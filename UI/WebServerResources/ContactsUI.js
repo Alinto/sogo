@@ -664,7 +664,11 @@ function onAddressBookRemove(event) {
   if (nodes.length > 0) {
     nodes[0].deselect();
     var owner = nodes[0].getAttribute("owner");
-    if (owner == UserLogin) {
+    if (owner == "nobody") {
+        var label = labels["You cannot remove nor unsubscribe from a public addressbook."];
+        window.alert(label);
+    }
+    else if (owner == UserLogin) {
       var folderIdElements = nodes[0].getAttribute("id").split(":");
       var abId = folderIdElements[0].substr(1);
       deletePersonalAddressBook(abId);
@@ -682,18 +686,24 @@ function onAddressBookRemove(event) {
 }
 
 function deletePersonalAddressBook(folderId) {
-  var label
-    = labels["Are you sure you want to delete the selected address book?"];
-  if (window.confirm(label)) {
-    if (document.deletePersonalABAjaxRequest) {
-      document.deletePersonalABAjaxRequest.aborted = true;
-      document.deletePersonalABAjaxRequest.abort();
+    if (folderId == "personal") {
+        var label = labels["You cannot remove nor unsubscribe from your personal addressbook."];
+        window.alert(label);
     }
-    var url = ApplicationBaseURL + folderId + "/deleteFolder";
-    document.deletePersonalABAjaxRequest
-      = triggerAjaxRequest(url, deletePersonalAddressBookCallback,
-			   folderId);
-  }
+    else {
+        var label
+            = labels["Are you sure you want to delete the selected address book?"];
+        if (window.confirm(label)) {
+            if (document.deletePersonalABAjaxRequest) {
+                document.deletePersonalABAjaxRequest.aborted = true;
+                document.deletePersonalABAjaxRequest.abort();
+            }
+            var url = ApplicationBaseURL + folderId + "/deleteFolder";
+            document.deletePersonalABAjaxRequest
+                = triggerAjaxRequest(url, deletePersonalAddressBookCallback,
+                                     folderId);
+        }
+    }
 }
 
 function deletePersonalAddressBookCallback(http) {
