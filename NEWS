@@ -1,5 +1,5 @@
-1.0-200808XX
-------------
+1.0-20080826 (1.0 rc8)
+----------------------
 - fixed a bug that would prevent deleted event and tasks from being removed from the events and tasks list
 - fixed a bug where the search of contacts would be done in authentication-only LDAP repositories
 - added the ability to transfer an event from one calendar to another
@@ -9,6 +9,10 @@
 - the event details appear when the user clicks on it
 - enable module constraints to be specified as patterns
 - inhibit internal links and css/javascript content from html files embedded as attachments to mails
+- updated all icons to use those from Thunderbird 2 and Lightning 0.9
+- fixed a bug where the cached credentials wouldn't be expired using SOGoLDAPUserManagerCleanupInterval
+- fixed a bug where mail headers wouldn't be decoded correctly
+- the copy/move menu items are correctly updated when IMAP folders are added, removed or renamed
 
 0.9.0-20080729 (1.0 rc7)
 ------------------------
