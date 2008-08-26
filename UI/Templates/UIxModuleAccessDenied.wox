@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE var:component>
+<var:component xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:uix="OGo:uix"
+  xmlns:label="OGo:label"
+  xmlns:rsrc="OGo:url"
+  className="UIxPageFrame"
+  title="title"
+  const:toolbar="none"
+  const:cssFiles="UIxModuleAccessDenied.css"
+  const:popup="YES">
+  <div id="messageWindow">
+    <var:string label:value="You are not allowed to access this module or this system. Please contact your system administrator."
+      />
+  </div>
+</var:component>

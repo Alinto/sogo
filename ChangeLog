@@ -1,3 +1,24 @@
+2008-08-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MainUI/SOGoRootPage.m ([SOGoRootPage -setUserName:_value])
+	([SOGoRootPage -userName]): removed accessors, since the
+	corresponding ivar is not used and was removed too.
+
+	* UI/SOGoUI/UIxComponent.m ([-shortUserNameForDisplay]): no longer
+	make use of the "wrongusernamepassword" hack.
+
+	* UI/MainUI/SOGoRootPage.m ([SOGoRootPage -connectAction]): return
+	HTTP code 403 if the username and the password passed in the
+	request are not valid.
+
+	* SoObjects/SOGo/SOGoUserFolder.m ([SOGoUserFolder
+	-lookupName:_keyinContext:_ctxacquire:_flag]): whenever a user has
+	no access to the specified module, a response with code 403 and
+	the content of "UIxModuleAccessDenied" will be generated.
+
+	* UI/SOGoUI/UIxModuleAccessDenied.[hm]: new template module
+	displaying an error message.
+
 2008-08-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailPartViewers/UIxMailRenderingContext.m

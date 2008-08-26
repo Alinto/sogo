@@ -27,6 +27,7 @@
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoClassSecurityInfo.h>
 #import <NGObjWeb/SoSecurityManager.h>
+#import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
@@ -43,6 +44,8 @@
 #import <Appointments/SOGoFreeBusyObject.h>
 #import <Contacts/SOGoContactFolders.h>
 #import <Mailer/SOGoMailAccounts.h>
+
+#import <SOGoUI/UIxComponent.h>
 
 #import "NSArray+Utilities.h"
 #import "NSDictionary+Utilities.h"
@@ -442,6 +445,26 @@
   return [$(@"SOGoFreeBusyObject") objectWithName: _key inContainer: self];
 }
 
+- (WOResponse *) _moduleAccessDeniedPage
+{
+  WOResponse *response;
+  UIxComponent *page;
+  NSString *content;
+
+  response = [context response];
+  [response setStatus: 403];
+  [response setHeader: @"text/html; charset=utf8"
+	    forKey: @"content-type"];
+  page = [[WOApplication application] pageWithName: @"UIxModuleAccessDenied"
+				      inContext: context];
+//   [page appendToResponse: response
+// 	inContext: context];
+  content = [[page generateResponse] contentAsString];
+  [response appendContentString: content];
+
+  return response;
+}
+
 - (id) lookupName: (NSString *) _key
         inContext: (WOContext *) _ctx
           acquire: (BOOL) _flag
@@ -454,14 +477,22 @@
   if (!obj)
     {
       currentUser = [_ctx activeUser];
-      if ([_key isEqualToString: @"Calendar"]
-	  && [currentUser canAccessModule: _key])
-	obj = [self privateCalendars: @"Calendar" inContext: _ctx];
+      if ([_key isEqualToString: @"Calendar"])
+	{
+	  if ([currentUser canAccessModule: _key])
+	    obj = [self privateCalendars: @"Calendar" inContext: _ctx];
+	  else
+	    obj = [self _moduleAccessDeniedPage];
+	}
       else if ([_key isEqualToString: @"Contacts"])
         obj = [self privateContacts: _key inContext: _ctx];
-      else if ([_key isEqualToString: @"Mail"]
-	       && [currentUser canAccessModule: _key])
-        obj = [self mailAccountsFolder: _key inContext: _ctx];
+      else if ([_key isEqualToString: @"Mail"])
+	{
+	  if ([currentUser canAccessModule: _key])
+	    obj = [self mailAccountsFolder: _key inContext: _ctx];
+	  else
+	    obj = [self _moduleAccessDeniedPage];
+	}
       else if ([_key isEqualToString: @"Preferences"])
         obj = [$(@"SOGoPreferencesFolder") objectWithName: _key
 		inContainer: self];

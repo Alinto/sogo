@@ -1,6 +1,6 @@
-/* SOGoRootPage.h - this file is part of SOGo
+/* UIxModuleAccessDenied.h - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse groupe conseil
+ * Copyright (C) 2008 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -20,13 +20,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef SOGOROOTPAGE_H
-#define SOGOROOTPAGE_H
+#import "UIxComponent.h"
 
-#import <UI/SOGoUI/UIxComponent.h>
-
-@interface SOGoRootPage : UIxComponent
+@interface UIxModuleAccessDenied : UIxComponent
 
 @end
-
-#endif /* SOGOROOTPAGE_H */

@@ -41,3 +41,6 @@
      	= "You have already subscribed to that folder!";
 "The user rights cannot be edited for this object!"
         = "The user rights cannot be edited for this object!";
+
+"You are not allowed to access this module or this system. Please contact your system administrator."
+= "You are not allowed to access this module or this system. Please contact your system administrator.";
