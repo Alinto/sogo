@@ -8,6 +8,7 @@
 "Connect" = "Connexion";
 
 "Wrong username or password." = "Mauvais nom d'utilisateur ou mot de passe.";
+"cookiesNotEnabled" = "Vous ne pouvez vous authentifier car les témoins (cookies) de votre navigateur Web sont désactivés. Activez les témoins dans votre navigateur Web et essayez de nouveau.";
 
 "browserNotCompatible" = "La version de votre navigateur Web n'est présentement pas supportée par ce site. Nous recommandons d'utiliser Firefox. Vous trouverez un lien vers la plus récente version de ce navigateur ci-dessous:";
 "alternativeBrowsers" = "Comme alternative, vous pouvez aussi utiliser les navigateurs suivants:";

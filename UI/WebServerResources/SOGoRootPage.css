@@ -48,9 +48,9 @@ DIV#loginButton IMG#progressIndicator
   margin-top: 5px;
   margin-left: 5px; }
 
+#noCookiesErrorMessage,
 #loginErrorMessage
-{ display: none;
-  color: #f00;
+{ color: #f00;
   text-align: center; }
 
 P.browser

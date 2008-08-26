@@ -40,41 +40,57 @@ function onLoginClick(event) {
 }
 
 function onLoginCallback(http) {
-    if (http.readyState == 4) {
-        if (isHttpStatus204(http.status)) {
-            var userName = $("userName").value;
-            if (typeof(loginSuffix) != "undefined"
-                && loginSuffix.length > 0
-                && !userName.endsWith(loginSuffix))
-                userName += loginSuffix;
-            var address = "" + window.location.href;
-            var baseAddress = ApplicationBaseURL + encodeURI(userName);
-            var altBaseAddress;
-            if (baseAddress[0] == "/") {
-                var parts = address.split("/");
-                var hostpart = parts[2];
-                var protocol = parts[0];
-                baseAddress = protocol + "//" + hostpart + baseAddress;
-            }
-            var altBaseAddress;
-            var parts = baseAddress.split("/");
-            parts.splice(3, 0);
-            altBaseAddress = parts.join("/");
+  if (http.readyState == 4) {
+    if (isHttpStatus204(http.status)) {
 
-            var newAddress;
-            if ((address.startsWith(baseAddress)
-                 || address.startsWith(altBaseAddress))
-                && !address.endsWith("/logoff"))
-                newAddress = address;
-            else
-                newAddress = baseAddress;
-            window.location.href = newAddress;
-        }
-        else {
-            var message = $("loginErrorMessage");
-            message.setStyle({ display: "block" });
-        }
+      // Make sure browser's cookies are enabled
+      var cookieExists = 0;
+      var ca = document.cookie.split(';');
+      for (var i = 0; i < ca.length; i++) {
+	var c = ca[i];
+	while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+	if (c.indexOf("0xHIGHFLYxSOGo-0.9=") == 0) {
+	  cookieExists = 1;
+	  break;
+	}
+      }
+      if (cookieExists === 0) {
+	$("noCookiesErrorMessage").show();
+	return false;
+      }
+      
+      // Redirect to proper page
+      var userName = $("userName").value;
+      if (typeof(loginSuffix) != "undefined"
+	  && loginSuffix.length > 0
+	  && !userName.endsWith(loginSuffix))
+	userName += loginSuffix;
+      var address = "" + window.location.href;
+      var baseAddress = ApplicationBaseURL + encodeURI(userName);
+      var altBaseAddress;
+      if (baseAddress[0] == "/") {
+	var parts = address.split("/");
+	var hostpart = parts[2];
+	var protocol = parts[0];
+	baseAddress = protocol + "//" + hostpart + baseAddress;
+      }
+      var altBaseAddress;
+      var parts = baseAddress.split("/");
+      parts.splice(3, 0);
+      altBaseAddress = parts.join("/");
+
+      var newAddress;
+      if ((address.startsWith(baseAddress)
+	   || address.startsWith(altBaseAddress))
+	  && !address.endsWith("/logoff"))
+	newAddress = address;
+      else
+	newAddress = baseAddress;
+      window.location.href = newAddress;
     }
+    else
+      $("loginErrorMessage").show();
+  }
 }
 
 FastInit.addOnLoad(initLogin);

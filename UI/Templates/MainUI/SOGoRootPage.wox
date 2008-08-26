@@ -15,7 +15,8 @@
 	 type="text/javascript">var loginSuffix = '<var:string value="loginSuffix"/>';</script
 	></var:if>
       <img const:alt="*" id="splash" rsrc:src="lori-login.jpg"/><br/><br/>
-      <p id="loginErrorMessage"><var:string label:value="Wrong username or password."/></p>
+      <p id="noCookiesErrorMessage" style="display: none;"><var:string label:value="cookiesNotEnabled"/></p>
+      <p id="loginErrorMessage" style="display: none;"><var:string label:value="Wrong username or password."/></p>
       <label><var:string label:value="Username:"/><br/>
 	<input class="textField" id="userName" name="userName"
 	  type="text" var:value="userName" /></label><br/>
