@@ -45,7 +45,7 @@
 #import <Contacts/SOGoContactFolders.h>
 #import <Mailer/SOGoMailAccounts.h>
 
-#import <SOGoUI/UIxComponent.h>
+#import <UI/SOGoUI/UIxComponent.h>
 
 #import "NSArray+Utilities.h"
 #import "NSDictionary+Utilities.h"
