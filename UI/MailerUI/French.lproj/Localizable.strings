@@ -221,6 +221,17 @@
 "Please select a message to print." = "Veuillez sélectionner un message à imprimer.";
 "Please select only one message to print." = "Veuillez ne sélectionner qu'un seul message à imprimer.";
 
+"The folder with name \"%{0}\" could not be created."
+= "Le dossier intitulé \"%{0}\" n'a pas pu être créé.";
+"This folder could not be renamed to \"%{0}\"."
+= "Ce dossier n'a pu être renommé en \"%{0}\".";
+"The folder could not be deleted."
+= "Le dossier n'a pas pu être effacé.";
+"The trash could not be emptied."
+= "La corbeille n'a pas pu être vidée.";
+"The folder functionality could not be changed."
+= "La fonctionnalité du dossier n'a pas pu être changée.";
+
 "You need to choose a non-virtual folder!" = "Vous devez choisir un dossier non-virtuel.";
 
 "Moving a message into its own folder is impossible!"

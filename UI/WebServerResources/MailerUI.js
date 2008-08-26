@@ -1581,18 +1581,21 @@ function onMenuCreateFolder(event) {
   if (name && name.length > 0) {
     var folderID = document.menuTarget.getAttribute("dataname");
     var urlstr = URLForFolderID(folderID) + "/createFolder?name=" + name;
-    triggerAjaxRequest(urlstr, folderOperationCallback);
+    var errorLabel = labels["The folder with name \"%{0}\" could not be created."];
+    triggerAjaxRequest(urlstr, folderOperationCallback,
+                       errorLabel.formatted(name));
   }
 }
 
 function onMenuRenameFolder(event) {
-  var name = window.prompt(labels["Enter the new name of your folder :"]
-			   ,
-			   "");
+  var name = window.prompt(labels["Enter the new name of your folder :"],
+                           "");
   if (name && name.length > 0) {
     var folderID = document.menuTarget.getAttribute("dataname");
     var urlstr = URLForFolderID(folderID) + "/renameFolder?name=" + name;
-    triggerAjaxRequest(urlstr, folderOperationCallback);
+    var errorLabel = labels["This folder could not be renamed to \"%{0}\"."];
+    triggerAjaxRequest(urlstr, folderOperationCallback,
+                       errorLabel.formatted(name));
   }
 }
 
@@ -1601,7 +1604,8 @@ function onMenuDeleteFolder(event) {
   if (answer) {
     var folderID = document.menuTarget.getAttribute("dataname");
     var urlstr = URLForFolderID(folderID) + "/deleteFolder";
-    triggerAjaxRequest(urlstr, folderOperationCallback);
+    var errorLabel = labels["The folder could not be deleted."];
+    triggerAjaxRequest(urlstr, folderOperationCallback, errorLabel);
   }
 }
 
@@ -1614,7 +1618,8 @@ function onMenuExpungeFolder(event) {
 function onMenuEmptyTrash(event) {
   var folderID = document.menuTarget.getAttribute("dataname");
   var urlstr = URLForFolderID(folderID) + "/emptyTrash";
-  triggerAjaxRequest(urlstr, folderOperationCallback, folderID);
+  var errorLabel = labels["The trash could not be emptied."];
+  triggerAjaxRequest(urlstr, folderOperationCallback, errorLabel);
 
   if (folderID == Mailer.currentMailbox) {
     var div = $('messageContent');
@@ -1634,7 +1639,8 @@ function _onMenuChangeToXXXFolder(event, folder) {
   else {
     var folderID = document.menuTarget.getAttribute("dataname");
     var urlstr = URLForFolderID(folderID) + "/setAs" + folder + "Folder";
-    triggerAjaxRequest(urlstr, folderOperationCallback);
+    var errorLabel = labels["The folder functionality could not be changed."];
+    triggerAjaxRequest(urlstr, folderOperationCallback, errorLabel);
   }
 }
 
@@ -1731,7 +1737,7 @@ function folderOperationCallback(http) {
       && isHttpStatus204(http.status))
     initMailboxTree();
   else
-    window.alert(labels["Operation failed"]);
+    window.alert(http.callbackData);
 }
 
 function folderRefreshCallback(http) {

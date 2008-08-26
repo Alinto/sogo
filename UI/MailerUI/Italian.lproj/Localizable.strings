@@ -227,6 +227,17 @@
 "Please select a message to print." = "Per favore seleziona un messaggio da stampare.";
 "Please select only one message to print." = "Per favore seleziona un solo messaggio da stampare.";
 
+"The folder with name \"%{0}\" could not be created."
+= "The folder with name \"%{0}\" could not be created.";
+"This folder could not be renamed to \"%{0}\"."
+= "This folder could not be renamed to \"%{0}\".";
+"The folder could not be deleted."
+= "The folder could not be deleted.";
+"The trash could not be emptied."
+= "The trash could not be emptied.";
+"The folder functionality could not be changed."
+= "The folder functionality could not be changed.";
+
 "You need to choose a non-virtual folder!" = "Devi selezionare una cartella fisica, non virtuale!";
 
 "Moving a message into its own folder is impossible!"

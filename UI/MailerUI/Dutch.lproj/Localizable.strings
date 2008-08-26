@@ -204,6 +204,17 @@
 "Please select a message to print." = "Selecteer een bericht om af te drukken.";
 "Please select only one message to print." = "Selecteer een enkel bericht om af te drukken.";
 
+"The folder with name \"%{0}\" could not be created."
+= "The folder with name \"%{0}\" could not be created.";
+"This folder could not be renamed to \"%{0}\"."
+= "This folder could not be renamed to \"%{0}\".";
+"The folder could not be deleted."
+= "The folder could not be deleted.";
+"The trash could not be emptied."
+= "The trash could not be emptied.";
+"The folder functionality could not be changed."
+= "The folder functionality could not be changed.";
+
 "You need to choose a non-virtual folder!" = "U dient een niet-virtuele map te kiezen!";
 
 "Moving a message into its own folder is impossible!"
