@@ -571,8 +571,8 @@ function onWindowResize(event) {
 //						   headerarea)[0];
 //    $("attachments").setStyle({ height: (headerarea.getHeight() - fromfield.getHeight() - 10) + 'px' });
   }
-  var subjectfield = headerarea.select("div#subjectRow span.headerField").first();
-  var subjectinput = headerarea.select("div#subjectRow input.textField").first();
+  var subjectfield = headerarea.down("div#subjectRow span.headerField");
+  var subjectinput = headerarea.down("div#subjectRow input.textField");
   
   // Resize subject field
   subjectinput.setStyle({ width: (window.width()
@@ -585,12 +585,10 @@ function onWindowResize(event) {
   addresslist.setStyle({ width: ($(this).width() - attachmentswidth - 10) + 'px' });
 
   // Set textarea position
-  textarea.setStyle({ 'top': (headerarea.getHeight() + headerarea.offsetTop) + 'px' });
-
-  var textareaoffset = textarea.offsetTop;
+  textarea.setStyle({ 'top': headerarea.select("hr").first().offsetTop + 'px' });
 
   // Resize the textarea (message content)
-  textarea.rows = Math.round((window.height() - textareaoffset) / rowheight);
+  textarea.rows = Math.round((window.height() - textarea.offsetTop) / rowheight);
 }
 
 function onMailEditorClose(event) {

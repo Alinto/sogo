@@ -140,7 +140,7 @@ function extractEmailAddress(mailTo) {
   var email = "";
 
   var emailre
-    = /(([a-zA-Z0-9\._-]+)*[a-zA-Z0-9_-]+@([a-zA-Z0-9\._-]+)*[a-zA-Z0-9_-]+)/g;
+    = /(([a-zA-Z0-9\._-]+)*[a-zA-Z0-9_-]+@([a-zA-Z0-9\._-]+)*[a-zA-Z0-9_-]+)/;
   if (emailre.test(mailTo)) {
     emailre.exec(mailTo);
     email = RegExp.$1;
@@ -155,18 +155,30 @@ function extractEmailName(mailTo) {
   var tmpMailTo = mailTo.replace("&lt;", "<");
   tmpMailTo = tmpMailTo.replace("&gt;", ">");
 
-  var emailNamere = /([ 	]+)?(.+)\ </;
+  var emailNamere = /([^ 	]+)\ </;
   if (emailNamere.test(tmpMailTo)) {
     emailNamere.exec(tmpMailTo);
-    emailName = RegExp.$2;
+    emailName = RegExp.$1;
   }
    
   return emailName;
 }
 
+function extractSubject(mailTo) {
+  var subject = "";
+
+  var subjectre = /\?subject=([^&]+)/;
+  if (subjectre.test(mailTo)) {
+    subjectre.exec(mailTo);
+    subject = RegExp.$1;
+  }
+
+  return subject;
+}
+
 function sanitizeMailTo(dirtyMailTo) {
   var emailName = extractEmailName(dirtyMailTo);
-  var email = "" + extractEmailAddress(dirtyMailTo);
+  var email = extractEmailAddress(dirtyMailTo);
    
   var mailto = "";
   if (emailName && emailName.length > 0)
@@ -234,6 +246,7 @@ function openMailComposeWindow(url, wId) {
 function openMailTo(senderMailTo) {
   var addresses = senderMailTo.split(",");
   var sanitizedAddresses = new Array();
+  var subject = extractSubject(senderMailTo);
   for (var i = 0; i < addresses.length; i++) {
     var sanitizedAddress = sanitizeMailTo(addresses[i]);
     if (sanitizedAddress.length > 0)
@@ -241,10 +254,11 @@ function openMailTo(senderMailTo) {
   }
 
   var mailto = sanitizedAddresses.join(",");
- 
+
   if (mailto.length > 0)
     openMailComposeWindow(ApplicationBaseURL
-			  + "../Mail/compose?mailto=" + mailto);
+			  + "../Mail/compose?mailto=" + mailto
+			  + ((subject.length > 0)?"?subject="+subject:""));
 
   return false; /* stop following the link */
 }

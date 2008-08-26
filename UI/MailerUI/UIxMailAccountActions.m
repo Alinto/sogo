@@ -147,22 +147,32 @@
   SOGoDraftObject *newDraftMessage;
   NSString *urlBase, *url, *value, *signature;
   NSArray *mailTo;
+  NSMutableDictionary *headers;
   BOOL save;
 
   drafts = [[self clientObject] draftsFolderInContext: context];
   newDraftMessage = [drafts newDraft];
-
+  headers = [NSMutableDictionary dictionary];
+  
   save = NO;
 
   value = [[self request] formValueForKey: @"mailto"];
   if ([value length] > 0)
     {
       mailTo = [value componentsSeparatedByString: @","];
-      [newDraftMessage
-	setHeaders: [NSDictionary dictionaryWithObject: mailTo
-				  forKey: @"to"]];
+      [headers setObject: mailTo forKey: @"to"];
       save = YES;
     }
+
+  value = [[self request] formValueForKey: @"subject"];
+  if ([value length] > 0)
+    {
+      [headers setObject: value forKey: @"subject"];
+      save = YES;
+    }
+
+  if (save)
+    [newDraftMessage setHeaders: headers];
 
   signature = [[context activeUser] signature];
   if ([signature length])

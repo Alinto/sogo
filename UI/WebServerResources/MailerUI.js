@@ -1055,7 +1055,7 @@ function newContactFromEmail(event) {
 
 function onEmailTo(event) {
   openMailTo(this.innerHTML.strip());
-  preventDefault(event);
+  Event.stop(event);
   return false;
 }
 
