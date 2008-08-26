@@ -129,10 +129,15 @@
 "Name of the Address Book" = "Nome della rubrica";
 "Are you sure you want to delete the selected address book?"
 = "Sei sicuro di voler cancellare la rubrica selezionata?";
+"You cannot remove nor unsubscribe from a public addressbook."
+= "You cannot remove nor unsubscribe from a public addressbook.";
+"You cannot remove nor unsubscribe from your personal addressbook."
+= "You cannot remove nor unsubscribe from your personal addressbook.";
+
 "Are you sure you want to delete the selected contacts?"
 = "Sei sicuro di voler eliminare i contatti selezionati?";
-
-= "Are you sure you want to delete the selected contacts?";
+"You cannot delete the selected contact(s)"
+= "Non puoi eliminare il contatto selezionato.";
 
 "Address Book Name" = "Nome della Rubrica";
 
@@ -157,8 +162,5 @@
 
 "The selected contact has no email address."
 = "Il contatto selezionato non dispone di indirizzo email.";
-
-"You cannot delete the selected contact(s)"
-= "Non puoi eliminare il contatto selezionato.";
 
 "Please select a contact." = "Per favore seleziona un contatto.";

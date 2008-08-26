@@ -120,6 +120,11 @@
 "Name of the Address Book" = "Nombre de la libreta";
 "Are you sure you want to delete the selected address book?"
 = "¿Está seguro/a que desea borrar la libreta de direcciones seleccionada?";
+"You cannot remove nor unsubscribe from a public addressbook."
+= "You cannot remove nor unsubscribe from a public addressbook.";
+"You cannot remove nor unsubscribe from your personal addressbook."
+= "You cannot remove nor unsubscribe from your personal addressbook.";
+
 "Are you sure you want to delete the selected contacts?"
 = "¿Está seguro/a que desea borrar el/los contacto(s) seleccionado(s)?";
 "You cannot delete the selected contact(s)"
