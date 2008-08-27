@@ -47,6 +47,7 @@ UL#userList
   top: 30px;
   bottom: 33px;
   padding: 0px;
+  margin: 0px;
   white-space: nowrap;
   overflow: auto;
   border-bottom: 1px solid #fff;
