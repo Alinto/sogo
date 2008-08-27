@@ -226,8 +226,8 @@ function onAttachmentChange(event) {
         this.removeClassName("currentAttachment");
         var list = $("attachments");
         createAttachment(this, list);
-        clickedEditorAttach(null)
-            }
+        clickedEditorAttach(null);
+    }
 }
 
 function createAttachment(node, list) {
@@ -268,6 +268,36 @@ function onTextFocus() {
     var input = currentAttachmentInput();
     if (input)
         input.parentNode.removeChild(input);
+}
+
+function onTextKeyDown(event) {
+    if (event.keyCode == 9) {
+        if (event.shiftKey) {
+            var nodes = $("subjectRow").childNodesWithTag("input");
+            var objectInput = $(nodes[0]);
+            objectInput.focus();
+            objectInput.selectText(0, objectInput.value.length);
+            preventDefault(event);
+        }
+        else {
+            if (!(event.shiftKey || event.metaKey || event.ctrlKey)) {
+                if (this.selectionStart) { // FF
+                    var startText = this.value.substr(0, this.selectionStart);
+                    var endText = this.value.substr(this.selectionStart);
+                    this.value = startText + "   " + endText;
+                }
+                else if (this.selectionRange) // IE
+                    this.selectionRange.text = "   ";
+                else { // others ?
+                }
+                preventDefault(event);
+            }
+        }
+    }
+}
+
+function onTextIEUpdateCursorPos(event) {
+    this.selectionRange = document.selection.createRange().duplicate();
 }
 
 function onTextFirstFocus() {
@@ -496,6 +526,13 @@ function initMailEditor() {
     textarea.observe("focus", onTextFocus);
     //   textarea.observe("contextmenu", onTextContextMenu);
     textarea.observe("mousedown", onTextMouseDown, true);
+    textarea.observe("keydown", onTextKeyDown);
+
+    if (Prototype.Browser.IE) {
+        var ieEvents = [ "click", "select", "keyup" ];
+        for (var i = 0; i < ieEvents.length; i++)
+            textarea.observe(ieEvents[i], onTextIEUpdateCursorPos, false);
+    }
 
     initTabIndex($("addressList"), $$("div#subjectRow input").first(), textarea);
     onWindowResize(null);
