@@ -14,6 +14,14 @@ DIV.acls LABEL
 { white-space: nowrap;
   width: 100%; }
 
+DIV.userSelector
+{ position: absolute;
+  top: 3em;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  height: 100px; }
+
 DIV#userSelectorHeader
 { margin: 1em 0 0.5em 1em; }
 
@@ -27,14 +35,17 @@ INPUT#defaultRolesBtn
 DIV#userRoles
 { height: 100%; }
 
-DIV#userRoles SPAN#userSelectorButtons
-{ margin-left: 1em; }
+#userSelectorButtons
+{ margin-left: 1em;
+  padding-top: 2px;
+  padding-bottom: 2px; }
 
 UL#userList
-{ height: 100%;
-  width: 100%;
-  cursor: default;
-  margin: 0px;
+{ position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 30px;
+  bottom: 33px;
   padding: 0px;
   white-space: nowrap;
   overflow: auto;
@@ -42,7 +53,7 @@ UL#userList
   border-right: 1px solid #fff;
   border-top: 2px solid #222;
   border-left: 2px solid #222;
-  background: #fff;
+  background-color: #fff;
   -moz-border-top-colors: #9c9a94 #000 transparent;
   -moz-border-left-colors: #9c9a94 #000 transparent;
   list-style-type: none;

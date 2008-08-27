@@ -24,11 +24,11 @@
 	    <span class="value"><strong><var:string value="ownerName"/></strong></span></label><br/>
 	</var:if>
       </div>
-      <input id="defaultRolesBtn" type="button"
-	class="button" label:value="Default Roles"/>
       <div class="userSelector" id="userRoles">
 	<var:if condition="canModifyAcls">
-	  <span id="userSelectorButtons">
+	  <input id="defaultRolesBtn" type="button"
+	    class="button" label:value="Default Roles"/>
+	  <div id="userSelectorButtons">
 	    <a href="#"
 	      class="button"><img rsrc:src="add-contact.gif"
 		label:title="Add..."
@@ -37,7 +37,7 @@
 	      class="button"><img rsrc:src="remove-contact.gif"
 		label:title="Remove"
 		/></a>
-	  </span>
+	  </div>
 	</var:if>
 	<ul id="userList" multiselect="yes">
 	  <var:foreach list="usersForObject" item="currentUser"
