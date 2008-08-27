@@ -155,10 +155,10 @@ function extractEmailName(mailTo) {
   var tmpMailTo = mailTo.replace("&lt;", "<");
   tmpMailTo = tmpMailTo.replace("&gt;", ">");
 
-  var emailNamere = /([^ 	]+)\ </;
+  var emailNamere = /([ 	]+)?(.+)\ </;
   if (emailNamere.test(tmpMailTo)) {
     emailNamere.exec(tmpMailTo);
-    emailName = RegExp.$1;
+    emailName = RegExp.$2;
   }
    
   return emailName;
@@ -185,7 +185,7 @@ function sanitizeMailTo(dirtyMailTo) {
     mailto = emailName + ' <' + email + '>';
   else
     mailto = email;
-
+  
   return mailto;
 }
 
