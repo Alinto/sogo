@@ -1,3 +1,9 @@
+2008-08-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailBodyPart.m ([SOGoMailBodyPart
+	-lookupImap4BodyPartKey:inContext:]): if the "parts" object is not
+	found, we try "body"->"parts".
+
 2008-08-26  Francis Lachapelle  <flachapelle@inverse.ca>
 	
 	* UI/MailerUI/UIxMailMainFrame.m ([composeAction]): build the

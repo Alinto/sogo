@@ -87,13 +87,15 @@ static BOOL debugOn = NO;
 
 /* hierarchy */
 
-- (SOGoMailObject *)mailObject {
+- (SOGoMailObject *) mailObject
+{
   return [[self container] mailObject];
 }
 
 /* IMAP4 */
 
-- (NSString *)bodyPartName {
+- (NSString *) bodyPartName
+{
   NSString *s;
   NSRange  r;
 
@@ -104,7 +106,8 @@ static BOOL debugOn = NO;
   return [s substringToIndex:r.location];
 }
 
-- (NSArray *)bodyPartPath {
+- (NSArray *) bodyPartPath
+{
   NSMutableArray *p;
   id obj;
   
@@ -122,7 +125,8 @@ static BOOL debugOn = NO;
   return pathToPart;
 }
 
-- (NSString *)bodyPartIdentifier {
+- (NSString *) bodyPartIdentifier
+{
   if (identifier != nil)
     return [identifier isNotNull] ? identifier : nil;
   
@@ -131,19 +135,23 @@ static BOOL debugOn = NO;
   return identifier;
 }
 
-- (NSURL *)imap4URL {
+- (NSURL *) imap4URL
+{
   /* reuse URL of message */
   return [[self mailObject] imap4URL];
 }
 
 /* part info */
 
-- (id)partInfo {
-  if (partInfo != nil)
-    return [partInfo isNotNull] ? partInfo : nil;
+- (id) partInfo
+{
+  if (!partInfo)
+    {
+      partInfo
+	= [[self mailObject] lookupInfoForBodyPart: [self bodyPartPath]];
+      [partInfo retain];
+    }
 
-  partInfo =
-    [[[self mailObject] lookupInfoForBodyPart:[self bodyPartPath]] retain];
   return partInfo;
 }
 
@@ -157,10 +165,14 @@ static BOOL debugOn = NO;
   NSArray *subParts;
   unsigned int nbr;
   id obj;
-  NSDictionary *subPart;
+  NSDictionary *subPart, *infos;
 
   nbr = [key intValue];
-  subParts = [[self partInfo] objectForKey: @"parts"];
+  infos = [self partInfo];
+  subParts = [infos objectForKey: @"parts"];
+  if (!subParts)
+    subParts = [[infos objectForKey: @"body"] objectForKey: @"parts"];
+
   if (nbr > 0 && nbr < ([subParts count] + 1))
     {
       subPart = [subParts objectAtIndex: nbr - 1];
