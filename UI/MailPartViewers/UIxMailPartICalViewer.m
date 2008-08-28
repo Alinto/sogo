@@ -215,29 +215,37 @@
   return [folder lookupName: @"personal" inContext: context acquire: NO];
 }
 
+- (BOOL) hasCalendarAccess
+{
+  return [[context activeUser] canAccessModule: @"Calendar"];
+}
+
 - (SOGoAppointmentObject *) storedEventObject
 {
   /* lookup object in the users Calendar */
   SOGoAppointmentFolder *calendar;
   NSString *filename;
  
-  if (!storedEventObject)
+  if ([self hasCalendarAccess])
     {
-      calendar = [self calendarFolder];
-      if ([calendar isKindOfClass: [NSException class]])
-	[self errorWithFormat:@"Did not find Calendar folder: %@", calendar];
-      else
+      if (!storedEventObject)
 	{
-	  filename = [calendar resourceNameForEventUID:[[self inEvent] uid]];
-	  if (filename)
+	  calendar = [self calendarFolder];
+	  if ([calendar isKindOfClass: [NSException class]])
+	    [self errorWithFormat:@"Did not find Calendar folder: %@", calendar];
+	  else
 	    {
-	      storedEventObject = [calendar lookupName: filename
-					    inContext: [self context]
-					    acquire: NO];
-	      if ([storedEventObject isKindOfClass: [NSException class]])
-		storedEventObject = nil;
-	      else
-		[storedEventObject retain];
+	      filename = [calendar resourceNameForEventUID:[[self inEvent] uid]];
+	      if (filename)
+		{
+		  storedEventObject = [calendar lookupName: filename
+						inContext: [self context]
+						acquire: NO];
+		  if ([storedEventObject isKindOfClass: [NSException class]])
+		    storedEventObject = nil;
+		  else
+		    [storedEventObject retain];
+		}
 	    }
 	}
     }
@@ -418,7 +426,8 @@
 
 - (BOOL) canOriginalEventBeUpdated
 {
-  return ([self hasSenderStatusChanged]
+  return ([self hasCalendarAccess]
+	  && [self hasSenderStatusChanged]
 	  && ([[inEvent sequence] compare: [storedEvent sequence]]
 	      != NSOrderedAscending));
 }

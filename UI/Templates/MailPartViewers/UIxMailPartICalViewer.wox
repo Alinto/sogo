@@ -39,24 +39,26 @@
       <var:if condition="inCalendar.method.uppercaseString" const:value="REQUEST">
 	<!-- sent to attendees to propose or update a meeting -->
 	<var:if condition="isLoggedInUserAnAttendee">
-	  <p class="uix_ical_toolbar" id="iCalendarToolbar">
-	    <var:if condition="currentUserAttendee.partStatWithDefault"
-	      const:value="ACCEPTED" const:negate="YES">
-	      <input id="iCalendarAccept" class="button"
-		type="button" label:value="Accept"/>
-	    </var:if>
-	    <var:if condition="currentUserAttendee.partStatWithDefault"
-	      const:value="DECLINED" const:negate="YES">
-	      <input id="iCalendarDecline" class="button"
-		type="button" label:value="Decline"/>
-	    </var:if>
-	    <!-- <input id="iCalendarTentative" class="button"
-	    type="button" label:value="Tentative"/> -->
-	    <var:if condition="isEventStoredInCalendar" const:negate="YES">
-	      | <input id="iCalendarAddToCalendar" class="button"
-		type="button" label:value="Add to calendar"/>
-	    </var:if>
-	  </p>
+	  <var:if condition="hasCalendarAccess">
+	    <p class="uix_ical_toolbar" id="iCalendarToolbar">
+	      <var:if condition="currentUserAttendee.partStatWithDefault"
+		const:value="ACCEPTED" const:negate="YES">
+		<input id="iCalendarAccept" class="button"
+		  type="button" label:value="Accept"/>
+	      </var:if>
+	      <var:if condition="currentUserAttendee.partStatWithDefault"
+		const:value="DECLINED" const:negate="YES">
+		<input id="iCalendarDecline" class="button"
+		  type="button" label:value="Decline"/>
+	      </var:if>
+	      <!-- <input id="iCalendarTentative" class="button"
+	      type="button" label:value="Tentative"/> -->
+	      <var:if condition="isEventStoredInCalendar" const:negate="YES">
+		| <input id="iCalendarAddToCalendar" class="button"
+		  type="button" label:value="Add to calendar"/>
+	      </var:if>
+	    </p>
+	  </var:if>
 
 	  <p>
 	    <var:string label:value="Organizer" />
@@ -76,7 +78,7 @@
 	</var:if>
       </var:if>
 
-	
+      
       <var:if condition="inCalendar.method.uppercaseString" const:value="REPLY">
 	<!-- sent to organizer to update the status of the participant -->
 	<var:if condition="isReplySenderAnAttendee" const:negate="1">
@@ -89,8 +91,8 @@
 	      <input id="iCalendarUpdateUserStatus" class="button"
 		type="button" label:value="Update status"/>
 	    </p>
-	  
-	  <!-- TODO: replies to events not in the calendar? -->
+	    
+	    <!-- TODO: replies to events not in the calendar? -->
 
 	    <p>
 	      Status Update:
