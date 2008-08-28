@@ -158,7 +158,6 @@ function initUserFoldersWindow() {
   searchValue.observe("keydown", onFolderSearchKeyDown);
   var addButton = $("addButton");
   addButton.observe("click", onConfirmFolderSelection);
-  addButton.disabled = true;
   searchValue.focus();
 }
 

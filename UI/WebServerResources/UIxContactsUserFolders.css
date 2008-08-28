@@ -2,7 +2,8 @@ DIV#filterPanel
 { position: absolute;
   text-align: center;
   width: auto;
-  top: 1em;
+  line-height: 3em;
+  top: 0;
   left: 1em;
   right: 1em; }
 
