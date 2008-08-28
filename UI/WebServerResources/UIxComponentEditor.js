@@ -1,8 +1,10 @@
+/* -*- Mode: java; tab-width: 2; c-tab-always-indent: t; indent-tabs-mode: t; c-basic-offset: 2 -*- */
+
 function onPopupAttendeesWindow(event) {
   if (event)
     preventDefault(event);
   window.open(ApplicationBaseURL + "/editAttendees", null, 
-	      "width=803,height=573");
+							"width=803,height=573");
 
   return false;
 }
@@ -30,14 +32,14 @@ function onPopupUrlWindow(event) {
     if (documentHref.childNodes.length > 0) {
       documentHref.childNodes[0].nodeValue = newUrl;
       if (newUrl.length > 0)
-	documentLabel.setStyle({ display: "block" });
+				documentLabel.setStyle({ display: "block" });
       else
-	documentLabel.setStyle({ display: "none" });
+				documentLabel.setStyle({ display: "none" });
     }
     else {
       documentHref.appendChild(document.createTextNode(newUrl)); 
       if (newUrl.length > 0)
-	documentLabel.setStyle({ display: "block" });
+				documentLabel.setStyle({ display: "block" });
     }
     urlInput.value = newUrl;
   }
@@ -124,9 +126,9 @@ function onComponentEditorLoad(event) {
 
   var menuItems = $("itemPrivacyList").childNodesWithTag("li");
   for (var i = 0; i < menuItems.length; i++)
-     menuItems[i].observe("mousedown",
-			  onMenuSetClassification.bindAsEventListener(menuItems[i]),
-			  false);
+		menuItems[i].observe("mousedown",
+												 onMenuSetClassification.bindAsEventListener(menuItems[i]),
+												 false);
 
   $("repeatHref").observe("click", onPopupRecurrenceWindow);
   $("repeatList").observe("change", onPopupRecurrenceWindow);
@@ -143,7 +145,7 @@ function onPopupRecurrenceWindow(event) {
     repeatHref.show();
     if (event)
       window.open(ApplicationBaseURL + "editRecurrence", null, 
-		  "width=500,height=400");
+									"width=500,height=400");
   }
   else
     repeatHref.hide();

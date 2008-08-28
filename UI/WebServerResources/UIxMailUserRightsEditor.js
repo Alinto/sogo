@@ -1,9 +1,11 @@
+/* -*- Mode: java; tab-width: 2; c-tab-always-indent: t; indent-tabs-mode: t; c-basic-offset: 2 -*- */
+
 function onCancelClick(event) {
-   window.close();
+	window.close();
 }
 
 function initACLButtons() {
-   $("cancelButton").observe("click", onCancelClick)
+	$("cancelButton").observe("click", onCancelClick);
 }
 
 FastInit.addOnLoad(initACLButtons);

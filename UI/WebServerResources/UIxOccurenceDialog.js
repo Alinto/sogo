@@ -1,3 +1,5 @@
+/* -*- Mode: java; tab-width: 2; c-tab-always-indent: t; indent-tabs-mode: t; c-basic-offset: 2 -*- */
+
 function onCancelButtonClick(event) {
   window.close();
 }
@@ -5,10 +7,10 @@ function onCancelButtonClick(event) {
 function onThisButtonClick(event) {
   if (action == 'edit')
     window.opener.performEventEdition(calendarFolder, componentName,
-				      recurrenceName);
+																			recurrenceName);
   else if (action == 'delete')
     window.opener.performEventDeletion(calendarFolder, componentName,
-				       recurrenceName);
+																			 recurrenceName);
   else
     window.alert("Invalid action: " + action);
 

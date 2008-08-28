@@ -1,3 +1,5 @@
+/* -*- Mode: java; tab-width: 2; c-tab-always-indent: t; indent-tabs-mode: t; c-basic-offset: 2 -*- */
+
 function onPrintCurrentMessage(event) {
   window.print();
 
@@ -17,8 +19,8 @@ function onICalendarButtonClick(event) {
     if (window.opener && window.opener.open && !window.opener.closed && window.messageUID) {
       var c = window.opener;
       window.opener.triggerAjaxRequest(urlstr,
-				       window.opener.ICalendarButtonCallback,
-				       window.messageUID);
+																			 window.opener.ICalendarButtonCallback,
+																			 window.messageUID);
     }
   }  
   else
@@ -32,9 +34,9 @@ function onMenuDeleteMessage(event) {
     var url = ApplicationBaseURL + messageId + "/trash";
 
     window.opener.deleteMessageWithDelay(url,
-					 rowId,
-					 window.opener.Mailer.currentMailbox,
-					 messageId);
+																				 rowId,
+																				 window.opener.Mailer.currentMailbox,
+																				 messageId);
   }
   
   window.close();

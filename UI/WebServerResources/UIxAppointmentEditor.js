@@ -1,3 +1,5 @@
+/* -*- Mode: java; tab-width: 2; c-tab-always-indent: t; indent-tabs-mode: t; c-basic-offset: 2 -*- */
+
 /*
   Copyright (C) 2005 SKYRIX Software AG
  
@@ -88,8 +90,8 @@ function validateAptEditor() {
       start = parseInt(document.forms[0]['startTime_time_minute'].value);
       end = parseInt(document.forms[0]['endTime_time_minute'].value);
       if (start > end) {
-         alert(labels.validate_endbeforestart);
-         return false;
+				alert(labels.validate_endbeforestart);
+				return false;
       }
     }
   }
@@ -168,7 +170,7 @@ function onComposeToUndecidedAttendees()
   attendees.each(function(item) {
       var address = item.firstChild.nodeValue.trim() + " <" + item.readAttribute("email") + ">";
       addresses.push(address);
-  });
+		});
   if (window.opener)
     window.opener.openMailTo(addresses.join(","));
 }
@@ -390,11 +392,11 @@ function onMailTo(event) {
 
 function getMenus() {
   AppointmentEditor.attendeesMenu = new Array(onPopupAttendeesWindow,
-					      "-",
-					      onComposeToAllAttendees,
-					      onComposeToUndecidedAttendees,
-					      "-",
-					      null);
+																							"-",
+																							onComposeToAllAttendees,
+																							onComposeToUndecidedAttendees,
+																							"-",
+																							null);
   
   var attendeesMenu = $('attendeesMenu');
   attendeesMenu.prepareVisibility = onAttendeesMenuPrepareVisibility;
@@ -403,17 +405,17 @@ function getMenus() {
 }
 
 function onAppointmentEditorLoad() {
-   assignCalendar('startTime_date');
-   assignCalendar('endTime_date');
+	assignCalendar('startTime_date');
+	assignCalendar('endTime_date');
    
-   var widgets = {'start': {'date': $("startTime_date"),
-                            'hour': $("startTime_time_hour"),
-                            'minute': $("startTime_time_minute")},
-                  'end': {'date': $("endTime_date"),
-                          'hour': $("endTime_time_hour"),
-                          'minute': $("endTime_time_minute")}};
-   initTimeWidgets(widgets);
-   initializeAttendeesHref();
+	var widgets = {'start': {'date': $("startTime_date"),
+													 'hour': $("startTime_time_hour"),
+													 'minute': $("startTime_time_minute")},
+								 'end': {'date': $("endTime_date"),
+												 'hour': $("endTime_time_hour"),
+												 'minute': $("endTime_time_minute")}};
+	initTimeWidgets(widgets);
+	initializeAttendeesHref();
 }
 
 FastInit.addOnLoad(onAppointmentEditorLoad);

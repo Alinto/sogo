@@ -1,3 +1,4 @@
+/* -*- Mode: java; tab-width: 2; c-tab-always-indent: t; indent-tabs-mode: t; c-basic-offset: 2 -*- */
 /* JavaScript for SOGoContacts */
 
 var cachedContacts = {};
@@ -23,7 +24,7 @@ function validateEditorInput(sender) {
   
   if (errortext.length > 0) {
     alert(labels.error_validationfailed + ":\n"
-	  + errortext);
+					+ errortext);
     return false;
   }
   return true;
@@ -39,11 +40,11 @@ function openContactsFolder(contactsFolder, reload, idx) {
     var searchValue = search["value"];
     if (searchValue && searchValue.length > 0)
       url += ("&search=" + search["criteria"]
-	      + "&value=" + escape(searchValue.utf8encode()));
+							+ "&value=" + escape(searchValue.utf8encode()));
     var sortAttribute = sorting["attribute"];
     if (sortAttribute && sortAttribute.length > 0)
       url += ("&sort=" + sorting["attribute"]
-	      + "&asc=" + sorting["ascending"]);
+							+ "&asc=" + sorting["ascending"]);
 
     var selection;
     if (idx) {
@@ -52,9 +53,9 @@ function openContactsFolder(contactsFolder, reload, idx) {
     else if (contactsFolder == Contact.currentAddressBook) {
       var contactsList = $("contactsList");
       if (contactsList)
-	selection = contactsList.getSelectedRowsId();
-//        else
-//           window.alert("no contactsList");
+				selection = contactsList.getSelectedRowsId();
+			//        else
+			//           window.alert("no contactsList");
     }
     else
       selection = null;
@@ -88,85 +89,85 @@ function contactsListCallback(http) {
       var div = $("contactsListContent");
       var table = $("contactsList");
       if (table) {
-	// Update table
-	var data = http.responseText;
-	var html = data.replace(/^(.*\n)*.*(<table(.*\n)*)$/, "$2");
-	var tbody = table.tBodies[0];
-	var tmp = document.createElement('div');
-	$(tmp).update(html);
-	table.replaceChild($(tmp).select("table tbody")[0], tbody);
+				// Update table
+				var data = http.responseText;
+				var html = data.replace(/^(.*\n)*.*(<table(.*\n)*)$/, "$2");
+				var tbody = table.tBodies[0];
+				var tmp = document.createElement('div');
+				$(tmp).update(html);
+				table.replaceChild($(tmp).select("table tbody")[0], tbody);
          
-	var rows = table.tBodies[0].rows;
-	for (var i = 0; i < rows.length; i++) {
-	  var row = $(rows[i]);
-	  row.observe("mousedown", onRowClick);
-	  row.observe("dblclick", onContactRowDblClick);
-	  row.observe("selectstart", listRowMouseDownHandler);
-	  row.observe("contextmenu", onContactContextMenu);
-	}
+				var rows = table.tBodies[0].rows;
+				for (var i = 0; i < rows.length; i++) {
+					var row = $(rows[i]);
+					row.observe("mousedown", onRowClick);
+					row.observe("dblclick", onContactRowDblClick);
+					row.observe("selectstart", listRowMouseDownHandler);
+					row.observe("contextmenu", onContactContextMenu);
+				}
       }
       else {
-	// Add table (doesn't happen .. yet)
-	div.update(http.responseText);
-	table = $("contactsList");
-	configureSortableTableHeaders(table);
-	TableKit.Resizable.init(table, {'trueResize' : true, 'keepWidth' : true});
+				// Add table (doesn't happen .. yet)
+				div.update(http.responseText);
+				table = $("contactsList");
+				configureSortableTableHeaders(table);
+				TableKit.Resizable.init(table, {'trueResize' : true, 'keepWidth' : true});
       }
       
       if (sorting["attribute"] && sorting["attribute"].length > 0) {
-	var sortHeader;
-	if (sorting["attribute"] == "displayName")
-	  sortHeader = $("nameHeader");
-	else if (sorting["attribute"] == "mail")
-	  sortHeader = $("mailHeader");
-	else if (sorting["attribute"] == "screenName")
-	  sortHeader = $("screenNameHeader");
-	else if (sorting["attribute"] == "org")
-	  sortHeader = $("orgHeader");
-	else if (sorting["attribute"] == "phone")
-	  sortHeader = $("phoneHeader");
-	else
-	  sortHeader = null;
+				var sortHeader;
+				if (sorting["attribute"] == "displayName")
+					sortHeader = $("nameHeader");
+				else if (sorting["attribute"] == "mail")
+					sortHeader = $("mailHeader");
+				else if (sorting["attribute"] == "screenName")
+					sortHeader = $("screenNameHeader");
+				else if (sorting["attribute"] == "org")
+					sortHeader = $("orgHeader");
+				else if (sorting["attribute"] == "phone")
+					sortHeader = $("phoneHeader");
+				else
+					sortHeader = null;
          
-	if (sortHeader) {
-	  var sortImages = $(table.tHead).select(".sortImage");
-	  $(sortImages).each(function(item) {
-	      item.remove();
-	    });
+				if (sortHeader) {
+					var sortImages = $(table.tHead).select(".sortImage");
+					$(sortImages).each(function(item) {
+							item.remove();
+						});
             
-	  var sortImage = createElement("img", "messageSortImage", "sortImage");
-	  sortHeader.insertBefore(sortImage, sortHeader.firstChild);
-	  if (sorting["ascending"])
-	    sortImage.src = ResourcesURL + "/title_sortdown_12x12.png";
-	  else
-	    sortImage.src = ResourcesURL + "/title_sortup_12x12.png";
-	}
+					var sortImage = createElement("img", "messageSortImage", "sortImage");
+					sortHeader.insertBefore(sortImage, sortHeader.firstChild);
+					if (sorting["ascending"])
+						sortImage.src = ResourcesURL + "/title_sortdown_12x12.png";
+					else
+						sortImage.src = ResourcesURL + "/title_sortup_12x12.png";
+				}
       }
       
       var selected = http.callbackData;
       if (selected) {
-	for (var i = 0; i < selected.length; i++) {
-	  var row = $(selected[i]);
-	  if (row) {
-	    var rowPosition = row.rowIndex * row.getHeight();
-	    if (div.getHeight() < rowPosition)
-	      div.scrollTop = rowPosition; // scroll to selected contact
-	    row.selectElement();
-	  }
-	}
+				for (var i = 0; i < selected.length; i++) {
+					var row = $(selected[i]);
+					if (row) {
+						var rowPosition = row.rowIndex * row.getHeight();
+						if (div.getHeight() < rowPosition)
+							div.scrollTop = rowPosition; // scroll to selected contact
+						row.selectElement();
+					}
+				}
       }
     }
     else {
       var table = $("contactsList");
       if (table) {
-	var sortImages = $(table.tHead).select(".sortImage");
-	$(sortImages).each(function(item) {
-	    item.remove();
-	  });
-	var tBody = $(table.tBodies[0]);
-	var length = tBody.rows.length;
-	for (var i = length - 1; i > -1; i--)
-	  tBody.removeChild(tBody.rows[i]);
+				var sortImages = $(table.tHead).select(".sortImage");
+				$(sortImages).each(function(item) {
+						item.remove();
+					});
+				var tBody = $(table.tBodies[0]);
+				var length = tBody.rows.length;
+				for (var i = length - 1; i > -1; i--)
+					tBody.removeChild(tBody.rows[i]);
       }
     }
   }
@@ -243,7 +244,7 @@ function _onContactMenuAction(folderItem, action, refresh) {
   if (Object.isArray(document.menuTarget) && selectedFolders.length > 0) {
     var selectedFolderId = $(selectedFolders[0]).readAttribute("id");
     var contactIds = $(document.menuTarget).collect(function(row) {
-	return row.getAttribute("id");
+				return row.getAttribute("id");
       });
 
     var url = ApplicationBaseURL + selectedFolderId + "/" + action + "?folder=" + folderId + "&uid="
@@ -269,16 +270,16 @@ function actionContactCallback(http) {
     if (isHttpStatus204(http.status)) {
       var refreshFolderId = http.callbackData;
       if (refreshFolderId)
-	openContactsFolder(refreshFolderId, true);
+				openContactsFolder(refreshFolderId, true);
     }
     else {
       var html = new Element("div").update(http.responseText);
       var error = html.select("p").first().firstChild.nodeValue.trim();
       log("actionContactCallback failed: error " + http.status + " (" + error + ")");
       if (parseInt(http.status) == 403)
-	window.alert(labels["You don't have the required privileges to perform the operation."]);
+				window.alert(labels["You don't have the required privileges to perform the operation."]);
       else if (error)
-	window.alert(labels[error]);
+				window.alert(labels[error]);
       refreshCurrentFolder();
     }
 }
@@ -296,7 +297,7 @@ function loadContact(idx) {
   }
   else {
     var url = (URLForFolderID(Contact.currentAddressBook)
-	       + "/" + idx + "/view?noframe=1");
+							 + "/" + idx + "/view?noframe=1");
     document.contactAjaxRequest
       = triggerAjaxRequest(url, contactLoadCallback, idx);
   }
@@ -353,7 +354,7 @@ function onContactRowDblClick(event) {
   var contactId = this.getAttribute('contactid');
 
   openContactWindow(URLForFolderID(Contact.currentAddressBook)
-		    + "/" + contactId + "/edit", contactId);
+										+ "/" + contactId + "/edit", contactId);
 
   return false;
 }
@@ -404,7 +405,7 @@ function onToolbarEditSelectedContacts(event) {
 
   for (var i = 0; i < rows.length; i++) {
     openContactWindow(URLForFolderID(Contact.currentAddressBook)
-		      + "/" + rows[i] + "/edit", rows[i]);
+											+ "/" + rows[i] + "/edit", rows[i]);
   }
 
   return false;
@@ -421,8 +422,8 @@ function onToolbarWriteToSelectedContacts(event) {
   }
 
   openMailComposeWindow(ApplicationBaseURL + "../Mail/compose"
-			+ "?folder=" + Contact.currentAddressBook.substring(1)
-			+ "&uid=" + rows.join("&uid="));
+												+ "?folder=" + Contact.currentAddressBook.substring(1)
+												+ "&uid=" + rows.join("&uid="));
 
   if (document.body.hasClassName("popup"))
     window.close();
@@ -459,7 +460,7 @@ function onContactDeleteEventCallback(http) {
       var row = $(http.callbackData);
       row.parentNode.removeChild(row);
       if (Contact.currentContact == http.callbackData)
-	$("contactView").update();
+				$("contactView").update();
     }
     else if (parseInt(http.status) == 403) {
       var row = $(http.callbackData);
@@ -550,8 +551,8 @@ function onConfirmContactSelection(event) {
   if (selector) {
     var selectorId = selector.getAttribute("id");
     selectorList = opener.window.document.getElementById('uixselector-'
-							 + selectorId
-							 + '-uidList');
+																												 + selectorId
+																												 + '-uidList');
     initialValues = selectorList.value;
   }
 
@@ -563,7 +564,7 @@ function onConfirmContactSelection(event) {
     var email = '' + rows[i].cells[1].innerHTML;
 
     window.opener.addContact(tag, currentAddressBookName + '/' + cname,
-			     cid, cname, email);
+														 cid, cname, email);
   }
 
   if (selector && selector.changeNotification
@@ -583,7 +584,7 @@ function refreshContacts(contactId) {
 
 function onAddressBookNew(event) {
   createFolder(window.prompt(labels["Name of the Address Book"], ""),
-	       appendAddressBook);
+							 appendAddressBook);
   preventDefault(event);
 }
 
@@ -620,8 +621,8 @@ function appendAddressBook(name, folder) {
     li.setAttribute("owner", owner);
     li.addClassName("local");
     li.appendChild(document.createTextNode(name
-					   .replace("&lt;", "<", "g")
-					   .replace("&gt;", ">", "g")));
+																					 .replace("&lt;", "<", "g")
+																					 .replace("&gt;", ">", "g")));
     setEventsOnAddressBook(li);
     updateAddressBooksMenus();
   }
@@ -657,8 +658,8 @@ function onAddressBookRemove(event) {
     node.deselect();
     var owner = node.getAttribute("owner");
     if (owner == "nobody") {
-        var label = labels["You cannot remove nor unsubscribe from a public addressbook."];
-        window.alert(label);
+			var label = labels["You cannot remove nor unsubscribe from a public addressbook."];
+			window.alert(label);
     }
     else if (owner == UserLogin) {
       var folderIdElements = node.getAttribute("id").split(":");
@@ -669,8 +670,8 @@ function onAddressBookRemove(event) {
       onFolderSelectionChange();
     }
     else {
-	var folderId = node.getAttribute("id");
-	unsubscribeFromFolder(folderId, owner, onFolderUnsubscribeCB, folderId);
+			var folderId = node.getAttribute("id");
+			unsubscribeFromFolder(folderId, owner, onFolderUnsubscribeCB, folderId);
     }
   }
 
@@ -678,24 +679,24 @@ function onAddressBookRemove(event) {
 }
 
 function deletePersonalAddressBook(folderId) {
-    if (folderId == "personal") {
-        var label = labels["You cannot remove nor unsubscribe from your personal addressbook."];
-        window.alert(label);
-    }
-    else {
-        var label
-            = labels["Are you sure you want to delete the selected address book?"];
-        if (window.confirm(label)) {
-            if (document.deletePersonalABAjaxRequest) {
-                document.deletePersonalABAjaxRequest.aborted = true;
-                document.deletePersonalABAjaxRequest.abort();
-            }
-            var url = ApplicationBaseURL + folderId + "/deleteFolder";
-            document.deletePersonalABAjaxRequest
-                = triggerAjaxRequest(url, deletePersonalAddressBookCallback,
-                                     folderId);
-        }
-    }
+	if (folderId == "personal") {
+		var label = labels["You cannot remove nor unsubscribe from your personal addressbook."];
+		window.alert(label);
+	}
+	else {
+		var label
+			= labels["Are you sure you want to delete the selected address book?"];
+		if (window.confirm(label)) {
+			if (document.deletePersonalABAjaxRequest) {
+				document.deletePersonalABAjaxRequest.aborted = true;
+				document.deletePersonalABAjaxRequest.abort();
+			}
+			var url = ApplicationBaseURL + folderId + "/deleteFolder";
+			document.deletePersonalABAjaxRequest
+				= triggerAjaxRequest(url, deletePersonalAddressBookCallback,
+														 folderId);
+		}
+	}
 }
 
 function deletePersonalAddressBookCallback(http) {
@@ -707,13 +708,13 @@ function deletePersonalAddressBookCallback(http) {
       var i = 0;
       var done = false;
       while (!done && i < children.length) {
-	var currentFolderId = children[i].getAttribute("id").substr(1);
-	if (currentFolderId == http.callbackData) {
-	  ul.removeChild(children[i]);
-	  done = true;
-	}
-	else
-	  i++;
+				var currentFolderId = children[i].getAttribute("id").substr(1);
+				if (currentFolderId == http.callbackData) {
+					ul.removeChild(children[i]);
+					done = true;
+				}
+				else
+					i++;
       }
     }
     document.deletePersonalABAjaxRequest = null;
@@ -791,10 +792,10 @@ function onAddressBookMenuPrepareVisibility() {
   if (selectedFolder) {
     var selectedFolderId = selectedFolder.readAttribute("id");
     $(this).select("li").each(function(menuEntry) {
-	if (menuEntry.readAttribute("folderId") == selectedFolderId)
-	  menuEntry.addClassName("disabled");
-	else
-	  menuEntry.removeClassName("disabled");
+				if (menuEntry.readAttribute("folderId") == selectedFolderId)
+					menuEntry.addClassName("disabled");
+				else
+					menuEntry.removeClassName("disabled");
       });
   }
 }
@@ -805,39 +806,39 @@ function updateAddressBooksMenus() {
     var pageContent = $("pageContent");
     var contactFolders = contactFoldersList.select("li");
     var contactActions = new Hash({ move: onContactMenuMove,
-	                            copy: onContactMenuCopy });
+																		copy: onContactMenuCopy });
     var actions = contactActions.keys();
     for (var j = 0; j < actions.size(); j++) {
       var key = actions[j];
-	var callbacks = new Array();
-	var menuId = key + "ContactMenu";
-	var menuDIV = $(menuId);
-	if (menuDIV)
-	  menuDIV.parentNode.removeChild(menuDIV);
+			var callbacks = new Array();
+			var menuId = key + "ContactMenu";
+			var menuDIV = $(menuId);
+			if (menuDIV)
+				menuDIV.parentNode.removeChild(menuDIV);
 	
-	menuDIV = document.createElement("div");
-	pageContent.appendChild(menuDIV);
+			menuDIV = document.createElement("div");
+			pageContent.appendChild(menuDIV);
 	
-	var menu = document.createElement("ul");
-	menuDIV.appendChild(menu);
+			var menu = document.createElement("ul");
+			menuDIV.appendChild(menu);
 	
-	$(menuDIV).addClassName("menu");
-	menuDIV.setAttribute("id", menuId);
+			$(menuDIV).addClassName("menu");
+			menuDIV.setAttribute("id", menuId);
 	
-	var submenuIds = new Array();
-	for (var i = 0; i < contactFolders.length; i++) {
-	  if (contactFolders[i].hasClassName("local")) {
-	    var menuEntry = new Element("li",
-					{ folderId: contactFolders[i].readAttribute("id"),
-					     owner: contactFolders[i].readAttribute("owner") }
-					).update(contactFolders[i].innerHTML);
-	    menu.appendChild(menuEntry);
-	    callbacks.push(contactActions.get(key));
-	  }
-	}
-	menuDIV.prepareVisibility = onAddressBookMenuPrepareVisibility;
-	initMenu(menuDIV, callbacks);
-      }
+			var submenuIds = new Array();
+			for (var i = 0; i < contactFolders.length; i++) {
+				if (contactFolders[i].hasClassName("local")) {
+					var menuEntry = new Element("li",
+																			{ folderId: contactFolders[i].readAttribute("id"),
+																				owner: contactFolders[i].readAttribute("owner") }
+																			).update(contactFolders[i].innerHTML);
+					menu.appendChild(menuEntry);
+					callbacks.push(contactActions.get(key));
+				}
+			}
+			menuDIV.prepareVisibility = onAddressBookMenuPrepareVisibility;
+			initMenu(menuDIV, callbacks);
+		}
   }
 }
   
@@ -857,13 +858,13 @@ function onAddressBookModify(event) {
   if (UserLogin == selected.getAttribute("owner")) {
     var currentName = selected.innerHTML;
     var newName = window.prompt(labels["Address Book Name"],
-				currentName);
+																currentName);
     if (newName && newName.length > 0
-	&& newName != currentName) {
+				&& newName != currentName) {
       var url = (URLForFolderID(selected.getAttribute("id"))
-		 + "/renameFolder?name=" + escape(newName.utf8encode()));
+								 + "/renameFolder?name=" + escape(newName.utf8encode()));
       triggerAjaxRequest(url, folderRenameCallback,
-			 {node: selected, name: newName});
+												 {node: selected, name: newName});
     }
   } else
     window.alert(clabels["Unable to rename that folder!"]);
@@ -887,7 +888,7 @@ function onMenuSharing(event) {
   var owner = selected.getAttribute("owner");
   if (owner == "nobody")
     window.alert(clabels["The user rights cannot be"
-			 + " edited for this object!"]);
+												 + " edited for this object!"]);
   else {
     var title = this.innerHTML;
     var url = URLForFolderID(selected.getAttribute("id"));
@@ -971,12 +972,12 @@ function onContactMenuPrepareVisibility() {
 function getMenus() {
   var menus = {};
   menus["contactFoldersMenu"] = new Array(onAddressBookModify, "-", newContact,
-					  null, "-", onAddressBookRemove, "-",
-					  onMenuSharing);
+																					null, "-", onAddressBookRemove, "-",
+																					onMenuSharing);
   menus["contactMenu"] = new Array(onMenuEditContact, "-",
-				   onMenuWriteToContact, onMenuAIMContact,
-				   "-", onMenuDeleteContact, "-",
-				   "moveContactMenu", "copyContactMenu");
+																	 onMenuWriteToContact, onMenuAIMContact,
+																	 "-", onMenuDeleteContact, "-",
+																	 "moveContactMenu", "copyContactMenu");
   menus["searchMenu"] = new Array(setSearchCriteria);
    
   var contactFoldersMenu = $("contactFoldersMenu");

@@ -1,11 +1,13 @@
+/* -*- Mode: java; tab-width: 2; c-tab-always-indent: t; indent-tabs-mode: t; c-basic-offset: 2 -*- */
+
 var RecurrenceEditor = {
  types: new Array("Daily", "Weekly", "Monthly", "Yearly"),
  currentRepeatType: 0
-}
+};
 
-  function onRepeatTypeChange(event) {
-    setRepeatType(parseInt(this.value));
-  }
+function onRepeatTypeChange(event) {
+	setRepeatType(parseInt(this.value));
+}
 
 function setRepeatType(type) {
   var elements;
@@ -16,8 +18,8 @@ function setRepeatType(type) {
     elements = $$("TABLE TR.recurrence" + RecurrenceEditor.types[i]);
     if (i != type)
       elements.each(function(row) {
-	  row.hide();
-	});
+					row.hide();
+				});
   }
   elements = $$("TABLE TR.recurrence" + RecurrenceEditor.types[type]);
   elements.each(function(row) {
@@ -32,8 +34,8 @@ function getSelectedDays(periodType) {
   var dayPrefix = periodType + "Day";
   elementsArray.each(function(item) {
       if (isNodeSelected(item)) {
-	var label = ""  + item.getAttribute("id");
-	days.push(label.substr(dayPrefix.length));
+				var label = ""  + item.getAttribute("id");
+				days.push(label.substr(dayPrefix.length));
       }
     });
   return days.join(",");
@@ -97,14 +99,14 @@ function initializeFormValues() {
   else if (repeatType == 1) {
     // Repeat weekly
     $('weeklyWeeksField').value = parent$("repeat1").value;
-//     log ("div: " + weekDiv);
-//     log ("days: " + parent$("repeat2").value);
+		//     log ("div: " + weekDiv);
+		//     log ("days: " + parent$("repeat2").value);
     var days = "" + parent$("repeat2").value;
     if (days.length > 0) {
       var daysArray = days.split(",");
       daysArray.each(function(index) {
-	  $("weekDay"+index).addClassName("_selected");
-      });
+					$("weekDay"+index).addClassName("_selected");
+				});
     }
   }
   else if (repeatType == 2) {
@@ -117,8 +119,8 @@ function initializeFormValues() {
     if (days.length > 0) {
       var daysArray = days.split(",");
       daysArray.each(function(index) {
-	  $("monthDay" + index).addClassName("_selected");
-	});
+					$("monthDay" + index).addClassName("_selected");
+				});
     }
   }
   else if (repeatType == 3) {
@@ -169,12 +171,12 @@ function handleDailyRecurrence() {
     var v = "" + $('dailyDaysField').value;
     if (v.length > 0) {
       v = parseInt(v);
-//       log("v: " + v);
+			//       log("v: " + v);
       if (!isNaN(v) && v > 0) {
-	validate = true;
-	showError = false;
-	parent$("repeat1").value = radioValue;
-	parent$("repeat2").value = v;
+				validate = true;
+				showError = false;
+				parent$("repeat1").value = radioValue;
+				parent$("repeat2").value = v;
       }
     }
 
@@ -228,13 +230,13 @@ function handleMonthlyRecurrence() {
     if (fieldValue.length > 0) {
       var v = parseInt(fieldValue);
       if (!isNaN(v) && v > 0) {
-	validate = true;
-	showError = false;
-	parent$("repeat1").value = fieldValue;
-	parent$("repeat2").value = radioValue;
-	parent$("repeat3").value = $('monthlyRepeat').value;
-	parent$("repeat4").value = $('monthlyDay').value;
-	parent$("repeat5").value = getSelectedDays("month");
+				validate = true;
+				showError = false;
+				parent$("repeat1").value = fieldValue;
+				parent$("repeat2").value = radioValue;
+				parent$("repeat3").value = $('monthlyRepeat').value;
+				parent$("repeat4").value = $('monthlyDay').value;
+				parent$("repeat5").value = getSelectedDays("month");
       }
     }
 
@@ -262,15 +264,15 @@ function handleYearlyRecurrence() {
       // We check if the yearlyYearsField really contains an integer
       var v = parseInt(fieldValue);
       if (!isNaN(v) && v > 0) {
-	validate = true;
-	showError = false;
-	parent$("repeat1").value = fieldValue;
-	parent$("repeat2").value = radioValue;
-	parent$("repeat3").value = $('yearlyDayField').value;
-	parent$("repeat4").value = $('yearlyMonth1').value;
-	parent$("repeat5").value = $('yearlyRepeat').value;
-	parent$("repeat6").value = $('yearlyDay').value;
-	parent$("repeat7").value = $('yearlyMonth2').value;
+				validate = true;
+				showError = false;
+				parent$("repeat1").value = fieldValue;
+				parent$("repeat2").value = radioValue;
+				parent$("repeat3").value = $('yearlyDayField').value;
+				parent$("repeat4").value = $('yearlyMonth1').value;
+				parent$("repeat5").value = $('yearlyRepeat').value;
+				parent$("repeat6").value = $('yearlyDay').value;
+				parent$("repeat7").value = $('yearlyMonth2').value;
       }
     }
 
@@ -295,9 +297,9 @@ function handleRange() {
       // We check if the rangeAppointmentsField really contains an integer
       var v = parseInt(fieldValue);
       if (!isNaN(v) && v > 0) {
-	validate = true;
-	showError = false;
-	parent$("range2").value = fieldValue;
+				validate = true;
+				showError = false;
+				parent$("range2").value = fieldValue;
       }
     }
 

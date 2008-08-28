@@ -1,3 +1,5 @@
+/* -*- Mode: java; tab-width: 2; c-tab-always-indent: t; indent-tabs-mode: t; c-basic-offset: 2 -*- */
+
 /*
   Copyright (C) 2005 SKYRIX Software AG
 
@@ -49,13 +51,13 @@ function getAllScopeElements(scope) {
 
   for (var i = 0; i < scope.childNodes.length; i++)
     if (typeof(scope.childNodes[i]) == "object"
-	&& scope.childNodes[i].tagName
-	&& scope.childNodes[i].tagName != '')
+				&& scope.childNodes[i].tagName
+				&& scope.childNodes[i].tagName != '')
       {
-	elements.push(scope.childNodes[i]);
-	var childElements = getAllElements(scope.childNodes[i]);
-	if (childElements.length > 0)
-	  elements.push(childElements);
+				elements.push(scope.childNodes[i]);
+				var childElements = getAllElements(scope.childNodes[i]);
+				if (childElements.length > 0)
+					elements.push(childElements);
       }
 
   return elements;
@@ -74,15 +76,15 @@ function getAllElements(scope) {
     {
       elements = getAllScopeElements(scope);
       if (scope == document)
-	allDocumentElements = elements;
+				allDocumentElements = elements;
     }
 
   return elements;
 }
 
 function createElement(tagName, id, classes,
-		       attributes, htmlAttributes,
-		       parentNode) {
+											 attributes, htmlAttributes,
+											 parentNode) {
   var newElement = $(document.createElement(tagName));
   if (id)
     newElement.setAttribute("id", id);
@@ -91,7 +93,7 @@ function createElement(tagName, id, classes,
       newElement.addClassName(classes);
     else
       for (var i = 0; i < classes.length; i++)
-	newElement.addClassName(classes[i]);
+				newElement.addClassName(classes[i]);
   }
   if (attributes)
     for (var i in attributes)
@@ -123,7 +125,7 @@ function URLForFolderID(folderID) {
   if (folderInfos.length > 1) {
     url = UserFolderURL + "../" + folderInfos[0];
     if (!(folderInfos[0].endsWith('/')
-	  || folderInfos[1].startsWith('/')))
+					|| folderInfos[1].startsWith('/')))
       url += '/';
     url += folderInfos[1];
   }
@@ -200,7 +202,7 @@ function openUserFolderSelector(callback, type) {
     urlstr += '/';
   urlstr += ("../../" + UserLogin + "/Contacts/userFolders");
   var w = window.open(urlstr, "_blank",
-		      "width=322,height=250,resizable=1,scrollbars=0,location=0");
+											"width=322,height=250,resizable=1,scrollbars=0,location=0");
   w.opener = window;
   window.userFolderCallback = callback;
   window.userFolderType = type;
@@ -215,7 +217,7 @@ function openContactWindow(url, wId) {
   }
 
   var w = window.open(url, wId,
-		      "width=450,height=600,resizable=0,location=0");
+											"width=450,height=600,resizable=0,location=0");
   w.focus();
 
   return w;
@@ -234,9 +236,9 @@ function openMailComposeWindow(url, wId) {
     parentWindow = window.opener;
 
   var w = parentWindow.open(url, wId,
-			    "width=680,height=520,resizable=1,scrollbars=1,toolbar=0,"
-			    + "location=0,directories=0,status=0,menubar=0"
-			    + ",copyhistory=0");
+														"width=680,height=520,resizable=1,scrollbars=1,toolbar=0,"
+														+ "location=0,directories=0,status=0,menubar=0"
+														+ ",copyhistory=0");
 
   w.focus();
 
@@ -257,8 +259,8 @@ function openMailTo(senderMailTo) {
 
   if (mailto.length > 0)
     openMailComposeWindow(ApplicationBaseURL
-			  + "../Mail/compose?mailto=" + mailto
-			  + ((subject.length > 0)?"?subject="+subject:""));
+													+ "../Mail/compose?mailto=" + mailto
+													+ ((subject.length > 0)?"?subject="+subject:""));
 
   return false; /* stop following the link */
 }
@@ -267,10 +269,10 @@ function deleteDraft(url) {
   /* this is called by UIxMailEditor with window.opener */
   new Ajax.Request(url, {
     method: 'post',
-    onFailure: function(transport) {
-	log("draftDeleteCallback: problem during ajax request: " + transport.status);
+				onFailure: function(transport) {
+				log("draftDeleteCallback: problem during ajax request: " + transport.status);
       }
-    });
+	});
 }
 
 function createHTTPClient() {
@@ -301,9 +303,9 @@ function appendDifferentiator(url) {
 function onAjaxRequestStateChange(http) {
   try {
     if (http.readyState == 4
-	&& activeAjaxRequests > 0) {
+				&& activeAjaxRequests > 0) {
       if (!http.aborted)
-	http.callback(http);
+				http.callback(http);
       activeAjaxRequests--;
       checkAjaxRequestsState();
       http.onreadystatechange = Prototype.emptyFunction;
@@ -337,8 +339,8 @@ function getContrastingTextColor(bgColor) {
   // Consider all colors with less than 56% brightness as dark colors and
   // use white as the foreground color, otherwise use black.
   return ((brightness < 144)
-	  ? "white"
-	  : "black");
+					? "white"
+					: "black");
 }
 
 function triggerAjaxRequest(url, callback, userdata, content, headers) {
@@ -354,21 +356,21 @@ function triggerAjaxRequest(url, callback, userdata, content, headers) {
     http.callback = callback;
     http.callbackData = userdata;
     http.onreadystatechange = function() { onAjaxRequestStateChange(http) };
-//       = function() {
-// //       log ("state changed (" + http.readyState + "): " + url);
-//     };
+		//       = function() {
+		// //       log ("state changed (" + http.readyState + "): " + url);
+		//     };
     var hasContentLength = false;
     if (headers) {
       for (var i in headers) {
-	if (i.toLowerCase() == "content-length")
-	  hasContentLength = true;
-	http.setRequestHeader(i, headers[i]);
+				if (i.toLowerCase() == "content-length")
+					hasContentLength = true;
+				http.setRequestHeader(i, headers[i]);
       }
     }
     if (!hasContentLength) {
       var cLength = "0";
       if (content)
-	cLength = "" + content.length;
+				cLength = "" + content.length;
       http.setRequestHeader("Content-Length", "" + cLength);
     }
     http.send(content ? content : "");
@@ -384,7 +386,7 @@ function startAnimation(parent, nextNode) {
   var anim = $("progressIndicator");
   if (!anim) {
     anim = createElement("img", "progressIndicator", null,
-			 {src: ResourcesURL + "/busy.gif"});
+												 {src: ResourcesURL + "/busy.gif"});
     anim.setStyle({ visibility: "hidden" });
     if (nextNode)
       parent.insertBefore(anim, nextNode);
@@ -405,7 +407,7 @@ function checkAjaxRequestsState() {
       startAnimation(toolbar);
   }
   else if (!activeAjaxRequests
-	   && progressImage)
+					 && progressImage)
     progressImage.parentNode.removeChild(progressImage);
 }
 
@@ -422,7 +424,7 @@ function isSafari() {
 
 function isHttpStatus204(status) {
   return (status == 204 ||                                  // Firefox
-	  (isSafari() && typeof(status) == 'undefined') ||  // Safari
+					(isSafari() && typeof(status) == 'undefined') ||  // Safari
           status == 1223);                                  // IE
 }
 
@@ -517,7 +519,7 @@ function acceptMultiSelect(node) {
   var attribute = node.getAttribute('multiselect');
   if (attribute && attribute.length > 0) {
     log("node '" + node.getAttribute("id")
-	+ "' is still using old-stylemultiselect!");
+				+ "' is still using old-stylemultiselect!");
     response = (attribute.toLowerCase() == 'yes');
   }
   else
@@ -543,8 +545,8 @@ function onRowClick(event) {
     var items = list.childNodesWithTag("li");
     for (var i = 0; i < items.length; i++) {
       if (items[i] == node) {
-	rowIndex = i;
-	break;
+				rowIndex = i;
+				break;
       }
     }
   }
@@ -554,14 +556,14 @@ function onRowClick(event) {
   if (initialSelection.length > 0 
       && initialSelection.indexOf(node) >= 0
       && (!isSafari() && !Event.isLeftClick(event) ||
-	  isSafari() && event.ctrlKey == 1)) // Event.isLeftClick is not supported in Safari
+					isSafari() && event.ctrlKey == 1)) // Event.isLeftClick is not supported in Safari
     // Ignore non primary-click (ie right-click) inside current selection
     return true;
    
   if ((event.shiftKey == 1 || event.metaKey == 1)
       && (lastClickedRow >= 0)
       && (acceptMultiSelect(node.parentNode)
-	  || acceptMultiSelect(node.parentNode.parentNode))) {
+					|| acceptMultiSelect(node.parentNode.parentNode))) {
     if (event.shiftKey) {
       $(node.parentNode).selectRange(lastClickedRow, rowIndex);
     } else if (isNodeSelected(node)) {
@@ -579,7 +581,7 @@ function onRowClick(event) {
       // Selection has changed; fire mousedown event
       var parentNode = node.parentNode;
       if (parentNode.tagName == 'TBODY')
-	parentNode = parentNode.parentNode;
+				parentNode = parentNode.parentNode;
       parentNode.fire("mousedown");
     }
   }
@@ -612,12 +614,12 @@ function popupMenu(event, menuId, target) {
   var menuTop = Event.pointerY(event) + deltaY;
   var menuLeft = Event.pointerX(event) + deltaX;
   var heightDiff = (window.height()
-		    - (menuTop + popup.offsetHeight));
+										- (menuTop + popup.offsetHeight));
   if (heightDiff < 0)
     menuTop += heightDiff;
   
   var leftDiff = (window.width()
-		  - (menuLeft + popup.offsetWidth));
+									- (menuLeft + popup.offsetWidth));
   if (leftDiff < 0)
     menuLeft -= popup.offsetWidth;
   
@@ -625,8 +627,8 @@ function popupMenu(event, menuId, target) {
     popup.prepareVisibility();
 
   popup.setStyle({ top: menuTop + "px",
-	           left: menuLeft + "px",
-	           visibility: "visible" });
+				left: menuLeft + "px",
+				visibility: "visible" });
   
   document.currentPopupMenu = popup;
 
@@ -643,7 +645,7 @@ function getParentMenu(node) {
   var menure = new RegExp("(^|\s+)menu(\s+|$)", "i");
 
   while (menuNode == null
-	 && currentNode)
+				 && currentNode)
     if (menure.test(currentNode.className))
       menuNode = currentNode;
     else
@@ -781,13 +783,13 @@ function backtrace() {
   while (func)
     {
       if (func.name)
-	{
-	  str += "  " + func.name;
-	  if (this)
+				{
+					str += "  " + func.name;
+					if (this)
             str += " (" + this + ")";
-	}
+				}
       else
-	str += "[anonymous]\n";
+				str += "[anonymous]\n";
 
       str += "\n";
       func = func.caller;
@@ -812,18 +814,18 @@ function popupSubmenu(event) {
       submenuNode.prepareVisibility();
 
     var menuTop = (parentNode.offsetTop - 1
-		   + this.offsetTop);
+									 + this.offsetTop);
 
     if (window.height()
-	< (menuTop + submenuNode.offsetHeight))
+				< (menuTop + submenuNode.offsetHeight))
       if (submenuNode.offsetHeight < window.height())
-	menuTop = window.height() - submenuNode.offsetHeight;
+				menuTop = window.height() - submenuNode.offsetHeight;
       else
-	menuTop = 0;
+				menuTop = 0;
 
     var menuLeft = (parentNode.offsetLeft + parentNode.offsetWidth - 3);
     if (window.width()
-	< (menuLeft + submenuNode.offsetWidth))
+				< (menuLeft + submenuNode.offsetWidth))
       menuLeft = parentNode.offsetLeft - submenuNode.offsetWidth + 3;
 
     this.mouseInside = true;
@@ -834,8 +836,8 @@ function popupSubmenu(event) {
     parentNode.observe("mouseover", onMouseEnteredParentMenu);
     $(this).addClassName("submenu-selected");
     submenuNode.setStyle({ top: menuTop + "px",
-	                   left: menuLeft + "px",
-	                   visibility: "visible" });
+					left: menuLeft + "px",
+					visibility: "visible" });
     preventDefault(event);
   }
 }
@@ -872,8 +874,8 @@ function popupSearchMenu(event) {
     var popup = $(menuId);
     offset = Position.positionedOffset(this);
     popup.setStyle({ top: this.offsetHeight + "px",
-	  left: (offset[0] + 3) + "px",
-	  visibility: "visible" });
+					left: (offset[0] + 3) + "px",
+					visibility: "visible" });
   
     document.currentPopupMenu = popup;
     $(document.body).observe("click", onBodyClickMenuHandler);
@@ -979,7 +981,7 @@ function onSearchFormSubmit(event) {
 
   if (searchValue.value != searchValue.ghostPhrase
       && (searchValue.value != searchValue.lastSearch
-	  || searchValue.value.strip().length > 0)) {
+					|| searchValue.value.strip().length > 0)) {
     search["criteria"] = searchCriteria.value;
     search["value"] = searchValue.value;
     searchValue.lastSearch = searchValue.value;
@@ -999,13 +1001,13 @@ function initCriteria() {
       searchValue.ghostPhrase = firstOption.innerHTML;
       searchValue.lastSearch = "";
       if (searchValue.value == '') {
-	searchValue.value = firstOption.innerHTML;
-	searchValue.setAttribute("modified", "");
-	searchValue.setStyle({ color: "#aaa" });
+				searchValue.value = firstOption.innerHTML;
+				searchValue.setAttribute("modified", "");
+				searchValue.setStyle({ color: "#aaa" });
       }
       // Set the checkmark to the first option
       if (searchOptions.chosenNode)
-	searchOptions.chosenNode.removeClassName("_chosen");
+				searchOptions.chosenNode.removeClassName("_chosen");
       firstOption.addClassName("_chosen");
       searchOptions.chosenNode = firstOption;
     }
@@ -1026,8 +1028,8 @@ function popupToolbarMenu(node, menuId) {
   var offset = $(node).cumulativeOffset();
   var top = offset.top + node.offsetHeight;
   popup.setStyle({ top: top + "px",
-	left: offset.left + "px",
-	visibility: "visible" });
+				left: offset.left + "px",
+				visibility: "visible" });
 
   document.currentPopupMenu = popup;
   $(document.body).observe("mouseup", onBodyClickMenuHandler);
@@ -1039,7 +1041,7 @@ function folderSubscriptionCallback(http) {
   if (http.readyState == 4) {
     if (isHttpStatus204(http.status)) {
       if (http.callbackData)
-	http.callbackData["method"](http.callbackData["data"]);
+				http.callbackData["method"](http.callbackData["data"]);
     }
     else
       window.alert(clabels["Unable to subscribe to that folder!"]);
@@ -1055,7 +1057,7 @@ function subscribeToFolder(refreshCallback, refreshCallbackData) {
   var folderPath = folderData[1];
   if (username != UserLogin) {
     var url = (UserFolderURL + "../" + username
-	       + folderPath + "/subscribe");
+							 + folderPath + "/subscribe");
     if (document.subscriptionAjaxRequest) {
       document.subscriptionAjaxRequest.aborted = true;
       document.subscriptionAjaxRequest.abort();
@@ -1063,8 +1065,8 @@ function subscribeToFolder(refreshCallback, refreshCallbackData) {
 
     var rfCbData = { method: refreshCallback, data: refreshCallbackData };
     document.subscriptionAjaxRequest = triggerAjaxRequest(url,
-							  folderSubscriptionCallback,
-							  rfCbData);
+																													folderSubscriptionCallback,
+																													rfCbData);
   }
   else
     refreshCallbackData["window"].alert(clabels["You cannot subscribe to a folder that you own!"]);
@@ -1075,7 +1077,7 @@ function folderUnsubscriptionCallback(http) {
     removeFolderRequestCount--;
     if (isHttpStatus204(http.status)) {
       if (http.callbackData)
-	http.callbackData["method"](http.callbackData["data"]);
+				http.callbackData["method"](http.callbackData["data"]);
     }
     else
       window.alert(clabels["Unable to unsubscribe from that folder!"]);
@@ -1083,10 +1085,10 @@ function folderUnsubscriptionCallback(http) {
 }
 
 function unsubscribeFromFolder(folder, owner, refreshCallback,
-			       refreshCallbackData) {
+															 refreshCallbackData) {
   if (document.body.hasClassName("popup")) {
     window.opener.unsubscribeFromFolder(folder, refreshCallback,
-					refreshCallbackData);
+																				refreshCallbackData);
   }
   else {
     if (owner.startsWith('/'))
@@ -1137,10 +1139,10 @@ function getListIndexForFolder(items, owner, folderName) {
     if (currentOwner == owner) {
       previousOwner = currentOwner;
       if (currentFolderName > folderName)
-	break;
+				break;
     }
     else if (previousOwner || 
-	     (currentOwner != UserLogin && currentOwner > owner))
+						 (currentOwner != UserLogin && currentOwner > owner))
       break;
     else if (currentOwner == "nobody")
       break;
@@ -1164,12 +1166,12 @@ function initTabs() {
       var firstTab = null;
       var nodes = $(list[0]).childNodesWithTag("li");
       for (var i = 0; i < nodes.length; i++) {
-	var currentNode = $(nodes[i]);
-	if (!firstTab)
-	  firstTab = currentNode;
-	currentNode.observe("mousedown", onTabMouseDown);
-	currentNode.observe("click", onTabClick);
-	//$(currentNode.getAttribute("target")).hide();
+				var currentNode = $(nodes[i]);
+				if (!firstTab)
+					firstTab = currentNode;
+				currentNode.observe("mousedown", onTabMouseDown);
+				currentNode.observe("click", onTabClick);
+				//$(currentNode.getAttribute("target")).hide();
       }
 
       firstTab.addClassName("first");
@@ -1189,7 +1191,7 @@ function initMenus() {
     for (var menuID in menus) {
       var menuDIV = $(menuID);
       if (menuDIV)
-	initMenu(menuDIV, menus[menuID]);
+				initMenu(menuDIV, menus[menuID]);
     }
   }
 }
@@ -1202,18 +1204,18 @@ function initMenu(menuDIV, callbacks) {
     var callback = callbacks[j];
     if (callback) {
       if (typeof(callback) == "string") {
-	if (callback == "-")
-	  node.addClassName("separator");
-	else {
-	  node.submenu = callback;
-	  node.addClassName("submenu");
-	  node.observe("mouseover", popupSubmenu);
-	}
+				if (callback == "-")
+					node.addClassName("separator");
+				else {
+					node.submenu = callback;
+					node.addClassName("submenu");
+					node.observe("mouseover", popupSubmenu);
+				}
       }
       else {
-	node.observe("mouseup", onBodyClickMenuHandler);
-	node.menuCallback = callback;
-	node.observe("click", onMenuClickHandler);
+				node.observe("mouseup", onBodyClickMenuHandler);
+				node.menuCallback = callback;
+				node.observe("click", onMenuClickHandler);
       }
     }
     else
@@ -1254,7 +1256,7 @@ function getTopWindow() {
   var currentWindow = window;
   while (!topWindow) {
     if (currentWindow.document.body.hasClassName("popup")
-	&& currentWindow.opener)
+				&& currentWindow.opener)
       currentWindow = currentWindow.opener;
     else
       topWindow = currentWindow;
@@ -1349,9 +1351,9 @@ function indexColor(number) {
     var index = 0;
     while (currentValue) {
       if (currentValue & 1)
-	colorTable[index]++;
+				colorTable[index]++;
       if (index == 3)
-	index = 0;
+				index = 0;
       currentValue >>= 1;
       index++;
     }
@@ -1410,8 +1412,8 @@ function onLoadHandler(event) {
 
 function onBodyClickContextMenu(event) {
   if (!(event.target
-	&& (event.target.tagName == "INPUT"
-	    || event.target.tagName == "TEXTAREA")))
+				&& (event.target.tagName == "INPUT"
+						|| event.target.tagName == "TEXTAREA")))
     preventDefault(event);
 }
 
@@ -1431,7 +1433,7 @@ function onLinkBannerClick() {
 function onPreferencesClick(event) {
   var urlstr = UserFolderURL + "preferences";
   var w = window.open(urlstr, "_blank",
-		      "width=430,height=250,resizable=0,scrollbars=0,location=0");
+											"width=430,height=250,resizable=0,scrollbars=0,location=0");
   w.opener = window;
   w.focus();
 
@@ -1445,8 +1447,8 @@ function configureLinkBanner() {
     for (var i = 0; i < moduleLinks.length; i++) {
       var link = $(moduleLinks[i] + "BannerLink");
       if (link) {
-	link.observe("mousedown", listRowMouseDownHandler);
-	link.observe("click", onLinkBannerClick);
+				link.observe("mousedown", listRowMouseDownHandler);
+				link.observe("click", onLinkBannerClick);
       }
     }
     link = $("preferencesBannerLink");
@@ -1472,9 +1474,9 @@ function createFolder(name, okCB, notOkCB) {
     var url = ApplicationBaseURL + "/createFolder?name=" + name;
     document.newFolderAjaxRequest
       = triggerAjaxRequest(url, createFolderCallback,
-			   {name: name,
-			    okCB: okCB,
-			    notOkCB: notOkCB});
+													 {name: name,
+														okCB: okCB,
+														notOkCB: notOkCB});
   }
 }
 
@@ -1483,13 +1485,13 @@ function createFolderCallback(http) {
     var data = http.callbackData;
     if (http.status == 201) {
       if (data.okCB)
-	data.okCB(data.name, "/" + http.responseText, UserLogin);
+				data.okCB(data.name, "/" + http.responseText, UserLogin);
     }
     else {
       if (data.notOkCB)
-	data.notOkCB(name);
+				data.notOkCB(name);
       else
-	log("ajax problem:" + http.status);
+				log("ajax problem:" + http.status);
     }
   }
 }

@@ -1,3 +1,5 @@
+/* -*- Mode: java; tab-width: 2; c-tab-always-indent: t; indent-tabs-mode: t; c-basic-offset: 2 -*- */
+
 String.prototype.trim = function() {
   return this.replace(/(^\s+|\s+$)/g, '');
 };
@@ -22,17 +24,17 @@ String.prototype.repeat = function(count) {
 
 String.prototype.capitalize = function() {
   return this.replace(/\w+/g,
-		      function(a) {
-			return ( a.charAt(0).toUpperCase()
-				 + a.substr(1).toLowerCase() );
-		      });
+											function(a) {
+												return ( a.charAt(0).toUpperCase()
+																 + a.substr(1).toLowerCase() );
+											});
 };
 
 String.prototype.decodeEntities = function() {
   return this.replace(/&#(\d+);/g,
-		      function(wholematch, parenmatch1) {
-			return String.fromCharCode(+parenmatch1);
-		      });
+											function(wholematch, parenmatch1) {
+												return String.fromCharCode(+parenmatch1);
+											});
 };
 
 String.prototype.asDate = function () {
@@ -46,9 +48,9 @@ String.prototype.asDate = function () {
       newDate = new Date(date[0], date[1] - 1, date[2]);
     else {
       if (this.length == 8) {
-	newDate = new Date(this.substring(0, 4),
-			   this.substring(4, 6) - 1,
-			   this.substring(6, 8));
+				newDate = new Date(this.substring(0, 4),
+													 this.substring(4, 6) - 1,
+													 this.substring(6, 8));
       }
     }
   }
@@ -177,7 +179,7 @@ Date.prototype.earlierDate = function(otherDate) {
   workDate.setTime(otherDate.getTime());
   workDate.setHours(0);
   return ((this.getTime() < workDate.getTime())
-	  ? this : otherDate);
+					? this : otherDate);
 };
 
 Date.prototype.laterDate = function(otherDate) {
@@ -188,7 +190,7 @@ Date.prototype.laterDate = function(otherDate) {
   workDate.setSeconds(59);
   workDate.setMilliseconds(999);
   return ((this.getTime() < workDate.getTime())
-	  ? otherDate : this);
+					? otherDate : this);
 };
   
 Date.prototype.beginOfWeek = function() {
