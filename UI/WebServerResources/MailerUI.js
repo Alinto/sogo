@@ -43,12 +43,7 @@ function openMessageWindow(msguid, url) {
   var wId = '';
   if (msguid) {
     wId += "SOGo_msg" + msguid;
-// 		var url = ApplicationBaseURL + msguid + "/markMessageRead";
-// 		var parts = msguid.split("/");
-// 		var data = { "window": window, "msguid": parts[parts.length-1], "markread": true };
-// 		triggerAjaxRequest(url, mailListMarkMessageCallback, data);
-
-//     markMailInWindow(window, msguid, true);
+    markMailReadInWindow(window, msguid);
   }
   var msgWin = openMailComposeWindow(url, wId);
   msgWin.messageUID = msguid;
@@ -134,11 +129,15 @@ function markMailInWindow(win, msguid, markread) {
 					img.setAttribute("title", title);
       }
     }
-		
     return true;
   }
   else
     return false;
+}
+
+function markMailReadInWindow(win, msguid) {
+  /* this is called by UIxMailView with window.opener */
+  return markMailInWindow(win, msguid, true);
 }
 
 /* mail list reply */
@@ -171,7 +170,6 @@ function openMessageWindowsForSelection(action, firstOnly) {
 }
 
 function mailListMarkMessage(event) {
-	log("maillistmarkmessage...");
   var msguid = this.id.split('_')[1];
   var action;
   var markread;
@@ -756,7 +754,6 @@ function onMessageSelectionChange() {
 }
 
 function loadMessage(idx) {
-	log("loadMessage: " + idx);
   if (document.messageAjaxRequest) {
     document.messageAjaxRequest.aborted = true;
     document.messageAjaxRequest.abort();
@@ -764,6 +761,7 @@ function loadMessage(idx) {
 
   var cachedMessage = getCachedMessage(idx);
 
+  markMailInWindow(window, idx, true);
   if (cachedMessage == null) {
     var url = (ApplicationBaseURL + Mailer.currentMailbox + "/"
 							 + idx + "/view?noframe=1");
@@ -943,10 +941,6 @@ function messageCallback(http) {
       cachedMessage['text'] = http.responseText;
       if (cachedMessage['text'].length < 30000)
 				storeCachedMessage(cachedMessage);
-
-			var url = ApplicationBaseURL + Mailer.currentMailbox + "/" + http.callbackData + "/markMessageRead";
-			var data = { "window": window, "msguid": http.callbackData, "markread": true };
-			triggerAjaxRequest(url, mailListMarkMessageCallback, data);
     }
   }
   else
@@ -1225,20 +1219,20 @@ function configureMessageListBodyEvents(table) {
 			row.observe("mousedown", onRowClick);
 			row.observe("selectstart", listRowMouseDownHandler);
 			row.observe("contextmenu", onMessageContextMenu);
-
+         
 			row.dndTypes = function() { return new Array("mailRow"); };
 			row.dndGhost = messageListGhost;
 			row.dndDataForType = messageListData;
 			//   document.DNDManager.registerSource(row);
-
+         
 			for (var j = 0; j < row.cells.length; j++) {
 				var cell = $(row.cells[j]);
 				cell.observe("mousedown", listRowMouseDownHandler);
 				if (j == 2 || j == 3 || j == 5)
-					cell.observe("dblclick", onMessageDoubleClick);
+					cell.observe("dblclick", onMessageDoubleClick.bindAsEventListener(cell));
 				else if (j == 4) {
 					var img = $(cell.childNodesWithTag("img")[0]);
-					img.observe("click", mailListMarkMessage);
+					img.observe("click", mailListMarkMessage.bindAsEventListener(img));
 				}
 			}
 		}

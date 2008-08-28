@@ -145,21 +145,31 @@
 - (id) markMessageUnreadAction 
 {
   id response;
+  SOGoMailFolder *mailFolder;
 
   response = [[self clientObject] removeFlags: @"seen"];
   if (!response)
-    response = [self responseWith204];
-
+    {
+      mailFolder = [[self clientObject] container];
+      [mailFolder unselect];
+      response = [self responseWith204];
+    }
+    
   return response;
 }
 
 - (id) markMessageReadAction 
 {
   id response;
+  SOGoMailFolder *mailFolder;
 
   response = [[self clientObject] addFlags: @"seen"];
   if (!response)
-    response = [self responseWith204];
+    {
+      mailFolder = [[self clientObject] container];
+      [mailFolder unselect];
+      response = [self responseWith204];
+    }
 
   return response;
 }

@@ -1,5 +1,9 @@
 2008-08-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailActions.m ([UIxMailActions
+	-markMessageUnreadAction]): unselect the mailbox after the operation.
+	([UIxMailActions -markMessageReadAction]): same as above.
+
 	* UI/MailPartViewers/UIxMailPartICalViewer.m
 	([UIxMailPartICalViewer -hasCalendarAccess]): new method that
 	returns whether the current user has access to the calendar
