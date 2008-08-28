@@ -283,6 +283,16 @@ static BOOL aclConformsToIMAPExt = NO;
   return [[self imap4Connection] expungeAtURL: [self imap4URL]];
 }
 
+- (NSException *) unselect
+{
+  NGImap4Client *client;
+
+  client = [[self imap4Connection] client];
+  [client unselect];
+
+  return nil;
+}
+
 - (void) markForExpunge
 {
   NSUserDefaults *ud;

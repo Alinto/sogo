@@ -209,6 +209,7 @@ static NSString *mailETag = nil;
 		inContext: (WOContext *) _ctx
 {
   UIxMailRenderingContext *mctx;
+  SOGoMailFolder *mailFolder;
 
   if (mailETag != nil)
     [[_ctx response] setHeader:mailETag forKey:@"etag"];
@@ -222,6 +223,9 @@ static NSString *mailETag = nil;
   [super appendToResponse: _response inContext: _ctx];
   
   [[_ctx popMailRenderingContext] reset];
+
+  mailFolder = [[self clientObject] container];
+  [mailFolder unselect];
 }
 
 @end /* UIxMailView */

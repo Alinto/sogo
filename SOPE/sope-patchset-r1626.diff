@@ -189,7 +189,15 @@ Index: sope-mime/NGImap4/NGImap4Client.h
 ===================================================================
 --- sope-mime/NGImap4/NGImap4Client.h	(révision 1626)
 +++ sope-mime/NGImap4/NGImap4Client.h	(copie de travail)
-@@ -138,7 +138,7 @@
+@@ -120,6 +120,7 @@
+ - (NSDictionary *)list:(NSString *)_folder pattern:(NSString *)_pattern;
+ - (NSDictionary *)lsub:(NSString *)_folder pattern:(NSString *)_pattern;
+ - (NSDictionary *)select:(NSString *)_folder;
++- (NSDictionary *)unselect;
+ - (NSDictionary *)status:(NSString *)_folder flags:(NSArray *)_flags;
+ - (NSDictionary *)rename:(NSString *)_folder to:(NSString *)_newName;
+ - (NSDictionary *)delete:(NSString *)_folder;
+@@ -138,7 +139,7 @@
    flags:(NSArray *)_flags;
  - (NSDictionary *)storeFrom:(unsigned)_from to:(unsigned)_to
    add:(NSNumber *)_add flags:(NSArray *)_flags;
@@ -247,7 +255,18 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  @end
  
  /*
-@@ -820,23 +824,23 @@
+@@ -635,6 +639,10 @@
+   return [self->normer normalizeSelectResponse:[self processCommand:s]];
+ }
+ 
++- (NSDictionary *)unselect {
++  return [self->normer normalizeResponse:[self processCommand:@"unselect"]];
++}
++
+ - (NSDictionary *)status:(NSString *)_folder flags:(NSArray *)_flags {
+   NSString *cmd;
+   
+@@ -820,23 +828,23 @@
    return [self->normer normalizeResponse:[self processCommand:cmd]];
  }
  
@@ -277,7 +296,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  		    seqstr, _flag ? '+' : '-', flagstr];
    
    return [self->normer normalizeResponse:[self processCommand:cmd]];
-@@ -967,11 +971,12 @@
+@@ -967,11 +975,12 @@
    descr = @"Could not process qualifier for imap search "; 
    descr = [descr stringByAppendingString:reason];           
    
@@ -293,7 +312,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  }
  
  - (NSString *)_searchExprForQual:(EOQualifier *)_qualifier {
-@@ -1093,7 +1098,18 @@
+@@ -1093,7 +1102,18 @@
       Eg: UID SORT ( DATE REVERSE SUBJECT ) UTF-8 TODO
    */
    NSString *tmp;
@@ -312,7 +331,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    if ([_sortSpec isKindOfClass:[NSArray class]])
      tmp = [self _generateIMAP4SortOrderings:_sortSpec];
    else if ([_sortSpec isKindOfClass:[EOSortOrdering class]])
-@@ -1107,9 +1123,10 @@
+@@ -1107,9 +1127,10 @@
      tmp = @"DATE";
    }
    
@@ -325,7 +344,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  }
  - (NSDictionary *)sort:(NSArray *)_sortOrderings
    qualifier:(EOQualifier *)_qual
-@@ -1130,7 +1147,7 @@
+@@ -1130,7 +1151,7 @@
      return nil;
    }
    
@@ -334,7 +353,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    return [self->normer normalizeSearchResponse:[self processCommand:s]];
  }
  
-@@ -1193,6 +1210,79 @@
+@@ -1193,6 +1214,79 @@
  
  /* Private Methods */
  
@@ -687,6 +706,19 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  - (NSException *)exceptionForFailedMatch:(unsigned char)_match
    got:(unsigned char)_avail
  {
+Index: sope-mime/NGImap4/ChangeLog
+===================================================================
+--- sope-mime/NGImap4/ChangeLog	(révision 1626)
++++ sope-mime/NGImap4/ChangeLog	(copie de travail)
+@@ -1,3 +1,8 @@
++2008-08-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
++
++	* NGImap4Client.m ([NGImap -unselect]): new method to send
++	"UNSELECT" to the imap server.
++
+ 2007-08-24  Wolfgang Sourdeau  <WSourdeau@Inverse.CA>
+ 
+ 	* NGImap4Connection.m: some fix for folders ending with a slash (OGo
 Index: sope-mime/NGMail/NGSmtpClient.m
 ===================================================================
 --- sope-mime/NGMail/NGSmtpClient.m	(révision 1626)
