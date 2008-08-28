@@ -411,6 +411,14 @@ function checkAjaxRequestsState() {
     progressImage.parentNode.removeChild(progressImage);
 }
 
+function isMac() {
+	return (navigator.platform.indexOf('Mac') > -1);
+}
+
+function isWindows() {
+	return (navigator.platform.indexOf('Win') > -1);
+}
+
 function isSafari3() {
   return (navigator.appVersion.indexOf("Version") > -1);
 }
@@ -552,15 +560,22 @@ function onRowClick(event) {
   }
    
   var initialSelection = $(node.parentNode).getSelectedNodes();
-   
+	var isLeftClick = true;
+	if (isMac() && isSafari())
+		if (event.ctrlKey == 1)
+			isLeftClick = false; // Control-click is equivalent to right-click under Mac OS X
+		else
+			isLeftClick = Event.isLeftClick(event);
+	else
+		isLeftClick = Event.isLeftClick(event);
+	
   if (initialSelection.length > 0 
       && initialSelection.indexOf(node) >= 0
-      && (!isSafari() && !Event.isLeftClick(event) ||
-					isSafari() && event.ctrlKey == 1)) // Event.isLeftClick is not supported in Safari
+			&& !isLeftClick)
     // Ignore non primary-click (ie right-click) inside current selection
     return true;
-   
-  if ((event.shiftKey == 1 || event.metaKey == 1)
+
+  if ((event.shiftKey == 1 || isMac() && event.metaKey == 1 || isWindows() && event.ctrlKey == 1)
       && (lastClickedRow >= 0)
       && (acceptMultiSelect(node.parentNode)
 					|| acceptMultiSelect(node.parentNode.parentNode))) {
