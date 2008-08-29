@@ -126,18 +126,22 @@ static NSMutableArray *yearMenuItems = nil;
 
 - (NSString *) verticalDragHandleStyle
 {
+  NSString *vertical;
+  
   [self _setupContext];
+  vertical = [moduleSettings objectForKey: @"DragHandleVertical"];
 
-  return [[moduleSettings objectForKey: @"DragHandleVertical"]
-	   stringByAppendingString: @"px"];
+  return ((vertical && [vertical intValue] > 0) ? [vertical stringByAppendingFormat: @"px"] : nil);
 }
 
 - (NSString *) horizontalDragHandleStyle
 {
-  [self _setupContext];
+  NSString *horizontal;
 
-  return [[moduleSettings objectForKey: @"DragHandleHorizontal"]
-	   stringByAppendingString: @"px"];
+  [self _setupContext];
+  horizontal = [moduleSettings objectForKey: @"DragHandleHorizontal"];
+
+  return ((horizontal && [horizontal intValue] > 0) ? [horizontal stringByAppendingFormat: @"px"] : nil);
 }
 
 - (NSString *) eventsListViewStyle
@@ -147,7 +151,7 @@ static NSMutableArray *yearMenuItems = nil;
   [self _setupContext];
   height = [moduleSettings objectForKey: @"DragHandleVertical"];
 
-  return (height ? [NSString stringWithFormat: @"%ipx", ([height intValue] - 27)] : nil);
+  return ((height && [height intValue] > 0) ? [NSString stringWithFormat: @"%ipx", ([height intValue] - 27)] : nil);
 }
 
 - (WOResponse *) saveDragHandleStateAction
