@@ -391,7 +391,9 @@ static BOOL        showTextAttachmentsInline  = NO;
 
   addresses = [_addrs objectEnumerator];
   while ((currentAddress = [addresses nextObject]))
-    [_ma addObject: [currentAddress email]];
+    if ([currentAddress email])
+      [_ma addObject: [currentAddress email]];
+    
 }
 
 - (void) _addRecipients: (NSArray *) recipients
@@ -402,7 +404,8 @@ static BOOL        showTextAttachmentsInline  = NO;
 
   addresses = [recipients objectEnumerator];
   while ((currentAddress = [addresses nextObject]))
-    [array addObject: [currentAddress baseEMail]];
+    if ([currentAddress baseEMail])
+      [array addObject: [currentAddress baseEMail]];
 }
 
 - (void) _purgeRecipients: (NSArray *) recipients
