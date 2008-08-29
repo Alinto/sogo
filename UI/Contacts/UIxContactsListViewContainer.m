@@ -147,7 +147,7 @@
    [self _setupContext];
    vertical = [moduleSettings objectForKey: @"DragHandleVertical"];
 
-   return (vertical ? [vertical stringByAppendingFormat: @"px"] : nil);
+   return ((vertical && [vertical intValue] > 0) ? [vertical stringByAppendingFormat: @"px"] : nil);
 }
 
 - (NSString *) horizontalDragHandleStyle
@@ -157,17 +157,17 @@
    [self _setupContext];
    horizontal = [moduleSettings objectForKey: @"DragHandleHorizontal"];
 
-   return (horizontal ? [horizontal stringByAppendingFormat: @"px"] : nil);
+   return ((horizontal && [horizontal intValue] > 0) ? [horizontal stringByAppendingFormat: @"px"] : nil);
 }
 
 - (NSString *) contactsListContentStyle
 {
-   int height;
+  NSString *height;
 
-   [self _setupContext];
-   height = [[moduleSettings objectForKey: @"DragHandleVertical"] intValue];
+  [self _setupContext];
+  height = [moduleSettings objectForKey: @"DragHandleVertical"];
 
-   return (height ? [NSString stringWithFormat: @"%ipx", (height - 27)] : nil);
+   return ((height && [height intValue] > 0) ? [NSString stringWithFormat: @"%ipx", ([height intValue] - 27)] : nil);
 }
 
 @end
