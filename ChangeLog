@@ -1,3 +1,12 @@
+2008-08-29  Ludovic Marcotte <lmarcotte@inverse.ca>
+
+	* SoObjects/Mailer/SOGoDraftObject.m ([SOGoDraftObject
+	-addRecipients:recipientstoArray:array]): same as below.
+
+	* SoObjects/Mailer/SOGoDraftObject.m: 
+	([SOGoDraftObject -addEMailsOfAddresses:_addrstoArray:_ma]): test
+	if the returned email is nil before adding it to the array.
+
 2008-08-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailerUI/UIxMailActions.m ([UIxMailActions
