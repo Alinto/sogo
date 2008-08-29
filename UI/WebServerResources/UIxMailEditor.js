@@ -283,10 +283,17 @@ function onTextKeyDown(event) {
 		}
 		else {
 			if (!(event.shiftKey || event.metaKey || event.ctrlKey)) {
-				if (this.selectionStart) { // FF
-					var startText = this.value.substr(0, this.selectionStart);
-					var endText = this.value.substr(this.selectionStart);
-					this.value = startText + "   " + endText;
+				if (typeof(this.selectionStart)
+						!= "undefined") { // For Mozilla and Safari
+					var cursor = this.selectionStart;
+					var startText = ((cursor > 0)
+													 ? this.value.substr(0, cursor)
+													 : "");
+					var endText = this.value.substr(cursor);
+					var newText = startText + "   " + endText;
+					this.value = newText;
+					cursor += 3;
+					this.setSelectionRange(cursor, cursor);
 				}
 				else if (this.selectionRange) // IE
 					this.selectionRange.text = "   ";

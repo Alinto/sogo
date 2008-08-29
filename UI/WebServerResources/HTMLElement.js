@@ -205,7 +205,8 @@ Element.addMethods(
 
 	setCaretTo: function(element, pos) { 
 			element = $(element);
-			if (element.selectionStart) {        // For Mozilla and Safari
+			if (typeof(element.selectionStart)
+					!= "undefined") { // For Mozilla and Safari
 				element.focus(); 
 				element.setSelectionRange(pos, pos); 
 			}
