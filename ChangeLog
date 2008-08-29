@@ -1,3 +1,9 @@
+2008-08-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MailerUI/UIxMailView.m ([UIxMailView
+	-appendToResponse:_responseinContext:_ctx]): logout from the imap
+	connectin once the response has been appended.
+
 2008-08-29  Ludovic Marcotte <lmarcotte@inverse.ca>
 
 	* SoObjects/Mailer/SOGoDraftObject.m ([SOGoDraftObject

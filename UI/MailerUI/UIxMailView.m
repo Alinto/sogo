@@ -26,6 +26,8 @@
 #import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSException+misc.h>
 #import <NGExtensions/NSString+misc.h>
+#import <NGImap4/NGImap4Client.h>
+#import <NGImap4/NGImap4Connection.h>
 #import <NGImap4/NGImap4Envelope.h>
 #import <NGImap4/NGImap4EnvelopeAddress.h>
 #import <SoObjects/Mailer/SOGoMailObject.h>
@@ -209,7 +211,7 @@ static NSString *mailETag = nil;
 		inContext: (WOContext *) _ctx
 {
   UIxMailRenderingContext *mctx;
-  SOGoMailFolder *mailFolder;
+  NGImap4Connection *conn;
 
   if (mailETag != nil)
     [[_ctx response] setHeader:mailETag forKey:@"etag"];
@@ -224,8 +226,8 @@ static NSString *mailETag = nil;
   
   [[_ctx popMailRenderingContext] reset];
 
-  mailFolder = [[self clientObject] container];
-  [mailFolder unselect];
+  conn = [[self clientObject] imap4Connection];
+  [[conn client] logout];
 }
 
 @end /* UIxMailView */
