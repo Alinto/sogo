@@ -50,7 +50,6 @@
 @interface SOGoDraftObject : SOGoMailBaseObject
 {
   NSString *path;
-  NGImap4Envelope *envelope;
   int IMAP4ID;
   NSMutableDictionary *headers;
   NSString *inReplyTo;

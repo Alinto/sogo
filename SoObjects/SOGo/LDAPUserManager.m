@@ -541,14 +541,12 @@ static BOOL forceImapLoginWithEmail = NO;
 
   now = [NSDate date];
   userIDs = [[users allKeys] objectEnumerator];
-  currentID = [userIDs nextObject];
-  while (currentID)
+  while ((currentID = [userIDs nextObject]))
     {
       currentUser = [users objectForKey: currentID];
       if ([now earlierDate:
 		 [currentUser objectForKey: @"cleanupDate"]] == now)
 	[users removeObjectForKey: currentID];
-      currentID = [userIDs nextObject];
     }
 }
 

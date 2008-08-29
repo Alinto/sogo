@@ -220,6 +220,9 @@ _timeValue (NSString *key)
       currentPassword = nil;
       dateFormatter = nil;
       homeFolder = nil;
+      cn = nil;
+      userTimeZone = nil;
+      mailAccounts = nil;
     }
 
   return self;
@@ -256,13 +259,16 @@ _timeValue (NSString *key)
 
 - (void) dealloc
 {
-  [currentPassword release];
   [userDefaults release];
   [userSettings release];
   [allEmails release];
   [language release];
+  [currentPassword release];
   [dateFormatter release];
   [homeFolder release];
+  [cn release];
+  [userTimeZone release];
+  [mailAccounts release];
   [super dealloc];
 }
 

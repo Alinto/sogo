@@ -103,6 +103,7 @@ static BOOL        showTextAttachmentsInline  = NO;
       IMAP4ID = -1;
       headers = [NSMutableDictionary new];
       text = @"";
+      path = nil;
       sourceURL = nil;
       sourceFlag = nil;
       inReplyTo = nil;
@@ -115,7 +116,6 @@ static BOOL        showTextAttachmentsInline  = NO;
 {
   [headers release];
   [text release];
-  [envelope release];
   [path release];
   [sourceURL release];
   [sourceFlag release];
