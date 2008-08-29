@@ -1004,6 +1004,15 @@ Index: sope-mime/NGMail/NGMailAddressParser.m
    int  length      = 0;  // token text length
    BOOL done        = NO;
  
+@@ -94,7 +94,7 @@
+       done   = YES;
+     }
+     else {
+-      register unsigned char c = self->data[self->dataPos];
++      register unichar c = self->data[self->dataPos];
+       
+       switch (c) {
+         case '(' :  case ')': case '<': case '>':
 @@ -162,7 +162,7 @@
    int  keepPos     = self->dataPos; // keep reference for backtracking
    id   returnValue = nil;
@@ -1013,6 +1022,18 @@ Index: sope-mime/NGMail/NGMailAddressParser.m
    int  length      = 0;  // token text length
    BOOL done        = YES;
  
+@@ -172,9 +172,9 @@
+       done    = YES;
+     }
+     else {
+-      register char c = self->data[self->dataPos];
++      register unichar c = self->data[self->dataPos];
+       
+-      switch ((int)c) {
++      switch (c) {
+         case '"' :  
+         case '\\':
+         case 13  :
 @@ -215,7 +215,7 @@
    int  keepPos     = self->dataPos; // keep reference for backtracking
    id   returnValue = nil;
@@ -1022,6 +1043,18 @@ Index: sope-mime/NGMail/NGMailAddressParser.m
    int  length      = 0;  // token text length
    BOOL done        = YES;
  
+@@ -225,9 +225,9 @@
+       done    = YES;
+     }
+     else {
+-      register char c = self->data[self->dataPos];
++      register unichar c = self->data[self->dataPos];
+       
+-      switch ((int)c) {
++      switch (c) {
+         case '[':  case ']':
+         case '\\': case 13:
+           isDText = (length > 0);
 @@ -320,42 +320,47 @@
  /* constructors */
  
@@ -1619,26 +1652,17 @@ Index: sope-mime/NGMime/NGMimeAddressHeaderFieldGenerator.m
 ===================================================================
 --- sope-mime/NGMime/NGMimeAddressHeaderFieldGenerator.m	(révision 1626)
 +++ sope-mime/NGMime/NGMimeAddressHeaderFieldGenerator.m	(copie de travail)
-@@ -93,7 +93,7 @@
-   
-   while ((obj = [enumerator nextObject]) != nil) {
-     NSString   *tmp;
--    char       *buffer;
-+    unichar       *buffer;
-     unsigned   bufLen, cnt;
-     BOOL       doEnc;
-     
 @@ -105,10 +105,10 @@
      }
      
      tmp    = [obj displayName];
 -    bufLen = [tmp cStringLength];
-+    bufLen = [tmp length];
++    bufLen = [tmp lengthOfBytesUsingEncoding: NSUTF8StringEncoding];
      
 -    buffer = calloc(bufLen + 10, sizeof(char));
 -    [tmp getCString:buffer];
-+    buffer = calloc(bufLen, sizeof(unichar));
-+    [tmp getCharacters:buffer];
++    buffer = calloc(bufLen, sizeof(char));
++    [tmp getCString: buffer maxLength: bufLen encoding: NSUTF8StringEncoding];
      
      cnt   = 0;
      doEnc = NO;
