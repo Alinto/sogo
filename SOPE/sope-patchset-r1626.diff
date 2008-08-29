@@ -1652,26 +1652,17 @@ Index: sope-mime/NGMime/NGMimeAddressHeaderFieldGenerator.m
 ===================================================================
 --- sope-mime/NGMime/NGMimeAddressHeaderFieldGenerator.m	(révision 1626)
 +++ sope-mime/NGMime/NGMimeAddressHeaderFieldGenerator.m	(copie de travail)
-@@ -93,7 +93,7 @@
-   
-   while ((obj = [enumerator nextObject]) != nil) {
-     NSString   *tmp;
--    char       *buffer;
-+    unichar       *buffer;
-     unsigned   bufLen, cnt;
-     BOOL       doEnc;
-     
 @@ -105,10 +105,10 @@
      }
      
      tmp    = [obj displayName];
 -    bufLen = [tmp cStringLength];
-+    bufLen = [tmp length];
++    bufLen = [tmp lengthOfBytesUsingEncoding: NSUTF8StringEncoding];
      
 -    buffer = calloc(bufLen + 10, sizeof(char));
 -    [tmp getCString:buffer];
-+    buffer = calloc(bufLen, sizeof(unichar));
-+    [tmp getCharacters:buffer];
++    buffer = calloc(bufLen, sizeof(char));
++    [tmp getCString: buffer maxLength: bufLen encoding: NSUTF8StringEncoding];
      
      cnt   = 0;
      doEnc = NO;
