@@ -1004,6 +1004,15 @@ Index: sope-mime/NGMail/NGMailAddressParser.m
    int  length      = 0;  // token text length
    BOOL done        = NO;
  
+@@ -94,7 +94,7 @@
+       done   = YES;
+     }
+     else {
+-      register unsigned char c = self->data[self->dataPos];
++      register unichar c = self->data[self->dataPos];
+       
+       switch (c) {
+         case '(' :  case ')': case '<': case '>':
 @@ -162,7 +162,7 @@
    int  keepPos     = self->dataPos; // keep reference for backtracking
    id   returnValue = nil;
@@ -1013,6 +1022,18 @@ Index: sope-mime/NGMail/NGMailAddressParser.m
    int  length      = 0;  // token text length
    BOOL done        = YES;
  
+@@ -172,9 +172,9 @@
+       done    = YES;
+     }
+     else {
+-      register char c = self->data[self->dataPos];
++      register unichar c = self->data[self->dataPos];
+       
+-      switch ((int)c) {
++      switch (c) {
+         case '"' :  
+         case '\\':
+         case 13  :
 @@ -215,7 +215,7 @@
    int  keepPos     = self->dataPos; // keep reference for backtracking
    id   returnValue = nil;
@@ -1022,6 +1043,18 @@ Index: sope-mime/NGMail/NGMailAddressParser.m
    int  length      = 0;  // token text length
    BOOL done        = YES;
  
+@@ -225,9 +225,9 @@
+       done    = YES;
+     }
+     else {
+-      register char c = self->data[self->dataPos];
++      register unichar c = self->data[self->dataPos];
+       
+-      switch ((int)c) {
++      switch (c) {
+         case '[':  case ']':
+         case '\\': case 13:
+           isDText = (length > 0);
 @@ -320,42 +320,47 @@
  /* constructors */
  
