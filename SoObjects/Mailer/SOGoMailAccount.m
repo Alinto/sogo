@@ -57,6 +57,9 @@ static NSString *trashFolderName = nil;
 static NSString *sharedFolderName = @""; // TODO: add English default
 static NSString *otherUsersFolderName = @""; // TODO: add English default
 
+// this is temporary, until we allow users to manage their own accounts
+static NSString *fallbackIMAP4Server = nil;
+
 + (void) initialize
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
@@ -95,7 +98,16 @@ static NSString *otherUsersFolderName = @""; // TODO: add English default
   else
     rootFolderNames = [[NSArray alloc] initWithObjects:
 				        draftsFolderName, 
-				      nil];
+				       nil];
+
+  if (!fallbackIMAP4Server)
+    {
+      fallbackIMAP4Server = [ud stringForKey: @"SOGoFallbackIMAP4Server"];
+      if (fallbackIMAP4Server)
+	[fallbackIMAP4Server retain];
+      else
+	fallbackIMAP4Server = @"localhost";
+    }
 }
 
 - (id) init
@@ -258,8 +270,14 @@ static NSString *otherUsersFolderName = @""; // TODO: add English default
       escUsername
 	= [[username stringByEscapingURL] stringByReplacingString: @"@"
 					  withString: @"%40"];
+#if 0
+      // see comment about fallbackIMAP4Server above
       hostString = [NSString stringWithFormat: @"%@@%@", escUsername,
 			     [mailAccount objectForKey: @"serverName"]];
+#else
+      hostString = [NSString stringWithFormat: @"%@@%@", escUsername,
+			     fallbackIMAP4Server];
+#endif
     }
   else
     hostString = @"localhost";

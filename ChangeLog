@@ -1,3 +1,14 @@
+2008-09-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailAccount.m ([SOGoMailAccount
+	+initialize]): use the user default "SOGoFallbackIMAP4Server" to
+	override the value of "serverName" from the actual user settings.
+	Fallback to "localhost" if value is unset.
+
+	* SoObjects/Mailer/SOGoMailAccount.m ([SOGoMailAccount
+	-imap4URLString]): use the value of SOGoFallbackIMAP4Server, as
+	mentionne above.
+
 2008-08-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailerUI/UIxMailView.m ([UIxMailView
