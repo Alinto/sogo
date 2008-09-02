@@ -320,18 +320,19 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    
    return [self->normer normalizeResponse:map];
  }
-@@ -635,6 +649,10 @@
+@@ -635,6 +649,11 @@
    return [self->normer normalizeSelectResponse:[self processCommand:s]];
  }
  
 +- (NSDictionary *)unselect {
++  [self->selectedFolder release]; self->selectedFolder = nil;
 +  return [self->normer normalizeResponse:[self processCommand:@"unselect"]];
 +}
 +
  - (NSDictionary *)status:(NSString *)_folder flags:(NSArray *)_flags {
    NSString *cmd;
    
-@@ -820,23 +838,23 @@
+@@ -820,23 +839,23 @@
    return [self->normer normalizeResponse:[self processCommand:cmd]];
  }
  
@@ -361,7 +362,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  		    seqstr, _flag ? '+' : '-', flagstr];
    
    return [self->normer normalizeResponse:[self processCommand:cmd]];
-@@ -967,11 +985,12 @@
+@@ -967,11 +986,12 @@
    descr = @"Could not process qualifier for imap search "; 
    descr = [descr stringByAppendingString:reason];           
    
@@ -377,7 +378,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  }
  
  - (NSString *)_searchExprForQual:(EOQualifier *)_qualifier {
-@@ -1093,7 +1112,18 @@
+@@ -1093,7 +1113,18 @@
       Eg: UID SORT ( DATE REVERSE SUBJECT ) UTF-8 TODO
    */
    NSString *tmp;
@@ -396,7 +397,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    if ([_sortSpec isKindOfClass:[NSArray class]])
      tmp = [self _generateIMAP4SortOrderings:_sortSpec];
    else if ([_sortSpec isKindOfClass:[EOSortOrdering class]])
-@@ -1107,9 +1137,10 @@
+@@ -1107,9 +1138,10 @@
      tmp = @"DATE";
    }
    
@@ -409,7 +410,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  }
  - (NSDictionary *)sort:(NSArray *)_sortOrderings
    qualifier:(EOQualifier *)_qual
-@@ -1130,7 +1161,7 @@
+@@ -1130,7 +1162,7 @@
      return nil;
    }
    
@@ -418,7 +419,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    return [self->normer normalizeSearchResponse:[self processCommand:s]];
  }
  
-@@ -1193,6 +1224,79 @@
+@@ -1193,6 +1225,79 @@
  
  /* Private Methods */
  
@@ -520,23 +521,6 @@ Index: sope-mime/NGImap4/NGImap4Connection.m
    if (![[result valueForKey:@"result"] boolValue]) {
      return [self errorForResult:result 
  		 text:@"Failed to change flags of IMAP4 message"];
-@@ -911,4 +911,16 @@
-   return ms;
- }
- 
-+- (id) retain
-+{
-+  NSLog (@"connection (%Lx) retained: %d", self, [self retainCount] + 1);
-+  return [super retain];
-+}
-+
-+- (void) release
-+{
-+  NSLog (@"connection (%Lx) released: %d", self, [self retainCount] - 1);
-+  [super release];
-+}
-+
- @end /* NGImap4Connection */
 Index: sope-mime/NGImap4/NGImap4ResponseNormalizer.m
 ===================================================================
 --- sope-mime/NGImap4/NGImap4ResponseNormalizer.m	(révision 1626)
