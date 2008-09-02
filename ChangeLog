@@ -1,5 +1,8 @@
 2008-09-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailEditor.m ([UIxMailEditor -from]): retain the
+	initialized value of from, otherwise we create a future zombie.
+
 	* SoObjects/SOGo/SOGoObject.m ([SOGoObject
 	-initWithName:_nameinContainer:_container]): we no longer retain
 	the context, to avoid making a circular reference.
