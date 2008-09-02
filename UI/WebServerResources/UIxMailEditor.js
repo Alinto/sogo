@@ -354,11 +354,11 @@ function onContactKeydown(event) {
 		this.confirmedValue = null;
 		MailEditor.selectedIndex = -1;
 		MailEditor.currentField = this;
-		if (this.value.length > 1 && MailEditor.delayedSearch == false) {
-			MailEditor.delayedSearch = true;
-			setTimeout("performSearch()", MailEditor.delay);
+		if (this.value.length > 1) {
+			if (MailEditor.delayedSearch) window.clearTimeout(MailEditor.delayedSearch);
+			MailEditor.delayedSearch = window.setTimeout("performSearch()", MailEditor.delay);
 		}
-		else if (this.value.length == 0) {
+		else if (this.value.length <= 1) {
 			if (document.currentPopupMenu)
 				hideMenu(document.currentPopupMenu);
 		}
@@ -409,7 +409,6 @@ function performSearch() {
 				triggerAjaxRequest(urlstr, performSearchCallback, MailEditor.currentField);
 		}
 	}
-	MailEditor.delayedSearch = false;
 }
 
 function performSearchCallback(http) {
