@@ -1,5 +1,31 @@
 2008-09-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailView.m ([UIxMailView
+	-appendToResponse:_responseinContext:_ctx]): no longer invoke
+	[NGImap4Client logout], since this is now handled by the
+	NGImap4Connection manager (or not).
+
+	* UI/MailerUI/UIxMailActions.m ([UIxMailActions
+	-markMessageUnreadAction]): no longer make use of [SOGoMailFolder
+	unselect].
+	([UIxMailActions -markMessageReadAction]): idem.
+
+	* SoObjects/Mailer/SOGoMailFolder.m ([-unselect]): removed method
+	since we no longer need it.
+
+	* SoObjects/Mailer/SOGoMailBaseObject.m ([SOGoMailBaseObject
+	-dealloc]): release "imap4". If the IMAP4 connection pooling is
+	disabled, the object will otherwise never be released.
+
+	* SoObjects/Mailer/SOGoMailAccount.m ([SOGoMailAccount
+	+initialize]): use the user default "SOGoFallbackIMAP4Server" to
+	override the value of "serverName" from the actual user settings.
+	Fallback to "localhost" if value is unset.
+
+	* SoObjects/Mailer/SOGoMailAccount.m ([SOGoMailAccount
+	-imap4URLString]): use the value of SOGoFallbackIMAP4Server, as
+	mentionne above.
+
 	* UI/MailerUI/UIxMailEditor.m ([UIxMailEditor -from]): retain the
 	initialized value of from, otherwise we create a future zombie.
 

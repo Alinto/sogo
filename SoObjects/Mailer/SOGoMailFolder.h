@@ -64,7 +64,6 @@ typedef enum {
 - (void) expungeLastMarkedFolder;
 
 - (NSException *) expunge;
-- (NSException *) unselect;
 
 /* flags */
 
