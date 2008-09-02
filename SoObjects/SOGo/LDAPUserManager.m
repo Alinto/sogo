@@ -87,7 +87,8 @@ static BOOL forceImapLoginWithEmail = NO;
   if (sourceID)
     [sources setObject: ldapSource forKey: sourceID];
   else
-    NSLog(@"LDAPUserManager.m: WARNING: id field missing in a LDAP source, check the SOGoLDAPSources default");
+    [self errorWithFormat: @"id field missing in a LDAP source,"
+	  @" check the SOGoLDAPSources defaults"];
   metadata = [NSMutableDictionary dictionary];
   value = [udSource objectForKey: @"canAuthenticate"];
   if (value)
@@ -121,6 +122,7 @@ static BOOL forceImapLoginWithEmail = NO;
 - (id) init
 {
   NSUserDefaults *ud;
+  NSString *cleanupSetting;
 
   if ((self = [super init]))
     {
@@ -129,14 +131,24 @@ static BOOL forceImapLoginWithEmail = NO;
       sources = nil;
       sourcesMetadata = nil;
       users = [NSMutableDictionary new];
-      cleanupInterval
-	= [ud integerForKey: @"SOGoLDAPUserManagerCleanupInterval"];
-      if (cleanupInterval)
-	cleanupTimer = [NSTimer scheduledTimerWithTimeInterval: cleanupInterval
-				target: self
-				selector: @selector(cleanupSources)
-				userInfo: nil
-				repeats: YES];
+      cleanupSetting
+	= [ud objectForKey: @"SOGoLDAPUserManagerCleanupInterval"];
+      if (cleanupSetting)
+	cleanupInterval = [cleanupSetting doubleValue];
+      else
+	cleanupInterval = 0.0;
+      if (cleanupInterval > 0.0)
+	{
+	  cleanupTimer = [NSTimer scheduledTimerWithTimeInterval: cleanupInterval
+				  target: self
+				  selector: @selector (_cleanupSources)
+				  userInfo: nil
+				  repeats: YES];
+	  [self logWithFormat: @"cleanup interval set every %f seconds",
+		cleanupInterval];
+	}
+      else
+	[self logWithFormat: @"no cleanup interval set: memory usage will grow"];
       [self _prepareLDAPSourcesWithDefaults: ud];
     }
 
@@ -384,12 +396,8 @@ static BOOL forceImapLoginWithEmail = NO;
   if (key)
     [users setObject: newUser forKey: key];
   emails = [[newUser objectForKey: @"emails"] objectEnumerator];
-  key = [emails nextObject];
-  while (key)
-    {
-      [users setObject: newUser forKey: key];
-      key = [emails nextObject];
-    }
+  while ((key = [emails nextObject]))
+    [users setObject: newUser forKey: key];
 }
 
 - (NSDictionary *) contactInfosForUserWithUIDorEmail: (NSString *) uid
@@ -532,22 +540,32 @@ static BOOL forceImapLoginWithEmail = NO;
 	       matching: filter];
 }
 
-- (void) cleanupSources
+- (void) _cleanupSources
 {
   NSEnumerator *userIDs;
   NSString *currentID;
   NSDictionary *currentUser;
   NSDate *now;
+  unsigned int count;
 
   now = [NSDate date];
+
+  count = 0;
+
   userIDs = [[users allKeys] objectEnumerator];
   while ((currentID = [userIDs nextObject]))
     {
       currentUser = [users objectForKey: currentID];
       if ([now earlierDate:
 		 [currentUser objectForKey: @"cleanupDate"]] == now)
-	[users removeObjectForKey: currentID];
+	{
+	  [users removeObjectForKey: currentID];
+	  count++;
+	}
     }
+
+  if (count)
+    [self logWithFormat: @"cleaned %d users records from cache", count];
 }
 
 @end
