@@ -1,3 +1,11 @@
+2008-09-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailManager.m ([NGImap
+	-copyMailURL:toFolderURL:password:]): do not compare the urls
+	based on the instance that NGImap4ConnectionManager returns,
+	because disabling the pooling will generate a bad result, even
+	though the host:port pairs are the same.
+
 2008-09-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailerUI/UIxMailView.m ([UIxMailView

@@ -20,6 +20,8 @@
 */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSURL.h>
+#import <Foundation/NSValue.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGExtensions/NSNull+misc.h>
@@ -194,20 +196,25 @@
   password:(NSString *)_pwd
 {
   NGImap4Connection *entry;
-  
+  NSNumber *destPort, *srcPort;
+ 
   /* check connection cache */
   
   if ((entry = [self connectionForURL:_srcurl password:_pwd]) == nil)
     return [self errorForMissingEntryAtURL:_srcurl];
   
   /* check whether URLs are on different servers */
-  
-  if ([self connectionForURL:_desturl password:_pwd] != entry) {
+  srcPort = [_srcurl port];
+  destPort = [_desturl port];
+
+  if (!([[_desturl host] isEqualToString: [_srcurl host]]
+	&& (srcPort == destPort
+	    || [destPort isEqualToNumber: srcPort]))) {
     // TODO: find a better error code
     return [NSException exceptionWithHTTPStatus:502 /* Bad Gateway */
 			reason:@"source and destination on different servers"];
-  }  
-  
+  }
+
   return [entry copyMailURL:_srcurl toFolderURL:_desturl];
 }
 
