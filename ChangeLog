@@ -1,5 +1,9 @@
 2008-09-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoObject.m ([SOGoObject
+	-initWithName:_nameinContainer:_container]): we no longer retain
+	the context, to avoid making a circular reference.
+
 	* SoObjects/SOGo/SOGoUser.m ([SOGoUser
 	-initWithLogin:newLoginroles:newRoles]): moved the core from init
 	here.
