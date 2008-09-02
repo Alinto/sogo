@@ -262,7 +262,7 @@ function deleteSelectedMessagesCallback(http) {
       if (!nextRow)
 				nextRow = row.previous("tr");
       //	row.addClassName("deleted"); // when we'll offer "mark as deleted"
-      
+
       if (deleteMessageRequestCount == 0) {
         if (nextRow) {
           Mailer.currentMessages[Mailer.currentMailbox] = nextRow.getAttribute("id").substr(4);

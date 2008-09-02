@@ -29,7 +29,8 @@ function onICalendarButtonClick(event) {
 
 function onMenuDeleteMessage(event) {
   if (window.opener && window.opener.open && !window.opener.closed) {
-    var rowId = window.name.substr(9);
+		var rowId_index = window.name.search(/[0-9]+$/);
+    var rowId = window.name.substr(rowId_index);
     var messageId = window.opener.Mailer.currentMailbox + "/" + rowId;
     var url = ApplicationBaseURL + messageId + "/trash";
 

@@ -8,7 +8,7 @@ var MailEditor = {
  addressBook: null,
  currentField: null,
  selectedIndex: -1,
- delay: 500,
+ delay: 750,
  delayedSearch: false
 };
 
@@ -273,7 +273,7 @@ function onTextFocus() {
 }
 
 function onTextKeyDown(event) {
-	if (event.keyCode == 9) {
+	if (event.keyCode == Event.KEY_TAB) {
 		if (event.shiftKey) {
 			var nodes = $("subjectRow").childNodesWithTag("input");
 			var objectInput = $(nodes[0]);
@@ -341,20 +341,20 @@ function onContactKeydown(event) {
 		this.focussed = true;
 		return;
 	}
-	if (event.keyCode == 9) { // Tab
+	if (event.keyCode == Event.KEY_TAB) {
 		if (this.confirmedValue)
 			this.value = this.confirmedValue;
 		if (document.currentPopupMenu)
 			hideMenu(document.currentPopupMenu);
 	}
 	else if (event.keyCode == 0
-					 || event.keyCode == 8 // Backspace
+					 || event.keyCode == Event.KEY_BACKSPACE
 					 || event.keyCode == 32  // Space
 					 || event.keyCode > 47) {
 		this.confirmedValue = null;
 		MailEditor.selectedIndex = -1;
 		MailEditor.currentField = this;
-		if (this.value.length > 0 && !MailEditor.delayedSearch) {
+		if (this.value.length > 1 && MailEditor.delayedSearch == false) {
 			MailEditor.delayedSearch = true;
 			setTimeout("performSearch()", MailEditor.delay);
 		}
@@ -363,17 +363,17 @@ function onContactKeydown(event) {
 				hideMenu(document.currentPopupMenu);
 		}
 	}
-	else if (event.keyCode == 13) {
+	else if (event.keyCode == Event.KEY_RETURN) {
 		preventDefault(event);
 		if (this.confirmedValue)
 			this.value = this.confirmedValue;
-		$(this).selectText(0, this.value.length);
+		$(this).select();
 		if (document.currentPopupMenu)
 			hideMenu(document.currentPopupMenu);
 		MailEditor.selectedIndex = -1;
 	}
 	else if ($('contactsMenu').getStyle('visibility') == 'visible') {
-		if (event.keyCode == 38) { // Up arrow
+		if (event.keyCode == Event.KEY_UP) { // Up arrow
 			if (MailEditor.selectedIndex > 0) {
 				var contacts = $('contactsMenu').select("li");
 				contacts[MailEditor.selectedIndex--].removeClassName("selected");
@@ -381,7 +381,7 @@ function onContactKeydown(event) {
 				contacts[MailEditor.selectedIndex].addClassName("selected");
 			}
 		}
-		else if (event.keyCode == 40) { // Down arrow
+		else if (event.keyCode == Event.KEY_DOWN) { // Down arrow
 			var contacts = $('contactsMenu').select("li");
 			if (contacts.size() - 1 > MailEditor.selectedIndex) {
 				if (MailEditor.selectedIndex >= 0)
@@ -402,7 +402,7 @@ function performSearch() {
 			document.contactLookupAjaxRequest.aborted = true;
 			document.contactLookupAjaxRequest.abort();
 		}
-		if (MailEditor.currentField.value.trim().length > 0) {
+		if (MailEditor.currentField.value.trim().length > 1) {
 			var urlstr = ( UserFolderURL + "Contacts/allContactSearch?search="
 										 + MailEditor.currentField.value );
 			document.contactLookupAjaxRequest =
@@ -543,7 +543,8 @@ function initMailEditor() {
 			textarea.observe(ieEvents[i], onTextIEUpdateCursorPos, false);
 	}
 
-	initTabIndex($("addressList"), $$("div#subjectRow input").first(), textarea);
+	var subjectField = $$("div#subjectRow input").first();
+	initTabIndex($("addressList"), subjectField, textarea);
 	onWindowResize(null);
 
 	Event.observe(window, "resize", onWindowResize);
@@ -632,10 +633,11 @@ function onWindowResize(event) {
 	addresslist.setStyle({ width: ($(this).width() - attachmentswidth - 10) + 'px' });
 
 	// Set textarea position
-	textarea.setStyle({ 'top': headerarea.select("hr").first().offsetTop + 'px' });
+	var hr = headerarea.select("hr").first();
+	textarea.setStyle({ 'top': hr.offsetTop + 'px' });
 
 	// Resize the textarea (message content)
-	textarea.rows = Math.round((window.height() - textarea.offsetTop) / rowheight);
+	textarea.rows = Math.floor((window.height() - textarea.offsetTop) / rowheight);
 }
 
 function onMailEditorClose(event) {
