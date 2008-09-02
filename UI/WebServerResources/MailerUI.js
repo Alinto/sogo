@@ -1570,9 +1570,7 @@ function saveFoldersState() {
     var urlstr =  ApplicationBaseURL + "saveFoldersState";
 		var parameters = "expandedFolders=" + foldersState;
     triggerAjaxRequest(urlstr, saveFoldersStateCallback, null, parameters,
-											 { "Content-type": "application/x-www-form-urlencoded",
-												 "Content-length": parameters.length,
-												 "Connection": "close" });
+											 { "Content-type": "application/x-www-form-urlencoded" });
   }
 }
 
