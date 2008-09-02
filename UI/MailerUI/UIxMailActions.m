@@ -151,7 +151,6 @@
   if (!response)
     {
       mailFolder = [[self clientObject] container];
-      [mailFolder unselect];
       response = [self responseWith204];
     }
     
@@ -167,7 +166,6 @@
   if (!response)
     {
       mailFolder = [[self clientObject] container];
-      [mailFolder unselect];
       response = [self responseWith204];
     }
 

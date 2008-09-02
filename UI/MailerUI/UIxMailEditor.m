@@ -135,6 +135,7 @@ static NSArray *infoKeys = nil;
     {
       identity = [[context activeUser] primaryIdentity];
       from = [identity keysWithFormat: @"%{fullName} <%{email}>"];
+      [from retain];
     }
 
   return from;

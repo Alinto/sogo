@@ -211,7 +211,6 @@ static NSString *mailETag = nil;
 		inContext: (WOContext *) _ctx
 {
   UIxMailRenderingContext *mctx;
-  NGImap4Connection *conn;
 
   if (mailETag != nil)
     [[_ctx response] setHeader:mailETag forKey:@"etag"];
@@ -225,9 +224,6 @@ static NSString *mailETag = nil;
   [super appendToResponse: _response inContext: _ctx];
   
   [[_ctx popMailRenderingContext] reset];
-
-  conn = [[self clientObject] imap4Connection];
-  [[conn client] logout];
 }
 
 @end /* UIxMailView */

@@ -130,6 +130,7 @@ static BOOL uixDebugEnabled = NO;
   if ((self = [super init]))
     {
       _selectedDate = nil;
+      queryParameters = nil;
     }
 
   return self;

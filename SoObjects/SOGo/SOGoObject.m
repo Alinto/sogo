@@ -270,7 +270,6 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
   if ((self = [self init]))
     {
       context = [[WOApplication application] context];
-      [context retain];
       nameInContainer = [_name copy];
       container = _container;
       if ([self doesRetainContainer])
@@ -285,7 +284,6 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
 
 - (void) dealloc
 {
-  [context release];
   [owner release];
   if ([self doesRetainContainer])
     [container release];
@@ -402,7 +400,7 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
 	{
 	  obj = [[self soClass] lookupKey: lookupName inContext: localContext];
 	  if (obj)
-	    [obj bindToObject: self inContext: localContext];
+	    obj = [obj bindToObject: self inContext: localContext];
 	}
 
       if (obj)

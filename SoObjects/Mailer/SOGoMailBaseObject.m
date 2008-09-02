@@ -57,6 +57,7 @@ static BOOL debugOn = YES;
 - (void) dealloc
 {
   [imap4URL release];
+  [imap4 release];
   [super dealloc];
 }
 
@@ -121,7 +122,7 @@ static BOOL debugOn = YES;
       imap4 = [[self mailManager] connectionForURL: [self imap4URL] 
 				  password: [self imap4Password]];
       if (imap4)
-	[imap4 retain];
+ 	[imap4 retain];
       else
 	[self errorWithFormat:@"Could not connect IMAP4."];
     }

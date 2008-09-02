@@ -201,31 +201,12 @@ _timeValue (NSString *key)
       if (user)
 	{
 	  [user autorelease];
-	  [cache registerUser: user];
+ 	  [cache registerUser: user];
 	}
     }
   [user setPrimaryRoles: newRoles];
 
   return user;
-}
-
-- (id) init
-{
-  if ((self = [super init]))
-    {
-      userDefaults = nil;
-      userSettings = nil;
-      allEmails = nil;
-      language = nil;
-      currentPassword = nil;
-      dateFormatter = nil;
-      homeFolder = nil;
-      cn = nil;
-      userTimeZone = nil;
-      mailAccounts = nil;
-    }
-
-  return self;
 }
 
 - (id) initWithLogin: (NSString *) newLogin
@@ -247,7 +228,21 @@ _timeValue (NSString *key)
     }
 
   if ([realUID length])
-    self = [super initWithLogin: realUID roles: newRoles];
+    {
+      if ((self = [super initWithLogin: realUID roles: newRoles]))
+	{
+	  userDefaults = nil;
+	  userSettings = nil;
+	  allEmails = nil;
+	  language = nil;
+	  currentPassword = nil;
+	  dateFormatter = nil;
+	  homeFolder = nil;
+	  cn = nil;
+	  userTimeZone = nil;
+	  mailAccounts = nil;
+	}
+    }
   else
     {
       [self release];

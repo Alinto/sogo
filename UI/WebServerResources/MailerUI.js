@@ -262,7 +262,7 @@ function deleteSelectedMessagesCallback(http) {
       if (!nextRow)
 				nextRow = row.previous("tr");
       //	row.addClassName("deleted"); // when we'll offer "mark as deleted"
-      
+
       if (deleteMessageRequestCount == 0) {
         if (nextRow) {
           Mailer.currentMessages[Mailer.currentMailbox] = nextRow.getAttribute("id").substr(4);
@@ -1567,8 +1567,12 @@ function getFoldersStateCallback(http) {
 function saveFoldersState() {
   if (mailAccounts.length > 0) {
     var foldersState = mailboxTree.getFoldersState();
-    var urlstr =  ApplicationBaseURL + "saveFoldersState" + "?expandedFolders=" + foldersState;
-    triggerAjaxRequest(urlstr, saveFoldersStateCallback);
+    var urlstr =  ApplicationBaseURL + "saveFoldersState";
+		var parameters = "expandedFolders=" + foldersState;
+    triggerAjaxRequest(urlstr, saveFoldersStateCallback, null, parameters,
+											 { "Content-type": "application/x-www-form-urlencoded",
+												 "Content-length": parameters.length,
+												 "Connection": "close" });
   }
 }
 
