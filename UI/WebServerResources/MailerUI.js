@@ -227,7 +227,7 @@ function ml_lowlight(sender) {
 function onDocumentKeydown(event) {
   var e = event || window.event;
 	var target = getTarget(event);
-	if (e.keyCode == Event.KEY_BACKSPACE &&
+	if (e.keyCode == Event.KEY_DELETE &&
 			target.tagName != "INPUT") {
 		deleteSelectedMessages();
 		Event.stop(event);
