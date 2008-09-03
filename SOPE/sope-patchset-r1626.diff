@@ -2298,8 +2298,8 @@ Index: sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m
 -  buf[length] = '\0';
 -  
 +
-+  length = [_data lengthOfBytesUsingEncoding: NSISOLatin1StringEncoding];
-+  bytes = [_data cStringUsingEncoding: NSISOLatin1StringEncoding];
++  length = [_data lengthOfBytesUsingEncoding: NSUTF8StringEncoding];
++  bytes = [_data cStringUsingEncoding: NSUTF8StringEncoding];
 +
    /* remove leading chars (skip to first digit, the day of the month) */
    while (length > 0 && (!isdigit(*bytes))) {
