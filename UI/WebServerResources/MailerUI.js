@@ -224,6 +224,16 @@ function ml_lowlight(sender) {
 
 /* bulk delete of messages */
 
+function onDocumentKeydown(event) {
+  var e = event || window.event;
+	var target = getTarget(event);
+	if (e.keyCode == Event.KEY_BACKSPACE &&
+			target.tagName != "INPUT") {
+		deleteSelectedMessages();
+		Event.stop(event);
+	}
+}
+
 function deleteSelectedMessages(sender) {
   var messageList = $("messageList");
   var rowIds = messageList.getSelectedRowsId();
@@ -1301,6 +1311,8 @@ function initMailer(event) {
     //     initDnd();
     initMailboxTree();
     initMessageCheckTimer();
+		
+		Event.observe(document, "keydown", onDocumentKeydown);
   }
   
   // Default sort options
@@ -1570,9 +1582,7 @@ function saveFoldersState() {
     var urlstr =  ApplicationBaseURL + "saveFoldersState";
 		var parameters = "expandedFolders=" + foldersState;
     triggerAjaxRequest(urlstr, saveFoldersStateCallback, null, parameters,
-											 { "Content-type": "application/x-www-form-urlencoded",
-												 "Content-length": parameters.length,
-												 "Connection": "close" });
+											 { "Content-type": "application/x-www-form-urlencoded" });
   }
 }
 
