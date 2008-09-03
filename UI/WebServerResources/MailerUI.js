@@ -227,9 +227,10 @@ function ml_lowlight(sender) {
 function onDocumentKeydown(event) {
   var e = event || window.event;
 	var target = getTarget(event);
-	var deleteKeyCode = (isMac() ? Event.KEY_BACKSPACE : Event.KEY_DELETE);
-	if (e.keyCode == deleteKeyCode &&
-			target.tagName != "INPUT") {
+	if ((e.keyCode == Event.KEY_DELETE
+			 || (e.keyCode == Event.KEY_BACKSPACE
+					 && isMac()))
+			&& target.tagName != "INPUT") {
 		deleteSelectedMessages();
 		Event.stop(event);
 	}
