@@ -65,10 +65,6 @@ static NSString *mailETag = nil;
     }
 }
 
-- (void)dealloc {
-  [super dealloc];
-}
-
 /* accessors */
 
 - (void) setCurrentAddress: (id) _addr

@@ -1,3 +1,8 @@
+2008-09-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MailPartViewers/UIxMailPartTextViewer.m (convertChars):
+	fixed a buffer overflow. Incremented the buffer size to 8192.
+
 2008-09-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Mailer/SOGoMailManager.m ([NGImap

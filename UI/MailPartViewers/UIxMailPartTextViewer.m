@@ -44,51 +44,51 @@
 
 @implementation NSString (SOGoMailUIExtension)
 
+#define paddingBuffer 8192
+
 static inline char *
 convertChars (const char *oldString, unsigned int oldLength,
 	      unsigned int *newLength)
 {
   const char *currentChar, *upperLimit;
   char *newString, *destChar, *reallocated;
-  unsigned int length, maxLength, iteration;
-
-  maxLength = oldLength + 500;
-  newString = malloc (maxLength);
+  unsigned int length, maxLength;
+ 
+  maxLength = oldLength + paddingBuffer;
+  newString = malloc (maxLength + 1);
   destChar = newString;
   currentChar = oldString;
 
   length = 0;
-  iteration = 0;
 
   upperLimit = oldString + oldLength;
   while (currentChar < upperLimit)
     {
-      if (*currentChar != '\r')
+      switch (*currentChar)
 	{
-	  if (*currentChar == '\n')
+	case '\r': break;
+	case '\n':
+	  length = destChar - newString;
+	  if (length + paddingBuffer > maxLength - 6)
 	    {
-	      length = destChar - newString;
-	      if ((length + (6 * iteration) + 500) > maxLength)
+	      maxLength += paddingBuffer;
+	      reallocated = realloc (newString, maxLength + 1);
+	      if (reallocated)
 		{
-		  maxLength = length + (iteration * 6) + 500;
-		  reallocated = realloc (newString, maxLength);
-		  if (reallocated)
-		    newString = reallocated;
-		  else
-		    [NSException raise: NSMallocException
-				 format: @"reallocation failed in %s",
-				 __PRETTY_FUNCTION__];
+		  newString = reallocated;
 		  destChar = newString + length;
 		}
-	      strcpy (destChar, "<br />");
-	      destChar += 6;
-	      iteration++;
+	      else
+		[NSException raise: NSMallocException
+			     format: @"reallocation failed in %s",
+			     __PRETTY_FUNCTION__];
 	    }
-	  else
-	    {
-	      *destChar = *currentChar;
-	      destChar++;
-	    }
+	  strcpy (destChar, "<br />");
+	  destChar += 6;
+	  break;
+	default:
+	  *destChar = *currentChar;
+	  destChar++;
 	}
       currentChar++;
     }
