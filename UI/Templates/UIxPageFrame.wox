@@ -118,6 +118,7 @@
 	  <script type="text/javascript" rsrc:src="prototype.js"><!-- space --></script>
 	  <script type="text/javascript" rsrc:src="tablekit.js"><!-- space --></script>
 	  <script type="text/javascript" rsrc:src="tablekit-trueresize.js"><!-- space --></script>
+	  <script type="text/javascript" rsrc:src="tablekit-sogo.js"><!-- space --></script>
 	  <script type="text/javascript" rsrc:src="JavascriptAPIExtensions.js"><!-- space --></script>
 	  <script type="text/javascript" rsrc:src="HTMLElement.js"><!-- space --></script>
 	  <script type="text/javascript" rsrc:src="HTMLInputElement.js"><!-- space --></script>
