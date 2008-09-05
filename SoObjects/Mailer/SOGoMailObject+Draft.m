@@ -40,7 +40,21 @@
 
 #define maxFilenameLength 64
 
+static BOOL inited = NO;
+static BOOL useOutlookStyleReplies = NO;
+
 @implementation SOGoMailObject (SOGoDraftObjectExtensions)
+
++ (void) initialize
+{
+  NSUserDefaults *ud;
+
+  if (!inited)
+    {
+      ud = [NSUserDefaults standardUserDefaults];
+      useOutlookStyleReplies = [ud boolForKey: @"SOGoMailUseOutlookStyleReplies"];
+    }
+}
 
 - (NSString *) subjectForReply
 {
@@ -132,17 +146,23 @@
 - (NSString *) contentForReply
 {
   SOGoUser *currentUser;
-  NSString *pageName;
+  NSString *pageName, *content;
   SOGoMailReply *page;
 
-  currentUser = [context activeUser];
-  pageName = [NSString stringWithFormat: @"SOGoMail%@Reply",
-		       [currentUser language]];
-  page = [[WOApplication application] pageWithName: pageName
-				      inContext: context];
-  [page setRepliedMail: self];
+  if (useOutlookStyleReplies)
+    content = [self contentForInlineForward];
+  else
+    {
+      currentUser = [context activeUser];
+      pageName = [NSString stringWithFormat: @"SOGoMail%@Reply",
+			   [currentUser language]];
+      page = [[WOApplication application] pageWithName: pageName
+					  inContext: context];
+      [page setRepliedMail: self];
+      content = [[page generateResponse] contentAsString];
+    }
 
-  return [[page generateResponse] contentAsString];
+  return content;
 }
 
 - (NSString *) filenameForForward
