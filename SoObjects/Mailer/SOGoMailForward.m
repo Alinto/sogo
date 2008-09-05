@@ -48,7 +48,7 @@
   [super dealloc];
 }
 
-- (void) setForwardedMail: (SOGoMailObject *) newSourceMail
+- (void) setSourceMail: (SOGoMailObject *) newSourceMail
 {
   ASSIGN (sourceMail, newSourceMail);
 }
@@ -164,6 +164,9 @@
 
 @end
 
+@implementation SOGoMailDutchForward
+@end
+
 @implementation SOGoMailEnglishForward
 @end
 
@@ -176,3 +179,5 @@
 @implementation SOGoMailItalianForward
 @end
 
+@implementation SOGoMailSpanishForward
+@end

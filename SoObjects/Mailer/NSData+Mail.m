@@ -25,6 +25,7 @@
 
 #import <NGExtensions/NGBase64Coding.h>
 #import <NGExtensions/NGQuotedPrintableCoding.h>
+#import <NGExtensions/NGExtensions/NSString+Encoding.h>
 
 #import "NSData+Mail.h"
 

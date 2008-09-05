@@ -1,5 +1,11 @@
 2008-09-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailReply.m: made class a child of
+	SOGoMailForward, since we need to access more or less the same
+	fields from the original message, especially in outlook reply mode.
+	([SOGoMailReply -setOutlookMode:newOutlookMode]): new accessor
+	defining in which mode we are.
+
 	* SoObjects/Mailer/SOGoMailObject+Draft.m ([SOGoMailObject
 	-contentForReply]): if the reply style is outlook, then we use the
 	content generated for inline forwarding.

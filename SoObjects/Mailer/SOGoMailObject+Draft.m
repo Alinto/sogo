@@ -147,23 +147,18 @@
 - (NSString *) contentForReply
 {
   SOGoUser *currentUser;
-  NSString *pageName, *replyContent;
+  NSString *pageName;
   SOGoMailReply *page;
 
-  if ([self useOutlookStyleReplies])
-    replyContent = [self contentForInlineForward];
-  else
-    {
-      currentUser = [context activeUser];
-      pageName = [NSString stringWithFormat: @"SOGoMail%@Reply",
-			   [currentUser language]];
-      page = [[WOApplication application] pageWithName: pageName
-					  inContext: context];
-      [page setRepliedMail: self];
-      replyContent = [[page generateResponse] contentAsString];
-    }
-
-  return replyContent;
+  currentUser = [context activeUser];
+  pageName = [NSString stringWithFormat: @"SOGoMail%@Reply",
+		       [currentUser language]];
+  page = [[WOApplication application] pageWithName: pageName
+				      inContext: context];
+  [page setSourceMail: self];
+  [page setOutlookMode: [self useOutlookStyleReplies]];
+  
+  return [[page generateResponse] contentAsString];
 }
 
 - (NSString *) filenameForForward
@@ -223,7 +218,7 @@
 		       [currentUser language]];
   page = [[WOApplication application] pageWithName: pageName
 				      inContext: context];
-  [page setForwardedMail: self];
+  [page setSourceMail: self];
 
   return [[page generateResponse] contentAsString];
 }

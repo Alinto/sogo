@@ -34,8 +34,11 @@
   NSString *currentValue;
 }
 
-- (void) setForwardedMail: (SOGoMailObject *) newSourceMail;
+- (void) setSourceMail: (SOGoMailObject *) newSourceMail;
 
+@end
+
+@interface SOGoMailDutchForward : SOGoMailForward
 @end
 
 @interface SOGoMailEnglishForward : SOGoMailForward
@@ -48,6 +51,9 @@
 @end
 
 @interface SOGoMailItalianForward : SOGoMailForward
+@end
+
+@interface SOGoMailSpanishForward : SOGoMailForward
 @end
 
 #endif /* SOGOMAILFORWARD_H */
