@@ -238,15 +238,16 @@ function onDocumentKeydown(event) {
 
 function deleteSelectedMessages(sender) {
   var messageList = $("messageList");
-  var rowIds = messageList.getSelectedRowsId();
-  
-  if (rowIds.length > 0) {
-    for (var i = 0; i < rowIds.length; i++) {
+	var rows = messageList.down("TBODY").getSelectedNodes();
+
+  if (rows.length > 0) {
+    for (var i = 0; i < rows.length; i++) {
       var url;
-      var rowId = rowIds[i].substr(4);
+      var rowId = rows[i].readAttribute("id").substr(4);
       var messageId = Mailer.currentMailbox + "/" + rowId;
       url = ApplicationBaseURL + messageId + "/trash";
       deleteMessageRequestCount++;
+			rows[i].addClassName("deleted");
       var data = { "id": rowId, "mailbox": Mailer.currentMailbox, "messageId": messageId };
       triggerAjaxRequest(url, deleteSelectedMessagesCallback, data);
     }
@@ -268,16 +269,15 @@ function deleteSelectedMessagesCallback(http) {
         div.update();
         Mailer.currentMessages[Mailer.currentMailbox] = null;	
       }
-
-      var row = $("row_" + data["id"]);
-      var nextRow = row.next("tr");
-      if (!nextRow)
-				nextRow = row.previous("tr");
-      //	row.addClassName("deleted"); // when we'll offer "mark as deleted"
-
       if (deleteMessageRequestCount == 0) {
+				var row = $("row_" + data["id"]);
+				var nextRow = row.next("tr");
+				if (!nextRow)
+					nextRow = row.previous("tr");
+				//	row.addClassName("deleted"); // when we'll offer "mark as deleted"
         if (nextRow) {
           Mailer.currentMessages[Mailer.currentMailbox] = nextRow.getAttribute("id").substr(4);
+					nextRow.selectElement();
           loadMessage(Mailer.currentMessages[Mailer.currentMailbox]);
         }
         refreshCurrentFolder();
@@ -563,9 +563,8 @@ function messageListCallback(http) {
 				row.selectElement();
 				lastClickedRow = row.rowIndex - $(row).up('table').down('thead').getElementsByTagName('tr').length;  
 				var rowPosition = row.rowIndex * row.getHeight();
-				if ($(row).up('div').getHeight() > rowPosition)
-					rowPosition = 0;
-				div.scrollTop = rowPosition; // scroll to selected message
+				if (rowPosition > div.getHeight())
+					div.scrollTop = rowPosition; // scroll to selected message
       }
       else
 				$("messageContent").update();
@@ -1236,10 +1235,10 @@ function configureMessageListBodyEvents(table) {
 			row.observe("selectstart", listRowMouseDownHandler);
 			row.observe("contextmenu", onMessageContextMenu);
          
-			row.dndTypes = function() { return new Array("mailRow"); };
-			row.dndGhost = messageListGhost;
-			row.dndDataForType = messageListData;
-			//   document.DNDManager.registerSource(row);
+			//row.dndTypes = function() { return new Array("mailRow"); };
+			//row.dndGhost = messageListGhost;
+			//row.dndDataForType = messageListData;
+			//document.DNDManager.registerSource(row);
          
 			for (var j = 0; j < row.cells.length; j++) {
 				var cell = $(row.cells[j]);
