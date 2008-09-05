@@ -88,7 +88,6 @@
   return newSubject;
 }
 
-
 - (NSString *) _contentForEditingFromKeys: (NSArray *) keys
 {
   NSArray *types;
@@ -126,7 +125,7 @@
 	    }
 	}
     }
-  
+
   return content;
 }
 
@@ -151,7 +150,7 @@
   SOGoMailReply *page;
 
   if ([self useOutlookStyleReplies])
-    replyContent = [self contentForInlineForward];
+    replyContent = [self contentForOutlookReply];
   else
     {
       currentUser = [context activeUser];
@@ -164,6 +163,23 @@
     }
 
   return replyContent;
+}
+
+- (NSString *) contentForOutlookReply
+{
+  SOGoUser *currentUser;
+  NSString *pageName;
+  SOGoMailForward *page;
+
+  currentUser = [context activeUser];
+  pageName = [NSString stringWithFormat: @"SOGoMail%@Forward",
+		       [currentUser language]];
+  page = [[WOApplication application] pageWithName: pageName
+				      inContext: context];
+  [page setForwardedMail: self];
+  [page setReplyMode: YES];
+
+  return [[page generateResponse] contentAsString];
 }
 
 - (NSString *) filenameForForward
@@ -224,6 +240,7 @@
   page = [[WOApplication application] pageWithName: pageName
 				      inContext: context];
   [page setForwardedMail: self];
+  [page setReplyMode: NO];
 
   return [[page generateResponse] contentAsString];
 }

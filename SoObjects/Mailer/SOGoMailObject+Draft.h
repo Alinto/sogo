@@ -32,6 +32,7 @@
 
 - (NSString *) subjectForReply;
 - (NSString *) contentForReply;
+- (NSString *) contentForOutlookReply;
 
 - (NSString *) subjectForForward;
 - (NSString *) filenameForForward;

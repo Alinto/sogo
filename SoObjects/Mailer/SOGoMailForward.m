@@ -21,6 +21,7 @@
  */
 
 #import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGExtensions/NSString+misc.h>
 
 #import <SoObjects/SOGo/SOGoDateFormatter.h>
 #import <SoObjects/SOGo/SOGoUser.h>
@@ -36,6 +37,7 @@
     {
       sourceMail = nil;
       currentValue = nil;
+      replyMode = NO;
     }
 
   return self;
@@ -51,6 +53,11 @@
 - (void) setForwardedMail: (SOGoMailObject *) newSourceMail
 {
   ASSIGN (sourceMail, newSourceMail);
+}
+
+- (void) setReplyMode: (BOOL) newReplyMode
+{
+  replyMode = newReplyMode;
 }
 
 - (NSString *) subject
@@ -146,7 +153,15 @@
 
 - (NSString *) messageBody
 {
-  return [sourceMail contentForEditing];
+  NSString *messageBody;
+
+  if (replyMode)
+    messageBody
+      = [[sourceMail contentForEditing] stringByApplyingMailQuoting];
+  else
+    messageBody = [sourceMail contentForEditing];
+
+  return messageBody;
 }
 
 - (NSString *) signature

@@ -32,9 +32,11 @@
   SOGoMailObject *sourceMail;
   NSString *field;
   NSString *currentValue;
+  BOOL replyMode;
 }
 
 - (void) setForwardedMail: (SOGoMailObject *) newSourceMail;
+- (void) setReplyMode: (BOOL) newReplyMode;
 
 @end
 
