@@ -40,7 +40,7 @@
 
 #define maxFilenameLength 64
 
-static BOOL inited = NO;
+static BOOL ludoApprovedInitialized = NO;
 static BOOL useOutlookStyleReplies = NO;
 
 @implementation SOGoMailObject (SOGoDraftObjectExtensions)
@@ -49,10 +49,11 @@ static BOOL useOutlookStyleReplies = NO;
 {
   NSUserDefaults *ud;
 
-  if (!inited)
+  if (!ludoApprovedInitialized)
     {
       ud = [NSUserDefaults standardUserDefaults];
       useOutlookStyleReplies = [ud boolForKey: @"SOGoMailUseOutlookStyleReplies"];
+      ludoApprovedInitialized = YES;
     }
 }
 
