@@ -564,11 +564,13 @@ function onRowClick(event) {
 	if (isMac() && isSafari())
 		if (event.ctrlKey == 1)
 			isLeftClick = false; // Control-click is equivalent to right-click under Mac OS X
+		else if (event.metaKey == 1) // Command-click
+			isLeftClick = true;
 		else
 			isLeftClick = Event.isLeftClick(event);
 	else
 		isLeftClick = Event.isLeftClick(event);
-	
+
   if (initialSelection.length > 0 
       && initialSelection.indexOf(node) >= 0
 			&& !isLeftClick)
@@ -1435,8 +1437,8 @@ function onBodyClickContextMenu(event) {
 function configureSortableTableHeaders(table) {
   var headers = $(table).getElementsByClassName("sortableTableHeader");
   for (var i = 0; i < headers.length; i++) {
-    var header = headers[i];
-    $(header).observe("click", onHeaderClick);
+    var header = $(headers[i]);
+		header.observe("click", onHeaderClick);
   }
 }
 

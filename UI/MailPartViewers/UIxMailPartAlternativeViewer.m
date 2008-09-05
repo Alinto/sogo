@@ -92,6 +92,8 @@
   if ((count = [_types count]) == 0)
     return NSNotFound;
   
+  if ((i = [_types indexOfObject:@"multipart/related"]) != NSNotFound)
+    return i;
   if ((i = [_types indexOfObject:@"text/calendar"]) != NSNotFound)
     return i;
   if ((i = [_types indexOfObject:@"text/html"]) != NSNotFound)

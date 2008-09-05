@@ -236,11 +236,6 @@ DIV#folderTreeContent TABLE TD
 
 /* mail tableview */
 
-span.mailer_datefield
-{
-  white-space: nowrap;
-}
-
 TD.mailer_readmailsubject
 {
   padding-left: 20px !important;
@@ -421,7 +416,8 @@ TD.mailer_fieldvalue a
 }
 
 TR.deleted TD
-{ text-decoration: line-through; }
+{ display: none;
+  /* text-decoration: line-through; -- alternative display */ }
 
 img.mailer_imagecontent
 {

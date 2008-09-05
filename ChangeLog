@@ -1,5 +1,13 @@
 2008-09-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailPartViewers/UIxMailPartAlternativeViewer.m
+	([UIxMailPartAlternativeViewer -selectPartIndexFromTypes:]): give
+	precedence on multipart/related parts.
+
+	* UI/MailPartViewers/UIxMailRenderingContext.m
+	([UIxMailRenderingContext -viewerForBodyInfo:_info]): add the
+	mixed viewer as the viewer for "multipart/digest" content.
+
 	* UI/MailPartViewers/UIxMailPartTextViewer.m (convertChars):
 	fixed a buffer overflow. Incremented the buffer size to 8192.
 
