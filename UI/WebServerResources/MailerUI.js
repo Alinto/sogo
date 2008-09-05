@@ -237,20 +237,25 @@ function onDocumentKeydown(event) {
 }
 
 function deleteSelectedMessages(sender) {
-  var messageList = $("messageList");
-	var rows = messageList.down("TBODY").getSelectedNodes();
+  var messageList = $("messageList").down("TBODY");
+	var rows = messageList.getSelectedNodes();
+	var uids = new Array(); // message IDs
+	var paths = new Array(); // row IDs
 
   if (rows.length > 0) {
     for (var i = 0; i < rows.length; i++) {
-      var url;
-      var rowId = rows[i].readAttribute("id").substr(4);
-      var messageId = Mailer.currentMailbox + "/" + rowId;
-      url = ApplicationBaseURL + messageId + "/trash";
+      var uid = rows[i].readAttribute("id").substr(4);
+      var path = Mailer.currentMailbox + "/" + uid;
       deleteMessageRequestCount++;
-			rows[i].addClassName("deleted");
-      var data = { "id": rowId, "mailbox": Mailer.currentMailbox, "messageId": messageId };
-      triggerAjaxRequest(url, deleteSelectedMessagesCallback, data);
+			rows[i].hide();
+			uids.push(uid);
+			paths.push(path);
     }
+		var url = ApplicationBaseURL + Mailer.currentMailbox + "/deleteMessages";
+		var parameters = "uid=" + uids.join(",");
+		var data = { "id": uids, "mailbox": Mailer.currentMailbox, "path": paths };
+		triggerAjaxRequest(url, deleteSelectedMessagesCallback, data, parameters,
+											 { "Content-type": "application/x-www-form-urlencoded" });
   }
   else
     window.alert(labels["Please select a message."]);
@@ -261,31 +266,33 @@ function deleteSelectedMessages(sender) {
 function deleteSelectedMessagesCallback(http) {
   if (isHttpStatus204(http.status)) {
     var data = http.callbackData;
-    deleteCachedMessage(data["messageId"]);
-    deleteMessageRequestCount--;
-    if (Mailer.currentMailbox == data["mailbox"]) {
-      var div = $('messageContent');
-      if (Mailer.currentMessages[Mailer.currentMailbox] == data["id"]) {
-        div.update();
-        Mailer.currentMessages[Mailer.currentMailbox] = null;	
-      }
-      if (deleteMessageRequestCount == 0) {
-				var row = $("row_" + data["id"]);
-				var nextRow = row.next("tr");
-				if (!nextRow)
-					nextRow = row.previous("tr");
-				//	row.addClassName("deleted"); // when we'll offer "mark as deleted"
-        if (nextRow) {
-          Mailer.currentMessages[Mailer.currentMailbox] = nextRow.getAttribute("id").substr(4);
-					nextRow.selectElement();
-          loadMessage(Mailer.currentMessages[Mailer.currentMailbox]);
-        }
-        refreshCurrentFolder();
-      }
-    }
-  }
-  else
-    log ("deleteSelectedMessagesCallback: problem during ajax request " + http.status);
+		for (var i = 0; i < data["path"].length; i++) {
+			deleteCachedMessage(data["path"][i]);
+			deleteMessageRequestCount--;
+			if (Mailer.currentMailbox == data["mailbox"]) {
+				var div = $('messageContent');
+				if (Mailer.currentMessages[Mailer.currentMailbox] == data["id"][i]) {
+					div.update();
+					Mailer.currentMessages[Mailer.currentMailbox] = null;	
+				}
+				if (deleteMessageRequestCount == 0) {
+					var row = $("row_" + data["id"][i]);
+					var nextRow = row.next("tr");
+					if (!nextRow)
+						nextRow = row.previous("tr");
+					//	row.addClassName("deleted"); // when we'll offer "mark as deleted"
+					if (nextRow) {
+						Mailer.currentMessages[Mailer.currentMailbox] = nextRow.getAttribute("id").substr(4);
+						nextRow.selectElement();
+						loadMessage(Mailer.currentMessages[Mailer.currentMailbox]);
+					}
+					refreshCurrentFolder();
+				}
+			}
+		}
+	}
+	else
+		log ("deleteSelectedMessagesCallback: problem during ajax request " + http.status);
 }
 
 function moveMessages(rowIds, folder) {
@@ -332,13 +339,15 @@ function onMenuDeleteMessage(event) {
 }
 
 function deleteMessage(url, id, mailbox, messageId) {
-  var data = { "id": id, "mailbox": mailbox, "messageId": messageId };
+  var data = { "id": new Array(id), "mailbox": mailbox, "path": new Array(messageId) };
   deleteMessageRequestCount++;
   triggerAjaxRequest(url, deleteSelectedMessagesCallback, data);
 }
 
 function deleteMessageWithDelay(url, id, mailbox, messageId) {
   /* this is called by UIxMailPopupView with window.opener */
+	var row = $("row_" + id);
+	if (row) row.hide();
   setTimeout("deleteMessage('" +
 						 url + "', '" +
 						 id + "', '" +

@@ -36,6 +36,7 @@
 #import <SoObjects/Mailer/SOGoMailFolder.h>
 #import <SoObjects/Mailer/SOGoTrashFolder.h>
 #import <SoObjects/Mailer/SOGoMailAccount.h>
+#import <SoObjects/Mailer/SOGoMailObject.h>
 #import <SoObjects/SOGo/NSObject+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 
@@ -176,6 +177,46 @@
       [response appendContentString: @"Unable to move folder."];
     }
   else
+    response = [self responseWith204];
+
+  return response;
+}
+
+- (WOResponse *) deleteMessagesAction
+{
+  SOGoMailFolder *co;
+  SOGoMailObject *mail;
+  WOResponse *response;
+  NSArray *uids;
+  NSString *value, *uid;
+  NSException *error;
+  unsigned int i;
+
+  co = [self clientObject];
+  value = [[context request] formValueForKey: @"uid"];
+  response = nil;
+
+  if ([value length] > 0)
+    {
+      uids = [value componentsSeparatedByString: @","];
+      for (i = 0; i < [uids count]; i++)
+	{
+	  uid = [uids objectAtIndex: i];
+	  mail = [co lookupName: uid inContext: context acquire: NO];
+	  if (mail)
+	    {
+	      error = [mail trashInContext: context];
+	      if (error)
+		{
+		  response = [self responseWithStatus: 500];
+		  [response appendContentString: [NSString stringWithFormat: @"Can't trash message %@/%@", [co nameInContainer], uid]];
+		  break;
+		}
+	    }
+	}
+    }
+
+  if (response == nil)
     response = [self responseWith204];
 
   return response;

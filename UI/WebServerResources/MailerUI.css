@@ -416,8 +416,7 @@ TD.mailer_fieldvalue a
 }
 
 TR.deleted TD
-{ display: none;
-  /* text-decoration: line-through; -- alternative display */ }
+{ /* text-decoration: line-through; -- alternative display */ }
 
 img.mailer_imagecontent
 {
