@@ -23,6 +23,7 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
+#import <Foundation/NSUserDefaults.h>
 
 #import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOResponse.h>
@@ -40,16 +41,20 @@
 
 #define maxFilenameLength 64
 
-static BOOL useOutlookStyleReplies = NO;
-
 @implementation SOGoMailObject (SOGoDraftObjectExtensions)
 
-+ (void) initialize
+- (BOOL) useOutlookStyleReplies
 {
   NSUserDefaults *ud;
+  static int useOutlookStyleReplies = -1;
 
-  ud = [NSUserDefaults standardUserDefaults];
-  useOutlookStyleReplies = [ud boolForKey: @"SOGoMailUseOutlookStyleReplies"];
+  if (useOutlookStyleReplies == -1)
+    {
+      ud = [NSUserDefaults standardUserDefaults];
+      useOutlookStyleReplies = [ud boolForKey: @"SOGoMailUseOutlookStyleReplies"];
+    }
+
+  return (useOutlookStyleReplies);
 }
 
 - (NSString *) subjectForReply
@@ -142,11 +147,11 @@ static BOOL useOutlookStyleReplies = NO;
 - (NSString *) contentForReply
 {
   SOGoUser *currentUser;
-  NSString *pageName, *content;
+  NSString *pageName, *replyContent;
   SOGoMailReply *page;
 
-  if (useOutlookStyleReplies)
-    content = [self contentForInlineForward];
+  if ([self useOutlookStyleReplies])
+    replyContent = [self contentForInlineForward];
   else
     {
       currentUser = [context activeUser];
@@ -155,10 +160,10 @@ static BOOL useOutlookStyleReplies = NO;
       page = [[WOApplication application] pageWithName: pageName
 					  inContext: context];
       [page setRepliedMail: self];
-      content = [[page generateResponse] contentAsString];
+      replyContent = [[page generateResponse] contentAsString];
     }
 
-  return content;
+  return replyContent;
 }
 
 - (NSString *) filenameForForward

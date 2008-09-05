@@ -3,6 +3,8 @@
 	* SoObjects/Mailer/SOGoMailObject+Draft.m ([SOGoMailObject
 	-contentForReply]): if the reply style is outlook, then we use the
 	content generated for inline forwarding.
+	([SOGoMailObject -useOutlookStyleReplies]): new method that
+	indicates whether the ud key "SOGoMailUseOutlookStyleReplies".
 
 	* SoObjects/Mailer/SOGoMailFolder.m ([SOGoMailFolder
 	-expungeLastMarkedFolder]): do not perform the expunge if the
