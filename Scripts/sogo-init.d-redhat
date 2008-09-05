@@ -1,5 +1,5 @@
 #!/bin/bash
-# chkconfig:	- 85 15
+# chkconfig:	2345 85 15
 # description:	SOGo is a groupware server
 # processname:  sogod-0.9
 # config:	/etc/sysconfig/sogo
