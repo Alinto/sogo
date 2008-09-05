@@ -35,37 +35,20 @@
 {
   if ((self = [super init]))
     {
-      sourceMail = nil;
-      currentValue = nil;
+      outlookMode = NO;
     }
 
   return self;
 }
 
-- (void) dealloc
+- (void) setOutlookMode: (BOOL) newOutlookMode
 {
-  [sourceMail release];
-  [currentValue release];
-  [super dealloc];
+  outlookMode = newOutlookMode;
 }
 
-- (void) setRepliedMail: (SOGoMailObject *) newSourceMail
+- (BOOL) outlookMode
 {
-  ASSIGN (sourceMail, newSourceMail);
-}
-
-- (NSString *) date
-{
-  SOGoDateFormatter *formatter;
-
-  formatter = [[context activeUser] dateFormatterInContext: context];
-
-  return [formatter formattedDateAndTime: [sourceMail date]];
-}
-
-- (NSString *) from
-{
-  return [[sourceMail mailHeaders] objectForKey: @"from"];
+  return outlookMode;
 }
 
 - (NSString *) messageBody
@@ -87,19 +70,9 @@
   return [s stringByApplyingMailQuoting];
 }
 
-- (NSString *) signature
-{
-  NSString *signature, *mailSignature;
+@end
 
-  signature = [[context activeUser] signature];
-  if ([signature length])
-    mailSignature = [NSString stringWithFormat: @"-- \n%@", signature];
-  else
-    mailSignature = @"";
-
-  return mailSignature;
-}
-
+@implementation SOGoMailDutchReply
 @end
 
 @implementation SOGoMailEnglishReply
@@ -114,3 +87,5 @@
 @implementation SOGoMailItalianReply
 @end
 
+@implementation SOGoMailSpanishReply
+@end

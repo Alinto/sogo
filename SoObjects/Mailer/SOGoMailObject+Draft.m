@@ -88,6 +88,7 @@
   return newSubject;
 }
 
+
 - (NSString *) _contentForEditingFromKeys: (NSArray *) keys
 {
   NSArray *types;
@@ -125,7 +126,7 @@
 	    }
 	}
     }
-
+  
   return content;
 }
 
@@ -146,39 +147,17 @@
 - (NSString *) contentForReply
 {
   SOGoUser *currentUser;
-  NSString *pageName, *replyContent;
+  NSString *pageName;
   SOGoMailReply *page;
 
-  if ([self useOutlookStyleReplies])
-    replyContent = [self contentForOutlookReply];
-  else
-    {
-      currentUser = [context activeUser];
-      pageName = [NSString stringWithFormat: @"SOGoMail%@Reply",
-			   [currentUser language]];
-      page = [[WOApplication application] pageWithName: pageName
-					  inContext: context];
-      [page setRepliedMail: self];
-      replyContent = [[page generateResponse] contentAsString];
-    }
-
-  return replyContent;
-}
-
-- (NSString *) contentForOutlookReply
-{
-  SOGoUser *currentUser;
-  NSString *pageName;
-  SOGoMailForward *page;
-
   currentUser = [context activeUser];
-  pageName = [NSString stringWithFormat: @"SOGoMail%@Forward",
+  pageName = [NSString stringWithFormat: @"SOGoMail%@Reply",
 		       [currentUser language]];
   page = [[WOApplication application] pageWithName: pageName
 				      inContext: context];
-  [page setForwardedMail: self];
-  [page setReplyMode: YES];
-
+  [page setSourceMail: self];
+  [page setOutlookMode: [self useOutlookStyleReplies]];
+  
   return [[page generateResponse] contentAsString];
 }
 
@@ -239,8 +218,7 @@
 		       [currentUser language]];
   page = [[WOApplication application] pageWithName: pageName
 				      inContext: context];
-  [page setForwardedMail: self];
-  [page setReplyMode: NO];
+  [page setSourceMail: self];
 
   return [[page generateResponse] contentAsString];
 }

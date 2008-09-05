@@ -23,19 +23,21 @@
 #ifndef SOGOMAILREPLY_H
 #define SOGOMAILREPLY_H
 
-#import <NGObjWeb/SoComponent.h>
+#import "SOGoMailForward.h"
 
 @class SOGoMailObject;
 
-@interface SOGoMailReply : SoComponent
+@interface SOGoMailReply : SOGoMailForward
 {
-  SOGoMailObject *sourceMail;
-  NSString *field;
-  NSString *currentValue;
+  BOOL outlookMode;
 }
 
-- (void) setRepliedMail: (SOGoMailObject *) newSourceMail;
+- (void) setOutlookMode: (BOOL) newOutlookMode;
+- (BOOL) outlookMode;
 
+@end
+
+@interface SOGoMailDutchReply : SOGoMailReply
 @end
 
 @interface SOGoMailEnglishReply : SOGoMailReply
@@ -48,6 +50,9 @@
 @end
 
 @interface SOGoMailItalianReply : SOGoMailReply
+@end
+
+@interface SOGoMailSpanishReply : SOGoMailReply
 @end
 
 #endif /* SOGOMAILREPLY_H */

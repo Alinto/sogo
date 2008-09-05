@@ -1,18 +1,16 @@
 2008-09-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
-	* SoObjects/Mailer/SOGoMailForward.m ([SOGoMailForward -init]):
-	added a "replyMode" ivar, used for outlook-style replying.
-	([SOGoMailForward -messageBody]): if used in "reply mode", quote
-	the returned body.
+	* SoObjects/Mailer/SOGoMailReply.m: made class a child of
+	SOGoMailForward, since we need to access more or less the same
+	fields from the original message, especially in outlook reply mode.
+	([SOGoMailReply -setOutlookMode:newOutlookMode]): new accessor
+	defining in which mode we are.
 
 	* SoObjects/Mailer/SOGoMailObject+Draft.m ([SOGoMailObject
 	-contentForReply]): if the reply style is outlook, then we use the
 	content generated for inline forwarding.
 	([SOGoMailObject -useOutlookStyleReplies]): new method that
 	indicates whether the ud key "SOGoMailUseOutlookStyleReplies".
-	([SOGoMailObject -contentForOutlookReply]): new method, derived
-	from -contentForInlineForward but set the forward template in
-	reply-mode, to get the text in quoted form.
 
 	* SoObjects/Mailer/SOGoMailFolder.m ([SOGoMailFolder
 	-expungeLastMarkedFolder]): do not perform the expunge if the
