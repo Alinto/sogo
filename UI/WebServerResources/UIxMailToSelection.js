@@ -105,6 +105,9 @@ function addressFieldGotFocus(sender) {
 function addressFieldLostFocus(sender) {
   lastIndex = this.getIndexFromIdentifier(sender.id);
   
+	if (sender.confirmedValue)
+		sender.value = sender.confirmedValue;
+
   var addresses = sender.value.split(',');
   if (addresses.length > 0) {
     sender.value = addresses[0].strip();

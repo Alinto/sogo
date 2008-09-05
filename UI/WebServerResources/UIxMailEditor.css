@@ -83,6 +83,11 @@ div#headerArea
 { border-top: 1px solid #fff;
   padding: 5px 0px; }
 
+div#headerArea div.addressList
+{ max-height: 10em;
+  overflow: auto;
+  overflow-x: hidden; }
+
 div#attachmentsArea
 { display: none;
   float: right;
