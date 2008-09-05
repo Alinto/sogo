@@ -1,6 +1,6 @@
 <?xml version='1.0' standalone='yes'?>
 <!DOCTYPE table>
-<table id="messageList" cellspacing="0"
+<table id="messageList"
   xmlns="http://www.w3.org/1999/xhtml"
   xmlns:var="http://www.skyrix.com/od/binding"
   xmlns:const="http://www.skyrix.com/od/constant"
@@ -15,12 +15,13 @@
 	  height="14"/></td
 	><td class="tbtv_headercell sortableTableHeader" id="subjectHeader"
 	><var:string label:value="Subject"/></td
-	><td class="tbtv_headercell sortableTableHeader" id="fromHeader"
+	><var:if condition="showToAddress"
+	><td class="tbtv_headercell sortableTableHeader" id="toHeader"
+	  ><var:string label:value="To"/></td></var:if
 	><var:if condition="showToAddress" const:negate="YES"
-	  ><var:string label:value="From"/></var:if
-	  ><var:if condition="showToAddress"
-	  ><var:string label:value="To"/></var:if
-	  ></td
+	><td class="tbtv_headercell sortableTableHeader" id="fromHeader"
+	  ><var:string label:value="From"/></td
+	  ></var:if
 	><td class="tbtv_headercell" id="messageFlagHeader"
 	><img rsrc:src="title_read_14x14.png"/></td
 	><td class="tbtv_headercell sortableTableHeader" id="dateHeader"

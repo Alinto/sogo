@@ -1435,8 +1435,8 @@ function onBodyClickContextMenu(event) {
 function configureSortableTableHeaders(table) {
   var headers = $(table).getElementsByClassName("sortableTableHeader");
   for (var i = 0; i < headers.length; i++) {
-    var header = headers[i];
-    $(header).observe("click", onHeaderClick);
+    var header = $(headers[i]);
+		header.observe("click", onHeaderClick);
   }
 }
 

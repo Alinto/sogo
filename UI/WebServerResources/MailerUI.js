@@ -539,9 +539,12 @@ function messageListCallback(http) {
       var tbody = table.tBodies[0];
       var tmp = document.createElement('div');
       $(tmp).update(http.responseText);
-      thead.rows[1].parentNode.replaceChild(tmp.firstChild.tHead.rows[1], thead.rows[1]);
-      addressHeaderCell.replaceChild(tmp.firstChild.tHead.rows[0].cells[3].lastChild, 
+
+			var newRows = tmp.firstChild.tHead.rows;
+      thead.rows[1].parentNode.replaceChild(newRows[1], thead.rows[1]);
+      addressHeaderCell.replaceChild(newRows[0].cells[3].lastChild, 
 																		 addressHeaderCell.lastChild);
+			addressHeaderCell.setAttribute("id", newRows[0].cells[3].getAttribute("id"));
       table.replaceChild(tmp.firstChild.tBodies[0], tbody);
     }
     else {
@@ -1102,6 +1105,8 @@ function onHeaderClick(event) {
     newSortAttribute = "subject";
   else if (headerId == "fromHeader")
     newSortAttribute = "from";
+  else if (headerId == "toHeader")
+    newSortAttribute = "to";
   else if (headerId == "dateHeader")
     newSortAttribute = "date";
   else
@@ -1208,8 +1213,7 @@ function configureMessageListEvents(table) {
 	if (table) {
 		table.multiselect = true;
 		// Each body row can load a message
-		table.observe("mousedown",
-									onMessageSelectionChange.bindAsEventListener(table));    
+		table.observe("mousedown", onMessageSelectionChange);
 		// Sortable columns
 		configureSortableTableHeaders(table);
 	}
