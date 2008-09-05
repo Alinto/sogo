@@ -1,3 +1,9 @@
+2008-09-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailFolder.m ([SOGoMailFolder
+	-expungeLastMarkedFolder]): do not perform the expunge if the
+	marked folder is the current folder.
+
 2008-09-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailPartViewers/UIxMailPartAlternativeViewer.m

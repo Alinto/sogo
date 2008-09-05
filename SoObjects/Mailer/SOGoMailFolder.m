@@ -319,7 +319,8 @@ static BOOL aclConformsToIMAPExt = NO;
   if (mailSettings)
     {
       expungeURL = [mailSettings objectForKey: @"folderForExpunge"];
-      if (expungeURL)
+      if (expungeURL
+	  && ![expungeURL isEqualToString: [self imap4URLString]])
 	{
 	  folderURL = [NSURL URLWithString: expungeURL];
 	  if (![[self imap4Connection] expungeAtURL: folderURL])
