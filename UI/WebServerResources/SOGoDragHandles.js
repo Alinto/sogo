@@ -91,7 +91,8 @@ var SOGoDragHandlesInterface = {
     Event.stopObserving(document.body, "mousemove", this.moveBound, true);
     
     document.body.setAttribute('style', '');
-    
+		document.body.setStyle({ cursor: "default" });
+
     Event.stop(event);
   },
  move: function (event) {
