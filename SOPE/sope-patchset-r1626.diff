@@ -3995,6 +3995,36 @@ Index: sope-appserver/NGObjWeb/WORequest.m
        
        /* check in map */
        if ((tmp = [self languageForBrowserLanguageCode:language]))
+Index: sope-appserver/NGObjWeb/NGHttp/NGUrlFormCoder.m
+===================================================================
+--- sope-appserver/NGObjWeb/NGHttp/NGUrlFormCoder.m	(révision 1626)
++++ sope-appserver/NGObjWeb/NGHttp/NGUrlFormCoder.m	(copie de travail)
+@@ -59,10 +59,6 @@
+     register char c = _src[i];
+     
+     switch (c) {
+-      case '+': // encoded space
+-        _dest[i2] = ' ';
+-        break;
+-          
+       case '%': // encoded hex ('%FF')
+         _dest[i2] = _valueOfHexChar(_src[i + 1]) * 16 +
+           _valueOfHexChar(_src[i + 2]);
+Index: sope-appserver/NGObjWeb/NGHttp/ChangeLog
+===================================================================
+--- sope-appserver/NGObjWeb/NGHttp/ChangeLog	(révision 1626)
++++ sope-appserver/NGObjWeb/NGHttp/ChangeLog	(copie de travail)
+@@ -1,3 +1,10 @@
++2008-09-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
++
++	* NGUrlFormCoder.m (NGDecodeUrlFormParameters): the '+' sign does
++	NOT represent the space character. It should thus be left
++	unencoded and undecoded:
++	http://www.rfc-editor.org/rfc/rfc1738.txt.
++
+ 2007-05-07  Helge Hess  <helge.hess@opengroupware.org>
+ 
+ 	* NGHttpMessageParser.m: minor code cleanups, use -warnWithFormat:
 Index: sope-appserver/NGObjWeb/NGHttp/NGHttpRequest.h
 ===================================================================
 --- sope-appserver/NGObjWeb/NGHttp/NGHttpRequest.h	(révision 1626)
