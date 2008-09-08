@@ -28,7 +28,7 @@ function onLoginClick(event) {
 				&& !userName.endsWith(loginSuffix))
 			userName += loginSuffix;
 		var url = $("connectForm").getAttribute("action");
-		var parameters = ("userName=" + encodeURI(userName) + "&password=" + encodeURI(password));
+		var parameters = ("userName=" + encodeURIComponent(userName) + "&password=" + encodeURIComponent(password));
 		document.cookie = "";
 		triggerAjaxRequest(url, onLoginCallback, null, parameters,
 											 { "Content-type": "application/x-www-form-urlencoded",
