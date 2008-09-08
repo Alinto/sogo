@@ -1,6 +1,6 @@
 /* LDAPSource.m - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse groupe conseil
+ * Copyright (C) 2007-2008 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -230,17 +230,30 @@ static int sizeLimit;
     ASSIGN (bindFields, newBindFields);
 }
 
-- (void) _initLDAPConnection
+- (BOOL) _initLDAPConnection
 {
-  ldapConnection = [[NGLdapConnection alloc] initWithHostName: hostname
-					     port: port];
-  [ldapConnection bindWithMethod: @"simple"
-		  binddn: bindDN
-		  credentials: password];
-  if (sizeLimit > 0)
-    [ldapConnection setQuerySizeLimit: sizeLimit];
-  if (timeLimit > 0)
-    [ldapConnection setQueryTimeLimit: timeLimit];
+  BOOL b;
+
+  NS_DURING
+    {
+      ldapConnection = [[NGLdapConnection alloc] initWithHostName: hostname
+						 port: port];
+      [ldapConnection bindWithMethod: @"simple"
+		      binddn: bindDN
+		      credentials: password];
+      if (sizeLimit > 0)
+	[ldapConnection setQuerySizeLimit: sizeLimit];
+      if (timeLimit > 0)
+	[ldapConnection setQueryTimeLimit: timeLimit];
+      b = YES;
+    }
+  NS_HANDLER
+    {
+      b = NO;
+    }
+  NS_ENDHANDLER;
+
+  return b;
 }
 
 /* user management */
@@ -266,17 +279,23 @@ static int sizeLimit;
   NSEnumerator *entries;
   NGLdapEntry *userEntry;
 
-  [self _initLDAPConnection];
-  entries = [ldapConnection deepSearchAtBaseDN: baseDN
-			    qualifier:
-			      [self _qualifierForBindFilter: loginToCheck]
-			    attributes: [NSArray arrayWithObject: @"dn"]];
-  userEntry = [entries nextObject];
+  if ([self _initLDAPConnection])
+    {
+      entries = [ldapConnection deepSearchAtBaseDN: baseDN
+				qualifier:
+				  [self _qualifierForBindFilter: loginToCheck]
+				attributes: [NSArray arrayWithObject: @"dn"]];
+      userEntry = [entries nextObject];
+    }
+  else
+    userEntry = nil;
+
   if (userEntry)
     userDN = [userEntry dn];
   else
     userDN = nil;
-  [ldapConnection release];
+
+  [ldapConnection autorelease];
 
   return userDN;
 }
@@ -399,10 +418,13 @@ static int sizeLimit;
 
   ids = [NSMutableArray array];
 
-  [self _initLDAPConnection];
-  entries = [ldapConnection deepSearchAtBaseDN: baseDN
-			    qualifier: nil
-			    attributes: [NSArray arrayWithObject: IDField]];
+  if ([self _initLDAPConnection])
+    entries = [ldapConnection deepSearchAtBaseDN: baseDN
+			      qualifier: nil
+			      attributes: [NSArray arrayWithObject: IDField]];
+  else
+    entries = nil;
+
   if (entries)
     {
       currentEntry = [entries nextObject];
@@ -415,7 +437,8 @@ static int sizeLimit;
 	  currentEntry = [entries nextObject];
 	}
     }
-  [ldapConnection release];
+
+  [ldapConnection autorelease];
 
   return ids;
 }
@@ -518,10 +541,13 @@ static int sizeLimit;
 
   if ([match length] > 0)
     {
-      [self _initLDAPConnection];
-      entries = [ldapConnection deepSearchAtBaseDN: baseDN
-				qualifier: [self _qualifierForFilter: match]
-				attributes: [self _searchAttributes]];
+      if ([self _initLDAPConnection])
+	entries = [ldapConnection deepSearchAtBaseDN: baseDN
+				  qualifier: [self _qualifierForFilter: match]
+				  attributes: [self _searchAttributes]];
+      else
+	entries = nil;
+
       if (entries)
 	{
 	  currentEntry = [entries nextObject];
@@ -532,6 +558,7 @@ static int sizeLimit;
 	      currentEntry = [entries nextObject];
 	    }
 	}
+
       [ldapConnection release];
     }
 
@@ -547,14 +574,18 @@ static int sizeLimit;
 
   if ([entryID length] > 0)
     {
-      [self _initLDAPConnection];
-      ldapEntry
-	= [ldapConnection entryAtDN: [NSString stringWithFormat: @"%@=%@,%@",
-					       IDField, entryID, baseDN]
-			  attributes: [self _searchAttributes]];
+      if ([self _initLDAPConnection])
+	ldapEntry
+	  = [ldapConnection entryAtDN: [NSString stringWithFormat: @"%@=%@,%@",
+						 IDField, entryID, baseDN]
+			    attributes: [self _searchAttributes]];
+      else
+	ldapEntry = nil;
+      
       if (ldapEntry)
 	contactEntry = [self _convertLDAPEntryToContact: ldapEntry];
-      [ldapConnection release];
+
+      [ldapConnection autorelease];
     }
 
   return contactEntry;
@@ -571,14 +602,20 @@ static int sizeLimit;
 
   if ([uid length] > 0)
     {
-      [self _initLDAPConnection];
-      qualifier = [self _qualifierForUIDFilter: uid];
-      entries = [ldapConnection deepSearchAtBaseDN: baseDN
-				qualifier: qualifier
-				attributes: [self _searchAttributes]];
-      ldapEntry = [entries nextObject];
+      if ([self _initLDAPConnection])
+	{
+	  qualifier = [self _qualifierForUIDFilter: uid];
+	  entries = [ldapConnection deepSearchAtBaseDN: baseDN
+				    qualifier: qualifier
+				    attributes: [self _searchAttributes]];
+	  ldapEntry = [entries nextObject];
+	}
+      else
+	ldapEntry = nil;
+      
       if (ldapEntry)
 	contactEntry = [self _convertLDAPEntryToContact: ldapEntry];
+
       [ldapConnection release];
     }
 

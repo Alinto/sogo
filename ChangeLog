@@ -1,3 +1,14 @@
+2008-09-08  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* SoObjects/SOGo/LDAPSource.m ([LDAPSource
+	-checkLogin:loginToCheckandPassword:passwordToCheck])
+	([LDAPSource -allEntryIDs])
+	([LDAPSource -fetchContactsMatching:match])
+	([LDAPSource -lookupContactEntry:entryID])
+	([LDAPSource -lookupContactEntryWithUIDorEmail:uid]): catch any
+	LDAP connection failure exception and return an empty result if
+	such as situation has happened.
+
 2008-09-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Mailer/SOGoMailReply.m: made class a child of
@@ -83,7 +94,7 @@
 	-appendToResponse:_responseinContext:_ctx]): logout from the imap
 	connectin once the response has been appended.
 
-2008-08-29  Ludovic Marcotte <lmarcotte@inverse.ca>
+2008-08-29  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/Mailer/SOGoDraftObject.m ([SOGoDraftObject
 	-addRecipients:recipientstoArray:array]): same as below.
@@ -1535,11 +1546,11 @@
 	* SoObjects/SOGo/SOGoCache.[hm]: new cache module implementing a
 	per-connection cache mechanism.
 
-2008-01-16  Ludovic Marcotte <ludovic@inverse.ca>
+2008-01-16  Ludovic Marcotte  <ludovic@inverse.ca>
 	
 	* Minor adjustments / bug fixes to previous commit.
 
-2008-01-14  Ludovic Marcotte <ludovic@inverse.ca>
+2008-01-14  Ludovic Marcotte  <ludovic@inverse.ca>
 
 	* Added files related to the custom recurrence
 	  editor of the SOGo Web interface. The CSS
@@ -1559,7 +1570,7 @@
 	-composeAction]): the mailto form parameter can now be a
 	comma-separated list of email addresses.
 
-2007-12-21  Ludovic Marcotte <ludovic@inverse.ca>
+2007-12-21  Ludovic Marcotte  <ludovic@inverse.ca>
 	
 	* UI/Contacts/UIxContactView.m
 	Modified -secondaryEmail so that we always get
@@ -1610,7 +1621,7 @@
 	* UI/MailerUI/UIxMailMainFrame.m ([UIxMailMainFrame
 	-composeAction]): fixed URL when no recipient is specified.
 
-2007-12-14  Ludovic Marcotte <ludovic@inverse.ca>
+2007-12-14  Ludovic Marcotte  <ludovic@inverse.ca>
 
 	* SoObjects/Appointments/SOGoCalendarComponent.m
 	We set headers in lowercase so that they get properly
@@ -1684,7 +1695,7 @@
 	-_loadAttendees]): added the retrieval of attendees state on
 	current event.
 
-2007-12-12  Ludovic Marcotte <ludovic@inverse.ca>
+2007-12-12  Ludovic Marcotte  <ludovic@inverse.ca>
 
 	* UI/MailPartViewers/UIxMailRenderingContext.{h,m} 
 	Removed template caching which added very little
@@ -1721,7 +1732,7 @@
 	@{tableName} substitution variable to be substitued with the real
 	table name obtained from the configuration variables.
 
-2007-12-07  Ludovic Marcotte <ludovic@inverse.ca>
+2007-12-07  Ludovic Marcotte  <ludovic@inverse.ca>
 
 	* UI/MailPartViewers/UIxMailRenderingContext.m 
 	We treat multipart/appledouble like multipart/mixed
@@ -1851,7 +1862,7 @@
 	that implement a custom DAV-based protocol query for querying
 	folder based on specified attributes.
 
-2007-12-03  Ludovic Marcotte <ludovic@inverse.ca>
+2007-12-03  Ludovic Marcotte  <ludovic@inverse.ca>
 
 	* Main/NSException+Stacktrace.{h,m} - new files
 	to handle automatic stack trace generation
@@ -2002,7 +2013,7 @@
 	* UI/MailPartViewers/UIxMailPartICalViewer.m
 	([-fallbackStringEncoding]): removed method.
 
-2007-11-25  Ludovic Marcotte <ludovic@inverse.ca>
+2007-11-25  Ludovic Marcotte  <ludovic@inverse.ca>
 
         * SoObjects/Mailer/SOGoMailForward.m
         Use [sourceMail decodedSubject] instead of [sourceMail subject]
@@ -2160,7 +2171,7 @@
 	([UIxMailPartICalActions -deleteFromCalendarAction]): actually
 	delete the found object.
 
-2007-11-18  Ludovic Marcotte <ludovic@inverse.ca>
+2007-11-18  Ludovic Marcotte  <ludovic@inverse.ca>
 
 	* SoObjects/Mailer/SOGoMailBodyPart.m
 	SoObjects/Mailer/SOGoMailObject.m
@@ -2288,7 +2299,7 @@
 
 	* UI/Common/UIxAppNavView.m: removed useless class module.
 
-2007-11-16  Ludovic Marcotte <ludovic@inverse.ca>
+2007-11-16  Ludovic Marcotte  <ludovic@inverse.ca>
 
         * SoObjects/Mailer/SOGoMailBaseObject.m
 	Fixed typo.
@@ -2316,7 +2327,7 @@
 	* UI/WebServerResources/MailerUI.css
 	CSS fix for table views.
 
-2007-11-15  Ludovic Marcotte <ludovic@inverse.ca>
+2007-11-15  Ludovic Marcotte  <ludovic@inverse.ca>
 
         * UI/WebServerResources/MailerUI.js
         We now check for empty selection and warn the
@@ -5486,7 +5497,7 @@
 	removed anyway.
 	([UIxComponent -applicationPath]): same as above.
 
-2007-02-08  Ludovic Marcotte <ludovic@inverse.ca>
+2007-02-08  Ludovic Marcotte  <ludovic@inverse.ca>
 
 	* SoObjects/Mailer/SOGoMailFolder.m: priorize the lookup of
 	folders before doing the one on messages.
@@ -5501,7 +5512,7 @@
 	SoObjects/common.make, UI/common.make: install in
 	GNUSTEP_INSTALLATION_DIR instead of GNUSTEP_USER_DIR.
 
-2007-02-07  Ludovic Marcotte <ludovic@inverse.ca>
+2007-02-07  Ludovic Marcotte  <ludovic@inverse.ca>
 
 	* UI/Scheduler/English.lproj/Localizable.strings: fixed typo for
 	"Agendas"
