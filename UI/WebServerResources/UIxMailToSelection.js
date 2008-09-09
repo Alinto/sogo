@@ -51,31 +51,29 @@ function checkAddresses() {
 }
 
 function fancyAddRow(shouldEdit, text, type) {
-  var addr, addressList, lastChild, proto, row, select, input;
-  
-  addr = $('addr_' + lastIndex);
+  var addr = $('addr_' + lastIndex);
   if (addr && addr.value == '') {
-    input = $('subjectField');
+    var input = $('subjectField');
     if (input && input.value != '') {
       input.focus();
       input.select();
       return;
     }
   }
-  addressList = $("addressList").tBodies[0];
-  lastChild = $("lastRow");
+  var addressList = $("addressList").tBodies[0];
+  var lastChild = $("lastRow");
   
   currentIndex++;
-  proto = lastChild.previous("tr");
-  row = proto.cloneNode(true);
+  var proto = lastChild.previous("tr");
+  var row = proto.cloneNode(true);
   row.writeAttribute("id", 'row_' + currentIndex);
 
   // select popup
   var rowNodes = row.childNodesWithTag("td");
-  select = $(rowNodes[0]).childNodesWithTag("select")[0];
+  var select = $(rowNodes[0]).childNodesWithTag("select")[0];
   select.name = 'popup_' + currentIndex;
   select.value = (type? type : proto.down("select").value);
-  input = $(rowNodes[1]).childNodesWithTag("input")[0];
+  var input = $(rowNodes[1]).childNodesWithTag("input")[0];
   input.name  = 'addr_' + currentIndex;
   input.id = 'addr_' + currentIndex;
   input.value = text;

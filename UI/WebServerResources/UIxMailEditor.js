@@ -55,9 +55,11 @@ function addContact(tag, fullContactName, contactId, contactName, contactEmail) 
 
 		if (!stop) {
 			fancyAddRow(false, "");
-			$($("row_" + counter).childNodesWithTag("td")[0]).childNodesWithTag("select")[0].value
-				= neededOptionValue;
-			insertContact($("addr_" + counter), contactName, contactEmail);
+			var row = $("row_" + currentIndex);
+			var td = $(row.childNodesWithTag("td")[0]);
+			var select = $(td.childNodesWithTag("select")[0]);
+			select.value = neededOptionValue;
+			insertContact($("addr_" + currentIndex), contactName, contactEmail);
 			onWindowResize(null);
 		}
 	}
