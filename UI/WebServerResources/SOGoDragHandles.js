@@ -141,9 +141,11 @@ var SOGoDragHandlesInterface = {
     }
   },
  saveDragHandleState: function (type, position) {
-    var urlstr =  ApplicationBaseURL + "saveDragHandleState"
-    + "?" + type + "=" + position;
-    triggerAjaxRequest(urlstr, this.saveDragHandleStateCallback);
+		if (!$(document.body).hasClassName("popup")) {
+			var urlstr =  ApplicationBaseURL + "saveDragHandleState"
+			+ "?" + type + "=" + position;
+			triggerAjaxRequest(urlstr, this.saveDragHandleStateCallback);
+		}
   },
     
  saveDragHandleStateCallback: function (http) {

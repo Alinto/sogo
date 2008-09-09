@@ -547,29 +547,17 @@ function onConfirmContactSelection(event) {
   var currentAddressBookName = folderLi.innerHTML;
   var selectorList = null;
   var initialValues = null;
-
-  if (selector) {
-    var selectorId = selector.getAttribute("id");
-    selectorList = opener.window.document.getElementById('uixselector-'
-																												 + selectorId
-																												 + '-uidList');
-    initialValues = selectorList.value;
-  }
-
+	
   var contactsList = $("contactsList");
   var rows = contactsList.getSelectedRows();
   for (i = 0; i < rows.length; i++) {
     var cid = rows[i].getAttribute("contactid");
     var cname = '' + rows[i].getAttribute("contactname");
     var email = '' + rows[i].cells[1].innerHTML;
-
+		
     window.opener.addContact(tag, currentAddressBookName + '/' + cname,
 														 cid, cname, email);
   }
-
-  if (selector && selector.changeNotification
-      && selectorList.value != initialValues)
-    selector.changeNotification("addition");
 
   preventDefault(event);
 }
@@ -993,7 +981,7 @@ function getMenus() {
 function configureSelectionButtons() {
   var container = $("contactSelectionButtons");
   if (container) {
-    var buttons = container.childNodesWithTag("input");
+    var buttons = container.select("input");
     for (var i = 0; i < buttons.length; i++)
       $(buttons[i]).observe("click", onConfirmContactSelection);
   }
