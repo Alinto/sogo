@@ -405,8 +405,8 @@ function performSearch() {
 			document.contactLookupAjaxRequest.abort();
 		}
 		if (MailEditor.currentField.value.trim().length > 1) {
-			var urlstr = ( UserFolderURL + "Contacts/allContactSearch?search="
-										 + MailEditor.currentField.value );
+			var urlstr = (UserFolderURL + "Contacts/allContactSearch?search="
+										+ encodeURIComponent(MailEditor.currentField.value));
 			document.contactLookupAjaxRequest =
 				triggerAjaxRequest(urlstr, performSearchCallback, MailEditor.currentField);
 		}
