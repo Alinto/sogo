@@ -1425,6 +1425,8 @@ function onLoadHandler(event) {
   if (progressImage)
     progressImage.parentNode.removeChild(progressImage);
   $(document.body).observe("contextmenu", onBodyClickContextMenu);
+
+	FastInit.addOnLoad(onFinalLoadHandler);
 }
 
 function onBodyClickContextMenu(event) {
@@ -1519,8 +1521,6 @@ function onFinalLoadHandler(event) {
     safetyNet.parentNode.removeChild(safetyNet);
 }
 
-FastInit.addOnLoad(onLoadHandler);
-
 function parent$(element) {
   return this.opener.document.getElementById(element);
 }
@@ -1538,3 +1538,5 @@ function getMenus() {
 function onHeaderClick(event) {
   window.alert("generic headerClick");
 }
+
+FastInit.addOnLoad(onLoadHandler);
