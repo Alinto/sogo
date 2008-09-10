@@ -1,5 +1,9 @@
 2008-09-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailPartViewers/UIxMailPartAlternativeViewer.m
+	([UIxMailPartAlternativeViewer -selectChildInfo]): give precedence
+	on multipart/mixed parts over text/* parts.
+
 	* SoObjects/Mailer/SOGoDraftObject.m ([SOGoDraftObject
 	-isValidAttachmentName:filename]): accept all filenames except
 	".", ".." and those that contain "/". Any other is valid and will

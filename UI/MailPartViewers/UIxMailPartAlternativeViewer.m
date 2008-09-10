@@ -49,14 +49,16 @@
 
 @implementation UIxMailPartAlternativeViewer
 
-- (void)dealloc {
+- (void) dealloc
+{
   [childInfo release];
   [super dealloc];
 }
 
 /* caches */
 
-- (void)resetBodyInfoCaches {
+- (void) resetBodyInfoCaches
+{
   [childInfo release]; childInfo = nil;
   childIndex = 0;
   [super resetBodyInfoCaches];
@@ -64,7 +66,8 @@
 
 /* part selection */
 
-- (NSArray *)childPartTypes {
+- (NSArray *) childPartTypes
+{
   NSMutableArray *types;
   unsigned i, count;
   NSArray  *childParts;
@@ -85,45 +88,66 @@
   return types;
 }
 
-- (int)selectPartIndexFromTypes:(NSArray *)_types {
-  /* returns the index of the selected part or NSNotFound */
-  unsigned i, count;
+- (unsigned int) _preferredTypesPart: (NSArray *) types
+{
+  unsigned int count, max;
+  unsigned int part;
+  const NSString *priorities[] = { @"multipart/related", @"multipart/mixed",
+				   @"text/calendar", @"text/html",
+				   @"text/plain" };
 
-  if ((count = [_types count]) == 0)
-    return NSNotFound;
-  
-  if ((i = [_types indexOfObject:@"multipart/related"]) != NSNotFound)
-    return i;
-  if ((i = [_types indexOfObject:@"text/calendar"]) != NSNotFound)
-    return i;
-  if ((i = [_types indexOfObject:@"text/html"]) != NSNotFound)
-    return i;
-  if ((i = [_types indexOfObject:@"text/plain"]) != NSNotFound)
-    return i;
+  part = NSNotFound;
 
-  /* then we scan for other text types and choose the first one found */
-  for (i = 0; i < count; i++) {
-    if ([(NSString *)[_types objectAtIndex:i] hasPrefix:@"text/"])
-      return i;
-  }
-  
-  /* as a fallback, we select the first available part */
-  return 0;
+  max = sizeof (priorities) / sizeof (NSString *);
+  for (count = 0; count < max; count++)
+    {
+      part = [types indexOfObject: priorities[count]];
+      if (part != NSNotFound)
+	break;
+    }
+
+  return part;
 }
 
-- (void)selectChildInfo {
+- (int) _selectPartIndexFromTypes: (NSArray *) _types
+{
+  /* returns the index of the selected part or NSNotFound */
+  unsigned count, max, part;
+
+  part = [self _preferredTypesPart: _types];
+  if (part == NSNotFound)
+    {
+      max = [_types count];
+      /* then we scan for other text types and choose the first one found */
+      for (count = 0; count < max; count++)
+	if ([[_types objectAtIndex: count] hasPrefix:@"text/"])
+	  {
+	    part = count;
+	    break;
+	  }
+    }
+
+  if (part == NSNotFound)
+    part = 0; /* as a fallback, we select the first available part */
+
+  return part;
+}
+
+- (void) selectChildInfo
+{
   unsigned idx;
-  
+
   [childInfo release]; childInfo = nil;
   childIndex = 0;
   
-  idx = [self selectPartIndexFromTypes:[self childPartTypes]];
-  if (idx == NSNotFound) {
-    [self errorWithFormat:@"could not select a part of types: %@",
+  idx = [self _selectPartIndexFromTypes: [self childPartTypes]];
+  if (idx == NSNotFound)
+    {
+      [self errorWithFormat:@"could not select a part of types: %@",
             [self childPartTypes]];
-    return;
-  }
-  
+      return;
+    }
+
   childIndex = idx + 1;
   childInfo  = 
     [[[[self bodyInfo] valueForKey:@"parts"] objectAtIndex:idx] retain];
@@ -131,27 +155,33 @@
 
 /* accessors */
 
-- (id)childInfo {
-  if (childInfo == nil)
+- (id) childInfo
+{
+  if (!childInfo)
     [self selectChildInfo];
   
   return childInfo;
 }
 
-- (unsigned int) childIndex {
-  if (childIndex == 0)
+- (unsigned int) childIndex
+{
+  if (!childIndex)
     [self selectChildInfo];
   
   return childIndex - 1;
 }
 
-- (NSString *)childPartName {
-  char buf[8];
-  sprintf(buf, "%d", [self childIndex] + 1);
+- (NSString *) childPartName
+{
+  char buf[8]
+
+  sprintf (buf, "%d", [self childIndex] + 1);
+
   return [NSString stringWithCString:buf];
 }
 
-- (id)childPartPath {
+- (id) childPartPath
+{
   NSArray *pp;
 
   pp = [self partPath];
@@ -162,7 +192,8 @@
 
 /* nested viewers */
 
-- (id)contentViewerComponent {
+- (id) contentViewerComponent
+{
   id info;
   
   info = [self childInfo];
