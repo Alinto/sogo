@@ -1,3 +1,10 @@
+2008-09-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoDraftObject.m ([SOGoDraftObject
+	-isValidAttachmentName:filename]): accept all filenames except
+	".", ".." and those that contain "/". Any other is valid and will
+	be accepted.
+
 2008-09-08  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/SOGo/LDAPSource.m ([LDAPSource
