@@ -173,7 +173,7 @@
 
 - (NSString *) childPartName
 {
-  char buf[8]
+  char buf[8];
 
   sprintf (buf, "%d", [self childIndex] + 1);
 
