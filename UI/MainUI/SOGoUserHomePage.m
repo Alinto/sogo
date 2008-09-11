@@ -213,8 +213,12 @@ static NSString *defaultModule = nil;
   SOGoWebAuthenticator *auth;
   id container;
   NSCalendarDate *date;
+  NSString *userName;
 
   container = [[self clientObject] container];
+
+  userName = [[context activeUser] login];
+  [self logWithFormat: @"user '%@' logged off", userName];
 
   response = [context response];
   [response setStatus: 302];

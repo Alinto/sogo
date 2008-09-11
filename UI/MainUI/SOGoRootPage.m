@@ -70,6 +70,7 @@
   password = [request formValueForKey: @"password"];
   if ([auth checkLogin: userName password: password])
     {
+      [self logWithFormat: @"successful login for user '%@'", userName];
       response = [self responseWith204];
       cookieString = [NSString stringWithFormat: @"%@:%@",
 			       userName, password];
@@ -81,7 +82,10 @@
       [response addCookie: authCookie];
     }
   else
-    response = [self responseWithStatus: 403];
+    {
+      [self logWithFormat: @"failed login for user '%@'", userName];
+      response = [self responseWithStatus: 403];
+    }
 
   return response;
 }

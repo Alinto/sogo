@@ -1,5 +1,11 @@
 2008-09-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MainUI/SOGoUserHomePage.m ([SOGoUserHomePage -logoffAction]):
+	log the username performing the logoff operation.
+
+	* UI/MainUI/SOGoRootPage.m ([SOGoRootPage -connectAction]): log
+	success information about current attempt.
+
 	* SoObjects/SOGo/SOGoObject.m ([SOGoObject
 	-lookupName:lookupNameinContext:localContextacquire:acquire]): do
 	not use the object returned by "bindToObject:inContext:".
