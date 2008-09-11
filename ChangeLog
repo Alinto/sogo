@@ -1,3 +1,10 @@
+2008-09-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoObject.m ([SOGoObject
+	-lookupName:lookupNameinContext:localContextacquire:acquire]): do
+	not use the object returned by "bindToObject:inContext:".
+	Otherwise the clientObject isn't set in the context.
+
 2008-09-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailPartViewers/UIxMailPartAlternativeViewer.m

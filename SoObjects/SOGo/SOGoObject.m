@@ -400,7 +400,7 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
 	{
 	  obj = [[self soClass] lookupKey: lookupName inContext: localContext];
 	  if (obj)
-	    obj = [obj bindToObject: self inContext: localContext];
+	    [obj bindToObject: self inContext: localContext];
 	}
 
       if (obj)
