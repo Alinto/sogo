@@ -179,7 +179,8 @@ static NSArray *headers = nil;
 - (NSArray *) addressLists
 {
   NSMutableArray *ma;
-  
+  NSArray *tmp;
+
   ma = [NSMutableArray arrayWithCapacity:3];
   if ([to isNotNull] && [to count] > 0)
     [ma addObject: to];
@@ -191,9 +192,9 @@ static NSArray *headers = nil;
   /* ensure that at least one object is available */
   if ([ma count] == 0)
     {
-      NSArray *tmp = [NSArray arrayWithObject:@""];
+      tmp = [NSArray arrayWithObject: @""];
       ASSIGN (to, tmp);
-      [ma addObject:to];
+      [ma addObject: to];
     }
 
   return ma;
