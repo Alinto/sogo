@@ -71,7 +71,7 @@ function removeUserCallback(http) {
 	var node = http.callbackData;
 
   if (http.readyState == 4
-      && http.status == 204)
+      && isHttpStatus204(http.status))
 		node.parentNode.removeChild(node);
   else
 		log("error deleting user: " + node.getAttribute("id"));

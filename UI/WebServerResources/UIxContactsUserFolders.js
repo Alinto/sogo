@@ -104,14 +104,14 @@ function userFoldersCallback(http) {
   var div = $("folders");
   if (http.status == 200) {
     var response = http.responseText;
-    div.innerHTML = buildTree(http.responseText);
+    div.update(buildTree(http.responseText));
     div.clean = false;
     var nodes = document.getElementsByClassName("node", $("d"));
     for (i = 0; i < nodes.length; i++)
       $(nodes[i]).observe("click", onFolderTreeItemClick);
   }
   else if (http.status == 404)
-    div.innerHTML = "";
+    div.update();
 }
 
 function onConfirmFolderSelection(event) {
@@ -122,23 +122,21 @@ function onConfirmFolderSelection(event) {
 
     var folderName;
     if (window.opener.userFolderType == "user") {
-      var spans = document.getElementsByClassName("nodeName",
-																									topNode.selectedEntry);
-      var email = (spans[0].innerHTML
+			var span = $(topNode.selectedEntry).down("SPAN.nodeName");
+			var email = (span.innerHTML
 									 .replace("&lt;", "<", "g")
 									 .replace("&gt;", ">", "g"));
       folderName = email;
     }
     else {
-      log("topNode.selectedEntry: " + topNode.selectedEntry.innerHTML);
-      var spans1 = topNode.selectedEntry.childNodesWithTag("span");
-      var spans2 = document.getElementsByClassName("nodeName",
-																									 node.parentNode.previousSibling);
-      var email = (spans2[0].innerHTML
+			var resource = $(topNode.selectedEntry).down("SPAN.nodeName");
+			var user = $(node.parentNode.previousSibling).down("SPAN.nodeName");
+			var email = (user.innerHTML
 									 .replace("&lt;", "<", "g")
 									 .replace("&gt;", ">", "g"));
-      folderName = spans1[0].innerHTML + ' (' + email + ')';
+			folderName = resource.innerHTML + ' (' + email + ')';
     }
+
     var data = { folderName: folderName, folder: folder, window: window };
     if (parent$(accessToSubscribedFolder(folder)))
       window.alert(clabels["You have already subscribed to that folder!"]);
@@ -150,8 +148,9 @@ function onConfirmFolderSelection(event) {
 function onFolderSearchKeyDown(event) {
   var div = $("folders");
   if (!div.clean) {
-    div.innerHTML = "";
+    div.update();
     div.clean = true;
+		$("addButton").disabled = true;
   }
 }
 
