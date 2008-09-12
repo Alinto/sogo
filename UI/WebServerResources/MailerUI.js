@@ -155,7 +155,7 @@ function openMessageWindowsForSelection(action, firstOnly) {
     if (rows.length > 0) {
       for (var i = 0; i < rows.length; i++) {
 				openMessageWindow(Mailer.currentMailbox + "/" + rows[i].substr(4),
-													ApplicationBaseURL + Mailer.currentMailbox
+													ApplicationBaseURL + encodeURI(Mailer.currentMailbox)
 													+ "/" + rows[i].substr(4)
 													+ "/" + action);
 				if (firstOnly)
@@ -181,7 +181,7 @@ function mailListMarkMessage(event) {
     action = 'markMessageUnread';
     markread = false;
   }
-  var url = ApplicationBaseURL + Mailer.currentMailbox + "/" + msguid + "/" + action;
+  var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/" + msguid + "/" + action;
 
   var data = { "window": window, "msguid": msguid, "markread": markread };
   triggerAjaxRequest(url, mailListMarkMessageCallback, data);
@@ -251,7 +251,7 @@ function deleteSelectedMessages(sender) {
 			uids.push(uid);
 			paths.push(path);
     }
-		var url = ApplicationBaseURL + Mailer.currentMailbox + "/deleteMessages";
+		var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/deleteMessages";
 		var parameters = "uid=" + uids.join(",");
 		var data = { "id": uids, "mailbox": Mailer.currentMailbox, "path": paths };
 		triggerAjaxRequest(url, deleteSelectedMessagesCallback, data, parameters,
@@ -303,9 +303,9 @@ function moveMessages(rowIds, folder) {
 
     /* send AJAX request (synchronously) */
 	  
-    var messageId = Mailer.currentMailbox + "/" + rowIds[i];
+    var messageId = encodeURI(Mailer.currentMailbox) + "/" + rowIds[i];
     url = (ApplicationBaseURL + messageId
-					 + "/move?tofolder=" + folder);
+					 + "/move?tofolder=" + encodeURIComponent(folder));
     http = createHTTPClient();
     http.open("GET", url, false /* not async */);
     http.send("");
@@ -424,7 +424,7 @@ function _onMailboxMenuAction(menuEntry, error, actionName) {
     var url_prefix = URLForFolderID(Mailer.currentMailbox) + "/";
     messages.each(function(msgid, i) {
 				var url = url_prefix + msgid + "/" + actionName
-					+ "?folder=" + targetMailbox;
+					+ "?folder=" + encodeURIComponent(targetMailbox);
 				triggerAjaxRequest(url, folderRefreshCallback,
 													 ((i == messages.size() - 1)?Mailer.currentMailbox:""));
       });
@@ -461,7 +461,7 @@ function onComposeMessage() {
 
 function composeNewMessage() {
   var account = Mailer.currentMailbox.split("/")[1];
-  var url = ApplicationBaseURL + "/" + account + "/compose";
+  var url = ApplicationBaseURL + "/" + encodeURI(account) + "/compose";
   openMailComposeWindow(url);
 }
 
@@ -518,7 +518,7 @@ function openMailbox(mailbox, reload, idx) {
 
     var account = Mailer.currentMailbox.split("/")[1];
     if (accounts[account].supportsQuotas) {
-      var quotasUrl = ApplicationBaseURL + mailbox + "/quotas";
+      var quotasUrl = ApplicationBaseURL + encodeURI(mailbox) + "/quotas";
       if (document.quotaAjaxRequest) {
 				document.quotaAjaxRequest.aborted = true;
 				document.quotaAjaxRequest.abort();
@@ -786,7 +786,7 @@ function loadMessage(idx) {
 
   markMailInWindow(window, idx, true);
   if (cachedMessage == null) {
-    var url = (ApplicationBaseURL + Mailer.currentMailbox + "/"
+    var url = (ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/"
 							 + idx + "/view?noframe=1");
     document.messageAjaxRequest
       = triggerAjaxRequest(url, messageCallback, idx);
@@ -1044,7 +1044,7 @@ function onMenuViewMessageSource(event) {
   var rows = messageList.getSelectedRowsId();
 
   if (rows.length > 0) {
-    var url = (ApplicationBaseURL + Mailer.currentMailbox + "/"
+    var url = (ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/"
 							 + rows[0].substr(4) + "/viewsource");
     openMailComposeWindow(url);
   }
@@ -1382,7 +1382,7 @@ function initMailboxTree() {
   mailboxTree.pendingRequests = mailAccounts.length;
   activeAjaxRequests += mailAccounts.length;
   for (var i = 0; i < mailAccounts.length; i++) {
-    var url = ApplicationBaseURL + mailAccounts[i] + "/mailboxes";
+    var url = ApplicationBaseURL + encodeURI(mailAccounts[i]) + "/mailboxes";
     triggerAjaxRequest(url, onLoadMailboxesCallback, mailAccounts[i]);
   }
 }
@@ -1610,7 +1610,7 @@ function onMenuCreateFolder(event) {
   var name = window.prompt(labels["Name :"], "");
   if (name && name.length > 0) {
     var folderID = document.menuTarget.getAttribute("dataname");
-    var urlstr = URLForFolderID(folderID) + "/createFolder?name=" + name;
+    var urlstr = URLForFolderID(folderID) + "/createFolder?name=" + encodeURIComponent(name);
     var errorLabel = labels["The folder with name \"%{0}\" could not be created."];
     triggerAjaxRequest(urlstr, folderOperationCallback,
                        errorLabel.formatted(name));
@@ -1701,7 +1701,7 @@ function onMenuLabelNone() {
     // Menu called from one selection in messages list view
     messages.push(document.menuTarget.getAttribute("id").substr(4));
   
-  var url = ApplicationBaseURL + Mailer.currentMailbox + "/";
+  var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/";
   messages.each(function(id) {
       triggerAjaxRequest(url + id + "/removeAllLabels",
 												 messageFlagCallback,
@@ -1727,7 +1727,7 @@ function _onMenuLabelFlagX(flag) {
     messages.set(document.menuTarget.getAttribute("id").substr(4),
 								 document.menuTarget.getAttribute("labels"));
   
-  var url = ApplicationBaseURL + Mailer.currentMailbox + "/";
+  var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/";
   messages.keys().each(function(id) {
       var flags = messages.get(id).split(" ");
       var operation = "add";

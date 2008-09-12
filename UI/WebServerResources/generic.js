@@ -123,14 +123,14 @@ function URLForFolderID(folderID) {
   var folderInfos = folderID.split(":");
   var url;
   if (folderInfos.length > 1) {
-    url = UserFolderURL + "../" + folderInfos[0];
+    url = UserFolderURL + "../" + encodeURI(folderInfos[0]);
     if (!(folderInfos[0].endsWith('/')
 					|| folderInfos[1].startsWith('/')))
       url += '/';
     url += folderInfos[1];
   }
   else
-    url = ApplicationBaseURL + folderInfos[0];
+    url = ApplicationBaseURL + encodeURI(folderInfos[0]);
    
   if (url[url.length-1] == '/')
     url = url.substr(0, url.length-1);
