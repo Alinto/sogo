@@ -4,6 +4,7 @@ var SOGoDragHandlesInterface = {
  leftMargin: 180,
  topMargin: 120,
  dhType: null,
+ dhLimit: null,
  origX: -1,
  origLeft: -1,
  origRight: -1,
@@ -23,12 +24,16 @@ var SOGoDragHandlesInterface = {
     this.observe("mousedown", this.startHandleDraggingBound, false);
   },
  _determineType: function () {
-    if (this.leftBlock && this.rightBlock)
+    if (this.leftBlock && this.rightBlock) {
       this.dhType = 'horizontal';
-    else if (this.upperBlock && this.lowerBlock)
+			this.dhLimit = window.width() - 10;
+		}
+    else if (this.upperBlock && this.lowerBlock) {
       this.dhType = 'vertical';
+			this.dhLimit = window.height() - 10;
+		}
   },
- startHandleDragging: function (event) {
+ startHandleDragging: function (event) { log("startHandleDragging");
     if (!this.dhType)
       this._determineType();
     var targ = getTarget(event);
@@ -103,6 +108,8 @@ var SOGoDragHandlesInterface = {
       var width = this.offsetWidth;
       if (hX < this.leftMargin)
 				hX = this.leftMargin + Math.floor(width / 2);
+			else if (hX > this.dhLimit)
+				log ("limit");
       var newLeft = Math.floor(hX - (width / 2));
       this.setStyle({ left: newLeft + 'px' });
     } else if (this.dhType == 'vertical') {
@@ -110,6 +117,8 @@ var SOGoDragHandlesInterface = {
       var hY = Event.pointerY(event);
       if (hY < this.topMargin)
 				hY = this.topMargin + Math.floor(height / 2);
+			else if (hY > this.dhLimit)
+				log ("limit");
       var newTop = Math.floor(hY - (height / 2))  - delta;
       this.setStyle({ top: newTop + 'px' });
     }
