@@ -199,7 +199,8 @@
  = "Weet u zeker dat u deze map wilt verplaatsen naar de prullenbak";
 "Operation failed" = "Operatie mislukt.";
 
-"quotasFormat" = "Quota: %{0} van %{1} KB gebruikt; %{2}%";
+"Quota" = "Quota";
+"quotasFormat" = "%{0} van %{1} KB gebruikt (%{2}%)";
 
 "Please select a message." = "Selecteer een bericht.";
 "Please select a message to print." = "Selecteer een bericht om af te drukken.";

@@ -216,7 +216,8 @@
  = "Voulez-vous vraiment déplacer le dossier sélectionné dans la corbeille?";
 "Operation failed" = "L'opération a échoué.";
 
-"quotasFormat" = "Quotas: %{0} Ko utilisés sur %{1}; %{2}%";
+"Quota" = "Quota";
+"quotasFormat" = "%{0} Ko utilisés sur %{1} (%{2}%)";
 
 "Please select a message." = "Veuillez sélectionner un message.";
 "Please select a message to print." = "Veuillez sélectionner un message à imprimer.";

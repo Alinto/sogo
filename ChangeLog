@@ -1,3 +1,9 @@
+2008-09-17  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/MailerUI/UIxMailAccountActions.m ([WOResponse
+	-listMailboxesAction]): also returns the inbox quota, wrapped in a
+	new dictionary with keys "mailboxes" and "quotas".
+
 2008-09-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Mailer/SOGoMailObject.m ([SOGoMailObject

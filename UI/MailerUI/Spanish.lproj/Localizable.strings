@@ -218,7 +218,8 @@
  = "¿Seguro que desea mover la carpeta a la papelera?";
 "Operation failed" = "Operación fallida";
 
-"quotasFormat" = "Quotas: %{0} de %{1} Kb usados ; %{2}%";
+"Quota" = "Quotas";
+"quotasFormat" = "%{0} de %{1} Kb usados (%{2}%)";
 
 "Please select a message." = "Seleccione un mensaje primero.";
 "Please select a message to print." = "Seleccione el mensaje que desea imprimir.";

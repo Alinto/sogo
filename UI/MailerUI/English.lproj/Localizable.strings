@@ -215,7 +215,8 @@
  = "Do you really want to move this folder into the trash ?";
 "Operation failed" = "Operation failed";
 
-"quotasFormat" = "Quotas: %{0} used on %{1} Kb; %{2}%";
+"Quota" = "Quota";
+"quotasFormat" = "%{0} used on %{1} Kb (%{2}%)";
 
 "Please select a message." = "Please select a message.";
 "Please select a message to print." = "Please select a message to print.";

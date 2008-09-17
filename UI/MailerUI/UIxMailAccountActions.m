@@ -28,6 +28,7 @@
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGImap4/NGImap4Connection.h>
+#import <NGImap4/NGImap4Client.h>
 
 #import <SoObjects/Mailer/SOGoMailAccount.h>
 #import <SoObjects/Mailer/SOGoDraftObject.h>
@@ -121,9 +122,14 @@
 
 - (WOResponse *) listMailboxesAction
 {
+  id infos;
   SOGoMailAccount *co;
+  SOGoMailFolder *inbox;
+  NGImap4Client *client;
   NSEnumerator *rawFolders;
   NSArray *folders;
+  NSDictionary *data;
+  NSString *inboxName;
   WOResponse *response;
 
   co = [self clientObject];
@@ -131,10 +137,19 @@
   rawFolders = [[co allFolderPaths] objectEnumerator];
   folders = [self _jsonFolders: rawFolders];
 
+  // Retrieve INBOX quota
+  inbox = [co inboxFolderInContext: context];
+  inboxName = [NSString stringWithFormat: @"/%@", [inbox relativeImap4Name]];
+  client = [[inbox imap4Connection] client];
+  infos = [client getQuotaRoot: [inbox relativeImap4Name]];
+
+  data = [NSDictionary dictionaryWithObjectsAndKeys: folders, @"mailboxes",
+		       [[infos objectForKey: @"quotas"] objectForKey: inboxName], @"quotas",
+		       nil];
   response = [self responseWithStatus: 200];
   [response setHeader: @"text/plain; charset=utf-8"
 	    forKey: @"content-type"];
-  [response appendContentString: [folders jsonRepresentation]];
+  [response appendContentString: [data jsonRepresentation]];
 
   return response;
 }

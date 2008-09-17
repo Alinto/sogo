@@ -631,6 +631,60 @@ TABLE#messageList TR[labels~="label1"]._selected TD
 { color: #fff;
   background-color: #f00; }
 
+/* quota indicator */
+DIV.quota
+{ border-bottom: 1px solid #ccc;
+  margin: 2px 4px 2px 2px; }
+DIV.quota DIV.level
+{ background-image: url(quota-level.png);
+  background-repeat: repeat-x;
+  background-position: 25% 0;
+  border-left: 1px solid #999;
+  border-right: 1px solid #999;
+  height: 20px; }
+DIV.quota DIV.marks DIV
+{ float: left;
+  margin: 0;
+  padding: 0;
+  width: 25%;
+  border: 0;
+  border-right: 1px solid #999;
+  height: 5px; }
+DIV.quota DIV.level DIV.value
+{ background-repeat: repeat-x;
+  border-left: 1px solid transparent;
+  height: 15px;
+  margin: 0;
+  position: relative; }
+DIV.quota DIV.level DIV.value.ok
+{ background-image: url(quota-level-ok.png); }
+DIV.quota DIV.level DIV.value.warn
+{ background-image: url(quota-level-warn.png); }
+DIV.quota DIV.level DIV.value.alert
+{ background-image: url(quota-level-alert.png); }  
+DIV#quotaDialog
+{ background-image: url("dialog-left.png");
+  background-repeat: no-repeat;
+  background-position: top left;
+  position: absolute;
+  top: 100px;
+  left: 75px;
+  width: 200px;
+  z-index: 50; }
+DIV#quotaDialog DIV
+{ border: 1px solid #444;
+  background-color: #fff;
+  padding: 5px; }
+DIV#quotaDialog DIV
+{ border-left: 0;
+  margin-left: 19px;
+  text-align: left; }
+DIV#quotaDialog H1,
+DIV#quotaDialog P
+{ font-size: 10px;
+  margin: 0;
+  padding: 0; }
+
 /* drag handles */
 DIV#verticalDragHandle
 { cursor: e-resize;

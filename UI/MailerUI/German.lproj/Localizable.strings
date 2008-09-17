@@ -198,7 +198,8 @@
  = "Wollen Sie diesen Ordner wirklich in den Papierkorb verschieben?";
 "Operation failed" = "L'opération a échoué.";
 
-"quotasFormat" = "Quota: %{0} von %{1} KB verwendet; %{2}%";
+"Quota" = "Quota";
+"quotasFormat" = "%{0} von %{1} KB verwendet (%{2}%)";
 
 "Please select a message." = "Sie müssen eine Nachricht auswählen.";
 "Please select a message to print." = "Sie müssen eine Nachricht zum Drucken auswählen.";

@@ -4,18 +4,11 @@
 var accounts = {};
 var mailboxTree;
 var mailAccounts;
-var quotaSupport;
 if (typeof textMailAccounts != 'undefined') {
   if (textMailAccounts.length > 0)
     mailAccounts = textMailAccounts.evalJSON(true);
   else
     mailAccounts = new Array();
- }
-if (typeof textQuotaSupport != 'undefined') {
-  if (textQuotaSupport.length > 0)
-    quotaSupport = textQuotaSupport.evalJSON(true);
-  else
-    quotaSupport = new Array();
  }
 
 var Mailer = {
@@ -25,7 +18,8 @@ var Mailer = {
  maxCachedMessages: 20,
  cachedMessages: new Array(),
  foldersStateTimer: false,
- popups: new Array()
+ popups: new Array(),
+ quotas: null
 };
 
 var usersRightsWindowHeight = 320;
@@ -515,16 +509,6 @@ function openMailbox(mailbox, reload, idx) {
     document.messageListAjaxRequest
       = triggerAjaxRequest(url, messageListCallback,
 													 currentMessage);
-
-    var account = Mailer.currentMailbox.split("/")[1];
-    if (accounts[account].supportsQuotas) {
-      var quotasUrl = ApplicationBaseURL + encodeURI(mailbox) + "/quotas";
-      if (document.quotaAjaxRequest) {
-				document.quotaAjaxRequest.aborted = true;
-				document.quotaAjaxRequest.abort();
-      }
-      document.quotaAjaxRequest = triggerAjaxRequest(quotasUrl, quotasCallback);
-    }
   }
 }
 
@@ -604,36 +588,6 @@ function messageListCallback(http) {
     var msg = data.replace(/^(.*\n)*.*<p>((.*\n)*.*)<\/p>(.*\n)*.*$/, "$2");
     log("messageListCallback: problem during ajax request (readyState = " + http.readyState + ", status = " + http.status + ", response = " + msg + ")");
   }
-}
-
-function quotasCallback(http) {
-  if (http.status == 200) {
-    var hasQuotas = false;
-
-    if (http.responseText.length > 0) {
-      var quotas = http.responseText.evalJSON(true);
-      for (var i in quotas) {
-				hasQuotas = true;
-				break;
-      }
-    }
-    
-    if (hasQuotas) {
-      var treePath = Mailer.currentMailbox.split("/");
-      var quotasMB = new Array();
-      for (var i = 2; i < treePath.length; i++)
-				quotasMB.push(treePath[i].substr(6));
-      var mbQuotas = quotas["/" + quotasMB.join("/")];
-      var used = mbQuotas["usedSpace"];
-      var max = mbQuotas["maxQuota"];
-      var percents = (Math.round(used * 10000 / max) / 100);
-      var format = labels["quotasFormat"];
-      var text = format.formatted(used, max, percents);
-      window.status = text;
-    }
-  }
-
-  document.quotaAjaxRequest = null;
 }
 
 function onMessageContextMenu(event) {
@@ -1388,7 +1342,8 @@ function initMailboxTree() {
 }
 
 function updateMailboxTreeInPage() {
-  $("folderTreeContent").update(mailboxTree);
+  var treeContent = $("folderTreeContent");
+	treeContent.update(mailboxTree);
 
   var inboxFound = false;
   var tree = $("mailboxTree");
@@ -1405,6 +1360,38 @@ function updateMailboxTreeInPage() {
       inboxFound = true;
     }
   }
+	if (Mailer.quotas) {
+		// Build quota indicator
+		var percents = (Math.round(Mailer.quotas.usedSpace * 10000 / Mailer.quotas.maxQuota) / 100);
+		var level = (percents > 85)? "alert" : (percents > 70)? "warn" : "ok";
+		var format = labels["quotasFormat"];
+		var text = format.formatted(Mailer.quotas.usedSpace, Mailer.quotas.maxQuota, percents);
+		var quotaDiv = new Element('div', { 'class': 'quota', 'info': text });
+		var levelDiv = new Element('div', { 'class': 'level' });
+		var valueDiv = new Element('div', { 'class': 'value ' + level, 'style': 'width: ' + percents + '%' });
+		var marksDiv = new Element('div', { 'class': 'marks' });
+		marksDiv.appendChild(new Element('div'));
+		marksDiv.appendChild(new Element('div'));
+		marksDiv.appendChild(new Element('div'));
+		levelDiv.appendChild(valueDiv);
+		levelDiv.appendChild(marksDiv);
+		quotaDiv.appendChild(levelDiv);
+		
+		treeContent.insertBefore(quotaDiv, tree);
+		quotaDiv.observe("mouseover", onViewQuota);
+		quotaDiv.observe("mouseout", function(event) { $("quotaDialog").hide(); });
+	}
+}
+
+function onViewQuota(event) {
+	var div = $("quotaDialog");
+	if (div.visible()) return;
+	var position = this.cumulativeOffset();
+	position[0] += this.getWidth();
+	div.down("p").update(this.readAttribute("info"));
+	div.setStyle({ left: position[0] + "px",
+								top: position[1] + "px" });
+	div.show();
 }
 
 function mailboxMenuNode(type, name) {
@@ -1538,14 +1525,16 @@ function onLoadMailboxesCallback(http) {
 
 function buildMailboxes(accountName, encoded) {
   var account = new Mailbox("account", accountName);
-
   var accountIndex = mailAccounts.indexOf(accountName);
-  account.supportsQuotas = (quotaSupport[accountIndex] != 0);
-
   var data = encoded.evalJSON(true);
-  for (var i = 0; i < data.length; i++) {
+	var mailboxes = data.mailboxes;
+
+	if (data.quotas)
+		Mailer.quotas = data.quotas;
+	
+  for (var i = 0; i < mailboxes.length; i++) {
     var currentNode = account;
-    var names = data[i].path.split("/");
+    var names = mailboxes[i].path.split("/");
     for (var j = 1; j < (names.length - 1); j++) {
       var node = currentNode.findMailboxByName(names[j]);
       if (!node) {
@@ -1557,9 +1546,9 @@ function buildMailboxes(accountName, encoded) {
     var basename = names[names.length-1];
     var leaf = currentNode.findMailboxByName(basename);
     if (leaf)
-      leaf.type = data[i].type;
+      leaf.type = mailboxes[i].type;
     else {
-      leaf = new Mailbox(data[i].type, basename);
+      leaf = new Mailbox(mailboxes[i].type, basename);
       currentNode.addMailbox(leaf);
     }
   }
