@@ -2,7 +2,9 @@
 
 	* UI/MailerUI/UIxMailAccountActions.m ([WOResponse
 	-listMailboxesAction]): also returns the inbox quota, wrapped in a
-	new dictionary with keys "mailboxes" and "quotas".
+	new dictionary with keys "mailboxes" and "quotas". Uses the new user
+	default "SOGoSoftQuota" to force a quota and ignore the one
+	returned by the IMAP server.
 
 2008-09-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

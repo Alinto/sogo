@@ -23,6 +23,7 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
+#import <Foundation/NSUserDefaults.h>
 
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest.h>
@@ -122,7 +123,7 @@
 
 - (WOResponse *) listMailboxesAction
 {
-  id infos;
+  id infos, inboxQuota;  
   SOGoMailAccount *co;
   SOGoMailFolder *inbox;
   NGImap4Client *client;
@@ -130,21 +131,31 @@
   NSArray *folders;
   NSDictionary *data;
   NSString *inboxName;
+  NSUserDefaults *ud;
   WOResponse *response;
+  int quota;
 
+  ud = [NSUserDefaults standardUserDefaults];
   co = [self clientObject];
 
   rawFolders = [[co allFolderPaths] objectEnumerator];
   folders = [self _jsonFolders: rawFolders];
 
   // Retrieve INBOX quota
+  quota = [ud integerForKey: @"SOGoSoftQuota"];
   inbox = [co inboxFolderInContext: context];
   inboxName = [NSString stringWithFormat: @"/%@", [inbox relativeImap4Name]];
   client = [[inbox imap4Connection] client];
-  infos = [client getQuotaRoot: [inbox relativeImap4Name]];
-
+  infos = [[client getQuotaRoot: [inbox relativeImap4Name]] objectForKey: @"quotas"];
+  inboxQuota = [infos objectForKey: inboxName];
+  if (quota > 0 && inboxQuota != nil)
+    // A soft quota is imposed for all users
+    inboxQuota = [NSDictionary dictionaryWithObjectsAndKeys:
+			       [NSNumber numberWithInt: quota], @"maxQuota",
+			       [inboxQuota objectForKey: @"usedSpace"], @"usedSpace",
+			       nil];
   data = [NSDictionary dictionaryWithObjectsAndKeys: folders, @"mailboxes",
-		       [[infos objectForKey: @"quotas"] objectForKey: inboxName], @"quotas",
+		       inboxQuota, @"quotas",
 		       nil];
   response = [self responseWithStatus: 200];
   [response setHeader: @"text/plain; charset=utf-8"
