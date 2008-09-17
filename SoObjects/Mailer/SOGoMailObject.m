@@ -663,7 +663,7 @@ static BOOL debugSoParts       = NO;
   if ([filename length])
     urlToPart = [NSString stringWithFormat: @"%@/%@", urlPrefix, filename];
   else
-    urlToPart = nil;
+    urlToPart = urlPrefix;
 
   return urlToPart;
 }
@@ -700,13 +700,17 @@ static BOOL debugSoParts       = NO;
 - (NSDictionary *) fetchAttachmentIds
 {
   NSMutableDictionary *attachmentIds;
+  NSString *prefix;
 
   attachmentIds = [NSMutableDictionary dictionary];
 
   [self fetchCoreInfos];
+  prefix = [[self soURL] absoluteString];
+  if ([prefix hasSuffix: @"/"])
+    prefix = [prefix substringToIndex: [prefix length] - 1];
   [self _feedAttachmentIds: attachmentIds
 	withInfos: [coreInfos objectForKey: @"body"]
-	andPrefix: [[self soURL] absoluteString]];
+	andPrefix: prefix];
 
   return attachmentIds;
 }

@@ -1,3 +1,10 @@
+2008-09-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailObject.m ([SOGoMailObject
+	-fetchAttachmentIds]): if the parts have no filename associated
+	with them, we still return the prefix url so that we still can
+	access the attachment from HTML messages.
+
 2008-09-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MainUI/SOGoUserHomePage.m ([SOGoUserHomePage -logoffAction]):
