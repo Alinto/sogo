@@ -73,7 +73,7 @@ function _editEventId(id, calendar, recurrence) {
     urlstr += "/" + recurrence;
     targetname += recurrence;
   }
-  urlstr += "/edit"; log (urlstr);
+  urlstr += "/edit";
   var win = window.open(urlstr, "_blank",
                         "width=490,height=470,resizable=0");
   if (win)
@@ -1940,6 +1940,15 @@ function onBodyClickHandler(event) {
   $("eventDialog").hide();
 }
 
+function onWindowResize(event) {
+  var handle = $("verticalDragHandle");
+  if (handle)
+		handle.adjust();
+  handle = $("rightDragHandle");
+  if (handle)
+		handle.adjust();
+}
+
 function initCalendars() {
   sorting["attribute"] = "start";
   sorting["ascending"] = true;
@@ -1954,6 +1963,9 @@ function initCalendars() {
       selector.attachMenu("calendarsMenu");
     $(document.body).observe("click", onBodyClickHandler);
   }
+
+	Event.observe(window, "resize", onWindowResize);
+	onWindowResize(null);
 }
 
 FastInit.addOnLoad(initCalendars);

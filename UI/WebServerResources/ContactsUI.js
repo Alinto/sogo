@@ -987,6 +987,15 @@ function configureSelectionButtons() {
   }
 }
 
+function onWindowResize(event) {
+  var handle = $("dragHandle");
+  if (handle)
+		handle.adjust();
+  handle = $("rightDragHandle");
+  if (handle)
+		handle.adjust();
+}
+
 function initContacts(event) {
   if (document.body.hasClassName("popup"))
     configureSelectionButtons();
@@ -1003,6 +1012,9 @@ function initContacts(event) {
     configureSortableTableHeaders(table);
     TableKit.Resizable.init(table, {'trueResize' : true, 'keepWidth' : true});
   }
+	
+	Event.observe(window, "resize", onWindowResize);
+	onWindowResize(null);
 
   // Default sort options
   sorting["attribute"] = "displayName";
