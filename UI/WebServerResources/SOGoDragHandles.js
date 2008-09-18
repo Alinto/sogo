@@ -2,9 +2,9 @@
 
 var SOGoDragHandlesInterface = {
  leftMargin: 180,
- topMargin: 120,
+ topMargin: 140,
  dhType: null,
- dhLimit: null,
+ dhLimit: -1,
  origX: -1,
  origLeft: -1,
  origRight: -1,
@@ -19,37 +19,60 @@ var SOGoDragHandlesInterface = {
  startHandleDraggingBound: null,
  stopHandleDraggingBound: null,
  moveBound: null,
+ delayedSave: null,
  bind: function () {
     this.startHandleDraggingBound = this.startHandleDragging.bindAsEventListener(this);
     this.observe("mousedown", this.startHandleDraggingBound, false);
   },
+ adjust: function () {
+    if (!this.dhType)
+      this._determineType();
+		if (this.dhType == 'horizontal') {
+			this.dhLimit = window.width() - 20;
+			if (parseInt(this.getStyle("left")) > this.dhLimit) {
+				this.setStyle({ left: this.dhLimit + "px" });
+				this.rightBlock.setStyle({ left: (this.dhLimit) + 'px' });
+				this.leftBlock.setStyle({ width: (this.dhLimit) + 'px' });
+				if (this.delayedSave) window.clearTimeout(this.delayedSave);
+				this.delayedSave = this.saveDragHandleState.delay(3, this.dhType, this.dhLimit, this.saveDragHandleStateCallback);
+			}
+		}
+		else if (this.dhType == 'vertical') {
+			this.dhLimit = window.height() - 20 - this.upperBlock.cumulativeOffset()[1] + this.upperBlock.offsetTop;
+			if (parseInt(this.getStyle("top")) > this.dhLimit) {
+				this.setStyle({ top: this.dhLimit + 'px' });
+				this.lowerBlock.setStyle({ top: this.dhLimit + 'px' });
+				this.upperBlock.setStyle({ height: (this.dhLimit - this.upperBlock.offsetTop) + 'px' });
+				if (this.delayedSave) window.clearTimeout(this.delayedSave);
+				this.delayedSave = this.saveDragHandleState.delay(3, this.dhType, this.dhLimit, this.saveDragHandleStateCallback);
+			}
+		}
+	},
  _determineType: function () {
-    if (this.leftBlock && this.rightBlock) {
+    if (this.leftBlock && this.rightBlock)
       this.dhType = 'horizontal';
-			this.dhLimit = window.width() - 10;
-		}
-    else if (this.upperBlock && this.lowerBlock) {
+    else if (this.upperBlock && this.lowerBlock)
       this.dhType = 'vertical';
-			this.dhLimit = window.height() - 10;
-		}
   },
- startHandleDragging: function (event) { log("startHandleDragging");
+ startHandleDragging: function (event) {
     if (!this.dhType)
       this._determineType();
     var targ = getTarget(event);
     if (targ.nodeType == 1) {
       if (this.dhType == 'horizontal') {
+				this.dhLimit = window.width() - 20;
         this.origX = this.offsetLeft;
         this.origLeft = this.leftBlock.offsetWidth;
-				delta = 0;
+				this.delta = 0;
         this.origRight = this.rightBlock.offsetLeft - 5;
         document.body.setStyle({ cursor: "e-resize" });
       } else if (this.dhType == 'vertical') {
+				this.dhLimit = window.height() - 20;
         this.origY = this.offsetTop;
         this.origUpper = this.upperBlock.offsetHeight;
 				var pointY = Event.pointerY(event);
-				if (pointY <= this.topMargin) delta = this.topMargin;
-        else delta = pointY - this.offsetTop - 5;
+				if (pointY <= this.topMargin) this.delta = this.topMargin;
+        else this.delta = pointY - this.offsetTop - 5;
         this.origLower = this.lowerBlock.offsetTop - 5;
         document.body.setStyle({ cursor: "n-resize" });
       }
@@ -72,6 +95,10 @@ var SOGoDragHandlesInterface = {
 				this.rightBlock.setStyle({ left: (this.leftMargin) + 'px' });
 				this.leftBlock.setStyle({ width: (this.leftMargin) + 'px' });
       }
+			else if (pointerX >= this.dhLimit) {
+				this.rightBlock.setStyle({ left: (this.dhLimit) + 'px' });
+				this.leftBlock.setStyle({ width: (this.dhLimit) + 'px' });
+			}
       else {
 				var deltaX = Math.floor(pointerX - this.origX - (this.offsetWidth / 2));
 				this.rightBlock.setStyle({ left: (this.origRight + deltaX) + 'px' });
@@ -81,15 +108,16 @@ var SOGoDragHandlesInterface = {
     }
     else if (this.dhType == 'vertical') {
 			var pointerY = Event.pointerY(event);
-			if (pointerY <= this.topMargin) {
-				this.lowerBlock.setStyle({ top: (this.topMargin - delta) + 'px' });
-				this.upperBlock.setStyle({ height: (this.topMargin - delta) + 'px' });
-			}
-			else {
-				var deltaY = Math.floor(pointerY - this.origY - (this.offsetHeight / 2));
-				this.lowerBlock.setStyle({ top: (this.origLower + deltaY - delta) + 'px' });
-				this.upperBlock.setStyle({ height: (this.origUpper + deltaY - delta) + 'px' });
-			}
+			var deltaY;
+			if (pointerY <= this.topMargin)
+				deltaY = Math.floor(this.topMargin - this.origY - (this.offsetHeight / 2));
+			else if (pointerY >= this.dhLimit)
+				deltaY = Math.floor(this.dhLimit - this.origY - (this.offsetHeight / 2));
+			else
+				deltaY = Math.floor(pointerY - this.origY - (this.offsetHeight / 2));
+			this.lowerBlock.setStyle({ top: (this.origLower + deltaY - this.delta) + 'px' });
+			this.upperBlock.setStyle({ height: (this.origUpper + deltaY - this.delta) + 'px' });
+			
 			this.saveDragHandleState(this.dhType, parseInt(this.lowerBlock.getStyle("top")));
     }
     Event.stopObserving(document.body, "mouseup", this.stopHandleDraggingBound, true);
@@ -106,20 +134,27 @@ var SOGoDragHandlesInterface = {
     if (this.dhType == 'horizontal') {
       var hX =  Event.pointerX(event);
       var width = this.offsetWidth;
-      if (hX < this.leftMargin)
+      if (hX < this.leftMargin) {
 				hX = this.leftMargin + Math.floor(width / 2);
-			else if (hX > this.dhLimit)
-				log ("limit");
+				this.stopHandleDragging(event);
+			} else if (hX > this.dhLimit) {
+				if (hX > (this.dhLimit + 5))
+					this.stopHandleDragging(event);
+				hX = this.dhLimit + Math.floor(width / 2);
+			}
       var newLeft = Math.floor(hX - (width / 2));
       this.setStyle({ left: newLeft + 'px' });
     } else if (this.dhType == 'vertical') {
-      var height = this.offsetHeight;
       var hY = Event.pointerY(event);
+      var height = this.offsetHeight;
       if (hY < this.topMargin)
-				hY = this.topMargin + Math.floor(height / 2);
-			else if (hY > this.dhLimit)
-				log ("limit");
-      var newTop = Math.floor(hY - (height / 2))  - delta;
+				hY = this.topMargin;
+			else if (hY > this.dhLimit) {
+				if (hY > (this.dhLimit + 5))
+					this.stopHandleDragging(event);
+				hY = this.dhLimit;
+			}
+      var newTop = Math.floor(hY - (height / 2)) - this.delta;
       this.setStyle({ top: newTop + 'px' });
     }
     Event.stop(event);
@@ -149,14 +184,14 @@ var SOGoDragHandlesInterface = {
       }
     }
   },
- saveDragHandleState: function (type, position) {
+ saveDragHandleState: function (type, position, fcn) {
 		if (!$(document.body).hasClassName("popup")) {
 			var urlstr =  ApplicationBaseURL + "saveDragHandleState"
 			+ "?" + type + "=" + position;
-			triggerAjaxRequest(urlstr, this.saveDragHandleStateCallback);
+			var callbackFunction = fcn || this.saveDragHandleStateCallback;
+			triggerAjaxRequest(urlstr, callbackFunction);
 		}
-  },
-    
+  },   
  saveDragHandleStateCallback: function (http) {
     if (isHttpStatus204(http.status)) {
       log ("drag handle state saved");

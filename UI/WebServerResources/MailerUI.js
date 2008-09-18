@@ -1221,7 +1221,7 @@ function configureDragHandles() {
   var handle = $("verticalDragHandle");
   if (handle) {
     handle.addInterface(SOGoDragHandlesInterface);
-    handle.leftMargin = 1;
+		handle.leftMargin = 50;
     handle.leftBlock=$("leftPanel");
     handle.rightBlock=$("rightPanel");
   }
@@ -1232,6 +1232,15 @@ function configureDragHandles() {
     handle.upperBlock=$("mailboxContent");
     handle.lowerBlock=$("messageContent");
   }
+}
+
+function onWindowResize(event) {
+  var handle = $("verticalDragHandle");
+  if (handle)
+		handle.adjust();
+  handle = $("rightDragHandle");
+  if (handle)
+		handle.adjust();
 }
 
 /* dnd */
@@ -1283,6 +1292,9 @@ function initMailer(event) {
 		Event.observe(document, "keydown", onDocumentKeydown);
   }
   
+	Event.observe(window, "resize", onWindowResize);
+	onWindowResize(null);
+
   // Default sort options
   sorting["attribute"] = "date";
   sorting["ascending"] = false;
@@ -1368,7 +1380,7 @@ function updateMailboxTreeInPage() {
 		var text = format.formatted(Mailer.quotas.usedSpace, Mailer.quotas.maxQuota, percents);
 		var quotaDiv = new Element('div', { 'class': 'quota', 'info': text });
 		var levelDiv = new Element('div', { 'class': 'level' });
-		var valueDiv = new Element('div', { 'class': 'value ' + level, 'style': 'width: ' + percents + '%' });
+		var valueDiv = new Element('div', { 'class': 'value ' + level, 'style': 'width: ' + ((percents > 100)?100:percents) + '%' });
 		var marksDiv = new Element('div', { 'class': 'marks' });
 		marksDiv.appendChild(new Element('div'));
 		marksDiv.appendChild(new Element('div'));
