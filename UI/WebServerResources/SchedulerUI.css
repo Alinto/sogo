@@ -86,7 +86,8 @@ UL#tasksList
   bottom: .25em; }
 
 UL#tasksList LI
-{ white-space: nowrap; }
+{ width: 100%;
+  white-space: nowrap; }
 
 UL#tasksList LI.overdue
 { color: #f00; }
