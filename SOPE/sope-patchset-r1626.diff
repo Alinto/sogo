@@ -604,9 +604,123 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  
  static __inline__ NSException *_consumeIfMatch
    (NGImap4ResponseParser *self, unsigned char _m);
-@@ -649,12 +652,37 @@
+@@ -648,13 +651,148 @@
+   [result_ addObject:_parseUntil(self, '\n') forKey:@"description"];
  }
  
++static inline BOOL
++_isReallyQuoted(const unichar *startC, const unichar *endC) {
++  const unichar *currentChar;
++  unsigned int questionMarks;
++  BOOL result;
++
++  result = YES;
++
++  if (startC < (endC - 4)
++      && (*startC == '='
++	  && *(startC + 1) == '?')
++      && (*(endC - 2) == '?'
++	  && *(endC - 1) == '=')) {
++    currentChar = startC;
++    while (result && (currentChar < endC)) {
++      if (*currentChar == ' '
++	  || *currentChar == '\t')
++	result = NO;
++      else {
++	if (*currentChar == '?') {
++	  questionMarks++;
++	  if (questionMarks == 2) {
++	    result = ((currentChar + 1) < endC
++		      && (*(currentChar + 1) == 'q'
++			  || *(currentChar + 1) == 'Q'
++			  || *(currentChar + 1) == 'b'
++			  || *(currentChar + 1) == 'B'));
++	    if (result)
++	      currentChar++;
++	  }
++	}
++	currentChar++;
++      }
++    }
++
++    result = (result && questionMarks == 4);
++  }
++  else
++    result = NO;
++
++  return result;
++}
++
++static inline void
++_purifyQuotedString(NSMutableString *quotedString) {
++  unichar *currentChar, *qString, *maxC, *startC;
++  unsigned int max;
++  BOOL possiblyQuoted, skipSpaces;
++  NSMutableString *newString;
++
++  newString = [NSMutableString string];
++
++  max = [quotedString length];
++  qString = malloc (sizeof (unichar) * max);
++  [quotedString getCharacters: qString];
++  currentChar = qString;
++  startC = qString;
++  maxC = qString + max;
++
++  possiblyQuoted = NO;
++  skipSpaces = NO;
++
++  while (currentChar < maxC) {
++    if (skipSpaces) {
++      while (currentChar < maxC
++	     && (*currentChar == ' '
++		 || *currentChar == '\t'))
++	currentChar++;
++      startC = currentChar;
++      skipSpaces = NO;
++    }
++    else if (possiblyQuoted) {
++      while (currentChar < maxC
++	     && *currentChar != ' '
++	     && *currentChar != '\t')
++	currentChar++;
++      if (startC < currentChar) {
++	[newString appendString: [NSString stringWithCharacters: startC
++					   length: (currentChar - startC)]];
++	skipSpaces = _isReallyQuoted(startC, currentChar);
++      }
++      possiblyQuoted = NO;
++      startC = currentChar;
++    }
++    else {
++      while (currentChar < maxC
++	     && *currentChar != '=')
++	currentChar++;
++      if ((currentChar + 1 < maxC)
++	  && *(currentChar + 1) == '?') {
++	if (startC < currentChar) {
++	  [newString appendString: [NSString stringWithCharacters: startC
++					     length: (currentChar - startC)]];
++	}
++	startC = currentChar;
++	currentChar += 2;
++	possiblyQuoted = YES;
++      }
++      else
++	currentChar++;
++    }
++  }
++
++  if (startC
++      && startC < (currentChar - 1)) {
++    [newString appendString: [NSString stringWithCharacters: startC
++				       length: (currentChar - startC - 1)]];
++  }
++
++  [quotedString setString: newString];
++  free (qString);
++}
++
  - (NSString *)_parseQuotedString {
 +  NSMutableString *quotedString;
 +  NSString *tmpString;
@@ -635,16 +749,13 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
 +    quotedString = nil;
 +  }
 +
-+  if ([quotedString rangeOfString: @"=?"].location != NSNotFound) {
-+    [quotedString replaceString: @"?= =?" withString: @"?==?"];
-+    [quotedString replaceString: @"?=\t=?" withString: @"?==?"];
-+  }
++  _purifyQuotedString(quotedString);
 +
 +  return quotedString;
  }
  - (void)_consumeOptionalSpace {
    if (_la(self, 0) == ' ') _consume(self, 1);
-@@ -1090,6 +1118,8 @@
+@@ -1090,6 +1228,8 @@
        return @"";
      
      s = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
@@ -653,7 +764,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
      if (s == nil) {
        [self logWithFormat:
  	      @"ERROR(%s): could not convert data (%d bytes) into string.",
-@@ -1185,7 +1215,7 @@
+@@ -1185,7 +1325,7 @@
    route   = [self _parseQuotedStringOrNIL]; [self _consumeOptionalSpace];
    mailbox = [self _parseQuotedStringOrNIL]; [self _consumeOptionalSpace];
    host    = [self _parseQuotedStringOrNIL]; [self _consumeOptionalSpace];
@@ -662,7 +773,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
    if (_la(self, 0) != ')') {
      [self logWithFormat:@"WARNING: IMAP4 envelope "
  	    @"address not properly closed (c0=%c,c1=%c): %@",
-@@ -1197,6 +1227,7 @@
+@@ -1197,6 +1337,7 @@
    address = [[NGImap4EnvelopeAddress alloc] initWithPersonalName:pname
  					    sourceRoute:route mailbox:mailbox
  					    host:host];
@@ -670,7 +781,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
    return address;
  }
  
-@@ -1594,8 +1625,11 @@
+@@ -1594,8 +1735,11 @@
      if (_decode)
        data = [data decodeQuotedPrintableValueOfMIMEHeaderField:nil];
      
@@ -684,7 +795,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
    }
    else {
      str = _parseUntil2(self, ' ', ')');
-@@ -1620,13 +1654,35 @@
+@@ -1620,13 +1764,35 @@
    return str;
  }
  
@@ -721,7 +832,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  static NSDictionary *_parseBodyParameterList(NGImap4ResponseParser *self)
  {
    NSMutableDictionary *list;
-@@ -1646,7 +1702,7 @@
+@@ -1646,7 +1812,7 @@
        _consumeIfMatch(self, ' ');
        value = _parseBodyDecodeString(self, YES, YES);
  
@@ -730,7 +841,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
      }
      _consumeIfMatch(self, ')');
    }
-@@ -1731,13 +1787,14 @@
+@@ -1731,13 +1897,14 @@
  static NSDictionary *_parseSingleBody(NGImap4ResponseParser *self,
  				      BOOL isBodyStructure) {
    NSString            *type, *subtype, *bodyId, *description,
@@ -747,7 +858,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
    _consumeIfMatch(self, ' ');
    parameterList = _parseBodyParameterList(self);
    _consumeIfMatch(self, ' ');
-@@ -1762,13 +1819,18 @@
+@@ -1762,13 +1929,18 @@
      _consumeIfMatch(self, ' ');
      [dict setObject:_parseBodyString(self, YES) forKey:@"lines"];
    }
@@ -769,7 +880,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
        _consumeIfMatch(self, ' ');
        [dict setObject:_parseParenthesizedAddressList(self) forKey:@"from"];
        _consumeIfMatch(self, ' ');
-@@ -1783,14 +1845,20 @@
+@@ -1783,14 +1955,20 @@
        _consumeIfMatch(self, ' ');
        [dict setObject:_parseParenthesizedAddressList(self) forKey:@"bcc"];
        _consumeIfMatch(self, ' ');
@@ -793,7 +904,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
      }
    }
  
-@@ -1805,14 +1873,9 @@
+@@ -1805,14 +1983,9 @@
  	      forKey: @"disposition"];
  	if (_la(self, 0) != ')') {
  	  _consume(self,1);
@@ -811,7 +922,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  	  if (_la(self, 0) != ')') {
  	    _consume(self,1);
  	    [dict setObject: _parseBodyString(self, YES)
-@@ -1829,6 +1892,7 @@
+@@ -1829,6 +2002,7 @@
  static NSDictionary *_parseMultipartBody(NGImap4ResponseParser *self,
  					 BOOL isBodyStructure) {
    NSMutableArray *parts;
@@ -819,7 +930,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
    NSString       *kind;
    NSMutableDictionary *dict;
  
-@@ -1854,14 +1918,9 @@
+@@ -1854,14 +2028,9 @@
  	      forKey: @"disposition"];
  	if (_la(self, 0) != ')') {
  	  _consume(self,1);
@@ -837,7 +948,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  	  if (_la(self, 0) != ')') {
  	    _consume(self,1);
  	    [dict setObject: _parseBodyString(self, YES)
-@@ -2170,6 +2229,21 @@
+@@ -2170,6 +2339,21 @@
    }
  }
  
@@ -859,7 +970,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  - (NSException *)exceptionForFailedMatch:(unsigned char)_match
    got:(unsigned char)_avail
  {
-@@ -2225,9 +2299,9 @@
+@@ -2225,9 +2409,9 @@
        [s release];
        
        if (c == '\n') {
