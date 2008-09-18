@@ -1,3 +1,13 @@
+2008-09-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MailPartViewers/UIxMailPartViewer.m ([UIxMailPartViewer
+	-decodedFlatContent]): same as below...
+
+	* SoObjects/Mailer/NSData+Mail.m ([NSData
+	-bodyDataFromEncoding:encoding]): invoke
+	"dataByDecodingQuotedPrintableTransferEncoding" on the NSData
+	instance to avoid decoding "_" chars.
+
 2008-09-17  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/MailerUI/UIxMailAccountActions.m ([WOResponse

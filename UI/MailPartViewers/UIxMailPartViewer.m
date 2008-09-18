@@ -112,6 +112,7 @@
   return flatContent;
 }
 
+#warning we should use NSData+Mail's bodyDataFromEncoding: instead
 - (NSData *) decodedFlatContent
 {
   NSString *enc;
@@ -128,7 +129,7 @@
     return [[self flatContent] dataByDecodingBase64];
 
   if ([enc isEqualToString:@"quoted-printable"])
-    return [[self flatContent] dataByDecodingQuotedPrintable];
+    return [[self flatContent] dataByDecodingQuotedPrintableTransferEncoding];
   
   [self errorWithFormat:@"unsupported MIME encoding: %@", enc];
 

@@ -44,7 +44,7 @@
   else if ([realEncoding isEqualToString: @"base64"])
     decodedData = [self dataByDecodingBase64];
   else if ([realEncoding isEqualToString: @"quoted-printable"])
-    decodedData = [self dataByDecodingQuotedPrintable];
+    decodedData = [self dataByDecodingQuotedPrintableTransferEncoding];
   else
     {
       decodedData = nil;
