@@ -231,7 +231,7 @@ static BOOL debugSoParts       = NO;
   id msgs;
 
   if (!coreInfos)
-    {  
+    {
       msgs = [self fetchParts: coreInfoKeys]; // returns dict
       if (heavyDebug)
 	[self logWithFormat: @"M: %@", msgs];
@@ -990,7 +990,7 @@ static BOOL debugSoParts       = NO;
 
   // TODO: check for safe HTTP method
   
-  trashFolder = [[self mailAccountFolder] trashFolderInContext:_ctx];
+  trashFolder = [[self mailAccountFolder] trashFolderInContext: _ctx];
   if ([trashFolder isKindOfClass:[NSException class]])
     return (NSException *)trashFolder;
   if (![trashFolder isNotNull]) {
@@ -1004,17 +1004,17 @@ static BOOL debugSoParts       = NO;
   error = [self davCopyToTargetObject:trashFolder
 		newName: @"fakeNewUnusedByIMAP4" /* autoassigned */
 		inContext:_ctx];
-  if (error != nil) return error;
+  if (error) return error;
   
   /* b) mark deleted */
   
   error = [[self imap4Connection] markURLDeleted: [self imap4URL]];
-  if (error != nil) return error;
+  if (error) return error;
 
   [container markForExpunge];
 
   [self flushMailCaches];
-  
+
   return nil;
 }
 

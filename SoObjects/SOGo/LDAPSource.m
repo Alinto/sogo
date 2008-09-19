@@ -549,15 +549,9 @@ static int sizeLimit;
 	entries = nil;
 
       if (entries)
-	{
-	  currentEntry = [entries nextObject];
-	  while (currentEntry)
-	    {
-	      [contacts addObject:
-			  [self _convertLDAPEntryToContact: currentEntry]];
-	      currentEntry = [entries nextObject];
-	    }
-	}
+	while ((currentEntry = [entries nextObject]))
+	  [contacts addObject:
+		      [self _convertLDAPEntryToContact: currentEntry]];
 
       [ldapConnection release];
     }

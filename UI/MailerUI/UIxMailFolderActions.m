@@ -132,7 +132,7 @@
       [response appendContentString: @"Missing 'name' parameter."];
     }
 
-  return response;  
+  return response;
 }
 
 - (NSURL *) _trashedURLOfFolder: (NSURL *) srcURL
