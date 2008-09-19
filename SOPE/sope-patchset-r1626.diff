@@ -320,7 +320,26 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    
    return [self->normer normalizeResponse:map];
  }
-@@ -635,6 +649,11 @@
+@@ -618,23 +632,24 @@
+       'RawResponse' - the raw IMAP4 response
+    */
+   NSString *s;
+-  id tmp;
+-  
+-  tmp = self->selectedFolder; // remember ptr to old folder name
+-  
++
+   if (![_folder isNotEmpty])
+     return nil;
+   if ((_folder = [self _folder2ImapFolder:_folder]) == nil)
+     return nil;
+ 
++  [self->selectedFolder release];
+   self->selectedFolder = [_folder copy];
+-  
+-  [tmp release]; tmp = nil; // release old folder name
+ 
+   s = [NSString stringWithFormat:@"select \"%@\"", self->selectedFolder];
    return [self->normer normalizeSelectResponse:[self processCommand:s]];
  }
  
@@ -332,7 +351,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  - (NSDictionary *)status:(NSString *)_folder flags:(NSArray *)_flags {
    NSString *cmd;
    
-@@ -820,23 +839,23 @@
+@@ -820,23 +835,23 @@
    return [self->normer normalizeResponse:[self processCommand:cmd]];
  }
  
@@ -362,7 +381,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  		    seqstr, _flag ? '+' : '-', flagstr];
    
    return [self->normer normalizeResponse:[self processCommand:cmd]];
-@@ -967,11 +986,12 @@
+@@ -967,11 +982,12 @@
    descr = @"Could not process qualifier for imap search "; 
    descr = [descr stringByAppendingString:reason];           
    
@@ -378,7 +397,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  }
  
  - (NSString *)_searchExprForQual:(EOQualifier *)_qualifier {
-@@ -1093,7 +1113,18 @@
+@@ -1093,7 +1109,18 @@
       Eg: UID SORT ( DATE REVERSE SUBJECT ) UTF-8 TODO
    */
    NSString *tmp;
@@ -397,7 +416,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    if ([_sortSpec isKindOfClass:[NSArray class]])
      tmp = [self _generateIMAP4SortOrderings:_sortSpec];
    else if ([_sortSpec isKindOfClass:[EOSortOrdering class]])
-@@ -1107,9 +1138,10 @@
+@@ -1107,9 +1134,10 @@
      tmp = @"DATE";
    }
    
@@ -410,7 +429,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  }
  - (NSDictionary *)sort:(NSArray *)_sortOrderings
    qualifier:(EOQualifier *)_qual
-@@ -1130,7 +1162,7 @@
+@@ -1130,7 +1158,7 @@
      return nil;
    }
    
@@ -419,7 +438,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    return [self->normer normalizeSearchResponse:[self processCommand:s]];
  }
  
-@@ -1193,6 +1225,79 @@
+@@ -1193,6 +1221,79 @@
  
  /* Private Methods */
  
@@ -986,7 +1005,13 @@ Index: sope-mime/NGImap4/ChangeLog
 ===================================================================
 --- sope-mime/NGImap4/ChangeLog	(révision 1626)
 +++ sope-mime/NGImap4/ChangeLog	(copie de travail)
-@@ -1,3 +1,12 @@
+@@ -1,3 +1,18 @@
++2008-09-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
++
++	* NGImap4Client.m ([NGImap -select:]): simplified method by
++	removing the need for storing the previous folder before releasing
++	it. This strangely seems to fix a crash with gnustep 1.14.
++
 +2008-09-01  Ludovic Marcotte  <lmarcotte@inverse.ca>
 +
 +	* NGImap4ConnectionManager.m: implemented _garbageCollect.
