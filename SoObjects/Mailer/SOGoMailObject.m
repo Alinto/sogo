@@ -209,7 +209,8 @@ static BOOL debugSoParts       = NO;
 
 /* core infos */
 
-- (BOOL)doesMailExist {
+- (BOOL) doesMailExist
+{
   static NSArray *existsKey = nil;
   id msgs;
   
