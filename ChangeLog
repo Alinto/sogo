@@ -1,5 +1,11 @@
 2008-09-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder -davCollectionTag]): do not ignore deleted
+	records when "computing" the ctag. Also, the EOSpecification
+	instance should not be static, otherwise any subsequent queries
+	will be based on the ctag of the first calendar ever queried.
+
 	* SoObjects/SOGo/NSString+Utilities.m ([NSString
 	-asQPSubjectString:encoding]): replace spaces with underscore
 	characters to comply with rfc 2047.

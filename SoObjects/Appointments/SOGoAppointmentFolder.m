@@ -2036,19 +2036,16 @@ static Class sogoAppointmentFolderKlass = Nil;
   NSString *cTag;
 
   folder = [self ocsFolder];
-  if (!cTagSpec)
-    {
-      ordering = [EOSortOrdering sortOrderingWithKey: @"c_lastmodified"
-				 selector: EOCompareDescending];
-      cTagSpec = [EOFetchSpecification
-		   fetchSpecificationWithEntityName: [folder folderName]
-		   qualifier: nil
-		   sortOrderings: [NSArray arrayWithObject: ordering]];
-      [cTagSpec retain];
-    }
+  ordering = [EOSortOrdering sortOrderingWithKey: @"c_lastmodified"
+			     selector: EOCompareDescending];
+  cTagSpec = [EOFetchSpecification
+	       fetchSpecificationWithEntityName: [folder folderName]
+	       qualifier: nil
+	       sortOrderings: [NSArray arrayWithObject: ordering]];
 
   records = [folder fetchFields: [NSArray arrayWithObject: @"c_lastmodified"]
-		    fetchSpecification: cTagSpec];
+		    fetchSpecification: cTagSpec
+		    ignoreDeleted: NO];
   if ([records count])
     {
       lastModified = [[records objectAtIndex: 0] objectForKey: @"c_lastmodified"];
