@@ -89,17 +89,6 @@
   return [self redirectToLocation: newLocation];
 }
 
-- (id) trashAction
-{
-  id response;
-
-  response = [[self clientObject] trashInContext: context];
-  if (!response)
-    response = [self responseWith204];
-
-  return response;
-}
-
 - (id) moveAction
 {
   NSString *destinationFolder;

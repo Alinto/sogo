@@ -54,6 +54,7 @@ typedef enum {
 - (NSString *) absoluteImap4Name;
 
 /* messages */
+- (NSException *) deleteUIDs: (NSArray *) uids  inContext: (id) context;
 
 - (NSArray *) fetchUIDsMatchingQualifier: (id)_q sortOrdering: (id) _so;
 - (NSArray *) fetchUIDs: (NSArray *) _uids parts: (NSArray *) _parts;

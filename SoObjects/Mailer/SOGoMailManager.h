@@ -22,8 +22,6 @@
 #ifndef __Mailer_SOGoMailManager_H__
 #define __Mailer_SOGoMailManager_H__
 
-#import <Foundation/NSObject.h>
-#import <Foundation/NSRange.h>
 #include <NGImap4/NGImap4ConnectionManager.h>
 
 /*
@@ -32,61 +30,15 @@
   Legacy methods, the methods were used prior the move to NGImap4.
 */
 
-@class NSString, NSData, NSURL, NSArray, NSMutableDictionary, NSTimer;
-@class NSDictionary;
 @class NSException;
-@class NGImap4Client;
+@class NSString;
+@class NSURL;
 
-@interface NGImap4ConnectionManager(SOGoMailManager)
+@interface NGImap4ConnectionManager (SOGoMailManager)
 
-/* folder hierarchy */
-
-- (NSArray *)subfoldersForURL:(NSURL *)_url password:(NSString *)_pwd;
-- (NSArray *)allFoldersForURL:(NSURL *)_url password:(NSString *)_pwd;
-
-/* messages */
-
-- (NSArray *)fetchUIDsInURL:(NSURL *)_url qualifier:(id)_q
-  sortOrdering:(id)_so password:(NSString *)_pwd;
-- (NSArray *)fetchUIDs:(NSArray *)_uids inURL:(NSURL *)_url
-  parts:(NSArray *)_parts password:(NSString *)_pwd;
-
-- (NSException *)expungeAtURL:(NSURL *)_url password:(NSString *)_pwd;
-
-/* individual message */
-
-- (id)fetchURL:(NSURL *)_url parts:(NSArray *)_parts password:(NSString *)_pwd;
-
-- (NSData *)fetchContentOfBodyPart:(NSString *)_partId
-  atURL:(NSURL *)_url password:(NSString *)_pwd;
-
-- (NSException *)addFlags:(id)_f    toURL:(NSURL *)_u password:(NSString *)_p;
-- (NSException *)removeFlags:(id)_f toURL:(NSURL *)_u password:(NSString *)_p;
-- (NSException *)markURLDeleted:(NSURL *)_u           password:(NSString *)_p;
-
-- (NSException *)postData:(NSData *)_data flags:(id)_flags
-  toFolderURL:(NSURL *)_url password:(NSString *)_p;
-
-- (NSException *)copyMailURL:(NSURL *)_srcurl toFolderURL:(NSURL *)_desturl
-  password:(NSString *)_pwd;
-
-/* managing folders */
-
-- (BOOL)doesMailboxExistAtURL:(NSURL *)_url password:(NSString *)_pwd;
-- (id)infoForMailboxAtURL:(NSURL *)_url     password:(NSString *)_pwd;
-
-- (NSException *)createMailbox:(NSString *)_mailbox atURL:(NSURL *)_url
-  password:(NSString *)_pwd;
-- (NSException *)deleteMailboxAtURL:(NSURL *)_url password:(NSString *)_pwd;
-
-- (NSException *)moveMailboxAtURL:(NSURL *)_srcurl toURL:(NSURL *)_desturl
-  password:(NSString *)_pwd;
-
-- (NSDictionary *)aclForMailboxAtURL:(NSURL *)_url password:(NSString *)_pwd;
-- (NSString *)myRightsForMailboxAtURL:(NSURL *)_url password:(NSString *)_pwd;
-
-- (NSException *)addFlags:(id)_f toAllMessagesInURL:(NSURL *)_u
-  password:(NSString *)_p;
+- (NSException *) copyMailURL: (NSURL *) srcurl
+		  toFolderURL: (NSURL *) desturl
+		     password: (NSString *) pwd;
 
 @end
 

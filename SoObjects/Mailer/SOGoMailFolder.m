@@ -255,6 +255,53 @@ static BOOL aclConformsToIMAPExt = NO;
 }
 
 /* messages */
+- (NSException *) deleteUIDs: (NSArray *) uids
+		   inContext: (id) localContext
+{
+  SOGoMailFolder *trashFolder;
+  id result;
+  NSException *error;
+  NSString *folderName;
+  NGImap4Client *client;
+
+  // TODO: check for safe HTTP method
+  trashFolder = [[self mailAccountFolder] trashFolderInContext: localContext];
+  if ([trashFolder isNotNull])
+    {
+      if ([trashFolder isKindOfClass: [NSException class]])
+	error = (NSException *) trashFolder;
+      else
+	{
+	  client = [[self imap4Connection] client];
+	  folderName = [[self imap4Connection]
+			 imap4FolderNameForURL: [trashFolder imap4URL]];
+	  result = [client copyUids: uids toFolder: folderName];
+	  if ([[result valueForKey: @"result"] boolValue])
+	    {
+	      result = [client storeFlags: [NSArray arrayWithObject: @"Deleted"]
+			       forUIDs: uids addOrRemove: YES];
+	      if ([[result valueForKey: @"result"] boolValue])
+		{
+		  [self markForExpunge];
+		  [trashFolder flushMailCaches];
+		  error = nil;
+		}
+	      else
+		error
+		  = [NSException exceptionWithHTTPStatus:500
+				 reason: @"Could not mark UIDs as Deleted"];
+	    }
+	  else
+	    error = [NSException exceptionWithHTTPStatus:500
+				 reason: @"Could not copy UIDs"];
+	}
+    }
+  else
+    error = [NSException exceptionWithHTTPStatus: 500
+			 reason: @"Did not find Trash folder!"];
+
+  return error;
+}
 
 - (NSArray *) fetchUIDsMatchingQualifier: (id) _q
 			    sortOrdering: (id) _so

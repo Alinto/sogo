@@ -41,292 +41,38 @@
         NGImap4Client.
 */
 
-@implementation NGImap4ConnectionManager(SOGoMailManager)
+@implementation NGImap4ConnectionManager (SOGoMailManager)
 
-+ (id)defaultMailManager {
-  return [self defaultConnectionManager];
-}
-
-
-- (NSException *)errorForMissingEntryAtURL:(NSURL *)_url {
-  // TODO: improve
-  return [NSException exceptionWithHTTPStatus:404 /* Not Found */
-		      reason:@"Did not find mail URL"];
-}
-
-/* client object */
-
-
-/* folder hierarchy */
-
-- (NSArray *)subfoldersForURL:(NSURL *)_url password:(NSString *)_pwd {
-  NGImap4Connection *entry;
-
-  /* check connection cache */
-  if ((entry = [self connectionForURL:_url password:_pwd]) == nil)
-    return nil;
-  
-  return [entry subfoldersForURL:_url];
-}
-
-- (NSArray *)allFoldersForURL:(NSURL *)_url password:(NSString *)_pwd {
-  NGImap4Connection *entry;
-  
-  /* check connection cache */
-  if ((entry = [self connectionForURL:_url password:_pwd]) == nil)
-    return nil;
-  
-  return [entry allFoldersForURL:_url];
-}
-
-/* messages */
-
-- (NSArray *)fetchUIDsInURL:(NSURL *)_url qualifier:(id)_qualifier
-  sortOrdering:(id)_so password:(NSString *)_pwd
-{
-  /* 
-     sortOrdering can be an NSString, an EOSortOrdering or an array of EOS.
-  */
-  NGImap4Connection *entry;
-  
-  /* check connection cache */
-  if ((entry = [self connectionForURL:_url password:_pwd]) == nil)
-    return nil;
-  
-  return [entry fetchUIDsInURL:_url qualifier:_qualifier sortOrdering:_so];
-}
-
-- (NSArray *)fetchUIDs:(NSArray *)_uids inURL:(NSURL *)_url
-  parts:(NSArray *)_parts password:(NSString *)_pwd
-{
-  // currently returns a dict?!
-  /*
-    Allowed fetch keys:
-      UID
-      BODY.PEEK[<section>]<<partial>>
-      BODY            [this is the bodystructure, supported]
-      BODYSTRUCTURE   [not supported yet!]
-      ENVELOPE        [this is a parsed header, but does not include type]
-      FLAGS
-      INTERNALDATE
-      RFC822
-      RFC822.HEADER
-      RFC822.SIZE
-      RFC822.TEXT
-  */
-  NGImap4Connection *entry;
-  
-  if (_uids == nil)
-    return nil;
-  if ([_uids count] == 0)
-    return nil; // TODO: might break empty folders?! return a dict!
-  
-  /* check connection cache */
-  if ((entry = [self connectionForURL:_url password:_pwd]) == nil)
-    return nil;
-  
-  return [entry fetchUIDs:_uids inURL:_url parts:_parts];
-}
-
-- (NSException *)expungeAtURL:(NSURL *)_url password:(NSString *)_pwd {
-  NGImap4Connection *entry;
-  
-  if ((entry = [self connectionForURL:_url password:_pwd]) == nil)
-    return [self errorForMissingEntryAtURL:_url];
-  
-  return [entry expungeAtURL:_url];
-}
-
-- (id)fetchURL:(NSURL *)_url parts:(NSArray *)_parts password:(NSString *)_pwd{
-  NGImap4Connection *entry;
-  
-  if (![_url isNotNull]) return nil;
-  if ((entry = [self connectionForURL:_url password:_pwd]) == nil)
-    return [self errorForMissingEntryAtURL:_url];
-  
-  return [entry fetchURL:_url parts:_parts];
-}
-
-- (NSData *)fetchContentOfBodyPart:(NSString *)_partId
-  atURL:(NSURL *)_url password:(NSString *)_pwd
-{
-  NGImap4Connection *entry;
-
-  if ((entry = [self connectionForURL:_url password:_pwd]) == nil)
-    return nil; // TODO: improve?
-
-  return [entry fetchContentOfBodyPart:_partId atURL:_url];
-}
-
-- (NSException *)addOrRemove:(BOOL)_flag flags:(id)_f
-  toURL:(NSURL *)_url password:(NSString *)_p
-{
-  NGImap4Connection *entry;
-
-  if ((entry = [self connectionForURL:_url password:_p]) == nil)
-    return [self errorForMissingEntryAtURL:_url];
-
-  return [entry addOrRemove:_flag flags:_f toURL:_url];
-}
-- (NSException *)addFlags:(id)_f toURL:(NSURL *)_u password:(NSString *)_p {
-  return [self addOrRemove:YES flags:_f toURL:_u password:_p];
-}
-- (NSException *)removeFlags:(id)_f toURL:(NSURL *)_u password:(NSString *)_p {
-  return [self addOrRemove:NO flags:_f toURL:_u password:_p];
-}
-
-- (NSException *)markURLDeleted:(NSURL *)_url password:(NSString *)_p {
-  return [self addOrRemove:YES flags:@"Deleted" toURL:_url password:_p];
-}
-
-- (NSException *)postData:(NSData *)_data flags:(id)_f
-  toFolderURL:(NSURL *)_url password:(NSString *)_p
-{
-  NGImap4Connection *entry;
-
-  if (![_url isNotNull]) return nil;
-  
-  if ((entry = [self connectionForURL:_url password:_p]) == nil)
-    return [self errorForMissingEntryAtURL:_url];
-  
-  return [entry postData:_data flags:_f toFolderURL:_url];
-}
-
-- (NSException *)copyMailURL:(NSURL *)_srcurl toFolderURL:(NSURL *)_desturl
-  password:(NSString *)_pwd
+- (NSException *) copyMailURL: (NSURL *) srcurl 
+		  toFolderURL: (NSURL *) desturl
+		     password: (NSString *) pwd
 {
   NGImap4Connection *entry;
   NSNumber *destPort, *srcPort;
+  NSException *error;
  
   /* check connection cache */
   
-  if ((entry = [self connectionForURL:_srcurl password:_pwd]) == nil)
-    return [self errorForMissingEntryAtURL:_srcurl];
-  
-  /* check whether URLs are on different servers */
-  srcPort = [_srcurl port];
-  destPort = [_desturl port];
+  entry = [self connectionForURL: srcurl password: pwd];
+  if (entry)
+    {
+      /* check whether URLs are on different servers */
+      srcPort = [srcurl port];
+      destPort = [desturl port];
 
-  if (!([[_desturl host] isEqualToString: [_srcurl host]]
-	&& (srcPort == destPort
-	    || [destPort isEqualToNumber: srcPort]))) {
-    // TODO: find a better error code
-    return [NSException exceptionWithHTTPStatus:502 /* Bad Gateway */
-			reason:@"source and destination on different servers"];
-  }
+      if ([[desturl host] isEqualToString: [srcurl host]]
+	  && (srcPort == destPort
+	      || [destPort isEqualToNumber: srcPort]))
+	error = [entry copyMailURL: srcurl toFolderURL: desturl];
+      else
+	error = [NSException exceptionWithHTTPStatus: 502 /* Bad Gateway */
+			     reason: @"source and destination on different servers"];
+    }
+  else
+    error = [NSException exceptionWithHTTPStatus: 404 /* Not Found */
+			 reason: @"Did not find mail URL"];
 
-  return [entry copyMailURL:_srcurl toFolderURL:_desturl];
-}
-
-/* managing folders */
-
-- (BOOL)isPermissionDeniedResult:(id)_result {
-  if ([[_result valueForKey:@"result"] intValue] != 0)
-    return NO;
-  
-  return [[_result valueForKey:@"reason"] 
-	           isEqualToString:@"Permission denied"];
-}
-
-- (BOOL)doesMailboxExistAtURL:(NSURL *)_url password:(NSString *)_pwd {
-  NGImap4Connection *entry;
-  
-  if ((entry = [self connectionForURL:_url password:_pwd]) == nil)
-    return NO;
-  
-  return [entry doesMailboxExistAtURL:_url];
-}
-
-- (id)infoForMailboxAtURL:(NSURL *)_url password:(NSString *)_pwd {
-  NGImap4Connection *entry;
-  
-  if ((entry = [self connectionForURL:_url password:_pwd]) == nil)
-    return [self errorForMissingEntryAtURL:_url];
-  
-  return [entry infoForMailboxAtURL:_url];
-}
-
-- (NSException *)createMailbox:(NSString *)_mailbox atURL:(NSURL *)_url
-  password:(NSString *)_pwd
-{
-  NGImap4Connection *entry;
-  
-  /* check connection cache */
-  if ((entry = [self connectionForURL:_url password:_pwd]) == nil)
-    return [self errorForMissingEntryAtURL:_url];
-
-  return [entry createMailbox:_mailbox atURL:_url];
-}
-
-- (NSException *)deleteMailboxAtURL:(NSURL *)_url password:(NSString *)_pwd {
-  NGImap4Connection *entry;
-  
-  /* check connection cache */
-  
-  if ((entry = [self connectionForURL:_url password:_pwd]) == nil)
-    return [self errorForMissingEntryAtURL:_url];
-  
-  return [entry deleteMailboxAtURL:_url];
-}
-
-- (NSException *)moveMailboxAtURL:(NSURL *)_srcurl toURL:(NSURL *)_desturl
-  password:(NSString *)_pwd
-{
-  NGImap4Connection *entry;
-  
-  /* check connection cache */
-  
-  if ((entry = [self connectionForURL:_srcurl password:_pwd]) == nil)
-    return [self errorForMissingEntryAtURL:_srcurl];
-  
-  /* check whether URLs are on different servers */
-  
-  if ([self connectionForURL:_desturl password:_pwd] != entry) {
-    // TODO: find a better error code
-    return [NSException exceptionWithHTTPStatus:502 /* Bad Gateway */
-			reason:@"source and destination on different servers"];
-  }  
-  
-  return [entry moveMailboxAtURL:_srcurl toURL:_desturl];
-}
-
-- (NSDictionary *)aclForMailboxAtURL:(NSURL *)_url password:(NSString *)_pwd {
-  /*
-    Returns a mapping of uid => permission strings, eg:
-      guizmo.g = lrs;
-      root     = lrswipcda;
-  */
-  NGImap4Connection *entry;
-  
-  if ((entry = [self connectionForURL:_url password:_pwd]) == nil)
-    return (id)[self errorForMissingEntryAtURL:_url];
-  
-  return [entry aclForMailboxAtURL:_url];
-}
-
-- (NSString *)myRightsForMailboxAtURL:(NSURL *)_url password:(NSString *)_pwd {
-  NGImap4Connection *entry;
-  
-  if ((entry = [self connectionForURL:_url password:_pwd]) == nil)
-    return (id)[self errorForMissingEntryAtURL:_url];
-
-  return [entry myRightsForMailboxAtURL:_url];
-}
-
-/* bulk flag adding (eg used for empty/trash) */
-
-- (NSException *)addFlags:(id)_f toAllMessagesInURL:(NSURL *)_url
-  password:(NSString *)_p
-{
-  NGImap4Connection *entry;
-  
-  if (![_url isNotNull]) return nil;
-  if (![_f   isNotNull]) return nil;
-  
-  if ((entry = [self connectionForURL:_url password:_p]) == nil)
-    return [self errorForMissingEntryAtURL:_url];
-  
-  return [entry addFlags:_f toAllMessagesInURL:_url];
+  return error;
 }
 
 @end /* NGImap4ConnectionManager(SOGoMailManager) */

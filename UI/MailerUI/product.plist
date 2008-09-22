@@ -216,11 +216,6 @@
 	  actionClass = "UIxMailActions";
 	  actionName  = "copy";
 	};
-	trash = {
-	  protectedBy = "View";
-	  actionClass = "UIxMailActions";
-	  actionName  = "trash";
-	};
 	junk = {
 	  protectedBy = "View";
 	  actionClass = "UIxMailActions";

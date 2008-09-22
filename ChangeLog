@@ -1,3 +1,23 @@
+2008-09-22  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* UI/MailerUI/UIxMailFolderActions.m ([UIxMailFolderActions
+	-deleteMessagesAction]): make use of the new SOGoFolder's
+	deleteUIDs:inContext: method described below.
+
+	* UI/MailerUI/UIxMailActions.m ([-trashAction]): removed web method.
+
+	* SoObjects/Mailer/SOGoMailObject.m ([-trashInContext:_ctx]):
+	removed method, obsoleted by the new "deletedUIDS:..." method
+	described below.
+
+	* SoObjects/Mailer/SOGoMailManager.[hm]: removed all methods
+	except -copyMailURL:srcurltoFolderURL:desturlpassword:pwd, which
+	is the only one still used.
+
+	* SoObjects/Mailer/SOGoMailFolder.m ([SOGoMailFolder
+	-deleteUIDs:uidsinContext:localContext]): new method enabling the
+	deletion of many IMAP uids in one batch.
+
 2008-09-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m

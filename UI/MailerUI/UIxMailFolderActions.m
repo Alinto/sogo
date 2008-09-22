@@ -1,6 +1,6 @@
 /* UIxMailFolderActions.m - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse groupe conseil
+ * Copyright (C) 2007-2008 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -185,12 +185,9 @@
 - (WOResponse *) deleteMessagesAction
 {
   SOGoMailFolder *co;
-  SOGoMailObject *mail;
   WOResponse *response;
   NSArray *uids;
-  NSString *value, *uid;
-  NSException *error;
-  unsigned int i;
+  NSString *value;
 
   co = [self clientObject];
   value = [[context request] formValueForKey: @"uid"];
@@ -199,25 +196,15 @@
   if ([value length] > 0)
     {
       uids = [value componentsSeparatedByString: @","];
-      for (i = 0; i < [uids count]; i++)
-	{
-	  uid = [uids objectAtIndex: i];
-	  mail = [co lookupName: uid inContext: context acquire: NO];
-	  if (mail)
-	    {
-	      error = [mail trashInContext: context];
-	      if (error)
-		{
-		  response = [self responseWithStatus: 500];
-		  [response appendContentString: [NSString stringWithFormat: @"Can't trash message %@/%@", [co nameInContainer], uid]];
-		  break;
-		}
-	    }
-	}
+      response = [co deleteUIDs: uids  inContext: context];
+      if (!response)
+	response = [self responseWith204];
     }
-
-  if (response == nil)
-    response = [self responseWith204];
+  else
+    {
+      response = [self responseWithStatus: 500];
+      [response appendContentString: @"Missing 'uid' parameter."];
+    }
 
   return response;
 }

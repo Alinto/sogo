@@ -975,50 +975,6 @@ static BOOL debugSoParts       = NO;
 
 /* operations */
 
-- (NSException *) trashInContext: (id) _ctx
-{
-  /*
-    Trashing is three actions:
-    a) copy to trash folder
-    b) mark mail as deleted
-    c) expunge folder
-    
-    In case b) or c) fails, we can't do anything because IMAP4 doesn't tell us
-    the ID used in the trash folder.
-  */
-  SOGoMailFolder *trashFolder;
-  NSException    *error;
-
-  // TODO: check for safe HTTP method
-  
-  trashFolder = [[self mailAccountFolder] trashFolderInContext: _ctx];
-  if ([trashFolder isKindOfClass:[NSException class]])
-    return (NSException *)trashFolder;
-  if (![trashFolder isNotNull]) {
-    return [NSException exceptionWithHTTPStatus:500 /* Server Error */
-			reason: @"Did not find Trash folder!"];
-  }
-  [trashFolder flushMailCaches];
-
-  /* a) copy */
-  
-  error = [self davCopyToTargetObject:trashFolder
-		newName: @"fakeNewUnusedByIMAP4" /* autoassigned */
-		inContext:_ctx];
-  if (error) return error;
-  
-  /* b) mark deleted */
-  
-  error = [[self imap4Connection] markURLDeleted: [self imap4URL]];
-  if (error) return error;
-
-  [container markForExpunge];
-
-  [self flushMailCaches];
-
-  return nil;
-}
-
 - (NSException *) copyToFolderNamed: (NSString *) folderName
                           inContext: (id)_ctx
 {
