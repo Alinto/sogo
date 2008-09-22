@@ -331,8 +331,11 @@ static NSMutableCharacterSet *urlStartChars = nil;
 			       encoding: NSASCIIStringEncoding];
   [qpString autorelease];
   if ([qpString length] > [self length])
-    subjectString = [NSString stringWithFormat: @"=?%@?Q?%@?=",
-			      encoding, qpString];
+    {
+      qpString = [qpString stringByReplacingString: @" " withString: @"_"];
+      subjectString = [NSString stringWithFormat: @"=?%@?Q?%@?=",
+				encoding, qpString];
+    }
   else
     subjectString = self;
 

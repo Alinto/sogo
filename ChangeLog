@@ -1,3 +1,9 @@
+2008-09-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/NSString+Utilities.m ([NSString
+	-asQPSubjectString:encoding]): replace spaces with underscore
+	characters to comply with rfc 2047.
+
 2008-09-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailPartViewers/UIxMailPartViewer.m ([UIxMailPartViewer
