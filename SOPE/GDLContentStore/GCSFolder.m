@@ -501,9 +501,9 @@ static NSArray *contentFieldNames = nil;
   return sql;
 }
 
-- (NSArray *) _fetchFields: (NSArray *) fields
-        fetchSpecification: (EOFetchSpecification *) spec
-	     ignoreDeleted: (BOOL) ignoreDeleted
+- (NSArray *) fetchFields: (NSArray *) fields
+       fetchSpecification: (EOFetchSpecification *) spec
+	    ignoreDeleted: (BOOL) ignoreDeleted
 {
   EOAdaptorChannel *channel;
   NSException      *error;
@@ -577,7 +577,7 @@ static NSArray *contentFieldNames = nil;
   columns = [NSArray arrayWithObjects: @"c_content", @"c_version",
 		     @"c_creationdate", @"c_lastmodified", nil];
   rows
-    = [self _fetchFields: columns
+    = [self fetchFields: columns
 	    fetchSpecification: [self _simpleFetchSpecificationWith: @"c_name"
 				      andValue: name]
 	    ignoreDeleted: YES];
@@ -834,10 +834,10 @@ static NSArray *contentFieldNames = nil;
   if (doLogStore)
     [self logWithFormat:@"should store content: '%@'\n%@", _name, _content];
   
-  rows = [self _fetchFields: [NSArray arrayWithObjects:
-					@"c_version",
-				      @"c_deleted",
-				   nil]
+  rows = [self fetchFields: [NSArray arrayWithObjects:
+				       @"c_version",
+				     @"c_deleted",
+				     nil]
 	       fetchSpecification: [self _simpleFetchSpecificationWith:
 					   @"c_name"
 					 andValue: _name]
@@ -1107,7 +1107,7 @@ static NSArray *contentFieldNames = nil;
 - (NSArray *) fetchFields: (NSArray *) fields
        fetchSpecification: (EOFetchSpecification *) spec
 {
-  return [self _fetchFields: fields
+  return [self fetchFields: fields
 	       fetchSpecification: spec
 	       ignoreDeleted: YES];
 }

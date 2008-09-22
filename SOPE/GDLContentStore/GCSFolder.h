@@ -130,6 +130,10 @@
 
 - (NSArray *) fetchFields: (NSArray *) _flds 
        fetchSpecification: (EOFetchSpecification *) _fs;
+- (NSArray *) fetchFields: (NSArray *) fields
+       fetchSpecification: (EOFetchSpecification *) spec
+	    ignoreDeleted: (BOOL) ignoreDeleted;
+
 - (NSArray *) fetchFields: (NSArray *) _flds
 	matchingQualifier: (EOQualifier *) _q;
 - (NSArray *) fetchAclMatchingQualifier: (EOQualifier *) _q;
