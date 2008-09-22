@@ -13,6 +13,7 @@
 - fixed a bug where the cached credentials wouldn't be expired using SOGoLDAPUserManagerCleanupInterval
 - fixed a bug where mail headers wouldn't be decoded correctly
 - the copy/move menu items are correctly updated when IMAP folders are added, removed or renamed
+- fixed a bug where the ctag of a calendar would not take the deleted events into account, and another one where the value would always take the one of the first calendar queries during the process lifetime.
 
 0.9.0-20080729 (1.0 rc7)
 ------------------------
