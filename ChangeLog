@@ -1,3 +1,9 @@
+2008-09-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailFolder.m ([SOGoMailFolder
+	-deleteUIDs:uidsinContext:localContext]): explicitly select the
+	current mailbox.
+
 2008-09-22  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* UI/MailerUI/UIxMailFolderActions.m ([UIxMailFolderActions

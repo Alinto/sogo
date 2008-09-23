@@ -264,7 +264,6 @@ static BOOL aclConformsToIMAPExt = NO;
   NSString *folderName;
   NGImap4Client *client;
 
-  // TODO: check for safe HTTP method
   trashFolder = [[self mailAccountFolder] trashFolderInContext: localContext];
   if ([trashFolder isNotNull])
     {
@@ -273,8 +272,8 @@ static BOOL aclConformsToIMAPExt = NO;
       else
 	{
 	  client = [[self imap4Connection] client];
-	  folderName = [[self imap4Connection]
-			 imap4FolderNameForURL: [trashFolder imap4URL]];
+	  [imap4 selectFolder: [self imap4URL]];
+	  folderName = [imap4 imap4FolderNameForURL: [trashFolder imap4URL]];
 	  result = [client copyUids: uids toFolder: folderName];
 	  if ([[result valueForKey: @"result"] boolValue])
 	    {

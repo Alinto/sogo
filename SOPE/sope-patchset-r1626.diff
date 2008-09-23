@@ -554,6 +554,18 @@ Index: sope-mime/NGImap4/NGSieveClient.m
    }
  
    /* write */
+Index: sope-mime/NGImap4/NGImap4Connection.h
+===================================================================
+--- sope-mime/NGImap4/NGImap4Connection.h	(révision 1626)
++++ sope-mime/NGImap4/NGImap4Connection.h	(copie de travail)
+@@ -89,6 +89,7 @@
+ 
+ - (NSArray *)subfoldersForURL:(NSURL *)_url;
+ - (NSArray *)allFoldersForURL:(NSURL *)_url;
++- (BOOL)selectFolder:(id)_url;
+ 
+ /* message operations */
+ 
 Index: sope-mime/NGImap4/NGImap4Connection.m
 ===================================================================
 --- sope-mime/NGImap4/NGImap4Connection.m	(révision 1626)
@@ -576,6 +588,35 @@ Index: sope-mime/NGImap4/NGImap4Connection.m
    if (![[result valueForKey:@"result"] boolValue]) {
      return [self errorForResult:result 
  		 text:@"Failed to change flags of IMAP4 message"];
+@@ -736,7 +736,7 @@
+ /* managing folders */
+ 
+ - (BOOL)doesMailboxExistAtURL:(NSURL *)_url {
+-  NSString *folderName;
++  NSString *folderName, *previousFolderName;
+   id result;
+ 
+   /* check in hierarchy cache */
+@@ -760,9 +760,16 @@
+   // TODO: we should probably just fetch the whole hierarchy?
+   
+   folderName = [self imap4FolderNameForURL:_url];
+-  result = [[self client] select:folderName];
+-  if (![[result valueForKey:@"result"] boolValue])
+-    return NO;
++  previousFolderName = [[self client] selectedFolderName];
++  if (![previousFolderName isEqualToString: folderName]) {
++    result = [[self client] select:folderName];
++    if (previousFolderName)
++      [[self client] select:previousFolderName];
++    else
++      [[self client] unselect];
++    if (![[result valueForKey:@"result"] boolValue])
++      return NO;
++  }
+   
+   return YES;
+ }
 Index: sope-mime/NGImap4/NGImap4ResponseNormalizer.m
 ===================================================================
 --- sope-mime/NGImap4/NGImap4ResponseNormalizer.m	(révision 1626)
@@ -1005,7 +1046,12 @@ Index: sope-mime/NGImap4/ChangeLog
 ===================================================================
 --- sope-mime/NGImap4/ChangeLog	(révision 1626)
 +++ sope-mime/NGImap4/ChangeLog	(copie de travail)
-@@ -1,3 +1,18 @@
+@@ -1,3 +1,23 @@
++2008-09-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
++
++	* NGImap4Connection.m ([NGImap -doesMailboxExistAtURL:]): restore
++	the previously selected folder state.
++
 +2008-09-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 +
 +	* NGImap4Client.m ([NGImap -select:]): simplified method by
@@ -2656,22 +2702,6 @@ Index: sope-mime/NGMime/NGMimeBodyPart.m
  }
  
  - (NSString *)contentId {
-Index: sope-mime/NGMime/GNUmakefile.preamble
-===================================================================
---- sope-mime/NGMime/GNUmakefile.preamble	(révision 1626)
-+++ sope-mime/NGMime/GNUmakefile.preamble	(copie de travail)
-@@ -5,6 +5,11 @@
- 	-DLIBRARY_MINOR_VERSION=${MINOR_VERSION} \
- 	-DLIBRARY_SUBMINOR_VERSION=${SUBMINOR_VERSION} \
- 
-+ifeq ($(patsubstr GNU/%,glibc,$(shell uname -o)),glibc)
-+ADDITIONAL_CPPFLAGS += \
-+        -DHAVE_STRNDUP
-+endif
-+
- NGMime_INCLUDE_DIRS += \
- 	-I.. -I../..			\
- 	-I../../sope-core/NGStreams/	\
 Index: sope-mime/NGMime/ChangeLog
 ===================================================================
 --- sope-mime/NGMime/ChangeLog	(révision 1626)
