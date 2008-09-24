@@ -13,6 +13,9 @@
 "Print"       = "Stampa";
 "Stop"        = "Stop";
 "Write"       = "Scrivi";
+"Attachment"  = "Attachment";
+"Unread"      = "Unread";
+"Flagged"     = "Flagged";
 
 "Send" = "Invia";
 "Contacts" = "Contatti";

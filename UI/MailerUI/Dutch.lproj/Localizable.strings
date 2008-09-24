@@ -13,6 +13,9 @@
 "Print"       = "Afdrukken";
 "Stop"        = "Stoppen";
 "Write"       = "Opstellen";
+"Attachment"  = "Attachment";
+"Unread"      = "Unread";
+"Flagged"     = "Flagged";
 
 "Send" = "Verzenden";
 "Contacts" = "Adresboek";

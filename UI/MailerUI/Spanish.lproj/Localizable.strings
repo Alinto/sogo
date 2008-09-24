@@ -16,6 +16,9 @@
 "Print"       = "Imprimir";
 "Stop"        = "Detener";
 "Write"       = "Redactar";
+"Attachment"  = "Attachment";
+"Unread"      = "Unread";
+"Flagged"     = "Flagged";
 
 "Send" = "Enviar";
 "Contacts" = "Contactos";

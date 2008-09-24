@@ -13,6 +13,9 @@
 "Print"       = "Imprimer";
 "Stop"        = "Stop";
 "Write"       = "Écrire";
+"Attachment"  = "Documents joints";
+"Unread"      = "Non-lus";
+"Flagged"     = "Marqués";
 
 "Send" = "Envoyer";
 "Contacts" = "Contacts";

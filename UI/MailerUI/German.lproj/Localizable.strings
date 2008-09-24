@@ -13,6 +13,10 @@
 "Print"       = "Drucken";
 "Stop"        = "Stopp";
 "Write"       = "Verfassen";
+"Attachment"  = "Attachment";
+"Unread"      = "Unread";
+"Flagged"     = "Flagged";
+
 
 "Send" = "Senden";
 "Contacts" = "Kontakte";
