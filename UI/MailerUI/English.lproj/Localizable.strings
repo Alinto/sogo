@@ -35,6 +35,9 @@
 "Mark the selected messages as junk" = "Mark the selected messages as junk";
 "Print this message" = "Print this message";
 "Stop the current transfer" = "Stop the current transfer";
+"Attachment" = "Attachment";
+"Unread" = "Unread";
+"Flagged" = "Flagged";
 
 /* Main Frame  */
 

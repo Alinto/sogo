@@ -8,10 +8,10 @@
   xmlns:label="OGo:label">
   <thead>
     <tr class="tableview"
-      ><td class="tbtv_headercell messageFlagColumn"
-	><var:entity const:name="nbsp" /></td
+      ><td class="tbtv_headercell messageFlagColumn">
+        <img rsrc:src="invisible.png" label:title="Unread" width="100%" height="100%" /></td
 	><td class="tbtv_headercell messageFlagColumn">
-	<img rsrc:src="title_attachment_14x14.png" width="14"
+	<img rsrc:src="title_attachment_14x14.png" label:title="Attachment" width="14"
 	  height="14"/></td
 	><td class="tbtv_headercell sortableTableHeader" id="subjectHeader"
 	><var:string label:value="Subject"/></td
@@ -23,7 +23,7 @@
 	  ><var:string label:value="From"/></td
 	  ></var:if
 	><td class="tbtv_headercell" id="messageFlagHeader"
-	><img rsrc:src="title_read_14x14.png"/></td
+	><img rsrc:src="title_read_14x14.png" label:title="Flagged" /></td
 	><td class="tbtv_headercell sortableTableHeader" id="dateHeader"
 	><var:string label:value="Date"/></td
 	></tr>
