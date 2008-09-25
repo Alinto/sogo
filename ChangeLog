@@ -1,3 +1,9 @@
+2008-09-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoLDAPUserDefaults.[hm]: new class module
+	designed to substitute the system NSUserDefaults system with
+	access to an LDAP directory.
+
 2008-09-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Mailer/SOGoMailFolder.m ([SOGoMailFolder

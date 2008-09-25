@@ -106,6 +106,11 @@ SOGo_OBJC_FILES = \
 SOGo_RESOURCE_FILES = \
 	DAVReportMap.plist
 
+ifeq ($(ldap_config),yes)
+SOGo_OBJC_FILES += SOGoLDAPUserDefaults.m
+SOGo_HEADER_FILES += SOGoLDAPUserDefaults.h
+endif
+
 # tools
 
 sogo_email2uid_OBJC_FILES  += sogo_email2uid.m

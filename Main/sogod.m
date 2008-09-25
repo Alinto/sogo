@@ -28,6 +28,10 @@
 
 #import <NGObjWeb/SoApplication.h>
 
+#if defined(LDAP_CONFIG)
+#import <SOGo/SOGoLDAPUserDefaults.h>
+#endif
+
 int
 main (int argc, char **argv, char **env)
 {
@@ -37,6 +41,10 @@ main (int argc, char **argv, char **env)
   int rc;
 
   pool = [NSAutoreleasePool new];
+
+#if defined(LDAP_CONFIG)
+  [SOGoLDAPUserDefaults poseAsClass: [NSUserDefaults class]];
+#endif
 
   rc = -1;
 
