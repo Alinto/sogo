@@ -16,12 +16,12 @@ ARG_NOCREATE=0
 ARG_PREFIX=""
 ARG_GSMAKE=`gnustep-config --variable=GNUSTEP_MAKEFILES 2>/dev/null`
 ARG_CFGMAKE="$PWD/config.make"
-ARG_WITH_GNUSTEP=1
 ARG_WITH_DEBUG=1
 ARG_WITH_STRIP=1
 
+GNUSTEP_INSTALLATION_DOMAIN="LOCAL"
+
 DARG_GNUSTEP_SH="$ARG_GSMAKE/GNUstep.sh"
-DARG_IS_FHS=1
 
 # detect GNU make, needed at least on *BSD
 make -v 2>/dev/null | grep GNU >/dev/null 2>/dev/null
@@ -55,7 +55,6 @@ Installation directories:
   --prefix=PREFIX	  install files in PREFIX [/usr/local]
   --gsmake=PATH           path to gnustep-make tree
   --configmake=PATH       path to the config file being created
-  --without-gnustep       do not install in GNUstep tree
   --enable-debug          turn on debugging and compile time warnings
   --enable-strip          turn on stripping of debug symbols
 
@@ -70,11 +69,6 @@ printParas() {
   echo "Configuration:"
   if test $ARG_BEQUIET  = 1; then echo "  will be quite.";  fi
   if test $ARG_NOCREATE = 1; then echo "  won't create files"; fi
-  if test $DARG_IS_FHS = 1;  then
-    echo "  FHS:    install in FHS root"; 
-  else
-    echo "  FHS:    install in GNUstep tree"; 
-  fi
 
   if test $ARG_WITH_DEBUG = 1; then 
     echo "  debug:  yes";
@@ -92,23 +86,6 @@ printParas() {
   echo "  config: $ARG_CFGMAKE"
   echo "  script: $DARG_GNUSTEP_SH"
   echo ""
-}
-
-warnOnFHSPrefix() {
-  cat <<_ACEOFWARN
-Warning: you are configuring for a non standard FHS style prefix.
-         prefix: $ARG_PREFIX
-
-Some code in SOPE only looks in /usr and /usr/local for resources and is
-therefore incompatible with arbitary install pathes.
-
-If you want to have the flexibility of installation in arbitary pathes just
-configure GNUstep-make and source the GNUstep.sh script prior executing tools
-to ensure a proper environment.
-All SOPE based code is completely relocatable when being used in a GNUstep
-environment.
-
-_ACEOFWARN
 }
 
 validateGNUstepArgs() {
@@ -145,66 +122,50 @@ validateGNUstepArgs() {
   fi
 }
 
-setupAppleArgs() {
-  ARG_WITH_STRIP=0
-  ARG_WITH_GNUSTEP=1
-  
-  if test "xLIBRARY_COMBO" != "apple-apple-nil"; then
-    if test "xLIBRARY_COMBO" != "apple-apple-apple"; then
-      echo "WARNING: detected unusual GNUstep setup: $LIBRARY_COMBO"
-      echo ""
-    fi
-  fi
-}
-
 validateArgs() {
   # validate prefix (could be better?)
   case "x$ARG_PREFIX" in
-    "x/usr/local"|"x/usr/local/")
-        DARG_IS_FHS=1;
-	;;
-    "x/usr"|"x/usr/")
-        DARG_IS_FHS=1;
-	;;
-    "x$GNUSTEP_USER_ROOT"|"x$GNUSTEP_LOCAL_ROOT"|"x$GNUSTEP_SYSTEM_ROOT")
-        DARG_IS_FHS=0;
-	ARG_WITH_GNUSTEP=1;
-	;;
     "x")
-        if test $ARG_WITH_GNUSTEP = 1; then
-          DARG_IS_FHS=0;
           ARG_PREFIX="$GNUSTEP_LOCAL_ROOT"
+	  GNUSTEP_INSTALLATION_DOMAIN="LOCAL"
           if test $ARG_BEQUIET != 1; then
-	    echo "Note: will install in GNUSTEP_LOCAL_ROOT: $ARG_PREFIX"
-	    echo ""
+	      echo "Note: will install in GNUSTEP_LOCAL_ROOT: $ARG_PREFIX"
+	      echo ""
 	  fi
-        else
-          DARG_IS_FHS=1;
-          ARG_PREFIX="/usr/local/"
-	  echo "Note: will install in default location: $ARG_PREFIX"
-	  echo ""
-	fi
+	;;
+    "x$GNUSTEP_USER_ROOT")
+	  GNUSTEP_INSTALLATION_DOMAIN="USER"
+          if test $ARG_BEQUIET != 1; then
+	      echo "Note: will install in GNUSTEP_USER_ROOT: $ARG_PREFIX"
+	      echo ""
+	  fi
+	;;
+    "x$GNUSTEP_LOCAL_ROOT")
+	  GNUSTEP_INSTALLATION_DOMAIN="LOCAL"
+          if test $ARG_BEQUIET != 1; then
+	      echo "Note: will install in GNUSTEP_LOCAL_ROOT: $ARG_PREFIX"
+	      echo ""
+	  fi
+	;;
+    "x$GNUSTEP_NETWORK_ROOT")
+	  GNUSTEP_INSTALLATION_DOMAIN="NETWORK"
+          if test $ARG_BEQUIET != 1; then
+	      echo "Note: will install in GNUSTEP_NETWORK_ROOT: $ARG_PREFIX"
+	      echo ""
+	  fi
+	;;
+    "x$GNUSTEP_SYSTEM_ROOT")
+	  GNUSTEP_INSTALLATION_DOMAIN="SYSTEM"
+          if test $ARG_BEQUIET != 1; then
+	      echo "Note: will install in GNUSTEP_SYSTEM_ROOT: $ARG_PREFIX"
+	      echo ""
+	  fi
 	;;
     *)
-        if test $ARG_WITH_GNUSTEP = 1; then
-	  echo "error: specified --with-gnustep, but specified prefix is not"
-	  echo "       a GNUstep root: '$ARG_PREFIX'"
+	  echo "error: specified prefix is not a GNUstep root: '$ARG_PREFIX'"
 	  exit 1
-        else
-          if test $ARG_BEQUIET != 1; then
-	    warnOnFHSPrefix;
-          fi
-	  DARG_IS_FHS=1;
-        fi
 	;;
   esac
-  
-  if test $ARG_WITH_GNUSTEP = 1; then
-    if test $DARG_IS_FHS = 1; then
-      echo "error: configured for FHS root _and_ GNUstep tree. Choose one!"
-      exit 1
-    fi
-  fi
 }
 
 printGNUstepSetup() {
@@ -252,12 +213,6 @@ genConfigMake() {
   cfgwrite "SOPE_MAJOR_VERSION=4"
   cfgwrite "SOPE_MINOR_VERSION=7"
   
-  if test $DARG_IS_FHS = 1; then
-    cfgwrite "# configured for FHS install"
-    cfgwrite "FHS_INSTALL_ROOT:=$ARG_PREFIX"
-    cfgwrite ""
-  fi
-  
   if test $ARG_WITH_DEBUG = 1; then
     cfgwrite "# configured to produce debugging code";
     cfgwrite "debug:=yes"
@@ -278,46 +233,16 @@ genConfigMake() {
     cfgwrite "CGS_LIBDIR_NAME:=lib"
   fi
 
-  cfgwrite "ifneq (\$(FHS_INSTALL_ROOT),)"
-  cfgwrite "CONFIGURE_FHS_INSTALL_LIBDIR:=\$(FHS_INSTALL_ROOT)/\$(CGS_LIBDIR_NAME)/"
-#  cfgwrite "CONFIGURE_SYSTEM_LIB_DIR += -L\$(CONFIGURE_FHS_INSTALL_LIBDIR)"
-  cfgwrite "endif"
-#  cfgwrite "CONFIGURE_SYSTEM_LIB_DIR += -L/usr/\$(CGS_LIBDIR_NAME)/"
-
-  if test $DARG_IS_FHS = 1; then
-    cfgwrite "# configured for FHS install"
-    cfgwrite "FHS_INSTALL_ROOT:=$ARG_PREFIX"
-    cfgwrite ""
-    cfgwrite "SOGO_SYSLIBDIR=\${DESTDIR}\${FHS_INSTALL_ROOT}/\${CGS_LIBDIR_NAME}"
-    cfgwrite "SOGO_LIBDIR=\${SOGO_SYSLIBDIR}/sogod-\${SOGO_MAJOR_VERSION}.\${SOGO_MINOR_VERSION}"
-    cfgwrite "SOPE_LIBDIR=\$(SOGO_SYSLIBDIR)/sope-\${SOPE_MAJOR_VERSION}.\${SOPE_MINOR_VERSION}"
-    cfgwrite "SOGO_SYSSHAREDIR=\${DESTDIR}\${FHS_INSTALL_ROOT}/share"
-    cfgwrite "SOGO_SHARED=\${SOGO_SYSSHAREDIR}/sogo-\${SOGO_MAJOR_VERSION}.\${SOGO_MINOR_VERSION}"
-    cfgwrite "SOPE_SHARED=\${SOGO_SYSSHAREDIR}/sope-\${SOPE_MAJOR_VERSION}.\${SOPE_MINOR_VERSION}"
-    cfgwrite "SOGO_TEMPLATESDIR=\${SOGO_SHARED}/templates"
-    cfgwrite "SOGO_WEBSERVERRESOURCESDIR=\${SOGO_SHARED}/www"
-    cfgwrite "SOGO_TOOLS=\${DESTDIR}\${FHS_INSTALL_ROOT}/bin"
-    cfgwrite "SOGO_ADMIN_TOOLS=\${DESTDIR}\${FHS_INSTALL_ROOT}/sbin"
-    cfgwrite "SOPE_SAXMAPPINGS=\${SOPE_SHARED}/saxmappings"
-    cfgwrite "SOPE_SAXDRIVERS=\${SOPE_LIBDIR}/saxdrivers"
-    cfgwrite "SOPE_WOXBUILDERS=\${SOPE_LIBDIR}/wox-builders"
-    cfgwrite "SOGO_TYPEMODELS=\${SOGO_SYSSHAREDIR}/ocs"
-
-    cfgwrite ""
-  else
-    cfgwrite "# configured for GNUstep install"
-    cfgwrite ""
-    cfgwrite "SOGO_SYSLIBDIR=\${GNUSTEP_LIBRARIES}"
-    cfgwrite "SOGO_LIBDIR=\${GNUSTEP_LIBRARY}/SOGo-\${SOGO_MAJOR_VERSION}.\${SOGO_MINOR_VERSION}"
-    cfgwrite "SOGO_TEMPLATESDIR=\${SOGO_LIBDIR}/Templates"
-    cfgwrite "SOGO_WEBSERVERRESOURCESDIR=\${SOGO_LIBDIR}/WebServerResources"
-    cfgwrite "SOGO_TOOLS=\${GNUSTEP_TOOLS}"
-    cfgwrite "SOGO_ADMIN_TOOLS=\${GNUSTEP_ADMIN_TOOLS}"
-    cfgwrite "SOPE_SAXMAPPINGS=\${GNUSTEP_LIBRARY}/SaxMappings"
-    cfgwrite "SOPE_SAXDRIVERS=\${GNUSTEP_LIBRARY}/SaxDrivers-\${SOPE_MAJOR_VERSION}.\${SOPE_MINOR_VERSION}"
-    cfgwrite "SOPE_WOXBUILDERS=\${GNUSTEP_LIBRARY}/WOxElemBuilders-\${SOPE_MAJOR_VERSION}.\${SOPE_MINOR_VERSION}"
-    cfgwrite "SOGO_TYPEMODELS=\${GNUSTEP_LIBRARY}/OCSTypeModels"
-  fi
+  cfgwrite "SOGO_SYSLIBDIR=\${GNUSTEP_LIBRARIES}"
+  cfgwrite "SOGO_LIBDIR=\${GNUSTEP_LIBRARY}/SOGo-\${SOGO_MAJOR_VERSION}.\${SOGO_MINOR_VERSION}"
+  cfgwrite "SOGO_TEMPLATESDIR=\${SOGO_LIBDIR}/Templates"
+  cfgwrite "SOGO_WEBSERVERRESOURCESDIR=\${SOGO_LIBDIR}/WebServerResources"
+  cfgwrite "SOGO_TOOLS=\${GNUSTEP_TOOLS}"
+  cfgwrite "SOGO_ADMIN_TOOLS=\${GNUSTEP_ADMIN_TOOLS}"
+  cfgwrite "SOPE_SAXMAPPINGS=\${GNUSTEP_LIBRARY}/SaxMappings"
+  cfgwrite "SOPE_SAXDRIVERS=\${GNUSTEP_LIBRARY}/SaxDrivers-\${SOPE_MAJOR_VERSION}.\${SOPE_MINOR_VERSION}"
+  cfgwrite "SOPE_WOXBUILDERS=\${GNUSTEP_LIBRARY}/WOxElemBuilders-\${SOPE_MAJOR_VERSION}.\${SOPE_MINOR_VERSION}"
+  cfgwrite "SOGO_TYPEMODELS=\${GNUSTEP_LIBRARY}/OCSTypeModels"
 
   if test $ARG_WITH_STRIP = 1; then
     cfgwrite "# configured to produce stripped code";
@@ -331,9 +256,9 @@ genConfigMake() {
   cfgwrite "# enforce shared libraries";
   cfgwrite "shared:=yes"
   cfgwrite ""
-  
+
   cfgwrite "# GNUstep environment variables:";
-  cfgwrite "GNUSTEP_INSTALLATION_DOMAIN=LOCAL"
+  cfgwrite "GNUSTEP_INSTALLATION_DOMAIN=$GNUSTEP_INSTALLATION_DOMAIN"
   for i in `env | grep GNUSTEP_ | sort`; do
     MAKE_ASSI="`echo $i | sed s/=/:=/`"
     cfgwrite "${MAKE_ASSI}";
@@ -435,14 +360,6 @@ processOption() {
 	extractFuncValue $1;
         ARG_CFGMAKE="$VALUE";
 	;;
-    "x--with-gnustep")
-        ARG_WITH_GNUSTEP=1
-        DARG_IS_FHS=0
-	;;
-    "x--without-gnustep")
-        ARG_WITH_GNUSTEP=0
-        DARG_IS_FHS=1
-	;;
     "x--enable-debug")
         ARG_WITH_DEBUG=1
 	;;
@@ -470,11 +387,6 @@ validateGNUstepArgs
 . $DARG_GNUSTEP_SH
 if test $ARG_BEQUIET != 1; then
   printGNUstepSetup;
-fi
-
-# setup some GNUstep dependend defaults
-if test "x$GNUSTEP_HOST_VENDOR" = "xapple"; then
-  setupAppleArgs;
 fi
 
 # ensure the parameters make sense
