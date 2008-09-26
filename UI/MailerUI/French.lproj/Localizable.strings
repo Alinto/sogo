@@ -220,7 +220,7 @@
 "Operation failed" = "L'opération a échoué.";
 
 "Quota" = "Quota";
-"quotasFormat" = "%{0} Ko utilisés sur %{1} (%{2}%)";
+"quotasFormat" = "%{0}% utilisé sur %{1} MO";
 
 "Please select a message." = "Veuillez sélectionner un message.";
 "Please select a message to print." = "Veuillez sélectionner un message à imprimer.";

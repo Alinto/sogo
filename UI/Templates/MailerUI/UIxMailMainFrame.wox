@@ -191,13 +191,6 @@
     </ul>
   </div>
 
-  <div id="quotaDialog" style="display: none;">
-    <div>
-      <h1><var:string label:value="Quota"/></h1>
-      <p><!-- space --></p>
-    </div>
-  </div>
-
   <div id="leftPanel">
     <div class="titlediv"><var:string label:value="Folders" /></div>
     <div id="folderTreeContent"><!-- space --></div>

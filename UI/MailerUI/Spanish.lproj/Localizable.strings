@@ -222,7 +222,7 @@
 "Operation failed" = "Operación fallida";
 
 "Quota" = "Quotas";
-"quotasFormat" = "%{0} de %{1} Kb usados (%{2}%)";
+"quotasFormat" = "%{0}% de %{1} MB usados";
 
 "Please select a message." = "Seleccione un mensaje primero.";
 "Please select a message to print." = "Seleccione el mensaje que desea imprimir.";

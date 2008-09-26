@@ -134,7 +134,7 @@
   NSString *inboxName;
   NSUserDefaults *ud;
   WOResponse *response;
-  int quota;
+  float quota;
 
   ud = [NSUserDefaults standardUserDefaults];
   co = [self clientObject];
@@ -143,18 +143,21 @@
   folders = [self _jsonFolders: rawFolders];
 
   // Retrieve INBOX quota
-  quota = [ud integerForKey: @"SOGoSoftQuota"];
+  quota = [ud floatForKey: @"SOGoSoftQuotaRatio"];
   inbox = [co inboxFolderInContext: context];
   inboxName = [NSString stringWithFormat: @"/%@", [inbox relativeImap4Name]];
   client = [[inbox imap4Connection] client];
   infos = [[client getQuotaRoot: [inbox relativeImap4Name]] objectForKey: @"quotas"];
   inboxQuota = [infos objectForKey: inboxName];
-  if (quota > 0 && inboxQuota != nil)
-    // A soft quota is imposed for all users
-    inboxQuota = [NSDictionary dictionaryWithObjectsAndKeys:
-			       [NSNumber numberWithInt: quota], @"maxQuota",
-			       [inboxQuota objectForKey: @"usedSpace"], @"usedSpace",
-			       nil];
+  if (quota != 0 && inboxQuota != nil)
+    {
+      // A soft quota ration is imposed for all users
+      quota = quota * [(NSNumber*)[inboxQuota objectForKey: @"maxQuota"] intValue];
+      inboxQuota = [NSDictionary dictionaryWithObjectsAndKeys:
+				 [NSNumber numberWithFloat: (long)(quota+0.5)], @"maxQuota",
+				 [inboxQuota objectForKey: @"usedSpace"], @"usedSpace",
+				 nil];
+    }
   data = [NSDictionary dictionaryWithObjectsAndKeys: folders, @"mailboxes",
 		       inboxQuota, @"quotas",
 		       nil];

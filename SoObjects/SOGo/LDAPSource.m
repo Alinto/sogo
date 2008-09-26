@@ -23,6 +23,7 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSUserDefaults.h>
 
 #import <EOControl/EOControl.h>
 #import <NGLdap/NGLdapConnection.h>
@@ -394,8 +395,12 @@ static int sizeLimit;
 
 - (NSArray *) _searchAttributes
 {
+  NSUserDefaults *ud;
+  NSString *contactInfo;
+
   if (!searchAttributes)
     {
+      ud = [NSUserDefaults standardUserDefaults];
       searchAttributes = [NSMutableArray new];
       if (CNField)
 	[searchAttributes addObject: CNField];
@@ -404,6 +409,12 @@ static int sizeLimit;
       [searchAttributes addObjectsFromArray: mailFields];
       [searchAttributes addObjectsFromArray: [self _contraintsFields]];
       [searchAttributes addObjectsFromArray: commonSearchFields];
+
+      // Add SOGoLDAPContactInfoAttribute from user defaults
+      contactInfo = [ud stringForKey: @"SOGoLDAPContactInfoAttribute"];
+      if ([contactInfo length] > 0 &&
+	  ![searchAttributes containsObject: contactInfo])
+	[searchAttributes addObject: contactInfo];
     }
 
   return searchAttributes;

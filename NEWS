@@ -1,3 +1,8 @@
+1.0-2008XXYY (1.0)
+------------------
+- added quota indicator in web mail module
+- improved drag handles behavior
+
 1.0-20080826 (1.0 rc8)
 ----------------------
 - fixed a bug that would prevent deleted event and tasks from being removed from the events and tasks list

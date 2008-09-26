@@ -24,6 +24,7 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSUserDefaults.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOApplication.h>
@@ -187,8 +188,10 @@
   NSEnumerator *oldRecords;
   NSDictionary *oldRecord;
   NSMutableDictionary *newRecord;
-  NSString *data;
+  NSString *data, *contactInfo;
+  NSUserDefaults *ud;
   
+  ud = [NSUserDefaults standardUserDefaults];
   newRecords = [[NSMutableArray alloc] initWithCapacity: [records count]];
   [newRecords autorelease];
 
@@ -236,6 +239,13 @@
       if (![data length])
 	data = @"";
       [newRecord setObject: data forKey: @"phone"];
+
+      contactInfo = [ud stringForKey: @"SOGoLDAPContactInfoAttribute"];
+      if ([contactInfo length] > 0) {
+	data = [oldRecord objectForKey: contactInfo];
+	if ([data length] > 0)
+	  [newRecord setObject: data forKey: @"contactInfo"];
+      }
 
       [newRecords addObject: newRecord];
       oldRecord = [oldRecords nextObject];
