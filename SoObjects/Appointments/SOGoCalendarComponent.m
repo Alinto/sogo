@@ -1,6 +1,6 @@
 /* SOGoCalendarComponent.m - this file is part of SOGo
  *
- * Copyright (C) 2006 Inverse groupe conseil
+ * Copyright (C) 2006 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -355,7 +355,7 @@ _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
 	    {
 	      ASSIGN (*calendar, [iCalCalendar groupWithTag: @"vcalendar"]);
 	      [*calendar setVersion: @"2.0"];
-	      [*calendar setProdID: @"-//Inverse groupe conseil//SOGo 0.9//EN"];
+	      [*calendar setProdID: @"-//Inverse inc.//SOGo 0.9//EN"];
 	      componentTag = [[self componentTag] uppercaseString];
 	      newComponent = [[*calendar classForTag: componentTag]
 			       groupWithTag: componentTag];

@@ -1,6 +1,6 @@
 /* iCalEvent+SOGo.m - this file is part of SOGo
  *
- * Copyright (C) 2008 Inverse groupe conseil
+ * Copyright (C) 2008 Inverse inc.
  * Copyright (C) 2004-2005 SKYRIX Software AG
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>

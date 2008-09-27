@@ -17,7 +17,7 @@
 	</title>
 	<meta name="hideFrame" var:content="hideFrame" />
 	<meta name="description" content="SOGo Web Interface" />
-	<meta name="author" content="SKYRIX Software AG/Inverse groupe conseil" />
+	<meta name="author" content="SKYRIX Software AG/Inverse inc." />
 	<meta name="robots" content="stop" />
 	<meta name="build" var:content="buildDate" />
 	<link href="mailto:support@inverse.ca" rev="made" />

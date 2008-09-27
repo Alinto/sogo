@@ -1,6 +1,6 @@
 /* iCalRepeatableEntityObject+SOGo.h - this file is part of SOGo
   Copyright (C) 2004-2005 SKYRIX Software AG
-  Copyright (C) 2008 Inverse groupe conseil
+  Copyright (C) 2008 Inverse inc.
 
   This file is part of OpenGroupware.org.
 
