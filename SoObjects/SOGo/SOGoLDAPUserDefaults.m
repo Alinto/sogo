@@ -289,6 +289,7 @@ _convertLDAPAtomToNSDictionary (_SOGoLDAPValue *atom)
 static _SOGoLDAPValue *
 _initLDAPDefaults ()
 {
+#error dn, password, uri, configDN should be defined
   const char *dn, *password, *uri, *configDN;
   LDAP *ldapHandle;
   int rc, opt;
