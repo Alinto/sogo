@@ -1,3 +1,9 @@
+2008-09-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoLDAPUserDefaults.m ([SOGoLDAPUserDefaults
+	-objectForKey:key]): implemented overriden method by using c types
+	and methods to avoid recursive calls from objective-c methods.
+
 2008-09-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoLDAPUserDefaults.[hm]: new class module
