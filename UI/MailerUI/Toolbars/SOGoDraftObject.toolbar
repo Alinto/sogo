@@ -27,5 +27,10 @@
       cssClass = "tbicon_save";
       label = "Save";
       tooltip = "Save this message"; },
+    { link = "#";
+      hasMenu = YES;
+      label = "Priority";
+      onclick = "return onSelectPriority(event);";
+      image = "priority.png"; },
   )
 )

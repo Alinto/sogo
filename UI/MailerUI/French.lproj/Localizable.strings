@@ -96,6 +96,12 @@
 
 "Edit Draft..." = "Modifier le brouillon...";
 
+"highest" = "Maximale";
+"high" = "Haute";
+"normal" = "Normale";
+"low" = "Basse";
+"lowest" = "Minimale";
+
 "This mail is being sent from an unsecure network!" = "Ce mail est envoyé depuis un réseau non sécurisé !";
 
 /* Popup "show" */

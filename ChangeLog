@@ -1,3 +1,23 @@
+2008-09-28  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+        * Modified the following files:
+	SoObjects/Mailer/SOGoDraftObject.m
+	UI/MailerUI/Dutch.lproj/Localizable.strings
+	UI/MailerUI/English.lproj/Localizable.strings
+	UI/MailerUI/French.lproj/Localizable.strings
+	UI/MailerUI/German.lproj/Localizable.strings
+	UI/MailerUI/Italian.lproj/Localizable.strings
+	UI/MailerUI/Spanish.lproj/Localizable.strings
+	UI/MailerUI/Toolbars/SOGoDraftObject.toolbar
+	UI/MailerUI/UIxMailEditor.m
+	UI/MailerUI/UIxMailListView.m
+	UI/Templates/MailerUI/UIxMailEditor.wox
+	UI/Templates/MailerUI/UIxMailListView.wox
+	UI/WebServerResources/UIxMailEditor.js
+	in order to add support for X-Priority in emails.
+	* Regenerated the sope-patchset in order to add
+	capabilities to parse BODY[HEADER.FIELDS ...] responses.
+
 2008-09-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoLDAPUserDefaults.m ([SOGoLDAPUserDefaults

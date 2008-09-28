@@ -102,6 +102,12 @@
 
 "Edit Draft..." = "Modifica bozza...";
 
+"highest" = "Highest";
+"high" = "High";
+"normal" = "Normal";
+"low" = "Low";
+"lowest" = "Lowest";
+
 "This mail is being sent from an unsecure network!" = "Questa email è stata spedita da un network contrassegnato come non sicuro!";
 
 /* Popup "show" */
