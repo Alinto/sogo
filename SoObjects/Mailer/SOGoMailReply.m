@@ -51,6 +51,26 @@
   return outlookMode;
 }
 
+- (void) setReplyPlacement: (NSString *) newPlacement
+{
+  replyPlacement = newPlacement;
+}
+
+- (BOOL) replyPlacementOnTop
+{
+  return [replyPlacement isEqual: @"above"];
+}
+
+- (void) setSignaturePlacement: (NSString *) newPlacement
+{
+  signaturePlacement = newPlacement;
+}
+
+- (BOOL) signaturePlacementOnTop
+{
+  return [signaturePlacement isEqual: @"above"];
+}
+
 - (NSString *) messageBody
 {
   NSString *s;

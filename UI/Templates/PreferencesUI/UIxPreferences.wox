@@ -104,6 +104,15 @@
 	      const:id="messageForwarding"
 	      string="itemMessageForwardingText"
 	      selection="userMessageForwarding"/></label><br/>
+	  <var:popup list="replyPlacementList" item="item"
+      const:id="replyPlacementList"
+	  	string="itemReplyPlacementText"
+      selection="userReplyPlacement"/>
+    <br /><label><var:string label:value="And place my signature"/></label>
+	  <var:popup list="signaturePlacementList" item="item"
+      const:id="signaturePlacementList"
+	  	string="itemSignaturePlacementText"
+      selection="userSignaturePlacement"/>
 	<!--	<label><input
 	const:name="inTheOffice" type="radio" const:value="YES"
 	var:selection="inTheOffice"/>
@@ -124,7 +133,7 @@
 	</var:multiselection>
 	  <br/>-->
 	  <textarea const:id="signature" const:name="signature"
-	    var:value="signature"/>
+	    var:value="signature" />
 	</div>
       </var:if>
       <var:if condition="shouldDisplayAdditionalPreferences"

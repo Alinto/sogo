@@ -137,6 +137,8 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 - (NSString *) messageCheck;
 
 - (NSString *) signature;
+- (NSString *) replyPlacement;
+- (NSString *) signaturePlacement;
 
 - (void) saveMailAccounts;
 

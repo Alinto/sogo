@@ -30,10 +30,14 @@
 @interface SOGoMailReply : SOGoMailForward
 {
   BOOL outlookMode;
+  NSString *replyPlacement;
+  NSString *signaturePlacement;
 }
 
 - (void) setOutlookMode: (BOOL) newOutlookMode;
 - (BOOL) outlookMode;
+- (void) setReplyPlacement: (NSString *) newPlacement;
+- (BOOL) replyPlacementOnTop;
 
 @end
 

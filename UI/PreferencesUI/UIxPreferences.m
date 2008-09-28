@@ -513,6 +513,50 @@ static BOOL shouldDisplayAdditionalPreferences = NO;
   [user saveMailAccounts];
 }
 
+/* Modification */
+- (NSArray *) replyPlacementList
+{
+  return [NSArray arrayWithObjects: @"above", @"below", nil];
+}
+
+- (NSString *) itemReplyPlacementText
+{
+  return [self labelForKey:
+		 [NSString stringWithFormat: @"replyplacement_%@", item]];
+}
+
+- (NSString *) userReplyPlacement
+{
+  return [user replyPlacement];
+}
+
+- (void) setUserReplyPlacement: (NSString *) newReplyPlacement
+{
+  [userDefaults setObject: newReplyPlacement forKey: @"ReplyPlacement"];
+}
+
+- (NSArray *) signaturePlacementList
+{
+  return [NSArray arrayWithObjects: @"above", @"below", nil];
+}
+
+- (NSString *) itemSignaturePlacementText
+{
+  return [self labelForKey:
+		 [NSString stringWithFormat: @"signatureplacement_%@", item]];
+}
+
+- (NSString *) userSignaturePlacement
+{
+  return [user signaturePlacement];
+}
+
+- (void) setUserSignaturePlacement: (NSString *) newSignaturePlacement
+{
+  [userDefaults setObject: newSignaturePlacement forKey: @"SignaturePlacement"];
+}
+/* Fin */
+
 - (id <WOActionResults>) defaultAction
 {
   id <WOActionResults> results;

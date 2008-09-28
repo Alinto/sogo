@@ -157,6 +157,8 @@
 				      inContext: context];
   [page setSourceMail: self];
   [page setOutlookMode: [self useOutlookStyleReplies]];
+  [page setReplyPlacement: [[currentUser userDefaults] stringForKey: @"ReplyPlacement"]];
+  [page setSignaturePlacement: [[currentUser userDefaults] stringForKey: @"SignaturePlacement"]];
   
   return [[page generateResponse] contentAsString];
 }

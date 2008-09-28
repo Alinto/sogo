@@ -772,6 +772,33 @@ _timeValue (NSString *key)
   return [[self primaryIdentity] objectForKey: @"signature"];
 }
 
+/* Modification */
+- (NSString *) replyPlacement
+{
+  NSString *replyPlacement;
+
+  replyPlacement
+    = [[self userDefaults] stringForKey: @"ReplyPlacement"];
+  if (![replyPlacement length])
+    replyPlacement = @"below";
+
+  return replyPlacement;
+}
+
+- (NSString *) signaturePlacement
+{
+  NSString *signaturePlacement;
+
+  signaturePlacement
+    = [[self userDefaults] stringForKey: @"SignaturePlacement"];
+  if (![signaturePlacement length])
+    signaturePlacement = @"below";
+
+  return signaturePlacement;
+}
+
+/* Fin */
+
 - (NSString *) messageForwarding
 {
   NSString *messageForwarding;

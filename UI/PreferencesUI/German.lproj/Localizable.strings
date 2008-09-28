@@ -82,6 +82,11 @@
 "Default identity:" = "Standard Identität:";
 "Manage identities..." = "Identitäten verwalten...";
 "Signature" = "Unterschrift";
+"replyplacement_above" = "replyplacement_above";
+"replyplacement_below" = "replyplacement_below";
+"And place my signature" = "And place my signature";
+"signatureplacement_above" = "signatureplacement_above";
+"signatureplacement_below" = "signatureplacement_below";
 
 /* Additional Parameters */
 "Additional Parameters" = "Additional Parameters";

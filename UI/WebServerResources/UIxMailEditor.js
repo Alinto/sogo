@@ -313,14 +313,22 @@ function onTextIEUpdateCursorPos(event) {
 
 function onTextFirstFocus() {
 	var content = this.getValue();
-	if (content.lastIndexOf("--") == 0) {
-		this.insertBefore(document.createTextNode("\r"),
-											this.lastChild);
-	}
-	if (signatureLength > 0) {
-		var length = this.getValue().length - signatureLength - 2;
-		this.setCaretTo(length);
-	}
+  var signaturePlacement = userDefaults["SignaturePlacement"];
+  if ( typeof(signaturePlacement) == "undefined" ) {
+    signaturePlacement = "below";
+  }
+  var replyPlacement = userDefaults["ReplyPlacement"];
+  if ( typeof(replyPlacement) == "undefined" ) {
+    replyPlacement = signaturePlacement;
+  }
+
+  if ( replyPlacement == "above" ) {
+    this.setCaretTo(0);
+  }
+  else {
+    this.setCaretTo(this.getValue().length - signatureLength - 2);
+  }
+    
 	Event.stopObserving(this, "focus", onTextFirstFocus);
 }
 

@@ -85,6 +85,11 @@
 "Default identity:" = "Default identity:";
 "Manage identities..." = "Manage identities...";
 "Signature" = "Signature";
+"replyplacement_above" = "Start my reply above the quote";
+"replyplacement_below" = "Start my reply below the quote";
+"And place my signature" = "And place my signature";
+"signatureplacement_above" = "below my reply";
+"signatureplacement_below" = "below the quote";
 
 /* Additional Parameters */
 "Additional Parameters" = "Additional Parameters";
