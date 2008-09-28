@@ -92,9 +92,14 @@
 "bcc"           = "Bcc";
 
 "Addressbook"   = "Address Book";
-"Anais"         = "Anais";
 
 "Edit Draft..." = "Edit Draft...";
+
+"highest" = "Highest";
+"high" = "High";
+"normal" = "Normal";
+"low" = "Low";
+"lowest" = "Lowest";
 
 "This mail is being sent from an unsecure network!" = "This mail is being sent from an unsecure network!";
 

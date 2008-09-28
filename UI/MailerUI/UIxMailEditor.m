@@ -1,6 +1,8 @@
 /*
   Copyright (C) 2004-2005 SKYRIX Software AG
 
+  Copyright (C) 2008 Inverse inc.
+
   This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
@@ -64,6 +66,9 @@
   NSString *from;
   SOGoMailFolder *sentFolder;
 
+  NSString *priority;
+  id item;
+
   /* these are for the inline attachment list */
   NSString *attachmentName;
   NSArray  *attachmentNames;
@@ -85,7 +90,7 @@ static NSArray *infoKeys = nil;
   infoKeys = [[NSArray alloc] initWithObjects:
 				@"subject", @"to", @"cc", @"bcc", 
 			      @"from", @"replyTo", @"inReplyTo",
-			      nil];
+			      @"priority", nil];
   
   /* Internet mail settings */
   
@@ -100,8 +105,20 @@ static NSArray *infoKeys = nil;
 	[internetMailHeaders count]);
 }
 
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      [self setPriority: @"NORMAL"];
+    }
+  
+  return self;
+}
+
 - (void) dealloc
 {
+  [item release];
+  [priority release];
   [sentFolder release];
   [fromEMails release];
   [from release];
@@ -117,6 +134,45 @@ static NSArray *infoKeys = nil;
 }
 
 /* accessors */
+- (void) setItem: (id) _item
+{
+  ASSIGN (item, _item);
+}
+
+- (id) item
+{
+  return item;
+}
+
+- (NSArray *) priorityClasses
+{
+  static NSArray *priorities = nil;
+  
+  if (!priorities)
+    {
+      priorities = [NSArray arrayWithObjects: @"HIGHEST", @"HIGH",
+                            @"NORMAL", @"LOW", @"LOWEST", nil];
+      [priorities retain];
+    }
+
+  return priorities;
+}
+
+- (void) setPriority: (NSString *) _priority
+{
+  ASSIGN(priority, _priority);
+}
+
+- (NSString *) priority
+{
+  return priority;
+}
+
+- (NSString *) itemPriorityText
+{
+  return [self labelForKey: [NSString stringWithFormat: @"%@", [item lowercaseString]]];
+}
+
 - (NSString *) isMailReply
 {
   return ([to count] > 0 ? @"true" : @"false");

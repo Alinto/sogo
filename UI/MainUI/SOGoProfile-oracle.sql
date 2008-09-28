@@ -1,5 +1,5 @@
 --
--- (C) 2007 Inverse groupe conseil
+-- (C) 2007 Inverse inc.
 --
 
 CREATE TABLE @{tableName} (

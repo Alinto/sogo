@@ -1,6 +1,6 @@
 /* UIxRecurrenceEditor.m - this file is part of SOGo
  *
- * Copyright (C) 2008 Inverse groupe conseil
+ * Copyright (C) 2008 Inverse inc.
  *
  * Author: Ludovic Marcotte <ludovic@inverse.ca>
  *

@@ -26,9 +26,11 @@
 	><img rsrc:src="title_read_14x14.png" label:title="Flagged" /></td
 	><td class="tbtv_headercell sortableTableHeader" id="dateHeader"
 	><var:string label:value="Date"/></td
+	><td class="tbtv_headercell" id="priorityHeader"
+	><var:string label:value="Priority"/></td
 	></tr>
     <tr class="tableview"
-      ><td colspan="6" class="tbtv_navcell"
+      ><td colspan="7" class="tbtv_navcell"
 	><var:if condition="hasPrevious">
 	  <a href="#"
 	    idx="1"><var:string label:value="first"/></a> |
@@ -107,6 +109,12 @@
 	  ><var:string value="messageDate" 
 	      /><entity name="nbsp"
 	    /></td
+
+	  ><td class="messagePriorityColumn"
+	  ><var:string value="messagePriority" 
+	      /><entity name="nbsp"
+	    /></td
+
 	  ></tr>
     </var:foreach>
   </tbody>

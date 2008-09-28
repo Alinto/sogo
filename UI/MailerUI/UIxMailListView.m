@@ -27,6 +27,7 @@
 */
 
 #import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSCharacterSet.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSTimeZone.h>
@@ -102,6 +103,55 @@
   [messageDate setTimeZone: userTimeZone];
 
   return [dateFormatter formattedDateAndTime: messageDate];
+}
+
+//
+// Priorities are defined like this:
+//
+// X-Priority: 1 (Highest)
+// X-Priority: 2 (High)
+// X-Priority: 3 (Normal)
+// X-Priority: 4 (Low)
+// X-Priority: 5 (Lowest)
+//
+// Sometimes, the MUAs don't send over the string in () so we ignore it.
+//
+- (NSString *) messagePriority
+{
+  NSString *result;
+  NSData *data;
+    
+  data = [message objectForKey: @"header"];
+  result = @"";
+
+  if (data)
+    {
+      NSString *s;
+      
+      s = [[NSString alloc] initWithData: data
+			    encoding: NSASCIIStringEncoding];
+
+      if (s)
+	{
+	  NSRange r;
+
+	  [s autorelease];
+	  r = [s rangeOfString: @":"];
+
+	  if (r.length)
+	    {
+	      s = [[s substringFromIndex: r.location+1]
+		    stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+
+	      if ([s hasPrefix: @"1"]) result = [self labelForKey: @"highest"];
+	      else if ([s hasPrefix: @"2"]) result = [self labelForKey: @"high"];
+	      else if ([s hasPrefix: @"4"]) result = [self labelForKey: @"low"];
+	      else if ([s hasPrefix: @"5"]) result = [self labelForKey: @"lowest"];
+	    }
+	}
+    }
+  
+  return result;
 }
 
 - (NSString *) messageSubject
@@ -239,9 +289,8 @@
 
   if (!keys)
     keys = [[NSArray alloc] initWithObjects: @"UID",
-			    @"FLAGS", @"ENVELOPE", @"RFC822.SIZE",
-			    @"BODYSTRUCTURE", nil];
-
+    			    @"FLAGS", @"ENVELOPE", @"RFC822.SIZE",
+    			    @"BODYSTRUCTURE", @"BODY[HEADER.FIELDS (X-PRIORITY)]", nil];
   return keys;
 }
 

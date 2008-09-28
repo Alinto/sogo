@@ -1,6 +1,6 @@
 /* NGVList.m - this file is part of NGCards
  *
- * Copyright (C) 2008 Inverse groupe conseil
+ * Copyright (C) 2008 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *

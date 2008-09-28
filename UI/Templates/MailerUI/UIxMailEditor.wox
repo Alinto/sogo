@@ -28,7 +28,19 @@
     </ul>
   </div>
 
+  <div class="menu" id="priority-menu">
+    <ul id="itemPriorityList" class="choiceMenu">
+      <var:foreach list="priorityClasses" item="item">
+	<li var:priority="item"><var:string
+	    var:value="itemPriorityText" /></li>
+      </var:foreach>
+    </ul>
+  </div>
+
   <form const:href="send" name="pageform" enctype="multipart/form-data" autocomplete="off">
+    <input type="hidden" name="priority" id="priority"
+	var:value="priority"/>
+
     <div id="attachmentsArea">
       <var:string label:value="Attachments:" />
       <ul id="attachments">

@@ -561,6 +561,33 @@ function initMailEditor() {
 
 	var focusField = (mailIsReply ? textarea : $("addr_0"));
 	focusField.focus();
+
+	initializePriorityMenu();
+}
+
+function initializePriorityMenu() {
+  var priority = $("priority").value.toUpperCase();
+  var priorityMenu = $("priority-menu").childNodesWithTag("ul")[0];
+  var menuEntries = $(priorityMenu).childNodesWithTag("li");
+  var chosenNode;
+  if (priority == "HIGHEST")
+    chosenNode = menuEntries[0];
+  else if (priority == "HIGH")
+    chosenNode = menuEntries[1];
+  else if (priority == "LOW")
+    chosenNode = menuEntries[3];
+  else if (priority == "LOWEST")
+    chosenNode = menuEntries[4];
+  else
+    chosenNode = menuEntries[2];
+  priorityMenu.chosenNode = chosenNode;
+  $(chosenNode).addClassName("_chosen");
+
+	var menuItems = $("itemPriorityList").childNodesWithTag("li");
+  for (var i = 0; i < menuItems.length; i++)
+		menuItems[i].observe("mousedown",
+												 onMenuSetPriority.bindAsEventListener(menuItems[i]),
+												 false);
 }
 
 function getMenus() {
@@ -607,11 +634,35 @@ function attachmentDeleteCallback(http) {
 	}
 }
 
+function onMenuSetPriority(event) {
+  event.cancelBubble = true;
+
+  var priority = this.getAttribute("priority");
+  if (this.parentNode.chosenNode)
+    this.parentNode.chosenNode.removeClassName("_chosen");
+  this.addClassName("_chosen");
+  this.parentNode.chosenNode = this;
+
+  var priorityInput = $("priority");
+  priorityInput.value = priority;
+}
+
 function onSelectAllAttachments() {
 	var list = $("attachments");
 	var nodes = list.childNodesWithTag("li");
 	for (var i = 0; i < nodes.length; i++)
 		nodes[i].selectElement();
+}
+
+function onSelectPriority(event) {
+  if (event.button == 0 || (isSafari() && event.button == 1)) {
+    var node = getTarget(event);
+    if (node.tagName != 'BUTTON')
+      node = $(node).up("button");
+    popupToolbarMenu(node, "priority-menu");
+    Event.stop(event);
+    //       preventDefault(event);
+  }
 }
 
 function onWindowResize(event) {

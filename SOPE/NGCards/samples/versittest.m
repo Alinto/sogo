@@ -1,6 +1,6 @@
 /* versittest.m - this file is part of $PROJECT_NAME_HERE$
  *
- * Copyright (C) 2006 Inverse groupe conseil
+ * Copyright (C) 2006 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *

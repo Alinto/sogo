@@ -120,7 +120,7 @@ static unsigned int freebusyRangeEnd = 0;
   uid = [container ownerInContext: context];
 
   calendar = [iCalCalendar groupWithTag: @"vcalendar"];
-  [calendar setProdID: @"//Inverse groupe conseil/SOGo 0.9"];
+  [calendar setProdID: @"//Inverse inc./SOGo 0.9"];
   [calendar setVersion: @"2.0"];
   if (method)
     [calendar setMethod: method];

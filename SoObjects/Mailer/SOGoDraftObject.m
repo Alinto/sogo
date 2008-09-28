@@ -181,7 +181,7 @@ static BOOL        showTextAttachmentsInline  = NO;
 {
   id headerValue;
   unsigned int count;
-  NSString *messageID;
+  NSString *messageID, *priority;
 
   for (count = 0; count < 8; count++)
     {
@@ -198,6 +198,29 @@ static BOOL        showTextAttachmentsInline  = NO;
     {
       messageID = [self _generateMessageID];
       [headers setObject: messageID forKey: @"message-id"];
+    }
+  
+  priority = [newHeaders objectForKey: @"priority"];
+  
+  if (!priority || [priority isEqualToString: @"NORMAL"])
+    {
+      [headers removeObjectForKey: @"X-Priority"];
+    }
+  else if ([priority isEqualToString: @"HIGHEST"])
+    {
+      [headers setObject: @"1 (Highest)"  forKey: @"X-Priority"];
+    }
+  else if ([priority isEqualToString: @"HIGH"])
+    {
+      [headers setObject: @"2 (High)"  forKey: @"X-Priority"];
+    }
+  else if ([priority isEqualToString: @"LOW"])
+    {
+      [headers setObject: @"4 (Low)"  forKey: @"X-Priority"];
+    }
+  else
+    {
+      [headers setObject: @"5 (Lowest)"  forKey: @"X-Priority"];
     }
 }
 
@@ -1235,8 +1258,10 @@ static BOOL        showTextAttachmentsInline  = NO;
   [map addObject: userAgent forKey: @"User-Agent"];
 
   /* add custom headers */
-  
-//   [self _addHeaders: [lInfo objectForKey: @"headers"] toHeaderMap:map];
+  if ([(s = [headers objectForKey: @"X-Priority"]) length] > 0)
+    [map setObject: s
+	 forKey: @"X-Priority"];
+
   [self _addHeaders: _headers toHeaderMap: map];
   
   return map;

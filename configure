@@ -83,6 +83,11 @@ printParas() {
   else
     echo "  strip:  no";
   fi
+  if test $ARG_WITH_LDAP_CONFIG = 1; then 
+    echo "  ldap-based configuration:  yes";
+  else
+    echo "  ldap-based configuration:  no";
+  fi
   
   echo "  prefix: $ARG_PREFIX"
   echo "  gstep:  $ARG_GSMAKE"
