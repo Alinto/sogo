@@ -437,12 +437,6 @@ function performSearchCallback(http) {
 					list.appendChild(node);
 					node.uid = contact["c_uid"];
 					node.appendChild(document.createTextNode(completeEmail));
-					log($H(contact).inspect() + "");
-					if (contact["contactInfo"]) {
-						var info = new Element('span').update(contact['contactInfo']);
-						node.appendChild(info);
-						log ("info = " + contact['contactInfo']);
-					}
 					$(node).observe("mousedown", onAddressResultClick);
 				}
 
