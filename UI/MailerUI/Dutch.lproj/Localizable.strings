@@ -209,7 +209,7 @@
 "Operation failed" = "Operatie mislukt.";
 
 "Quota" = "Quota";
-"quotasFormat" = "%{0} van %{1} KB gebruikt (%{2}%)";
+"quotasFormat" = "%{0}% van %{1} MB gebruikt";
 
 "Please select a message." = "Selecteer een bericht.";
 "Please select a message to print." = "Selecteer een bericht om af te drukken.";

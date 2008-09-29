@@ -20,7 +20,6 @@
 */
 
 #import <Foundation/NSEnumerator.h>
-#import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSValue.h>
 
 #import <NGCards/NGVCard.h>
@@ -150,8 +149,8 @@
 - (id <WOActionResults>) composeAction
 {
   id <SOGoContactObject> contact;
-  NSArray *accounts, *contactsId;
-  NSString *firstAccount, *newLocation, *parameters, *folderId, *uid, *email, *n;
+  NSArray *accounts, *contactsId, *n;
+  NSString *firstAccount, *newLocation, *parameters, *folderId, *uid, *email;
   NSMutableString *fn;
   NSEnumerator *uids;
   NSMutableArray *addresses;
