@@ -81,3 +81,21 @@ signature: WOString {
   value = signature;
   escapeHTML = NO;
 }
+
+replyPlacementOnTop: WOConditional {
+  condition = replyPlacementOnTop;
+}
+
+replyPlacementOnBottom: WOConditional {
+  condition = replyPlacementOnTop;
+  negate = YES;
+}
+
+signaturePlacementOnTop: WOConditional {
+  condition = signaturePlacementOnTop;
+}
+
+signaturePlacementOnBottom: WOConditional {
+  condition = signaturePlacementOnTop;
+  negate = YES;
+}
