@@ -86,6 +86,11 @@ static BOOL showNamedTextAttachmentsInline = NO;
   flatContents = nil;
 }
 
+- (void) setUnsafe: (BOOL) b
+{
+  unsafe = b;
+}
+
 /* fetching */
 
 - (NSDictionary *) flatContents
@@ -152,7 +157,12 @@ static BOOL showNamedTextAttachmentsInline = NO;
 
 - (WOComponent *) htmlViewer
 {
-  return [viewer pageWithName: @"UIxMailPartHTMLViewer"];
+  id o;
+  
+  o = [viewer pageWithName: @"UIxMailPartHTMLViewer"];
+  [o setUnsafe: unsafe];
+  
+  return o;
 }
 
 - (WOComponent *) messageViewer
@@ -307,7 +317,8 @@ static BOOL showNamedTextAttachmentsInline = NO;
 
 /* debugging */
 
-- (BOOL)isDebuggingEnabled {
+- (BOOL) isDebuggingEnabled
+{
   return NO;
 }
 
@@ -318,10 +329,13 @@ static BOOL showNamedTextAttachmentsInline = NO;
 
 static NSString *MRK = @"UIxMailRenderingContext";
 
-- (void)pushMailRenderingContext:(UIxMailRenderingContext *)_mctx {
+- (void) pushMailRenderingContext: (UIxMailRenderingContext *) _mctx
+{
   [self setObject:_mctx forKey:MRK];
 }
-- (UIxMailRenderingContext *)popMailRenderingContext {
+
+- (UIxMailRenderingContext *) popMailRenderingContext
+{
   UIxMailRenderingContext *mctx;
   
   if ((mctx = [self objectForKey:MRK]) == nil)
@@ -331,7 +345,9 @@ static NSString *MRK = @"UIxMailRenderingContext";
   [self removeObjectForKey:MRK];
   return mctx;
 }
-- (UIxMailRenderingContext *)mailRenderingContext {
+
+- (UIxMailRenderingContext *) mailRenderingContext
+{
   return [self objectForKey:MRK];
 }
 

@@ -103,6 +103,8 @@ _xmlCharsetForCharset (NSString *charset)
   BOOL inScript;
   BOOL inCSSDeclaration;
   BOOL hasEmbeddedCSS;
+  BOOL hasExternalImages;
+  BOOL unsafe;
   NSMutableArray *crumb;
   xmlCharEncoding contentEncoding;
 }
@@ -133,6 +135,16 @@ _xmlCharsetForCharset (NSString *charset)
   [result release];
   [css release];
   [super dealloc];
+}
+
+- (BOOL) hasExternalImages
+{
+  return hasExternalImages;
+}
+
+- (BOOL) setUnsafe: (BOOL) b
+{
+  unsafe = b;
 }
 
 - (void) setContentEncoding: (xmlCharEncoding) newContentEncoding
@@ -292,8 +304,14 @@ _xmlCharsetForCharset (NSString *charset)
                   value = [attachmentIds objectForKey: cid];
                   skipAttribute = (value == nil);
                 }
-              else
-                skipAttribute = YES;
+              else if ([_rawName caseInsensitiveCompare: @"img"] == NSOrderedSame)
+		{
+		  hasExternalImages = YES;
+		  
+		  if (!unsafe) skipAttribute = YES;
+		}
+	      else
+		skipAttribute = YES;
             }
           else if ([name caseInsensitiveCompare: @"href"] == NSOrderedSame
 		   || [name caseInsensitiveCompare: @"action"] == NSOrderedSame)
@@ -520,8 +538,15 @@ _xmlCharsetForCharset (NSString *charset)
   handler = [_UIxHTMLMailContentHandler new];
   [handler setAttachmentIds: [mail fetchAttachmentIds]];
   [handler setContentEncoding: [self _xmlCharEncoding]];
+  [handler setUnsafe: unsafe];
+
   [parser setContentHandler: handler];
   [parser parseFromSource: preparsedContent];
+}
+
+- (BOOL) hasExternalImages
+{
+  return [handler hasExternalImages];
 }
 
 - (NSString *) cssContent
@@ -548,6 +573,23 @@ _xmlCharsetForCharset (NSString *charset)
     [self _parseContent];
 
   return [handler result];
+}
+
+- (void) setUnsafe: (BOOL) b
+{
+  unsafe = b;
+}
+
+- (BOOL) displayLoadImages
+{
+  BOOL b;
+
+  b = [handler hasExternalImages];
+
+  if (b && unsafe)
+    return NO;
+
+  return b;
 }
 
 @end

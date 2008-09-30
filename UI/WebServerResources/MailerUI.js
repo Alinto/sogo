@@ -752,6 +752,20 @@ function loadMessage(idx) {
     configureLinksInMessage();
     resizeMailContent();
   }
+
+	configureLoadImagesButton();
+}
+
+function configureLoadImagesButton() {
+	// We show/hide the "Load Images" button
+	var loadImagesButton = $("loadImagesButton");
+	var displayLoadImages = $("displayLoadImages");
+	
+	if (typeof(displayLoadImages) == "undefined" ||
+			displayLoadImages == null ||
+			displayLoadImages.value == 0) {
+		loadImagesButton.style.display = 'none';
+	}
 }
 
 function configureLinksInMessage() {
@@ -778,6 +792,11 @@ function configureLinksInMessage() {
   if (editDraftButton)
     editDraftButton.observe("click",
 														onMessageEditDraft.bindAsEventListener(editDraftButton));
+
+	var loadImagesButton = $("loadImagesButton");
+	if (loadImagesButton)
+		loadImagesButton.observe("click",
+														 onMessageLoadImages.bindAsEventListener(loadImagesButton));
 
   configureiCalLinksInMessage();
 }
@@ -885,6 +904,14 @@ function onMessageEditDraft(event) {
   return openMessageWindowsForSelection("edit", true);
 }
 
+function onMessageLoadImages(event) {
+	var msguid = Mailer.currentMessages[Mailer.currentMailbox];
+	var url = (ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/"
+						 + msguid + "/view?noframe=1&unsafe=1");
+	document.messageAjaxRequest
+		= triggerAjaxRequest(url, messageCallback, msguid);
+}
+
 function onEmailAddressClick(event) {
   popupMenu(event, 'addressMenu', this);
   preventDefault(event);
@@ -910,7 +937,8 @@ function messageCallback(http) {
     div.update(http.responseText);
     configureLinksInMessage();
     resizeMailContent();
-    
+		configureLoadImagesButton();
+		
     if (http.callbackData) {
       var cachedMessage = new Array();
       cachedMessage['idx'] = Mailer.currentMailbox + '/' + http.callbackData;

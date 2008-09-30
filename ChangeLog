@@ -1,3 +1,8 @@
+2008-09-30  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* Implemented external loading of images
+	  in HTML mails the same way Thunderbird does it.
+
 2008-09-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoLDAPUserDefaults.m ([SOGoLDAPUserDefaults

@@ -356,6 +356,13 @@ INPUT#editDraftButton
   right: 1em;
 }
 
+INPUT#loadImagesButton
+{
+  position: absolute;
+  top: 2.5em;
+  right: 1em;
+}
+
 TABLE.mailer_fieldtable
 { top: 0px;
   left: 0px;

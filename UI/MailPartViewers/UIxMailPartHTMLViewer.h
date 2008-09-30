@@ -1,6 +1,6 @@
 /* UIxMailPartHTMLViewer.h - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse inc.
+ * Copyright (C) 2007, 2008 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -28,9 +28,11 @@
 @interface UIxMailPartHTMLViewer : UIxMailPartViewer
 {
   id handler;
+  BOOL unsafe;
 }
 
 - (NSString *) flatContentAsString;
+- (void) setUnsafe: (BOOL) b;
 
 @end
 
