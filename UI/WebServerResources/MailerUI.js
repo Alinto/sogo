@@ -1830,6 +1830,34 @@ function onLabelMenuPrepareVisibility() {
     lis[0].addClassName("_chosen");
 }
 
+
+function saveAs() {
+	saveSelectedMessages();
+  preventDefault(event);
+}
+
+function saveSelectedMessages(sender) {
+  var messageList = $("messageList").down("TBODY");
+	var rows = messageList.getSelectedNodes();
+	var uids = new Array(); // message IDs
+	var paths = new Array(); // row IDs
+
+  if (rows.length > 0) {
+    for (var i = 0; i < rows.length; i++) {
+      var uid = rows[i].readAttribute("id").substr(4);
+      var path = Mailer.currentMailbox + "/" + uid;
+			uids.push(uid);
+			paths.push(path);
+    }
+		var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/saveMessages";
+		window.open(url+"?id="+uids+"&uid="+uids+"&mailbox="+Mailer.currentMailbox+"&path="+paths);
+  }
+  else
+    window.alert(labels["Please select a message."]);
+
+  return false;
+}
+
 function getMenus() {
   var menus = {}
   menus["accountIconMenu"] = new Array(null, null, onMenuCreateFolder, null,
@@ -1857,14 +1885,14 @@ function getMenus() {
 																			 onMenuForwardMessage, null,
 																			 "-", "moveMailboxMenu",
 																			 "copyMailboxMenu", "label-menu",
-																			 "mark-menu", "-", null,
+																			 "mark-menu", "-", saveAs,
 																			 onMenuViewMessageSource, null,
 																			 null, onMenuDeleteMessage);
   menus["messagesListMenu"] = new Array(onMenuForwardMessage,
 																				"-", "moveMailboxMenu",
 																				"copyMailboxMenu", "label-menu",
 																				"mark-menu", "-",
-																				null, null,
+																				saveAs, null,
 																				onMenuDeleteMessage);
   menus["imageMenu"] = new Array(saveImage);
   menus["messageContentMenu"] = new Array(onMenuReplyToSender,
@@ -1874,7 +1902,7 @@ function getMenus() {
 																					"copyMailboxMenu",
 																					"-", "label-menu", "mark-menu",
 																					"-",
-																					null, onMenuViewMessageSource,
+																					saveAs, onMenuViewMessageSource,
 																					null, onPrintCurrentMessage,
 																					onMenuDeleteMessage);
   menus["folderTypeMenu"] = new Array(onMenuChangeToSentFolder,
