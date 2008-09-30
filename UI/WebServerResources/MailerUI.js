@@ -1830,13 +1830,7 @@ function onLabelMenuPrepareVisibility() {
     lis[0].addClassName("_chosen");
 }
 
-
-function saveAs() {
-	saveSelectedMessages();
-  preventDefault(event);
-}
-
-function saveSelectedMessages(sender) {
+function saveAs(event) {
   var messageList = $("messageList").down("TBODY");
 	var rows = messageList.getSelectedNodes();
 	var uids = new Array(); // message IDs
