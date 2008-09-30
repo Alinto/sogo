@@ -2,6 +2,7 @@
 ------------------
 - added quota indicator in web mail module
 - improved drag handles behavior
+- added support for LDAP-based configuration
 
 1.0-20080826 (1.0 rc8)
 ----------------------
