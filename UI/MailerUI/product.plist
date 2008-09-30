@@ -141,6 +141,11 @@
 	  actionClass = "UIxMailFolderActions";
 	  actionName = "deleteMessages";
 	};
+	saveMessages = {
+	  protectedBy = "View";
+	  actionClass = "UIxMailFolderActions";
+	  actionName = "saveMessages";
+	};
 	setAsDraftsFolder = {
 	  protectedBy = "View";
 	  actionClass = "UIxMailFolderActions";

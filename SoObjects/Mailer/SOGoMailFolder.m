@@ -23,13 +23,16 @@
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSURL.h>
 #import <Foundation/NSUserDefaults.h>
+#import <Foundation/NSTask.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSURL+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
+#import <NGExtensions/NSFileManager+Extensions.h>
 
 #import <NGImap4/NGImap4Connection.h>
 #import <NGImap4/NGImap4Client.h>
@@ -51,6 +54,8 @@ static BOOL aclUsernamesAreQuoted = NO;
 /* http://www.tools.ietf.org/wg/imapext/draft-ietf-imapext-acl/ */
 static BOOL aclConformsToIMAPExt = NO;
 
+static NSString *spoolFolder = nil;
+
 @interface NGImap4Connection (PrivateMethods)
 
 - (NSString *) imap4FolderNameForURL: (NSURL *) url;
@@ -65,19 +70,29 @@ static BOOL aclConformsToIMAPExt = NO;
   NSString *aclStyleStr;
 
   if (aclStyle == undefined)
-    {
-      ud = [NSUserDefaults standardUserDefaults];
-      aclStyleStr = [ud stringForKey: @"SOGoIMAPAclStyle"];
-      if ([aclStyleStr isEqualToString: @"rfc2086"])
-	aclStyle = rfc2086;
-      else
-	aclStyle = rfc4314;
+  {
+    ud = [NSUserDefaults standardUserDefaults];
+    aclStyleStr = [ud stringForKey: @"SOGoIMAPAclStyle"];
+    if ([aclStyleStr isEqualToString: @"rfc2086"])
+      aclStyle = rfc2086;
+    else
+      aclStyle = rfc4314;
 
-      aclUsernamesAreQuoted
-	= [ud boolForKey: @"SOGoIMAPAclUsernamesAreQuoted"];
-      aclConformsToIMAPExt
-	= [ud boolForKey: @"SOGoIMAPAclConformsToIMAPExt"];
-    }
+    aclUsernamesAreQuoted
+      = [ud boolForKey: @"SOGoIMAPAclUsernamesAreQuoted"];
+    aclConformsToIMAPExt
+      = [ud boolForKey: @"SOGoIMAPAclConformsToIMAPExt"];
+  }
+
+  if (!spoolFolder)
+  {
+    spoolFolder = [ud stringForKey:@"SOGoMailSpoolPath"];
+    if (![spoolFolder length])
+      spoolFolder = @"/tmp/";
+    [spoolFolder retain];
+
+    NSLog(@"Note: using SOGo mail spool folder: %@", spoolFolder);
+  }
 }
 
 + (SOGoIMAPAclStyle) imapAclStyle
@@ -300,6 +315,82 @@ static BOOL aclConformsToIMAPExt = NO;
 			 reason: @"Did not find Trash folder!"];
 
   return error;
+}
+
+- (WOResponse *) archiveUIDs: (NSArray *) uids
+  inContext: (id) localContext
+{
+  NSException *error;
+  NSFileManager *fm;
+  NSString *spoolPath, *fileName;
+  NSDictionary *msgs;
+  NSArray *messages;
+  NSData *content, *zipContent;
+  NSTask *zipTask;
+  NSMutableArray *zipTaskArguments;
+  WOResponse *response;
+  int i;
+  
+  spoolPath = [self userSpoolFolderPath];
+  if ( ![self ensureSpoolFolderPath] ) {
+    error = [NSException exceptionWithHTTPStatus: 500 
+      reason: @"spoolFolderPath doesn't exist"];
+    return (WOResponse *)error;
+  }
+
+  fm = [NSFileManager defaultManager];
+  if ( ![fm fileExistsAtPath: @"/usr/bin/zip"] ) {
+    error = [NSException exceptionWithHTTPStatus: 500 
+      reason: @"zip not available"];
+    return (WOResponse *)error;
+  }
+  
+  zipTask = [[NSTask alloc] init];
+  [zipTask setCurrentDirectoryPath: spoolPath];
+  [zipTask setLaunchPath: @"/usr/bin/zip"];
+  
+  zipTaskArguments = [NSMutableArray arrayWithObjects: nil];
+  [zipTaskArguments addObject: @"SavedMessages.zip"];
+
+  msgs = (NSDictionary *)[self fetchUIDs: uids  
+    parts: [NSArray arrayWithObject: @"RFC822"]];
+  messages = [[msgs objectForKey: @"fetch"] retain];
+
+  for (i = 0; i < [messages count]; i++) {
+    content = [[messages objectAtIndex: i] objectForKey: @"message"];
+
+    [content writeToFile: 
+      [NSString stringWithFormat:@"%@/%d.eml", spoolPath, [uids objectAtIndex: i]] 
+      atomically: YES];
+    
+    [zipTaskArguments addObject: 
+      [NSString stringWithFormat:@"%d.eml", [uids objectAtIndex: i]]];
+  }
+  
+  [zipTask setArguments: zipTaskArguments];
+  [zipTask launch];
+  [zipTask waitUntilExit];
+  
+  [zipTask release];
+  
+  zipContent = [[NSData alloc] initWithContentsOfFile: 
+    [NSString stringWithFormat: @"%@/SavedMessages.zip", spoolPath]];
+  
+  for(i = 0; i < [zipTaskArguments count]; i++) {
+    fileName = [zipTaskArguments objectAtIndex: i];
+    [fm removeFileAtPath: 
+      [NSString stringWithFormat: @"%@/%@", spoolPath, fileName] handler: nil];
+  }
+  
+  response = [[WOResponse alloc] init];
+  [response autorelease];
+  [response setHeader: @"application/zip" forKey:@"content-type"];
+  [response setHeader: @"attachment;filename=SavedMessages.zip" forKey: @"Content-Disposition"];
+  [response setContent: zipContent];
+  
+  [zipContent release];
+  
+  return response;
 }
 
 - (NSArray *) fetchUIDsMatchingQualifier: (id) _q
@@ -889,6 +980,25 @@ static BOOL aclConformsToIMAPExt = NO;
   [userURL autorelease];
 
   return [userURL absoluteString];
+}
+
+- (NSString *) userSpoolFolderPath
+{
+  NSString *login;
+
+  login = [[context activeUser] login];
+
+  return [NSString stringWithFormat: @"%@/%@",
+		   spoolFolder, login];
+}
+
+- (BOOL) ensureSpoolFolderPath
+{
+  NSFileManager *fm;
+
+  fm = [NSFileManager defaultManager];
+  
+  return ([fm createDirectoriesAtPath: [self userSpoolFolderPath] attributes:nil]);
 }
 
 @end /* SOGoMailFolder */

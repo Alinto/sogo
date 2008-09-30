@@ -124,6 +124,7 @@
       <li><var:string label:value="Label"/></li>
       <li><var:string label:value="Mark"/></li>
       <li><!-- separator --></li>
+      <li><var:string label:value="Save As..."/></li>
       <li><var:string label:value="Print Preview"/></li>
       <li><var:string label:value="Print..."/></li>
       <li><var:string label:value="Delete Selected Messages"/></li>

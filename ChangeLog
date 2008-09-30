@@ -1,3 +1,19 @@
+2008-09-30  Cyril Robert <crobert@inverse.ca>
+
+  * SoObjects/Mailer/SOGoDraftsFolder.m
+    Moved userSpoolFolderPath method to SOGoMailFolder.m
+  * SoObjects/Mailer/SOGoMailFolder.h
+  * SoObjects/Mailer/SOGoMailFolder.m
+    Added userSpoolFolderPath from SOGoDraftsFolder
+    Added archiveUIDs method to create an archive from email uids
+  * UI/MailerUI/UIxMailFolderActions.h
+  * UI/MailerUI/UIxMailFolderActions.m
+    Added saveMessagesAction method to handle the /saveMessages call 
+  * UI/MailerUI/product.plist
+    Added a definition for saveMessages
+
+  
+
 2008-09-28  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
         * Modified the following files:
