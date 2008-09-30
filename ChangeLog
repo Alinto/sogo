@@ -5,9 +5,23 @@
 	lookup syntax has been generalized by testing for "ref-dn" instead
 	of "dict-dn". Make use of only non-deprecated LDAP functions.
 
+2008-09-30  Cyril Robert <crobert@inverse.ca>
+
+	* SoObjects/Mailer/SOGoDraftsFolder.m
+	Moved userSpoolFolderPath method to SOGoMailFolder.m
+	* SoObjects/Mailer/SOGoMailFolder.h
+	* SoObjects/Mailer/SOGoMailFolder.m
+	Added userSpoolFolderPath from SOGoDraftsFolder
+	Added archiveUIDs method to create an archive from email uids
+	* UI/MailerUI/UIxMailFolderActions.h
+	* UI/MailerUI/UIxMailFolderActions.m
+	Added saveMessagesAction method to handle the /saveMessages call 
+	* UI/MailerUI/product.plist
+	Added a definition for saveMessages
+
 2008-09-28  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
-        * Modified the following files:
+	* Modified the following files:
 	SoObjects/Mailer/SOGoDraftObject.m
 	UI/MailerUI/Dutch.lproj/Localizable.strings
 	UI/MailerUI/English.lproj/Localizable.strings
@@ -329,7 +343,7 @@
 
 2008-08-22  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
-        * Modified SoObjects/Mailer/NSData+Mail.m
+	* Modified SoObjects/Mailer/NSData+Mail.m
 	-decodedSubject so we correctly implement decoding
 	instead of relying on the broken SOPE implementation.
 
@@ -1679,14 +1693,14 @@
 2008-01-14  Ludovic Marcotte  <ludovic@inverse.ca>
 
 	* Added files related to the custom recurrence
-	  editor of the SOGo Web interface. The CSS
-	  needs to be done correctly.
+	editor of the SOGo Web interface. The CSS
+	needs to be done correctly.
 
 	* Fixed a bug in the daily recurrence generator.
-	  We now consider the byDayMask, if any.
+	We now consider the byDayMask, if any.
 
 	* Moved the repeat/reminder code to the
-	  UIxComponentEditor class / template.
+	UIxComponentEditor class / template.
 
 	* Added a few JavaScript methods to HTMLElement.js
 
@@ -1828,7 +1842,7 @@
 	and created re-entrant issues.
 	
 	* UI/MailPartViewers/UIxMailPartHTMLViewer.m 
-        Added a hack (and stated so in the source file)
+	Added a hack (and stated so in the source file)
 	to avoid what seems to be a bug in libxml. 
 
 2007-12-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
@@ -2141,32 +2155,32 @@
 
 2007-11-25  Ludovic Marcotte  <ludovic@inverse.ca>
 
-        * SoObjects/Mailer/SOGoMailForward.m
-        Use [sourceMail decodedSubject] instead of [sourceMail subject]
-        Signature fix in -signature - see the comment
-        for SOGoMailReply.
+	* SoObjects/Mailer/SOGoMailForward.m
+	Use [sourceMail decodedSubject] instead of [sourceMail subject]
+	Signature fix in -signature - see the comment
+	for SOGoMailReply.
 
-        * SoObjects/Mailer/SOGoMailObject.m
-        Improved -stringFromData: to try UTF-8 then fallback to Latin1
+	* SoObjects/Mailer/SOGoMailObject.m
+	Improved -stringFromData: to try UTF-8 then fallback to Latin1
 
-        * SoObjects/Mailer/SOGoMailReply.m
-        Modified -messageBody to strip the signature from the reply.
-        Also modified -signature to add "-- \n%@" instead of the
-        broken ""--\r\n%@" pattern.
+	* SoObjects/Mailer/SOGoMailReply.m
+	Modified -messageBody to strip the signature from the reply.
+	Also modified -signature to add "-- \n%@" instead of the
+	broken ""--\r\n%@" pattern.
 
-        * UI/MailPartViewers/UIxMailPartAlternativeViewer.m
-        We now favor text/calendar parts over text/html and
-        text/plain parts when viewing a multipart/alternative mail.
-        This allows us to show the email invitations coming from
-        Microsoft Outlook.
+	* UI/MailPartViewers/UIxMailPartAlternativeViewer.m
+	We now favor text/calendar parts over text/html and
+	text/plain parts when viewing a multipart/alternative mail.
+	This allows us to show the email invitations coming from
+	Microsoft Outlook.
 
-        * UI/MailerUI/UIxMailAccountActions.m
-        Signature fix in -composeAction - see the comment
-        for SOGoMailReply.
+	* UI/MailerUI/UIxMailAccountActions.m
+	Signature fix in -composeAction - see the comment
+	for SOGoMailReply.
 
-        * UI/MailPartViewers/UIxMailPartViewer.m
-        Modified -flatContentAsString to use UTF-8 as the
-        default fallback encoding for 8-bit content.
+	* UI/MailPartViewers/UIxMailPartViewer.m
+	Modified -flatContentAsString to use UTF-8 as the
+	default fallback encoding for 8-bit content.
 
 	* SoObjects/Mailer/SOGoDraftObject.m
 	Modified _fillInReplyAddresses:replyToAll:envelope:
@@ -2427,7 +2441,7 @@
 
 2007-11-16  Ludovic Marcotte  <ludovic@inverse.ca>
 
-        * SoObjects/Mailer/SOGoMailBaseObject.m
+	* SoObjects/Mailer/SOGoMailBaseObject.m
 	Fixed typo.
 
 	* SoObjects/Mailer/SOGoMailBodyPart.m
@@ -2455,27 +2469,27 @@
 
 2007-11-15  Ludovic Marcotte  <ludovic@inverse.ca>
 
-        * UI/WebServerResources/MailerUI.js
-        We now check for empty selection and warn the
-        user about it when deleting messages
+	* UI/WebServerResources/MailerUI.js
+	We now check for empty selection and warn the
+	user about it when deleting messages
  
-        * SoObjects/Mailer/SOGoDraftObject.m
-        Correctly check for the presence of a subject
-        before attempting to forward a message from
-        the Drafts folder.
+	* SoObjects/Mailer/SOGoDraftObject.m
+	Correctly check for the presence of a subject
+	before attempting to forward a message from
+	the Drafts folder.
 
-        * SoObjects/Mailer/SOGoMailObject+Draft.m
-        We no longer use "[Fwd: ]" but simply "Fwd:"
-        when forwarding email messages.
+	* SoObjects/Mailer/SOGoMailObject+Draft.m
+	We no longer use "[Fwd: ]" but simply "Fwd:"
+	when forwarding email messages.
  
-        * SoObjects/SOGo/SOGoUser.m
-        Modified the default forwarding format to be
-        inline instead of "attachment".
+	* SoObjects/SOGo/SOGoUser.m
+	Modified the default forwarding format to be
+	inline instead of "attachment".
  
-        * SoObjects/Mailer/SOGoDraftObject.m
-        We now create and use a NGMimeContentDispositionHeaderField
-        in order to avoid encoding the whole Content-Disposition
-        header in case a non-ASCII char is present!
+	* SoObjects/Mailer/SOGoDraftObject.m
+	We now create and use a NGMimeContentDispositionHeaderField
+	in order to avoid encoding the whole Content-Disposition
+	header in case a non-ASCII char is present!
 
 2007-11-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
@@ -3118,10 +3132,10 @@
 2007-10-10  Ludovic Marcotte  <ludovic@inverse.ca>
 
 	* We now send advisory emails when folders
-	  are created / deleted.
+	are created / deleted.
 
 	* Fixed the sending of advisory emails upon
-	  ACL changes on folders.
+	ACL changes on folders.
 
 2007-10-10  Ludovic Marcotte  <ludovic@inverse.ca>
 
@@ -3137,7 +3151,7 @@
 	in every LDAP-based authentication sources.
 
 	* UI/MailPartViewers/UIxMailPartTextViewer.m and
-	  UI/WebServerResources/MailerUI.css
+	UI/WebServerResources/MailerUI.css
 	We avoid replacing "\r\n" and "\n" with <br /> and
 	rather use CSS capabilities for proper formatting.
 	This is _WAY_ faster on very large mails.
@@ -5448,10 +5462,10 @@
 2007-02-09  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m: added CalDAV
-	  resourcetype
+	resourcetype
 
 	* SoObjects/SOGo/SOGoUserFolder.m: added davCalendarHomeSet CalDAV
-	  property to point at the user folder
+	property to point at the user folder
 
 2007-03-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
@@ -7525,9 +7539,9 @@
 
 2006-06-15      ludovic@inverse.ca
 
-        * It's now possible to set the default
-	  domain using for email using the
-	  SOGoDefaultMailDomain preference key.
+	* It's now possible to set the default
+	domain using for email using the
+	SOGoDefaultMailDomain preference key.
 
 2006-06-15	ludovic@inverse.ca
 	

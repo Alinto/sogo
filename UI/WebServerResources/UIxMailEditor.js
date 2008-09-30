@@ -539,7 +539,9 @@ function initMailEditor() {
 	var sigLimit = textContent.lastIndexOf("--");
 	if (sigLimit > -1)
 		signatureLength = (textContent.length - sigLimit);
-	textarea.scrollTop = textarea.scrollHeight;
+	if ( userDefaults["ReplyPlacement"] != "above" ) {
+	  textarea.scrollTop = textarea.scrollHeight;
+	}
 	textarea.observe("focus", onTextFirstFocus);
 	textarea.observe("focus", onTextFocus);
 	//   textarea.observe("contextmenu", onTextContextMenu);

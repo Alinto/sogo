@@ -232,7 +232,7 @@
 "Operation failed" = "Operazione non riuscita";
 
 "Quota" = "Spazio usato";
-"quotasFormat" = "%{0} su %{1} Kb (%{2}%)";
+"quotasFormat" = "%{0}% usato su %{1} MB";
 
 "Please select a message." = "Per favore seleziona un messaggio.";
 "Please select a message to print." = "Per favore seleziona un messaggio da stampare.";

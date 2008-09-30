@@ -209,6 +209,33 @@
   return response;
 }
 
+- (WOResponse *) saveMessagesAction
+{
+  SOGoMailFolder *co;
+  WOResponse *response;
+  NSArray *uids;
+  NSString *value;
+
+  co = [self clientObject];
+  value = [[context request] formValueForKey: @"uid"];
+  response = nil;
+
+  if ([value length] > 0)
+  {
+    uids = [value componentsSeparatedByString: @","];
+    response = [co archiveUIDs: uids  inContext: context];
+    if (!response)
+      response = [self responseWith204];
+  }
+  else
+  {
+    response = [self responseWithStatus: 500];
+    [response appendContentString: @"Missing 'uid' parameter."];
+  }
+
+  return response;
+}
+
 - (WOResponse *) _setFolderPurpose: (NSString *) purpose
 {
   SOGoMailFolder *co;

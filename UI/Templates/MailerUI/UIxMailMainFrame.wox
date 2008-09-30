@@ -124,6 +124,7 @@
       <li><var:string label:value="Label"/></li>
       <li><var:string label:value="Mark"/></li>
       <li><!-- separator --></li>
+      <li><var:string label:value="Save As..."/></li>
       <li><var:string label:value="Print Preview"/></li>
       <li><var:string label:value="Print..."/></li>
       <li><var:string label:value="Delete Selected Messages"/></li>
@@ -189,13 +190,6 @@
     <ul>
       <li id="save_image"><var:string label:value="Save Image"/></li>
     </ul>
-  </div>
-
-  <div id="quotaDialog" style="display: none;">
-    <div>
-      <h1><var:string label:value="Quota"/></h1>
-      <p><!-- space --></p>
-    </div>
   </div>
 
   <div id="leftPanel">

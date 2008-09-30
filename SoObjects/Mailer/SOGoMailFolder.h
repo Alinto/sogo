@@ -24,6 +24,7 @@
 
 #include <SoObjects/Mailer/SOGoMailBaseObject.h>
 #import <Foundation/NSRange.h>
+#import <NGObjWeb/WOResponse.h>
 
 /*
   SOGoMailFolder
@@ -55,6 +56,7 @@ typedef enum {
 
 /* messages */
 - (NSException *) deleteUIDs: (NSArray *) uids  inContext: (id) context;
+- (WOResponse *) archiveUIDs: (NSArray *) uids  inContext: (id) context;
 
 - (NSArray *) fetchUIDsMatchingQualifier: (id)_q sortOrdering: (id) _so;
 - (NSArray *) fetchUIDs: (NSArray *) _uids parts: (NSArray *) _parts;
@@ -80,6 +82,9 @@ typedef enum {
 
 - (NSArray *) allFolderPaths;
 - (NSArray *) allFolderURLs;
+
+- (NSString *) userSpoolFolderPath;
+- (BOOL) ensureSpoolFolderPath;
 
 @end
 

@@ -1373,37 +1373,27 @@ function updateMailboxTreeInPage() {
     }
   }
 	if (Mailer.quotas) {
-		// Build quota indicator
+		// Build quota indicator, show values in MB
 		var percents = (Math.round(Mailer.quotas.usedSpace * 10000 / Mailer.quotas.maxQuota) / 100);
 		var level = (percents > 85)? "alert" : (percents > 70)? "warn" : "ok";
 		var format = labels["quotasFormat"];
-		var text = format.formatted(Mailer.quotas.usedSpace, Mailer.quotas.maxQuota, percents);
+		var text = format.formatted(percents,
+																Math.round(Mailer.quotas.maxQuota/10.24)/100);
 		var quotaDiv = new Element('div', { 'class': 'quota', 'info': text });
 		var levelDiv = new Element('div', { 'class': 'level' });
 		var valueDiv = new Element('div', { 'class': 'value ' + level, 'style': 'width: ' + ((percents > 100)?100:percents) + '%' });
 		var marksDiv = new Element('div', { 'class': 'marks' });
+		var textP = new Element('p').update(text);
 		marksDiv.appendChild(new Element('div'));
 		marksDiv.appendChild(new Element('div'));
 		marksDiv.appendChild(new Element('div'));
 		levelDiv.appendChild(valueDiv);
 		levelDiv.appendChild(marksDiv);
+		levelDiv.appendChild(textP);
 		quotaDiv.appendChild(levelDiv);
 		
 		treeContent.insertBefore(quotaDiv, tree);
-		quotaDiv.observe("mouseover", onViewQuota);
-		quotaDiv.observe("mouseout", function(event) { $("quotaDialog").hide(); });
 	}
-}
-
-function onViewQuota(event) {
-	var div = $("quotaDialog");
-	if (div.visible()) return;
-	var position = this.cumulativeOffset();
-	position[0] += this.getWidth();
-	div.down("p").update(this.readAttribute("info"));
-	div.setStyle({ left: position[0] + "px",
-								top: position[1] + "px" });
-	div.show();
 }
 
 function mailboxMenuNode(type, name) {
@@ -1840,6 +1830,28 @@ function onLabelMenuPrepareVisibility() {
     lis[0].addClassName("_chosen");
 }
 
+function saveAs(event) {
+  var messageList = $("messageList").down("TBODY");
+	var rows = messageList.getSelectedNodes();
+	var uids = new Array(); // message IDs
+	var paths = new Array(); // row IDs
+
+  if (rows.length > 0) {
+    for (var i = 0; i < rows.length; i++) {
+      var uid = rows[i].readAttribute("id").substr(4);
+      var path = Mailer.currentMailbox + "/" + uid;
+			uids.push(uid);
+			paths.push(path);
+    }
+		var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/saveMessages";
+		window.open(url+"?id="+uids+"&uid="+uids+"&mailbox="+Mailer.currentMailbox+"&path="+paths);
+  }
+  else
+    window.alert(labels["Please select a message."]);
+
+  return false;
+}
+
 function getMenus() {
   var menus = {}
   menus["accountIconMenu"] = new Array(null, null, onMenuCreateFolder, null,
@@ -1867,14 +1879,14 @@ function getMenus() {
 																			 onMenuForwardMessage, null,
 																			 "-", "moveMailboxMenu",
 																			 "copyMailboxMenu", "label-menu",
-																			 "mark-menu", "-", null,
+																			 "mark-menu", "-", saveAs,
 																			 onMenuViewMessageSource, null,
 																			 null, onMenuDeleteMessage);
   menus["messagesListMenu"] = new Array(onMenuForwardMessage,
 																				"-", "moveMailboxMenu",
 																				"copyMailboxMenu", "label-menu",
 																				"mark-menu", "-",
-																				null, null,
+																				saveAs, null,
 																				onMenuDeleteMessage);
   menus["imageMenu"] = new Array(saveImage);
   menus["messageContentMenu"] = new Array(onMenuReplyToSender,
@@ -1884,7 +1896,7 @@ function getMenus() {
 																					"copyMailboxMenu",
 																					"-", "label-menu", "mark-menu",
 																					"-",
-																					null, onMenuViewMessageSource,
+																					saveAs, onMenuViewMessageSource,
 																					null, onPrintCurrentMessage,
 																					onMenuDeleteMessage);
   menus["folderTypeMenu"] = new Array(onMenuChangeToSentFolder,

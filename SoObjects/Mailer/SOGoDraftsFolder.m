@@ -47,7 +47,7 @@ static unsigned int newCount;
       ud = [NSUserDefaults standardUserDefaults];
       spoolFolder = [ud stringForKey:@"SOGoMailSpoolPath"];
       if (![spoolFolder length])
-	spoolFolder = @"/tmp/";
+       spoolFolder = @"/tmp/";
       [spoolFolder retain];
 
       NSLog(@"Note: using SOGo mail spool folder: %@", spoolFolder);
@@ -102,14 +102,5 @@ static unsigned int newCount;
   return YES;
 }
 
-- (NSString *) userSpoolFolderPath
-{
-  NSString *login;
-
-  login = [[context activeUser] login];
-
-  return [NSString stringWithFormat: @"%@/%@",
-		   spoolFolder, login];
-}
 
 @end

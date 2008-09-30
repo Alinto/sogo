@@ -650,7 +650,7 @@ DIV.quota DIV.level
   background-position: 25% 0;
   border-left: 1px solid #999;
   border-right: 1px solid #999;
-  height: 20px; }
+  /*height: 20px;*/ }
 DIV.quota DIV.marks DIV
 { float: left;
   margin: 0;
@@ -658,11 +658,11 @@ DIV.quota DIV.marks DIV
   width: 25%;
   border: 0;
   border-right: 1px solid #999;
-  height: 5px; }
+  height: 3px; }
 DIV.quota DIV.level DIV.value
 { background-repeat: repeat-x;
   border-left: 1px solid transparent;
-  height: 15px;
+  height: 9px;
   margin: 0;
   position: relative; }
 DIV.quota DIV.level DIV.value.ok
@@ -670,7 +670,15 @@ DIV.quota DIV.level DIV.value.ok
 DIV.quota DIV.level DIV.value.warn
 { background-image: url(quota-level-warn.png); }
 DIV.quota DIV.level DIV.value.alert
-{ background-image: url(quota-level-alert.png); }  
+{ background-image: url(quota-level-alert.png); }
+DIV.quota DIV.level P
+{ margin: 0;
+  padding: 0;
+  clear: both;
+  color: #555;
+  font-size: 1em;
+  text-align: center;
+}
 DIV#quotaDialog
 { background-image: url("dialog-left.png");
   background-repeat: no-repeat;

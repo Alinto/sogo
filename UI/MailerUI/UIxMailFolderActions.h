@@ -33,6 +33,7 @@
 - (WOResponse *) renameFolderAction;
 - (WOResponse *) deleteFolderAction;
 - (WOResponse *) deleteMessagesAction;
+- (WOResponse *) saveMessagesAction;
 - (WOResponse *) expungeAction;
 - (WOResponse *) emptyTrashAction;
 - (WOResponse *) subscribeAction;
