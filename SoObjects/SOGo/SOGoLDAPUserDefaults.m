@@ -20,9 +20,9 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#define LDAP_DEPRECATED	1
-
-#import <ldap.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <ldap.h>
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
@@ -33,7 +33,8 @@
 #import "SOGoLDAPUserDefaults.h"
 
 #define SOGoLDAPDescriptor @"/etc/sogo.conf"
-#define SOGoLDAPContainerSize 64
+#define SOGoLDAPContainerSize 8192
+#define SOGoLDAPAttrRefSeparator '/'
 
 typedef enum _SOGoLDAPValueType {
   SOGoLDAPAtom,
@@ -51,19 +52,21 @@ typedef struct _SOGoLDAPValue {
 
 @implementation SOGoLDAPUserDefaults
 
-static _SOGoLDAPValue*
+static _SOGoLDAPValue *
 _createAtom (_SOGoLDAPValueType type, void *value)
 {
   _SOGoLDAPValue *newAtom;
 
-  newAtom = calloc (sizeof (_SOGoLDAPValue), 1);
+  newAtom = malloc (sizeof (_SOGoLDAPValue));
   newAtom->type = type;
   newAtom->value = value;
+  newAtom->maxCount = 0;
+  newAtom->key = NULL;
 
   return newAtom;
 }
 
-static _SOGoLDAPValue*
+static _SOGoLDAPValue *
 _createContainer (_SOGoLDAPValueType type)
 {
   _SOGoLDAPValue *newContainer;
@@ -89,11 +92,14 @@ _appendAtomToContainer (_SOGoLDAPValue *atom, _SOGoLDAPValue *container)
     currentAtom++;
 
   count = (currentAtom - atoms);
-  if (count > container->maxCount)
+  if (count >= container->maxCount)
     {
       container->maxCount += SOGoLDAPContainerSize;
-      container->value = realloc (container->value, container->maxCount + 1);
+      container->value = realloc (container->value, (container->maxCount + 1)
+				  * sizeof (_SOGoLDAPValue *));
+      currentAtom = (_SOGoLDAPValue **) container->value + count;
     }
+
   *currentAtom = atom;
   *(currentAtom + 1) = NULL;
 }
@@ -153,25 +159,30 @@ _appendAtomToDictionary (_SOGoLDAPValue *atom, _SOGoLDAPValue *dictionary)
   _appendAtomToContainer (atom, container);
 }
 
-static _SOGoLDAPValue *
-_readLDAPDictionaryWithHandle(const char *dn, LDAP *ldapHandle)
+static _SOGoLDAPValue *_readLDAPAttrRefWithHandle (const char *attrPair,
+						   LDAP *ldapHandle);
+
+static _SOGoLDAPValue **
+_fetchLDAPDNAndAttrWithHandle (const char *dn, char *attrs[], LDAP *ldapHandle)
 {
   struct timeval timeout;
   int rc;
-  _SOGoLDAPValue *atom, *dictionary;
   LDAPMessage *messages, *message;
   BerElement *element;
   BerValue **values, **value;
   const char *attribute;
+  _SOGoLDAPValue **atoms, **currentAtom;
+  unsigned int atomsCount;
 
-  dictionary = _createContainer (SOGoLDAPDictionary);
+  atoms = malloc (SOGoLDAPContainerSize * sizeof (_SOGoLDAPValue *));
+  currentAtom = atoms;
+  atomsCount = 0;
 
-  timeout.tv_sec = 100;
+  timeout.tv_sec = 30;
   timeout.tv_usec = 0;
-      
+
   rc = ldap_search_ext_s (ldapHandle, dn, LDAP_SCOPE_BASE, "(objectClass=*)",
-			  NULL, 0, NULL, NULL, &timeout, 0, &messages);
-  fprintf (stderr, "code: %d, %s\n", rc, ldap_err2string (rc));
+			  attrs, 0, NULL, NULL, &timeout, 0, &messages);
   if (rc == LDAP_SUCCESS)
     {
       message = ldap_first_entry (ldapHandle, messages);
@@ -184,15 +195,25 @@ _readLDAPDictionaryWithHandle(const char *dn, LDAP *ldapHandle)
 	      value = values;
 	      while (*value)
 		{
-		  if (strncmp ((*value)->bv_val, "dict-dn:", 8) == 0)
-		    atom
-		      = _readLDAPDictionaryWithHandle (((*value)->bv_val + 8),
-						       ldapHandle);
+		  if (strncmp ((*value)->bv_val, "ref-dn:", 7) == 0)
+		    *currentAtom
+		      = _readLDAPAttrRefWithHandle (((*value)->bv_val + 7),
+						    ldapHandle);
 		  else
-		    atom = _createAtom (SOGoLDAPAtom,
-					strdup ((*value)->bv_val));
-		  atom->key = strdup (attribute);
-		  _appendAtomToDictionary (atom, dictionary);
+		    *currentAtom = _createAtom (SOGoLDAPAtom,
+						strdup ((*value)->bv_val));
+		  (*currentAtom)->key = strdup (attribute);
+		  currentAtom++;
+		  atomsCount++;
+
+		  if (!(atomsCount % SOGoLDAPContainerSize))
+		    {
+		      atoms = realloc (atoms, (int)
+				       (SOGoLDAPContainerSize + atomsCount)
+ 				       * sizeof (_SOGoLDAPValue *));
+
+		      currentAtom = atoms + atomsCount;
+		    }
 		  value++;
 		}
 	      ldap_value_free_len (values);
@@ -202,7 +223,54 @@ _readLDAPDictionaryWithHandle(const char *dn, LDAP *ldapHandle)
       ldap_msgfree (message);
     }
 
-  return dictionary;
+  *currentAtom = NULL;
+
+  return atoms;
+}
+
+static void
+_fillLDAPDictionaryWithAtoms (_SOGoLDAPValue *container,
+			     _SOGoLDAPValue *atoms[])
+{
+  _SOGoLDAPValue **currentAtom;
+
+  currentAtom = atoms;
+  while (*currentAtom)
+    {
+      _appendAtomToDictionary (*currentAtom, container);
+      currentAtom++;
+    }
+}
+
+static _SOGoLDAPValue *
+_readLDAPAttrRefWithHandle (const char *attrPair, LDAP *ldapHandle)
+{
+  char *dn, *separator;
+  _SOGoLDAPValue *refValue;
+  _SOGoLDAPValue **atoms;
+  char *attrs[2];
+
+  dn = strdup (attrPair);
+  separator = strrchr (dn, SOGoLDAPAttrRefSeparator);
+  if (separator)
+    {
+      *separator = 0;
+      attrs[0] = strdup (separator + 1);
+      attrs[1] = NULL;
+      atoms = _fetchLDAPDNAndAttrWithHandle (dn, attrs, ldapHandle);
+      refValue = *atoms;
+      free (attrs[0]);
+    }
+  else
+    {
+      refValue = _createContainer (SOGoLDAPDictionary);
+      atoms = _fetchLDAPDNAndAttrWithHandle (dn, NULL, ldapHandle);
+      _fillLDAPDictionaryWithAtoms (refValue, atoms);
+    }
+  free (atoms);
+  free (dn);
+
+  return refValue;
 }
 
 static NSString *_convertLDAPAtomToNSString (_SOGoLDAPValue *atom);
@@ -294,19 +362,28 @@ _initLDAPDefaults ()
   LDAP *ldapHandle;
   int rc, opt;
   _SOGoLDAPValue *dictionary;
+  _SOGoLDAPValue **atoms;
+  BerValue cred;
 
   ldap_initialize (&ldapHandle, uri);
 
   opt = LDAP_VERSION3;
   rc = ldap_set_option (ldapHandle, LDAP_OPT_PROTOCOL_VERSION, &opt);
   rc = ldap_set_option (ldapHandle, LDAP_OPT_REFERRALS, LDAP_OPT_OFF);
-  // rc = ldap_sasl_bind_s (ldapHandle, dn, LDAP_SASL_NULL, password, NULL, NULL, &none);
-  rc = ldap_simple_bind_s (ldapHandle, dn, password);
+
+  dictionary = _createContainer (SOGoLDAPDictionary);
+
+  cred.bv_val = (char *) password;
+  cred.bv_len = strlen (password);
+  
+  rc = ldap_sasl_bind_s (ldapHandle, dn, LDAP_SASL_SIMPLE, &cred,
+			 NULL, NULL, NULL);
   if (rc == LDAP_SUCCESS)
-    dictionary
-      = _readLDAPDictionaryWithHandle (configDN, ldapHandle);
-  else
-    dictionary = _createContainer (SOGoLDAPDictionary);
+    {
+      atoms = _fetchLDAPDNAndAttrWithHandle (configDN, NULL, ldapHandle);
+      _fillLDAPDictionaryWithAtoms (dictionary, atoms);
+      free (atoms);
+    }
 
   return dictionary;
 }
@@ -321,10 +398,9 @@ _initLDAPDefaults ()
     SOGoLDAPDefaults = _initLDAPDefaults ();
 
   atom = _findAtomInDictionary ([key UTF8String], SOGoLDAPDefaults);
-  if (atom)
-    ldapObject = _convertLDAPAtomToNSObject (*atom);
-  else
-    ldapObject = nil;
+  ldapObject = ((atom)
+		? _convertLDAPAtomToNSObject (*atom)
+		: NULL);
 
   if (!ldapObject)
     ldapObject = [super objectForKey: key];

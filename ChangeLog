@@ -1,3 +1,10 @@
+2008-09-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoLDAPUserDefaults.m ([SOGoLDAPUserDefaults
+	-objectForKey:key]): added support for dn+attribute lookup. The
+	lookup syntax has been generalized by testing for "ref-dn" instead
+	of "dict-dn". Make use of only non-deprecated LDAP functions.
+
 2008-09-28  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
         * Modified the following files:
