@@ -1,6 +1,6 @@
 /* SOGoCalendarComponent.h - this file is part of SOGo
  * 
- * Copyright (C) 2006 Inverse inc.
+ * Copyright (C) 2006-2008 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -59,10 +59,9 @@
 
 /* mail notifications */
 - (BOOL) sendEMailNotifications;
-- (void) sendEMailUsingTemplateNamed: (NSString *) _pageName
-                        forOldObject: (iCalRepeatableEntityObject *) _oldObject
-                        andNewObject: (iCalRepeatableEntityObject *) _newObject
-                         toAttendees: (NSArray *) _attendees;
+- (void) sendEMailUsingTemplateNamed: (NSString *) pageName
+			   forObject: (iCalRepeatableEntityObject *) object
+                         toAttendees: (NSArray *) attendees;
 - (void) sendIMIPReplyForEvent: (iCalRepeatableEntityObject *) event
 			    to: (iCalPerson *) recipient;
 - (void) sendResponseToOrganizer: (iCalRepeatableEntityObject *) newComponent;

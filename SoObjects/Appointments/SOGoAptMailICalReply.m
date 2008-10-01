@@ -96,6 +96,11 @@ static NSCharacterSet *wsSet  = nil;
   return attendee;
 }
 
+- (NSString *) attendeeName
+{
+  return [attendee cn];
+}
+
 - (BOOL) hasAccepted
 {
   NSString *partStat;

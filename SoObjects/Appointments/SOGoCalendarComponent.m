@@ -1,6 +1,6 @@
 /* SOGoCalendarComponent.m - this file is part of SOGo
  *
- * Copyright (C) 2006 Inverse inc.
+ * Copyright (C) 2006-2008 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -465,10 +465,9 @@ _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
     }
 }
 
-- (void) sendEMailUsingTemplateNamed: (NSString *) _pageName
-                        forOldObject: (iCalRepeatableEntityObject *) _oldObject
-                        andNewObject: (iCalRepeatableEntityObject *) _newObject
-                         toAttendees: (NSArray *) _attendees
+- (void) sendEMailUsingTemplateNamed: (NSString *) newPageName
+			   forObject: (iCalRepeatableEntityObject *) object
+                         toAttendees: (NSArray *) attendees
 {
   NSString *pageName;
   NSString *senderEmail, *shortSenderEmail, *email, *iCalString;
@@ -485,9 +484,9 @@ _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
   SOGoUser *ownerUser, *currentUser;
 
   if (sendEMailNotifications
-      && [_newObject isStillRelevant])
+      && [object isStillRelevant])
     {
-      count = [_attendees count];
+      count = [attendees count];
       if (count)
 	{
 	  /* sender */
@@ -496,11 +495,11 @@ _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
 	  shortSenderEmail = [[currentUser allEmails] objectAtIndex: 0];
 	  senderEmail = [NSString stringWithFormat: @"%@ <%@>",
 				  [ownerUser cn], shortSenderEmail];
-	  [self _setupSentByIfNeeded: [_newObject organizer]];
+	  [self _setupSentByIfNeeded: [object organizer]];
 // 	  NSLog (@"sending '%@' from %@",
-// 		 [(iCalCalendar *) [_newObject parent] method], senderEmail);
+// 		 [(iCalCalendar *) [object parent] method], senderEmail);
 	  /* generate iCalString once */
-	  iCalString = [[_newObject parent] versitString];
+	  iCalString = [[object parent] versitString];
 
 	  /* get WOApplication instance */
 	  app = [WOApplication application];
@@ -509,7 +508,7 @@ _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
 
 	  for (i = 0; i < count; i++)
 	    {
-	      attendee = [_attendees objectAtIndex: i];
+	      attendee = [attendees objectAtIndex: i];
 	      if (![[attendee uid] isEqualToString: owner])
 		{
 		  /* construct recipient */
@@ -521,13 +520,10 @@ _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
   SOGoObject acl notification mechanism
 		  /* create page name */
 		  pageName = [NSString stringWithFormat: @"SOGoAptMail%@%@",
-				       language, _pageName];
+				       language, newPageName];
 		  /* construct message content */
 		  p = [app pageWithName: pageName inContext: context];
-		  [p setNewApt: _newObject];
-		  [p setOldApt: _oldObject];
-		  [p setHomePageURL: [self homePageURLForPerson: attendee]];
-		  [p setViewTZ: [self timeZoneForUser: email]];
+		  [p setApt: object];
 		  subject = [p getSubject];
 		  text = [p getBody];
 
@@ -563,7 +559,7 @@ _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
 		  /* calendar part */
 		  header = [NSString stringWithFormat: @"text/calendar; method=%@;"
 				     @" charset=utf-8",
-				     [(iCalCalendar *) [_newObject parent] method]];
+				     [(iCalCalendar *) [object parent] method]];
 		  headerMap = [NGMutableHashMap hashMapWithCapacity: 1];
 		  [headerMap setObject:header forKey: @"content-type"];
 		  bodyPart = [NGMimeBodyPart bodyPartWithHeader: headerMap];

@@ -30,8 +30,6 @@ Appointments_OBJC_FILES = \
 	\
 	SOGoAptMailNotification.m	\
 	SOGoAptMailInvitation.m		\
-	SOGoAptMailUpdate.m		\
-	SOGoAptMailRemoval.m		\
 	SOGoAptMailDeletion.m		\
 	SOGoAptMailICalReply.m		\
 
@@ -46,33 +44,21 @@ Appointments_LOCALIZED_RESOURCE_FILES = Localizable.strings
 Appointments_COMPONENTS +=	\
 	SOGoAptMailDutchInvitation.wo	\
 	SOGoAptMailDutchICalReply.wo	\
-	SOGoAptMailDutchUpdate.wo	\
-	SOGoAptMailDutchRemoval.wo	\
 	SOGoAptMailDutchDeletion.wo	\
 	SOGoAptMailEnglishInvitation.wo	\
 	SOGoAptMailEnglishICalReply.wo	\
-	SOGoAptMailEnglishUpdate.wo	\
-	SOGoAptMailEnglishRemoval.wo	\
 	SOGoAptMailEnglishDeletion.wo	\
 	SOGoAptMailFrenchInvitation.wo	\
 	SOGoAptMailFrenchICalReply.wo	\
-	SOGoAptMailFrenchUpdate.wo	\
-	SOGoAptMailFrenchRemoval.wo	\
 	SOGoAptMailFrenchDeletion.wo	\
 	SOGoAptMailGermanInvitation.wo	\
 	SOGoAptMailGermanICalReply.wo	\
-	SOGoAptMailGermanUpdate.wo	\
-	SOGoAptMailGermanRemoval.wo	\
 	SOGoAptMailGermanDeletion.wo	\
 	SOGoAptMailItalianInvitation.wo \
 	SOGoAptMailItalianICalReply.wo  \
-	SOGoAptMailItalianUpdate.wo	\
-	SOGoAptMailItalianRemoval.wo	\
 	SOGoAptMailItalianDeletion.wo   \
 	SOGoAptMailSpanishInvitation.wo \
 	SOGoAptMailSpanishICalReply.wo  \
-	SOGoAptMailSpanishUpdate.wo	\
-	SOGoAptMailSpanishRemoval.wo	\
 	SOGoAptMailSpanishDeletion.wo   \
 
 

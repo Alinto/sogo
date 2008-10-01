@@ -1,17 +1,19 @@
-AptStartDate: WOString {
-  value = startDate;
-  dateformat = "%d/%m/%y";
+IsSubject: WOConditional {
+  condition = isSubject;
+}
+
+IsBody: WOConditional {
+  condition = isSubject;
+  negate = YES;
+}
+
+summary: WOString {
+  value      = summary;
   escapeHTML = NO;
 }
 
-AptStartTime: WOString {
-  value = startDate;
-  dateformat = "%H:%M";
-  escapeHTML = NO;
-}
-
-Attendee: WOString {
-  value = attendee.cnWithoutQuotes;
+attendee: WOString {
+  value      = attendeeName;
   escapeHTML = NO;
 }
 
@@ -21,13 +23,4 @@ HasAccepted: WOConditional {
 
 HasDeclined: WOConditional {
   condition = hasDeclined;
-}
-
-IsSubject: WOConditional {
-  condition = isSubject;
-}
-
-IsBody: WOConditional {
-  condition = isSubject;
-  negate    = YES;
 }

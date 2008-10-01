@@ -1,3 +1,20 @@
+2008-10-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	([SOGoCalendarComponent
+	-sendEMailUsingTemplateNamed:newPageNameforObject:objecttoAttendees:attendees]):
+	changed method to only accept one event from now on, since we
+	actually use less information with the Lightning-inspired
+	templates than before.
+
+	* SoObjects/Appointments/SOGoAptMailNotification.m ([-homePageURL])
+	([-setHomePageURL:newhomePageURL], [-appointmentURL], [-viewTZ])
+	([-setViewTZ:newViewTZ]): removed obsolete accessors.
+
+	* SoObjects/Appointments/SOGoAptMailICalReply.m
+	([SOGoAptMailICalReply -attendeeName]): new method returning the
+	cn of the attendee.
+
 2008-09-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoLDAPUserDefaults.m ([SOGoLDAPUserDefaults

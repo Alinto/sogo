@@ -1,5 +1,6 @@
 /*
   Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2006-2008 Inverse inc.
 
   This file is part of OpenGroupware.org.
 
@@ -33,8 +34,7 @@
  */
 @interface SOGoAptMailNotification : SoComponent
 {
-  iCalEntityObject* oldApt;
-  iCalEntityObject* newApt;
+  iCalEntityObject* apt;
   NSString *homePageURL;
   NSTimeZone *viewTZ;
   NSCalendarDate *oldStartDate;
@@ -42,22 +42,8 @@
   BOOL isSubject;
 }
 
-- (id) oldApt;
-- (void) setOldApt: (iCalEntityObject *) _oldApt;
-
-- (id) newApt;
-- (void) setNewApt: (iCalEntityObject *) _newApt;
-
-- (NSString *) homePageURL;
-- (void) setHomePageURL: (NSString *) _homePageURL;
-
-- (NSTimeZone *) viewTZ;
-- (void) setViewTZ: (NSTimeZone *) _viewTZ;
-
-/* Helpers */
-
-- (NSCalendarDate *) oldStartDate;
-- (NSCalendarDate *) newStartDate;
+- (iCalEntityObject *) apt;
+- (void) setApt: (iCalEntityObject *) newApt;
 
 /* Content Generation */
 

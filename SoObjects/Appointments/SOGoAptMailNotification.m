@@ -28,6 +28,7 @@
 #import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGCards/iCalEntityObject.h>
+#import <NGCards/iCalPerson.h>
 
 #import <SoObjects/SOGo/NSString+Utilities.h>
 
@@ -54,75 +55,32 @@ static NSTimeZone *UTC = nil;
     }
 }
 
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      apt = nil;
+    }
+
+  return self;
+}
+
 - (void) dealloc
 {
-  [oldApt release];
-  [newApt release];
-  [homePageURL release];
-  [viewTZ release];
-
-  [oldStartDate release];
-  [newStartDate release];
+  [apt release];
   [super dealloc];
 }
 
-- (id) oldApt
+- (iCalEntityObject *) apt
 {
-  return oldApt;
+  return apt;
 }
 
-- (void) setOldApt: (iCalEntityObject *) newOldApt
+- (void) setApt: (iCalEntityObject *) newApt
 {
-  ASSIGN (oldApt, newOldApt);
+  ASSIGN (apt, newApt);
 }
 
-- (id) newApt
-{
-  return newApt;
-}
-
-- (void) setNewApt: (iCalEntityObject *) newNewApt
-{
-  ASSIGN (newApt, newNewApt);
-}
-
-- (NSString *) homePageURL
-{
-  return homePageURL;
-}
-
-- (void) setHomePageURL: (NSString *) newhomePageURL
-{
-  ASSIGN (homePageURL, newhomePageURL);
-}
-
-- (NSString *) appointmentURL
-{
-  NSString *aptUID;
-
-  aptUID = [[self newApt] uid];
-
-  return [NSString stringWithFormat: @"%@/Calendar/personal/%@/edit?mail-invitation=yes",
-		   [self homePageURL],
-		   aptUID];
-}
-
-- (NSTimeZone *) viewTZ
-{
-  NSTimeZone *tz;
-
-  if (viewTZ)
-    tz = viewTZ;
-  else 
-    tz = UTC;
-
-  return tz;
-}
-
-- (void) setViewTZ: (NSTimeZone *) newViewTZ
-{
-  ASSIGN (viewTZ, newViewTZ);
-}
 
 - (BOOL) isSubject
 {
@@ -134,29 +92,17 @@ static NSTimeZone *UTC = nil;
   isSubject = newIsSubject;
 }
 
+- (NSString *) summary
+{
+  return [apt summary];
+}
+
+- (NSString *) organizerName
+{
+  return [[apt organizer] cn];
+}
+
 /* Helpers */
-
-- (NSCalendarDate *) oldStartDate
-{
-  if (!oldStartDate)
-    {
-      ASSIGN (oldStartDate, [[self oldApt] startDate]);
-      [oldStartDate setTimeZone: [self viewTZ]];
-    }
-
-  return oldStartDate;
-}
-
-- (NSCalendarDate *) newStartDate
-{
-  if (!newStartDate)
-    {
-      ASSIGN (newStartDate, [[self newApt] startDate]);
-      [newStartDate setTimeZone: [self viewTZ]];
-    }
-
-  return newStartDate;
-}
 
 /* Generate Response */
 
@@ -166,7 +112,7 @@ static NSTimeZone *UTC = nil;
 
   [self setIsSubject: YES];
   subject = [[[self generateResponse] contentAsString]
-	      stringByTrimmingCharactersInSet:wsSet];
+	      stringByTrimmingCharactersInSet: wsSet];
   if (!subject)
     {
       [self errorWithFormat:@"Failed to properly generate subject! Please check "

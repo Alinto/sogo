@@ -269,9 +269,8 @@
 	      forUID: currentUID];
     }
 
-  [self sendEMailUsingTemplateNamed: @"Update"
-	forOldObject: oldEvent
-	andNewObject: [newEvent itipEntryWithMethod: @"request"]
+  [self sendEMailUsingTemplateNamed: @"Invitation"
+	forObject: [newEvent itipEntryWithMethod: @"request"]
 	toAttendees: updateAttendees];
 }
 
@@ -304,8 +303,7 @@
     {
       [self _handleRemovedUsers: attendees];
       [self sendEMailUsingTemplateNamed: @"Deletion"
-	    forOldObject: oldEvent
-	    andNewObject: [newEvent itipEntryWithMethod: @"cancel"]
+	    forObject: [newEvent itipEntryWithMethod: @"cancel"]
 	    toAttendees: attendees];
     }
 
@@ -325,8 +323,7 @@
     {
       [self _handleAddedUsers: attendees fromEvent: newEvent];
       [self sendEMailUsingTemplateNamed: @"Invitation"
-	    forOldObject: oldEvent
-	    andNewObject: [newEvent itipEntryWithMethod: @"request"]
+	    forObject: [newEvent itipEntryWithMethod: @"request"]
 	    toAttendees: attendees];
     }
 }
@@ -351,8 +348,7 @@
 	    {
 	      [self _handleAddedUsers: attendees fromEvent: newEvent];
 	      [self sendEMailUsingTemplateNamed: @"Invitation"
-		    forOldObject: nil
-		    andNewObject: [newEvent itipEntryWithMethod: @"request"]
+		    forObject: [newEvent itipEntryWithMethod: @"request"]
 		    toAttendees: attendees];
 	    }
 
@@ -470,7 +466,7 @@
 	  [self _addOrUpdateEvent: event forUID: uid];
 #warning fix this when sendEmailUsing blabla has been cleaned up
 	[self sendEMailUsingTemplateNamed: @"Invitation"
-	      forOldObject: nil andNewObject: event
+	      forObject: event
 	      toAttendees: [NSArray arrayWithObject: person]];
 	[person release];
 	[elements
@@ -502,7 +498,7 @@
 	  [self _removeEventFromUID: uid];
 #warning fix this when sendEmailUsing blabla has been cleaned up
 	[self sendEMailUsingTemplateNamed: @"Deletion"
-	      forOldObject: nil andNewObject: event
+	      forObject: event
 	      toAttendees: [NSArray arrayWithObject: person]];
 	[person release];
 	[elements
@@ -619,8 +615,7 @@
 	    {
 	      [self _handleRemovedUsers: attendees];
 	      [self sendEMailUsingTemplateNamed: @"Deletion"
-		    forOldObject: nil
-		    andNewObject: [occurence itipEntryWithMethod: @"cancel"]
+		    forObject: [occurence itipEntryWithMethod: @"cancel"]
 		    toAttendees: attendees];
 	    }
 	}

@@ -53,7 +53,7 @@
 
 - (NSString *) getSubject;
 - (NSString *) getBody;
-  
+
 @end
 
 #endif /* SOGOAPTMAILICALREPLY_H */
