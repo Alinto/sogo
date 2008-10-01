@@ -1,6 +1,7 @@
 /*
   Copyright (C) 2000-2005 SKYRIX Software AG
- 
+  Copyright (C) 2006-2008 Inverse inc.
+
   This file is part of OpenGroupware.org.
  
   OGo is free software; you can redistribute it and/or modify it under
@@ -33,123 +34,154 @@
 #import "SOGoAptMailNotification.h"
 
 @interface SOGoAptMailNotification (PrivateAPI)
-- (BOOL)isSubject;
-- (void)setIsSubject:(BOOL)_isSubject;
+
+- (BOOL) isSubject;
+- (void) setIsSubject: (BOOL) newIsSubject;
+
 @end
 
 @implementation SOGoAptMailNotification
 
-static NSCharacterSet *wsSet  = nil;
-static NSTimeZone     *EST = nil;
+static NSCharacterSet *wsSet = nil;
+static NSTimeZone *UTC = nil;
 
-+ (void)initialize {
-  static BOOL didInit = NO;
-
-  if (didInit) return;
-  didInit = YES;
-
-  wsSet = [[NSCharacterSet whitespaceAndNewlineCharacterSet] retain];
-  EST   = [[NSTimeZone timeZoneWithAbbreviation:@"EST"] retain];
++ (void) initialize
+{
+  if (!wsSet)
+    {
+      wsSet = [[NSCharacterSet whitespaceAndNewlineCharacterSet] retain];
+      UTC = [[NSTimeZone timeZoneWithAbbreviation: @"UTC"] retain];
+    }
 }
 
-- (void)dealloc {
-  [self->oldApt       release];
-  [self->newApt       release];
-  [self->homePageURL  release];
-  [self->viewTZ       release];
+- (void) dealloc
+{
+  [oldApt release];
+  [newApt release];
+  [homePageURL release];
+  [viewTZ release];
 
-  [self->oldStartDate release];
-  [self->newStartDate release];
+  [oldStartDate release];
+  [newStartDate release];
   [super dealloc];
 }
 
-- (id)oldApt {
-  return self->oldApt;
-}
-- (void)setOldApt:(iCalEntityObject *)_oldApt {
-  ASSIGN(self->oldApt, _oldApt);
-}
-
-- (id)newApt {
-  return self->newApt;
-}
-
-- (void)setNewApt:(iCalEntityObject *) _newApt
+- (id) oldApt
 {
-  ASSIGN(self->newApt, _newApt);
+  return oldApt;
 }
 
-- (NSString *)homePageURL {
-  return self->homePageURL;
+- (void) setOldApt: (iCalEntityObject *) newOldApt
+{
+  ASSIGN (oldApt, newOldApt);
 }
 
-- (void)setHomePageURL:(NSString *)_homePageURL {
-  ASSIGN(self->homePageURL, _homePageURL);
+- (id) newApt
+{
+  return newApt;
 }
 
-- (NSString *)appointmentURL {
+- (void) setNewApt: (iCalEntityObject *) newNewApt
+{
+  ASSIGN (newApt, newNewApt);
+}
+
+- (NSString *) homePageURL
+{
+  return homePageURL;
+}
+
+- (void) setHomePageURL: (NSString *) newhomePageURL
+{
+  ASSIGN (homePageURL, newhomePageURL);
+}
+
+- (NSString *) appointmentURL
+{
   NSString *aptUID;
-  
+
   aptUID = [[self newApt] uid];
-  return [NSString stringWithFormat:@"%@/Calendar/personal/%@/edit?mail-invitation=yes",
-                                    [self homePageURL],
-                                    aptUID];
+
+  return [NSString stringWithFormat: @"%@/Calendar/personal/%@/edit?mail-invitation=yes",
+		   [self homePageURL],
+		   aptUID];
 }
 
-- (NSTimeZone *)viewTZ {
-  if (self->viewTZ) return self->viewTZ;
-  return EST;
-}
-- (void)setViewTZ:(NSTimeZone *)_viewTZ {
-  ASSIGN(self->viewTZ, _viewTZ);
+- (NSTimeZone *) viewTZ
+{
+  NSTimeZone *tz;
+
+  if (viewTZ)
+    tz = viewTZ;
+  else 
+    tz = UTC;
+
+  return tz;
 }
 
-- (BOOL)isSubject {
-  return self->isSubject;
-}
-- (void)setIsSubject:(BOOL)_isSubject {
-  self->isSubject = _isSubject;
+- (void) setViewTZ: (NSTimeZone *) newViewTZ
+{
+  ASSIGN (viewTZ, newViewTZ);
 }
 
+- (BOOL) isSubject
+{
+  return isSubject;
+}
+
+- (void) setIsSubject: (BOOL) newIsSubject
+{
+  isSubject = newIsSubject;
+}
 
 /* Helpers */
 
-- (NSCalendarDate *)oldStartDate {
-  if (!self->oldStartDate) {
-    ASSIGN(self->oldStartDate, [[self oldApt] startDate]);
-    [self->oldStartDate setTimeZone:[self viewTZ]];
-  }
-  return self->oldStartDate;
+- (NSCalendarDate *) oldStartDate
+{
+  if (!oldStartDate)
+    {
+      ASSIGN (oldStartDate, [[self oldApt] startDate]);
+      [oldStartDate setTimeZone: [self viewTZ]];
+    }
+
+  return oldStartDate;
 }
 
-- (NSCalendarDate *)newStartDate {
-  if (!self->newStartDate) {
-    ASSIGN(self->newStartDate, [[self newApt] startDate]);
-    [self->newStartDate setTimeZone:[self viewTZ]];
-  }
-  return self->newStartDate;
+- (NSCalendarDate *) newStartDate
+{
+  if (!newStartDate)
+    {
+      ASSIGN (newStartDate, [[self newApt] startDate]);
+      [newStartDate setTimeZone: [self viewTZ]];
+    }
+
+  return newStartDate;
 }
 
 /* Generate Response */
 
-- (NSString *)getSubject {
+- (NSString *) getSubject
+{
   NSString *subject;
 
-  [self setIsSubject:YES];
+  [self setIsSubject: YES];
   subject = [[[self generateResponse] contentAsString]
-                                      stringByTrimmingCharactersInSet:wsSet];
-  if (!subject) {
-    [self errorWithFormat:@"Failed to properly generate subject! Please check "
-                          @"template for component '%@'!",
-                          [self name]];
-    subject = @"ERROR: missing subject!";
-  }
+	      stringByTrimmingCharactersInSet:wsSet];
+  if (!subject)
+    {
+      [self errorWithFormat:@"Failed to properly generate subject! Please check "
+	    @"template for component '%@'!",
+	    [self name]];
+      subject = @"ERROR: missing subject!";
+    }
 
   return [subject asQPSubjectString: @"utf-8"];
 }
 
-- (NSString *)getBody {
+- (NSString *) getBody
+{
   [self setIsSubject:NO];
+
   return [[self generateResponse] contentAsString];
 }
 
