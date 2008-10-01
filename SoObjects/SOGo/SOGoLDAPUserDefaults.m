@@ -133,19 +133,15 @@ _appendAtomToDictionary (_SOGoLDAPValue *atom, _SOGoLDAPValue *dictionary)
   if (oldAtomPtr)
     {
       oldAtom = *oldAtomPtr;
-      if (oldAtom->type == SOGoLDAPAtom)
+      if (oldAtom->type == SOGoLDAPArray)
+	container = oldAtom;
+      else
 	{
 	  container = _createContainer (SOGoLDAPArray);
 	  container->key = oldAtom->key;
 	  oldAtom->key = NULL;
 	  _appendAtomToContainer (oldAtom, container);
 	  *oldAtomPtr = container;
-	}
-      else if (oldAtom->type == SOGoLDAPArray)
-	container = oldAtom;
-      else
-	{
-// 	  some error handling here...
 	}
     }
   else
@@ -352,7 +348,7 @@ _convertLDAPAtomToNSDictionary (_SOGoLDAPValue *atom)
 // dn = "cn=admin,dc=inverse,dc=ca";
 // password = "qwerty";
 // uri = "ldap://127.0.0.1";
-// configDN = @"cn=sogo-config,dc=inverse,dc=ca";
+// configDN = "cn=sogo-config,dc=inverse,dc=ca";
 
 static _SOGoLDAPValue *
 _initLDAPDefaults ()
