@@ -322,13 +322,16 @@ checkDependencies() {
 }
 
 runIt() {
-  if [ "$ARG_WITH_DEBUG" == "1" ] && [ "$ARG_WITH_STRIP" == "1" ]
-  then
-    echo "Note: Disabling stripping of symbols since debug is enabled"
+  DISABLED_STRIPPING=0
+  if test $ARG_WITH_DEBUG = 1 && test $ARG_WITH_STRIP = 1; then
+    DISABLED_STRIPPING=1
     ARG_WITH_STRIP=0
   fi
 
   if test $ARG_BEQUIET != 1; then
+    if test $DISABLED_STRIPPING = 1; then
+	echo "Note: Disabling stripping of symbols since debug is enabled";
+    fi
     printParas;
   fi
 
