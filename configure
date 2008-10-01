@@ -17,7 +17,7 @@ ARG_PREFIX=""
 ARG_GSMAKE=`gnustep-config --variable=GNUSTEP_MAKEFILES 2>/dev/null`
 ARG_CFGMAKE="$PWD/config.make"
 ARG_WITH_DEBUG=1
-ARG_WITH_STRIP=1
+ARG_WITH_STRIP=0
 ARG_WITH_LDAP_CONFIG=0
 
 GNUSTEP_INSTALLATION_DOMAIN="LOCAL"
@@ -322,10 +322,16 @@ checkDependencies() {
 }
 
 runIt() {
+  if [ "$ARG_WITH_DEBUG" == "1" ] && [ "$ARG_WITH_STRIP" == "1" ]
+  then
+    echo "Note: Disabling stripping of symbols since debug is enabled"
+    ARG_WITH_STRIP=0
+  fi
+
   if test $ARG_BEQUIET != 1; then
     printParas;
   fi
-  
+
   if test $ARG_NOCREATE = 1; then 
     if test $ARG_BEQUIET != 1; then
       echo "not creating the config file ...";
