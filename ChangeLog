@@ -15,17 +15,15 @@
 	([SOGoAptMailICalReply -attendeeName]): new method returning the
 	cn of the attendee.
 
-2008-09-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
-
-	* SoObjects/SOGo/SOGoLDAPUserDefaults.m ([SOGoLDAPUserDefaults
-	-objectForKey:key]): properly handle arrays of record references.
-
 2008-09-30  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* Implemented external loading of images
 	  in HTML mails the same way Thunderbird does it.
 
 2008-09-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoLDAPUserDefaults.m ([SOGoLDAPUserDefaults
+	-objectForKey:key]): properly handle arrays of record references.
 
 	* SoObjects/SOGo/SOGoLDAPUserDefaults.m ([SOGoLDAPUserDefaults
 	-objectForKey:key]): added support for dn+attribute lookup. The
