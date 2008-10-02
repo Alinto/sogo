@@ -302,7 +302,7 @@ function deleteSelectedMessagesCallback(http) {
 
 function moveMessages(rowIds, folder) {
   var failCount = 0;
-  
+  /*
   if ( rowIds.length > 0 ) {
     var uids = new Array();
     var paths = new Array();
@@ -319,7 +319,7 @@ function moveMessages(rowIds, folder) {
 		triggerAjaxRequest(url, deleteSelectedMessagesCallback, data, parameters,
 											 { "Content-type": "application/x-www-form-urlencoded" });
   }
-/*
+  */
   for (var i = 0; i < rowIds.length; i++) {
     var url, http;
 	  
@@ -345,7 +345,7 @@ function moveMessages(rowIds, folder) {
 
   if (failCount > 0)
     alert("Could not move " + failCount + " messages!");
-*/
+    
   return failCount;
 }
 
