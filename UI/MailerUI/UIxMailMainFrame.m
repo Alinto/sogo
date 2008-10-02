@@ -86,8 +86,13 @@
   
   sud = [NSUserDefaults standardUserDefaults];
   defaultColumnsOrder = [NSArray arrayWithArray: [sud arrayForKey: @"SOGoMailListViewColumnsOrder"]];
+  if ( [defaultColumnsOrder count] == 0 )
+  {
+    defaultColumnsOrder = [NSArray arrayWithObjects: @"Invisible", @"Attachment", @"Subject", 
+      @"From", @"Unread", @"Date", @"Priority", nil];
+  }
     
-    return [defaultColumnsOrder jsonRepresentation];
+  return [defaultColumnsOrder jsonRepresentation];
 }
 
 - (NSString *) quotaSupport

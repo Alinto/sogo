@@ -678,8 +678,14 @@
   
   ud = [[context activeUser] userSettings];
   userDefinedOrder = [NSArray arrayWithArray: [ud arrayForKey: @"SOGoMailListViewColumnsOrder"]];
-  if ( [userDefinedOrder count] == 0 ) {
+  if ( [userDefinedOrder count] == 0 )
+  {
     userDefinedOrder = [[NSUserDefaults standardUserDefaults] arrayForKey: @"SOGoMailListViewColumnsOrder"];
+  }
+  if ( [userDefinedOrder count] == 0 )
+  {
+    userDefinedOrder = [NSArray arrayWithObjects: @"Invisible", @"Attachment", @"Subject", 
+      @"From", @"Unread", @"Date", @"Priority", nil];
   }
   
   columnsMetaData = [self columnsMetaData];
