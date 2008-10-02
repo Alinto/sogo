@@ -290,7 +290,7 @@
   if (!keys)
     keys = [[NSArray alloc] initWithObjects: @"UID",
     			    @"FLAGS", @"ENVELOPE", @"RFC822.SIZE",
-    			    @"BODYSTRUCTURE", @"BODY[HEADER.FIELDS (X-PRIORITY)]", nil];
+    			    @"BODYSTRUCTURE", @"BODY.PEEK[HEADER.FIELDS (X-PRIORITY)]", nil];
   return keys;
 }
 
