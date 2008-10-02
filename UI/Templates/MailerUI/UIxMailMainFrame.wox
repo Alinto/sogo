@@ -10,6 +10,7 @@
   const:jsFiles="dtree.js,MailerUI+dTree.js">
   <script type="text/javascript">
     var textMailAccounts = '<var:string value="mailAccounts" const:escapeHTML="NO"/>';
+    var textDefaultColumnsOrder = '<var:string value="defaultColumnsOrder" const:escapeHTML="NO"/>';
   </script>
   <style type="text/css">
   <var:if condition="horizontalDragHandleStyle">

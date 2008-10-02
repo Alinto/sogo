@@ -49,6 +49,7 @@
 #import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/SOGoDateFormatter.h>
 #import <SoObjects/SOGo/SOGoUser.h>
+#import <SoObjects/SOGo/SOGoUserDefaults.h>
 
 #import "UIxMailListView.h"
 
@@ -665,6 +666,67 @@
       [labels addObject: [currentFlag substringFromIndex: 1]];
 
   return [labels componentsJoinedByString: @" "];
+}
+
+- (NSArray *) columnsDisplayOrder
+{
+  NSMutableArray *columnsDisplayOrder;
+  NSMutableDictionary *columnsMetaData;
+  NSArray *userDefinedOrder;
+  SOGoUserDefaults *ud;
+  int i;
+  
+  ud = [[context activeUser] userSettings];
+  userDefinedOrder = [NSArray arrayWithArray: [ud arrayForKey: @"SOGoMailListViewColumnsOrder"]];
+  if ( [userDefinedOrder count] == 0 ) {
+    userDefinedOrder = [[NSUserDefaults standardUserDefaults] arrayForKey: @"SOGoMailListViewColumnsOrder"];
+  }
+  
+  columnsMetaData = [self columnsMetaData];
+  columnsDisplayOrder = [NSMutableArray array];
+  
+  for(i = 0; i < [userDefinedOrder count]; i += 1)
+  {
+    [columnsDisplayOrder addObject: 
+      [columnsMetaData objectForKey: 
+        [userDefinedOrder objectAtIndex: i]]];
+  }
+
+  return columnsDisplayOrder;
+}
+
+- (NSDictionary *) columnsMetaData
+{
+  NSMutableDictionary *columnsMetaData;
+  NSArray *tmpColumns, *tmpKeys;
+  columnsMetaData = [NSMutableDictionary dictionaryWithCapacity:8];
+  
+  tmpKeys = [NSArray arrayWithObjects: @"headerClass", @"headerId", @"value", nil];
+  tmpColumns = [NSArray arrayWithObjects: @"tbtv_headercell sortableTableHeader", @"subjectHeader", @"Subject", nil];
+  [columnsMetaData setObject: [NSDictionary dictionaryWithObjects: tmpColumns forKeys: tmpKeys] forKey: @"Subject"];
+  
+  tmpColumns = [NSArray arrayWithObjects: @"tbtv_headercell messageFlagColumn", @"invisibleHeader", @"Invisible", nil];
+  [columnsMetaData setObject: [NSDictionary dictionaryWithObjects: tmpColumns forKeys: tmpKeys] forKey: @"Invisible"];
+
+  tmpColumns = [NSArray arrayWithObjects: @"tbtv_headercell messageFlagColumn", @"attachmentHeader", @"Attachment", nil];
+  [columnsMetaData setObject: [NSDictionary dictionaryWithObjects: tmpColumns forKeys: tmpKeys] forKey: @"Attachment"];
+
+  tmpColumns = [NSArray arrayWithObjects: @"tbtv_headercell", @"messageFlagHeader", @"Unread", nil];
+  [columnsMetaData setObject: [NSDictionary dictionaryWithObjects: tmpColumns forKeys: tmpKeys] forKey: @"Unread"];
+  
+  tmpColumns = [NSArray arrayWithObjects: @"tbtv_headercell sortableTableHeader", @"toHeader", @"To", nil];
+  [columnsMetaData setObject: [NSDictionary dictionaryWithObjects: tmpColumns forKeys: tmpKeys] forKey: @"To"];
+
+  tmpColumns = [NSArray arrayWithObjects: @"tbtv_headercell sortableTableHeader", @"fromHeader", @"From", nil];
+  [columnsMetaData setObject: [NSDictionary dictionaryWithObjects: tmpColumns forKeys: tmpKeys] forKey: @"From"];
+  
+  tmpColumns = [NSArray arrayWithObjects: @"tbtv_headercell sortableTableHeader", @"dateHeader", @"Date", nil];
+  [columnsMetaData setObject: [NSDictionary dictionaryWithObjects: tmpColumns forKeys: tmpKeys] forKey: @"Date"];
+  
+  tmpColumns = [NSArray arrayWithObjects: @"tbtv_headercell", @"priorityHeader", @"Priority", nil];
+  [columnsMetaData setObject: [NSDictionary dictionaryWithObjects: tmpColumns forKeys: tmpKeys] forKey: @"Priority"];
+  
+  return columnsMetaData;
 }
 
 @end

@@ -10,6 +10,14 @@ if (typeof textMailAccounts != 'undefined') {
   else
     mailAccounts = new Array();
  }
+ 
+var defaultColumnsOrder;
+if (typeof textDefaultColumnsOrder != 'undefined') {
+  if (textDefaultColumnsOrder.length > 0)
+    defaultColumnsOrder = textDefaultColumnsOrder.evalJSON(true);
+  else
+    defaultColumnsOrder = new Array();
+ }
 
 var Mailer = {
  currentMailbox: null,
@@ -280,6 +288,9 @@ function deleteSelectedMessagesCallback(http) {
 						nextRow.selectElement();
 						loadMessage(Mailer.currentMessages[Mailer.currentMailbox]);
 					}
+					else {
+					  div.innerHTML = "";
+					}
 					refreshCurrentFolder();
 				}
 			}
@@ -291,17 +302,32 @@ function deleteSelectedMessagesCallback(http) {
 
 function moveMessages(rowIds, folder) {
   var failCount = 0;
-
+  
+  if ( rowIds.length > 0 ) {
+    var uids = new Array();
+    var paths = new Array();
+    for (var i = 0; i < rows.length; i++) {
+      var uid = rowIds[i];
+      var path = Mailer.currentMailbox + "/" + uid;
+			rows[i].hide();
+			uids.push(uid);
+			paths.push(path);
+    }
+		var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/moveMessages";
+		var parameters = "uid=" + uids.join(",");
+		var data = { "id": uids, "mailbox": Mailer.currentMailbox, "path": paths, "toFolder": folder };
+		triggerAjaxRequest(url, deleteSelectedMessagesCallback, data, parameters,
+											 { "Content-type": "application/x-www-form-urlencoded" });
+  }
+/*
   for (var i = 0; i < rowIds.length; i++) {
     var url, http;
-
-    /* send AJAX request (synchronously) */
 	  
     var messageId = encodeURI(Mailer.currentMailbox) + "/" + rowIds[i];
     url = (ApplicationBaseURL + messageId
 					 + "/move?tofolder=" + encodeURIComponent(folder));
     http = createHTTPClient();
-    http.open("GET", url, false /* not async */);
+    http.open("GET", url, false);
     http.send("");
     if (http.status == 200) {
       var row = $("row_" + rowIds[i]);
@@ -313,18 +339,18 @@ function moveMessages(rowIds, folder) {
 				Mailer.currentMessages[Mailer.currentMailbox] = null;
       }
     }
-    else /* request failed */
+    else
       failCount++;
-
-    /* remove from page */
-
-    /* line-through would be nicer, but hiding is OK too */
   }
 
   if (failCount > 0)
     alert("Could not move " + failCount + " messages!");
-   
+*/
   return failCount;
+}
+
+function moveMessagesCallback(http) {
+  alert("messages are teh moved");
 }
 
 function onMenuDeleteMessage(event) {
@@ -761,6 +787,10 @@ function configureLoadImagesButton() {
 	var loadImagesButton = $("loadImagesButton");
 	var displayLoadImages = $("displayLoadImages");
 	
+	if (typeof(loadImagesButton) == "undefined" ||
+	    loadImagesButton == null ) {
+	  return;
+	}
 	if (typeof(displayLoadImages) == "undefined" ||
 			displayLoadImages == null ||
 			displayLoadImages.value == 0) {
@@ -1230,13 +1260,25 @@ function configureMessageListBodyEvents(table) {
 			//row.dndGhost = messageListGhost;
 			//row.dndDataForType = messageListData;
 			//document.DNDManager.registerSource(row);
-         
+      // Correspondances index <> nom de la colonne
+      // 0 => Invisible
+      // 1 => Attachment
+      // 2 => Subject
+      // 3 => From
+      // 4 => Unread
+      // 5 => Date
+      // 6 => Priority
+      var columnsOrder = userSettings["SOGoMailListViewColumnsOrder"];
+      if ( typeof(columnsOrder) == "undefined" ) {
+          columnsOrder = defaultColumnsOrder;
+      }
 			for (var j = 0; j < row.cells.length; j++) {
 				var cell = $(row.cells[j]);
+				var cellType = columnsOrder[j];
 				cell.observe("mousedown", listRowMouseDownHandler);
-				if (j == 2 || j == 3 || j == 5)
+				if (cellType == "Subject" || cellType == "From" || cellType == "Date")
 					cell.observe("dblclick", onMessageDoubleClick.bindAsEventListener(cell));
-				else if (j == 4) {
+				else if (cellType == "Unread") {
 					var img = $(cell.childNodesWithTag("img")[0]);
 					img.observe("click", mailListMarkMessage.bindAsEventListener(img));
 				}

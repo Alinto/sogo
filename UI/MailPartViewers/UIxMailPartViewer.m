@@ -36,6 +36,7 @@
 #import "UI/MailerUI/WOContext+UIxMailer.h"
 #import "UIxMailRenderingContext.h"
 #import "UIxMailSizeFormatter.h"
+#import "UI/SOGoUI/UIxComponent.h"
 
 #import "UIxMailPartViewer.h"
 
@@ -362,6 +363,31 @@
   [url appendString: attachment];
 
   return url;
+}
+
+- (NSString *) mimeImageUrl
+{
+  NSString *mimeImageFile, *mimeImageUrl;
+    
+  mimeImageFile = [NSString stringWithFormat: @"mime-%@-%@.png", 
+    [bodyInfo objectForKey: @"type"], 
+    [bodyInfo objectForKey: @"subtype"]];
+  
+  mimeImageUrl = [self urlForResourceFilename: mimeImageFile];
+  
+  if ( [mimeImageUrl length] == 0 ) 
+  {
+    mimeImageFile = [NSString stringWithFormat: @"mime-%@.png", 
+      [bodyInfo objectForKey: @"type"]];
+    mimeImageUrl = [self urlForResourceFilename: mimeImageFile];
+  }
+  
+  if ( [mimeImageUrl length] == 0 ) 
+  {
+    mimeImageUrl = [self urlForResourceFilename: @"mime-unknown.png"];
+  }
+  
+  return mimeImageUrl;
 }
 
 @end /* UIxMailPartViewer */

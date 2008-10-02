@@ -21,6 +21,7 @@
 
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSValue.h>
+#import <Foundation/NSUserDefaults.h>
 
 #import <NGCards/NGVCard.h>
 #import <NGObjWeb/WOContext.h>
@@ -76,6 +77,17 @@
   accountNames = [accounts objectsForKey: @"name"];
 
   return [accountNames jsonRepresentation];
+}
+
+- (NSString *) defaultColumnsOrder
+{
+  NSArray *defaultColumnsOrder;
+  NSUserDefaults *sud;
+  
+  sud = [NSUserDefaults standardUserDefaults];
+  defaultColumnsOrder = [NSArray arrayWithArray: [sud arrayForKey: @"SOGoMailListViewColumnsOrder"]];
+    
+    return [defaultColumnsOrder jsonRepresentation];
 }
 
 - (NSString *) quotaSupport

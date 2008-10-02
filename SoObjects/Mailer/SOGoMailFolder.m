@@ -322,7 +322,7 @@ static NSString *spoolFolder = nil;
 {
   NSException *error;
   NSFileManager *fm;
-  NSString *spoolPath, *fileName;
+  NSString *spoolPath, *fileName, *zipPath;
   NSDictionary *msgs;
   NSArray *messages;
   NSData *content, *zipContent;
@@ -337,9 +337,13 @@ static NSString *spoolFolder = nil;
       reason: @"spoolFolderPath doesn't exist"];
     return (WOResponse *)error;
   }
+  
+  zipPath = [[NSUserDefaults standardUserDefaults] stringForKey: @"SOGoZipPath"];
+  if (![zipPath length])
+    zipPath = [NSString stringWithString: @"/usr/bin/zip"];
 
   fm = [NSFileManager defaultManager];
-  if ( ![fm fileExistsAtPath: @"/usr/bin/zip"] ) {
+  if ( ![fm fileExistsAtPath: zipPath] ) {
     error = [NSException exceptionWithHTTPStatus: 500 
       reason: @"zip not available"];
     return (WOResponse *)error;
@@ -347,7 +351,7 @@ static NSString *spoolFolder = nil;
   
   zipTask = [[NSTask alloc] init];
   [zipTask setCurrentDirectoryPath: spoolPath];
-  [zipTask setLaunchPath: @"/usr/bin/zip"];
+  [zipTask setLaunchPath: zipPath];
   
   zipTaskArguments = [NSMutableArray arrayWithObjects: nil];
   [zipTaskArguments addObject: @"SavedMessages.zip"];

@@ -8,27 +8,28 @@
   xmlns:label="OGo:label">
   <thead>
     <tr class="tableview"
-      ><td class="tbtv_headercell messageFlagColumn">
-        <img rsrc:src="invisible.png" label:title="Unread" width="100%" height="100%" /></td
-	><td class="tbtv_headercell messageFlagColumn">
-	<img rsrc:src="title_attachment_14x14.png" label:title="Attachment" width="14"
-	  height="14"/></td
-	><td class="tbtv_headercell sortableTableHeader" id="subjectHeader"
-	><var:string label:value="Subject"/></td
-	><var:if condition="showToAddress"
-	><td class="tbtv_headercell sortableTableHeader" id="toHeader"
-	  ><var:string label:value="To"/></td></var:if
-	><var:if condition="showToAddress" const:negate="YES"
-	><td class="tbtv_headercell sortableTableHeader" id="fromHeader"
-	  ><var:string label:value="From"/></td
-	  ></var:if
-	><td class="tbtv_headercell" id="messageFlagHeader"
-	><img rsrc:src="title_read_14x14.png" label:title="Flagged" /></td
-	><td class="tbtv_headercell sortableTableHeader" id="dateHeader"
-	><var:string label:value="Date"/></td
-	><td class="tbtv_headercell" id="priorityHeader"
-	><var:string label:value="Priority"/></td
-	></tr>
+      ><var:foreach list="columnsDisplayOrder" item="currentColumn">
+        <td var:class="currentColumn.headerClass" var:id="currentColumn.headerId">
+          <var:if condition="currentColumn.value" const:value="Invisible">
+            <img rsrc:src="invisible.png" width="100%" height="100%" label:title="void" />
+          </var:if>
+          <var:if condition="currentColumn.value" const:value="Attachment">
+            <img rsrc:src="title_attachment_14x14.png" var:title="currentColumn.value" width="14"
+          	  height="14"/>
+          </var:if>
+          <var:if condition="currentColumn.value" const:value="Unread">
+            <img rsrc:src="title_read_14x14.png" var:title="currentColumn.value" />
+          </var:if>
+          <var:if condition="currentColumn.value" const:value="Invisible" const:negate="YES">
+            <var:if condition="currentColumn.value" const:value="Attachment" const:negate="YES">
+              <var:if condition="currentColumn.value" const:value="Unread" const:negate="YES">
+                <var:string var:value="currentColumn.value" />
+              </var:if>
+            </var:if>
+          </var:if>
+        </td>
+      </var:foreach>
+      </tr>
     <tr class="tableview"
       ><td colspan="7" class="tbtv_navcell"
 	><var:if condition="hasPrevious">
@@ -61,61 +62,69 @@
       >
   </thead>
   <tbody>
-    <var:foreach list="messages" item="message"
-      ><tr var:class="messageRowStyleClass" var:id="msgRowID" var:labels="msgLabels"
-	><td class="messageFlagColumn"><var:entity name="nbsp"/></td
-	  ><td class="messageFlagColumn"
-	  ><var:if condition="hasMessageAttachment"
-	    ><img rsrc:src="title_attachment_14x14.png"
-	      /></var:if
-	    ></td
-	  ><td
-	  var:class="messageSubjectCellStyleClass"
-	  var:id="msgDivID"
-	  ><var:string value="messageSubject"
-	    /></td
-
-	  ><td class="messageAddressColumn"
-	  ><var:if condition="showToAddress" const:negate="YES"
-	    ><var:string value="message.envelope.from"
-	      formatter="context.mailEnvelopeAddressFormatter"
-	      /></var:if
-	    ><var:if condition="showToAddress"
-	    ><var:string value="message.envelope.to"
-	      formatter="context.mailEnvelopeAddressFormatter"
-	      /></var:if
-	    ></td
-	  
-	  ><td class="messageFlagColumn"
-	  ><var:if condition="isMessageRead"
-	    ><img rsrc:src="icon_read.gif"
-	      class="mailerReadIcon"
-	      label:title="Mark Unread"
-	      label:title-markread="Mark Read"
-	      label:title-markunread="Mark Unread"
-	      var:id="msgIconReadImgID"
-	      /></var:if
-	    ><var:if condition="isMessageRead" const:negate="YES"
-	    ><img rsrc:src="icon_unread.gif"
-	      class="mailerUnreadIcon"
-	      label:title="Mark Read"
-	      label:title-markread="Mark Read"
-	      label:title-markunread="Mark Unread"
-	      var:id="msgIconUnreadImgID"
-	      /></var:if
-	    ></td
-	  
-	  ><td class="messageDateColumn"
-	  ><var:string value="messageDate" 
-	      /><entity name="nbsp"
-	    /></td
-
-	  ><td class="messagePriorityColumn"
-	  ><var:string value="messagePriority" 
-	      /><entity name="nbsp"
-	    /></td
-
-	  ></tr>
-    </var:foreach>
+    <var:foreach list="messages" item="message">
+      <tr var:class="messageRowStyleClass" var:id="msgRowID" var:labels="msgLabels"
+        ><var:foreach list="columnsDisplayOrder" item="currentColumn"
+          ><var:if condition="currentColumn.value" const:value="Invisible"
+            ><td class="messageFlagColumn"><var:entity name="nbsp"
+            /></td
+          ></var:if>
+          <var:if condition="currentColumn.value" const:value="Attachment"
+            ><td class="messageFlagColumn"
+              ><var:if condition="hasMessageAttachment"
+                ><img rsrc:src="title_attachment_14x14.png" 
+              /></var:if
+            ></td
+          ></var:if
+          ><var:if condition="currentColumn.value" const:value="Subject"
+            ><td var:class="messageSubjectCellStyleClass" var:id="msgDivID"
+              ><var:string value="messageSubject" 
+            /></td
+          ></var:if
+          ><var:if condition="currentColumn.value" const:value="From"
+            ><td class="messageAddressColumn"
+              ><var:if condition="showToAddress" const:negate="YES"
+                ><var:string value="message.envelope.from" formatter="context.mailEnvelopeAddressFormatter" 
+              /></var:if
+              ><var:if condition="showToAddress"
+                ><var:string value="message.envelope.to" formatter="context.mailEnvelopeAddressFormatter" 
+              /></var:if
+            ></td
+          ></var:if
+          ><var:if condition="currentColumn.value" const:value="Unread"
+            ><td class="messageFlagColumn"
+              ><var:if condition="isMessageRead"
+                ><img rsrc:src="icon_read.gif"
+                class="mailerReadIcon"
+                label:title="Mark Unread"
+                label:title-markread="Mark Read"
+                label:title-markunread="Mark Unread"
+                var:id="msgIconReadImgID" 
+              /></var:if
+              ><var:if condition="isMessageRead" const:negate="YES"
+                ><img rsrc:src="icon_unread.gif"
+                class="mailerUnreadIcon"
+                label:title="Mark Read"
+                label:title-markread="Mark Read"
+                label:title-markunread="Mark Unread"
+                var:id="msgIconUnreadImgID" 
+              /></var:if
+            ></td
+          ></var:if
+          ><var:if condition="currentColumn.value" const:value="Date"
+            ><td class="messageDateColumn"
+              ><var:string value="messageDate" 
+              /><entity name="nbsp" 
+            /></td
+            ></var:if
+            ><var:if condition="currentColumn.value" const:value="Priority"
+              ><td class="messagePriorityColumn"
+                ><var:string value="messagePriority" 
+                /><entity name="nbsp"
+                /></td
+                ></var:if>
+            </var:foreach>
+          </tr>
+        </var:foreach>
   </tbody>
   </table>

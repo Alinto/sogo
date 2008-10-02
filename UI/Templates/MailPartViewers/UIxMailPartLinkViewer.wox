@@ -10,14 +10,11 @@
     <a var:href="pathToAttachment"
       var:title="filenameForDisplay"
       const:absolute="YES"
-      ><var:string value="filenameForDisplay" /></a>
+      ><img var:src="mimeImageUrl" />
+    </a>
     <div class="linked_attachment_meta">
-      <var:string label:value="Type" />:
-      <var:string value="bodyInfo.type" /> / 
-      <var:string value="bodyInfo.subtype" />,
-
-      <var:string label:value="Size" />:
-      <var:string value="bodyInfo.size" formatter="sizeFormatter" />
+      <var:string value="filenameForDisplay" 
+      /> (<var:string value="bodyInfo.size" formatter="sizeFormatter" />)
     </div>
 
     <!-- debug
