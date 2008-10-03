@@ -146,6 +146,16 @@
 	  actionClass = "UIxMailFolderActions";
 	  actionName = "saveMessages";
 	};
+	copyMessages = {
+	  protectedBy = "View";
+	  actionClass = "UIxMailFolderActions";
+	  actionName = "copyMessages";
+	};
+	moveMessages = {
+	  protectedBy = "View";
+	  actionClass = "UIxMailFolderActions";
+	  actionName = "moveMessages";
+	};
 	setAsDraftsFolder = {
 	  protectedBy = "View";
 	  actionClass = "UIxMailFolderActions";
@@ -210,16 +220,6 @@
 	popupview = {
 	  protectedBy = "View";
 	  pageName    = "UIxMailPopupView";
-	};
-	move = {
-	  protectedBy = "View";
-	  actionClass = "UIxMailActions";
-	  actionName  = "move";
-	};
-	copy = {
-	  protectedBy = "View";
-	  actionClass = "UIxMailActions";
-	  actionName  = "copy";
 	};
 	junk = {
 	  protectedBy = "View";

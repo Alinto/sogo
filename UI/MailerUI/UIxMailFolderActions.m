@@ -236,6 +236,62 @@
   return response;
 }
 
+- (WOResponse *) copyMessagesAction
+{
+  SOGoMailFolder *co;
+  WOResponse *response;
+  NSArray *uids;
+  NSString *value, *destinationFolder;
+
+  co = [self clientObject];
+  value = [[context request] formValueForKey: @"uid"];
+  destinationFolder = [[context request] formValueForKey: @"folder"];
+  response = nil;
+
+  if ([value length] > 0)
+  {
+    uids = [value componentsSeparatedByString: @","];
+    response = [co copyUIDs: uids  toFolder: destinationFolder inContext: context];
+    if (!response)
+      response = [self responseWith204];
+  }
+  else
+  {
+    response = [self responseWithStatus: 500];
+    [response appendContentString: @"Missing 'uid' parameter."];
+  }
+
+  return response;
+}
+
+- (WOResponse *) moveMessagesAction
+{
+  SOGoMailFolder *co;
+  WOResponse *response;
+  NSArray *uids;
+  NSString *value, *destinationFolder;
+
+  co = [self clientObject];
+  value = [[context request] formValueForKey: @"uid"];
+  destinationFolder = [[context request] formValueForKey: @"folder"];
+  response = nil;
+
+  if ([value length] > 0)
+  {
+    uids = [value componentsSeparatedByString: @","];
+    response = [co moveUIDs: uids  toFolder: destinationFolder inContext: context];
+    if (!response)
+      response = [self responseWith204];
+  }
+  else
+  {
+    response = [self responseWithStatus: 500];
+    [response appendContentString: @"Missing 'uid' parameter."];
+  }
+
+  return response;
+}
+
 - (WOResponse *) _setFolderPurpose: (NSString *) purpose
 {
   SOGoMailFolder *co;

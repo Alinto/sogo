@@ -397,6 +397,55 @@ static NSString *spoolFolder = nil;
   return response;
 }
 
+- (WOResponse *) copyUIDs: (NSArray *) uids
+          toFolder: (NSString *) destinationFolder
+          inContext: (id) localContext
+{
+  NSEnumerator *folders;
+  NSString *currentFolderName;
+  NSMutableString *imapDestinationFolder;
+  NGImap4Client *client;
+  id result;
+  
+  imapDestinationFolder = [NSMutableString string];
+  folders = [[destinationFolder componentsSeparatedByString: @"/"] objectEnumerator];
+  currentFolderName = [folders nextObject];
+  while (currentFolderName)
+  {
+    if ([currentFolderName hasPrefix: @"folder"])
+    {
+      [imapDestinationFolder appendString: @"/"];
+      [imapDestinationFolder appendString: [currentFolderName substringFromIndex: 6]];
+    }
+    currentFolderName = [folders nextObject];
+  }
+
+  client = [[self imap4Connection] client];
+  [imap4 selectFolder: [self imap4URL]];
+  
+  result = [client copyUids: uids toFolder: imapDestinationFolder];
+
+  if ([[result valueForKey: @"result"] boolValue])
+    result = nil;
+  else
+    result = [NSException exceptionWithHTTPStatus: 500 reason: @"Couldn't copy UIDs."];
+  
+  return result;
+}
+
+- (WOResponse *) moveUIDs: (NSArray *) uids
+          toFolder: (NSString *) destinationFolder
+          inContext: (id) localContext
+{
+  id result;
+  result = [self copyUIDs: uids toFolder: destinationFolder inContext: localContext];
+  
+  if ( ![result isNotNull] )
+    result = [self deleteUIDs: uids inContext: localContext];
+    
+  return result;
+}
+
 - (NSArray *) fetchUIDsMatchingQualifier: (id) _q
 			    sortOrdering: (id) _so
 {

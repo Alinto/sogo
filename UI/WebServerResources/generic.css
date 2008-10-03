@@ -327,7 +327,7 @@ SPAN.toolbarButton:active
   border-top: 1px solid #fff;
   border-left: 1px solid #fff;
   border-right: 1px solid #9e9a92;
-  border-bottom: 1px solid #9e9a92; }
+  /*border-bottom: 1px solid #9e9a92;*/ }
 
 .menu LI,
 .popupMenu LI

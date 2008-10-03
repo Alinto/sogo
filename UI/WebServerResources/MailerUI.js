@@ -422,45 +422,49 @@ function onMailboxTreeItemClick(event) {
   Event.stop(event);
 }
 
-function _onMailboxMenuAction(menuEntry, error, actionName) {
-  var targetMailbox = menuEntry.mailbox.fullName();
-  var messages = new Array();
-
-  if (targetMailbox == Mailer.currentMailbox)
-    window.alert(labels[error]);
-  else {
-    if (document.menuTarget.tagName == "DIV")
-      // Menu called from message content view
-      messages.push(Mailer.currentMessages[Mailer.currentMailbox]);
-    else if (Object.isArray(document.menuTarget))
-      // Menu called from multiple selection in messages list view
-      messages = $(document.menuTarget).collect(function(row) {
-					return row.getAttribute("id").substr(4);
-				});
-    else
-      // Menu called from one selection in messages list view
-      messages.push(document.menuTarget.getAttribute("id").substr(4));
-
-    var url_prefix = URLForFolderID(Mailer.currentMailbox) + "/";
-    messages.each(function(msgid, i) {
-				var url = url_prefix + msgid + "/" + actionName
-					+ "?folder=" + encodeURIComponent(targetMailbox);
-				triggerAjaxRequest(url, folderRefreshCallback,
-													 ((i == messages.size() - 1)?Mailer.currentMailbox:""));
-      });
-  }
-}
-
 function onMailboxMenuMove(event) {
-  _onMailboxMenuAction(this,
-											 "Moving a message into its own folder is impossible!",
-											 "move");
+  var targetMailbox = this.mailbox.fullName();
+  var messageList = $("messageList").down("TBODY");
+  var rows = messageList.getSelectedNodes();
+  var uids = new Array(); // message IDs
+  var paths = new Array(); // row IDs
+
+  for (var i = 0; i < rows.length; i++) {
+    var uid = rows[i].readAttribute("id").substr(4);
+    var path = Mailer.currentMailbox + "/" + uid;
+    rows[i].hide();
+    uids.push(uid);
+    paths.push(path);
+  }
+  var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/moveMessages";
+  var parameters = "uid=" + uids.join(",") + "&folder=" + targetMailbox;
+  var data = { "id": uids, "mailbox": Mailer.currentMailbox, "path": paths, "folder": targetMailbox };
+  triggerAjaxRequest(url, folderRefreshCallback, data, parameters,
+    { "Content-type": "application/x-www-form-urlencoded" });
+
+  return false;
 }
 
 function onMailboxMenuCopy(event) {
-  _onMailboxMenuAction(this,
-											 "Copying a message into its own folder is impossible!",
-											 "copy");
+  var targetMailbox = this.mailbox.fullName();
+  var messageList = $("messageList").down("TBODY");
+  var rows = messageList.getSelectedNodes();
+  var uids = new Array(); // message IDs
+  var paths = new Array(); // row IDs
+
+  for (var i = 0; i < rows.length; i++) {
+    var uid = rows[i].readAttribute("id").substr(4);
+    var path = Mailer.currentMailbox + "/" + uid;
+    uids.push(uid);
+    paths.push(path);
+  }
+  var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/copyMessages";
+  var parameters = "uid=" + uids.join(",") + "&folder=" + targetMailbox;
+  var data = { "id": uids, "mailbox": Mailer.currentMailbox, "path": paths, "folder": targetMailbox };
+  triggerAjaxRequest(url, folderRefreshCallback, data, parameters,
+    { "Content-type": "application/x-www-form-urlencoded" });
+
+  return false;
 }
 
 function refreshMailbox() {
@@ -1491,8 +1495,22 @@ function generateMenuForMailbox(mailbox, prefix, callback) {
     previousMenuDIV.parentNode.removeChild(previousMenuDIV);
   menuDIV.setAttribute("id", menuID);
   var menu = document.createElement("ul");
+  menu.style.cssFloat="left";
+  menu.style.styleFloat="left";
   menuDIV.appendChild(menu);
   pageContent.appendChild(menuDIV);
+
+  var windowHeight = 0;
+  if ( typeof(window.innerHeight) != "undefined" && window.innerHeight != 0 ) {
+    windowHeight = window.innerHeight;
+  }
+  else {
+    windowHeight = document.body.clientHeight;
+  }
+  var offset = 70;
+  if ( navigator.appVersion.indexOf("Safari") >= 0 ) {
+    offset = 140;
+  }
 
   var callbacks = new Array();
   if (mailbox.type != "account") {
@@ -1507,6 +1525,12 @@ function generateMenuForMailbox(mailbox, prefix, callback) {
 
   var submenuCount = 0;
   for (var i = 0; i < mailbox.children.length; i++) {
+    if ( menu.offsetHeight > windowHeight-offset ) {
+      menu = document.createElement("ul");
+      menu.style.cssFloat="left";
+      menu.style.styleFloat="left";
+      menuDIV.appendChild(menu);
+    }
     var child = mailbox.children[i];
     var newNode = mailboxMenuNode(child.type, child.name);
     menu.appendChild(newNode);
@@ -1521,6 +1545,7 @@ function generateMenuForMailbox(mailbox, prefix, callback) {
       callbacks.push(callback);
     }
   }
+  
   initMenu(menuDIV, callbacks);
 
   return menuDIV.getAttribute("id");

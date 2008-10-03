@@ -1,3 +1,20 @@
+2008-10-03  Cyril Robert <crobert@inverse.ca>
+  * SoObjects/Mailer/SOGoMailFolder.m
+    Added copyUIDs and moveUIDs
+      
+  * UI/MailerUI/UIxMailActions.m
+    Removed copyAction and moveAction
+    
+  * UI/MailerUI/UIxMailFolderActions.m
+    Added copyMessagesAction and moveMessagesAction
+  
+  * UI/WebServerResources/MailerUI.js
+    Removed _onMailboxMenuAction
+    Modified onMailboxMenuCopy and onMailboxMenuMove
+    
+  Copying/Moving messages is now done with one POST.
+	Fixed bug #1893
+
 2008-10-02  Cyril Robert <crobert@inverse.ca>
 
   * SoObjects/Mailer/SOGoMailFolder.m
