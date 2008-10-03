@@ -1,6 +1,6 @@
 /* UIxContactFoldersView.m - this file is part of SOGo
  *
- * Copyright (C) 2006 Inverse inc.
+ * Copyright (C) 2006-2008 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -140,23 +140,23 @@ withSearchOn: (NSString *) contact
   return email;
 }
 
-- (WOResponse *) _responseForResults: (NSArray *) results
+- (NSDictionary *) _responseForResults: (NSArray *) results
 {
-  WOResponse *response;
   NSEnumerator *contacts;
-  NSString *email;
+  NSString *email, *infoKey, *info;
   NSDictionary *contact;
   NSMutableArray *formattedContacts;
   NSMutableDictionary *formattedContact; 
+  NSUserDefaults *sud;
 
-  response = [context response];
+  formattedContacts = [NSMutableArray arrayWithCapacity: [results count]];
 
   if ([results count] > 0)
     {
-      [response setStatus: 200];
+      sud = [NSUserDefaults standardUserDefaults];
+      infoKey = [sud stringForKey: @"SOGoLDAPContactInfoAttribute"];
       contacts = [results objectEnumerator];
       contact = [contacts nextObject];
-      formattedContacts = [[NSMutableArray alloc] initWithCapacity: [results count]];
       while (contact)
 	{
 	  email = [contact objectForKey: @"c_email"];
@@ -169,17 +169,20 @@ withSearchOn: (NSString *) contact
 				forKey: @"name"];
 	      [formattedContact setObject: email
 				forKey: @"email"];
+	      if ([infoKey length] > 0)
+		{
+		  info = [contact objectForKey: infoKey];
+		  if (info != nil)
+		    [formattedContact setObject: info
+				      forKey: @"contactInfo"];
+		}
 	      [formattedContacts addObject: formattedContact];
 	    }
 	  contact = [contacts nextObject];
 	}
-      [response appendContentString: [formattedContacts jsonRepresentation]];
-      [formattedContacts release];
     }
-  else
-    [response setStatus: 404];
 
-  return response;
+  return formattedContacts;
 }
 
 - (id <WOActionResults>) allContactSearchAction
@@ -187,7 +190,7 @@ withSearchOn: (NSString *) contact
   id <WOActionResults> result;
   id <SOGoContactFolder> folder;
   NSString *searchText, *mail;
-  NSDictionary *contact;
+  NSDictionary *contact, *data;
   NSArray *folders, *contacts, *descriptors, *sortedContacts;
   NSMutableDictionary *uniqueContacts;
   unsigned int i, j;
@@ -214,21 +217,20 @@ withSearchOn: (NSString *) contact
 	      if ([mail isNotNull] && [uniqueContacts objectForKey: mail] == nil)
 		[uniqueContacts setObject: contact forKey: [contact objectForKey: @"mail"]];
 	    }
-	}
-      
-      result = [context response];
+	}      
       if ([uniqueContacts count] > 0)
 	{
 	  // Sort the contacts by display name
 	  displayNameDescriptor = [[[NSSortDescriptor alloc] initWithKey: @"displayName"
 							     ascending:YES] autorelease];
 	  descriptors = [NSArray arrayWithObjects: displayNameDescriptor, nil];
-	  sortedContacts = [[uniqueContacts allValues] sortedArrayUsingDescriptors: descriptors];
-	  
-	  [(WOResponse*)result appendContentString: [sortedContacts jsonRepresentation]];
+	  sortedContacts = [[uniqueContacts allValues] sortedArrayUsingDescriptors: descriptors];	  
 	}
-      else
-	[(WOResponse*)result setStatus: 404];
+      data = [NSDictionary dictionaryWithObjectsAndKeys: searchText, @"searchText",
+			                                 sortedContacts, @"contacts",
+			                                 nil];
+      result = [context response];
+      [(WOResponse*)result appendContentString: [data jsonRepresentation]];
     }
   else
     result = [NSException exceptionWithHTTPStatus: 400
@@ -239,16 +241,22 @@ withSearchOn: (NSString *) contact
 
 - (id <WOActionResults>) contactSearchAction
 {
-  NSString *contact;
+  NSDictionary *contacts, *data;
+  NSString *searchText;
   id <WOActionResults> result;
   LDAPUserManager *um;
   
-  contact = [self queryParameterForKey: @"search"];
-  if ([contact length] > 0)
+  searchText = [self queryParameterForKey: @"search"];
+  if ([searchText length] > 0)
     {
       um = [LDAPUserManager sharedUserManager];
-      result
-	= [self _responseForResults: [um fetchContactsMatching: contact]];
+      contacts
+	= [self _responseForResults: [um fetchContactsMatching: searchText]];
+      data = [NSDictionary dictionaryWithObjectsAndKeys: searchText, @"searchText",
+			                                 contacts, @"contacts",
+			                                 nil];
+      result = [context response];
+      [(WOResponse*)result appendContentString: [data jsonRepresentation]];
     }
   else
     result = [NSException exceptionWithHTTPStatus: 400

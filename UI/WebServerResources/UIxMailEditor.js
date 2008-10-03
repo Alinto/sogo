@@ -387,7 +387,7 @@ function onContactKeydown(event) {
 			if (MailEditor.selectedIndex > 0) {
 				var contacts = $('contactsMenu').select("li");
 				contacts[MailEditor.selectedIndex--].removeClassName("selected");
-				this.value = contacts[MailEditor.selectedIndex].firstChild.nodeValue.trim();
+				this.value = contacts[MailEditor.selectedIndex].readAttribute("address");
 				contacts[MailEditor.selectedIndex].addClassName("selected");
 			}
 		}
@@ -397,7 +397,7 @@ function onContactKeydown(event) {
 				if (MailEditor.selectedIndex >= 0)
 					contacts[MailEditor.selectedIndex].removeClassName("selected");
 				MailEditor.selectedIndex++;
-				this.value = contacts[MailEditor.selectedIndex].firstChild.nodeValue.trim();
+				this.value = contacts[MailEditor.selectedIndex].readAttribute("address");
 				contacts[MailEditor.selectedIndex].addClassName("selected");
 			}
 		}
@@ -431,20 +431,28 @@ function performSearchCallback(http) {
 		if (http.status == 200) {
 			var start = input.value.length;
 			var data = http.responseText.evalJSON(true);
-      
-			if (data.length > 1) {
+
+			if (data.contacts.length > 1) {
 				list.select("li").each(function(item) {
 						item.remove();
 					});
 	
 				// Populate popup menu
-				for (var i = 0; i < data.length; i++) {
-					var contact = data[i];
+				for (var i = 0; i < data.contacts.length; i++) {
+					var contact = data.contacts[i];
 					var completeEmail = contact["displayName"] + " <" + contact["mail"] + ">";
-					var node = document.createElement("li");
+					var node = new Element('li', { 'address': completeEmail });
+					var matchPosition = completeEmail.toLowerCase().indexOf(data.searchText.toLowerCase());
+					var matchBefore = completeEmail.substring(0, matchPosition);
+					var matchText = completeEmail.substring(matchPosition, matchPosition + data.searchText.length);
+					var matchAfter = completeEmail.substring(matchPosition + data.searchText.length);
 					list.appendChild(node);
 					node.uid = contact["c_uid"];
-					node.appendChild(document.createTextNode(completeEmail));
+					node.appendChild(document.createTextNode(matchBefore));
+					node.appendChild(new Element('strong').update(matchText));
+					node.appendChild(document.createTextNode(matchAfter));
+					if (contact["contactInfo"])
+						node.appendChild(document.createTextNode(" (" + contact["contactInfo"] + ")"));
 					$(node).observe("mousedown", onAddressResultClick);
 				}
 
@@ -456,7 +464,7 @@ function performSearchCallback(http) {
 				var heightDiff = window.height() - offset[1];
 				var nodeHeight = node.getHeight();
 
-				if ((data.length * nodeHeight) > heightDiff)
+				if ((data.contacts.length * nodeHeight) > heightDiff)
 					// Limit the size of the popup to the window height, minus 12 pixels
 					height = parseInt(heightDiff/nodeHeight) * nodeHeight - 12 + 'px';
 
@@ -473,9 +481,9 @@ function performSearchCallback(http) {
 				if (document.currentPopupMenu)
 					hideMenu(document.currentPopupMenu);
 
-				if (data.length == 1) {
+				if (data.contacts.length == 1) {
 					// Single result
-					var contact = data[0];
+					var contact = data.contacts[0];
 					if (contact["c_uid"].length > 0)
 						input.uid = contact["c_uid"];
 					var completeEmail = contact["displayName"] + " <" + contact["mail"] + ">";
@@ -504,7 +512,7 @@ function performSearchCallback(http) {
 function onAddressResultClick(event) {
 	if (MailEditor.currentField) {
 		MailEditor.currentField.uid = this.uid;
-		MailEditor.currentField.value = this.firstChild.nodeValue.trim();
+		MailEditor.currentField.value = $(this).readAttribute("address");
 		MailEditor.currentField.confirmedValue = MailEditor.currentField.value;
 	}
 }

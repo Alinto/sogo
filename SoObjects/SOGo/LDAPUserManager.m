@@ -34,6 +34,7 @@
 #import "LDAPUserManager.h"
 
 static NSString *defaultMailDomain = nil;
+static NSString *LDAPContactInfoAttribute = nil;
 static BOOL defaultMailDomainIsConfigured = NO;
 static BOOL forceImapLoginWithEmail = NO;
 
@@ -49,13 +50,16 @@ static BOOL forceImapLoginWithEmail = NO;
       defaultMailDomain = [ud stringForKey: @"SOGoDefaultMailDomain"];
       [defaultMailDomain retain];
       defaultMailDomainIsConfigured = YES;
-    }
-  if (!defaultMailDomain)
-    {
-      [self warnWithFormat:
-	      @"no domain specified for SOGoDefaultMailDomain,"
-	    @" value set to 'localhost'"];
-      defaultMailDomain = @"localhost";
+
+      if (!defaultMailDomain)
+	{
+	  [self warnWithFormat:
+		  @"no domain specified for SOGoDefaultMailDomain,"
+		@" value set to 'localhost'"];
+	  defaultMailDomain = @"localhost";
+	}
+
+      LDAPContactInfoAttribute = [ud stringForKey: @"SOGoLDAPContactInfoAttribute"];
     }
   if (!forceImapLoginWithEmail)
     forceImapLoginWithEmail = [ud boolForKey: @"SOGoForceIMAPLoginWithEmail"];
@@ -498,6 +502,11 @@ static BOOL forceImapLoginWithEmail = NO;
 	  email = [userEntry objectForKey: @"xmozillasecondemail"];
 	  if (email && ![emails containsObject: email])
 	    [emails addObject: email];
+	  if ([LDAPContactInfoAttribute length] > 0 &&
+	      [[returnContact objectForKey: LDAPContactInfoAttribute] length] > 0 &&
+	      [userEntry objectForKey: LDAPContactInfoAttribute] != nil)
+	    [returnContact setObject: [userEntry objectForKey: LDAPContactInfoAttribute]
+			   forKey: LDAPContactInfoAttribute];
 	}
 
       userEntry = [contacts nextObject];

@@ -1,6 +1,6 @@
 /* SOGoUserHomePage.m - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse inc.
+ * Copyright (C) 2007, 2008 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -45,6 +45,7 @@
 #define intervalSeconds 900 /* 15 minutes */
 
 static NSString *defaultModule = nil;
+static NSString *LDAPContactInfoAttribute = nil;
 
 @interface SOGoUserHomePage : UIxComponent
 
@@ -59,6 +60,7 @@ static NSString *defaultModule = nil;
   if (!defaultModule)
     {
       ud = [NSUserDefaults standardUserDefaults];
+
       defaultModule = [ud stringForKey: @"SOGoUIxDefaultModule"];
       if (defaultModule)
 	{
@@ -75,6 +77,9 @@ static NSString *defaultModule = nil;
 	defaultModule = @"Calendar";
       [self logWithFormat: @"default module set to '%@'", defaultModule];
       [defaultModule retain];
+
+      LDAPContactInfoAttribute = [ud stringForKey: @"SOGoLDAPContactInfoAttribute"];
+      [LDAPContactInfoAttribute retain];
     }
 }
 
@@ -287,9 +292,11 @@ static NSString *defaultModule = nil;
       folders = [results objectForKey: contact];
       foldersString
 	= [self _foldersStringForFolders: [folders objectEnumerator]];
-      [responseString appendFormat: @"%@:%@:%@%@\n", uid,
+      [responseString appendFormat: @"%@:%@:%@:%@%@\n", uid,
 		      [contact objectForKey: @"cn"],
 		      [contact objectForKey: @"c_email"],
+		      ([LDAPContactInfoAttribute length] > 0 && [contact objectForKey: LDAPContactInfoAttribute] != nil) ? 
+		      [contact objectForKey: LDAPContactInfoAttribute] : @"",
 		      foldersString];
     }
   [response appendContentString: responseString];

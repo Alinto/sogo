@@ -1,3 +1,32 @@
+2008-10-03  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/MainUI/SOGoUserHomePage.m ([WOResponse
+	_foldersResponseForResults]): include the value of the attribute value
+	from user defaults SOGoLDAPContactInfoAttribute.
+
+	* UI/Contacts/UIxContactFoldersView.m ([WOActionResults
+	allContactSearchAction]): return a dictionary with the found
+	contacts and the original search string.
+	([WOActionResults contactSearchAction]): idem.
+
+	* SoObjects/SOGo/LDAPUserManager.m ([NSArray
+	_compactAndCompleteContacts:]): add the attribute from user
+	defaults SOGoLDAPContactInfoAttribute for each returned contact.
+
+	* SoObjects/SOGo/LDAPSource.m ([EOQualifier _qualifierForFilter:
+	]): the filter doesn't match only the beginning of the attribute's
+	value anymore.
+	([NSArray _searchAttributes]): add the attribute from user
+	defaults SOGoLDAPContactInfoAttribute if not already included.
+
+	* SoObjects/Contacts/SOGoContactLDAPFolder.m ([NSArray
+	_flattenedRecords]): added the key "contactInfo" with the value of
+	the attribute from user defaults SOGoLDAPContactInfoAttribute.
+
+	* UI/Contacts/UIxContactFoldersView.m ([NSDictionary
+	_responseForResults:]): returns a dictionary instead of a
+	WOResponse. Currently only called by contactSearchAction.
+
 2008-10-03  Cyril Robert <crobert@inverse.ca>
   * SoObjects/Mailer/SOGoMailFolder.m
     Added copyUIDs and moveUIDs

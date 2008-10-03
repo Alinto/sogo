@@ -23,6 +23,7 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSUserDefaults.h>
 
 #import <EOControl/EOControl.h>
 #import <NGLdap/NGLdapConnection.h>
@@ -36,6 +37,7 @@
 #import "LDAPSource.h"
 
 static NSArray *commonSearchFields;
+static NSString *LDAPContactInfoAttribute = nil;
 static int timeLimit;
 static int sizeLimit;
 
@@ -48,6 +50,7 @@ static int sizeLimit;
   if (!commonSearchFields)
     {
       ud = [NSUserDefaults standardUserDefaults];
+      LDAPContactInfoAttribute = [ud stringForKey: @"SOGoLDAPContactInfoAttribute"];
       sizeLimit = [ud integerForKey: @"SOGoLDAPQueryLimit"];
       timeLimit = [ud integerForKey: @"SOGoLDAPQueryTimeout"];
 
@@ -121,6 +124,7 @@ static int sizeLimit;
 				    @"calFBURL", @"proxyAddresses",
 				    nil];
 	
+      [LDAPContactInfoAttribute retain];
       [commonSearchFields retain];
     }
 }
@@ -341,7 +345,7 @@ static int sizeLimit;
   NSString *qs, *mailFormat, *fieldFormat;
   EOQualifier *qualifier;
 
-  fieldFormat = [NSString stringWithFormat: @"(%%@='%@*')", filter];
+  fieldFormat = [NSString stringWithFormat: @"(%%@='*%@*')", filter];
   mailFormat = [[mailFields stringsWithFormat: fieldFormat]
 		 componentsJoinedByString: @" OR "];
 
@@ -394,8 +398,12 @@ static int sizeLimit;
 
 - (NSArray *) _searchAttributes
 {
+  NSUserDefaults *ud;
+  NSString *contactInfo;
+
   if (!searchAttributes)
     {
+      ud = [NSUserDefaults standardUserDefaults];
       searchAttributes = [NSMutableArray new];
       if (CNField)
 	[searchAttributes addObject: CNField];
@@ -404,6 +412,12 @@ static int sizeLimit;
       [searchAttributes addObjectsFromArray: mailFields];
       [searchAttributes addObjectsFromArray: [self _contraintsFields]];
       [searchAttributes addObjectsFromArray: commonSearchFields];
+
+      // Add SOGoLDAPContactInfoAttribute from user defaults
+      contactInfo = [ud stringForKey: @"SOGoLDAPContactInfoAttribute"];
+      if ([contactInfo length] > 0 &&
+	  ![searchAttributes containsObject: contactInfo])
+	[searchAttributes addObject: contactInfo];
     }
 
   return searchAttributes;

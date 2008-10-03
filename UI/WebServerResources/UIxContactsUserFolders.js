@@ -25,6 +25,8 @@ function addLineToTree(tree, parent, line) {
 		var parentNode = nodes[0];
 		var userInfos = parentNode.split(":");
 		var email = userInfos[1] + " &lt;" + userInfos[2] + "&gt;";
+		if (!userInfos[3].empty())
+			email += " (" + userInfos[3] + ")"; // extra contact info
 		tree.add(parent, 0, email, 0, '#', userInfos[0], 'person',
 						 '', '',
 						 ResourcesURL + '/abcard.gif',

@@ -69,23 +69,23 @@ function onContactKeydown(event) {
   }
   else if ($('attendeesMenu').getStyle('visibility') == 'visible') {
     attendeesEditor.currentField = this;
-    if (event.keyCode == 38) { // Up arrow
+    if (event.keyCode == Event.KEY_UP) { // Up arrow
       if (attendeesEditor.selectedIndex > 0) {
 				var attendees = $('attendeesMenu').select("li");
 				attendees[attendeesEditor.selectedIndex--].removeClassName("selected");
 				attendees[attendeesEditor.selectedIndex].addClassName("selected");
-				this.value = this.confirmedValue = attendees[attendeesEditor.selectedIndex].firstChild.nodeValue.trim();
+				this.value = this.confirmedValue = attendees[attendeesEditor.selectedIndex].readAttribute("address");
 				this.uid = attendees[attendeesEditor.selectedIndex].uid;
       }
     }
-    else if (event.keyCode == 40) { // Down arrow
+    else if (event.keyCode == Event.KEY_DOWN) { // Down arrow
       var attendees = $('attendeesMenu').select("li");
       if (attendees.size() - 1 > attendeesEditor.selectedIndex) {
 				if (attendeesEditor.selectedIndex >= 0)
 					attendees[attendeesEditor.selectedIndex].removeClassName("selected");
 				attendeesEditor.selectedIndex++;
 				attendees[attendeesEditor.selectedIndex].addClassName("selected");
-				this.value = this.confirmedValue = attendees[attendeesEditor.selectedIndex].firstChild.nodeValue.trim();
+				this.value = this.confirmedValue = attendees[attendeesEditor.selectedIndex].readAttribute("address");
 				this.uid = attendees[attendeesEditor.selectedIndex].uid;
       }
     }
@@ -121,19 +121,27 @@ function performSearchCallback(http) {
       var start = input.value.length;
       var data = http.responseText.evalJSON(true);
 
-      if (data.length > 1) {
+      if (data.contacts.length > 1) {
 				$(list.childNodesWithTag("li")).each(function(item) {
 						item.remove();
 					});
 	
 				// Populate popup menu
-				for (var i = 0; i < data.length; i++) {
-					var contact = data[i];
+				for (var i = 0; i < data.contacts.length; i++) {
+					var contact = data.contacts[i];
 					var completeEmail = contact["name"] + " <" + contact["email"] + ">";
-					var node = document.createElement("li");
+					var node = new Element('li', { 'address': completeEmail });
+					var matchPosition = completeEmail.toLowerCase().indexOf(data.searchText.toLowerCase());
+					var matchBefore = completeEmail.substring(0, matchPosition);
+					var matchText = completeEmail.substring(matchPosition, matchPosition + data.searchText.length);
+					var matchAfter = completeEmail.substring(matchPosition + data.searchText.length);
 					list.appendChild(node);
 					node.uid = contact["uid"];
-					node.appendChild(document.createTextNode(completeEmail));
+					node.appendChild(document.createTextNode(matchBefore));
+					node.appendChild(new Element('strong').update(matchText));
+					node.appendChild(document.createTextNode(matchAfter));
+					if (contact["contactInfo"])
+						node.appendChild(document.createTextNode(" (" + contact["contactInfo"] + ")"));
 					$(node).observe("mousedown", onAttendeeResultClick);
 				}
 
@@ -145,7 +153,7 @@ function performSearchCallback(http) {
 				var heightDiff = window.height() - offset[1];
 				var nodeHeight = node.getHeight();
 
-				if ((data.length * nodeHeight) > heightDiff)
+				if ((data.contacts.length * nodeHeight) > heightDiff)
 					// Limit the size of the popup to the window height, minus 12 pixels
 					height = parseInt(heightDiff/nodeHeight) * nodeHeight - 12 + 'px';
 
@@ -162,9 +170,9 @@ function performSearchCallback(http) {
 				if (document.currentPopupMenu)
 					hideMenu(document.currentPopupMenu);
 
-				if (data.length == 1) {
+				if (data.contacts.length == 1) {
 					// Single result
-					var contact = data[0];
+					var contact = data.contacts[0];
 					if (contact["uid"].length > 0)
 						input.uid = contact["uid"];
 					var completeEmail = contact["name"] + " <" + contact["email"] + ">";
@@ -192,7 +200,7 @@ function performSearchCallback(http) {
 function onAttendeeResultClick(event) {
   if (attendeesEditor.currentField) {
     attendeesEditor.currentField.uid = this.uid;
-    attendeesEditor.currentField.value = this.firstChild.nodeValue.trim();
+    attendeesEditor.currentField.value = $(this).readAttribute("address");
     attendeesEditor.currentField.confirmedValue = attendeesEditor.currentField.value;
     attendeesEditor.currentField.blur(); // triggers checkAttendee function call
   }
