@@ -439,7 +439,7 @@ function onMailboxMenuMove(event) {
   var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/moveMessages";
   var parameters = "uid=" + uids.join(",") + "&folder=" + targetMailbox;
   var data = { "id": uids, "mailbox": Mailer.currentMailbox, "path": paths, "folder": targetMailbox };
-  triggerAjaxRequest(url, folderRefreshCallback, data, parameters,
+  triggerAjaxRequest(url, refreshCurrentFolder, data, parameters,
     { "Content-type": "application/x-www-form-urlencoded" });
 
   return false;
