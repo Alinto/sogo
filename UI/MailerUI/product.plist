@@ -372,6 +372,11 @@
 	  actionClass = "UIxMailFolderActions";
 	  actionName = "createFolder";
 	};
+	statusFolders = {
+	  protectedBy = "View";
+	  actionClass = "UIxMailAccountActions";
+	  actionName = "statusFolders";
+	};
       };
     };
 

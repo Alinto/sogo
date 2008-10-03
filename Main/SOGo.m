@@ -344,24 +344,25 @@ static BOOL debugObjectAllocation = NO;
   [self _setupLocaleInContext:_ctx];
   
   /* first check attributes directly bound to the application */
-  if ((obj = [super lookupName:_key inContext:_ctx acquire:_flag]))
-    return obj;
-  
-  /* 
-     The problem is, that at this point we still get request for resources,
-     eg 'favicon.ico'.
+  obj = [super lookupName:_key inContext:_ctx acquire:_flag];
+  if (!obj)
+    {
+      /* 
+	 The problem is, that at this point we still get request for resources,
+	 eg 'favicon.ico'.
      
-     Addition: we also get queries for various other methods, like "GET" if
-               no method was provided in the query path.
-  */
+	 Addition: we also get queries for various other methods, like "GET" if
+	 no method was provided in the query path.
+      */
   
-  if ([_key isEqualToString:@"favicon.ico"])
-    return nil;
+      if (![_key isEqualToString:@"favicon.ico"])
+	{
+	  if ([self isUserName: _key inContext: _ctx])
+	    obj = [self lookupUser: _key inContext: _ctx];
+	}
+    }
 
-  if ([self isUserName:_key inContext:_ctx])
-    return [self lookupUser:_key inContext:_ctx];
-
-  return nil;
+  return obj;
 }
 
 /* WebDAV */

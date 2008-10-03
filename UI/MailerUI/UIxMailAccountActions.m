@@ -122,6 +122,40 @@
   return folders;
 }
 
+- (NSDictionary *) _statusFolders
+{
+  SOGoMailFolder *inbox;
+  NGImap4Client *client;
+  SOGoMailAccount *co;  
+  NSNumber *unseen;
+
+  co = [self clientObject];
+  inbox = [co inboxFolderInContext: context];
+  client = [[inbox imap4Connection] client];
+  unseen = [[client status: [inbox relativeImap4Name]  flags: [NSArray arrayWithObject: @"UNSEEN"]]
+	     objectForKey: @"unseen"];
+
+  if (!unseen)
+    unseen = [NSNumber numberWithInt: 0];
+  
+  return [NSDictionary dictionaryWithObjectsAndKeys: unseen, @"unseen", nil];
+}
+
+- (WOResponse *) statusFoldersAction
+{
+  WOResponse *response;
+  NSDictionary *data;
+  
+  response = [self responseWithStatus: 200];
+  data = [self _statusFolders];
+
+  [response setHeader: @"text/plain; charset=utf-8"
+	    forKey: @"content-type"];
+  [response appendContentString: [data jsonRepresentation]];
+
+  return response;
+}
+
 - (WOResponse *) listMailboxesAction
 {
   id infos, inboxQuota;  
