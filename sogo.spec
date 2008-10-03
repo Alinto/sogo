@@ -99,8 +99,7 @@ rm -fr ${RPM_BUILD_ROOT}
 . /usr/GNUstep/System/Library/Makefiles/GNUstep.sh
 ./configure \
             --enable-strip \
-            --disable-debug \
-	    --with-gnustep
+            --disable-debug
 
 case %{_target_platform} in
 ppc64-*) 
