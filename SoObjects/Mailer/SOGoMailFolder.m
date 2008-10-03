@@ -438,11 +438,22 @@ static NSString *spoolFolder = nil;
           inContext: (id) localContext
 {
   id result;
+  NGImap4Client *client;
+
+	client = [[self imap4Connection] client];
+  
   result = [self copyUIDs: uids toFolder: destinationFolder inContext: localContext];
   
-  if ( ![result isNotNull] )
-    result = [self deleteUIDs: uids inContext: localContext];
-    
+  if ( ![result isNotNull] ) {
+    result = [client storeFlags: [NSArray arrayWithObject: @"Deleted"]
+	       forUIDs: uids addOrRemove: YES];
+	  if ([[result valueForKey: @"result"] boolValue])
+		{
+		  [self markForExpunge];
+      result = nil;
+    }
+  }
+
   return result;
 }
 
