@@ -93,6 +93,10 @@
           protectedBy = "<public>";
           pageName = "SOGoRootPage"; 
         };
+	index = { 
+          protectedBy = "<public>";
+          pageName = "SOGoRootPage"; 
+        };
 /*	crash = {
           protectedBy = "<public>";
           pageName = "SOGoRootPage";
