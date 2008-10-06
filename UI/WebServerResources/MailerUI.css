@@ -363,6 +363,12 @@ INPUT#loadImagesButton
   right: 1em;
 }
 
+.popup INPUT#loadImagesButton
+{
+  top: 9.0em;
+  right: 1em;
+}
+
 TABLE.mailer_fieldtable
 { top: 0px;
   left: 0px;

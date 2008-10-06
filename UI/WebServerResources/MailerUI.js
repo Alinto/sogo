@@ -790,7 +790,7 @@ function configureLoadImagesButton() {
 	// We show/hide the "Load Images" button
 	var loadImagesButton = $("loadImagesButton");
 	var displayLoadImages = $("displayLoadImages");
-	
+
 	if (typeof(loadImagesButton) == "undefined" ||
 	    loadImagesButton == null ) {
 	  return;
