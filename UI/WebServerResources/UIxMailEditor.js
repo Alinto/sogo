@@ -323,6 +323,7 @@ function onTextFirstFocus() {
   }
 
   if ( replyPlacement == "above" ) {
+    this.insertBefore(document.createTextNode("\r\r"), this.lastChild);
     this.setCaretTo(0);
   }
   else {
