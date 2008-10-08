@@ -11,7 +11,7 @@
       ><var:foreach list="columnsDisplayOrder" item="currentColumn">
         <td var:class="currentColumn.headerClass" var:id="currentColumn.headerId">
           <var:if condition="currentColumn.value" const:value="Invisible">
-            <img rsrc:src="invisible.png" width="100%" height="100%" label:title="void" />
+            <img rsrc:src="empty.gif" width="100%" height="100%" label:title="void" />
           </var:if>
           <var:if condition="currentColumn.value" const:value="Attachment">
             <img rsrc:src="title_attachment_14x14.png" var:title="currentColumn.value" width="14"
