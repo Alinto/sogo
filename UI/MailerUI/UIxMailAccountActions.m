@@ -32,6 +32,8 @@
 #import <NGImap4/NGImap4Connection.h>
 #import <NGImap4/NGImap4Client.h>
 
+#import <EOControl/EOQualifier.h>
+
 #import <SoObjects/Mailer/SOGoMailAccount.h>
 #import <SoObjects/Mailer/SOGoDraftObject.h>
 #import <SoObjects/Mailer/SOGoDraftsFolder.h>
@@ -124,17 +126,26 @@
 
 - (NSDictionary *) _statusFolders
 {
-  SOGoMailFolder *inbox;
+  EOQualifier *searchQualifier;
+  NSArray *searchResult;
+  NSDictionary *imapResult;
   NGImap4Client *client;
-  SOGoMailAccount *co;  
   NSNumber *unseen;
+  SOGoMailFolder *inbox;
+  SOGoMailAccount *co;  
 
   co = [self clientObject];
   inbox = [co inboxFolderInContext: context];
   client = [[inbox imap4Connection] client];
-  unseen = [[client status: [inbox relativeImap4Name]  flags: [NSArray arrayWithObject: @"UNSEEN"]]
-	     objectForKey: @"unseen"];
 
+  if ([client select: [inbox relativeImap4Name]])
+    {
+      searchQualifier = [EOQualifier qualifierWithQualifierFormat: @"flags = %@ AND not flags = %@", @"unseen", @"deleted"];
+      imapResult = [client searchWithQualifier: searchQualifier];
+      searchResult = [[imapResult objectForKey: @"RawResponse"] objectForKey: @"search"];
+      unseen = [NSNumber numberWithInt: [searchResult count]];
+    }
+  
   if (!unseen)
     unseen = [NSNumber numberWithInt: 0];
   
@@ -193,6 +204,7 @@
 				 nil];
     }
   data = [NSDictionary dictionaryWithObjectsAndKeys: folders, @"mailboxes",
+		       [self _statusFolders], @"status",
 		       inboxQuota, @"quotas",
 		       nil];
   response = [self responseWithStatus: 200];
