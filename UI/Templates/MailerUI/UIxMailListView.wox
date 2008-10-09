@@ -23,7 +23,7 @@
           <var:if condition="currentColumn.value" const:value="Invisible" const:negate="YES">
             <var:if condition="currentColumn.value" const:value="Attachment" const:negate="YES">
               <var:if condition="currentColumn.value" const:value="Unread" const:negate="YES">
-                <var:string var:value="currentColumn.value" />
+                <var:string var:value="columnTitle" />
               </var:if>
             </var:if>
           </var:if>

@@ -492,20 +492,12 @@ static Class sogoAppointmentFolderKlass = Nil;
   GCSFolder *folder;
   NSString *sql, *dateSqlString, *titleSqlString, *componentSqlString,
     *filterSqlString;
-  NGCalendarDateRange *r;
 
   folder = [self ocsFolder];
   if (startDate && endDate)
-    {
-      r = [NGCalendarDateRange calendarDateRangeWithStartDate: startDate
-                               endDate: endDate];
-      dateSqlString = [self _sqlStringRangeFrom: startDate to: endDate];
-    }
+    dateSqlString = [self _sqlStringRangeFrom: startDate to: endDate];
   else
-    {
-      r = nil;
-      dateSqlString = @"";
-    }
+    dateSqlString = @"";
 
   if ([title length])
     titleSqlString = [NSString stringWithFormat: @"AND (c_title"

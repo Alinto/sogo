@@ -68,6 +68,7 @@
       ASSIGN (dateFormatter, [user dateFormatterInContext: context]);
       ASSIGN (userTimeZone, [user timeZone]);
       folderType = 0;
+      currentColumn = nil;
     }
 
   return self;
@@ -81,6 +82,7 @@
   [message release];
   [dateFormatter release];
   [userTimeZone release];
+  [currentColumn release];
   [super dealloc];
 }
 
@@ -733,6 +735,11 @@
   [columnsMetaData setObject: [NSDictionary dictionaryWithObjects: tmpColumns forKeys: tmpKeys] forKey: @"Priority"];
   
   return columnsMetaData;
+}
+
+- (NSString *) columnTitle
+{
+  return [self labelForKey: [currentColumn objectForKey: @"value"]];
 }
 
 @end

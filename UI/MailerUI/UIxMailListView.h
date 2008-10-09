@@ -24,6 +24,7 @@
 
 #import <SOGoUI/UIxComponent.h>
 
+@class NSDictionary;
 @class EOQualifier;
 @class SOGoDateFormatter;
 
@@ -37,6 +38,7 @@
   SOGoDateFormatter *dateFormatter;
   NSTimeZone *userTimeZone;
   int folderType;
+  NSDictionary *currentColumn;
 }
 
 - (NSString *) defaultSortKey;
