@@ -102,39 +102,54 @@ function onMenuSharing(event) {
 function markMailInWindow(win, msguid, markread) {
   var row = win.$("row_" + msguid);
   var subjectCell = win.$("div_" + msguid);
+	var unseenCount = 0;
+
   if (row && subjectCell) {
     if (markread) {
-      row.removeClassName("mailer_unreadmail");
-      subjectCell.addClassName("mailer_readmailsubject");
-      var img = win.$("unreaddiv_" + msguid);
-      if (img) {
-				img.removeClassName("mailerUnreadIcon");
-				img.addClassName("mailerReadIcon");
-				img.setAttribute("id", "readdiv_" + msguid);
-				img.setAttribute("src", ResourcesURL + "/icon_read.gif");
-				var title = img.getAttribute("title-markunread");
-				if (title)
-					img.setAttribute("title", title);
-      }
+			if (row.hasClassName("mailer_unreadmail")) {
+				row.removeClassName("mailer_unreadmail");
+				subjectCell.addClassName("mailer_readmailsubject");
+				var img = win.$("unreaddiv_" + msguid);
+				if (img) {
+					img.removeClassName("mailerUnreadIcon");
+					img.addClassName("mailerReadIcon");
+					img.setAttribute("id", "readdiv_" + msguid);
+					img.setAttribute("src", ResourcesURL + "/icon_read.gif");
+					var title = img.getAttribute("title-markunread");
+					if (title)
+						img.setAttribute("title", title);
+				}
+				unseenCount = -1;
+			}
+		}
+		else {
+			if (!row.hasClassName("mailer_unreadmail")) {
+				row.addClassName("mailer_unreadmail");
+				subjectCell.removeClassName('mailer_readmailsubject');
+				var img = win.$("readdiv_" + msguid);
+				if (img) {
+					img.removeClassName("mailerReadIcon");
+					img.addClassName("mailerUnreadIcon");
+					img.setAttribute("id", "unreaddiv_" + msguid);
+					img.setAttribute("src", ResourcesURL + "/icon_unread.gif");
+					var title = img.getAttribute("title-markread");
+					if (title)
+						img.setAttribute("title", title);
+				}
+				unseenCount = 1;
+			}
     }
-    else {
-      row.addClassName("mailer_unreadmail");
-      subjectCell.removeClassName('mailer_readmailsubject');
-      var img = win.$("readdiv_" + msguid);
-      if (img) {
-				img.removeClassName("mailerReadIcon");
-				img.addClassName("mailerUnreadIcon");
-				img.setAttribute("id", "unreaddiv_" + msguid);
-				img.setAttribute("src", ResourcesURL + "/icon_unread.gif");
-				var title = img.getAttribute("title-markread");
-				if (title)
-					img.setAttribute("title", title);
-      }
-    }
-    return true;
   }
-  else
-    return false;
+
+	if (unseenCount != 0) {
+		/* Update unseen count only if it's the inbox */
+		for (var i = 0; i < mailboxTree.aNodes.length; i++)
+			if (mailboxTree.aNodes[i].datatype == "inbox") break;
+		if (i != mailboxTree.aNodes.length && Mailer.currentMailbox == mailboxTree.aNodes[i].dataname)
+			updateStatusFolders(unseenCount, true);
+	}
+
+	return (unseenCount != 0);
 }
 
 function markMailReadInWindow(win, msguid) {
@@ -277,8 +292,8 @@ function deleteSelectedMessagesCallback(http) {
 					div.update();
 					Mailer.currentMessages[Mailer.currentMailbox] = null;	
 				}
+				var row = $("row_" + data["id"][i]);
 				if (deleteMessageRequestCount == 0) {
-					var row = $("row_" + data["id"][i]);
 					var nextRow = row.next("tr");
 					if (!nextRow)
 						nextRow = row.previous("tr");
@@ -289,10 +304,11 @@ function deleteSelectedMessagesCallback(http) {
 						loadMessage(Mailer.currentMessages[Mailer.currentMailbox]);
 					}
 					else {
-					  div.innerHTML = "";
+					  div.update();
 					}
 					refreshCurrentFolder();
 				}
+				row.parentNode.removeChild(row);
 			}
 		}
 	}
@@ -345,12 +361,8 @@ function moveMessages(rowIds, folder) {
 
   if (failCount > 0)
     alert("Could not move " + failCount + " messages!");
-    
+	
   return failCount;
-}
-
-function moveMessagesCallback(http) {
-  alert("messages are teh moved");
 }
 
 function onMenuDeleteMessage(event) {
@@ -489,7 +501,7 @@ function composeNewMessage() {
   openMailComposeWindow(url);
 }
 
-function openMailbox(mailbox, reload, idx) {
+function openMailbox(mailbox, reload, idx, updateStatus) {
   if (mailbox != Mailer.currentMailbox || reload) {
     Mailer.currentMailbox = mailbox;
     var url = ApplicationBaseURL + encodeURI(mailbox) + "/view?noframe=1";
@@ -539,6 +551,9 @@ function openMailbox(mailbox, reload, idx) {
     document.messageListAjaxRequest
       = triggerAjaxRequest(url, messageListCallback,
 													 currentMessage);
+
+		if (updateStatus != false)
+			getStatusFolders();
   }
 }
 
@@ -618,6 +633,46 @@ function messageListCallback(http) {
     var msg = data.replace(/^(.*\n)*.*<p>((.*\n)*.*)<\/p>(.*\n)*.*$/, "$2");
     log("messageListCallback: problem during ajax request (readyState = " + http.readyState + ", status = " + http.status + ", response = " + msg + ")");
   }
+}
+
+function getStatusFolders() {
+	var account = Mailer.currentMailbox.split("/")[1];
+	var url = ApplicationBaseURL + encodeURI(account) + '/statusFolders';
+	if (document.statusFoldersAjaxRequest) {
+		document.statusFoldersAjaxRequest.aborted = true;
+		document.statusFoldersAjaxRequest.abort();
+	}
+	document.statusFoldersAjaxRequest = triggerAjaxRequest(url, statusFoldersCallback);
+}
+
+function statusFoldersCallback(http) {
+  var div = $('mailboxContent');
+  var table = $('messageList');
+  
+  if (http.status == 200) {
+    document.statusFoldersAjaxRequest = null;
+		var data = http.responseText.evalJSON(true);
+		updateStatusFolders(data.unseen, false);
+	}
+}
+
+function updateStatusFolders(count, isDelta) {
+	var span = $("unseenCount");
+	var counter = span.select("SPAN").first();
+
+	if (typeof count == "undefined")
+		count = parseInt(counter.innerHTML);
+	else if (isDelta)
+		count += parseInt(counter.innerHTML);
+	counter.update(count);
+	if (count > 0) {
+		span.setStyle({ display: "inline" });
+		span.up("SPAN").addClassName("unseen");
+	}
+	else {
+		span.setStyle({ display: "none" });
+		span.up("SPAN").removeClassName("unseen");
+	}
 }
 
 function onMessageContextMenu(event) {
@@ -798,7 +853,7 @@ function configureLoadImagesButton() {
 	if (typeof(displayLoadImages) == "undefined" ||
 			displayLoadImages == null ||
 			displayLoadImages.value == 0) {
-		loadImagesButton.style.display = 'none';
+		loadImagesButton.setStyle({ display: 'none' });
 	}
 }
 
@@ -1350,7 +1405,7 @@ function refreshContacts() {
 
 function openInbox(node) {
   var done = false;
-  openMailbox(node.parentNode.getAttribute("dataname"));
+  openMailbox(node.parentNode.getAttribute("dataname"), null, null, false);
   var tree = $("mailboxTree");
   tree.selectedEntry = node;
   node.selectElement();
@@ -1599,6 +1654,7 @@ function onLoadMailboxesCallback(http) {
 				updateMailboxMenus();
 				checkAjaxRequestsState();
 				getFoldersState();
+				updateStatusFolders();
       }
     }
   }
@@ -1625,6 +1681,7 @@ function buildMailboxes(accountName, encoded) {
   var accountIndex = mailAccounts.indexOf(accountName);
   var data = encoded.evalJSON(true);
 	var mailboxes = data.mailboxes;
+	var unseen = (data.status? data.status.unseen : 0);
 
 	if (data.quotas)
 		Mailer.quotas = data.quotas;
@@ -1645,8 +1702,11 @@ function buildMailboxes(accountName, encoded) {
     if (leaf)
       leaf.type = mailboxes[i].type;
     else {
-      leaf = new Mailbox(mailboxes[i].type, basename);
-      currentNode.addMailbox(leaf);
+			if (mailboxes[i].type == 'inbox')
+				leaf = new Mailbox(mailboxes[i].type, basename, unseen);
+      else
+				leaf = new Mailbox(mailboxes[i].type, basename);
+			currentNode.addMailbox(leaf);
     }
   }
 
@@ -2015,9 +2075,10 @@ function getMenus() {
 
 FastInit.addOnLoad(initMailer);
 
-function Mailbox(type, name) {
+function Mailbox(type, name, unseen) {
   this.type = type;
   this.name = name;
+	this.unseen = unseen;
   this.parentFolder = null;
   this.children = new Array();
   return this;

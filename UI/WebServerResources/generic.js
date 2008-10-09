@@ -545,8 +545,10 @@ function onRowClick(event) {
 
   if (node.tagName == 'TD') {
     node = node.parentNode; // select TR
-    rowIndex = node.rowIndex - $(node).up('table').down('thead').getElementsByTagName('tr').length;  
   }
+	if (node.tagName == 'TR') {
+    rowIndex = node.rowIndex - $(node).up('table').down('thead').getElementsByTagName('tr').length;
+	}
   else if (node.tagName == 'LI') {
     // Find index of clicked row
     var list = node.parentNode;
@@ -593,7 +595,7 @@ function onRowClick(event) {
     // Single line selection
     $(node.parentNode).deselectAll();
     $(node).selectElement();
-      
+		
     if (initialSelection != $(node.parentNode).getSelectedNodes()) {
       // Selection has changed; fire mousedown event
       var parentNode = node.parentNode;

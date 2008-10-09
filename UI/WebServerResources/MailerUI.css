@@ -234,6 +234,10 @@ DIV#folderTreeContent TABLE TD
   margin: 0px;
   padding: 0px; }
 
+/* mailbox tree (dtree) */
+DIV.dTreeNode SPAN.unseen
+{ font-weight: bold; }
+
 /* mail tableview */
 
 TD.mailer_readmailsubject

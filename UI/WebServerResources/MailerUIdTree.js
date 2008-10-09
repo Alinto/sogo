@@ -11,22 +11,27 @@ var MailerUIdTreeExtension = {
 								sent: labels["SentFolderName"],
 								draft: labels["DraftsFolderName"],
 								trash: labels["TrashFolderName"] },
- _addFolderNode: function (parent, name, fullName, type) {
+ _addFolderNode: function (parent, name, fullName, type, unseen) {
 		var icon = this.folderIcons[type];
 		if (icon)
 			icon = ResourcesURL + "/"  + icon;
 		else
 			icon = "";
 		var displayName = this.folderNames[type];
+		var hasUnseen = false;
 		if (!displayName)
 			displayName = name;
+		if (typeof unseen != "undefined") {
+			hasUnseen = true;
+			displayName += "<span id=\"unseenCount\"> (<span>" + parseInt(unseen) + "</span>)</span>";
+		}
 		this.add(this.elementCounter, parent, displayName, 1, '#', fullName,
-						 type, '', '', icon, icon);
+						 type, '', '', icon, icon, hasUnseen);
 		this.elementCounter++;
 	},
  _addFolder: function (parent, folder) {
 		var thisCounter = this.elementCounter;
-		this._addFolderNode(parent, folder.name, folder.fullName(), folder.type);
+		this._addFolderNode(parent, folder.name, folder.fullName(), folder.type, folder.unseen);
 		for (var i = 0; i < folder.children.length; i++)
       this._addFolder(thisCounter, folder.children[i]);
 	},

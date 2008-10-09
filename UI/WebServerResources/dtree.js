@@ -11,7 +11,7 @@
 
 // Node object
 function Node(id, pid, name, isParent, url, dataname, datatype, title, target,
-              icon, iconOpen, open) {
+              icon, iconOpen, open, hasUnseen) {
   this.isParent = isParent;
   this.id = id;
   this.pid = pid;
@@ -23,6 +23,7 @@ function Node(id, pid, name, isParent, url, dataname, datatype, title, target,
   this.iconOpen = iconOpen;
   this.dataname = dataname;
   this.datatype = datatype;
+  this.hasUnseen = hasUnseen;
   this._io = open || false;
   this._is = false;
   this._ls = false;
@@ -74,10 +75,10 @@ function dTree(objName) {
 
 // Adds a new node to the node array
 dTree.prototype.add = function(id, pid, name, isParent, url, datatype,
-                               title, target, icon, iconOpen, open) {
+                               title, target, icon, iconOpen, open, hasUnseen) {
   this.aNodes[this.aNodes.length] = new Node(id, pid, name, isParent, url,
                                              datatype, title, target, icon,
-                                             iconOpen, open);
+                                             iconOpen, open, false, hasUnseen);
 };
 
 // Open/close all nodes
@@ -160,6 +161,8 @@ dTree.prototype.node = function(node, nodeId) {
     str += '<span class="nodeName';
     if (!node.isParent)
       str += ' leaf';
+    if (node.hasUnseen)
+      str += ' unseen';
     str += '">' + node.name + '</span>';
     if (node.url || ((!this.config.folderLinks || !node.url) && node._hc)) str += '</a>';
     str += '</div>';
