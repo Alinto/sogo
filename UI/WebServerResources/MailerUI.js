@@ -1579,15 +1579,20 @@ function generateMenuForMailbox(mailbox, prefix, callback) {
   }
 
   var submenuCount = 0;
+  var newNode;
   for (var i = 0; i < mailbox.children.length; i++) {
     if ( menu.offsetHeight > windowHeight-offset ) {
+      var menuWidth = parseInt(menu.offsetWidth) + 15
+      menuWidth = menuWidth + "px";
+      menu.style.width = menuWidth;
       menu = document.createElement("ul");
       menu.style.cssFloat="left";
       menu.style.styleFloat="left";
       menuDIV.appendChild(menu);
     }
     var child = mailbox.children[i];
-    var newNode = mailboxMenuNode(child.type, child.name);
+    newNode = mailboxMenuNode(child.type, child.name);
+    newNode.style.width = "auto";
     menu.appendChild(newNode);
     if (child.children.length > 0) {
       var newPrefix = prefix + submenuCount;
@@ -1600,6 +1605,10 @@ function generateMenuForMailbox(mailbox, prefix, callback) {
       callbacks.push(callback);
     }
   }
+  var menuWidth = parseInt(menu.offsetWidth) + 15
+  menuWidth = menuWidth + "px";
+  menu.style.width = menuWidth;
+  
   
   initMenu(menuDIV, callbacks);
 
