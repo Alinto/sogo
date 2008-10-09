@@ -350,6 +350,10 @@ SPAN.toolbarButton:active
   padding-right: .2em;
   vertical-align: middle; }
 
+/* contact info for auto-completion */
+.popupMenu LI STRONG
+{ color: #b00; }
+
 /* popup menu with check marks */
 UL.choiceMenu LI
 { list-style-position: inside;
