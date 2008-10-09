@@ -75,7 +75,7 @@
 "messagecheck_every_30_minutes" = "Toutes les 30 minutes";
 "messagecheck_once_per_hour" = "Une fois par heure";
 
-"Forward messages:" = "Transérer les messages :";
+"Forward messages:" = "Transférer les messages :";
 "messageforward_inline" = "intégrés";
 "messageforward_attached" = "en pièces jointes";
 
