@@ -831,11 +831,14 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
 			userInfo:nil];
   }
 
+  [[channel adaptorContext] beginTransaction];
+
   if ((ex = [channel evaluateExpressionX:sql]) != nil) {
     [self releaseChannel:channel];
     return ex;
   }
 
+  [[channel adaptorContext] commitTransaction];
   [self releaseChannel:channel];
 
   return [folder deleteFolder];

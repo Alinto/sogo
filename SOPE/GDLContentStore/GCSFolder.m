@@ -1,6 +1,7 @@
 /*
   Copyright (C) 2004-2007 SKYRIX Software AG
   Copyright (C) 2007      Helge Hess
+  Copyright (c) 2008 Inverse inc.
 
   This file is part of OpenGroupware.org.
 
@@ -789,12 +790,15 @@ static NSArray *contentFieldNames = nil;
   EOAdaptorChannel *channel;
 
   channel = [self acquireStoreChannel];
+  [[channel adaptorContext] beginTransaction];
 
   table = [self storeTableName];
   delSql = [NSString stringWithFormat: @"DELETE FROM %@"
 		     @" WHERE c_name = %@", table,
 		     [self _formatRowValue: recordName]];
   [channel evaluateExpressionX: delSql];
+
+  [[channel adaptorContext] commitTransaction];
   [self releaseChannel: channel];
 }
 
@@ -1028,6 +1032,9 @@ static NSArray *contentFieldNames = nil;
 	}
     }
 
+  if (!ofFlags.sameTableForQuick) [[quickChannel adaptorContext] beginTransaction];
+  [[storeChannel adaptorContext] beginTransaction];
+
   /* delete rows */
   nowDate = [NSCalendarDate calendarDate];
 
@@ -1059,10 +1066,13 @@ static NSArray *contentFieldNames = nil;
   }
   
   /* release channels and return */
-  
+  [[storeChannel adaptorContext] commitTransaction];
   [self releaseChannel:storeChannel];
-  if (!ofFlags.sameTableForQuick)
+  
+  if (!ofFlags.sameTableForQuick) {
+    [[quickChannel adaptorContext] commitTransaction];
     [self releaseChannel:quickChannel];
+  }
   return error;
 }
 
@@ -1079,7 +1089,7 @@ static NSArray *contentFieldNames = nil;
   }
   
   /* delete rows */
-
+  [[channel adaptorContext] beginTransaction];
   table = [self storeTableName];
   if ([table length] > 0) {
     delsql = [@"DROP TABLE " stringByAppendingString: table];
@@ -1096,6 +1106,7 @@ static NSArray *contentFieldNames = nil;
     [channel evaluateExpressionX:delsql];
   }
   
+  [[channel adaptorContext] commitTransaction];
   [self releaseChannel:channel];
 
   return nil;
@@ -1251,7 +1262,7 @@ static NSArray *contentFieldNames = nil;
       }
   
       /* run SQL */
-    
+      [[channel adaptorContext] beginTransaction];
       if ((error = [channel evaluateExpressionX:sql]) != nil) {
 	[self errorWithFormat:@"%s: cannot execute acl-fetch SQL '%@': %@", 
 	      __PRETTY_FUNCTION__, sql, error];
@@ -1259,6 +1270,7 @@ static NSArray *contentFieldNames = nil;
 	return;
       }
       
+      [[channel adaptorContext] commitTransaction];
       [self releaseChannel:channel];
     }
 }

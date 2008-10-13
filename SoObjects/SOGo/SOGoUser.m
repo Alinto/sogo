@@ -772,7 +772,6 @@ _timeValue (NSString *key)
   return [[self primaryIdentity] objectForKey: @"signature"];
 }
 
-/* Modification */
 - (NSString *) replyPlacement
 {
   NSString *replyPlacement;
@@ -796,8 +795,6 @@ _timeValue (NSString *key)
 
   return signaturePlacement;
 }
-
-/* Fin */
 
 - (NSString *) messageForwarding
 {
