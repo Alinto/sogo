@@ -1216,29 +1216,36 @@ function initMenus() {
 }
 
 function initMenu(menuDIV, callbacks) {
-  var lis = menuDIV.down("ul").childNodesWithTag("li");
-  for (var j = 0; j < lis.length; j++) {
-    var node = $(lis[j]);
-    node.observe("mousedown", listRowMouseDownHandler, false);
-    var callback = callbacks[j];
-    if (callback) {
-      if (typeof(callback) == "string") {
-				if (callback == "-")
-					node.addClassName("separator");
-				else {
-					node.submenu = callback;
-					node.addClassName("submenu");
-					node.observe("mouseover", popupSubmenu);
-				}
+  var uls = menuDIV.childNodesWithTag("ul");
+  for (var i = 0; i < uls.length; i++) {
+    var lis = $(uls[i]).childNodesWithTag("li");
+    for (var j = 0; j < lis.length; j++) {
+      var node = $(lis[j]);
+      node.observe("mousedown", listRowMouseDownHandler, false);
+      var callback;
+      if (i > 0)
+        callback = callbacks[i+j+1];
+      else
+        callback = callbacks[i+j];
+      if (callback) {
+        if (typeof(callback) == "string") {
+          if (callback == "-")
+            node.addClassName("separator");
+          else {
+            node.submenu = callback;
+            node.addClassName("submenu");
+            node.observe("mouseover", popupSubmenu);
+          }
+        }
+        else {
+          node.observe("mouseup", onBodyClickMenuHandler);
+          node.menuCallback = callback;
+          node.observe("click", onMenuClickHandler);
+        }
       }
-      else {
-				node.observe("mouseup", onBodyClickMenuHandler);
-				node.menuCallback = callback;
-				node.observe("click", onMenuClickHandler);
-      }
+      else
+        node.addClassName("disabled");
     }
-    else
-      node.addClassName("disabled");
   }
 }
 

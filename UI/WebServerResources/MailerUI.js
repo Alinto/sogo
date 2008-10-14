@@ -1896,7 +1896,7 @@ function _onMenuLabelFlagX(flag) {
   if (document.menuTarget.tagName == "DIV")
     // Menu called from message content view
     messages.set(Mailer.currentMessages[Mailer.currentMailbox],
-								 $('tr#row_' + Mailer.currentMessages[Mailer.currentMailbox]).getAttribute("labels"));
+								 $('row_' + Mailer.currentMessages[Mailer.currentMailbox]).getAttribute("labels"));
   else if (Object.isArray(document.menuTarget))
     // Menu called from multiple selection in messages list view
     $(document.menuTarget).collect(function(row) {
