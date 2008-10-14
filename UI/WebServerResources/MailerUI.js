@@ -566,24 +566,36 @@ function openMailboxAtIndex(event) {
 function messageListCallback(http) {
   var div = $('mailboxContent');
   var table = $('messageList');
-  
+
+  var columnsOrder = userSettings["SOGoMailListViewColumnsOrder"];
+  if ( typeof(columnsOrder) == "undefined" ) {
+    columnsOrder = defaultColumnsOrder;
+  }
+  var addrIndex = 3;
+  for(var i=0; i<columnsOrder.length; i++) {
+    if (columnsOrder[i] == "From" || columnsOrder[i] == "To") {
+      addrIndex = i;
+    }
+  }
+
   if (http.status == 200) {
     document.messageListAjaxRequest = null;
 
     if (table) {
       // Update table
       var thead = table.tHead;
-      var addressHeaderCell = thead.rows[0].cells[3];
+      var addressHeaderCell = thead.rows[0].cells[addrIndex];
       var tbody = table.tBodies[0];
       var tmp = document.createElement('div');
       $(tmp).update(http.responseText);
 
 			var newRows = tmp.firstChild.tHead.rows;
       thead.rows[1].parentNode.replaceChild(newRows[1], thead.rows[1]);
-      addressHeaderCell.replaceChild(newRows[0].cells[3].lastChild, 
+      addressHeaderCell.replaceChild(newRows[0].cells[addrIndex].lastChild,
 																		 addressHeaderCell.lastChild);
-			addressHeaderCell.setAttribute("id", newRows[0].cells[3].getAttribute("id"));
+			addressHeaderCell.setAttribute("id", newRows[0].cells[addrIndex].getAttribute("id"));
       table.replaceChild(tmp.firstChild.tBodies[0], tbody);
+      configureMessageListEvents(table);
     }
     else {
       // Add table
@@ -1335,7 +1347,7 @@ function configureMessageListBodyEvents(table) {
 				var cell = $(row.cells[j]);
 				var cellType = columnsOrder[j];
 				cell.observe("mousedown", listRowMouseDownHandler);
-				if (cellType == "Subject" || cellType == "From" || cellType == "Date")
+				if (cellType == "Subject" || cellType == "From" || cellType == "To" || cellType == "Date")
 					cell.observe("dblclick", onMessageDoubleClick.bindAsEventListener(cell));
 				else if (cellType == "Unread") {
 					var img = $(cell.childNodesWithTag("img")[0]);

@@ -682,7 +682,8 @@
   userDefinedOrder = [NSArray arrayWithArray: [ud arrayForKey: @"SOGoMailListViewColumnsOrder"]];
   if ( [userDefinedOrder count] == 0 )
   {
-    userDefinedOrder = [[NSUserDefaults standardUserDefaults] arrayForKey: @"SOGoMailListViewColumnsOrder"];
+    userDefinedOrder = [NSMutableArray arrayWithArray:
+      [[NSUserDefaults standardUserDefaults] arrayForKey: @"SOGoMailListViewColumnsOrder"]];
   }
   if ( [userDefinedOrder count] == 0 )
   {
@@ -697,6 +698,15 @@
     {
       [userDefinedOrder replaceObjectAtIndex:i withObject:@"To"];
     }
+  }
+  else
+  {
+    i = [userDefinedOrder indexOfObject:@"To"];
+    if ( i >= 0 && i < [userDefinedOrder count] )
+    {
+      [userDefinedOrder replaceObjectAtIndex:i withObject:@"From"];
+    }
+    
   }
   
   columnsMetaData = [self columnsMetaData];
