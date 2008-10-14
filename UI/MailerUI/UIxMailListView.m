@@ -674,7 +674,7 @@
 {
   NSMutableArray *columnsDisplayOrder;
   NSMutableDictionary *columnsMetaData;
-  NSArray *userDefinedOrder;
+  NSMutableArray *userDefinedOrder;
   SOGoUserDefaults *ud;
   int i;
   
@@ -686,8 +686,13 @@
   }
   if ( [userDefinedOrder count] == 0 )
   {
-    userDefinedOrder = [NSArray arrayWithObjects: @"Invisible", @"Attachment", @"Subject", 
+    userDefinedOrder = [NSMutableArray arrayWithObjects: @"Invisible", @"Attachment", @"Subject", 
       @"From", @"Unread", @"Date", @"Priority", nil];
+  }
+  
+  if ( [self showToAddress] )
+  {
+    [userDefinedOrder replaceObjectAtIndex:[userDefinedOrder indexOfObjectIdenticalTo:@"From"] withObject:@"To"];
   }
   
   columnsMetaData = [self columnsMetaData];

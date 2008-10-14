@@ -91,6 +91,16 @@
               /></var:if
             ></td
           ></var:if
+          ><var:if condition="currentColumn.value" const:value="To"
+            ><td class="messageAddressColumn"
+              ><var:if condition="showToAddress" const:negate="YES"
+                ><var:string value="message.envelope.from" formatter="context.mailEnvelopeAddressFormatter" 
+              /></var:if
+              ><var:if condition="showToAddress"
+                ><var:string value="message.envelope.to" formatter="context.mailEnvelopeAddressFormatter" 
+              /></var:if
+            ></td
+          ></var:if
           ><var:if condition="currentColumn.value" const:value="Unread"
             ><td class="messageFlagColumn"
               ><var:if condition="isMessageRead"
