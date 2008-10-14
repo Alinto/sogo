@@ -81,7 +81,7 @@
 
 /* Mail edition */
 
-"From"          = "De";
+"From"          = "Expéditeur";
 "Subject"       = "Sujet";
 "Add address"   = "Ajouter Adresse";
 

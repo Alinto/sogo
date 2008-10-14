@@ -83,8 +83,8 @@
 "Default identity:" = "Identité par défaut :";
 "Manage identities..." = "Gérer les identitiés...";
 "Signature" = "Signature";
-"replyplacement_above" = "Placer ma reponse avant la citation";
-"replyplacement_below" = "Placer ma reponse après la citation";
+"replyplacement_above" = "Placer ma réponse avant la citation";
+"replyplacement_below" = "Placer ma réponse après la citation";
 "And place my signature" = "Et placer ma signature";
 "signatureplacement_above" = "après ma reponse";
 "signatureplacement_below" = "après la citation";
