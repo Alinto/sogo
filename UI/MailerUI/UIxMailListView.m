@@ -692,7 +692,11 @@
   
   if ( [self showToAddress] )
   {
-    [userDefinedOrder replaceObjectAtIndex:[userDefinedOrder indexOfObjectIdenticalTo:@"From"] withObject:@"To"];
+    i = [userDefinedOrder indexOfObject:@"From"];
+    if ( i >= 0 && i < [userDefinedOrder count] )
+    {
+      [userDefinedOrder replaceObjectAtIndex:i withObject:@"To"];
+    }
   }
   
   columnsMetaData = [self columnsMetaData];
