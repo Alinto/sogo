@@ -239,6 +239,19 @@ function ml_lowlight(sender) {
 }
 
 
+function onUnload(event) {
+	var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/expunge";
+
+	new Ajax.Request(url, {
+			method: 'get',
+				onFailure: function(transport) {
+				log("Can't expunge current folder: " + transport.status);
+			}
+	});
+
+	return true;
+}
+
 /* bulk delete of messages */
 
 function onDocumentKeydown(event) {
@@ -1431,6 +1444,7 @@ function initMailer(event) {
     initMessageCheckTimer();
 		
 		Event.observe(document, "keydown", onDocumentKeydown);
+		Event.observe(window, "beforeunload", onUnload);
   }
   
 	Event.observe(window, "resize", onWindowResize);
