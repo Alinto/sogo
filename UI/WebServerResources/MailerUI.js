@@ -899,7 +899,7 @@ function configureLinksInMessage() {
     else
       $(anchors[i]).observe("click", onMessageAnchorClick);
 
-  var images = messageDiv.getElementsByTagName('img');
+	var images = messageDiv.select("IMG.mailer_imagecontent");
   for (var i = 0; i < images.length; i++)
     $(images[i]).observe("contextmenu", onImageClick);
 
