@@ -226,6 +226,8 @@ withSearchOn: (NSString *) contact
 	  descriptors = [NSArray arrayWithObjects: displayNameDescriptor, nil];
 	  sortedContacts = [[uniqueContacts allValues] sortedArrayUsingDescriptors: descriptors];	  
 	}
+      else
+	sortedContacts = [NSArray array];
       data = [NSDictionary dictionaryWithObjectsAndKeys: searchText, @"searchText",
 			                                 sortedContacts, @"contacts",
 			                                 nil];

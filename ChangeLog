@@ -6,6 +6,10 @@
 	* OGoContentStore/OCSContactFieldExtractor.m ([NSMutableDictionary
 	extractQuickFieldsFromVCard:vCard]): set email address to an empty
 	string if not defined.
+
+	* UI/Contacts/UIxContactFoldersView.m ([WOActionResults
+	allContactSearchAction]): returned array is now properly
+	initialized if no result is found.
 	
 2008-10-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
