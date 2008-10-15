@@ -61,8 +61,9 @@
   if (value)
     [fields setObject: value forKey: @"c_telephoneNumber"];
   value = [vCard preferredEMail];
-  if (value)
-    [fields setObject: value forKey: @"c_mail"];
+  if (![value isNotNull])
+    value = @"";
+  [fields setObject: value forKey: @"c_mail"];
   values = [vCard org];
   max = [values count];
   if (max > 0)

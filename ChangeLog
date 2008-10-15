@@ -1,3 +1,12 @@
+2008-10-15  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Contacts/UIxContactEditor.m ([_setupEmailFields]): avoid
+	setting the work mail if only the home mail is defined.
+
+	* OGoContentStore/OCSContactFieldExtractor.m ([NSMutableDictionary
+	extractQuickFieldsFromVCard:vCard]): set email address to an empty
+	string if not defined.
+	
 2008-10-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailerUI/UIxMailListView.m ([UIxMailListView

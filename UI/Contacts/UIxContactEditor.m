@@ -289,8 +289,11 @@
       potential = [[elements objectAtIndex: 0] value: 0];
       if (!workMail)
         {
-          if (homeMail && homeMail == potential && max > 1)
-            workMail = [[elements objectAtIndex: 1] value: 0];
+          if (homeMail && homeMail == potential)
+	    {
+	      if (max > 1)
+		workMail = [[elements objectAtIndex: 1] value: 0];
+	    }
           else
             workMail = potential;
         }
