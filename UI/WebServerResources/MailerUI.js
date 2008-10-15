@@ -241,8 +241,9 @@ function ml_lowlight(sender) {
 
 function onUnload(event) {
 	var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/expunge";
-
+	
 	new Ajax.Request(url, {
+			asynchronous: false,
 			method: 'get',
 				onFailure: function(transport) {
 				log("Can't expunge current folder: " + transport.status);
@@ -1439,13 +1440,20 @@ function openInbox(node) {
 
 function initMailer(event) {
   if (!$(document.body).hasClassName("popup")) {
-    //     initDnd();
+    //initDnd();
     initMailboxTree();
     initMessageCheckTimer();
 		
+		/* Perform an expunge when leaving the webmail */
 		Event.observe(document, "keydown", onDocumentKeydown);
-		Event.observe(window, "beforeunload", onUnload);
-  }
+		if (isSafari()) {
+			$('calendarBannerLink').observe("click", onUnload);
+			$('contactsBannerLink').observe("click", onUnload);
+			$('logoff').observe("click", onUnload);
+		}
+		else
+			Event.observe(window, "beforeunload", onUnload);
+	}
   
 	Event.observe(window, "resize", onWindowResize);
 	onWindowResize(null);

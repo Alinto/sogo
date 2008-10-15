@@ -268,6 +268,7 @@ function openMailTo(senderMailTo) {
 function deleteDraft(url) {
   /* this is called by UIxMailEditor with window.opener */
   new Ajax.Request(url, {
+    asynchronous: false,
     method: 'post',
 				onFailure: function(transport) {
 				log("draftDeleteCallback: problem during ajax request: " + transport.status);
