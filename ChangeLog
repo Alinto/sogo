@@ -1,3 +1,9 @@
+2008-10-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoObject.m ([SOGoObject -davURL])
+	([SOGoObject -soURL]): appended the port number to the hostname
+	used to construct the NSURL instance.
+
 2008-10-03  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/MainUI/SOGoUserHomePage.m ([WOResponse

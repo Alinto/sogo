@@ -1164,7 +1164,7 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
 {
   NSURL *serverURL, *url;
   NSMutableArray *path;
-  NSString *baseURL, *urlMethod;
+  NSString *baseURL, *urlMethod, *fullHost;
 
   serverURL = [context serverURL];
   baseURL = [[self baseURLInContext: context] stringByUnescapingURL];
@@ -1185,8 +1185,10 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
 	[path insertObject: expected atIndex: 2];
     }
 
+  fullHost = [NSString stringWithFormat: @"%@:%@",
+		       [serverURL host], [serverURL port]];
   url = [[NSURL alloc] initWithScheme: [serverURL scheme]
-		       host: [serverURL host]
+		       host: fullHost
 		       path: [path componentsJoinedByString: @"/"]];
   [url autorelease];
 
