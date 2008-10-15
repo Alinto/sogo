@@ -1,5 +1,10 @@
 2008-10-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailListView.m ([UIxMailListView
+	-columnsDisplayOrder]): slightly optimized method by reducing the
+	amount of method calls. Initialized userDefinedOrder as an
+	NSMutableArray instead of an NSArray. Fixed indentation.
+
 	* SoObjects/SOGo/SOGoObject.m ([SOGoObject -davURL])
 	([SOGoObject -soURL]): appended the port number to the hostname
 	used to construct the NSURL instance.
