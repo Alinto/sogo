@@ -1,3 +1,10 @@
+2008-10-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoObject.m ([SOGoObject -davURL])
+	([SOGoObject -soURL]): adjusted last change by checking that the
+	port returned initially is not nil before initializing the
+	returned NSURL.
+
 2008-10-15  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Contacts/UIxContactEditor.m ([_setupEmailFields]): avoid
