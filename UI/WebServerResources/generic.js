@@ -446,10 +446,11 @@ function getTarget(event) {
 }
 
 function preventDefault(event) {
-  if (event.preventDefault)
-    event.preventDefault(); // W3C DOM
-  else
-    event.returnValue = false; // IE
+	if (event)
+		if (event.preventDefault)
+			event.preventDefault(); // W3C DOM
+		else
+			event.returnValue = false; // IE
 }
 
 function resetSelection(win) {
@@ -1462,7 +1463,7 @@ function onLinkBannerClick() {
 function onPreferencesClick(event) {
   var urlstr = UserFolderURL + "preferences";
   var w = window.open(urlstr, "_blank",
-											"width=430,height=250,resizable=0,scrollbars=0,location=0");
+											"width=440,height=250,resizable=0,scrollbars=0,location=0");
   w.opener = window;
   w.focus();
 
