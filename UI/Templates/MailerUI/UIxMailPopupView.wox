@@ -17,4 +17,9 @@
         <li id="create_filter"><var:string label:value="Create Filter From Message..."/></li>
       </ul>
     </div>
+    <div class="menu" id="imageMenu">
+      <ul>
+        <li id="save_image"><var:string label:value="Save Image"/></li>
+      </ul>
+    </div>
    </var:component>
