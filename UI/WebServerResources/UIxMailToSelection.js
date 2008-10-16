@@ -67,8 +67,6 @@ function fancyAddRow(shouldEdit, text, type) {
   var proto = lastChild.previous("tr");
   var row = proto.cloneNode(true);
   row.writeAttribute("id", 'row_' + currentIndex);
-
-  // select popup
   var rowNodes = row.childNodesWithTag("td");
   var select = $(rowNodes[0]).childNodesWithTag("select")[0];
   select.name = 'popup_' + currentIndex;
@@ -77,12 +75,12 @@ function fancyAddRow(shouldEdit, text, type) {
   input.name  = 'addr_' + currentIndex;
   input.id = 'addr_' + currentIndex;
   input.value = text;
+	input.stopObserving("keydown", onContactKeydown);
 
   addressList.insertBefore(row, lastChild);
 
   if (shouldEdit) {
     input.writeAttribute("autocomplete", "off");
-    input.stopObserving("keydown", onContactKeydown);
     input.observe("keydown", onContactKeydown); // bind listener for address completion
     input.focus();
     input.select();
@@ -102,10 +100,12 @@ function addressFieldGotFocus(sender) {
 
 function addressFieldLostFocus(sender) {
   lastIndex = this.getIndexFromIdentifier(sender.id);
-  
-	if (sender.confirmedValue)
-		sender.value = sender.confirmedValue;
 
+	if (sender.confirmedValue) {
+		sender.value = sender.confirmedValue;
+		sender.confirmedValue = false;
+	}
+	
   var addresses = sender.value.split(',');
   if (addresses.length > 0) {
     sender.value = addresses[0].strip();
@@ -130,7 +130,7 @@ function removeLastEditedRowIfEmpty() {
   if (!addr) return;
   if (addr.value.strip() != '') return;
   senderRow = $("row_" + lastIndex);
-  addressList.removeChild(senderRow);
+	addressList.removeChild(senderRow);
 }
 
 function getIndexFromIdentifier(id) {
