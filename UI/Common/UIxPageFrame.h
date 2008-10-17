@@ -67,6 +67,8 @@
 
 - (BOOL) isSuperUser;
 
+- (NSString *) userLanguage;
+
 - (BOOL) isCompatibleBrowser;
 
 @end

@@ -386,6 +386,17 @@
   return [user canAccessModule: @"Mail"];
 }
 
+- (NSString *) userLanguage
+{
+  NSString *language;
+
+  language = [[context activeUser] language];
+  if (!language)
+    language = [SOGoUser language];
+
+  return language;
+}
+
 /* browser/os identification */
 
 - (BOOL) isCompatibleBrowser
