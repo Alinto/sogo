@@ -173,7 +173,7 @@ function clickedEditorSend(sender) {
 	var lastRow = $("lastRow");
 	lastRow.down("select").name = "popup_last";
   
-	//window.shouldPreserve = true;
+	window.shouldPreserve = true;
 	document.pageform.action = "send";
 	document.pageform.submit();
   
@@ -259,7 +259,7 @@ function clickedEditorSave(sender) {
 	var lastRow = $("lastRow");
 	lastRow.down("select").name = "popup_last";
 
-	//window.shouldPreserve = true;
+	window.shouldPreserve = true;
 	document.pageform.action = "save";
 	document.pageform.submit();
 
@@ -712,9 +712,9 @@ function onWindowResize(event) {
 }
 
 function onMailEditorClose(event) {
-//	if (window.shouldPreserve)
-//		window.shouldPreserve = false;
-//	else {
+	if (window.shouldPreserve)
+		window.shouldPreserve = false;
+	else {
 		if (window.opener && window.opener.open && !window.opener.closed) {
 			var url = "" + window.location;
 			var parts = url.split("/");
@@ -722,7 +722,7 @@ function onMailEditorClose(event) {
 			url = parts.join("/");
 			window.opener.deleteDraft(url);
 		}
-//	}
+	}
 
 	if (MailEditor.addressBook && MailEditor.addressBook.open
 			&& !MailEditor.addressBook.closed)
