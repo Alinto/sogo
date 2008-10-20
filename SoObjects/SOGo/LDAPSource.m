@@ -253,6 +253,7 @@ static int sizeLimit;
     }
   NS_HANDLER
     {
+      NSLog(@"Could not bind to the LDAP server %@ (%d) using the bind DN: %@", hostname, port, bindDN);
       b = NO;
     }
   NS_ENDHANDLER;
