@@ -849,7 +849,7 @@ function loadMessage(idx) {
 
   var cachedMessage = getCachedMessage(idx);
 	var row = $("row_" + idx);
-	var seenStateChanged = row.hasClassName('mailer_unreadmail');
+	var seenStateChanged = row && row.hasClassName('mailer_unreadmail');
   if (cachedMessage == null) {
     var url = (ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/"
 							 + idx + "/view?noframe=1");

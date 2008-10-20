@@ -1,3 +1,9 @@
+2008-10-17  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Common/UIxPageFrame.m ([NSString userLanguage]): returns the
+	user's language. Used to make this information available through
+	JavaScript.
+
 2008-10-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoObject.m ([SOGoObject -davURL])

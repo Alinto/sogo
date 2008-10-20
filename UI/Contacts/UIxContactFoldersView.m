@@ -42,6 +42,7 @@
 #import <SoObjects/SOGo/SOGoPermissions.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/NSArray+Utilities.h>
+#import <SoObjects/SOGo/NSDictionary+Utilities.h>
 #import <SoObjects/SOGo/NSString+Utilities.h>
 #import <SoObjects/Contacts/SOGoContactFolders.h>
 #import <SoObjects/Contacts/SOGoContactFolder.h>
@@ -192,6 +193,7 @@ withSearchOn: (NSString *) contact
   NSString *searchText, *mail;
   NSDictionary *contact, *data;
   NSArray *folders, *contacts, *descriptors, *sortedContacts;
+  NSMutableArray *sortedFolders;
   NSMutableDictionary *uniqueContacts;
   unsigned int i, j;
   NSSortDescriptor *displayNameDescriptor;
@@ -201,10 +203,20 @@ withSearchOn: (NSString *) contact
     {
       //NSLog(@"Search all contacts: %@", searchText);
       folders = [[self clientObject] subFolders];
+      sortedFolders = [NSMutableArray arrayWithCapacity: [folders count]];
       uniqueContacts = [NSMutableDictionary dictionary];
+      /* We first search in LDAP folders (in case of duplicated entries in GCS folders) */
       for (i = 0; i < [folders count]; i++)
 	{
 	  folder = [folders objectAtIndex: i];
+	  if ([folder isKindOfClass: [SOGoContactLDAPFolder class]])
+	    [sortedFolders insertObject: folder atIndex: 0];
+	  else
+	    [sortedFolders addObject: folder];
+	}
+      for (i = 0; i < [sortedFolders count]; i++)
+	{
+	  folder = [sortedFolders objectAtIndex: i];
 	  //NSLog(@"  Address book: %@ (%@)", [folder displayName], [folder class]);
 	  contacts = [folder lookupContactsWithFilter: searchText
 			     sortBy: @"displayName"
