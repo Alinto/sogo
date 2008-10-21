@@ -141,7 +141,7 @@ withSearchOn: (NSString *) contact
   return email;
 }
 
-- (NSDictionary *) _responseForResults: (NSArray *) results
+- (NSArray *) _responseForResults: (NSArray *) results
 {
   NSEnumerator *contacts;
   NSString *email, *infoKey, *info;
@@ -255,7 +255,8 @@ withSearchOn: (NSString *) contact
 
 - (id <WOActionResults>) contactSearchAction
 {
-  NSDictionary *contacts, *data;
+  NSDictionary *data;
+  NSArray *contacts;
   NSString *searchText;
   id <WOActionResults> result;
   LDAPUserManager *um;
