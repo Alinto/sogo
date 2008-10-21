@@ -1,15 +1,14 @@
 /* -*- Mode: java; tab-width: 2; c-tab-always-indent: t; indent-tabs-mode: t; c-basic-offset: 2 -*- */
 
 var contactSelectorAction = 'mailer-contacts';
-var signatureLength = 0;
-
 var attachmentCount = 0;
 var MailEditor = {
  addressBook: null,
  currentField: null,
  selectedIndex: -1,
  delay: 750,
- delayedSearch: false
+ delayedSearch: false,
+ signatureLength: 0
 };
 
 function onContactAdd() {
@@ -327,7 +326,12 @@ function onTextFirstFocus() {
     this.setCaretTo(0);
   }
   else {
-    this.setCaretTo(this.getValue().length - signatureLength - 2);
+		var caretPosition = this.getValue().length - MailEditor.signatureLength;
+		if (Prototype.Browser.IE)
+			caretPosition -= lineBreakCount(this.getValue().substring(0, caretPosition));
+		if (hasSignature())
+			caretPosition -= 2;
+    this.setCaretTo(caretPosition);
   }
     
 	Event.stopObserving(this, "focus", onTextFirstFocus);
@@ -545,9 +549,11 @@ function initMailEditor() {
 	var textarea = $("text");
   
 	var textContent = textarea.getValue();
-	var sigLimit = textContent.lastIndexOf("--");
-	if (sigLimit > -1)
-		signatureLength = (textContent.length - sigLimit);
+	if (hasSignature()) {
+		var sigLimit = textContent.lastIndexOf("--");
+		if (sigLimit > -1)
+			MailEditor.signatureLength = (textContent.length - sigLimit);
+	}
 	if ( userDefaults["ReplyPlacement"] != "above" ) {
 	  textarea.scrollTop = textarea.scrollHeight;
 	}
@@ -642,6 +648,23 @@ function attachmentDeleteCallback(http) {
 		}
 		else
 			log("attachmentDeleteCallback: an error occured: " + http.responseText);
+	}
+}
+
+function lineBreakCount(str){
+	/* counts \n */
+	try {
+		return((str.match(/[^\n]*\n[^\n]*/gi).length));
+	} catch(e) {
+		return 0;
+	}
+}
+
+function hasSignature() {
+	try {
+		return(userDefaults.MailAccounts[0].identities[0].signature.length > 0);
+	} catch(e) {
+		return false;
 	}
 }
 
