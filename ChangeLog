@@ -1,3 +1,9 @@
+2008-10-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView
+	-contactSearchAction]): fixed typing of "contacts", which actually
+	is an NSArray.
+
 2008-10-17  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Common/UIxPageFrame.m ([NSString userLanguage]): returns the
