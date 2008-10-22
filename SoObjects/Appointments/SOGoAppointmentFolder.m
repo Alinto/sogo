@@ -1180,7 +1180,7 @@ static Class sogoAppointmentFolderKlass = Nil;
 	  toResponse: r];
 //   NSLog (@"/(appendPropstats...): %@", [NSDate date]);
 
-  [r appendContentString: @"</D:response>\r\n"];
+  [r appendContentString: @"</D:response>"];
 }
 
 - (void) appendMissingObjectRef: (NSString *) href
@@ -1188,7 +1188,7 @@ static Class sogoAppointmentFolderKlass = Nil;
 {
   [r appendContentString: @"<D:response><D:href>"];
   [r appendContentString: href];
-  [r appendContentString: @"</D:href><D:status>HTTP/1.1 404 Not Found</D:status></D:response>\r\n"];
+  [r appendContentString: @"</D:href><D:status>HTTP/1.1 404 Not Found</D:status></D:response>"];
 }
 
 - (void) _appendTimeRange: (id <DOMElement>) timeRangeElement
@@ -1488,9 +1488,9 @@ static Class sogoAppointmentFolderKlass = Nil;
   [r setHeader: @"text/xml; charset=\"utf-8\"" forKey: @"content-type"];
   [r setHeader: @"no-cache" forKey: @"pragma"];
   [r setHeader: @"no-cache" forKey: @"cache-control"];
-  [r appendContentString:@"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"];
+  [r appendContentString:@"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
   [r appendContentString: @"<D:multistatus xmlns:D=\"DAV:\""
-     @" xmlns:C=\"urn:ietf:params:xml:ns:caldav\">\r\n"];
+     @" xmlns:C=\"urn:ietf:params:xml:ns:caldav\">"];
 
   document = [[context request] contentAsDOMDocument];
   documentElement = [document documentElement];
@@ -1499,7 +1499,7 @@ static Class sogoAppointmentFolderKlass = Nil;
   [self _appendComponentProperties: properties
 	matchingFilters: [self _parseCalendarFilters: documentElement]
         toResponse: r];
-  [r appendContentString:@"</D:multistatus>\r\n"];
+  [r appendContentString:@"</D:multistatus>"];
   free (properties);
 
   return r;
@@ -1680,9 +1680,9 @@ static Class sogoAppointmentFolderKlass = Nil;
   [r setHeader: @"text/xml; charset=\"utf-8\"" forKey: @"content-type"];
   [r setHeader: @"no-cache" forKey: @"pragma"];
   [r setHeader: @"no-cache" forKey: @"cache-control"];
-  [r appendContentString:@"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"];
+  [r appendContentString:@"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
   [r appendContentString: @"<D:multistatus xmlns:D=\"DAV:\""
-     @" xmlns:C=\"urn:ietf:params:xml:ns:caldav\">\r\n"];
+     @" xmlns:C=\"urn:ietf:params:xml:ns:caldav\">"];
 
   document = [[context request] contentAsDOMDocument];
   documentElement = [document documentElement];
@@ -1691,7 +1691,7 @@ static Class sogoAppointmentFolderKlass = Nil;
   [self _appendComponentProperties: properties
 	matchingURLs: [documentElement getElementsByTagName: @"href"]
         toResponse: r];
-  [r appendContentString:@"</D:multistatus>\r\n"];
+  [r appendContentString:@"</D:multistatus>"];
   free (properties);
 
   return r;
@@ -1913,7 +1913,7 @@ static Class sogoAppointmentFolderKlass = Nil;
     {
       [response setStatus: 200];
       [response appendContentString:@"<?xml version=\"1.0\""
-		@" encoding=\"utf-8\"?>\r\n"];
+		@" encoding=\"utf-8\"?>"];
       [response setHeader: @"application/xml; charset=utf-8"
 		forKey: @"Content-Type"];
       [response appendContentString:

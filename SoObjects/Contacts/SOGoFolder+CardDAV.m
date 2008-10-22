@@ -137,9 +137,9 @@
   [r setHeader: @"text/xml; charset=\"utf-8\"" forKey: @"content-type"];
   [r setHeader: @"no-cache" forKey: @"pragma"];
   [r setHeader: @"no-cache" forKey: @"cache-control"];
-  [r appendContentString:@"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"];
+  [r appendContentString:@"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
   [r appendContentString: @"<D:multistatus xmlns:D=\"DAV:\""
-     @" xmlns:C=\"urn:ietf:params:xml:ns:carddav\">\r\n"];
+     @" xmlns:C=\"urn:ietf:params:xml:ns:carddav\">"];
 
   document = [[queryContext request] contentAsDOMDocument];
   filters = [self _parseContactFilters: [document documentElement]];
@@ -147,7 +147,7 @@
   [self _appendComponentsMatchingFilters: filters
         toResponse: r
 	context: queryContext];
-  [r appendContentString:@"</D:multistatus>\r\n"];
+  [r appendContentString:@"</D:multistatus>"];
 
   return r;
 }

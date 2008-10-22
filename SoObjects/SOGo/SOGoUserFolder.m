@@ -263,7 +263,7 @@
 	  [r appendContentString: @"</ownerdisplayname><D:displayname>"];
 	  data = [currentFolder objectForKey: @"displayName"];
 	  [r appendContentString: [data stringByEscapingXMLString]];
-	  [r appendContentString: @"</D:displayname></D:response>\r\n"];
+	  [r appendContentString: @"</D:displayname></D:response>"];
 	}
     }
 }
@@ -297,15 +297,15 @@
   [r setHeader: @"text/xml; charset=\"utf-8\"" forKey: @"content-type"];
   [r setHeader: @"no-cache" forKey: @"pragma"];
   [r setHeader: @"no-cache" forKey: @"cache-control"];
-  [r appendContentString:@"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"];
+  [r appendContentString:@"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
   [r appendContentString: @"<D:multistatus xmlns:D=\"DAV:\""
-     @" xmlns=\"urn:ietf:params:xml:ns:inverse-dav\">\r\n"];
+     @" xmlns=\"urn:ietf:params:xml:ns:inverse-dav\">"];
 
   document = [[context request] contentAsDOMDocument];
   filter = [self _parseCollectionFilters: document];
   [self _appendCollectionsMatchingFilter: filter toResponse: r];
 
-  [r appendContentString:@"</D:multistatus>\r\n"];
+  [r appendContentString:@"</D:multistatus>"];
 
   return r;
 }
@@ -394,7 +394,7 @@
       [r setStatus: 207];
       if ([content length])
 	{
-	  [r appendContentString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"];
+	  [r appendContentString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
 	  [r appendContentString: content];
 	}
     }
