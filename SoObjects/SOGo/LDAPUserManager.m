@@ -111,16 +111,21 @@ static BOOL forceImapLoginWithEmail = NO;
 
 - (void) _prepareLDAPSourcesWithDefaults: (NSUserDefaults *) ud
 {
-  NSArray *udSources;
+  id udSources;
   unsigned int count, max;
 
   sources = [NSMutableDictionary new];
   sourcesMetadata = [NSMutableDictionary new];
 
   udSources = [ud arrayForKey: @"SOGoLDAPSources"];
-  max = [udSources count];
-  for (count = 0; count < max; count++)
-    [self _registerSource: [udSources objectAtIndex: count]];
+  
+  if (udSources && [udSources isKindOfClass: [NSArray class]]) {
+    max = [udSources count];
+    for (count = 0; count < max; count++)
+      [self _registerSource: [udSources objectAtIndex: count]];
+  } else {
+    [self errorWithFormat: @"SOGoLDAPSources is not defined or it is not an array. Check your defaults."];
+  }
 }
 
 - (id) init
