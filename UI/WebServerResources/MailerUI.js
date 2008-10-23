@@ -1543,9 +1543,11 @@ function updateMailboxTreeInPage() {
       inboxFound = true;
     }
   }
-	if (Mailer.quotas) {
+	if (Mailer.quotas && parseInt(Mailer.quotas.maxQuota) > 0) {
 		// Build quota indicator, show values in MB
-		var percents = (Math.round(Mailer.quotas.usedSpace * 10000 / Mailer.quotas.maxQuota) / 100);
+		var percents = (Math.round(Mailer.quotas.usedSpace * 10000
+															 / Mailer.quotas.maxQuota)
+										/ 100);
 		var level = (percents > 85)? "alert" : (percents > 70)? "warn" : "ok";
 		var format = labels["quotasFormat"];
 		var text = format.formatted(percents,

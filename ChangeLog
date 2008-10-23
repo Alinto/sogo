@@ -1,5 +1,8 @@
 2008-10-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailMainFrame.m ([-quotaSupport]): removed
+	useless method.
+
 	* SoObjects/SOGo/NSArray+Utilities.m ([NSArray
 	-objectsForKey:keynotFoundMarker:marker]): added a
 	"notFoundMarker:" parameter to the "objectsForKey:" method. When

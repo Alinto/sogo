@@ -97,29 +97,6 @@
   return [defaultColumnsOrder jsonRepresentation];
 }
 
-- (NSString *) quotaSupport
-{
-  NSEnumerator *accountNames;
-  NSMutableArray *quotas;
-  NSString *currentAccount;
-  SOGoMailAccounts *co;
-  BOOL supportsQuota;
-
-  co = [self clientObject];
-  accountNames = [[co toManyRelationshipKeys] objectEnumerator];
-
-  quotas = [NSMutableArray array];
-  while ((currentAccount = [accountNames nextObject]))
-    {
-      supportsQuota = [[co lookupName: currentAccount
-			   inContext: context
-			   acquire: NO] supportsQuotas];
-      [quotas addObject: [NSNumber numberWithInt: supportsQuota]];
-    }
-
-  return [quotas jsonRepresentation];
-}
-
 - (NSString *) pageFormURL
 {
   NSString *u;
