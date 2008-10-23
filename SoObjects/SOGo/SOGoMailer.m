@@ -155,8 +155,7 @@
   client = [NGSmtpClient smtpClient];
   if ([client connectToHost: smtpServer])
     {
-      if ([client hello]
-	  && [client mailFrom: sender])
+      if ([client mailFrom: sender])
 	{
 	  toErrors = 0;
 	  addresses = [recipients objectEnumerator];
