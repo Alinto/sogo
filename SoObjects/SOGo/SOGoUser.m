@@ -751,8 +751,8 @@ _timeValue (NSString *key)
 {
   NSArray *identities;
 
-  [self mailAccounts];
-  identities = [mailAccounts objectsForKey: @"identities"];
+  identities = [[self mailAccounts] objectsForKey: @"identities"
+				    notFoundMarker: nil];
 
   return [identities flattenedArray];
 }

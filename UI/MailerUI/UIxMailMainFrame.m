@@ -69,12 +69,14 @@
 }
 
 /* accessors */
+
+#warning this method is a duplication of SOGoMailAccounts:toManyRelationShipKeys
 - (NSString *) mailAccounts
 {
   NSArray *accounts, *accountNames;
 
   accounts = [[context activeUser] mailAccounts];
-  accountNames = [accounts objectsForKey: @"name"];
+  accountNames = [accounts objectsForKey: @"name" notFoundMarker: nil];
 
   return [accountNames jsonRepresentation];
 }
@@ -183,7 +185,8 @@
   
   // We use the first mail account
   accounts = [[context activeUser] mailAccounts];
-  firstAccount = [[accounts objectsForKey: @"name"] objectAtIndex: 0];
+  firstAccount = [[accounts objectsForKey: @"name" notFoundMarker: nil]
+		   objectAtIndex: 0];
   request = [context request];
   
   if ((folderId = [request formValueForKey: @"folder"]) &&

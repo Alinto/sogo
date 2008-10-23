@@ -35,7 +35,8 @@
 
 - (NSArray *) stringsWithFormat: (NSString *) format;
 - (NSArray *) keysWithFormat: (NSString *) format;
-- (NSArray *) objectsForKey: (NSString *) key;
+- (NSArray *) objectsForKey: (NSString *) key
+	     notFoundMarker: (id) marker;
 - (NSArray *) flattenedArray;
 
 - (NSArray *) uniqueObjects;

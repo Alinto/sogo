@@ -467,7 +467,7 @@ static NSArray *childRecordFields = nil;
     return records;
 
   [childRecords release];
-  names = [records objectsForKey: @"c_name"];
+  names = [records objectsForKey: @"c_name" notFoundMarker: nil];
   childRecords = [[NSMutableDictionary alloc] initWithObjects: records
 					      forKeys: names];
 

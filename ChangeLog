@@ -1,3 +1,11 @@
+2008-10-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/NSArray+Utilities.m ([NSArray
+	-objectsForKey:keynotFoundMarker:marker]): added a
+	"notFoundMarker:" parameter to the "objectsForKey:" method. When
+	the marker is nil and no match is found in the current dictionary,
+	the entry is ignored.
+
 2008-10-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView

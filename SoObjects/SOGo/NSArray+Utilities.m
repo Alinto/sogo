@@ -85,6 +85,7 @@
 }
 
 - (NSArray *) objectsForKey: (NSString *) key
+	     notFoundMarker: (id) marker
 {
   NSMutableArray *objectsForKey;
   unsigned int count, max;
@@ -96,7 +97,10 @@
   for (count = 0; count < max; count++)
     {
       value = [[self objectAtIndex: count] objectForKey: key];
-      [objectsForKey addObject: value];
+      if (value)
+	[objectsForKey addObject: value];
+      else if (marker)
+	[objectsForKey addObject: marker];
     }
 
   return objectsForKey;

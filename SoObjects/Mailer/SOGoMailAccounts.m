@@ -47,18 +47,14 @@
 
   accounts = [[context activeUser] mailAccounts];
 
-  return [accounts objectsForKey: @"name"];
+  return [accounts objectsForKey: @"name" notFoundMarker: nil];
 }
 
 /* name lookup */
 
 - (BOOL) isValidMailAccountName: (NSString *) _key
 {
-  NSArray *accounts;
-
-  accounts = [[context activeUser] mailAccounts];
-
-  return [[accounts objectsForKey: @"name"] containsObject: _key];
+  return [[self toManyRelationshipKeys] containsObject: _key];
 }
 
 // - (id) mailAccountWithName: (NSString *) _key

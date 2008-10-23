@@ -604,10 +604,11 @@ static BOOL debugSoParts       = NO;
   id result;
   
   [self debugWithFormat: @"fetch keys: %@", _fetchKeys];
-  
-  result = [self fetchParts: [_fetchKeys objectsForKey: @"key"]];
+
+  result = [self fetchParts: [_fetchKeys objectsForKey: @"key"
+					 notFoundMarker: nil]];
   result = [result valueForKey: @"RawResponse"]; // hackish
-  
+
   // Note: -valueForKey: doesn't work!
   result = [(NSDictionary *)result objectForKey: @"fetch"]; 
   

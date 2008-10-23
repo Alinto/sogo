@@ -101,7 +101,7 @@
 
   if ([keys count])
     {
-      types = [keys objectsForKey: @"mimeType"];
+      types = [keys objectsForKey: @"mimeType" notFoundMarker: @""];
       index = [types indexOfObject: @"text/plain"];
       if (index == NSNotFound)
 	{

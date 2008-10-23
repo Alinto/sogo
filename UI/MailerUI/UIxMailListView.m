@@ -274,11 +274,11 @@
   parts = [[message objectForKey: @"body"] objectForKey: @"parts"];
   if ([parts count] > 1)
     {
-      dispositions
-	= [[parts objectsForKey: @"disposition"] objectEnumerator];
+      dispositions = [[parts objectsForKey: @"disposition"
+			     notFoundMarker: nil] objectEnumerator];
       while (!hasAttachment
 	     && (currentDisp = [dispositions nextObject]))
-	  hasAttachment = ([[currentDisp objectForKey: @"type"] length]);
+	hasAttachment = ([[currentDisp objectForKey: @"type"] length]);
     }
 
   return hasAttachment;
