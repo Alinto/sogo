@@ -36,6 +36,7 @@
 
 @class NSData, NSArray, NSException, NSMutableArray;
 @class NGImap4MailboxInfo;
+@class WOResponse;
 
 typedef enum {
   undefined = -1,
@@ -60,6 +61,13 @@ typedef enum {
 
 - (NSArray *) fetchUIDsMatchingQualifier: (id)_q sortOrdering: (id) _so;
 - (NSArray *) fetchUIDs: (NSArray *) _uids parts: (NSArray *) _parts;
+
+- (WOResponse *) copyUIDs: (NSArray *) uids
+		 toFolder: (NSString *) destinationFolder
+		inContext: (id) localContext;
+- (WOResponse *) moveUIDs: (NSArray *) uids
+		 toFolder: (NSString *) destinationFolder
+		inContext: (id) localContext;
 
 - (NSException *) postData: (NSData *) _data flags: (id) _flags;
 

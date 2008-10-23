@@ -109,7 +109,7 @@ static NSArray *infoKeys = nil;
 {
   if ((self = [super init]))
     {
-      [self setPriority: @"NORMAL"];
+      priority = @"NORMAL";
     }
   
   return self;

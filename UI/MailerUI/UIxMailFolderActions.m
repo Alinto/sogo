@@ -196,7 +196,7 @@
   if ([value length] > 0)
     {
       uids = [value componentsSeparatedByString: @","];
-      response = [co deleteUIDs: uids  inContext: context];
+      response = (WOResponse *) [co deleteUIDs: uids  inContext: context];
       if (!response)
 	response = [self responseWith204];
     }

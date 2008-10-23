@@ -398,8 +398,8 @@ static NSString *spoolFolder = nil;
 }
 
 - (WOResponse *) copyUIDs: (NSArray *) uids
-          toFolder: (NSString *) destinationFolder
-          inContext: (id) localContext
+		 toFolder: (NSString *) destinationFolder
+		inContext: (id) localContext
 {
   NSEnumerator *folders;
   NSString *currentFolderName;
@@ -434,8 +434,8 @@ static NSString *spoolFolder = nil;
 }
 
 - (WOResponse *) moveUIDs: (NSArray *) uids
-          toFolder: (NSString *) destinationFolder
-          inContext: (id) localContext
+		 toFolder: (NSString *) destinationFolder
+		inContext: (id) localContext
 {
   id result;
   NGImap4Client *client;
