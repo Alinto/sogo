@@ -40,6 +40,7 @@
   NSCalendarDate *oldStartDate;
   NSCalendarDate *newStartDate;
   BOOL isSubject;
+  NSString *organizerName;
 }
 
 - (iCalEntityObject *) apt;

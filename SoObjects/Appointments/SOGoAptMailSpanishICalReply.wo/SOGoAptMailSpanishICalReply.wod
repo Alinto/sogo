@@ -24,3 +24,7 @@ HasAccepted: WOConditional {
 HasDeclined: WOConditional {
   condition = hasDeclined;
 }
+
+HasNotAcceptedNotDeclined: WOConditional {
+  condition = hasNotAcceptedNotDeclined;
+}

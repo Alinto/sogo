@@ -524,6 +524,16 @@ _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
 		  /* construct message content */
 		  p = [app pageWithName: pageName inContext: context];
 		  [p setApt: object];
+		  
+		  if ([[object organizer] cn] && [[[object organizer] cn] length])
+		    {
+		      [p setOrganizerName: [[object organizer] cn]];
+		    }
+		  else
+		    {
+		      [p setOrganizerName: [ownerUser cn]];
+		    }
+
 		  subject = [p getSubject];
 		  text = [p getBody];
 

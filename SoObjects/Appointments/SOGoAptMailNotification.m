@@ -68,6 +68,7 @@ static NSTimeZone *UTC = nil;
 - (void) dealloc
 {
   [apt release];
+  [organizerName release];
   [super dealloc];
 }
 
@@ -97,9 +98,14 @@ static NSTimeZone *UTC = nil;
   return [apt summary];
 }
 
+- (void) setOrganizerName: (NSString *) theString
+{
+  ASSIGN(organizerName, theString);
+}
+
 - (NSString *) organizerName
 {
-  return [[apt organizer] cn];
+  return organizerName;
 }
 
 /* Helpers */

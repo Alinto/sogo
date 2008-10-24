@@ -119,6 +119,11 @@ static NSCharacterSet *wsSet  = nil;
   return [partStat isEqualToString: @"declined"];
 }
 
+- (BOOL) hasNotAcceptedNotDeclined
+{
+  return !([self hasAccepted] || [self hasDeclined]);
+}
+
 - (NSCalendarDate *) startDate
 {
   NSCalendarDate *date;
@@ -129,6 +134,11 @@ static NSCharacterSet *wsSet  = nil;
   [date setTimeZone: [user timeZone]];
 
   return date;
+}
+
+- (NSString *) summary
+{
+  return [apt summary];
 }
 
 - (BOOL) isSubject
