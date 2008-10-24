@@ -386,8 +386,10 @@ function onMenuDeleteMessage(event) {
 
 function deleteMessage(url, id, mailbox, messageId) {
   var data = { "id": new Array(id), "mailbox": mailbox, "path": new Array(messageId) };
+	var parameters = "uid=" + id;
   deleteMessageRequestCount++;
-  triggerAjaxRequest(url, deleteSelectedMessagesCallback, data);
+  triggerAjaxRequest(url, deleteSelectedMessagesCallback, data, parameters,
+										 { "Content-type": "application/x-www-form-urlencoded" });
 }
 
 function deleteMessageWithDelay(url, id, mailbox, messageId) {

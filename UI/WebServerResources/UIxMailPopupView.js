@@ -44,15 +44,10 @@ function onICalendarButtonClick(event) {
 
 function onMenuDeleteMessage(event) {
   if (window.opener && window.opener.open && !window.opener.closed) {
-		var rowId_index = window.name.search(/[0-9]+$/);
-    var rowId = window.name.substr(rowId_index);
-    var messageId = window.opener.Mailer.currentMailbox + "/" + rowId;
-    var url = ApplicationBaseURL + messageId + "/trash";
+		var url = ApplicationBaseURL + encodeURI(mailboxName) + "/deleteMessages";
+		var path = mailboxName + "/" + messageName;
 
-    window.opener.deleteMessageWithDelay(url,
-																				 rowId,
-																				 window.opener.Mailer.currentMailbox,
-																				 messageId);
+    window.opener.deleteMessageWithDelay(url, messageName, mailboxName, path);
   }
   
   window.close();
