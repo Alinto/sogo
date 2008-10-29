@@ -50,6 +50,10 @@ static NSTimeZone *serverTimeZone = nil;
 static NSString *fallbackIMAP4Server = nil;
 static BOOL fallbackIsConfigured = NO;
 static NSString *defaultLanguage = nil;
+static NSString *defaultReplyPlacement = nil;
+static NSString *defaultSignaturePlacement = nil;
+static NSString *defaultMessageForwarding = nil;
+static NSString *defaultMessageCheck = nil;
 static NSArray *superUsernames = nil;
 static NSURL *SOGoProfileURL = nil;
 // static BOOL acceptAnyUser = NO;
@@ -158,6 +162,31 @@ _timeValue (NSString *key)
       if (!defaultLanguage)
 	ASSIGN (defaultLanguage, @"English");
     }
+  if (!defaultReplyPlacement)
+    {
+      ASSIGN (defaultReplyPlacement, [ud stringForKey: @"SOGoMailReplyPlacement"]);
+      if (!defaultReplyPlacement)
+	ASSIGN (defaultReplyPlacement, @"below");
+    }
+  if (!defaultSignaturePlacement)
+    {
+      ASSIGN (defaultSignaturePlacement, [ud stringForKey: @"SOGoMailSignaturePlacement"]);
+      if (!defaultSignaturePlacement)
+	ASSIGN (defaultSignaturePlacement, @"below");
+    }
+  if (!defaultMessageForwarding)
+    {
+      ASSIGN (defaultMessageForwarding, [ud stringForKey: @"SOGoMailMessageForwarding"]);
+      if (!defaultMessageForwarding)
+	ASSIGN (defaultMessageForwarding, @"inline");
+    }
+  if (!defaultMessageCheck)
+    {
+      ASSIGN (defaultMessageCheck, [ud stringForKey: @"SOGoMailMessageCheck"]);
+      if (!defaultMessageCheck)
+	ASSIGN (defaultMessageCheck, @"manually");
+    }
+  
   if (!superUsernames)
     ASSIGN (superUsernames, [ud arrayForKey: @"SOGoSuperUsernames"]);
 
@@ -445,10 +474,21 @@ _timeValue (NSString *key)
 - (NSUserDefaults *) userDefaults
 {
   if (!userDefaults)
-    userDefaults
-      = [[SOGoUserDefaults alloc] initWithTableURL: SOGoProfileURL
-				  uid: login
-				  fieldName: @"c_defaults"];
+    {
+      userDefaults
+	= [[SOGoUserDefaults alloc] initWithTableURL: SOGoProfileURL
+				    uid: login
+				    fieldName: @"c_defaults"];
+      /* Required parameters for the web interface */
+      if (![[userDefaults stringForKey: @"ReplyPlacement"] length])
+	[userDefaults setObject: defaultReplyPlacement forKey: @"ReplyPlacement"];
+      if (![[userDefaults stringForKey: @"SignaturePlacement"] length])
+	[userDefaults setObject: defaultSignaturePlacement forKey: @"SignaturePlacement"];
+      if (![[userDefaults stringForKey: @"MessageForwarding"] length])
+	[userDefaults setObject: defaultMessageForwarding forKey: @"MessageForwarding"];
+      if (![[userDefaults stringForKey: @"MessageCheck"] length])
+	[userDefaults setObject: defaultMessageCheck forKey: @"MessageCheck"];
+    }
 
   return userDefaults;
 }
@@ -778,8 +818,6 @@ _timeValue (NSString *key)
 
   replyPlacement
     = [[self userDefaults] stringForKey: @"ReplyPlacement"];
-  if (![replyPlacement length])
-    replyPlacement = @"below";
 
   return replyPlacement;
 }
@@ -790,8 +828,6 @@ _timeValue (NSString *key)
 
   signaturePlacement
     = [[self userDefaults] stringForKey: @"SignaturePlacement"];
-  if (![signaturePlacement length])
-    signaturePlacement = @"below";
 
   return signaturePlacement;
 }
@@ -802,22 +838,8 @@ _timeValue (NSString *key)
 
   messageForwarding
     = [[self userDefaults] stringForKey: @"MessageForwarding"];
-  if (![messageForwarding length])
-    messageForwarding = @"inline";
 
   return messageForwarding;
-}
-
-- (NSString *) messageCheck
-{
-  NSString *messageCheck;
-
-  messageCheck
-    = [[self userDefaults] stringForKey: @"MessageCheck"];
-  if (![messageCheck length])
-    messageCheck = @"manually";
-
-  return messageCheck;
 }
 
 /* folders */

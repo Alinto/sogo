@@ -134,7 +134,6 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 - (NSDictionary *) primaryIdentity;
 - (NSMutableDictionary *) defaultIdentity;
 - (NSString *) messageForwarding;
-- (NSString *) messageCheck;
 
 - (NSString *) signature;
 - (NSString *) replyPlacement;

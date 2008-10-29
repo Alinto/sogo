@@ -1,3 +1,9 @@
+2008-10-29  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUser.m ([-userDefaults]): added support for
+	system-wide defaults for ReplyPlacement, SignaturePlacement,
+	MessageForwarding, and MessageCheck.
+
 2008-10-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoMailer.m ([SOGoMailer

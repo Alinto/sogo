@@ -312,16 +312,9 @@ function onTextIEUpdateCursorPos(event) {
 
 function onTextFirstFocus() {
 	var content = this.getValue();
-  var signaturePlacement = userDefaults["SignaturePlacement"];
-  if ( typeof(signaturePlacement) == "undefined" ) {
-    signaturePlacement = "below";
-  }
   var replyPlacement = userDefaults["ReplyPlacement"];
-  if ( typeof(replyPlacement) == "undefined" ) {
-    replyPlacement = signaturePlacement;
-  }
 
-  if ( replyPlacement == "above" ) {
+  if (replyPlacement == "above") {
     this.insertBefore(document.createTextNode("\r\r"), this.lastChild);
     this.setCaretTo(0);
   }
@@ -554,7 +547,7 @@ function initMailEditor() {
 		if (sigLimit > -1)
 			MailEditor.signatureLength = (textContent.length - sigLimit);
 	}
-	if ( userDefaults["ReplyPlacement"] != "above" ) {
+	if (userDefaults["ReplyPlacement"] != "above") {
 	  textarea.scrollTop = textarea.scrollHeight;
 	}
 	textarea.observe("focus", onTextFirstFocus);

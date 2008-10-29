@@ -454,7 +454,7 @@ static BOOL shouldDisplayAdditionalPreferences = NO;
 
 - (NSString *) userMessageCheck
 {
-  return [user messageCheck];
+  return [userDefaults stringForKey: @"MessageCheck"];
 }
 
 - (void) setUserMessageCheck: (NSString *) newMessageCheck
@@ -475,7 +475,7 @@ static BOOL shouldDisplayAdditionalPreferences = NO;
 
 - (NSString *) userMessageForwarding
 {
-  return [user messageForwarding];
+  return [userDefaults stringForKey: @"MessageForwarding"];
 }
 
 - (void) setUserMessageForwarding: (NSString *) newMessageForwarding
@@ -513,7 +513,6 @@ static BOOL shouldDisplayAdditionalPreferences = NO;
   [user saveMailAccounts];
 }
 
-/* Modification */
 - (NSArray *) replyPlacementList
 {
   return [NSArray arrayWithObjects: @"above", @"below", nil];
@@ -527,7 +526,7 @@ static BOOL shouldDisplayAdditionalPreferences = NO;
 
 - (NSString *) userReplyPlacement
 {
-  return [user replyPlacement];
+  return [userDefaults stringForKey: @"ReplyPlacement"];
 }
 
 - (void) setUserReplyPlacement: (NSString *) newReplyPlacement
@@ -548,14 +547,13 @@ static BOOL shouldDisplayAdditionalPreferences = NO;
 
 - (NSString *) userSignaturePlacement
 {
-  return [user signaturePlacement];
+  return [userDefaults stringForKey: @"SignaturePlacement"];
 }
 
 - (void) setUserSignaturePlacement: (NSString *) newSignaturePlacement
 {
   [userDefaults setObject: newSignaturePlacement forKey: @"SignaturePlacement"];
 }
-/* Fin */
 
 - (id <WOActionResults>) defaultAction
 {
