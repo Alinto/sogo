@@ -1015,7 +1015,7 @@ function _drawCalendarEvents(events, eventsData) {
   var daysView = $("daysView");
   var subdivs = daysView.childNodesWithTag("div");
   var days = subdivs[1].childNodesWithTag("div");
-  for (var i = 0; i < events.length; i++) {
+  for (var i = 0; i < days.length; i++) {
     var parentDiv = days[i].childNodesWithTag("div")[0];
     for (var j = 0; j < events[i].length; j++) {
       var eventRep = events[i][j];
