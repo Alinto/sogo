@@ -43,6 +43,7 @@
 #import <SoObjects/SOGo/SOGoContentObject.h>
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>
 #import <SoObjects/Appointments/SOGoAppointmentObject.h>
+#import <SoObjects/Appointments/SOGoAppointmentOccurence.h>
 
 #import <SoObjects/Appointments/SOGoComponentOccurence.h>
 
@@ -270,6 +271,8 @@
     {
       sm = [SoSecurityManager sharedSecurityManager];
 
+      if ([co isKindOfClass: [SOGoAppointmentOccurence class]])
+	co = [co container];
       thisFolder = [co container];
       if (componentCalendar != thisFolder)
 	if (![sm validatePermission: SoPerm_DeleteObjects

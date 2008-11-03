@@ -313,7 +313,10 @@ function _editRecurrenceDialog(eventDiv, method) {
 
 function onViewEvent(event) {
   if (event.detail == 2) return;
-  var url = ApplicationBaseURL + this.calendar + "/" + this.cname + "/view";
+  var url = ApplicationBaseURL + this.calendar + "/" + this.cname;
+	if (typeof this.recurrenceTime != "undefined")
+		url += "/occurence" + this.recurrenceTime;
+	url += "/view";
   if (document.viewEventAjaxRequest) {
     document.viewEventAjaxRequest.aborted = true;
     document.viewEventAjaxRequest.abort();
