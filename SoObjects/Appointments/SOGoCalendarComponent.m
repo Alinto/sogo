@@ -231,7 +231,7 @@ _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
       [newOccurence setOrganizer: nil];
       [newOccurence setRecurrenceId: recDate];
 
-      calendar = [newOccurence parent];
+      calendar = [masterOccurence parent];
       [calendar addChild: newOccurence];
     }
   else
