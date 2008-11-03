@@ -109,12 +109,13 @@
     [tag release];
   [values release];
   [attributes release];
+  [parent release];
   [super dealloc];
 }
 
 - (void) setParent: (CardGroup *) aParent
 {
-  parent = aParent;
+  ASSIGN (parent, aParent);
 }
 
 - (id) parent
