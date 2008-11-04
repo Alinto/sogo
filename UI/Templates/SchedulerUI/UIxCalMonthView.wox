@@ -9,35 +9,35 @@
 
   <a href="#"
     class="leftNavigationArrow"
-    var:date="prevMonthQueryParameters.day"
+    var:date="prevMonthQueryParameters.month"
     onclick="return onCalendarGotoDay(this);"
     ><img rsrc:src="arrow-lft-sharp.gif"/></a>
   <span class="monthsHeader">
     <span class="month2"><a href="#"
-        var:date="monthBeforePrevMonthQueryParameters.day"
+        var:date="monthBeforePrevMonthQueryParameters.month"
         onclick="return onCalendarGotoDay(this);"
         ><var:string value="monthNameOfTwoMonthAgo"
           /></a></span
       ><span class="month1"><a href="#"
-        var:date="prevMonthQueryParameters.day"
+        var:date="prevMonthQueryParameters.month"
         onclick="return onCalendarGotoDay(this);"
         ><var:string value="monthNameOfOneMonthAgo"
           /></a></span
       ><span class="month0"><var:string value="monthNameOfThisMonth" /></span
       ><span class="month1"><a href="#"
-        var:date="nextMonthQueryParameters.day"
+        var:date="nextMonthQueryParameters.month"
         onclick="return onCalendarGotoDay(this);"
         ><var:string value="monthNameOfNextMonth"
           /></a></span
       ><span class="month2"><a href="#"
-        var:date="monthAfterNextMonthQueryParameters.day"
+        var:date="monthAfterNextMonthQueryParameters.month"
         onclick="return onCalendarGotoDay(this);"
         ><var:string value="monthNameOfTheMonthAfterNextMonth"
           /></a></span
       ></span>
   <a href="#"
     class="rightNavigationArrow"
-    var:date="nextMonthQueryParameters.day"
+    var:date="nextMonthQueryParameters.month"
     onclick="return onCalendarGotoDay(this);"
     ><img rsrc:src="arrow-rit-sharp.gif"/></a>
 

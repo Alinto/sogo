@@ -395,6 +395,9 @@ function onViewEventCallback(http) {
       div.show();
     }
   }
+	else {
+    log("onViewEventCallback ajax error:" + http.url);		
+	}
 }
 
 function editDoubleClickedEvent(event) {
@@ -707,8 +710,11 @@ function restoreCurrentDaySelection(div) {
 
 function changeDateSelectorDisplay(day, keepCurrentDay) {
   var url = ApplicationBaseURL + "dateselector";
-  if (day)
+  if (day) {
+		if (day.length < 8)
+			day += "01";
     url += "?day=" + day;
+	}
 
   if (day != currentDay) {
     if (!keepCurrentDay)
@@ -781,6 +787,9 @@ function changeCalendarDisplay(data, newView) {
 
 				return false;
       }
+			else if (day.length == 6) {
+				day += "01";
+			}
     }
     url += "?day=" + day;
   }

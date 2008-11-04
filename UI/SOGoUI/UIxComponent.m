@@ -25,6 +25,7 @@
 #import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSPathUtilities.h>
+#import <Foundation/NSString.h>
 
 #import <NGObjWeb/SoHTTPAuthenticator.h>
 #import <NGObjWeb/SoObjects.h>
@@ -240,10 +241,19 @@ static BOOL uixDebugEnabled = NO;
 - (void) setSelectedDateQueryParameter: (NSCalendarDate *) _newDate
                           inDictionary: (NSMutableDictionary *) _qp
 {
+  NSString *day;
+
   if (_newDate)
-    [_qp setObject: [self dateStringForDate: _newDate] forKey: @"day"];
+    {
+      day = [self dateStringForDate: _newDate];
+      [_qp setObject: day forKey: @"day"];
+      [_qp setObject: [day substringToIndex: 6] forKey: @"month"];
+    }
   else
-    [_qp removeObjectForKey:@"day"];
+    {
+      [_qp removeObjectForKey:@"day"];
+      [_qp removeObjectForKey:@"month"];
+    }
 }
 
 - (NSString *) completeHrefForMethod: (NSString *) _method
