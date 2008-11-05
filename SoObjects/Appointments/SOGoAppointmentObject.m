@@ -40,6 +40,7 @@
 #import <SoObjects/SOGo/SOGoObject.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
 #import <SoObjects/SOGo/SOGoUser.h>
+#import <SoObjects/SOGo/SOGoUserManager.h>
 #import <SoObjects/SOGo/SOGoWebDAVAclManager.h>
 #import <SoObjects/SOGo/SOGoWebDAVValue.h>
 #import <SoObjects/SOGo/WORequest+SOGo.h>
@@ -169,7 +170,7 @@
       possibleName = [folder resourceNameForEventUID: eventUID];
       if (possibleName)
 	{
-	  object = [folder lookupName: nameInContainer
+	  object = [folder lookupName: possibleName
 			   inContext: context acquire: NO];
 	  if ([object isKindOfClass: [NSException class]])
 	    object = nil;
@@ -362,9 +363,11 @@
 }
 
 - (NSException *) _updateAttendee: (iCalPerson *) attendee
+                        ownerUser: (SOGoUser *) theOwnerUser
 		      forEventUID: (NSString *) eventUID
 		     withSequence: (NSNumber *) sequence
 			   forUID: (NSString *) uid
+	          shouldAddSentBy: (BOOL) b
 {
   SOGoAppointmentObject *eventObject;
   iCalEvent *event;
@@ -381,8 +384,23 @@
       if ([[event sequence] compare: sequence]
 	  == NSOrderedSame)
 	{
-	  otherAttendee = [event findParticipant: [context activeUser]];
+	  SOGoUser *currentUser;
+	  
+	  //otherAttendee = [event findParticipant: [context activeUser]];
+	  otherAttendee = [event findParticipant: theOwnerUser];
 	  [otherAttendee setPartStat: [attendee partStat]];
+	  
+	  // If one has accepted / declined an invitation on behalf of
+	  // the attendee, we add the user to the SENT-BY attribute.
+	  currentUser = [context activeUser];
+	  if (b && ![[currentUser login] isEqualToString: [theOwnerUser login]])
+	    {
+	      NSString *currentEmail;
+	      currentEmail = [[currentUser allEmails] objectAtIndex: 0];
+	      [otherAttendee addAttribute: @"SENT-BY"
+			     value: [NSString stringWithFormat: @"\"MAILTO:%@\"", currentEmail]];
+	    }
+
 	  iCalString = [[event parent] versitString];
 	  error = [eventObject saveContentString: iCalString];
 	}
@@ -392,10 +410,11 @@
 }
 
 - (NSException *) _handleAttendee: (iCalPerson *) attendee
+                        ownerUser: (SOGoUser *) theOwnerUser
 		     statusChange: (NSString *) newStatus
 			  inEvent: (iCalEvent *) event
 {
-  NSString *newContent, *currentStatus, *organizerUID;
+  NSString *newContent, *currentStatus, *currentUser, *organizerUID;
   NSException *ex;
   SOGoUser *ownerUser;
 
@@ -406,20 +425,70 @@
       != NSOrderedSame)
     {
       [attendee setPartStat: newStatus];
+      
+      // If one has accepted / declined an invitation on behalf of
+      // the attendee, we add the user to the SENT-BY attribute.
+      currentUser = [context activeUser];
+      if (![[currentUser login] isEqualToString: [theOwnerUser login]])
+	{
+	  NSString *currentEmail;
+	  currentEmail = [[currentUser allEmails] objectAtIndex: 0];
+	  [attendee addAttribute: @"SENT-BY"
+		    value: [NSString stringWithFormat: @"\"MAILTO:%@\"", currentEmail]];
+	}
+
+      // We generate the updated iCalendar file and we save it
+      // in the database.
       newContent = [[event parent] versitString];
       ex = [self saveContentString: newContent];
+
+
       ownerUser = [SOGoUser userWithLogin: owner roles: nil];
       if (!(ex || [event userIsOrganizer: ownerUser]))
 	{
 	  if ([[attendee rsvp] isEqualToString: @"true"]
 	      && [event isStillRelevant])
 	    [self sendResponseToOrganizer: event];
+	
 	  organizerUID = [[event organizer] uid];
 	  if (organizerUID)
 	    ex = [self _updateAttendee: attendee
+		       ownerUser: theOwnerUser
 		       forEventUID: [event uid]
 		       withSequence: [event sequence]
-		       forUID: organizerUID];
+		       forUID: organizerUID
+		       shouldAddSentBy: YES];
+	}
+
+      // We update the calendar of all participants that are
+      // local to the system. This is useful in case user A accepts
+      // invitation from organizer B and users C, D, E who are also
+      // attendees need to verify if A has accepted.
+      NSArray *attendees;
+      iCalPerson *att;
+      NSString *uid;
+      int i;
+
+      attendees = [event attendees];
+
+      for (i = 0; i < [attendees count]; i++)
+	{
+	  att = [attendees objectAtIndex: i];
+	  
+	  if (att == attendee) continue;
+	  
+	  uid = [[LDAPUserManager sharedUserManager]
+		  getUIDForEmail: [att rfc822Email]];
+
+	  if (uid)
+	    {
+	      [self _updateAttendee: attendee
+		    ownerUser: theOwnerUser
+		    forEventUID: [event uid]
+		    withSequence: [event sequence]
+		    forUID: uid
+		    shouldAddSentBy: YES];
+	    }
 	}
     }
 
@@ -512,6 +581,7 @@
 {
   iCalPerson *localAttendee;
   iCalEvent *event;
+  SOGoUser *ownerUser;
 
   event = [self component: NO secure: NO];
   localAttendee = [event findParticipantWithEmail: [attendee rfc822Email]];
@@ -519,6 +589,46 @@
     {
       [localAttendee setPartStat: [attendee partStat]];
       [self saveComponent: event];
+
+      /// TEST ///
+     NSArray *attendees;
+     iCalPerson *att;
+     NSString *uid;
+     int i;
+
+     // We update for the organizer
+     ownerUser = [context activeUser];
+
+     [self _updateAttendee: attendee
+	   ownerUser: ownerUser
+	   forEventUID: [event uid]
+	   withSequence: [event sequence]
+	   forUID: [[SOGoUser userWithLogin: owner roles: nil] login]
+	   shouldAddSentBy: NO];
+
+      attendees = [event attendees];
+
+      for (i = 0; i < [attendees count]; i++)
+	{
+	  att = [attendees objectAtIndex: i];
+	  
+	  if (att == attendee) continue;
+	  
+	  uid = [[LDAPUserManager sharedUserManager]
+		  getUIDForEmail: [att rfc822Email]];
+
+	  if (uid)
+	    {		
+	      [self _updateAttendee: attendee
+		    ownerUser: ownerUser
+		    forEventUID: [event uid]
+		    withSequence: [event sequence]
+		    forUID: uid
+		    shouldAddSentBy: NO];
+	    }
+	}
+
+      /// TEST ///
     }
   else
     [self errorWithFormat: @"attendee not found: '%@'", attendee];
@@ -579,7 +689,9 @@
       ownerUser = [SOGoUser userWithLogin: owner roles: nil];
       attendee = [event findParticipant: ownerUser];
       if (attendee)
-	ex = [self _handleAttendee: attendee statusChange: _status
+	ex = [self _handleAttendee: attendee
+		   ownerUser: ownerUser
+		   statusChange: _status
 		   inEvent: event];
       else
         ex = [NSException exceptionWithHTTPStatus: 404 /* Not Found */

@@ -108,6 +108,16 @@ static NSTimeZone *UTC = nil;
   return organizerName;
 }
 
+- (BOOL) hasSentBy
+{
+  return [[apt organizer] hasSentBy];
+}
+
+- (NSString *) sentBy
+{
+  return [[apt organizer] sentBy];
+}
+
 /* Helpers */
 
 /* Generate Response */

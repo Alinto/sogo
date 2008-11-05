@@ -36,12 +36,9 @@
 
 @interface SOGoUserDefaults :  NSObject
 {
-  NSUserDefaults *parent;
   NSURL    *url;
   NSString *uid;
   NSString *fieldName;
-  
-  NSArray *fieldNames;
   NSMutableDictionary *values;
   NSCalendarDate *lastFetch;
 
@@ -58,6 +55,7 @@
 	      fieldName: (NSString *) fieldName;
 
 /* value access */
+- (void) setValues: (NSDictionary *) theValues;
 
 - (void) setObject: (id) value
 	    forKey: (NSString *) key;

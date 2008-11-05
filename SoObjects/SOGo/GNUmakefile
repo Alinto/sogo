@@ -53,6 +53,7 @@ SOGo_HEADER_FILES = \
 	SOGoWebDAVValue.h		\
 	SOGoMailer.h			\
 	SOGoUser.h			\
+	SOGoUserManager.h		\
 	\
 	NSDictionary+BSJSONAdditions.h	\
 	NSScanner+BSJSONAdditions.h	\
@@ -98,6 +99,7 @@ SOGo_OBJC_FILES = \
 	SOGoWebDAVValue.m		\
 	SOGoMailer.m			\
 	SOGoUser.m			\
+	SOGoUserManager.m		\
 	\
 	NSDictionary+BSJSONAdditions.m	\
 	NSScanner+BSJSONAdditions.m	\

@@ -28,3 +28,12 @@ HasDeclined: WOConditional {
 HasNotAcceptedNotDeclined: WOConditional {
   condition = hasNotAcceptedNotDeclined;
 } 
+
+HasSentBy: WOConditional {
+  condition = hasSentBy;
+}
+
+sentBy: WOString {
+  value = sentBy;
+  escapeHTML = NO;
+}

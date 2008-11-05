@@ -46,6 +46,7 @@
 #import <SoObjects/SOGo/SOGoMailer.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
 #import <SoObjects/SOGo/SOGoUser.h>
+#import <SoObjects/SOGo/SOGoUserManager.h>
 #import <SoObjects/SOGo/WORequest+SOGo.h>
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>
 
@@ -451,20 +452,6 @@ _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
   return [[SOGoUser userWithLogin: uid roles: nil] timeZone];
 }
 
-- (void) _setupSentByIfNeeded: (iCalPerson *) person
-{
-  SOGoUser *currentUser;
-  NSString *currentEmail;
-
-  currentUser = [context activeUser];
-  if (![[currentUser login] isEqualToString: owner])
-    {
-      currentEmail = [[currentUser allEmails] objectAtIndex: 0];
-      [person addAttribute: @"SENT-BY"
-	      value: [NSString stringWithFormat: @"MAILTO:%@", currentEmail]];
-    }
-}
-
 - (void) sendEMailUsingTemplateNamed: (NSString *) newPageName
 			   forObject: (iCalRepeatableEntityObject *) object
                          toAttendees: (NSArray *) attendees
@@ -491,11 +478,12 @@ _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
 	{
 	  /* sender */
 	  ownerUser = [SOGoUser userWithLogin: owner roles: nil];
-	  currentUser = [context activeUser];
-	  shortSenderEmail = [[currentUser allEmails] objectAtIndex: 0];
-	  senderEmail = [NSString stringWithFormat: @"%@ <%@>",
-				  [ownerUser cn], shortSenderEmail];
-	  [self _setupSentByIfNeeded: [object organizer]];
+	  //currentUser = [context activeUser];
+	  //shortSenderEmail = [[currentUser allEmails] objectAtIndex: 0];
+	  //  senderEmail = [NSString stringWithFormat: @"%@ <%@>",
+	  //			  [ownerUser cn], shortSenderEmail];
+	  shortSenderEmail = [[object organizer] rfc822Email];
+	  senderEmail = [[object organizer] mailAddress];
 // 	  NSLog (@"sending '%@' from %@",
 // 		 [(iCalCalendar *) [object parent] method], senderEmail);
 	  /* generate iCalString once */
@@ -695,7 +683,6 @@ _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
     {
       organizer = [event organizer];
       attendee = [event findParticipant: ownerUser];
-      [self _setupSentByIfNeeded: attendee];
       [event setAttendees: [NSArray arrayWithObject: attendee]];
       [self sendIMIPReplyForEvent: event to: organizer];
     }

@@ -470,6 +470,14 @@ _timeValue (NSString *key)
 }
 
 /* defaults */
+- (void) setUserDefaultsFromDictionary: (NSDictionary *) theDictionary
+{
+  if (!userDefaults)
+    userDefaults = [[SOGoUserDefaults alloc] initWithTableURL: SOGoProfileURL
+					     uid: login
+					     fieldName: @"c_defaults"];
+  [userDefaults setValues: theDictionary];
+}
 
 - (NSUserDefaults *) userDefaults
 {
@@ -491,6 +499,15 @@ _timeValue (NSString *key)
     }
 
   return userDefaults;
+}
+
+- (void) setUserSettingsFromDictionary: (NSDictionary *) theDictionary
+{
+  if (!userSettings)
+    userSettings = [[SOGoUserDefaults alloc] initWithTableURL: SOGoProfileURL
+					     uid: login
+					     fieldName: @"c_settings"];
+  [userSettings setValues: theDictionary];
 }
 
 - (NSUserDefaults *) userSettings

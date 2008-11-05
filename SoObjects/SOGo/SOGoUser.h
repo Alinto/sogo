@@ -48,6 +48,7 @@
 @class SOGoAppointmentFolder;
 @class SOGoAppointmentFolders;
 @class SOGoDateFormatter;
+@class SOGoUserDefaults;
 @class SOGoUserFolder;
 
 extern NSString *SOGoWeekStartJanuary1;
@@ -62,8 +63,8 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 
 @interface SOGoUser : SoUser
 {
-  NSUserDefaults *userDefaults;
-  NSUserDefaults *userSettings;
+  SOGoUserDefaults *userDefaults;
+  SOGoUserDefaults *userSettings;
   NSArray *allEmails;
   NSString *language;
   NSString *currentPassword;
@@ -111,7 +112,10 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 
 /* defaults */
 
+- (void) setUserDefaultsFromDictionary: (NSDictionary *) theDictionary;
 - (NSUserDefaults *) userDefaults;
+
+- (void) setUserSettingsFromDictionary: (NSDictionary *) theDictionary;
 - (NSUserDefaults *) userSettings;
 
 - (NSString *) language;

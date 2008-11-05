@@ -61,6 +61,7 @@
 #import "SOGoCache.h"
 #import "SOGoPermissions.h"
 #import "SOGoUser.h"
+#import "SOGoUserManager.h"
 #import "SOGoUserFolder.h"
 #import "SOGoWebDAVAclManager.h"
 #import "SOGoWebDAVValue.h"

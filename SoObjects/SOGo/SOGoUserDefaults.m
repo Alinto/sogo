@@ -20,6 +20,7 @@
 */
 
 #import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSDistributedNotificationCenter.h>
 #import <Foundation/NSPropertyList.h>
 #import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSValue.h>
@@ -50,7 +51,6 @@ static NSString *uidColumnName = @"c_uid";
       if (tableURL && [userID length] > 0
 	  && [defaultsFieldName length] > 0)
 	{
-	  parent = [[NSUserDefaults standardUserDefaults] retain];
 	  fieldName = [defaultsFieldName copy];
 	  url = [tableURL copy];
 	  uid = [userID copy];
@@ -77,7 +77,6 @@ static NSString *uidColumnName = @"c_uid";
 {
   [values release];
   [lastFetch release];
-  [parent release];
   [url release];
   [uid release];
   [fieldName release];
@@ -99,11 +98,6 @@ static NSString *uidColumnName = @"c_uid";
 - (NSString *) fieldName
 {
   return fieldName;
-}
-
-- (NSUserDefaults *) parentDefaults
-{
-  return parent;
 }
 
 /* operation */
@@ -275,6 +269,18 @@ static NSString *uidColumnName = @"c_uid";
 	    [self errorWithFormat: @"could not run SQL '%@': %@", sql, ex];
 	  else
 	    {
+	      NSMutableDictionary *d;
+
+	      d = [[NSMutableDictionary alloc] init];
+	      [d addEntriesFromDictionary: values];
+	      [d setObject: uid  forKey: @"uid"];
+
+	      [[NSDistributedNotificationCenter defaultCenter]
+		postNotificationName: ([fieldName isEqualToString: @"c_defaults"] ? @"SOGoUserDefaultsHaveChanged" : @"SOGoUserSettingsHaveChanged")
+		object: nil
+		userInfo: d];
+	      [d release];
+	      
 	      if ([[channel adaptorContext] hasOpenTransaction])
 		{
 		  ex = [channel evaluateExpressionX: @"COMMIT TRANSACTION"];
@@ -315,6 +321,11 @@ static NSString *uidColumnName = @"c_uid";
 }
 
 /* value access */
+- (void) setValues: (NSDictionary *) theValues
+{
+  [values removeAllObjects];
+  [values addEntriesFromDictionary: theValues];
+}
 
 - (void) setObject: (id) value
 	    forKey: (NSString *) key

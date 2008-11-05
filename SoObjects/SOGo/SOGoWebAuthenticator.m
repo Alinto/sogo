@@ -40,6 +40,7 @@
 #import "LDAPUserManager.h"
 #import "SOGoPermissions.h"
 #import "SOGoUser.h"
+#import "SOGoUserManager.h"
 
 #import "SOGoWebAuthenticator.h"
 

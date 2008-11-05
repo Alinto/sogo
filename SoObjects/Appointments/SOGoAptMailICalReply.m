@@ -98,7 +98,24 @@ static NSCharacterSet *wsSet  = nil;
 
 - (NSString *) attendeeName
 {
-  return [attendee cn];
+  NSString *name;
+
+  name = [attendee cn];
+
+  if (name && [name length])
+    return name;
+
+  return [attendee rfc822Email];
+}
+
+- (BOOL) hasSentBy
+{
+  return [attendee hasSentBy];
+}
+
+- (NSString *) sentBy
+{
+  return [attendee sentBy];
 }
 
 - (BOOL) hasAccepted

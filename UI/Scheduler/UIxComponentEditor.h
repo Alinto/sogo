@@ -1,6 +1,6 @@
 /* UIxComponentEditor.h - this file is part of SOGo
  *
- * Copyright (C) 2006 Inverse inc.
+ * Copyright (C) 2006-2008 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -41,8 +41,8 @@
 
   NSString *saveURL;
   NSMutableArray *calendarList;
-  NSMutableArray *organizerList;
-  NSDictionary *organizerIdentity;
+  //NSMutableArray *organizerList;
+  //NSDictionary *organizerIdentity;
   
   /* individual values */
   NSCalendarDate *cycleUntilDate;

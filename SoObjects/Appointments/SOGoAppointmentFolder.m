@@ -1,5 +1,6 @@
 /*
   Copyright (C) 2004-2005 SKYRIX Software AG
+  Copyright (C) 2007-2008 Inverse inc.
 
   This file is part of OpenGroupware.org.
 
@@ -62,6 +63,7 @@
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserManager.h>
 #import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoWebDAVAclManager.h>
 

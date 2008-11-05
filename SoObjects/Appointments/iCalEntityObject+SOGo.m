@@ -95,14 +95,22 @@ _computeAllDayOffset()
   return isParticipant;
 }
 
-#warning user could be a delegate, we will need to handle that someday
 - (BOOL) userIsOrganizer: (SOGoUser *) user
 {
-  NSString *orgMail;
+  NSString *mail;
+  BOOL b;
 
-  orgMail = [[self organizer] rfc822Email];
+  mail = [[self organizer] rfc822Email];
+  b = [user hasEmail: mail];
+  if (b) return YES;
 
-  return [user hasEmail: orgMail];
+  // We check for the SENT-BY
+  mail = [[self organizer] sentBy];
+
+  if ([mail length])
+    return [user hasEmail: mail];
+  
+  return NO;
 }
 
 - (NSArray *) attendeeUIDs

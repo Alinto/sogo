@@ -60,6 +60,7 @@
 #import "SOGoParentFolder.h"
 #import "SOGoPermissions.h"
 #import "SOGoUser.h"
+#import "SOGoUserManager.h"
 #import "SOGoWebDAVAclManager.h"
 #import "WORequest+SOGo.h"
 

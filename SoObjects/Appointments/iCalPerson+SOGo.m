@@ -1,6 +1,6 @@
 /* iCalPerson+SOGo.m - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse inc.
+ * Copyright (C) 2007-2008 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -48,6 +48,32 @@ static LDAPUserManager *um = nil;
     um = [LDAPUserManager sharedUserManager];
 
   return [um getUIDForEmail: [self rfc822Email]];
+}
+
+- (BOOL) hasSentBy
+{
+  NSString *mail;
+
+  mail = [self value: 0  ofAttribute: @"SENT-BY"];
+
+  return ([mail length] > 7);
+}
+
+- (NSString *) sentBy
+{
+  NSString *mail;
+  
+  mail = [self value: 0  ofAttribute: @"SENT-BY"];
+
+  if ([mail length] > 7)
+    {
+      if ([mail characterAtIndex: 0] && [mail hasSuffix: @"\""])
+	mail = [mail substringWithRange: NSMakeRange(1, [mail length]-2)];
+      
+      return [mail substringFromIndex: 7];
+    }
+  
+  return @"";
 }
 
 @end

@@ -1,6 +1,6 @@
 /* UIxComponentEditor.m - this file is part of SOGo
  *
- * Copyright (C) 2006 Inverse inc.
+ * Copyright (C) 2006-2008 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -81,7 +81,7 @@ iRANGE(2);
 
 #define REPEAT(X) \
 - (NSString *) repeat##X { return repeat##X; } \
-- (void) setRepeat##X: (NSString *) theValue { NSLog(@"setRepeat%d %@", X, theValue); ASSIGN(repeat##X, theValue); } \
+- (void) setRepeat##X: (NSString *) theValue { ASSIGN(repeat##X, theValue); } \
 
 #define RANGE(X) \
 - (NSString *) range##X { return range##X; } \
@@ -98,7 +98,7 @@ iRANGE(2);
       [self setIsCycleEndNever];
       componentOwner = @"";
       organizer = nil;
-      organizerIdentity = nil;
+      //organizerIdentity = nil;
       attendeesNames = nil;
       attendeesUIDs = nil;
       attendeesEmails = nil;
@@ -128,7 +128,7 @@ iRANGE(2);
   [title release];
   [location release];
   [organizer release];
-  [organizerIdentity release];
+  //[organizerIdentity release];
   [comment release];
   [priority release];
   [categories release];
@@ -460,75 +460,101 @@ iRANGE(2);
   return [organizer mailAddress];
 }
 
-- (BOOL) canBeOrganizer
-{
-  NSString *owner;
-  SOGoObject <SOGoComponentOccurence> *co;
-  SOGoUser *currentUser;
-  BOOL hasOrganizer;
-  SoSecurityManager *sm;
+// - (BOOL) canBeOrganizer
+// {
+//   NSString *owner;
+//   SOGoObject <SOGoComponentOccurence> *co;
+//   SOGoUser *currentUser;
+//   BOOL hasOrganizer;
+//   SoSecurityManager *sm;
 
-  co = [self clientObject];
-  owner = [co ownerInContext: context];
-  currentUser = [context activeUser];
+//   co = [self clientObject];
+//   owner = [co ownerInContext: context];
+//   currentUser = [context activeUser];
 
-  hasOrganizer = ([[organizer value: 0] length] > 0);
+//   hasOrganizer = ([[organizer value: 0] length] > 0);
 
-  sm = [SoSecurityManager sharedSecurityManager];
+//   sm = [SoSecurityManager sharedSecurityManager];
   
-  return ([co isNew]
-	  || (([owner isEqualToString: [currentUser login]]
-	       || ![sm validatePermission: SOGoCalendarPerm_ModifyComponent
-		       onObject: co
-		       inContext: context])
-	      && (!hasOrganizer || [component userIsOrganizer: currentUser])));
-}
+//   return ([co isNew]
+// 	  || (([owner isEqualToString: [currentUser login]]
+// 	       || ![sm validatePermission: SOGoCalendarPerm_ModifyComponent
+// 		       onObject: co
+// 		       inContext: context])
+// 	      && (!hasOrganizer || [component userIsOrganizer: currentUser])));
+// }
 
 - (BOOL) hasOrganizer
 {
-  return ([[organizer value: 0] length] && ![self canBeOrganizer]);
-}
+  // We check if there's an organizer and if it's not ourself
+  NSString *value;
 
-- (void) setOrganizerIdentity: (NSDictionary *) newOrganizerIdentity
-{
-  ASSIGN (organizerIdentity, newOrganizerIdentity);
-}
+  value = [organizer rfc822Email];
 
-- (NSDictionary *) organizerIdentity
-{
-  NSArray *allIdentities;
-  NSEnumerator *identities;
-  NSDictionary *currentIdentity;
-  NSString *orgEmail;
-
-  orgEmail = [organizer rfc822Email];
-  if (!organizerIdentity)
+  if ([value length])
     {
-      if ([orgEmail length])
-	{
-	  allIdentities = [[context activeUser] allIdentities];
-	  identities = [allIdentities objectEnumerator];
-	  while (!organizerIdentity
-		 && ((currentIdentity = [identities nextObject])))
-	    if ([[currentIdentity objectForKey: @"email"]
-		  caseInsensitiveCompare: orgEmail]
-		== NSOrderedSame)
-	      ASSIGN (organizerIdentity, currentIdentity);
-	}
+      NSDictionary *currentIdentity;
+      NSEnumerator *identities;
+      NSArray *allIdentities;
+      
+      allIdentities = [[context activeUser] allIdentities];
+      identities = [allIdentities objectEnumerator];
+      currentIdentity = nil;
+
+      while ((currentIdentity = [identities nextObject]))
+	if ([[currentIdentity objectForKey: @"email"]
+	      caseInsensitiveCompare: value]
+	    == NSOrderedSame)
+	  return NO;
+
+      return YES;
     }
 
-  return organizerIdentity;
+  return NO;
+
+    //return ([[organizer value: 0] length] && ![self canBeOrganizer]);
 }
 
-- (NSArray *) organizerList
-{
-  return [[context activeUser] allIdentities];
-}
+//- (void) setOrganizerIdentity: (NSDictionary *) newOrganizerIdentity
+//{
+//  ASSIGN (organizerIdentity, newOrganizerIdentity);
+//}
 
-- (NSString *) itemOrganizerText
-{
-  return [item keysWithFormat: @"%{fullName} <%{email}>"];
-}
+// - (NSDictionary *) organizerIdentity
+// {
+//   NSArray *allIdentities;
+//   NSEnumerator *identities;
+//   NSDictionary *currentIdentity;
+//   NSString *orgEmail;
+
+//   orgEmail = [organizer rfc822Email];
+//   if (!organizerIdentity)
+//     {
+//       if ([orgEmail length])
+// 	{
+// 	  allIdentities = [[context activeUser] allIdentities];
+// 	  identities = [allIdentities objectEnumerator];
+// 	  while (!organizerIdentity
+// 		 && ((currentIdentity = [identities nextObject])))
+// 	    if ([[currentIdentity objectForKey: @"email"]
+// 		  caseInsensitiveCompare: orgEmail]
+// 		== NSOrderedSame)
+// 	      ASSIGN (organizerIdentity, currentIdentity);
+// 	}
+//     }
+
+//   return organizerIdentity;
+// }
+
+//- (NSArray *) organizerList
+//{
+//  return [[context activeUser] allIdentities];
+//}
+
+//- (NSString *) itemOrganizerText
+//{
+//  return [item keysWithFormat: @"%{fullName} <%{email}>"];
+//}
 
 - (void) setAttendeesNames: (NSString *) newAttendeesNames
 {
@@ -833,7 +859,7 @@ iRANGE(2);
 
 - (void) setComponentCalendar: (SOGoAppointmentFolder *) _componentCalendar
 {
-  ASSIGN (componentCalendar, _componentCalendar);
+  ASSIGN(componentCalendar, _componentCalendar);
 }
 
 /* priorities */
@@ -1286,13 +1312,38 @@ RANGE(2);
   NSString *owner, *login;
   BOOL isOwner, hasOrganizer, hasAttendees;
 
-  owner = [[self clientObject] ownerInContext: context];
+  //owner = [[self clientObject] ownerInContext: context];
+  owner = [componentCalendar ownerInContext: context];
   login = [[context activeUser] login];
   isOwner = [owner isEqualToString: login];
   hasAttendees = ([[component attendees] count] > 0);
   organizerEmail = [[component organizer] email];
   hasOrganizer = ([organizerEmail length] > 0);
 
+#if 1
+  ASSIGN (organizer, [iCalPerson elementWithTag: @"organizer"]);
+  [component setOrganizer: organizer];
+  
+  if (hasAttendees)
+    {
+      SOGoUser *user;
+      id identity;
+
+      user = [SOGoUser userWithLogin: owner roles: nil];
+      identity = [user defaultIdentity];
+      [organizer setCn: [identity objectForKey: @"fullName"]]; 
+      [organizer setEmail: [identity  objectForKey: @"email"]];
+
+      if (!isOwner)
+	{
+	  NSString *currentEmail;
+	  
+	  currentEmail = [[[context activeUser] allEmails] objectAtIndex: 0];
+	  [organizer addAttribute: @"SENT-BY"
+		     value: [NSString stringWithFormat: @"\"MAILTO:%@\"", currentEmail]];
+	}
+    }
+#else 
   if (hasOrganizer)
     {
       if (isOwner && !hasAttendees)
@@ -1311,6 +1362,7 @@ RANGE(2);
 	  [component setOrganizer: organizer];
 	}
     }
+#endif
 }
 
 - (void) _handleCustomRRule: (iCalRecurrenceRule *) theRule
