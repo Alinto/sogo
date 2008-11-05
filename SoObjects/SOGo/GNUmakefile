@@ -57,7 +57,8 @@ SOGo_HEADER_FILES = \
 	NSDictionary+BSJSONAdditions.h	\
 	NSScanner+BSJSONAdditions.h	\
 	\
-	WORequest+SOGo.h
+	WORequest+SOGo.h		\
+	WOContext+SOGo.h
 
 #	SOGoCustomGroupFolder.m		\
 # 	SOGoGroupsFolder.m		\
@@ -101,7 +102,8 @@ SOGo_OBJC_FILES = \
 	NSDictionary+BSJSONAdditions.m	\
 	NSScanner+BSJSONAdditions.m	\
 	\
-	WORequest+SOGo.m
+	WORequest+SOGo.m		\
+	WOContext+SOGo.m
 
 SOGo_RESOURCE_FILES = \
 	DAVReportMap.plist

@@ -38,6 +38,8 @@
 
 #import "SOGoRootPage.h"
 
+static NSArray *supportedLanguages = nil;
+
 @interface SOGoRootPage (crashAdditions)
 
 - (void) segfault;
@@ -45,6 +47,12 @@
 @end
 
 @implementation SOGoRootPage
+
++ (void) initialize
+{
+  if (!supportedLanguages)
+    supportedLanguages = [NSArray arrayWithObjects: @"English", @"French", @"German", @"Italian", @"Spanish", nil];
+}
 
 /* accessors */
 
@@ -60,14 +68,16 @@
   WORequest *request;
   WOCookie *authCookie;
   SOGoWebAuthenticator *auth;
+  SOGoUser *user;
   NSString *cookieValue, *cookieString;
-  NSString *userName, *password;
+  NSString *userName, *password, *language;
 
   auth = [[WOApplication application]
 	   authenticatorInContext: context];
   request = [context request];
   userName = [request formValueForKey: @"userName"];
   password = [request formValueForKey: @"password"];
+  language = [request formValueForKey: @"language"];
   if ([auth checkLogin: userName password: password])
     {
       [self logWithFormat: @"successful login for user '%@'", userName];
@@ -80,6 +90,13 @@
 			     value: cookieValue];
       [authCookie setPath: @"/"];
       [response addCookie: authCookie];
+
+      if (language)
+	{
+	  user = [SOGoUser userWithLogin: userName roles: nil];
+	  [[user userDefaults] setObject: language forKey: @"Language"];
+	  [[user userDefaults] synchronize];
+	}
     }
   else
     {
@@ -150,5 +167,35 @@
 {
   return ([[self loginSuffix] length]);
 }
+
+- (void) setItem: (id) _item
+{
+  ASSIGN (item, _item);
+}
+
+- (id) item
+{
+  return item;
+}
+
+- (NSArray *) languages
+{
+  return supportedLanguages;
+}
+
+- (NSString *) language
+{
+  return [SOGoUser language];
+}
+
+- (NSString *) languageText
+{
+  NSString *text;
+
+  text = [self labelForKey: item];
+
+  return text;
+}
+
 
 @end /* SOGoRootPage */

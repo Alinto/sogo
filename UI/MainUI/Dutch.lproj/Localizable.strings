@@ -6,3 +6,19 @@
 "Password:" = "Wachtwoord:";
 
 "Connect" = "Inloggen";
+
+"Wrong username or password." = "Wrong username or password.";
+"cookiesNotEnabled" = "You cannot login because your browser's cookies are disabled. Please enable cookies in your browser's settings and try again.";
+
+"browserNotCompatible" = "We've detected that your browser version is currently not supported on this site. Our recommendation is to use Firefox. Click on the link bellow to download the most current version of this browser.";
+"alternativeBrowsers" = "Alternatively, you can also use the following compatible browsers";
+"alternativeBrowserSafari" = "Alternatively, you can also use Safari.";
+"Download" = "Download";
+
+"Language:" = "Language:";
+"choose" = "Choose ...";
+"English" = "English";
+"French" = "French";
+"German" = "German";
+"Italian" = "Italian";
+"Spanish" = "Spanish";

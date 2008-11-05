@@ -14,3 +14,11 @@
 "alternativeBrowsers" = "Alternatively, you can also use the following compatible browsers";
 "alternativeBrowserSafari" = "Alternatively, you can also use Safari.";
 "Download" = "Download";
+
+"Language:" = "Language:";
+"choose" = "Choose ...";
+"English" = "English";
+"French" = "French";
+"German" = "German";
+"Italian" = "Italian";
+"Spanish" = "Spanish";

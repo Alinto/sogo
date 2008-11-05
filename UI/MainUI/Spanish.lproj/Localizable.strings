@@ -16,3 +16,11 @@
 "alternativeBrowsers" = "Alternativamente, también puede usar uno se los siguientes navegadores compatibles: ";
 "alternativeBrowserSafari" = "Alternativamente, puede usar Safari.";
 "Download" = "Descarga";
+
+"Language:" = "Language:";
+"choose" = "Choose ...";
+"English" = "English";
+"French" = "French";
+"German" = "German";
+"Italian" = "Italian";
+"Spanish" = "Spanish";

@@ -1,8 +1,8 @@
-/* SOGoRootPage.h - this file is part of SOGo
+/* WOContext+SOGo.h - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse inc.
+ * Copyright (C) 2008 Inverse inc.
  *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Author: Francis Lachapelle <flachapelle@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,16 +20,15 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef SOGOROOTPAGE_H
-#define SOGOROOTPAGE_H
+#ifndef WOCONTEXT_SOGo_H
+#define WOCONTEXT_SOGo_H
 
-#import <UI/SOGoUI/UIxComponent.h>
+#import <NGObjWeb/WOContext.h>
 
-@interface SOGoRootPage : UIxComponent
-{
-  id item;
-}
+@interface WOContext (SOGoSOPEUtilities)
+
+- (NSArray *)resourceLookupLanguages;
 
 @end
 
-#endif /* SOGOROOTPAGE_H */
+#endif /* WOcontext_SOGo_H */

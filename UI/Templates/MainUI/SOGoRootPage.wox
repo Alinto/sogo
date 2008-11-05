@@ -23,6 +23,15 @@
       <label><var:string label:value="Password:"/><br/>
 	<input class="textField" id="password"
 	  name="password" type="password" var:value="password" /><br/></label>
+      <label><var:string label:value="Language:"/><br/>
+      <var:popup const:id="language" const:name="language"
+		 list="languages"
+		 item="item"
+		 var:selection="item"
+		 var:value="item"
+		 string="languageText"
+		 label:noSelectionString="choose"
+		 /><br/></label>
       <div id="loginButton">
 	<input class="button" id="submit" name="submit" type="submit" label:value="Connect" />
       </div>
