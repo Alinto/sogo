@@ -144,6 +144,12 @@
     [updatedProperties addObject:@"sequence"];
   if(!IS_EQUAL([_from organizer], [_to organizer], isEqual:))
     [updatedProperties addObject:@"organizer"];
+  if(!IS_EQUAL([_from recurrenceRules], [_to recurrenceRules], isEqual:))
+    [updatedProperties addObject:@"rrule"];
+  if(!IS_EQUAL([_from exceptionRules], [_to exceptionRules], isEqual:))
+    [updatedProperties addObject:@"exrule"];
+  if(!IS_EQUAL([_from exceptionDates], [_to exceptionDates], isEqual:))
+    [updatedProperties addObject:@"exdate"];
 }
 
 - (BOOL)hasChanges {
