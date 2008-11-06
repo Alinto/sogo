@@ -7,18 +7,17 @@
 
 "Connect" = "Verbinden";
 
-"Wrong username or password." = "Wrong username or password.";
-"cookiesNotEnabled" = "You cannot login because your browser's cookies are disabled. Please enable cookies in your browser's settings and try again.";
+"Wrong username or password." = "Falscher Benutzername oder falsches Passwort";
+"cookiesNotEnabled" ="Verbindung zu SOGo is unmöglich, da Cookies in Ihrem Browser desaktiviert sind. Bitte aktivieren sie die Cookies in Ihrem Browser.";
+"browserNotCompatible"="Wir haben festgestellt, dass Ihre Browserversion im Moment nicht von SOGo unterstützt wird. Klicken Sie auf den Link, um die letzte Version von Firefox zu installieren.";
+"alternativeBrowsers"="Sie können auch die folgenden Browser benutzen";
+"alternativeBrowserSafari"="Sie können auch Sarari benutzen.";
+"Download" = "Herunterladen";
 
-"browserNotCompatible" = "We've detected that your browser version is currently not supported on this site. Our recommendation is to use Firefox. Click on the link bellow to download the most current version of this browser.";
-"alternativeBrowsers" = "Alternatively, you can also use the following compatible browsers";
-"alternativeBrowserSafari" = "Alternatively, you can also use Safari.";
-"Download" = "Download";
-
-"Language:" = "Language:";
-"choose" = "Choose ...";
-"English" = "English";
-"French" = "French";
-"German" = "German";
-"Italian" = "Italian";
-"Spanish" = "Spanish";
+"Language:" = "Sprache:";
+"choose" = "Aufwählen";
+"English" = "Englisch";
+"French" = "Französisch";
+"German" = "Deutsch";
+"Italian" = "Italienisch";
+"Spanish" = "Spanisch";
