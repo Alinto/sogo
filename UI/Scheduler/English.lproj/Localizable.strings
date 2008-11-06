@@ -388,6 +388,12 @@
 "zoom_50" = "50%";
 "zoom_25" = "25%";
 
+/* transparency */
+
+"Show Time as" = "Show Time as";
+"opaque" = "opaque";
+"transparent" = "transparent";
+
 /* validation errors */
 
 validate_notitle           = "No title is set, continue?";

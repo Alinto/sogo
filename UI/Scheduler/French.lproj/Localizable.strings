@@ -386,6 +386,12 @@
 "zoom_50" = "50%";
 "zoom_25" = "25%";
 
+/* transparency */
+
+"Show Time as" = "Disponibilité";
+"opaque" = "occupé";
+"transparent" = "disponible";
+
 /* validation errors */
 
 validate_notitle           = "Le titre n'est pas rempli. Continuer quand-même ?";

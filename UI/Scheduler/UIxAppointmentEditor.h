@@ -33,6 +33,7 @@
   iCalEvent *event;
   SOGoAppointmentFolder *componentCalendar;
   BOOL isAllDay;
+  NSString *transparency;
   NSCalendarDate *aptStartDate;
   NSCalendarDate *aptEndDate;
   NSString *item;
@@ -43,13 +44,16 @@
 - (iCalEvent *) event;
 
 /* icalendar values */
-- (BOOL) isAllDay;
 - (void) setIsAllDay: (BOOL) newIsAllDay;
+- (BOOL) isAllDay;
 
-- (void) setAptStartDate: (NSCalendarDate *) _date;
+- (void) setTransparency: (NSString *) newTransparency;
+- (NSString *) transparency;
+
+- (void) setAptStartDate: (NSCalendarDate *) newAptEndDate;
 - (NSCalendarDate *) aptStartDate;
 
-- (void) setAptEndDate: (NSCalendarDate *) _date;
+- (void) setAptEndDate: (NSCalendarDate *) newAptEndDate;
 - (NSCalendarDate *) aptEndDate;
 
 @end

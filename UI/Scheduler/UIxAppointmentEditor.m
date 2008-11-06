@@ -109,6 +109,38 @@
   isAllDay = newIsAllDay;
 }
 
+- (NSArray *) transparencyList
+{
+  static NSArray *transparencies = nil;
+
+  if (!transparencies)
+    {
+      transparencies = [NSArray arrayWithObjects: @"OPAQUE", @"TRANSPARENT", nil];
+      [transparencies retain];
+    }
+
+  return transparencies;
+}
+
+- (NSString *) transparency
+{
+  return transparency;
+}
+
+- (NSString *) itemTransparencyText
+{
+  NSString *text;
+
+  text = [self labelForKey: [item lowercaseString]];
+
+  return text;
+}
+
+- (void) setTransparency: (NSString *) newTransparency
+{
+  ASSIGN (transparency, newTransparency);
+}
+
 - (void) setAptStartDate: (NSCalendarDate *) newAptStartDate
 {
   ASSIGN (aptStartDate, newAptStartDate);
@@ -188,7 +220,7 @@
 - (id <WOActionResults>) defaultAction
 {
   NSCalendarDate *startDate, *endDate;
-  NSString *duration;
+  NSString *duration, *transp;
   unsigned int minutes;
   SOGoObject <SOGoComponentOccurence> *co;
 
@@ -219,6 +251,9 @@
 
   ASSIGN (aptStartDate, startDate);
   ASSIGN (aptEndDate, endDate);
+
+  transp = [[event transparency] uppercaseString];
+  ASSIGN (transparency, transp);
 
   return self;
 }
@@ -356,8 +391,8 @@
       [event setStartDate: aptStartDate];
       [event setEndDate: aptEndDate];
     }
-  if ([clientObject isNew])
-    [event setTransparency: @"OPAQUE"];
+
+  [event setTransparency: transparency];
 }
 
 // TODO: add tentatively
