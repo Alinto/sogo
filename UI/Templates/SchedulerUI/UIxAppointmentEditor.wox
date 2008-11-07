@@ -35,16 +35,6 @@
           string="itemTransparencyText"
 	  var:selection="transparency"
           /></span></label>
-  <label><var:string label:value="Repeat:" />
-       <span class="content"><var:popup list="repeatList" item="item"
-          label:noSelectionString="repeat_NEVER"
-	    var:disabled="isChildOccurence"
-          const:disabledValue="-"
-          const:name="repeatList"
-	  const:id="repeatList"
-          string="itemRepeatText" var:selection="repeat"
-          /> <a href="#" id="repeatHref" style="display: none;"
-             ><var:string label:value="Edit"/></a></span></label>
   <span class="checkBoxList"><var:string label:value="Start:" />
     <span class="content"><var:component className="UIxTimeDateControl"
         const:controlID="startTime"
