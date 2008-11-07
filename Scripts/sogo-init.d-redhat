@@ -8,9 +8,10 @@
 
 # SOGo init script for RedHat
 #
-# Copyright (C) 2007 Inverse inc.
+# Copyright (C) 2007-2008 Inverse inc.
 #
-# Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+# Authors: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+#          Francis Lachapelle <flachapelle@inverse.ca>
 #
 # This file is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -74,31 +75,38 @@ fi
 
 #set -e
 
+start() {
+    echo $"Starting $DESC: "
+    for ((a=1; a <= PREFORK ; a++))
+    do
+        daemon --user=sogo $DAEMON $a
+        echo "$DAEMON $a"
+    done
+}
+
+stop() {
+    echo $"Stopping $DESC: "
+    for ((a=1; a <= PREFORK ; a++))
+    do
+        pid="`cat ${PIDFILE}${a}`"
+        ppid="`ps --ppid ${pid} -o pid=`"
+        kill -9 $pid
+        kill -9 $ppid
+        rm -f ${PIDFILE}${a}
+        echo "$DAEMON $a stopped"
+    done
+}
+
 case "$1" in
   start)
-	echo $"Starting $DESC: "
-	for ((a=1; a <= PREFORK ; a++))
-	do
-	  daemon --user=sogo $DAEMON $a
-	  echo "$DAEMON $a"
-	done
+	start
 	;;
   stop)
-	echo -n $"Stopping $DESC: "
-	killproc $REAL_DAEMON && rm -f ${PIDFILE}*
-	echo
+	stop
 	;;
   restart|force-reload)
-	echo $"Restarting $DESC: "
-	for ((a=1; a <= PREFORK ; a++))
-	do
-	  pid="`cat ${PIDFILE}${a}`"
-	  kill $pid
-	  rm -f ${PIDFILE}${a}
-	  sleep 1
-	  daemon --user=sogo $DAEMON $a
-	  echo "$DAEMON $a restarted"
-	done
+	stop
+	start
 	;;
   status)
   	status $REAL_DAEMON
