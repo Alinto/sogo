@@ -83,13 +83,13 @@
 
 "From"          = "Expéditeur";
 "Subject"       = "Sujet";
-"Add address"   = "Ajouter Adresse";
-
-"Attachments:" = "Pièces jointes :";
-
 "To"            = "Destinataire";
 "Cc"            = "Copie à";
 "Bcc"           = "Copie cachée à";
+"Reply-To"	= "Répondre à";
+"Add address"   = "Ajouter Adresse";
+
+"Attachments:" = "Pièces jointes :";
 
 "to"            = "Pour";
 "cc"            = "Copie à";

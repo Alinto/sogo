@@ -66,13 +66,13 @@
 
 "From"          = "Van";
 "Subject"       = "Onderwerp";
-"Add address"   = "Adres toevoegen";
-
-"Attachments:" = "Bijlage:";
-
 "To"            = "Aan";
 "Cc"            = "Cc";
 "Bcc"           = "Bcc";
+"Reply-To"	= "Reply-To";
+"Add address"   = "Adres toevoegen";
+
+"Attachments:" = "Bijlage:";
 
 "to"            = "aan";
 "cc"            = "cc";

@@ -84,9 +84,11 @@
 
 "From"          = "Da";
 "Subject"       = "Oggetto";
-"To"			= "A";
+"To"		= "A";
+"Cc"            = "Cc";
+"Bcc"           = "Bcc";
+"Reply-To"	= "Rispondi a";
 "Add address"   = "Aggiungi indirizzi";
-"Reply-To"		= "Rispondi a";
 
 "Attachments:" = "Allegati:";
 "Open" = "Apri";

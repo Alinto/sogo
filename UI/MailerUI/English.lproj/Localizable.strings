@@ -84,6 +84,10 @@
 
 "From"          = "From";
 "Subject"       = "Subject";
+"To"            = "To";
+"Cc"            = "Cc";
+"Bcc"           = "Bcc";
+"Reply-To"	= "Reply-To";
 "Add address"   = "Add address";
 
 "Attachments:" = "Attachments:";

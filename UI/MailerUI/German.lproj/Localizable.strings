@@ -67,13 +67,13 @@
 
 "From"          = "Von";
 "Subject"       = "Betreff";
-"Add address"   = "Adresse hinzufügen";
-
-"Attachments:" = "Anhänge:";
-
 "To"            = "An";
 "Cc"            = "CC";
 "Bcc"           = "BCC";
+"Reply-To"	= "Reply-To";
+"Add address"   = "Adresse hinzufügen";
+
+"Attachments:" = "Anhänge:";
 
 "to"            = "An";
 "cc"            = "CC";
