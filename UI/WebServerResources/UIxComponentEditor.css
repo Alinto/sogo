@@ -3,3 +3,6 @@ SELECT#calendarList
 
 #attendeesLabel
 { display: none; }
+
+SPAN.timeDateControl A.button
+{ border: 0; }

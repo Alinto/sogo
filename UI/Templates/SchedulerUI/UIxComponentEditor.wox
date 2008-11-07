@@ -44,7 +44,7 @@
         <span class="content"><var:popup list="categoryList" item="item"
             label:noSelectionString="category_NONE"
             string="itemCategoryText" selection="category"
-            /><var:string label:value="Calendar:" />
+            /> <var:string label:value="Calendar:" />
           <var:popup const:id="calendarList"
 	    var:disabled="isChildOccurence"
 	    list="calendarList" item="item"
