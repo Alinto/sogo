@@ -515,7 +515,7 @@ static Class sogoAppointmentFolderKlass = Nil;
 
   /* prepare mandatory fields */
 
-  sql = [[NSString stringWithFormat: @"%@%@%@%@",
+  sql = [[NSString stringWithFormat: @"%@ %@ %@ %@",
 		   dateSqlString, titleSqlString, componentSqlString,
 		   filterSqlString] substringFromIndex: 4];
 
@@ -887,6 +887,7 @@ static Class sogoAppointmentFolderKlass = Nil;
   NSArray *records;
   NSString *sql, *dateSqlString, *titleSqlString, *componentSqlString,
     *privacySqlString, *currentLogin, *filterSqlString;
+  NSCalendarDate *endDate;
   NGCalendarDateRange *r;
   BOOL rememberRecords;
 
@@ -902,11 +903,15 @@ static Class sogoAppointmentFolderKlass = Nil;
       return nil;
     }
 
-  if (_startDate && _endDate)
+  if (_startDate)
     {
+      if (_endDate)
+	endDate = _endDate;
+      else
+	endDate = [NSCalendarDate distantFuture];
       r = [NGCalendarDateRange calendarDateRangeWithStartDate: _startDate
-                               endDate: _endDate];
-      dateSqlString = [self _sqlStringRangeFrom: _startDate to: _endDate];
+                               endDate: endDate];
+      dateSqlString = [self _sqlStringRangeFrom: _startDate to: endDate];
     }
   else
     {
@@ -937,9 +942,9 @@ static Class sogoAppointmentFolderKlass = Nil;
   [fields addObjectUniquely: @"c_isallday"];
 
   if (logger)
-    [self debugWithFormat:@"should fetch (%@=>%@) ...", _startDate, _endDate];
+    [self debugWithFormat:@"should fetch (%@=>%@) ...", _startDate, endDate];
 
-  sql = [NSString stringWithFormat: @"(c_iscycle = 0)%@%@%@%@%@",
+  sql = [NSString stringWithFormat: @"(c_iscycle = 0) %@ %@ %@ %@ %@",
                   dateSqlString, titleSqlString, componentSqlString,
                   privacySqlString, filterSqlString];
 
@@ -957,25 +962,26 @@ static Class sogoAppointmentFolderKlass = Nil;
       ma = [NSMutableArray arrayWithArray: records];
     }
 
-  /* fetch recurrent apts now. we do NOT consider the date range when doing that
-     as the c_startdate/c_enddate of a recurring event is always set to the first
-     recurrence - others are generated on the fly */
-  sql = [NSString stringWithFormat: @"(c_iscycle = 1)%@%@%@%@", titleSqlString,
-		  componentSqlString, privacySqlString, filterSqlString];
-
-  qualifier = [EOQualifier qualifierWithQualifierFormat: sql];
-
-  records = [folder fetchFields: fields matchingQualifier: qualifier];
-  if (records)
+  /* fetch recurrent apts now. we do NOT consider events with no cycle end. */
+  if (_endDate)
     {
-      if (r)
-        records = [self fixupCyclicRecords: records fetchRange: r];
-      if (ma)
-	[ma addObjectsFromArray: records];
-      else
-        ma = [NSMutableArray arrayWithArray: records];
+      sql = [NSString stringWithFormat: @"(c_iscycle = 1) %@ %@ %@ %@", titleSqlString,
+		      componentSqlString, privacySqlString, filterSqlString];
+      
+      qualifier = [EOQualifier qualifierWithQualifierFormat: sql];
+      
+      records = [folder fetchFields: fields matchingQualifier: qualifier];
+      if (records)
+	{
+	  if (r)
+	    records = [self fixupCyclicRecords: records fetchRange: r];
+	  if (ma)
+	    [ma addObjectsFromArray: records];
+	  else
+	    ma = [NSMutableArray arrayWithArray: records];
+	}
     }
-  else if (!ma)
+  if (!ma)
     {
       [self errorWithFormat: @"(%s): fetch failed!", __PRETTY_FUNCTION__];
       return nil;

@@ -159,7 +159,7 @@ static NSArray *tasksFields = nil;
       newDate = [NSCalendarDate calendarDate];
       [newDate setTimeZone: userTZ];
       startDate = [newDate beginOfDay];
-      endDate = [NSCalendarDate distantFuture];
+      endDate = nil;
     }
   else if ([popupValue isEqualToString: @"view_selectedday"])
     {
@@ -313,6 +313,7 @@ static NSArray *tasksFields = nil;
   NSString *formattedDate;
 
   date = [NSCalendarDate dateWithTimeIntervalSince1970: seconds];
+  // Adjust for daylight saving time? (wrt to startDate)
   [date setTimeZone: userTimeZone];
   if (forAllDay)
     formattedDate = [dateFormatter formattedDate: date];
