@@ -63,8 +63,10 @@
 			   forObject: (iCalRepeatableEntityObject *) object
                          toAttendees: (NSArray *) attendees;
 - (void) sendIMIPReplyForEvent: (iCalRepeatableEntityObject *) event
+			  from: (SOGoUser *) from
 			    to: (iCalPerson *) recipient;
-- (void) sendResponseToOrganizer: (iCalRepeatableEntityObject *) newComponent;
+- (void) sendResponseToOrganizer: (iCalRepeatableEntityObject *) newComponent
+			   from: (SOGoUser *) owner;
 
 // - (BOOL) isOrganizerOrOwner: (SOGoUser *) user;
 

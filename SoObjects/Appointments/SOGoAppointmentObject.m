@@ -362,6 +362,17 @@
   [super saveComponent: newEvent];
 }
 
+//
+// This method is used to update the status of an attendee.
+//
+// - theOwnerUser is owner of the calendar where the attendee
+//   participation state has changed.
+// - uid is the actual UID of the user for whom we must
+//   update the calendar event (with the participation change)
+//
+// This method is called multiple times, in order to update the
+// status of the attendee in calendars for the particular event UID.
+// 
 - (NSException *) _updateAttendee: (iCalPerson *) attendee
                         ownerUser: (SOGoUser *) theOwnerUser
 		      forEventUID: (NSString *) eventUID
@@ -409,14 +420,21 @@
   return error;
 }
 
+
+//
+// This method is invoked only from the SOGo Web interface.
+//
+// - theOwnerUser is owner of the calendar where the attendee
+//   participation state has changed.
+//
 - (NSException *) _handleAttendee: (iCalPerson *) attendee
                         ownerUser: (SOGoUser *) theOwnerUser
 		     statusChange: (NSString *) newStatus
 			  inEvent: (iCalEvent *) event
 {
   NSString *newContent, *currentStatus, *currentUser, *organizerUID;
-  NSException *ex;
   SOGoUser *ownerUser;
+  NSException *ex;
 
   ex = nil;
 
@@ -442,14 +460,17 @@
       newContent = [[event parent] versitString];
       ex = [self saveContentString: newContent];
 
-
+      // If the current user isn't the organizer of the event
+      // that has just been updated, we update the event and
+      // send a notification
       ownerUser = [SOGoUser userWithLogin: owner roles: nil];
       if (!(ex || [event userIsOrganizer: ownerUser]))
 	{
 	  if ([[attendee rsvp] isEqualToString: @"true"]
 	      && [event isStillRelevant])
-	    [self sendResponseToOrganizer: event];
-	
+	    [self sendResponseToOrganizer: event
+		  from: ownerUser];
+	  
 	  organizerUID = [[event organizer] uid];
 	  if (organizerUID)
 	    ex = [self _updateAttendee: attendee
@@ -514,6 +535,7 @@
 }
 
 - (NSArray *) postCalDAVEventRequestTo: (NSArray *) recipients
+				  from: (NSString *) originator
 {
   NSMutableArray *elements;
   NSEnumerator *recipientsEnum;
@@ -546,6 +568,7 @@
 }
 
 - (NSArray *) postCalDAVEventCancelTo: (NSArray *) recipients
+				 from: (NSString *) originator
 {
   NSMutableArray *elements;
   NSEnumerator *recipientsEnum;
@@ -577,7 +600,19 @@
   return elements;
 }
 
+
+//
+// This method is invoked by CalDAV clients such as
+// Mozilla Lightning. We assume the SENT-BY has
+// already been added, if required.
+//
+// It is used to updated the status of an attendee.
+// The originator is the actualy owner of the calendar
+// where the update took place. The status must then
+// be propagated to the organizer and the other attendees.
+//
 - (void) takeAttendeeStatus: (iCalPerson *) attendee
+		       from: (NSString *) originator
 {
   iCalPerson *localAttendee;
   iCalEvent *event;
@@ -595,17 +630,23 @@
      iCalPerson *att;
      NSString *uid;
      int i;
+     
+     ownerUser = [SOGoUser userWithLogin:[[LDAPUserManager sharedUserManager]
+					   getUIDForEmail: originator]
+			   roles: nil];
 
-     // We update for the organizer
-     ownerUser = [context activeUser];
-
-     [self _updateAttendee: attendee
-	   ownerUser: ownerUser
-	   forEventUID: [event uid]
-	   withSequence: [event sequence]
-	   forUID: [[SOGoUser userWithLogin: owner roles: nil] login]
-	   shouldAddSentBy: NO];
-
+     // We update the copy of the organizer, only
+     // if it's a local user.
+#warning add a check for only local users
+     uid = [[event organizer] uid];
+     if (uid)
+       [self _updateAttendee: attendee
+	     ownerUser: ownerUser
+	     forEventUID: [event uid]
+	     withSequence: [event sequence]
+	     forUID: uid
+	     shouldAddSentBy: NO];
+    
       attendees = [event attendees];
 
       for (i = 0; i < [attendees count]; i++)
@@ -619,6 +660,12 @@
 
 	  if (uid)
 	    {		
+	      // We skip the update that correspond to the originator
+	      // since the CalDAV client will already have updated
+	      // the actual event.
+	      if ([ownerUser hasEmail: [att rfc822Email]]) 
+		continue;
+
 	      [self _updateAttendee: attendee
 		    ownerUser: ownerUser
 		    forEventUID: [event uid]
@@ -635,6 +682,7 @@
 }
 
 - (NSArray *) postCalDAVEventReplyTo: (NSArray *) recipients
+				from: (NSString *) originator
 {
   NSMutableArray *elements;
   NSEnumerator *recipientsEnum;
@@ -643,10 +691,15 @@
   iCalPerson *attendee, *person;
   SOGoAppointmentObject *recipientEvent;
   SOGoUser *ownerUser;
+  NSString *email;
 
   elements = [NSMutableArray array];
   event = [self component: NO secure: NO];
-  ownerUser = [SOGoUser userWithLogin: owner roles: nil];
+  //ownerUser = [SOGoUser userWithLogin: owner roles: nil]; 
+
+  ownerUser = [SOGoUser userWithLogin: [[LDAPUserManager sharedUserManager]
+					 getUIDForEmail: originator]
+			roles: nil];
   attendee = [event findParticipant: ownerUser];
   eventUID = [event uid];
 
@@ -663,9 +716,12 @@
 	    if ([recipientEvent isNew])
 	      [recipientEvent saveComponent: event];
 	    else
-	      [recipientEvent takeAttendeeStatus: attendee];
+	      [recipientEvent takeAttendeeStatus: attendee
+			      from: originator];
 	  }
-	[self sendIMIPReplyForEvent: event to: person];
+	[self sendIMIPReplyForEvent: event
+	      from: ownerUser
+	      to: person];
 	[person release];
 	[elements
 	  addObject: [self _caldavSuccessCodeWithRecipient: recipient]];
@@ -674,6 +730,9 @@
   return elements;
 }
 
+//
+// This method is invoked only from the SOGo Web interface.
+//
 - (NSException *) changeParticipationStatus: (NSString *) _status
 {
   iCalEvent *event;
@@ -686,7 +745,13 @@
   event = [self component: NO secure: NO];
   if (event)
     {
+      // owerUser will actually be the owner of the calendar
+      // where the participation change on the event has
+      // actually occured. The particpation change will of
+      // course be on the attendee that is the owner of the
+      // calendar where the participation change has occured.
       ownerUser = [SOGoUser userWithLogin: owner roles: nil];
+     
       attendee = [event findParticipant: ownerUser];
       if (attendee)
 	ex = [self _handleAttendee: attendee
