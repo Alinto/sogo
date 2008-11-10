@@ -16,3 +16,12 @@ summary: WOString {
   value = summary;
   escapeHTML = NO;
 }
+
+HasSentBy: WOConditional {
+  condition = hasSentBy;
+}
+
+sentBy: WOString {
+  value = sentBy;
+  escapeHTML = NO;
+}

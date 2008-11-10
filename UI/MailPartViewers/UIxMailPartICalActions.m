@@ -1,6 +1,6 @@
 /* UIxMailPartICalActions.m - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse inc.
+ * Copyright (C) 2007-2008 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -36,6 +36,7 @@
 
 #import <NGImap4/NGImap4EnvelopeAddress.h>
 
+#import <SoObjects/Appointments/iCalEvent+SOGo.h>
 #import <SoObjects/Appointments/iCalPerson+SOGo.h>
 #import <SoObjects/Appointments/SOGoAppointmentObject.h>
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>
@@ -168,16 +169,18 @@
 
 #warning this is code copied from SOGoAppointmentObject...
 - (void) _updateAttendee: (iCalPerson *) attendee
-	    withSequence: (NSNumber *) sequence
-	       andCalUID: (NSString *) calUID
-		  forUID: (NSString *) uid
+               ownerUser: (SOGoUser *) theOwnerUser
+	       forEventUID: (NSString *) eventUID
+	       withSequence: (NSNumber *) sequence
+	       forUID: (NSString *) uid
+	       shouldAddSentBy: (BOOL) b
 {
   SOGoAppointmentObject *eventObject;
   iCalEvent *event;
   iCalPerson *otherAttendee;
   NSString *iCalString;
 
-  eventObject = [self _eventObjectWithUID: calUID
+  eventObject = [self _eventObjectWithUID: eventUID
 		      forUser: [SOGoUser userWithLogin: uid roles: nil]];
   if (![eventObject isNew])
     {
@@ -185,9 +188,22 @@
       if ([[event sequence] compare: sequence]
 	  == NSOrderedSame)
 	{
-	  otherAttendee
-	    = [event findParticipantWithEmail: [attendee rfc822Email]];
+	  SOGoUser *currentUser;
+	  
+	  otherAttendee = [event findParticipant: theOwnerUser];
 	  [otherAttendee setPartStat: [attendee partStat]];
+	  
+	  // If one has accepted / declined an invitation on behalf of
+	  // the attendee, we add the user to the SENT-BY attribute.
+	  currentUser = [context activeUser];
+	  if (b && ![[currentUser login] isEqualToString: [theOwnerUser login]])
+	    {
+	      NSString *currentEmail;
+	      currentEmail = [[currentUser allEmails] objectAtIndex: 0];
+	      [otherAttendee addAttribute: @"SENT-BY"
+			     value: [NSString stringWithFormat: @"\"MAILTO:%@\"", currentEmail]];
+	    }
+
 	  iCalString = [[event parent] versitString];
 	  [eventObject saveContentString: iCalString];
 	}
@@ -219,12 +235,50 @@
       else
 	rsvp = nil;
       [eventObject saveContentString: [calendar versitString]];
-      if ([rsvp isEqualToString: @"true"])
-	[eventObject sendResponseToOrganizer: chosenEvent];
+      if ([rsvp isEqualToString: @"true"] &&
+	  [chosenEvent isStillRelevant])
+	[eventObject sendResponseToOrganizer: chosenEvent
+		     from: [context activeUser]];
       organizerUID = [[chosenEvent organizer] uid];
       if (organizerUID)
-	[self _updateAttendee: user withSequence: [chosenEvent sequence]
-	      andCalUID: [chosenEvent uid] forUID: organizerUID];
+	[self _updateAttendee: user
+	      ownerUser: [context activeUser]
+	      forEventUID: [chosenEvent uid]
+	      withSequence: [chosenEvent sequence]
+	      forUID: organizerUID
+	      shouldAddSentBy: YES];
+
+      // We update the calendar of all participants that are
+      // local to the system. This is useful in case user A accepts
+      // invitation from organizer B and users C, D, E who are also
+      // attendees need to verify if A has accepted.
+      NSArray *attendees;
+      iCalPerson *att;
+      NSString *uid;
+      int i;
+
+      attendees = [chosenEvent attendees];
+
+      for (i = 0; i < [attendees count]; i++)
+	{
+	  att = [attendees objectAtIndex: i];
+	  
+	  if (att == user) continue;
+	  
+	  uid = [[LDAPUserManager sharedUserManager]
+		  getUIDForEmail: [att rfc822Email]];
+
+	  if (uid)
+	    {
+	      [self _updateAttendee: user
+		    ownerUser: [context activeUser]
+		    forEventUID: [chosenEvent uid]
+		    withSequence: [chosenEvent sequence]
+		    forUID: uid
+		    shouldAddSentBy: YES];
+	    }
+	}
+
       response = [self responseWith204];
     }
   else

@@ -48,11 +48,11 @@
 
 - (NSException *) changeParticipationStatus: (NSString *) _status;
 
-- (void) takeAttendeeStatus: (iCalPerson *) attendee;
+- (void) takeAttendeeStatus: (iCalPerson *) attendee  from: (NSString *) originator;
 
-- (NSArray *) postCalDAVEventRequestTo: (NSArray *) recipients;
-- (NSArray *) postCalDAVEventReplyTo: (NSArray *) recipients;
-- (NSArray *) postCalDAVEventCancelTo: (NSArray *) recipients;
+- (NSArray *) postCalDAVEventRequestTo: (NSArray *) recipients  from: (NSString *) originator;
+- (NSArray *) postCalDAVEventReplyTo: (NSArray *) recipients  from: (NSString *) originator;
+- (NSArray *) postCalDAVEventCancelTo: (NSArray *) recipients  from: (NSString *) originator;
 
 /* "iCal multifolder saves" */
 
