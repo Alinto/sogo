@@ -583,6 +583,7 @@ _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
 
 #warning fix this when sendEmailUsing blabla has been cleaned up
 - (void) sendIMIPReplyForEvent: (iCalRepeatableEntityObject *) event
+			  from: (SOGoUser *) from
 			    to: (iCalPerson *) recipient
 {
   NSString *pageName, *language, *mailDate, *email;
@@ -602,7 +603,8 @@ _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
       /* get WOApplication instance */
       app = [WOApplication application];
 
-      ownerUser = [SOGoUser userWithLogin: owner roles: nil];
+      //ownerUser = [SOGoUser userWithLogin: owner roles: nil];
+      ownerUser = from;
       language = [ownerUser language];
       /* create page name */
       pageName
@@ -672,6 +674,7 @@ _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
 }
 
 - (void) sendResponseToOrganizer: (iCalRepeatableEntityObject *) newComponent
+			    from: (SOGoUser *) from
 {
   iCalPerson *organizer, *attendee;
   iCalEvent *event;
@@ -684,7 +687,7 @@ _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
       organizer = [event organizer];
       attendee = [event findParticipant: ownerUser];
       [event setAttendees: [NSArray arrayWithObject: attendee]];
-      [self sendIMIPReplyForEvent: event to: organizer];
+      [self sendIMIPReplyForEvent: event from: from to: organizer];
     }
 }
 

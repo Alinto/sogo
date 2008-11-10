@@ -275,10 +275,13 @@ static NSString *uidColumnName = @"c_uid";
 	      [d addEntriesFromDictionary: values];
 	      [d setObject: uid  forKey: @"uid"];
 
+#warning reenable when the code to use the SOGoUserManager is finished	      
+#if 0
 	      [[NSDistributedNotificationCenter defaultCenter]
 		postNotificationName: ([fieldName isEqualToString: @"c_defaults"] ? @"SOGoUserDefaultsHaveChanged" : @"SOGoUserSettingsHaveChanged")
 		object: nil
 		userInfo: d];
+#endif
 	      [d release];
 	      
 	      if ([[channel adaptorContext] hasOpenTransaction])

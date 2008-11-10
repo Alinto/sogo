@@ -1888,18 +1888,18 @@ static Class sogoAppointmentFolderKlass = Nil;
   NSArray *elements;
   NSString *method, *filename;
   SOGoAppointmentObject *apt;
-
+  
   filename = [NSString stringWithFormat: @"%@.ics", [event uid]];
   apt = [SOGoAppointmentObject objectWithName: filename
 			       andContent: iCalString
 			       inContainer: self];
   method = [[event parent] method];
   if ([method isEqualToString: @"REQUEST"])
-    elements = [apt postCalDAVEventRequestTo: recipients];
+    elements = [apt postCalDAVEventRequestTo: recipients  from: originator];
   else if ([method isEqualToString: @"REPLY"])
-    elements = [apt postCalDAVEventReplyTo: recipients];
+    elements = [apt postCalDAVEventReplyTo: recipients  from: originator];
   else if ([method isEqualToString: @"CANCEL"])
-    elements = [apt postCalDAVEventCancelTo: recipients];
+    elements = [apt postCalDAVEventCancelTo: recipients  from: originator];
   else
     elements = nil;
 
@@ -1970,6 +1970,10 @@ static Class sogoAppointmentFolderKlass = Nil;
   if ([cType hasPrefix: @"text/calendar"])
     {
       originator = [request headerForKey: @"originator"];
+
+      if ([[originator lowercaseString] hasPrefix: @"mailto:"])
+	originator = [originator substringFromIndex: 7];  
+
       recipients = [[request headerForKey: @"recipient"]
 		     componentsSeparatedByString: @", "];
       obj = [self caldavScheduleRequest: [request contentAsString]
