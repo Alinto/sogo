@@ -541,7 +541,7 @@ _timeValue (NSString *key)
 
 + (NSDictionary *) userSettingsCache
 {
-  return userDefaults;
+  return userSettings;
 }
 
 - (NSUserDefaults *) userSettings

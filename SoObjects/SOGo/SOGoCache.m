@@ -208,10 +208,12 @@ static SOGoCache *sharedCache = nil;
   d = [[NSMutableDictionary alloc] init];
   [d addEntriesFromDictionary: [theNotification userInfo]];
   
-  user = [d objectForKey: @"uid"];  
+  user = [d objectForKey: @"uid"];
+  [user retain];
   [d removeObjectForKey: @"uid"];
 
   [SOGoUser setUserDefaultsFromDictionary: d  user: user];
+  [user release];
   [d release];
 }
 
@@ -223,10 +225,12 @@ static SOGoCache *sharedCache = nil;
   d = [[NSMutableDictionary alloc] init];
   [d addEntriesFromDictionary: [theNotification userInfo]];
   
-  user = [d objectForKey: @"uid"];  
+  user = [d objectForKey: @"uid"];
+  [user retain];
   [d removeObjectForKey: @"uid"];
 
   [SOGoUser setUserSettingsFromDictionary: d  user: user];
+  [user release];
   [d release];
 }
 
@@ -267,7 +271,7 @@ static SOGoCache *sharedCache = nil;
       
       if ([now earlierDate: [currentEntry objectForKey: @"cleanupDate"]] == now)
 	{
-	  [SOGoUser setUserDefaultsFromDictionary: nil  user: currentID];
+	  [SOGoUser setUserSettingsFromDictionary: nil  user: currentID];
 	  count++;
 	}
     }

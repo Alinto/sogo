@@ -1,3 +1,8 @@
+2008-11-11  Ludovic Marcotte  <lmarcotte@inverse.ca>
+	
+	* Fixed a couple of issues in the new pref caching
+	  subsystem.
+
 2008-10-29  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUser.m ([-userDefaults]): added support for
