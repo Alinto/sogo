@@ -35,11 +35,11 @@
 
 @interface SOGoCache : NSObject
 {
-  NSMutableDictionary *cache;
-  NSMutableDictionary *users;
-  NSTimer *_cleanupTimer;
+  @private
+    NSTimer *_cleanupTimer;
 }
 
++ (NSTimeInterval) cleanupInterval;
 + (SOGoCache *) sharedCache;
 + (void) killCache;
 

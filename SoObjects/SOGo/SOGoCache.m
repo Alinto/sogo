@@ -38,12 +38,21 @@
 #import "SOGoCache.h"
 
 // We define the default value for cleaning up cached
-// users' preferences. This value should be relatively high
-// to avoid useless database calls.
+// users' preferences. This value should be relatively
+// high to avoid useless database calls.
 static NSTimeInterval cleanupInterval = 1800;
+
+static NSMutableDictionary *cache = nil;
+static NSMutableDictionary *users = nil;
+
 static SOGoCache *sharedCache = nil;
 
 @implementation SOGoCache
+
++ (NSTimeInterval) cleanupInterval
+{
+  return cleanupInterval;
+}
 
 + (SOGoCache *) sharedCache
 {
@@ -55,8 +64,8 @@ static SOGoCache *sharedCache = nil;
 
 + (void) killCache
 {
-  [sharedCache release];
-  sharedCache = nil;
+  [cache removeAllObjects];
+  [users removeAllObjects];
 }
 
 - (id) init
@@ -102,6 +111,16 @@ static SOGoCache *sharedCache = nil;
 
 - (void) dealloc
 {
+  [[NSDistributedNotificationCenter defaultCenter]
+    removeObserver: self
+    name: @"SOGoUserDefaultsHaveChanged"
+    object: nil];
+  
+  [[NSDistributedNotificationCenter defaultCenter]
+    removeObserver: self
+    name: @"SOGoUserSettingsHaveChanged"
+    object: nil];
+
   [cache release];
   [users release];
   [super dealloc];
@@ -167,20 +186,15 @@ static SOGoCache *sharedCache = nil;
 }
 
 - (void) registerUser: (SOGoUser *) user
-{
-  NSDate *cleanupDate;
-    
-  cleanupDate = [[NSDate date] addTimeInterval: cleanupInterval];
- 
-  [users setObject: [NSMutableDictionary dictionaryWithObjectsAndKeys: user, @"user", cleanupDate, @"cleanupDate", nil]
+{ 
+  [users setObject: user
 	 forKey: [user login]];
 }
 
 - (id) userNamed: (NSString *) name
 {
-  return [[users objectForKey: name] objectForKey: @"user"];
+  return [users objectForKey: name];
 }
-
 
 - (void) _userDefaultsHaveChanged: (NSNotification *) theNotification
 {
@@ -214,29 +228,48 @@ static SOGoCache *sharedCache = nil;
 
 - (void) _cleanupSources
 {
+  NSDictionary *currentEntry;
   NSEnumerator *userIDs;
   NSString *currentID;
-  NSDictionary *currentUser;
   NSDate *now;
+  
   unsigned int count;
 
   now = [NSDate date];
+  
+  // We cleanup the user defaults
+  userIDs = [[[SOGoUser userDefaultsCache] allKeys] objectEnumerator];
   count = 0;
-  userIDs = [[users allKeys] objectEnumerator];
-
   while ((currentID = [userIDs nextObject]))
     {
-      currentUser = [users objectForKey: currentID];
-      if ([now earlierDate:
-		 [currentUser objectForKey: @"cleanupDate"]] == now)
+      currentEntry = [[SOGoUser userDefaultsCache] objectForKey: currentID];
+      
+      if ([now earlierDate: [currentEntry objectForKey: @"cleanupDate"]] == now)
 	{
-	  [users removeObjectForKey: currentID];
+	  [SOGoUser setUserDefaultsFromDictionary: nil  user: currentID];
 	  count++;
 	}
     }
 
   if (count)
-    [self logWithFormat: @"cleaned %d users records from cache", count];
+    [self logWithFormat: @"cleaned %d users records from user defaults cache", count];
+
+  // We cleanup the user settings
+  userIDs = [[[SOGoUser userSettingsCache] allKeys] objectEnumerator];
+  count = 0;
+  while ((currentID = [userIDs nextObject]))
+    {
+      currentEntry = [[SOGoUser userSettingsCache] objectForKey: currentID];
+      
+      if ([now earlierDate: [currentEntry objectForKey: @"cleanupDate"]] == now)
+	{
+	  [SOGoUser setUserDefaultsFromDictionary: nil  user: currentID];
+	  count++;
+	}
+    }
+  
+    if (count)
+    [self logWithFormat: @"cleaned %d users records from user settings cache", count];
 }
 
 @end

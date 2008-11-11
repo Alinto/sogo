@@ -112,10 +112,12 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 
 + (void) setUserDefaultsFromDictionary: (NSDictionary *) theDictionary
 				  user: (NSString *) login;
++ (NSDictionary *) userDefaultsCache;
 - (NSUserDefaults *) userDefaults;
 
 + (void) setUserSettingsFromDictionary: (NSDictionary *) theDictionary
   				  user: (NSString *) login;
++ (NSDictionary *) userSettingsCache;
 - (NSUserDefaults *) userSettings;
 
 - (NSString *) language;

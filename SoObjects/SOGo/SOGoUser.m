@@ -472,10 +472,26 @@ _timeValue (NSString *key)
 }
 
 /* defaults */
-- (void) setUserDefaultsFromDictionary: (NSDictionary *) theDictionary
++ (void) setUserDefaultsFromDictionary: (NSDictionary *) theDictionary
 				  user: (NSString *) login
 {
-  [userDefaults setObject: theDictionary  forKey: login];
+  if (!theDictionary)
+    [userDefaults removeObjectForKey: login];
+  else
+    {
+      NSDate *cleanupDate;
+      
+      cleanupDate = [[NSDate date] addTimeInterval: [SOGoCache cleanupInterval]];
+      [userDefaults setObject: [NSDictionary dictionaryWithObjectsAndKeys:
+					       theDictionary, @"dictionary",
+					     cleanupDate, @"cleanupDate", nil]
+		    forKey: login];
+    }
+}
+
++ (NSDictionary *) userDefaultsCache
+{
+  return userDefaults;
 }
 
 - (NSUserDefaults *) userDefaults
@@ -484,7 +500,7 @@ _timeValue (NSString *key)
   
   o = [userDefaults objectForKey: login];
   if (!o)
-    {	
+    {		    
       o = [[SOGoUserDefaults alloc] initWithTableURL: SOGoProfileURL
 				    uid: login
 				    fieldName: @"c_defaults"];
@@ -498,16 +514,34 @@ _timeValue (NSString *key)
       if (![[o stringForKey: @"MessageCheck"] length])
 	[o setObject: defaultMessageCheck forKey: @"MessageCheck"];
 
-      [userDefaults setObject: o  forKey: login];
+      [SOGoUser setUserDefaultsFromDictionary: o  user: login];
+
+      return o;
     }
 
-  return o;
+  return [o objectForKey: @"dictionary"];
 }
 
 + (void) setUserSettingsFromDictionary: (NSDictionary *) theDictionary
 				  user: (NSString *) login
 {
-  [userSettings setObject: theDictionary  forKey: login];
+  if (!theDictionary)
+    [userSettings removeObjectForKey: login];
+  else
+    {
+      NSDate *cleanupDate;
+
+      cleanupDate = [[NSDate date] addTimeInterval: [SOGoCache cleanupInterval]];
+      [userSettings setObject: [NSDictionary dictionaryWithObjectsAndKeys:
+					       theDictionary, @"dictionary",
+					     cleanupDate, @"cleanupDate", nil]
+		    forKey: login];
+    }
+}
+
++ (NSDictionary *) userSettingsCache
+{
+  return userDefaults;
 }
 
 - (NSUserDefaults *) userSettings
@@ -517,14 +551,16 @@ _timeValue (NSString *key)
   o = [userSettings objectForKey: login];
 
   if (!o)
-    {
+    {      
       o = [[SOGoUserDefaults alloc] initWithTableURL: SOGoProfileURL
 				    uid: login
 				    fieldName: @"c_settings"];
-      [userSettings setObject: o  forKey: login];
+      [SOGoUser setUserSettingsFromDictionary: o  user: login];
+
+      return o;
     }
 
-  return o;
+  return [o objectForKey: @"dictionary"];
 }
 
 - (NSString *) language
