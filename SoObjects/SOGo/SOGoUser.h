@@ -63,8 +63,6 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 
 @interface SOGoUser : SoUser
 {
-  SOGoUserDefaults *userDefaults;
-  SOGoUserDefaults *userSettings;
   NSArray *allEmails;
   NSString *language;
   NSString *currentPassword;
@@ -112,10 +110,12 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 
 /* defaults */
 
-- (void) setUserDefaultsFromDictionary: (NSDictionary *) theDictionary;
++ (void) setUserDefaultsFromDictionary: (NSDictionary *) theDictionary
+				  user: (NSString *) login;
 - (NSUserDefaults *) userDefaults;
 
-- (void) setUserSettingsFromDictionary: (NSDictionary *) theDictionary;
++ (void) setUserSettingsFromDictionary: (NSDictionary *) theDictionary
+  				  user: (NSString *) login;
 - (NSUserDefaults *) userSettings;
 
 - (NSString *) language;

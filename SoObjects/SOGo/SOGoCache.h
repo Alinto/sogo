@@ -3,6 +3,7 @@
  * Copyright (C) 2008 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *         Ludovic Marcotte <lmarcotte@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +28,7 @@
 
 @class NSMutableDictionary;
 @class NSString;
+@class NSTimer;
 
 @class SOGoObject;
 @class SOGoUser;
@@ -35,6 +37,7 @@
 {
   NSMutableDictionary *cache;
   NSMutableDictionary *users;
+  NSTimer *_cleanupTimer;
 }
 
 + (SOGoCache *) sharedCache;

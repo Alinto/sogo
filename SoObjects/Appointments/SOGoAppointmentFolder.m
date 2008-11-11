@@ -63,7 +63,6 @@
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoUserManager.h>
 #import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoWebDAVAclManager.h>
 
@@ -1627,7 +1626,9 @@ static Class sogoAppointmentFolderKlass = Nil;
     {
       record = [records objectAtIndex: count];
       recordURL = [cnames objectForKey: [record objectForKey: @"c_name"]];
-      [components setObject: record forKey: recordURL];
+
+      if (recordURL)
+	[components setObject: record forKey: recordURL];
     }
 
   return components;

@@ -31,7 +31,6 @@
 #import <SaxObjC/XMLNamespaces.h>
 
 #import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoUserManager.h>
 #import <SOGo/NSObject+DAV.h>
 #import <SOGo/NSString+DAV.h>
 

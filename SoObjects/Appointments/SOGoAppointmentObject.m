@@ -40,7 +40,6 @@
 #import <SoObjects/SOGo/SOGoObject.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
 #import <SoObjects/SOGo/SOGoUser.h>
-#import <SoObjects/SOGo/SOGoUserManager.h>
 #import <SoObjects/SOGo/SOGoWebDAVAclManager.h>
 #import <SoObjects/SOGo/SOGoWebDAVValue.h>
 #import <SoObjects/SOGo/WORequest+SOGo.h>

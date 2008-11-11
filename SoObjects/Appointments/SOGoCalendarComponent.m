@@ -46,7 +46,6 @@
 #import <SoObjects/SOGo/SOGoMailer.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
 #import <SoObjects/SOGo/SOGoUser.h>
-#import <SoObjects/SOGo/SOGoUserManager.h>
 #import <SoObjects/SOGo/WORequest+SOGo.h>
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>
 

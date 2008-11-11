@@ -46,6 +46,9 @@
 
 #import "SOGoUser.h"
 
+static NSMutableDictionary *userDefaults;
+static NSMutableDictionary *userSettings;
+
 static NSTimeZone *serverTimeZone = nil;
 static NSString *fallbackIMAP4Server = nil;
 static BOOL fallbackIsConfigured = NO;
@@ -192,6 +195,9 @@ _timeValue (NSString *key)
 
 //   acceptAnyUser = ([[ud stringForKey: @"SOGoAuthentificationMethod"]
 // 		     isEqualToString: @"bypass"]);
+
+  userDefaults = [[NSMutableDictionary alloc] init];
+  userSettings = [[NSMutableDictionary alloc] init];
 }
 
 + (NSString *) language
@@ -260,8 +266,6 @@ _timeValue (NSString *key)
     {
       if ((self = [super initWithLogin: realUID roles: newRoles]))
 	{
-	  userDefaults = nil;
-	  userSettings = nil;
 	  allEmails = nil;
 	  language = nil;
 	  currentPassword = nil;
@@ -283,8 +287,6 @@ _timeValue (NSString *key)
 
 - (void) dealloc
 {
-  [userDefaults release];
-  [userSettings release];
   [allEmails release];
   [language release];
   [currentPassword release];
@@ -413,8 +415,8 @@ _timeValue (NSString *key)
       doSave = NO;
     }
   if (doSave)
-    [userDefaults setObject: [self mailAccounts]
-		  forKey: @"MailAccounts"];
+    [[self userDefaults] setObject: [self mailAccounts]
+			 forKey: @"MailAccounts"];
   else
     [self logWithFormat: @"saving mail accounts is disabled until the"
 	  @" variable(s) mentionned above are configured"];
@@ -471,54 +473,58 @@ _timeValue (NSString *key)
 
 /* defaults */
 - (void) setUserDefaultsFromDictionary: (NSDictionary *) theDictionary
+				  user: (NSString *) login
 {
-  if (!userDefaults)
-    userDefaults = [[SOGoUserDefaults alloc] initWithTableURL: SOGoProfileURL
-					     uid: login
-					     fieldName: @"c_defaults"];
-  [userDefaults setValues: theDictionary];
+  [userDefaults setObject: theDictionary  forKey: login];
 }
 
 - (NSUserDefaults *) userDefaults
 {
-  if (!userDefaults)
-    {
-      userDefaults
-	= [[SOGoUserDefaults alloc] initWithTableURL: SOGoProfileURL
+  id o;
+  
+  o = [userDefaults objectForKey: login];
+  if (!o)
+    {	
+      o = [[SOGoUserDefaults alloc] initWithTableURL: SOGoProfileURL
 				    uid: login
 				    fieldName: @"c_defaults"];
       /* Required parameters for the web interface */
-      if (![[userDefaults stringForKey: @"ReplyPlacement"] length])
-	[userDefaults setObject: defaultReplyPlacement forKey: @"ReplyPlacement"];
-      if (![[userDefaults stringForKey: @"SignaturePlacement"] length])
-	[userDefaults setObject: defaultSignaturePlacement forKey: @"SignaturePlacement"];
-      if (![[userDefaults stringForKey: @"MessageForwarding"] length])
-	[userDefaults setObject: defaultMessageForwarding forKey: @"MessageForwarding"];
-      if (![[userDefaults stringForKey: @"MessageCheck"] length])
-	[userDefaults setObject: defaultMessageCheck forKey: @"MessageCheck"];
+      if (![[o stringForKey: @"ReplyPlacement"] length])
+	[o setObject: defaultReplyPlacement forKey: @"ReplyPlacement"];
+      if (![[o stringForKey: @"SignaturePlacement"] length])
+	[o setObject: defaultSignaturePlacement forKey: @"SignaturePlacement"];
+      if (![[o stringForKey: @"MessageForwarding"] length])
+	[o setObject: defaultMessageForwarding forKey: @"MessageForwarding"];
+      if (![[o stringForKey: @"MessageCheck"] length])
+	[o setObject: defaultMessageCheck forKey: @"MessageCheck"];
+
+      [userDefaults setObject: o  forKey: login];
     }
 
-  return userDefaults;
+  return o;
 }
 
-- (void) setUserSettingsFromDictionary: (NSDictionary *) theDictionary
++ (void) setUserSettingsFromDictionary: (NSDictionary *) theDictionary
+				  user: (NSString *) login
 {
-  if (!userSettings)
-    userSettings = [[SOGoUserDefaults alloc] initWithTableURL: SOGoProfileURL
-					     uid: login
-					     fieldName: @"c_settings"];
-  [userSettings setValues: theDictionary];
+  [userSettings setObject: theDictionary  forKey: login];
 }
 
 - (NSUserDefaults *) userSettings
 {
-  if (!userSettings)
-    userSettings
-      = [[SOGoUserDefaults alloc] initWithTableURL: SOGoProfileURL
-				  uid: login
-				  fieldName: @"c_settings"];
+  id o;
+  
+  o = [userSettings objectForKey: login];
 
-  return userSettings;
+  if (!o)
+    {
+      o = [[SOGoUserDefaults alloc] initWithTableURL: SOGoProfileURL
+				    uid: login
+				    fieldName: @"c_settings"];
+      [userSettings setObject: o  forKey: login];
+    }
+
+  return o;
 }
 
 - (NSString *) language
@@ -626,7 +632,7 @@ _timeValue (NSString *key)
   NSCalendarDate *januaryFirst, *firstWeek;
   unsigned int dayOfWeek;
 
-  firstWeekRule = [userDefaults objectForKey: @"FirstWeek"];
+  firstWeekRule = [[self userDefaults] objectForKey: @"FirstWeek"];
 
   januaryFirst = [NSCalendarDate dateWithYear: [date yearOfCommonEra]
 				 month: 1 day: 1 hour: 0 minute: 0 second: 0

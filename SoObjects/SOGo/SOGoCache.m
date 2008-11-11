@@ -3,6 +3,7 @@
  * Copyright (C) 2008 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *         Ludovic Marcotte <lmarcotte@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,15 +23,24 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSDistributedNotificationCenter.h>
+#import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSTimer.h>
+#import <Foundation/NSUserDefaults.h>
 
 #import <NGObjWeb/SoObject.h>
+#import <NGExtensions/NSObject+Logs.h>
 
 #import "SOGoObject.h"
 #import "SOGoUser.h"
 
 #import "SOGoCache.h"
 
+// We define the default value for cleaning up cached
+// users' preferences. This value should be relatively high
+// to avoid useless database calls.
+static NSTimeInterval cleanupInterval = 1800;
 static SOGoCache *sharedCache = nil;
 
 @implementation SOGoCache
@@ -53,8 +63,38 @@ static SOGoCache *sharedCache = nil;
 {
   if ((self = [super init]))
     {
+      NSString *cleanupSetting;
+
       cache = [NSMutableDictionary new];
       users = [NSMutableDictionary new];
+
+        // We register ourself for notifications
+      [[NSDistributedNotificationCenter defaultCenter]
+	addObserver: self
+	selector: @selector(_userDefaultsHaveChanged:)
+	name: @"SOGoUserDefaultsHaveChanged"
+	object: nil];
+      
+      [[NSDistributedNotificationCenter defaultCenter]
+	addObserver: self
+	selector: @selector(_userSettingsHaveChanged:)
+	name: @"SOGoUserSettingsHaveChanged"
+	object: nil];
+
+      // We fire our timer that will cleanup cache entries
+      cleanupSetting = [[NSUserDefaults standardUserDefaults] 
+			 objectForKey: @"SOGoCacheCleanupInterval"];
+      
+      if (cleanupSetting && [cleanupSetting doubleValue] > 0.0)
+	cleanupInterval = [cleanupSetting doubleValue];
+      
+      _cleanupTimer = [NSTimer scheduledTimerWithTimeInterval: cleanupInterval
+			       target: self
+			       selector: @selector(_cleanupSources)
+			       userInfo: nil
+			       repeats: YES];
+      [self logWithFormat: @"cleanup interval set every %f seconds",
+	    cleanupInterval];
     }
 
   return self;
@@ -128,16 +168,75 @@ static SOGoCache *sharedCache = nil;
 
 - (void) registerUser: (SOGoUser *) user
 {
-//   NSLog (@"registerUser: %@", user);
-
-  [users setObject: user forKey: [user login]];
+  NSDate *cleanupDate;
+    
+  cleanupDate = [[NSDate date] addTimeInterval: cleanupInterval];
+ 
+  [users setObject: [NSMutableDictionary dictionaryWithObjectsAndKeys: user, @"user", cleanupDate, @"cleanupDate", nil]
+	 forKey: [user login]];
 }
 
 - (id) userNamed: (NSString *) name
 {
-//   NSLog (@"userNamed: %@", name);
+  return [[users objectForKey: name] objectForKey: @"user"];
+}
 
-  return [users objectForKey: name];
+
+- (void) _userDefaultsHaveChanged: (NSNotification *) theNotification
+{
+  NSMutableDictionary *d;
+  NSString *user;
+
+  d = [[NSMutableDictionary alloc] init];
+  [d addEntriesFromDictionary: [theNotification userInfo]];
+  
+  user = [d objectForKey: @"uid"];  
+  [d removeObjectForKey: @"uid"];
+
+  [SOGoUser setUserDefaultsFromDictionary: d  user: user];
+  [d release];
+}
+
+- (void) _userSettingsHaveChanged: (NSNotification *) theNotification
+{
+  NSMutableDictionary *d;
+  NSString *user;
+
+  d = [[NSMutableDictionary alloc] init];
+  [d addEntriesFromDictionary: [theNotification userInfo]];
+  
+  user = [d objectForKey: @"uid"];  
+  [d removeObjectForKey: @"uid"];
+
+  [SOGoUser setUserSettingsFromDictionary: d  user: user];
+  [d release];
+}
+
+- (void) _cleanupSources
+{
+  NSEnumerator *userIDs;
+  NSString *currentID;
+  NSDictionary *currentUser;
+  NSDate *now;
+  unsigned int count;
+
+  now = [NSDate date];
+  count = 0;
+  userIDs = [[users allKeys] objectEnumerator];
+
+  while ((currentID = [userIDs nextObject]))
+    {
+      currentUser = [users objectForKey: currentID];
+      if ([now earlierDate:
+		 [currentUser objectForKey: @"cleanupDate"]] == now)
+	{
+	  [users removeObjectForKey: currentID];
+	  count++;
+	}
+    }
+
+  if (count)
+    [self logWithFormat: @"cleaned %d users records from cache", count];
 }
 
 @end
