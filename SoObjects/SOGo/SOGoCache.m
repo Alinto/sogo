@@ -113,6 +113,7 @@ static SOGoCache *sharedCache = nil;
 
 - (void) dealloc
 {
+#if 0
   [[NSDistributedNotificationCenter defaultCenter]
     removeObserver: self
     name: @"SOGoUserDefaultsHaveChanged"
@@ -122,6 +123,7 @@ static SOGoCache *sharedCache = nil;
     removeObserver: self
     name: @"SOGoUserSettingsHaveChanged"
     object: nil];
+#endif
 
   [cache release];
   [users release];

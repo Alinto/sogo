@@ -514,7 +514,7 @@ static Class sogoAppointmentFolderKlass = Nil;
 
   /* prepare mandatory fields */
 
-  sql = [[NSString stringWithFormat: @"%@ %@ %@ %@",
+  sql = [[NSString stringWithFormat: @"%@%@%@%@",
 		   dateSqlString, titleSqlString, componentSqlString,
 		   filterSqlString] substringFromIndex: 4];
 
@@ -1626,9 +1626,7 @@ static Class sogoAppointmentFolderKlass = Nil;
     {
       record = [records objectAtIndex: count];
       recordURL = [cnames objectForKey: [record objectForKey: @"c_name"]];
-
-      if (recordURL)
-	[components setObject: record forKey: recordURL];
+      [components setObject: record forKey: recordURL];
     }
 
   return components;
