@@ -78,6 +78,7 @@ static SOGoCache *sharedCache = nil;
       users = [NSMutableDictionary new];
 
         // We register ourself for notifications
+#if 0
       [[NSDistributedNotificationCenter defaultCenter]
 	addObserver: self
 	selector: @selector(_userDefaultsHaveChanged:)
@@ -89,6 +90,7 @@ static SOGoCache *sharedCache = nil;
 	selector: @selector(_userSettingsHaveChanged:)
 	name: @"SOGoUserSettingsHaveChanged"
 	object: nil];
+#endif
 
       // We fire our timer that will cleanup cache entries
       cleanupSetting = [[NSUserDefaults standardUserDefaults] 
