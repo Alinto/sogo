@@ -272,16 +272,16 @@ static NSString *uidColumnName = @"c_uid";
 	      NSMutableDictionary *d;
 
 	      d = [[NSMutableDictionary alloc] init];
-	      [d addEntriesFromDictionary: values];
+	      [d setObject: values forKey: @"values"];
 	      [d setObject: uid  forKey: @"uid"];
+	      [d setObject: fieldName forKey: @"fieldName"];
+	      [d setObject: url forKey: @"url"];
 
 #warning reenable when the code to use the SOGoCache is finished	      
-#if 0
 	      [[NSDistributedNotificationCenter defaultCenter]
 		postNotificationName: ([fieldName isEqualToString: @"c_defaults"] ? @"SOGoUserDefaultsHaveChanged" : @"SOGoUserSettingsHaveChanged")
 		object: nil
 		userInfo: d];
-#endif
 	      [d release];
 	      
 	      if ([[channel adaptorContext] hasOpenTransaction])

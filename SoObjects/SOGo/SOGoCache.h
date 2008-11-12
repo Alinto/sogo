@@ -29,9 +29,11 @@
 @class NSMutableDictionary;
 @class NSString;
 @class NSTimer;
+@class NSUserDefaults;
 
 @class SOGoObject;
 @class SOGoUser;
+@class SOGoUserDefaults;
 
 @interface SOGoCache : NSObject
 {
@@ -51,6 +53,13 @@
 
 - (void) registerUser: (SOGoUser *) user;
 - (id) userNamed: (NSString *) name;
+
++ (void) setCachedUserDefaults: (SOGoUserDefaults *) theDefaults
+			  user: (NSString *) login;
++ (NSDictionary *) cachedUserDefaults;
++ (void) setCachedUserSettings: (SOGoUserDefaults *) theSettings
+			  user: (NSString *) login;
++ (NSDictionary *) cachedUserSettings;
 
 @end
 

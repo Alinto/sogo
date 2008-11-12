@@ -2,6 +2,8 @@
 	
 	* Fixed a couple of issues in the new pref caching
 	  subsystem.
+	* Cleaned up the caching code and activated
+	  distributed notifications by default.
 
 2008-10-29  Francis Lachapelle  <flachapelle@inverse.ca>
 

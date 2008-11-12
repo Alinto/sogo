@@ -46,9 +46,6 @@
 
 #import "SOGoUser.h"
 
-static NSMutableDictionary *userDefaults;
-static NSMutableDictionary *userSettings;
-
 static NSTimeZone *serverTimeZone = nil;
 static NSString *fallbackIMAP4Server = nil;
 static BOOL fallbackIsConfigured = NO;
@@ -195,9 +192,6 @@ _timeValue (NSString *key)
 
 //   acceptAnyUser = ([[ud stringForKey: @"SOGoAuthentificationMethod"]
 // 		     isEqualToString: @"bypass"]);
-
-  userDefaults = [[NSMutableDictionary alloc] init];
-  userSettings = [[NSMutableDictionary alloc] init];
 }
 
 + (NSString *) language
@@ -471,34 +465,12 @@ _timeValue (NSString *key)
   return dateFormatter;
 }
 
-/* defaults */
-+ (void) setUserDefaultsFromDictionary: (NSDictionary *) theDictionary
-				  user: (NSString *) login
-{
-  if (!theDictionary)
-    [userDefaults removeObjectForKey: login];
-  else
-    {
-      NSDate *cleanupDate;
-      
-      cleanupDate = [[NSDate date] addTimeInterval: [SOGoCache cleanupInterval]];
-      [userDefaults setObject: [NSDictionary dictionaryWithObjectsAndKeys:
-					       theDictionary, @"dictionary",
-					     cleanupDate, @"cleanupDate", nil]
-		    forKey: login];
-    }
-}
-
-+ (NSDictionary *) userDefaultsCache
-{
-  return userDefaults;
-}
-
 - (NSUserDefaults *) userDefaults
 {
   id o;
   
-  o = [userDefaults objectForKey: login];
+  o = [[SOGoCache cachedUserDefaults] objectForKey: login];
+
   if (!o)
     {		    
       o = [[SOGoUserDefaults alloc] initWithTableURL: SOGoProfileURL
@@ -514,7 +486,8 @@ _timeValue (NSString *key)
       if (![[o stringForKey: @"MessageCheck"] length])
 	[o setObject: defaultMessageCheck forKey: @"MessageCheck"];
 
-      [SOGoUser setUserDefaultsFromDictionary: o  user: login];
+      [SOGoCache setCachedUserDefaults: o  user: login];
+      [o release];
 
       return o;
     }
@@ -522,40 +495,19 @@ _timeValue (NSString *key)
   return [o objectForKey: @"dictionary"];
 }
 
-+ (void) setUserSettingsFromDictionary: (NSDictionary *) theDictionary
-				  user: (NSString *) login
-{
-  if (!theDictionary)
-    [userSettings removeObjectForKey: login];
-  else
-    {
-      NSDate *cleanupDate;
-
-      cleanupDate = [[NSDate date] addTimeInterval: [SOGoCache cleanupInterval]];
-      [userSettings setObject: [NSDictionary dictionaryWithObjectsAndKeys:
-					       theDictionary, @"dictionary",
-					     cleanupDate, @"cleanupDate", nil]
-		    forKey: login];
-    }
-}
-
-+ (NSDictionary *) userSettingsCache
-{
-  return userSettings;
-}
-
 - (NSUserDefaults *) userSettings
 {
   id o;
   
-  o = [userSettings objectForKey: login];
+  o = [[SOGoCache cachedUserSettings] objectForKey: login];
 
   if (!o)
     {      
       o = [[SOGoUserDefaults alloc] initWithTableURL: SOGoProfileURL
 				    uid: login
 				    fieldName: @"c_settings"];
-      [SOGoUser setUserSettingsFromDictionary: o  user: login];
+      [SOGoCache setCachedUserSettings: o  user: login];
+      [o release];
 
       return o;
     }
