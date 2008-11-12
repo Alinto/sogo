@@ -41,10 +41,16 @@
 - (BOOL) isStillRelevant
 {
   NSCalendarDate *now;
-
+  BOOL isStillRelevent;
+  
   now = [NSCalendarDate calendarDate];
 
-  return ([[self endDate] earlierDate: now] == now);
+  if ([self isRecurrent])
+      isStillRelevent = ([[self lastPossibleRecurrenceStartDate] earlierDate: now] == now);
+  else
+      isStillRelevent = ([[self endDate] earlierDate: now] == now);
+  
+  return isStillRelevent;
 }
 
 - (NSMutableDictionary *) quickRecord

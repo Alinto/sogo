@@ -962,7 +962,7 @@ static Class sogoAppointmentFolderKlass = Nil;
     }
 
   /* fetch recurrent apts now. we do NOT consider events with no cycle end. */
-  if (_endDate)
+  if (_endDate || filters)
     {
       sql = [NSString stringWithFormat: @"(c_iscycle = 1) %@ %@ %@ %@", titleSqlString,
 		      componentSqlString, privacySqlString, filterSqlString];
