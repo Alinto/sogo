@@ -1,3 +1,13 @@
+2008-11-13  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	We now remove the SENT-BY when updating attendees
+	if it's the attendee himself that changes his
+	particpation status
+	* SoObjects/SOGo/SOGoUserFolder.m
+	Improve the comparison of strings by rather using
+	URL objects.
+
 2008-11-11  Ludovic Marcotte  <lmarcotte@inverse.ca>
 	
 	* Fixed a couple of issues in the new pref caching

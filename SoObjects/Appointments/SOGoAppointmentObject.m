@@ -410,7 +410,14 @@
 	      [otherAttendee addAttribute: @"SENT-BY"
 			     value: [NSString stringWithFormat: @"\"MAILTO:%@\"", currentEmail]];
 	    }
-
+	  else
+	    {
+	      // We must REMOVE any SENT-BY here. This is important since if A accepted
+	      // the event for B and then, B changes by himself his participation status,
+	      // we don't want to keep the previous SENT-BY attribute there.
+	      [(NSMutableDictionary *)[otherAttendee attributes] removeObjectForKey: @"SENT-BY"];
+	    }
+	  
 	  iCalString = [[event parent] versitString];
 	  error = [eventObject saveContentString: iCalString];
 	}
@@ -452,6 +459,13 @@
 	  currentEmail = [[currentUser allEmails] objectAtIndex: 0];
 	  [attendee addAttribute: @"SENT-BY"
 		    value: [NSString stringWithFormat: @"\"MAILTO:%@\"", currentEmail]];
+	}
+      else
+	{
+	  // We must REMOVE any SENT-BY here. This is important since if A accepted
+	  // the event for B and then, B changes by himself his participation status,
+	  // we don't want to keep the previous SENT-BY attribute there.
+	  [(NSMutableDictionary *)[attendee attributes] removeObjectForKey: @"SENT-BY"];
 	}
 
       // We generate the updated iCalendar file and we save it
@@ -690,7 +704,6 @@
   iCalPerson *attendee, *person;
   SOGoAppointmentObject *recipientEvent;
   SOGoUser *ownerUser;
-  NSString *email;
 
   elements = [NSMutableArray array];
   event = [self component: NO secure: NO];

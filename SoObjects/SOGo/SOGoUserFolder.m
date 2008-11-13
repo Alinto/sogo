@@ -271,14 +271,15 @@
 - (void) _appendCollectionsMatchingFilter: (NSDictionary *) filter
 			       toResponse: (WOResponse *) r
 {
-  NSString *prefix, *queryOwner, *uid;
+  NSURL *prefix, *queryOwner;
   NSDictionary *folders;
+  NSString *uid;
 
-  prefix = [self _baseDAVURLWithSuffix: @"users/"];
-  queryOwner = [filter objectForKey: @"owner"];
-  if ([queryOwner hasPrefix: prefix])
+  prefix = [NSURL URLWithString: [self _baseDAVURLWithSuffix: @"users/"]];
+  queryOwner = [NSURL URLWithString: [filter objectForKey: @"owner"]];
+  if ([[queryOwner relativePath] hasPrefix: [prefix relativePath]])
     {
-      uid = [queryOwner substringFromIndex: [prefix length]];
+      uid = [[queryOwner relativePath] lastPathComponent];
       folders = [self foldersOfType: [filter objectForKey: @"resource-type"]
 		      matchingUID: uid];
       [self _appendFolders: folders toResponse: r];
