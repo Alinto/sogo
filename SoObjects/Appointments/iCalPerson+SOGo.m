@@ -67,7 +67,7 @@ static LDAPUserManager *um = nil;
 
   if ([mail length] > 7)
     {
-      if ([mail characterAtIndex: 0] && [mail hasSuffix: @"\""])
+      if ([mail characterAtIndex: 0] == '"' && [mail hasSuffix: @"\""])
 	mail = [mail substringWithRange: NSMakeRange(1, [mail length]-2)];
       
       return [mail substringFromIndex: 7];

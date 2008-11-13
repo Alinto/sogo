@@ -7,6 +7,11 @@
 	* SoObjects/SOGo/SOGoUserFolder.m
 	Improve the comparison of strings by rather using
 	URL objects.
+	* SOPE/NGCards/CardVersitRenderer.m
+	We now properly quote attribute values if they
+	contain an ':' in them
+	* SoObjects/Appointments/iCalPerson+SOGo.m
+	Fixed the check for quoted SENT-BY
 
 2008-11-11  Ludovic Marcotte  <lmarcotte@inverse.ca>
 	
