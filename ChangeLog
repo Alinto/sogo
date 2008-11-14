@@ -12,6 +12,8 @@
 	contain an ':' in them
 	* SoObjects/Appointments/iCalPerson+SOGo.m
 	Fixed the check for quoted SENT-BY
+	* Updated the iCal invitation replies to take
+	the SENT-BY into account.
 
 2008-11-11  Ludovic Marcotte  <lmarcotte@inverse.ca>
 	

@@ -83,8 +83,8 @@ static SOGoCache *sharedCache = nil;
       
       s_userDefaults = [[NSMutableDictionary alloc] init];
       s_userSettings = [[NSMutableDictionary alloc] init];
-
-        // We register ourself for notifications
+      
+      // We register ourself for notifications
       [[NSDistributedNotificationCenter defaultCenter]
 	addObserver: self
 	selector: @selector(_userDefaultsHaveChanged:)
