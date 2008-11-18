@@ -1,3 +1,9 @@
+2008-11-18  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+        * SoObjects/Appointments/SOGoAppointmentObject.m
+	Modified postCalDAVEventRequestTo: from: to handle
+	invitation updates from normal ones.
+
 2008-11-17  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
         * Added back the appointment update notification

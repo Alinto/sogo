@@ -557,9 +557,10 @@
   NSMutableArray *elements;
   NSEnumerator *recipientsEnum;
   NSString *recipient, *uid;
-  iCalEvent *event;
+  iCalEvent *event, *oldEvent;
   iCalPerson *person;
-
+  BOOL isUpdate, hasChanged;
+  
   elements = [NSMutableArray array];
 
   event = [self component: NO secure: NO];
@@ -570,13 +571,37 @@
 	person = [iCalPerson new];
 	[person setValue: 0 to: recipient];
 	uid = [person uid];
-	if (uid)
-	  [self _addOrUpdateEvent: event forUID: uid];
+	oldEvent = nil;
+	hasChanged = YES;
+	isUpdate = NO;
+
+	if (uid) 
+	  {
+	    // We check if we must send an invitation update
+	    // rather than just a normal invitation
+	    SOGoAppointmentObject *oldEventObject;
+	    iCalEventChanges *changes;
+
+	    oldEventObject = [self _lookupEvent: [event uid] forUID: uid];
+	    oldEvent = [oldEventObject component: NO  secure: NO];
+	    changes = [event getChangesRelativeToEvent: oldEvent];
+
+	    if ([[oldEvent sequence] compare: [event sequence]] != NSOrderedSame)
+	      {
+		if ([changes sequenceShouldBeIncreased])
+		  isUpdate = YES;
+		else
+		  hasChanged = NO;
+	      }
+	    [self _addOrUpdateEvent: event forUID: uid];
+	  }
 #warning fix this when sendEmailUsing blabla has been cleaned up
-	[self sendEMailUsingTemplateNamed: @"Invitation"
-	      forObject: event
-	      previousObject: nil
-	      toAttendees: [NSArray arrayWithObject: person]];
+	if (hasChanged)
+	  [self sendEMailUsingTemplateNamed: (isUpdate ? @"Update" : @"Invitation")
+		forObject: event
+		previousObject: oldEvent
+		toAttendees: [NSArray arrayWithObject: person]];
+
 	[person release];
 	[elements
 	  addObject: [self _caldavSuccessCodeWithRecipient: recipient]];
