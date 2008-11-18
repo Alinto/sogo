@@ -269,8 +269,9 @@
 	      forUID: currentUID];
     }
 
-  [self sendEMailUsingTemplateNamed: @"Invitation"
+  [self sendEMailUsingTemplateNamed: @"Update"
 	forObject: [newEvent itipEntryWithMethod: @"request"]
+	previousObject: oldEvent
 	toAttendees: updateAttendees];
 }
 
@@ -304,6 +305,7 @@
       [self _handleRemovedUsers: attendees];
       [self sendEMailUsingTemplateNamed: @"Deletion"
 	    forObject: [newEvent itipEntryWithMethod: @"cancel"]
+	    previousObject: oldEvent
 	    toAttendees: attendees];
     }
 
@@ -324,6 +326,7 @@
       [self _handleAddedUsers: attendees fromEvent: newEvent];
       [self sendEMailUsingTemplateNamed: @"Invitation"
 	    forObject: [newEvent itipEntryWithMethod: @"request"]
+	    previousObject: oldEvent
 	    toAttendees: attendees];
     }
 }
@@ -349,6 +352,7 @@
 	      [self _handleAddedUsers: attendees fromEvent: newEvent];
 	      [self sendEMailUsingTemplateNamed: @"Invitation"
 		    forObject: [newEvent itipEntryWithMethod: @"request"]
+		    previousObject: oldEvent
 		    toAttendees: attendees];
 	    }
 
@@ -438,8 +442,8 @@
 		     statusChange: (NSString *) newStatus
 			  inEvent: (iCalEvent *) event
 {
-  NSString *newContent, *currentStatus, *currentUser, *organizerUID;
-  SOGoUser *ownerUser;
+  NSString *newContent, *currentStatus, *organizerUID;
+  SOGoUser *ownerUser, *currentUser;
   NSException *ex;
 
   ex = nil;
@@ -571,6 +575,7 @@
 #warning fix this when sendEmailUsing blabla has been cleaned up
 	[self sendEMailUsingTemplateNamed: @"Invitation"
 	      forObject: event
+	      previousObject: nil
 	      toAttendees: [NSArray arrayWithObject: person]];
 	[person release];
 	[elements
@@ -604,6 +609,7 @@
 #warning fix this when sendEmailUsing blabla has been cleaned up
 	[self sendEMailUsingTemplateNamed: @"Deletion"
 	      forObject: event
+	      previousObject: nil
 	      toAttendees: [NSArray arrayWithObject: person]];
 	[person release];
 	[elements
@@ -805,6 +811,7 @@
 	      [self _handleRemovedUsers: attendees];
 	      [self sendEMailUsingTemplateNamed: @"Deletion"
 		    forObject: [occurence itipEntryWithMethod: @"cancel"]
+		    previousObject: nil
 		    toAttendees: attendees];
 	    }
 	}

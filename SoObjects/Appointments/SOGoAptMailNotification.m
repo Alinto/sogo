@@ -68,7 +68,11 @@ static NSTimeZone *UTC = nil;
 - (void) dealloc
 {
   [apt release];
+  [previousApt release];
   [organizerName release];
+  [viewTZ release];
+  [oldStartDate release];
+  [newStartDate release];
   [super dealloc];
 }
 
@@ -77,11 +81,50 @@ static NSTimeZone *UTC = nil;
   return apt;
 }
 
-- (void) setApt: (iCalEntityObject *) newApt
+- (void) setApt: (iCalEntityObject *) theApt
 {
-  ASSIGN (apt, newApt);
+  ASSIGN(apt, theApt);
 }
 
+- (iCalEntityObject *) previousApt
+{
+  return previousApt;
+}
+
+- (void) setPreviousApt: (iCalEntityObject *) theApt
+{
+  ASSIGN(previousApt, theApt);
+}
+
+- (NSTimeZone *) viewTZ 
+{
+  if (self->viewTZ) return self->viewTZ;
+  return UTC;
+}
+- (void) setViewTZ: (NSTimeZone *) _viewTZ
+{
+  ASSIGN(self->viewTZ, _viewTZ);
+}
+
+- (NSCalendarDate *) oldStartDate
+{
+  if (!self->oldStartDate)
+    {
+      ASSIGN(self->oldStartDate, [[self previousApt] startDate]);
+      [self->oldStartDate setTimeZone: [self viewTZ]];
+    }
+  return self->oldStartDate;
+}
+
+- (NSCalendarDate *) newStartDate
+{
+  if (!self->newStartDate)
+    {
+      ASSIGN(self->newStartDate, [[self apt] startDate]);
+      [self->newStartDate setTimeZone:[self viewTZ]];
+    }
+  return self->newStartDate;
+}
 
 - (BOOL) isSubject
 {

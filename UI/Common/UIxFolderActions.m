@@ -81,7 +81,7 @@
   [self _setupContext];
 
   return [clientObject subscribe: YES
-		       inTheNameOf: nil
+		       inTheNamesOf: nil
 		       fromMailInvitation: isMailInvitation
 		       inContext: context];
 }
@@ -91,7 +91,7 @@
   [self _setupContext];
 
   return [clientObject subscribe: NO
-		       inTheNameOf: nil
+		       inTheNamesOf: nil
 		       fromMailInvitation: isMailInvitation
 		       inContext: context];
 }

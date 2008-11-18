@@ -42,9 +42,11 @@
   iCalCalendar *fullCalendar;
   iCalCalendar *safeCalendar;
   iCalCalendar *originalCalendar;
+  NSString *componentTag;
 }
 
 - (NSString *) componentTag;
+- (void) setComponentTag: (NSString *) theTag;
 
 - (iCalCalendar *) calendar: (BOOL) create
   		     secure: (BOOL) secure;
@@ -61,6 +63,7 @@
 - (BOOL) sendEMailNotifications;
 - (void) sendEMailUsingTemplateNamed: (NSString *) pageName
 			   forObject: (iCalRepeatableEntityObject *) object
+		      previousObject: (iCalRepeatableEntityObject *) previousObject
                          toAttendees: (NSArray *) attendees;
 - (void) sendIMIPReplyForEvent: (iCalRepeatableEntityObject *) event
 			  from: (SOGoUser *) from

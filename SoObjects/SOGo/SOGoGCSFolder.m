@@ -660,59 +660,72 @@ static NSArray *childRecordFields = nil;
 }
 
 - (WOResponse *) subscribe: (BOOL) reallyDo
-	       inTheNameOf: (NSString *) delegatedUser
+	      inTheNamesOf: (NSArray *) delegatedUsers
 	fromMailInvitation: (BOOL) isMailInvitation
 		 inContext: (WOContext *) localContext
 {
   WOResponse *response;
-  SOGoUser *currentUser, *subscriptionUser;
-  BOOL validRequest;
+  SOGoUser *currentUser;
 
   response = [localContext response];
   currentUser = [localContext activeUser];
 
-  if ([delegatedUser length])
+  if (delegatedUsers && [delegatedUsers count])
     {
-      validRequest = ([currentUser isSuperUser]);
-      subscriptionUser = [SOGoUser userWithLogin: delegatedUser roles: nil];
-    }
-  else
-    {
-      validRequest = YES;
-      subscriptionUser = currentUser;
-    }
+      if (![currentUser isSuperUser])
+	{
+	  [response setStatus: 403];
+	  [response appendContentString:
+		      @"You cannot subscribe another user to any folder"
+		    @" unless you are a super-user."];
+	}
+      else
+	{
+	  SOGoUser *subscriptionUser;
+	  int i;
 
-  if (validRequest)
-    [self _subscribeUser: subscriptionUser
-	  reallyDo: reallyDo
-	  fromMailInvitation: isMailInvitation
-	  inResponse: response];
+	  for (i = 0; i < [delegatedUsers count]; i++)
+	    {
+	      subscriptionUser = [SOGoUser userWithLogin: [delegatedUsers objectAtIndex: i]
+					   roles: nil];
+	      
+	      [self _subscribeUser: subscriptionUser
+		    reallyDo: reallyDo
+		    fromMailInvitation: isMailInvitation
+		    inResponse: response];
+	    }
+	}
+    }
   else
     {
-      [response setStatus: 403];
-      [response appendContentString:
-		 @"You cannot subscribe another user to any folder"
-		@" unless you are a super-user."];
+      [self _subscribeUser: currentUser
+	    reallyDo: reallyDo
+	    fromMailInvitation: isMailInvitation
+	    inResponse: response];
     }
 
   return response;
 }
 
-- (NSString *) _parseDAVDelegatedUser: (WOContext *) queryContext
+- (NSArray *) _parseDAVDelegatedUser: (WOContext *) queryContext
 {
   id <DOMDocument> document;
   id <DOMNamedNodeMap> attrs;
-
+  id o;
   document = [[queryContext request] contentAsDOMDocument];
   attrs = [[document documentElement] attributes];
 
-  return [[attrs namedItem: @"user"] nodeValue];
+  o = [attrs namedItem: @"users"];
+  
+  if (o) return [[o nodeValue] componentsSeparatedByString: @","];
+ 
+  return nil;
 }
 
 - (id <WOActionResults>) davSubscribe: (WOContext *) queryContext
 {
   return [self subscribe: YES
-	       inTheNameOf: [self _parseDAVDelegatedUser: queryContext]
+	       inTheNamesOf: [self _parseDAVDelegatedUser: queryContext]
 	       fromMailInvitation: NO
 	       inContext: queryContext];
 }
@@ -720,7 +733,7 @@ static NSArray *childRecordFields = nil;
 - (id <WOActionResults>) davUnsubscribe: (WOContext *) queryContext
 {
   return [self subscribe: NO
-	       inTheNameOf: [self _parseDAVDelegatedUser: queryContext]
+	       inTheNamesOf: [self _parseDAVDelegatedUser: queryContext]
 	       fromMailInvitation: NO
 	       inContext: queryContext];
 }

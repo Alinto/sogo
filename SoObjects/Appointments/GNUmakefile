@@ -32,6 +32,7 @@ Appointments_OBJC_FILES = \
 	SOGoAptMailInvitation.m		\
 	SOGoAptMailDeletion.m		\
 	SOGoAptMailICalReply.m		\
+	SOGoAptMailUpdate.m		\
 
 Appointments_RESOURCE_FILES +=		\
 	Version				\
@@ -45,21 +46,27 @@ Appointments_COMPONENTS +=	\
 	SOGoAptMailDutchInvitation.wo	\
 	SOGoAptMailDutchICalReply.wo	\
 	SOGoAptMailDutchDeletion.wo	\
+	SOGoAptMailDutchUpdate.wo	\
 	SOGoAptMailEnglishInvitation.wo	\
 	SOGoAptMailEnglishICalReply.wo	\
 	SOGoAptMailEnglishDeletion.wo	\
+	SOGoAptMailEnglishUpdate.wo	\
 	SOGoAptMailFrenchInvitation.wo	\
 	SOGoAptMailFrenchICalReply.wo	\
 	SOGoAptMailFrenchDeletion.wo	\
+	SOGoAptMailFrenchUpdate.wo	\
 	SOGoAptMailGermanInvitation.wo	\
 	SOGoAptMailGermanICalReply.wo	\
 	SOGoAptMailGermanDeletion.wo	\
+	SOGoAptMailGermanUpdate.wo	\
 	SOGoAptMailItalianInvitation.wo \
 	SOGoAptMailItalianICalReply.wo  \
 	SOGoAptMailItalianDeletion.wo   \
+	SOGoAptMailItalianUpdate.wo   \
 	SOGoAptMailSpanishInvitation.wo \
 	SOGoAptMailSpanishICalReply.wo  \
 	SOGoAptMailSpanishDeletion.wo   \
+	SOGoAptMailSpanishUpdate.wo   \
 
 
 ADDITIONAL_INCLUDE_DIRS += -I../../SOPE/

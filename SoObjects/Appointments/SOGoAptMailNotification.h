@@ -34,7 +34,8 @@
  */
 @interface SOGoAptMailNotification : SoComponent
 {
-  iCalEntityObject* apt;
+  iCalEntityObject *apt;
+  iCalEntityObject *previousApt;
   NSString *homePageURL;
   NSTimeZone *viewTZ;
   NSCalendarDate *oldStartDate;
@@ -44,9 +45,16 @@
 }
 
 - (iCalEntityObject *) apt;
-- (void) setApt: (iCalEntityObject *) newApt;
+- (void) setApt: (iCalEntityObject *) theApt;
 
-/* Content Generation */
+- (iCalEntityObject *) previousApt;
+- (void) setPreviousApt: (iCalEntityObject *) theApt;
+
+- (void) setOrganizerName: (NSString *) theString;
+- (NSString *) organizerName;
+
+- (BOOL) hasSentBy;
+- (NSString *) sentBy;
 
 - (NSString *) getSubject;
 - (NSString *) getBody;

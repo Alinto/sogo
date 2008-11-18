@@ -1005,19 +1005,19 @@ static Class sogoAppointmentFolderKlass = Nil;
 }
 
 - (void) _appendPropstat: (NSDictionary *) propstat
-	      toResponse: (WOResponse *) r
+                toBuffer: (NSMutableString *) r
 {
   NSArray *properties;
   unsigned int count, max;
 
-  [r appendContentString: @"<D:propstat><D:prop>"];
+  [r appendString: @"<D:propstat><D:prop>"];
   properties = [propstat objectForKey: @"properties"];
   max = [properties count];
   for (count = 0; count < max; count++)
-    [r appendContentString: [properties objectAtIndex: count]];
-  [r appendContentString: @"</D:prop><D:status>"];
-  [r appendContentString: [propstat objectForKey: @"status"]];
-  [r appendContentString: @"</D:status></D:propstat>"];
+    [r appendString: [properties objectAtIndex: count]];
+  [r appendString: @"</D:prop><D:status>"];
+  [r appendString: [propstat objectForKey: @"status"]];
+  [r appendString: @"</D:status></D:propstat>"];
 }
 
 #warning we should use the EOFetchSpecification for that!!! (see doPROPFIND:)
@@ -1062,11 +1062,12 @@ static Class sogoAppointmentFolderKlass = Nil;
 - (NSString **) _properties: (NSString **) properties
                    ofObject: (NSDictionary *) object
 {
+  SOGoCalendarComponent *sogoObject;
   NSString **currentProperty;
   NSString **values, **currentValue;
-  SOGoObject *sogoObject;
   SoSecurityManager *mgr;
   SEL methodSel;
+  Class c;
 
 #warning things may crash here...
   values = calloc (100, sizeof (NSMutableString *));
@@ -1075,7 +1076,11 @@ static Class sogoAppointmentFolderKlass = Nil;
 
 #warning this check should be done directly in the query... we should fix this sometime
   mgr = [SoSecurityManager sharedSecurityManager];
-  sogoObject = [self _createChildComponentWithRecord: object];
+  
+  //c = [self objectClassForComponentName: [object objectForKey: @"c_component"]];
+  sogoObject = [SOGoCalendarComponent objectWithRecord: object  inContainer: self];
+  [sogoObject setComponentTag: [object objectForKey: @"c_component"]];
+  //sogoObject = [self _createChildComponentWithRecord: object];
 
   if (activeUserIsOwner
       || [[self ownerInContext: context]
@@ -1167,35 +1172,35 @@ static Class sogoAppointmentFolderKlass = Nil;
 - (void) appendObject: (NSDictionary *) object
 	   properties: (NSString **) properties
           withBaseURL: (NSString *) baseURL
-    toComplexResponse: (WOResponse *) r
+	     toBuffer: (NSMutableString *) r
 {
   NSArray *propstats;
   unsigned int count, max;
 
-  [r appendContentString: @"<D:response><D:href>"];
-  [r appendContentString: baseURL];
+  [r appendFormat: @"<D:response><D:href>"];
+  [r appendString: baseURL];
 //   if (![baseURL hasSuffix: @"/"])
 //     [r appendContentString: @"/"];
-  [r appendContentString: [object objectForKey: @"c_name"]];
-  [r appendContentString: @"</D:href>"];
+  [r appendString: [object objectForKey: @"c_name"]];
+  [r appendString: @"</D:href>"];
 
 //   NSLog (@"(appendPropstats...): %@", [NSDate date]);
   propstats = [self _propstats: properties ofObject: object];
   max = [propstats count];
   for (count = 0; count < max; count++)
     [self _appendPropstat: [propstats objectAtIndex: count]
-	  toResponse: r];
+	  toBuffer: r];
 //   NSLog (@"/(appendPropstats...): %@", [NSDate date]);
 
-  [r appendContentString: @"</D:response>"];
+  [r appendString: @"</D:response>"];
 }
 
 - (void) appendMissingObjectRef: (NSString *) href
-	      toComplexResponse: (WOResponse *) r
+		       toBuffer: (NSMutableString *) r
 {
-  [r appendContentString: @"<D:response><D:href>"];
-  [r appendContentString: href];
-  [r appendContentString: @"</D:href><D:status>HTTP/1.1 404 Not Found</D:status></D:response>"];
+  [r appendString: @"<D:response><D:href>"];
+  [r appendString: href];
+  [r appendString: @"</D:href><D:status>HTTP/1.1 404 Not Found</D:status></D:response>"];
 }
 
 - (void) _appendTimeRange: (id <DOMElement>) timeRangeElement
@@ -1452,33 +1457,48 @@ static Class sogoAppointmentFolderKlass = Nil;
 		    matchingFilters: (NSArray *) filters
 			 toResponse: (WOResponse *) response
 {
-  NSArray *apts;
+  NSArray *apts, *fields;
   NSDictionary *currentFilter;
   NSEnumerator *filterList;
   NSString *additionalFilters, *baseURL;
+  NSMutableString *buffer;
   unsigned int count, max;
 
   baseURL = [[self davURL] absoluteString];
-
+  
+  // We check if we need to fetch all fields. If the DAV client
+  // has only asked for {DAV:}getetag with no other properties,
+  // we do not load the c_content and other fields from the
+  // database as this can be pretty costly.
+  if ([*properties caseInsensitiveCompare: @"{DAV:}getetag"] == NSOrderedSame &&
+      !*(properties+1))
+    fields =[NSArray arrayWithObjects: @"c_name", @"c_version",
+		     @"c_component", nil];
+  else
+    fields = reportQueryFields;
+    
   filterList = [filters objectEnumerator];
   while ((currentFilter = [filterList nextObject]))
     {
       additionalFilters = [self _composeAdditionalFilters: currentFilter];
-//       NSLog(@"query");
-      apts = [self bareFetchFields: reportQueryFields
+      NSLog(@"query");
+      apts = [self bareFetchFields: fields
 		   from: [currentFilter objectForKey: @"start"]
                    to: [currentFilter objectForKey: @"end"]
 		   title: [currentFilter objectForKey: @"title"]
                    component: [currentFilter objectForKey: @"name"]
 		   additionalFilters: additionalFilters];
-//       NSLog(@"adding properties");
+      NSLog(@"adding properties");
       max = [apts count];
+      buffer = [[NSMutableString alloc] initWithCapacity: max*512];
       for (count = 0; count < max; count++)
 	[self appendObject: [apts objectAtIndex: count]
 	      properties: properties
 	      withBaseURL: baseURL
-	      toComplexResponse: response];
-//       NSLog(@"done");
+	      toBuffer: buffer];
+      NSLog(@"done");
+      [response appendContentString: buffer];
+      [buffer release];
     }
 }
 
@@ -1640,6 +1660,7 @@ static Class sogoAppointmentFolderKlass = Nil;
   NSDictionary *currentComponent, *components;
   NSString *currentURL, *baseURL;
   NSMutableArray *urls;
+  NSMutableString *buffer;
   unsigned int count, max;
 
   baseURL = [[self davURL] absoluteString];
@@ -1656,6 +1677,7 @@ static Class sogoAppointmentFolderKlass = Nil;
   components = [self _fetchComponentsMatchingURLs: urls];
   max = [urls count];
 //   NSLog (@"adding properties with url");
+  buffer = [[NSMutableString alloc] initWithCapacity: max*512];
   for (count = 0; count < max; count++)
     {
       currentComponent
@@ -1664,11 +1686,13 @@ static Class sogoAppointmentFolderKlass = Nil;
 	[self appendObject: currentComponent
 	      properties: properties
 	      withBaseURL: baseURL
-	      toComplexResponse: response];
+	      toBuffer: buffer];
       else
 	[self appendMissingObjectRef: currentURL
-	      toComplexResponse: response];
+	      toBuffer: buffer];
     }
+  [response appendContentString: buffer];
+  [buffer release];
 //   NSLog (@"/adding properties with url");
 
   [urls release];

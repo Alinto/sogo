@@ -83,6 +83,7 @@ static BOOL sendEMailNotifications = NO;
       fullCalendar = nil;
       safeCalendar = nil;
       originalCalendar = nil;
+      componentTag = nil;
     }
 
   return self;
@@ -93,6 +94,7 @@ static BOOL sendEMailNotifications = NO;
   [fullCalendar release];
   [safeCalendar release];
   [originalCalendar release];
+  [componentTag release];
   [super dealloc];
 }
 
@@ -103,9 +105,15 @@ static BOOL sendEMailNotifications = NO;
 
 - (NSString *) componentTag
 {
-  [self subclassResponsibility: _cmd];
+  if (!componentTag)
+    [self subclassResponsibility: _cmd];
 
-  return nil;
+  return componentTag;
+}
+
+- (void) setComponentTag: (NSString *) theTag
+{
+  ASSIGN(componentTag, theTag);
 }
 
 - (void) _filterComponent: (iCalEntityObject *) component
@@ -326,10 +334,9 @@ _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
 
 - (iCalCalendar *) calendar: (BOOL) create secure: (BOOL) secure
 {
-  NSString *componentTag;
   iCalRepeatableEntityObject *newComponent;
   iCalCalendar **calendar, *returnedCopy;
-  NSString *iCalString;
+  NSString *iCalString, *tag;
 
   if (secure)
     calendar = &safeCalendar;
@@ -356,9 +363,9 @@ _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
 	      ASSIGN (*calendar, [iCalCalendar groupWithTag: @"vcalendar"]);
 	      [*calendar setVersion: @"2.0"];
 	      [*calendar setProdID: @"-//Inverse inc.//SOGo 0.9//EN"];
-	      componentTag = [[self componentTag] uppercaseString];
-	      newComponent = [[*calendar classForTag: componentTag]
-			       groupWithTag: componentTag];
+	      tag = [[self componentTag] uppercaseString];
+	      newComponent = [[*calendar classForTag: tag]
+			       groupWithTag: tag];
 	      [newComponent setUid: [self globallyUniqueObjectId]];
 	      [*calendar addChild: newComponent];
 	    }
@@ -453,6 +460,7 @@ _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
 
 - (void) sendEMailUsingTemplateNamed: (NSString *) newPageName
 			   forObject: (iCalRepeatableEntityObject *) object
+		      previousObject: (iCalRepeatableEntityObject *) previousObject
                          toAttendees: (NSArray *) attendees
 {
   NSString *pageName;
@@ -467,7 +475,7 @@ _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
   NGMimeMessage *msg;
   NGMimeBodyPart *bodyPart;
   NGMimeMultipartBody *body;
-  SOGoUser *ownerUser, *currentUser;
+  SOGoUser *ownerUser;
 
   if (sendEMailNotifications
       && [object isStillRelevant])
@@ -511,6 +519,7 @@ _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
 		  /* construct message content */
 		  p = [app pageWithName: pageName inContext: context];
 		  [p setApt: object];
+		  [p setPreviousApt: previousObject];
 		  
 		  if ([[object organizer] cn] && [[[object organizer] cn] length])
 		    {

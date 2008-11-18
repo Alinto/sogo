@@ -84,7 +84,7 @@
 - (void) renameTo: (NSString *) newName;
 
 - (WOResponse *) subscribe: (BOOL) reallyDo
-	       inTheNameOf: (NSString *) delegatedUser
+	      inTheNamesOf: (NSArray *) delegatedUsers
 	fromMailInvitation: (BOOL) isMailInvitation
 		 inContext: (WOContext *) localContext;
 

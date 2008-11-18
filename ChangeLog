@@ -1,3 +1,13 @@
+2008-11-17  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+        * Added back the appointment update notification
+	templates from RC8 and updated them.
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	Greatly improved the speed of getetag calls
+	* SoObjects/SOGo/SOGoGCSFolder.m
+	We now allow multiple users subscribe/unsubscribe
+	requests during one DAV call.
+
 2008-11-13  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentObject.m
