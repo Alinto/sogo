@@ -1,3 +1,11 @@
+2008-11-20  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* Fixed a crash issue in SOGoCache - we don't
+	replaced the cached object.
+	* Reworked the freebusy code to ignore c_status
+	and rather consider the values of the particpant
+	states (accepted/needs-action/declined)
+
 2008-11-18  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
         * SoObjects/Appointments/SOGoAppointmentObject.m

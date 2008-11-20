@@ -274,8 +274,6 @@ static NSString *uidColumnName = @"c_uid";
 	      d = [[NSMutableDictionary alloc] init];
 	      [d setObject: values forKey: @"values"];
 	      [d setObject: uid  forKey: @"uid"];
-	      [d setObject: fieldName forKey: @"fieldName"];
-	      [d setObject: url forKey: @"url"];
 
 #warning reenable when the code to use the SOGoCache is finished	      
 	      [[NSDistributedNotificationCenter defaultCenter]

@@ -101,16 +101,54 @@ static NSString *LDAPContactInfoAttribute = nil;
               fromStartDate: (NSCalendarDate *) startDate
                   toEndDate: (NSCalendarDate *) endDate
 {
-  NSDictionary *record;
-  int recordCount, recordMax, count, startInterval, endInterval;
+  NSArray *emails, *partstates;
   NSCalendarDate *currentDate;
+  NSDictionary *record;
+  SOGoUser *user;
+
+  int recordCount, recordMax, count, startInterval, endInterval, i, type;
 
   recordMax = [records count];
+  user = [SOGoUser userWithLogin: [[self clientObject] ownerInContext: context]
+		     roles: nil];
+
   for (recordCount = 0; recordCount < recordMax; recordCount++)
     {
       record = [records objectAtIndex: recordCount];
       if ([[record objectForKey: @"c_isopaque"] boolValue])
 	{
+	type = 0;
+
+	// If the event has NO organizer (which means it's the user that has created it) OR
+	// If we are the organizer of the event THEN we are automatically busy
+	if ([[record objectForKey: @"c_orgmail"] length] == 0 ||
+	    [user hasEmail: [record objectForKey: @"c_orgmail"]])
+	  {
+	    type = 1;
+	  }
+	else
+	  {
+	    // We check if the user has accepted/declined or needs action
+	    // on the current event.
+	    emails = [[record objectForKey: @"c_partmails"] componentsSeparatedByString: @"\n"];
+
+	    for (i = 0; i < [emails count]; i++)
+	      {
+		if ([user hasEmail: [emails objectAtIndex: i]])
+		  {
+		    // We now fetch the c_partstates array and get the participation
+		    // status of the user for the event
+		    partstates = [[record objectForKey: @"c_partstates"] componentsSeparatedByString: @"\n"];
+		    
+		    if (i < [partstates count])
+		      {
+			type = ([[partstates objectAtIndex: i] intValue] < 2 ? 1 : 0);
+		      }
+		    break;
+		  }
+	      }
+	  }
+
 	  currentDate = [record objectForKey: @"startDate"];
 	  if ([currentDate earlierDate: startDate] == currentDate)
 	    startInterval = 0;
@@ -125,8 +163,9 @@ static NSString *LDAPContactInfoAttribute = nil;
 	    endInterval = ([currentDate timeIntervalSinceDate: startDate]
 			   / intervalSeconds);
 
-	  for (count = startInterval; count < endInterval; count++)
-	    *(items + count) = 1;
+	  if (type == 1)
+	    for (count = startInterval; count < endInterval; count++)
+	      *(items + count) = 1;
 	}
     }
 }

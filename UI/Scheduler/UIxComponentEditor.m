@@ -918,15 +918,15 @@ iRANGE(2);
 
 - (NSArray *) statusTypes
 {
-  static NSArray *priorities = nil;
+  static NSArray *statusTypes = nil;
 
-  if (!priorities)
+  if (!statusTypes)
     {
-      priorities = [NSArray arrayWithObjects: @"", @"TENTATIVE", @"CONFIRMED", @"CANCELLED", nil];
-      [priorities retain];
+      statusTypes = [NSArray arrayWithObjects: @"", @"TENTATIVE", @"CONFIRMED", @"CANCELLED", nil];
+      [statusTypes retain];
     }
 
-  return priorities;
+  return statusTypes;
 }
 
 - (void) setStatus: (NSString *) _status

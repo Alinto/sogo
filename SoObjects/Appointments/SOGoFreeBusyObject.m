@@ -89,15 +89,15 @@ static unsigned int freebusyRangeEnd = 0;
 }
 
 /* Private API */
-- (iCalFreeBusyType) _fbTypeForEventStatus: (NSNumber *) eventStatus
+- (iCalFreeBusyType) _fbTypeForEventStatus: (int) eventStatus
 {
-  unsigned int status;
+  //unsigned int status;
   iCalFreeBusyType fbType;
 
-  status = [eventStatus unsignedIntValue];
-  if (status == 0)
+  //status = [eventStatus unsignedIntValue];
+  if (eventStatus == 0)
     fbType = iCalFBBusyTentative;
-  else if (status == 1)
+  else if (eventStatus == 1)
     fbType = iCalFBBusy;
   else
     fbType = iCalFBFree;
@@ -110,14 +110,18 @@ static unsigned int freebusyRangeEnd = 0;
                                      from: (NSCalendarDate *) _startDate
                                        to: (NSCalendarDate *) _endDate
 {
-  NSString *uid;
+  NSArray *emails, *partstates;
   NSEnumerator *events;
   iCalCalendar *calendar;
   iCalFreeBusy *freebusy;
   NSDictionary *info;
   iCalFreeBusyType type;
+  SOGoUser *user;
+  NSString *uid;
+  int i;
 
   uid = [container ownerInContext: context];
+  user = [SOGoUser userWithLogin: uid  roles: nil];
 
   calendar = [iCalCalendar groupWithTag: @"vcalendar"];
   [calendar setProdID: @"//Inverse inc./SOGo 0.9"];
@@ -143,10 +147,42 @@ static unsigned int freebusyRangeEnd = 0;
   while ((info = [events nextObject]))
     if ([[info objectForKey: @"c_isopaque"] boolValue])
       {
-	type = [self _fbTypeForEventStatus: [info objectForKey: @"c_status"]];
-	[freebusy addFreeBusyFrom: [info objectForKey: @"startDate"]
-		  to: [info objectForKey: @"endDate"]
-		  type: type];
+	type = iCalFBFree;
+
+	// If the event has NO organizer (which means it's the user that has created it) OR
+	// If we are the organizer of the event THEN we are automatically busy
+	if ([[info objectForKey: @"c_orgmail"] length] == 0 ||
+	    [user hasEmail: [info objectForKey: @"c_orgmail"]])
+	  {
+	    type = iCalFBBusy;
+	  }
+	else
+	  {
+	    // We check if the user has accepted/declined or needs action
+	    // on the current event.
+	    emails = [[info objectForKey: @"c_partmails"] componentsSeparatedByString: @"\n"];
+
+	    for (i = 0; i < [emails count]; i++)
+	      {
+		if ([user hasEmail: [emails objectAtIndex: i]])
+		  {
+		    // We now fetch the c_partstates array and get the participation
+		    // status of the user for the event
+		    partstates = [[info objectForKey: @"c_partstates"] componentsSeparatedByString: @"\n"];
+		    
+		    if (i < [partstates count])
+		      {
+			type = [self _fbTypeForEventStatus: [[partstates objectAtIndex: i] intValue]];
+		      }
+		    break;
+		  }
+	      }
+	  }
+
+	if (type == iCalFBBusy || type == iCalFBBusyTentative)
+	  [freebusy addFreeBusyFrom: [info objectForKey: @"startDate"]
+		    to: [info objectForKey: @"endDate"]
+		    type: type];
       }
 
   [calendar setUniqueChild: freebusy];

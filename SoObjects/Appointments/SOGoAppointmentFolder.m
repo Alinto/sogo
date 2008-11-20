@@ -2217,7 +2217,7 @@ static Class sogoAppointmentFolderKlass = Nil;
   
   if (!infos)
     infos = [[NSArray alloc] initWithObjects: @"c_partmails", @"c_partstates",
-                             @"c_isopaque", @"c_status", @"c_cycleinfo", nil];
+                             @"c_isopaque", @"c_status", @"c_cycleinfo", @"c_orgmail", nil];
 
   return [self fetchFields: infos
 	       from: _startDate to: _endDate

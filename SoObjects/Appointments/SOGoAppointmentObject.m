@@ -568,7 +568,7 @@
   while ((recipient = [recipientsEnum nextObject]))
     if ([[recipient lowercaseString] hasPrefix: @"mailto:"])
       {
-	person = [iCalPerson new];
+ 	person = [iCalPerson new];
 	[person setValue: 0 to: recipient];
 	uid = [person uid];
 	oldEvent = nil;

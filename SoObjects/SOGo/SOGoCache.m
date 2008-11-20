@@ -240,32 +240,28 @@ static SOGoCache *sharedCache = nil;
 
 - (void) _userDefaultsHaveChanged: (NSNotification *) theNotification
 {
-  SOGoUserDefaults *d;
-
-  d = [[SOGoUserDefaults alloc] initWithTableURL: [[theNotification userInfo] objectForKey: @"url"]
-				uid: [[theNotification userInfo] objectForKey: @"uid"]
-				fieldName: [[theNotification userInfo] objectForKey: @"fieldName"]];
-  [d setValues: [[theNotification userInfo] objectForKey: @"values"]];
+  SOGoUser *user;
+  NSString *uid;
   
-     
-  [SOGoCache setCachedUserDefaults: d
-	     user: [[theNotification userInfo] objectForKey: @"uid"]];
-  [d release];
+  uid = [[theNotification userInfo] objectForKey: @"uid"];
+
+  if ((user = [users objectForKey: uid]))
+    {
+      [[user userDefaults] setValues: [[theNotification userInfo] objectForKey: @"values"]];
+    }
 }
 
 - (void) _userSettingsHaveChanged: (NSNotification *) theNotification
 {
-  SOGoUserDefaults *d;
-
-  d = [[SOGoUserDefaults alloc] initWithTableURL: [[theNotification userInfo] objectForKey: @"url"]
-				uid: [[theNotification userInfo] objectForKey: @"uid"]
-				fieldName: [[theNotification userInfo] objectForKey: @"fieldName"]];
-  [d setValues: [[theNotification userInfo] objectForKey: @"values"]];
+  SOGoUser *user;
+  NSString *uid;
   
-     
-  [SOGoCache setCachedUserSettings: d
-	     user: [[theNotification userInfo] objectForKey: @"uid"]];
-  [d release];
+  uid = [[theNotification userInfo] objectForKey: @"uid"];
+
+  if ((user = [users objectForKey: uid]))
+    {
+      [[user userSettings] setValues: [[theNotification userInfo] objectForKey: @"values"]];
+    }
 }
 
 - (void) _cleanupSources
