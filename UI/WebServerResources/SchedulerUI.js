@@ -396,7 +396,7 @@ function onViewEventCallback(http) {
     }
   }
 	else {
-    log("onViewEventCallback ajax error:" + http.url);		
+    log("onViewEventCallback ajax error: " + http.url);		
 	}
 }
 
@@ -414,23 +414,29 @@ function performEventEdition(folder, event, recurrence) {
 }
 
 function performEventDeletion(folder, event, recurrence) {
-  if (calendarEvents) {
-    var urlstr = ApplicationBaseURL + folder + "/" + event;
-    var occurenceTime;
+  if (calendarEvents) {  
     if (recurrence) {
-      urlstr += "/" + recurrence;
-      occurenceTime = recurrence.substring(9);
+			// Only one recurrence
+			var occurenceTime = recurrence.substring(9);
+      var nodes = _eventBlocksMatching(folder, event, occurenceTime);
+			var urlstr = ApplicationBaseURL + folder + "/" + event  + "/" + recurrence + "/delete";
+			
+			if (nodes)
+				document.deleteEventAjaxRequest = triggerAjaxRequest(urlstr,
+																														 performDeleteEventCallback,
+																														 { nodes: nodes,
+																															 occurence: occurenceTime });
     }
-    else
-      occurenceTime = null;
-
-    urlstr += "/delete";
-    var nodes = _eventBlocksMatching(folder, event, occurenceTime);
-    if (nodes)
-      document.deleteEventAjaxRequest = triggerAjaxRequest(urlstr,
-																													 performDeleteEventCallback,
-																													 { nodes: nodes,
-																														 occurence: occurenceTime });
+    else {
+			// All recurrences
+			if (document.deleteEventAjaxRequest) {
+				document.deleteEventAjaxRequest.aborted = true;
+				document.deleteEventAjaxRequest.abort();
+			}
+			eventsToDelete.push([event]);
+			calendarsOfEventsToDelete.push(folder);
+			_batchDeleteEvents();
+		}
   }
 }
 
@@ -443,7 +449,6 @@ function performDeleteEventCallback(http) {
       var calendar = nodes[0].calendar;
       for (var i = 0; i < nodes.length; i++) {
 				var node = nodes[i];
-				// 	log("node: " + node);
 				node.parentNode.removeChild(node);
       }
       var basename = calendar + "-" + cname;
@@ -453,11 +458,12 @@ function performDeleteEventCallback(http) {
 				if (row)
 					row.parentNode.removeChild(row);
 
+				// Update calendar events cache
 				var occurences = calendarEvents[calendar][cname];
 				var newOccurences = [];
 				for (var i = 0; i < occurences.length; i++) {
 					var occurence = occurences[i];
-					if (occurence[13] != recurrenceTime)
+					if (occurence[13] != occurenceTime)
 						newOccurences.push(occurence);
 				}
 				calendarEvents[calendar][cname] = newOccurences;

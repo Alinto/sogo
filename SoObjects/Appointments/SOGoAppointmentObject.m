@@ -50,6 +50,7 @@
 #import "NSArray+Appointments.h"
 #import "SOGoAppointmentFolder.h"
 #import "SOGoAppointmentOccurence.h"
+#import "SOGoCalendarComponent.h"
 
 #import "SOGoAppointmentObject.h"
 
@@ -162,6 +163,7 @@
   NSString *possibleName;
 
   folder = [container lookupCalendarFolderForUID: uid];
+  // should call lookupCalendarFoldersForUIDs to search among all folders
   object = [folder lookupName: nameInContainer
 		   inContext: context acquire: NO];
   if ([object isKindOfClass: [NSException class]])
@@ -324,7 +326,7 @@
   if ([attendees count])
     {
       [self _handleAddedUsers: attendees fromEvent: newEvent];
-      [self sendEMailUsingTemplateNamed: @"Invitation"
+      [self sendEMailUsingTemplateNamed: @"Update"
 	    forObject: [newEvent itipEntryWithMethod: @"request"]
 	    previousObject: oldEvent
 	    toAttendees: attendees];
@@ -379,14 +381,18 @@
 - (NSException *) _updateAttendee: (iCalPerson *) attendee
                         ownerUser: (SOGoUser *) theOwnerUser
 		      forEventUID: (NSString *) eventUID
+		 withRecurrenceId: (NSCalendarDate *) recurrenceId
 		     withSequence: (NSNumber *) sequence
 			   forUID: (NSString *) uid
 	          shouldAddSentBy: (BOOL) b
 {
   SOGoAppointmentObject *eventObject;
-  iCalEvent *event;
+  //iCalEvent *event;
+  iCalCalendar *calendar;
+  iCalEntityObject *event;
   iCalPerson *otherAttendee;
-  NSString *iCalString;
+  NSArray *events;
+  NSString *iCalString, *recurrenceTime;
   NSException *error;
 
   error = nil;
@@ -394,32 +400,55 @@
   eventObject = [self _lookupEvent: eventUID forUID: uid];
   if (![eventObject isNew])
     {
-      event = [eventObject component: NO secure: NO];
+      if (recurrenceId == nil)
+	{
+	  // We must update main event and all its occurences (if any).
+	  calendar = [eventObject calendar: NO secure: NO];
+	  event = [calendar firstChildWithTag: [self componentTag]];
+	  events = [calendar allObjects];
+	}
+      else
+	{
+	  // If recurrenceId is defined, find the specified occurence
+	  // within the repeating vEvent.
+	  recurrenceTime = [NSString stringWithFormat: @"%f", [recurrenceId timeIntervalSince1970]];
+	  event = [eventObject lookupOccurence: recurrenceTime];
+	  
+	  if (event == nil)
+	    event = [eventObject newOccurenceWithID: recurrenceTime];
+	  events = [NSArray arrayWithObject: event];
+	}
+
       if ([[event sequence] compare: sequence]
 	  == NSOrderedSame)
 	{
 	  SOGoUser *currentUser;
-	  
-	  //otherAttendee = [event findParticipant: [context activeUser]];
-	  otherAttendee = [event findParticipant: theOwnerUser];
-	  [otherAttendee setPartStat: [attendee partStat]];
-	  
-	  // If one has accepted / declined an invitation on behalf of
-	  // the attendee, we add the user to the SENT-BY attribute.
-	  currentUser = [context activeUser];
-	  if (b && ![[currentUser login] isEqualToString: [theOwnerUser login]])
+	  int i;
+
+	  for (i = 0; i < [events count]; i++)
 	    {
-	      NSString *currentEmail;
-	      currentEmail = [[currentUser allEmails] objectAtIndex: 0];
-	      [otherAttendee addAttribute: @"SENT-BY"
-			     value: [NSString stringWithFormat: @"\"MAILTO:%@\"", currentEmail]];
-	    }
-	  else
-	    {
-	      // We must REMOVE any SENT-BY here. This is important since if A accepted
-	      // the event for B and then, B changes by himself his participation status,
-	      // we don't want to keep the previous SENT-BY attribute there.
-	      [(NSMutableDictionary *)[otherAttendee attributes] removeObjectForKey: @"SENT-BY"];
+	      event = [events objectAtIndex: i];
+
+	      otherAttendee = [event findParticipant: theOwnerUser];
+	      [otherAttendee setPartStat: [attendee partStat]];
+	  
+	      // If one has accepted / declined an invitation on behalf of
+	      // the attendee, we add the user to the SENT-BY attribute.
+	      currentUser = [context activeUser];
+	      if (b && ![[currentUser login] isEqualToString: [theOwnerUser login]])
+		{
+		  NSString *currentEmail;
+		  currentEmail = [[currentUser allEmails] objectAtIndex: 0];
+		  [otherAttendee addAttribute: @"SENT-BY"
+				 value: [NSString stringWithFormat: @"\"MAILTO:%@\"", currentEmail]];
+		}
+	      else
+		{
+		  // We must REMOVE any SENT-BY here. This is important since if A accepted
+		  // the event for B and then, B changes by himself his participation status,
+		  // we don't want to keep the previous SENT-BY attribute there.
+		  [(NSMutableDictionary *)[otherAttendee attributes] removeObjectForKey: @"SENT-BY"];
+		}
 	    }
 	  
 	  iCalString = [[event parent] versitString];
@@ -489,10 +518,16 @@
 		  from: ownerUser];
 	  
 	  organizerUID = [[event organizer] uid];
+
+	  if (!organizerUID)
+	    // event is an recurrence; retrieve organizer from master event
+	    organizerUID = [[(iCalEntityObject*)[[event parent] firstChildWithTag: [self componentTag]] organizer] uid];
+
 	  if (organizerUID)
 	    ex = [self _updateAttendee: attendee
 		       ownerUser: theOwnerUser
 		       forEventUID: [event uid]
+		       withRecurrenceId: [event recurrenceId]
 		       withSequence: [event sequence]
 		       forUID: organizerUID
 		       shouldAddSentBy: YES];
@@ -523,6 +558,7 @@
 	      [self _updateAttendee: attendee
 		    ownerUser: theOwnerUser
 		    forEventUID: [event uid]
+		    withRecurrenceId: [event recurrenceId]
 		    withSequence: [event sequence]
 		    forUID: uid
 		    shouldAddSentBy: YES];
@@ -687,6 +723,7 @@
        [self _updateAttendee: attendee
 	     ownerUser: ownerUser
 	     forEventUID: [event uid]
+	     withRecurrenceId: [event recurrenceId]
 	     withSequence: [event sequence]
 	     forUID: uid
 	     shouldAddSentBy: NO];
@@ -713,6 +750,7 @@
 	      [self _updateAttendee: attendee
 		    ownerUser: ownerUser
 		    forEventUID: [event uid]
+		    withRecurrenceId: [event recurrenceId]
 		    withSequence: [event sequence]
 		    forUID: uid
 		    shouldAddSentBy: NO];
@@ -778,14 +816,38 @@
 //
 - (NSException *) changeParticipationStatus: (NSString *) _status
 {
+  return [self changeParticipationStatus: _status forRecurrenceId: nil];
+}
+
+- (NSException *) changeParticipationStatus: (NSString *) _status forRecurrenceId: (NSCalendarDate *) _recurrenceId
+{
+  iCalCalendar *calendar;
   iCalEvent *event;
   iCalPerson *attendee;
   NSException *ex;
   SOGoUser *ownerUser;
+  NSString *recurrenceTime;
 
+  event = nil;
   ex = nil;
 
-  event = [self component: NO secure: NO];
+  calendar = [self calendar: NO secure: NO];
+  if (calendar)
+    {
+      if (_recurrenceId)
+	{
+	  // If _recurrenceId is defined, find the specified occurence
+	  // within the repeating vEvent.
+	  recurrenceTime = [NSString stringWithFormat: @"%f", [_recurrenceId timeIntervalSince1970]];
+	  event = [self lookupOccurence: recurrenceTime];
+	  // If no occurence found, create one
+	  event = [self newOccurenceWithID: recurrenceTime];
+	}
+      else
+	// No specific occurence specified; return the first vEvent of
+	// the vCalendar.
+	event = [calendar firstChildWithTag: [self componentTag]];
+    }
   if (event)
     {
       // owerUser will actually be the owner of the calendar
@@ -794,7 +856,7 @@
       // course be on the attendee that is the owner of the
       // calendar where the participation change has occured.
       ownerUser = [SOGoUser userWithLogin: owner roles: nil];
-     
+      
       attendee = [event findParticipant: ownerUser];
       if (attendee)
 	ex = [self _handleAttendee: attendee
@@ -802,14 +864,14 @@
 		   statusChange: _status
 		   inEvent: event];
       else
-        ex = [NSException exceptionWithHTTPStatus: 404 /* Not Found */
+        ex = [NSException exceptionWithHTTPStatus: 404 // Not Found
                           reason: @"user does not participate in this "
                           @"calendar event"];
     }
   else
-    ex = [NSException exceptionWithHTTPStatus: 500 /* Server Error */
+    ex = [NSException exceptionWithHTTPStatus: 500 // Server Error
                       reason: @"unable to parse event record"];
-
+  
   return ex;
 }
 
@@ -827,7 +889,7 @@
 	occurence = event;
       if ([event userIsOrganizer: ownerUser])
 	{
-	  currentUser = [context activeUser];
+	  currentUser = [context activeUser]; // is this correct?
 	  attendees = [occurence attendeesWithoutUser: currentUser];
 	  if (![attendees count] && event != occurence)
 	    attendees = [event attendeesWithoutUser: currentUser];

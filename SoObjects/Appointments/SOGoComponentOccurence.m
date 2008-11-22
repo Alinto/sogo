@@ -27,9 +27,11 @@
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalRepeatableEntityObject.h>
 
+#import "SOGoAppointmentObject.h"
+#import "SOGoCalendarComponent.h"
+
 #import "SOGoComponentOccurence.h"
 
-#import "SOGoCalendarComponent.h"
 @interface SOGoCalendarComponent (OccurenceExtensions)
 
 - (void) prepareDeleteOccurence: (iCalRepeatableEntityObject *) component;
@@ -135,7 +137,7 @@
   return component;
 }
 
-- (NSException *) delete;
+- (NSException *) prepareDelete;
 {
   NSException *error;
   iCalCalendar *parent;
@@ -149,7 +151,10 @@
       [master addToExceptionDates: [component startDate]];
       parent = [component parent];
       [[parent children] removeObject: component];
+      
+      // changes participant status & send invitation email - as if it was a new event! :(
       [container saveComponent: master];
+
       error = nil;
     }
 
@@ -163,9 +168,13 @@
 
 #warning most of SOGoCalendarComponent and SOGoComponentOccurence share the same external interface... \
   they should be siblings or SOGoComponentOccurence the parent class of SOGoCalendarComponent...
-- (NSException *) changeParticipationStatus: (NSString *) newPartStat
+- (NSException *) changeParticipationStatus: (NSString *) newStatus
 {
-  return [container changeParticipationStatus: newPartStat];
+  NSCalendarDate *date;
+
+  date = [component recurrenceId];
+
+  return [container changeParticipationStatus: newStatus forRecurrenceId: date];
 }
 
 @end

@@ -116,11 +116,11 @@
   doesOccur = [self isRecurrent];
   if (doesOccur)
     {
-      tz = [occurenceDate timeZone];
-      if ([tz isDaylightSavingTimeForDate: occurenceDate] != [tz isDaylightSavingTimeForDate: [self startDate]]) {
-	daylightOffset = [tz secondsFromGMTForDate: occurenceDate] - [tz secondsFromGMTForDate: [self startDate]];
-	occurenceDate =  [occurenceDate dateByAddingYears: 0 months: 0 days: 0 hours: 0 minutes: 0 seconds: daylightOffset];
-      }
+//      tz = [occurenceDate timeZone];
+//      if ([tz isDaylightSavingTimeForDate: occurenceDate] != [tz isDaylightSavingTimeForDate: [self startDate]]) {
+//	daylightOffset = [tz secondsFromGMTForDate: occurenceDate] - [tz secondsFromGMTForDate: [self startDate]];
+//	occurenceDate =  [occurenceDate dateByAddingYears: 0 months: 0 days: 0 hours: 0 minutes: 0 seconds: daylightOffset];
+//      }
       
       endDate = [occurenceDate addTimeInterval: [self occurenceInterval]];
       checkRange = [NGCalendarDateRange calendarDateRangeWithStartDate: occurenceDate
