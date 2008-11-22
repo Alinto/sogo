@@ -107,7 +107,7 @@ static BOOL sendEMailNotifications = NO;
 {
   if (!componentTag)
     [self subclassResponsibility: _cmd];
-
+  
   return componentTag;
 }
 

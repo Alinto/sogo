@@ -275,7 +275,6 @@ static NSString *uidColumnName = @"c_uid";
 	      [d setObject: values forKey: @"values"];
 	      [d setObject: uid  forKey: @"uid"];
 
-#warning reenable when the code to use the SOGoCache is finished	      
 	      [[NSDistributedNotificationCenter defaultCenter]
 		postNotificationName: ([fieldName isEqualToString: @"c_defaults"] ? @"SOGoUserDefaultsHaveChanged" : @"SOGoUserSettingsHaveChanged")
 		object: nil

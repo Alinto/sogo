@@ -1470,25 +1470,29 @@ static Class sogoAppointmentFolderKlass = Nil;
   // has only asked for {DAV:}getetag with no other properties,
   // we do not load the c_content and other fields from the
   // database as this can be pretty costly.
+#if 0
+  // FOR AN UNKNOWN REASON FOR NOW, THIS GENERATES EMPTY ETAGS (ALL HAVE GCS0000000 VALUE)
   if ([*properties caseInsensitiveCompare: @"{DAV:}getetag"] == NSOrderedSame &&
       !*(properties+1))
-    fields =[NSArray arrayWithObjects: @"c_name", @"c_version",
-		     @"c_component", nil];
+    fields =  [NSArray arrayWithObjects: @"c_name", @"c_creationdate",
+		       @"c_lastmodified", @"c_version",
+		       @"c_component", nil];
   else
+#endif
     fields = reportQueryFields;
-    
+
   filterList = [filters objectEnumerator];
   while ((currentFilter = [filterList nextObject]))
     {
       additionalFilters = [self _composeAdditionalFilters: currentFilter];
-      NSLog(@"query");
+      //NSLog(@"query");
       apts = [self bareFetchFields: fields
 		   from: [currentFilter objectForKey: @"start"]
                    to: [currentFilter objectForKey: @"end"]
 		   title: [currentFilter objectForKey: @"title"]
                    component: [currentFilter objectForKey: @"name"]
 		   additionalFilters: additionalFilters];
-      NSLog(@"adding properties");
+      //NSLog(@"adding properties");
       max = [apts count];
       buffer = [[NSMutableString alloc] initWithCapacity: max*512];
       for (count = 0; count < max; count++)
@@ -1496,7 +1500,7 @@ static Class sogoAppointmentFolderKlass = Nil;
 	      properties: properties
 	      withBaseURL: baseURL
 	      toBuffer: buffer];
-      NSLog(@"done");
+      //NSLog(@"done");
       [response appendContentString: buffer];
       [buffer release];
     }

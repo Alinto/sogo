@@ -45,3 +45,8 @@ IsBody: WOConditional {
   condition = isSubject;
   negate    = YES;
 }
+
+Summary: WOString {
+  value = summary;
+  escapeHTML = NO;
+}

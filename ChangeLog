@@ -1,3 +1,10 @@
+2008-11-22  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+        * Modified the invitation "update" templates
+	to display the summar in the email subject.
+	* Commented out a premature optimization in
+	SOGoAppointmentFolder.m
+
 2008-11-20  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* Fixed a crash issue in SOGoCache - we don't
