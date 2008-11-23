@@ -1,3 +1,11 @@
+2008-11-23  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+        * UI/Scheduler/UIxComponentEditor.m - _loadAttendees
+	We set the name to the rfc822 email address if the
+	cn is not available. This avoid NOT showing attendees
+	from the Web interface when only the email address
+	was specified from the attendee list.
+
 2008-11-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUserFolder.m ([SOGoUserFolder

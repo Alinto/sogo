@@ -177,7 +177,11 @@ iRANGE(2);
   attendees = [[component attendees] objectEnumerator];
   while ((currentAttendee = [attendees nextObject]))
     {
-      [names appendFormat: @"%@,", [currentAttendee cn]];
+      if ([[currentAttendee cn] length])
+	[names appendFormat: @"%@,", [currentAttendee cn]];
+      else
+	[names appendFormat: @"%@,", [currentAttendee rfc822Email]];
+	
       [emails appendFormat: @"%@,", [currentAttendee rfc822Email]];
       uid = [um getUIDForEmail: [currentAttendee rfc822Email]];
       if (uid != nil)
