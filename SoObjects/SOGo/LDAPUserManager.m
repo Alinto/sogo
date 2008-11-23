@@ -60,6 +60,7 @@ static BOOL forceImapLoginWithEmail = NO;
 	}
 
       LDAPContactInfoAttribute = [ud stringForKey: @"SOGoLDAPContactInfoAttribute"];
+      [LDAPContactInfoAttribute retain];
     }
   if (!forceImapLoginWithEmail)
     forceImapLoginWithEmail = [ud boolForKey: @"SOGoForceIMAPLoginWithEmail"];
@@ -470,11 +471,10 @@ static BOOL forceImapLoginWithEmail = NO;
   NSDictionary *userEntry;
   NSArray *newContacts;
   NSMutableArray *emails;
-  NSString *uid, *email;
+  NSString *uid, *email, *infoAttribute;
 
   compactContacts = [NSMutableDictionary dictionary];
-  userEntry = [contacts nextObject];
-  while (userEntry)
+  while ((userEntry = [contacts nextObject]))
     {
       uid = [userEntry objectForKey: @"c_uid"];
       if ([uid length])
@@ -507,14 +507,17 @@ static BOOL forceImapLoginWithEmail = NO;
 	  email = [userEntry objectForKey: @"xmozillasecondemail"];
 	  if (email && ![emails containsObject: email])
 	    [emails addObject: email];
-	  if ([LDAPContactInfoAttribute length] > 0 &&
-	      [[returnContact objectForKey: LDAPContactInfoAttribute] length] > 0 &&
-	      [userEntry objectForKey: LDAPContactInfoAttribute] != nil)
-	    [returnContact setObject: [userEntry objectForKey: LDAPContactInfoAttribute]
+	  if ([LDAPContactInfoAttribute length]
+	      && ![[returnContact
+		     objectForKey: LDAPContactInfoAttribute] length])
+	    {
+	      infoAttribute
+		= [userEntry objectForKey: LDAPContactInfoAttribute];
+	      if ([infoAttribute length])
+		[returnContact setObject: infoAttribute
 			   forKey: LDAPContactInfoAttribute];
+	    }
 	}
-
-      userEntry = [contacts nextObject];
     }
   newContacts = [compactContacts allValues];
   [self _fillContactsMailRecords: [newContacts objectEnumerator]];

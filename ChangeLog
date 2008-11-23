@@ -1,3 +1,13 @@
+2008-11-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/LDAPUserManager.m ([LDAPUserManager
+	+initialize]): we need to retain the LDAPContactInfoAttribute
+	static var, to avoid a zombie.
+	([LDAPUserManager -fetchContactsMatching:filter])
+	([LDAPUserManager -fetchUsersMatching:filter]): the info attribute
+	is returned if the related entry does NOT contain it yet: the test
+	was reverted.
+
 2008-11-22  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
         * Modified the invitation "update" templates
