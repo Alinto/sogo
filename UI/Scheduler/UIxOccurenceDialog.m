@@ -87,4 +87,17 @@
   return self;
 }
 
+- (WOResponse *) deleteAction
+{
+  SOGoCalendarComponent *component;
+  WOResponse *response;
+
+  component = [self clientObject];
+  response = (WOResponse *) [component prepareDelete];
+  if (!response)
+    response = [self responseWithStatus: 204];
+
+  return response;
+}
+
 @end

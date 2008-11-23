@@ -79,6 +79,7 @@
 - (NSArray *) getUIDsForICalPersons: (NSArray *) iCalPersons;
 
 /* recurrences */
+- (iCalRepeatableEntityObject *) lookupOccurence: (NSString *) recID;
 - (SOGoComponentOccurence *)
  occurence: (iCalRepeatableEntityObject *) component;
 - (iCalRepeatableEntityObject *) newOccurenceWithID: (NSString *) recID;

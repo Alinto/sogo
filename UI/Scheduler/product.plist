@@ -251,7 +251,7 @@
 	confirmDeletion = { 
 	  protectedBy = "ModifyComponent";
 	  pageName    = "UIxOccurenceDialog";
-	  actionName = "confirmDeletion";
+	  actionName  = "confirmDeletion";
 	};
       };
     };
@@ -272,6 +272,11 @@
 	  protectedBy = "ModifyComponent";
 	  pageName    = "UIxAppointmentEditor"; 
 	  actionName  = "save";
+	};
+	delete = {
+	  protectedBy = "Delete Objects";
+	  pageName    = "UIxOccurenceDialog";
+	  actionName  = "delete";
 	};
       };
     };

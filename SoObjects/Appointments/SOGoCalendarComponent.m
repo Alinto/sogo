@@ -532,6 +532,8 @@ _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
 
 		  subject = [p getSubject];
 		  text = [p getBody];
+		  NSLog(@"Template: %@", pageName);
+		  NSLog(@"Email: %@ => %@ (%@)", senderEmail, recipient, subject);
 
 		  /* construct message */
 		  headerMap = [NGMutableHashMap hashMapWithCapacity: 5];

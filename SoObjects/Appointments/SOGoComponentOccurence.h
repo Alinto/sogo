@@ -34,7 +34,7 @@
 
 - (iCalRepeatableEntityObject *) occurence;
 - (BOOL) isNew;
-- (NSException *) delete;
+- (NSException *) prepareDelete;
 
 @end
 
