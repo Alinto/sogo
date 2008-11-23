@@ -50,7 +50,9 @@ static int sizeLimit;
   if (!commonSearchFields)
     {
       ud = [NSUserDefaults standardUserDefaults];
-      LDAPContactInfoAttribute = [ud stringForKey: @"SOGoLDAPContactInfoAttribute"];
+      LDAPContactInfoAttribute
+	= [ud stringForKey: @"SOGoLDAPContactInfoAttribute"];
+      [LDAPContactInfoAttribute retain];
       sizeLimit = [ud integerForKey: @"SOGoLDAPQueryLimit"];
       timeLimit = [ud integerForKey: @"SOGoLDAPQueryTimeout"];
 
@@ -122,9 +124,7 @@ static int sizeLimit;
 				    @"birthyear",
 				    @"serialNumber",
 				    @"calFBURL", @"proxyAddresses",
-				    nil];
-	
-      [LDAPContactInfoAttribute retain];
+				    nil];	
       [commonSearchFields retain];
     }
 }
