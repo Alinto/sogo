@@ -23,6 +23,7 @@
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSURL.h>
+#import <Foundation/NSUserDefaults.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoClassSecurityInfo.h>
@@ -55,7 +56,22 @@
 
 #import "SOGoUserFolder.h"
 
+static NSString *LDAPContactInfoAttribute = nil;
+
 @implementation SOGoUserFolder
+
++ (void) initialize
+{
+  NSUserDefaults *ud;
+
+  if (!LDAPContactInfoAttribute)
+    {
+      ud = [NSUserDefaults standardUserDefaults];
+      LDAPContactInfoAttribute
+	= [ud stringForKey: @"SOGoLDAPContactInfoAttribute"];
+      [LDAPContactInfoAttribute retain];
+    }
+}
 
 /* hierarchy */
 
@@ -221,68 +237,29 @@
   return rType;
 }
 
-- (NSString *) _baseDAVURLWithSuffix: (NSString *) suffix
-{
-  NSURL *prefixURL;
-
-  prefixURL = [NSURL URLWithString: [NSString stringWithFormat: @"../%@", suffix]
-		     relativeToURL: [self davURL]];
-
-  return [[prefixURL standardizedURL] absoluteString];
-}
-
-- (void) _appendFolders: (NSDictionary *) users
+- (void) _appendFolders: (NSArray *) folders
 	     toResponse: (WOResponse *) r
 {
-  NSDictionary *currentContact, *currentFolder;
-  NSEnumerator *keys, *folders;
+  NSDictionary *currentFolder;
   NSString *baseHREF, *data;
+  NSEnumerator *foldersEnum;
 
-  baseHREF = [self _baseDAVURLWithSuffix: @"./"];
-
-  keys = [[users allKeys] objectEnumerator];
-  while ((currentContact = [keys nextObject]))
+  baseHREF = [[self davURL] absoluteString];
+  if ([baseHREF hasSuffix: @"/"])
+    baseHREF = [baseHREF substringToIndex: [baseHREF length] - 1];
+  foldersEnum = [folders objectEnumerator];
+  while ((currentFolder = [foldersEnum nextObject]))
     {
-      folders = [[users objectForKey: currentContact] objectEnumerator];
-      while ((currentFolder = [folders nextObject]))
-	{
-	  [r appendContentString: @"<D:response><D:href>"];
-	  data = [NSString stringWithFormat: @"%@%@%@/", baseHREF,
-			   [currentContact objectForKey: @"c_uid"],
-			   [currentFolder objectForKey: @"name"]];
-	  [r appendContentString: data];
-	  [r appendContentString: @"</D:href><D:propstat>"];
-	  [r appendContentString: @"<D:status>HTTP/1.1 200 OK</D:status>"];
-	  [r appendContentString: @"</D:propstat><D:owner>"];
-	  data = [NSString stringWithFormat: @"%@%@", baseHREF,
-			   [currentContact objectForKey: @"c_uid"]];
-	  [r appendContentString: data];
-	  [r appendContentString: @"</D:owner><ownerdisplayname>"];
-	  data = [currentContact keysWithFormat: @"%{cn} <%{c_email}>"];
-	  [r appendContentString: [data stringByEscapingXMLString]];
-	  [r appendContentString: @"</ownerdisplayname><D:displayname>"];
-	  data = [currentFolder objectForKey: @"displayName"];
-	  [r appendContentString: [data stringByEscapingXMLString]];
-	  [r appendContentString: @"</D:displayname></D:response>"];
-	}
-    }
-}
-
-- (void) _appendCollectionsMatchingFilter: (NSDictionary *) filter
-			       toResponse: (WOResponse *) r
-{
-  NSURL *prefix, *queryOwner;
-  NSDictionary *folders;
-  NSString *uid;
-
-  prefix = [NSURL URLWithString: [self _baseDAVURLWithSuffix: @"users/"]];
-  queryOwner = [NSURL URLWithString: [filter objectForKey: @"owner"]];
-  if ([[queryOwner relativePath] hasPrefix: [prefix relativePath]])
-    {
-      uid = [[queryOwner relativePath] lastPathComponent];
-      folders = [self foldersOfType: [filter objectForKey: @"resource-type"]
-		      matchingUID: uid];
-      [self _appendFolders: folders toResponse: r];
+      [r appendContentString: @"<D:response><D:href>"];
+      data = [NSString stringWithFormat: @"%@%@/", baseHREF,
+		       [currentFolder objectForKey: @"name"]];
+      [r appendContentString: data];
+      [r appendContentString: @"</D:href><D:propstat>"];
+      [r appendContentString: @"<D:status>HTTP/1.1 200 OK</D:status>"];
+      [r appendContentString: @"<D:prop><D:displayname>"];
+      data = [currentFolder objectForKey: @"displayName"];
+      [r appendContentString: [data stringByEscapingXMLString]];
+      [r appendContentString: @"</D:displayname></D:prop></D:propstat></D:response>"];
     }
 }
 
@@ -291,6 +268,7 @@
   WOResponse *r;
   NSDictionary *filter;
   id <DOMDocument> document;
+  NSArray *folders;
 
   r = [context response];
   [r setStatus: 207];
@@ -304,7 +282,9 @@
 
   document = [[context request] contentAsDOMDocument];
   filter = [self _parseCollectionFilters: document];
-  [self _appendCollectionsMatchingFilter: filter toResponse: r];
+  folders = [self foldersOfType: [filter objectForKey: @"resource-type"]
+		  forUID: [self ownerInContext: nil]];
+  [self _appendFolders: folders toResponse: r];
 
   [r appendContentString:@"</D:multistatus>"];
 
@@ -319,6 +299,7 @@
   NSDictionary *currentUser;
   NSString *field;
 
+#warning the attributes returned here should match the one requested in the query
   fetch = [NSMutableString string];
 
   um = [LDAPUserManager sharedUserManager];
@@ -335,6 +316,13 @@
       field = [currentUser objectForKey: @"c_email"];
       [fetch appendFormat: @"<email>%@</email>",
 	     [field stringByEscapingXMLString]];
+      if (LDAPContactInfoAttribute)
+	{
+	  field = [currentUser objectForKey: LDAPContactInfoAttribute];
+	  if ([field length])
+	    [fetch appendFormat: @"<info>%@</info>",
+		   [field stringByEscapingXMLString]];
+	}
       [fetch appendString: @"</user>"];
     }
 

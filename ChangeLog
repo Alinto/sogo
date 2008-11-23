@@ -1,5 +1,13 @@
 2008-11-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUserFolder.m ([SOGoUserFolder
+	-davCollectionQuery:queryContext]): simplified method by returning
+	only the folders with the specified type that are shared by the
+	owner of the current user folder. The folder owner is now
+	identified correctly with his personal folder principal.
+	([SOGoUserFolder -davUserQuery:queryContext]): when an LDAP info
+	attribute is available for the user, we return it too.
+
 	* SoObjects/SOGo/LDAPUserManager.m ([LDAPUserManager
 	+initialize]): we need to retain the LDAPContactInfoAttribute
 	static var, to avoid a zombie.
