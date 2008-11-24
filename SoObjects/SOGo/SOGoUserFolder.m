@@ -293,18 +293,26 @@ static NSString *LDAPContactInfoAttribute = nil;
 - (NSString *) _davFetchUsersMatching: (NSString *) user
 {
   LDAPUserManager *um;
-  NSEnumerator *users;
   NSMutableString *fetch;
   NSDictionary *currentUser;
   NSString *field;
+  NSArray *users;
+  int i;
 
 #warning the attributes returned here should match the one requested in the query
   fetch = [NSMutableString string];
 
   um = [LDAPUserManager sharedUserManager];
-  users = [[um fetchUsersMatching: user] objectEnumerator];
-  while ((currentUser = [users nextObject]))
+
+  // We sort our array - this is pretty useful for the
+  // SOGo Integrator extension, among other things.
+  users = [[[[um fetchUsersMatching: user] objectEnumerator] allObjects]
+	    sortedArrayUsingSelector: @selector(caseInsensitiveDisplayNameCompare:)];
+
+  for (i = 0; i < [users count]; i++)
     {
+      currentUser = [users objectAtIndex: i];
+      
       [fetch appendString: @"<user>"];
       field = [currentUser objectForKey: @"c_uid"];
       [fetch appendFormat: @"<id>%@</id>",

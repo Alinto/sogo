@@ -1,3 +1,7 @@
+2008-11-24  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+        * We now sort the results in the subsription window
+
 2008-11-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoParentFolder.m ([SOGoParentFolder

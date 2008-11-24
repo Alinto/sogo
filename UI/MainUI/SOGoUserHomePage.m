@@ -297,6 +297,8 @@ static NSString *LDAPContactInfoAttribute = nil;
   NSMutableString *responseString;
   NSDictionary *contact;
   NSString *contactInfo;
+  NSArray *allUsers;
+  int i;
 
   response = [context response];
   [response setStatus: 200];
@@ -304,8 +306,15 @@ static NSString *LDAPContactInfoAttribute = nil;
 	    forKey: @"Content-Type"];
 
   responseString = [NSMutableString new];
-  while ((contact = [users nextObject]))
+
+  // We sort our array - this is pretty useful for the Web
+  // interface of SOGo.
+  allUsers = [[users allObjects]
+	       sortedArrayUsingSelector: @selector(caseInsensitiveDisplayNameCompare:)];
+
+  for (i = 0; i < [allUsers count]; i++)
     {
+      contact = [allUsers objectAtIndex: i];
       uid = [contact objectForKey: @"c_uid"];
       if ([LDAPContactInfoAttribute length])
 	{

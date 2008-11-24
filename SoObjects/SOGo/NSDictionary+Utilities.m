@@ -103,6 +103,11 @@
   return keysWithFormat;
 }
 
+- (NSComparisonResult) caseInsensitiveDisplayNameCompare: (NSDictionary *) theDictionary
+{
+  return [[self objectForKey: @"cn"] caseInsensitiveCompare: [theDictionary objectForKey: @"cn"]];
+}
+
 @end
 
 @implementation NSMutableDictionary (SOGoDictionaryUtilities)
