@@ -136,6 +136,11 @@
           pageName = "SOGoUserHomePage";
 	  actionName = "logoff";
 	};
+	usersSearch = {
+	  protectedBy = "View";
+	  pageName = "SOGoUserHomePage";
+	  actionName = "usersSearch";
+	};
 	foldersSearch = {
 	  protectedBy = "View";
 	  pageName = "SOGoUserHomePage";

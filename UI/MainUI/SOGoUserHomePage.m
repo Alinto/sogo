@@ -36,10 +36,12 @@
 #import <NGExtensions/NSObject+Logs.h>
 
 #import <Appointments/SOGoFreeBusyObject.h>
+#import <SoObjects/SOGo/LDAPUserManager.h>
 #import <SoObjects/SOGo/SOGoWebAuthenticator.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/SOGoUserFolder.h>
 #import <SoObjects/SOGo/NSCalendarDate+SOGo.h>
+#import <SoObjects/SOGo/NSDictionary+Utilities.h>
 #import <SOGoUI/UIxComponent.h>
 
 #define intervalSeconds 900 /* 15 minutes */
@@ -288,35 +290,13 @@ static NSString *LDAPContactInfoAttribute = nil;
   return response;
 }
 
-- (NSString *) _foldersStringForFolders: (NSEnumerator *) folders
-{
-  NSMutableString *foldersString;
-  NSDictionary *currentFolder;
-
-  foldersString = [NSMutableString new];
-  [foldersString autorelease];
-
-  currentFolder = [folders nextObject];
-  while (currentFolder)
-    {
-      [foldersString appendFormat: @";%@:%@:%@",
-		     [currentFolder objectForKey: @"displayName"],
-		     [currentFolder objectForKey: @"name"],
-		     [currentFolder objectForKey: @"type"]];
-      currentFolder = [folders nextObject];
-    }
-
-  return foldersString;
-}
-
-- (WOResponse *) _foldersResponseForResults: (NSDictionary *) results
+- (WOResponse *) _usersResponseForResults: (NSEnumerator *) users
 {
   WOResponse *response;
-  NSString *uid, *foldersString;
+  NSString *uid;
   NSMutableString *responseString;
   NSDictionary *contact;
-  NSEnumerator *contacts;
-  NSArray *folders;
+  NSString *contactInfo;
 
   response = [context response];
   [response setStatus: 200];
@@ -324,19 +304,21 @@ static NSString *LDAPContactInfoAttribute = nil;
 	    forKey: @"Content-Type"];
 
   responseString = [NSMutableString new];
-  contacts = [[results allKeys] objectEnumerator];
-  while ((contact = [contacts nextObject]))
+  while ((contact = [users nextObject]))
     {
       uid = [contact objectForKey: @"c_uid"];
-      folders = [results objectForKey: contact];
-      foldersString
-	= [self _foldersStringForFolders: [folders objectEnumerator]];
-      [responseString appendFormat: @"%@:%@:%@:%@%@\n", uid,
+      if ([LDAPContactInfoAttribute length])
+	{
+	  contactInfo = [contact objectForKey: LDAPContactInfoAttribute];
+	  if (!contactInfo)
+	    contactInfo = @"";
+	}
+      else
+	contactInfo = @"";
+      [responseString appendFormat: @"%@:%@:%@:%@\n", uid,
 		      [contact objectForKey: @"cn"],
 		      [contact objectForKey: @"c_email"],
-		      ([LDAPContactInfoAttribute length] > 0 && [contact objectForKey: LDAPContactInfoAttribute] != nil) ? 
-		      [contact objectForKey: LDAPContactInfoAttribute] : @"",
-		      foldersString];
+		      contactInfo];
     }
   [response appendContentString: responseString];
   [responseString release];
@@ -344,20 +326,59 @@ static NSString *LDAPContactInfoAttribute = nil;
   return response;
 }
 
+- (id <WOActionResults>) usersSearchAction
+{
+  NSString *contact;
+  id <WOActionResults> result;
+  LDAPUserManager *um;
+  NSEnumerator *users;
+
+  um = [LDAPUserManager sharedUserManager];
+  contact = [self queryParameterForKey: @"search"];
+  if ([contact length])
+    {
+      users = [[um fetchUsersMatching: contact] objectEnumerator];
+      result = [self _usersResponseForResults: users];
+    }
+  else
+    result = [NSException exceptionWithHTTPStatus: 400
+                          reason: @"missing 'search' parameter"];
+
+  return result;
+}
+
+- (WOResponse *) _foldersResponseForResults: (NSArray *) folders
+{
+  WOResponse *response;
+  NSEnumerator *foldersEnum;
+  NSDictionary *currentFolder;
+
+  response = [context response];
+  [response setStatus: 200];
+  [response setHeader: @"text/plain; charset=utf-8"
+	    forKey: @"Content-Type"];
+  foldersEnum = [folders objectEnumerator];
+  while ((currentFolder = [foldersEnum nextObject]))
+    [response appendContentString:
+		[currentFolder keysWithFormat: @";%{displayName}:%{name}:%{type}"]];
+
+  return response;
+}
+
 - (id <WOActionResults>) foldersSearchAction
 {
   NSString *contact, *folderType;
-  NSDictionary *folders;
+  NSArray *folders;
   id <WOActionResults> result;
 
-  contact = [self queryParameterForKey: @"search"];
+  contact = [self queryParameterForKey: @"user"];
   if ([contact length])
     {
       folderType = [self queryParameterForKey: @"type"];
       if ([folderType length])
 	{
 	  folders = [[self clientObject] foldersOfType: folderType
-					 matchingUID: contact];
+					 forUID: contact];
 	  result = [self _foldersResponseForResults: folders];
 	}
       else
@@ -366,7 +387,7 @@ static NSString *LDAPContactInfoAttribute = nil;
     }
   else
     result = [NSException exceptionWithHTTPStatus: 400
-                          reason: @"missing 'search' parameter"];
+                          reason: @"missing 'user' parameter"];
 
   return result;
 }

@@ -1,3 +1,13 @@
+2008-11-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MainUI/SOGoUserHomePage.m ([SOGoUserHomePage
+	-usersSearchAction]): new method, derived from the previous
+	version of foldersSearchAction, but that only returns username and
+	contact info about matching users.
+	([SOGoUserHomePage -foldersSearchAction]): new implementation that
+	returns the folders available for subscription of the only user
+	passed as parameter.
+
 2008-11-23  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
         * UI/Scheduler/UIxComponentEditor.m - _loadAttendees
