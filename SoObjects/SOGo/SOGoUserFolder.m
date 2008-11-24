@@ -184,7 +184,6 @@ static NSString *LDAPContactInfoAttribute = nil;
 
   userFolder = [container lookupName: uid inContext: context acquire: NO];
 
-  /* FIXME: should be moved in the SOGo* classes. Maybe by having a SOGoFolderManager. */
   if ([folderType length] == 0 || [folderType isEqualToString: @"calendar"])
     {
       parentFolder = [userFolder lookupName: @"Calendar"
