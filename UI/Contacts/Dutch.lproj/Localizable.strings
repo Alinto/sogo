@@ -58,6 +58,9 @@
 "Add..." = "Toevoegen...";
 "Remove" = "Verwijderen";
 
+"Please wait..." = "Please wait...";
+"No possible subscription" = "No possible subscription";
+
 "Preferred" = "Voorkeurs-";
 "Card for %@" = "%@";
 "Display:" = "Weergavenaam:";

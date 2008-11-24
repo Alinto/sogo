@@ -71,6 +71,9 @@
 "Add..." = "Aggiungi...";
 "Remove" = "Rimuovi";
 
+"Please wait..." = "Please wait...";
+"No possible subscription" = "No possible subscription";
+
 "Preferred" = "Predefinito";
 "Card for %@" = "Biglietto da visita di %@";
 "Display:" = "Nome visualizzato:";

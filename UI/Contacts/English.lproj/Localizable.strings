@@ -59,6 +59,9 @@
 "Add..." = "Add...";
 "Remove" = "Remove";
 
+"Please wait..." = "Please wait...";
+"No possible subscription" = "No possible subscription";
+
 "Preferred" = "Preferred";
 "Card for %@" = "Card for %@";
 "Display Name: " = "Display Name: ";

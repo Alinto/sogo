@@ -58,6 +58,9 @@
 "Add..." = "Hinzufügen...";
 "Remove" = "Löschen";
 
+"Please wait..." = "Please wait...";
+"No possible subscription" = "No possible subscription";
+
 "Preferred" = "Bevorzugt";
 "Card for %@" = "%@";
 "Display:" = "Anzeigename:";

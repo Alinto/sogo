@@ -66,6 +66,9 @@
 "Add..." = "Ajouter...";
 "Remove" = "Enlever";
 
+"Please wait..." = "Veuillez patienter...";
+"No possible subscription" = "Aucune inscription possible";
+
 "Preferred" = "Préféré";
 "Card for %@" = "Fiche pour %@";
 "Display:" = "Nom à afficher :";

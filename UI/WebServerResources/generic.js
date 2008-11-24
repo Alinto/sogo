@@ -941,13 +941,13 @@ function checkSearchValue(event) {
 function configureSearchField() {
 	var searchValue = $("searchValue");
 
-	if (!searchValue) return;
-
-	searchValue.observe("click", popupSearchMenu);
-	searchValue.observe("blur", onSearchBlur);
-	searchValue.observe("focus", onSearchFocus);
-	searchValue.observe("keydown", onSearchKeyDown);
-	searchValue.observe("mousedown", onSearchMouseDown);
+	if (searchValue) {
+		searchValue.observe("click", popupSearchMenu);
+		searchValue.observe("blur", onSearchBlur);
+		searchValue.observe("focus", onSearchFocus);
+		searchValue.observe("keydown", onSearchKeyDown);
+		searchValue.observe("mousedown", onSearchMouseDown);
+	}
 }
 
 function onSearchMouseDown(event) {
@@ -998,7 +998,8 @@ function onSearchKeyDown(event) {
 		onSearchFormSubmit();
 		preventDefault(event);
 	}
-	else
+	else if (event.keyCode == 8
+					 || event.keyCode >31)
 		this.timer = setTimeout("onSearchFormSubmit()", 1000);
 }
 

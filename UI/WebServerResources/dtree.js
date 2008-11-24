@@ -186,7 +186,7 @@ dTree.prototype.indent = function(node, nodeId) {
     (node._ls) ? this.aIndent.push(0) : this.aIndent.push(1);
     if (node._hc)
       {
-	str += '<a href="#" onclick="return ' + this.obj + '.o(' + nodeId + ');"><img id="j' + this.obj + nodeId + '" src="';
+	str += '<a href="#" id="tg' + this.obj + nodeId + '" onclick="return ' + this.obj + '.o(' + nodeId + ');"><img id="j' + this.obj + nodeId + '" src="';
 	if (!this.config.useLines) str += (node._io) ? this.icon.nlMinus : this.icon.nlPlus;
 	else str += ( (node._io) ? ((node._ls && this.config.useLines) ? this.icon.minusBottom : this.icon.minus) : ((node._ls && this.config.useLines) ? this.icon.plusBottom : this.icon.plus ) );
 	str += '" alt="" /></a>';
