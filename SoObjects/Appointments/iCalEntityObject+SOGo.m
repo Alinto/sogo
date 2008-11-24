@@ -28,6 +28,7 @@
 #import <Foundation/NSTimeZone.h>
 
 #import <NGCards/iCalCalendar.h>
+#import <NGCards/iCalDateTime.h>
 #import <NGCards/iCalPerson.h>
 
 #import <NGObjWeb/WOApplication.h>
@@ -143,12 +144,33 @@ _computeAllDayOffset()
 - (id) itipEntryWithMethod: (NSString *) method
 {
   iCalCalendar *newCalendar;
-  iCalEntityObject *newEntry;
+  iCalEntityObject *currentEvent, *newEntry;
+  iCalPerson *organizer;
 
+  NSArray *events;
+  int i, count;
+  
   newCalendar = [parent mutableCopy];
   [newCalendar autorelease];
   [newCalendar setMethod: method];
-  newEntry = (iCalEntityObject *) [newCalendar firstChildWithTag: tag];
+  
+  events = [newCalendar childrenWithTag: tag];
+  count = [events count];
+  if (count > 1)
+    {
+      // If the event is recurrent, remove all occurences
+      organizer = [[(iCalEntityObject *)[newCalendar firstChildWithTag: tag] organizer] mutableCopy];
+      for (i = 0; i < count; i++)
+	{
+	  currentEvent = [events objectAtIndex: i];
+	  [[newCalendar children] removeObject: currentEvent];
+	}
+      newEntry = [[self mutableCopy] autorelease];
+      [newEntry setOrganizer: organizer];
+      [newCalendar addChild: newEntry];
+    }
+  else
+    newEntry = (iCalEntityObject *) [newCalendar firstChildWithTag: tag];
 
   return newEntry;
 }
