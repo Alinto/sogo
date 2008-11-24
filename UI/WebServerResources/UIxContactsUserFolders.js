@@ -63,8 +63,8 @@ function buildUsersTree(treeDiv, response) {
 	d.icon.empty = ResourcesURL + '/empty.gif';
 	d.add(0, -1, '');
 
-	var multiplier = ((window.opener.userFolderType == "user")
-										? 1 : 2);
+	var isUserDialog = (window.opener.userFolderType == "user");
+	var multiplier = ((isUserDialog) ? 1 : 2);
 
 	if (response.length) {
 		var lines = response.split("\n");
@@ -76,14 +76,14 @@ function buildUsersTree(treeDiv, response) {
 		treeDiv.update(d);
 		treeDiv.clean = false;
 
-		if (window.opener.userFolderType != "user") {
-			for (var i = 0; i < lines.length - 1; i++) {
-				if (lines[i].length > 0) {
+		for (var i = 0; i < lines.length - 1; i++) {
+			if (lines[i].length > 0) {
+				if (!isUserDialog) {
 					var toggle = $("tgd" + (1 + i * 2));
 					toggle.observe ("click", onUserNodeToggle);
-					var sd = $("sd" + (1 + i * 2));
-					sd.observe("click", onFolderTreeItemClick);
 				}
+				var sd = $("sd" + (1 + i * multiplier));
+				sd.observe("click", onTreeItemClick);
 			}
 		}
 	}
@@ -101,10 +101,8 @@ function onUserNodeToggle(event) {
 										 { nodeId: nodeId, user: person });
 }
 
-function onFolderTreeItemClick(event) {
+function onTreeItemClick(event) {
 	preventDefault(event);
-
-	log("click");
 
 	var topNode = $("d");
 	if (topNode.selectedEntry)
@@ -144,13 +142,13 @@ function foldersSearchCallback(http) {
 			dd.update(str);
 			for (var i = 1; i < folders.length; i++) {
 				var sd = $("sd" + (nodeId + i));
-				sd.observe("click", onFolderTreeItemClick);
+				sd.observe("click", onTreeItemClick);
 			}
 		}
 		else {
 			dd.update(addFolderNotFoundNode (d, nodeId));
 			var sd = $("sd" + (nodeId + 1));
-			sd.observe("click", onFolderTreeItemClick);
+			sd.observe("click", onTreeItemClick);
 		}
 
 		d.aIndent.pop();
@@ -207,6 +205,7 @@ function onConfirmFolderSelection(event) {
 									 .replace("&gt;", ">", "g"));
 			folderName = resource.innerHTML + ' (' + email + ')';
     }
+		folderName = folderName.replace(/>,.*(\))?$/, ">)$1", "g");
 
     var data = { folderName: folderName, folder: folder, window: window };
     if (parent$(accessToSubscribedFolder(folder)))
