@@ -1,3 +1,11 @@
+2008-11-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoParentFolder.m ([SOGoParentFolder
+	-toManyRelationshipKeys]): return the subfolders in the order by
+	which they appear in the web interface, to avoid confusing
+	Lighting with its Inbox management and so that the folders appear
+	in an ordered way.
+
 2008-11-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MainUI/SOGoUserHomePage.m ([SOGoUserHomePage

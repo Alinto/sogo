@@ -349,14 +349,6 @@ static SoSecurityManager *sm = nil;
   return obj;
 }
 
-- (NSArray *) toManyRelationshipKeys
-{
-  if (!subFolders)
-    [self initSubFolders];
-
-  return [subFolders allKeys];
-}
-
 - (NSArray *) subFolders
 {
   if (!subFolders)
@@ -364,6 +356,20 @@ static SoSecurityManager *sm = nil;
 
   return [[subFolders allValues]
 	   sortedArrayUsingSelector: @selector (compare:)];
+}
+
+- (NSArray *) toManyRelationshipKeys
+{
+  NSEnumerator *sortedSubFolders;
+  NSMutableArray *keys;
+  SOGoGCSFolder *currentFolder;
+
+  keys = [NSMutableArray array];
+  sortedSubFolders = [[self subFolders] objectEnumerator];
+  while ((currentFolder = [sortedSubFolders nextObject]))
+    [keys addObject: [currentFolder nameInContainer]];
+
+  return keys;
 }
 
 - (NSException *) davCreateCollection: (NSString *) pathInfo
