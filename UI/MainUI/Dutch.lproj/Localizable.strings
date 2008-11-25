@@ -7,7 +7,7 @@
 
 "Connect" = "Inloggen";
 
-"Wrong username or password." = "Wrong username or password.";
+"Wrong username or password." = "Slecht gebruikersnaam of wachtwoord.";
 "cookiesNotEnabled" = "You cannot login because your browser's cookies are disabled. Please enable cookies in your browser's settings and try again.";
 
 "browserNotCompatible" = "We've detected that your browser version is currently not supported on this site. Our recommendation is to use Firefox. Click on the link bellow to download the most current version of this browser.";
@@ -21,5 +21,5 @@
 "English" = "Engels";
 "French" = "Frans";
 "German" = "Duits";
-"Italian" = "Italiaan";
-"Spanish" = "Spaniaard";
+"Italian" = "Italiaans";
+"Spanish" = "Spaans";
