@@ -444,7 +444,9 @@ static NSArray *childRecordFields = nil;
       sql
 	= [NSString stringWithFormat: (@"UPDATE %@ SET c_foldername = '%@'"
 				       @" WHERE c_path = '%@'"),
-		    [folderLocation gcsTableName], newName, ocsPath];
+		    [folderLocation gcsTableName],
+		    [newName stringByReplacingString: @"'"  withString: @"''"],
+		    ocsPath];
       [fc evaluateExpressionX: sql];
       [cm releaseChannel: fc];
 //       sql = [sql stringByAppendingFormat:@" WHERE %@ = '%@'", 

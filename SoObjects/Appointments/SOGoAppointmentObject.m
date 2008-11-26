@@ -190,29 +190,30 @@
   return object;
 }
 
-- (void) _addOrUpdateEvent: (iCalEvent *) event
-		    forUID: (NSString *) uid
+- (void) _addOrUpdateEvent: (iCalEvent *) theEvent
+		    forUID: (NSString *) theUID
+		     owner: (NSString *) theOwner
 {
-  SOGoAppointmentObject *object;
-  NSString *iCalString, *userLogin;
-
-  userLogin = [[context activeUser] login];
-  if (![uid isEqualToString: userLogin])
+  if (![theUID isEqualToString: theOwner])
     {
-      object = [self _lookupEvent: [event uid] forUID: uid];
-      iCalString = [[event parent] versitString];
+      SOGoAppointmentObject *object;
+      NSString *iCalString;
+
+      object = [self _lookupEvent: [theEvent uid] forUID: theUID];
+      iCalString = [[theEvent parent] versitString];
       [object saveContentString: iCalString];
     }
 }
 
-- (void) _removeEventFromUID: (NSString *) uid
+- (void) _removeEventFromUID: (NSString *) theUID
+                       owner: (NSString *) theOwner
 {
-  SOGoAppointmentFolder *folder;
-  SOGoAppointmentObject *object;
-
-  if (![uid isEqualToString: owner])
+  if (![theUID isEqualToString: theOwner])
     {
-      folder = [container lookupCalendarFolderForUID: uid];
+      SOGoAppointmentFolder *folder;
+      SOGoAppointmentObject *object;
+
+      folder = [container lookupCalendarFolderForUID: theUID];
       object = [folder lookupName: nameInContainer
 		       inContext: context acquire: NO];
       if (![object isKindOfClass: [NSException class]])
@@ -232,7 +233,8 @@
     {
       currentUID = [currentAttendee uid];
       if (currentUID)
-	[self _removeEventFromUID: currentUID];
+	[self _removeEventFromUID: currentUID
+	      owner: owner];
     }
 }
 
@@ -268,7 +270,8 @@
       currentUID = [currentAttendee uid];
       if (currentUID)
 	[self _addOrUpdateEvent: newEvent
-	      forUID: currentUID];
+	      forUID: currentUID
+	      owner: owner];
     }
 
   [self sendEMailUsingTemplateNamed: @"Update"
@@ -290,7 +293,8 @@
       currentUID = [currentAttendee uid];
       if (currentUID)
 	[self _addOrUpdateEvent: newEvent
-	      forUID: currentUID];
+	      forUID: currentUID
+	      owner: owner];
     }
 }
 
@@ -587,6 +591,14 @@
   return code;
 }
 
+//
+// The originator here is the owner of the calendar where
+// the event was created. Lightning sends us exactly this
+// and handles the SENT-BY itself. We might have to review
+// this if the originator ever becomes the user on whom
+// the act is performed (ie. Alice creates an event in Bob's
+// calendar and invites Thomas).
+// 
 - (NSArray *) postCalDAVEventRequestTo: (NSArray *) recipients
 				  from: (NSString *) originator
 {
@@ -629,7 +641,10 @@
 		else
 		  hasChanged = NO;
 	      }
-	    [self _addOrUpdateEvent: event forUID: uid];
+	    [self _addOrUpdateEvent: event
+		  forUID: uid
+		  owner: [[LDAPUserManager sharedUserManager]
+			   getUIDForEmail: originator]];
 	  }
 #warning fix this when sendEmailUsing blabla has been cleaned up
 	if (hasChanged)
@@ -646,6 +661,9 @@
   return elements;
 }
 
+//
+// See our comment about the originator in the method above.
+//
 - (NSArray *) postCalDAVEventCancelTo: (NSArray *) recipients
 				 from: (NSString *) originator
 {
@@ -666,7 +684,9 @@
 	[person setValue: 0 to: recipient];
 	uid = [person uid];
 	if (uid)
-	  [self _removeEventFromUID: uid];
+	  [self _removeEventFromUID: uid
+		owner: [[LDAPUserManager sharedUserManager]
+			 getUIDForEmail: originator]];
 #warning fix this when sendEmailUsing blabla has been cleaned up
 	[self sendEMailUsingTemplateNamed: @"Deletion"
 	      forObject: event

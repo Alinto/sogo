@@ -1,3 +1,12 @@
+2008-11-26  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* SoObjects/SOGo/SOGoGCSFolder.m
+	We escape the ' character in the folder name
+	before trying to set it.
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	We now handle the originator/organizer correctly
+	when posting CalDAV messages.
+
 2008-11-24  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
         * We now sort the results in the subsription window
