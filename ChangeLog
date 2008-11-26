@@ -1,3 +1,13 @@
+2008-11-26  Ludovic Marcotte  <lmarcotte@inverse.ca>	
+
+	* SoObjects/SOGo/SOGoGCSFolder.m
+	We correctly wrap ACL additions around a 
+	database transaction.
+	* Updated the code wrt acting on behalf of
+	someone else to speed up things and also to
+	honor the participation status of the one acting
+	on behalf of someone else.
+
 2008-11-26  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/SOGo/SOGoGCSFolder.m

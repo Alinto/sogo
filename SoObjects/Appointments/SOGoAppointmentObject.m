@@ -345,6 +345,7 @@
 
   [[newEvent parent] setMethod: @""];
   ownerUser = [SOGoUser userWithLogin: owner roles: nil];
+
   if ([newEvent userIsOrganizer: ownerUser])
     {
       oldEvent = [self component: NO secure: NO];
@@ -352,7 +353,7 @@
 	[self _handleUpdatedEvent: newEvent fromOldEvent: oldEvent];
       else
 	{
-	  attendees = [newEvent attendeesWithoutUser: [context activeUser]];
+	  attendees = [newEvent attendeesWithoutUser: ownerUser];
 	  if ([attendees count])
 	    {
 	      [self _handleAddedUsers: attendees fromEvent: newEvent];

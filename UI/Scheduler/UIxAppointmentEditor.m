@@ -292,16 +292,41 @@
   return result;
 }
 
+//
+// This method needs to carefully handle the following cases :
+//
+// A- Alice creates an event in her calendar
+// B- Alice creates an event in Bob's calendar (and invites herself or not)
+// C- Alice moves an event to an other calendar
+//
 - (id <WOActionResults>) saveAction
 {
   SOGoAppointmentFolder *thisFolder;
   SOGoAppointmentObject *co;
   SoSecurityManager *sm;
   NSException *ex;
+  NSString *aOwner;
 
+  // See A.
   co = [self clientObject];
+
+  if (componentCalendar)
+    {
+      aOwner = [componentCalendar ownerInContext: context];
+      
+      // See B.
+      if (![aOwner isEqualToString: [[context activeUser] login]])
+	{
+	  co = [componentCalendar lookupName: [co nameInContainer]
+				  inContext: context
+				  acquire: NO];
+	}
+    }
+  
+  // We save the component
   [co saveComponent: event];
 
+  // See C.
   if (componentCalendar)
     {
       sm = [SoSecurityManager sharedSecurityManager];

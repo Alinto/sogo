@@ -1608,12 +1608,25 @@ RANGE(2);
 		andClientObject: (SOGoContentObject
 				  <SOGoComponentOccurence> *) clientObject
 {
-  NSString *toolbarFilename;
   iCalPersonPartStat participationStatus;
+  NSString *toolbarFilename;
+  BOOL isOrganizer;
+
+  // We determine if we're the organizer of the component beeing modified.
+  // If we created an event on behalf of someone else -userIsOrganizer will
+  // return us YES. This is OK because we're in the SENT-BY. But, Alice
+  // should be able to accept/decline an invitation if she created the event
+  // in Bob's calendar and added herself in the attendee list.
+  isOrganizer = [component userIsOrganizer: ownerUser];
+
+  if (isOrganizer)
+    {
+      isOrganizer = ![ownerUser hasEmail: [[component organizer] sentBy]];
+    }
 
   if ([[component attendees] count]
       && [component userIsParticipant: ownerUser]
-      && ![component userIsOrganizer: ownerUser])
+      && !isOrganizer)
     {
       participationStatus
 	= [[component findParticipant: ownerUser] participationStatus];

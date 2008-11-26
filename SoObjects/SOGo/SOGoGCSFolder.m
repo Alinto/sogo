@@ -855,6 +855,7 @@ static NSArray *childRecordFields = nil;
 
   folder = [self ocsFolder];
   channel = [folder acquireAclChannel];
+  [[channel adaptorContext] beginTransaction];
   userRoles = [roles objectEnumerator];
   while ((currentRole = [userRoles nextObject]))
     {
@@ -863,9 +864,10 @@ static NSArray *childRecordFields = nil;
 		      @" VALUES ('/%@', '%@', '%@')",
 		      [folder aclTableName],
 		      objectPath, uid, currentRole];
-      [channel evaluateExpressionX: SQL];
+      [channel evaluateExpressionX: SQL];	    
     }
 
+  [[channel adaptorContext] commitTransaction];
   [folder releaseChannel: channel];
 }
 
