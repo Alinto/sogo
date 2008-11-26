@@ -86,17 +86,25 @@
 
 - (void) _setRecord: (NSDictionary *) objectRecord
 {
-  NSString *newContent;
+  id data;
   int intValue;
 
-  newContent = [objectRecord objectForKey: @"c_content"];
-  if (newContent)
+  data = [objectRecord objectForKey: @"c_content"];
+  if (data)
+    ASSIGN (content, data);
+  data = [objectRecord objectForKey: @"c_version"];
+  if (data)
+    version = [data unsignedIntValue];
+  data = [objectRecord objectForKey: @"c_creationdate"];
+  if (data)
     {
-      ASSIGN (content, newContent);
-      version = [[objectRecord objectForKey: @"c_version"] unsignedIntValue];
-      intValue = [[objectRecord objectForKey: @"c_creationdate"] intValue];
+      intValue = [data intValue];
       ASSIGN (creationDate,
 	      [NSCalendarDate dateWithTimeIntervalSince1970: intValue]);
+    }
+  data = [objectRecord objectForKey: @"c_lastmodified"];
+  if (data)
+    {
       intValue = [[objectRecord objectForKey: @"c_lastmodified"] intValue];
       ASSIGN (lastModified,
 	      [NSCalendarDate dateWithTimeIntervalSince1970: intValue]);

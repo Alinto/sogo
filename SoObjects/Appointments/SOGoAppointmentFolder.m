@@ -1470,15 +1470,13 @@ static Class sogoAppointmentFolderKlass = Nil;
   // has only asked for {DAV:}getetag with no other properties,
   // we do not load the c_content and other fields from the
   // database as this can be pretty costly.
-#if 0
-  // FOR AN UNKNOWN REASON FOR NOW, THIS GENERATES EMPTY ETAGS (ALL HAVE GCS0000000 VALUE)
+#warning we should build the list of fields based on the requested props
   if ([*properties caseInsensitiveCompare: @"{DAV:}getetag"] == NSOrderedSame &&
       !*(properties+1))
     fields =  [NSArray arrayWithObjects: @"c_name", @"c_creationdate",
 		       @"c_lastmodified", @"c_version",
 		       @"c_component", nil];
   else
-#endif
     fields = reportQueryFields;
 
   filterList = [filters objectEnumerator];
