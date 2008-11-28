@@ -136,7 +136,7 @@ function foldersSearchCallback(http) {
 			var user = http.callbackData["user"];
 
 			for (var i = 1; i < folders.length - 1; i++)
-				str += addFolderBranchToTree (d, user, folders[i], nodeId, 1, false);
+				str += addFolderBranchToTree (d, user, folders[i], nodeId, i, false);
 			str += addFolderBranchToTree (d, user, folders[folders.length-1], nodeId,
 																		(folders.length - 1), true);
 			dd.update(str);
