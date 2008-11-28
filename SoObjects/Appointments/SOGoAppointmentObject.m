@@ -348,24 +348,28 @@
 
   if ([newEvent userIsOrganizer: ownerUser])
     {
-      oldEvent = [self component: NO secure: NO];
-      if (oldEvent)
-	[self _handleUpdatedEvent: newEvent fromOldEvent: oldEvent];
-      else
+      if ([self isNew])
 	{
+	  // New event -- send invitation to all attendees
 	  attendees = [newEvent attendeesWithoutUser: ownerUser];
 	  if ([attendees count])
 	    {
 	      [self _handleAddedUsers: attendees fromEvent: newEvent];
 	      [self sendEMailUsingTemplateNamed: @"Invitation"
 		    forObject: [newEvent itipEntryWithMethod: @"request"]
-		    previousObject: oldEvent
+		    previousObject: nil
 		    toAttendees: attendees];
 	    }
 
 	  if (![[newEvent attendees] count])
 	    [[newEvent uniqueChildWithTag: @"organizer"] setValue: 0
 							 to: @""];
+	}
+      else
+	{
+	  // Event is modified -- sent update status to all attendees
+	  oldEvent = [self component: NO secure: NO];
+	  [self _handleUpdatedEvent: newEvent fromOldEvent: oldEvent];
 	}
     }
 
