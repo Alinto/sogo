@@ -38,7 +38,7 @@
       defaultRoles = {
 	"ViewAllComponent" = ( "Owner", "Organizer", "Participant", "ComponentModifier", "ComponentResponder", "ComponentViewer" );
 	"ViewDAndT" = ( "Organizer", "Participant", "ComponentDAndTViewer" );
-	"ModifyComponent" = ( "Owner", "ComponentModifier" );
+	"ModifyComponent" = ( "Owner", "ComponentModifier", "ObjectEditor" );
 	"RespondToComponent" = ( "Owner", "ComponentModifier", "ComponentResponder" );
 	"Access Object" = ( "Owner", "Organizer", "Participant", "ComponentModifier", "ComponentResponder", "ComponentViewer", "ComponentDAndTViewer" );
 	"Change Images and Files" = ( "Owner", "Organizer", "ComponentModifier" );
