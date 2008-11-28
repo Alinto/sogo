@@ -170,7 +170,7 @@
   NSCalendarDate *date;
   NSTimeZone *timeZone;
  
-  date = [[self authorativeEvent] startDate];
+  date = [[self inEvent] startDate];
   timeZone = [[context activeUser] timeZone];
   [date setTimeZone: timeZone];
 
@@ -182,7 +182,7 @@
   NSCalendarDate *date;
   NSTimeZone *timeZone;
  
-  date = [[self authorativeEvent] endDate];
+  date = [[self inEvent] endDate];
   timeZone = [[context activeUser] timeZone];
   [date setTimeZone: timeZone];
 
