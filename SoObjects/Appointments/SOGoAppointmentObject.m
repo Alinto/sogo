@@ -325,12 +325,35 @@
 	    fromOldEvent: oldEvent];
     }
   else
-    [self _requireResponseFromAttendees: attendees];
+    {
+      // Set new attendees status to "needs action"
+      [self _requireResponseFromAttendees: attendees];
+      
+      // If other attributes have changed, update the event
+      // in each attendee's calendar
+      if ([[changes updatedProperties] count])
+	{
+	  NSEnumerator *enumerator;
+	  iCalPerson *currentAttendee;
+	  NSString *currentUID;
+	  
+	  enumerator = [[newEvent attendees] objectEnumerator];
+	  while ((currentAttendee = [enumerator nextObject]))
+	    {
+	      currentUID = [currentAttendee uid];
+	      if (currentUID)
+		[self _addOrUpdateEvent: newEvent
+		      forUID: currentUID
+		      owner: owner];
+	    }
+	}
+    }
 
   if ([attendees count])
     {
+      // Send an invitation to new attendees
       [self _handleAddedUsers: attendees fromEvent: newEvent];
-      [self sendEMailUsingTemplateNamed: @"Update"
+      [self sendEMailUsingTemplateNamed: @"Invitation"
 	    forObject: [newEvent itipEntryWithMethod: @"request"]
 	    previousObject: oldEvent
 	    toAttendees: attendees];
