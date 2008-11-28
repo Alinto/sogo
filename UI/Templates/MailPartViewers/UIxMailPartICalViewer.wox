@@ -184,7 +184,7 @@
 	  <tr>
 	    <td valign="top"><var:string label:value="Attendees"/>:</td>
 	    <td>
-	      <var:foreach list="authorativeEvent.participants" item="attendee">
+	      <var:foreach list="inEvent.participants" item="attendee">
 		<a var:href="attendee.email"><var:string value="attendeeForDisplay"/></a>
 		(<var:string label:value="$attendee.partStatWithDefault" />)
 		<br />
