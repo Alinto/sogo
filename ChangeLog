@@ -1,3 +1,8 @@
+2008-11-28  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+        * We no longer show the previous/new location
+	if it's empty in the invitation update templates.
+
 2008-11-26  Ludovic Marcotte  <lmarcotte@inverse.ca>	
 
 	* SoObjects/SOGo/SOGoGCSFolder.m

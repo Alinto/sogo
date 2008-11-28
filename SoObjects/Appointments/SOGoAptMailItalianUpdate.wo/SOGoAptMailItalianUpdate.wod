@@ -50,3 +50,11 @@ Summary: WOString {
   value = summary;
   escapeHTML = NO;
 }
+
+HasNewLocation: WOConditional {
+  condition = hasNewLocation;
+}
+
+HasOldLocation: WOConditional {
+  condition = hasOldLocation;
+}
