@@ -8,13 +8,13 @@
   xmlns:label="OGo:label">
 
 <var:if condition="isSubject">
-    <var:string const:value='"' const:escapeHTML="NO"/><var:string value="displayName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> has been deleted
+    <var:string const:value='"' const:escapeHTML="NO"/><var:string value="displayName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> wurde entfernt
 </var:if>
 
 <var:if condition="isBody">
-The <var:string const:value='"' const:escapeHTML="NO"/><var:string value="displayName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> folder has been deleted. 
+Der Ordner <var:string const:value='"' const:escapeHTML="NO"/><var:string value="displayName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> wurde entfernt. 
 
-The following URL is now no longer active:  
+Folgende URL ist nicht mehr aktiv:
 
 <var:string value="httpFolderURL" const:escapeHTML="NO"/>
 </var:if>

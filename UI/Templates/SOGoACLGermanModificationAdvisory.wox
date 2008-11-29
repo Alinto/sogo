@@ -8,16 +8,20 @@
   xmlns:label="OGo:label">
 
 <var:if condition="isSubject">
-    Zugangserlaubniss von <var:string value="currentUserName" const:escapeHTML="NO"/> erstellt
+    Zugangserlaubniss von <var:string value="currentUserName" const:escapeHTML="NO"/> geändert
 </var:if>
 
 <var:if condition="isBody">
-<var:string value="currentUserName" const:escapeHTML="NO"/> PLEASE TRANSLATE <var:string const:value='"' const:escapeHTML="NO"/><var:string value="resourceName"/><var:string const:value='"' const:escapeHTML="NO"/> XXXXXXXXXX.
+<var:string value="currentUserName" const:escapeHTML="NO"/> hat Ihre Zugangsberechtigungen für seinen Ordner <var:string const:value='"' const:escapeHTML="NO"/><var:string value="resourceName"/><var:string const:value='"' const:escapeHTML="NO"/> geändert.
 
-Folgende URL erlaubt Ihnen, sich sofort an diesem Ordner zu abonnieren:
+Folgende URL erlaubt Ihnen, diesen Ordner sofort zu abonnieren:
     <var:string value="httpAdvisoryURL" const:escapeHTML="NO"/>unsubscribe?mail-invitation=YES
 
-Sie können sich auch später immer noch durch die SOGo Webseiten abonnieren.
+Ansonsten können Sie den Ordner auch später noch über die SOGo Webseite abonnieren.
+
+Sie können auf diesen Ordner auch über folgende URL zugreifen:
+
+<var:string value="httpFolderURL" const:escapeHTML="NO"/>
 </var:if>
 
 </container>

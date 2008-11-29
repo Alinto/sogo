@@ -14,9 +14,14 @@
 <var:if condition="isBody">
 <var:string value="currentUserName" const:escapeHTML="NO"/> erlaubt Ihnen nicht mehr den Zugang zu seinem Order <var:string const:value='"' const:escapeHTML="NO"/><var:string value="resourceName"/><var:string const:value='"' const:escapeHTML="NO"/>.
 
-Sie können sich sofort an folgender URL von diesem Order des-abonnieren:
+Folgende URL erlaubt Ihnen, das Abonnement für diesen Ordner sofort zu beenden:
     <var:string value="httpAdvisoryURL" const:escapeHTML="NO"/>unsubscribe?mail-invitation=YES
 
-Sich können sich auch später immer noch durch die SOGo Webseiten des-abonnieren.</var:if>
+Ansonsten können Sie das Abonnement auch später noch über die SOGo Webseite beenden.
+
+Sie können auch nicht länger auf diesen Ordner über folgende URL zugreifen:
+
+<var:string value="httpFolderURL" const:escapeHTML="NO"/>
+</var:if>
 
 </container>

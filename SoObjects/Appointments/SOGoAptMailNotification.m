@@ -96,6 +96,16 @@ static NSTimeZone *UTC = nil;
   ASSIGN(previousApt, theApt);
 }
 
+- (BOOL) hasNewLocation
+{
+  return ([[apt location] length] > 0);
+}
+
+- (BOOL) hasOldLocation
+{
+  return ([[previousApt location] length] > 0);
+}
+
 - (NSTimeZone *) viewTZ 
 {
   if (self->viewTZ) return self->viewTZ;

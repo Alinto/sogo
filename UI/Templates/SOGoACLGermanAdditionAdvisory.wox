@@ -14,10 +14,14 @@
 <var:if condition="isBody">
 <var:string value="currentUserName" const:escapeHTML="NO"/> hat Ihnen den Zugang zu seinem Ordner <var:string const:value='"' const:escapeHTML="NO"/><var:string value="resourceName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> erlaubt.
 
-Folgende URL erlaubt Ihnen, sich sofort an diesem Ordner zu abonnieren:
+Folgende URL erlaubt Ihnen, diesen Ordner sofort zu abonnieren:
     <var:string value="httpAdvisoryURL" const:escapeHTML="NO"/>unsubscribe?mail-invitation=YES
 
-Sie können sich auch später immer noch durch die SOGo Webseiten abonnieren.
+Ansonsten können Sie den Ordner auch später noch über die SOGo Webseite abonnieren.
+
+Sie können auf diesen Ordner auch über folgende URL zugreifen:
+
+<var:string value="httpFolderURL" const:escapeHTML="NO"/>
 </var:if>
 
 </container>
