@@ -8,13 +8,13 @@
   xmlns:label="OGo:label">
 
 <var:if condition="isSubject">
-    <var:string const:value='"' const:escapeHTML="NO"/><var:string value="displayName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> has been created
+    <var:string const:value='"' const:escapeHTML="NO"/><var:string value="displayName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> wurde erstellt
 </var:if>
 
 <var:if condition="isBody">
-The <var:string const:value='"' const:escapeHTML="NO"/><var:string value="displayName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> folder has been created. 
+Der Ordner <var:string const:value='"' const:escapeHTML="NO"/><var:string value="displayName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> wurde erstellt. 
 
-You can access this resource remotely by using the following URL:  
+Sie können auf diesen Ordner über folgende URL zugreifen:
 
 <var:string value="httpFolderURL" const:escapeHTML="NO"/>
 </var:if>

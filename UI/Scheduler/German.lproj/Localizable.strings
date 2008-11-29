@@ -157,12 +157,12 @@
 "Appointment on" = "Termin am";
 "Start:" = "Beginn:";
 "End:" = "Ende:";
-"Due Date:" = "Fälligkeitsdatum:";
+"Due Date:" = "Fällig:";
 "Title:" = "Titel:";
 "Calendar:" = "Kalender:";
 "Name" = "Name";
 "Email" = "E-Mail";
-"Status:" = "Fortschritt :";
+"Status:" = "Status:";
 "% complete" = "% fertig";
 "Location:" = "Ort:";
 "Priority:" = "Priorität";
@@ -174,7 +174,7 @@
 "Duration" = "Dauer";
 "Attendees:" = "Teilnehmer:";
 "Resources" = "Ressourcen";
-"Organizer:" = "Organisator :";
+"Organizer:" = "Organisator:";
 "Description:" = "Beschreibung:";
 "Document:" = "Dokument:";
 "Category:" = "Kategorie:";
@@ -203,12 +203,12 @@
 "partStat_DECLINED" = "Abgelehnt";
 "partStat_TENTATIVE" = "Vorläufig";
 "partStat_DELEGATED" = "Vertreter";
-"partStat_OTHER" = "???";
+"partStat_OTHER" = "Anderer";
 
 /* Appointments (error messages) */
 
 "Conflicts found!" = "Einer order mehrere Konflikte wurden gefunden";
-"Invalid iCal data!" = "Ungültig iCal-Daten...";
+"Invalid iCal data!" = "Ungültige iCal-Daten...";
 "Could not create iCal data!" = "iCal-Daten konnten nicht erstellt werden...";
 
 /* Searching */
@@ -306,7 +306,7 @@
 "Year(s)" = "Jahr(e)";
 "cycle_of" = "of";
 "No end date" = "Kein Enddatum";
-"Create" = "Erstellen";
+"Create" = "Erstelle";
 "appointment(s)" = "Verabredung(en)";
 "Repeat until" = "Wiederhole bis";
 
@@ -374,8 +374,8 @@
 
 /* transparency */
 
-"Show Time as" = "Show Time as";
-"opaque" = "opaque";
+"Show Time as" = "Zeige Zeit als";
+"opaque" = "deckend";
 "transparent" = "transparent";
 
 /* validation errors */
@@ -423,17 +423,17 @@ validate_endbeforestart    = "Ihr Beginn ist nach dem Ende";
 /* Legend */
 "Required participant" = "notwendiger Teilnehmer";
 "Optional participant" = "optionaler Teilnehmer";
-"Chair" = "Stuhl";
+"Chair" = "Vorsitz";
 
 "Needs action" = "Benötigt Eingriff";
 "Accepted" = "Akzeptiert";
 "Declined" = "Abgelehnt";
 "Tentative" = "Vorläufig";
 
-"Free" = "Frei";
+"Free" = "Verfügbar";
 "Busy" = "Beschäftigt";
-"Maybe busy" = "Vielleicht beschãftigt";
-"No free-busy information" = "Keine free-busy Information";
+"Maybe busy" = "Vielleicht beschäftigt";
+"No free-busy information" = "Keine Verfügbarkeitsinformationen";
 
 /* FreeBusy panel buttons */
 "Suggest time slot:" = "Zeitzone :";
@@ -459,7 +459,7 @@ vtodo_class1 = "(Private task)";
 vtodo_class2 = "(Confidential task)";
 
 "closeThisWindowMessage" = "Vielen Dank! Sie können dieses Fenster jetzt schließen.";
-"Multicolumn Day View" = "Multicolonne";
+"Multicolumn Day View" = "Mehrspaltige Tagesansicht";
 
 "Please select an event or a task." = "Bitte wählen Sie einen Termin oder eine Aufgabe aus!";
 

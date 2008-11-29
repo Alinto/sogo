@@ -30,7 +30,7 @@
 "Organization"      = "Organisation";
 "Work Phone"	    = "Dienstlich";
 "Phone"             = "Telefon";
-"Postal"            = "Professionnelle";
+"Postal"            = "PLZ";
 "Save"              = "Speichern";
 "URL"               = "Webseite";
 "Unit"              = "Abteilung";
@@ -41,7 +41,7 @@
 "Preferred Phone"   = "Bevorzugt";
 
 "htmlMailFormat_UNKNOWN" = "Unbekannt";
-"htmlMailFormat_FALSE" = "Reintext";
+"htmlMailFormat_FALSE" = "Klartext";
 "htmlMailFormat_TRUE" = "HTML";
 
 "Name or Email" = "Name oder E-Mail";
@@ -58,8 +58,8 @@
 "Add..." = "Hinzufügen...";
 "Remove" = "Löschen";
 
-"Please wait..." = "Please wait...";
-"No possible subscription" = "No possible subscription";
+"Please wait..." = "Bitte warten...";
+"No possible subscription" = "Kein abonnieren möglich";
 
 "Preferred" = "Bevorzugt";
 "Card for %@" = "%@";
@@ -113,16 +113,16 @@
 "Are you sure you want to delete the selected address book?"
 = "Wollen Sie wirklich das ausgewählte Adressbuch löschen?";
 "You cannot remove nor unsubscribe from a public addressbook."
-= "You cannot remove nor unsubscribe from a public addressbook.";
+= "Sie können das gemeinsame Adressbuch nicht löschen.";
 "You cannot remove nor unsubscribe from your personal addressbook."
-= "You cannot remove nor unsubscribe from your personal addressbook.";
+= "Sie können ihr Persönliches Adressbuch nicht löschen.";
 
 "Are you sure you want to delete the selected contacts?"
 = "Wollen Sie wirklich die ausgewählte Karten löschen?";
 "You cannot delete the selected contact(s)"
 = "Ausgewählte Karten können nicht gelöscht werden.";
 
-"Address Book Name" = "Adressbuch Name";
+"Address Book Name" = "Adressbuch-Name";
 
 "You cannot subscribe to a folder that you own!"
 = "Sie können ihre eigenen Ordner nicht abonnieren!";

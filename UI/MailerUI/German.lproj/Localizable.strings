@@ -5,7 +5,7 @@
 "Create"      = "Erstellen";
 "Empty Trash" = "Papierkorb leeren";
 "Delete"      = "Löschen";
-"Expunge"     = "Purger";
+"Expunge"     = "Expunge";
 "Get Mail"    = "Abrufen";
 "Junk"        = "Junk";
 "Reply"       = "Antworten";
@@ -13,23 +13,23 @@
 "Print"       = "Drucken";
 "Stop"        = "Stopp";
 "Write"       = "Verfassen";
-"Attachment"  = "Attachment";
-"Unread"      = "Unread";
-"Flagged"     = "Flagged";
+"Attachment"  = "Anhang";
+"Unread"      = "Ungelesen";
+"Flagged"     = "Markiert";
 
 
 "Send" = "Senden";
 "Contacts" = "Kontakte";
 "Attach" = "Anhang";
 "Save" = "Speichern";
-"Priority" = "Priority";
+"Priority" = "Priorität";
 
 /* Main Frame  */
 
 "Home"                 = "Start"; 
-"Calendar"             = "Kalendar";
+"Calendar"             = "Kalender";
 "Addressbook"          = "Adressbuch";
-"Mail"                 = "Mail";
+"Mail"                 = "E-Mail";
 "Right Administration" = "Verwaltung";
 "Help" = "Hilfe";
 
@@ -45,7 +45,7 @@
 "Shared Account: " = "Gemeinsames Konto";
 
 /* acls */
-"Default Roles" = "Standard-Rollen";
+"Default Roles" = "Standardrechte";
 "User rights for:" = "Benutzerrechte für:";
 
 "List and see this folder" = "Diesen Ordner sehen";
@@ -88,7 +88,7 @@
 "low" = "Low";
 "lowest" = "Lowest";
 
-"This mail is being sent from an unsecure network!" = "Diese e-Mail wurde von einem unsicheren Netzwerk gesendet!";
+"This mail is being sent from an unsecure network!" = "Diese E-Mail wurde von einem unsicheren Netzwerk gesendet!";
 
 /* Popup "show" */
 
@@ -208,7 +208,7 @@
  = "Geben Sie den Namen des neuen Ordners ein:";
 "Do you really want to move this folder into the trash ?"
  = "Wollen Sie diesen Ordner wirklich in den Papierkorb verschieben?";
-"Operation failed" = "L'opération a échoué.";
+"Operation failed" = "Operation fehlgeschlagen.";
 
 "Quota" = "Quota";
 "quotasFormat" = "%{0}% von %{1} MB verwendet";
