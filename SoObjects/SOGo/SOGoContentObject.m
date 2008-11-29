@@ -449,6 +449,11 @@
   if ([containerAcls count] > 0)
     {
       [acls addObjectsFromArray: containerAcls];
+      /* The creation of an object is actually a "modification" to an
+	 unexisting object. When the object is new, we give the
+	 "ObjectCreator" the "ObjectModifier" role temporarily while we
+	 disallow the "ObjectModifier" users to modify them, unless they are
+	 ObjectCreators too. */
       if (isNew)
 	{
 	  if ([containerAcls containsObject: SOGoRole_ObjectCreator])
