@@ -1,3 +1,13 @@
+2008-12-01  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	([SOGoAppointmentObject -prepareDeleteOccurence:]): fixed handling
+	of occurence deletion by an attendee.
+
+	* ([-changeParticipationStatus: forRecurrenceId:]): fixed handling
+	of changing the attendee's status when no occurrence was
+	previously defined.
+
 2008-12-01  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
         * We now try to match the c_name and c_uid
