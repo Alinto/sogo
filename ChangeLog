@@ -1,3 +1,11 @@
+2008-12-01  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+        * We now try to match the c_name and c_uid
+	when creating events from the Web interface.
+	This can avoid creating duplicate events
+	with IMIP when calendar refreshes haven't occured
+	before the accept/decline/tentative actions.
+
 2008-11-29  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* Updated german translation - patch from

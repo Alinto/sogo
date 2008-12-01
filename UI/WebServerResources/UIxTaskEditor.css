@@ -94,10 +94,7 @@ SPAN#allDay > INPUT
 { position: static; }
 
 SPAN.content > INPUT
-{ position: absolute;
-  top: 0px;
-  left: 0px;
-  right: 0px; }
+{ width: 390px; }
 
 INPUT#startDateCB,
 INPUT#dueDateCB,

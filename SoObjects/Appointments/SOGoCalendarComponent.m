@@ -409,11 +409,26 @@ _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
 
 - (void) saveComponent: (iCalRepeatableEntityObject *) newObject
 {
-  NSString *newiCalString;
+  NSString *newiCalString, *newUid;
 
   if (!isNew
       && [newObject isRecurrent])
     [self _updateRecurrenceIDs];
+
+  // As much as we can, we try to use c_name == c_uid in order
+  // to avoid tricky scenarios with some CalDAV clients. For example,
+  // if Alice invites Bob (both use SOGo) and Bob accepts the invitation
+  // using Lightning before having refreshed his calendar, he'll end up
+  // with a duplicate of the event in his database tables.
+  if (isNew)
+    {
+      newUid = nameInContainer;
+      
+      if ([newUid hasSuffix: @".ics"])
+	newUid = [newUid substringToIndex: [newUid length]-4];
+      [newObject setUid: newUid];
+    }
+
   newiCalString = [[newObject parent] versitString];
 
   [self saveContentString: newiCalString];

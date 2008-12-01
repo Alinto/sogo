@@ -368,6 +368,10 @@
 
   [[newEvent parent] setMethod: @""];
   ownerUser = [SOGoUser userWithLogin: owner roles: nil];
+  
+  // We first save the event. It is important to this initially
+  // as the event's UID might get modified in SOGoCalendarComponent: -saveComponent:
+  [super saveComponent: newEvent];  
 
   if ([newEvent userIsOrganizer: ownerUser])
     {
@@ -395,8 +399,6 @@
 	  [self _handleUpdatedEvent: newEvent fromOldEvent: oldEvent];
 	}
     }
-
-  [super saveComponent: newEvent];
 }
 
 //
