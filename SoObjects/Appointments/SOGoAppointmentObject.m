@@ -447,7 +447,9 @@
 	  event = [eventObject lookupOccurence: recurrenceTime];
 	  
 	  if (event == nil)
+	    // If no occurence found, create one
 	    event = [eventObject newOccurenceWithID: recurrenceTime];
+	  
 	  events = [NSArray arrayWithObject: event];
 	}
 
@@ -888,8 +890,10 @@
 	  // within the repeating vEvent.
 	  recurrenceTime = [NSString stringWithFormat: @"%f", [_recurrenceId timeIntervalSince1970]];
 	  event = [self lookupOccurence: recurrenceTime];
-	  // If no occurence found, create one
-	  event = [self newOccurenceWithID: recurrenceTime];
+	  
+	  if (event == nil)
+	    // If no occurence found, create one
+	    event = [self newOccurenceWithID: recurrenceTime];
 	}
       else
 	// No specific occurence specified; return the first vEvent of
