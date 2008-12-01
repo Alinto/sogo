@@ -22,15 +22,8 @@
     </ul>
   </div>
 
-  <label><span class="content"
-	><var:string label:value="Show Time as"
-        /> <var:popup list="transparencyList" item="item"
-          const:name="transparencyList"
-	  const:id="transparencyList"
-          string="itemTransparencyText"
-	  var:selection="transparency"
-          />
-  <span id="allDay"><input class="checkBox"
+  <label><span class="content">
+    <span id="allDay"><input class="checkBox"
         type="checkbox" var:selection="isAllDay"
         var:checked="isAllDay"
         /> <var:string label:value="All day Event"
@@ -49,4 +42,10 @@
         const:dayStartHour="0"
         const:dayEndHour="23"
         /></span></span>
+  <label><span class="content">
+    <span id="isTransparent"><input class="checkBox"
+        type="checkbox" var:selection="isTransparent"
+        var:checked="isTransparent"
+        /> <var:string label:value="Show Time as Free"
+        /></span></span></label>
 </var:component>

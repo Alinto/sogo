@@ -61,6 +61,7 @@
       item = nil;
       event = nil;
       isAllDay = NO;
+      isTransparent = NO;
     }
 
   return self;
@@ -109,36 +110,14 @@
   isAllDay = newIsAllDay;
 }
 
-- (NSArray *) transparencyList
+- (BOOL) isTransparent
 {
-  static NSArray *transparencies = nil;
-
-  if (!transparencies)
-    {
-      transparencies = [NSArray arrayWithObjects: @"OPAQUE", @"TRANSPARENT", nil];
-      [transparencies retain];
-    }
-
-  return transparencies;
+  return isTransparent;
 }
 
-- (NSString *) transparency
+- (void) setIsTransparent: (BOOL) newIsTransparent
 {
-  return transparency;
-}
-
-- (NSString *) itemTransparencyText
-{
-  NSString *text;
-
-  text = [self labelForKey: [item lowercaseString]];
-
-  return text;
-}
-
-- (void) setTransparency: (NSString *) newTransparency
-{
-  ASSIGN (transparency, newTransparency);
+  isTransparent = newIsTransparent;
 }
 
 - (void) setAptStartDate: (NSCalendarDate *) newAptStartDate
@@ -220,7 +199,7 @@
 - (id <WOActionResults>) defaultAction
 {
   NSCalendarDate *startDate, *endDate;
-  NSString *duration, *transp;
+  NSString *duration;
   unsigned int minutes;
   SOGoObject <SOGoComponentOccurence> *co;
 
@@ -247,13 +226,11 @@
 	endDate = [[event endDate] dateByAddingYears: 0 months: 0 days: -1];
       else
 	endDate = [event endDate];
+      isTransparent = ![event isOpaque];
     }
 
   ASSIGN (aptStartDate, startDate);
   ASSIGN (aptEndDate, endDate);
-
-  transp = [[event transparency] uppercaseString];
-  ASSIGN (transparency, transp);
 
   return self;
 }
@@ -417,7 +394,7 @@
       [event setEndDate: aptEndDate];
     }
 
-  [event setTransparency: transparency];
+  [event setTransparency: (isTransparent? @"TRANSPARENT" : @"OPAQUE")];
 }
 
 // TODO: add tentatively

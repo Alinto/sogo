@@ -82,12 +82,10 @@ SPAN.checkBoxList SPAN.content LABEL
 
 SPAN.content
 { position: absolute;
+  line-height: 2em;
   top: -.25em;
   left: 8em;
   right: 1em; }
-
-SPAN.content
-{ line-height: 2em; }
 
 SPAN.content A
 { line-height: 2em; }
@@ -125,12 +123,8 @@ SPAN#categoriesCB LABEL
 { margin-left: 0px;
   margin-right: 1em; }
 
-SPAN.content > INPUT
+SPAN.content > INPUT.textField
 { width: 380px; }
-
-SPAN#allDay > INPUT
-{ position: static;
-  width: auto; }
 
 LABEL#urlArea INPUT
 { position: static; }

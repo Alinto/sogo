@@ -93,7 +93,7 @@ SPAN#categoriesCB LABEL
 SPAN#allDay > INPUT
 { position: static; }
 
-SPAN.content > INPUT
+SPAN.content > INPUT.textField
 { width: 390px; }
 
 INPUT#startDateCB,
