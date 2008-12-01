@@ -449,7 +449,9 @@
 	  event = [eventObject lookupOccurence: recurrenceTime];
 	  
 	  if (event == nil)
+	    // If no occurence found, create one
 	    event = [eventObject newOccurenceWithID: recurrenceTime];
+	  
 	  events = [NSArray arrayWithObject: event];
 	}
 
@@ -890,8 +892,10 @@
 	  // within the repeating vEvent.
 	  recurrenceTime = [NSString stringWithFormat: @"%f", [_recurrenceId timeIntervalSince1970]];
 	  event = [self lookupOccurence: recurrenceTime];
-	  // If no occurence found, create one
-	  event = [self newOccurenceWithID: recurrenceTime];
+	  
+	  if (event == nil)
+	    // If no occurence found, create one
+	    event = [self newOccurenceWithID: recurrenceTime];
 	}
       else
 	// No specific occurence specified; return the first vEvent of
@@ -930,21 +934,34 @@
   iCalEvent *event;
   SOGoUser *ownerUser, *currentUser;
   NSArray *attendees;
+  NSCalendarDate *recurrenceId;
 
   if ([[context request] handledByDefaultHandler])
     {
       ownerUser = [SOGoUser userWithLogin: owner roles: nil];
       event = [self component: NO secure: NO];
-      if (!occurence)
-	occurence = event;
+
+      if (occurence == nil)
+	{
+	  // No occurence specified; use the master event.
+	  occurence = event;
+	  recurrenceId = nil;
+	}
+      else
+	// Retrieve this occurence ID.
+	recurrenceId = [occurence recurrenceId];
+
       if ([event userIsOrganizer: ownerUser])
 	{
-	  currentUser = [context activeUser]; // is this correct?
+	  // The organizer deletes an occurence.
+	  currentUser = [context activeUser];
 	  attendees = [occurence attendeesWithoutUser: currentUser];
 	  if (![attendees count] && event != occurence)
 	    attendees = [event attendeesWithoutUser: currentUser];
 	  if ([attendees count])
 	    {
+	      // Remove the event from all attendees calendars
+	      // and send them an email.
 	      [self _handleRemovedUsers: attendees];
 	      [self sendEMailUsingTemplateNamed: @"Deletion"
 		    forObject: [occurence itipEntryWithMethod: @"cancel"]
@@ -953,7 +970,9 @@
 	    }
 	}
       else if ([occurence userIsParticipant: ownerUser])
-	[self changeParticipationStatus: @"DECLINED"];
+	// The current user deletes the occurence; let the organizer know that
+	// the user has declined this occurence.
+	[self changeParticipationStatus: @"DECLINED" forRecurrenceId: recurrenceId];
     }
 }
 
