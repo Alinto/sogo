@@ -203,7 +203,14 @@
 	      [otherAttendee addAttribute: @"SENT-BY"
 			     value: [NSString stringWithFormat: @"\"MAILTO:%@\"", currentEmail]];
 	    }
-
+	  else
+	    {
+	      // We must REMOVE any SENT-BY here. This is important since if A accepted
+	      // the event for B and then, B changes by himself his participation status,
+	      // we don't want to keep the previous SENT-BY attribute there.
+	      [(NSMutableDictionary *)[otherAttendee attributes] removeObjectForKey: @"SENT-BY"];
+	    }
+	  
 	  iCalString = [[event parent] versitString];
 	  [eventObject saveContentString: iCalString];
 	}

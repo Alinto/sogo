@@ -1,5 +1,6 @@
 /*
   Copyright (C) 2005 SKYRIX Software AG
+  Copyright (C) 2008 Inverse inc.
 
   This file is part of OpenGroupware.org.
 
@@ -264,33 +265,19 @@ static NSString *uidColumnName = @"c_uid";
       channel = [cm acquireOpenChannelForURL: [self tableURL]];
       if (channel)
 	{
+	  [[channel adaptorContext] beginTransaction];
 	  ex = [channel evaluateExpressionX:sql];
 	  if (ex)
-	    [self errorWithFormat: @"could not run SQL '%@': %@", sql, ex];
+	    {
+	      [self errorWithFormat: @"could not run SQL '%@': %@", sql, ex];
+	      [[channel adaptorContext] rollbackTransaction];
+	    }
 	  else
 	    {
-	      NSMutableDictionary *d;
-
-	      d = [[NSMutableDictionary alloc] init];
-	      [d setObject: values forKey: @"values"];
-	      [d setObject: uid  forKey: @"uid"];
-
-	      [[NSDistributedNotificationCenter defaultCenter]
-		postNotificationName: ([fieldName isEqualToString: @"c_defaults"] ? @"SOGoUserDefaultsHaveChanged" : @"SOGoUserSettingsHaveChanged")
-		object: nil
-		userInfo: d];
-	      [d release];
-	      
-	      if ([[channel adaptorContext] hasOpenTransaction])
+	      if ([[channel adaptorContext] commitTransaction])
 		{
-		  ex = [channel evaluateExpressionX: @"COMMIT TRANSACTION"];
-		  if (ex)
-		    [self errorWithFormat:@"could not commit transaction for update: %@", ex];
-		  else
-		    rc = YES;
+		  rc = YES;
 		}
-	      else
-		rc = YES;
 	      
 	      defFlags.modified = NO;
 	      defFlags.isNew = NO;
@@ -304,6 +291,22 @@ static NSString *uidColumnName = @"c_uid";
     }
   else
     [self errorWithFormat: @"failed to generate SQL for storing defaults"];
+
+  if (rc)
+    {
+      NSMutableDictionary *d;
+      
+      d = [[NSMutableDictionary alloc] init];
+      [d setObject: values forKey: @"values"];
+      [d setObject: uid  forKey: @"uid"];
+      
+      [[NSDistributedNotificationCenter defaultCenter]
+	postNotificationName: ([fieldName isEqualToString: @"c_defaults"] ? @"SOGoUserDefaultsHaveChanged" : @"SOGoUserSettingsHaveChanged")
+	object: nil
+	userInfo: d
+	deliverImmediately: YES];
+      [d release];
+    }
 
   return rc;
 }
