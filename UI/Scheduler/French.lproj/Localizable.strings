@@ -388,9 +388,7 @@
 
 /* transparency */
 
-"Show Time as" = "Disponibilité";
-"opaque" = "occupé";
-"transparent" = "disponible";
+"Show Time as Free" = "Affiché comme disponible";
 
 /* validation errors */
 

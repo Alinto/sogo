@@ -386,9 +386,7 @@
 
 /* transparency */
 
-"Show Time as" = "Show Time as";
-"opaque" = "opaque";
-"transparent" = "transparent";
+"Show Time as Free" = "Show Time as Free";
 
 /* validation errors */
 
