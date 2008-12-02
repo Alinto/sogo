@@ -421,7 +421,6 @@
 	          shouldAddSentBy: (BOOL) b
 {
   SOGoAppointmentObject *eventObject;
-  //iCalEvent *event;
   iCalCalendar *calendar;
   iCalEntityObject *event;
   iCalPerson *otherAttendee;
@@ -461,6 +460,8 @@
 	  SOGoUser *currentUser;
 	  int i;
 
+	  currentUser = [context activeUser];
+	  
 	  for (i = 0; i < [events count]; i++)
 	    {
 	      event = [events objectAtIndex: i];
@@ -470,7 +471,6 @@
 	  
 	      // If one has accepted / declined an invitation on behalf of
 	      // the attendee, we add the user to the SENT-BY attribute.
-	      currentUser = [context activeUser];
 	      if (b && ![[currentUser login] isEqualToString: [theOwnerUser login]])
 		{
 		  NSString *currentEmail;
