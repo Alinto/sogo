@@ -149,6 +149,12 @@ function initializeFormValues() {
     $('endDate_date').disabled = false;
   }
 
+	$('rangeAppointmentsField').observe("click", function(event) {
+			// Set the range to a fixed number of appointments if user
+			// clicks in the range field.
+			$('recurrence_form').setRadioValue('rangeRadioButtonName', 1);
+		});
+
   // Observe change of range radio buttons to activate the date picker when required
   Form.getInputs($('recurrence_form'), 'radio', 'rangeRadioButtonName').each(function(input) {
       input.observe("change", onRangeChange);
