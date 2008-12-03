@@ -1,3 +1,21 @@
+2008-12-03  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/MailPartViewers/UIxMailPartICalViewer.m
+	([UIxMailPartICalViewer -storedEvent): returns the occurence of
+	the repeating event if recurrenceId is defined.
+
+	* UI/MailPartViewers/UIxMailPartICalActions.m
+	([UIxMailPartICalActions -_setupChosenEventAndEventObject:]):
+	fixed comparison of the calendar and email event when dealing with
+	an occurence of a repeating event.
+	([UIxMailPartICalActions -_updateAttendee:ownerUser:forEventUID:withRecurrenceId:forUID:shouldAddSentBy:]):	
+	fixed handling of status update for one occurence of a repeating event.
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	([SOGoAppointmentObject -saveComponent:]): fixed handling of an
+	occurence modification (resulting a properly written email sent to
+	attendees).
+	
 2008-12-02  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
         * SoObjects/Appointments/SOGoAppointmentFolder.m
@@ -15,10 +33,13 @@
 	* SoObjects/Appointments/SOGoAppointmentObject.m
 	([SOGoAppointmentObject -prepareDeleteOccurence:]): fixed handling
 	of occurence deletion by an attendee.
-
-	* ([-changeParticipationStatus: forRecurrenceId:]): fixed handling
+	([-changeParticipationStatus: forRecurrenceId:]): fixed handling
 	of changing the attendee's status when no occurrence was
 	previously defined.
+
+	* UI/Scheduler/UIxAppointmentEditor.m ([UIxAppointmentEditor
+	-takeValuesFromRequest: inContext:]): replaced pulldown
+	transparency menu by a checkbox (Show Time as Free).
 
 2008-12-01  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
