@@ -457,8 +457,7 @@ static Class sogoAppointmentFolderKlass = Nil;
 
   activeUser = [context activeUser];
 
-  if (activeUserIsOwner
-      || [[self ownerInContext: context] isEqualToString: [[context activeUser] login]]
+  if ([[self ownerInContext: context] isEqualToString: [[context activeUser] login]]
       || [[activeUser rolesForObject: self inContext: context]
 	   containsObject: SoRole_Owner])
     privacySqlString = @"";
@@ -492,7 +491,7 @@ static Class sogoAppointmentFolderKlass = Nil;
   EOQualifier *qualifier;
   GCSFolder *folder;
   NSString *sql, *dateSqlString, *titleSqlString, *componentSqlString,
-    *filterSqlString;
+    *filterSqlString, *privacySqlString;
 
   folder = [self ocsFolder];
   if (startDate && endDate)
@@ -512,6 +511,10 @@ static Class sogoAppointmentFolderKlass = Nil;
   else
     filterSqlString = @"";
 
+  privacySqlString = [self _privacySqlString];
+  if ([privacySqlString length])
+    filterSqlString = [NSString stringWithFormat: @"AND (%@)", privacySqlString];
+  
   /* prepare mandatory fields */
 
   sql = [[NSString stringWithFormat: @"%@%@%@%@",
@@ -1648,7 +1651,8 @@ static Class sogoAppointmentFolderKlass = Nil;
     {
       record = [records objectAtIndex: count];
       recordURL = [cnames objectForKey: [record objectForKey: @"c_name"]];
-      [components setObject: record forKey: recordURL];
+      if (recordURL)
+	[components setObject: record forKey: recordURL];
     }
 
   return components;

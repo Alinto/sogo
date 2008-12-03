@@ -1,3 +1,10 @@
+2008-12-02  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+        * SoObjects/Appointments/SOGoAppointmentFolder.m
+	Modified to handle correctly the classification
+	of events when fetching the etags in order to
+	not return unaccessible components.
+
 2008-12-01  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
         * Improved the cache sync process and added
