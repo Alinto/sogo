@@ -15,7 +15,11 @@
 	([SOGoAppointmentObject -saveComponent:]): fixed handling of an
 	occurence modification (resulting a properly written email sent to
 	attendees).
-	
+	([SOGoAppointmentObject
+	_removeEventFromUID:owner:withRecurrenceId]:): fixed handling of
+	an occurrence deletion. In this case an exception date must be
+	added to the event.
+
 2008-12-02  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
         * SoObjects/Appointments/SOGoAppointmentFolder.m
