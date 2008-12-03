@@ -163,7 +163,7 @@
   NSString *possibleName;
 
   folder = [container lookupCalendarFolderForUID: uid];
-  // should call lookupCalendarFoldersForUIDs to search among all folders
+#warning Should call lookupCalendarFoldersForUIDs to search among all folders
   object = [folder lookupName: nameInContainer
 		   inContext: context acquire: NO];
   if ([object isKindOfClass: [NSException class]])
@@ -364,6 +364,8 @@
 {
   iCalEvent *oldEvent;
   NSArray *attendees;
+  NSCalendarDate *recurrenceId;
+  NSString *recurrenceTime;
   SOGoUser *ownerUser;
 
   [[newEvent parent] setMethod: @""];
@@ -395,8 +397,23 @@
       else
 	{
 	  // Event is modified -- sent update status to all attendees
-	  oldEvent = [self component: NO secure: NO];
+	  recurrenceId = [newEvent recurrenceId];
+	  if (recurrenceId == nil)
+	    oldEvent = [self component: NO secure: NO];
+	  else
+	    {
+	      // If recurrenceId is defined, find the specified occurence
+	      // within the repeating vEvent.
+	      recurrenceTime = [NSString stringWithFormat: @"%f", [recurrenceId timeIntervalSince1970]];
+	      oldEvent = (iCalEvent*)[self lookupOccurence: recurrenceTime];
+	      if (oldEvent == nil)
+		// If no occurence found, create one
+		oldEvent = (iCalEvent*)[self newOccurenceWithID: recurrenceTime];
+	    }
 	  [self _handleUpdatedEvent: newEvent fromOldEvent: oldEvent];
+	  
+	  // The sequence has possibly been increased -- resave the event
+	  [super saveComponent: newEvent];
 	}
     }
 }
@@ -437,7 +454,7 @@
 	{
 	  // We must update main event and all its occurences (if any).
 	  calendar = [eventObject calendar: NO secure: NO];
-	  event = [calendar firstChildWithTag: [self componentTag]];
+	  event = (iCalEntityObject*)[calendar firstChildWithTag: [self componentTag]];
 	  events = [calendar allObjects];
 	}
       else
@@ -891,16 +908,16 @@
 	  // If _recurrenceId is defined, find the specified occurence
 	  // within the repeating vEvent.
 	  recurrenceTime = [NSString stringWithFormat: @"%f", [_recurrenceId timeIntervalSince1970]];
-	  event = [self lookupOccurence: recurrenceTime];
+	  event = (iCalEvent*)[self lookupOccurence: recurrenceTime];
 	  
 	  if (event == nil)
 	    // If no occurence found, create one
-	    event = [self newOccurenceWithID: recurrenceTime];
+	    event = (iCalEvent*)[self newOccurenceWithID: recurrenceTime];
 	}
       else
 	// No specific occurence specified; return the first vEvent of
 	// the vCalendar.
-	event = [calendar firstChildWithTag: [self componentTag]];
+	event = (iCalEvent*)[calendar firstChildWithTag: [self componentTag]];
     }
   if (event)
     {

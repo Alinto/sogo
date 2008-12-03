@@ -75,6 +75,7 @@
 
   eventObject = nil;
 
+#warning Should call lookupCalendarFoldersForUIDs to search among all folders
   personalFolder = [user personalCalendarFolderInContext: context];
   cname = [personalFolder resourceNameForEventUID: uid];
   if (cname)
@@ -149,12 +150,35 @@
 	chosenEvent = emailEvent;
       else
 	{
-	  calendarEvent = (iCalEvent *) [*eventObject component: NO
-						      secure: NO];
-	  if ([calendarEvent compare: emailEvent] == NSOrderedAscending)
-	    chosenEvent = emailEvent;
+	  if ([emailEvent recurrenceId])
+	    {
+	      // Event attached to email is not completed -- retrieve it
+	      // from the database.
+	      NSString *recurrenceTime;
+
+	      recurrenceTime = [NSString stringWithFormat: @"%f", 
+					 [[emailEvent recurrenceId] timeIntervalSince1970]];
+	      calendarEvent = [*eventObject lookupOccurence: recurrenceTime];
+	    }
 	  else
-	    chosenEvent = calendarEvent;
+	    calendarEvent = (iCalEvent *) [*eventObject component: NO
+							secure: NO];
+	  
+	  if (calendarEvent != nil)
+	    {
+	      // Calendar event still exists -- verify which of the calendar
+	      // and email events is the most recent.
+	      if ([calendarEvent compare: emailEvent] == NSOrderedAscending)
+		chosenEvent = emailEvent;
+	      else
+		{
+		  chosenEvent = calendarEvent;
+		  if (![[[chosenEvent parent] method] length])
+		    [[chosenEvent parent] setMethod: [[emailEvent parent] method]];
+		}
+	    }
+	  else
+	    chosenEvent = emailEvent;
 	}
 
       organizer = [chosenEvent organizer];
@@ -163,7 +187,7 @@
     }
   else
     chosenEvent = nil;
-
+  
   return chosenEvent;
 }
 
@@ -171,46 +195,75 @@
 - (void) _updateAttendee: (iCalPerson *) attendee
                ownerUser: (SOGoUser *) theOwnerUser
 	       forEventUID: (NSString *) eventUID
+	       withRecurrenceId: (NSCalendarDate *) recurrenceId
 	       withSequence: (NSNumber *) sequence
 	       forUID: (NSString *) uid
 	       shouldAddSentBy: (BOOL) b
 {
   SOGoAppointmentObject *eventObject;
+  iCalCalendar *calendar;
   iCalEvent *event;
   iCalPerson *otherAttendee;
-  NSString *iCalString;
+  NSArray *events;
+  NSString *iCalString, *recurrenceTime;
 
   eventObject = [self _eventObjectWithUID: eventUID
 		      forUser: [SOGoUser userWithLogin: uid roles: nil]];
   if (![eventObject isNew])
     {
-      event = [eventObject component: NO secure: NO];
+      if (recurrenceId == nil)
+	{
+	  // We must update main event and all its occurences (if any).
+	  calendar = [eventObject calendar: NO secure: NO];
+	  event = [calendar firstChildWithTag: [eventObject componentTag]];
+	  events = [calendar allObjects];
+	}
+      else
+	{
+	  // If recurrenceId is defined, find the specified occurence
+	  // within the repeating vEvent.
+	  recurrenceTime = [NSString stringWithFormat: @"%f", [recurrenceId timeIntervalSince1970]];
+	  event = [eventObject lookupOccurence: recurrenceTime];
+	  
+	  if (event == nil)
+	    // If no occurence found, create one
+	    event = [eventObject newOccurenceWithID: recurrenceTime];
+	  
+	  events = [NSArray arrayWithObject: event];
+	}
+
       if ([[event sequence] compare: sequence]
 	  == NSOrderedSame)
 	{
 	  SOGoUser *currentUser;
+	  int i;
 	  
-	  otherAttendee = [event findParticipant: theOwnerUser];
-	  [otherAttendee setPartStat: [attendee partStat]];
-	  
-	  // If one has accepted / declined an invitation on behalf of
-	  // the attendee, we add the user to the SENT-BY attribute.
 	  currentUser = [context activeUser];
-	  if (b && ![[currentUser login] isEqualToString: [theOwnerUser login]])
-	    {
-	      NSString *currentEmail;
-	      currentEmail = [[currentUser allEmails] objectAtIndex: 0];
-	      [otherAttendee addAttribute: @"SENT-BY"
-			     value: [NSString stringWithFormat: @"\"MAILTO:%@\"", currentEmail]];
-	    }
-	  else
-	    {
-	      // We must REMOVE any SENT-BY here. This is important since if A accepted
-	      // the event for B and then, B changes by himself his participation status,
-	      // we don't want to keep the previous SENT-BY attribute there.
-	      [(NSMutableDictionary *)[otherAttendee attributes] removeObjectForKey: @"SENT-BY"];
-	    }
 	  
+	  for (i = 0; i < [events count]; i++)
+	    {
+	      event = [events objectAtIndex: i];
+
+	      otherAttendee = [event findParticipant: theOwnerUser];
+	      [otherAttendee setPartStat: [attendee partStat]];
+	  
+	      // If one has accepted / declined an invitation on behalf of
+	      // the attendee, we add the user to the SENT-BY attribute.
+	      if (b && ![[currentUser login] isEqualToString: [theOwnerUser login]])
+		{
+		  NSString *currentEmail;
+		  currentEmail = [[currentUser allEmails] objectAtIndex: 0];
+		  [otherAttendee addAttribute: @"SENT-BY"
+				 value: [NSString stringWithFormat: @"\"MAILTO:%@\"", currentEmail]];
+		}
+	      else
+		{
+		  // We must REMOVE any SENT-BY here. This is important since if A accepted
+		  // the event for B and then, B changes by himself his participation status,
+		  // we don't want to keep the previous SENT-BY attribute there.
+		  [(NSMutableDictionary *)[otherAttendee attributes] removeObjectForKey: @"SENT-BY"];
+		}
+	    }
 	  iCalString = [[event parent] versitString];
 	  [eventObject saveContentString: iCalString];
 	}
@@ -232,6 +285,7 @@
       user = [chosenEvent findParticipant: [context activeUser]];
       [user setPartStat: newStatus];
       calendar = [chosenEvent parent];
+
       emailCalendar = [[self _emailEvent] parent];
       method = [[emailCalendar method] lowercaseString];
       if ([method isEqualToString: @"request"])
@@ -241,16 +295,24 @@
 	}
       else
 	rsvp = nil;
+
+      // We generate the updated iCalendar file and we save it
+      // in the database.
       [eventObject saveContentString: [calendar versitString]];
+
+      // Send a notification to the organizer if necessary
       if ([rsvp isEqualToString: @"true"] &&
 	  [chosenEvent isStillRelevant])
 	[eventObject sendResponseToOrganizer: chosenEvent
 		     from: [context activeUser]];
+
       organizerUID = [[chosenEvent organizer] uid];
       if (organizerUID)
+	// Update the event in the organizer's calendar
 	[self _updateAttendee: user
 	      ownerUser: [context activeUser]
 	      forEventUID: [chosenEvent uid]
+	      withRecurrenceId: [chosenEvent recurrenceId]
 	      withSequence: [chosenEvent sequence]
 	      forUID: organizerUID
 	      shouldAddSentBy: YES];
@@ -281,6 +343,7 @@
 		    ownerUser: [context activeUser]
 		    forEventUID: [chosenEvent uid]
 		    withSequence: [chosenEvent sequence]
+		    withRecurrenceId: [chosenEvent recurrenceId]
 		    forUID: uid
 		    shouldAddSentBy: YES];
 	    }

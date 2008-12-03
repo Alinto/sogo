@@ -104,7 +104,7 @@
     {
       events = [[self inCalendar] events];
       if ([events count] > 0)
-	inEvent = [[events objectAtIndex:0] retain];
+	inEvent = [[events objectAtIndex: 0] retain];
     }
 
   return inEvent;
@@ -262,7 +262,25 @@
 {
   if (!storedEvent)
     {
-      storedEvent = [[self storedEventObject] component: NO secure: NO];
+      NSCalendarDate *recurrenceId;
+
+      recurrenceId = [[self inEvent] recurrenceId];
+
+      if (recurrenceId == nil)
+	storedEvent = [[self storedEventObject] component: NO secure: NO];
+      else
+	{
+	  // Find the specific occurence within the repeating vEvent.
+	  NSString *recurrenceTime;
+
+	  recurrenceTime = [NSString stringWithFormat: @"%f", [recurrenceId timeIntervalSince1970]];
+	  storedEvent = (iCalEvent*)[[self storedEventObject] lookupOccurence: recurrenceTime];
+
+	  if (storedEvent == nil)
+	    // If no occurence found, create one
+	    storedEvent = (iCalEvent*)[storedEventObject newOccurenceWithID: recurrenceTime];
+	}
+      
       [storedEvent retain];
     }
 
