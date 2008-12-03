@@ -55,8 +55,6 @@
 // - (NSException *) primarySaveContentString: (NSString *) _iCalString;
 // - (NSException *) primaryDelete;
 
-// - (NSException *) delete;
-
 - (void) saveComponent: (iCalRepeatableEntityObject *) newObject;
 
 /* mail notifications */

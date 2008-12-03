@@ -148,6 +148,7 @@
     {
       if ([container respondsToSelector: @selector (prepareDeleteOccurence:)])
 	[container prepareDeleteOccurence: component];
+
       [master addToExceptionDates: [component startDate]];
       parent = [component parent];
       [[parent children] removeObject: component];

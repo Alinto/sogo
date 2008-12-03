@@ -205,24 +205,56 @@
     }
 }
 
+#warning what about occurences?
 - (void) _removeEventFromUID: (NSString *) theUID
                        owner: (NSString *) theOwner
+	    withRecurrenceId: (NSCalendarDate *) recurrenceId
 {
   if (![theUID isEqualToString: theOwner])
     {
       SOGoAppointmentFolder *folder;
       SOGoAppointmentObject *object;
+      iCalEntityObject *occurence;
+      iCalRepeatableEntityObject *event;
+      iCalCalendar *calendar;
+      NSString *recurrenceTime, *calendarContent;
 
       folder = [container lookupCalendarFolderForUID: theUID];
       object = [folder lookupName: nameInContainer
 		       inContext: context acquire: NO];
       if (![object isKindOfClass: [NSException class]])
-	[object delete];
+	{
+	  if (recurrenceId == nil)
+	    [object delete];
+	  else
+	    {
+	      // If recurrenceId is defined, find the specified occurence
+	      // within the repeating vEvent.
+	      recurrenceTime = [NSString stringWithFormat: @"%f", [recurrenceId timeIntervalSince1970]];
+	      occurence = [object lookupOccurence: recurrenceTime];
+	      if (occurence != nil)
+		{
+		  // The occurence is defined -- remove it.
+		  calendar = [occurence parent];
+		  [[calendar children] removeObject: occurence];
+		}
+	      
+	      // Add an date exception
+	      calendar = [object calendar: NO secure: NO];
+	      event = (iCalRepeatableEntityObject*)[calendar firstChildWithTag: [object componentTag]];
+	      [event addToExceptionDates: recurrenceId];
+
+	      // We generate the updated iCalendar file and we save it
+	      // in the database.
+	      calendarContent = [calendar versitString];
+	      [object saveContentString: calendarContent];
+	    }
+	}
     }
 }
 
-#warning what about occurences?
 - (void) _handleRemovedUsers: (NSArray *) attendees
+            withRecurrenceId: (NSCalendarDate *) recurrenceId
 {
   NSEnumerator *enumerator;
   iCalPerson *currentAttendee;
@@ -234,7 +266,8 @@
       currentUID = [currentAttendee uid];
       if (currentUID)
 	[self _removeEventFromUID: currentUID
-	      owner: owner];
+	      owner: owner
+	      withRecurrenceId: recurrenceId];
     }
 }
 
@@ -308,7 +341,8 @@
   attendees = [changes deletedAttendees];
   if ([attendees count])
     {
-      [self _handleRemovedUsers: attendees];
+      [self _handleRemovedUsers: attendees
+	    withRecurrenceId: [newEvent recurrenceId]];
       [self sendEMailUsingTemplateNamed: @"Deletion"
 	    forObject: [newEvent itipEntryWithMethod: @"cancel"]
 	    previousObject: oldEvent
@@ -735,7 +769,8 @@
 	if (uid)
 	  [self _removeEventFromUID: uid
 		owner: [[LDAPUserManager sharedUserManager]
-			 getUIDForEmail: originator]];
+			 getUIDForEmail: originator]
+		withRecurrenceId: [event recurrenceId]];
 #warning fix this when sendEmailUsing blabla has been cleaned up
 	[self sendEMailUsingTemplateNamed: @"Deletion"
 	      forObject: event
@@ -973,13 +1008,17 @@
 	  // The organizer deletes an occurence.
 	  currentUser = [context activeUser];
 	  attendees = [occurence attendeesWithoutUser: currentUser];
+
+#warning Make sure this is correct ..
 	  if (![attendees count] && event != occurence)
 	    attendees = [event attendeesWithoutUser: currentUser];
+
 	  if ([attendees count])
 	    {
 	      // Remove the event from all attendees calendars
 	      // and send them an email.
-	      [self _handleRemovedUsers: attendees];
+	      [self _handleRemovedUsers: attendees
+		    withRecurrenceId: recurrenceId];
 	      [self sendEMailUsingTemplateNamed: @"Deletion"
 		    forObject: [occurence itipEntryWithMethod: @"cancel"]
 		    previousObject: nil
