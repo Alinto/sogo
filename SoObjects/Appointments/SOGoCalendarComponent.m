@@ -33,6 +33,7 @@
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NGHashMap.h>
 #import <NGCards/iCalCalendar.h>
+#import <NGCards/iCalDateTime.h>
 #import <NGCards/iCalEvent.h>
 #import <NGCards/iCalPerson.h>
 #import <NGCards/iCalRepeatableEntityObject.h>
@@ -384,26 +385,52 @@ _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
 	   firstChildWithTag: [self componentTag]];
 }
 
-- (void) _updateRecurrenceIDs
+- (void) _updateRecurrenceIDsWithEvent: (iCalRepeatableEntityObject*) newEvent
 {
-  iCalRepeatableEntityObject *master, *oldMaster, *currentComponent;
+  iCalRepeatableEntityObject *oldMaster, *currentComponent;
+  iCalDateTime *currentDate;
   int deltaSecs;
-  NSArray *components;
+  NSArray *components, *dates;
+  NSMutableArray *newDates;
   unsigned int count, max;
-  NSCalendarDate *recID;
+  NSCalendarDate *recID, *newDate;
 
-  master = [self component: NO secure: NO];
+  // Compute time interval from previous event definition.
   oldMaster = (iCalRepeatableEntityObject *)
     [originalCalendar firstChildWithTag: [self componentTag]];
-  deltaSecs = [[master startDate]
+  deltaSecs = [[newEvent startDate]
 		timeIntervalSinceDate: [oldMaster startDate]];
-  components = [fullCalendar allObjects];
+
+  components = [[newEvent parent] events];
   max = [components count];
-  for (count = 1; count < max; count++)
+
+  if (max > 0)
     {
-      currentComponent = [components objectAtIndex: count];
-      recID = [[currentComponent recurrenceId] addTimeInterval: deltaSecs];
-      [currentComponent setRecurrenceId: recID];
+      // Update recurrence-id attribute of occurences.
+      for (count = 1; count < max; count++)
+	{
+	  currentComponent = [components objectAtIndex: count];
+	  recID = [[currentComponent recurrenceId] addTimeInterval: deltaSecs];
+	  [currentComponent setRecurrenceId: recID];
+	}
+
+      // Update exception dates in master vEvent.
+      currentComponent = [components objectAtIndex: 0];
+      dates = [currentComponent childrenWithTag: @"exdate"];
+      max = [dates count];
+      if (max > 0)
+	{
+	  newDates = [NSMutableArray arrayWithCapacity: max];
+	  for (count = 0; count < max; count++)
+	    {
+	      currentDate = [dates objectAtIndex: count];
+	      newDate = [[currentDate dateTime] addTimeInterval: deltaSecs];
+	      [newDates addObject: newDate];
+	    }
+	  [currentComponent removeAllExceptionDates];
+	  for (count = 0; count < max; count++)
+	    [currentComponent addToExceptionDates: [newDates objectAtIndex: count]];
+	}      
     }
 }
 
@@ -413,7 +440,9 @@ _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
 
   if (!isNew
       && [newObject isRecurrent])
-    [self _updateRecurrenceIDs];
+    // We update an repeating event -- update exception dates
+    // and recurrence-ids.
+    [self _updateRecurrenceIDsWithEvent: newObject];
 
   // As much as we can, we try to use c_name == c_uid in order
   // to avoid tricky scenarios with some CalDAV clients. For example,

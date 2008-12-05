@@ -205,7 +205,6 @@
     }
 }
 
-#warning what about occurences?
 - (void) _removeEventFromUID: (NSString *) theUID
                        owner: (NSString *) theOwner
 	    withRecurrenceId: (NSCalendarDate *) recurrenceId
@@ -214,10 +213,13 @@
     {
       SOGoAppointmentFolder *folder;
       SOGoAppointmentObject *object;
-      iCalEntityObject *occurence;
+      iCalEntityObject *currentOccurence;
       iCalRepeatableEntityObject *event;
       iCalCalendar *calendar;
-      NSString *recurrenceTime, *calendarContent;
+      NSMutableArray *occurences;
+      NSCalendarDate *currentId;
+      NSString *calendarContent;
+      int max, count;
 
       folder = [container lookupCalendarFolderForUID: theUID];
       object = [folder lookupName: nameInContainer
@@ -228,21 +230,30 @@
 	    [object delete];
 	  else
 	    {
-	      // If recurrenceId is defined, find the specified occurence
-	      // within the repeating vEvent.
-	      recurrenceTime = [NSString stringWithFormat: @"%f", [recurrenceId timeIntervalSince1970]];
-	      occurence = [object lookupOccurence: recurrenceTime];
-	      if (occurence != nil)
+	      calendar = [object calendar: NO secure: NO];
+
+	      // If recurrenceId is defined, remove the occurence from
+	      // the repeating event.
+	      occurences = [calendar events];
+	      max = [occurences count];
+	      count = 1;
+	      while (count < max)
 		{
-		  // The occurence is defined -- remove it.
-		  calendar = [occurence parent];
-		  [[calendar children] removeObject: occurence];
+		  currentOccurence = [occurences objectAtIndex: count];
+		  currentId = [currentOccurence recurrenceId];
+		  if ([currentId compare: recurrenceId] == NSOrderedSame)
+		    {
+		      [[calendar children] removeObject: currentOccurence];
+		      break;
+		    }
+		  count++;
 		}
 	      
-	      // Add an date exception
-	      calendar = [object calendar: NO secure: NO];
+	      // Add an date exception.
 	      event = (iCalRepeatableEntityObject*)[calendar firstChildWithTag: [object componentTag]];
 	      [event addToExceptionDates: recurrenceId];
+
+	      [event increaseSequence];
 
 	      // We generate the updated iCalendar file and we save it
 	      // in the database.
@@ -431,6 +442,7 @@
       else
 	{
 	  // Event is modified -- sent update status to all attendees
+	  // and modify their calendars.
 	  recurrenceId = [newEvent recurrenceId];
 	  if (recurrenceId == nil)
 	    oldEvent = [self component: NO secure: NO];

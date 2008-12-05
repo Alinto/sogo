@@ -139,8 +139,13 @@
 
 - (NSException *) prepareDelete;
 {
+  NSMutableArray *occurences;
+  NSCalendarDate *recurrenceId, *currentId;
   NSException *error;
-  iCalCalendar *parent;
+  NSString *newContent;
+  iCalCalendar *calendar;
+  iCalEntityObject *currentOccurence;
+  int max, count;
 
   if (component == master)
     error = [container delete];
@@ -149,14 +154,32 @@
       if ([container respondsToSelector: @selector (prepareDeleteOccurence:)])
 	[container prepareDeleteOccurence: component];
 
-      [master addToExceptionDates: [component startDate]];
-      parent = [component parent];
-      [[parent children] removeObject: component];
-      
-      // changes participant status & send invitation email - as if it was a new event! :(
-      [container saveComponent: master];
+      // Add an date exception
+      recurrenceId = [component recurrenceId];
+      [master addToExceptionDates: recurrenceId];
+      [master increaseSequence];
 
-      error = nil;
+      // Remove the specified occurence within the repeating vEvent.
+      calendar = [master parent];      
+      occurences = [calendar events];
+      max = [occurences count];
+      count = 1;
+      while (count < max)
+	{
+	  currentOccurence = [occurences objectAtIndex: count];
+	  currentId = [currentOccurence recurrenceId];
+	  if ([currentId compare: recurrenceId] == NSOrderedSame)
+	    {
+	      [[calendar children] removeObject: currentOccurence];
+	      break;
+	    }
+	  count++;
+	}
+      
+      // We generate the updated iCalendar file and we save it
+      // in the database.
+      newContent = [calendar versitString];
+      error = [container saveContentString: newContent];
     }
 
   return error;

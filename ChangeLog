@@ -1,3 +1,25 @@
+2008-12-05  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	([SOGoCalendarComponent -_updateRecurrenceIDsWithEvent:]): fixed
+	modification of the new event and added adjustement of the
+	exception dates.
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	([SOGoAppointmentObject
+	_removeEventFromUID:owner:withRecurrenceId:]): for a repeating
+	event, the occurrence was not properly removed.
+
+	* SoObjects/Appointments/SOGoComponentOccurence.m
+	([SOGoComponentOccurence prepareDelete]): for a repeating event,
+	the exception date was not added and the occurence was not
+	properly deleted.
+
+	* UI/MailPartViewers/UIxMailPartICalViewer.m
+	([UIxMailPartICalViewer isEventStoredInCalendar]): when dealing
+	with an occurence of a repeating event, the function now properly
+	verify the presence of the occurence and not only the event.
+
 2008-12-05  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SOPE/NGCards/NSString+NGCards.m
@@ -13,7 +35,7 @@
 2008-12-03  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/MailPartViewers/UIxMailPartICalViewer.m
-	([UIxMailPartICalViewer -storedEvent): returns the occurence of
+	([UIxMailPartICalViewer -storedEvent]): returns the occurence of
 	the repeating event if recurrenceId is defined.
 
 	* UI/MailPartViewers/UIxMailPartICalActions.m
