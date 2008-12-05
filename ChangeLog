@@ -1,3 +1,8 @@
+2008-12-04  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* Fixed a typ in SoObjects/SOGo/SOGoCache.m
+	that would lead to a crash
+
 2008-12-03  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/MailPartViewers/UIxMailPartICalViewer.m

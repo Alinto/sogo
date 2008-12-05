@@ -248,7 +248,7 @@ static SOGoCache *sharedCache = nil;
   if ((user = [users objectForKey: uid]))
     {
       [[user userDefaults] setValues: [[theNotification userInfo] objectForKey: @"values"]];
-      [self setCachedUserDefaults: [user userDefaults]  forKey: uid];
+      [SOGoCache setCachedUserDefaults: (SOGoUserDefaults*)[user userDefaults]  user: uid];
     }
   else
     {
@@ -266,7 +266,7 @@ static SOGoCache *sharedCache = nil;
   if ((user = [users objectForKey: uid]))
     {
       [[user userSettings] setValues: [[theNotification userInfo] objectForKey: @"values"]];
-      [self setCachedUserSettings: [user userSettings]  forKey: uid];
+      [SOGoCache setCachedUserSettings: (SOGoUserDefaults *)[user userSettings]  user: uid];
     }
   else
     {
