@@ -68,7 +68,7 @@
     }
     else {
       jnRuleLast = (interval * [self->rrule repeatCount])
-      + jnFirst;
+      + jnFirst - 1;
       if (jnRuleLast < jnStart)
         return nil;
     }
@@ -104,7 +104,7 @@
 	//        to check if the end date is also within it.
 	if ([self->rrule byDayMask]) {
 	  mask = ([start dayOfWeek]
-		  ? (unsigned int) 1 << ([start dayOfWeek] - 1)
+		  ? (unsigned int) 1 << ([start dayOfWeek])
 		  : iCalWeekDaySunday);
 	  if (([self->rrule byDayMask]&mask) != mask) continue;
 	}

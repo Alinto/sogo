@@ -1,3 +1,10 @@
+2008-12-05  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* SOPE/NGCards/NSString+NGCards.m
+	We avoid escaping the comma during content generation
+	* SOPE/NGCards/iCalDailyRecurrenceCalculator.m
+	Fixed RRULE lamenesses.
+
 2008-12-04  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* Fixed a typ in SoObjects/SOGo/SOGoCache.m
