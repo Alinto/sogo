@@ -255,7 +255,21 @@
 
 - (BOOL) isEventStoredInCalendar
 {
-  return ([self storedEventObject] != nil);
+  NSCalendarDate *recurrenceId;
+  NSString *recurrenceTime;
+  BOOL inCalendar;
+
+  recurrenceId = [[self inEvent] recurrenceId];
+
+  if (recurrenceId)
+    {
+      recurrenceTime = [NSString stringWithFormat: @"%f", [recurrenceId timeIntervalSince1970]];
+      inCalendar = ([[self storedEventObject] lookupOccurence: recurrenceTime] != nil);
+    }
+  else
+    inCalendar = ([self storedEventObject] != nil);
+
+  return inCalendar;
 }
 
 - (iCalEvent *) storedEvent
@@ -272,6 +286,7 @@
 	{
 	  // Find the specific occurence within the repeating vEvent.
 	  NSString *recurrenceTime;
+	  iCalPerson *organizer;
 
 	  recurrenceTime = [NSString stringWithFormat: @"%f", [recurrenceId timeIntervalSince1970]];
 	  storedEvent = (iCalEvent*)[[self storedEventObject] lookupOccurence: recurrenceTime];
@@ -279,6 +294,14 @@
 	  if (storedEvent == nil)
 	    // If no occurence found, create one
 	    storedEvent = (iCalEvent*)[storedEventObject newOccurenceWithID: recurrenceTime];
+
+	  // Add organizer to occurence if not present
+	  organizer = [storedEvent organizer];
+	  if (organizer == nil || [organizer isVoid])
+	    {
+	      organizer = [[[storedEvent parent] firstChildWithTag: [storedEventObject componentTag]] organizer];
+	      [storedEvent setOrganizer: organizer];
+	    }
 	}
       
       [storedEvent retain];
@@ -330,10 +353,10 @@
   NSString *value;
 
   organizer = [[self authorativeEvent] organizer];
-  if (organizer)
-    value = [self _personForDisplay: organizer];
-  else
+  if ([organizer isVoid])
     value = @"[todo: no organizer set, use 'from']";
+  else
+    value = [self _personForDisplay: organizer];
 
   return value;
 }
