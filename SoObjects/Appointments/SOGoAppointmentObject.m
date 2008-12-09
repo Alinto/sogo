@@ -162,8 +162,8 @@
   SOGoAppointmentObject *object;
   NSString *possibleName;
 
-  folder = [container lookupCalendarFolderForUID: uid];
 #warning Should call lookupCalendarFoldersForUIDs to search among all folders
+  folder = [container lookupCalendarFolderForUID: uid];
   object = [folder lookupName: nameInContainer
 		   inContext: context acquire: NO];
   if ([object isKindOfClass: [NSException class]])
@@ -221,6 +221,7 @@
       NSString *calendarContent;
       int max, count;
 
+#warning Should call lookupCalendarFoldersForUIDs to search among all folders
       folder = [container lookupCalendarFolderForUID: theUID];
       object = [folder lookupName: nameInContainer
 		       inContext: context acquire: NO];
@@ -364,16 +365,16 @@
   if ([changes sequenceShouldBeIncreased])
     {
       [newEvent increaseSequence];
+      // Set new attendees status to "needs action"
       [self _requireResponseFromAttendees: [newEvent attendees]];
+      // Update attendees calendars and send them an update
+      // notification by email
       [self _handleSequenceUpdateInEvent: newEvent
 	    ignoringAttendees: attendees
 	    fromOldEvent: oldEvent];
     }
   else
     {
-      // Set new attendees status to "needs action"
-      [self _requireResponseFromAttendees: attendees];
-      
       // If other attributes have changed, update the event
       // in each attendee's calendar
       if ([[changes updatedProperties] count])
@@ -487,7 +488,6 @@
   iCalCalendar *calendar;
   iCalEntityObject *event;
   iCalPerson *otherAttendee;
-  NSArray *events;
   NSString *iCalString, *recurrenceTime;
   NSException *error;
 
@@ -501,7 +501,7 @@
 	  // We must update main event and all its occurences (if any).
 	  calendar = [eventObject calendar: NO secure: NO];
 	  event = (iCalEntityObject*)[calendar firstChildWithTag: [self componentTag]];
-	  events = [calendar allObjects];
+	  //events = [calendar allObjects];
 	}
       else
 	{
@@ -513,48 +513,41 @@
 	  if (event == nil)
 	    // If no occurence found, create one
 	    event = [eventObject newOccurenceWithID: recurrenceTime];
-	  
-	  events = [NSArray arrayWithObject: event];
 	}
 
       if ([[event sequence] compare: sequence]
 	  == NSOrderedSame)
 	{
 	  SOGoUser *currentUser;
-	  int i;
 
 	  currentUser = [context activeUser];
+	  otherAttendee = [event findParticipant: theOwnerUser];
+	  [otherAttendee setPartStat: [attendee partStat]];
 	  
-	  for (i = 0; i < [events count]; i++)
+	  // If one has accepted / declined an invitation on behalf of
+	  // the attendee, we add the user to the SENT-BY attribute.
+	  if (b && ![[currentUser login] isEqualToString: [theOwnerUser login]])
 	    {
-	      event = [events objectAtIndex: i];
-
-	      otherAttendee = [event findParticipant: theOwnerUser];
-	      [otherAttendee setPartStat: [attendee partStat]];
-	  
-	      // If one has accepted / declined an invitation on behalf of
-	      // the attendee, we add the user to the SENT-BY attribute.
-	      if (b && ![[currentUser login] isEqualToString: [theOwnerUser login]])
-		{
-		  NSString *currentEmail;
-		  currentEmail = [[currentUser allEmails] objectAtIndex: 0];
-		  [otherAttendee addAttribute: @"SENT-BY"
-				 value: [NSString stringWithFormat: @"\"MAILTO:%@\"", currentEmail]];
-		}
-	      else
-		{
-		  // We must REMOVE any SENT-BY here. This is important since if A accepted
-		  // the event for B and then, B changes by himself his participation status,
-		  // we don't want to keep the previous SENT-BY attribute there.
-		  [(NSMutableDictionary *)[otherAttendee attributes] removeObjectForKey: @"SENT-BY"];
-		}
+	      NSString *currentEmail;
+	      currentEmail = [[currentUser allEmails] objectAtIndex: 0];
+	      [otherAttendee addAttribute: @"SENT-BY"
+			     value: [NSString stringWithFormat: @"\"MAILTO:%@\"", currentEmail]];
 	    }
-	  
-	  iCalString = [[event parent] versitString];
-	  error = [eventObject saveContentString: iCalString];
+	  else
+	    {
+	      // We must REMOVE any SENT-BY here. This is important since if A accepted
+	      // the event for B and then, B changes by himself his participation status,
+	      // we don't want to keep the previous SENT-BY attribute there.
+	      [(NSMutableDictionary *)[otherAttendee attributes] removeObjectForKey: @"SENT-BY"];
+	    }
 	}
+      
+      // We generate the updated iCalendar file and we save it
+      // in the database.
+      iCalString = [[event parent] versitString];
+      error = [eventObject saveContentString: iCalString];
     }
-
+  
   return error;
 }
 
@@ -623,6 +616,7 @@
 	    organizerUID = [[(iCalEntityObject*)[[event parent] firstChildWithTag: [self componentTag]] organizer] uid];
 
 	  if (organizerUID)
+	    // Update the attendee in organizer's calendar.
 	    ex = [self _updateAttendee: attendee
 		       ownerUser: theOwnerUser
 		       forEventUID: [event uid]
@@ -699,13 +693,15 @@
 {
   NSMutableArray *elements;
   NSEnumerator *recipientsEnum;
-  NSString *recipient, *uid;
+  NSString *recipient, *uid, *ownerUID;
   iCalEvent *event, *oldEvent;
   iCalPerson *person;
   BOOL isUpdate, hasChanged;
   
   elements = [NSMutableArray array];
-
+  
+  ownerUID = [[LDAPUserManager sharedUserManager]
+	       getUIDForEmail: originator];
   event = [self component: NO secure: NO];
   recipientsEnum = [recipients objectEnumerator];
   while ((recipient = [recipientsEnum nextObject]))
@@ -722,24 +718,65 @@
 	  {
 	    // We check if we must send an invitation update
 	    // rather than just a normal invitation
+	    NSString *iCalString;
 	    SOGoAppointmentObject *oldEventObject;
-	    iCalEventChanges *changes;
 
 	    oldEventObject = [self _lookupEvent: [event uid] forUID: uid];
-	    oldEvent = [oldEventObject component: NO  secure: NO];
-	    changes = [event getChangesRelativeToEvent: oldEvent];
 
-	    if ([[oldEvent sequence] compare: [event sequence]] != NSOrderedSame)
+	    if (![oldEventObject isNew])
 	      {
-		if ([changes sequenceShouldBeIncreased])
-		  isUpdate = YES;
+		// We are updating an existing event.
+		// If the event containts a recurrence-id, replace the proper
+		// occurrence of the recurrent event.
+		iCalCalendar *calendar;
+		iCalEvent *currentOccurence;
+		iCalEventChanges *changes;
+		NSArray *occurences;
+		NSCalendarDate *recurrenceId, *currentId;
+		NSString *recurrenceTime;
+		unsigned int i;
+		
+		calendar = [oldEventObject calendar: NO secure: NO];
+		recurrenceId = [event recurrenceId];
+		if (recurrenceId == nil)
+		  oldEvent = [oldEventObject component: NO  secure: NO];
 		else
-		  hasChanged = NO;
+		  {
+		    // If recurrenceId is defined, find the specified occurence
+		    // within the repeating vEvent and replace it.
+		    occurences = [calendar events];
+		    for (i = 1; i< [occurences count]; i++)
+		      {
+			currentOccurence = [occurences objectAtIndex: i];
+			currentId = [currentOccurence recurrenceId];
+			if ([currentId compare: recurrenceId] == NSOrderedSame)
+			  {
+			    [[calendar children] removeObject: currentOccurence];
+			    oldEvent = currentOccurence;
+			    break;
+			  }
+		      }
+		    // Add the event as a new occurrence, without the organizer.
+		    [event setOrganizer: nil];
+		    [calendar addChild: event];
+		  }
+
+		// Identify changes in order to send a notification to the attendee
+		// if necessary and with the proper template.
+		changes = [event getChangesRelativeToEvent: oldEvent];
+		if ([[oldEvent sequence] compare: [event sequence]] != NSOrderedSame)
+		  {
+		    if ([changes sequenceShouldBeIncreased])
+		      isUpdate = YES;
+		    else
+		      hasChanged = NO;
+		  }
 	      }
-	    [self _addOrUpdateEvent: event
-		  forUID: uid
-		  owner: [[LDAPUserManager sharedUserManager]
-			   getUIDForEmail: originator]];
+
+	    // We generate the updated iCalendar file and we save it
+	    // in the database.
+	    iCalString = [[event parent] versitString];
+	    [oldEventObject saveContentString: iCalString];
 	  }
 #warning fix this when sendEmailUsing blabla has been cleaned up
 	if (hasChanged)
@@ -764,12 +801,14 @@
 {
   NSMutableArray *elements;
   NSEnumerator *recipientsEnum;
-  NSString *recipient, *uid;
+  NSString *recipient, *ownerUID, *uid;
   iCalEvent *event;
   iCalPerson *person;
 
   elements = [NSMutableArray array];
 
+  ownerUID = [[LDAPUserManager sharedUserManager]
+		    getUIDForEmail: originator];
   event = [self component: NO secure: NO];
   recipientsEnum = [recipients objectEnumerator];
   while ((recipient = [recipientsEnum nextObject]))
@@ -780,8 +819,7 @@
 	uid = [person uid];
 	if (uid)
 	  [self _removeEventFromUID: uid
-		owner: [[LDAPUserManager sharedUserManager]
-			 getUIDForEmail: originator]
+		owner: ownerUID
 		withRecurrenceId: [event recurrenceId]];
 #warning fix this when sendEmailUsing blabla has been cleaned up
 	[self sendEMailUsingTemplateNamed: @"Deletion"
@@ -808,42 +846,54 @@
 // be propagated to the organizer and the other attendees.
 //
 - (void) takeAttendeeStatus: (iCalPerson *) attendee
-		       from: (NSString *) originator
+		       from: (NSString *) ownerUser
+	   withRecurrenceId: (NSCalendarDate*) recurrenceId
 {
   iCalPerson *localAttendee;
   iCalEvent *event;
-  SOGoUser *ownerUser;
+  NSString *recurrenceTime;
 
-  event = [self component: NO secure: NO];
+  if (recurrenceId == nil)
+    // We must update the master event only.
+    event = [self component: NO secure: NO];
+  else
+    {
+      // If recurrenceId is defined, find the specified occurence
+      // within the repeating vEvent.
+      recurrenceTime = [NSString stringWithFormat: @"%f", [recurrenceId timeIntervalSince1970]];
+      event = [self lookupOccurence: recurrenceTime];
+      
+      if (event == nil)
+	// If no occurence found, create one
+	event = [self newOccurenceWithID: recurrenceTime];      
+    }
+  
+  // Find attendee within event
   localAttendee = [event findParticipantWithEmail: [attendee rfc822Email]];
   if (localAttendee)
     {
+      // Update the attendee's status
       [localAttendee setPartStat: [attendee partStat]];
       [self saveComponent: event];
-
-      /// TEST ///
-     NSArray *attendees;
-     iCalPerson *att;
-     NSString *uid;
-     int i;
-     
-     ownerUser = [SOGoUser userWithLogin:[[LDAPUserManager sharedUserManager]
-					   getUIDForEmail: originator]
-			   roles: nil];
-
-     // We update the copy of the organizer, only
-     // if it's a local user.
+      
+      NSArray *attendees;
+      iCalPerson *att;
+      NSString *uid;
+      int i;
+      
+      // We update the copy of the organizer, only
+      // if it's a local user.
 #warning add a check for only local users
-     uid = [[event organizer] uid];
-     if (uid)
-       [self _updateAttendee: attendee
-	     ownerUser: ownerUser
-	     forEventUID: [event uid]
-	     withRecurrenceId: [event recurrenceId]
-	     withSequence: [event sequence]
-	     forUID: uid
-	     shouldAddSentBy: NO];
-    
+      uid = [[event organizer] uid];
+      if (uid)
+	[self _updateAttendee: attendee
+	      ownerUser: ownerUser
+	      forEventUID: [event uid]
+	      withRecurrenceId: [event recurrenceId]
+	      withSequence: [event sequence]
+	      forUID: uid
+	      shouldAddSentBy: NO];
+      
       attendees = [event attendees];
 
       for (i = 0; i < [attendees count]; i++)
@@ -854,15 +904,15 @@
 	  
 	  uid = [[LDAPUserManager sharedUserManager]
 		  getUIDForEmail: [att rfc822Email]];
-
+	  
 	  if (uid)
 	    {		
-	      // We skip the update that correspond to the originator
+	      // We skip the update that correspond to the owner
 	      // since the CalDAV client will already have updated
 	      // the actual event.
 	      if ([ownerUser hasEmail: [att rfc822Email]]) 
 		continue;
-
+	      
 	      [self _updateAttendee: attendee
 		    ownerUser: ownerUser
 		    forEventUID: [event uid]
@@ -872,8 +922,6 @@
 		    shouldAddSentBy: NO];
 	    }
 	}
-
-      /// TEST ///
     }
   else
     [self errorWithFormat: @"attendee not found: '%@'", attendee];
@@ -892,7 +940,6 @@
 
   elements = [NSMutableArray array];
   event = [self component: NO secure: NO];
-  //ownerUser = [SOGoUser userWithLogin: owner roles: nil]; 
 
   ownerUser = [SOGoUser userWithLogin: [[LDAPUserManager sharedUserManager]
 					 getUIDForEmail: originator]
@@ -914,8 +961,11 @@
 	      [recipientEvent saveComponent: event];
 	    else
 	      [recipientEvent takeAttendeeStatus: attendee
-			      from: originator];
+			      from: ownerUser
+			      withRecurrenceId: [event recurrenceId]];
 	  }
+
+	// Send reply to recipient/organizer
 	[self sendIMIPReplyForEvent: event
 	      from: ownerUser
 	      to: person];

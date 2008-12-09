@@ -1,3 +1,21 @@
+2008-12-09  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	([SOGoAppointmentObject -_handleUpdatedEvent:fromOldEvent:]): if
+	the sequence doesn't change, attendees will no longer receive a
+	notification by email.
+	([SOGoAppointmentObject
+	-_updateAttendee:ownerUser:forEventUID:withRecurrenceId:withSequence:forUID:shouldAddSentBy:]):
+	if an attendee accepts all events, on the master event of a
+	repeating event will be updated; occurrences will no longer be affected.  
+	([SOGoAppointmentObject -postCalDAVEventRequestTo:from:]): when
+	dealing with an occurrence of a repeating event, the function now
+	proprly update each attendee's calendar.
+	([SOGoAppointmentObject
+	-takeAttendeeStatus:from:withRecurrenceId:]): fixed handling of an
+	occurrence of a repeating event.
+	([SOGoAppointmentObject -postCalDAVEventReplyTo:from:]): idem.
+
 2008-12-08  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
@@ -14,17 +32,17 @@
 
 	* SoObjects/Appointments/SOGoAppointmentObject.m
 	([SOGoAppointmentObject
-	_removeEventFromUID:owner:withRecurrenceId:]): for a repeating
+	-_removeEventFromUID:owner:withRecurrenceId:]): for a repeating
 	event, the occurrence was not properly removed.
 
 	* SoObjects/Appointments/SOGoComponentOccurence.m
-	([SOGoComponentOccurence prepareDelete]): for a repeating event,
+	([SOGoComponentOccurence -prepareDelete]): for a repeating event,
 	the exception date was not added and the occurence was not
 	properly deleted.
 
 	* UI/MailPartViewers/UIxMailPartICalViewer.m
-	([UIxMailPartICalViewer isEventStoredInCalendar]): when dealing
-	with an occurence of a repeating event, the function now properly
+	([UIxMailPartICalViewer -isEventStoredInCalendar]): when dealing
+	with an occurrence of a repeating event, the function now properly
 	verify the presence of the occurence and not only the event.
 
 2008-12-05  Ludovic Marcotte  <lmarcotte@inverse.ca>

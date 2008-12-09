@@ -50,7 +50,9 @@
 - (NSException *) changeParticipationStatus: (NSString *) _status
 			    forRecurrenceId: (NSCalendarDate *) _recurrenceId;
 
-- (void) takeAttendeeStatus: (iCalPerson *) attendee  from: (NSString *) originator;
+- (void) takeAttendeeStatus: (iCalPerson *) attendee
+		       from: (NSString *) originator
+	   withRecurrenceId: (NSCalendarDate*) recurrenceId;
 
 - (NSArray *) postCalDAVEventRequestTo: (NSArray *) recipients  from: (NSString *) originator;
 - (NSArray *) postCalDAVEventReplyTo: (NSArray *) recipients  from: (NSString *) originator;
