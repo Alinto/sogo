@@ -694,7 +694,7 @@
   NSMutableArray *elements;
   NSEnumerator *recipientsEnum;
   NSString *recipient, *uid, *ownerUID;
-  iCalEvent *event, *oldEvent;
+  iCalEvent *newEvent, *oldEvent, *emailEvent;
   iCalPerson *person;
   BOOL isUpdate, hasChanged;
   
@@ -702,7 +702,10 @@
   
   ownerUID = [[LDAPUserManager sharedUserManager]
 	       getUIDForEmail: originator];
-  event = [self component: NO secure: NO];
+  emailEvent = [self component: NO secure: NO];
+  newEvent = [self component: NO secure: NO];
+  [[newEvent parent] setMethod: @""];
+
   recipientsEnum = [recipients objectEnumerator];
   while ((recipient = [recipientsEnum nextObject]))
     if ([[recipient lowercaseString] hasPrefix: @"mailto:"])
@@ -721,7 +724,7 @@
 	    NSString *iCalString;
 	    SOGoAppointmentObject *oldEventObject;
 
-	    oldEventObject = [self _lookupEvent: [event uid] forUID: uid];
+	    oldEventObject = [self _lookupEvent: [newEvent uid] forUID: uid];
 
 	    if (![oldEventObject isNew])
 	      {
@@ -733,11 +736,10 @@
 		iCalEventChanges *changes;
 		NSArray *occurences;
 		NSCalendarDate *recurrenceId, *currentId;
-		NSString *recurrenceTime;
 		unsigned int i;
 		
 		calendar = [oldEventObject calendar: NO secure: NO];
-		recurrenceId = [event recurrenceId];
+		recurrenceId = [newEvent recurrenceId];
 		if (recurrenceId == nil)
 		  oldEvent = [oldEventObject component: NO  secure: NO];
 		else
@@ -751,20 +753,20 @@
 			currentId = [currentOccurence recurrenceId];
 			if ([currentId compare: recurrenceId] == NSOrderedSame)
 			  {
-			    [[calendar children] removeObject: currentOccurence];
 			    oldEvent = currentOccurence;
+			    [[calendar children] removeObject: currentOccurence];
 			    break;
 			  }
 		      }
 		    // Add the event as a new occurrence, without the organizer.
-		    [event setOrganizer: nil];
-		    [calendar addChild: event];
+		    [newEvent setOrganizer: nil];
+		    [calendar addChild: newEvent];
 		  }
 
 		// Identify changes in order to send a notification to the attendee
 		// if necessary and with the proper template.
-		changes = [event getChangesRelativeToEvent: oldEvent];
-		if ([[oldEvent sequence] compare: [event sequence]] != NSOrderedSame)
+		changes = [newEvent getChangesRelativeToEvent: oldEvent];
+		if ([[oldEvent sequence] compare: [newEvent sequence]] != NSOrderedSame)
 		  {
 		    if ([changes sequenceShouldBeIncreased])
 		      isUpdate = YES;
@@ -775,16 +777,18 @@
 
 	    // We generate the updated iCalendar file and we save it
 	    // in the database.
-	    iCalString = [[event parent] versitString];
+	    iCalString = [[newEvent parent] versitString];
 	    [oldEventObject saveContentString: iCalString];
 	  }
 #warning fix this when sendEmailUsing blabla has been cleaned up
 	if (hasChanged)
-	  [self sendEMailUsingTemplateNamed: (isUpdate ? @"Update" : @"Invitation")
-		forObject: event
-		previousObject: oldEvent
-		toAttendees: [NSArray arrayWithObject: person]];
-
+	  {
+	    [self sendEMailUsingTemplateNamed: (isUpdate ? @"Update" : @"Invitation")
+		  forObject: emailEvent
+		  previousObject: oldEvent
+		  toAttendees: [NSArray arrayWithObject: person]];
+	  }
+	
 	[person release];
 	[elements
 	  addObject: [self _caldavSuccessCodeWithRecipient: recipient]];
@@ -861,11 +865,11 @@
       // If recurrenceId is defined, find the specified occurence
       // within the repeating vEvent.
       recurrenceTime = [NSString stringWithFormat: @"%f", [recurrenceId timeIntervalSince1970]];
-      event = [self lookupOccurence: recurrenceTime];
+      event = (iCalEvent*)[self lookupOccurence: recurrenceTime];
       
       if (event == nil)
 	// If no occurence found, create one
-	event = [self newOccurenceWithID: recurrenceTime];      
+	event = (iCalEvent*)[self newOccurenceWithID: recurrenceTime];      
     }
   
   // Find attendee within event
@@ -940,7 +944,7 @@
 
   elements = [NSMutableArray array];
   event = [self component: NO secure: NO];
-
+  [event setMethod: @""];
   ownerUser = [SOGoUser userWithLogin: [[LDAPUserManager sharedUserManager]
 					 getUIDForEmail: originator]
 			roles: nil];
