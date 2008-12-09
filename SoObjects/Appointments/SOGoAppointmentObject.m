@@ -775,13 +775,11 @@
 		// Identify changes in order to send a notification to the attendee
 		// if necessary and with the proper template.
 		changes = [newEvent getChangesRelativeToEvent: oldEvent];
-		if ([[oldEvent sequence] compare: [newEvent sequence]] != NSOrderedSame)
-		  {
-		    if ([changes sequenceShouldBeIncreased])
-		      isUpdate = YES;
-		    else
-		      hasChanged = NO;
-		  }
+		if ([[oldEvent sequence] compare: [newEvent sequence]] != NSOrderedSame
+		    && [changes sequenceShouldBeIncreased])
+		  isUpdate = YES;
+		else
+		  hasChanged = NO;
 	      }
 
 	    // We generate the updated iCalendar file and we save it
