@@ -720,7 +720,7 @@
 	if (uid) 
 	  {
 	    // We check if we must send an invitation update
-	    // rather than just a normal invitation
+	    // rather than just a normal invitation.
 	    NSString *iCalString;
 	    SOGoAppointmentObject *oldEventObject;
 
@@ -736,6 +736,7 @@
 		iCalEventChanges *changes;
 		NSArray *occurences;
 		NSCalendarDate *recurrenceId, *currentId;
+		NSString *recurrenceTime;
 		unsigned int i;
 		
 		calendar = [oldEventObject calendar: NO secure: NO];
@@ -745,9 +746,9 @@
 		else
 		  {
 		    // If recurrenceId is defined, find the specified occurence
-		    // within the repeating vEvent and replace it.
+		    // within the repeating vEvent and remove it.
 		    occurences = [calendar events];
-		    for (i = 1; i< [occurences count]; i++)
+		    for (i = 1; i < [occurences count]; i++)
 		      {
 			currentOccurence = [occurences objectAtIndex: i];
 			currentId = [currentOccurence recurrenceId];
@@ -758,6 +759,14 @@
 			    break;
 			  }
 		      }
+
+		    if (oldEvent == nil)
+		      {
+			// If no occurence found, create one.
+			recurrenceTime = [NSString stringWithFormat: @"%f", [recurrenceId timeIntervalSince1970]];
+			oldEvent = [oldEventObject newOccurenceWithID: recurrenceTime];
+		      }
+		    
 		    // Add the event as a new occurrence, without the organizer.
 		    [newEvent setOrganizer: nil];
 		    [calendar addChild: newEvent];
