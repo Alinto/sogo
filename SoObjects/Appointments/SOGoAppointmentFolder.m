@@ -457,7 +457,7 @@ static Class sogoAppointmentFolderKlass = Nil;
 
   activeUser = [context activeUser];
 
-  if ([[self ownerInContext: context] isEqualToString: [[context activeUser] login]]
+  if ([[self ownerInContext: context] isEqualToString: [activeUser login]]
       || [[activeUser rolesForObject: self inContext: context]
 	   containsObject: SoRole_Owner])
     privacySqlString = @"";
@@ -513,7 +513,8 @@ static Class sogoAppointmentFolderKlass = Nil;
 
   privacySqlString = [self _privacySqlString];
   if ([privacySqlString length])
-    filterSqlString = [NSString stringWithFormat: @"AND (%@)", privacySqlString];
+    filterSqlString = [NSString stringWithFormat: @"%@ AND (%@)",
+				filterSqlString, privacySqlString];
   
   /* prepare mandatory fields */
 

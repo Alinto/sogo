@@ -1,3 +1,10 @@
+2008-12-08  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder bareFetchFields:...]): we now
+	correctly handle the privacy SQL string w/o loosing
+	the previously defined filters.
+
 2008-12-05  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/Appointments/SOGoCalendarComponent.m
