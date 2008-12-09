@@ -951,7 +951,7 @@
 
   elements = [NSMutableArray array];
   event = [self component: NO secure: NO];
-  [event setMethod: @""];
+  [[event parent] setMethod: @""];
   ownerUser = [SOGoUser userWithLogin: [[LDAPUserManager sharedUserManager]
 					 getUIDForEmail: originator]
 			roles: nil];
