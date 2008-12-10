@@ -30,10 +30,11 @@
 
 - (BOOL) sequenceShouldBeIncreased
 {
-  NSString *properties[] = {@"organizer", @"startDate", @"endDate", /* vtask:
-								       @"due" */
+  NSString *properties[] = {@"organizer", @"startDate", @"endDate",
+			    @"due", @"duration",
 			    @"rdate", @"rrule", @"exdate", @"exrule",
-			    @"status", @"summary", @"comment", @"location",
+			    @"status", @"location",
+			    //@"summary", @"comment",
 			    nil};
   NSString **currentProperty;
   BOOL updateRequired;
