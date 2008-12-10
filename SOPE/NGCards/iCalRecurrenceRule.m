@@ -205,7 +205,7 @@
 - (void) setUntilDate: (NSCalendarDate *) _untilDate
 {
   [self setNamedValue: @"until"
-        to: [_untilDate iCalFormattedDateTimeString]];
+        to: [_untilDate icalString]];
 }
 
 - (NSCalendarDate *) untilDate
