@@ -1,3 +1,22 @@
+2008-12-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* iCalYearlyRecurrenceCalculator.m
+	([iCalYearlyRecurrenceCalculator -lastInstanceStartDate]): same as
+	below.
+
+	* iCalMonthlyRecurrenceCalculator.m
+	([iCalMonthlyRecurrenceCalculator -lastInstanceStartDate]): same
+	as below.
+
+	* iCalWeeklyRecurrenceCalculator.m
+	([iCalWeeklyRecurrenceCalculator -lastInstanceStartDate]): same as
+	below.
+
+	* iCalDailyRecurrenceCalculator.m ([iCalDailyRecurrenceCalculator
+	-lastInstanceStartDate]): return a date based on the start date,
+	instead of julian calculations, to avoid losing the original date
+	timezone.
+
 2008-08-18  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* NSString+NGCards.m ([NSString -unescapedFromCard]): added code

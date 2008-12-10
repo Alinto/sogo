@@ -90,19 +90,22 @@
 
 - (NSCalendarDate *) lastInstanceStartDate
 {
-  if ([rrule repeatCount] > 0)
+  NSCalendarDate *firStart, *lastInstanceStartDate;
+
+  if ([rrule repeatCount] > 0) 
     {
-      NSCalendarDate *until;
-      unsigned years, interval;
- 
-      interval = [rrule repeatInterval];
-      years = [rrule repeatCount] * interval;
-      until = [[firstRange startDate] dateByAddingYears: years
-				      months: 0
-				      days: 0];
-      return until;
+      firStart = [firstRange startDate];
+
+      lastInstanceStartDate
+	= [firStart dateByAddingYears: ([rrule repeatInterval]
+					* [rrule repeatCount])
+		    months: 0
+		    days: 0];
     }
-  return [super lastInstanceStartDate];
+  else
+    lastInstanceStartDate = [super lastInstanceStartDate];
+
+  return lastInstanceStartDate;
 }
 
 @end /* iCalYearlyRecurrenceCalculator */

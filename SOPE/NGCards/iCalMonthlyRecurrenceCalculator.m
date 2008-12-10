@@ -484,25 +484,23 @@ static void NGMonthDaySet_fillWithByDayX (NGMonthDaySet *daySet,
   return ranges;
 }
 
-- (NSCalendarDate *) lastInstanceStartDate 
+- (NSCalendarDate *) lastInstanceStartDate
 {
+  NSCalendarDate *firStart, *lastInstanceStartDate;
+
   if ([rrule repeatCount] > 0) 
     {
-      NSCalendarDate *until;
-      unsigned       months, interval;
-    
-      interval = [rrule repeatInterval];
-      months   = [rrule repeatCount] - 1 /* the first counts as one! */;
-    
-      if (interval > 0)
-	months *= interval;
-    
-      until = [[firstRange startDate] dateByAddingYears: 0
-				      months: months
-				      days: 0];
-      return until;
+      firStart = [firstRange startDate];
+
+      lastInstanceStartDate = [firStart dateByAddingYears: 0
+					months: ([rrule repeatInterval]
+						 * [rrule repeatCount])
+					days: 0];
     }
-  return [super lastInstanceStartDate];
+  else
+    lastInstanceStartDate = [super lastInstanceStartDate];
+
+  return lastInstanceStartDate;
 }
 
 @end /* iCalMonthlyRecurrenceCalculator */

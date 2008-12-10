@@ -185,25 +185,22 @@
   return ranges;
 }
 
-- (NSCalendarDate *) lastInstanceStartDate 
+- (NSCalendarDate *) lastInstanceStartDate
 {
+  NSCalendarDate *firStart, *lastInstanceStartDate;
+
   if ([rrule repeatCount] > 0) 
     {
-      long jnFirst, jnRuleLast;
-      NSCalendarDate *firStart, *until;
- 
       firStart = [firstRange startDate];
-      jnFirst = [firStart julianNumber];
-      jnRuleLast = ([rrule repeatInterval] *
-		    [rrule repeatCount] * 7) +
-	jnFirst;
-      until = [NSCalendarDate dateForJulianNumber: jnRuleLast];
-      until = [until hour: [firStart hourOfDay]
-		     minute: [firStart minuteOfHour]
-		     second: [firStart secondOfMinute]];
-      return until;
+
+      lastInstanceStartDate = [firStart dateByAddingYears: 0 months: 0
+					days: (7 * [rrule repeatInterval]
+					       * [rrule repeatCount])];
     }
-  return [super lastInstanceStartDate];
+  else
+    lastInstanceStartDate = [super lastInstanceStartDate];
+
+  return lastInstanceStartDate;
 }
 
 @end /* iCalWeeklyRecurrenceCalculator */
