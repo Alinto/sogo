@@ -1298,7 +1298,7 @@ function onListFilterChange() {
 }
 
 function selectMonthInMenu(menu, month) {
-  var entries = menu.childNodes[1].childNodesWithTag("LI");
+	var entries = $(menu).select("LI");
   for (i = 0; i < entries.length; i++) {
     var entry = entries[i];
     var entryMonth = entry.getAttribute("month");
@@ -1309,17 +1309,15 @@ function selectMonthInMenu(menu, month) {
   }
 }
 
-function selectYearInMenu(menu, month) {
-  var entries = menu.childNodes[1].childNodes;
+function selectYearInMenu(menu, year) {
+	var entries = $(menu).select("LI");
   for (i = 0; i < entries.length; i++) {
     var entry = entries[i];
-    if (entry.tagName == "LI") {
-      var entryMonth = entry.innerHTML;
-      if (entryMonth == month)
-        entry.addClassName("currentMonth");
-      else
-        entry.removeClassName("currentMonth");
-    }
+		var entryYear = entry.innerHTML.strip();
+		if (entryYear == year)
+			entry.addClassName("currentMonth");
+		else
+			entry.removeClassName("currentMonth");
   }
 }
 
@@ -1344,14 +1342,14 @@ function popupMonthMenu(event) {
 
 function onMonthMenuItemClick(event) {
   var month = '' + this.getAttribute("month");
-  var year = '' + $("yearLabel").innerHTML;
+  var year = '' + $("yearLabel").innerHTML.strip();
 
   changeDateSelectorDisplay(year + month + "01", true);
 }
 
 function onYearMenuItemClick(event) {
   var month = '' + $("monthLabel").getAttribute("month");;
-  var year = '' + this.innerHTML;
+  var year = '' + this.innerHTML.strip();
 
   changeDateSelectorDisplay(year + month + "01", true);
 }
