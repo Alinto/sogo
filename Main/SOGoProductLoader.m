@@ -32,97 +32,110 @@
 
 @implementation SOGoProductLoader
 
-+ (int)sogoMajorVersion {
++ (int) sogoMajorVersion
+{
   return SOGO_MAJOR_VERSION;
 }
-+ (int)sogoMinorVersion {
+
++ (int) sogoMinorVersion
+{
   return SOGO_MINOR_VERSION;
 }
 
-+ (id)productLoader {
-  return [[[self alloc] init] autorelease];
++ (id) productLoader
+{
+  return [[self new] autorelease];
 }
 
-- (id)init {
-  if ((self = [super init])) {
-    self->productDirectoryName =
-      [[NSString alloc] initWithFormat:@"SOGo-%i.%i", 
-	[[self class] sogoMajorVersion],
-	[[self class] sogoMinorVersion]];
-  }
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      productDirectoryName =
+	[[NSString alloc] initWithFormat: @"SOGo-%i.%i",
+			  [[self class] sogoMajorVersion],
+			  [[self class] sogoMinorVersion]];
+    }
   return self;
 }
 
-- (void)dealloc {
-  [self->productDirectoryName release];
-  [self->searchPathes release];
+- (void) dealloc
+{
+  [productDirectoryName release];
+  [searchPathes release];
   [super dealloc];
 }
 
 /* loading */
 
-- (void)_addCocoaSearchPathesToArray:(NSMutableArray *)ma {
+- (void) _addCocoaSearchPathesToArray: (NSMutableArray *) ma
+{
   id tmp;
+  NSEnumerator *e;
 
-  tmp = NSSearchPathForDirectoriesInDomains(NSAllLibrariesDirectory,
-                                            NSAllDomainsMask,
-                                            YES);
-  if ([tmp count] > 0) {
-    NSEnumerator *e;
-      
-    e = [tmp objectEnumerator];
-    while ((tmp = [e nextObject])) {
-      tmp = [tmp stringByAppendingPathComponent:self->productDirectoryName];
-      if (![ma containsObject:tmp])
-        [ma addObject:tmp];
+  tmp = NSSearchPathForDirectoriesInDomains (NSAllLibrariesDirectory,
+					     NSAllDomainsMask,
+					     YES);
+  if ([tmp count] > 0)
+    {
+      e = [tmp objectEnumerator];
+      while ((tmp = [e nextObject]))
+	{
+	  tmp = [tmp stringByAppendingPathComponent: productDirectoryName];
+	  if (![ma containsObject: tmp])
+	    [ma addObject: tmp];
+	}
     }
-  }
 }
 
-- (void)_addGNUstepSearchPathesToArray:(NSMutableArray *)ma {
+- (void) _addGNUstepSearchPathesToArray: (NSMutableArray *) ma
+{
   NSEnumerator *libraryPaths;
   NSString *directory;
 
   libraryPaths = [NSStandardLibraryPaths() objectEnumerator];
   while ((directory = [libraryPaths nextObject]))
-    [ma addObject: [directory stringByAppendingPathComponent:self->productDirectoryName]];
+    [ma addObject:
+	  [directory stringByAppendingPathComponent: productDirectoryName]];
 }
 
-- (void)_addFHSPathesToArray:(NSMutableArray *)ma {
+- (void) _addFHSPathesToArray: (NSMutableArray *) ma
+{
   NSString *s;
 
   s = @"sogod-0.9";
-  [ma addObject:[@"/usr/local/lib/" stringByAppendingString:s]];
-  [ma addObject:[@"/usr/lib/"       stringByAppendingString:s]];
+  [ma addObject: [NSString stringWithFormat: @"/usr/local/lib/%@", s]];
+  [ma addObject: [NSString stringWithFormat: @"/usr/lib/%@", s]];
 }
 
-- (NSArray *)productSearchPathes {
+- (NSArray *) productSearchPathes
+{
   NSMutableArray *ma;
-  
-  if (self->searchPathes != nil)
-    return self->searchPathes;
 
-  ma  = [NSMutableArray arrayWithCapacity:6];
-  
-  [self _addGNUstepSearchPathesToArray:ma];
+  if (!searchPathes)
+    {
+      ma = [NSMutableArray arrayWithCapacity: 6];
+
+      [self _addGNUstepSearchPathesToArray: ma];
 #if COCOA_Foundation_LIBRARY
-  else
-    [self _addCocoaSearchPathesToArray:ma];
+      else
+	[self _addCocoaSearchPathesToArray: ma];
 #endif
 
-  [self _addFHSPathesToArray:ma];
-  
-  self->searchPathes = [ma copy];
-  
-  if ([self->searchPathes count] == 0) {
-    [self logWithFormat:@"%s: no search pathes were found !", 
-	  __PRETTY_FUNCTION__];
-  }
-  
-  return self->searchPathes;
+      [self _addFHSPathesToArray: ma];
+
+      searchPathes = [ma copy];
+
+      if ([searchPathes count] == 0)
+	[self logWithFormat: @"%s: no search pathes were found !",
+	      __PRETTY_FUNCTION__];
+    }
+
+  return searchPathes;
 }
 
-- (void)loadProducts {
+- (void) loadProducts
+{
   SoProductRegistry *registry = nil;
   NSFileManager *fm;
   NSEnumerator *pathes;
@@ -131,36 +144,30 @@
   NSString *productName;
 
   registry = [SoProductRegistry sharedProductRegistry];
-  fm       = [NSFileManager defaultManager];
- 
+  fm = [NSFileManager defaultManager];
+
   pathes = [[self productSearchPathes] objectEnumerator];
-  lpath = [pathes nextObject];
-  while (lpath)
+  while ((lpath = [pathes nextObject]))
     {
-      [self logWithFormat:@"scanning SOGo products in: %@", lpath];
+      [self logWithFormat: @"scanning SOGo products in: %@", lpath];
 
       productNames = [[fm directoryContentsAtPath: lpath] objectEnumerator];
-
-      productName = [productNames nextObject];
-      while (productName)
+      while ((productName = [productNames nextObject]))
 	{
 	  extension = [productName pathExtension];
 	  if ([extension length] > 0
 	      && [extension isEqualToString: @"SOGo"])
 	    {
 	      bpath = [lpath stringByAppendingPathComponent: productName];
-	      [self logWithFormat:@"  register SOGo product: %@",
+	      [self logWithFormat: @" register SOGo product: %@",
 		    productName];
 	      [registry registerProductAtPath: bpath];
 	    }
-	  productName = [productNames nextObject];
 	}
-
-      lpath = [pathes nextObject];
     }
 
   if (![registry loadAllProducts])
-    [self warnWithFormat:@"could not load all products !"];
+    [self warnWithFormat: @"could not load all products !"];
 }
 
 @end /* SOGoProductLoader */
