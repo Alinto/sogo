@@ -30,95 +30,105 @@
 /*
   TODO:
   - implemented pooling
-  - auto-close channels which are very old?! 
-    (eg missing release due to an exception)
+  - auto-close channels which are very old?!
+  (eg missing release due to an exception)
 */
 
 @interface GCSChannelHandle : NSObject
 {
 @public
-  NSURL            *url;
+  NSURL *url;
   EOAdaptorChannel *channel;
-  NSDate           *creationTime;
-  NSDate           *lastReleaseTime;
-  NSDate           *lastAcquireTime;
+  NSDate *creationTime;
+  NSDate *lastReleaseTime;
+  NSDate *lastAcquireTime;
 }
 
-- (EOAdaptorChannel *)channel;
-- (BOOL)canHandleURL:(NSURL *)_url;
-- (NSTimeInterval)age;
+- (EOAdaptorChannel *) channel;
+- (BOOL) canHandleURL: (NSURL *) _url;
+- (NSTimeInterval) age;
 
 @end
 
 @implementation GCSChannelManager
 
-static BOOL           debugOn                = NO;
-static BOOL           debugPools             = NO;
-static int            ChannelExpireAge       = 180;
+static BOOL debugOn = NO;
+static BOOL debugPools = NO;
+static int ChannelExpireAge = 180;
 static NSTimeInterval ChannelCollectionTimer = 5 * 60;
 
-+ (void)initialize {
++ (void) initialize
+{
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  
-  debugOn    = [ud boolForKey:@"GCSChannelManagerDebugEnabled"];
-  debugPools = [ud boolForKey:@"GCSChannelManagerPoolDebugEnabled"];
-  
-  ChannelExpireAge = [[ud objectForKey:@"GCSChannelExpireAge"] intValue];
+
+  debugOn = [ud boolForKey: @"GCSChannelManagerDebugEnabled"];
+  debugPools = [ud boolForKey: @"GCSChannelManagerPoolDebugEnabled"];
+
+  ChannelExpireAge = [[ud objectForKey: @"GCSChannelExpireAge"] intValue];
   if (ChannelExpireAge < 1)
     ChannelExpireAge = 180;
-  
-  ChannelCollectionTimer = 
-    [[ud objectForKey:@"GCSChannelCollectionTimer"] intValue];
+
+  ChannelCollectionTimer =
+    [[ud objectForKey: @"GCSChannelCollectionTimer"] intValue];
   if (ChannelCollectionTimer < 1)
     ChannelCollectionTimer = 5*60;
 }
 
-+ (NSString *)adaptorNameForURLScheme:(NSString *)_scheme {
-  // TODO: map scheme to adaptors (eg 'postgresql://' to PostgreSQL
++ (NSString *) adaptorNameForURLScheme: (NSString *) _scheme
+{
+  // TODO: map scheme to adaptors (eg 'postgresql: //' to PostgreSQL
   return @"PostgreSQL";
 }
 
-+ (id)defaultChannelManager {
++ (id) defaultChannelManager
+{
   static GCSChannelManager *cm = nil;
-  if (cm == nil)
-    cm = [[self alloc] init];
+
+  if (!cm)
+    cm = [self new];
+
   return cm;
 }
 
-- (id)init {
-  if ((self = [super init])) {
-    self->urlToAdaptor      = [[NSMutableDictionary alloc] initWithCapacity:4];
-    self->availableChannels = [[NSMutableArray alloc] initWithCapacity:16];
-    self->busyChannels      = [[NSMutableArray alloc] initWithCapacity:16];
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      urlToAdaptor = [[NSMutableDictionary alloc] initWithCapacity: 4];
+      availableChannels = [[NSMutableArray alloc] initWithCapacity: 16];
+      busyChannels = [[NSMutableArray alloc] initWithCapacity: 16];
 
-    self->gcTimer = [[NSTimer scheduledTimerWithTimeInterval:
-				ChannelCollectionTimer
-			      target:self selector:@selector(_garbageCollect:)
-			      userInfo:nil repeats:YES] retain];
-  }
+      gcTimer = [[NSTimer scheduledTimerWithTimeInterval:
+			    ChannelCollectionTimer
+			  target: self selector: @selector (_garbageCollect: )
+			  userInfo: nil repeats: YES] retain];
+    }
+
   return self;
 }
 
-- (void)dealloc {
-  if (self->gcTimer) [self->gcTimer invalidate];
-  [self->gcTimer release];
+- (void) dealloc
+{
+  if (gcTimer)
+    [gcTimer invalidate];
 
-  [self->busyChannels      release];
-  [self->availableChannels release];
-  [self->urlToAdaptor      release];
+  [busyChannels release];
+  [availableChannels release];
+  [urlToAdaptor release];
   [super dealloc];
 }
 
 /* DB key */
 
-- (NSString *)databaseKeyForURL:(NSURL *)_url {
+- (NSString *) databaseKeyForURL: (NSURL *) _url
+{
   /*
     We need to build a proper key that omits passwords and URL path components
     which are not required.
   */
   NSString *key;
-  
-  key = [NSString stringWithFormat:@"%@\n%@\n%@\n%@",
+
+  key = [NSString stringWithFormat: @"%@\n%@\n%@\n%@",
 		  [_url host], [_url port],
 		  [_url user], [_url gcsDatabaseName]];
   return key;
@@ -126,307 +136,343 @@ static NSTimeInterval ChannelCollectionTimer = 5 * 60;
 
 /* adaptors */
 
-- (NSDictionary *)connectionDictionaryForURL:(NSURL *)_url {
+- (NSDictionary *) connectionDictionaryForURL: (NSURL *) _url
+{
   NSMutableDictionary *md;
   id tmp;
-  
-  md = [NSMutableDictionary dictionaryWithCapacity:4];
 
-  if ((tmp = [_url host]) != nil) 
-    [md setObject:tmp forKey:@"hostName"];
-  if ((tmp = [_url port]) != nil) 
-    [md setObject:tmp forKey:@"port"];
-  if ((tmp = [_url user]) != nil) 
-    [md setObject:tmp forKey:@"userName"];
-  if ((tmp = [_url password]) != nil) 
-    [md setObject:tmp forKey:@"password"];
-  
-  if ((tmp = [_url gcsDatabaseName]) != nil) 
-    [md setObject:tmp forKey:@"databaseName"];
-  
-  [self debugWithFormat:@"build connection dictionary for URL %@: %@", 
+  md = [NSMutableDictionary dictionaryWithCapacity: 4];
+
+  if ((tmp = [_url host]))
+    [md setObject: tmp forKey: @"hostName"];
+  if ((tmp = [_url port]))
+    [md setObject: tmp forKey: @"port"];
+  if ((tmp = [_url user]))
+    [md setObject: tmp forKey: @"userName"];
+  if ((tmp = [_url password]))
+    [md setObject: tmp forKey: @"password"];
+
+  if ((tmp = [_url gcsDatabaseName]))
+    [md setObject: tmp forKey: @"databaseName"];
+
+  [self debugWithFormat: @"build connection dictionary for URL %@: %@",
 	[_url absoluteString], md];
+
   return md;
 }
 
-- (EOAdaptor *)adaptorForURL:(NSURL *)_url {
+- (EOAdaptor *) adaptorForURL: (NSURL *) _url
+{
   EOAdaptor *adaptor;
-  NSString  *key;
-  
-  if (_url == nil)
-    return nil;
-  if ((key = [self databaseKeyForURL:_url]) == nil)
-    return nil;
-  if ((adaptor = [self->urlToAdaptor objectForKey:key]) != nil) {
-    [self debugWithFormat:@"using cached adaptor: %@", adaptor];
-    return adaptor; /* cached :-) */
-  }
-  
-  [self debugWithFormat:@"creating new adaptor for URL: %@", _url];
-  
-  if ([EOAdaptor respondsToSelector:@selector(adaptorForURL:)]) {
-    adaptor = [EOAdaptor adaptorForURL:_url];
-  }
-  else {
-    NSString     *adaptorName;
-    NSDictionary *condict;
-    
-    adaptorName = [[self class] adaptorNameForURLScheme:[_url scheme]];
-    if ([adaptorName length] == 0) {
-      [self errorWithFormat:@"cannot handle URL: %@", _url];
-      return nil;
+  NSString *key;
+  NSString *adaptorName;
+  NSDictionary *condict;
+
+  adaptor = nil;
+
+  if (_url)
+    {
+      if ((key = [self databaseKeyForURL: _url]))
+	{
+	  adaptor = [urlToAdaptor objectForKey: key];
+	  if (adaptor)
+	    [self debugWithFormat: @"using cached adaptor: %@", adaptor];
+	  else
+	    {
+	      [self debugWithFormat: @"creating new adaptor for URL: %@", _url];
+	  
+	      if ([EOAdaptor respondsToSelector: @selector (adaptorForURL: )])
+		adaptor = [EOAdaptor adaptorForURL: _url];
+	      else
+		{
+		  adaptorName = [[self class]
+				  adaptorNameForURLScheme: [_url scheme]];
+		  if ([adaptorName length])
+		    {
+		      condict = [self connectionDictionaryForURL: _url];
+
+		      adaptor = [EOAdaptor adaptorWithName: adaptorName];
+		      if (adaptor)
+			[adaptor setConnectionDictionary: condict];
+		      else
+			[self errorWithFormat:
+				@"did not find adaptor '%@' for URL: %@",
+			      adaptorName, _url];
+		    }
+		  else
+		    [self errorWithFormat: @"cannot handle URL: %@", _url];
+		}
+	  
+	      [urlToAdaptor setObject: adaptor forKey: key];
+	    }
+	}
     }
-  
-    condict = [self connectionDictionaryForURL:_url];
-  
-    if ((adaptor = [EOAdaptor adaptorWithName:adaptorName]) == nil) {
-      [self errorWithFormat:@"did not find adaptor '%@' for URL: %@", 
-	    adaptorName, _url];
-      return nil;
-    }
-  
-    [adaptor setConnectionDictionary:condict];
-  }
-  
-  [self->urlToAdaptor setObject:adaptor forKey:key];
+
   return adaptor;
 }
 
 /* channels */
 
-- (GCSChannelHandle *)findBusyChannelHandleForChannel:(EOAdaptorChannel *)_ch {
+- (GCSChannelHandle *)
+ findBusyChannelHandleForChannel: (EOAdaptorChannel *) _ch
+{
   NSEnumerator *e;
-  GCSChannelHandle *handle;
-  
-  e = [self->busyChannels objectEnumerator];
-  while ((handle = [e nextObject])) {
-    if ([handle channel] == _ch)
-      return handle;
-  }
-  return nil;
-}
-- (GCSChannelHandle *)findAvailChannelHandleForURL:(NSURL *)_url {
-  NSEnumerator *e;
-  GCSChannelHandle *handle;
-  
-  e = [self->availableChannels objectEnumerator];
-  while ((handle = [e nextObject])) {
-    if ([handle canHandleURL:_url])
-      return handle;
-    
-    if (debugPools) {
-      [self logWithFormat:@"DBPOOL: cannot use handle (%@ vs %@)",
-	      [_url absoluteString], [handle->url absoluteString]];
-    }
-  }
-  return nil;
+  GCSChannelHandle *handle, *currentHandle;
+
+  handle = NULL;
+
+  e = [busyChannels objectEnumerator];
+  while (!handle && (currentHandle = [e nextObject]))
+    if ([currentHandle channel] == _ch)
+      handle = currentHandle;
+
+  return handle;
 }
 
-- (EOAdaptorChannel *)_createChannelForURL:(NSURL *)_url {
-  EOAdaptor        *adaptor;
+- (GCSChannelHandle *) findAvailChannelHandleForURL: (NSURL *) _url
+{
+  NSEnumerator *e;
+  GCSChannelHandle *handle, *currentHandle;
+
+  handle = nil;
+
+  e = [availableChannels objectEnumerator];
+  while (!handle && (currentHandle = [e nextObject]))
+    if ([currentHandle canHandleURL: _url])
+      handle = currentHandle;
+    else if (debugPools)
+      [self logWithFormat: @"DBPOOL: cannot use handle (%@ vs %@) ",
+	    [_url absoluteString], [handle->url absoluteString]];
+
+  return handle;
+}
+
+- (EOAdaptorChannel *) _createChannelForURL: (NSURL *) _url
+{
+  EOAdaptor *adaptor;
   EOAdaptorContext *adContext;
   EOAdaptorChannel *adChannel;
-  
-  if ((adaptor = [self adaptorForURL:_url]) == nil)
-    return nil;
-  
-  if ((adContext = [adaptor createAdaptorContext]) == nil) {
-    [self errorWithFormat:@"could not create adaptor context!"];
-    return nil;
-  }
-  if ((adChannel = [adContext createAdaptorChannel]) == nil) {
-    [self errorWithFormat:@"could not create adaptor channel!"];
-    return nil;
-  }
+
+  adChannel = nil;
+
+  adaptor = [self adaptorForURL: _url];
+  if (adaptor)
+    {
+      adContext = [adaptor createAdaptorContext];
+      if (adContext)
+	{
+	  adChannel = [adContext createAdaptorChannel];
+	  if (!adChannel)
+	    [self errorWithFormat: @"could not create adaptor channel!"];
+	}
+      else
+	[self errorWithFormat: @"could not create adaptor context!"];
+    }
+
   return adChannel;
 }
 
-- (EOAdaptorChannel *)acquireOpenChannelForURL:(NSURL *)_url {
+- (EOAdaptorChannel *) acquireOpenChannelForURL: (NSURL *) _url
+{
   // TODO: naive implementation, add pooling!
   EOAdaptorChannel *channel;
   GCSChannelHandle *handle;
-  NSCalendarDate   *now;
+  NSCalendarDate *now;
+
+  channel = nil;
 
   now = [NSCalendarDate date];
-  
+
   /* look for cached handles */
-  
-  if ((handle = [self findAvailChannelHandleForURL:_url]) != nil) {
-    // TODO: check age?
-    [self->busyChannels      addObject:handle];
-    [self->availableChannels removeObject:handle];
-    ASSIGN(handle->lastAcquireTime, now);
-    
-    if (debugPools)
-      [self logWithFormat:@"DBPOOL: reused cached DB channel!"];
-    return [[handle channel] retain];
-  }
 
-  if (debugPools) {
-    [self logWithFormat:@"DBPOOL: create new DB channel for URL: %@",
-	    [_url absoluteString]];
-  }
-  
-  /* create channel */
-  
-  if ((channel = [self _createChannelForURL:_url]) == nil)
-    return nil;
-  
-  if ([channel isOpen])
-    ;
-  else if (![channel openChannel]) {
-    [self errorWithFormat:@"could not open channel %@ for URL: %@",
-	    channel, [_url absoluteString]];
-    return nil;
-  }
-  
-  /* create handle for channel */
-  
-  handle = [[GCSChannelHandle alloc] init];
-  handle->url             = [_url retain];
-  handle->channel         = [channel retain];
-  handle->creationTime    = [now retain];
-  handle->lastAcquireTime = [now retain];
-  
-  [self->busyChannels addObject:handle];
-  [handle release];
-  
-  return [channel retain];
+  handle = [self findAvailChannelHandleForURL: _url];
+  if (handle)
+    {
+      // TODO: check age?
+      [busyChannels addObject: handle];
+      [availableChannels removeObject: handle];
+      ASSIGN (handle->lastAcquireTime, now);
+
+      channel = [handle channel];
+      if (debugPools)
+	[self logWithFormat: @"DBPOOL: reused cached DB channel! (%p)",
+	      channel];
+    }
+  else
+    {
+      if (debugPools)
+	{
+	  [self logWithFormat: @"DBPOOL: create new DB channel for URL: %@",
+		[_url absoluteString]];
+	}
+
+      /* create channel */
+      channel = [self _createChannelForURL: _url];
+      if (channel)
+	{
+	  if ([channel isOpen]
+	      || [channel openChannel])
+	    {
+	      /* create handle for channel */
+
+	      handle = [[GCSChannelHandle alloc] init];
+	      handle->url = [_url retain];
+	      handle->channel = [channel retain];
+	      handle->creationTime = [now retain];
+	      handle->lastAcquireTime = [now retain];
+
+	      [busyChannels addObject: handle];
+	      [handle release];
+	    }
+	  else
+	    [self errorWithFormat: @"could not open channel %@ for URL: %@",
+		  channel, [_url absoluteString]];
+	}
+    }
+
+  return channel;
 }
-- (void)releaseChannel:(EOAdaptorChannel *)_channel {
+
+- (void) releaseChannel: (EOAdaptorChannel *) _channel
+{
   GCSChannelHandle *handle;
-  
-  if ((handle = [self findBusyChannelHandleForChannel:_channel]) != nil) {
-    NSCalendarDate *now;
 
-    now = [NSCalendarDate date];
-    
-    handle = [handle retain];
-    ASSIGN(handle->lastReleaseTime, now);
-    
-    [self->busyChannels removeObject:handle];
-    
-    if ([[handle channel] isOpen] && [handle age] < ChannelExpireAge) {
-      // TODO: consider age
-      [self->availableChannels addObject:handle];
-      if (debugPools) {
+  handle = [self findBusyChannelHandleForChannel: _channel];
+  if (handle)
+    {
+      handle = [handle retain];
+
+      ASSIGN (handle->lastReleaseTime, [NSCalendarDate date]);
+      [busyChannels removeObject: handle];
+
+      if ([_channel isOpen] && [handle age] < ChannelExpireAge)
+	{
+	  // TODO: consider age
+	  [availableChannels addObject: handle];
+	  if (debugPools)
+	    [self logWithFormat:
+		    @"DBPOOL: keeping channel (age %ds, #%d, %p) : %@",
+		  (int)
+		  [handle age], [availableChannels count],
+		  [handle->url absoluteString],
+		  _channel];
+	}
+      else if (debugPools)
 	[self logWithFormat:
-		@"DBPOOL: keeping channel (age %ds, #%d): %@", 
-	        (int)[handle age], [self->availableChannels count],
-	        [handle->url absoluteString]];
-      }
-      [_channel release];
+		@"DBPOOL: freeing old channel (age %ds, %p) ", (int)
+	      [handle age], _channel];
       [handle release];
-      return;
     }
+  else
+    {
+      if ([_channel isOpen])
+	[_channel closeChannel];
 
-    if (debugPools) {
-      [self logWithFormat:
-	      @"DBPOOL: freeing old channel (age %ds)", (int)[handle age]];
+      [_channel release];
     }
-    
-    /* not reusing channel */
-    [handle release]; handle = nil;
-  }
-  
-  if ([_channel isOpen])
-    [_channel closeChannel];
-  
-  [_channel release];
 }
 
 /* checking for tables */
 
-- (BOOL)canConnect:(NSURL *)_url {
-  /* 
-     this can check for DB connect as well as for table URLs (whether a table
-     exists)
+- (BOOL) canConnect: (NSURL *) _url
+{
+  /*
+    this can check for DB connect as well as for table URLs (whether a table
+    exists)
   */
   EOAdaptorChannel *channel;
   NSString *table;
-  BOOL     result;
-  
-  if ((channel = [self acquireOpenChannelForURL:_url]) == nil) {
-    if (debugOn) [self debugWithFormat:@"could not acquire channel: %@", _url];
-    return NO;
-  }
-  if (debugOn) [self debugWithFormat:@"acquired channel: %@", channel];
-  result = YES; /* could open channel */
-  
-  /* check whether table exists */
-  
-  table = [_url gcsTableName];
-  if ([table length] > 0)
-    result = [channel tableExistsWithName:table];
-  
-  /* release channel */
-  
-  [self releaseChannel:channel]; channel = nil;
-  
+  BOOL result;
+
+  channel = [self acquireOpenChannelForURL: _url];
+  if (channel)
+    {
+      if (debugOn)
+	[self debugWithFormat: @"acquired channel: %@", channel];
+
+      /* check whether table exists */
+      table = [_url gcsTableName];
+      if ([table length] > 0)
+	result = [channel tableExistsWithName: table];
+      else
+	result = YES; /* could open channel */
+      
+      /* release channel */
+      [self releaseChannel: channel];
+    }
+  else
+    {
+      if (debugOn)
+	[self debugWithFormat: @"could not acquire channel: %@", _url];
+      result = NO;
+    }
+
   return result;
 }
 
 /* collect old channels */
 
-- (void)_garbageCollect:(NSTimer *)_timer {
+- (void) _garbageCollect: (NSTimer *) _timer
+{
   NSMutableArray *handlesToRemove;
   unsigned i, count;
-  
-  if ((count = [self->availableChannels count]) == 0)
-    /* no available channels */
-    return;
+  GCSChannelHandle *handle;
 
-  /* collect channels to expire */
-  
-  handlesToRemove = [[NSMutableArray alloc] initWithCapacity:4];
-  for (i = 0; i < count; i++) {
-    GCSChannelHandle *handle;
-    
-    handle = [self->availableChannels objectAtIndex:i];
-    if (![[handle channel] isOpen]) {
-      [handlesToRemove addObject:handle];
-      continue;
+  count = [availableChannels count];
+  if (count)
+    {
+      /* collect channels to expire */
+
+      handlesToRemove = [[NSMutableArray alloc] initWithCapacity: count];
+      for (i = 0; i < count; i++)
+	{
+	  handle = [availableChannels objectAtIndex: i];
+	  if ([[handle channel] isOpen])
+	    {
+	      if ([handle age] > ChannelExpireAge)
+		[handlesToRemove addObject: handle];
+	    }
+	  else
+	    [handlesToRemove addObject: handle];
+	}
+
+      /* remove channels */
+      count = [handlesToRemove count];
+      if (debugPools)
+	[self logWithFormat: @"DBPOOL: garbage collecting %d channels.", count];
+      for (i = 0; i < count; i++)
+	{
+	  handle = [handlesToRemove objectAtIndex: i];
+	  [handle retain];
+	  [availableChannels removeObject: handle];
+	  if ([[handle channel] isOpen])
+	    [[handle channel] closeChannel];
+	  [handle release];
+	}
+
+      [handlesToRemove release];
     }
-    if ([handle age] > ChannelExpireAge) {
-      [handlesToRemove addObject:handle];
-      continue;
-    }
-  }
-  
-  /* remove channels */
-  count = [handlesToRemove count];
-  if (debugPools) 
-    [self logWithFormat:@"DBPOOL: garbage collecting %d channels.", count];
-  for (i = 0; i < count; i++) {
-    GCSChannelHandle *handle;
-    
-    handle = [[handlesToRemove objectAtIndex:i] retain];
-    [self->availableChannels removeObject:handle];
-    if ([[handle channel] isOpen])
-      [[handle channel] closeChannel];
-    [handle release];
-  }
-  
-  [handlesToRemove release];
 }
 
 /* debugging */
 
-- (BOOL)isDebuggingEnabled {
+- (BOOL) isDebuggingEnabled
+{
   return debugOn;
 }
 
 /* description */
 
-- (NSString *)description {
+- (NSString *) description
+{
   NSMutableString *ms;
 
-  ms = [NSMutableString stringWithCapacity:256];
-  [ms appendFormat:@"<0x%p[%@]:", self, NSStringFromClass([self class])];
-  
-  [ms appendFormat:@" #adaptors=%d", [self->urlToAdaptor count]];
-  
-  [ms appendString:@">"];
+  ms = [NSMutableString stringWithCapacity: 256];
+  [ms appendFormat: @"<0x%p[%@]: ", self, NSStringFromClass ([self class])];
+
+  [ms appendFormat: @" #adaptors=%d", [urlToAdaptor count]];
+
+  [ms appendString: @">"];
   return ms;
 }
 
@@ -434,82 +480,95 @@ static NSTimeInterval ChannelCollectionTimer = 5 * 60;
 
 @implementation GCSChannelHandle
 
-- (void)dealloc {
-  [self->channel         release];
-  [self->creationTime    release];
-  [self->lastReleaseTime release];
-  [self->lastAcquireTime release];
+- (void) dealloc
+{
+  [channel release];
+  [creationTime release];
+  [lastReleaseTime release];
+  [lastAcquireTime release];
   [super dealloc];
 }
 
 /* accessors */
 
-- (EOAdaptorChannel *)channel {
-  return self->channel;
+- (EOAdaptorChannel *) channel
+{
+  return channel;
 }
 
-- (BOOL)canHandleURL:(NSURL *)_url {
-  BOOL isSQLite;
-  
-  if (_url == nil) {
-    [self logWithFormat:@"MISMATCH: no url .."];
-    return NO;
-  }
-  if (_url == self->url)
-    return YES;
+- (BOOL) canHandleURL: (NSURL *) _url
+{
+  BOOL result;
 
-  isSQLite = [[_url scheme] isEqualToString:@"sqlite"];
-  
-  if (!isSQLite && ![[self->url host] isEqual:[_url host]]) {
-    [self logWithFormat:@"MISMATCH: different host (%@ vs %@)",
-	    [self->url host], [_url host]];
-    return NO;
-  }
-  if (![[self->url gcsDatabaseName] isEqualToString:[_url gcsDatabaseName]]) {
-    [self logWithFormat:@"MISMATCH: different db .."];
-    return NO;
-  }
-  if (!isSQLite) {
-    if (![[self->url user] isEqual:[_url user]]) {
-      [self logWithFormat:@"MISMATCH: different user .."];
-      return NO;
+  result = NO;
+
+  if (_url)
+    {
+      if (_url == url
+	  || [[_url scheme] isEqualToString: @"sqlite"])
+	result = YES;
+      else if ([[url host] isEqual: [_url host]])
+	{
+	  if ([[url gcsDatabaseName]
+		isEqualToString: [_url gcsDatabaseName]])
+	    {
+	      if ([[url user] isEqual: [_url user]])
+		{
+		  if ([[url port] intValue] == [[_url port] intValue])
+		    result = YES;
+		  else
+		    [self logWithFormat:
+			    @"MISMATCH: different port (%@ vs %@) ..",
+			  [url port], [_url port]];
+		}
+	      else
+		[self logWithFormat: @"MISMATCH: different user .."];
+	    }
+	  else
+	    [self logWithFormat: @"MISMATCH: different db .."];
+	}
+      else
+	[self logWithFormat: @"MISMATCH: different host (%@ vs %@) ",
+	      [url host], [_url host]];
     }
-    if ([[self->url port] intValue] != [[_url port] intValue]) {
-      [self logWithFormat:@"MISMATCH: different port (%@ vs %@) ..",
-  	  [self->url port], [_url port]];
-      return NO;
-    }
-  }
-  return YES;
+  else
+    [self logWithFormat: @"MISMATCH: no url .."];
+
+  return result;
 }
 
-- (NSTimeInterval)age {
-  return [[NSCalendarDate calendarDate] 
-	                  timeIntervalSinceDate:self->creationTime];
+- (NSTimeInterval) age
+{
+  return [[NSCalendarDate calendarDate]
+	   timeIntervalSinceDate: creationTime];
 }
 
 /* NSCopying */
 
-- (id)copyWithZone:(NSZone *)_zone {
+- (id) copyWithZone: (NSZone *) _zone
+{
   return [self retain];
 }
 
 /* description */
 
-- (NSString *)description {
+- (NSString *) description
+{
   NSMutableString *ms;
 
-  ms = [NSMutableString stringWithCapacity:256];
-  [ms appendFormat:@"<0x%p[%@]:", self, NSStringFromClass([self class])];
-  
-  [ms appendFormat:@" channel=0x%p", self->channel];
-  if (self->creationTime) [ms appendFormat:@" created=%@", self->creationTime];
-  if (self->lastReleaseTime) 
-    [ms appendFormat:@" last-released=%@", self->lastReleaseTime];
-  if (self->lastAcquireTime) 
-    [ms appendFormat:@" last-acquired=%@", self->lastAcquireTime];
-  
-  [ms appendString:@">"];
+  ms = [NSMutableString stringWithCapacity: 256];
+  [ms appendFormat: @"<0x%p[%@]: ", self, NSStringFromClass ([self class])];
+
+  [ms appendFormat: @" channel=0x%p", channel];
+  if (creationTime)
+    [ms appendFormat: @" created=%@", creationTime];
+  if (lastReleaseTime)
+    [ms appendFormat: @" last-released=%@", lastReleaseTime];
+  if (lastAcquireTime)
+    [ms appendFormat: @" last-acquired=%@", lastAcquireTime];
+
+  [ms appendString: @">"];
+
   return ms;
 }
 
