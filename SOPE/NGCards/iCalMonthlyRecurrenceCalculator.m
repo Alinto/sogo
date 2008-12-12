@@ -494,7 +494,7 @@ static void NGMonthDaySet_fillWithByDayX (NGMonthDaySet *daySet,
 
       lastInstanceStartDate = [firStart dateByAddingYears: 0
 					months: ([rrule repeatInterval]
-						 * [rrule repeatCount])
+						 * ([rrule repeatCount] - 1))
 					days: 0];
     }
   else

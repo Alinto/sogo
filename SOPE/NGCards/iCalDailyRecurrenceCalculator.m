@@ -138,7 +138,7 @@
 
       lastInstanceStartDate = [firStart dateByAddingYears: 0 months: 0
 					days: ([rrule repeatInterval]
-					       * [rrule repeatCount])];
+					       * ([rrule repeatCount] - 1))];
     }
   else
     lastInstanceStartDate = [super lastInstanceStartDate];

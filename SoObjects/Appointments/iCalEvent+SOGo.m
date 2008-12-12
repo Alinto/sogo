@@ -40,15 +40,18 @@
 
 - (BOOL) isStillRelevant
 {
-  NSCalendarDate *now;
+  NSCalendarDate *now, *lastRecurrence;
   BOOL isStillRelevent;
   
   now = [NSCalendarDate calendarDate];
 
   if ([self isRecurrent])
-      isStillRelevent = ([[self lastPossibleRecurrenceStartDate] earlierDate: now] == now);
+    {
+      lastRecurrence = [self lastPossibleRecurrenceStartDate];
+      isStillRelevent = (lastRecurrence == nil || [lastRecurrence earlierDate: now] == now);
+    }
   else
-      isStillRelevent = ([[self endDate] earlierDate: now] == now);
+    isStillRelevent = ([[self endDate] earlierDate: now] == now);
   
   return isStillRelevent;
 }
