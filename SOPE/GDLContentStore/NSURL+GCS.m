@@ -19,8 +19,10 @@
   02111-1307, USA.
 */
 
-#include "NSURL+GCS.h"
-#include "common.h"
+#import <Foundation/NSArray.h>
+#import <Foundation/NSString.h>
+
+#import "NSURL+GCS.h"
 
 @implementation NSURL(GCS)
 

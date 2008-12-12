@@ -19,8 +19,10 @@
   02111-1307, USA.
 */
 
-#include "EOAdaptorChannel+GCS.h"
-#include "common.h"
+#import <Foundation/NSArray.h>
+#import <Foundation/NSString.h>
+
+#import "EOAdaptorChannel+GCS.h"
 
 @implementation EOAdaptorChannel(GCS)
 

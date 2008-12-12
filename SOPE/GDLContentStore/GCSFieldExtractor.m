@@ -19,8 +19,7 @@
   02111-1307, USA.
 */
 
-#include "GCSFieldExtractor.h"
-#include "common.h"
+#import "GCSFieldExtractor.h"
 
 @implementation GCSFieldExtractor
 

@@ -21,6 +21,17 @@
   02111-1307, USA.
 */
 
+#import <NGExtensions/NSNull+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
+
+#import <EOControl/EOFetchSpecification.h>
+#import <EOControl/EOSortOrdering.h>
+
+#import <GDLAccess/EOEntity.h>
+#import <GDLAccess/EOAttribute.h>
+#import <GDLAccess/EOSQLQualifier.h>
+#import <GDLAccess/EOAdaptorContext.h>
+
 #import "GCSFieldInfo.h"
 #import "GCSFolder.h"
 #import "GCSFolderManager.h"
@@ -31,12 +42,6 @@
 #import "EOAdaptorChannel+GCS.h"
 #import "EOQualifier+GCS.h"
 #import "GCSStringFormatter.h"
-#import "common.h"
-
-#import <GDLAccess/EOEntity.h>
-#import <GDLAccess/EOAttribute.h>
-#import <GDLAccess/EOSQLQualifier.h>
-#import <GDLAccess/EOAdaptorContext.h>
 
 typedef enum {
   noTableRequired = 0,

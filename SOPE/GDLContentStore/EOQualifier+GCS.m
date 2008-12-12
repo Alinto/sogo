@@ -19,8 +19,13 @@
   02111-1307, USA.
 */
 
-#include "EOQualifier+GCS.h"
-#include "common.h"
+#import <Foundation/NSValue.h>
+#import <Foundation/NSString.h>
+
+#import <NGExtensions/NSNull+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
+
+#import "EOQualifier+GCS.h"
 
 @implementation EOQualifier(GCS)
 

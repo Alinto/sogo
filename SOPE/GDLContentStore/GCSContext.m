@@ -19,8 +19,7 @@
   02111-1307, USA.
 */
 
-#include "GCSContext.h"
-#include "common.h"
+#import "GCSContext.h"
 
 @implementation GCSContext
 @end /* GCSContext */

@@ -19,13 +19,23 @@
   02111-1307, USA.
 */
 
-#include "GCSFolderType.h"
-#include "GCSFolder.h"
-#include "GCSFieldInfo.h"
-#include "GCSFieldExtractor.h"
-#include "common.h"
-#include <EOControl/EOKeyValueCoding.h>
-#include <NGExtensions/NGResourceLocator.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSSet.h>
+#import <Foundation/NSString.h>
+
+#import <NGExtensions/NSNull+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NSString+misc.h>
+
+#import <EOControl/EOQualifier.h>
+
+#import <EOControl/EOKeyValueCoding.h>
+#import <NGExtensions/NGResourceLocator.h>
+
+#import "GCSFolderType.h"
+#import "GCSFolder.h"
+#import "GCSFieldInfo.h"
+#import "GCSFieldExtractor.h"
 
 @implementation GCSFolderType
 
