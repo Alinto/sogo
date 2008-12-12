@@ -23,6 +23,7 @@
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
+#import <Foundation/NSLock.h>
 #import <Foundation/NSTimer.h>
 #import <Foundation/NSUserDefaults.h>
 
@@ -43,6 +44,10 @@
   - auto-close channels which are very old?!
   (eg missing release due to an exception)
 */
+
+#if defined(THREADSAFE)
+static NSLock *lock;
+#endif
 
 @interface GCSChannelHandle : NSObject
 {
@@ -82,6 +87,10 @@ static NSTimeInterval ChannelCollectionTimer = 5 * 60;
     [[ud objectForKey: @"GCSChannelCollectionTimer"] intValue];
   if (ChannelCollectionTimer < 1)
     ChannelCollectionTimer = 5*60;
+
+#if defined(THREADSAFE)
+  lock = [NSLock new];
+#endif
 }
 
 + (NSString *) adaptorNameForURLScheme: (NSString *) _scheme
@@ -94,8 +103,14 @@ static NSTimeInterval ChannelCollectionTimer = 5 * 60;
 {
   static GCSChannelManager *cm = nil;
 
+#if defined(THREADSAFE)
+  [lock lock];
+#endif
   if (!cm)
     cm = [self new];
+#if defined(THREADSAFE)
+  [lock unlock];
+#endif
 
   return cm;
 }
@@ -184,6 +199,9 @@ static NSTimeInterval ChannelCollectionTimer = 5 * 60;
     {
       if ((key = [self databaseKeyForURL: _url]))
 	{
+#if defined(THREADSAFE)
+	  [lock lock];
+#endif
 	  adaptor = [urlToAdaptor objectForKey: key];
 	  if (adaptor)
 	    [self debugWithFormat: @"using cached adaptor: %@", adaptor];
@@ -215,6 +233,9 @@ static NSTimeInterval ChannelCollectionTimer = 5 * 60;
 	  
 	      [urlToAdaptor setObject: adaptor forKey: key];
 	    }
+#if defined(THREADSAFE)
+	  [lock unlock];
+#endif
 	}
     }
 
@@ -295,6 +316,9 @@ static NSTimeInterval ChannelCollectionTimer = 5 * 60;
 
   /* look for cached handles */
 
+#if defined(THREADSAFE)
+  [lock lock];
+#endif
   handle = [self findAvailChannelHandleForURL: _url];
   if (handle)
     {
@@ -339,6 +363,9 @@ static NSTimeInterval ChannelCollectionTimer = 5 * 60;
 		  channel, [_url absoluteString]];
 	}
     }
+#if defined(THREADSAFE)
+  [lock unlock];
+#endif
 
   return channel;
 }
@@ -347,6 +374,9 @@ static NSTimeInterval ChannelCollectionTimer = 5 * 60;
 {
   GCSChannelHandle *handle;
 
+#if defined(THREADSAFE)
+  [lock lock];
+#endif
   handle = [self findBusyChannelHandleForChannel: _channel];
   if (handle)
     {
@@ -380,6 +410,9 @@ static NSTimeInterval ChannelCollectionTimer = 5 * 60;
 
       [_channel release];
     }
+#if defined(THREADSAFE)
+  [lock unlock];
+#endif
 }
 
 /* checking for tables */
@@ -428,6 +461,9 @@ static NSTimeInterval ChannelCollectionTimer = 5 * 60;
   unsigned i, count;
   GCSChannelHandle *handle;
 
+#if defined(THREADSAFE)
+  [lock lock];
+#endif
   count = [availableChannels count];
   if (count)
     {
@@ -462,6 +498,9 @@ static NSTimeInterval ChannelCollectionTimer = 5 * 60;
 
       [handlesToRemove release];
     }
+#if defined(THREADSAFE)
+  [lock unlock];
+#endif
 }
 
 /* debugging */

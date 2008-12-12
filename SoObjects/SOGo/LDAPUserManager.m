@@ -23,6 +23,7 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
+#import <Foundation/NSLock.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSTimer.h>
 #import <Foundation/NSUserDefaults.h>
@@ -37,6 +38,10 @@ static NSString *defaultMailDomain = nil;
 static NSString *LDAPContactInfoAttribute = nil;
 static BOOL defaultMailDomainIsConfigured = NO;
 static BOOL forceImapLoginWithEmail = NO;
+
+#if defined(THREADSAFE)
+static NSLock *lock;
+#endif
 
 @implementation LDAPUserManager
 
@@ -64,6 +69,9 @@ static BOOL forceImapLoginWithEmail = NO;
     }
   if (!forceImapLoginWithEmail)
     forceImapLoginWithEmail = [ud boolForKey: @"SOGoForceIMAPLoginWithEmail"];
+#if defined(THREADSAFE)
+  lock = [NSLock new];
+#endif
 }
 
 + (BOOL) defaultMailDomainIsConfigured
@@ -75,8 +83,14 @@ static BOOL forceImapLoginWithEmail = NO;
 {
   static id sharedUserManager = nil;
 
+#if defined(THREADSAFE)
+  [lock lock];
+#endif
   if (!sharedUserManager)
     sharedUserManager = [self new];
+#if defined(THREADSAFE)
+  [lock unlock];
+#endif
 
   return sharedUserManager;
 }
@@ -149,16 +163,18 @@ static BOOL forceImapLoginWithEmail = NO;
 	cleanupInterval = 0.0;
       if (cleanupInterval > 0.0)
 	{
-	  cleanupTimer = [NSTimer scheduledTimerWithTimeInterval: cleanupInterval
-				  target: self
-				  selector: @selector (_cleanupSources)
-				  userInfo: nil
-				  repeats: YES];
+	  cleanupTimer
+	    = [NSTimer scheduledTimerWithTimeInterval: cleanupInterval
+		       target: self
+		       selector: @selector (_cleanupSources)
+		       userInfo: nil
+		       repeats: YES];
 	  [self logWithFormat: @"cleanup interval set every %f seconds",
 		cleanupInterval];
 	}
       else
-	[self logWithFormat: @"no cleanup interval set: memory usage will grow"];
+	[self
+	  logWithFormat: @"no cleanup interval set: memory usage will grow"];
       [self _prepareLDAPSourcesWithDefaults: ud];
     }
 
@@ -300,6 +316,10 @@ static BOOL forceImapLoginWithEmail = NO;
   NSMutableDictionary *currentUser;
   NSString *dictPassword;
 
+#if defined(THREADSAFE)
+  [lock lock];
+#endif
+
   currentUser = [users objectForKey: login];
   dictPassword = [currentUser objectForKey: @"password"];
   if (currentUser && dictPassword)
@@ -322,6 +342,10 @@ static BOOL forceImapLoginWithEmail = NO;
       cleanupDate = [[NSDate date] addTimeInterval: cleanupInterval];
       [currentUser setObject: cleanupDate forKey: @"cleanupDate"];
     }
+
+#if defined(THREADSAFE)
+  [lock unlock];
+#endif
 
   return checkOK;
 }
@@ -402,12 +426,18 @@ static BOOL forceImapLoginWithEmail = NO;
   NSString *key;
   NSEnumerator *emails;
 
+#if defined(THREADSAFE)
+  [lock lock];
+#endif
   key = [newUser objectForKey: @"c_uid"];
   if (key)
     [users setObject: newUser forKey: key];
   emails = [[newUser objectForKey: @"emails"] objectEnumerator];
   while ((key = [emails nextObject]))
     [users setObject: newUser forKey: key];
+#if defined(THREADSAFE)
+  [lock unlock];
+#endif
 }
 
 - (NSDictionary *) contactInfosForUserWithUIDorEmail: (NSString *) uid
@@ -420,6 +450,9 @@ static BOOL forceImapLoginWithEmail = NO;
     {
       contactInfos = [NSMutableDictionary dictionary];
       currentUser = [users objectForKey: uid];
+#if defined(THREADSAFE)
+      [lock lock];
+#endif
       if (!([currentUser objectForKey: @"emails"]
 	    && [currentUser objectForKey: @"cn"]))
 	{
@@ -446,23 +479,14 @@ static BOOL forceImapLoginWithEmail = NO;
 	  cleanupDate = [[NSDate date] addTimeInterval: cleanupInterval];
 	  [currentUser setObject: cleanupDate forKey: @"cleanupDate"];
 	}
+#if defined(THREADSAFE)
+      [lock unlock];
+#endif
     }
   else
     currentUser = nil;
 
   return currentUser;
-}
-
-- (void) _fillContactsMailRecords: (NSEnumerator *) contacts
-{
-  NSMutableDictionary *currentContact;
-
-  currentContact = [contacts nextObject];
-  while (currentContact)
-    {
-      [self _fillContactMailRecords: currentContact];
-      currentContact = [contacts nextObject];
-    }
 }
 
 - (NSArray *) _compactAndCompleteContacts: (NSEnumerator *) contacts
@@ -517,10 +541,11 @@ static BOOL forceImapLoginWithEmail = NO;
 		[returnContact setObject: infoAttribute
 			   forKey: LDAPContactInfoAttribute];
 	    }
+	  [self _fillContactMailRecords: returnContact];
 	}
     }
+
   newContacts = [compactContacts allValues];
-  [self _fillContactsMailRecords: [newContacts objectEnumerator]];
 
   return newContacts;
 }
@@ -565,6 +590,10 @@ static BOOL forceImapLoginWithEmail = NO;
   NSDate *now;
   unsigned int count;
 
+#if defined(THREADSAFE)
+  [lock lock];
+#endif
+
   now = [NSDate date];
 
   count = 0;
@@ -583,6 +612,10 @@ static BOOL forceImapLoginWithEmail = NO;
 
   if (count)
     [self logWithFormat: @"cleaned %d users records from cache", count];
+
+#if defined(THREADSAFE)
+  [lock unlock];
+#endif
 }
 
 @end

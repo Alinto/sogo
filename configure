@@ -18,6 +18,7 @@ ARG_GSMAKE=`gnustep-config --variable=GNUSTEP_MAKEFILES 2>/dev/null`
 ARG_CFGMAKE="$PWD/config.make"
 ARG_WITH_DEBUG=1
 ARG_WITH_STRIP=0
+ARG_WITH_THREADS=0
 ARG_WITH_LDAP_CONFIG=0
 
 GNUSTEP_INSTALLATION_DOMAIN="LOCAL"
@@ -58,6 +59,7 @@ Installation directories:
   --configmake=PATH       path to the config file being created
   --enable-debug          turn on debugging and compile time warnings
   --enable-strip          turn on stripping of debug symbols
+  --enable-thread-safety  turn on thread-safety
 
   --enable-ldap-config    enable LDAP based configuration of SOGo
 
@@ -82,6 +84,11 @@ printParas() {
     echo "  strip:  yes";
   else
     echo "  strip:  no";
+  fi
+  if test $ARG_WITH_THREADS = 1; then 
+    echo "  thread-safe:  yes";
+  else
+    echo "  thread-safe:  no";
   fi
   if test $ARG_WITH_LDAP_CONFIG = 1; then 
     echo "  ldap-based configuration:  yes";
@@ -261,6 +268,11 @@ genConfigMake() {
   fi
   cfgwrite ""
 
+  if test $ARG_WITH_THREADS = 1; then
+    cfgwrite "# configured to produce thread-safe code";
+    cfgwrite "ADDITIONAL_CPPFLAGS += -DTHREADSAFE=1"
+  fi
+
   cfgwrite "# enforce shared libraries";
   cfgwrite "shared:=yes"
   cfgwrite ""
@@ -392,6 +404,12 @@ processOption() {
 	;;
     "x--disable-strip")
         ARG_WITH_STRIP=0
+	;;
+    "x--enable-thread-safety")
+        ARG_WITH_THREADS=1
+	;;
+    "x--disable-thread-safety")
+        ARG_WITH_THREADS=0
 	;;
 
     "x--enable-ldap-config")
