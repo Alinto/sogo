@@ -269,60 +269,59 @@
   return result;
 }
 
-//
-// This method needs to carefully handle the following cases :
-//
-// A- Alice creates an event in her calendar
-// B- Alice creates an event in Bob's calendar (and invites herself or not)
-// C- Alice moves an event to an other calendar
-//
 - (id <WOActionResults>) saveAction
 {
-  SOGoAppointmentFolder *thisFolder;
+  SOGoAppointmentFolder *previousCalendar;
   SOGoAppointmentObject *co;
   SoSecurityManager *sm;
   NSException *ex;
   NSString *aOwner;
 
-  // See A.
   co = [self clientObject];
+  if ([co isKindOfClass: [SOGoAppointmentOccurence class]])
+    co = [co container];
+  previousCalendar = [co container];
+  sm = [SoSecurityManager sharedSecurityManager];
 
-  if (componentCalendar)
+  if ([co isNew])
     {
-      aOwner = [componentCalendar ownerInContext: context];
-      
-      // See B.
-      if (![aOwner isEqualToString: [[context activeUser] login]])
+      if (componentCalendar && componentCalendar != previousCalendar)
 	{
-	  co = [componentCalendar lookupName: [co nameInContainer]
-				  inContext: context
-				  acquire: NO];
+	  // New event in a different calendar -- make sure the user can
+	  // write to the selected calendar since the rights were verified
+	  // on the calendar specified in the URL, not on the selected
+	  // calendar of the popup menu.
+	  if (![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
+		   onObject: componentCalendar
+		   inContext: context])
+	    co = [componentCalendar lookupName: [co nameInContainer]
+				    inContext: context
+				    acquire: NO];
+	}
+      
+      // Save the event.
+      [co saveComponent: event];
+    }
+  else
+    {
+      // The event was modified -- save it.
+      [co saveComponent: event];
+
+      if (componentCalendar && componentCalendar != previousCalendar)
+	{
+	  // The event was moved to a different calendar.
+	  if (![sm validatePermission: SoPerm_DeleteObjects
+		   onObject: previousCalendar
+		   inContext: context])
+	    {
+	      if (![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
+		       onObject: componentCalendar
+		       inContext: context])
+		ex = [co moveToFolder: componentCalendar];
+	    }
 	}
     }
   
-  // We save the component
-  [co saveComponent: event];
-
-  // See C.
-  if (componentCalendar)
-    {
-      sm = [SoSecurityManager sharedSecurityManager];
-
-      if ([co isKindOfClass: [SOGoAppointmentOccurence class]])
-	co = [co container];
-      thisFolder = [co container];
-      if (componentCalendar != thisFolder)
-	if (![sm validatePermission: SoPerm_DeleteObjects
-		 onObject: thisFolder
-		 inContext: context])
-	  {
-	    if (![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
-		     onObject: componentCalendar
-		     inContext: context])
-	      ex = [co moveToFolder: componentCalendar]; // TODO: handle exception
-	  }
-    }
-
   return [self jsCloseWithRefreshMethod: @"refreshEventsAndDisplay()"];
 }
 
@@ -373,10 +372,8 @@
 - (void) takeValuesFromRequest: (WORequest *) _rq
                      inContext: (WOContext *) _ctx
 {
-  SOGoAppointmentObject *clientObject;
   int nbrDays;
 
-  clientObject = [self clientObject];
   [self event];
 
   [super takeValuesFromRequest: _rq inContext: _ctx];
