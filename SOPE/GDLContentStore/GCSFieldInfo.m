@@ -19,8 +19,14 @@
   02111-1307, USA.
 */
 
-#include "GCSFieldInfo.h"
-#include "common.h"
+#import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSString.h>
+
+#import <NGExtensions/NSNull+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
+
+#import "GCSFieldInfo.h"
 
 @implementation GCSFieldInfo
 

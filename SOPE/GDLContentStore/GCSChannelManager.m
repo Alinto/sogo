@@ -19,13 +19,23 @@
   02111-1307, USA.
 */
 
-#include "GCSChannelManager.h"
-#include "NSURL+GCS.h"
-#include "EOAdaptorChannel+GCS.h"
-#include <GDLAccess/EOAdaptor.h>
-#include <GDLAccess/EOAdaptorContext.h>
-#include <GDLAccess/EOAdaptorChannel.h>
-#include "common.h"
+#import <Foundation/NSArray.h>
+#import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSEnumerator.h>
+#import <Foundation/NSTimer.h>
+#import <Foundation/NSUserDefaults.h>
+
+#import <NGExtensions/NSNull+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
+
+#import <GDLAccess/EOAdaptor.h>
+#import <GDLAccess/EOAdaptorContext.h>
+#import <GDLAccess/EOAdaptorChannel.h>
+
+#import "GCSChannelManager.h"
+#import "NSURL+GCS.h"
+#import "EOAdaptorChannel+GCS.h"
 
 /*
   TODO:

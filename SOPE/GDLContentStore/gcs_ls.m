@@ -19,7 +19,20 @@
   02111-1307, USA.
 */
 
-#import <Foundation/NSObject.h>
+#import <Foundation/NSArray.h>
+#import <Foundation/NSAutoreleasePool.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSEnumerator.h>
+#import <Foundation/NSProcessInfo.h>
+#import <Foundation/NSURL.h>
+#import <Foundation/NSUserDefaults.h>
+
+#import <NGExtensions/NSNull+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NSProcessInfo+misc.h>
+
+#import <GDLContentStore/GCSFolder.h>
+#import <GDLContentStore/GCSFolderManager.h>
 
 @class NSUserDefaults, NSArray;
 @class GCSFolderManager;
@@ -34,10 +47,6 @@
 - (int)run;
 
 @end
-
-#include <GDLContentStore/GCSFolder.h>
-#include <GDLContentStore/GCSFolderManager.h>
-#include "common.h"
 
 @implementation Tool
 

@@ -19,8 +19,9 @@
   02111-1307, USA.
 */
 
-#include "GCSStringFormatter.h"
-#include "common.h"
+#import <Foundation/NSCharacterSet.h>
+
+#import "GCSStringFormatter.h"
 
 @implementation GCSStringFormatter
 
