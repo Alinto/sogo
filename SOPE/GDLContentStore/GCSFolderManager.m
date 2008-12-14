@@ -19,7 +19,23 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSArray.h>
+#import <Foundation/NSCharacterSet.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSException.h>
+#import <Foundation/NSLock.h>
 #import <Foundation/NSProcessInfo.h>
+#import <Foundation/NSSet.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSUserDefaults.h>
+
+#import <NGExtensions/NSNull+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
+
+#import <GDLAccess/EOAdaptorChannel.h>
+#import <GDLAccess/EOAdaptorContext.h>
+#import <NGExtensions/NGResourceLocator.h>
+#import <unistd.h>
 
 #import "GCSFolderManager.h"
 #import "GCSChannelManager.h"
@@ -27,11 +43,6 @@
 #import "GCSFolder.h"
 #import "NSURL+GCS.h"
 #import "EOAdaptorChannel+GCS.h"
-#import "common.h"
-#import <GDLAccess/EOAdaptorChannel.h>
-#import <GDLAccess/EOAdaptorContext.h>
-#import <NGExtensions/NGResourceLocator.h>
-#import <unistd.h>
 
 /*
   Required database schema:
@@ -64,6 +75,10 @@ static NSString   *GCSGenericFolderTypeName = @"Container";
 static const char *GCSPathColumnPattern     = "c_path%i";
 static NSCharacterSet *asciiAlphaNumericCS  = nil;
 
+#if defined(THREADSAFE)
+static NSLock *lock;
+#endif
+
 + (void) initialize
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
@@ -76,6 +91,9 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
   debugOn     = [ud boolForKey: @"GCSFolderManagerDebugEnabled"];
   debugSQLGen = [ud boolForKey: @"GCSFolderManagerSQLDebugEnabled"];
   emptyArray  = [[NSArray alloc] init];
+#if defined(THREADSAFE)
+  lock = [NSLock new];
+#endif
   if (!asciiAlphaNumericCS)
     {
       asciiAlphaNumericCS
@@ -90,26 +108,34 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
 + (id)defaultFolderManager {
   NSString *s;
   NSURL    *url;
-  if (fm) return fm;
-  
-  s = [[NSUserDefaults standardUserDefaults] stringForKey:@"OCSFolderInfoURL"];
-  if ([s length] == 0) {
-    NSLog(@"ERROR(%s): default 'OCSFolderInfoURL' is not configured.",
-	  __PRETTY_FUNCTION__);
-    return nil;
-  }
-  if ((url = [NSURL URLWithString:s]) == nil) {
-    NSLog(@"ERROR(%s): default 'OCSFolderInfoURL' is not a valid URL: '%@'",
-	  __PRETTY_FUNCTION__, s);
-    return nil;
-  }
-  if ((fm = [[self alloc] initWithFolderInfoLocation:url]) == nil) {
-    NSLog(@"ERROR(%s): could not create folder manager with URL: '%@'",
-	  __PRETTY_FUNCTION__, [url absoluteString]);
-    return nil;
-  }
-  
-  NSLog(@"Note: setup default manager at: %@", url);
+
+#if defined(THREADSAFE)
+  [lock lock];
+#endif
+  if (!fm)
+    {
+      s = [[NSUserDefaults standardUserDefaults] stringForKey:@"OCSFolderInfoURL"];
+      if ([s length] == 0) {
+	NSLog(@"ERROR(%s): default 'OCSFolderInfoURL' is not configured.",
+	      __PRETTY_FUNCTION__);
+	return nil;
+      }
+      if ((url = [NSURL URLWithString:s]) == nil) {
+	NSLog(@"ERROR(%s): default 'OCSFolderInfoURL' is not a valid URL: '%@'",
+	      __PRETTY_FUNCTION__, s);
+	return nil;
+      }
+      if ((fm = [[self alloc] initWithFolderInfoLocation:url]) == nil) {
+	NSLog(@"ERROR(%s): could not create folder manager with URL: '%@'",
+	      __PRETTY_FUNCTION__, [url absoluteString]);
+	return nil;
+      }
+      NSLog(@"Note: setup default manager at: %@", url);
+    }
+#if defined(THREADSAFE)
+  [lock unlock];
+#endif
+      
   return fm;
 }
 
@@ -199,6 +225,7 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
   
   ch = [[self channelManager] acquireOpenChannelForURL:
 				[self folderInfoLocation]];
+
   return ch;
 }
 - (void)releaseChannel:(EOAdaptorChannel *)_channel {

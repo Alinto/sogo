@@ -25,6 +25,7 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSDistributedNotificationCenter.h>
 #import <Foundation/NSEnumerator.h>
+#import <Foundation/NSLock.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSTimer.h>
 #import <Foundation/NSUserDefaults.h>
@@ -51,7 +52,18 @@ static NSMutableDictionary *s_userSettings = nil;
 
 static SOGoCache *sharedCache = nil;
 
+#if defined(THREADSAFE)
+static NSLock *lock;
+#endif
+
 @implementation SOGoCache
+
+#if defined(THREADSAFE)
++ (void) initialize
+{
+  lock = [NSLock new];
+}
+#endif
 
 + (NSTimeInterval) cleanupInterval
 {
@@ -60,16 +72,28 @@ static SOGoCache *sharedCache = nil;
 
 + (SOGoCache *) sharedCache
 {
+#if defined(THREADSAFE)
+  [lock lock];
+#endif
   if (!sharedCache)
     sharedCache = [self new];
+#if defined(THREADSAFE)
+  [lock unlock];
+#endif
 
   return sharedCache;
 }
 
 + (void) killCache
 {
+#if defined(THREADSAFE)
+  [lock lock];
+#endif
   [cache removeAllObjects];
   [users removeAllObjects];
+#if defined(THREADSAFE)
+  [lock unlock];
+#endif
 }
 
 - (id) init
@@ -134,7 +158,7 @@ static SOGoCache *sharedCache = nil;
 }
 
 - (NSString *) _pathFromObject: (SOGoObject *) container
-		      withName: (NSString *) name
+withName: (NSString *) name
 {
   NSString *fullPath, *nameInContainer;
   NSMutableArray *names;
@@ -169,13 +193,19 @@ static SOGoCache *sharedCache = nil;
 	    inContainer: [container container]];
       fullPath = [self _pathFromObject: container
 		       withName: name];
+#if defined(THREADSAFE)
+      [lock lock];
+#endif
       if (![cache objectForKey: fullPath])
 	{
-// 	  NSLog (@"registering '%@'", fullPath);
+	  // 	  NSLog (@"registering '%@'", fullPath);
 	  [cache setObject: object forKey: fullPath];
 	}
-//       else
-// 	NSLog (@"'%@' already registered", fullPath);
+#if defined(THREADSAFE)
+      [lock unlock];
+#endif
+      //       else
+      // 	NSLog (@"'%@' already registered", fullPath);
     }
 }
 
@@ -188,14 +218,20 @@ static SOGoCache *sharedCache = nil;
 		   withName: name];
 
   return [cache objectForKey: fullPath];
-//   if (object)
-//     NSLog (@"found cached object '%@'", fullPath);
+  //   if (object)
+  //     NSLog (@"found cached object '%@'", fullPath);
 }
 
 - (void) registerUser: (SOGoUser *) user
 { 
+#if defined(THREADSAFE)
+  [lock lock];
+#endif
   [users setObject: user
 	 forKey: [user login]];
+#if defined(THREADSAFE)
+  [lock unlock];
+#endif
 }
 
 - (id) userNamed: (NSString *) name
@@ -214,11 +250,17 @@ static SOGoCache *sharedCache = nil;
 {
   NSDate *cleanupDate;
   
+#if defined(THREADSAFE)
+  [lock lock];
+#endif
   cleanupDate = [[NSDate date] addTimeInterval: [SOGoCache cleanupInterval]];
   [s_userDefaults setObject: [NSDictionary dictionaryWithObjectsAndKeys:
 					     theDefaults, @"dictionary",
 					   cleanupDate, @"cleanupDate", nil]
 		  forKey: login];
+#if defined(THREADSAFE)
+  [lock unlock];
+#endif
 }
 
 + (NSDictionary *) cachedUserSettings
@@ -231,11 +273,17 @@ static SOGoCache *sharedCache = nil;
 {
   NSDate *cleanupDate;
   
+#if defined(THREADSAFE)
+  [lock lock];
+#endif
   cleanupDate = [[NSDate date] addTimeInterval: [SOGoCache cleanupInterval]];
   [s_userSettings setObject: [NSDictionary dictionaryWithObjectsAndKeys:
 					     theSettings, @"dictionary",
 					   cleanupDate, @"cleanupDate", nil]
 		  forKey: login];
+#if defined(THREADSAFE)
+  [lock unlock];
+#endif
 }
 
 - (void) _userDefaultsHaveChanged: (NSNotification *) theNotification
@@ -245,6 +293,9 @@ static SOGoCache *sharedCache = nil;
   
   uid = [[theNotification userInfo] objectForKey: @"uid"];
 
+#if defined(THREADSAFE)
+  [lock lock];
+#endif
   if ((user = [users objectForKey: uid]))
     {
       [[user userDefaults] setValues: [[theNotification userInfo] objectForKey: @"values"]];
@@ -254,6 +305,9 @@ static SOGoCache *sharedCache = nil;
     {
       [s_userDefaults removeObjectForKey: uid];
     }
+#if defined(THREADSAFE)
+  [lock unlock];
+#endif
 }
 
 - (void) _userSettingsHaveChanged: (NSNotification *) theNotification
@@ -282,6 +336,10 @@ static SOGoCache *sharedCache = nil;
   NSDate *now;
   
   unsigned int count;
+
+#if defined(THREADSAFE)
+  [lock lock];
+#endif
 
   now = [NSDate date];
   
@@ -317,7 +375,12 @@ static SOGoCache *sharedCache = nil;
     }
   
   if (count)
-    [self logWithFormat: @"cleaned %d users records from user settings cache", count];
+    [self logWithFormat: @"cleaned %d users records from user settings cache",
+	  count];
+
+#if defined(THREADSAFE)
+  [lock unlock];
+#endif
 }
 
 @end
