@@ -841,7 +841,7 @@ static Class sogoAppointmentFolderKlass = Nil;
   [stripFields removeObjectsInArray: [NSArray arrayWithObjects: @"c_name",
 					      @"c_uid", @"c_startdate",
 					      @"c_enddate", @"c_isallday",
-					      @"c_iscycle",
+					      @"c_iscycle", @"c_isopaque",
 					      @"c_classification",
 					      @"c_component", nil]];
 }

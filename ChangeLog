@@ -1,3 +1,9 @@
+2008-12-14  Ludovic Marcotte  <lmarcotte@inverse.ca>
+	
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder -_buildStripFieldsFromFields:]):
+	Don't strip the c_isopaque for the DAndTViewer role.
+
 2008-12-09  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentObject.m
