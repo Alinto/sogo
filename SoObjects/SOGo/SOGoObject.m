@@ -1062,9 +1062,7 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
   BOOL result;
 
   if ([uid length]
-      && ![uid isEqualToString: [self ownerInContext: nil]]
-      && [[LDAPUserManager sharedUserManager]
-	   contactInfosForUserWithUIDorEmail: uid])
+      && ![uid isEqualToString: [self ownerInContext: nil]])
     {
       [self setRoles: [self aclsForUser: uid]
 	    forUser: uid];
@@ -1432,7 +1430,8 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
   id <DOMNode> node, userAttr;
   id <DOMNamedNodeMap> attrs;
   NSString *nodeName, *result, *response, *user;
-  NSArray *childNodes;
+  NSArray *childNodes, *allUsers, *allRoles;
+  int i;
 
   result = nil;
 
@@ -1454,16 +1453,50 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
 	}
       else if ([nodeName isEqualToString: @"set-roles"])
 	{
+	  // We support two ways of setting roles. The first one is, for example:
+	  //
+	  // <?xml version="1.0" encoding="UTF-8"?>
+	  // <acl-query xmlns="urn:inverse:params:xml:ns:inverse-dav">
+	  // <set-roles user="alice"><PrivateViewer/></set-roles></acl-query>
+	  // 
+	  // while the second one, for mutliple users at the same time, is:
+	  //
+	  // <?xml version="1.0" encoding="UTF-8"?>
+	  // <acl-query xmlns="urn:inverse:params:xml:ns:inverse-dav">
+	  // <set-roles users="alice,bob,bernard"><PrivateViewer/></set-roles></acl-query>
+	  // 
 	  attrs = [node attributes];
 	  userAttr = [attrs namedItem: @"user"];
 	  user = [userAttr nodeValue];
+	  
 	  if ([user length])
+	    allUsers = [NSArray arrayWithObject: user];
+	  else {
+	    userAttr = [attrs namedItem: @"users"];
+	    allUsers = [[userAttr nodeValue] componentsSeparatedByString: @","];
+	  }
+	  
+	  allRoles = [self _davGetRolesFromRequest: node];
+	  for (i = 0; i < [allUsers count]; i++)
 	    {
-	      [self setRoles: [self _davGetRolesFromRequest: node]
-		    forUser: user];
-	      result = @"";
+	      [self setRoles: allRoles
+		    forUser: [allUsers objectAtIndex: i]];
 	    }
+	  result = @"";
 	}
+      //
+      // Here again, we support two ways of adding users. The first one is, for example:
+      //
+      // <?xml version="1.0" encoding="utf-8"?>
+      // <acl-query xmlns="urn:inverse:params:xml:ns:inverse-dav">
+      // <add-user user="alice"/></acl-query>
+      //
+      // while the second one, for mutliple users at the same time, is:
+      //
+      // <?xml version="1.0" encoding="utf-8"?>
+      // <acl-query xmlns="urn:inverse:params:xml:ns:inverse-dav">
+      // <add-users users="alice,bob,bernard"/></acl-query>
+      //
       else if ([nodeName isEqualToString: @"add-user"])
 	{
 	  attrs = [node attributes];
@@ -1472,6 +1505,25 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
 	  if ([self addUserInAcls: user])
 	    result = @"";
 	}
+      else if ([nodeName isEqualToString: @"add-users"])
+	{
+	  attrs = [node attributes];
+	  userAttr = [attrs namedItem: @"users"];
+	  allUsers = [[userAttr nodeValue] componentsSeparatedByString: @","];
+
+	  for (i = 0; i < [allUsers count]; i++)
+	    {
+	      if ([self addUserInAcls: [allUsers objectAtIndex: i]])
+		result = @"";
+	      else {
+		result = nil;
+		break;
+	      }
+	    }	 
+	}
+      //
+      // See the comment for add-user / add-users
+      //
       else if ([nodeName isEqualToString: @"remove-user"])
 	{
 	  attrs = [node attributes];
@@ -1479,6 +1531,23 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
 	  user = [userAttr nodeValue];
 	  if ([self removeUserFromAcls: user])
 	    result = @"";
+	}
+      else if ([nodeName isEqualToString: @"remove-users"])
+	{
+	  attrs = [node attributes];
+	  userAttr = [attrs namedItem: @"users"];
+
+	  allUsers = [[userAttr nodeValue] componentsSeparatedByString: @","];
+
+	  for (i = 0; i < [allUsers count]; i++)
+	    {
+	      if ([self removeUserFromAcls: [allUsers objectAtIndex: i]])
+		result = @"";
+	      else {
+		result = nil;
+		break;
+	      }
+	    }
 	}
     }
 

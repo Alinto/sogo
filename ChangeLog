@@ -7,6 +7,10 @@
 	the usage of the SOGoLDAPContactInfoAttribute,
 	if defined, over "description" when generating
 	the "NOTE" attribute.
+	* SoObjects/SOGo/SOGoObject.m
+	Optimized a bit and we also now support setting
+	roles, or adding/removing roles for multiple users
+	at once.
 
 2008-12-14  Ludovic Marcotte  <lmarcotte@inverse.ca>
 	
