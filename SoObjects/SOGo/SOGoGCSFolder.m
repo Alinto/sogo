@@ -73,7 +73,7 @@ static NSArray *childRecordFields = nil;
 
 + (SOGoWebDAVAclManager *) webdavAclManager
 {
-  SOGoWebDAVAclManager *aclManager = nil;
+  static SOGoWebDAVAclManager *aclManager = nil;
 
   if (!aclManager)
     {

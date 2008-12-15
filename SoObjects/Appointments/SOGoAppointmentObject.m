@@ -58,7 +58,7 @@
 
 + (SOGoWebDAVAclManager *) webdavAclManager
 {
-  SOGoWebDAVAclManager *aclManager = nil;
+  static SOGoWebDAVAclManager *aclManager = nil;
   NSString *nsD, *nsI;
 
   if (!aclManager)

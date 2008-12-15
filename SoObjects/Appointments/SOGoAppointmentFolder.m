@@ -127,7 +127,7 @@ static Class sogoAppointmentFolderKlass = Nil;
 
 + (SOGoWebDAVAclManager *) webdavAclManager
 {
-  SOGoWebDAVAclManager *aclManager = nil;
+  static SOGoWebDAVAclManager *aclManager = nil;
   NSString *nsI;
 
   if (!aclManager)
@@ -1071,7 +1071,6 @@ static Class sogoAppointmentFolderKlass = Nil;
   NSString **values, **currentValue;
   SoSecurityManager *mgr;
   SEL methodSel;
-  Class c;
 
 #warning things may crash here...
   values = calloc (100, sizeof (NSMutableString *));

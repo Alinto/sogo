@@ -46,7 +46,7 @@
 
 + (SOGoWebDAVAclManager *) webdavAclManager
 {
-  SOGoWebDAVAclManager *webdavAclManager = nil;
+  static SOGoWebDAVAclManager *webdavAclManager = nil;
 
   if (!webdavAclManager)
     {
