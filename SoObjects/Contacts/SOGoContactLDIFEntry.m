@@ -23,6 +23,7 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSUserDefaults.h>
 
 #import <NGCards/NGVCard.h>
 #import <NGCards/CardVersitRenderer.h>
@@ -113,7 +114,7 @@
 
 - (NGVCard *) vCard
 {
-  NSString *info, *surname, *streetAddress, *location;
+  NSString *info, *surname, *streetAddress, *location, *key;
   CardElement *element;
   unsigned int count;
 
@@ -141,9 +142,20 @@
       info = [ldifEntry objectForKey: @"mozillaNickname"];
       if (info)
         [vcard setNickname: info];
-      info = [ldifEntry objectForKey: @"description"];
+      
+      // If SOGoLDAPContactInfoAttribute is defined, we set it
+      // as the NOTE value in order for Thunderbird (or any other
+      // CardDAV client) to display it.
+      key = [[NSUserDefaults standardUserDefaults]
+	      stringForKey: @"SOGoLDAPContactInfoAttribute"];
+
+      if (!key)
+	key = @"description";
+
+      info = [ldifEntry objectForKey: key];
       if (info)
         [vcard setNote: info];
+
       info = [ldifEntry objectForKey: @"mail"];
       if (info)
         [vcard addEmail: info
