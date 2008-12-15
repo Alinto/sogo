@@ -39,36 +39,23 @@
 
 @interface NGCardsSaxHandler : SaxDefaultHandler
 {
+  unichar  *content;
+
   NSMutableArray *cards;
+
   CardElement *currentElement;
   CardGroup *currentCardGroup;
 
   NSString *currentGroup;
-  unichar  *content;
   unsigned contentLength;
 
-  NSMutableDictionary *xtags;
-  NSMutableDictionary *subvalues;
   NSMutableArray      *types;
-  NSMutableDictionary *args;
-  NSMutableArray      *tel;
-  NSMutableArray      *adr;
-  NSMutableArray      *email;
-  NSMutableArray      *label;
-  NSMutableArray      *url;
-  NSMutableArray      *fburl;
-  NSMutableArray      *caluri;
-  
+
   struct {
     int isInVCardSet:1;
     int isInVCard:1;
-    int isInN:1;
-    int isInAdr:1;
-    int isInOrg:1;
     int isInGroup:1;
-    int isInGeo:1;
     int collectContent:1;
-    int reserved:24;
   } vcs;
 
   Class topGroupClass;
