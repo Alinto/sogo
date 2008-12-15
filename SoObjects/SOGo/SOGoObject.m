@@ -134,7 +134,7 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
 
 + (SOGoWebDAVAclManager *) webdavAclManager
 {
-  SOGoWebDAVAclManager *aclManager = nil;
+  static SOGoWebDAVAclManager *aclManager = nil;
 
   if (!aclManager)
     aclManager = [SOGoWebDAVAclManager new];
@@ -246,7 +246,7 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
 
 - (BOOL) doesRetainContainer
 {
-  return YES;
+  return NO;
 }
 
 - (id) init

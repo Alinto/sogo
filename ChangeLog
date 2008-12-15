@@ -1,5 +1,10 @@
 2008-12-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoObject.m ([SOGoObject +webdavAclManager]):
+	same as below.
+	([SOGoObject -doesRetainContainer]): return "NO" here in order to
+	avoid leaks.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	([SOGoAppointmentFolder +webdavAclManager]): same as below.
 
