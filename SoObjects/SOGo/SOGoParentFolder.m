@@ -54,7 +54,7 @@ static SoSecurityManager *sm = nil;
 
 + (SOGoWebDAVAclManager *) webdavAclManager
 {
-  SOGoWebDAVAclManager *aclManager = nil;
+  static SOGoWebDAVAclManager *aclManager = nil;
 
   if (!aclManager)
     {

@@ -105,17 +105,17 @@
 
 - (void) dealloc
 {
-  if (tag)
-    [tag release];
-  [values release];
+//   [parent release];
+  [tag release];
+  [group release];
   [attributes release];
-  [parent release];
+  [values release];
   [super dealloc];
 }
 
 - (void) setParent: (CardGroup *) aParent
 {
-  ASSIGN (parent, aParent);
+  parent = aParent;
 }
 
 - (id) parent
@@ -126,6 +126,11 @@
 - (void) setTag: (NSString *) aTag
 {
   ASSIGN (tag, aTag);
+}
+
+- (NSString *) tag
+{
+  return tag;
 }
 
 - (void) setGroup: (NSString *) aGroup
@@ -214,11 +219,6 @@
 - (void) addType: (NSString *) aType
 {
   [self addAttribute: @"type" value: aType];
-}
-
-- (NSString *) tag
-{
-  return tag;
 }
 
 - (NSArray *) values
@@ -493,16 +493,12 @@
 
 - (void) setValuesAsCopy: (NSMutableArray *) someValues
 {
-  [values release];
-  values = someValues;
-  [values retain];
+  ASSIGN (values, someValues);
 }
 
 - (void) setAttributesAsCopy: (NSMutableDictionary *) someAttributes
 {
-  [attributes release];
-  attributes = someAttributes;
-  [attributes retain];
+  ASSIGN (attributes, someAttributes);
 }
 
 - (CardGroup *) searchParentOfClass: (Class) parentClass
@@ -537,6 +533,7 @@
     {
       newChild = [[oldArray objectAtIndex: count] mutableCopyWithZone: aZone];
       [newArray addObject: newChild];
+      [newChild release];
     }
 
   return newArray;
@@ -565,7 +562,6 @@
   new = [[self class] new];
   [new setTag: [tag copyWithZone: aZone]];
   [new setGroup: [group copyWithZone: aZone]];
-  [new setParent: nil];
   [new setValuesAsCopy: [self deepCopyOfArray: values withZone: aZone]];
   [new setAttributesAsCopy: [self deepCopyOfDictionary: attributes
 				  withZone: aZone]];
@@ -581,7 +577,6 @@
   new = [[self class] new];
   [new setTag: [tag mutableCopyWithZone: aZone]];
   [new setGroup: [group mutableCopyWithZone: aZone]];
-  [new setParent: nil];
   [new setValuesAsCopy: [self deepCopyOfArray: values withZone: aZone]];
   [new setAttributesAsCopy: [self deepCopyOfDictionary: attributes
 				  withZone: aZone]];

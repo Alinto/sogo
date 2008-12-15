@@ -49,6 +49,7 @@
 {
   if (content)
     free (content);
+  [self reset];
   [cards release];
   [currentGroup release];
   [super dealloc];
@@ -71,7 +72,9 @@
       content = NULL;
     }
 
-  vcs.isInVCardSet   = 0;
+  vcs.isInVCardSet = 0;
+  vcs.isInVCard = 0;
+  vcs.isInGroup = 0;
   vcs.collectContent = 0;
 }
 
@@ -86,7 +89,7 @@
 - (void) startDocument
 {
   if (!cards)
-    cards = [[NSMutableArray alloc] initWithCapacity:16];
+    cards = [[NSMutableArray alloc] initWithCapacity: 16];
   [self reset];
 }
 
@@ -95,56 +98,12 @@
   [self resetExceptResult];
 }
 
-/* common tags */
-
-- (void) startValueTag: (NSString *) _tag
-            attributes: (id<SaxAttributes>) _attrs
-{
-  /* a tag with types and attributes */
-  unsigned i, count;
-  
-  [types removeAllObjects];
-  [args  removeAllObjects];
-  
-  for (i = 0, count = [_attrs count]; i < count; i++) {
-    NSString *n, *v;
-    
-    n = [_attrs nameAtIndex:i];
-    v = [_attrs valueAtIndex:i];
-    
-    if ([n hasSuffix:@".type"] || [n isEqualToString:@"TYPE"]) {
-      /*
-        Note: types cannot be separated by comma! Its indeed always a space,eg
-                "work pref voice"
-              If you find commas, usually the vCard is broken.
-      */
-      NSEnumerator *e;
-      NSString *k;
-      
-      e = [[v componentsSeparatedByString:@" "] objectEnumerator];
-      while ((k = [e nextObject]) != nil) {
-        k = [k uppercaseString];
-        if ([types containsObject:k]) continue;
-	[types addObject:k];
-      }
-    }
-    else
-      [args setObject:v forKey:n];
-  }
-}
-
-- (void) endValueTag
-{
-  [types removeAllObjects];
-  [args  removeAllObjects];
-}
-
 /* handle elements */
 
 - (void) startGroup: (NSString *)_name
 {
   vcs.isInGroup = 1;
-  ASSIGNCOPY(currentGroup, _name);
+  ASSIGNCOPY (currentGroup, _name);
 }
 
 - (void) endGroup
@@ -229,10 +188,12 @@
 
 - (void) startCollectingContent
 {
-  if (content) {
-    free (content);
-    content = NULL;
-  }
+  if (content)
+    {
+      free (content);
+      content = NULL;
+    }
+
   vcs.collectContent = 1;
 }
 

@@ -58,12 +58,14 @@ static NSLock *lock;
 
 @implementation SOGoCache
 
-#if defined(THREADSAFE)
 + (void) initialize
 {
+ #if defined(THREADSAFE)
   lock = [NSLock new];
-}
 #endif
+  s_userDefaults = [[NSMutableDictionary alloc] init];
+  s_userSettings = [[NSMutableDictionary alloc] init];
+}
 
 + (NSTimeInterval) cleanupInterval
 {
@@ -104,9 +106,6 @@ static NSLock *lock;
 
       cache = [[NSMutableDictionary alloc] init];
       users = [[NSMutableDictionary alloc] init];
-      
-      s_userDefaults = [[NSMutableDictionary alloc] init];
-      s_userSettings = [[NSMutableDictionary alloc] init];
       
       // We register ourself for notifications
       [[NSDistributedNotificationCenter defaultCenter]

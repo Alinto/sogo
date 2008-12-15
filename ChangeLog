@@ -1,3 +1,23 @@
+2008-12-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder +webdavAclManager]): same as below.
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	([SOGoAppointmentObject +webdavAclManager]): same as below.
+
+	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder +webdavAclManager]):
+	same as below.
+
+	* SoObjects/SOGo/SOGoGCSFolder.m ([SOGoGCSFolder
+	+webdavAclManager]): same as below.
+
+	* SoObjects/SOGo/SOGoObject.m ([SOGoObject +webdavAclManager]):
+	same as below.
+
+	* SoObjects/SOGo/SOGoParentFolder.m ([SOGoParentFolder
+	+webdavAclManager]): declare singleton as static to avoid leaking.
+
 2008-12-15  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
         * Updated german translations - patch from
