@@ -68,7 +68,7 @@ static NGCardsSaxHandler *sax = nil;
 
 + (NSArray *) parseFromSource: (id) source
 {
-  static id <NSObject,SaxXMLReader> cardParser;
+  static id <NSObject, SaxXMLReader> cardParser;
   NSArray *cardGroups;
 
   cardGroups = nil;
@@ -83,6 +83,7 @@ static NGCardsSaxHandler *sax = nil;
 	  [parser parseFromSource: source];
 
 	  cardGroups = [sax cards];
+	  [sax reset];
 	}
     }
 
