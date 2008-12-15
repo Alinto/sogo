@@ -1,3 +1,9 @@
+2008-12-15  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+        * Updated german translations - patch from
+	Alexander Greiner-Baer <sogo-algb@freenet.de>
+
+
 2008-12-14  Ludovic Marcotte  <lmarcotte@inverse.ca>
 	
 	* SoObjects/Appointments/SOGoAppointmentFolder.m

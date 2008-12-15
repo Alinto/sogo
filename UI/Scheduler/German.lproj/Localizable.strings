@@ -1,5 +1,20 @@
 /* this file is in UTF-8 format! */
 
+/* Tooltips */
+
+"Create a new event" = "Neuen Termin erstellen";
+"Create a new task" = "Neue Aufgabe erstellen";
+"Edit this event or task" = "Gewählten Termin oder Aufgabe bearbeiten";
+"Delete this event or task" = "Gewählten Termin oder Aufgabe löschen ";
+"Go to today" = "Zu Heute wechseln";
+"Switch to day view" = "Zur Tagesansicht wechseln";
+"Switch to week view" = "Zur Wochenansicht wechseln";
+"Switch to month view" = "Zur wehrwöchigen Ansicht wechseln";
+
+/* Tabs */
+"Date" = "Datum";
+"Calendars" = "Kalenderliste";
+
 /* Day */
 
 "Sunday" = "Sonntag";
@@ -9,10 +24,6 @@
 "Thursday" = "Donnerstag";
 "Friday" = "Freitag";
 "Saturday" = "Samstag";
-
-/* Tabs */
-"Date" = "Datum";
-"Calendars" = "Kalenderliste";
 
 "Sun" = "So";
 "Mon" = "Mo";
@@ -118,7 +129,7 @@
 
 "New Calendar..." = "Neuer Kalender...";
 "Subscribe to a Calendar..." = "Einen Kalender abonnieren...";
-"Remove the selected Calendar" = "Ausgewählten Kalender löschen";
+"Remove the selected Calendar" = "Gewählten Kalender löschen";
 
 "Name of the Calendar" = "Name des Kalenders";
 
@@ -129,7 +140,7 @@
 "proposal" = "Vorschlag";
 "Save and Close" = "Speichern und schließen";
 "Close" = "Schließen";
-"Invite Attendees" = "Teilnehmer";
+"Invite Attendees" = "Teilnehmer einladen";
 "Documents" = "Dokumente";
 "Update" = "Speichern";
 "Cancel" = "Abbrechen";
@@ -191,7 +202,7 @@
 "Public" = "Öffentlich";
 "Private" = "Privat";
 /* text used in overviews and tooltips */
-"empty title" = "kein Titel";
+"empty title" = "Kein Titel";
 "private appointment" = "Privater Termin";
 
 "Change..." = "Bearbeiten...";
@@ -235,6 +246,8 @@
 "check for conflicts" = "Auf Konflikte überprüfen";
 
 "Browse URL" = "Gehe zu URL";
+
+"newAttendee" = "Teilnehmer hinzufügen";
 
 /* calendar modes */
 
@@ -374,7 +387,7 @@
 
 /* transparency */
 
-"Show Time as Free" = "Show Time as Free";
+"Show Time as Free" = "Zeige Zeit als Frei";
 
 /* validation errors */
 
@@ -434,7 +447,7 @@ validate_endbeforestart    = "Ihr Beginn ist nach dem Ende";
 "No free-busy information" = "Keine Verfügbarkeitsinformationen";
 
 /* FreeBusy panel buttons */
-"Suggest time slot:" = "Zeitzone :";
+"Suggest time slot:" = "Termin vorschlagen:";
 "Previous slot" = "Vorherige";
 "Next slot" = "Nächste";
 "Previous hour" = "Vorherige Stunde";
@@ -448,13 +461,13 @@ validate_endbeforestart    = "Ihr Beginn ist nach dem Ende";
 "(Private Event)" = "(Privater Termin)";
 
 /* event list */
-vevent_class0 = "(Public event)";
-vevent_class1 = "(Private event)";
-vevent_class2 = "(Confidential event)";
+vevent_class0 = "(Öffentlicher Termin)";
+vevent_class1 = "(Privater Termin)";
+vevent_class2 = "(Vertraulicher Termin)";
 
-vtodo_class0 = "(Public task)";
-vtodo_class1 = "(Private task)";
-vtodo_class2 = "(Confidential task)";
+vtodo_class0 = "(Öffentliche Aufgabe)";
+vtodo_class1 = "(Private Aufgabe)";
+vtodo_class2 = "(Vertrauliche Aufgabe)";
 
 "closeThisWindowMessage" = "Vielen Dank! Sie können dieses Fenster jetzt schließen.";
 "Multicolumn Day View" = "Mehrspaltige Tagesansicht";

@@ -9,8 +9,9 @@
 "Mail" = "Mail";
 "Preferences" = "Einstellungen";
 "Logoff" = "Beenden";
+"Disconnect" = "Beenden";
 "Right Administration" = "Rechte Administration";
-"Log Console (dev.)" = " (dev.)";
+"Log Console (dev.)" = "Journal (dev.)";
 
 "User" = "Benutzer";
 

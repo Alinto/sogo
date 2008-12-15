@@ -79,6 +79,7 @@
 "messageforward_inline" = "Eingebunden";
 "messageforward_attached" = "Als Anhang";
 
+/* Identities */
 "Default identity:" = "Standard Identität:";
 "Manage identities..." = "Identitäten verwalten...";
 "Signature" = "Signatur";

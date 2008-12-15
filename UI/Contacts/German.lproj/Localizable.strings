@@ -36,12 +36,20 @@
 "Unit"              = "Abteilung";
 "delete"            = "Löschen";
 "edit"              = "Bearbeiten";
-"invalidemailwarn"  = "Adressfeld der e-Mail ist ungültig. Wollen Sie trotzdem fortfahren?";
+"invalidemailwarn"  = "Adressfeld der E-Mail ist ungültig. Wollen Sie trotzdem fortfahren?";
 "new"               = "Neu";
 "Preferred Phone"   = "Bevorzugt";
 
+/* Tooltips */
+
+"Create a new address book card" = "Neue Adressbuch-Karte erzeugen";
+"Create a new list" = "Neue Liste erstellen";
+"Edit the selected card" = "Gewählte Karte bearbeiten";
+"Send a mail message" = "Neue Nachricht verfassen";
+"Delete selected card or address book" = "Gewählte Karte oder Adressbuch löschen";
+
 "htmlMailFormat_UNKNOWN" = "Unbekannt";
-"htmlMailFormat_FALSE" = "Klartext";
+"htmlMailFormat_FALSE" = "Reintext";
 "htmlMailFormat_TRUE" = "HTML";
 
 "Name or Email" = "Name oder E-Mail";
@@ -98,7 +106,7 @@
 "Note:" = "Notizen:";
 "Timezone:" = "Zeitzone:";
 "Birthday:" = "Geburtsdatum:";
-"Freebusy URL:" = "Free/Busy URL:";
+"Freebusy URL:" = "Freebusy URL:";
 
 "Add as..." = "Hinzufügen als ...";
 "Recipient" = "Empfänger";
@@ -119,8 +127,13 @@
 
 "Are you sure you want to delete the selected contacts?"
 = "Wollen Sie wirklich die ausgewählte Karten löschen?";
+
+"You don't have the required privileges to perform the operation."
+= "Sie haben nicht die benötigte Berechtigung für diesen Befehl.";
 "You cannot delete the selected contact(s)"
 = "Ausgewählte Karten können nicht gelöscht werden.";
+"You cannot delete the card of \"%{0}\"."
+= "Sie können die Karte von \"%{0}\" nicht löschen.";
 
 "Address Book Name" = "Adressbuch-Name";
 
@@ -144,6 +157,17 @@
 = "Diese Person kann Karten aus diesem Adressbuch löschen";
 
 "The selected contact has no email address."
-= "Der ausgewählte Kontakt hat keine e-Mail Adresse.";
+= "Der gewählte Kontakt hat keine E-Mail-Adresse.";
 
 "Please select a contact." = "Bitte einen Kontakt auswählen.";
+
+/* Error messages for move and copy */
+
+"SoAccessDeniedException" = "Sie können nicht auf dieses Adressbuch schreiben.";
+"Forbidden" = "Sie können nicht auf dieses Adressbuch schreiben.";
+"Invalid Contact" = "Der ausgewählte Kontakt existiert nicht mehr.";
+"Unknown Destination Folder" = "Das ausgewählte Ziel-Adressbuch existiert nicht mehr.";
+
+"Move To" = "Verschieben in";
+"Copy To" = "Kopieren in";
+"Add to:" = "Hinzufügen zu:";
