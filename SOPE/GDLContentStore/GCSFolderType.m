@@ -106,7 +106,6 @@
   [blobTablePattern   release];
   [quickTablePattern  release];
   [fields             release];
-  [fieldDict          release];
   [folderQualifier    release];
   [super dealloc];
 }

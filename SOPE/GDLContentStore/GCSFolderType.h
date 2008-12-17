@@ -48,7 +48,6 @@
   NSString     *blobTablePattern;  // eg 'SOGo_$folderId$_blob
   NSString     *quickTablePattern; // eg 'SOGo_$folderId$_quick
   NSArray      *fields;            // GCSFieldInfo objects
-  NSDictionary *fieldDict;         // maps a name to GCSFieldInfo
   EOQualifier  *folderQualifier;   // to further limit the table set
   NSString     *extractorClassName;
   GCSFieldExtractor *extractor;
