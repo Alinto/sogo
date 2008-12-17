@@ -34,6 +34,7 @@
   NSMutableDictionary *subFolders;
   NSString *OCSPath;
   Class subFolderClass;
+  BOOL hasSubscribedSources;
 }
 
 + (NSString *) gcsFolderType;

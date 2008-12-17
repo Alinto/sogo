@@ -1,5 +1,10 @@
 2008-12-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoParentFolder.m ([SOGoParentFolder
+	-lookupName:nameinContext:lookupContextacquire:acquire]): we avoid
+	getting subscribed sources if not needed, which reduces the amount
+	of requests to the database.
+
 	* UI/Scheduler/UIxAppointmentEditor.m ([UIxAppointmentEditor
 	-dealloc]): we release componentCalendar here to avoid a leak
 	(since if set, it was through a call to ASSIGN()).
