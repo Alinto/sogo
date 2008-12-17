@@ -380,9 +380,11 @@ iRANGE(2);
 	  [self _loadAttendees];
 	  [self _loadRRules];
 
+	  [componentCalendar release];
 	  componentCalendar = [co container];
 	  if ([componentCalendar isKindOfClass: [SOGoCalendarComponent class]])
 	    componentCalendar = [componentCalendar container];
+	  [componentCalendar retain];
 	}
     }
 //   /* cycles */

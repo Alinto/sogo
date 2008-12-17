@@ -1,3 +1,14 @@
+2008-12-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxAppointmentEditor.m ([UIxAppointmentEditor
+	-dealloc]): we release componentCalendar here to avoid a leak
+	(since if set, it was through a call to ASSIGN()).
+
+	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
+	-setComponent:newComponent]): since componentCalendar is released
+	at deallocation, we need to retain it, and to release the previous
+	value to avoid a leak...
+
 2008-12-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoObject.m ([SOGoObject +webdavAclManager]):

@@ -62,6 +62,7 @@
       event = nil;
       isAllDay = NO;
       isTransparent = NO;
+      componentCalendar = nil;
     }
 
   return self;
@@ -73,6 +74,7 @@
   [event release];
   [aptStartDate release];
   [aptEndDate release];
+  [componentCalendar release];
   [super dealloc];
 }
 
@@ -275,7 +277,6 @@
   SOGoAppointmentObject *co;
   SoSecurityManager *sm;
   NSException *ex;
-  NSString *aOwner;
 
   co = [self clientObject];
   if ([co isKindOfClass: [SOGoAppointmentOccurence class]])
