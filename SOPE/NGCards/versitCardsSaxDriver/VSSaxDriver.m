@@ -86,6 +86,7 @@
   if ((self = [super init]))
     {
       groupElement = NO;
+      data = NULL;
     }
 
   return self;
@@ -119,7 +120,7 @@
 }
 
 - (void) dealloc {
-  if (data) free(data);
+  if (data) free (data);
   [group   release];
   [tagName release];
   [attrs   release];
