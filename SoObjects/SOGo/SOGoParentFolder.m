@@ -107,7 +107,7 @@ static SoSecurityManager *sm = nil;
       subFolders = nil;
       OCSPath = nil;
       subFolderClass = Nil;
-      hasSubscribedSources = NO;
+//       hasSubscribedSources = NO;
     }
 
   return self;
@@ -318,23 +318,28 @@ static SoSecurityManager *sm = nil;
 
 - (void) initSubFolders
 {
+  NSString *login;
+
   if (!subFolders)
     {
       subFolders = [NSMutableDictionary new];
       [self appendPersonalSources];
       [self appendSystemSources];
+      login = [[context activeUser] login];
+      if ([login isEqualToString: owner])
+	[self appendSubscribedSources];
     }
 }
 
-- (void) _appendSubscribedSourcesIfNeeded
-{
-  NSString *login;
+// - (void) _appendSubscribedSourcesIfNeeded
+// {
+//   NSString *login;
 
-  login = [[context activeUser] login];
-  if ([login isEqualToString: owner])
-    [self appendSubscribedSources];
-  hasSubscribedSources = YES;
-}
+//   login = [[context activeUser] login];
+//   if ([login isEqualToString: owner])
+//     [self appendSubscribedSources];
+//   hasSubscribedSources = YES;
+// }
 
 - (id) lookupName: (NSString *) name
         inContext: (WOContext *) lookupContext
@@ -350,11 +355,11 @@ static SoSecurityManager *sm = nil;
         [self initSubFolders];
 
       obj = [subFolders objectForKey: name];
-      if (!obj && !hasSubscribedSources)
-	{
-	  [self _appendSubscribedSourcesIfNeeded];
-	  obj = [subFolders objectForKey: name];
-	}
+//       if (!obj && !hasSubscribedSources)
+// 	{
+// 	  [self _appendSubscribedSourcesIfNeeded];
+// 	  obj = [subFolders objectForKey: name];
+// 	}
     }
 
   return obj;
@@ -364,8 +369,8 @@ static SoSecurityManager *sm = nil;
 {
   if (!subFolders)
     [self initSubFolders];
-  if (!!hasSubscribedSources)
-    [self _appendSubscribedSourcesIfNeeded];
+//   if (!!hasSubscribedSources)
+//     [self _appendSubscribedSourcesIfNeeded];
 
   return [[subFolders allValues]
 	   sortedArrayUsingSelector: @selector (compare:)];
