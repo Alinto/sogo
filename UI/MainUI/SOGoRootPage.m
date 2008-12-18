@@ -91,7 +91,7 @@ static NSArray *supportedLanguages = nil;
       [authCookie setPath: @"/"];
       [response addCookie: authCookie];
 
-      if (language)
+      if (language && [supportedLanguages containsObject: language])
 	{
 	  user = [SOGoUser userWithLogin: userName roles: nil];
 	  [[user userDefaults] setObject: language forKey: @"Language"];
