@@ -282,9 +282,6 @@ static NSArray *childRecordFields = nil;
 {
   static GCSFolderManager *folderManager = nil;
 
-#if 0
-  return nil;
-#endif
   if (!folderManager)
     folderManager = [GCSFolderManager defaultFolderManager];
 
@@ -293,10 +290,6 @@ static NSArray *childRecordFields = nil;
 
 - (GCSFolder *) ocsFolderForPath: (NSString *) _path
 {
-#if 0
-  return nil;
-#endif
-
   return [[self folderManager] folderAtPath: _path];
 }
 
@@ -358,10 +351,6 @@ static NSArray *childRecordFields = nil;
 {
   GCSFolder *folder;
   NSString *userLogin;
-
-#if 0
-  return nil;
-#endif
 
   if (!ocsFolder)
     {

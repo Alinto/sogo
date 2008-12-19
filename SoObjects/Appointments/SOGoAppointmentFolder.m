@@ -1791,12 +1791,6 @@ static Class sogoAppointmentFolderKlass = Nil;
   NSString *url;
   BOOL handledLater;
 
-#if 0
-  obj = [SOGoAppointmentObject objectWithName: _key
-			       inContainer: self];
-  return obj;
-#endif
-
   /* first check attributes directly bound to the application */
   handledLater = [self requestNamedIsHandledLater: _key];
   if (handledLater)
