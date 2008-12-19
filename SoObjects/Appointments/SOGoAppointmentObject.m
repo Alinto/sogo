@@ -783,15 +783,41 @@
 		else
 		  hasChanged = NO;
 	      }
-	  
 	    else if (recurrenceId)
 	      {
-		// We must add a recurrence to a non-existing event -- simply retrieve
+		NSArray *attendees;
+		unsigned int i;
+		BOOL found;
+		
+		// We must add an occurence to a non-existing event -- simply retrieve
 		// the event from the organizer's calendar
 		if (ownerEventObject == nil)
 		  ownerEventObject = [self _lookupEvent: [newEvent uid] forUID: ownerUID];
-		
+
 		newEvent = [ownerEventObject component: NO  secure: NO];
+		attendees = [newEvent attendees];
+		found = NO;
+
+		// We check if the attendee that was added to a single occurence is
+		// present in the master component. If not, we add it with a participation
+		// status set to "DECLINED"
+		for (i = 0; i < [attendees count]; i++)
+		  {
+		    if ([[attendees objectAtIndex: i] hasSameEmailAddress: person])
+		      {
+			found = YES;
+			break;
+		      }
+		  }
+		
+		if (!found)
+		  {
+		    [person setParticipationStatus: iCalPersonPartStatDeclined];
+		    [person setRsvp: @"TRUE"];
+		    [person setRole: @"REQ-PARTICIPANT"];
+		    [newEvent addToAttendees: person];
+		    [ownerEventObject saveContentString: [[newEvent parent] versitString]];
+		  }
 	      }
 
 	    // We generate the updated iCalendar file and we save it
