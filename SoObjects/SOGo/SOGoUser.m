@@ -244,17 +244,15 @@ _timeValue (NSString *key)
   LDAPUserManager *um;
   NSString *realUID;
 
-//   if (// acceptAnyUser
-// //       ||
-//       [newLogin isEqualToString: @"anonymous"]
-//       || [newLogin isEqualToString: @"freebusy"])
-//     realUID = newLogin;
-//   else
-//     {
-  um = [LDAPUserManager sharedUserManager];
-  realUID = [[um contactInfosForUserWithUIDorEmail: newLogin]
-	      objectForKey: @"c_uid"];
-//     }
+  if ([newLogin isEqualToString: @"anonymous"]
+      || [newLogin isEqualToString: @"freebusy"])
+    realUID = newLogin;
+  else
+    {
+      um = [LDAPUserManager sharedUserManager];
+      realUID = [[um contactInfosForUserWithUIDorEmail: newLogin]
+		  objectForKey: @"c_uid"];
+    }
 
   if ([realUID length])
     {
