@@ -60,6 +60,9 @@ UL#userList
   list-style-type: none;
   list-style-image: none; }
 
+UL#userList LI
+{ margin-left: 3px; }
+
 UL#userList > LI._selected
 { background: #4b6983 !important;
   color: #fff !important; }

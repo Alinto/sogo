@@ -699,7 +699,6 @@
   BOOL isUpdate, hasChanged;
   
   elements = [NSMutableArray array];
-  
   ownerUID = [[LDAPUserManager sharedUserManager]
 	       getUIDForEmail: originator];
   emailEvent = [self component: NO secure: NO];
@@ -721,26 +720,29 @@
 	  {
 	    // We check if we must send an invitation update
 	    // rather than just a normal invitation.
+	    NSCalendarDate *recurrenceId;
 	    NSString *iCalString;
-	    SOGoAppointmentObject *oldEventObject;
+	    SOGoAppointmentObject *oldEventObject, *ownerEventObject;
+	    iCalCalendar *calendar;
 
 	    oldEventObject = [self _lookupEvent: [newEvent uid] forUID: uid];
-
+	    calendar = [oldEventObject calendar: NO secure: NO];
+	    ownerEventObject = nil;
+	    
+	    recurrenceId = [newEvent recurrenceId];
+	    
 	    if (![oldEventObject isNew])
 	      {
 		// We are updating an existing event.
 		// If the event containts a recurrence-id, replace the proper
 		// occurrence of the recurrent event.
-		iCalCalendar *calendar;
 		iCalEvent *currentOccurence;
 		iCalEventChanges *changes;
 		NSArray *occurences;
-		NSCalendarDate *recurrenceId, *currentId;
+		NSCalendarDate *currentId;
 		NSString *recurrenceTime;
 		unsigned int i;
 		
-		calendar = [oldEventObject calendar: NO secure: NO];
-		recurrenceId = [newEvent recurrenceId];
 		if (recurrenceId == nil)
 		  oldEvent = [oldEventObject component: NO  secure: NO];
 		else
@@ -776,10 +778,20 @@
 		// if necessary and with the proper template.
 		changes = [newEvent getChangesRelativeToEvent: oldEvent];
 		if ([[oldEvent sequence] compare: [newEvent sequence]] != NSOrderedSame
-		    && [changes sequenceShouldBeIncreased])
+		    && [changes sequenceShouldBeIncreased]) 
 		  isUpdate = YES;
 		else
 		  hasChanged = NO;
+	      }
+	  
+	    else if (recurrenceId)
+	      {
+		// We must add a recurrence to a non-existing event -- simply retrieve
+		// the event from the organizer's calendar
+		if (ownerEventObject == nil)
+		  ownerEventObject = [self _lookupEvent: [newEvent uid] forUID: ownerUID];
+		
+		newEvent = [ownerEventObject component: NO  secure: NO];
 	      }
 
 	    // We generate the updated iCalendar file and we save it
