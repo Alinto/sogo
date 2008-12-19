@@ -22,6 +22,7 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSLock.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSUserDefaults.h>
 
@@ -40,6 +41,10 @@ static NSArray *commonSearchFields;
 static NSString *LDAPContactInfoAttribute = nil;
 static int timeLimit;
 static int sizeLimit;
+
+#if defined(THREADSAFE)
+static NSLock *lock;
+#endif
 
 @implementation LDAPSource
 
@@ -126,6 +131,10 @@ static int sizeLimit;
 				    @"calFBURL", @"proxyAddresses",
 				    nil];	
       [commonSearchFields retain];
+
+#if defined(THREADSAFE)
+      lock = [NSLock new];
+#endif
     }
 }
 
@@ -312,6 +321,10 @@ static int sizeLimit;
   NSString *userDN;
   NGLdapConnection *bindConnection;
 
+#if defined(THREADSAFE)
+  [lock lock];
+#endif
+
   didBind = NO;
 
   if ([loginToCheck length] > 0)
@@ -336,6 +349,10 @@ static int sizeLimit;
 	}
       [bindConnection release];
     }
+
+#if defined(THREADSAFE)
+  [lock unlock];
+#endif
 
   return didBind;
 }
@@ -431,6 +448,10 @@ static int sizeLimit;
   NGLdapEntry *currentEntry;
   NSString *value;
 
+#if defined(THREADSAFE)
+  [lock lock];
+#endif
+
   ids = [NSMutableArray array];
 
   if ([self _initLDAPConnection])
@@ -454,6 +475,10 @@ static int sizeLimit;
     }
 
   [ldapConnection autorelease];
+
+#if defined(THREADSAFE)
+  [lock unlock];
+#endif
 
   return ids;
 }
@@ -552,6 +577,10 @@ static int sizeLimit;
   NGLdapEntry *currentEntry;
   NSEnumerator *entries;
 
+#if defined(THREADSAFE)
+  [lock lock];
+#endif
+
   contacts = [NSMutableArray array];
 
   if ([match length] > 0)
@@ -571,6 +600,10 @@ static int sizeLimit;
       [ldapConnection release];
     }
 
+#if defined(THREADSAFE)
+  [lock unlock];
+#endif
+
   return contacts;
 }
 
@@ -578,6 +611,10 @@ static int sizeLimit;
 {
   NSDictionary *contactEntry;
   NGLdapEntry *ldapEntry;
+
+#if defined(THREADSAFE)
+  [lock lock];
+#endif
 
   contactEntry = nil;
 
@@ -597,6 +634,10 @@ static int sizeLimit;
       [ldapConnection autorelease];
     }
 
+#if defined(THREADSAFE)
+  [lock unlock];
+#endif
+
   return contactEntry;
 }
 
@@ -606,6 +647,10 @@ static int sizeLimit;
   NGLdapEntry *ldapEntry;
   NSEnumerator *entries;
   EOQualifier *qualifier;
+
+#if defined(THREADSAFE)
+  [lock lock];
+#endif
 
   contactEntry = nil;
 
@@ -627,6 +672,10 @@ static int sizeLimit;
 
       [ldapConnection release];
     }
+
+#if defined(THREADSAFE)
+  [lock unlock];
+#endif
 
   return contactEntry;
 }
