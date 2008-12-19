@@ -200,7 +200,55 @@
       NSString *iCalString;
 
       object = [self _lookupEvent: [theEvent uid] forUID: theUID];
-      iCalString = [[theEvent parent] versitString];
+      
+      // We must add an occurence to a non-existing event. We have
+      // to handle this with care, as in the postCalDAVEventRequestTo:from:
+      if ([object isNew] && [theEvent recurrenceId])
+	{
+	  SOGoAppointmentObject *ownerEventObject;
+	  NSArray *attendees;
+	  iCalPerson *person;
+	  SOGoUser *user;
+	  BOOL found;
+	  int i;
+
+	  user = [SOGoUser userWithLogin: theUID  roles: nil];
+	  person = [iCalPerson elementWithTag: @"attendee"];
+	  [person setCn: [user cn]];
+	  [person setEmail: [[user allEmails] objectAtIndex: 0]];
+	  [person setParticipationStatus: iCalPersonPartStatDeclined];
+	  [person setRsvp: @"TRUE"];
+	  [person setRole: @"REQ-PARTICIPANT"];
+	  
+	  ownerEventObject = [self _lookupEvent: [theEvent uid] forUID: theOwner];
+	  theEvent = [[[theEvent parent] events] objectAtIndex: 0];	  
+	  attendees = [theEvent attendees];
+	  found = NO;
+	  
+	  // We check if the attendee that was added to a single occurence is
+	  // present in the master component. If not, we add it with a participation
+	  // status set to "DECLINED"
+	  for (i = 0; i < [attendees count]; i++)
+	    {
+	      if ([[attendees objectAtIndex: i] hasSameEmailAddress: person])
+		{
+		  found = YES;
+		  break;
+		}
+	    }
+	  
+	  if (!found)
+	    {
+	      [theEvent addToAttendees: person];
+	      iCalString = [[theEvent parent] versitString];
+	      [ownerEventObject saveContentString: iCalString];
+	    }
+	} 
+      else
+	{
+	  iCalString = [[theEvent parent] versitString];
+	}
+      
       [object saveContentString: iCalString];
     }
 }
