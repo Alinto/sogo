@@ -461,7 +461,6 @@ static BOOL debugObjectAllocation = NO;
   
       if (![_key isEqualToString:@"favicon.ico"])
 	{
-// 	  NSLog (@"lookup user name '%@'", _key);
 	  if ([self isUserName: _key inContext: _ctx])
 	    obj = [self lookupUser: _key inContext: _ctx];
 	}
