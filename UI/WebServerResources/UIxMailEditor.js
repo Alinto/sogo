@@ -312,7 +312,7 @@ function onTextIEUpdateCursorPos(event) {
 
 function onTextFirstFocus() {
 	var content = this.getValue();
-  var replyPlacement = userDefaults["ReplyPlacement"];
+  var replyPlacement = UserDefaults["ReplyPlacement"];
 
   if (replyPlacement == "above") {
     this.insertBefore(document.createTextNode("\r\r"), this.lastChild);
@@ -547,7 +547,7 @@ function initMailEditor() {
 		if (sigLimit > -1)
 			MailEditor.signatureLength = (textContent.length - sigLimit);
 	}
-	if (userDefaults["ReplyPlacement"] != "above") {
+	if (UserDefaults["ReplyPlacement"] != "above") {
 	  textarea.scrollTop = textarea.scrollHeight;
 	}
 	textarea.observe("focus", onTextFirstFocus);
@@ -655,7 +655,7 @@ function lineBreakCount(str){
 
 function hasSignature() {
 	try {
-		return(userDefaults.MailAccounts[0].identities[0].signature.length > 0);
+		return(UserDefaults.MailAccounts[0].identities[0].signature.length > 0);
 	} catch(e) {
 		return false;
 	}

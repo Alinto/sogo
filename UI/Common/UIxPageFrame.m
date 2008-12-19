@@ -397,6 +397,34 @@
   return language;
 }
 
+- (NSString *) userSettings
+{
+  NSUserDefaults *userSettings;
+  NSString *jsonResult;
+
+  userSettings = [[context activeUser] userSettings];
+  if (userSettings)
+    jsonResult = [userSettings jsonRepresentation];
+  else
+    jsonResult = @"{}";
+
+  return jsonResult;
+}
+
+- (NSString *) userDefaults
+{
+  NSUserDefaults *userDefaults;
+  NSString *jsonResult;
+
+  userDefaults = [[context activeUser] userDefaults];
+  if (userDefaults)
+    jsonResult = [userDefaults jsonRepresentation];
+  else
+    jsonResult = @"{}";
+
+  return jsonResult;
+}
+
 /* browser/os identification */
 
 - (BOOL) isCompatibleBrowser

@@ -1,3 +1,10 @@
+2008-12-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Common/UIxPageFrame.m ([UIxPageFrame -userSettings]): new
+	accessor method to avoid loading the user settings with an
+	additional json request.
+	([UIxPageFrame -userDefaults]): same as above for user defaults.
+
 2008-12-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoParentFolder.m ([SOGoParentFolder
