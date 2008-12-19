@@ -88,6 +88,11 @@
 
   categories = {
     SOGo = { // TODO: move decls to class
+      slots = {
+	toolbar = {
+	  value = "none";
+	};
+      };
       methods = {
         view = { 
           protectedBy = "<public>";
