@@ -522,7 +522,10 @@ _timeValue (NSString *key)
 
 - (NSString *) language
 {
+#if 0
   return @"English";
+#endif
+
   if (!language)
     {
       language = [[self userDefaults] stringForKey: @"Language"];
