@@ -244,17 +244,17 @@ _timeValue (NSString *key)
   LDAPUserManager *um;
   NSString *realUID;
 
-  if (// acceptAnyUser
-//       ||
-      [newLogin isEqualToString: @"anonymous"]
-      || [newLogin isEqualToString: @"freebusy"])
-    realUID = newLogin;
-  else
-    {
-      um = [LDAPUserManager sharedUserManager];
-      realUID = [[um contactInfosForUserWithUIDorEmail: newLogin]
-		  objectForKey: @"c_uid"];
-    }
+//   if (// acceptAnyUser
+// //       ||
+//       [newLogin isEqualToString: @"anonymous"]
+//       || [newLogin isEqualToString: @"freebusy"])
+//     realUID = newLogin;
+//   else
+//     {
+  um = [LDAPUserManager sharedUserManager];
+  realUID = [[um contactInfosForUserWithUIDorEmail: newLogin]
+	      objectForKey: @"c_uid"];
+//     }
 
   if ([realUID length])
     {
@@ -320,12 +320,19 @@ _timeValue (NSString *key)
 
 - (void) _fetchAllEmails
 {
+#if 0
+  allEmails = [NSArray arrayWithObject: @"wsourdeau@inverse.ca"];
+#else
   allEmails = [self _fetchFieldForUser: @"emails"];
+#endif
   [allEmails retain];
 }
 
 - (void) _fetchCN
 {
+#if 0
+  return @"Wolfgang Sourdeau";
+#endif
   cn = [self _fetchFieldForUser: @"cn"];
   [cn retain];
 }
@@ -517,6 +524,7 @@ _timeValue (NSString *key)
 
 - (NSString *) language
 {
+  return @"English";
   if (!language)
     {
       language = [[self userDefaults] stringForKey: @"Language"];
@@ -531,6 +539,10 @@ _timeValue (NSString *key)
 - (NSTimeZone *) timeZone
 {
   NSString *timeZoneName;
+
+#if 0
+  return @"UTC";
+#endif
 
   if (!userTimeZone)
     {
@@ -957,6 +969,10 @@ _timeValue (NSString *key)
 - (BOOL) canAccessModule: (NSString *) module
 {
   NSString *accessValue;
+
+#if 0
+  return YES;
+#endif
 
   accessValue = [self _fetchFieldForUser:
 			[NSString stringWithFormat: @"%@Access", module]];

@@ -320,6 +320,24 @@ _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
 {
   NSString *secureContent;
 
+#if 0
+  return (@"BEGIN:VCALENDAR\r\n"
+	  @"VERSION:2.0\r\n"
+	  @"PRODID:-//Inverse inc.//SOGo0.9//EN\r\n"
+	  @"BEGIN:VEVENT\r\n"
+	  @"UID:3185-492B0B80-5-BA4E3100\r\n"
+	  @"SUMMARY:test event\r\n"
+	  @"CREATED:20081124T201510Z\r\n"
+	  @"DTSTAMP:20081124T201510Z\r\n"
+	  @"LAST-MODIFIED:20081126T015646Z\r\n"
+	  @"DTSTART:20081127T150000Z\r\n"
+	  @"DTEND:20081127T160000Z\r\n"
+	  @"TRANSP:OPAQUE\r\n"
+	  @"RRULE:INTERVAL=1;FREQ=WEEKLY\r\n"
+	  @"END:VEVENT\r\n"
+	  @"END:VCALENDAR");
+#endif
+
   if ([[context request] isSoWebDAVRequest])
     secureContent = [self secureContentAsString];
   else

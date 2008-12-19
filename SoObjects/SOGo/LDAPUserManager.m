@@ -317,6 +317,10 @@ static NSLock *lock = nil;
   NSMutableDictionary *currentUser;
   NSString *dictPassword;
 
+#if 0
+  return YES;
+#endif
+
 #if defined(THREADSAFE)
   [lock lock];
 #endif

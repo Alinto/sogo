@@ -202,6 +202,10 @@ static SoSecurityManager *sm = nil;
   NSURL *folderLocation;
   NSString *sql, *gcsFolderType;
 
+#if 0
+  return;
+#endif
+
   cm = [GCSChannelManager defaultChannelManager];
   folderLocation
     = [[GCSFolderManager defaultFolderManager] folderInfoLocation];
@@ -323,6 +327,20 @@ static SoSecurityManager *sm = nil;
   if (!subFolders)
     {
       subFolders = [NSMutableDictionary new];
+
+#if 0
+      SOGoGCSFolder *folder;
+      if (!subFolderClass)
+	subFolderClass = [[self class] subFolderClass];
+
+      folder = [subFolderClass objectWithName: @"personal" inContainer: self];
+      [folder setDisplayName: [self defaultFolderName]];
+      [folder
+	setOCSPath: [NSString stringWithFormat: @"%@/personal", OCSPath]];
+      [subFolders setObject: folder forKey: @"personal"];
+      return;
+#endif
+
       [self appendPersonalSources];
       [self appendSystemSources];
       login = [[context activeUser] login];

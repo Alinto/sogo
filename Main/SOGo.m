@@ -19,9 +19,13 @@
   02111-1307, USA.
 */
 
+// #import <Foundation/NSAutoreleasePool.h>
+// #import <Foundation/NSArray.h>
+
 #import <Foundation/NSDebug.h>
 #import <Foundation/NSData.h>
 #import <Foundation/NSDate.h>
+// #import <Foundation/NSValue.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSProcessInfo.h>
 #import <Foundation/NSRunLoop.h>
@@ -56,6 +60,102 @@
 #import "build.h"
 #import "SOGoProductLoader.h"
 #import "NSException+Stacktrace.h"
+
+// static NSMutableDictionary *debugCache = nil;
+
+// static NSMutableArray *debugCache = nil;
+
+// @interface GSMutableArray : NSArray;
+// @end
+
+// @interface GSMutableArray (sogodebug)
+// @end
+
+// @implementation GSMutableArray (sogodebug)
+
+// + (id) alloc
+// {
+//   static BOOL avoid = NO;
+//   id newInst;
+
+//   newInst = [super alloc];
+//   if (!avoid)
+//     {
+//       avoid = YES;
+//       if (!debugCache)
+// 	debugCache = [NSMutableArray new];
+//       [debugCache addObject: [NSValue valueWithPointer: newInst]];
+//     }
+
+//   return newInst;
+// }
+
+// - (id) retain
+// {
+//   NSNumber *nbr;
+//   id this;
+//   static BOOL avoid = NO;
+
+//   fprintf (stderr, "retain start (%p)\n", self);
+
+//   if (avoid)
+//     this = [super retain];
+//   else
+//     {
+//       avoid = YES;
+//       if (!debugCache)
+// 	debugCache = [NSMutableArray new];
+//       nbr = [debugCache objectForKey: self];
+//       nbr = [NSNumber numberWithInt: ([nbr intValue] + 1)];
+//       [debugCache setObject: nbr forKey: self];
+//       this = [super retain];
+//       avoid = NO;
+//     }
+
+//   fprintf (stderr, "retain stop (%p)\n", self);
+
+//   return this;
+// }
+
+// - (void) release
+// {
+//   NSNumber *nbr;
+//   int count;
+//   static BOOL avoid = NO;
+
+//   fprintf (stderr, "release start (%p)\n", self);
+
+//   if (avoid)
+//     [super release];
+//   else
+//     {
+//       avoid = YES;
+
+//       nbr = [debugCache objectForKey: self];
+//       if (nbr)
+// 	{
+// 	  count = [nbr intValue];
+// 	  if (count == 2)
+// 	    {
+// 	      [debugCache removeObjectForKey: self];
+// 	      fprintf (stderr, "removing object\n");
+// 	    }
+// 	  else
+// 	    {
+// 	      nbr = [NSNumber numberWithInt: (count - 1)];
+// 	      [debugCache setObject: nbr forKey: self];
+// 	      fprintf (stderr, "decrementing counter\n");
+// 	    }
+// 	}
+//       [super release];
+
+//       avoid = NO;
+//     }
+
+//   fprintf (stderr, "release stop (%p)\n", self);
+// }
+
+// @end
 
 @interface SOGo : SoApplication
 {
@@ -230,6 +330,10 @@ static BOOL debugObjectAllocation = NO;
   NSUserDefaults *ud;
   BOOL ok;
 
+#if 0
+  return YES;
+#endif
+
   ud = [NSUserDefaults standardUserDefaults];
   ok = YES;
   cm = [GCSChannelManager defaultChannelManager];
@@ -342,7 +446,7 @@ static BOOL debugObjectAllocation = NO;
 #endif
   /* put locale info into the context in case it's not there */
   [self _setupLocaleInContext:_ctx];
-  
+
   /* first check attributes directly bound to the application */
   obj = [super lookupName:_key inContext:_ctx acquire:_flag];
   if (!obj)
@@ -357,6 +461,7 @@ static BOOL debugObjectAllocation = NO;
   
       if (![_key isEqualToString:@"favicon.ico"])
 	{
+// 	  NSLog (@"lookup user name '%@'", _key);
 	  if ([self isUserName: _key inContext: _ctx])
 	    obj = [self lookupUser: _key inContext: _ctx];
 	}
@@ -411,6 +516,8 @@ static BOOL debugObjectAllocation = NO;
   WOResponse *resp;
   NSDate *startDate, *endDate;
 
+//   NSAutoreleasePool *pool;
+
   if (debugRequests)
     {
       [self logWithFormat: @"starting method '%@' on uri '%@'",
@@ -418,9 +525,21 @@ static BOOL debugObjectAllocation = NO;
       startDate = [NSDate date];
     }
 
+//   GSDebugAllocationActive (YES);
+//   GSDebugAllocationList (NO);
+
+//   pool = [NSAutoreleasePool new];
+
   cache = [SOGoCache sharedCache];
   resp = [super dispatchRequest: _request];
   [SOGoCache killCache];
+
+//   [resp retain];
+//   [pool release];
+//   [resp autorelease];
+
+//   NSLog (@"objects:\n%s\n", GSDebugAllocationList (YES));
+//   GSDebugAllocationActive (NO);
 
   if (debugRequests)
     {
