@@ -43,87 +43,78 @@
  recurrenceRangesWithinCalendarDateRange: (NGCalendarDateRange *) _r
 {
   NSMutableArray *ranges;
-  NSCalendarDate *firStart;
-  long i, jnFirst, jnStart, jnEnd, startEndCount;
+  NSCalendarDate *firStart, *startDate, *endDate, *currentStartDate, *currentEndDate;
+  long i;
   unsigned interval;
 
   firStart = [firstRange startDate];
-  jnFirst = [firStart julianNumber];
-  jnEnd = [[_r endDate] julianNumber];
- 
-  if (jnFirst > jnEnd)
+  startDate = [_r startDate];
+  endDate = [_r endDate];
+
+  if ([endDate compare: firStart] == NSOrderedAscending)
+    // Range ends before first occurrence
     return nil;
  
-  jnStart = [[_r startDate] julianNumber];
   interval = [rrule repeatInterval];
  
-  /* if rule is bound, check the bounds */
+  // If rule is bound, check the bounds
   if (![rrule isInfinite]) 
     {
-      NSCalendarDate *until;
-      long jnRuleLast;
+      NSCalendarDate *until, *lastDate;
  
       until = [rrule untilDate];
       if (until) 
-	{
-	  if ([until compare: [_r startDate]] == NSOrderedAscending)
-	    return nil;
-	  jnRuleLast = [until julianNumber];
-	}
-      else 
-	{
-	  jnRuleLast = (interval * [rrule repeatCount])
-	    + jnFirst - 1;
-	    if (jnRuleLast < jnStart)
-	      return nil;
-	}
-      /* jnStart < jnRuleLast < jnEnd ? */
-      if (jnEnd > jnRuleLast)
-	jnEnd = jnRuleLast;
+	lastDate = until;
+      else
+	lastDate = [firStart dateByAddingYears: 0 months: 0
+			     days: (interval
+				    * ([rrule repeatCount] - 1))];
+    
+      if ([lastDate compare: startDate] == NSOrderedAscending)
+	// Range starts after last occurrence
+	return nil;
+      
+      if ([lastDate compare: endDate] == NSOrderedAscending)
+	// Range ends after last occurence; adjust end date
+	endDate = lastDate;
     }
 
-  startEndCount = (jnEnd - jnStart) + 1;
-  ranges = [NSMutableArray arrayWithCapacity:startEndCount];
-  for (i = 0 ; i < startEndCount; i++) 
+  currentStartDate = [firStart copy];
+  ranges = [NSMutableArray array];
+  i = 1;
+
+  while ([currentStartDate compare: endDate] == NSOrderedAscending ||
+	 [currentStartDate compare: endDate] == NSOrderedSame)
     {
-      long jnCurrent;
- 
-      jnCurrent = jnStart + i;
-      if (jnCurrent >= jnFirst) 
+      if ([startDate compare: currentStartDate] == NSOrderedAscending ||
+	  [startDate compare: currentStartDate] == NSOrderedSame)
 	{
-	  long jnTest;
- 
-	  jnTest = jnCurrent - jnFirst;
-	  if ((jnTest % interval) == 0) 
+	  BOOL wrongDay = NO;
+	  unsigned int mask;
+	  NGCalendarDateRange *r;
+
+	  if ([rrule byDayMask])
 	    {
-	      NSCalendarDate *start, *end;
-	      NGCalendarDateRange *r;
-	      unsigned int mask;
+	      mask = ([currentStartDate dayOfWeek]
+		      ? (unsigned int) 1 << ([currentStartDate dayOfWeek])
+		      : iCalWeekDaySunday);
+	      if (([rrule byDayMask] & mask) != mask)
+		wrongDay = YES;
+	    }
 
-	      start = [NSCalendarDate dateForJulianNumber:jnCurrent];
-	      [start setTimeZone: [firStart timeZone]];
-	      start = [start hour: [firStart hourOfDay]
-			     minute: [firStart minuteOfHour]
-			     second: [firStart secondOfMinute]];
-	      end = [start addTimeInterval: [firstRange duration]];
-
-	      // We check if our start date is within the byDayMask 
-	      // FIXME: Should we also check the end date? We might want
-	      // to check if the end date is also within it.
-	      if ([rrule byDayMask]) 
-		{
-		  mask = ([start dayOfWeek]
-			  ? (unsigned int) 1 << ([start dayOfWeek])
-			  : iCalWeekDaySunday);
-		  if (([rrule byDayMask]&mask) != mask) continue;
-		}
-
-	      r = [NGCalendarDateRange calendarDateRangeWithStartDate:start
-				       endDate:end];
-	      if ([_r containsDateRange:r])
-		[ranges addObject:r];
+	  if (wrongDay == NO)
+	    {
+	      currentEndDate = [currentStartDate addTimeInterval: [firstRange duration]];
+	      r = [NGCalendarDateRange calendarDateRangeWithStartDate: currentStartDate
+				       endDate: currentEndDate];
+	      if ([_r containsDateRange: r])
+		[ranges addObject: r];
 	    }
 	}
+      
+      currentStartDate = [firStart dateByAddingYears: 0 months: 0
+				   days: (interval * i)];
+      i++;
     }
   return ranges;
 }

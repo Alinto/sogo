@@ -1,3 +1,13 @@
+2008-12-19  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* iCalWeeklyRecurrenceCalculator.m ([iCalDailyRecurrenceCalculator
+	-recurrenceRangesWithinCalendarDateRange:_r]): rewrote method to
+	handle timezones. Removed usage of julian numbers.
+
+	* iCalDailyRecurrenceCalculator.m ([iCalWeeklyRecurrenceCalculator
+	-recurrenceRangesWithinCalendarDateRange:_r]): idem. Also fixed
+	the handling of intervals.
+
 2008-12-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoParentFolder.m ([SOGoParentFolder

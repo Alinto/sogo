@@ -48,140 +48,122 @@
 */
 @implementation iCalWeeklyRecurrenceCalculator
 
-- (NSArray *)
- recurrenceRangesWithinCalendarDateRange: (NGCalendarDateRange *) _r
+- (NSArray *) recurrenceRangesWithinCalendarDateRange: (NGCalendarDateRange *) _r
 {
   NSMutableArray *ranges;
-  NSCalendarDate *firStart;
-  long i, jnFirst, jnStart, jnEnd, startEndCount;
+  NSCalendarDate *firStart, *startDate, *endDate, *currentStartDate, *currentEndDate;
+  long i;
   unsigned interval, byDayMask;
 
   firStart = [firstRange startDate];
-  jnFirst = [firStart julianNumber];
-  jnEnd = [[_r endDate] julianNumber];
- 
-  if (jnFirst > jnEnd)
+  startDate = [_r startDate];
+  endDate = [_r endDate];
+
+  if ([endDate compare: firStart] == NSOrderedAscending)
+    // Range ends before first occurrence
     return nil;
- 
-  jnStart = [[_r startDate] julianNumber];
+  
   interval = [rrule repeatInterval];
  
-  /* if rule is bound, check the bounds */
+  // If rule is bound, check the bounds
   if (![rrule isInfinite]) 
     {
-      NSCalendarDate *until;
-      long jnRuleLast;
+      NSCalendarDate *until, *lastDate;
  
       until = [rrule untilDate];
-      if (until) 
-	{
-	  if ([until compare: [_r startDate]] == NSOrderedAscending)
-	    return nil;
-	  jnRuleLast = [until julianNumber];
-	}
+      if (until)
+	lastDate = until;
       else 
-	{
-	  jnRuleLast = (interval * [rrule repeatCount] * 7)
-	    + jnFirst;
-	    if (jnRuleLast < jnStart)
-	      return nil;
-	}
-      /* jnStart < jnRuleLast < jnEnd ? */
-      if (jnEnd > jnRuleLast)
-	jnEnd = jnRuleLast;
+	lastDate = [firStart dateByAddingYears: 0 months: 0
+			     days: (interval
+				    * ([rrule repeatCount] - 1) * 7)];
+      
+      if ([lastDate compare: startDate] == NSOrderedAscending)
+	// Range starts after last occurrence
+	return nil;
+      if ([lastDate compare: endDate] == NSOrderedAscending)
+	// Range ends after last occurence; adjust end date
+	endDate = lastDate;
     }
  
-  startEndCount = (jnEnd - jnStart) + 1;
-  ranges = [NSMutableArray arrayWithCapacity: startEndCount];
+  currentStartDate = [firStart copy];
+  ranges = [NSMutableArray array];
   byDayMask = [rrule byDayMask];
+  i = 1;
   if (!byDayMask) 
     {
-      for (i = 0 ; i < startEndCount; i++) 
+      while ([currentStartDate compare: endDate] == NSOrderedAscending ||
+	     [currentStartDate compare: endDate] == NSOrderedSame)
 	{
-	  long jnCurrent;
- 
-	  jnCurrent = jnStart + i;
-	  if (jnCurrent >= jnFirst) 
+	  if ([startDate compare: currentStartDate] == NSOrderedAscending ||
+	      [startDate compare: currentStartDate] == NSOrderedSame)
 	    {
-	      long jnDiff;
- 
-	      jnDiff = jnCurrent - jnFirst; /* difference in days */
-	      if ((jnDiff % (interval * 7)) == 0) 
-		{
-		  NSCalendarDate *start, *end;
-		  NGCalendarDateRange *r;
- 
-		  start = [NSCalendarDate dateForJulianNumber: jnCurrent];
-		  [start setTimeZone: [firStart timeZone]];
-		  start = [start hour: [firStart hourOfDay]
-				 minute: [firStart minuteOfHour]
-				 second: [firStart secondOfMinute]];
-		  end = [start addTimeInterval: [firstRange duration]];
-		  r = [NGCalendarDateRange calendarDateRangeWithStartDate: start
-					   endDate: end];
-		  if ([_r containsDateRange: r])
-		    [ranges addObject: r];
-		}
-	    }
+	      NGCalendarDateRange *r;
+	      
+	      currentEndDate = [currentStartDate addTimeInterval: [firstRange duration]];
+	      r = [NGCalendarDateRange calendarDateRangeWithStartDate: currentStartDate
+				       endDate: currentEndDate];
+	      if ([_r containsDateRange: r])
+		[ranges addObject: r];
+	    }  
+	  currentStartDate = [firStart dateByAddingYears: 0
+				       months: 0
+				       days: (interval * i * 7)];
+	  i++;
 	}
     }
-  else 
+  else
     {
-      long jnFirstWeekStart, weekStartOffset;
-
-      /* calculate jnFirst's week start - this depends on our setting of week
-	 start */
-      weekStartOffset = [self offsetFromSundayForJulianNumber: jnFirst] -
-	[self offsetFromSundayForCurrentWeekStart];
-
-      jnFirstWeekStart = jnFirst - weekStartOffset;
-
-      for (i = 0 ; i < startEndCount; i++) 
+      unsigned dayOfWeek;
+      NGCalendarDateRange *r;
+      
+      while ([currentStartDate compare: endDate] == NSOrderedAscending ||
+	     [currentStartDate compare: endDate] == NSOrderedSame)
 	{
-	  long jnCurrent;
-
-	  jnCurrent = jnStart + i;
-	  if (jnCurrent >= jnFirst) 
+	  if ([startDate compare: currentStartDate] == NSOrderedAscending ||
+	      [startDate compare: currentStartDate] == NSOrderedSame)
 	    {
-	      long jnDiff;
- 
-	      /* we need to calculate a difference in weeks */
-	      jnDiff = (jnCurrent - jnFirstWeekStart) % 7;
-	      if ((jnDiff % interval) == 0) 
+	      unsigned int days, week;
+	      
+	      [currentStartDate years:NULL months:NULL days:&days hours:NULL
+				minutes:NULL seconds:NULL sinceDate:firStart];
+	      week = days / 7;
+	      
+	      if ((week % interval) == 0)
 		{
+		  // Date is in the proper week with respect to the
+		  // week interval
 		  BOOL isRecurrence = NO;
- 
-		  if (jnCurrent == jnFirst) 
+		  
+		  if ([currentStartDate compare: firStart] == NSOrderedSame)
+		    // Always add the event of the start date of
+		    // the recurring event.
+		    isRecurrence = YES;
+		  else
 		    {
-		      isRecurrence = YES;
+		      // Only consider events that matches the day mask.
+		      dayOfWeek = ([currentStartDate dayOfWeek]
+				   ? (unsigned int) 1 << [currentStartDate dayOfWeek]
+				   : iCalWeekDaySunday);
+		      if (dayOfWeek & [rrule byDayMask])
+			isRecurrence = YES;
 		    }
-		  else 
+		  if (isRecurrence)
 		    {
-		      iCalWeekDay weekDay;
-
-		      weekDay = [self weekDayForJulianNumber: jnCurrent];
-		      isRecurrence = (weekDay & [rrule byDayMask]) ? YES : NO;
-		    }
-		  if (isRecurrence) 
-		    {
-		      NSCalendarDate *start, *end;
-		      NGCalendarDateRange *r;
- 
-		      start = [NSCalendarDate dateForJulianNumber: jnCurrent];
-		      [start setTimeZone: [firStart timeZone]];
-		      start = [start hour: [firStart hourOfDay]
-				     minute: [firStart minuteOfHour]
-				     second: [firStart secondOfMinute]];
-		      end = [start addTimeInterval: [firstRange duration]];
-		      r = [NGCalendarDateRange calendarDateRangeWithStartDate: start
-					       endDate: end];
+		      currentEndDate = [currentStartDate addTimeInterval: [firstRange duration]];
+		      r = [NGCalendarDateRange calendarDateRangeWithStartDate: currentStartDate
+					       endDate: currentEndDate];
 		      if ([_r containsDateRange: r])
 			[ranges addObject: r];
 		    }
 		}
 	    }
+	  currentStartDate = [currentStartDate dateByAddingYears: 0
+					       months: 0
+					       days: 1];
 	}
     }
+
   return ranges;
 }
 
