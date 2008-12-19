@@ -244,9 +244,7 @@ _timeValue (NSString *key)
   LDAPUserManager *um;
   NSString *realUID;
 
-  if (// acceptAnyUser
-//       ||
-      [newLogin isEqualToString: @"anonymous"]
+  if ([newLogin isEqualToString: @"anonymous"]
       || [newLogin isEqualToString: @"freebusy"])
     realUID = newLogin;
   else

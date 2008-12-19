@@ -583,7 +583,7 @@ function messageListCallback(http) {
   var div = $('mailboxContent');
   var table = $('messageList');
 
-  var columnsOrder = userSettings["SOGoMailListViewColumnsOrder"];
+  var columnsOrder = UserSettings["SOGoMailListViewColumnsOrder"];
   if ( typeof(columnsOrder) == "undefined" ) {
     columnsOrder = defaultColumnsOrder;
   }
@@ -1363,7 +1363,7 @@ function configureMessageListBodyEvents(table) {
       // 4 => Unread
       // 5 => Date
       // 6 => Priority
-      var columnsOrder = userSettings["SOGoMailListViewColumnsOrder"];
+      var columnsOrder = UserSettings["SOGoMailListViewColumnsOrder"];
       if ( typeof(columnsOrder) == "undefined" ) {
           columnsOrder = defaultColumnsOrder;
       }
@@ -1474,7 +1474,7 @@ function initMailer(event) {
 }
 
 function initMessageCheckTimer() {
-  var messageCheck = userDefaults["MessageCheck"];
+  var messageCheck = UserDefaults["MessageCheck"];
   if (messageCheck && messageCheck != "manually") {
     var interval;
     if (messageCheck == "once_per_hour")

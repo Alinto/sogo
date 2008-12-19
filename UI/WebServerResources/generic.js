@@ -38,9 +38,6 @@ var lastClickedRow = -1;
 // logArea = null;
 var allDocumentElements = null;
 
-var userDefaults = null;
-var userSettings = null;
-
 // Ajax requests counts
 var activeAjaxRequests = 0;
 var removeFolderRequestCount = 0;
@@ -1402,7 +1399,7 @@ function indexColor(number) {
 	return color;
 }
 
-function loadPreferences() {
+function reloadPreferences() {
 	var url = UserFolderURL + "jsonDefaults";
 	var http = createHTTPClient();
 	http.open("GET", url, false);
@@ -1410,9 +1407,9 @@ function loadPreferences() {
 
 	if (http.status == 200) {
 		if (http.responseText.length > 0)
-			userDefaults = http.responseText.evalJSON(true);
+			UserDefaults = http.responseText.evalJSON(true);
 		else
-			userDefaults = {};
+			UserDefaults = {};
 	}
 
 	url = UserFolderURL + "jsonSettings";
@@ -1420,15 +1417,13 @@ function loadPreferences() {
 	http.send("");
 	if (http.status == 200) {
 		if (http.responseText.length > 0)
-			userSettings = http.responseText.evalJSON(true);
+			UserSettings = http.responseText.evalJSON(true);
 		else
-			userSettings = {};
+			UserSettings = {};
 	}
 }
 
 function onLoadHandler(event) {
-	if (typeof UserLogin != "undefined" && UserLogin != "wrongusernamepassword")
-		loadPreferences();
 	queryParameters = parseQueryParameters('' + window.location);
 	if (!$(document.body).hasClassName("popup")) {
 		initLogConsole();

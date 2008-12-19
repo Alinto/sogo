@@ -46,7 +46,8 @@
 */
 
 #if defined(THREADSAFE)
-static NSLock *lock;
+static NSLock *channelLock;
+static NSLock *adaptorLock;
 #endif
 
 @interface GCSChannelHandle : NSObject
@@ -89,7 +90,8 @@ static NSTimeInterval ChannelCollectionTimer = 5 * 60;
     ChannelCollectionTimer = 5*60;
 
 #if defined(THREADSAFE)
-  lock = [NSLock new];
+  channelLock = [NSLock new];
+  adaptorLock = [NSLock new];
 #endif
 }
 
@@ -104,12 +106,12 @@ static NSTimeInterval ChannelCollectionTimer = 5 * 60;
   static GCSChannelManager *cm = nil;
 
 #if defined(THREADSAFE)
-  [lock lock];
+  [channelLock lock];
 #endif
   if (!cm)
     cm = [self new];
 #if defined(THREADSAFE)
-  [lock unlock];
+  [channelLock unlock];
 #endif
 
   return cm;
@@ -125,7 +127,7 @@ static NSTimeInterval ChannelCollectionTimer = 5 * 60;
 
       gcTimer = [[NSTimer scheduledTimerWithTimeInterval:
 			    ChannelCollectionTimer
-			  target: self selector: @selector (_garbageCollect: )
+			  target: self selector: @selector (_garbageCollect:)
 			  userInfo: nil repeats: YES] retain];
     }
 
@@ -200,7 +202,7 @@ static NSTimeInterval ChannelCollectionTimer = 5 * 60;
       if ((key = [self databaseKeyForURL: _url]))
 	{
 #if defined(THREADSAFE)
-	  [lock lock];
+	  [adaptorLock lock];
 #endif
 	  adaptor = [urlToAdaptor objectForKey: key];
 	  if (adaptor)
@@ -209,7 +211,7 @@ static NSTimeInterval ChannelCollectionTimer = 5 * 60;
 	    {
 	      [self debugWithFormat: @"creating new adaptor for URL: %@", _url];
 	  
-	      if ([EOAdaptor respondsToSelector: @selector (adaptorForURL: )])
+	      if ([EOAdaptor respondsToSelector: @selector (adaptorForURL:)])
 		adaptor = [EOAdaptor adaptorForURL: _url];
 	      else
 		{
@@ -234,7 +236,7 @@ static NSTimeInterval ChannelCollectionTimer = 5 * 60;
 	      [urlToAdaptor setObject: adaptor forKey: key];
 	    }
 #if defined(THREADSAFE)
-	  [lock unlock];
+	  [adaptorLock unlock];
 #endif
 	}
     }
@@ -317,7 +319,7 @@ static NSTimeInterval ChannelCollectionTimer = 5 * 60;
   /* look for cached handles */
 
 #if defined(THREADSAFE)
-  [lock lock];
+  [channelLock lock];
 #endif
   handle = [self findAvailChannelHandleForURL: _url];
   if (handle)
@@ -364,7 +366,7 @@ static NSTimeInterval ChannelCollectionTimer = 5 * 60;
 	}
     }
 #if defined(THREADSAFE)
-  [lock unlock];
+  [channelLock unlock];
 #endif
 
   return channel;
@@ -375,7 +377,7 @@ static NSTimeInterval ChannelCollectionTimer = 5 * 60;
   GCSChannelHandle *handle;
 
 #if defined(THREADSAFE)
-  [lock lock];
+  [channelLock lock];
 #endif
   handle = [self findBusyChannelHandleForChannel: _channel];
   if (handle)
@@ -411,7 +413,7 @@ static NSTimeInterval ChannelCollectionTimer = 5 * 60;
       [_channel release];
     }
 #if defined(THREADSAFE)
-  [lock unlock];
+  [channelLock unlock];
 #endif
 }
 
@@ -462,7 +464,7 @@ static NSTimeInterval ChannelCollectionTimer = 5 * 60;
   GCSChannelHandle *handle;
 
 #if defined(THREADSAFE)
-  [lock lock];
+  [channelLock lock];
 #endif
   count = [availableChannels count];
   if (count)
@@ -499,7 +501,7 @@ static NSTimeInterval ChannelCollectionTimer = 5 * 60;
       [handlesToRemove release];
     }
 #if defined(THREADSAFE)
-  [lock unlock];
+  [channelLock unlock];
 #endif
 }
 

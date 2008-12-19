@@ -40,7 +40,7 @@ static BOOL defaultMailDomainIsConfigured = NO;
 static BOOL forceImapLoginWithEmail = NO;
 
 #if defined(THREADSAFE)
-static NSLock *lock;
+static NSLock *lock = nil;
 #endif
 
 @implementation LDAPUserManager
@@ -134,13 +134,14 @@ static NSLock *lock;
 
   udSources = [ud arrayForKey: @"SOGoLDAPSources"];
   
-  if (udSources && [udSources isKindOfClass: [NSArray class]]) {
-    max = [udSources count];
-    for (count = 0; count < max; count++)
-      [self _registerSource: [udSources objectAtIndex: count]];
-  } else {
+  if (udSources && [udSources isKindOfClass: [NSArray class]])
+    {
+      max = [udSources count];
+      for (count = 0; count < max; count++)
+	[self _registerSource: [udSources objectAtIndex: count]];
+    } 
+  else
     [self errorWithFormat: @"SOGoLDAPSources is not defined or it is not an array. Check your defaults."];
-  }
 }
 
 - (id) init

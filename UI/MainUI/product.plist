@@ -88,6 +88,12 @@
 
   categories = {
     SOGo = { // TODO: move decls to class
+      slots = {
+	toolbar = {
+	  value = "none"; // keep this in order to avoid lookups on username
+			  // "toolbar"
+	};
+      };
       methods = {
         view = { 
           protectedBy = "<public>";
