@@ -342,8 +342,8 @@
 	      [self _updateAttendee: user
 		    ownerUser: [context activeUser]
 		    forEventUID: [chosenEvent uid]
-		    withSequence: [chosenEvent sequence]
 		    withRecurrenceId: [chosenEvent recurrenceId]
+		    withSequence: [chosenEvent sequence]
 		    forUID: uid
 		    shouldAddSentBy: YES];
 	    }
