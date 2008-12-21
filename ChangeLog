@@ -1,3 +1,8 @@
+2008-12-21  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+        * Added the "sent-by" field to all invitation
+	update templates.
+
 2008-12-19  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* iCalWeeklyRecurrenceCalculator.m ([iCalDailyRecurrenceCalculator

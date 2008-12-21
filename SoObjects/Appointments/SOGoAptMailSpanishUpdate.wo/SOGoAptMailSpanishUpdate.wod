@@ -58,3 +58,12 @@ HasNewLocation: WOConditional {
 HasOldLocation: WOConditional {
   condition = hasOldLocation;
 }
+
+HasSentBy: WOConditional {
+  condition = hasSentBy;
+}
+
+sentBy: WOString {
+  value = sentBy;
+  escapeHTML = NO;
+}
