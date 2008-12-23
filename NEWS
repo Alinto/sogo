@@ -4,6 +4,8 @@
 - improved drag handles behavior
 - added support for LDAP-based configuration
 - improved init script when killing proccesses
+- improved the ACL editor of the calendar web module
+- fixed handling of timezones in daily and weekly events
 
 1.0-20080826 (1.0 rc8)
 ----------------------

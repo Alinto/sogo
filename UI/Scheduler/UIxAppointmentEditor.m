@@ -23,6 +23,7 @@
 #include <math.h>
 
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSEnumerator.h>
 
 #import <NGObjWeb/SoObject.h>
 #import <NGObjWeb/SoPermissions.h>
@@ -41,6 +42,7 @@
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/SOGoDateFormatter.h>
 #import <SoObjects/SOGo/SOGoContentObject.h>
+#import <SoObjects/SOGo/SOGoPermissions.h>
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>
 #import <SoObjects/Appointments/SOGoAppointmentObject.h>
 #import <SoObjects/Appointments/SOGoAppointmentOccurence.h>
@@ -271,6 +273,30 @@
   return result;
 }
 
+- (void) _adjustRecurrentRules
+{
+  iCalRecurrenceRule *rule;
+  NSEnumerator *rules;
+  NSCalendarDate *untilDate;
+  
+  rules = [[event recurrenceRules] objectEnumerator];
+  while ((rule = [rules nextObject]))
+    {
+      untilDate = [rule untilDate];
+      if (untilDate)
+	{
+	  // The until date must match the time of the start date
+	  untilDate = [untilDate dateByAddingYears:0
+				 months:0
+				 days:0
+				 hours:[[event startDate] hourOfDay]
+				 minutes:[[event startDate] minuteOfHour]
+				 seconds:0];
+	  [rule setUntilDate: untilDate];
+	}
+    }
+}
+
 - (id <WOActionResults>) saveAction
 {
   SOGoAppointmentFolder *previousCalendar;
@@ -305,6 +331,9 @@
     }
   else
     {
+      if ([event hasRecurrenceRules])
+	[self _adjustRecurrentRules];
+      
       // The event was modified -- save it.
       [co saveComponent: event];
 
@@ -330,14 +359,12 @@
 {
   WOResponse *result;
   NSDictionary *data;
-  SOGoAppointmentFolder *co;
   SOGoDateFormatter *dateFormatter;
   SOGoUser *user;
   NSCalendarDate *startDate;
 
   result = [context response];
   user = [context activeUser];
-  co = [self clientObject];
   dateFormatter = [user dateFormatterInContext: context];
 
   [self event];
@@ -353,6 +380,7 @@
 		       [event location], @"location",
 		       [event comment], @"description",
 		       nil];
+  
   [result appendContentString: [data jsonRepresentation]];
   [startDate release];
 

@@ -1,3 +1,9 @@
+2008-12-23  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Scheduler/UIxAppointmentEditor.m ([UIxAppointmentEditor
+	-_adjustRecurrentRules]): new method to adjust the until date of a
+	recurrent rule using the start time of the event.
+
 2008-12-21  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
         * Added the "sent-by" field to all invitation
