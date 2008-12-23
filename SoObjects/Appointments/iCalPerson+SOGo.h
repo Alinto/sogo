@@ -34,6 +34,7 @@
 - (NSString *) mailAddress;
 - (NSString *) uid;
 - (BOOL) hasSentBy;
+- (NSString *) sentBy;
 
 @end
 

@@ -1,3 +1,12 @@
+2008-12-23  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.{h,m}
+	Added an additional parameter to fetchFields:...
+	so that we can avoid stripping relevant information.
+	This is useful when verifying the freebusy of
+	meeting participants as we must not strip the
+	c_partstates/c_partmails fields.
+
 2008-12-23  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Scheduler/UIxAppointmentEditor.m ([UIxAppointmentEditor

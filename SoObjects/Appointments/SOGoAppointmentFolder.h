@@ -1,5 +1,6 @@
 /*
   Copyright (C) 2004-2005 SKYRIX Software AG
+  Copyright (C) 2007-2008 Inverse inc.
 
   This file is part of OpenGroupware.org.
 
@@ -74,13 +75,14 @@
 
 /* fetching */
 
-- (NSArray *) fetchFields: (NSArray *) _fields
-                     from: (NSCalendarDate *) _startDate
-                       to: (NSCalendarDate *) _endDate
-		    title: (NSString *) title
-                component: (id) _component
-	additionalFilters: (NSString *) filters;
-
+- (NSArray *)    fetchFields: (NSArray *) _fields
+			from: (NSCalendarDate *) _startDate
+			  to: (NSCalendarDate *) _endDate
+		       title: (NSString *) title
+		   component: (id) _component
+	   additionalFilters: (NSString *) filters
+ includeProtectedInformation: (BOOL) _includeProtectedInformation;
+  
 - (NSArray *) fetchCoreInfosFrom: (NSCalendarDate *) _startDate
                               to: (NSCalendarDate *) _endDate
 			   title: (NSString *) title

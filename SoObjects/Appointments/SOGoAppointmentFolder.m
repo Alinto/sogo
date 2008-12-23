@@ -838,6 +838,8 @@ static Class sogoAppointmentFolderKlass = Nil;
 {
   stripFields = [[NSMutableArray alloc] initWithCapacity: [fields count]];
   [stripFields setArray: fields];
+
+  // What we keep....
   [stripFields removeObjectsInArray: [NSArray arrayWithObjects: @"c_name",
 					      @"c_uid", @"c_startdate",
 					      @"c_enddate", @"c_isallday",
@@ -877,12 +879,14 @@ static Class sogoAppointmentFolderKlass = Nil;
     }
 }
 
-- (NSArray *) fetchFields: (NSArray *) _fields
-                     from: (NSCalendarDate *) _startDate
-                       to: (NSCalendarDate *) _endDate 
-		    title: (NSString *) title
-                component: (id) _component
-	additionalFilters: (NSString *) filters
+- (NSArray *)    fetchFields: (NSArray *) _fields
+			from: (NSCalendarDate *) _startDate
+			  to: (NSCalendarDate *) _endDate 
+		       title: (NSString *) title
+		   component: (id) _component
+	   additionalFilters: (NSString *) filters
+ includeProtectedInformation: (BOOL) _includeProtectedInformation;
+
 {
   EOQualifier *qualifier;
   GCSFolder *folder;
@@ -994,13 +998,10 @@ static Class sogoAppointmentFolderKlass = Nil;
     [self debugWithFormat:@"returning %i records", [ma count]];
 
   currentLogin = [[context activeUser] login];
-  if (![currentLogin isEqualToString: owner])
+  if (![currentLogin isEqualToString: owner] && !_includeProtectedInformation)
     [self _fixupProtectedInformation: [ma objectEnumerator]
 	  inFields: _fields
 	  forUser: currentLogin];
-//   [ma makeObjectsPerform: @selector (setObject:forKey:)
-//       withObject: owner
-//       withObject: @"owner"];
 
   if (rememberRecords)
     [self _rememberRecords: ma];
@@ -2226,11 +2227,14 @@ static Class sogoAppointmentFolderKlass = Nil;
     infos = [[NSArray alloc] initWithObjects: @"c_partmails", @"c_partstates",
                              @"c_isopaque", @"c_status", @"c_cycleinfo", @"c_orgmail", nil];
 
+  // We MUST include the protected information whenc checking for freebusy info as
+  // we rely on the c_partmails/c_partstates fields for many operations.
   return [self fetchFields: infos
 	       from: _startDate to: _endDate
 	       title: nil
                component: @"vevent"
-	       additionalFilters: nil];
+	       additionalFilters: nil
+	       includeProtectedInformation: YES];
 }
 
 - (NSArray *) fetchCoreInfosFrom: (NSCalendarDate *) _startDate
@@ -2262,7 +2266,8 @@ static Class sogoAppointmentFolderKlass = Nil;
 
   return [self fetchFields: infos from: _startDate to: _endDate title: title
                component: _component
-	       additionalFilters: filters];
+	       additionalFilters: filters
+	       includeProtectedInformation: NO];
 }
 
 /* URL generation */
