@@ -1353,34 +1353,52 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
 
 /* dav acls */
 - (NSString *) davRecordForUser: (NSString *) user
+		     parameters: (NSArray *) params
 {
   NSMutableString *userRecord;
   SOGoUser *sogoUser;
-  NSString *cn, *email;
 
   userRecord = [NSMutableString string];
 
   [userRecord appendFormat: @"<id>%@</id>",
 	      [user stringByEscapingXMLString]];
   sogoUser = [SOGoUser userWithLogin: user roles: nil];
-  cn = [sogoUser cn];
-  if (!cn)
-    cn = user;
-  [userRecord appendFormat: @"<displayName>%@</displayName>",
-	      [cn stringByEscapingXMLString]];
-  email = [[sogoUser allEmails] objectAtIndex: 0];
-  if (email)
-    [userRecord appendFormat: @"<email>%@</email>",
-		[email stringByEscapingXMLString]];
+
+  if (![params containsObject: @"nocn"])
+    {
+      NSString *cn;
+
+      cn = [sogoUser cn];
+      if (!cn)
+	cn = user;
+      [userRecord appendFormat: @"<displayName>%@</displayName>",
+		  [cn stringByEscapingXMLString]];
+    }
+  
+  if (![params containsObject: @"noemail"])
+    {
+      NSString *email;
+
+      email = [[sogoUser allEmails] objectAtIndex: 0];
+      if (email)
+	[userRecord appendFormat: @"<email>%@</email>",
+		    [email stringByEscapingXMLString]];
+    }
 
   return userRecord;
 }
 
-- (NSString *) _davAclUserListQuery
+- (NSString *) _davAclUserListQuery: (NSString *) theParameters
 {
   NSMutableString *userList;
   NSString *defaultUserID, *currentUserID;
   NSEnumerator *users;
+  NSArray *params;
+
+  if (theParameters && [theParameters length])
+    params = [[theParameters lowercaseString] componentsSeparatedByString: @","];
+  else
+    params = [NSArray array];
 
   userList = [NSMutableString string];
 
@@ -1390,9 +1408,14 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
 	      [defaultUserID stringByEscapingXMLString]];
   users = [[self aclUsers] objectEnumerator];
   while ((currentUserID = [users nextObject]))
-    if (![currentUserID isEqualToString: defaultUserID])
-      [userList appendFormat: @"<user>%@</user>",
-		[self davRecordForUser: currentUserID]];
+    {
+      if (![currentUserID isEqualToString: defaultUserID])
+	{
+	  [userList appendFormat: @"<user>%@</user>",
+		    [self davRecordForUser: currentUserID
+			  parameters: params]];
+	}
+    }
 
   return userList;
 }
@@ -1441,8 +1464,30 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
     {
       node = [childNodes objectAtIndex: 0];
       nodeName = [node localName];
+
+      //
+      // We support parameters during the user-list REPORT.
+      // We do that in order to avoid looking up from the LDAP
+      // the CN and the EMAIL address of the users that are 
+      // returned in the REPORT's response. That can be slow if
+      // the LDAP server used for authentication is slow and this
+      // information might not be necessary for scripting purposes.
+      //
+      // The following parameters are supported:
+      //
+      // nocn - avoid returning the CN
+      // noemail - avoid returning the EMAIL address
+      //
+      // Both can be specified using:
+      //
+      // params=nocn,noemail
+      //
       if ([nodeName isEqualToString: @"user-list"])
-	result = [self _davAclUserListQuery];
+	{
+	  result = [self _davAclUserListQuery: [[[node attributes] 
+						  namedItem: @"params"]
+						 nodeValue]];
+	}
       else if ([nodeName isEqualToString: @"roles"])
 	{
 	  attrs = [node attributes];
@@ -1471,10 +1516,11 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
 	  
 	  if ([user length])
 	    allUsers = [NSArray arrayWithObject: user];
-	  else {
-	    userAttr = [attrs namedItem: @"users"];
-	    allUsers = [[userAttr nodeValue] componentsSeparatedByString: @","];
-	  }
+	  else
+	    {
+	      userAttr = [attrs namedItem: @"users"];
+	      allUsers = [[userAttr nodeValue] componentsSeparatedByString: @","];
+	    }
 	  
 	  allRoles = [self _davGetRolesFromRequest: node];
 	  for (i = 0; i < [allUsers count]; i++)
@@ -1515,11 +1561,12 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
 	    {
 	      if ([self addUserInAcls: [allUsers objectAtIndex: i]])
 		result = @"";
-	      else {
-		result = nil;
-		break;
-	      }
-	    }	 
+	      else
+		{
+		  result = nil;
+		  break;
+		}
+	    } 
 	}
       //
       // See the comment for add-user / add-users
@@ -1543,10 +1590,11 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
 	    {
 	      if ([self removeUserFromAcls: [allUsers objectAtIndex: i]])
 		result = @"";
-	      else {
-		result = nil;
-		break;
-	      }
+	      else
+		{
+		  result = nil;
+		  break;
+		}
 	    }
 	}
     }

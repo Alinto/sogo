@@ -148,7 +148,8 @@ SEL SOGoSelectorForPropertySetter (NSString *property);
 - (SOGoWebDAVValue *) davCurrentUserPrivilegeSet;
 
 /* inverse dav extensions for acls */
-- (NSString *) davRecordForUser: (NSString *) user;
+- (NSString *) davRecordForUser: (NSString *) user
+		     parameters: (NSArray *) params;
 
 /* description */
 

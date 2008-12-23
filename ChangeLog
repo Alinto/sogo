@@ -6,6 +6,9 @@
 	This is useful when verifying the freebusy of
 	meeting participants as we must not strip the
 	c_partstates/c_partmails fields.
+	* SoObjects/SOGo/SOGoObject.{h,m}
+	We now permit two parameters during the user-list
+	REPORT in order to avoid LDAP lookups.
 
 2008-12-23  Francis Lachapelle  <flachapelle@inverse.ca>
 
