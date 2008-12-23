@@ -44,3 +44,5 @@
 
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "You are not allowed to access this module or this system. Please contact your system administrator.";
+"You don't have the required privileges to perform the operation."
+= "Sie haben nicht die benötigte Berechtigung für diesen Befehl.";

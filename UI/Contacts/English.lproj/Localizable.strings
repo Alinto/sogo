@@ -116,8 +116,6 @@
 "Are you sure you want to delete the selected contacts?"
 = "Are you sure you want to delete the selected contacts?";
 
-"You don't have the required privileges to perform the operation."
-= "You don't have the required privileges to perform the operation.";
 "You cannot delete the card of \"%{0}\"."
 = "You cannot delete the card of \"%{0}\".";
 

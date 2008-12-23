@@ -128,8 +128,6 @@
 "Are you sure you want to delete the selected contacts?"
 = "Wollen Sie wirklich die ausgewählte Karten löschen?";
 
-"You don't have the required privileges to perform the operation."
-= "Sie haben nicht die benötigte Berechtigung für diesen Befehl.";
 "You cannot delete the selected contact(s)"
 = "Ausgewählte Karten können nicht gelöscht werden.";
 "You cannot delete the card of \"%{0}\"."

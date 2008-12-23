@@ -13,30 +13,15 @@ DIV.title SPAN.value
   font-weight: bold; }
 
 DIV.calendarUserRights
-{ margin: 1em;}
+{ margin: 1em; }
 
-DIV.calendarUserRights > TABLE
-{ background-color: #fff;
-  width: 480px;
-  color: #999;
-  border-collapse: collapse;
-  border: 1px solid #222; }
-
-DIV.calendarUserRights > TABLE TR.permissions TH
-{ color: #00f;
-/*   background-color: #ddd;
- */  border-bottom: 1px solid #999; }
-
-DIV.calendarUserRights > TABLE TH
-{ width: 70px; }
-
-DIV.calendarUserRights > TABLE TD.eventType
-{ text-align: right;
-  border-right: 1px solid #999; }
-
-DIV.calendarUserRights > TABLE TD
-{ text-align: center;
-  border-top: 1px solid #cecbff; }
+DIV.calendarUserRights SPAN
+{ float: left;
+  clear: right;
+  line-height: 2em;
+  margin-right: 1em;
+  text-align: right;
+  width: 200px; }
 
 DIV.buttons
 { text-align: right;

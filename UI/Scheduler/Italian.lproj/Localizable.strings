@@ -110,16 +110,26 @@
 "Forbidden" = "Vietato";
 
 /* acls */
+
 "Default Roles" = "Permessi predefiniti";
 "User rights for:" = "Permessi per:";
+
 "label_Public" = "Pubblico";
 "label_Private" = "Privato";
 "label_Confidential" = "Confidenziale";
+
+"label_Viewer" = "Tutto";
+"label_DAndTViewer" = "Data e ora";
+"label_Modifier" = "Modifica";
+"label_Responder" = "Rispondi a";
+"label_None" = "Nessuno";
+
 "View All" = "Tutto";
 "View the Date & Time" = "Data e ora";
 "Modify" = "Modifica";
 "Respond To" = "Rispondi a";
 "None" = "Nessuno";
+
 "This person can create objects in my calendar." = "Questa persona può inserire elementi nel mio calendario.";
 "This person can erase objects from my calendar." = "Questa persona può rimuovere elementi dal mio calendario.";
 

@@ -167,6 +167,12 @@
   return currentRightType;
 }
 
+- (NSString *) currentRightLabel
+{
+  return [self labelForKey:
+		 [NSString stringWithFormat: @"label_%@", currentRight]];
+}
+
 - (NSString *) currentRightTypeLabel
 {
   return [self labelForKey:

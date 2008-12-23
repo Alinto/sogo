@@ -129,8 +129,6 @@
 "Are you sure you want to delete the selected contacts?"
 = "Voulez-vous vraiment supprimer les contacts sélectionnés ?";
 
-"You don't have the required privileges to perform the operation."
-= "Vous n'avez pas les privilèges requis pour compléter l'opération.";
 "You cannot delete the card of \"%{0}\"."
 = "Vous ne pouvez pas supprimer la fiche de \"%{0}\".";
 

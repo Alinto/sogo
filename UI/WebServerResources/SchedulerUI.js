@@ -19,7 +19,7 @@ var contactSelectorAction = 'calendars-contacts';
 var eventsToDelete = [];
 var calendarsOfEventsToDelete = [];
 
-var usersRightsWindowHeight = 250;
+var usersRightsWindowHeight = 215;
 var usersRightsWindowWidth = 502;
 
 var calendarEvents = null;
@@ -282,8 +282,10 @@ function deleteEventCallback(http) {
 				document.deleteEventAjaxRequest = null;
       }
     }
-    else
-      log ("deleteEventCallback Ajax error");
+		else if (parseInt(http.status) == 403)
+			window.alert(clabels["You don't have the required privileges to perform the operation."]);
+		else
+      log ("deleteEventCallback Ajax error (" + http.status + ")");
   }
 }
 

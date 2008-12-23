@@ -96,16 +96,26 @@
 "Forbidden" = "Toegang geweigerd";
 
 /* acls */
+
 "Default Roles" = "Standaardmachtigingen";
 "User rights for:" = "Machtigingen voor:";
+
 "label_Public" = "Publiek";
 "label_Private" = "Privé";
 "label_Confidential" = "Vertrouwelijk";
+
+"label_Viewer" = "Alles inzien";
+"label_DAndTViewer" = "Alleen Datum & tijd inzien";
+"label_Modifier" = "Aanpassen";
+"label_Responder" = "Reageren op";
+"label_None" = "Geen toegang";
+
 "View All" = "Alles inzien";
 "View the Date & Time" = "Alleen Datum & tijd inzien";
 "Modify" = "Aanpassen";
 "Respond To" = "Reageren op";
 "None" = "Geen toegang";
+
 "This person can create objects in my calendar."
 = "Deze persoon mag afspraken in mijn agenda plaatsen.";
 "This person can erase objects from my calendar."

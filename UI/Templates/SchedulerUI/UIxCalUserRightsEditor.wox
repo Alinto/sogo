@@ -22,27 +22,15 @@
 	      /></span></label></var:if>
     </div>
     <div class="calendarUserRights">
-      <table>
-	<tr class="permissions">
-	  <th class="eventType"><!-- space --></th>
-	  <th><var:string label:value="View All"/></th>
-	  <th><var:string label:value="View the Date &amp; Time"/></th>
-	  <th><var:string label:value="Modify"/></th>
-	  <th><var:string label:value="Respond To"/></th>
-	  <th><var:string label:value="None"/></th>
-	</tr
-	  ><var:foreach list="rightTypes" item="currentRightType">
-	  <tr>
-	    <td class="eventType"><var:string
-		value="currentRightTypeLabel"/></td
-	      ><var:foreach list="objectRights" item="currentRight">
-	      <td><input type="radio"
-		  var:name="currentRightTypeName"
-		  var:value="currentRight"
-		  var:selection="currentRightSelection"/></td
-		></var:foreach>
-	  </tr></var:foreach>
-      </table>
+      <var:foreach list="rightTypes" item="currentRightType">
+	<span><var:string value="currentRightTypeLabel"/></span>
+	<var:popup list="objectRights" item="currentRight"
+		   var:name="currentRightTypeName"
+		   var:value="currentRight"
+		   string="currentRightLabel"
+		   selection="currentRightSelection"
+		   />
+      </var:foreach>
     </div>
     <div class="basicUserRights">
       <label><input type="checkbox" class="checkBox"
@@ -56,10 +44,10 @@
 	  label:value="This person can erase objects from my calendar."/></label>
     </div>
     <div class="buttons">
-      <input const:name="updateButton" id="updateButton"
-	class="button" type="submit" label:value="Update"/>
       <input const:name="cancelButton" id="cancelButton"
 	class="button" type="button" label:value="Cancel"/>
+      <input const:name="updateButton" id="updateButton"
+	class="button" type="submit" label:value="Update"/>
     </div>
   </form>
 </var:component>

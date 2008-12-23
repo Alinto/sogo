@@ -2157,7 +2157,8 @@ static Class sogoAppointmentFolderKlass = Nil;
 - (NSArray *) subscriptionRoles
 {
   return [NSArray arrayWithObjects:
-		    SOGoRole_ObjectCreator, SOGoRole_ObjectEraser,
+		  SOGoRole_ObjectCreator,
+		  SOGoRole_ObjectEraser,
 		  SOGoCalendarRole_PublicResponder,
 		  SOGoCalendarRole_PublicModifier,
 		  SOGoCalendarRole_PublicViewer,
