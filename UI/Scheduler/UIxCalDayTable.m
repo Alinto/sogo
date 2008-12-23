@@ -44,17 +44,23 @@
 {
   if ((self = [super init]))
     {
+      NSDictionary *locale;
+      NSString *language;
+
+      language = [[context activeUser] language];
+      locale = [[WOApplication application] localeForLanguageNamed: language];
+
       daysToDisplay = nil;
       hoursToDisplay = nil;
       numberOfDays = 1;
       startDate = nil;
       currentTableDay = nil;
       currentTableHour = nil;
-      weekDays = [[context valueForKey: @"locale"] objectForKey: NSShortWeekDayNameArray];
+      weekDays = [locale objectForKey: NSShortWeekDayNameArray];
       [weekDays retain];
       dateFormatter = [[context activeUser] dateFormatterInContext: context];
     }
-
+  
   return self;
 }
 

@@ -34,6 +34,7 @@
 {
   id item;
   SOGoUser *user;
+  NSDictionary *locale;
   NSUserDefaults *userDefaults;
   NSCalendarDate *today;
   NSMutableArray *hours;

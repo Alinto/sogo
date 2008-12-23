@@ -65,16 +65,20 @@ static BOOL shouldDisplayAdditionalPreferences = NO;
 
 - (id) init
 {
-  NSDictionary *locale;
+  //NSDictionary *locale;
+  NSString *language;
   
   if ((self = [super init]))
     {
+      language = [[context activeUser] language];
+
       item = nil;
       hours = nil;
       ASSIGN (user, [context activeUser]);
       ASSIGN (userDefaults, [user userDefaults]);
       ASSIGN (today, [NSCalendarDate date]);
-      locale = [context valueForKey: @"locale"];
+      //locale = [context valueForKey: @"locale"];
+      ASSIGN (locale, [[WOApplication application] localeForLanguageNamed: language]);
       ASSIGN (daysOfWeek,
 	      [locale objectForKey: NSWeekDayNameArray]);
       hasChanged = NO;
@@ -91,6 +95,7 @@ static BOOL shouldDisplayAdditionalPreferences = NO;
   [userDefaults release];
   [hours release];
   [daysOfWeek release];
+  [locale release];
   [super dealloc];
 }
 
@@ -185,7 +190,8 @@ static BOOL shouldDisplayAdditionalPreferences = NO;
 - (NSString *) itemShortDateFormatText
 {
   return [today descriptionWithCalendarFormat: item
-		locale: [context valueForKey: @"locale"]];
+		locale: locale];
+  //locale: [context valueForKey: @"locale"]];
 }
 
 - (NSString *) userShortDateFormat
@@ -228,7 +234,8 @@ static BOOL shouldDisplayAdditionalPreferences = NO;
 - (NSString *) itemLongDateFormatText
 {
   return [today descriptionWithCalendarFormat: item
-		locale: [context valueForKey: @"locale"]];
+		locale: locale];
+  //locale: [context valueForKey: @"locale"]];
 }
 
 - (NSString *) userLongDateFormat
@@ -271,7 +278,8 @@ static BOOL shouldDisplayAdditionalPreferences = NO;
 - (NSString *) itemTimeFormatText
 {
   return [today descriptionWithCalendarFormat: item
-		locale: [context valueForKey: @"locale"]];
+		locale: locale];
+		//locale: [context valueForKey: @"locale"]];
 }
 
 - (NSString *) userTimeFormat

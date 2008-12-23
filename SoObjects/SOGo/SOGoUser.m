@@ -447,7 +447,7 @@ _timeValue (NSString *key)
   if (!dateFormatter)
     {
       dateFormatter = [SOGoDateFormatter new];
-      [dateFormatter setLocale: [context valueForKey: @"locale"]];
+      [dateFormatter setLocale: [[WOApplication application] localeForLanguageNamed: [self language]]];
       ud = [self userDefaults];
       format = [ud stringForKey: @"ShortDateFormat"];
       if (format)
