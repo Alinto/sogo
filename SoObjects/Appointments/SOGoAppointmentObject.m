@@ -549,7 +549,6 @@
 	  // We must update main event and all its occurences (if any).
 	  calendar = [eventObject calendar: NO secure: NO];
 	  event = (iCalEntityObject*)[calendar firstChildWithTag: [self componentTag]];
-	  //events = [calendar allObjects];
 	}
       else
 	{
