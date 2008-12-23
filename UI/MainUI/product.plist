@@ -83,6 +83,9 @@
     };
     SOGoGCSFolder = {
       superclass = "SOGoFolder";
+      defaultRoles = {
+	"Delete Objects" = ( "Owner" );
+      };
     };
   };
 
