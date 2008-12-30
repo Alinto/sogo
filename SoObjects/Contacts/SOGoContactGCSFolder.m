@@ -1,4 +1,5 @@
 /*
+  Copyright (C) 2006-2009 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
@@ -215,6 +216,7 @@
 
   if (filter && [filter length] > 0)
     {
+      filter = [filter stringByReplacingString: @"'"  withString: @"\\'\\'"];
       qs = [NSString stringWithFormat:
                        @"(c_sn isCaseInsensitiveLike: '%@%%') OR "
                      @"(c_givenname isCaseInsensitiveLike: '%@%%') OR "

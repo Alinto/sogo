@@ -1270,7 +1270,7 @@ function refreshEvents() {
   var titleSearch;
   var value = search["value"];
   if (value && value.length)
-    titleSearch = "&search=" + value;
+    titleSearch = "&search=" + escape(value.utf8encode());
   else
     titleSearch = "";
  

@@ -44,8 +44,6 @@ SchedulerUI_OBJC_FILES =		\
 	UIxCalMonthViewOld.m \
 	UIxRecurrenceEditor.m \
 	UIxOccurenceDialog.m
-# 	UIxAppointmentProposal.m
-# 	UIxTaskProposal.m
 
 SchedulerUI_RESOURCE_FILES += \
 	Version		\

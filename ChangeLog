@@ -1,3 +1,14 @@
+2008-12-30  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* Dropped the following files:
+	UI/Scheduler/UIxAppointmentProposal.m
+	UI/Scheduler/UIxTaskProposal.m
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	SoObjects/Contacts/SOGoContactGCSFolder.m
+	UI/WebServerResources/SchedulerUI.js
+	Fixed the escaping of characters and associated
+	search methods.
+
 2008-12-30  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentObject.m

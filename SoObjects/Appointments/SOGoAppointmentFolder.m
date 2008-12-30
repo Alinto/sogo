@@ -1,6 +1,6 @@
 /*
-  Copyright (C) 2004-2005 SKYRIX Software AG
   Copyright (C) 2007-2008 Inverse inc.
+  Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
 
@@ -968,7 +968,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
   if ([title length])
     titleSqlString = [NSString stringWithFormat: @"AND (c_title"
-			       @" isCaseInsensitiveLike: '%%%@%%')", title];
+			       @" isCaseInsensitiveLike: '%%%@%%')",
+			       [title stringByReplacingString: @"'"  withString: @"\\'\\'"]];
   else
     titleSqlString = @"";
 
@@ -2267,7 +2268,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     infos = [[NSArray alloc] initWithObjects: @"c_partmails", @"c_partstates",
                              @"c_isopaque", @"c_status", @"c_cycleinfo", @"c_orgmail", nil];
 
-  // We MUST include the protected information whenc checking for freebusy info as
+  // We MUST include the protected information when checking for freebusy info as
   // we rely on the c_partmails/c_partstates fields for many operations.
   return [self fetchFields: infos
 	       from: _startDate to: _endDate
