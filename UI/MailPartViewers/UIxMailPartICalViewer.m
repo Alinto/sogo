@@ -257,19 +257,19 @@
 {
   NSCalendarDate *recurrenceId;
   NSString *recurrenceTime;
-  BOOL inCalendar;
+  BOOL isInCalendar;
 
   recurrenceId = [[self inEvent] recurrenceId];
 
   if (recurrenceId)
     {
       recurrenceTime = [NSString stringWithFormat: @"%f", [recurrenceId timeIntervalSince1970]];
-      inCalendar = ([[self storedEventObject] lookupOccurence: recurrenceTime] != nil);
+      isInCalendar = ([[self storedEventObject] lookupOccurence: recurrenceTime] != nil);
     }
   else
-    inCalendar = ([self storedEventObject] != nil);
+    isInCalendar = ([self storedEventObject] != nil);
 
-  return inCalendar;
+  return isInCalendar;
 }
 
 - (iCalEvent *) storedEvent

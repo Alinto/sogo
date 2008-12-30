@@ -1,3 +1,18 @@
+2008-12-30  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder
+	-fixupCycleRecord:cycleRange:firstInstanceCalendarDateRange:forViewRange:]):
+	Fixed the start/end dates and recurrence id of events that span a
+	time period where the daylight saving time changes.
+	([SOGoAppointmentFolder
+	-_appendCycleException:firstInstanceCalendarDateRange:fromRow:forRange:toArray:]):
+	idem.
+
+	* UI/Scheduler/UIxAppointmentEditor.m ([UIxAppointmentEditor
+	-defaultAction]): idem.
+	([UIxAppointmentEditor -viewAction]): idem. 
+
 2008-12-23  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.{h,m}
