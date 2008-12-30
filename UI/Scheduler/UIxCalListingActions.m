@@ -371,8 +371,14 @@ static inline void
 _feedBlockWithDayBasedData(NSMutableDictionary *block, unsigned int start,
 			   unsigned int end, unsigned int dayStart)
 {
-  unsigned int delta, quarterStart, length;
-
+  unsigned int delta, quarterStart, length, swap;
+  
+  if (start > end)
+    {
+      swap = end;
+      end = start;
+      start = swap;
+    }
   quarterStart = (start - dayStart) / quarterLength;
   delta = end - dayStart;
   if ((delta % quarterLength))
