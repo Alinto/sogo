@@ -23,6 +23,7 @@
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
+#import <Foundation/NSTimeZone.h>
 #import <Foundation/NSURL.h>
 #import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSValue.h>
@@ -607,27 +608,48 @@ static Class sogoAppointmentFolderKlass = Nil;
 
 - (NSMutableDictionary *) fixupCycleRecord: (NSDictionary *) _record
                                 cycleRange: (NGCalendarDateRange *) _r
+	    firstInstanceCalendarDateRange: (NGCalendarDateRange *) _fir
+			      forViewRange: (NGCalendarDateRange *) _viewRange
 {
   NSMutableDictionary *md;
   NSNumber *dateSecs;
   id tmp;
+  signed int daylightOffset;
   
   md = [[_record mutableCopy] autorelease];
+  daylightOffset = 0;
 
   /* cycle is in _r. We also have to override the c_startdate/c_enddate with the date values of
      the reccurence since we use those when displaying events in SOGo Web */
+
   tmp = [_r startDate];
+  if ([timeZone isDaylightSavingTimeForDate: tmp] != [timeZone isDaylightSavingTimeForDate: [_viewRange startDate]])
+    // For the event's start/end dates, compute the daylight saving time
+    // offset with respect to the view period.
+    daylightOffset = (signed int)[timeZone secondsFromGMTForDate: tmp]
+      - (signed int)[timeZone secondsFromGMTForDate: [_viewRange startDate]];
+  
   [tmp setTimeZone: timeZone];
   [md setObject: tmp forKey: @"startDate"];
-  dateSecs = [NSNumber numberWithInt: [tmp timeIntervalSince1970]];
+  dateSecs = [NSNumber numberWithInt: [tmp timeIntervalSince1970] + daylightOffset];
   [md setObject: dateSecs forKey: @"c_startdate"];
-  [md setObject: dateSecs forKey: @"c_recurrence_id"];
 
   tmp = [_r endDate];
   [tmp setTimeZone: timeZone];
   [md setObject: tmp forKey: @"endDate"];
-  dateSecs = [NSNumber numberWithInt: [tmp timeIntervalSince1970]];
+  dateSecs = [NSNumber numberWithInt: [tmp timeIntervalSince1970] + daylightOffset];
   [md setObject: dateSecs forKey: @"c_enddate"];
+
+  tmp = [_r startDate];
+  if ([timeZone isDaylightSavingTimeForDate: tmp] != [timeZone isDaylightSavingTimeForDate: [_fir startDate]])
+    // For the event's recurrence id, compute the daylight saving time
+    // offset with respect to the first occurrence of the recurring event.
+    daylightOffset = (signed int)[timeZone secondsFromGMTForDate: tmp]
+      - (signed int)[timeZone secondsFromGMTForDate: [_fir startDate]];
+  else
+    daylightOffset = 0;
+  dateSecs = [NSNumber numberWithInt: [tmp timeIntervalSince1970] + daylightOffset];
+  [md setObject: dateSecs forKey: @"c_recurrence_id"];
   
   return md;
 }
@@ -672,6 +694,7 @@ static Class sogoAppointmentFolderKlass = Nil;
 }
 
 - (void) _appendCycleException: (iCalRepeatableEntityObject *) component
+firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 		       fromRow: (NSDictionary *) row
 		      forRange: (NGCalendarDateRange *) dateRange
 		       toArray: (NSMutableArray *) ma
@@ -681,9 +704,20 @@ static Class sogoAppointmentFolderKlass = Nil;
   NSDictionary *oldRecord;
   NGCalendarDateRange *newRecordRange;
   int recordIndex;
+  signed int daylightOffset;
 
   newRecord = nil;
   recurrenceId = [component recurrenceId];
+  
+  if ([timeZone isDaylightSavingTimeForDate: recurrenceId] != [timeZone isDaylightSavingTimeForDate: [fir startDate]])
+    {
+      // For the event's recurrence id, compute the daylight saving time
+      // offset with respect to the first occurrence of the recurring event.
+      daylightOffset = (signed int)[timeZone secondsFromGMTForDate: [fir startDate]]
+	- (signed int)[timeZone secondsFromGMTForDate: recurrenceId];
+      recurrenceId = [recurrenceId dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds:daylightOffset];
+    }
+
   if ([dateRange containsDate: recurrenceId])
     {
       recordIndex = [self _indexOfRecordMatchingDate: recurrenceId
@@ -726,6 +760,7 @@ static Class sogoAppointmentFolderKlass = Nil;
 }
 
 - (void) _appendCycleExceptionsFromRow: (NSDictionary *) row
+        firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 			      forRange: (NGCalendarDateRange *) dateRange
 			       toArray: (NSMutableArray *) ma
 {
@@ -743,6 +778,7 @@ static Class sogoAppointmentFolderKlass = Nil;
 	  max = [components count];
 	  for (count = 1; count < max; count++)
 	    [self _appendCycleException: [components objectAtIndex: count]
+		  firstInstanceCalendarDateRange: fir
 		  fromRow: row
 		  forRange: dateRange
 		  toArray: ma];
@@ -802,12 +838,16 @@ static Class sogoAppointmentFolderKlass = Nil;
   for (i = 0; i < count; i++)
     {
       rRange = [ranges objectAtIndex: i];
-      fixedRow = [self fixupCycleRecord: row cycleRange: rRange];
+      fixedRow = [self fixupCycleRecord: row 
+		       cycleRange: rRange 
+		       firstInstanceCalendarDateRange: fir
+		       forViewRange: _r];
       if (fixedRow)
 	[recordArray addObject: fixedRow];
     }
 
   [self _appendCycleExceptionsFromRow: row
+	firstInstanceCalendarDateRange: fir
 	forRange: _r
 	toArray: recordArray];
 

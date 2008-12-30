@@ -24,6 +24,7 @@
 
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
+#import <Foundation/NSTimeZone.h>
 
 #import <NGObjWeb/SoObject.h>
 #import <NGObjWeb/SoPermissions.h>
@@ -224,12 +225,35 @@
     }
   else
     {
+      NSCalendarDate *firstDate;
+      NSTimeZone *timeZone;
+      iCalEvent *master;
+      signed int daylightOffset;
+
       startDate = [event startDate];
+      daylightOffset = 0;
+ 
+      if ([co isNew] && [co isKindOfClass: [SOGoAppointmentOccurence class]])
+	{
+	  // We are creating a new exception in a recurrent event -- compute the daylight
+	  // saving time with respect to the first occurrence of the recurrent event.
+	  master = (iCalEvent*)[[event parent] firstChildWithTag: @"vevent"];
+	  firstDate = [master startDate];
+	  timeZone = [[context activeUser] timeZone];
+	  
+	  if ([timeZone isDaylightSavingTimeForDate: startDate] != [timeZone isDaylightSavingTimeForDate: firstDate])
+	    {
+	      daylightOffset = (signed int)[timeZone secondsFromGMTForDate: firstDate]
+		- (signed int)[timeZone secondsFromGMTForDate: startDate];
+	      startDate = [startDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds:daylightOffset];
+	    }
+	}
+      
       isAllDay = [event isAllDay];
       if (isAllDay)
 	endDate = [[event endDate] dateByAddingYears: 0 months: 0 days: -1];
       else
-	endDate = [event endDate];
+	endDate = [[event endDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds:daylightOffset];
       isTransparent = ![event isOpaque];
     }
 
@@ -359,21 +383,41 @@
 {
   WOResponse *result;
   NSDictionary *data;
+  NSCalendarDate *firstDate, *eventDate;
+  NSTimeZone *timeZone;
   SOGoDateFormatter *dateFormatter;
   SOGoUser *user;
-  NSCalendarDate *startDate;
+  SOGoCalendarComponent *co;
+  iCalEvent *master;
+  signed int daylightOffset;
+
+  [self event];
 
   result = [context response];
   user = [context activeUser];
+  timeZone = [user timeZone];
   dateFormatter = [user dateFormatterInContext: context];
+  eventDate = [event startDate];
+  [eventDate setTimeZone: timeZone];
+  co = [self clientObject];
+  
+  if ([co isNew] && [co isKindOfClass: [SOGoAppointmentOccurence class]])
+    {
+      // This is a new exception in a recurrent event -- compute the daylight
+      // saving time with respect to the first occurrence of the recurrent event.
+      master = (iCalEvent*)[[event parent] firstChildWithTag: @"vevent"];
+      firstDate = [master startDate];
 
-  [self event];
-  startDate = [[event startDate] copy];
-  [startDate setTimeZone: [user timeZone]];
-
+      if ([timeZone isDaylightSavingTimeForDate: eventDate] != [timeZone isDaylightSavingTimeForDate: firstDate])
+	{
+	  daylightOffset = (signed int)[timeZone secondsFromGMTForDate: firstDate] 
+	    - (signed int)[timeZone secondsFromGMTForDate: eventDate];
+	  eventDate = [eventDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds:daylightOffset];
+	}
+    }
   data = [NSDictionary dictionaryWithObjectsAndKeys:
-			 [dateFormatter formattedDate: startDate], @"startDate",
-		       [dateFormatter formattedTime: startDate], @"startTime",
+			 [dateFormatter formattedDate: eventDate], @"startDate",
+		       [dateFormatter formattedTime: eventDate], @"startTime",
 		       ([event hasRecurrenceRules]? @"1": @"0"), @"isReccurent",
 		       ([event isAllDay] ? @"1": @"0"), @"isAllDay",
 		       [event summary], @"summary",
@@ -382,7 +426,6 @@
 		       nil];
   
   [result appendContentString: [data jsonRepresentation]];
-  [startDate release];
 
   return result;
 }
