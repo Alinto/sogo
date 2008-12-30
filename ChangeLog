@@ -8,6 +8,15 @@
 	UI/WebServerResources/SchedulerUI.js
 	Fixed the escaping of characters and associated
 	search methods.
+	* SoObjects/SOGo/SOGoGCSFolder.m
+	([SOGoGCSFolder aclsForUser:forObjectAtPath:]):
+	Added two new defaults to control the default
+	ACLs when none are specified:
+	SOGoCalendarDefaultRoles and SOGoContactsDefaultRoles
+	They are both arrays in which we set strings,
+	for example :
+	SOGoCalendarDefaultRoles = ("ObjectCreator", "PublicViewer");
+	SOGoContactsDefaultRoles = ("ObjectEditor"); 
 
 2008-12-30  Francis Lachapelle  <flachapelle@inverse.ca>
 

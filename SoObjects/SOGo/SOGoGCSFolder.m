@@ -819,6 +819,17 @@ static NSArray *childRecordFields = nil;
     acls = [self aclsForUser: defaultUserID
 		 forObjectAtPath: objectPathArray];
 
+  // If we still don't have ACLs defined for this particular resource,
+  // let's go get the system-wide defaults, if any.
+  if (![acls count])
+    {
+      if ([[container nameInContainer] isEqualToString: @"Calendar"] ||
+	  [[container nameInContainer] isEqualToString: @"Contacts"])
+	acls = [[NSUserDefaults standardUserDefaults] 
+		 objectForKey: [NSString stringWithFormat: @"SOGo%@DefaultRoles",
+					 [container nameInContainer]]];
+    }
+  
   return acls;
 }
 
