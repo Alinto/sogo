@@ -139,13 +139,21 @@
 {
   iCalEvent *newOccurence;
   NSCalendarDate *date;
-  unsigned int interval;
+  unsigned int interval, nbrDays;
 
   newOccurence = (iCalEvent *) [super newOccurenceWithID: recID];
   date = [newOccurence recurrenceId];
   interval = [[newOccurence endDate]
 	       timeIntervalSinceDate: [newOccurence startDate]];
-  [newOccurence setStartDate: date];
+  if ([newOccurence isAllDay])
+    {
+      nbrDays = ((float) abs (interval) / 86400) + 1;
+      [newOccurence setAllDayWithStartDate: date
+		    duration: nbrDays];
+    }
+  else
+    [newOccurence setStartDate: date];
+
   [newOccurence setEndDate: [date addYear: 0
 				  month: 0
 				  day: 0

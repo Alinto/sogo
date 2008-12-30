@@ -232,7 +232,7 @@
 
       startDate = [event startDate];
       daylightOffset = 0;
- 
+      
       if ([co isNew] && [co isKindOfClass: [SOGoAppointmentOccurence class]])
 	{
 	  // We are creating a new exception in a recurrent event -- compute the daylight
@@ -416,10 +416,10 @@
 	}
     }
   data = [NSDictionary dictionaryWithObjectsAndKeys:
-			 [dateFormatter formattedDate: eventDate], @"startDate",
+		       [dateFormatter formattedDate: eventDate], @"startDate",
 		       [dateFormatter formattedTime: eventDate], @"startTime",
 		       ([event hasRecurrenceRules]? @"1": @"0"), @"isReccurent",
-		       ([event isAllDay] ? @"1": @"0"), @"isAllDay",
+		       ([event isAllDay]? @"1": @"0"), @"isAllDay",
 		       [event summary], @"summary",
 		       [event location], @"location",
 		       [event comment], @"description",

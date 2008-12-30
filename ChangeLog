@@ -1,5 +1,9 @@
 2008-12-30  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	([SOGoAppointmentObject -newOccurenceWithID:]): fixed the start
+	date when returning an occurrence of an all-day event.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	([SOGoAppointmentFolder
 	-fixupCycleRecord:cycleRange:firstInstanceCalendarDateRange:forViewRange:]):
