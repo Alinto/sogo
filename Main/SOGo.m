@@ -157,15 +157,6 @@ static BOOL debugObjectAllocation = NO;
   [super dealloc];
 }
 
-- (NSString *) _sqlScriptFromTableFile: (NSString *) fileName
-			 withTableName: (NSString *) tableName
-{
-  NSString *script;
-
-
-  return script;
-}
-
 - (NSString *) _sqlScriptForTable: (NSString *) tableName
 			 withType: (NSString *) tableType
 		    andFileSuffix: (NSString *) fileSuffix
