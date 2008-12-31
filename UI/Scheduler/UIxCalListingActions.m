@@ -257,16 +257,14 @@ static NSArray *tasksFields = nil;
   NSNull *marker;
   SOGoAppointmentFolders *clientObject;
 
+  infos = [NSMutableArray array];
+
   marker = [NSNull null];
 
   clientObject = [self clientObject];
 
   folders = [[clientObject subFolders] objectEnumerator];
-  currentFolder = [folders nextObject];
-
-  infos = [NSMutableArray array];
-
-  while (currentFolder)
+  while ((currentFolder = [folders nextObject]))
     {
       if ([currentFolder isActive])
 	{
@@ -288,7 +286,6 @@ static NSArray *tasksFields = nil;
 					 notFoundMarker: marker]];
 	    }
 	}
-      currentFolder = [folders nextObject];
     }
 
   return infos;
