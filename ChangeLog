@@ -37,6 +37,13 @@
 	-defaultAction]): idem.
 	([UIxAppointmentEditor -viewAction]): idem. 
 
+2008-12-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxCalListingActions.m ([UIxCalListingActions
+	-eventsBlocksAction]): fixed a crash occuring in the rare
+	situation where an event end date would be inferior than its start
+	date.
+
 2008-12-23  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.{h,m}

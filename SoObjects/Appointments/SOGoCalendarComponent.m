@@ -431,7 +431,7 @@ _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
 	  [currentComponent removeAllExceptionDates];
 	  for (count = 0; count < max; count++)
 	    [currentComponent addToExceptionDates: [newDates objectAtIndex: count]];
-	}      
+	}
     }
 }
 
