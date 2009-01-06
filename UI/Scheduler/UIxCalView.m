@@ -20,8 +20,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-//#import <OGoContentStore/OCSFolder.h>
-
 #import <NGObjWeb/SoSecurityManager.h>
 #import <NGObjWeb/SoUser.h>
 #import <NGObjWeb/WOResponse.h>

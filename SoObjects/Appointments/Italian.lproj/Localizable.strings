@@ -1,1 +1,8 @@
 "Personal Calendar" = "Calendario personale";
+vevent_class0 = "(Evento pubblico)";
+vevent_class1 = "(Evento privato)";
+vevent_class2 = "(Evento confidenziale)";
+
+vtodo_class0 = "(Attività pubblica)";
+vtodo_class1 = "(Attività privata)";
+vtodo_class2 = "(Attività confidenziale)";

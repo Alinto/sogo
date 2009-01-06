@@ -1,3 +1,12 @@
+2008-01-06  Ludovic Marcotte  <lmarcotte@inverse.ca>
+	
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	([SOGoCalendarComponent -_filterComponent:]):
+	We now set the proper component summary just like
+	we do in the Web UI when 'securing' the
+	returned component. Also adjusted the Localizable.strings
+	files accordingly.
+
 2008-12-30  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* Dropped the following files:

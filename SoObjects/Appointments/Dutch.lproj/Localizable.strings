@@ -1,1 +1,8 @@
 "Personal Calendar" = "Persoonlijke agenda";
+vevent_class0 = "(Publieke afspraak)";
+vevent_class1 = "(Privé-afspraak)";
+vevent_class2 = "(Vertrouwelijke afspraak)";
+
+vtodo_class0 = "(Publieke taak)";
+vtodo_class1 = "(Privétaak)";
+vtodo_class2 = "(Vertrouwelijke taak)";

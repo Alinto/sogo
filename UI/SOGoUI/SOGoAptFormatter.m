@@ -1,4 +1,5 @@
 /*
+  Copyright (C) 2008-2009 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.

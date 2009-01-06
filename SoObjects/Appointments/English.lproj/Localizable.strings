@@ -1,1 +1,8 @@
 "Personal Calendar" = "Personal Calendar";
+vevent_class0 = "(Public event)";
+vevent_class1 = "(Private event)";
+vevent_class2 = "(Confidential event)";
+
+vtodo_class0 = "(Public task)";
+vtodo_class1 = "(Private task)";
+vtodo_class2 = "(Confidential task)";

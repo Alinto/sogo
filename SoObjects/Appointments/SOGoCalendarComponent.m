@@ -119,7 +119,21 @@ static BOOL sendEMailNotifications = NO;
 
 - (void) _filterComponent: (iCalEntityObject *) component
 {
-  [component setSummary: @""];
+  NSString *type;
+  int classification;
+
+  type = @"vtodo";
+  classification = 0;
+
+  if ([component isKindOfClass: [iCalEvent class]])
+    type = @"vevent";
+  
+  if ([component symbolicAccessClass] == iCalAccessPrivate)
+    classification = 1;
+  else if ([component symbolicAccessClass] == iCalAccessPrivate)
+    classification = 2;
+  
+  [component setSummary: [self labelForKey: [NSString stringWithFormat: @"%@_class%d", type, classification]]];
   [component setComment: @""];
   [component setUserComment: @""];
   [component setLocation: @""];
@@ -168,6 +182,11 @@ static BOOL sendEMailNotifications = NO;
       tmpComponent = (iCalRepeatableEntityObject *)
 	[tmpCalendar firstChildWithTag: [self componentTag]];
       [self _filterComponent: tmpComponent];
+      
+      // We add an additional header here to inform clients (if necessary) that
+      // we churned the content of the calendar.
+      [tmpComponent addChild: [CardElement simpleElementWithTag: @"X-SOGo-Secure"
+					   value: @"YES"]];
       iCalString = [tmpCalendar versitString];
       [tmpCalendar release];
     }
