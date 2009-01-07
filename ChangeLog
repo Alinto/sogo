@@ -1,3 +1,16 @@
+2009-01-07  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
+	-_handleCustomRRule:]): set the proper timezone for the end date.
+	([UIxComponentEditor -_loadRRules]): idem.
+
+	* UI/Scheduler/UIxAppointmentEditor.m ([UIxAppointmentEditor
+	-saveAction]): for recurrent events with an end date, the method
+	_adjustRecurrentRules must be called unconditionally. This fixes
+	the missing occurence on the last day.
+	([UIxAppointmentEditor -_adjustRecurrentRules]): fixed adjustment
+	of end date by using the proper timezone.
+
 2009-01-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/NSString+Utilities.m ([NSString
@@ -5,13 +18,6 @@
 	properly escaped version of the string. Since it's the same
 	algorithm used in jsonRepresentation, the latter is now calling
 	this new method.
-
-2009-01-07  Francis Lachapelle  <flachapelle@inverse.ca>
-
-	* UI/Scheduler/UIxAppointmentEditor.m ([UIxAppointmentEditor
-	-saveAction]): for recurrent events with an end date, the method
-	_adjustRecurrentRules must be called unconditionally. This fixes
-	the missing occurence on the last day.
 
 2008-01-06  Ludovic Marcotte  <lmarcotte@inverse.ca>
 	

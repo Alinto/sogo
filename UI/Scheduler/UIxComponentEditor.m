@@ -37,6 +37,7 @@
 #import <NGCards/NSCalendarDate+NGCards.h>
 #import <NGObjWeb/SoSecurityManager.h>
 #import <NGObjWeb/NSException+HTTP.h>
+#import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -340,8 +341,12 @@ iRANGE(2);
 	}
       else if ([rule untilDate])
 	{
+	  NSCalendarDate *date;
+
+	  date = [[rule untilDate] copy];
+	  [date setTimeZone: [[context activeUser] timeZone]];
 	  [self setRange1: @"2"];
-	  [self setRange2: [[rule untilDate] descriptionWithCalendarFormat: @"%Y-%m-%d"]];
+	  [self setRange2: [date descriptionWithCalendarFormat: @"%Y-%m-%d"]];
 	}
       else
 	[self setRange1: @"0"];
@@ -1387,8 +1392,14 @@ RANGE(2);
   // Repeat until date
   else if (range == 2)
     {
-      [theRule setUntilDate: [NSCalendarDate dateWithString: [self range2]
-					     calendarFormat: @"%Y-%m-%d"]];
+      NSCalendarDate *date;
+      SOGoUser *user;
+      
+      user = [context activeUser];
+      date = [NSCalendarDate dateWithString: [self range2]
+			     calendarFormat: @"%Y-%m-%d"
+			     locale: [[WOApplication application] localeForLanguageNamed: [user language]]];      
+      [theRule setUntilDate: date];
     }
   // No end date.
   else

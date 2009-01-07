@@ -310,13 +310,16 @@
       if (untilDate)
 	{
 	  // The until date must match the time of the start date
-	  untilDate = [untilDate initWithYear: [untilDate yearOfCommonEra]
-				 month: [untilDate monthOfYear]
-				 day: [untilDate dayOfMonth]
-				 hour: [[event startDate] hourOfDay]
-				 minute: [[event startDate] minuteOfHour]
-				 second: 0
-				 timeZone: [untilDate timeZone]];
+	  NSCalendarDate *date;
+
+	  date = [[event startDate] copy];
+	  [date setTimeZone: [[context activeUser] timeZone]];
+	  untilDate = [untilDate dateByAddingYears:0
+				 months:0
+				 days:0
+				 hours:[date hourOfDay]
+				 minutes:[date minuteOfHour]
+				 seconds:0];
 	  [rule setUntilDate: untilDate];
 	}
     }
