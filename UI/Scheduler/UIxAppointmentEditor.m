@@ -321,6 +321,7 @@
 				 minutes:[date minuteOfHour]
 				 seconds:0];
 	  [rule setUntilDate: untilDate];
+	  [date release];
 	}
     }
 }

@@ -347,6 +347,7 @@ iRANGE(2);
 	  [date setTimeZone: [[context activeUser] timeZone]];
 	  [self setRange1: @"2"];
 	  [self setRange2: [date descriptionWithCalendarFormat: @"%Y-%m-%d"]];
+	  [date release];
 	}
       else
 	[self setRange1: @"0"];
