@@ -334,6 +334,9 @@
   previousCalendar = [co container];
   sm = [SoSecurityManager sharedSecurityManager];
 
+  if ([event hasRecurrenceRules])
+    [self _adjustRecurrentRules];
+
   if ([co isNew])
     {
       if (componentCalendar && componentCalendar != previousCalendar)
@@ -355,9 +358,6 @@
     }
   else
     {
-      if ([event hasRecurrenceRules])
-	[self _adjustRecurrentRules];
-      
       // The event was modified -- save it.
       [co saveComponent: event];
 

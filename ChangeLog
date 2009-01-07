@@ -1,3 +1,10 @@
+2009-01-07  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Scheduler/UIxAppointmentEditor.m ([UIxAppointmentEditor
+	-saveAction]): for recurrent events with an end date, the method
+	_adjustRecurrentRules must be called unconditionally. This fixes
+	the missing occurence on the last day.
+
 2008-01-06  Ludovic Marcotte  <lmarcotte@inverse.ca>
 	
 	* SoObjects/Appointments/SOGoCalendarComponent.m
