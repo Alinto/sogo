@@ -42,6 +42,8 @@
 
 - (NSString *) stringByDetectingURLs;
 
+- (NSString *) doubleQuotedString;
+
 - (NSString *) jsonRepresentation;
 
 /* bare email addresses */
