@@ -310,12 +310,13 @@
       if (untilDate)
 	{
 	  // The until date must match the time of the start date
-	  untilDate = [untilDate dateByAddingYears:0
-				 months:0
-				 days:0
-				 hours:[[event startDate] hourOfDay]
-				 minutes:[[event startDate] minuteOfHour]
-				 seconds:0];
+	  untilDate = [untilDate initWithYear: [untilDate yearOfCommonEra]
+				 month: [untilDate monthOfYear]
+				 day: [untilDate dayOfMonth]
+				 hour: [[event startDate] hourOfDay]
+				 minute: [[event startDate] minuteOfHour]
+				 second: 0
+				 timeZone: [untilDate timeZone]];
 	  [rule setUntilDate: untilDate];
 	}
     }
