@@ -60,6 +60,7 @@
   NSString *cycleEnd;
   iCalPerson *organizer;
   NSString *componentOwner;
+  NSString *dateFormat;
 
   NSString *attendeesNames;
   NSString *attendeesUIDs;

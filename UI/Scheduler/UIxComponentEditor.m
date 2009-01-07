@@ -57,6 +57,7 @@
 #import <SoObjects/SOGo/SOGoPermissions.h>
 
 #import "UIxComponentEditor.h"
+#import "UIxDatePicker.h"
 
 #define iREPEAT(X) \
 - (NSString *) repeat##X; \
@@ -65,6 +66,7 @@
 #define iRANGE(X) \
 - (NSString *) range##X; \
 - (void) setRange##X: (NSString *) theValue
+
 
 @interface UIxComponentEditor (Private)
 
@@ -94,6 +96,13 @@ iRANGE(2);
 {
   if ((self = [super init]))
     {
+      UIxDatePicker *datePicker;
+
+      // We must instanciate a UIxDatePicker object to retrieve
+      // the proper date format to use.
+      datePicker = [[UIxDatePicker alloc] initWithContext: context];
+      dateFormat = [datePicker dateFormat];
+      
       component = nil;
       [self setPrivacy: @"PUBLIC"];
       [self setIsCycleEndNever];
@@ -117,6 +126,8 @@ iRANGE(2);
       repeat7 = nil;
       range1 = nil;
       range2 = nil;
+
+      [datePicker release];
     }
 
   return self;
@@ -342,11 +353,11 @@ iRANGE(2);
       else if ([rule untilDate])
 	{
 	  NSCalendarDate *date;
-
+	  
 	  date = [[rule untilDate] copy];
 	  [date setTimeZone: [[context activeUser] timeZone]];
 	  [self setRange1: @"2"];
-	  [self setRange2: [date descriptionWithCalendarFormat: @"%Y-%m-%d"]];
+	  [self setRange2: [date descriptionWithCalendarFormat: dateFormat]];
 	  [date release];
 	}
       else
@@ -1395,11 +1406,11 @@ RANGE(2);
     {
       NSCalendarDate *date;
       SOGoUser *user;
-      
+	  
       user = [context activeUser];
       date = [NSCalendarDate dateWithString: [self range2]
-			     calendarFormat: @"%Y-%m-%d"
-			     locale: [[WOApplication application] localeForLanguageNamed: [user language]]];      
+			     calendarFormat: dateFormat
+			     locale: [[WOApplication application] localeForLanguageNamed: [user language]]];
       [theRule setUntilDate: date];
     }
   // No end date.

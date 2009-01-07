@@ -22,28 +22,11 @@
 #import <Foundation/NSValue.h>
 #import <Foundation/NSCalendarDate.h>
 
-#import <NGObjWeb/WOComponent.h>
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGExtensions/NSObject+Logs.h>
 
-@class NSString;
-
-@interface UIxDatePicker : WOComponent
-{
-  NSString *dateID;
-  id       day;
-  id       month;
-  id       year;
-  NSString *label;
-  BOOL isDisabled;
-}
-
-- (NSString *) dateID;
-- (NSString *) dateFormat;
-- (NSString *) jsDateFormat;
-- (BOOL) useISOFormats;
-@end
+#import "UIxDatePicker.h"
 
 @implementation UIxDatePicker
 
