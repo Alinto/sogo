@@ -1,3 +1,11 @@
+2009-01-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/NSString+Utilities.m ([NSString
+	-doubleQuotedString]): new method that returns a double-quoted and
+	properly escaped version of the string. Since it's the same
+	algorithm used in jsonRepresentation, the latter is now calling
+	this new method.
+
 2009-01-07  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Scheduler/UIxAppointmentEditor.m ([UIxAppointmentEditor

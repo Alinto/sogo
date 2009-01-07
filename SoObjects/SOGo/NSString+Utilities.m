@@ -283,7 +283,7 @@ static NSMutableCharacterSet *urlStartChars = nil;
   return selfCopy;
 }
 
-- (NSString *) jsonRepresentation
+- (NSString *) doubleQuotedString
 {
   NSMutableString *representation;
 
@@ -298,6 +298,11 @@ static NSMutableCharacterSet *urlStartChars = nil;
   [representation replaceString: @"\t" withString: @"\\t"];
 
   return [NSString stringWithFormat: @"\"%@\"", representation];
+}
+
+- (NSString *) jsonRepresentation
+{
+  return [self doubleQuotedString];
 }
 
 - (NSString *) pureEMailAddress
