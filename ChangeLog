@@ -1,3 +1,11 @@
+2009-01-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoGCSFolder.m ([SOGoGCSFolder
+	-sendFolderAdvisoryTemplate:template]): the condition check for
+	sending folder advisories has been moved here.
+	([SOGoGCSFolder -sendFolderAdvisoryTemplate:template]): now a
+	public method.
+
 2008-01-07  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* Added Documentation/SOGo Mobile Devices Configuration.odt
