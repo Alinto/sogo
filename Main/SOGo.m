@@ -31,7 +31,6 @@
 #import <GDLAccess/EOAdaptorChannel.h>
 #import <GDLContentStore/GCSChannelManager.h>
 
-#import <NGObjWeb/SoApplication.h>
 #import <NGObjWeb/SoClassSecurityInfo.h>
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WORequest.h>
@@ -57,16 +56,7 @@
 #import "SOGoProductLoader.h"
 #import "NSException+Stacktrace.h"
 
-@interface SOGo : SoApplication
-{
-  NSMutableDictionary *localeLUT;
-  SOGoCache *cache;
-}
-
-- (NSDictionary *) currentLocaleConsideringLanguages:(NSArray *)_langs;
-- (NSDictionary *) localeForLanguageNamed:(NSString *)_name;
-
-@end
+#import "SOGo.h"
 
 @implementation SOGo
 
