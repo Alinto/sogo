@@ -432,7 +432,7 @@
   pathArray = [NSMutableArray arrayWithArray: [container pathArrayToFolder]];
   [pathArray addObject: nameInContainer];
 
-  return pathArray;
+  return [container aclUsersForObjectAtPath: pathArray];
 }
 
 - (NSArray *) aclsForUser: (NSString *) uid
