@@ -29,7 +29,7 @@
 		   var:value="currentRight"
 		   string="currentRightLabel"
 		   selection="currentRightSelection"
-		   />
+		   /><hr/>
       </var:foreach>
     </div>
     <div class="basicUserRights">
