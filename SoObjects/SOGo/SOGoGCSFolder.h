@@ -98,6 +98,9 @@
 - (void) removeAclsForUsers: (NSArray *) users
             forObjectAtPath: (NSArray *) objectPathArray;
 
+/* advisories */
+- (void) sendFolderAdvisoryTemplate: (NSString *) template;
+
 @end
 
 #endif /* __SOGo_SOGoGCSFolder_H__ */

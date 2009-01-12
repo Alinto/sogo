@@ -1,7 +1,21 @@
+2009-01-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoContentObject.m ([SOGoContentObject
+	-aclUsers]): fixed method to invoke [container
+	aclUsersForObjectAtPath:] with the resulting path as argument
+	instead of the path itself.
+
+	* SoObjects/SOGo/SOGoGCSFolder.m ([SOGoGCSFolder
+	-sendFolderAdvisoryTemplate:template]): the condition check for
+	sending folder advisories has been moved here.
+	([SOGoGCSFolder -sendFolderAdvisoryTemplate:template]): now a
+	public method.
+
 2008-01-07  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* Added Documentation/SOGo Mobile Devices Configuration.odt
 	* Fixed typos in the Intallation & Configuration guide
+	* Added Documentation/SOGo Mozilla Thunderbird Configuration.odt
 
 2009-01-07  Francis Lachapelle  <flachapelle@inverse.ca>
 

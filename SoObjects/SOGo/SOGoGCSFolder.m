@@ -378,15 +378,18 @@ static NSArray *childRecordFields = nil;
   SOGoUser *user;
   SOGoFolderAdvisory *page;
 
-  user = [context activeUser];
-  pageName = [NSString stringWithFormat: @"SOGoFolder%@%@Advisory",
-		       [user language], template];
+  if (sendFolderAdvisories)
+    {
+      user = [context activeUser];
+      pageName = [NSString stringWithFormat: @"SOGoFolder%@%@Advisory",
+			   [user language], template];
 
-  page = [[WOApplication application] pageWithName: pageName
-				      inContext: context];
-  [page setFolderObject: self];
-  [page setRecipientUID: [user login]];
-  [page send];
+      page = [[WOApplication application] pageWithName: pageName
+					  inContext: context];
+      [page setFolderObject: self];
+      [page setRecipientUID: [user login]];
+      [page send];
+    }
 }
 
 - (BOOL) create
@@ -398,8 +401,7 @@ static NSArray *childRecordFields = nil;
                                  atPath: ocsPath];
 
   if (!result
-      && [[context request] handledByDefaultHandler]
-      && sendFolderAdvisories)
+      && [[context request] handledByDefaultHandler])
     [self sendFolderAdvisoryTemplate: @"Addition"];
 
   return (result == nil);
@@ -418,8 +420,7 @@ static NSArray *childRecordFields = nil;
   else
     error = [[self folderManager] deleteFolderAtPath: ocsPath];
 
-  if (!error && sendFolderAdvisories
-      && [[context request] handledByDefaultHandler])
+  if (!error && [[context request] handledByDefaultHandler])
     [self sendFolderAdvisoryTemplate: @"Removal"];
 
   return error;
