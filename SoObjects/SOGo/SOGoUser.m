@@ -187,7 +187,7 @@ _timeValue (NSString *key)
       if (!defaultMessageCheck)
 	ASSIGN (defaultMessageCheck, @"manually");
     }
-  
+
   if (!superUsernames)
     ASSIGN (superUsernames, [ud arrayForKey: @"SOGoSuperUsernames"]);
 
@@ -349,7 +349,7 @@ _timeValue (NSString *key)
   if (!allEmails)
     [self _fetchAllEmails];
 
-  return allEmails;  
+  return allEmails;
 }
 
 - (NSString *) systemEmail
@@ -364,7 +364,7 @@ _timeValue (NSString *key)
 {
   if (!allEmails)
     [self _fetchAllEmails];
-  
+
   return [allEmails containsCaseInsensitiveString: email];
 }
 
@@ -467,11 +467,11 @@ _timeValue (NSString *key)
 - (NSUserDefaults *) userDefaults
 {
   id o;
-  
+
   o = [[SOGoCache cachedUserDefaults] objectForKey: login];
 
   if (!o)
-    {		    
+    {
       o = [[SOGoUserDefaults alloc] initWithTableURL: SOGoProfileURL
 				    uid: login
 				    fieldName: @"c_defaults"];
@@ -497,11 +497,11 @@ _timeValue (NSString *key)
 - (NSUserDefaults *) userSettings
 {
   id o;
-  
+
   o = [[SOGoCache cachedUserSettings] objectForKey: login];
 
   if (!o)
-    {      
+    {
       o = [[SOGoUserDefaults alloc] initWithTableURL: SOGoProfileURL
 				    uid: login
 				    fieldName: @"c_settings"];
@@ -897,12 +897,12 @@ _timeValue (NSString *key)
 //   folder = [self homeFolderInContext:_ctx];
 //   if ([folder isKindOfClass:[NSException class]])
 //     return folder;
-  
+
 //   folder = [folder lookupName:@"Calendar" inContext:_ctx acquire:NO];
 //   if ([folder isKindOfClass:[NSException class]])
 //     return folder;
-  
-//   [(WOContext *)_ctx setObject:folder ? folder : [NSNull null] 
+
+//   [(WOContext *)_ctx setObject:folder ? folder : [NSNull null]
 //                 forKey:@"ActiveUserCalendar"];
 //   return folder;
 // }
