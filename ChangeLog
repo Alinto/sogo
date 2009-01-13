@@ -1,3 +1,11 @@
+2009-01-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUser.m ([SOGoUser -userDefaults]): make use
+	of more explicit names for the variables used. Invoke a new [self
+	primaryUserDefaults] that fetches the defaults from the database,
+	so as to separate that mechanism from the caching mechanisme.
+	([SOGoUser -userSettings]): same as above.
+
 2009-01-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoContentObject.m ([SOGoContentObject

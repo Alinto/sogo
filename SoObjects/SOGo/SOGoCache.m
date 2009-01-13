@@ -289,6 +289,7 @@ withName: (NSString *) name
 {
   SOGoUser *user;
   NSString *uid;
+  SOGoUserDefaults *defaults;
   
   uid = [[theNotification userInfo] objectForKey: @"uid"];
 
@@ -297,8 +298,9 @@ withName: (NSString *) name
 #endif
   if ((user = [users objectForKey: uid]))
     {
-      [[user userDefaults] setValues: [[theNotification userInfo] objectForKey: @"values"]];
-      [SOGoCache setCachedUserDefaults: (SOGoUserDefaults*)[user userDefaults]  user: uid];
+      defaults = (SOGoUserDefaults *) [user userDefaults];
+      [defaults setValues: [[theNotification userInfo] objectForKey: @"values"]];
+      [SOGoCache setCachedUserDefaults: defaults user: uid];
     }
   else
     {
@@ -313,13 +315,15 @@ withName: (NSString *) name
 {
   SOGoUser *user;
   NSString *uid;
-  
+  SOGoUserDefaults *settings; 
+ 
   uid = [[theNotification userInfo] objectForKey: @"uid"];
 
   if ((user = [users objectForKey: uid]))
     {
-      [[user userSettings] setValues: [[theNotification userInfo] objectForKey: @"values"]];
-      [SOGoCache setCachedUserSettings: (SOGoUserDefaults *)[user userSettings]  user: uid];
+      settings = (SOGoUserDefaults *) [user userSettings];
+      [settings setValues: [[theNotification userInfo] objectForKey: @"values"]];
+      [SOGoCache setCachedUserSettings: settings user: uid];
     }
   else
     {

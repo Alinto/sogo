@@ -47,7 +47,7 @@ static NSString *uidColumnName = @"c_uid";
 		    uid: (NSString *) userID
 	      fieldName: (NSString *) defaultsFieldName
 {
-  if ((self = [super init]))
+  if ((self = [self init]))
     {
       if (tableURL && [userID length] > 0
 	  && [defaultsFieldName length] > 0)
@@ -65,13 +65,6 @@ static NSString *uidColumnName = @"c_uid";
     }
 
   return self;
-}
-
-- (id) init
-{
-  [self release];
-
-  return nil;
 }
 
 - (void) dealloc
@@ -296,16 +289,17 @@ static NSString *uidColumnName = @"c_uid";
     {
       NSMutableDictionary *d;
       
-      d = [[NSMutableDictionary alloc] init];
+      d = [NSMutableDictionary dictionary];
       [d setObject: values forKey: @"values"];
       [d setObject: uid  forKey: @"uid"];
-      
+
       [[NSDistributedNotificationCenter defaultCenter]
-	postNotificationName: ([fieldName isEqualToString: @"c_defaults"] ? @"SOGoUserDefaultsHaveChanged" : @"SOGoUserSettingsHaveChanged")
+	postNotificationName: ([fieldName isEqualToString: @"c_defaults"]
+			       ? @"SOGoUserDefaultsHaveChanged"
+			       : @"SOGoUserSettingsHaveChanged")
 	object: nil
 	userInfo: d
 	deliverImmediately: YES];
-      [d release];
     }
 
   return rc;
