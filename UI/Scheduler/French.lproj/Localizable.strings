@@ -115,7 +115,7 @@
 "Default Roles" = "Rôles par défaut";
 "User rights for:" = "Autorisations pour :";
 
-"label_Public" = "Voir tout";
+"label_Public" = "Public";
 "label_Private" = "Privé";
 "label_Confidential" = "Confidentiel";
 
