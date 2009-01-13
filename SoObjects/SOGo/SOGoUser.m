@@ -464,54 +464,72 @@ _timeValue (NSString *key)
   return dateFormatter;
 }
 
+- (SOGoUserDefaults *) primaryUserDefaults
+{
+  SOGoUserDefaults *o;
+
+  o = [[SOGoUserDefaults alloc] initWithTableURL: SOGoProfileURL
+				uid: login
+				fieldName: @"c_defaults"];
+  [o autorelease];
+
+  return o;
+}
+
+- (SOGoUserDefaults *) primaryUserSettings
+{
+  SOGoUserDefaults *o;
+
+  o = [[SOGoUserDefaults alloc] initWithTableURL: SOGoProfileURL
+				uid: login
+				fieldName: @"c_settings"];
+  [o autorelease];
+
+  return o;
+}
+
 - (NSUserDefaults *) userDefaults
 {
-  id o;
+  SOGoUserDefaults *defaults;
+  NSDictionary *cachedDefaults;
 
-  o = [[SOGoCache cachedUserDefaults] objectForKey: login];
-
-  if (!o)
+  cachedDefaults = [[SOGoCache cachedUserDefaults] objectForKey: login];
+  if (cachedDefaults)
+    defaults = [cachedDefaults objectForKey: @"dictionary"];
+  else    
     {
-      o = [[SOGoUserDefaults alloc] initWithTableURL: SOGoProfileURL
-				    uid: login
-				    fieldName: @"c_defaults"];
+      defaults = [self primaryUserDefaults];
       /* Required parameters for the web interface */
-      if (![[o stringForKey: @"ReplyPlacement"] length])
-	[o setObject: defaultReplyPlacement forKey: @"ReplyPlacement"];
-      if (![[o stringForKey: @"SignaturePlacement"] length])
-	[o setObject: defaultSignaturePlacement forKey: @"SignaturePlacement"];
-      if (![[o stringForKey: @"MessageForwarding"] length])
-	[o setObject: defaultMessageForwarding forKey: @"MessageForwarding"];
-      if (![[o stringForKey: @"MessageCheck"] length])
-	[o setObject: defaultMessageCheck forKey: @"MessageCheck"];
+      if (![[defaults stringForKey: @"ReplyPlacement"] length])
+	[defaults setObject: defaultReplyPlacement forKey: @"ReplyPlacement"];
+      if (![[defaults stringForKey: @"SignaturePlacement"] length])
+	[defaults setObject: defaultSignaturePlacement forKey: @"SignaturePlacement"];
+      if (![[defaults stringForKey: @"MessageForwarding"] length])
+	[defaults setObject: defaultMessageForwarding forKey: @"MessageForwarding"];
+      if (![[defaults stringForKey: @"MessageCheck"] length])
+	[defaults setObject: defaultMessageCheck forKey: @"MessageCheck"];
 
-      [SOGoCache setCachedUserDefaults: o  user: login];
-      [o release];
-
-      return o;
+      [SOGoCache setCachedUserDefaults: defaults user: login];
     }
 
-  return [o objectForKey: @"dictionary"];
+  return (NSUserDefaults *) defaults;
 }
 
 - (NSUserDefaults *) userSettings
 {
-  id o;
+  SOGoUserDefaults *settings;
+  NSDictionary *cachedSettings;
 
-  o = [[SOGoCache cachedUserSettings] objectForKey: login];
-
-  if (!o)
+  cachedSettings = [[SOGoCache cachedUserSettings] objectForKey: login];
+  if (cachedSettings)
+    settings = [cachedSettings objectForKey: @"dictionary"];
+  else    
     {
-      o = [[SOGoUserDefaults alloc] initWithTableURL: SOGoProfileURL
-				    uid: login
-				    fieldName: @"c_settings"];
-      [SOGoCache setCachedUserSettings: o  user: login];
-      [o release];
-
-      return o;
+      settings = [self primaryUserSettings];
+      [SOGoCache setCachedUserSettings: settings user: login];
     }
 
-  return [o objectForKey: @"dictionary"];
+  return (NSUserDefaults *) settings;
 }
 
 - (NSString *) language
