@@ -305,6 +305,22 @@ static NSMutableCharacterSet *urlStartChars = nil;
   return [self doubleQuotedString];
 }
 
+- (NSString *) asCSSIdentifier
+{
+  NSMutableString *cssIdentifier;
+
+  cssIdentifier = [NSMutableString stringWithString: self];
+  [cssIdentifier replaceString: @"." withString: @"_D_"];
+  [cssIdentifier replaceString: @"#" withString: @"_H_"];
+  [cssIdentifier replaceString: @"@" withString: @"_A_"];
+  [cssIdentifier replaceString: @"*" withString: @"_S_"];
+  [cssIdentifier replaceString: @":" withString: @"_C_"];
+  [cssIdentifier replaceString: @"," withString: @"_CO_"];
+  [cssIdentifier replaceString: @" " withString: @"_SP_"];
+
+  return cssIdentifier;
+}
+
 - (NSString *) pureEMailAddress
 {
   NSString *pureAddress;

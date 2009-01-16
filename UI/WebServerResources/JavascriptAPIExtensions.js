@@ -58,6 +58,22 @@ String.prototype.asDate = function () {
   return newDate;  
 };
 
+String.prototype.asCSSIdentifier = function () {
+	var substitutions = { '.': '_D_',
+												'#': '_H_',
+												'@': '_A_',
+												'*': '_S_',
+												':': '_C_',
+												',': '_CO_',
+												' ': '_SP_' };
+	var newString = this;
+
+	for (var key in substitutions)
+		newString = newString.replace(key, substitutions[key]);
+
+  return newString;
+}
+
 Date.prototype.sogoDayName = function() {
   var dayName = "";
 
