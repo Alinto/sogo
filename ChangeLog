@@ -1,3 +1,9 @@
+2009-01-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/NSString+Utilities.m ([NSString
+	-asCSSIdentifier]): new method returning a "safe" CSS identifier
+	based on the original string.
+
 2009-01-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUser.m ([SOGoUser -userDefaults]): make use
