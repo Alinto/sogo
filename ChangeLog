@@ -1,3 +1,9 @@
+2009-01-19  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* Main/SOGo.m
+	We check if we have an empty configuration upon startup
+	and warn the user about this.
+
 2009-01-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/NSString+Utilities.m ([NSString
@@ -25,7 +31,7 @@
 	([SOGoGCSFolder -sendFolderAdvisoryTemplate:template]): now a
 	public method.
 
-2008-01-07  Ludovic Marcotte  <lmarcotte@inverse.ca>
+2009-01-07  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* Added Documentation/SOGo Mobile Devices Configuration.odt
 	* Fixed typos in the Intallation & Configuration guide
@@ -54,7 +60,7 @@
 	algorithm used in jsonRepresentation, the latter is now calling
 	this new method.
 
-2008-01-06  Ludovic Marcotte  <lmarcotte@inverse.ca>
+2009-01-06  Ludovic Marcotte  <lmarcotte@inverse.ca>
 	
 	* SoObjects/Appointments/SOGoCalendarComponent.m
 	([SOGoCalendarComponent -_filterComponent:]):

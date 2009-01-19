@@ -76,8 +76,11 @@ static BOOL debugObjectAllocation = NO;
   NSArray *basicRoles;
   id tmp;
 
-  NSLog (@"starting SOGo (build %@)", SOGoBuildDate);
+  NSLog(@"starting SOGo (build %@)", SOGoBuildDate);
   
+  if ([[ud persistentDomainForName: @"sogod-0.9"] count] == 0) 
+    NSLog(@"WARNING: No configuration found. SOGo will not work properly.");
+    
   doCrashOnSessionCreate = [ud boolForKey:@"SOGoCrashOnSessionCreate"];
 #ifdef GNUSTEP_BASE_LIBRARY
   debugObjectAllocation = [ud boolForKey: @"SOGoDebugObjectAllocation"];
