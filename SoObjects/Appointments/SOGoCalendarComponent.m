@@ -130,7 +130,7 @@ static BOOL sendEMailNotifications = NO;
   
   if ([component symbolicAccessClass] == iCalAccessPrivate)
     classification = 1;
-  else if ([component symbolicAccessClass] == iCalAccessPrivate)
+  else if ([component symbolicAccessClass] == iCalAccessConfidential)
     classification = 2;
   
   [component setSummary: [self labelForKey: [NSString stringWithFormat: @"%@_class%d", type, classification]]];
