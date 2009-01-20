@@ -133,6 +133,9 @@ SPAN.freeBusyZoneElement
 TABLE#freeBusyHeader TR.freeBusyHeader3 SPAN.freeBusyZoneElement
 { height: .25em; }
 
+TABLE#freeBusyHeader TR.freeBusyHeader3 SPAN.freeBusyZoneElement.busy
+{ background-color: #f03 !important; }
+
 TABLE#freeBusyData TD SPAN.freeBusyZoneElement
 { height: 98%; /* not nice under Safari */ }
 
