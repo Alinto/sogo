@@ -557,9 +557,6 @@ static Class sogoAppointmentFolderKlass = Nil;
   unsigned int count;
   NSCalendarDate *date;
   NSNumber *dateValue;
-  BOOL isAllDay;
-
-  isAllDay = [[_record objectForKey: @"c_isallday"] boolValue];
 
   md = [[_record mutableCopy] autorelease];
   for (count = 0; count < 2; count++)
@@ -582,7 +579,6 @@ static Class sogoAppointmentFolderKlass = Nil;
 }
 
 - (NSArray *) fixupRecords: (NSArray *) records
-                fetchRange: (NGCalendarDateRange *) r
 {
   // TODO: is the result supposed to be sorted by date?
   NSMutableArray *ma;
@@ -1003,7 +999,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   if (records)
     {
       if (r)
-        records = [self fixupRecords: records fetchRange: r];
+        records = [self fixupRecords: records];
       if (logger)
         [self debugWithFormat: @"fetched %i records: %@",
               [records count], records];

@@ -1,5 +1,11 @@
 2009-01-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder -fixupRecord:_record]): removed the unused
+	isAllDay local variable.
+	([SOGoAppointmentFolder -fixupRecords:records]): removed the
+	unused "fetchRange:" argument.
+
 	* SoObjects/SOGo/SOGoGCSFolder.m ([SOGoGCSFolder
 	+folderWithSubscriptionReference:referenceinContainer:aContainer]):
 	same as below.
