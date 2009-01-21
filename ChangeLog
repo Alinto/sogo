@@ -1,3 +1,14 @@
+2009-01-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoGCSFolder.m ([SOGoGCSFolder
+	-subscribe:reallyDoinTheNamesOf:delegatedUsersfromMailInvitation:isMailInvitationinContext:localContext]):
+	explicitly set the content-type of the response to text/plain with
+	charset='utf-8' to work-around a bug in Firefox, complaining about
+	a hypothetical text/xml content he does not receive.
+	* UI/Common/WODirectAction+SOGo.m ([WODirectAction
+	-responseWith204]):
+	same as above.
+
 2009-01-19  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* Main/SOGo.m

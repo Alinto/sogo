@@ -63,7 +63,13 @@
 
 - (WOResponse *) responseWith204
 {
-  return [self responseWithStatus: 204];
+  WOResponse *response;
+
+  response = [self responseWithStatus: 204];
+  [response setHeader: @"text/plain; charset=utf-8"
+	    forKey: @"Content-Type"];
+
+  return response;
 }
 
 - (WOResponse *) redirectToLocation: (NSString *) newLocation

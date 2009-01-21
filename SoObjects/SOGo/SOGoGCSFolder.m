@@ -671,6 +671,9 @@ static NSArray *childRecordFields = nil;
   SOGoUser *currentUser;
 
   response = [localContext response];
+  [response setHeader: @"text/plain; charset=utf-8"
+	    forKey: @"Content-Type"];
+
   currentUser = [localContext activeUser];
 
   if (delegatedUsers && [delegatedUsers count])
