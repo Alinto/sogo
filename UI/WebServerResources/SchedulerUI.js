@@ -1739,14 +1739,16 @@ function updateCalendarProperties(calendarID, calendarName, calendarColor) {
   var idParts = calendarID.split(":");
   var folderName = idParts[1].split("/")[1];
   var nodeID;
+
   if (idParts[0] != UserLogin)
-    nodeID = "/" + idParts[0] + "_" + folderName;
-  else
+    nodeID = "/" + idParts[0].asCSSIdentifier() + "_" + folderName;
+  else {
     nodeID = "/" + folderName;
 	//   log("nodeID: " + nodeID);
-  var calendarNode = $(nodeID);
-  var childNodes = calendarNode.childNodes;
-  childNodes[childNodes.length-1].nodeValue = calendarName;
+		var calendarNode = $(nodeID);
+		var childNodes = calendarNode.childNodes;
+		childNodes[childNodes.length-1].nodeValue = calendarName;
+	}
 
   appendStyleElement(nodeID, calendarColor);
 }

@@ -107,7 +107,7 @@
 
   if (isSubscription)
     {
-      ownerName = [self ownerInContext: context];
+      ownerName = [[self ownerInContext: context] asCSSIdentifier];
       realNameInContainer
 	= [nameInContainer substringFromIndex: [ownerName length] + 1];
     }

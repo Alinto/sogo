@@ -1,6 +1,16 @@
 2009-01-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoGCSFolder.m ([SOGoGCSFolder
+	+folderWithSubscriptionReference:referenceinContainer:aContainer]):
+	same as below.
+
+	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder -realNameInContainer]):
+	escape the owner name as a potential CSS identifier.
+
+	* SoObjects/SOGo/NSString+Utilities.m ([NSString
+	-asCSSIdentifier]): escape the "_" character first.
+
+	* SoObjects/SOGo/SOGoGCSFolder.m ([SOGoGCSFolder
 	-subscribe:reallyDoinTheNamesOf:delegatedUsersfromMailInvitation:isMailInvitationinContext:localContext]):
 	explicitly set the content-type of the response to text/plain with
 	charset='utf-8' to work-around a bug in Firefox, complaining about

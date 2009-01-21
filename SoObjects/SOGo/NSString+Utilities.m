@@ -310,6 +310,7 @@ static NSMutableCharacterSet *urlStartChars = nil;
   NSMutableString *cssIdentifier;
 
   cssIdentifier = [NSMutableString stringWithString: self];
+  [cssIdentifier replaceString: @"_" withString: @"_U_"];
   [cssIdentifier replaceString: @"." withString: @"_D_"];
   [cssIdentifier replaceString: @"#" withString: @"_H_"];
   [cssIdentifier replaceString: @"@" withString: @"_A_"];

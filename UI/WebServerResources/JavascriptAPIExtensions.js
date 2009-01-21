@@ -59,7 +59,8 @@ String.prototype.asDate = function () {
 };
 
 String.prototype.asCSSIdentifier = function () {
-	var substitutions = { '.': '_D_',
+	var substitutions = { '_': '_U_',
+												'.': '_D_',
 												'#': '_H_',
 												'@': '_A_',
 												'*': '_S_',

@@ -1135,7 +1135,7 @@ function accessToSubscribedFolder(serverFolder) {
 	var parts = serverFolder.split(":");
 	if (parts.length > 1) {
 		var paths = parts[1].split("/");
-		folder = "/" + parts[0] + "_" + paths[2];
+		folder = "/" + parts[0].asCSSIdentifier() + "_" + paths[2];
 	}
 	else
 		folder = serverFolder;

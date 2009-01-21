@@ -43,10 +43,10 @@
 #import <DOM/DOMProtocols.h>
 #import <EOControl/EOQualifier.h>
 #import <GDLAccess/EOAdaptorChannel.h>
+#import <GDLAccess/EOAdaptorContext.h>
 #import <GDLContentStore/GCSChannelManager.h>
 #import <GDLContentStore/GCSFolderManager.h>
 #import <GDLContentStore/GCSFolder.h>
-#import <GDLContentStore/GCSFolderType.h>
 #import <GDLContentStore/NSURL+GCS.h>
 #import <SaxObjC/XMLNamespaces.h>
 #import <UI/SOGoUI/SOGoFolderAdvisory.h>
@@ -164,7 +164,8 @@ static NSArray *childRecordFields = nil;
 
   path = [NSString stringWithFormat: @"/Users/%@/%@/%@",
 		   login, [pathElements objectAtIndex: 0], ocsName];
-  folderName = [NSString stringWithFormat: @"%@_%@", login, ocsName];
+  folderName = [NSString stringWithFormat: @"%@_%@",
+			 [login asCSSIdentifier], ocsName];
   newFolder = [self objectWithName: folderName inContainer: aContainer];
   [newFolder setOCSPath: path];
   [newFolder setOwner: login];
