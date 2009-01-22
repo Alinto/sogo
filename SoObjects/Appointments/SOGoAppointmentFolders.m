@@ -150,7 +150,6 @@
   return error;
 }
 
-#warning THIS CAUSES LIGHTNING TO FAIL (that is why its commented out)
 - (NSArray *) davComplianceClassesInContext: (id)_ctx
 {
   NSMutableArray *classes;

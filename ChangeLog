@@ -1,3 +1,14 @@
+2009-01-22  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+        * Updated the Apache section in the installation
+	and configuration guide
+	* Apache/SOGo.conf
+	Updated to use mod_proxy and mod_proxy_balancer
+	instead of mod_ngobjweb. We now also distribute
+	requests across three sogod processes.
+	* sogo.spec
+	Removed mod_ngobjweb from the build dependancies
+
 2009-01-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m

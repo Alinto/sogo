@@ -2,7 +2,7 @@
 
 # SOGo init script for Debian GNU/Linux
 #
-# Copyright (C) 2007 Inverse inc.
+# Copyright (C) 2007-2009 Inverse inc.
 #
 # Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
 #         Ludovic Marcotte <ludovic@inverse.ca>
@@ -23,7 +23,7 @@
 # Boston, MA 02111-1307, USA.
 
 # specify more if you are using a load-balancer
-PREFORK=1
+PREFORK=3
 
 SOGO_ARGS=""
 

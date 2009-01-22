@@ -10,7 +10,7 @@ Group:        Productivity/Groupware
 Source:       SOGo-%{sogo_version}.tar.gz
 Prefix:       %{sogo_prefix}
 AutoReqProv:  off
-Requires:     gnustep-base sope%{sope_major_version}%{sope_minor_version}-core httpd mod_ngobjweb sope%{sope_major_version}%{sope_minor_version}-core  sope%{sope_major_version}%{sope_minor_version}-appserver sope%{sope_major_version}%{sope_minor_version}-ldap sope%{sope_major_version}%{sope_minor_version}-cards sope%{sope_major_version}%{sope_minor_version}-gdl1-contentstore
+Requires:     gnustep-base sope%{sope_major_version}%{sope_minor_version}-core httpd sope%{sope_major_version}%{sope_minor_version}-core sope%{sope_major_version}%{sope_minor_version}-appserver sope%{sope_major_version}%{sope_minor_version}-ldap sope%{sope_major_version}%{sope_minor_version}-cards sope%{sope_major_version}%{sope_minor_version}-gdl1-contentstore
 BuildRoot:    %{_tmppath}/%{name}-%{version}-%{release}
 BuildPreReq:  gcc-objc gnustep-base gnustep-make sope%{sope_major_version}%{sope_minor_version}-appserver-devel sope%{sope_major_version}%{sope_minor_version}-core-devel sope%{sope_major_version}%{sope_minor_version}-ldap-devel sope%{sope_major_version}%{sope_minor_version}-mime-devel sope%{sope_major_version}%{sope_minor_version}-xml-devel sope%{sope_major_version}%{sope_minor_version}-gdl1-devel 
 %description
