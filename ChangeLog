@@ -80,7 +80,7 @@
 	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
 	-_handleCustomRRule:]): set the proper timezone for the end date.
 	([UIxComponentEditor -_loadRRules]): idem.
-	([UIxComponentEditor -init): instanciates an UIxDatePicker object
+	([UIxComponentEditor -init): instantiates an UIxDatePicker object
 	to retrieve the proper date format.
 
 	* UI/Scheduler/UIxAppointmentEditor.m ([UIxAppointmentEditor

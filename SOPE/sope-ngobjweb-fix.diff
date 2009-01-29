@@ -1,0 +1,12 @@
+--- sope-appserver/GNUmakefile.withngobjweb	2008-02-27 12:25:22.000000000 -0500
++++ sope-appserver/GNUmakefile	2008-02-27 12:25:29.000000000 -0500
+@@ -13,8 +13,7 @@
+ 	WOXML		\
+ 	SoOFS		\
+ 	NGXmlRpc	\
+-	WEPrototype	\
+-	mod_ngobjweb
++	WEPrototype
+ 
+ 
+ ifeq ($(frameworks),yes)
