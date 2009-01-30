@@ -21,7 +21,7 @@
 	<meta name="robots" content="stop" />
 	<meta name="build" var:content="buildDate" />
 	<link href="mailto:support@inverse.ca" rev="made" />
-	<link rel="shortcut icon" rsrc:href="lori_16x16.ico" type="image/x-icon" />
+	<link rel="shortcut icon" rsrc:href="sogo.ico" type="image/x-icon" />
 	<link type="text/css" rel="stylesheet" rsrc:href="generic.css" />
 	<link type="text/css" rel="stylesheet" rsrc:href="dtree.css" />
 	<var:if condition="hasProductSpecificCSS"
