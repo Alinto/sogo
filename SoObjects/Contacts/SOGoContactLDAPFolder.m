@@ -167,11 +167,12 @@
   if (!obj)
     {
       ldifEntry = [ldapSource lookupContactEntryWithUIDorEmail: objectName];
-      obj = ((ldifEntry)
-	     ? [SOGoContactLDIFEntry contactEntryWithName: objectName
-				     withLDIFEntry: ldifEntry
-				     inContainer: self]
-	     : [NSException exceptionWithHTTPStatus: 404]);
+      if (ldifEntry)
+	obj = [SOGoContactLDIFEntry contactEntryWithName: objectName
+				    withLDIFEntry: ldifEntry
+				    inContainer: self];
+      else
+	obj = [NSException exceptionWithHTTPStatus: 404];
     }
 
   return obj;
@@ -212,24 +213,24 @@
 	data = [oldRecord objectForKey: @"c_cn"];
       if (!data)
 	data = @"";
-      [newRecord setObject: data forKey: @"displayName"];
+      [newRecord setObject: data forKey: @"c_cn"];
 
       data = [oldRecord objectForKey: @"mail"];
       if (!data)
 	data = @"";
-      [newRecord setObject: data forKey: @"mail"];
+      [newRecord setObject: data forKey: @"c_mail"];
 
       data = [oldRecord objectForKey: @"nsAIMid"];
       if (![data length])
 	data = [oldRecord objectForKey: @"nscpaimscreenname"];
       if (![data length])
 	data = @"";
-      [newRecord setObject: data forKey: @"screenName"];
+      [newRecord setObject: data forKey: @"c_screenname"];
 
       data = [oldRecord objectForKey: @"o"];
       if (!data)
 	data = @"";
-      [newRecord setObject: data forKey: @"org"];
+      [newRecord setObject: data forKey: @"c_o"];
 
       data = [oldRecord objectForKey: @"telephoneNumber"];
       if (![data length])
@@ -238,7 +239,7 @@
 	data = [oldRecord objectForKey: @"homePhone"];
       if (![data length])
 	data = @"";
-      [newRecord setObject: data forKey: @"phone"];
+      [newRecord setObject: data forKey: @"c_telephonenumber"];
 
       contactInfo = [ud stringForKey: @"SOGoLDAPContactInfoAttribute"];
       if ([contactInfo length] > 0) {

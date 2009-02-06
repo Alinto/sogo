@@ -60,15 +60,6 @@
   return currentContact;
 }
 
-- (NSString *) currentCName
-{
-  NSString *cName;
-
-  cName = [currentContact objectForKey: @"c_name"];
-
-  return [cName stringByEscapingURL];
-}
-
 - (id <WOActionResults>) mailerContactsAction
 {
   selectorComponentClass = @"UIxContactsMailerSelection";

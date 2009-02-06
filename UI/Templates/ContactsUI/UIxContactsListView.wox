@@ -29,14 +29,13 @@
       <tbody>
         <var:foreach list="contactInfos" item="currentContact">
           <tr class="tableview"
-            var:id="currentCName"
-            var:contactname="currentContact.displayName"
-            var:contactid="currentContact.c_uid">
-            <td class="displayName"><var:string value="currentContact.displayName" const:escapeHTML="YES" /></td>
-            <td><var:string value="currentContact.mail"/></td>
-            <td><var:string value="currentContact.screenName"/></td>
-            <td><var:string value="currentContact.org"/></td>
-            <td><var:string value="currentContact.phone"/></td>
+            var:id="currentContact.c_name"
+            var:contactname="currentContact.c_cn">
+            <td class="displayName"><var:string value="currentContact.c_cn" const:escapeHTML="YES" /></td>
+            <td><var:string value="currentContact.c_mail"/></td>
+            <td><var:string value="currentContact.c_screenname"/></td>
+            <td><var:string value="currentContact.c_o"/></td>
+            <td><var:string value="currentContact.c_telephonenumber"/></td>
           </tr>
         </var:foreach>
       </tbody>
