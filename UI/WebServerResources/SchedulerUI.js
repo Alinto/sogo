@@ -316,6 +316,7 @@ function _editRecurrenceDialog(eventDiv, method) {
 function onViewEvent(event) {
   if (event.detail == 2) return;
   var url = ApplicationBaseURL + this.calendar + "/" + this.cname;
+
 	if (typeof this.recurrenceTime != "undefined")
 		url += "/occurence" + this.recurrenceTime;
 	url += "/view";
@@ -346,7 +347,6 @@ function onViewEventCallback(http) {
       if (currentView != "monthview") {
 				view = $("daysView");
 				var viewPosition = view.cumulativeOffset();
-	
 				if (parseInt(data["isAllDay"]) == 0) {
 					top -= view.scrollTop;
 					if (viewPosition[1] > top + 2) {
@@ -398,7 +398,7 @@ function onViewEventCallback(http) {
     }
   }
 	else {
-    log("onViewEventCallback ajax error: " + http.url);		
+    log("onViewEventCallback ajax error (" + http.status + "): " + http.url);		
 	}
 }
 
@@ -998,11 +998,13 @@ function newBaseEventDIV(eventRep, event, eventText) {
   textDiv.addClassName("text");
   textDiv.appendChild(document.createTextNode(eventText));
 
-  eventDiv.observe("mousedown", listRowMouseDownHandler);
-  eventDiv.observe("click", onCalendarSelectEvent);
-  eventDiv.observe("dblclick", editDoubleClickedEvent);
-  eventDiv.observe("click", onViewEvent);
-
+	if (event[6] != null) {
+		// Location field is defined -- user can read event
+		eventDiv.observe("mousedown", listRowMouseDownHandler);
+		eventDiv.observe("click", onCalendarSelectEvent);
+		eventDiv.observe("dblclick", editDoubleClickedEvent);
+		eventDiv.observe("click", onViewEvent);
+	}
   event.blocks.push(eventDiv);
 
   return eventDiv;
@@ -1848,7 +1850,7 @@ function appendStyleElement(folderPath, color) {
       if (styleElement.styleSheet && styleElement.styleSheet.addRule)
 				styleElement.styleSheet.addRule(selectors[i], rules[i]); // IE
       else
-				styleElement.appendChild(document.createTextNode(selectors[i] + rules[i])); // Mozilla _+ Safari
+				styleElement.appendChild(document.createTextNode(selectors[i] + rules[i])); // Mozilla + Safari
     document.getElementsByTagName("head")[0].appendChild(styleElement);
   }
 }
