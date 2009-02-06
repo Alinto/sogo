@@ -57,7 +57,6 @@
   [attendee release];
   [item release];
   [inCalendar release];
-  [inEvent release];
   [dateFormatter release];
   [super dealloc];
 }
@@ -67,7 +66,7 @@
 - (void) resetPathCaches
 {
   [super resetPathCaches];
-  [inEvent release]; inEvent = nil;
+  inEvent = nil;
   [inCalendar release]; inCalendar = nil;
   [storedEventObject release]; storedEventObject = nil;
   [storedEvent release]; storedEvent = nil;
@@ -104,7 +103,7 @@
     {
       events = [[self inCalendar] events];
       if ([events count] > 0)
-	inEvent = [[events objectAtIndex: 0] retain];
+	inEvent = [events objectAtIndex: 0];
     }
 
   return inEvent;

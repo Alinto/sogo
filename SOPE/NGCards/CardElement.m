@@ -105,7 +105,6 @@
 
 - (void) dealloc
 {
-  [parent release];
   [tag release];
   [group release];
   [attributes release];
@@ -115,8 +114,7 @@
 
 - (void) setParent: (CardGroup *) aParent
 {
-#warning THIS CAUSES A LEAK. We need this for the moment because of a design error.
-  ASSIGN (parent, aParent);
+  parent = aParent;
 }
 
 - (id) parent
