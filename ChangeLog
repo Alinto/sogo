@@ -1,5 +1,9 @@
 2009-02-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoGCSFolder.m ([SOGoGCSFolder
+	-aclsForUser:uidforObjectAtPath:objectPathArray]): cache an empty
+	array if not acl have been returned for the specified user.
+
 	* SoObjects/Contacts/SOGoContactGCSFolder.m ([SOGoContactGCSFolder
 	-lookupContactsWithFilter:filtersortBy:sortKeyordering:sortOrdering]):
 	same as below.
