@@ -1,9 +1,10 @@
-1.0-2008XXYY (1.0)
+1.0-20090130 (1.0 rc9)
 ------------------
 - added quota indicator in web mail module
 - improved drag handles behavior
 - added support for LDAP-based configuration
 - improved init script when killing proccesses
+- improved behavior of recurrent events with attendees
 - improved the ACL editor of the calendar web module
 - fixed handling of timezones in daily and weekly events
 
