@@ -1,3 +1,21 @@
+2009-02-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Contacts/SOGoContactGCSFolder.m ([SOGoContactGCSFolder
+	-lookupContactsWithFilter:filtersortBy:sortKeyordering:sortOrdering]):
+	same as below.
+	([SOGoContactGCSFolder -fixupContactRecord:contactRecord]): new
+	method that initializes c_mail, c_screenname, c_o,
+	c_telephonenumber to empty strings if not found.
+
+	* SoObjects/Contacts/SOGoContactLDAPFolder.m
+	([SOGoContactLDAPFolder
+	-lookupContactsWithFilter:filtersortBy:sortKeyordering:sortOrdering]):
+	no longer make use of the displayName, mail, screenName, phone and
+	org intermediary keys.
+
+	* UI/Contacts/UIxContactsListView.m ([-currentCName]): removed
+	useless method.
+
 2009-02-05  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/SOGoUI/UIxComponent.m ([UIxComponent -responseWithStatus:):
