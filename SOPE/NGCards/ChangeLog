@@ -1,4 +1,4 @@
-2008-12-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+2009-02-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* CardElement.m ([CardElement -setParent:aParent]): no longer
 	retain the parent passed as parameter.
