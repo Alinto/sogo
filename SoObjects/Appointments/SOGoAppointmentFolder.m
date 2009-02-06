@@ -880,6 +880,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 					      @"c_uid", @"c_startdate",
 					      @"c_enddate", @"c_isallday",
 					      @"c_iscycle", @"c_isopaque",
+					      @"c_cycleinfo",
+					      @"c_cycleenddate",
 					      @"c_classification",
 					      @"c_component", nil]];
 }

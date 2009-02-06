@@ -1,5 +1,11 @@
 2009-02-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder
+	-fetchFields:_fieldsfrom:_startDateto:_endDatetitle:titlecomponent:_componentadditionalFilters:filtersincludeProtectedInformation:_includeProtectedInformation]):
+	added the "c_cycleinfo" and "c_cycleenddate" fields to the list of
+	fields that should not be stripped when removing protected informations.
+
 	* UI/Scheduler/UIxTaskEditor.m ([UIxTaskEditor -dealloc])
 	([UIxTaskEditor -todo]): same as below (apts).
 
