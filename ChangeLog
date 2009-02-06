@@ -1,3 +1,12 @@
+2009-02-05  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/SOGoUI/UIxComponent.m ([UIxComponent -responseWithStatus:):
+	we now set the content-type to "text/plain" to fix issues with nginx.
+
+	* UI/MailPartViewers/UIxMailPartHTMLViewer.m
+	([UIxMailPartHTMLViewer
+	-startElement:namespace:rawName:attributes:]): the base tag must be ignored.
+
 2009-01-22  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
         * Updated the Apache section in the installation

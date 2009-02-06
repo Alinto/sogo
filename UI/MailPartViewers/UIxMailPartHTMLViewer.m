@@ -276,6 +276,8 @@ _xmlCharsetForCharset (NSString *charset)
   showWhoWeAre();
   if (inStyle || inScript)
     ;
+  else if ([_localName caseInsensitiveCompare: @"base"] == NSOrderedSame)
+    ;
   else if ([_localName caseInsensitiveCompare: @"body"] == NSOrderedSame)
     inBody = YES;
   else if ([_localName caseInsensitiveCompare: @"script"] == NSOrderedSame)
