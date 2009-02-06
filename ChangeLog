@@ -1,5 +1,11 @@
 2009-02-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Main/SOGo.m ([SOGo +initialize]): added handling of the
+	"SOGoDebugLeaks" configuration variable.
+	([SOGo -dispatchRequest:_request]): log the classes of instances
+	that were leaked between the handling of the request, if
+	SOGoDebugLeaks is set.
+
 	* SoObjects/SOGo/SOGoGCSFolder.m ([SOGoGCSFolder
 	-aclsForUser:uidforObjectAtPath:objectPathArray]): cache an empty
 	array if not acl have been returned for the specified user.
