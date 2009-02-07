@@ -19,6 +19,7 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSDebug.h>
 #import <Foundation/NSData.h>
 #import <Foundation/NSDate.h>
@@ -64,6 +65,7 @@ static unsigned int vMemSizeLimit = 0;
 static BOOL doCrashOnSessionCreate = NO;
 static BOOL hasCheckedTables = NO;
 static BOOL debugRequests = NO;
+static BOOL debugLeaks = NO;
 
 #ifdef GNUSTEP_BASE_LIBRARY
 static BOOL debugObjectAllocation = NO;
@@ -91,6 +93,7 @@ static BOOL debugObjectAllocation = NO;
     }
 #endif
   debugRequests = [ud boolForKey: @"SOGoDebugRequests"];
+  debugLeaks = [ud boolForKey: @"SOGoDebugLeaks"];
   /* vMem size check - default is 200MB */
     
   tmp = [ud objectForKey: @"SxVMemLimit"];
@@ -394,6 +397,7 @@ static BOOL debugObjectAllocation = NO;
   static NSArray *runLoopModes = nil;
   WOResponse *resp;
   NSDate *startDate, *endDate;
+  NSAutoreleasePool *pool;
 
   if (debugRequests)
     {
@@ -403,6 +407,13 @@ static BOOL debugObjectAllocation = NO;
     }
 
   cache = [SOGoCache sharedCache];
+  if (debugLeaks)
+    {
+      GSDebugAllocationActive (YES);
+      GSDebugAllocationList (NO);
+      pool = [NSAutoreleasePool new];
+    }
+
   resp = [super dispatchRequest: _request];
   [SOGoCache killCache];
 
@@ -411,6 +422,15 @@ static BOOL debugObjectAllocation = NO;
       endDate = [NSDate date];
       [self logWithFormat: @"request took %f seconds to execute",
 	    [endDate timeIntervalSinceDate: startDate]];
+    }
+
+  if (debugLeaks)
+    {
+      [resp retain];
+      [pool release];
+      [resp autorelease];
+      NSLog (@"allocated classes:\n%s", GSDebugAllocationList (YES));
+      GSDebugAllocationActive (NO);
     }
 
   if (![self isTerminating])

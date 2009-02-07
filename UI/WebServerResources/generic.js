@@ -207,7 +207,7 @@ function openUserFolderSelector(callback, type) {
 }
 
 function openContactWindow(url, wId) {
-	if (typeof wId == "undefined")
+	if (!wId)
 		wId = "_blank";
 	else {
 		wId = sanitizeWindowName(wId);
@@ -223,7 +223,7 @@ function openContactWindow(url, wId) {
 function openMailComposeWindow(url, wId) {
 	var parentWindow = this;
 
-	if (typeof wId == "undefined")
+	if (!wId)
 		wId = "_blank";
 	else {
 		wId = sanitizeWindowName(wId);

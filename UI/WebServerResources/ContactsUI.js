@@ -351,10 +351,10 @@ function moveTo(uri) {
 
 /* contact menu entries */
 function onContactRowDblClick(event) {
-  var contactId = this.getAttribute('contactid');
+  var cname = this.getAttribute('id');
 
   openContactWindow(URLForFolderID(Contact.currentAddressBook)
-										+ "/" + contactId + "/edit", contactId);
+										+ "/" + cname + "/edit", cname);
 
   return false;
 }
@@ -364,7 +364,7 @@ function onContactSelectionChange(event) {
   
   if (rows.length == 1) {
     var node = $(rows[0]);
-    loadContact(node.getAttribute('contactid'));
+    loadContact(node.getAttribute('id'));
   }
   else if (rows.length > 1) {
     $('contactView').update();
@@ -551,7 +551,7 @@ function onConfirmContactSelection(event) {
   var contactsList = $("contactsList");
   var rows = contactsList.getSelectedRows();
   for (i = 0; i < rows.length; i++) {
-    var cid = rows[i].getAttribute("contactid");
+    var cid = rows[i].getAttribute("id");
     var cname = '' + rows[i].getAttribute("contactname");
     var email = '' + rows[i].cells[1].innerHTML;
 		
@@ -562,10 +562,10 @@ function onConfirmContactSelection(event) {
   preventDefault(event);
 }
 
-function refreshContacts(contactId) {
-  openContactsFolder(Contact.currentAddressBook, true, contactId);
-  delete cachedContacts[Contact.currentAddressBook + "/" + contactId];
-  loadContact(contactId);
+function refreshContacts(cname) {
+  openContactsFolder(Contact.currentAddressBook, true, cname);
+  delete cachedContacts[Contact.currentAddressBook + "/" + cname];
+  loadContact(cname);
 
   return false;
 }

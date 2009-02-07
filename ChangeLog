@@ -4,6 +4,52 @@
 	add CardDAV stuff. Currently only implements the
 	addressbook-home-set report from the principal URL.
 
+2009-02-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder
+	-fetchFields:_fieldsfrom:_startDateto:_endDatetitle:titlecomponent:_componentadditionalFilters:filtersincludeProtectedInformation:_includeProtectedInformation]):
+	added the "c_cycleinfo" and "c_cycleenddate" fields to the list of
+	fields that should not be stripped when removing protected informations.
+
+	* UI/Scheduler/UIxTaskEditor.m ([UIxTaskEditor -dealloc])
+	([UIxTaskEditor -todo]): same as below (apts).
+
+	* UI/Scheduler/UIxAppointmentEditor.m ([UIxAppointmentEditor
+	-event]): retain the event parent calendar object instead of the
+	event itself.
+	([UIxAppointmentEditor -dealloc]): release the above calendar.
+
+	* UI/MailPartViewers/UIxMailPartICalViewer.m
+	([UIxMailPartICalViewer -dealloc]): no longer release "inEvent"
+	since it does not need to be retained.
+
+	* Main/SOGo.m ([SOGo +initialize]): added handling of the
+	"SOGoDebugLeaks" configuration variable.
+	([SOGo -dispatchRequest:_request]): log the classes of instances
+	that were leaked between the handling of the request, if
+	SOGoDebugLeaks is set.
+
+	* SoObjects/SOGo/SOGoGCSFolder.m ([SOGoGCSFolder
+	-aclsForUser:uidforObjectAtPath:objectPathArray]): cache an empty
+	array if not acl have been returned for the specified user.
+
+	* SoObjects/Contacts/SOGoContactGCSFolder.m ([SOGoContactGCSFolder
+	-lookupContactsWithFilter:filtersortBy:sortKeyordering:sortOrdering]):
+	same as below.
+	([SOGoContactGCSFolder -fixupContactRecord:contactRecord]): new
+	method that initializes c_mail, c_screenname, c_o,
+	c_telephonenumber to empty strings if not found.
+
+	* SoObjects/Contacts/SOGoContactLDAPFolder.m
+	([SOGoContactLDAPFolder
+	-lookupContactsWithFilter:filtersortBy:sortKeyordering:sortOrdering]):
+	no longer make use of the displayName, mail, screenName, phone and
+	org intermediary keys.
+
+	* UI/Contacts/UIxContactsListView.m ([-currentCName]): removed
+	useless method.
+
 2009-02-05  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/SOGoUI/UIxComponent.m ([UIxComponent -responseWithStatus:):

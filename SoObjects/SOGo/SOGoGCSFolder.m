@@ -817,6 +817,8 @@ static NSArray *childRecordFields = nil;
   if (!acls)
     {
       acls = [self _fetchAclsForUser: uid forObjectAtPath: objectPath];
+      if (!acls)
+	acls = [NSArray array];
       [self _cacheRoles: acls forUser: uid forObjectAtPath: objectPath];
     }
 

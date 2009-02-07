@@ -232,13 +232,33 @@
   return qualifier;
 }
 
+- (void) fixupContactRecord: (NSMutableDictionary *) contactRecord
+{
+  NSString *data;
+
+  data = [contactRecord objectForKey: @"c_cn"];
+  if (![data length])
+    {
+      data = [contactRecord keysWithFormat: @"%{c_givenname} %{c_sn}"];
+      [contactRecord setObject: data forKey: @"c_cn"];
+    }
+
+  if (![contactRecord objectForKey: @"c_mail"])
+    [contactRecord setObject: @"" forKey: @"c_mail"];
+  if (![contactRecord objectForKey: @"c_screenname"])
+    [contactRecord setObject: @"" forKey: @"c_screenname"];
+  if (![contactRecord objectForKey: @"c_o"])
+    [contactRecord setObject: @"" forKey: @"c_o"];
+  if (![contactRecord objectForKey: @"c_telephonenumber"])
+    [contactRecord setObject: @"" forKey: @"c_telephonenumber"];
+}
+
 - (NSArray *) _flattenedRecords: (NSArray *) records
 {
   NSMutableArray *newRecords;
   NSEnumerator *oldRecords;
   NSDictionary *oldRecord;
   NSMutableDictionary *newRecord;
-  NSString *data;
   
   newRecords = [NSMutableArray arrayWithCapacity: [records count]];
 
@@ -246,40 +266,8 @@
   oldRecord = [oldRecords nextObject];
   while (oldRecord)
     {
-      newRecord = [NSMutableDictionary new];
-      [newRecord autorelease];
-
-      [newRecord setObject: [oldRecord objectForKey: @"c_name"]
-		 forKey: @"c_uid"];
-      [newRecord setObject: [oldRecord objectForKey: @"c_name"]
-		 forKey: @"c_name"];
-
-      data = [oldRecord objectForKey: @"c_cn"];
-      if (![data length])
-	data = [oldRecord keysWithFormat: @"%{c_givenname} %{c_sn}"];
-      [newRecord setObject: data
-		 forKey: @"displayName"];
-
-      data = [oldRecord objectForKey: @"c_mail"];
-      if (!data)
-	data = @"";
-      [newRecord setObject: data forKey: @"mail"];
-
-      data = [oldRecord objectForKey: @"c_screenname"];
-      if (!data)
-	data = @"";
-      [newRecord setObject: data forKey: @"screenName"];
-
-      data = [oldRecord objectForKey: @"c_o"];
-      if (!data)
-	data = @"";
-      [newRecord setObject: data forKey: @"org"];
-
-      data = [oldRecord objectForKey: @"c_telephonenumber"];
-      if (![data length])
-	data = @"";
-      [newRecord setObject: data forKey: @"phone"];
-
+      newRecord = [NSMutableDictionary dictionaryWithDictionary: oldRecord];
+      [self fixupContactRecord: newRecord];
       [newRecords addObject: newRecord];
       oldRecord = [oldRecords nextObject];
     }

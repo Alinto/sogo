@@ -74,7 +74,7 @@
 - (void) dealloc
 {
   [item release];
-  [event release];
+  [[event parent] release];
   [aptStartDate release];
   [aptEndDate release];
   [componentCalendar release];
@@ -87,7 +87,7 @@
   if (!event)
     {
       event = (iCalEvent *) [[self clientObject] occurence];
-      [event retain];
+      [[event parent] retain];
     }
 
   return event;

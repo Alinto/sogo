@@ -32,6 +32,8 @@
 
 @interface SOGoContactGCSFolder : SOGoGCSFolder <SOGoContactFolder>
 
+- (void) fixupContactRecord: (NSMutableDictionary *) contactRecord;
+
 @end
 
 #endif /* __Contacts_SOGoContactGCSFolder_H__ */

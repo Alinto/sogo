@@ -67,7 +67,7 @@
   [statusDate release];
   [status release];
   [statusPercent release];
-  [todo release];
+  [[todo parent] release];
   [super dealloc];
 }
 
@@ -77,7 +77,7 @@
   if (!todo)
     {
       todo = (iCalToDo *) [[self clientObject] component: YES secure: YES];
-      [todo retain];
+      [[todo parent] retain];
     }
 
   return todo;
