@@ -1,3 +1,9 @@
+2009-02-06  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Contacts/SOGoUserFolder+Contacts.[hm]: new class to
+	add CardDAV stuff. Currently only implements the
+	addressbook-home-set report from the principal URL.
+
 2009-02-05  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/SOGoUI/UIxComponent.m ([UIxComponent -responseWithStatus:):

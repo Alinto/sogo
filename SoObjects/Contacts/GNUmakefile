@@ -16,6 +16,7 @@ Contacts_OBJC_FILES =			\
 	SOGoContactGCSFolder.m		\
 	SOGoContactLDIFEntry.m		\
 	SOGoContactLDAPFolder.m		\
+	SOGoUserFolder+Contacts.m		\
 
 Contacts_RESOURCE_FILES +=		\
 	Version				\
