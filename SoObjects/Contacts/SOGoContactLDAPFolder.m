@@ -57,29 +57,32 @@
   NSString *name, *etagLine, *contactString;
 
   name = [object objectForKey: @"c_name"];
-  component = [self lookupName: name inContext: context acquire: NO];
+  if ([name length])
+    {
+      component = [self lookupName: name inContext: context acquire: NO];
 
-  [r appendContentString: @"  <D:response>\r\n"];
-  [r appendContentString: @"    <D:href>"];
-  [r appendContentString: baseURL];
-  if (![baseURL hasSuffix: @"/"])
-    [r appendContentString: @"/"];
-  [r appendContentString: name];
-  [r appendContentString: @"</D:href>\r\n"];
+      [r appendContentString: @"  <D:response>\r\n"];
+      [r appendContentString: @"    <D:href>"];
+      [r appendContentString: baseURL];
+      if (![baseURL hasSuffix: @"/"])
+	[r appendContentString: @"/"];
+      [r appendContentString: name];
+      [r appendContentString: @"</D:href>\r\n"];
 
-  [r appendContentString: @"    <D:propstat>\r\n"];
-  [r appendContentString: @"      <D:prop>\r\n"];
-  etagLine = [NSString stringWithFormat: @"        <D:getetag>%@</D:getetag>\r\n",
-                       [component davEntityTag]];
-  [r appendContentString: etagLine];
-  [r appendContentString: @"      </D:prop>\r\n"];
-  [r appendContentString: @"      <D:status>HTTP/1.1 200 OK</D:status>\r\n"];
-  [r appendContentString: @"    </D:propstat>\r\n"];
-  [r appendContentString: @"    <C:addressbook-data>"];
-  contactString = [[component contentAsString] stringByEscapingXMLString];
-  [r appendContentString: contactString];
-  [r appendContentString: @"</C:addressbook-data>\r\n"];
-  [r appendContentString: @"  </D:response>\r\n"];
+      [r appendContentString: @"    <D:propstat>\r\n"];
+      [r appendContentString: @"      <D:prop>\r\n"];
+      etagLine = [NSString stringWithFormat: @"        <D:getetag>%@</D:getetag>\r\n",
+			   [component davEntityTag]];
+      [r appendContentString: etagLine];
+      [r appendContentString: @"      </D:prop>\r\n"];
+      [r appendContentString: @"      <D:status>HTTP/1.1 200 OK</D:status>\r\n"];
+      [r appendContentString: @"    </D:propstat>\r\n"];
+      [r appendContentString: @"    <C:addressbook-data>"];
+      contactString = [[component contentAsString] stringByEscapingXMLString];
+      [r appendContentString: contactString];
+      [r appendContentString: @"</C:addressbook-data>\r\n"];
+      [r appendContentString: @"  </D:response>\r\n"];
+    }
 }
 
 + (id) folderWithName: (NSString *) aName

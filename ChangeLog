@@ -1,3 +1,10 @@
+2009-02-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Contacts/SOGoContactLDAPFolder.m
+	([SOGoContactLDAPFolder
+	-appendObject:objectwithBaseURL:baseURLtoREPORTResponse:r]): don't
+	lookup the returned object if its c_name has no length.
+
 2009-02-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
