@@ -1,194 +1,7 @@
-Index: sope-gdl1/PostgreSQL/PostgreSQL72Channel.m
-===================================================================
---- sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(révision 1630)
-+++ sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(copie de travail)
-@@ -713,6 +713,39 @@
-   return ms;
- }
- 
-+/* GCSEOAdaptorChannel protocol */
-+static NSString *sqlFolderFormat = (@"CREATE TABLE %@ (\n"	\
-+				    @"  c_name VARCHAR (256) NOT NULL PRIMARY KEY,\n"
-+				    @"  c_content VARCHAR (100000) NOT NULL,\n"
-+				    @"  c_creationdate INT4 NOT NULL,\n"
-+				    @"  c_lastmodified INT4 NOT NULL,\n"
-+				    @"  c_version INT4 NOT NULL,\n"
-+				    @"  c_deleted INT4 NULL\n"
-+				    @")");
-+static NSString *sqlFolderACLFormat = (@"CREATE TABLE %@ (\n"	\
-+				       @"  c_uid VARCHAR (256) NOT NULL,\n"
-+				       @"  c_object VARCHAR (256) NOT NULL,\n"
-+				       @"  c_role VARCHAR (80) NOT NULL\n"
-+				       @")");
-+
-+- (NSException *) createGCSFolderTableWithName: (NSString *) tableName
-+{
-+  NSString *sql;
-+
-+  sql = [NSString stringWithFormat: sqlFolderFormat, tableName];
-+
-+  return [self evaluateExpressionX: sql];
-+}
-+
-+- (NSException *) createGCSFolderACLTableWithName: (NSString *) tableName
-+{
-+  NSString *sql;
-+
-+  sql = [NSString stringWithFormat: sqlFolderACLFormat, tableName];
-+
-+  return [self evaluateExpressionX: sql];
-+}
-+
- @end /* PostgreSQL72Channel */
- 
- @implementation PostgreSQL72Channel(PrimaryKeyGeneration)
-Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
-===================================================================
---- sope-gdl1/Oracle8/OracleAdaptorChannel.m	(révision 1630)
-+++ sope-gdl1/Oracle8/OracleAdaptorChannel.m	(copie de travail)
-@@ -30,6 +30,7 @@
- 
- #import <NGExtensions/NSObject+Logs.h>
- 
-+static BOOL debugOn = NO;
- //
- //
- //
-@@ -41,10 +42,19 @@
- 
- @implementation OracleAdaptorChannel (Private)
- 
---  (void) _cleanup
-++ (void) initialize
- {
-+  NSUserDefaults *ud;
-+
-+  ud = [NSUserDefaults standardUserDefaults];
-+  debugOn = [ud boolForKey: @"OracleAdaptorDebug"];
-+}
-+
-+- (void) _cleanup
-+{
-   column_info *info;
-   int c;
-+  sword result;
- 
-   [_resultSetProperties removeAllObjects];
- 
-@@ -58,11 +68,29 @@
-       // so we just free the value instead.
-       if (info->value)
- 	{
--	  if (OCIDescriptorFree((dvoid *)info->value, (ub4)OCI_DTYPE_LOB) != OCI_SUCCESS)
-+	  if (info->type == SQLT_CLOB
-+	      || info->type == SQLT_BLOB
-+	      || info->type == SQLT_BFILEE
-+	      || info->type == SQLT_CFILEE)
-+	    {
-+	      result = OCIDescriptorFree((dvoid *)info->value, (ub4) OCI_DTYPE_LOB);
-+	      if (result != OCI_SUCCESS)
-+		{
-+		  NSLog (@"value was not a LOB descriptor");
-+		  abort();
-+		}
-+	    }
-+	  else
- 	    free(info->value);
- 	  info->value = NULL;
- 	}
--       free(info);
-+      else
-+	{
-+	  NSLog (@"trying to free an already freed value!");
-+	  abort();
-+	}
-+      free(info);
-+
-       [_row_buffer removeObjectAtIndex: c];
-     }
- 
-@@ -231,6 +259,9 @@
- 
-   [self _cleanup];
- 
-+  if (debugOn)
-+    [self logWithFormat: @"expression: %@", theExpression];
-+
-   if (!theExpression || ![theExpression length])
-     {
-       [NSException raise: @"OracleInvalidExpressionException"
-@@ -302,7 +333,9 @@
-       // We read the maximum width of a column
-       info->max_width = 0;
-       status = OCIAttrGet((dvoid*)param, (ub4)OCI_DTYPE_PARAM, (dvoid*)&(info->max_width), (ub4 *)0, (ub4)OCI_ATTR_DATA_SIZE, (OCIError *)_oci_err);
--      
-+
-+      if (debugOn)
-+	NSLog(@"name: %s, type: %d", cname, info->type);
-       attribute = [EOAttribute attributeWithOracleType: info->type  name: cname  length: clen  width: info->max_width];
-       [_resultSetProperties addObject: attribute];
- 
-@@ -609,7 +642,7 @@
- 
- /* GCSEOAdaptorChannel protocol */
- static NSString *sqlFolderFormat = (@"CREATE TABLE %@ (\n"	\
--				    @"  c_name VARCHAR2 (256) NOT NULL,\n"
-+				    @"  c_name VARCHAR2 (256) NOT NULL PRIMARY KEY,\n"
- 				    @"  c_content CLOB NOT NULL,\n"
- 				    @"  c_creationdate INTEGER NOT NULL,\n"
- 				    @"  c_lastmodified INTEGER NOT NULL,\n"
-Index: sope-gdl1/Oracle8/OracleAdaptorChannelController.m
-===================================================================
---- sope-gdl1/Oracle8/OracleAdaptorChannelController.m	(révision 1630)
-+++ sope-gdl1/Oracle8/OracleAdaptorChannelController.m	(copie de travail)
-@@ -31,6 +31,8 @@
- #import <Foundation/Foundation.h>
- #import <GDLAccess/EOSQLExpression.h>
- 
-+static BOOL debugOn = NO;
-+
- //
- //
- //
-@@ -48,6 +50,14 @@
- //
- @implementation OracleAdaptorChannelController
- 
-++ (void) initialize
-+{
-+  NSUserDefaults *ud;
-+
-+  ud = [NSUserDefaults standardUserDefaults];
-+  debugOn = [ud boolForKey: @"OracleAdaptorDebug"];
-+}
-+
- - (EODelegateResponse) adaptorChannel: (id) theChannel
-                         willInsertRow: (NSMutableDictionary *) theRow
-                             forEntity: (EOEntity *) theEntity
-@@ -56,7 +66,8 @@
-   NSArray *keys;
-   int i, c;
- 
--  NSLog(@"willInsertRow: %@ %@", [theRow description], [theEntity description]);
-+  if (debugOn)
-+    NSLog(@"willInsertRow: %@ %@", [theRow description], [theEntity description]);
- 
-   s = AUTORELEASE([[NSMutableString alloc] init]);
- 
-@@ -101,7 +112,8 @@
-   NSArray *keys;
-   int i, c;
- 
--  NSLog(@"willUpdatetRow: %@ %@", [theRow description], [theQualifier description]);
-+  if (debugOn)
-+    NSLog(@"willUpdateRow: %@ %@", [theRow description], [theQualifier description]);
- 
-   s = AUTORELEASE([[NSMutableString alloc] init]);
- 
 Index: sope-mime/NGImap4/NGImap4Client.h
 ===================================================================
---- sope-mime/NGImap4/NGImap4Client.h	(révision 1630)
-+++ sope-mime/NGImap4/NGImap4Client.h	(copie de travail)
+--- sope-mime/NGImap4/NGImap4Client.h	(revision 1630)
++++ sope-mime/NGImap4/NGImap4Client.h	(working copy)
 @@ -62,6 +62,8 @@
    NGImap4ResponseNormalizer *normer;
    NSMutableArray            *responseReceiver;  
@@ -217,8 +30,8 @@ Index: sope-mime/NGImap4/NGImap4Client.h
  - (NSDictionary *)copyUid:(unsigned)_uid    toFolder:(NSString *)_folder;
 Index: sope-mime/NGImap4/NGImap4Client.m
 ===================================================================
---- sope-mime/NGImap4/NGImap4Client.m	(révision 1630)
-+++ sope-mime/NGImap4/NGImap4Client.m	(copie de travail)
+--- sope-mime/NGImap4/NGImap4Client.m	(revision 1630)
++++ sope-mime/NGImap4/NGImap4Client.m	(working copy)
 @@ -24,6 +24,8 @@
  #include "NGImap4Client.h"
  #include "NGImap4Context.h"
@@ -526,8 +339,8 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  	__PRETTY_FUNCTION__, [_exception name], [_exception reason]];
 Index: sope-mime/NGImap4/NGSieveClient.m
 ===================================================================
---- sope-mime/NGImap4/NGSieveClient.m	(révision 1630)
-+++ sope-mime/NGImap4/NGSieveClient.m	(copie de travail)
+--- sope-mime/NGImap4/NGSieveClient.m	(revision 1630)
++++ sope-mime/NGImap4/NGSieveClient.m	(working copy)
 @@ -294,8 +294,8 @@
        return con;
    }
@@ -562,8 +375,8 @@ Index: sope-mime/NGImap4/NGSieveClient.m
    /* write */
 Index: sope-mime/NGImap4/NGImap4Connection.h
 ===================================================================
---- sope-mime/NGImap4/NGImap4Connection.h	(révision 1630)
-+++ sope-mime/NGImap4/NGImap4Connection.h	(copie de travail)
+--- sope-mime/NGImap4/NGImap4Connection.h	(revision 1630)
++++ sope-mime/NGImap4/NGImap4Connection.h	(working copy)
 @@ -89,6 +89,7 @@
  
  - (NSArray *)subfoldersForURL:(NSURL *)_url;
@@ -574,8 +387,8 @@ Index: sope-mime/NGImap4/NGImap4Connection.h
  
 Index: sope-mime/NGImap4/NGImap4Connection.m
 ===================================================================
---- sope-mime/NGImap4/NGImap4Connection.m	(révision 1630)
-+++ sope-mime/NGImap4/NGImap4Connection.m	(copie de travail)
+--- sope-mime/NGImap4/NGImap4Connection.m	(revision 1630)
++++ sope-mime/NGImap4/NGImap4Connection.m	(working copy)
 @@ -381,7 +381,7 @@
    
    if (debugCache) [self logWithFormat:@"  no folders cached yet .."];
@@ -622,8 +435,8 @@ Index: sope-mime/NGImap4/NGImap4Connection.m
  - (id)infoForMailboxAtURL:(NSURL *)_url {
 Index: sope-mime/NGImap4/NGImap4ResponseNormalizer.m
 ===================================================================
---- sope-mime/NGImap4/NGImap4ResponseNormalizer.m	(révision 1630)
-+++ sope-mime/NGImap4/NGImap4ResponseNormalizer.m	(copie de travail)
+--- sope-mime/NGImap4/NGImap4ResponseNormalizer.m	(revision 1630)
++++ sope-mime/NGImap4/NGImap4ResponseNormalizer.m	(working copy)
 @@ -292,7 +292,7 @@
  /*
    filter for fetch response
@@ -671,8 +484,8 @@ Index: sope-mime/NGImap4/NGImap4ResponseNormalizer.m
    if (objs) free(objs);
 Index: sope-mime/NGImap4/NGImap4ResponseParser.m
 ===================================================================
---- sope-mime/NGImap4/NGImap4ResponseParser.m	(révision 1630)
-+++ sope-mime/NGImap4/NGImap4ResponseParser.m	(copie de travail)
+--- sope-mime/NGImap4/NGImap4ResponseParser.m	(revision 1630)
++++ sope-mime/NGImap4/NGImap4ResponseParser.m	(working copy)
 @@ -31,6 +31,7 @@
  @interface NGImap4ResponseParser(ParsingPrivates)
  - (BOOL)_parseNumberUntaggedResponse:(NGMutableHashMap *)result_;
@@ -1122,8 +935,8 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
            self->serverResponseDebug = 
 Index: sope-mime/NGImap4/ChangeLog
 ===================================================================
---- sope-mime/NGImap4/ChangeLog	(révision 1630)
-+++ sope-mime/NGImap4/ChangeLog	(copie de travail)
+--- sope-mime/NGImap4/ChangeLog	(revision 1630)
++++ sope-mime/NGImap4/ChangeLog	(working copy)
 @@ -1,3 +1,29 @@
 +2008-10-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 +
@@ -1156,8 +969,8 @@ Index: sope-mime/NGImap4/ChangeLog
  	* NGImap4Connection.m: some fix for folders ending with a slash (OGo
 Index: sope-mime/NGImap4/NGImap4ConnectionManager.m
 ===================================================================
---- sope-mime/NGImap4/NGImap4ConnectionManager.m	(révision 1630)
-+++ sope-mime/NGImap4/NGImap4ConnectionManager.m	(copie de travail)
+--- sope-mime/NGImap4/NGImap4ConnectionManager.m	(revision 1630)
++++ sope-mime/NGImap4/NGImap4ConnectionManager.m	(working copy)
 @@ -38,6 +38,9 @@
    debugCache   = [ud boolForKey:@"NGImap4EnableIMAP4CacheDebug"];
    poolingOff   = [ud boolForKey:@"NGImap4DisableIMAP4Pooling"];
@@ -1283,8 +1096,8 @@ Index: sope-mime/NGImap4/NGImap4ConnectionManager.m
  /* client object */
 Index: sope-mime/NGImap4/NSString+Imap4.m
 ===================================================================
---- sope-mime/NGImap4/NSString+Imap4.m	(révision 1630)
-+++ sope-mime/NGImap4/NSString+Imap4.m	(copie de travail)
+--- sope-mime/NGImap4/NSString+Imap4.m	(revision 1630)
++++ sope-mime/NGImap4/NSString+Imap4.m	(working copy)
 @@ -20,11 +20,56 @@
    02111-1307, USA.
  */
@@ -1805,8 +1618,8 @@ Index: sope-mime/NGImap4/NSString+Imap4.m
 +@end /* NSString(Imap4) */
 Index: sope-mime/NGMail/NGSmtpClient.m
 ===================================================================
---- sope-mime/NGMail/NGSmtpClient.m	(révision 1630)
-+++ sope-mime/NGMail/NGSmtpClient.m	(copie de travail)
+--- sope-mime/NGMail/NGSmtpClient.m	(revision 1630)
++++ sope-mime/NGMail/NGSmtpClient.m	(working copy)
 @@ -24,6 +24,82 @@
  #include "NGSmtpReplyCodes.h"
  #include "common.h"
@@ -1961,8 +1774,8 @@ Index: sope-mime/NGMail/NGSmtpClient.m
      reply = [self receiveReply];
 Index: sope-mime/NGMail/NGMailAddressParser.h
 ===================================================================
---- sope-mime/NGMail/NGMailAddressParser.h	(révision 1630)
-+++ sope-mime/NGMail/NGMailAddressParser.h	(copie de travail)
+--- sope-mime/NGMail/NGMailAddressParser.h	(revision 1630)
++++ sope-mime/NGMail/NGMailAddressParser.h	(working copy)
 @@ -24,7 +24,9 @@
  
  #import <Foundation/NSObject.h>
@@ -1999,8 +1812,8 @@ Index: sope-mime/NGMail/NGMailAddressParser.h
  
 Index: sope-mime/NGMail/NGMimeMessageGenerator.m
 ===================================================================
---- sope-mime/NGMail/NGMimeMessageGenerator.m	(révision 1630)
-+++ sope-mime/NGMail/NGMimeMessageGenerator.m	(copie de travail)
+--- sope-mime/NGMail/NGMimeMessageGenerator.m	(revision 1630)
++++ sope-mime/NGMail/NGMimeMessageGenerator.m	(working copy)
 @@ -86,37 +86,40 @@
    char         *des    = NULL;
    unsigned int cnt;
@@ -2065,8 +1878,8 @@ Index: sope-mime/NGMail/NGMimeMessageGenerator.m
      unsigned    isoEndLen = 2;
 Index: sope-mime/NGMail/NGMailAddressParser.m
 ===================================================================
---- sope-mime/NGMail/NGMailAddressParser.m	(révision 1630)
-+++ sope-mime/NGMail/NGMailAddressParser.m	(copie de travail)
+--- sope-mime/NGMail/NGMailAddressParser.m	(revision 1630)
++++ sope-mime/NGMail/NGMailAddressParser.m	(working copy)
 @@ -52,9 +52,9 @@
    StrClass = [NSString class];
  }
@@ -2210,8 +2023,8 @@ Index: sope-mime/NGMail/NGMailAddressParser.m
    self->dataPos   = 0;
 Index: sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m
 ===================================================================
---- sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m	(révision 1630)
-+++ sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m	(copie de travail)
+--- sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m	(revision 1630)
++++ sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m	(working copy)
 @@ -19,88 +19,45 @@
    02111-1307, USA.
  */
@@ -2615,8 +2428,8 @@ Index: sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m
  #if 0  
 Index: sope-mime/NGMime/NGMimeMultipartBodyParser.m
 ===================================================================
---- sope-mime/NGMime/NGMimeMultipartBodyParser.m	(révision 1630)
-+++ sope-mime/NGMime/NGMimeMultipartBodyParser.m	(copie de travail)
+--- sope-mime/NGMime/NGMimeMultipartBodyParser.m	(revision 1630)
++++ sope-mime/NGMime/NGMimeMultipartBodyParser.m	(working copy)
 @@ -428,6 +428,7 @@
    NSString   *boundary     = nil;
    NSArray    *rawBodyParts = nil;
@@ -2640,8 +2453,8 @@ Index: sope-mime/NGMime/NGMimeMultipartBodyParser.m
    if (rawBodyParts) {
 Index: sope-mime/NGMime/NGMimeHeaderFieldGeneratorSet.m
 ===================================================================
---- sope-mime/NGMime/NGMimeHeaderFieldGeneratorSet.m	(révision 1630)
-+++ sope-mime/NGMime/NGMimeHeaderFieldGeneratorSet.m	(copie de travail)
+--- sope-mime/NGMime/NGMimeHeaderFieldGeneratorSet.m	(revision 1630)
++++ sope-mime/NGMime/NGMimeHeaderFieldGeneratorSet.m	(working copy)
 @@ -77,6 +77,7 @@
      [rfc822Set setGenerator:gen forField:@"bcc"];
      [rfc822Set setGenerator:gen forField:Fields->from];
@@ -2652,8 +2465,8 @@ Index: sope-mime/NGMime/NGMimeHeaderFieldGeneratorSet.m
    
 Index: sope-mime/NGMime/NGMimeType.m
 ===================================================================
---- sope-mime/NGMime/NGMimeType.m	(révision 1630)
-+++ sope-mime/NGMime/NGMimeType.m	(copie de travail)
+--- sope-mime/NGMime/NGMimeType.m	(revision 1630)
++++ sope-mime/NGMime/NGMimeType.m	(working copy)
 @@ -120,28 +120,23 @@
    
    /* some unsupported, but known encoding */
@@ -2750,8 +2563,8 @@ Index: sope-mime/NGMime/NGMimeType.m
  - (NSString *)stringValue {
 Index: sope-mime/NGMime/NGMimeBodyPart.m
 ===================================================================
---- sope-mime/NGMime/NGMimeBodyPart.m	(révision 1630)
-+++ sope-mime/NGMime/NGMimeBodyPart.m	(copie de travail)
+--- sope-mime/NGMime/NGMimeBodyPart.m	(revision 1630)
++++ sope-mime/NGMime/NGMimeBodyPart.m	(working copy)
 @@ -31,18 +31,6 @@
    return 2;
  }
@@ -2788,8 +2601,8 @@ Index: sope-mime/NGMime/NGMimeBodyPart.m
  - (NSString *)contentId {
 Index: sope-mime/NGMime/ChangeLog
 ===================================================================
---- sope-mime/NGMime/ChangeLog	(révision 1630)
-+++ sope-mime/NGMime/ChangeLog	(copie de travail)
+--- sope-mime/NGMime/ChangeLog	(revision 1630)
++++ sope-mime/NGMime/ChangeLog	(working copy)
 @@ -1,3 +1,25 @@
 +2008-09-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 +
@@ -2818,8 +2631,8 @@ Index: sope-mime/NGMime/ChangeLog
  	* fixes for OGo bug #789 (reply-to QP encoding)
 Index: sope-mime/NGMime/NGMimeContentTypeHeaderFieldGenerator.m
 ===================================================================
---- sope-mime/NGMime/NGMimeContentTypeHeaderFieldGenerator.m	(révision 1630)
-+++ sope-mime/NGMime/NGMimeContentTypeHeaderFieldGenerator.m	(copie de travail)
+--- sope-mime/NGMime/NGMimeContentTypeHeaderFieldGenerator.m	(revision 1630)
++++ sope-mime/NGMime/NGMimeContentTypeHeaderFieldGenerator.m	(working copy)
 @@ -36,8 +36,7 @@
    NGMimeType    *type = nil; // only one content-type field
    NSString      *tmp  = nil;
@@ -2958,8 +2771,8 @@ Index: sope-mime/NGMime/NGMimeContentTypeHeaderFieldGenerator.m
      }
 Index: sope-mime/NGMime/NGMimePartGenerator.m
 ===================================================================
---- sope-mime/NGMime/NGMimePartGenerator.m	(révision 1630)
-+++ sope-mime/NGMime/NGMimePartGenerator.m	(copie de travail)
+--- sope-mime/NGMime/NGMimePartGenerator.m	(revision 1630)
++++ sope-mime/NGMime/NGMimePartGenerator.m	(working copy)
 @@ -155,8 +155,9 @@
    BOOL     isMultiValue, isFirst;
    
@@ -2983,8 +2796,8 @@ Index: sope-mime/NGMime/NGMimePartGenerator.m
    
 Index: sope-mime/NGMime/NGMimeBodyParser.m
 ===================================================================
---- sope-mime/NGMime/NGMimeBodyParser.m	(révision 1630)
-+++ sope-mime/NGMime/NGMimeBodyParser.m	(copie de travail)
+--- sope-mime/NGMime/NGMimeBodyParser.m	(revision 1630)
++++ sope-mime/NGMime/NGMimeBodyParser.m	(working copy)
 @@ -67,7 +67,10 @@
    if (_data == nil) return nil;
    
@@ -2999,8 +2812,8 @@ Index: sope-mime/NGMime/NGMimeBodyParser.m
    
 Index: sope-mime/NGMime/NGMimePartParser.h
 ===================================================================
---- sope-mime/NGMime/NGMimePartParser.h	(révision 1630)
-+++ sope-mime/NGMime/NGMimePartParser.h	(copie de travail)
+--- sope-mime/NGMime/NGMimePartParser.h	(revision 1630)
++++ sope-mime/NGMime/NGMimePartParser.h	(working copy)
 @@ -117,6 +117,7 @@
      BOOL parserParseRawBodyDataOfPart:1;
      BOOL parserBodyParserForPart:1;
@@ -3021,8 +2834,8 @@ Index: sope-mime/NGMime/NGMimePartParser.h
  @interface NSObject(NGMimePartParser)
 Index: sope-mime/NGMime/NGMimePartParser.m
 ===================================================================
---- sope-mime/NGMime/NGMimePartParser.m	(révision 1630)
-+++ sope-mime/NGMime/NGMimePartParser.m	(copie de travail)
+--- sope-mime/NGMime/NGMimePartParser.m	(revision 1630)
++++ sope-mime/NGMime/NGMimePartParser.m	(working copy)
 @@ -227,7 +227,7 @@
  }
  
@@ -3046,8 +2859,8 @@ Index: sope-mime/NGMime/NGMimePartParser.m
      : [NGMimeType mimeType:[ctype stringValue]];
 Index: sope-mime/NGMime/NGMimeAddressHeaderFieldGenerator.m
 ===================================================================
---- sope-mime/NGMime/NGMimeAddressHeaderFieldGenerator.m	(révision 1630)
-+++ sope-mime/NGMime/NGMimeAddressHeaderFieldGenerator.m	(copie de travail)
+--- sope-mime/NGMime/NGMimeAddressHeaderFieldGenerator.m	(revision 1630)
++++ sope-mime/NGMime/NGMimeAddressHeaderFieldGenerator.m	(working copy)
 @@ -105,10 +105,10 @@
      }
      
@@ -3132,8 +2945,8 @@ Index: sope-mime/NGMime/NGMimeAddressHeaderFieldGenerator.m
    return data;
 Index: sope-mime/NGMime/NGMimeContentDispositionHeaderFieldGenerator.m
 ===================================================================
---- sope-mime/NGMime/NGMimeContentDispositionHeaderFieldGenerator.m	(révision 1630)
-+++ sope-mime/NGMime/NGMimeContentDispositionHeaderFieldGenerator.m	(copie de travail)
+--- sope-mime/NGMime/NGMimeContentDispositionHeaderFieldGenerator.m	(revision 1630)
++++ sope-mime/NGMime/NGMimeContentDispositionHeaderFieldGenerator.m	(working copy)
 @@ -49,80 +49,70 @@
    
    // TODO: move the stuff below to some NSString or NSData category?
@@ -3266,10 +3079,197 @@ Index: sope-mime/NGMime/NGMimeContentDispositionHeaderFieldGenerator.m
    }
    return data;
  }
+Index: sope-gdl1/PostgreSQL/PostgreSQL72Channel.m
+===================================================================
+--- sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(revision 1630)
++++ sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(working copy)
+@@ -713,6 +713,39 @@
+   return ms;
+ }
+ 
++/* GCSEOAdaptorChannel protocol */
++static NSString *sqlFolderFormat = (@"CREATE TABLE %@ (\n"	\
++				    @"  c_name VARCHAR (256) NOT NULL PRIMARY KEY,\n"
++				    @"  c_content VARCHAR (100000) NOT NULL,\n"
++				    @"  c_creationdate INT4 NOT NULL,\n"
++				    @"  c_lastmodified INT4 NOT NULL,\n"
++				    @"  c_version INT4 NOT NULL,\n"
++				    @"  c_deleted INT4 NULL\n"
++				    @")");
++static NSString *sqlFolderACLFormat = (@"CREATE TABLE %@ (\n"	\
++				       @"  c_uid VARCHAR (256) NOT NULL,\n"
++				       @"  c_object VARCHAR (256) NOT NULL,\n"
++				       @"  c_role VARCHAR (80) NOT NULL\n"
++				       @")");
++
++- (NSException *) createGCSFolderTableWithName: (NSString *) tableName
++{
++  NSString *sql;
++
++  sql = [NSString stringWithFormat: sqlFolderFormat, tableName];
++
++  return [self evaluateExpressionX: sql];
++}
++
++- (NSException *) createGCSFolderACLTableWithName: (NSString *) tableName
++{
++  NSString *sql;
++
++  sql = [NSString stringWithFormat: sqlFolderACLFormat, tableName];
++
++  return [self evaluateExpressionX: sql];
++}
++
+ @end /* PostgreSQL72Channel */
+ 
+ @implementation PostgreSQL72Channel(PrimaryKeyGeneration)
+Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
+===================================================================
+--- sope-gdl1/Oracle8/OracleAdaptorChannel.m	(revision 1630)
++++ sope-gdl1/Oracle8/OracleAdaptorChannel.m	(working copy)
+@@ -30,6 +30,7 @@
+ 
+ #import <NGExtensions/NSObject+Logs.h>
+ 
++static BOOL debugOn = NO;
+ //
+ //
+ //
+@@ -41,10 +42,19 @@
+ 
+ @implementation OracleAdaptorChannel (Private)
+ 
+--  (void) _cleanup
+++ (void) initialize
+ {
++  NSUserDefaults *ud;
++
++  ud = [NSUserDefaults standardUserDefaults];
++  debugOn = [ud boolForKey: @"OracleAdaptorDebug"];
++}
++
++- (void) _cleanup
++{
+   column_info *info;
+   int c;
++  sword result;
+ 
+   [_resultSetProperties removeAllObjects];
+ 
+@@ -58,11 +68,29 @@
+       // so we just free the value instead.
+       if (info->value)
+ 	{
+-	  if (OCIDescriptorFree((dvoid *)info->value, (ub4)OCI_DTYPE_LOB) != OCI_SUCCESS)
++	  if (info->type == SQLT_CLOB
++	      || info->type == SQLT_BLOB
++	      || info->type == SQLT_BFILEE
++	      || info->type == SQLT_CFILEE)
++	    {
++	      result = OCIDescriptorFree((dvoid *)info->value, (ub4) OCI_DTYPE_LOB);
++	      if (result != OCI_SUCCESS)
++		{
++		  NSLog (@"value was not a LOB descriptor");
++		  abort();
++		}
++	    }
++	  else
+ 	    free(info->value);
+ 	  info->value = NULL;
+ 	}
+-       free(info);
++      else
++	{
++	  NSLog (@"trying to free an already freed value!");
++	  abort();
++	}
++      free(info);
++
+       [_row_buffer removeObjectAtIndex: c];
+     }
+ 
+@@ -231,6 +259,9 @@
+ 
+   [self _cleanup];
+ 
++  if (debugOn)
++    [self logWithFormat: @"expression: %@", theExpression];
++
+   if (!theExpression || ![theExpression length])
+     {
+       [NSException raise: @"OracleInvalidExpressionException"
+@@ -302,7 +333,9 @@
+       // We read the maximum width of a column
+       info->max_width = 0;
+       status = OCIAttrGet((dvoid*)param, (ub4)OCI_DTYPE_PARAM, (dvoid*)&(info->max_width), (ub4 *)0, (ub4)OCI_ATTR_DATA_SIZE, (OCIError *)_oci_err);
+-      
++
++      if (debugOn)
++	NSLog(@"name: %s, type: %d", cname, info->type);
+       attribute = [EOAttribute attributeWithOracleType: info->type  name: cname  length: clen  width: info->max_width];
+       [_resultSetProperties addObject: attribute];
+ 
+@@ -609,7 +642,7 @@
+ 
+ /* GCSEOAdaptorChannel protocol */
+ static NSString *sqlFolderFormat = (@"CREATE TABLE %@ (\n"	\
+-				    @"  c_name VARCHAR2 (256) NOT NULL,\n"
++				    @"  c_name VARCHAR2 (256) NOT NULL PRIMARY KEY,\n"
+ 				    @"  c_content CLOB NOT NULL,\n"
+ 				    @"  c_creationdate INTEGER NOT NULL,\n"
+ 				    @"  c_lastmodified INTEGER NOT NULL,\n"
+Index: sope-gdl1/Oracle8/OracleAdaptorChannelController.m
+===================================================================
+--- sope-gdl1/Oracle8/OracleAdaptorChannelController.m	(revision 1630)
++++ sope-gdl1/Oracle8/OracleAdaptorChannelController.m	(working copy)
+@@ -31,6 +31,8 @@
+ #import <Foundation/Foundation.h>
+ #import <GDLAccess/EOSQLExpression.h>
+ 
++static BOOL debugOn = NO;
++
+ //
+ //
+ //
+@@ -48,6 +50,14 @@
+ //
+ @implementation OracleAdaptorChannelController
+ 
+++ (void) initialize
++{
++  NSUserDefaults *ud;
++
++  ud = [NSUserDefaults standardUserDefaults];
++  debugOn = [ud boolForKey: @"OracleAdaptorDebug"];
++}
++
+ - (EODelegateResponse) adaptorChannel: (id) theChannel
+                         willInsertRow: (NSMutableDictionary *) theRow
+                             forEntity: (EOEntity *) theEntity
+@@ -56,7 +66,8 @@
+   NSArray *keys;
+   int i, c;
+ 
+-  NSLog(@"willInsertRow: %@ %@", [theRow description], [theEntity description]);
++  if (debugOn)
++    NSLog(@"willInsertRow: %@ %@", [theRow description], [theEntity description]);
+ 
+   s = AUTORELEASE([[NSMutableString alloc] init]);
+ 
+@@ -101,7 +112,8 @@
+   NSArray *keys;
+   int i, c;
+ 
+-  NSLog(@"willUpdatetRow: %@ %@", [theRow description], [theQualifier description]);
++  if (debugOn)
++    NSLog(@"willUpdateRow: %@ %@", [theRow description], [theQualifier description]);
+ 
+   s = AUTORELEASE([[NSMutableString alloc] init]);
+ 
 Index: sope-core/NGExtensions/NGExtensions/NSString+Ext.h
 ===================================================================
---- sope-core/NGExtensions/NGExtensions/NSString+Ext.h	(révision 1630)
-+++ sope-core/NGExtensions/NGExtensions/NSString+Ext.h	(copie de travail)
+--- sope-core/NGExtensions/NGExtensions/NSString+Ext.h	(revision 1630)
++++ sope-core/NGExtensions/NGExtensions/NSString+Ext.h	(working copy)
 @@ -30,6 +30,7 @@
  
  @interface NSString(GSAdditions)
@@ -3306,8 +3306,8 @@ Index: sope-core/NGExtensions/NGExtensions/NSString+Ext.h
  /* specific to libFoundation */
 Index: sope-core/NGExtensions/FdExt.subproj/NSString+Ext.m
 ===================================================================
---- sope-core/NGExtensions/FdExt.subproj/NSString+Ext.m	(révision 1630)
-+++ sope-core/NGExtensions/FdExt.subproj/NSString+Ext.m	(copie de travail)
+--- sope-core/NGExtensions/FdExt.subproj/NSString+Ext.m	(revision 1630)
++++ sope-core/NGExtensions/FdExt.subproj/NSString+Ext.m	(working copy)
 @@ -39,18 +39,6 @@
          : (NSString *)[[self copy] autorelease];
  }
@@ -3395,8 +3395,8 @@ Index: sope-core/NGExtensions/FdExt.subproj/NSString+Ext.m
  - (BOOL)isAbsoluteURL
 Index: sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m
 ===================================================================
---- sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m	(révision 1630)
-+++ sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m	(copie de travail)
+--- sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m	(revision 1630)
++++ sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m	(working copy)
 @@ -140,8 +140,12 @@
  
  
@@ -3438,8 +3438,8 @@ Index: sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m
  static char *iconv_wrapper(id self, char *_src, unsigned _srcLen,
 Index: sope-core/NGExtensions/NGQuotedPrintableCoding.m
 ===================================================================
---- sope-core/NGExtensions/NGQuotedPrintableCoding.m	(révision 1630)
-+++ sope-core/NGExtensions/NGQuotedPrintableCoding.m	(copie de travail)
+--- sope-core/NGExtensions/NGQuotedPrintableCoding.m	(revision 1630)
++++ sope-core/NGExtensions/NGQuotedPrintableCoding.m	(working copy)
 @@ -278,7 +278,12 @@
    
    for (cnt = 0; (cnt < _srcLen) && (destCnt < _destLen); cnt++) {
@@ -3456,8 +3456,8 @@ Index: sope-core/NGExtensions/NGQuotedPrintableCoding.m
          ((c > 31) && (c < 61)) ||
 Index: sope-core/NGExtensions/EOExt.subproj/EOGlobalID+Ext.m
 ===================================================================
---- sope-core/NGExtensions/EOExt.subproj/EOGlobalID+Ext.m	(révision 1630)
-+++ sope-core/NGExtensions/EOExt.subproj/EOGlobalID+Ext.m	(copie de travail)
+--- sope-core/NGExtensions/EOExt.subproj/EOGlobalID+Ext.m	(revision 1630)
++++ sope-core/NGExtensions/EOExt.subproj/EOGlobalID+Ext.m	(working copy)
 @@ -19,6 +19,7 @@
    02111-1307, USA.
  */
@@ -3468,8 +3468,8 @@ Index: sope-core/NGExtensions/EOExt.subproj/EOGlobalID+Ext.m
  
 Index: sope-core/NGStreams/GNUmakefile.preamble
 ===================================================================
---- sope-core/NGStreams/GNUmakefile.preamble	(révision 1630)
-+++ sope-core/NGStreams/GNUmakefile.preamble	(copie de travail)
+--- sope-core/NGStreams/GNUmakefile.preamble	(revision 1630)
++++ sope-core/NGStreams/GNUmakefile.preamble	(working copy)
 @@ -1,7 +1,10 @@
  # compilation settings
  
@@ -3483,8 +3483,8 @@ Index: sope-core/NGStreams/GNUmakefile.preamble
  	-I..
 Index: sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.h
 ===================================================================
---- sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.h	(révision 1630)
-+++ sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.h	(copie de travail)
+--- sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.h	(revision 1630)
++++ sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.h	(working copy)
 @@ -19,6 +19,8 @@
    02111-1307, USA.
  */
@@ -3505,8 +3505,8 @@ Index: sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.h
    id<NSObject,SaxEntityResolver> entityResolver;
 Index: sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.m
 ===================================================================
---- sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.m	(révision 1630)
-+++ sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.m	(copie de travail)
+--- sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.m	(revision 1630)
++++ sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.m	(working copy)
 @@ -30,6 +30,12 @@
  #include <libxml/HTMLparser.h>
  #include <libxml/HTMLtree.h>
@@ -3565,8 +3565,8 @@ Index: sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.m
  - (void)tearDownParser {
 Index: sope-xml/libxmlSAXDriver/libxmlSAXDriver.m
 ===================================================================
---- sope-xml/libxmlSAXDriver/libxmlSAXDriver.m	(révision 1630)
-+++ sope-xml/libxmlSAXDriver/libxmlSAXDriver.m	(copie de travail)
+--- sope-xml/libxmlSAXDriver/libxmlSAXDriver.m	(revision 1630)
++++ sope-xml/libxmlSAXDriver/libxmlSAXDriver.m	(working copy)
 @@ -614,7 +614,7 @@
      xmlParseDocument(ctxt);
      
@@ -3587,8 +3587,8 @@ Index: sope-xml/libxmlSAXDriver/libxmlSAXDriver.m
      xmlFreeParserCtxt(self->ctxt);
 Index: sope-appserver/mod_ngobjweb/config.c
 ===================================================================
---- sope-appserver/mod_ngobjweb/config.c	(révision 1630)
-+++ sope-appserver/mod_ngobjweb/config.c	(copie de travail)
+--- sope-appserver/mod_ngobjweb/config.c	(revision 1630)
++++ sope-appserver/mod_ngobjweb/config.c	(working copy)
 @@ -21,7 +21,7 @@
  
  #include "common.h"
@@ -3600,8 +3600,8 @@ Index: sope-appserver/mod_ngobjweb/config.c
    if (buf == NULL)
 Index: sope-appserver/mod_ngobjweb/GNUmakefile
 ===================================================================
---- sope-appserver/mod_ngobjweb/GNUmakefile	(révision 1630)
-+++ sope-appserver/mod_ngobjweb/GNUmakefile	(copie de travail)
+--- sope-appserver/mod_ngobjweb/GNUmakefile	(revision 1630)
++++ sope-appserver/mod_ngobjweb/GNUmakefile	(working copy)
 @@ -82,7 +82,7 @@
  
  CFLAGS  = -Wall -I. -fPIC \
@@ -3623,8 +3623,8 @@ Index: sope-appserver/mod_ngobjweb/GNUmakefile
  	$(INSTALL_PROGRAM) $(product) /usr/libexec/httpd/
 Index: sope-appserver/mod_ngobjweb/NGBufferedDescriptor.c
 ===================================================================
---- sope-appserver/mod_ngobjweb/NGBufferedDescriptor.c	(révision 1630)
-+++ sope-appserver/mod_ngobjweb/NGBufferedDescriptor.c	(copie de travail)
+--- sope-appserver/mod_ngobjweb/NGBufferedDescriptor.c	(revision 1630)
++++ sope-appserver/mod_ngobjweb/NGBufferedDescriptor.c	(working copy)
 @@ -23,6 +23,7 @@
  #include <unistd.h>
  #include <string.h>
@@ -3635,8 +3635,8 @@ Index: sope-appserver/mod_ngobjweb/NGBufferedDescriptor.c
  // returns the number of bytes which where read from the buffer
 Index: sope-appserver/NGObjWeb/GNUmakefile.postamble
 ===================================================================
---- sope-appserver/NGObjWeb/GNUmakefile.postamble	(révision 1630)
-+++ sope-appserver/NGObjWeb/GNUmakefile.postamble	(copie de travail)
+--- sope-appserver/NGObjWeb/GNUmakefile.postamble	(revision 1630)
++++ sope-appserver/NGObjWeb/GNUmakefile.postamble	(working copy)
 @@ -23,14 +23,20 @@
  
  # install makefiles
@@ -3667,8 +3667,8 @@ Index: sope-appserver/NGObjWeb/GNUmakefile.postamble
 +		$(DESTDIR)/$(GNUSTEP_MAKEFILES)/wobundle.make
 Index: sope-appserver/NGObjWeb/WOContext.m
 ===================================================================
---- sope-appserver/NGObjWeb/WOContext.m	(révision 1630)
-+++ sope-appserver/NGObjWeb/WOContext.m	(copie de travail)
+--- sope-appserver/NGObjWeb/WOContext.m	(revision 1630)
++++ sope-appserver/NGObjWeb/WOContext.m	(working copy)
 @@ -64,11 +64,13 @@
  static BOOL     testNSURLs           = NO;
  static BOOL     newCURLStyle         = NO;
@@ -3707,8 +3707,8 @@ Index: sope-appserver/NGObjWeb/WOContext.m
        serverURL = [@"http://" stringByAppendingString:host];
 Index: sope-appserver/NGObjWeb/ChangeLog
 ===================================================================
---- sope-appserver/NGObjWeb/ChangeLog	(révision 1630)
-+++ sope-appserver/NGObjWeb/ChangeLog	(copie de travail)
+--- sope-appserver/NGObjWeb/ChangeLog	(revision 1630)
++++ sope-appserver/NGObjWeb/ChangeLog	(working copy)
 @@ -3,6 +3,11 @@
  	* WOHttpAdaptor/WOHttpAdaptor.m: properly embed threaded request
  	  handler in a top-level pool (v4.7.27)
@@ -3723,8 +3723,8 @@ Index: sope-appserver/NGObjWeb/ChangeLog
  	* WOHTTPURLHandle.m: add 'query' component of URL to request path
 Index: sope-appserver/NGObjWeb/DAVPropMap.plist
 ===================================================================
---- sope-appserver/NGObjWeb/DAVPropMap.plist	(révision 1630)
-+++ sope-appserver/NGObjWeb/DAVPropMap.plist	(copie de travail)
+--- sope-appserver/NGObjWeb/DAVPropMap.plist	(revision 1630)
++++ sope-appserver/NGObjWeb/DAVPropMap.plist	(working copy)
 @@ -24,13 +24,19 @@
    "{DAV:}status"               = "davStatus";
    "{http://apache.org/dav/props/}executable" = "davIsExecutable";
@@ -3779,7 +3779,13 @@ Index: sope-appserver/NGObjWeb/DAVPropMap.plist
    "{urn:ietf:params:xml:ns:caldav}supported-calendar-component-set" =
       davCalendarComponentSet;
    "{urn:ietf:params:xml:ns:caldav}supported-calendar-data" =
-@@ -138,13 +163,14 @@
+@@ -133,18 +158,20 @@
+   "{urn:ietf:params:xml:ns:caldav}calendar-description" = davDescription;
+ 
+   /* CardDAV */
++  "{urn:ietf:params:xml:ns:carddav}addressbook-home-set" = davAddressbookHomeSet;
+   "{urn:ietf:params:xml:ns:carddav}supported-address-data" =
+      davSupportedAddressDataTypes;
    "{urn:ietf:params:xml:ns:carddav}addressbook-description" = davDescription;
  
    /* Apple CalServer */
@@ -3801,8 +3807,8 @@ Index: sope-appserver/NGObjWeb/DAVPropMap.plist
    "{http://groupdav.org/}component-set"     = gdavComponentSet;
 Index: sope-appserver/NGObjWeb/WebDAV/SaxDAVHandler.m
 ===================================================================
---- sope-appserver/NGObjWeb/WebDAV/SaxDAVHandler.m	(révision 1630)
-+++ sope-appserver/NGObjWeb/WebDAV/SaxDAVHandler.m	(copie de travail)
+--- sope-appserver/NGObjWeb/WebDAV/SaxDAVHandler.m	(revision 1630)
++++ sope-appserver/NGObjWeb/WebDAV/SaxDAVHandler.m	(working copy)
 @@ -655,6 +655,7 @@
        if (self->responses == nil)
  	self->responses = [[NSMutableArray alloc] initWithCapacity:64];
@@ -3813,8 +3819,8 @@ Index: sope-appserver/NGObjWeb/WebDAV/SaxDAVHandler.m
    case 'n':
 Index: sope-appserver/NGObjWeb/WebDAV/SoObjectWebDAVDispatcher.m
 ===================================================================
---- sope-appserver/NGObjWeb/WebDAV/SoObjectWebDAVDispatcher.m	(révision 1630)
-+++ sope-appserver/NGObjWeb/WebDAV/SoObjectWebDAVDispatcher.m	(copie de travail)
+--- sope-appserver/NGObjWeb/WebDAV/SoObjectWebDAVDispatcher.m	(revision 1630)
++++ sope-appserver/NGObjWeb/WebDAV/SoObjectWebDAVDispatcher.m	(working copy)
 @@ -1523,16 +1523,16 @@
  - (id)doREPORT:(WOContext *)_ctx {
    id<DOMDocument> domDocument;
@@ -3901,8 +3907,8 @@ Index: sope-appserver/NGObjWeb/WebDAV/SoObjectWebDAVDispatcher.m
  /* DAV access control lists */
 Index: sope-appserver/NGObjWeb/WebDAV/SoWebDAVRenderer.m
 ===================================================================
---- sope-appserver/NGObjWeb/WebDAV/SoWebDAVRenderer.m	(révision 1630)
-+++ sope-appserver/NGObjWeb/WebDAV/SoWebDAVRenderer.m	(copie de travail)
+--- sope-appserver/NGObjWeb/WebDAV/SoWebDAVRenderer.m	(revision 1630)
++++ sope-appserver/NGObjWeb/WebDAV/SoWebDAVRenderer.m	(working copy)
 @@ -277,7 +277,8 @@
        ok = [self renderLockToken:_object inContext:_ctx];
      break;
@@ -3915,8 +3921,8 @@ Index: sope-appserver/NGObjWeb/WebDAV/SoWebDAVRenderer.m
        ok = [self renderStatusResult:_object 
 Index: sope-appserver/NGObjWeb/WebDAV/SoObject+SoDAV.h
 ===================================================================
---- sope-appserver/NGObjWeb/WebDAV/SoObject+SoDAV.h	(révision 1630)
-+++ sope-appserver/NGObjWeb/WebDAV/SoObject+SoDAV.h	(copie de travail)
+--- sope-appserver/NGObjWeb/WebDAV/SoObject+SoDAV.h	(revision 1630)
++++ sope-appserver/NGObjWeb/WebDAV/SoObject+SoDAV.h	(working copy)
 @@ -62,6 +62,7 @@
    properties:(NSDictionary *)_props
    inContext:(id)_ctx;
@@ -3927,8 +3933,8 @@ Index: sope-appserver/NGObjWeb/WebDAV/SoObject+SoDAV.h
    inContext:(id)_ctx;
 Index: sope-appserver/NGObjWeb/WODirectAction.m
 ===================================================================
---- sope-appserver/NGObjWeb/WODirectAction.m	(révision 1630)
-+++ sope-appserver/NGObjWeb/WODirectAction.m	(copie de travail)
+--- sope-appserver/NGObjWeb/WODirectAction.m	(revision 1630)
++++ sope-appserver/NGObjWeb/WODirectAction.m	(working copy)
 @@ -46,7 +46,7 @@
  }
  - (id)initWithContext:(WOContext *)_ctx {
@@ -3962,8 +3968,8 @@ Index: sope-appserver/NGObjWeb/WODirectAction.m
  
 Index: sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.m
 ===================================================================
---- sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.m	(révision 1630)
-+++ sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.m	(copie de travail)
+--- sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.m	(revision 1630)
++++ sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.m	(working copy)
 @@ -216,6 +216,12 @@
        assocCount++;
      }
@@ -3979,8 +3985,8 @@ Index: sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.m
    
 Index: sope-appserver/NGObjWeb/DynamicElements/_WOComplexHyperlink.m
 ===================================================================
---- sope-appserver/NGObjWeb/DynamicElements/_WOComplexHyperlink.m	(révision 1630)
-+++ sope-appserver/NGObjWeb/DynamicElements/_WOComplexHyperlink.m	(copie de travail)
+--- sope-appserver/NGObjWeb/DynamicElements/_WOComplexHyperlink.m	(revision 1630)
++++ sope-appserver/NGObjWeb/DynamicElements/_WOComplexHyperlink.m	(working copy)
 @@ -41,6 +41,7 @@
    WOAssociation *string;
    WOAssociation *target;
@@ -4012,8 +4018,8 @@ Index: sope-appserver/NGObjWeb/DynamicElements/_WOComplexHyperlink.m
      return NO;
 Index: sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.h
 ===================================================================
---- sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.h	(révision 1630)
-+++ sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.h	(copie de travail)
+--- sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.h	(revision 1630)
++++ sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.h	(working copy)
 @@ -41,7 +41,8 @@
    WOAssociation *pageName;
    WOAssociation *actionClass;
@@ -4026,8 +4032,8 @@ Index: sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.h
    /* 'ivar' associations */
 Index: sope-appserver/NGObjWeb/SoObjects/SoObject.m
 ===================================================================
---- sope-appserver/NGObjWeb/SoObjects/SoObject.m	(révision 1630)
-+++ sope-appserver/NGObjWeb/SoObjects/SoObject.m	(copie de travail)
+--- sope-appserver/NGObjWeb/SoObjects/SoObject.m	(revision 1630)
++++ sope-appserver/NGObjWeb/SoObjects/SoObject.m	(working copy)
 @@ -39,22 +39,34 @@
  static int debugLookup  = -1;
  static int debugBaseURL = -1;
@@ -4177,8 +4183,8 @@ Index: sope-appserver/NGObjWeb/SoObjects/SoObject.m
    
 Index: sope-appserver/NGObjWeb/SoObjects/SoObject+Traversal.m
 ===================================================================
---- sope-appserver/NGObjWeb/SoObjects/SoObject+Traversal.m	(révision 1630)
-+++ sope-appserver/NGObjWeb/SoObjects/SoObject+Traversal.m	(copie de travail)
+--- sope-appserver/NGObjWeb/SoObjects/SoObject+Traversal.m	(revision 1630)
++++ sope-appserver/NGObjWeb/SoObjects/SoObject+Traversal.m	(working copy)
 @@ -195,7 +195,8 @@
          isCreateIfMissingMethod = YES;
        else if ([m isEqualToString:@"PROPPATCH"])
@@ -4191,8 +4197,8 @@ Index: sope-appserver/NGObjWeb/SoObjects/SoObject+Traversal.m
          // TODO: the following are only create-if-missing on the target!
 Index: sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpTransaction.m
 ===================================================================
---- sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpTransaction.m	(révision 1630)
-+++ sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpTransaction.m	(copie de travail)
+--- sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpTransaction.m	(revision 1630)
++++ sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpTransaction.m	(working copy)
 @@ -32,6 +32,7 @@
  #include <NGObjWeb/WOCookie.h>
  #include <NGExtensions/NSData+gzip.h>
@@ -4216,8 +4222,8 @@ Index: sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpTransaction.m
  @implementation WOCoreApplication(SimpleParserSelection)
 Index: sope-appserver/NGObjWeb/Defaults.plist
 ===================================================================
---- sope-appserver/NGObjWeb/Defaults.plist	(révision 1630)
-+++ sope-appserver/NGObjWeb/Defaults.plist	(copie de travail)
+--- sope-appserver/NGObjWeb/Defaults.plist	(revision 1630)
++++ sope-appserver/NGObjWeb/Defaults.plist	(working copy)
 @@ -216,7 +216,7 @@
    SoWebDAVDisableCrossHostMoveCheck = NO;
    
@@ -4237,8 +4243,8 @@ Index: sope-appserver/NGObjWeb/Defaults.plist
      DELETE,
 Index: sope-appserver/NGObjWeb/WORequest.m
 ===================================================================
---- sope-appserver/NGObjWeb/WORequest.m	(révision 1630)
-+++ sope-appserver/NGObjWeb/WORequest.m	(copie de travail)
+--- sope-appserver/NGObjWeb/WORequest.m	(revision 1630)
++++ sope-appserver/NGObjWeb/WORequest.m	(working copy)
 @@ -597,6 +597,8 @@
        if (r.length > 0)
  	language = [language substringToIndex:r.location];
@@ -4250,8 +4256,8 @@ Index: sope-appserver/NGObjWeb/WORequest.m
        if ((tmp = [self languageForBrowserLanguageCode:language]))
 Index: sope-appserver/NGObjWeb/NGHttp/NGHttpRequest.h
 ===================================================================
---- sope-appserver/NGObjWeb/NGHttp/NGHttpRequest.h	(révision 1630)
-+++ sope-appserver/NGObjWeb/NGHttp/NGHttpRequest.h	(copie de travail)
+--- sope-appserver/NGObjWeb/NGHttp/NGHttpRequest.h	(revision 1630)
++++ sope-appserver/NGObjWeb/NGHttp/NGHttpRequest.h	(working copy)
 @@ -62,6 +62,10 @@
    /* RFC 3253 (DeltaV) */
    NGHttpMethod_REPORT,
@@ -4265,8 +4271,8 @@ Index: sope-appserver/NGObjWeb/NGHttp/NGHttpRequest.h
  
 Index: sope-appserver/NGObjWeb/NGHttp/NGHttpRequest.m
 ===================================================================
---- sope-appserver/NGObjWeb/NGHttp/NGHttpRequest.m	(révision 1630)
-+++ sope-appserver/NGObjWeb/NGHttp/NGHttpRequest.m	(copie de travail)
+--- sope-appserver/NGObjWeb/NGHttp/NGHttpRequest.m	(revision 1630)
++++ sope-appserver/NGObjWeb/NGHttp/NGHttpRequest.m	(working copy)
 @@ -59,6 +59,10 @@
    /* RFC 3253 (DeltaV) */
    @"REPORT",

@@ -5,6 +5,12 @@
 	-appendObject:objectwithBaseURL:baseURLtoREPORTResponse:r]): don't
 	lookup the returned object if its c_name has no length.
 
+2009-02-06  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Contacts/SOGoUserFolder+Contacts.[hm]: new class to
+	add CardDAV stuff. Currently only implements the
+	addressbook-home-set report from the principal URL.
+
 2009-02-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
