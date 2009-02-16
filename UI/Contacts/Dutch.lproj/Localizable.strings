@@ -58,8 +58,8 @@
 "Add..." = "Toevoegen...";
 "Remove" = "Verwijderen";
 
-"Please wait..." = "Please wait...";
-"No possible subscription" = "No possible subscription";
+"Please wait..." = "Even geduld AUB...";
+"No possible subscription" = "Abonnement niet mogelijk";
 
 "Preferred" = "Voorkeurs-";
 "Card for %@" = "%@";
@@ -113,9 +113,9 @@
 "Are you sure you want to delete the selected address book?"
 = "Weet u zeker dat u het geselecteerde adresboek wilt verwijderen?";
 "You cannot remove nor unsubscribe from a public addressbook."
-= "You cannot remove nor unsubscribe from a public addressbook.";
+= "U kunt een openbaar adresboek niet verwijderen, tevens is het afmelden hiervan niet mogelijk.";
 "You cannot remove nor unsubscribe from your personal addressbook."
-= "You cannot remove nor unsubscribe from your personal addressbook.";
+= "U kunt een persoonlijk adresboek niet verwijderen, tevens is het afmelden hiervan niet mogelijk.";
 
 "Are you sure you want to delete the selected contacts?"
 = "Weet u zeker dat u de geselecteerde contactpersonen wilt verwijderen?";

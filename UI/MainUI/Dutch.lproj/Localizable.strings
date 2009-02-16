@@ -7,12 +7,12 @@
 
 "Connect" = "Inloggen";
 
-"Wrong username or password." = "Slecht gebruikersnaam of wachtwoord.";
-"cookiesNotEnabled" = "You cannot login because your browser's cookies are disabled. Please enable cookies in your browser's settings and try again.";
+"Wrong username or password." = "Onjuiste gebruikersnaam of wachtwoord.";
+"cookiesNotEnabled" = "U kunt niet inloggen omdat de browser geen cookies accepteert. Verander AUB de cookies instellingen van de browser en probeer het opnieuw.";
 
-"browserNotCompatible" = "We've detected that your browser version is currently not supported on this site. Our recommendation is to use Firefox. Click on the link bellow to download the most current version of this browser.";
-"alternativeBrowsers" = "Alternatively, you can also use the following compatible browsers";
-"alternativeBrowserSafari" = "Alternatively, you can also use Safari.";
+"browserNotCompatible" = "We hebben gedetecteerd dat de browser die u op dit moment gebruikt niet word ondersteund voor deze site. Onze aanbeveling is Firefox te gebruiken. Hieronder staat een link om de laatste versie van deze browser te downloaden.
+"alternativeBrowsers" = "Als alternatief kun u ook de volgende compatible browsers gebruiken.";
+"alternativeBrowserSafari" = "Als alternatief kunt u ook Safari gebruiken.";
 "Download" = "Download";
 
 "Language:" = "Taal:";

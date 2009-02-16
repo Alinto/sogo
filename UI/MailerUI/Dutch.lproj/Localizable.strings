@@ -13,15 +13,15 @@
 "Print"       = "Afdrukken";
 "Stop"        = "Stoppen";
 "Write"       = "Opstellen";
-"Attachment"  = "Attachment";
-"Unread"      = "Unread";
-"Flagged"     = "Flagged";
+"Attachment"  = "Bijlage";
+"Unread"      = "Ongelezen";
+"Flagged"     = "Gemarkeerd";
 
 "Send" = "Verzenden";
 "Contacts" = "Adresboek";
 "Attach" = "Bijlage";
 "Save" = "Opslaan";
-"Priority" = "Priority";
+"Priority" = "Prioriteit";
 
 /* Main Frame  */
 
@@ -79,13 +79,13 @@
 "bcc"           = "bcc";
 
 "Edit Draft..." = "Concept aanpassen...";
-"Load Images" = "Load Images";
+"Load Images" = "Afbeeldingen laden";
 
-"highest" = "Highest";
-"high" = "High";
-"normal" = "Normal";
-"low" = "Low";
-"lowest" = "Lowest";
+"highest" = "Hoogste";
+"high" = "Hoog";
+"normal" = "Normaal";
+"low" = "Laag";
+"lowest" = "Laagste";
 
 "This mail is being sent from an unsecure network!" = "Deze e-mail wordt verzonden vanaf een onveilig netwerk!";
 
@@ -151,11 +151,11 @@
 "Subscribe..." = "Abonneren...";
 "Mark Folder Read..." = "Map als gelezen markeren";
 "New Folder..." = "Nieuwe map...";
-"Compact This Folder" = "Comprimeren";
+"Compact This Folder" = "Comprimeer deze map";
 "Search Messages..." = "Zoeken...";
 "Sharing..." = "Delen...";
 "New Subfolder..." = "Nieuwe submap...";
-"Rename Folder..." = "Naam wijzigen...";
+"Rename Folder..." = "Mapnaam wijzigen...";
 "Delete Folder" = "Map verwijderen";
 "Use This Folder For" = "De map gebruiken voor...";
 "Get Messages for Account" = "Berichten ophalen voor account";
@@ -180,7 +180,7 @@
 "View Message Source" = "Bron bekijken";
 "Print..." = "Afdrukken...";
 "Delete Message" = "Bericht verwijderen";
-"Delete Selected Messages" = "Delete Selected Messages";
+"Delete Selected Messages" = "Verwijder geselecteerde berichten";
 
 "This Folder" = "Deze map";
 
@@ -218,15 +218,15 @@
 "Please select only one message to print." = "Selecteer een enkel bericht om af te drukken.";
 
 "The folder with name \"%{0}\" could not be created."
-= "The folder with name \"%{0}\" could not be created.";
+= "De map met naam \"%{0}\" kan niet gemaakt worden.";
 "This folder could not be renamed to \"%{0}\"."
-= "This folder could not be renamed to \"%{0}\".";
+= "Deze map kan niet hernoemd worden naar \"%{0}\".";
 "The folder could not be deleted."
-= "The folder could not be deleted.";
+= "Het verwijderen van de map is mislukt.";
 "The trash could not be emptied."
-= "The trash could not be emptied.";
+= "Prullenbak legen mislukt.";
 "The folder functionality could not be changed."
-= "The folder functionality could not be changed.";
+= "De map functionaliteit kan niet veranderd worden.";
 
 "You need to choose a non-virtual folder!" = "U dient een niet-virtuele map te kiezen!";
 

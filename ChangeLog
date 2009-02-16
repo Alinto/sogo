@@ -1,3 +1,8 @@
+2009-02-16  Ludovic Marcotte <lmarcotte@inverse.ca>
+
+        * Updated Dutch translation - patch from
+	Robert-Jan van Baal
+
 2009-02-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Contacts/SOGoContactLDAPFolder.m

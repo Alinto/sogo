@@ -81,15 +81,15 @@
 
 "Default identity:" = "Standaardidentiteit:";
 "Manage identities..." = "Identiteiten beheren...";
-"Signature" = "Signature";
-"replyplacement_above" = "replyplacement_above";
-"replyplacement_below" = "replyplacement_below";
-"And place my signature" = "And place my signature";
-"signatureplacement_above" = "signatureplacement_above";
-"signatureplacement_below" = "signatureplacement_below";
+"Signature" = "Ondertekening";
+"replyplacement_above" = "reactie boven orgineletekst";
+"replyplacement_below" = "reactie onder orgineletekst";
+"And place my signature" = "Ondertekening plaatsen";
+"signatureplacement_above" = "boven orginele tekst";
+"signatureplacement_below" = "onder orginele tekst";
 
 /* Additional Parameters */
-"Additional Parameters" = "Additional Parameters";
+"Additional Parameters" = "Extra Parameters";
 
 /* password */
 "New password:" = "Nieuw wachtwoord:";

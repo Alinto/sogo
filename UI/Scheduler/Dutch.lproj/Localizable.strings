@@ -294,14 +294,14 @@
 "cycle_weekday" = "op werkdagen";
 "cycle_yearly" = "jaarlijks";
 
-"cycle_end_never" = "Unendlich oft wiederholen";
-"cycle_end_until" = "Wiederholen bis :";
+"cycle_end_never" = "Herhaal oneindig vaak:";
+"cycle_end_until" = "Herhalen tot:";
 
 "Recurrence pattern" = "Herhalingsschema";
 "Range of recurrence" = "Herhalingsbereik";
 
 "Repeat" = "Herhalen";
-"Daily" = "Dagelijk";
+"Daily" = "Dagelijks";
 "Weekly" = "Wekelijks";
 "Monthly" = "Maandelijks";
 "Yearly" = "Jaarlijks";
@@ -383,7 +383,7 @@
 
 /* transparency */
 
-"Show Time as Free" = "Show Time as Free";
+"Show Time as Free" = "Toon tijd als vrij:";
 
 /* validation errors */
 
@@ -410,7 +410,7 @@ validate_endbeforestart    = "Het begin vindt plaats vóór het einde.";
 "Week View" = "Weekoverzicht";
 "Month View" = "Maandoverzicht";
 
-"eventPartStatModificationError" = "Ihre Teilnahme an dem Termin kann nicht geändert werden.";
+"eventPartStatModificationError" = "Uw participatiestatus kon niet worden gewijzigd.";
 
 /* menu */
 "New Event..." = "Nieuwe afspraak...";
@@ -447,7 +447,7 @@ validate_endbeforestart    = "Het begin vindt plaats vóór het einde.";
 "Previous slot" = "Vorige";
 "Next slot" = "Volgende";
 "Previous hour" = "Vorig uur";
-"Next hour" = "Vorgend uur";
+"Next hour" = "Volgend uur";
 
 /* apt list */
 "Title" = "Titel";
@@ -477,4 +477,4 @@ vtodo_class2 = "(Vertrouwelijke taak)";
 /* Properties dialog */
 "Name:" = "Naam:";
 "Color:" = "Kleur:";
-"Tag:" = "Tag:";
+"Tag:" = "Markering:";

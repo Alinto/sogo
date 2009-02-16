@@ -8,7 +8,7 @@
 "Address Book"	= "Adresboek";
 "Mail" = "E-mail";
 "Preferences" = "Instellingen";
-"Logoff" = "Uitloggen";
+"Disconnect" = "Uitloggen";
 "Right Administration" = "Machtigingen beheren";
 "Log Console (dev.)" = " (dev.)";
 
@@ -42,6 +42,6 @@
         = "De machtigingen kunnen niet worden aangepast voor dit object!";
 
 "You are not allowed to access this module or this system. Please contact your system administrator."
-= "You are not allowed to access this module or this system. Please contact your system administrator.";
-"You don't have the required privileges to perform the operation."
-= "You don't have the required privileges to perform the operation.";
+= "U hebt geen toegang tot deze module of dit systeem. Neem contact op met uw systeem beheerder."
+"You don't have the required privileges to perform the operation.";
+= "Voor deze actie heeft u niet de benodigde rechten.";
