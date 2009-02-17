@@ -2,7 +2,7 @@
 
 "title" = "Schaalbare OpenGroupware.org";
 
-"Login:" = "Gebruikersnaam:";
+"Username:" = "Gebruikersnaam:";
 "Password:" = "Wachtwoord:";
 
 "Connect" = "Inloggen";
