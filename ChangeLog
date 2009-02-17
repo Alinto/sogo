@@ -1,3 +1,9 @@
+2009-02-17  Ludovic Marcotte <lmarcotte@inverse.ca>
+
+        * SoObjects/Contacts/SOGoContactLDIFEntry.m ([SOGoContactLDIFEntry
+	-vCard]): We now correctly handle most address fields coming from
+	an LDAP server during the generation of the vCard.
+
 2009-02-17  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView

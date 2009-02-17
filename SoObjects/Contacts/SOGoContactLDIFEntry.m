@@ -1,8 +1,9 @@
 /* SOGoContactLDIFEntry.m - this file is part of SOGo
  *
- * Copyright (C) 2006 Inverse inc.
+ * Copyright (C) 2006-2009 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *         Ludovic Marcotte <lmarcotte@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,8 +57,6 @@
   ASSIGN (container, newContainer);
   ASSIGN (ldifEntry, newEntry);
   vcard = nil;
-
-//   [self dumpEntry: anEntry];
 
   return self;
 }
@@ -114,7 +113,7 @@
 
 - (NGVCard *) vCard
 {
-  NSString *info, *surname, *streetAddress, *location, *key;
+  NSString *info, *surname, *streetAddress, *location, *key, *region, *postalCode, *country, *org, *orgunit;
   CardElement *element;
   unsigned int count;
 
@@ -161,17 +160,55 @@
         [vcard addEmail: info
                types: [NSArray arrayWithObjects: @"internet", @"pref", nil]];
       [self _setPhonesOfVCard: vcard];
-      streetAddress = [ldifEntry objectForKey: @"streetAddress"];
+
+      streetAddress = [ldifEntry objectForKey: @"street"];
+      if (!streetAddress) streetAddress = [ldifEntry objectForKey: @"streetAddress"];
+
       location = [ldifEntry objectForKey: @"l"];
+      if (!location) location = [ldifEntry objectForKey: @"locality"];
+
+      region = [ldifEntry objectForKey: @"st"];
+      if (!region) region = [ldifEntry objectForKey: @"region"];
+
+      postalCode = [ldifEntry objectForKey: @"postalCode"];
+      if (!postalCode) postalCode = [ldifEntry objectForKey: @"zip"];
+
+      country = [ldifEntry objectForKey: @"c"];
+      if (!country) country = [ldifEntry objectForKey: @"countryname"];
+
       element = [CardElement elementWithTag: @"adr"
                              attributes: nil values: nil];
       [element setValue: 0 ofAttribute: @"type" to: @"work"];
+
       if (streetAddress)
         [element setValue: 2 to: streetAddress];
       if (location)
         [element setValue: 3 to: location];
-      if (streetAddress || location)
+      if (region)
+	[element setValue: 4 to: region];
+      if (postalCode)
+	[element setValue: 5 to: postalCode];
+      if (country)
+	[element setValue: 6 to: country];
+      
+      if (streetAddress || location || region || postalCode || country)
         [vcard addChild: element];
+
+      // We handle the org/orgunit stuff
+      element = [CardElement elementWithTag: @"org"
+                             attributes: nil values: nil];
+      org = [ldifEntry objectForKey: @"o"];
+      orgunit = [ldifEntry objectForKey: @"ou"];
+      if (!orgunit) orgunit = [ldifEntry objectForKey: @"orgunit"];
+      
+      if (org)
+	[element setValue: 0 to: org];
+      if (orgunit)
+	[element setValue: 1 to: orgunit];
+
+      if (org || orgunit)
+	[vcard addChild: element];
+
       info = [ldifEntry objectForKey: @"calFBURL"];
       if (info)
         [vcard addChildWithTag: @"FBURL"
