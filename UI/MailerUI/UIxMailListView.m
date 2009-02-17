@@ -460,9 +460,11 @@
 - (NSArray *) messages 
 {
   NSArray *uids;
-  NSDictionary *msgs;
+  NSDictionary *msgs, *msg;
+  NSEnumerator *msgsList;
+  NSMutableArray *unsortedMsgs, *sortedMsgs;
   NSRange r;
-  unsigned len;
+  unsigned len, index;
   
   if (!messages)
     {
@@ -470,12 +472,26 @@
       uids = [self sortedUIDs];
       len = [uids count];
       if (len > r.length)
-	/* only need to restrict if we have a lot */
-	uids = [uids subarrayWithRange: r];
-  
+	  /* only need to restrict if we have a lot */
+	  uids = [uids subarrayWithRange: r];
+
+      // Don't assume the IMAP server return the messages in the
+      // same order as the specified list of UIDs (specially true for
+      // dovecot).
       msgs = (NSDictionary *) [[self clientObject] fetchUIDs: uids
 						   parts: [self fetchKeys]];
-      messages = [[msgs objectForKey: @"fetch"] retain];
+      unsortedMsgs = [msgs objectForKey: @"fetch"];
+      sortedMsgs = [NSMutableArray arrayWithCapacity: [unsortedMsgs count]];
+      msgsList = [unsortedMsgs objectEnumerator];
+      while ( (msg = [msgsList nextObject]) )
+	{
+	  index = [uids indexOfObject: [msg objectForKey: @"uid"]];
+	  if (index < [sortedMsgs count])
+	    [sortedMsgs insertObject: msg atIndex: index];
+	  else
+	    [sortedMsgs addObject: msg];
+	}
+      messages = [[NSArray arrayWithArray: sortedMsgs] retain];
     }
 
   return messages;

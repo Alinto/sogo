@@ -6,6 +6,9 @@
 
 2009-02-17  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/MailerUI/UIxMailListView.m ([UIxMailListView -messages]):
+	forced ordering of messages based on sorted UIDs.
+
 	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView
 	-allContactSearchAction]): replaced references to "displayName" by
 	"c_cn", following changes made on 2009-02-06. 
