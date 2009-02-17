@@ -196,7 +196,7 @@ withSearchOn: (NSString *) contact
   NSMutableArray *sortedFolders;
   NSMutableDictionary *uniqueContacts;
   unsigned int i, j;
-  NSSortDescriptor *displayNameDescriptor;
+  NSSortDescriptor *commonNameDescriptor;
   
   searchText = [self queryParameterForKey: @"search"];
   if ([searchText length] > 0)
@@ -219,24 +219,24 @@ withSearchOn: (NSString *) contact
 	  folder = [sortedFolders objectAtIndex: i];
 	  //NSLog(@"  Address book: %@ (%@)", [folder displayName], [folder class]);
 	  contacts = [folder lookupContactsWithFilter: searchText
-			     sortBy: @"displayName"
+			     sortBy: @"c_cn"
 			     ordering: NSOrderedAscending];
 	  for (j = 0; j < [contacts count]; j++)
 	    {
 	      contact = [contacts objectAtIndex: j];
-	      mail = [contact objectForKey: @"mail"];
+	      mail = [contact objectForKey: @"c_mail"];
 	      //NSLog(@"   found %@ (%@)", [contact objectForKey: @"displayName"], mail);
 	      if ([mail isNotNull] && [uniqueContacts objectForKey: mail] == nil)
-		[uniqueContacts setObject: contact forKey: [contact objectForKey: @"mail"]];
+		[uniqueContacts setObject: contact forKey: mail];
 	    }
 	}      
       if ([uniqueContacts count] > 0)
 	{
 	  // Sort the contacts by display name
-	  displayNameDescriptor = [[[NSSortDescriptor alloc] initWithKey: @"displayName"
+	  commonNameDescriptor = [[[NSSortDescriptor alloc] initWithKey: @"c_cn"
 							     ascending:YES] autorelease];
-	  descriptors = [NSArray arrayWithObjects: displayNameDescriptor, nil];
-	  sortedContacts = [[uniqueContacts allValues] sortedArrayUsingDescriptors: descriptors];	  
+	  descriptors = [NSArray arrayWithObjects: commonNameDescriptor, nil];
+	  sortedContacts = [[uniqueContacts allValues] sortedArrayUsingDescriptors: descriptors];
 	}
       else
 	sortedContacts = [NSArray array];
@@ -265,7 +265,7 @@ withSearchOn: (NSString *) contact
   if ([searchText length] > 0)
     {
       um = [LDAPUserManager sharedUserManager];
-      contacts
+      contacts 
 	= [self _responseForResults: [um fetchContactsMatching: searchText]];
       data = [NSDictionary dictionaryWithObjectsAndKeys: searchText, @"searchText",
 			                                 contacts, @"contacts",

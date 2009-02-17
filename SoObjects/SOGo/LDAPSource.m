@@ -363,7 +363,7 @@ static NSLock *lock;
   NSString *qs, *mailFormat, *fieldFormat;
   EOQualifier *qualifier;
 
-  fieldFormat = [NSString stringWithFormat: @"(%%@='*%@*')", filter];
+  fieldFormat = [NSString stringWithFormat: @"(%%@='%@*')", filter];
   mailFormat = [[mailFields stringsWithFormat: fieldFormat]
 		 componentsJoinedByString: @" OR "];
 

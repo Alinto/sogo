@@ -438,14 +438,14 @@ function performSearchCallback(http) {
 				// Populate popup menu
 				for (var i = 0; i < data.contacts.length; i++) {
 					var contact = data.contacts[i];
-					var completeEmail = contact["displayName"] + " <" + contact["mail"] + ">";
+					var completeEmail = contact["c_cn"] + " <" + contact["c_mail"] + ">";
 					var node = new Element('li', { 'address': completeEmail });
 					var matchPosition = completeEmail.toLowerCase().indexOf(data.searchText.toLowerCase());
 					var matchBefore = completeEmail.substring(0, matchPosition);
 					var matchText = completeEmail.substring(matchPosition, matchPosition + data.searchText.length);
 					var matchAfter = completeEmail.substring(matchPosition + data.searchText.length);
 					list.appendChild(node);
-					node.uid = contact["c_uid"];
+					node.uid = contact["c_name"];
 					node.appendChild(document.createTextNode(matchBefore));
 					node.appendChild(new Element('strong').update(matchText));
 					node.appendChild(document.createTextNode(matchAfter));
@@ -482,10 +482,9 @@ function performSearchCallback(http) {
 				if (data.contacts.length == 1) {
 					// Single result
 					var contact = data.contacts[0];
-					if (contact["c_uid"].length > 0)
-						input.uid = contact["c_uid"];
-					var completeEmail = contact["displayName"] + " <" + contact["mail"] + ">";
-					if (contact["displayName"].substring(0, input.value.length).toUpperCase()
+					input.uid = contact["c_name"];
+					var completeEmail = contact["c_cn"] + " <" + contact["c_mail"] + ">";
+					if (contact["c_cn"].substring(0, input.value.length).toUpperCase()
 							== input.value.toUpperCase())
 						input.value = completeEmail;
 					else
