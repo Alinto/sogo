@@ -1,3 +1,15 @@
+2009-02-17  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView
+	-allContactSearchAction]): replaced references to "displayName" by
+	"c_cn", following changes made on 2009-02-06. 
+
+	* SoObjects/Contacts/SOGoContactGCSFolder.m ([SOGoContactGCSFolder
+	-_qualifierForFilter:]): changed search in email address to match
+	search behavior of Thunderbird.
+
+	* SoObjects/SOGo/LDAPSource.m ([LDAPSource -_qualifierForFilter:]): idem.
+
 2009-02-16  Ludovic Marcotte <lmarcotte@inverse.ca>
 
         * Updated Dutch translation - patch from
