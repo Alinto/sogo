@@ -1185,7 +1185,7 @@ function onEventsSelectionChange() {
   this.removeClassName("_unfocused");
   $("tasksList").addClassName("_unfocused");
 
-  var rows = this.tBodies[0].getSelectedNodes();
+  var rows = $(this.tBodies[0]).getSelectedNodes();
   if (rows.length == 1) {
     var row = rows[0];
     changeCalendarDisplay( { "day": row.day,
