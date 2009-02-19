@@ -74,7 +74,7 @@
 
 - (NSString *) defaultSortKey
 {
-  return @"displayName";
+  return @"c_cn";
 }
 
 - (NSString *) sortKey
