@@ -82,6 +82,7 @@ function fancyAddRow(shouldEdit, text, type) {
   if (shouldEdit) {
     input.writeAttribute("autocomplete", "off");
     input.observe("keydown", onContactKeydown); // bind listener for address completion
+		input.observe("blur", onContactBlur);
     input.focus();
     input.select();
   }
