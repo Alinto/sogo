@@ -296,8 +296,6 @@ static NSArray *tasksFields = nil;
   WOResponse *response;
 
   response = [self responseWithStatus: 200];
-  [response setHeader: @"text/plain; charset=utf-8"
-	    forKey: @"content-type"];
   [response appendContentString: [data jsonRepresentation]];
 
   return response;

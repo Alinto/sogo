@@ -39,6 +39,8 @@
 
   response = [context response];
   [response setStatus: status];
+  [response setHeader: @"text/plain; charset=utf-8" 
+	    forKey: @"Content-Type"];
 
   return response;
 }
@@ -66,8 +68,6 @@
   WOResponse *response;
 
   response = [self responseWithStatus: 204];
-  [response setHeader: @"text/plain; charset=utf-8"
-	    forKey: @"Content-Type"];
 
   return response;
 }
