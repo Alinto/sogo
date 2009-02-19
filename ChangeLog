@@ -1,3 +1,13 @@
+2009-02-19  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Contacts/UIxContactsListView.m ([UIxContactsListView
+	-defaultSortKey]): replaced "displayName" by "c_cn", following
+	changes made on 2009-02-06.
+
+	* UI/Common/WODirectAction+SOGo.m ([WODirectAction
+	-responseWithStatus:]): set the default type so Firefox doesn't
+	complain when using nginx with SOGo.
+
 2009-02-17  Ludovic Marcotte <lmarcotte@inverse.ca>
 
         * SoObjects/Contacts/SOGoContactLDIFEntry.m ([SOGoContactLDIFEntry
