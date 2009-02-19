@@ -362,14 +362,9 @@ function onContactKeydown(event) {
 		this.confirmedValue = null;
 		MailEditor.selectedIndex = -1;
 		MailEditor.currentField = this;
-		if (this.value.length > 1) {
-			if (MailEditor.delayedSearch) window.clearTimeout(MailEditor.delayedSearch);
-			MailEditor.delayedSearch = window.setTimeout("performSearch()", MailEditor.delay);
-		}
-		else if (this.value.length <= 1) {
-			if (document.currentPopupMenu)
-				hideMenu(document.currentPopupMenu);
-		}
+		if (MailEditor.delayedSearch)
+			window.clearTimeout(MailEditor.delayedSearch);
+		MailEditor.delayedSearch = window.setTimeout("performSearch()", MailEditor.delay);
 	}
 	else if (event.keyCode == Event.KEY_RETURN) {
 		preventDefault(event);
@@ -402,6 +397,12 @@ function onContactKeydown(event) {
 	}
 }
 
+function onContactBlur(event) {
+	if (MailEditor.delayedSearch)
+		window.clearTimeout(MailEditor.delayedSearch);
+	MailEditor.currentField = null;
+}
+
 function performSearch() {
 	// Perform address completion
 	if (MailEditor.currentField) {
@@ -410,11 +411,15 @@ function performSearch() {
 			document.contactLookupAjaxRequest.aborted = true;
 			document.contactLookupAjaxRequest.abort();
 		}
-		if (MailEditor.currentField.value.trim().length > 1) {
+		if (MailEditor.currentField.value.trim().length > 2) {
 			var urlstr = (UserFolderURL + "Contacts/allContactSearch?search="
 										+ encodeURIComponent(MailEditor.currentField.value));
 			document.contactLookupAjaxRequest =
 				triggerAjaxRequest(urlstr, performSearchCallback, MailEditor.currentField);
+		}
+		else {
+			if (document.currentPopupMenu)
+				hideMenu(document.currentPopupMenu);
 		}
 	}
 }
@@ -521,6 +526,7 @@ function initTabIndex(addressList, subjectField, msgArea) {
 				input.writeAttribute("tabindex", i++);
 				input.writeAttribute("autocomplete", "off");
 				input.observe("keydown", onContactKeydown); // bind listener for address completion
+				input.observe("blur", onContactBlur);
 			}
 		});
 	subjectField.writeAttribute("tabindex", i++);
