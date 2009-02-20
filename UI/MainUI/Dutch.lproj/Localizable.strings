@@ -10,7 +10,7 @@
 "Wrong username or password." = "Onjuiste gebruikersnaam of wachtwoord.";
 "cookiesNotEnabled" = "U kunt niet inloggen omdat de browser geen cookies accepteert. Verander AUB de cookies instellingen van de browser en probeer het opnieuw.";
 
-"browserNotCompatible" = "We hebben gedetecteerd dat de browser die u op dit moment gebruikt niet word ondersteund voor deze site. Onze aanbeveling is Firefox te gebruiken. Hieronder staat een link om de laatste versie van deze browser te downloaden.
+"browserNotCompatible" = "We hebben gedetecteerd dat de browser die u op dit moment gebruikt niet word ondersteund voor deze site. Onze aanbeveling is Firefox te gebruiken. Hieronder staat een link om de laatste versie van deze browser te downloaden.";
 "alternativeBrowsers" = "Als alternatief kun u ook de volgende compatible browsers gebruiken.";
 "alternativeBrowserSafari" = "Als alternatief kunt u ook Safari gebruiken.";
 "Download" = "Download";
