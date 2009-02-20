@@ -36,12 +36,8 @@
 "Unable to unsubscribe from that folder!" = "Het is niet mogelijk om u hiervan uit te schrijven.";
 "You cannot unsubscribe from a folder that you own!" = "Het is niet mogelijk om u uit te schrijven van uw eigen mappen.";
 "Unable to rename that folder!" = "Het is niet mogelijk om deze map te hernoemen.";
-"You have already subscribed to that folder!"
-     	= "U bent al op deze map geabonneerd!";
-"The user rights cannot be edited for this object!"
-        = "De machtigingen kunnen niet worden aangepast voor dit object!";
+"You have already subscribed to that folder!" = "U bent al op deze map geabonneerd!";
+"The user rights cannot be edited for this object!" = "De machtigingen kunnen niet worden aangepast voor dit object!";
 
-"You are not allowed to access this module or this system. Please contact your system administrator."
-= "U hebt geen toegang tot deze module of dit systeem. Neem contact op met uw systeem beheerder."
-"You don't have the required privileges to perform the operation.";
-= "Voor deze actie heeft u niet de benodigde rechten.";
+"You are not allowed to access this module or this system. Please contact your system administrator." = "U hebt geen toegang tot deze module of dit systeem. Neem contact op met uw systeem beheerder.";
+"You don't have the required privileges to perform the operation." = "Voor deze actie heeft u niet de benodigde rechten.";
