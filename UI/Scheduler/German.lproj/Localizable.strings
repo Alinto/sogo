@@ -111,7 +111,7 @@
 
 /* acls */
 
-"Default Roles" = "Standard-Rollen";
+"Default Roles" = "Standardrechte";
 "User rights for:" = "Benutzerrechte für:";
 
 "label_Public" = "Öffentlich";
@@ -131,9 +131,9 @@
 "None" = "Keine";
 
 "This person can create objects in my calendar."
-= "Diese Person kann Termine in meinem Kalender hinzufügen.";
+= "Diese Person kann Objekte in meinem Kalender hinzufügen.";
 "This person can erase objects from my calendar."
-= "Diese Person kann Termine in meinem Kalender löschen.";
+= "Diese Person kann Objekte in meinem Kalender löschen.";
 
 /* Button Titles */
 
@@ -397,7 +397,7 @@
 
 /* transparency */
 
-"Show Time as Free" = "Zeige Zeit als Frei";
+"Show Time as Free" = "Zeige Zeit als Verfügbar";
 
 /* validation errors */
 
@@ -439,7 +439,7 @@ validate_endbeforestart    = "Ihr Beginn ist nach dem Ende";
 "taskDeleteConfirmation" = "Wollen Sie diese Aufgabe wirklich dauerhaft löschen?";
 
 "Are you sure you want to delete the calendar \"%{0}\"?"
-= "Wollen Sie diesen Kalender wirklich dauerhaft löschen \"%{0}\"?";
+= "Wollen Sie diesen Kalender wirklich löschen \"%{0}\"?";
 
 /* Legend */
 "Required participant" = "notwendiger Teilnehmer";
@@ -458,8 +458,8 @@ validate_endbeforestart    = "Ihr Beginn ist nach dem Ende";
 
 /* FreeBusy panel buttons */
 "Suggest time slot:" = "Termin vorschlagen:";
-"Previous slot" = "Vorherige";
-"Next slot" = "Nächste";
+"Previous slot" = "Vorheriger";
+"Next slot" = "Nächster";
 "Previous hour" = "Vorherige Stunde";
 "Next hour" = "Nächste Stunde";
 

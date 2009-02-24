@@ -83,14 +83,14 @@
 "Default identity:" = "Identità principale:";
 "Manage identities..." = "Gestisci identità...";
 "Signature" = "Firma";
-"replyplacement_above" = "replyplacement_above";
-"replyplacement_below" = "replyplacement_below";
-"And place my signature" = "And place my signature";
-"signatureplacement_above" = "signatureplacement_above";
-"signatureplacement_below" = "signatureplacement_below";
+"replyplacement_above" = "Inizia la risposta sopra il testo a cui si risponde";
+"replyplacement_below" = "Inizia la risposta sotto il testo a cui si risponde";
+"And place my signature" = "Metti la firma";
+"signatureplacement_above" = "sopra il testo a cui si risponde";
+"signatureplacement_below" = "sotto il testo a cui si risponde";
 
 /* Additional Parameters */
-"Additional Parameters" = "Additional Parameters";
+"Additional Parameters" = "Parametri addizionali";
 
 /* password */
 "New password:" = "Nuova password:";

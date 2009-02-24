@@ -24,6 +24,7 @@
 "Thursday" = "Giovedi";
 "Friday" = "Venerdi";
 "Saturday" = "Sabato";
+"DayOfTheMonth" = "Giorno del mese";
 
 "Sun" = "Dom";
 "Mon" = "Lun";
@@ -95,7 +96,7 @@
 "Sharing..." = "Condivisione";
 "Export Calendar..." = "Esporta calendario...";
 "Publish Calendar..." = "Pubblica calendario...";
-"Reload Remote Calendars" = "Aggiorna calendari Remoti";
+"Reload Remote Calendars" = "Aggiorna calendari remoti";
 "Properties" = "Proprietà";
 
 "Compose E-Mail to All Attendees" = "Invia Email a tutti gli invitati";
@@ -196,7 +197,7 @@
 "Duration" = "Durata";
 "Attendees:" = "Partecipanti:";
 "Resources" = "Risorse";
-"Organizer:" = "Organizzatore:";
+"Organizer:" = "Proprietario:";
 "Description:" = "Descrizione:";
 "Document:" = "Documento:";
 "Category:" = "Categoria:";
@@ -256,7 +257,10 @@
 "All day Event" = "Tutta la giornata";
 "check for conflicts" = "Controlla conflitti";
 
-"Browse URL" = "Cerca URL";
+"Browse URL" = "Mostra URL";
+
+"newAttendee" = "Nuovo partecipante";
+
 
 /* calendar modes */
 
@@ -396,7 +400,7 @@
 
 /* transparency */
 
-"Show Time as Free" = "Show Time as Free";
+"Show Time as Free" = "Mostra comunque come libero";
 
 /* validation errors */
 
@@ -443,7 +447,7 @@ validate_endbeforestart    = "La data finale specificata è precedente alla data
 /* Legend */
 "Required participant" = "Richiede partecipanti";
 "Optional participant" = "Partecipanti opzionali";
-"Chair" = "Chair";
+"Chair" = "Sedia";
 
 "Needs action" = "Richiede un'azione";
 "Accepted" = "Accettato";
@@ -491,4 +495,4 @@ vtodo_class2 = "(Attività confidenziale)";
 /* Properties dialog */
 "Name:" = "Nome:";
 "Color:" = "Colore:";
-"Tag:" = "Tag:";
+"Tag:" = "Etichetta:";

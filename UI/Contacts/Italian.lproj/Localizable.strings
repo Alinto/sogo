@@ -15,7 +15,7 @@
 "Addressbook" = "Rubrica";
 "Addresses" = "Indirizzi";
 "Update" = "Aggiorna";
-"Cancel" = "Anulla";
+"Cancel" = "Annulla";
 "Common" = "Comuni";
 "Contact editor" = "Editor dei contatti";
 "Contact viewer" = "Visulizzatore dei contatti";
@@ -42,7 +42,7 @@
 "delete" = "cancella";
 "edit" = "modifica";
 "invalidemailwarn" = "L'indirizzo email specificato non è valido";
-"new" = "new";
+"new" = "nuovo";
 "Preferred Phone"   = "Telefono lavoro";
 
 /* Tooltips */
@@ -71,8 +71,8 @@
 "Add..." = "Aggiungi...";
 "Remove" = "Rimuovi";
 
-"Please wait..." = "Please wait...";
-"No possible subscription" = "No possible subscription";
+"Please wait..." = "Attendere prego...";
+"No possible subscription" = "Nessuna sottoscrizione possibile";
 
 "Preferred" = "Predefinito";
 "Card for %@" = "Biglietto da visita di %@";
@@ -125,6 +125,9 @@
 "Carbon Copy" = "Copia Carbone";
 "Blind Carbon Copy" = "Copia Carbone Nascosta";
 
+"Move To" = "Sposta in ";
+"Copy To" = "Copia in ";
+
 "New Addressbook..." = "Nuova rubrica...";
 "Subscribe to an Addressbook..." = "Sottoscrivi una rubrica...";
 "Remove the selected Addressbook" = "Rimuovi la rubrica selezionata";
@@ -133,9 +136,9 @@
 "Are you sure you want to delete the selected address book?"
 = "Sei sicuro di voler cancellare la rubrica selezionata?";
 "You cannot remove nor unsubscribe from a public addressbook."
-= "You cannot remove nor unsubscribe from a public addressbook.";
+= "Non puoi rimuovere una rubrica pubblica.";
 "You cannot remove nor unsubscribe from your personal addressbook."
-= "You cannot remove nor unsubscribe from your personal addressbook.";
+= "Non puoi rimuovere la tua rubrica personale.";
 
 "Are you sure you want to delete the selected contacts?"
 = "Sei sicuro di voler eliminare i contatti selezionati?";

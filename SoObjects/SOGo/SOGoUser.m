@@ -23,11 +23,13 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSDistributedNotificationCenter.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSNull.h>
 #import <Foundation/NSTimeZone.h>
 #import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSValue.h>
+#import <Foundation/NSURL.h>
 #import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WORequest.h>
@@ -330,20 +332,6 @@ _timeValue (NSString *key)
 }
 
 /* properties */
-
-// - (NSString *) fullEmail
-// {
-//   return [[LDAPUserManager sharedUserManager] getFullEmailForUID: login];
-// }
-
-// - (NSString *) primaryEmail
-// {
-//   if (!allEmails)
-//     [self _fetchAllEmails];
-
-//   return [allEmails objectAtIndex: 0];
-// }
-
 - (NSArray *) allEmails
 {
   if (!allEmails)
@@ -415,26 +403,6 @@ _timeValue (NSString *key)
 	  @" variable(s) mentionned above are configured"];
 }
 
-// - (NSString *) primaryMailServer
-// {
-//   return [[self userManager] getServerForUID: [self login]];
-// }
-
-// - (NSArray *) additionalIMAP4AccountStrings
-// {
-//   return [[self userManager]getSharedMailboxAccountStringsForUID: [self login]];
-// }
-
-// - (NSArray *) additionalEMailAddresses
-// {
-//   return [[self userManager] getSharedMailboxEMailsForUID: [self login]];
-// }
-
-// - (NSDictionary *) additionalIMAP4AccountsAndEMails
-// {
-//   return [[self userManager] getSharedMailboxesAndEMailsForUID: [self login]];
-// }
-
 - (NSURL *) freeBusyURL
 {
   return nil;
@@ -491,15 +459,16 @@ _timeValue (NSString *key)
 - (NSUserDefaults *) userDefaults
 {
   SOGoUserDefaults *defaults;
-  NSDictionary *cachedDefaults;
 
-  cachedDefaults = [[SOGoCache cachedUserDefaults] objectForKey: login];
-  if (cachedDefaults)
-    defaults = [cachedDefaults objectForKey: @"dictionary"];
-  else    
+  defaults = [[SOGoCache sharedCache] userDefaultsForLogin: login];
+
+  if (!defaults)    
     {
+      NSMutableDictionary *d;
+
       defaults = [self primaryUserDefaults];
-      /* Required parameters for the web interface */
+
+      // Required parameters for the Web interface
       if (![[defaults stringForKey: @"ReplyPlacement"] length])
 	[defaults setObject: defaultReplyPlacement forKey: @"ReplyPlacement"];
       if (![[defaults stringForKey: @"SignaturePlacement"] length])
@@ -509,8 +478,22 @@ _timeValue (NSString *key)
       if (![[defaults stringForKey: @"MessageCheck"] length])
 	[defaults setObject: defaultMessageCheck forKey: @"MessageCheck"];
 
-      [SOGoCache setCachedUserDefaults: defaults user: login];
+      // We propagate the loaded user defaults to other sogod instances
+      // which will cache them in SOGoCache (including for the instance
+      // that actually posts the notification)
+      d = [NSMutableDictionary dictionary];
+      [d setObject: [defaults values]  forKey: @"values"];
+      [d setObject: login  forKey: @"uid"];
+      [d setObject: [SOGoProfileURL absoluteString]  forKey: @"url"];
+
+      [[NSDistributedNotificationCenter defaultCenter]
+	postNotificationName: @"SOGoUserDefaultsHaveLoaded"
+	object: nil
+	userInfo: d
+	deliverImmediately: YES];
     }
+  //else
+  //  NSLog(@"User defaults cache hit for %@", login);
 
   return (NSUserDefaults *) defaults;
 }
@@ -518,16 +501,31 @@ _timeValue (NSString *key)
 - (NSUserDefaults *) userSettings
 {
   SOGoUserDefaults *settings;
-  NSDictionary *cachedSettings;
 
-  cachedSettings = [[SOGoCache cachedUserSettings] objectForKey: login];
-  if (cachedSettings)
-    settings = [cachedSettings objectForKey: @"dictionary"];
-  else    
+  settings = [[SOGoCache sharedCache] userSettingsForLogin: login];
+
+  if (!settings)    
     {
+      NSMutableDictionary *d;
+
       settings = [self primaryUserSettings];
-      [SOGoCache setCachedUserSettings: settings user: login];
+      [settings fetchProfile];
+      // We propagate the loaded user settings to other sogod instances
+      // which will cache them in SOGoCache (including for the instance
+      // that actually posts the notification)
+      d = [NSMutableDictionary dictionary];
+      [d setObject: [settings values]  forKey: @"values"];
+      [d setObject: login  forKey: @"uid"];
+      [d setObject: [SOGoProfileURL absoluteString]  forKey: @"url"];
+
+      [[NSDistributedNotificationCenter defaultCenter]
+	postNotificationName: @"SOGoUserSettingsHaveLoaded"
+	object: nil
+	userInfo: d
+	deliverImmediately: YES];
     }
+  //else
+  //  NSLog(@"User settings cache hit for %@", login);
 
   return (NSUserDefaults *) settings;
 }

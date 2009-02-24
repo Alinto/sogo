@@ -23,12 +23,12 @@
   NSShortDateFormatString = "%d/%m/%y";
   NSShortMonthNameArray = (Gen, Feb, Mar, Apr, Mag, Giu, Lug, Ago, Set, Ott, Nov, Dic);
   NSShortTimeDateFormatString = "%d/%m/%y %H:%M";
-  NSShortWeekDayNameArray = (Lun, Mar, Mer, Gio, Ven, Sab, Dom);
+  NSShortWeekDayNameArray = (Dom, Lun, Mar, Mer, Gio, Ven, Sab);
   NSThisDayDesignations = (oggi, ora);
   NSThousandsSeparator = ",";
   NSTimeDateFormatString = "%A, %e %B, %Y %H:%M:%S %Z";
   NSTimeFormatString = "%H:%M:%S";
-  NSWeekDayNameArray = (Lunedi, Martedi, Mercoledi, Giovedi, Venerdi, Sabato, Domenica);
+  NSWeekDayNameArray = (Domenica, Lunedi, Martedi, Mercoledi, Giovedi, Venerdi, Sabato);
   NSYearMonthWeekDesignations = (anno, mese, settimana);
   NSPositiveCurrencyFormatString = "â¬ 9,999.00";
   NSNegativeCurrencyFormatString = "-â¬ 9,999.00";

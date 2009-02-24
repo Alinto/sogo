@@ -1,6 +1,6 @@
 /* SOGoCache.h - this file is part of SOGo
  *
- * Copyright (C) 2008 Inverse inc.
+ * Copyright (C) 2008-2009 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *         Ludovic Marcotte <lmarcotte@inverse.ca>
@@ -54,12 +54,11 @@
 - (void) registerUser: (SOGoUser *) user;
 - (id) userNamed: (NSString *) name;
 
-+ (void) setCachedUserDefaults: (SOGoUserDefaults *) theDefaults
-			  user: (NSString *) login;
-+ (NSDictionary *) cachedUserDefaults;
-+ (void) setCachedUserSettings: (SOGoUserDefaults *) theSettings
-			  user: (NSString *) login;
-+ (NSDictionary *) cachedUserSettings;
+- (void) cacheAttributes: (NSDictionary *) theAttributes
+		forLogin: (NSString *) theLogin;
+- (NSMutableDictionary *) userAttributesForLogin: (NSString *) theLogin;
+- (SOGoUserDefaults *) userDefaultsForLogin: (NSString *) theLogin;
+- (SOGoUserDefaults *) userSettingsForLogin: (NSString *) theLogin;
 
 @end
 

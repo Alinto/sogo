@@ -1,6 +1,6 @@
 /* LDAPUserManager.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2008 Inverse inc.
+ * Copyright (C) 2007-2009 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -22,6 +22,7 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSDistributedNotificationCenter.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSLock.h>
 #import <Foundation/NSString.h>
@@ -33,6 +34,7 @@
 #import "NSArray+Utilities.h"
 #import "LDAPSource.h"
 #import "LDAPUserManager.h"
+#import "SOGoCache.h"
 
 static NSString *defaultMailDomain = nil;
 static NSString *LDAPContactInfoAttribute = nil;
@@ -147,7 +149,6 @@ static NSLock *lock = nil;
 - (id) init
 {
   NSUserDefaults *ud;
-  NSString *cleanupSetting;
 
   if ((self = [super init]))
     {
@@ -155,27 +156,6 @@ static NSLock *lock = nil;
 
       sources = nil;
       sourcesMetadata = nil;
-      users = [NSMutableDictionary new];
-      cleanupSetting
-	= [ud objectForKey: @"SOGoLDAPUserManagerCleanupInterval"];
-      if (cleanupSetting)
-	cleanupInterval = [cleanupSetting doubleValue];
-      else
-	cleanupInterval = 0.0;
-      if (cleanupInterval > 0.0)
-	{
-	  cleanupTimer
-	    = [NSTimer scheduledTimerWithTimeInterval: cleanupInterval
-		       target: self
-		       selector: @selector (_cleanupSources)
-		       userInfo: nil
-		       repeats: YES];
-	  [self logWithFormat: @"cleanup interval set every %f seconds",
-		cleanupInterval];
-	}
-      else
-	[self
-	  logWithFormat: @"no cleanup interval set: memory usage will grow"];
       [self _prepareLDAPSourcesWithDefaults: ud];
     }
 
@@ -185,7 +165,6 @@ static NSLock *lock = nil;
 - (void) dealloc
 {
   [sources release];
-  [users release];
   [super dealloc];
 }
 
@@ -312,16 +291,15 @@ static NSLock *lock = nil;
 - (BOOL) checkLogin: (NSString *) login
 	andPassword: (NSString *) password
 {
-  BOOL checkOK;
-  NSDate *cleanupDate;
   NSMutableDictionary *currentUser;
   NSString *dictPassword;
+  BOOL checkOK;
 
 #if defined(THREADSAFE)
   [lock lock];
 #endif
 
-  currentUser = [users objectForKey: login];
+  currentUser = [[SOGoCache sharedCache] userAttributesForLogin: login];
   dictPassword = [currentUser objectForKey: @"password"];
   if (currentUser && dictPassword)
     checkOK = ([dictPassword isEqualToString: password]);
@@ -331,18 +309,12 @@ static NSLock *lock = nil;
       if (!currentUser)
 	{
 	  currentUser = [NSMutableDictionary dictionary];
-	  [users setObject: currentUser forKey: login];
+	  [[SOGoCache sharedCache] cacheAttributes: currentUser  forLogin: login];
 	}
       [currentUser setObject: password forKey: @"password"];
     }
   else
     checkOK = NO;
-
-  if (cleanupInterval)
-    {
-      cleanupDate = [[NSDate date] addTimeInterval: cleanupInterval];
-      [currentUser setObject: cleanupDate forKey: @"cleanupDate"];
-    }
 
 #if defined(THREADSAFE)
   [lock unlock];
@@ -422,35 +394,59 @@ static NSLock *lock = nil;
   [self _fillContactMailRecords: currentUser];
 }
 
+//
+// We cache here all identities, including those
+// associated with email addresses.
+//
 - (void) _retainUser: (NSDictionary *) newUser
 {
-  NSString *key;
   NSEnumerator *emails;
-
+  NSString *key;
+  
 #if defined(THREADSAFE)
   [lock lock];
 #endif
   key = [newUser objectForKey: @"c_uid"];
   if (key)
-    [users setObject: newUser forKey: key];
+    [[SOGoCache sharedCache] cacheAttributes: newUser  forLogin: key];
   emails = [[newUser objectForKey: @"emails"] objectEnumerator];
   while ((key = [emails nextObject]))
-    [users setObject: newUser forKey: key];
+    {
+      [[SOGoCache sharedCache] cacheAttributes: newUser  forLogin: key];
+    }
 #if defined(THREADSAFE)
   [lock unlock];
 #endif
+
+  // We propagate the loaded LDAP attributes to other sogod instances
+  // which will cache them in SOGoCache (excluding for the instance
+  // that actually posts the notification)
+  if ([newUser objectForKey: @"c_uid"]) 
+    {
+      NSMutableDictionary *d;
+      
+      d = [NSMutableDictionary dictionary];
+      [d setObject: newUser  forKey: @"values"];
+      [d setObject: [newUser objectForKey: @"c_uid"]
+	 forKey: @"uid"];
+      
+      [[NSDistributedNotificationCenter defaultCenter]
+	postNotificationName: @"SOGoUserAttributesHaveLoaded"
+	object: nil
+	userInfo: d
+	deliverImmediately: YES];
+    }
 }
 
 - (NSDictionary *) contactInfosForUserWithUIDorEmail: (NSString *) uid
 {
   NSMutableDictionary *currentUser, *contactInfos;
-  NSDate *cleanupDate;
   BOOL newUser;
 
   if ([uid length] > 0)
     {
       contactInfos = [NSMutableDictionary dictionary];
-      currentUser = [users objectForKey: uid];
+      currentUser = [[SOGoCache sharedCache] userAttributesForLogin: uid];
 #if defined(THREADSAFE)
       [lock lock];
 #endif
@@ -475,11 +471,6 @@ static NSLock *lock = nil;
 	    }
 	}
 
-      if (cleanupInterval && currentUser)
-	{
-	  cleanupDate = [[NSDate date] addTimeInterval: cleanupInterval];
-	  [currentUser setObject: cleanupDate forKey: @"cleanupDate"];
-	}
 #if defined(THREADSAFE)
       [lock unlock];
 #endif
@@ -581,42 +572,6 @@ static NSLock *lock = nil;
 {
   return [self _fetchEntriesInSources: [self authenticationSourceIDs]
 	       matching: filter];
-}
-
-- (void) _cleanupSources
-{
-  NSEnumerator *userIDs;
-  NSString *currentID;
-  NSDictionary *currentUser;
-  NSDate *now;
-  unsigned int count;
-
-#if defined(THREADSAFE)
-  [lock lock];
-#endif
-
-  now = [NSDate date];
-
-  count = 0;
-
-  userIDs = [[users allKeys] objectEnumerator];
-  while ((currentID = [userIDs nextObject]))
-    {
-      currentUser = [users objectForKey: currentID];
-      if ([now earlierDate:
-		 [currentUser objectForKey: @"cleanupDate"]] == now)
-	{
-	  [users removeObjectForKey: currentID];
-	  count++;
-	}
-    }
-
-  if (count)
-    [self logWithFormat: @"cleaned %d users records from cache", count];
-
-#if defined(THREADSAFE)
-  [lock unlock];
-#endif
 }
 
 @end

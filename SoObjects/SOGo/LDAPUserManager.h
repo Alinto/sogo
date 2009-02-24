@@ -1,6 +1,6 @@
 /* LDAPUserManager.h - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse inc.
+ * Copyright (C) 2007-2009 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -34,11 +34,9 @@
 
 @interface LDAPUserManager : NSObject
 {
-  NSMutableDictionary *sources;
-  NSMutableDictionary *sourcesMetadata;
-  NSTimeInterval cleanupInterval;
-  NSTimer *cleanupTimer;
-  NSMutableDictionary *users;
+  @private
+    NSMutableDictionary *sources;
+    NSMutableDictionary *sourcesMetadata;
 }
 
 + (id) sharedUserManager;

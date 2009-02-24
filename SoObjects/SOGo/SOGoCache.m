@@ -1,6 +1,6 @@
 /* SOGoCache.m - this file is part of SOGo
  *
- * Copyright (C) 2008 Inverse inc.
+ * Copyright (C) 2008-2009 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *         Ludovic Marcotte <lmarcotte@inverse.ca>
@@ -19,6 +19,24 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
+ */
+
+/*
+ * [ Structure ]
+ * users: key = user ID         value = NSMutableDictionary instance
+ * value: key = @"user"         value = SOGOUser instance
+ *        key = @"cleanupDate"  value = NSDate instance
+ *        key = @"defaults"     value = SOGoUserDefaults instance
+ *        key = @"settings"     value = SOGoUserDefaults instance
+ *        key = @"attributes"   value = NSDictionary instance (attributes from LDAP)
+ *
+ * [ Workflows - processes A and B ]
+ *
+ * A cache user defaults and posts the notification
+ * B ....
+ *
+ * B crashes
+ * B receives a notificaion update
  */
 
 #import <Foundation/NSArray.h>
@@ -42,13 +60,10 @@
 // We define the default value for cleaning up cached
 // users' preferences. This value should be relatively
 // high to avoid useless database calls.
-static NSTimeInterval cleanupInterval = 1800;
+static NSTimeInterval cleanupInterval = 300;
 
 static NSMutableDictionary *cache = nil;
 static NSMutableDictionary *users = nil;
-
-static NSMutableDictionary *s_userDefaults = nil;
-static NSMutableDictionary *s_userSettings = nil;
 
 static SOGoCache *sharedCache = nil;
 
@@ -60,11 +75,9 @@ static NSLock *lock;
 
 + (void) initialize
 {
- #if defined(THREADSAFE)
+#if defined(THREADSAFE)
   lock = [NSLock new];
 #endif
-  s_userDefaults = [[NSMutableDictionary alloc] init];
-  s_userSettings = [[NSMutableDictionary alloc] init];
 }
 
 + (NSTimeInterval) cleanupInterval
@@ -92,7 +105,6 @@ static NSLock *lock;
   [lock lock];
 #endif
   [cache removeAllObjects];
-  [users removeAllObjects];
 #if defined(THREADSAFE)
   [lock unlock];
 #endif
@@ -110,10 +122,28 @@ static NSLock *lock;
       // We register ourself for notifications
       [[NSDistributedNotificationCenter defaultCenter]
 	addObserver: self
+	selector: @selector(_userAttributesHaveLoaded:)
+	name: @"SOGoUserAttributesHaveLoaded"
+	object: nil];
+
+      [[NSDistributedNotificationCenter defaultCenter]
+	addObserver: self
+	selector: @selector(_userDefaultsHaveLoaded:)
+	name: @"SOGoUserDefaultsHaveLoaded"
+	object: nil];
+
+      [[NSDistributedNotificationCenter defaultCenter]
+	addObserver: self
 	selector: @selector(_userDefaultsHaveChanged:)
 	name: @"SOGoUserDefaultsHaveChanged"
 	object: nil];
       
+      [[NSDistributedNotificationCenter defaultCenter]
+	addObserver: self
+	selector: @selector(_userSettingsHaveLoaded:)
+	name: @"SOGoUserSettingsHaveLoaded"
+	object: nil];
+
       [[NSDistributedNotificationCenter defaultCenter]
 	addObserver: self
 	selector: @selector(_userSettingsHaveChanged:)
@@ -132,7 +162,7 @@ static NSLock *lock;
 			       selector: @selector(_cleanupSources)
 			       userInfo: nil
 			       repeats: YES];
-      [self logWithFormat: @"cleanup interval set every %f seconds",
+      [self logWithFormat: @"Cache cleanup interval set every %f seconds",
 	    cleanupInterval];
     }
 
@@ -143,7 +173,22 @@ static NSLock *lock;
 {
   [[NSDistributedNotificationCenter defaultCenter]
     removeObserver: self
+    name: @"SOGoUserAttributesHaveLoaded"
+    object: nil];
+
+  [[NSDistributedNotificationCenter defaultCenter]
+    removeObserver: self
+    name: @"SOGoUserDefaultsHaveLoaded"
+    object: nil];
+
+  [[NSDistributedNotificationCenter defaultCenter]
+    removeObserver: self
     name: @"SOGoUserDefaultsHaveChanged"
+    object: nil];
+
+  [[NSDistributedNotificationCenter defaultCenter]
+    removeObserver: self
+    name: @"SOGoUserSettingsHaveLoaded"
     object: nil];
   
   [[NSDistributedNotificationCenter defaultCenter]
@@ -157,7 +202,7 @@ static NSLock *lock;
 }
 
 - (NSString *) _pathFromObject: (SOGoObject *) container
-withName: (NSString *) name
+                      withName: (NSString *) name
 {
   NSString *fullPath, *nameInContainer;
   NSMutableArray *names;
@@ -197,14 +242,11 @@ withName: (NSString *) name
 #endif
       if (![cache objectForKey: fullPath])
 	{
-	  // 	  NSLog (@"registering '%@'", fullPath);
 	  [cache setObject: object forKey: fullPath];
 	}
 #if defined(THREADSAFE)
       [lock unlock];
 #endif
-      //       else
-      // 	NSLog (@"'%@' already registered", fullPath);
     }
 }
 
@@ -223,11 +265,21 @@ withName: (NSString *) name
 
 - (void) registerUser: (SOGoUser *) user
 { 
+  NSData *cleanupDate;
+
 #if defined(THREADSAFE)
   [lock lock];
 #endif
-  [users setObject: user
-	 forKey: [user login]];
+
+  cleanupDate = [[NSDate date] addTimeInterval: [SOGoCache cleanupInterval]];
+  
+  if (![users objectForKey: [user login]])
+    [users setObject: [NSMutableDictionary dictionary]  forKey: [user login]];
+
+  [[users objectForKey: [user login]] setObject: user  forKey: @"user"];
+  [[users objectForKey: [user login]] setObject: [[NSDate date] addTimeInterval: [SOGoCache cleanupInterval]]
+				      forKey: @"cleanupDate"];
+
 #if defined(THREADSAFE)
   [lock unlock];
 #endif
@@ -235,99 +287,184 @@ withName: (NSString *) name
 
 - (id) userNamed: (NSString *) name
 {
-  return [users objectForKey: name];
+  return [[users objectForKey: name] objectForKey: @"user"];
 }
 
-+ (NSDictionary *) cachedUserDefaults
+- (void) cacheAttributes: (NSDictionary *) theAttributes
+		forLogin: (NSString *) theLogin
 {
-  return s_userDefaults;
+  if (![users objectForKey: theLogin])
+    [users setObject: [NSMutableDictionary dictionary]  forKey: theLogin];
+
+  [[users objectForKey: theLogin] setObject: theAttributes  forKey: @"attributes"];
+  [[users objectForKey: theLogin] setObject: [[NSDate date] addTimeInterval: [SOGoCache cleanupInterval]]
+				  forKey: @"cleanupDate"];
 }
 
-/* defaults */
-+ (void) setCachedUserDefaults: (SOGoUserDefaults *) theDefaults
-			  user: (NSString *) login
+- (NSMutableDictionary *) userAttributesForLogin: (NSString *) theLogin
 {
-  NSDate *cleanupDate;
+  return [[users objectForKey: theLogin] objectForKey: @"attributes"];
+}
+
+- (SOGoUserDefaults *) userDefaultsForLogin: (NSString *) theLogin
+{
+  return [[users objectForKey: theLogin] objectForKey: @"defaults"];
+}
+
+- (SOGoUserDefaults *) userSettingsForLogin: (NSString *) theLogin
+{
+  return [[users objectForKey: theLogin] objectForKey: @"settings"];
+}
+
+//
+// Notification callbacks.
+//
+- (void) _cacheValues: (NSDictionary *) theValues
+                login: (NSString *) theLogin
+	          url: (NSString *) theURL
+		  key: (NSString *) theKey
+{
+  SOGoUserDefaults *defaults;
+  NSURL *url;
   
 #if defined(THREADSAFE)
   [lock lock];
 #endif
-  cleanupDate = [[NSDate date] addTimeInterval: [SOGoCache cleanupInterval]];
-  [s_userDefaults setObject: [NSDictionary dictionaryWithObjectsAndKeys:
-					     theDefaults, @"dictionary",
-					   cleanupDate, @"cleanupDate", nil]
-		  forKey: login];
+  url = [[[NSURL alloc] initWithString: theURL] autorelease];
+  
+  defaults = [[[SOGoUserDefaults alloc] initWithTableURL: url
+					uid: theLogin
+					fieldName: [NSString stringWithFormat: @"c_%@", theKey]]
+	       autorelease];
+  
+  if (![users objectForKey: theLogin])
+    [users setObject: [NSMutableDictionary dictionary]  forKey: theLogin];
+
+  [[users objectForKey: theLogin] setObject: defaults  forKey: theKey];
+  [[users objectForKey: theLogin] setObject: [[NSDate date] addTimeInterval: [SOGoCache cleanupInterval]]
+				  forKey: @"cleanupDate"];
+
+  //NSLog(@"\n\n\nCached user %@ for UID: %@\nvalues: %@\n\n", theKey, theLogin, theValues);
+  
 #if defined(THREADSAFE)
   [lock unlock];
 #endif
 }
 
-+ (NSDictionary *) cachedUserSettings
+- (void) _userAttributesHaveLoaded: (NSNotification *) theNotification
 {
-  return s_userSettings;
+  NSString *uid;
+
+  uid = [[theNotification userInfo] objectForKey: @"uid"];
+  //NSLog(@"Caching user attributes for UID: %@", uid);
+  if (![self userAttributesForLogin: uid])
+    {
+      NSEnumerator *emails;
+      NSDictionary *values;
+      NSString *key;
+      
+      if (![users objectForKey: uid])
+	[users setObject: [NSMutableDictionary dictionary]  forKey: uid];
+
+      values = [[theNotification userInfo] objectForKey: @"values"];
+      [self cacheAttributes: values  forLogin: uid];
+
+      emails = [[values objectForKey: @"emails"] objectEnumerator];
+      while ((key = [emails nextObject]))
+	{
+	  [self cacheAttributes: values  forLogin: key];
+	}
+
+      [[users objectForKey: uid] setObject: [[NSDate date] addTimeInterval: [SOGoCache cleanupInterval]]
+				 forKey: @"cleanupDate"];
+    }
 }
 
-+ (void) setCachedUserSettings: (SOGoUserDefaults *) theSettings
-			  user: (NSString *) login
+- (void) _userDefaultsHaveLoaded: (NSNotification *) theNotification
 {
-  NSDate *cleanupDate;
-  
-#if defined(THREADSAFE)
-  [lock lock];
-#endif
-  cleanupDate = [[NSDate date] addTimeInterval: [SOGoCache cleanupInterval]];
-  [s_userSettings setObject: [NSDictionary dictionaryWithObjectsAndKeys:
-					     theSettings, @"dictionary",
-					   cleanupDate, @"cleanupDate", nil]
-		  forKey: login];
-#if defined(THREADSAFE)
-  [lock unlock];
-#endif
+  NSString *uid;
+
+  uid = [[theNotification userInfo] objectForKey: @"uid"];
+  //NSLog(@"Loading user defaults for UID: %@", uid);
+  if (![self userDefaultsForLogin: uid])
+    {
+      [self _cacheValues: [[theNotification userInfo] objectForKey: @"values"]
+	    login: uid
+	    url: [[theNotification userInfo] objectForKey: @"url"]
+	    key: @"defaults"];
+    }
 }
 
 - (void) _userDefaultsHaveChanged: (NSNotification *) theNotification
 {
-  SOGoUser *user;
-  NSString *uid;
   SOGoUserDefaults *defaults;
+  NSString *uid;
   
   uid = [[theNotification userInfo] objectForKey: @"uid"];
-
-#if defined(THREADSAFE)
-  [lock lock];
-#endif
-  if ((user = [users objectForKey: uid]))
+  //NSLog(@"Updating user defaults for UID: %@", uid);
+  defaults = (SOGoUserDefaults *)[self userDefaultsForLogin: uid];
+  if (defaults)
     {
-      defaults = (SOGoUserDefaults *) [user userDefaults];
+#if defined(THREADSAFE)
+      [lock lock];
+#endif
       [defaults setValues: [[theNotification userInfo] objectForKey: @"values"]];
-      [SOGoCache setCachedUserDefaults: defaults user: uid];
+      [[users objectForKey: uid] setObject: [[NSDate date] addTimeInterval: [SOGoCache cleanupInterval]]
+				 forKey: @"cleanupDate"];
+#if defined(THREADSAFE)
+      [lock unlock];
+#endif
     }
   else
     {
-      [s_userDefaults removeObjectForKey: uid];
+      [self _cacheValues: [[theNotification userInfo] objectForKey: @"values"]
+	    login: uid
+	    url: [[theNotification userInfo] objectForKey: @"url"]
+	    key: @"defaults"];
     }
-#if defined(THREADSAFE)
-  [lock unlock];
-#endif
+}
+
+- (void) _userSettingsHaveLoaded: (NSNotification *) theNotification
+{
+  NSString *uid;
+
+  uid = [[theNotification userInfo] objectForKey: @"uid"];
+  //NSLog(@"Loading user settings for UID: %@", uid);
+  if (![self userSettingsForLogin: uid])
+    {
+      [self _cacheValues: [[theNotification userInfo] objectForKey: @"values"]
+	    login: uid
+	    url: [[theNotification userInfo] objectForKey: @"url"]
+	    key: @"settings"];
+    }
 }
 
 - (void) _userSettingsHaveChanged: (NSNotification *) theNotification
 {
-  SOGoUser *user;
+  SOGoUserDefaults *settings;
   NSString *uid;
-  SOGoUserDefaults *settings; 
- 
+  
   uid = [[theNotification userInfo] objectForKey: @"uid"];
-
-  if ((user = [users objectForKey: uid]))
+  //NSLog(@"Updating user settings for UID: %@", uid);
+  settings = (SOGoUserDefaults *)[self userSettingsForLogin: uid];
+  if (settings)
     {
-      settings = (SOGoUserDefaults *) [user userSettings];
+#if defined(THREADSAFE)
+      [lock lock];
+#endif
       [settings setValues: [[theNotification userInfo] objectForKey: @"values"]];
-      [SOGoCache setCachedUserSettings: settings user: uid];
+      [[users objectForKey: uid] setObject: [[NSDate date] addTimeInterval: [SOGoCache cleanupInterval]]
+				 forKey: @"cleanupDate"];
+#if defined(THREADSAFE)
+      [lock unlock];
+#endif
     }
   else
     {
-      [s_userSettings removeObjectForKey: uid];
+      [self _cacheValues: [[theNotification userInfo] objectForKey: @"values"]
+	    login: uid
+	    url: [[theNotification userInfo] objectForKey: @"url"]
+	    key: @"settings"];
     }
 }
 
@@ -345,40 +482,23 @@ withName: (NSString *) name
 #endif
 
   now = [NSDate date];
-  
-  // We cleanup the user defaults
-  userIDs = [[s_userDefaults allKeys] objectEnumerator];
-  count = 0;
-  while ((currentID = [userIDs nextObject]))
-    {
-      currentEntry = [s_userDefaults objectForKey: currentID];
-      
-      if ([now earlierDate: [currentEntry objectForKey: @"cleanupDate"]] == now)
-	{
-	  [s_userDefaults removeObjectForKey: currentID];
-	  count++;
-	}
-    }
-  
-  if (count)
-    [self logWithFormat: @"cleaned %d users records from user defaults cache", count];
 
-  // We cleanup the user settings
-  userIDs = [[s_userSettings allKeys] objectEnumerator];
+  // We cleanup the user cache
+  userIDs = [[users allKeys] objectEnumerator];
   count = 0;
   while ((currentID = [userIDs nextObject]))
     {
-      currentEntry = [s_userSettings objectForKey: currentID];
+      currentEntry = [users objectForKey: currentID];
       
       if ([now earlierDate: [currentEntry objectForKey: @"cleanupDate"]] == now)
 	{
-	  [s_userSettings removeObjectForKey: currentID];
+	  [users removeObjectForKey: currentID];
 	  count++;
 	}
     }
   
   if (count)
-    [self logWithFormat: @"cleaned %d users records from user settings cache",
+    [self logWithFormat: @"cleaned %d users records from users cache",
 	  count];
 
 #if defined(THREADSAFE)

@@ -37,6 +37,6 @@
 "The user rights cannot be edited for this object!"  = "I permessi di questo oggetto non possono essere modificati!";
 
 "You are not allowed to access this module or this system. Please contact your system administrator."
-= "You are not allowed to access this module or this system. Please contact your system administrator.";
+= "Non sei abilitato ad accedere a questo modulo. Contatta il tuo amministratore di sistema.";
 "You don't have the required privileges to perform the operation."
-= "You don't have the required privileges to perform the operation.";
+= "Non disponi dei privilegi richiesti per eseguire questa operazione.";

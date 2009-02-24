@@ -1,15 +1,15 @@
 /*
   Copyright (C) 2005 SKYRIX Software AG
-  Copyright (C) 2008 Inverse inc.
+  Copyright (C) 2008-2009 Inverse inc.
 
-  This file is part of OpenGroupware.org.
+  This file is part of SOGo.
 
-  OGo is free software; you can redistribute it and/or modify it under
+  SOGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
   Free Software Foundation; either version 2, or (at your option) any
   later version.
 
-  OGo is distributed in the hope that it will be useful, but WITHOUT ANY
+  SOGo is distributed in the hope that it will be useful, but WITHOUT ANY
   WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
   License for more details.
@@ -159,7 +159,7 @@ static NSString *uidColumnName = @"c_uid";
 	  else
 	    values = [NSMutableDictionary new];
 
-	  ASSIGN (lastFetch, [NSCalendarDate date]);
+	  ASSIGN(lastFetch, [NSCalendarDate date]);
 	  defFlags.modified = NO;
 	  rc = YES;
 	}
@@ -292,6 +292,7 @@ static NSString *uidColumnName = @"c_uid";
       d = [NSMutableDictionary dictionary];
       [d setObject: values forKey: @"values"];
       [d setObject: uid  forKey: @"uid"];
+      [d setObject: [url absoluteString]  forKey: @"url"];
 
       [[NSDistributedNotificationCenter defaultCenter]
 	postNotificationName: ([fieldName isEqualToString: @"c_defaults"]
@@ -322,6 +323,14 @@ static NSString *uidColumnName = @"c_uid";
 {
   [values removeAllObjects];
   [values addEntriesFromDictionary: theValues];
+  ASSIGN(lastFetch, [NSCalendarDate date]);
+  defFlags.modified = NO;
+  defFlags.isNew = NO;
+}
+
+- (NSDictionary *) values
+{
+  return values;
 }
 
 - (void) setObject: (id) value

@@ -85,29 +85,12 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 - (NSString *) currentPassword;
 
 /* properties */
-
-// - (NSString *) fullEmail;
-
-// - (NSString *) primaryEmail;
-// - (NSString *) systemEmail;
 - (NSArray *) allEmails;
-
 - (BOOL) hasEmail: (NSString *) email;
-
 - (NSString *) cn;
 - (NSURL *) freeBusyURL;
 
 - (SOGoDateFormatter *) dateFormatterInContext: (WOContext *) context;
-
-/* shares and identities */
-
-// - (NSString *) primaryIMAP4AccountString;
-
-// - (NSString *) primaryIMAP4AccountString;
-// - (NSString *) primaryMailServer;
-// - (NSArray *) additionalIMAP4AccountStrings;
-// - (NSArray *) additionalEMailAddresses;
-// - (NSDictionary *) additionalIMAP4AccountsAndEMails;
 
 /* defaults */
 - (NSUserDefaults *) userDefaults;

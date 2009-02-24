@@ -1,3 +1,14 @@
+2009-02-23  Ludovic Marcotte <lmarcotte@inverse.ca>
+
+	* Updated German translation. Patch from
+	Alexander Greiner-Baer <sogo-algb@freenet.de>
+	* Added Italian translation. Patch from
+	Marco Lertora <marco.lertora@infoporto.it>
+	* Combined the various caches and moved the logic
+	towards the SOGoCache class. Deprecated the
+	SOGoLDAPUserManagerCleanupInterval defaults.
+	Now only SOGoCacheCleanupInterval should be used.
+
 2009-02-19  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Contacts/UIxContactsListView.m ([UIxContactsListView

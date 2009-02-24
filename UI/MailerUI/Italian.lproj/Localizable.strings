@@ -4,7 +4,7 @@
 "Create"      = "Crea";
 "Empty Trash" = "Svuota cestino";
 "Delete"      = "Cancella";
-"Expunge"     = "Expunge";
+"Expunge"     = "Pulisci";
 "Forward"     = "Inoltra";
 "Get Mail"    = "Scarica posta";
 "Junk"        = "Indesiderato";
@@ -13,15 +13,15 @@
 "Print"       = "Stampa";
 "Stop"        = "Stop";
 "Write"       = "Scrivi";
-"Attachment"  = "Attachment";
-"Unread"      = "Unread";
+"Attachment"  = "Allegato";
+"Unread"      = "Non letta";
 "Flagged"     = "Flagged";
 
 "Send" = "Invia";
 "Contacts" = "Contatti";
 "Attach" = "Allegato";
 "Save" = "Salva";
-"Priority" = "Priority";
+"Priority" = "Priorità";
 
 /* Tooltips */
 
@@ -74,7 +74,7 @@
 "Add subfolders to this folder" = "Aggiungi sottocartelle a questa cartella";
 "Remove this folder" = "Rimuovi questa cartella";
 "Erase mails from this folder" = "Elimina emails da questa cartella";
-"Expunge this folder" = "Expugne per questa cartella";
+"Expunge this folder" = "Pulisci questa cartella";
 "Modify the acl of this folder" = "Modifica i permessi per questa cartella";
 
 "Update" = "Aggiorna";
@@ -104,15 +104,15 @@
 "Anais"         = "Anais";
 
 "Edit Draft..." = "Modifica bozza...";
-"Load Images" = "Load Images";
+"Load Images" = "Carica Immagini";
 
-"highest" = "Highest";
-"high" = "High";
-"normal" = "Normal";
-"low" = "Low";
-"lowest" = "Lowest";
+"highest" = "Molto alta";
+"high" = "Alta";
+"normal" = "Normale";
+"low" = "Bassa";
+"lowest" = "Molto bassa";
 
-"This mail is being sent from an unsecure network!" = "Questa email è stata spedita da un network contrassegnato come non sicuro!";
+"This mail is being sent from an unsecure network!" = "Questa email è stata spedita da una rete contrassegnata come non sicuro!";
 
 /* Popup "show" */
 
@@ -205,9 +205,9 @@
 "View Message Source" = "Visualizza sorgente";
 "Print..." = "Stampa...";
 "Delete Message" = "Cancella messaggio";
-"Delete Selected Messages" = "Delete Selected Messages";
+"Delete Selected Messages" = "Cancella i messaggi selezionati";
 
-"This Folder" = "This Folder";
+"This Folder" = "Questa cartella";
 
 /* Label popup menu */
 "None" = "Nessuno";
@@ -230,7 +230,7 @@
 /* Folder operations */
 "Name :" = "Nome :";
 "Enter the new name of your folder :"
- = "Inserisci il nuovo nome della tua cartella :";
+ = "Inserisci il nuovo nome della cartella :";
 "Do you really want to move this folder into the trash ?"
  = "Sei sicuro di voler spostare la cartella nel cestino ?";
 "Operation failed" = "Operazione non riuscita";
@@ -243,15 +243,15 @@
 "Please select only one message to print." = "Per favore seleziona un solo messaggio da stampare.";
 
 "The folder with name \"%{0}\" could not be created."
-= "The folder with name \"%{0}\" could not be created.";
+= "La cartella con nome \"%{0}\" non può essere creata.";
 "This folder could not be renamed to \"%{0}\"."
-= "This folder could not be renamed to \"%{0}\".";
+= "Questa cartella non puo essere rinominata in \"%{0}\".";
 "The folder could not be deleted."
-= "The folder could not be deleted.";
+= "Questa cartella non può essere eliminata.";
 "The trash could not be emptied."
-= "The trash could not be emptied.";
+= "Il cestino non puo essere svuotato.";
 "The folder functionality could not be changed."
-= "The folder functionality could not be changed.";
+= "La funzionalita della cartella non puo essere cambiata.";
 
 "You need to choose a non-virtual folder!" = "Devi selezionare una cartella fisica, non virtuale!";
 

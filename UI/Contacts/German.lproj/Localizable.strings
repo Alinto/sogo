@@ -67,7 +67,7 @@
 "Remove" = "Löschen";
 
 "Please wait..." = "Bitte warten...";
-"No possible subscription" = "Kein abonnieren möglich";
+"No possible subscription" = "Kein Abonnieren möglich";
 
 "Preferred" = "Bevorzugt";
 "Card for %@" = "%@";
@@ -114,22 +114,22 @@
 "Blind Carbon Copy" = "Blindkopie";
 
 "New Addressbook..." = "Neues Adressbuch...";
-"Subscribe to an Addressbook..." = "Abonnieren...";
-"Remove the selected Addressbook" = "Adressbuch löschen";
+"Subscribe to an Addressbook..." = "Ein Adressbuch abonnieren...";
+"Remove the selected Addressbook" = "Gewähltes Adressbuch löschen";
 
 "Name of the Address Book" = "Adressbuch-Name";
 "Are you sure you want to delete the selected address book?"
-= "Wollen Sie wirklich das ausgewählte Adressbuch löschen?";
+= "Wollen Sie wirklich das gewählte Adressbuch löschen?";
 "You cannot remove nor unsubscribe from a public addressbook."
 = "Sie können das gemeinsame Adressbuch nicht löschen.";
 "You cannot remove nor unsubscribe from your personal addressbook."
 = "Sie können ihr Persönliches Adressbuch nicht löschen.";
 
 "Are you sure you want to delete the selected contacts?"
-= "Wollen Sie wirklich die ausgewählte Karten löschen?";
+= "Wollen Sie wirklich die gewählten Karten löschen?";
 
 "You cannot delete the selected contact(s)"
-= "Ausgewählte Karten können nicht gelöscht werden.";
+= "Gewählte Karten können nicht gelöscht werden.";
 "You cannot delete the card of \"%{0}\"."
 = "Sie können die Karte von \"%{0}\" nicht löschen.";
 
@@ -140,7 +140,7 @@
 "Unable to subscribe to that folder!"
 = "Abonnieren des Ordners nicht möglich!";
 
-"Default Roles" = "Standard-Rollen";
+"Default Roles" = "Standardrechte";
 "User rights for:" = "Benutzerrechte für:";
 
 "This person can add cards to this addressbook."
@@ -152,7 +152,7 @@
 "This person can read the cards of this addressbook."
 = "Diese Person kann Karten dieses Adressbuches anzeigen.";
 "This person can erase cards from this addressbook."
-= "Diese Person kann Karten aus diesem Adressbuch löschen";
+= "Diese Person kann Karten aus diesem Adressbuch löschen.";
 
 "The selected contact has no email address."
 = "Der gewählte Kontakt hat keine E-Mail-Adresse.";
@@ -163,8 +163,8 @@
 
 "SoAccessDeniedException" = "Sie können nicht auf dieses Adressbuch schreiben.";
 "Forbidden" = "Sie können nicht auf dieses Adressbuch schreiben.";
-"Invalid Contact" = "Der ausgewählte Kontakt existiert nicht mehr.";
-"Unknown Destination Folder" = "Das ausgewählte Ziel-Adressbuch existiert nicht mehr.";
+"Invalid Contact" = "Der gewählte Kontakt existiert nicht mehr.";
+"Unknown Destination Folder" = "Das gewählte Ziel-Adressbuch existiert nicht mehr.";
 
 "Move To" = "Verschieben in";
 "Copy To" = "Kopieren in";
