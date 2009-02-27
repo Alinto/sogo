@@ -256,8 +256,8 @@ function openMailTo(senderMailTo) {
 
 	if (mailto.length > 0)
 		openMailComposeWindow(ApplicationBaseURL
-													+ "../Mail/compose?mailto=" + mailto
-													+ ((subject.length > 0)?"?subject="+subject:""));
+													+ "../Mail/compose?mailto=" + encodeURI(mailto)
+													+ ((subject.length > 0)?"?subject=" + encodeURI(subject):""));
 
 	return false; /* stop following the link */
 }
@@ -592,6 +592,7 @@ function onRowClick(event) {
 			$(node.parentNode).selectRange(lastClickedRow, rowIndex);
 		} else if (isNodeSelected(node)) {
 			$(node).deselect();
+			rowIndex = null;
 		} else {
 			$(node).selectElement();
 		}
@@ -609,7 +610,8 @@ function onRowClick(event) {
 			parentNode.fire("mousedown");
 		}
 	}
-	lastClickedRow = rowIndex;
+	if (rowIndex)
+		lastClickedRow = rowIndex;
 
 	return true;
 }
