@@ -9,7 +9,6 @@ SUBPROJECTS = \
 	OGoContentStore	\
 	SoObjects	\
 	Main		\
-	UI		\
-# 	Protocols	\
+	UI
 
 include $(GNUSTEP_MAKEFILES)/aggregate.make
