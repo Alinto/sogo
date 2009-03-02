@@ -1,3 +1,10 @@
+2009-03-02  Ludovic Marcotte <lmarcotte@inverse.ca>
+
+	* SoObjects/SOGo/SOGoObject.m
+	([SOGoObject -davRecordForUser:parameters:]):
+	Don't initialize the SOGoUser variable of
+	nocn AND noemail are passed.
+
 2009-02-23  Ludovic Marcotte <lmarcotte@inverse.ca>
 
 	* Updated German translation. Patch from

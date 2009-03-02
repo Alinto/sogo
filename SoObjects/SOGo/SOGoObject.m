@@ -1356,19 +1356,19 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
 		     parameters: (NSArray *) params
 {
   NSMutableString *userRecord;
-  SOGoUser *sogoUser;
 
   userRecord = [NSMutableString string];
 
   [userRecord appendFormat: @"<id>%@</id>",
 	      [user stringByEscapingXMLString]];
-  sogoUser = [SOGoUser userWithLogin: user roles: nil];
 
+  // Make sure to not call [SOGoUser userWithLogin...] here if nocn AND noemail
+  // is specified. We'll avoid generating LDAP calls by doing so.
   if (![params containsObject: @"nocn"])
     {
       NSString *cn;
 
-      cn = [sogoUser cn];
+      cn = [[SOGoUser userWithLogin: user roles: nil] cn];
       if (!cn)
 	cn = user;
       [userRecord appendFormat: @"<displayName>%@</displayName>",
@@ -1379,7 +1379,8 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
     {
       NSString *email;
 
-      email = [[sogoUser allEmails] objectAtIndex: 0];
+      email = [[[SOGoUser userWithLogin: user roles: nil]
+		 allEmails] objectAtIndex: 0];
       if (email)
 	[userRecord appendFormat: @"<email>%@</email>",
 		    [email stringByEscapingXMLString]];
