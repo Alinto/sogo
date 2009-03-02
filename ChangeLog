@@ -1,3 +1,13 @@
+2009-03-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoComponentOccurence.m
+	([SOGoComponentOccurence -setComponent:newComponent]): retain the
+	component's parent instead of the component itself, which is
+	already retain by its parent anyway. See 2009-02-06 from me below.
+	([SOGoComponentOccurence -setMasterComponent:newMaster]): no
+	longer retain the "master" occurence since its parent is already
+	retained.
+
 2009-03-02  Ludovic Marcotte <lmarcotte@inverse.ca>
 
 	* SoObjects/SOGo/SOGoObject.m

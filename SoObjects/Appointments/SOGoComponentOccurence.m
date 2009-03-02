@@ -66,6 +66,7 @@
 {
   if ((self = [super init]))
     {
+      parentCalendar = nil;
       component = nil;
       master = nil;
       isNew = NO;
@@ -86,8 +87,7 @@
 
 - (void) dealloc
 {
-  [component release];
-  [master release];
+  [parentCalendar release];
   [super dealloc];
 }
 
@@ -117,12 +117,13 @@
 
 - (void) setComponent: (iCalRepeatableEntityObject *) newComponent
 {
-  ASSIGN (component, newComponent);
+  component = newComponent;
+  ASSIGN (parentCalendar, [component parent]);
 }
 
 - (void) setMasterComponent: (iCalRepeatableEntityObject *) newMaster
 {
-  ASSIGN (master, newMaster);
+  master = newMaster;
 }
 
 - (NSArray *) aclsForUser: (NSString *) uid

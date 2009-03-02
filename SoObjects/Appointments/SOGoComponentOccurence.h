@@ -27,6 +27,7 @@
 
 @class NSException;
 
+@class iCalCalendar;
 @class iCalRepeatableEntityObject;
 @class SOGoCalendarComponent;
 
@@ -40,6 +41,7 @@
 
 @interface SOGoComponentOccurence : SOGoObject <SOGoComponentOccurence>
 {
+  iCalCalendar *parentCalendar;
   iCalRepeatableEntityObject *component;
   iCalRepeatableEntityObject *master;
   BOOL isNew;
