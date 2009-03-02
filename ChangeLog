@@ -5,6 +5,7 @@
 	Don't initialize the SOGoUser variable of
 	nocn AND noemail are passed.
 	* Dropped Protocols/* from the repository.
+	* Added missing Dutch wox templates
 
 2009-02-23  Ludovic Marcotte <lmarcotte@inverse.ca>
 
