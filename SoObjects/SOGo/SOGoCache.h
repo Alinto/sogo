@@ -60,6 +60,10 @@
 - (SOGoUserDefaults *) userDefaultsForLogin: (NSString *) theLogin;
 - (SOGoUserDefaults *) userSettingsForLogin: (NSString *) theLogin;
 
+- (void) setDefaults: (SOGoUserDefaults *) theDefaults
+	    forLogin: (NSString *) theLogin
+		 key: (NSString *) theKey;
+
 @end
 
 #endif /* SOGOCACHE_H */

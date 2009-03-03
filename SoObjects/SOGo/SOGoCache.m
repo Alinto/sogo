@@ -317,6 +317,23 @@ static NSLock *lock;
 }
 
 //
+//
+//
+- (void) setDefaults: (SOGoUserDefaults *) theDefaults
+	    forLogin: (NSString *) theLogin
+		 key: (NSString *) theKey
+{
+  if (![users objectForKey: theLogin])
+    [users setObject: [NSMutableDictionary dictionary]  forKey: theLogin];
+  
+  [[users objectForKey: theLogin] setObject: theDefaults  forKey: theKey];
+  [[users objectForKey: theLogin] setObject: [[NSDate date] addTimeInterval: [SOGoCache cleanupInterval]]
+				  forKey: @"cleanupDate"];
+
+  //NSLog(@"Set %@ to %@", theKey, [users objectForKey: theLogin]);
+}
+
+//
 // Notification callbacks.
 //
 - (void) _cacheValues: (NSDictionary *) theValues
@@ -336,21 +353,17 @@ static NSLock *lock;
 					uid: theLogin
 					fieldName: [NSString stringWithFormat: @"c_%@", theKey]]
 	       autorelease];
-  
-  if (![users objectForKey: theLogin])
-    [users setObject: [NSMutableDictionary dictionary]  forKey: theLogin];
+  [defaults setValues: theValues];
+  [self setDefaults: defaults  forLogin: theLogin  key: theKey];
 
-  [[users objectForKey: theLogin] setObject: defaults  forKey: theKey];
-  [[users objectForKey: theLogin] setObject: [[NSDate date] addTimeInterval: [SOGoCache cleanupInterval]]
-				  forKey: @"cleanupDate"];
-
-  //NSLog(@"\n\n\nCached user %@ for UID: %@\nvalues: %@\n\n", theKey, theLogin, theValues);
-  
 #if defined(THREADSAFE)
   [lock unlock];
 #endif
 }
 
+//
+//
+//
 - (void) _userAttributesHaveLoaded: (NSNotification *) theNotification
 {
   NSString *uid;
@@ -380,6 +393,9 @@ static NSLock *lock;
     }
 }
 
+//
+//
+//
 - (void) _userDefaultsHaveLoaded: (NSNotification *) theNotification
 {
   NSString *uid;
@@ -395,11 +411,14 @@ static NSLock *lock;
     }
 }
 
+//
+//
+//
 - (void) _userDefaultsHaveChanged: (NSNotification *) theNotification
 {
   SOGoUserDefaults *defaults;
   NSString *uid;
-  
+
   uid = [[theNotification userInfo] objectForKey: @"uid"];
   //NSLog(@"Updating user defaults for UID: %@", uid);
   defaults = (SOGoUserDefaults *)[self userDefaultsForLogin: uid];
@@ -424,6 +443,9 @@ static NSLock *lock;
     }
 }
 
+//
+//
+//
 - (void) _userSettingsHaveLoaded: (NSNotification *) theNotification
 {
   NSString *uid;
@@ -439,6 +461,9 @@ static NSLock *lock;
     }
 }
 
+//
+//
+//
 - (void) _userSettingsHaveChanged: (NSNotification *) theNotification
 {
   SOGoUserDefaults *settings;
@@ -468,6 +493,9 @@ static NSLock *lock;
     }
 }
 
+//
+//
+//
 - (void) _cleanupSources
 {
   NSDictionary *currentEntry;

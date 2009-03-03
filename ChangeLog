@@ -1,3 +1,8 @@
+2009-03-03  Ludovic Marcotte <lmarcotte@inverse.ca>
+
+        * Fixed various small issues with the SOGo
+	cache subsystem.
+
 2009-03-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxCalDayTable.m ([UIxCalDayTable -dayClasses]):

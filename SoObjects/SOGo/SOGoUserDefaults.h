@@ -30,18 +30,21 @@
   
   An object with the same API like NSUserDefaults which retrieves profile
   information for users in the database.
+
+  It does NOT store values internally but rather uses an external
+  mutable dictionary for this (generally coming from SOGoCache)
 */
 
-@class NSString, NSURL, NSUserDefaults, NSArray, NSDictionary, NSData;
-@class NSCalendarDate, NSMutableDictionary;
+@class NSString, NSURL, NSUserDefaults, NSArray, NSDictionary;
+@class NSData, NSCalendarDate, NSMutableDictionary;
 
 @interface SOGoUserDefaults :  NSObject
 {
   NSURL    *url;
   NSString *uid;
   NSString *fieldName;
-  NSMutableDictionary *values;
   NSCalendarDate *lastFetch;
+  NSMutableDictionary *values;
 
   struct
   {
@@ -50,9 +53,9 @@
   } defFlags;
 }
 
-- (id) initWithTableURL: (NSURL *) url
-		    uid: (NSString *) uid
-	      fieldName: (NSString *) fieldName;
+- (id) initWithTableURL: (NSURL *) theURL
+		    uid: (NSString *) theUID
+	      fieldName: (NSString *) theFieldName;
 
 /* value access */
 - (void) setValues: (NSDictionary *) theValues;

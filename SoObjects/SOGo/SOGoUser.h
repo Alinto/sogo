@@ -64,14 +64,11 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 
 @interface SOGoUser : SoUser
 {
-  NSArray *allEmails;
-  NSString *language;
-  NSString *currentPassword;
-  SOGoDateFormatter *dateFormatter;
-  SOGoUserFolder *homeFolder;
-  NSString *cn;
-  NSTimeZone *userTimeZone;
   NSMutableArray *mailAccounts;
+  SOGoUserFolder *homeFolder;
+  NSString *currentPassword;
+  NSArray *allEmails;
+  NSString *cn;
 }
 
 + (NSString *) language;

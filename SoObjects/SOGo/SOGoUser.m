@@ -262,12 +262,9 @@ _timeValue (NSString *key)
       if ((self = [super initWithLogin: realUID roles: newRoles]))
 	{
 	  allEmails = nil;
-	  language = nil;
 	  currentPassword = nil;
-	  dateFormatter = nil;
 	  homeFolder = nil;
 	  cn = nil;
-	  userTimeZone = nil;
 	  mailAccounts = nil;
 	}
     }
@@ -283,24 +280,21 @@ _timeValue (NSString *key)
 - (void) dealloc
 {
   [allEmails release];
-  [language release];
   [currentPassword release];
-  [dateFormatter release];
   [homeFolder release];
   [cn release];
-  [userTimeZone release];
   [mailAccounts release];
   [super dealloc];
 }
 
 - (void) setPrimaryRoles: (NSArray *) newRoles
 {
-  ASSIGN (roles, newRoles);
+  ASSIGN(roles, newRoles);
 }
 
 - (void) setCurrentPassword: (NSString *) newPassword
 {
-  ASSIGN (currentPassword, newPassword);
+  ASSIGN(currentPassword, newPassword);
 }
 
 - (NSString *) currentPassword
@@ -410,25 +404,25 @@ _timeValue (NSString *key)
 
 - (SOGoDateFormatter *) dateFormatterInContext: (WOContext *) context
 {
+  SOGoDateFormatter *dateFormatter;
   NSString *format;
   NSUserDefaults *ud;
 
-  if (!dateFormatter)
-    {
-      dateFormatter = [SOGoDateFormatter new];
-      [dateFormatter setLocale: [[WOApplication application] localeForLanguageNamed: [self language]]];
-      ud = [self userDefaults];
-      format = [ud stringForKey: @"ShortDateFormat"];
-      if (format)
-	[dateFormatter setShortDateFormat: format];
-      format = [ud stringForKey: @"LongDateFormat"];
-      if (format)
-	[dateFormatter setLongDateFormat: format];
-      format = [ud stringForKey: @"TimeFormat"];
-      if (format)
-	[dateFormatter setTimeFormat: format];
-    }
+  dateFormatter = [SOGoDateFormatter new];
+  [dateFormatter autorelease];
 
+  [dateFormatter setLocale: [[WOApplication application] localeForLanguageNamed: [self language]]];
+  ud = [self userDefaults];
+  format = [ud stringForKey: @"ShortDateFormat"];
+  if (format)
+    [dateFormatter setShortDateFormat: format];
+  format = [ud stringForKey: @"LongDateFormat"];
+  if (format)
+    [dateFormatter setLongDateFormat: format];
+  format = [ud stringForKey: @"TimeFormat"];
+  if (format)
+    [dateFormatter setTimeFormat: format];
+  
   return dateFormatter;
 }
 
@@ -486,6 +480,8 @@ _timeValue (NSString *key)
       [d setObject: login  forKey: @"uid"];
       [d setObject: [SOGoProfileURL absoluteString]  forKey: @"url"];
 
+      [[SOGoCache sharedCache] setDefaults: defaults  forLogin: login  key: @"defaults"];
+
       [[NSDistributedNotificationCenter defaultCenter]
 	postNotificationName: @"SOGoUserDefaultsHaveLoaded"
 	object: nil
@@ -518,6 +514,8 @@ _timeValue (NSString *key)
       [d setObject: login  forKey: @"uid"];
       [d setObject: [SOGoProfileURL absoluteString]  forKey: @"url"];
 
+      [[SOGoCache sharedCache] setDefaults: settings  forLogin: login  key: @"settings"];
+
       [[NSDistributedNotificationCenter defaultCenter]
 	postNotificationName: @"SOGoUserSettingsHaveLoaded"
 	object: nil
@@ -532,31 +530,28 @@ _timeValue (NSString *key)
 
 - (NSString *) language
 {
-  if (!language)
-    {
-      language = [[self userDefaults] stringForKey: @"Language"];
-      if (![language length])
-	language = [SOGoUser language];
-      [language retain];
-    }
+  NSString *language;
+  
+  language = [[self userDefaults] stringForKey: @"Language"];
+  if (![language length])
+    language = [SOGoUser language];
 
   return language;
 }
 
 - (NSTimeZone *) timeZone
 {
+  NSTimeZone *userTimeZone;
   NSString *timeZoneName;
+ 
+  timeZoneName = [[self userDefaults] stringForKey: @"TimeZone"];
+  userTimeZone = nil;
 
+  if ([timeZoneName length] > 0)
+    userTimeZone = [NSTimeZone timeZoneWithName: timeZoneName];
   if (!userTimeZone)
-    {
-      timeZoneName = [[self userDefaults] stringForKey: @"TimeZone"];
-      if ([timeZoneName length] > 0)
-	userTimeZone = [NSTimeZone timeZoneWithName: timeZoneName];
-      if (!userTimeZone)
-	userTimeZone = serverTimeZone;
-      [userTimeZone retain];
-    }
-
+    userTimeZone = serverTimeZone;
+  
   return userTimeZone;
 }
 
@@ -840,32 +835,17 @@ _timeValue (NSString *key)
 
 - (NSString *) replyPlacement
 {
-  NSString *replyPlacement;
-
-  replyPlacement
-    = [[self userDefaults] stringForKey: @"ReplyPlacement"];
-
-  return replyPlacement;
+  return [[self userDefaults] stringForKey: @"ReplyPlacement"];
 }
 
 - (NSString *) signaturePlacement
 {
-  NSString *signaturePlacement;
-
-  signaturePlacement
-    = [[self userDefaults] stringForKey: @"SignaturePlacement"];
-
-  return signaturePlacement;
+  return [[self userDefaults] stringForKey: @"SignaturePlacement"];
 }
 
 - (NSString *) messageForwarding
 {
-  NSString *messageForwarding;
-
-  messageForwarding
-    = [[self userDefaults] stringForKey: @"MessageForwarding"];
-
-  return messageForwarding;
+  return [[self userDefaults] stringForKey: @"MessageForwarding"];
 }
 
 /* folders */

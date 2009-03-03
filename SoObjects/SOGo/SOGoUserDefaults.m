@@ -38,23 +38,24 @@
 #import "NSObject+Utilities.h"
 
 #import "SOGoUserDefaults.h"
+#import "SOGoCache.h"
 
 @implementation SOGoUserDefaults
 
 static NSString *uidColumnName = @"c_uid";
 
-- (id) initWithTableURL: (NSURL *) tableURL
-		    uid: (NSString *) userID
-	      fieldName: (NSString *) defaultsFieldName
+- (id) initWithTableURL: (NSURL *) theURL
+		    uid: (NSString *) theUID
+	      fieldName: (NSString *) theFieldName
 {
   if ((self = [self init]))
     {
-      if (tableURL && [userID length] > 0
-	  && [defaultsFieldName length] > 0)
+      if (theURL && [theUID length] > 0
+	  && [theFieldName length] > 0)
 	{
-	  fieldName = [defaultsFieldName copy];
-	  url = [tableURL copy];
-	  uid = [userID copy];
+	  fieldName = [theFieldName copy];
+	  url = [theURL copy];
+	  uid = [theUID copy];
 	}
       else
 	{
@@ -120,10 +121,9 @@ static NSString *uidColumnName = @"c_uid";
 		      fieldName, [[self tableURL] gcsTableName],
 		      uidColumnName, [self uid]];
       
-      [values release];
+      values = [[NSMutableDictionary alloc] init];
 
       /* run SQL */
-
       ex = [channel evaluateExpressionX: sql];
       if (ex)
 	[self errorWithFormat:@"could not run SQL '%@': %@", sql, ex];
@@ -141,24 +141,21 @@ static NSString *uidColumnName = @"c_uid";
 	  value = [row objectForKey: fieldName];
 	  if ([value isNotNull])
 	    {
+	      id v;
+	      
 	      value = [value stringByReplacingString: @"''"
 			     withString: @"'"];
 	      value = [value stringByReplacingString: @"\\\\"
 			     withString: @"\\"];
 	      plistData = [value dataUsingEncoding: NSUTF8StringEncoding];
-	      values
-		= [NSPropertyListSerialization propertyListFromData: plistData
+	      v = [NSPropertyListSerialization propertyListFromData: plistData
 					       mutabilityOption: NSPropertyListMutableContainers
 					       format: NULL
 					       errorDescription: &error];
-	      if ([values isKindOfClass: [NSMutableDictionary class]])
-		[values retain];
-	      else
-		values = [NSMutableDictionary new];
+	      if ([v isKindOfClass: [NSMutableDictionary class]])
+		[values addEntriesFromDictionary: v];
 	    }
-	  else
-	    values = [NSMutableDictionary new];
-
+	  
 	  ASSIGN(lastFetch, [NSCalendarDate date]);
 	  defFlags.modified = NO;
 	  rc = YES;
@@ -294,6 +291,10 @@ static NSString *uidColumnName = @"c_uid";
       [d setObject: uid  forKey: @"uid"];
       [d setObject: [url absoluteString]  forKey: @"url"];
 
+      [[SOGoCache sharedCache] setDefaults: self
+			       forLogin: uid
+			       key: ([fieldName isEqualToString: @"c_defaults"] ? @"defaults" : @"settings")];
+
       [[NSDistributedNotificationCenter defaultCenter]
 	postNotificationName: ([fieldName isEqualToString: @"c_defaults"]
 			       ? @"SOGoUserDefaultsHaveChanged"
@@ -308,7 +309,7 @@ static NSString *uidColumnName = @"c_uid";
 
 - (BOOL) fetchProfile
 {
-  return (values || [self primaryFetchProfile]);
+  return (values  || [self primaryFetchProfile]);
 }
 
 - (NSString *) jsonRepresentation
@@ -321,7 +322,9 @@ static NSString *uidColumnName = @"c_uid";
 /* value access */
 - (void) setValues: (NSDictionary *) theValues
 {
-  [values removeAllObjects];
+  [values release];
+  
+  values = [[NSMutableDictionary alloc] init];
   [values addEntriesFromDictionary: theValues];
   ASSIGN(lastFetch, [NSCalendarDate date]);
   defFlags.modified = NO;
@@ -404,9 +407,8 @@ static NSString *uidColumnName = @"c_uid";
 
 - (void) flush
 {
-  [values release];
+  [values removeAllObjects];
   [lastFetch release];
-  values = nil;
   lastFetch = nil;
   defFlags.modified = NO;
   defFlags.isNew = NO;
@@ -469,6 +471,11 @@ static NSString *uidColumnName = @"c_uid";
 {
   [self setObject: [NSNumber numberWithInt: value]
 	forKey: key];
+}
+
+- (NSString *) description
+{
+  return [values description];
 }
 
 @end /* SOGoUserDefaults */
