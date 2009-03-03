@@ -1,3 +1,9 @@
+2009-03-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxCalDayTable.m ([UIxCalDayTable -dayClasses]):
+	fixed the way the number of the current day is deduced,
+	independently from the timezone (d. saving time or not).
+
 2009-03-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoComponentOccurence.m

@@ -292,8 +292,7 @@
   NSMutableString *classes;
   unsigned int currentDayNbr, realDayOfWeek;
   
-  currentDayNbr = ([currentTableDay timeIntervalSinceDate: [self startDate]]
-		   / 86400);
+  currentDayNbr = [daysToDisplay indexOfObject: currentTableDay];
   realDayOfWeek = [currentTableDay dayOfWeek];
 
   classes = [NSMutableString string];
