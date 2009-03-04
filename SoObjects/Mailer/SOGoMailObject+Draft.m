@@ -243,9 +243,8 @@
       currentFile = [NSDictionary dictionaryWithObjectsAndKeys:
 				    filename, @"filename",
 				  [mimeType lowercaseString], @"mimetype",
-				  [part
-				    objectForKey: @"encoding"], @"encoding",
-				  path, @"path", nil];
+				  path, @"path",
+				  [part	objectForKey: @"encoding"], @"encoding", nil];
       [keys addObject: currentFile];
     }
 }
@@ -254,29 +253,26 @@
                               intoArray: (NSMutableArray *) keys
 			       withPath: (NSString *) path
 {
-  NSEnumerator *subparts;
-  NSString *type;
-  unsigned int count;
-  NSDictionary *currentPart;
+  NSMutableDictionary *currentPart;
   NSString *newPath;
+  NSArray *subparts;
+  NSString *type;
+  unsigned int i;
 
   type = [[part objectForKey: @"type"] lowercaseString];
   if ([type isEqualToString: @"multipart"])
     {
-      subparts = [[part objectForKey: @"parts"] objectEnumerator];
-      currentPart = [subparts nextObject];
-      count = 1;
-      while (currentPart)
+      subparts = [part objectForKey: @"parts"];
+      for (i = 1; i <= [subparts count]; i++)
 	{
+	  currentPart = [subparts objectAtIndex: i-1];
 	  if (path)
-	    newPath = [NSString stringWithFormat: @"%@.%d", path, count];
+	    newPath = [NSString stringWithFormat: @"%@.%d", path, i];
 	  else
-	    newPath = [NSString stringWithFormat: @"%d", count];
+	    newPath = [NSString stringWithFormat: @"%d", i];
 	  [self _fetchFileAttachmentKeysInPart: currentPart
 		intoArray: keys
 		withPath: newPath];
-	  currentPart = [subparts nextObject];
-	  count++;
 	}
     }
   else

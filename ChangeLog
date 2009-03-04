@@ -1,3 +1,9 @@
+2009-03-04  Ludovic Marcotte <lmarcotte@inverse.ca>
+
+        * Fixed a small issue when fetching parts where
+	the encoding could be nil and subsequently, the
+	path couldn't be set.
+
 2009-03-03  Ludovic Marcotte <lmarcotte@inverse.ca>
 
         * Fixed various small issues with the SOGo
