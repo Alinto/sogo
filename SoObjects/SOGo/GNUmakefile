@@ -109,8 +109,17 @@ SOGo_RESOURCE_FILES = \
 	DAVReportMap.plist
 
 ifeq ($(ldap_config),yes)
-SOGo_OBJC_FILES += SOGoLDAPUserDefaults.m
-SOGo_HEADER_FILES += SOGoLDAPUserDefaults.h
+
+LIBRARY_NAME += \
+	SOGoNSUserDefaults
+
+SOGoNSUserDefaults_VERSION = 1
+SOGoNSUserDefaults_INSTALL_DIR = $(SOGO_LIBDIR)
+
+SOGoNSUserDefaults_OBJC_FILES = \
+	SOGoLDAPUserDefaultsBootstrap.m \
+	SOGoLDAPUserDefaults.m
+
 endif
 
 # tools
@@ -129,5 +138,6 @@ ifneq ($(FHS_INSTALL_ROOT),)
 GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
 endif
 include $(GNUSTEP_MAKEFILES)/framework.make
+include $(GNUSTEP_MAKEFILES)/library.make
 include $(GNUSTEP_MAKEFILES)/tool.make
 -include GNUmakefile.postamble

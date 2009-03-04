@@ -1,3 +1,13 @@
+2009-03-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoLDAPUserDefaultsBootstrap.m: new module for
+	the libSOGoNSUserDefaults.so.1 library built when enabling
+	ldap-based configuration.
+
+	* Main/sogod.m (BootstrapNSUserDefaults): added function to load a
+	library named "libSOGoNSUserDefaults.so.1" which would bootstrap
+	the NSUserDefaults class with an arbitrary "pose class".
+
 2009-03-04  Ludovic Marcotte <lmarcotte@inverse.ca>
 
         * Fixed a small issue when fetching parts where

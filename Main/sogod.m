@@ -19,6 +19,7 @@
   02111-1307, USA.
 */
 
+#import <dlfcn.h>
 #import <unistd.h>
 
 #import <Foundation/NSAutoreleasePool.h>
@@ -32,6 +33,28 @@
 #import <SOGo/SOGoLDAPUserDefaults.h>
 #endif
 
+typedef void (*NSUserDefaultsInitFunction) ();
+
+#define DIR_SEP "/"
+
+static void
+BootstrapNSUserDefaults ()
+{
+  char *filename;
+  NSUserDefaultsInitFunction SOGoNSUserDefaultsBootstrap;
+  void *handle;
+
+  filename = SOGO_LIBDIR DIR_SEP "libSOGoNSUserDefaults.so.1";
+  handle = dlopen (filename, RTLD_NOW | RTLD_GLOBAL);
+  if (handle)
+    {
+      SOGoNSUserDefaultsBootstrap = dlsym (handle,
+					   "SOGoNSUserDefaultsBootstrap");
+      if (SOGoNSUserDefaultsBootstrap)
+	SOGoNSUserDefaultsBootstrap ();
+    }
+}
+
 int
 main (int argc, char **argv, char **env)
 {
@@ -42,9 +65,7 @@ main (int argc, char **argv, char **env)
 
   pool = [NSAutoreleasePool new];
 
-#if defined(LDAP_CONFIG)
-  [SOGoLDAPUserDefaults poseAsClass: [NSUserDefaults class]];
-#endif
+  BootstrapNSUserDefaults ();
 
   rc = -1;
 
