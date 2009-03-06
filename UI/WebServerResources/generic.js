@@ -1552,4 +1552,4 @@ function onHeaderClick(event) {
 	window.alert("generic headerClick");
 }
 
-FastInit.addOnLoad(onLoadHandler);
+document.observe("dom:loaded", onLoadHandler);

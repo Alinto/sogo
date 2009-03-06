@@ -2128,7 +2128,7 @@ function getMenus() {
   return menus;
 }
 
-FastInit.addOnLoad(initMailer);
+document.observe("dom:loaded", initMailer);
 
 function Mailbox(type, name, unseen) {
   this.type = type;
