@@ -1439,7 +1439,7 @@ function onLoadHandler(event) {
 		progressImage.parentNode.removeChild(progressImage);
 	$(document.body).observe("contextmenu", onBodyClickContextMenu);
 
-	FastInit.addOnLoad(onFinalLoadHandler);
+	onFinalLoadHandler();
 }
 
 function onBodyClickContextMenu(event) {

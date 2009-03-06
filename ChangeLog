@@ -1,3 +1,9 @@
+2009-03-05  Ludovic Marcotte <lmarcotte@inverse.ca>
+
+	* Updated prototype to the latest development version
+	in order to fix an IE7 bug related to the DOM load event
+	* Improved the mod_proxy/mod_proxy_balancer configuration
+
 2009-03-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoLDAPUserDefaultsBootstrap.m: new module for
