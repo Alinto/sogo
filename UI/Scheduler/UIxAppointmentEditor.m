@@ -398,7 +398,7 @@
 
   [self event];
 
-  result = [context response];
+  result = [self responseWithStatus: 200];
   user = [context activeUser];
   timeZone = [user timeZone];
   dateFormatter = [user dateFormatterInContext: context];
