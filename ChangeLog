@@ -1,3 +1,10 @@
+2009-03-08  Ludovic Marcotte <lmarcotte@inverse.ca>
+
+	* Updated the SOGo Mozilla Thunderbird Configuration
+	guide to add a note that WOApplicationRedirectURL
+	MUST match the updateURL in extensions.rdf from
+	SOGo Integrator
+
 2009-03-05  Ludovic Marcotte <lmarcotte@inverse.ca>
 
 	* Updated prototype to the latest development version
