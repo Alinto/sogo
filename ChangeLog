@@ -1,3 +1,10 @@
+2009-03-11  Ludovic Marcotte <lmarcotte@inverse.ca>
+
+        * SoObjects/Appointments/SOGoAppointmentFolder.m
+	We now correctly escape caracters that can be
+	present in the filename prior to initalizing
+	the NSURL instance.
+
 2009-03-09  Ludovic Marcotte <lmarcotte@inverse.ca>
 
 	* Documentation/SOGo Installation Guide.odt

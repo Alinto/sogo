@@ -1592,7 +1592,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
   for (count = 0; count < max; count++)
     {
-      url = [urls objectAtIndex: count];
+      url = [NSString stringWithFormat: @"%@/%@",
+		      [[urls objectAtIndex: count] stringByDeletingLastPathComponent],
+      		      [[[urls objectAtIndex: count] lastPathComponent] stringByEscapingURL]];
       componentURL = [[NSURL URLWithString: url relativeToURL: baseURL]
 		       standardizedURL];
       componentURLPath = [componentURL absoluteString];
@@ -1600,8 +1602,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 	  != NSNotFound)
 	{
 	  urlComponents = [componentURLPath componentsSeparatedByString: @"/"];
-	  cName = [urlComponents objectAtIndex: [urlComponents count] - 1];
-	  [cNames setObject: url forKey: cName];
+	  cName = [[urls objectAtIndex: count] lastPathComponent];
+	  [cNames setObject: [urls objectAtIndex: count]  forKey: cName];
 	}
     }
 
@@ -1726,8 +1728,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   buffer = [[NSMutableString alloc] initWithCapacity: max*512];
   for (count = 0; count < max; count++)
     {
-      currentComponent
-	= [components objectForKey: [urls objectAtIndex: count]];
+      currentComponent = [components objectForKey: [urls objectAtIndex: count]];
       if (currentComponent)
 	[self appendObject: currentComponent
 	      properties: properties
