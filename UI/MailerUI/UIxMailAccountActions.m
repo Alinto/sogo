@@ -137,6 +137,7 @@
   co = [self clientObject];
   inbox = [co inboxFolderInContext: context];
   client = [[inbox imap4Connection] client];
+  unseen = nil;
 
   if ([client select: [inbox relativeImap4Name]])
     {

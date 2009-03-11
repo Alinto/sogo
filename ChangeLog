@@ -4,6 +4,9 @@
 	We now correctly escape caracters that can be
 	present in the filename prior to initalizing
 	the NSURL instance.
+	* UI/MailerUI/UIxMailAccountActions.m 
+	We correctly intialize the "unseen" variable
+	to nil in _statusFolders.
 
 2009-03-09  Ludovic Marcotte <lmarcotte@inverse.ca>
 
