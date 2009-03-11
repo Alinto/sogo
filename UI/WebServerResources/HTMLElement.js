@@ -96,39 +96,36 @@ Element.addMethods(
 
 	getSelectedNodes: function(element) {
 			element = $(element);
-			var selArray = new Array();
-    
-			for (var i = 0; i < element.childNodes.length; i++) {
-				node = element.childNodes.item(i);
-				if (node.nodeType == 1
-						&& isNodeSelected(node))
-					selArray.push(node);
-			}
-    
-			return selArray;
+
+			if (!element.selectedElements)
+				element.selectedElements = new Array();
+
+			return element.selectedElements;
 		},
 
 	getSelectedNodesId: function(element) {
 			element = $(element);
-			var selArray = new Array();
-    
-			for (var i = 0; i < element.childNodes.length; i++) {
-				node = element.childNodes.item(i);
-				if (node.nodeType == 1
-						&& isNodeSelected(node)) {
-					selArray.push(node.getAttribute("id")); }
+
+			var selArray = new Array();    
+			if (element.selectedElements) {
+				for (var i = 0; i < element.selectedElements.length; i++) {
+					var node = element.selectedElements[i];
+					selArray.push(node.getAttribute("id"));
+				}
 			}
+			else
+				element.selectedElements = new Array();
 
 			return selArray;
 		},
 
 	onContextMenu: function(element, event) {
 			element = $(element);
-			var popup = element.sogoContextMenu;
 
 			if (document.currentPopupMenu)
 				hideMenu(document.currentPopupMenu);
     
+			var popup = element.sogoContextMenu;
 			var menuTop = Event.pointerY(event);
 			var menuLeft = Event.pointerX(event);
 			var heightDiff = (window.height()
@@ -162,6 +159,15 @@ Element.addMethods(
 	selectElement: function(element) {
 			element = $(element);
 			element.addClassName('_selected');
+			
+			var parent = element.up();
+			if (!parent.selectedElements)
+				// Selected nodes are kept in a array at the
+				// container level.
+				parent.selectedElements = new Array();
+			for (var i = 0; i < parent.selectedElements.length; i++)
+				if (parent.selectedElements[i] == element) return;
+			parent.selectedElements.push(element); // use index instead ?
 		},
 
 	selectRange: function(element, startIndex, endIndex) {
@@ -192,16 +198,20 @@ Element.addMethods(
 	deselect: function(element) {
 			element = $(element);
 			element.removeClassName('_selected');
-		},
+
+			var parent = element.up();
+			if (parent.selectedElements)
+				parent.selectedElements = parent.selectedElements.without(element);
+	},
 
 	deselectAll: function(element) {
 			element = $(element);
-			for (var i = 0; i < element.childNodes.length; i++) {
-				var node = element.childNodes.item(i);
-				if (node.nodeType == 1)
-					$(node).deselect();
+			if (element.selectedElements) {
+				for (var i = 0; i < element.selectedElements.length; i++)
+					element.selectedElements[i].removeClassName('_selected');
+				element.selectedElements = null;
 			}
-		},
+	},
 
 	setCaretTo: function(element, pos) { 
 			element = $(element);
