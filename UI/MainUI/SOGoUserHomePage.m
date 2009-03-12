@@ -243,8 +243,7 @@ static NSString *LDAPContactInfoAttribute = nil;
 {
   WOResponse *response;
 
-  response = [context response];
-  [response setStatus: 200];
+  response = [self responseWithStatus: 200];
 //   [response setHeader: @"text/plain; charset=iso-8859-1"
 //             forKey: @"Content-Type"];
   [response appendContentString: [self _freeBusyAsText]];

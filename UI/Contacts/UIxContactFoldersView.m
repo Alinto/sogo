@@ -270,7 +270,7 @@ withSearchOn: (NSString *) contact
       data = [NSDictionary dictionaryWithObjectsAndKeys: searchText, @"searchText",
 			                                 contacts, @"contacts",
 			                                 nil];
-      result = [context response];
+      result = [self responseWithStatus: 200];
       [(WOResponse*)result appendContentString: [data jsonRepresentation]];
     }
   else
