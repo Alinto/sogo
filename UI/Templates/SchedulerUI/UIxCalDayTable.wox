@@ -19,6 +19,7 @@
       ><var:foreach list="daysToDisplay" item="currentTableDay"
 	><div var:class="dayClasses"
 	  var:day="currentTableDay.shortDateString"
+	  hour="allday"
 	  ><!-- space --></div
 	  ></var:foreach
 	></div>

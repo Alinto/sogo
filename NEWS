@@ -1,3 +1,8 @@
+1.0-2009XXYY
+-----------
+- when double-clicking in the all-day zone (day & week views), the "All Day event" checkbox is now automatically checked
+- replaced the JavaScript FastInit class by the dom:loaded event of Prototype JS
+  
 1.0-20090130 (1.0 rc9)
 ------------------
 - added quota indicator in web mail module
