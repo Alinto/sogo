@@ -48,4 +48,4 @@ function onReplyPlacementListChange() {
   }
 }
 
-FastInit.addOnLoad(initPreferences);
+document.observe("dom:loaded", initPreferences);

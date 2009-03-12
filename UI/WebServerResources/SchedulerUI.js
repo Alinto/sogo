@@ -41,6 +41,7 @@ function newEvent(sender, type) {
     params.push("hm=" + hour);
   if (params.length > 0)
     urlstr += "?" + params.join("&");
+
   window.open(urlstr, "", "width=490,height=470,resizable=0");
    
   return false; /* stop following the link */
@@ -1110,7 +1111,8 @@ function calendarDisplayCallback(http) {
     
     refreshCalendarEvents(http.callbackData.scrollEvent);
     
-    var days = document.getElementsByClassName("day", contentView);
+		var days = contentView.select("DIV.day");
+
     if (currentView == "monthview")
       for (var i = 0; i < days.length; i++) {
         days[i].observe("click", onCalendarSelectDay);
@@ -1121,20 +1123,19 @@ function calendarDisplayCallback(http) {
 					days[i].observe("scroll", onBodyClickHandler);
       }
     else {
-      var headerDivs = $("calendarHeader").childNodesWithTag("div"); 
-      var headerDaysLabels
-				= document.getElementsByClassName("day", headerDivs[0]);
-      var headerDays = document.getElementsByClassName("day", headerDivs[1]);
-      for (var i = 0; i < days.length; i++) {
+			var calendarHeader = $("calendarHeader");
+			var headerDaysLabels = calendarHeader.select("DIV.dayLabels DIV.day");
+			var headerDays = calendarHeader.select("DIV.days DIV.day");
+			for (var i = 0; i < days.length; i++) {
 				headerDays[i].hour = "allday";
 				headerDaysLabels[i].observe("mousedown", listRowMouseDownHandler);
 				headerDays[i].observe("click", onCalendarSelectDay);
 				headerDays[i].observe("dblclick", onClickableCellsDblClick);
 				days[i].observe("click", onCalendarSelectDay);
-				var clickableCells
-					= document.getElementsByClassName("clickableHourCell", days[i]);
+
+				var clickableCells = days[i].select("DIV.clickableHourCell");
 				for (var j = 0; j < clickableCells.length; j++)
-					clickableCells[j].observe("dblclick", onClickableCellsDblClick);
+					clickableCells[j].observe("dblclick", onClickableCellsDblClick);					
       }
     }
   }
@@ -1691,15 +1692,15 @@ function configureDragHandles() {
   var handle = $("verticalDragHandle");
   if (handle) {
     handle.addInterface(SOGoDragHandlesInterface);
-    handle.leftBlock=$("leftPanel");
-    handle.rightBlock=$("rightPanel");
+    handle.leftBlock = $("leftPanel");
+    handle.rightBlock = $("rightPanel");
   }
 
   handle = $("rightDragHandle");
   if (handle) {
     handle.addInterface(SOGoDragHandlesInterface);
-    handle.upperBlock=$("eventsListView");
-    handle.lowerBlock=$("calendarView");
+    handle.upperBlock = $("eventsListView");
+    handle.lowerBlock = $("calendarView");
   }
 }
 
@@ -1975,7 +1976,7 @@ function initCalendars() {
   sorting["attribute"] = "start";
   sorting["ascending"] = true;
   
-  if (!document.body.hasClassName("popup")) {
+  if (!$(document.body).hasClassName("popup")) {
     initDateSelectorEvents();
     initCalendarSelector();
     configureSearchField();
@@ -1986,8 +1987,8 @@ function initCalendars() {
     $(document.body).observe("click", onBodyClickHandler);
   }
 
+	onWindowResize.defer();
 	Event.observe(window, "resize", onWindowResize);
-	onWindowResize(null);
 }
 
-FastInit.addOnLoad(initCalendars);
+document.observe("dom:loaded", initCalendars);

@@ -145,8 +145,8 @@ function initializeFormValues() {
     $('rangeAppointmentsField').value = parent$("range2").value;
   }
   else if (range == 2) {
-    $('endDate_date').value = parent$("range2").value;
-    $('endDate_date').disabled = false;
+		$('endDate_date').value = parent$("range2").value;
+		$('endDate_date').disabled = false;
   }
 
 	$('rangeAppointmentsField').observe("click", function(event) {
@@ -354,4 +354,4 @@ function onRecurrenceLoadHandler() {
   assignCalendar('endDate_date');
 }
 
-FastInit.addOnLoad(onRecurrenceLoadHandler);
+document.observe("dom:loaded", onRecurrenceLoadHandler);

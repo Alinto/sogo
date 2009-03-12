@@ -718,7 +718,7 @@ function onFreeBusyLoadHandler() {
 	$$('TABLE#freeBusy TD.freeBusyData DIV').first().observe("scroll", onScroll);
 }
 
-FastInit.addOnLoad(onFreeBusyLoadHandler);
+document.observe("dom:loaded", onFreeBusyLoadHandler);
 
 /* Functions related to UIxTimeDateControl widget */
 

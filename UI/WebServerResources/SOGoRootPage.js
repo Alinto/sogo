@@ -23,7 +23,7 @@ function onLoginClick(event) {
 	
 	if (userName.length > 0) {
 		startAnimation($("loginButton"), $("submit"));
-
+		
 		if (typeof(loginSuffix) != "undefined"
 				&& loginSuffix.length > 0
 				&& !userName.endsWith(loginSuffix))
@@ -103,4 +103,4 @@ function onLoginCallback(http) {
 	}
 }
 
-FastInit.addOnLoad(initLogin);
+document.observe("dom:loaded", initLogin);

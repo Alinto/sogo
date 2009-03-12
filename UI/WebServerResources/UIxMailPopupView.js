@@ -54,4 +54,4 @@ function onMenuDeleteMessage(event) {
   return false;
 }
 
-FastInit.addOnLoad(initPopupMailer);
+document.observe("dom:loaded", initPopupMailer);

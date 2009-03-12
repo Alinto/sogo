@@ -143,4 +143,4 @@ function initEditorForm() {
   $("cancelButton").observe("click", onEditorCancelClick);
 }
 
-FastInit.addOnLoad(initEditorForm);
+document.observe("dom:loaded", initEditorForm);

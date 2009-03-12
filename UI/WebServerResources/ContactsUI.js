@@ -997,7 +997,7 @@ function onWindowResize(event) {
 }
 
 function initContacts(event) {
-  if (document.body.hasClassName("popup"))
+  if ($(document.body).hasClassName("popup"))
     configureSelectionButtons();
   configureAbToolbar();
   configureAddressBooks();
@@ -1013,12 +1013,12 @@ function initContacts(event) {
     TableKit.Resizable.init(table, {'trueResize' : true, 'keepWidth' : true});
   }
 	
+	onWindowResize.defer();
 	Event.observe(window, "resize", onWindowResize);
-	onWindowResize(null);
 
   // Default sort options
   sorting["attribute"] = "c_cn";
   sorting["ascending"] = true;
 }
 
-FastInit.addOnLoad(initContacts);
+document.observe("dom:loaded", initContacts);

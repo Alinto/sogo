@@ -39,4 +39,4 @@ function onOccurenceDialogLoad() {
   cancelButton.observe("click", onCancelButtonClick);
 }
 
-FastInit.addOnLoad(onOccurenceDialogLoad);
+document.observe("dom:loaded", onOccurenceDialogLoad);

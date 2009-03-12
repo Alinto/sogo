@@ -155,4 +155,4 @@ function onAclLoadHandler() {
 	AclEditor['userRightsWidth'] = window.opener.getUsersRightsWindowWidth();
 }
 
-FastInit.addOnLoad(onAclLoadHandler);
+document.observe("dom:loaded", onAclLoadHandler);

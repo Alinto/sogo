@@ -234,4 +234,4 @@ function initUserFoldersWindow() {
   searchValue.focus();
 }
 
-FastInit.addOnLoad(initUserFoldersWindow);
+document.observe("dom:loaded", initUserFoldersWindow);

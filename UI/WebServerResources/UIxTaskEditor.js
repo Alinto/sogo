@@ -311,4 +311,4 @@ function onTaskEditorLoad() {
   initializeStatusLine();
 }
 
-FastInit.addOnLoad(onTaskEditorLoad);
+document.observe("dom:loaded", onTaskEditorLoad);

@@ -262,7 +262,7 @@ function clickedEditorSave(sender) {
 	document.pageform.action = "save";
 	document.pageform.submit();
 
-	if (window.opener && window.open && !window.closed)
+	if (window.opener && window.opener.open && !window.opener.closed)
 		window.opener.refreshFolderByType('draft');
 	return false;
 }
@@ -569,7 +569,7 @@ function initMailEditor() {
 
 	var subjectField = $$("div#subjectRow input").first();
 	initTabIndex($("addressList"), subjectField, textarea);
-	onWindowResize(null);
+	onWindowResize.defer();
 
 	Event.observe(window, "resize", onWindowResize);
 	Event.observe(window, "beforeunload", onMailEditorClose);
@@ -722,7 +722,7 @@ function onWindowResize(event) {
 
 	// Resize address fields
 	var addresslist = $('addressList');
-	addresslist.setStyle({ width: ($(this).width() - attachmentswidth - 10) + 'px' });
+	addresslist.setStyle({ width: ($(window).width() - attachmentswidth - 10) + 'px' });
 
 	// Set textarea position
 	var hr = headerarea.select("hr").first();
@@ -752,4 +752,4 @@ function onMailEditorClose(event) {
 	Event.stopObserving(window, "beforeunload", onMailEditorClose);
 }
 
-FastInit.addOnLoad(initMailEditor);
+document.observe("dom:loaded", initMailEditor);

@@ -191,4 +191,4 @@ function initMailToSelection() {
   currentIndex = lastIndex = $$("table#addressList tr").length - 2;
 }
 
-FastInit.addOnLoad(initMailToSelection);
+document.observe("dom:loaded", initMailToSelection);

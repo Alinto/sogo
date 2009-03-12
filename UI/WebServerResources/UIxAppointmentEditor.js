@@ -418,4 +418,4 @@ function onAppointmentEditorLoad() {
 	initializeAttendeesHref();
 }
 
-FastInit.addOnLoad(onAppointmentEditorLoad);
+document.observe("dom:loaded", onAppointmentEditorLoad);

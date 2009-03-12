@@ -153,4 +153,4 @@ function onPopupRecurrenceWindow(event) {
   return false;
 }
 
-FastInit.addOnLoad(onComponentEditorLoad);
+document.observe("dom:loaded", onComponentEditorLoad);

@@ -45,4 +45,4 @@ function onColorPickerChoice(newColor) {
   calendarColor.value = newColor;
 }
 
-FastInit.addOnLoad(onLoadCalendarProperties);
+document.observe("dom:loaded", onLoadCalendarProperties);

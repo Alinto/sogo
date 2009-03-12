@@ -160,7 +160,7 @@ function markMailReadInWindow(win, msguid) {
 /* mail list reply */
 
 function openMessageWindowsForSelection(action, firstOnly) {
-  if (document.body.hasClassName("popup")) {
+  if ($(document.body).hasClassName("popup")) {
     var url = window.location.href;
     var parts = url.split("/");
     parts[parts.length-1] = action;
@@ -897,7 +897,7 @@ function configureLinksInMessage() {
   var messageDiv = $('messageContent');
   var mailContentDiv = document.getElementsByClassName('mailer_mailcontent',
 																											 messageDiv)[0];
-  if (!document.body.hasClassName("popup"))
+  if (!$(document.body).hasClassName("popup"))
     mailContentDiv.observe("contextmenu", onMessageContentMenu);
 
   var anchors = messageDiv.getElementsByTagName('a');
@@ -1454,8 +1454,9 @@ function initMailer(event) {
     initMailboxTree();
     initMessageCheckTimer();
 		
-		/* Perform an expunge when leaving the webmail */
 		Event.observe(document, "keydown", onDocumentKeydown);
+
+		/* Perform an expunge when leaving the webmail */
 		if (isSafari()) {
 			$('calendarBannerLink').observe("click", onUnload);
 			$('contactsBannerLink').observe("click", onUnload);
@@ -1465,8 +1466,8 @@ function initMailer(event) {
 			Event.observe(window, "beforeunload", onUnload);
 	}
   
+	onWindowResize.defer();
 	Event.observe(window, "resize", onWindowResize);
-	onWindowResize(null);
 
   // Default sort options
   sorting["attribute"] = "date";
@@ -1712,6 +1713,8 @@ function onLoadMailboxesCallback(http) {
 				updateStatusFolders();
       }
     }
+		else
+			log ("onLoadMailboxesCallback " + http.status);
   }
 
   //       var tree = $("mailboxTree");

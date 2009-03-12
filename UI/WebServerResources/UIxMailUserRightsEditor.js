@@ -8,4 +8,4 @@ function initACLButtons() {
 	$("cancelButton").observe("click", onCancelClick);
 }
 
-FastInit.addOnLoad(initACLButtons);
+document.observe("dom:loaded", initACLButtons);

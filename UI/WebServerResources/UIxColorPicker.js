@@ -8,4 +8,4 @@ function onChooseColor(newColor) {
   window.opener.onColorPickerChoice(newColor);
 }
 
-FastInit.addOnLoad(onLoadColorPicker);
+document.observe("dom:loaded", onLoadColorPicker);
