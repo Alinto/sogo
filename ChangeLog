@@ -1,3 +1,8 @@
+2009-03-12  Ludovic Marcotte <lmarcotte@inverse.ca>
+
+        * Updated the SOPE patchset in order to
+	fix a bug in NGMimeBodyParser.
+
 2009-03-11  Ludovic Marcotte <lmarcotte@inverse.ca>
 
         * SoObjects/Appointments/SOGoAppointmentFolder.m
