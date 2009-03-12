@@ -64,20 +64,22 @@ case "$1" in
 	echo -n "Starting $DESC: "
 	for ((a=1; a <= PREFORK ; a++))
 	do
-	  start-stop-daemon -c sogo --pidfile $PIDFILE$a \
+	  start-stop-daemon -c sogo
 	      -b --start --quiet --exec $DAEMON $a
 	done
 	echo "$NAME."
 	;;
   stop)
-	echo -n "Stopping $DESC: "
+	echo "Stopping $DESC: "
 	for ((a=1; a <= PREFORK ; a++))
 	do
-	  sogopid=$(cat $PIDFILE$a)
-	  kill ${sogopid} 2> /dev/null
+	  pid=$(cat $PIDFILE$a)
+	  ppid=$(ps --ppid $pid -o pid=)
+	  kill -9 ${pid}
+	  kill -9 ${ppid}
 	  rm -f $PIDFILE$a
+	  echo "$NAME $a stopped"
 	done
-	echo "$NAME."
 	;;
   restart|force-reload)
 	$0 stop && sleep 2 && $0 start
