@@ -2,6 +2,8 @@
 
         * Updated the SOPE patchset in order to
 	fix a bug in NGMimeBodyParser.
+	* Updated again the SOPE patchset to enable
+	MySQL support.
 
 2009-03-11  Francis Lachapelle  <flachapelle@inverse.ca>
 

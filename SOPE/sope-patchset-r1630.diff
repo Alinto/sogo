@@ -42,6 +42,62 @@ Index: sope-gdl1/PostgreSQL/PostgreSQL72Channel.m
  @end /* PostgreSQL72Channel */
  
  @implementation PostgreSQL72Channel(PrimaryKeyGeneration)
+Index: sope-gdl1/MySQL/MySQL4Channel.m
+===================================================================
+--- sope-gdl1/MySQL/MySQL4Channel.m	(revision 1632)
++++ sope-gdl1/MySQL/MySQL4Channel.m	(working copy)
+@@ -755,6 +755,39 @@
+   return pkey;
+ }
+ 
++/* GCSEOAdaptorChannel protocol */
++static NSString *sqlFolderFormat = (@"CREATE TABLE %@ (\n"	\
++				    @"  c_name VARCHAR (256) NOT NULL PRIMARY KEY,\n"
++				    @"  c_content VARCHAR (100000) NOT NULL,\n"
++				    @"  c_creationdate INT NOT NULL,\n"
++				    @"  c_lastmodified INT NOT NULL,\n"
++				    @"  c_version INT NOT NULL,\n"
++				    @"  c_deleted INT NULL\n"
++				    @")");
++static NSString *sqlFolderACLFormat = (@"CREATE TABLE %@ (\n"	\
++				       @"  c_uid VARCHAR (256) NOT NULL,\n"
++				       @"  c_object VARCHAR (256) NOT NULL,\n"
++				       @"  c_role VARCHAR (80) NOT NULL\n"
++				       @")");
++
++- (NSException *) createGCSFolderTableWithName: (NSString *) tableName
++{
++  NSString *sql;
++
++  sql = [NSString stringWithFormat: sqlFolderFormat, tableName];
++
++  return [self evaluateExpressionX: sql];
++}
++
++- (NSException *) createGCSFolderACLTableWithName: (NSString *) tableName
++{
++  NSString *sql;
++
++  sql = [NSString stringWithFormat: sqlFolderACLFormat, tableName];
++
++  return [self evaluateExpressionX: sql];
++}
++
+ @end /* MySQL4Channel */
+ 
+ void __link_MySQL4Channel() {
+Index: sope-gdl1/GDLAccess/EOAdaptor.m
+===================================================================
+--- sope-gdl1/GDLAccess/EOAdaptor.m	(revision 1632)
++++ sope-gdl1/GDLAccess/EOAdaptor.m	(working copy)
+@@ -202,6 +202,7 @@
+   if ([_scheme isEqualToString:@"sybase"])     return @"Sybase10";
+   if ([_scheme isEqualToString:@"sqlite"])     return @"SQLite3";
+   if ([_scheme isEqualToString:@"oracle"])     return @"Oracle8";
++  if ([_scheme isEqualToString:@"mysql"])      return @"MySQL";
+ 
+   if ([_scheme isEqualToString:@"http"]) {
+     NSLog(@"WARNING(%s): asked for 'http' URL, "
 Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
 ===================================================================
 --- sope-gdl1/Oracle8/OracleAdaptorChannel.m	(revision 1632)
