@@ -3,6 +3,15 @@
         * Updated the SOPE patchset in order to
 	fix a bug in NGMimeBodyParser.
 
+2009-03-11  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/MainUI/SOGoUserHomePage.m ([SOGoUserHomePage
+	-readFreeBusyAction]): we now set the content-type to "text/plain"
+	to fix issues with nginx.
+
+	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView
+	-contactSearchAction]): idem.
+
 2009-03-11  Ludovic Marcotte <lmarcotte@inverse.ca>
 
         * SoObjects/Appointments/SOGoAppointmentFolder.m
