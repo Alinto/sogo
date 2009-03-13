@@ -289,7 +289,18 @@ static NSString *spoolFolder = nil;
 	  client = [[self imap4Connection] client];
 	  [imap4 selectFolder: [self imap4URL]];
 	  folderName = [imap4 imap4FolderNameForURL: [trashFolder imap4URL]];
-	  result = [client copyUids: uids toFolder: folderName];
+
+	  // If our Trash folder doesn't exist when we try to copy messages
+	  // to it, we create it.
+	  result = [[client status: folderName  flags: [NSArray arrayWithObject: @"UIDVALIDITY"]]
+		     objectForKey: @"result"];
+	  
+	  if (![result boolValue])
+	    result = [[self imap4Connection] createMailbox: folderName  atURL: [[self mailAccountFolder] imap4URL]];
+
+	  if (!result || [result boolValue])
+	    result = [client copyUids: uids toFolder: folderName];
+
 	  if ([[result valueForKey: @"result"] boolValue])
 	    {
 	      result = [client storeFlags: [NSArray arrayWithObject: @"Deleted"]
@@ -423,7 +434,15 @@ static NSString *spoolFolder = nil;
   client = [[self imap4Connection] client];
   [imap4 selectFolder: [self imap4URL]];
   
-  result = [client copyUids: uids toFolder: imapDestinationFolder];
+  // We make sure the destination IMAP folder exist, if not, we create it.
+  result = [[client status: imapDestinationFolder  flags: [NSArray arrayWithObject: @"UIDVALIDITY"]]
+	     objectForKey: @"result"];
+  
+  if (![result boolValue])
+    result = [[self imap4Connection] createMailbox: imapDestinationFolder  atURL: [[self mailAccountFolder] imap4URL]];
+
+  if (!result || [result boolValue])
+    result = [client copyUids: uids toFolder: imapDestinationFolder];
 
   if ([[result valueForKey: @"result"] boolValue])
     result = nil;
@@ -475,8 +494,15 @@ static NSString *spoolFolder = nil;
 - (NSException *) postData: (NSData *) _data
 		     flags: (id) _flags
 {
-  return [[self imap4Connection] postData: _data flags: _flags
-				 toFolderURL: [self imap4URL]];
+  // We check for the existence of the IMAP folder (likely to be the
+  // Sent mailbox) prior to appending messages to it.
+  if ([[self imap4Connection] doesMailboxExistAtURL: [self imap4URL]] ||
+      ![[self imap4Connection] createMailbox: [self relativeImap4Name]  atURL: [[self mailAccountFolder] imap4URL]])
+    return [[self imap4Connection] postData: _data flags: _flags
+				   toFolderURL: [self imap4URL]];
+  
+  return [NSException exceptionWithHTTPStatus: 502 /* Bad Gateway */
+		      reason: [NSString stringWithFormat: @"%@ is not an IMAP4 folder", [self relativeImap4Name]]];
 }
 
 - (NSException *) expunge
@@ -577,7 +603,12 @@ static NSString *spoolFolder = nil;
     }
   else
     {
-      if ([[self imap4Connection] doesMailboxExistAtURL: [self imap4URL]])
+      // We automatically create mailboxes that don't exist but that we're
+      // trying to open. This shouldn't happen unless a mailbox has been
+      // deleted "behind our back" or if we're trying to open a special
+      // mailbox that doesn't yet exist.
+      if ([[self imap4Connection] doesMailboxExistAtURL: [self imap4URL]] ||
+	  ![[self imap4Connection] createMailbox: [self relativeImap4Name]  atURL: [[self mailAccountFolder] imap4URL]])
 	{
 	  if (isdigit ([_key characterAtIndex: 0]))
 	    obj = [SOGoMailObject objectWithName: _key inContainer: self];
@@ -1068,20 +1099,6 @@ static NSString *spoolFolder = nil;
 @end /* SOGoMailFolder */
 
 @implementation SOGoSpecialMailFolder
-
-- (id) initWithName: (NSString *) newName
-	inContainer: (id) newContainer
-{
-  if ((self = [super initWithName: newName
-		     inContainer: newContainer]))
-    {
-      if (![[self imap4Connection] doesMailboxExistAtURL: [self imap4URL]])
-	[imap4 createMailbox: [self relativeImap4Name]
-	       atURL: [newContainer imap4URL]];
-    }
-
-  return self;
-}
 
 - (BOOL) isSpecialFolder
 {

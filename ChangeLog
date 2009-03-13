@@ -1,3 +1,8 @@
+2009-03-13  Ludovic Marcotte <lmarcotte@inverse.ca>
+
+        * Optimized the IMAP client code to avoid
+	unnecessary STATUS calls.
+
 2009-03-12  Ludovic Marcotte <lmarcotte@inverse.ca>
 
         * Updated the SOPE patchset in order to
