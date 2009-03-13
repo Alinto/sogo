@@ -71,7 +71,7 @@ var SOGoDragHandlesInterface = {
         this.origY = this.offsetTop;
         this.origUpper = this.upperBlock.offsetHeight;
 				var pointY = Event.pointerY(event);
-				if (pointY <= this.topMargin) this.delta = this.topMargin;
+				if (pointY < this.topMargin) this.delta = this.topMargin;
         else this.delta = pointY - this.offsetTop - 5;
         this.origLower = this.lowerBlock.offsetTop - 5;
         document.body.setStyle({ cursor: "n-resize" });

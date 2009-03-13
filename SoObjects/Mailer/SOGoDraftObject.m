@@ -388,6 +388,13 @@ static BOOL        showTextAttachmentsInline  = NO;
   message = [self mimeMessageAsData];
 
   client = [[self imap4Connection] client];
+
+  if (![imap4 doesMailboxExistAtURL: [container imap4URL]])
+    {
+      [client create: [container relativeImap4Name]];
+      [imap4 flushFolderHierarchyCache];
+    }
+  
   folder = [imap4 imap4FolderNameForURL: [container imap4URL]];
   result
     = [client append: message toFolder: folder
