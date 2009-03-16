@@ -215,10 +215,9 @@ Date.prototype.beginOfWeek = function() {
   if (offset > 0)
     offset -= 7;
 
-  var beginOfWeek = new Date();
-  beginOfWeek.setTime(this.getTime());
+  var beginOfWeek = new Date(this.getTime());
+  beginOfWeek.setHours(12);
   beginOfWeek.addDays(offset);
-  beginOfWeek.setHours(0);
   beginOfWeek.setMinutes(0);
   beginOfWeek.setSeconds(0);
   beginOfWeek.setMilliseconds(0);
