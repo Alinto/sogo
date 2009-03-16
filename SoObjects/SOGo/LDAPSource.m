@@ -1,6 +1,6 @@
 /* LDAPSource.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2008 Inverse inc.
+ * Copyright (C) 2007-2009 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -165,6 +165,7 @@ static NSLock *lock;
       mailFields = [NSArray arrayWithObject: @"mail"];
       [mailFields retain];
       bindFields = nil;
+      _filter = nil;
 
       ldapConnection = nil;
       searchAttributes = nil;
@@ -184,6 +185,7 @@ static NSLock *lock;
   [UIDField release];
   [mailFields release];
   [bindFields release];
+  [_filter release];
   [ldapConnection release];
   [sourceID release];
   [modulesConstraints release];
@@ -206,7 +208,8 @@ static NSLock *lock;
 	UIDField: [udSource objectForKey: @"UIDFieldName"]
 	mailFields: [udSource objectForKey: @"MailFieldNames"]
 	andBindFields: [udSource objectForKey: @"bindFields"]];
-  ASSIGN (modulesConstraints, [udSource objectForKey: @"ModulesConstraints"]);
+  ASSIGN(modulesConstraints, [udSource objectForKey: @"ModulesConstraints"]);
+  ASSIGN(_filter, [udSource objectForKey: @"filter"]);
 
   return self;
 }
@@ -282,7 +285,11 @@ static NSLock *lock;
   fields = [[bindFields componentsSeparatedByString: @","] objectEnumerator];
   while ((currentField = [fields nextObject]))
     [qs appendFormat: @" OR (%@='%@')", currentField, uid];
-  [qs deleteCharactersInRange: NSMakeRange (0, 4)];
+  
+  if (_filter && [_filter length])
+    [qs appendFormat: @" AND %@", _filter];
+
+  [qs deleteCharactersInRange: NSMakeRange(0, 4)];
 
   return [EOQualifier qualifierWithQualifierFormat: qs];
 }
@@ -360,25 +367,30 @@ static NSLock *lock;
 /* contact management */
 - (EOQualifier *) _qualifierForFilter: (NSString *) filter
 {
-  NSString *qs, *mailFormat, *fieldFormat;
+  NSString *mailFormat, *fieldFormat;
   EOQualifier *qualifier;
-
+  NSMutableString *qs;
+  
   fieldFormat = [NSString stringWithFormat: @"(%%@='%@*')", filter];
   mailFormat = [[mailFields stringsWithFormat: fieldFormat]
 		 componentsJoinedByString: @" OR "];
+  qs = [NSMutableString string];
 
   if ([filter length] > 0)
     {
       if ([filter isEqualToString: @"."])
-        qs = @"(cn='*')";
+        [qs appendFormat: @"(%@='*')", CNField];
       else
-        qs = [NSString stringWithFormat:
-                         @"(cn='%@*')"
-                       @"OR (sn='%@*')"
-                       @"OR (displayName='%@*')"
-                       @"OR %@"
-                       @"OR (telephoneNumber='*%@*')",
-                       filter, filter, filter, mailFormat, filter];
+        [qs appendFormat: @"(%@='%@*')"
+	    @"OR (sn='%@*')"
+	    @"OR (displayName='%@*')"
+	    @"OR %@"
+	    @"OR (telephoneNumber='*%@*')",
+	    CNField, filter, filter, filter, mailFormat, filter];
+      
+      if (_filter && [_filter length])
+	[qs appendFormat: @" AND %@", _filter];
+
       qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
     }
   else
@@ -389,13 +401,18 @@ static NSLock *lock;
 
 - (EOQualifier *) _qualifierForUIDFilter: (NSString *) uid
 {
-  NSString *qs, *mailFormat, *fieldFormat;
+  NSString *mailFormat, *fieldFormat;
+  NSMutableString *qs;
 
   fieldFormat = [NSString stringWithFormat: @"(%%@='%@')", uid];
   mailFormat = [[mailFields stringsWithFormat: fieldFormat]
 		 componentsJoinedByString: @" OR "];
-  qs = [NSString stringWithFormat: (@"(%@='%@') OR %@"),
-		 UIDField, uid, mailFormat];
+  qs = [NSMutableString string];
+  
+  [qs appendFormat: (@"(%@='%@') OR %@"), UIDField, uid, mailFormat];
+  
+  if (_filter && [_filter length])
+    [qs appendFormat: @" AND %@", _filter];
 
   return [EOQualifier qualifierWithQualifierFormat: qs];
 }

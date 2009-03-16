@@ -1,3 +1,11 @@
+2009-03-16  Ludovic Marcotte <lmarcotte@inverse.ca>
+
+        * SoObjects/SOGo/LDAPSource.m: We now support
+	the specification of a filter. Also updated
+	the installation guide to document this new parameter
+	* sogo.spec: Modified so that we use our tmpwatch
+	script from /etc/cron.daily
+
 2009-03-16  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Scheduler/UIxCalListingActions.m ([UIxCalListingActions
