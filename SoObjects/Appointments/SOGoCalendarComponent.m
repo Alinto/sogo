@@ -319,7 +319,9 @@ _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
 	{
 	  recID = [lookupName substringFromIndex: 9];
 	  occurence = [self lookupOccurence: recID];
-	  if (!occurence)
+	  if (occurence)
+	    isNewOccurence = NO;
+	  else
 	    {
 	      occurence = [self newOccurenceWithID: recID];
 	      isNewOccurence = YES;

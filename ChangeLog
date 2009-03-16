@@ -1,5 +1,11 @@
 2009-03-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	([SOGoCalendarComponent
+	-lookupName:lookupNameinContext:localContextacquire:acquire]):
+	initialize "isNewComponent" to NO if it's not, to avoid problems
+	with unitialized memory.
+
 	* SoObjects/SOGo/LDAPSource.m ([LDAPSource
 	-setBaseDN:newBaseDNIDField:newIDFieldCNField:newCNFieldUIDField:newUIDFieldmailFields:newMailFieldsandBindFields:newBindFields]):
 	bug setting the CN and UID field only if they were set before,
