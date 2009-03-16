@@ -233,9 +233,9 @@ static NSLock *lock;
   ASSIGN (baseDN, newBaseDN);
   if (newIDField)
     ASSIGN (IDField, newIDField);
-  if (CNField)
+  if (newCNField)
     ASSIGN (CNField, newCNField);
-  if (UIDField)
+  if (newUIDField)
     ASSIGN (UIDField, newUIDField);
   if (newMailFields)
     ASSIGN (mailFields, newMailFields);

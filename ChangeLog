@@ -1,3 +1,10 @@
+2009-03-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/LDAPSource.m ([LDAPSource
+	-setBaseDN:newBaseDNIDField:newIDFieldCNField:newCNFieldUIDField:newUIDFieldmailFields:newMailFieldsandBindFields:newBindFields]):
+	bug setting the CN and UID field only if they were set before,
+	rather than checking their value passed as parameter.
+
 2009-03-13  Ludovic Marcotte <lmarcotte@inverse.ca>
 
         * Optimized the IMAP client code to avoid
