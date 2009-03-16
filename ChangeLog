@@ -1,5 +1,13 @@
 2009-03-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	([SOGoAppointmentObject -occurence:occ]): create the occurence
+	with the first calendar event as master.
+
+	* SoObjects/Appointments/SOGoTaskObject.m ([SOGoTaskObject
+	-occurence:occ]): create the occurence with the first calendar
+	task as master.
+
 	* SoObjects/Appointments/SOGoCalendarComponent.m
 	([SOGoCalendarComponent
 	-lookupName:lookupNameinContext:localContextacquire:acquire]):

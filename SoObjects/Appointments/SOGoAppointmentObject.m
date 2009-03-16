@@ -129,10 +129,14 @@
 
 - (SOGoComponentOccurence *) occurence: (iCalRepeatableEntityObject *) occ
 {
-  return [SOGoAppointmentOccurence occurenceWithComponent: occ
-				   withMasterComponent: [self component: NO
-							      secure: NO]
-				   inContainer: self];
+  NSArray *allEvents;
+
+  allEvents = [[occ parent] events];
+
+  return [SOGoAppointmentOccurence
+	   occurenceWithComponent: occ
+	   withMasterComponent: [allEvents objectAtIndex: 0]
+	   inContainer: self];
 }
 
 - (iCalRepeatableEntityObject *) newOccurenceWithID: (NSString *) recID

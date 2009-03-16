@@ -48,9 +48,12 @@
 
 - (SOGoComponentOccurence *) occurence: (iCalRepeatableEntityObject *) occ
 {
+  NSArray *allTodos;
+
+  allTodos = [[occ parent] todos];
+
   return [SOGoTaskOccurence occurenceWithComponent: occ
-			    withMasterComponent: [self component: NO
-						       secure: NO]
+			    withMasterComponent: [allTodos objectAtIndex: 0]
 			    inContainer: self];
 }
 
