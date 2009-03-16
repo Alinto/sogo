@@ -249,7 +249,7 @@ _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
 
   recDate = [NSCalendarDate dateWithTimeIntervalSince1970: [recID intValue]];
   masterOccurence = [self component: NO secure: NO];
-
+ 
   if ([masterOccurence doesOccurOnDate: recDate])
     {
       newOccurence = [masterOccurence mutableCopy];

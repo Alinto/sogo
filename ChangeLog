@@ -1,3 +1,17 @@
+2009-03-16  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Scheduler/UIxCalListingActions.m ([UIxCalListingActions
+	-_fixDates:]): moved corrections for daylight saving time in this
+	new method.
+	
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder
+	-fixupCycleRecord:_recordcycleRange:_rfirstInstanceCalendarDateRange:_firforViewRange:_viewRange]): 
+	propagate the start date of the cycle so it can be used later to
+	adjust the timezone.
+	* ([SOGoAppointmentFolder
+	-_appendCycleException:firstInstanceCalendarDateRange:fromRow:forRange:toArray:]): idem	.
+
 2009-03-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentObject.m

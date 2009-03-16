@@ -578,20 +578,20 @@ static Class sogoAppointmentFolderKlass = Nil;
   return md;
 }
 
-- (NSArray *) fixupRecords: (NSArray *) records
+- (NSArray *) fixupRecords: (NSArray *) theRecords
 {
   // TODO: is the result supposed to be sorted by date?
   NSMutableArray *ma;
   unsigned count, max;
   id row; // TODO: what is the type of the record?
 
-  if (records)
+  if (theRecords)
     {
-      max = [records count];
+      max = [theRecords count];
       ma = [NSMutableArray arrayWithCapacity: max];
       for (count = 0; count < max; count++)
 	{
-	  row = [self fixupRecord: [records objectAtIndex: count]];
+	  row = [self fixupRecord: [theRecords objectAtIndex: count]];
 	  if (row)
 	    [ma addObject: row];
 	}
@@ -610,42 +610,30 @@ static Class sogoAppointmentFolderKlass = Nil;
   NSMutableDictionary *md;
   NSNumber *dateSecs;
   id tmp;
-  signed int daylightOffset;
   
   md = [[_record mutableCopy] autorelease];
-  daylightOffset = 0;
 
   /* cycle is in _r. We also have to override the c_startdate/c_enddate with the date values of
      the reccurence since we use those when displaying events in SOGo Web */
 
-  tmp = [_r startDate];
-  if ([timeZone isDaylightSavingTimeForDate: tmp] != [timeZone isDaylightSavingTimeForDate: [_viewRange startDate]])
-    // For the event's start/end dates, compute the daylight saving time
-    // offset with respect to the view period.
-    daylightOffset = (signed int)[timeZone secondsFromGMTForDate: tmp]
-      - (signed int)[timeZone secondsFromGMTForDate: [_viewRange startDate]];
-  
+  tmp = [_r startDate];  
   [tmp setTimeZone: timeZone];
   [md setObject: tmp forKey: @"startDate"];
-  dateSecs = [NSNumber numberWithInt: [tmp timeIntervalSince1970] + daylightOffset];
+  dateSecs = [NSNumber numberWithInt: [tmp timeIntervalSince1970]];
   [md setObject: dateSecs forKey: @"c_startdate"];
 
   tmp = [_r endDate];
   [tmp setTimeZone: timeZone];
   [md setObject: tmp forKey: @"endDate"];
-  dateSecs = [NSNumber numberWithInt: [tmp timeIntervalSince1970] + daylightOffset];
+  dateSecs = [NSNumber numberWithInt: [tmp timeIntervalSince1970]];
   [md setObject: dateSecs forKey: @"c_enddate"];
 
   tmp = [_r startDate];
-  if ([timeZone isDaylightSavingTimeForDate: tmp] != [timeZone isDaylightSavingTimeForDate: [_fir startDate]])
-    // For the event's recurrence id, compute the daylight saving time
-    // offset with respect to the first occurrence of the recurring event.
-    daylightOffset = (signed int)[timeZone secondsFromGMTForDate: tmp]
-      - (signed int)[timeZone secondsFromGMTForDate: [_fir startDate]];
-  else
-    daylightOffset = 0;
-  dateSecs = [NSNumber numberWithInt: [tmp timeIntervalSince1970] + daylightOffset];
+  dateSecs = [NSNumber numberWithInt: [tmp timeIntervalSince1970]];
   [md setObject: dateSecs forKey: @"c_recurrence_id"];
+  
+  tmp = [_fir startDate];
+  [md setObject: tmp forKey: @"cycleStartDate"];
   
   return md;
 }
@@ -657,7 +645,6 @@ static Class sogoAppointmentFolderKlass = Nil;
   NSDictionary *currentRecord;
 
   recordIndex = -1;
-
   count = 0;
   max = [recordArray count];
   while (recordIndex == -1 && count < max)
@@ -729,6 +716,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 	      oldRecord = [ma objectAtIndex: recordIndex];
 	      [newRecord setObject: [oldRecord objectForKey: @"c_recurrence_id"]
 			 forKey: @"c_recurrence_id"];
+	      [newRecord setObject: [fir startDate] forKey: @"cycleStartDate"];
 	      [ma replaceObjectAtIndex: recordIndex withObject: newRecord];
 	    }
 	  else
@@ -742,11 +730,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   else
     {
       newRecord = [self fixupRecord: [component quickRecord]];
-      newRecordRange = [NGCalendarDateRange calendarDateRangeWithStartDate:
-					      [newRecord objectForKey:
-							   @"startDate"]
-					    endDate: [newRecord objectForKey:
-								  @"endDate"]];
+      newRecordRange = [NGCalendarDateRange 
+			 calendarDateRangeWithStartDate: [newRecord objectForKey: @"startDate"]
+			 endDate: [newRecord objectForKey: @"endDate"]];
       if ([dateRange doesIntersectWithDateRange: newRecordRange])
 	[ma addObject: newRecord];
     }
