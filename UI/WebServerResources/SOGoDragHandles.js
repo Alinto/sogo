@@ -12,6 +12,7 @@ var SOGoDragHandlesInterface = {
  origUpper: -1,
  origLower: -1,
  delta: -1,
+ btn: null,
  leftBlock: null,
  rightBlock: null,
  upperBlock: null,
@@ -55,6 +56,7 @@ var SOGoDragHandlesInterface = {
       this.dhType = 'vertical';
   },
  startHandleDragging: function (event) {
+		this.btn = event.button;
     if (!this.dhType)
       this._determineType();
     var targ = getTarget(event);
@@ -71,17 +73,18 @@ var SOGoDragHandlesInterface = {
         this.origY = this.offsetTop;
         this.origUpper = this.upperBlock.offsetHeight;
 				var pointY = Event.pointerY(event);
-				if (pointY < this.topMargin) this.delta = this.topMargin;
-        else this.delta = pointY - this.offsetTop - 5;
+				this.delta = pointY - this.offsetTop - 5;
         this.origLower = this.lowerBlock.offsetTop - 5;
-        document.body.setStyle({ cursor: "n-resize" });
+				document.body.setStyle({ cursor: "n-resize" });
       }
       this.stopHandleDraggingBound = this.stopHandleDragging.bindAsEventListener(this);
-      document.body.observe("mouseup", this.stopHandleDraggingBound, true);
-      this.moveBound = this.move.bindAsEventListener(this);
-      document.body.observe("mousemove", this.moveBound, true);
+			if (Prototype.Browser.IE)
+				Event.observe(document.body, "mouseup", this.stopHandleDraggingBound);
+			else
+				Event.observe(window, "mouseup", this.stopHandleDraggingBound);
+			this.moveBound = this.move.bindAsEventListener(this);
+      Event.observe(document.body, "mousemove", this.moveBound);
       this.move(event);
-      event.cancelBubble = true;
     }
 
     return false;
@@ -120,8 +123,11 @@ var SOGoDragHandlesInterface = {
 			
 			this.saveDragHandleState(this.dhType, parseInt(this.lowerBlock.getStyle("top")));
     }
-    Event.stopObserving(document.body, "mouseup", this.stopHandleDraggingBound, true);
-    Event.stopObserving(document.body, "mousemove", this.moveBound, true);
+		if (Prototype.Browser.IE)		
+			Event.stopObserving(document.body, "mouseup", this.stopHandleDraggingBound);
+    else
+			Event.stopObserving(window, "mouseup", this.stopHandleDraggingBound);
+		Event.stopObserving(document.body, "mousemove", this.moveBound);
     
     document.body.setAttribute('style', '');
 		document.body.setStyle({ cursor: "default" });
@@ -134,31 +140,27 @@ var SOGoDragHandlesInterface = {
     if (this.dhType == 'horizontal') {
       var hX =  Event.pointerX(event);
       var width = this.offsetWidth;
-      if (hX < this.leftMargin) {
+      if (hX < this.leftMargin)
 				hX = this.leftMargin + Math.floor(width / 2);
-				this.stopHandleDragging(event);
-			} else if (hX > this.dhLimit) {
-				if (hX > (this.dhLimit + 5))
-					this.stopHandleDragging(event);
+			else if (hX > this.dhLimit)
 				hX = this.dhLimit + Math.floor(width / 2);
-			}
-      var newLeft = Math.floor(hX - (width / 2));
+			var newLeft = Math.floor(hX - (width / 2));
       this.setStyle({ left: newLeft + 'px' });
     } else if (this.dhType == 'vertical') {
       var hY = Event.pointerY(event);
       var height = this.offsetHeight;
       if (hY < this.topMargin)
 				hY = this.topMargin;
-			else if (hY > this.dhLimit) {
-				if (hY > (this.dhLimit + 5))
-					this.stopHandleDragging(event);
+			else if (hY > this.dhLimit)
 				hY = this.dhLimit;
-			}
+
       var newTop = Math.floor(hY - (height / 2)) - this.delta;
       this.setStyle({ top: newTop + 'px' });
     }
     Event.stop(event);
-  },
+		if (Prototype.Browser.IE && event.button != this.btn)
+			this.stopHandleDragging(event);
+	},
  doubleClick: function (event) {
     if (!this.dhType)
       this._determineType();
