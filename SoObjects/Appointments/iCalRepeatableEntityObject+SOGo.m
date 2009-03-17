@@ -109,13 +109,11 @@
   NSArray *ranges;
   NGCalendarDateRange *checkRange;
   NSCalendarDate *endDate;
-  NSTimeZone *tz;
   BOOL doesOccur;
-  signed daylightOffset;
 
   doesOccur = [self isRecurrent];
   if (doesOccur)
-    {      
+    {
       endDate = [occurenceDate addTimeInterval: [self occurenceInterval]];
       checkRange = [NGCalendarDateRange calendarDateRangeWithStartDate: occurenceDate
 					endDate: endDate];
