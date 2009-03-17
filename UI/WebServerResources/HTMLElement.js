@@ -200,7 +200,7 @@ Element.addMethods(
 			element.removeClassName('_selected');
 
 			var parent = element.up();
-			if (parent.selectedElements)
+			if (parent && parent.selectedElements)
 				parent.selectedElements = parent.selectedElements.without(element);
 	},
 
