@@ -1,3 +1,11 @@
+2009-03-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* GCSFolder.m ([GCSFolder
+	-writeContent:_contenttoName:_namebaseVersion:_baseVersion]):
+	reorganized method to centralize error management, enabling us to
+	remove the "CHECKERROR" macro. The method was also not closing
+	channels whenever an error occured.
+
 2008-09-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* GCSFolder.m ([GCSFolder

@@ -50,15 +50,6 @@ typedef enum {
   bothTableRequired = 3
 } GCSTableRequirement;
 
-#define CHECKERROR() \
- if (error) { \
-   [[storeChannel adaptorContext] rollbackTransaction]; \
-   [[quickChannel adaptorContext] rollbackTransaction]; \
-   [self logWithFormat:@"ERROR(%s): cannot %s content : %@", \
-	 __PRETTY_FUNCTION__, isNewRecord ? "insert" : "update", error]; \
-   return error; \
- } \
-
 @implementation GCSFolder
 
 static BOOL debugOn    = NO;
@@ -815,182 +806,202 @@ static NSArray *contentFieldNames = nil;
   NSMutableDictionary *quickRow, *contentRow;
   NSDictionary	      *currentRow;
   GCSFieldExtractor   *extractor;
-  NSException         *error;
   NSNumber            *storedVersion;
   BOOL                isNewRecord, hasInsertDelegate, hasUpdateDelegate;
   NSCalendarDate      *nowDate;
   NSNumber            *now;
   EOEntity *quickTableEntity, *storeTableEntity;
   NSArray *rows;
+  NSException         *error;
 
   /* check preconditions */  
-  if (_name == nil) {
-    return [NSException exceptionWithName:@"GCSStoreException"
-			reason:@"no content filename was provided"
-			userInfo:nil];
-  }
-  if (_content == nil) {
-    return [NSException exceptionWithName:@"GCSStoreException"
-			reason:@"no content was provided"
-			userInfo:nil];
-  }
-  
-  /* run */
-  error   = nil;
-  nowDate = [NSCalendarDate date];
-  now     = [NSNumber numberWithUnsignedInt:[nowDate timeIntervalSince1970]];
-  
-  if (doLogStore)
-    [self logWithFormat:@"should store content: '%@'\n%@", _name, _content];
-  
-  rows = [self fetchFields: [NSArray arrayWithObjects:
-				       @"c_version",
-				     @"c_deleted",
-				     nil]
-	       fetchSpecification: [self _simpleFetchSpecificationWith:
-					   @"c_name"
-					 andValue: _name]
-	       ignoreDeleted: NO];
-  if ([rows count])
+  if (_name)
     {
-      currentRow = [rows objectAtIndex: 0];
-      storedVersion = [currentRow objectForKey: @"c_version"];
-      if (doLogStore)
-	[self logWithFormat:@"  version: %@", storedVersion];
-      if ([[currentRow objectForKey: @"c_deleted"] intValue] > 0)
+      if (_content)
 	{
-	  [self _purgeRecordWithName: _name];
-	  isNewRecord = YES;
-	}
+	  /* run */
+	  error   = nil;
+	  nowDate = [NSCalendarDate date];
+	  now     = [NSNumber numberWithUnsignedInt:[nowDate timeIntervalSince1970]];
+  
+	  if (doLogStore)
+	    [self logWithFormat:@"should store content: '%@'\n%@", _name, _content];
+  
+	  rows = [self fetchFields: [NSArray arrayWithObjects:
+					       @"c_version",
+					     @"c_deleted",
+					     nil]
+		       fetchSpecification: [self _simpleFetchSpecificationWith:
+						   @"c_name"
+						 andValue: _name]
+		       ignoreDeleted: NO];
+	  if ([rows count])
+	    {
+	      currentRow = [rows objectAtIndex: 0];
+	      storedVersion = [currentRow objectForKey: @"c_version"];
+	      if (doLogStore)
+		[self logWithFormat:@"  version: %@", storedVersion];
+	      if ([[currentRow objectForKey: @"c_deleted"] intValue] > 0)
+		{
+		  [self _purgeRecordWithName: _name];
+		  isNewRecord = YES;
+		}
+	      else
+		isNewRecord = NO;
+	    }
+	  else
+	    {
+	      storedVersion = nil;
+	      isNewRecord = YES;
+	    }
+
+	  /* check whether sequence matches */
+	  /* use version = 0 to override check */
+	  if (_baseVersion == 0
+	      || _baseVersion == [storedVersion unsignedIntValue])
+	    {
+	      /* extract quick info */
+	      extractor = [folderInfo quickExtractor];
+	      quickRow = [extractor extractQuickFieldsFromContent:_content];
+	      if (quickRow)
+		{
+		  [quickRow setObject:_name forKey:@"c_name"];
+  
+		  if (doLogStore)
+		    [self logWithFormat:@"  store quick: %@", quickRow];
+  
+		  /* make content row */
+		  contentRow = [NSMutableDictionary dictionaryWithCapacity:16];
+  
+		  if (ofFlags.sameTableForQuick)
+		    [contentRow addEntriesFromDictionary:quickRow];
+  
+		  [contentRow setObject:_name forKey:@"c_name"];
+		  [contentRow setObject:now forKey:@"c_lastmodified"];
+		  if (isNewRecord)
+		    {
+		      [contentRow setObject:now forKey:@"c_creationdate"];
+		      [contentRow setObject:[NSNumber numberWithInt:0]
+				  forKey:@"c_version"];
+		    }
+		  else // TODO: increase version?
+		    [contentRow setObject:
+				  [NSNumber numberWithInt:([storedVersion intValue] + 1)]
+				forKey:@"c_version"];
+		  [contentRow setObject:_content forKey:@"c_content"];
+  
+		  /* open channels */
+		  storeChannel = [self acquireStoreChannel];
+		  if (storeChannel)
+		    {
+		      if (!ofFlags.sameTableForQuick)
+			{
+			  quickChannel = [self acquireQuickChannel];
+			  if (!quickChannel)
+			    {
+			      [self errorWithFormat:@"%s: could not open quick channel!",
+				    __PRETTY_FUNCTION__];
+			      [self releaseChannel:storeChannel];
+			      return nil;
+			    }
+			}
+
+		      /* we check if we can call directly methods on our adaptor
+			 channel delegate. If not, we generate SQL ourself since it'll
+			 be a little bit faster and less complex than using GDL to do so */
+		      hasInsertDelegate = [[storeChannel delegate] 
+					    respondsToSelector: @selector(adaptorChannel:willInsertRow:forEntity:)];
+		      hasUpdateDelegate = [[storeChannel delegate]
+					    respondsToSelector: @selector(adaptorChannel:willUpdateRow:describedByQualifier:)];
+
+		      [[quickChannel adaptorContext] beginTransaction];
+		      [[storeChannel adaptorContext] beginTransaction];
+  
+		      quickTableEntity = [self _quickTableEntity];
+		      storeTableEntity = [self _storeTableEntity];
+
+		      if (isNewRecord)
+			{
+			  if (!ofFlags.sameTableForQuick)
+			    error = (hasInsertDelegate
+				     ? [quickChannel insertRowX: quickRow forEntity: quickTableEntity]
+				     : [quickChannel
+					 evaluateExpressionX: [self _generateInsertStatementForRow: quickRow 
+								    tableName: [self quickTableName]]]);
+			  
+			  if (!error)
+			    error = (hasInsertDelegate
+				     ? [storeChannel insertRowX: contentRow forEntity: storeTableEntity]
+				     : [storeChannel
+					 evaluateExpressionX: [self _generateInsertStatementForRow: contentRow
+								    tableName: [self storeTableName]]]);
+			}
+		      else
+			{
+			  if (!ofFlags.sameTableForQuick)
+			    error = (hasUpdateDelegate
+				     ? [quickChannel updateRowX: quickRow
+						     describedByQualifier: [self _qualifierUsingWhereColumn: @"c_name"
+										 isEqualTo: _name  andColumn: nil  isEqualTo: nil
+										 entity: quickTableEntity]]
+				     : [quickChannel evaluateExpressionX: [self _generateUpdateStatementForRow: quickRow
+										tableName: [self quickTableName]
+										whereColumn: @"c_name" isEqualTo: _name
+										andColumn: nil isEqualTo: nil]]);
+			  if (!error)
+			    error = (hasUpdateDelegate
+				     ? [storeChannel updateRowX: contentRow
+						     describedByQualifier: [self _qualifierUsingWhereColumn: @"c_name"  isEqualTo: _name
+										 andColumn: (_baseVersion != 0 ? (id)@"c_version" : (id)nil)
+										 isEqualTo: (_baseVersion != 0 ? [NSNumber numberWithUnsignedInt:_baseVersion] : (NSNumber *)nil)
+										 entity: storeTableEntity]]
+				     : [storeChannel evaluateExpressionX: [self _generateUpdateStatementForRow: contentRow  tableName:[self storeTableName]
+										whereColumn: @"c_name"  isEqualTo: _name
+										andColumn: (_baseVersion != 0 ? (id)@"c_version" : (id)nil)
+										isEqualTo: (_baseVersion != 0 ? [NSNumber numberWithUnsignedInt: _baseVersion] : (NSNumber *)nil)]]);
+		      }
+  
+		      if (error)
+			{
+			  [[storeChannel adaptorContext] rollbackTransaction];
+			  [[quickChannel adaptorContext] rollbackTransaction];
+			  [self logWithFormat:
+				  @"ERROR(%s): cannot %s content : %@", __PRETTY_FUNCTION__,
+				isNewRecord ? "insert" : "update",
+				error];
+			}
+		      else
+			{
+			  [[storeChannel adaptorContext] commitTransaction];
+			  [[quickChannel adaptorContext] commitTransaction];
+			}
+
+		      [self releaseChannel: storeChannel];
+		      if (!ofFlags.sameTableForQuick)
+			[self releaseChannel: quickChannel];
+		    }
+		  else
+		    [self errorWithFormat:@"%s: could not open storage channel!",
+			  __PRETTY_FUNCTION__];
+		}
+	      else
+		error = [self errorExtractorReturnedNoQuickRow:extractor
+			      forContent:_content];
+	    }
+	  else /* version mismatch (concurrent update) */
+	    error = [self errorVersionMismatchBetweenStoredVersion:
+			    [storedVersion unsignedIntValue]
+			  andExpectedVersion: _baseVersion];
+  	}
       else
-	isNewRecord = NO;
+	error = [NSException exceptionWithName:@"GCSStoreException"
+			     reason:@"no content was provided"
+			     userInfo:nil];
     }
   else
-    {
-      storedVersion = nil;
-      isNewRecord = YES;
-    }
-
-  /* check whether sequence matches */  
-  if (_baseVersion != 0 /* use 0 to override check */) {
-    if (_baseVersion != [storedVersion unsignedIntValue]) {
-      /* version mismatch (concurrent update) */
-      return [self errorVersionMismatchBetweenStoredVersion:
-		     [storedVersion unsignedIntValue]
-		   andExpectedVersion:_baseVersion];
-    }
-  }
-  
-  /* extract quick info */
-  extractor = [folderInfo quickExtractor];
-  if ((quickRow = [extractor extractQuickFieldsFromContent:_content]) == nil) {
-    return [self errorExtractorReturnedNoQuickRow:extractor
-		 forContent:_content];
-  }
-  
-  [quickRow setObject:_name forKey:@"c_name"];
-  
-  if (doLogStore)
-    [self logWithFormat:@"  store quick: %@", quickRow];
-  
-  /* make content row */
-  contentRow = [NSMutableDictionary dictionaryWithCapacity:16];
-  
-  if (ofFlags.sameTableForQuick)
-    [contentRow addEntriesFromDictionary:quickRow];
-  
-  [contentRow setObject:_name forKey:@"c_name"];
-  if (isNewRecord) [contentRow setObject:now forKey:@"c_creationdate"];
-  [contentRow setObject:now forKey:@"c_lastmodified"];
-  if (isNewRecord)
-    [contentRow setObject:[NSNumber numberWithInt:0] forKey:@"c_version"];
-  else {
-    // TODO: increase version?
-    [contentRow setObject:
-		  [NSNumber numberWithInt:([storedVersion intValue] + 1)]
-		forKey:@"c_version"];
-  }
-  [contentRow setObject:_content forKey:@"c_content"];
-  
-  /* open channels */
-  if ((storeChannel = [self acquireStoreChannel]) == nil) {
-    [self errorWithFormat:@"%s: could not open storage channel!",
-	    __PRETTY_FUNCTION__];
-    return nil;
-  }
-  if (!ofFlags.sameTableForQuick) {
-    if ((quickChannel = [self acquireQuickChannel]) == nil) {
-      [self errorWithFormat:@"%s: could not open quick channel!",
-	      __PRETTY_FUNCTION__];
-      [self releaseChannel:storeChannel];
-      return nil;
-    }
-  }
-
-  /* we check if we can call directly methods on our adaptor
-     channel delegate. If not, we generate SQL ourself since it'll
-     be a little bit faster and less complex than using GDL to do so */
-  hasInsertDelegate = [[storeChannel delegate] 
-			respondsToSelector: @selector(adaptorChannel:willInsertRow:forEntity:)];
-  hasUpdateDelegate = [[storeChannel delegate]
-			respondsToSelector: @selector(adaptorChannel:willUpdateRow:describedByQualifier:)];
-
-  [[quickChannel adaptorContext] beginTransaction];
-  [[storeChannel adaptorContext] beginTransaction];
-  
-  quickTableEntity = [self _quickTableEntity];
-  storeTableEntity = [self _storeTableEntity];
-
-  if (isNewRecord) {
-    if (!ofFlags.sameTableForQuick) {
-      error = (hasInsertDelegate
-	       ? [quickChannel insertRowX: quickRow forEntity: quickTableEntity]
-	       : [quickChannel
-		   evaluateExpressionX: [self _generateInsertStatementForRow: quickRow 
-					      tableName: [self quickTableName]]]);
-      CHECKERROR();
-    }
-
-    error = (hasInsertDelegate
-	     ? [storeChannel insertRowX: contentRow forEntity: storeTableEntity]
-	     : [storeChannel
-		 evaluateExpressionX: [self _generateInsertStatementForRow: contentRow
-					    tableName: [self storeTableName]]]);
-    
-    CHECKERROR();
-  }
-  else {
-    if (!ofFlags.sameTableForQuick) {
-      error = (hasUpdateDelegate
-	       ? [quickChannel updateRowX: quickRow
-			       describedByQualifier: [self _qualifierUsingWhereColumn: @"c_name"
-							   isEqualTo: _name  andColumn: nil  isEqualTo: nil
-							   entity: quickTableEntity]]
-	       : [quickChannel evaluateExpressionX: [self _generateUpdateStatementForRow: quickRow
-							  tableName: [self quickTableName]
-							  whereColumn: @"c_name" isEqualTo: _name
-							  andColumn: nil isEqualTo: nil]]);
-      CHECKERROR();
-    }
-    
-    error = (hasUpdateDelegate
-	     ? [storeChannel updateRowX: contentRow
-			     describedByQualifier: [self _qualifierUsingWhereColumn: @"c_name"  isEqualTo: _name
-							 andColumn: (_baseVersion != 0 ? (id)@"c_version" : (id)nil)
-							 isEqualTo: (_baseVersion != 0 ? [NSNumber numberWithUnsignedInt:_baseVersion] : (NSNumber *)nil)
-							 entity: storeTableEntity]]
-	     : [storeChannel evaluateExpressionX: [self _generateUpdateStatementForRow: contentRow  tableName:[self storeTableName]
-							whereColumn: @"c_name"  isEqualTo: _name
-							andColumn: (_baseVersion != 0 ? (id)@"c_version" : (id)nil)
-							isEqualTo: (_baseVersion != 0 ? [NSNumber numberWithUnsignedInt: _baseVersion] : (NSNumber *)nil)]]);
-    CHECKERROR();
-  }
-  
-  [[storeChannel adaptorContext] commitTransaction];
-  [[quickChannel adaptorContext] commitTransaction];
-  
-  [self releaseChannel: storeChannel];
-  if (!ofFlags.sameTableForQuick) [self releaseChannel: quickChannel];
+    error = [NSException exceptionWithName:@"GCSStoreException"
+			 reason:@"no content filename was provided"
+			 userInfo:nil];
 
   return error;
 }
