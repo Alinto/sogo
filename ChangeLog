@@ -1,3 +1,13 @@
+2009-03-17  Ludovic Marcotte <lmarcotte@inverse.ca>
+
+	* Documentation/SOGo Installation Guide.odt
+	Updated to mention MySQL and to refer as 1.0
+	as the version number
+	* Scripts/sogo-init.d-debian and
+	Scripts/sogo-init.d-redhat
+	We now kill gdnc (only processes belonging to
+	the sogo user) when stopping sogod.
+
 2009-03-16  Ludovic Marcotte <lmarcotte@inverse.ca>
 
         * SoObjects/SOGo/LDAPSource.m: We now support

@@ -71,6 +71,7 @@ case "$1" in
 	;;
   stop)
 	echo "Stopping $DESC: "
+	/usr/bin/killall -u sogo gdnc
 	for ((a=1; a <= PREFORK ; a++))
 	do
 	  pid=$(cat $PIDFILE$a)
