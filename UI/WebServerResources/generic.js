@@ -698,7 +698,7 @@ function onMenuClickHandler(event) {
 function hideMenu(menuNode) {
 	var onHide;
 
-	if (menuNode.submenu) {
+	if (menuNode && menuNode.submenu) {
 		hideMenu(menuNode.submenu);
 		menuNode.submenu = null;
 	}
