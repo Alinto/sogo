@@ -3,7 +3,7 @@
 function initLogin() {
 	var date = new Date();
 	date.setTime(date.getTime() - 86400000);
-	document.cookie = ("0xHIGHFLYxSOGo-0.9=discard; path=/"
+	document.cookie = ("0xHIGHFLYxSOGo=discard; path=/"
 										 + "; expires=" + date.toGMTString());
 	var submit = $("submit");
 	submit.observe("click", onLoginClick);
@@ -56,7 +56,7 @@ function onLoginCallback(http) {
 			for (var i = 0; i < ca.length; i++) {
 				var c = ca[i];
 				while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-				if (c.indexOf("0xHIGHFLYxSOGo-0.9=") == 0) {
+				if (c.indexOf("0xHIGHFLYxSOGo=") == 0) {
 					cookieExists = 1;
 					break;
 				}

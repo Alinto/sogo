@@ -55,6 +55,25 @@ BootstrapNSUserDefaults ()
     }
 }
 
+static void
+convertOldSOGoDomain (NSUserDefaults *ud)
+{
+  NSDictionary *domain;
+
+  domain = [ud persistentDomainForName: @"sogod"];
+  if (![domain count])
+    {
+      domain = [ud persistentDomainForName: @"sogod-0.9"];
+      if ([domain count])
+	{
+	  NSLog (@"migrating user defaults from sogod-0.9");
+	  [ud setPersistentDomain: domain forName: @"sogod"];
+	  [ud removePersistentDomainForName: @"sogod-0.9"];
+	  [ud synchronize];
+	}
+    }
+}
+
 int
 main (int argc, char **argv, char **env)
 {
@@ -76,6 +95,8 @@ main (int argc, char **argv, char **env)
 		     count: argc environment: env];
 #endif
       ud = [NSUserDefaults standardUserDefaults];
+      convertOldSOGoDomain (ud);
+
       rc = 0;
       tzName = [ud stringForKey: @"SOGoServerTimeZone"];
       if (!tzName)

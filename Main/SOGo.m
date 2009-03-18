@@ -602,7 +602,7 @@ static BOOL debugObjectAllocation = NO;
 
 - (NSString *) name
 {
-  return @"SOGo-0.9";
+  return @"SOGo";
 }
 
 @end /* SOGo */

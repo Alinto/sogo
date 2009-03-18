@@ -29,7 +29,6 @@
 
 @interface SOGoProductLoader : NSObject
 {
-  NSString *productDirectoryName;
   NSArray  *searchPathes;
 }
 

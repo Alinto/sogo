@@ -249,7 +249,7 @@ genConfigMake() {
   fi
 
   cfgwrite "SOGO_SYSLIBDIR=\${GNUSTEP_LIBRARIES}"
-  cfgwrite "SOGO_LIBDIR=\${GNUSTEP_LIBRARY}/SOGo-\${SOGO_MAJOR_VERSION}.\${SOGO_MINOR_VERSION}"
+  cfgwrite "SOGO_LIBDIR=\${GNUSTEP_LIBRARY}/SOGo"
   cfgwrite "SOGO_TEMPLATESDIR=\${SOGO_LIBDIR}/Templates"
   cfgwrite "SOGO_WEBSERVERRESOURCESDIR=\${SOGO_LIBDIR}/WebServerResources"
   cfgwrite "SOGO_TOOLS=\${GNUSTEP_TOOLS}"

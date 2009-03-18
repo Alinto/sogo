@@ -1,5 +1,18 @@
 2009-03-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Main/sogod.m (convertOldSOGoDomain): new function that convert
+	the old "sogod-0.9" NSUserDefaults domain to "sogod".
+
+	* Main/SOGoProductLoader.m ([SOGoProductLoader
+	+sogoMajorVersion]): removed useless method.
+	([SOGoProductLoader +sogoMinorVersion]): removed useless method.
+	([SOGoProductLoader -init]): productDirectoryName is no longer an
+	ivar but a static string.
+	([SOGoProductLoader -productSearchPathes]): removed FHS paths from
+	search paths.
+
+	* Main/SOGo.m ([SOGo -name]): returns "SOGo".
+
 	* SoObjects/SOGo/SOGoParentFolder.m ([SOGoParentFolder
 	-appendPersonalSources]): returns an NSException.
 	([SOGoParentFolder -appendSystemSources]): same as above.

@@ -30,38 +30,17 @@
 
 #import "SOGoProductLoader.h"
 
+static NSString *productDirectoryName = @"SOGo";
+
 @implementation SOGoProductLoader
-
-+ (int) sogoMajorVersion
-{
-  return SOGO_MAJOR_VERSION;
-}
-
-+ (int) sogoMinorVersion
-{
-  return SOGO_MINOR_VERSION;
-}
 
 + (id) productLoader
 {
   return [[self new] autorelease];
 }
 
-- (id) init
-{
-  if ((self = [super init]))
-    {
-      productDirectoryName =
-	[[NSString alloc] initWithFormat: @"SOGo-%i.%i",
-			  [[self class] sogoMajorVersion],
-			  [[self class] sogoMinorVersion]];
-    }
-  return self;
-}
-
 - (void) dealloc
 {
-  [productDirectoryName release];
   [searchPathes release];
   [super dealloc];
 }
@@ -99,15 +78,6 @@
 	  [directory stringByAppendingPathComponent: productDirectoryName]];
 }
 
-- (void) _addFHSPathesToArray: (NSMutableArray *) ma
-{
-  NSString *s;
-
-  s = @"sogod-0.9";
-  [ma addObject: [NSString stringWithFormat: @"/usr/local/lib/%@", s]];
-  [ma addObject: [NSString stringWithFormat: @"/usr/lib/%@", s]];
-}
-
 - (NSArray *) productSearchPathes
 {
   NSMutableArray *ma;
@@ -121,8 +91,6 @@
       else
 	[self _addCocoaSearchPathesToArray: ma];
 #endif
-
-      [self _addFHSPathesToArray: ma];
 
       searchPathes = [ma copy];
 
