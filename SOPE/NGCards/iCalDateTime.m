@@ -171,7 +171,7 @@
               tz = [NSTimeZone defaultTimeZone];
               dateTime = [initialDate addYear: 0 month: 0 day: 0
                                       hour: 0 minute: 0
-                                      second: -[tz secondsFromGMT]];
+                                      second: -[tz secondsFromGMTForDate: initialDate]];
             }
         }
       else
