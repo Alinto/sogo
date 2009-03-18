@@ -117,16 +117,17 @@ static NSString *LDAPContactInfoAttribute = nil;
 
 - (NSDictionary *) _parseCollectionFilters: (id <DOMDocument>) parentNode
 {
-  NSEnumerator *children;
+  id<DOMNodeList> children;
   NGDOMNode *node;
   NSMutableDictionary *filter;
   NSString *componentName;
+  unsigned int count, max;
 
   filter = [NSMutableDictionary dictionaryWithCapacity: 2];
-  children = [[parentNode getElementsByTagName: @"prop-match"]
-	       objectEnumerator];
-  while ((node = [children nextObject]))
+  children = [parentNode getElementsByTagName: @"prop-match"];
+  for (count = 0; count < max; count++)
     {
+      node = [children objectAtIndex: count];
       componentName = [[node attribute: @"name"] lowercaseString];
       [filter setObject: [node textValue] forKey: componentName];
     }
@@ -441,33 +442,13 @@ static NSString *LDAPContactInfoAttribute = nil;
   return [$(@"SOGoFreeBusyObject") objectWithName: _key inContainer: self];
 }
 
-- (WOResponse *) _moduleAccessDeniedPage
-{
-  WOResponse *response;
-  UIxComponent *page;
-  NSString *content;
-
-  response = [context response];
-  [response setStatus: 403];
-  [response setHeader: @"text/html; charset=utf8"
-	    forKey: @"content-type"];
-  page = [[WOApplication application] pageWithName: @"UIxModuleAccessDenied"
-				      inContext: context];
-//   [page appendToResponse: response
-// 	inContext: context];
-  content = [[page generateResponse] contentAsString];
-  [response appendContentString: content];
-
-  return response;
-}
-
 - (id) lookupName: (NSString *) _key
         inContext: (WOContext *) _ctx
           acquire: (BOOL) _flag
 {
   id obj;
   SOGoUser *currentUser;
-  
+
   /* first check attributes directly bound to the application */
   obj = [super lookupName: _key inContext: _ctx acquire: NO];
   if (!obj)
@@ -477,8 +458,6 @@ static NSString *LDAPContactInfoAttribute = nil;
 	{
 	  if ([currentUser canAccessModule: _key])
 	    obj = [self privateCalendars: @"Calendar" inContext: _ctx];
-	  else
-	    obj = [self _moduleAccessDeniedPage];
 	}
       else if ([_key isEqualToString: @"Contacts"])
         obj = [self privateContacts: _key inContext: _ctx];
@@ -486,15 +465,14 @@ static NSString *LDAPContactInfoAttribute = nil;
 	{
 	  if ([currentUser canAccessModule: _key])
 	    obj = [self mailAccountsFolder: _key inContext: _ctx];
-	  else
-	    obj = [self _moduleAccessDeniedPage];
 	}
       else if ([_key isEqualToString: @"Preferences"])
         obj = [$(@"SOGoPreferencesFolder") objectWithName: _key
 		inContainer: self];
       else if ([_key isEqualToString: @"freebusy.ifb"])
         obj = [self freeBusyObject:_key inContext: _ctx];
-      else
+
+      if (!obj)
         obj = [NSException exceptionWithHTTPStatus: 404 /* Not Found */];
     }
 

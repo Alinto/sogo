@@ -1,3 +1,11 @@
+2009-03-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUserFolder.m ([SOGoUserFolder
+	-lookupName:_keyinContext:_ctxacquire:_flag]): no longer invoke
+	the _accessDeniedPage when accessing the module is forbidden to
+	the current user. Instead, returns an HTTP exception with code
+	404.
+
 2009-03-17  Ludovic Marcotte <lmarcotte@inverse.ca>
 
 	* Documentation/SOGo Installation Guide.odt
