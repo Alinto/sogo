@@ -441,6 +441,8 @@ validate_endbeforestart    = "The end date that you entered occurs before the st
 "eventDeleteConfirmation" = "Erasing this event will be permanent.\nWould you like to continue?";
 "taskDeleteConfirmation" = "Erasing this task will be permanent.\nWould you like to continue?";
 
+"You cannot remove nor unsubscribe from your personal calendar."
+= "You cannot remove nor unsubscribe from your personal calendar.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Are you sure you want to delete the calendar \"%{0}\"?";
 

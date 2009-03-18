@@ -445,6 +445,8 @@ validate_endbeforestart    = "Su fecha/hora de comienzo es posterio a la de fina
 "eventDeleteConfirmation" = "No se puede deshacer el borrado de este evento. ¿Desea continuar?";
 "taskDeleteConfirmation" = "No se puede deshacer el borrado de esta tarea. ¿Desea continuar?";
 
+"You cannot remove nor unsubscribe from your personal calendar."
+= "You cannot remove nor unsubscribe from your personal calendar.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "¿Está seguro/a que desea borrar el calendario \"%{0}\"?";
 

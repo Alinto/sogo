@@ -439,6 +439,8 @@ validate_endbeforestart    = "La date de fin est avant la date de début.";
 "eventDeleteConfirmation" = "L'effacement de cet événement sera permanent.\nVoulez-vous continuer?";
 "taskDeleteConfirmation" = "L'effacement de cette tâche sera permanent.\nVoulez-vous continuer?";
 
+"You cannot remove nor unsubscribe from your personal calendar."
+= "Vous ne pouvez pas supprimer ni vous désabonner de votre agenda personnel.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Voulez-vous vraiment supprimer l'agenda «%{0}»?";
 

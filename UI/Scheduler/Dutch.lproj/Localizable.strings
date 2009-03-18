@@ -424,6 +424,8 @@ validate_endbeforestart    = "Het begin vindt plaats vóór het einde.";
 "eventDeleteConfirmation" = "Weet u zeker dat u deze afspraak wilt verwijderen?";
 "taskDeleteConfirmation" = "Weet u zeker dat u deze taak wilt verwijderen?";
 
+"You cannot remove nor unsubscribe from your personal calendar."
+= "U kunt niet uw persoonlijke agenda verwijderen of ontabonneren.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Weet u zeker dat u de agenda \"%{0}\" wilt verwijderen?";
 

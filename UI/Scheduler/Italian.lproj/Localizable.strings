@@ -441,6 +441,8 @@ validate_endbeforestart    = "La data finale specificata è precedente alla data
 "eventDeleteConfirmation" = "Stai per cancellare in maniera permanente l'evento.\nVuoi procedere?";
 "taskDeleteConfirmation" = "Stai per cancellare in maniera permanente il task.\nVuoi procedere?";
 
+"You cannot remove nor unsubscribe from your personal calendar."
+= "You cannot remove nor unsubscribe from your personal calendar.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Sei sicuro di voler cancellare il calendario \"%{0}\"?";
 

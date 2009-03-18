@@ -1880,8 +1880,15 @@ function onCalendarRemove(event) {
       var owner = nodes[i].getAttribute("owner");
       var folderId = nodes[i].getAttribute("id");
       if (owner == UserLogin) {
-        var folderIdElements = folderId.split(":");
-				deletePersonalCalendar(folderIdElements[0]);
+				if (folderId == "/personal") {
+					var label = labels["You cannot remove nor unsubscribe from your"
+														 + " personal calendar."];
+					window.alert(label);
+				}
+				else {
+					var folderIdElements = folderId.split(":");
+					deletePersonalCalendar(folderIdElements[0]);
+				}
       }
       else
 				unsubscribeFromFolder(folderId, owner,
