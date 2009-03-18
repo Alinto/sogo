@@ -28,6 +28,7 @@
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoSecurityManager.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGExtensions/NSObject+Logs.h>
 #import <GDLContentStore/GCSChannelManager.h>
 #import <GDLContentStore/GCSFolderManager.h>
 #import <GDLContentStore/NSURL+GCS.h>
@@ -161,52 +162,59 @@ static SoSecurityManager *sm = nil;
     }
 }
 
-- (void) _fetchPersonalFolders: (NSString *) sql
-		   withChannel: (EOAdaptorChannel *) fc
+- (NSException *) _fetchPersonalFolders: (NSString *) sql
+			    withChannel: (EOAdaptorChannel *) fc
 {
   NSArray *attrs;
   NSDictionary *row;
   BOOL hasPersonal;
   SOGoGCSFolder *folder;
   NSString *key;
+  NSException *error;
 
   if (!subFolderClass)
     subFolderClass = [[self class] subFolderClass];
 
   hasPersonal = NO;
-  [fc evaluateExpressionX: sql];
-  attrs = [fc describeResults: NO];
-  row = [fc fetchAttributes: attrs withZone: NULL];
-  while (row)
+  error = [fc evaluateExpressionX: sql];
+  if (!error)
     {
-      key = [row objectForKey: @"c_path4"];
-      if ([key isKindOfClass: [NSString class]])
-	{
-	  folder = [subFolderClass objectWithName: key inContainer: self];
-	  hasPersonal = (hasPersonal || [key isEqualToString: @"personal"]);
-	  [folder setOCSPath: [NSString stringWithFormat: @"%@/%@",
-					OCSPath, key]];
-	  [subFolders setObject: folder forKey: key];
-	}
+      attrs = [fc describeResults: NO];
       row = [fc fetchAttributes: attrs withZone: NULL];
+      while (row)
+	{
+	  key = [row objectForKey: @"c_path4"];
+	  if ([key isKindOfClass: [NSString class]])
+	    {
+	      folder = [subFolderClass objectWithName: key inContainer: self];
+	      hasPersonal = (hasPersonal || [key isEqualToString: @"personal"]);
+	      [folder setOCSPath: [NSString stringWithFormat: @"%@/%@",
+					    OCSPath, key]];
+	      [subFolders setObject: folder forKey: key];
+	    }
+	  row = [fc fetchAttributes: attrs withZone: NULL];
+	}
+
+      if (!hasPersonal)
+	[self _createPersonalFolder];
     }
 
-  if (!hasPersonal)
-    [self _createPersonalFolder];
+  return error;
 }
 
-- (void) appendPersonalSources
+- (NSException *) appendPersonalSources
 {
   GCSChannelManager *cm;
   EOAdaptorChannel *fc;
   NSURL *folderLocation;
   NSString *sql, *gcsFolderType;
+  NSException *error;
 
   cm = [GCSChannelManager defaultChannelManager];
   folderLocation
     = [[GCSFolderManager defaultFolderManager] folderInfoLocation];
   fc = [cm acquireOpenChannelForURL: folderLocation];
-  if (fc)
+  if ([fc isOpen])
     {
       gcsFolderType = [[self class] gcsFolderType];
       
@@ -217,15 +225,22 @@ static SoSecurityManager *sm = nil;
 		    [folderLocation gcsTableName],
 		    [self ownerInContext: context],
 		    gcsFolderType];
-      [self _fetchPersonalFolders: sql withChannel: fc];
+      error = [self _fetchPersonalFolders: sql withChannel: fc];
       [cm releaseChannel: fc];
 //       sql = [sql stringByAppendingFormat:@" WHERE %@ = '%@'", 
 //                  uidColumnName, [self uid]];
     }
+  else
+    error = [NSException exceptionWithName: @"SOGoDBException"
+			 reason: @"database connection could not be open"
+			 userInfo: nil];
+
+  return error;
 }
 
-- (void) appendSystemSources
+- (NSException *) appendSystemSources
 {
+  return nil;
 }
 
 - (void) _removeSubscribedSource: (NSString *) key
@@ -250,12 +265,15 @@ static SoSecurityManager *sm = nil;
     [self _removeSubscribedSource: sourceKey];
 }
 
-- (void) appendSubscribedSources
+- (NSException *) appendSubscribedSources
 {
   NSArray *subscribedReferences;
   NSUserDefaults *settings;
   NSEnumerator *allKeys;
   NSString *currentKey;
+  NSException *error;
+
+  error = nil; /* we ignore non-DB errors at this time... */
 
   settings = [[context activeUser] userSettings];
   subscribedReferences = [[settings objectForKey: nameInContainer]
@@ -266,6 +284,8 @@ static SoSecurityManager *sm = nil;
       while ((currentKey = [allKeys nextObject]))
 	[self _appendSubscribedSource: currentKey];
     }
+
+  return error;
 }
 
 - (NSException *) newFolderWithName: (NSString *) name
@@ -316,19 +336,35 @@ static SoSecurityManager *sm = nil;
   return error;
 }
 
-- (void) initSubFolders
+- (NSException *) initSubFolders
 {
   NSString *login;
+  NSException *error;
 
   if (!subFolders)
     {
       subFolders = [NSMutableDictionary new];
-      [self appendPersonalSources];
-      [self appendSystemSources];
-      login = [[context activeUser] login];
-      if ([login isEqualToString: owner])
-	[self appendSubscribedSources];
+      error = [self appendPersonalSources];
+      if (!error)
+	{
+	  error = [self appendSystemSources];
+	  if (!error)
+	    {
+	      login = [[context activeUser] login];
+	      if ([login isEqualToString: owner])
+		error = [self appendSubscribedSources];
+	    }
+	}
+      if (error)
+	{
+	  [subFolders release];
+	  subFolders = nil;
+	}
     }
+  else
+    error = nil;
+
+  return error;
 }
 
 // - (void) _appendSubscribedSourcesIfNeeded
@@ -341,20 +377,34 @@ static SoSecurityManager *sm = nil;
 //   hasSubscribedSources = YES;
 // }
 
+- (NSArray *) fetchContentObjectNames
+{
+  return nil;
+}
+
 - (id) lookupName: (NSString *) name
         inContext: (WOContext *) lookupContext
           acquire: (BOOL) acquire
 {
   id obj;
+  NSException *error;
 
   /* first check attributes directly bound to the application */
   obj = [super lookupName: name inContext: lookupContext acquire: NO];
   if (!obj)
     {
       if (!subFolders)
-        [self initSubFolders];
+        error = [self initSubFolders];
+      else
+	error = nil;
 
-      obj = [subFolders objectForKey: name];
+      if (error)
+	{
+	  [self errorWithFormat: @"a database error occured: %@", [error reason]];
+	  obj = [NSException exceptionWithHTTPStatus: 503];
+	}
+      else
+	obj = [subFolders objectForKey: name];
 //       if (!obj && !hasSubscribedSources)
 // 	{
 // 	  [self _appendSubscribedSourcesIfNeeded];
@@ -367,8 +417,14 @@ static SoSecurityManager *sm = nil;
 
 - (NSArray *) subFolders
 {
+  NSException *error;
+
   if (!subFolders)
-    [self initSubFolders];
+    {
+      error = [self initSubFolders];
+      if (error)
+	[error raise];
+    }
 //   if (!!hasSubscribedSources)
 //     [self _appendSubscribedSourcesIfNeeded];
 

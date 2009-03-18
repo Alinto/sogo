@@ -1,5 +1,17 @@
 2009-03-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoParentFolder.m ([SOGoParentFolder
+	-appendPersonalSources]): returns an NSException.
+	([SOGoParentFolder -appendSystemSources]): same as above.
+	([SOGoParentFolder -appendSubscribedSources]): same as above.
+	([SOGoParentFolder
+	-lookupName:nameinContext:lookupContextacquire:acquire]): if
+	initSubfolders returns an exception, this probably means a db
+	error occured, so we log the exception reason and return a 503.
+	([SOGoParentFolder -subFolders]): this method is invoked when a
+	PROPFIND is made on the current collection. If a DB error occurs,
+	we raise it to prevent SOPE from returning a 207 status code.
+
 	* SoObjects/SOGo/SOGoUserFolder.m ([SOGoUserFolder
 	-lookupName:_keyinContext:_ctxacquire:_flag]): no longer invoke
 	the _accessDeniedPage when accessing the module is forbidden to
