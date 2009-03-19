@@ -161,8 +161,8 @@ rm -fr ${RPM_BUILD_ROOT}
 %{prefix}/Library/Libraries/libOGoContentStore.so*
 %{prefix}/Library/SOGo/*.SOGo
 %{prefix}/Library/SOGo/SOGo.framework/Resources
-%{prefix}/Library/SOGo/SOGo.framework/Versions/0/libSOGo.so.*
-%{prefix}/Library/SOGo/SOGo.framework/Versions/0/Resources
+%{prefix}/Library/SOGo/SOGo.framework/Versions/1/libSOGo.so.*
+%{prefix}/Library/SOGo/SOGo.framework/Versions/1/Resources
 %{prefix}/Library/SOGo/SOGo.framework/Versions/Current
 %{prefix}/Library/SOGo/Templates
 %{prefix}/Library/SOGo/WebServerResources
@@ -183,9 +183,9 @@ rm -fr ${RPM_BUILD_ROOT}
 %{prefix}/Library/SOGo/SOGo.framework/Headers
 %{prefix}/Library/SOGo/SOGo.framework/libSOGo.so
 %{prefix}/Library/SOGo/SOGo.framework/SOGo
-%{prefix}/Library/SOGo/SOGo.framework/Versions/0/Headers
-%{prefix}/Library/SOGo/SOGo.framework/Versions/0/libSOGo.so
-%{prefix}/Library/SOGo/SOGo.framework/Versions/0/SOGo
+%{prefix}/Library/SOGo/SOGo.framework/Versions/1/Headers
+%{prefix}/Library/SOGo/SOGo.framework/Versions/1/libSOGo.so
+%{prefix}/Library/SOGo/SOGo.framework/Versions/1/SOGo
 
 %files -n sope%{sope_major_version}%{sope_minor_version}-gdl1-contentstore
 %defattr(-,root,root,-)

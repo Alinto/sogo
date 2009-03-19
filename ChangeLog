@@ -1,3 +1,10 @@
+2009-03-19  Ludovic Marcotte <lmarcotte@inverse.ca>
+
+        * Updated the sope.spec file wrt to changes
+	related to 0.9 -> 1.0
+	* Updated the SOGo documentation to also reflect
+	the version change.
+
 2009-03-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUserFolder.m: initialize max to the correct value.
