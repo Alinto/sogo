@@ -7,10 +7,12 @@ function initLogin() {
 										 + "; expires=" + date.toGMTString());
 
 	var about = $("about");
-	about.observe("click", function(event) { $("aboutBox").show(); });
+	if (about) {
+		about.observe("click", function(event) { $("aboutBox").show(); });
 
-	var aboutClose = $("aboutClose");
-	aboutClose.observe("click", function(event) { $("aboutBox").hide(); });
+		var aboutClose = $("aboutClose");
+		aboutClose.observe("click", function(event) { $("aboutBox").hide(); });
+	}
 
 	var submit = $("submit");
 	submit.observe("click", onLoginClick);
