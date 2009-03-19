@@ -166,6 +166,7 @@ static NSString *LDAPContactInfoAttribute = nil;
 	  [currentDictionary setObject: [currentFolder displayName]
 			     forKey: @"displayName"];
 	  [currentDictionary setObject: folderName forKey: @"name"];
+	  [currentDictionary setObject: folderOwner forKey: @"owner"];
 	  [currentDictionary setObject: [currentFolder folderType]
 			     forKey: @"type"];
 	  [folders addObject: currentDictionary];
@@ -244,15 +245,17 @@ static NSString *LDAPContactInfoAttribute = nil;
   NSDictionary *currentFolder;
   NSString *baseHREF, *data;
   NSEnumerator *foldersEnum;
+  SOGoUser *ownerUser;
 
-  baseHREF = [[self davURL] absoluteString];
+  baseHREF = [[container davURL] absoluteString];
   if ([baseHREF hasSuffix: @"/"])
     baseHREF = [baseHREF substringToIndex: [baseHREF length] - 1];
   foldersEnum = [folders objectEnumerator];
   while ((currentFolder = [foldersEnum nextObject]))
     {
       [r appendContentString: @"<D:response><D:href>"];
-      data = [NSString stringWithFormat: @"%@%@/", baseHREF,
+      data = [NSString stringWithFormat: @"%@/%@%@/", baseHREF,
+		       [currentFolder objectForKey: @"owner"],
 		       [currentFolder objectForKey: @"name"]];
       [r appendContentString: data];
       [r appendContentString: @"</D:href><D:propstat>"];
@@ -260,7 +263,89 @@ static NSString *LDAPContactInfoAttribute = nil;
       [r appendContentString: @"<D:prop><D:displayname>"];
       data = [currentFolder objectForKey: @"displayName"];
       [r appendContentString: [data stringByEscapingXMLString]];
-      [r appendContentString: @"</D:displayname></D:prop></D:propstat></D:response>"];
+      [r appendContentString: @"</D:displayname></D:prop></D:propstat>"];
+
+      /* Remove this once extensions 0.8x are no longer used */
+      data = [NSString stringWithFormat: @"<D:owner>%@/%@</D:owner>", baseHREF,
+		       [currentFolder objectForKey: @"owner"]];
+      [r appendContentString: data];
+
+      [r appendContentString: @"<ownerdisplayname>"];
+
+      ownerUser = [SOGoUser userWithLogin: [currentFolder objectForKey: @"owner"]
+			    roles: nil];
+      data = [ownerUser cn];
+      [r appendContentString: [data stringByEscapingXMLString]];
+      [r appendContentString: @"</ownerdisplayname>"];
+
+      [r appendContentString: @"<D:displayname>"];
+      data = [currentFolder objectForKey: @"displayName"];
+      [r appendContentString: [data stringByEscapingXMLString]];
+      [r appendContentString: @"</D:displayname>"];
+      /* end of temporary compatibility hack */
+
+      [r appendContentString: @"</D:response>"];
+    }
+}
+
+/* This method takes a user principal and converts it to a potential username.
+   The old form using "dav/users/XXX" is also supported. */
+- (NSString *) _userFromDAVuser: (NSString *) davOwnerMatch
+{
+  NSRange match;
+  NSString *user;
+
+  match = [davOwnerMatch rangeOfString: @"/SOGo/dav/users/"];
+  if (match.location == NSNotFound)
+    match = [davOwnerMatch rangeOfString: @"/SOGo/dav/"];
+  if (match.location != NSNotFound)
+    {
+      user = [davOwnerMatch substringFromIndex: NSMaxRange (match)];
+      match = [user rangeOfString: @"/"];
+      if (match.location != NSNotFound)
+	user = [user substringToIndex: match.location];
+    }
+  else
+    user = nil;
+
+  return user;
+}
+
+- (NSArray *) _searchDavOwners: (NSString *) davOwnerMatch
+{
+  NSArray *users, *owners;
+  NSString *ownerMatch;
+  LDAPUserManager *um;
+
+  owners = [NSMutableArray array];
+  if (davOwnerMatch)
+    {
+      ownerMatch = [self _userFromDAVuser: davOwnerMatch];
+      um = [LDAPUserManager sharedUserManager];
+      users = [[um fetchUsersMatching: ownerMatch]
+		 sortedArrayUsingSelector: @selector (caseInsensitiveDisplayNameCompare:)];
+      owners = [users objectsForKey: @"c_uid" notFoundMarker: nil];
+    }
+  else
+    owners = [NSArray arrayWithObject: [self ownerInContext: nil]];
+
+  return owners;
+}
+
+- (void) _appendFoldersOfType: (NSString *) folderType
+	     ofOwnersMatching: (NSString *) ownerMatch
+		   toResponse: (WOResponse *) r
+{
+  NSString *currentOwner;
+  NSEnumerator *owners;
+  NSArray *folders;
+
+  owners = [[self _searchDavOwners: ownerMatch] objectEnumerator];
+  while ((currentOwner = [owners nextObject]))
+    {
+      folders = [self foldersOfType: folderType
+		      forUID: currentOwner];
+      [self _appendFolders: folders toResponse: r];
     }
 }
 
@@ -269,7 +354,6 @@ static NSString *LDAPContactInfoAttribute = nil;
   WOResponse *r;
   NSDictionary *filter;
   id <DOMDocument> document;
-  NSArray *folders;
 
   r = [context response];
   [r setStatus: 207];
@@ -283,9 +367,9 @@ static NSString *LDAPContactInfoAttribute = nil;
 
   document = [[context request] contentAsDOMDocument];
   filter = [self _parseCollectionFilters: document];
-  folders = [self foldersOfType: [filter objectForKey: @"resource-type"]
-		  forUID: [self ownerInContext: nil]];
-  [self _appendFolders: folders toResponse: r];
+  [self _appendFoldersOfType: [filter objectForKey: @"resource-type"]
+	ofOwnersMatching: [filter objectForKey: @"owner"]
+	toResponse: r];
 
   [r appendContentString:@"</D:multistatus>"];
 
@@ -308,9 +392,8 @@ static NSString *LDAPContactInfoAttribute = nil;
 
   // We sort our array - this is pretty useful for the
   // SOGo Integrator extension, among other things.
-  users = [[[[um fetchUsersMatching: user] objectEnumerator] allObjects]
-	    sortedArrayUsingSelector: @selector(caseInsensitiveDisplayNameCompare:)];
-
+  users = [[um fetchUsersMatching: user]
+	    sortedArrayUsingSelector: @selector (caseInsensitiveDisplayNameCompare:)];
   for (i = 0; i < [users count]; i++)
     {
       currentUser = [users objectAtIndex: i];

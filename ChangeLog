@@ -1,5 +1,13 @@
 2009-03-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUserFolder.m ([SOGoUserFolder
+	-foldersOfType:folderTypeforUID:uid]): now also returns the owner
+	of the folders in the folder dictionary.
+	([SOGoUserFolder -davCollectionQuery:queryContext]): works again
+	for multiple users if the DAV:owner property is specified in the
+	query. The response is formatted in a way that is compatible with
+	both the 0.8x and 0.9x SOGo extensions.
+
 	* SoObjects/SOGo/SOGoUser.m ([SOGoUser
 	-homeFolderInContext:context]): no longer put the home folder in
 	cache, since it uses an context that is freed and invalidated
