@@ -197,5 +197,17 @@ static NSArray *supportedLanguages = nil;
   return text;
 }
 
+- (NSString *) version
+{
+  NSString *aString;
+
+  aString = [NSString stringWithFormat: @"%d.%d.%d",
+		      SOGO_MAJOR_VERSION,
+		      SOGO_MINOR_VERSION,
+		      SOGO_SUBMINOR_VERSION];
+
+  return aString;
+}
+
 
 @end /* SOGoRootPage */

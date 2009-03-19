@@ -22,3 +22,12 @@
 "German" = "Deutsch";
 "Italian" = "Italienisch";
 "Spanish" = "Spanisch";
+
+"About" = "About";
+"AboutBox" = "SOGo  is a groupware server built around OpenGroupware.org (OGo) and the SOPE application server.  It focuses on scalability.<br/><br/>
+SOGo provides a rich AJAX-based Web interface and supports multiple native clients through the use of standard protocols such as CalDAV, CardDAV and GroupDAV.<br/><br/>
+Copyright © 2006-2009 Inverse inc.<br/>
+Copyright © 2002-2005 SKYRIX Software AG<br/><br/>
+This software are distributed under the <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2.<br/>
+Parts of this software are distributed under the GNU LGPL version 2.<br/><br/>
+This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.";

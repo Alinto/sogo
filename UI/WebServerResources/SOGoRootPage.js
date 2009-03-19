@@ -5,6 +5,13 @@ function initLogin() {
 	date.setTime(date.getTime() - 86400000);
 	document.cookie = ("0xHIGHFLYxSOGo=discard; path=/"
 										 + "; expires=" + date.toGMTString());
+
+	var about = $("about");
+	about.observe("click", function(event) { $("aboutBox").show(); });
+
+	var aboutClose = $("aboutClose");
+	aboutClose.observe("click", function(event) { $("aboutBox").hide(); });
+
 	var submit = $("submit");
 	submit.observe("click", onLoginClick);
 
@@ -22,8 +29,9 @@ function onLoginClick(event) {
 	var language = $("language").value;
 	
 	if (userName.length > 0) {
-		startAnimation($("loginButton"), $("submit"));
-		
+		this.hide();
+		startAnimation($("animation"));
+
 		if (typeof(loginSuffix) != "undefined"
 				&& loginSuffix.length > 0
 				&& !userName.endsWith(loginSuffix))
@@ -48,6 +56,7 @@ function onLoginCallback(http) {
 	if (http.readyState == 4) {
 		var noCookiesErrorMessage = $("noCookiesErrorMessage");
 		var loginErrorMessage = $("loginErrorMessage");
+		var submitBtn = $("submit");
 
 		if (isHttpStatus204(http.status)) {
 			// Make sure browser's cookies are enabled
@@ -64,6 +73,7 @@ function onLoginCallback(http) {
 			if (cookieExists === 0) {
 				loginErrorMessage.hide();
 				noCookiesErrorMessage.show();
+				submitBtn.show();
 				return false;
 			}
       
@@ -99,6 +109,7 @@ function onLoginCallback(http) {
 		else {
 			loginErrorMessage.show();
 			noCookiesErrorMessage.hide();
+			submitBtn.show();
 		}
 	}
 }

@@ -1,51 +1,114 @@
 BODY
-{ background-color: #999;
+{ background-color: #dad3cc;
   text-align: center; }
 
 IMG#preparedAnimation
-{ 
-  width: 0px;
-  height: 0px;
-}
+{ width: 0px;
+  height: 0px; }
 
-DIV#loginScreen
-{
-  background-color: #d4d0c8;
-  margin: 0px auto;
-  margin-top: 5em;
+DIV#aboutBox
+{ position: absolute;
+  z-index: 1000;
+  left: 0px;
+  width: 100%;
+  text-align: center; }
+  
+DIV#aboutBox IMG
+{ margin-top: 20px; }
+
+DIV#aboutBox DIV
+{ background-color: #fff;
+  border: 1px solid #222;
+  margin: auto;
+  padding-bottom: 20px;
+  width: 550px; }
+
+A,
+A:link,
+A:visited
+{ color: #54b948; }
+
+DIV#aboutBox DIV A.button
+{ color: #000; }
+
+DIV#aboutBox P.logo
+{ background-color: #222;
+  margin-top: 0;
+  margin-bottom: 10px; }
+
+DIV#aboutBox P.scroll
+{ border: 1px solid #222;
+  height: 120px;
+  margin: auto;
   padding: 5px;
-  border: 2px solid transparent;
+  width: 350px;
   text-align: left;
-  width: 200px;
-  -moz-border-top-colors: #efebe7 #fff;
-  -moz-border-left-colors: #efebe7 #fff;
-  -moz-border-right-colors: #000 #9c9a94 transparent;
-  -moz-border-bottom-colors: #000 #9c9a94 transparent;
-}
+  overflow-y: auto; }
 
-IMG#splash
-{ border: 0px;
-  margin: 0px;
-  padding: 0px;
-  height: 200px;
-  width: 200px; }
+DIV#aboutBox P.links
+{ margin: 0 0 20px 0; }
 
-DIV#loginScreen INPUT.textField
-{ width: 187px; }
-
-DIV#loginButton
+DIV.linkbanner
 { text-align: right; }
 
-DIV#loginButton INPUT
-{ width: auto;
-  margin-top: 5px; }
+DIV.linkbanner A
+{ padding-right: .5em; }
 
-DIV#loginButton IMG#progressIndicator
-{ float: left;
-  width: 16px;
+DIV#loginScreen
+{ clear: both;
+  margin: 0px auto;
+  padding-top: 5em;
+  border: 2px solid transparent;
+  text-align: center;
+}
+
+DIV#loginScreen TABLE
+{ margin: auto; }
+
+DIV#loginScreen TABLE TD
+{ text-align: right; }
+
+DIV#loginScreen TABLE TD#loginCell
+{ border-left: 1px solid #fff;
+  padding-left: 10px; }
+
+LABEL
+{ display: inline-block;
+  padding: 10px; }
+
+DIV#loginScreen LABEL
+{ display: block;
+  padding: 5px; }
+
+#animation
+{ margin: 0px auto;
+  padding: 0px; }
+
+IMG#splash
+{ border: 0;
+  margin: 0px;
+  padding: 0px 0px 0px 0px; }
+
+DIV#loginScreen INPUT.textField
+{ border: 1px solid #333;
+  width: 187px; }
+
+DIV#loginScreen INPUT.textField,
+DIV#loginScreen SELECT
+{ border: 1px solid #333;
+  -moz-border-top-colors: #333;
+  -moz-border-left-colors: #333;
+  -moz-border-right-colors: #333;
+  -moz-border-bottom-colors: #333;
+}
+
+DIV#loginScreen INPUT#submit
+{ margin-top: 10px; }
+
+IMG#progressIndicator
+{ width: 16px;
   height: 16px;
-  border: 0px none;
-  margin-top: 5px;
+  margin-top: 20px;
   margin-left: 5px; }
 
 #noCookiesErrorMessage,
@@ -58,8 +121,11 @@ P.browser
   border-top: 1px solid #888;
   border-left: 1px solid #888;
   border-right: 1px solid #eee;
-  border-bottom: 1px solid #eee; 
-  line-height: 32px; }
+  border-bottom: 1px solid #eee;
+  line-height: 32px;
+  padding-right: 5px; }
 
-P.browser img
-{ padding: 2px; }
+P.browser IMG
+{ padding: 0 2px;
+  margin: 0;
+  vertical-align: middle; }

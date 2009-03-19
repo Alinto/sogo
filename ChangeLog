@@ -1,3 +1,11 @@
+2009-03-18  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/MainUI/SOGoRootPage.m ([SOGoRootPage -version]): new method
+	that returns the application version.
+	
+	* iCalDateTime.m ([iCalDateTime -dateTime]): when not defined, the 
+	timezone is now guessed from the date of the current object.
+	
 2009-03-18  Ludovic Marcotte <lmarcotte@inverse.ca>
 
         * Updated the documentation for the SOGo
