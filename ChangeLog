@@ -1,3 +1,9 @@
+2009-03-19  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Scheduler/UIxCalListingActions.m ([UIxCalListingActions
+	-_fetchFields:forComponentOfType:]): the _fixDates method doesn't
+	have to be called for the month view.
+
 2009-03-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUserFolder.m ([SOGoUserFolder
