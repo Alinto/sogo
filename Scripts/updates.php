@@ -1,7 +1,7 @@
 <?php
 /* updates.php - this file is part of SOGo
  *
- *  Copyright (C) 2006-2008 Inverse inc.
+ *  Copyright (C) 2006-2009 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -26,16 +26,16 @@
 $plugins
 = array( "sogo-connector@inverse.ca"
          => array( "application" => "thunderbird",
-                   "version" => "0.67",
-                   "filename" => "sogo-connector-0.80.xpi" ),
+                   "version" => "0.92",
+                   "filename" => "sogo-connector-0.92.xpi" ),
 	 "sogo-integrator@inverse.ca"
 	 => array( "application" => "thunderbird",
-		   "version" => "0.67",
-		   "filename" => "sogo-integrator-0.80-sogo-demo.xpi" ),
+		   "version" => "0.92",
+		   "filename" => "sogo-integrator-0.92-sogo-demo.xpi" ),
 	 "{e2fda1a4-762b-4020-b5ad-a41df1933103}" 
 	 => array( "application" => "thunderbird",
-		   "version" => "0.8",
-		   "filename" => "lightning-0.8.xpi" ));
+		   "version" => "0.9.2",
+		   "filename" => "lightning-0.9.2.xpi" ));
 
 $applications
 = array( "thunderbird" => "<em:id>{3550f703-e582-4d05-9a08-453d09bdfdc6}</em:id>

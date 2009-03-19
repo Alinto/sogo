@@ -443,7 +443,8 @@
 	      && [cc majorVersion] >= 5)
 	  || ([[cc userAgentType] isEqualToString: @"Safari"]
 	      && [cc majorVersion] >= 4)
-	  //	  ([[cc userAgentType] isEqualToString: @"Konqueror"])
+	  || ([[cc userAgentType] isEqualToString: @"Konqueror"]
+	      && [cc majorVersion] >= 4)
 	   );
 }
 

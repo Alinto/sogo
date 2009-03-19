@@ -80,7 +80,7 @@ static BOOL debugObjectAllocation = NO;
 
   NSLog(@"starting SOGo (build %@)", SOGoBuildDate);
   
-  if ([[ud persistentDomainForName: @"sogod-0.9"] count] == 0) 
+  if ([[ud persistentDomainForName: @"sogod"] count] == 0) 
     NSLog(@"WARNING: No configuration found. SOGo will not work properly.");
     
   doCrashOnSessionCreate = [ud boolForKey:@"SOGoCrashOnSessionCreate"];

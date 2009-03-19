@@ -53,7 +53,7 @@ Apache Setup
 ============
 
   AliasMatch /SOGoHH/so/ControlPanel/Products/(.*)/Resources/(.*) \
-             /home/helge/GNUstep/Library/SOGo/$1.SOGo/Resources/$2
+             /home/bob/GNUstep/Library/SOGo/$1.SOGo/Resources/$2
 
   <LocationMatch "^/SOGoHH*">
     AuthName "Agenor LDAP"

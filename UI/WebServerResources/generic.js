@@ -431,7 +431,7 @@ function isSafari() {
 	//var agt = navigator.userAgent.toLowerCase();
 	//var is_safari = ((agt.indexOf('safari')!=-1)&&(agt.indexOf('mac')!=-1))?true:false;
 
-	return (navigator.vendor == "Apple Computer, Inc.");
+	return (navigator.vendor == "Apple Computer, Inc.") || (navigator.userAgent.toLowerCase().indexOf('konqueror') != -1);
 }
 
 function isHttpStatus204(status) {

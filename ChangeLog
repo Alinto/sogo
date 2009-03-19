@@ -1,3 +1,13 @@
+2009-03-18  Ludovic Marcotte <lmarcotte@inverse.ca>
+
+        * Updated the documentation for the SOGo
+	update server.
+	* Enabled support for Konqueror. We use the
+	Safari 'exceptions' in the JavaScript code.
+	* Main/SOGo.m: Corrected a small mistake in previous
+	commit wrt sogod-0.9 > sogod change
+	* Updated the NEWS file for the release
+
 2009-03-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Contacts/SOGoContactLDIFEntry.m ([SOGoContactLDIFEntry

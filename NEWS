@@ -1,8 +1,14 @@
-1.0-2009XXYY
+1.0-20090317
 -----------
 - when double-clicking in the all-day zone (day & week views), the "All Day event" checkbox is now automatically checked
 - replaced the JavaScript FastInit class by the dom:loaded event of Prototype JS
-  
+- also updated Prototype JS to fix issues with IE7
+- improvements to the underlying SOGo cache infrastructure
+- many improvements to DST handling
+- better compatibility with nginx
+- new SOGo login screen
+- added MySQL support
+
 1.0-20090130 (1.0 rc9)
 ------------------
 - added quota indicator in web mail module
