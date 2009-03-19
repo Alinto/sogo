@@ -270,7 +270,6 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
   if ((self = [self init]))
     {
       context = [[WOApplication application] context];
-      NSLog (@"init [%p] context = %p", self, context);
       nameInContainer = [_name copy];
       container = _container;
       if ([self doesRetainContainer])
@@ -1165,8 +1164,6 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
   NSMutableArray *path;
   NSString *baseURL, *urlMethod, *fullHost;
   NSNumber *port;
-
-  NSLog (@"url [%p] context = %p", self, context);
 
   serverURL = [context serverURL];
   baseURL = [[self baseURLInContext: context] stringByUnescapingURL];
