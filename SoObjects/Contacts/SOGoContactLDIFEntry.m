@@ -121,7 +121,7 @@
     {
       vcard = [[NGVCard alloc] initWithUid: [self nameInContainer]];
       [vcard setVClass: @"PUBLIC"];
-      [vcard setProdID: @"-//Inverse inc.//SOGo"];
+      [vcard setProdID: @"-//Inverse inc./SOGo 1.0//EN"];
       [vcard setProfile: @"vCard"];
       info = [ldifEntry objectForKey: @"displayName"];
       if (!(info && [info length] > 0))

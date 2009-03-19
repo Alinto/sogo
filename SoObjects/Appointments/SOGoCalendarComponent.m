@@ -385,7 +385,7 @@ _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
 	    {
 	      ASSIGN (*calendar, [iCalCalendar groupWithTag: @"vcalendar"]);
 	      [*calendar setVersion: @"2.0"];
-	      [*calendar setProdID: @"-//Inverse inc.//SOGo 0.9//EN"];
+	      [*calendar setProdID: @"-//Inverse inc./SOGo 1.0//EN"];
 	      tag = [[self componentTag] uppercaseString];
 	      newComponent = [[*calendar classForTag: tag]
 			       groupWithTag: tag];

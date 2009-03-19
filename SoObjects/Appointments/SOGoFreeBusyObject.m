@@ -124,7 +124,7 @@ static unsigned int freebusyRangeEnd = 0;
   user = [SOGoUser userWithLogin: uid  roles: nil];
 
   calendar = [iCalCalendar groupWithTag: @"vcalendar"];
-  [calendar setProdID: @"//Inverse inc./SOGo 0.9"];
+  [calendar setProdID: @"//Inverse inc./SOGo 1.0//EN"];
   [calendar setVersion: @"2.0"];
   if (method)
     [calendar setMethod: method];

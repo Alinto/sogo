@@ -1,5 +1,16 @@
 2009-03-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactLDIFEntry.m ([SOGoContactLDIFEntry
+	-vCard]): same as below.
+
+	* SoObjects/Appointments/SOGoFreeBusyObject.m ([SOGoFreeBusyObject
+	-iCalStringForFreeBusyInfos:_infoswithMethod:methodfrom:_startDateto:_endDate]):
+	same as below.
+
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	([SOGoCalendarComponent -calendar:create:secure]): specify
+	"-//Inverse inc./SOGo 1.0//EN" as PRODID.
+
 	* Main/sogod.m (convertOldSOGoDomain): new function that convert
 	the old "sogod-0.9" NSUserDefaults domain to "sogod".
 
