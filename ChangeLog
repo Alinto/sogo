@@ -1,3 +1,7 @@
+2009-03-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUserFolder.m: initialize max to the correct value.
+
 2009-03-18  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/MainUI/SOGoRootPage.m ([SOGoRootPage -version]): new method
