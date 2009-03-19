@@ -94,8 +94,11 @@ function editEvent() {
       _editEventId(nodes[i].cname,
                    nodes[i].calendar);
   } else if (selectedCalendarCell) {
-    _editEventId(selectedCalendarCell[0].cname,
-                 selectedCalendarCell[0].calendar);
+		if (selectedCalendarCell[0].recurrenceTime)
+			_editRecurrenceDialog(selectedCalendarCell[0], "confirmEditing");
+		else
+			_editEventId(selectedCalendarCell[0].cname,
+									 selectedCalendarCell[0].calendar);
   } else {
     window.alert(labels["Please select an event or a task."]);
   }
