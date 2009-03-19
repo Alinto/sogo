@@ -296,10 +296,15 @@ static BOOL debugObjectAllocation = NO;
 
   user = [SOGoUser userWithLogin: _key roles: nil];
   if (user)
-    userFolder = [$(@"SOGoUserFolder") objectWithName: _key
-		   inContainer: self];
+    {
+      userFolder = [$(@"SOGoUserFolder")
+		     objectWithName: _key
+		     inContainer: self];
+    }
   else
     userFolder = nil;
+
+  NSLog (@"userFolder: %p (%@)", userFolder, _key);
 
   return userFolder;
 }
@@ -348,6 +353,8 @@ static BOOL debugObjectAllocation = NO;
 	    obj = [self lookupUser: _key inContext: _ctx];
 	}
     }
+
+  NSLog (@"SOGo: lookup: %p (%@)", obj, _key);
 
   return obj;
 }

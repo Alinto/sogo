@@ -263,7 +263,6 @@ _timeValue (NSString *key)
 	{
 	  allEmails = nil;
 	  currentPassword = nil;
-	  homeFolder = nil;
 	  cn = nil;
 	  mailAccounts = nil;
 	}
@@ -281,7 +280,6 @@ _timeValue (NSString *key)
 {
   [allEmails release];
   [currentPassword release];
-  [homeFolder release];
   [cn release];
   [mailAccounts release];
   [super dealloc];
@@ -855,15 +853,9 @@ _timeValue (NSString *key)
 
 - (SOGoUserFolder *) homeFolderInContext: (id) context
 {
-  if (!homeFolder)
-    {
-      homeFolder = [[WOApplication application] lookupName: [self login]
-						inContext: context
-						acquire: NO];
-      [homeFolder retain];
-    }
-
-  return homeFolder;
+  return [[WOApplication application] lookupName: [self login]
+				      inContext: context
+				      acquire: NO];
 }
 
 - (SOGoAppointmentFolders *) calendarsFolderInContext: (WOContext *) context

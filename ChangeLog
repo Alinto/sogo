@@ -1,3 +1,10 @@
+2009-03-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUser.m ([SOGoUser
+	-homeFolderInContext:context]): no longer put the home folder in
+	cache, since it uses an context that is freed and invalidated
+	afterwards, which can cause crashes.
+
 2009-03-19  Ludovic Marcotte <lmarcotte@inverse.ca>
 
         * Updated the sope.spec file wrt to changes
