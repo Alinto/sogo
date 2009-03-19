@@ -28,7 +28,7 @@ function onLoginClick(event) {
 	var userNameField = $("userName");
 	var userName = userNameField.value;
 	var password = $("password").value;
-	var language = $("language").value;
+	var language = $("language");
 	
 	if (userName.length > 0) {
 		this.hide();
@@ -39,11 +39,12 @@ function onLoginClick(event) {
 				&& !userName.endsWith(loginSuffix))
 			userName += loginSuffix;
 		var url = $("connectForm").getAttribute("action");
-		var parameters = ("userName=" + encodeURIComponent(userName) + 
-											"&password=" + encodeURIComponent(password) + 
-											((language == "WONoSelectionString")?"":("&language=" + language)));
+		var parameters = "userName=" + encodeURIComponent(userName) + 
+											"&password=" + encodeURIComponent(password);
+		if (language)
+			parameters += (language.value == "WONoSelectionString")?"":("&language=" + language.value);
 		document.cookie = "";
-		triggerAjaxRequest(url, onLoginCallback, null, parameters,
+		triggerAjaxRequest(url, onLoginCallback, null, (parameters),
 											 { "Content-type": "application/x-www-form-urlencoded",
 													 "Content-length": parameters.length,
 													 "Connection": "close" });
