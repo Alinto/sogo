@@ -53,7 +53,7 @@ Apache Setup
 ============
 
   AliasMatch /SOGoHH/so/ControlPanel/Products/(.*)/Resources/(.*) \
-             /home/helge/GNUstep/Library/SOGo-0.9/$1.SOGo/Resources/$2
+             /home/helge/GNUstep/Library/SOGo/$1.SOGo/Resources/$2
 
   <LocationMatch "^/SOGoHH*">
     AuthName "Agenor LDAP"
@@ -74,15 +74,15 @@ Apache Setup
 FHS Setup
 =========
 
-NOTE: use the appname, sogo-0.9, not the tool name (sogod-0.9)!
+NOTE: use the appname, sogo, not the tool name (sogod)!
 
 cd /usr/local/share
-mkdir sogo-0.9/
-cd sogo-0.9/
+mkdir sogo/
+cd sogo/
 ln -s ~/dev/SOGo-trunk/UI/Templates ./templates
 ln -s ~/dev/SOGo-trunk/UI/WebServerResources ./www
 
 Apache:
 
 Alias /SOGo.woa/WebServerResources/ \
-      /usr/local/share/sogo-0.9/www/
+      /usr/local/share/sogo/www/

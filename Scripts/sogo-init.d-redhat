@@ -1,7 +1,7 @@
 #!/bin/bash
 # chkconfig:	2345 85 15
 # description:	SOGo is a groupware server
-# processname:  sogod-0.9
+# processname:  sogod
 # config:	/etc/sysconfig/sogo
 # config:	/etc/httpd/conf.d/SOGo.conf
 # pidfile:	/var/run/sogo/sogod.pid
@@ -42,7 +42,7 @@ then
   . /usr/GNUstep/System/Library/Makefiles/GNUstep.sh
 fi
 
-REAL_DAEMON=sogod-0.9
+REAL_DAEMON=sogod
 DAEMON=/usr/sbin/sogod
 NAME=sogo
 DESC="Scalable OpenGroupware.Org (Inverse edition)"

@@ -155,17 +155,17 @@ rm -fr ${RPM_BUILD_ROOT}
 /var/run/sogo
 /var/log/sogo
 /var/spool/sogo
-%{prefix}/Tools/Admin/sogod-0.9
+%{prefix}/Tools/Admin/sogod
 %{prefix}/Library/Libraries/libSOGo.so.*
 %{prefix}/Library/Libraries/libSOGoUI.so.*
 %{prefix}/Library/Libraries/libOGoContentStore.so*
-%{prefix}/Library/SOGo-0.9/*.SOGo
-%{prefix}/Library/SOGo-0.9/SOGo.framework/Resources
-%{prefix}/Library/SOGo-0.9/SOGo.framework/Versions/0/libSOGo.so.*
-%{prefix}/Library/SOGo-0.9/SOGo.framework/Versions/0/Resources
-%{prefix}/Library/SOGo-0.9/SOGo.framework/Versions/Current
-%{prefix}/Library/SOGo-0.9/Templates
-%{prefix}/Library/SOGo-0.9/WebServerResources
+%{prefix}/Library/SOGo/*.SOGo
+%{prefix}/Library/SOGo/SOGo.framework/Resources
+%{prefix}/Library/SOGo/SOGo.framework/Versions/0/libSOGo.so.*
+%{prefix}/Library/SOGo/SOGo.framework/Versions/0/Resources
+%{prefix}/Library/SOGo/SOGo.framework/Versions/Current
+%{prefix}/Library/SOGo/Templates
+%{prefix}/Library/SOGo/WebServerResources
 %{prefix}/Library/OCSTypeModels/appointment.ocs
 %{prefix}/Library/OCSTypeModels/contact.ocs
 %{prefix}/Library/OCSTypeModels/appointment-oracle.ocs
@@ -180,12 +180,12 @@ rm -fr ${RPM_BUILD_ROOT}
 %{prefix}/Library/Headers/SOGoUI
 %{prefix}/Library/Libraries/libSOGo.so
 %{prefix}/Library/Libraries/libSOGoUI.so
-%{prefix}/Library/SOGo-0.9/SOGo.framework/Headers
-%{prefix}/Library/SOGo-0.9/SOGo.framework/libSOGo.so
-%{prefix}/Library/SOGo-0.9/SOGo.framework/SOGo
-%{prefix}/Library/SOGo-0.9/SOGo.framework/Versions/0/Headers
-%{prefix}/Library/SOGo-0.9/SOGo.framework/Versions/0/libSOGo.so
-%{prefix}/Library/SOGo-0.9/SOGo.framework/Versions/0/SOGo
+%{prefix}/Library/SOGo/SOGo.framework/Headers
+%{prefix}/Library/SOGo/SOGo.framework/libSOGo.so
+%{prefix}/Library/SOGo/SOGo.framework/SOGo
+%{prefix}/Library/SOGo/SOGo.framework/Versions/0/Headers
+%{prefix}/Library/SOGo/SOGo.framework/Versions/0/libSOGo.so
+%{prefix}/Library/SOGo/SOGo.framework/Versions/0/SOGo
 
 %files -n sope%{sope_major_version}%{sope_minor_version}-gdl1-contentstore
 %defattr(-,root,root,-)

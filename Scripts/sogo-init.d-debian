@@ -29,7 +29,7 @@ SOGO_ARGS=""
 
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
-DAEMON=/usr/sbin/sogod-0.9
+DAEMON=/usr/sbin/sogod
 NAME=sogo
 DESC="Scalable OpenGroupware.Org"
 

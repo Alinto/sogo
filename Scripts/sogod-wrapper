@@ -40,22 +40,22 @@ else
 fi
 fi
 
-if [ -x $GNUSTEP_USER_ROOT/Tools/sogod-0.9 ]; then
-    sogod="$GNUSTEP_USER_ROOT/Tools/sogod-0.9"
-elif [ -x $GNUSTEP_LOCAL_ROOT/Tools/sogod-0.9 ]; then
-    sogod="$GNUSTEP_LOCAL_ROOT/Tools/sogod-0.9"
-elif [ -x $GNUSTEP_LOCAL_ROOT/Tools/Admin/sogod-0.9 ]; then
-    sogod="$GNUSTEP_LOCAL_ROOT/Tools/Admin/sogod-0.9"
-elif [ -x $GNUSTEP_SYSTEM_ROOT/Tools/sogod-0.9 ]; then
-    sogod="$GNUSTEP_SYSTEM_ROOT/Tools/sogod-0.9"
-elif [ -x $GNUSTEP_SYSTEM_ROOT/Tools/Admin/sogod-0.9 ]; then
-    sogod="$GNUSTEP_SYSTEM_ROOT/Tools/Admin/sogod-0.9"
+if [ -x $GNUSTEP_USER_ROOT/Tools/sogod ]; then
+    sogod="$GNUSTEP_USER_ROOT/Tools/sogod"
+elif [ -x $GNUSTEP_LOCAL_ROOT/Tools/sogod ]; then
+    sogod="$GNUSTEP_LOCAL_ROOT/Tools/sogod"
+elif [ -x $GNUSTEP_LOCAL_ROOT/Tools/Admin/sogod ]; then
+    sogod="$GNUSTEP_LOCAL_ROOT/Tools/Admin/sogod"
+elif [ -x $GNUSTEP_SYSTEM_ROOT/Tools/sogod ]; then
+    sogod="$GNUSTEP_SYSTEM_ROOT/Tools/sogod"
+elif [ -x $GNUSTEP_SYSTEM_ROOT/Tools/Admin/sogod ]; then
+    sogod="$GNUSTEP_SYSTEM_ROOT/Tools/Admin/sogod"
 else
-    echo "Can't find sogod-0.9"
+    echo "Can't find sogod"
     exit 1
 fi
 
-startport=`defaults read sogod-0.9 WOPort`
+startport=`defaults read sogod WOPort`
 if [ "$?" == "0" ]
 then
   startport=`echo $startport | awk '{print $3}'`
@@ -74,4 +74,3 @@ echo "SOGOD: $sogod" 2>&1
 
 exec $sogod -WOPort $port >> /var/log/sogo/sogod-$port.log 2>&1 &
 echo $! > $PIDFILE
-
