@@ -6,6 +6,8 @@
 	valid. This fixes a crash because the channel, already
 	autoreleased, would be later released again by the caller (through
 	releaseChannel:).
+	([GCSChannelManager -releaseChannel:_channel]): ensure the channel
+	is closed if we need to release it.
 
 2009-03-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

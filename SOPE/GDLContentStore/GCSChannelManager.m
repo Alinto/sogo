@@ -379,6 +379,7 @@ static NSTimeInterval ChannelCollectionTimer = 5 * 60;
 - (void) releaseChannel: (EOAdaptorChannel *) _channel
 {
   GCSChannelHandle *handle;
+  BOOL keepOpen;
 
 #if defined(THREADSAFE)
   [channelLock lock];
@@ -391,8 +392,10 @@ static NSTimeInterval ChannelCollectionTimer = 5 * 60;
       ASSIGN (handle->lastReleaseTime, [NSCalendarDate date]);
       [busyChannels removeObject: handle];
 
+      keepOpen = NO;
       if ([_channel isOpen] && [handle age] < ChannelExpireAge)
 	{
+	  keepOpen = YES;
 	  // TODO: consider age
 	  [availableChannels addObject: handle];
 	  if (debugPools)
@@ -404,9 +407,13 @@ static NSTimeInterval ChannelCollectionTimer = 5 * 60;
 		  _channel];
 	}
       else if (debugPools)
-	[self logWithFormat:
-		@"DBPOOL: freeing old channel (age %ds, %p) ", (int)
-	      [handle age], _channel];
+	{
+	  [self logWithFormat:
+		  @"DBPOOL: freeing old channel (age %ds, %p) ", (int)
+		[handle age], _channel];
+	}
+      if (!keepOpen && [_channel isOpen])
+	[_channel closeChannel];
       [handle release];
     }
   else
