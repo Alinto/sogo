@@ -4,6 +4,9 @@
 	values are not nil before putting them in the cache. This fixes an
 	exception occuring for setting a nil key in a dictionary.
 	([SOGoUser -userSettings]): same as above.
+	([SOGoUser -userDefaults]): if "value" is null, meaning that
+	database connectivity has failed, don't try to set default values,
+	which would trigger other connection tries.
 
 2009-03-19  Francis Lachapelle  <flachapelle@inverse.ca>
 
