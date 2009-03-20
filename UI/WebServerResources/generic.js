@@ -1411,8 +1411,11 @@ function reloadPreferences() {
 	http.send("");
 
 	if (http.status == 200) {
-		if (http.responseText.length > 0)
+		if (http.responseText.length > 0) {
 			UserDefaults = http.responseText.evalJSON(true);
+			if (!UserDefaults)
+				UserDefaults = {};
+		}
 		else
 			UserDefaults = {};
 	}
