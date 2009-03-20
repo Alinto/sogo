@@ -26,6 +26,7 @@
 #import <Foundation/NSLock.h>
 #import <Foundation/NSTimer.h>
 #import <Foundation/NSUserDefaults.h>
+#import <Foundation/NSValue.h>
 
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -361,8 +362,11 @@ static NSTimeInterval ChannelCollectionTimer = 5 * 60;
 	      [handle release];
 	    }
 	  else
-	    [self errorWithFormat: @"could not open channel %@ for URL: %@",
-		  channel, [_url absoluteString]];
+	    {
+	      [self errorWithFormat: @"could not open channel %@ for URL: %@",
+		    channel, [_url absoluteString]];
+	      channel = nil;
+	    }
 	}
     }
 #if defined(THREADSAFE)
