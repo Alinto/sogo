@@ -1,3 +1,10 @@
+2009-03-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUser.m ([SOGoUser -userDefaults]): ensure the
+	values are not nil before putting them in the cache. This fixes an
+	exception occuring for setting a nil key in a dictionary.
+	([SOGoUser -userSettings]): same as above.
+
 2009-03-19  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Scheduler/UIxCalListingActions.m ([UIxCalListingActions
