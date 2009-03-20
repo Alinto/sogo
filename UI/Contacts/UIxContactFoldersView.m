@@ -202,7 +202,17 @@ withSearchOn: (NSString *) contact
   if ([searchText length] > 0)
     {
       //NSLog(@"Search all contacts: %@", searchText);
-      folders = [[self clientObject] subFolders];
+      NS_DURING
+	folders = [[self clientObject] subFolders];
+      NS_HANDLER
+	/* We need to specifically test for @"SOGoDBException", which is
+	   raised explicitly in SOGoParentFolder. Any other exception should
+	   be re-raised. */
+	if ([[localException name] isEqualToString: @"SOGoDBException"])
+	  folders = nil;
+	else
+	  [localException raise];
+      NS_ENDHANDLER
       sortedFolders = [NSMutableArray arrayWithCapacity: [folders count]];
       uniqueContacts = [NSMutableDictionary dictionary];
       /* We first search in LDAP folders (in case of duplicated entries in GCS folders) */

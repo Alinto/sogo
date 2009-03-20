@@ -423,7 +423,13 @@ static SoSecurityManager *sm = nil;
     {
       error = [self initSubFolders];
       if (error)
-	[error raise];
+	{
+	  /* We exceptionnally raise the exception here because doPROPFIND:
+	     will not care for errors in its response from
+	     toManyRelationShipKeys, which may in turn trigger the
+	     disappearance of user folders in the SOGo extensions. */
+	  [error raise];
+	}
     }
 //   if (!!hasSubscribedSources)
 //     [self _appendSubscribedSourcesIfNeeded];

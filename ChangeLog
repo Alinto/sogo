@@ -1,5 +1,9 @@
 2009-03-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView
+	-allContactSearchAction]): trap @"SOGoDBException" and return nil
+	in that case.
+
 	* SoObjects/SOGo/SOGoUserDefaults.m ([SOGoUserDefaults
 	-jsonRepresentation]): return "{}" if values is nil (due to a DB
 	connection error).
