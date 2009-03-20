@@ -314,9 +314,15 @@ static NSString *uidColumnName = @"c_uid";
 
 - (NSString *) jsonRepresentation
 {
-  [self fetchProfile];
+  NSString *jsonRep;
 
-  return [values jsonRepresentation];
+  [self fetchProfile];
+  if (values)
+    jsonRep = [values jsonRepresentation];
+  else
+    jsonRep = @"{}";
+
+  return jsonRep;
 }
 
 /* value access */

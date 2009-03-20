@@ -1,5 +1,9 @@
 2009-03-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUserDefaults.m ([SOGoUserDefaults
+	-jsonRepresentation]): return "{}" if values is nil (due to a DB
+	connection error).
+
 	* SoObjects/SOGo/SOGoUser.m ([SOGoUser -userDefaults]): ensure the
 	values are not nil before putting them in the cache. This fixes an
 	exception occuring for setting a nil key in a dictionary.
