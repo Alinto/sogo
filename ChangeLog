@@ -1,3 +1,9 @@
+2009-03-20  Ludovic Marcotte <lmarcotte@inverse.ca>
+
+        * SoObjects/SOGo/SOGoUserDefaults.{h,m}
+	We are now way quicker to react when the database
+	is down.
+
 2009-03-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView

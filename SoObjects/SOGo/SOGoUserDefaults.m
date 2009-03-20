@@ -115,6 +115,7 @@ static NSString *uidColumnName = @"c_uid";
   if (channel)
     {
       /* generate SQL */
+      defFlags.ready = YES;
       sql = [NSString stringWithFormat: (@"SELECT %@"
 					 @"  FROM %@"
 					 @" WHERE %@ = '%@'"),
@@ -164,8 +165,11 @@ static NSString *uidColumnName = @"c_uid";
       [cm releaseChannel:channel];
     }
   else
-    [self errorWithFormat:@"failed to acquire channel for URL: %@", 
-	  [self tableURL]];
+    {
+      defFlags.ready = NO;
+      [self errorWithFormat:@"failed to acquire channel for URL: %@", 
+	    [self tableURL]];
+    }
 
   return rc;
 }
@@ -255,6 +259,7 @@ static NSString *uidColumnName = @"c_uid";
       channel = [cm acquireOpenChannelForURL: [self tableURL]];
       if (channel)
 	{
+	  defFlags.ready = YES;
 	  [[channel adaptorContext] beginTransaction];
 	  ex = [channel evaluateExpressionX:sql];
 	  if (ex)
@@ -276,8 +281,11 @@ static NSString *uidColumnName = @"c_uid";
 	  [cm releaseChannel: channel];
 	}
       else
-	[self errorWithFormat: @"failed to acquire channel for URL: %@", 
-	      [self tableURL]];
+	{
+	  defFlags.ready = NO;
+	  [self errorWithFormat: @"failed to acquire channel for URL: %@", 
+		[self tableURL]];
+	}
     }
   else
     [self errorWithFormat: @"failed to generate SQL for storing defaults"];
@@ -376,7 +384,7 @@ static NSString *uidColumnName = @"c_uid";
 {
   id value;
   
-  if (![self fetchProfile])
+  if (!defFlags.ready || ![self fetchProfile])
     value = nil;
   else
     value = [values objectForKey: key];

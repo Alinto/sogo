@@ -50,6 +50,7 @@
   {
     int modified: 1;
     int isNew: 1;
+    int ready: 1;
   } defFlags;
 }
 
