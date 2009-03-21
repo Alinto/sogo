@@ -264,7 +264,6 @@ _timeValue (NSString *key)
 	  allEmails = nil;
 	  currentPassword = nil;
 	  cn = nil;
-	  mailAccounts = nil;
 	}
     }
   else
@@ -281,7 +280,6 @@ _timeValue (NSString *key)
   [allEmails release];
   [currentPassword release];
   [cn release];
-  [mailAccounts release];
   [super dealloc];
 }
 
@@ -692,10 +690,10 @@ _timeValue (NSString *key)
 }
 
 /* mail */
-- (void) _prepareDefaultMailAccounts
+- (NSArray *) _prepareDefaultMailAccounts
 {
   NSMutableDictionary *mailAccount, *identity;
-  NSMutableArray *identities;
+  NSMutableArray *identities, *mailAccounts;
   NSString *name, *fullName, *imapLogin;
   NSArray *mails;
   unsigned int count, max;
@@ -731,21 +729,19 @@ _timeValue (NSString *key)
 
   mailAccounts = [NSMutableArray new];
   [mailAccounts addObject: mailAccount];
+
+  return mailAccounts;
 }
 
 - (NSArray *) mailAccounts
 {
   NSUserDefaults *ud;
+  NSArray *mailAccounts;
 
+  ud = [self userDefaults];
+  mailAccounts = [ud objectForKey: @"MailAccounts"];
   if (!mailAccounts)
-    {
-      ud = [self userDefaults];
-      mailAccounts = [ud objectForKey: @"MailAccounts"];
-      if (mailAccounts)
-	[mailAccounts retain];
-      else
-	[self _prepareDefaultMailAccounts];
-    }
+    mailAccounts = [self _prepareDefaultMailAccounts];
 
   return mailAccounts;
 }
@@ -835,8 +831,7 @@ _timeValue (NSString *key)
 {
   NSDictionary *defaultAccount;
 
-  [self mailAccounts];
-  defaultAccount = [mailAccounts objectAtIndex: 0];
+  defaultAccount = [[self mailAccounts] objectAtIndex: 0];
 
   return [[defaultAccount objectForKey: @"identities"] objectAtIndex: 0];
 }
