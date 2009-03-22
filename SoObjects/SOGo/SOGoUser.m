@@ -459,19 +459,20 @@ _timeValue (NSString *key)
       defaults = [self primaryUserDefaults];
       if (defaults)
 	{
+	  // Required parameters for the Web interface. This will trigger the
+	  // preferences to load so it's important to leave those calls here.
+	  if (![[defaults stringForKey: @"ReplyPlacement"] length])
+	    [defaults setObject: defaultReplyPlacement forKey: @"ReplyPlacement"];
+	  if (![[defaults stringForKey: @"SignaturePlacement"] length])
+	    [defaults setObject: defaultSignaturePlacement forKey: @"SignaturePlacement"];
+	  if (![[defaults stringForKey: @"MessageForwarding"] length])
+	    [defaults setObject: defaultMessageForwarding forKey: @"MessageForwarding"];
+	  if (![[defaults stringForKey: @"MessageCheck"] length])
+	    [defaults setObject: defaultMessageCheck forKey: @"MessageCheck"];
+
 	  values = [defaults values];
 	  if (values)
 	    {
-	      // Required parameters for the Web interface
-	      if (![[defaults stringForKey: @"ReplyPlacement"] length])
-		[defaults setObject: defaultReplyPlacement forKey: @"ReplyPlacement"];
-	      if (![[defaults stringForKey: @"SignaturePlacement"] length])
-		[defaults setObject: defaultSignaturePlacement forKey: @"SignaturePlacement"];
-	      if (![[defaults stringForKey: @"MessageForwarding"] length])
-		[defaults setObject: defaultMessageForwarding forKey: @"MessageForwarding"];
-	      if (![[defaults stringForKey: @"MessageCheck"] length])
-		[defaults setObject: defaultMessageCheck forKey: @"MessageCheck"];
-
 	      // We propagate the loaded user defaults to other sogod instances
 	      // which will cache them in SOGoCache (including for the instance
 	      // that actually posts the notification)
