@@ -1,3 +1,11 @@
+2009-03-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUser.m ([SOGoUser -language]): cache the
+	language in an ivar again, that is reset when the user settings or
+	defaults have been loaded successfully.
+	([SOGoUser -userDefaults]): invoke "fetchProfile" on the defaults
+	instance, in order to validate the DB connection.
+
 2009-03-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUser.m ([SOGoUser

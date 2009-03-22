@@ -318,7 +318,7 @@ static NSString *uidColumnName = @"c_uid";
 
 - (BOOL) fetchProfile
 {
-  return (values  || [self primaryFetchProfile]);
+  return (values || [self primaryFetchProfile]);
 }
 
 - (NSString *) jsonRepresentation

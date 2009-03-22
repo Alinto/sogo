@@ -459,20 +459,25 @@ _timeValue (NSString *key)
       defaults = [self primaryUserDefaults];
       if (defaults)
 	{
-	  // Required parameters for the Web interface. This will trigger the
-	  // preferences to load so it's important to leave those calls here.
-	  if (![[defaults stringForKey: @"ReplyPlacement"] length])
-	    [defaults setObject: defaultReplyPlacement forKey: @"ReplyPlacement"];
-	  if (![[defaults stringForKey: @"SignaturePlacement"] length])
-	    [defaults setObject: defaultSignaturePlacement forKey: @"SignaturePlacement"];
-	  if (![[defaults stringForKey: @"MessageForwarding"] length])
-	    [defaults setObject: defaultMessageForwarding forKey: @"MessageForwarding"];
-	  if (![[defaults stringForKey: @"MessageCheck"] length])
-	    [defaults setObject: defaultMessageCheck forKey: @"MessageCheck"];
-
+          [defaults fetchProfile];
 	  values = [defaults values];
+	  
 	  if (values)
 	    {
+	      /* see explanation in -language */
+	      [language release];
+	      language = nil;
+	      // Required parameters for the Web interface. This will trigger the
+	      // preferences to load so it's important to leave those calls here.
+	      if (![[defaults stringForKey: @"ReplyPlacement"] length])
+		[defaults setObject: defaultReplyPlacement forKey: @"ReplyPlacement"];
+	      if (![[defaults stringForKey: @"SignaturePlacement"] length])
+		[defaults setObject: defaultSignaturePlacement forKey: @"SignaturePlacement"];
+	      if (![[defaults stringForKey: @"MessageForwarding"] length])
+		[defaults setObject: defaultMessageForwarding forKey: @"MessageForwarding"];
+	      if (![[defaults stringForKey: @"MessageCheck"] length])
+		[defaults setObject: defaultMessageCheck forKey: @"MessageCheck"];
+
 	      // We propagate the loaded user defaults to other sogod instances
 	      // which will cache them in SOGoCache (including for the instance
 	      // that actually posts the notification)
@@ -516,6 +521,9 @@ _timeValue (NSString *key)
 	  values = [settings values];
 	  if (values)
 	    {
+	      /* see explanation in -language */
+	      [language release];
+	      language = nil;
 	      // We propagate the loaded user settings to other sogod instances
 	      // which will cache them in SOGoCache (including for the instance
 	      // that actually posts the notification)
@@ -542,11 +550,16 @@ _timeValue (NSString *key)
 
 - (NSString *) language
 {
-  NSString *language;
-  
-  language = [[self userDefaults] stringForKey: @"Language"];
   if (![language length])
-    language = [SOGoUser language];
+    {
+      language = [[self userDefaults] stringForKey: @"Language"];
+      if (![language length])
+        language = [SOGoUser language];
+      /* This is a hack until we handle the connection errors to the db a
+	 better way. It enables us to avoid retrieving the userDefaults 5000
+	 times when the DB is down, causing a huge delay. */
+      [language retain];
+    }
 
   return language;
 }
