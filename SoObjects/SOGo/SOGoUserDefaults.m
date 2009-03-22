@@ -356,7 +356,7 @@ static NSString *uidColumnName = @"c_uid";
 { 
   id old;
   
-  if (![self fetchProfile])
+  if (!defFlags.ready || ![self fetchProfile])
     return;
 
   /* check whether the value is actually modified */
