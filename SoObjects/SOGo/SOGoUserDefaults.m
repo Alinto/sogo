@@ -56,6 +56,7 @@ static NSString *uidColumnName = @"c_uid";
 	  fieldName = [theFieldName copy];
 	  url = [theURL copy];
 	  uid = [theUID copy];
+	  defFlags.ready = YES;
 	}
       else
 	{
