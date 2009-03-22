@@ -56,6 +56,7 @@ static NSString *uidColumnName = @"c_uid";
 	  fieldName = [theFieldName copy];
 	  url = [theURL copy];
 	  uid = [theUID copy];
+	  defFlags.ready = YES;
 	}
       else
 	{
@@ -355,7 +356,7 @@ static NSString *uidColumnName = @"c_uid";
 { 
   id old;
   
-  if (![self fetchProfile])
+  if (!defFlags.ready || ![self fetchProfile])
     return;
 
   /* check whether the value is actually modified */
