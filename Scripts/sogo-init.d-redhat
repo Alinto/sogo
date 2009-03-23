@@ -59,20 +59,23 @@ if [ ! -x $DAEMON ]; then
  exit 1
 fi
 
-if [ `/usr/bin/stat /var/run/sogo -c %U` != "sogo" ]; then
- echo "/var/run/sogo is not owned by the sogo user."
- exit 1
-fi
+checkDir() {
+    directory="$1"
+    if [ ! -d "$directory" ]
+    then
+	echo "$directory does not exist."
+	exit 1
+    fi
 
-if [ `/usr/bin/stat /var/spool/sogo -c %U` != "sogo" ]; then
- echo "/var/spool/sogo is not owned by the sogo user."
- exit 1
-fi
+    if [ `/usr/bin/stat "$directory" -c %U` != "$USER" ]
+    then
+	echo "$directory is not owned by the sogo user."
+	exit 1
+    fi
+}
 
-if [ `/usr/bin/stat /var/log/sogo -c %U` != "sogo" ]; then
- echo "/var/log/sogo is not owned by the sogo user."
- exit 1
-fi
+checkDir /var/run/sogo
+checkDir /var/spool/sogo
 
 #set -e
 
