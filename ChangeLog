@@ -1,5 +1,11 @@
 2009-03-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoGCSFolder.m ([SOGoGCSFolder
+	-subscribe:reallyDoinTheNamesOf:delegatedUsersfromMailInvitation:isMailInvitationinContext:localContext]):
+	when the user preferences didn't already contain a key matching
+	the current module name, the subscriptions would not work. We thus
+	create one if none exists yet.
+
 	* SoObjects/Contacts/SOGoContactFolders.m ([SOGoContactFolders
 	-appendSystemSources]): modified the return type and returns nil,
 	to match the new SOGoParentFolder definition of the method.
