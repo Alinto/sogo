@@ -464,9 +464,9 @@ _timeValue (NSString *key)
 	  
 	  if (values)
 	    {
-	      /* see explanation in -language */
-	      [language release];
+	      // See explanation in -language
 	      language = nil;
+
 	      // Required parameters for the Web interface. This will trigger the
 	      // preferences to load so it's important to leave those calls here.
 	      if (![[defaults stringForKey: @"ReplyPlacement"] length])
@@ -521,9 +521,9 @@ _timeValue (NSString *key)
 	  values = [settings values];
 	  if (values)
 	    {
-	      /* see explanation in -language */
-	      [language release];
+	      // See explanation in -language
 	      language = nil;
+
 	      // We propagate the loaded user settings to other sogod instances
 	      // which will cache them in SOGoCache (including for the instance
 	      // that actually posts the notification)
@@ -553,12 +553,11 @@ _timeValue (NSString *key)
   if (![language length])
     {
       language = [[self userDefaults] stringForKey: @"Language"];
+      // This is a hack until we handle the connection errors to the db a
+      // better way. It enables us to avoid retrieving the userDefaults too
+      // many times when the DB is down, causing a huge delay.
       if (![language length])
         language = [SOGoUser language];
-      /* This is a hack until we handle the connection errors to the db a
-	 better way. It enables us to avoid retrieving the userDefaults 5000
-	 times when the DB is down, causing a huge delay. */
-      [language retain];
     }
 
   return language;

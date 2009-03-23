@@ -113,7 +113,7 @@
   return flatContent;
 }
 
-#warning we should use NSData+Mail's bodyDataFromEncoding: instead
+#warning we should use NSData+Mail bodyDataFromEncoding: instead
 - (NSData *) decodedFlatContent
 {
   NSString *enc;

@@ -1,3 +1,9 @@
+2009-03-23  Ludovic Marcotte <lmarcotte@inverse.ca>
+
+        * SoObjects/SOGo/SOGoUser.m:
+	Don't retain/release the language ivar.
+
+
 2009-03-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUser.m ([SOGoUser -language]): cache the
