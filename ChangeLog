@@ -1,3 +1,10 @@
+2009-03-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Contacts/SOGoContactFolders.m ([SOGoContactFolders
+	-appendSystemSources]): modified the return type and returns nil,
+	to match the new SOGoParentFolder definition of the method.
+	Otherwise, a confusion is created on the stack.
+
 2009-03-23  Ludovic Marcotte <lmarcotte@inverse.ca>
 
         * SoObjects/SOGo/SOGoUser.m:
