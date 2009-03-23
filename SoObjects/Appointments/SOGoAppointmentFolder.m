@@ -2406,6 +2406,37 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return (SOGoAppointmentFolder *) currentContainer;
 }
 
+//
+// This method returns an array containing all the calendar folders
+// of a specific user, excluding her/his subscriptions.
+//
+- (NSArray *) lookupCalendarFoldersForUID: (NSString *) theUID
+{
+  NSArray *aFolders;
+  NSEnumerator *e;
+  NSMutableArray *aUserFolders;
+  SOGoAppointmentFolders *aParent;
+  SOGoFolder *aContainer, *aFolder;
+
+  aUserFolders = [NSMutableArray arrayWithCapacity: 16];
+  aContainer = [[container container] container];
+  aContainer = [aContainer lookupName: theUID
+			   inContext: context
+			   acquire: NO];
+  aParent = [aContainer lookupName: @"Calendar" 
+			inContext: context
+			acquire: NO];
+  aFolders = [aParent subFolders];
+  e = [aFolders objectEnumerator];
+  while ( (aFolder = [e nextObject]) )
+    {
+      if (![aFolder isSubscription])
+	[aUserFolders addObject: aFolder];
+    }
+
+  return aUserFolders;
+}
+
 - (NSArray *) lookupCalendarFoldersForUIDs: (NSArray *) _uids
                                  inContext: (id)_ctx
 {

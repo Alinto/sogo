@@ -1,3 +1,15 @@
+2009-03-23  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	([SOGoAppointmentObject -_lookupEvent:forUID:]): when looking for
+	an event for a specific user, we now search into all the user's
+	calendar folders.
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder -lookupCalendarFoldersForUID:]): new
+	method that returns an array of a user's calendar folders
+	excluding the subscriptions.
+
 2009-03-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoGCSFolder.m ([SOGoGCSFolder
@@ -15,7 +27,6 @@
 
         * SoObjects/SOGo/SOGoUser.m:
 	Don't retain/release the language ivar.
-
 
 2009-03-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

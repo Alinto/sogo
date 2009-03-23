@@ -1,5 +1,9 @@
-1.0-20090317
------------
+1.0-2009
+--------
+- when the status of an attendee changes, the event of an organizer is now updated correctly if it doesn't reside in the personal folder
+
+1.0-20090317 (1.0.0)
+---------------
 - when double-clicking in the all-day zone (day & week views), the "All Day event" checkbox is now automatically checked
 - replaced the JavaScript FastInit class by the dom:loaded event of Prototype JS
 - also updated Prototype JS to fix issues with IE7
