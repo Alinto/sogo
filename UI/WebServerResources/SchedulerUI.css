@@ -1,6 +1,6 @@
 DIV#leftPanel
 { position: absolute;
-  top: 5.5em;
+  top: 65px;
   left: 0px;
   width: 19.25em;
   bottom: 0px;
@@ -117,7 +117,7 @@ UL#tasksList LI[class~="_selected"].completed
 
 DIV#rightPanel
 { position: absolute;
-  top: 5.5em;
+  top: 65px;
   left: 19.25em;
   right: 0px;
   bottom: 0px;

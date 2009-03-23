@@ -23,7 +23,7 @@
 DIV#leftPanel
 {
   position: absolute;
-  top: 5.5em;
+  top: 65px;
   left: 0px;
   width: 15em;
   bottom: 0px;
@@ -34,7 +34,7 @@ DIV#leftPanel
 
 DIV#rightPanel
 { position: absolute;
-  top: 5.5em;
+  top: 65px;
   left: 15em;
   right: 0px;
   bottom: 0px;
