@@ -104,6 +104,7 @@ iRANGE(2);
       dateFormat = [datePicker dateFormat];
       
       component = nil;
+      componentCalendar = nil;
       [self setPrivacy: @"PUBLIC"];
       [self setIsCycleEndNever];
       componentOwner = @"";
@@ -168,6 +169,7 @@ iRANGE(2);
   [range2 release];
   
   [component release];
+  [componentCalendar release];
 
   [super dealloc];
 }
@@ -180,10 +182,10 @@ iRANGE(2);
   NSString *uid;
   LDAPUserManager *um;
 
-  names = [NSMutableString new];
-  uids = [NSMutableString new];
-  emails = [NSMutableString new];
-  states = [NSMutableString new];
+  names = [NSMutableString string];
+  uids = [NSMutableString string];
+  emails = [NSMutableString string];
+  states = [NSMutableString string];
   um = [LDAPUserManager sharedUserManager];
 
   attendees = [[component attendees] objectEnumerator];
@@ -212,9 +214,6 @@ iRANGE(2);
 	      [emails substringToIndex: [emails length] - 1]);
       ASSIGN (attendeesStates, [states substringToIndex: [states length] - 1]);
     }
-
-  [names release];
-  [emails release];
 }
 
 - (void) _loadCategories
@@ -397,7 +396,7 @@ iRANGE(2);
 	  [self _loadAttendees];
 	  [self _loadRRules];
 
-	  [componentCalendar release];
+ 	  [componentCalendar release];
 	  componentCalendar = [co container];
 	  if ([componentCalendar isKindOfClass: [SOGoCalendarComponent class]])
 	    componentCalendar = [componentCalendar container];
