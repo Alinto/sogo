@@ -1,3 +1,7 @@
+2009-03-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* VSStringFormatter.[hm]: removed useless module.
+
 2007-08-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* VSSaxDriver.m ([VSSaxDriver

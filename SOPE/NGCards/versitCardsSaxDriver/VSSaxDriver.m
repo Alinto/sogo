@@ -29,7 +29,6 @@
           are not expected in a sax handler... this is all wrong. */
 
 #import "VSSaxDriver.h"
-#import "VSStringFormatter.h"
 #import <SaxObjC/SaxException.h>
 #import <NGExtensions/NGQuotedPrintableCoding.h>
 #import <NGCards/NSString+NGCards.h>
@@ -164,8 +163,6 @@ static NSCharacterSet *colonAndSemicolonCharSet = nil;
 static NSCharacterSet *colonSemicolonAndDquoteCharSet = nil;
 static NSCharacterSet *whitespaceCharSet = nil;
 
-static VSStringFormatter *stringFormatter = nil;
-
 + (void) initialize
 {
   static BOOL didInit = NO;
@@ -190,8 +187,6 @@ static VSStringFormatter *stringFormatter = nil;
     [[NSCharacterSet characterSetWithCharactersInString: @":;\""] retain];
   whitespaceCharSet =
     [[NSCharacterSet whitespaceCharacterSet] retain];
-
-  stringFormatter = [VSStringFormatter sharedFormatter];
 }
 
 - (id) init {
@@ -382,7 +377,6 @@ static VSStringFormatter *stringFormatter = nil;
 
   *attr_ = attrName;
   *value_ = [attrValue unescapedFromCard];
-//   *value_ = [stringFormatter stringByUnescapingRFC2445Text: attrValue];
 }
 
 - (SaxAttributes *) _mapAttrs: (NSArray *) _attrs

@@ -14,8 +14,7 @@ versitCardsSaxDriver_PCH_FILE = common.h
 
 versitCardsSaxDriver_OBJC_FILES =	\
 	VSSaxDriver.m		\
-	VSCardSaxDriver.m	\
-	VSStringFormatter.m	\
+	VSCardSaxDriver.m
 
 versitCardsSaxDriver_RESOURCE_FILES = bundle-info.plist
 
