@@ -548,6 +548,11 @@ _timeValue (NSString *key)
   return (NSUserDefaults *) settings;
 }
 
+- (void) invalidateLanguage
+{
+  language = nil;
+}
+
 - (NSString *) language
 {
   if (![language length])
