@@ -86,10 +86,20 @@ function initializeFormValues() {
   $("repeatType").value = repeatType;
 
   // Default values
+	var startTimeDate = parent$("startTime_date").value.asDate();
+	$('yearlyDayField').value = startTimeDate.getDate();
+	$('yearlyMonth1').value = startTimeDate.getMonth();
+	$("weekDay"+startTimeDate.getDay()).addClassName("_selected");
+	$("monthDay"+startTimeDate.getDate()).addClassName("_selected");
+
   $('recurrence_form').setRadioValue('dailyRadioButtonName', 0);
-  $('recurrence_form').setRadioValue('monthlyRadioButtonName', 0);
+  $('recurrence_form').setRadioValue('monthlyRadioButtonName', 1);
   $('recurrence_form').setRadioValue('yearlyRadioButtonName', 0);
   $('endDate_date').disabled = true;
+	$('dailyDaysField').value = "1";
+	$('weeklyWeeksField').value = "1";
+	$('monthlyMonthsField').value = "1";
+	$('yearlyYearsField').value = "1";
   
   if (repeatType == 0) {
     // Repeat daily
@@ -101,6 +111,9 @@ function initializeFormValues() {
     $('weeklyWeeksField').value = parent$("repeat1").value;
 		//     log ("div: " + weekDiv);
 		//     log ("days: " + parent$("repeat2").value);
+		for (var i = 0; i < 7; i++) {
+			$("weekDay" + i).removeClassName("_selected");
+		}
     var days = "" + parent$("repeat2").value;
     if (days.length > 0) {
       var daysArray = days.split(",");
@@ -116,6 +129,10 @@ function initializeFormValues() {
     $('monthlyRepeat').value = parent$("repeat3").value;
     $('monthlyDay').value = parent$("repeat4").value;
     var days = "" + parent$("repeat5").value;
+		for (var i = 0; i < 31; i++) {
+			$("monthDay" + (i + 1)).removeClassName("_selected");
+		}
+
     if (days.length > 0) {
       var daysArray = days.split(",");
       daysArray.each(function(index) {
