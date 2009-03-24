@@ -570,7 +570,11 @@ _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
 	  for (i = 0; i < count; i++)
 	    {
 	      attendee = [attendees objectAtIndex: i];
-	      if (![[attendee uid] isEqualToString: owner])
+	      // Don't send a notification to the event organizer nor a deletion
+	      // notification to an attendee who already declined the invitation.
+	      if (![[attendee uid] isEqualToString: owner] &&
+		  !([[attendee partStat] compare: @"DECLINED"] == NSOrderedSame &&
+		    [newPageName compare: @"Deletion"] == NSOrderedSame))
 		{
 		  /* construct recipient */
 		  recipient = [attendee mailAddress];

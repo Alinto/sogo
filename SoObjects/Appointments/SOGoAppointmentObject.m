@@ -202,6 +202,7 @@
 
   if (!object)
     {
+      folder = [container lookupCalendarFolderForUID: uid];
       object = [SOGoAppointmentObject objectWithName: nameInContainer
 				      inContainer: folder];
       [object setIsNew: YES];

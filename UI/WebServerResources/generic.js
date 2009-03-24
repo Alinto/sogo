@@ -1461,6 +1461,7 @@ function configureSortableTableHeaders(table) {
 	var headers = $(table).getElementsByClassName("sortableTableHeader");
 	for (var i = 0; i < headers.length; i++) {
 		var header = $(headers[i]);
+		header.stopObserving("click", onHeaderClick);
 		header.observe("click", onHeaderClick);
 	}
 }

@@ -1,3 +1,25 @@
+2009-03-24  Ludovic Marcotte <lmarcotte@inverse.ca>
+
+	* UI/MailerUI/UIxMailListView.m
+	([UIxMailListView messages)]:
+	Adjusted the sort so it's a little bit faster
+	and correctly work in case the server returns us
+	the FETCH response in an order different that what
+	we asked for.
+
+2009-03-24  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	([SOGoCalendarComponent
+	-sendEMailUsingTemplateNamed:forObject:previousObject:toAttendees:]):
+	no longer send a deletion notification to an attendee who already
+	declined the meeting.
+
+	* UI/MailPartViewers/UIxMailPartICalActions.m
+	([UIxMailPartICalActions -_eventObjectWithUID:forUser:]): when
+	looking for an event for a specific user, we now search into all
+	the user's calendar folders. 
+
 2009-03-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
@@ -119,8 +141,8 @@
 	* UI/MainUI/SOGoRootPage.m ([SOGoRootPage -version]): new method
 	that returns the application version.
 	
-	* iCalDateTime.m ([iCalDateTime -dateTime]): when not defined, the 
-	timezone is now guessed from the date of the current object.
+	* SOPE/NGCards/iCalDateTime.m ([iCalDateTime -dateTime]): when not
+	defined, the timezone is now guessed from the date of the current object.
 	
 2009-03-18  Ludovic Marcotte <lmarcotte@inverse.ca>
 
