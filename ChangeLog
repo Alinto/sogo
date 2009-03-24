@@ -15,6 +15,10 @@
 	* UI/MainUI/SOGoRootPage.m ([SOGoRootPage -connectAction]): must
 	invalidate user's language ivar when it changes.
 
+	* SoObjects/SOGo/SOGoCache.m ([SOGoCache
+	-_userDefaultsHaveChanged:]): must invalidate the user's language
+	ivar when the defaults change.
+
 	* SoObjects/Appointments/SOGoCalendarComponent.m
 	([SOGoCalendarComponent
 	-sendEMailUsingTemplateNamed:forObject:previousObject:toAttendees:]):
