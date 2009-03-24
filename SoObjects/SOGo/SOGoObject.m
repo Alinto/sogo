@@ -561,8 +561,8 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
 				 [self _davPrivilegesFromRoles: roles]);
       [currentAce addObject: currentGrant];
       [aces addObject: davElementWithContent (@"ace", @"DAV:", currentAce)];
-      [currentAce release];
     }
+  [currentAce release];
 }
 
 - (void) _fillAcesWithRolesForPseudoPrincipals: (NSMutableArray *) aces

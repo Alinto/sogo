@@ -1,3 +1,8 @@
+2009-03-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxCalMainView.m: if the module settings key
+	exists, do not reset it.
+
 2009-03-24  Ludovic Marcotte <lmarcotte@inverse.ca>
 
 	* UI/MailerUI/UIxMailListView.m
