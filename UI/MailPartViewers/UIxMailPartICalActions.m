@@ -21,6 +21,7 @@
  */
 
 #import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSEnumerator.h>
 
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WOResponse.h>
@@ -41,6 +42,7 @@
 #import <SoObjects/Appointments/SOGoAppointmentObject.h>
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>
 #import <SoObjects/Mailer/SOGoMailObject.h>
+#import <SoObjects/SOGo/SOGoParentFolder.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/iCalEntityObject+Utilities.h>
 #import <SoObjects/Mailer/SOGoMailBodyPart.h>
@@ -69,27 +71,32 @@
 - (SOGoAppointmentObject *) _eventObjectWithUID: (NSString *) uid
 					forUser: (SOGoUser *) user
 {
-  SOGoAppointmentFolder *personalFolder;
+  SOGoAppointmentFolder *folder;
   SOGoAppointmentObject *eventObject;
+  NSArray *folders;
+  NSEnumerator *e;
   NSString *cname;
 
   eventObject = nil;
 
-#warning Should call lookupCalendarFoldersForUIDs to search among all folders
-  personalFolder = [user personalCalendarFolderInContext: context];
-  cname = [personalFolder resourceNameForEventUID: uid];
-  if (cname)
+  folders = [[user calendarsFolderInContext: context] subFolders];
+  e = [folders objectEnumerator];
+  while ( eventObject == nil && (folder = [e nextObject]) )
     {
-      eventObject = [personalFolder lookupName: cname
-				    inContext: context acquire: NO];
-      if (![eventObject isKindOfClass: [SOGoAppointmentObject class]])
-	eventObject = nil;
+      cname = [folder resourceNameForEventUID: uid];
+      if (cname)
+	{
+	  eventObject = [folder lookupName: cname
+				inContext: context acquire: NO];
+	  if (![eventObject isKindOfClass: [SOGoAppointmentObject class]])
+	    eventObject = nil;
+	}
     }
-
+  
   if (!eventObject)
     {
       eventObject = [SOGoAppointmentObject objectWithName: uid
-					   inContainer: personalFolder];
+					   inContainer: folder];
       [eventObject setIsNew: YES];
     }
 

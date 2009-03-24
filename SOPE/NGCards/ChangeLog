@@ -9,6 +9,11 @@
 	currentStartDate when instantiated from a copy of firDate, to
 	avoid a leak.
 
+2009-03-18  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* iCalDateTime.m ([iCalDateTime -dateTime]): when not defined, the
+	timezone is now guessed from the date of the current object.
+
 2009-02-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* CardElement.m ([CardElement -setParent:aParent]): no longer
