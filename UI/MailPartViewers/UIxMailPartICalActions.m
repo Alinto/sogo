@@ -95,6 +95,7 @@
   
   if (!eventObject)
     {
+      folder = [user personalCalendarFolderInContext: context];
       eventObject = [SOGoAppointmentObject objectWithName: uid
 					   inContainer: folder];
       [eventObject setIsNew: YES];
