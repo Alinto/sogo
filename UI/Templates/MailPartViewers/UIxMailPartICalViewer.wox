@@ -167,9 +167,23 @@
 	    <td><var:string label:value="Time"/>:</td>
 	    <td>
 	      <!-- TODO: we need a better viewer for that -->
-	      <var:string value="startTime" formatter="dateFormatter" />
-	      <var:string label:value="to" />
-	      <var:string value="endTime" formatter="dateFormatter" />
+	      <var:string value="startDate" /> 
+	      <var:if condition="inEvent.isAllDay" const:negate="YES">
+		<var:string value="startTime" />
+	      </var:if>
+	      <var:if condition="isEndDateOnSameDay">
+		<var:if condition="inEvent.isAllDay" const:negate="YES">
+		  <var:string label:value="to" />
+		  <var:string value="endTime" />
+		</var:if>
+	      </var:if>
+	      <var:if condition="isEndDateOnSameDay" const:negate="YES">
+		<var:string label:value="to" />
+		<var:string value="endDate" />
+		<var:if condition="inEvent.isAllDay" const:negate="YES">
+		  <var:string value="endTime" />
+		</var:if>
+	      </var:if>
 	    </td>
 	  </tr>
 

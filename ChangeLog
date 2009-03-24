@@ -35,6 +35,19 @@
 	looking for an event for a specific user, we now search into all
 	the user's calendar folders. 
 
+	* UI/MailPartViewers/UIxMailPartICalViewer.m
+	([UIxMailPartICalViewer -startCalendarDate]): new method that returns
+	the start date with the proper timezone.
+	([-endCalendarDate]): idem for the end date.
+	([-startDate]): new method that returns a formatted string of the
+	start date.
+	([-endDate]): idem for the end date. Also take care of all-day events.
+	([-startTime]): new method that returns a formatted string ot the
+	start time.
+	([-endTime]): idem for the end time.
+	([-isEndDateOnSameDay]): must subtract 1 second from end date when
+	it's a all-day event.
+
 2009-03-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
