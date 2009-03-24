@@ -1,5 +1,9 @@
 2009-03-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUser.m ([SOGoUser
+	-_prepareDefaultMailAccounts]): return an autoreleased array to
+	avoid a leak.
+
 	* UI/Scheduler/UIxCalListingActions.m ([UIxCalListingActions
 	-initWithRequest:newRequest]): retain dateFormatter, since it is
 	released in -dealloc.

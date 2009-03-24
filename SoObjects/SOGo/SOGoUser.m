@@ -740,7 +740,7 @@ _timeValue (NSString *key)
 
   [mailAccount setObject: identities forKey: @"identities"];
 
-  mailAccounts = [NSMutableArray new];
+  mailAccounts = [NSMutableArray array];
   [mailAccounts addObject: mailAccount];
 
   return mailAccounts;
