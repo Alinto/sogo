@@ -1,14 +1,15 @@
 /*
   Copyright (C) 2004-2005 SKYRIX Software AG
+  Copyright (C) 2006-2009 Inverse inc.
 
-  This file is part of OpenGroupware.org.
+  This file is part of SOGo
 
-  OGo is free software; you can redistribute it and/or modify it under
+  SOGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
   Free Software Foundation; either version 2, or (at your option) any
   later version.
 
-  OGo is distributed in the hope that it will be useful, but WITHOUT ANY
+  SOGo is distributed in the hope that it will be useful, but WITHOUT ANY
   WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
   License for more details.
@@ -459,21 +460,26 @@
 
 - (NSArray *) messages 
 {
+  NSMutableArray *unsortedMsgs;
+  NSMutableDictionary *map;
+  NSDictionary *msgs;
   NSArray *uids;
-  NSDictionary *msgs, *msg;
-  NSEnumerator *msgsList;
-  NSMutableArray *unsortedMsgs, *sortedMsgs;
+
+  unsigned len, i, count;
   NSRange r;
-  unsigned len, index;
   
   if (!messages)
     {
-      r    = [self fetchBlock];
+      r = [self fetchBlock];
       uids = [self sortedUIDs];
       len = [uids count];
+      
+      // only need to restrict if we have a lot
       if (len > r.length)
-	  /* only need to restrict if we have a lot */
+	{
 	  uids = [uids subarrayWithRange: r];
+	  len = [uids count];
+	}
 
       // Don't assume the IMAP server return the messages in the
       // same order as the specified list of UIDs (specially true for
@@ -481,17 +487,24 @@
       msgs = (NSDictionary *) [[self clientObject] fetchUIDs: uids
 						   parts: [self fetchKeys]];
       unsortedMsgs = [msgs objectForKey: @"fetch"];
-      sortedMsgs = [NSMutableArray arrayWithCapacity: [unsortedMsgs count]];
-      msgsList = [unsortedMsgs objectEnumerator];
-      while ( (msg = [msgsList nextObject]) )
+      count = [unsortedMsgs count];
+
+      messages = [NSMutableArray arrayWithCapacity: count];
+      
+      // We build our uid->message map from our FETCH response
+      map = [[NSMutableDictionary alloc] initWithCapacity: count];
+      
+      for (i = 0; i < count; i++)
+	[map setObject: [unsortedMsgs objectAtIndex: i]
+	     forKey: [[unsortedMsgs objectAtIndex: i] objectForKey: @"uid"]];
+      
+      for (i = 0; i < len; i++)
 	{
-	  index = [uids indexOfObject: [msg objectForKey: @"uid"]];
-	  if (index < [sortedMsgs count])
-	    [sortedMsgs insertObject: msg atIndex: index];
-	  else
-	    [sortedMsgs addObject: msg];
+	  [(NSMutableArray *)messages addObject: [map objectForKey: [uids objectAtIndex: i]]];
 	}
-      messages = [[NSArray arrayWithArray: sortedMsgs] retain];
+      
+      RELEASE(map);
+      RETAIN(messages);
     }
 
   return messages;
