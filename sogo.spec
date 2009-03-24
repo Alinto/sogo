@@ -222,11 +222,8 @@ if ! id sogo >& /dev/null; then /usr/sbin/adduser sogo > /dev/null 2>&1; fi
 /sbin/chkconfig --add sogod
 
 %preun
-if [ "$1" == "0" ]
-then
-  /sbin/chkconfig --del sogod
-  /sbin/service sogod stop > /dev/null 2>&1
-fi
+/sbin/chkconfig --del sogod
+/sbin/service sogod stop > /dev/null 2>&1
 
 %postun
 if test "$1" = "0"
