@@ -1,5 +1,9 @@
 2009-03-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
+	-takeValuesFromRequest:_rqinContext:_ctx]): ensure the values
+	meant to construct the custom recurrence rule are consistent.
+
 	* UI/Scheduler/UIxCalMainView.m: if the module settings key
 	exists, do not reset it.
 
