@@ -87,7 +87,6 @@
     }
  
   currentStartDate = [firStart copy];
-  [currentStartDate autorelease];
   ranges = [NSMutableArray array];
   byDayMask = [rrule byDayMask];
   i = 1;

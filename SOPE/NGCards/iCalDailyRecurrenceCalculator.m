@@ -80,7 +80,6 @@
     }
 
   currentStartDate = [firStart copy];
-  [currentStartDate autorelease];
   ranges = [NSMutableArray array];
   i = 1;
 
