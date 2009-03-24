@@ -94,15 +94,16 @@ iRANGE(2);
 
 - (id) init
 {
+  UIxDatePicker *datePicker;
+
   if ((self = [super init]))
     {
-      UIxDatePicker *datePicker;
-
       // We must instanciate a UIxDatePicker object to retrieve
       // the proper date format to use.
       datePicker = [[UIxDatePicker alloc] initWithContext: context];
       dateFormat = [datePicker dateFormat];
-      
+      [datePicker release];
+
       component = nil;
       componentCalendar = nil;
       [self setPrivacy: @"PUBLIC"];
@@ -127,8 +128,6 @@ iRANGE(2);
       repeat7 = nil;
       range1 = nil;
       range2 = nil;
-
-      [datePicker release];
     }
 
   return self;
@@ -167,7 +166,7 @@ iRANGE(2);
   [repeat7 release];
   [range1 release];
   [range2 release];
-  
+
   [component release];
   [componentCalendar release];
 
@@ -195,7 +194,7 @@ iRANGE(2);
 	[names appendFormat: @"%@,", [currentAttendee cn]];
       else
 	[names appendFormat: @"%@,", [currentAttendee rfc822Email]];
-	
+
       [emails appendFormat: @"%@,", [currentAttendee rfc822Email]];
       uid = [um getUIDForEmail: [currentAttendee rfc822Email]];
       if (uid != nil)
@@ -363,7 +362,12 @@ iRANGE(2);
 	[self setRange1: @"0"];
     }
   else
-    DESTROY(repeat);
+    {
+      DESTROY(repeat);
+      repeatType = @"0";
+      repeat1 = @"0";
+      repeat2 = @"1";
+    }
 }
 
 /* warning: we use this method which will be triggered by the template system
