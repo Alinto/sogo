@@ -21,6 +21,7 @@
 
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSUserDefaults.h>
 
 #import <NGObjWeb/WOResourceManager.h>
 
@@ -31,7 +32,18 @@
 
 #import "UIxPageFrame.h"
 
+static NSString *siteFavicon = nil;
+
 @implementation UIxPageFrame
+
++ (void) initialize
+{
+  NSUserDefaults *ud;
+
+  ud = [NSUserDefaults standardUserDefaults];
+  siteFavicon = [ud stringForKey: @"SOGoFaviconRelativeURL"];
+  [siteFavicon retain];
+}
 
 - (id) init
 {
@@ -166,6 +178,11 @@
 - (NSString *) bodyClasses
 {
   return (isPopup ? @"popup" : @"main");
+}
+
+- (NSString *) siteFavicon
+{
+  return (!siteFavicon ? [self urlForResourceFilename: @"sogo.ico"] : siteFavicon);
 }
 
 /* page based JavaScript */

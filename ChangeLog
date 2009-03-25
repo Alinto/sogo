@@ -1,5 +1,9 @@
 2009-03-25  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/Common/UIxPageFrame.m ([UIxPageFrame -siteFavicon]): new
+	method to allow the customization of the site favicon through the
+	user defaults SOGoFaviconRelativeURL.
+
 	* SoObjects/SOGo/SOGoUser.m ([SOGoUser -language]): must retain
 	the ivar language to avoid a crash if the language is retrieved
 	from the user agent header returned by the browser.
