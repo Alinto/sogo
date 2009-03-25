@@ -94,16 +94,18 @@ iRANGE(2);
 
 - (id) init
 {
+  UIxDatePicker *datePicker;
+
   if ((self = [super init]))
     {
-      UIxDatePicker *datePicker;
-
       // We must instanciate a UIxDatePicker object to retrieve
       // the proper date format to use.
       datePicker = [[UIxDatePicker alloc] initWithContext: context];
       dateFormat = [datePicker dateFormat];
-      
+      [datePicker release];
+
       component = nil;
+      componentCalendar = nil;
       [self setPrivacy: @"PUBLIC"];
       [self setIsCycleEndNever];
       componentOwner = @"";
@@ -126,8 +128,6 @@ iRANGE(2);
       repeat7 = nil;
       range1 = nil;
       range2 = nil;
-
-      [datePicker release];
     }
 
   return self;
@@ -166,8 +166,9 @@ iRANGE(2);
   [repeat7 release];
   [range1 release];
   [range2 release];
-  
+
   [component release];
+  [componentCalendar release];
 
   [super dealloc];
 }
@@ -180,10 +181,10 @@ iRANGE(2);
   NSString *uid;
   LDAPUserManager *um;
 
-  names = [NSMutableString new];
-  uids = [NSMutableString new];
-  emails = [NSMutableString new];
-  states = [NSMutableString new];
+  names = [NSMutableString string];
+  uids = [NSMutableString string];
+  emails = [NSMutableString string];
+  states = [NSMutableString string];
   um = [LDAPUserManager sharedUserManager];
 
   attendees = [[component attendees] objectEnumerator];
@@ -193,7 +194,7 @@ iRANGE(2);
 	[names appendFormat: @"%@,", [currentAttendee cn]];
       else
 	[names appendFormat: @"%@,", [currentAttendee rfc822Email]];
-	
+
       [emails appendFormat: @"%@,", [currentAttendee rfc822Email]];
       uid = [um getUIDForEmail: [currentAttendee rfc822Email]];
       if (uid != nil)
@@ -212,9 +213,6 @@ iRANGE(2);
 	      [emails substringToIndex: [emails length] - 1]);
       ASSIGN (attendeesStates, [states substringToIndex: [states length] - 1]);
     }
-
-  [names release];
-  [emails release];
 }
 
 - (void) _loadCategories
@@ -364,7 +362,12 @@ iRANGE(2);
 	[self setRange1: @"0"];
     }
   else
-    DESTROY(repeat);
+    {
+      DESTROY(repeat);
+      repeatType = @"0";
+      repeat1 = @"0";
+      repeat2 = @"1";
+    }
 }
 
 /* warning: we use this method which will be triggered by the template system
@@ -397,7 +400,7 @@ iRANGE(2);
 	  [self _loadAttendees];
 	  [self _loadRRules];
 
-	  [componentCalendar release];
+ 	  [componentCalendar release];
 	  componentCalendar = [co container];
 	  if ([componentCalendar isKindOfClass: [SOGoCalendarComponent class]])
 	    componentCalendar = [componentCalendar container];
@@ -1435,19 +1438,22 @@ RANGE(2);
       //
     case 0:
       {
-	[theRule setFrequency: iCalRecurrenceFrequenceDaily];
+	if ([[self repeat2] intValue] > 0)
+	  {
+	    [theRule setFrequency: iCalRecurrenceFrequenceDaily];
 
-	if ([[self repeat1] intValue] == 0)
-	  {
-	    [theRule setInterval: [self repeat2]];
-	  }
-	else
-	  {
-	    [theRule setByDayMask: (iCalWeekDayMonday
-				    |iCalWeekDayTuesday
-				    |iCalWeekDayWednesday
-				    |iCalWeekDayThursday
-				    |iCalWeekDayFriday)];
+	    if ([[self repeat1] intValue] == 0)
+	      {
+		[theRule setInterval: [self repeat2]];
+	      }
+	    else
+	      {
+		[theRule setByDayMask: (iCalWeekDayMonday
+					|iCalWeekDayTuesday
+					|iCalWeekDayWednesday
+					|iCalWeekDayThursday
+					|iCalWeekDayFriday)];
+	      }
 	  }
       }
       break;
@@ -1462,20 +1468,23 @@ RANGE(2);
       //  The list is separated by commas, like: 1,3,4
     case 1:
       {
-	NSArray *v;
-	int c, mask;
+	if ([[self repeat1] intValue] > 0)
+	  {
+	    NSArray *v;
+	    int c, mask;
 
-	[theRule setFrequency: iCalRecurrenceFrequenceWeekly];
-	[theRule setInterval: [self repeat1]];
+	    [theRule setFrequency: iCalRecurrenceFrequenceWeekly];
+	    [theRule setInterval: [self repeat1]];
 
-	v = [[self repeat2] componentsSeparatedByString: @","];
-	c = [v count];
-	mask = 0;
+	    v = [[self repeat2] componentsSeparatedByString: @","];
+	    c = [v count];
+	    mask = 0;
 
-	while (c--)
-	  mask |= 1 << ([[v objectAtIndex: c] intValue]);
+	    while (c--)
+	      mask |= 1 << ([[v objectAtIndex: c] intValue]);
 	
-	[theRule setByDayMask: mask];
+	    [theRule setByDayMask: mask];
+	  }
       }
       break;
       
@@ -1501,17 +1510,21 @@ RANGE(2);
       //
     case 2:
       {
-	[theRule setFrequency: iCalRecurrenceFrequenceMonthly];
-	[theRule setInterval: [self repeat1]];
+	if ([[self repeat1] intValue] > 0)
+	  {
+	    [theRule setFrequency: iCalRecurrenceFrequenceMonthly];
+	    [theRule setInterval: [self repeat1]];
 
-	// We recur on specific days...
-	if ([[self repeat2] intValue] == 1)
-	  {
-	    [theRule setNamedValue: @"bymonthday" to: [self repeat5]];
-	  }
-	else
-	  {
-	    // TODO
+	    // We recur on specific days...
+	    if ([[self repeat2] intValue] == 1
+		&& [[self repeat5] intValue] > 0)
+	      {
+		[theRule setNamedValue: @"bymonthday" to: [self repeat5]];
+	      }
+	    else
+	      {
+		// TODO
+	      }
 	  }
       }
       break;
@@ -1535,19 +1548,27 @@ RANGE(2);
     case 3:
     default:
       {
-	[theRule setFrequency: iCalRecurrenceFrequenceYearly];
-	[theRule setInterval: [self repeat1]];
+	if ([[self repeat1] intValue] > 0)
+	  {
+	    [theRule setFrequency: iCalRecurrenceFrequenceYearly];
+	    [theRule setInterval: [self repeat1]];
 
-	// We recur Every .. of ..
-	if ([[self repeat2] intValue] == 1)
-	  {
-	    // TODO
-	  }
-	else
-	  {
-	    [theRule setNamedValue: @"bymonthday"  to: [self repeat3]];
-	    [theRule setNamedValue: @"bymonth" 
-		     to: [NSString stringWithFormat: @"%d", ([[self repeat4] intValue]+1)]];
+	    // We recur Every .. of ..
+	    if ([[self repeat2] intValue] == 1)
+	      {
+		// TODO
+	      }
+	    else
+	      {
+		if ([[self repeat3] intValue] > 0
+		    && [[self repeat4] intValue] > 0)
+		  {
+		    [theRule setNamedValue: @"bymonthday"
+			     to: [self repeat3]];
+		    [theRule setNamedValue: @"bymonth" 
+			     to: [NSString stringWithFormat: @"%d", ([[self repeat4] intValue]+1)]];
+		  }
+	      }
 	  }
       }
       break;

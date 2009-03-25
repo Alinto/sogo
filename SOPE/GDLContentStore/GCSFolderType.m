@@ -10,11 +10,11 @@
 
   OGo is distributed in the hope that it will be useful, but WITHOUT ANY
   WARRANTY; without even the implied warranty of MERCHANTABILITY or
-  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+  FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
   License for more details.
 
   You should have received a copy of the GNU Lesser General Public
-  License along with OGo; see the file COPYING.  If not, write to the
+  License along with OGo; see the file COPYING. If not, write to the
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
@@ -39,148 +39,164 @@
 
 @implementation GCSFolderType
 
-- (id)initWithPropertyList:(id)_plist {
-  if ((self = [super init])) {
-    NSDictionary *plist = _plist;
-    
-    blobTablePattern  = [[plist objectForKey:@"blobTablePattern"] copy];
-    quickTablePattern = [[plist objectForKey:@"quickTablePattern"]copy];
-    
-    extractorClassName = 
-      [[plist objectForKey:@"extractorClassName"] copy];
-    // TODO: qualifier;
-    
-    fields = [[GCSFieldInfo fieldsForPropertyList:
-			      [plist objectForKey:@"fields"]] retain];
-  }
-  return self;
-}
-
-- (id)initWithContentsOfFile:(NSString *)_path {
-  NSDictionary *plist;
-  
-  plist = [NSDictionary dictionaryWithContentsOfFile:_path];
-  if (plist == nil) {
-    NSLog(@"ERROR(%s): could not read dictionary at path %@", 
-	  __PRETTY_FUNCTION__, _path);
-    [self release];
-    return nil;
-  }
-  return [self initWithPropertyList:plist];
-}
-
-+ (NGResourceLocator *)resourceLocator {
-  NGResourceLocator *loc;
-  
-  // TODO: fix me, GCS instead of OCS
-  loc = [NGResourceLocator resourceLocatorForGNUstepPath:
-			     @"OCSTypeModels"
-                           fhsPath:@"share/ocs"];
-  return loc;
-}
-
-+ (id)folderTypeWithName:(NSString *)_typeName {
++ (id) folderTypeWithName: (NSString *) _typeName
+{
   NSString *filename, *path;
+  GCSFolderType *folderType;
 
   // TODO: fix me, GCS instead of OCS
   filename = [_typeName stringByAppendingPathExtension:@"ocs"];
-  path     = [[self resourceLocator] lookupFileWithName:filename];
-  
-  if (path != nil)
-    return [[self alloc] initWithContentsOfFile:path];
+  path = [[self resourceLocator] lookupFileWithName: filename];
+ 
+  if (path)
+    {
+      folderType = [[self alloc] initWithContentsOfFile: path];
+      [folderType autorelease];
+    }
+  else
+    {
+      folderType = nil;
+      NSLog(@"ERROR(%s): did not find model for type: '%@'", 
+	    __PRETTY_FUNCTION__, _typeName);
+    }
 
-  NSLog(@"ERROR(%s): did not find model for type: '%@'", 
-	__PRETTY_FUNCTION__, _typeName);
-  return nil;
+  return folderType;
 }
 
-- (id)initWithFolderTypeName:(NSString *)_typeName {
-  // DEPRECATED
-  [self release];
-  return [[GCSFolderType folderTypeWithName:_typeName] retain];
+- (id) initWithPropertyList: (id) _plist
+{
+  NSDictionary *plist = _plist;
+ 
+  if ((self = [super init]))
+    {
+      blobTablePattern = [[plist objectForKey:@"blobTablePattern"] copy];
+      quickTablePattern = [[plist objectForKey:@"quickTablePattern"] copy];
+ 
+      extractorClassName = 
+	[[plist objectForKey: @"extractorClassName"] copy];
+      // TODO: qualifier;
+ 
+      fields = [[GCSFieldInfo fieldsForPropertyList:
+				[plist objectForKey:@"fields"]] retain];
+    }
+
+  return self;
 }
 
-- (void)dealloc {
-  [extractor          release];
+- (id) initWithContentsOfFile: (NSString *) _path
+{
+  NSDictionary *plist;
+ 
+  plist = [NSDictionary dictionaryWithContentsOfFile: _path];
+  if (plist)
+    [self initWithPropertyList: plist];
+  else
+    {
+      NSLog(@"ERROR(%s): could not read dictionary at path %@", 
+	    __PRETTY_FUNCTION__, _path);
+      [self release];
+      self = nil;
+    }
+
+  return self;
+}
+
++ (NGResourceLocator *) resourceLocator
+{
+  NGResourceLocator *loc;
+ 
+  // TODO: fix me, GCS instead of OCS
+  loc = [NGResourceLocator resourceLocatorForGNUstepPath:
+			     @"OCSTypeModels"
+			   fhsPath:@"share/ocs"];
+  return loc;
+}
+
+- (void) dealloc
+{
+  [extractor release];
   [extractorClassName release];
-  [blobTablePattern   release];
-  [quickTablePattern  release];
-  [fields             release];
-  [folderQualifier    release];
+  [blobTablePattern release];
+  [quickTablePattern release];
+  [fields release];
+  [folderQualifier release];
   [super dealloc];
 }
 
 /* operations */
 
-- (NSString *)blobTableNameForFolder:(GCSFolder *)_folder {
+- (NSString *) blobTableNameForFolder: (GCSFolder *) _folder
+{
   return [blobTablePattern 
-	      stringByReplacingVariablesWithBindings:_folder];
-}
-- (NSString *)quickTableNameForFolder:(GCSFolder *)_folder {
-  return [quickTablePattern
-	      stringByReplacingVariablesWithBindings:_folder];
+	   stringByReplacingVariablesWithBindings:_folder];
 }
 
-- (EOQualifier *)qualifierForFolder:(GCSFolder *)_folder {
-  NSArray      *keys;
+- (NSString *) quickTableNameForFolder: (GCSFolder *) _folder
+{
+  return [quickTablePattern
+	   stringByReplacingVariablesWithBindings:_folder];
+}
+
+- (EOQualifier *) qualifierForFolder: (GCSFolder *) _folder
+{
+  NSArray *keys;
   NSDictionary *bindings;
-  
+ 
   keys = [[folderQualifier allQualifierKeys] allObjects];
   if ([keys count] == 0)
     return folderQualifier;
 
   bindings = [_folder valuesForKeys:keys];
   return [folderQualifier qualifierWithBindings:bindings
-	                        requiresAllVariables:NO];
+			  requiresAllVariables:NO];
 }
 
 /* generating SQL */
 
-- (NSString *)sqlQuickCreateWithTableName:(NSString *)_tabName {
+- (NSString *) sqlQuickCreateWithTableName: (NSString *) _tabName
+{
   NSMutableString *sql;
   unsigned i, count;
-  
-  sql = [NSMutableString stringWithCapacity:512];
-  [sql appendString:@"CREATE TABLE "];
-  [sql appendString:_tabName];
-  [sql appendString:@" (\n"];
-
+ 
+  sql = [NSMutableString stringWithFormat: @"CREATE TABLE %@ (", _tabName];
   count = [fields count];
-  for (i = 0; i < count; i++) {
-    if (i > 0) [sql appendString:@",\n"];
-    
-    [sql appendString:@"  "];
-    [sql appendString:[[fields objectAtIndex:i] sqlCreateSection]];
-  }
-  
+  for (i = 0; i < count; i++)
+    {
+      if (i > 0) [sql appendString:@", "];
+      [sql appendFormat: @" %@", [[fields objectAtIndex:i] sqlCreateSection]];
+    }
   [sql appendString:@"\n)"];
-  
+ 
   return sql;
 }
 
 /* quick support */
 
-- (GCSFieldExtractor *)quickExtractor {
+- (GCSFieldExtractor *) quickExtractor
+{
   Class clazz;
-  
-  if (extractor != nil) {
-    return [extractor isNotNull]
-      ? extractor : (GCSFieldExtractor *)nil;
-  }
+  GCSFieldExtractor *quickExtractor;
 
-  clazz = extractorClassName
-    ? NSClassFromString(extractorClassName)
-    : [GCSFieldExtractor class];
-  if (clazz == Nil) {
-    [self logWithFormat:@"ERROR: did not find field extractor class!"];
-    return nil;
-  }
-  
-  if ((extractor = [[clazz alloc] init]) == nil) {
-    [self logWithFormat:@"ERROR: could not create field extractor of class %@",
-	    clazz];
-    return nil;
-  }
+  if (!extractor)
+    {
+      clazz = (extractorClassName
+	       ? NSClassFromString (extractorClassName)
+	       : [GCSFieldExtractor class]);
+      if (clazz)
+	{
+	  extractor = [clazz new];
+	  if (!extractor)
+	    [self logWithFormat:@"ERROR: could not create field extractor of class %@",
+		  clazz];
+	}
+      else
+	[self logWithFormat:@"ERROR: did not find field extractor class!"];
+    }
+  if ([extractor isNotNull])
+    quickExtractor = extractor;
+  else
+    quickExtractor = nil;
+ 
   return extractor;
 }
 
@@ -191,20 +207,21 @@
 
 /* description */
 
-- (NSString *)description {
+- (NSString *) description
+{
   NSMutableString *ms;
 
   ms = [NSMutableString stringWithCapacity:256];
   [ms appendFormat:@"<0x%p[%@]:", self, NSStringFromClass([self class])];
 
-  [ms appendFormat:@" blobtable='%@'",  blobTablePattern];
+  [ms appendFormat:@" blobtable='%@'", blobTablePattern];
   [ms appendFormat:@" quicktable='%@'", quickTablePattern];
-  [ms appendFormat:@" fields=%@",       fields];
-  [ms appendFormat:@" extractor=%@",    extractorClassName];
-  
+  [ms appendFormat:@" fields=%@", fields];
+  [ms appendFormat:@" extractor=%@", extractorClassName];
+ 
   if (folderQualifier)
     [ms appendFormat:@" qualifier=%@", folderQualifier];
-  
+ 
   [ms appendString:@">"];
   return ms;
 }

@@ -93,6 +93,7 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 - (NSUserDefaults *) userDefaults;
 - (NSUserDefaults *) userSettings;
 
+- (void) invalidateLanguage;
 - (NSString *) language;
 - (NSTimeZone *) timeZone;
 - (NSTimeZone *) serverTimeZone;

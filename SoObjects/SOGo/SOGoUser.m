@@ -280,6 +280,7 @@ _timeValue (NSString *key)
   [allEmails release];
   [currentPassword release];
   [cn release];
+  [language release];
   [super dealloc];
 }
 
@@ -465,7 +466,7 @@ _timeValue (NSString *key)
 	  if (values)
 	    {
 	      // See explanation in -language
-	      language = nil;
+	      [self invalidateLanguage];
 
 	      // Required parameters for the Web interface. This will trigger the
 	      // preferences to load so it's important to leave those calls here.
@@ -522,7 +523,7 @@ _timeValue (NSString *key)
 	  if (values)
 	    {
 	      // See explanation in -language
-	      language = nil;
+	      [self invalidateLanguage];
 
 	      // We propagate the loaded user settings to other sogod instances
 	      // which will cache them in SOGoCache (including for the instance
@@ -548,6 +549,11 @@ _timeValue (NSString *key)
   return (NSUserDefaults *) settings;
 }
 
+- (void) invalidateLanguage
+{
+  DESTROY(language);
+}
+
 - (NSString *) language
 {
   if (![language length])
@@ -558,6 +564,8 @@ _timeValue (NSString *key)
       // many times when the DB is down, causing a huge delay.
       if (![language length])
         language = [SOGoUser language];
+
+      [language retain];
     }
 
   return language;
@@ -740,7 +748,7 @@ _timeValue (NSString *key)
 
   [mailAccount setObject: identities forKey: @"identities"];
 
-  mailAccounts = [NSMutableArray new];
+  mailAccounts = [NSMutableArray array];
   [mailAccounts addObject: mailAccount];
 
   return mailAccounts;

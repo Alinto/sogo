@@ -1,8 +1,108 @@
+2009-03-25  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUser.m ([SOGoUser -language]): must retain
+	the ivar language to avoid a crash if the language is retrieved
+	from the user agent header returned by the browser.
+
+2009-03-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
+	-takeValuesFromRequest:_rqinContext:_ctx]): ensure the values
+	meant to construct the custom recurrence rule are consistent.
+
+	* UI/Scheduler/UIxCalMainView.m: if the module settings key
+	exists, do not reset it.
+
+2009-03-24  Ludovic Marcotte <lmarcotte@inverse.ca>
+
+	* UI/MailerUI/UIxMailListView.m
+	([UIxMailListView messages)]:
+	Adjusted the sort so it's a little bit faster
+	and correctly work in case the server returns us
+	the FETCH response in an order different that what
+	we asked for.
+
+2009-03-24  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUser.m ([SOGoUser -invalidateLanguage]):
+	new method to invalidate the language ivar.	
+
+	* UI/MainUI/SOGoRootPage.m ([SOGoRootPage -connectAction]): must
+	invalidate user's language ivar when it changes.
+
+	* SoObjects/SOGo/SOGoCache.m ([SOGoCache
+	-_userDefaultsHaveChanged:]): must invalidate the user's language
+	ivar when the defaults change.
+
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	([SOGoCalendarComponent
+	-sendEMailUsingTemplateNamed:forObject:previousObject:toAttendees:]):
+	no longer send a deletion notification to an attendee who already
+	declined the meeting.
+
+	* UI/MailPartViewers/UIxMailPartICalActions.m
+	([UIxMailPartICalActions -_eventObjectWithUID:forUser:]): when
+	looking for an event for a specific user, we now search into all
+	the user's calendar folders. 
+
+	* UI/MailPartViewers/UIxMailPartICalViewer.m
+	([UIxMailPartICalViewer -startCalendarDate]): new method that returns
+	the start date with the proper timezone.
+	([-endCalendarDate]): idem for the end date.
+	([-startDate]): new method that returns a formatted string of the
+	start date.
+	([-endDate]): idem for the end date. Also take care of all-day events.
+	([-startTime]): new method that returns a formatted string ot the
+	start time.
+	([-endTime]): idem for the end time.
+	([-isEndDateOnSameDay]): must subtract 1 second from end date when
+	it's a all-day event.
+
+2009-03-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
+	-_loadAttendees]): make use of autoreleased strings to avoid a leak.
+	([UIxComponentEditor -dealloc]): release componentCalendar.
+
+	* SoObjects/SOGo/SOGoUser.m ([SOGoUser
+	-_prepareDefaultMailAccounts]): return an autoreleased array to
+	avoid a leak.
+
+	* UI/Scheduler/UIxCalListingActions.m ([UIxCalListingActions
+	-initWithRequest:newRequest]): retain dateFormatter, since it is
+	released in -dealloc.
+	([UIxCalListingActions -dealloc]): do not release startDate and
+	endDate since they are not retained.
+
+2009-03-23  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	([SOGoAppointmentObject -_lookupEvent:forUID:]): when looking for
+	an event for a specific user, we now search into all the user's
+	calendar folders.
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder -lookupCalendarFoldersForUID:]): new
+	method that returns an array of a user's calendar folders
+	excluding the subscriptions.
+
+2009-03-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoGCSFolder.m ([SOGoGCSFolder
+	-subscribe:reallyDoinTheNamesOf:delegatedUsersfromMailInvitation:isMailInvitationinContext:localContext]):
+	when the user preferences didn't already contain a key matching
+	the current module name, the subscriptions would not work. We thus
+	create one if none exists yet.
+
+	* SoObjects/Contacts/SOGoContactFolders.m ([SOGoContactFolders
+	-appendSystemSources]): modified the return type and returns nil,
+	to match the new SOGoParentFolder definition of the method.
+	Otherwise, a confusion is created on the stack.
+
 2009-03-23  Ludovic Marcotte <lmarcotte@inverse.ca>
 
         * SoObjects/SOGo/SOGoUser.m:
 	Don't retain/release the language ivar.
-
 
 2009-03-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
@@ -79,8 +179,8 @@
 	* UI/MainUI/SOGoRootPage.m ([SOGoRootPage -version]): new method
 	that returns the application version.
 	
-	* iCalDateTime.m ([iCalDateTime -dateTime]): when not defined, the 
-	timezone is now guessed from the date of the current object.
+	* SOPE/NGCards/iCalDateTime.m ([iCalDateTime -dateTime]): when not
+	defined, the timezone is now guessed from the date of the current object.
 	
 2009-03-18  Ludovic Marcotte <lmarcotte@inverse.ca>
 

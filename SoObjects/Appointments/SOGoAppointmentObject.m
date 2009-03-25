@@ -173,28 +173,36 @@
 {
   SOGoAppointmentFolder *folder;
   SOGoAppointmentObject *object;
+  NSArray *folders;
+  NSEnumerator *e;
   NSString *possibleName;
 
-#warning Should call lookupCalendarFoldersForUIDs to search among all folders
-  folder = [container lookupCalendarFolderForUID: uid];
-  object = [folder lookupName: nameInContainer
-		   inContext: context acquire: NO];
-  if ([object isKindOfClass: [NSException class]])
+  object = nil;
+  folders = [container lookupCalendarFoldersForUID: uid];
+  e = [folders objectEnumerator];
+  while ( object == nil && (folder = [e nextObject]) )
     {
-      possibleName = [folder resourceNameForEventUID: eventUID];
-      if (possibleName)
+      object = [folder lookupName: nameInContainer
+		       inContext: context 
+		       acquire: NO];
+      if ([object isKindOfClass: [NSException class]])
 	{
-	  object = [folder lookupName: possibleName
-			   inContext: context acquire: NO];
-	  if ([object isKindOfClass: [NSException class]])
+	  possibleName = [folder resourceNameForEventUID: eventUID];
+	  if (possibleName)
+	    {
+	      object = [folder lookupName: possibleName
+			       inContext: context acquire: NO];
+	      if ([object isKindOfClass: [NSException class]])
+		object = nil;
+	    }
+	  else
 	    object = nil;
 	}
-      else
-	object = nil;
     }
 
   if (!object)
     {
+      folder = [container lookupCalendarFolderForUID: uid];
       object = [SOGoAppointmentObject objectWithName: nameInContainer
 				      inContainer: folder];
       [object setIsNew: YES];
@@ -281,8 +289,9 @@
       NSCalendarDate *currentId;
       NSString *calendarContent;
       int max, count;
-
-#warning Should call lookupCalendarFoldersForUIDs to search among all folders
+      
+      // Invitations are always written to the personal folder; it's not necessay
+      // to look into all folders of the user
       folder = [container lookupCalendarFolderForUID: theUID];
       object = [folder lookupName: nameInContainer
 		       inContext: context acquire: NO];
@@ -293,7 +302,7 @@
 	  else
 	    {
 	      calendar = [object calendar: NO secure: NO];
-
+	      
 	      // If recurrenceId is defined, remove the occurence from
 	      // the repeating event.
 	      occurences = [calendar events];
@@ -314,9 +323,9 @@
 	      // Add an date exception.
 	      event = (iCalRepeatableEntityObject*)[calendar firstChildWithTag: [object componentTag]];
 	      [event addToExceptionDates: recurrenceId];
-
+	      
 	      [event increaseSequence];
-
+	      
 	      // We generate the updated iCalendar file and we save it
 	      // in the database.
 	      calendarContent = [calendar versitString];

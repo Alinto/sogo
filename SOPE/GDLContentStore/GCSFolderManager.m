@@ -161,12 +161,11 @@ static NSLock *lock;
     GCSFolderType *typeObject;
     
     type       = [[types objectAtIndex:i] stringByDeletingPathExtension];
-    typeObject = [[GCSFolderType alloc] initWithFolderTypeName:type];
+    typeObject = [GCSFolderType folderTypeWithName: type];
     
     [self logWithFormat:@"  %@: %s", 
 	  type, [typeObject isNotNull] ? "OK" : "FAIL"];
-    [typeMap setObject:typeObject forKey:type];
-    [typeObject release];
+    [typeMap setObject: typeObject forKey:type];
   }
   
   return typeMap;

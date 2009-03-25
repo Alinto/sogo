@@ -164,7 +164,7 @@
   return item;
 }
 
-- (NSCalendarDate *) startTime
+- (NSCalendarDate *) startCalendarDate
 {
   NSCalendarDate *date;
   NSTimeZone *timeZone;
@@ -172,11 +172,21 @@
   date = [[self inEvent] startDate];
   timeZone = [[context activeUser] timeZone];
   [date setTimeZone: timeZone];
-
+  
   return date;
 }
 
-- (NSCalendarDate *) endTime
+- (NSString *) startDate
+{
+  return [[self dateFormatter] formattedDate: [self startCalendarDate]];
+}
+
+- (NSString *) startTime
+{
+  return [[self dateFormatter] formattedTime: [self startCalendarDate]];
+}
+
+- (NSCalendarDate *) endCalendarDate
 {
   NSCalendarDate *date;
   NSTimeZone *timeZone;
@@ -188,14 +198,35 @@
   return date;
 }
 
+- (NSString *) endDate
+{
+  NSCalendarDate *aDate;
+  if ([[self inEvent] isAllDay])
+    aDate = [[self endCalendarDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds:-1];
+  else
+    aDate = [self endCalendarDate];
+
+  return [[self dateFormatter] formattedDate: aDate];
+}
+
+- (NSString *) endTime
+{
+  return [[self dateFormatter] formattedTime: [self endCalendarDate]];
+}
+
 - (BOOL) isEndDateOnSameDay
 {
-  return [[self startTime] isDateOnSameDay:[self endTime]];
+  NSCalendarDate *aDate;
+  if ([[self inEvent] isAllDay])
+    aDate = [[self endCalendarDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds:-1];
+  else
+    aDate = [self endCalendarDate];
+  return [[self startCalendarDate] isDateOnSameDay: aDate];
 }
 
 - (NSTimeInterval) duration
 {
-  return [[self endTime] timeIntervalSinceDate:[self startTime]];
+  return [[self endCalendarDate] timeIntervalSinceDate:[self startCalendarDate]];
 }
 
 /* calendar folder support */

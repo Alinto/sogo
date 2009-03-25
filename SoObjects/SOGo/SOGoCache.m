@@ -416,10 +416,18 @@ static NSLock *lock;
 //
 - (void) _userDefaultsHaveChanged: (NSNotification *) theNotification
 {
+  SOGoUser *user;
   SOGoUserDefaults *defaults;
   NSString *uid;
 
   uid = [[theNotification userInfo] objectForKey: @"uid"];
+
+  // When the user defaults changed, we must invalidate the 
+  // ivar language for the user object.
+  user = [self userNamed: uid];
+  if (user)
+    [user invalidateLanguage];
+
   //NSLog(@"Updating user defaults for UID: %@", uid);
   defaults = (SOGoUserDefaults *)[self userDefaultsForLogin: uid];
   if (defaults)

@@ -1,3 +1,10 @@
+2009-03-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* GCSFolderType.m ([GCSFolderType +folderTypeWithName:_typeName]):
+	autorelease the returned GCSFolderType.
+	([GCSFolderType -initWithFolderTypeName:_path]): removed useless
+	method.
+
 2009-03-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* GCSChannelManager.m ([GCSChannelManager

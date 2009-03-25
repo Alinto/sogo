@@ -3608,6 +3608,23 @@ Index: sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m
  }
  
  static char *iconv_wrapper(id self, char *_src, unsigned _srcLen,
+Index: sope-core/NGExtensions/NGCalendarDateRange.m
+===================================================================
+--- sope-core/NGExtensions/NGCalendarDateRange.m	(revision 1632)
++++ sope-core/NGExtensions/NGCalendarDateRange.m	(working copy)
+@@ -50,6 +50,12 @@
+   return self;
+ }
+ 
++- (void)dealloc {
++  [self->startDate release];
++  [self->endDate release];
++  [super dealloc];
++}
++
+ /* NSCopying */
+ 
+ - (id)copyWithZone:(NSZone *)zone {
 Index: sope-core/NGExtensions/NGQuotedPrintableCoding.m
 ===================================================================
 --- sope-core/NGExtensions/NGQuotedPrintableCoding.m	(revision 1632)
@@ -3638,6 +3655,19 @@ Index: sope-core/NGExtensions/EOExt.subproj/EOGlobalID+Ext.m
  #import <EOControl/EOGlobalID.h>
  #import <Foundation/NSString.h>
  
+Index: sope-core/NGExtensions/ChangeLog
+===================================================================
+--- sope-core/NGExtensions/ChangeLog	(revision 1632)
++++ sope-core/NGExtensions/ChangeLog	(working copy)
+@@ -1,3 +1,8 @@
++2009-03-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
++
++	* NGCalendarDateRange.m ([NGCalendarDateRange -dealloc]): release
++	endDate and startDate.
++
+ 2008-03-11  Helge Hess  <helge.hess@opengroupware.org>
+ 
+ 	* FdExt.subproj/NSArray+enumerator.m: fixed for MacOS 10.5 (v4.7.201)
 Index: sope-core/NGStreams/GNUmakefile.preamble
 ===================================================================
 --- sope-core/NGStreams/GNUmakefile.preamble	(revision 1632)
@@ -3653,6 +3683,19 @@ Index: sope-core/NGStreams/GNUmakefile.preamble
  	-INGStreams		\
  	-I../NGExtensions	\
  	-I..
+Index: sope-xml/libxmlSAXDriver/ChangeLog
+===================================================================
+--- sope-xml/libxmlSAXDriver/ChangeLog	(revision 1632)
++++ sope-xml/libxmlSAXDriver/ChangeLog	(working copy)
+@@ -1,3 +1,8 @@
++2009-03-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
++
++	* libxmlSAXDriver.m (_startElement): autorelease "nsDict" when its
++	instantiated from a copy of "ns".
++
+ 2006-07-03  Helge Hess  <helge.hess@opengroupware.org>
+ 
+ 	* libXMLSaxDriver.m: fixed last changes for libFoundation (v4.5.24)
 Index: sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.h
 ===================================================================
 --- sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.h	(revision 1632)
@@ -3757,6 +3800,14 @@ Index: sope-xml/libxmlSAXDriver/libxmlSAXDriver.m
      
      ((xmlParserCtxtPtr)self->ctxt)->sax = NULL;
      xmlFreeParserCtxt(self->ctxt);
+@@ -872,6 +872,7 @@
+     }
+     
+     nsDict = [ns copy];
++    [nsDict autorelease];
+     [ns release];
+   }
+   
 Index: sope-appserver/mod_ngobjweb/config.c
 ===================================================================
 --- sope-appserver/mod_ngobjweb/config.c	(revision 1632)
@@ -3881,8 +3932,17 @@ Index: sope-appserver/NGObjWeb/ChangeLog
 ===================================================================
 --- sope-appserver/NGObjWeb/ChangeLog	(revision 1632)
 +++ sope-appserver/NGObjWeb/ChangeLog	(working copy)
-@@ -3,6 +3,11 @@
+@@ -1,3 +1,9 @@
++2009-03-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
++
++	* SoObjects/SoActionInvocation.m ([SoActionInvocation
++	-bindToObject:inContext:]): do not retain methodObject when
++	instantiated since it is not autoreleased.
++
+ 2008-12-11  Helge Hess  <helge.hess@opengroupware.org>
+ 
  	* WOHttpAdaptor/WOHttpAdaptor.m: properly embed threaded request
+@@ -3,4 +9,9 @@
  	  handler in a top-level pool (v4.7.27)
  
 +2008-09-01  Ludovic Marcotte  <lmarcotte@inverse.ca>
@@ -3892,7 +3952,6 @@ Index: sope-appserver/NGObjWeb/ChangeLog
 +
  2008-05-21  Sebastian Reitenbach  <reitenbach@rapideye.de>
  
- 	* WOHTTPURLHandle.m: add 'query' component of URL to request path
 Index: sope-appserver/NGObjWeb/DAVPropMap.plist
 ===================================================================
 --- sope-appserver/NGObjWeb/DAVPropMap.plist	(revision 1632)
@@ -4353,6 +4412,19 @@ Index: sope-appserver/NGObjWeb/SoObjects/SoObject.m
      }
    }
    
+Index: sope-appserver/NGObjWeb/SoObjects/SoActionInvocation.m
+===================================================================
+--- sope-appserver/NGObjWeb/SoObjects/SoActionInvocation.m	(revision 1632)
++++ sope-appserver/NGObjWeb/SoObjects/SoActionInvocation.m	(working copy)
+@@ -338,7 +338,7 @@
+   inv->actionName   = [self->actionName copy];
+   inv->argumentSpecifications = [self->argumentSpecifications copy];
+   
+-  inv->methodObject = [[inv instantiateMethodInContext:_ctx] retain];
++  inv->methodObject = [inv instantiateMethodInContext:_ctx];
+   if (inv->methodObject == nil) {
+     [self errorWithFormat:@"did not find method '%@'", [self actionClassName]];
+     return nil;
 Index: sope-appserver/NGObjWeb/SoObjects/SoObject+Traversal.m
 ===================================================================
 --- sope-appserver/NGObjWeb/SoObjects/SoObject+Traversal.m	(revision 1632)

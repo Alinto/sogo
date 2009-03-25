@@ -29,13 +29,6 @@
 
 @implementation UIxRecurrenceEditor
 
-- (id) defaultAction
-{
-  [[self parent] setToolbar: @""];
-
-  return self;
-}
-
 - (NSArray *) monthlyRepeatList
 {
   static NSArray *monthlyRepeatList = nil;
@@ -43,7 +36,7 @@
   if (!monthlyRepeatList)
     {
       monthlyRepeatList = [NSArray arrayWithObjects: @"First", @"Second", @"Third",
-				  @"Fourth", @"Fift", @"Last", nil];
+				   @"Fourth", @"Fift", @"Last", nil];
       [monthlyRepeatList retain];
     }
 

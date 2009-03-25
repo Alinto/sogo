@@ -10,6 +10,11 @@ OldAptStartTime: WOString {
   escapeHTML = NO;
 }
 
+IsNotOldAllDay: WOConditional {
+  condition = previousApt.isAllDay;
+  negate    = YES;
+}
+
 NewAptStartDate: WOString {
   value      = newStartDate;
   dateformat = "%d/%m/%y";
@@ -20,6 +25,11 @@ NewAptStartTime: WOString {
   value      = newStartDate;
   dateformat = "%H:%M";
   escapeHTML = NO;
+}
+
+IsNotNewAllDay: WOConditional {
+  condition = apt.isAllDay;
+  negate    = YES;
 }
 
 Organizer: WOString {

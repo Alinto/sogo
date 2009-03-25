@@ -57,7 +57,6 @@
 
 - (id)initWithPropertyList:(id)_plist;
 - (id)initWithContentsOfFile:(NSString *)_path;
-- (id)initWithFolderTypeName:(NSString *)_typeName;
 
 /* operations */
 

@@ -621,9 +621,6 @@ static NSArray *childRecordFields = nil;
   NSUserDefaults *ud;
   NSMutableDictionary *moduleSettings;
 
-  ud = [subscribingUser userSettings];
-  moduleSettings = [ud objectForKey: [container nameInContainer]];
-
   if ([owner isEqualToString: [subscribingUser login]])
     {
       [response setStatus: 403];
@@ -632,6 +629,15 @@ static NSArray *childRecordFields = nil;
     }
   else
     {
+      ud = [subscribingUser userSettings];
+      moduleSettings = [ud objectForKey: [container nameInContainer]];
+      if (!(moduleSettings
+	    && [moduleSettings isKindOfClass: [NSMutableDictionary class]]))
+	{
+	  moduleSettings = [NSMutableDictionary dictionary];
+	  [ud setObject: moduleSettings forKey: [container nameInContainer]];
+	}
+
       folderSubscription
 	= [moduleSettings objectForKey: @"SubscribedFolders"];
       if (!(folderSubscription

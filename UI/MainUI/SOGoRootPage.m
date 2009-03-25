@@ -96,6 +96,7 @@ static NSArray *supportedLanguages = nil;
 	  user = [SOGoUser userWithLogin: userName roles: nil];
 	  [[user userDefaults] setObject: language forKey: @"Language"];
 	  [[user userDefaults] synchronize];
+	  [user invalidateLanguage];
 	}
     }
   else

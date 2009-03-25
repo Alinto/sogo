@@ -40,9 +40,6 @@
 
 #import <Appointments/SOGoAppointmentFolder.h>
 
-static NSMutableArray *monthMenuItems = nil;
-static NSMutableArray *yearMenuItems = nil;
-
 @implementation UIxCalMainView
 
 - (void) _setupContext
@@ -60,24 +57,22 @@ static NSMutableArray *yearMenuItems = nil;
   moduleSettings = [ud objectForKey: module];
   if (!moduleSettings)
     {
-      moduleSettings = [NSMutableDictionary new];
-      [moduleSettings autorelease];
+      moduleSettings = [NSMutableDictionary dictionary];
+      [ud setObject: moduleSettings forKey: module];
     }
-  [ud setObject: moduleSettings forKey: module];
 }
 
 - (NSArray *) monthMenuItems
 {
+  static NSMutableArray *monthMenuItems = nil;
   unsigned int count;
  
   if (!monthMenuItems)
     {
-      monthMenuItems = [NSMutableArray arrayWithCapacity: 12];
-      
+      monthMenuItems = [[NSMutableArray alloc] initWithCapacity: 12];
       for (count = 1; count < 13; count++)
         [monthMenuItems addObject:
                           [NSString stringWithFormat: @"%.2d", count]];
-      [monthMenuItems retain];
     }
 
   return monthMenuItems;
@@ -100,15 +95,15 @@ static NSMutableArray *yearMenuItems = nil;
 
 - (NSArray *) yearMenuItems
 {
+  static NSMutableArray *yearMenuItems = nil;
   int count, year;
  
   if (!yearMenuItems)
     {
       year = [[NSCalendarDate date] yearOfCommonEra];
-      yearMenuItems = [NSMutableArray arrayWithCapacity: 11];
+      yearMenuItems = [[NSMutableArray alloc] initWithCapacity: 11];
       for (count = -5; count < 6; count++)
         [yearMenuItems addObject: [NSNumber numberWithInt: year + count]];
-      [yearMenuItems retain];
     }
 
   return yearMenuItems;

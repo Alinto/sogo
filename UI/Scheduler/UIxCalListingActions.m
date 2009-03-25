@@ -90,7 +90,7 @@ static NSArray *tasksFields = nil;
       endDate = nil;
       ASSIGN (request, newRequest);
       user = [[self context] activeUser];
-      dateFormatter = [user dateFormatterInContext: context];
+      ASSIGN (dateFormatter, [user dateFormatterInContext: context]);
       ASSIGN (userTimeZone, [user timeZone]);
       dayBasedView = NO;
     }
@@ -103,8 +103,6 @@ static NSArray *tasksFields = nil;
   [dateFormatter release];
   [request release];
   [componentsData release];
-  [startDate release];
-  [endDate release];
   [userTimeZone release];
   [super dealloc];
 }

@@ -1,0 +1,29 @@
+Index: sope-appserver/NGObjWeb/WOCoreApplication.m
+===================================================================
+--- sope-appserver/NGObjWeb/WOCoreApplication.m	(révision 1632)
++++ sope-appserver/NGObjWeb/WOCoreApplication.m	(copie de travail)
+@@ -157,6 +157,10 @@
+     NSUserDefaults  *ud;
+     NGLoggerManager *lm;
+ 
++    GSDebugAllocationActive (YES);
++    GSDebugAllocationList (NO);
++
++// GSDebugAllocationActiveRecordingObjects
+     [self registerUserDefaults];
+     ud               = [NSUserDefaults standardUserDefaults];
+     lm               = [NGLoggerManager defaultLoggerManager];
+@@ -535,10 +539,12 @@
+       
+       if ([self isTerminating])
+         break;
+-      
++
+       [self activateApplication];
+       [loop runMode:NSDefaultRunLoopMode beforeDate:limitDate];
+       [self deactivateApplication];
++
++      NSLog (@"allocated classes:\n%s", GSDebugAllocationList (YES));
+     }
+     
+     [pool release];

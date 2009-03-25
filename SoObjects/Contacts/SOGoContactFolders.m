@@ -50,7 +50,7 @@
   return [SOGoContactGCSFolder class];
 }
 
-- (void) appendSystemSources
+- (NSException *) appendSystemSources
 {
   LDAPUserManager *um;
   NSEnumerator *sourceIDs;
@@ -68,6 +68,8 @@
       [currentFolder setLDAPSource: [um sourceWithID: currentSourceID]];
       [subFolders setObject: currentFolder forKey: currentSourceID];
     }
+
+  return nil;
 }
 
 - (NSString *) defaultFolderName
