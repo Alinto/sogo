@@ -1,3 +1,9 @@
+2009-03-25  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUser.m ([SOGoUser -language]): must retain
+	the ivar language to avoid a crash if the language is retrieved
+	from the user agent header returned by the browser.
+
 2009-03-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
