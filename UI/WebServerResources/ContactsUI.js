@@ -530,7 +530,6 @@ function onFolderSelectionChange(event) {
   }
   else {
     search = {};
-    sorting = {};
     $("searchValue").value = "";
     initCriteria();
     openContactsFolder(nodes[0].getAttribute("id"));
