@@ -253,19 +253,50 @@ function onUnload(event) {
 	return true;
 }
 
-/* bulk delete of messages */
-
 function onDocumentKeydown(event) {
-  var e = event || window.event;
-	var target = getTarget(event);
-	if ((e.keyCode == Event.KEY_DELETE
-			 || (e.keyCode == Event.KEY_BACKSPACE
-					 && isMac()))
-			&& target.tagName != "INPUT") {
-		deleteSelectedMessages();
-		Event.stop(event);
-	}
+	var target = Event.element(event);
+	if (target.tagName != "INPUT")
+		if (event.keyCode == Event.KEY_DELETE ||
+				event.keyCode == Event.KEY_BACKSPACE && isMac()) {
+			deleteSelectedMessages();
+			Event.stop(event);
+		}
+		else if (event.keyCode == Event.KEY_DOWN ||
+						 event.keyCode == Event.KEY_UP) {
+			if (Mailer.currentMessages[Mailer.currentMailbox]) {
+				var row = $("row_" + Mailer.currentMessages[Mailer.currentMailbox]);
+				var nextRow;
+				if (event.keyCode == Event.KEY_DOWN)
+					nextRow = row.next("tr");
+				else
+					nextRow = row.previous("tr");
+				if (nextRow) {
+					Mailer.currentMessages[Mailer.currentMailbox] = nextRow.getAttribute("id").substr(4);
+					row.up().deselectAll();
+					
+					// Adjust the scollbar
+					var viewPort = $("mailboxContent");
+					var divDimensions = viewPort.getDimensions();
+					var rowScrollOffset = nextRow.cumulativeScrollOffset();
+					var rowPosition = nextRow.positionedOffset();
+					var divBottom = divDimensions.height + rowScrollOffset.top;
+					var rowBottom = rowPosition.top + nextRow.getHeight();
+
+					if (divBottom < rowBottom)
+						viewPort.scrollTop += rowBottom - divBottom;
+					else if (rowScrollOffset.top > rowPosition.top)
+						viewPort.scrollTop -= rowScrollOffset.top - rowPosition.top;
+					
+					// Select and load the next message
+					nextRow.selectElement();
+					loadMessage(Mailer.currentMessages[Mailer.currentMailbox]);
+				}
+				Event.stop(event);
+			}
+		}
 }
+
+/* bulk delete of messages */
 
 function deleteSelectedMessages(sender) {
   var messageList = $("messageList").down("TBODY");
@@ -445,7 +476,7 @@ function onMailboxTreeItemClick(event) {
       head.rows[1].firstChild.update();
   }
   else
-    openMailbox(mailbox);
+    openMailbox(mailbox); // FRANCIS: don't update folder status?
    
   Event.stop(event);
 }
@@ -845,22 +876,23 @@ function onMessageSelectionChange() {
 
 function loadMessage(idx) {
   if (document.messageAjaxRequest) {
+		log ("aborting message request");
     document.messageAjaxRequest.aborted = true;
     document.messageAjaxRequest.abort();
   }
 
+	var div = $('messageContent');
   var cachedMessage = getCachedMessage(idx);
 	var row = $("row_" + idx);
 	var seenStateChanged = row && row.hasClassName('mailer_unreadmail');
   if (cachedMessage == null) {
     var url = (ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/"
 							 + idx + "/view?noframe=1");
-    document.messageAjaxRequest
-      = triggerAjaxRequest(url, messageCallback, idx);
+		div.update();
+    document.messageAjaxRequest = triggerAjaxRequest(url, messageCallback, idx);
 		markMailInWindow(window, idx, true);
   }
 	else {
-    var div = $('messageContent');
     div.update(cachedMessage['text']);
     cachedMessage['time'] = (new Date()).getTime();
     document.messageAjaxRequest = null;
