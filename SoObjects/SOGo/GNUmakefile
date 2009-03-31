@@ -25,11 +25,13 @@ SOGo_HEADER_FILES = \
 	SOGoObject.h			\
 	SOGoContentObject.h		\
 	SOGoFolder.h			\
+	SOGoGCSFolder.h			\
 	SOGoParentFolder.h		\
 	SOGoUserFolder.h		\
 	\
 	LDAPUserManager.h		\
 	LDAPSource.h			\
+	SOGoUserDefaults.h		\
 	SOGoDateFormatter.h		\
 	SOGoPermissions.h		\
 	iCalEntityObject+Utilities.h	\
@@ -47,6 +49,7 @@ SOGo_HEADER_FILES = \
 	NSString+Utilities.h		\
 	NSURL+DAV.h			\
 	\
+	SOGoAuthenticator.h		\
 	SOGoDAVAuthenticator.h		\
 	SOGoWebAuthenticator.h		\
 	SOGoWebDAVAclManager.h		\
