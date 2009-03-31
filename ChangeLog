@@ -1,3 +1,9 @@
+2009-03-31  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Scheduler/UIxCalListingActions.m ([UIxCalListingActions
+	_fetchFieldsforComponentOfType:]): the method _fixDates must be
+	called even for the month view.
+
 2009-03-25  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Common/UIxPageFrame.m ([UIxPageFrame -siteFavicon]): new

@@ -325,10 +325,9 @@ static NSArray *tasksFields = nil;
 		       forKey: @"c_owner"];
 	      if (![[newInfo objectForKey: @"c_title"] length])
 		[self _fixComponentTitle: newInfo withType: component];
-	      if (dayBasedView)
-		// Possible improvement: only call _fixDates if event is recurrent
-		// or the view range span a daylight saving time change
-		[self _fixDates: newInfo];
+	      // Possible improvement: only call _fixDates if event is recurrent
+	      // or the view range span a daylight saving time change
+	      [self _fixDates: newInfo];
 	      [infos addObject: [newInfo objectsForKeys: fields
 					 notFoundMarker: marker]];
 	    }
