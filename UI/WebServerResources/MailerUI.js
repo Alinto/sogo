@@ -1486,7 +1486,10 @@ function initMailer(event) {
     initMailboxTree();
     initMessageCheckTimer();
 		
-		Event.observe(document, "keydown", onDocumentKeydown);
+		if (Prototype.Browser.Gecko)
+			Event.observe(document, "keypress", onDocumentKeydown); // for FF2
+		else
+			Event.observe(document, "keydown", onDocumentKeydown);
 
 		/* Perform an expunge when leaving the webmail */
 		if (isSafari()) {

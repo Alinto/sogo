@@ -8,7 +8,8 @@ var usersRightsWindowWidth = 450;
 
 var Contact = {
  currentAddressBook: null,
- currentContact: null
+ currentContact: null,
+ deleteContactsRequestCount: null
 };
 
 function validateEditorInput(sender) {
@@ -442,6 +443,7 @@ function onToolbarDeleteSelectedContacts(event) {
         delete cachedContacts[Contact.currentAddressBook + "/" + rows[i]];
         var urlstr = (URLForFolderID(Contact.currentAddressBook) + "/"
                       + rows[i] + "/delete");
+				Contact.deleteContactsRequestCount++;
         triggerAjaxRequest(urlstr, onContactDeleteEventCallback,
                            rows[i]);
       }
@@ -458,13 +460,27 @@ function onContactDeleteEventCallback(http) {
   if (http.readyState == 4) {
     if (isHttpStatus204(http.status)) {
       var row = $(http.callbackData);
-      row.parentNode.removeChild(row);
-      if (Contact.currentContact == http.callbackData)
+      if (Contact.currentContact == http.callbackData) {
 				$("contactView").update();
+				Contact.currentContact = null;
+			}
+			Contact.deleteContactsRequestCount--;
+      if (Contact.deleteContactsRequestCount == 0) {
+				var nextRow = row.next("tr");
+				if (!nextRow)
+					nextRow = row.previous("tr");
+				if (nextRow) {
+					Contact.currentContact = nextRow.getAttribute("id");
+					nextRow.selectElement();
+					loadContact(Contact.currentContact);
+				}
+			}
+			row.parentNode.removeChild(row);
     }
     else if (parseInt(http.status) == 403) {
       var row = $(http.callbackData);
       var displayName = row.down("TD.displayName").firstChild.nodeValue.trim();
+			Contact.deleteContactsRequestCount--;
       window.alert(labels["You cannot delete the card of \"%{0}\"."].formatted(displayName));
     }
   }
@@ -995,10 +1011,56 @@ function onWindowResize(event) {
 		handle.adjust();
 }
 
+function onDocumentKeydown(event) {
+	var target = Event.element(event);
+	if (target.tagName != "INPUT")
+		if (event.keyCode == Event.KEY_DELETE ||
+				event.keyCode == Event.KEY_BACKSPACE && isMac()) {
+			onToolbarDeleteSelectedContacts();
+			Event.stop(event);
+		}
+		else if (event.keyCode == Event.KEY_DOWN ||
+						 event.keyCode == Event.KEY_UP) {
+			if (Contact.currentContact) {
+				var row = $(Contact.currentContact);
+				var nextRow;
+				if (event.keyCode == Event.KEY_DOWN)
+					nextRow = row.next("tr");
+				else
+					nextRow = row.previous("tr");
+				if (nextRow) {
+					row.up().deselectAll();
+					
+					// Adjust the scollbar
+					var viewPort = $("contactsListContent");
+					var divDimensions = viewPort.getDimensions();
+					var rowScrollOffset = nextRow.cumulativeScrollOffset();
+					var rowPosition = nextRow.positionedOffset();
+					var divBottom = divDimensions.height + rowScrollOffset.top;
+					var rowBottom = rowPosition.top + nextRow.getHeight();
+
+					if (divBottom < rowBottom)
+						viewPort.scrollTop += rowBottom - divBottom;
+					else if (rowScrollOffset.top > rowPosition.top)
+						viewPort.scrollTop -= rowScrollOffset.top - rowPosition.top;
+					
+					// Select and load the next message
+					nextRow.selectElement();
+					loadContact(nextRow.readAttribute("id"));
+				}
+				Event.stop(event);
+			}
+		}
+}
+
 function initContacts(event) {
   if ($(document.body).hasClassName("popup"))
     configureSelectionButtons();
-  configureAbToolbar();
+	else if (Prototype.Browser.Gecko)
+		Event.observe(document, "keypress", onDocumentKeydown); // for FF2
+	else
+		Event.observe(document, "keydown", onDocumentKeydown);
+	configureAbToolbar();
   configureAddressBooks();
   updateAddressBooksMenus();
   //     initDnd();
@@ -1014,7 +1076,7 @@ function initContacts(event) {
 	
 	onWindowResize.defer();
 	Event.observe(window, "resize", onWindowResize);
-
+	
   // Default sort options
   sorting["attribute"] = "c_cn";
   sorting["ascending"] = true;

@@ -758,7 +758,7 @@ function initLogConsole() {
 }
 
 function onBodyKeyDown(event) {
-	if (event.keyCode == 27) {
+	if (event.keyCode == Event.KEY_ESC) {
 		toggleLogConsole();
 		preventDefault(event);
 	}
