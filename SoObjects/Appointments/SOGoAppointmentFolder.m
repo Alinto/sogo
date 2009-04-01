@@ -83,8 +83,6 @@ static NGLogger *logger = nil;
 static NSNumber *sharedYes = nil;
 static NSArray *reportQueryFields = nil;
 
-static Class sogoAppointmentFolderKlass = Nil;
-
 + (void) initialize
 {
   NGLoggerManager *lm;
@@ -94,11 +92,7 @@ static Class sogoAppointmentFolderKlass = Nil;
   if (didInit) return;
   didInit = YES;
   
-  if (!sogoAppointmentFolderKlass)
-    {
-      sogoAppointmentFolderKlass = self;
-      [iCalEntityObject initializeSOGoExtensions];
-    }
+  [iCalEntityObject initializeSOGoExtensions];
 
   if (!reportQueryFields)
     reportQueryFields = [[NSArray alloc] initWithObjects: @"c_name",
