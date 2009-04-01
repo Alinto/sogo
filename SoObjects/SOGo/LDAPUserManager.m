@@ -19,7 +19,6 @@
  * the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSDistributedNotificationCenter.h>
@@ -430,7 +429,7 @@ static NSLock *lock = nil;
       [d setObject: [newUser objectForKey: @"c_uid"]
 	 forKey: @"uid"];
       
-      [[NSDistributedNotificationCenter defaultCenter]
+      [(NSDistributedNotificationCenter *)[NSDistributedNotificationCenter defaultCenter]
 	postNotificationName: @"SOGoUserAttributesHaveLoaded"
 	object: nil
 	userInfo: d

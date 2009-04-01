@@ -47,6 +47,8 @@
 #import "SOGoUserDefaults.h"
 #import "SOGoUserFolder.h"
 
+#import "../../Main/SOGo.h"
+
 #import "SOGoUser.h"
 
 static NSTimeZone *serverTimeZone = nil;
@@ -490,7 +492,7 @@ _timeValue (NSString *key)
 	      [[SOGoCache sharedCache] setDefaults: defaults
 				       forLogin: login key: @"defaults"];
 
-	      [[NSDistributedNotificationCenter defaultCenter]
+	      [(NSDistributedNotificationCenter *)[NSDistributedNotificationCenter defaultCenter]
 		postNotificationName: @"SOGoUserDefaultsHaveLoaded"
 		object: nil
 		userInfo: d
@@ -535,7 +537,7 @@ _timeValue (NSString *key)
 
 	      [[SOGoCache sharedCache] setDefaults: settings  forLogin: login  key: @"settings"];
 	  
-	      [[NSDistributedNotificationCenter defaultCenter]
+	      [(NSDistributedNotificationCenter *)[NSDistributedNotificationCenter defaultCenter]
 		postNotificationName: @"SOGoUserSettingsHaveLoaded"
 		object: nil
 		userInfo: d

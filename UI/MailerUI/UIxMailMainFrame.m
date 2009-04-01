@@ -1,14 +1,15 @@
 /*
+  Copyright (C) 2007-2009 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
-  This file is part of OpenGroupware.org.
+  This file is part of SOGo.
 
-  OGo is free software; you can redistribute it and/or modify it under
+  SOGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
   Free Software Foundation; either version 2, or (at your option) any
   later version.
 
-  OGo is distributed in the hope that it will be useful, but WITHOUT ANY
+  SOGo is distributed in the hope that it will be useful, but WITHOUT ANY
   WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
   License for more details.
@@ -43,6 +44,15 @@
 #import <SOGoUI/UIxComponent.h>
 
 #import "UIxMailMainFrame.h"
+
+// Avoid compilation warnings
+@interface SOGoUserFolder (private)
+
+- (SOGoAppointmentFolders *) privateContacts: (NSString *) key
+				   inContext: (WOContext *) localContext;
+
+@end
+
 
 @implementation UIxMailMainFrame
 
@@ -171,8 +181,8 @@
     {
       // Retrieve the email addresses from the specified address book
       // and contact IDs
-      folders = [[[self clientObject] container] privateContacts: @"Contacts"
-						 inContext: nil];
+      folders = (SOGoContactFolders *)[[[self clientObject] container] privateContacts: @"Contacts"
+								       inContext: nil];
       folder = [folders lookupName: folderId
 			inContext: nil
 			acquire: NO];
@@ -266,7 +276,7 @@
    [self _setupContext];
    vertical = [moduleSettings objectForKey: @"DragHandleVertical"];
    
-   return ((vertical && [vertical intValue] > 0) ? [vertical stringByAppendingFormat: @"px"] : nil);
+   return ((vertical && [vertical intValue] > 0) ? (id)[vertical stringByAppendingFormat: @"px"] : nil);
 }
 
 - (NSString *) horizontalDragHandleStyle
@@ -276,7 +286,7 @@
    [self _setupContext];
    horizontal = [moduleSettings objectForKey: @"DragHandleHorizontal"];
 
-   return ((horizontal && [horizontal intValue] > 0) ? [horizontal stringByAppendingFormat: @"px"] : nil);
+   return ((horizontal && [horizontal intValue] > 0) ? (id)[horizontal stringByAppendingFormat: @"px"] : nil);
 }
 
 - (NSString *) mailboxContentStyle
@@ -286,7 +296,7 @@
    [self _setupContext];
    height = [moduleSettings objectForKey: @"DragHandleVertical"];
 
-   return ((height && [height intValue] > 0) ? [NSString stringWithFormat: @"%ipx", ([height intValue] - 27)] : nil);
+   return ((height && [height intValue] > 0) ? (id)[NSString stringWithFormat: @"%ipx", ([height intValue] - 27)] : nil);
 }
 
 - (WOResponse *) saveDragHandleStateAction

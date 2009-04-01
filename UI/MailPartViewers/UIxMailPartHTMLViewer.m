@@ -1,6 +1,6 @@
 /* UIxMailPartHTMLViewer.m - this file is part of SOGo
  *
- * Copyright (C) 2007, 2008 Inverse inc.
+ * Copyright (C) 2007-2009 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -142,7 +142,7 @@ _xmlCharsetForCharset (NSString *charset)
   return hasExternalImages;
 }
 
-- (BOOL) setUnsafe: (BOOL) b
+- (void) setUnsafe: (BOOL) b
 {
   unsafe = b;
 }

@@ -104,6 +104,11 @@
 - (NSException *) moveToFolderNamed: (NSString *) folderName
                           inContext: (id)_ctx;
 
+- (void) addRequiredKeysOfStructure: (NSDictionary *) info
+			       path: (NSString *) p
+			    toArray: (NSMutableArray *) keys
+		      acceptedTypes: (NSArray *) types;
+
 @end
 
 #endif /* __Mailer_SOGoMailObject_H__ */

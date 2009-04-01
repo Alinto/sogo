@@ -1,6 +1,6 @@
 /* NSObject+CardDAV.m - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse inc.
+ * Copyright (C) 2007-2009 Inverse inc.
  *
  * Author: Ludovic Marcotte <ludovic@inverse.ca>
  *
@@ -52,15 +52,15 @@
   for (count = 0; count < max; count++)
     {
       currentFilter = [filters objectAtIndex: count];
-      contacts = [[self lookupContactsWithFilter: [[currentFilter allValues] lastObject]
-			sortBy: @"c_givenname"
-			ordering: NSOrderedDescending]
+      contacts = [[(id<SOGoContactFolder>)self lookupContactsWithFilter: [[currentFilter allValues] lastObject]
+					  sortBy: @"c_givenname"
+					  ordering: NSOrderedDescending]
 		   objectEnumerator];
       
       while ((contact = [contacts nextObject]))
-	[self appendObject: contact
-	      withBaseURL: baseURL
-	      toREPORTResponse: response];
+	[(id<SOGoContactFolder>)self appendObject: contact
+				withBaseURL: baseURL
+				toREPORTResponse: response];
     }
 }
 
@@ -86,7 +86,7 @@
 
   parentNode = [filterElement parentNode];
 
-  if ([[parentNode tagName] isEqualToString: @"filter"]
+  if ([[(id)parentNode tagName] isEqualToString: @"filter"]
       && [self _isValidFilter: [filterElement attribute: @"name"]])
     {
       ranges = [filterElement getElementsByTagName: @"text-match"];
@@ -113,8 +113,8 @@
 
   filters = [NSMutableArray array];
 
-  children = [[parentNode getElementsByTagName: @"prop-filter"]
-	       objectEnumerator];
+  children = [(NSArray *)[parentNode getElementsByTagName: @"prop-filter"]
+			 objectEnumerator];
   while ((node = [children nextObject]))
     {
       filter = [self _parseContactFilter: node];

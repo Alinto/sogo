@@ -112,7 +112,7 @@ static BOOL debugOn = NO;
   id obj;
   
   if (pathToPart != nil)
-    return [pathToPart isNotNull] ? pathToPart : nil;
+    return ([pathToPart isNotNull] ? (id)pathToPart : nil);
   
   p = [[NSMutableArray alloc] initWithCapacity:8];
   for (obj = self; [obj isKindOfClass:[SOGoMailBodyPart class]]; 
@@ -128,7 +128,7 @@ static BOOL debugOn = NO;
 - (NSString *) bodyPartIdentifier
 {
   if (identifier != nil)
-    return [identifier isNotNull] ? identifier : nil;
+    return ([identifier isNotNull] ? (id)identifier : nil);
   
   identifier =
     [[[self bodyPartPath] componentsJoinedByString:@"."] copy];

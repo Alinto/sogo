@@ -34,6 +34,8 @@
 #import <SoObjects/SOGo/SOGoDateFormatter.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 
+#import "../../Main/SOGo.h"
+
 #import "UIxCalDayTable.h"
 
 @class SOGoAppointment;

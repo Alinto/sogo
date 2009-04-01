@@ -1,16 +1,15 @@
 /*
   Copyright (C) 2004-2005 SKYRIX Software AG
+  Copyright (C) 2008-2009 Inverse inc.
 
-  Copyright (C) 2008 Inverse inc.
+  This file is part of SOGo.
 
-  This file is part of OpenGroupware.org.
-
-  OGo is free software; you can redistribute it and/or modify it under
+  SOGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
   Free Software Foundation; either version 2, or (at your option) any
   later version.
 
-  OGo is distributed in the hope that it will be useful, but WITHOUT ANY
+  SOGo is distributed in the hope that it will be useful, but WITHOUT ANY
   WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
   License for more details.
@@ -52,7 +51,7 @@
 /*
   UIxMailEditor
   
-  An mail editor component which works on SOGoDraftObject's.
+  A mail editor component which works on SOGoDraftObject's.
 */
 
 @interface UIxMailEditor : UIxComponent

@@ -166,7 +166,7 @@
 
 	      recurrenceTime = [NSString stringWithFormat: @"%f", 
 					 [[emailEvent recurrenceId] timeIntervalSince1970]];
-	      calendarEvent = [*eventObject lookupOccurence: recurrenceTime];
+	      calendarEvent = (iCalEvent *)[*eventObject lookupOccurence: recurrenceTime];
 	    }
 	  else
 	    calendarEvent = (iCalEvent *) [*eventObject component: NO
@@ -223,7 +223,7 @@
 	{
 	  // We must update main event and all its occurences (if any).
 	  calendar = [eventObject calendar: NO secure: NO];
-	  event = [calendar firstChildWithTag: [eventObject componentTag]];
+	  event = (iCalEvent *)[calendar firstChildWithTag: [eventObject componentTag]];
 	  events = [calendar allObjects];
 	}
       else
@@ -231,11 +231,11 @@
 	  // If recurrenceId is defined, find the specified occurence
 	  // within the repeating vEvent.
 	  recurrenceTime = [NSString stringWithFormat: @"%f", [recurrenceId timeIntervalSince1970]];
-	  event = [eventObject lookupOccurence: recurrenceTime];
+	  event = (iCalEvent *)[eventObject lookupOccurence: recurrenceTime];
 	  
 	  if (event == nil)
 	    // If no occurence found, create one
-	    event = [eventObject newOccurenceWithID: recurrenceTime];
+	    event = (iCalEvent *)[eventObject newOccurenceWithID: recurrenceTime];
 	  
 	  events = [NSArray arrayWithObject: event];
 	}

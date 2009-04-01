@@ -16,8 +16,6 @@ libGDLContentStore_PCH_FILE = common.h
 libGDLContentStore_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
 libGDLContentStore_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 
-TOOL_NAME = gcs_ls gcs_mkdir gcs_cat gcs_recreatequick gcs_gensql
-
 libGDLContentStore_HEADER_FILES_DIR         = .
 libGDLContentStore_HEADER_FILES_INSTALL_DIR = /GDLContentStore
 FHS_HEADER_FILES_INSTALL_DIR = $(libGDLContentStore_HEADER_FILES_INSTALL_DIR)
@@ -48,13 +46,6 @@ libGDLContentStore_OBJC_FILES +=		\
 	GCSChannelManager.m			\
 	GCSFieldExtractor.m			\
 	GCSStringFormatter.m			\
-
-gcs_ls_OBJC_FILES            += gcs_ls.m
-gcs_mkdir_OBJC_FILES         += gcs_mkdir.m
-gcs_cat_OBJC_FILES           += gcs_cat.m
-gcs_gensql_OBJC_FILES        += gcs_gensql.m
-gcs_recreatequick_OBJC_FILES += gcs_recreatequick.m
-
 
 # framework support
 

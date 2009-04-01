@@ -1,6 +1,6 @@
 /* SOGoMailReply.h - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse inc.
+ * Copyright (C) 2007-2009 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -38,6 +38,9 @@
 - (BOOL) outlookMode;
 - (void) setReplyPlacement: (NSString *) newPlacement;
 - (BOOL) replyPlacementOnTop;
+- (void) setSignaturePlacement: (NSString *) newPlacement;
+- (BOOL) signaturePlacementOnTop;
+- (NSString *) messageBody;
 
 @end
 

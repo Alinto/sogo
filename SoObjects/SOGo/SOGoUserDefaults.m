@@ -304,7 +304,7 @@ static NSString *uidColumnName = @"c_uid";
 			       forLogin: uid
 			       key: ([fieldName isEqualToString: @"c_defaults"] ? @"defaults" : @"settings")];
 
-      [[NSDistributedNotificationCenter defaultCenter]
+      [(NSDistributedNotificationCenter *)[NSDistributedNotificationCenter defaultCenter]
 	postNotificationName: ([fieldName isEqualToString: @"c_defaults"]
 			       ? @"SOGoUserDefaultsHaveChanged"
 			       : @"SOGoUserSettingsHaveChanged")

@@ -9,12 +9,6 @@ FRAMEWORK_NAME = SOGo
 
 SOGo_INSTALL_DIR = $(SOGO_LIBDIR)
 
-TOOL_NAME = \
-# 	sogo_email2uid	\
-# 	sogo_shares4uid	\
-# 	sogo_emails4uid	\
-# 	sogo_defaults
-
 SOGo_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
 
 #	SOGoCustomGroupFolder.h		\
@@ -124,13 +118,6 @@ SOGoNSUserDefaults_OBJC_FILES = \
 	SOGoLDAPUserDefaults.m
 
 endif
-
-# tools
-
-sogo_email2uid_OBJC_FILES  += sogo_email2uid.m
-sogo_shares4uid_OBJC_FILES += sogo_shares4uid.m
-sogo_emails4uid_OBJC_FILES += sogo_emails4uid.m
-sogo_defaults_OBJC_FILES   += sogo_defaults.m
 
 ADDITIONAL_TOOL_LIBS += -Lobj -lSOGo$(LIBRARY_NAME_SUFFIX)
 ADDITIONAL_INCLUDE_DIRS += -I../../SOPE/

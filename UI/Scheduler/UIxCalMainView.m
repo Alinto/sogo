@@ -1,6 +1,6 @@
 /* UIxCalMainView.m - this file is part of SOGo
  *
- * Copyright (C) 2006 Inverse inc.
+ * Copyright (C) 2006-2009 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -22,6 +22,7 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSTimeZone.h>
 #import <Foundation/NSUserDefaults.h>
@@ -126,7 +127,7 @@
   [self _setupContext];
   vertical = [moduleSettings objectForKey: @"DragHandleVertical"];
 
-  return ((vertical && [vertical intValue] > 0) ? [vertical stringByAppendingFormat: @"px"] : nil);
+  return ((vertical && [vertical intValue] > 0) ? (id)[vertical stringByAppendingFormat: @"px"] : nil);
 }
 
 - (NSString *) horizontalDragHandleStyle
@@ -136,7 +137,7 @@
   [self _setupContext];
   horizontal = [moduleSettings objectForKey: @"DragHandleHorizontal"];
 
-  return ((horizontal && [horizontal intValue] > 0) ? [horizontal stringByAppendingFormat: @"px"] : nil);
+  return ((horizontal && [horizontal intValue] > 0) ? (id)[horizontal stringByAppendingFormat: @"px"] : nil);
 }
 
 - (NSString *) eventsListViewStyle

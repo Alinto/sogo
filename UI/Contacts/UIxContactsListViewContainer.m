@@ -1,6 +1,6 @@
 /* UIxContactsListViewContainer.m - this file is part of SOGo
  *
- * Copyright (C) 2006 Inverse inc.
+ * Copyright (C) 2006-2009 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -147,7 +147,7 @@
    [self _setupContext];
    vertical = [moduleSettings objectForKey: @"DragHandleVertical"];
 
-   return ((vertical && [vertical intValue] > 0) ? [vertical stringByAppendingFormat: @"px"] : nil);
+   return ((vertical && [vertical intValue] > 0) ? (id)[vertical stringByAppendingFormat: @"px"] : nil);
 }
 
 - (NSString *) horizontalDragHandleStyle
@@ -157,7 +157,7 @@
    [self _setupContext];
    horizontal = [moduleSettings objectForKey: @"DragHandleHorizontal"];
 
-   return ((horizontal && [horizontal intValue] > 0) ? [horizontal stringByAppendingFormat: @"px"] : nil);
+   return ((horizontal && [horizontal intValue] > 0) ? (id)[horizontal stringByAppendingFormat: @"px"] : nil);
 }
 
 - (NSString *) contactsListContentStyle
@@ -167,7 +167,7 @@
   [self _setupContext];
   height = [moduleSettings objectForKey: @"DragHandleVertical"];
 
-   return ((height && [height intValue] > 0) ? [NSString stringWithFormat: @"%ipx", ([height intValue] - 27)] : nil);
+  return ((height && [height intValue] > 0) ? (id)[NSString stringWithFormat: @"%ipx", ([height intValue] - 27)] : nil);
 }
 
 @end

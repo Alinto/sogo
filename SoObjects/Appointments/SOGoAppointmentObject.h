@@ -52,7 +52,7 @@
 			    forRecurrenceId: (NSCalendarDate *) _recurrenceId;
 
 - (void) takeAttendeeStatus: (iCalPerson *) attendee
-		       from: (NSString *) originator
+		       from: (SOGoUser *) originator
 	   withRecurrenceId: (NSCalendarDate*) recurrenceId;
 
 - (NSArray *) postCalDAVEventRequestTo: (NSArray *) recipients  from: (NSString *) originator;

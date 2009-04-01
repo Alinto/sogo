@@ -56,6 +56,8 @@
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
 
+#import "../../Main/SOGo.h"
+
 #import "UIxComponentEditor.h"
 #import "UIxDatePicker.h"
 

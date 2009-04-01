@@ -329,7 +329,7 @@
 	  organizer = [storedEvent organizer];
 	  if (organizer == nil || [organizer isVoid])
 	    {
-	      organizer = [[[storedEvent parent] firstChildWithTag: [storedEventObject componentTag]] organizer];
+	      organizer = [(iCalEntityObject *)[[storedEvent parent] firstChildWithTag: [storedEventObject componentTag]] organizer];
 	      [storedEvent setOrganizer: organizer];
 	    }
 	}

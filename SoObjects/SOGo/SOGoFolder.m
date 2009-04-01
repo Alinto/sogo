@@ -88,7 +88,7 @@
 
 - (NSString *) displayName
 {
-  return ((displayName) ? displayName : nameInContainer);
+  return ((id)displayName ? (id)displayName : (id)nameInContainer);
 }
 
 - (void) setIsSubscription: (BOOL) newIsSubscription

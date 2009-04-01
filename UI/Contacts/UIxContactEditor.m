@@ -626,7 +626,7 @@
 	      if (![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
 		       onObject: componentAddressBook
 		       inContext: context])
-		ex = [contact moveToFolder: componentAddressBook]; // TODO: handle exception
+		ex = [contact moveToFolder: (SOGoGCSFolder *)componentAddressBook]; // TODO: handle exception
 	    }
 	}
       

@@ -140,7 +140,7 @@
 
 - (NSException *) prepareDelete;
 {
-  NSMutableArray *occurences;
+  NSArray *occurences;
   NSCalendarDate *recurrenceId, *currentId;
   NSException *error;
   NSString *newContent;

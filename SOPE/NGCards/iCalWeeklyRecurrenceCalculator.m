@@ -124,9 +124,9 @@
 	  if ([startDate compare: currentStartDate] == NSOrderedAscending ||
 	      [startDate compare: currentStartDate] == NSOrderedSame)
 	    {
-	      unsigned int days, week;
+	      int days, week;
 	      
-	      [currentStartDate years:NULL months:NULL days:&days hours:NULL
+	      [currentStartDate years:NULL months:NULL days:(int *)&days hours:NULL
 				minutes:NULL seconds:NULL sinceDate:firStart];
 	      week = days / 7;
 	      

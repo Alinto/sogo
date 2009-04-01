@@ -285,9 +285,9 @@
       iCalEntityObject *currentOccurence;
       iCalRepeatableEntityObject *event;
       iCalCalendar *calendar;
-      NSMutableArray *occurences;
       NSCalendarDate *currentId;
       NSString *calendarContent;
+      NSArray *occurences;
       int max, count;
       
       // Invitations are always written to the personal folder; it's not necessay
@@ -835,7 +835,7 @@
 		      {
 			// If no occurence found, create one.
 			recurrenceTime = [NSString stringWithFormat: @"%f", [recurrenceId timeIntervalSince1970]];
-			oldEvent = [oldEventObject newOccurenceWithID: recurrenceTime];
+			oldEvent = (iCalEvent *)[oldEventObject newOccurenceWithID: recurrenceTime];
 		      }
 		    
 		    // Add the event as a new occurrence, without the organizer.
@@ -958,13 +958,13 @@
 // Mozilla Lightning. We assume the SENT-BY has
 // already been added, if required.
 //
-// It is used to updated the status of an attendee.
+// It is used to update the status of an attendee.
 // The originator is the actualy owner of the calendar
 // where the update took place. The status must then
 // be propagated to the organizer and the other attendees.
 //
 - (void) takeAttendeeStatus: (iCalPerson *) attendee
-		       from: (NSString *) ownerUser
+		       from: (SOGoUser *) ownerUser
 	   withRecurrenceId: (NSCalendarDate*) recurrenceId
 {
   iCalPerson *localAttendee;

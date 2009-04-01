@@ -1,14 +1,15 @@
 /*
+  Copyright (C) 2007-2009 Inverse inc.
   Copyright (C) 2004 SKYRIX Software AG
 
-  This file is part of OpenGroupware.org.
+  This file is part of SOGo.
 
-  OGo is free software; you can redistribute it and/or modify it under
+  SOGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
   Free Software Foundation; either version 2, or (at your option) any
   later version.
 
-  OGo is distributed in the hope that it will be useful, but WITHOUT ANY
+  SOGo is distributed in the hope that it will be useful, but WITHOUT ANY
   WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
   License for more details.
@@ -83,7 +84,7 @@
     st = [[[childParts objectAtIndex:i] valueForKey:@"subtype"]
 	               lowercaseString];
     mt = [[mt stringByAppendingString:@"/"] stringByAppendingString:st];
-    [types addObject:mt ? mt : (id)[NSNull null]];
+    [types addObject:mt ? (id)mt : (id)[NSNull null]];
   }
   return types;
 }
@@ -186,8 +187,8 @@
 
   pp = [self partPath];
   return [pp count] > 0
-    ? [pp arrayByAddingObject:[self childPartName]]
-    : [NSArray arrayWithObject:[self childPartName]];
+    ? (id)[pp arrayByAddingObject:[self childPartName]]
+    : (id)[NSArray arrayWithObject:[self childPartName]];
 }
 
 /* nested viewers */

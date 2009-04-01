@@ -1,6 +1,6 @@
 /* SOGoUserFolder+Contacts.m - this file is part of SOGo
  *
- * Copyright (C) 2008 Inverse inc.
+ * Copyright (C) 2008-2009 Inverse inc.
  *
  * Author: Francis Lachapelle <flachapelle@inverse.ca>
  *
@@ -37,7 +37,7 @@
 @interface SOGoUserFolder (private)
 
 - (SOGoAppointmentFolders *) privateContacts: (NSString *) key
-				    inContext: (WOContext *) localContext;
+				   inContext: (WOContext *) localContext;
 
 @end
 

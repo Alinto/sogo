@@ -1,14 +1,15 @@
 /*
+  Copyright (C) 2007-2009 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
-  This file is part of OpenGroupware.org.
+  This file is part of SOGo.
 
-  OGo is free software; you can redistribute it and/or modify it under
+  SOGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
   Free Software Foundation; either version 2, or (at your option) any
   later version.
 
-  OGo is distributed in the hope that it will be useful, but WITHOUT ANY
+  SOGo is distributed in the hope that it will be useful, but WITHOUT ANY
   WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
   License for more details.
@@ -146,14 +147,14 @@
   }
 
   if ((tb = [pathToConfig objectForKey:path]) != nil)
-    return [tb isNotNull] ? tb : nil;
+    return [tb isNotNull] ? (id)tb : nil;
   
   if ((tb = [NSArray arrayWithContentsOfFile:path]) == nil)
     [self errorWithFormat:@"Could not load toolbar resource: %@", _name];
 
   if (pathToConfig == nil)
     pathToConfig = [[NSMutableDictionary alloc] initWithCapacity:32];
-  [pathToConfig setObject:(tb ? tb : (id)[NSNull null]) forKey:path];
+  [pathToConfig setObject:(tb ? (id)tb : (id)[NSNull null]) forKey:path];
 
   return tb;
 }
@@ -163,7 +164,7 @@
   id tb;
   
   if (toolbarConfig != nil)
-    return [toolbarConfig isNotNull] ? toolbarConfig : nil;
+    return [toolbarConfig isNotNull] ? (id)toolbarConfig : nil;
   
   if (toolbar)
     tb = toolbar;

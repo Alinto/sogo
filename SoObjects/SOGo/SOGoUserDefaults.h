@@ -83,6 +83,8 @@
 
 - (NSString *) jsonRepresentation;
 
+- (BOOL) fetchProfile;
+
 /* saving changes */
 
 - (BOOL) synchronize;

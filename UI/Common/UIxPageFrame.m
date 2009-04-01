@@ -26,6 +26,7 @@
 #import <NGObjWeb/WOResourceManager.h>
 
 #import <SoObjects/SOGo/SOGoUser.h>
+#import <SoObjects/SOGo/SOGoUserDefaults.h>
 #import <SoObjects/SOGo/NSDictionary+Utilities.h>
 
 #import <Main/build.h>
@@ -416,10 +417,10 @@ static NSString *siteFavicon = nil;
 
 - (NSString *) userSettings
 {
-  NSUserDefaults *userSettings;
+  SOGoUserDefaults *userSettings;
   NSString *jsonResult;
 
-  userSettings = [[context activeUser] userSettings];
+  userSettings = (SOGoUserDefaults *)[[context activeUser] userSettings];
   if (userSettings)
     jsonResult = [userSettings jsonRepresentation];
   else
@@ -430,10 +431,10 @@ static NSString *siteFavicon = nil;
 
 - (NSString *) userDefaults
 {
-  NSUserDefaults *userDefaults;
+  SOGoUserDefaults *userDefaults;
   NSString *jsonResult;
 
-  userDefaults = [[context activeUser] userDefaults];
+  userDefaults = (SOGoUserDefaults *)[[context activeUser] userDefaults];
   if (userDefaults)
     jsonResult = [userDefaults jsonRepresentation];
   else

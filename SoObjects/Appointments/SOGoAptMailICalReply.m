@@ -1,6 +1,6 @@
 /* SOGoAptMailICalReply - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse inc.
+ * Copyright (C) 2007-2009 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -35,6 +35,7 @@
 #import <SoObjects/SOGo/NSString+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 
+#import "iCalPerson+SOGo.h"
 #import "SOGoAptMailICalReply.h"
 
 @interface SOGoAptMailICalReply (PrivateAPI)

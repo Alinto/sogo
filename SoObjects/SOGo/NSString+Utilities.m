@@ -374,7 +374,7 @@ static NSMutableCharacterSet *urlStartChars = nil;
 		     match];
   sq = [EOQualifier qualifierWithQualifierFormat: format];
 
-  return [sq evaluateWithObject: self];
+  return [(id<EOQualifierEvaluation>)sq evaluateWithObject: self];
 }
 
 #if LIB_FOUNDATION_LIBRARY

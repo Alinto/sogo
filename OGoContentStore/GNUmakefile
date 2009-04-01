@@ -5,7 +5,6 @@ include $(GNUSTEP_MAKEFILES)/common.make
 include ./Version
 
 LIBRARY_NAME = libOGoContentStore
-TOOL_NAME    = test_quick_extract
 
 TYPEMODELS_DIR = $(SOGO_TYPEMODELS)
 
@@ -25,9 +24,6 @@ libOGoContentStore_TYPEMODELS += \
 	contact.ocs \
 	appointment-oracle.ocs \
 	contact-oracle.ocs
-
-test_quick_extract_OBJC_FILES += \
-	test_quick_extract.m
 
 -include GNUmakefile.preamble
 ifneq ($(FHS_INSTALL_ROOT),)
