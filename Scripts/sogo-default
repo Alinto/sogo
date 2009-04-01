@@ -1,0 +1,5 @@
+# The amount of processes that should be spawned (Default: 1)
+# PREFORK=1
+
+# The name of the account under which SOGo will be running (Default: sogo)
+# USER=sogo
