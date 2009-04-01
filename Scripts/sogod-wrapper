@@ -70,7 +70,7 @@ else
   let "port=$startport + $1 - 1"
 fi
 
-echo "SOGOD: $sogod" 2>&1
+# echo "SOGOD: $sogod" 2>&1
 
 exec $sogod -WOPort $port >> /var/log/sogo/sogod-$port.log 2>&1 &
 echo $! > $PIDFILE
