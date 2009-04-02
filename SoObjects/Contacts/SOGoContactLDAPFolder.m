@@ -1,6 +1,6 @@
 /* SOGoContactLDAPFolder.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2008 Inverse inc.
+ * Copyright (C) 2006-2009 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -35,6 +35,7 @@
 #import <NGObjWeb/SoSelectorInvocation.h>
 #import <NGObjWeb/SoUser.h>
 #import <NGExtensions/NSString+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
 #import <EOControl/EOSortOrdering.h>
 #import <SaxObjC/XMLNamespaces.h>
 
@@ -60,6 +61,12 @@
   if ([name length])
     {
       component = [self lookupName: name inContext: context acquire: NO];
+
+      if ([component isKindOfClass: [NSException class]])
+	{
+	  [self logWithFormat: @"Object with name '%@' not found. You likely have a LDAP configuration issue.", name];
+	  return;
+	}
 
       [r appendContentString: @"  <D:response>\r\n"];
       [r appendContentString: @"    <D:href>"];

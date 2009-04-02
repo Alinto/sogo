@@ -2,7 +2,13 @@
 
 	* Dropped worthless tools
 	* Fixed tons of compiler warnings
-
+	* SoObjects/Contacts/SOGoContactLDAPFolder.m
+	([SOGoContactLDAPFolder appendObject:withBaseURL:
+	toREPORTResponse:]): We now check if we've got
+	an exception when looking up contacts and the LDAP-part
+	of SOGo is misconfigured and warn the admin (by adding
+	a log entry) about it.
+	
 2009-03-31  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Scheduler/UIxCalListingActions.m ([UIxCalListingActions
