@@ -36,6 +36,7 @@
   NSString *hostname;
   unsigned int port;
   NSString *password;
+  NSString *encryption;
   NSString *_filter;
 
   NSString *baseDN;
@@ -56,9 +57,10 @@
 - (id) initFromUDSource: (NSDictionary *) udSource;
 
 - (void) setBindDN: (NSString *) newBindDN
+	  password: (NSString *) newBindPassword
 	  hostname: (NSString *) newBindHostname
 	      port: (NSString *) newBindPort
-       andPassword: (NSString *) newBindPassword;
+	encryption: (NSString *) newEncryption;
 - (void) setBaseDN: (NSString *) newBaseDN
 	   IDField: (NSString *) newIDField
 	   CNField: (NSString *) newCNField

@@ -1,3 +1,65 @@
+Index: sope-ldap/NGLdap/NGLdapConnection.m
+===================================================================
+--- sope-ldap/NGLdap/NGLdapConnection.m	(revision 1632)
++++ sope-ldap/NGLdap/NGLdapConnection.m	(working copy)
+@@ -219,6 +219,29 @@
+   return e;
+ }
+ 
++/* encryption */
++
++- (BOOL)useSSL
++{
++  BOOL rc;
++  int option;
++
++  if (self->handle != NULL) {
++    option = LDAP_OPT_X_TLS_HARD;
++    rc = (ldap_set_option(self->handle, LDAP_OPT_X_TLS, &option) == LDAP_SUCCESS);
++  }
++  else
++    rc = NO;
++
++  return rc;
++}
++
++- (BOOL)startTLS
++{
++  return (self->handle != NULL
++	  && ldap_start_tls_s(self->handle, NULL, NULL) == LDAP_SUCCESS);
++}
++
+ /* binding */
+ 
+ - (BOOL)isBound {
+Index: sope-ldap/NGLdap/ChangeLog
+===================================================================
+--- sope-ldap/NGLdap/ChangeLog	(revision 1632)
++++ sope-ldap/NGLdap/ChangeLog	(working copy)
+@@ -1,3 +1,8 @@
++2009-04-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
++
++	* NGLdapConnection.m (useSSL,startTLS): new method enabling
++	encryption on the LDAP connection.
++
+ 2007-11-21  Helge Hess  <helge.hess@opengroupware.org>
+ 
+ 	* NGLdapConnection.m: replaced some -cString calls with -UTF8String
+Index: sope-ldap/NGLdap/NGLdapConnection.h
+===================================================================
+--- sope-ldap/NGLdap/NGLdapConnection.h	(revision 1632)
++++ sope-ldap/NGLdap/NGLdapConnection.h	(working copy)
+@@ -53,6 +53,10 @@
+ - (NSString *)hostName;
+ - (int)port;
+ 
++/* encryption */
++- (BOOL)useSSL;
++- (BOOL)startTLS;
++
+ /* binding */
+ 
+ - (BOOL)isBound;
 Index: sope-gdl1/PostgreSQL/PostgreSQL72Channel.m
 ===================================================================
 --- sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(revision 1632)

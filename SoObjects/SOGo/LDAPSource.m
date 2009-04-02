@@ -26,6 +26,7 @@
 #import <Foundation/NSString.h>
 #import <Foundation/NSUserDefaults.h>
 
+#import <NGExtensions/NSObject+Logs.h>
 #import <EOControl/EOControl.h>
 #import <NGLdap/NGLdapConnection.h>
 #import <NGLdap/NGLdapAttribute.h>
@@ -155,6 +156,7 @@ static NSLock *lock;
       bindDN = nil;
       hostname = nil;
       port = 389;
+      encryption = nil;
       password = nil;
       sourceID = nil;
 
@@ -178,6 +180,7 @@ static NSLock *lock;
 {
   [bindDN release];
   [hostname release];
+  [encryption release];
   [password release];
   [baseDN release];
   [IDField release];
@@ -196,30 +199,35 @@ static NSLock *lock;
 {
   self = [self init];
 
-  ASSIGN(sourceID, [udSource objectForKey: @"id"]);
+  ASSIGN (sourceID, [udSource objectForKey: @"id"]);
 
   [self setBindDN: [udSource objectForKey: @"bindDN"]
+	password: [udSource objectForKey: @"bindPassword"]
 	hostname: [udSource objectForKey: @"hostname"]
 	port: [udSource objectForKey: @"port"]
-	andPassword: [udSource objectForKey: @"bindPassword"]];
+	encryption: [udSource objectForKey: @"encryption"]];
   [self setBaseDN: [udSource objectForKey: @"baseDN"]
 	IDField: [udSource objectForKey: @"IDFieldName"]
 	CNField: [udSource objectForKey: @"CNFieldName"]
 	UIDField: [udSource objectForKey: @"UIDFieldName"]
 	mailFields: [udSource objectForKey: @"MailFieldNames"]
 	andBindFields: [udSource objectForKey: @"bindFields"]];
-  ASSIGN(modulesConstraints, [udSource objectForKey: @"ModulesConstraints"]);
-  ASSIGN(_filter, [udSource objectForKey: @"filter"]);
+  ASSIGN (modulesConstraints, [udSource objectForKey: @"ModulesConstraints"]);
+  ASSIGN (_filter, [udSource objectForKey: @"filter"]);
 
   return self;
 }
 
 - (void) setBindDN: (NSString *) newBindDN
+	  password: (NSString *) newBindPassword
 	  hostname: (NSString *) newBindHostname
 	      port: (NSString *) newBindPort
-       andPassword: (NSString *) newBindPassword
+	encryption: (NSString *) newEncryption
 {
   ASSIGN (bindDN, newBindDN);
+  ASSIGN (encryption, [newEncryption uppercaseString]);
+  if ([encryption isEqualToString: @"SSL"])
+    port = 636;
   ASSIGN (hostname, newBindHostname);
   if (newBindPort)
     port = [newBindPort intValue];
@@ -246,6 +254,23 @@ static NSLock *lock;
     ASSIGN (bindFields, newBindFields);
 }
 
+- (BOOL) _setupEncryption: (NGLdapConnection *) encryptedConn
+{
+  BOOL rc;
+
+  if ([encryption isEqualToString: @"SSL"])
+    rc = [encryptedConn useSSL];
+  else if ([encryption isEqualToString: @"SSL"])
+    rc = [encryptedConn startTLS];
+  else
+    {
+      [self errorWithFormat: @"encryption scheme '%@' not supported: use 'SSL' or 'STARTTLS'"];
+      rc = NO;
+    }
+
+  return rc;
+}
+
 - (BOOL) _initLDAPConnection
 {
   BOOL b;
@@ -254,14 +279,19 @@ static NSLock *lock;
     {
       ldapConnection = [[NGLdapConnection alloc] initWithHostName: hostname
 						 port: port];
-      [ldapConnection bindWithMethod: @"simple"
-		      binddn: bindDN
-		      credentials: password];
-      if (sizeLimit > 0)
-	[ldapConnection setQuerySizeLimit: sizeLimit];
-      if (timeLimit > 0)
-	[ldapConnection setQueryTimeLimit: timeLimit];
-      b = YES;
+      if (![encryption length] || [self _setupEncryption: ldapConnection])
+	{
+	  [ldapConnection bindWithMethod: @"simple"
+			  binddn: bindDN
+			  credentials: password];
+	  if (sizeLimit > 0)
+	    [ldapConnection setQuerySizeLimit: sizeLimit];
+	  if (timeLimit > 0)
+	    [ldapConnection setQueryTimeLimit: timeLimit];
+	  b = YES;
+	}
+      else
+	b = NO;
     }
   NS_HANDLER
     {
@@ -338,23 +368,26 @@ static NSLock *lock;
     {
       bindConnection = [[NGLdapConnection alloc] initWithHostName: hostname
 						 port: port];
-      if (timeLimit > 0)
-	[ldapConnection setQueryTimeLimit: timeLimit];
-      if (bindFields)
-	userDN = [self _fetchUserDNForLogin: loginToCheck];
-      else
-	userDN = [NSString stringWithFormat: @"%@=%@,%@",
-			   IDField, loginToCheck, baseDN];
-      if (userDN)
+      if (![encryption length] || [self _setupEncryption: bindConnection])
 	{
-	  NS_DURING
-	    didBind = [bindConnection bindWithMethod: @"simple"
-				      binddn: userDN
-				      credentials: passwordToCheck];
-	  NS_HANDLER
-	  NS_ENDHANDLER
+	  if (timeLimit > 0)
+	    [ldapConnection setQueryTimeLimit: timeLimit];
+	  if (bindFields)
+	    userDN = [self _fetchUserDNForLogin: loginToCheck];
+	  else
+	    userDN = [NSString stringWithFormat: @"%@=%@,%@",
+			       IDField, loginToCheck, baseDN];
+	  if (userDN)
+	    {
+	      NS_DURING
+		didBind = [bindConnection bindWithMethod: @"simple"
+					  binddn: userDN
+					  credentials: passwordToCheck];
+	      NS_HANDLER
+		NS_ENDHANDLER
+		}
+	  [bindConnection release];
 	}
-      [bindConnection release];
     }
 
 #if defined(THREADSAFE)

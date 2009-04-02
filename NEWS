@@ -1,3 +1,7 @@
+1.0.x
+-----
+- we now support LDAP encryption for binding and for contact lookups
+
 1.0-2009
 --------
 - when the status of an attendee changes, the event of an organizer is now updated correctly if it doesn't reside in the personal folder
