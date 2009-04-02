@@ -59,19 +59,6 @@ This package contains the header files for SOPE's GDLContentStore library.
 SOPE is a framework for developing web applications and services. The
 name "SOPE" (SKYRiX Object Publishing Environment) is inspired by ZOPE.
 
-
-%package -n sope%{sope_major_version}%{sope_minor_version}-gdl1-tools
-Summary:      Tools (gcs_cat/gcs_gensql/gcs_ls/gcs_mkdir/gcs_recreatequick)
-Group:        Development/Libraries/Objective C
-Requires:     sope%{sope_major_version}%{sope_minor_version}-gdl1
-AutoReqProv:  off
-
-%description -n sope%{sope_major_version}%{sope_minor_version}-gdl1-tools
-Various tools around the GDLContentStore.
-
-SOPE is a framework for developing web applications and services. The
-name "SOPE" (SKYRiX Object Publishing Environment) is inspired by ZOPE.
-
 %package -n sope%{sope_major_version}%{sope_minor_version}-cards
 Summary:      SOPE versit parsing library for iCal and VCard formats
 Group:        Development/Libraries/Objective C
@@ -192,14 +179,6 @@ rm -fr ${RPM_BUILD_ROOT}
 %files -n sope%{sope_major_version}%{sope_minor_version}-gdl1-contentstore-devel
 %{prefix}/Library/Headers/GDLContentStore
 %{prefix}/Library/Libraries/libGDLContentStore*.so
-
-%files -n sope%{sope_major_version}%{sope_minor_version}-gdl1-tools
-%defattr(-,root,root,-)
-%{prefix}/Tools/gcs_cat
-%{prefix}/Tools/gcs_gensql
-%{prefix}/Tools/gcs_ls
-%{prefix}/Tools/gcs_mkdir
-%{prefix}/Tools/gcs_recreatequick
 
 %files -n sope%{sope_major_version}%{sope_minor_version}-cards
 %{prefix}/Library/Libraries/libNGCards.so.*
