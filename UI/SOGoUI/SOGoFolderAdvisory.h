@@ -24,7 +24,7 @@
 #define SOGOFOLDERADVISORY_H
 
 #import "UIxComponent.h"
-#import "../../SoObjects/SOGo/SOGoFolder.h"
+#import <SOGo/SOGoFolder.h>
 
 @interface SOGoFolderAdvisory : UIxComponent
 {

@@ -23,7 +23,7 @@
 #ifndef SOGOAPPOINTMENTFOLDERS_H
 #define SOGOAPPOINTMENTFOLDERS_H
 
-#import <SoObjects/SOGo/SOGoParentFolder.h>
+#import <SOGo/SOGoParentFolder.h>
 
 @interface SOGoAppointmentFolders : SOGoParentFolder
 

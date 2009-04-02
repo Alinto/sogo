@@ -22,7 +22,7 @@
 #ifndef __Contacts_SOGoContactGCSFolder_H__
 #define __Contacts_SOGoContactGCSFolder_H__
 
-#import <SoObjects/SOGo/SOGoGCSFolder.h>
+#import <SOGo/SOGoGCSFolder.h>
 
 #import "SOGoContactFolder.h"
 #import "SOGoFolder+CardDAV.h"

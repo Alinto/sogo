@@ -23,7 +23,7 @@
 #ifndef SOGOCONTACTFOLDERS_H
 #define SOGOCONTACTFOLDERS_H
 
-#import <SoObjects/SOGo/SOGoParentFolder.h>
+#import <SOGo/SOGoParentFolder.h>
 
 @interface SOGoContactFolders : SOGoParentFolder
 

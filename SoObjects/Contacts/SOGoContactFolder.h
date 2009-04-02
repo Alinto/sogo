@@ -33,7 +33,7 @@
 
 #import <Foundation/NSObject.h>
 
-#import <SoObjects/SOGo/SOGoFolder.h>
+#import <SOGo/SOGoFolder.h>
 
 @class NSArray;
 @class NSDictionary;

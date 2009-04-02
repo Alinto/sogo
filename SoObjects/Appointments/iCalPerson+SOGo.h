@@ -25,7 +25,7 @@
 
 #import <NGCards/iCalPerson.h>
 
-#import <SoObjects/SOGo/LDAPUserManager.h>
+#import <SOGo/LDAPUserManager.h>
 
 @class NSString;
 
