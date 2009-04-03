@@ -260,11 +260,13 @@ static NSLock *lock;
 
   if ([encryption isEqualToString: @"SSL"])
     rc = [encryptedConn useSSL];
-  else if ([encryption isEqualToString: @"SSL"])
+  else if ([encryption isEqualToString: @"STARTTLS"])
     rc = [encryptedConn startTLS];
   else
     {
-      [self errorWithFormat: @"encryption scheme '%@' not supported: use 'SSL' or 'STARTTLS'"];
+      [self errorWithFormat:
+	      @"encryption scheme '%@' not supported:"
+	    @" use 'SSL' or 'STARTTLS'", encryption];
       rc = NO;
     }
 
