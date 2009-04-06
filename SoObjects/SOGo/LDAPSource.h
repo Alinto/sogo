@@ -38,6 +38,7 @@
   NSString *password;
   NSString *encryption;
   NSString *_filter;
+  NSString *_scope;
 
   NSString *baseDN;
   NSString *IDField; /* the first part of a user DN */

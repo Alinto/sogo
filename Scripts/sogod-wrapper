@@ -2,7 +2,7 @@
 
 # SOGo daemon wrapper
 #
-# Copyright (C) 2007 Inverse inc.
+# Copyright (C) 2007-2009 Inverse inc.
 #
 # Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
 #
@@ -55,10 +55,10 @@ else
     exit 1
 fi
 
-startport=`defaults read sogod WOPort`
+woport=`defaults read sogod WOPort`
 if [ "$?" == "0" ]
 then
-  startport=`echo $startport | awk '{print $3}'`
+  startport=`echo $woport | awk '{print $3}' | sed -e 's/\(.*:\)//'`
 else
   startport=20000
 fi
@@ -69,8 +69,9 @@ then
 else
   let "port=$startport + $1 - 1"
 fi
+listen=`echo $woport | awk '{ print $3 }' | sed -e 's/\([0-9]\+\)$/'$port'/g'`
 
 # echo "SOGOD: $sogod" 2>&1
 
-exec $sogod -WOPort $port >> /var/log/sogo/sogod-$port.log 2>&1 &
+exec $sogod -WOPort $listen >> /var/log/sogo/sogod-$port.log 2>&1 &
 echo $! > $PIDFILE

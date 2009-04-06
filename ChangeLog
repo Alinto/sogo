@@ -1,3 +1,11 @@
+	* Improved the sogod-wrapper script in order to
+	consider the IP address that can be specified
+	in the WOPort user default. Patch from
+	Romain LE DISEZ <romain.ledisez@netensia.fr>
+	* SoObjects/SOGo/LDAPSource.{h.m}: Now possible to
+	specify a scope for LDAP operations. Patch from
+	Yann Cezard <yann.cezard@univ-pau.fr>
+
 2009-04-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/LDAPSource.m: we now support an "encryption"

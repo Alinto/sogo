@@ -167,6 +167,7 @@ static NSLock *lock;
       mailFields = [NSArray arrayWithObject: @"mail"];
       [mailFields retain];
       bindFields = nil;
+      _scope = @"sub";
       _filter = nil;
 
       ldapConnection = nil;
@@ -192,6 +193,7 @@ static NSLock *lock;
   [ldapConnection release];
   [sourceID release];
   [modulesConstraints release];
+  [_scope release];
   [super dealloc];
 }
 
@@ -199,7 +201,7 @@ static NSLock *lock;
 {
   self = [self init];
 
-  ASSIGN (sourceID, [udSource objectForKey: @"id"]);
+  ASSIGN(sourceID, [udSource objectForKey: @"id"]);
 
   [self setBindDN: [udSource objectForKey: @"bindDN"]
 	password: [udSource objectForKey: @"bindPassword"]
@@ -212,9 +214,10 @@ static NSLock *lock;
 	UIDField: [udSource objectForKey: @"UIDFieldName"]
 	mailFields: [udSource objectForKey: @"MailFieldNames"]
 	andBindFields: [udSource objectForKey: @"bindFields"]];
-  ASSIGN (modulesConstraints, [udSource objectForKey: @"ModulesConstraints"]);
-  ASSIGN (_filter, [udSource objectForKey: @"filter"]);
-
+  ASSIGN(modulesConstraints, [udSource objectForKey: @"ModulesConstraints"]);
+  ASSIGN(_filter, [udSource objectForKey: @"filter"]);
+  ASSIGN(_scope, ([udSource objectForKey: @"scope"] ? (id)[udSource objectForKey: @"scope"]: (id)@"sub"));
+  
   return self;
 }
 
@@ -334,10 +337,31 @@ static NSLock *lock;
 
   if ([self _initLDAPConnection])
     {
-      entries = [ldapConnection deepSearchAtBaseDN: baseDN
-				qualifier:
-				  [self _qualifierForBindFilter: loginToCheck]
-				attributes: [NSArray arrayWithObject: @"dn"]];
+      EOQualifier *qualifier;
+      NSArray *attributes;
+
+      qualifier = [self _qualifierForBindFilter: loginToCheck];
+      attributes = [NSArray arrayWithObject: @"dn"];
+      
+      if ([_scope caseInsensitiveCompare: @"BASE"] == NSOrderedSame) 
+        {
+          entries = [ldapConnection baseSearchAtBaseDN: baseDN
+				    qualifier: qualifier
+				    attributes: attributes];
+        }
+      else if ([_scope caseInsensitiveCompare: @"ONE"] == NSOrderedSame) 
+        {
+          entries = [ldapConnection flatSearchAtBaseDN: baseDN
+				    qualifier: qualifier
+				    attributes: attributes];
+	} 
+      else /* else we do like it was before */ 
+        {
+          entries = [ldapConnection deepSearchAtBaseDN: baseDN
+				    qualifier: qualifier
+				    attributes: attributes];
+        }
+
       userEntry = [entries nextObject];
     }
   else
@@ -507,9 +531,23 @@ static NSLock *lock;
   ids = [NSMutableArray array];
 
   if ([self _initLDAPConnection])
-    entries = [ldapConnection deepSearchAtBaseDN: baseDN
-			      qualifier: nil
-			      attributes: [NSArray arrayWithObject: IDField]];
+    {
+      NSArray *attributes;
+      
+      attributes = [NSArray arrayWithObject: IDField];
+      if ([_scope caseInsensitiveCompare: @"BASE"] == NSOrderedSame) 
+        entries = [ldapConnection baseSearchAtBaseDN: baseDN
+				  qualifier: nil
+				  attributes: attributes];
+      else if ([_scope caseInsensitiveCompare: @"ONE"] == NSOrderedSame) 
+        entries = [ldapConnection flatSearchAtBaseDN: baseDN
+				  qualifier: nil
+				  attributes: attributes];
+      else /* else we do like it was before */ 
+	entries = [ldapConnection deepSearchAtBaseDN: baseDN
+				  qualifier: nil
+				  attributes: attributes];
+    }
   else
     entries = nil;
 
@@ -638,9 +676,26 @@ static NSLock *lock;
   if ([match length] > 0)
     {
       if ([self _initLDAPConnection])
-	entries = [ldapConnection deepSearchAtBaseDN: baseDN
-				  qualifier: [self _qualifierForFilter: match]
-				  attributes: [self _searchAttributes]];
+	{    
+	  EOQualifier *qualifier;
+	  NSArray *attributes;
+
+	  qualifier = [self _qualifierForFilter: match];
+	  attributes = [self _searchAttributes];
+	  
+	  if ([_scope caseInsensitiveCompare: @"BASE"] == NSOrderedSame)
+            entries = [ldapConnection baseSearchAtBaseDN: baseDN
+				      qualifier: qualifier
+				      attributes: attributes];
+	  else if ([_scope caseInsensitiveCompare: @"ONE"] == NSOrderedSame)
+            entries = [ldapConnection flatSearchAtBaseDN: baseDN
+				      qualifier: qualifier
+				      attributes: attributes];
+	  else /* else we de like it was before */ 
+            entries = [ldapConnection deepSearchAtBaseDN: baseDN
+				      qualifier: qualifier
+				      attributes: attributes];
+	}
       else
 	entries = nil;
 
@@ -698,7 +753,6 @@ static NSLock *lock;
   NSDictionary *contactEntry;
   NGLdapEntry *ldapEntry;
   NSEnumerator *entries;
-  EOQualifier *qualifier;
 
 #if defined(THREADSAFE)
   [lock lock];
@@ -710,10 +764,25 @@ static NSLock *lock;
     {
       if ([self _initLDAPConnection])
 	{
+	  EOQualifier *qualifier;
+	  NSArray *attributes;
+	  
 	  qualifier = [self _qualifierForUIDFilter: uid];
-	  entries = [ldapConnection deepSearchAtBaseDN: baseDN
-				    qualifier: qualifier
-				    attributes: [self _searchAttributes]];
+	  attributes = [self _searchAttributes];
+
+	  if ([_scope caseInsensitiveCompare: @"BASE"] == NSOrderedSame)
+	    entries = [ldapConnection baseSearchAtBaseDN: baseDN
+				      qualifier: qualifier
+				      attributes: attributes];
+	  else if ([_scope caseInsensitiveCompare: @"ONE"] == NSOrderedSame)
+	    entries = [ldapConnection flatSearchAtBaseDN: baseDN
+				      qualifier: qualifier
+				      attributes: attributes];
+	  else /* else we do like it was before */ 
+	    entries = [ldapConnection deepSearchAtBaseDN: baseDN
+				      qualifier: qualifier
+				      attributes: attributes];
+	  
 	  ldapEntry = [entries nextObject];
 	}
       else
