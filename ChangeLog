@@ -1,3 +1,5 @@
+2009-04-06  Ludovic Marcotte <lmarcotte@inverse.ca>
+
 	* Improved the sogod-wrapper script in order to
 	consider the IP address that can be specified
 	in the WOPort user default. Patch from

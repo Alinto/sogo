@@ -1,10 +1,15 @@
-1.0.x
+1.0-20090407 (1.0.1)
 -----
+- now possbile to navigate using keyboard keys in the address book and mail modules
+- the favicon can now be specified using the SOGoFaviconRelativeURL preference
 - we now support LDAP encryption for binding and for contact lookups
-
-1.0-2009
---------
+- we now support LDAP scopes for various search operations
 - when the status of an attendee changes, the event of an organizer is now updated correctly if it doesn't reside in the personal folder
+- formatting improvements in the email invitation templates
+- Dovecot IMAP fixes and speed enhancements 
+- code cleanups to remove most compiler warnings
+- various database fixes (Oracle, connection pools, unavailability, etc.)
+- init scripts improvements
 
 1.0-20090317 (1.0.0)
 ---------------
