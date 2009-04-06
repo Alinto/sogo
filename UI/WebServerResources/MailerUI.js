@@ -476,7 +476,7 @@ function onMailboxTreeItemClick(event) {
       head.rows[1].firstChild.update();
   }
   else
-    openMailbox(mailbox); // FRANCIS: don't update folder status?
+    openMailbox(mailbox);
    
   Event.stop(event);
 }
@@ -876,7 +876,6 @@ function onMessageSelectionChange() {
 
 function loadMessage(idx) {
   if (document.messageAjaxRequest) {
-		log ("aborting message request");
     document.messageAjaxRequest.aborted = true;
     document.messageAjaxRequest.abort();
   }
