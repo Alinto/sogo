@@ -460,7 +460,7 @@ static NSString *siteFavicon = nil;
 	  || ([[cc userAgentType] isEqualToString: @"Mozilla"]
 	      && [cc majorVersion] >= 5)
 	  || ([[cc userAgentType] isEqualToString: @"Safari"]
-	      && [cc majorVersion] >= 4)
+	      && [cc majorVersion] >= 3)
 	  || ([[cc userAgentType] isEqualToString: @"Konqueror"]
 	      && [cc majorVersion] >= 4)
 	   );

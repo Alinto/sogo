@@ -1,3 +1,8 @@
+2009-04-07  Cyril Robert <crobert@inverse.ca>
+
+	* UI/Common/UIxPageFrame.m (isCompatibleBrowser): Fixed Safari 3 issue,
+	was only accepting 4+
+
 2009-04-06  Ludovic Marcotte <lmarcotte@inverse.ca>
 
 	* Improved the sogod-wrapper script in order to
