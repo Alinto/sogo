@@ -1097,6 +1097,11 @@ static NSString *spoolFolder = nil;
   return ([fm createDirectoriesAtPath: [self userSpoolFolderPath] attributes:nil]);
 }
 
+- (NSString *) displayName
+{
+  return [self nameInContainer];
+}
+
 @end /* SOGoMailFolder */
 
 @implementation SOGoSpecialMailFolder

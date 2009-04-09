@@ -3,6 +3,9 @@
         * Reverted previous patch and provided the correct
 	fix in SOGoMailFolder: -postData:flags:
 	* Fixed the compilation of unit tests for NGCards.
+	* SoObjects/Mailer/SOGoMailFolder.m: Added -displayName
+	which returns -nameInContainer to avoid crashes when
+	sending ACL changes notifications for email folders.
 
 2009-04-09  Francis Lachapelle  <flachapelle@inverse.ca>
 
