@@ -1381,6 +1381,15 @@ static BOOL        showTextAttachmentsInline  = NO;
       if (!error)
 	{
 	  error = [sentFolder postData: message flags: @"seen"];
+	  if (error)
+	    {
+	      // Sent folder probably doesn't exist -- create it
+	      error = [[self imap4Connection]
+			createMailbox: [imap4 imap4FolderNameForURL: [sentFolder imap4URL]]
+			atURL: [[self mailAccountFolder] imap4URL]];
+	      if (!error)
+		error = [sentFolder postData: message flags: @"seen"];
+	    }
 	  if (!error)
 	    {
 	      [self imap4Connection];

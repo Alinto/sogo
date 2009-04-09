@@ -1,3 +1,8 @@
+2009-04-09  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Mailer/SOGoDraftObject.m ([SOGoDraftObject
+	-sendMail]): create the Sent folder if it doesn't exist.
+
 2009-04-07  Cyril Robert <crobert@inverse.ca>
 
 	* UI/Common/UIxPageFrame.m (isCompatibleBrowser): Fixed Safari 3 issue,
