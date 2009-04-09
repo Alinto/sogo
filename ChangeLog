@@ -1,3 +1,9 @@
+2009-04-09  Ludovic Marcotte <lmarcotte@inverse.ca>
+
+        * Reverted previous patch and provided the correct
+	fix in SOGoMailFolder: -postData:flags:
+	* Fixed the compilation of unit tests for NGCards.
+
 2009-04-09  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/Mailer/SOGoDraftObject.m ([SOGoDraftObject

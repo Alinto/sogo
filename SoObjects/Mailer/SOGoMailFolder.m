@@ -497,7 +497,8 @@ static NSString *spoolFolder = nil;
   // We check for the existence of the IMAP folder (likely to be the
   // Sent mailbox) prior to appending messages to it.
   if ([[self imap4Connection] doesMailboxExistAtURL: [self imap4URL]] ||
-      ![[self imap4Connection] createMailbox: [self relativeImap4Name]  atURL: [[self mailAccountFolder] imap4URL]])
+      ![[self imap4Connection] createMailbox: [[self imap4Connection] imap4FolderNameForURL: [self imap4URL]]
+			       atURL: [[self mailAccountFolder] imap4URL]])
     return [[self imap4Connection] postData: _data flags: _flags
 				   toFolderURL: [self imap4URL]];
   

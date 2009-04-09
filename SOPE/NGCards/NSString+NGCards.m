@@ -1,6 +1,6 @@
 /* NSString+NGCards.m - this file is part of SOPE
  *
- * Copyright (C) 2006-2008 Inverse inc.
+ * Copyright (C) 2006-2009 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
