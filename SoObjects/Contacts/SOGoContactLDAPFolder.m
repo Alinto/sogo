@@ -176,7 +176,7 @@
 
   if (!obj)
     {
-      ldifEntry = [ldapSource lookupContactEntryWithUIDorEmail: objectName];
+      ldifEntry = [ldapSource lookupContactEntry: objectName];
       if (ldifEntry)
 	obj = [SOGoContactLDIFEntry contactEntryWithName: objectName
 				    withLDIFEntry: ldifEntry
@@ -190,7 +190,7 @@
 
 - (NSArray *) toOneRelationshipKeys
 {
-  return [ldapSource allEntryUIDs];
+  return [ldapSource allEntryIDs];
 }
 
 - (NSArray *) _flattenedRecords: (NSArray *) records

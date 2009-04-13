@@ -355,7 +355,7 @@ static NSLock *lock;
 				    qualifier: qualifier
 				    attributes: attributes];
 	} 
-      else /* else we do like it was before */ 
+      else 
         {
           entries = [ldapConnection deepSearchAtBaseDN: baseDN
 				    qualifier: qualifier
@@ -492,11 +492,11 @@ static NSLock *lock;
 
 - (NSArray *) _searchAttributes
 {
-  NSUserDefaults *ud;
-  NSString *contactInfo;
-
   if (!searchAttributes)
     {
+      NSUserDefaults *ud;
+      NSString *contactInfo;
+
       ud = [NSUserDefaults standardUserDefaults];
       searchAttributes = [NSMutableArray new];
       if (CNField)
@@ -517,7 +517,7 @@ static NSLock *lock;
   return searchAttributes;
 }
 
-- (NSArray *) allEntryUIDs
+- (NSArray *) allEntryIDs
 {
   NSMutableArray *ids;
   NSEnumerator *entries;
@@ -534,7 +534,7 @@ static NSLock *lock;
     {
       NSArray *attributes;
       
-      attributes = [NSArray arrayWithObject: UIDField];
+      attributes = [NSArray arrayWithObject: IDField];
       if ([_scope caseInsensitiveCompare: @"BASE"] == NSOrderedSame) 
         entries = [ldapConnection baseSearchAtBaseDN: baseDN
 				  qualifier: nil
@@ -543,7 +543,7 @@ static NSLock *lock;
         entries = [ldapConnection flatSearchAtBaseDN: baseDN
 				  qualifier: nil
 				  attributes: attributes];
-      else /* else we do like it was before */ 
+      else
 	entries = [ldapConnection deepSearchAtBaseDN: baseDN
 				  qualifier: nil
 				  attributes: attributes];
@@ -556,7 +556,7 @@ static NSLock *lock;
       currentEntry = [entries nextObject];
       while (currentEntry)
 	{
-	  value = [[currentEntry attributeWithName: UIDField]
+	  value = [[currentEntry attributeWithName: IDField]
 		    stringValueAtIndex: 0];
 	  if ([value length] > 0)
 	    [ids addObject: value];
@@ -714,7 +714,7 @@ static NSLock *lock;
   return contacts;
 }
 
-- (NSDictionary *) lookupContactEntry: (NSString *) entryID;
+- (NSDictionary *) lookupContactEntry: (NSString *) theID
 {
   NSDictionary *contactEntry;
   NGLdapEntry *ldapEntry;
@@ -725,13 +725,34 @@ static NSLock *lock;
 
   contactEntry = nil;
 
-  if ([entryID length] > 0)
+  if ([theID length] > 0)
     {
       if ([self _initLDAPConnection])
-	ldapEntry
-	  = [ldapConnection entryAtDN: [NSString stringWithFormat: @"%@=%@,%@",
-						 IDField, entryID, baseDN]
-			    attributes: [self _searchAttributes]];
+	{
+	  NSEnumerator *entries;
+	  EOQualifier *qualifier;
+	  NSArray *attributes;
+	  NSString *s;
+	  
+	  s = [NSString stringWithFormat: @"(%@='%@')",	IDField, theID];
+	  qualifier = [EOQualifier qualifierWithQualifierFormat: s];
+	  attributes = [self _searchAttributes];
+
+	  if ([_scope caseInsensitiveCompare: @"BASE"] == NSOrderedSame)
+	    entries = [ldapConnection baseSearchAtBaseDN: baseDN
+				      qualifier: qualifier
+				      attributes: attributes];
+	  else if ([_scope caseInsensitiveCompare: @"ONE"] == NSOrderedSame)
+	    entries = [ldapConnection flatSearchAtBaseDN: baseDN
+				      qualifier: qualifier
+				      attributes: attributes];
+	  else
+	    entries = [ldapConnection deepSearchAtBaseDN: baseDN
+				      qualifier: qualifier
+				      attributes: attributes];
+	  
+	  ldapEntry = [entries nextObject];
+	}
       else
 	ldapEntry = nil;
       
@@ -748,11 +769,10 @@ static NSLock *lock;
   return contactEntry;
 }
 
-- (NSDictionary *) lookupContactEntryWithUIDorEmail: (NSString *) uid;
+- (NSDictionary *) lookupContactEntryWithUIDorEmail: (NSString *) uid
 {
   NSDictionary *contactEntry;
   NGLdapEntry *ldapEntry;
-  NSEnumerator *entries;
 
 #if defined(THREADSAFE)
   [lock lock];
@@ -763,7 +783,8 @@ static NSLock *lock;
   if ([uid length] > 0)
     {
       if ([self _initLDAPConnection])
-	{
+	{				       
+	  NSEnumerator *entries;
 	  EOQualifier *qualifier;
 	  NSArray *attributes;
 	  
@@ -778,7 +799,7 @@ static NSLock *lock;
 	    entries = [ldapConnection flatSearchAtBaseDN: baseDN
 				      qualifier: qualifier
 				      attributes: attributes];
-	  else /* else we do like it was before */ 
+	  else
 	    entries = [ldapConnection deepSearchAtBaseDN: baseDN
 				      qualifier: qualifier
 				      attributes: attributes];

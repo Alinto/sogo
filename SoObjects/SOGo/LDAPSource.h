@@ -72,9 +72,9 @@
 - (BOOL) checkLogin: (NSString *) login
 	andPassword: (NSString *) password;
 
-- (NSDictionary *) lookupContactEntry: (NSString *) entryID;
+- (NSDictionary *) lookupContactEntry: (NSString *) theID;
 - (NSDictionary *) lookupContactEntryWithUIDorEmail: (NSString *) entryID;
-- (NSArray *) allEntryUIDs;
+- (NSArray *) allEntryIDs;
 - (NSArray *) fetchContactsMatching: (NSString *) filter;
 - (NSString *) sourceID;
 

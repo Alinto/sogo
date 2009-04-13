@@ -1,11 +1,11 @@
 2009-04-13  Ludovic Marcotte <lmarcotte@inverse.ca>
-	
-	* SoObjects/Contacts/SOGoContactLDAPFolder.m and
-	SoObjects/SOGo/LDAPSource.h: renamed allEntryIDs to
-	allEntryUIDs and we now use the UID instead of the ID
-	when returning all entries since when the callback
-	is invoked, we use the UID and NOT the ID.
-	
+
+	* SoObjects/SOGo/LDAPSource.m: cleaned up and
+	also correctly implemented -lookupContactEntry.
+	* SoObjects/Contacts/SOGoContactLDAPFolder.m:
+	we now use the correctly implemented -lookupContactEntry
+	method instead of -lookupContactEntryWithUIDorEmail
+
 2009-04-09  Ludovic Marcotte <lmarcotte@inverse.ca>
 
         * Reverted previous patch and provided the correct
