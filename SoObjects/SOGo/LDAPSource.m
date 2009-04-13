@@ -517,7 +517,7 @@ static NSLock *lock;
   return searchAttributes;
 }
 
-- (NSArray *) allEntryIDs
+- (NSArray *) allEntryUIDs
 {
   NSMutableArray *ids;
   NSEnumerator *entries;
@@ -534,7 +534,7 @@ static NSLock *lock;
     {
       NSArray *attributes;
       
-      attributes = [NSArray arrayWithObject: IDField];
+      attributes = [NSArray arrayWithObject: UIDField];
       if ([_scope caseInsensitiveCompare: @"BASE"] == NSOrderedSame) 
         entries = [ldapConnection baseSearchAtBaseDN: baseDN
 				  qualifier: nil
@@ -556,7 +556,7 @@ static NSLock *lock;
       currentEntry = [entries nextObject];
       while (currentEntry)
 	{
-	  value = [[currentEntry attributeWithName: IDField]
+	  value = [[currentEntry attributeWithName: UIDField]
 		    stringValueAtIndex: 0];
 	  if ([value length] > 0)
 	    [ids addObject: value];

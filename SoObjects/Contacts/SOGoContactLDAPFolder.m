@@ -190,7 +190,7 @@
 
 - (NSArray *) toOneRelationshipKeys
 {
-  return [ldapSource allEntryIDs];
+  return [ldapSource allEntryUIDs];
 }
 
 - (NSArray *) _flattenedRecords: (NSArray *) records

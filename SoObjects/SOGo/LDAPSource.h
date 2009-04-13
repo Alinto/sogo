@@ -74,7 +74,7 @@
 
 - (NSDictionary *) lookupContactEntry: (NSString *) entryID;
 - (NSDictionary *) lookupContactEntryWithUIDorEmail: (NSString *) entryID;
-- (NSArray *) allEntryIDs;
+- (NSArray *) allEntryUIDs;
 - (NSArray *) fetchContactsMatching: (NSString *) filter;
 - (NSString *) sourceID;
 
