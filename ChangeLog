@@ -5,6 +5,8 @@
 	* SoObjects/Contacts/SOGoContactLDAPFolder.m:
 	we now use the correctly implemented -lookupContactEntry
 	method instead of -lookupContactEntryWithUIDorEmail
+	* Regenerated the SOPE patchset to include a fix
+	for Oracle RAC.
 
 2009-04-09  Ludovic Marcotte <lmarcotte@inverse.ca>
 

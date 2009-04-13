@@ -319,16 +319,19 @@ Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
        return NO;
      }
    
-@@ -414,7 +448,7 @@
+@@ -414,7 +448,10 @@
    // Under Oracle 10g, the third parameter of OCILogon() has the form: [//]host[:port][/service_name]
    // See http://download-west.oracle.com/docs/cd/B12037_01/network.101/b10775/naming.htm#i498306 for
    // all juicy details.
 -  database = [[NSString stringWithFormat:@"%@:%@", [o serverName], [o port]] UTF8String];
-+  database = [[NSString stringWithFormat:@"%@:%@/%@", [o serverName], [o port], [o databaseName]] UTF8String];
++  if ([o serverName] && [o port])
++    database = [[NSString stringWithFormat:@"%@:%@/%@", [o serverName], [o port], [o databaseName]] UTF8String];
++  else
++    database = [[o databaseName] UTF8String];
  
    // We logon to the database.
    if (OCILogon(_oci_env, _oci_err, &_oci_ctx, (const OraText*)username, strlen(username),
-@@ -422,6 +456,7 @@
+@@ -422,6 +459,7 @@
      {
        NSLog(@"FAILED: OCILogon(). username = %s  password = %s"
  	    @"  database = %s", username, password, database);
@@ -336,7 +339,7 @@ Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
        return NO;
      }
    
-@@ -438,6 +473,11 @@
+@@ -438,6 +476,11 @@
  {
    sword status;
    
@@ -348,7 +351,7 @@ Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
    status = OCIStmtFetch2(_current_stm, _oci_err, (ub4)1, (ub4)OCI_FETCH_NEXT, (sb4)0, (ub4)OCI_DEFAULT);
  
    if (status == OCI_NO_DATA)
-@@ -609,7 +649,7 @@
+@@ -609,7 +652,7 @@
  
  /* GCSEOAdaptorChannel protocol */
  static NSString *sqlFolderFormat = (@"CREATE TABLE %@ (\n"	\
