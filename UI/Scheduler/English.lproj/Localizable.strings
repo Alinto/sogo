@@ -392,6 +392,14 @@
 "reminder_1_WEEK_BEFORE" = "1 week before";
 "reminder_CUSTOM" = "Custom...";
 
+"reminder_MINUTES" = "minutes";
+"reminder_HOURS" = "hours";
+"reminder_DAYS" = "days";
+"reminder_BEFORE" = "before";
+"reminder_AFTER" = "after";
+"reminder_START" = "the event starts";
+"reminder_END" = "the event ends";
+
 "zoom_400" = "400%";
 "zoom_200" = "200%";
 "zoom_100" = "100%";

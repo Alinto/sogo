@@ -1,6 +1,6 @@
 /* UIxComponentEditor.h - this file is part of SOGo
  *
- * Copyright (C) 2006-2008 Inverse inc.
+ * Copyright (C) 2006-2009 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -67,10 +67,15 @@
   NSString *attendeesEmails;
   NSString *attendeesStates;
 
-  NSString *repeat;
   NSString *reminder;
+  NSString *reminderQuantity;
+  NSString *reminderUnit;
+  NSString *reminderRelation;
+  NSString *reminderReference;
   
   /* ugly */
+  NSString *repeat;
+
   NSString *repeatType;
   NSString *repeat1;
   NSString *repeat2;

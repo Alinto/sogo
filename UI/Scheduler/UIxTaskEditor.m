@@ -1,6 +1,6 @@
 /* UIxTaskEditor.m - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse inc.
+ * Copyright (C) 2007-2009 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -403,7 +403,10 @@
   if (hasDueDate)
     [todo setDue: taskDueDate];
   else
-    [todo setDue: nil];
+    {
+      [todo setDue: nil];
+      [todo removeAllAlarms];
+    }
 
   if ([status isEqualToString: @"COMPLETED"])
     [todo setCompleted: statusDate];

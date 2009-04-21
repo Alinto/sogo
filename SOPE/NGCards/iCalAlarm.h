@@ -32,9 +32,11 @@
 
 /* accessors */
 
+- (void) setTrigger: (iCalTrigger *) _value;
 - (iCalTrigger *) trigger;
 - (iCalAttachment *) attach;
 - (NSString *) comment;
+- (void) setAction: (NSString *) _value;
 - (NSString *) action;
 - (void) setRecurrenceRule: (NSString *) _recurrenceRule;
 - (NSString *) recurrenceRule;

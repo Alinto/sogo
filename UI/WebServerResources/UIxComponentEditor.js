@@ -132,7 +132,10 @@ function onComponentEditorLoad(event) {
 
   $("repeatHref").observe("click", onPopupRecurrenceWindow);
   $("repeatList").observe("change", onPopupRecurrenceWindow);
+	$("reminderHref").observe("click", onPopupReminderWindow);
+	$("reminderList").observe("change", onPopupReminderWindow);
   onPopupRecurrenceWindow(null);
+	onPopupReminderWindow(null);
 }
 
 function onPopupRecurrenceWindow(event) {
@@ -149,6 +152,24 @@ function onPopupRecurrenceWindow(event) {
   }
   else
     repeatHref.hide();
+
+  return false;
+}
+
+function onPopupReminderWindow(event) {
+  if (event)
+    preventDefault(event);
+
+  var reminderHref = $("reminderHref");
+
+  if ($("reminderList").value == 15) {
+    reminderHref.show();
+    if (event)
+      window.open(ApplicationBaseURL + "editReminder", null, 
+									"width=250,height=150");
+  }
+  else
+    reminderHref.hide();
 
   return false;
 }

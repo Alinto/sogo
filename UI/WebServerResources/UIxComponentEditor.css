@@ -4,5 +4,8 @@ SELECT#calendarList
 #attendeesLabel
 { display: none; }
 
+SPAN.datePicker INPUT.textField
+{ width: 7em; }
+
 SPAN.timeDateControl A.button
 { border: 0; }

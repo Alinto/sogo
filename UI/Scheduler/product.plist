@@ -107,6 +107,10 @@
 	  protectedBy = "View";
 	  pageName    = "UIxRecurrenceEditor";
 	};
+	editReminder = {
+	  protectedBy = "View";
+	  pageName    = "UIxReminderEditor";
+	};
 	colorPicker = {
 	  protectedBy = "View";
 	  pageName = "UIxColorPicker";

@@ -1,3 +1,16 @@
+2009-04-21  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Scheduler/UIxTaskEditor.m ([UIxTaskEditor
+	-takeValuesFromRequest:inContext:]): removes any alarm if the
+	vTodo doesn't have a due date.
+
+	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
+	-_loadAlarms]): new method to extract the first alarm of the component.
+
+	* SoObjects/Appointments/iCalEvent+SOGo.m ([iCalEvent
+	-quickRecord]): added support for an event's alarm. The database
+	field "c_nextalarm" must first be added to all tables.
+
 2009-04-13  Ludovic Marcotte <lmarcotte@inverse.ca>
 
 	* SoObjects/SOGo/LDAPSource.m: cleaned up and

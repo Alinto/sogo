@@ -29,8 +29,11 @@
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 
+#import <NGCards/iCalAlarm.h>
 #import <NGCards/iCalEvent.h>
 #import <NGCards/iCalPerson.h>
+#import <NGCards/iCalTrigger.h>
+#import <NGCards/NSString+NGCards.h>
 
 #import "iCalRepeatableEntityObject+SOGo.h"
 
@@ -59,7 +62,7 @@
 - (NSMutableDictionary *) quickRecord
 {
   NSMutableDictionary *row;
-  NSCalendarDate *startDate, *endDate;
+  NSCalendarDate *startDate, *endDate, *nextAlarmDate;
   NSArray *attendees;
   NSString *uid, *title, *location, *status;
   NSNumber *sequence;
@@ -74,6 +77,7 @@
 
   startDate = [self startDate];
   endDate = [self endDate];
+  nextAlarmDate = nil;
   uid = [self uid];
   title = [self summary];
   if (![title isNotNull])
@@ -198,6 +202,73 @@
     }
   [row setObject:partstates forKey: @"c_partstates"];
   [partstates release];
+
+  if ([self hasAlarms])
+    {
+      // We currently have the following limitations for alarms:
+      // - only the first alarm is considered;
+      // - the alarm's action must be of type DISPLAY;
+      // - the alarm's trigger value type must be DURATION.
+      
+      iCalAlarm *anAlarm;
+      iCalTrigger *aTrigger;
+      NSCalendarDate *relationDate;
+      NSString *relation;
+      NSTimeInterval anInterval;
+
+      anAlarm = [[self alarms] objectAtIndex: 0];
+      aTrigger = [anAlarm trigger];
+      relation = [aTrigger relationType];
+      anInterval = [[aTrigger value] durationAsTimeInterval];
+
+      if ([[anAlarm action] caseInsensitiveCompare: @"DISPLAY"] == NSOrderedSame &&
+	  [[aTrigger valueType] caseInsensitiveCompare: @"DURATION"] == NSOrderedSame)
+	{
+	  if ([self isRecurrent])
+	    {
+	      if ([self isStillRelevant])
+		{
+		  NSArray *occurrences;
+		  NSCalendarDate *now, *later;
+		  NGCalendarDateRange *range;
+
+		  // We only compute the next occurrence of the repeating event
+		  // for the next 48 hours
+		  now = [NSCalendarDate calendarDate];
+		  later = [now addTimeInterval: (60*60*48)];
+		  range = [NGCalendarDateRange calendarDateRangeWithStartDate: now
+					       endDate: later];
+		  occurrences = [self recurrenceRangesWithinCalendarDateRange: range];
+		  if ([occurrences count] > 0)
+		    {
+		      range = [occurrences objectAtIndex: 0];
+		      if ([relation caseInsensitiveCompare: @"END"] == NSOrderedSame)
+			relationDate = [range endDate];
+		      else
+			relationDate = [range startDate];
+		    }
+		}
+	    }
+	  else
+	    {
+	      // Event is not reccurent
+	      if ([relation caseInsensitiveCompare: @"END"] == NSOrderedSame)
+		relationDate = endDate;
+	      else
+		relationDate = startDate;
+	    }
+	  
+	  // Compute the next alarm date with respect to the reference date
+	  if ([relationDate isNotNull])
+	    nextAlarmDate = [relationDate addTimeInterval: anInterval];
+	}
+    }
+  if ([nextAlarmDate isNotNull])
+    [row setObject: [NSNumber numberWithInt: [nextAlarmDate timeIntervalSince1970]]
+	 forKey: @"c_nextalarm"];
+  else
+    [row setObject: [NSNumber numberWithInt: 0] forKey: @"c_nextalarm"];
+
 
   return row;
 }

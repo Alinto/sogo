@@ -76,7 +76,7 @@
       <label><var:string label:value="Repeat:" />
        <span class="content"><var:popup list="repeatList" item="item"
           label:noSelectionString="repeat_NEVER"
-	    var:disabled="isChildOccurence"
+	  var:disabled="isChildOccurence"
           const:disabledValue="-"
           const:name="repeatList"
 	  const:id="repeatList"
@@ -87,10 +87,12 @@
       <label><var:string label:value="Reminder:" />
       <span class="content"><var:popup list="reminderList" item="item"
          const:disabledValue="-"
-	 const:disabled="YES"
          label:noSelectionString="reminder_NONE"
-         string="itemReminderText" selection="reminder"
-         /></span></label>
+          const:name="reminderList"
+	 const:id="reminderList"
+         string="itemReminderText" var:selection="reminder"
+         /> <a href="#" id="reminderHref" style="display: none;"
+             ><var:string label:value="Edit"/></a></span></label>
       <hr />
       <label id="commentArea"><var:string label:value="Description:"
 	  /><textarea rows="20" name="comment" var:value="comment" /></label>
@@ -148,6 +150,19 @@
      <input type="hidden" name="range2"
 	id="range2"
 	var:value="range2"/>
+
+     <input type="hidden" name="reminderQuantity"
+	    id="reminderQuantity"
+	    var:value="reminderQuantity"/>
+     <input type="hidden" name="reminderUnit"
+	    id="reminderUnit"
+	    var:value="reminderUnit"/>
+     <input type="hidden" name="reminderRelation"
+	    id="reminderRelation"
+	    var:value="reminderRelation"/>
+     <input type="hidden" name="reminderReference"
+	    id="reminderReference"
+	    var:value="reminderReference"/>
     </div>
   </form>
 </var:component>

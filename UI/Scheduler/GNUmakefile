@@ -35,14 +35,15 @@ SchedulerUI_OBJC_FILES =		\
 	UIxComponentEditor.m		\
 	UIxCalendarSelector.m		\
 	UIxAppointmentEditor.m		\
-	UIxTaskEditor.m		\
+	UIxTaskEditor.m			\
 	UIxCalDateLabel.m		\
 	UIxDatePicker.m			\
 	UIxTimeDateControl.m		\
 	UIxCalParticipationStatusView.m \
-	UIxCalMonthOverview.m	\
-	UIxCalMonthViewOld.m \
-	UIxRecurrenceEditor.m \
+	UIxCalMonthOverview.m		\
+	UIxCalMonthViewOld.m		\
+	UIxRecurrenceEditor.m		\
+	UIxReminderEditor.m		\
 	UIxOccurenceDialog.m
 
 SchedulerUI_RESOURCE_FILES += \

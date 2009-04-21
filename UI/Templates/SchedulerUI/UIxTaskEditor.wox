@@ -8,8 +8,10 @@
   xmlns:rsrc="OGo:url"
   xmlns:label="OGo:label"
   className="UIxComponentEditor"
+  componentCalendar="componentCalendar"
   var:component="todo"
   var:saveURL="saveURL">
+
   <span class="checkBoxList"><var:string label:value="Start:" />
     <span class="content"><input var:checked="hasStartDate"
 	id="startDateCB" type="checkbox" class="checkBox"

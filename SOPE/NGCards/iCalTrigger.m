@@ -27,9 +27,9 @@
 
 /* accessors */
 
-- (void) setValue: (NSString *) _value
+- (void) setValue: (NSString *) theValue
 {
-  [self setValue: 0 to: _value];
+  [self setValue: 0 to: theValue];
 }
 
 - (NSString *) value
@@ -37,14 +37,24 @@
   return [self value: 0];
 }
 
-- (void) setValueType: (NSString *) _value
+- (void) setValueType: (NSString *) theValue
 {
-  [self setValue: 0 ofAttribute: @"type" to: _value];
+  [self setValue: 0 ofAttribute: @"value" to: theValue];
 }
 
 - (NSString *) valueType
 {
-  return [self value: 0 ofAttribute: @"type"];
+  return [self value: 0 ofAttribute: @"value"];
+}
+
+- (void) setRelationType: (NSString *) theRelationType
+{
+  [self setValue: 0 ofAttribute: @"related" to: theRelationType];
+}
+
+- (NSString *) relationType
+{
+  return [self value: 0 ofAttribute: @"related"];
 }
 
 @end /* iCalTrigger */

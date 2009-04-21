@@ -1,3 +1,11 @@
+2009-04-21  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* iCalTrigger.m ([iCalTrigger -setRelationType:]): new method to
+	set the "related" attribute of an alarm trigger.
+
+	* NSString+NGCards.m ([NSString -durationAsTimeInterval]): added
+	support of negative durations.
+
 2009-03-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* iCalWeeklyRecurrenceCalculator.m

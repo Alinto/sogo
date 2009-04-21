@@ -158,20 +158,33 @@ static NSString *commaSeparator = nil;
   */
   unsigned       i, len;
   NSTimeInterval ti;
-  BOOL           isTime;
+  BOOL           isNegative, isTime;
   int            val;
   unichar c;
-    
+  
   ti  = 0.0;
+  i = 0;
 
-  if ([self hasPrefix:@"P"])
+  c = [self characterAtIndex: i];
+  if (c == '-')
+    {
+      isNegative = YES;
+      i++;
+    }
+  else
+    {
+      isNegative = NO;
+    }
+  
+  c = [self characterAtIndex: i];
+  if (c == 'P')
     {
       val = 0;
 
       len = [self length];
       isTime = NO;
 
-      for (i = 1; i < len; i++)
+      for (i++; i < len; i++)
 	{
 	  c = [self characterAtIndex: i];
 	  if (c == 't' || c == 'T')
@@ -212,6 +225,9 @@ static NSString *commaSeparator = nil;
   else
     NSLog(@"Cannot parse iCal duration value: '%@'", self);
 
+  if (isNegative)
+    ti = -ti;
+  
   return ti;
 }
 

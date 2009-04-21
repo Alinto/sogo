@@ -55,7 +55,7 @@ function validateTaskEditor() {
     if (!enddate)
       return false;
   }
-
+	
   if (startdate && enddate) {
     tmpdate = uixEarlierDate(startdate, enddate);
     if (tmpdate == enddate) {
@@ -164,6 +164,8 @@ function onTimeControlCheck(checkBox) {
   for (var i = 0; i < selects.length; i++)
     if (selects[i] != checkBox)
       selects[i].disabled = !checkBox.checked;
+	if (checkBox.id == "dueDateCB")
+		$("reminderList").disabled = !checkBox.checked;
 }
 
 function saveEvent(sender) {
@@ -307,7 +309,10 @@ function onTaskEditorLoad() {
 													 'hour': $("dueTime_time_hour"),
 													 'minute': $("dueTime_time_minute")}};
 	initTimeWidgets(widgets);
-  
+	
+	// Enable or disable the reminder list
+	onTimeControlCheck($("dueDateCB"));
+
   initializeStatusLine();
 }
 

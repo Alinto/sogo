@@ -1,6 +1,6 @@
 /* UIxComponentEditor.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2008 Inverse inc.
+ * Copyright (C) 2006-2009 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -30,9 +30,11 @@
 #import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSURL.h>
 
+#import <NGCards/iCalAlarm.h>
 #import <NGCards/iCalPerson.h>
 #import <NGCards/iCalRepeatableEntityObject.h>
 #import <NGCards/iCalRecurrenceRule.h>
+#import <NGCards/iCalTrigger.h>
 #import <NGCards/NSString+NGCards.h>
 #import <NGCards/NSCalendarDate+NGCards.h>
 #import <NGObjWeb/SoSecurityManager.h>
@@ -60,6 +62,9 @@
 
 #import "UIxComponentEditor.h"
 #import "UIxDatePicker.h"
+
+static NSArray *reminderItems = nil;
+static NSArray *reminderValues = nil;
 
 #define iREPEAT(X) \
 - (NSString *) repeat##X; \
@@ -94,6 +99,52 @@ iRANGE(2);
 
 @implementation UIxComponentEditor
 
++ (void) initialize
+{
+  if (!reminderItems && !reminderValues)
+    {
+      reminderItems = [NSArray arrayWithObjects:
+			       @"5_MINUTES_BEFORE",
+			       @"10_MINUTES_BEFORE",
+			       @"15_MINUTES_BEFORE",
+			       @"30_MINUTES_BEFORE",
+			       @"45_MINUTES_BEFORE",
+			       @"-",
+			       @"1_HOUR_BEFORE",
+			       @"2_HOURS_BEFORE",
+			       @"5_HOURS_BEFORE",
+			       @"15_HOURS_BEFORE",
+			       @"-",
+			       @"1_DAY_BEFORE",
+			       @"2_DAYS_BEFORE",
+			       @"1_WEEK_BEFORE",
+			       @"-",
+			       @"CUSTOM",
+			       nil];
+      reminderValues = [NSArray arrayWithObjects:
+				@"-PT5M",
+				@"-PT10M",
+				@"-PT15M",
+				@"-PT30M",
+				@"-PT45M",
+				@"",
+				@"-PT1H",
+				@"-PT2H",
+				@"-PT5H",
+				@"-PT15H",
+				@"",
+				@"-P1D",
+				@"-P2D",
+				@"-P1W",
+				@"",
+				@"",
+				nil];
+
+      [reminderItems retain];
+      [reminderValues retain];
+    }
+}
+
 - (id) init
 {
   UIxDatePicker *datePicker;
@@ -120,6 +171,10 @@ iRANGE(2);
       calendarList = nil;
       repeat = nil;
       reminder = nil;
+      reminderQuantity = nil;
+      reminderUnit = nil;
+      reminderRelation = nil;
+      reminderReference = nil;
       repeatType = nil;
       repeat1 = nil;
       repeat2 = nil;
@@ -155,9 +210,13 @@ iRANGE(2);
   [attendeesStates release];
   [calendarList release];
 
-  [repeat release];
   [reminder release];
+  [reminderQuantity release];
+  [reminderUnit release];
+  [reminderRelation release];
+  [reminderReference release];
 
+  [repeat release];
   [repeatType release];
   [repeat1 release];
   [repeat2 release];
@@ -372,6 +431,90 @@ iRANGE(2);
     }
 }
 
+- (void) _loadAlarms
+{
+  if ([component hasAlarms])
+    {
+      // We currently have the following limitations for alarms:
+      // - only the first alarm is considered;
+      // - the alarm's action must be of type DISPLAY;
+      // - the alarm's trigger value type must be DURATION.
+
+      iCalAlarm *anAlarm;
+      iCalTrigger *aTrigger;
+      NSString *duration, *quantity;
+      unichar c;
+      unsigned int i;
+
+      anAlarm = [[component alarms] objectAtIndex: 0];
+      aTrigger = [anAlarm trigger];
+      if ([[anAlarm action] caseInsensitiveCompare: @"DISPLAY"] == NSOrderedSame &&
+	  [[aTrigger valueType] caseInsensitiveCompare: @"DURATION"] == NSOrderedSame)
+	{
+	  duration = [aTrigger value];
+	  i = [reminderValues indexOfObject: duration];
+
+	  if (i == NSNotFound)
+	    {
+	      // Custom alarm
+	      ASSIGN (reminder, @"CUSTOM");
+	      ASSIGN (reminderRelation, [aTrigger relationType]);
+
+	      i = 0;
+	      c = [duration characterAtIndex: i];
+	      if (c == '-')
+		{
+		  ASSIGN (reminderReference, @"BEFORE");
+		  i++;
+		}
+	      else
+		{
+		  ASSIGN (reminderReference, @"AFTER");
+		}
+	      
+	      c = [duration characterAtIndex: i];
+	      if (c == 'P')
+		{
+		  quantity = @"";
+		  // Parse duration -- ignore first character (P)
+		  for (i++; i < [duration length]; i++)
+		    {
+		      c = [duration characterAtIndex: i];
+		      if (c == 't' || c == 'T')
+			// time -- ignore character
+			continue;
+		      else if (isdigit (c))
+			quantity = [quantity stringByAppendingFormat: @"%c", c];
+		      else
+			{
+			  switch (c)
+			    {
+			    case 'D': /* day  */
+			      ASSIGN (reminderUnit, @"DAYS");
+			      break;
+			    case 'H': /* hour */
+			      ASSIGN (reminderUnit, @"HOURS");
+			      break;
+			    case 'M': /* min  */
+			      ASSIGN (reminderUnit, @"MINUTES");
+			      break;
+			    default:
+			      NSLog(@"Cannot process duration unit: '%c'", c);
+			      break;
+			    }
+			}
+		    }
+		  if ([quantity length])
+		    ASSIGN (reminderQuantity, quantity);
+		}
+	    }
+	  else
+	    // Matches one of the predefined alarms
+	    ASSIGN (reminder, [reminderItems objectAtIndex: i]);
+	}
+    }
+}
+
 /* warning: we use this method which will be triggered by the template system
    when the page is instantiated, but we should find another and cleaner way of
    doing this... for example, when the clientObject is set */
@@ -401,6 +544,7 @@ iRANGE(2);
 	  [self _loadCategories];
 	  [self _loadAttendees];
 	  [self _loadRRules];
+	  [self _loadAlarms];
 
  	  [componentCalendar release];
 	  componentCalendar = [co container];
@@ -739,51 +883,28 @@ iRANGE(2);
 
 - (NSArray *) reminderList
 {
-  static NSArray *reminderItems = nil;
-
-  if (!reminderItems)
-    {
-      reminderItems = [NSArray arrayWithObjects: @"5_MINUTES_BEFORE",
-                               @"10_MINUTES_BEFORE",
-                               @"15_MINUTES_BEFORE",
-                               @"30_MINUTES_BEFORE",
-                               @"45_MINUTES_BEFORE",
-                               @"-",
-                               @"1_HOUR_BEFORE",
-                               @"2_HOURS_BEFORE",
-                               @"5_HOURS_BEFORE",
-                               @"15_HOURS_BEFORE",
-                               @"-",
-                               @"1_DAY_BEFORE",
-                               @"2_DAYS_BEFORE",
-                               @"1_WEEK_BEFORE",
-                               @"-",
-                               @"CUSTOM",
-                               nil];
-      [reminderItems retain];
-    }
-
   return reminderItems;
 }
 
-// - (void) setReminder: (NSString *) reminder
-// {
-//   ASSIGN(reminder, _reminder);
-// }
-
-// - (NSString *) reminder
-// {
-//   return reminder;
-// }
+ - (void) setReminder: (NSString *) theReminder
+ {
+   ASSIGN(reminder, theReminder);
+ }
 
 - (NSString *) reminder
-{
-  return @"";
-}
+ {
+   return reminder;
+ }
 
-- (void) setReminder: (NSString *) newReminder
-{
-}
+ - (void) setReminderQuantity: (NSString *) theReminderQuantity
+ {
+   ASSIGN(reminderQuantity, theReminderQuantity);
+ }
+
+- (NSString *) reminderQuantity
+ {
+   return reminderQuantity;
+ }
 
 - (NSString *) itemReminderText
 {
@@ -1604,6 +1725,54 @@ RANGE(2);
   [component setPriority: priority];
   [component setLastModified: now];
 
+  if (!reminder || [reminder caseInsensitiveCompare: @"-"] == NSOrderedSame)
+    // No alarm selected -- if there was an unsupported alarm defined in
+    // the event, it will be deleted.
+    [component removeAllAlarms];
+  else
+    {
+      iCalTrigger *aTrigger;
+      iCalAlarm *anAlarm;
+      NSString *aValue;
+      unsigned int index;
+      
+      index = [reminderItems indexOfObject: reminder];
+      aValue = [reminderValues objectAtIndex: index];
+
+      aTrigger = [iCalTrigger elementWithTag: @"TRIGGER"];
+      [aTrigger setValueType: @"DURATION"];
+      
+      anAlarm = [iCalAlarm new];
+      [anAlarm setAction: @"DISPLAY"];
+      [anAlarm setTrigger: aTrigger];
+      
+      if ([aValue length]) {
+	// Predefined alarm
+	[aTrigger setValue: aValue];
+      }
+      else {
+	// Custom alarm
+	if ([reminderReference caseInsensitiveCompare: @"BEFORE"] == NSOrderedSame)
+	  aValue = [NSString stringWithString: @"-P"];
+	else
+	  aValue = [NSString stringWithString: @"P"];
+	
+	if ([reminderUnit caseInsensitiveCompare: @"MINUTES"] == NSOrderedSame ||
+	    [reminderUnit caseInsensitiveCompare: @"HOURS"] == NSOrderedSame)
+	  aValue = [aValue stringByAppendingString: @"T"];
+	
+	aValue = [aValue stringByAppendingFormat: @"%i%@",			 
+			 [reminderQuantity intValue],
+			 [reminderUnit substringToIndex: 1]];
+	[aTrigger setValue: aValue];
+	[aTrigger setRelationType: reminderRelation];
+      }
+      [component removeAllAlarms];
+      [component addToAlarms: anAlarm];
+      
+      [anAlarm release];
+    }
+  
   if (![self isChildOccurence])
     {
       // We remove any repeat rules
