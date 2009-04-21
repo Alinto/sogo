@@ -543,7 +543,7 @@ static BOOL debugObjectAllocation = NO;
                       _name];
             }
           else
-            [self errorWithFormat:@"did not find Locale for language: %@", _name];
+            [self errorWithFormat:@"did not find locale for language: %@", _name];
         }
     }
   else

@@ -1,0 +1,48 @@
+/* this file is in UTF-8 format! */
+
+/* toolbars */
+"Save" = "Cadw";
+"Close" = "Cau";
+"Edit User Rights" = "Golygu Hawliau Defnyddiwr";
+
+"Home" = "Hafan";
+"Calendar" = "Calendr";
+"Address Book"	= "Llyfr Cyfeiriadau";
+"Mail" = "Post";
+"Preferences" = "Dewisiadau";
+"Disconnect" = "Datgysylltu";
+"Right Administration" = "Hawl Gweinyddu";
+"Log Console (dev.)" = "Consol Log (dev.)";
+
+"User"			= "Defnyddiwr";
+
+"Help"			= "Help";
+
+"noJavascriptError" = "Mae angen Javascript ar SOGo i redeg. Sicrhewch fod yr opsiwn ar gael ac yn actifedig yn newisiadau eich porwr.";
+"noJavascriptRetry" = "Ailgynnig";
+
+"Publish the Free/Busy information" = "Cyhoddwch y wybodaeth Rhydd/Brysur";
+
+"Default Roles" = "Rolau Gwreiddiol";
+
+"Sorry, the user rights can not be configured for that object." = "Sori, ni all hawliau'r defnyddiwr cael ei newid ar gyfer y gwrthrych hwn.";
+
+/* generic.js */
+"Unable to subscribe to that folder!"
+	= "Methu tanysgrifio i'r ffolder yna!";
+"You cannot subscribe to a folder that you own!"
+      	= "Ni fedrwch danysgrifio i ffolder yr ydych yn ei berchen!";
+"Unable to unsubscribe from that folder!"
+	= "Methu dad-danysgrifio i'r ffolder yna!";
+"You cannot unsubscribe from a folder that you own!"
+      	= "Ni fedrwch dad-danysgrifio i ffolder yr ydych yn ei berchen!";
+"Unable to rename that folder!" = "Methu ail-enwi'r ffolder yna!";
+"You have already subscribed to that folder!"
+     	= "Yr ydych wedi tanysgrifio eisoes i'r ffolder yna!";
+"The user rights cannot be edited for this object!"
+        = "Ni all hawliau'r defnyddiwr cael eu golygu ar gyfer y gwrthrych hwn!";
+
+"You are not allowed to access this module or this system. Please contact your system administrator."
+= "Nid oes gennych caniatad mynediad i'r modiwl hwn na'r system hwn. Cysylltwch a'r Gweinyddwr Systemau os gwelwch yn dda.";
+"You don't have the required privileges to perform the operation."
+= "Nid oes gennych y breintiau gofynnol i berfformio'r gweithrediad.";

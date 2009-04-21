@@ -1,6 +1,13 @@
+config.make
 shared_debug_obj
 obj
 imgs-.*
 .*\.d$
 .*\.SOGo$
 .*\.sax$
+SoObjects/SOGo/SOGo.framework
+SoObjects/SOGo/derived_src
+SOPE/NGCards/samples/CardElement.m
+SOPE/NGCards/samples/CardGroup.m
+SOPE/NGCards/samples/CardVersitRenderer.m
+SOPE/NGCards/samples/NGCardsSaxHandler.m

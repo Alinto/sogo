@@ -45,6 +45,7 @@
   NSString *fieldName;
   NSCalendarDate *lastFetch;
   NSMutableDictionary *values;
+  BOOL propagateCache;
 
   struct
   {
@@ -56,7 +57,8 @@
 
 - (id) initWithTableURL: (NSURL *) theURL
 		    uid: (NSString *) theUID
-	      fieldName: (NSString *) theFieldName;
+	      fieldName: (NSString *) theFieldName
+  	shouldPropagate: (BOOL) b;
 
 /* value access */
 - (void) setValues: (NSDictionary *) theValues;

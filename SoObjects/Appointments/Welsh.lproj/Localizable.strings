@@ -1,0 +1,8 @@
+"Personal Calendar" = "Calendr Personol";
+vevent_class0 = "(Digwyddiad cyhoeddus)";
+vevent_class1 = "(Digwyddiad preifat)";
+vevent_class2 = "(Digwyddiad cyfrinachol)";
+
+vtodo_class0 = "(Tasg gyhoeddus)";
+vtodo_class1 = "(Tasg breifat)";
+vtodo_class2 = "(Tasg gyfrinachol)";

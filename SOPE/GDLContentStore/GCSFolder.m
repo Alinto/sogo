@@ -1,7 +1,7 @@
 /*
   Copyright (C) 2004-2007 SKYRIX Software AG
   Copyright (C) 2007      Helge Hess
-  Copyright (c) 2008 Inverse inc.
+  Copyright (c) 2008-2009 Inverse inc.
 
   This file is part of OpenGroupware.org.
 

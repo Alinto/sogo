@@ -351,7 +351,8 @@ static NSLock *lock;
   
   defaults = [[[SOGoUserDefaults alloc] initWithTableURL: url
 					uid: theLogin
-					fieldName: [NSString stringWithFormat: @"c_%@", theKey]]
+					fieldName: [NSString stringWithFormat: @"c_%@", theKey]
+					shouldPropagate: YES]
 	       autorelease];
   [defaults setValues: theValues];
   [self setDefaults: defaults  forLogin: theLogin  key: theKey];

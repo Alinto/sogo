@@ -1,0 +1,496 @@
+/* this file is in UTF-8 format! */
+
+/* Tooltips */
+
+"Create a new event" = "Creu digwyddiad newydd";
+"Create a new task" = "Creu tasg newydd";
+"Edit this event or task" = "Golygu'r digwyddiad neu'r dasg";
+"Delete this event or task" = "Dileu'r digwyddiad neu'r dasg";
+"Go to today" = "Ewch i heddiw";
+"Switch to day view" = "Newid i olygfa diwrnod";
+"Switch to week view" = "Newid i olygfa wythnos";
+"Switch to month view" = "Newid i olygfa mis";
+
+/* Tabs */
+"Date" = "Dyddiad";
+"Calendars" = "Calendrau";
+
+/* Day */
+
+"Sunday" = "Sul";
+"Monday" = "Llun";
+"Tuesday" = "Mawrth";
+"Wednesday" = "Mercher";
+"Thursday" = "Iau";
+"Friday" = "Gwener";
+"Saturday" = "Sadwrn";
+
+"Sun" = "Sul";
+"Mon" = "Llu";
+"Tue" = "Maw";
+"Wed" = "Mer";
+"Thu" = "Iau";
+"Fri" = "Gwe";
+"Sat" = "Sad";
+
+"a2_Sunday" = "Su";
+"a2_Monday" = "Ll";
+"a2_Tuesday" = "Ma";
+"a2_Wednesday" = "Me";
+"a2_Thursday" = "Ia";
+"a2_Friday" = "Gw";
+"a2_Saturday" = "Sa";
+
+"dayLabelFormat" = "%m/%d/%Y";
+"today" = "Heddiw";
+
+/* Week */
+
+"Week" = "wythnos";
+"this week" = "yr wythnos hon";
+
+"Week %d" = "Week %d";
+
+/* Month */
+
+"this month" = "mis hon";
+
+"January" = "Ionawr";
+"February" = "Chwefror";
+"March" = "Mawrth";
+"April" = "Ebrill";
+"May" = "Mai";
+"June" = "Mehefin";
+"July" = "Gorffennaf";
+"August" = "Awst";
+"September" = "Medi";
+"October" = "Hydref";
+"November" = "Tachwedd";
+"December" = "Rhagfyr";
+
+"a3_January" = "Ionawr";
+"a3_February" = "Chwefror";
+"a3_March" = "Mawrth";
+"a3_April" = "Ebrill";
+"a3_May" = "Mai";
+"a3_June" = "Mehefin";
+"a3_July" = "Gorffennaf";
+"a3_August" = "Awst";
+"a3_September" = "Medi";
+"a3_October" = "Hydref";
+"a3_November" = "Tachwedd";
+"a3_December" = "Rhagfyr";
+
+/* Year */
+
+"this year" = "y flwyddyn hon";
+
+/* Menu */
+
+"Calendar" = "Calendr";
+"Contacts" = "Cysylltiadau";
+
+"New Calendar..." = "Calendr Newydd...";
+"Delete Calendar" = "Dileu Calendar";
+"Sharing..." = "Rhannu...";
+"Export Calendar..." = "Allfudo Calendr...";
+"Publish Calendar..." = "Cyhoeddi Calendr...";
+"Reload Remote Calendars" = "Ail-lwytho Calendrau Anghysbell";
+"Properties" = "Dewisiadau";
+
+"Compose E-Mail to All Attendees" = "Cyfansoddi Ebost i bawb sy'n mynychu";
+"Compose E-Mail to Undecided Attendees" = "Cyfansoddi Ebost i bawb sydd heb benderfynu";
+
+/* Folders */
+"Personal calendar" = "Calendr Personol";
+
+/* Misc */
+
+"OpenGroupware.org" = "OpenGroupware.org";
+"Forbidden" = "Gwaharddedig";
+
+/* acls */
+
+"Default Roles" = "Rolau gwreiddiol";
+"User rights for:" = "hawliau defnyddiwr i:";
+
+"label_Public" = "Cyhoeddus";
+"label_Private" = "Preifat";
+"label_Confidential" = "Cyfrinachol";
+
+"label_Viewer" = "Dangos cyfan";
+"label_DAndTViewer" = "Dangos amser a dyddiad";
+"label_Modifier" = "Newid";
+"label_Responder" = "Ymateb i";
+"label_None" = "Dim";
+
+"View All" = "Dangos y cyfan";
+"View the Date & Time" = "Dangos y dyddiad a'r amser";
+"Modify" = "Newid";
+"Respond To" = "Ymateb i";
+"None" = "Dim";
+
+"This person can create objects in my calendar."
+= "Gall y person yma creu gwrthrychau yn fy nghalendr.";
+"This person can erase objects from my calendar."
+= "Gall y person hwn ddileu gwrthrychau o fy nghalendr.";
+
+/* Button Titles */
+
+"New Calendar..." = "Calendr Newydd...";
+"Subscribe to a Calendar..." = "Tanysgrifio i Galendr...";
+"Remove the selected Calendar" = "Dileu y calendr dewisol";
+
+"Name of the Calendar" = "Enw'r Calendr";
+
+"new" = "Newydd";
+"printview" = "Golygfa argraffu";
+"edit" = "Golygu";
+"delete" = "Dileu";
+"proposal" = "Cynnig";
+"Save and Close" = "Cadw a Cau";
+"Close" = "Cau";
+"Invite Attendees" = "Gwahodd Mynychwyr";
+"Documents" = "Dogfennau";
+"Update" = "Diweddaru";
+"Cancel" = "Canslo";
+"show_rejected_apts" = "Dangos apwyntiadau a gwrthodwyd";
+"hide_rejected_apts" = "Cuddio apwyntiadau a gwrthodwyd";
+
+
+/* Schedule */
+
+"Schedule" = "Rhaglen";
+"No appointments found" = "Ni chwiliwyd unrhyw apwyntiadau";
+"Meetings proposed by you" = "Cyfarfodydd a gynnigwyd gennych chi";
+"Meetings proposed to you" = "Cyfarfodydd a gynnigwyd i chi";
+"sched_startDateFormat" = "%d/%m %H:%M";
+"action" = "Gweithred";
+"accept" = "Derbyn";
+"decline" = "Gwrthod";
+"more attendees" = "Mwy o Fynychwyr";
+"Hide already accepted and rejected appointments" = "Cuddio apwyntiadau sydd eisoes wedi derbyn a gwrthod";
+"Show already accepted and rejected appointments" = "Dangos apwyntiadau sydd eisoes wedi derbyn neu gwrthod";
+
+
+/* Appointments */
+
+"Appointment viewer" = "Syllwr Apwyntiadau";
+"Appointment editor" = "Golygydd Apwyntiadau";
+"Appointment proposal" = "Cynnig Apwyntiad";
+"Appointment on" = "Apwyntiad ar";
+"Start:" = "Dechrau:";
+"End:" = "Diwedd:";
+"Due Date:" = "Dyddiad dyledus:";
+"Title:" = "Teitl:";
+"Calendar:" = "Calendr:";
+"Name" = "Enw";
+"Email" = "Ebost";
+"Status:" = "Statws:";
+"% complete" = "% cwblhau";
+"Location:" = "Lleoliad:";
+"Priority:" = "Blaenoriaeth:";
+"Privacy" = "Preifatrwydd";
+"Cycle" = "Cylch";
+"Cycle End" = "Diwedd Cylch";
+"Categories" = "Categoriau";
+"Classification" = "Dosbarthiad";
+"Duration" = "Parhad";
+"Attendees:" = "Mynychwyr:";
+"Resources" = "Adnoddau";
+"Organizer:" = "Trefnwr:";
+"Description:" = "Disgrifiad:";
+"Document:" = "Dogfen:";
+"Category:" = "Categori:";
+"Repeat:" = "Ailwneud:";
+"Reminder:" = "Atgoffa:";
+
+"Target:" = "Targed:";
+
+"attributes" = "priodoleddau";
+"attendees" = "mynychwyr";
+/* checkbox title */
+"is private" = "yn breifat";
+/* classification */
+"Public" = "Cyhoeddus";
+"Private" = "Preifat";
+/* text used in overviews and tooltips */
+"empty title" = "Teitl Gwag";
+"private appointment" = "Apwyntiad preifat";
+
+"Change..." = "Newid...";
+
+/* Appointments (participation state) */
+
+"partStat_NEEDS-ACTION" = "Angen gweithred";
+"partStat_ACCEPTED" = "Derbyniwyd";
+"partStat_DECLINED" = "Gwrthodwyd";
+"partStat_TENTATIVE" = "Petrus";
+"partStat_DELEGATED" = "Dirprwyedig";
+"partStat_OTHER" = "Arall";
+
+/* Appointments (error messages) */
+
+"Conflicts found!" = "Gwrthdaro!";
+"Invalid iCal data!" = "Data iCal annilys!";
+"Could not create iCal data!" = "Methwyd creu data iCal!";
+
+/* Searching */
+
+"view_all" = "Oll";
+"view_today" = "Heddiw";
+"view_next7" = "7 diwrnod nesaf";
+"view_next14" = "14 diwrnod nesaf";
+"view_next31" = "31 diwrnod nesaf";
+"view_thismonth" = "Y mis yma";
+"view_future" = "Holl digwyddiadau'r dyfodol";
+"view_selectedday" = "Diwrnod dewisol";
+
+"View:" = "Golygfa:";
+"Title or Description" = "Teitl neu disgrifiad";
+
+"Search" = "Chwilio";
+"Search attendees" = "Chwilio mynychwyr";
+"Search resources" = "Chwilio adnoddau";
+"Search appointments" = "Chwilio apwyntiadau";"Search in Anais" = "Chwilio yn Anais";
+
+"All day Event" = "Digwyddiad trwy'r dydd";
+"check for conflicts" = "Gwirio gwrthdaro";
+
+"Browse URL" = "Pori URL";
+
+"newAttendee" = "Ychwanegu mynychwr";
+
+/* calendar modes */
+
+"Overview" = "Trosolwg";
+"Chart" = "Siart";
+"List" = "Rhestr";
+"Columns" = "Colofnau";
+
+/* Priorities */
+
+"prio_0" = "Not specified";
+"prio_1" = "Uchel";
+"prio_2" = "Uchel";
+"prio_3" = "Uchel";
+"prio_4" = "Uchel";
+"prio_5" = "Normal";
+"prio_6" = "Isel";
+"prio_7" = "Isel";
+"prio_8" = "Isel";
+"prio_9" = "Isel";
+
+/* access classes (privacy) */
+"PUBLIC_vevent" = "Digwyddiad cyhoeddus";
+"CONFIDENTIAL_vevent" = "Digwyddiad cyfrinachol";
+"PRIVATE_vevent" = "Digwyddiad preifat";
+"PUBLIC_vtodo" = "Tasg gyhoeddus";
+"CONFIDENTIAL_vtodo" = "Tasg gyfrinachol";
+"PRIVATE_vtodo" = "Tasg breifat";
+
+/* status type */
+"status_" = "nid penodedig";
+"status_NOT-SPECIFIED" = "nid penodedig";
+"status_TENTATIVE" = "Petrus";
+"status_CONFIRMED" = "Cadarnhawyd";
+"status_CANCELLED" = "Canslwyd";
+"status_NEEDS-ACTION" = "Angen gweithred";
+"status_IN-PROCESS" = "Mewn proses";
+"status_COMPLETED" = "Cwblhawyd ar";
+
+/* Cycles */
+
+"cycle_once" = "Cylch-unwaith";
+"cycle_daily" = "cylch-dyddiol";
+"cycle_weekly" = "cylch_wythnosol";
+"cycle_2weeks" = "cylch-2wythnosol";
+"cycle_4weeks" = "cylch-4wythnosol";
+"cycle_monthly" = "cylch-misol";
+"cycle_weekday" = "cycle_diwrnod wythnos";
+"cycle_yearly" = "cylch_blynyddol";
+
+"cycle_end_never" = "cylch_diwedd_byth";
+"cycle_end_until" = "cylch_diwedd_tan";
+
+"Recurrence pattern" = "Patrwm dychweliad";
+"Range of recurrence" = "Amrediad y dychweliad";
+
+"Repeat" = "Ailadrodd";
+"Daily" = "Dyddiol";
+"Weekly" = "Wythnosol";
+"Monthly" = "Misol";
+"Yearly" = "Blynyddol";
+"Every" = "Pob";
+"Days" = "Diwrnodau";
+"Week(s)" = "wythnos(au)";
+"On" = "Ar";
+"Month(s)" = "Mis(oedd)";
+"The" = "Y";
+"Recur on day(s)" = "Ailddigwydd ar diwrnod(au)";
+"Year(s)" = "Blwyddyn(au)";
+"cycle_of" = "o";
+"No end date" = "Dim dyddiad diwedd";
+"Create" = "Creu";
+"appointment(s)" = "apwyntiad(au)";
+"Repeat until" = "Ailadrodd tan";
+
+"First" = "Cyntaf";
+"Second" = "Ail";
+"Third" = "Trydydd";
+"Fourth" = "Pedwerydd";
+"Fift" = "Pumed";
+"Last" = "Olaf";
+
+/* Appointment categories */
+
+"category_NONE" = "Dim";
+"category_ANNIVERSARY" = "Penblwydd";
+"category_BIRTHDAY" = "Penblwydd";
+"category_BUSINESS" = "Busnes";
+"category_CALLS" = "Galwadau"; 
+"category_CLIENTS" = "Clientau";
+"category_COMPETITION" = "Cystadleuaeth";
+"category_CUSTOMER" = "Cwsmer";
+"category_FAVORITES" = "Ffefrynnau";
+"category_FOLLOW UP" = "Dilyn lan";
+"category_GIFTS" = "Anrhegion";
+"category_HOLIDAYS" = "Gwyliau";
+"category_IDEAS" = "Syniadau";
+"category_ISSUES" = "Canlyniadau";
+"category_MISCELLANEOUS" = "Amrywiol";
+"category_PERSONAL" = "Personol";
+"category_PROJECTS" = "Projectau";
+"category_PUBLIC HOLIDAY" = "Gwyliau Cyhoeddus";
+"category_STATUS" = "Statws";
+"category_SUPPLIERS" = "Cyflenwyr";
+"category_TRAVEL" = "Teithio";
+"category_VACATION" = "Gwyliau";
+
+"repeat_NEVER" = "Ddim yn ailadrodd";
+"repeat_DAILY" = "Dyddiol";
+"repeat_WEEKLY" = "Wythnosol";
+"repeat_BI-WEEKLY" = "2-wythnosol";
+"repeat_EVERY WEEKDAY" = "Pob diwrnod wythnos";
+"repeat_MONTHLY" = "Misol";
+"repeat_YEARLY" = "Blynyddol";
+"repeat_CUSTOM" = "Cwstwm...";
+
+"reminder_NONE" = "Dim atgoffa";
+"reminder_5_MINUTES_BEFORE" = "5 munud o flaen";
+"reminder_10_MINUTES_BEFORE" = "10 munud o flaen";
+"reminder_15_MINUTES_BEFORE" = "15 munud o flaen";
+"reminder_30_MINUTES_BEFORE" = "30 munud o flaen";
+"reminder_45_MINUTES_BEFORE" = "45 munud o flaen";
+"reminder_1_HOUR_BEFORE" = "1 awr o flaen";
+"reminder_2_HOURS_BEFORE" = "2 awr o flaen";
+"reminder_5_HOURS_BEFORE" = "5 awr o flaen";
+"reminder_15_HOURS_BEFORE" = "15 awr o flaen";
+"reminder_1_DAY_BEFORE" = "1 diwrnod o flaen";
+"reminder_2_DAYS_BEFORE" = "2 diwrnod o flaen";
+"reminder_1_WEEK_BEFORE" = "1 wythnos o flaen";
+"reminder_CUSTOM" = "Cwstwm...";
+
+"zoom_400" = "400%";
+"zoom_200" = "200%";
+"zoom_100" = "100%";
+"zoom_50" = "50%";
+"zoom_25" = "25%";
+
+/* transparency */
+
+"Show Time as Free" = "Dangos amser fel rhydd";
+
+/* validation errors */
+
+validate_notitle           = "Dim teitl wedi gosod, parhau?";
+validate_invalid_startdate = "Maes Dyddiad dechrau anghywir!";
+validate_invalid_enddate   = "Maes dyddiad gorffen anghywir!";
+validate_endbeforestart    = "Mae'r dyddiad gorffen sydd wedi'i roi yn digwydd cyn y dyddiad dechrau";
+
+"Tasks" = "Tasgau";
+"Show completed tasks" = "Dangos tasgau cwblhawyd";
+
+/* tabs */
+"Task" = "Tasg";
+"Event" = "Digwyddiad";
+"Recurrence" = "Dychweliad";
+
+/* toolbar */
+"New Event" = "Digwyddiad newydd";
+"New Task" = "Tasg Newydd";
+"Edit" = "Golygu";
+"Delete" = "Dileu";
+"Go to Today" = "Ewch at Heddiw";
+"Day View" = "Golygfa diwrnod";
+"Week View" = "Golygfa wythnos";
+"Month View" = "Golygfa mis";
+
+"eventPartStatModificationError" = "Ni fedrwyd newid statws eich cyfranogiad.";
+
+/* menu */
+"New Event..." = "Digwyddiad Newydd...";
+"New Task..." = "Tasg Newydd...";
+"Edit Selected Event..." = "Newid digwyddiad dewisol...";
+"Delete Selected Event" = "Dileu Digwyddiad Dewisol";
+"Select All" = "Dewis y cyfan";
+"Workweek days only" = "diwrnodau gwaith yn unig";
+"Tasks in View" = "Tasgau mewn golwg";
+
+"eventDeleteConfirmation" = "Bydd dileu y digwyddiad yn barhaol.\nHoffech barhau?";
+"taskDeleteConfirmation" = "Bydd dileu'r dasg yma'n barhaol.\nHoffech barhau?";
+
+"Are you sure you want to delete the calendar \"%{0}\"?"
+= "A ydych yn sicr eich bod eisiau dileu'r calendr \"%{0}\"?";
+
+/* Legend */
+"Required participant" = "Cyfranogwr gofynnol";
+"Optional participant" = "Cyfranogwr opsiynol";
+"Chair" = "Cadair";
+
+"Needs action" = "Angen gweithred";
+"Accepted" = "Derbyniwyd";
+"Declined" = "Gwrthodwyd";
+"Tentative" = "Petrus";
+
+"Free" = "Rhydd";
+"Busy" = "Brysur";
+"Maybe busy" = "Brysur efallai";
+"No free-busy information" = "Dim gwybodaeth rhydd-brysur";
+
+/* FreeBusy panel buttons and labels */
+"Suggest time slot:" = "Awgrymwch amser:";
+"Zoom:" = "Zoom:";
+"Previous slot" = "Slot flaenorol";
+"Next slot" = "Slot nesaf";
+"Previous hour" = "Awr flaenorol";
+"Next hour" = "Awr nesaf";
+
+/* apt list */
+"Title" = "Teitl";
+"Start" = "Dechrau";
+"End" = "Diwedd";
+"Location" = "Lleoliad";
+"(Private Event)" = "(Digwyddiad preifat)";
+
+vevent_class0 = "(Digwyddiad cyhoeddus)";
+vevent_class1 = "(Digwyddiad preifat)";
+vevent_class2 = "(Digwyddiad cyfrinachol)";
+
+vtodo_class0 = "(Tasg gyhoeddus)";
+vtodo_class1 = "(Tasg breifat)";
+vtodo_class2 = "(Tasg gyhoeddus)";
+
+"closeThisWindowMessage" = "Diolch! Gallwch cau'r ffenestr neu weld ";
+"Multicolumn Day View" = "Golygfa diwrnod aml-golofn";
+
+"Please select an event or a task." = "Dewiswch digwyddiad neu dasg.";
+
+"editRepeatingItem" = "Mae'r eitem yr ydych yn golygu yn ailadrodd. A ydych am olygu'r holl achlysuron neu yr un yma'n unig?";
+"button_thisOccurrenceOnly" = "Yr achlysur yma'n unig";
+"button_allOccurrences" = "Pob achlysur";
+
+/* Properties dialog */
+"Name:" = "Enw:";
+"Color:" = "Lliw:";
+"Tag:" = "Tag:";

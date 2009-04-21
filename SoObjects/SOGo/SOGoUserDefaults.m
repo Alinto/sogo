@@ -1,6 +1,6 @@
 /*
-  Copyright (C) 2005 SKYRIX Software AG
   Copyright (C) 2008-2009 Inverse inc.
+  Copyright (C) 2005 SKYRIX Software AG
 
   This file is part of SOGo.
 
@@ -47,6 +47,7 @@ static NSString *uidColumnName = @"c_uid";
 - (id) initWithTableURL: (NSURL *) theURL
 		    uid: (NSString *) theUID
 	      fieldName: (NSString *) theFieldName
+	shouldPropagate: (BOOL) b
 {
   if ((self = [self init]))
     {
@@ -57,6 +58,7 @@ static NSString *uidColumnName = @"c_uid";
 	  url = [theURL copy];
 	  uid = [theUID copy];
 	  defFlags.ready = YES;
+	  propagateCache = b;
 	}
       else
 	{
@@ -304,13 +306,14 @@ static NSString *uidColumnName = @"c_uid";
 			       forLogin: uid
 			       key: ([fieldName isEqualToString: @"c_defaults"] ? @"defaults" : @"settings")];
 
-      [(NSDistributedNotificationCenter *)[NSDistributedNotificationCenter defaultCenter]
-	postNotificationName: ([fieldName isEqualToString: @"c_defaults"]
-			       ? @"SOGoUserDefaultsHaveChanged"
-			       : @"SOGoUserSettingsHaveChanged")
-	object: nil
-	userInfo: d
-	deliverImmediately: YES];
+      if (propagateCache)
+	[(NSDistributedNotificationCenter *)[NSDistributedNotificationCenter defaultCenter]
+					    postNotificationName: ([fieldName isEqualToString: @"c_defaults"]
+								   ? @"SOGoUserDefaultsHaveChanged"
+								   : @"SOGoUserSettingsHaveChanged")
+					    object: nil
+					    userInfo: d
+					    deliverImmediately: YES];
     }
 
   return rc;

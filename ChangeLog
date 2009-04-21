@@ -1,3 +1,30 @@
+2009-04-21  Ludovic Marcotte <lmarcotte@inverse.ca>
+
+        * Added Welsh translation - patches from the
+	National Library of Wales.
+	* Regenerated the SOPE patchset so that we correctly
+	handle Oracle's reconnection problems on RAC. We now
+	try by default 3 times before giving up when there
+	is a failover to an other node part of the RAC.
+	* Dropped old ChangeLog files and combined them
+	in ChangeLog.old
+	* Dropped old NOTES files
+	* Added Scripts/sql-update-101_to_102.sh to update
+	the database schema for the 1.0.2 release
+	* Scripts/sogod-wrapper - updted this script to
+	handle the TNS_NAMES environment variable for
+	Oracle RAC.
+	* Added the possibility to disable cache propagation
+	in SOGoCache (together with SOGoUser and SOGoUserDefaults)
+	in order to greatly reduce gdnc contention when a massive
+	amount of operations are performed by the SOGo super-usernames
+	* SoObjects/SOGo/SOGoGCSFolder.m: We avoid cache
+	propagation when subscribing users to resources as
+	a superuser.
+	* UI/Scheduler/UIxCalListingActions.{h,m}: Added
+	-alarmsListAction so that we correctly return the upcoming
+	alarms. It does NOT yet handle correctly recurring components.
+
 2009-04-21  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Scheduler/UIxTaskEditor.m ([UIxTaskEditor

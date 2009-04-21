@@ -54,6 +54,11 @@
 	  pageName = "UIxCalendarSelector";
 	  actionName = "calendarsList";
 	};
+	alarmslist = {
+	  protectedBy = "View";
+	  actionClass = "UIxCalListingActions";
+	  actionName = "alarmsList";
+	};
 	eventslist = {
 	  protectedBy = "View";
 	  actionClass = "UIxCalListingActions";

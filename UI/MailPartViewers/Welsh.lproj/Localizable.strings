@@ -1,0 +1,34 @@
+ACCEPTED = "Derbynwyd";
+COMPLETED = "Cwblhawyd";
+DECLINED = "gwrthodwyd";
+DELEGATED = "dirprwyedig";
+IN-PROCESS = "mewn proses";
+NEEDS-ACTION = "angen gweithred";
+TENTATIVE = "petrus";
+organized_by_you = "trefnwyd gennych chi";
+you_are_an_attendee = "yr ydych yn mynychu";
+add_info_text = "iMIP 'ADD' requests are not yet supported by SOGo.";
+publish_info_text = "Mae'r anfonwr yn eich hysbysu o'r digwyddiad atodol.";
+cancel_info_text = "Cafodd eich gwahoddiad i'r holl ddigwyddiad ei ganslo.";
+request_info_no_attendee = "yn cynnig cyfarfod i'r holl rhai sy'n mynychu. Rydych yn derbyn yr ebost yma fel hysbysiad, nid ydych wedi cael eich rhestri fel cyfrannogwr.";
+Appointment = "Apwyntiad";
+
+Organizer = "Trefnwr";
+Time = "Amser";
+Attendees = "Mynychwyr";
+request_info = "yn eich gwahodd i gyfarfod.";
+"Add to calendar" = "Ychwanegu i'r calendr";
+"Delete from calendar" = "Dileu o'r calendr";
+"Update status" = "Diweddaru statws";
+Accept = "Derbyn";
+Decline = "Gwrthod";
+Tentative = "Petrus";
+"Update status in calendar" = "Diweddaru statws yn y calendr";
+reply_info_no_attendee = "Rydych wedi derbyn ymateb i digwyddiad ond nid yw'r anfonwr yn cyfranogwr.";
+reply_info = "Dyma ymateb i wahoddiad i digwyddiad a wnaed gennych chi.";
+
+"to" = "at";
+
+"Untitled" = "heb deitl";
+
+"Size" = "maint";

@@ -105,5 +105,10 @@
       sqlType    = "VARCHAR(10)";
       allowsNull = NO;
     },
+    {
+      columnName = c_nextalarm;
+      sqlType    = "INT";
+      allowsNull = YES;
+    },
   );
 }

@@ -1,0 +1,100 @@
+/* toolbar */
+"Save and Close" = "Cadw a Cau";
+"Close" = "Cau";
+
+/* tabs */
+"General" = "Cyffredinol";
+"Calendar Options" = "Opsiynau Calendr";
+"Mail Options" = "Opsiynau Ebost";
+"Identities" = "hunaniaethau";
+"Password" = "Cyfrinair";
+
+/* ooo */
+"I'm currently in the office" = "Yr wyf yn y swyddfa ar hyn o bryd";
+"I'm currently out of the office" = "Yr wyf allan o'r swyddfa ar hyn o bryd";
+"AutoReply only once to each sender with the following text :"
+= "Ymateb Awtomatig unwaith yn unig i pob anfonwr gyda'r testun canlynol :";
+
+/* d & t */
+"Current Time Zone :" = "Amser Cyfredol :";
+"Short Date Format :" = "Dyddiad fformat byr :";
+"Long Date Format :" = "Dyddiad fformat hir :";
+"Time Format :" = "Fformat amser :";
+
+"shortDateFmt_0" = "%m/%e/%Y";
+"shortDateFmt_1" = "%m/%e/%y";
+"shortDateFmt_2" = "%m/%d/%Y";
+"shortDateFmt_3" = "%m/%d/%y";
+"shortDateFmt_4" = "%y/%m/%d";
+"shortDateFmt_5" = "%Y-%m-%d";
+"shortDateFmt_6" = "%d-%b-%y";
+"shortDateFmt_7" = "";
+
+"longDateFmt_0" = "%A, %B %d, %Y";
+"longDateFmt_1" = "%B %d, %Y";
+"longDateFmt_2" = "%A, %d %B, %Y";
+"longDateFmt_3" = "%d %B, %Y";
+"longDateFmt_4" = "";
+
+"timeFmt_0" = "%I:%M %p";
+"timeFmt_1" = "%H:%M";
+"timeFmt_2" = "";
+
+/* calendar */
+"Week begins on :" = "wythnos yn dechrau :";
+"Day start time :" = "Amser dechrau'r diwrnod :";
+"Day end time :" = "Amser diwedd y dydd :";
+"First week of year :" = "Wythnos cyntaf y flwyddyn :";
+"Enable reminders for Calendar items" = "Galluogu atgoffa ar gyfer eitemau calendr";
+"Play a sound when a reminder comes due"
+= "Chwarae swn pan fydd amser atgoffa";
+"Default reminder :" = "Atgoffa gwreiddiol :";
+
+"firstWeekOfYear_January1" = "Dechrau ar Ionawr 1";
+"firstWeekOfYear_First4DayWeek" = "First 4-day week";
+"firstWeekOfYear_FirstFullWeek" = "Wythnos cyntaf llawn";
+
+"reminderTime_0000" = "0 munud";
+"reminderTime_0005" = "5 munud";
+"reminderTime_0010" = "10 munud";
+"reminderTime_0015" = "15 munud";
+"reminderTime_0030" = "30 munud";
+"reminderTime_0100" = "1 awr";
+"reminderTime_0200" = "2 awr";
+"reminderTime_0400" = "4 awr";
+"reminderTime_0800" = "8 awr";
+"reminderTime_1200" = "1/2 diwrnod";
+"reminderTime_2400" = "1 diwrnod";
+"reminderTime_4800" = "2 ddiwrnod";
+
+/* Mailer */
+"Check for new mail:" = "Chwilio am ebost newydd:";
+"messagecheck_manually" = "Corfforol";
+"messagecheck_every_minute" = "Pob munud";
+"messagecheck_every_2_minutes" = "Pob 2 munud";
+"messagecheck_every_5_minutes" = "Pob 5 munud";
+"messagecheck_every_10_minutes" = "Pob 10 munud";
+"messagecheck_every_20_minutes" = "Pob 20 munud";
+"messagecheck_every_30_minutes" = "Pob 30 munud";
+"messagecheck_once_per_hour" = "Unwaith pob awr";
+
+"Forward messages:" = "Blaenyrru negeseuon:";
+"messageforward_inline" = "Mewn llinell";
+"messageforward_attached" = "Fel Atodiad";
+
+"Default identity:" = "Hunaniaeth Gwreiddiol:";
+"Manage identities..." = "Rheoli hunaniaethau...";
+"Signature" = "Llofnod";
+"replyplacement_above" = "Dechrau fy ymateb uwchben y dyfynnod";
+"replyplacement_below" = "Dechrau fy ymateb o dan y dyfynnod";
+"And place my signature" = "A rhowch fy llofnod";
+"signatureplacement_above" = "o dan fy ymateb";
+"signatureplacement_below" = "o dan y dyfynnod";
+
+/* Additional Parameters */
+"Additional Parameters" = "Additional Parameters";
+
+/* password */
+"New password:" = "New password:";
+"Confirmation:" = "Confirmation:";
+"Change" = "Change";

@@ -1,0 +1,261 @@
+/* this file is in UTF-8 format! */
+
+/* Icon's label */
+"Create"      = "Creu";
+"Empty Trash" = "Gwagio Sbwriel";
+"Delete"      = "Dileu";
+"Expunge"     = "Dileu";
+"Forward"     = "Blaenyrru";
+"Get Mail"    = "Cael ebost";
+"Junk"        = "Jync";
+"Reply"       = "Ateb";
+"Reply All"   = "Ateb Pawb";
+"Print"       = "Argraffu";
+"Stop"        = "Stop";
+"Write"       = "Ysgrifennu";
+
+"Send" = "Anfon";
+"Contacts" = "Cysylltiadau";
+"Attach" = "Atodi";
+"Save" = "Cadw";
+"Priority" = "Blaenoriaeth";
+
+/* Tooltips */
+
+"Send this message now" = "Anfon y neges yn syth";
+"Select a recipient from an Address Book" = "Dewis derbynnydd o lyfr cyfeiriadau";
+"Include an attachment" = "Cynnwys atodiad";
+"Save this message" = "Cadw'r neges";
+"Get new messages" = "Cael negeseuon newydd";
+"Create a new message" = "Creu neges newydd";
+"Go to address book" = "Mynd at llyfr cyfeiriadau";
+"Reply to the message" = "Ymateb i'r neges";
+"Reply to sender and all recipients" = "Ymateb i'r anfonwr a'r holl derbynwyr";
+"Forward selected messagee" = "Blaenyrru'r neges dewisol";
+"Delete selected message or folder" = "Dileu y neges dewisol neu ffolder";
+"Mark the selected messages as junk" = "Marciwch y negeseuon dewisol fel jync";
+"Print this message" = "Argraffu'r neges";
+"Stop the current transfer" = "Stopio'r trosglwyddiad presennol";
+"Attachment" = "Atodiad";
+"Unread" = "Heb ei ddarllen";
+"Flagged" = "Wedi fflagio";
+
+/* Main Frame  */
+
+"Home"                 = "Hafan"; 
+"Calendar"             = "Calendr";
+"Addressbook"          = "Llyfr Cyfeiriadau";
+"Mail"                 = "Ebost";
+"Right Administration" = "Hawl Gweinyddwr";
+
+"Help" = "Help";
+
+/* Mail account main windows */
+
+"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Croeso i ebost SOGo. Defnyddiwch y coeden ffolderi ar y chwith i pori eich cyfrifon ebost!";
+
+"Read messages"       = "Darllen negeseuon";
+"Write a new message" = "Ysgrifennu neges newydd";
+
+"Share: " = "Rhannu: ";
+"Account: " = "Cyfrif: ";
+"Shared Account: " = "Cyfrif ranedig: ";
+
+/* acls */
+"Default Roles" = "Rolau Gwreiddiol";
+"User rights for:" = "hawliau defnyddiwr i:";
+
+"List and see this folder" = "Rhestri a gweld y ffolder hwn";
+"Read mails from this folder" = "Darllen negeseuon o'r ffolder hwn";
+"Mark mails read and unread" = "Marcio ebost wedi darllen a heb ddarllen";
+"Modify the flags of the mails in this folder" = "Newid y fflags ar yr ebost yn y ffolder hwn";
+"Insert, copy and move mails into this folder" = "Mewnosod, copio a symud ebost i'r ffolder hwn";
+"Post mails" = "Anfon ebost";
+"Add subfolders to this folder" = "Ychwanegu is-ffolderi i'r ffolder hwn";
+"Remove this folder" = "Dileu'r ffolder hwn";
+"Erase mails from this folder" = "Dileu ebost o'r ffolder hwn";
+"Expunge this folder" = "Dileu'r ffolder hwn";
+"Modify the acl of this folder" = "Newid acl y ffolder";
+
+"Update" = "Diweddaru";
+"Cancel" = "Canslo";
+
+/* Mail edition */
+
+"From"          = "Oddi wrth";
+"Subject"       = "Testun";
+"To"            = "At";
+"Cc"            = "Cc";
+"Bcc"           = "Bcc";
+"Reply-To"	= "Ymateb i";
+"Add address"   = "Ychwanegu cyfeiriad";
+
+"Attachments:" = "Atodiadau:";
+
+"to"            = "At";
+"cc"            = "Cc";
+"bcc"           = "Bcc";
+
+"Addressbook"   = "Llyfr Cyfeiradau";
+
+"Edit Draft..." = "Golygu Drafft...";
+"Load Images" = "Llwytho Delweddau";
+
+"highest" = "Uchaf";
+"high" = "Uchel";
+"normal" = "Normal";
+"low" = "Isel";
+"lowest" = "Lleiaf";
+
+"This mail is being sent from an unsecure network!" = "Mae'r neges yma yn cael ei anfon o rwydwaith anniogel!";
+
+/* Popup "show" */
+
+"all"     = "Oll";
+"read"    = "darllenwyd";
+"unread"  = "heb ddarllen";
+"deleted" = "dilewyd";
+"flagged" = "fflagiwyd";
+
+/* MailListView */
+
+"Sender" = "Anfonwr";
+"Subject or Sender" = "Testun neu Anfonwr";
+"To or Cc" = "At neu Cc";
+"Entire Message" = "Neges Llawn";
+
+"Date"          = "Dyddiad";
+"View"          = "Gweld";
+"All"           = "Oll";
+"Unread"        = "Heb ddarllen";
+"messages"      = "negeseuon";
+
+"first"         = "Cyntaf";
+"previous"      = "Cynt";
+"next"          = "Nesaf";
+"last"          = "Olaf";
+
+"msgnumber_to"  = "at";
+"msgnumber_of"  = "o";
+
+"Mark Unread" = "Marcio heb ddarllen";
+"Mark Read"   = "Marcio Darllenwyd";
+
+"Untitled" = "Heb deitl";
+
+/* Tree */
+
+"SentFolderName"   = "Anfonwyd";
+"TrashFolderName"  = "Sbwriel";
+"InboxFolderName"  = "Newydd";
+"DraftsFolderName" = "Draffts";
+"SieveFolderName"  = "Ffilteri";
+"Folders"          = "Ffolderi"; /* title line */
+
+/* MailMoveToPopUp */
+
+"MoveTo"        = "Move &hellip;";
+
+/* Address Popup menu */
+"Add to Address Book..." = "Ychwanegu i Llyfr Cyfeiriadau...";
+"Compose Mail To" = "Cyfansoddi neges at";
+"Create Filter From Message..." = "Creu Ffilter o'r neges...";
+
+/* Image Popup menu */
+"Save Image" = "Cadw Delwedd";
+
+/* Mailbox popup menus */
+"Open in New Mail Window" = "Agor mewn ffenestr Neges Newydd";
+"Copy Folder Location" = "Copio Lleoliad Ffolder";
+"Subscribe..." = "Tanysgrifio...";
+"Mark Folder Read..." = "Marcio Ffolder Darllenwyd...";
+"New Folder..." = "Ffolder Newydd...";
+"Compact This Folder" = "Cywasgu'r ffolder hwn";
+"Search Messages..." = "Chwilio negeseuon...";
+"Sharing..." = "Rhannu...";
+"New Subfolder..." = "Is-ffolder newydd...";
+"Rename Folder..." = "Ail-enwi ffolder...";
+"Delete Folder" = "Dileu Ffolder";
+"Use This Folder For" = "Defyddio'r Ffolder yma am";
+"Get Messages for Account" = "Cael negeseuon ar gyfer Cyfrif";
+
+/* Use This Folder menu */
+"Sent Messages" = "Negeseuon anfonwyd";
+"Drafts" = "Draffts";
+"Deleted Messages" = "Negeseuon Dileuwyd";
+
+/* Message list popup menu */
+"Open Message In New Window" = "Agor Neges mewn ffenestr newydd";
+"Reply to Sender Only" = "Ymateb i Anfonwr yn unig";
+"Reply to All" = "Ymateb i Pawb";
+"Forward" = "Blaenyrru";
+"Edit As New..." = "Golygu fel Newydd...";
+"Move To" = "Symud i";
+"Copy To" = "Copio i";
+"Label" = "Label";
+"Mark" = "Marc";
+"Save As..." = "Cadw Fel...";
+"Print Preview" = "Rhagolwg Argraffu";
+"View Message Source" = "Gweld Tarddiad Neges";
+"Print..." = "Argraffu...";
+"Delete Message" = "Dileu Neges";
+"Delete Selected Messages" = "Dileu Negeseuon Dewisol";
+
+"This Folder" = "Y ffolder hwn";
+
+/* Label popup menu */
+"None" = "Dim";
+"Important" = "Pwysig";
+"Work" = "gwaith";
+"Personal" = "Personol";
+"To Do" = "I'w wneud";
+"Later" = "Hwyrach";
+
+/* Mark popup menu */
+"As Read" = "Darllenwyd";
+"Thread As Read" = "Thread Darllenwyd";
+"As Read By Date..." = "Darllenwyd wrth dyddiad...";
+"All Read" = "Oll Darllenwyd";
+"Flag" = "Fflag";
+"As Junk" = "Fel Jync";
+"As Not Junk" = "Fel nid Jync";
+"Run Junk Mail Controls" = "Rhedeg rheolaethau ebost Jync";
+
+/* Folder operations */
+"Name :" = "Enw :";
+"Enter the new name of your folder :"
+ = "Rhowch yr enw newydd ar eich ffolder :";
+"Do you really want to move this folder into the trash ?"
+ = "A ydych yn sicr eich bod eisiau symudy ffolder yma i'r sbwriel ?";
+"Operation failed" = "Gweithrediad wedi methu";
+
+"Quota" = "cwota:";
+"quotasFormat" = "%{0}% used on %{1} MB";
+
+"Please select a message." = "Dewiswch neges.";
+"Please select a message to print." = "Dewiswch neges i'w argraffu.";
+"Please select only one message to print." = "Dewiswch un neges yn unig i'w argraffu.";
+
+
+"The folder with name \"%{0}\" could not be created."
+= "Ni chafodd y ffolder o'r' enw \"%{0}\" ei greu.";
+"This folder could not be renamed to \"%{0}\"."
+= "Ni llwyddwyd i ail-enwi'r ffolder yma i \"%{0}\".";
+"The folder could not be deleted."
+= "Ni llwyddwyd i ddileu'r ffolder yma";
+"The trash could not be emptied."
+= "Ni llwyddwyd i wagio'r sbwriel.";
+"The folder functionality could not be changed."
+= "Ni llwyddwyd i newid ffwythiant y ffolder.";
+
+"You need to choose a non-virtual folder!" = "Mae angen i chi dewis ffolder a di-rhithwir!";
+
+"Moving a message into its own folder is impossible!"
+= "Mae symud neges i fewn i'w ffolder ei hun yn amhosibl!";
+"Copying a message into its own folder is impossible!"
+= "Mae copio neges i fewn i'w ffolder ei hun yn amhosibl!";
+
+/* Message editing */
+"error_validationfailed" = "Dilysiad wedi methu";
+"error_missingsubject" = "Testun yn eisiau";
+"error_missingrecipients" = "Dim derbynnydd wedi nodi";

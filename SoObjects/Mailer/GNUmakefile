@@ -46,12 +46,14 @@ Mailer_RESOURCE_FILES += \
 	SOGoMailGermanForward.wo \
 	SOGoMailItalianForward.wo \
 	SOGoMailSpanishForward.wo \
+	SOGoMailWelshForward.wo \
 	SOGoMailDutchReply.wo \
 	SOGoMailEnglishReply.wo \
 	SOGoMailFrenchReply.wo \
 	SOGoMailGermanReply.wo \
 	SOGoMailItalianReply.wo \
-	SOGoMailSpanishReply.wo 
+	SOGoMailSpanishReply.wo \
+	SOGoMailWelshReply.wo
 
 
 ADDITIONAL_INCLUDE_DIRS += -I../../SOPE/

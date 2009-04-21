@@ -694,13 +694,18 @@ static NSArray *childRecordFields = nil;
 	}
       else
 	{
+	  // The current user is a superuser...
 	  SOGoUser *subscriptionUser;
 	  int i;
 
 	  for (i = 0; i < [delegatedUsers count]; i++)
 	    {
+	      // We trust the passed user ID here as it might generate tons or LDAP
+	      // call but more importantly, cache propagation calls that will create
+	      // contention on GDNC.
 	      subscriptionUser = [SOGoUser userWithLogin: [delegatedUsers objectAtIndex: i]
-					   roles: nil];
+					   roles: nil
+					   trust: YES];
 	      
 	      [self _subscribeUser: subscriptionUser
 		    reallyDo: reallyDo

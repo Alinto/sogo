@@ -224,6 +224,13 @@ _timeValue (NSString *key)
 + (SOGoUser *) userWithLogin: (NSString *) newLogin
 		       roles: (NSArray *) newRoles
 {
+  return [self userWithLogin: newLogin  roles: newRoles  trust: NO];
+}
+
++ (SOGoUser *) userWithLogin: (NSString *) newLogin
+		       roles: (NSArray *) newRoles
+		       trust: (BOOL) b
+{
   SOGoCache *cache;
   SOGoUser *user;
 
@@ -231,7 +238,7 @@ _timeValue (NSString *key)
   user = [cache userNamed: newLogin];
   if (!user)
     {
-      user = [[self alloc] initWithLogin: newLogin roles: newRoles];
+      user = [[self alloc] initWithLogin: newLogin roles: newRoles  trust: b];
       if (user)
 	{
 	  [user autorelease];
@@ -245,18 +252,31 @@ _timeValue (NSString *key)
 
 - (id) initWithLogin: (NSString *) newLogin
 	       roles: (NSArray *) newRoles
+	       trust: (BOOL) b
 {
   LDAPUserManager *um;
   NSString *realUID;
+  
+  // We propagate the cache if we do NOT trust the login names.
+  // When trusting login names, we 'assume' we're dealing with a
+  // super user doing kungfu with the system. We definitively don't
+  // want to propagate the cache to other sogod instances when
+  // dealing with massive number of ops.
+  propagateCache = !b;
 
   if ([newLogin isEqualToString: @"anonymous"]
       || [newLogin isEqualToString: @"freebusy"])
     realUID = newLogin;
   else
     {
-      um = [LDAPUserManager sharedUserManager];
-      realUID = [[um contactInfosForUserWithUIDorEmail: newLogin]
-		  objectForKey: @"c_uid"];
+      if (b)
+	realUID = newLogin;
+      else
+	{
+	  um = [LDAPUserManager sharedUserManager];
+	  realUID = [[um contactInfosForUserWithUIDorEmail: newLogin]
+		      objectForKey: @"c_uid"];
+	}
     }
 
   if ([realUID length])
@@ -431,7 +451,8 @@ _timeValue (NSString *key)
 
   o = [[SOGoUserDefaults alloc] initWithTableURL: SOGoProfileURL
 				uid: login
-				fieldName: @"c_defaults"];
+				fieldName: @"c_defaults"
+				shouldPropagate: propagateCache];
   [o autorelease];
 
   return o;
@@ -443,7 +464,8 @@ _timeValue (NSString *key)
 
   o = [[SOGoUserDefaults alloc] initWithTableURL: SOGoProfileURL
 				uid: login
-				fieldName: @"c_settings"];
+				fieldName: @"c_settings"
+				shouldPropagate: propagateCache];
   [o autorelease];
 
   return o;
@@ -491,12 +513,13 @@ _timeValue (NSString *key)
 
 	      [[SOGoCache sharedCache] setDefaults: defaults
 				       forLogin: login key: @"defaults"];
-
-	      [(NSDistributedNotificationCenter *)[NSDistributedNotificationCenter defaultCenter]
-		postNotificationName: @"SOGoUserDefaultsHaveLoaded"
-		object: nil
-		userInfo: d
-		deliverImmediately: YES];
+	      
+	      if (propagateCache)
+		[(NSDistributedNotificationCenter *)[NSDistributedNotificationCenter defaultCenter]
+						    postNotificationName: @"SOGoUserDefaultsHaveLoaded"
+						    object: nil
+						    userInfo: d
+						    deliverImmediately: YES];
 	    }
 	}
     }
@@ -536,12 +559,13 @@ _timeValue (NSString *key)
 	      [d setObject: [SOGoProfileURL absoluteString]  forKey: @"url"];
 
 	      [[SOGoCache sharedCache] setDefaults: settings  forLogin: login  key: @"settings"];
-	  
-	      [(NSDistributedNotificationCenter *)[NSDistributedNotificationCenter defaultCenter]
-		postNotificationName: @"SOGoUserSettingsHaveLoaded"
-		object: nil
-		userInfo: d
-		deliverImmediately: YES];
+	      
+	      if (propagateCache)
+		[(NSDistributedNotificationCenter *)[NSDistributedNotificationCenter defaultCenter]
+						    postNotificationName: @"SOGoUserSettingsHaveLoaded"
+						    object: nil
+						    userInfo: d
+						    deliverImmediately: YES];
 	    }
 	}
     }

@@ -69,12 +69,21 @@ extern NSString *SOGoWeekStartFirstFullWeek;
   NSString *language;
   NSArray *allEmails;
   NSString *cn;
+  BOOL propagateCache;
 }
 
 + (NSString *) language;
 
 + (SOGoUser *) userWithLogin: (NSString *) login
 		       roles: (NSArray *) roles;
+
++ (SOGoUser *) userWithLogin: (NSString *) login
+		       roles: (NSArray *) roles
+		       trust: (BOOL) b;
+
+- (id) initWithLogin: (NSString *) newLogin
+	       roles: (NSArray *) newRoles
+	       trust: (BOOL) b;
 
 - (void) setPrimaryRoles: (NSArray *) newRoles;
 

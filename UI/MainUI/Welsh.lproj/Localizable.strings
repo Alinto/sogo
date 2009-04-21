@@ -1,0 +1,25 @@
+/* this file is in UTF-8 format! */
+
+"title" = "SOGo";
+
+"Username:" = "Enw defnyddiwr:";
+"Password:" = "Cyfrinair:";
+
+"Connect" = "Cysylltu";
+
+"Wrong username or password." = "enw defnyddiwr neu cyfrinair anghywir.";
+"cookiesNotEnabled" = "Ni ellir logio i fewn oherwydd bod cookies eich porwr wedi eu analluogi. Galluogwch y cookies yng ngosodiadau'ch porwr a cheisiwch eto.";
+
+"browserNotCompatible" = "Nid yw fersiwn eich porwr yn cael ei gynnal ar hyn o bryd gan y safle hwn. Rydym yn cymeradwyo defnyddio Firefox. Cliciwch ar y linc isod i lawrlwytho y fersiwn mwyaf cyfredol o'r porwr yma.";
+"alternativeBrowsers" = "Medrwch hefyd defnyddio y porwyr gytun yma";
+"alternativeBrowserSafari" = "Medrwch hefyd defnyddio Safari.";
+"Download" = "Lawrlwytho";
+
+"Language:" = "Iaith:";
+"choose" = "Dewis ...";
+"Dutch" = "Dutch";
+"English" = "English";
+"French" = "French";
+"German" = "German";
+"Italian" = "Italian";
+"Spanish" = "Spanish";

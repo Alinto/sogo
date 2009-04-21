@@ -38,7 +38,7 @@ Appointments_RESOURCE_FILES +=		\
 	Version				\
 	product.plist			\
 
-Appointments_LANGUAGES = Dutch English French German Italian Spanish
+Appointments_LANGUAGES = Dutch English French German Italian Spanish Welsh
 
 Appointments_LOCALIZED_RESOURCE_FILES = Localizable.strings
 
@@ -67,7 +67,10 @@ Appointments_COMPONENTS +=	\
 	SOGoAptMailSpanishICalReply.wo  \
 	SOGoAptMailSpanishDeletion.wo   \
 	SOGoAptMailSpanishUpdate.wo   \
-
+	SOGoAptMailWelshInvitation.wo \
+	SOGoAptMailWelshICalReply.wo  \
+	SOGoAptMailWelshDeletion.wo   \
+	SOGoAptMailWelshUpdate.wo 
 
 ADDITIONAL_INCLUDE_DIRS += -I../../SOPE/
 ADDITIONAL_LIB_DIRS += -L../../SOPE/GDLContentStore/obj/

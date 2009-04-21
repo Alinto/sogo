@@ -1,6 +1,6 @@
 /* UIxCalListingActions.m - this file is part of SOGo
  *
- * Copyright (C) 2006 Inverse inc.
+ * Copyright (C) 2006-2009 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -362,6 +362,75 @@ static NSArray *tasksFields = nil;
     formattedDate = [dateFormatter formattedDateAndTime: date];
 
   return formattedDate;    
+}
+
+//
+// We return:
+// 
+// {complete Event ID (full path) => Fire date (UTC)}
+//
+// Called when each module is loaded or whenever a calendar component is created, modified, deleted
+// or whenever there's a {un}subscribe to a calendar.
+//
+// Workflow :
+//
+// - for ALL subscribed and ACTIVE calendars
+//  - returns alarms for which the (event end date > browserTime) OR (browserTime <  c_nextalarm)
+//   - if it's a recurring event and that condition isn't met
+//    - set date range from X (now) until Y (now+2 days)
+//    - compute the c_nextalarm and if it is met, store it in c_nextalarm
+//
+//
+- (WOResponse *) alarmsListAction
+{
+  SOGoAppointmentFolder *currentFolder;
+  SOGoAppointmentFolders *clientObject;
+  NSMutableArray *allAlarms;
+  NSEnumerator *folders;
+  WOResponse *response;
+  int browserTime;
+
+  browserTime = [[[context request] formValueForKey: @"browserTime"] intValue];
+  clientObject = [self clientObject];
+  allAlarms = [NSMutableArray array];
+
+  folders = [[clientObject subFolders] objectEnumerator];
+  while ((currentFolder = [folders nextObject]))
+    {
+      if ([currentFolder isActive])
+	{
+	  NSDictionary *entry;;
+	  NSArray *alarms;
+	  int i, v;
+
+	  // Let's compute everything +2 days in case we hit recurring components
+	  alarms = [currentFolder fetchFields: [NSArray arrayWithObjects: @"c_nextalarm", @"c_iscycle", nil]
+				  from: [NSCalendarDate date]
+				  to: [[NSCalendarDate date] dateByAddingYears: 0 months: 0 days: 2 hours: 0 minutes: 0 seconds: 0]
+				  title: nil
+				  component: nil
+				  additionalFilters: nil
+				  includeProtectedInformation: NO];
+	  for (i = 0; i < [alarms count]; i++)
+	    {
+	      entry = [alarms objectAtIndex: i];
+	      v = [[entry objectForKey: @"c_nextalarm"] intValue];
+
+	      if (([[entry objectForKey: @"c_enddate"] intValue] > browserTime) ||
+		  browserTime < v)
+		{
+		  [allAlarms addObject: [NSDictionary dictionaryWithObject: [entry objectForKey: @"c_nextalarm"]
+						      forKey: [entry objectForKey: @"c_name"]]];
+		}
+	    }
+	}
+    }
+
+
+  response = [self responseWithStatus: 200];
+  [response appendContentString: [allAlarms jsonRepresentation]];
+  
+  return response;
 }
 
 - (WOResponse *) eventsListAction
@@ -884,30 +953,5 @@ _computeBlocksPosition (NSArray *blocks)
 
   return [self _responseWithData: filteredTasks];
 }
-
-// - (BOOL) shouldDisplayCurrentTask
-// {
-//   if (!knowsToShow)
-//     {
-//       showCompleted
-//         = [[self queryParameterForKey: @"show-completed"] intValue];
-//       knowsToShow = YES;
-//     }
-
-//   return ([[currentTask objectForKey: @"status"] intValue] != 1
-// 	   || showCompleted);
-// }
-
-// - (BOOL) shouldShowCompletedTasks
-// {
-//   if (!knowsToShow)
-//     {
-//       showCompleted
-//         = [[self queryParameterForKey: @"show-completed"] intValue];
-//       knowsToShow = YES;
-//     }
-
-//   return showCompleted;
-// }
 
 @end
