@@ -1,0 +1,44 @@
+<?xml version='1.0' standalone='yes'?>
+<!DOCTYPE var:component>
+<var:component
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:uix="OGo:uix"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label"
+  className="UIxPageFrame"
+  const:toolbar="none"
+  const:popup="YES">
+
+  <form name="reminder_form" id="reminder_form" href="editReminder">
+    <div id="reminder_pattern">
+      <span class="caption"><var:string label:value="Reminder Details"/></span>
+      <table class="section">
+	<tr><td>
+	  <input type="text" id="quantityField"
+		 class="textField"
+		 size="2"
+		 /><var:popup list="unitsList" const:id="unitsList" item="item"
+		 string="itemText" var:value="item" selection="minutes"
+		 /><var:popup list="referencesList" const:id="referencesList" item="item"
+		 string="itemText" var:value="item" selection="BEFORE"
+		 />
+	</td></tr>
+	<tr><td>
+	  <var:popup list="relationsList" const:id="relationsList" item="item"
+		     string="itemText" var:value="item" selection="START"
+		     />
+	</td></tr>
+      </table>
+    </div>
+  
+    <div id="windowButtons">
+      <a id="cancelButton" href="#" class="button"
+        ><var:string label:value="Cancel"/></a>
+      <a id="okButton" href="#" class="button"
+        ><var:string label:value="OK"/></a>
+    </div>
+  </form>
+
+</var:component>
