@@ -206,14 +206,18 @@
   if ([self hasAlarms])
     {
       // We currently have the following limitations for alarms:
+      // - the event must not be recurrent;
       // - only the first alarm is considered;
       // - the alarm's action must be of type DISPLAY;
-      // - the alarm's trigger value type must be DURATION.
+      // - the alarm's trigger value type must be DURATION;
+      //
+      // Morever, we don't update the quick table if the property X-WebStatus
+      // of the trigger is set to "triggered".
       
       iCalAlarm *anAlarm;
       iCalTrigger *aTrigger;
       NSCalendarDate *relationDate;
-      NSString *relation;
+      NSString *relation, *webstatus;
       NSTimeInterval anInterval;
 
       anAlarm = [[self alarms] objectAtIndex: 0];
@@ -222,45 +226,22 @@
       anInterval = [[aTrigger value] durationAsTimeInterval];
 
       if ([[anAlarm action] caseInsensitiveCompare: @"DISPLAY"] == NSOrderedSame &&
-	  [[aTrigger valueType] caseInsensitiveCompare: @"DURATION"] == NSOrderedSame)
+	  [[aTrigger valueType] caseInsensitiveCompare: @"DURATION"] == NSOrderedSame &&
+	  ![self isRecurrent])
 	{
-	  if ([self isRecurrent])
+	  webstatus = [aTrigger value: 0 ofAttribute: @"x-webstatus"];
+	  if (!webstatus ||
+	      [webstatus caseInsensitiveCompare: @"TRIGGERED"] != NSOrderedSame)
 	    {
-	      if ([self isStillRelevant])
-		{
-		  NSArray *occurrences;
-		  NSCalendarDate *now, *later;
-		  NGCalendarDateRange *range;
-
-		  // We only compute the next occurrence of the repeating event
-		  // for the next 48 hours
-		  now = [NSCalendarDate calendarDate];
-		  later = [now addTimeInterval: (60*60*48)];
-		  range = [NGCalendarDateRange calendarDateRangeWithStartDate: now
-					       endDate: later];
-		  occurrences = [self recurrenceRangesWithinCalendarDateRange: range];
-		  if ([occurrences count] > 0)
-		    {
-		      range = [occurrences objectAtIndex: 0];
-		      if ([relation caseInsensitiveCompare: @"END"] == NSOrderedSame)
-			relationDate = [range endDate];
-		      else
-			relationDate = [range startDate];
-		    }
-		}
-	    }
-	  else
-	    {
-	      // Event is not reccurent
 	      if ([relation caseInsensitiveCompare: @"END"] == NSOrderedSame)
 		relationDate = endDate;
 	      else
 		relationDate = startDate;
+	      
+	      // Compute the next alarm date with respect to the reference date
+	      if ([relationDate isNotNull])
+		nextAlarmDate = [relationDate addTimeInterval: anInterval];
 	    }
-	  
-	  // Compute the next alarm date with respect to the reference date
-	  if ([relationDate isNotNull])
-	    nextAlarmDate = [relationDate addTimeInterval: anInterval];
 	}
     }
   if ([nextAlarmDate isNotNull])

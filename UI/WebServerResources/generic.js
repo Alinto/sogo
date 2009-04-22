@@ -38,6 +38,10 @@ var lastClickedRow = -1;
 // logArea = null;
 var allDocumentElements = null;
 
+// Alarms
+var nextAlarm = null;
+var Alarms = new Array();
+
 // Ajax requests counts
 var activeAjaxRequests = 0;
 var removeFolderRequestCount = 0;
@@ -1215,6 +1219,103 @@ function initTabs() {
 	}
 }
 
+function reverseSortByAlarmTime(a, b) {
+	var x = parseInt(a[2]);
+	var y = parseInt(b[2]);
+	return (y - x);
+}
+
+function refreshAlarms() {
+	var url;
+	var now = new Date();
+	var utc = Math.floor(now.getTime()/1000);
+
+	if (document.alarmsListAjaxRequest) {
+		document.alarmsListAjaxRequest.aborted = true;
+		document.alarmsListAjaxRequest.abort();
+	}
+	url = UserFolderURL + "Calendar/alarmslist?browserTime=" + utc;
+	document.alarmsListAjaxRequest 
+		= triggerAjaxRequest(url, refreshAlarmsCallback);
+
+	return true;
+}
+
+function refreshAlarmsCallback(http) {
+  if (http.readyState == 4
+      && http.status == 200) {
+    document.alarmsListAjaxRequest = null;
+ 
+    if (http.responseText.length > 0) {
+      Alarms = http.responseText.evalJSON(true);
+			Alarms.sort(reverseSortByAlarmTime);
+			triggerNextAlarm();
+		}
+	}
+	else
+    log ("refreshAlarmsCallback Ajax error");
+}
+
+function triggerNextAlarm() {
+	if (Alarms.length > 0) {
+		var next = Alarms.pop();
+		var now = new Date();
+		var utc = Math.floor(now.getTime()/1000);
+		var url = next[0] + '/' + next[1];
+		var alarmTime = parseInt(next[2]);
+		var delay = alarmTime;
+		if (alarmTime > 0) delay -= utc;				
+		var d = new Date(alarmTime*1000);
+		log ("now = " + now.toUTCString());
+		log ("next event " + url + " in " + delay + " seconds (on " + d.toUTCString() + ")");
+		showAlarm.delay(delay, url);
+	}
+}
+
+function showAlarm(url) {
+	url = UserFolderURL + "Calendar/" + url + "/view?resetAlarm=yes";
+  if (document.viewAlarmAjaxRequest) {
+    document.viewAlarmAjaxRequest.aborted = true;
+    document.viewAlarmAjaxRequest.abort();
+  }
+  document.viewAlarmAjaxRequest = triggerAjaxRequest(url, showAlarmCallback);
+}
+
+function showAlarmCallback(http) {
+  if (http.readyState == 4
+      && http.status == 200) {
+    if (http.responseText.length) {
+      var data = http.responseText.evalJSON(true);
+			var msg = clabels["Reminder:"] + " " + data["summary"] + "\n";
+			if (data["startDate"]) {
+				msg += clabels["Start:"] + " " + data["startDate"];
+				if (parseInt(data["isAllDay"]) == 0)
+					msg += " - " + data["startTime"];
+				msg += "\n";
+			}
+			if (data["dueDate"]) {
+				msg += clabels["Due Date:"] + " " + data["dueDate"];
+				if (data["dueTime"])
+					msg += " - " + data["dueTime"];
+				msg += "\n";
+			}
+			if (data["location"].length)
+				msg += "\n" + clabels["Location:"] + " " + data["location"];
+			if (data["description"].length)
+				msg += "\n\n" + data["description"];
+
+			window.alert(msg);
+		}
+		else
+			log("showAlarmCallback ajax error: no data received");
+  }
+	else {
+    log("showAlarmCallback ajax error (" + http.status + "): " + http.url);		
+	}
+
+	triggerNextAlarm();
+}
+
 function initMenus() {
 	var menus = getMenus();
 	if (menus) {
@@ -1435,6 +1536,7 @@ function onLoadHandler(event) {
 	queryParameters = parseQueryParameters('' + window.location);
 	if (!$(document.body).hasClassName("popup")) {
 		initLogConsole();
+		refreshAlarms();
 	}
 	initCriteria();
 	configureSearchField();

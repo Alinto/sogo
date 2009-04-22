@@ -20,6 +20,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSDictionary.h>
+
 #import <NGObjWeb/SoObject.h>
 #import <NGObjWeb/SoPermissions.h>
 #import <NGObjWeb/SoSecurityManager.h>
@@ -28,12 +30,16 @@
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGExtensions/NSCalendarDate+misc.h>
 
+#import <NGCards/iCalAlarm.h>
 #import <NGCards/iCalCalendar.h>
-#import <NGCards/iCalToDo.h>
 #import <NGCards/iCalPerson.h>
+#import <NGCards/iCalToDo.h>
+#import <NGCards/iCalTrigger.h>
 
+#import <SoObjects/SOGo/NSDictionary+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/SOGoContentObject.h>
+#import <SoObjects/SOGo/SOGoDateFormatter.h>
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>
 #import <SoObjects/Appointments/SOGoTaskObject.h>
 
@@ -376,6 +382,59 @@
 
 //   return [self jsCloseWithRefreshMethod: @"refreshTasks()"];
 // }
+
+- (id <WOActionResults>) viewAction
+{
+  WOResponse *result;
+  NSDictionary *data;
+  NSCalendarDate *startDate, *dueDate;
+  NSTimeZone *timeZone;
+  SOGoDateFormatter *dateFormatter;
+  SOGoUser *user;
+  BOOL resetAlarm;
+
+  [self todo];
+
+  result = [self responseWithStatus: 200];
+  user = [context activeUser];
+  timeZone = [user timeZone];
+  dateFormatter = [user dateFormatterInContext: context];
+  startDate = [todo startDate];
+  [startDate setTimeZone: timeZone];
+  dueDate = [todo due];
+  [dueDate setTimeZone: timeZone];
+  
+  resetAlarm = [[[context request] formValueForKey: @"resetAlarm"] boolValue];
+  if (resetAlarm && [todo hasAlarms] && ![todo hasRecurrenceRules])
+    {
+      iCalAlarm *anAlarm;
+      iCalTrigger *aTrigger;
+      SOGoCalendarComponent *co;
+
+      anAlarm = [[todo alarms] objectAtIndex: 0];
+      aTrigger = [anAlarm trigger];
+      [aTrigger setValue: 0 ofAttribute: @"x-webstatus" to: @"triggered"];
+      
+      co = [self clientObject];
+      [co saveComponent: todo];
+    }
+  
+  data = [NSDictionary dictionaryWithObjectsAndKeys:
+		       [todo tag], @"component",
+		       (startDate? [dateFormatter formattedDate: startDate] : @""), @"startDate",
+		       (startDate? [dateFormatter formattedTime: startDate] : @""), @"startTime",
+		       (dueDate? [dateFormatter formattedDate: dueDate] : @""), @"dueDate",
+		       (dueDate? [dateFormatter formattedTime: dueDate] : @""), @"dueTime",
+		       ([todo hasRecurrenceRules]? @"1": @"0"), @"isReccurent",
+		       [todo summary], @"summary",
+		       [todo location], @"location",
+		       [todo comment], @"description",
+		       nil];
+  
+  [result appendContentString: [data jsonRepresentation]];
+
+  return result;
+}
 
 - (BOOL) shouldTakeValuesFromRequest: (WORequest *) request
                            inContext: (WOContext*) context

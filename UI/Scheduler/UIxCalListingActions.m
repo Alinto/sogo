@@ -43,6 +43,7 @@
 #import <SoObjects/SOGo/NSObject+Utilities.h>
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>
 #import <SoObjects/Appointments/SOGoAppointmentFolders.h>
+#import <SoObjects/Appointments/SOGoAppointmentObject.h>
 
 #import <UI/Common/WODirectAction+SOGo.h>
 
@@ -367,7 +368,7 @@ static NSArray *tasksFields = nil;
 //
 // We return:
 // 
-// {complete Event ID (full path) => Fire date (UTC)}
+// [[calendar name (full path), complete Event ID (full path), Fire date (UTC)], ..]
 //
 // Called when each module is loaded or whenever a calendar component is created, modified, deleted
 // or whenever there's a {un}subscribe to a calendar.
@@ -375,11 +376,9 @@ static NSArray *tasksFields = nil;
 // Workflow :
 //
 // - for ALL subscribed and ACTIVE calendars
-//  - returns alarms for which the (event end date > browserTime) OR (browserTime <  c_nextalarm)
-//   - if it's a recurring event and that condition isn't met
-//    - set date range from X (now) until Y (now+2 days)
-//    - compute the c_nextalarm and if it is met, store it in c_nextalarm
-//
+//  - returns alarms that will occur in the next 48 hours or the non-triggered alarms
+//    for non-completed events
+//  - recurring events are currently ignored
 //
 - (WOResponse *) alarmsListAction
 {
@@ -388,9 +387,11 @@ static NSArray *tasksFields = nil;
   NSMutableArray *allAlarms;
   NSEnumerator *folders;
   WOResponse *response;
-  int browserTime;
+  unsigned int browserTime, laterTime;
 
+  // We look for alarms in the next 48 hours
   browserTime = [[[context request] formValueForKey: @"browserTime"] intValue];
+  laterTime = browserTime + 60*60*48;
   clientObject = [self clientObject];
   allAlarms = [NSMutableArray array];
 
@@ -399,34 +400,32 @@ static NSArray *tasksFields = nil;
     {
       if ([currentFolder isActive])
 	{
-	  NSDictionary *entry;;
+	  NSDictionary *entry;
 	  NSArray *alarms;
-	  int i, v;
+	  BOOL isCycle;
+	  int i;
 
-	  // Let's compute everything +2 days in case we hit recurring components
-	  alarms = [currentFolder fetchFields: [NSArray arrayWithObjects: @"c_nextalarm", @"c_iscycle", nil]
-				  from: [NSCalendarDate date]
-				  to: [[NSCalendarDate date] dateByAddingYears: 0 months: 0 days: 2 hours: 0 minutes: 0 seconds: 0]
-				  title: nil
-				  component: nil
-				  additionalFilters: nil
-				  includeProtectedInformation: NO];
+	  alarms = [currentFolder fetchAlarmInfosFrom: [NSNumber numberWithInt: browserTime]
+				  to: [NSNumber numberWithInt: laterTime]];
+	  
 	  for (i = 0; i < [alarms count]; i++)
 	    {
 	      entry = [alarms objectAtIndex: i];
-	      v = [[entry objectForKey: @"c_nextalarm"] intValue];
-
-	      if (([[entry objectForKey: @"c_enddate"] intValue] > browserTime) ||
-		  browserTime < v)
+	      isCycle = [[entry objectForKey: @"c_iscycle"] boolValue];
+	      
+	      if (!isCycle)
 		{
-		  [allAlarms addObject: [NSDictionary dictionaryWithObject: [entry objectForKey: @"c_nextalarm"]
-						      forKey: [entry objectForKey: @"c_name"]]];
+		  [allAlarms addObject: [NSArray arrayWithObjects:
+						 [currentFolder nameInContainer],
+						 [entry objectForKey: @"c_name"],
+						 [entry objectForKey: @"c_nextalarm"],
+						 nil]];
 		}
 	    }
 	}
     }
-
-
+  
+  
   response = [self responseWithStatus: 200];
   [response appendContentString: [allAlarms jsonRepresentation]];
   

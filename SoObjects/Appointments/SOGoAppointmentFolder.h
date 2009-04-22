@@ -96,6 +96,9 @@
 - (NSArray *) fetchFreeBusyInfosFrom: (NSCalendarDate *) _startDate
                                   to: (NSCalendarDate *) _endDate;
 
+- (NSArray *) fetchAlarmInfosFrom: (NSNumber *) _startUTCDate
+			       to: (NSNumber *) _endUTCDate;
+
 /* URL generation */
 
 - (NSString *) baseURLForAptWithUID: (NSString *) _uid

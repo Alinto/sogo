@@ -1,3 +1,30 @@
+2009-04-22  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Scheduler/UIxCalListingActions.m ([UIxCalListingActions
+	-alarmsListAction]): only return the alarms active for the next 48
+	hours and exclude any recurring event (for now).
+
+	* UI/Scheduler/UIxAppointmentEditor.m ([UIxAppointmentEditor
+	-viewAction]): if the form parameter "resetAlarm" is true, set the
+	property X-WebStatus to "triggered" in the event's alarm.
+
+	* UI/Scheduler/UIxTaskEditor.m ([UIxTaskEditor -viewAction]): new
+	method that returns some of the task properties. Currently only
+	used for the alarms. Behavior is similar to UIxAppointmentEditor.
+
+	* SoObjects/Appointments/iCalEvent+SOGo.m ([iCalEvent
+	-quickRecord]): don't update the c_nextalarm field if the event is
+	recurrent or if the property X-WebStatus is set to "triggered" in
+	the alarm's trigger definition.
+
+	* SoObjects/Appointments/iCalToDo+SOGo.m ([iCalToDo
+	-quickRecord]): idem.
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder -fetchAlarmInfosFrom:to:]): new method
+	that returns attributes of events and todos for which there's an
+	active alarm within the next 48 hours.
+
 2009-04-21  Ludovic Marcotte <lmarcotte@inverse.ca>
 
         * Added Welsh translation - patches from the

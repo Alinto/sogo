@@ -30,7 +30,10 @@
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 
+#import <NGCards/iCalAlarm.h>
 #import <NGCards/iCalPerson.h>
+#import <NGCards/iCalTrigger.h>
+#import <NGCards/NSString+NGCards.h>
 
 #import "iCalRepeatableEntityObject+SOGo.h"
 
@@ -41,7 +44,7 @@
 - (NSMutableDictionary *) quickRecord
 {
   NSMutableDictionary *row;
-  NSCalendarDate *startDate, *dueDate;
+  NSCalendarDate *startDate, *dueDate, *nextAlarmDate;
   NSArray *attendees;
   NSString *uid, *title, *location, *status;
   NSNumber *sequence;
@@ -55,6 +58,7 @@
  
   startDate = [self startDate];
   dueDate = [self due];
+  nextAlarmDate = nil;
   uid = [self uid];
   title = [self summary];
   if (![title isNotNull])
@@ -167,6 +171,46 @@
   [row setObject:partstates forKey: @"c_partstates"];
   [partstates release];
 
+  if ([self hasAlarms])
+    {
+      // We currently have the following limitations for alarms:
+      // - the component must not be recurrent;
+      // - only the first alarm is considered;
+      // - the alarm's action must be of type DISPLAY;
+      // - the alarm's trigger value type must be DURATION;
+      //
+      // Morever, we don't update the quick table if the property X-WebStatus
+      // of the trigger is set to "triggered".
+      
+      iCalAlarm *anAlarm;
+      iCalTrigger *aTrigger;
+      NSString *webstatus;
+      NSTimeInterval anInterval;
+
+      anAlarm = [[self alarms] objectAtIndex: 0];
+      aTrigger = [anAlarm trigger];
+      anInterval = [[aTrigger value] durationAsTimeInterval];
+
+      if ([[anAlarm action] caseInsensitiveCompare: @"DISPLAY"] == NSOrderedSame &&
+	  [[aTrigger valueType] caseInsensitiveCompare: @"DURATION"] == NSOrderedSame &&
+	  ![self isRecurrent])
+	{
+	  webstatus = [aTrigger value: 0 ofAttribute: @"x-webstatus"];
+	  if (!webstatus ||
+	      [webstatus caseInsensitiveCompare: @"TRIGGERED"] != NSOrderedSame)
+	    {
+	      // Compute the next alarm date with respect to the due date
+	      if ([dueDate isNotNull])
+		nextAlarmDate = [dueDate addTimeInterval: anInterval];
+	    }
+	}
+    }
+  if ([nextAlarmDate isNotNull])
+    [row setObject: [NSNumber numberWithInt: [nextAlarmDate timeIntervalSince1970]]
+	 forKey: @"c_nextalarm"];
+  else
+    [row setObject: [NSNumber numberWithInt: 0] forKey: @"c_nextalarm"];
+  
   return row;
 }
 

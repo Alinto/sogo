@@ -50,3 +50,9 @@
 = "You are not allowed to access this module or this system. Please contact your system administrator.";
 "You don't have the required privileges to perform the operation."
 = "You don't have the required privileges to perform the operation.";
+
+/* alarms */
+"Reminder:" = "Recordatorio:";
+"Start:" = "Desde:";
+"Due Date:" = "Vencimiento:";
+"Location:" = "Lugar:";

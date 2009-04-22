@@ -40,3 +40,9 @@
 = "Non sei abilitato ad accedere a questo modulo. Contatta il tuo amministratore di sistema.";
 "You don't have the required privileges to perform the operation."
 = "Non disponi dei privilegi richiesti per eseguire questa operazione.";
+
+/* alarms */
+"Reminder:" = "Promemoria:";
+"Start:" = "Inizio:";
+"Due Date:" = "Scadenza:";
+"Location:" = "Luogo:";

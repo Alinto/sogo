@@ -1081,7 +1081,7 @@ function _drawMonthCalendarEvents(events, eventsData) {
 
 function newMonthEventDIV(eventRep, event) {
   var eventText;
-  if (event[7])
+  if (event[7]) // all-day event
     eventText = event[3];
   else
     eventText = eventRep.starthour + " - " + event[3];
@@ -1209,7 +1209,7 @@ function _loadEventHref(href) {
     document.eventsListAjaxRequest.aborted = true;
     document.eventsListAjaxRequest.abort();
   }
-  var url = ApplicationBaseURL + "/" + href;
+  var url = ApplicationBaseURL + href;
   document.eventsListAjaxRequest
     = triggerAjaxRequest(url, eventsListCallback, href);
 
@@ -1279,7 +1279,9 @@ function refreshEvents() {
     titleSearch = "&search=" + escape(value.utf8encode());
   else
     titleSearch = "";
- 
+	
+	refreshAlarms();
+
   return _loadEventHref("eventslist?asc=" + sorting["ascending"]
 												+ "&sort=" + sorting["attribute"]
 												+ "&day=" + currentDay
@@ -1288,6 +1290,7 @@ function refreshEvents() {
 }
 
 function refreshTasks() {
+	refreshAlarms();
   return _loadTasksHref("taskslist?show-completed=" + showCompletedTasks);
 }
 

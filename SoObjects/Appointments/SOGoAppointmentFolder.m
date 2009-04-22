@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2008 Inverse inc.
+  Copyright (C) 2007-2009 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
@@ -2288,6 +2288,34 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                component: _component
 	       additionalFilters: filters
 	       includeProtectedInformation: NO];
+}
+
+- (NSArray *) fetchAlarmInfosFrom: (NSNumber *) _startUTCDate
+			       to: (NSNumber *) _endUTCDate
+{
+  static NSArray *nameFields = nil;
+  EOQualifier *qualifier;
+  GCSFolder *folder;
+  NSArray *records;
+  NSString *sql;
+
+  if (!nameFields)
+    nameFields = [[NSArray alloc] initWithObjects: @"c_name", @"c_nextalarm", @"c_iscycle", nil];
+  
+  folder = [self ocsFolder];
+  if (!folder)
+    {
+      [self errorWithFormat:@"(%s): missing folder for fetch!",
+            __PRETTY_FUNCTION__];
+      return nil;
+    }
+
+  sql =  [NSString stringWithFormat: @"((c_nextalarm <= %u) AND (c_nextalarm >= %u)) OR ((c_nextalarm > 0) AND (c_enddate > %u))",
+		   [_endUTCDate unsignedIntValue], [_startUTCDate unsignedIntValue], [_startUTCDate unsignedIntValue]];
+  qualifier = [EOQualifier qualifierWithQualifierFormat: sql];
+  records = [folder fetchFields: nameFields matchingQualifier: qualifier];
+  
+  return records;
 }
 
 /* URL generation */

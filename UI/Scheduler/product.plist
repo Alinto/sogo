@@ -216,6 +216,11 @@
 	};
       };
       methods = {
+	view = {
+	  protectedBy = "ViewAllComponent";
+	  pageName    = "UIxTaskEditor";
+	  actionName  = "view";
+	};
 	edit = { 
 	  protectedBy = "ViewAllComponent";
 	  pageName    = "UIxTaskEditor"; 

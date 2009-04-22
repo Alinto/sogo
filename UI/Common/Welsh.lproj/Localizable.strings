@@ -46,3 +46,9 @@
 = "Nid oes gennych caniatad mynediad i'r modiwl hwn na'r system hwn. Cysylltwch a'r Gweinyddwr Systemau os gwelwch yn dda.";
 "You don't have the required privileges to perform the operation."
 = "Nid oes gennych y breintiau gofynnol i berfformio'r gweithrediad.";
+
+/* alarms */
+"Reminder:" = "Atgoffa:";
+"Start:" = "Dechrau:";
+"Due Date:" = "Dyddiad dyledus:";
+"Location:" = "Lleoliad:";

@@ -41,3 +41,9 @@
 
 "You are not allowed to access this module or this system. Please contact your system administrator." = "U hebt geen toegang tot deze module of dit systeem. Neem contact op met uw systeem beheerder.";
 "You don't have the required privileges to perform the operation." = "Voor deze actie heeft u niet de benodigde rechten.";
+
+/* alarms */
+"Reminder:" = "Alarm:";
+"Start:" = "Begin:";
+"Due Date:" = "Verloopdatum:";
+"Location:" = "Plaats:";

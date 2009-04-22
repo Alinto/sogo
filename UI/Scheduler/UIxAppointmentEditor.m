@@ -34,9 +34,11 @@
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGExtensions/NSCalendarDate+misc.h>
 
+#import <NGCards/iCalAlarm.h>
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalEvent.h>
 #import <NGCards/iCalPerson.h>
+#import <NGCards/iCalTrigger.h>
 #import <NGCards/iCalRecurrenceRule.h>
 
 #import <SoObjects/SOGo/NSDictionary+Utilities.h>
@@ -394,6 +396,7 @@
   SOGoUser *user;
   SOGoCalendarComponent *co;
   iCalEvent *master;
+  BOOL resetAlarm;
   signed int daylightOffset;
 
   [self event];
@@ -406,6 +409,19 @@
   [eventDate setTimeZone: timeZone];
   co = [self clientObject];
   
+  resetAlarm = [[[context request] formValueForKey: @"resetAlarm"] boolValue];
+  if (resetAlarm && [event hasAlarms] && ![event hasRecurrenceRules])
+    {
+      iCalAlarm *anAlarm;
+      iCalTrigger *aTrigger;
+
+      anAlarm = [[event alarms] objectAtIndex: 0];
+      aTrigger = [anAlarm trigger];
+      [aTrigger setValue: 0 ofAttribute: @"x-webstatus" to: @"triggered"];
+
+      [co saveComponent: event];
+    }
+
   if ([co isNew] && [co isKindOfClass: [SOGoAppointmentOccurence class]])
     {
       // This is a new exception in a recurrent event -- compute the daylight
@@ -421,6 +437,7 @@
 	}
     }
   data = [NSDictionary dictionaryWithObjectsAndKeys:
+		       [event tag], @"component",
 		       [dateFormatter formattedDate: eventDate], @"startDate",
 		       [dateFormatter formattedTime: eventDate], @"startTime",
 		       ([event hasRecurrenceRules]? @"1": @"0"), @"isReccurent",
