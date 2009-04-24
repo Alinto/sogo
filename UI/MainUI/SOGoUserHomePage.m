@@ -1,6 +1,6 @@
 /* SOGoUserHomePage.m - this file is part of SOGo
  *
- * Copyright (C) 2007, 2008 Inverse inc.
+ * Copyright (C) 2007-2009 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -71,7 +71,7 @@ static NSString *LDAPContactInfoAttribute = nil;
 		|| [defaultModule isEqualToString: @"Mail"]))
 	    {
 	      [self logWithFormat: @"default module '%@' not accepted (must be"
-		    @"'Calendar', 'Contacts' or Mail)", defaultModule];
+		    @"'Calendar', 'Contacts' or 'Mail')", defaultModule];
 	      defaultModule = @"Calendar";
 	    }
 	}
