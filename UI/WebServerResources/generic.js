@@ -353,7 +353,6 @@ function getContrastingTextColor(bgColor) {
 
 function triggerAjaxRequest(url, callback, userdata, content, headers) {
 	var http = createHTTPClient();
-
 	activeAjaxRequests++;
 	document.animTimer = setTimeout("checkAjaxRequestsState();", 250);
 	//url = appendDifferentiator(url);
@@ -1230,10 +1229,8 @@ function refreshAlarms() {
 	var now = new Date();
 	var utc = Math.floor(now.getTime()/1000);
 
-	if (document.alarmsListAjaxRequest) {
-		document.alarmsListAjaxRequest.aborted = true;
-		document.alarmsListAjaxRequest.abort();
-	}
+	if (document.alarmsListAjaxRequest)
+		return false;
 	url = UserFolderURL + "Calendar/alarmslist?browserTime=" + utc;
 	document.alarmsListAjaxRequest 
 		= triggerAjaxRequest(url, refreshAlarmsCallback);
