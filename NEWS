@@ -1,5 +1,15 @@
+1.0-2009mmdd (1.0.2)
+--------------------
+- basic alarm implementation for the web interface
+- user's status for events in the web interface now appears like in Lightning ("needs-action" events are surrounded by a dashed line, "declined" events are lighter)
+- added Welsh localisation, thanks to Iona Bailey
+- added support for Oracle RAC
+- improvements to the underlying SOGo cache infrastructure
+- fixed bug with LDAP-based address books and the entries references (ID vs UID)
+- added "scope" parameter to LDAP sources
+
 1.0-20090407 (1.0.1)
------
+--------------------
 - now possbile to navigate using keyboard keys in the address book and mail modules
 - the favicon can now be specified using the SOGoFaviconRelativeURL preference
 - we now support LDAP encryption for binding and for contact lookups
