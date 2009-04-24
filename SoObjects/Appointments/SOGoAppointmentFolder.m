@@ -2282,7 +2282,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 			     @"c_classification", @"c_isallday",
 			     @"c_isopaque", @"c_participants", @"c_partmails",
 			     @"c_partstates", @"c_sequence", @"c_priority",
-			     @"c_cycleinfo", @"c_iscycle", nil];
+			     @"c_cycleinfo", @"c_iscycle",  @"c_nextalarm", nil];
 
   return [self fetchFields: infos from: _startDate to: _endDate title: title
                component: _component

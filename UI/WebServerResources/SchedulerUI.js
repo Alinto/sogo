@@ -469,7 +469,7 @@ function performDeleteEventCallback(http) {
 				var newOccurences = [];
 				for (var i = 0; i < occurences.length; i++) {
 					var occurence = occurences[i];
-					if (occurence[13] != occurenceTime)
+					if (occurence[14] != occurenceTime)
 						newOccurences.push(occurence);
 				}
 				calendarEvents[calendar][cname] = newOccurences;
@@ -578,7 +578,7 @@ function eventsListCallback(http) {
 				var row = $(document.createElement("tr"));
 				table.tBodies[0].appendChild(row);
 				row.addClassName("eventRow");
-				var rTime = data[i][13];
+				var rTime = data[i][14];
 				var id = escape(data[i][1] + "-" + data[i][0]);
 				if (rTime)
 					id += "-" + escape(rTime);
@@ -980,19 +980,21 @@ function newBaseEventDIV(eventRep, event, eventText) {
   eventDiv.calendar = event[1];
   if (eventRep.recurrenceTime)
     eventDiv.recurrenceTime = eventRep.recurrenceTime;
-
   eventDiv.addClassName("event");
-  if (eventRep.userState >= 0 && userStates[eventRep.userState])
-    eventDiv.addClassName(userStates[eventRep.userState]);
+	if (event[13] > 0)
+		eventDiv.addClassName("alarm");
 
   var innerDiv = $(document.createElement("div"));
   eventDiv.appendChild(innerDiv);
   innerDiv.addClassName("eventInside");
   innerDiv.addClassName("calendarFolder" + event[1]);
+  if (eventRep.userState >= 0 && userStates[eventRep.userState])
+    innerDiv.addClassName(userStates[eventRep.userState]);
 
   var gradientDiv = $(document.createElement("div"));
   innerDiv.appendChild(gradientDiv);
   gradientDiv.addClassName("gradient");
+
   var gradientImg = $(document.createElement("img"));
   gradientDiv.appendChild(gradientImg);
   gradientImg.src = ResourcesURL + "/event-gradient.png";
@@ -1375,7 +1377,7 @@ function _eventBlocksMatching(calendar, cname, recurrenceTime) {
       if (recurrenceTime) {
 				for (var i = 0; i < occurences.length; i++) {
 					var occurence = occurences[i];
-					if (occurence[13] == recurrenceTime)
+					if (occurence[14] == recurrenceTime)
 						blocks = occurence.blocks;
 				}
       }
