@@ -604,12 +604,12 @@ function eventsListCallback(http) {
 				td = $(document.createElement("td"));
 				row.appendChild(td);
 				td.observe("mousedown", listRowMouseDownHandler, true);
-				td.appendChild(document.createTextNode(data[i][14]));
+				td.appendChild(document.createTextNode(data[i][15]));
 
 				td = $(document.createElement("td"));
 				row.appendChild(td);
 				td.observe("mousedown", listRowMouseDownHandler, true);
-				td.appendChild(document.createTextNode(data[i][15]));
+				td.appendChild(document.createTextNode(data[i][16]));
       
 				td = $(document.createElement("td"));
 				row.appendChild(td);
@@ -935,7 +935,7 @@ function _parseEvents(list) {
     var event = list[i];
     var cname = event[0];
     var calendar = event[1];
-		//     log("parsed cname: " + cname + "; calendar: " + calendar);
+//		log("parsed cname: " + cname + "; calendar: " + calendar);
     var calendarDict = newCalendarEvents[calendar];
     if (!calendarDict) {
       calendarDict = {};
