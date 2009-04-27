@@ -592,8 +592,8 @@ _userStateInEvent (NSArray *event)
   eventStart = [[event objectAtIndex: 4] unsignedIntValue];
   eventEnd = [[event objectAtIndex: 5] unsignedIntValue];
 
-  if ([[event objectAtIndex: 12] boolValue])
-    recurrenceTime = [[event objectAtIndex: 13] unsignedIntValue];
+  if ([[event objectAtIndex: 12] boolValue]) // c_iscycle
+    recurrenceTime = [[event objectAtIndex: 14] unsignedIntValue]; // c_recurrence_id
   else
     recurrenceTime = 0;
 
