@@ -164,6 +164,7 @@ static NSLock *lock = nil;
 - (void) dealloc
 {
   [sources release];
+  [sourcesMetadata release];
   [super dealloc];
 }
 

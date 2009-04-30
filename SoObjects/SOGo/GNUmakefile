@@ -49,6 +49,7 @@ SOGo_HEADER_FILES = \
 	SOGoWebDAVAclManager.h		\
 	SOGoWebDAVValue.h		\
 	SOGoMailer.h			\
+	SOGoGroup.h			\
 	SOGoUser.h			\
 	\
 	NSDictionary+BSJSONAdditions.h	\
@@ -94,6 +95,7 @@ SOGo_OBJC_FILES = \
 	SOGoWebDAVAclManager.m		\
 	SOGoWebDAVValue.m		\
 	SOGoMailer.m			\
+	SOGoGroup.m			\
 	SOGoUser.m			\
 	\
 	NSDictionary+BSJSONAdditions.m	\

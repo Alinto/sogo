@@ -54,12 +54,10 @@
 #import <NGExtensions/NSObject+Logs.h>
 #import <SaxObjC/XMLNamespaces.h>
 
-// #import <NGObjWeb/SoClassSecurityInfo.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSObject+DAV.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoCache.h>
-// #import <SOGo/SOGoCustomGroupFolder.h>
 #import <SOGo/LDAPUserManager.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/SOGoPermissions.h>

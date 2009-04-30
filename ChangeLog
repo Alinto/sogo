@@ -1,3 +1,10 @@
+2009-04-30  Ludovic Marcotte <lmarcotte@inverse.ca>
+
+         * Added SoObjects/SOGo/SOGoGroup.{h.m} and
+	 modified the LDAPSource, LDAPUserManager, SOGoAppoinmentObject
+	 in order to add initial groups support which decomposes
+	 groups to members when events are saved.
+
 2009-04-27  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Scheduler/UIxCalListingActions.m ([UIxCalListingActions

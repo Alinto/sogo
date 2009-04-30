@@ -29,6 +29,7 @@
 @class NSMutableDictionary;
 @class NSString;
 @class NSTimer;
+@class NGLdapEntry;
 
 @class LDAPSource;
 

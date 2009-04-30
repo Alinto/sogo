@@ -28,6 +28,7 @@
 @class NSDictionary;
 @class NSString;
 @class NGLdapConnection;
+@class NGLdapEntry;
 
 @interface LDAPSource : NSObject
 {
@@ -62,6 +63,7 @@
 	  hostname: (NSString *) newBindHostname
 	      port: (NSString *) newBindPort
 	encryption: (NSString *) newEncryption;
+
 - (void) setBaseDN: (NSString *) newBaseDN
 	   IDField: (NSString *) newIDField
 	   CNField: (NSString *) newCNField
@@ -69,11 +71,15 @@
 	mailFields: (NSArray *) newMailFields
      andBindFields: (NSString *) newBindFields;
 
+- (NSString *) loginForDN: (NSString *) theDN;
+
 - (BOOL) checkLogin: (NSString *) login
 	andPassword: (NSString *) password;
 
 - (NSDictionary *) lookupContactEntry: (NSString *) theID;
 - (NSDictionary *) lookupContactEntryWithUIDorEmail: (NSString *) entryID;
+- (NGLdapEntry *) lookupGroupEntry: (NSString *) theID;
+
 - (NSArray *) allEntryIDs;
 - (NSArray *) fetchContactsMatching: (NSString *) filter;
 - (NSString *) sourceID;

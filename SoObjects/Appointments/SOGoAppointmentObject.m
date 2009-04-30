@@ -1,15 +1,15 @@
 /*
   Copyright (C) 2004-2005 SKYRIX Software AG
-  Copyright (C) 2007-2008 Inverse inc.
+  Copyright (C) 2007-2009 Inverse inc.
 
   This file is part of OpenGroupware.org.
 
-  OGo is free software; you can redistribute it and/or modify it under
+  SOGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
   Free Software Foundation; either version 2, or (at your option) any
   later version.
 
-  OGo is distributed in the hope that it will be useful, but WITHOUT ANY
+  SOGo is distributed in the hope that it will be useful, but WITHOUT ANY
   WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
   License for more details.
@@ -40,6 +40,7 @@
 #import <SoObjects/SOGo/NSObject+DAV.h>
 #import <SoObjects/SOGo/SOGoObject.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
+#import <SoObjects/SOGo/SOGoGroup.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/SOGoWebDAVAclManager.h>
 #import <SoObjects/SOGo/SOGoWebDAVValue.h>
@@ -395,24 +396,92 @@
 	toAttendees: updateAttendees];
 }
 
-- (void) _handleAddedUsers: (NSArray *) attendees
+//
+// Returns "YES" if a group was decomposed during attendees addition.
+//
+- (BOOL) _handleAddedUsers: (NSArray *) attendees
 		 fromEvent: (iCalEvent *) newEvent
 {
+  NSMutableArray *array, *attendeesFromGroups;
   NSEnumerator *enumerator;
   iCalPerson *currentAttendee;
   NSString *currentUID;
+  BOOL b;
+  int i;
+
+  array = [NSMutableArray arrayWithArray: [newEvent attendees]];
+  attendeesFromGroups = [NSMutableArray array];
+  RETAIN(attendees);
+  b = NO;
 
   enumerator = [attendees objectEnumerator];
   while ((currentAttendee = [enumerator nextObject]))
     {
-      currentUID = [currentAttendee uid];
-      if (currentUID)
+      SOGoGroup *group;
+
+      group = [SOGoGroup groupWithIdentifier: [currentAttendee rfc822Email]];
+
+      if (group)
+	{
+	  iCalPerson *person;
+	  NSArray *members;
+	  SOGoUser *user;
+	  
+	  // We did decompose a group...
+	  [array removeObject: currentAttendee];
+	  b = YES;
+
+	  members = [group members];
+	  for (i = 0; i < [members count]; i++)
+	    {
+	      user = [members objectAtIndex: i];
+
+	      // If the organizer is part of the group, we skip it from
+	      // the addition to the attendees' list
+	      if ([user hasEmail: [[newEvent organizer] rfc822Email]])
+		continue;
+	      
+	      person = [self iCalPersonWithUID: [user login]];
+	      [person setTag: @"ATTENDEE"];
+	      [person setParticipationStatus: iCalPersonPartStatNeedsAction];
+	      [person setRsvp: @"TRUE"];
+	      [person setRole: @"REQ-PARTICIPANT"];
+	
+	      [attendeesFromGroups addObject: [user login]];
+			    
+	      if (![array containsObject: person])
+		[array addObject: person];
+	    }
+	}
+      else
+	{
+	  currentUID = [currentAttendee uid];
+	  if (currentUID)
+	    [self _addOrUpdateEvent: newEvent
+		  forUID: currentUID
+		  owner: owner];
+	}
+    }
+
+  if (b)
+    {
+      NSLog(@"New attendees: %@", array);
+      [newEvent setAttendees: array];
+
+      for (i = 0; i < [attendeesFromGroups count]; i++)
 	[self _addOrUpdateEvent: newEvent
-	      forUID: currentUID
+	      forUID: [attendeesFromGroups objectAtIndex: i]
 	      owner: owner];
     }
+
+  RELEASE(attendees);
+
+  return b;
 }
 
+//
+//
+//
 - (void) _handleUpdatedEvent: (iCalEvent *) newEvent
 		fromOldEvent: (iCalEvent *) oldEvent
 {
@@ -467,8 +536,19 @@
 
   if ([attendees count])
     {
+      NSArray *originalAttendees;
+
+      originalAttendees = [NSArray arrayWithArray: [newEvent attendees]];
+      
       // Send an invitation to new attendees
-      [self _handleAddedUsers: attendees fromEvent: newEvent];
+      if ([self _handleAddedUsers: attendees fromEvent: newEvent])
+	{
+	  // We need to compute our new set for the invitation template
+	  // if we decomposed groups.
+	  attendees = [NSMutableArray arrayWithArray: [newEvent attendees]];
+	  [(NSMutableArray *)attendees removeObjectsInArray: originalAttendees];
+	}
+
       [self sendEMailUsingTemplateNamed: @"Invitation"
 	    forObject: [newEvent itipEntryWithMethod: @"request"]
 	    previousObject: oldEvent
@@ -499,7 +579,13 @@
 	  attendees = [newEvent attendeesWithoutUser: ownerUser];
 	  if ([attendees count])
 	    {
-	      [self _handleAddedUsers: attendees fromEvent: newEvent];
+	      if ([self _handleAddedUsers: attendees fromEvent: newEvent])
+		{
+		  // We refetch the list of attendees and save again the
+		  // event as a group was decomposed
+		  attendees = [newEvent attendeesWithoutUser: ownerUser];
+		  [super saveComponent: newEvent];
+		}
 	      [self sendEMailUsingTemplateNamed: @"Invitation"
 		    forObject: [newEvent itipEntryWithMethod: @"request"]
 		    previousObject: nil
@@ -529,7 +615,8 @@
 	    }
 	  [self _handleUpdatedEvent: newEvent fromOldEvent: oldEvent];
 	  
-	  // The sequence has possibly been increased -- resave the event
+	  // The sequence has possibly been increased -- resave the event.
+	  // This will also take care of a decomposed group.
 	  [super saveComponent: newEvent];
 	}
     }
@@ -1222,6 +1309,86 @@
 - (NSString *) outlookMessageClass
 {
   return @"IPM.Appointment";
+}
+
+//
+// If we see "X-SOGo: NoGroupsDecomposition" in the HTTP headers, we
+// simply invoke super's PUTAction.
+//
+- (id) PUTAction: (WOContext *) _ctx
+{
+  iCalPerson *currentAttendee;
+  NSEnumerator *enumerator;
+  iCalCalendar *calendar;
+  NSMutableArray *array;
+  NSArray *allEvents;
+  SOGoGroup *group;
+  iCalEvent *event;
+  WORequest *rq;
+  int i;
+
+  rq = [_ctx request];
+
+  //NSLog(@"Content from request: %@",  [rq contentAsString]);
+
+  // The algorithm is pretty straightforward: 
+  //
+  // We get all events
+  //   We get all attendees
+  //     If some are groups, we decompose them
+  // We regenerate the iCalendar string
+  //
+  calendar = [iCalCalendar parseSingleFromSource: [rq contentAsString]];
+  allEvents = [calendar events];
+
+  for (i = 0; i < [allEvents count]; i++)
+    {
+      event = [allEvents objectAtIndex: i];
+      array = [NSMutableArray arrayWithArray: [event attendees]];
+
+      enumerator = [[event attendees] objectEnumerator];
+      while ((currentAttendee = [enumerator nextObject]))
+	{
+	  group = [SOGoGroup groupWithIdentifier: [currentAttendee rfc822Email]];
+	  
+	  if (group)
+	    {
+	      iCalPerson *person;
+	      NSArray *members;
+	      SOGoUser *user;
+	      
+	      // We did decompose a group...
+	      [array removeObject: currentAttendee];
+	      
+	      members = [group members];
+	      for (i = 0; i < [members count]; i++)
+		{
+		  user = [members objectAtIndex: i];
+		  
+		  // If the organizer is part of the group, we skip it from
+		  // the addition to the attendees' list
+		  if ([user hasEmail: [[event organizer] rfc822Email]])
+		    continue;
+		  
+		  person = [self iCalPersonWithUID: [user login]];
+		  [person setTag: @"ATTENDEE"];
+		  [person setParticipationStatus: iCalPersonPartStatNeedsAction];
+		  [person setRsvp: @"TRUE"];
+		  [person setRole: @"REQ-PARTICIPANT"];
+		  
+		  if (![array containsObject: person])
+		    [array addObject: person];
+		}
+	    }
+	}
+      
+      [event setAttendees: array];
+    }
+
+  //NSLog(@"Content from calendar:secure: %@", [calendar versitString]);
+
+  [rq setContent: [[calendar versitString] dataUsingEncoding: [rq contentEncoding]]];
+  return [super PUTAction: _ctx];
 }
 
 @end /* SOGoAppointmentObject */

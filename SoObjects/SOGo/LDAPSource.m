@@ -377,6 +377,21 @@ static NSLock *lock;
   return userDN;
 }
 
+- (NSString *) loginForDN: (NSString *) theDN
+{
+  NGLdapEntry *entry;
+  
+  entry = [ldapConnection entryAtDN: theDN
+			  attributes: [NSArray arrayWithObject: IDField]];
+  
+  if (entry)
+    {
+      return [[entry attributeWithName: IDField] stringValueAtIndex: 0];
+    }
+
+  return nil;
+}
+
 - (BOOL) checkLogin: (NSString *) loginToCheck
 	andPassword: (NSString *) passwordToCheck
 {
@@ -820,6 +835,61 @@ static NSLock *lock;
 #endif
 
   return contactEntry;
+}
+
+// Use the email address for now...
+- (NGLdapEntry *) lookupGroupEntry: (NSString *) theID
+{
+  NGLdapEntry *ldapEntry;
+
+#if defined(THREADSAFE)
+  [lock lock];
+#endif
+
+  ldapEntry = nil;
+
+  if ([theID length] > 0)
+    {
+      if ([self _initLDAPConnection])
+	{
+	  NSMutableArray *attributes;
+	  NSEnumerator *entries;
+	  EOQualifier *qualifier;
+	  NSString *s;
+	  
+	  // FIXME
+	  s = [NSString stringWithFormat: @"(mail='%@')", theID];
+	  qualifier = [EOQualifier qualifierWithQualifierFormat: s];
+	  
+	  // We look for additional attributes - the ones related to group membership
+	  attributes = [NSMutableArray arrayWithArray: [self _searchAttributes]];
+	  [attributes addObject: @"member"];
+	  [attributes addObject: @"memberOf"];
+
+	  if ([_scope caseInsensitiveCompare: @"BASE"] == NSOrderedSame)
+	    entries = [ldapConnection baseSearchAtBaseDN: baseDN
+				      qualifier: qualifier
+				      attributes: attributes];
+	  else if ([_scope caseInsensitiveCompare: @"ONE"] == NSOrderedSame)
+	    entries = [ldapConnection flatSearchAtBaseDN: baseDN
+				      qualifier: qualifier
+				      attributes: attributes];
+	  else
+	    entries = [ldapConnection deepSearchAtBaseDN: baseDN
+				      qualifier: qualifier
+				      attributes: attributes];
+	  
+	  ldapEntry = [entries nextObject];
+	}
+
+      [ldapConnection autorelease];
+    }
+
+#if defined(THREADSAFE)
+  [lock unlock];
+#endif
+
+  return ldapEntry;
 }
 
 - (NSString *) sourceID
