@@ -1325,9 +1325,14 @@
   SOGoGroup *group;
   iCalEvent *event;
   WORequest *rq;
+
+  BOOL b;
   int i;
 
   rq = [_ctx request];
+
+  if ([[rq headersForKey: @"X-SOGo"] containsObject: @"NoGroupsDecomposition"])
+    return [super PUTAction: _ctx];
 
   //NSLog(@"Content from request: %@",  [rq contentAsString]);
 
@@ -1340,6 +1345,7 @@
   //
   calendar = [iCalCalendar parseSingleFromSource: [rq contentAsString]];
   allEvents = [calendar events];
+  b = NO;
 
   for (i = 0; i < [allEvents count]; i++)
     {
@@ -1359,6 +1365,7 @@
 	      
 	      // We did decompose a group...
 	      [array removeObject: currentAttendee];
+	      b = YES;
 	      
 	      members = [group members];
 	      for (i = 0; i < [members count]; i++)
@@ -1387,7 +1394,12 @@
 
   //NSLog(@"Content from calendar:secure: %@", [calendar versitString]);
 
-  [rq setContent: [[calendar versitString] dataUsingEncoding: [rq contentEncoding]]];
+  // If we decomposed at least one group, let's rewrite the content
+  // of the request. Otherwise, leave it as is in case this rewrite
+  // isn't totaly lossless.
+  if (b)
+    [rq setContent: [[calendar versitString] dataUsingEncoding: [rq contentEncoding]]];
+
   return [super PUTAction: _ctx];
 }
 

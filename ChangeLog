@@ -1,3 +1,10 @@
+2009-05-01  Ludovic Marcotte <lmarcotte@inverse.ca>
+
+         * SoObjects/Appointments/SOGoAppointmentObject.m
+	 ([SOGoAppointmentObject -PUTAction:]): Slightly optimized
+	 and we now consider the "X-SOGo: NoGroupsDecomposition"
+	 special header.
+
 2009-04-30  Ludovic Marcotte <lmarcotte@inverse.ca>
 
          * Added SoObjects/SOGo/SOGoGroup.{h.m} and
