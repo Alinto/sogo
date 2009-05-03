@@ -27,6 +27,7 @@
 #import <SoObjects/SOGo/LDAPUserManager.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
 #import <SoObjects/SOGo/SOGoObject.h>
+#import <SoObjects/SOGo/SOGoGroup.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <UI/SOGoUI/SOGoACLAdvisory.h>
 #import <Foundation/NSUserDefaults.h>
@@ -92,9 +93,10 @@ static BOOL sendACLAdvisories = NO;
 - (BOOL) _initRights
 {
   BOOL response;
-  NSString *newUID;
+  NSString *newUID, *searchUID;
   LDAPUserManager *um;
   SOGoObject *clientObject;
+  SOGoGroup *group;
 
   response = NO;
 
@@ -108,6 +110,13 @@ static BOOL sendACLAdvisories = NO;
       if ([newUID isEqualToString: defaultUserID]
 	  || [[um getEmailForUID: newUID] length] > 0)
 	{
+	  if (![newUID hasPrefix: @"@"])
+	    {
+	      group = [SOGoGroup groupWithIdentifier: newUID];
+	      if (group)
+		newUID = [NSString stringWithFormat: @"@%@", newUID];
+	    }
+
 	  ASSIGN (uid, newUID);
 	  clientObject = [self clientObject];
 	  [userRights addObjectsFromArray: [clientObject aclsForUser: uid]];

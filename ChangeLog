@@ -1,3 +1,43 @@
+2009-05-03  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Common/UIxUserRightsEditor.m ([UIxUserRightsEditor
+	-_initRights:]): add the "@" prefix to groups UID.
+
+	* SoObjects/SOGo/SOGoGroup.m ([SOGoGroup +groupWithIdentifier:]):
+	returns a SOGoGroup instance matching the specified UID value or
+	nil if no group is found.
+	([+groupWithEmail:]): idem for the specified email address.
+	([-members]): now properly search among all LDAP sources for the
+	members of the group.
+
+	* SoObjects/SOGo/SOGoGCSFolder.m ([SOGoGCSFolder
+	-_fetchAclsForUser:forObjectAtPath:]): also search for entries
+	prefixed by a "@" corresponding to group entries. For those
+	entries, find the members and add the ACLs if the user if part of
+	the group.
+	([-setRoles:forUser:forObjectAtPath:]): prefix the UID with the
+	"@" character when dealing with a group.
+
+	* SoObjects/SOGo/LDAPUserManager.m ([LDAPUserManager
+	-getLoginForDN:]): searches among all defined LDAP sources and
+	returns the UIDFieldName value for the requested DN.
+	([-contactInfosForUserWithUIDorEmail:]): prior to perform the
+	search, removes the "@" prefix used to identified groups in the
+	ACL tables.
+
+	* SoObjects/SOGo/LDAPSource.m ([LDAPSource -lookupLoginByDN:]):
+	returns the UIDFieldName value for the requested DN.
+	([-lookupGroupEntryByUID:]): returns the LDAP entry corresponding
+	to a group (ie with an objectClass of member, uniqueMember,
+	memberUid, or memberOf) for the requested UID.
+	([-lookupGroupEntryByEmail]): idem for the requested email address.
+	([-lookupGroupEntryByAttribute:andValue:]): idem for the specified
+	value for the specified attribute.
+	([-baseDN]): accessor for the base DN.
+
+	* UI/Common/UIxAclEditor.m ([UIxAclEditor -_displayNameForUID:]):
+	removes the "@" prefix before looking up for the CN and email address.
+
 2009-05-01  Ludovic Marcotte <lmarcotte@inverse.ca>
 
          * SoObjects/Appointments/SOGoAppointmentObject.m

@@ -57,6 +57,7 @@
 #import "NSString+Utilities.h"
 
 #import "SOGoContentObject.h"
+#import "SOGoGroup.h"
 #import "SOGoParentFolder.h"
 #import "SOGoPermissions.h"
 #import "SOGoUser.h"
@@ -781,15 +782,45 @@ static NSArray *childRecordFields = nil;
   NSMutableArray *acls;
   NSString *qs;
 
-  qs = [NSString stringWithFormat: @"(c_object = '/%@') AND (c_uid = '%@')",
+  // We look for the exact uid or any uid that begins with "@" (corresponding to groups)
+  qs = [NSString stringWithFormat: @"(c_object = '/%@') AND (c_uid = '%@' OR c_uid LIKE '@%%')",
 		 objectPath, uid];
   qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
   records = [[self ocsFolder] fetchAclMatchingQualifier: qualifier];
-
   acls = [NSMutableArray array];
-  if ([records count] > 0)
-    [acls addObjectsFromArray: [records valueForKey: @"c_role"]];
 
+  unsigned int i, j;
+  NSArray *members;
+  NSDictionary *record;
+  NSString *currentUid;
+  SOGoGroup *group;
+  SOGoUser *user;
+
+  for (i = 0; i < [records count]; i ++)
+    {
+      record = [records objectAtIndex: i];
+      currentUid = [record valueForKey: @"c_uid"];
+      if ([currentUid isEqualToString: uid])
+	[acls addObject: [record valueForKey: @"c_role"]];
+      else
+	{
+	  group = [SOGoGroup groupWithIdentifier: currentUid];
+	  if (group)
+	    {
+	      members = [group members];
+	      for (j = 0; j < [members count]; j++)
+		{
+		  user = [members objectAtIndex: j];
+		  if ([[user login] isEqualToString: uid])
+		    {
+		      [acls addObject: [record valueForKey: @"c_role"]];
+		      break;
+		    }
+		}
+	    }
+	}
+    }
+ 
   return [acls uniqueObjects];
 }
 
@@ -904,10 +935,19 @@ static NSArray *childRecordFields = nil;
           forUser: (NSString *) uid
   forObjectAtPath: (NSArray *) objectPathArray
 {
-  NSString *objectPath;
+  NSString *objectPath, *aUID;
   NSMutableArray *newRoles;
+  SOGoGroup *group;
 
-  [self removeAclsForUsers: [NSArray arrayWithObject: uid]
+  aUID = uid;
+  if (![uid hasPrefix: @"@"])
+    {
+      // Prefix the UID with the character "@" when dealing with a group
+      group = [SOGoGroup groupWithIdentifier: uid];
+      if (group)
+	aUID = [NSString stringWithFormat: @"@%@", uid];
+    }
+  [self removeAclsForUsers: [NSArray arrayWithObject: aUID]
         forObjectAtPath: objectPathArray];
 
   newRoles = [NSMutableArray arrayWithArray: roles];
@@ -919,7 +959,7 @@ static NSArray *childRecordFields = nil;
   if (![newRoles count])
     [newRoles addObject: SOGoRole_None];
 
-  [self _commitRoles: newRoles forUID: uid forObject: objectPath];
+  [self _commitRoles: newRoles forUID: aUID forObject: objectPath];
 }
 
 /* acls */

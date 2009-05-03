@@ -85,11 +85,25 @@
   [super dealloc];
 }
 
-//
-// Returns nil if theID (which is an email address) doesn't
-// actually match to a group (so its objectClass isn't really a group)
-//
 + (id) groupWithIdentifier: (NSString *) theID
+{
+  NSString *uid;
+
+  uid = [theID hasPrefix: @"@"] ? [theID substringFromIndex: 1] : theID;
+  return [SOGoGroup groupWithValue: uid andSourceSelector: @selector (lookupGroupEntryByUID:)];
+}
+
++ (id) groupWithEmail: (NSString *) theEmail
+{
+  return [SOGoGroup groupWithValue: theEmail andSourceSelector: @selector (lookupGroupEntryByEmail:)];
+}
+
+//
+// Returns nil if theValue doesn't match to a group
+//  (so its objectClass isn't a group)
+//
++ (id) groupWithValue: (NSString *) theValue
+    andSourceSelector: (SEL) theSelector
 {
   NSArray *allSources;
   NGLdapEntry *entry;
@@ -99,8 +113,8 @@
   int i;
 
   // Don't bother looking in all sources if the
-  // supplied email address is nil.
-  if (!theID)
+  // supplied value is nil.
+  if (!theValue)
     return nil;
 
   allSources = [[LDAPUserManager sharedUserManager] sourceIDs];
@@ -109,7 +123,8 @@
   for (i = 0; i < [allSources count]; i++)
     {
       source = [[LDAPUserManager sharedUserManager] sourceWithID: [allSources objectAtIndex: i]];
-      entry = [source lookupGroupEntry: theID];
+      entry = [source performSelector: theSelector
+		      withObject: theValue];
 
       if (entry)
 	break;
@@ -131,7 +146,7 @@
 	  [classes containsObject: @"groupOfUniqueNames"] ||
 	  [classes containsObject: @"posixGroup"])
 	{
-	  o = [[self alloc] initWithIdentifier: theID
+	  o = [[self alloc] initWithIdentifier: theValue
 			    source: source
 			    entry: entry];
 	  AUTORELEASE(o);
@@ -149,9 +164,10 @@
 {
   NSMutableArray *dns, *uids;
   NSMutableArray *array;
-  NSString *login;
+  NSString *dn, *login;
   SOGoUser *user;
   NSArray *o;
+  LDAPUserManager *um;
   int i, c;
 
   array = [NSMutableArray array];
@@ -180,13 +196,15 @@
   // We deal with a static group, let's add the members
   if (c)
     {
+      um = [LDAPUserManager sharedUserManager];
+
       // We add members for whom we have their associated DN
       for (i = 0; i < [dns count]; i++)
 	{
-	  login = [_source loginForDN: [dns objectAtIndex: i]];
+	  dn = [dns objectAtIndex: i];
+	  login = [um getLoginForDN: dn];
 	  NSLog(@"member = %@", login);
-	  user = [SOGoUser userWithLogin: login  roles: nil];
-	  
+	  user = [SOGoUser userWithLogin: login roles: nil];
 	  if (user)
 	    [array addObject: user];
 	}

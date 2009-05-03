@@ -441,12 +441,15 @@ static NSLock *lock = nil;
 - (NSDictionary *) contactInfosForUserWithUIDorEmail: (NSString *) uid
 {
   NSMutableDictionary *currentUser, *contactInfos;
+  NSString *aUID;
   BOOL newUser;
 
   if ([uid length] > 0)
     {
+      // Remove the "@" prefix used to identified groups in the ACL tables.
+      aUID = [uid hasPrefix: @"@"] ? [uid substringFromIndex: 1] : uid;
       contactInfos = [NSMutableDictionary dictionary];
-      currentUser = [[SOGoCache sharedCache] userAttributesForLogin: uid];
+      currentUser = [[SOGoCache sharedCache] userAttributesForLogin: aUID];
 #if defined(THREADSAFE)
       [lock lock];
 #endif
@@ -461,7 +464,7 @@ static NSLock *lock = nil;
 	  else
 	    newUser = NO;
 	  [self _fillContactInfosForUser: currentUser
-		withUIDorEmail: uid];
+		withUIDorEmail: aUID];
 	  if (newUser)
 	    {
 	      if ([[currentUser objectForKey: @"c_uid"] length] > 0)
@@ -572,6 +575,26 @@ static NSLock *lock = nil;
 {
   return [self _fetchEntriesInSources: [self authenticationSourceIDs]
 	       matching: filter];
+}
+
+- (NSString *) getLoginForDN: (NSString *) theDN
+{
+  NSEnumerator *ldapSources;
+  NSString *login;
+  LDAPSource *currentSource;
+
+  login = nil;
+  ldapSources = [[sources allValues] objectEnumerator];
+  while ((currentSource = [ldapSources nextObject]))
+    {
+      if ([theDN hasSuffix: [currentSource baseDN]])
+	{
+	  login = [currentSource lookupLoginByDN: theDN];
+	  if (login)
+	    break;
+	}
+    }
+  return login;
 }
 
 @end

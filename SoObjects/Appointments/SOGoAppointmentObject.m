@@ -419,7 +419,7 @@
     {
       SOGoGroup *group;
 
-      group = [SOGoGroup groupWithIdentifier: [currentAttendee rfc822Email]];
+      group = [SOGoGroup groupWithEmail: [currentAttendee rfc822Email]];
 
       if (group)
 	{
@@ -1355,7 +1355,7 @@
       enumerator = [[event attendees] objectEnumerator];
       while ((currentAttendee = [enumerator nextObject]))
 	{
-	  group = [SOGoGroup groupWithIdentifier: [currentAttendee rfc822Email]];
+	  group = [SOGoGroup groupWithEmail: [currentAttendee rfc822Email]];
 	  
 	  if (group)
 	    {

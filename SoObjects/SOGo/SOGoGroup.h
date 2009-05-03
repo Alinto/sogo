@@ -39,6 +39,9 @@
 }
 
 + (id) groupWithIdentifier: (NSString *) theID;
++ (id) groupWithEmail: (NSString *) theEmail;
++ (id) groupWithValue: (NSString *) theValue
+    andSourceSelector: (SEL) theSelector;
 
 - (NSArray *) members;
 

@@ -71,18 +71,23 @@
 	mailFields: (NSArray *) newMailFields
      andBindFields: (NSString *) newBindFields;
 
-- (NSString *) loginForDN: (NSString *) theDN;
-
 - (BOOL) checkLogin: (NSString *) login
 	andPassword: (NSString *) password;
 
+- (NSString *) lookupLoginByDN: (NSString *) theDN;
+
 - (NSDictionary *) lookupContactEntry: (NSString *) theID;
 - (NSDictionary *) lookupContactEntryWithUIDorEmail: (NSString *) entryID;
-- (NGLdapEntry *) lookupGroupEntry: (NSString *) theID;
+
+- (NGLdapEntry *) lookupGroupEntryByUID: (NSString *) theUID;
+- (NGLdapEntry *) lookupGroupEntryByEmail: (NSString *) theEmail;
+- (NGLdapEntry *) lookupGroupEntryByAttribute: (NSString *) theAttribute 
+				     andValue: (NSString *) theValue;
 
 - (NSArray *) allEntryIDs;
 - (NSArray *) fetchContactsMatching: (NSString *) filter;
 - (NSString *) sourceID;
+- (NSString *) baseDN;
 
 @end
 

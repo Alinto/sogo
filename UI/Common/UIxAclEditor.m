@@ -75,11 +75,13 @@
 - (NSString *) _displayNameForUID: (NSString *) uid
 {
   LDAPUserManager *um;
+  NSString *s;
   
   um = [LDAPUserManager sharedUserManager];
+  s = [uid hasPrefix: @"@"] ? [uid substringFromIndex: 1] : uid;
 
   return [NSString stringWithFormat: @"%@ <%@>",
-		   [um getCNForUID: uid], [um getEmailForUID: uid]];
+		   [um getCNForUID: s], [um getEmailForUID: s]];
 }
 
 - (NSString *) ownerName
@@ -121,6 +123,9 @@
   currentUID = [aclsEnum nextObject];
   while (currentUID)
     {
+      if ([currentUID hasPrefix: @"@"])
+	// NOTE: don't remove the prefix if we want to identify the lists visually
+	currentUID = [currentUID substringFromIndex: 1];
       if (!([currentUID isEqualToString: ownerLogin]
 	    || [currentUID isEqualToString: defaultUserID]))
 	[users addObjectUniquely: currentUID];

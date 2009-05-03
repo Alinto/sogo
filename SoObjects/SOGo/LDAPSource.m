@@ -377,21 +377,6 @@ static NSLock *lock;
   return userDN;
 }
 
-- (NSString *) loginForDN: (NSString *) theDN
-{
-  NGLdapEntry *entry;
-  
-  entry = [ldapConnection entryAtDN: theDN
-			  attributes: [NSArray arrayWithObject: IDField]];
-  
-  if (entry)
-    {
-      return [[entry attributeWithName: IDField] stringValueAtIndex: 0];
-    }
-
-  return nil;
-}
-
 - (BOOL) checkLogin: (NSString *) loginToCheck
 	andPassword: (NSString *) passwordToCheck
 {
@@ -662,6 +647,11 @@ static NSLock *lock;
   value = [[ldapEntry attributeWithName: UIDField] stringValueAtIndex: 0];
   if (!value)
     value = @"";
+//  else
+//    {
+//      Eventually, we could check at this point if the entry is a group
+//      and prefix the UID with a "@"
+//    }
   [contactEntry setObject: value forKey: @"c_uid"];
   value = [[ldapEntry attributeWithName: CNField] stringValueAtIndex: 0];
   if (!value)
@@ -706,7 +696,7 @@ static NSLock *lock;
             entries = [ldapConnection flatSearchAtBaseDN: baseDN
 				      qualifier: qualifier
 				      attributes: attributes];
-	  else /* else we de like it was before */ 
+	  else /* we do it like before */ 
             entries = [ldapConnection deepSearchAtBaseDN: baseDN
 				      qualifier: qualifier
 				      attributes: attributes];
@@ -837,8 +827,38 @@ static NSLock *lock;
   return contactEntry;
 }
 
-// Use the email address for now...
-- (NGLdapEntry *) lookupGroupEntry: (NSString *) theID
+- (NSString *) lookupLoginByDN: (NSString *) theDN
+{
+  NGLdapEntry *entry;
+  NSString *login;
+  
+  login = nil;
+  if ([self _initLDAPConnection])
+    {
+      entry = [ldapConnection entryAtDN: theDN
+			      attributes: [NSArray arrayWithObject: UIDField]];
+      if (entry)
+	login = [[entry attributeWithName: UIDField] stringValueAtIndex: 0];
+      [ldapConnection autorelease];
+    }
+  
+  return login;
+}
+
+- (NGLdapEntry *) lookupGroupEntryByUID: (NSString *) theUID
+{
+  return [self lookupGroupEntryByAttribute: UIDField
+	       andValue: theUID];
+}
+
+- (NGLdapEntry *) lookupGroupEntryByEmail: (NSString *) theEmail
+{
+  return [self lookupGroupEntryByAttribute: @"mail"
+	       andValue: theEmail];
+}
+
+- (NGLdapEntry *) lookupGroupEntryByAttribute: (NSString *) theAttribute 
+				     andValue: (NSString *) theValue
 {
   NGLdapEntry *ldapEntry;
 
@@ -848,7 +868,7 @@ static NSLock *lock;
 
   ldapEntry = nil;
 
-  if ([theID length] > 0)
+  if ([theValue length] > 0)
     {
       if ([self _initLDAPConnection])
 	{
@@ -858,12 +878,14 @@ static NSLock *lock;
 	  NSString *s;
 	  
 	  // FIXME
-	  s = [NSString stringWithFormat: @"(mail='%@')", theID];
+	  s = [NSString stringWithFormat: @"(%@='%@')", theAttribute, theValue];
 	  qualifier = [EOQualifier qualifierWithQualifierFormat: s];
 	  
 	  // We look for additional attributes - the ones related to group membership
 	  attributes = [NSMutableArray arrayWithArray: [self _searchAttributes]];
 	  [attributes addObject: @"member"];
+	  [attributes addObject: @"uniqueMember"];
+	  [attributes addObject: @"memberUid"];
 	  [attributes addObject: @"memberOf"];
 
 	  if ([_scope caseInsensitiveCompare: @"BASE"] == NSOrderedSame)
@@ -895,6 +917,11 @@ static NSLock *lock;
 - (NSString *) sourceID
 {
   return sourceID;
+}
+
+- (NSString *) baseDN
+{
+  return baseDN;
 }
 
 @end

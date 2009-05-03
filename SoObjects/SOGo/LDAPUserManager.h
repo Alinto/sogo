@@ -60,6 +60,7 @@
 - (NSString *) getFullEmailForUID: (NSString *) uid;
 - (NSString *) getImapLoginForUID: (NSString *) uid;
 - (NSString *) getUIDForEmail: (NSString *) email;
+- (NSString *) getLoginForDN: (NSString *) theDN;
 
 - (BOOL) checkLogin: (NSString *) login
 	andPassword: (NSString *) password;
