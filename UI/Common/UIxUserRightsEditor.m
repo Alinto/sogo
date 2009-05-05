@@ -93,7 +93,7 @@ static BOOL sendACLAdvisories = NO;
 - (BOOL) _initRights
 {
   BOOL response;
-  NSString *newUID, *searchUID;
+  NSString *newUID;
   LDAPUserManager *um;
   SOGoObject *clientObject;
   SOGoGroup *group;

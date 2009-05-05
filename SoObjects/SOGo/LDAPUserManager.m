@@ -377,6 +377,7 @@ static NSLock *lock = nil;
 	  if (!access)
 	    [currentUser setObject: [NSNumber numberWithBool: NO]
 			 forKey: @"MailAccess"];
+	  break;
 	}
     }
 

@@ -1,3 +1,9 @@
+2009-05-05  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUser.m ([SOGoUser
+	+userWithLogin:roles:trust:]): don't set the roles if the passed
+	roles are not defined.
+
 2009-05-03  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Common/UIxUserRightsEditor.m ([UIxUserRightsEditor

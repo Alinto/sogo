@@ -238,14 +238,15 @@ _timeValue (NSString *key)
   user = [cache userNamed: newLogin];
   if (!user)
     {
-      user = [[self alloc] initWithLogin: newLogin roles: newRoles  trust: b];
+      user = [[self alloc] initWithLogin: newLogin  roles: newRoles  trust: b];
       if (user)
 	{
 	  [user autorelease];
  	  [cache registerUser: user];
 	}
     }
-  [user setPrimaryRoles: newRoles];
+  if (newRoles)
+    [user setPrimaryRoles: newRoles];
 
   return user;
 }
