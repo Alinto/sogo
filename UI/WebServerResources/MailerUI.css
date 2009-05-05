@@ -514,13 +514,17 @@ TD.attachment_uplabel
 DIV.linked_attachment_frame
 { 
   border: 0px;
-  display: inline;
-  float: left;
+  clear: left;
   margin: 0px;
   margin-top: 10px;
   padding: 5px;
   /*background: #F0F0F0;*/
 }
+
+DIV.linked_attachment_frame.file
+{ display: inline;
+  clear: none;
+  float: left; }
 
 DIV.linked_attachment_body
 {
@@ -547,6 +551,7 @@ DIV.bodyFields
   background: #efefef;
   font-family: serif;
   margin: 0.5em;
+  text-align: left;
 }
 
 DIV.bodyFields SPAN.fieldName
@@ -556,6 +561,10 @@ DIV.bodyAdditionalFields
 { 
   background: #d4d0c8;
 }
+
+DIV.bodyMailContent
+{ margin: 0.5em;
+  text-align: left; }
 
 DIV[datatype~="additional"] > A.node > SPAN.nodeName
 { color: #777;

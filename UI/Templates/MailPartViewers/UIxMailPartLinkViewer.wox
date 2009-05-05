@@ -4,7 +4,7 @@
   xmlns:var="http://www.skyrix.com/od/binding"
   xmlns:const="http://www.skyrix.com/od/constant"
   xmlns:label="OGo:label"
-  class="linked_attachment_frame"
+  class="linked_attachment_frame file"
   >
   <div class="linked_attachment_body">
     <a var:href="pathToAttachment"
