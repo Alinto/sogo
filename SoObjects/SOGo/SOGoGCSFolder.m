@@ -397,7 +397,6 @@ static NSArray *childRecordFields = nil;
 - (BOOL) create
 {
   NSException *result;
-
   result = [[self folderManager] createFolderOfType: [self folderType]
 				 withName: displayName
                                  atPath: ocsPath];
@@ -886,16 +885,32 @@ static NSArray *childRecordFields = nil;
             forObjectAtPath: (NSArray *) objectPathArray
 {
   EOQualifier *qualifier;
-  NSString *uids, *qs, *objectPath;
+  NSString *uid, *uids, *qs, *objectPath;
+  NSMutableArray *usersAndGroups;
   NSMutableDictionary *aclsForObject;
+  SOGoGroup *group;
+  unsigned int i;
 
   if ([users count] > 0)
     {
+      usersAndGroups = [NSMutableArray arrayWithArray: users];
+      for (i = 0; i < [usersAndGroups count]; i++)
+	{
+	  uid = [usersAndGroups objectAtIndex: i];
+	  if (![uid hasPrefix: @"@"])
+	    {
+	      // Prefix the UID with the character "@" when dealing with a group
+	      group = [SOGoGroup groupWithIdentifier: uid];
+	      if (group)
+		[usersAndGroups replaceObjectAtIndex: i
+				withObject: [NSString stringWithFormat: @"@%@", uid]];
+	    }
+	}
       objectPath = [objectPathArray componentsJoinedByString: @"/"];
       aclsForObject = [aclCache objectForKey: objectPath];
       if (aclsForObject)
-	[aclsForObject removeObjectsForKeys: users];
-      uids = [users componentsJoinedByString: @"') OR (c_uid = '"];
+	[aclsForObject removeObjectsForKeys: usersAndGroups];
+      uids = [usersAndGroups componentsJoinedByString: @"') OR (c_uid = '"];
       qs = [NSString
 	     stringWithFormat: @"(c_object = '/%@') AND ((c_uid = '%@'))",
 	     objectPath, uids];

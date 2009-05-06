@@ -31,6 +31,7 @@
 @class NSString;
 
 @class iCalCalendar;
+@class iCalEvent;
 @class iCalPerson;
 @class iCalRepeatableEntityObject;
 
@@ -51,6 +52,8 @@
 - (iCalCalendar *) calendar: (BOOL) create
   		     secure: (BOOL) secure;
 - (id) component: (BOOL) create secure: (BOOL) secure;
+
+- (BOOL) expandGroupsInEvent: (iCalEvent *) theEvent;
 
 // - (NSException *) primarySaveContentString: (NSString *) _iCalString;
 // - (NSException *) primaryDelete;

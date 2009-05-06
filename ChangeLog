@@ -1,3 +1,15 @@
+2009-05-06  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/SOGo/SOGoGCSFolder.m ([SOGoGCSFolder
+	-removeAclsForUsers:atObjectPath:]): verify if user is a group and
+	prefix the UID with "@" if so.
+
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	([SOGoCalendarComponent -expandGroupsInEvent:]): new method from
+	the code that was in [SOGoAppointmentObject -_handleAddedUsers:]
+	and [SOGoAppointmentObject -_PUTAction:] that expands the groups
+	among the attendees of the passed event.
+
 2009-05-05  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUser.m ([SOGoUser

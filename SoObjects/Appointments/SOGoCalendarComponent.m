@@ -45,6 +45,7 @@
 #import <SoObjects/SOGo/LDAPUserManager.h>
 #import <SoObjects/SOGo/NSCalendarDate+SOGo.h>
 #import <SoObjects/SOGo/SOGoMailer.h>
+#import <SoObjects/SOGo/SOGoGroup.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/WORequest+SOGo.h>
@@ -196,8 +197,7 @@ static BOOL sendEMailNotifications = NO;
   return iCalString;
 }
 
-static inline BOOL
-_occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
+static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
 {
   unsigned int seconds, recSeconds;
   
@@ -405,6 +405,64 @@ _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
 {
   return [[self calendar: create secure: secure]
 	   firstChildWithTag: [self componentTag]];
+}
+
+//
+// Returs "YES" if a a group was decomposed among attendees.
+//
+- (BOOL) expandGroupsInEvent: (iCalEvent *) theEvent
+{
+  NSMutableArray *allAttendees;
+  NSEnumerator *enumerator;
+  NSString *organizerEmail;
+  iCalPerson *currentAttendee;
+  SOGoGroup *group;
+  BOOL doesIncludeGroup;
+  unsigned int i;
+
+  organizerEmail = [[theEvent organizer] rfc822Email];
+  doesIncludeGroup = NO;
+  allAttendees = [NSMutableArray arrayWithArray: [theEvent attendees]];
+  enumerator = [[theEvent attendees] objectEnumerator];
+  while ((currentAttendee = [enumerator nextObject]))
+    {
+      group = [SOGoGroup groupWithEmail: [currentAttendee rfc822Email]];
+      if (group)
+	{
+	  iCalPerson *person;
+	  NSArray *members;
+	  SOGoUser *user;
+	  
+	  // We did decompose a group...
+	  [allAttendees removeObject: currentAttendee];
+
+	  members = [group members];
+	  for (i = 0; i < [members count]; i++)
+	    {
+	      user = [members objectAtIndex: i];
+	      doesIncludeGroup = YES;
+
+	      // If the organizer is part of the group, we skip it from
+	      // the addition to the attendees' list
+	      if ([user hasEmail: organizerEmail])
+		continue;
+	      
+	      person = [self iCalPersonWithUID: [user login]];
+	      [person setTag: @"ATTENDEE"];
+	      [person setParticipationStatus: [currentAttendee participationStatus]];
+	      [person setRsvp: [currentAttendee rsvp]];
+	      [person setRole: [currentAttendee role]];
+			    
+	      if (![allAttendees containsObject: person])
+		[allAttendees addObject: person];
+	    }
+	}
+    }
+
+  if (doesIncludeGroup)
+    [theEvent setAttendees: allAttendees];
+  
+  return doesIncludeGroup;
 }
 
 - (void) _updateRecurrenceIDsWithEvent: (iCalRepeatableEntityObject*) newEvent

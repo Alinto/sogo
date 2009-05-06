@@ -2399,6 +2399,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return result;
 }
 
+//
+// This method returns the personal calendar of a specific user.
+//
 - (SOGoAppointmentFolder *) lookupCalendarFolderForUID: (NSString *) uid
 {
   SOGoFolder *currentContainer;
