@@ -271,7 +271,7 @@ static NSString *fallbackIMAP4Server = nil;
       escUsername
 	= [[username stringByEscapingURL] stringByReplacingString: @"@"
 					  withString: @"%40"];
-#if 0
+#if 1
       // see comment about fallbackIMAP4Server above
       hostString = [NSString stringWithFormat: @"%@@%@", escUsername,
 			     [mailAccount objectForKey: @"serverName"]];

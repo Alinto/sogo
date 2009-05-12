@@ -742,16 +742,19 @@ _timeValue (NSString *key)
 {
   NSMutableDictionary *mailAccount, *identity;
   NSMutableArray *identities, *mailAccounts;
-  NSString *name, *fullName, *imapLogin;
+  NSString *name, *fullName, *imapLogin, *imapServer;
   NSArray *mails;
   unsigned int count, max;
 
   imapLogin = [[LDAPUserManager sharedUserManager] getImapLoginForUID: login];
+  imapServer = [self _fetchFieldForUser: @"c_imaphostname"];
+  if (!imapServer)
+    imapServer = fallbackIMAP4Server;
   mailAccount = [NSMutableDictionary dictionary];
   name = [NSString stringWithFormat: @"%@@%@",
-		   imapLogin, fallbackIMAP4Server];
+		   imapLogin, imapServer];
   [mailAccount setObject: imapLogin forKey: @"userName"];
-  [mailAccount setObject: fallbackIMAP4Server forKey: @"serverName"];
+  [mailAccount setObject: imapServer forKey: @"serverName"];
   [mailAccount setObject: name forKey: @"name"];
 
   identities = [NSMutableArray array];

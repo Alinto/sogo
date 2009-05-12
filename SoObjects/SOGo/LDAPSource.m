@@ -166,6 +166,7 @@ static NSLock *lock;
       UIDField = @"uid";
       mailFields = [NSArray arrayWithObject: @"mail"];
       [mailFields retain];
+      IMAPHostField = nil;
       bindFields = nil;
       _scope = @"sub";
       _filter = nil;
@@ -188,6 +189,7 @@ static NSLock *lock;
   [CNField release];
   [UIDField release];
   [mailFields release];
+  [IMAPHostField release];
   [bindFields release];
   [_filter release];
   [ldapConnection release];
@@ -213,6 +215,7 @@ static NSLock *lock;
 	CNField: [udSource objectForKey: @"CNFieldName"]
 	UIDField: [udSource objectForKey: @"UIDFieldName"]
 	mailFields: [udSource objectForKey: @"MailFieldNames"]
+	IMAPHostField: [udSource objectForKey: @"IMAPHostFieldName"]
 	andBindFields: [udSource objectForKey: @"bindFields"]];
   ASSIGN(modulesConstraints, [udSource objectForKey: @"ModulesConstraints"]);
   ASSIGN(_filter, [udSource objectForKey: @"filter"]);
@@ -242,6 +245,7 @@ static NSLock *lock;
 	   CNField: (NSString *) newCNField
 	  UIDField: (NSString *) newUIDField
 	mailFields: (NSArray *) newMailFields
+     IMAPHostField: (NSString *) newIMAPHostField
      andBindFields: (NSString *) newBindFields
 {
   ASSIGN (baseDN, newBaseDN);
@@ -251,6 +255,8 @@ static NSLock *lock;
     ASSIGN (CNField, newCNField);
   if (newUIDField)
     ASSIGN (UIDField, newUIDField);
+  if (newIMAPHostField)
+    ASSIGN (IMAPHostField, newIMAPHostField);
   if (newMailFields)
     ASSIGN (mailFields, newMailFields);
   if (newBindFields)
@@ -495,7 +501,7 @@ static NSLock *lock;
   if (!searchAttributes)
     {
       NSUserDefaults *ud;
-      NSString *contactInfo;
+      NSString *attribute;
 
       ud = [NSUserDefaults standardUserDefaults];
       searchAttributes = [NSMutableArray new];
@@ -508,12 +514,17 @@ static NSLock *lock;
       [searchAttributes addObjectsFromArray: commonSearchFields];
 
       // Add SOGoLDAPContactInfoAttribute from user defaults
-      contactInfo = [ud stringForKey: @"SOGoLDAPContactInfoAttribute"];
-      if ([contactInfo length] > 0 &&
-	  ![searchAttributes containsObject: contactInfo])
-	[searchAttributes addObject: contactInfo];
-    }
+      attribute = [ud stringForKey: @"SOGoLDAPContactInfoAttribute"];
+      if ([attribute length] > 0 &&
+	  ![searchAttributes containsObject: attribute])
+	[searchAttributes addObject: attribute];
 
+      // Add IMAP hostname from user defaults
+      if (IMAPHostField && [IMAPHostField length] > 0 &&
+	  ![searchAttributes containsObject: IMAPHostField])
+	[searchAttributes addObject: IMAPHostField];
+    }
+  
   return searchAttributes;
 }
 
@@ -577,7 +588,7 @@ static NSLock *lock;
 	   intoContactEntry: (NSMutableDictionary *) contactEntry
 {
   NSEnumerator *emailFields;
-  NSString *currentFieldName;
+  NSString *currentFieldName, *ldapValue;
   NSMutableArray *emails;
   NSArray *allValues;
 
@@ -591,6 +602,13 @@ static NSLock *lock;
     }
   [contactEntry setObject: emails forKey: @"c_emails"];
   [emails release];
+
+  if (IMAPHostField)
+    {
+      ldapValue = [[ldapEntry attributeWithName: IMAPHostField] stringValueAtIndex: 0];
+      if ([ldapValue length] > 0)
+	[contactEntry setObject: ldapValue forKey: @"c_imaphostname"];
+    }
 }
 
 - (void) _fillConstraints: (NGLdapEntry *) ldapEntry

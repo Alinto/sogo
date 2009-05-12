@@ -46,6 +46,7 @@
   NSString *CNField;
   NSString *UIDField;
   NSArray *mailFields;
+  NSString *IMAPHostField;
   NSString *bindFields;
 
   NSDictionary *modulesConstraints;
@@ -69,6 +70,7 @@
 	   CNField: (NSString *) newCNField
 	  UIDField: (NSString *) newUIDField
 	mailFields: (NSArray *) newMailFields
+     IMAPHostField: (NSString *) newIMAPHostField
      andBindFields: (NSString *) newBindFields;
 
 - (BOOL) checkLogin: (NSString *) login

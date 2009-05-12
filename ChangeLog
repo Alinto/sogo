@@ -1,3 +1,21 @@
+2009-05-12  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/SOGo/LDAPSource.m ([LDAPSource -initFromSource:]):
+	retrieves the user default attribute "IMAPHostFieldName" so the
+	IMAP server name can be fetched from the LDAP directory.
+	([LDAPSource -_fillEmailsOfEntry:intoContactEntry:]): if a IMAP
+	hostname field is specified for the source, retrieve the LDAP
+	attribute and set the value to the key "c_imaphostname".
+
+	* SoObjects/Mailer/SOGoMailAccount.m (SOGoMailAccount
+	-_urlHostString]): the IMAP server name is now retrieved from the
+	SOGoUser object and no longer hardcoded to the fallbackIMAP4Server
+	user default.
+
+	* SoObjects/SOGo/LDAPUserManager.m ([LDAPUserManager
+	-_fillContactInfosForUser:withUIDorEmail:]): now fills the user
+	attributes dictionary with the IMAP hostname if specified and defined.
+
 2009-05-06  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/SOGo/SOGoGCSFolder.m ([SOGoGCSFolder

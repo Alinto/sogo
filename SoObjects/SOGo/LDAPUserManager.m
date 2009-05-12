@@ -342,13 +342,14 @@ static NSLock *lock = nil;
   NSDictionary *userEntry;
   NSEnumerator *ldapSources;
   LDAPSource *currentSource;
-  NSString *sourceID, *cn, *c_uid;
+  NSString *sourceID, *cn, *c_uid, *c_imaphostname;
   NSArray *c_emails;
   BOOL access;
 
   emails = [NSMutableArray array];
   cn = nil;
   c_uid = nil;
+  c_imaphostname = nil;
 
   [currentUser setObject: [NSNumber numberWithBool: YES]
 	       forKey: @"CalendarAccess"];
@@ -369,6 +370,8 @@ static NSLock *lock = nil;
 	  c_emails = [userEntry objectForKey: @"c_emails"];
 	  if ([c_emails count])
 	    [emails addObjectsFromArray: c_emails];
+	  if (!c_imaphostname)
+	    c_imaphostname = [userEntry objectForKey: @"c_imaphostname"];
 	  access = [[userEntry objectForKey: @"CalendarAccess"] boolValue];
 	  if (!access)
 	    [currentUser setObject: [NSNumber numberWithBool: NO]
@@ -377,7 +380,6 @@ static NSLock *lock = nil;
 	  if (!access)
 	    [currentUser setObject: [NSNumber numberWithBool: NO]
 			 forKey: @"MailAccess"];
-	  break;
 	}
     }
 
@@ -385,7 +387,9 @@ static NSLock *lock = nil;
     cn = @"";
   if (!c_uid)
     c_uid = @"";
-
+  
+  if (c_imaphostname)
+    [currentUser setObject: c_imaphostname forKey: @"c_imaphostname"];
   [currentUser setObject: emails forKey: @"emails"];
   [currentUser setObject: cn forKey: @"cn"];
   [currentUser setObject: c_uid forKey: @"c_uid"];
