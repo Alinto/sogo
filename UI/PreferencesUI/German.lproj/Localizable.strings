@@ -65,6 +65,7 @@
 "reminderTime_4800" = "2 Tage";
 
 /* Mailer */
+"Show subscribed mailboxes only" = "Show subscribed mailboxes only";
 "Check for new mail:" = "Auf neue Nachrichten prüfen:";
 "messagecheck_manually" = "Manuell";
 "messagecheck_every_minute" = "Minütlich";

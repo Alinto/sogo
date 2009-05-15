@@ -68,6 +68,7 @@
 "reminderTime_4800" = "2 ddiwrnod";
 
 /* Mailer */
+"Show subscribed mailboxes only" = "Show subscribed mailboxes only";
 "Check for new mail:" = "Chwilio am ebost newydd:";
 "messagecheck_manually" = "Corfforol";
 "messagecheck_every_minute" = "Pob munud";
