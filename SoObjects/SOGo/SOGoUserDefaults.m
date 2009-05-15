@@ -379,7 +379,10 @@ static NSString *uidColumnName = @"c_uid";
     }
 
   /* set in hash and mark as modified */
-  [values setObject: value forKey: key];
+  if (value)
+    [values setObject: value forKey: key];
+  else
+    [values removeObjectForKey: key];
 
   defFlags.modified = YES;
 }
