@@ -447,6 +447,19 @@ static BOOL shouldDisplayAdditionalPreferences = NO;
 }
 
 /* Mailer */
+- (void) setShowSubscribedFoldersOnly: (BOOL) showSubscribedFoldersOnly
+{
+  if (showSubscribedFoldersOnly)
+    [userDefaults setBool: YES forKey: @"showSubscribedFoldersOnly"];
+  else
+    [userDefaults removeObjectForKey: @"showSubscribedFoldersOnly"];
+}
+
+- (BOOL) showSubscribedFoldersOnly
+{
+  return [userDefaults boolForKey: @"showSubscribedFoldersOnly"];
+}
+
 - (NSArray *) messageCheckList
 {
   return [NSArray arrayWithObjects: @"manually", @"every_minute",

@@ -208,8 +208,11 @@ static NSString *fallbackIMAP4Server = nil;
 {
   NSMutableArray *folderPaths;
   NSArray *rawFolders, *mainFolders;
+  NSUserDefaults *ud;
 
-  rawFolders = [[self imap4Connection] allFoldersForURL: [self imap4URL]];
+  ud = [[context activeUser] userDefaults];
+  rawFolders = [[self imap4Connection] allFoldersForURL: [self imap4URL]
+				       onlySubscribedFolders: [ud boolForKey: @"showSubscribedFoldersOnly"]];
 
   mainFolders = [[NSArray arrayWithObjects:
 			    [self inboxFolderNameInContext: context],

@@ -95,6 +95,11 @@
       </var:if>
       <var:if condition="userHasMailAccess">
 	<div id="mailOptionsView" class="tab">
+	  <label><input type="checkbox" 
+	            const:name="subscribedFoldersOnly"
+		    const:id="subscribedFoldersOnly"
+		    var:checked="showSubscribedFoldersOnly" />
+	    <var:string label:value="Show subscribed mailboxes only"/></label><br/>
 	  <label><var:string label:value="Check for new mail:"/>
 	    <var:popup list="messageCheckList" item="item"
 	      const:id="messageCheck"

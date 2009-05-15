@@ -1,8 +1,21 @@
 2009-05-15  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* SOPE/sope-ldap/NGLdap/NGLdapConnection.m: added methods
+	primaryFetchMailboxHierarchyForURL:onlySubscribedFolders: and
+	allFoldersForURL:onlySubscribedFolders: to offer the possibility
+	to use the IMAP command LSUB instead of LIST.
+
+	* SoObjects/Mailer/SOGoMailAccount.m ([SOGoMailAccount
+	-allFolderPaths]): return only subscribed folders if user default
+	"showSubscribedFoldersOnly" is true.
+
 	* SoObjects/SOGo/SOGoUserDefaults.m ([SOGoUserDefaults
 	-setObject:forKey:]): fix an issue when calling removeObjectForKey
 	and value is nil.
+
+	* UI/PreferencesUI/UIxPreferences.m ([UIxPreferences
+	-setShowSubscribedFoldersOnly:]): setter for the user default
+	"showSubscribedFoldersOnly".
 
 2009-05-12  Francis Lachapelle  <flachapelle@inverse.ca>
 
