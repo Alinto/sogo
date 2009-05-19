@@ -24,13 +24,13 @@
 
 # specify more if you are using a load-balancer
 PREFORK=3
-
 SOGO_ARGS=""
+USER=sogo
 
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
 DAEMON=/usr/sbin/sogod
-NAME=sogo
+NAME=sogod
 DESC="Scalable OpenGroupware.Org"
 
 PIDFILE=/var/run/sogo/sogod.
@@ -61,30 +61,108 @@ fi
 
 case "$1" in
   start)
-	echo -n "Starting $DESC: "
+	echo $"Starting $DESC: "
 	for ((a=1; a <= PREFORK ; a++))
 	do
-	  start-stop-daemon -c sogo
-	      -b --start --quiet --exec $DAEMON $a
+            ppid="`cat ${PIDFILE}${a} 2> /dev/null`"
+	    if [ -n "$ppid" ]
+	    then
+		ppid="`ps --pid ${ppid} -o pid=`"
+		if [ -n "$ppid" ]
+		then
+		    echo "  $DAEMON $a already running. Skipped."
+		else
+		    rm -f ${PIDFILE}${a}
+		    start-stop-daemon -c $USER \
+			-b --start --quiet --exec $DAEMON $a
+		    echo "  $DAEMON $a (stale pid file removed)"
+		fi
+	    else
+		start-stop-daemon -c $USER \
+		    -b --start --quiet --exec $DAEMON $a
+		echo "  $DAEMON $a"
+	    fi
 	done
-	echo "$NAME."
 	;;
+
   stop)
-	echo "Stopping $DESC: "
-	/usr/bin/killall -u sogo gdnc
+	echo $"Stopping $DESC: "
+	su "$USER" -c '/usr/bin/killall gdnc >& /dev/null'
+        # We kill the parent processes with SIGTERM so that they
+        # can exit gracefully.
 	for ((a=1; a <= PREFORK ; a++))
 	do
-	  pid=$(cat $PIDFILE$a)
-	  ppid=$(ps --ppid $pid -o pid=)
-	  kill -9 ${pid}
-	  kill -9 ${ppid}
-	  rm -f $PIDFILE$a
-	  echo "$NAME $a stopped"
+            ppid="`cat ${PIDFILE}${a} 2> /dev/null`"
+	    if [ -n "$ppid" ]
+	    then
+		ppid="`ps --pid ${ppid} -o pid=`"
+		if [ -n "$ppid" ]
+		then
+		    if kill $ppid >& /dev/null
+		    then
+			echo "  $DAEMON $a stopped"
+		    fi
+		else
+		    echo "  $DAEMON $a not running"
+		fi
+	    else
+		echo "  $DAEMON $a not running"
+	    fi
+	done
+
+	sleep 1
+        # We kill the parent and child processes with SIGKILL to make sure they
+        # really are shutdown, and then we remove their pidfile.
+	for ((a=1; a <= PREFORK ; a++))
+	do
+	    ppid="`cat ${PIDFILE}${a} 2> /dev/null`"
+	    if [ -n "$ppid" ]
+	    then
+		ppid="`ps --pid ${ppid} -o pid= 2> /dev/null`"
+		if [ -n "$ppid" ]
+		then
+		    kill -9 $ppid >& /dev/null
+		    pid="`ps --ppid ${ppid} -o pid= 2> /dev/null`"
+		    if [ -n "$pid" ]
+		    then
+			kill -9 $pid >& /dev/null
+		    fi
+		    echo "  $DAEMON $a killed"
+		fi
+	    fi
+            rm -f ${PIDFILE}${a}
 	done
 	;;
+
   restart|force-reload)
-	$0 stop && sleep 2 && $0 start
+	echo $"Restarting $DESC: "
+	su "$USER" -c '/usr/bin/killall gdnc >& /dev/null'
+	for ((a=1; a <= PREFORK ; a++))
+	do
+	    ppid="`cat ${PIDFILE}${a} 2> /dev/null`"
+	    if [ -n "$ppid" ]
+	    then
+		ppid="`ps --pid ${ppid} -o pid=`"
+		if [ -n "$ppid" ]
+		then
+		    kill $ppid >& /dev/null
+		    sleep 1
+		fi
+		ppid="`ps --pid ${ppid} -o pid=`"
+		if [ -n "$ppid" ]
+		then
+		    pid="`ps --ppid ${ppid} -o pid=`"
+		    kill -9 $ppid >& /dev/null
+		    kill -9 $pid >& /dev/null
+		fi
+		rm -f ${PIDFILE}${a}
+	    fi
+	    start-stop-daemon -c $USER \
+		-b --start --quiet --exec $DAEMON $a
+            echo "  $DAEMON $a"
+	done
 	;;
+
   *)
 	N=/etc/init.d/$NAME
 	echo "Usage: $N {start|stop|restart|force-reload}" >&2
@@ -93,4 +171,3 @@ case "$1" in
 esac
 
 exit 0
-
