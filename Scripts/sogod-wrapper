@@ -5,6 +5,7 @@
 # Copyright (C) 2007-2009 Inverse inc.
 #
 # Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+#          Francis Lachapelle <flachapelle@inverse.ca>
 #
 # This file is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -32,30 +33,26 @@ else
   PIDFILE=/var/run/sogo/sogod.$1
 fi
 
-if [ -d /usr/lib/GNUstep ]
-then
-  . /usr/lib/GNUstep/System/Library/Makefiles/GNUstep.sh
+if [ -f /etc/GNUstep/GNUstep.conf ]; then
+    . /etc/GNUstep/GNUstep.conf
 else
-if [ -f /usr/share/GNUstep/Makefiles/GNUstep.sh ]
-then
-  . /usr/share/GNUstep/Makefiles/GNUstep.sh
-else
-  . /usr/GNUstep/System/Library/Makefiles/GNUstep.sh
-fi
+    echo "Can't find GNUstep.conf"
+    exit 1
 fi
 
-if [ -x $GNUSTEP_USER_ROOT/Tools/sogod ]; then
-    sogod="$GNUSTEP_USER_ROOT/Tools/sogod"
-elif [ -x $GNUSTEP_LOCAL_ROOT/Tools/sogod ]; then
-    sogod="$GNUSTEP_LOCAL_ROOT/Tools/sogod"
-elif [ -x $GNUSTEP_LOCAL_ROOT/Tools/Admin/sogod ]; then
-    sogod="$GNUSTEP_LOCAL_ROOT/Tools/Admin/sogod"
-elif [ -x $GNUSTEP_SYSTEM_ROOT/Tools/sogod ]; then
-    sogod="$GNUSTEP_SYSTEM_ROOT/Tools/sogod"
-elif [ -x $GNUSTEP_SYSTEM_ROOT/Tools/Admin/sogod ]; then
-    sogod="$GNUSTEP_SYSTEM_ROOT/Tools/Admin/sogod"
+if [ -x $GNUSTEP_SYSTEM_ADMIN_TOOLS/sogod ]; then
+    sogod="$GNUSTEP_SYSTEM_ADMIN_TOOLS/sogod"
+elif [ -x $GNUSTEP_LOCAL_ADMIN_TOOLS/sogod ]; then
+    sogod="$GNUSTEP_LOCAL_ADMIN_TOOLS/sogod"
 else
     echo "Can't find sogod"
+    exit 1
+fi
+
+if [ -f $GNUSTEP_MAKEFILES/GNUstep.sh ]; then
+    . $GNUSTEP_MAKEFILES/GNUstep.sh
+else
+    echo "Can't find GNUstep.sh"
     exit 1
 fi
 
@@ -75,7 +72,7 @@ else
 fi
 listen=`echo $woport | awk '{ print $3 }' | sed -e 's/\([0-9]\+\)$/'$port'/g'`
 
-# echo "SOGOD: $sogod" 2>&1
+# echo "SOGOD: $sogod -WOPort $listen" 2>&1
 
 exec $sogod -WOPort $listen >> /var/log/sogo/sogod-$port.log 2>&1 &
 echo $! > $PIDFILE
