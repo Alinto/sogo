@@ -57,7 +57,7 @@ static NSString *sentFolderName = nil;
 static NSString *trashFolderName = nil;
 static NSString *sharedFolderName = @""; // TODO: add English default
 static NSString *otherUsersFolderName = @""; // TODO: add English default
-
+static BOOL defaultShowSubscribedFoldersOnly = NO;
 // this is temporary, until we allow users to manage their own accounts
 static NSString *fallbackIMAP4Server = nil;
 
@@ -109,6 +109,8 @@ static NSString *fallbackIMAP4Server = nil;
       else
 	fallbackIMAP4Server = @"localhost";
     }
+
+  defaultShowSubscribedFoldersOnly = [ud boolForKey: @"SOGoMailShowSubscribedFoldersOnly"];
 }
 
 - (id) init
@@ -209,10 +211,16 @@ static NSString *fallbackIMAP4Server = nil;
   NSMutableArray *folderPaths;
   NSArray *rawFolders, *mainFolders;
   NSUserDefaults *ud;
+  NSString *showSubscribedFoldersOnly;
 
   ud = [[context activeUser] userDefaults];
-  rawFolders = [[self imap4Connection] allFoldersForURL: [self imap4URL]
-				       onlySubscribedFolders: [ud boolForKey: @"showSubscribedFoldersOnly"]];
+  showSubscribedFoldersOnly = [ud stringForKey: @"showSubscribedFoldersOnly"];
+  if (showSubscribedFoldersOnly)
+    rawFolders = [[self imap4Connection] allFoldersForURL: [self imap4URL]
+					 onlySubscribedFolders: [showSubscribedFoldersOnly boolValue]];
+  else
+    rawFolders = [[self imap4Connection] allFoldersForURL: [self imap4URL]
+					 onlySubscribedFolders: defaultShowSubscribedFoldersOnly];
 
   mainFolders = [[NSArray arrayWithObjects:
 			    [self inboxFolderNameInContext: context],

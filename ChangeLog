@@ -1,3 +1,18 @@
+2009-05-19  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailAccount.m ([SOGoMailAccount
+	-allFolderPaths]): if the user default "showSubscribedFoldersOnly"
+	is not defined for the user, use the application default
+	"SOGoMailShowSubscribedFoldersOnly".
+
+	* UI/PreferencesUI/UIxPreferences.m ([UIxPreferences
+	-showSubscribedFoldersOnly]): return the user default or the
+	application default if not defined.
+	([UIxPreferences-setShowSubscribedFoldersOnly]): when false, set
+	the user default parameter "showSubscribedFoldersOnly" to NO
+	instead of removing the entry. This will ensure user defaults are
+	taking precedence over application defaults.
+
 2009-05-15  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SOPE/sope-ldap/NGLdap/NGLdapConnection.m: added methods

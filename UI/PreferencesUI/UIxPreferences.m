@@ -46,6 +46,7 @@
 static BOOL defaultsRead = NO;
 static BOOL shouldDisplayPasswordChange = NO;
 static BOOL shouldDisplayAdditionalPreferences = NO;
+static BOOL defaultShowSubscribedFoldersOnly = NO;
 
 @implementation UIxPreferences
 
@@ -60,6 +61,8 @@ static BOOL shouldDisplayAdditionalPreferences = NO;
 	= [ud boolForKey: @"SOGoUIxUserCanChangePassword"];
       shouldDisplayAdditionalPreferences
 	= [ud boolForKey: @"SOGoUIxAdditionalPreferences"];
+      defaultShowSubscribedFoldersOnly
+	= [ud boolForKey: @"SOGoMailShowSubscribedFoldersOnly"];
       defaultsRead = YES;
     }
 }
@@ -452,12 +455,21 @@ static BOOL shouldDisplayAdditionalPreferences = NO;
   if (showSubscribedFoldersOnly)
     [userDefaults setBool: YES forKey: @"showSubscribedFoldersOnly"];
   else
-    [userDefaults removeObjectForKey: @"showSubscribedFoldersOnly"];
+    [userDefaults setBool: NO forKey: @"showSubscribedFoldersOnly"];
 }
 
 - (BOOL) showSubscribedFoldersOnly
 {
-  return [userDefaults boolForKey: @"showSubscribedFoldersOnly"];
+  NSString *showSubscribedFoldersOnly;
+  BOOL r;
+
+  showSubscribedFoldersOnly = [userDefaults stringForKey: @"showSubscribedFoldersOnly"];
+  if (showSubscribedFoldersOnly)
+    r = [showSubscribedFoldersOnly boolValue];
+  else
+    r = defaultShowSubscribedFoldersOnly;
+
+  return r;
 }
 
 - (NSArray *) messageCheckList
