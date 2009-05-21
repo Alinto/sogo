@@ -226,7 +226,7 @@ genConfigMake() {
   cfgwrite "SOGO_MAJOR_VERSION=0"
   cfgwrite "SOGO_MINOR_VERSION=9"
   cfgwrite "SOPE_MAJOR_VERSION=4"
-  cfgwrite "SOPE_MINOR_VERSION=7"
+  cfgwrite "SOPE_MINOR_VERSION=9"
   
   if test $ARG_WITH_DEBUG = 1; then
     cfgwrite "# configured to produce debugging code";
