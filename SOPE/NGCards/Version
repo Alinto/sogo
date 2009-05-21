@@ -1,8 +1,8 @@
 # version file
 
 MAJOR_VERSION=4
-MINOR_VERSION=7
-SUBMINOR_VERSION:=76
+MINOR_VERSION=9
+SUBMINOR_VERSION:=0
 
 # v4.5.40 requires NGExtensions v4.5.145
 # v4.5.37 requires NGExtensions v4.5.140

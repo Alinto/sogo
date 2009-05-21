@@ -1,8 +1,8 @@
 # Version file
 
 MAJOR_VERSION:=4
-MINOR_VERSION:=7
-SUBMINOR_VERSION:=49
+MINOR_VERSION:=9
+SUBMINOR_VERSION:=0
 
 # v4.5.29 requires libNGExtensions v4.5.161
 # v4.5.26 does not require libNGiCal anymore
