@@ -60,17 +60,20 @@ String.prototype.asDate = function () {
 
 String.prototype.asCSSIdentifier = function () {
 	var substitutions = { '_': '_U_',
-												'.': '_D_',
+												'\\.': '_D_',
 												'#': '_H_',
 												'@': '_A_',
-												'*': '_S_',
+												'\\*': '_S_',
 												':': '_C_',
 												',': '_CO_',
 												' ': '_SP_' };
 	var newString = this;
+	var re;
 
-	for (var key in substitutions)
-		newString = newString.replace(key, substitutions[key]);
+	for (var key in substitutions) {
+		re = new RegExp(key, 'g');
+		newString = newString.replace(re, substitutions[key]);
+	}
 
   return newString;
 }
