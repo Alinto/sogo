@@ -99,6 +99,7 @@ start() {
 	    startproc -u "$USER" "$DAEMON" $a
             echo "  $DAEMON $a"
 	fi
+	sleep 1
     done
 }
 
