@@ -39,6 +39,8 @@
 #import <SoObjects/Mailer/SOGoMailObject.h>
 #import <SoObjects/Mailer/SOGoMailBodyPart.h>
 
+#import <NGMime/NGMimeType.h>
+
 #import "UIxMailPartHTMLViewer.h"
 
 #if 0
@@ -73,6 +75,8 @@ _xmlCharsetForCharset (NSString *charset)
     { @"iso-8859-9", XML_CHAR_ENCODING_8859_9},
     { @"iso-2022-jp", XML_CHAR_ENCODING_2022_JP},
 //     { @"iso-2022-jp", XML_CHAR_ENCODING_SHIFT_JIS},
+    { @"koi8-r", XML_CHAR_ENCODING_ERROR},       // unsupported, will trigger koi8-r -> utf8 conversion
+    { @"windows-1251", XML_CHAR_ENCODING_ERROR}, // unsupported, will trigger windows-1251 -> utf8 conversion
     { @"euc-jp", XML_CHAR_ENCODING_EUC_JP}};
   unsigned count;
   xmlCharEncoding encoding;
@@ -277,6 +281,8 @@ _xmlCharsetForCharset (NSString *charset)
   if (inStyle || inScript)
     ;
   else if ([_localName caseInsensitiveCompare: @"base"] == NSOrderedSame)
+    ;
+  else if ([_localName caseInsensitiveCompare: @"meta"] == NSOrderedSame)
     ;
   else if ([_localName caseInsensitiveCompare: @"body"] == NSOrderedSame)
     inBody = YES;
@@ -522,7 +528,7 @@ _xmlCharsetForCharset (NSString *charset)
   if (![charset length])
     charset = @"us-ascii";
 
-  return _xmlCharsetForCharset ([charset lowercaseString]);
+  return _xmlCharsetForCharset([charset lowercaseString]);
 }
 
 - (void) _parseContent
@@ -530,6 +536,7 @@ _xmlCharsetForCharset (NSString *charset)
   NSObject <SaxXMLReader> *parser;
   NSData *preparsedContent;
   SOGoMailObject *mail;
+  xmlCharEncoding enc;
 
   mail = [self clientObject];
 
@@ -539,7 +546,32 @@ _xmlCharsetForCharset (NSString *charset)
 
   handler = [_UIxHTMLMailContentHandler new];
   [handler setAttachmentIds: [mail fetchAttachmentIds]];
-  [handler setContentEncoding: [self _xmlCharEncoding]];
+
+  // We check if we got an unsupported charset. If so
+  // we convert everything to UTF-16{LE,BE} so it passes
+  // in libxml2 and also in characters: length: defined
+  // in this file (that expects unichar:s)
+  enc = [self _xmlCharEncoding];
+  if (enc == XML_CHAR_ENCODING_ERROR)
+    {
+      NSString *s;
+
+      s = [[NSString alloc] initWithData: preparsedContent
+			    encoding: [NGMimeType stringEncodingForCharset:
+						    [[bodyInfo objectForKey:@"parameterList"]
+						      objectForKey: @"charset"]]];
+      [s autorelease];
+      
+#if BYTE_ORDER == BIG_ENDIAN
+      preparsedContent = [s dataUsingEncoding: NSUTF16BigEndianStringEncoding];
+      enc = XML_CHAR_ENCODING_UTF16BE;
+#else
+      preparsedContent = [s dataUsingEncoding: NSUTF16LittleEndianStringEncoding];
+      enc = XML_CHAR_ENCODING_UTF16LE;
+#endif
+    }
+
+  [handler setContentEncoding: enc];
   [handler setUnsafe: unsafe];
 
   [parser setContentHandler: handler];
@@ -573,7 +605,7 @@ _xmlCharsetForCharset (NSString *charset)
 {
   if (!handler)
     [self _parseContent];
-
+      
   return [handler result];
 }
 
@@ -623,7 +655,7 @@ _xmlCharsetForCharset (NSString *charset)
   if (![charset length])
     charset = @"us-ascii";
 
-  return _xmlCharsetForCharset ([charset lowercaseString]);
+  return _xmlCharsetForCharset([charset lowercaseString]);
 }
 
 - (void) _parseContent
@@ -633,6 +665,7 @@ _xmlCharsetForCharset (NSString *charset)
   SOGoMailObject *mail;
   SOGoMailBodyPart *part;
   NSString *encoding;
+  xmlCharEncoding enc;
 
   part = [self clientObject];
   mail = [part mailObject];
@@ -646,7 +679,32 @@ _xmlCharsetForCharset (NSString *charset)
 
   handler = [_UIxHTMLMailContentHandler new];
   [handler setAttachmentIds: [mail fetchAttachmentIds]];
-  [handler setContentEncoding: _xmlCharsetForCharset (encoding)];
+
+  // We check if we got an unsupported charset. If so
+  // we convert everything to UTF-16{LE,BE} so it passes
+  // in libxml2 and also in characters: length: defined
+  // in this file (that expects unichar:s)
+  enc = _xmlCharsetForCharset(encoding);
+  if (enc == XML_CHAR_ENCODING_ERROR)
+    {
+      NSString *s;
+
+      s = [[NSString alloc] initWithData: preparsedContent
+			    encoding: [NGMimeType stringEncodingForCharset:
+						    [[bodyInfo objectForKey:@"parameterList"]
+						      objectForKey: @"charset"]]];
+      [s autorelease];
+      
+#if BYTE_ORDER == BIG_ENDIAN
+      preparsedContent = [s dataUsingEncoding: NSUTF16BigEndianStringEncoding];
+      enc = XML_CHAR_ENCODING_UTF16BE;
+#else
+      preparsedContent = [s dataUsingEncoding: NSUTF16LittleEndianStringEncoding];
+      enc = XML_CHAR_ENCODING_UTF16LE;
+#endif
+    }
+
+  [handler setContentEncoding: enc];
   [parser setContentHandler: handler];
   [parser parseFromSource: preparsedContent];
 }

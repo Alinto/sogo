@@ -7,7 +7,7 @@
 - improvements to the underlying SOGo cache infrastructure
 - fixed bug with LDAP-based address books and the entries references (ID vs UID)
 - added "scope" parameter to LDAP sources
-- added groups support in attendees in ACLs
+- added groups support in attendees and in ACLs
 - added support for user-based IMAP hostname
 
 1.0-20090407 (1.0.1)
