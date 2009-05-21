@@ -1,7 +1,408 @@
+Index: sope-gdl1/PostgreSQL/PostgreSQL72Channel.m
+===================================================================
+--- sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(revision 1657)
++++ sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(working copy)
+@@ -713,6 +713,39 @@
+   return ms;
+ }
+ 
++/* GCSEOAdaptorChannel protocol */
++static NSString *sqlFolderFormat = (@"CREATE TABLE %@ (\n"	\
++				    @"  c_name VARCHAR (256) NOT NULL PRIMARY KEY,\n"
++				    @"  c_content VARCHAR (100000) NOT NULL,\n"
++				    @"  c_creationdate INT4 NOT NULL,\n"
++				    @"  c_lastmodified INT4 NOT NULL,\n"
++				    @"  c_version INT4 NOT NULL,\n"
++				    @"  c_deleted INT4 NULL\n"
++				    @")");
++static NSString *sqlFolderACLFormat = (@"CREATE TABLE %@ (\n"	\
++				       @"  c_uid VARCHAR (256) NOT NULL,\n"
++				       @"  c_object VARCHAR (256) NOT NULL,\n"
++				       @"  c_role VARCHAR (80) NOT NULL\n"
++				       @")");
++
++- (NSException *) createGCSFolderTableWithName: (NSString *) tableName
++{
++  NSString *sql;
++
++  sql = [NSString stringWithFormat: sqlFolderFormat, tableName];
++
++  return [self evaluateExpressionX: sql];
++}
++
++- (NSException *) createGCSFolderACLTableWithName: (NSString *) tableName
++{
++  NSString *sql;
++
++  sql = [NSString stringWithFormat: sqlFolderACLFormat, tableName];
++
++  return [self evaluateExpressionX: sql];
++}
++
+ @end /* PostgreSQL72Channel */
+ 
+ @implementation PostgreSQL72Channel(PrimaryKeyGeneration)
+Index: sope-gdl1/MySQL/MySQL4Channel.m
+===================================================================
+--- sope-gdl1/MySQL/MySQL4Channel.m	(revision 1657)
++++ sope-gdl1/MySQL/MySQL4Channel.m	(working copy)
+@@ -755,6 +755,39 @@
+   return pkey;
+ }
+ 
++/* GCSEOAdaptorChannel protocol */
++static NSString *sqlFolderFormat = (@"CREATE TABLE %@ (\n"	\
++				    @"  c_name VARCHAR (256) NOT NULL PRIMARY KEY,\n"
++				    @"  c_content VARCHAR (100000) NOT NULL,\n"
++				    @"  c_creationdate INT NOT NULL,\n"
++				    @"  c_lastmodified INT NOT NULL,\n"
++				    @"  c_version INT NOT NULL,\n"
++				    @"  c_deleted INT NULL\n"
++				    @")");
++static NSString *sqlFolderACLFormat = (@"CREATE TABLE %@ (\n"	\
++				       @"  c_uid VARCHAR (256) NOT NULL,\n"
++				       @"  c_object VARCHAR (256) NOT NULL,\n"
++				       @"  c_role VARCHAR (80) NOT NULL\n"
++				       @")");
++
++- (NSException *) createGCSFolderTableWithName: (NSString *) tableName
++{
++  NSString *sql;
++
++  sql = [NSString stringWithFormat: sqlFolderFormat, tableName];
++
++  return [self evaluateExpressionX: sql];
++}
++
++- (NSException *) createGCSFolderACLTableWithName: (NSString *) tableName
++{
++  NSString *sql;
++
++  sql = [NSString stringWithFormat: sqlFolderACLFormat, tableName];
++
++  return [self evaluateExpressionX: sql];
++}
++
+ @end /* MySQL4Channel */
+ 
+ void __link_MySQL4Channel() {
+Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
+===================================================================
+--- sope-gdl1/Oracle8/OracleAdaptorChannel.m	(revision 1657)
++++ sope-gdl1/Oracle8/OracleAdaptorChannel.m	(working copy)
+@@ -1,7 +1,7 @@
+ /*
+ **  OracleAdaptorChannel.m
+ **
+-**  Copyright (c) 2007  Inverse groupe conseil inc. and Ludovic Marcotte
++**  Copyright (c) 2007-2009  Inverse inc. and Ludovic Marcotte
+ **
+ **  Author: Ludovic Marcotte <ludovic@inverse.ca>
+ **
+@@ -30,6 +30,11 @@
+ 
+ #import <NGExtensions/NSObject+Logs.h>
+ 
++#include <unistd.h>
++
++static BOOL debugOn = NO;
++static int maxTry = 3;
++static int maxSleep = 500;
+ //
+ //
+ //
+@@ -41,10 +46,11 @@
+ 
+ @implementation OracleAdaptorChannel (Private)
+ 
+--  (void) _cleanup
++- (void) _cleanup
+ {
+   column_info *info;
+   int c;
++  sword result;
+ 
+   [_resultSetProperties removeAllObjects];
+ 
+@@ -58,11 +64,29 @@
+       // so we just free the value instead.
+       if (info->value)
+ 	{
+-	  if (OCIDescriptorFree((dvoid *)info->value, (ub4)OCI_DTYPE_LOB) != OCI_SUCCESS)
++	  if (info->type == SQLT_CLOB
++	      || info->type == SQLT_BLOB
++	      || info->type == SQLT_BFILEE
++	      || info->type == SQLT_CFILEE)
++	    {
++	      result = OCIDescriptorFree((dvoid *)info->value, (ub4) OCI_DTYPE_LOB);
++	      if (result != OCI_SUCCESS)
++		{
++		  NSLog (@"value was not a LOB descriptor");
++		  abort();
++		}
++	    }
++	  else
+ 	    free(info->value);
+ 	  info->value = NULL;
+ 	}
+-       free(info);
++      else
++	{
++	  NSLog (@"trying to free an already freed value!");
++	  abort();
++	}
++      free(info);
++
+       [_row_buffer removeObjectAtIndex: c];
+     }
+ 
+@@ -78,8 +102,7 @@
+ //
+ @implementation OracleAdaptorChannel
+ 
+-static void
+-DBTerminate()
++static void DBTerminate()
+ {
+   if (OCITerminate(OCI_DEFAULT))
+     NSLog(@"FAILED: OCITerminate()");
+@@ -89,6 +112,11 @@
+ 
+ + (void) initialize
+ {
++  NSUserDefaults *ud;
++
++  ud = [NSUserDefaults standardUserDefaults];
++  debugOn = [ud boolForKey: @"OracleAdaptorDebug"];
++
+   // We Initialize the OCI process environment.
+   if (OCIInitialize((ub4)OCI_DEFAULT, (dvoid *)0,
+                     (dvoid * (*)(dvoid *, size_t)) 0,
+@@ -156,14 +184,17 @@
+       [super closeChannel];
+     
+       // We logoff from the database.
+-      if (OCILogoff(_oci_ctx, _oci_err))
++      if (!_oci_ctx || !_oci_err || OCILogoff(_oci_ctx, _oci_err))
+ 	{
+ 	  NSLog(@"FAILED: OCILogoff()");
+ 	}
+ 
++      if (_oci_ctx)
++	OCIHandleFree(_oci_ctx, OCI_HTYPE_SVCCTX);
+ 
+-      OCIHandleFree(_oci_ctx, OCI_HTYPE_SVCCTX);
+-      OCIHandleFree(_oci_err, OCI_HTYPE_ERROR);
++      if (_oci_err)
++	OCIHandleFree(_oci_err, OCI_HTYPE_ERROR);
++      
+       // OCIHandleFree(_oci_env, OCI_HTYPE_ENV);
+ 
+       _oci_ctx = (OCISvcCtx *)0;
+@@ -177,7 +208,8 @@
+ //
+ - (void) dealloc
+ {
+-  //NSLog(@"OracleAdaptorChannel: -dealloc");
++  if (debugOn)
++    NSLog(@"OracleAdaptorChannel: -dealloc");
+ 
+   [self _cleanup];
+ 
+@@ -222,7 +254,7 @@
+ {
+   EOAttribute *attribute;
+   OCIParam *param;
+-
++  int rCount;
+   column_info *info;
+   ub4 i, clen, count;
+   text *sql, *cname;
+@@ -231,6 +263,9 @@
+ 
+   [self _cleanup];
+ 
++  if (debugOn)
++    [self logWithFormat: @"expression: %@", theExpression];
++
+   if (!theExpression || ![theExpression length])
+     {
+       [NSException raise: @"OracleInvalidExpressionException"
+@@ -244,7 +279,9 @@
+     }
+   
+   sql = (text *)[theExpression UTF8String];
+-  
++ 
++ rCount = 0;
++ retry:
+   // We alloc our statement handle
+   if ((status = OCIHandleAlloc((dvoid *)_oci_env, (dvoid **)&_current_stm, (ub4)OCI_HTYPE_STMT, (CONST size_t) 0, (dvoid **) 0)))
+     {
+@@ -264,13 +301,39 @@
+   // We check if we're doing a SELECT and if so, we're fetching data!
+   OCIAttrGet(_current_stm, OCI_HTYPE_STMT, &type, 0, OCI_ATTR_STMT_TYPE, _oci_err);
+   self->isFetchInProgress = (type == OCI_STMT_SELECT ? YES : NO);
+-  
++ 
+   // We execute our statement. Not that we _MUST_ set iter to 0 for non-SELECT statements.
+   if ((status = OCIStmtExecute(_oci_ctx, _current_stm, _oci_err, (self->isFetchInProgress ? (ub4)0 : (ub4)1), (ub4)0, (CONST OCISnapshot *)NULL, (OCISnapshot *)NULL,
+ 			       ([(OracleAdaptorContext *)[self adaptorContext] autoCommit] ? OCI_COMMIT_ON_SUCCESS : OCI_DEFAULT))))
+     {
++      ub4 serverStatus;
++      
+       checkerr(_oci_err, status);
+       NSLog(@"Statement execute failed (OCI_ERROR): %@", theExpression);
++
++      // We check to see if we lost connection and need to reconnect.
++      serverStatus = 0;
++      OCIAttrGet((dvoid *)_oci_env, OCI_HTYPE_SERVER, (dvoid *)&serverStatus, (ub4 *)0, OCI_ATTR_SERVER_STATUS, _oci_err);
++      
++      if (serverStatus == OCI_SERVER_NOT_CONNECTED)
++	{
++	  // We cleanup our previous handles
++	  [self cancelFetch];
++	  [self closeChannel];
++	  
++	  // We try to reconnect a couple of times before giving up...
++	  while (rCount < maxTry)
++	    {
++	      usleep(maxSleep);
++	      rCount++;
++
++	      if ([self openChannel])
++		{
++		  NSLog(@"Connection re-established to Oracle - retrying to process the statement.");
++		  goto retry;
++		}
++	    }
++	}
+       return NO;
+     }
+ 
+@@ -302,7 +365,9 @@
+       // We read the maximum width of a column
+       info->max_width = 0;
+       status = OCIAttrGet((dvoid*)param, (ub4)OCI_DTYPE_PARAM, (dvoid*)&(info->max_width), (ub4 *)0, (ub4)OCI_ATTR_DATA_SIZE, (OCIError *)_oci_err);
+-      
++
++      if (debugOn)
++	NSLog(@"name: %s, type: %d", cname, info->type);
+       attribute = [EOAttribute attributeWithOracleType: info->type  name: cname  length: clen  width: info->max_width];
+       [_resultSetProperties addObject: attribute];
+ 
+@@ -394,16 +459,17 @@
+       return NO;
+     }
+ 
+- 
+   if (OCIEnvInit((OCIEnv **)&_oci_env, (ub4)OCI_DEFAULT, (size_t)0, (dvoid **)0))
+     {
+       NSLog(@"FAILED: OCIEnvInit()");
++      [self closeChannel];
+       return NO;
+     }
+   
+   if (OCIHandleAlloc((dvoid *)_oci_env, (dvoid *)&_oci_err, (ub4)OCI_HTYPE_ERROR, (size_t)0, (dvoid **)0))
+     {
+       NSLog(@"FAILED: OCIHandleAlloc() on errhp");
++      [self closeChannel];
+       return NO;
+     }
+   
+@@ -414,7 +480,10 @@
+   // Under Oracle 10g, the third parameter of OCILogon() has the form: [//]host[:port][/service_name]
+   // See http://download-west.oracle.com/docs/cd/B12037_01/network.101/b10775/naming.htm#i498306 for
+   // all juicy details.
+-  database = [[NSString stringWithFormat:@"%@:%@", [o serverName], [o port]] UTF8String];
++  if ([o serverName] && [o port])
++    database = [[NSString stringWithFormat:@"%@:%@/%@", [o serverName], [o port], [o databaseName]] UTF8String];
++  else
++    database = [[o databaseName] UTF8String];
+ 
+   // We logon to the database.
+   if (OCILogon(_oci_env, _oci_err, &_oci_ctx, (const OraText*)username, strlen(username),
+@@ -422,6 +491,7 @@
+     {
+       NSLog(@"FAILED: OCILogon(). username = %s  password = %s"
+ 	    @"  database = %s", username, password, database);
++      [self closeChannel];
+       return NO;
+     }
+   
+@@ -438,6 +508,11 @@
+ {
+   sword status;
+   
++  // We check if our connection is open prior to trying to fetch any data. OCIStmtFetch2() returns
++  // NO error code if the OCI environment is set up but the OCILogon() has failed.
++  if (![self isOpen])
++    return nil;
++
+   status = OCIStmtFetch2(_current_stm, _oci_err, (ub4)1, (ub4)OCI_FETCH_NEXT, (sb4)0, (ub4)OCI_DEFAULT);
+ 
+   if (status == OCI_NO_DATA)
+@@ -609,7 +684,7 @@
+ 
+ /* GCSEOAdaptorChannel protocol */
+ static NSString *sqlFolderFormat = (@"CREATE TABLE %@ (\n"	\
+-				    @"  c_name VARCHAR2 (256) NOT NULL,\n"
++				    @"  c_name VARCHAR2 (256) NOT NULL PRIMARY KEY,\n"
+ 				    @"  c_content CLOB NOT NULL,\n"
+ 				    @"  c_creationdate INTEGER NOT NULL,\n"
+ 				    @"  c_lastmodified INTEGER NOT NULL,\n"
+Index: sope-gdl1/Oracle8/OracleAdaptorChannelController.m
+===================================================================
+--- sope-gdl1/Oracle8/OracleAdaptorChannelController.m	(revision 1657)
++++ sope-gdl1/Oracle8/OracleAdaptorChannelController.m	(working copy)
+@@ -31,6 +31,8 @@
+ #import <Foundation/Foundation.h>
+ #import <GDLAccess/EOSQLExpression.h>
+ 
++static BOOL debugOn = NO;
++
+ //
+ //
+ //
+@@ -48,6 +50,14 @@
+ //
+ @implementation OracleAdaptorChannelController
+ 
+++ (void) initialize
++{
++  NSUserDefaults *ud;
++
++  ud = [NSUserDefaults standardUserDefaults];
++  debugOn = [ud boolForKey: @"OracleAdaptorDebug"];
++}
++
+ - (EODelegateResponse) adaptorChannel: (id) theChannel
+                         willInsertRow: (NSMutableDictionary *) theRow
+                             forEntity: (EOEntity *) theEntity
+@@ -56,7 +66,8 @@
+   NSArray *keys;
+   int i, c;
+ 
+-  NSLog(@"willInsertRow: %@ %@", [theRow description], [theEntity description]);
++  if (debugOn)
++    NSLog(@"willInsertRow: %@ %@", [theRow description], [theEntity description]);
+ 
+   s = AUTORELEASE([[NSMutableString alloc] init]);
+ 
+@@ -101,7 +112,8 @@
+   NSArray *keys;
+   int i, c;
+ 
+-  NSLog(@"willUpdatetRow: %@ %@", [theRow description], [theQualifier description]);
++  if (debugOn)
++    NSLog(@"willUpdateRow: %@ %@", [theRow description], [theQualifier description]);
+ 
+   s = AUTORELEASE([[NSMutableString alloc] init]);
+ 
 Index: sope-mime/NGImap4/NGImap4Client.h
 ===================================================================
---- sope-mime/NGImap4/NGImap4Client.h	(révision 1650)
-+++ sope-mime/NGImap4/NGImap4Client.h	(copie de travail)
+--- sope-mime/NGImap4/NGImap4Client.h	(revision 1657)
++++ sope-mime/NGImap4/NGImap4Client.h	(working copy)
 @@ -62,6 +62,8 @@
    NGImap4ResponseNormalizer *normer;
    NSMutableArray            *responseReceiver;  
@@ -30,8 +431,8 @@ Index: sope-mime/NGImap4/NGImap4Client.h
  - (NSDictionary *)copyUid:(unsigned)_uid    toFolder:(NSString *)_folder;
 Index: sope-mime/NGImap4/NGImap4Client.m
 ===================================================================
---- sope-mime/NGImap4/NGImap4Client.m	(révision 1650)
-+++ sope-mime/NGImap4/NGImap4Client.m	(copie de travail)
+--- sope-mime/NGImap4/NGImap4Client.m	(revision 1657)
++++ sope-mime/NGImap4/NGImap4Client.m	(working copy)
 @@ -24,6 +24,8 @@
  #include "NGImap4Client.h"
  #include "NGImap4Context.h"
@@ -339,8 +740,8 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  	__PRETTY_FUNCTION__, [_exception name], [_exception reason]];
 Index: sope-mime/NGImap4/NGSieveClient.m
 ===================================================================
---- sope-mime/NGImap4/NGSieveClient.m	(révision 1650)
-+++ sope-mime/NGImap4/NGSieveClient.m	(copie de travail)
+--- sope-mime/NGImap4/NGSieveClient.m	(revision 1657)
++++ sope-mime/NGImap4/NGSieveClient.m	(working copy)
 @@ -294,8 +294,8 @@
        return con;
    }
@@ -375,8 +776,8 @@ Index: sope-mime/NGImap4/NGSieveClient.m
    /* write */
 Index: sope-mime/NGImap4/NGImap4Connection.h
 ===================================================================
---- sope-mime/NGImap4/NGImap4Connection.h	(révision 1650)
-+++ sope-mime/NGImap4/NGImap4Connection.h	(copie de travail)
+--- sope-mime/NGImap4/NGImap4Connection.h	(revision 1657)
++++ sope-mime/NGImap4/NGImap4Connection.h	(working copy)
 @@ -89,6 +89,7 @@
  
  - (NSArray *)subfoldersForURL:(NSURL *)_url;
@@ -387,8 +788,8 @@ Index: sope-mime/NGImap4/NGImap4Connection.h
  
 Index: sope-mime/NGImap4/NGImap4Connection.m
 ===================================================================
---- sope-mime/NGImap4/NGImap4Connection.m	(révision 1650)
-+++ sope-mime/NGImap4/NGImap4Connection.m	(copie de travail)
+--- sope-mime/NGImap4/NGImap4Connection.m	(revision 1657)
++++ sope-mime/NGImap4/NGImap4Connection.m	(working copy)
 @@ -373,7 +373,14 @@
  
  /* folder operations */
@@ -478,8 +879,8 @@ Index: sope-mime/NGImap4/NGImap4Connection.m
  - (id)infoForMailboxAtURL:(NSURL *)_url {
 Index: sope-mime/NGImap4/NGImap4ResponseNormalizer.m
 ===================================================================
---- sope-mime/NGImap4/NGImap4ResponseNormalizer.m	(révision 1650)
-+++ sope-mime/NGImap4/NGImap4ResponseNormalizer.m	(copie de travail)
+--- sope-mime/NGImap4/NGImap4ResponseNormalizer.m	(revision 1657)
++++ sope-mime/NGImap4/NGImap4ResponseNormalizer.m	(working copy)
 @@ -292,7 +292,7 @@
  /*
    filter for fetch response
@@ -527,8 +928,8 @@ Index: sope-mime/NGImap4/NGImap4ResponseNormalizer.m
    if (objs) free(objs);
 Index: sope-mime/NGImap4/NGImap4ResponseParser.m
 ===================================================================
---- sope-mime/NGImap4/NGImap4ResponseParser.m	(révision 1650)
-+++ sope-mime/NGImap4/NGImap4ResponseParser.m	(copie de travail)
+--- sope-mime/NGImap4/NGImap4ResponseParser.m	(revision 1657)
++++ sope-mime/NGImap4/NGImap4ResponseParser.m	(working copy)
 @@ -31,6 +31,7 @@
  @interface NGImap4ResponseParser(ParsingPrivates)
  - (BOOL)_parseNumberUntaggedResponse:(NGMutableHashMap *)result_;
@@ -978,8 +1379,8 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
            self->serverResponseDebug = 
 Index: sope-mime/NGImap4/ChangeLog
 ===================================================================
---- sope-mime/NGImap4/ChangeLog	(révision 1650)
-+++ sope-mime/NGImap4/ChangeLog	(copie de travail)
+--- sope-mime/NGImap4/ChangeLog	(revision 1657)
++++ sope-mime/NGImap4/ChangeLog	(working copy)
 @@ -1,3 +1,29 @@
 +2008-10-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 +
@@ -1012,8 +1413,8 @@ Index: sope-mime/NGImap4/ChangeLog
  	* NGImap4Connection.m: some fix for folders ending with a slash (OGo
 Index: sope-mime/NGImap4/NGImap4ConnectionManager.m
 ===================================================================
---- sope-mime/NGImap4/NGImap4ConnectionManager.m	(révision 1650)
-+++ sope-mime/NGImap4/NGImap4ConnectionManager.m	(copie de travail)
+--- sope-mime/NGImap4/NGImap4ConnectionManager.m	(revision 1657)
++++ sope-mime/NGImap4/NGImap4ConnectionManager.m	(working copy)
 @@ -38,6 +38,9 @@
    debugCache   = [ud boolForKey:@"NGImap4EnableIMAP4CacheDebug"];
    poolingOff   = [ud boolForKey:@"NGImap4DisableIMAP4Pooling"];
@@ -1139,8 +1540,8 @@ Index: sope-mime/NGImap4/NGImap4ConnectionManager.m
  /* client object */
 Index: sope-mime/NGImap4/NSString+Imap4.m
 ===================================================================
---- sope-mime/NGImap4/NSString+Imap4.m	(révision 1650)
-+++ sope-mime/NGImap4/NSString+Imap4.m	(copie de travail)
+--- sope-mime/NGImap4/NSString+Imap4.m	(revision 1657)
++++ sope-mime/NGImap4/NSString+Imap4.m	(working copy)
 @@ -20,11 +20,56 @@
    02111-1307, USA.
  */
@@ -1661,8 +2062,8 @@ Index: sope-mime/NGImap4/NSString+Imap4.m
 +@end /* NSString(Imap4) */
 Index: sope-mime/NGMail/NGMailAddressParser.h
 ===================================================================
---- sope-mime/NGMail/NGMailAddressParser.h	(révision 1650)
-+++ sope-mime/NGMail/NGMailAddressParser.h	(copie de travail)
+--- sope-mime/NGMail/NGMailAddressParser.h	(revision 1657)
++++ sope-mime/NGMail/NGMailAddressParser.h	(working copy)
 @@ -24,7 +24,9 @@
  
  #import <Foundation/NSObject.h>
@@ -1699,8 +2100,8 @@ Index: sope-mime/NGMail/NGMailAddressParser.h
  
 Index: sope-mime/NGMail/NGMimeMessageGenerator.m
 ===================================================================
---- sope-mime/NGMail/NGMimeMessageGenerator.m	(révision 1650)
-+++ sope-mime/NGMail/NGMimeMessageGenerator.m	(copie de travail)
+--- sope-mime/NGMail/NGMimeMessageGenerator.m	(revision 1657)
++++ sope-mime/NGMail/NGMimeMessageGenerator.m	(working copy)
 @@ -86,37 +86,40 @@
    char         *des    = NULL;
    unsigned int cnt;
@@ -1765,8 +2166,8 @@ Index: sope-mime/NGMail/NGMimeMessageGenerator.m
      unsigned    isoEndLen = 2;
 Index: sope-mime/NGMail/NGMailAddressParser.m
 ===================================================================
---- sope-mime/NGMail/NGMailAddressParser.m	(révision 1650)
-+++ sope-mime/NGMail/NGMailAddressParser.m	(copie de travail)
+--- sope-mime/NGMail/NGMailAddressParser.m	(revision 1657)
++++ sope-mime/NGMail/NGMailAddressParser.m	(working copy)
 @@ -52,9 +52,9 @@
    StrClass = [NSString class];
  }
@@ -1910,8 +2311,8 @@ Index: sope-mime/NGMail/NGMailAddressParser.m
    self->dataPos   = 0;
 Index: sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m
 ===================================================================
---- sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m	(révision 1650)
-+++ sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m	(copie de travail)
+--- sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m	(revision 1657)
++++ sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m	(working copy)
 @@ -19,88 +19,45 @@
    02111-1307, USA.
  */
@@ -2315,8 +2716,8 @@ Index: sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m
  #if 0  
 Index: sope-mime/NGMime/NGMimeMultipartBodyParser.m
 ===================================================================
---- sope-mime/NGMime/NGMimeMultipartBodyParser.m	(révision 1650)
-+++ sope-mime/NGMime/NGMimeMultipartBodyParser.m	(copie de travail)
+--- sope-mime/NGMime/NGMimeMultipartBodyParser.m	(revision 1657)
++++ sope-mime/NGMime/NGMimeMultipartBodyParser.m	(working copy)
 @@ -428,6 +428,7 @@
    NSString   *boundary     = nil;
    NSArray    *rawBodyParts = nil;
@@ -2340,8 +2741,8 @@ Index: sope-mime/NGMime/NGMimeMultipartBodyParser.m
    if (rawBodyParts) {
 Index: sope-mime/NGMime/NGMimeHeaderFieldGeneratorSet.m
 ===================================================================
---- sope-mime/NGMime/NGMimeHeaderFieldGeneratorSet.m	(révision 1650)
-+++ sope-mime/NGMime/NGMimeHeaderFieldGeneratorSet.m	(copie de travail)
+--- sope-mime/NGMime/NGMimeHeaderFieldGeneratorSet.m	(revision 1657)
++++ sope-mime/NGMime/NGMimeHeaderFieldGeneratorSet.m	(working copy)
 @@ -77,6 +77,7 @@
      [rfc822Set setGenerator:gen forField:@"bcc"];
      [rfc822Set setGenerator:gen forField:Fields->from];
@@ -2352,8 +2753,8 @@ Index: sope-mime/NGMime/NGMimeHeaderFieldGeneratorSet.m
    
 Index: sope-mime/NGMime/NGMimeType.m
 ===================================================================
---- sope-mime/NGMime/NGMimeType.m	(révision 1650)
-+++ sope-mime/NGMime/NGMimeType.m	(copie de travail)
+--- sope-mime/NGMime/NGMimeType.m	(revision 1657)
++++ sope-mime/NGMime/NGMimeType.m	(working copy)
 @@ -120,28 +120,23 @@
    
    /* some unsupported, but known encoding */
@@ -2450,8 +2851,8 @@ Index: sope-mime/NGMime/NGMimeType.m
  - (NSString *)stringValue {
 Index: sope-mime/NGMime/NGMimeBodyPart.m
 ===================================================================
---- sope-mime/NGMime/NGMimeBodyPart.m	(révision 1650)
-+++ sope-mime/NGMime/NGMimeBodyPart.m	(copie de travail)
+--- sope-mime/NGMime/NGMimeBodyPart.m	(revision 1657)
++++ sope-mime/NGMime/NGMimeBodyPart.m	(working copy)
 @@ -31,18 +31,6 @@
    return 2;
  }
@@ -2488,8 +2889,8 @@ Index: sope-mime/NGMime/NGMimeBodyPart.m
  - (NSString *)contentId {
 Index: sope-mime/NGMime/ChangeLog
 ===================================================================
---- sope-mime/NGMime/ChangeLog	(révision 1650)
-+++ sope-mime/NGMime/ChangeLog	(copie de travail)
+--- sope-mime/NGMime/ChangeLog	(revision 1657)
++++ sope-mime/NGMime/ChangeLog	(working copy)
 @@ -1,3 +1,25 @@
 +2008-09-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 +
@@ -2518,8 +2919,8 @@ Index: sope-mime/NGMime/ChangeLog
  	* fixes for OGo bug #789 (reply-to QP encoding)
 Index: sope-mime/NGMime/NGMimeContentTypeHeaderFieldGenerator.m
 ===================================================================
---- sope-mime/NGMime/NGMimeContentTypeHeaderFieldGenerator.m	(révision 1650)
-+++ sope-mime/NGMime/NGMimeContentTypeHeaderFieldGenerator.m	(copie de travail)
+--- sope-mime/NGMime/NGMimeContentTypeHeaderFieldGenerator.m	(revision 1657)
++++ sope-mime/NGMime/NGMimeContentTypeHeaderFieldGenerator.m	(working copy)
 @@ -36,8 +36,7 @@
    NGMimeType    *type = nil; // only one content-type field
    NSString      *tmp  = nil;
@@ -2658,8 +3059,8 @@ Index: sope-mime/NGMime/NGMimeContentTypeHeaderFieldGenerator.m
      }
 Index: sope-mime/NGMime/NGMimePartGenerator.m
 ===================================================================
---- sope-mime/NGMime/NGMimePartGenerator.m	(révision 1650)
-+++ sope-mime/NGMime/NGMimePartGenerator.m	(copie de travail)
+--- sope-mime/NGMime/NGMimePartGenerator.m	(revision 1657)
++++ sope-mime/NGMime/NGMimePartGenerator.m	(working copy)
 @@ -155,8 +155,9 @@
    BOOL     isMultiValue, isFirst;
    
@@ -2683,8 +3084,8 @@ Index: sope-mime/NGMime/NGMimePartGenerator.m
    
 Index: sope-mime/NGMime/NGMimeBodyParser.m
 ===================================================================
---- sope-mime/NGMime/NGMimeBodyParser.m	(révision 1650)
-+++ sope-mime/NGMime/NGMimeBodyParser.m	(copie de travail)
+--- sope-mime/NGMime/NGMimeBodyParser.m	(revision 1657)
++++ sope-mime/NGMime/NGMimeBodyParser.m	(working copy)
 @@ -67,7 +67,10 @@
    if (_data == nil) return nil;
    
@@ -2722,8 +3123,8 @@ Index: sope-mime/NGMime/NGMimeBodyParser.m
  }
 Index: sope-mime/NGMime/NGMimePartParser.h
 ===================================================================
---- sope-mime/NGMime/NGMimePartParser.h	(révision 1650)
-+++ sope-mime/NGMime/NGMimePartParser.h	(copie de travail)
+--- sope-mime/NGMime/NGMimePartParser.h	(revision 1657)
++++ sope-mime/NGMime/NGMimePartParser.h	(working copy)
 @@ -117,6 +117,7 @@
      BOOL parserParseRawBodyDataOfPart:1;
      BOOL parserBodyParserForPart:1;
@@ -2744,8 +3145,8 @@ Index: sope-mime/NGMime/NGMimePartParser.h
  @interface NSObject(NGMimePartParser)
 Index: sope-mime/NGMime/NGMimePartParser.m
 ===================================================================
---- sope-mime/NGMime/NGMimePartParser.m	(révision 1650)
-+++ sope-mime/NGMime/NGMimePartParser.m	(copie de travail)
+--- sope-mime/NGMime/NGMimePartParser.m	(revision 1657)
++++ sope-mime/NGMime/NGMimePartParser.m	(working copy)
 @@ -227,7 +227,7 @@
  }
  
@@ -2769,8 +3170,8 @@ Index: sope-mime/NGMime/NGMimePartParser.m
      : [NGMimeType mimeType:[ctype stringValue]];
 Index: sope-mime/NGMime/NGMimeAddressHeaderFieldGenerator.m
 ===================================================================
---- sope-mime/NGMime/NGMimeAddressHeaderFieldGenerator.m	(révision 1650)
-+++ sope-mime/NGMime/NGMimeAddressHeaderFieldGenerator.m	(copie de travail)
+--- sope-mime/NGMime/NGMimeAddressHeaderFieldGenerator.m	(revision 1657)
++++ sope-mime/NGMime/NGMimeAddressHeaderFieldGenerator.m	(working copy)
 @@ -105,10 +105,10 @@
      }
      
@@ -2855,8 +3256,8 @@ Index: sope-mime/NGMime/NGMimeAddressHeaderFieldGenerator.m
    return data;
 Index: sope-mime/NGMime/NGMimeContentDispositionHeaderFieldGenerator.m
 ===================================================================
---- sope-mime/NGMime/NGMimeContentDispositionHeaderFieldGenerator.m	(révision 1650)
-+++ sope-mime/NGMime/NGMimeContentDispositionHeaderFieldGenerator.m	(copie de travail)
+--- sope-mime/NGMime/NGMimeContentDispositionHeaderFieldGenerator.m	(revision 1657)
++++ sope-mime/NGMime/NGMimeContentDispositionHeaderFieldGenerator.m	(working copy)
 @@ -49,80 +49,70 @@
    
    // TODO: move the stuff below to some NSString or NSData category?
@@ -2989,411 +3390,10 @@ Index: sope-mime/NGMime/NGMimeContentDispositionHeaderFieldGenerator.m
    }
    return data;
  }
-Index: sope-gdl1/PostgreSQL/PostgreSQL72Channel.m
-===================================================================
---- sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(révision 1650)
-+++ sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(copie de travail)
-@@ -713,6 +713,39 @@
-   return ms;
- }
- 
-+/* GCSEOAdaptorChannel protocol */
-+static NSString *sqlFolderFormat = (@"CREATE TABLE %@ (\n"	\
-+				    @"  c_name VARCHAR (256) NOT NULL PRIMARY KEY,\n"
-+				    @"  c_content VARCHAR (100000) NOT NULL,\n"
-+				    @"  c_creationdate INT4 NOT NULL,\n"
-+				    @"  c_lastmodified INT4 NOT NULL,\n"
-+				    @"  c_version INT4 NOT NULL,\n"
-+				    @"  c_deleted INT4 NULL\n"
-+				    @")");
-+static NSString *sqlFolderACLFormat = (@"CREATE TABLE %@ (\n"	\
-+				       @"  c_uid VARCHAR (256) NOT NULL,\n"
-+				       @"  c_object VARCHAR (256) NOT NULL,\n"
-+				       @"  c_role VARCHAR (80) NOT NULL\n"
-+				       @")");
-+
-+- (NSException *) createGCSFolderTableWithName: (NSString *) tableName
-+{
-+  NSString *sql;
-+
-+  sql = [NSString stringWithFormat: sqlFolderFormat, tableName];
-+
-+  return [self evaluateExpressionX: sql];
-+}
-+
-+- (NSException *) createGCSFolderACLTableWithName: (NSString *) tableName
-+{
-+  NSString *sql;
-+
-+  sql = [NSString stringWithFormat: sqlFolderACLFormat, tableName];
-+
-+  return [self evaluateExpressionX: sql];
-+}
-+
- @end /* PostgreSQL72Channel */
- 
- @implementation PostgreSQL72Channel(PrimaryKeyGeneration)
-Index: sope-gdl1/MySQL/MySQL4Channel.m
-===================================================================
---- sope-gdl1/MySQL/MySQL4Channel.m	(révision 1650)
-+++ sope-gdl1/MySQL/MySQL4Channel.m	(copie de travail)
-@@ -755,6 +755,39 @@
-   return pkey;
- }
- 
-+/* GCSEOAdaptorChannel protocol */
-+static NSString *sqlFolderFormat = (@"CREATE TABLE %@ (\n"	\
-+				    @"  c_name VARCHAR (256) NOT NULL PRIMARY KEY,\n"
-+				    @"  c_content VARCHAR (100000) NOT NULL,\n"
-+				    @"  c_creationdate INT NOT NULL,\n"
-+				    @"  c_lastmodified INT NOT NULL,\n"
-+				    @"  c_version INT NOT NULL,\n"
-+				    @"  c_deleted INT NULL\n"
-+				    @")");
-+static NSString *sqlFolderACLFormat = (@"CREATE TABLE %@ (\n"	\
-+				       @"  c_uid VARCHAR (256) NOT NULL,\n"
-+				       @"  c_object VARCHAR (256) NOT NULL,\n"
-+				       @"  c_role VARCHAR (80) NOT NULL\n"
-+				       @")");
-+
-+- (NSException *) createGCSFolderTableWithName: (NSString *) tableName
-+{
-+  NSString *sql;
-+
-+  sql = [NSString stringWithFormat: sqlFolderFormat, tableName];
-+
-+  return [self evaluateExpressionX: sql];
-+}
-+
-+- (NSException *) createGCSFolderACLTableWithName: (NSString *) tableName
-+{
-+  NSString *sql;
-+
-+  sql = [NSString stringWithFormat: sqlFolderACLFormat, tableName];
-+
-+  return [self evaluateExpressionX: sql];
-+}
-+
- @end /* MySQL4Channel */
- 
- void __link_MySQL4Channel() {
-Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
-===================================================================
---- sope-gdl1/Oracle8/OracleAdaptorChannel.m	(révision 1650)
-+++ sope-gdl1/Oracle8/OracleAdaptorChannel.m	(copie de travail)
-@@ -1,7 +1,7 @@
- /*
- **  OracleAdaptorChannel.m
- **
--**  Copyright (c) 2007  Inverse groupe conseil inc. and Ludovic Marcotte
-+**  Copyright (c) 2007-2009  Inverse inc. and Ludovic Marcotte
- **
- **  Author: Ludovic Marcotte <ludovic@inverse.ca>
- **
-@@ -30,6 +30,11 @@
- 
- #import <NGExtensions/NSObject+Logs.h>
- 
-+#include <unistd.h>
-+
-+static BOOL debugOn = NO;
-+static int maxTry = 3;
-+static int maxSleep = 500;
- //
- //
- //
-@@ -41,10 +46,11 @@
- 
- @implementation OracleAdaptorChannel (Private)
- 
---  (void) _cleanup
-+- (void) _cleanup
- {
-   column_info *info;
-   int c;
-+  sword result;
- 
-   [_resultSetProperties removeAllObjects];
- 
-@@ -58,11 +64,29 @@
-       // so we just free the value instead.
-       if (info->value)
- 	{
--	  if (OCIDescriptorFree((dvoid *)info->value, (ub4)OCI_DTYPE_LOB) != OCI_SUCCESS)
-+	  if (info->type == SQLT_CLOB
-+	      || info->type == SQLT_BLOB
-+	      || info->type == SQLT_BFILEE
-+	      || info->type == SQLT_CFILEE)
-+	    {
-+	      result = OCIDescriptorFree((dvoid *)info->value, (ub4) OCI_DTYPE_LOB);
-+	      if (result != OCI_SUCCESS)
-+		{
-+		  NSLog (@"value was not a LOB descriptor");
-+		  abort();
-+		}
-+	    }
-+	  else
- 	    free(info->value);
- 	  info->value = NULL;
- 	}
--       free(info);
-+      else
-+	{
-+	  NSLog (@"trying to free an already freed value!");
-+	  abort();
-+	}
-+      free(info);
-+
-       [_row_buffer removeObjectAtIndex: c];
-     }
- 
-@@ -78,8 +102,7 @@
- //
- @implementation OracleAdaptorChannel
- 
--static void
--DBTerminate()
-+static void DBTerminate()
- {
-   if (OCITerminate(OCI_DEFAULT))
-     NSLog(@"FAILED: OCITerminate()");
-@@ -89,6 +112,11 @@
- 
- + (void) initialize
- {
-+  NSUserDefaults *ud;
-+
-+  ud = [NSUserDefaults standardUserDefaults];
-+  debugOn = [ud boolForKey: @"OracleAdaptorDebug"];
-+
-   // We Initialize the OCI process environment.
-   if (OCIInitialize((ub4)OCI_DEFAULT, (dvoid *)0,
-                     (dvoid * (*)(dvoid *, size_t)) 0,
-@@ -156,14 +184,17 @@
-       [super closeChannel];
-     
-       // We logoff from the database.
--      if (OCILogoff(_oci_ctx, _oci_err))
-+      if (!_oci_ctx || !_oci_err || OCILogoff(_oci_ctx, _oci_err))
- 	{
- 	  NSLog(@"FAILED: OCILogoff()");
- 	}
- 
-+      if (_oci_ctx)
-+	OCIHandleFree(_oci_ctx, OCI_HTYPE_SVCCTX);
- 
--      OCIHandleFree(_oci_ctx, OCI_HTYPE_SVCCTX);
--      OCIHandleFree(_oci_err, OCI_HTYPE_ERROR);
-+      if (_oci_err)
-+	OCIHandleFree(_oci_err, OCI_HTYPE_ERROR);
-+      
-       // OCIHandleFree(_oci_env, OCI_HTYPE_ENV);
- 
-       _oci_ctx = (OCISvcCtx *)0;
-@@ -177,7 +208,8 @@
- //
- - (void) dealloc
- {
--  //NSLog(@"OracleAdaptorChannel: -dealloc");
-+  if (debugOn)
-+    NSLog(@"OracleAdaptorChannel: -dealloc");
- 
-   [self _cleanup];
- 
-@@ -222,7 +254,7 @@
- {
-   EOAttribute *attribute;
-   OCIParam *param;
--
-+  int rCount;
-   column_info *info;
-   ub4 i, clen, count;
-   text *sql, *cname;
-@@ -231,6 +263,9 @@
- 
-   [self _cleanup];
- 
-+  if (debugOn)
-+    [self logWithFormat: @"expression: %@", theExpression];
-+
-   if (!theExpression || ![theExpression length])
-     {
-       [NSException raise: @"OracleInvalidExpressionException"
-@@ -244,7 +279,9 @@
-     }
-   
-   sql = (text *)[theExpression UTF8String];
--  
-+ 
-+ rCount = 0;
-+ retry:
-   // We alloc our statement handle
-   if ((status = OCIHandleAlloc((dvoid *)_oci_env, (dvoid **)&_current_stm, (ub4)OCI_HTYPE_STMT, (CONST size_t) 0, (dvoid **) 0)))
-     {
-@@ -264,13 +301,39 @@
-   // We check if we're doing a SELECT and if so, we're fetching data!
-   OCIAttrGet(_current_stm, OCI_HTYPE_STMT, &type, 0, OCI_ATTR_STMT_TYPE, _oci_err);
-   self->isFetchInProgress = (type == OCI_STMT_SELECT ? YES : NO);
--  
-+ 
-   // We execute our statement. Not that we _MUST_ set iter to 0 for non-SELECT statements.
-   if ((status = OCIStmtExecute(_oci_ctx, _current_stm, _oci_err, (self->isFetchInProgress ? (ub4)0 : (ub4)1), (ub4)0, (CONST OCISnapshot *)NULL, (OCISnapshot *)NULL,
- 			       ([(OracleAdaptorContext *)[self adaptorContext] autoCommit] ? OCI_COMMIT_ON_SUCCESS : OCI_DEFAULT))))
-     {
-+      ub4 serverStatus;
-+      
-       checkerr(_oci_err, status);
-       NSLog(@"Statement execute failed (OCI_ERROR): %@", theExpression);
-+
-+      // We check to see if we lost connection and need to reconnect.
-+      serverStatus = 0;
-+      OCIAttrGet((dvoid *)_oci_env, OCI_HTYPE_SERVER, (dvoid *)&serverStatus, (ub4 *)0, OCI_ATTR_SERVER_STATUS, _oci_err);
-+      
-+      if (serverStatus == OCI_SERVER_NOT_CONNECTED)
-+	{
-+	  // We cleanup our previous handles
-+	  [self cancelFetch];
-+	  [self closeChannel];
-+	  
-+	  // We try to reconnect a couple of times before giving up...
-+	  while (rCount < maxTry)
-+	    {
-+	      usleep(maxSleep);
-+	      rCount++;
-+
-+	      if ([self openChannel])
-+		{
-+		  NSLog(@"Connection re-established to Oracle - retrying to process the statement.");
-+		  goto retry;
-+		}
-+	    }
-+	}
-       return NO;
-     }
- 
-@@ -302,7 +365,9 @@
-       // We read the maximum width of a column
-       info->max_width = 0;
-       status = OCIAttrGet((dvoid*)param, (ub4)OCI_DTYPE_PARAM, (dvoid*)&(info->max_width), (ub4 *)0, (ub4)OCI_ATTR_DATA_SIZE, (OCIError *)_oci_err);
--      
-+
-+      if (debugOn)
-+	NSLog(@"name: %s, type: %d", cname, info->type);
-       attribute = [EOAttribute attributeWithOracleType: info->type  name: cname  length: clen  width: info->max_width];
-       [_resultSetProperties addObject: attribute];
- 
-@@ -394,16 +459,17 @@
-       return NO;
-     }
- 
-- 
-   if (OCIEnvInit((OCIEnv **)&_oci_env, (ub4)OCI_DEFAULT, (size_t)0, (dvoid **)0))
-     {
-       NSLog(@"FAILED: OCIEnvInit()");
-+      [self closeChannel];
-       return NO;
-     }
-   
-   if (OCIHandleAlloc((dvoid *)_oci_env, (dvoid *)&_oci_err, (ub4)OCI_HTYPE_ERROR, (size_t)0, (dvoid **)0))
-     {
-       NSLog(@"FAILED: OCIHandleAlloc() on errhp");
-+      [self closeChannel];
-       return NO;
-     }
-   
-@@ -414,7 +480,10 @@
-   // Under Oracle 10g, the third parameter of OCILogon() has the form: [//]host[:port][/service_name]
-   // See http://download-west.oracle.com/docs/cd/B12037_01/network.101/b10775/naming.htm#i498306 for
-   // all juicy details.
--  database = [[NSString stringWithFormat:@"%@:%@", [o serverName], [o port]] UTF8String];
-+  if ([o serverName] && [o port])
-+    database = [[NSString stringWithFormat:@"%@:%@/%@", [o serverName], [o port], [o databaseName]] UTF8String];
-+  else
-+    database = [[o databaseName] UTF8String];
- 
-   // We logon to the database.
-   if (OCILogon(_oci_env, _oci_err, &_oci_ctx, (const OraText*)username, strlen(username),
-@@ -422,6 +491,7 @@
-     {
-       NSLog(@"FAILED: OCILogon(). username = %s  password = %s"
- 	    @"  database = %s", username, password, database);
-+      [self closeChannel];
-       return NO;
-     }
-   
-@@ -438,6 +508,11 @@
- {
-   sword status;
-   
-+  // We check if our connection is open prior to trying to fetch any data. OCIStmtFetch2() returns
-+  // NO error code if the OCI environment is set up but the OCILogon() has failed.
-+  if (![self isOpen])
-+    return nil;
-+
-   status = OCIStmtFetch2(_current_stm, _oci_err, (ub4)1, (ub4)OCI_FETCH_NEXT, (sb4)0, (ub4)OCI_DEFAULT);
- 
-   if (status == OCI_NO_DATA)
-@@ -609,7 +684,7 @@
- 
- /* GCSEOAdaptorChannel protocol */
- static NSString *sqlFolderFormat = (@"CREATE TABLE %@ (\n"	\
--				    @"  c_name VARCHAR2 (256) NOT NULL,\n"
-+				    @"  c_name VARCHAR2 (256) NOT NULL PRIMARY KEY,\n"
- 				    @"  c_content CLOB NOT NULL,\n"
- 				    @"  c_creationdate INTEGER NOT NULL,\n"
- 				    @"  c_lastmodified INTEGER NOT NULL,\n"
-Index: sope-gdl1/Oracle8/OracleAdaptorChannelController.m
-===================================================================
---- sope-gdl1/Oracle8/OracleAdaptorChannelController.m	(révision 1650)
-+++ sope-gdl1/Oracle8/OracleAdaptorChannelController.m	(copie de travail)
-@@ -31,6 +31,8 @@
- #import <Foundation/Foundation.h>
- #import <GDLAccess/EOSQLExpression.h>
- 
-+static BOOL debugOn = NO;
-+
- //
- //
- //
-@@ -48,6 +50,14 @@
- //
- @implementation OracleAdaptorChannelController
- 
-++ (void) initialize
-+{
-+  NSUserDefaults *ud;
-+
-+  ud = [NSUserDefaults standardUserDefaults];
-+  debugOn = [ud boolForKey: @"OracleAdaptorDebug"];
-+}
-+
- - (EODelegateResponse) adaptorChannel: (id) theChannel
-                         willInsertRow: (NSMutableDictionary *) theRow
-                             forEntity: (EOEntity *) theEntity
-@@ -56,7 +66,8 @@
-   NSArray *keys;
-   int i, c;
- 
--  NSLog(@"willInsertRow: %@ %@", [theRow description], [theEntity description]);
-+  if (debugOn)
-+    NSLog(@"willInsertRow: %@ %@", [theRow description], [theEntity description]);
- 
-   s = AUTORELEASE([[NSMutableString alloc] init]);
- 
-@@ -101,7 +112,8 @@
-   NSArray *keys;
-   int i, c;
- 
--  NSLog(@"willUpdatetRow: %@ %@", [theRow description], [theQualifier description]);
-+  if (debugOn)
-+    NSLog(@"willUpdateRow: %@ %@", [theRow description], [theQualifier description]);
- 
-   s = AUTORELEASE([[NSMutableString alloc] init]);
- 
 Index: sope-core/NGExtensions/NGExtensions/NSString+Ext.h
 ===================================================================
---- sope-core/NGExtensions/NGExtensions/NSString+Ext.h	(révision 1650)
-+++ sope-core/NGExtensions/NGExtensions/NSString+Ext.h	(copie de travail)
+--- sope-core/NGExtensions/NGExtensions/NSString+Ext.h	(revision 1657)
++++ sope-core/NGExtensions/NGExtensions/NSString+Ext.h	(working copy)
 @@ -30,6 +30,7 @@
  
  @interface NSString(GSAdditions)
@@ -3430,8 +3430,8 @@ Index: sope-core/NGExtensions/NGExtensions/NSString+Ext.h
  /* specific to libFoundation */
 Index: sope-core/NGExtensions/FdExt.subproj/NSString+Ext.m
 ===================================================================
---- sope-core/NGExtensions/FdExt.subproj/NSString+Ext.m	(révision 1650)
-+++ sope-core/NGExtensions/FdExt.subproj/NSString+Ext.m	(copie de travail)
+--- sope-core/NGExtensions/FdExt.subproj/NSString+Ext.m	(revision 1657)
++++ sope-core/NGExtensions/FdExt.subproj/NSString+Ext.m	(working copy)
 @@ -39,18 +39,6 @@
          : (NSString *)[[self copy] autorelease];
  }
@@ -3519,8 +3519,8 @@ Index: sope-core/NGExtensions/FdExt.subproj/NSString+Ext.m
  - (BOOL)isAbsoluteURL
 Index: sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m
 ===================================================================
---- sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m	(révision 1650)
-+++ sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m	(copie de travail)
+--- sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m	(revision 1657)
++++ sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m	(working copy)
 @@ -140,8 +140,12 @@
  
  
@@ -3562,8 +3562,8 @@ Index: sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m
  static char *iconv_wrapper(id self, char *_src, unsigned _srcLen,
 Index: sope-core/NGExtensions/EOExt.subproj/EOGlobalID+Ext.m
 ===================================================================
---- sope-core/NGExtensions/EOExt.subproj/EOGlobalID+Ext.m	(révision 1650)
-+++ sope-core/NGExtensions/EOExt.subproj/EOGlobalID+Ext.m	(copie de travail)
+--- sope-core/NGExtensions/EOExt.subproj/EOGlobalID+Ext.m	(revision 1657)
++++ sope-core/NGExtensions/EOExt.subproj/EOGlobalID+Ext.m	(working copy)
 @@ -19,6 +19,7 @@
    02111-1307, USA.
  */
@@ -3574,8 +3574,8 @@ Index: sope-core/NGExtensions/EOExt.subproj/EOGlobalID+Ext.m
  
 Index: sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.h
 ===================================================================
---- sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.h	(révision 1650)
-+++ sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.h	(copie de travail)
+--- sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.h	(revision 1657)
++++ sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.h	(working copy)
 @@ -19,6 +19,8 @@
    02111-1307, USA.
  */
@@ -3596,8 +3596,8 @@ Index: sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.h
    id<NSObject,SaxEntityResolver> entityResolver;
 Index: sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.m
 ===================================================================
---- sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.m	(révision 1650)
-+++ sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.m	(copie de travail)
+--- sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.m	(revision 1657)
++++ sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.m	(working copy)
 @@ -200,10 +200,10 @@
    return self->entityResolver;
  }
@@ -3613,8 +3613,8 @@ Index: sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.m
  
 Index: sope-appserver/mod_ngobjweb/GNUmakefile
 ===================================================================
---- sope-appserver/mod_ngobjweb/GNUmakefile	(révision 1650)
-+++ sope-appserver/mod_ngobjweb/GNUmakefile	(copie de travail)
+--- sope-appserver/mod_ngobjweb/GNUmakefile	(revision 1657)
++++ sope-appserver/mod_ngobjweb/GNUmakefile	(working copy)
 @@ -82,7 +82,7 @@
  
  CFLAGS  = -Wall -I. -fPIC \
@@ -3636,8 +3636,8 @@ Index: sope-appserver/mod_ngobjweb/GNUmakefile
  	$(INSTALL_PROGRAM) $(product) /usr/libexec/httpd/
 Index: sope-appserver/NGObjWeb/GNUmakefile.postamble
 ===================================================================
---- sope-appserver/NGObjWeb/GNUmakefile.postamble	(révision 1650)
-+++ sope-appserver/NGObjWeb/GNUmakefile.postamble	(copie de travail)
+--- sope-appserver/NGObjWeb/GNUmakefile.postamble	(revision 1657)
++++ sope-appserver/NGObjWeb/GNUmakefile.postamble	(working copy)
 @@ -23,14 +23,20 @@
  
  # install makefiles
@@ -3668,8 +3668,8 @@ Index: sope-appserver/NGObjWeb/GNUmakefile.postamble
 +		$(DESTDIR)/$(GNUSTEP_MAKEFILES)/wobundle.make
 Index: sope-appserver/NGObjWeb/WODirectAction.m
 ===================================================================
---- sope-appserver/NGObjWeb/WODirectAction.m	(révision 1650)
-+++ sope-appserver/NGObjWeb/WODirectAction.m	(copie de travail)
+--- sope-appserver/NGObjWeb/WODirectAction.m	(revision 1657)
++++ sope-appserver/NGObjWeb/WODirectAction.m	(working copy)
 @@ -46,7 +46,7 @@
  }
  - (id)initWithContext:(WOContext *)_ctx {
@@ -3703,8 +3703,8 @@ Index: sope-appserver/NGObjWeb/WODirectAction.m
  
 Index: sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.m
 ===================================================================
---- sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.m	(révision 1650)
-+++ sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.m	(copie de travail)
+--- sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.m	(revision 1657)
++++ sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.m	(working copy)
 @@ -216,6 +216,12 @@
        assocCount++;
      }
@@ -3720,8 +3720,8 @@ Index: sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.m
    
 Index: sope-appserver/NGObjWeb/DynamicElements/_WOComplexHyperlink.m
 ===================================================================
---- sope-appserver/NGObjWeb/DynamicElements/_WOComplexHyperlink.m	(révision 1650)
-+++ sope-appserver/NGObjWeb/DynamicElements/_WOComplexHyperlink.m	(copie de travail)
+--- sope-appserver/NGObjWeb/DynamicElements/_WOComplexHyperlink.m	(revision 1657)
++++ sope-appserver/NGObjWeb/DynamicElements/_WOComplexHyperlink.m	(working copy)
 @@ -41,6 +41,7 @@
    WOAssociation *string;
    WOAssociation *target;
@@ -3753,8 +3753,8 @@ Index: sope-appserver/NGObjWeb/DynamicElements/_WOComplexHyperlink.m
      return NO;
 Index: sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.h
 ===================================================================
---- sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.h	(révision 1650)
-+++ sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.h	(copie de travail)
+--- sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.h	(revision 1657)
++++ sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.h	(working copy)
 @@ -41,7 +41,8 @@
    WOAssociation *pageName;
    WOAssociation *actionClass;
@@ -3767,8 +3767,8 @@ Index: sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.h
    /* 'ivar' associations */
 Index: sope-appserver/NGObjWeb/SoObjects/SoObject.m
 ===================================================================
---- sope-appserver/NGObjWeb/SoObjects/SoObject.m	(révision 1650)
-+++ sope-appserver/NGObjWeb/SoObjects/SoObject.m	(copie de travail)
+--- sope-appserver/NGObjWeb/SoObjects/SoObject.m	(revision 1657)
++++ sope-appserver/NGObjWeb/SoObjects/SoObject.m	(working copy)
 @@ -39,22 +39,34 @@
  static int debugLookup  = -1;
  static int debugBaseURL = -1;
