@@ -973,8 +973,6 @@ function refreshCalendarEventsCallback(http) {
 }
 
 function newBaseEventDIV(eventRep, event, eventText) {
-	// cname, calendar, starts, lasts,
-	// 		     startHour, endHour, title) {
   var eventDiv = $(document.createElement("div"));
   eventDiv.cname = event[0];
   eventDiv.calendar = event[1];
@@ -1004,8 +1002,8 @@ function newBaseEventDIV(eventRep, event, eventText) {
   textDiv.addClassName("text");
   textDiv.appendChild(document.createTextNode(eventText));
 
-	if (event[6] != null) {
-		// Location field is defined -- user can read event
+	if (event[2] != null) {
+		// Status field is defined -- user can read event
 		eventDiv.observe("mousedown", listRowMouseDownHandler);
 		eventDiv.observe("click", onCalendarSelectEvent);
 		eventDiv.observe("dblclick", editDoubleClickedEvent);
@@ -1866,8 +1864,12 @@ function appendStyleElement(folderPath, color) {
 
 function onFolderSubscribeCB(folderData) {
   var folder = $(folderData["folder"]);
-  if (!folder)
+  if (!folder) {
     appendCalendar(folderData["folderName"], folderData["folder"]);
+    refreshEvents();
+    refreshTasks();
+    changeCalendarDisplay();
+	}
 }
 
 function onFolderUnsubscribeCB(folderId) {
