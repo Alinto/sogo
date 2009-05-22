@@ -1,5 +1,9 @@
 2009-05-22  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* Main/sogod.m (main): verify if the default parameter
+	WOApplicationRedirectURL is defined and if so, removed any
+	trailing slash.
+
 	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
 	-_toolbarForOwner:andClientObject:]): ignore the participation
 	status for tasks so the usual edition toolbar appears.

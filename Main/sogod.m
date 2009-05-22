@@ -77,7 +77,7 @@ convertOldSOGoDomain (NSUserDefaults *ud)
 int
 main (int argc, char **argv, char **env)
 {
-  NSString *tzName;
+  NSString *tzName, *redirectURL;
   NSUserDefaults *ud;
   NSAutoreleasePool *pool;
   int rc;
@@ -96,6 +96,14 @@ main (int argc, char **argv, char **env)
 #endif
       ud = [NSUserDefaults standardUserDefaults];
       convertOldSOGoDomain (ud);
+
+      redirectURL = [ud stringForKey: @"WOApplicationRedirectURL"];
+      if (redirectURL && [redirectURL hasSuffix: @"/"])
+	{
+	  [ud setObject: [redirectURL substringToIndex: [redirectURL length] - 1]
+	      forKey: @"WOApplicationRedirectURL"];
+	  [ud synchronize];
+	}
 
       rc = 0;
       tzName = [ud stringForKey: @"SOGoServerTimeZone"];
