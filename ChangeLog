@@ -1,3 +1,9 @@
+2009-05-22  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
+	-_toolbarForOwner:andClientObject:]): ignore the participation
+	status for tasks so the usual edition toolbar appears.
+
 2009-05-21  Ludovic Marcotte <lmarcotte@inverse.ca>
 
 	* Regenerated the SOPE patchset so we now correctly

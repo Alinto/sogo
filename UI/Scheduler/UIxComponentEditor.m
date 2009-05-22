@@ -1843,11 +1843,14 @@ RANGE(2);
 
   if ([[component attendees] count]
       && [component userIsParticipant: ownerUser]
-      && !isOrganizer)
+      && !isOrganizer
+      // Lightning does not manage participation status within tasks,
+      // so we also ignore the participation status of tasks in the
+      // web interface.
+      && ![[component tag] isEqualToString: @"VTODO"])
     {
       participationStatus
 	= [[component findParticipant: ownerUser] participationStatus];
-      /* Lightning does not manage participation status within tasks */
       if (participationStatus == iCalPersonPartStatAccepted)
 	toolbarFilename = @"SOGoAppointmentObjectDecline.toolbar";
       else if (participationStatus == iCalPersonPartStatDeclined)
