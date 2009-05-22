@@ -158,7 +158,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %{prefix}/Library/WOxElemBuilders-%{sope_version}/SOGoElements.wox
 
 %config %{_sysconfdir}/httpd/conf.d/SOGo.conf
-%doc ChangeLog README NEWS Scripts/sql-update-20070724.sh Scripts/sql-update-20070822.sh Scripts/sql-update-20080303.sh
+%doc ChangeLog README NEWS Scripts/sql-update-20070724.sh Scripts/sql-update-20070822.sh Scripts/sql-update-20080303.sh Scripts/sql-update-101_to_102.sh
 
 %files -n sogo-devel
 %{prefix}/Library/Headers/SOGo
