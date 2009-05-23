@@ -62,4 +62,7 @@
 @interface SOGoMailSpanishReply : SOGoMailReply
 @end
 
+@interface SOGoMailRussianReply : SOGoMailReply
+@end
+
 #endif /* SOGOMAILREPLY_H */

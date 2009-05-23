@@ -299,3 +299,12 @@
 
 @implementation SOGoACLSpanishRemovalAdvisory
 @end
+
+@implementation SOGoACLRussianAdditionAdvisory
+@end
+
+@implementation SOGoACLRussianModificationAdvisory
+@end
+
+@implementation SOGoACLRussianRemovalAdvisory
+@end

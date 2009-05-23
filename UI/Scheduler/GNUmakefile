@@ -6,7 +6,7 @@ BUNDLE_NAME = SchedulerUI
 
 SchedulerUI_PRINCIPAL_CLASS = SchedulerUIProduct
 
-SchedulerUI_LANGUAGES = Dutch English French German Italian Spanish Welsh
+SchedulerUI_LANGUAGES = Dutch English French German Italian Spanish Welsh Russian
 
 SchedulerUI_OBJC_FILES =		\
 	SchedulerUIProduct.m		\

@@ -254,3 +254,9 @@
 
 @implementation SOGoFolderSpanishRemovalAdvisory
 @end
+
+@implementation SOGoFolderRussianAdditionAdvisory
+@end
+
+@implementation SOGoFolderRussianRemovalAdvisory
+@end

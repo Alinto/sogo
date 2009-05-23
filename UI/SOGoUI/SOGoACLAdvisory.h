@@ -119,4 +119,13 @@
 @interface SOGoACLSpanishRemovalAdvisory : SOGoACLRemovalAdvisory
 @end
 
+@interface SOGoACLRussianAdditionAdvisory : SOGoACLAdditionAdvisory
+@end
+
+@interface SOGoACLRussianModificationAdvisory : SOGoACLModificationAdvisory
+@end
+
+@interface SOGoACLRussianRemovalAdvisory : SOGoACLRemovalAdvisory
+@end
+
 #endif /* SOGOACLADVISORY_H */

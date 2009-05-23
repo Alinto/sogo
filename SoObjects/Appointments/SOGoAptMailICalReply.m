@@ -216,3 +216,9 @@ static NSCharacterSet *wsSet  = nil;
 @implementation SOGoAptMailItalianICalReply
 @end
 
+@interface SOGoAptMailRussianICalReply : SOGoAptMailICalReply
+@end
+
+@implementation SOGoAptMailRussianICalReply
+@end
+

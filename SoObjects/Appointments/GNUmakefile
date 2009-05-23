@@ -38,7 +38,7 @@ Appointments_RESOURCE_FILES +=		\
 	Version				\
 	product.plist			\
 
-Appointments_LANGUAGES = Dutch English French German Italian Spanish Welsh
+Appointments_LANGUAGES = Dutch English French German Italian Spanish Welsh Russian
 
 Appointments_LOCALIZED_RESOURCE_FILES = Localizable.strings
 
@@ -59,6 +59,10 @@ Appointments_COMPONENTS +=	\
 	SOGoAptMailGermanICalReply.wo	\
 	SOGoAptMailGermanDeletion.wo	\
 	SOGoAptMailGermanUpdate.wo	\
+	SOGoAptMailRussianInvitation.wo	\
+	SOGoAptMailRussianICalReply.wo	\
+	SOGoAptMailRussianDeletion.wo	\
+	SOGoAptMailRussianUpdate.wo	\
 	SOGoAptMailItalianInvitation.wo \
 	SOGoAptMailItalianICalReply.wo  \
 	SOGoAptMailItalianDeletion.wo   \

@@ -45,3 +45,9 @@
 @implementation SOGoAptMailItalianDeletion
 @end
 
+@interface SOGoAptMailRussianDeletion : SOGoAptMailNotification
+@end
+
+@implementation SOGoAptMailRussianDeletion
+@end
+

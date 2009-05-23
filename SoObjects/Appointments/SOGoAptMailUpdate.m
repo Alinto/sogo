@@ -29,6 +29,14 @@
 @implementation SOGoAptMailEnglishUpdate
 @end
 
+@interface SOGoAptMailRussianUpdate : SOGoAptMailNotification
+{
+}
+@end
+
+@implementation SOGoAptMailRussianUpdate
+@end
+
 @interface SOGoAptMailFrenchUpdate : SOGoAptMailNotification
 {
 }
