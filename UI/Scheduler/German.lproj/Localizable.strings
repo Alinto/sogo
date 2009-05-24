@@ -239,7 +239,7 @@
 "view_next7" = "Termine in den nächsten 7 Tagen";
 "view_next14" = "Termine in den nächsten 14 Tagen";
 "view_next31" = "Termine in den nächsten 31 Tagen";
-"view_thismonth" = "Termie in diesem Kalendermonat";
+"view_thismonth" = "Termine in diesem Kalendermonat";
 "view_future" = "Alle zukünftigen Termine";
 "view_selectedday" = "Momentan gewählter Tag";
 
@@ -389,13 +389,14 @@
 "reminder_1_WEEK_BEFORE" = "1 Woche vor";
 "reminder_CUSTOM" = "Benutzerdefiniert...";
 
-"reminder_MINUTES" = "minutes";
-"reminder_HOURS" = "hours";
-"reminder_DAYS" = "days";
-"reminder_BEFORE" = "before";
-"reminder_AFTER" = "after";
-"reminder_START" = "the event starts";
-"reminder_END" = "the event ends";
+"reminder_MINUTES" = "Minuten";
+"reminder_HOURS" = "Stunden";
+"reminder_DAYS" = "Tage";
+"reminder_BEFORE" = "bevor";
+"reminder_AFTER" = "nachdem";
+"reminder_START" = "der Termin startet";
+"reminder_END" = "der Termin endet";
+"Reminder Details" = "Erinnerungsdetails";
 
 "zoom_400" = "400%";
 "zoom_200" = "200%";

@@ -1,0 +1,155 @@
+/* this file is in UTF-8 format! */
+
+"Addressbook" = "Адресная книга";
+"Addresses" = "Адреса";
+"Update" = "Обновить";
+"Cancel" = "Cancel";
+"Common" = "Common";
+"Contact editor" = "Contact editor";
+"Contact viewer" = "Contact viewer";
+"Email" = "Email";
+"Screen Name" = "Screen Name";
+"Extended" = "Extended";
+"Fax" = "Факс";
+"Firstname" = "Имя";
+"Home" = "Home";
+"HomePhone" = "ДомашнийТелефон";
+"Lastname" = "Фамилия";
+"Location" = "Местоположение";
+"MobilePhone" = "МобильныйТелефон";
+"Name" = "ПолноеИмя";
+"OfficePhone" = "РабочийТелефон";
+"Organization" = "Организация";
+"Work Phone" = "Рабочий телефон";
+"Phone" = "Телефон";
+"Phones" = "Телефоны";
+"Postal" = "Почтовый адрес";
+"Save" = "Сохранить";
+"URL" = "URL";
+"Unit" = "Unit";
+"delete" = "удалить";
+"edit" = "редактировать";
+"invalidemailwarn" = "The specified email is invalid";
+"new" = "новый";
+"Preferred Phone"   = "Preferred Phone";
+
+/* Tooltips */
+
+"Create a new address book card" = "Create a new address book card";
+"Create a new list" = "Create a new list";
+"Edit the selected card" = "Edit the selected card";
+"Send a mail message" = "Send a mail message";
+"Delete selected card or address book" = "Delete selected card or address book";
+
+"htmlMailFormat_UNKNOWN" = "Unknown";
+"htmlMailFormat_FALSE" = "Plain Text";
+"htmlMailFormat_TRUE" = "HTML";
+
+"Name or Email" = "Name or Email";
+"Personal Addressbook" = "Personal Addressbook";
+"Search in Addressbook" = "Search in Addressbook";
+
+"New Card" = "New Card";
+"New List" = "New List";
+"Properties" = "Properties";
+"Sharing..." = "Sharing...";
+"Write" = "Write";
+"Delete" = "Delete";
+"Instant Message" = "Instant Message";
+"Add..." = "Add...";
+"Remove" = "Remove";
+
+"Please wait..." = "Подождите пожалуйста...";
+"No possible subscription" = "Нет возможных подписок";
+
+"Preferred" = "Preferred";
+"Card for %@" = "Card for %@";
+"Display Name: " = "Display Name: ";
+"Email Address: " = "Email Address: ";
+
+"Firstname: " = "Firstname: ";
+"Lastname: " = "Lastname: ";
+"Nickname: " = "Nickname: ";
+
+"Telephone" = "Telephone";
+"Work: " = "Work: ";
+"Home: " = "Home: ";
+"Fax: " = "Fax: ";
+"Mobile: " = "Mobile: ";
+"Pager: " = "Pager: ";
+
+"Title: " = "Title: ";
+"Service: " = "Service: ";
+"Company: " = "Company: ";
+"Street Address: " = "Street Address: ";
+"City: " = "City: ";
+"State_Province:" = "State/Province:";
+"ZIP_Postal Code:" = "ZIP/Postal Code:";
+"Country: " = "Country: ";
+"Web: " = "Web: ";
+
+"Work" = "Work";
+"Other Infos" = "Other Infos";
+
+"Note: " = "Note: ";
+"Timezone: " = "Timezone: ";
+"Birthday: " = "Birthday: ";
+"Freebusy URL: " = "Freebusy URL: ";
+
+"Add as..." = "Add as...";
+"Recipient" = "Recipient";
+"Carbon Copy" = "Carbon Copy";
+"Blind Carbon Copy" = "Blind Carbon Copy";
+
+"New Addressbook..." = "New Addressbook...";
+"Subscribe to an Addressbook..." = "Subscribe to an Addressbook...";
+"Remove the selected Addressbook" = "Remove the selected Addressbook";
+
+"Name of the Address Book" = "Name of the Address Book";
+"Are you sure you want to delete the selected address book?"
+= "Are you sure you want to delete the selected address book?";
+"You cannot remove nor unsubscribe from a public addressbook."
+= "You cannot remove nor unsubscribe from a public addressbook.";
+"You cannot remove nor unsubscribe from your personal addressbook."
+= "You cannot remove nor unsubscribe from your personal addressbook.";
+
+"Are you sure you want to delete the selected contacts?"
+= "Are you sure you want to delete the selected contacts?";
+
+"You don't have the required privileges to perform the operation."
+= "You don't have the required privileges to perform the operation.";
+"You cannot delete the card of \"%{0}\"."
+= "You cannot delete the card of \"%{0}\".";
+
+"Address Book Name" = "Address Book Name";
+
+"You cannot subscribe to a folder that you own!"
+= "You cannot subscribe to a folder that you own.";
+"Unable to subscribe to that folder!"
+= "Unable to subscribe to that folder.";
+
+"Default Roles" = "Default Roles";
+"User rights for:" = "User rights for:";
+
+"This person can add cards to this addressbook."
+= "This person can add cards to this addressbook.";
+"This person can edit the cards of this addressbook."
+= "This person can edit the cards of this addressbook.";
+"This person can list the content of this addressbook."
+= "This person can list the content of this addressbook.";
+"This person can read the cards of this addressbook."
+= "This person can read the cards of this addressbook.";
+"This person can erase cards from this addressbook."
+= "This person can erase cards from this addressbook.";
+
+"The selected contact has no email address."
+= "The selected contact has no email address.";
+
+"Please select a contact." = "Please select a contact.";
+
+/* Error messages for move and copy */
+
+"SoAccessDeniedException" = "You cannot write to this address book.";
+"Forbidden" = "You cannot write to this address book.";
+"Invalid Contact" = "The selected contact no longer exists.";
+"Unknown Destination Folder" = "The chosen destination address book no longer exists.";

@@ -1,0 +1,35 @@
+/* Russian */
+{
+  NSLanguageName = "Russian";
+  NSFormalName = "Русский";
+  NSLocaleCode = "ru"; /* ISO 639-1 */
+  NSLanguageCode = "rus"; /* ISO 639-2 */
+  NSParentContext = "";
+
+  NSAMPMDesignation = (AM, PM);
+  NSCurrencySymbol = " руб.";
+  NSDateFormatString = "%A %e %B %Y";
+  NSDateTimeOrdering = DMYH;
+  NSDecimalDigits = ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
+  NSDecimalSeparator = ".";
+  NSEarlierTimeDesignations = ("первый", "последний", "прошедший", "назад");
+  NSHourNameDesignations = ((0, "полночь"), (10, "утро"), (12, "полдень", "обед"), (14, "день"), (19, "вечер"));
+  NSInternationalCurrencyString = RUB; /* ISO 4217 */
+  NSLaterTimeDesignations = ("позже");
+  NSMonthNameArray = ("Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь");
+  NSNextDayDesignations = ("завтра");
+  NSNextNextDayDesignations = ("завтра");
+  NSPriorDayDesignations = ("вчера");
+  NSShortDateFormatString = "%e/%m/%y";
+  NSShortMonthNameArray = ("Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек");
+  NSShortTimeDateFormatString = "%e/%m/%y %H:%M";
+  NSShortWeekDayNameArray = ("Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб");
+  NSThisDayDesignations = ("сегодня", "сейчас");
+  NSThousandsSeparator = " ";
+  NSTimeDateFormatString = "%A %e %B %Y %H:%M:%S %Z";
+  NSTimeFormatString = "%H:%M:%S";
+  NSWeekDayNameArray = ("Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота");
+  NSYearMonthWeekDesignations = ("год", "месяц", "неделя");
+  NSPositiveCurrencyFormatString = "9 999.00$";
+  NSNegativeCurrencyFormatString = "-9 999.00$";
+}

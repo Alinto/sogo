@@ -1,0 +1,261 @@
+/* this file is in UTF-8 format! */
+
+/* Icon's label */
+"Create"      = "Создать";
+"Empty Trash" = "Очистить 'Удаленные'";
+"Delete"      = "Удалить";
+"Expunge"     = "Очистить";
+"Forward"     = "Переслать";
+"Get Mail"    = "Получить";
+"Junk"        = "Спам";
+"Reply"       = "Ответить";
+"Reply All"   = "Ответить всем";
+"Print"       = "Печать";
+"Stop"        = "Стоп";
+"Write"       = "Написать";
+
+"Send" = "Послать";
+"Contacts" = "Адресная книга";
+"Attach" = "Вложить";
+"Save" = "Сохранить";
+"Priority" = "Важность";
+
+/* Tooltips */
+
+"Send this message now" = "Послать это сообщение сейчас";
+"Select a recipient from an Address Book" = "Выбрать получателей из адресной книги";
+"Include an attachment" = "Приложить файл";
+"Save this message" = "Сохранить это сообщение";
+"Get new messages" = "Получить новые сообщения";
+"Create a new message" = "Составить новое сообщение";
+"Go to address book" = "Перейти в адресную книгу";
+"Reply to the message" = "Ответить на сообщение";
+"Reply to sender and all recipients" = "Сосотавить ответ для отправителя и всех получателей";
+"Forward selected message" = "Переслать выделенное письмо";
+"Delete selected message or folder" = "Удалить выделенное письмо или папку";
+"Mark the selected messages as junk" = "Пометить выделенные сообщения как спам";
+"Print this message" = "Напечатать это сообщение";
+"Stop the current transfer" = "Остановить текущую операцию";
+"Attachment" = "Вложения";
+"Unread" = "Непрочитанные";
+"Flagged" = "Помеченные флагом";
+
+/* Main Frame  */
+
+"Home"                 = "Начало"; 
+"Calendar"             = "Календарь";
+"Addressbook"          = "Адресная книга";
+"Mail"                 = "Почта";
+"Right Administration" = "Права доступа";
+
+"Help" = "Помощь";
+
+/* Mail account main windows */
+
+"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Добро пожаловать в быстропочту! Для просмотра сообщений воспользуйтесь деревом папок слева.";
+
+"Read messages"       = "Читать сообщения";
+"Write a new message" = "Составить новое сообщение";
+
+"Share: " = "Совместное использование: ";
+"Account: " = "Пользователь: ";
+"Shared Account: " = "Общая учетная запись: ";
+
+/* acls */
+"Default Roles" = "Роли по умолчанию";
+"User rights for:" = "Права доступа для:";
+
+"List and see this folder" = "Видеть папку и названия писем в ней";
+"Read mails from this folder" = "Читать письма в папке";
+"Mark mails read and unread" = "Ставить письмам метку о прочтении";
+"Modify the flags of the mails in this folder" = "Расставлять флаги сообщениям в папке";
+"Insert, copy and move mails into this folder" = "Добавлять, копироваьт и перемещать сообщения в эту папку";
+"Post mails" = "Отправлять сообщения";
+"Add subfolders to this folder" = "Создавать подпапки в этой папке";
+"Remove this folder" = "Удалять эту папку";
+"Erase mails from this folder" = "Удалять сообщения из этой папки";
+"Expunge this folder" = "Помечать письма как удаленные";
+"Modify the acl of this folder" = "Управлять правами доступа к этой папке";
+
+"Update" = "Обновить";
+"Cancel" = "Отмена";
+
+/* Mail edition */
+
+"From"          = "От";
+"Subject"       = "Тема";
+"To"            = "Кому";
+"Cc"            = "Копия";
+"Bcc"           = "Скрытая копия";
+"Reply-To"	= "Обратный адрес";
+"Add address"   = "Добавить адрес";
+
+"Attachments:" = "Вложения:";
+
+"to"            = "Кому";
+"cc"            = "Копия";
+"bcc"           = "Скрытая копия";
+
+"Addressbook"   = "Адресная книга";
+
+"Edit Draft..." = "Редактировать черновик...";
+"Load Images" = "Загрузить изображения";
+
+"highest" = "Самый высокий";
+"high" = "Высокий";
+"normal" = "Обычный";
+"low" = "Низкий";
+"lowest" = "Самый низкий";
+
+"This mail is being sent from an unsecure network!" = "This mail is being sent from an unsecure network!";
+
+/* Popup "show" */
+
+"all"     = "все";
+"read"    = "прочитанные";
+"unread"  = "непрочитанные";
+"deleted" = "удаленные";
+"flagged" = "помеченные флагом";
+
+/* MailListView */
+
+"Sender" = "Отправитель";
+"Subject or Sender" = "Тема или Отправитель";
+"To or Cc" = "Кому или копия";
+"Entire Message" = "Сообщение целиком";
+
+"Date"          = "Дата";
+"View"          = "Просмотр";
+"All"           = "Все";
+"Unread"        = "Непрочитанные";
+"messages"      = "сообщения";
+
+"first"         = "первая";
+"previous"      = "предыдущая";
+"next"          = "следующая";
+"last"          = "последняя";
+
+"msgnumber_to"  = "до";
+"msgnumber_of"  = "из";
+
+"Mark Unread" = "Пометить как непрочитанное";
+"Mark Read"   = "Пометить как прочитанное";
+
+"Untitled" = "Без темы";
+
+/* Tree */
+
+"SentFolderName"   = "Отправленные";
+"TrashFolderName"  = "Корзина";
+"InboxFolderName"  = "Входящие";
+"DraftsFolderName" = "Черновики";
+"SieveFolderName"  = "Папки";
+"Folders"          = "Папки"; /* title line */
+
+/* MailMoveToPopUp */
+
+"MoveTo"        = "Переместить в &hellip;";
+
+/* Address Popup menu */
+"Add to Address Book..." = "Добавиь в адресную книгу...";
+"Compose Mail To" = "Составить письмо для";
+"Create Filter From Message..." = "Создать фильтр из сообщения...";
+
+/* Image Popup menu */
+"Save Image" = "Сохранить изображение";
+
+/* Mailbox popup menus */
+"Open in New Mail Window" = "Открыть в новом окне";
+"Copy Folder Location" = "Скопировать адрес папки";
+"Subscribe..." = "Подписаться...";
+"Mark Folder Read..." = "Отметить все письма в папке как прочтенные...";
+"New Folder..." = "Создать папку...";
+"Compact This Folder" = "Сжать эту папку";
+"Search Messages..." = "Поиск в сообщениях...";
+"Sharing..." = "Совместное использование папки...";
+"New Subfolder..." = "Создать вложенную папку...";
+"Rename Folder..." = "Переименовать папку...";
+"Delete Folder" = "Удалить папку";
+"Use This Folder For" = "Использовать эту папку для";
+"Get Messages for Account" = "Получить новые сообщения";
+
+/* Use This Folder menu */
+"Sent Messages" = "Отправленные сообщения";
+"Drafts" = "Черновики";
+"Deleted Messages" = "Удаленные сообщения";
+
+/* Message list popup menu */
+"Open Message In New Window" = "Открыть сообщение в новом окне";
+"Reply to Sender Only" = "Ответить отправителю";
+"Reply to All" = "Ответить всем упомянутым адресатам";
+"Forward" = "Переслать";
+"Edit As New..." = "Редактировать как новое...";
+"Move To" = "Переместить в";
+"Copy To" = "Скопировать в";
+"Label" = "Метка";
+"Mark" = "Отметить";
+"Save As..." = "Сохранить как...";
+"Print Preview" = "Печатать с предпросмотром";
+"View Message Source" = "Просмотр исходного текста сообщения";
+"Print..." = "Отправить на печать";
+"Delete Message" = "Удалить сообщение";
+"Delete Selected Messages" = "Удалить выделенные сообщения";
+
+"This Folder" = "Текущая папка";
+
+/* Label popup menu */
+"None" = "Удалить все метки";
+"Important" = "Важно";
+"Work" = "Работа";
+"Personal" = "Личное";
+"To Do" = "К исполнению";
+"Later" = "Позже";
+
+/* Mark popup menu */
+"As Read" = "как прочтанное";
+"Thread As Read" = "ветку как прочитанную";
+"As Read By Date..." = "как прочитанные по дате...";
+"All Read" = "все прочитанные";
+"Flag" = "Флаг";
+"As Junk" = "Спам";
+"As Not Junk" = "Не спам";
+"Run Junk Mail Controls" = "Запустить фильтр спама";
+
+/* Folder operations */
+"Name :" = "Имя :";
+"Enter the new name of your folder :"
+ = "Введите новое имя папки :";
+"Do you really want to move this folder into the trash ?"
+ = "Вы действительно хотите перенести эту папку в корзину?";
+"Operation failed" = "Операция завершилась неудачно";
+
+"Quota" = "Квота:";
+"quotasFormat" = "Занято %{0}% из %{1}МБ";
+
+"Please select a message." = "Пожалуйста выберите сообщение.";
+"Please select a message to print." = "Пожалуйста выберите сообщение для отправки на печать.";
+"Please select only one message to print." = "Пожалуйста выберите только одно сообщение для печати.";
+
+
+"The folder with name \"%{0}\" could not be created."
+= "Не могу создать папку с именем \"%{0}\".";
+"This folder could not be renamed to \"%{0}\"."
+= "Не могу переименовать папку в \"%{0}\".";
+"The folder could not be deleted."
+= "Не могу удалить эту папку.";
+"The trash could not be emptied."
+= "Не могу очистить корзину.";
+"The folder functionality could not be changed."
+= "Назначение папки не может быть изменено.";
+
+"You need to choose a non-virtual folder!" = "Выберите одно из невиртуальных папок!";
+
+"Moving a message into its own folder is impossible!"
+= "Невозможно переместить сообщение туда, где оно уже находится!";
+"Copying a message into its own folder is impossible!"
+= "Невозможно скопировать сообщение туда, где оно уже находится!";
+
+/* Message editing */
+"error_validationfailed" = "Проверка завершилась неудачей";
+"error_missingsubject" = "Тема сообщения не указана";
+"error_missingrecipients" = "Не указан адрес получателя";

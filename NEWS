@@ -2,7 +2,8 @@
 --------------------
 - basic alarm implementation for the web interface
 - user's status for events in the web interface now appears like in Lightning ("needs-action" events are surrounded by a dashed line, "declined" events are lighter)
-- added Welsh localisation, thanks to Iona Bailey
+- added Welsh translation, thanks to Iona Bailey
+- added Russh translation, thanks to Alex Kabakaev
 - added support for Oracle RAC
 - improvements to the underlying SOGo cache infrastructure
 - fixed bug with LDAP-based address books and the entries references (ID vs UID)
