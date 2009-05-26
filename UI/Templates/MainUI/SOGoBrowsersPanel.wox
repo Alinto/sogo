@@ -11,7 +11,7 @@
     <table>
       <tr>
 	<td>
-	  <img const:alt="*" id="splash" rsrc:src="sogo-bg.png"/>
+	  <img const:alt="*" id="splash" rsrc:src="sogo-logo.png"/>
 	</td>
 	<td id="loginCell" width="250">
 	  <p><var:string label:value="browserNotCompatible"/></p>
