@@ -1,0 +1,55 @@
+/* this file is in UTF-8 format! */
+
+/* toolbars */
+"Save" = "Сохранить";
+"Close" = "Закрыть";
+"Edit User Rights" = "Редактировать права пользователей";
+
+"Home" = "Начало";
+"Calendar" = "Календарь";
+"Address Book"	= "Адресная книга";
+"Mail" = "Почта";
+"Preferences" = "Настройки";
+"Disconnect" = "Выход";
+"Right Administration" = "Управление доступом";
+"Log Console (dev.)" = "Log Console (dev.)";
+
+"User"			= "Пользователь";
+
+"Help"			= "Помощь";
+
+"noJavascriptError" = "SOGo requires Javascript to run. Please make sure this option is available and activated within your browser preferences.";
+"noJavascriptRetry" = "Повторить попытку";
+
+"Publish the Free/Busy information" = "Публиковать информацию о занятом/свободном времени";
+
+"Default Roles" = "Контроль доступа для всех";
+
+"Sorry, the user rights can not be configured for that object." = "Извините, для данного объекта невозможно настроить права доступа.";
+
+/* generic.js */
+"Unable to subscribe to that folder!"
+	= "Невозможно подписаться на эту папку!";
+"You cannot subscribe to a folder that you own!"
+      	= "Вы не можете подписываться на собственную папку!";
+"Unable to unsubscribe from that folder!"
+	= "Невозможно прекратить подписку на эту папку!";
+"You cannot unsubscribe from a folder that you own!"
+      	= "Вы не можете прекратить подписку на собственную папку!";
+"Unable to rename that folder!" = "Unable to rename that folder!";
+"You have already subscribed to that folder!"
+     	= "Вы уже подписались на эту папку!";
+"The user rights cannot be edited for this object!"
+        = "Извините, для данного объекта невозможно настроить права доступа!";
+
+"You are not allowed to access this module or this system. Please contact your system administrator."
+= "Вам не предоставлено право доступа к этому модулю/системе. Пожалуйста, свяжитесь с администратором.";
+"You don't have the required privileges to perform the operation."
+= "У Вас нет права производить эту операцию.";
+
+
+/* alarms */
+"Reminder:" = "Напоминание:";
+"Start:" = "Начало:";
+"Due Date:" = "Дата начала:";
+"Location:" = "Место:";

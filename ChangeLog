@@ -1,3 +1,8 @@
+2009-05-23  Ludovic Marcotte <lmarcotte@inverse.ca>
+
+	* Added Russian tranlation - patch from
+	Alex Kabakaev <lists@kas.tomsk.ru>
+
 2009-05-22  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* Main/sogod.m (main): verify if the default parameter

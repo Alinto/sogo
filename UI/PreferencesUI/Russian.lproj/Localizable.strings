@@ -1,0 +1,106 @@
+/* toolbar */
+"Save and Close" = "Сохранить и закрыть";
+"Close" = "Закрыть не сохраняя";
+
+/* tabs */
+"General" = "Общее";
+"Calendar Options" = "Календарь";
+"Mail Options" = "Почта";
+"Identities" = "Identities";
+"Password" = "Пароль";
+
+/* ooo */
+"I'm currently in the office" = "Я на рабочем месте";
+"I'm currently out of the office" = "Я отошел от рабочего места";
+"AutoReply only once to each sender with the following text :"
+= "Автоматически посылать этот текст каждому отправителю один раз :";
+
+/* d & t */
+"Current Time Zone :" = "Текущая временная зона :";
+"Short Date Format :" = "Короткий формат даты :";
+"Long Date Format :" = "Длинный формат даты :";
+"Time Format :" = "Формат времени :";
+
+"shortDateFmt_0" = "%e/%m/%Y";
+"shortDateFmt_1" = "%d/%m/%Y";
+"shortDateFmt_2" = "%e-%m-%y";
+"shortDateFmt_3" = "%d-%m-%y";
+"shortDateFmt_4" = "%y/%m/%d";
+"shortDateFmt_5" = "%Y-%m-%d";
+"shortDateFmt_6" = "%d-%b-%y";
+"shortDateFmt_7" = "";
+
+"longDateFmt_0" = "%A %e %B %Y";
+"longDateFmt_1" = "%e %b. %Y";
+"longDateFmt_2" = "%e %B %Y";
+"longDateFmt_3" = "%A, %B %d, %Y";
+"longDateFmt_4" = "%B %d, %Y";
+"longDateFmt_5" = "%A, %d %B, %Y";
+"longDateFmt_6" = "%d %B, %Y";
+"longDateFmt_7" = "";
+
+"timeFmt_0" = "%H:%M";
+"timeFmt_1" = "%H.%M";
+"timeFmt_2" = "%H h. %M";
+"timeFmt_3" = "%I:%M %p";
+"timeFmt_4" = "";
+
+/* calendar */
+"Week begins on :" = "Неделя начинается с :";
+"Day start time :" = "Рабочий день начинается в :";
+"Day end time :" = "Рабочий день заканчивается в :";
+"First week of year :" = "Первая неделя года :";
+"Enable reminders for Calendar items" = "Включить напоминания для событий календаря";
+"Play a sound when a reminder comes due"
+= "Проигрывать звук когда срабатывает оповещение";
+"Default reminder :" = "Обычное оповещение :";
+
+"firstWeekOfYear_January1" = "Начинается 1 января";
+"firstWeekOfYear_First4DayWeek" = "Первая 4-х дневная неделя";
+"firstWeekOfYear_FirstFullWeek" = "Первая полная неделя";
+
+"reminderTime_0000" = "0 минут";
+"reminderTime_0005" = "5 минут";
+"reminderTime_0010" = "10 минут";
+"reminderTime_0015" = "15 минут";
+"reminderTime_0030" = "30 минут";
+"reminderTime_0100" = "1 час";
+"reminderTime_0200" = "2 часа";
+"reminderTime_0400" = "4 часа";
+"reminderTime_0800" = "8 часов";
+"reminderTime_1200" = "1/2дня";
+"reminderTime_2400" = "1 день";
+"reminderTime_4800" = "2 дня";
+
+/* Mailer */
+"Show subscribed mailboxes only" = "Показывать только почтовые ящики, на которые подписан";
+"Check for new mail:" = "Проверять новую почту:";
+"messagecheck_manually" = "Вручную";
+"messagecheck_every_minute" = "Каждую минуту";
+"messagecheck_every_2_minutes" = "Каждые 2 минуты";
+"messagecheck_every_5_minutes" = "Каждые 5 минут";
+"messagecheck_every_10_minutes" = "Каждые 10 минут";
+"messagecheck_every_20_minutes" = "Каждые 20 минут";
+"messagecheck_every_30_minutes" = "Каждые 30 минут";
+"messagecheck_once_per_hour" = "Раз в час";
+
+"Forward messages:" = "Пересылать сообщения:";
+"messageforward_inline" = "В теле письма";
+"messageforward_attached" = "Приложенным файлом";
+
+"Default identity:" = "Обысно я представляюсь как:";
+"Manage identities..." = "Управлять именами...";
+"Signature" = "Подпись";
+"replyplacement_above" = "Начинать мой ответ над цитируемым текстом";
+"replyplacement_below" = "Начинать мой ответ под цитируемым текстом";
+"And place my signature" = "И поместить мою подпись";
+"signatureplacement_above" = "под ответом";
+"signatureplacement_below" = "под цитируемым текстом письма";
+
+/* Additional Parameters */
+"Additional Parameters" = "Дополнительные параметры";
+
+/* password */
+"New password:" = "Новый пароль:";
+"Confirmation:" = "Повтор нового пароля:";
+"Change" = "Изменить";

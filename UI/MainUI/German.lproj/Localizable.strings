@@ -2,7 +2,7 @@
 
 "title" = "SOGo";
 
-"Login:" = "Benutzername:";
+"Username:" = "Benutzername:";
 "Password:" = "Passwort:";
 
 "Connect" = "Anmelden";
@@ -22,6 +22,8 @@
 "German" = "Deutsch";
 "Italian" = "Italienisch";
 "Spanish" = "Spanisch";
+"Welsh" = "Walisisch";
+"Russian" = "Russisch";
 
 "About" = "About";
 "AboutBox" = "SOGo  is a groupware server built around OpenGroupware.org (OGo) and the SOPE application server.  It focuses on scalability.<br/><br/>

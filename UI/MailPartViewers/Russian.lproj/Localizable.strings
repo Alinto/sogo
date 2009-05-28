@@ -1,0 +1,34 @@
+ACCEPTED = "принято";
+COMPLETED = "закончено";
+DECLINED = "отклонено";
+DELEGATED = "делегировано";
+IN-PROCESS = "в процессе";
+NEEDS-ACTION = "требует действия";
+TENTATIVE = "предварительное согласие";
+organized_by_you = "организованные Вами";
+you_are_an_attendee = "с Вашим участием";
+add_info_text = "iMIP 'ADD' requests are not yet supported by SOGo.";
+publish_info_text = "Отправитель сообщает о приложенном событии.";
+cancel_info_text = "Ваше приглашение или все мероприятие отменено.";
+request_info_no_attendee = "предлагает участникам встретиться. Вы получили это сообщение как приглашенное лицо. Вы еще не включены в список подтвержденных участников.";
+Appointment = "Встреча";
+
+Organizer = "Организатор";
+Time = "Время";
+Attendees = "Приглашенные";
+request_info = "приглашает Вас принять участие в встрече.";
+"Add to calendar" = "Добавить в календарь";
+"Delete from calendar" = "Удалить из календаря";
+"Update status" = "Обновить статус";
+Accept = "Принять";
+Decline = "Отклонить";
+Tentative = "предварительно согласиться";
+"Update status in calendar" = "Обновить статус в календаре";
+reply_info_no_attendee = "Вы получили ответ на запланированное мероприятие, но отправителя сообщения нет среди приглашенных.";
+reply_info = "Это ответ на Ваше приглашение на мероприятие.";
+
+"to" = "к";
+
+"Untitled" = "Без названия";
+
+"Size" = "Размер";

@@ -56,4 +56,7 @@
 @interface SOGoMailSpanishForward : SOGoMailForward
 @end
 
+@interface SOGoMailRussianForward : SOGoMailForward
+@end
+
 #endif /* SOGOMAILFORWARD_H */
