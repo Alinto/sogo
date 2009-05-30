@@ -1,3 +1,9 @@
+2009-05-30  Ludovic Marcotte <lmarcotte@inverse.ca>
+
+	* Modified SOGoCalendarComponent.m so that we
+	explicitely add the MIME-Version header when
+	sending out invitation messages.
+
 2009-05-23  Ludovic Marcotte <lmarcotte@inverse.ca>
 
 	* Added Russian tranlation - patch from

@@ -11,6 +11,7 @@
 - added groups support in attendees and in ACLs
 - added support for user-based IMAP hostname
 - added support for IMAP subscriptions in web interface
+- now possible to use SSL (or TLS) for LDAP sources
 
 1.0-20090407 (1.0.1)
 --------------------

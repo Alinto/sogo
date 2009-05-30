@@ -673,6 +673,7 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
 		   * so we'll stick with multipart/mixed for the time being.
 		   */
 		  [headerMap setObject: @"multipart/mixed" forKey: @"content-type"];
+		  [headerMap setObject: @"1.0" forKey: @"MIME-Version"];
 		  [headerMap setObject: senderEmail forKey: @"from"];
 		  [headerMap setObject: recipient forKey: @"to"];
 		  mailDate = [[NSCalendarDate date] rfc822DateString];
@@ -764,6 +765,7 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
        * so we'll stick with multipart/mixed for the time being.
        */
       [headerMap setObject: @"multipart/mixed" forKey: @"content-type"];
+      [headerMap setObject: @"1.0" forKey: @"MIME-Version"];
       [headerMap setObject: [attendee mailAddress] forKey: @"from"];
       [headerMap setObject: [recipient mailAddress] forKey: @"to"];
       mailDate = [[NSCalendarDate date] rfc822DateString];
