@@ -1,5 +1,8 @@
 2009-06-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailFolderActions.m (-deleteFolderAction):
+	renamed to deleteAction to match the methods in UI/Common/*Actions.m
+
 	* UI/Common/UIxFolderActions.m (-): removed useless method since
 	SOGoFolders can use the "delete" web method to achieve the same result.
 

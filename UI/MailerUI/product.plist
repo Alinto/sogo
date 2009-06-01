@@ -131,7 +131,7 @@
 	  actionClass = "UIxMailFolderActions";
 	  actionName = "renameFolder";
 	};
-	deleteFolder = {
+	delete = {
 	  protectedBy = "View";
 	  actionClass = "UIxMailFolderActions";
 	  actionName = "deleteFolder";

@@ -153,7 +153,7 @@
   return destURL;
 }
 
-- (WOResponse *) deleteFolderAction
+- (WOResponse *) deleteAction
 {
   SOGoMailFolder *co, *inbox;
   WOResponse *response;
@@ -164,13 +164,11 @@
   co = [self clientObject];
   connection = [co imap4Connection];
   srcURL = [co imap4URL];
-  destURL = [self _trashedURLOfFolder: srcURL
-		  withCO: co];
+  destURL = [self _trashedURLOfFolder: srcURL withCO: co];
   connection = [co imap4Connection];
   inbox = [[co mailAccountFolder] inboxFolderInContext: context];
   [[connection client] select: [inbox absoluteImap4Name]];
-  error = [connection moveMailboxAtURL: srcURL
-		      toURL: destURL];
+  error = [connection moveMailboxAtURL: srcURL toURL: destURL];
   if (error)
     {
       response = [self responseWithStatus: 500];
@@ -182,7 +180,7 @@
   return response;
 }
 
-- (WOResponse *) deleteMessagesAction
+- (WOResponse *) batchDeleteAction
 {
   SOGoMailFolder *co;
   WOResponse *response;

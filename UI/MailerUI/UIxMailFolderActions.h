@@ -31,8 +31,8 @@
 
 - (WOResponse *) createFolderAction;
 - (WOResponse *) renameFolderAction;
-- (WOResponse *) deleteFolderAction;
-- (WOResponse *) deleteMessagesAction;
+- (WOResponse *) deleteAction;
+- (WOResponse *) batchDeleteAction;
 - (WOResponse *) saveMessagesAction;
 - (WOResponse *) expungeAction;
 - (WOResponse *) emptyTrashAction;

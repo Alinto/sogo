@@ -313,7 +313,7 @@ function deleteSelectedMessages(sender) {
 			uids.push(uid);
 			paths.push(path);
     }
-		var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/deleteMessages";
+		var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/batchDelete";
 		var parameters = "uid=" + uids.join(",");
 		var data = { "id": uids, "mailbox": Mailer.currentMailbox, "path": paths };
 		triggerAjaxRequest(url, deleteSelectedMessagesCallback, data, parameters,
