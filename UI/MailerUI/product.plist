@@ -134,12 +134,12 @@
 	delete = {
 	  protectedBy = "View";
 	  actionClass = "UIxMailFolderActions";
-	  actionName = "deleteFolder";
+	  actionName = "delete";
 	};
-	deleteMessages = {
+	batchDelete = {
 	  protectedBy = "View";
 	  actionClass = "UIxMailFolderActions";
-	  actionName = "deleteMessages";
+	  actionName = "batchDelete";
 	};
 	saveMessages = {
 	  protectedBy = "View";
