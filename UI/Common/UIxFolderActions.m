@@ -168,17 +168,6 @@
   return [self _realFolderActivation: NO];
 }
 
-- (WOResponse *) deleteFolderAction
-{
-  WOResponse *response;
-
-  response = (WOResponse *) [[self clientObject] delete];
-  if (!response)
-    response = [self responseWith204];
-
-  return response;
-}
-
 - (WOResponse *) renameFolderAction
 {
   WOResponse *response;

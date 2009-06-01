@@ -694,7 +694,7 @@ function deletePersonalAddressBook(folderId) {
 				document.deletePersonalABAjaxRequest.aborted = true;
 				document.deletePersonalABAjaxRequest.abort();
 			}
-			var url = ApplicationBaseURL + folderId + "/deleteFolder";
+			var url = ApplicationBaseURL + folderId + "/delete";
 			document.deletePersonalABAjaxRequest
 				= triggerAjaxRequest(url, deletePersonalAddressBookCallback,
 														 folderId);

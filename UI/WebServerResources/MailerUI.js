@@ -1871,7 +1871,7 @@ function onMenuDeleteFolder(event) {
   var answer = window.confirm(labels["Do you really want to move this folder into the trash ?"]);
   if (answer) {
     var folderID = document.menuTarget.getAttribute("dataname");
-    var urlstr = URLForFolderID(folderID) + "/deleteFolder";
+    var urlstr = URLForFolderID(folderID) + "/delete";
     var errorLabel = labels["The folder could not be deleted."];
     triggerAjaxRequest(urlstr, folderOperationCallback, errorLabel);
   }

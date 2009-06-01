@@ -1,3 +1,11 @@
+2009-06-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Common/UIxFolderActions.m (-): removed useless method since
+	SOGoFolders can use the "delete" web method to achieve the same result.
+
+	* SoObjects/SOGo/SOGoPermissions.m: declared new "Delete Object"
+	permission.
+
 2009-05-30  Ludovic Marcotte <lmarcotte@inverse.ca>
 
 	* Modified SOGoCalendarComponent.m so that we

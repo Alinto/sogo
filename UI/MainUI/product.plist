@@ -27,8 +27,19 @@
 	"Add Folders" = ( "Owner", "FolderCreator" );
         "ReadAcls" = ( "Owner" );
         "Change Permissions" = ( "Owner" );
-        "Delete Objects" = ( "Owner", "ObjectEraser" );
+        "Delete Object" = ( "Owner", "ObjectEraser" );
         "WebDAV Access" = ( "Owner", "ObjectViewer", "ObjectEditor", "ObjectCreator", "ObjectEraser" );
+      };
+      methods = {
+        DELETE = { 
+          protectedBy = "Delete Object";
+        };
+	GET = {
+          protectedBy = "Access Contents Information";
+	};
+	PUT = {
+	  protectedBy = "Change Images And Files";
+	};
       };
     };
     SOGoContentObject = {
@@ -40,17 +51,6 @@
       	"Access Contents Information" = ( "Owner", "ObjectViewer", "ObjectEditor" );
 	"Change Images And Files" = ( "Owner", "ObjectEditor" );
       };
-      methods = {
-        DELETE = { 
-          protectedBy = "Delete Objects";
-        };
-	GET = {
-          protectedBy = "Access Contents Information";
-	};
-	PUT = {
-	  protectedBy = "Change Images And Files";
-	};
-      };
     };
     SOGoFolder = {
       superclass = "SOGoObject";
@@ -60,6 +60,8 @@
 	"View" = ( "Owner", "ObjectViewer", "ObjectEditor" );
 	"Access Contents Information" = ( "Owner", "ObjectViewer", "ObjectEditor" );
 	"WebDAV Access" = ( "Authenticated", "AuthorizedSubscriber" );
+        "Delete Object" = ( "Owner" );
+        "Delete Objects" = ( "Owner", "ObjectEraser" );
       };
     };
     SOGoParentFolder = {
@@ -69,7 +71,6 @@
 	"Access Contents Information" = ( "Authenticated" );
         "WebDAV Access" = ( "Authenticated" );
 	"Add Folders" = ( "Owner" );
-	"Delete Objects" = ( "Owner" );
       };
     };
     SOGoUserFolder = {
@@ -83,9 +84,6 @@
     };
     SOGoGCSFolder = {
       superclass = "SOGoFolder";
-      defaultRoles = {
-	"Delete Objects" = ( "Owner" );
-      };
     };
   };
 

@@ -72,6 +72,7 @@ NSString *SOGoMailRole_Administrator = @"MailAdministrator";
 
 /* permissions */
 NSString *SOGoPerm_AccessObject= @"Access Object";
+NSString *SOGoPerm_DeleteObject= @"Delete Object";
 NSString *SOGoPerm_ReadAcls = @"ReadAcls"; /* the equivalent of "read-acl" in
                                               the WebDAV acls spec, which is
                                               currently missing from SOPE */

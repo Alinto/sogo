@@ -41,7 +41,7 @@
 	  actionName  = "removeUserFromAcls";
 	};
 	delete = {
-	  protectedBy = "Delete Objects";
+	  protectedBy = "Delete Object";
 	  actionClass = "UIxObjectActions";
 	  actionName  = "delete";
 	};
@@ -100,11 +100,6 @@
 	  protectedBy = "<public>";
 	  actionClass = "UIxFolderActions";
 	  actionName  = "deactivateFolder";
-	};
-	deleteFolder = {
-	  protectedBy = "Delete Objects";
-	  actionClass = "UIxFolderActions";
-	  actionName  = "deleteFolder";
 	};
 	renameFolder = {
 	  protectedBy = "Change Permissions";

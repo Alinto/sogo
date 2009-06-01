@@ -1915,7 +1915,7 @@ function deletePersonalCalendar(folderElement) {
     = labels["Are you sure you want to delete the calendar \"%{0}\"?"].formatted($(folderElement).lastChild.nodeValue.strip());
   if (window.confirm(label)) {
     removeFolderRequestCount++;
-    var url = ApplicationBaseURL + "/" + folderId + "/deleteFolder";
+    var url = ApplicationBaseURL + "/" + folderId + "/delete";
     triggerAjaxRequest(url, deletePersonalCalendarCallback, folderId);
   }
 }

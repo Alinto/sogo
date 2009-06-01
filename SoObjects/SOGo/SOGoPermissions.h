@@ -70,6 +70,7 @@ extern NSString *SOGoCalendarRole_ComponentModifier;
 extern NSString *SOGoCalendarRole_ComponentResponder;
 
 extern NSString *SOGoPerm_AccessObject;
+extern NSString *SOGoPerm_DeleteObject;
 extern NSString *SOGoPerm_ReadAcls;
 extern NSString *SOGoPerm_FreeBusyLookup;
 
