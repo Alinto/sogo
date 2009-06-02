@@ -2,9 +2,10 @@
 
 function onSearchFormSubmit() {
   var searchValue = $("searchValue");
+  var encodedValue = encodeURI(searchValue.value);
 
   var url = (UserFolderURL
-						 + "usersSearch?search=" + escape(searchValue.value));
+						 + "usersSearch?search=" + encodedValue);
   if (document.userFoldersRequest) {
 		document.userFoldersRequest.aborted = true;
 		document.userFoldersRequest.abort();

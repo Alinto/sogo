@@ -1545,10 +1545,10 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   document = [[context request] contentAsDOMDocument];
   documentElement = [document documentElement];
   properties = [[self _parseRequestedProperties: documentElement]
-		 asPointersOfObjects];
+                 asPointersOfObjects];
   [self _appendComponentProperties: properties
-	matchingFilters: [self _parseCalendarFilters: documentElement]
-        toResponse: r];
+	                 matchingFilters: [self _parseCalendarFilters: documentElement]
+                        toResponse: r];
   [r appendContentString:@"</D:multistatus>"];
   free (properties);
 
