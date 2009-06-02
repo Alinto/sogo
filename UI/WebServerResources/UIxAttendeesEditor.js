@@ -450,10 +450,10 @@ function initializeWindowButtons() {
 	var buttons = $("freeBusyViewButtons").childNodesWithTag("a");
 	for (var i = 0; i < buttons.length; i++)
 		buttons[i].observe("click", listRowMouseDownHandler, false);
-	buttons = $("freeBusyZoomButtons").childNodesWithTag("a");
+/*	buttons = $("freeBusyZoomButtons").childNodesWithTag("a");
 	for (var i = 0; i < buttons.length; i++)
 		buttons[i].observe("click", listRowMouseDownHandler, false);
-/*	buttons = $("freeBusyButtons").childNodesWithTag("a");
+	buttons = $("freeBusyButtons").childNodesWithTag("a");
 	for (var i = 0; i < buttons.length; i++)
 		buttons[i].observe("click", listRowMouseDownHandler, false);
 */
