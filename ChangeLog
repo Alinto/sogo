@@ -1,3 +1,11 @@
+2009-06-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Tools/sogo-contacts-removedoubles.m: new maintenance utility
+	that removes double records in specified addressbooks.
+
+	* Tools/sogo-contacts-checkdoubles.m: new maintenance utility that
+	helps determine which contact folders need cleanup.
+
 2009-06-02  Cyril Robert <crobert@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m (_enforceTimeLimitOnFilter):

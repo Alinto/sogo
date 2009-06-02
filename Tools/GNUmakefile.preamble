@@ -1,0 +1,20 @@
+# compile settings
+
+ADDITIONAL_CPPFLAGS += \
+        -DSOGO_MAJOR_VERSION=$(MAJOR_VERSION) \
+        -DSOGO_MINOR_VERSION=$(MINOR_VERSION) \
+        -DSOGO_SUBMINOR_VERSION=$(SUBMINOR_VERSION) \
+	-DSOGO_LIBDIR="\"$(SOGO_LIBDIR)\""
+
+ADDITIONAL_INCLUDE_DIRS += \
+	-I../SOPE/ -D_GNU_SOURCE
+
+ADDITIONAL_LIB_DIRS += \
+	-L../SOPE/GDLContentStore/$(GNUSTEP_OBJ_DIR)/ -lGDLContentStore
+
+SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib
+
+$(SOGOD)_TOOL_LIBS += \
+	-lGDLContentStore	\
+	-lGDLAccess		\
+	-lNGExtensions
