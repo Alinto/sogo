@@ -1291,6 +1291,43 @@ static NSArray *contentFieldNames = nil;
     }
 }
 
+- (unsigned int) recordsCountByExcludingDeleted: (BOOL) excludeDeleted
+{
+  NSMutableString  *sqlString;
+  EOAdaptorChannel *channel;
+  NSException *error;
+  NSDictionary *row;
+  unsigned int count;
+  NSArray *attrs;
+
+  count = 0;
+
+  sqlString = [NSMutableString stringWithFormat:
+				 @"SELECT COUNT(*) AS CNT FROM %@",
+			       [self storeTableName]];
+  if (excludeDeleted)
+    [sqlString appendString: @" WHERE (c_deleted != 1 OR c_deleted IS NULL)"];
+
+  channel = [self acquireStoreChannel];
+  if (channel)
+    {
+      error = [channel evaluateExpressionX: sqlString];
+      if (error)
+	[self errorWithFormat: @"%s: cannot execute SQL '%@': %@", 
+	      __PRETTY_FUNCTION__, sqlString, error];
+      else
+	{
+	  attrs = [channel describeResults: NO];
+	  row = [channel fetchAttributes: attrs withZone: NULL];
+	  count = [[row objectForKey: @"cnt"] unsignedIntValue];
+	  [channel cancelFetch];
+	}
+      [self releaseChannel: channel];
+    }
+
+  return count;
+}
+
 /* description */
 
 - (NSString *)description {

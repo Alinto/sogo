@@ -1,3 +1,8 @@
+2009-06-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* GCSFolder.m ([GCSFolder -recordsCountByExcludingDeleted:]): new
+	method that returns the amount of records in a GCS folder.
+
 2009-03-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* GCSFolderType.m ([GCSFolderType +folderTypeWithName:_typeName]):

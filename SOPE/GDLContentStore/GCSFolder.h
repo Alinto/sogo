@@ -140,6 +140,8 @@
 - (void) deleteAclMatchingQualifier: (EOQualifier *) _q;
 - (void) deleteAclWithSpecification: (EOFetchSpecification *) _fs;
 
+- (unsigned int) recordsCountByExcludingDeleted: (BOOL) includeDeleted;
+
 @end
 
 #endif /* __GDLContentStore_GCSFolder_H__ */
