@@ -901,8 +901,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 		       title: (NSString *) title
 		   component: (id) _component
 	   additionalFilters: (NSString *) filters
- includeProtectedInformation: (BOOL) _includeProtectedInformation;
-
+ includeProtectedInformation: (BOOL) _includeProtectedInformation
 {
   EOQualifier *qualifier;
   GCSFolder *folder;
@@ -1306,6 +1305,20 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   [self _enforceTimeLimitOnFilter: filter];
 }
 
+- (void) _addDateRangeLimitToFilter: (NSMutableDictionary *) filter
+{
+  NSCalendarDate *now;
+  int limit;
+
+  now = [NSCalendarDate date];
+  limit = [self _getStartTimeLimit];
+
+  [filter setObject: [now addTimeInterval: (limit / 2) * -86400]
+             forKey: @"start"];
+  [filter setObject: [now addTimeInterval: (limit / 2) * 86400]
+             forKey: @"end"];
+}
+
 #warning This method lacks support for timeranges
 - (void) _appendPropertyFilter: (id <DOMElement>) propFilter
 		      toFilter: (NSMutableDictionary *) filter
@@ -1359,10 +1372,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
           maxStart = [self _getMaxStartDate];
           if (maxStart)
             {
-              [filterData setObject: maxStart 
-                             forKey: @"start"];
-              [filterData setObject: [NSCalendarDate distantFuture]
-                             forKey: @"end"];
+              [self _addDateRangeLimitToFilter: filterData];
             }
         }
     }
