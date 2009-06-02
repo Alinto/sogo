@@ -1514,7 +1514,6 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     {
       filterString = [NSString stringWithFormat: @"(c_iscycle = '%d')", 
                       [cycle intValue]];
-      NSLog (filterString);
       [filters addObject: filterString];
     }
 
