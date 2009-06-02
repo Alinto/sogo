@@ -895,6 +895,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     }
 }
 
+/* TODO: this method should make use of bareFetchFields instead and only keep
+   its "intelligence" part for handling protected infos and recurrent
+   events... */
 - (NSArray *)    fetchFields: (NSArray *) _fields
                         from: (NSCalendarDate *) _startDate
                           to: (NSCalendarDate *) _endDate 
@@ -1016,8 +1019,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   currentLogin = [[context activeUser] login];
   if (![currentLogin isEqualToString: owner] && !_includeProtectedInformation)
     [self _fixupProtectedInformation: [ma objectEnumerator]
-                            inFields: _fields
-                             forUser: currentLogin];
+	  inFields: _fields
+	  forUser: currentLogin];
 
   if (rememberRecords)
     [self _rememberRecords: ma];
@@ -1277,7 +1280,6 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
               end = [now addTimeInterval: (limit / 2) * 86400];
               [filter setObject: end forKey: @"end"];
             }
-
         }
       else if ([now compare: end] == NSOrderedDescending)
         {
@@ -1360,20 +1362,18 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       elements = [filterElement getElementsByTagName: @"time-range"];
       if ([elements length])
         [self _appendTimeRange: [elements objectAtIndex: 0]
-              toFilter: filterData];
+		      toFilter: filterData];
 
       elements = [filterElement getElementsByTagName: @"prop-filter"];
       if ([elements length])
         [self _appendPropertyFilter: [elements objectAtIndex: 0]
-              toFilter: filterData];
+                           toFilter: filterData];
 
-      if ( ![filterData objectForKey: @"start"] )
+      if (![filterData objectForKey: @"start"])
         {
           maxStart = [self _getMaxStartDate];
           if (maxStart)
-            {
-              [self _addDateRangeLimitToFilter: filterData];
-            }
+	    [self _addDateRangeLimitToFilter: filterData];
         }
       [filterData setObject: [NSNumber numberWithBool: NO] forKey: @"iscycle"];
     }
@@ -1427,7 +1427,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   rc = [NSMutableDictionary dictionaryWithDictionary: filter];
   [rc removeObjectForKey: @"start"];
   [rc removeObjectForKey: @"end"];
-  [rc setObject: [NSNumber numberWithBool: YES] forKey: @"iscycle"];
+  [rc setObject: sharedYes forKey: @"iscycle"];
 
   return rc;
 }
@@ -1502,8 +1502,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       keyField = [NSString stringWithFormat: @"c_%@", currentKey];
       if ([fields containsObject: keyField])
         {
-          filterString = [self _additionalFilterKey: keyField
-                                              value: [filter objectForKey: currentKey]];
+          filterString
+            = [self _additionalFilterKey: keyField
+                                   value: [filter objectForKey: currentKey]];
           [filters addObject: filterString];
         }
     }
@@ -1513,7 +1514,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   if (cycle)
     {
       filterString = [NSString stringWithFormat: @"(c_iscycle = '%d')", 
-                      [cycle intValue]];
+			       [cycle intValue]];
       [filters addObject: filterString];
     }
 
@@ -1666,7 +1667,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   properties = [[self _parseRequestedProperties: documentElement]
                  asPointersOfObjects];
   [self _appendComponentProperties: properties
-	                 matchingFilters: [self _parseCalendarFilters: documentElement]
+                   matchingFilters: [self _parseCalendarFilters:
+                                            documentElement]
                         toResponse: r];
   [r appendContentString:@"</D:multistatus>"];
   free (properties);

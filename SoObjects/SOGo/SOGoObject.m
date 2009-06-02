@@ -1667,7 +1667,7 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
 	{
 	  currentValue = [setProps objectForKey: currentProp];
 	  exception = [self performSelector: methodSel
-			    withObject: currentValue];
+                                 withObject: currentValue];
 	}
       else
 	exception
