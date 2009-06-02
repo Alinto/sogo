@@ -880,27 +880,27 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   while ((currentRecord = [ma nextObject]))
     {
       accessClass
-	= [[currentRecord objectForKey: @"c_classification"] intValue];
+        = [[currentRecord objectForKey: @"c_classification"] intValue];
       role = roles[accessClass];
       if (!role)
-	{
-	  fullRole = [self roleForComponentsWithAccessClass: accessClass
-			   forUser: uid];
-	  if ([fullRole length] > 9)
-	    role = [fullRole substringFromIndex: 9];
-	  roles[accessClass] = role;
-	}
+        {
+          fullRole = [self roleForComponentsWithAccessClass: accessClass
+                                                    forUser: uid];
+          if ([fullRole length] > 9)
+            role = [fullRole substringFromIndex: 9];
+          roles[accessClass] = role;
+        }
       if ([role isEqualToString: @"DAndTViewer"])
-	[currentRecord removeObjectsForKeys: stripFields];
+        [currentRecord removeObjectsForKeys: stripFields];
     }
 }
 
 - (NSArray *)    fetchFields: (NSArray *) _fields
-			from: (NSCalendarDate *) _startDate
-			  to: (NSCalendarDate *) _endDate 
-		       title: (NSString *) title
-		   component: (id) _component
-	   additionalFilters: (NSString *) filters
+                        from: (NSCalendarDate *) _startDate
+                          to: (NSCalendarDate *) _endDate 
+                       title: (NSString *) title
+                   component: (id) _component
+           additionalFilters: (NSString *) filters
  includeProtectedInformation: (BOOL) _includeProtectedInformation
 {
   EOQualifier *qualifier;
@@ -928,11 +928,11 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   if (_startDate)
     {
       if (_endDate)
-	endDate = _endDate;
+        endDate = _endDate;
       else
-	endDate = [NSCalendarDate distantFuture];
+        endDate = [NSCalendarDate distantFuture];
       r = [NGCalendarDateRange calendarDateRangeWithStartDate: _startDate
-                               endDate: endDate];
+                                                      endDate: endDate];
       dateSqlString = [self _sqlStringRangeFrom: _startDate to: endDate];
     }
   else
@@ -995,14 +995,14 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       
       records = [folder fetchFields: fields matchingQualifier: qualifier];
       if (records)
-	{
-	  if (r)
-	    records = [self fixupCyclicRecords: records fetchRange: r];
-	  if (ma)
-	    [ma addObjectsFromArray: records];
-	  else
-	    ma = [NSMutableArray arrayWithArray: records];
-	}
+        {
+          if (r)
+            records = [self fixupCyclicRecords: records fetchRange: r];
+          if (ma)
+            [ma addObjectsFromArray: records];
+          else
+            ma = [NSMutableArray arrayWithArray: records];
+        }
     }
   if (!ma)
     {
