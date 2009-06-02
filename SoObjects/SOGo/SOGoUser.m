@@ -915,15 +915,15 @@ _timeValue (NSString *key)
 - (SOGoUserFolder *) homeFolderInContext: (id) context
 {
   return [[WOApplication application] lookupName: [self login]
-				      inContext: context
-				      acquire: NO];
+                                       inContext: context
+                                         acquire: NO];
 }
 
 - (SOGoAppointmentFolders *) calendarsFolderInContext: (WOContext *) context
 {
   return [[self homeFolderInContext: context] lookupName: @"Calendar"
-					      inContext: context
-					      acquire: NO];
+                                               inContext: context
+                                                 acquire: NO];
 }
 
 - (SOGoAppointmentFolder *)

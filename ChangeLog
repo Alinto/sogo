@@ -1,3 +1,16 @@
+2009-06-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Tools/sogo-contacts-removedoubles.m: new maintenance utility
+	that removes double records in specified addressbooks.
+
+	* Tools/sogo-contacts-checkdoubles.m: new maintenance utility that
+	helps determine which contact folders need cleanup.
+
+2009-06-02  Cyril Robert <crobert@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m (_enforceTimeLimitOnFilter):
+	Rewrote algorithm, fixed cyclic events issue.
+
 2009-06-02  Ludovic Marcotte <lmarcotte@inverse.ca>
 
 	* Updated the documentation (version change, Russian
@@ -19,6 +32,10 @@
 
 	* UI/WebServerResources/UIxContactsUserFolders.js (onSearchFormSubmit): 
 	Fixed encoding issue/crash.
+	* SoObjects/Appointments/SOGoAppointmentFolder.m (_parseCalendarFilter): 
+	Added support for default SOGoDAVCalendarStartTimeLimit, which is the
+	maximum number of days for dav queries.
+	Added: _enforceTimeLimitOnFilter, _getMaxStartDate and _getStartTimeLimit
 
 2009-05-30  Ludovic Marcotte <lmarcotte@inverse.ca>
 
