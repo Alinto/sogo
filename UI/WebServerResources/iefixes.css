@@ -31,9 +31,7 @@ A.button,
 INPUT.button
 { border: 1px solid #fff;
   border-right: 1px solid #666;
-  border-bottom: 1px solid #666;
-  margin: 0px;
-  padding: 0px; }
+  border-bottom: 1px solid #666; }
 
 A.button
 { color: #000;
@@ -302,3 +300,10 @@ TABLE
 /* UIxCalendarProperties */
 BUTTON#colorButton
 { margin-top: 2px; }
+
+/* UIxMailPartICalViewer */
+fieldset
+{ padding: 0.5em 1.0em; }
+
+fieldset div, fieldset p
+{ margin: 1.0em; }

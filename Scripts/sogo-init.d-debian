@@ -44,18 +44,18 @@ if [ ! -x $DAEMON ]; then
  exit 1
 fi
 
-if [ `/usr/bin/stat /var/run/sogo -c %U` != "sogo" ]; then
- echo "/var/run/sogo is not owned by the sogo user."
+if [ `/usr/bin/stat /var/run/sogo -c %U` != $USER ]; then
+ echo "/var/run/sogo is not owned by the ${USER}."
  exit 1
 fi
 
-if [ `/usr/bin/stat /var/spool/sogo -c %U` != "sogo" ]; then
- echo "/var/spool/sogo is not owned by the sogo user."
+if [ `/usr/bin/stat /var/spool/sogo -c %U` != $USER ]; then
+ echo "/var/spool/sogo is not owned by the ${USER}."
  exit 1
 fi
 
-if [ `/usr/bin/stat /var/log/sogo -c %U` != "sogo" ]; then
- echo "/var/log/sogo is not owned by the sogo user."
+if [ `/usr/bin/stat /var/log/sogo -c %U` != $USER ]; then
+ echo "/var/log/sogo is not owned by the ${USER}."
  exit 1
 fi
 

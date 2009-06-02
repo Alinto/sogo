@@ -40,7 +40,9 @@ else
     exit 1
 fi
 
-if [ -x $GNUSTEP_LOCAL_ADMIN_TOOLS/sogod ]; then
+if [ -x $HOME/$GNUSTEP_USER_DIR_ADMIN_TOOLS/sogod ]; then
+    sogod="$HOME/$GNUSTEP_USER_DIR_ADMIN_TOOLS/sogod"
+elif [ -x $GNUSTEP_LOCAL_ADMIN_TOOLS/sogod ]; then
     sogod="$GNUSTEP_LOCAL_ADMIN_TOOLS/sogod"
 elif [ -x $GNUSTEP_SYSTEM_ADMIN_TOOLS/sogod ]; then
     sogod="$GNUSTEP_SYSTEM_ADMIN_TOOLS/sogod"

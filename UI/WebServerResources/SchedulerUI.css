@@ -895,8 +895,6 @@ DIV.event._selected > DIV.eventInside
 DIV.monthView DIV.event,
 DIV.monthView DIV.event > DIV.eventInside
 { bottom: 0px;
-  nopadding: 0px;
-  nomargin: 0px; 
   top: 0px; }
 
 DIV.monthView DIV.event > DIV.eventInside
