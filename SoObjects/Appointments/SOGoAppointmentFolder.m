@@ -1625,6 +1625,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     {
       additionalFilters = [self _composeAdditionalFilters: currentFilter];
       //NSLog(@"query");
+      /* TODO: we should invoke bareFetchField:... twice and compute the
+         recurrent events properly instead of using _makeCyclicFilterFrom: */
       apts = [self bareFetchFields: fields
                               from: [currentFilter objectForKey: @"start"]
                                 to: [currentFilter objectForKey: @"end"]
