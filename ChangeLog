@@ -1,7 +1,7 @@
 2009-06-02  Cyril Robert <crobert@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m (_enforceTimeLimitOnFilter):
-	Rewrote algorithm.
+	Rewrote algorithm, fixed cyclic events issue.
 
 2009-06-02  Ludovic Marcotte <lmarcotte@inverse.ca>
 

@@ -475,11 +475,11 @@ static NSArray *reportQueryFields = nil;
 }
 
 - (NSArray *) bareFetchFields: (NSArray *) fields
-			 from: (NSCalendarDate *) startDate
-			   to: (NSCalendarDate *) endDate 
-			title: (NSString *) title
-		    component: (id) component
-	    additionalFilters: (NSString *) filters
+                         from: (NSCalendarDate *) startDate
+                           to: (NSCalendarDate *) endDate 
+                        title: (NSString *) title
+                    component: (id) component
+            additionalFilters: (NSString *) filters
 {
   EOQualifier *qualifier;
   GCSFolder *folder;
@@ -1016,8 +1016,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   currentLogin = [[context activeUser] login];
   if (![currentLogin isEqualToString: owner] && !_includeProtectedInformation)
     [self _fixupProtectedInformation: [ma objectEnumerator]
-	  inFields: _fields
-	  forUser: currentLogin];
+                            inFields: _fields
+                             forUser: currentLogin];
 
   if (rememberRecords)
     [self _rememberRecords: ma];
@@ -1375,6 +1375,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
               [self _addDateRangeLimitToFilter: filterData];
             }
         }
+      [filterData setObject: [NSNumber numberWithBool: NO] forKey: @"iscycle"];
     }
   else
     filterData = nil;
@@ -1419,6 +1420,18 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return properties;
 }
 
+- (NSDictionary *) _makeCyclicFilterFrom: (NSDictionary *) filter
+{
+  NSMutableDictionary *rc;
+
+  rc = [NSMutableDictionary dictionaryWithDictionary: filter];
+  [rc removeObjectForKey: @"start"];
+  [rc removeObjectForKey: @"end"];
+  [rc setObject: [NSNumber numberWithBool: YES] forKey: @"iscycle"];
+
+  return rc;
+}
+
 - (NSArray *) _parseCalendarFilters: (id <DOMElement>) parentNode
 {
   id <DOMNodeList> children;
@@ -1437,7 +1450,10 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       node = [children objectAtIndex: count];
       filter = [self _parseCalendarFilter: node];
       if (filter)
-        [filters addObject: filter];
+        {
+          [filters addObject: filter];
+          [filters addObject: [self _makeCyclicFilterFrom: filter]];
+        }
     }
 //   NSLog (@"/parseCalendarFilter: %@", [NSDate date]);
 
@@ -1445,17 +1461,17 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 }
 
 - (NSString *) _additionalFilterKey: (NSString *) key
-			      value: (NSString *) value
+                              value: (NSString *) value
 {
   NSString *filterString;
 
   if ([value length])
     {
       if ([value isEqualToString: @"NULL"])
-	filterString = [NSString stringWithFormat: @"(%@ = '')", key];
+        filterString = [NSString stringWithFormat: @"(%@ = '')", key];
       else
-	filterString
-	  = [NSString stringWithFormat: @"(%@ like '%%%@%%')", key, value];
+        filterString
+          = [NSString stringWithFormat: @"(%@ like '%%%@%%')", key, value];
     }
   else
     filterString = [NSString stringWithFormat: @"(%@ != '')", key];
@@ -1470,6 +1486,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   NSString *currentKey, *keyField, *filterString;
   static NSArray *fields = nil;
   NSMutableArray *filters;
+  NSNumber *cycle;
 
 #warning the list of fields should be taken from the .ocs description file
   if (!fields)
@@ -1489,6 +1506,16 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                                               value: [filter objectForKey: currentKey]];
           [filters addObject: filterString];
         }
+    }
+
+  // Exception for iscycle
+  cycle = [filter objectForKey: @"iscycle"];
+  if (cycle)
+    {
+      filterString = [NSString stringWithFormat: @"(c_iscycle = '%d')", 
+                      [cycle intValue]];
+      NSLog (filterString);
+      [filters addObject: filterString];
     }
 
   if ([filters count])
