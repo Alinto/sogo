@@ -1,3 +1,9 @@
+2009-06-02  Ludovic Marcotte <lmarcotte@inverse.ca>
+
+	* Updated the documentation (version change, Russian
+	language addition and documentation of the WOApplicationRedirectURL
+	parameter)
+
 2009-06-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailerUI/UIxMailFolderActions.m (-deleteFolderAction):
