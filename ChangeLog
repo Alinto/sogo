@@ -10,6 +10,9 @@
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m (_enforceTimeLimitOnFilter):
 	Rewrote algorithm, fixed cyclic events issue.
+	* UI/WebServerResources/UIxAttendeesEditor.js: Fixed update bug on "enter"
+	* UI/Templates/SchedulerUI/UIxAttendeesEditor.wox: Removed next/prev hour
+	and zoom buttons
 
 2009-06-02  Ludovic Marcotte <lmarcotte@inverse.ca>
 
