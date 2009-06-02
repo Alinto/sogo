@@ -594,8 +594,8 @@ function eventsListCallback(http) {
 				row.observe("mousedown", onRowClick);
 				row.observe("selectstart", listRowMouseDownHandler);
 				row.observe("dblclick", editDoubleClickedEvent);
-				row.observe("contextmenu", onEventContextMenu);
-      
+				row.attachMenu("eventsListMenu");
+
 				var td = $(document.createElement("td"));
 				row.appendChild(td);
 				td.observe("mousedown", listRowMouseDownHandler, true);
@@ -973,6 +973,22 @@ function refreshCalendarEventsCallback(http) {
 }
 
 function newBaseEventDIV(eventRep, event, eventText) {
+//	log ("0 cname = " + event[0]);
+//	log ("1 calendar = " + event[1]);
+//	log ("2 status = " + event[2]);
+//	log ("3 title = " + event[3]);
+//	log ("4 start = " + event[4]);
+//	log ("5 end = " + event[5]);
+//	log ("6 location = " + event[6]);
+//	log ("7 isallday = " + event[7]);
+//	log ("8 classification = " + event[8]);
+//	log ("9 participants emails = " + event[9]);
+//	log ("10 participants states = " + event[10]);
+//	log ("11 owner = " + event[11]);
+//	log ("12 iscycle = " + event[12]);
+//	log ("13 nextalarm = " + event[13]);
+//	log ("14 recurrenceid = " + event[14]);
+
   var eventDiv = $(document.createElement("div"));
   eventDiv.cname = event[0];
   eventDiv.calendar = event[1];
@@ -1165,23 +1181,6 @@ function popupCalendar(node) {
   input.calendar.popup();
 
   return false;
-}
-
-function onEventContextMenu(event) {
-  var topNode = $("eventsList");
-  var menu = $("eventsListMenu");
-
-  menu.observe("hideMenu", onEventContextMenuHide);
-  popupMenu(event, "eventsListMenu", this);
-}
-
-function onEventContextMenuHide(event) {
-  var topNode = $("eventsList");
-
-  if (topNode.menuSelectedEntry) {
-    topNode.menuSelectedEntry.deselect();
-    topNode.menuSelectedEntry = null;
-  }
 }
 
 function onEventsSelectionChange() {
@@ -1634,7 +1633,6 @@ function browseURL(anchor, event) {
 function onCalendarsMenuPrepareVisibility() {
   var folders = $("calendarList");
   var selected = folders.getSelectedNodes();  
-
   if (selected.length > 0) {
     var folderOwner = selected[0].getAttribute("owner");
     var sharingOption = $(this).down("ul").childElements().last();
@@ -1643,7 +1641,9 @@ function onCalendarsMenuPrepareVisibility() {
       sharingOption.removeClassName("disabled");
     else
       sharingOption.addClassName("disabled");
-  }
+		return true;
+	}
+	return false;
 }
 
 function getMenus() {
@@ -1815,6 +1815,7 @@ function appendCalendar(folderName, folderPath) {
 
     var checkBox = createElement("input", null, "checkBox", { checked: 1 },
 																 { type: "checkbox" }, li);
+
     li.appendChild(document.createTextNode(" "));
     
     var colorBox = document.createElement("div");
@@ -1827,8 +1828,11 @@ function appendCalendar(folderName, folderPath) {
     $(colorBox).addClassName("colorBox");
     $(colorBox).addClassName('calendarFolder' + folderPath.substr(1));
 
+		// Check the checkbox (required for IE)
+		$(li).down("input.checkBox").checked = true;
+
     // Register events (doesn't work with Safari)
-    setEventsOnCalendar(checkBox, li);
+    setEventsOnCalendar($(checkBox), $(li));
 
     var url = URLForFolderID(folderPath) + "/canAccessContent";
     triggerAjaxRequest(url, calendarEntryCallback, folderPath);
@@ -1865,10 +1869,10 @@ function appendStyleElement(folderPath, color) {
 function onFolderSubscribeCB(folderData) {
   var folder = $(folderData["folder"]);
   if (!folder) {
-    appendCalendar(folderData["folderName"], folderData["folder"]);
+		appendCalendar(folderData["folderName"], folderData["folder"]);
     refreshEvents();
     refreshTasks();
-    changeCalendarDisplay();
+    changeCalendarDisplay();		
 	}
 }
 
@@ -1998,9 +2002,7 @@ function initCalendars() {
     initCalendarSelector();
     configureSearchField();
     configureLists();
-    var selector = $("calendarSelector");
-    if (selector)
-      selector.attachMenu("calendarsMenu");
+		$("calendarList").attachMenu("calendarsMenu");
     $(document.body).observe("click", onBodyClickHandler);
   }
 

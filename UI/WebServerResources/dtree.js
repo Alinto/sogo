@@ -133,6 +133,7 @@ dTree.prototype.addNode = function(pNode) {
 dTree.prototype.node = function(node, nodeId) {
   var str = '';
 
+  this.aNodes[nodeId] = node;
   if (this.root.id != node.pid || !this.config.hideRoot) {
     str += '<div class="dTreeNode"';
     if (node.datatype) str += ' datatype="' + node.datatype + '"';

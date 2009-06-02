@@ -205,7 +205,7 @@ function onConfirmFolderSelection(event) {
 									 .replace("&lt;", "<", "g")
 									 .replace("&gt;", ">", "g"));
 			folderName = resource.innerHTML + ' (' + email + ')';
-    }
+		}
 		folderName = folderName.replace(/>,.*(\))?$/, ">)$1", "g");
 
     var data = { folderName: folderName, folder: folder, window: window };

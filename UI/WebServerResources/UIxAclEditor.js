@@ -25,6 +25,7 @@ function addUser(userName, userID) {
 }
 
 function addUserCallback(http) {
+	// Ignore response
 }
 
 function setEventsOnUserNode(node) {

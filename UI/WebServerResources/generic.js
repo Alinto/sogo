@@ -277,6 +277,12 @@ function deleteDraft(url) {
 	});
 }
 
+function refreshFolderByType(type) {
+	/* this is called by UIxMailEditor with window.opener */
+  if (Mailer && Mailer.currentMailboxType == type)
+    refreshCurrentFolder();
+}
+
 function createHTTPClient() {
 	// http://developer.apple.com/internet/webcontent/xmlhttpreq.html
 	if (typeof XMLHttpRequest != "undefined")
@@ -652,17 +658,21 @@ function popupMenu(event, menuId, target) {
 	if (leftDiff < 0)
 		menuLeft -= popup.offsetWidth;
 
+	var isVisible = true;
 	if (popup.prepareVisibility)
-		popup.prepareVisibility();
+		if (!popup.prepareVisibility())
+			isVisible = false;
 
-	popup.setStyle({ top: menuTop + "px",
-				left: menuLeft + "px",
-				visibility: "visible" });
-
-	document.currentPopupMenu = popup;
-
-	$(document.body).observe("click", onBodyClickMenuHandler);
-
+	if (isVisible) {
+		popup.setStyle({ top: menuTop + "px",
+					left: menuLeft + "px",
+					visibility: "visible" });
+		
+		document.currentPopupMenu = popup;
+		
+		$(document.body).observe("click", onBodyClickMenuHandler);
+	}
+	
 	Event.stop(event);
 }
 
@@ -1054,7 +1064,6 @@ function popupToolbarMenu(node, menuId) {
 		hideMenu(document.currentPopupMenu);
 
 	var popup = $(menuId);
-
 	if (popup.prepareVisibility)
 		popup.prepareVisibility();
 
