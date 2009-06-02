@@ -1224,6 +1224,75 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   [r appendString: @"</D:href><D:status>HTTP/1.1 404 Not Found</D:status></D:response>"];
 }
 
+- (int) _getStartTimeLimit
+{
+  NSUserDefaults *ud;
+  int interval;
+  
+  ud = [NSUserDefaults standardUserDefaults];
+  interval = [ud integerForKey: @"SOGoDAVCalendarStartTimeLimit"];
+
+  return interval;
+}
+
+- (NSCalendarDate *) _getMaxStartDate
+{
+  NSCalendarDate *tmp, *rc = NULL;
+  int interval;
+  
+  interval = [self _getStartTimeLimit];
+  if (interval > 0)
+    {
+      tmp = [NSCalendarDate date];
+      rc = [tmp addTimeInterval: interval * -86400];
+    }
+
+  return rc;
+}
+
+- (void) _enforceTimeLimitOnFilter: (NSMutableDictionary *) filter
+{
+  NSCalendarDate *start, *end, *now;
+  int limit, interval, intervalStart, intervalEnd;
+
+  start = [filter objectForKey: @"start"];
+  end = [filter objectForKey: @"end"];
+  now = [NSCalendarDate date];
+  limit = [self _getStartTimeLimit];
+  interval = ([end timeIntervalSinceDate: start] / 86400);
+  
+  if (limit > 0 && interval > limit)
+    {
+      if ([now compare: start] == NSOrderedDescending
+          && [now compare: end] == NSOrderedAscending)
+        {
+          intervalStart = [now timeIntervalSinceDate: start] / 86400;
+          intervalEnd = [end timeIntervalSinceDate: now] / 86400;
+          if (intervalStart > limit / 2)
+            {
+              start = [now addTimeInterval: (limit / 2) * -86400];
+              [filter setObject: start forKey: @"start"];
+            }
+          if (intervalEnd > limit / 2)
+            {
+              end = [now addTimeInterval: (limit / 2) * 86400];
+              [filter setObject: end forKey: @"end"];
+            }
+
+        }
+      else if ([now compare: end] == NSOrderedDescending)
+        {
+          start = [end addTimeInterval: limit * -86400];
+          [filter setObject: start forKey: @"start"];
+        }
+      else if ([now compare: start] == NSOrderedAscending)
+        {
+          end = [start addTimeInterval: limit * 86400];
+          [filter setObject: end forKey: @"end"];
+        }
+    }
+}
+
 - (void) _appendTimeRange: (id <DOMElement>) timeRangeElement
                  toFilter: (NSMutableDictionary *) filter
 {
@@ -1233,6 +1302,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   [filter setObject: parsedDate forKey: @"start"];
   parsedDate = [[timeRangeElement attribute: @"end"] asCalendarDate];
   [filter setObject: parsedDate forKey: @"end"];
+
+  [self _enforceTimeLimitOnFilter: filter];
 }
 
 #warning This method lacks support for timeranges
@@ -1264,6 +1335,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   id <DOMElement> parentNode;
   id <DOMNodeList> elements;
   NSString *componentName;
+  NSCalendarDate *maxStart;
 
   parentNode = (id <DOMElement>) [filterElement parentNode];
   if ([[parentNode tagName] isEqualToString: @"comp-filter"]
@@ -1281,6 +1353,18 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       if ([elements length])
         [self _appendPropertyFilter: [elements objectAtIndex: 0]
               toFilter: filterData];
+
+      if ( ![filterData objectForKey: @"start"] )
+        {
+          maxStart = [self _getMaxStartDate];
+          if (maxStart)
+            {
+              [filterData setObject: maxStart 
+                             forKey: @"start"];
+              [filterData setObject: [NSCalendarDate distantFuture]
+                             forKey: @"end"];
+            }
+        }
     }
   else
     filterData = nil;
@@ -1306,21 +1390,21 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       children = [[propList objectAtIndex: count] childNodes];
       max2 = [children length];
       for (count2 = 0; count2 < max2; count2++)
-	{
-	  currentChild = [children objectAtIndex: count2];
-	  if ([currentChild conformsToProtocol: @protocol (DOMElement)])
-	    {
-	      flatProperty = [NSString stringWithFormat: @"{%@}%@",
-				       [currentChild namespaceURI],
-				       [currentChild nodeName]];
-	      [properties addObject: flatProperty];
-	    }
-	}
+        {
+          currentChild = [children objectAtIndex: count2];
+          if ([currentChild conformsToProtocol: @protocol (DOMElement)])
+            {
+              flatProperty = [NSString stringWithFormat: @"{%@}%@",
+                           [currentChild namespaceURI],
+                           [currentChild nodeName]];
+              [properties addObject: flatProperty];
+            }
+        }
 
-//       while ([children hasChildNodes])
-// 	[properties addObject: [children next]];
+      //       while ([children hasChildNodes])
+      // 	[properties addObject: [children next]];
     }
-//   NSLog (@"/parseRequestProperties: %@", [NSDate date]);
+  //   NSLog (@"/parseRequestProperties: %@", [NSDate date]);
 
   return properties;
 }
@@ -1343,7 +1427,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       node = [children objectAtIndex: count];
       filter = [self _parseCalendarFilter: node];
       if (filter)
-	[filters addObject: filter];
+        [filters addObject: filter];
     }
 //   NSLog (@"/parseCalendarFilter: %@", [NSDate date]);
 
@@ -1390,11 +1474,11 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     {
       keyField = [NSString stringWithFormat: @"c_%@", currentKey];
       if ([fields containsObject: keyField])
-	{
-	  filterString = [self _additionalFilterKey: keyField
-			       value: [filter objectForKey: currentKey]];
-	  [filters addObject: filterString];
-	}
+        {
+          filterString = [self _additionalFilterKey: keyField
+                                              value: [filter objectForKey: currentKey]];
+          [filters addObject: filterString];
+        }
     }
 
   if ([filters count])
@@ -1473,10 +1557,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return nil;
 }
 
-
 - (void) _appendComponentProperties: (NSString **) properties
-		    matchingFilters: (NSArray *) filters
-			 toResponse: (WOResponse *) response
+                    matchingFilters: (NSArray *) filters
+                         toResponse: (WOResponse *) response
 {
   NSArray *apts, *fields;
   NSDictionary *currentFilter;
@@ -1495,8 +1578,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   if ([*properties caseInsensitiveCompare: @"{DAV:}getetag"] == NSOrderedSame &&
       !*(properties+1))
     fields =  [NSArray arrayWithObjects: @"c_name", @"c_creationdate",
-		       @"c_lastmodified", @"c_version",
-		       @"c_component", nil];
+           @"c_lastmodified", @"c_version",
+           @"c_component", nil];
   else
     fields = reportQueryFields;
 
@@ -1506,19 +1589,19 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       additionalFilters = [self _composeAdditionalFilters: currentFilter];
       //NSLog(@"query");
       apts = [self bareFetchFields: fields
-		   from: [currentFilter objectForKey: @"start"]
-                   to: [currentFilter objectForKey: @"end"]
-		   title: [currentFilter objectForKey: @"title"]
-                   component: [currentFilter objectForKey: @"name"]
-		   additionalFilters: additionalFilters];
+                              from: [currentFilter objectForKey: @"start"]
+                                to: [currentFilter objectForKey: @"end"]
+                             title: [currentFilter objectForKey: @"title"]
+                         component: [currentFilter objectForKey: @"name"]
+                 additionalFilters: additionalFilters];
       //NSLog(@"adding properties");
       max = [apts count];
       buffer = [[NSMutableString alloc] initWithCapacity: max*512];
       for (count = 0; count < max; count++)
-	[self appendObject: [apts objectAtIndex: count]
-	      properties: properties
-	      withBaseURL: baseURL
-	      toBuffer: buffer];
+        [self appendObject: [apts objectAtIndex: count]
+                properties: properties
+               withBaseURL: baseURL
+                  toBuffer: buffer];
       //NSLog(@"done");
       [response appendContentString: buffer];
       [buffer release];
@@ -1672,15 +1755,15 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       record = [records objectAtIndex: count];
       recordURL = [cnames objectForKey: [record objectForKey: @"c_name"]];
       if (recordURL)
-	[components setObject: record forKey: recordURL];
+        [components setObject: record forKey: recordURL];
     }
 
   return components;
 }
 
 - (void) _appendComponentProperties: (NSString **) properties
-		       matchingURLs: (id <DOMNodeList>) refs
-			 toResponse: (WOResponse *) response
+                       matchingURLs: (id <DOMNodeList>) refs
+                         toResponse: (WOResponse *) response
 {
   NSObject <DOMElement> *element;
   NSDictionary *currentComponent, *components;
@@ -1708,13 +1791,13 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     {
       currentComponent = [components objectForKey: [urls objectAtIndex: count]];
       if (currentComponent)
-	[self appendObject: currentComponent
-	      properties: properties
-	      withBaseURL: baseURL
-	      toBuffer: buffer];
+        [self appendObject: currentComponent
+                properties: properties
+               withBaseURL: baseURL
+                  toBuffer: buffer];
       else
-	[self appendMissingObjectRef: currentURL
-	      toBuffer: buffer];
+        [self appendMissingObjectRef: currentURL
+                            toBuffer: buffer];
     }
   [response appendContentString: buffer];
   [buffer release];
