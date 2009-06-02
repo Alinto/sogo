@@ -1,4 +1,3 @@
-<<<<<<< variant A
 2009-06-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailerUI/UIxMailFolderActions.m (-deleteFolderAction):
@@ -10,14 +9,11 @@
 	* SoObjects/SOGo/SOGoPermissions.m: declared new "Delete Object"
 	permission.
 
->>>>>>> variant B
 2009-06-01  Cyril Robert <crobert@inverse.ca>
 
 	* UI/WebServerResources/UIxContactsUserFolders.js (onSearchFormSubmit): 
 	Fixed encoding issue/crash.
 
-####### Ancestor
-======= end
 2009-05-30  Ludovic Marcotte <lmarcotte@inverse.ca>
 
 	* Modified SOGoCalendarComponent.m so that we
