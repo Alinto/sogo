@@ -219,23 +219,28 @@
 {
   if (![theUID isEqualToString: theOwner])
     {
-      SOGoAppointmentObject *object;
+      SOGoAppointmentObject *attendeeObject;
       NSString *iCalString;
 
-      object = [self _lookupEvent: [theEvent uid] forUID: theUID];
+      attendeeObject = [self _lookupEvent: [theEvent uid] forUID: theUID];
       
       // We must add an occurence to a non-existing event. We have
       // to handle this with care, as in the postCalDAVEventRequestTo:from:
-      if ([object isNew] && [theEvent recurrenceId])
+      if ([attendeeObject isNew] && [theEvent recurrenceId])
 	{
-	  SOGoAppointmentObject *ownerEventObject;
+	  SOGoAppointmentObject *ownerObject;
 	  NSArray *attendees;
+	  iCalEvent *ownerEvent;
 	  iCalPerson *person;
 	  SOGoUser *user;
 	  BOOL found;
 	  int i;
 
-	  user = [SOGoUser userWithLogin: theUID  roles: nil];
+	  // We check if the attendee that was added to a single occurence is
+	  // present in the master component. If not, we add it with a participation
+	  // status set to "DECLINED".
+
+	  user = [SOGoUser userWithLogin: theUID roles: nil];
 	  person = [iCalPerson elementWithTag: @"attendee"];
 	  [person setCn: [user cn]];
 	  [person setEmail: [[user allEmails] objectAtIndex: 0]];
@@ -243,14 +248,11 @@
 	  [person setRsvp: @"TRUE"];
 	  [person setRole: @"REQ-PARTICIPANT"];
 	  
-	  ownerEventObject = [self _lookupEvent: [theEvent uid] forUID: theOwner];
-	  theEvent = [[[theEvent parent] events] objectAtIndex: 0];	  
-	  attendees = [theEvent attendees];
+	  ownerObject = [self _lookupEvent: [theEvent uid] forUID: theOwner];
+	  ownerEvent = [[[theEvent parent] events] objectAtIndex: 0];
+	  attendees = [ownerEvent attendees];
 	  found = NO;
 	  
-	  // We check if the attendee that was added to a single occurence is
-	  // present in the master component. If not, we add it with a participation
-	  // status set to "DECLINED"
 	  for (i = 0; i < [attendees count]; i++)
 	    {
 	      if ([[attendees objectAtIndex: i] hasSameEmailAddress: person])
@@ -262,9 +264,11 @@
 	  
 	  if (!found)
 	    {
-	      [theEvent addToAttendees: person];
-	      iCalString = [[theEvent parent] versitString];
-	      [ownerEventObject saveContentString: iCalString];
+	      // Update the master event in the owner's calendar with the
+	      // status of the new attendee set as "DECLINED".
+	      [ownerEvent addToAttendees: person];
+	      iCalString = [[ownerEvent parent] versitString];
+	      [ownerObject saveContentString: iCalString];
 	    }
 	} 
       else
@@ -272,7 +276,8 @@
 	  iCalString = [[theEvent parent] versitString];
 	}
       
-      [object saveContentString: iCalString];
+      // Save the event in the attendee's calendar
+      [attendeeObject saveContentString: iCalString];
     }
 }
 
@@ -776,16 +781,18 @@
   NSEnumerator *recipientsEnum;
   NSString *recipient, *uid, *ownerUID;
   iCalEvent *newEvent, *oldEvent, *emailEvent;
-  iCalPerson *person;
+  iCalPerson *person, *eventOwner;
   BOOL isUpdate, hasChanged;
   
   elements = [NSMutableArray array];
   ownerUID = [[LDAPUserManager sharedUserManager]
 	       getUIDForEmail: originator];
+  eventOwner = [self iCalPersonWithUID: ownerUID];
   emailEvent = [self component: NO secure: NO];
   newEvent = [self component: NO secure: NO];
+  [newEvent removeAllAlarms];
   [[newEvent parent] setMethod: @""];
-
+  
   recipientsEnum = [recipients objectEnumerator];
   while ((recipient = [recipientsEnum nextObject]))
     if ([[recipient lowercaseString] hasPrefix: @"mailto:"])
@@ -897,6 +904,8 @@
 		    [person setRsvp: @"TRUE"];
 		    [person setRole: @"REQ-PARTICIPANT"];
 		    [newEvent addToAttendees: person];
+		    if ([[newEvent organizer] isVoid])
+		      [newEvent setOrganizer: eventOwner];
 		    [ownerEventObject saveContentString: [[newEvent parent] versitString]];
 		  }
 	      }

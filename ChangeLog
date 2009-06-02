@@ -1,3 +1,10 @@
+2009-06-02  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	([SOGoAppointmentObject -postCalDAVEventRequestTo:from:]): remove
+	alarms from invitation and set organizer of master event when
+	dealing with a recurrent event.
+
 2009-06-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* Tools/sogo-contacts-removedoubles.m: new maintenance utility
