@@ -60,12 +60,16 @@ function onContactKeydown(event) {
     preventDefault(event);
     if (this.confirmedValue)
       this.value = this.confirmedValue;
-    if (this.uid)
-      this.blur(); // triggers checkAttendee function call
     $(this).selectText(0, this.value.length);
     if (document.currentPopupMenu)
       hideMenu(document.currentPopupMenu);
     attendeesEditor.selectedIndex = -1;
+    if (this.uid) {
+      this.hasfreebusy = false;
+      this.setAttribute ("modified", "1");
+      this.blur(); // triggers checkAttendee function call
+    }
+
   }
   else if ($('attendeesMenu').getStyle('visibility') == 'visible') {
     attendeesEditor.currentField = this;
@@ -449,9 +453,10 @@ function initializeWindowButtons() {
 	buttons = $("freeBusyZoomButtons").childNodesWithTag("a");
 	for (var i = 0; i < buttons.length; i++)
 		buttons[i].observe("click", listRowMouseDownHandler, false);
-	buttons = $("freeBusyButtons").childNodesWithTag("a");
+/*	buttons = $("freeBusyButtons").childNodesWithTag("a");
 	for (var i = 0; i < buttons.length; i++)
 		buttons[i].observe("click", listRowMouseDownHandler, false);
+*/
 }
 
 function onEditorOkClick(event) {
