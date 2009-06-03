@@ -965,6 +965,7 @@ function refreshCalendarEventsCallback(http) {
 				_drawCalendarAllDayEvents(eventsBlocks[1], eventsBlocks[0]);
 				_drawCalendarEvents(eventsBlocks[2], eventsBlocks[0]);
       }
+			onWindowResize(null);
     }
     scrollDayView(http.callbackData["scrollEvent"]);
   }
@@ -1991,6 +1992,16 @@ function onWindowResize(event) {
   handle = $("rightDragHandle");
   if (handle)
 		handle.adjust();
+
+	if (Prototype.Browser.IE) {
+		var days = $$("DIV#daysView DIV.days");
+		var labels = $$("DIV#calendarHeader DIV.days");
+		if (days.length && labels.length) {
+			var day = days[0];
+			var label = labels[0];
+			day.setStyle({ width: (label.getWidth()-1) + "px" });
+		}
+	}
 }
 
 function initCalendars() {
