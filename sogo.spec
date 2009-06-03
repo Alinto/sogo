@@ -26,6 +26,16 @@ The Web interface has been rewritten in an AJAX fashion to provided a faster
 UI for the users, consistency in look and feel with the Mozilla applications,
 and to reduce the load of the transactions on the server.
 
+%package -n sogo-tools
+Summary:      Command-line tools for SOGo
+Group:        Productivity/Groupware
+AutoReqProv:  off
+
+%description -n sogo-tools
+Command-line tools for SOGo:
+  sogo-contacts-checkdoubles - check excessive amounts of records in addressbooks
+  sogo-contacts-removedoubles - intelligently remove contacts that may exist in addressbooks
+
 %package -n sogo-devel
 Summary:      Development headers and libraries for SOGo
 Group:        Development/Libraries/Objective C
@@ -54,7 +64,7 @@ Requires:     sope%{sope_major_version}%{sope_minor_version}-gdl1
 AutoReqProv:  off
 
 %description -n sope%{sope_major_version}%{sope_minor_version}-gdl1-contentstore-devel
-This package contains the header files for SOPE's GDLContentStore library.
+This package contains the header files for the SOPE GDLContentStore library.
 
 SOPE is a framework for developing web applications and services. The
 name "SOPE" (SKYRiX Object Publishing Environment) is inspired by ZOPE.
@@ -159,6 +169,9 @@ rm -fr ${RPM_BUILD_ROOT}
 
 %config %{_sysconfdir}/httpd/conf.d/SOGo.conf
 %doc ChangeLog README NEWS Scripts/sql-update-20070724.sh Scripts/sql-update-20070822.sh Scripts/sql-update-20080303.sh Scripts/sql-update-101_to_102.sh
+
+%files -n sogo-tools
+%{prefix}/Tools/Admin/sogo-contacts-*
 
 %files -n sogo-devel
 %{prefix}/Library/Headers/SOGo
