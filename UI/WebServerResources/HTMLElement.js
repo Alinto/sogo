@@ -138,15 +138,20 @@ Element.addMethods(
 			if (leftDiff < 0)
 				menuLeft -= popup.offsetWidth;
 
+			var isVisible = true;
 			if (popup.prepareVisibility)
-				popup.prepareVisibility();
+				isVisible = popup.prepareVisibility();
 
-			popup.setStyle( { top: menuTop + "px",
-						left: menuLeft + "px",
-						visibility: "visible" } );
-    
-			document.currentPopupMenu = popup;
-			document.body.observe("click", onBodyClickMenuHandler);
+			if (isVisible) {
+				popup.setStyle( { top: menuTop + "px",
+							left: menuLeft + "px",
+							visibility: "visible" } );
+				
+				document.currentPopupMenu = popup;
+				document.body.observe("click", onBodyClickMenuHandler);
+			}
+			else
+				log ("Warning: not showing the contextual menu " + element.id);
 		},
 
 	attachMenu: function(element, menuName) {

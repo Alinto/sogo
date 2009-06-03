@@ -176,20 +176,6 @@ function contactsListCallback(http) {
     log ("ajax problem 1: status = " + http.status);
 }
 
-function onAddressBooksContextMenu(event) {
-  var menu = $("contactFoldersMenu");
-  menu.observe("mousedown", onAddressBooksContextMenuHide);
-  popupMenu(event, "contactFoldersMenu", this);
-
-  var topNode = $("contactFolders");
-  var selectedNodes = topNode.getSelectedRows();
-  topNode.menuSelectedRows = selectedNodes;
-  for (var i = 0; i < selectedNodes.length; i++)
-    $(selectedNodes[i]).deselect();
-  topNode.menuSelectedEntry = this;
-  $(this).selectElement();
-}
-
 function onContactContextMenu(event) {
   var contactsList = $("contactsList");
   var menu = $("contactMenu");
@@ -209,21 +195,6 @@ function onContactContextMenuHide(event) {
     var nodes = topNode.menuSelectedRows;
     for (var i = 0; i < nodes.length; i++)
       $(nodes[i]).selectElement();
-    topNode.menuSelectedRows = null;
-  }
-}
-
-function onAddressBooksContextMenuHide(event) {
-  var topNode = $("contactFolders");
-
-  if (topNode.menuSelectedEntry) {
-    topNode.menuSelectedEntry.deselect();
-    topNode.menuSelectedEntry = null;
-  }
-  if (topNode.menuSelectedRows) {
-    var nodes = topNode.menuSelectedRows;
-    for (var i = 0; i < nodes.length; i++)
-      nodes[i].selectElement();
     topNode.menuSelectedRows = null;
   }
 }
@@ -778,6 +749,7 @@ function configureAddressBooks() {
   if (contactFolders) {
     contactFolders.observe("mousedown", listRowMouseDownHandler);
     contactFolders.observe("click", onFolderSelectionChange);
+		contactFolders.attachMenu("contactFoldersMenu");
     var lis = contactFolders.childNodesWithTag("li");
     for (var i = 0; i < lis.length; i++)
       setEventsOnAddressBook(lis[i]);
@@ -851,7 +823,6 @@ function setEventsOnAddressBook(folder) {
   node.observe("mousedown", listRowMouseDownHandler);
   node.observe("click", onRowClick);
   node.observe("dblclick", onAddressBookModify);
-  node.observe("contextmenu", onAddressBooksContextMenu);
 }
 
 function onAddressBookModify(event) {
@@ -930,7 +901,11 @@ function onAddressBooksMenuPrepareVisibility() {
       removeOption.addClassName("disabled");
     else
       removeOption.removeClassName("disabled");
+
+		return true;
   }
+
+	return false;
 }
 
 function onContactMenuPrepareVisibility() {

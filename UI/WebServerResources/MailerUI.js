@@ -936,7 +936,7 @@ function configureLinksInMessage() {
     if (anchors[i].href.substring(0,7) == "mailto:") {
       $(anchors[i]).observe("click", onEmailTo);
       $(anchors[i]).observe("contextmenu", onEmailAddressClick);
-    }
+		}
     else
       $(anchors[i]).observe("click", onMessageAnchorClick);
 
@@ -1273,11 +1273,6 @@ function refreshCurrentFolder() {
   openMailbox(Mailer.currentMailbox, true);
 }
 
-function refreshFolderByType(type) {
-  if (Mailer.currentMailboxType == type)
-    refreshCurrentFolder();
-}
-
 var mailboxSpanAcceptType = function(type) {
   return (type == "mailRow");
 };
@@ -1594,13 +1589,13 @@ function updateMailboxTreeInPage() {
 		var valueDiv = new Element('div', { 'class': 'value ' + level, 'style': 'width: ' + ((percents > 100)?100:percents) + '%' });
 		var marksDiv = new Element('div', { 'class': 'marks' });
 		var textP = new Element('p').update(text);
-		marksDiv.appendChild(new Element('div'));
-		marksDiv.appendChild(new Element('div'));
-		marksDiv.appendChild(new Element('div'));
-		levelDiv.appendChild(valueDiv);
-		levelDiv.appendChild(marksDiv);
-		levelDiv.appendChild(textP);
-		quotaDiv.appendChild(levelDiv);
+		marksDiv.insert(new Element('div'));
+		marksDiv.insert(new Element('div'));
+		marksDiv.insert(new Element('div'));
+		levelDiv.insert(valueDiv);
+		levelDiv.insert(marksDiv);
+		levelDiv.insert(textP);
+		quotaDiv.insert(levelDiv);
 		
 		treeContent.insertBefore(quotaDiv, tree);
 	}
