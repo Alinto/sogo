@@ -1,5 +1,13 @@
 2009-06-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m (+initialize):
+	removed obsolete security declarations.
+	(-davCalendarQuery, -davCalendarMultiget): delegate conversion of
+	"properties" NSArray to C array to submethods. Those submethods
+	now pass a count parameter to properly evaluate the amount of
+	responses instead of the static 100 value. Make use of
+	NSZoneMalloc instead of malloc.
+
 	* Tools/sogo-contacts-removedoubles.m: added code to avoid
 	removing cards referenced in vlists.
 

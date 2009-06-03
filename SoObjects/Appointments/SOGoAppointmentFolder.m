@@ -80,42 +80,43 @@
 static NGLogger *logger = nil;
 static NSNumber *sharedYes = nil;
 static NSArray *reportQueryFields = nil;
+static NSArray *reducedReportQueryFields = nil;
 
 + (void) initialize
 {
   NGLoggerManager *lm;
   static BOOL     didInit = NO;
-//   SoClassSecurityInfo *securityInfo;
 
-  if (didInit) return;
-  didInit = YES;
+  if (!didInit)
+    {
+      didInit = YES;
   
-  [iCalEntityObject initializeSOGoExtensions];
+      [iCalEntityObject initializeSOGoExtensions];
 
-  if (!reportQueryFields)
-    reportQueryFields = [[NSArray alloc] initWithObjects: @"c_name",
-					 @"c_content", @"c_creationdate",
-					 @"c_lastmodified", @"c_version",
-					 @"c_component", nil];
+      if (!reportQueryFields)
+        reportQueryFields = [[NSArray alloc] initWithObjects: @"c_name",
+                                             @"c_content", @"c_creationdate",
+                                             @"c_lastmodified", @"c_version",
+                                             @"c_component",
+                                             @"c_classification",
+                                             nil];
+      if (!reducedReportQueryFields)
+        reducedReportQueryFields = [[NSArray alloc] initWithObjects:
+                                                      @"c_name",
+                                                    @"c_creationdate",
+                                                    @"c_lastmodified",
+                                                    @"c_version",
+                                                    @"c_classification",
+                                                    @"c_component", nil];
+      NSAssert2([super version] == 0,
+                @"invalid superclass (%@) version %i !",
+                NSStringFromClass([self superclass]), [super version]);
 
-  NSAssert2([super version] == 0,
-            @"invalid superclass (%@) version %i !",
-            NSStringFromClass([self superclass]), [super version]);
+      lm = [NGLoggerManager defaultLoggerManager];
+      logger = [lm loggerForDefaultKey: @"SOGoAppointmentFolderDebugEnabled"];
 
-  lm      = [NGLoggerManager defaultLoggerManager];
-  logger  = [lm loggerForDefaultKey: @"SOGoAppointmentFolderDebugEnabled"];
-
-//   securityInfo = [self soClassSecurityInfo];
-//   [securityInfo declareRole: SOGoRole_Delegate
-//                 asDefaultForPermission: SoPerm_AddDocumentsImagesAndFiles];
-//   [securityInfo declareRole: SOGoRole_Delegate
-//                 asDefaultForPermission: SoPerm_ChangeImagesAndFiles];
-//   [securityInfo declareRoles: [NSArray arrayWithObjects:
-//                                          SOGoRole_Delegate,
-//                                        SOGoRole_Assistant, nil]
-//                 asDefaultForPermission: SoPerm_View];
-
-  sharedYes = [[NSNumber numberWithBool: YES] retain];
+      sharedYes = [[NSNumber numberWithBool: YES] retain];
+    }
 }
 
 + (SOGoWebDAVAclManager *) webdavAclManager
@@ -1084,6 +1085,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 }
 
 - (NSString **) _properties: (NSString **) properties
+                      count: (unsigned int) propertiesCount
                    ofObject: (NSDictionary *) object
 {
   SOGoCalendarComponent *sogoObject;
@@ -1092,14 +1094,15 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   SoSecurityManager *mgr;
   SEL methodSel;
 
-#warning things may crash here...
-  values = calloc (100, sizeof (NSMutableString *));
+  values = NSZoneMalloc (NULL,
+                         (propertiesCount + 1) * sizeof (NSMutableString *));
+  *(values + propertiesCount) = nil;
 
 //   NSLog (@"_properties:ofObject:: %@", [NSDate date]);
 
 #warning this check should be done directly in the query... we should fix this sometime
   mgr = [SoSecurityManager sharedSecurityManager];
-  
+
   //c = [self objectClassForComponentName: [object objectForKey: @"c_component"]];
   sogoObject = [SOGoCalendarComponent objectWithRecord: object  inContainer: self];
   [sogoObject setComponentTag: [object objectForKey: @"c_component"]];
@@ -1131,6 +1134,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 }
 
 - (NSArray *) _propstats: (NSString **) properties
+                   count: (unsigned int) propertiesCount
 		ofObject: (NSDictionary *) object
 {
   NSMutableArray *propstats, *properties200, *properties404, *propDict;
@@ -1144,7 +1148,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   properties200 = [NSMutableArray new];
   properties404 = [NSMutableArray new];
 
-  values = [self _properties: properties ofObject: object];
+  values = [self _properties: properties count: propertiesCount ofObject: object];
   currentValue = values;
 
   property = properties;
@@ -1174,7 +1178,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 					@"HTTP/1.1 200 OK", @"status",
 					nil]];
   [properties200 release];
-  
+
   if ([properties404 count])
     [propstats addObject: [NSDictionary dictionaryWithObjectsAndKeys:
 					  properties404, @"properties",
@@ -1194,6 +1198,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
 - (void) appendObject: (NSDictionary *) object
 	   properties: (NSString **) properties
+                count: (unsigned int) propertiesCount
           withBaseURL: (NSString *) baseURL
 	     toBuffer: (NSMutableString *) r
 {
@@ -1208,7 +1213,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   [r appendString: @"</D:href>"];
 
 //   NSLog (@"(appendPropstats...): %@", [NSDate date]);
-  propstats = [self _propstats: properties ofObject: object];
+  propstats = [self _propstats: properties count: propertiesCount
+                      ofObject: object];
   max = [propstats count];
   for (count = 0; count < max; count++)
     [self _appendPropstat: [propstats objectAtIndex: count]
@@ -1594,7 +1600,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return nil;
 }
 
-- (void) _appendComponentProperties: (NSString **) properties
+- (void) _appendComponentProperties: (NSArray *) propertiesArray
                     matchingFilters: (NSArray *) filters
                          toResponse: (WOResponse *) response
 {
@@ -1603,7 +1609,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   NSEnumerator *filterList;
   NSString *additionalFilters, *baseURL;
   NSMutableString *buffer;
-  unsigned int count, max;
+  NSString **properties;
+  unsigned int count, max, propertiesCount;
 
   baseURL = [[self davURL] absoluteString];
   
@@ -1612,13 +1619,15 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   // we do not load the c_content and other fields from the
   // database as this can be pretty costly.
 #warning we should build the list of fields based on the requested props
-  if ([*properties caseInsensitiveCompare: @"{DAV:}getetag"] == NSOrderedSame &&
-      !*(properties+1))
-    fields =  [NSArray arrayWithObjects: @"c_name", @"c_creationdate",
-           @"c_lastmodified", @"c_version",
-           @"c_component", nil];
+  if ([propertiesArray count] == 1
+      && [[propertiesArray objectAtIndex: 0]
+           caseInsensitiveCompare: @"{DAV:}getetag"] == NSOrderedSame)
+    fields = reducedReportQueryFields;
   else
     fields = reportQueryFields;
+
+  properties = [propertiesArray asPointersOfObjects];
+  propertiesCount = [propertiesArray count];
 
   filterList = [filters objectEnumerator];
   while ((currentFilter = [filterList nextObject]))
@@ -1639,12 +1648,15 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       for (count = 0; count < max; count++)
         [self appendObject: [apts objectAtIndex: count]
                 properties: properties
+                     count: propertiesCount
                withBaseURL: baseURL
                   toBuffer: buffer];
       //NSLog(@"done");
       [response appendContentString: buffer];
       [buffer release];
     }
+
+  NSZoneFree (NULL, properties);
 }
 
 - (id) davCalendarQuery: (id) queryContext
@@ -1652,7 +1664,6 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   WOResponse *r;
   id <DOMDocument> document;
   id <DOMElement> documentElement;
-  NSString **properties;
 
   r = [context response];
   [r setStatus: 207];
@@ -1666,14 +1677,12 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
   document = [[context request] contentAsDOMDocument];
   documentElement = [document documentElement];
-  properties = [[self _parseRequestedProperties: documentElement]
-                 asPointersOfObjects];
-  [self _appendComponentProperties: properties
-                   matchingFilters: [self _parseCalendarFilters:
-                                            documentElement]
+  [self _appendComponentProperties:
+          [self _parseRequestedProperties: documentElement]
+                   matchingFilters:
+       [self _parseCalendarFilters: documentElement]
                         toResponse: r];
   [r appendContentString:@"</D:multistatus>"];
-  free (properties);
 
   return r;
 }
@@ -1801,16 +1810,17 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return components;
 }
 
-- (void) _appendComponentProperties: (NSString **) properties
+- (void) _appendComponentProperties: (NSArray *) propertiesArray
                        matchingURLs: (id <DOMNodeList>) refs
                          toResponse: (WOResponse *) response
 {
   NSObject <DOMElement> *element;
   NSDictionary *currentComponent, *components;
   NSString *currentURL, *baseURL;
+  NSString **properties;
   NSMutableArray *urls;
   NSMutableString *buffer;
-  unsigned int count, max;
+  unsigned int count, max, propertiesCount;
 
   baseURL = [[self davURL] absoluteString];
 
@@ -1823,6 +1833,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       [urls addObject: currentURL];
     }
 
+  properties = [propertiesArray asPointersOfObjects];
+  propertiesCount = [propertiesArray count];
+
   components = [self _fetchComponentsMatchingURLs: urls];
   max = [urls count];
 //   NSLog (@"adding properties with url");
@@ -1833,6 +1846,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       if (currentComponent)
         [self appendObject: currentComponent
                 properties: properties
+                     count: propertiesCount
                withBaseURL: baseURL
                   toBuffer: buffer];
       else
@@ -1843,6 +1857,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   [buffer release];
 //   NSLog (@"/adding properties with url");
 
+  NSZoneFree (NULL, properties);
+
   [urls release];
 }
 
@@ -1851,7 +1867,6 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   WOResponse *r;
   id <DOMDocument> document;
   id <DOMElement> documentElement;
-  NSString **properties;
 
   r = [context response];
   [r setStatus: 207];
@@ -1865,13 +1880,10 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
   document = [[context request] contentAsDOMDocument];
   documentElement = [document documentElement];
-  properties = [[self _parseRequestedProperties: documentElement]
-		 asPointersOfObjects];
-  [self _appendComponentProperties: properties
-	matchingURLs: [documentElement getElementsByTagName: @"href"]
-        toResponse: r];
+  [self _appendComponentProperties: [self _parseRequestedProperties: documentElement]
+                      matchingURLs: [documentElement getElementsByTagName: @"href"]
+                        toResponse: r];
   [r appendContentString:@"</D:multistatus>"];
-  free (properties);
 
   return r;
 }
