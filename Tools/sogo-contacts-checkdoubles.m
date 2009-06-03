@@ -42,10 +42,10 @@ typedef void (*NSUserDefaultsInitFunction) ();
 
 static unsigned int ContactsCountWarningLimit = 1000;
 
-static void
-NSLogInhibitor (NSString *message)
-{
-}
+// static void
+// NSLogInhibitor (NSString *message)
+// {
+// }
 
 @interface SOGoDoublesChecker : NSObject
 
@@ -60,7 +60,7 @@ NSLogInhibitor (NSString *message)
   NSUserDefaults *ud;
   NSNumber *warningLimit;
 
-  _NSLog_printf_handler = NSLogInhibitor;
+//   _NSLog_printf_handler = NSLogInhibitor;
 
   ud = [NSUserDefaults standardUserDefaults];
   [ud addSuiteNamed: @"sogod"];
@@ -119,10 +119,11 @@ NSLogInhibitor (NSString *message)
   channel = [cm acquireOpenChannelForURL: [fom folderInfoLocation]];
   if (channel)
     {
-      sqlString = [NSString stringWithFormat: @"SELECT c_path, c_path2, c_foldername"
-			    @" FROM %@"
-			    @" WHERE c_folder_type = 'Contact'",
-			    [fom folderInfoTableName]];
+      sqlString
+        = [NSString stringWithFormat: @"SELECT c_path, c_path2, c_foldername"
+                    @" FROM %@"
+                    @" WHERE c_folder_type = 'Contact'",
+                    [fom folderInfoTableName]];
       ex = [channel evaluateExpressionX: sqlString];
       if (ex)
 	{

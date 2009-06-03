@@ -34,6 +34,10 @@
 #import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSValue.h>
 
+#import <NGCards/NGVList.h>
+
+#import <EOControl/EOQualifier.h>
+
 #import <GDLAccess/EOAdaptorChannel.h>
 #import <GDLAccess/EOAdaptorContext.h>
 
@@ -43,7 +47,31 @@
 
 typedef void (*NSUserDefaultsInitFunction) ();
 
-static unsigned int ContactsCountWarningLimit = 1000;
+@interface NGVList (RemoveDoubles)
+
+- (NSArray *) cardNames;
+
+@end
+
+@implementation NGVList (RemoveDoubles)
+
+- (NSArray *) cardNames
+{
+  NSEnumerator *cardReferences;
+  NSMutableArray *cardNames;
+  CardElement *currentReference;
+
+  cardNames = [NSMutableArray array];
+
+  cardReferences = [[self cardReferences] objectEnumerator];
+
+  while ((currentReference = [cardReferences nextObject]))
+    [cardNames addObject: [currentReference value: 0]];
+
+  return cardNames;
+}
+
+@end
 
 @interface SOGoDoublesRemover : NSObject
 @end
@@ -53,16 +81,9 @@ static unsigned int ContactsCountWarningLimit = 1000;
 + (void) initialize
 {
   NSUserDefaults *ud;
-  NSNumber *warningLimit;
 
   ud = [NSUserDefaults standardUserDefaults];
   [ud addSuiteNamed: @"sogod"];
-  warningLimit = [ud objectForKey: @"SOGoContactsCountWarningLimit"];
-  if (warningLimit)
-    ContactsCountWarningLimit = [warningLimit unsignedIntValue];
-
-  NSLog (@"The warning limit for folder records is set at %u",
-	 ContactsCountWarningLimit);
 }
 
 - (void) feedDoubleEmails: (NSMutableDictionary *) doubleEmails
@@ -92,10 +113,8 @@ static unsigned int ContactsCountWarningLimit = 1000;
 
   keys = [[doubleEmails allKeys] objectEnumerator];
   while ((currentKey = [keys nextObject]))
-    {
-      if ([[doubleEmails objectForKey: currentKey] count] < 2)
-	[doubleEmails removeObjectForKey: currentKey];
-    }
+    if ([[doubleEmails objectForKey: currentKey] count] < 2)
+      [doubleEmails removeObjectForKey: currentKey];
 }
 
 - (NSDictionary *) detectDoubleEmailsFromRecords: (NSArray *) records
@@ -111,6 +130,32 @@ static unsigned int ContactsCountWarningLimit = 1000;
   [self cleanupSingleRecords: doubleEmails];
 
   return doubleEmails;
+}
+
+- (NSArray *) fetchCardsInListsFromFolder: (GCSFolder *) folder
+{
+  EOQualifier *qualifier;
+  NSMutableArray *cardsInLists;
+  NSDictionary *currentRecord;
+  NSArray *records;
+  NSEnumerator *recordsEnum;
+  NGVList *list;
+
+  cardsInLists = [NSMutableArray array];
+
+  qualifier = [EOQualifier qualifierWithQualifierFormat: @"c_component = %@",
+                           @"vlist"];
+  records = [folder fetchFields: [NSArray arrayWithObject: @"c_content"]
+              matchingQualifier: qualifier];
+  recordsEnum = [records objectEnumerator];
+  while ((currentRecord = [recordsEnum nextObject]))
+    {
+      list = [NGVList parseSingleFromSource:
+                [currentRecord objectForKey: @"c_content"]];
+      [cardsInLists addObjectsFromArray: [list cardNames]];
+    }
+
+  return cardsInLists;
 }
 
 - (void) removeRecord: (NSString *) recordName
@@ -141,6 +186,8 @@ static unsigned int ContactsCountWarningLimit = 1000;
   NSString *tableName, *quickTableName, *currentRecordName;
   NSEnumerator *recordsEnum;
 
+  fprintf (stderr, "Removing %d records...\n", [recordNames count]);
+
   channel = [folder acquireStoreChannel];
   context = [channel adaptorContext];
   [context beginTransaction];
@@ -153,7 +200,6 @@ static unsigned int ContactsCountWarningLimit = 1000;
     [self removeRecord: currentRecordName
 	  fromTable: tableName andQuickTable: quickTableName
 	  usingChannel: channel];
-  fprintf (stderr, "Removing %d records...\n", [recordNames count]);
 
   [context commitTransaction];
   [folder releaseChannel: channel];
@@ -207,8 +253,8 @@ static unsigned int ContactsCountWarningLimit = 1000;
 	       count: max];
 }
 
-- (unsigned int) mostModifiedRecord: (NSArray *) records
-			      count: (unsigned int) max
+- (int) mostModifiedRecord: (NSArray *) records
+                     count: (unsigned int) max
 {
   unsigned int mostModified, count, highestVersion, version;
   NSNumber *currentVersion;
@@ -231,11 +277,11 @@ static unsigned int ContactsCountWarningLimit = 1000;
   return mostModified;
 }
 
-- (unsigned int) amountOfFilledQuickFields: (NSDictionary *) record
+- (int) amountOfFilledQuickFields: (NSDictionary *) record
 {
   static NSArray *quickFields = nil;
   id value;
-  unsigned int amount, count, max;
+  int amount, count, max;
 
   amount = 0;
 
@@ -263,10 +309,10 @@ static unsigned int ContactsCountWarningLimit = 1000;
   return amount;
 }
 
-- (unsigned int) recordWithTheMostQuickFields: (NSArray *) records
-			      count: (unsigned int) max
+- (int) recordWithTheMostQuickFields: (NSArray *) records
+                               count: (unsigned int) max
 {
-  unsigned int mostQuickFields, count, highestQFields, currentQFields;
+  int mostQuickFields, count, highestQFields, currentQFields;
 
   mostQuickFields = 0;
 
@@ -285,9 +331,9 @@ static unsigned int ContactsCountWarningLimit = 1000;
   return mostQuickFields;
 }
 
-- (unsigned int) linesInContent: (NSString *) content
+- (int) linesInContent: (NSString *) content
 {
-  unsigned int nbrLines;
+  int nbrLines;
   NSArray *lines;
 
   lines = [content componentsSeparatedByString: @"\n"];
@@ -300,10 +346,10 @@ static unsigned int ContactsCountWarningLimit = 1000;
   return nbrLines;
 }
 
-- (unsigned int) mostCompleteRecord: (NSArray *) records
+- (int) mostCompleteRecord: (NSArray *) records
 			      count: (unsigned int) max
 {
-  unsigned int mostComplete, count, highestLines, lines;
+  int mostComplete, count, highestLines, lines;
   NSString *content;
 
   mostComplete = 0;
@@ -323,11 +369,36 @@ static unsigned int ContactsCountWarningLimit = 1000;
   return mostComplete;
 }
 
+- (int)      record: (NSArray *) records
+  referencedInLists: (NSArray *) cardsInLists
+{
+  int recordIndex, count, max;
+  NSDictionary *currentRecord;
+
+  recordIndex = -1;
+
+  max = [records count];
+  count = 0;
+
+  while (recordIndex == -1 && count < max)
+    {
+      currentRecord = [records objectAtIndex: count];
+      if ([cardsInLists
+            containsObject: [currentRecord objectForKey: @"c_name"]])
+        recordIndex = count;
+      else
+        count++;
+    }
+
+  return recordIndex;
+}
+
 - (void) assignScores: (unsigned int *) scores
 	    toRecords: (NSArray *) records
 		count: (unsigned int) max
+     withCardsInLists: (NSArray *) cardsInLists
 {
-  unsigned int recordIndex;
+  int recordIndex;
 
   recordIndex = [self mostModifiedRecord: records count: max];
   (*(scores + recordIndex))++;
@@ -335,9 +406,17 @@ static unsigned int ContactsCountWarningLimit = 1000;
   (*(scores + recordIndex)) += 2;
   recordIndex = [self recordWithTheMostQuickFields: records count: max];
   (*(scores + recordIndex)) += 3;
+
+  /* TODO: this method is ugly. Instead of replacing the card references in the
+     list with the most useful one, we remove the cards that are not
+     mentionned in the list. */
+  recordIndex = [self record: records referencedInLists: cardsInLists];
+  if (recordIndex > -1)
+    (*(scores + recordIndex)) += 6;
 }
 
 - (NSArray *) detectRecordsToRemove: (NSDictionary *) records
+                   withCardsInLists: (NSArray *) cardsInLists
 {
   NSMutableArray *recordsToRemove;
   NSEnumerator *recordsEnum;
@@ -346,11 +425,14 @@ static unsigned int ContactsCountWarningLimit = 1000;
 
   recordsToRemove = [NSMutableArray arrayWithCapacity: [records count] * 4];
   recordsEnum = [[records allValues] objectEnumerator];
+
   while ((currentRecords = [recordsEnum nextObject]))
     {
       max = [currentRecords count];
       scores = NSZoneCalloc (NULL, max, sizeof (unsigned int));
-      [self assignScores: scores toRecords: currentRecords count: max];
+      [self assignScores: scores
+               toRecords: currentRecords count: max
+        withCardsInLists: cardsInLists];
       [recordsToRemove addObjectsFromArray: [self records: currentRecords
 						  withLowestScores: scores
 						  count: max]];
@@ -363,22 +445,33 @@ static unsigned int ContactsCountWarningLimit = 1000;
 - (BOOL) removeDoublesFromFolder: (GCSFolder *) folder
 {
   NSArray *fields, *records, *recordsToRemove;
+  EOQualifier *qualifier;
   BOOL rc;
 
   fields = [NSArray arrayWithObjects: @"c_name", @"c_givenname", @"c_cn",
 		    @"c_sn", @"c_screenname", @"c_l", @"c_mail", @"c_o",
 		    @"c_ou", @"c_telephoneNumber", @"c_content", @"c_version",
 		    @"c_creationdate", @"c_lastmodified", nil];
-  records = [folder fetchFields: fields fetchSpecification: nil];
+  qualifier = [EOQualifier qualifierWithQualifierFormat: @"c_component = %@",
+                           @"vcard"];
+  records = [folder fetchFields: fields matchingQualifier: qualifier];
+
   if (records)
     {
       rc = YES;
-      recordsToRemove
-	= [self detectRecordsToRemove:
-		  [self detectDoubleEmailsFromRecords: records]];
-      [self removeRecords: recordsToRemove fromFolder: folder];
-      fprintf (stderr, "Removed %d records from %d.\n",
-	       [recordsToRemove count], [records count]);
+      recordsToRemove = [self detectRecordsToRemove:
+                                [self detectDoubleEmailsFromRecords: records]
+                                   withCardsInLists:
+                                [self fetchCardsInListsFromFolder: folder]];
+      if ([recordsToRemove count])
+        {
+          [self removeRecords: recordsToRemove fromFolder: folder];
+          fprintf (stderr, "Removed %d records from %d.\n",
+                   [recordsToRemove count], [records count]);
+        }
+      else
+        fprintf (stderr, "No record to remove. %d records kept.\n",
+                 [records count]);
     }
   else
     {
@@ -401,13 +494,12 @@ static unsigned int ContactsCountWarningLimit = 1000;
 			 username, folderId];
   folder = [fom folderAtPath: folderPath];
   if (folder)
-    {
-      rc = [self removeDoublesFromFolder: folder];
-    }
+    rc = [self removeDoublesFromFolder: folder];
   else
     {
-      fprintf (stderr, "Folder '%s' not found.\n",
-	       [folderId cStringUsingEncoding: NSUTF8StringEncoding]);
+      fprintf (stderr, "Folder '%s' of user '%s' not found.\n",
+	       [folderId cStringUsingEncoding: NSUTF8StringEncoding],
+               [username cStringUsingEncoding: NSUTF8StringEncoding]);
       rc = NO;
     }
 
