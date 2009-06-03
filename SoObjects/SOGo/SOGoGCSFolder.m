@@ -834,7 +834,7 @@ static NSArray *childRecordFields = nil;
     {
       aclsForObject = [NSMutableDictionary dictionary];
       [aclCache setObject: aclsForObject
-		forKey: objectPath];
+                   forKey: objectPath];
     }
   if (roles)
     [aclsForObject setObject: roles forKey: uid];
@@ -871,13 +871,13 @@ static NSArray *childRecordFields = nil;
   // let's go get the system-wide defaults, if any.
   if (![acls count])
     {
-      if ([[container nameInContainer] isEqualToString: @"Calendar"] ||
-	  [[container nameInContainer] isEqualToString: @"Contacts"])
+      if ([[container nameInContainer] isEqualToString: @"Calendar"]
+          || [[container nameInContainer] isEqualToString: @"Contacts"])
 	acls = [[NSUserDefaults standardUserDefaults] 
 		 objectForKey: [NSString stringWithFormat: @"SOGo%@DefaultRoles",
 					 [container nameInContainer]]];
     }
-  
+
   return acls;
 }
 

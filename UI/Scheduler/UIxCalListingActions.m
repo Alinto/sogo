@@ -761,7 +761,7 @@ _computeBlockPosition (NSArray *block)
   max = [block count];
   event = [block objectAtIndex: 0];
   siblings = [[event objectForKey: @"siblings"] unsignedIntValue];
-  positions = calloc (siblings, sizeof (NSMutableDictionary *));
+  positions = NSZoneCalloc (NULL, siblings, sizeof (NSMutableDictionary *));
 
   for (count = 0; count < max; count++)
     {
@@ -780,7 +780,7 @@ _computeBlockPosition (NSArray *block)
 	}
     }
 
-  free (positions);
+  NSZoneFree (NULL, positions);
 }
 
 // static inline void
@@ -831,7 +831,7 @@ _computeBlocksPosition (NSArray *blocks)
       block = [blocks objectAtIndex: count];
       _computeBlockPosition (block);
 //       _addBlockMultipliers (block, positions);
-//       free (positions);
+//       NSZoneFree (NULL, positions);
     }
 }
 

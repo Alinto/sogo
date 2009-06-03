@@ -57,7 +57,7 @@ _createAtom (_SOGoLDAPValueType type, void *value)
 {
   _SOGoLDAPValue *newAtom;
 
-  newAtom = malloc (sizeof (_SOGoLDAPValue));
+  newAtom = NSZoneMalloc (NULL, sizeof (_SOGoLDAPValue));
   newAtom->type = type;
   newAtom->value = value;
   newAtom->maxCount = 0;
@@ -72,7 +72,8 @@ _createContainer (_SOGoLDAPValueType type)
   _SOGoLDAPValue *newContainer;
   _SOGoLDAPValue **array;
 
-  array = malloc (sizeof (_SOGoLDAPValue *) * SOGoLDAPContainerSize);
+  array = NSZoneMalloc (NULL,
+                        sizeof (_SOGoLDAPValue *) * SOGoLDAPContainerSize);
   *array = NULL;
   newContainer = _createAtom (type, array);
   newContainer->maxCount = SOGoLDAPContainerSize - 1; /* all values + NULL */
@@ -95,8 +96,9 @@ _appendAtomToContainer (_SOGoLDAPValue *atom, _SOGoLDAPValue *container)
   if (count >= container->maxCount)
     {
       container->maxCount += SOGoLDAPContainerSize;
-      container->value = realloc (container->value, (container->maxCount + 1)
-				  * sizeof (_SOGoLDAPValue *));
+      container->value = NSZoneRealloc (NULL, container->value,
+                                        (container->maxCount + 1)
+                                        * sizeof (_SOGoLDAPValue *));
       currentAtom = (_SOGoLDAPValue **) container->value + count;
     }
 
@@ -149,7 +151,7 @@ _appendAtomToDictionary (_SOGoLDAPValue *atom, _SOGoLDAPValue *dictionary)
 
   if (container->type == SOGoLDAPArray)
     {
-      free (atom->key);
+      NSZoneFree (NULL, atom->key);
       atom->key = NULL;
     }
   _appendAtomToContainer (atom, container);
@@ -170,7 +172,8 @@ _fetchLDAPDNAndAttrWithHandle (const char *dn, char *attrs[], LDAP *ldapHandle)
   _SOGoLDAPValue **atoms, **currentAtom;
   unsigned int atomsCount;
 
-  atoms = malloc (SOGoLDAPContainerSize * sizeof (_SOGoLDAPValue *));
+  atoms = NSZoneMalloc (NULL,
+                        SOGoLDAPContainerSize * sizeof (_SOGoLDAPValue *));
   currentAtom = atoms;
   atomsCount = 0;
 
@@ -204,10 +207,10 @@ _fetchLDAPDNAndAttrWithHandle (const char *dn, char *attrs[], LDAP *ldapHandle)
 
 		  if (!(atomsCount % SOGoLDAPContainerSize))
 		    {
-		      atoms = realloc (atoms, (int)
-				       (SOGoLDAPContainerSize + atomsCount)
- 				       * sizeof (_SOGoLDAPValue *));
-
+		      atoms = NSZoneRealloc (NULL, atoms,
+                                             (int) (SOGoLDAPContainerSizee
+                                                    + atomsCount)
+                                             * sizeof (_SOGoLDAPValue *));
 		      currentAtom = atoms + atomsCount;
 		    }
 		  value++;
@@ -255,7 +258,7 @@ _readLDAPAttrRefWithHandle (const char *attrPair, LDAP *ldapHandle)
       attrs[1] = NULL;
       atoms = _fetchLDAPDNAndAttrWithHandle (dn, attrs, ldapHandle);
       refValue = *atoms;
-      free (attrs[0]);
+      NSZoneFree (NULL, attrs[0]);
     }
   else
     {
@@ -263,8 +266,8 @@ _readLDAPAttrRefWithHandle (const char *attrPair, LDAP *ldapHandle)
       atoms = _fetchLDAPDNAndAttrWithHandle (dn, NULL, ldapHandle);
       _fillLDAPDictionaryWithAtoms (refValue, atoms);
     }
-  free (atoms);
-  free (dn);
+  NSZoneFree (NULL, atoms);
+  NSZoneFree (NULL, dn);
 
   return refValue;
 }
@@ -378,7 +381,7 @@ _initLDAPDefaults ()
     {
       atoms = _fetchLDAPDNAndAttrWithHandle (configDN, NULL, ldapHandle);
       _fillLDAPDictionaryWithAtoms (dictionary, atoms);
-      free (atoms);
+      NSZoneFree (NULL, atoms);
     }
 
   return dictionary;

@@ -108,7 +108,7 @@
     }
 
   datalen = [_data length];
-  data = calloc(datalen + 1, sizeof(unichar));
+  data = NSZoneCalloc (NULL, datalen + 1, sizeof(unichar));
   [_data getCharacters: data range: NSMakeRange(0, datalen)];
   return self;
 }
@@ -119,7 +119,7 @@
 }
 
 - (void) dealloc {
-  if (data) free (data);
+  if (data) NSZoneFree (NULL, data);
   [group   release];
   [tagName release];
   [attrs   release];

@@ -1,5 +1,17 @@
 2009-06-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Main/NSException+Stacktrace.m, SOPE/NGCards/NGCardsSaxHandler.m,
+	SOPE/NGCards/NSString+NGCards.m,
+	SOPE/NGCards/versitCardsSaxDriver/VSSaxDriver.m,
+	SoObjects/Appointments/SOGoAppointmentFolder.m,
+	SoObjects/SOGo/NSArray+Utilities.m,
+	SoObjects/SOGo/SOGoGCSFolder.m,
+	SoObjects/SOGo/SOGoLDAPUserDefaults.m,
+	UI/MailPartViewers/UIxMailPartTextViewer.m,
+	UI/MainUI/SOGoUserHomePage.m, UI/Scheduler/UIxCalListingActions.m:
+	replaced all invocations of "malloc", "realloc", "free" by similar
+	invocations to NSZoneMalloc, NSZoneRealloc and NSZoneFree.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m (+initialize):
 	removed obsolete security declarations.
 	(-davCalendarQuery, -davCalendarMultiget): delegate conversion of

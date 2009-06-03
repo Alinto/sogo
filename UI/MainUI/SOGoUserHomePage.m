@@ -183,7 +183,7 @@ static NSString *LDAPContactInfoAttribute = nil;
 
   interval = [endDate timeIntervalSinceDate: startDate] + 60;
   intervals = interval / intervalSeconds; /* slices of 15 minutes */
-  freeBusyItems = calloc (intervals, sizeof (int));
+  freeBusyItems = NSZoneCalloc (NULL, intervals, sizeof (int));
   [self _fillFreeBusyItems: freeBusyItems count: intervals
 	withRecords: [fb fetchFreeBusyInfosFrom: startDate to: endDate]
         fromStartDate: startDate toEndDate: endDate];
@@ -192,7 +192,7 @@ static NSString *LDAPContactInfoAttribute = nil;
   for (count = 0; count < intervals; count++)
     [response appendFormat: @"%d,", *(freeBusyItems + count)];
   [response deleteCharactersInRange: NSMakeRange (intervals * 2 - 1, 1)];
-  free (freeBusyItems);
+  NSZoneFree (NULL, freeBusyItems);
 
   return response;
 }

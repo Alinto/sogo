@@ -55,7 +55,7 @@ convertChars (const char *oldString, unsigned int oldLength,
   unsigned int length, maxLength;
  
   maxLength = oldLength + paddingBuffer;
-  newString = malloc (maxLength + 1);
+  newString = NSZoneMalloc (NULL, maxLength + 1);
   destChar = newString;
   currentChar = oldString;
 
@@ -72,7 +72,7 @@ convertChars (const char *oldString, unsigned int oldLength,
 	  if (length + paddingBuffer > maxLength - 6)
 	    {
 	      maxLength += paddingBuffer;
-	      reallocated = realloc (newString, maxLength + 1);
+	      reallocated = NSZoneRealloc (NULL, newString, maxLength + 1);
 	      if (reallocated)
 		{
 		  newString = reallocated;
@@ -112,7 +112,7 @@ convertChars (const char *oldString, unsigned int oldLength,
 				      length: newLength
 				      encoding: NSUTF8StringEncoding];
   [convertedString autorelease];
-  free (newString);
+  NSZoneFree (NULL, newString);
 
   return convertedString;
 }

@@ -295,7 +295,7 @@ static NSString *commaSeparator = nil;
   components = [NSMutableArray array];
 
   length = [self length];
-  stringBuffer = malloc (sizeof (unichar) * length);
+  stringBuffer = NSZoneMalloc (NULL, sizeof (unichar) * length);
   [self getCharacters: stringBuffer];
 
   currentRange = NSMakeRange(0, 0);
@@ -324,7 +324,7 @@ static NSString *commaSeparator = nil;
   [components
     addObject: [self substringWithRange: currentRange]];
 
-  free (stringBuffer);
+  NSZoneFree (NULL, stringBuffer);
 
   return components;
 }

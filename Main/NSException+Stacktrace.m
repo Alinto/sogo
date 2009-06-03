@@ -235,7 +235,7 @@ _NSFoundationUncaughtExceptionHandler (NSException *exception)
     }
   if (_symbols)
     {
-      objc_free (_symbols);
+      NSZoneFree (NULL, _symbols);
       _symbols = NULL;
     }
   [super dealloc];
@@ -301,7 +301,7 @@ _NSFoundationUncaughtExceptionHandler (NSException *exception)
       [self release];
       return nil;
     }
-  _symbols = objc_malloc (neededSpace);
+  _symbols = NSZoneMalloc (NULL, neededSpace);
   if (!_symbols)
     {
       //NSLog (@"GSBinaryFileInfo: Can't allocate buffer");

@@ -1104,7 +1104,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   mgr = [SoSecurityManager sharedSecurityManager];
 
   //c = [self objectClassForComponentName: [object objectForKey: @"c_component"]];
-  sogoObject = [SOGoCalendarComponent objectWithRecord: object  inContainer: self];
+  sogoObject = [SOGoCalendarComponent objectWithRecord: object
+                                           inContainer: self];
   [sogoObject setComponentTag: [object objectForKey: @"c_component"]];
   //sogoObject = [self _createChildComponentWithRecord: object];
 

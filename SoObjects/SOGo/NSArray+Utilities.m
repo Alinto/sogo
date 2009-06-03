@@ -35,7 +35,7 @@
   unsigned int max;
 
   max = [self count];
-  pointers = malloc (sizeof(id) * (max + 1));
+  pointers = NSZoneMalloc (NULL, sizeof(id) * (max + 1));
   [self getObjects: pointers];
   *(pointers + max) = nil;
 

@@ -219,8 +219,8 @@
   return contentValues;
 }
 
-- (void) characters:(unichar *)_chars
-             length:(int)_len
+- (void) characters: (unichar *) _chars
+             length: (int) _len
 {
   if (_len && _chars)
     {
@@ -228,14 +228,16 @@
         {
           /* first content */
           contentLength = _len;
-          content = calloc (_len + 1, sizeof(unichar));
-          memcpy (content, _chars, (_len * sizeof(unichar)));
+          content = NSZoneMalloc (NULL, (_len + 1) * sizeof (unichar));
+          memcpy (content, _chars, (_len * sizeof (unichar)));
+          *(content + _len) = 0;
         }
       else
         {
           /* increase content */
           content =
-            realloc (content, (contentLength + _len+2) * sizeof(unichar));
+            NSZoneRealloc (NULL, content,
+                           (contentLength + _len+2) * sizeof(unichar));
           memcpy (&(content[contentLength]), _chars, 
                   (_len * sizeof(unichar)));
           contentLength += _len;
