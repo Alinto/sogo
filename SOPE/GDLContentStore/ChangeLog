@@ -1,3 +1,9 @@
+2009-06-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* GCSFolderManager.m: replaced invocations of NSLog with
+	debugWithFormat:. This avoids polluting the log with information
+	that really pertains to debugging.
+
 2009-06-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* GCSFolder.m ([GCSFolder -recordsCountByExcludingDeleted:]): new

@@ -130,7 +130,8 @@ static NSLock *lock;
 	      __PRETTY_FUNCTION__, [url absoluteString]);
 	return nil;
       }
-      NSLog(@"Note: setup default manager at: %@", url);
+      if (debugOn)
+        [self debugWithFormat:@"Note: setup default manager at: %@", url];
     }
 #if defined(THREADSAFE)
   [lock unlock];
@@ -155,7 +156,7 @@ static NSLock *lock;
   
   typeMap = [NSMutableDictionary dictionaryWithCapacity:count];
   
-  [self logWithFormat:@"Note: loading %d GCS folder types:", count];
+  [self debugWithFormat:@"Note: loading %d GCS folder types:", count];
   for (i = 0, count = [types count]; i < count; i++) {
     NSString *type;
     GCSFolderType *typeObject;
@@ -163,7 +164,7 @@ static NSLock *lock;
     type       = [[types objectAtIndex:i] stringByDeletingPathExtension];
     typeObject = [GCSFolderType folderTypeWithName: type];
     
-    [self logWithFormat:@"  %@: %s", 
+    [self debugWithFormat:@"  %@: %s", 
 	  type, [typeObject isNotNull] ? "OK" : "FAIL"];
     [typeMap setObject: typeObject forKey:type];
   }
