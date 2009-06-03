@@ -81,8 +81,7 @@
 
 /* recurrences */
 - (iCalRepeatableEntityObject *) lookupOccurence: (NSString *) recID;
-- (SOGoComponentOccurence *)
- occurence: (iCalRepeatableEntityObject *) component;
+- (SOGoComponentOccurence *) occurence: (iCalRepeatableEntityObject *) component;
 - (iCalRepeatableEntityObject *) newOccurenceWithID: (NSString *) recID;
 
 @end
