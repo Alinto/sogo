@@ -1,5 +1,19 @@
 2009-06-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoGCSFolder.m
+	(-initializeQuickTablesAclsInContext:): new method that
+	initializes the new "userCanAccessAllObjects" ivar.
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-initWithName:inContainer:): added new
+	"userCanAccessObjectsClassifiedAs" ivar (array of bools) to
+	quickly determine whether a user can access a component
+	informations.
+	(-initializeQuickTablesAclsInContext:): new method that
+	initializes the new ivar above. 
+	(-davCalendarQuery:, -davCalendarMultiget:): invoke the new method
+	above.
+
 	* Main/NSException+Stacktrace.m, SOPE/NGCards/NGCardsSaxHandler.m,
 	SOPE/NGCards/NSString+NGCards.m,
 	SOPE/NGCards/versitCardsSaxDriver/VSSaxDriver.m,

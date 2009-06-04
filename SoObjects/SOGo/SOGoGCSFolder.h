@@ -49,6 +49,8 @@
   GCSFolder *ocsFolder;
   NSMutableDictionary *childRecords;
   NSMutableDictionary *aclCache;
+  BOOL userCanAccessAllObjects; /* i.e. user obtains 'Access Object' on
+                                   subobjects */
 }
 
 + (id) folderWithSubscriptionReference: (NSString *) reference
@@ -87,6 +89,8 @@
 	      inTheNamesOf: (NSArray *) delegatedUsers
 	fromMailInvitation: (BOOL) isMailInvitation
 		 inContext: (WOContext *) localContext;
+
+- (void) initializeQuickTablesAclsInContext: (WOContext *) localContext;
 
 /* acls as a container */
 - (NSArray *) aclUsersForObjectAtPath: (NSArray *) objectPathArray;

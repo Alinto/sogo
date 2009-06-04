@@ -55,6 +55,7 @@
   NSMutableDictionary *uidToFilename;
   NSMutableDictionary *aclMatrix;
   NSMutableArray *stripFields;
+  BOOL userCanAccessObjectsClassifiedAs[iCalAccessClassCount];
 }
 
 - (BOOL) isActive;

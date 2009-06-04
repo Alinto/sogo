@@ -185,6 +185,7 @@ static NSArray *childRecordFields = nil;
       ocsFolder = nil;
       aclCache = [NSMutableDictionary new];
       childRecords = [NSMutableDictionary new];
+      userCanAccessAllObjects = NO;
     }
 
   return self;
@@ -754,6 +755,26 @@ static NSArray *childRecordFields = nil;
 	       inTheNamesOf: [self _parseDAVDelegatedUser: queryContext]
 	       fromMailInvitation: NO
 	       inContext: queryContext];
+}
+
+/* handling acls from quick tables */
+- (void) initializeQuickTablesAclsInContext: (WOContext *) localContext
+{
+  NSString *login;
+
+  if (activeUserIsOwner)
+    userCanAccessAllObjects = activeUserIsOwner;
+  else
+    {
+      login = [[localContext activeUser] login];
+      /* we only grant "userCanAccessAllObjects" for role "ObjectEraser" and
+         not "ObjectCreator" because the latter doesn't imply we can read
+         properties from subobjects or even know their existence. */
+      userCanAccessAllObjects = ([[self ownerInContext: localContext]
+                                   isEqualToString: login]
+                                 || [[self aclsForUser: login]
+                                      containsObject: SOGoRole_ObjectEraser]);
+    }
 }
 
 /* acls as a container */

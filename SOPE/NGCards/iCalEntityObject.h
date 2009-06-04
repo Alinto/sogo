@@ -40,6 +40,7 @@ typedef enum
   iCalAccessPublic = 0,
   iCalAccessPrivate = 1,
   iCalAccessConfidential = 2,
+  iCalAccessClassCount = 3
 } iCalAccessClass;
 
 @interface iCalEntityObject : CardGroup

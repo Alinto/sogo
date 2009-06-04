@@ -30,7 +30,6 @@
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoObject+SoDAV.h>
-#import <NGObjWeb/SoSecurityManager.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WOMessage.h>
 #import <NGObjWeb/WORequest.h>
@@ -259,6 +258,8 @@ static NSArray *reducedReportQueryFields = nil;
       aclMatrix = [NSMutableDictionary new];
       stripFields = nil;
       uidToFilename = nil;
+      memset (userCanAccessObjectsClassifiedAs, NO,
+              iCalAccessClassCount * sizeof (BOOL));
     }
 
   return self;
@@ -1091,31 +1092,26 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   SOGoCalendarComponent *sogoObject;
   NSString **currentProperty;
   NSString **values, **currentValue;
-  SoSecurityManager *mgr;
   SEL methodSel;
-
-  values = NSZoneMalloc (NULL,
-                         (propertiesCount + 1) * sizeof (NSMutableString *));
-  *(values + propertiesCount) = nil;
+  iCalAccessClass classification;
 
 //   NSLog (@"_properties:ofObject:: %@", [NSDate date]);
 
-#warning this check should be done directly in the query... we should fix this sometime
-  mgr = [SoSecurityManager sharedSecurityManager];
+  values = NSZoneMalloc (NULL,
+                         (propertiesCount + 1) * sizeof (NSString *));
+  *(values + propertiesCount) = nil;
 
+  classification = [[object objectForKey: @"c_classification"] intValue];
   //c = [self objectClassForComponentName: [object objectForKey: @"c_component"]];
-  sogoObject = [SOGoCalendarComponent objectWithRecord: object
-                                           inContainer: self];
-  [sogoObject setComponentTag: [object objectForKey: @"c_component"]];
-  //sogoObject = [self _createChildComponentWithRecord: object];
-
-  if (activeUserIsOwner
-      || [[self ownerInContext: context]
-	   isEqualToString: [[context activeUser] login]]
-      || !([mgr validatePermission: SOGoPerm_AccessObject
-		onObject: sogoObject
-		inContext: context]))
+  if (userCanAccessObjectsClassifiedAs[classification])
     {
+      #warning TODO: determine why this commented invocation takes so long...
+      // sogoObject = [self _createChildComponentWithRecord: object];
+
+      sogoObject = [SOGoCalendarComponent objectWithRecord: object
+                                               inContainer: self];
+      [sogoObject setComponentTag: [object objectForKey: @"c_component"]];
+
       currentProperty = properties;
       currentValue = values;
       while (*currentProperty)
@@ -1154,7 +1150,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   properties200 = [NSMutableArray new];
   properties404 = [NSMutableArray new];
 
-  values = [self _properties: properties count: propertiesCount ofObject: object];
+  values = [self _properties: properties count: propertiesCount
+                    ofObject: object];
   currentValue = values;
 
   property = properties;
@@ -1650,7 +1647,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                  additionalFilters: additionalFilters];
       //NSLog(@"adding properties");
       max = [apts count];
-      buffer = [[NSMutableString alloc] initWithCapacity: max*512];
+      buffer = [[NSMutableString alloc] initWithCapacity: max * 512];
       for (count = 0; count < max; count++)
         [self appendObject: [apts objectAtIndex: count]
                 properties: properties
@@ -1670,6 +1667,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   WOResponse *r;
   id <DOMDocument> document;
   id <DOMElement> documentElement;
+
+  [self initializeQuickTablesAclsInContext: queryContext];
 
   r = [context response];
   [r setStatus: 207];
@@ -1873,6 +1872,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   WOResponse *r;
   id <DOMDocument> document;
   id <DOMElement> documentElement;
+
+  [self initializeQuickTablesAclsInContext: queryContext];
 
   r = [context response];
   [r setStatus: 207];
@@ -2375,6 +2376,41 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     }
 
   return accessRole;
+}
+
+- (void) initializeQuickTablesAclsInContext: (WOContext *) localContext
+{
+  NSString *login, *role, *permission;
+  iCalAccessClass currentClass;
+  unsigned int permStrIndex;
+
+  [super initializeQuickTablesAclsInContext: localContext];
+  /* We assume "userIsOwner" will be set after calling the super method. */
+  if (!activeUserIsOwner)
+    {
+      login = [[localContext activeUser] login];
+      permStrIndex = [@"Component" length];
+    }
+
+  for (currentClass = 0; currentClass < iCalAccessClassCount; currentClass++)
+    {
+      if (activeUserIsOwner)
+        userCanAccessObjectsClassifiedAs[currentClass] = YES;
+      else
+        {
+          role = [self roleForComponentsWithAccessClass: currentClass
+                                                forUser: login];
+          if ([role length])
+            {
+              permission = [role substringFromIndex: permStrIndex];
+              userCanAccessObjectsClassifiedAs[currentClass]
+                = ([permission isEqualToString: @"Viewer"]
+                   || [permission isEqualToString: @"DAndTViewer"]
+                   || [permission isEqualToString: @"Modifier"]
+                   || [permission isEqualToString: @"Responder"]);
+            }
+        }
+    }
 }
 
 - (NSArray *) fetchFreeBusyInfosFrom: (NSCalendarDate *) _startDate
