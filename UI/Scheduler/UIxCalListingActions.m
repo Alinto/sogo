@@ -44,6 +44,7 @@
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>
 #import <SoObjects/Appointments/SOGoAppointmentFolders.h>
 #import <SoObjects/Appointments/SOGoAppointmentObject.h>
+#import <Appointments/SOGoFreeBusyObject.h>
 
 #import <UI/Common/WODirectAction+SOGo.h>
 
@@ -56,6 +57,12 @@ static NSArray *tasksFields = nil;
 
 #define dayLength 86400
 #define quarterLength 900
+
+#define intervalSeconds 900
+#define offsetHours     24 * 5
+#define offsetSeconds   offsetHours * 60 * 60
+#define offsetBlocks    offsetHours * 4
+#define maxBlocks       offsetBlocks * 2
 
 @implementation UIxCalListingActions
 
@@ -951,6 +958,291 @@ _computeBlocksPosition (NSArray *blocks)
   [filteredTasks sortUsingSelector: @selector (compareTasksAscending:)];
 
   return [self _responseWithData: filteredTasks];
+}
+
+
+- (void) _fillFreeBusy: (unsigned int *) fb
+                forUid: (NSString *) uid
+              fromDate: (NSCalendarDate *) start
+{
+  SOGoUser *user;
+  SOGoFreeBusyObject *fbObject;
+  NSCalendarDate *end;
+  NSTimeInterval interval;
+  NSArray *records;
+  NSDictionary *record;
+  NSArray *emails, *partstates;
+  NSCalendarDate *currentDate;
+  unsigned int intervals, recordCount, recordMax;
+  int count, startInterval, endInterval, i, type;
+  int itemCount = (offsetBlocks + maxBlocks) * 15 * 60;
+
+  user = [SOGoUser userWithLogin: uid roles: nil];
+  fbObject = [[user homeFolderInContext: context] 
+              freeBusyObject: @"freebusy.ifb" 
+              inContext: context];
+
+  end = [start addTimeInterval: itemCount];
+
+  interval = [end timeIntervalSinceDate: start];// + 60;
+  intervals = interval / intervalSeconds; /* slices of 15 minutes */
+
+  records = [fbObject fetchFreeBusyInfosFrom: start to: end];
+  recordMax = [records count];
+
+  for (recordCount = 0; recordCount < recordMax; recordCount++)
+    {
+      record = [records objectAtIndex: recordCount];
+      if ([[record objectForKey: @"c_isopaque"] boolValue])
+        {
+          type = 0;
+
+          // If the event has NO organizer (which means it's the user that has created it) OR
+          // If we are the organizer of the event THEN we are automatically busy
+          if ([[record objectForKey: @"c_orgmail"] length] == 0 ||
+              [user hasEmail: [record objectForKey: @"c_orgmail"]])
+            {
+              type = 1;
+            }
+          else
+            {
+              // We check if the user has accepted/declined or needs action
+              // on the current event.
+              emails = [[record objectForKey: @"c_partmails"] componentsSeparatedByString: @"\n"];
+
+              for (i = 0; i < [emails count]; i++)
+                {
+                  if ([user hasEmail: [emails objectAtIndex: i]])
+                    {
+                      // We now fetch the c_partstates array and get the participation
+                      // status of the user for the event
+                      partstates = [[record objectForKey: @"c_partstates"] componentsSeparatedByString: @"\n"];
+
+                      if (i < [partstates count])
+                        {
+                          type = ([[partstates objectAtIndex: i] intValue] < 2 ? 1 : 0);
+                        }
+                      break;
+                    }
+                }
+            }
+
+          currentDate = [record objectForKey: @"startDate"];
+          if ([currentDate earlierDate: start] == currentDate)
+            startInterval = 0;
+          else
+            startInterval = ([currentDate timeIntervalSinceDate: start]
+                             / intervalSeconds);
+
+          currentDate = [record objectForKey: @"endDate"];
+          if ([currentDate earlierDate: end] == end)
+            endInterval = itemCount - 1;
+          else
+            endInterval = ([currentDate timeIntervalSinceDate: start]
+                           / intervalSeconds);
+
+          if (type == 1)
+            for (count = startInterval; count < endInterval; count++)
+              *(fb + count) = 1;
+        }
+    }
+
+}
+
+- (unsigned int **) _loadFreeBusyForUsers: (NSArray *) uids 
+                      fromDate: (NSCalendarDate *) start
+{
+  unsigned int **fbData, **node, count;
+
+  fbData = calloc ([uids count], sizeof (unsigned int *));
+  for (count = 0; count < [uids count]; count++)
+    {
+      fbData[count] = calloc (offsetBlocks + maxBlocks, sizeof (unsigned int *));
+      node = fbData + count;
+      [self _fillFreeBusy: *node
+                   forUid: [uids objectAtIndex: count]
+                 fromDate: start];
+    }
+
+  return fbData;
+}
+
+- (BOOL) _possibleBlock: (int) block
+               forUsers: (int) users
+               freeBusy: (unsigned int **) fbData
+               interval: (int) blocks
+{
+  unsigned int *node;
+  int bCount, uCount;
+  BOOL rc = YES;
+
+  for (uCount = 0; uCount < users; uCount++)
+    {
+      node = *(fbData + uCount);
+      for (bCount = block; bCount < block + blocks; bCount++)
+        {
+          if (*(node+bCount) != 0)
+            {
+              rc = NO;
+              break;
+            }
+        }
+    }
+
+  return rc;
+}
+
+- (NSCalendarDate *) _parseDateField: (NSString *) dateF
+                           timeField: (NSString *) timeF
+{
+  NSString *buffer;
+  NSCalendarDate *rc;
+
+  buffer = [NSString stringWithFormat: @"%@ %@", 
+                [[context request] formValueForKey: dateF],
+                [[context request] formValueForKey: timeF]];
+  rc = [NSCalendarDate dateWithString: buffer
+                       calendarFormat: @"%Y%m%d %H:%M"];
+
+  return rc;
+}
+
+- (NSMutableDictionary *) _makeValidResponseFrom: (NSCalendarDate *) nStart 
+                                              to: (NSCalendarDate *) nEnd
+{
+  NSMutableDictionary *rc;
+
+  rc = [NSMutableDictionary dictionaryWithCapacity: 512];
+  [rc setObject: [nStart descriptionWithCalendarFormat: @"%Y%m%d"]
+         forKey: @"startDate"];
+  [rc setObject: [nStart descriptionWithCalendarFormat: @"%H"]
+         forKey: @"startHour"];
+  [rc setObject: [nStart descriptionWithCalendarFormat: @"%M"]
+         forKey: @"startMinute"];
+
+  [rc setObject: [nEnd descriptionWithCalendarFormat: @"%Y%m%d"]
+         forKey: @"endDate"];
+  [rc setObject: [nEnd descriptionWithCalendarFormat: @"%H"]
+         forKey: @"endHour"];
+  [rc setObject: [nEnd descriptionWithCalendarFormat: @"%M"]
+         forKey: @"endMinute"];
+
+  return rc;
+}
+
+- (BOOL) _validateStart: (NSCalendarDate *) start 
+                 andEnd: (NSCalendarDate *) end 
+                against: (NSArray *) limits
+{
+  NSCalendarDate *maxFrom, *maxTo;
+  NSString *buffer;
+  BOOL rc = YES;
+
+  buffer = [NSString stringWithFormat: @"%04d-%02d-%02d %@ %05d",
+            [start yearOfCommonEra], [start monthOfYear], [start dayOfMonth],
+            [[limits objectAtIndex: 0] descriptionWithCalendarFormat: @"%H:%M"],
+            ([[start timeZone] secondsFromGMTForDate: start]/36)];
+  maxFrom = [NSCalendarDate dateWithString: buffer
+                            calendarFormat: @"%Y-%m-%d %H:%M %z"];
+
+  buffer = [NSString stringWithFormat: @"%04d-%02d-%02d %@ %05d",
+            [start yearOfCommonEra], [start monthOfYear], [start dayOfMonth],
+            [[limits objectAtIndex: 1] descriptionWithCalendarFormat: @"%H:%M"],
+            ([[end timeZone] secondsFromGMTForDate: end]/36)];
+  maxTo = [NSCalendarDate dateWithString: buffer
+                          calendarFormat: @"%Y-%m-%d %H:%M %z"];
+
+  if ([maxFrom compare: start] == NSOrderedDescending)
+    rc = NO;
+  if ([maxTo compare: end] == NSOrderedAscending)
+    rc = NO;
+
+  return rc;
+}
+
+- (NSArray *) _loadScheduleLimitsForUsers: (NSArray *) users
+{
+  SOGoUserDefaults *ud;
+  NSCalendarDate *from, *to, *maxFrom, *maxTo;
+  int count;
+
+  maxFrom = [NSCalendarDate dateWithString: @"00:01"
+                            calendarFormat: @"%H:%M"];
+  maxTo = [NSCalendarDate dateWithString: @"23:59"
+                          calendarFormat: @"%H:%M"];
+
+  for (count = 0; count < [users count]; count++)
+    {
+      ud = [[SOGoUser userWithLogin: [users objectAtIndex: count]
+                              roles: nil] primaryUserDefaults];
+      from = [NSCalendarDate dateWithString: [ud objectForKey: @"DayStartTime"]
+                             calendarFormat: @"%H:%M"];
+      to = [NSCalendarDate dateWithString: [ud objectForKey: @"DayEndTime"]
+                             calendarFormat: @"%H:%M"];
+      maxFrom = (NSCalendarDate *)[from laterDate: maxFrom];
+      maxTo = (NSCalendarDate *)[to earlierDate: maxTo];
+    }
+
+  return [NSArray arrayWithObjects: maxFrom, maxTo, nil];
+}
+
+- (WOResponse *) findPossibleSlotAction
+{
+  WORequest *r;
+  NSCalendarDate *nStart, *nEnd;
+  NSArray *uids, *limits;
+  NSMutableDictionary *rc;
+  int direction, count, blockDuration;
+  unsigned int **fbData;
+
+  r = [context request];
+  rc = nil;
+  
+  uids = [[r formValueForKey: @"uids"] componentsSeparatedByString: @","];
+  if ([uids count] > 0)
+    {
+      limits = [self _loadScheduleLimitsForUsers: uids];
+      
+      direction = [[r formValueForKey: @"direction"] intValue];
+      nStart = [[self _parseDateField: @"startDate" 
+                            timeField: @"startTime"] 
+                addTimeInterval: intervalSeconds * direction];
+      nEnd = [[self _parseDateField: @"endDate" 
+                          timeField: @"endTime"] 
+              addTimeInterval: intervalSeconds * direction];
+      blockDuration = [nEnd timeIntervalSinceDate: nStart] / intervalSeconds;
+
+      fbData = [self _loadFreeBusyForUsers: uids 
+                                  fromDate: [nStart addTimeInterval: -offsetSeconds]];
+
+      for (count = offsetBlocks; 
+           (count < offsetBlocks + maxBlocks) && count >= 0; 
+           count += direction)
+        {
+          if ([self _validateStart: nStart 
+                            andEnd: nEnd 
+                           against: limits])
+            {
+              if ([self _possibleBlock: count
+                              forUsers: [uids count]
+                              freeBusy: fbData
+                              interval: blockDuration])
+                {
+                  rc = [self _makeValidResponseFrom: nStart 
+                                                 to: nEnd];
+                  break;
+                }
+            }
+          nStart = [nStart addTimeInterval: intervalSeconds * direction];
+          nEnd = [nEnd addTimeInterval: intervalSeconds * direction];
+        }
+
+      for (count = 0; count < [uids count]; count++)
+        free (*(fbData+count));
+      free (fbData);
+    }
+
+  return [self _responseWithData: [NSArray arrayWithObjects: rc, nil]];
 }
 
 @end
