@@ -444,7 +444,9 @@ DIV#daysView
   border-left: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
   border-top: 1px solid #ccc;
-  overflow: auto; }
+  overflow: auto;
+  overflow-x: hidden;
+  right: 0px;}
 
 DIV#calendarHeader
 { top: 3.5em;
@@ -461,8 +463,8 @@ DIV#calendarHeader DIV.days
   border-top: 1px solid #ccc;
   left: 5em;
   margin-left: 2px;
-  margin-right: 16px;
-  right: 0px;
+  margin-right: 16px; /* scrollbar width */
+  right: 1px;
   overflow: hidden; }
 
 DIV#calendarHeader DIV.dayLabels
@@ -524,7 +526,9 @@ DIV#daysView DIV.days
   height: 96em;
   top: 0px;
   left: 5em;
-  right: 2px; }
+  right: 2px;
+  /* width is specified dynamically through JavaScript */
+}
 
 DIV.multicolumnDayView DIV.lastDayUser
 { border-right: 1px solid #ccc; }
