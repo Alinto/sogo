@@ -276,7 +276,11 @@
 	}
     }
   else
-    [self _fetchFileAttachmentKey: part intoArray: keys withPath: path];
+    {
+      if (!path)
+        path = @"1";
+      [self _fetchFileAttachmentKey: part intoArray: keys withPath: path];
+    }
 }
 
 #warning we might need to handle parts with a "name" attribute

@@ -1,5 +1,8 @@
 2009-06-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailObject+Draft.m: add a default
+	attachment path of "1" when path is nil and thus unique.
+
 	* UI/SOGoUI/UIxComponent.m (-_parseQueryString:): fixed handling
 	of bad charsets in the parameters encoding. Invalid values will be
 	discarded.
