@@ -1128,6 +1128,11 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 	  currentValue++;
 	}
     }
+  else
+    {
+      /* We mark all values as nil since the area was not cleared before. */
+      memset (values, 0, propertiesCount * sizeof (NSString *));
+    }
 
 //    NSLog (@"/_properties:ofObject:: %@", [NSDate date]);
 
