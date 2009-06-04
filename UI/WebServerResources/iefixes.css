@@ -48,6 +48,11 @@ DIV#userRoles
 UL#userList
 { top: 3em; }
 
+/* UIxCalUserRightsEditor */
+
+DIV.calendarUserRights HR
+{ display: none; }
+
 /* MailerUI */
 
 IMG.dragMessage

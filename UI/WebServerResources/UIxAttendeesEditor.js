@@ -4,6 +4,7 @@ var resultsDiv;
 var address;
 var awaitingFreeBusyRequests = new Array();
 var additionalDays = 2;
+var isAllDay = parent$("isAllDay").checked + 0;
 
 var attendeesEditor = {
  delay: 500,
@@ -15,6 +16,19 @@ var attendeesEditor = {
  emails: null,
  states: null
 };
+
+
+function handleAllDay () {
+  window.timeWidgets['end']['hour'].value = 17;
+  window.timeWidgets['end']['minute'].value = 0;
+  window.timeWidgets['start']['hour'].value = 9;
+  window.timeWidgets['start']['minute'].value = 0;
+
+  $("startTime_time_hour").disabled = true;
+  $("startTime_time_minute").disabled = true;
+  $("endTime_time_hour").disabled = true;
+  $("endTime_time_minute").disabled = true;
+}
 
 /* address completion */
 
@@ -486,7 +500,8 @@ function findSlot (direction) {
                 + "&startDate=" + escape (sd)
                 + "&startTime=" + escape (st)
                 + "&endDate=" + escape (ed)
-                + "&endTime=" + escape (et));
+                + "&endTime=" + escape (et)
+                + "&isAllDay=" + isAllDay);
   document.findSlotAjaxRequest = triggerAjaxRequest(urlstr,
                                                     updateSlotDisplayCallback,
                                                     userList);
@@ -836,6 +851,9 @@ function initTimeWidgets(widgets) {
 			}
 		}
 	}
+
+  if (isAllDay)
+    handleAllDay ();
 }
 
 function onAdjustTime(event) {

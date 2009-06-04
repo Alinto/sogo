@@ -1134,27 +1134,51 @@ _computeBlocksPosition (NSArray *blocks)
                  andEnd: (NSCalendarDate *) end 
                 against: (NSArray *) limits
 {
-  NSCalendarDate *maxFrom, *maxTo;
-  NSString *buffer;
+  NSCalendarDate *sFrom, *sTo, *eFrom, *eTo;
   BOOL rc = YES;
 
-  buffer = [NSString stringWithFormat: @"%04d-%02d-%02d %@ %05d",
-            [start yearOfCommonEra], [start monthOfYear], [start dayOfMonth],
-            [[limits objectAtIndex: 0] descriptionWithCalendarFormat: @"%H:%M"],
-            ([[start timeZone] secondsFromGMTForDate: start]/36)];
-  maxFrom = [NSCalendarDate dateWithString: buffer
-                            calendarFormat: @"%Y-%m-%d %H:%M %z"];
+  sFrom = [NSCalendarDate dateWithYear: [start yearOfCommonEra]
+                                 month: [start monthOfYear]
+                                   day: [start dayOfMonth]
+                                  hour: [[limits objectAtIndex: 0] hourOfDay]
+                                minute: [[limits objectAtIndex: 0] minuteOfHour]
+                                second: 0
+                              timeZone: [start timeZone]];
+  sTo = [NSCalendarDate dateWithYear: [start yearOfCommonEra]
+                               month: [start monthOfYear]
+                                 day: [start dayOfMonth]
+                                hour: [[limits objectAtIndex: 1] hourOfDay]
+                              minute: [[limits objectAtIndex: 1] minuteOfHour]
+                              second: 0
+                            timeZone: [start timeZone]];
 
-  buffer = [NSString stringWithFormat: @"%04d-%02d-%02d %@ %05d",
-            [start yearOfCommonEra], [start monthOfYear], [start dayOfMonth],
-            [[limits objectAtIndex: 1] descriptionWithCalendarFormat: @"%H:%M"],
-            ([[end timeZone] secondsFromGMTForDate: end]/36)];
-  maxTo = [NSCalendarDate dateWithString: buffer
-                          calendarFormat: @"%Y-%m-%d %H:%M %z"];
+  eFrom = [NSCalendarDate dateWithYear: [end yearOfCommonEra]
+                                 month: [end monthOfYear]
+                                   day: [end dayOfMonth]
+                                  hour: [[limits objectAtIndex: 0] hourOfDay]
+                                minute: [[limits objectAtIndex: 0] minuteOfHour]
+                                second: 0
+                              timeZone: [end timeZone]];
+  eTo = [NSCalendarDate dateWithYear: [end yearOfCommonEra]
+                               month: [end monthOfYear]
+                                 day: [end dayOfMonth]
+                                hour: [[limits objectAtIndex: 1] hourOfDay]
+                              minute: [[limits objectAtIndex: 1] minuteOfHour]
+                              second: 0
+                            timeZone: [end timeZone]];
 
-  if ([maxFrom compare: start] == NSOrderedDescending)
+  // start < sFrom
+  if ([sFrom compare: start] == NSOrderedDescending)
     rc = NO;
-  if ([maxTo compare: end] == NSOrderedAscending)
+  // start > sTo
+  if ([sTo compare: start] == NSOrderedAscending)
+    rc = NO;
+
+  // end > eTo
+  if ([eTo compare: end] == NSOrderedAscending)
+    rc = NO;
+  // end < eFrom
+  if ([eFrom compare: end] == NSOrderedDescending)
     rc = NO;
 
   return rc;
@@ -1192,8 +1216,9 @@ _computeBlocksPosition (NSArray *blocks)
   NSCalendarDate *nStart, *nEnd;
   NSArray *uids, *limits;
   NSMutableDictionary *rc;
-  int direction, count, blockDuration;
+  int direction, count, blockDuration, step;
   unsigned int **fbData;
+  BOOL isAllDay = NO;
 
   r = [context request];
   rc = nil;
@@ -1201,15 +1226,21 @@ _computeBlocksPosition (NSArray *blocks)
   uids = [[r formValueForKey: @"uids"] componentsSeparatedByString: @","];
   if ([uids count] > 0)
     {
+      isAllDay = [[r formValueForKey: @"isAllDay"] boolValue];
+      direction = [[r formValueForKey: @"direction"] intValue];
       limits = [self _loadScheduleLimitsForUsers: uids];
       
-      direction = [[r formValueForKey: @"direction"] intValue];
+      if (isAllDay)
+        step = direction * 96;
+      else
+        step = direction;
+
       nStart = [[self _parseDateField: @"startDate" 
                             timeField: @"startTime"] 
-                addTimeInterval: intervalSeconds * direction];
+                addTimeInterval: intervalSeconds * step];
       nEnd = [[self _parseDateField: @"endDate" 
                           timeField: @"endTime"] 
-              addTimeInterval: intervalSeconds * direction];
+              addTimeInterval: intervalSeconds * step];
       blockDuration = [nEnd timeIntervalSinceDate: nStart] / intervalSeconds;
 
       fbData = [self _loadFreeBusyForUsers: uids 
@@ -1217,24 +1248,27 @@ _computeBlocksPosition (NSArray *blocks)
 
       for (count = offsetBlocks; 
            (count < offsetBlocks + maxBlocks) && count >= 0; 
-           count += direction)
+           count += step)
         {
+          //NSLog (@"Trying %@ -> %@", nStart, nEnd);
           if ([self _validateStart: nStart 
                             andEnd: nEnd 
                            against: limits])
             {
+              //NSLog (@"valid");
               if ([self _possibleBlock: count
                               forUsers: [uids count]
                               freeBusy: fbData
                               interval: blockDuration])
                 {
+                  //NSLog (@"possible");
                   rc = [self _makeValidResponseFrom: nStart 
                                                  to: nEnd];
                   break;
                 }
             }
-          nStart = [nStart addTimeInterval: intervalSeconds * direction];
-          nEnd = [nEnd addTimeInterval: intervalSeconds * direction];
+          nStart = [nStart addTimeInterval: intervalSeconds * step];
+          nEnd = [nEnd addTimeInterval: intervalSeconds * step];
         }
 
       for (count = 0; count < [uids count]; count++)
