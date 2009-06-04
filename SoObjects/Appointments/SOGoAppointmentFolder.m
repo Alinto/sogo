@@ -2386,7 +2386,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
   [super initializeQuickTablesAclsInContext: localContext];
   /* We assume "userIsOwner" will be set after calling the super method. */
-  if (!activeUserIsOwner)
+  if (!userCanAccessAllObjects)
     {
       login = [[localContext activeUser] login];
       permStrIndex = [@"Component" length];
@@ -2394,7 +2394,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
   for (currentClass = 0; currentClass < iCalAccessClassCount; currentClass++)
     {
-      if (activeUserIsOwner)
+      if (userCanAccessAllObjects)
         userCanAccessObjectsClassifiedAs[currentClass] = YES;
       else
         {
