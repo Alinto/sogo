@@ -1,25 +1,33 @@
 1.0-2009mmdd (1.0.2)
 --------------------
 - basic alarm implementation for the web interface
-- user's status for events in the web interface now appears like in Lightning ("needs-action" events are surrounded by a dashed line, "declined" events are lighter)
+- user's status for events in the web interface now appears like in Lightning
+  ("needs-action" events are surrounded by a dashed line, "declined" events
+  are lighter)
 - added Welsh translation, thanks to Iona Bailey
 - added Russh translation, thanks to Alex Kabakaev
 - added support for Oracle RAC
 - improvements to the underlying SOGo cache infrastructure
-- fixed bug with LDAP-based address books and the entries references (ID vs UID)
+- fixed bug with LDAP-based address books and the entries references (ID vs
+  UID)
 - added "scope" parameter to LDAP sources
 - added groups support in attendees and in ACLs
 - added support for user-based IMAP hostname
 - added support for IMAP subscriptions in web interface
 - now possible to use SSL (or TLS) for LDAP sources
+- fixed LDAP and SQL injection bugs
+- improved the handling of user permissions in CalDAV and WebDAV queries
+  pertaining to accessing and deleting elements
 
 1.0-20090407 (1.0.1)
 --------------------
-- now possbile to navigate using keyboard keys in the address book and mail modules
+- now possible to navigate using keyboard keys in the address book and mail
+  modules
 - the favicon can now be specified using the SOGoFaviconRelativeURL preference
 - we now support LDAP encryption for binding and for contact lookups
 - we now support LDAP scopes for various search operations
-- when the status of an attendee changes, the event of an organizer is now updated correctly if it doesn't reside in the personal folder
+- when the status of an attendee changes, the event of an organizer is now
+  updated correctly if it doesn't reside in the personal folder
 - formatting improvements in the email invitation templates
 - Dovecot IMAP fixes and speed enhancements 
 - code cleanups to remove most compiler warnings
@@ -28,8 +36,10 @@
 
 1.0-20090317 (1.0.0)
 ---------------
-- when double-clicking in the all-day zone (day & week views), the "All Day event" checkbox is now automatically checked
-- replaced the JavaScript FastInit class by the dom:loaded event of Prototype JS
+- when double-clicking in the all-day zone (day & week views), the "All Day
+  event" checkbox is now automatically checked
+- replaced the JavaScript FastInit class by the dom:loaded event of Prototype
+  JS
 - also updated Prototype JS to fix issues with IE7
 - improvements to the underlying SOGo cache infrastructure
 - many improvements to DST handling
@@ -49,48 +59,70 @@
 
 1.0-20080826 (1.0 rc8)
 ----------------------
-- fixed a bug that would prevent deleted event and tasks from being removed from the events and tasks list
-- fixed a bug where the search of contacts would be done in authentication-only LDAP repositories
+- fixed a bug that would prevent deleted event and tasks from being removed
+  from the events and tasks list
+- fixed a bug where the search of contacts would be done in
+  authentication-only LDAP repositories
 - added the ability to transfer an event from one calendar to another
-- fixed a bug where deleting a contact would leave it listed in the contact list until the next refresh
-- fixed a bug where events shared among different attendees would no longer be updated automatically
+- fixed a bug where deleting a contact would leave it listed in the contact
+  list until the next refresh
+- fixed a bug where events shared among different attendees would no longer be
+  updated automatically
 - changed the look of the Calendar module to match the look of Lightning 0.9
 - the event details appear when the user clicks on it
 - enable module constraints to be specified as patterns
-- inhibit internal links and css/javascript content from html files embedded as attachments to mails
+- inhibit internal links and css/javascript content from html files embedded
+  as attachments to mails
 - updated all icons to use those from Thunderbird 2 and Lightning 0.9
-- fixed a bug where the cached credentials wouldn't be expired using SOGoLDAPUserManagerCleanupInterval
+- fixed a bug where the cached credentials wouldn't be expired using
+  SOGoLDAPUserManagerCleanupInterval
 - fixed a bug where mail headers wouldn't be decoded correctly
-- the copy/move menu items are correctly updated when IMAP folders are added, removed or renamed
-- fixed a bug where the ctag of a calendar would not take the deleted events into account, and another one where the value would always take the one of the first calendar queries during the process lifetime.
+- the copy/move menu items are correctly updated when IMAP folders are added,
+  removed or renamed
+- fixed a bug where the ctag of a calendar would not take the deleted events
+  into account, and another one where the value would always take the one of the
+  first calendar queries during the process lifetime.
 
 0.9.0-20080729 (1.0 rc7)
 ------------------------
-- work around the situation where Courier IMAP would refuse to rename the current mailbox or move it into the trash
+- work around the situation where Courier IMAP would refuse to rename the
+  current mailbox or move it into the trash
 - fixed tab index in mail composition window
 - fixed default privacy selection for new events
-- fixed a bug where concurrent versions of SOGo would create the user's personal folders table twice
+- fixed a bug where concurrent versions of SOGo would create the user's
+  personal folders table twice
 - added address completion in the web mail editor
-- implemented support for CalDAV methods which were missing for supporting iCal 3
+- implemented support for CalDAV methods which were missing for supporting
+  iCal 3
 - added support to write to multiple contacts from the Address Book module
-- added support to move and copy one or many contacts to another address book in the Address Book module
+- added support to move and copy one or many contacts to another address book
+  in the Address Book module
 - added icons to folders in Address Book module
 - fixed various bugs occuring with Safari 3.1
 - fixed various bugs occuring with Firefox 3
-- fixed bug where selecting the current day cell would not select the header day cell and vice-versa in the daily and weekly views
-- the events are now computed in the server code again, in order to speedup the drawing of events as well as to fix the bug where events would be shifted back or forth of one day, depending on how their start time would be compared to UTC time
+- fixed bug where selecting the current day cell would not select the header
+  day cell and vice-versa in the daily and weekly views
+- the events are now computed in the server code again, in order to speedup
+  the drawing of events as well as to fix the bug where events would be
+  shifted back or forth of one day, depending on how their start time would be
+  compared to UTC time
 - implemented the handling of exceptional occurences of recurrent events
 - all the calendar preferences are now taken into account
-- the user defaults variable "SOGoAuthentificationMethod" has been renamed to "SOGoAuthenticationMethod"
-- fixed a bug where the search of users would be done in addressbook-only LDAP repositories
+- the user defaults variable "SOGoAuthentificationMethod" has been renamed to
+  "SOGoAuthenticationMethod"
+- fixed a bug where the search of users would be done in addressbook-only LDAP
+  repositories
 
 0.9.0-20080520 (1.0 rc6)
 ------------------------
 - retrieving the freebusy DAV object was causing SOGo to crash
 - converted to use the gnustep-make 2 build framework
-- added custom DAV methods for managing user permissions from the SOGo Integrator
-- pressing enter in the contact edition dialog will perform the creation/update operation
-- implemented more of the CalDAV specification for compatibility with Lightning 0.8
+- added custom DAV methods for managing user permissions from the SOGo
+  Integrator
+- pressing enter in the contact edition dialog will perform the
+  creation/update operation
+- implemented more of the CalDAV specification for compatibility with
+  Lightning 0.8
 - added Italian translation, thanks to Marco Lertora and Sauro Saltini
 - added initial logic for splitting overlapping events
 - improved restoration of drag handles state
@@ -99,14 +131,19 @@
 - fixed various bugs occuring with Safari 3.1
 - monthly events would not be returned properly
 - bi-weekly events would appear every week instead
-- weekly events with specified days of week would not appear on the correct days
-- started supporting Lightning 0.8, improved general implementation of the CalDAV protocol
+- weekly events with specified days of week would not appear on the correct
+  days
+- started supporting Lightning 0.8, improved general implementation of the
+  CalDAV protocol
 - added support for calendar colors, both in the web and DAV interfaces
-- refactored and fixed the implementation of DAV acl, with partial support for CalDAV Scheduling extensions
-- removed the limitation that prevented the user of underscore characters in usernames
+- refactored and fixed the implementation of DAV acl, with partial support for
+  CalDAV Scheduling extensions
+- removed the limitation that prevented the user of underscore characters in
+  usernames
 - added Spanish translation, thanks to Ernesto Revilla
 - added Dutch translation, thanks to Wilco Baan Hofman
-- applied a patch from Wilco Baan Hofman to let SOGo works correctly through a Squid proxy
+- applied a patch from Wilco Baan Hofman to let SOGo works correctly through a
+  Squid proxy
 
 0.9.0-20080208 (1.0 rc5)
 ------------------------
@@ -142,7 +179,8 @@
 - the status of participants in represented with an icon;
 - added the option to save attached images;
 - fixed problems with mod_ngobjweb (part of SOPE);
-- the current module can no longer be reselected from the module navigation bar;
+- the current module can no longer be reselected from the module navigation
+  bar;
 - many bugfixes in the Mail and Calendar modules;
 - improved handling of ACLs;
 
@@ -152,8 +190,8 @@
 - SOGo will no longer redirect the browser to the default page when a
   specific location is submitted before login;
 - it is now possible to specify a sequence of LDAP attributes/values pairs
-  required in a user record to enable or prevent access to the Calendar and/or Mail
-  module;
+  required in a user record to enable or prevent access to the Calendar and/or
+  Mail module;
 - many messages can be moved or copied at the same time;
 - replying to mails in the Sent folder will take the recipients of the
   original mails into account;
