@@ -18,8 +18,10 @@
 
 	* UI/Scheduler/UIxCalListingActions.m: Added everything needed for the
 	findSlot action. Fixes for allday & multiday events.
+
 	* UI/WebServerResources/UIxAttendeesEditor.js: Added everything needed for
-	the findSlot action. Fixes for allday events.
+	the findSlot action. Fixes for allday events. Fixed scrolling issues
+	
 	* UI/Scheduler/UIxCalListingActions.h (findPossibleSlotAction): Added header.
 
 2009-06-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
