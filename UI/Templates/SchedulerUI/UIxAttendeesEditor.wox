@@ -21,9 +21,9 @@
   <div id="attendeesView">
     <div id="freeBusyViewButtons">
       <var:string label:value="Suggest time slot:"/>
-      <a href="#" class="button _disabled"
+      <a id="previousSlot" href="#" class="button"
 	><var:string label:value="Previous slot" /></a>
-      <a href="#" class="button _disabled"
+      <a id="nextSlot" href="#" class="button"
 	><var:string label:value="Next slot" /></a>
     </div>
     <!--

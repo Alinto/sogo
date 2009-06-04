@@ -447,9 +447,9 @@ function initializeWindowButtons() {
 	okButton.observe("click", onEditorOkClick, false);
 	cancelButton.observe("click", onEditorCancelClick, false);
 
-	var buttons = $("freeBusyViewButtons").childNodesWithTag("a");
-	for (var i = 0; i < buttons.length; i++)
-		buttons[i].observe("click", listRowMouseDownHandler, false);
+  $("previousSlot").observe ("click", onPreviousSlotClick, false);
+  $("nextSlot").observe ("click", onNextSlotClick, false);
+
 /*	buttons = $("freeBusyZoomButtons").childNodesWithTag("a");
 	for (var i = 0; i < buttons.length; i++)
 		buttons[i].observe("click", listRowMouseDownHandler, false);
@@ -457,6 +457,84 @@ function initializeWindowButtons() {
 	for (var i = 0; i < buttons.length; i++)
 		buttons[i].observe("click", listRowMouseDownHandler, false);
 */
+}
+
+function findSlot (direction) {
+  var userList = UserLogin;
+  var table = $("freeBusy");
+  var inputs = table.getElementsByTagName("input");
+  var sd = window.timeWidgets['start']['date'].valueAsShortDateString();
+  var st = window.timeWidgets['start']['hour'].value
+    + ":" + window.timeWidgets['start']['minute'].value;
+  var ed = window.timeWidgets['end']['date'].valueAsShortDateString();
+  var et = window.timeWidgets['end']['hour'].value
+    + ":" + window.timeWidgets['end']['minute'].value;
+
+  for (var i = 0; i < inputs.length - 2; i++)
+    {
+      userList += "," + inputs[i].uid;
+    }
+
+  // Abort any pending request
+  if (document.findSlotAjaxRequest) {
+    document.findSlotAjaxRequest.aborted = true;
+    document.findSlotAjaxRequest.abort();
+  }
+  var urlstr = (ApplicationBaseURL
+                + "/findPossibleSlot?direction=" + direction
+                + "&uids=" + escape (userList)
+                + "&startDate=" + escape (sd)
+                + "&startTime=" + escape (st)
+                + "&endDate=" + escape (ed)
+                + "&endTime=" + escape (et));
+  document.findSlotAjaxRequest = triggerAjaxRequest(urlstr,
+                                                    updateSlotDisplayCallback,
+                                                    userList);
+}
+
+function cleanInt (data) {
+  var rc = data;
+  if (rc.substr (0, 1) == "0")
+    rc = rc.substr (1, rc.length - 1);
+  return parseInt (rc);
+}
+
+function updateSlotDisplayCallback (http) {
+  var data = http.responseText.evalJSON (true);
+  var start = new Date ();
+  var end = new Date ();
+  var cb = redisplayFreeBusyZone;
+
+  start.setFullYear (parseInt (data[0]['startDate'].substr (0, 4)),
+                     parseInt (data[0]['startDate'].substr (4, 2)) - 1,
+                     parseInt (data[0]['startDate'].substr (6, 2)));
+  end.setFullYear (parseInt (data[0]['endDate'].substr (0, 4)),
+                   parseInt (data[0]['endDate'].substr (4, 2)) - 1,
+                   parseInt (data[0]['endDate'].substr (6, 2)));
+  
+  window.timeWidgets['end']['date'].setValueAsDate (end);
+  window.timeWidgets['end']['hour'].value = cleanInt (data[0]['endHour']);
+  window.timeWidgets['end']['minute'].value = cleanInt (data[0]['endMinute']);
+
+  if (window.timeWidgets['start']['date'].valueAsShortDateString () !=
+      data[0]['startDate'])
+    {
+      cb = onTimeDateWidgetChange;
+    }
+
+  window.timeWidgets['start']['date'].setValueAsDate (start);
+  window.timeWidgets['start']['hour'].value = cleanInt (data[0]['startHour']);
+  window.timeWidgets['start']['minute'].value = cleanInt (data[0]['startMinute']);
+
+  cb ();
+}
+
+function onPreviousSlotClick (event) {
+  findSlot (-1);
+}
+
+function onNextSlotClick (event) {
+  findSlot (1);
 }
 
 function onEditorOkClick(event) {

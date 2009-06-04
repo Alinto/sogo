@@ -11,6 +11,14 @@
 	strings which may contain quotes and thereby mess up the LDAP
 	queries.
 
+2009-06-04  Cyril Robert <crobert@inverse.ca>
+
+	* UI/Scheduler/UIxCalListingActions.m: Added everything needed for the
+	findSlot action.
+	* UI/WebServerResources/UIxAttendeesEditor.js: Added everything needed for
+	the findSlot action.
+	* UI/Scheduler/UIxCalListingActions.h (findPossibleSlotAction): Added header.
+
 2009-06-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoGCSFolder.m

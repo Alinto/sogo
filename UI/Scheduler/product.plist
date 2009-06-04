@@ -74,6 +74,11 @@
 	  actionClass = "UIxCalListingActions";
 	  actionName = "tasksList";
 	};
+	findPossibleSlot = {
+	  protectedBy = "View";
+	  actionClass = "UIxCalListingActions";
+	  actionName = "findPossibleSlot";
+	};
 	dayview = {
 	  protectedBy = "View";
 	  pageName    = "UIxCalDayView"; 
