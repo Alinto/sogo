@@ -38,6 +38,8 @@
 
 #import "LDAPSource.h"
 
+#define SafeLDAPCriteria(x) [[x stringByReplacingString: @"\\" withString: @"\\\\"] \
+                                stringByReplacingString: @"'" withString: @"\\'"]
 static NSArray *commonSearchFields;
 static NSString *LDAPContactInfoAttribute = nil;
 static int timeLimit;
@@ -327,7 +329,7 @@ static NSLock *lock;
 
   qs = [NSMutableString string];
 
-  escapedUid = [uid stringByReplacingString: @"'" withString: @"\\'"];
+  escapedUid = SafeLDAPCriteria (uid);
 
   fields = [[bindFields componentsSeparatedByString: @","] objectEnumerator];
   while ((currentField = [fields nextObject]))
@@ -442,7 +444,7 @@ static NSLock *lock;
   EOQualifier *qualifier;
   NSMutableString *qs;
 
-  escapedFilter = [filter stringByReplacingString: @"'" withString: @"\\'"];
+  escapedFilter = SafeLDAPCriteria (filter);
   if ([escapedFilter length] > 0)
     {
       fieldFormat = [NSString stringWithFormat: @"(%%@='%@*')", escapedFilter];
@@ -474,7 +476,7 @@ static NSLock *lock;
   NSString *mailFormat, *fieldFormat, *escapedUid;
   NSMutableString *qs;
 
-  escapedUid = [uid stringByReplacingString: @"'" withString: @"\\'"];
+  escapedUid = SafeLDAPCriteria (uid);
 
   fieldFormat = [NSString stringWithFormat: @"(%%@='%@')", escapedUid];
   mailFormat = [[mailFields stringsWithFormat: fieldFormat]
@@ -764,9 +766,8 @@ static NSLock *lock;
 	  NSArray *attributes;
 	  NSString *s;
 
-	  s = [NSString stringWithFormat: @"(%@='%@')", IDField,
-                        [theID stringByReplacingString: @"'"
-                                            withString: @"\\'"]];
+	  s = [NSString stringWithFormat: @"(%@='%@')",
+                        IDField, SafeLDAPCriteria (theID)];
 	  qualifier = [EOQualifier qualifierWithQualifierFormat: s];
 	  attributes = [self _searchAttributes];
 
@@ -905,9 +906,8 @@ static NSLock *lock;
 	  NSString *s;
 	  
 	  // FIXME
-	  s = [NSString stringWithFormat: @"(%@='%@')", theAttribute,
-                        [theValue stringByReplacingString: @","
-                                               withString: @"\\,"]];
+	  s = [NSString stringWithFormat: @"(%@='%@')",
+                        theAttribute, SafeLDAPCriteria (theValue)];
 	  qualifier = [EOQualifier qualifierWithQualifierFormat: s];
 	  
 	  // We look for additional attributes - the ones related to group membership
