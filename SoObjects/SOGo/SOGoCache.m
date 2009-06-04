@@ -208,18 +208,22 @@ static NSLock *lock;
   NSMutableArray *names;
   id currentObject;
 
-  names = [NSMutableArray new];
-
-  [names addObject: name];
-  currentObject = container;
-  while ((nameInContainer = [currentObject nameInContainer]))
+  if ([name length])
     {
-      [names addObject: nameInContainer];
-      currentObject = [currentObject container];
-    }
+      names = [NSMutableArray array];
 
-  fullPath = [names componentsJoinedByString: @"/"];
-  [names release];
+      [names addObject: name];
+      currentObject = container;
+      while ((nameInContainer = [currentObject nameInContainer]))
+        {
+          [names addObject: nameInContainer];
+          currentObject = [currentObject container];
+        }
+
+      fullPath = [names componentsJoinedByString: @"/"];
+    }
+  else
+    fullPath = nil;
 
   return fullPath;
 }
