@@ -154,24 +154,23 @@ static BOOL uixDebugEnabled = NO;
   NSString *key, *value;
 
   e = [[_s componentsSeparatedByString:@"&"] objectEnumerator];
-  part = [e nextObject];
-  while (part)
+  while ((part = [e nextObject]))
     {
       r = [part rangeOfString:@"="];
       if (r.length == 0)
         {
       /* missing value of query parameter */
-          key   = [part stringByUnescapingURL];
+          key = [part stringByUnescapingURL];
           value = @"1";
         }
       else
         {
-          key   = [[part substringToIndex:r.location] stringByUnescapingURL];
+          key = [[part substringToIndex:r.location] stringByUnescapingURL];
           value = [[part substringFromIndex:(r.location + r.length)] 
                     stringByUnescapingURL];
         }
-      [queryParameters setObject:value forKey:key];
-      part = [e nextObject];
+      if (key && value)
+        [queryParameters setObject:value forKey:key];
     }
 }
 

@@ -1,5 +1,9 @@
 2009-06-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/SOGoUI/UIxComponent.m (-_parseQueryString:): fixed handling
+	of bad charsets in the parameters encoding. Invalid values will be
+	discarded.
+
 	* SoObjects/Contacts/SOGoContactGCSFolder.m
 	(-lookupContactsWithFilter:sortBy:ordering:): same as below.
 
