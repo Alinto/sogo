@@ -17,9 +17,11 @@
 
 "Language:" = "Iaith:";
 "choose" = "Dewis ...";
-"Dutch" = "Dutch";
+"Dutch" = "Nederlands";
 "English" = "English";
-"French" = "French";
-"German" = "German";
-"Italian" = "Italian";
-"Spanish" = "Spanish";
+"French" = "Français";
+"German" = "Deutsch";
+"Italian" = "Italiano";
+"Russian" = "Русский";
+"Spanish" = "Español";
+"Welsh" = "Welsh";
