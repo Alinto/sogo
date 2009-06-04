@@ -23,7 +23,7 @@
   </div>
 
   <label><span class="content">
-    <span id="allDay"><input class="checkBox"
+    <span id="allDay"><input id="isAllDay" class="checkBox"
         type="checkbox" var:selection="isAllDay"
         var:checked="isAllDay"
         /> <var:string label:value="All day Event"
