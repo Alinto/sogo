@@ -1,5 +1,8 @@
 2009-06-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactGCSFolder.m
+	(-lookupContactsWithFilter:sortBy:ordering:): same as below.
+
 	* SoObjects/SOGo/LDAPSource.m: properly escaped user-entered
 	strings which may contain quotes and thereby mess up the LDAP
 	queries.

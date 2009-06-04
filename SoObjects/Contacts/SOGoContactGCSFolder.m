@@ -216,7 +216,8 @@
 
   if (filter && [filter length] > 0)
     {
-      filter = [filter stringByReplacingString: @"'"  withString: @"\\'\\'"];
+      filter = [[filter stringByReplacingString: @"\\"  withString: @"\\\\"]
+                 stringByReplacingString: @"'"  withString: @"\\'\\'"];
       qs = [NSString stringWithFormat:
                        @"(c_sn isCaseInsensitiveLike: '%@%%') OR "
                      @"(c_givenname isCaseInsensitiveLike: '%@%%') OR "
