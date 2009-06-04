@@ -567,6 +567,17 @@ static BOOL debugSoParts       = NO;
   body = [info objectForKey: @"body"];
   if (body)
     {
+      /* FIXME: this seems to generate bad mime part keys, which triggers a
+         exceptions such as this:
+
+         ERROR(-[NGImap4Client _processCommandParserException:]): catched
+         IMAP4 parser exception NGImap4ParserException: unsupported fetch key:
+         nil)
+
+         Do we really need to assign p to sp in a multipart body part? Or do
+         we need to do this only when the part in question is the first one in
+         the message? */
+
       sp = [[body valueForKey: @"type"] lowercaseString];
       if ([sp isEqualToString: @"multipart"])
 	sp = p;
