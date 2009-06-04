@@ -203,7 +203,7 @@ static NSLock *lock;
 {
   self = [self init];
 
-  ASSIGN(sourceID, [udSource objectForKey: @"id"]);
+  ASSIGN (sourceID, [udSource objectForKey: @"id"]);
 
   [self setBindDN: [udSource objectForKey: @"bindDN"]
 	password: [udSource objectForKey: @"bindPassword"]
@@ -217,9 +217,12 @@ static NSLock *lock;
 	mailFields: [udSource objectForKey: @"MailFieldNames"]
 	IMAPHostField: [udSource objectForKey: @"IMAPHostFieldName"]
 	andBindFields: [udSource objectForKey: @"bindFields"]];
-  ASSIGN(modulesConstraints, [udSource objectForKey: @"ModulesConstraints"]);
-  ASSIGN(_filter, [udSource objectForKey: @"filter"]);
-  ASSIGN(_scope, ([udSource objectForKey: @"scope"] ? (id)[udSource objectForKey: @"scope"]: (id)@"sub"));
+  ASSIGN (modulesConstraints,
+          [udSource objectForKey: @"ModulesConstraints"]);
+  ASSIGN (_filter, [udSource objectForKey: @"filter"]);
+  ASSIGN (_scope, ([udSource objectForKey: @"scope"]
+                   ? [udSource objectForKey: @"scope"]
+                   : @"sub"));
   
   return self;
 }
@@ -318,15 +321,18 @@ static NSLock *lock;
 - (EOQualifier *) _qualifierForBindFilter: (NSString *) uid
 {
   NSMutableString *qs;
+  NSString *escapedUid;
   NSEnumerator *fields;
   NSString *currentField;
 
   qs = [NSMutableString string];
 
+  escapedUid = [uid stringByReplacingString: @"'" withString: @"\\'"];
+
   fields = [[bindFields componentsSeparatedByString: @","] objectEnumerator];
   while ((currentField = [fields nextObject]))
-    [qs appendFormat: @" OR (%@='%@')", currentField, uid];
-  
+    [qs appendFormat: @" OR (%@='%@')", currentField, escapedUid];
+
   if (_filter && [_filter length])
     [qs appendFormat: @" AND %@", _filter];
 
@@ -432,27 +438,26 @@ static NSLock *lock;
 /* contact management */
 - (EOQualifier *) _qualifierForFilter: (NSString *) filter
 {
-  NSString *mailFormat, *fieldFormat;
+  NSString *mailFormat, *fieldFormat, *escapedFilter;
   EOQualifier *qualifier;
   NSMutableString *qs;
-  
-  fieldFormat = [NSString stringWithFormat: @"(%%@='%@*')", filter];
-  mailFormat = [[mailFields stringsWithFormat: fieldFormat]
-		 componentsJoinedByString: @" OR "];
-  qs = [NSMutableString string];
 
-  if ([filter length] > 0)
+  escapedFilter = [filter stringByReplacingString: @"'" withString: @"\\'"];
+  if ([escapedFilter length] > 0)
     {
-      if ([filter isEqualToString: @"."])
+      fieldFormat = [NSString stringWithFormat: @"(%%@='%@*')", escapedFilter];
+      mailFormat = [[mailFields stringsWithFormat: fieldFormat]
+                     componentsJoinedByString: @" OR "];
+
+      qs = [NSMutableString string];
+      if ([escapedFilter isEqualToString: @"."])
         [qs appendFormat: @"(%@='*')", CNField];
       else
-        [qs appendFormat: @"(%@='%@*')"
-	    @"OR (sn='%@*')"
-	    @"OR (displayName='%@*')"
-	    @"OR %@"
-	    @"OR (telephoneNumber='*%@*')",
-	    CNField, filter, filter, filter, mailFormat, filter];
-      
+        [qs appendFormat: @"(%@='%@*') OR (sn='%@*') OR (displayName='%@*')"
+	    @"OR %@ OR (telephoneNumber='*%@*')",
+	    CNField, escapedFilter, escapedFilter, escapedFilter, mailFormat,
+            escapedFilter];
+
       if (_filter && [_filter length])
 	[qs appendFormat: @" AND %@", _filter];
 
@@ -466,16 +471,18 @@ static NSLock *lock;
 
 - (EOQualifier *) _qualifierForUIDFilter: (NSString *) uid
 {
-  NSString *mailFormat, *fieldFormat;
+  NSString *mailFormat, *fieldFormat, *escapedUid;
   NSMutableString *qs;
 
-  fieldFormat = [NSString stringWithFormat: @"(%%@='%@')", uid];
+  escapedUid = [uid stringByReplacingString: @"'" withString: @"\\'"];
+
+  fieldFormat = [NSString stringWithFormat: @"(%%@='%@')", escapedUid];
   mailFormat = [[mailFields stringsWithFormat: fieldFormat]
 		 componentsJoinedByString: @" OR "];
   qs = [NSMutableString string];
   
-  [qs appendFormat: (@"(%@='%@') OR %@"), UIDField, uid, mailFormat];
-  
+  [qs appendFormat: (@"(%@='%@') OR %@"), UIDField, escapedUid, mailFormat];
+
   if (_filter && [_filter length])
     [qs appendFormat: @" AND %@", _filter];
 
@@ -756,8 +763,10 @@ static NSLock *lock;
 	  EOQualifier *qualifier;
 	  NSArray *attributes;
 	  NSString *s;
-	  
-	  s = [NSString stringWithFormat: @"(%@='%@')",	IDField, theID];
+
+	  s = [NSString stringWithFormat: @"(%@='%@')", IDField,
+                        [theID stringByReplacingString: @"'"
+                                            withString: @"\\'"]];
 	  qualifier = [EOQualifier qualifierWithQualifierFormat: s];
 	  attributes = [self _searchAttributes];
 
@@ -773,7 +782,7 @@ static NSLock *lock;
 	    entries = [ldapConnection deepSearchAtBaseDN: baseDN
 				      qualifier: qualifier
 				      attributes: attributes];
-	  
+
 	  ldapEntry = [entries nextObject];
 	}
       else
@@ -896,7 +905,9 @@ static NSLock *lock;
 	  NSString *s;
 	  
 	  // FIXME
-	  s = [NSString stringWithFormat: @"(%@='%@')", theAttribute, theValue];
+	  s = [NSString stringWithFormat: @"(%@='%@')", theAttribute,
+                        [theValue stringByReplacingString: @","
+                                               withString: @"\\,"]];
 	  qualifier = [EOQualifier qualifierWithQualifierFormat: s];
 	  
 	  // We look for additional attributes - the ones related to group membership

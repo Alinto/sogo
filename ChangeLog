@@ -1,3 +1,9 @@
+2009-06-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/LDAPSource.m: properly escaped user-entered
+	strings which may contain quotes and thereby mess up the LDAP
+	queries.
+
 2009-06-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoGCSFolder.m
