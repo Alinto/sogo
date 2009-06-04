@@ -6,6 +6,9 @@ var awaitingFreeBusyRequests = new Array();
 var additionalDays = 2;
 var isAllDay = parent$("isAllDay").checked + 0;
 
+dayStartHour = 0;
+dayEndHour = 23;
+
 var attendeesEditor = {
  delay: 500,
  delayedSearch: false,
@@ -296,6 +299,7 @@ function redisplayFreeBusyZone() {
     }
     deltaSpans--;
   }
+  scrollToEvent ();
 }
 
 function newAttendee(event) {
@@ -514,6 +518,21 @@ function cleanInt (data) {
   return parseInt (rc);
 }
 
+function scrollToEvent () {
+  var ths = $("currentEventPosition").childNodesWithTag ("th");
+  for (var i = 0; i < ths.length; i++) {
+    var spans = ths[i].childNodesWithTag ("span");
+    for (var j = 0; j < spans.length; j++) {
+      if (spans[j].hasClassName ("busy")) {
+        spans[j].scrollIntoView ();
+        var headerDiv = $$('TABLE#freeBusy TD.freeBusyHeader DIV').first();
+        var dataDiv = $$('TABLE#freeBusy TD.freeBusyData DIV').first();
+        dataDiv.scrollLeft = headerDiv.scrollLeft;
+      }
+    }
+  }
+}
+
 function updateSlotDisplayCallback (http) {
   var data = http.responseText.evalJSON (true);
   var start = new Date ();
@@ -674,9 +693,13 @@ function prepareTableHeaders() {
 	var days = startDate.daysUpTo(endDate);
 	for (var i = 0; i < days.length; i++) {
 		var header1 = document.createElement("th");
-		header1.colSpan = (dayEndHour - dayStartHour) + 1;
+		header1.colSpan = ((dayEndHour - dayStartHour) + 1)/2;
 		header1.appendChild(document.createTextNode(days[i].toLocaleDateString()));
 		rows[0].appendChild(header1);
+    var header1b = document.createElement("th");
+		header1b.colSpan = ((dayEndHour - dayStartHour) + 1)/2;
+		header1b.appendChild(document.createTextNode(days[i].toLocaleDateString()));
+		rows[0].appendChild(header1b);
 		for (var hour = dayStartHour; hour < (dayEndHour + 1); hour++) {
 			var header2 = document.createElement("th");
 			var text = hour + ":00";
@@ -814,6 +837,7 @@ function onFreeBusyLoadHandler() {
 	onWindowResize(null);
 	Event.observe(window, "resize", onWindowResize);
 	$$('TABLE#freeBusy TD.freeBusyData DIV').first().observe("scroll", onScroll);
+  scrollToEvent ();
 }
 
 document.observe("dom:loaded", onFreeBusyLoadHandler);

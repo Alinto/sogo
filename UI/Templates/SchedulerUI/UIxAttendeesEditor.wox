@@ -50,7 +50,7 @@
               <div><table id="freeBusyHeader" cellspacing="0" cellpadding="0">
 	        <tr class="freeBusyHeader1"><!--space --></tr>
 	        <tr class="freeBusyHeader2"><!--space --></tr>
-	        <tr class="freeBusyHeader3"><!--space --></tr>
+	        <tr id="currentEventPosition" class="freeBusyHeader3"><!--space --></tr>
               </table></div>
             </td>
           </tr>
