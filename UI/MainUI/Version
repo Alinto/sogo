@@ -1,5 +1,5 @@
 # Version file
 
-SUBMINOR_VERSION:=1
+SUBMINOR_VERSION:=2
 
 # v0.9.1 requires Main v0.9.59
