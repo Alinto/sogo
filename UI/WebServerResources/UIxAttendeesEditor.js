@@ -4,10 +4,11 @@ var resultsDiv;
 var address;
 var awaitingFreeBusyRequests = new Array();
 var additionalDays = 2;
-var isAllDay = parent$("isAllDay").checked + 0;
 
-dayStartHour = 0;
-dayEndHour = 23;
+var isAllDay = parent$("isAllDay").checked + 0;
+var displayStartHour = 0;
+var displayEndHour = 23;
+// dayStartHour & dayEndHour
 
 var attendeesEditor = {
  delay: 500,
@@ -249,20 +250,20 @@ function redisplayFreeBusyZone() {
   var stMinute = parseInt($("startTime_time_minute").value) / 15;
   var etHour = parseInt($("endTime_time_hour").value);
   var etMinute = parseInt($("endTime_time_minute").value) / 15;
-  if (stHour < dayStartHour) {
-    stHour = dayStartHour;
+  if (stHour < displayStartHour) {
+    stHour = displayStartHour;
     stMinute = 0;
   }
-  if (stHour > dayEndHour + 1) {
-    stHour = dayEndHour + 1;
+  if (stHour > displayEndHour + 1) {
+    stHour = displayEndHour + 1;
     stMinute = 0;
   }
-  if (etHour < dayStartHour) {
-    etHour = dayStartHour;
+  if (etHour < displayStartHour) {
+    etHour = displayStartHour;
     etMinute = 0;
   }
-  if (etHour > dayEndHour + 1) {
-    etHour = dayEndHour;
+  if (etHour > displayEndHour + 1) {
+    etHour = displayEndHour;
     etMinute = 0;
   }
   if (stHour > etHour) {
@@ -280,9 +281,9 @@ function redisplayFreeBusyZone() {
     }
   }
 
-  var deltaCells = (etHour - stHour) + ((dayEndHour - dayStartHour + 1) * addDays);
+  var deltaCells = (etHour - stHour) + ((displayEndHour - displayStartHour + 1) * addDays);
   var deltaSpans = (deltaCells * 4 ) + (etMinute - stMinute);
-  var currentCellNbr = stHour - dayStartHour;
+  var currentCellNbr = stHour - displayStartHour;
   var currentCell = row.cells[currentCellNbr];
   var currentSpanNbr = stMinute;
   var spans = $(currentCell).childNodesWithTag("span");
@@ -418,8 +419,8 @@ function setSlot(tds, nbr, status) {
     days = Math.floor(tdnbr / 24);
     tdnbr -= (days * 24);
   }
-  if (tdnbr > (dayStartHour - 1) && tdnbr < (dayEndHour + 1)) {
-    var i = (days * (dayEndHour - dayStartHour + 1) + tdnbr - (dayStartHour - 1));
+  if (tdnbr > (displayStartHour - 1) && tdnbr < (displayEndHour + 1)) {
+    var i = (days * (displayEndHour - displayStartHour + 1) + tdnbr - (displayStartHour - 1));
     var td = tds[i - 1];
     var spans = $(td).childNodesWithTag("span");
     if (status == '2')
@@ -467,14 +468,6 @@ function initializeWindowButtons() {
 
   $("previousSlot").observe ("click", onPreviousSlotClick, false);
   $("nextSlot").observe ("click", onNextSlotClick, false);
-
-/*	buttons = $("freeBusyZoomButtons").childNodesWithTag("a");
-	for (var i = 0; i < buttons.length; i++)
-		buttons[i].observe("click", listRowMouseDownHandler, false);
-	buttons = $("freeBusyButtons").childNodesWithTag("a");
-	for (var i = 0; i < buttons.length; i++)
-		buttons[i].observe("click", listRowMouseDownHandler, false);
-*/
 }
 
 function findSlot (direction) {
@@ -505,7 +498,8 @@ function findSlot (direction) {
                 + "&startTime=" + escape (st)
                 + "&endDate=" + escape (ed)
                 + "&endTime=" + escape (et)
-                + "&isAllDay=" + isAllDay);
+                + "&isAllDay=" + isAllDay
+                + "&onlyOfficeHours=" + ($("onlyOfficeHours").checked + 0));
   document.findSlotAjaxRequest = triggerAjaxRequest(urlstr,
                                                     updateSlotDisplayCallback,
                                                     userList);
@@ -519,19 +513,34 @@ function cleanInt (data) {
 }
 
 function scrollToEvent () {
-  var ths = $("currentEventPosition").childNodesWithTag ("th");
-  for (var i = 0; i < ths.length; i++) {
-    var spans = ths[i].childNodesWithTag ("span");
-    for (var j = 0; j < spans.length; j++) {
-      if (spans[j].hasClassName ("busy")) {
-        spans[j].scrollIntoView ();
-        var headerDiv = $$('TABLE#freeBusy TD.freeBusyHeader DIV').first();
-        var dataDiv = $$('TABLE#freeBusy TD.freeBusyData DIV').first();
-        dataDiv.scrollLeft = headerDiv.scrollLeft;
-      }
+  var headerDiv = $$('TABLE#freeBusy TD.freeBusyHeader DIV').first();
+  var dataDiv = $$('TABLE#freeBusy TD.freeBusyData DIV').first();
+  
+  var scroll = 0;
+  var spans = $$('TR#currentEventPosition TH SPAN');
+  for (var i = 0; i < spans.length; i++) {
+    scroll += spans[i].getWidth (spans[i]);
+    if (spans[i].hasClassName ("busy")) {
+      scroll -= 20 * spans[i].getWidth (spans[i]);
+      break;
     }
   }
+
+  headerDiv.scrollLeft = scroll;
+  dataDiv.scrollLeft = headerDiv.scrollLeft;
 }
+
+function toggleOfficeHours () {
+  var endDate = window.getEndDate();
+	var startDate = window.getStartDate();
+
+  if (startDate.getHours () < dayStartHour
+      || startDate.getHours () > dayEndHour
+      || endDate.getHours () > dayEndHour
+      || endDate.getHours () < dayStartHour)
+    $("onlyOfficeHours").checked = false;
+}
+
 
 function updateSlotDisplayCallback (http) {
   var data = http.responseText.evalJSON (true);
@@ -693,18 +702,20 @@ function prepareTableHeaders() {
 	var days = startDate.daysUpTo(endDate);
 	for (var i = 0; i < days.length; i++) {
 		var header1 = document.createElement("th");
-		header1.colSpan = ((dayEndHour - dayStartHour) + 1)/2;
+		header1.colSpan = ((displayEndHour - displayStartHour) + 1)/2;
 		header1.appendChild(document.createTextNode(days[i].toLocaleDateString()));
 		rows[0].appendChild(header1);
     var header1b = document.createElement("th");
-		header1b.colSpan = ((dayEndHour - dayStartHour) + 1)/2;
+		header1b.colSpan = ((displayEndHour - displayStartHour) + 1)/2;
 		header1b.appendChild(document.createTextNode(days[i].toLocaleDateString()));
 		rows[0].appendChild(header1b);
-		for (var hour = dayStartHour; hour < (dayEndHour + 1); hour++) {
+		for (var hour = displayStartHour; hour < (displayEndHour + 1); hour++) {
 			var header2 = document.createElement("th");
 			var text = hour + ":00";
 			if (hour < 10)
 				text = "0" + text;
+      if (hour >= dayStartHour && hour <= dayEndHour)
+        $(header2).addClassName ("officeHour");
 			header2.appendChild(document.createTextNode(text));
 			rows[1].appendChild(header2);
 
@@ -733,7 +744,7 @@ function prepareTableRows() {
 	$("freeBusyData").setStyle({ width: width + 'px' });
 	for (var i = 0; i < days.length; i++)
 		for (var rowNbr = 0; rowNbr < rows.length; rowNbr++)
-			for (var hour = dayStartHour; hour < (dayEndHour + 1); hour++)
+			for (var hour = displayStartHour; hour < (displayEndHour + 1); hour++)
 				rows[rowNbr].appendChild(document.createElement("td"));
 }
 
@@ -838,6 +849,7 @@ function onFreeBusyLoadHandler() {
 	Event.observe(window, "resize", onWindowResize);
 	$$('TABLE#freeBusy TD.freeBusyData DIV').first().observe("scroll", onScroll);
   scrollToEvent ();
+  toggleOfficeHours ();
 }
 
 document.observe("dom:loaded", onFreeBusyLoadHandler);
@@ -912,6 +924,7 @@ function onAdjustTime(event) {
 
 	// Specific function for the attendees editor
 	onTimeDateWidgetChange();
+  toggleOfficeHours ();
 }
 
 function _getDate(which) {

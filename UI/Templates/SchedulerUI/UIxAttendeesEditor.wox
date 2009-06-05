@@ -24,17 +24,11 @@
       <a id="previousSlot" href="#" class="button"
 	><var:string label:value="Previous slot" /></a>
       <a id="nextSlot" href="#" class="button"
-	><var:string label:value="Next slot" /></a>
+        ><var:string label:value="Next slot" /></a><label
+        ><input class="checkbox" type="checkbox" checked="1" id="onlyOfficeHours"
+            /><var:string label:value="Only office hours" 
+            /></label>
     </div>
-    <!--
-    <div id="freeBusyZoomButtons">
-      <var:string label:value="Zoom:"/>
-      <a href="#" class="button _disabled"><var:string label:value="-" /></a>
-      <var:popup list="zoomList" item="item"
-	string="itemZoomText" selection="zoom"/>
-      <a href="#" class="button _disabled"><var:string label:value="+" /></a>
-    </div>
-    -->
     <div id="freeBusyView">
       <table id="freeBusy" cellspacing="0" cellpadding="0"
 	xmlns="http://www.w3.org/1999/xhtml"
@@ -95,12 +89,6 @@
 	      ><var:string label:value="No free-busy information" /></li>
 	</ul>
       </div>
-      <!--<div id="freeBusyButtons">
-        <a href="#" class="button _disabled"
-	  ><var:string label:value="Previous hour" /></a>
-        <a href="#" class="button _disabled"
-	  ><var:string label:value="Next hour" /></a>
-      </div>-->
       <div id="freeBusyReplicas">
 	<div><var:string label:value="Start:"
             /><var:component className="UIxTimeDateControl"

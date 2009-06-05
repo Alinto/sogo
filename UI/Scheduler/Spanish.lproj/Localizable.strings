@@ -480,6 +480,7 @@ validate_endbeforestart    = "Su fecha/hora de comienzo es posterio a la de fina
 "Next slot" = "Siguiente ranura";
 "Previous hour" = "Hora anterior";
 "Next hour" = "Hora siguiente";
+"Only office hours" = "Only office hours";
 
 /* apt list */
 "Title" = "Título";

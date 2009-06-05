@@ -476,6 +476,7 @@ validate_endbeforestart    = "The end date that you entered occurs before the st
 "Next slot" = "Next slot";
 "Previous hour" = "Previous hour";
 "Next hour" = "Next hour";
+"Only office hours" = "Only office hours";
 
 /* apt list */
 "Title" = "Title";

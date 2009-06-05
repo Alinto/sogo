@@ -458,6 +458,7 @@ validate_endbeforestart    = "Het begin vindt plaats vóór het einde.";
 "Next slot" = "Volgende";
 "Previous hour" = "Vorig uur";
 "Next hour" = "Volgend uur";
+"Only office hours" = "Only office hours";
 
 /* apt list */
 "Title" = "Titel";

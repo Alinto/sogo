@@ -465,6 +465,7 @@ validate_endbeforestart    = "Mae'r dyddiad gorffen sydd wedi'i roi yn digwydd c
 "Next slot" = "Slot nesaf";
 "Previous hour" = "Awr flaenorol";
 "Next hour" = "Awr nesaf";
+"Only office hours" = "Only office hours";
 
 /* apt list */
 "Title" = "Teitl";

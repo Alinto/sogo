@@ -1218,7 +1218,7 @@ _computeBlocksPosition (NSArray *blocks)
   NSMutableDictionary *rc;
   int direction, count, blockDuration, step;
   unsigned int **fbData;
-  BOOL isAllDay = NO;
+  BOOL isAllDay = NO, onlyOfficeHours = YES;
 
   r = [context request];
   rc = nil;
@@ -1227,6 +1227,7 @@ _computeBlocksPosition (NSArray *blocks)
   if ([uids count] > 0)
     {
       isAllDay = [[r formValueForKey: @"isAllDay"] boolValue];
+      onlyOfficeHours = [[r formValueForKey: @"onlyOfficeHours"] boolValue];
       direction = [[r formValueForKey: @"direction"] intValue];
       limits = [self _loadScheduleLimitsForUsers: uids];
       
@@ -1251,9 +1252,10 @@ _computeBlocksPosition (NSArray *blocks)
            count += step)
         {
           //NSLog (@"Trying %@ -> %@", nStart, nEnd);
-          if ([self _validateStart: nStart 
-                            andEnd: nEnd 
-                           against: limits])
+          if ((onlyOfficeHours && [self _validateStart: nStart 
+                                                andEnd: nEnd 
+                                               against: limits]) 
+              || !onlyOfficeHours)
             {
               //NSLog (@"valid");
               if ([self _possibleBlock: count

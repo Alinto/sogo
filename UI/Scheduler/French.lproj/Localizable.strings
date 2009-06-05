@@ -473,6 +473,7 @@ validate_endbeforestart    = "La date de fin est avant la date de début.";
 "Next slot" = "Prochain";
 "Previous hour" = "Heure précédente";
 "Next hour" = "Prochaine heure";
+"Only office hours" = "Heures de bureau seulement";
 
 /* apt list */
 "Title" = "Titre";
