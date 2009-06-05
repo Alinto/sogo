@@ -1,27 +1,32 @@
-1.0-2009mmdd (1.0.2)
+1.0-20090605 (1.0.2)
 --------------------
 - basic alarm implementation for the web interface
-- user's status for events in the web interface now appears like in Lightning
-  ("needs-action" events are surrounded by a dashed line, "declined" events
-  are lighter)
 - added Welsh translation, thanks to Iona Bailey
 - added Russh translation, thanks to Alex Kabakaev
 - added support for Oracle RAC
-- improvements to the underlying SOGo cache infrastructure
-- fixed bug with LDAP-based address books and the entries references (ID vs
-  UID)
 - added "scope" parameter to LDAP sources
+- now possible to use SSL (or TLS) for LDAP sources
 - added groups support in attendees and in ACLs
 - added support for user-based IMAP hostname
 - added support for IMAP subscriptions in web interface
-- now possible to use SSL (or TLS) for LDAP sources
-- fixed LDAP and SQL injection bugs
+- added compatibility mode meta tag for IE8
+- added support for next/previous slot buttons in attendees window of
+   calendar module
+- user's status for events in the web interface now appears like in Lightning
+  ("needs-action" events are surrounded by a dashed line, "declined" events
+  are lighter)
+- improvements to the underlying SOGo cache infrastructure
+- improved JavaScript for selection and deselection in HTML tables and lists
 - improved the handling of user permissions in CalDAV and WebDAV queries
   pertaining to accessing and deleting elements
+- fixed bug with LDAP-based address books and the entries references (ID vs
+  UID)
+- fixed week view alignment problem in IE7
+- fixed LDAP and SQL injection bugs
 
 1.0-20090407 (1.0.1)
 --------------------
-- now possible to navigate using keyboard keys in the address book and mail
+- now possbile to navigate using keyboard keys in the address book and mail
   modules
 - the favicon can now be specified using the SOGoFaviconRelativeURL preference
 - we now support LDAP encryption for binding and for contact lookups
