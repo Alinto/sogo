@@ -1195,6 +1195,7 @@ function getListIndexForFolder(items, owner, folderName) {
 
 function listRowMouseDownHandler(event) {
 	preventDefault(event);
+	return false;
 }
 
 /* tabs */
@@ -1569,6 +1570,7 @@ function configureSortableTableHeaders(table) {
 	var headers = $(table).getElementsByClassName("sortableTableHeader");
 	for (var i = 0; i < headers.length; i++) {
 		var header = $(headers[i]);
+		header.observe("selectstart", listRowMouseDownHandler);
 		header.stopObserving("click", onHeaderClick);
 		header.observe("click", onHeaderClick);
 	}

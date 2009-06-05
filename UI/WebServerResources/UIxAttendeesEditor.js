@@ -8,7 +8,6 @@ var additionalDays = 2;
 var isAllDay = parent$("isAllDay").checked + 0;
 var displayStartHour = 0;
 var displayEndHour = 23;
-// dayStartHour & dayEndHour
 
 var attendeesEditor = {
  delay: 500,
@@ -87,7 +86,6 @@ function onContactKeydown(event) {
       this.setAttribute ("modified", "1");
       this.blur(); // triggers checkAttendee function call
     }
-
   }
   else if ($('attendeesMenu').getStyle('visibility') == 'visible') {
     attendeesEditor.currentField = this;
@@ -505,7 +503,7 @@ function findSlot (direction) {
                                                     userList);
 }
 
-function cleanInt (data) {
+function cleanInt(data) {
   var rc = data;
   if (rc.substr (0, 1) == "0")
     rc = rc.substr (1, rc.length - 1);
@@ -541,8 +539,7 @@ function toggleOfficeHours () {
     $("onlyOfficeHours").checked = false;
 }
 
-
-function updateSlotDisplayCallback (http) {
+function updateSlotDisplayCallback(http) {
   var data = http.responseText.evalJSON (true);
   var start = new Date ();
   var end = new Date ();
