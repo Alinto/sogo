@@ -1433,7 +1433,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   NSMutableDictionary *rc;
 
   rc = [NSMutableDictionary dictionaryWithDictionary: filter];
-  [rc setObject: [rc objectForKey: @"start"] forKey: @"cycleenddate"];
+  if ([rc objectForKey: @"start"])
+    [rc setObject: [rc objectForKey: @"start"] forKey: @"cycleenddate"];
   [rc removeObjectForKey: @"start"];
   [rc removeObjectForKey: @"end"];
   [rc setObject: sharedYes forKey: @"iscycle"];
