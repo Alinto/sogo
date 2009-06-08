@@ -1382,7 +1382,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
         {
           maxStart = [self _getMaxStartDate];
           if (maxStart)
-	    [self _addDateRangeLimitToFilter: filterData];
+            [self _addDateRangeLimitToFilter: filterData];
         }
       [filterData setObject: [NSNumber numberWithBool: NO] forKey: @"iscycle"];
     }
@@ -1434,6 +1434,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   NSMutableDictionary *rc;
 
   rc = [NSMutableDictionary dictionaryWithDictionary: filter];
+  [rc setObject: [rc objectForKey: @"start"] forKey: @"cycleenddate"];
   [rc removeObjectForKey: @"start"];
   [rc removeObjectForKey: @"end"];
   [rc setObject: sharedYes forKey: @"iscycle"];
@@ -1496,6 +1497,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   static NSArray *fields = nil;
   NSMutableArray *filters;
   NSNumber *cycle;
+  NSCalendarDate *cEndDate;
 
 #warning the list of fields should be taken from the .ocs description file
   if (!fields)
@@ -1525,6 +1527,14 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       filterString = [NSString stringWithFormat: @"(c_iscycle = '%d')", 
 			       [cycle intValue]];
       [filters addObject: filterString];
+
+      if ([cycle intValue])
+        {
+          cEndDate = [filter objectForKey: @"cycleenddate"];
+          filterString = [NSString stringWithFormat: @"(c_cycleenddate >= %u)",
+                          (unsigned int) [cEndDate timeIntervalSince1970]];
+          [filters addObject: filterString];
+        }
     }
 
   if ([filters count])

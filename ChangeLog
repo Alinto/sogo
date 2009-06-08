@@ -1,3 +1,8 @@
+2009-06-08  Cyril Robert <crobert@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m: Added c_cycleenddate in
+	dav date limitation.
+
 2009-06-05  Cyril Robert <crobert@inverse.ca>
 
 	* UI/Scheduler/UIxCalListingActions.m: Added support to ignore
