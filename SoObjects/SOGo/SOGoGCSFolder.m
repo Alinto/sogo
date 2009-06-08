@@ -41,7 +41,9 @@
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <DOM/DOMProtocols.h>
+#import <EOControl/EOFetchSpecification.h>
 #import <EOControl/EOQualifier.h>
+#import <EOControl/EOSortOrdering.h>
 #import <GDLAccess/EOAdaptorChannel.h>
 #import <GDLAccess/EOAdaptorContext.h>
 #import <GDLContentStore/GCSChannelManager.h>
@@ -615,18 +617,18 @@ static NSArray *childRecordFields = nil;
 {
   NSArray *records;
   GCSFolder *folder;
-  static EOFetchSpecification *cTagSpec = nil;
+  EOFetchSpecification *cTagSpec;
   EOSortOrdering *ordering;
   NSNumber *lastModified;
   NSString *cTag;
 
   folder = [self ocsFolder];
   ordering = [EOSortOrdering sortOrderingWithKey: @"c_lastmodified"
-			     selector: EOCompareDescending];
+                                        selector: EOCompareDescending];
   cTagSpec = [EOFetchSpecification
-	       fetchSpecificationWithEntityName: [folder folderName]
-	       qualifier: nil
-	       sortOrderings: [NSArray arrayWithObject: ordering]];
+                   fetchSpecificationWithEntityName: [folder folderName]
+                                          qualifier: nil
+                                      sortOrderings: [NSArray arrayWithObject: ordering]];
 
   records = [folder fetchFields: [NSArray arrayWithObject: @"c_lastmodified"]
 		    fetchSpecification: cTagSpec

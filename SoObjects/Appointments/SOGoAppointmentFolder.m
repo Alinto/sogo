@@ -39,7 +39,6 @@
 #import <GDLContentStore/GCSFolder.h>
 #import <DOM/DOMNode.h>
 #import <DOM/DOMProtocols.h>
-#import <EOControl/EOFetchSpecification.h>
 #import <EOControl/EOQualifier.h>
 #import <EOControl/EOSortOrdering.h>
 #import <NGCards/iCalCalendar.h>
