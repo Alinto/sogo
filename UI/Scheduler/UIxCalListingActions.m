@@ -32,12 +32,15 @@
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
-#import <NGExtensions/NSCalendarDate+misc.h>
-#import <NGCards/iCalPerson.h>
-#import <NGExtensions/NGCalendarDateRange.h>
 
-#import <SoObjects/SOGo/SOGoUser.h>
+#import <NGCards/iCalPerson.h>
+
+#import <NGExtensions/NGCalendarDateRange.h>
+#import <NGExtensions/NSCalendarDate+misc.h>
+
 #import <SoObjects/SOGo/SOGoDateFormatter.h>
+#import <SoObjects/SOGo/SOGoUser.h>
+#import <SoObjects/SOGo/SOGoUserFolder.h>
 #import <SoObjects/SOGo/NSCalendarDate+SOGo.h>
 #import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/NSObject+Utilities.h>
@@ -1186,7 +1189,7 @@ _computeBlocksPosition (NSArray *blocks)
 
 - (NSArray *) _loadScheduleLimitsForUsers: (NSArray *) users
 {
-  SOGoUserDefaults *ud;
+  NSUserDefaults *ud;
   NSCalendarDate *from, *to, *maxFrom, *maxTo;
   int count;
 
@@ -1198,7 +1201,7 @@ _computeBlocksPosition (NSArray *blocks)
   for (count = 0; count < [users count]; count++)
     {
       ud = [[SOGoUser userWithLogin: [users objectAtIndex: count]
-                              roles: nil] primaryUserDefaults];
+                              roles: nil] userDefaults];
       from = [NSCalendarDate dateWithString: [ud objectForKey: @"DayStartTime"]
                              calendarFormat: @"%H:%M"];
       to = [NSCalendarDate dateWithString: [ud objectForKey: @"DayEndTime"]
