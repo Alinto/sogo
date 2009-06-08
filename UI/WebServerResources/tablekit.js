@@ -3,6 +3,7 @@
 * Copyright (c) 2007 Andrew Tetlaw & Millstream Web Software
 * http://www.millstream.com.au/view/code/tablekit/
 * Version: 1.3b 2008-03-23
+* Modified and improved by Inverse inc.
 *
 * Permission is hereby granted, free of charge, to any person
 * obtaining a copy of this software and associated documentation
@@ -342,7 +343,7 @@ TableKit.Sortable = {
 		if(TableKit.Resizable._onHandle) {return;}
 		e = TableKit.e(e);
 		Event.stop(e);
-		var cell = Event.element(e);
+		var cell = e.element();
 		while(!(cell.tagName && cell.tagName.match(/td|th/gi))) {
 			cell = cell.parentNode;
 		}
@@ -616,7 +617,7 @@ TableKit.Resizable = {
 		TableKit.register(table,Object.extend(options || {},{resizable:true}));		 
 		var cells = TableKit.getHeaderCells(table);
 		cells.each(function(c){
-			c = $(c);
+		        c = $(c);
 			Event.observe(c, 'mouseover', TableKit.Resizable.initDetect);
 			Event.observe(c, 'mouseout', TableKit.Resizable.killDetect);
 		});
@@ -641,15 +642,15 @@ TableKit.Resizable = {
 		cell.setStyle({'width' : w + 'px'});
 	},
 	initDetect : function(e) {
-		e = TableKit.e(e);
-		var cell = Event.element(e);
+		var cell = e.element();
+		if (cell.tagName != "TD") {return;}
 		Event.observe(cell, 'mousemove', TableKit.Resizable.detectHandle);
 		Event.observe(cell, 'mousedown', TableKit.Resizable.startResize);
 	},
 	detectHandle : function(e) {
-		e = TableKit.e(e);
-		var cell = Event.element(e);
-  		if(TableKit.Resizable.pointerPos(cell,Event.pointerX(e),Event.pointerY(e))){
+                e = TableKit.e(e);
+  		var cell = e.element();
+		if(TableKit.Resizable.pointerPos(cell,Event.pointerX(e),Event.pointerY(e))){
   			cell.addClassName(TableKit.option('resizeOnHandleClass', cell.up('table').id)[0]);
   			TableKit.Resizable._onHandle = true;
   		} else {
@@ -658,17 +659,15 @@ TableKit.Resizable = {
   		}
 	},
 	killDetect : function(e) {
-		e = TableKit.e(e);
 		TableKit.Resizable._onHandle = false;
-		var cell = Event.element(e);
+		var cell = e.element();
 		Event.stopObserving(cell, 'mousemove', TableKit.Resizable.detectHandle);
 		Event.stopObserving(cell, 'mousedown', TableKit.Resizable.startResize);
 		cell.removeClassName(TableKit.option('resizeOnHandleClass', cell.up('table').id)[0]);
 	},
 	startResize : function(e) {
-		e = TableKit.e(e);
-		if(!TableKit.Resizable._onHandle) {return;}
-		var cell = Event.element(e);
+                if(!TableKit.Resizable._onHandle) {return;}
+		var cell = e.element();
 		Event.stopObserving(cell, 'mousemove', TableKit.Resizable.detectHandle);
 		Event.stopObserving(cell, 'mousedown', TableKit.Resizable.startResize);
 		Event.stopObserving(cell, 'mouseout', TableKit.Resizable.killDetect);
@@ -688,15 +687,16 @@ TableKit.Resizable = {
 		Event.stop(e);
 	},
 	endResize : function(e) {
-		e = TableKit.e(e);
+                e = TableKit.e(e);
 		var cell = TableKit.Resizable._cell;
+		if (!cell) {return;}
 		TableKit.Resizable.resize(null, cell, (Event.pointerX(e) - cell.cumulativeOffset()[0]));
 		Event.stopObserving(document, 'mousemove', TableKit.Resizable.drag);
 		Event.stopObserving(document, 'mouseup', TableKit.Resizable.endResize);
 		if(TableKit.option('showHandle', TableKit.Resizable._tbl.id)[0]) {
-			$$('div.resize-handle').each(function(elm){
-				document.body.removeChild(elm);
-			});
+		  $$('div.resize-handle').each(function(elm){
+		      document.body.removeChild(elm);
+		    });
 		}
 		Event.observe(cell, 'mouseout', TableKit.Resizable.killDetect);
 		TableKit.Resizable._tbl = TableKit.Resizable._handle = TableKit.Resizable._cell = null;
