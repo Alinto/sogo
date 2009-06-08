@@ -1,7 +1,7 @@
 2009-06-08  Cyril Robert <crobert@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m: Added c_cycleenddate in
-	dav date limitation.
+	dav date limitation. Added c_cycleenddate = NULL
 
 2009-06-05  Cyril Robert <crobert@inverse.ca>
 
