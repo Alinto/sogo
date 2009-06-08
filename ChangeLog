@@ -1,3 +1,9 @@
+2009-06-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoGCSFolder.m (-davCollectionTag): moved method
+	from SOGoAppointmentFolder since we will need it for contacts
+	folders as well.
+
 2009-06-08  Cyril Robert <crobert@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m: Added c_cycleenddate in

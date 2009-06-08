@@ -611,6 +611,38 @@ static NSArray *childRecordFields = nil;
     }
 }
 
+- (NSString *) davCollectionTag
+{
+  NSArray *records;
+  GCSFolder *folder;
+  static EOFetchSpecification *cTagSpec = nil;
+  EOSortOrdering *ordering;
+  NSNumber *lastModified;
+  NSString *cTag;
+
+  folder = [self ocsFolder];
+  ordering = [EOSortOrdering sortOrderingWithKey: @"c_lastmodified"
+			     selector: EOCompareDescending];
+  cTagSpec = [EOFetchSpecification
+	       fetchSpecificationWithEntityName: [folder folderName]
+	       qualifier: nil
+	       sortOrderings: [NSArray arrayWithObject: ordering]];
+
+  records = [folder fetchFields: [NSArray arrayWithObject: @"c_lastmodified"]
+		    fetchSpecification: cTagSpec
+		    ignoreDeleted: NO];
+  if ([records count])
+    {
+      lastModified = [[records objectAtIndex: 0]
+                       objectForKey: @"c_lastmodified"];
+      cTag = [lastModified stringValue];
+    }
+  else
+    cTag = @"-1";
+
+  return cTag;
+}
+
 #warning this code should be cleaned up
 - (void) _subscribeUser: (SOGoUser *) subscribingUser
 	       reallyDo: (BOOL) reallyDo
@@ -744,15 +776,15 @@ static NSArray *childRecordFields = nil;
 - (id <WOActionResults>) davSubscribe: (WOContext *) queryContext
 {
   return [self subscribe: YES
-	       inTheNamesOf: [self _parseDAVDelegatedUser: queryContext]
-	       fromMailInvitation: NO
+            inTheNamesOf: [self _parseDAVDelegatedUser: queryContext]
+               fromMailInvitation: NO
 	       inContext: queryContext];
 }
 
 - (id <WOActionResults>) davUnsubscribe: (WOContext *) queryContext
 {
   return [self subscribe: NO
-	       inTheNamesOf: [self _parseDAVDelegatedUser: queryContext]
+            inTheNamesOf: [self _parseDAVDelegatedUser: queryContext]
 	       fromMailInvitation: NO
 	       inContext: queryContext];
 }
