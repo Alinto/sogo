@@ -108,6 +108,7 @@ static unsigned int freebusyRangeEnd = 0;
 - (NSString *) iCalStringForFreeBusyInfos: (NSArray *) _infos
 			       withMethod: (NSString *) method
                                    andUID: (NSString *) uid
+                             andOrganizer: (iCalPerson *) organizer
                                      from: (NSCalendarDate *) _startDate
                                        to: (NSCalendarDate *) _endDate
 {
@@ -133,6 +134,8 @@ static unsigned int freebusyRangeEnd = 0;
   freebusy = [iCalFreeBusy groupWithTag: @"vfreebusy"];
   if (uid)
     [freebusy setUid: uid];
+  if (organizer)
+    [freebusy setOrganizer: organizer];
   [freebusy addToAttendees: [self iCalPersonWithUID: login]];
   [freebusy setTimeStampAsDate: [NSCalendarDate calendarDate]];
   [freebusy setStartDate: _startDate];
@@ -214,6 +217,7 @@ static unsigned int freebusyRangeEnd = 0;
 
 - (NSString *) contentAsStringWithMethod: (NSString *) method
                                   andUID: (NSString *) UID
+                            andOrganizer: (iCalPerson *) organizer
 				    from: (NSCalendarDate *) _startDate
 				      to: (NSCalendarDate *) _endDate
 {
@@ -222,7 +226,8 @@ static unsigned int freebusyRangeEnd = 0;
   infos = [self fetchFreeBusyInfosFrom: _startDate to: _endDate];
 
   return [self iCalStringForFreeBusyInfos: infos
-                               withMethod: method andUID: UID
+                               withMethod: method
+                                   andUID: UID andOrganizer: organizer
                                      from: _startDate to: _endDate];
 }
 
@@ -230,6 +235,7 @@ static unsigned int freebusyRangeEnd = 0;
 				to: (NSCalendarDate *) _endDate
 {
   return [self contentAsStringWithMethod: nil andUID: nil
+                            andOrganizer: nil
                                     from: _startDate
                                       to: _endDate];
 }

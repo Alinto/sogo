@@ -1,9 +1,9 @@
 2009-06-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoFreeBusyObject.m
-	(-iCalStringForFreeBusyInfos:withMethod:andUID:from:to:): accept
-	an additional "UID" parameter that will be set as UID attribute on
-	the reported freebusy object.
+	(-iCalStringForFreeBusyInfos:withMethod:andUID:andOrganizer:from:to:):
+	accept additional "UID" and "organizer" parameters that will be set as
+	attributes on the reported freebusy object.
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	(-freebusyResponseForRecipient:withUser:andCalendarData:): expose

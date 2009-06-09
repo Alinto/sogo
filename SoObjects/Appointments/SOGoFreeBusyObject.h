@@ -31,7 +31,10 @@
  Represents Free/Busy information for a single user as specified in RFC2445.
 */
 
-@class NSArray, NSCalendarDate;
+@class NSArray;
+@class NSCalendarDate;
+
+@class iCalPerson;
 
 @interface SOGoFreeBusyObject : SOGoObject
 {
@@ -45,6 +48,7 @@
 				to: (NSCalendarDate *) _endDate;
 - (NSString *) contentAsStringWithMethod: (NSString *) method
                                   andUID: (NSString *) uid
+                            andOrganizer: (iCalPerson *) organizer
 				    from: (NSCalendarDate *) _startDate
 				      to: (NSCalendarDate *) _endDate;
 

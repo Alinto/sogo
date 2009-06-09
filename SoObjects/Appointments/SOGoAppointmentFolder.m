@@ -2044,6 +2044,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
 - (NSDictionary *) caldavFreeBusyRequestOnRecipient: (NSString *) recipient
                                             withUID: (NSString *) uid
+                                       andOrganizer: (iCalPerson *) organizer
 					       from: (NSCalendarDate *) start
 						 to: (NSCalendarDate *) to
 {
@@ -2068,6 +2069,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 		       inContext: context];
 	  calendarData = [freebusy contentAsStringWithMethod: @"REPLY"
                                                       andUID: uid
+                                                andOrganizer: organizer
                                                         from: start to: to];
 	}
     }
@@ -2084,16 +2086,19 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   NSDictionary *responseElement;
   NSMutableArray *elements;
   NSString *recipient, *uid;
+  iCalPerson *organizer;
   NSEnumerator *allRecipients;
   NSCalendarDate *startDate, *endDate;
 
   elements = [NSMutableArray new];
   [freebusy fillStartDate: &startDate andEndDate: &endDate];
   uid = [freebusy uid];
+  organizer = [freebusy organizer];
   allRecipients = [recipients objectEnumerator];
   while ((recipient = [allRecipients nextObject]))
     [elements addObject: [self caldavFreeBusyRequestOnRecipient: recipient
                                                         withUID: uid
+                                                   andOrganizer: organizer
                                                            from: startDate
                                                              to: endDate]];
   responseElement = davElementWithContent (@"schedule-response",
