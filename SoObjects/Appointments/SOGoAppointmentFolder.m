@@ -2014,6 +2014,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 {
   NSDictionary *response;
   NSMutableArray *content;
+  NSString *calendarCData;
 
   content = [NSMutableArray new];
 
@@ -2022,8 +2023,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     {
       [content addObject: davElementWithContent (@"request-status", XMLNS_CALDAV,
 						 @"2.0;Success")];
-      [content addObject: davElementWithContent (@"calendar-data", XMLNS_CALDAV,
-						 calendarData)];
+      calendarCData = [NSString stringWithFormat: @"<![CDATA[%@]]>", calendarData];
+      [content addObject: [davElementWithContent (@"calendar-data", XMLNS_CALDAV,
+                                                 calendarCData) asWebDAVValue]];
     }
   else
       [content addObject:
