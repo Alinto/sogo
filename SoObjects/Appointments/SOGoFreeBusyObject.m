@@ -179,10 +179,10 @@ static unsigned int freebusyRangeEnd = 0;
 	      }
 	  }
 
-	if (type == iCalFBBusy || type == iCalFBBusyTentative)
+	if (type == iCalFBBusy || type == iCalFBBusyTentative || type == iCalFBBusyUnavailable)
 	  [freebusy addFreeBusyFrom: [info objectForKey: @"startDate"]
 		    to: [info objectForKey: @"endDate"]
-		    type: type];
+		    type: iCalFBBusyUnavailable];
       }
 
   [calendar setUniqueChild: freebusy];
