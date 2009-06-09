@@ -175,7 +175,7 @@
   dns = [NSMutableArray array];
 
   // We check if it's a static group
-  NSLog(@"attributes = %@", [_entry attributes]);
+  //NSLog(@"attributes = %@", [_entry attributes]);
   
   // Fetch "members" - we get DNs
   o = [[_entry attributeWithName: @"member"] allStringValues];
@@ -203,7 +203,7 @@
 	{
 	  dn = [dns objectAtIndex: i];
 	  login = [um getLoginForDN: dn];
-	  NSLog(@"member = %@", login);
+	  //NSLog(@"member = %@", login);
 	  user = [SOGoUser userWithLogin: login roles: nil];
 	  if (user)
 	    [array addObject: user];

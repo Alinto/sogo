@@ -418,8 +418,9 @@ static NSArray *reducedReportQueryFields = nil;
   start = (unsigned int) [_startDate timeIntervalSince1970];
   end = (unsigned int) [_endDate timeIntervalSince1970];
 
+  // vTODOs don't necessarily have start/end dates
   return [NSString stringWithFormat:
-                     @" AND (c_startdate <= %u) AND (c_enddate >= %u)",
+                     @" AND (c_startdate = NULL OR c_startdate <= %u) AND (c_enddate = NULL OR c_enddate >= %u)",
                    end, start];
 }
 
@@ -515,7 +516,7 @@ static NSArray *reducedReportQueryFields = nil;
   sql = [[NSString stringWithFormat: @"%@%@%@%@",
 		   dateSqlString, titleSqlString, componentSqlString,
 		   filterSqlString] substringFromIndex: 4];
-
+  
   /* fetch non-recurrent apts first */
   qualifier = [EOQualifier qualifierWithQualifierFormat: sql];
 
@@ -1537,14 +1538,14 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
         {
           cEndDate = [filter objectForKey: @"cycleenddate"];
           filterString = [NSString stringWithFormat: 
-                          @"(c_cycleenddate = NULL or c_cycleenddate >= %u)",
+                          @"(c_cycleenddate = NULL OR c_cycleenddate >= %u)",
                           (unsigned int) [cEndDate timeIntervalSince1970]];
           [filters addObject: filterString];
         }
     }
 
   if ([filters count])
-    additionalFilter = [filters componentsJoinedByString: @" and "];
+    additionalFilter = [filters componentsJoinedByString: @" AND "];
   else
     additionalFilter = nil;
   [filters release];

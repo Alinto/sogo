@@ -1,3 +1,10 @@
+2009-06-09  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder -_sqlStringRangeFromto:]): dates are not
+	necessarily defined in case of vTODOs; don't apply the range
+	constraint when dates are null so the SQL query return tasks.
+
 2009-06-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoGCSFolder.m (-davCollectionTag): moved method
