@@ -62,6 +62,7 @@
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoWebDAVAclManager.h>
+#import <SOGo/SOGoWebDAVValue.h>
 
 #import "iCalEntityObject+SOGo.h"
 #import "SOGoAppointmentObject.h"
@@ -2014,7 +2015,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 {
   NSDictionary *response;
   NSMutableArray *content;
-  NSString *calendarCData;
+  SOGoWebDAVValue *cdata;
+  NSString *escapedData;
 
   content = [NSMutableArray new];
 
@@ -2023,9 +2025,13 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     {
       [content addObject: davElementWithContent (@"request-status", XMLNS_CALDAV,
 						 @"2.0;Success")];
-      calendarCData = [NSString stringWithFormat: @"<![CDATA[%@]]>", calendarData];
-      [content addObject: [davElementWithContent (@"calendar-data", XMLNS_CALDAV,
-                                                 calendarCData) asWebDAVValue]];
+      escapedData = [[NSString stringWithFormat: @"<![CDATA[%@]]>",
+                               calendarData]
+                      stringByEscapingXMLString];
+      cdata = [SOGoWebDAVValue valueForObject: escapedData
+                                   attributes: nil];
+      [content addObject: davElementWithContent (@"calendar-data", XMLNS_CALDAV,
+                                                 cdata)];
     }
   else
       [content addObject:

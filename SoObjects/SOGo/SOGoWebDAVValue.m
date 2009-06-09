@@ -24,12 +24,20 @@
 
 #import "SOGoWebDAVValue.h"
 
+@class NSMutableDictionary;
+
 @implementation SOGoWebDAVValue : SoWebDAVValue
 
 - (NSString *) stringForTag: (NSString *) _key
                     rawName: (NSString *) setTag
                   inContext: (id) context
                    prefixes: (NSDictionary *) prefixes
+{
+  return object;
+}
+
+/* maybe a bit hackish... the mechanism should be reviewed a little bit */
+- (NSString *) asWebDavStringWithNamespaces: (NSMutableDictionary *) namespaces
 {
   return object;
 }
