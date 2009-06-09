@@ -2025,9 +2025,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     {
       [content addObject: davElementWithContent (@"request-status", XMLNS_CALDAV,
 						 @"2.0;Success")];
-      escapedData = [[NSString stringWithFormat: @"<![CDATA[%@]]>",
-                               calendarData]
-                      stringByEscapingXMLString];
+      escapedData = [NSString stringWithFormat: @"<![CDATA[%@]]>",
+                              [calendarData stringByEscapingXMLString]];
       cdata = [SOGoWebDAVValue valueForObject: escapedData
                                    attributes: nil];
       [content addObject: davElementWithContent (@"calendar-data", XMLNS_CALDAV,
