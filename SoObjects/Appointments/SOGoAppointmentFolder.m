@@ -1428,13 +1428,16 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return properties;
 }
 
+/* FIXME: is this really what we want? Why limit the cycleenddate? */
 - (NSDictionary *) _makeCyclicFilterFrom: (NSDictionary *) filter
 {
   NSMutableDictionary *rc;
+  NSNumber *start;
 
   rc = [NSMutableDictionary dictionaryWithDictionary: filter];
-  if ([rc objectForKey: @"start"])
-    [rc setObject: [rc objectForKey: @"start"] forKey: @"cycleenddate"];
+  start = [rc objectForKey: @"start"];
+  if (start)
+    [rc setObject: start forKey: @"cycleenddate"];
   [rc removeObjectForKey: @"start"];
   [rc removeObjectForKey: @"end"];
   [rc setObject: sharedYes forKey: @"iscycle"];
