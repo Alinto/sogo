@@ -1491,7 +1491,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return filterString;
 }
 
-/* This methods enables the mapping between comp-filter attributes and SQL
+/* This method enables the mapping between comp-filter attributes and SQL
    fields in the quick table. Probably unused most of the time but should be
    completed one day for full CalDAV compliance. */
 - (NSString *) _composeAdditionalFilters: (NSDictionary *) filter
