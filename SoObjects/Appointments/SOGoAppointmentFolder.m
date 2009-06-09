@@ -2043,6 +2043,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 }
 
 - (NSDictionary *) caldavFreeBusyRequestOnRecipient: (NSString *) recipient
+                                            withUID: (NSString *) uid
 					       from: (NSCalendarDate *) start
 						 to: (NSCalendarDate *) to
 {
@@ -2066,7 +2067,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 		       freeBusyObject: @"freebusy.ifb"
 		       inContext: context];
 	  calendarData = [freebusy contentAsStringWithMethod: @"REPLY"
-				   from: start to: to];
+                                                      andUID: uid
+                                                        from: start to: to];
 	}
     }
 
@@ -2081,16 +2083,19 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 {
   NSDictionary *responseElement;
   NSMutableArray *elements;
-  NSString *recipient;
+  NSString *recipient, *uid;
   NSEnumerator *allRecipients;
   NSCalendarDate *startDate, *endDate;
 
   elements = [NSMutableArray new];
   [freebusy fillStartDate: &startDate andEndDate: &endDate];
+  uid = [freebusy uid];
   allRecipients = [recipients objectEnumerator];
   while ((recipient = [allRecipients nextObject]))
     [elements addObject: [self caldavFreeBusyRequestOnRecipient: recipient
-			       from: startDate to: endDate]];
+                                                        withUID: uid
+                                                           from: startDate
+                                                             to: endDate]];
   responseElement = davElementWithContent (@"schedule-response",
 					   XMLNS_CALDAV, elements);
   [elements release];

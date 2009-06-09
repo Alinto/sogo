@@ -44,6 +44,7 @@
 - (NSString *) contentAsStringFrom: (NSCalendarDate *) _startDate
 				to: (NSCalendarDate *) _endDate;
 - (NSString *) contentAsStringWithMethod: (NSString *) method
+                                  andUID: (NSString *) uid
 				    from: (NSCalendarDate *) _startDate
 				      to: (NSCalendarDate *) _endDate;
 

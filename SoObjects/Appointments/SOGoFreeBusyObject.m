@@ -107,6 +107,7 @@ static unsigned int freebusyRangeEnd = 0;
 
 - (NSString *) iCalStringForFreeBusyInfos: (NSArray *) _infos
 			       withMethod: (NSString *) method
+                                   andUID: (NSString *) uid
                                      from: (NSCalendarDate *) _startDate
                                        to: (NSCalendarDate *) _endDate
 {
@@ -117,11 +118,11 @@ static unsigned int freebusyRangeEnd = 0;
   NSDictionary *info;
   iCalFreeBusyType type;
   SOGoUser *user;
-  NSString *uid;
+  NSString *login;
   int i;
 
-  uid = [container ownerInContext: context];
-  user = [SOGoUser userWithLogin: uid  roles: nil];
+  login = [container ownerInContext: context];
+  user = [SOGoUser userWithLogin: login  roles: nil];
 
   calendar = [iCalCalendar groupWithTag: @"vcalendar"];
   [calendar setProdID: @"//Inverse inc./SOGo 1.0//EN"];
@@ -130,7 +131,9 @@ static unsigned int freebusyRangeEnd = 0;
     [calendar setMethod: method];
 
   freebusy = [iCalFreeBusy groupWithTag: @"vfreebusy"];
-  [freebusy addToAttendees: [self iCalPersonWithUID: uid]];
+  if (uid)
+    [freebusy setUid: uid];
+  [freebusy addToAttendees: [self iCalPersonWithUID: login]];
   [freebusy setTimeStampAsDate: [NSCalendarDate calendarDate]];
   [freebusy setStartDate: _startDate];
   [freebusy setEndDate: _endDate];
@@ -138,7 +141,7 @@ static unsigned int freebusyRangeEnd = 0;
   /* ORGANIZER - strictly required but missing for now */
 
   /* ATTENDEE */
-//   person = [self iCalPersonWithUid: uid];
+//   person = [self iCalPersonWithUid: login];
 //   [person setTag: @"ATTENDEE"];
 //   [ms appendString: [person versitString]];
 
@@ -210,23 +213,25 @@ static unsigned int freebusyRangeEnd = 0;
 }
 
 - (NSString *) contentAsStringWithMethod: (NSString *) method
+                                  andUID: (NSString *) UID
 				    from: (NSCalendarDate *) _startDate
 				      to: (NSCalendarDate *) _endDate
 {
   NSArray *infos;
-  
+
   infos = [self fetchFreeBusyInfosFrom: _startDate to: _endDate];
 
-  return [self iCalStringForFreeBusyInfos: infos withMethod: method
-	       from: _startDate to: _endDate];
+  return [self iCalStringForFreeBusyInfos: infos
+                               withMethod: method andUID: UID
+                                     from: _startDate to: _endDate];
 }
 
 - (NSString *) contentAsStringFrom: (NSCalendarDate *) _startDate
 				to: (NSCalendarDate *) _endDate
 {
-  return [self contentAsStringWithMethod: nil
-	       from: _startDate
-	       to: _endDate];
+  return [self contentAsStringWithMethod: nil andUID: nil
+                                    from: _startDate
+                                      to: _endDate];
 }
 
 - (NSArray *) fetchFreeBusyInfosFrom: (NSCalendarDate *) startDate
