@@ -1428,7 +1428,6 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return properties;
 }
 
-/* FIXME: is this really what we want? Why limit the cycleenddate? */
 - (NSDictionary *) _makeCyclicFilterFrom: (NSDictionary *) filter
 {
   NSMutableDictionary *rc;
@@ -1492,6 +1491,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return filterString;
 }
 
+/* This methods enables the mapping between comp-filter attributes and SQL
+   fields in the quick table. Probably unused most of the time but should be
+   completed one day for full CalDAV compliance. */
 - (NSString *) _composeAdditionalFilters: (NSDictionary *) filter
 {
   NSString *additionalFilter;
