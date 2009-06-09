@@ -340,6 +340,32 @@ static BOOL shouldDisplayWeekend = NO;
   return [self dateStringForDate: [self nextMonth]];
 }
 
+- (void) setCurrentView: (NSString *) theView
+{
+  SOGoUser *activeUser;
+  NSString *module;
+  NSUserDefaults *ud;
+  NSMutableDictionary *moduleSettings;
+  SOGoAppointmentFolders *clientObject;
+
+  activeUser = [context activeUser];
+  clientObject = [self clientObject];
+
+  module = [clientObject nameInContainer];
+
+  ud = [activeUser userSettings];
+  moduleSettings = [ud objectForKey: module];
+  if (!moduleSettings)
+    {
+      moduleSettings = [NSMutableDictionary dictionary];
+      [ud setObject: moduleSettings forKey: module];
+    }
+  
+  [moduleSettings setObject: theView
+		     forKey: @"View"];
+  [ud synchronize];
+}
+
 /* current day related */
 
 - (void) setCurrentDay:(NSCalendarDate *) _day

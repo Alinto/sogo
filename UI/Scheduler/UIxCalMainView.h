@@ -53,6 +53,10 @@
 
 - (WOResponse *) saveDragHandleStateAction;
 
+- (unsigned int) firstDayOfWeek;
+- (unsigned int) dayStartHour;
+- (NSString *) currentView;
+
 @end
 
 #endif /* UIXCALMAINVIEW_H */

@@ -69,6 +69,13 @@
   [super dealloc];
 }
 
+- (id <WOActionResults>) defaultAction
+{
+  [super setCurrentView: @"monthview"];
+
+  return self;
+}
+
 - (NSArray *) headerDaysToDisplay
 {
   NSMutableArray *headerDaysToDisplay;

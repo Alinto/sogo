@@ -35,6 +35,13 @@
 
 @implementation UIxCalWeekView
 
+- (id <WOActionResults>) defaultAction
+{
+  [super setCurrentView: @"weekview"];
+
+  return self;
+}
+
 - (NSCalendarDate *) startDate
 {
   NSCalendarDate *date;

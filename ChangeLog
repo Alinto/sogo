@@ -15,6 +15,12 @@
 
 2009-06-09  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/Scheduler/UIxCalView.m ([UIxCalView -setCurrentView:]): new
+	method to save the user's current view in her/his settings.
+
+	* UI/Scheduler/UIxCalMainView.m ([UIxCalMainView -currentView]):
+	returns the active user's last calendar view.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	([SOGoAppointmentFolder -_sqlStringRangeFromto:]): dates are not
 	necessarily defined in case of vTODOs; don't apply the range

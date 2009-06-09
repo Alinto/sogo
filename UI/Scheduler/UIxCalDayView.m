@@ -48,6 +48,13 @@
 //   [super dealloc];
 // }
 
+- (id <WOActionResults>) defaultAction
+{
+  [super setCurrentView: @"dayview"];
+
+  return self;
+}
+
 // - (void) setCurrentDate: (NSCalendarDate *) _date
 // {
 //   ASSIGN(self->currentDate, _date);

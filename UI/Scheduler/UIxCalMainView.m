@@ -182,4 +182,14 @@
   return [[context activeUser] dayStartHour];
 }
 
+- (NSString *) currentView
+{
+  NSString *view;
+  
+  [self _setupContext];
+  view = [moduleSettings objectForKey: @"View"];
+
+  return (view ? view : @"weekview");
+}
+
 @end

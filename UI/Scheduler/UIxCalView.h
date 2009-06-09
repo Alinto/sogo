@@ -94,6 +94,8 @@
 - (NSCalendarDate *) thisMonth;
 - (NSCalendarDate *) nextMonth;
 
+- (void) setCurrentView: (NSString *) theView;
+
 /* fetching */
 
 - (NSCalendarDate *) startDate;
