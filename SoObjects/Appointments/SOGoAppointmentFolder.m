@@ -972,10 +972,16 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   if (logger)
     [self debugWithFormat:@"should fetch (%@=>%@) ...", _startDate, endDate];
 
-  sql = [NSString stringWithFormat: @"(c_iscycle = 0) %@ %@ %@ %@ %@",
-                  dateSqlString, titleSqlString, componentSqlString,
-                  privacySqlString, filterSqlString];
-
+  // We treat recurrent tasks as normal components
+  if ([_component caseInsensitiveCompare: @"vtodo"] == NSOrderedSame)
+    sql = @"";
+  else
+    sql = @"(c_iscycle = 0) ";
+  
+  sql = [sql stringByAppendingFormat: @"%@ %@ %@ %@ %@",
+	     dateSqlString, titleSqlString, componentSqlString,
+	     privacySqlString, filterSqlString];
+  
   /* fetch non-recurrent apts first */
   qualifier = [EOQualifier qualifierWithQualifierFormat: sql];
 

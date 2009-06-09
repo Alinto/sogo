@@ -4,6 +4,11 @@
 	([SOGoAppointmentFolder -_sqlStringRangeFromto:]): dates are not
 	necessarily defined in case of vTODOs; don't apply the range
 	constraint when dates are null so the SQL query return tasks.
+	([SOGoAppointmentFolder
+	-fetchFields:from:to:title:component:additionalFilters:includeProtectedInformation:]):
+	recurrent tasks are now returned as normal components and are
+	shown in the web interface. They are not flatten as recurrent
+	events are.
 
 2009-06-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
