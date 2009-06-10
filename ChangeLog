@@ -1,3 +1,10 @@
+2009-06-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MailPartViewers/UIxMailPartHTMLViewer.m: fixed rendering of
+	CSS content containing comment characters. Ignore certain HTML
+	tags that can alter the appearance of the SOGo display altogether
+	(SCRIPT, LINK, BASE, META, TITLE).
+
 2009-06-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoFreeBusyObject.m
