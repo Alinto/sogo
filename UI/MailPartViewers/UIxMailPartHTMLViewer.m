@@ -49,6 +49,9 @@
 #define showWhoWeAre()
 #endif
 
+/* Tags that are forbidden within the body of the html content */
+static NSArray *BannedTags = nil;
+
 static xmlCharEncoding
 _xmlCharsetForCharset (NSString *charset)
 {
@@ -102,14 +105,14 @@ _xmlCharsetForCharset (NSString *charset)
   NSMutableString *result;
   NSMutableString *css;
   NSDictionary *attachmentIds;
+  BOOL ignoreContent;
+  NSString *ignoreTag;
   BOOL inBody;
   BOOL inStyle;
-  BOOL inScript;
   BOOL inCSSDeclaration;
   BOOL hasEmbeddedCSS;
   BOOL hasExternalImages;
   BOOL unsafe;
-  NSMutableArray *crumb;
   xmlCharEncoding contentEncoding;
 }
 
@@ -119,13 +122,23 @@ _xmlCharsetForCharset (NSString *charset)
 
 @implementation _UIxHTMLMailContentHandler
 
++ (void) initialize
+{
+  if (!BannedTags)
+    {
+      BannedTags = [NSArray arrayWithObjects: @"SCRIPT", @"LINK", @"BASE",
+                            @"META", @"TITLE", nil];
+      [BannedTags retain];
+    }
+}
+
 - (id) init
 {
   if ((self = [super init]))
     {
-      crumb = nil;
       css = nil;
       result = nil;
+      ignoreTag = nil;
       attachmentIds = nil;
       contentEncoding = XML_CHAR_ENCODING_UTF8;
     }
@@ -135,7 +148,6 @@ _xmlCharsetForCharset (NSString *charset)
 
 - (void) dealloc
 {
-  [crumb release];
   [result release];
   [css release];
   [super dealloc];
@@ -181,34 +193,25 @@ _xmlCharsetForCharset (NSString *charset)
 {
   showWhoWeAre();
 
-  [crumb release];
   [css release];
   [result release];
 
   result = [NSMutableString new];
   css = [NSMutableString new];
-  crumb = [NSMutableArray new];
+
+  ignoreContent = NO;
+  [ignoreTag release];
+  ignoreTag = nil;
 
   inBody = NO;
   inStyle = NO;
-  inScript = NO;
   inCSSDeclaration = NO;
   hasEmbeddedCSS = NO;
 }
 
 - (void) endDocument
 {
-  unsigned int count, max;
-
-
   showWhoWeAre();
-  max = [crumb count];
-  if (max > 0)
-    for (count = max - 1; count > -1; count--)
-      {
-        [result appendFormat: @"</%@>", [crumb objectAtIndex: count]];
-        [crumb removeObjectAtIndex: count];
-      }
 }
 
 - (void) startPrefixMapping: (NSString *)_prefix
@@ -225,10 +228,13 @@ _xmlCharsetForCharset (NSString *charset)
 - (void) _appendStyle: (unichar *) _chars
                length: (int) _len
 {
-  unsigned int count;
+  unsigned int count, length;
   unichar *start, *currentChar;
 
   start = _chars;
+  while (*start < 33)
+    start++;
+
   currentChar = start;
   for (count = 0; count < _len; count++)
     {
@@ -243,28 +249,39 @@ _xmlCharsetForCharset (NSString *charset)
         }
       else
         {
-          if (*currentChar == '{')
-            inCSSDeclaration = YES;
-          if (*currentChar == ',')
-            hasEmbeddedCSS = NO;
-          else if (!hasEmbeddedCSS)
+          if (*currentChar < 32)
             {
-              if (*currentChar == '@')
-                hasEmbeddedCSS = YES;
-              else
-                if (*currentChar > 32)
-                  {
-                    [css appendString: [NSString stringWithCharacters: start
-                                                 length: (currentChar - start)]];
-                    [css appendString: @".SOGoHTMLMail-CSS-Delimiter "];
+              if (currentChar > start)
+                [css appendString: [NSString stringWithCharacters: start
+                                                           length: (currentChar - start)]];
+              start = currentChar + 1;
+            }
+          else
+            {
+              if (*currentChar == '{')
+                inCSSDeclaration = YES;
+              else if (*currentChar == ',')
+                hasEmbeddedCSS = NO;
+              else if (!hasEmbeddedCSS)
+                {
+                  if (*currentChar == '@')
                     hasEmbeddedCSS = YES;
-                    start = currentChar;
-                  }
+                  else
+                    if (*currentChar > 32)
+                      {
+                        length = (currentChar - start);
+                        [css appendFormat: @"%@\n.SOGoHTMLMail-CSS-Delimiter ",
+                             [NSString stringWithCharacters: start length: length]];
+                        hasEmbeddedCSS = YES;
+                        start = currentChar;
+                      }
+                }
             }
         }
     }
-  [css appendString: [NSString stringWithCharacters: start
-                               length: (currentChar - start)]];
+  if (currentChar > start)
+    [css appendString: [NSString stringWithCharacters: start
+                                               length: (currentChar - start)]];
 }
 
 - (void) startElement: (NSString *) _localName
@@ -273,111 +290,146 @@ _xmlCharsetForCharset (NSString *charset)
            attributes: (id <SaxAttributes>) _attributes
 {
   unsigned int count, max;
-  NSString *name, *value, *cid;
+  NSString *name, *value, *cid, *upperName;
   NSMutableString *resultPart;
   BOOL skipAttribute;
 
   showWhoWeAre();
-  if (inStyle || inScript)
+
+  upperName = [_localName uppercaseString];
+  if (inStyle || ignoreContent)
     ;
-  else if ([_localName caseInsensitiveCompare: @"base"] == NSOrderedSame)
+  else if ([upperName isEqualToString: @"BASE"])
     ;
-  else if ([_localName caseInsensitiveCompare: @"meta"] == NSOrderedSame)
+  else if ([upperName isEqualToString: @"META"])
     ;
-  else if ([_localName caseInsensitiveCompare: @"body"] == NSOrderedSame)
+  else if ([upperName isEqualToString: @"BODY"])
     inBody = YES;
-  else if ([_localName caseInsensitiveCompare: @"script"] == NSOrderedSame)
-    inScript = YES;
-  else if ([_localName caseInsensitiveCompare: @"style"] == NSOrderedSame)
+  else if ([upperName isEqualToString: @"STYLE"])
     inStyle = YES;
   else if (inBody)
     {
-      resultPart = [NSMutableString new];
-      [resultPart appendFormat: @"<%@", _rawName];
-
-      max = [_attributes count];
-      for (count = 0; count < max; count++)
+      if ([BannedTags containsObject: upperName])
         {
-          skipAttribute = NO;
-          name = [_attributes nameAtIndex: count];
-          if ([[name lowercaseString] hasPrefix: @"on"])
-            skipAttribute = YES;
-          else if ([name caseInsensitiveCompare: @"src"] == NSOrderedSame)
-            {
-              value = [_attributes valueAtIndex: count];
-              if ([value hasPrefix: @"cid:"])
-                {
-		  cid = [NSString stringWithFormat: @"<%@>",
-				  [value substringFromIndex: 4]];
-                  value = [attachmentIds objectForKey: cid];
-                  skipAttribute = (value == nil);
-                }
-              else if ([_rawName caseInsensitiveCompare: @"img"] == NSOrderedSame)
-		{
-		  hasExternalImages = YES;
-		  
-		  if (!unsafe) skipAttribute = YES;
-		}
-	      else
-		skipAttribute = YES;
-            }
-          else if ([name caseInsensitiveCompare: @"href"] == NSOrderedSame
-		   || [name caseInsensitiveCompare: @"action"] == NSOrderedSame)
-	    {
-              value = [_attributes valueAtIndex: count];
-	      skipAttribute = ([value rangeOfString: @"://"].location
-			       == NSNotFound
-			       && ![value hasPrefix: @"#"]);
-	    }
-          else
-            value = [_attributes valueAtIndex: count];
-          if (!skipAttribute)
-            [resultPart appendFormat: @" %@=\"%@\"",
-                        name, [value stringByReplacingString: @"\""
-                                     withString: @"\\\""]];
+          ignoreTag = [upperName copy];
+          ignoreContent = YES;
         }
+      else
+        {
+          resultPart = [NSMutableString new];
+          [resultPart appendFormat: @"<%@", _rawName];
 
-      [resultPart appendString: @">"];
-      [result appendString: resultPart];
-      [resultPart release];
+          max = [_attributes count];
+          for (count = 0; count < max; count++)
+            {
+              skipAttribute = NO;
+              name = [[_attributes nameAtIndex: count] uppercaseString];
+              if ([name hasPrefix: @"ON"])
+                skipAttribute = YES;
+              else if ([name isEqualToString: @"SRC"])
+                {
+                  value = [_attributes valueAtIndex: count];
+                  if ([value hasPrefix: @"cid:"])
+                    {
+                      cid = [NSString stringWithFormat: @"<%@>",
+                             [value substringFromIndex: 4]];
+                      value = [attachmentIds objectForKey: cid];
+                      skipAttribute = (value == nil);
+                    }
+                  else if ([upperName isEqualToString: @"IMG"])
+                    {
+                      hasExternalImages = YES;
+                      
+                      if (!unsafe) skipAttribute = YES;
+                    }
+                  else
+                    skipAttribute = YES;
+                }
+              else if ([name isEqualToString: @"HREF"]
+                       || [name isEqualToString: @"ACTION"])
+                {
+                  value = [_attributes valueAtIndex: count];
+                  skipAttribute = ([value rangeOfString: @"://"].location
+                                   == NSNotFound
+                                   && ![value hasPrefix: @"#"]);
+                }
+              else
+                value = [_attributes valueAtIndex: count];
+              if (!skipAttribute)
+                [resultPart appendFormat: @" %@=\"%@\"",
+                            name, [value stringByReplacingString: @"\""
+                                                      withString: @"\\\""]];
+            }
+
+          [resultPart appendString: @">"];
+          [result appendString: resultPart];
+          [resultPart release];
+        }
     }
 }
 
 - (void) _finishCSS
 {
+  NSRange excessiveDelimiter;
+
+  [css replaceString: @"<!--" withString: @""];
+  [css replaceString: @"-->" withString: @""];
   [css replaceString: @".SOGoHTMLMail-CSS-Delimiter body"
        withString: @".SOGoHTMLMail-CSS-Delimiter"];
   [css replaceString: @";" withString: @" !important;"];
-  [css replaceString: @"<!--" withString: @""];
-  [css replaceString: @"-->" withString: @""];
+
+  excessiveDelimiter = [css rangeOfString: @".SOGoHTMLMail-CSS-Delimiter "
+                                  options: NSBackwardsSearch];
+  if (excessiveDelimiter.location != NSNotFound)
+    {
+      if (NSMaxRange (excessiveDelimiter) == [css length])
+        [css deleteCharactersInRange: excessiveDelimiter];
+    }
 }
 
 - (void) endElement: (NSString *) _localName
           namespace: (NSString *) _ns
             rawName: (NSString *) _rawName
 {
+  NSString *upperName;
+
   showWhoWeAre();
 
-  if (inStyle)
+  upperName = [_localName uppercaseString];
+
+  if (ignoreContent)
     {
-     if ([_localName caseInsensitiveCompare: @"style"] == NSOrderedSame)
-       {
-         inStyle = NO;
-         inCSSDeclaration = NO;
-       }
+      if ([upperName isEqualToString: ignoreTag])
+        {
+          ignoreContent = NO;
+          [ignoreTag release];
+          ignoreTag = nil;
+        }
     }
-  else if (inScript)
-    inScript = ([_localName caseInsensitiveCompare: @"script"] != NSOrderedSame);
-  else if (inBody)
+  else
     {
-      if ([_localName caseInsensitiveCompare: @"body"] == NSOrderedSame)
-	{
-	  inBody = NO;
-	  if (css)
-	    [self _finishCSS];
-	}
-      else
-        [result appendFormat: @"</%@>", _localName];
+      if (inStyle)
+        {
+          if ([upperName isEqualToString: @"STYLE"])
+            {
+              inStyle = NO;
+              inCSSDeclaration = NO;
+            }
+        }
+      else if (inBody)
+        {
+          if ([upperName isEqualToString: @"BODY"])
+            {
+              inBody = NO;
+              if (css)
+                [self _finishCSS];
+            }
+          else
+            {
+              NSLog (@"%@", _localName);
+              [result appendFormat: @"</%@>", _localName];
+            }
+        }
     }
 }
 
@@ -385,7 +437,7 @@ _xmlCharsetForCharset (NSString *charset)
              length: (int) _len
 {
   showWhoWeAre();
-  if (!inScript)
+  if (!ignoreContent)
     {
       if (inStyle)
         [self _appendStyle: _chars length: _len];
@@ -394,7 +446,7 @@ _xmlCharsetForCharset (NSString *charset)
 	  NSString *tmpString;
   
           tmpString = [NSString stringWithCharacters: _chars length: _len];
-	  
+
 	  // HACK: This is to avoid appending the useless junk in the <html> tag
 	  //       that Outlook adds. It seems to confuse the XML parser for
 	  //       forwarded messages as we get this in the _body_ of the email
