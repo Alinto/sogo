@@ -1,5 +1,15 @@
 2009-06-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/NSString+Utilities.m (-stringByDetectingURLs):
+	fixed a leak. Fixed a crash on GNUstep by using arrays of pointers
+	to NSRange instead of converting/parsing them to/from NSString.
+
+	* SoObjects/SOGo/NSArray+Utilities.m (-addRange): removed method.
+	(-addNonNSObject:withSize:copy:): new helper method to add object
+	pointers to arrays.
+	(-freeNonNSObjects): new helper method to release the above object
+	pointers.
+
 	* UI/MailPartViewers/UIxMailPartHTMLViewer.m: fixed rendering of
 	CSS content containing comment characters. Ignore certain HTML
 	tags that can alter the appearance of the SOGo display altogether

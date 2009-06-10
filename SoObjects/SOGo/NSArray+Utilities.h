@@ -53,9 +53,13 @@
 
 @interface NSMutableArray (SOGoArrayUtilities)
 
+- (void) addNonNSObject: (void *) objectPtr
+               withSize: (size_t) objectSize
+                   copy: (BOOL) doCopy;
+- (void) freeNonNSObjects;
+
 - (void) addObjectUniquely: (id) object;
 
-- (void) addRange: (NSRange) newRange;
 - (BOOL) hasRangeIntersection: (NSRange) testRange;
 
 @end
