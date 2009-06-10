@@ -70,7 +70,8 @@ DIV#loginScreen TABLE TD
 
 DIV#loginScreen TABLE TD#loginCell
 { border-left: 1px solid #fff;
-  padding-left: 10px; }
+  padding-left: 10px;
+  vertical-align: top; }
 
 LABEL
 { display: inline-block;
