@@ -1,5 +1,8 @@
 2009-06-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUserFolder.m (-davUserQuery:): do not return
+	the user information for the current user.
+
 	* UI/MainUI/SOGoUserHomePage.m (-usersSearchAction): do not return
 	the user information for the current user.
 	(-foldersSearchAction): the method only search folders for the

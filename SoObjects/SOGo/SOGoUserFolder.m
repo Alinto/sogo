@@ -382,13 +382,14 @@ static NSString *LDAPContactInfoAttribute = nil;
   LDAPUserManager *um;
   NSMutableString *fetch;
   NSDictionary *currentUser;
-  NSString *field;
+  NSString *field, *login;
   NSArray *users;
   int i;
 
 #warning the attributes returned here should match the one requested in the query
   fetch = [NSMutableString string];
 
+  login = [[context activeUser] login];
   um = [LDAPUserManager sharedUserManager];
 
   // We sort our array - this is pretty useful for the
@@ -398,25 +399,26 @@ static NSString *LDAPContactInfoAttribute = nil;
   for (i = 0; i < [users count]; i++)
     {
       currentUser = [users objectAtIndex: i];
-      
-      [fetch appendString: @"<user>"];
       field = [currentUser objectForKey: @"c_uid"];
-      [fetch appendFormat: @"<id>%@</id>",
-	     [field stringByEscapingXMLString]];
-      field = [currentUser objectForKey: @"cn"];
-      [fetch appendFormat: @"<displayName>%@</displayName>",
-	     [field stringByEscapingXMLString]];
-      field = [currentUser objectForKey: @"c_email"];
-      [fetch appendFormat: @"<email>%@</email>",
-	     [field stringByEscapingXMLString]];
-      if (LDAPContactInfoAttribute)
-	{
-	  field = [currentUser objectForKey: LDAPContactInfoAttribute];
-	  if ([field length])
-	    [fetch appendFormat: @"<info>%@</info>",
-		   [field stringByEscapingXMLString]];
-	}
-      [fetch appendString: @"</user>"];
+      if (![field isEqualToString: login])
+        {
+          [fetch appendFormat: @"<user><id>%@</id>",
+                 [field stringByEscapingXMLString]];
+          field = [currentUser objectForKey: @"cn"];
+          [fetch appendFormat: @"<displayName>%@</displayName>",
+                 [field stringByEscapingXMLString]];
+          field = [currentUser objectForKey: @"c_email"];
+          [fetch appendFormat: @"<email>%@</email>",
+                 [field stringByEscapingXMLString]];
+          if (LDAPContactInfoAttribute)
+            {
+              field = [currentUser objectForKey: LDAPContactInfoAttribute];
+              if ([field length])
+                [fetch appendFormat: @"<info>%@</info>",
+                       [field stringByEscapingXMLString]];
+            }
+          [fetch appendString: @"</user>"];
+        }
     }
 
   return fetch;
