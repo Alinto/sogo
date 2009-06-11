@@ -34,46 +34,48 @@ function Node(id, pid, name, isParent, url, dataname, datatype, title, target,
 
 // Tree object
 function dTree(objName) {
-  this.config = {
-    target : null,
-    hideRoot : false,
-    folderLinks : true,
-    useSelection : true,
-    useCookies : false,
-    useLines : true,
-    useIcons : true,
-    useStatusText : false,
-    closeSameLevel : false,
-    inOrder : false
-  }
-  this.icon = {
-    root : 'img/base.gif',
-    folder : 'img/folder.gif',
-    folderOpen : 'img/folderopen.gif',
-    node : 'img/page.gif',
-    empty : 'img/empty.gif',
-    line : 'img/line.gif',
-    join : 'img/join.gif',
-    joinBottom : 'img/joinbottom.gif',
-    plus : 'img/plus.gif',
-    plusBottom : 'img/plusbottom.gif',
-    minus : 'img/minus.gif',
-    minusBottom : 'img/minusbottom.gif',
-    nlPlus : 'img/nolines_plus.gif',
-    nlMinus : 'img/nolines_minus.gif'
-  };
   this.obj = objName;
-  this.aNodes = [];
-  this.aIndent = [];
-  this.root = new Node(-1);
-  this.selectedNode = null;
-  this.selectedFound = false;
-  this.completed = false;
 
   return this;
 };
 
 dTree.prototype = {
+    obj: null,
+    config: {
+        target: null,
+        hideRoot: false,
+        folderLinks: true,
+        useSelection: true,
+        useCookies: false,
+        useLines: true,
+        useIcons: true,
+        useStatusText: false,
+        closeSameLevel: false,
+        inOrder: false
+    },
+    icon: {
+        root: 'img/base.gif',
+        folder: 'img/folder.gif',
+        folderOpen: 'img/folderopen.gif',
+        node: 'img/page.gif',
+        empty: 'img/empty.gif',
+        line: 'img/line.gif',
+        join: 'img/join.gif',
+        joinBottom: 'img/joinbottom.gif',
+        plus: 'img/plus.gif',
+        plusBottom: 'img/plusbottom.gif',
+        minus: 'img/minus.gif',
+        minusBottom: 'img/minusbottom.gif',
+        nlPlus: 'img/nolines_plus.gif',
+        nlMinus: 'img/nolines_minus.gif'
+    },
+    aNodes: [],
+    aIndent: [],
+    root: new Node(-1),
+    selectedNode: null,
+    selectedFound: false,
+    completed: false,
+
     // Adds a new node to the node array
     add: function(id, pid, name, isParent, url, datatype,
                   title, target, icon, iconOpen, open, hasUnseen) {
