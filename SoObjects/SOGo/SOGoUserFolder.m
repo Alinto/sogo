@@ -129,7 +129,8 @@ static NSString *LDAPContactInfoAttribute = nil;
   for (count = 0; count < max; count++)
     {
       node = [children objectAtIndex: count];
-      componentName = [[(id<DOMElement>)node attribute: @"name"] lowercaseString];
+      componentName = [[(id<DOMElement>)node attribute: @"name"]
+                        lowercaseString];
       [filter setObject: [node textValue] forKey: componentName];
     }
 

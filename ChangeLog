@@ -1,3 +1,11 @@
+2009-06-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MainUI/SOGoUserHomePage.m (-usersSearchAction): do not return
+	the user information for the current user.
+	(-foldersSearchAction): the method only search folders for the
+	owner of the current folder. The "user" parameter has thus been
+	removed.
+
 2009-06-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/NSString+Utilities.m (-stringByDetectingURLs):

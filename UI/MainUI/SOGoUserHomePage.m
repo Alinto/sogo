@@ -289,16 +289,17 @@ static NSString *LDAPContactInfoAttribute = nil;
   return response;
 }
 
-- (WOResponse *) _usersResponseForResults: (NSEnumerator *) users
+- (WOResponse *) _usersResponseForResults: (NSArray *) users
 {
   WOResponse *response;
   NSString *uid;
   NSMutableString *responseString;
   NSDictionary *contact;
-  NSString *contactInfo;
+  NSString *contactInfo, *login;
   NSArray *allUsers;
   int i;
 
+  login = [[context activeUser] login];
   response = [context response];
   [response setStatus: 200];
   [response setHeader: @"text/plain; charset=utf-8"
@@ -308,25 +309,28 @@ static NSString *LDAPContactInfoAttribute = nil;
 
   // We sort our array - this is pretty useful for the Web
   // interface of SOGo.
-  allUsers = [[users allObjects]
-	       sortedArrayUsingSelector: @selector(caseInsensitiveDisplayNameCompare:)];
+  allUsers = [users
+	       sortedArrayUsingSelector: @selector (caseInsensitiveDisplayNameCompare:)];
 
   for (i = 0; i < [allUsers count]; i++)
     {
       contact = [allUsers objectAtIndex: i];
       uid = [contact objectForKey: @"c_uid"];
-      if ([LDAPContactInfoAttribute length])
-	{
-	  contactInfo = [contact objectForKey: LDAPContactInfoAttribute];
-	  if (!contactInfo)
-	    contactInfo = @"";
-	}
-      else
-	contactInfo = @"";
-      [responseString appendFormat: @"%@:%@:%@:%@\n", uid,
-		      [contact objectForKey: @"cn"],
-		      [contact objectForKey: @"c_email"],
-		      contactInfo];
+      if (![uid isEqualToString: login])
+        {
+          if ([LDAPContactInfoAttribute length])
+            {
+              contactInfo = [contact objectForKey: LDAPContactInfoAttribute];
+              if (!contactInfo)
+                contactInfo = @"";
+            }
+          else
+            contactInfo = @"";
+          [responseString appendFormat: @"%@:%@:%@:%@\n", uid,
+                 [contact objectForKey: @"cn"],
+                 [contact objectForKey: @"c_email"],
+                          contactInfo];
+        }
     }
   [response appendContentString: responseString];
   [responseString release];
@@ -339,14 +343,13 @@ static NSString *LDAPContactInfoAttribute = nil;
   NSString *contact;
   id <WOActionResults> result;
   LDAPUserManager *um;
-  NSEnumerator *users;
 
   um = [LDAPUserManager sharedUserManager];
   contact = [self queryParameterForKey: @"search"];
   if ([contact length])
     {
-      users = [[um fetchUsersMatching: contact] objectEnumerator];
-      result = [self _usersResponseForResults: users];
+      result
+        = [self _usersResponseForResults: [um fetchUsersMatching: contact]];
     }
   else
     result = [NSException exceptionWithHTTPStatus: 400
@@ -375,27 +378,23 @@ static NSString *LDAPContactInfoAttribute = nil;
 
 - (id <WOActionResults>) foldersSearchAction
 {
-  NSString *contact, *folderType;
+  NSString *folderType;
   NSArray *folders;
   id <WOActionResults> result;
+  SOGoUserFolder *userFolder;
 
-  contact = [self queryParameterForKey: @"user"];
-  if ([contact length])
+  folderType = [self queryParameterForKey: @"type"];
+  if ([folderType length])
     {
-      folderType = [self queryParameterForKey: @"type"];
-      if ([folderType length])
-	{
-	  folders = [[self clientObject] foldersOfType: folderType
-					 forUID: contact];
-	  result = [self _foldersResponseForResults: folders];
-	}
-      else
-	result = [NSException exceptionWithHTTPStatus: 400
-			      reason: @"missing 'type' parameter"];
+      userFolder = [self clientObject];
+      folders
+        = [userFolder foldersOfType: folderType
+                             forUID: [userFolder ownerInContext: context]];
+      result = [self _foldersResponseForResults: folders];
     }
   else
     result = [NSException exceptionWithHTTPStatus: 400
-                          reason: @"missing 'user' parameter"];
+                                           reason: @"missing 'type' parameter"];
 
   return result;
 }

@@ -352,9 +352,7 @@ function getContrastingTextColor(bgColor) {
 
 	// Consider all colors with less than 56% brightness as dark colors and
 	// use white as the foreground color, otherwise use black.
-	return ((brightness < 144)
-					? "white"
-					: "black");
+	return ((brightness < 144) ? "white" : "black");
 }
 
 function triggerAjaxRequest(url, callback, userdata, content, headers) {
@@ -1613,6 +1611,19 @@ function configureLinkBanner() {
 			link.observe("click", toggleLogConsole);
 		}
 	}
+}
+
+/* accessing another user's data */
+function UserFolderURLForUser(user) {
+	var folderArray = UserFolderURL.split("/");
+	var count;
+	if (UserFolderURL.endsWith('/'))
+		count = folderArray.length - 2;
+	else
+		count = folderArray.length - 1;
+	folderArray[count] = escape(user);
+
+	return folderArray.join("/");
 }
 
 /* folder creation */

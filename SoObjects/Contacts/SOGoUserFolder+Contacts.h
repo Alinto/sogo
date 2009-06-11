@@ -24,7 +24,6 @@
 #define SOGOUSERFOLDER_CONTACTS_H
 
 @class NSArray;
-@class NSString;
 
 #import <SOGo/SOGoUserFolder.h>
 
