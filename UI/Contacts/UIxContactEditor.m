@@ -186,9 +186,10 @@
   while (currentFolder)
     {
       if ([currentFolder isEqual: folder] ||
-	  ![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
-	       onObject: currentFolder
-	       inContext: context])
+	  ([currentFolder isKindOfClass: [SOGoContactGCSFolder class]] &&
+	   ![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
+			  onObject: currentFolder
+			 inContext: context]))
 	[addressBooksList addObject: currentFolder];
       currentFolder = [folders nextObject];
     }

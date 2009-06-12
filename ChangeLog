@@ -1,3 +1,9 @@
+2009-06-12  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Contacts/UIxContactEditor.m ([UIxContactEditor
+	-addressBooksList]): LDAP-based addressbooks must not be
+	editable, even for super users.
+
 2009-06-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoFreeBusyObject.m
