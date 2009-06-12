@@ -9,6 +9,13 @@
   | Updated: 17.04.2003                               |
   |--------------------------------------------------*/
 
+function dTreeQuote(str) {
+    return (str
+            .replace(/\\/g, "\\\\")
+            .replace(/\"/g, "&quot;")
+            .replace(/\'/g, "&apos;"));
+}
+
 // Node object
 function Node(id, pid, name, isParent, url, dataname, datatype, title, target,
               icon, iconOpen, open, hasUnseen) {
@@ -34,44 +41,52 @@ function Node(id, pid, name, isParent, url, dataname, datatype, title, target,
 
 // Tree object
 function dTree(objName) {
-  this.obj = objName;
-
-  return this;
+    this.obj = objName;
+    this.config = {
+    target: null,
+    hideRoot: false,
+    folderLinks: true,
+    useSelection: true,
+    useCookies: false,
+    useLines: true,
+    useIcons: true,
+    useStatusText: false,
+    closeSameLevel: false,
+    inOrder: false
+    };
+    this.icon = {
+    root: 'img/base.gif',
+    folder: 'img/folder.gif',
+    folderOpen: 'img/folderopen.gif',
+    node: 'img/page.gif',
+    empty: 'img/empty.gif',
+    line: 'img/line.gif',
+    join: 'img/join.gif',
+    joinBottom: 'img/joinbottom.gif',
+    plus: 'img/plus.gif',
+    plusBottom: 'img/plusbottom.gif',
+    minus: 'img/minus.gif',
+    minusBottom: 'img/minusbottom.gif',
+    nlPlus: 'img/nolines_plus.gif',
+    nlMinus: 'img/nolines_minus.gif'
+    };
+    this.aNodes = [];
+    this.aIndent = [];
+    this.root = new Node(-1);
+    this.selectedNode = null;
+    this.selectedFound = false;
+    this.completed = false;
+    
+    return this;
 };
 
 dTree.prototype = {
     obj: null,
-    config: {
-        target: null,
-        hideRoot: false,
-        folderLinks: true,
-        useSelection: true,
-        useCookies: false,
-        useLines: true,
-        useIcons: true,
-        useStatusText: false,
-        closeSameLevel: false,
-        inOrder: false
-    },
-    icon: {
-        root: 'img/base.gif',
-        folder: 'img/folder.gif',
-        folderOpen: 'img/folderopen.gif',
-        node: 'img/page.gif',
-        empty: 'img/empty.gif',
-        line: 'img/line.gif',
-        join: 'img/join.gif',
-        joinBottom: 'img/joinbottom.gif',
-        plus: 'img/plus.gif',
-        plusBottom: 'img/plusbottom.gif',
-        minus: 'img/minus.gif',
-        minusBottom: 'img/minusbottom.gif',
-        nlPlus: 'img/nolines_plus.gif',
-        nlMinus: 'img/nolines_minus.gif'
-    },
-    aNodes: [],
-    aIndent: [],
-    root: new Node(-1),
+    config: null,
+    icon: null,
+    aNodes: null,
+    aIndent: null,
+    root: null,
     selectedNode: null,
     selectedFound: false,
     completed: false,
@@ -94,6 +109,7 @@ dTree.prototype = {
 
     // Outputs the tree to the page
     toString: function() {
+        log("toString invoked");
         var str = '<div class="dtree" id="' + this.obj + '">\n';
         if (document.getElementById) {
             if (this.config.useCookies)
@@ -104,6 +120,10 @@ dTree.prototype = {
         if (!this.selectedFound) this.selectedNode = null;
         this.completed = true;
         return str;
+    },
+    valueOf: function() {
+        log("valueOf invoked");
+        return this.toString();
     },
 
     // Creates the tree structure
@@ -139,14 +159,14 @@ dTree.prototype = {
         this.aNodes[nodeId] = node;
         if (this.root.id != node.pid || !this.config.hideRoot) {
             str += '<div class="dTreeNode"';
-            if (node.datatype) str += ' datatype="' + node.datatype + '"';
-            if (node.dataname) str += ' dataname="' + node.dataname + '"';
+            if (node.datatype) str += ' datatype="' + dTreeQuote(node.datatype) + '"';
+            if (node.dataname) str += ' dataname="' + dTreeQuote(node.dataname) + '"';
             str += '>' + this.indent(node, nodeId);
             if (node.url) {
-                str += '<a id="s' + this.obj + nodeId + '" class="node" href="' + node.url + '"';
-                if (node.title) str += ' title="' + node.title + '"';
-                if (node.target) str += ' target="' + node.target + '"';
-                if (this.config.useStatusText) str += ' onmouseover="window.status=\'' + node.name + '\';return true;" onmouseout="window.status=\'\';return true;" ';
+                str += '<a id="s' + this.obj + nodeId + '" class="node" href="' + dTreeQuote(node.url) + '"';
+                if (node.title) str += ' title="' + dTreeQuote(node.title) + '"';
+                if (node.target) str += ' target="' + dTreeQuote(node.target) + '"';
+                if (this.config.useStatusText) str += ' onmouseover="window.status=\'' + dTreeQuote(node.name) + '\';return true;" onmouseout="window.status=\'\';return true;" ';
                 if (this.config.useSelection && ((node._hc && this.config.folderLinks) || !node._hc))
                     str += ' onclick="' + this.obj + '.s(' + nodeId + ');"';
                 str += '>';
@@ -177,6 +197,7 @@ dTree.prototype = {
             str += '</div>';
         }
         this.aIndent.pop();
+
         return str;
     },
 
@@ -185,6 +206,7 @@ dTree.prototype = {
         var str = '';
         if (this.root.id != node.pid)
             {
+                
                 for (var n=0; n<this.aIndent.length; n++)
                     str += '<img src="' + ( (this.aIndent[n] == 1 && this.config.useLines) ? this.icon.line : this.icon.empty ) + '" alt="" />';
                 (node._ls) ? this.aIndent.push(0) : this.aIndent.push(1);

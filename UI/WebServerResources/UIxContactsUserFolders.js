@@ -1,4 +1,6 @@
-/* -*- Mode: java; tab-width: 2; c-tab-always-indent: t; indent-tabs-mode: t; c-basic-offset: 2 -*- */
+/* -*- Mode: java; tab-width: 2; c-tab-always-indent: t; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
+
+var d;
 
 function onSearchFormSubmit() {
   var searchValue = $("searchValue");
@@ -44,7 +46,7 @@ function addUserLineToTree(tree, parent, line) {
 	}
 }
 
-function buildUsersTree(treeDiv, response) { 
+function buildUsersTree(treeDiv, response) {
 	d = new dTree("d");
 	d.config.folderLlinks = true;
 	d.config.hideRoot = true;
@@ -132,10 +134,10 @@ function foldersSearchCallback(http) {
 
 		var dd = $("dd" + nodeId);
 		if (response.length) {
-			var str = '';
 			var folders = response.split(";");
 			var user = http.callbackData["user"];
 
+			var str = '';
 			for (var i = 1; i < folders.length - 1; i++)
 				str += addFolderBranchToTree (d, user, folders[i], nodeId, i, false);
 			str += addFolderBranchToTree (d, user, folders[folders.length-1], nodeId,
@@ -218,10 +220,12 @@ function onConfirmFolderSelection(event) {
 
 function onFolderSearchKeyDown(event) {
   var div = $("folders");
-  if (!div.clean
-			&& (event.keyCode == 8
-					|| event.keyCode >31)) {
-    div.update();
+  if (!div.clean && (event.keyCode == 8 || event.keyCode >31)) {
+		var oldD = $("d");
+		if (oldD) {
+			oldD.remove();
+			delete d;
+		}
     div.clean = true;
 		$("addButton").disabled = true;
   }
