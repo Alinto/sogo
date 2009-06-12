@@ -23,6 +23,7 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSCharacterSet.h>
 #import <Foundation/NSEnumerator.h>
+#import <Foundation/NSValue.h>
 
 #import <EOControl/EOQualifier.h>
 
@@ -88,7 +89,7 @@ static NSMutableCharacterSet *urlStartChars = nil;
   
   r = [self rangeOfString:@"?" options: NSBackwardsSearch];
   if (r.length > 0)
-    newUrl = [self substringToIndex: NSMaxRange(r) - 1];
+    newUrl = [self substringToIndex: NSMaxRange (r) - 1];
   else
     newUrl = self;
 
@@ -132,11 +133,10 @@ static NSMutableCharacterSet *urlStartChars = nil;
     {
       nsEnclosing = [self rangeOfString: @"}"];
       length = [self length];
-      if (nsEnclosing.length > 0
-	  && nsEnclosing.location < (length - 1))
+      if (nsEnclosing.length > 0 && nsEnclosing.location < (length - 1))
 	{
-	  methodEnclosing = NSMakeRange(nsEnclosing.location + 1,
-					length - nsEnclosing.location - 1);
+	  methodEnclosing = NSMakeRange (nsEnclosing.location + 1,
+                                         length - nsEnclosing.location - 1);
 	  nsEnclosing.length = nsEnclosing.location - 1;
 	  nsEnclosing.location = 1;
 	  davInvocation = [NSMutableDictionary dictionaryWithCapacity: 2];
@@ -176,7 +176,7 @@ static NSMutableCharacterSet *urlStartChars = nil;
     start--;
   start++;
   length = [self length] - start;
-  workRange = NSMakeRange(start, length);
+  workRange = NSMakeRange (start, length);
   workRange = [self rangeOfCharacterFromSet: urlAfterEndingChars
 		    options: NSLiteralSearch range: workRange];
   if (workRange.location != NSNotFound)
@@ -198,7 +198,8 @@ static NSMutableCharacterSet *urlStartChars = nil;
   NSEnumerator *enumRanges;
   NSMutableArray *newRanges;
   NSRange matchRange, currentUrlRange, rest;
-  NSString *urlText, *newUrlText, *range;
+  NSRange *rangePtr;
+  NSString *urlText, *newUrlText;
   unsigned int length, matchLength, offset;
   int startLocation;
 
@@ -209,10 +210,11 @@ static NSMutableCharacterSet *urlStartChars = nil;
 		     @"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 		     @"0123456789:@"];
     }
-  newRanges = [NSMutableArray new];
+
+  newRanges = [NSMutableArray array];
   matchLength = [match length];
   rest.location = -1;
- 
+
   matchRange = [selfCopy rangeOfString: match];
   while (matchRange.location != NSNotFound)
     {
@@ -225,12 +227,14 @@ static NSMutableCharacterSet *urlStartChars = nil;
 
       currentUrlRange = [selfCopy _rangeOfURLInRange: matchRange];
       if ([ranges hasRangeIntersection: currentUrlRange])
-	rest.location = NSMaxRange(currentUrlRange);
+	rest.location = NSMaxRange (currentUrlRange);
       else
 	{
 	  if (currentUrlRange.length > matchLength)
-	    [newRanges addRange: currentUrlRange];
-	  rest.location = NSMaxRange(currentUrlRange);
+	    [newRanges addNonNSObject: &currentUrlRange
+                             withSize: sizeof (NSRange)
+                                 copy: YES];
+	  rest.location = NSMaxRange (currentUrlRange);
 	}
 
       length = [selfCopy length];
@@ -242,25 +246,24 @@ static NSMutableCharacterSet *urlStartChars = nil;
   // Make the substitutions, keep track of the new offset
   offset = 0;
   enumRanges = [newRanges objectEnumerator];
-  range = [enumRanges nextObject];
-  while (range)
+  while ((rangePtr = [[enumRanges nextObject] pointerValue]))
     {
-      currentUrlRange = NSRangeFromString(range);
-      currentUrlRange.location += offset;
-      urlText = [selfCopy substringFromRange: currentUrlRange];
+      rangePtr->location += offset;
+      urlText = [selfCopy substringFromRange: *rangePtr];
       if ([urlText hasPrefix: prefix]) prefix = @"";
       newUrlText = [NSString stringWithFormat: @"<a href=\"%@%@\">%@</a>",
 			     prefix, urlText, urlText];
-      [selfCopy replaceCharactersInRange: currentUrlRange
+      [selfCopy replaceCharactersInRange: *rangePtr
 		withString: newUrlText];
       offset += ([newUrlText length] - [urlText length]);
 
       // Add range for further substitutions
       currentUrlRange = NSMakeRange (currentUrlRange.location, [newUrlText length]);
-      [ranges addRange: currentUrlRange];
-
-      range = [enumRanges nextObject];
+      [ranges addNonNSObject: &currentUrlRange
+                    withSize: sizeof (NSRange)
+                        copy: YES];
     }
+  [newRanges freeNonNSObjects];
 }
 
 - (NSString *) stringByDetectingURLs
@@ -268,7 +271,7 @@ static NSMutableCharacterSet *urlStartChars = nil;
   NSMutableString *selfCopy;
   NSMutableArray *ranges;
 
-  ranges = [NSMutableArray new];
+  ranges = [NSMutableArray array];
   selfCopy = [NSMutableString stringWithString: self];
   [self _handleURLs: selfCopy
 	textToMatch: @"://"
@@ -278,7 +281,7 @@ static NSMutableCharacterSet *urlStartChars = nil;
 	textToMatch: @"@"
 	prefix: @"mailto:"
 	inRanges: ranges];
-  [ranges release];
+  [ranges freeNonNSObjects];
 
   return selfCopy;
 }

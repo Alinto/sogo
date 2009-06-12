@@ -718,7 +718,7 @@ static NSArray *childRecordFields = nil;
 
   currentUser = [localContext activeUser];
 
-  if (delegatedUsers && [delegatedUsers count])
+  if ([delegatedUsers count])
     {
       if (![currentUser isSuperUser])
 	{

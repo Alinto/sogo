@@ -94,9 +94,9 @@ function onUserNodeToggle(event) {
 	this.stopObserving("click", onUserNodeToggle);
 
 	var person = this.parentNode.getAttribute("dataname");
-	var url = (UserFolderURL + "foldersSearch"
-						 + "?user=" + escape(person)
-						 + "&type=" + window.opener.userFolderType);
+	
+	var url = (UserFolderURLForUser(person) + "foldersSearch"
+						 + "?type=" + window.opener.userFolderType);
 	var nodeId = this.getAttribute("id").substr(3);
 	triggerAjaxRequest(url, foldersSearchCallback,
 										 { nodeId: nodeId, user: person });

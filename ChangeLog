@@ -4,6 +4,34 @@
 	-addressBooksList]): LDAP-based addressbooks must not be
 	editable, even for super users.
 
+2009-06-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUserFolder.m (-davUserQuery:): do not return
+	the user information for the current user.
+
+	* UI/MainUI/SOGoUserHomePage.m (-usersSearchAction): do not return
+	the user information for the current user.
+	(-foldersSearchAction): the method only search folders for the
+	owner of the current folder. The "user" parameter has thus been
+	removed.
+
+2009-06-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/NSString+Utilities.m (-stringByDetectingURLs):
+	fixed a leak. Fixed a crash on GNUstep by using arrays of pointers
+	to NSRange instead of converting/parsing them to/from NSString.
+
+	* SoObjects/SOGo/NSArray+Utilities.m (-addRange): removed method.
+	(-addNonNSObject:withSize:copy:): new helper method to add object
+	pointers to arrays.
+	(-freeNonNSObjects): new helper method to release the above object
+	pointers.
+
+	* UI/MailPartViewers/UIxMailPartHTMLViewer.m: fixed rendering of
+	CSS content containing comment characters. Ignore certain HTML
+	tags that can alter the appearance of the SOGo display altogether
+	(SCRIPT, LINK, BASE, META, TITLE).
+
 2009-06-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoFreeBusyObject.m

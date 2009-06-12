@@ -24,6 +24,7 @@
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSNull.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSValue.h>
 
 #import "NSArray+Utilities.h"
 
@@ -199,15 +200,40 @@
 
 @implementation NSMutableArray (SOGoArrayUtilities)
 
+- (void) addNonNSObject: (void *) objectPtr
+               withSize: (size_t) objectSize
+                   copy: (BOOL) doCopy
+{
+  void *newObjectPtr;
+
+  if (doCopy)
+    {
+      newObjectPtr = NSZoneMalloc (NULL, objectSize);
+      memcpy (newObjectPtr, objectPtr, objectSize);
+    }
+  else
+    newObjectPtr = objectPtr;
+
+  [self addObject: [NSValue valueWithPointer: newObjectPtr]];
+}
+
+- (void) freeNonNSObjects
+{
+  unsigned int count, max;
+  void *objectPtr;
+
+  max = [self count];
+  for (count = 0; count < max; count++)
+    {
+      objectPtr = [[self objectAtIndex: count] pointerValue];
+      NSZoneFree (NULL, objectPtr);
+    }
+}
+
 - (void) addObjectUniquely: (id) object
 {
   if (![self containsObject: object])
     [self addObject: object];
-}
-
-- (void) addRange: (NSRange) newRange
-{
-  [self addObject: NSStringFromRange (newRange)];
 }
 
 - (BOOL) hasRangeIntersection: (NSRange) testRange
