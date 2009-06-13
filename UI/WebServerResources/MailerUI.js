@@ -452,7 +452,6 @@ function onPrintCurrentMessage(event) {
 function onMailboxTreeItemClick(event) {
   var topNode = $("mailboxTree");
   var mailbox = this.parentNode.getAttribute("dataname");
-
   if (topNode.selectedEntry)
     topNode.selectedEntry.deselect();
   this.selectElement();
