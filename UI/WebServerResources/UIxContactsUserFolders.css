@@ -10,6 +10,11 @@ DIV#filterPanel
 SPAN.searchBox
 { float: none !important; }
 
+IMG#progressIndicator
+{ float: right;
+  margin: 0;
+  padding: 1em; }
+
 INPUT#searchValue
 { margin: 0px; }
 

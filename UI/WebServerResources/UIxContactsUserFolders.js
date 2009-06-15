@@ -5,7 +5,7 @@ var d;
 function onSearchFormSubmit() {
   var searchValue = $("searchValue");
   var encodedValue = encodeURI(searchValue.value);
-
+  
   var url = (UserFolderURL
 						 + "usersSearch?search=" + encodedValue);
   if (document.userFoldersRequest) {
@@ -14,7 +14,7 @@ function onSearchFormSubmit() {
   }
   document.userFoldersRequest
 		= triggerAjaxRequest(url, usersSearchCallback);
-
+  
   return false;
 }
 
@@ -75,18 +75,16 @@ function buildUsersTree(treeDiv, response) {
 			if (lines[i].length > 0)
 				addUserLineToTree(d, 1 + i * multiplier, lines[i]);
 		}
-
 		treeDiv.update(d);
 		treeDiv.clean = false;
-
 		for (var i = 0; i < lines.length - 1; i++) {
 			if (lines[i].length > 0) {
 				if (!isUserDialog) {
 					var toggle = $("tgd" + (1 + i * 2));
-					toggle.observe ("click", onUserNodeToggle);
+          toggle.observe ("click", onUserNodeToggle);
 				}
 				var sd = $("sd" + (1 + i * multiplier));
-				sd.observe("click", onTreeItemClick);
+        sd.observe("click", onTreeItemClick);
 			}
 		}
 	}
@@ -228,6 +226,7 @@ function onFolderSearchKeyDown(event) {
 		}
     div.clean = true;
 		$("addButton").disabled = true;
+    startAnimation($("pageContent"), $("filterPanel"));
   }
 }
 
