@@ -39,6 +39,17 @@ var deleteMessageRequestCount = 0;
 
 var messageCheckTimer;
 
+/* We need to override this method since it is adapted to GCS-based folder
+	 references, which we do not use here */
+function URLForFolderID(folderID) {
+	var url = ApplicationBaseURL + encodeURI(folderID);
+
+	if (url[url.length-1] == '/')
+		url = url.substr(0, url.length-1);
+
+	return url;
+}
+
 /* mail list */
 
 function openMessageWindow(msguid, url) {
