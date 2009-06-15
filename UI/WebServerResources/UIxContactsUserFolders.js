@@ -6,14 +6,19 @@ function onSearchFormSubmit() {
   var searchValue = $("searchValue");
   var encodedValue = encodeURI(searchValue.value);
   
-  var url = (UserFolderURL
-						 + "usersSearch?search=" + encodedValue);
-  if (document.userFoldersRequest) {
-		document.userFoldersRequest.aborted = true;
-		document.userFoldersRequest.abort();
+  if (encodedValue.blank()) {
+    checkAjaxRequestsState();
   }
-  document.userFoldersRequest
-		= triggerAjaxRequest(url, usersSearchCallback);
+  else {
+    var url = (UserFolderURL
+               + "usersSearch?search=" + encodedValue);
+    if (document.userFoldersRequest) {
+      document.userFoldersRequest.aborted = true;
+      document.userFoldersRequest.abort();
+    }
+    document.userFoldersRequest
+      = triggerAjaxRequest(url, usersSearchCallback);
+  }
   
   return false;
 }
@@ -218,7 +223,8 @@ function onConfirmFolderSelection(event) {
 
 function onFolderSearchKeyDown(event) {
   var div = $("folders");
-  if (!div.clean && (event.keyCode == 8 || event.keyCode >31)) {
+  
+  if (!div.clean) {
 		var oldD = $("d");
 		if (oldD) {
 			oldD.remove();
@@ -226,8 +232,10 @@ function onFolderSearchKeyDown(event) {
 		}
     div.clean = true;
 		$("addButton").disabled = true;
-    startAnimation($("pageContent"), $("filterPanel"));
   }
+  
+  if (this.timer)
+    startAnimation($("pageContent"), $("filterPanel"));
 }
 
 function initUserFoldersWindow() {

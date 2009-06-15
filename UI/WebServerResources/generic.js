@@ -985,7 +985,7 @@ function onSearchFocus() {
 }
 
 function onSearchBlur(event) {
-	if (!this.value || this.value.strip().length == 0) {
+	if (!this.value || this.value.blank()) {
 		this.setAttribute("modified", "");
 		this.setStyle({ color: "#aaa" });
 		this.value = this.ghostPhrase;
@@ -1007,12 +1007,15 @@ function onSearchKeyDown(event) {
 	if (this.timer)
 		clearTimeout(this.timer);
 
-	if (event.keyCode == 13) {
+	if (event.ctrlKey || event.metaKey)
+		return;
+	else if (event.keyCode == Event.KEY_RETURN) {
 		onSearchFormSubmit();
 		preventDefault(event);
 	}
-	else if (event.keyCode == 8
-					 || event.keyCode >31)
+	else if (event.keyCode == 0
+					 || event.keyCode == Event.KEY_BACKSPACE
+					 || event.keyCode > 31)
 		this.timer = setTimeout("onSearchFormSubmit()", 1000);
 }
 

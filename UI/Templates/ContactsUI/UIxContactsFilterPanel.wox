@@ -13,7 +13,7 @@
     </div>
 
     <div id="filterPanel">
-      <span class="searchBox" style="float: right">
+      <span class="searchBox" style="float: right;">
         <input id="searchCriteria" name="criteria" type="hidden" var:value="searchCriteria" />
         <input id="searchValue" class="textField" autocomplete="off" name="search"
 	  menuid="searchMenu"
