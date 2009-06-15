@@ -1,3 +1,13 @@
+2009-06-15  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder
+	-_appendCycleException:firstInstanceCalendarDateRange:fromRow:forRange:toArray:]):
+	for exceptions in the date range, add the boolean key
+	"isException" to the dictionary.
+	(-_flattenCycleRecords:fetchRange:): renamed method (was
+	-fixupCyclicRecords:fetchRange:).
+
 2009-06-12  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Contacts/UIxContactEditor.m ([UIxContactEditor

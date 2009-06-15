@@ -78,7 +78,7 @@ static NSArray *tasksFields = nil;
 			      @"c_enddate", @"c_location", @"c_isallday",
 			      @"c_classification", @"c_partmails",
 			      @"c_partstates", @"c_owner", @"c_iscycle", @"c_nextalarm",
-			      @"c_recurrence_id", nil];
+			      @"c_recurrence_id", @"isException", nil];
       [eventsFields retain];
     }
   if (!tasksFields)

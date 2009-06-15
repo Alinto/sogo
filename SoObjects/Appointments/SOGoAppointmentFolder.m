@@ -611,7 +611,7 @@ static NSArray *reducedReportQueryFields = nil;
   /* cycle is in _r. We also have to override the c_startdate/c_enddate with the date values of
      the reccurence since we use those when displaying events in SOGo Web */
 
-  tmp = [_r startDate];  
+  tmp = [_r startDate];
   [tmp setTimeZone: timeZone];
   [md setObject: tmp forKey: @"startDate"];
   dateSecs = [NSNumber numberWithInt: [tmp timeIntervalSince1970]];
@@ -627,6 +627,8 @@ static NSArray *reducedReportQueryFields = nil;
   dateSecs = [NSNumber numberWithInt: [tmp timeIntervalSince1970]];
   [md setObject: dateSecs forKey: @"c_recurrence_id"];
   
+  // The first instance date is added to the dictionary so it can
+  // be used by UIxCalListingActions to compute the DST offset.
   tmp = [_fir startDate];
   [md setObject: tmp forKey: @"cycleStartDate"];
   
@@ -707,11 +709,19 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 	    {
 	      newRecord = [self fixupRecord: [component quickRecord]];
 	      [newRecord setObject: [NSNumber numberWithInt: 1]
-			 forKey: @"c_iscycle"];
+			    forKey: @"c_iscycle"];
 	      oldRecord = [ma objectAtIndex: recordIndex];
 	      [newRecord setObject: [oldRecord objectForKey: @"c_recurrence_id"]
-			 forKey: @"c_recurrence_id"];
+			    forKey: @"c_recurrence_id"];
+	      
+	      // The first instance date is added to the dictionary so it can
+	      // be used by UIxCalListingActions to compute the DST offset.
 	      [newRecord setObject: [fir startDate] forKey: @"cycleStartDate"];
+	      
+	      // We identified the record as an exception.
+	      [newRecord setObject: [NSNumber numberWithInt: 1]
+			    forKey: @"isException"];
+	      
 	      [ma replaceObjectAtIndex: recordIndex withObject: newRecord];
 	    }
 	  else
@@ -831,8 +841,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   [_ma addObjectsFromArray: recordArray];
 }
 
-- (NSArray *) fixupCyclicRecords: (NSArray *) _records
-                      fetchRange: (NGCalendarDateRange *) _r
+- (NSArray *) _flattenCycleRecords: (NSArray *) _records
+                        fetchRange: (NGCalendarDateRange *) _r
 {
   // TODO: is the result supposed to be sorted by date?
   NSMutableArray *ma;
@@ -1009,7 +1019,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       if (records)
         {
           if (r)
-            records = [self fixupCyclicRecords: records fetchRange: r];
+            records = [self _flattenCycleRecords: records fetchRange: r];
           if (ma)
             [ma addObjectsFromArray: records];
           else

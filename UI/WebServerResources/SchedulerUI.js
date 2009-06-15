@@ -93,7 +93,7 @@ function editEvent() {
       _editEventId(nodes[i].cname,
                    nodes[i].calendar);
   } else if (selectedCalendarCell) {
-		if (selectedCalendarCell[0].recurrenceTime)
+		if (selectedCalendarCell[0].recurrenceTime && !selectedCalendarCell[0].isException)
 			_editRecurrenceDialog(selectedCalendarCell[0], "confirmEditing");
 		else
 			_editEventId(selectedCalendarCell[0].cname,
@@ -406,7 +406,7 @@ function onViewEventCallback(http) {
 }
 
 function editDoubleClickedEvent(event) {
-  if (this.recurrenceTime)
+  if (this.recurrenceTime && !this.isException)
     _editRecurrenceDialog(this, "confirmEditing");
   else
     _editEventId(this.cname, this.calendar);
@@ -586,6 +586,7 @@ function eventsListCallback(http) {
 				row.calendar = escape(data[i][1]);
 				if (rTime)
 					row.recurrenceTime = escape(rTime);
+				row.isException = data[i][15];
 				var startDate = new Date();
 				startDate.setTime(data[i][4] * 1000);
 				row.day = startDate.getDayString();
@@ -988,12 +989,14 @@ function newBaseEventDIV(eventRep, event, eventText) {
 //	log ("12 iscycle = " + event[12]);
 //	log ("13 nextalarm = " + event[13]);
 //	log ("14 recurrenceid = " + event[14]);
+//	log ("15 isexception = " + event[15]);
 
   var eventDiv = $(document.createElement("div"));
   eventDiv.cname = event[0];
   eventDiv.calendar = event[1];
   if (eventRep.recurrenceTime)
     eventDiv.recurrenceTime = eventRep.recurrenceTime;
+	eventDiv.isException = event[15];
   eventDiv.addClassName("event");
 	if (event[13] > 0)
 		eventDiv.addClassName("alarm");
