@@ -39,7 +39,7 @@ TABLE#addressList TD
 
 TABLE#addressList TD.headerField
 { border-right: 1px solid #C4C8FF; 
-  width: 110px; }
+  width: 120px; }
 
 TABLE#addressList TD.headerField SELECT
 { border: 1px solid #eee; }
