@@ -109,7 +109,6 @@ dTree.prototype = {
 
     // Outputs the tree to the page
     toString: function() {
-        log("toString invoked");
         var str = '<div class="dtree" id="' + this.obj + '">\n';
         if (document.getElementById) {
             if (this.config.useCookies)
@@ -122,7 +121,6 @@ dTree.prototype = {
         return str;
     },
     valueOf: function() {
-        log("valueOf invoked");
         return this.toString();
     },
 
