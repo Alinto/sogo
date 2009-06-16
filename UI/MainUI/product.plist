@@ -50,6 +50,7 @@
       defaultRoles = {
       	"Access Contents Information" = ( "Owner", "ObjectViewer", "ObjectEditor" );
 	"Change Images And Files" = ( "Owner", "ObjectEditor" );
+        "Delete Objects" = ( "Owner", "ObjectEraser" );
       };
     };
     SOGoFolder = {
