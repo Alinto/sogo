@@ -1,5 +1,13 @@
 2009-06-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-davCalendarQuery:, davCalendarMultiget:): we now fetch the only
+	fields that are required by the DAV query from the database
+	tables.
+	(-bareFetchFields:from:to:title:component:additionalFilters:,fetchFields:from:to:title:component:additionalFilters:includeProtectedInformation:):
+	optimized the privacy SQL string to a single where clause based on
+	the tables computed in initializeQuickTablesAclsInContext:.
+
 	* SoObjects/Appointments/SOGoCalendarComponent.m (-valuesForKeys:)
 	overriden method to speed up PROPFIND requests.
 

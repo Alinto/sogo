@@ -448,30 +448,39 @@ static NSArray *reducedReportQueryFields = nil;
 
 - (NSString *) _privacySqlString
 {
-  NSString *privacySqlString, *email, *login;
-  SOGoUser *activeUser;
+  NSString *privacySqlString, *login;
+  NSMutableArray *grantedClasses, *deniedClasses;
+  NSNumber *classNumber;
+  unsigned int grantedCount;
+  iCalAccessClass currentClass;
 
-  activeUser = [context activeUser];
-
-  if ([[self ownerInContext: context] isEqualToString: [activeUser login]]
-      || [[activeUser rolesForObject: self inContext: context]
-	   containsObject: SoRole_Owner])
-    privacySqlString = @"";
-  else if ([[activeUser login] isEqualToString: @"freebusy"])
-    privacySqlString = @"and (c_isopaque = 1)";
+  login = [[context activeUser] login];
+  if ([login isEqualToString: @"freebusy"])
+    privacySqlString = @"c_isopaque = 1";
   else
     {
-#warning we do not manage all the possible user emails
-      email = [[activeUser primaryIdentity] objectForKey: @"email"];
-      login = [activeUser login];
-
-      privacySqlString
-        = [NSString stringWithFormat:
-                      @"(%@(c_orgmail = '%@')"
-		    @" or ((c_partmails caseInsensitiveLike '%@%%'"
-		    @" or c_partmails caseInsensitiveLike '%%\n%@%%')))",
-		    [self _privacyClassificationStringsForUID: login],
-		    email, email, email];
+      [self initializeQuickTablesAclsInContext: context];
+      grantedClasses = [NSMutableArray arrayWithCapacity: 3];
+      deniedClasses = [NSMutableArray arrayWithCapacity: 3];
+      for (currentClass = 0; currentClass < iCalAccessClassCount; currentClass++)
+        {
+          classNumber = [NSNumber numberWithInt: currentClass];
+          if (userCanAccessObjectsClassifiedAs[currentClass])
+            [grantedClasses addObject: classNumber];
+          else
+            [deniedClasses addObject: classNumber];
+        }
+      grantedCount = [grantedClasses count];
+      if (grantedCount == 3)
+        privacySqlString = @"";
+      else if (grantedCount == 2)
+        privacySqlString
+          = [NSString stringWithFormat: @"c_classification != %@",
+                      [deniedClasses objectAtIndex: 0]];
+      else
+        privacySqlString
+          = [NSString stringWithFormat: @"c_classification == %@",
+                      [grantedClasses objectAtIndex: 0]];
     }
 
   return privacySqlString;
@@ -487,7 +496,8 @@ static NSArray *reducedReportQueryFields = nil;
   EOQualifier *qualifier;
   GCSFolder *folder;
   NSString *sql, *dateSqlString, *titleSqlString, *componentSqlString,
-    *filterSqlString, *privacySqlString;
+    *privacySqlString;
+  NSMutableString *filterSqlString;
 
   folder = [self ocsFolder];
   if (startDate && endDate)
@@ -502,16 +512,14 @@ static NSArray *reducedReportQueryFields = nil;
     titleSqlString = @"";
 
   componentSqlString = [self _sqlStringForComponent: component];
-  if (filters)
-    filterSqlString = [NSString stringWithFormat: @"AND (%@)", filters];
-  else
-    filterSqlString = @"";
+  filterSqlString = [NSMutableString string];
+  if ([filters length])
+    [filterSqlString appendFormat: @"AND (%@)", filters];
 
   privacySqlString = [self _privacySqlString];
   if ([privacySqlString length])
-    filterSqlString = [NSString stringWithFormat: @"%@ AND (%@)",
-				filterSqlString, privacySqlString];
-  
+    [filterSqlString appendFormat: @"AND (%@)", privacySqlString];
+
   /* prepare mandatory fields */
 
   sql = [[NSString stringWithFormat: @"%@%@%@%@",
@@ -924,7 +932,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   NSMutableArray *fields, *ma = nil;
   NSArray *records;
   NSString *sql, *dateSqlString, *titleSqlString, *componentSqlString,
-    *privacySqlString, *currentLogin, *filterSqlString;
+    *privacySqlString, *currentLogin;
+  NSMutableString *filterSqlString;
   NSCalendarDate *endDate;
   NGCalendarDateRange *r;
   BOOL rememberRecords;
@@ -965,11 +974,14 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     titleSqlString = @"";
 
   componentSqlString = [self _sqlStringForComponent: _component];
+
+  filterSqlString = [NSMutableString string];
+  if ([filters length])
+    [filterSqlString appendFormat: @"AND (%@)", filters];
+
   privacySqlString = [self _privacySqlString];
-  if (filters)
-    filterSqlString = [NSString stringWithFormat: @"AND (%@)", filters];
-  else
-    filterSqlString = @"";
+  if ([privacySqlString length])
+    [filterSqlString appendFormat: @"AND (%@)", privacySqlString];
 
   /* prepare mandatory fields */
 
@@ -989,9 +1001,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   else
     sql = @"(c_iscycle = 0) ";
   
-  sql = [sql stringByAppendingFormat: @"%@ %@ %@ %@ %@",
+  sql = [sql stringByAppendingFormat: @"%@ %@ %@ %@",
 	     dateSqlString, titleSqlString, componentSqlString,
-	     privacySqlString, filterSqlString];
+	     filterSqlString];
   
   /* fetch non-recurrent apts first */
   qualifier = [EOQualifier qualifierWithQualifierFormat: sql];
@@ -1120,31 +1132,24 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
   classification = [[object objectForKey: @"c_classification"] intValue];
   //c = [self objectClassForComponentName: [object objectForKey: @"c_component"]];
-  if (userCanAccessObjectsClassifiedAs[classification])
-    {
-      #warning TODO: determine why this commented invocation takes so long...
-      // sogoObject = [self _createChildComponentWithRecord: object];
 
-      sogoObject = [SOGoCalendarComponent objectWithRecord: object
-                                               inContainer: self];
-      [sogoObject setComponentTag: [object objectForKey: @"c_component"]];
+#warning TODO: determine why this commented invocation takes so long...
+  // sogoObject = [self _createChildComponentWithRecord: object];
 
-      currentProperty = properties;
-      currentValue = values;
-      while (*currentProperty)
-	{
-	  methodSel = SOGoSelectorForPropertyGetter (*currentProperty);
-	  if (methodSel && [sogoObject respondsToSelector: methodSel])
-	    *currentValue = [[sogoObject performSelector: methodSel]
-			      stringByEscapingXMLString];
-	  currentProperty++;
-	  currentValue++;
-	}
-    }
-  else
+  sogoObject = [SOGoCalendarComponent objectWithRecord: object
+                                           inContainer: self];
+  [sogoObject setComponentTag: [object objectForKey: @"c_component"]];
+
+  currentProperty = properties;
+  currentValue = values;
+  while (*currentProperty)
     {
-      /* We mark all values as nil since the area was not cleared before. */
-      memset (values, 0, propertiesCount * sizeof (NSString *));
+      methodSel = SOGoSelectorForPropertyGetter (*currentProperty);
+      if (methodSel && [sogoObject respondsToSelector: methodSel])
+        *currentValue = [[sogoObject performSelector: methodSel]
+                          stringByEscapingXMLString];
+      currentProperty++;
+      currentValue++;
     }
 
 //    NSLog (@"/_properties:ofObject:: %@", [NSDate date]);
@@ -1164,8 +1169,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
   propstats = [NSMutableArray array];
 
-  properties200 = [NSMutableArray new];
-  properties404 = [NSMutableArray new];
+  properties200 = [NSMutableArray array];
+  properties404 = [NSMutableArray array];
 
   values = [self _properties: properties count: propertiesCount
                     ofObject: object];
@@ -1197,15 +1202,11 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 					  properties200, @"properties",
 					@"HTTP/1.1 200 OK", @"status",
 					nil]];
-  [properties200 release];
-
   if ([properties404 count])
     [propstats addObject: [NSDictionary dictionaryWithObjectsAndKeys:
 					  properties404, @"properties",
 					@"HTTP/1.1 404 Not Found", @"status",
 					nil]];
-  [properties404 release];
-
 //    NSLog (@"/_propstats:ofObject:: %@", [NSDate date]);
 
   return propstats;
@@ -1409,16 +1410,31 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return filterData;
 }
 
-- (NSArray *) _parseRequestedProperties: (id <DOMElement>) parentNode
+- (NSDictionary *) _parseRequestedProperties: (id <DOMElement>) parentNode
 {
-  NSMutableArray *properties;
+  NSMutableDictionary *properties;
   NSObject <DOMNodeList> *propList, *children;
   NSObject <DOMNode> *currentChild;
   unsigned int count, max, count2, max2;
   NSString *flatProperty;
+  NSString *sqlField;
+  static NSMutableDictionary *davPropsToSQLFields = nil;
+
+  if (!davPropsToSQLFields)
+    {
+      /* This table is meant to match SQL fields to the properties that
+         requires them. The fields may NOT be processed directly. This list
+         is not complete but is at least sufficient for processing requests
+         from Lightning. */
+      davPropsToSQLFields = [NSMutableDictionary new];
+      [davPropsToSQLFields setObject: @"c_content"
+                              forKey: @"{urn:ietf:params:xml:ns:caldav}calendar-data"];
+      [davPropsToSQLFields setObject: @"c_version"
+                              forKey: @"{DAV:}getetag"];
+    }
 
 //   NSLog (@"parseRequestProperties: %@", [NSDate date]);
-  properties = [NSMutableArray array];
+  properties = [NSMutableDictionary dictionary];
 
   propList = [parentNode getElementsByTagName: @"prop"];
   max = [propList length];
@@ -1434,7 +1450,12 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
               flatProperty = [NSString stringWithFormat: @"{%@}%@",
                            [currentChild namespaceURI],
                            [currentChild nodeName]];
-              [properties addObject: flatProperty];
+              sqlField = [davPropsToSQLFields objectForKey: flatProperty];
+              if (sqlField)
+                [properties setObject: sqlField forKey: flatProperty];
+              else
+                [self errorWithFormat: @"DAV property '%@' not yet supported,"
+                      @" response will be incomplete", flatProperty];
             }
         }
 
@@ -1519,8 +1540,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   NSString *currentKey, *keyField, *filterString;
   static NSArray *fields = nil;
   NSMutableArray *filters;
-  NSNumber *cycle;
-  NSCalendarDate *cEndDate;
+  NSNumber *cycle, *cEndDate;
 
 #warning the list of fields should be taken from the .ocs description file
   if (!fields)
@@ -1529,7 +1549,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       [fields retain];
     }
 
-  filters = [NSMutableArray new];
+  filters = [NSMutableArray array];
   keys = [[filter allKeys] objectEnumerator];
   while ((currentKey = [keys nextObject]))
     {
@@ -1568,7 +1588,6 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     additionalFilter = [filters componentsJoinedByString: @" AND "];
   else
     additionalFilter = nil;
-  [filters release];
 
   return additionalFilter;
 }
@@ -1622,14 +1641,13 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   NSMutableArray *response;
   SOGoWebDAVValue *responseValue;
 
-  response = [NSMutableArray new];
+  response = [NSMutableArray array];
   subFolders = [[container subFolders] objectEnumerator];
   while ((currentFolder = [subFolders nextObject]))
     [response addObject: davElementWithContent (@"href", XMLNS_WEBDAV,
 						[currentFolder davURL])];
   responseValue = [davElementWithContent (@"calendar-free-busy-set", XMLNS_CALDAV, response)
 					 asWebDAVValue];
-  [response release];
 
   return responseValue;
 }
@@ -1640,40 +1658,32 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return nil;
 }
 
-- (void) _appendComponentProperties: (NSArray *) propertiesArray
+- (void) _appendComponentProperties: (NSDictionary *) properties
                     matchingFilters: (NSArray *) filters
                          toResponse: (WOResponse *) response
 {
-  NSArray *apts, *fields;
+  NSArray *apts;
+  NSMutableArray *fields;
   NSDictionary *currentFilter;
   NSEnumerator *filterList;
   NSString *additionalFilters, *baseURL;
   NSMutableString *buffer;
-  NSString **properties;
+  NSString **propertiesArray;
   unsigned int count, max, propertiesCount;
 
+  fields = [NSMutableArray arrayWithObject: @"c_name"];
+  [fields addObjectsFromArray: [properties allValues]];
   baseURL = [[self davURL] absoluteString];
-  
-  // We check if we need to fetch all fields. If the DAV client
-  // has only asked for {DAV:}getetag with no other properties,
-  // we do not load the c_content and other fields from the
-  // database as this can be pretty costly.
-#warning we should build the list of fields based on the requested props
-  if ([propertiesArray count] == 1
-      && [[propertiesArray objectAtIndex: 0]
-           caseInsensitiveCompare: @"{DAV:}getetag"] == NSOrderedSame)
-    fields = reducedReportQueryFields;
-  else
-    fields = reportQueryFields;
 
-  properties = [propertiesArray asPointersOfObjects];
-  propertiesCount = [propertiesArray count];
+  propertiesArray = [[properties allKeys] asPointersOfObjects];
+  propertiesCount = [properties count];
 
+  NSLog (@"start");
   filterList = [filters objectEnumerator];
   while ((currentFilter = [filterList nextObject]))
     {
       additionalFilters = [self _composeAdditionalFilters: currentFilter];
-      //NSLog(@"query");
+      NSLog(@"query");
       /* TODO: we should invoke bareFetchField:... twice and compute the
          recurrent events properly instead of using _makeCyclicFilterFrom: */
       apts = [self bareFetchFields: fields
@@ -1682,21 +1692,22 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                              title: [currentFilter objectForKey: @"title"]
                          component: [currentFilter objectForKey: @"name"]
                  additionalFilters: additionalFilters];
-      //NSLog(@"adding properties");
+      NSLog(@"adding properties");
       max = [apts count];
-      buffer = [[NSMutableString alloc] initWithCapacity: max * 512];
+      buffer = [NSMutableString stringWithCapacity: max * 512];
       for (count = 0; count < max; count++)
         [self appendObject: [apts objectAtIndex: count]
-                properties: properties
+                properties: propertiesArray
                      count: propertiesCount
                withBaseURL: baseURL
                   toBuffer: buffer];
-      //NSLog(@"done");
+      NSLog(@"done 1");
       [response appendContentString: buffer];
-      [buffer release];
+      NSLog(@"done 2");
     }
+  NSLog (@"stop");
 
-  NSZoneFree (NULL, properties);
+  NSZoneFree (NULL, propertiesArray);
 }
 
 - (id) davCalendarQuery: (id) queryContext
@@ -1704,8 +1715,6 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   WOResponse *r;
   id <DOMDocument> document;
   id <DOMElement> documentElement;
-
-  [self initializeQuickTablesAclsInContext: queryContext];
 
   r = [context response];
   [r setStatus: 207];
@@ -1719,10 +1728,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
   document = [[context request] contentAsDOMDocument];
   documentElement = [document documentElement];
-  [self _appendComponentProperties:
-          [self _parseRequestedProperties: documentElement]
-                   matchingFilters:
-       [self _parseCalendarFilters: documentElement]
+  [self _appendComponentProperties: [self _parseRequestedProperties: documentElement]
+                   matchingFilters: [self _parseCalendarFilters: documentElement]
                         toResponse: r];
   [r appendContentString:@"</D:multistatus>"];
 
@@ -1763,22 +1770,21 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 }
 
 - (NSArray *) _fetchComponentsWithNames: (NSArray *) cNames
+                                 fields: (NSArray *) fields
 {
   NSMutableString *filterString;
   NSArray *records;
 
 //   NSLog (@"fetchComponentsWithNames");
-  filterString = [NSMutableString new];
+  filterString = [NSMutableString string];
   [filterString appendFormat: @"c_name='%@'",
 		[cNames componentsJoinedByString: @"' OR c_name='"]];
 //   NSLog (@"fetchComponentsWithNames: query");
-  records = [self bareFetchFields: reportQueryFields
-		  from: nil
-		  to: nil
+  records = [self bareFetchFields: fields
+		  from: nil to: nil
 		  title: nil
 		  component: nil
 		  additionalFilters: filterString];
-  [filterString release];
 //   NSLog (@"/fetchComponentsWithNames");
 
   return records;
@@ -1789,6 +1795,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 #define idQueryOverhead 13
 
 - (NSArray *) _fetchComponentsMatchingObjectNames: (NSArray *) cNames
+                                           fields: (NSArray *) fields
 {
   NSMutableArray *components;
   NSArray *records;
@@ -1798,7 +1805,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
 //   NSLog (@"fetching components matching names");
 
-  currentNames = [NSMutableArray new];
+  currentNames = [NSMutableArray array];
   currentSize = baseQuerySize;
 
   max = [cNames count];
@@ -1810,7 +1817,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       if ((currentSize + queryNameLength)
 	  > maxQuerySize)
 	{
-	  records = [self _fetchComponentsWithNames: currentNames];
+	  records = [self _fetchComponentsWithNames: currentNames fields: fields];
 	  [components addObjectsFromArray: records];
 	  [currentNames removeAllObjects];
 	  currentSize = baseQuerySize;
@@ -1819,9 +1826,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       currentSize += queryNameLength;
     }
 
-  records = [self _fetchComponentsWithNames: currentNames];
+  records = [self _fetchComponentsWithNames: currentNames fields: fields];
   [components addObjectsFromArray: records];
-  [currentNames release];
 
 //   NSLog (@"/fetching components matching names");
 
@@ -1829,6 +1835,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 }
 
 - (NSDictionary *) _fetchComponentsMatchingURLs: (NSArray *) urls
+                                         fields: (NSArray *) fields
 {
   NSMutableDictionary *components;
   NSDictionary *cnames, *record;
@@ -1839,7 +1846,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   components = [NSMutableDictionary dictionary];
 
   cnames = [self _deduceObjectNamesFromURLs: urls];
-  records = [self _fetchComponentsMatchingObjectNames: [cnames allKeys]];
+  records = [self _fetchComponentsMatchingObjectNames: [cnames allKeys]
+                                               fields: fields];
   max = [records count];
   for (count = 0; count < max; count++)
     {
@@ -1852,21 +1860,21 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return components;
 }
 
-- (void) _appendComponentProperties: (NSArray *) propertiesArray
+- (void) _appendComponentProperties: (NSDictionary *) properties
                        matchingURLs: (id <DOMNodeList>) refs
                          toResponse: (WOResponse *) response
 {
   NSObject <DOMElement> *element;
   NSDictionary *currentComponent, *components;
   NSString *currentURL, *baseURL;
-  NSString **properties;
-  NSMutableArray *urls;
+  NSString **propertiesArray;
+  NSMutableArray *urls, *fields;
   NSMutableString *buffer;
   unsigned int count, max, propertiesCount;
 
   baseURL = [[self davURL] absoluteString];
 
-  urls = [NSMutableArray new];
+  urls = [NSMutableArray array];
   max = [refs length];
   for (count = 0; count < max; count++)
     {
@@ -1875,19 +1883,22 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       [urls addObject: currentURL];
     }
 
-  properties = [propertiesArray asPointersOfObjects];
-  propertiesCount = [propertiesArray count];
+  propertiesArray = [[properties allKeys] asPointersOfObjects];
+  propertiesCount = [properties count];
 
-  components = [self _fetchComponentsMatchingURLs: urls];
+  fields = [NSMutableArray arrayWithObject: @"c_name"];
+  [fields addObjectsFromArray: [properties allValues]];
+
+  components = [self _fetchComponentsMatchingURLs: urls fields: fields];
   max = [urls count];
 //   NSLog (@"adding properties with url");
-  buffer = [[NSMutableString alloc] initWithCapacity: max*512];
+  buffer = [NSMutableString stringWithCapacity: max*512];
   for (count = 0; count < max; count++)
     {
       currentComponent = [components objectForKey: [urls objectAtIndex: count]];
       if (currentComponent)
         [self appendObject: currentComponent
-                properties: properties
+                properties: propertiesArray
                      count: propertiesCount
                withBaseURL: baseURL
                   toBuffer: buffer];
@@ -1896,12 +1907,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                             toBuffer: buffer];
     }
   [response appendContentString: buffer];
-  [buffer release];
 //   NSLog (@"/adding properties with url");
 
-  NSZoneFree (NULL, properties);
-
-  [urls release];
+  NSZoneFree (NULL, propertiesArray);
 }
 
 - (id) davCalendarMultiget: (id) queryContext
@@ -1909,8 +1917,6 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   WOResponse *r;
   id <DOMDocument> document;
   id <DOMElement> documentElement;
-
-  [self initializeQuickTablesAclsInContext: queryContext];
 
   r = [context response];
   [r setStatus: 207];
@@ -2031,7 +2037,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   SOGoWebDAVValue *cdata;
   NSString *escapedData;
 
-  content = [NSMutableArray new];
+  content = [NSMutableArray array];
 
   [content addObject: davElementWithContent (@"recipient", XMLNS_CALDAV, recipient)];
   if (user)
@@ -2050,7 +2056,6 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 		 davElementWithContent (@"request-status", XMLNS_CALDAV,
 					@"3.7;Invalid Calendar User")];
   response = davElementWithContent (@"response", XMLNS_CALDAV, content);
-  [content release];
 
   return response;
 }
@@ -2103,7 +2108,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   NSEnumerator *allRecipients;
   NSCalendarDate *startDate, *endDate;
 
-  elements = [NSMutableArray new];
+  elements = [NSMutableArray array];
   [freebusy fillStartDate: &startDate andEndDate: &endDate];
   uid = [freebusy uid];
   organizer = [freebusy organizer];
@@ -2116,7 +2121,6 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                                                              to: endDate]];
   responseElement = davElementWithContent (@"schedule-response",
 					   XMLNS_CALDAV, elements);
-  [elements release];
 
   return responseElement;
 }
@@ -2234,8 +2238,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   NSMutableArray *classes;
   NSArray *primaryClasses;
 
-  classes = [NSMutableArray new];
-  [classes autorelease];
+  classes = [NSMutableArray array];
 
   primaryClasses = [super davComplianceClassesInContext: _ctx];
   if (primaryClasses)
