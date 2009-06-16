@@ -218,18 +218,17 @@ Element.addMethods(
 			}
 	},
 
-	setCaretTo: function(element, pos) { 
-			element = $(element);
-			if (typeof(element.selectionStart)
-					!= "undefined") { // For Mozilla and Safari
-				element.focus(); 
+	setCaretTo: function(element, pos) {
+		  element = $(element);
+			if (element.setSelectionRange) {  // For Mozilla and Safari
+				element.focus();
 				element.setSelectionRange(pos, pos); 
 			}
 			else if (element.createTextRange) {  // For IE
-				var range = element.createTextRange(); 
+				var range = element.createTextRange();
 				range.move("character", pos); 
 				range.select();
-			} 
+			}
 		},
 
 	selectText: function(element, start, end) {

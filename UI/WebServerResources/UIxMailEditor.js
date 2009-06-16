@@ -8,7 +8,8 @@ var MailEditor = {
  selectedIndex: -1,
  delay: 750,
  delayedSearch: false,
- signatureLength: 0
+ signatureLength: 0,
+ textFirstFocus: true
 };
 
 function onContactAdd() {
@@ -267,7 +268,25 @@ function clickedEditorSave(sender) {
 	return false;
 }
 
-function onTextFocus() {
+function onTextFocus(event) {
+	if (MailEditor.textFirstFocus) {
+		var content = this.getValue();
+		var replyPlacement = UserDefaults["ReplyPlacement"];
+		if (replyPlacement == "above") {
+			this.insertBefore(document.createTextNode("\r\r"), this.lastChild);
+			this.setCaretTo(0);
+		}
+		else {
+			var caretPosition = this.getValue().length - MailEditor.signatureLength;
+			if (Prototype.Browser.IE)
+				caretPosition -= lineBreakCount(this.getValue().substring(0, caretPosition));
+			if (hasSignature())
+				caretPosition -= 1;
+			this.setCaretTo(caretPosition);
+		}
+		MailEditor.textFirstFocus = false;
+	}
+	
 	var input = currentAttachmentInput();
 	if (input)
 		input.parentNode.removeChild(input);
@@ -275,11 +294,11 @@ function onTextFocus() {
 
 function onTextKeyDown(event) {
 	if (event.keyCode == Event.KEY_TAB) {
+		// Change behavior of tab key
 		if (event.shiftKey) {
-			var nodes = $("subjectRow").childNodesWithTag("input");
-			var objectInput = $(nodes[0]);
-			objectInput.focus();
-			objectInput.selectText(0, objectInput.value.length);
+			var subjectField = $$("div#subjectRow input").first();
+			subjectField.focus();
+			subjectField.selectText(0, subjectField.value.length);
 			preventDefault(event);
 		}
 		else {
@@ -308,31 +327,6 @@ function onTextKeyDown(event) {
 
 function onTextIEUpdateCursorPos(event) {
 	this.selectionRange = document.selection.createRange().duplicate();
-}
-
-function onTextFirstFocus() {
-	var content = this.getValue();
-  var replyPlacement = UserDefaults["ReplyPlacement"];
-
-  if (replyPlacement == "above") {
-    this.insertBefore(document.createTextNode("\r\r"), this.lastChild);
-    this.setCaretTo(0);
-  }
-  else {
-		var caretPosition = this.getValue().length - MailEditor.signatureLength;
-		if (Prototype.Browser.IE)
-			caretPosition -= lineBreakCount(this.getValue().substring(0, caretPosition));
-		if (hasSignature())
-			caretPosition -= 2;
-    this.setCaretTo(caretPosition);
-  }
-    
-	Event.stopObserving(this, "focus", onTextFirstFocus);
-}
-
-function onTextContextMenu(event) {
-	event.returnValue = true;
-	event.cancelBubble = true;
 }
 
 function onTextMouseDown(event) {
@@ -555,10 +549,8 @@ function initMailEditor() {
 	if (UserDefaults["ReplyPlacement"] != "above") {
 	  textarea.scrollTop = textarea.scrollHeight;
 	}
-	textarea.observe("focus", onTextFirstFocus);
 	textarea.observe("focus", onTextFocus);
-	//   textarea.observe("contextmenu", onTextContextMenu);
-	textarea.observe("mousedown", onTextMouseDown, true);
+	//textarea.observe("mousedown", onTextMouseDown);
 	textarea.observe("keydown", onTextKeyDown);
 
 	if (Prototype.Browser.IE) {
@@ -693,7 +685,6 @@ function onSelectPriority(event) {
       node = $(node).up("button");
     popupToolbarMenu(node, "priority-menu");
     Event.stop(event);
-    //       preventDefault(event);
   }
 }
 
