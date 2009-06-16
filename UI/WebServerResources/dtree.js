@@ -9,12 +9,17 @@
   | Updated: 17.04.2003                               |
   |--------------------------------------------------*/
 
+/* The content of attribute values should be quoted properly by using the
+   equivalent entities. */
 function dTreeQuote(str) {
     return (str
-            .replace(/\\/g, "\\\\")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
             .replace(/\"/g, "&quot;")
             .replace(/\'/g, "&apos;"));
 }
+
+window.alert("test: " + dTreeQuote("& < \" ' \" &"));
 
 // Node object
 function Node(id, pid, name, isParent, url, dataname, datatype, title, target,

@@ -28,6 +28,7 @@
   UID)
 - fixed week view alignment problem in IE7
 - fixed LDAP and SQL injection bugs
+- fixed many bugs related to the encoding and decoding of IMAP folder names
 
 1.0-20090407 (1.0.1)
 --------------------
