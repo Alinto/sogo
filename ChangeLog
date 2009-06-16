@@ -1,3 +1,8 @@
+2009-06-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoCalendarComponent.m (-valuesForKeys:)
+	overriden method to speed up PROPFIND requests.
+
 2009-06-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/NSArray+Utilities.m (-hasRangeIntersection):

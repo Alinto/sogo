@@ -1013,4 +1013,20 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
   return [self component: YES secure: NO];
 }
 
+/* Overriding this method dramatically speeds up PROPFIND request, but may
+   otherwise be a bad idea... Wait and see. */
+- (NSDictionary*) valuesForKeys: (NSArray*)keys
+{
+  NSMutableDictionary *values;
+
+  values = [NSMutableDictionary dictionaryWithCapacity: [keys count]];
+  [values setObject: [self davCreationDate] forKey: @"davCreationDate"];
+  [values setObject: [self davContentLength] forKey: @"davContentLength"];
+  [values setObject: [self davLastModified] forKey: @"davLastModified"];
+  [values setObject: @"text/calendar" forKey: @"davContentType"];
+  [values setObject: [self baseURL] forKey: @"davURL"];
+
+  return values;
+}
+
 @end
