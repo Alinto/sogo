@@ -19,8 +19,6 @@ function dTreeQuote(str) {
             .replace(/\'/g, "&apos;"));
 }
 
-window.alert("test: " + dTreeQuote("& < \" ' \" &"));
-
 // Node object
 function Node(id, pid, name, isParent, url, dataname, datatype, title, target,
               icon, iconOpen, open, hasUnseen) {
