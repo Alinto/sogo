@@ -1,3 +1,9 @@
+2009-06-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/NSArray+Utilities.m (-hasRangeIntersection):
+	modified to use the range pointers rather than serialized
+	representations.
+
 2009-06-15  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m

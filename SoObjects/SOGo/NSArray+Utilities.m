@@ -239,23 +239,19 @@
 - (BOOL) hasRangeIntersection: (NSRange) testRange
 {
   NSEnumerator *ranges;
-  NSString *currentRangeString;
-  NSRange currentRange;
+  NSValue *currentRangePtr;
+  NSRange *currentRange;
   BOOL response;
 
   response = NO;
 
   ranges = [self objectEnumerator];
-  currentRangeString = [ranges nextObject];
-
-  while (!response && currentRangeString)
+  while (!response && (currentRangePtr = [ranges nextObject]))
     {
-      currentRange = NSRangeFromString (currentRangeString);
-      if (NSLocationInRange (testRange.location, currentRange)
-	  || NSLocationInRange (NSMaxRange (testRange), currentRange))
+      currentRange = [currentRangePtr pointerValue];
+      if (NSLocationInRange (testRange.location, *currentRange)
+	  || NSLocationInRange (NSMaxRange (testRange), *currentRange))
 	response = YES;
-      else
-	currentRangeString = [ranges nextObject];
     }
 
   return response;
