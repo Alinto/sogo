@@ -462,7 +462,8 @@ static NSArray *reducedReportQueryFields = nil;
       [self initializeQuickTablesAclsInContext: context];
       grantedClasses = [NSMutableArray arrayWithCapacity: 3];
       deniedClasses = [NSMutableArray arrayWithCapacity: 3];
-      for (currentClass = 0; currentClass < iCalAccessClassCount; currentClass++)
+      for (currentClass = 0;
+           currentClass < iCalAccessClassCount; currentClass++)
         {
           classNumber = [NSNumber numberWithInt: currentClass];
           if (userCanAccessObjectsClassifiedAs[currentClass])
@@ -477,10 +478,14 @@ static NSArray *reducedReportQueryFields = nil;
         privacySqlString
           = [NSString stringWithFormat: @"c_classification != %@",
                       [deniedClasses objectAtIndex: 0]];
-      else
+      else if (grantedCount == 1)
         privacySqlString
           = [NSString stringWithFormat: @"c_classification == %@",
                       [grantedClasses objectAtIndex: 0]];
+      else
+        /* We prevent any event/task from being listed. There must be a better
+           way... */
+        privacySqlString = @"0 == 1";
     }
 
   return privacySqlString;
