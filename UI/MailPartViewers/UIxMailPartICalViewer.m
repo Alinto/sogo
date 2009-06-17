@@ -255,29 +255,30 @@
   /* lookup object in the users Calendar */
   SOGoAppointmentFolder *calendar;
   NSString *filename;
- 
-  if ([self hasCalendarAccess])
+
+  if (!storedEventFetched)
     {
-      if (!storedEventObject)
-	{
-	  calendar = [self calendarFolder];
-	  if ([calendar isKindOfClass: [NSException class]])
-	    [self errorWithFormat:@"Did not find Calendar folder: %@", calendar];
-	  else
-	    {
-	      filename = [calendar resourceNameForEventUID:[[self inEvent] uid]];
-	      if (filename)
-		{
-		  storedEventObject = [calendar lookupName: filename
-						inContext: [self context]
-						acquire: NO];
-		  if ([storedEventObject isKindOfClass: [NSException class]])
+      if ([self hasCalendarAccess])
+        {
+          calendar = [self calendarFolder];
+          if ([calendar isKindOfClass: [NSException class]])
+            [self errorWithFormat:@"Did not find Calendar folder: %@", calendar];
+          else
+            {
+              filename = [calendar resourceNameForEventUID:[[self inEvent] uid]];
+              if (filename)
+                {
+                  storedEventObject = [calendar lookupName: filename
+                                                 inContext: [self context]
+                                                   acquire: NO];
+                  if ([storedEventObject isKindOfClass: [NSException class]])
 		    storedEventObject = nil;
-		  else
-		    [storedEventObject retain];
-		}
-	    }
-	}
+                  else
+                    [storedEventObject retain];
+                }
+            }
+        }
+      storedEventFetched = YES;
     }
  
   return storedEventObject;

@@ -1,5 +1,9 @@
 2009-06-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailPartViewers/UIxMailPartICalViewer.m (-storedEventObject):
+	use the new "storedEventFetched" bool ivar to specify whether we
+	already attempted to fetch the event from the user calendars.
+
 	* SoObjects/SOGo/SOGoUser.m (-rolesForObject:inContext:): do not
 	query the acls for the object if the current user is its owner.
 

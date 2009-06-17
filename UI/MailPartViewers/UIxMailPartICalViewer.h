@@ -38,6 +38,7 @@
   SOGoDateFormatter *dateFormatter;
   id item;
   SOGoAppointmentObject *storedEventObject;
+  BOOL storedEventFetched;
   iCalEvent *storedEvent;
 }
 
