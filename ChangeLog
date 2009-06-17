@@ -1,5 +1,11 @@
 2009-06-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-fetchFields:...): don't use the privacySqlString twice.
+	The component parameter MUST be a NSString from now on. Fixed a
+	syntax problem in the where clause occuring when vtodo components
+	were requested.
+
 	* UI/MailPartViewers/UIxMailPartICalViewer.m (-storedEventObject):
 	use the new "storedEventFetched" bool ivar to specify whether we
 	already attempted to fetch the event from the user calendars.

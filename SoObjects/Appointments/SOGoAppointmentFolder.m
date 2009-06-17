@@ -389,28 +389,6 @@ static NSArray *reducedReportQueryFields = nil;
 
 /* fetching */
 
-- (NSString *) _sqlStringForComponent: (id) _component
-{
-  NSString *sqlString;
-  NSArray *components;
-
-  if (_component)
-    {
-      if ([_component isKindOfClass: [NSArray class]])
-        components = _component;
-      else
-        components = [NSArray arrayWithObject: _component];
-
-      sqlString
-        = [NSString stringWithFormat: @"AND (c_component = '%@')",
-                    [components componentsJoinedByString: @"' OR c_component = '"]];
-    }
-  else
-    sqlString = @"";
-
-  return sqlString;
-}
-
 - (NSString *) _sqlStringRangeFrom: (NSCalendarDate *) _startDate
                                 to: (NSCalendarDate *) _endDate
 {
@@ -462,7 +440,8 @@ static NSArray *reducedReportQueryFields = nil;
       [self initializeQuickTablesAclsInContext: context];
       grantedClasses = [NSMutableArray arrayWithCapacity: 3];
       deniedClasses = [NSMutableArray arrayWithCapacity: 3];
-      for (currentClass = 0; currentClass < iCalAccessClassCount; currentClass++)
+      for (currentClass = 0;
+           currentClass < iCalAccessClassCount; currentClass++)
         {
           classNumber = [NSNumber numberWithInt: currentClass];
           if (userCanAccessObjectsClassifiedAs[currentClass])
@@ -477,10 +456,14 @@ static NSArray *reducedReportQueryFields = nil;
         privacySqlString
           = [NSString stringWithFormat: @"c_classification != %@",
                       [deniedClasses objectAtIndex: 0]];
-      else
+      else if (grantedCount == 1)
         privacySqlString
-          = [NSString stringWithFormat: @"c_classification == %@",
+          = [NSString stringWithFormat: @"c_classification = %@",
                       [grantedClasses objectAtIndex: 0]];
+      else
+        /* We prevent any event/task from being listed. There must be a better
+           way... */
+        privacySqlString = @"c_classification = 255";
     }
 
   return privacySqlString;
@@ -490,7 +473,7 @@ static NSArray *reducedReportQueryFields = nil;
                          from: (NSCalendarDate *) startDate
                            to: (NSCalendarDate *) endDate 
                         title: (NSString *) title
-                    component: (id) component
+                    component: (NSString *) component
             additionalFilters: (NSString *) filters
 {
   EOQualifier *qualifier;
@@ -511,7 +494,11 @@ static NSArray *reducedReportQueryFields = nil;
   else
     titleSqlString = @"";
 
-  componentSqlString = [self _sqlStringForComponent: component];
+  if (component)
+    componentSqlString = [NSString stringWithFormat: @"AND c_component = '%@'",
+                                   component];
+  else
+    componentSqlString = @"";
   filterSqlString = [NSMutableString string];
   if ([filters length])
     [filterSqlString appendFormat: @"AND (%@)", filters];
@@ -929,16 +916,16 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 {
   EOQualifier *qualifier;
   GCSFolder *folder;
-  NSMutableArray *fields, *ma = nil;
+  NSMutableArray *fields, *ma;
   NSArray *records;
-  NSString *sql, *dateSqlString, *titleSqlString, *componentSqlString,
-    *privacySqlString, *currentLogin;
-  NSMutableString *filterSqlString;
+  NSMutableString *baseWhere;
+  NSString *where, *dateSqlString, *privacySqlString, *currentLogin;
   NSCalendarDate *endDate;
   NGCalendarDateRange *r;
-  BOOL rememberRecords;
+  BOOL rememberRecords, canCycle;
 
   rememberRecords = [self _checkIfWeCanRememberRecords: _fields];
+  canCycle = [_component isEqualToString: @"vevent"];
 //   if (rememberRecords)
 //     NSLog (@"we will remember those records!");
 
@@ -949,6 +936,12 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
             __PRETTY_FUNCTION__];
       return nil;
     }
+
+  if (_component)
+    baseWhere = [NSMutableString stringWithFormat: @"AND c_component = '%@'",
+                               _component];
+  else
+    baseWhere = [NSMutableString string];
 
   if (_startDate)
     {
@@ -966,22 +959,16 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       dateSqlString = @"";
     }
 
-  if ([title length])
-    titleSqlString = [NSString stringWithFormat: @"AND (c_title"
-			       @" isCaseInsensitiveLike: '%%%@%%')",
-			       [title stringByReplacingString: @"'"  withString: @"\\'\\'"]];
-  else
-    titleSqlString = @"";
-
-  componentSqlString = [self _sqlStringForComponent: _component];
-
-  filterSqlString = [NSMutableString string];
-  if ([filters length])
-    [filterSqlString appendFormat: @"AND (%@)", filters];
-
   privacySqlString = [self _privacySqlString];
   if ([privacySqlString length])
-    [filterSqlString appendFormat: @"AND (%@)", privacySqlString];
+    [baseWhere appendFormat: @"AND %@", privacySqlString];
+
+  if ([title length])
+    [baseWhere appendFormat: @"AND c_title isCaseInsensitiveLike: '%%%@%%'",
+             [title stringByReplacingString: @"'"  withString: @"\\'\\'"]];
+
+  if ([filters length])
+    [baseWhere appendFormat: @"AND (%@)", filters];
 
   /* prepare mandatory fields */
 
@@ -995,19 +982,15 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   if (logger)
     [self debugWithFormat:@"should fetch (%@=>%@) ...", _startDate, endDate];
 
-  // We treat recurrent tasks as normal components
-  if ([_component caseInsensitiveCompare: @"vtodo"] == NSOrderedSame)
-    sql = @"";
+  if (canCycle)
+    where = [NSString stringWithFormat: @"%@ %@ AND c_iscycle = 0",
+                      baseWhere, dateSqlString];
   else
-    sql = @"(c_iscycle = 0) ";
-  
-  sql = [sql stringByAppendingFormat: @"%@ %@ %@ %@",
-	     dateSqlString, titleSqlString, componentSqlString,
-	     filterSqlString];
-  
-  /* fetch non-recurrent apts first */
-  qualifier = [EOQualifier qualifierWithQualifierFormat: sql];
+    where = baseWhere;
 
+  /* fetch non-recurrent apts first */
+  qualifier = [EOQualifier qualifierWithQualifierFormat:
+                              [where substringFromIndex: 4]];
   records = [folder fetchFields: fields matchingQualifier: qualifier];
   if (records)
     {
@@ -1018,15 +1001,15 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
               [records count], records];
       ma = [NSMutableArray arrayWithArray: records];
     }
+  else
+    ma = nil;
 
   /* fetch recurrent apts now. we do NOT consider events with no cycle end. */
-  if (_endDate || filters)
+//  || _endDate || filters)
+  if (canCycle)
     {
-      sql = [NSString stringWithFormat: @"(c_iscycle = 1) %@ %@ %@ %@", titleSqlString,
-		      componentSqlString, privacySqlString, filterSqlString];
-      
-      qualifier = [EOQualifier qualifierWithQualifierFormat: sql];
-      
+      where = [NSString stringWithFormat: @"%@ AND c_iscycle = 1", baseWhere];
+      qualifier = [EOQualifier qualifierWithQualifierFormat: [where substringFromIndex: 4]];
       records = [folder fetchFields: fields matchingQualifier: qualifier];
       if (records)
         {
@@ -1410,6 +1393,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return filterData;
 }
 
+/* TODO: This method should be generalized to all SOGoGCSFolder-based
+   classes. */
 - (NSDictionary *) _parseRequestedProperties: (id <DOMElement>) parentNode
 {
   NSMutableDictionary *properties;
