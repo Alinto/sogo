@@ -480,12 +480,12 @@ static NSArray *reducedReportQueryFields = nil;
                       [deniedClasses objectAtIndex: 0]];
       else if (grantedCount == 1)
         privacySqlString
-          = [NSString stringWithFormat: @"c_classification == %@",
+          = [NSString stringWithFormat: @"c_classification = %@",
                       [grantedClasses objectAtIndex: 0]];
       else
         /* We prevent any event/task from being listed. There must be a better
            way... */
-        privacySqlString = @"0 == 1";
+        privacySqlString = @"c_classification = 255";
     }
 
   return privacySqlString;
@@ -1027,8 +1027,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   /* fetch recurrent apts now. we do NOT consider events with no cycle end. */
   if (_endDate || filters)
     {
-      sql = [NSString stringWithFormat: @"(c_iscycle = 1) %@ %@ %@ %@", titleSqlString,
-		      componentSqlString, privacySqlString, filterSqlString];
+      sql = [NSString stringWithFormat: @"(c_iscycle = 1) %@ %@ %@", titleSqlString,
+		      componentSqlString, filterSqlString];
       
       qualifier = [EOQualifier qualifierWithQualifierFormat: sql];
       
