@@ -1415,6 +1415,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return filterData;
 }
 
+/* TODO: This method should be generalized to all SOGoGCSFolder-based
+   classes. */
 - (NSDictionary *) _parseRequestedProperties: (id <DOMElement>) parentNode
 {
   NSMutableDictionary *properties;
