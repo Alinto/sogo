@@ -544,7 +544,7 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
   NSDictionary *currentGrant, *userHREF;
   NSString *principalURL;
 
-  currentAce = [NSMutableArray new];
+  currentAce = [NSMutableArray array];
   roles = [[SOGoUser userWithLogin: currentUID roles: nil]
 	    rolesForObject: self
 	    inContext: context];
@@ -562,7 +562,6 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
       [currentAce addObject: currentGrant];
       [aces addObject: davElementWithContent (@"ace", @"DAV:", currentAce)];
     }
-  [currentAce release];
 }
 
 - (void) _fillAcesWithRolesForPseudoPrincipals: (NSMutableArray *) aces
@@ -644,7 +643,7 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
   NSMutableArray *responses;
   NSArray *responseElements;
 
-  responses = [NSMutableArray new];
+  responses = [NSMutableArray array];
 
   hrefList = [hrefs objectEnumerator];
   while ((currentHref = [hrefList nextObject]))
@@ -660,7 +659,6 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
     }
 
   multiStatus = davElementWithContent (@"multistatus", @"DAV:", responses);
-  [responses release];
 
   return multiStatus;
 }
@@ -697,11 +695,10 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
   NSMutableArray *hrefs;
   NSDictionary *response;
 
-  hrefs = [NSMutableArray new];
+  hrefs = [NSMutableArray array];
   [self _fillArrayWithPrincipalsOwnedBySelf: hrefs];
 
   response = [self _formalizePrincipalMatchResponse: hrefs];
-  [hrefs release];
 
   return response;
 }
