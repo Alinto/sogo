@@ -270,10 +270,10 @@ function clickedEditorSave(sender) {
 
 function onTextFocus(event) {
 	if (MailEditor.textFirstFocus) {
+		// On first focus, position the caret at the proper position
 		var content = this.getValue();
 		var replyPlacement = UserDefaults["ReplyPlacement"];
-		if (replyPlacement == "above") {
-			this.insertBefore(document.createTextNode("\r\r"), this.lastChild);
+		if (replyPlacement == "above" || !mailIsReply) { // for forwards, place caret at top unconditionally
 			this.setCaretTo(0);
 		}
 		else {
@@ -281,7 +281,7 @@ function onTextFocus(event) {
 			if (Prototype.Browser.IE)
 				caretPosition -= lineBreakCount(this.getValue().substring(0, caretPosition));
 			if (hasSignature())
-				caretPosition -= 1;
+				caretPosition -= 2;
 			this.setCaretTo(caretPosition);
 		}
 		MailEditor.textFirstFocus = false;
@@ -294,7 +294,7 @@ function onTextFocus(event) {
 
 function onTextKeyDown(event) {
 	if (event.keyCode == Event.KEY_TAB) {
-		// Change behavior of tab key
+		// Change behavior of tab key in textarea
 		if (event.shiftKey) {
 			var subjectField = $$("div#subjectRow input").first();
 			subjectField.focus();
