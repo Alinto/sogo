@@ -1,3 +1,10 @@
+2009-06-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoParentFolder.m (-initSubFoldersMatching:):
+	renamed from "initSubFolders". Take a string argument that, if
+	specified, will stop the search of folders when the name can be
+	found in the folders list.
+
 2009-06-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m

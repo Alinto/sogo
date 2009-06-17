@@ -336,7 +336,7 @@ static SoSecurityManager *sm = nil;
   return error;
 }
 
-- (NSException *) initSubFolders
+- (NSException *) initSubFoldersMatching: (NSString *) folderName
 {
   NSString *login;
   NSException *error;
@@ -345,10 +345,12 @@ static SoSecurityManager *sm = nil;
     {
       subFolders = [NSMutableDictionary new];
       error = [self appendPersonalSources];
-      if (!error)
+      if (!error
+          && !(folderName && [subFolders objectForKey: folderName]))
 	{
 	  error = [self appendSystemSources];
-	  if (!error)
+	  if (!error
+              && !(folderName && [subFolders objectForKey: folderName]))
 	    {
 	      login = [[context activeUser] login];
 	      if ([login isEqualToString: owner])
@@ -394,7 +396,7 @@ static SoSecurityManager *sm = nil;
   if (!obj)
     {
       if (!subFolders)
-        error = [self initSubFolders];
+        error = [self initSubFoldersMatching: name];
       else
 	error = nil;
 
@@ -421,7 +423,7 @@ static SoSecurityManager *sm = nil;
 
   if (!subFolders)
     {
-      error = [self initSubFolders];
+      error = [self initSubFoldersMatching: nil];
       if (error)
 	{
 	  /* We exceptionnally raise the exception here because doPROPFIND:
