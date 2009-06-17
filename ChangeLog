@@ -1,5 +1,8 @@
 2009-06-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUser.m (-rolesForObject:inContext:): do not
+	query the acls for the object if the current user is its owner.
+
 	* SoObjects/SOGo/SOGoParentFolder.m (-initSubFoldersMatching:):
 	renamed from "initSubFolders". Take a string argument that, if
 	specified, will stop the search of folders when the name can be
