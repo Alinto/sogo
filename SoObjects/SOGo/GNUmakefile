@@ -55,6 +55,8 @@ SOGo_HEADER_FILES = \
 	NSDictionary+BSJSONAdditions.h	\
 	NSScanner+BSJSONAdditions.h	\
 	\
+	DOMNode+SOGo.h			\
+	\
 	WORequest+SOGo.h		\
 	WOContext+SOGo.h
 
@@ -100,6 +102,8 @@ SOGo_OBJC_FILES = \
 	\
 	NSDictionary+BSJSONAdditions.m	\
 	NSScanner+BSJSONAdditions.m	\
+	\
+	DOMNode+SOGo.m			\
 	\
 	WORequest+SOGo.m		\
 	WOContext+SOGo.m

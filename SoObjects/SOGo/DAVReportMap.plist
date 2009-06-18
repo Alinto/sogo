@@ -14,6 +14,8 @@
   "{DAV:}principal-match" = davPrincipalMatch;
   "{DAV:}principal-property-search" = davPrincipalPropertySearch;
   "{DAV:}principal-search-property-set" = davPrincipalSearchPropertySet;
+  "{DAV:}principal-search-property-set" = davPrincipalSearchPropertySet;
+  "{DAV:}sync-collection" = davSyncCollection;
 
   /* Inverse DAV */
   "{urn:inverse:params:xml:ns:inverse-dav}collection-query"

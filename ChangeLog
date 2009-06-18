@@ -1,6 +1,19 @@
 2009-06-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
-	* SoObjects/SOGo/DOMNode+SOGo.h: new category module that
+	* SoObjects/SOGo/DOMNode+SOGo.m
+	(-flatPropertyNameOfSubElements): new method that returns
+	flattened ({namespace}tag) names of the first direct child
+	elements.
+
+	* SoObjects/SOGo/SOGoGCSFolder.m (-davSQLFieldsTable): new method
+	that returns a correspondance table between requested dav
+	properties and SQL fields required to answer them.
+	(-parseDAVRequestedProperties:): new method derived from a similar
+	one in SOGoAppointmentFolder which will return a dictionary of DAV
+	properties that are requested as well as their corresponding SQL
+	fields.
+
+	* SoObjects/SOGo/DOMNode+SOGo.[hm]: new category module that
 	implement helper methods for DOM processing.
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m

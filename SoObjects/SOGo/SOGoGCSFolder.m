@@ -40,6 +40,7 @@
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <DOM/DOMElement.h>
 #import <DOM/DOMProtocols.h>
 #import <EOControl/EOFetchSpecification.h>
 #import <EOControl/EOQualifier.h>
@@ -58,6 +59,7 @@
 #import "NSObject+DAV.h"
 #import "NSString+Utilities.h"
 
+#import "DOMNode+SOGo.h"
 #import "SOGoContentObject.h"
 #import "SOGoGroup.h"
 #import "SOGoParentFolder.h"
@@ -789,6 +791,55 @@ static NSArray *childRecordFields = nil;
             inTheNamesOf: [self _parseDAVDelegatedUser: queryContext]
 	       fromMailInvitation: NO
 	       inContext: queryContext];
+}
+
+- (NSDictionary *) davSQLFieldsTable
+{
+  static NSMutableDictionary *davSQLFieldsTable = nil;
+
+  if (!davSQLFieldsTable)
+    {
+      davSQLFieldsTable = [NSMutableDictionary new];
+      [davSQLFieldsTable setObject: @"c_version" forKey: @"{DAV:}getetag"];
+    }
+
+  return davSQLFieldsTable;
+}
+
+- (NSDictionary *) _davSQLFieldsForProperties: (NSArray *) properties
+{
+  NSMutableDictionary *davSQLFields;
+  NSDictionary *davSQLFieldsTable;
+  NSString *sqlField, *property;
+  unsigned int count, max;
+
+  davSQLFieldsTable = [self davSQLFieldsTable];
+
+  max = [properties count];
+  davSQLFields = [NSMutableDictionary dictionaryWithCapacity: max];
+  for (count = 0; count < max; count++)
+    {
+      property = [properties objectAtIndex: count];
+      sqlField = [davSQLFieldsTable objectForKey: property];
+      if (sqlField)
+        [davSQLFields setObject: sqlField forKey: property];
+      else
+        [self errorWithFormat: @"DAV property '%@' has no matching SQL field,"
+              @" response will be incomplete", property];
+    }
+
+  return davSQLFields;
+}
+
+- (NSDictionary *) parseDAVRequestedProperties: (DOMElement *) propElement
+{
+  NSArray *properties;
+  NSDictionary *sqlFieldsTable;
+
+  properties = [propElement flatPropertyNameOfSubElements];
+  sqlFieldsTable = [self _davSQLFieldsForProperties: properties];
+
+  return sqlFieldsTable;
 }
 
 /* handling acls from quick tables */

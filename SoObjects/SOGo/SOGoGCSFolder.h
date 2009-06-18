@@ -33,6 +33,8 @@
 @class WOContext;
 @class WOResponse;
 
+@class DOMElement;
+
 /*
   SOGoGCSFolder
   
@@ -104,6 +106,10 @@
 
 /* advisories */
 - (void) sendFolderAdvisoryTemplate: (NSString *) template;
+
+/* DAV */
+- (NSDictionary *) davSQLFieldsTable;
+- (NSDictionary *) parseDAVRequestedProperties: (DOMElement *) propElement;
 
 @end
 

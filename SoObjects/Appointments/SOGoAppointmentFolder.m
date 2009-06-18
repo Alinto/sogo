@@ -37,7 +37,7 @@
 #import <NGExtensions/NGLoggerManager.h>
 #import <NGExtensions/NSString+misc.h>
 #import <GDLContentStore/GCSFolder.h>
-#import <DOM/DOMNode.h>
+#import <DOM/DOMElement.h>
 #import <DOM/DOMProtocols.h>
 #import <EOControl/EOQualifier.h>
 #import <EOControl/EOSortOrdering.h>
@@ -52,6 +52,7 @@
 #import <NGExtensions/NSObject+Logs.h>
 #import <SaxObjC/XMLNamespaces.h>
 
+#import <SOGo/DOMNode+SOGo.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSObject+DAV.h>
 #import <SOGo/NSString+Utilities.h>
@@ -1358,7 +1359,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   [filter setObject: textMatch forKey: propName];
 }
 
-- (NSDictionary *) _parseCalendarFilter: (id <DOMElement>) filterElement
+- (NSDictionary *) _parseCalendarFilter: (DOMElement *) filterElement
 {
   NSMutableDictionary *filterData;
   id <DOMElement> parentNode;
@@ -1397,65 +1398,6 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return filterData;
 }
 
-/* TODO: This method should be generalized to all SOGoGCSFolder-based
-   classes. */
-- (NSDictionary *) _parseRequestedProperties: (id <DOMElement>) parentNode
-{
-  NSMutableDictionary *properties;
-  NSObject <DOMNodeList> *propList, *children;
-  NSObject <DOMNode> *currentChild;
-  unsigned int count, max, count2, max2;
-  NSString *flatProperty;
-  NSString *sqlField;
-  static NSMutableDictionary *davPropsToSQLFields = nil;
-
-  if (!davPropsToSQLFields)
-    {
-      /* This table is meant to match SQL fields to the properties that
-         requires them. The fields may NOT be processed directly. This list
-         is not complete but is at least sufficient for processing requests
-         from Lightning. */
-      davPropsToSQLFields = [NSMutableDictionary new];
-      [davPropsToSQLFields setObject: @"c_content"
-                              forKey: @"{urn:ietf:params:xml:ns:caldav}calendar-data"];
-      [davPropsToSQLFields setObject: @"c_version"
-                              forKey: @"{DAV:}getetag"];
-    }
-
-//   NSLog (@"parseRequestProperties: %@", [NSDate date]);
-  properties = [NSMutableDictionary dictionary];
-
-  propList = [parentNode getElementsByTagName: @"prop"];
-  max = [propList length];
-  for (count = 0; count < max; count++)
-    {
-      children = [[propList objectAtIndex: count] childNodes];
-      max2 = [children length];
-      for (count2 = 0; count2 < max2; count2++)
-        {
-          currentChild = [children objectAtIndex: count2];
-          if ([currentChild conformsToProtocol: @protocol (DOMElement)])
-            {
-              flatProperty = [NSString stringWithFormat: @"{%@}%@",
-                           [currentChild namespaceURI],
-                           [currentChild nodeName]];
-              sqlField = [davPropsToSQLFields objectForKey: flatProperty];
-              if (sqlField)
-                [properties setObject: sqlField forKey: flatProperty];
-              else
-                [self errorWithFormat: @"DAV property '%@' not yet supported,"
-                      @" response will be incomplete", flatProperty];
-            }
-        }
-
-      //       while ([children hasChildNodes])
-      // 	[properties addObject: [children next]];
-    }
-  //   NSLog (@"/parseRequestProperties: %@", [NSDate date]);
-
-  return properties;
-}
-
 - (NSDictionary *) _makeCyclicFilterFrom: (NSDictionary *) filter
 {
   NSMutableDictionary *rc;
@@ -1472,10 +1414,10 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return rc;
 }
 
-- (NSArray *) _parseCalendarFilters: (id <DOMElement>) parentNode
+- (NSArray *) _parseCalendarFilters: (DOMElement *) parentNode
 {
   id <DOMNodeList> children;
-  id <DOMElement> node;
+  DOMElement *element;
   NSMutableArray *filters;
   NSDictionary *filter;
   unsigned int count, max;
@@ -1487,8 +1429,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   max = [children length];
   for (count = 0; count < max; count++)
     {
-      node = [children objectAtIndex: count];
-      filter = [self _parseCalendarFilter: node];
+      element = [children objectAtIndex: count];
+      filter = [self _parseCalendarFilter: element];
       if (filter)
         {
           [filters addObject: filter];
@@ -1667,7 +1609,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   propertiesArray = [[properties allKeys] asPointersOfObjects];
   propertiesCount = [properties count];
 
-  NSLog (@"start");
+//   NSLog (@"start");
   filterList = [filters objectEnumerator];
   while ((currentFilter = [filterList nextObject]))
     {
@@ -1681,7 +1623,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                              title: [currentFilter objectForKey: @"title"]
                          component: [currentFilter objectForKey: @"name"]
                  additionalFilters: additionalFilters];
-      NSLog(@"adding properties");
+//       NSLog(@"adding properties");
       max = [apts count];
       buffer = [NSMutableString stringWithCapacity: max * 512];
       for (count = 0; count < max; count++)
@@ -1690,20 +1632,37 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                      count: propertiesCount
                withBaseURL: baseURL
                   toBuffer: buffer];
-      NSLog(@"done 1");
+//       NSLog(@"done 1");
       [response appendContentString: buffer];
-      NSLog(@"done 2");
+//       NSLog(@"done 2");
     }
-  NSLog (@"stop");
+//   NSLog (@"stop");
 
   NSZoneFree (NULL, propertiesArray);
+}
+
+/* This table is meant to match SQL fields to the properties that requires
+   them. The fields may NOT be processed directly. This list is not complete
+   but is at least sufficient for processing requests from Lightning. */
+- (NSDictionary *) davSQLFieldsTable
+{
+  static NSMutableDictionary *davSQLFieldsTable = nil;
+
+  if (!davSQLFieldsTable)
+    {
+      davSQLFieldsTable = [[super davSQLFieldsTable] mutableCopy];
+      [davSQLFieldsTable setObject: @"c_content"
+                            forKey: @"{" XMLNS_CALDAV  @"}calendar-data"];
+    }
+
+  return davSQLFieldsTable;
 }
 
 - (id) davCalendarQuery: (id) queryContext
 {
   WOResponse *r;
   id <DOMDocument> document;
-  id <DOMElement> documentElement;
+  DOMElement *documentElement, *propElement;
 
   r = [context response];
   [r setStatus: 207];
@@ -1713,11 +1672,14 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   [r setHeader: @"no-cache" forKey: @"cache-control"];
   [r appendContentString:@"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
   [r appendContentString: @"<D:multistatus xmlns:D=\"DAV:\""
-     @" xmlns:C=\"urn:ietf:params:xml:ns:caldav\">"];
+                @" xmlns:C=\"urn:ietf:params:xml:ns:caldav\">"];
 
   document = [[context request] contentAsDOMDocument];
-  documentElement = [document documentElement];
-  [self _appendComponentProperties: [self _parseRequestedProperties: documentElement]
+  documentElement = (DOMElement *) [document documentElement];
+  propElement = [documentElement firstElementWithTag: @"prop"
+                                         inNamespace: XMLNS_WEBDAV];
+
+  [self _appendComponentProperties: [self parseDAVRequestedProperties: propElement]
                    matchingFilters: [self _parseCalendarFilters: documentElement]
                         toResponse: r];
   [r appendContentString:@"</D:multistatus>"];
@@ -1905,7 +1867,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 {
   WOResponse *r;
   id <DOMDocument> document;
-  id <DOMElement> documentElement;
+  DOMElement *documentElement, *propElement;
 
   r = [context response];
   [r setStatus: 207];
@@ -1918,8 +1880,11 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
      @" xmlns:C=\"urn:ietf:params:xml:ns:caldav\">"];
 
   document = [[context request] contentAsDOMDocument];
-  documentElement = [document documentElement];
-  [self _appendComponentProperties: [self _parseRequestedProperties: documentElement]
+  documentElement = (DOMElement *) [document documentElement];
+  propElement = [documentElement firstElementWithTag: @"prop"
+                                         inNamespace: @"DAV:"];
+  
+  [self _appendComponentProperties: [self parseDAVRequestedProperties: propElement]
                       matchingURLs: [documentElement getElementsByTagName: @"href"]
                         toResponse: r];
   [r appendContentString:@"</D:multistatus>"];
