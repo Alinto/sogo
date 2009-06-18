@@ -1,5 +1,8 @@
 2009-06-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/DOMNode+SOGo.h: new category module that
+	implement helper methods for DOM processing.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	(davCalendarQuery:): specify default values for "start" and "end"
 	whenever one of them is missing.
