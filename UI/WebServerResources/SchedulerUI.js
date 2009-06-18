@@ -604,12 +604,12 @@ function eventsListCallback(http) {
 				td = $(document.createElement("td"));
 				row.appendChild(td);
 				td.observe("mousedown", listRowMouseDownHandler, true);
-				td.appendChild(document.createTextNode(data[i][15]));
+				td.appendChild(document.createTextNode(data[i][16]));
 
 				td = $(document.createElement("td"));
 				row.appendChild(td);
 				td.observe("mousedown", listRowMouseDownHandler, true);
-				td.appendChild(document.createTextNode(data[i][16]));
+				td.appendChild(document.createTextNode(data[i][17]));
       
 				td = $(document.createElement("td"));
 				row.appendChild(td);
