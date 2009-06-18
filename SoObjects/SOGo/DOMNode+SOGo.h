@@ -25,15 +25,15 @@
 
 #import <DOM/DOMNode.h>
 
-@interface NGDOMNodeWithChildren (SOGoDOMExtensions)
+@interface NGDOMNodeWithChildren (SOGoDOMExtensions)  < DOMNode >
 
-- (id <DOMNodeList>) childNodesWithTag: (NSString *) tagName;
-- (id <DOMNodeList>) childNodesWithTag: (NSString *) tagName
-                           inNamespace: (NSString *) namespace;
-
-- (id<NSObject,DOMNode>) firstNodeWithTag: (NSString *) tagName;
-- (id<NSObject,DOMNode>) firstNodeWithTag: (NSString *) tagName
+- (id <DOMNodeList>) childElementsWithTag: (NSString *) tagName;
+- (id <DOMNodeList>) childElementsWithTag: (NSString *) tagName
                               inNamespace: (NSString *) namespace;
+
+- (id <DOMElement>) firstElementWithTag: (NSString *) tagName;
+- (id <DOMElement>) firstElementWithTag: (NSString *) tagName
+                            inNamespace: (NSString *) namespace;
 
 @end
 

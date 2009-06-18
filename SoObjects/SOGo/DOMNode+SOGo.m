@@ -29,40 +29,41 @@
 
 @implementation NGDOMNodeWithChildren (SOGo)
 
-- (id <DOMNodeList>) childNodesWithTag: (NSString *) tagName
-                           inNamespace: (NSString *) namespace
+- (id <DOMNodeList>) childElementsWithTag: (NSString *) tagName
+                              inNamespace: (NSString *) namespace
 {
   id <DOMNodeList> nodes;
-  NSMutableArray <DOMNodeList> *childNodesWithTag;
-  id <NSObject, DOMNode> currentNode;
+  NSMutableArray <DOMNodeList> *childElementsWithTag;
+  id <DOMElement> currentElement;
   unsigned int count, max;
 
-  childNodesWithTag = [NSMutableArray array];
+  childElementsWithTag = [NSMutableArray array];
 
   nodes = [self childNodes];
   max = [nodes length];
   for (count = 0; count < max; count++)
     {
-      currentNode = [nodes objectAtIndex: count];
-      if ([[currentNode nodeName] isEqualToString: tagName]
+      currentElement = [nodes objectAtIndex: count];
+      if ([currentElement nodeType] == DOM_ELEMENT_NODE
+          && [[currentElement tagName] isEqualToString: tagName]
           && (!namespace
-              || [[currentNode nodeName] isEqualToString: namespace]))
-        [childNodesWithTag addObject: currentNode];
+              || [[currentElement namespaceURI] isEqualToString: namespace]))
+        [childElementsWithTag addObject: currentElement];
     }
 
-  return childNodesWithTag;
+  return childElementsWithTag;
 }
 
-- (id <DOMNodeList>) childNodesWithTag: (NSString *) tagName
+- (id <DOMNodeList>) childElementsWithTag: (NSString *) tagName
 {
-  return [self childNodesWithTag: tagName inNamespace: nil];
+  return [self childElementsWithTag: tagName inNamespace: nil];
 }
 
-- (id <NSObject, DOMNode>) firstNodeWithTag: (NSString *) tagName
-                                inNamespace: (NSString *) namespace
+- (id <DOMElement>) firstElementWithTag: (NSString *) tagName
+                            inNamespace: (NSString *) namespace
 {
   id <DOMNodeList> nodes;
-  id <NSObject, DOMNode> node, currentNode;
+  id <DOMElement> node, currentElement;
   unsigned int count, max;
 
   node = nil;
@@ -71,20 +72,20 @@
   max = [nodes length];
   for (count = 0; !node && count < max; count++)
     {
-      currentNode = [nodes objectAtIndex: count];
-      if ([[currentNode nodeName] isEqualToString: tagName]
+      currentElement = [nodes objectAtIndex: count];
+      if ([currentElement nodeType] == DOM_ELEMENT_NODE
+          && [[currentElement tagName] isEqualToString: tagName]
           && (!namespace
-              || [[currentNode nodeName] isEqualToString: namespace]))
-        node = currentNode;
+              || [[currentElement namespaceURI] isEqualToString: namespace]))
+        node = currentElement;
     }
 
   return node;
 }
 
-- (id<NSObject,DOMNode>) firstNodeWithTag: (NSString *) tagName
+- (id <DOMElement>) firstElementWithTag: (NSString *) tagName
 {
-  return [self firstNodeWithTag: tagName inNamespace: nil];
+  return [self firstElementWithTag: tagName inNamespace: nil];
 }
-
 
 @end
