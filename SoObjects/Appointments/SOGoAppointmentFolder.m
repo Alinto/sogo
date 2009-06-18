@@ -1310,8 +1310,12 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   NSCalendarDate *parsedDate;
 
   parsedDate = [[timeRangeElement attribute: @"start"] asCalendarDate];
+  if (!parsedDate)
+    parsedDate = [NSCalendarDate distantPast];
   [filter setObject: parsedDate forKey: @"start"];
   parsedDate = [[timeRangeElement attribute: @"end"] asCalendarDate];
+  if (!parsedDate)
+    parsedDate = [NSCalendarDate distantFuture];
   [filter setObject: parsedDate forKey: @"end"];
 
   [self _enforceTimeLimitOnFilter: filter];

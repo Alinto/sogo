@@ -1,3 +1,9 @@
+2009-06-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(davCalendarQuery:): specify default values for "start" and "end"
+	whenever one of them is missing.
+
 2009-06-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
