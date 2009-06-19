@@ -33,14 +33,17 @@
  asWebDavStringWithNamespaces: (NSMutableDictionary *) namespaces
 {
   NSMutableString *webdavString;
-  NSEnumerator *children;
+  unsigned int count, max;
   NSObject *child;
 
   webdavString = [NSMutableString string];
-  children = [self objectEnumerator];
-  while ((child = [children nextObject]))
-    [webdavString appendString:
-		    [child asWebDavStringWithNamespaces: namespaces]];
+  max = [self count];
+  for (count = 0; count < max; count++)
+    {
+      child = [self objectAtIndex: count];
+      [webdavString appendString:
+                      [child asWebDavStringWithNamespaces: namespaces]];
+    }
 
   return webdavString;
 }

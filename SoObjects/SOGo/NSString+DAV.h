@@ -31,7 +31,8 @@
 
 - (NSString *)
  asWebDavStringWithNamespaces: (NSMutableDictionary *) namespaces;
-- (NSDictionary *) asWebDAVTuple;
+- (NSMutableDictionary *) asWebDAVTuple;
+- (NSMutableDictionary *) asWebDAVTupleWithContent: (id) content;
 
 @end
 

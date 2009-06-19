@@ -1,3 +1,12 @@
+2009-06-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/NSString+DAV.m (asWebDAVTupleWithContent:): new
+	method that returns a DAV dictionary from a flat DAV element (self)
+	string and a content.
+
+	* SoObjects/SOGo/NSArray+DAV.m (asWebDavStringWithNamespaces:): we
+	no longer use an NSEnumerator in order to be a bit faster.
+
 2009-06-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/DOMNode+SOGo.m

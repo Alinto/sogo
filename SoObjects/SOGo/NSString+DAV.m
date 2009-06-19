@@ -35,7 +35,7 @@
 }
 
 #warning we should use the same nomenclature as the webdav values...
-- (NSDictionary *) asWebDAVTuple
+- (NSMutableDictionary *) asWebDAVTuple
 {
   NSString *namespace, *nodeName;
   NSRange nsEnd;
@@ -44,9 +44,19 @@
   namespace = [self substringFromRange: NSMakeRange (1, nsEnd.location - 1)];
   nodeName = [self substringFromIndex: nsEnd.location + 1];
 
-  return [NSDictionary dictionaryWithObjectsAndKeys: namespace, @"ns",
-		       nodeName, @"method", nil];
+  return [NSMutableDictionary
+           dictionaryWithObjectsAndKeys: namespace, @"ns",
+           nodeName, @"method", nil];
 }
 
+- (NSMutableDictionary *) asWebDAVTupleWithContent: (id) content
+{
+  NSMutableDictionary *tuple;
+
+  tuple = [self asWebDAVTuple];
+  [tuple setObject: content forKey: @"content"];
+
+  return tuple;
+}
 
 @end
