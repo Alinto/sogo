@@ -1,5 +1,9 @@
 2009-06-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoGCSFolder.m (-davSyncCollection:): deleted
+	records are always ignored when fetching fields from the quick
+	table, we thus need to make two separate queries.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	(-davResourceType): return the "schedule-inbox" and
 	"schedule-inbox" caldav types when the user is the owner and the

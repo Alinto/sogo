@@ -844,6 +844,28 @@ static NSArray *childRecordFields = nil;
   return sqlFieldsTable;
 }
 
+/* make this a public method? */
+- (NSArray *) _fetchFields: (NSArray *) fields
+             withQualifier: (EOQualifier *) qualifier
+             ignoreDeleted: (BOOL) ignoreDeleted
+{
+  GCSFolder *folder;
+  EOFetchSpecification *fetchSpec;
+
+  folder = [self ocsFolder];
+
+  if (qualifier)
+    fetchSpec = [EOFetchSpecification
+                   fetchSpecificationWithEntityName: [folder folderName]
+                                          qualifier: qualifier
+                                      sortOrderings: nil];
+  else
+    fetchSpec = nil;
+
+  return [folder fetchFields: fields fetchSpecification: fetchSpec
+               ignoreDeleted: ignoreDeleted];
+}
+
 - (NSArray *) _fetchSyncTokenFields: (NSDictionary *) properties
                   matchingSyncToken: (int) syncToken
 {
@@ -852,31 +874,35 @@ static NSArray *childRecordFields = nil;
        - synctoken and return "DAV:valid-sync-token" as error if needed
        - properties
        - database errors */
-  NSMutableArray *fields;
+  NSMutableArray *fields, *mRecords;
+  NSArray *records;
   EOQualifier *qualifier;
-  GCSFolder *folder;
-  EOFetchSpecification *syncSpec;
 
   fields = [NSMutableArray arrayWithObjects: @"c_name", @"c_component",
-                           @"c_creationdate", @"c_lastmodified", @"c_deleted",
-                           nil];
+                           @"c_creationdate", @"c_lastmodified", nil];
   [fields addObjectsFromArray: [properties allValues]];
 
   if (syncToken)
-    qualifier
-      = [EOQualifier qualifierWithQualifierFormat:
-                       [NSString stringWithFormat: @"c_lastmodified > %d",
-                                 syncToken]];
+    {
+      qualifier = [EOQualifier qualifierWithQualifierFormat:
+                                 @"c_lastmodified > %d", syncToken];
+      mRecords = [NSMutableArray arrayWithArray: [self _fetchFields: fields
+                                                      withQualifier: qualifier
+                                                      ignoreDeleted: YES]];
+      qualifier = [EOQualifier qualifierWithQualifierFormat:
+                                 @"c_lastmodified > %d and c_deleted == 1",
+                               syncToken];
+      fields = [NSMutableArray arrayWithObjects: @"c_name", @"c_deleted", nil];
+      [mRecords addObjectsFromArray: [self _fetchFields: fields
+                                          withQualifier: qualifier
+                                          ignoreDeleted: NO]];
+      records = mRecords;
+    }
   else
-    qualifier = nil;
+    records = [self _fetchFields: fields withQualifier: nil
+                   ignoreDeleted: YES];
 
-  folder = [self ocsFolder];
-  syncSpec = [EOFetchSpecification
-                   fetchSpecificationWithEntityName: [folder folderName]
-                                          qualifier: qualifier
-                                      sortOrderings: nil];
-  return [folder fetchFields: fields fetchSpecification: syncSpec
-               ignoreDeleted: (!syncToken)];
+  return records;
 }
 
 /* These methods are the optimal ones to generate propstats for DAV reports,
@@ -978,6 +1004,7 @@ static NSArray *childRecordFields = nil;
   else
     statusIndex = 1;
 
+//   NSLog (@"webdav sync: %@ (%@)", href, status[statusIndex]);
   [children addObject: davElementWithContent (@"status", XMLNS_WEBDAV,
                                               status[statusIndex])];
   if (statusIndex)
