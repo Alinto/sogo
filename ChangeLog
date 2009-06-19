@@ -1,5 +1,9 @@
 2009-06-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoGCSFolder.m (davSyncCollection:): new method
+	that implements the draft webdav sync specification
+	(http://ietfreport.isoc.org/idref/draft-daboo-webdav-sync/).
+
 	* SoObjects/SOGo/NSString+DAV.m (asWebDAVTupleWithContent:): new
 	method that returns a DAV dictionary from a flat DAV element (self)
 	string and a content.

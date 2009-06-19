@@ -58,6 +58,7 @@
 #import "NSArray+Utilities.h"
 #import "NSObject+DAV.h"
 #import "NSString+Utilities.h"
+#import "NSString+DAV.h"
 
 #import "DOMNode+SOGo.h"
 #import "SOGoContentObject.h"
@@ -840,6 +841,245 @@ static NSArray *childRecordFields = nil;
   sqlFieldsTable = [self _davSQLFieldsForProperties: properties];
 
   return sqlFieldsTable;
+}
+
+- (NSArray *) _fetchSyncTokenFields: (NSDictionary *) properties
+                  matchingSyncToken: (int) syncToken
+{
+  /* TODO:
+     - validation:
+       - synctoken and return "DAV:valid-sync-token" as error if needed
+       - properties
+       - database errors */
+  NSMutableArray *fields;
+  EOQualifier *qualifier;
+  GCSFolder *folder;
+  EOFetchSpecification *syncSpec;
+
+  fields = [NSMutableArray arrayWithObjects: @"c_name", @"c_component",
+                           @"c_creationdate", @"c_lastmodified", @"c_deleted",
+                           nil];
+  [fields addObjectsFromArray: [properties allValues]];
+
+  if (syncToken)
+    qualifier
+      = [EOQualifier qualifierWithQualifierFormat:
+                       [NSString stringWithFormat: @"c_lastmodified > %d",
+                                 syncToken]];
+  else
+    qualifier = nil;
+
+  folder = [self ocsFolder];
+  syncSpec = [EOFetchSpecification
+                   fetchSpecificationWithEntityName: [folder folderName]
+                                          qualifier: qualifier
+                                      sortOrderings: nil];
+  return [folder fetchFields: fields fetchSpecification: syncSpec
+               ignoreDeleted: (!syncToken)];
+}
+
+/* These methods are the optimal ones to generate propstats for DAV reports,
+   it should be used in other subclasses. */
+- (NSDictionary *) _davPropstat: (NSArray *) properties
+                     withStatus: (NSString *) status
+{
+  NSMutableArray *propstat;
+
+  propstat = [NSMutableArray arrayWithCapacity: 2];
+  [propstat addObject: davElementWithContent (@"prop", XMLNS_WEBDAV,
+                                              properties)];
+  [propstat addObject: davElementWithContent (@"status", XMLNS_WEBDAV,
+                                              status)];
+
+  return davElementWithContent (@"propstat", XMLNS_WEBDAV, propstat);
+}
+
+- (NSArray *) _davPropStatsWithProperties: (NSArray *) davProperties
+                       andMethodSelectors: (SEL *) selectors
+                               fromRecord: (NSDictionary *) record
+{
+  SOGoContentObject *sogoObject;
+  unsigned int count, max;
+  NSMutableArray *properties200, *properties404, *propstats;
+  NSDictionary *propContent;
+  id result;
+
+  propstats = [NSMutableArray arrayWithCapacity: 2];
+
+  max = [davProperties count];
+  properties200 = [NSMutableArray arrayWithCapacity: max];
+  properties404 = [NSMutableArray arrayWithCapacity: max];
+
+  sogoObject = [self _createChildComponentWithRecord: record];
+  for (count = 0; count < max; count++)
+    {
+      if (selectors[count]
+          && [sogoObject respondsToSelector: selectors[count]])
+        result = [sogoObject performSelector: selectors[count]];
+      else
+        result = nil;
+
+      if (result)
+        {
+          propContent = [[davProperties objectAtIndex: count]
+                          asWebDAVTupleWithContent: result];
+          [properties200 addObject: propContent];
+        }
+      else
+        {
+          propContent = [[davProperties objectAtIndex: count]
+                          asWebDAVTuple];
+          [properties404 addObject: propContent];
+        }
+    }
+
+  if ([properties200 count])
+    [propstats addObject: [self _davPropstat: properties200
+                                  withStatus: @"HTTP/1.1 200 OK"]];
+  if ([properties404 count])
+    [propstats addObject: [self _davPropstat: properties404
+                                  withStatus: @"HTTP/1.1 404 Not Found"]];
+
+  return propstats;
+}
+
+- (NSDictionary *) _syncResponseWithProperties: (NSArray *) properties
+                            andMethodSelectors: (SEL *) selectors
+                                    fromRecord: (NSDictionary *) record
+                                     withToken: (int) syncToken
+                                    andBaseURL: (NSString *) baseURL
+{
+  static NSString *status[] = { @"HTTP/1.1 404 Not Found",
+                                @"HTTP/1.1 201 Created",
+                                @"HTTP/1.1 200 OK" };
+  NSMutableArray *children;
+  NSString *href;
+  unsigned int statusIndex;
+
+  children = [NSMutableArray arrayWithCapacity: 3];
+  href = [NSString stringWithFormat: @"%@%@",
+                   baseURL, [record objectForKey: @"c_name"]];
+  [children addObject: davElementWithContent (@"href", XMLNS_WEBDAV,
+                                              href)];
+  if (syncToken)
+    {
+      if ([[record objectForKey: @"c_deleted"] intValue] > 0)
+        statusIndex = 0;
+      else
+        {
+          if ([[record objectForKey: @"c_creationdate"] intValue]
+              >= syncToken)
+            statusIndex = 1;
+          else
+            statusIndex = 2;
+        }
+    }
+  else
+    statusIndex = 1;
+
+  [children addObject: davElementWithContent (@"status", XMLNS_WEBDAV,
+                                              status[statusIndex])];
+  if (statusIndex)
+    [children
+      addObjectsFromArray: [self _davPropStatsWithProperties: properties
+                                          andMethodSelectors: selectors
+                                                  fromRecord: record]];
+
+  return davElementWithContent (@"sync-response", XMLNS_WEBDAV, children);
+}
+
+- (void) _appendComponentProperties: (NSArray *) properties
+                        fromRecords: (NSArray *) records
+                  matchingSyncToken: (int) syncToken
+                         toResponse: (WOResponse *) response
+{
+  NSMutableArray *syncResponses;
+  NSDictionary *multistatus, *record;
+  unsigned int count, max, now;
+  int newToken, currentLM;
+  NSString *baseURL, *newTokenStr;
+  SEL *selectors;
+
+  max = [properties count];
+  selectors = NSZoneMalloc (NULL, sizeof (max * sizeof (SEL)));
+  for (count = 0; count < max; count++)
+    selectors[count]
+      = SOGoSelectorForPropertyGetter ([properties objectAtIndex: count]);
+
+  now = (unsigned int) [[NSDate date] timeIntervalSince1970];
+
+  newToken = 0;
+
+  baseURL = [[self davURL] absoluteString];
+
+  max = [records count];
+  syncResponses = [NSMutableArray arrayWithCapacity: max + 1];
+  for (count = 0; count < max; count++)
+    {
+      record = [records objectAtIndex: count];
+      currentLM = [[record objectForKey: @"c_lastmodified"] intValue];
+      if (newToken < currentLM)
+        newToken = currentLM;
+      [syncResponses addObject: [self _syncResponseWithProperties: properties
+                                               andMethodSelectors: selectors
+                                                       fromRecord: record
+                                                        withToken: syncToken
+                                                       andBaseURL: baseURL]];
+    }
+
+  NSZoneFree (NULL, selectors);
+
+  /* If the most recent c_lastmodified is "now", we need to return "now - 1"
+     in order to make sure during the next sync that every records that might
+     get added at the same moment are not lost. */
+  if (!newToken || newToken == now)
+    newToken = now - 1;
+
+  newTokenStr = [NSString stringWithFormat: @"%d", newToken];
+  [syncResponses addObject: davElementWithContent (@"sync-token",
+                                                   XMLNS_WEBDAV,
+                                                   newTokenStr)];
+  multistatus = davElementWithContent (@"multistatus", XMLNS_WEBDAV,
+                                       syncResponses);
+  [response
+    appendContentString: [multistatus asWebDavStringWithNamespaces: nil]];
+}
+
+- (WOResponse *) davSyncCollection: (WOContext *) localContext
+{
+  WOResponse *r;
+  id <DOMDocument> document;
+  DOMElement *documentElement, *propElement;
+  NSString *syncToken;
+  NSDictionary *properties;
+  NSArray *records;
+  int syncTokenInt;
+
+  r = [context response];
+  [r setStatus: 207];
+  [r setContentEncoding: NSUTF8StringEncoding];
+  [r setHeader: @"text/xml; charset=\"utf-8\"" forKey: @"content-type"];
+  [r setHeader: @"no-cache" forKey: @"pragma"];
+  [r setHeader: @"no-cache" forKey: @"cache-control"];
+  [r appendContentString:@"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"];
+
+  document = [[context request] contentAsDOMDocument];
+  documentElement = (DOMElement *) [document documentElement];
+  syncToken = [[documentElement firstElementWithTag: @"sync-token"
+                                        inNamespace: XMLNS_WEBDAV] textValue];
+  propElement = [documentElement firstElementWithTag: @"prop"
+                                         inNamespace: XMLNS_WEBDAV];
+
+  syncTokenInt = [syncToken intValue];
+  properties = [self parseDAVRequestedProperties: propElement];
+  records = [self _fetchSyncTokenFields: properties
+                      matchingSyncToken: syncTokenInt];
+  [self _appendComponentProperties: [properties allKeys]
+                       fromRecords: records
+                 matchingSyncToken: syncTokenInt
+                        toResponse: r];
+
+  return r;
 }
 
 /* handling acls from quick tables */
