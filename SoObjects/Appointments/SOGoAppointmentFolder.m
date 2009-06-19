@@ -1106,7 +1106,6 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   NSString **currentProperty;
   NSString **values, **currentValue;
   SEL methodSel;
-  iCalAccessClass classification;
 
 //   NSLog (@"_properties:ofObject:: %@", [NSDate date]);
 
@@ -1114,7 +1113,6 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                          (propertiesCount + 1) * sizeof (NSString *));
   *(values + propertiesCount) = nil;
 
-  classification = [[object objectForKey: @"c_classification"] intValue];
   //c = [self objectClassForComponentName: [object objectForKey: @"c_component"]];
 
 #warning TODO: determine why this commented invocation takes so long...
