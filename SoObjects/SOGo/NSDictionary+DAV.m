@@ -54,6 +54,8 @@
   return newTag;
 }
 
+#warning this method could probably be optimized to speedup the rendering\
+  of thousands of records
 - (NSString *)
  asWebDavStringWithNamespaces: (NSMutableDictionary *) namespaces
 {
@@ -75,6 +77,7 @@
   nsTag = [namespaces objectForKey: ns];
   if (!nsTag)
     nsTag = [self _newTagInNamespaces: namespaces forNS: ns];
+
   element = [NSString stringWithFormat: @"%@:%@",
 		      nsTag, [self objectForKey: @"method"]];
   [webdavString appendFormat: @"<%@", element];
