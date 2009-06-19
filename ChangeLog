@@ -1,5 +1,10 @@
 2009-06-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-davResourceType): return the "schedule-inbox" and
+	"schedule-inbox" caldav types when the user is the owner and the
+	collection is its personal calendar.
+
 	* SoObjects/SOGo/SOGoGCSFolder.m (davSyncCollection:): new method
 	that implements the draft webdav sync specification
 	(http://ietfreport.isoc.org/idref/draft-daboo-webdav-sync/).

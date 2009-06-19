@@ -2210,20 +2210,31 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
 - (NSArray *) davResourceType
 {
-  static NSArray *colType = nil;
-  NSArray *cdCol, *gdRT, *gdVEventCol, *gdVTodoCol;
+  NSMutableArray *colType;
+  NSArray *gdRT, *gdVEventCol, *gdVTodoCol;
+  NSString *login;
 
-  if (!colType)
+  colType = [NSMutableArray arrayWithCapacity: 10];
+  [colType addObject: @"collection"];
+  [colType addObject: [NSArray arrayWithObjects: @"calendar", XMLNS_CALDAV, nil]];
+
+  gdRT = [self groupDavResourceType];
+  gdVEventCol = [NSArray arrayWithObjects: [gdRT objectAtIndex: 0],
+                         XMLNS_GROUPDAV, nil];
+  [colType addObject: gdVEventCol];
+  gdVTodoCol = [NSArray arrayWithObjects: [gdRT objectAtIndex: 1],
+                        XMLNS_GROUPDAV, nil];
+  [colType addObject: gdVTodoCol];
+  if ([nameInContainer isEqualToString: @"personal"])
     {
-      gdRT = [self groupDavResourceType];
-      gdVEventCol = [NSArray arrayWithObjects: [gdRT objectAtIndex: 0],
-			     XMLNS_GROUPDAV, nil];
-      gdVTodoCol = [NSArray arrayWithObjects: [gdRT objectAtIndex: 1],
-			    XMLNS_GROUPDAV, nil];
-      cdCol = [NSArray arrayWithObjects: @"calendar", XMLNS_CALDAV, nil];
-      colType = [NSArray arrayWithObjects: @"collection", cdCol,
-			 gdVEventCol, gdVTodoCol, nil];
-      [colType retain];
+      login = [[context activeUser] login];
+      if ([login isEqualToString: [self ownerInContext: self]])
+        {
+          [colType addObject: [NSArray arrayWithObjects: @"schedule-inbox",
+                                                         XMLNS_CALDAV, nil]];
+          [colType addObject: [NSArray arrayWithObjects: @"schedule-outbox",
+                                                         XMLNS_CALDAV, nil]];
+        }
     }
 
   return colType;
