@@ -2240,6 +2240,33 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return colType;
 }
 
+- (SOGoWebDAVValue *) davCalendarComponentSet
+{
+  static SOGoWebDAVValue *componentSet = nil;
+  NSMutableArray *components;
+
+  if (!componentSet)
+    {
+      components = [NSMutableArray array];
+      /* Totally hackish.... we use the "n1" prefix because we know our
+         extensions will assign that one to ..:caldav but we really need to
+         handle element attributes */
+      [components addObject: [SOGoWebDAVValue
+                               valueForObject: @"<n1:comp name=\"VEVENT\"/>"
+                                   attributes: nil]];
+      [components addObject: [SOGoWebDAVValue
+                               valueForObject: @"<n1:comp name=\"VTODO\"/>"
+                                   attributes: nil]];
+      componentSet
+        = [davElementWithContent (@"supported-calendar-component-set",
+                                  XMLNS_CALDAV,
+                                  components)
+                                 asWebDAVValue];
+    }
+
+  return componentSet;
+}
+
 - (NSString *) davDescription
 {
   return @"";

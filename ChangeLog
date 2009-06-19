@@ -4,6 +4,8 @@
 	(-davResourceType): return the "schedule-inbox" and
 	"schedule-inbox" caldav types when the user is the owner and the
 	collection is its personal calendar.
+	(-davCalendarComponentSet): new method that returns VEVENT and
+	VTODO.
 
 	* SoObjects/SOGo/SOGoGCSFolder.m (davSyncCollection:): new method
 	that implements the draft webdav sync specification
