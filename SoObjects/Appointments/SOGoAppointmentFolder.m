@@ -1469,7 +1469,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   NSString *currentKey, *keyField, *filterString;
   static NSArray *fields = nil;
   NSMutableArray *filters;
-  NSNumber *cycle, *cEndDate;
+  NSCalendarDate *cEndDate;
+  NSNumber *cycle;
 
 #warning the list of fields should be taken from the .ocs description file
   if (!fields)
@@ -1503,11 +1504,11 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       if ([cycle intValue])
         {
           cEndDate = [filter objectForKey: @"cycleenddate"];
-          if ([cEndDate intValue])
+          if (cEndDate)
             {
               filterString = [NSString stringWithFormat: 
                                          @"(c_cycleenddate = NULL OR c_cycleenddate >= %@)",
-                                       cEndDate];
+                                       (int) [cEndDate timeIntervalSince1970]];
               [filters addObject: filterString];
             }
         }
