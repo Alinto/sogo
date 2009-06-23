@@ -70,6 +70,7 @@
 #import "SOGoDraftObject.h"
 
 static NSString *contentTypeValue = @"text/plain; charset=utf-8";
+static NSString *htmlContentTypeValue = @"text/html; charset=utf-8";
 static NSString *headerKeys[] = {@"subject", @"to", @"cc", @"bcc", 
 				 @"from", @"replyTo", @"message-id",
 				 nil};
@@ -879,8 +880,11 @@ static BOOL        showTextAttachmentsInline  = NO;
 - (NGMimeMessage *) mimeMessageForContentWithHeaderMap: (NGMutableHashMap *) map
 {
   NGMimeMessage *message;  
+  NSUserDefaults *ud;
 //   BOOL     addSuffix;
   id       body;
+
+  ud = [[context activeUser] userDefaults];
 
   [map setObject: @"text/plain" forKey: @"content-type"];
   body = text;
@@ -888,8 +892,12 @@ static BOOL        showTextAttachmentsInline  = NO;
     {
 //       if ([body isKindOfClass:[NSString class]])
 	/* Note: just 'utf8' is displayed wrong in Mail.app */
-	[map setObject: contentTypeValue
-	     forKey: @"content-type"];
+      if ([[ud stringForKey: @"ComposeMessagesType"] isEqualToString: @"html"])
+        [map setObject: htmlContentTypeValue
+                forKey: @"content-type"];
+      else
+        [map setObject: contentTypeValue
+                forKey: @"content-type"];
 //       body = [body dataUsingEncoding:NSUTF8StringEncoding];
 //       else if ([body isKindOfClass:[NSData class]] && addSuffix) {
 // 	body = [[body mutableCopy] autorelease];

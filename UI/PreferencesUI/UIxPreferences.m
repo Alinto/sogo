@@ -584,6 +584,27 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
   return [userDefaults stringForKey: @"SignaturePlacement"];
 }
 
+- (NSArray *) composeMessagesType
+{
+  return [NSArray arrayWithObjects: @"text", @"html", nil];
+}
+
+- (NSString *) itemComposeMessagesText
+{
+  return [self labelForKey: [NSString stringWithFormat: @"composemessagestype_%@", item]];
+}
+
+- (NSString *) userComposeMessagesType
+{
+  return [userDefaults stringForKey: @"ComposeMessagesType"];
+}
+
+- (void) setUserComposeMessagesType: (NSString *) newType
+{
+  [userDefaults setObject: newType forKey: @"ComposeMessagesType"];
+}
+
+
 - (void) setUserSignaturePlacement: (NSString *) newSignaturePlacement
 {
   [userDefaults setObject: newSignaturePlacement forKey: @"SignaturePlacement"];

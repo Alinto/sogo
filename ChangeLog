@@ -1,3 +1,19 @@
+2009-06-23  Cyril Robert <crobert@inverse.ca>
+
+	* SoObjects/Mailer/NSString+Mail.m (stringByConvertingCRLNToHTML): Added
+	* UI/MailPartViewers/UIxMailPartTextViewer.m (stringByConvertingCRLNToHTML): 
+		Removed 
+	* SoObjects/Mailer/SOGoDraftObject.m: Added support for html content type
+	* SoObjects/Mailer/SOGoMailObject+Draft.m: Added support for html content
+	type in mail reply
+	* SoObjects/Mailer/SOGoMailReply.m: Added support for html in mail editor
+	* UI/PreferencesUI/UIxPreferences.m: Added option to se content type for
+	 mail editing
+	* UI/WebServerResources/GNUmakefile: Added fckeditor entry
+	* UI/WebServerResources/UIxMailEditor.js: Plugged-in FCKEditor
+	* UI/WebServerResources/UIxPreferences.js: Plugged-in FCKEditor, handle html
+	 toggle for signature box
+
 2009-06-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoGCSFolder.m (-davSyncCollection:): deleted

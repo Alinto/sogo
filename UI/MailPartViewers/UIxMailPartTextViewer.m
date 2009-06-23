@@ -33,91 +33,9 @@
 #import <NGExtensions/NSString+misc.h>
 
 #import <SoObjects/SOGo/NSString+Utilities.h>
+#import <SoObjects/Mailer/NSString+Mail.h>
 
 #import "UIxMailPartTextViewer.h"
-
-@interface NSString (SOGoMailUIExtension)
-
-- (NSString *) stringByConvertingCRLNToHTML;
-
-@end
-
-@implementation NSString (SOGoMailUIExtension)
-
-#define paddingBuffer 8192
-
-static inline char *
-convertChars (const char *oldString, unsigned int oldLength,
-	      unsigned int *newLength)
-{
-  const char *currentChar, *upperLimit;
-  char *newString, *destChar, *reallocated;
-  unsigned int length, maxLength;
- 
-  maxLength = oldLength + paddingBuffer;
-  newString = NSZoneMalloc (NULL, maxLength + 1);
-  destChar = newString;
-  currentChar = oldString;
-
-  length = 0;
-
-  upperLimit = oldString + oldLength;
-  while (currentChar < upperLimit)
-    {
-      switch (*currentChar)
-	{
-	case '\r': break;
-	case '\n':
-	  length = destChar - newString;
-	  if (length + paddingBuffer > maxLength - 6)
-	    {
-	      maxLength += paddingBuffer;
-	      reallocated = NSZoneRealloc (NULL, newString, maxLength + 1);
-	      if (reallocated)
-		{
-		  newString = reallocated;
-		  destChar = newString + length;
-		}
-	      else
-		[NSException raise: NSMallocException
-			     format: @"reallocation failed in %s",
-			     __PRETTY_FUNCTION__];
-	    }
-	  strcpy (destChar, "<br />");
-	  destChar += 6;
-	  break;
-	default:
-	  *destChar = *currentChar;
-	  destChar++;
-	}
-      currentChar++;
-    }
-  *destChar = 0;
-  *newLength = destChar - newString;
-
-  return newString;
-}
-
-- (NSString *) stringByConvertingCRLNToHTML
-{
-  NSString *convertedString;
-  char *newString;
-  unsigned int newLength;
-
-  newString
-    = convertChars ([self cStringUsingEncoding: NSUTF8StringEncoding],
-		    [self lengthOfBytesUsingEncoding: NSUTF8StringEncoding],
-		    &newLength);
-  convertedString = [[NSString alloc] initWithBytes: newString
-				      length: newLength
-				      encoding: NSUTF8StringEncoding];
-  [convertedString autorelease];
-  NSZoneFree (NULL, newString);
-
-  return convertedString;
-}
-
-@end
 
 @implementation UIxMailPartTextViewer
 

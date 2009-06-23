@@ -28,6 +28,7 @@
 @interface NSString (SOGoExtension)
 
 - (NSString *) htmlToText;
+- (NSString *) stringByConvertingCRLNToHTML;
 - (int) indexOf: (unichar) _c;
 - (NSString *) decodedSubject;
 

@@ -25,6 +25,7 @@
 
 #import <SoObjects/SOGo/SOGoDateFormatter.h>
 #import <SoObjects/SOGo/SOGoUser.h>
+#import <SoObjects/SOGo/SOGoUserDefaults.h>
 
 #import "SOGoMailObject+Draft.h"
 #import "SOGoMailReply.h"
@@ -74,20 +75,32 @@
 - (NSString *) messageBody
 {
   NSString *s;
+  NSUserDefaults *ud;
+
+  ud = [[context activeUser] userDefaults];
   
   s = [sourceMail contentForEditing];
 
   if (s)
     {
-      NSRange r;
+      if ([[ud objectForKey: @"ComposeMessagesType"] isEqualToString: @"html"])
+        {
+          s = [NSString stringWithFormat: @"<blockquote type=\"cite\">%@</blockquote>", s];
+        }
+      else
+        {
+          NSRange r;
 
-      r = [s rangeOfString: @"\n-- \n"  options: NSBackwardsSearch];
+          r = [s rangeOfString: @"\n-- \n"  options: NSBackwardsSearch];
 
-      if (r.length)
-	s = [s substringToIndex: r.location];
+          if (r.length)
+            s = [s substringToIndex: r.location];
+          
+          s = [s stringByApplyingMailQuoting]; //adds "> " on each line
+        }
     }
 
-  return [s stringByApplyingMailQuoting];
+  return s;
 }
 
 @end

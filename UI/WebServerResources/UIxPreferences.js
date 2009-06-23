@@ -33,8 +33,22 @@ function initPreferences() {
   _setupEvents(true);
   if (typeof (initAdditionalPreferences) != "undefined")
     initAdditionalPreferences();
-  $("replyPlacementList").observe("change", onReplyPlacementListChange);
+  $("replyPlacementList").observe ("change", onReplyPlacementListChange);
   onReplyPlacementListChange();
+
+  var oFCKeditor = new FCKeditor ('signature');
+  oFCKeditor.BasePath = "/SOGo.woa/WebServerResources/fckeditor/";
+  oFCKeditor.ToolbarSet	= 'Basic';
+  oFCKeditor.ReplaceTextarea ();
+  $('signature___Frame').style.height = "150px";
+  $('signature___Frame').height = "150px";
+
+  if (UserDefaults["ComposeMessagesType"] != "html") {
+    $("signature").style.display = 'inline';
+    $('signature___Frame').style.display = 'none';
+  }
+
+  $("composeMessagesType").observe ("change", onComposeMessagesTypeChange);
 }
 
 function onReplyPlacementListChange() {
@@ -45,6 +59,23 @@ function onReplyPlacementListChange() {
   else {
     $("signaturePlacementList").value=1;
     $("signaturePlacementList").disabled=true;
+  }
+}
+
+function onComposeMessagesTypeChange () {
+  var textArea = $('signature');
+  var oEditor = FCKeditorAPI.GetInstance('signature');
+  var editor = $('signature___Frame');
+ 
+  if ($("composeMessagesType").value == 0) {
+    textArea.style.display = 'inline';
+    editor.style.display = 'none';
+    textArea.value = oEditor.GetData();
+  }
+  else {
+    textArea.style.display = 'none';
+    editor.style.display = '';
+    oEditor.SetHTML(textArea.value);
   }
 }
 

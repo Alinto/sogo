@@ -88,6 +88,26 @@
   return newSubject;
 }
 
+- (NSString *) _convertRawContentForEditing: (NSString *) raw
+                                    rawHtml: (BOOL) html
+{
+  NSString *rc;
+  NSUserDefaults *ud;
+  BOOL htmlComposition;
+
+  ud = [[context activeUser] userDefaults];
+  htmlComposition = [[ud stringForKey: @"ComposeMessagesType"] 
+                     isEqualToString: @"html"];
+
+  if (html && !htmlComposition)
+    rc = [raw htmlToText];
+  else if (!html && htmlComposition)
+    rc = [raw stringByConvertingCRLNToHTML];
+  else
+    rc = raw;
+
+  return rc;
+}
 
 - (NSString *) _contentForEditingFromKeys: (NSArray *) keys
 {
@@ -104,29 +124,27 @@
       types = [keys objectsForKey: @"mimeType" notFoundMarker: @""];
       index = [types indexOfObject: @"text/plain"];
       if (index == NSNotFound)
-	{
-	  index = [types indexOfObject: @"text/html"];
-	  htmlContent = YES;
-	}
+        {
+          index = [types indexOfObject: @"text/html"];
+          htmlContent = YES;
+        }
       else
-	htmlContent = NO;
-      
+        htmlContent = NO;
+
       if (index != NSNotFound)
-	{
-	  contentKey = [keys objectAtIndex: index];
-	  parts = [self fetchPlainTextStrings:
-			  [NSArray arrayWithObject: contentKey]];
-	  if ([parts count] > 0)
-	    {
-	      rawPart = [[parts allValues] objectAtIndex: 0];
-	      if (htmlContent)
-		content = [rawPart htmlToText];
-	      else
-		content = rawPart;
-	    }
-	}
+        {
+          contentKey = [keys objectAtIndex: index];
+          parts = [self fetchPlainTextStrings:
+                     [NSArray arrayWithObject: contentKey]];
+          if ([parts count] > 0)
+            {
+              rawPart = [[parts allValues] objectAtIndex: 0];
+              content = [self _convertRawContentForEditing: rawPart 
+                                                   rawHtml: htmlContent];
+            }
+        }
     }
-  
+
   return content;
 }
 

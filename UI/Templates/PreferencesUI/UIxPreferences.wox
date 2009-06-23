@@ -10,6 +10,7 @@
   className="UIxPageFrame"
   title="title"
   const:popup="YES"
+  const:jsFiles="fckeditor/fckeditor.js"
   >
   <form id="mainForm" var:href="ownPath">
     <div class="tabsContainer" id="preferencesTabs">
@@ -118,6 +119,11 @@
       const:id="signaturePlacementList"
 	  	string="itemSignaturePlacementText"
       selection="userSignaturePlacement"/>
+    <br /><label><var:string label:value="Compose messages in"/></label>
+	  <var:popup list="composeMessagesType" item="item"
+      const:id="composeMessagesType"
+	  	string="itemComposeMessagesText"
+      selection="userComposeMessagesType"/>
 	<!--	<label><input
 	const:name="inTheOffice" type="radio" const:value="YES"
 	var:selection="inTheOffice"/>

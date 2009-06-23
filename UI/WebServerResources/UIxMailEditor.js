@@ -570,6 +570,15 @@ function initMailEditor() {
 	focusField.focus();
 
 	initializePriorityMenu();
+
+  var composeMode = UserDefaults["ComposeMessagesType"];
+  if (composeMode == "html") {
+    var oFCKeditor = new FCKeditor ('text');
+    oFCKeditor.BasePath = "/SOGo.woa/WebServerResources/fckeditor/";
+    oFCKeditor.ToolbarSet	= 'Basic';
+    oFCKeditor.ReplaceTextarea ();
+  }
+  onWindowResize (null);
 }
 
 function initializePriorityMenu() {
@@ -720,7 +729,14 @@ function onWindowResize(event) {
 	textarea.setStyle({ 'top': hr.offsetTop + 'px' });
 
 	// Resize the textarea (message content)
-	textarea.rows = Math.floor((window.height() - textarea.offsetTop) / rowheight);
+  var composeMode = UserDefaults["ComposeMessagesType"];
+  if (composeMode == "html") {
+    var editor = $('text___Frame');
+    editor.height = Math.floor(window.height() - editor.offsetTop) + "px";
+    editor.style.height = Math.floor(window.height() - editor.offsetTop) + "px";
+    editor.setStyle({ 'top': hr.offsetTop + 'px' });
+  }
+  textarea.rows = Math.floor((window.height() - textarea.offsetTop) / rowheight);
 }
 
 function onMailEditorClose(event) {
