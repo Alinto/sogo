@@ -1,3 +1,10 @@
+2009-06-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-davCalendarQuery:,-davCalendarMultiget:): automatically include
+	"c_component" in the requested fields, so that items can be
+	instantiated properly.
+
 2009-06-23  Cyril Robert <crobert@inverse.ca>
 
 	* SoObjects/Mailer/NSString+Mail.m (stringByConvertingCRLNToHTML): Added

@@ -79,8 +79,6 @@
 
 static NGLogger *logger = nil;
 static NSNumber *sharedYes = nil;
-static NSArray *reportQueryFields = nil;
-static NSArray *reducedReportQueryFields = nil;
 
 + (void) initialize
 {
@@ -93,21 +91,6 @@ static NSArray *reducedReportQueryFields = nil;
   
       [iCalEntityObject initializeSOGoExtensions];
 
-      if (!reportQueryFields)
-        reportQueryFields = [[NSArray alloc] initWithObjects: @"c_name",
-                                             @"c_content", @"c_creationdate",
-                                             @"c_lastmodified", @"c_version",
-                                             @"c_component",
-                                             @"c_classification",
-                                             nil];
-      if (!reducedReportQueryFields)
-        reducedReportQueryFields = [[NSArray alloc] initWithObjects:
-                                                      @"c_name",
-                                                    @"c_creationdate",
-                                                    @"c_lastmodified",
-                                                    @"c_version",
-                                                    @"c_classification",
-                                                    @"c_component", nil];
       NSAssert2([super version] == 0,
                 @"invalid superclass (%@) version %i !",
                 NSStringFromClass([self superclass]), [super version]);
@@ -1601,7 +1584,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   NSString **propertiesArray;
   unsigned int count, max, propertiesCount;
 
-  fields = [NSMutableArray arrayWithObject: @"c_name"];
+  fields = [NSMutableArray arrayWithObjects: @"c_name", @"c_component", nil];
   [fields addObjectsFromArray: [properties allValues]];
   baseURL = [[self davURL] absoluteString];
 
@@ -1835,7 +1818,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   propertiesArray = [[properties allKeys] asPointersOfObjects];
   propertiesCount = [properties count];
 
-  fields = [NSMutableArray arrayWithObject: @"c_name"];
+  fields = [NSMutableArray arrayWithObjects: @"c_name", @"c_component", nil];
   [fields addObjectsFromArray: [properties allValues]];
 
   components = [self _fetchComponentsMatchingURLs: urls fields: fields];
@@ -2295,7 +2278,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       count = [records count];
       if (count)
 	{
-	  filename = [[records objectAtIndex:0] valueForKey:@"c_name"];
+	  filename = [[records objectAtIndex:0] valueForKey: @"c_name"];
 	  if (count > 1)
 	    [self errorWithFormat:
 		    @"The storage contains more than file with UID '%@'",
