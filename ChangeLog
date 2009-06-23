@@ -1,6 +1,14 @@
 2009-06-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoGCSFolder.m (-davSyncCollection:): certain
+	dav attribute methods do not necessitate additional fields, we
+	declare their corresponding fields to "". Also, we make sure those
+	fake fields are not specified in the SQL query and we ensure all
+	the fields are only requested once each.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(+initialize): we no longer need reportQueryFields nor
+	reducedReportQueryFields.
 	(-davCalendarQuery:,-davCalendarMultiget:): automatically include
 	"c_component" in the requested fields, so that items can be
 	instantiated properly.

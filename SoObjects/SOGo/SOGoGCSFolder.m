@@ -803,6 +803,7 @@ static NSArray *childRecordFields = nil;
     {
       davSQLFieldsTable = [NSMutableDictionary new];
       [davSQLFieldsTable setObject: @"c_version" forKey: @"{DAV:}getetag"];
+      [davSQLFieldsTable setObject: @"" forKey: @"{DAV:}getcontenttype"];
     }
 
   return davSQLFieldsTable;
@@ -827,7 +828,7 @@ static NSArray *childRecordFields = nil;
         [davSQLFields setObject: sqlField forKey: property];
       else
         [self errorWithFormat: @"DAV property '%@' has no matching SQL field,"
-              @" response will be incomplete", property];
+              @" response could be incomplete", property];
     }
 
   return davSQLFields;
@@ -877,10 +878,15 @@ static NSArray *childRecordFields = nil;
   NSMutableArray *fields, *mRecords;
   NSArray *records;
   EOQualifier *qualifier;
+  NSEnumerator *addFields;
+  NSString *currentField;
 
   fields = [NSMutableArray arrayWithObjects: @"c_name", @"c_component",
                            @"c_creationdate", @"c_lastmodified", nil];
-  [fields addObjectsFromArray: [properties allValues]];
+  addFields = [[properties allValues] objectEnumerator];
+  while ((currentField = [addFields nextObject]))
+    if ([currentField length])
+      [fields addObjectUniquely: currentField];
 
   if (syncToken)
     {
@@ -921,7 +927,7 @@ static NSArray *childRecordFields = nil;
   return davElementWithContent (@"propstat", XMLNS_WEBDAV, propstat);
 }
 
-- (NSArray *) _davPropStatsWithProperties: (NSArray *) davProperties
+- (NSArray *) _davPropstatsWithProperties: (NSArray *) davProperties
                        andMethodSelectors: (SEL *) selectors
                                fromRecord: (NSDictionary *) record
 {
@@ -1009,7 +1015,7 @@ static NSArray *childRecordFields = nil;
                                               status[statusIndex])];
   if (statusIndex)
     [children
-      addObjectsFromArray: [self _davPropStatsWithProperties: properties
+      addObjectsFromArray: [self _davPropstatsWithProperties: properties
                                           andMethodSelectors: selectors
                                                   fromRecord: record]];
 
