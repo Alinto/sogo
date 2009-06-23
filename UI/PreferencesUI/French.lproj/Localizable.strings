@@ -89,6 +89,9 @@
 "And place my signature" = "Et placer ma signature";
 "signatureplacement_above" = "après ma reponse";
 "signatureplacement_below" = "après la citation";
+"Compose messages in" = "Composer les messages en";
+"composemessagestype_html" = "HTML";
+"composemessagestype_text" = "Texte";
 
 /* Additional Parameters */
 "Additional Parameters" = "Paramètres supplémentaires";

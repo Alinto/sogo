@@ -88,6 +88,9 @@
 "And place my signature" = "Ondertekening plaatsen";
 "signatureplacement_above" = "boven orginele tekst";
 "signatureplacement_below" = "onder orginele tekst";
+"Compose messages in" = "Compose messages in";
+"composemessagestype_html" = "HTML";
+"composemessagestype_text" = "Plain text";
 
 /* Additional Parameters */
 "Additional Parameters" = "Extra Parameters";

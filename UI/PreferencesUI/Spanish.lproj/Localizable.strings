@@ -100,6 +100,9 @@
 "And place my signature" = "And place my signature";
 "signatureplacement_above" = "signatureplacement_above";
 "signatureplacement_below" = "signatureplacement_below";
+"Compose messages in" = "Compose messages in";
+"composemessagestype_html" = "HTML";
+"composemessagestype_text" = "Plain text";
 
 /* Additional Parameters */
 "Additional Parameters" = "Additional Parameters";
