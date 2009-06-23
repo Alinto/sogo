@@ -91,6 +91,9 @@
 "And place my signature" = "A rhowch fy llofnod";
 "signatureplacement_above" = "o dan fy ymateb";
 "signatureplacement_below" = "o dan y dyfynnod";
+"Compose messages in" = "Compose messages in";
+"composemessagestype_html" = "HTML";
+"composemessagestype_text" = "Plain text";
 
 /* Additional Parameters */
 "Additional Parameters" = "Additional Parameters";
