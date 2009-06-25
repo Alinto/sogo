@@ -4,6 +4,7 @@
 	* UI/WebServerResources/UIxMailEditor.js: Use CKeditor
 	* SoObjects/Mailer/SOGoMailForward.m: Added htmlComposition property,
 	changed almost all methods to escape what needsto be escaped.
+	* UI/WebServerResources/UIxPreferences.js: Fixed CKeditor toggle issue
 
 2009-06-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

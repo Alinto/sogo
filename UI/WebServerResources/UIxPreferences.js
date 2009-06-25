@@ -50,8 +50,10 @@ function initPreferences() {
 
   $("composeMessagesType").observe ("change", onComposeMessagesTypeChange);
 
+  alert (UserDefaults["ComposeMessagesType"]);
   if (UserDefaults["ComposeMessagesType"] != "html") {
-    $("signature").style.display = 'inline';
+    $("signature").style.display = 'block';
+    $("signature").style.visibility = '';
     $('cke_signature').style.display = 'none';
   }
 }
@@ -68,20 +70,18 @@ function onReplyPlacementListChange() {
 }
 
 function onComposeMessagesTypeChange () {
-/*  var textArea = $('signature');
-  var oEditor = CKeditorAPI.GetInstance('signature');
+  var textArea = $('signature');
   var editor = $('cke_signature');
  
   if ($("composeMessagesType").value == 0) {
-    textArea.style.display = 'inline';
+    textArea.style.display = 'block';
+    textArea.style.visibility = '';
     editor.style.display = 'none';
-    textArea.value = oEditor.GetData();
   }
   else {
     textArea.style.display = 'none';
-    editor.style.display = '';
-    oEditor.SetHTML(textArea.value);
-  }*/
+    editor.style.display = 'block';
+  }
 }
 
 document.observe("dom:loaded", initPreferences);
