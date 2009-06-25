@@ -1,0 +1,2318 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="generator" content="JsDoc Toolkit" />
+
+		<title>CKEDITOR.dom.node - CKEditor 3.0 JavaScript API Documentation</title>
+
+		<style type="text/css">
+			/* default.css */
+body
+{
+	font: 12px "Lucida Grande", Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.header
+{
+	clear: both;
+	background-color: #ccc;
+	padding: 8px;
+}
+
+h1
+{
+	font-size: 150%;
+	font-weight: bold;
+	padding: 0;
+	margin: 1em 0 0 .3em;
+}
+
+hr
+{
+	border: none 0;
+	border-top: 1px solid #7F8FB1;
+	height: 1px;
+}
+
+pre.code
+{
+	display: block;
+	padding: 8px;
+	border: 1px dashed #ccc;
+}
+
+#index
+{
+	margin-top: 24px;
+	float: left;
+	width: 160px;
+	position: absolute;
+	left: 8px;
+	background-color: #F3F3F3;
+	padding: 8px;
+}
+
+#content
+{
+	margin-left: 190px;
+}
+
+.classList
+{
+	list-style-type: none;
+	padding: 0;
+	margin: 0 0 0 8px;
+	font-family: arial, sans-serif;
+	font-size: 1em;
+	overflow: auto;
+}
+
+.classList li
+{
+	padding: 0;
+	margin: 0 0 8px 0;
+}
+
+.summaryTable { width: 100%; }
+
+h1.classTitle
+{
+	font-size:170%;
+	line-height:130%;
+}
+
+h2 { font-size: 110%; }
+caption, div.sectionTitle
+{
+	background-color: #7F8FB1;
+	color: #fff;
+	font-size:130%;
+	text-align: left;
+	padding: 2px 6px 2px 6px;
+	border: 1px #7F8FB1 solid;
+}
+
+div.sectionTitle { margin-bottom: 8px; }
+.summaryTable thead { display: none; }
+
+.summaryTable td
+{
+	vertical-align: top;
+	padding: 4px;
+	border-bottom: 1px #7F8FB1 solid;
+	border-right: 1px #7F8FB1 solid;
+}
+
+/*col#summaryAttributes {}*/
+.summaryTable td.attributes
+{
+	border-left: 1px #7F8FB1 solid;
+	width: 140px;
+	text-align: right;
+}
+
+td.attributes, .fixedFont
+{
+	line-height: 15px;
+	color: #002EBE;
+	font-family: "Courier New",Courier,monospace;
+	font-size: 13px;
+}
+
+.summaryTable td.nameDescription
+{
+	text-align: left;
+	font-size: 13px;
+	line-height: 15px;
+}
+
+.summaryTable td.nameDescription, .description
+{
+	line-height: 15px;
+	padding: 4px;
+	padding-left: 4px;
+}
+
+.summaryTable { margin-bottom: 8px; }
+
+ul.inheritsList
+{
+	list-style: square;
+	margin-left: 20px;
+	padding-left: 0;
+}
+
+.detailList {
+	margin-left: 20px;
+	line-height: 15px;
+}
+.detailList dt { margin-left: 20px; }
+
+.detailList .heading
+{
+	font-weight: bold;
+	padding-bottom: 6px;
+	margin-left: 0;
+}
+
+.light, td.attributes, .light a:link, .light a:visited
+{
+	color: #777;
+	font-style: italic;
+}
+
+.fineprint
+{
+	text-align: right;
+	font-size: 10px;
+}
+
+		</style>
+	</head>
+
+	<body>
+<!-- ============================== header ================================= -->
+		<!-- begin static/header.html -->
+		<div id="header">
+	<h1>CKEditor 3.0 JavaScript API Documentation</h1>
+	<hr />
+</div>
+
+		<!-- end static/header.html -->
+
+<!-- ============================== classes index ============================ -->
+		<div id="index">
+			<!-- begin publish.classesIndex -->
+			<div align="center">
+	<a href="../index.html">Code Index</a>
+	| <a href="../files.html">File Index</a>
+</div>
+<hr />
+<h2>Namespaces</h2>
+<ul class="classList">
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.html">CKEDITOR</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ajax.html">CKEDITOR.ajax</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.config.html">CKEDITOR.config</a>
+			</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.html">CKEDITOR.dom</a>
+			</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dtd.html">CKEDITOR.dtd</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.env.html">CKEDITOR.env</a>
+			</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.imageCacher.html">CKEDITOR.imageCacher</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.loader.html">CKEDITOR.loader</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.plugins.html">CKEDITOR.plugins</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.resourceManager.html">CKEDITOR.resourceManager</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.scriptLoader.html">CKEDITOR.scriptLoader</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.skins.html">CKEDITOR.skins</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.test.html">CKEDITOR.test</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.themes.html">CKEDITOR.themes</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.tools.html">CKEDITOR.tools</a>
+			</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</ul>
+<h2>Classes</h2>
+<ul class="classList">
+
+
+
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.commandDefinition.html">CKEDITOR.commandDefinition</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dialog.html">CKEDITOR.dialog</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dialog.buttonDefinition.html">CKEDITOR.dialog.buttonDefinition</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dialog.contentDefinition.html">CKEDITOR.dialog.contentDefinition</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dialog.contentDefinitionObject.html">CKEDITOR.dialog.contentDefinitionObject</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dialog.dialogDefinition.html">CKEDITOR.dialog.dialogDefinition</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dialog.dialogDefinitionObject.html">CKEDITOR.dialog.dialogDefinitionObject</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dialog.uiElementDefinition.html">CKEDITOR.dialog.uiElementDefinition</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dialogCommand.html">CKEDITOR.dialogCommand</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.document.html">CKEDITOR.dom.document</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.domObject.html">CKEDITOR.dom.domObject</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.element.html">CKEDITOR.dom.element</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.event.html">CKEDITOR.dom.event</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.node.html">CKEDITOR.dom.node</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.selection.html">CKEDITOR.dom.selection</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.text.html">CKEDITOR.dom.text</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.window.html">CKEDITOR.dom.window</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.editor.html">CKEDITOR.editor</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.event.html">CKEDITOR.event</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.eventInfo.html">CKEDITOR.eventInfo</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.focusManager.html">CKEDITOR.focusManager</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.htmlParser.html">CKEDITOR.htmlParser</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.htmlParser.cdata.html">CKEDITOR.htmlParser.cdata</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.htmlParser.comment.html">CKEDITOR.htmlParser.comment</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.htmlParser.element.html">CKEDITOR.htmlParser.element</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.htmlParser.fragment.html">CKEDITOR.htmlParser.fragment</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.htmlParser.text.html">CKEDITOR.htmlParser.text</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.htmlWriter.html">CKEDITOR.htmlWriter</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.keystrokeHandler.html">CKEDITOR.keystrokeHandler</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.pluginDefinition.html">CKEDITOR.pluginDefinition</a>
+			</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.html">CKEDITOR.ui</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.button.html">CKEDITOR.ui.button</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.button.html">CKEDITOR.ui.dialog.button</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.checkbox.html">CKEDITOR.ui.dialog.checkbox</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.file.html">CKEDITOR.ui.dialog.file</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.fileButton.html">CKEDITOR.ui.dialog.fileButton</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.hbox.html">CKEDITOR.ui.dialog.hbox</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.html.html">CKEDITOR.ui.dialog.html</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.labeledElement.html">CKEDITOR.ui.dialog.labeledElement</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.radio.html">CKEDITOR.ui.dialog.radio</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.select.html">CKEDITOR.ui.dialog.select</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.textarea.html">CKEDITOR.ui.dialog.textarea</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.textInput.html">CKEDITOR.ui.dialog.textInput</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.uiElement.html">CKEDITOR.ui.dialog.uiElement</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.vbox.html">CKEDITOR.ui.dialog.vbox</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.handlerDefinition.html">CKEDITOR.ui.handlerDefinition</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.xml.html">CKEDITOR.xml</a>
+			</li>
+
+
+</ul>
+<hr />
+			<!-- end publish.classesIndex -->
+		</div>
+
+		<div id="content">
+<!-- ============================== class title ============================ -->
+			<h1 class="classTitle">
+
+				Class CKEDITOR.dom.node
+			</h1>
+
+<!-- ============================== class summary ========================== -->
+			<p class="description">
+				<br />Extends
+					<a href="../symbols/CKEDITOR.dom.domObject.html#constructor">CKEDITOR.dom.domObject</a>.<br />
+
+
+
+
+
+					<br /><i>Defined in: </i> <a href="../symbols/src/core_dom_node.js.html">core/dom/node.js</a>.
+
+			</p>
+
+<!-- ============================== constructor summary ==================== -->
+
+			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class CKEDITOR.dom.node.">
+				<caption>Class Summary</caption>
+				<thead>
+					<tr>
+						<th scope="col">Constructor Attributes</th>
+						<th scope="col">Constructor Name and Description</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="attributes">&nbsp;</td>
+						<td class="nameDescription" >
+							<div class="fixedFont">
+								<b><a href="../symbols/CKEDITOR.dom.node.html#constructor">CKEDITOR.dom.node</a></b>(domNode)
+							</div>
+							<div class="description">Base class for classes representing DOM nodes.</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+
+<!-- ============================== properties summary ===================== -->
+
+
+
+
+
+
+
+
+
+				<dl class="inheritsList">
+				<dt>Fields borrowed from class <a href="../symbols/CKEDITOR.dom.domObject.html#constructor">CKEDITOR.dom.domObject</a>: </dt><dd><a href="../symbols/CKEDITOR.dom.domObject.html#$">$</a></dd>
+				</dl>
+
+
+
+<!-- ============================== methods summary ======================== -->
+
+
+
+				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class CKEDITOR.dom.node.">
+					<caption>Method Summary</caption>
+					<thead>
+						<tr>
+							<th scope="col">Method Attributes</th>
+							<th scope="col">Method Name and Description</th>
+						</tr>
+					</thead>
+					<tbody>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dom.node.html#appendTo">appendTo</a></b>(element, toStart)
+								</div>
+								<div class="description">Makes this node child of another element.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dom.node.html#clone">clone</a></b>(includeChildren, cloneId)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dom.node.html#getAddress">getAddress</a></b>(normalized)
+								</div>
+								<div class="description">Retrieves a uniquely identifiable tree address for this node.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dom.node.html#getAscendant">getAscendant</a></b>(name, includeSelf)
+								</div>
+								<div class="description">Gets the closes ancestor node of a specified node name.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dom.node.html#getCommonAncestor">getCommonAncestor</a></b>(node)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dom.node.html#getDocument">getDocument</a></b>()
+								</div>
+								<div class="description">Gets the document containing this element.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dom.node.html#getIndex">getIndex</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dom.node.html#getNext">getNext</a></b>(ignoreSpaces)
+								</div>
+								<div class="description">Gets the node that follows this element in its parent's child list.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dom.node.html#getNextSourceNode">getNextSourceNode</a></b>(startFromSibling, nodeType, guard)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dom.node.html#getParent">getParent</a></b>()
+								</div>
+								<div class="description">Gets the parent element for this node.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dom.node.html#getParents">getParents</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dom.node.html#getPosition">getPosition</a></b>(otherNode)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dom.node.html#getPrevious">getPrevious</a></b>(ignoreSpaces)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dom.node.html#getPreviousSourceNode">getPreviousSourceNode</a></b>(startFromSibling, nodeType, guard)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dom.node.html#hasAscendant">hasAscendant</a></b>(name, includeSelf)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dom.node.html#hasNext">hasNext</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dom.node.html#hasPrevious">hasPrevious</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dom.node.html#insertAfter">insertAfter</a></b>(node)
+								</div>
+								<div class="description">Inserts this element after a node.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dom.node.html#insertBefore">insertBefore</a></b>(node)
+								</div>
+								<div class="description">Inserts this element before a node.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dom.node.html#insertBeforeMe">insertBeforeMe</a></b>(node)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dom.node.html#ltrim">ltrim</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dom.node.html#move">move</a></b>(target, toStart)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dom.node.html#remove">remove</a></b>(preserveChildren)
+								</div>
+								<div class="description">Removes this node from the document DOM.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dom.node.html#replace">replace</a></b>(nodeToReplace)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dom.node.html#rtrim">rtrim</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dom.node.html#trim">trim</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+
+					</tbody>
+				</table>
+
+
+
+				<dl class="inheritsList">
+				<dt>Methods borrowed from class <a href="../symbols/CKEDITOR.dom.domObject.html#constructor">CKEDITOR.dom.domObject</a>: </dt><dd><a href="../symbols/CKEDITOR.dom.domObject.html#equals">equals</a>, <a href="../symbols/CKEDITOR.dom.domObject.html#getCustomData">getCustomData</a>, <a href="../symbols/CKEDITOR.dom.domObject.html#getPrivate">getPrivate</a>, <a href="../symbols/CKEDITOR.dom.domObject.html#setCustomData">setCustomData</a></dd><dt>Methods borrowed from class <a href="../symbols/CKEDITOR.event.html#constructor">CKEDITOR.event</a>: </dt><dd><a href="../symbols/CKEDITOR.event.html#fire">fire</a>, <a href="../symbols/CKEDITOR.event.html#fireOnce">fireOnce</a>, <a href="../symbols/CKEDITOR.event.html#hasListeners">hasListeners</a>, <a href="../symbols/CKEDITOR.event.html#.implementOn">implementOn</a>, <a href="../symbols/CKEDITOR.event.html#on">on</a>, <a href="../symbols/CKEDITOR.event.html#removeListener">removeListener</a></dd>
+				</dl>
+
+
+
+<!-- ============================== constructor details ==================== -->
+
+			<div class="details"><a name="constructor"> </a>
+				<div class="sectionTitle">
+					Class Detail
+				</div>
+
+				<div class="fixedFont" style="float:left">
+						<b>CKEDITOR.dom.node</b>(domNode)
+				</div>
+
+				<div style="float:right">
+					<span class="heading">Since:</span>
+
+							3.0
+
+				</div>
+				<div style="clear:both"></div>
+
+				<div class="description">
+					Base class for classes representing DOM nodes. This constructor may return
+and instance of classes that inherits this class, like
+<a href="../symbols/CKEDITOR.dom.element.html#constructor">CKEDITOR.dom.element</a> or <a href="../symbols/CKEDITOR.dom.text.html#constructor">CKEDITOR.dom.text</a>.
+
+				</div>
+
+
+
+
+
+
+
+
+
+						<dl class="detailList">
+						<dt class="heading">Parameters:</dt>
+
+							<dt>
+								<span class="light fixedFont">{Object}</span> <b>domNode</b>
+
+							</dt>
+								<dd>A native DOM node.</dd>
+
+						</dl>
+
+
+
+
+
+
+						<dl class="detailList">
+						<dt class="heading">See:</dt>
+
+							<dd><a href="../symbols/CKEDITOR.dom.element.html#constructor">CKEDITOR.dom.element</a></dd>
+
+							<dd><a href="../symbols/CKEDITOR.dom.text.html#constructor">CKEDITOR.dom.text</a></dd>
+
+						</dl>
+
+
+			</div>
+
+
+<!-- ============================== field details ========================== -->
+
+
+<!-- ============================== method details ========================= -->
+
+				<div class="sectionTitle">
+					Method Detail
+				</div>
+
+					<a name="appendTo"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{<a href="../symbols/CKEDITOR.dom.element.html#constructor">CKEDITOR.dom.element</a>}</span>
+					<b>appendTo</b>(element, toStart)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Makes this node child of another element.
+
+
+					</div>
+
+
+
+
+							<pre class="code">var p = new CKEDITOR.dom.element( 'p' );
+var strong = new CKEDITOR.dom.element( 'strong' );
+strong.appendTo( p );
+
+// result: "&lt;p&gt;&lt;strong&gt;&lt;/strong&gt;&lt;/p&gt;"</pre>
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{<a href="../symbols/CKEDITOR.dom.element.html#constructor">CKEDITOR.dom.element</a>}</span> <b>element</b>
+
+								</dt>
+								<dd>The target element to which append
+		this node.</dd>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>toStart</b>
+
+								</dt>
+								<dd></dd>
+
+							</dl>
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+
+								<dd><span class="light fixedFont">{<a href="../symbols/CKEDITOR.dom.element.html#constructor">CKEDITOR.dom.element</a>}</span> The target element.</dd>
+
+							</dl>
+
+
+
+
+					<hr />
+
+					<a name="clone"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{Undefined}</span>
+					<b>clone</b>(includeChildren, cloneId)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>includeChildren</b>
+
+								</dt>
+								<dd></dd>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>cloneId</b>
+
+								</dt>
+								<dd></dd>
+
+							</dl>
+
+
+
+
+
+
+
+					<hr />
+
+					<a name="getAddress"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{Undefined}</span>
+					<b>getAddress</b>(normalized)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Retrieves a uniquely identifiable tree address for this node.
+The tree address returns is an array of integers, with each integer
+indicating a child index of a DOM node, starting from
+document.documentElement.
+
+For example, assuming <body> is the second child from <html> (<head>
+being the first), and we'd like to address the third child under the
+fourth child of body, the tree address returned would be:
+[1, 3, 2]
+
+The tree address cannot be used for finding back the DOM tree node once
+the DOM tree structure has been modified.
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>normalized</b>
+
+								</dt>
+								<dd></dd>
+
+							</dl>
+
+
+
+
+
+
+
+					<hr />
+
+					<a name="getAscendant"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{<a href="../symbols/CKEDITOR.dom.node.html#constructor">CKEDITOR.dom.node</a>}</span>
+					<b>getAscendant</b>(name, includeSelf)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Gets the closes ancestor node of a specified node name.
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>name</b>
+
+								</dt>
+								<dd>Node name of ancestor node.</dd>
+
+								<dt>
+									<span class="light fixedFont">{Boolean}</span> <b>includeSelf</b>
+
+								</dt>
+								<dd>(Optional) Whether to include the current
+node in the calculation or not.</dd>
+
+							</dl>
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+
+								<dd><span class="light fixedFont">{<a href="../symbols/CKEDITOR.dom.node.html#constructor">CKEDITOR.dom.node</a>}</span> Ancestor node.</dd>
+
+							</dl>
+
+
+
+
+					<hr />
+
+					<a name="getCommonAncestor"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{Undefined}</span>
+					<b>getCommonAncestor</b>(node)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>node</b>
+
+								</dt>
+								<dd></dd>
+
+							</dl>
+
+
+
+
+
+
+
+					<hr />
+
+					<a name="getDocument"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{<a href="../symbols/CKEDITOR.dom.document.html#constructor">CKEDITOR.dom.document</a>}</span>
+					<b>getDocument</b>()
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Gets the document containing this element.
+
+
+					</div>
+
+
+
+
+							<pre class="code">var element = CKEDITOR.document.getById( 'example' );
+alert( <b>element.getDocument().equals( CKEDITOR.document )</b> );  // "true"</pre>
+
+
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+
+								<dd><span class="light fixedFont">{<a href="../symbols/CKEDITOR.dom.document.html#constructor">CKEDITOR.dom.document</a>}</span> The document.</dd>
+
+							</dl>
+
+
+
+
+					<hr />
+
+					<a name="getIndex"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{Undefined}</span>
+					<b>getIndex</b>()
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+
+
+
+
+
+
+					<hr />
+
+					<a name="getNext"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{<a href="../symbols/CKEDITOR.dom.node.html#constructor">CKEDITOR.dom.node</a>}</span>
+					<b>getNext</b>(ignoreSpaces)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Gets the node that follows this element in its parent's child list.
+
+
+					</div>
+
+
+
+
+							<pre class="code">var element = CKEDITOR.dom.element.createFromHtml( '&lt;div&gt;&lt;b&gt;Example&lt;/b&gt; &lt;i&gt;next&lt;/i&gt;&lt;/div&gt;' );
+var first = <b>element.getFirst().getNext()</b>;
+alert( first.getName() );  // "i"</pre>
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{Boolean}</span> <b>ignoreSpaces</b>
+
+								</dt>
+								<dd>Whether should ignore empty text nodes.</dd>
+
+							</dl>
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+
+								<dd><span class="light fixedFont">{<a href="../symbols/CKEDITOR.dom.node.html#constructor">CKEDITOR.dom.node</a>}</span> The next node or null if not
+		available.</dd>
+
+							</dl>
+
+
+
+
+					<hr />
+
+					<a name="getNextSourceNode"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{Undefined}</span>
+					<b>getNextSourceNode</b>(startFromSibling, nodeType, guard)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>startFromSibling</b>
+
+								</dt>
+								<dd></dd>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>nodeType</b>
+
+								</dt>
+								<dd></dd>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>guard</b>
+
+								</dt>
+								<dd></dd>
+
+							</dl>
+
+
+
+
+
+
+
+					<hr />
+
+					<a name="getParent"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{<a href="../symbols/CKEDITOR.dom.element.html#constructor">CKEDITOR.dom.element</a>}</span>
+					<b>getParent</b>()
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Gets the parent element for this node.
+
+
+					</div>
+
+
+
+
+							<pre class="code">var node = editor.document.getBody().getFirst();
+var parent = node.<b>getParent()</b>;
+alert( node.getName() );  // "body"</pre>
+
+
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+
+								<dd><span class="light fixedFont">{<a href="../symbols/CKEDITOR.dom.element.html#constructor">CKEDITOR.dom.element</a>}</span> The parent element.</dd>
+
+							</dl>
+
+
+
+
+					<hr />
+
+					<a name="getParents"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{Undefined}</span>
+					<b>getParents</b>()
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+
+
+
+
+
+
+					<hr />
+
+					<a name="getPosition"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{Undefined}</span>
+					<b>getPosition</b>(otherNode)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>otherNode</b>
+
+								</dt>
+								<dd></dd>
+
+							</dl>
+
+
+
+
+
+
+
+					<hr />
+
+					<a name="getPrevious"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{Undefined}</span>
+					<b>getPrevious</b>(ignoreSpaces)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>ignoreSpaces</b>
+
+								</dt>
+								<dd></dd>
+
+							</dl>
+
+
+
+
+
+
+
+					<hr />
+
+					<a name="getPreviousSourceNode"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{Undefined}</span>
+					<b>getPreviousSourceNode</b>(startFromSibling, nodeType, guard)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>startFromSibling</b>
+
+								</dt>
+								<dd></dd>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>nodeType</b>
+
+								</dt>
+								<dd></dd>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>guard</b>
+
+								</dt>
+								<dd></dd>
+
+							</dl>
+
+
+
+
+
+
+
+					<hr />
+
+					<a name="hasAscendant"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{Undefined}</span>
+					<b>hasAscendant</b>(name, includeSelf)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>name</b>
+
+								</dt>
+								<dd></dd>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>includeSelf</b>
+
+								</dt>
+								<dd></dd>
+
+							</dl>
+
+
+
+
+
+
+
+					<hr />
+
+					<a name="hasNext"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{Undefined}</span>
+					<b>hasNext</b>()
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+
+
+
+
+
+
+					<hr />
+
+					<a name="hasPrevious"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{Undefined}</span>
+					<b>hasPrevious</b>()
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+
+
+
+
+
+
+					<hr />
+
+					<a name="insertAfter"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{<a href="../symbols/CKEDITOR.dom.node.html#constructor">CKEDITOR.dom.node</a>}</span>
+					<b>insertAfter</b>(node)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Inserts this element after a node.
+
+
+					</div>
+
+
+
+
+							<pre class="code">var em = new CKEDITOR.dom.element( 'em' );
+var strong = new CKEDITOR.dom.element( 'strong' );
+strong.insertAfter( em );
+
+// result: "&lt;em&gt;&lt;/em&gt;&lt;strong&gt;&lt;/strong&gt;"</pre>
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{<a href="../symbols/CKEDITOR.dom.node.html#constructor">CKEDITOR.dom.node</a>}</span> <b>node</b>
+
+								</dt>
+								<dd>The that will preceed this element.</dd>
+
+							</dl>
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+
+								<dd><span class="light fixedFont">{<a href="../symbols/CKEDITOR.dom.node.html#constructor">CKEDITOR.dom.node</a>}</span> The node preceeding this one after
+		insertion.</dd>
+
+							</dl>
+
+
+
+
+					<hr />
+
+					<a name="insertBefore"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{<a href="../symbols/CKEDITOR.dom.node.html#constructor">CKEDITOR.dom.node</a>}</span>
+					<b>insertBefore</b>(node)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Inserts this element before a node.
+
+
+					</div>
+
+
+
+
+							<pre class="code">var em = new CKEDITOR.dom.element( 'em' );
+var strong = new CKEDITOR.dom.element( 'strong' );
+strong.insertBefore( em );
+
+// result: "&lt;strong&gt;&lt;/strong&gt;&lt;em&gt;&lt;/em&gt;"</pre>
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{<a href="../symbols/CKEDITOR.dom.node.html#constructor">CKEDITOR.dom.node</a>}</span> <b>node</b>
+
+								</dt>
+								<dd>The that will be after this element.</dd>
+
+							</dl>
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+
+								<dd><span class="light fixedFont">{<a href="../symbols/CKEDITOR.dom.node.html#constructor">CKEDITOR.dom.node</a>}</span> The node being inserted.</dd>
+
+							</dl>
+
+
+
+
+					<hr />
+
+					<a name="insertBeforeMe"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{Undefined}</span>
+					<b>insertBeforeMe</b>(node)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>node</b>
+
+								</dt>
+								<dd></dd>
+
+							</dl>
+
+
+
+
+
+
+
+					<hr />
+
+					<a name="ltrim"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{Undefined}</span>
+					<b>ltrim</b>()
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+
+
+
+
+
+
+					<hr />
+
+					<a name="move"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{Undefined}</span>
+					<b>move</b>(target, toStart)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>target</b>
+
+								</dt>
+								<dd></dd>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>toStart</b>
+
+								</dt>
+								<dd></dd>
+
+							</dl>
+
+
+
+
+
+
+
+					<hr />
+
+					<a name="remove"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{Undefined}</span>
+					<b>remove</b>(preserveChildren)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Removes this node from the document DOM.
+
+
+					</div>
+
+
+
+
+							<pre class="code">var element = CKEDITOR.dom.element.getById( 'MyElement' );
+<b>element.remove()</b>;</pre>
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{Boolean}</span> <b>preserveChildren</b>
+									<i>Optional</i>
+								</dt>
+								<dd>Indicates that the children
+		elements must remain in the document, removing only the outer
+		tags.</dd>
+
+							</dl>
+
+
+
+
+
+
+
+					<hr />
+
+					<a name="replace"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{Undefined}</span>
+					<b>replace</b>(nodeToReplace)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>nodeToReplace</b>
+
+								</dt>
+								<dd></dd>
+
+							</dl>
+
+
+
+
+
+
+
+					<hr />
+
+					<a name="rtrim"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{Undefined}</span>
+					<b>rtrim</b>()
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+
+
+
+
+
+
+					<hr />
+
+					<a name="trim"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{Undefined}</span>
+					<b>trim</b>()
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+			<hr />
+		</div>
+
+<!-- ============================== footer ================================= -->
+		<div class="fineprint" style="clear:both">
+	Copyright &copy; 2003-2009, <a href="http://cksource.com/">CKSource</a> - Frederico Knabben. All rights reserved.
+</div>
+
+	</body>
+</html>

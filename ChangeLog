@@ -1,3 +1,10 @@
+2009-06-25  Cyril Robert <crobert@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailReply.m: Added proper blockquote
+	* UI/WebServerResources/UIxMailEditor.js: Use CKeditor
+	* SoObjects/Mailer/SOGoMailForward.m: Added htmlComposition property,
+	changed almost all methods to escape what needsto be escaped.
+
 2009-06-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoGCSFolder.m (-davSyncCollection:): certain

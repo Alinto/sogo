@@ -561,10 +561,7 @@ function initMailEditor() {
 
 	var subjectField = $$("div#subjectRow input").first();
 	initTabIndex($("addressList"), subjectField, textarea);
-	onWindowResize.defer();
-
-	Event.observe(window, "resize", onWindowResize);
-	Event.observe(window, "beforeunload", onMailEditorClose);
+	//onWindowResize.defer();
 
 	var focusField = (mailIsReply ? textarea : $("addr_0"));
 	focusField.focus();
@@ -573,12 +570,23 @@ function initMailEditor() {
 
   var composeMode = UserDefaults["ComposeMessagesType"];
   if (composeMode == "html") {
-    var oFCKeditor = new FCKeditor ('text');
-    oFCKeditor.BasePath = "/SOGo.woa/WebServerResources/fckeditor/";
-    oFCKeditor.ToolbarSet	= 'Basic';
-    oFCKeditor.ReplaceTextarea ();
+    CKEDITOR.replace('text',
+                     {
+                        skin: "v2",
+                        toolbar :
+                        [['Bold', 'Italic', '-', 'NumberedList', 
+                          'BulletedList', '-', 'Link', 'Unlink', 'Image', 
+                          'JustifyLeft','JustifyCenter','JustifyRight',
+                          'JustifyBlock','Font','FontSize','-','TextColor',
+                          'BGColor']
+                        ] 
+                     }
+                    );
   }
-  onWindowResize (null);
+
+	Event.observe(window, "resize", onWindowResize);
+	Event.observe(window, "beforeunload", onMailEditorClose);
+  onWindowResize.defer();
 }
 
 function initializePriorityMenu() {
@@ -731,10 +739,17 @@ function onWindowResize(event) {
 	// Resize the textarea (message content)
   var composeMode = UserDefaults["ComposeMessagesType"];
   if (composeMode == "html") {
-    var editor = $('text___Frame');
-    editor.height = Math.floor(window.height() - editor.offsetTop) + "px";
-    editor.style.height = Math.floor(window.height() - editor.offsetTop) + "px";
-    editor.setStyle({ 'top': hr.offsetTop + 'px' });
+    var editor = $('cke_text');
+    if (editor == null) {
+      setTimeout ('onWindowResize ()', 100);
+      return;
+    }
+    var content = $("cke_contents_text");
+    var height = Math.floor(window.height() - editor.offsetTop);
+
+    content.height = (height-60) + "px";
+    content.style.height = (height-60) + "px";
+    content.setStyle({ 'top': hr.offsetTop + 'px' });
   }
   textarea.rows = Math.floor((window.height() - textarea.offsetTop) / rowheight);
 }

@@ -30,25 +30,30 @@ function onChoiceChanged(event) {
 }
 
 function initPreferences() {
+  CKEDITOR.replace('signature',
+                     {
+                        skin: "v2",
+                        height: "90px",
+                        toolbar :
+                        [['Bold', 'Italic', '-', 'Link', 
+                          'Font','FontSize','-','TextColor',
+                          'BGColor']
+                        ] 
+                     }
+                    );
+
   _setupEvents(true);
   if (typeof (initAdditionalPreferences) != "undefined")
     initAdditionalPreferences();
   $("replyPlacementList").observe ("change", onReplyPlacementListChange);
   onReplyPlacementListChange();
 
-  var oFCKeditor = new FCKeditor ('signature');
-  oFCKeditor.BasePath = "/SOGo.woa/WebServerResources/fckeditor/";
-  oFCKeditor.ToolbarSet	= 'Basic';
-  oFCKeditor.ReplaceTextarea ();
-  $('signature___Frame').style.height = "150px";
-  $('signature___Frame').height = "150px";
+  $("composeMessagesType").observe ("change", onComposeMessagesTypeChange);
 
   if (UserDefaults["ComposeMessagesType"] != "html") {
     $("signature").style.display = 'inline';
-    $('signature___Frame').style.display = 'none';
+    $('cke_signature').style.display = 'none';
   }
-
-  $("composeMessagesType").observe ("change", onComposeMessagesTypeChange);
 }
 
 function onReplyPlacementListChange() {
@@ -63,9 +68,9 @@ function onReplyPlacementListChange() {
 }
 
 function onComposeMessagesTypeChange () {
-  var textArea = $('signature');
-  var oEditor = FCKeditorAPI.GetInstance('signature');
-  var editor = $('signature___Frame');
+/*  var textArea = $('signature');
+  var oEditor = CKeditorAPI.GetInstance('signature');
+  var editor = $('cke_signature');
  
   if ($("composeMessagesType").value == 0) {
     textArea.style.display = 'inline';
@@ -76,7 +81,7 @@ function onComposeMessagesTypeChange () {
     textArea.style.display = 'none';
     editor.style.display = '';
     oEditor.SetHTML(textArea.value);
-  }
+  }*/
 }
 
 document.observe("dom:loaded", initPreferences);

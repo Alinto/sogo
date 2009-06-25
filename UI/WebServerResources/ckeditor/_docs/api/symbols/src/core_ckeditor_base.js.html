@@ -1,0 +1,198 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="TOKN">﻿</span><span class="COMM">/*
+<span class='line'>  2</span> Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
+<span class='line'>  3</span> For licensing, see LICENSE.html or http://ckeditor.com/license
+<span class='line'>  4</span> */</span><span class="WHIT">
+<span class='line'>  5</span>
+<span class='line'>  6</span> </span><span class="COMM">/**
+<span class='line'>  7</span>  * @fileOverview Contains the first and essential part of the {@link CKEDITOR}
+<span class='line'>  8</span>  *		object definition.
+<span class='line'>  9</span>  */</span><span class="WHIT">
+<span class='line'> 10</span>
+<span class='line'> 11</span> </span><span class="COMM">// #### Compressed Code</span><span class="WHIT">
+<span class='line'> 12</span> </span><span class="COMM">// Must be updated on changes in the script, as well as updated in the</span><span class="WHIT">
+<span class='line'> 13</span> </span><span class="COMM">// ckeditor_source.js and ckeditor_basic_source.js files.</span><span class="WHIT">
+<span class='line'> 14</span>
+<span class='line'> 15</span> </span><span class="COMM">// if(!window.CKEDITOR)window.CKEDITOR=(function(){var a={timestamp:'',version:'3.0 RC',rev:'3753',_:{},status:'unloaded',basePath:(function(){var d=window.CKEDITOR_BASEPATH||'';if(!d){var e=document.getElementsByTagName('script');for(var f=0;f&lt;e.length;f++){var g=e[f].src.match(/(^|.*[\\\/])ckeditor(?:_basic)?(?:_source)?.js(?:\?.*)?$/i);if(g){d=g[1];break;}}}if(d.indexOf('://')==-1)if(d.indexOf('/')===0)d=location.href.match(/^.*?:\/\/[^\/]*/)[0]+d;else d=location.href.match(/^[^\?]*\/(?:)/)[0]+d;return d;})(),getUrl:function(d){if(d.indexOf('://')==-1&&d.indexOf('/')!==0)d=this.basePath+d;if(this.timestamp&&d.charAt(d.length-1)!='/')d+=(d.indexOf('?')>=0?'&':'?')+('t=')+this.timestamp;return d;}},b=window.CKEDITOR_GETURL;if(b){var c=a.getUrl;a.getUrl=function(d){return b.call(a,d)||c.call(a,d);};}return a;})();</span><span class="WHIT">
+<span class='line'> 16</span>
+<span class='line'> 17</span> </span><span class="COMM">// #### Raw code</span><span class="WHIT">
+<span class='line'> 18</span> </span><span class="COMM">// ATTENTION: read the above "Compressed Code" notes when changing this code.</span><span class="WHIT">
+<span class='line'> 19</span>
+<span class='line'> 20</span> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">window.CKEDITOR</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 21</span> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 22</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'> 23</span> 	 * This is the API entry point. The entire CKEditor code runs under this object.
+<span class='line'> 24</span> 	 * @name CKEDITOR
+<span class='line'> 25</span> 	 * @namespace
+<span class='line'> 26</span> 	 * @example
+<span class='line'> 27</span> 	 */</span><span class="WHIT">
+<span class='line'> 28</span> </span><span class="WHIT">	</span><span class="NAME">window.CKEDITOR</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 29</span> </span><span class="WHIT">	</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 30</span> </span><span class="WHIT">		</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">CKEDITOR</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT">
+<span class='line'> 31</span> </span><span class="WHIT">		</span><span class="COMM">/** @lends CKEDITOR */</span><span class="WHIT">
+<span class='line'> 32</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 33</span>
+<span class='line'> 34</span> </span><span class="WHIT">			</span><span class="COMM">/**
+<span class='line'> 35</span> 			 * A constant string unique for each release of CKEditor. Its value
+<span class='line'> 36</span> 			 * is used, by default, to build the URL for all resources loaded
+<span class='line'> 37</span> 			 * by the editor code, guaranteing clean cache results when
+<span class='line'> 38</span> 			 * upgrading.
+<span class='line'> 39</span> 			 * @type String
+<span class='line'> 40</span> 			 * @example
+<span class='line'> 41</span> 			 * alert( CKEDITOR.timestamp );  // e.g. '87dm'
+<span class='line'> 42</span> 			 */</span><span class="WHIT">
+<span class='line'> 45</span> 			// The production implementation contains a fixed timestamp, unique
+<span class='line'> 46</span> 			// for each release, generated by the releaser.
+<span class='line'> 47</span> 			// (Base 36 value of each component of YYMMDDHH - 4 chars total - e.g. 87bm == 08071122)
+<span class='line'> 48</span> 			timestamp : '95MI',
+<span class='line'> 50</span>
+<span class='line'> 51</span> </span><span class="WHIT">			</span><span class="COMM">/**
+<span class='line'> 52</span> 			 * Contains the CKEditor version number.
+<span class='line'> 53</span> 			 * @type String
+<span class='line'> 54</span> 			 * @example
+<span class='line'> 55</span> 			 * alert( CKEDITOR.version );  // e.g. 'CKEditor 3.0 Beta'
+<span class='line'> 56</span> 			 */</span><span class="WHIT">
+<span class='line'> 57</span> </span><span class="WHIT">			</span><span class="NAME">version</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">'3.0 RC'</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 58</span>
+<span class='line'> 59</span> </span><span class="WHIT">			</span><span class="COMM">/**
+<span class='line'> 60</span> 			 * Contains the CKEditor revision number.
+<span class='line'> 61</span> 			 * Revision number is incremented automatically after each modification of CKEditor source code.
+<span class='line'> 62</span> 			 * @type String
+<span class='line'> 63</span> 			 * @example
+<span class='line'> 64</span> 			 * alert( CKEDITOR.revision );  // e.g. '3975'
+<span class='line'> 65</span> 			 */</span><span class="WHIT">
+<span class='line'> 66</span> </span><span class="WHIT">			</span><span class="NAME">revision</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">'3753'</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 67</span>
+<span class='line'> 68</span> </span><span class="WHIT">			</span><span class="COMM">/**
+<span class='line'> 69</span> 			 * Private object used to hold core stuff. It should not be used out of
+<span class='line'> 70</span> 			 * the API code as properties defined here may change at any time
+<span class='line'> 71</span> 			 * without notice.
+<span class='line'> 72</span> 			 * @private
+<span class='line'> 73</span> 			 */</span><span class="WHIT">
+<span class='line'> 74</span> </span><span class="WHIT">			</span><span class="NAME">_</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 75</span>
+<span class='line'> 76</span> </span><span class="WHIT">			</span><span class="COMM">/**
+<span class='line'> 77</span> 			 * Indicates the API loading status. The following status are available:
+<span class='line'> 78</span> 			 *		&lt;ul>
+<span class='line'> 79</span> 			 *			&lt;li>&lt;b>unloaded&lt;/b>: the API is not yet loaded.&lt;/li>
+<span class='line'> 80</span> 			 *			&lt;li>&lt;b>basic_loaded&lt;/b>: the basic API features are available.&lt;/li>
+<span class='line'> 81</span> 			 *			&lt;li>&lt;b>basic_ready&lt;/b>: the basic API is ready to load the full core code.&lt;/li>
+<span class='line'> 82</span> 			 *			&lt;li>&lt;b>loading&lt;/b>: the full API is being loaded.&lt;/li>
+<span class='line'> 83</span> 			 *			&lt;li>&lt;b>ready&lt;/b>: the API can be fully used.&lt;/li>
+<span class='line'> 84</span> 			 *		&lt;/ul>
+<span class='line'> 85</span> 			 * @type String
+<span class='line'> 86</span> 			 * @example
+<span class='line'> 87</span> 			 * if ( &lt;b>CKEDITOR.status&lt;/b> == 'ready' )
+<span class='line'> 88</span> 			 * {
+<span class='line'> 89</span> 			 *     // The API can now be fully used.
+<span class='line'> 90</span> 			 * }
+<span class='line'> 91</span> 			 */</span><span class="WHIT">
+<span class='line'> 92</span> </span><span class="WHIT">			</span><span class="NAME">status</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">'unloaded'</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 93</span>
+<span class='line'> 94</span> </span><span class="WHIT">			</span><span class="COMM">/**
+<span class='line'> 95</span> 			 * Contains the full URL for the CKEditor installation directory.
+<span class='line'> 96</span> 			 * It's possible to manually provide the base path by setting a
+<span class='line'> 97</span> 			 * global variable named CKEDITOR_BASEPATH. This global variable
+<span class='line'> 98</span> 			 * must be set "before" the editor script loading.
+<span class='line'> 99</span> 			 * @type String
+<span class='line'>100</span> 			 * @example
+<span class='line'>101</span> 			 * alert( &lt;b>CKEDITOR.basePath&lt;/b> );  // "http://www.example.com/ckeditor/" (e.g.)
+<span class='line'>102</span> 			 */</span><span class="WHIT">
+<span class='line'>103</span> </span><span class="WHIT">			</span><span class="NAME">basePath</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>104</span> </span><span class="WHIT">			</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>105</span> </span><span class="WHIT">				</span><span class="COMM">// ATTENTION: fixes on this code must be ported to</span><span class="WHIT">
+<span class='line'>106</span> </span><span class="WHIT">				</span><span class="COMM">// var basePath in "core/loader.js".</span><span class="WHIT">
+<span class='line'>107</span>
+<span class='line'>108</span> </span><span class="WHIT">				</span><span class="COMM">// Find out the editor directory path, based on its &lt;script> tag.</span><span class="WHIT">
+<span class='line'>109</span> </span><span class="WHIT">				</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">path</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">window.CKEDITOR_BASEPATH</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="STRN">''</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>110</span>
+<span class='line'>111</span> </span><span class="WHIT">				</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">path</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>112</span> </span><span class="WHIT">				</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>113</span> </span><span class="WHIT">					</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">scripts</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">document.getElementsByTagName</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'script'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>114</span>
+<span class='line'>115</span> </span><span class="WHIT">					</span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="WHIT"> </span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">scripts.length</span><span class="WHIT"> </span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>116</span> </span><span class="WHIT">					</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>117</span> </span><span class="WHIT">						</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">match</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">scripts</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">src.match</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="REGX">/(^|.*[\\\/])ckeditor(?:_basic)?(?:_source)?.js(?:\?.*)?$/i</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>118</span>
+<span class='line'>119</span> </span><span class="WHIT">						</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">match</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>120</span> </span><span class="WHIT">						</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>121</span> </span><span class="WHIT">							</span><span class="NAME">path</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">match</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>122</span> </span><span class="WHIT">							</span><span class="KEYW">break</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>123</span> </span><span class="WHIT">						</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>124</span> </span><span class="WHIT">					</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>125</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>126</span>
+<span class='line'>127</span> </span><span class="WHIT">				</span><span class="COMM">// In IE (only) the script.src string is the raw valued entered in the</span><span class="WHIT">
+<span class='line'>128</span> </span><span class="WHIT">				</span><span class="COMM">// HTML. Other browsers return the full resolved URL instead.</span><span class="WHIT">
+<span class='line'>129</span> </span><span class="WHIT">				</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">path.indexOf</span><span class="PUNC">(</span><span class="STRN">'://'</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="NUMB">1</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>130</span> </span><span class="WHIT">				</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>131</span> </span><span class="WHIT">					</span><span class="COMM">// Absolute path.</span><span class="WHIT">
+<span class='line'>132</span> </span><span class="WHIT">					</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">path.indexOf</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'/'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>133</span> </span><span class="WHIT">						</span><span class="NAME">path</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">location.href.match</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="REGX">/^.*?:\/\/[^\/]*/</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">path</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>134</span> </span><span class="WHIT">					</span><span class="COMM">// Relative path.</span><span class="WHIT">
+<span class='line'>135</span> </span><span class="WHIT">					</span><span class="KEYW">else</span><span class="WHIT">
+<span class='line'>136</span> </span><span class="WHIT">						</span><span class="NAME">path</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">location.href.match</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="REGX">/^[^\?]*\/(?:)/</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">path</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>137</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>138</span>
+<span class='line'>139</span> </span><span class="WHIT">				</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">path</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>140</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>141</span>
+<span class='line'>142</span> </span><span class="WHIT">			</span><span class="COMM">/**
+<span class='line'>143</span> 			 * Gets the full URL for CKEditor resources. By default, URLs
+<span class='line'>144</span> 			 * returned by this function contains a querystring parameter ("t")
+<span class='line'>145</span> 			 * set to the {@link CKEDITOR.timestamp} value.
+<span class='line'>146</span> 			 * It's possible to provide a custom implementation to this
+<span class='line'>147</span> 			 * function by setting a global variable named CKEDITOR_GETURL.
+<span class='line'>148</span> 			 * This global variable must be set "before" the editor script
+<span class='line'>149</span> 			 * loading. If the custom implementation returns nothing, the
+<span class='line'>150</span> 			 * default implementation is used.
+<span class='line'>151</span> 			 * @returns {String} The full URL.
+<span class='line'>152</span> 			 * @example
+<span class='line'>153</span> 			 * // e.g. http://www.example.com/ckeditor/skins/default/editor.css?t=87dm
+<span class='line'>154</span> 			 * alert( CKEDITOR.getUrl( 'skins/default/editor.css' ) );
+<span class='line'>155</span> 			 * @example
+<span class='line'>156</span> 			 * // e.g. http://www.example.com/skins/default/editor.css?t=87dm
+<span class='line'>157</span> 			 * alert( CKEDITOR.getUrl( '/skins/default/editor.css' ) );
+<span class='line'>158</span> 			 * @example
+<span class='line'>159</span> 			 * // e.g. http://www.somesite.com/skins/default/editor.css?t=87dm
+<span class='line'>160</span> 			 * alert( CKEDITOR.getUrl( 'http://www.somesite.com/skins/default/editor.css' ) );
+<span class='line'>161</span> 			 */</span><span class="WHIT">
+<span class='line'>162</span> </span><span class="WHIT">			</span><span class="NAME">getUrl</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">resource</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>163</span> </span><span class="WHIT">			</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>164</span> </span><span class="WHIT">				</span><span class="COMM">// If this is not a full or absolute path.</span><span class="WHIT">
+<span class='line'>165</span> </span><span class="WHIT">				</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">resource.indexOf</span><span class="PUNC">(</span><span class="STRN">'://'</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="NUMB">1</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">resource.indexOf</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'/'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">!==</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>166</span> </span><span class="WHIT">					</span><span class="NAME">resource</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.basePath</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">resource</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>167</span>
+<span class='line'>168</span> </span><span class="WHIT">				</span><span class="COMM">// Add the timestamp, except for directories.</span><span class="WHIT">
+<span class='line'>169</span> </span><span class="WHIT">				</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">this.timestamp</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">resource.charAt</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">resource.length</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="STRN">'/'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>170</span> </span><span class="WHIT">					</span><span class="NAME">resource</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">resource.indexOf</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'?'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">>=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="STRN">'&'</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">'?'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">'t='</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">this.timestamp</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>171</span>
+<span class='line'>172</span> </span><span class="WHIT">				</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">resource</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>173</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>174</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>175</span>
+<span class='line'>176</span> </span><span class="WHIT">		</span><span class="COMM">// Make it possible to override the getUrl function with a custom</span><span class="WHIT">
+<span class='line'>177</span> </span><span class="WHIT">		</span><span class="COMM">// implementation pointing to a global named CKEDITOR_GETURL.</span><span class="WHIT">
+<span class='line'>178</span> </span><span class="WHIT">		</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">newGetUrl</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">window.CKEDITOR_GETURL</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>179</span> </span><span class="WHIT">		</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">newGetUrl</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>180</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>181</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">originalGetUrl</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.getUrl</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>182</span> </span><span class="WHIT">			</span><span class="NAME">CKEDITOR.getUrl</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">resource</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>183</span> </span><span class="WHIT">			</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>184</span> </span><span class="WHIT">				</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">newGetUrl.call</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">CKEDITOR</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">resource</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT">
+<span class='line'>185</span> </span><span class="WHIT">					</span><span class="NAME">originalGetUrl.call</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">CKEDITOR</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">resource</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>186</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>187</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>188</span>
+<span class='line'>189</span> </span><span class="WHIT">		</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">CKEDITOR</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>190</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>191</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>192</span>
+<span class='line'>193</span> </span><span class="COMM">// PACKAGER_RENAME( CKEDITOR )</span><span class="WHIT">
+<span class='line'>194</span> </span></pre></body></html>

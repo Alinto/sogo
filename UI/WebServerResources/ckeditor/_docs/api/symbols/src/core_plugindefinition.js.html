@@ -1,0 +1,74 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="TOKN">﻿</span><span class="COMM">/*
+<span class='line'>  2</span> Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
+<span class='line'>  3</span> For licensing, see LICENSE.html or http://ckeditor.com/license
+<span class='line'>  4</span> */</span><span class="WHIT">
+<span class='line'>  5</span>
+<span class='line'>  6</span> </span><span class="COMM">/**
+<span class='line'>  7</span>  * @fileOverview Defines the "virtual" {@link CKEDITOR.pluginDefinition} class, which
+<span class='line'>  8</span>  *		contains the defintion of a plugin. This file is for documentation
+<span class='line'>  9</span>  *		purposes only.
+<span class='line'> 10</span>  */</span><span class="WHIT">
+<span class='line'> 11</span>
+<span class='line'> 12</span> </span><span class="COMM">/**
+<span class='line'> 13</span>  * (Virtual Class) Do not call this constructor. This class is not really part
+<span class='line'> 14</span>  *		of the API. It just illustrates the features of plugin objects to be
+<span class='line'> 15</span>  *		passed to the {@link CKEDITOR.plugins.add} function.
+<span class='line'> 16</span>  * @name CKEDITOR.pluginDefinition
+<span class='line'> 17</span>  * @constructor
+<span class='line'> 18</span>  * @example
+<span class='line'> 19</span>  */</span><span class="WHIT">
+<span class='line'> 20</span>
+<span class='line'> 21</span> </span><span class="COMM">/**
+<span class='line'> 22</span>  * A list of plugins that are required by this plugin. Note that this property
+<span class='line'> 23</span>  * doesn't guarantee the loading order of the plugins.
+<span class='line'> 24</span>  * @name CKEDITOR.pluginDefinition.prototype.requires
+<span class='line'> 25</span>  * @type Array
+<span class='line'> 26</span>  * @example
+<span class='line'> 27</span>  * CKEDITOR.plugins.add( 'sample',
+<span class='line'> 28</span>  * {
+<span class='line'> 29</span>  *     requires : [ 'button', 'selection' ]
+<span class='line'> 30</span>  * });
+<span class='line'> 31</span>  */</span><span class="WHIT">
+<span class='line'> 32</span>
+<span class='line'> 33</span> </span><span class="WHIT"> </span><span class="COMM">/**
+<span class='line'> 34</span>  * Function called on initialization of every editor instance created in the
+<span class='line'> 35</span>  * page before the init() call task. The beforeInit function will be called for
+<span class='line'> 36</span>  * all plugins, after that the init function is called for all of them. This
+<span class='line'> 37</span>  * feature makes it possible to initialize things that could be used in the
+<span class='line'> 38</span>  * init function of other plugins.
+<span class='line'> 39</span>  * @name CKEDITOR.pluginDefinition.prototype.beforeInit
+<span class='line'> 40</span>  * @function
+<span class='line'> 41</span>  * @param {CKEDITOR.editor} editor The editor instance being initialized.
+<span class='line'> 42</span>  * @example
+<span class='line'> 43</span>  * CKEDITOR.plugins.add( 'sample',
+<span class='line'> 44</span>  * {
+<span class='line'> 45</span>  *     beforeInit : function( editor )
+<span class='line'> 46</span>  *     {
+<span class='line'> 47</span>  *         alert( 'Editor "' + editor.name + '" is to be initialized!' );
+<span class='line'> 48</span>  *     }
+<span class='line'> 49</span>  * });
+<span class='line'> 50</span>  */</span><span class="WHIT">
+<span class='line'> 51</span>
+<span class='line'> 52</span> </span><span class="WHIT"> </span><span class="COMM">/**
+<span class='line'> 53</span>  * Function called on initialization of every editor instance created in the
+<span class='line'> 54</span>  * page.
+<span class='line'> 55</span>  * @name CKEDITOR.pluginDefinition.prototype.init
+<span class='line'> 56</span>  * @function
+<span class='line'> 57</span>  * @param {CKEDITOR.editor} editor The editor instance being initialized.
+<span class='line'> 58</span>  * @example
+<span class='line'> 59</span>  * CKEDITOR.plugins.add( 'sample',
+<span class='line'> 60</span>  * {
+<span class='line'> 61</span>  *     init : function( editor )
+<span class='line'> 62</span>  *     {
+<span class='line'> 63</span>  *         alert( 'Editor "' + editor.name + '" is being initialized!' );
+<span class='line'> 64</span>  *     }
+<span class='line'> 65</span>  * });
+<span class='line'> 66</span>  */</span><span class="WHIT">
+<span class='line'> 67</span> </span></pre></body></html>

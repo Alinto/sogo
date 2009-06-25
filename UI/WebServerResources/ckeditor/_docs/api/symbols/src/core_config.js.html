@@ -1,0 +1,243 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="COMM">/*
+<span class='line'>  2</span> Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
+<span class='line'>  3</span> For licensing, see LICENSE.html or http://ckeditor.com/license
+<span class='line'>  4</span> */</span><span class="WHIT">
+<span class='line'>  5</span>
+<span class='line'>  6</span> </span><span class="COMM">/**
+<span class='line'>  7</span>  * @fileOverview Defines the {@link CKEDITOR.config} object, which holds the
+<span class='line'>  8</span>  * default configuration settings.
+<span class='line'>  9</span>  */</span><span class="WHIT">
+<span class='line'> 10</span>
+<span class='line'> 11</span> </span><span class="NAME">CKEDITOR.ENTER_P</span><span class="WHIT">	</span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 12</span> </span><span class="NAME">CKEDITOR.ENTER_BR</span><span class="WHIT">	</span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 13</span> </span><span class="NAME">CKEDITOR.ENTER_DIV</span><span class="WHIT">	</span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">3</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 14</span>
+<span class='line'> 15</span> </span><span class="COMM">/**
+<span class='line'> 16</span>  * Holds the default configuration settings. Changes to this object are
+<span class='line'> 17</span>  * reflected in all editor instances, if not specificaly specified for those
+<span class='line'> 18</span>  * instances.
+<span class='line'> 19</span>  * @namespace
+<span class='line'> 20</span>  * @example
+<span class='line'> 21</span>  * // All editor created after the following setting will not load custom
+<span class='line'> 22</span>  * // configuration files.
+<span class='line'> 23</span>  * CKEDITOR.config.customConfig = '';
+<span class='line'> 24</span>  */</span><span class="WHIT">
+<span class='line'> 25</span> </span><span class="NAME">CKEDITOR.config</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT">
+<span class='line'> 26</span> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 27</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'> 28</span> 	 * The URL path for the custom configuration file to be loaded. If not
+<span class='line'> 29</span> 	 * overloaded with inline configurations, it defaults to the "config.js"
+<span class='line'> 30</span> 	 * file present in the root of the CKEditor installation directory.&lt;br />&lt;br />
+<span class='line'> 31</span> 	 *
+<span class='line'> 32</span> 	 * CKEditor will recursively load custom configuration files defined inside
+<span class='line'> 33</span> 	 * other custom configuration files.
+<span class='line'> 34</span> 	 * @type String
+<span class='line'> 35</span> 	 * @default '&lt;CKEditor folder&gt;/config.js'
+<span class='line'> 36</span> 	 * @example
+<span class='line'> 37</span> 	 * // Load a specific configuration file.
+<span class='line'> 38</span> 	 * CKEDITOR.replace( 'myfiled', { customConfig : '/myconfig.js' } );
+<span class='line'> 39</span> 	 * @example
+<span class='line'> 40</span> 	 * // Do not load any custom configuration file.
+<span class='line'> 41</span> 	 * CKEDITOR.replace( 'myfiled', { customConfig : '' } );
+<span class='line'> 42</span> 	 */</span><span class="WHIT">
+<span class='line'> 43</span> </span><span class="WHIT">	</span><span class="NAME">customConfig</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.getUrl</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'config.js'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 44</span>
+<span class='line'> 45</span> </span><span class="WHIT">	</span><span class="NAME">autoUpdateElement</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 46</span>
+<span class='line'> 47</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'> 48</span> 	 * The base href URL used to resolve relative and absolute URLs in the
+<span class='line'> 49</span> 	 * editor content.
+<span class='line'> 50</span> 	 * @type String
+<span class='line'> 51</span> 	 * @default '' (empty string)
+<span class='line'> 52</span> 	 * @example
+<span class='line'> 53</span> 	 * config.baseHref = 'http://www.example.com/path/';
+<span class='line'> 54</span> 	 */</span><span class="WHIT">
+<span class='line'> 55</span> </span><span class="WHIT">	</span><span class="NAME">baseHref</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">''</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 56</span>
+<span class='line'> 57</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'> 58</span> 	 * The CSS file to be used to apply style to the contents. It should
+<span class='line'> 59</span> 	 * reflect the CSS used in the final pages where the contents are to be
+<span class='line'> 60</span> 	 * used.
+<span class='line'> 61</span> 	 * @type String
+<span class='line'> 62</span> 	 * @default '&lt;CKEditor folder&gt;/contents.css'
+<span class='line'> 63</span> 	 * @example
+<span class='line'> 64</span> 	 * config.contentsCss = '/css/mysitestyles.css';
+<span class='line'> 65</span> 	 */</span><span class="WHIT">
+<span class='line'> 66</span> </span><span class="WHIT">	</span><span class="NAME">contentsCss</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.basePath</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">'contents.css'</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 67</span>
+<span class='line'> 68</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'> 69</span> 	 * The writting direction of the language used to write the editor
+<span class='line'> 70</span> 	 * contents. Allowed values are 'ltr' for Left-To-Right language (like
+<span class='line'> 71</span> 	 * English), or 'rtl' for Right-To-Left languages (like Arabic).
+<span class='line'> 72</span> 	 * @default 'ltr'
+<span class='line'> 73</span> 	 * @type String
+<span class='line'> 74</span> 	 * @example
+<span class='line'> 75</span> 	 * config.contentsLangDirection = 'rtl';
+<span class='line'> 76</span> 	 */</span><span class="WHIT">
+<span class='line'> 77</span> </span><span class="WHIT">	</span><span class="NAME">contentsLangDirection</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">'ltr'</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 78</span>
+<span class='line'> 79</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'> 80</span> 	 * The user interface language localization to use. If empty, the editor
+<span class='line'> 81</span> 	 * automatically localize the editor to the user language, if supported,
+<span class='line'> 82</span> 	 * otherwise the [@link #defaultLanguage] language is used.
+<span class='line'> 83</span> 	 * @default true
+<span class='line'> 84</span> 	 * @type Boolean
+<span class='line'> 85</span> 	 * @example
+<span class='line'> 86</span> 	 * // Load the German interface.
+<span class='line'> 87</span> 	 * config.language = 'de';
+<span class='line'> 88</span> 	 */</span><span class="WHIT">
+<span class='line'> 89</span> </span><span class="WHIT">	</span><span class="NAME">language</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">''</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 90</span>
+<span class='line'> 91</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'> 92</span> 	 * The language to be used if [@link #language] is left empty and it's not
+<span class='line'> 93</span> 	 * possible to localize the editor to the user language.
+<span class='line'> 94</span> 	 * @default 'en'
+<span class='line'> 95</span> 	 * @type String
+<span class='line'> 96</span> 	 * @example
+<span class='line'> 97</span> 	 * config.defaultLanguage = 'it';
+<span class='line'> 98</span> 	 */</span><span class="WHIT">
+<span class='line'> 99</span> </span><span class="WHIT">	</span><span class="NAME">defaultLanguage</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">'en'</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>100</span>
+<span class='line'>101</span> </span><span class="WHIT">	</span><span class="NAME">enterMode</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.ENTER_P</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>102</span> </span><span class="WHIT">	</span><span class="NAME">shiftEnterMode</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.ENTER_BR</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>103</span>
+<span class='line'>104</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'>105</span> 	 * A comma separated list of plugins that are not related to editor
+<span class='line'>106</span> 	 * instances. Reserved to plugins that extend the core code only.&lt;br />&lt;br />
+<span class='line'>107</span> 	 *
+<span class='line'>108</span> 	 * There are no ways to override this setting, except by editing the source
+<span class='line'>109</span> 	 * code of CKEditor (_source/core/config.js).
+<span class='line'>110</span> 	 * @type String
+<span class='line'>111</span> 	 * @example
+<span class='line'>112</span> 	 */</span><span class="WHIT">
+<span class='line'>113</span> </span><span class="WHIT">	</span><span class="NAME">corePlugins</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">''</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>114</span>
+<span class='line'>115</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'>116</span> 	 * Sets the doctype to be used when loading the editor content as HTML.
+<span class='line'>117</span> 	 * @type String
+<span class='line'>118</span> 	 * @default '&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;'
+<span class='line'>119</span> 	 * @example
+<span class='line'>120</span> 	 * // Set the doctype to the HTML 4 (quirks) mode.
+<span class='line'>121</span> 	 * config.docType = '&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"&gt;';
+<span class='line'>122</span> 	 */</span><span class="WHIT">
+<span class='line'>123</span> </span><span class="WHIT">	</span><span class="NAME">docType</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">'&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">'</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>124</span>
+<span class='line'>125</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'>126</span> 	 * Indicates whether the contents to be edited are being inputted as a full
+<span class='line'>127</span> 	 * HTML page. A full page includes the &lt;html&gt;, &lt;head&gt; and
+<span class='line'>128</span> 	 * &lt;body&gt; tags. The final output will also reflect this setting,
+<span class='line'>129</span> 	 * including the &lt;body&gt; contents only if this setting is disabled.
+<span class='line'>130</span> 	 * @type Boolean
+<span class='line'>131</span> 	 * @default false
+<span class='line'>132</span> 	 * @example
+<span class='line'>133</span> 	 * config.fullPage = true;
+<span class='line'>134</span> 	 */</span><span class="WHIT">
+<span class='line'>135</span> </span><span class="WHIT">	</span><span class="NAME">fullPage</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>136</span>
+<span class='line'>137</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'>138</span> 	 * The editor height, in CSS size format or pixel integer.
+<span class='line'>139</span> 	 * @type String|Number
+<span class='line'>140</span> 	 * @default '200'
+<span class='line'>141</span> 	 * @example
+<span class='line'>142</span> 	 */</span><span class="WHIT">
+<span class='line'>143</span> </span><span class="WHIT">	</span><span class="NAME">height</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">200</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>144</span>
+<span class='line'>145</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'>146</span> 	 * Comma separated list of plugins to load and initialize for an editor
+<span class='line'>147</span> 	 * instance.
+<span class='line'>148</span> 	 * @type String
+<span class='line'>149</span> 	 * @example
+<span class='line'>150</span> 	 * config.plugins = 'basicstyles,button,htmldataprocessor,toolbar,wysiwygarea';
+<span class='line'>151</span> 	 */</span><span class="WHIT">
+<span class='line'>152</span> </span><span class="WHIT">	</span><span class="NAME">plugins</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">'about,basicstyles,blockquote,button,clipboard,colorbutton,contextmenu,elementspath,enterkey,entities,filebrowser,find,flash,font,format,forms,horizontalrule,htmldataprocessor,image,indent,justify,keystrokes,link,list,maximize,newpage,pagebreak,pastefromword,pastetext,popup,preview,print,removeformat,resize,save,scayt,smiley,showblocks,sourcearea,stylescombo,table,tabletools,specialchar,tab,templates,toolbar,undo,wysiwygarea,wsc'</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>153</span>
+<span class='line'>154</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'>155</span> 	 * List of additional plugins to be loaded. This is a tool setting which
+<span class='line'>156</span> 	 * makes it easier to add new plugins, whithout having to touch and
+<span class='line'>157</span> 	 * possibly breaking the &lt;i>plugins&lt;/i> setting.
+<span class='line'>158</span> 	 * @type String
+<span class='line'>159</span> 	 * @example
+<span class='line'>160</span> 	 * config.extraPlugins = 'myplugin,anotherplugin';
+<span class='line'>161</span> 	 */</span><span class="WHIT">
+<span class='line'>162</span> </span><span class="WHIT">	</span><span class="NAME">extraPlugins</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">''</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>163</span>
+<span class='line'>164</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'>165</span> 	 * List of plugins that must not be loaded. This is a tool setting which
+<span class='line'>166</span> 	 * makes it easier to avoid loading plugins definied in the &lt;i>plugins&lt;/i>
+<span class='line'>167</span> 	 * setting, whithout having to touch and possibly breaking it.
+<span class='line'>168</span> 	 * @type String
+<span class='line'>169</span> 	 * @example
+<span class='line'>170</span> 	 * config.removePlugins = 'elementspath,save,font';
+<span class='line'>171</span> 	 */</span><span class="WHIT">
+<span class='line'>172</span> </span><span class="WHIT">	</span><span class="NAME">removePlugins</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">''</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>173</span>
+<span class='line'>174</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'>175</span> 	 * List of regular expressions to be executed over the input HTML,
+<span class='line'>176</span> 	 * indicating code that must stay untouched.
+<span class='line'>177</span> 	 * @type Array
+<span class='line'>178</span> 	 * @example
+<span class='line'>179</span> 	 * config.protectedSource.push( /&lt;\?[\s\S]*?\?>/g );   // PHP Code
+<span class='line'>180</span> 	 * config.protectedSource.push( /&lt;%[\s\S]*?%>/g );   // ASP Code
+<span class='line'>181</span> 	 * config.protectedSource.push( /(&lt;asp:[^\>]+>[\s|\S]*?&lt;\/asp:[^\>]+>)|(&lt;asp:[^\>]+\/>)/gi );   // ASP.Net Code
+<span class='line'>182</span> 	 */</span><span class="WHIT">
+<span class='line'>183</span> </span><span class="WHIT">	</span><span class="NAME">protectedSource</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>184</span>
+<span class='line'>185</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'>186</span> 	 * The editor tabindex value.
+<span class='line'>187</span> 	 * @type Number
+<span class='line'>188</span> 	 * @default 0 (zero)
+<span class='line'>189</span> 	 * @example
+<span class='line'>190</span> 	 * config.tabIndex = 1;
+<span class='line'>191</span> 	 */</span><span class="WHIT">
+<span class='line'>192</span> </span><span class="WHIT">	</span><span class="NAME">tabIndex</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>193</span>
+<span class='line'>194</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'>195</span> 	 * The theme to be used to build the UI.
+<span class='line'>196</span> 	 * @type String
+<span class='line'>197</span> 	 * @default 'default'
+<span class='line'>198</span> 	 * @see CKEDITOR.config.skin
+<span class='line'>199</span> 	 * @example
+<span class='line'>200</span> 	 * config.theme = 'default';
+<span class='line'>201</span> 	 */</span><span class="WHIT">
+<span class='line'>202</span> </span><span class="WHIT">	</span><span class="NAME">theme</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">'default'</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>203</span>
+<span class='line'>204</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'>205</span> 	 * The skin to load. It may be the name of the skin folder inside the
+<span class='line'>206</span> 	 * editor installation path, or the name and the path separated by a comma.
+<span class='line'>207</span> 	 * @type String
+<span class='line'>208</span> 	 * @default 'default'
+<span class='line'>209</span> 	 * @example
+<span class='line'>210</span> 	 * config.skin = 'v2';
+<span class='line'>211</span> 	 * @example
+<span class='line'>212</span> 	 * config.skin = 'myskin,/customstuff/myskin/';
+<span class='line'>213</span> 	 */</span><span class="WHIT">
+<span class='line'>214</span> </span><span class="WHIT">	</span><span class="NAME">skin</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">'kama'</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>215</span>
+<span class='line'>216</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'>217</span> 	 * The editor width in CSS size format or pixel integer.
+<span class='line'>218</span> 	 * @type String|Number
+<span class='line'>219</span> 	 * @default '100%'
+<span class='line'>220</span> 	 * @example
+<span class='line'>221</span> 	 */</span><span class="WHIT">
+<span class='line'>222</span> </span><span class="WHIT">	</span><span class="NAME">width</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">'100%'</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>223</span>
+<span class='line'>224</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'>225</span> 	 * The base Z-index for floating dialogs and popups.
+<span class='line'>226</span> 	 * @type Number
+<span class='line'>227</span> 	 * @default 10000
+<span class='line'>228</span> 	 * @example
+<span class='line'>229</span> 	 * config.baseFloatZIndex = 2000
+<span class='line'>230</span> 	 */</span><span class="WHIT">
+<span class='line'>231</span> </span><span class="WHIT">	</span><span class="NAME">baseFloatZIndex</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">10000</span><span class="WHIT">
+<span class='line'>232</span>
+<span class='line'>233</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>234</span>
+<span class='line'>235</span> </span><span class="COMM">// PACKAGER_RENAME( CKEDITOR.config )</span><span class="WHIT">
+<span class='line'>236</span> </span></pre></body></html>

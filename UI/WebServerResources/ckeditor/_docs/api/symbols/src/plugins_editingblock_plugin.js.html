@@ -1,0 +1,233 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="TOKN">﻿</span><span class="COMM">/*
+<span class='line'>  2</span> Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
+<span class='line'>  3</span> For licensing, see LICENSE.html or http://ckeditor.com/license
+<span class='line'>  4</span> */</span><span class="WHIT">
+<span class='line'>  5</span>
+<span class='line'>  6</span> </span><span class="COMM">/**
+<span class='line'>  7</span>  * @fileOverview The default editing block plugin, which holds the editing area
+<span class='line'>  8</span>  *		and source view.
+<span class='line'>  9</span>  */</span><span class="WHIT">
+<span class='line'> 10</span>
+<span class='line'> 11</span> </span><span class="PUNC">(</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 12</span> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 13</span> </span><span class="WHIT">	</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">getMode</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">editor</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">mode</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 14</span> </span><span class="WHIT">	</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 15</span> </span><span class="WHIT">		</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">editor._.modes</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">editor._.modes</span><span class="PUNC">[</span><span class="WHIT"> </span><span class="NAME">mode</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NAME">editor.mode</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 16</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 17</span>
+<span class='line'> 18</span> </span><span class="WHIT">	</span><span class="COMM">// This is a semaphore used to avoid recursive calls between</span><span class="WHIT">
+<span class='line'> 19</span> </span><span class="WHIT">	</span><span class="COMM">// the following data handling functions.</span><span class="WHIT">
+<span class='line'> 20</span> </span><span class="WHIT">	</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">isHandlingData</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 21</span>
+<span class='line'> 22</span> </span><span class="WHIT">	</span><span class="NAME">CKEDITOR.plugins.add</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'editingblock'</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 23</span> </span><span class="WHIT">	</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 24</span> </span><span class="WHIT">		</span><span class="NAME">init</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">editor</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 25</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 26</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">editor.config.editingBlock</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 27</span> </span><span class="WHIT">				</span><span class="KEYW">return</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 28</span>
+<span class='line'> 29</span> </span><span class="WHIT">			</span><span class="NAME">editor.on</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'themeSpace'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">event</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 30</span> </span><span class="WHIT">				</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 31</span> </span><span class="WHIT">					</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">event.data.space</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="STRN">'contents'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 32</span> </span><span class="WHIT">						</span><span class="NAME">event.data.html</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'&lt;br>'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 33</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 34</span>
+<span class='line'> 35</span> </span><span class="WHIT">			</span><span class="NAME">editor.on</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'themeLoaded'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 36</span> </span><span class="WHIT">				</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 37</span> </span><span class="WHIT">					</span><span class="NAME">editor.fireOnce</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'editingBlockReady'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 38</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 39</span>
+<span class='line'> 40</span> </span><span class="WHIT">			</span><span class="NAME">editor.on</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'uiReady'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 41</span> </span><span class="WHIT">				</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 42</span> </span><span class="WHIT">					</span><span class="NAME">editor.setMode</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">editor.config.startupMode</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 43</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 44</span>
+<span class='line'> 45</span> </span><span class="WHIT">			</span><span class="NAME">editor.on</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'afterSetData'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 46</span> </span><span class="WHIT">				</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 47</span> </span><span class="WHIT">					</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">isHandlingData</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 48</span> </span><span class="WHIT">					</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 49</span> </span><span class="WHIT">						</span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">setData</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 50</span> </span><span class="WHIT">						</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 51</span> </span><span class="WHIT">							</span><span class="NAME">isHandlingData</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 52</span> </span><span class="WHIT">							</span><span class="NAME">getMode</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">editor</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">loadData</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">editor.getData</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 53</span> </span><span class="WHIT">							</span><span class="NAME">isHandlingData</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 54</span> </span><span class="WHIT">						</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 55</span>
+<span class='line'> 56</span> </span><span class="WHIT">						</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">editor.mode</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 57</span> </span><span class="WHIT">							</span><span class="NAME">setData</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 58</span> </span><span class="WHIT">						</span><span class="KEYW">else</span><span class="WHIT">
+<span class='line'> 59</span> </span><span class="WHIT">						</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 60</span> </span><span class="WHIT">							</span><span class="NAME">editor.on</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'mode'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 61</span> </span><span class="WHIT">								</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 62</span> </span><span class="WHIT">									</span><span class="NAME">setData</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 63</span> </span><span class="WHIT">									</span><span class="NAME">editor.removeListener</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'mode'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">arguments.callee</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 64</span> </span><span class="WHIT">								</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 65</span> </span><span class="WHIT">						</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 66</span> </span><span class="WHIT">					</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 67</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 68</span>
+<span class='line'> 69</span> </span><span class="WHIT">			</span><span class="NAME">editor.on</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'beforeGetData'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 70</span> </span><span class="WHIT">				</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 71</span> </span><span class="WHIT">					</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">isHandlingData</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">editor.mode</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 72</span> </span><span class="WHIT">					</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 73</span> </span><span class="WHIT">						</span><span class="NAME">isHandlingData</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 74</span> </span><span class="WHIT">						</span><span class="NAME">editor.setData</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">getMode</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">editor</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">getData</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 75</span> </span><span class="WHIT">						</span><span class="NAME">isHandlingData</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 76</span> </span><span class="WHIT">					</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 77</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 78</span>
+<span class='line'> 79</span> </span><span class="WHIT">			</span><span class="NAME">editor.on</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'getSnapshot'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">event</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 80</span> </span><span class="WHIT">				</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 81</span> </span><span class="WHIT">					</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">editor.mode</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 82</span> </span><span class="WHIT">						</span><span class="NAME">event.data</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">getMode</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">editor</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">getSnapshotData</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 83</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 84</span>
+<span class='line'> 85</span> </span><span class="WHIT">			</span><span class="NAME">editor.on</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'loadSnapshot'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">event</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 86</span> </span><span class="WHIT">				</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 87</span> </span><span class="WHIT">					</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">editor.mode</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 88</span> </span><span class="WHIT">						</span><span class="NAME">getMode</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">editor</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">loadSnapshotData</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">event.data</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 89</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 90</span>
+<span class='line'> 91</span> </span><span class="WHIT">			</span><span class="COMM">// For the first "mode" call, we'll also fire the "instanceReady"</span><span class="WHIT">
+<span class='line'> 92</span> </span><span class="WHIT">			</span><span class="COMM">// event.</span><span class="WHIT">
+<span class='line'> 93</span> </span><span class="WHIT">			</span><span class="NAME">editor.on</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'mode'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">event</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 94</span> </span><span class="WHIT">				</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 95</span> </span><span class="WHIT">					</span><span class="COMM">// Do that once only.</span><span class="WHIT">
+<span class='line'> 96</span> </span><span class="WHIT">					</span><span class="NAME">event.removeListener</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 97</span>
+<span class='line'> 98</span> </span><span class="WHIT">					</span><span class="COMM">// Grab editor focus if the editor container is focused. (#3104)</span><span class="WHIT">
+<span class='line'> 99</span> </span><span class="WHIT">					</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">focusGrabber</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">editor.container</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>100</span>
+<span class='line'>101</span> </span><span class="WHIT">					</span><span class="COMM">// Safari 3 can't handle tabindex in all elements, so we do</span><span class="WHIT">
+<span class='line'>102</span> </span><span class="WHIT">					</span><span class="COMM">// a trick to make it move the focus to the editor on TAB.</span><span class="WHIT">
+<span class='line'>103</span> </span><span class="WHIT">					</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.env.webkit</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.env.version</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NUMB">528</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>104</span> </span><span class="WHIT">					</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>105</span> </span><span class="WHIT">						</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">tabIndex</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">editor.config.tabIndex</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NAME">editor.element.getAttribute</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'tabindex'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>106</span> </span><span class="WHIT">						</span><span class="NAME">focusGrabber</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">focusGrabber.append</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.dom.element.createFromHtml</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>107</span> </span><span class="WHIT">							</span><span class="STRN">'&lt;input'</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT">
+<span class='line'>108</span> </span><span class="WHIT">								</span><span class="STRN">' tabindex="'</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">tabIndex</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">'"'</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT">
+<span class='line'>109</span> </span><span class="WHIT">								</span><span class="STRN">' style="position:absolute; left:-10000">'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>110</span> </span><span class="WHIT">					</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>111</span>
+<span class='line'>112</span> </span><span class="WHIT">					</span><span class="NAME">focusGrabber.on</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'focus'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>113</span> </span><span class="WHIT">						</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>114</span> </span><span class="WHIT">							</span><span class="NAME">editor.focus</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>115</span> </span><span class="WHIT">						</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>116</span>
+<span class='line'>117</span> </span><span class="WHIT">					</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">editor.config.startupFocus</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>118</span> </span><span class="WHIT">						</span><span class="NAME">editor.focus</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>119</span>
+<span class='line'>120</span> </span><span class="WHIT">					</span><span class="COMM">// Fire instanceReady for both the editor and CKEDITOR, but</span><span class="WHIT">
+<span class='line'>121</span> </span><span class="WHIT">					</span><span class="COMM">// defer this until the whole execution has completed</span><span class="WHIT">
+<span class='line'>122</span> </span><span class="WHIT">					</span><span class="COMM">// to guarantee the editor is fully responsible.</span><span class="WHIT">
+<span class='line'>123</span> </span><span class="WHIT">					</span><span class="NAME">setTimeout</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>124</span> </span><span class="WHIT">						</span><span class="NAME">editor.fireOnce</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'instanceReady'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>125</span> </span><span class="WHIT">						</span><span class="NAME">CKEDITOR.fire</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'instanceReady'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">editor</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>126</span> </span><span class="WHIT">					</span><span class="PUNC">}</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>127</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>128</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>129</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>130</span>
+<span class='line'>131</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'>132</span> 	 * The current editing mode. An editing mode is basically a viewport for
+<span class='line'>133</span> 	 * editing or content viewing. By default the possible values for this
+<span class='line'>134</span> 	 * property are "wysiwyg" and "source".
+<span class='line'>135</span> 	 * @type String
+<span class='line'>136</span> 	 * @example
+<span class='line'>137</span> 	 * alert( CKEDITOR.instances.editor1.mode );  // "wysiwyg" (e.g.)
+<span class='line'>138</span> 	 */</span><span class="WHIT">
+<span class='line'>139</span> </span><span class="WHIT">	</span><span class="NAME">CKEDITOR.editor.prototype.mode</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">''</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>140</span>
+<span class='line'>141</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'>142</span> 	 * Registers an editing mode. This function is to be used mainly by plugins.
+<span class='line'>143</span> 	 * @param {String} mode The mode name.
+<span class='line'>144</span> 	 * @param {Object} modeEditor The mode editor definition.
+<span class='line'>145</span> 	 * @example
+<span class='line'>146</span> 	 */</span><span class="WHIT">
+<span class='line'>147</span> </span><span class="WHIT">	</span><span class="NAME">CKEDITOR.editor.prototype.addMode</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">mode</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">modeEditor</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>148</span> </span><span class="WHIT">	</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>149</span> </span><span class="WHIT">		</span><span class="NAME">modeEditor.name</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">mode</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>150</span> </span><span class="WHIT">		</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">this._.modes</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">this._.modes</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="PUNC">}</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">[</span><span class="WHIT"> </span><span class="NAME">mode</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">modeEditor</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>151</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>152</span>
+<span class='line'>153</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'>154</span> 	 * Sets the current editing mode in this editor instance.
+<span class='line'>155</span> 	 * @param {String} mode A registered mode name.
+<span class='line'>156</span> 	 * @example
+<span class='line'>157</span> 	 * // Switch to "source" view.
+<span class='line'>158</span> 	 * CKEDITOR.instances.editor1.setMode( 'source' );
+<span class='line'>159</span> 	 */</span><span class="WHIT">
+<span class='line'>160</span> </span><span class="WHIT">	</span><span class="NAME">CKEDITOR.editor.prototype.setMode</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">mode</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>161</span> </span><span class="WHIT">	</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>162</span> </span><span class="WHIT">		</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">data</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>163</span> </span><span class="WHIT">			</span><span class="NAME">holderElement</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.getThemeSpace</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'contents'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>164</span> </span><span class="WHIT">			</span><span class="NAME">isDirty</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.checkDirty</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>165</span>
+<span class='line'>166</span> </span><span class="WHIT">		</span><span class="COMM">// Unload the previous mode.</span><span class="WHIT">
+<span class='line'>167</span> </span><span class="WHIT">		</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">this.mode</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>168</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>169</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">mode</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">this.mode</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>170</span> </span><span class="WHIT">				</span><span class="KEYW">return</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>171</span>
+<span class='line'>172</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">currentMode</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">getMode</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>173</span> </span><span class="WHIT">			</span><span class="NAME">data</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">currentMode.getData</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>174</span> </span><span class="WHIT">			</span><span class="NAME">currentMode.unload</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">holderElement</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>175</span> </span><span class="WHIT">			</span><span class="NAME">this.mode</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">''</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>176</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>177</span>
+<span class='line'>178</span> </span><span class="WHIT">		</span><span class="NAME">holderElement.setHtml</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">''</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>179</span>
+<span class='line'>180</span> </span><span class="WHIT">		</span><span class="COMM">// Load required mode.</span><span class="WHIT">
+<span class='line'>181</span> </span><span class="WHIT">		</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">modeEditor</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">getMode</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">mode</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>182</span> </span><span class="WHIT">		</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">modeEditor</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>183</span> </span><span class="WHIT">			</span><span class="KEYW">throw</span><span class="WHIT"> </span><span class="STRN">'[CKEDITOR.editor.setMode] Unknown mode "'</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">mode</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">'".'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>184</span>
+<span class='line'>185</span> </span><span class="WHIT">		</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">isDirty</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>186</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>187</span> </span><span class="WHIT">			</span><span class="NAME">this.on</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'mode'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>188</span> </span><span class="WHIT">				</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>189</span> </span><span class="WHIT">					</span><span class="NAME">this.resetDirty</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>190</span> </span><span class="WHIT">					</span><span class="NAME">this.removeListener</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'mode'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">arguments.callee</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>191</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>192</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>193</span>
+<span class='line'>194</span> </span><span class="WHIT">		</span><span class="NAME">modeEditor.load</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">holderElement</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">typeof</span><span class="WHIT"> </span><span class="NAME">data</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="STRN">'string'</span><span class="WHIT">  </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="NAME">this.getData</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">data</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>195</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>196</span>
+<span class='line'>197</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'>198</span> 	 * Moves the selection focus to the editing are space in the editor.
+<span class='line'>199</span> 	 */</span><span class="WHIT">
+<span class='line'>200</span> </span><span class="WHIT">	</span><span class="NAME">CKEDITOR.editor.prototype.focus</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>201</span> </span><span class="WHIT">	</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>202</span> </span><span class="WHIT">		</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">mode</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">getMode</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>203</span> </span><span class="WHIT">		</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">mode</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>204</span> </span><span class="WHIT">			</span><span class="NAME">mode.focus</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>205</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>206</span> </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>207</span>
+<span class='line'>208</span> </span><span class="COMM">/**
+<span class='line'>209</span>  * The mode to load at the editor startup. It depends on the plugins
+<span class='line'>210</span>  * loaded. By default, the "wysiwyg" and "source" modes are available.
+<span class='line'>211</span>  * @type String
+<span class='line'>212</span>  * @default 'wysiwyg'
+<span class='line'>213</span>  * @example
+<span class='line'>214</span>  * config.toolbarLocation = 'source';
+<span class='line'>215</span>  */</span><span class="WHIT">
+<span class='line'>216</span> </span><span class="NAME">CKEDITOR.config.startupMode</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'wysiwyg'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>217</span>
+<span class='line'>218</span> </span><span class="COMM">/**
+<span class='line'>219</span>  * Sets whether the editor should have the focus when the page loads.
+<span class='line'>220</span>  * @type Boolean
+<span class='line'>221</span>  * @default false
+<span class='line'>222</span>  */</span><span class="WHIT">
+<span class='line'>223</span> </span><span class="NAME">CKEDITOR.config.startupFocus</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>224</span>
+<span class='line'>225</span> </span><span class="NAME">CKEDITOR.config.editingBlock</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>226</span> </span></pre></body></html>

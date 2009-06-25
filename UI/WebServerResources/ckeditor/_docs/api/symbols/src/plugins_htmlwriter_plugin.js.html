@@ -1,0 +1,297 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="TOKN">﻿</span><span class="COMM">/*
+<span class='line'>  2</span> Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
+<span class='line'>  3</span> For licensing, see LICENSE.html or http://ckeditor.com/license
+<span class='line'>  4</span> */</span><span class="WHIT">
+<span class='line'>  5</span>
+<span class='line'>  6</span> </span><span class="NAME">CKEDITOR.plugins.add</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'htmlwriter'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>  7</span>
+<span class='line'>  8</span> </span><span class="COMM">/**
+<span class='line'>  9</span>  * Class used to write HTML data.
+<span class='line'> 10</span>  * @constructor
+<span class='line'> 11</span>  * @example
+<span class='line'> 12</span>  * var writer = new CKEDITOR.htmlWriter();
+<span class='line'> 13</span>  * writer.openTag( 'p' );
+<span class='line'> 14</span>  * writer.attribute( 'class', 'MyClass' );
+<span class='line'> 15</span>  * writer.openTagClose( 'p' );
+<span class='line'> 16</span>  * writer.text( 'Hello' );
+<span class='line'> 17</span>  * writer.closeTag( 'p' );
+<span class='line'> 18</span>  * alert( writer.getHtml() );  "&lt;p class="MyClass"&gt;Hello&lt;/p&gt;"
+<span class='line'> 19</span>  */</span><span class="WHIT">
+<span class='line'> 20</span> </span><span class="NAME">CKEDITOR.htmlWriter</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.tools.createClass</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'> 21</span> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 22</span> </span><span class="WHIT">	</span><span class="NAME">base</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.htmlParser.basicWriter</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 23</span>
+<span class='line'> 24</span> </span><span class="WHIT">	</span><span class="NAME">$</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 25</span> </span><span class="WHIT">	</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 26</span> </span><span class="WHIT">		</span><span class="COMM">// Call the base contructor.</span><span class="WHIT">
+<span class='line'> 27</span> </span><span class="WHIT">		</span><span class="NAME">this.base</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 28</span>
+<span class='line'> 29</span> </span><span class="WHIT">		</span><span class="COMM">/**
+<span class='line'> 30</span> 		 * The characters to be used for each identation step.
+<span class='line'> 31</span> 		 * @type String
+<span class='line'> 32</span> 		 * @default "\t" (tab)
+<span class='line'> 33</span> 		 * @example
+<span class='line'> 34</span> 		 * // Use two spaces for indentation.
+<span class='line'> 35</span> 		 * editorInstance.dataProcessor.writer.indentationChars = '  ';
+<span class='line'> 36</span> 		 */</span><span class="WHIT">
+<span class='line'> 37</span> </span><span class="WHIT">		</span><span class="NAME">this.indentationChars</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'\t'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 38</span>
+<span class='line'> 39</span> </span><span class="WHIT">		</span><span class="COMM">/**
+<span class='line'> 40</span> 		 * The characters to be used to close "self-closing" elements, like "br" or
+<span class='line'> 41</span> 		 * "img".
+<span class='line'> 42</span> 		 * @type String
+<span class='line'> 43</span> 		 * @default " /&gt;"
+<span class='line'> 44</span> 		 * @example
+<span class='line'> 45</span> 		 * // Use HTML4 notation for self-closing elements.
+<span class='line'> 46</span> 		 * editorInstance.dataProcessor.writer.selfClosingEnd = '>';
+<span class='line'> 47</span> 		 */</span><span class="WHIT">
+<span class='line'> 48</span> </span><span class="WHIT">		</span><span class="NAME">this.selfClosingEnd</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">' />'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 49</span>
+<span class='line'> 50</span> </span><span class="WHIT">		</span><span class="COMM">/**
+<span class='line'> 51</span> 		 * The characters to be used for line breaks.
+<span class='line'> 52</span> 		 * @type String
+<span class='line'> 53</span> 		 * @default "\n" (LF)
+<span class='line'> 54</span> 		 * @example
+<span class='line'> 55</span> 		 * // Use CRLF for line breaks.
+<span class='line'> 56</span> 		 * editorInstance.dataProcessor.writer.lineBreakChars = '\r\n';
+<span class='line'> 57</span> 		 */</span><span class="WHIT">
+<span class='line'> 58</span> </span><span class="WHIT">		</span><span class="NAME">this.lineBreakChars</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'\n'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 59</span>
+<span class='line'> 60</span> </span><span class="WHIT">		</span><span class="NAME">this.forceSimpleAmpersand</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 61</span>
+<span class='line'> 62</span> </span><span class="WHIT">		</span><span class="NAME">this.sortAttributes</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 63</span>
+<span class='line'> 64</span> </span><span class="WHIT">		</span><span class="NAME">this._.indent</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 65</span> </span><span class="WHIT">		</span><span class="NAME">this._.indentation</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">''</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 66</span> </span><span class="WHIT">		</span><span class="NAME">this._.rules</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 67</span>
+<span class='line'> 68</span> </span><span class="WHIT">		</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">dtd</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.dtd</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 69</span>
+<span class='line'> 70</span> </span><span class="WHIT">		</span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">e</span><span class="WHIT"> </span><span class="KEYW">in</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.tools.extend</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">dtd.$block</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">dtd.$listItem</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">dtd.$tableContent</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 71</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 72</span> </span><span class="WHIT">			</span><span class="NAME">this.setRules</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">e</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 73</span> </span><span class="WHIT">				</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 74</span> </span><span class="WHIT">					</span><span class="NAME">indent</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 75</span> </span><span class="WHIT">					</span><span class="NAME">breakBeforeOpen</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 76</span> </span><span class="WHIT">					</span><span class="NAME">breakAfterOpen</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 77</span> </span><span class="WHIT">					</span><span class="NAME">breakBeforeClose</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">dtd</span><span class="PUNC">[</span><span class="WHIT"> </span><span class="NAME">e</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="PUNC">[</span><span class="WHIT"> </span><span class="STRN">'#'</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 78</span> </span><span class="WHIT">					</span><span class="NAME">breakAfterClose</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="WHIT">
+<span class='line'> 79</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 80</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 81</span> </span><span class="WHIT">		</span><span class="NAME">this.setRules</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'br'</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 82</span> </span><span class="WHIT">			</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 83</span> </span><span class="WHIT">				</span><span class="NAME">breakAfterOpen</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="WHIT">
+<span class='line'> 84</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 85</span> </span><span class="WHIT">		</span><span class="COMM">// Disable indentation on &lt;pre>.</span><span class="WHIT">
+<span class='line'> 86</span> </span><span class="WHIT">		</span><span class="NAME">this.setRules</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'pre'</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 87</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 88</span> </span><span class="WHIT">		  </span><span class="NAME">indent</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="WHIT">
+<span class='line'> 89</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 90</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 91</span>
+<span class='line'> 92</span> </span><span class="WHIT">	</span><span class="NAME">proto</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT">
+<span class='line'> 93</span> </span><span class="WHIT">	</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 94</span> </span><span class="WHIT">		</span><span class="COMM">/**
+<span class='line'> 95</span> 		 * Writes the tag opening part for a opener tag.
+<span class='line'> 96</span> 		 * @param {String} tagName The element name for this tag.
+<span class='line'> 97</span> 		 * @param {Object} attributes The attributes defined for this tag. The
+<span class='line'> 98</span> 		 *		attributes could be used to inspect the tag.
+<span class='line'> 99</span> 		 * @example
+<span class='line'>100</span> 		 * // Writes "&lt;p".
+<span class='line'>101</span> 		 * writer.openTag( 'p', { class : 'MyClass', id : 'MyId' } );
+<span class='line'>102</span> 		 */</span><span class="WHIT">
+<span class='line'>103</span> </span><span class="WHIT">		</span><span class="NAME">openTag</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">tagName</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">attributes</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>104</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>105</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">rules</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this._.rules</span><span class="PUNC">[</span><span class="WHIT"> </span><span class="NAME">tagName</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>106</span>
+<span class='line'>107</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">this._.indent</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>108</span> </span><span class="WHIT">				</span><span class="NAME">this.indentation</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>109</span> </span><span class="WHIT">			</span><span class="COMM">// Do not break if indenting.</span><span class="WHIT">
+<span class='line'>110</span> </span><span class="WHIT">			</span><span class="KEYW">else</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">rules</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">rules.breakBeforeOpen</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>111</span> </span><span class="WHIT">			</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>112</span> </span><span class="WHIT">				</span><span class="NAME">this.lineBreak</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>113</span> </span><span class="WHIT">				</span><span class="NAME">this.indentation</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>114</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>115</span>
+<span class='line'>116</span> </span><span class="WHIT">			</span><span class="NAME">this._.output.push</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'&lt;'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">tagName</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>117</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>118</span>
+<span class='line'>119</span> </span><span class="WHIT">		</span><span class="COMM">/**
+<span class='line'>120</span> 		 * Writes the tag closing part for a opener tag.
+<span class='line'>121</span> 		 * @param {String} tagName The element name for this tag.
+<span class='line'>122</span> 		 * @param {Boolean} isSelfClose Indicates that this is a self-closing tag,
+<span class='line'>123</span> 		 *		like "br" or "img".
+<span class='line'>124</span> 		 * @example
+<span class='line'>125</span> 		 * // Writes "&gt;".
+<span class='line'>126</span> 		 * writer.openTagClose( 'p', false );
+<span class='line'>127</span> 		 * @example
+<span class='line'>128</span> 		 * // Writes " /&gt;".
+<span class='line'>129</span> 		 * writer.openTagClose( 'br', true );
+<span class='line'>130</span> 		 */</span><span class="WHIT">
+<span class='line'>131</span> </span><span class="WHIT">		</span><span class="NAME">openTagClose</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">tagName</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">isSelfClose</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>132</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>133</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">rules</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this._.rules</span><span class="PUNC">[</span><span class="WHIT"> </span><span class="NAME">tagName</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>134</span>
+<span class='line'>135</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">isSelfClose</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>136</span> </span><span class="WHIT">				</span><span class="NAME">this._.output.push</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">this.selfClosingEnd</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>137</span> </span><span class="WHIT">			</span><span class="KEYW">else</span><span class="WHIT">
+<span class='line'>138</span> </span><span class="WHIT">			</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>139</span> </span><span class="WHIT">				</span><span class="NAME">this._.output.push</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'>'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>140</span>
+<span class='line'>141</span> </span><span class="WHIT">				</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">rules</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">rules.indent</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>142</span> </span><span class="WHIT">					</span><span class="NAME">this._.indentation</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.indentationChars</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>143</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>144</span>
+<span class='line'>145</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">rules</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">rules.breakAfterOpen</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>146</span> </span><span class="WHIT">				</span><span class="NAME">this.lineBreak</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>147</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>148</span>
+<span class='line'>149</span> </span><span class="WHIT">		</span><span class="COMM">/**
+<span class='line'>150</span> 		 * Writes an attribute. This function should be called after opening the
+<span class='line'>151</span> 		 * tag with {@link #openTagClose}.
+<span class='line'>152</span> 		 * @param {String} attName The attribute name.
+<span class='line'>153</span> 		 * @param {String} attValue The attribute value.
+<span class='line'>154</span> 		 * @example
+<span class='line'>155</span> 		 * // Writes ' class="MyClass"'.
+<span class='line'>156</span> 		 * writer.attribute( 'class', 'MyClass' );
+<span class='line'>157</span> 		 */</span><span class="WHIT">
+<span class='line'>158</span> </span><span class="WHIT">		</span><span class="NAME">attribute</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">attName</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">attValue</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>159</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>160</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">this.forceSimpleAmpersand</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>161</span> </span><span class="WHIT">				</span><span class="NAME">attValue</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">attValue.replace</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="REGX">/&amp;/</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'&'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>162</span>
+<span class='line'>163</span> </span><span class="WHIT">			</span><span class="NAME">this._.output.push</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">' '</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">attName</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'="'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">attValue</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'"'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>164</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>165</span>
+<span class='line'>166</span> </span><span class="WHIT">		</span><span class="COMM">/**
+<span class='line'>167</span> 		 * Writes a closer tag.
+<span class='line'>168</span> 		 * @param {String} tagName The element name for this tag.
+<span class='line'>169</span> 		 * @example
+<span class='line'>170</span> 		 * // Writes "&lt;/p&gt;".
+<span class='line'>171</span> 		 * writer.closeTag( 'p' );
+<span class='line'>172</span> 		 */</span><span class="WHIT">
+<span class='line'>173</span> </span><span class="WHIT">		</span><span class="NAME">closeTag</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">tagName</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>174</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>175</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">rules</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this._.rules</span><span class="PUNC">[</span><span class="WHIT"> </span><span class="NAME">tagName</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>176</span>
+<span class='line'>177</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">rules</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">rules.indent</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>178</span> </span><span class="WHIT">				</span><span class="NAME">this._.indentation</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this._.indentation.substr</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">this.indentationChars.length</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>179</span>
+<span class='line'>180</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">this._.indent</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>181</span> </span><span class="WHIT">				</span><span class="NAME">this.indentation</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>182</span> </span><span class="WHIT">			</span><span class="COMM">// Do not break if indenting.</span><span class="WHIT">
+<span class='line'>183</span> </span><span class="WHIT">			</span><span class="KEYW">else</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">rules</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">rules.breakBeforeClose</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>184</span> </span><span class="WHIT">			</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>185</span> </span><span class="WHIT">				</span><span class="NAME">this.lineBreak</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>186</span> </span><span class="WHIT">				</span><span class="NAME">this.indentation</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>187</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>188</span>
+<span class='line'>189</span> </span><span class="WHIT">			</span><span class="NAME">this._.output.push</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'&lt;/'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">tagName</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'>'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>190</span>
+<span class='line'>191</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">rules</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">rules.breakAfterClose</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>192</span> </span><span class="WHIT">				</span><span class="NAME">this.lineBreak</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>193</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>194</span>
+<span class='line'>195</span> </span><span class="WHIT">		</span><span class="COMM">/**
+<span class='line'>196</span> 		 * Writes text.
+<span class='line'>197</span> 		 * @param {String} text The text value
+<span class='line'>198</span> 		 * @example
+<span class='line'>199</span> 		 * // Writes "Hello Word".
+<span class='line'>200</span> 		 * writer.text( 'Hello Word' );
+<span class='line'>201</span> 		 */</span><span class="WHIT">
+<span class='line'>202</span> </span><span class="WHIT">		</span><span class="NAME">text</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">text</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>203</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>204</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">this._.indent</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>205</span> </span><span class="WHIT">			</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>206</span> </span><span class="WHIT">				</span><span class="NAME">this.indentation</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>207</span> </span><span class="WHIT">				</span><span class="NAME">text</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.tools.ltrim</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">text</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>208</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>209</span>
+<span class='line'>210</span> </span><span class="WHIT">			</span><span class="NAME">this._.output.push</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">text</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>211</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>212</span>
+<span class='line'>213</span> </span><span class="WHIT">		</span><span class="COMM">/**
+<span class='line'>214</span> 		 * Writes a comment.
+<span class='line'>215</span> 		 * @param {String} comment The comment text.
+<span class='line'>216</span> 		 * @example
+<span class='line'>217</span> 		 * // Writes "&lt;!-- My comment --&gt;".
+<span class='line'>218</span> 		 * writer.comment( ' My comment ' );
+<span class='line'>219</span> 		 */</span><span class="WHIT">
+<span class='line'>220</span> </span><span class="WHIT">		</span><span class="NAME">comment</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">comment</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>221</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>222</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">this._.indent</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>223</span> </span><span class="WHIT">				</span><span class="NAME">this.indentation</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>224</span>
+<span class='line'>225</span> </span><span class="WHIT">			</span><span class="NAME">this._.output.push</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'&lt;!--'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">comment</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'-->'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>226</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>227</span>
+<span class='line'>228</span> </span><span class="WHIT">		</span><span class="COMM">/**
+<span class='line'>229</span> 		 * Writes a line break. It uses the {@link #lineBreakChars} property for it.
+<span class='line'>230</span> 		 * @example
+<span class='line'>231</span> 		 * // Writes "\n" (e.g.).
+<span class='line'>232</span> 		 * writer.lineBreak();
+<span class='line'>233</span> 		 */</span><span class="WHIT">
+<span class='line'>234</span> </span><span class="WHIT">		</span><span class="NAME">lineBreak</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>235</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>236</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">this._.output.length</span><span class="WHIT"> </span><span class="PUNC">></span><span class="WHIT"> </span><span class="NUMB">0</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>237</span> </span><span class="WHIT">				</span><span class="NAME">this._.output.push</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">this.lineBreakChars</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>238</span> </span><span class="WHIT">			</span><span class="NAME">this._.indent</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>239</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>240</span>
+<span class='line'>241</span> </span><span class="WHIT">		</span><span class="COMM">/**
+<span class='line'>242</span> 		 * Writes the current indentation chars. It uses the
+<span class='line'>243</span> 		 * {@link #indentationChars} property, repeating it for the current
+<span class='line'>244</span> 		 * indentation steps.
+<span class='line'>245</span> 		 * @example
+<span class='line'>246</span> 		 * // Writes "\t" (e.g.).
+<span class='line'>247</span> 		 * writer.indentation();
+<span class='line'>248</span> 		 */</span><span class="WHIT">
+<span class='line'>249</span> </span><span class="WHIT">		</span><span class="NAME">indentation</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>250</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>251</span> </span><span class="WHIT">			</span><span class="NAME">this._.output.push</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">this._.indentation</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>252</span> </span><span class="WHIT">			</span><span class="NAME">this._.indent</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>253</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>254</span>
+<span class='line'>255</span> </span><span class="WHIT">		</span><span class="COMM">/**
+<span class='line'>256</span> 		 * Sets formatting rules for a give element. The possible rules are:
+<span class='line'>257</span> 		 * &lt;ul>
+<span class='line'>258</span> 		 *	&lt;li>&lt;b>indent&lt;/b>: indent the element contents.&lt;/li>
+<span class='line'>259</span> 		 *	&lt;li>&lt;b>breakBeforeOpen&lt;/b>: break line before the opener tag for this element.&lt;/li>
+<span class='line'>260</span> 		 *	&lt;li>&lt;b>breakAfterOpen&lt;/b>: break line after the opener tag for this element.&lt;/li>
+<span class='line'>261</span> 		 *	&lt;li>&lt;b>breakBeforeClose&lt;/b>: break line before the closer tag for this element.&lt;/li>
+<span class='line'>262</span> 		 *	&lt;li>&lt;b>breakAfterClose&lt;/b>: break line after the closer tag for this element.&lt;/li>
+<span class='line'>263</span> 		 * &lt;/ul>
+<span class='line'>264</span> 		 *
+<span class='line'>265</span> 		 * All rules default to "false".
+<span class='line'>266</span> 		 *
+<span class='line'>267</span> 		 * By default, all elements available in the {@link CKEDITOR.dtd.$block),
+<span class='line'>268</span> 		 * {@link CKEDITOR.dtd.$listItem} and {@link CKEDITOR.dtd.$tableContent}
+<span class='line'>269</span> 		 * lists have all the above rules set to "true". Additionaly, the "br"
+<span class='line'>270</span> 		 * element has the "breakAfterOpen" set to "true".
+<span class='line'>271</span> 		 * @param {String} tagName The element name to which set the rules.
+<span class='line'>272</span> 		 * @param {Object} rules An object containing the element rules.
+<span class='line'>273</span> 		 * @example
+<span class='line'>274</span> 		 * // Break line before and after "img" tags.
+<span class='line'>275</span> 		 * writer.setRules( 'img',
+<span class='line'>276</span> 		 *     {
+<span class='line'>277</span> 		 *         breakBeforeOpen : true
+<span class='line'>278</span> 		 *         breakAfterOpen : true
+<span class='line'>279</span> 		 *     });
+<span class='line'>280</span> 		 * @example
+<span class='line'>281</span> 		 * // Reset the rules for the "h1" tag.
+<span class='line'>282</span> 		 * writer.setRules( 'h1', {} );
+<span class='line'>283</span> 		 */</span><span class="WHIT">
+<span class='line'>284</span> </span><span class="WHIT">		</span><span class="NAME">setRules</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">tagName</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">rules</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>285</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>286</span> </span><span class="WHIT">			</span><span class="NAME">this._.rules</span><span class="PUNC">[</span><span class="WHIT"> </span><span class="NAME">tagName</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">rules</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>287</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>288</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>289</span> </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>290</span> </span></pre></body></html>

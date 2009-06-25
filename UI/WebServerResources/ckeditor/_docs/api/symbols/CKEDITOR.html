@@ -1,0 +1,2837 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="generator" content="JsDoc Toolkit" />
+
+		<title>CKEDITOR - CKEditor 3.0 JavaScript API Documentation</title>
+
+		<style type="text/css">
+			/* default.css */
+body
+{
+	font: 12px "Lucida Grande", Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.header
+{
+	clear: both;
+	background-color: #ccc;
+	padding: 8px;
+}
+
+h1
+{
+	font-size: 150%;
+	font-weight: bold;
+	padding: 0;
+	margin: 1em 0 0 .3em;
+}
+
+hr
+{
+	border: none 0;
+	border-top: 1px solid #7F8FB1;
+	height: 1px;
+}
+
+pre.code
+{
+	display: block;
+	padding: 8px;
+	border: 1px dashed #ccc;
+}
+
+#index
+{
+	margin-top: 24px;
+	float: left;
+	width: 160px;
+	position: absolute;
+	left: 8px;
+	background-color: #F3F3F3;
+	padding: 8px;
+}
+
+#content
+{
+	margin-left: 190px;
+}
+
+.classList
+{
+	list-style-type: none;
+	padding: 0;
+	margin: 0 0 0 8px;
+	font-family: arial, sans-serif;
+	font-size: 1em;
+	overflow: auto;
+}
+
+.classList li
+{
+	padding: 0;
+	margin: 0 0 8px 0;
+}
+
+.summaryTable { width: 100%; }
+
+h1.classTitle
+{
+	font-size:170%;
+	line-height:130%;
+}
+
+h2 { font-size: 110%; }
+caption, div.sectionTitle
+{
+	background-color: #7F8FB1;
+	color: #fff;
+	font-size:130%;
+	text-align: left;
+	padding: 2px 6px 2px 6px;
+	border: 1px #7F8FB1 solid;
+}
+
+div.sectionTitle { margin-bottom: 8px; }
+.summaryTable thead { display: none; }
+
+.summaryTable td
+{
+	vertical-align: top;
+	padding: 4px;
+	border-bottom: 1px #7F8FB1 solid;
+	border-right: 1px #7F8FB1 solid;
+}
+
+/*col#summaryAttributes {}*/
+.summaryTable td.attributes
+{
+	border-left: 1px #7F8FB1 solid;
+	width: 140px;
+	text-align: right;
+}
+
+td.attributes, .fixedFont
+{
+	line-height: 15px;
+	color: #002EBE;
+	font-family: "Courier New",Courier,monospace;
+	font-size: 13px;
+}
+
+.summaryTable td.nameDescription
+{
+	text-align: left;
+	font-size: 13px;
+	line-height: 15px;
+}
+
+.summaryTable td.nameDescription, .description
+{
+	line-height: 15px;
+	padding: 4px;
+	padding-left: 4px;
+}
+
+.summaryTable { margin-bottom: 8px; }
+
+ul.inheritsList
+{
+	list-style: square;
+	margin-left: 20px;
+	padding-left: 0;
+}
+
+.detailList {
+	margin-left: 20px;
+	line-height: 15px;
+}
+.detailList dt { margin-left: 20px; }
+
+.detailList .heading
+{
+	font-weight: bold;
+	padding-bottom: 6px;
+	margin-left: 0;
+}
+
+.light, td.attributes, .light a:link, .light a:visited
+{
+	color: #777;
+	font-style: italic;
+}
+
+.fineprint
+{
+	text-align: right;
+	font-size: 10px;
+}
+
+		</style>
+	</head>
+
+	<body>
+<!-- ============================== header ================================= -->
+		<!-- begin static/header.html -->
+		<div id="header">
+	<h1>CKEditor 3.0 JavaScript API Documentation</h1>
+	<hr />
+</div>
+
+		<!-- end static/header.html -->
+
+<!-- ============================== classes index ============================ -->
+		<div id="index">
+			<!-- begin publish.classesIndex -->
+			<div align="center">
+	<a href="../index.html">Code Index</a>
+	| <a href="../files.html">File Index</a>
+</div>
+<hr />
+<h2>Namespaces</h2>
+<ul class="classList">
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.html">CKEDITOR</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ajax.html">CKEDITOR.ajax</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.config.html">CKEDITOR.config</a>
+			</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.html">CKEDITOR.dom</a>
+			</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dtd.html">CKEDITOR.dtd</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.env.html">CKEDITOR.env</a>
+			</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.imageCacher.html">CKEDITOR.imageCacher</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.loader.html">CKEDITOR.loader</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.plugins.html">CKEDITOR.plugins</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.resourceManager.html">CKEDITOR.resourceManager</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.scriptLoader.html">CKEDITOR.scriptLoader</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.skins.html">CKEDITOR.skins</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.test.html">CKEDITOR.test</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.themes.html">CKEDITOR.themes</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.tools.html">CKEDITOR.tools</a>
+			</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</ul>
+<h2>Classes</h2>
+<ul class="classList">
+
+
+
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.commandDefinition.html">CKEDITOR.commandDefinition</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dialog.html">CKEDITOR.dialog</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dialog.buttonDefinition.html">CKEDITOR.dialog.buttonDefinition</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dialog.contentDefinition.html">CKEDITOR.dialog.contentDefinition</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dialog.contentDefinitionObject.html">CKEDITOR.dialog.contentDefinitionObject</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dialog.dialogDefinition.html">CKEDITOR.dialog.dialogDefinition</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dialog.dialogDefinitionObject.html">CKEDITOR.dialog.dialogDefinitionObject</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dialog.uiElementDefinition.html">CKEDITOR.dialog.uiElementDefinition</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dialogCommand.html">CKEDITOR.dialogCommand</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.document.html">CKEDITOR.dom.document</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.domObject.html">CKEDITOR.dom.domObject</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.element.html">CKEDITOR.dom.element</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.event.html">CKEDITOR.dom.event</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.node.html">CKEDITOR.dom.node</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.selection.html">CKEDITOR.dom.selection</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.text.html">CKEDITOR.dom.text</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.window.html">CKEDITOR.dom.window</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.editor.html">CKEDITOR.editor</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.event.html">CKEDITOR.event</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.eventInfo.html">CKEDITOR.eventInfo</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.focusManager.html">CKEDITOR.focusManager</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.htmlParser.html">CKEDITOR.htmlParser</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.htmlParser.cdata.html">CKEDITOR.htmlParser.cdata</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.htmlParser.comment.html">CKEDITOR.htmlParser.comment</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.htmlParser.element.html">CKEDITOR.htmlParser.element</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.htmlParser.fragment.html">CKEDITOR.htmlParser.fragment</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.htmlParser.text.html">CKEDITOR.htmlParser.text</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.htmlWriter.html">CKEDITOR.htmlWriter</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.keystrokeHandler.html">CKEDITOR.keystrokeHandler</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.pluginDefinition.html">CKEDITOR.pluginDefinition</a>
+			</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.html">CKEDITOR.ui</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.button.html">CKEDITOR.ui.button</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.button.html">CKEDITOR.ui.dialog.button</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.checkbox.html">CKEDITOR.ui.dialog.checkbox</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.file.html">CKEDITOR.ui.dialog.file</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.fileButton.html">CKEDITOR.ui.dialog.fileButton</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.hbox.html">CKEDITOR.ui.dialog.hbox</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.html.html">CKEDITOR.ui.dialog.html</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.labeledElement.html">CKEDITOR.ui.dialog.labeledElement</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.radio.html">CKEDITOR.ui.dialog.radio</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.select.html">CKEDITOR.ui.dialog.select</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.textarea.html">CKEDITOR.ui.dialog.textarea</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.textInput.html">CKEDITOR.ui.dialog.textInput</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.uiElement.html">CKEDITOR.ui.dialog.uiElement</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.vbox.html">CKEDITOR.ui.dialog.vbox</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.handlerDefinition.html">CKEDITOR.ui.handlerDefinition</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.xml.html">CKEDITOR.xml</a>
+			</li>
+
+
+</ul>
+<hr />
+			<!-- end publish.classesIndex -->
+		</div>
+
+		<div id="content">
+<!-- ============================== class title ============================ -->
+			<h1 class="classTitle">
+
+				Namespace CKEDITOR
+			</h1>
+
+<!-- ============================== class summary ========================== -->
+			<p class="description">
+
+
+
+This is the API entry point. The entire CKEditor code runs under this object.
+
+
+					<br /><i>Defined in: </i> <a href="../symbols/src/core_ckeditor_base.js.html">core/ckeditor_base.js</a>.
+
+			</p>
+
+<!-- ============================== constructor summary ==================== -->
+
+			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class CKEDITOR.">
+				<caption>Namespace Summary</caption>
+				<thead>
+					<tr>
+						<th scope="col">Constructor Attributes</th>
+						<th scope="col">Constructor Name and Description</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="attributes">&nbsp;</td>
+						<td class="nameDescription" >
+							<div class="fixedFont">
+								<b><a href="../symbols/CKEDITOR.html#constructor">CKEDITOR</a></b>
+							</div>
+							<div class="description">This is the API entry point.</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+
+<!-- ============================== properties summary ===================== -->
+
+
+
+
+				<table class="summaryTable" cellspacing="0" summary="A summary of the constants documented in the class CKEDITOR.">
+					<caption>Constants Summary</caption>
+					<thead>
+						<tr>
+							<th scope="col">Constant Attributes</th>
+							<th scope="col">Constant Name and Description</th>
+						</tr>
+					</thead>
+					<tbody>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.ALT">ALT</a></b>
+								</div>
+								<div class="description">ALT key (4000).</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.CTRL">CTRL</a></b>
+								</div>
+								<div class="description">CTRL key (1000).</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.DIALOG_RESIZE_HEIGHT">DIALOG_RESIZE_HEIGHT</a></b>
+								</div>
+								<div class="description">Only allow vertical resizing for this dialog, disable horizontal resizing.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.DIALOG_RESIZE_NONE">DIALOG_RESIZE_NONE</a></b>
+								</div>
+								<div class="description">No resize for this dialog.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.DIALOG_RESIZE_WIDTH">DIALOG_RESIZE_WIDTH</a></b>
+								</div>
+								<div class="description">Only allow horizontal resizing for this dialog, disable vertical resizing.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.ELEMENT_MODE_APPENDTO">ELEMENT_MODE_APPENDTO</a></b>
+								</div>
+								<div class="description">The editor is to be created inside the element.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.ELEMENT_MODE_NONE">ELEMENT_MODE_NONE</a></b>
+								</div>
+								<div class="description">No element is linked to the editor instance.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.ELEMENT_MODE_REPLACE">ELEMENT_MODE_REPLACE</a></b>
+								</div>
+								<div class="description">The element is to be replaced by the editor instance.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.NODE_COMMENT">NODE_COMMENT</a></b>
+								</div>
+								<div class="description">Comment node type.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.NODE_ELEMENT">NODE_ELEMENT</a></b>
+								</div>
+								<div class="description">Element node type.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.NODE_TEXT">NODE_TEXT</a></b>
+								</div>
+								<div class="description">Text node type.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.SELECTION_ELEMENT">SELECTION_ELEMENT</a></b>
+								</div>
+								<div class="description">Element selection.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.SELECTION_NONE">SELECTION_NONE</a></b>
+								</div>
+								<div class="description">No selection.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.SELECTION_TEXT">SELECTION_TEXT</a></b>
+								</div>
+								<div class="description">Text or collapsed selection.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.SHIFT">SHIFT</a></b>
+								</div>
+								<div class="description">SHIFT key (2000).</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.TRISTATE_DISABLED">TRISTATE_DISABLED</a></b>
+								</div>
+								<div class="description">Used to indicate DISABLED state.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.TRISTATE_OFF">TRISTATE_OFF</a></b>
+								</div>
+								<div class="description">Used to indicate the OFF or NON ACTIVE state.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.TRISTATE_ON">TRISTATE_ON</a></b>
+								</div>
+								<div class="description">Used to indicate the ON or ACTIVE state.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.UI_BUTTON">UI_BUTTON</a></b>
+								</div>
+								<div class="description">Button UI element.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.UI_MENUBUTTON">UI_MENUBUTTON</a></b>
+								</div>
+								<div class="description">Button UI element.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.UI_PANEL">UI_PANEL</a></b>
+								</div>
+								<div class="description">Panel UI element.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.UI_PANELBUTTON">UI_PANELBUTTON</a></b>
+								</div>
+								<div class="description">Button UI element.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.UI_RICHCOMBO">UI_RICHCOMBO</a></b>
+								</div>
+								<div class="description">Button UI element.</div>
+							</td>
+						</tr>
+
+					</tbody>
+				</table>
+
+
+
+
+				<table class="summaryTable" cellspacing="0" summary="A summary of the fields documented in the class CKEDITOR.">
+					<caption>Field Summary</caption>
+					<thead>
+						<tr>
+							<th scope="col">Field Attributes</th>
+							<th scope="col">Field Name and Description</th>
+						</tr>
+					</thead>
+					<tbody>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.basePath">basePath</a></b>
+								</div>
+								<div class="description">Contains the full URL for the CKEditor installation directory.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.document">document</a></b>
+								</div>
+								<div class="description">The document of the window holding the CKEDITOR object.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.instances">instances</a></b>
+								</div>
+								<div class="description">Holds references to all editor instances created.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.loadFullCoreTimeout">loadFullCoreTimeout</a></b>
+								</div>
+								<div class="description">The time to wait (in seconds) to load the full editor code after the
+page load, if the "ckeditor_basic" file is used.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.replaceByClassEnabled">replaceByClassEnabled</a></b>
+								</div>
+								<div class="description">Enables the replacement of all textareas with class name matching
+<a href="../symbols/CKEDITOR.html#.replaceClass">CKEDITOR.replaceClass</a>.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.replaceClass">replaceClass</a></b>
+								</div>
+								<div class="description">The class name used to identify &lt;textarea&gt; elements to be replace
+by CKEditor instances.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.revision">revision</a></b>
+								</div>
+								<div class="description">Contains the CKEditor revision number.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.START">START</a></b>
+								</div>
+								<div class="description">Check boundary types.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.status">status</a></b>
+								</div>
+								<div class="description">Indicates the API loading status.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.timestamp">timestamp</a></b>
+								</div>
+								<div class="description">A constant string unique for each release of CKEditor.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.version">version</a></b>
+								</div>
+								<div class="description">Contains the CKEditor version number.</div>
+							</td>
+						</tr>
+
+					</tbody>
+				</table>
+
+
+
+
+
+<!-- ============================== methods summary ======================== -->
+
+
+
+				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class CKEDITOR.">
+					<caption>Method Summary</caption>
+					<thead>
+						<tr>
+							<th scope="col">Method Attributes</th>
+							<th scope="col">Method Name and Description</th>
+						</tr>
+					</thead>
+					<tbody>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.add">add</a></b>(editor)
+								</div>
+								<div class="description">Adds an editor instance to the global <a href="../symbols/CKEDITOR.html#constructor">CKEDITOR</a> object.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.addStylesSet">addStylesSet</a></b>(name, styles)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.addTemplates">addTemplates</a></b>(name, definition)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.appendTo">appendTo</a></b>(elementOrId, config)
+								</div>
+								<div class="description">Creates a new editor instance inside a specific DOM element.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.command">command</a></b>(editor, commandDefinition)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.exec">exec</a></b>(data)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.getClipboardData">getClipboardData</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.getTemplates">getTemplates</a></b>(name)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.getUrl">getUrl</a></b>(resource)
+								</div>
+								<div class="description">Gets the full URL for CKEditor resources.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.htmlDataProcessor">htmlDataProcessor</a></b>(editor)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.loadFullCore">loadFullCore</a></b>()
+								</div>
+								<div class="description">Forces the full CKEditor core code, in the case only the basic code has been
+loaded (ckeditor_basic.js).</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.loadStylesSet">loadStylesSet</a></b>(name, url, callback)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.loadTemplates">loadTemplates</a></b>(templateFiles, callback)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.remove">remove</a></b>(editor)
+								</div>
+								<div class="description">Removes and editor instance from the global <a href="../symbols/CKEDITOR.html#constructor">CKEDITOR</a> object.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.replace">replace</a></b>(elementOrIdOrName, config)
+								</div>
+								<div class="description">Replaces a &lt;textarea&gt; or a DOM element (DIV) with a CKEditor
+instance.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.replaceAll">replaceAll</a></b>()
+								</div>
+								<div class="description">Replace all &lt;textarea&gt; elements available in the document with
+editor instances.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.style">style</a></b>(styleDefinition, variablesValues)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.styleCommand">styleCommand</a></b>(style)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">CKEDITOR.<b><a href="../symbols/CKEDITOR.html#.unlinkCommand">unlinkCommand</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+
+					</tbody>
+				</table>
+
+
+
+
+
+<!-- ============================== constructor details ==================== -->
+
+			<div class="details"><a name="constructor"> </a>
+				<div class="sectionTitle">
+					Namespace Detail
+				</div>
+
+				<div class="fixedFont" style="float:left">
+						<b>CKEDITOR</b>
+				</div>
+
+				<div style="float:right">
+					<span class="heading">Since:</span>
+
+							3.0
+
+				</div>
+				<div style="clear:both"></div>
+
+				<div class="description">
+					This is the API entry point. The entire CKEditor code runs under this object.
+
+				</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			</div>
+
+
+<!-- ============================== field details ========================== -->
+
+				<div class="sectionTitle">
+					Field Detail
+				</div>
+
+					<a name=".basePath"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{String}</span>
+					<span class="light">CKEDITOR.</span><b>basePath</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Contains the full URL for the CKEditor installation directory.
+It's possible to manually provide the base path by setting a
+global variable named CKEDITOR_BASEPATH. This global variable
+must be set "before" the editor script loading.
+
+
+					</div>
+
+
+
+
+							<pre class="code">alert( <b>CKEDITOR.basePath</b> );  // "http://www.example.com/ckeditor/" (e.g.)</pre>
+
+
+
+
+
+
+
+
+					<hr />
+
+					<a name=".document"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Undefined}</span>
+					<span class="light">CKEDITOR.</span><b>document</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						The document of the window holding the CKEDITOR object.
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/core_ckeditor.js.html">core/ckeditor.js</a>.
+
+
+					</div>
+
+
+
+
+							<pre class="code">alert( <b>CKEDITOR.document</b>.getBody().getName() );  // "body"</pre>
+
+
+
+
+
+
+
+
+					<hr />
+
+					<a name=".instances"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Undefined}</span>
+					<span class="light">CKEDITOR.</span><b>instances</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Holds references to all editor instances created. The name of the properties
+in this object correspond to instance names, and their values contains the
+<a href="../symbols/CKEDITOR.editor.html#constructor">CKEDITOR.editor</a> object representing them.
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/core_ckeditor.js.html">core/ckeditor.js</a>.
+
+
+					</div>
+
+
+
+
+							<pre class="code">alert( <b>CKEDITOR.instances</b>.editor1.name );  // "editor1"</pre>
+
+
+
+
+
+
+
+
+					<hr />
+
+					<a name=".loadFullCoreTimeout"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Number}</span>
+					<span class="light">CKEDITOR.</span><b>loadFullCoreTimeout</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						The time to wait (in seconds) to load the full editor code after the
+page load, if the "ckeditor_basic" file is used. If set to zero, the
+editor is loaded on demand, as soon as an instance is created.
+
+This value must be set on the page before the page load completion.
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/core_ckeditor_basic.js.html">core/ckeditor_basic.js</a>.
+
+
+					</div>
+
+
+
+
+							<pre class="code">// Loads the full source after five seconds.
+CKEDITOR.loadFullCoreTimeout = 5;</pre>
+
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Default Value:</dt>
+							<dd>
+								0 (zero)
+							</dd>
+							</dl>
+
+
+					<hr />
+
+					<a name=".replaceByClassEnabled"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Boolean}</span>
+					<span class="light">CKEDITOR.</span><b>replaceByClassEnabled</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Enables the replacement of all textareas with class name matching
+<a href="../symbols/CKEDITOR.html#.replaceClass">CKEDITOR.replaceClass</a>.
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/core_ckeditor_basic.js.html">core/ckeditor_basic.js</a>.
+
+
+					</div>
+
+
+
+
+							<pre class="code">// Disable the auto-replace feature.
+<b>CKEDITOR.replaceByClassEnabled</b> = false;</pre>
+
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Default Value:</dt>
+							<dd>
+								true
+							</dd>
+							</dl>
+
+
+					<hr />
+
+					<a name=".replaceClass"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{String}</span>
+					<span class="light">CKEDITOR.</span><b>replaceClass</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						The class name used to identify &lt;textarea&gt; elements to be replace
+by CKEditor instances.
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/core_ckeditor_basic.js.html">core/ckeditor_basic.js</a>.
+
+
+					</div>
+
+
+
+
+							<pre class="code"><b>CKEDITOR.replaceClass</b> = 'rich_editor';</pre>
+
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Default Value:</dt>
+							<dd>
+								'ckeditor'
+							</dd>
+							</dl>
+
+
+					<hr />
+
+					<a name=".revision"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{String}</span>
+					<span class="light">CKEDITOR.</span><b>revision</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Contains the CKEditor revision number.
+Revision number is incremented automatically after each modification of CKEditor source code.
+
+
+					</div>
+
+
+
+
+							<pre class="code">alert( CKEDITOR.revision );  // e.g. '3975'</pre>
+
+
+
+
+
+
+
+
+					<hr />
+
+					<a name=".START"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Undefined}</span>
+					<span class="light">CKEDITOR.</span><b>START</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Check boundary types.
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/core_dom_range.js.html">core/dom/range.js</a>.
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">See:</dt>
+
+							<dd>CKEDITOR.dom.range::checkBoundaryOfElement</dd>
+
+							</dl>
+
+
+
+					<hr />
+
+					<a name=".status"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{String}</span>
+					<span class="light">CKEDITOR.</span><b>status</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Indicates the API loading status. The following status are available:
+		<ul>
+			<li><b>unloaded</b>: the API is not yet loaded.</li>
+			<li><b>basic_loaded</b>: the basic API features are available.</li>
+			<li><b>basic_ready</b>: the basic API is ready to load the full core code.</li>
+			<li><b>loading</b>: the full API is being loaded.</li>
+			<li><b>ready</b>: the API can be fully used.</li>
+		</ul>
+
+
+					</div>
+
+
+
+
+							<pre class="code">if ( <b>CKEDITOR.status</b> == 'ready' )
+{
+    // The API can now be fully used.
+}</pre>
+
+
+
+
+
+
+
+
+					<hr />
+
+					<a name=".timestamp"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{String}</span>
+					<span class="light">CKEDITOR.</span><b>timestamp</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						A constant string unique for each release of CKEditor. Its value
+is used, by default, to build the URL for all resources loaded
+by the editor code, guaranteing clean cache results when
+upgrading.
+
+
+					</div>
+
+
+
+
+							<pre class="code">alert( CKEDITOR.timestamp );  // e.g. '87dm'</pre>
+
+
+
+
+
+
+
+
+					<hr />
+
+					<a name=".version"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{String}</span>
+					<span class="light">CKEDITOR.</span><b>version</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Contains the CKEditor version number.
+
+
+					</div>
+
+
+
+
+							<pre class="code">alert( CKEDITOR.version );  // e.g. 'CKEditor 3.0 Beta'</pre>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ============================== method details ========================= -->
+
+				<div class="sectionTitle">
+					Method Detail
+				</div>
+
+					<a name=".add"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Undefined}</span>
+					<span class="light">CKEDITOR.</span><b>add</b>(editor)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Adds an editor instance to the global <a href="../symbols/CKEDITOR.html#constructor">CKEDITOR</a> object. This function
+is available for internal use mainly.
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/core_ckeditor.js.html">core/ckeditor.js</a>.
+
+
+					</div>
+
+
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{<a href="../symbols/CKEDITOR.editor.html#constructor">CKEDITOR.editor</a>}</span> <b>editor</b>
+
+								</dt>
+								<dd>The editor instance to be added.</dd>
+
+							</dl>
+
+
+
+
+
+
+
+					<hr />
+
+					<a name=".addStylesSet"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Undefined}</span>
+					<span class="light">CKEDITOR.</span><b>addStylesSet</b>(name, styles)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/plugins_stylescombo_plugin.js.html">plugins/stylescombo/plugin.js</a>.
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>name</b>
+
+								</dt>
+								<dd></dd>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>styles</b>
+
+								</dt>
+								<dd></dd>
+
+							</dl>
+
+
+
+
+
+
+
+					<hr />
+
+					<a name=".addTemplates"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Undefined}</span>
+					<span class="light">CKEDITOR.</span><b>addTemplates</b>(name, definition)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/plugins_templates_plugin.js.html">plugins/templates/plugin.js</a>.
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>name</b>
+
+								</dt>
+								<dd></dd>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>definition</b>
+
+								</dt>
+								<dd></dd>
+
+							</dl>
+
+
+
+
+
+
+
+					<hr />
+
+					<a name=".appendTo"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{<a href="../symbols/CKEDITOR.editor.html#constructor">CKEDITOR.editor</a>}</span>
+					<span class="light">CKEDITOR.</span><b>appendTo</b>(elementOrId, config)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Creates a new editor instance inside a specific DOM element.
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/core_ckeditor_basic.js.html">core/ckeditor_basic.js</a>.
+
+
+					</div>
+
+
+
+
+							<pre class="code">&lt;div id="editorSpace"&gt;&lt:/div&gt;
+...
+<b>CKEDITOR.appendTo( 'editorSpace' )</b>;</pre>
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{Object|String}</span> <b>elementOrId</b>
+
+								</dt>
+								<dd>The DOM element or its ID.</dd>
+
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>config</b>
+									<i>Optional</i>
+								</dt>
+								<dd>The specific configurations to apply to this
+		editor instance. Configurations set here will override global CKEditor
+		settings.</dd>
+
+							</dl>
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+
+								<dd><span class="light fixedFont">{<a href="../symbols/CKEDITOR.editor.html#constructor">CKEDITOR.editor</a>}</span> The editor instance created.</dd>
+
+							</dl>
+
+
+
+
+					<hr />
+
+					<a name=".command"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Undefined}</span>
+					<span class="light">CKEDITOR.</span><b>command</b>(editor, commandDefinition)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/core_command.js.html">core/command.js</a>.
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>editor</b>
+
+								</dt>
+								<dd></dd>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>commandDefinition</b>
+
+								</dt>
+								<dd></dd>
+
+							</dl>
+
+
+
+
+
+
+
+					<hr />
+
+					<a name=".exec"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Undefined}</span>
+					<span class="light">CKEDITOR.</span><b>exec</b>(data)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/core_command.js.html">core/command.js</a>.
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>data</b>
+
+								</dt>
+								<dd></dd>
+
+							</dl>
+
+
+
+
+
+
+
+					<hr />
+
+					<a name=".getClipboardData"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Undefined}</span>
+					<span class="light">CKEDITOR.</span><b>getClipboardData</b>()
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/plugins_pastetext_plugin.js.html">plugins/pastetext/plugin.js</a>.
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+
+
+
+
+
+
+					<hr />
+
+					<a name=".getTemplates"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Undefined}</span>
+					<span class="light">CKEDITOR.</span><b>getTemplates</b>(name)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/plugins_templates_plugin.js.html">plugins/templates/plugin.js</a>.
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>name</b>
+
+								</dt>
+								<dd></dd>
+
+							</dl>
+
+
+
+
+
+
+
+					<hr />
+
+					<a name=".getUrl"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{String}</span>
+					<span class="light">CKEDITOR.</span><b>getUrl</b>(resource)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Gets the full URL for CKEditor resources. By default, URLs
+returned by this function contains a querystring parameter ("t")
+set to the <a href="../symbols/CKEDITOR.html#.timestamp">CKEDITOR.timestamp</a> value.
+It's possible to provide a custom implementation to this
+function by setting a global variable named CKEDITOR_GETURL.
+This global variable must be set "before" the editor script
+loading. If the custom implementation returns nothing, the
+default implementation is used.
+
+
+					</div>
+
+
+
+
+							<pre class="code">// e.g. http://www.example.com/ckeditor/skins/default/editor.css?t=87dm
+alert( CKEDITOR.getUrl( 'skins/default/editor.css' ) );</pre>
+
+
+
+							<pre class="code">// e.g. http://www.example.com/skins/default/editor.css?t=87dm
+alert( CKEDITOR.getUrl( '/skins/default/editor.css' ) );</pre>
+
+
+
+							<pre class="code">// e.g. http://www.somesite.com/skins/default/editor.css?t=87dm
+alert( CKEDITOR.getUrl( 'http://www.somesite.com/skins/default/editor.css' ) );</pre>
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>resource</b>
+
+								</dt>
+								<dd></dd>
+
+							</dl>
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+
+								<dd><span class="light fixedFont">{String}</span> The full URL.</dd>
+
+							</dl>
+
+
+
+
+					<hr />
+
+					<a name=".htmlDataProcessor"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Undefined}</span>
+					<span class="light">CKEDITOR.</span><b>htmlDataProcessor</b>(editor)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/plugins_htmldataprocessor_plugin.js.html">plugins/htmldataprocessor/plugin.js</a>.
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>editor</b>
+
+								</dt>
+								<dd></dd>
+
+							</dl>
+
+
+
+
+
+
+
+					<hr />
+
+					<a name=".loadFullCore"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Undefined}</span>
+					<span class="light">CKEDITOR.</span><b>loadFullCore</b>()
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Forces the full CKEditor core code, in the case only the basic code has been
+loaded (ckeditor_basic.js). This method self-destroys (becomes undefined) in
+the first call or as soon as the full code is available.
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/core_ckeditor_basic.js.html">core/ckeditor_basic.js</a>.
+
+
+					</div>
+
+
+
+
+							<pre class="code">// Check if the full core code has been loaded and load it.
+if ( CKEDITOR.loadFullCore )
+    <b>CKEDITOR.loadFullCore()</b>;</pre>
+
+
+
+
+
+
+
+
+
+
+
+					<hr />
+
+					<a name=".loadStylesSet"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Undefined}</span>
+					<span class="light">CKEDITOR.</span><b>loadStylesSet</b>(name, url, callback)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/plugins_stylescombo_plugin.js.html">plugins/stylescombo/plugin.js</a>.
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>name</b>
+
+								</dt>
+								<dd></dd>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>url</b>
+
+								</dt>
+								<dd></dd>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>callback</b>
+
+								</dt>
+								<dd></dd>
+
+							</dl>
+
+
+
+
+
+
+
+					<hr />
+
+					<a name=".loadTemplates"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Undefined}</span>
+					<span class="light">CKEDITOR.</span><b>loadTemplates</b>(templateFiles, callback)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/plugins_templates_plugin.js.html">plugins/templates/plugin.js</a>.
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>templateFiles</b>
+
+								</dt>
+								<dd></dd>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>callback</b>
+
+								</dt>
+								<dd></dd>
+
+							</dl>
+
+
+
+
+
+
+
+					<hr />
+
+					<a name=".remove"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Undefined}</span>
+					<span class="light">CKEDITOR.</span><b>remove</b>(editor)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Removes and editor instance from the global <a href="../symbols/CKEDITOR.html#constructor">CKEDITOR</a> object. his function
+is available for internal use mainly.
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/core_ckeditor.js.html">core/ckeditor.js</a>.
+
+
+					</div>
+
+
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{<a href="../symbols/CKEDITOR.editor.html#constructor">CKEDITOR.editor</a>}</span> <b>editor</b>
+
+								</dt>
+								<dd>The editor instance to be added.</dd>
+
+							</dl>
+
+
+
+
+
+
+
+					<hr />
+
+					<a name=".replace"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{<a href="../symbols/CKEDITOR.editor.html#constructor">CKEDITOR.editor</a>}</span>
+					<span class="light">CKEDITOR.</span><b>replace</b>(elementOrIdOrName, config)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Replaces a &lt;textarea&gt; or a DOM element (DIV) with a CKEditor
+instance. For textareas, the initial value in the editor will be the
+textarea value. For DOM elements, their innerHTML will be used
+instead. We recommend using TEXTAREA and DIV elements only.
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/core_ckeditor_basic.js.html">core/ckeditor_basic.js</a>.
+
+
+					</div>
+
+
+
+
+							<pre class="code">&lt;textarea id="myfield" name="myfield"&gt;&lt:/textarea&gt;
+...
+<b>CKEDITOR.replace( 'myfield' )</b>;</pre>
+
+
+
+							<pre class="code">var textarea = document.body.appendChild( document.createElement( 'textarea' ) );
+<b>CKEDITOR.replace( textarea )</b>;</pre>
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{Object|String}</span> <b>elementOrIdOrName</b>
+
+								</dt>
+								<dd>The DOM element (textarea), its
+		ID or name.</dd>
+
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>config</b>
+									<i>Optional</i>
+								</dt>
+								<dd>The specific configurations to apply to this
+		editor instance. Configurations set here will override global CKEditor
+		settings.</dd>
+
+							</dl>
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+
+								<dd><span class="light fixedFont">{<a href="../symbols/CKEDITOR.editor.html#constructor">CKEDITOR.editor</a>}</span> The editor instance created.</dd>
+
+							</dl>
+
+
+
+
+					<hr />
+
+					<a name=".replaceAll"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Undefined}</span>
+					<span class="light">CKEDITOR.</span><b>replaceAll</b>()
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Replace all &lt;textarea&gt; elements available in the document with
+editor instances.
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/core_ckeditor_basic.js.html">core/ckeditor_basic.js</a>.
+
+
+					</div>
+
+
+
+
+							<pre class="code">// Replace all &lt;textarea&gt; elements in the page.
+CKEDITOR.replaceAll();</pre>
+
+
+
+							<pre class="code">// Replace all &lt;textarea class="myClassName"&gt; elements in the page.
+CKEDITOR.replaceAll( 'myClassName' );</pre>
+
+
+
+							<pre class="code">// Selectively replace &lt;textarea&gt; elements, based on custom assertions.
+CKEDITOR.replaceAll( function( textarea, config )
+    {
+        // Custom code to evaluate the replace, returning false
+        // if it must not be done.
+        // It also passes the "config" parameter, so the
+        // developer can customize the instance.
+    } );</pre>
+
+
+
+
+
+
+
+
+
+
+
+					<hr />
+
+					<a name=".style"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Undefined}</span>
+					<span class="light">CKEDITOR.</span><b>style</b>(styleDefinition, variablesValues)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/plugins_styles_plugin.js.html">plugins/styles/plugin.js</a>.
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>styleDefinition</b>
+
+								</dt>
+								<dd></dd>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>variablesValues</b>
+
+								</dt>
+								<dd></dd>
+
+							</dl>
+
+
+
+
+
+
+
+					<hr />
+
+					<a name=".styleCommand"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Undefined}</span>
+					<span class="light">CKEDITOR.</span><b>styleCommand</b>(style)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/plugins_styles_plugin.js.html">plugins/styles/plugin.js</a>.
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>style</b>
+
+								</dt>
+								<dd></dd>
+
+							</dl>
+
+
+
+
+
+
+
+					<hr />
+
+					<a name=".unlinkCommand"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Undefined}</span>
+					<span class="light">CKEDITOR.</span><b>unlinkCommand</b>()
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/plugins_link_plugin.js.html">plugins/link/plugin.js</a>.
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+			<hr />
+		</div>
+
+<!-- ============================== footer ================================= -->
+		<div class="fineprint" style="clear:both">
+	Copyright &copy; 2003-2009, <a href="http://cksource.com/">CKSource</a> - Frederico Knabben. All rights reserved.
+</div>
+
+	</body>
+</html>

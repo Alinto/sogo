@@ -1,0 +1,2799 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="generator" content="JsDoc Toolkit" />
+
+		<title>CKEDITOR.config - CKEditor 3.0 JavaScript API Documentation</title>
+
+		<style type="text/css">
+			/* default.css */
+body
+{
+	font: 12px "Lucida Grande", Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.header
+{
+	clear: both;
+	background-color: #ccc;
+	padding: 8px;
+}
+
+h1
+{
+	font-size: 150%;
+	font-weight: bold;
+	padding: 0;
+	margin: 1em 0 0 .3em;
+}
+
+hr
+{
+	border: none 0;
+	border-top: 1px solid #7F8FB1;
+	height: 1px;
+}
+
+pre.code
+{
+	display: block;
+	padding: 8px;
+	border: 1px dashed #ccc;
+}
+
+#index
+{
+	margin-top: 24px;
+	float: left;
+	width: 160px;
+	position: absolute;
+	left: 8px;
+	background-color: #F3F3F3;
+	padding: 8px;
+}
+
+#content
+{
+	margin-left: 190px;
+}
+
+.classList
+{
+	list-style-type: none;
+	padding: 0;
+	margin: 0 0 0 8px;
+	font-family: arial, sans-serif;
+	font-size: 1em;
+	overflow: auto;
+}
+
+.classList li
+{
+	padding: 0;
+	margin: 0 0 8px 0;
+}
+
+.summaryTable { width: 100%; }
+
+h1.classTitle
+{
+	font-size:170%;
+	line-height:130%;
+}
+
+h2 { font-size: 110%; }
+caption, div.sectionTitle
+{
+	background-color: #7F8FB1;
+	color: #fff;
+	font-size:130%;
+	text-align: left;
+	padding: 2px 6px 2px 6px;
+	border: 1px #7F8FB1 solid;
+}
+
+div.sectionTitle { margin-bottom: 8px; }
+.summaryTable thead { display: none; }
+
+.summaryTable td
+{
+	vertical-align: top;
+	padding: 4px;
+	border-bottom: 1px #7F8FB1 solid;
+	border-right: 1px #7F8FB1 solid;
+}
+
+/*col#summaryAttributes {}*/
+.summaryTable td.attributes
+{
+	border-left: 1px #7F8FB1 solid;
+	width: 140px;
+	text-align: right;
+}
+
+td.attributes, .fixedFont
+{
+	line-height: 15px;
+	color: #002EBE;
+	font-family: "Courier New",Courier,monospace;
+	font-size: 13px;
+}
+
+.summaryTable td.nameDescription
+{
+	text-align: left;
+	font-size: 13px;
+	line-height: 15px;
+}
+
+.summaryTable td.nameDescription, .description
+{
+	line-height: 15px;
+	padding: 4px;
+	padding-left: 4px;
+}
+
+.summaryTable { margin-bottom: 8px; }
+
+ul.inheritsList
+{
+	list-style: square;
+	margin-left: 20px;
+	padding-left: 0;
+}
+
+.detailList {
+	margin-left: 20px;
+	line-height: 15px;
+}
+.detailList dt { margin-left: 20px; }
+
+.detailList .heading
+{
+	font-weight: bold;
+	padding-bottom: 6px;
+	margin-left: 0;
+}
+
+.light, td.attributes, .light a:link, .light a:visited
+{
+	color: #777;
+	font-style: italic;
+}
+
+.fineprint
+{
+	text-align: right;
+	font-size: 10px;
+}
+
+		</style>
+	</head>
+
+	<body>
+<!-- ============================== header ================================= -->
+		<!-- begin static/header.html -->
+		<div id="header">
+	<h1>CKEditor 3.0 JavaScript API Documentation</h1>
+	<hr />
+</div>
+
+		<!-- end static/header.html -->
+
+<!-- ============================== classes index ============================ -->
+		<div id="index">
+			<!-- begin publish.classesIndex -->
+			<div align="center">
+	<a href="../index.html">Code Index</a>
+	| <a href="../files.html">File Index</a>
+</div>
+<hr />
+<h2>Namespaces</h2>
+<ul class="classList">
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.html">CKEDITOR</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ajax.html">CKEDITOR.ajax</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.config.html">CKEDITOR.config</a>
+			</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.html">CKEDITOR.dom</a>
+			</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dtd.html">CKEDITOR.dtd</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.env.html">CKEDITOR.env</a>
+			</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.imageCacher.html">CKEDITOR.imageCacher</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.loader.html">CKEDITOR.loader</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.plugins.html">CKEDITOR.plugins</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.resourceManager.html">CKEDITOR.resourceManager</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.scriptLoader.html">CKEDITOR.scriptLoader</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.skins.html">CKEDITOR.skins</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.test.html">CKEDITOR.test</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.themes.html">CKEDITOR.themes</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.tools.html">CKEDITOR.tools</a>
+			</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</ul>
+<h2>Classes</h2>
+<ul class="classList">
+
+
+
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.commandDefinition.html">CKEDITOR.commandDefinition</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dialog.html">CKEDITOR.dialog</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dialog.buttonDefinition.html">CKEDITOR.dialog.buttonDefinition</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dialog.contentDefinition.html">CKEDITOR.dialog.contentDefinition</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dialog.contentDefinitionObject.html">CKEDITOR.dialog.contentDefinitionObject</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dialog.dialogDefinition.html">CKEDITOR.dialog.dialogDefinition</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dialog.dialogDefinitionObject.html">CKEDITOR.dialog.dialogDefinitionObject</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dialog.uiElementDefinition.html">CKEDITOR.dialog.uiElementDefinition</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dialogCommand.html">CKEDITOR.dialogCommand</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.document.html">CKEDITOR.dom.document</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.domObject.html">CKEDITOR.dom.domObject</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.element.html">CKEDITOR.dom.element</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.event.html">CKEDITOR.dom.event</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.node.html">CKEDITOR.dom.node</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.selection.html">CKEDITOR.dom.selection</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.text.html">CKEDITOR.dom.text</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.window.html">CKEDITOR.dom.window</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.editor.html">CKEDITOR.editor</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.event.html">CKEDITOR.event</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.eventInfo.html">CKEDITOR.eventInfo</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.focusManager.html">CKEDITOR.focusManager</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.htmlParser.html">CKEDITOR.htmlParser</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.htmlParser.cdata.html">CKEDITOR.htmlParser.cdata</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.htmlParser.comment.html">CKEDITOR.htmlParser.comment</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.htmlParser.element.html">CKEDITOR.htmlParser.element</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.htmlParser.fragment.html">CKEDITOR.htmlParser.fragment</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.htmlParser.text.html">CKEDITOR.htmlParser.text</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.htmlWriter.html">CKEDITOR.htmlWriter</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.keystrokeHandler.html">CKEDITOR.keystrokeHandler</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.pluginDefinition.html">CKEDITOR.pluginDefinition</a>
+			</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.html">CKEDITOR.ui</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.button.html">CKEDITOR.ui.button</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.button.html">CKEDITOR.ui.dialog.button</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.checkbox.html">CKEDITOR.ui.dialog.checkbox</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.file.html">CKEDITOR.ui.dialog.file</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.fileButton.html">CKEDITOR.ui.dialog.fileButton</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.hbox.html">CKEDITOR.ui.dialog.hbox</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.html.html">CKEDITOR.ui.dialog.html</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.labeledElement.html">CKEDITOR.ui.dialog.labeledElement</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.radio.html">CKEDITOR.ui.dialog.radio</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.select.html">CKEDITOR.ui.dialog.select</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.textarea.html">CKEDITOR.ui.dialog.textarea</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.textInput.html">CKEDITOR.ui.dialog.textInput</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.uiElement.html">CKEDITOR.ui.dialog.uiElement</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.vbox.html">CKEDITOR.ui.dialog.vbox</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.handlerDefinition.html">CKEDITOR.ui.handlerDefinition</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.xml.html">CKEDITOR.xml</a>
+			</li>
+
+
+</ul>
+<hr />
+			<!-- end publish.classesIndex -->
+		</div>
+
+		<div id="content">
+<!-- ============================== class title ============================ -->
+			<h1 class="classTitle">
+
+				Namespace CKEDITOR.config
+			</h1>
+
+<!-- ============================== class summary ========================== -->
+			<p class="description">
+
+
+
+Holds the default configuration settings. Changes to this object are
+reflected in all editor instances, if not specificaly specified for those
+instances.
+
+
+					<br /><i>Defined in: </i> <a href="../symbols/src/core_config.js.html">core/config.js</a>.
+
+			</p>
+
+<!-- ============================== constructor summary ==================== -->
+
+			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class CKEDITOR.config.">
+				<caption>Namespace Summary</caption>
+				<thead>
+					<tr>
+						<th scope="col">Constructor Attributes</th>
+						<th scope="col">Constructor Name and Description</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="attributes">&nbsp;</td>
+						<td class="nameDescription" >
+							<div class="fixedFont">
+								<b><a href="../symbols/CKEDITOR.config.html#constructor">CKEDITOR.config</a></b>
+							</div>
+							<div class="description">Holds the default configuration settings.</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+
+<!-- ============================== properties summary ===================== -->
+
+
+
+
+
+
+
+				<table class="summaryTable" cellspacing="0" summary="A summary of the fields documented in the class CKEDITOR.config.">
+					<caption>Field Summary</caption>
+					<thead>
+						<tr>
+							<th scope="col">Field Attributes</th>
+							<th scope="col">Field Name and Description</th>
+						</tr>
+					</thead>
+					<tbody>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.config.<b><a href="../symbols/CKEDITOR.config.html#.baseFloatZIndex">baseFloatZIndex</a></b>
+								</div>
+								<div class="description">The base Z-index for floating dialogs and popups.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.config.<b><a href="../symbols/CKEDITOR.config.html#.baseHref">baseHref</a></b>
+								</div>
+								<div class="description">The base href URL used to resolve relative and absolute URLs in the
+editor content.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.config.<b><a href="../symbols/CKEDITOR.config.html#.blockedKeystrokes">blockedKeystrokes</a></b>
+								</div>
+								<div class="description">A list of keystrokes to be blocked if not defined in the <a href="#keystrokes">#keystrokes</a>
+setting.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.config.<b><a href="../symbols/CKEDITOR.config.html#.contentsCss">contentsCss</a></b>
+								</div>
+								<div class="description">The CSS file to be used to apply style to the contents.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.config.<b><a href="../symbols/CKEDITOR.config.html#.contentsLangDirection">contentsLangDirection</a></b>
+								</div>
+								<div class="description">The writting direction of the language used to write the editor
+contents.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.config.<b><a href="../symbols/CKEDITOR.config.html#.corePlugins">corePlugins</a></b>
+								</div>
+								<div class="description">A comma separated list of plugins that are not related to editor
+instances.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.config.<b><a href="../symbols/CKEDITOR.config.html#.customConfig">customConfig</a></b>
+								</div>
+								<div class="description">The URL path for the custom configuration file to be loaded.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.config.<b><a href="../symbols/CKEDITOR.config.html#.defaultLanguage">defaultLanguage</a></b>
+								</div>
+								<div class="description">The language to be used if [@link #language] is left empty and it's not
+possible to localize the editor to the user language.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.config.<b><a href="../symbols/CKEDITOR.config.html#.dialog_backgroundCoverColor">dialog_backgroundCoverColor</a></b>
+								</div>
+								<div class="description">The color of the dialog background cover.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.config.<b><a href="../symbols/CKEDITOR.config.html#.dialog_backgroundCoverOpacity">dialog_backgroundCoverOpacity</a></b>
+								</div>
+								<div class="description">The opacity of the dialog background cover.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.config.<b><a href="../symbols/CKEDITOR.config.html#.dialog_magnetDistance">dialog_magnetDistance</a></b>
+								</div>
+								<div class="description">The distance of magnetic borders used in moving and resizing dialogs,
+measured in pixels.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.config.<b><a href="../symbols/CKEDITOR.config.html#.disableNativeSpellChecker">disableNativeSpellChecker</a></b>
+								</div>
+								<div class="description">Disables the built-in spell checker while typing natively available in the
+browser (currently Firefox and Safari only).</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.config.<b><a href="../symbols/CKEDITOR.config.html#.disableNativeTableHandles">disableNativeTableHandles</a></b>
+								</div>
+								<div class="description">Disables the "table tools" offered natively by the browser (currently
+Firefox only) to make quick table editing operations, like adding or
+deleting rows and columns.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.config.<b><a href="../symbols/CKEDITOR.config.html#.disableObjectResizing">disableObjectResizing</a></b>
+								</div>
+								<div class="description">Disables the ability of resize objects (image and tables) in the editing
+area</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.config.<b><a href="../symbols/CKEDITOR.config.html#.docType">docType</a></b>
+								</div>
+								<div class="description">Sets the doctype to be used when loading the editor content as HTML.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.config.<b><a href="../symbols/CKEDITOR.config.html#.extraPlugins">extraPlugins</a></b>
+								</div>
+								<div class="description">List of additional plugins to be loaded.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.config.<b><a href="../symbols/CKEDITOR.config.html#.fullPage">fullPage</a></b>
+								</div>
+								<div class="description">Indicates whether the contents to be edited are being inputted as a full
+HTML page.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.config.<b><a href="../symbols/CKEDITOR.config.html#.height">height</a></b>
+								</div>
+								<div class="description">The editor height, in CSS size format or pixel integer.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.config.<b><a href="../symbols/CKEDITOR.config.html#.ignoreEmptyParagraph">ignoreEmptyParagraph</a></b>
+								</div>
+								<div class="description">The editor will post an empty value ("") if you have just an empty paragraph on it, like this:</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.config.<b><a href="../symbols/CKEDITOR.config.html#.keystrokes">keystrokes</a></b>
+								</div>
+								<div class="description">A list associating keystrokes to editor commands.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.config.<b><a href="../symbols/CKEDITOR.config.html#.language">language</a></b>
+								</div>
+								<div class="description">The user interface language localization to use.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.config.<b><a href="../symbols/CKEDITOR.config.html#.plugins">plugins</a></b>
+								</div>
+								<div class="description">Comma separated list of plugins to load and initialize for an editor
+instance.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.config.<b><a href="../symbols/CKEDITOR.config.html#.protectedSource">protectedSource</a></b>
+								</div>
+								<div class="description">List of regular expressions to be executed over the input HTML,
+indicating code that must stay untouched.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.config.<b><a href="../symbols/CKEDITOR.config.html#.removePlugins">removePlugins</a></b>
+								</div>
+								<div class="description">List of plugins that must not be loaded.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.config.<b><a href="../symbols/CKEDITOR.config.html#.skin">skin</a></b>
+								</div>
+								<div class="description">The skin to load.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.config.<b><a href="../symbols/CKEDITOR.config.html#.startupFocus">startupFocus</a></b>
+								</div>
+								<div class="description">Sets whether the editor should have the focus when the page loads.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.config.<b><a href="../symbols/CKEDITOR.config.html#.startupMode">startupMode</a></b>
+								</div>
+								<div class="description">The mode to load at the editor startup.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.config.<b><a href="../symbols/CKEDITOR.config.html#.tabIndex">tabIndex</a></b>
+								</div>
+								<div class="description">The editor tabindex value.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.config.<b><a href="../symbols/CKEDITOR.config.html#.tabSpaces">tabSpaces</a></b>
+								</div>
+								<div class="description">Intructs the editor to add a number of spaces (&amp;nbsp;) to the text when
+hitting the TAB key.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.config.<b><a href="../symbols/CKEDITOR.config.html#.templates">templates</a></b>
+								</div>
+								<div class="description">The templates definition set to use.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.config.<b><a href="../symbols/CKEDITOR.config.html#.templates_files">templates_files</a></b>
+								</div>
+								<div class="description">The list of templates definition files to load.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.config.<b><a href="../symbols/CKEDITOR.config.html#.templates_replaceContent">templates_replaceContent</a></b>
+								</div>
+								<div class="description">Whether replace the current document content OR insert current
+editing position.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.config.<b><a href="../symbols/CKEDITOR.config.html#.theme">theme</a></b>
+								</div>
+								<div class="description">The theme to be used to build the UI.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.config.<b><a href="../symbols/CKEDITOR.config.html#.toolbar">toolbar</a></b>
+								</div>
+								<div class="description">The toolbox (alias toolbar) definition.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.config.<b><a href="../symbols/CKEDITOR.config.html#.toolbar_Basic">toolbar_Basic</a></b>
+								</div>
+								<div class="description">The toolbar definition.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.config.<b><a href="../symbols/CKEDITOR.config.html#.toolbarLocation">toolbarLocation</a></b>
+								</div>
+								<div class="description">The "theme space" to which rendering the toolbar.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.config.<b><a href="../symbols/CKEDITOR.config.html#.width">width</a></b>
+								</div>
+								<div class="description">The editor width in CSS size format or pixel integer.</div>
+							</td>
+						</tr>
+
+					</tbody>
+				</table>
+
+
+
+
+
+<!-- ============================== methods summary ======================== -->
+
+
+<!-- ============================== constructor details ==================== -->
+
+			<div class="details"><a name="constructor"> </a>
+				<div class="sectionTitle">
+					Namespace Detail
+				</div>
+
+				<div class="fixedFont" style="float:left">
+						<b>CKEDITOR.config</b>
+				</div>
+
+				<div style="float:right">
+					<span class="heading">Since:</span>
+
+							3.0
+
+				</div>
+				<div style="clear:both"></div>
+
+				<div class="description">
+					Holds the default configuration settings. Changes to this object are
+reflected in all editor instances, if not specificaly specified for those
+instances.
+
+				</div>
+
+
+
+
+						<pre class="code">// All editor created after the following setting will not load custom
+// configuration files.
+CKEDITOR.config.customConfig = '';</pre>
+
+
+
+
+
+
+
+
+
+
+
+
+			</div>
+
+
+<!-- ============================== field details ========================== -->
+
+				<div class="sectionTitle">
+					Field Detail
+				</div>
+
+					<a name=".baseFloatZIndex"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Number}</span>
+					<span class="light">CKEDITOR.config.</span><b>baseFloatZIndex</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						The base Z-index for floating dialogs and popups.
+
+
+					</div>
+
+
+
+
+							<pre class="code">config.baseFloatZIndex = 2000</pre>
+
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Default Value:</dt>
+							<dd>
+								10000
+							</dd>
+							</dl>
+
+
+					<hr />
+
+					<a name=".baseHref"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{String}</span>
+					<span class="light">CKEDITOR.config.</span><b>baseHref</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						The base href URL used to resolve relative and absolute URLs in the
+editor content.
+
+
+					</div>
+
+
+
+
+							<pre class="code">config.baseHref = 'http://www.example.com/path/';</pre>
+
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Default Value:</dt>
+							<dd>
+								'' (empty string)
+							</dd>
+							</dl>
+
+
+					<hr />
+
+					<a name=".blockedKeystrokes"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Array}</span>
+					<span class="light">CKEDITOR.config.</span><b>blockedKeystrokes</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						A list of keystrokes to be blocked if not defined in the <a href="#keystrokes">#keystrokes</a>
+setting. In this way it is possible to block the default browser behavior
+for those keystrokes.
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/plugins_keystrokes_plugin.js.html">plugins/keystrokes/plugin.js</a>.
+
+
+					</div>
+
+
+
+
+
+
+
+
+
+
+
+					<hr />
+
+					<a name=".contentsCss"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{String}</span>
+					<span class="light">CKEDITOR.config.</span><b>contentsCss</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						The CSS file to be used to apply style to the contents. It should
+reflect the CSS used in the final pages where the contents are to be
+used.
+
+
+					</div>
+
+
+
+
+							<pre class="code">config.contentsCss = '/css/mysitestyles.css';</pre>
+
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Default Value:</dt>
+							<dd>
+								'&lt;CKEditor folder&gt;/contents.css'
+							</dd>
+							</dl>
+
+
+					<hr />
+
+					<a name=".contentsLangDirection"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{String}</span>
+					<span class="light">CKEDITOR.config.</span><b>contentsLangDirection</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						The writting direction of the language used to write the editor
+contents. Allowed values are 'ltr' for Left-To-Right language (like
+English), or 'rtl' for Right-To-Left languages (like Arabic).
+
+
+					</div>
+
+
+
+
+							<pre class="code">config.contentsLangDirection = 'rtl';</pre>
+
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Default Value:</dt>
+							<dd>
+								'ltr'
+							</dd>
+							</dl>
+
+
+					<hr />
+
+					<a name=".corePlugins"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{String}</span>
+					<span class="light">CKEDITOR.config.</span><b>corePlugins</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						A comma separated list of plugins that are not related to editor
+instances. Reserved to plugins that extend the core code only.<br /><br />
+
+There are no ways to override this setting, except by editing the source
+code of CKEditor (_source/core/config.js).
+
+
+					</div>
+
+
+
+
+
+
+
+
+
+
+
+					<hr />
+
+					<a name=".customConfig"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{String}</span>
+					<span class="light">CKEDITOR.config.</span><b>customConfig</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						The URL path for the custom configuration file to be loaded. If not
+overloaded with inline configurations, it defaults to the "config.js"
+file present in the root of the CKEditor installation directory.<br /><br />
+
+CKEditor will recursively load custom configuration files defined inside
+other custom configuration files.
+
+
+					</div>
+
+
+
+
+							<pre class="code">// Load a specific configuration file.
+CKEDITOR.replace( 'myfiled', { customConfig : '/myconfig.js' } );</pre>
+
+
+
+							<pre class="code">// Do not load any custom configuration file.
+CKEDITOR.replace( 'myfiled', { customConfig : '' } );</pre>
+
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Default Value:</dt>
+							<dd>
+								'&lt;CKEditor folder&gt;/config.js'
+							</dd>
+							</dl>
+
+
+					<hr />
+
+					<a name=".defaultLanguage"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{String}</span>
+					<span class="light">CKEDITOR.config.</span><b>defaultLanguage</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						The language to be used if [@link #language] is left empty and it's not
+possible to localize the editor to the user language.
+
+
+					</div>
+
+
+
+
+							<pre class="code">config.defaultLanguage = 'it';</pre>
+
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Default Value:</dt>
+							<dd>
+								'en'
+							</dd>
+							</dl>
+
+
+					<hr />
+
+					<a name=".dialog_backgroundCoverColor"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{String}</span>
+					<span class="light">CKEDITOR.config.</span><b>dialog_backgroundCoverColor</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						The color of the dialog background cover. It should be a valid CSS color
+string.
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/plugins_dialog_plugin.js.html">plugins/dialog/plugin.js</a>.
+
+
+					</div>
+
+
+
+
+							<pre class="code">config.dialog_backgroundCoverColor = 'rgb(255, 254, 253)';</pre>
+
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Default Value:</dt>
+							<dd>
+								white
+							</dd>
+							</dl>
+
+
+					<hr />
+
+					<a name=".dialog_backgroundCoverOpacity"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Number}</span>
+					<span class="light">CKEDITOR.config.</span><b>dialog_backgroundCoverOpacity</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						The opacity of the dialog background cover. It should be a number within the
+range [0.0, 1.0].
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/plugins_dialog_plugin.js.html">plugins/dialog/plugin.js</a>.
+
+
+					</div>
+
+
+
+
+							<pre class="code">config.dialog_backgroundCoverOpacity = 0.7;</pre>
+
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Default Value:</dt>
+							<dd>
+								0.5
+							</dd>
+							</dl>
+
+
+					<hr />
+
+					<a name=".dialog_magnetDistance"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Number}</span>
+					<span class="light">CKEDITOR.config.</span><b>dialog_magnetDistance</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						The distance of magnetic borders used in moving and resizing dialogs,
+measured in pixels.
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/plugins_dialog_plugin.js.html">plugins/dialog/plugin.js</a>.
+
+
+					</div>
+
+
+
+
+							<pre class="code">config.dialog_magnetDistance = 30;</pre>
+
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Default Value:</dt>
+							<dd>
+								20
+							</dd>
+							</dl>
+
+
+					<hr />
+
+					<a name=".disableNativeSpellChecker"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Boolean}</span>
+					<span class="light">CKEDITOR.config.</span><b>disableNativeSpellChecker</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Disables the built-in spell checker while typing natively available in the
+browser (currently Firefox and Safari only).<br /><br />
+
+Even if word suggestions will not appear in the CKEditor context menu, this
+feature is useful to help quickly identifying misspelled words.<br /><br />
+
+This setting is currently compatible with Firefox only due to limitations in
+other browsers.
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/plugins_wysiwygarea_plugin.js.html">plugins/wysiwygarea/plugin.js</a>.
+
+
+					</div>
+
+
+
+
+							<pre class="code">config.disableNativeSpellChecker = false;</pre>
+
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Default Value:</dt>
+							<dd>
+								true
+							</dd>
+							</dl>
+
+
+					<hr />
+
+					<a name=".disableNativeTableHandles"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Boolean}</span>
+					<span class="light">CKEDITOR.config.</span><b>disableNativeTableHandles</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Disables the "table tools" offered natively by the browser (currently
+Firefox only) to make quick table editing operations, like adding or
+deleting rows and columns.
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/plugins_wysiwygarea_plugin.js.html">plugins/wysiwygarea/plugin.js</a>.
+
+
+					</div>
+
+
+
+
+							<pre class="code">config.disableNativeTableHandles = false;</pre>
+
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Default Value:</dt>
+							<dd>
+								true
+							</dd>
+							</dl>
+
+
+					<hr />
+
+					<a name=".disableObjectResizing"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Boolean}</span>
+					<span class="light">CKEDITOR.config.</span><b>disableObjectResizing</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Disables the ability of resize objects (image and tables) in the editing
+area
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/plugins_wysiwygarea_plugin.js.html">plugins/wysiwygarea/plugin.js</a>.
+
+
+					</div>
+
+
+
+
+							<pre class="code">config.disableObjectResizing = true;</pre>
+
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Default Value:</dt>
+							<dd>
+								false
+							</dd>
+							</dl>
+
+
+					<hr />
+
+					<a name=".docType"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{String}</span>
+					<span class="light">CKEDITOR.config.</span><b>docType</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Sets the doctype to be used when loading the editor content as HTML.
+
+
+					</div>
+
+
+
+
+							<pre class="code">// Set the doctype to the HTML 4 (quirks) mode.
+config.docType = '&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"&gt;';</pre>
+
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Default Value:</dt>
+							<dd>
+								'&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;'
+							</dd>
+							</dl>
+
+
+					<hr />
+
+					<a name=".extraPlugins"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{String}</span>
+					<span class="light">CKEDITOR.config.</span><b>extraPlugins</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						List of additional plugins to be loaded. This is a tool setting which
+makes it easier to add new plugins, whithout having to touch and
+possibly breaking the <i>plugins</i> setting.
+
+
+					</div>
+
+
+
+
+							<pre class="code">config.extraPlugins = 'myplugin,anotherplugin';</pre>
+
+
+
+
+
+
+
+
+					<hr />
+
+					<a name=".fullPage"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Boolean}</span>
+					<span class="light">CKEDITOR.config.</span><b>fullPage</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Indicates whether the contents to be edited are being inputted as a full
+HTML page. A full page includes the &lt;html&gt;, &lt;head&gt; and
+&lt;body&gt; tags. The final output will also reflect this setting,
+including the &lt;body&gt; contents only if this setting is disabled.
+
+
+					</div>
+
+
+
+
+							<pre class="code">config.fullPage = true;</pre>
+
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Default Value:</dt>
+							<dd>
+								false
+							</dd>
+							</dl>
+
+
+					<hr />
+
+					<a name=".height"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{String|Number}</span>
+					<span class="light">CKEDITOR.config.</span><b>height</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						The editor height, in CSS size format or pixel integer.
+
+
+					</div>
+
+
+
+
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Default Value:</dt>
+							<dd>
+								'200'
+							</dd>
+							</dl>
+
+
+					<hr />
+
+					<a name=".ignoreEmptyParagraph"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Undefined}</span>
+					<span class="light">CKEDITOR.config.</span><b>ignoreEmptyParagraph</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						The editor will post an empty value ("") if you have just an empty paragraph on it, like this:
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/plugins_wysiwygarea_plugin.js.html">plugins/wysiwygarea/plugin.js</a>.
+
+
+					</div>
+
+
+
+
+							<pre class="code"><p></p>
+<p><br /></p>
+<p><b></b></p></pre>
+
+
+
+
+
+
+
+
+					<hr />
+
+					<a name=".keystrokes"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Array}</span>
+					<span class="light">CKEDITOR.config.</span><b>keystrokes</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						A list associating keystrokes to editor commands. Each element in the list
+is an array where the first item is the keystroke, and the second is the
+command to be executed.
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/plugins_keystrokes_plugin.js.html">plugins/keystrokes/plugin.js</a>.
+
+
+					</div>
+
+
+
+
+
+
+
+
+
+
+
+					<hr />
+
+					<a name=".language"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Boolean}</span>
+					<span class="light">CKEDITOR.config.</span><b>language</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						The user interface language localization to use. If empty, the editor
+automatically localize the editor to the user language, if supported,
+otherwise the [@link #defaultLanguage] language is used.
+
+
+					</div>
+
+
+
+
+							<pre class="code">// Load the German interface.
+config.language = 'de';</pre>
+
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Default Value:</dt>
+							<dd>
+								true
+							</dd>
+							</dl>
+
+
+					<hr />
+
+					<a name=".plugins"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{String}</span>
+					<span class="light">CKEDITOR.config.</span><b>plugins</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Comma separated list of plugins to load and initialize for an editor
+instance.
+
+
+					</div>
+
+
+
+
+							<pre class="code">config.plugins = 'basicstyles,button,htmldataprocessor,toolbar,wysiwygarea';</pre>
+
+
+
+
+
+
+
+
+					<hr />
+
+					<a name=".protectedSource"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Array}</span>
+					<span class="light">CKEDITOR.config.</span><b>protectedSource</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						List of regular expressions to be executed over the input HTML,
+indicating code that must stay untouched.
+
+
+					</div>
+
+
+
+
+							<pre class="code">config.protectedSource.push( /<\?[\s\S]*?\?>/g );   // PHP Code
+config.protectedSource.push( /<%[\s\S]*?%>/g );   // ASP Code
+config.protectedSource.push( /(<asp:[^\>]+>[\s|\S]*?<\/asp:[^\>]+>)|(<asp:[^\>]+\/>)/gi );   // ASP.Net Code</pre>
+
+
+
+
+
+
+
+
+					<hr />
+
+					<a name=".removePlugins"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{String}</span>
+					<span class="light">CKEDITOR.config.</span><b>removePlugins</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						List of plugins that must not be loaded. This is a tool setting which
+makes it easier to avoid loading plugins definied in the <i>plugins</i>
+setting, whithout having to touch and possibly breaking it.
+
+
+					</div>
+
+
+
+
+							<pre class="code">config.removePlugins = 'elementspath,save,font';</pre>
+
+
+
+
+
+
+
+
+					<hr />
+
+					<a name=".skin"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{String}</span>
+					<span class="light">CKEDITOR.config.</span><b>skin</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						The skin to load. It may be the name of the skin folder inside the
+editor installation path, or the name and the path separated by a comma.
+
+
+					</div>
+
+
+
+
+							<pre class="code">config.skin = 'v2';</pre>
+
+
+
+							<pre class="code">config.skin = 'myskin,/customstuff/myskin/';</pre>
+
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Default Value:</dt>
+							<dd>
+								'default'
+							</dd>
+							</dl>
+
+
+					<hr />
+
+					<a name=".startupFocus"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Boolean}</span>
+					<span class="light">CKEDITOR.config.</span><b>startupFocus</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Sets whether the editor should have the focus when the page loads.
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/plugins_editingblock_plugin.js.html">plugins/editingblock/plugin.js</a>.
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Default Value:</dt>
+							<dd>
+								false
+							</dd>
+							</dl>
+
+
+					<hr />
+
+					<a name=".startupMode"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{String}</span>
+					<span class="light">CKEDITOR.config.</span><b>startupMode</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						The mode to load at the editor startup. It depends on the plugins
+loaded. By default, the "wysiwyg" and "source" modes are available.
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/plugins_editingblock_plugin.js.html">plugins/editingblock/plugin.js</a>.
+
+
+					</div>
+
+
+
+
+							<pre class="code">config.toolbarLocation = 'source';</pre>
+
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Default Value:</dt>
+							<dd>
+								'wysiwyg'
+							</dd>
+							</dl>
+
+
+					<hr />
+
+					<a name=".tabIndex"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Number}</span>
+					<span class="light">CKEDITOR.config.</span><b>tabIndex</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						The editor tabindex value.
+
+
+					</div>
+
+
+
+
+							<pre class="code">config.tabIndex = 1;</pre>
+
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Default Value:</dt>
+							<dd>
+								0 (zero)
+							</dd>
+							</dl>
+
+
+					<hr />
+
+					<a name=".tabSpaces"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Undefined}</span>
+					<span class="light">CKEDITOR.config.</span><b>tabSpaces</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Intructs the editor to add a number of spaces (&amp;nbsp;) to the text when
+hitting the TAB key. If set to zero, the TAB key will have its default
+behavior instead (like moving out of the editor).
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/plugins_tab_plugin.js.html">plugins/tab/plugin.js</a>.
+
+
+					</div>
+
+
+
+
+							<pre class="code">config.tabSpaces = 4;</pre>
+
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Default Value:</dt>
+							<dd>
+								0
+							</dd>
+							</dl>
+
+
+					<hr />
+
+					<a name=".templates"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{String}</span>
+					<span class="light">CKEDITOR.config.</span><b>templates</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						The templates definition set to use. It accepts a list of names separated by
+comma. It must match definitions loaded with the templates_files setting.
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/plugins_templates_plugin.js.html">plugins/templates/plugin.js</a>.
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Default Value:</dt>
+							<dd>
+								'default'
+							</dd>
+							</dl>
+
+
+					<hr />
+
+					<a name=".templates_files"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{(String) Array}</span>
+					<span class="light">CKEDITOR.config.</span><b>templates_files</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						The list of templates definition files to load.
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/plugins_templates_plugin.js.html">plugins/templates/plugin.js</a>.
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Default Value:</dt>
+							<dd>
+								[ 'plugins/templates/templates/default.js' ]
+							</dd>
+							</dl>
+
+
+					<hr />
+
+					<a name=".templates_replaceContent"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Boolean}</span>
+					<span class="light">CKEDITOR.config.</span><b>templates_replaceContent</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Whether replace the current document content OR insert current
+editing position.
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/plugins_templates_plugin.js.html">plugins/templates/plugin.js</a>.
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Default Value:</dt>
+							<dd>
+								true
+							</dd>
+							</dl>
+
+
+					<hr />
+
+					<a name=".theme"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{String}</span>
+					<span class="light">CKEDITOR.config.</span><b>theme</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						The theme to be used to build the UI.
+
+
+					</div>
+
+
+
+
+							<pre class="code">config.theme = 'default';</pre>
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">See:</dt>
+
+							<dd><a href="../symbols/CKEDITOR.config.html#.skin">CKEDITOR.config.skin</a></dd>
+
+							</dl>
+
+
+							<dl class="detailList">
+							<dt class="heading">Default Value:</dt>
+							<dd>
+								'default'
+							</dd>
+							</dl>
+
+
+					<hr />
+
+					<a name=".toolbar"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Array or String}</span>
+					<span class="light">CKEDITOR.config.</span><b>toolbar</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						The toolbox (alias toolbar) definition. It is a toolbar name or an array of toolbars (strips),
+each one being also an array, containing a list of UI items.
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/plugins_toolbar_plugin.js.html">plugins/toolbar/plugin.js</a>.
+
+
+					</div>
+
+
+
+
+							<pre class="code">// Defines a toolbar with only one strip containing the "Source" button, a
+// separator and the "Bold" and "Italic" buttons.
+<b>CKEDITOR.config.toolbar =
+[
+    [ 'Source', '-', 'Bold', 'Italic' ]
+]</b>;
+// Load toolbar_Name where Name = Basic.
+<b>CKEDITOR.config.toolbar = 'Basic';</pre>
+
+
+
+
+
+
+
+
+					<hr />
+
+					<a name=".toolbar_Basic"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Array}</span>
+					<span class="light">CKEDITOR.config.</span><b>toolbar_Basic</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						The toolbar definition. It is an array of toolbars (strips),
+each one being also an array, containing a list of UI items.
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/plugins_toolbar_plugin.js.html">plugins/toolbar/plugin.js</a>.
+
+
+					</div>
+
+
+
+
+							<pre class="code">// Defines a toolbar with only one strip containing the "Source" button, a
+// separator and the "Bold" and "Italic" buttons.
+<b>CKEDITOR.config.toolbar_Basic =
+[
+    [ 'Source', '-', 'Bold', 'Italic' ]
+]</b>;</pre>
+
+
+
+
+
+
+
+
+					<hr />
+
+					<a name=".toolbarLocation"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{String}</span>
+					<span class="light">CKEDITOR.config.</span><b>toolbarLocation</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						The "theme space" to which rendering the toolbar. For the default theme,
+the recommended options are "top" and "bottom".
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/plugins_toolbar_plugin.js.html">plugins/toolbar/plugin.js</a>.
+
+
+					</div>
+
+
+
+
+							<pre class="code">config.toolbarLocation = 'bottom';</pre>
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">See:</dt>
+
+							<dd><a href="../symbols/CKEDITOR.config.html#.theme">CKEDITOR.config.theme</a></dd>
+
+							</dl>
+
+
+							<dl class="detailList">
+							<dt class="heading">Default Value:</dt>
+							<dd>
+								'top'
+							</dd>
+							</dl>
+
+
+					<hr />
+
+					<a name=".width"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{String|Number}</span>
+					<span class="light">CKEDITOR.config.</span><b>width</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						The editor width in CSS size format or pixel integer.
+
+
+					</div>
+
+
+
+
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Default Value:</dt>
+							<dd>
+								'100%'
+							</dd>
+							</dl>
+
+
+
+
+
+
+<!-- ============================== method details ========================= -->
+
+
+			<hr />
+		</div>
+
+<!-- ============================== footer ================================= -->
+		<div class="fineprint" style="clear:both">
+	Copyright &copy; 2003-2009, <a href="http://cksource.com/">CKSource</a> - Frederico Knabben. All rights reserved.
+</div>
+
+	</body>
+</html>

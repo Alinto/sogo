@@ -12,7 +12,7 @@ install ::
 	else \
 	  mkdir -p $(SOGO_WEBSERVERRESOURCESDIR); \
 	  cp $(WEBSERVER_RESOURCE_FILES) $(SOGO_WEBSERVERRESOURCESDIR); \
-		cp -r fckeditor $(SOGO_WEBSERVERRESOURCESDIR); \
+		cp -r ckeditor $(SOGO_WEBSERVERRESOURCESDIR); \
 	fi
 
 clean ::

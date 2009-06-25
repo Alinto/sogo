@@ -1,0 +1,2863 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="generator" content="JsDoc Toolkit" />
+
+		<title>CKEDITOR.dialog - CKEditor 3.0 JavaScript API Documentation</title>
+
+		<style type="text/css">
+			/* default.css */
+body
+{
+	font: 12px "Lucida Grande", Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.header
+{
+	clear: both;
+	background-color: #ccc;
+	padding: 8px;
+}
+
+h1
+{
+	font-size: 150%;
+	font-weight: bold;
+	padding: 0;
+	margin: 1em 0 0 .3em;
+}
+
+hr
+{
+	border: none 0;
+	border-top: 1px solid #7F8FB1;
+	height: 1px;
+}
+
+pre.code
+{
+	display: block;
+	padding: 8px;
+	border: 1px dashed #ccc;
+}
+
+#index
+{
+	margin-top: 24px;
+	float: left;
+	width: 160px;
+	position: absolute;
+	left: 8px;
+	background-color: #F3F3F3;
+	padding: 8px;
+}
+
+#content
+{
+	margin-left: 190px;
+}
+
+.classList
+{
+	list-style-type: none;
+	padding: 0;
+	margin: 0 0 0 8px;
+	font-family: arial, sans-serif;
+	font-size: 1em;
+	overflow: auto;
+}
+
+.classList li
+{
+	padding: 0;
+	margin: 0 0 8px 0;
+}
+
+.summaryTable { width: 100%; }
+
+h1.classTitle
+{
+	font-size:170%;
+	line-height:130%;
+}
+
+h2 { font-size: 110%; }
+caption, div.sectionTitle
+{
+	background-color: #7F8FB1;
+	color: #fff;
+	font-size:130%;
+	text-align: left;
+	padding: 2px 6px 2px 6px;
+	border: 1px #7F8FB1 solid;
+}
+
+div.sectionTitle { margin-bottom: 8px; }
+.summaryTable thead { display: none; }
+
+.summaryTable td
+{
+	vertical-align: top;
+	padding: 4px;
+	border-bottom: 1px #7F8FB1 solid;
+	border-right: 1px #7F8FB1 solid;
+}
+
+/*col#summaryAttributes {}*/
+.summaryTable td.attributes
+{
+	border-left: 1px #7F8FB1 solid;
+	width: 140px;
+	text-align: right;
+}
+
+td.attributes, .fixedFont
+{
+	line-height: 15px;
+	color: #002EBE;
+	font-family: "Courier New",Courier,monospace;
+	font-size: 13px;
+}
+
+.summaryTable td.nameDescription
+{
+	text-align: left;
+	font-size: 13px;
+	line-height: 15px;
+}
+
+.summaryTable td.nameDescription, .description
+{
+	line-height: 15px;
+	padding: 4px;
+	padding-left: 4px;
+}
+
+.summaryTable { margin-bottom: 8px; }
+
+ul.inheritsList
+{
+	list-style: square;
+	margin-left: 20px;
+	padding-left: 0;
+}
+
+.detailList {
+	margin-left: 20px;
+	line-height: 15px;
+}
+.detailList dt { margin-left: 20px; }
+
+.detailList .heading
+{
+	font-weight: bold;
+	padding-bottom: 6px;
+	margin-left: 0;
+}
+
+.light, td.attributes, .light a:link, .light a:visited
+{
+	color: #777;
+	font-style: italic;
+}
+
+.fineprint
+{
+	text-align: right;
+	font-size: 10px;
+}
+
+		</style>
+	</head>
+
+	<body>
+<!-- ============================== header ================================= -->
+		<!-- begin static/header.html -->
+		<div id="header">
+	<h1>CKEditor 3.0 JavaScript API Documentation</h1>
+	<hr />
+</div>
+
+		<!-- end static/header.html -->
+
+<!-- ============================== classes index ============================ -->
+		<div id="index">
+			<!-- begin publish.classesIndex -->
+			<div align="center">
+	<a href="../index.html">Code Index</a>
+	| <a href="../files.html">File Index</a>
+</div>
+<hr />
+<h2>Namespaces</h2>
+<ul class="classList">
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.html">CKEDITOR</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ajax.html">CKEDITOR.ajax</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.config.html">CKEDITOR.config</a>
+			</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.html">CKEDITOR.dom</a>
+			</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dtd.html">CKEDITOR.dtd</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.env.html">CKEDITOR.env</a>
+			</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.imageCacher.html">CKEDITOR.imageCacher</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.loader.html">CKEDITOR.loader</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.plugins.html">CKEDITOR.plugins</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.resourceManager.html">CKEDITOR.resourceManager</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.scriptLoader.html">CKEDITOR.scriptLoader</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.skins.html">CKEDITOR.skins</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.test.html">CKEDITOR.test</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.themes.html">CKEDITOR.themes</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.tools.html">CKEDITOR.tools</a>
+			</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</ul>
+<h2>Classes</h2>
+<ul class="classList">
+
+
+
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.commandDefinition.html">CKEDITOR.commandDefinition</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dialog.html">CKEDITOR.dialog</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dialog.buttonDefinition.html">CKEDITOR.dialog.buttonDefinition</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dialog.contentDefinition.html">CKEDITOR.dialog.contentDefinition</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dialog.contentDefinitionObject.html">CKEDITOR.dialog.contentDefinitionObject</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dialog.dialogDefinition.html">CKEDITOR.dialog.dialogDefinition</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dialog.dialogDefinitionObject.html">CKEDITOR.dialog.dialogDefinitionObject</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dialog.uiElementDefinition.html">CKEDITOR.dialog.uiElementDefinition</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dialogCommand.html">CKEDITOR.dialogCommand</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.document.html">CKEDITOR.dom.document</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.domObject.html">CKEDITOR.dom.domObject</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.element.html">CKEDITOR.dom.element</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.event.html">CKEDITOR.dom.event</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.node.html">CKEDITOR.dom.node</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.selection.html">CKEDITOR.dom.selection</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.text.html">CKEDITOR.dom.text</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.window.html">CKEDITOR.dom.window</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.editor.html">CKEDITOR.editor</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.event.html">CKEDITOR.event</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.eventInfo.html">CKEDITOR.eventInfo</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.focusManager.html">CKEDITOR.focusManager</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.htmlParser.html">CKEDITOR.htmlParser</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.htmlParser.cdata.html">CKEDITOR.htmlParser.cdata</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.htmlParser.comment.html">CKEDITOR.htmlParser.comment</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.htmlParser.element.html">CKEDITOR.htmlParser.element</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.htmlParser.fragment.html">CKEDITOR.htmlParser.fragment</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.htmlParser.text.html">CKEDITOR.htmlParser.text</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.htmlWriter.html">CKEDITOR.htmlWriter</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.keystrokeHandler.html">CKEDITOR.keystrokeHandler</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.pluginDefinition.html">CKEDITOR.pluginDefinition</a>
+			</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.html">CKEDITOR.ui</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.button.html">CKEDITOR.ui.button</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.button.html">CKEDITOR.ui.dialog.button</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.checkbox.html">CKEDITOR.ui.dialog.checkbox</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.file.html">CKEDITOR.ui.dialog.file</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.fileButton.html">CKEDITOR.ui.dialog.fileButton</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.hbox.html">CKEDITOR.ui.dialog.hbox</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.html.html">CKEDITOR.ui.dialog.html</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.labeledElement.html">CKEDITOR.ui.dialog.labeledElement</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.radio.html">CKEDITOR.ui.dialog.radio</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.select.html">CKEDITOR.ui.dialog.select</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.textarea.html">CKEDITOR.ui.dialog.textarea</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.textInput.html">CKEDITOR.ui.dialog.textInput</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.uiElement.html">CKEDITOR.ui.dialog.uiElement</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.vbox.html">CKEDITOR.ui.dialog.vbox</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.handlerDefinition.html">CKEDITOR.ui.handlerDefinition</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.xml.html">CKEDITOR.xml</a>
+			</li>
+
+
+</ul>
+<hr />
+			<!-- end publish.classesIndex -->
+		</div>
+
+		<div id="content">
+<!-- ============================== class title ============================ -->
+			<h1 class="classTitle">
+
+				Class CKEDITOR.dialog
+			</h1>
+
+<!-- ============================== class summary ========================== -->
+			<p class="description">
+
+
+
+
+
+					<br /><i>Defined in: </i> <a href="../symbols/src/plugins_dialog_plugin.js.html">plugins/dialog/plugin.js</a>.
+
+			</p>
+
+<!-- ============================== constructor summary ==================== -->
+
+			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class CKEDITOR.dialog.">
+				<caption>Class Summary</caption>
+				<thead>
+					<tr>
+						<th scope="col">Constructor Attributes</th>
+						<th scope="col">Constructor Name and Description</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="attributes">&nbsp;</td>
+						<td class="nameDescription" >
+							<div class="fixedFont">
+								<b><a href="../symbols/CKEDITOR.dialog.html#constructor">CKEDITOR.dialog</a></b>(editor, dialogName)
+							</div>
+							<div class="description">This is the base class for runtime dialog objects.</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+
+<!-- ============================== properties summary ===================== -->
+
+
+
+
+
+
+
+				<table class="summaryTable" cellspacing="0" summary="A summary of the fields documented in the class CKEDITOR.dialog.">
+					<caption>Field Summary</caption>
+					<thead>
+						<tr>
+							<th scope="col">Field Attributes</th>
+							<th scope="col">Field Name and Description</th>
+						</tr>
+					</thead>
+					<tbody>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.dialog.<b><a href="../symbols/CKEDITOR.dialog.html#.cancelButton">cancelButton</a></b>
+								</div>
+								<div class="description">The default cancel button for dialogs.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								CKEDITOR.dialog.<b><a href="../symbols/CKEDITOR.dialog.html#.okButton">okButton</a></b>
+								</div>
+								<div class="description">The default OK button for dialogs.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/CKEDITOR.dialog.html#reset">reset</a></b>
+								</div>
+								<div class="description">Resets all input values in the dialog.</div>
+							</td>
+						</tr>
+
+					</tbody>
+				</table>
+
+
+
+
+
+<!-- ============================== methods summary ======================== -->
+
+
+
+				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class CKEDITOR.dialog.">
+					<caption>Method Summary</caption>
+					<thead>
+						<tr>
+							<th scope="col">Method Attributes</th>
+							<th scope="col">Method Name and Description</th>
+						</tr>
+					</thead>
+					<tbody>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">CKEDITOR.dialog.<b><a href="../symbols/CKEDITOR.dialog.html#.add">add</a></b>(name, dialogDefinition)
+								</div>
+								<div class="description">Registers a dialog.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">CKEDITOR.dialog.<b><a href="../symbols/CKEDITOR.dialog.html#.addIframe">addIframe</a></b>(name, title, src, width, height, onContentLoad)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">CKEDITOR.dialog.<b><a href="../symbols/CKEDITOR.dialog.html#.addUIElement">addUIElement</a></b>(typeName, builder)
+								</div>
+								<div class="description">Registers a dialog UI element.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">CKEDITOR.dialog.<b><a href="../symbols/CKEDITOR.dialog.html#.exists">exists</a></b>(name)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">CKEDITOR.dialog.<b><a href="../symbols/CKEDITOR.dialog.html#.getCurrent">getCurrent</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;inner&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dialog.html#-changeFocus">changeFocus</a></b>(forward)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;inner&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dialog.html#-focusKeydownHandler">focusKeydownHandler</a></b>(evt)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&lt;inner&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dialog.html#-iterContents">iterContents</a></b>(func)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dialog.html#addPage">addPage</a></b>(contents)
+								</div>
+								<div class="description">Adds a tabbed page into the dialog.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dialog.html#click">click</a></b>(id)
+								</div>
+								<div class="description">Simulates a click to a dialog button in the dialog's button row.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dialog.html#commitContent">commitContent</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dialog.html#disableButton">disableButton</a></b>(id)
+								</div>
+								<div class="description">Disables a dialog button.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dialog.html#enableButton">enableButton</a></b>(id)
+								</div>
+								<div class="description">Enables a dialog button.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dialog.html#foreach">foreach</a></b>(fn)
+								</div>
+								<div class="description">Executes a function for each UI element.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dialog.html#getButton">getButton</a></b>(id)
+								</div>
+								<div class="description">Gets the UI element of a button in the dialog's button row.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dialog.html#getContentElement">getContentElement</a></b>(pageId, elementId)
+								</div>
+								<div class="description">Gets a dialog UI element object from a dialog page.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dialog.html#getElement">getElement</a></b>()
+								</div>
+								<div class="description">Gets the root DOM element of the dialog.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dialog.html#getName">getName</a></b>()
+								</div>
+								<div class="description">Gets the name of the dialog.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dialog.html#getPageCount">getPageCount</a></b>()
+								</div>
+								<div class="description">Gets the number of pages in the dialog.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dialog.html#getParentEditor">getParentEditor</a></b>()
+								</div>
+								<div class="description">Gets the editor instance which opened this dialog.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dialog.html#getPosition">getPosition</a></b>()
+								</div>
+								<div class="description">Gets the dialog's position in the window.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dialog.html#getSelectedElement">getSelectedElement</a></b>()
+								</div>
+								<div class="description">Gets the element that was selected when opening the dialog, if any.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dialog.html#getSize">getSize</a></b>()
+								</div>
+								<div class="description">Gets the current size of the dialog in pixels.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dialog.html#getValueOf">getValueOf</a></b>(pageId, elementId)
+								</div>
+								<div class="description">Gets the value of a dialog UI element.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dialog.html#hide">hide</a></b>()
+								</div>
+								<div class="description">Hides the dialog box.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dialog.html#hidePage">hidePage</a></b>(id)
+								</div>
+								<div class="description">Hides a page's tab away from the dialog.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dialog.html#move">move</a></b>(x, y)
+								</div>
+								<div class="description">Moves the dialog to an (x, y) coordinate relative to the window.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dialog.html#resize">resize</a></b>(width, height)
+								</div>
+								<div class="description">Resizes the dialog.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dialog.html#selectPage">selectPage</a></b>(id)
+								</div>
+								<div class="description">Activates a tab page in the dialog by its id.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dialog.html#setupContent">setupContent</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dialog.html#setValueOf">setValueOf</a></b>(pageId, elementId, value)
+								</div>
+								<div class="description">Sets the value of a dialog UI element.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dialog.html#show">show</a></b>()
+								</div>
+								<div class="description">Shows the dialog box.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.dialog.html#showPage">showPage</a></b>(id)
+								</div>
+								<div class="description">Unhides a page's tab.</div>
+							</td>
+						</tr>
+
+					</tbody>
+				</table>
+
+
+
+
+
+<!-- ============================== constructor details ==================== -->
+
+			<div class="details"><a name="constructor"> </a>
+				<div class="sectionTitle">
+					Class Detail
+				</div>
+
+				<div class="fixedFont" style="float:left">
+						<b>CKEDITOR.dialog</b>(editor, dialogName)
+				</div>
+
+				<div style="float:right">
+					<span class="heading">Since:</span>
+
+							3.0
+
+				</div>
+				<div style="clear:both"></div>
+
+				<div class="description">
+					This is the base class for runtime dialog objects. An instance of this
+class represents a single named dialog for a single editor instance.
+
+				</div>
+
+
+
+
+						<pre class="code">var dialogObj = new CKEDITOR.dialog( editor, 'smiley' );</pre>
+
+
+
+
+
+
+						<dl class="detailList">
+						<dt class="heading">Parameters:</dt>
+
+							<dt>
+								<span class="light fixedFont">{Object}</span> <b>editor</b>
+
+							</dt>
+								<dd>The editor which created the dialog.</dd>
+
+							<dt>
+								<span class="light fixedFont">{String}</span> <b>dialogName</b>
+
+							</dt>
+								<dd>The dialog's registered name.</dd>
+
+						</dl>
+
+
+
+
+
+
+
+			</div>
+
+
+<!-- ============================== field details ========================== -->
+
+				<div class="sectionTitle">
+					Field Detail
+				</div>
+
+					<a name=".cancelButton"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Function}</span>
+					<span class="light">CKEDITOR.dialog.</span><b>cancelButton</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						The default cancel button for dialogs. Fires the "cancel" event and closes the dialog if no UI element value changed.
+
+
+					</div>
+
+
+
+
+
+
+
+
+
+
+
+					<hr />
+
+					<a name=".okButton"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Function}</span>
+					<span class="light">CKEDITOR.dialog.</span><b>okButton</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						The default OK button for dialogs. Fires the "ok" event and closes the dialog if the event succeeds.
+
+
+					</div>
+
+
+
+
+
+
+
+
+
+
+
+					<hr />
+
+					<a name="reset"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{<a href="../symbols/CKEDITOR.dialog.html#constructor">CKEDITOR.dialog</a>}</span>
+					<b>reset</b>
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Resets all input values in the dialog.
+
+
+					</div>
+
+
+
+
+							<pre class="code">dialogObj.reset();</pre>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ============================== method details ========================= -->
+
+				<div class="sectionTitle">
+					Method Detail
+				</div>
+
+					<a name=".add"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Undefined}</span>
+					<span class="light">CKEDITOR.dialog.</span><b>add</b>(name, dialogDefinition)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Registers a dialog.
+
+
+					</div>
+
+
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>name</b>
+
+								</dt>
+								<dd>The dialog's name.</dd>
+
+								<dt>
+									<span class="light fixedFont">{Function|String}</span> <b>dialogDefinition</b>
+
+								</dt>
+								<dd>A function returning the dialog's definition, or the URL to the .js file holding the function.
+The function should accept an argument "editor" which is the current editor instance, and
+return an object conforming to <a href="../symbols/CKEDITOR.dialog.dialogDefinition.html#constructor">CKEDITOR.dialog.dialogDefinition</a>.</dd>
+
+							</dl>
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">See:</dt>
+
+								<dd><a href="../symbols/CKEDITOR.dialog.dialogDefinition.html#constructor">CKEDITOR.dialog.dialogDefinition</a></dd>
+
+							</dl>
+
+
+					<hr />
+
+					<a name=".addIframe"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Undefined}</span>
+					<span class="light">CKEDITOR.dialog.</span><b>addIframe</b>(name, title, src, width, height, onContentLoad)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+
+
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/plugins_iframedialog_plugin.js.html">plugins/iframedialog/plugin.js</a>.
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>name</b>
+
+								</dt>
+								<dd></dd>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>title</b>
+
+								</dt>
+								<dd></dd>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>src</b>
+
+								</dt>
+								<dd></dd>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>width</b>
+
+								</dt>
+								<dd></dd>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>height</b>
+
+								</dt>
+								<dd></dd>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>onContentLoad</b>
+
+								</dt>
+								<dd></dd>
+
+							</dl>
+
+
+
+
+
+
+
+					<hr />
+
+					<a name=".addUIElement"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Undefined}</span>
+					<span class="light">CKEDITOR.dialog.</span><b>addUIElement</b>(typeName, builder)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Registers a dialog UI element.
+
+
+					</div>
+
+
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>typeName</b>
+
+								</dt>
+								<dd>The name of the UI element.</dd>
+
+								<dt>
+									<span class="light fixedFont">{Function}</span> <b>builder</b>
+
+								</dt>
+								<dd>The function to build the UI element.</dd>
+
+							</dl>
+
+
+
+
+
+
+
+					<hr />
+
+					<a name=".exists"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Undefined}</span>
+					<span class="light">CKEDITOR.dialog.</span><b>exists</b>(name)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>name</b>
+
+								</dt>
+								<dd></dd>
+
+							</dl>
+
+
+
+
+
+
+
+					<hr />
+
+					<a name=".getCurrent"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Undefined}</span>
+					<span class="light">CKEDITOR.dialog.</span><b>getCurrent</b>()
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+
+
+
+
+
+
+					<hr />
+
+					<a name="-changeFocus"> </a>
+					<div class="fixedFont" style="float:left">&lt;inner&gt;
+
+					<span class="light">{Undefined}</span>
+					<b>changeFocus</b>(forward)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>forward</b>
+
+								</dt>
+								<dd></dd>
+
+							</dl>
+
+
+
+
+
+
+
+					<hr />
+
+					<a name="-focusKeydownHandler"> </a>
+					<div class="fixedFont" style="float:left">&lt;inner&gt;
+
+					<span class="light">{Undefined}</span>
+					<b>focusKeydownHandler</b>(evt)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>evt</b>
+
+								</dt>
+								<dd></dd>
+
+							</dl>
+
+
+
+
+
+
+
+					<hr />
+
+					<a name="-iterContents"> </a>
+					<div class="fixedFont" style="float:left">&lt;inner&gt;
+
+					<span class="light">{Undefined}</span>
+					<b>iterContents</b>(func)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>func</b>
+
+								</dt>
+								<dd></dd>
+
+							</dl>
+
+
+
+
+
+
+
+					<hr />
+
+					<a name="addPage"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{Undefined}</span>
+					<b>addPage</b>(contents)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Adds a tabbed page into the dialog.
+
+
+					</div>
+
+
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>contents</b>
+
+								</dt>
+								<dd>Content definition.</dd>
+
+							</dl>
+
+
+
+
+
+
+
+					<hr />
+
+					<a name="click"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{Undefined}</span>
+					<b>click</b>(id)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Simulates a click to a dialog button in the dialog's button row.
+
+
+					</div>
+
+
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>id</b>
+
+								</dt>
+								<dd>The id of the button.</dd>
+
+							</dl>
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+
+								<dd><span class="light fixedFont">{Undefined}</span> The return value of the dialog's "click" event.</dd>
+
+							</dl>
+
+
+
+
+					<hr />
+
+					<a name="commitContent"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{Undefined}</span>
+					<b>commitContent</b>()
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+
+
+
+
+
+
+					<hr />
+
+					<a name="disableButton"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{Undefined}</span>
+					<b>disableButton</b>(id)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Disables a dialog button.
+
+
+					</div>
+
+
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>id</b>
+
+								</dt>
+								<dd>The id of the button.</dd>
+
+							</dl>
+
+
+
+
+
+
+
+					<hr />
+
+					<a name="enableButton"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{Undefined}</span>
+					<b>enableButton</b>(id)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Enables a dialog button.
+
+
+					</div>
+
+
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>id</b>
+
+								</dt>
+								<dd>The id of the button.</dd>
+
+							</dl>
+
+
+
+
+
+
+
+					<hr />
+
+					<a name="foreach"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{<a href="../symbols/CKEDITOR.dialog.html#constructor">CKEDITOR.dialog</a>}</span>
+					<b>foreach</b>(fn)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Executes a function for each UI element.
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{Function}</span> <b>fn</b>
+
+								</dt>
+								<dd>Function to execute for each UI element.</dd>
+
+							</dl>
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+
+								<dd><span class="light fixedFont">{<a href="../symbols/CKEDITOR.dialog.html#constructor">CKEDITOR.dialog</a>}</span> The current dialog object.</dd>
+
+							</dl>
+
+
+
+
+					<hr />
+
+					<a name="getButton"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{<a href="../symbols/CKEDITOR.ui.dialog.button.html#constructor">CKEDITOR.ui.dialog.button</a>}</span>
+					<b>getButton</b>(id)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Gets the UI element of a button in the dialog's button row.
+
+
+					</div>
+
+
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>id</b>
+
+								</dt>
+								<dd>The id of the button.</dd>
+
+							</dl>
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+
+								<dd><span class="light fixedFont">{<a href="../symbols/CKEDITOR.ui.dialog.button.html#constructor">CKEDITOR.ui.dialog.button</a>}</span> The button object.</dd>
+
+							</dl>
+
+
+
+
+					<hr />
+
+					<a name="getContentElement"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{<a href="../symbols/CKEDITOR.ui.dialog.uiElement.html#constructor">CKEDITOR.ui.dialog.uiElement</a>}</span>
+					<b>getContentElement</b>(pageId, elementId)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Gets a dialog UI element object from a dialog page.
+
+
+					</div>
+
+
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>pageId</b>
+
+								</dt>
+								<dd>id of dialog page.</dd>
+
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>elementId</b>
+
+								</dt>
+								<dd>id of UI element.</dd>
+
+							</dl>
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+
+								<dd><span class="light fixedFont">{<a href="../symbols/CKEDITOR.ui.dialog.uiElement.html#constructor">CKEDITOR.ui.dialog.uiElement</a>}</span> The dialog UI element.</dd>
+
+							</dl>
+
+
+
+
+					<hr />
+
+					<a name="getElement"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{<a href="../symbols/CKEDITOR.dom.element.html#constructor">CKEDITOR.dom.element</a>}</span>
+					<b>getElement</b>()
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Gets the root DOM element of the dialog.
+
+
+					</div>
+
+
+
+
+							<pre class="code">var dialogElement = dialogObj.getElement().getFirst();
+dialogElement.setStyle( 'padding', '5px' );</pre>
+
+
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+
+								<dd><span class="light fixedFont">{<a href="../symbols/CKEDITOR.dom.element.html#constructor">CKEDITOR.dom.element</a>}</span> The &lt;span&gt; element containing this dialog.</dd>
+
+							</dl>
+
+
+
+
+					<hr />
+
+					<a name="getName"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{String}</span>
+					<b>getName</b>()
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Gets the name of the dialog.
+
+
+					</div>
+
+
+
+
+							<pre class="code">var dialogName = dialogObj.getName();</pre>
+
+
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+
+								<dd><span class="light fixedFont">{String}</span> The name of this dialog.</dd>
+
+							</dl>
+
+
+
+
+					<hr />
+
+					<a name="getPageCount"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{Number}</span>
+					<b>getPageCount</b>()
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Gets the number of pages in the dialog.
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+
+								<dd><span class="light fixedFont">{Number}</span> Page count.</dd>
+
+							</dl>
+
+
+
+
+					<hr />
+
+					<a name="getParentEditor"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{<a href="../symbols/CKEDITOR.editor.html#constructor">CKEDITOR.editor</a>}</span>
+					<b>getParentEditor</b>()
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Gets the editor instance which opened this dialog.
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+
+								<dd><span class="light fixedFont">{<a href="../symbols/CKEDITOR.editor.html#constructor">CKEDITOR.editor</a>}</span> Parent editor instances.</dd>
+
+							</dl>
+
+
+
+
+					<hr />
+
+					<a name="getPosition"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{Object}</span>
+					<b>getPosition</b>()
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Gets the dialog's position in the window.
+
+
+					</div>
+
+
+
+
+							<pre class="code">var dialogX = dialogObj.getPosition().x;</pre>
+
+
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+
+								<dd><span class="light fixedFont">{Object}</span> An object with "x" and "y" properties.</dd>
+
+							</dl>
+
+
+
+
+					<hr />
+
+					<a name="getSelectedElement"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{<a href="../symbols/CKEDITOR.dom.element.html#constructor">CKEDITOR.dom.element</a>}</span>
+					<b>getSelectedElement</b>()
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Gets the element that was selected when opening the dialog, if any.
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+
+								<dd><span class="light fixedFont">{<a href="../symbols/CKEDITOR.dom.element.html#constructor">CKEDITOR.dom.element</a>}</span> The element that was selected, or null.</dd>
+
+							</dl>
+
+
+
+
+					<hr />
+
+					<a name="getSize"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{Object}</span>
+					<b>getSize</b>()
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Gets the current size of the dialog in pixels.
+
+
+					</div>
+
+
+
+
+							<pre class="code">var width = dialogObj.getSize().width;</pre>
+
+
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+
+								<dd><span class="light fixedFont">{Object}</span> An object with "width" and "height" properties.</dd>
+
+							</dl>
+
+
+
+
+					<hr />
+
+					<a name="getValueOf"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{Object}</span>
+					<b>getValueOf</b>(pageId, elementId)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Gets the value of a dialog UI element.
+
+
+					</div>
+
+
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>pageId</b>
+
+								</dt>
+								<dd>id of dialog page.</dd>
+
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>elementId</b>
+
+								</dt>
+								<dd>id of UI element.</dd>
+
+							</dl>
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+
+								<dd><span class="light fixedFont">{Object}</span> The value of the UI element.</dd>
+
+							</dl>
+
+
+
+
+					<hr />
+
+					<a name="hide"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{Undefined}</span>
+					<b>hide</b>()
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Hides the dialog box.
+
+
+					</div>
+
+
+
+
+							<pre class="code">dialogObj.hide();</pre>
+
+
+
+
+
+
+
+
+
+
+
+					<hr />
+
+					<a name="hidePage"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{Undefined}</span>
+					<b>hidePage</b>(id)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Hides a page's tab away from the dialog.
+
+
+					</div>
+
+
+
+
+							<pre class="code">dialog.hidePage( 'tab_3' );</pre>
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>id</b>
+
+								</dt>
+								<dd>The page's Id.</dd>
+
+							</dl>
+
+
+
+
+
+
+
+					<hr />
+
+					<a name="move"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{Undefined}</span>
+					<b>move</b>(x, y)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Moves the dialog to an (x, y) coordinate relative to the window.
+
+
+					</div>
+
+
+
+
+							<pre class="code">dialogObj.move( 10, 40 );</pre>
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{Number}</span> <b>x</b>
+
+								</dt>
+								<dd>The target x-coordinate.</dd>
+
+								<dt>
+									<span class="light fixedFont">{Number}</span> <b>y</b>
+
+								</dt>
+								<dd>The target y-coordinate.</dd>
+
+							</dl>
+
+
+
+
+
+
+
+					<hr />
+
+					<a name="resize"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{Undefined}</span>
+					<b>resize</b>(width, height)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Resizes the dialog.
+
+
+					</div>
+
+
+
+
+							<pre class="code">dialogObj.resize( 800, 640 );</pre>
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{Number}</span> <b>width</b>
+
+								</dt>
+								<dd>The width of the dialog in pixels.</dd>
+
+								<dt>
+									<span class="light fixedFont">{Number}</span> <b>height</b>
+
+								</dt>
+								<dd>The height of the dialog in pixels.</dd>
+
+							</dl>
+
+
+
+
+
+
+
+					<hr />
+
+					<a name="selectPage"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{Undefined}</span>
+					<b>selectPage</b>(id)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Activates a tab page in the dialog by its id.
+
+
+					</div>
+
+
+
+
+							<pre class="code">dialogObj.selectPage( 'tab_1' );</pre>
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>id</b>
+
+								</dt>
+								<dd>The id of the dialog tab to be activated.</dd>
+
+							</dl>
+
+
+
+
+
+
+
+					<hr />
+
+					<a name="setupContent"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{Undefined}</span>
+					<b>setupContent</b>()
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+
+
+
+					</div>
+
+
+						<pre class="code"><span style="color:red">NO EXAMPLE AVAILABLE</span></pre>
+
+
+
+
+
+
+
+
+
+					<hr />
+
+					<a name="setValueOf"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{Undefined}</span>
+					<b>setValueOf</b>(pageId, elementId, value)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Sets the value of a dialog UI element.
+
+
+					</div>
+
+
+
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>pageId</b>
+
+								</dt>
+								<dd>id of the dialog page.</dd>
+
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>elementId</b>
+
+								</dt>
+								<dd>id of the UI element.</dd>
+
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>value</b>
+
+								</dt>
+								<dd>The new value of the UI element.</dd>
+
+							</dl>
+
+
+
+
+
+
+
+					<hr />
+
+					<a name="show"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{Undefined}</span>
+					<b>show</b>()
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Shows the dialog box.
+
+
+					</div>
+
+
+
+
+							<pre class="code">dialogObj.show();</pre>
+
+
+
+
+
+
+
+
+
+
+
+					<hr />
+
+					<a name="showPage"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{Undefined}</span>
+					<b>showPage</b>(id)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Unhides a page's tab.
+
+
+					</div>
+
+
+
+
+							<pre class="code">dialog.showPage( 'tab_2' );</pre>
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>id</b>
+
+								</dt>
+								<dd>The page's Id.</dd>
+
+							</dl>
+
+
+
+
+
+
+
+
+
+
+
+			<hr />
+		</div>
+
+<!-- ============================== footer ================================= -->
+		<div class="fineprint" style="clear:both">
+	Copyright &copy; 2003-2009, <a href="http://cksource.com/">CKSource</a> - Frederico Knabben. All rights reserved.
+</div>
+
+	</body>
+</html>

@@ -1,0 +1,654 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="TOKN">﻿</span><span class="COMM">/*
+<span class='line'>  2</span> Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
+<span class='line'>  3</span> For licensing, see LICENSE.html or http://ckeditor.com/license
+<span class='line'>  4</span> */</span><span class="WHIT">
+<span class='line'>  5</span>
+<span class='line'>  6</span> </span><span class="COMM">/**
+<span class='line'>  7</span>  * @fileOverview Defines the {@link CKEDITOR.dom.node} class, which is the base
+<span class='line'>  8</span>  *		class for classes that represent DOM nodes.
+<span class='line'>  9</span>  */</span><span class="WHIT">
+<span class='line'> 10</span>
+<span class='line'> 11</span> </span><span class="COMM">/**
+<span class='line'> 12</span>  * Base class for classes representing DOM nodes. This constructor may return
+<span class='line'> 13</span>  * and instance of classes that inherits this class, like
+<span class='line'> 14</span>  * {@link CKEDITOR.dom.element} or {@link CKEDITOR.dom.text}.
+<span class='line'> 15</span>  * @augments CKEDITOR.dom.domObject
+<span class='line'> 16</span>  * @param {Object} domNode A native DOM node.
+<span class='line'> 17</span>  * @constructor
+<span class='line'> 18</span>  * @see CKEDITOR.dom.element
+<span class='line'> 19</span>  * @see CKEDITOR.dom.text
+<span class='line'> 20</span>  * @example
+<span class='line'> 21</span>  */</span><span class="WHIT">
+<span class='line'> 22</span> </span><span class="NAME">CKEDITOR.dom.node</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">domNode</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 23</span> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 24</span> </span><span class="WHIT">	</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">domNode</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 25</span> </span><span class="WHIT">	</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 26</span> </span><span class="WHIT">		</span><span class="KEYW">switch</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">domNode.nodeType</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 27</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 28</span> </span><span class="WHIT">			</span><span class="KEYW">case</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.NODE_ELEMENT</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT">
+<span class='line'> 29</span> </span><span class="WHIT">				</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.dom.element</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">domNode</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 30</span>
+<span class='line'> 31</span> </span><span class="WHIT">			</span><span class="KEYW">case</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.NODE_TEXT</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT">
+<span class='line'> 32</span> </span><span class="WHIT">				</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.dom.text</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">domNode</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 33</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 34</span>
+<span class='line'> 35</span> </span><span class="WHIT">		</span><span class="COMM">// Call the base constructor.</span><span class="WHIT">
+<span class='line'> 36</span> </span><span class="WHIT">		</span><span class="NAME">CKEDITOR.dom.domObject.call</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">domNode</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 37</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 38</span>
+<span class='line'> 39</span> </span><span class="WHIT">	</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 40</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 41</span>
+<span class='line'> 42</span> </span><span class="NAME">CKEDITOR.dom.node.prototype</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.dom.domObject</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 43</span>
+<span class='line'> 44</span> </span><span class="COMM">/**
+<span class='line'> 45</span>  * Element node type.
+<span class='line'> 46</span>  * @constant
+<span class='line'> 47</span>  * @example
+<span class='line'> 48</span>  */</span><span class="WHIT">
+<span class='line'> 49</span> </span><span class="NAME">CKEDITOR.NODE_ELEMENT</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 50</span>
+<span class='line'> 51</span> </span><span class="COMM">/**
+<span class='line'> 52</span>  * Text node type.
+<span class='line'> 53</span>  * @constant
+<span class='line'> 54</span>  * @example
+<span class='line'> 55</span>  */</span><span class="WHIT">
+<span class='line'> 56</span> </span><span class="NAME">CKEDITOR.NODE_TEXT</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">3</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 57</span>
+<span class='line'> 58</span> </span><span class="COMM">/**
+<span class='line'> 59</span>  * Comment node type.
+<span class='line'> 60</span>  * @constant
+<span class='line'> 61</span>  * @example
+<span class='line'> 62</span>  */</span><span class="WHIT">
+<span class='line'> 63</span> </span><span class="NAME">CKEDITOR.NODE_COMMENT</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">8</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 64</span>
+<span class='line'> 65</span> </span><span class="NAME">CKEDITOR.NODE_DOCUMENT_FRAGMENT</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">11</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 66</span>
+<span class='line'> 67</span> </span><span class="NAME">CKEDITOR.POSITION_IDENTICAL</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 68</span> </span><span class="NAME">CKEDITOR.POSITION_DISCONNECTED</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 69</span> </span><span class="NAME">CKEDITOR.POSITION_FOLLOWING</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 70</span> </span><span class="NAME">CKEDITOR.POSITION_PRECEDING</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">4</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 71</span> </span><span class="NAME">CKEDITOR.POSITION_IS_CONTAINED</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">8</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 72</span> </span><span class="NAME">CKEDITOR.POSITION_CONTAINS</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">16</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 73</span>
+<span class='line'> 74</span> </span><span class="NAME">CKEDITOR.tools.extend</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.dom.node.prototype</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 75</span> </span><span class="WHIT">	</span><span class="COMM">/** @lends CKEDITOR.dom.node.prototype */</span><span class="WHIT">
+<span class='line'> 76</span> </span><span class="WHIT">	</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 77</span> </span><span class="WHIT">		</span><span class="COMM">/**
+<span class='line'> 78</span> 		 * Makes this node child of another element.
+<span class='line'> 79</span> 		 * @param {CKEDITOR.dom.element} element The target element to which append
+<span class='line'> 80</span> 		 *		this node.
+<span class='line'> 81</span> 		 * @returns {CKEDITOR.dom.element} The target element.
+<span class='line'> 82</span> 		 * @example
+<span class='line'> 83</span> 		 * var p = new CKEDITOR.dom.element( 'p' );
+<span class='line'> 84</span> 		 * var strong = new CKEDITOR.dom.element( 'strong' );
+<span class='line'> 85</span> 		 * strong.appendTo( p );
+<span class='line'> 86</span> 		 *
+<span class='line'> 87</span> 		 * // result: "&lt;p&gt;&lt;strong&gt;&lt;/strong&gt;&lt;/p&gt;"
+<span class='line'> 88</span> 		 */</span><span class="WHIT">
+<span class='line'> 89</span> </span><span class="WHIT">		</span><span class="NAME">appendTo</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">element</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">toStart</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 90</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 91</span> </span><span class="WHIT">			</span><span class="NAME">element.append</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">toStart</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 92</span> </span><span class="WHIT">			</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">element</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 93</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 94</span>
+<span class='line'> 95</span> </span><span class="WHIT">		</span><span class="NAME">clone</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">includeChildren</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">cloneId</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 96</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 97</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">$clone</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.$.cloneNode</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">includeChildren</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 98</span>
+<span class='line'> 99</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">cloneId</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>100</span> </span><span class="WHIT">			</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>101</span> </span><span class="WHIT">				</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">removeIds</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>102</span> </span><span class="WHIT">				</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>103</span> </span><span class="WHIT">					</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">node.nodeType</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.NODE_ELEMENT</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>104</span> </span><span class="WHIT">						</span><span class="KEYW">return</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>105</span>
+<span class='line'>106</span> </span><span class="WHIT">					</span><span class="NAME">node.removeAttribute</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'id'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>107</span> </span><span class="WHIT">					</span><span class="NAME">node.removeAttribute</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'_cke_expando'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>108</span>
+<span class='line'>109</span> </span><span class="WHIT">					</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">childs</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">node.childNodes</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>110</span> </span><span class="WHIT">					</span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">=</span><span class="NUMB">0</span><span class="WHIT"> </span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">childs.length</span><span class="WHIT"> </span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>111</span> </span><span class="WHIT">						</span><span class="NAME">removeIds</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">childs</span><span class="PUNC">[</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>112</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>113</span>
+<span class='line'>114</span> </span><span class="WHIT">				</span><span class="COMM">// The "id" attribute should never be cloned to avoid duplication.</span><span class="WHIT">
+<span class='line'>115</span> </span><span class="WHIT">				</span><span class="NAME">removeIds</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">$clone</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>116</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>117</span>
+<span class='line'>118</span> </span><span class="WHIT">			</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.dom.node</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">$clone</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>119</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>120</span>
+<span class='line'>121</span> </span><span class="WHIT">		</span><span class="NAME">hasPrevious</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>122</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>123</span> </span><span class="WHIT">			</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="PUNC">!</span><span class="NAME">this.$.previousSibling</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>124</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>125</span>
+<span class='line'>126</span> </span><span class="WHIT">		</span><span class="NAME">hasNext</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>127</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>128</span> </span><span class="WHIT">			</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="PUNC">!</span><span class="NAME">this.$.nextSibling</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>129</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>130</span>
+<span class='line'>131</span> </span><span class="WHIT">		</span><span class="COMM">/**
+<span class='line'>132</span> 		 * Inserts this element after a node.
+<span class='line'>133</span> 		 * @param {CKEDITOR.dom.node} node The that will preceed this element.
+<span class='line'>134</span> 		 * @returns {CKEDITOR.dom.node} The node preceeding this one after
+<span class='line'>135</span> 		 *		insertion.
+<span class='line'>136</span> 		 * @example
+<span class='line'>137</span> 		 * var em = new CKEDITOR.dom.element( 'em' );
+<span class='line'>138</span> 		 * var strong = new CKEDITOR.dom.element( 'strong' );
+<span class='line'>139</span> 		 * strong.insertAfter( em );
+<span class='line'>140</span> 		 *
+<span class='line'>141</span> 		 * // result: "&lt;em&gt;&lt;/em&gt;&lt;strong&gt;&lt;/strong&gt;"
+<span class='line'>142</span> 		 */</span><span class="WHIT">
+<span class='line'>143</span> </span><span class="WHIT">		</span><span class="NAME">insertAfter</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>144</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>145</span> </span><span class="WHIT">			</span><span class="NAME">node.$.parentNode.insertBefore</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">this.$</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">node.$.nextSibling</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>146</span> </span><span class="WHIT">			</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">node</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>147</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>148</span>
+<span class='line'>149</span> </span><span class="WHIT">		</span><span class="COMM">/**
+<span class='line'>150</span> 		 * Inserts this element before a node.
+<span class='line'>151</span> 		 * @param {CKEDITOR.dom.node} node The that will be after this element.
+<span class='line'>152</span> 		 * @returns {CKEDITOR.dom.node} The node being inserted.
+<span class='line'>153</span> 		 * @example
+<span class='line'>154</span> 		 * var em = new CKEDITOR.dom.element( 'em' );
+<span class='line'>155</span> 		 * var strong = new CKEDITOR.dom.element( 'strong' );
+<span class='line'>156</span> 		 * strong.insertBefore( em );
+<span class='line'>157</span> 		 *
+<span class='line'>158</span> 		 * // result: "&lt;strong&gt;&lt;/strong&gt;&lt;em&gt;&lt;/em&gt;"
+<span class='line'>159</span> 		 */</span><span class="WHIT">
+<span class='line'>160</span> </span><span class="WHIT">		</span><span class="NAME">insertBefore</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>161</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>162</span> </span><span class="WHIT">			</span><span class="NAME">node.$.parentNode.insertBefore</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">this.$</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">node.$</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>163</span> </span><span class="WHIT">			</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">node</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>164</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>165</span>
+<span class='line'>166</span> </span><span class="WHIT">		</span><span class="NAME">insertBeforeMe</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>167</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>168</span> </span><span class="WHIT">			</span><span class="NAME">this.$.parentNode.insertBefore</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">node.$</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.$</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>169</span> </span><span class="WHIT">			</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">node</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>170</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>171</span>
+<span class='line'>172</span> </span><span class="WHIT">		</span><span class="COMM">/**
+<span class='line'>173</span> 		 * Retrieves a uniquely identifiable tree address for this node.
+<span class='line'>174</span> 		 * The tree address returns is an array of integers, with each integer
+<span class='line'>175</span> 		 * indicating a child index of a DOM node, starting from
+<span class='line'>176</span> 		 * document.documentElement.
+<span class='line'>177</span> 		 *
+<span class='line'>178</span> 		 * For example, assuming &lt;body> is the second child from &lt;html> (&lt;head>
+<span class='line'>179</span> 		 * being the first), and we'd like to address the third child under the
+<span class='line'>180</span> 		 * fourth child of body, the tree address returned would be:
+<span class='line'>181</span> 		 * [1, 3, 2]
+<span class='line'>182</span> 		 *
+<span class='line'>183</span> 		 * The tree address cannot be used for finding back the DOM tree node once
+<span class='line'>184</span> 		 * the DOM tree structure has been modified.
+<span class='line'>185</span> 		 */</span><span class="WHIT">
+<span class='line'>186</span> </span><span class="WHIT">		</span><span class="NAME">getAddress</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">normalized</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>187</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>188</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">address</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>189</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">$documentElement</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.getDocument</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">$.documentElement</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>190</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.$</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>191</span>
+<span class='line'>192</span> </span><span class="WHIT">			</span><span class="KEYW">while</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="NAME">$documentElement</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>193</span> </span><span class="WHIT">			</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>194</span> </span><span class="WHIT">				</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">parentNode</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">node.parentNode</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>195</span> </span><span class="WHIT">				</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">currentIndex</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>196</span>
+<span class='line'>197</span> </span><span class="WHIT">				</span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="WHIT"> </span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">parentNode.childNodes.length</span><span class="WHIT"> </span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>198</span> </span><span class="WHIT">				</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>199</span> </span><span class="WHIT">					</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">candidate</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">parentNode.childNodes</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>200</span>
+<span class='line'>201</span> </span><span class="WHIT">					</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">normalized</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
+<span class='line'>202</span> </span><span class="WHIT">							</span><span class="NAME">candidate.nodeType</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NUMB">3</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
+<span class='line'>203</span> </span><span class="WHIT">							</span><span class="NAME">candidate.previousSibling</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT">
+<span class='line'>204</span> </span><span class="WHIT">							</span><span class="NAME">candidate.previousSibling.nodeType</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NUMB">3</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>205</span> </span><span class="WHIT">					</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>206</span> </span><span class="WHIT">						</span><span class="KEYW">continue</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>207</span> </span><span class="WHIT">					</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>208</span>
+<span class='line'>209</span> </span><span class="WHIT">					</span><span class="NAME">currentIndex</span><span class="PUNC">++</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>210</span>
+<span class='line'>211</span> </span><span class="WHIT">					</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">candidate</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>212</span> </span><span class="WHIT">						</span><span class="KEYW">break</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>213</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>214</span>
+<span class='line'>215</span> </span><span class="WHIT">				</span><span class="NAME">address.unshift</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">currentIndex</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>216</span>
+<span class='line'>217</span> </span><span class="WHIT">				</span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">node.parentNode</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>218</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>219</span>
+<span class='line'>220</span> </span><span class="WHIT">			</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">address</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>221</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>222</span>
+<span class='line'>223</span> </span><span class="WHIT">		</span><span class="COMM">/**
+<span class='line'>224</span> 		 * Gets the document containing this element.
+<span class='line'>225</span> 		 * @returns {CKEDITOR.dom.document} The document.
+<span class='line'>226</span> 		 * @example
+<span class='line'>227</span> 		 * var element = CKEDITOR.document.getById( 'example' );
+<span class='line'>228</span> 		 * alert( &lt;b>element.getDocument().equals( CKEDITOR.document )&lt;/b> );  // "true"
+<span class='line'>229</span> 		 */</span><span class="WHIT">
+<span class='line'>230</span> </span><span class="WHIT">		</span><span class="NAME">getDocument</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>231</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>232</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">document</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.dom.document</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">this.$.ownerDocument</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NAME">this.$.parentNode.ownerDocument</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>233</span>
+<span class='line'>234</span> </span><span class="WHIT">			</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'>235</span> </span><span class="WHIT">			</span><span class="COMM">/** @ignore */</span><span class="WHIT">
+<span class='line'>236</span> </span><span class="WHIT">			</span><span class="NAME">this.getDocument</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>237</span> </span><span class="WHIT">				</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>238</span> </span><span class="WHIT">					</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">document</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>239</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>240</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>241</span>
+<span class='line'>242</span> </span><span class="WHIT">		</span><span class="NAME">getIndex</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>243</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>244</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">$</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.$</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>245</span>
+<span class='line'>246</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">currentNode</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">$.parentNode</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">$.parentNode.firstChild</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>247</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">currentIndex</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>248</span>
+<span class='line'>249</span> </span><span class="WHIT">			</span><span class="KEYW">while</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">currentNode</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>250</span> </span><span class="WHIT">			</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>251</span> </span><span class="WHIT">				</span><span class="NAME">currentIndex</span><span class="PUNC">++</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>252</span>
+<span class='line'>253</span> </span><span class="WHIT">				</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">currentNode</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">$</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>254</span> </span><span class="WHIT">					</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">currentIndex</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>255</span>
+<span class='line'>256</span> </span><span class="WHIT">				</span><span class="NAME">currentNode</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">currentNode.nextSibling</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>257</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>258</span>
+<span class='line'>259</span> </span><span class="WHIT">			</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>260</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>261</span>
+<span class='line'>262</span> </span><span class="WHIT">		</span><span class="NAME">getNextSourceNode</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">startFromSibling</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">nodeType</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">guard</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>263</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>264</span> </span><span class="WHIT">			</span><span class="COMM">// If "guard" is a node, transform it in a function.</span><span class="WHIT">
+<span class='line'>265</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">guard</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">guard.call</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>266</span> </span><span class="WHIT">			</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>267</span> </span><span class="WHIT">				</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">guardNode</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">guard</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>268</span> </span><span class="WHIT">				</span><span class="NAME">guard</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>269</span> </span><span class="WHIT">				</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>270</span> </span><span class="WHIT">					</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">node.equals</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">guardNode</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>271</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>272</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>273</span>
+<span class='line'>274</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">startFromSibling</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">this.getFirst</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">this.getFirst</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>275</span> </span><span class="WHIT">				</span><span class="NAME">parent</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>276</span>
+<span class='line'>277</span> </span><span class="WHIT">			</span><span class="COMM">// Guarding when we're skipping the current element( no children or 'startFromSibling' ).</span><span class="WHIT">
+<span class='line'>278</span> </span><span class="WHIT">			</span><span class="COMM">// send the 'moving out' signal even we don't actually dive into.</span><span class="WHIT">
+<span class='line'>279</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>280</span> </span><span class="WHIT">			</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>281</span> </span><span class="WHIT">				</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">this.type</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.NODE_ELEMENT</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">guard</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">guard</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>282</span> </span><span class="WHIT">					</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>283</span> </span><span class="WHIT">				</span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.getNext</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>284</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>285</span>
+<span class='line'>286</span> </span><span class="WHIT">			</span><span class="KEYW">while</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">parent</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">parent</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">getParent</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>287</span> </span><span class="WHIT">			</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>288</span> </span><span class="WHIT">				</span><span class="COMM">// The guard check sends the "true" paramenter to indicate that</span><span class="WHIT">
+<span class='line'>289</span> </span><span class="WHIT">				</span><span class="COMM">// we are moving "out" of the element.</span><span class="WHIT">
+<span class='line'>290</span> </span><span class="WHIT">				</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">guard</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">guard</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">parent</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>291</span> </span><span class="WHIT">					</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>292</span>
+<span class='line'>293</span> </span><span class="WHIT">				</span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">parent.getNext</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>294</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>295</span>
+<span class='line'>296</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>297</span> </span><span class="WHIT">				</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>298</span>
+<span class='line'>299</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">guard</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">guard</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>300</span> </span><span class="WHIT">				</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>301</span>
+<span class='line'>302</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">nodeType</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">nodeType</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="NAME">node.type</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>303</span> </span><span class="WHIT">				</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">node.getNextSourceNode</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">nodeType</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">guard</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>304</span>
+<span class='line'>305</span> </span><span class="WHIT">			</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">node</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>306</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>307</span>
+<span class='line'>308</span> </span><span class="WHIT">		</span><span class="NAME">getPreviousSourceNode</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">startFromSibling</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">nodeType</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">guard</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>309</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>310</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">guard</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">guard.call</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>311</span> </span><span class="WHIT">			</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>312</span> </span><span class="WHIT">				</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">guardNode</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">guard</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>313</span> </span><span class="WHIT">				</span><span class="NAME">guard</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>314</span> </span><span class="WHIT">				</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>315</span> </span><span class="WHIT">					</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">node.equals</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">guardNode</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>316</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>317</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>318</span>
+<span class='line'>319</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">startFromSibling</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">this.getLast</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">this.getLast</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>320</span> </span><span class="WHIT">				</span><span class="NAME">parent</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>321</span>
+<span class='line'>322</span> </span><span class="WHIT">			</span><span class="COMM">// Guarding when we're skipping the current element( no children or 'startFromSibling' ).</span><span class="WHIT">
+<span class='line'>323</span> </span><span class="WHIT">			</span><span class="COMM">// send the 'moving out' signal even we don't actually dive into.</span><span class="WHIT">
+<span class='line'>324</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>325</span> </span><span class="WHIT">			</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>326</span> </span><span class="WHIT">				</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">this.type</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.NODE_ELEMENT</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">guard</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">guard</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>327</span> </span><span class="WHIT">					</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>328</span> </span><span class="WHIT">				</span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.getPrevious</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>329</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>330</span>
+<span class='line'>331</span> </span><span class="WHIT">			</span><span class="KEYW">while</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">parent</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">parent</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">getParent</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>332</span> </span><span class="WHIT">			</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>333</span> </span><span class="WHIT">				</span><span class="COMM">// The guard check sends the "true" paramenter to indicate that</span><span class="WHIT">
+<span class='line'>334</span> </span><span class="WHIT">				</span><span class="COMM">// we are moving "out" of the element.</span><span class="WHIT">
+<span class='line'>335</span> </span><span class="WHIT">				</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">guard</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">guard</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">parent</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>336</span> </span><span class="WHIT">					</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>337</span>
+<span class='line'>338</span> </span><span class="WHIT">				</span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">parent.getPrevious</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>339</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>340</span>
+<span class='line'>341</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>342</span> </span><span class="WHIT">				</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>343</span>
+<span class='line'>344</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">guard</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">guard</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>345</span> </span><span class="WHIT">				</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>346</span>
+<span class='line'>347</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">nodeType</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">node.type</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="NAME">nodeType</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>348</span> </span><span class="WHIT">				</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">node.getPreviousSourceNode</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">nodeType</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">guard</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>349</span>
+<span class='line'>350</span> </span><span class="WHIT">			</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">node</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>351</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>352</span>
+<span class='line'>353</span> </span><span class="WHIT">		</span><span class="NAME">getPrevious</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">ignoreSpaces</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>354</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>355</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">previous</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.$.previousSibling</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>356</span> </span><span class="WHIT">			</span><span class="KEYW">while</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">ignoreSpaces</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">previous</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">previous.nodeType</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.NODE_TEXT</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>357</span> </span><span class="WHIT">					</span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">CKEDITOR.tools.trim</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">previous.nodeValue</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>358</span> </span><span class="WHIT">				</span><span class="NAME">previous</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">previous.previousSibling</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>359</span>
+<span class='line'>360</span> </span><span class="WHIT">			</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">previous</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.dom.node</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">previous</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>361</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>362</span>
+<span class='line'>363</span> </span><span class="WHIT">		</span><span class="COMM">/**
+<span class='line'>364</span> 		 * Gets the node that follows this element in its parent's child list.
+<span class='line'>365</span> 		 * @param {Boolean} ignoreSpaces Whether should ignore empty text nodes.
+<span class='line'>366</span> 		 * @returns {CKEDITOR.dom.node} The next node or null if not
+<span class='line'>367</span> 		 *		available.
+<span class='line'>368</span> 		 * @example
+<span class='line'>369</span> 		 * var element = CKEDITOR.dom.element.createFromHtml( '&lt;div&gt;&lt;b&gt;Example&lt;/b&gt; &lt;i&gt;next&lt;/i&gt;&lt;/div&gt;' );
+<span class='line'>370</span> 		 * var first = &lt;b>element.getFirst().getNext()&lt;/b>;
+<span class='line'>371</span> 		 * alert( first.getName() );  // "i"
+<span class='line'>372</span> 		 */</span><span class="WHIT">
+<span class='line'>373</span> </span><span class="WHIT">		</span><span class="NAME">getNext</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">ignoreSpaces</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>374</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>375</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">next</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.$.nextSibling</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>376</span> </span><span class="WHIT">			</span><span class="KEYW">while</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">ignoreSpaces</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">next</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">next.nodeType</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.NODE_TEXT</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>377</span> </span><span class="WHIT">				  </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">CKEDITOR.tools.trim</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">next.nodeValue</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>378</span> </span><span class="WHIT">				</span><span class="NAME">next</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">next.nextSibling</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>379</span>
+<span class='line'>380</span> </span><span class="WHIT">			</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">next</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.dom.node</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">next</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>381</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>382</span>
+<span class='line'>383</span> </span><span class="WHIT">		</span><span class="COMM">/**
+<span class='line'>384</span> 		 * Gets the parent element for this node.
+<span class='line'>385</span> 		 * @returns {CKEDITOR.dom.element} The parent element.
+<span class='line'>386</span> 		 * @example
+<span class='line'>387</span> 		 * var node = editor.document.getBody().getFirst();
+<span class='line'>388</span> 		 * var parent = node.&lt;b>getParent()&lt;/b>;
+<span class='line'>389</span> 		 * alert( node.getName() );  // "body"
+<span class='line'>390</span> 		 */</span><span class="WHIT">
+<span class='line'>391</span> </span><span class="WHIT">		</span><span class="NAME">getParent</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>392</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>393</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">parent</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.$.parentNode</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>394</span> </span><span class="WHIT">			</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">parent</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">parent.nodeType</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.dom.node</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">parent</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>395</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>396</span>
+<span class='line'>397</span> </span><span class="WHIT">		</span><span class="NAME">getParents</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>398</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>399</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>400</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">parents</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>401</span>
+<span class='line'>402</span> </span><span class="WHIT">			</span><span class="KEYW">do</span><span class="WHIT">
+<span class='line'>403</span> </span><span class="WHIT">			</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>404</span> </span><span class="WHIT">				</span><span class="NAME">parents.unshift</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>405</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>406</span> </span><span class="WHIT">			</span><span class="KEYW">while</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">node.getParent</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>407</span>
+<span class='line'>408</span> </span><span class="WHIT">			</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">parents</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>409</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>410</span>
+<span class='line'>411</span> </span><span class="WHIT">		</span><span class="NAME">getCommonAncestor</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>412</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>413</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">node.equals</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>414</span> </span><span class="WHIT">				</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>415</span>
+<span class='line'>416</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">node.contains</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">node.contains</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>417</span> </span><span class="WHIT">				</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">node</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>418</span>
+<span class='line'>419</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">start</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.contains</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">this.getParent</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>420</span>
+<span class='line'>421</span> </span><span class="WHIT">			</span><span class="KEYW">do</span><span class="WHIT">
+<span class='line'>422</span> </span><span class="WHIT">			</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>423</span> </span><span class="WHIT">				</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">start.contains</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">node</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>424</span> </span><span class="WHIT">					</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">start</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>425</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>426</span> </span><span class="WHIT">			</span><span class="KEYW">while</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">start</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">start.getParent</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>427</span>
+<span class='line'>428</span> </span><span class="WHIT">			</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>429</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>430</span>
+<span class='line'>431</span> </span><span class="WHIT">		</span><span class="NAME">getPosition</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">otherNode</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>432</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>433</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">$</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.$</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>434</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">$other</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">otherNode.$</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>435</span>
+<span class='line'>436</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">$.compareDocumentPosition</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>437</span> </span><span class="WHIT">				</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">$.compareDocumentPosition</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">$other</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>438</span>
+<span class='line'>439</span> </span><span class="WHIT">			</span><span class="COMM">// IE and Safari have no support for compareDocumentPosition.</span><span class="WHIT">
+<span class='line'>440</span>
+<span class='line'>441</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">$</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">$other</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>442</span> </span><span class="WHIT">				</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.POSITION_IDENTICAL</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>443</span>
+<span class='line'>444</span> </span><span class="WHIT">			</span><span class="COMM">// Only element nodes support contains and sourceIndex.</span><span class="WHIT">
+<span class='line'>445</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">this.type</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.NODE_ELEMENT</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">otherNode.type</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.NODE_ELEMENT</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>446</span> </span><span class="WHIT">			</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>447</span> </span><span class="WHIT">				</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">$.contains</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>448</span> </span><span class="WHIT">				</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>449</span> </span><span class="WHIT">					</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">$.contains</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">$other</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>450</span> </span><span class="WHIT">						</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.POSITION_CONTAINS</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.POSITION_PRECEDING</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>451</span>
+<span class='line'>452</span> </span><span class="WHIT">					</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">$other.contains</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">$</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>453</span> </span><span class="WHIT">						</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.POSITION_IS_CONTAINED</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.POSITION_FOLLOWING</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>454</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>455</span>
+<span class='line'>456</span> </span><span class="WHIT">				</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'sourceIndex'</span><span class="WHIT"> </span><span class="KEYW">in</span><span class="WHIT"> </span><span class="NAME">$</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>457</span> </span><span class="WHIT">				</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>458</span> </span><span class="WHIT">					</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">$.sourceIndex</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NAME">$other.sourceIndex</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.POSITION_DISCONNECTED</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT">
+<span class='line'>459</span> </span><span class="WHIT">						</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">$.sourceIndex</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">$other.sourceIndex</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.POSITION_PRECEDING</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT">
+<span class='line'>460</span> </span><span class="WHIT">						</span><span class="NAME">CKEDITOR.POSITION_FOLLOWING</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>461</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>462</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>463</span>
+<span class='line'>464</span> </span><span class="WHIT">			</span><span class="COMM">// For nodes that don't support compareDocumentPosition, contains</span><span class="WHIT">
+<span class='line'>465</span> </span><span class="WHIT">			</span><span class="COMM">// or sourceIndex, their "address" is compared.</span><span class="WHIT">
+<span class='line'>466</span>
+<span class='line'>467</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">addressOfThis</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.getAddress</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>468</span> </span><span class="WHIT">				</span><span class="NAME">addressOfOther</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">otherNode.getAddress</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>469</span> </span><span class="WHIT">				</span><span class="NAME">minLevel</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">Math.min</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">addressOfThis.length</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">addressOfOther.length</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>470</span>
+<span class='line'>471</span> </span><span class="WHIT">				</span><span class="COMM">// Determinate preceed/follow relationship.</span><span class="WHIT">
+<span class='line'>472</span> </span><span class="WHIT">				</span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="WHIT"> </span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;=</span><span class="WHIT"> </span><span class="NAME">minLevel</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="WHIT"> </span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>473</span> </span><span class="WHIT"> 				</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>474</span> </span><span class="WHIT">					</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">addressOfThis</span><span class="PUNC">[</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="NAME">addressOfOther</span><span class="PUNC">[</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>475</span> </span><span class="WHIT">					</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>476</span> </span><span class="WHIT">						</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">minLevel</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>477</span> </span><span class="WHIT">						</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>478</span> </span><span class="WHIT">							</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">addressOfThis</span><span class="PUNC">[</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">addressOfOther</span><span class="PUNC">[</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT">
+<span class='line'>479</span> </span><span class="WHIT">						            </span><span class="NAME">CKEDITOR.POSITION_PRECEDING</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.POSITION_FOLLOWING</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>480</span> </span><span class="WHIT">						</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>481</span> </span><span class="WHIT">						</span><span class="KEYW">break</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>482</span> </span><span class="WHIT">					</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>483</span> </span><span class="WHIT"> 				</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>484</span>
+<span class='line'>485</span> </span><span class="WHIT">				</span><span class="COMM">// Determinate contains/contained relationship.</span><span class="WHIT">
+<span class='line'>486</span> </span><span class="WHIT">				</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">addressOfThis.length</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">addressOfOther.length</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT">
+<span class='line'>487</span> </span><span class="WHIT">							</span><span class="NAME">CKEDITOR.POSITION_CONTAINS</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.POSITION_PRECEDING</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT">
+<span class='line'>488</span> </span><span class="WHIT">							</span><span class="NAME">CKEDITOR.POSITION_IS_CONTAINED</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.POSITION_FOLLOWING</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>489</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>490</span>
+<span class='line'>491</span> </span><span class="WHIT">		</span><span class="COMM">/**
+<span class='line'>492</span> 		 * Gets the closes ancestor node of a specified node name.
+<span class='line'>493</span> 		 * @param {String} name Node name of ancestor node.
+<span class='line'>494</span> 		 * @param {Boolean} includeSelf (Optional) Whether to include the current
+<span class='line'>495</span> 		 * node in the calculation or not.
+<span class='line'>496</span> 		 * @returns {CKEDITOR.dom.node} Ancestor node.
+<span class='line'>497</span> 		 */</span><span class="WHIT">
+<span class='line'>498</span> </span><span class="WHIT">		</span><span class="NAME">getAscendant</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">name</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">includeSelf</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>499</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>500</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">$</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.$</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>501</span>
+<span class='line'>502</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">includeSelf</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>503</span> </span><span class="WHIT">				</span><span class="NAME">$</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">$.parentNode</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>504</span>
+<span class='line'>505</span> </span><span class="WHIT">			</span><span class="KEYW">while</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">$</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>506</span> </span><span class="WHIT">			</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>507</span> </span><span class="WHIT">				</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">$.nodeName</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">$.nodeName.toLowerCase</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">name</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>508</span> </span><span class="WHIT">					</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.dom.node</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">$</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>509</span>
+<span class='line'>510</span> </span><span class="WHIT">				</span><span class="NAME">$</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">$.parentNode</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>511</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>512</span> </span><span class="WHIT">			</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>513</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>514</span>
+<span class='line'>515</span> </span><span class="WHIT">		</span><span class="NAME">hasAscendant</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">name</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">includeSelf</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>516</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>517</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">$</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.$</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>518</span>
+<span class='line'>519</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">includeSelf</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>520</span> </span><span class="WHIT">				</span><span class="NAME">$</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">$.parentNode</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>521</span>
+<span class='line'>522</span> </span><span class="WHIT">			</span><span class="KEYW">while</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">$</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>523</span> </span><span class="WHIT">			</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>524</span> </span><span class="WHIT">				</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">$.nodeName</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">$.nodeName.toLowerCase</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">name</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>525</span> </span><span class="WHIT">					</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>526</span>
+<span class='line'>527</span> </span><span class="WHIT">				</span><span class="NAME">$</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">$.parentNode</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>528</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>529</span> </span><span class="WHIT">			</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>530</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>531</span>
+<span class='line'>532</span> </span><span class="WHIT">		</span><span class="NAME">move</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">target</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">toStart</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>533</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>534</span> </span><span class="WHIT">			</span><span class="NAME">target.append</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">this.remove</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">toStart</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>535</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>536</span>
+<span class='line'>537</span> </span><span class="WHIT">		</span><span class="COMM">/**
+<span class='line'>538</span> 		 * Removes this node from the document DOM.
+<span class='line'>539</span> 		 * @param {Boolean} [preserveChildren] Indicates that the children
+<span class='line'>540</span> 		 *		elements must remain in the document, removing only the outer
+<span class='line'>541</span> 		 *		tags.
+<span class='line'>542</span> 		 * @example
+<span class='line'>543</span> 		 * var element = CKEDITOR.dom.element.getById( 'MyElement' );
+<span class='line'>544</span> 		 * &lt;b>element.remove()&lt;/b>;
+<span class='line'>545</span> 		 */</span><span class="WHIT">
+<span class='line'>546</span> </span><span class="WHIT">		</span><span class="NAME">remove</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">preserveChildren</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>547</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>548</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">$</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.$</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>549</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">parent</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">$.parentNode</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>550</span>
+<span class='line'>551</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">parent</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>552</span> </span><span class="WHIT">			</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>553</span> </span><span class="WHIT">				</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">preserveChildren</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>554</span> </span><span class="WHIT">				</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>555</span> </span><span class="WHIT">					</span><span class="COMM">// Move all children before the node.</span><span class="WHIT">
+<span class='line'>556</span> </span><span class="WHIT">					</span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">child</span><span class="WHIT"> </span><span class="PUNC">;</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">child</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">$.firstChild</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">;</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>557</span> </span><span class="WHIT">					</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>558</span> </span><span class="WHIT">						</span><span class="NAME">parent.insertBefore</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">$.removeChild</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">child</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">$</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>559</span> </span><span class="WHIT">					</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>560</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>561</span>
+<span class='line'>562</span> </span><span class="WHIT">				</span><span class="NAME">parent.removeChild</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">$</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>563</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>564</span>
+<span class='line'>565</span> </span><span class="WHIT">			</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>566</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>567</span>
+<span class='line'>568</span> </span><span class="WHIT">		</span><span class="NAME">replace</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">nodeToReplace</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>569</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>570</span> </span><span class="WHIT">			</span><span class="NAME">this.insertBefore</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">nodeToReplace</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>571</span> </span><span class="WHIT">			</span><span class="NAME">nodeToReplace.remove</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>572</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>573</span>
+<span class='line'>574</span> </span><span class="WHIT">		</span><span class="NAME">trim</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>575</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>576</span> </span><span class="WHIT">			</span><span class="NAME">this.ltrim</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>577</span> </span><span class="WHIT">			</span><span class="NAME">this.rtrim</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>578</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>579</span>
+<span class='line'>580</span> </span><span class="WHIT">		</span><span class="NAME">ltrim</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>581</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>582</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">child</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>583</span> </span><span class="WHIT">			</span><span class="KEYW">while</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">this.getFirst</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">child</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.getFirst</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>584</span> </span><span class="WHIT">			</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>585</span> </span><span class="WHIT">				</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">child.type</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.NODE_TEXT</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>586</span> </span><span class="WHIT">				</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>587</span> </span><span class="WHIT">					</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">trimmed</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.tools.ltrim</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">child.getText</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>588</span> </span><span class="WHIT">						</span><span class="NAME">originalLength</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">child.getLength</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>589</span>
+<span class='line'>590</span> </span><span class="WHIT">					</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">trimmed</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>591</span> </span><span class="WHIT">					</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>592</span> </span><span class="WHIT">						</span><span class="NAME">child.remove</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>593</span> </span><span class="WHIT">						</span><span class="KEYW">continue</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>594</span> </span><span class="WHIT">					</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>595</span> </span><span class="WHIT">					</span><span class="KEYW">else</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">trimmed.length</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">originalLength</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>596</span> </span><span class="WHIT">					</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>597</span> </span><span class="WHIT">						</span><span class="NAME">child.split</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">originalLength</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">trimmed.length</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>598</span>
+<span class='line'>599</span> </span><span class="WHIT">						</span><span class="COMM">// IE BUG: child.remove() may raise JavaScript errors here. (#81)</span><span class="WHIT">
+<span class='line'>600</span> </span><span class="WHIT">						</span><span class="NAME">this.$.removeChild</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">this.$.firstChild</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>601</span> </span><span class="WHIT">					</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>602</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>603</span> </span><span class="WHIT">				</span><span class="KEYW">break</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>604</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>605</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>606</span>
+<span class='line'>607</span> </span><span class="WHIT">		</span><span class="NAME">rtrim</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>608</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>609</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">child</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>610</span> </span><span class="WHIT">			</span><span class="KEYW">while</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">this.getLast</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">child</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.getLast</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>611</span> </span><span class="WHIT">			</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>612</span> </span><span class="WHIT">				</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">child.type</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.NODE_TEXT</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>613</span> </span><span class="WHIT">				</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>614</span> </span><span class="WHIT">					</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">trimmed</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.tools.rtrim</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">child.getText</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>615</span> </span><span class="WHIT">						</span><span class="NAME">originalLength</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">child.getLength</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>616</span>
+<span class='line'>617</span> </span><span class="WHIT">					</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">trimmed</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>618</span> </span><span class="WHIT">					</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>619</span> </span><span class="WHIT">						</span><span class="NAME">child.remove</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>620</span> </span><span class="WHIT">						</span><span class="KEYW">continue</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>621</span> </span><span class="WHIT">					</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>622</span> </span><span class="WHIT">					</span><span class="KEYW">else</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">trimmed.length</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">originalLength</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>623</span> </span><span class="WHIT">					</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>624</span> </span><span class="WHIT">						</span><span class="NAME">child.split</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">trimmed.length</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>625</span>
+<span class='line'>626</span> </span><span class="WHIT">						</span><span class="COMM">// IE BUG: child.getNext().remove() may raise JavaScript errors here.</span><span class="WHIT">
+<span class='line'>627</span> </span><span class="WHIT">						</span><span class="COMM">// (#81)</span><span class="WHIT">
+<span class='line'>628</span> </span><span class="WHIT">						</span><span class="NAME">this.$.lastChild.parentNode.removeChild</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">this.$.lastChild</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>629</span> </span><span class="WHIT">					</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>630</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>631</span> </span><span class="WHIT">				</span><span class="KEYW">break</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>632</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>633</span>
+<span class='line'>634</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">CKEDITOR.env.ie</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">CKEDITOR.env.opera</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>635</span> </span><span class="WHIT">			</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>636</span> </span><span class="WHIT">				</span><span class="NAME">child</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.$.lastChild</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>637</span>
+<span class='line'>638</span> </span><span class="WHIT">				</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">child</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">child.type</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">child.nodeName.toLowerCase</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="STRN">'br'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>639</span> </span><span class="WHIT">				</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>640</span> </span><span class="WHIT">					</span><span class="COMM">// Use "eChildNode.parentNode" instead of "node" to avoid IE bug (#324).</span><span class="WHIT">
+<span class='line'>641</span> </span><span class="WHIT">					</span><span class="NAME">child.parentNode.removeChild</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">child</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>642</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>643</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>644</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>645</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>646</span> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>647</span> </span></pre></body></html>

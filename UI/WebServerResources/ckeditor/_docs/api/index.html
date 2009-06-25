@@ -1,0 +1,1354 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8"" />
+
+		<title>CKEditor 3.0 JavaScript API Documentation</title>
+		<meta name="generator" content="JsDoc Toolkit" />
+
+		<style type="text/css">
+		/* default.css */
+body
+{
+	font: 12px "Lucida Grande", Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.header
+{
+	clear: both;
+	background-color: #ccc;
+	padding: 8px;
+}
+
+h1
+{
+	font-size: 150%;
+	font-weight: bold;
+	padding: 0;
+	margin: 1em 0 0 .3em;
+}
+
+hr
+{
+	border: none 0;
+	border-top: 1px solid #7F8FB1;
+	height: 1px;
+}
+
+pre.code
+{
+	display: block;
+	padding: 8px;
+	border: 1px dashed #ccc;
+}
+
+#index
+{
+	margin-top: 24px;
+	float: left;
+	width: 160px;
+	position: absolute;
+	left: 8px;
+	background-color: #F3F3F3;
+	padding: 8px;
+}
+
+#content
+{
+	margin-left: 190px;
+}
+
+.classList
+{
+	list-style-type: none;
+	padding: 0;
+	margin: 0 0 0 8px;
+	font-family: arial, sans-serif;
+	font-size: 1em;
+	overflow: auto;
+}
+
+.classList li
+{
+	padding: 0;
+	margin: 0 0 8px 0;
+}
+
+.summaryTable { width: 100%; }
+
+h1.classTitle
+{
+	font-size:170%;
+	line-height:130%;
+}
+
+h2 { font-size: 110%; }
+caption, div.sectionTitle
+{
+	background-color: #7F8FB1;
+	color: #fff;
+	font-size:130%;
+	text-align: left;
+	padding: 2px 6px 2px 6px;
+	border: 1px #7F8FB1 solid;
+}
+
+div.sectionTitle { margin-bottom: 8px; }
+.summaryTable thead { display: none; }
+
+.summaryTable td
+{
+	vertical-align: top;
+	padding: 4px;
+	border-bottom: 1px #7F8FB1 solid;
+	border-right: 1px #7F8FB1 solid;
+}
+
+/*col#summaryAttributes {}*/
+.summaryTable td.attributes
+{
+	border-left: 1px #7F8FB1 solid;
+	width: 140px;
+	text-align: right;
+}
+
+td.attributes, .fixedFont
+{
+	line-height: 15px;
+	color: #002EBE;
+	font-family: "Courier New",Courier,monospace;
+	font-size: 13px;
+}
+
+.summaryTable td.nameDescription
+{
+	text-align: left;
+	font-size: 13px;
+	line-height: 15px;
+}
+
+.summaryTable td.nameDescription, .description
+{
+	line-height: 15px;
+	padding: 4px;
+	padding-left: 4px;
+}
+
+.summaryTable { margin-bottom: 8px; }
+
+ul.inheritsList
+{
+	list-style: square;
+	margin-left: 20px;
+	padding-left: 0;
+}
+
+.detailList {
+	margin-left: 20px;
+	line-height: 15px;
+}
+.detailList dt { margin-left: 20px; }
+
+.detailList .heading
+{
+	font-weight: bold;
+	padding-bottom: 6px;
+	margin-left: 0;
+}
+
+.light, td.attributes, .light a:link, .light a:visited
+{
+	color: #777;
+	font-style: italic;
+}
+
+.fineprint
+{
+	text-align: right;
+	font-size: 10px;
+}
+
+		</style>
+	</head>
+
+	<body>
+		<div id="header">
+	<h1>CKEditor 3.0 JavaScript API Documentation</h1>
+	<hr />
+</div>
+
+
+		<div id="index">
+			<div align="center">
+	<a href="index.html">Code Index</a>
+	| <a href="files.html">File Index</a>
+</div>
+<hr />
+<h2>Namespaces</h2>
+<ul class="classList">
+
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.html">CKEDITOR</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.ajax.html">CKEDITOR.ajax</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.config.html">CKEDITOR.config</a>
+			</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.dom.html">CKEDITOR.dom</a>
+			</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.dtd.html">CKEDITOR.dtd</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.env.html">CKEDITOR.env</a>
+			</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.imageCacher.html">CKEDITOR.imageCacher</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.loader.html">CKEDITOR.loader</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.plugins.html">CKEDITOR.plugins</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.resourceManager.html">CKEDITOR.resourceManager</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.scriptLoader.html">CKEDITOR.scriptLoader</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.skins.html">CKEDITOR.skins</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.test.html">CKEDITOR.test</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.themes.html">CKEDITOR.themes</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.tools.html">CKEDITOR.tools</a>
+			</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</ul>
+<h2>Classes</h2>
+<ul class="classList">
+
+
+
+
+
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.commandDefinition.html">CKEDITOR.commandDefinition</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.dialog.html">CKEDITOR.dialog</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.dialog.buttonDefinition.html">CKEDITOR.dialog.buttonDefinition</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.dialog.contentDefinition.html">CKEDITOR.dialog.contentDefinition</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.dialog.contentDefinitionObject.html">CKEDITOR.dialog.contentDefinitionObject</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.dialog.dialogDefinition.html">CKEDITOR.dialog.dialogDefinition</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.dialog.dialogDefinitionObject.html">CKEDITOR.dialog.dialogDefinitionObject</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.dialog.uiElementDefinition.html">CKEDITOR.dialog.uiElementDefinition</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.dialogCommand.html">CKEDITOR.dialogCommand</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.dom.document.html">CKEDITOR.dom.document</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.dom.domObject.html">CKEDITOR.dom.domObject</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.dom.element.html">CKEDITOR.dom.element</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.dom.event.html">CKEDITOR.dom.event</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.dom.node.html">CKEDITOR.dom.node</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.dom.selection.html">CKEDITOR.dom.selection</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.dom.text.html">CKEDITOR.dom.text</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.dom.window.html">CKEDITOR.dom.window</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.editor.html">CKEDITOR.editor</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.event.html">CKEDITOR.event</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.eventInfo.html">CKEDITOR.eventInfo</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.focusManager.html">CKEDITOR.focusManager</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.htmlParser.html">CKEDITOR.htmlParser</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.htmlParser.cdata.html">CKEDITOR.htmlParser.cdata</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.htmlParser.comment.html">CKEDITOR.htmlParser.comment</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.htmlParser.element.html">CKEDITOR.htmlParser.element</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.htmlParser.fragment.html">CKEDITOR.htmlParser.fragment</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.htmlParser.text.html">CKEDITOR.htmlParser.text</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.htmlWriter.html">CKEDITOR.htmlWriter</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.keystrokeHandler.html">CKEDITOR.keystrokeHandler</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.pluginDefinition.html">CKEDITOR.pluginDefinition</a>
+			</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.ui.html">CKEDITOR.ui</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.ui.button.html">CKEDITOR.ui.button</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.ui.dialog.button.html">CKEDITOR.ui.dialog.button</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.ui.dialog.checkbox.html">CKEDITOR.ui.dialog.checkbox</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.ui.dialog.file.html">CKEDITOR.ui.dialog.file</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.ui.dialog.fileButton.html">CKEDITOR.ui.dialog.fileButton</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.ui.dialog.hbox.html">CKEDITOR.ui.dialog.hbox</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.ui.dialog.html.html">CKEDITOR.ui.dialog.html</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.ui.dialog.labeledElement.html">CKEDITOR.ui.dialog.labeledElement</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.ui.dialog.radio.html">CKEDITOR.ui.dialog.radio</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.ui.dialog.select.html">CKEDITOR.ui.dialog.select</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.ui.dialog.textarea.html">CKEDITOR.ui.dialog.textarea</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.ui.dialog.textInput.html">CKEDITOR.ui.dialog.textInput</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.ui.dialog.uiElement.html">CKEDITOR.ui.dialog.uiElement</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.ui.dialog.vbox.html">CKEDITOR.ui.dialog.vbox</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.ui.handlerDefinition.html">CKEDITOR.ui.handlerDefinition</a>
+			</li>
+
+
+
+			<li>
+				<a href="symbols/CKEDITOR.xml.html">CKEDITOR.xml</a>
+			</li>
+
+
+</ul>
+<hr />
+		</div>
+
+		<div id="content">
+			<h1 class="classTitle">Namespace Index</h1>
+
+
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.html#constructor">CKEDITOR</a></h2>
+
+This is the API entry point.
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.ajax.html#constructor">CKEDITOR.ajax</a></h2>
+
+Ajax methods for data loading.
+					</div>
+					<hr />
+
+
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.config.html#constructor">CKEDITOR.config</a></h2>
+
+Holds the default configuration settings.
+					</div>
+					<hr />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.dom.html#constructor">CKEDITOR.dom</a></h2>
+
+DOM manipulation objects and function.
+					</div>
+					<hr />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.dtd.html#constructor">CKEDITOR.dtd</a></h2>
+
+Holds and object representation of the HTML DTD to be used by the editor in
+its internal operations.
+					</div>
+					<hr />
+
+
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.env.html#constructor">CKEDITOR.env</a></h2>
+
+Environment and browser information.
+					</div>
+					<hr />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.imageCacher.html#constructor">CKEDITOR.imageCacher</a></h2>
+
+Load images into the browser cache.
+					</div>
+					<hr />
+
+
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.loader.html#constructor">CKEDITOR.loader</a></h2>
+
+Load core scripts and their dependencies from _source.
+					</div>
+					<hr />
+
+
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.plugins.html#constructor">CKEDITOR.plugins</a></h2>
+
+Manages plugins registration and loading.
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.resourceManager.html#constructor">CKEDITOR.resourceManager</a></h2>
+
+Base class for resource managers, like plugins and themes.
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.scriptLoader.html#constructor">CKEDITOR.scriptLoader</a></h2>
+
+Load scripts asynchronously.
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.skins.html#constructor">CKEDITOR.skins</a></h2>
+
+Manages skins loading.
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.test.html#constructor">CKEDITOR.test</a></h2>
+
+Contains functions used at our testing environment.
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.themes.html#constructor">CKEDITOR.themes</a></h2>
+
+Manages themes registration and loading.
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.tools.html#constructor">CKEDITOR.tools</a></h2>
+
+Utility functions.
+					</div>
+					<hr />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			<h1 class="classTitle">Class Index</h1>
+
+
+
+
+
+
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.commandDefinition.html#constructor">CKEDITOR.commandDefinition</a></h2>
+
+					</div>
+					<hr />
+
+
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.dialog.html#constructor">CKEDITOR.dialog</a></h2>
+
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.dialog.buttonDefinition.html#constructor">CKEDITOR.dialog.buttonDefinition</a></h2>
+
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.dialog.contentDefinition.html#constructor">CKEDITOR.dialog.contentDefinition</a></h2>
+
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.dialog.contentDefinitionObject.html#constructor">CKEDITOR.dialog.contentDefinitionObject</a></h2>
+
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.dialog.dialogDefinition.html#constructor">CKEDITOR.dialog.dialogDefinition</a></h2>
+
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.dialog.dialogDefinitionObject.html#constructor">CKEDITOR.dialog.dialogDefinitionObject</a></h2>
+
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.dialog.uiElementDefinition.html#constructor">CKEDITOR.dialog.uiElementDefinition</a></h2>
+
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.dialogCommand.html#constructor">CKEDITOR.dialogCommand</a></h2>
+
+					</div>
+					<hr />
+
+
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.dom.document.html#constructor">CKEDITOR.dom.document</a></h2>
+
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.dom.domObject.html#constructor">CKEDITOR.dom.domObject</a></h2>
+
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.dom.element.html#constructor">CKEDITOR.dom.element</a></h2>
+
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.dom.event.html#constructor">CKEDITOR.dom.event</a></h2>
+
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.dom.node.html#constructor">CKEDITOR.dom.node</a></h2>
+
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.dom.selection.html#constructor">CKEDITOR.dom.selection</a></h2>
+
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.dom.text.html#constructor">CKEDITOR.dom.text</a></h2>
+
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.dom.window.html#constructor">CKEDITOR.dom.window</a></h2>
+
+					</div>
+					<hr />
+
+
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.editor.html#constructor">CKEDITOR.editor</a></h2>
+
+					</div>
+					<hr />
+
+
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.event.html#constructor">CKEDITOR.event</a></h2>
+
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.eventInfo.html#constructor">CKEDITOR.eventInfo</a></h2>
+
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.focusManager.html#constructor">CKEDITOR.focusManager</a></h2>
+
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.htmlParser.html#constructor">CKEDITOR.htmlParser</a></h2>
+
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.htmlParser.cdata.html#constructor">CKEDITOR.htmlParser.cdata</a></h2>
+
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.htmlParser.comment.html#constructor">CKEDITOR.htmlParser.comment</a></h2>
+
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.htmlParser.element.html#constructor">CKEDITOR.htmlParser.element</a></h2>
+
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.htmlParser.fragment.html#constructor">CKEDITOR.htmlParser.fragment</a></h2>
+
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.htmlParser.text.html#constructor">CKEDITOR.htmlParser.text</a></h2>
+
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.htmlWriter.html#constructor">CKEDITOR.htmlWriter</a></h2>
+
+					</div>
+					<hr />
+
+
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.keystrokeHandler.html#constructor">CKEDITOR.keystrokeHandler</a></h2>
+
+					</div>
+					<hr />
+
+
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.pluginDefinition.html#constructor">CKEDITOR.pluginDefinition</a></h2>
+
+					</div>
+					<hr />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.ui.html#constructor">CKEDITOR.ui</a></h2>
+
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.ui.button.html#constructor">CKEDITOR.ui.button</a></h2>
+
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.ui.dialog.button.html#constructor">CKEDITOR.ui.dialog.button</a></h2>
+
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.ui.dialog.checkbox.html#constructor">CKEDITOR.ui.dialog.checkbox</a></h2>
+
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.ui.dialog.file.html#constructor">CKEDITOR.ui.dialog.file</a></h2>
+
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.ui.dialog.fileButton.html#constructor">CKEDITOR.ui.dialog.fileButton</a></h2>
+
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.ui.dialog.hbox.html#constructor">CKEDITOR.ui.dialog.hbox</a></h2>
+
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.ui.dialog.html.html#constructor">CKEDITOR.ui.dialog.html</a></h2>
+
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.ui.dialog.labeledElement.html#constructor">CKEDITOR.ui.dialog.labeledElement</a></h2>
+
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.ui.dialog.radio.html#constructor">CKEDITOR.ui.dialog.radio</a></h2>
+
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.ui.dialog.select.html#constructor">CKEDITOR.ui.dialog.select</a></h2>
+
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.ui.dialog.textarea.html#constructor">CKEDITOR.ui.dialog.textarea</a></h2>
+
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.ui.dialog.textInput.html#constructor">CKEDITOR.ui.dialog.textInput</a></h2>
+
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.ui.dialog.uiElement.html#constructor">CKEDITOR.ui.dialog.uiElement</a></h2>
+
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.ui.dialog.vbox.html#constructor">CKEDITOR.ui.dialog.vbox</a></h2>
+
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.ui.handlerDefinition.html#constructor">CKEDITOR.ui.handlerDefinition</a></h2>
+
+					</div>
+					<hr />
+
+
+
+					<div>
+						<h2><a href="symbols/CKEDITOR.xml.html#constructor">CKEDITOR.xml</a></h2>
+
+					</div>
+					<hr />
+
+
+
+		</div>
+		<div class="fineprint" style="clear:both">
+	Copyright &copy; 2003-2009, <a href="http://cksource.com/">CKSource</a> - Frederico Knabben. All rights reserved.
+</div>
+
+	</body>
+</html>

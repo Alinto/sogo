@@ -1,0 +1,343 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="TOKN">﻿</span><span class="COMM">/*
+<span class='line'>  2</span> Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
+<span class='line'>  3</span> For licensing, see LICENSE.html or http://ckeditor.com/license
+<span class='line'>  4</span> */</span><span class="WHIT">
+<span class='line'>  5</span>
+<span class='line'>  6</span> </span><span class="COMM">/**
+<span class='line'>  7</span>  * @fileOverview Defines the {@link CKEDITOR.event} class, which serves as the
+<span class='line'>  8</span>  *		base for classes and objects that require event handling features.
+<span class='line'>  9</span>  */</span><span class="WHIT">
+<span class='line'> 10</span>
+<span class='line'> 11</span> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">CKEDITOR.event</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 12</span> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 13</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'> 14</span> 	 * This is a base class for classes and objects that require event handling
+<span class='line'> 15</span> 	 * features.
+<span class='line'> 16</span> 	 * @constructor
+<span class='line'> 17</span> 	 * @example
+<span class='line'> 18</span> 	 */</span><span class="WHIT">
+<span class='line'> 19</span> </span><span class="WHIT">	</span><span class="NAME">CKEDITOR.event</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 20</span> </span><span class="WHIT">	</span><span class="PUNC">{</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 21</span>
+<span class='line'> 22</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'> 23</span> 	 * Implements the {@link CKEDITOR.event} features in an object.
+<span class='line'> 24</span> 	 * @param {Object} targetObject The object in which implement the features.
+<span class='line'> 25</span> 	 * @example
+<span class='line'> 26</span> 	 * var myObject = { message : 'Example' };
+<span class='line'> 27</span> 	 * &lt;b>CKEDITOR.event.implementOn( myObject }&lt;/b>;
+<span class='line'> 28</span> 	 * myObject.on( 'testEvent', function()
+<span class='line'> 29</span> 	 *     {
+<span class='line'> 30</span> 	 *         alert( this.message );  // "Example"
+<span class='line'> 31</span> 	 *     });
+<span class='line'> 32</span> 	 * myObject.fire( 'testEvent' );
+<span class='line'> 33</span> 	 */</span><span class="WHIT">
+<span class='line'> 34</span> </span><span class="WHIT">	</span><span class="NAME">CKEDITOR.event.implementOn</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">targetObject</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">isTargetPrototype</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 35</span> </span><span class="WHIT">	</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 36</span> </span><span class="WHIT">		</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">eventProto</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.event.prototype</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 37</span>
+<span class='line'> 38</span> </span><span class="WHIT">		</span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">prop</span><span class="WHIT"> </span><span class="KEYW">in</span><span class="WHIT"> </span><span class="NAME">eventProto</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 39</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 40</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">targetObject</span><span class="PUNC">[</span><span class="WHIT"> </span><span class="NAME">prop</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">undefined</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 41</span> </span><span class="WHIT">				</span><span class="NAME">targetObject</span><span class="PUNC">[</span><span class="WHIT"> </span><span class="NAME">prop</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">eventProto</span><span class="PUNC">[</span><span class="WHIT"> </span><span class="NAME">prop</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 42</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 43</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 44</span>
+<span class='line'> 45</span> </span><span class="WHIT">	</span><span class="NAME">CKEDITOR.event.prototype</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 46</span> </span><span class="WHIT">	</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 47</span> </span><span class="WHIT">		</span><span class="COMM">// Returns the private events object for a given object.</span><span class="WHIT">
+<span class='line'> 48</span> </span><span class="WHIT">		</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">getPrivate</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">obj</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 49</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 50</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">_</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">obj.getPrivate</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">obj.getPrivate</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NAME">obj._</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">obj._</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="PUNC">}</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 51</span> </span><span class="WHIT">			</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">_.events</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">_.events</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="PUNC">}</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 52</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 53</span>
+<span class='line'> 54</span> </span><span class="WHIT">		</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">eventEntry</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">eventName</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 55</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 56</span> </span><span class="WHIT">			</span><span class="NAME">this.name</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">eventName</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 57</span> </span><span class="WHIT">			</span><span class="NAME">this.listeners</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 58</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 59</span>
+<span class='line'> 60</span> </span><span class="WHIT">		</span><span class="NAME">eventEntry.prototype</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT">
+<span class='line'> 61</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 62</span> </span><span class="WHIT">			</span><span class="COMM">// Get the listener index for a specified function.</span><span class="WHIT">
+<span class='line'> 63</span> </span><span class="WHIT">			</span><span class="COMM">// Returns -1 if not found.</span><span class="WHIT">
+<span class='line'> 64</span> </span><span class="WHIT">			</span><span class="NAME">getListenerIndex</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">listenerFunction</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 65</span> </span><span class="WHIT">			</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 66</span> </span><span class="WHIT">				</span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">listeners</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.listeners</span><span class="WHIT"> </span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">listeners.length</span><span class="WHIT"> </span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 67</span> </span><span class="WHIT">				</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 68</span> </span><span class="WHIT">					</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">listeners</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">fn</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">listenerFunction</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 69</span> </span><span class="WHIT">						</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 70</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 71</span> </span><span class="WHIT">				</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 72</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 73</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 74</span>
+<span class='line'> 75</span> </span><span class="WHIT">		</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="COMM">/** @lends CKEDITOR.event.prototype */</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 76</span> </span><span class="WHIT">			</span><span class="COMM">/**
+<span class='line'> 77</span> 			 * Registers a listener to a specific event in the current object.
+<span class='line'> 78</span> 			 * @param {String} eventName The event name to which listen.
+<span class='line'> 79</span> 			 * @param {Function} listenerFunction The function listening to the
+<span class='line'> 80</span> 			 *		event.
+<span class='line'> 81</span> 			 * @param {Object} [scopeObj] The object used to scope the listener
+<span class='line'> 82</span> 			 *		call (the this object. If omitted, the current object is used.
+<span class='line'> 83</span> 			 * @param {Object} [listenerData] Data to be sent as the
+<span class='line'> 84</span> 			 *		{@link CKEDITOR.eventInfo#listenerData} when calling the
+<span class='line'> 85</span> 			 *		listener.
+<span class='line'> 86</span> 			 * @param {Number} [priority] The listener priority. Lower priority
+<span class='line'> 87</span> 			 *		listeners are called first. Listeners with the same priority
+<span class='line'> 88</span> 			 *		value are called in registration order. Defaults to 10.
+<span class='line'> 89</span> 			 * @example
+<span class='line'> 90</span> 			 * someObject.on( 'someEvent', function()
+<span class='line'> 91</span> 			 *     {
+<span class='line'> 92</span> 			 *         alert( this == someObject );  // "true"
+<span class='line'> 93</span> 			 *     });
+<span class='line'> 94</span> 			 * @example
+<span class='line'> 95</span> 			 * someObject.on( 'someEvent', function()
+<span class='line'> 96</span> 			 *     {
+<span class='line'> 97</span> 			 *         alert( this == anotherObject );  // "true"
+<span class='line'> 98</span> 			 *     }
+<span class='line'> 99</span> 			 *     , anotherObject );
+<span class='line'>100</span> 			 * @example
+<span class='line'>101</span> 			 * someObject.on( 'someEvent', function( event )
+<span class='line'>102</span> 			 *     {
+<span class='line'>103</span> 			 *         alert( event.listenerData );  // "Example"
+<span class='line'>104</span> 			 *     }
+<span class='line'>105</span> 			 *     , null, 'Example' );
+<span class='line'>106</span> 			 * @example
+<span class='line'>107</span> 			 * someObject.on( 'someEvent', function() { ... } );                   // 2nd called
+<span class='line'>108</span> 			 * someObject.on( 'someEvent', function() { ... }, null, null, 100 );  // 3rd called
+<span class='line'>109</span> 			 * someObject.on( 'someEvent', function() { ... }, null, null, 1 );    // 1st called
+<span class='line'>110</span> 			 */</span><span class="WHIT">
+<span class='line'>111</span> </span><span class="WHIT">			</span><span class="NAME">on</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">eventName</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">listenerFunction</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">scopeObj</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">listenerData</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">priority</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>112</span> </span><span class="WHIT">			</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>113</span> </span><span class="WHIT">				</span><span class="COMM">// Get the event entry (create it if needed).</span><span class="WHIT">
+<span class='line'>114</span> </span><span class="WHIT">				</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">events</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">getPrivate</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>115</span> </span><span class="WHIT">					</span><span class="NAME">event</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">events</span><span class="PUNC">[</span><span class="WHIT"> </span><span class="NAME">eventName</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">events</span><span class="PUNC">[</span><span class="WHIT"> </span><span class="NAME">eventName</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">eventEntry</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">eventName</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>116</span>
+<span class='line'>117</span> </span><span class="WHIT">				</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">event.getListenerIndex</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">listenerFunction</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>118</span> </span><span class="WHIT">				</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>119</span> </span><span class="WHIT">					</span><span class="COMM">// Get the listeners.</span><span class="WHIT">
+<span class='line'>120</span> </span><span class="WHIT">					</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">listeners</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">event.listeners</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>121</span>
+<span class='line'>122</span> </span><span class="WHIT">					</span><span class="COMM">// Fill the scope.</span><span class="WHIT">
+<span class='line'>123</span> </span><span class="WHIT">					</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">scopeObj</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>124</span> </span><span class="WHIT">						</span><span class="NAME">scopeObj</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>125</span>
+<span class='line'>126</span> </span><span class="WHIT">					</span><span class="COMM">// Default the priority, if needed.</span><span class="WHIT">
+<span class='line'>127</span> </span><span class="WHIT">					</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">isNaN</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">priority</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>128</span> </span><span class="WHIT">						</span><span class="NAME">priority</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">10</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>129</span>
+<span class='line'>130</span> </span><span class="WHIT">					</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">me</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>131</span>
+<span class='line'>132</span> </span><span class="WHIT">					</span><span class="COMM">// Create the function to be fired for this listener.</span><span class="WHIT">
+<span class='line'>133</span> </span><span class="WHIT">					</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">listenerFirer</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">editor</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">publisherData</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">stopFn</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">cancelFn</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>134</span> </span><span class="WHIT">					</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>135</span> </span><span class="WHIT">						</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">ev</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT">
+<span class='line'>136</span> </span><span class="WHIT">						</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>137</span> </span><span class="WHIT">							</span><span class="NAME">name</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">eventName</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>138</span> </span><span class="WHIT">							</span><span class="NAME">sender</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>139</span> </span><span class="WHIT">							</span><span class="NAME">editor</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">editor</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>140</span> </span><span class="WHIT">							</span><span class="NAME">data</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">publisherData</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>141</span> </span><span class="WHIT">							</span><span class="NAME">listenerData</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">listenerData</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>142</span> </span><span class="WHIT">							</span><span class="NAME">stop</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">stopFn</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>143</span> </span><span class="WHIT">							</span><span class="NAME">cancel</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">cancelFn</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>144</span> </span><span class="WHIT">							</span><span class="NAME">removeListener</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>145</span> </span><span class="WHIT">							</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>146</span> </span><span class="WHIT">								</span><span class="NAME">me.removeListener</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">eventName</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">listenerFunction</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>147</span> </span><span class="WHIT">							</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>148</span> </span><span class="WHIT">						</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>149</span>
+<span class='line'>150</span> </span><span class="WHIT">						</span><span class="NAME">listenerFunction.call</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">scopeObj</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">ev</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>151</span>
+<span class='line'>152</span> </span><span class="WHIT">						</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">ev.data</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>153</span> </span><span class="WHIT">					</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>154</span> </span><span class="WHIT">					</span><span class="NAME">listenerFirer.fn</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">listenerFunction</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>155</span> </span><span class="WHIT">					</span><span class="NAME">listenerFirer.priority</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">priority</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>156</span>
+<span class='line'>157</span> </span><span class="WHIT">					</span><span class="COMM">// Search for the right position for this new listener, based on its</span><span class="WHIT">
+<span class='line'>158</span> </span><span class="WHIT">					</span><span class="COMM">// priority.</span><span class="WHIT">
+<span class='line'>159</span> </span><span class="WHIT">					</span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">listeners.length</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="WHIT"> </span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">>=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="WHIT"> </span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">--</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>160</span> </span><span class="WHIT">					</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>161</span> </span><span class="WHIT">						</span><span class="COMM">// Find the item which should be before the new one.</span><span class="WHIT">
+<span class='line'>162</span> </span><span class="WHIT">						</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">listeners</span><span class="PUNC">[</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">priority</span><span class="WHIT"> </span><span class="PUNC">&lt;=</span><span class="WHIT"> </span><span class="NAME">priority</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>163</span> </span><span class="WHIT">						</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>164</span> </span><span class="WHIT">							</span><span class="COMM">// Insert the listener in the array.</span><span class="WHIT">
+<span class='line'>165</span> </span><span class="WHIT">							</span><span class="NAME">listeners.splice</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">listenerFirer</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>166</span> </span><span class="WHIT">							</span><span class="KEYW">return</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>167</span> </span><span class="WHIT">						</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>168</span> </span><span class="WHIT">					</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>169</span>
+<span class='line'>170</span> </span><span class="WHIT">					</span><span class="COMM">// If no position has been found (or zero length), put it in</span><span class="WHIT">
+<span class='line'>171</span> </span><span class="WHIT">					</span><span class="COMM">// the front of list.</span><span class="WHIT">
+<span class='line'>172</span> </span><span class="WHIT">					</span><span class="NAME">listeners.unshift</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">listenerFirer</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>173</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>174</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>175</span>
+<span class='line'>176</span> </span><span class="WHIT">			</span><span class="COMM">/**
+<span class='line'>177</span> 			 * Fires an specific event in the object. All registered listeners are
+<span class='line'>178</span> 			 * called at this point.
+<span class='line'>179</span> 			 * @function
+<span class='line'>180</span> 			 * @param {String} eventName The event name to fire.
+<span class='line'>181</span> 			 * @param {Object} [data] Data to be sent as the
+<span class='line'>182</span> 			 *		{@link CKEDITOR.eventInfo#data} when calling the
+<span class='line'>183</span> 			 *		listeners.
+<span class='line'>184</span> 			 * @param {CKEDITOR.editor} [editor] The editor instance to send as the
+<span class='line'>185</span> 			 *		{@link CKEDITOR.eventInfo#editor} when calling the
+<span class='line'>186</span> 			 *		listener.
+<span class='line'>187</span> 			 * @returns {Boolean|Object} A booloan indicating that the event is to be
+<span class='line'>188</span> 			 *		canceled, or data returned by one of the listeners.
+<span class='line'>189</span> 			 * @example
+<span class='line'>190</span> 			 * someObject.on( 'someEvent', function() { ... } );
+<span class='line'>191</span> 			 * someObject.on( 'someEvent', function() { ... } );
+<span class='line'>192</span> 			 * &lt;b>someObject.fire( 'someEvent' )&lt;/b>;  // both listeners are called
+<span class='line'>193</span> 			 * @example
+<span class='line'>194</span> 			 * someObject.on( 'someEvent', function( event )
+<span class='line'>195</span> 			 *     {
+<span class='line'>196</span> 			 *         alert( event.data );  // "Example"
+<span class='line'>197</span> 			 *     });
+<span class='line'>198</span> 			 * &lt;b>someObject.fire( 'someEvent', 'Example' )&lt;/b>;
+<span class='line'>199</span> 			 */</span><span class="WHIT">
+<span class='line'>200</span> </span><span class="WHIT">			</span><span class="NAME">fire</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>201</span> </span><span class="WHIT">			</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>202</span> </span><span class="WHIT">				</span><span class="COMM">// Create the function that marks the event as stopped.</span><span class="WHIT">
+<span class='line'>203</span> </span><span class="WHIT">				</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">stopped</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>204</span> </span><span class="WHIT">				</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">stopEvent</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>205</span> </span><span class="WHIT">				</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>206</span> </span><span class="WHIT">					</span><span class="NAME">stopped</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>207</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>208</span>
+<span class='line'>209</span> </span><span class="WHIT">				</span><span class="COMM">// Create the function that marks the event as canceled.</span><span class="WHIT">
+<span class='line'>210</span> </span><span class="WHIT">				</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">canceled</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>211</span> </span><span class="WHIT">				</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">cancelEvent</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>212</span> </span><span class="WHIT">				</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>213</span> </span><span class="WHIT">					</span><span class="NAME">canceled</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>214</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>215</span>
+<span class='line'>216</span> </span><span class="WHIT">				</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">eventName</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">data</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">editor</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>217</span> </span><span class="WHIT">				</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>218</span> </span><span class="WHIT">					</span><span class="COMM">// Get the event entry.</span><span class="WHIT">
+<span class='line'>219</span> </span><span class="WHIT">					</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">event</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">getPrivate</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">[</span><span class="WHIT"> </span><span class="NAME">eventName</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>220</span>
+<span class='line'>221</span> </span><span class="WHIT">					</span><span class="COMM">// Save the previous stopped and cancelled states. We may</span><span class="WHIT">
+<span class='line'>222</span> </span><span class="WHIT">					</span><span class="COMM">// be nesting fire() calls.</span><span class="WHIT">
+<span class='line'>223</span> </span><span class="WHIT">					</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">previousStopped</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">stopped</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>224</span> </span><span class="WHIT">						</span><span class="NAME">previousCancelled</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">canceled</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>225</span>
+<span class='line'>226</span> </span><span class="WHIT">					</span><span class="COMM">// Reset the stopped and canceled flags.</span><span class="WHIT">
+<span class='line'>227</span> </span><span class="WHIT">					</span><span class="NAME">stopped</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">canceled</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>228</span>
+<span class='line'>229</span> </span><span class="WHIT">					</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">event</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>230</span> </span><span class="WHIT">					</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>231</span> </span><span class="WHIT">						</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">listeners</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">event.listeners</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>232</span>
+<span class='line'>233</span> </span><span class="WHIT">						</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">listeners.length</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>234</span> </span><span class="WHIT">						</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>235</span> </span><span class="WHIT">							</span><span class="COMM">// As some listeners may remove themselves from the</span><span class="WHIT">
+<span class='line'>236</span> </span><span class="WHIT">							</span><span class="COMM">// event, the original array length is dinamic. So,</span><span class="WHIT">
+<span class='line'>237</span> </span><span class="WHIT">							</span><span class="COMM">// let's make a copy of all listeners, so we are</span><span class="WHIT">
+<span class='line'>238</span> </span><span class="WHIT">							</span><span class="COMM">// sure we'll call all of them.</span><span class="WHIT">
+<span class='line'>239</span> </span><span class="WHIT">							</span><span class="NAME">listeners</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">listeners.slice</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>240</span>
+<span class='line'>241</span> </span><span class="WHIT">							</span><span class="COMM">// Loop through all listeners.</span><span class="WHIT">
+<span class='line'>242</span> </span><span class="WHIT">							</span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="WHIT"> </span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">listeners.length</span><span class="WHIT"> </span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>243</span> </span><span class="WHIT">							</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>244</span> </span><span class="WHIT">								</span><span class="COMM">// Call the listener, passing the event data.</span><span class="WHIT">
+<span class='line'>245</span> </span><span class="WHIT">								</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">retData</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">listeners</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">call</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">editor</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">data</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">stopEvent</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">cancelEvent</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>246</span>
+<span class='line'>247</span> </span><span class="WHIT">								</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">typeof</span><span class="WHIT"> </span><span class="NAME">retData</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="STRN">'undefined'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>248</span> </span><span class="WHIT">									</span><span class="NAME">data</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">retData</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>249</span>
+<span class='line'>250</span> </span><span class="WHIT">								</span><span class="COMM">// No further calls is stopped or canceled.</span><span class="WHIT">
+<span class='line'>251</span> </span><span class="WHIT">								</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">stopped</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NAME">canceled</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>252</span> </span><span class="WHIT">									</span><span class="KEYW">break</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>253</span> </span><span class="WHIT">							</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>254</span> </span><span class="WHIT">						</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>255</span> </span><span class="WHIT">					</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>256</span>
+<span class='line'>257</span> </span><span class="WHIT">					</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">ret</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">canceled</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">typeof</span><span class="WHIT"> </span><span class="NAME">data</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="STRN">'undefined'</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">data</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>258</span>
+<span class='line'>259</span> </span><span class="WHIT">					</span><span class="COMM">// Restore the previous stopped and canceled states.</span><span class="WHIT">
+<span class='line'>260</span> </span><span class="WHIT">					</span><span class="NAME">stopped</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">previousStopped</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>261</span> </span><span class="WHIT">					</span><span class="NAME">canceled</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">previousCancelled</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>262</span>
+<span class='line'>263</span> </span><span class="WHIT">					</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">ret</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>264</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>265</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>266</span>
+<span class='line'>267</span> </span><span class="WHIT">			</span><span class="COMM">/**
+<span class='line'>268</span> 			 * Fires an specific event in the object, releasing all listeners
+<span class='line'>269</span> 			 * registered to that event. The same listeners are not called again on
+<span class='line'>270</span> 			 * successive calls of it or of {@link #fire}.
+<span class='line'>271</span> 			 * @param {String} eventName The event name to fire.
+<span class='line'>272</span> 			 * @param {Object} [data] Data to be sent as the
+<span class='line'>273</span> 			 *		{@link CKEDITOR.eventInfo#data} when calling the
+<span class='line'>274</span> 			 *		listeners.
+<span class='line'>275</span> 			 * @param {CKEDITOR.editor} [editor] The editor instance to send as the
+<span class='line'>276</span> 			 *		{@link CKEDITOR.eventInfo#editor} when calling the
+<span class='line'>277</span> 			 *		listener.
+<span class='line'>278</span> 			 * @returns {Boolean|Object} A booloan indicating that the event is to be
+<span class='line'>279</span> 			 *		canceled, or data returned by one of the listeners.
+<span class='line'>280</span> 			 * @example
+<span class='line'>281</span> 			 * someObject.on( 'someEvent', function() { ... } );
+<span class='line'>282</span> 			 * someObject.fire( 'someEvent' );  // above listener called
+<span class='line'>283</span> 			 * &lt;b>someObject.fireOnce( 'someEvent' )&lt;/b>;  // above listener called
+<span class='line'>284</span> 			 * someObject.fire( 'someEvent' );  // no listeners called
+<span class='line'>285</span> 			 */</span><span class="WHIT">
+<span class='line'>286</span> </span><span class="WHIT">			</span><span class="NAME">fireOnce</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">eventName</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">data</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">editor</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>287</span> </span><span class="WHIT">			</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>288</span> </span><span class="WHIT">				</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">ret</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.fire</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">eventName</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">data</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">editor</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>289</span> </span><span class="WHIT">				</span><span class="KEYW">delete</span><span class="WHIT"> </span><span class="NAME">getPrivate</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">[</span><span class="WHIT"> </span><span class="NAME">eventName</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>290</span> </span><span class="WHIT">				</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">ret</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>291</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>292</span>
+<span class='line'>293</span> </span><span class="WHIT">			</span><span class="COMM">/**
+<span class='line'>294</span> 			 * Unregisters a listener function from being called at the specified
+<span class='line'>295</span> 			 *		event. No errors are thrown if the listener has not been
+<span class='line'>296</span> 			 *		registered previously.
+<span class='line'>297</span> 			 * @param {String} eventName The event name.
+<span class='line'>298</span> 			 * @param {Function} listenerFunction The listener function to unregister.
+<span class='line'>299</span> 			 * @example
+<span class='line'>300</span> 			 * var myListener = function() { ... };
+<span class='line'>301</span> 			 * someObject.on( 'someEvent', myListener );
+<span class='line'>302</span> 			 * someObject.fire( 'someEvent' );  // myListener called
+<span class='line'>303</span> 			 * &lt;b>someObject.removeListener( 'someEvent', myListener )&lt;/b>;
+<span class='line'>304</span> 			 * someObject.fire( 'someEvent' );  // myListener not called
+<span class='line'>305</span> 			 */</span><span class="WHIT">
+<span class='line'>306</span> </span><span class="WHIT">			</span><span class="NAME">removeListener</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">eventName</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">listenerFunction</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>307</span> </span><span class="WHIT">			</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>308</span> </span><span class="WHIT">				</span><span class="COMM">// Get the event entry.</span><span class="WHIT">
+<span class='line'>309</span> </span><span class="WHIT">				</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">event</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">getPrivate</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">[</span><span class="WHIT"> </span><span class="NAME">eventName</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>310</span>
+<span class='line'>311</span> </span><span class="WHIT">				</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">event</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>312</span> </span><span class="WHIT">				</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>313</span> </span><span class="WHIT">					</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">index</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">event.getListenerIndex</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">listenerFunction</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>314</span> </span><span class="WHIT">					</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">index</span><span class="WHIT"> </span><span class="PUNC">>=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>315</span> </span><span class="WHIT">						</span><span class="NAME">event.listeners.splice</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">index</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>316</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>317</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>318</span>
+<span class='line'>319</span> </span><span class="WHIT">			</span><span class="COMM">/**
+<span class='line'>320</span> 			 * Checks if there is any listener registered to a given event.
+<span class='line'>321</span> 			 * @param {String} eventName The event name.
+<span class='line'>322</span> 			 * @example
+<span class='line'>323</span> 			 * var myListener = function() { ... };
+<span class='line'>324</span> 			 * someObject.on( 'someEvent', myListener );
+<span class='line'>325</span> 			 * alert( someObject.&lt;b>hasListeners( 'someEvent' )&lt;/b> );  // "true"
+<span class='line'>326</span> 			 * alert( someObject.&lt;b>hasListeners( 'noEvent' )&lt;/b> );    // "false"
+<span class='line'>327</span> 			 */</span><span class="WHIT">
+<span class='line'>328</span> </span><span class="WHIT">			</span><span class="NAME">hasListeners</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">eventName</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>329</span> </span><span class="WHIT">			</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>330</span> </span><span class="WHIT">				</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">event</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">getPrivate</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">[</span><span class="WHIT"> </span><span class="NAME">eventName</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>331</span> </span><span class="WHIT">				</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">event</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">event.listeners.length</span><span class="WHIT"> </span><span class="PUNC">></span><span class="WHIT"> </span><span class="NUMB">0</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>332</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>333</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>334</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>335</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>336</span> </span></pre></body></html>

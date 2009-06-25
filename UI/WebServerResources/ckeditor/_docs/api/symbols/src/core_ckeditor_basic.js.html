@@ -1,0 +1,249 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="TOKN">﻿</span><span class="COMM">/*
+<span class='line'>  2</span> Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
+<span class='line'>  3</span> For licensing, see LICENSE.html or http://ckeditor.com/license
+<span class='line'>  4</span> */</span><span class="WHIT">
+<span class='line'>  5</span>
+<span class='line'>  6</span> </span><span class="COMM">/**
+<span class='line'>  7</span>  * @fileOverview Contains the second part of the {@link CKEDITOR} object
+<span class='line'>  8</span>  *		definition, which defines the basic editor features to be available in
+<span class='line'>  9</span>  *		the root ckeditor_basic.js file.
+<span class='line'> 10</span>  */</span><span class="WHIT">
+<span class='line'> 11</span>
+<span class='line'> 12</span> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.status</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="STRN">'unloaded'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 13</span> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 14</span> </span><span class="WHIT">	</span><span class="PUNC">(</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 15</span> </span><span class="WHIT">	</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 16</span> </span><span class="WHIT">		</span><span class="NAME">CKEDITOR.event.implementOn</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">CKEDITOR</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 17</span>
+<span class='line'> 18</span> </span><span class="WHIT">		</span><span class="COMM">/**
+<span class='line'> 19</span> 		 * Forces the full CKEditor core code, in the case only the basic code has been
+<span class='line'> 20</span> 		 * loaded (ckeditor_basic.js). This method self-destroys (becomes undefined) in
+<span class='line'> 21</span> 		 * the first call or as soon as the full code is available.
+<span class='line'> 22</span> 		 * @example
+<span class='line'> 23</span> 		 * // Check if the full core code has been loaded and load it.
+<span class='line'> 24</span> 		 * if ( CKEDITOR.loadFullCore )
+<span class='line'> 25</span> 		 *     &lt;b>CKEDITOR.loadFullCore()&lt;/b>;
+<span class='line'> 26</span> 		 */</span><span class="WHIT">
+<span class='line'> 27</span> </span><span class="WHIT">		</span><span class="NAME">CKEDITOR.loadFullCore</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 28</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 29</span> </span><span class="WHIT">			</span><span class="COMM">// If not the basic code is not ready it, just mark it to be loaded.</span><span class="WHIT">
+<span class='line'> 30</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.status</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="STRN">'basic_ready'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 31</span> </span><span class="WHIT">			</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 32</span> </span><span class="WHIT">				</span><span class="NAME">CKEDITOR.loadFullCore._load</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 33</span> </span><span class="WHIT">				</span><span class="KEYW">return</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 34</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 35</span>
+<span class='line'> 36</span> </span><span class="WHIT">			</span><span class="COMM">// Destroy this function.</span><span class="WHIT">
+<span class='line'> 37</span> </span><span class="WHIT">			</span><span class="KEYW">delete</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.loadFullCore</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 38</span>
+<span class='line'> 39</span> </span><span class="WHIT">			</span><span class="COMM">// Append the script to the head.</span><span class="WHIT">
+<span class='line'> 40</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">script</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">document.createElement</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'script'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 41</span> </span><span class="WHIT">			</span><span class="NAME">script.type</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'text/javascript'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 42</span> </span><span class="WHIT">			</span><span class="NAME">script.src</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.basePath</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">'ckeditor.js'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 44</span>
+<span class='line'> 45</span> </span><span class="WHIT">			</span><span class="NAME">document.getElementsByTagName</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'head'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">appendChild</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">script</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 46</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 47</span>
+<span class='line'> 48</span> </span><span class="WHIT">		</span><span class="COMM">/**
+<span class='line'> 49</span> 		 * The time to wait (in seconds) to load the full editor code after the
+<span class='line'> 50</span> 		 * page load, if the "ckeditor_basic" file is used. If set to zero, the
+<span class='line'> 51</span> 		 * editor is loaded on demand, as soon as an instance is created.
+<span class='line'> 52</span> 		 *
+<span class='line'> 53</span> 		 * This value must be set on the page before the page load completion.
+<span class='line'> 54</span> 		 * @type Number
+<span class='line'> 55</span> 		 * @default 0 (zero)
+<span class='line'> 56</span> 		 * @example
+<span class='line'> 57</span> 		 * // Loads the full source after five seconds.
+<span class='line'> 58</span> 		 * CKEDITOR.loadFullCoreTimeout = 5;
+<span class='line'> 59</span> 		 */</span><span class="WHIT">
+<span class='line'> 60</span> </span><span class="WHIT">		</span><span class="NAME">CKEDITOR.loadFullCoreTimeout</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 61</span>
+<span class='line'> 62</span> </span><span class="WHIT">		</span><span class="COMM">/**
+<span class='line'> 63</span> 		 * The class name used to identify &lt;textarea&gt; elements to be replace
+<span class='line'> 64</span> 		 * by CKEditor instances.
+<span class='line'> 65</span> 		 * @type String
+<span class='line'> 66</span> 		 * @default 'ckeditor'
+<span class='line'> 67</span> 		 * @example
+<span class='line'> 68</span> 		 * &lt;b>CKEDITOR.replaceClass&lt;/b> = 'rich_editor';
+<span class='line'> 69</span> 		 */</span><span class="WHIT">
+<span class='line'> 70</span> </span><span class="WHIT">		</span><span class="NAME">CKEDITOR.replaceClass</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'ckeditor'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 71</span>
+<span class='line'> 72</span> </span><span class="WHIT">		</span><span class="COMM">/**
+<span class='line'> 73</span> 		 * Enables the replacement of all textareas with class name matching
+<span class='line'> 74</span> 		 * {@link CKEDITOR.replaceClass}.
+<span class='line'> 75</span> 		 * @type Boolean
+<span class='line'> 76</span> 		 * @default true
+<span class='line'> 77</span> 		 * @example
+<span class='line'> 78</span> 		 * // Disable the auto-replace feature.
+<span class='line'> 79</span> 		 * &lt;b>CKEDITOR.replaceByClassEnabled&lt;/b> = false;
+<span class='line'> 80</span> 		 */</span><span class="WHIT">
+<span class='line'> 81</span> </span><span class="WHIT">		</span><span class="NAME">CKEDITOR.replaceByClassEnabled</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 82</span>
+<span class='line'> 83</span> </span><span class="WHIT">		</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">createInstance</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">elementOrIdOrName</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">config</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">creationFunction</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 84</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 85</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.env.isCompatible</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 86</span> </span><span class="WHIT">			</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 87</span> </span><span class="WHIT">				</span><span class="COMM">// Load the full core.</span><span class="WHIT">
+<span class='line'> 88</span> </span><span class="WHIT">				</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.loadFullCore</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 89</span> </span><span class="WHIT">					</span><span class="NAME">CKEDITOR.loadFullCore</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 90</span>
+<span class='line'> 91</span> </span><span class="WHIT">				</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">editor</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">creationFunction</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">elementOrIdOrName</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">config</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 92</span> </span><span class="WHIT">				</span><span class="NAME">CKEDITOR.add</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">editor</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 93</span> </span><span class="WHIT">				</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">editor</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 94</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 95</span>
+<span class='line'> 96</span> </span><span class="WHIT">			</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 97</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 98</span>
+<span class='line'> 99</span> </span><span class="WHIT">		</span><span class="COMM">/**
+<span class='line'>100</span> 		 * Replaces a &lt;textarea&gt; or a DOM element (DIV) with a CKEditor
+<span class='line'>101</span> 		 * instance. For textareas, the initial value in the editor will be the
+<span class='line'>102</span> 		 * textarea value. For DOM elements, their innerHTML will be used
+<span class='line'>103</span> 		 * instead. We recommend using TEXTAREA and DIV elements only.
+<span class='line'>104</span> 		 * @param {Object|String} elementOrIdOrName The DOM element (textarea), its
+<span class='line'>105</span> 		 *		ID or name.
+<span class='line'>106</span> 		 * @param {Object} [config] The specific configurations to apply to this
+<span class='line'>107</span> 		 *		editor instance. Configurations set here will override global CKEditor
+<span class='line'>108</span> 		 *		settings.
+<span class='line'>109</span> 		 * @returns {CKEDITOR.editor} The editor instance created.
+<span class='line'>110</span> 		 * @example
+<span class='line'>111</span> 		 * &lt;textarea id="myfield" name="myfield"&gt;&lt:/textarea&gt;
+<span class='line'>112</span> 		 * ...
+<span class='line'>113</span> 		 * &lt;b>CKEDITOR.replace( 'myfield' )&lt;/b>;
+<span class='line'>114</span> 		 * @example
+<span class='line'>115</span> 		 * var textarea = document.body.appendChild( document.createElement( 'textarea' ) );
+<span class='line'>116</span> 		 * &lt;b>CKEDITOR.replace( textarea )&lt;/b>;
+<span class='line'>117</span> 		 */</span><span class="WHIT">
+<span class='line'>118</span> </span><span class="WHIT">		</span><span class="NAME">CKEDITOR.replace</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">elementOrIdOrName</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">config</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>119</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>120</span> </span><span class="WHIT">			</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">createInstance</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">elementOrIdOrName</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">config</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.editor.replace</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>121</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>122</span>
+<span class='line'>123</span> </span><span class="WHIT">		</span><span class="COMM">/**
+<span class='line'>124</span> 		 * Creates a new editor instance inside a specific DOM element.
+<span class='line'>125</span> 		 * @param {Object|String} elementOrId The DOM element or its ID.
+<span class='line'>126</span> 		 * @param {Object} [config] The specific configurations to apply to this
+<span class='line'>127</span> 		 *		editor instance. Configurations set here will override global CKEditor
+<span class='line'>128</span> 		 *		settings.
+<span class='line'>129</span> 		 * @returns {CKEDITOR.editor} The editor instance created.
+<span class='line'>130</span> 		 * @example
+<span class='line'>131</span> 		 * &lt;div id="editorSpace"&gt;&lt:/div&gt;
+<span class='line'>132</span> 		 * ...
+<span class='line'>133</span> 		 * &lt;b>CKEDITOR.appendTo( 'editorSpace' )&lt;/b>;
+<span class='line'>134</span> 		 */</span><span class="WHIT">
+<span class='line'>135</span> </span><span class="WHIT">		</span><span class="NAME">CKEDITOR.appendTo</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">elementOrId</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">config</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>136</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>137</span> </span><span class="WHIT">			</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">createInstance</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">elementOrId</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">config</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.editor.appendTo</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>138</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>139</span>
+<span class='line'>140</span> </span><span class="WHIT">		</span><span class="COMM">/**
+<span class='line'>141</span> 		 * @ignore
+<span class='line'>142</span> 		 * Documented at ckeditor.js.
+<span class='line'>143</span> 		 */</span><span class="WHIT">
+<span class='line'>144</span> </span><span class="WHIT">		</span><span class="NAME">CKEDITOR.add</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">editor</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>145</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>146</span> </span><span class="WHIT">			</span><span class="COMM">// For now, just put the editor in the pending list. It will be</span><span class="WHIT">
+<span class='line'>147</span> </span><span class="WHIT">			</span><span class="COMM">// processed as soon as the full code gets loaded.</span><span class="WHIT">
+<span class='line'>148</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">pending</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this._.pending</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">this._.pending</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>149</span> </span><span class="WHIT">			</span><span class="NAME">pending.push</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">editor</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>150</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>151</span>
+<span class='line'>152</span> </span><span class="WHIT">		</span><span class="COMM">/**
+<span class='line'>153</span> 		 * Replace all &lt;textarea&gt; elements available in the document with
+<span class='line'>154</span> 		 * editor instances.
+<span class='line'>155</span> 		 * @example
+<span class='line'>156</span> 		 * // Replace all &lt;textarea&gt; elements in the page.
+<span class='line'>157</span> 		 * CKEDITOR.replaceAll();
+<span class='line'>158</span> 		 * @example
+<span class='line'>159</span> 		 * // Replace all &lt;textarea class="myClassName"&gt; elements in the page.
+<span class='line'>160</span> 		 * CKEDITOR.replaceAll( 'myClassName' );
+<span class='line'>161</span> 		 * @example
+<span class='line'>162</span> 		 * // Selectively replace &lt;textarea&gt; elements, based on custom assertions.
+<span class='line'>163</span> 		 * CKEDITOR.replaceAll( function( textarea, config )
+<span class='line'>164</span> 		 *     {
+<span class='line'>165</span> 		 *         // Custom code to evaluate the replace, returning false
+<span class='line'>166</span> 		 *         // if it must not be done.
+<span class='line'>167</span> 		 *         // It also passes the "config" parameter, so the
+<span class='line'>168</span> 		 *         // developer can customize the instance.
+<span class='line'>169</span> 		 *     } );
+<span class='line'>170</span> 		 */</span><span class="WHIT">
+<span class='line'>171</span> </span><span class="WHIT">		</span><span class="NAME">CKEDITOR.replaceAll</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>172</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>173</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">textareas</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">document.getElementsByTagName</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'textarea'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>174</span>
+<span class='line'>175</span> </span><span class="WHIT">			</span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="WHIT"> </span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">textareas.length</span><span class="WHIT"> </span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>176</span> </span><span class="WHIT">			</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>177</span> </span><span class="WHIT">				</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">config</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>178</span> </span><span class="WHIT">				</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">textarea</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">textareas</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>179</span> </span><span class="WHIT">				</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">name</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">textarea.name</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>180</span>
+<span class='line'>181</span> </span><span class="WHIT">				</span><span class="COMM">// The "name" and/or "id" attribute must exist.</span><span class="WHIT">
+<span class='line'>182</span> </span><span class="WHIT">				</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">textarea.name</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">textarea.id</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>183</span> </span><span class="WHIT">					</span><span class="KEYW">continue</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>184</span>
+<span class='line'>185</span> </span><span class="WHIT">				</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">typeof</span><span class="WHIT"> </span><span class="NAME">arguments</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="STRN">'string'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>186</span> </span><span class="WHIT">				</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>187</span> </span><span class="WHIT">					</span><span class="COMM">// The textarea class name could be passed as the function</span><span class="WHIT">
+<span class='line'>188</span> </span><span class="WHIT">					</span><span class="COMM">// parameter.</span><span class="WHIT">
+<span class='line'>189</span>
+<span class='line'>190</span> </span><span class="WHIT">					</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">classRegex</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">RegExp</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'(?:^| )'</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">arguments</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">'(?:$| )'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>191</span>
+<span class='line'>192</span> </span><span class="WHIT">					</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">classRegex.test</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">textarea.className</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>193</span> </span><span class="WHIT">						</span><span class="KEYW">continue</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>194</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>195</span> </span><span class="WHIT">				</span><span class="KEYW">else</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">typeof</span><span class="WHIT"> </span><span class="NAME">arguments</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="STRN">'function'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>196</span> </span><span class="WHIT">				</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>197</span> </span><span class="WHIT">					</span><span class="COMM">// An assertion function could be passed as the function parameter.</span><span class="WHIT">
+<span class='line'>198</span> </span><span class="WHIT">					</span><span class="COMM">// It must explicitly return "false" to ignore a specific &lt;textarea>.</span><span class="WHIT">
+<span class='line'>199</span> </span><span class="WHIT">					</span><span class="NAME">config</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>200</span> </span><span class="WHIT">					</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">arguments</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">textarea</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">config</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>201</span> </span><span class="WHIT">						</span><span class="KEYW">continue</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>202</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>203</span>
+<span class='line'>204</span> </span><span class="WHIT">				</span><span class="NAME">this.replace</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">textarea</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">config</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>205</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>206</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>207</span>
+<span class='line'>208</span> </span><span class="WHIT">		</span><span class="PUNC">(</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>209</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>210</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">onload</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>211</span> </span><span class="WHIT">			</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>212</span> </span><span class="WHIT">				</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">loadFullCore</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.loadFullCore</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>213</span> </span><span class="WHIT">					</span><span class="NAME">loadFullCoreTimeout</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.loadFullCoreTimeout</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>214</span>
+<span class='line'>215</span> </span><span class="WHIT">				</span><span class="COMM">// Replace all textareas with the default class name.</span><span class="WHIT">
+<span class='line'>216</span> </span><span class="WHIT">				</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.replaceByClassEnabled</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>217</span> </span><span class="WHIT">					</span><span class="NAME">CKEDITOR.replaceAll</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.replaceClass</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>218</span>
+<span class='line'>219</span> </span><span class="WHIT">				</span><span class="NAME">CKEDITOR.status</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'basic_ready'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>220</span>
+<span class='line'>221</span> </span><span class="WHIT">				</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">loadFullCore</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">loadFullCore._load</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>222</span> </span><span class="WHIT">					</span><span class="NAME">loadFullCore</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>223</span> </span><span class="WHIT">				</span><span class="KEYW">else</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">loadFullCoreTimeout</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>224</span> </span><span class="WHIT">				</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>225</span> </span><span class="WHIT">					</span><span class="NAME">setTimeout</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>226</span> </span><span class="WHIT">						</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>227</span> </span><span class="WHIT">							</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.loadFullCore</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>228</span> </span><span class="WHIT">								</span><span class="NAME">CKEDITOR.loadFullCore</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>229</span> </span><span class="WHIT">						</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>230</span> </span><span class="WHIT">						</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">loadFullCoreTimeout</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NUMB">1000</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>231</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>232</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>233</span>
+<span class='line'>234</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">window.addEventListener</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>235</span> </span><span class="WHIT">				</span><span class="NAME">window.addEventListener</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'load'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">onload</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>236</span> </span><span class="WHIT">			</span><span class="KEYW">else</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">window.attachEvent</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>237</span> </span><span class="WHIT">				</span><span class="NAME">window.attachEvent</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'onload'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">onload</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>238</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>239</span>
+<span class='line'>240</span> </span><span class="WHIT">		</span><span class="NAME">CKEDITOR.status</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'basic_loaded'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>241</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>242</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>243</span> </span></pre></body></html>

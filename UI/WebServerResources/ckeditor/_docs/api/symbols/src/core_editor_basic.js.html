@@ -1,0 +1,186 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="TOKN">﻿</span><span class="COMM">/*
+<span class='line'>  2</span> Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
+<span class='line'>  3</span> For licensing, see LICENSE.html or http://ckeditor.com/license
+<span class='line'>  4</span> */</span><span class="WHIT">
+<span class='line'>  5</span>
+<span class='line'>  6</span> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">CKEDITOR.editor</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>  7</span> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>  8</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'>  9</span> 	 * No element is linked to the editor instance.
+<span class='line'> 10</span> 	 * @constant
+<span class='line'> 11</span> 	 * @example
+<span class='line'> 12</span> 	 */</span><span class="WHIT">
+<span class='line'> 13</span> </span><span class="WHIT">	</span><span class="NAME">CKEDITOR.ELEMENT_MODE_NONE</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 14</span>
+<span class='line'> 15</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'> 16</span> 	 * The element is to be replaced by the editor instance.
+<span class='line'> 17</span> 	 * @constant
+<span class='line'> 18</span> 	 * @example
+<span class='line'> 19</span> 	 */</span><span class="WHIT">
+<span class='line'> 20</span> </span><span class="WHIT">	</span><span class="NAME">CKEDITOR.ELEMENT_MODE_REPLACE</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 21</span>
+<span class='line'> 22</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'> 23</span> 	 * The editor is to be created inside the element.
+<span class='line'> 24</span> 	 * @constant
+<span class='line'> 25</span> 	 * @example
+<span class='line'> 26</span> 	 */</span><span class="WHIT">
+<span class='line'> 27</span> </span><span class="WHIT">	</span><span class="NAME">CKEDITOR.ELEMENT_MODE_APPENDTO</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 28</span>
+<span class='line'> 29</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'> 30</span> 	 * Represents an editor instance. This constructor should be rarely used,
+<span class='line'> 31</span> 	 * being the {@link CKEDITOR} methods preferible.
+<span class='line'> 32</span> 	 * @constructor
+<span class='line'> 33</span> 	 * @param {Object} instanceConfig Configuration values for this specific
+<span class='line'> 34</span> 	 *		instance.
+<span class='line'> 35</span> 	 * @param {CKEDITOR.dom.element} [element] The element linked to this
+<span class='line'> 36</span> 	 *		instance.
+<span class='line'> 37</span> 	 * @param {Number} [mode] The mode in which the element is linked to this
+<span class='line'> 38</span> 	 *		instance.
+<span class='line'> 39</span> 	 * @augments CKEDITOR.event
+<span class='line'> 40</span> 	 * @example
+<span class='line'> 41</span> 	 */</span><span class="WHIT">
+<span class='line'> 42</span> </span><span class="WHIT">	</span><span class="NAME">CKEDITOR.editor</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">instanceConfig</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">element</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">mode</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 43</span> </span><span class="WHIT">	</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 44</span> </span><span class="WHIT">		</span><span class="NAME">this._</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT">
+<span class='line'> 45</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 46</span> </span><span class="WHIT">			</span><span class="COMM">// Save the config to be processed later by the full core code.</span><span class="WHIT">
+<span class='line'> 47</span> </span><span class="WHIT">			</span><span class="NAME">instanceConfig</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">instanceConfig</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 48</span> </span><span class="WHIT">			</span><span class="NAME">element</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">element</span><span class="WHIT">
+<span class='line'> 49</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 50</span>
+<span class='line'> 51</span> </span><span class="WHIT">		</span><span class="COMM">/**
+<span class='line'> 52</span> 		 * The mode in which the {@link #element} is linked to this editor
+<span class='line'> 53</span> 		 * instance. It can be any of the following values:
+<span class='line'> 54</span> 		 * &lt;ul>
+<span class='line'> 55</span> 		 * &lt;li>&lt;b>CKEDITOR.ELEMENT_MODE_NONE&lt;/b>: No element is linked to the
+<span class='line'> 56</span> 		 *		editor instance.&lt;/li>
+<span class='line'> 57</span> 		 * &lt;li>&lt;b>CKEDITOR.ELEMENT_MODE_REPLACE&lt;/b>: The element is to be
+<span class='line'> 58</span> 		 *		replaced by the editor instance.&lt;/li>
+<span class='line'> 59</span> 		 * &lt;li>&lt;b>CKEDITOR.ELEMENT_MODE_APPENDTO&lt;/b>: The editor is to be
+<span class='line'> 60</span> 		 *		created inside the element.&lt;/li>
+<span class='line'> 61</span> 		 * &lt;/ul>
+<span class='line'> 62</span> 		 * @name CKEDITOR.editor.prototype.elementMode
+<span class='line'> 63</span> 		 * @type Number
+<span class='line'> 64</span> 		 * @example
+<span class='line'> 65</span> 		 * var editor = CKEDITOR.replace( 'editor1' );
+<span class='line'> 66</span> 		 * alert( &lt;b>editor.elementMode&lt;/b> );  "1"
+<span class='line'> 67</span> 		 */</span><span class="WHIT">
+<span class='line'> 68</span> </span><span class="WHIT">		</span><span class="NAME">this.elementMode</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">mode</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.ELEMENT_MODE_NONE</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 69</span>
+<span class='line'> 70</span> </span><span class="WHIT">		</span><span class="COMM">// Call the CKEDITOR.event constructor to initialize this instance.</span><span class="WHIT">
+<span class='line'> 71</span> </span><span class="WHIT">		</span><span class="NAME">CKEDITOR.event.call</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 72</span>
+<span class='line'> 73</span> </span><span class="WHIT">		</span><span class="NAME">this._init</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 74</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 75</span>
+<span class='line'> 76</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'> 77</span> 	 * Replaces a &lt;textarea&gt; or a DOM element (DIV) with a CKEditor
+<span class='line'> 78</span> 	 * instance. For textareas, the initial value in the editor will be the
+<span class='line'> 79</span> 	 * textarea value. For DOM elements, their innerHTML will be used
+<span class='line'> 80</span> 	 * instead. We recommend using TEXTAREA and DIV elements only. Do not use
+<span class='line'> 81</span> 	 * this function directly. Use {@link CKEDITOR.replace} instead.
+<span class='line'> 82</span> 	 * @param {Object|String} elementOrIdOrName The DOM element (textarea), its
+<span class='line'> 83</span> 	 *		ID or name.
+<span class='line'> 84</span> 	 * @param {Object} [config] The specific configurations to apply to this
+<span class='line'> 85</span> 	 *		editor instance. Configurations set here will override global CKEditor
+<span class='line'> 86</span> 	 *		settings.
+<span class='line'> 87</span> 	 * @returns {CKEDITOR.editor} The editor instance created.
+<span class='line'> 88</span> 	 * @example
+<span class='line'> 89</span> 	 */</span><span class="WHIT">
+<span class='line'> 90</span> </span><span class="WHIT">	</span><span class="NAME">CKEDITOR.editor.replace</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">elementOrIdOrName</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">config</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 91</span> </span><span class="WHIT">	</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 92</span> </span><span class="WHIT">		</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">element</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">elementOrIdOrName</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 93</span>
+<span class='line'> 94</span> </span><span class="WHIT">		</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">typeof</span><span class="WHIT"> </span><span class="NAME">element</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="STRN">'object'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 95</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 96</span> </span><span class="WHIT">			</span><span class="COMM">// Look for the element by id. We accept any kind of element here.</span><span class="WHIT">
+<span class='line'> 97</span> </span><span class="WHIT">			</span><span class="NAME">element</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">document.getElementById</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">elementOrIdOrName</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 98</span>
+<span class='line'> 99</span> </span><span class="WHIT">			</span><span class="COMM">// If not found, look for elements by name. In this case we accept only</span><span class="WHIT">
+<span class='line'>100</span> </span><span class="WHIT">			</span><span class="COMM">// textareas.</span><span class="WHIT">
+<span class='line'>101</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">element</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>102</span> </span><span class="WHIT">			</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>103</span> </span><span class="WHIT">				</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>104</span> </span><span class="WHIT">					</span><span class="NAME">textareasByName</span><span class="WHIT">	</span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">document.getElementsByName</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">elementOrIdOrName</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>105</span>
+<span class='line'>106</span> </span><span class="WHIT">				</span><span class="KEYW">while</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">element</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">textareasByName</span><span class="PUNC">[</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">element.tagName.toLowerCase</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="STRN">'textarea'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>107</span> </span><span class="WHIT">				</span><span class="PUNC">{</span><span class="WHIT"> </span><span class="COMM">/*jsl:pass*/</span><span class="WHIT"> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>108</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>109</span>
+<span class='line'>110</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">element</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>111</span> </span><span class="WHIT">				</span><span class="KEYW">throw</span><span class="WHIT"> </span><span class="STRN">'[CKEDITOR.editor.replace] The element with id or name "'</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">elementOrIdOrName</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">'" was not found.'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>112</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>113</span>
+<span class='line'>114</span> </span><span class="WHIT">		</span><span class="COMM">// Do not replace the textarea right now, just hide it. The effective</span><span class="WHIT">
+<span class='line'>115</span> </span><span class="WHIT">		</span><span class="COMM">// replacement will be done by the _init function.</span><span class="WHIT">
+<span class='line'>116</span> </span><span class="WHIT">		</span><span class="NAME">element.style.visibility</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'hidden'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>117</span>
+<span class='line'>118</span> </span><span class="WHIT">		</span><span class="COMM">// Create the editor instance.</span><span class="WHIT">
+<span class='line'>119</span> </span><span class="WHIT">		</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.editor</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">config</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">element</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.ELEMENT_MODE_REPLACE</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>120</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>121</span>
+<span class='line'>122</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'>123</span> 	 * Creates a new editor instance inside a specific DOM element. Do not use
+<span class='line'>124</span> 	 * this function directly. Use {@link CKEDITOR.appendTo} instead.
+<span class='line'>125</span> 	 * @param {Object|String} elementOrId The DOM element or its ID.
+<span class='line'>126</span> 	 * @param {Object} [config] The specific configurations to apply to this
+<span class='line'>127</span> 	 *		editor instance. Configurations set here will override global CKEditor
+<span class='line'>128</span> 	 *		settings.
+<span class='line'>129</span> 	 * @returns {CKEDITOR.editor} The editor instance created.
+<span class='line'>130</span> 	 * @example
+<span class='line'>131</span> 	 */</span><span class="WHIT">
+<span class='line'>132</span> </span><span class="WHIT">	</span><span class="NAME">CKEDITOR.editor.appendTo</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">elementOrId</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">config</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>133</span> </span><span class="WHIT">	</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>134</span> </span><span class="WHIT">		</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">typeof</span><span class="WHIT"> </span><span class="NAME">elementOrId</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="STRN">'object'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>135</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>136</span> </span><span class="WHIT">			</span><span class="NAME">elementOrId</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">document.getElementById</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">elementOrId</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>137</span>
+<span class='line'>138</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">elementOrId</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>139</span> </span><span class="WHIT">				</span><span class="KEYW">throw</span><span class="WHIT"> </span><span class="STRN">'[CKEDITOR.editor.appendTo] The element with id "'</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">elementOrId</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">'" was not found.'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>140</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>141</span>
+<span class='line'>142</span> </span><span class="WHIT">		</span><span class="COMM">// Create the editor instance.</span><span class="WHIT">
+<span class='line'>143</span> </span><span class="WHIT">		</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.editor</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">config</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">elementOrId</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.ELEMENT_MODE_APPENDTO</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>144</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>145</span>
+<span class='line'>146</span> </span><span class="WHIT">	</span><span class="NAME">CKEDITOR.editor.prototype</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT">
+<span class='line'>147</span> </span><span class="WHIT">	</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>148</span> </span><span class="WHIT">		</span><span class="COMM">/**
+<span class='line'>149</span> 		 * Initializes the editor instance. This function will be overriden by the
+<span class='line'>150</span> 		 * full CKEDITOR.editor implementation (editor.js).
+<span class='line'>151</span> 		 * @private
+<span class='line'>152</span> 		 */</span><span class="WHIT">
+<span class='line'>153</span> </span><span class="WHIT">		</span><span class="NAME">_init</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>154</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>155</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">pending</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.editor._pending</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.editor._pending</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>156</span> </span><span class="WHIT">			</span><span class="NAME">pending.push</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>157</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>158</span>
+<span class='line'>159</span> </span><span class="WHIT">		</span><span class="COMM">// Both fire and fireOnce will always pass this editor instance as the</span><span class="WHIT">
+<span class='line'>160</span> </span><span class="WHIT">		</span><span class="COMM">// "editor" param in CKEDITOR.event.fire. So, we override it to do that</span><span class="WHIT">
+<span class='line'>161</span> </span><span class="WHIT">		</span><span class="COMM">// automaticaly.</span><span class="WHIT">
+<span class='line'>162</span>
+<span class='line'>163</span> </span><span class="WHIT">		</span><span class="COMM">/** @ignore */</span><span class="WHIT">
+<span class='line'>164</span> </span><span class="WHIT">		</span><span class="NAME">fire</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">eventName</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">data</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>165</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>166</span> </span><span class="WHIT">			</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.event.prototype.fire.call</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">eventName</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">data</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>167</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>168</span>
+<span class='line'>169</span> </span><span class="WHIT">		</span><span class="COMM">/** @ignore */</span><span class="WHIT">
+<span class='line'>170</span> </span><span class="WHIT">		</span><span class="NAME">fireOnce</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">eventName</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">data</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>171</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>172</span> </span><span class="WHIT">			</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.event.prototype.fireOnce.call</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">eventName</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">data</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>173</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>174</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>175</span>
+<span class='line'>176</span> </span><span class="WHIT">	</span><span class="COMM">// "Inherit" (copy actually) from CKEDITOR.event.</span><span class="WHIT">
+<span class='line'>177</span> </span><span class="WHIT">	</span><span class="NAME">CKEDITOR.event.implementOn</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.editor.prototype</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>178</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>179</span> </span></pre></body></html>

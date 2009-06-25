@@ -1,0 +1,128 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="TOKN">﻿</span><span class="COMM">/*
+<span class='line'>  2</span> Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
+<span class='line'>  3</span> For licensing, see LICENSE.html or http://ckeditor.com/license
+<span class='line'>  4</span> */</span><span class="WHIT">
+<span class='line'>  5</span>
+<span class='line'>  6</span> </span><span class="COMM">/**
+<span class='line'>  7</span>  * @fileOverview Defines the "virtual" {@link CKEDITOR.eventInfo} class, which
+<span class='line'>  8</span>  *		contains the defintions of the event object passed to event listeners.
+<span class='line'>  9</span>  *		This file is for documentation purposes only.
+<span class='line'> 10</span>  */</span><span class="WHIT">
+<span class='line'> 11</span>
+<span class='line'> 12</span> </span><span class="COMM">/**
+<span class='line'> 13</span>  * This class is not really part of the API. It just illustrates the features
+<span class='line'> 14</span>  * of the event object passed to event listeners by a {@link CKEDITOR.event}
+<span class='line'> 15</span>  * based object.
+<span class='line'> 16</span>  * @name CKEDITOR.eventInfo
+<span class='line'> 17</span>  * @constructor
+<span class='line'> 18</span>  * @example
+<span class='line'> 19</span>  * // Do not do this.
+<span class='line'> 20</span>  * var myEvent = new CKEDITOR.eventInfo();  // Error: CKEDITOR.eventInfo is undefined
+<span class='line'> 21</span>  */</span><span class="WHIT">
+<span class='line'> 22</span>
+<span class='line'> 23</span> </span><span class="COMM">/**
+<span class='line'> 24</span>  * The event name.
+<span class='line'> 25</span>  * @name CKEDITOR.eventInfo.prototype.name
+<span class='line'> 26</span>  * @field
+<span class='line'> 27</span>  * @type String
+<span class='line'> 28</span>  * @example
+<span class='line'> 29</span>  * someObject.on( 'someEvent', function( event )
+<span class='line'> 30</span>  *     {
+<span class='line'> 31</span>  *         alert( &lt;b>event.name&lt;/b> );  // "someEvent"
+<span class='line'> 32</span>  *     });
+<span class='line'> 33</span>  * someObject.fire( 'someEvent' );
+<span class='line'> 34</span>  */</span><span class="WHIT">
+<span class='line'> 35</span>
+<span class='line'> 36</span> </span><span class="COMM">/**
+<span class='line'> 37</span>  * The object that publishes (sends) the event.
+<span class='line'> 38</span>  * @name CKEDITOR.eventInfo.prototype.sender
+<span class='line'> 39</span>  * @field
+<span class='line'> 40</span>  * @type Object
+<span class='line'> 41</span>  * @example
+<span class='line'> 42</span>  * someObject.on( 'someEvent', function( event )
+<span class='line'> 43</span>  *     {
+<span class='line'> 44</span>  *         alert( &lt;b>event.sender&lt;/b> == someObject );  // "true"
+<span class='line'> 45</span>  *     });
+<span class='line'> 46</span>  * someObject.fire( 'someEvent' );
+<span class='line'> 47</span>  */</span><span class="WHIT">
+<span class='line'> 48</span>
+<span class='line'> 49</span> </span><span class="COMM">/**
+<span class='line'> 50</span>  * The editor instance that holds the sender. May be the same as sender. May be
+<span class='line'> 51</span>  * null if the sender is not part of an editor instance, like a component
+<span class='line'> 52</span>  * running in standalone mode.
+<span class='line'> 53</span>  * @name CKEDITOR.eventInfo.prototype.editor
+<span class='line'> 54</span>  * @field
+<span class='line'> 55</span>  * @type CKEDITOR.editor
+<span class='line'> 56</span>  * @example
+<span class='line'> 57</span>  * myButton.on( 'someEvent', function( event )
+<span class='line'> 58</span>  *     {
+<span class='line'> 59</span>  *         alert( &lt;b>event.editor&lt;/b> == myEditor );  // "true"
+<span class='line'> 60</span>  *     });
+<span class='line'> 61</span>  * myButton.fire( 'someEvent', null, &lt;b>myEditor&lt;/b> );
+<span class='line'> 62</span>  */</span><span class="WHIT">
+<span class='line'> 63</span>
+<span class='line'> 64</span> </span><span class="COMM">/**
+<span class='line'> 65</span>  * Any kind of additional data. Its format and usage is event dependent.
+<span class='line'> 66</span>  * @name CKEDITOR.eventInfo.prototype.data
+<span class='line'> 67</span>  * @field
+<span class='line'> 68</span>  * @type Object
+<span class='line'> 69</span>  * @example
+<span class='line'> 70</span>  * someObject.on( 'someEvent', function( event )
+<span class='line'> 71</span>  *     {
+<span class='line'> 72</span>  *         alert( &lt;b>event.data&lt;/b> );  // "Example"
+<span class='line'> 73</span>  *     });
+<span class='line'> 74</span>  * someObject.fire( 'someEvent', &lt;b>'Example'&lt;/b> );
+<span class='line'> 75</span>  */</span><span class="WHIT">
+<span class='line'> 76</span>
+<span class='line'> 77</span> </span><span class="COMM">/**
+<span class='line'> 78</span>  * Any extra data appended during the listener registration.
+<span class='line'> 79</span>  * @name CKEDITOR.eventInfo.prototype.listenerData
+<span class='line'> 80</span>  * @field
+<span class='line'> 81</span>  * @type Object
+<span class='line'> 82</span>  * @example
+<span class='line'> 83</span>  * someObject.on( 'someEvent', function( event )
+<span class='line'> 84</span>  *     {
+<span class='line'> 85</span>  *         alert( &lt;b>event.listenerData&lt;/b> );  // "Example"
+<span class='line'> 86</span>  *     }
+<span class='line'> 87</span>  *     , null, &lt;b>'Example'&lt;/b> );
+<span class='line'> 88</span>  */</span><span class="WHIT">
+<span class='line'> 89</span>
+<span class='line'> 90</span> </span><span class="COMM">/**
+<span class='line'> 91</span>  * Indicates that no further listeners are to be called.
+<span class='line'> 92</span>  * @name CKEDITOR.eventInfo.prototype.stop
+<span class='line'> 93</span>  * @function
+<span class='line'> 94</span>  * @example
+<span class='line'> 95</span>  * someObject.on( 'someEvent', function( event )
+<span class='line'> 96</span>  *     {
+<span class='line'> 97</span>  *         &lt;b>event.stop()&lt;/b>;
+<span class='line'> 98</span>  *     });
+<span class='line'> 99</span>  * someObject.on( 'someEvent', function( event )
+<span class='line'>100</span>  *     {
+<span class='line'>101</span>  *         // This one will not be called.
+<span class='line'>102</span>  *     });
+<span class='line'>103</span>  * alert( someObject.fire( 'someEvent' ) );  // "false"
+<span class='line'>104</span>  */</span><span class="WHIT">
+<span class='line'>105</span>
+<span class='line'>106</span> </span><span class="COMM">/**
+<span class='line'>107</span>  * Indicates that the event is to be cancelled (if cancelable).
+<span class='line'>108</span>  * @name CKEDITOR.eventInfo.prototype.cancel
+<span class='line'>109</span>  * @function
+<span class='line'>110</span>  * @example
+<span class='line'>111</span>  * someObject.on( 'someEvent', function( event )
+<span class='line'>112</span>  *     {
+<span class='line'>113</span>  *         &lt;b>event.cancel()&lt;/b>;
+<span class='line'>114</span>  *     });
+<span class='line'>115</span>  * someObject.on( 'someEvent', function( event )
+<span class='line'>116</span>  *     {
+<span class='line'>117</span>  *         // This one will not be called.
+<span class='line'>118</span>  *     });
+<span class='line'>119</span>  * alert( someObject.fire( 'someEvent' ) );  // "true"
+<span class='line'>120</span>  */</span><span class="WHIT">
+<span class='line'>121</span> </span></pre></body></html>

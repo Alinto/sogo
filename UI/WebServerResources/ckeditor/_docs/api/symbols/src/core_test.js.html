@@ -1,0 +1,132 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="TOKN">﻿</span><span class="COMM">/*
+<span class='line'>  2</span> Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
+<span class='line'>  3</span> For licensing, see LICENSE.html or http://ckeditor.com/license
+<span class='line'>  4</span> */</span><span class="WHIT">
+<span class='line'>  5</span>
+<span class='line'>  6</span> </span><span class="COMM">/**
+<span class='line'>  7</span>  * @fileOverview Defines the {@link CKEDITOR.test} object, which contains
+<span class='line'>  8</span>  *		functions used at our testing environment.
+<span class='line'>  9</span>  */</span><span class="WHIT">
+<span class='line'> 10</span>
+<span class='line'> 11</span> </span><span class="COMM">/*jsl:import ../tests/yuitest.js*/</span><span class="WHIT">
+<span class='line'> 12</span>
+<span class='line'> 13</span> </span><span class="COMM">/**
+<span class='line'> 14</span>  * Contains functions used at our testing environment. Currently,
+<span class='line'> 15</span>  * our testing system is based on the
+<span class='line'> 16</span>  * &lt;a href="http://developer.yahoo.com/yui/yuitest/">YUI Test&lt;/a>.
+<span class='line'> 17</span>  * @namespace
+<span class='line'> 18</span>  * @example
+<span class='line'> 19</span>  */</span><span class="WHIT">
+<span class='line'> 20</span> </span><span class="NAME">CKEDITOR.test</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT">
+<span class='line'> 21</span> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 22</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'> 23</span> 	 * The assertion namespace, containing all assertion functions. Currently,
+<span class='line'> 24</span> 	 * this is an alias for
+<span class='line'> 25</span> 	 * &lt;a href="http://developer.yahoo.com/yui/docs/YAHOO.util.Assert.html">YAHOO.util.Assert&lt;/a>.
+<span class='line'> 26</span> 	 * @example
+<span class='line'> 27</span> 	 * &lt;b>CKEDITOR.test.assert&lt;/b>.areEqual( '10', 10 );        // "true"
+<span class='line'> 28</span> 	 * &lt;b>CKEDITOR.test.assert&lt;/b>.areSame( '10', 10 );         // "false"
+<span class='line'> 29</span> 	 * &lt;b>CKEDITOR.test.assert&lt;/b>.isUndefined( window.test );  // "true"
+<span class='line'> 30</span> 	 */</span><span class="WHIT">
+<span class='line'> 31</span> </span><span class="WHIT">	</span><span class="NAME">assert</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">YAHOO.util.Assert</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 32</span>
+<span class='line'> 33</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'> 34</span> 	 * Adds a test case to the test runner.
+<span class='line'> 35</span> 	 * @param {Object} testCase The test case object. See other tests for
+<span class='line'> 36</span> 	 *		examples.
+<span class='line'> 37</span> 	 * @example
+<span class='line'> 38</span> 	 * &lt;b>CKEDITOR.test.addTestCase&lt;/b>((function()
+<span class='line'> 39</span> 	 * {
+<span class='line'> 40</span> 	 *     // Local reference to the "assert" object.
+<span class='line'> 41</span> 	 *     var assert = CKEDITOR.test.assert;
+<span class='line'> 42</span> 	 *
+<span class='line'> 43</span> 	 *     return {
+<span class='line'> 44</span> 	 *         test_example : function()
+<span class='line'> 45</span> 	 *         {
+<span class='line'> 46</span> 	 *             assert.areSame( '10', 10 );  // FAIL
+<span class='line'> 47</span> 	 *         }
+<span class='line'> 48</span> 	 *      };
+<span class='line'> 49</span> 	 * })());
+<span class='line'> 50</span> 	 */</span><span class="WHIT">
+<span class='line'> 51</span> </span><span class="WHIT">	</span><span class="NAME">addTestCase</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">testCase</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 52</span> </span><span class="WHIT">	</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 53</span> </span><span class="WHIT">		</span><span class="NAME">YAHOO.tool.TestRunner.add</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">YAHOO.tool.TestCase</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">testCase</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 54</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 55</span>
+<span class='line'> 56</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'> 57</span> 	 * Gets the inner HTML of an element, for testing purposes.
+<span class='line'> 58</span> 	 */</span><span class="WHIT">
+<span class='line'> 59</span> </span><span class="WHIT">	</span><span class="NAME">getInnerHtml</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">elementOrId</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 60</span> </span><span class="WHIT">	</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 61</span> </span><span class="WHIT">		</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">html</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 62</span>
+<span class='line'> 63</span> </span><span class="WHIT">		</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">typeof</span><span class="WHIT"> </span><span class="NAME">elementOrId</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="STRN">'string'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 64</span> </span><span class="WHIT">			</span><span class="NAME">html</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">document.getElementById</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">elementOrId</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">innerHTML</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 65</span> </span><span class="WHIT">		</span><span class="KEYW">else</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">elementOrId.getHtml</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 66</span> </span><span class="WHIT">			</span><span class="NAME">html</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">elementOrId.getHtml</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 67</span> </span><span class="WHIT">		</span><span class="KEYW">else</span><span class="WHIT">
+<span class='line'> 68</span> </span><span class="WHIT">			</span><span class="NAME">html</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">elementOrId.innerHTML</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="STRN">''</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 69</span>
+<span class='line'> 70</span> </span><span class="WHIT">		</span><span class="NAME">html</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">html.toLowerCase</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 71</span> </span><span class="WHIT">		</span><span class="NAME">html</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">html.replace</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="REGX">/[\n\r]/g</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">''</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 72</span>
+<span class='line'> 73</span> </span><span class="WHIT">		</span><span class="NAME">html</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">html.replace</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="REGX">/&lt;\w[^>]*/g</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">match</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 74</span> </span><span class="WHIT">			</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 75</span> </span><span class="WHIT">				</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">attribs</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 76</span> </span><span class="WHIT">				</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">hasClass</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 77</span>
+<span class='line'> 78</span> </span><span class="WHIT">				</span><span class="NAME">match</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">match.replace</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="REGX">/\s([^\s=]+)=((?:"[^"]*")|(?:'[^']*')|(?:[^\s]+))/g</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">match</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">attName</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">attValue</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 79</span> </span><span class="WHIT">					</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 80</span> </span><span class="WHIT">						</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">attName</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="STRN">'style'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 81</span> </span><span class="WHIT">						</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 82</span> </span><span class="WHIT">							</span><span class="COMM">// Safari adds some extra space to the end.</span><span class="WHIT">
+<span class='line'> 83</span> </span><span class="WHIT">							</span><span class="NAME">attValue</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">attValue.replace</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="REGX">/\s+/g</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">''</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 84</span>
+<span class='line'> 85</span> </span><span class="WHIT">							</span><span class="COMM">// IE doesn't add the final ";"</span><span class="WHIT">
+<span class='line'> 86</span> </span><span class="WHIT">							</span><span class="NAME">attValue</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">attValue.replace</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="REGX">/([^"';\s])\s*(["']?)$/</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'$1;$2'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 87</span> </span><span class="WHIT">						</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 88</span>
+<span class='line'> 89</span> </span><span class="WHIT">						</span><span class="COMM">// IE may have 'class' more than once.</span><span class="WHIT">
+<span class='line'> 90</span> </span><span class="WHIT">						</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">attName</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="STRN">'class'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 91</span> </span><span class="WHIT">						</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 92</span> </span><span class="WHIT">							</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">hasClass</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 93</span> </span><span class="WHIT">								</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="STRN">''</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 94</span>
+<span class='line'> 95</span> </span><span class="WHIT">							</span><span class="NAME">hasClass</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 96</span> </span><span class="WHIT">						</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 97</span>
+<span class='line'> 98</span> </span><span class="WHIT">						</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">attName</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="STRN">'_cke_expando'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 99</span> </span><span class="WHIT">							</span><span class="NAME">attribs.push</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="WHIT"> </span><span class="NAME">attName</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">attValue</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>100</span>
+<span class='line'>101</span> </span><span class="WHIT">						</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="STRN">''</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>102</span> </span><span class="WHIT">					</span><span class="PUNC">}</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>103</span>
+<span class='line'>104</span> </span><span class="WHIT">				</span><span class="NAME">attribs.sort</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">a</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">b</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>105</span> </span><span class="WHIT">					</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>106</span> </span><span class="WHIT">						</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">nameA</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">a</span><span class="PUNC">[</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>107</span> </span><span class="WHIT">						</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">nameB</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">b</span><span class="PUNC">[</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>108</span> </span><span class="WHIT">						</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">nameA</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">nameB</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="NUMB">1</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">nameA</span><span class="WHIT"> </span><span class="PUNC">></span><span class="WHIT"> </span><span class="NAME">nameB</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>109</span> </span><span class="WHIT">					</span><span class="PUNC">}</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>110</span>
+<span class='line'>111</span> </span><span class="WHIT">				</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">ret</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">match.replace</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="REGX">/\s{2,}/g</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">' '</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>112</span>
+<span class='line'>113</span> </span><span class="WHIT">				</span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="WHIT"> </span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">attribs.length</span><span class="WHIT"> </span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>114</span> </span><span class="WHIT">				</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>115</span> </span><span class="WHIT">					</span><span class="NAME">ret</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">' '</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">attribs</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">'='</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>116</span> </span><span class="WHIT">					</span><span class="NAME">ret</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="REGX">/^["']/</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">test</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">attribs</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="NAME">attribs</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">'"'</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">attribs</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">'"'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>117</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>118</span>
+<span class='line'>119</span> </span><span class="WHIT">				</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">ret</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>120</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>121</span>
+<span class='line'>122</span> </span><span class="WHIT">		</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">html</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>123</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>124</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>125</span> </span></pre></body></html>

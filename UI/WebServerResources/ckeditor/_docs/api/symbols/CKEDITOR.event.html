@@ -1,0 +1,1324 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="generator" content="JsDoc Toolkit" />
+
+		<title>CKEDITOR.event - CKEditor 3.0 JavaScript API Documentation</title>
+
+		<style type="text/css">
+			/* default.css */
+body
+{
+	font: 12px "Lucida Grande", Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.header
+{
+	clear: both;
+	background-color: #ccc;
+	padding: 8px;
+}
+
+h1
+{
+	font-size: 150%;
+	font-weight: bold;
+	padding: 0;
+	margin: 1em 0 0 .3em;
+}
+
+hr
+{
+	border: none 0;
+	border-top: 1px solid #7F8FB1;
+	height: 1px;
+}
+
+pre.code
+{
+	display: block;
+	padding: 8px;
+	border: 1px dashed #ccc;
+}
+
+#index
+{
+	margin-top: 24px;
+	float: left;
+	width: 160px;
+	position: absolute;
+	left: 8px;
+	background-color: #F3F3F3;
+	padding: 8px;
+}
+
+#content
+{
+	margin-left: 190px;
+}
+
+.classList
+{
+	list-style-type: none;
+	padding: 0;
+	margin: 0 0 0 8px;
+	font-family: arial, sans-serif;
+	font-size: 1em;
+	overflow: auto;
+}
+
+.classList li
+{
+	padding: 0;
+	margin: 0 0 8px 0;
+}
+
+.summaryTable { width: 100%; }
+
+h1.classTitle
+{
+	font-size:170%;
+	line-height:130%;
+}
+
+h2 { font-size: 110%; }
+caption, div.sectionTitle
+{
+	background-color: #7F8FB1;
+	color: #fff;
+	font-size:130%;
+	text-align: left;
+	padding: 2px 6px 2px 6px;
+	border: 1px #7F8FB1 solid;
+}
+
+div.sectionTitle { margin-bottom: 8px; }
+.summaryTable thead { display: none; }
+
+.summaryTable td
+{
+	vertical-align: top;
+	padding: 4px;
+	border-bottom: 1px #7F8FB1 solid;
+	border-right: 1px #7F8FB1 solid;
+}
+
+/*col#summaryAttributes {}*/
+.summaryTable td.attributes
+{
+	border-left: 1px #7F8FB1 solid;
+	width: 140px;
+	text-align: right;
+}
+
+td.attributes, .fixedFont
+{
+	line-height: 15px;
+	color: #002EBE;
+	font-family: "Courier New",Courier,monospace;
+	font-size: 13px;
+}
+
+.summaryTable td.nameDescription
+{
+	text-align: left;
+	font-size: 13px;
+	line-height: 15px;
+}
+
+.summaryTable td.nameDescription, .description
+{
+	line-height: 15px;
+	padding: 4px;
+	padding-left: 4px;
+}
+
+.summaryTable { margin-bottom: 8px; }
+
+ul.inheritsList
+{
+	list-style: square;
+	margin-left: 20px;
+	padding-left: 0;
+}
+
+.detailList {
+	margin-left: 20px;
+	line-height: 15px;
+}
+.detailList dt { margin-left: 20px; }
+
+.detailList .heading
+{
+	font-weight: bold;
+	padding-bottom: 6px;
+	margin-left: 0;
+}
+
+.light, td.attributes, .light a:link, .light a:visited
+{
+	color: #777;
+	font-style: italic;
+}
+
+.fineprint
+{
+	text-align: right;
+	font-size: 10px;
+}
+
+		</style>
+	</head>
+
+	<body>
+<!-- ============================== header ================================= -->
+		<!-- begin static/header.html -->
+		<div id="header">
+	<h1>CKEditor 3.0 JavaScript API Documentation</h1>
+	<hr />
+</div>
+
+		<!-- end static/header.html -->
+
+<!-- ============================== classes index ============================ -->
+		<div id="index">
+			<!-- begin publish.classesIndex -->
+			<div align="center">
+	<a href="../index.html">Code Index</a>
+	| <a href="../files.html">File Index</a>
+</div>
+<hr />
+<h2>Namespaces</h2>
+<ul class="classList">
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.html">CKEDITOR</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ajax.html">CKEDITOR.ajax</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.config.html">CKEDITOR.config</a>
+			</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.html">CKEDITOR.dom</a>
+			</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dtd.html">CKEDITOR.dtd</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.env.html">CKEDITOR.env</a>
+			</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.imageCacher.html">CKEDITOR.imageCacher</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.loader.html">CKEDITOR.loader</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.plugins.html">CKEDITOR.plugins</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.resourceManager.html">CKEDITOR.resourceManager</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.scriptLoader.html">CKEDITOR.scriptLoader</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.skins.html">CKEDITOR.skins</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.test.html">CKEDITOR.test</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.themes.html">CKEDITOR.themes</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.tools.html">CKEDITOR.tools</a>
+			</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</ul>
+<h2>Classes</h2>
+<ul class="classList">
+
+
+
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.commandDefinition.html">CKEDITOR.commandDefinition</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dialog.html">CKEDITOR.dialog</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dialog.buttonDefinition.html">CKEDITOR.dialog.buttonDefinition</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dialog.contentDefinition.html">CKEDITOR.dialog.contentDefinition</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dialog.contentDefinitionObject.html">CKEDITOR.dialog.contentDefinitionObject</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dialog.dialogDefinition.html">CKEDITOR.dialog.dialogDefinition</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dialog.dialogDefinitionObject.html">CKEDITOR.dialog.dialogDefinitionObject</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dialog.uiElementDefinition.html">CKEDITOR.dialog.uiElementDefinition</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dialogCommand.html">CKEDITOR.dialogCommand</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.document.html">CKEDITOR.dom.document</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.domObject.html">CKEDITOR.dom.domObject</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.element.html">CKEDITOR.dom.element</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.event.html">CKEDITOR.dom.event</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.node.html">CKEDITOR.dom.node</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.selection.html">CKEDITOR.dom.selection</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.text.html">CKEDITOR.dom.text</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.dom.window.html">CKEDITOR.dom.window</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.editor.html">CKEDITOR.editor</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.event.html">CKEDITOR.event</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.eventInfo.html">CKEDITOR.eventInfo</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.focusManager.html">CKEDITOR.focusManager</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.htmlParser.html">CKEDITOR.htmlParser</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.htmlParser.cdata.html">CKEDITOR.htmlParser.cdata</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.htmlParser.comment.html">CKEDITOR.htmlParser.comment</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.htmlParser.element.html">CKEDITOR.htmlParser.element</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.htmlParser.fragment.html">CKEDITOR.htmlParser.fragment</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.htmlParser.text.html">CKEDITOR.htmlParser.text</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.htmlWriter.html">CKEDITOR.htmlWriter</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.keystrokeHandler.html">CKEDITOR.keystrokeHandler</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.pluginDefinition.html">CKEDITOR.pluginDefinition</a>
+			</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.html">CKEDITOR.ui</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.button.html">CKEDITOR.ui.button</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.button.html">CKEDITOR.ui.dialog.button</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.checkbox.html">CKEDITOR.ui.dialog.checkbox</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.file.html">CKEDITOR.ui.dialog.file</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.fileButton.html">CKEDITOR.ui.dialog.fileButton</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.hbox.html">CKEDITOR.ui.dialog.hbox</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.html.html">CKEDITOR.ui.dialog.html</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.labeledElement.html">CKEDITOR.ui.dialog.labeledElement</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.radio.html">CKEDITOR.ui.dialog.radio</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.select.html">CKEDITOR.ui.dialog.select</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.textarea.html">CKEDITOR.ui.dialog.textarea</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.textInput.html">CKEDITOR.ui.dialog.textInput</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.uiElement.html">CKEDITOR.ui.dialog.uiElement</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.dialog.vbox.html">CKEDITOR.ui.dialog.vbox</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.ui.handlerDefinition.html">CKEDITOR.ui.handlerDefinition</a>
+			</li>
+
+
+
+			<li>
+				<a href="../symbols/CKEDITOR.xml.html">CKEDITOR.xml</a>
+			</li>
+
+
+</ul>
+<hr />
+			<!-- end publish.classesIndex -->
+		</div>
+
+		<div id="content">
+<!-- ============================== class title ============================ -->
+			<h1 class="classTitle">
+
+				Class CKEDITOR.event
+			</h1>
+
+<!-- ============================== class summary ========================== -->
+			<p class="description">
+
+
+
+
+
+					<br /><i>Defined in: </i> <a href="../symbols/src/core_event.js.html">core/event.js</a>.
+
+			</p>
+
+<!-- ============================== constructor summary ==================== -->
+
+			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class CKEDITOR.event.">
+				<caption>Class Summary</caption>
+				<thead>
+					<tr>
+						<th scope="col">Constructor Attributes</th>
+						<th scope="col">Constructor Name and Description</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="attributes">&nbsp;</td>
+						<td class="nameDescription" >
+							<div class="fixedFont">
+								<b><a href="../symbols/CKEDITOR.event.html#constructor">CKEDITOR.event</a></b>()
+							</div>
+							<div class="description">This is a base class for classes and objects that require event handling
+features.</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+
+<!-- ============================== properties summary ===================== -->
+
+
+<!-- ============================== methods summary ======================== -->
+
+
+
+				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class CKEDITOR.event.">
+					<caption>Method Summary</caption>
+					<thead>
+						<tr>
+							<th scope="col">Method Attributes</th>
+							<th scope="col">Method Name and Description</th>
+						</tr>
+					</thead>
+					<tbody>
+
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">CKEDITOR.event.<b><a href="../symbols/CKEDITOR.event.html#.implementOn">implementOn</a></b>(targetObject, isTargetPrototype)
+								</div>
+								<div class="description">Implements the <a href="../symbols/CKEDITOR.event.html#constructor">CKEDITOR.event</a> features in an object.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.event.html#fire">fire</a></b>(eventName, data, editor)
+								</div>
+								<div class="description">Fires an specific event in the object.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.event.html#fireOnce">fireOnce</a></b>(eventName, data, editor)
+								</div>
+								<div class="description">Fires an specific event in the object, releasing all listeners
+registered to that event.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.event.html#hasListeners">hasListeners</a></b>(eventName)
+								</div>
+								<div class="description">Checks if there is any listener registered to a given event.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.event.html#on">on</a></b>(eventName, listenerFunction, scopeObj, listenerData, priority)
+								</div>
+								<div class="description">Registers a listener to a specific event in the current object.</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/CKEDITOR.event.html#removeListener">removeListener</a></b>(eventName, listenerFunction)
+								</div>
+								<div class="description">Unregisters a listener function from being called at the specified
+		event.</div>
+							</td>
+						</tr>
+
+					</tbody>
+				</table>
+
+
+
+
+
+<!-- ============================== constructor details ==================== -->
+
+			<div class="details"><a name="constructor"> </a>
+				<div class="sectionTitle">
+					Class Detail
+				</div>
+
+				<div class="fixedFont" style="float:left">
+						<b>CKEDITOR.event</b>()
+				</div>
+
+				<div style="float:right">
+					<span class="heading">Since:</span>
+
+							3.0
+
+				</div>
+				<div style="clear:both"></div>
+
+				<div class="description">
+					This is a base class for classes and objects that require event handling
+features.
+
+				</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			</div>
+
+
+<!-- ============================== field details ========================== -->
+
+
+<!-- ============================== method details ========================= -->
+
+				<div class="sectionTitle">
+					Method Detail
+				</div>
+
+					<a name=".implementOn"> </a>
+					<div class="fixedFont" style="float:left">&lt;static&gt;
+
+					<span class="light">{Undefined}</span>
+					<span class="light">CKEDITOR.event.</span><b>implementOn</b>(targetObject, isTargetPrototype)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Implements the <a href="../symbols/CKEDITOR.event.html#constructor">CKEDITOR.event</a> features in an object.
+
+
+					</div>
+
+
+
+
+							<pre class="code">var myObject = { message : 'Example' };
+<b>CKEDITOR.event.implementOn( myObject }</b>;
+myObject.on( 'testEvent', function()
+    {
+        alert( this.message );  // "Example"
+    });
+myObject.fire( 'testEvent' );</pre>
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>targetObject</b>
+
+								</dt>
+								<dd>The object in which implement the features.</dd>
+
+								<dt>
+									<span class="light fixedFont">{Undefined}</span> <b>isTargetPrototype</b>
+
+								</dt>
+								<dd></dd>
+
+							</dl>
+
+
+
+
+
+
+
+					<hr />
+
+					<a name="fire"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{Boolean|Object}</span>
+					<b>fire</b>(eventName, data, editor)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Fires an specific event in the object. All registered listeners are
+called at this point.
+
+
+					</div>
+
+
+
+
+							<pre class="code">someObject.on( 'someEvent', function() { ... } );
+someObject.on( 'someEvent', function() { ... } );
+<b>someObject.fire( 'someEvent' )</b>;  // both listeners are called</pre>
+
+
+
+							<pre class="code">someObject.on( 'someEvent', function( event )
+    {
+        alert( event.data );  // "Example"
+    });
+<b>someObject.fire( 'someEvent', 'Example' )</b>;</pre>
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>eventName</b>
+
+								</dt>
+								<dd>The event name to fire.</dd>
+
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>data</b>
+									<i>Optional</i>
+								</dt>
+								<dd>Data to be sent as the
+		<a href="../symbols/CKEDITOR.eventInfo.html#data">CKEDITOR.eventInfo#data</a> when calling the
+		listeners.</dd>
+
+								<dt>
+									<span class="light fixedFont">{<a href="../symbols/CKEDITOR.editor.html#constructor">CKEDITOR.editor</a>}</span> <b>editor</b>
+									<i>Optional</i>
+								</dt>
+								<dd>The editor instance to send as the
+		<a href="../symbols/CKEDITOR.eventInfo.html#editor">CKEDITOR.eventInfo#editor</a> when calling the
+		listener.</dd>
+
+							</dl>
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+
+								<dd><span class="light fixedFont">{Boolean|Object}</span> A booloan indicating that the event is to be
+		canceled, or data returned by one of the listeners.</dd>
+
+							</dl>
+
+
+
+
+					<hr />
+
+					<a name="fireOnce"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{Boolean|Object}</span>
+					<b>fireOnce</b>(eventName, data, editor)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Fires an specific event in the object, releasing all listeners
+registered to that event. The same listeners are not called again on
+successive calls of it or of <a href="#fire">#fire</a>.
+
+
+					</div>
+
+
+
+
+							<pre class="code">someObject.on( 'someEvent', function() { ... } );
+someObject.fire( 'someEvent' );  // above listener called
+<b>someObject.fireOnce( 'someEvent' )</b>;  // above listener called
+someObject.fire( 'someEvent' );  // no listeners called</pre>
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>eventName</b>
+
+								</dt>
+								<dd>The event name to fire.</dd>
+
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>data</b>
+									<i>Optional</i>
+								</dt>
+								<dd>Data to be sent as the
+		<a href="../symbols/CKEDITOR.eventInfo.html#data">CKEDITOR.eventInfo#data</a> when calling the
+		listeners.</dd>
+
+								<dt>
+									<span class="light fixedFont">{<a href="../symbols/CKEDITOR.editor.html#constructor">CKEDITOR.editor</a>}</span> <b>editor</b>
+									<i>Optional</i>
+								</dt>
+								<dd>The editor instance to send as the
+		<a href="../symbols/CKEDITOR.eventInfo.html#editor">CKEDITOR.eventInfo#editor</a> when calling the
+		listener.</dd>
+
+							</dl>
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+
+								<dd><span class="light fixedFont">{Boolean|Object}</span> A booloan indicating that the event is to be
+		canceled, or data returned by one of the listeners.</dd>
+
+							</dl>
+
+
+
+
+					<hr />
+
+					<a name="hasListeners"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{Undefined}</span>
+					<b>hasListeners</b>(eventName)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Checks if there is any listener registered to a given event.
+
+
+					</div>
+
+
+
+
+							<pre class="code">var myListener = function() { ... };
+someObject.on( 'someEvent', myListener );
+alert( someObject.<b>hasListeners( 'someEvent' )</b> );  // "true"
+alert( someObject.<b>hasListeners( 'noEvent' )</b> );    // "false"</pre>
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>eventName</b>
+
+								</dt>
+								<dd>The event name.</dd>
+
+							</dl>
+
+
+
+
+
+
+
+					<hr />
+
+					<a name="on"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{Undefined}</span>
+					<b>on</b>(eventName, listenerFunction, scopeObj, listenerData, priority)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Registers a listener to a specific event in the current object.
+
+
+					</div>
+
+
+
+
+							<pre class="code">someObject.on( 'someEvent', function()
+    {
+        alert( this == someObject );  // "true"
+    });</pre>
+
+
+
+							<pre class="code">someObject.on( 'someEvent', function()
+    {
+        alert( this == anotherObject );  // "true"
+    }
+    , anotherObject );</pre>
+
+
+
+							<pre class="code">someObject.on( 'someEvent', function( event )
+    {
+        alert( event.listenerData );  // "Example"
+    }
+    , null, 'Example' );</pre>
+
+
+
+							<pre class="code">someObject.on( 'someEvent', function() { ... } );                   // 2nd called
+someObject.on( 'someEvent', function() { ... }, null, null, 100 );  // 3rd called
+someObject.on( 'someEvent', function() { ... }, null, null, 1 );    // 1st called</pre>
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>eventName</b>
+
+								</dt>
+								<dd>The event name to which listen.</dd>
+
+								<dt>
+									<span class="light fixedFont">{Function}</span> <b>listenerFunction</b>
+
+								</dt>
+								<dd>The function listening to the
+		event.</dd>
+
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>scopeObj</b>
+									<i>Optional</i>
+								</dt>
+								<dd>The object used to scope the listener
+		call (the this object. If omitted, the current object is used.</dd>
+
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>listenerData</b>
+									<i>Optional</i>
+								</dt>
+								<dd>Data to be sent as the
+		<a href="../symbols/CKEDITOR.eventInfo.html#listenerData">CKEDITOR.eventInfo#listenerData</a> when calling the
+		listener.</dd>
+
+								<dt>
+									<span class="light fixedFont">{Number}</span> <b>priority</b>
+									<i>Optional</i>
+								</dt>
+								<dd>The listener priority. Lower priority
+		listeners are called first. Listeners with the same priority
+		value are called in registration order. Defaults to 10.</dd>
+
+							</dl>
+
+
+
+
+
+
+
+					<hr />
+
+					<a name="removeListener"> </a>
+					<div class="fixedFont" style="float:left">
+
+					<span class="light">{Undefined}</span>
+					<b>removeListener</b>(eventName, listenerFunction)
+
+					</div>
+					<div style="float:right">
+						<span class="heading">Since:</span>
+
+								3.0
+
+					</div>
+					<div style="clear:both"></div>
+					<div class="description">
+						Unregisters a listener function from being called at the specified
+		event. No errors are thrown if the listener has not been
+		registered previously.
+
+
+					</div>
+
+
+
+
+							<pre class="code">var myListener = function() { ... };
+someObject.on( 'someEvent', myListener );
+someObject.fire( 'someEvent' );  // myListener called
+<b>someObject.removeListener( 'someEvent', myListener )</b>;
+someObject.fire( 'someEvent' );  // myListener not called</pre>
+
+
+
+
+
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>eventName</b>
+
+								</dt>
+								<dd>The event name.</dd>
+
+								<dt>
+									<span class="light fixedFont">{Function}</span> <b>listenerFunction</b>
+
+								</dt>
+								<dd>The listener function to unregister.</dd>
+
+							</dl>
+
+
+
+
+
+
+
+
+
+
+
+			<hr />
+		</div>
+
+<!-- ============================== footer ================================= -->
+		<div class="fineprint" style="clear:both">
+	Copyright &copy; 2003-2009, <a href="http://cksource.com/">CKSource</a> - Frederico Knabben. All rights reserved.
+</div>
+
+	</body>
+</html>

@@ -1,0 +1,43 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="COMM">/*
+<span class='line'>  2</span> Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
+<span class='line'>  3</span> For licensing, see LICENSE.html or http://ckeditor.com/license
+<span class='line'>  4</span> */</span><span class="WHIT">
+<span class='line'>  5</span>
+<span class='line'>  6</span> </span><span class="NAME">CKEDITOR.plugins.add</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'uicolor'</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>  7</span> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>  8</span> </span><span class="WHIT">	</span><span class="NAME">requires</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="WHIT"> </span><span class="STRN">'dialog'</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>  9</span> </span><span class="WHIT">	</span><span class="NAME">lang</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="WHIT"> </span><span class="STRN">'en'</span><span class="WHIT"> </span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 10</span>
+<span class='line'> 11</span> </span><span class="WHIT">	</span><span class="NAME">init</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">editor</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 12</span> </span><span class="WHIT">	</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 13</span> </span><span class="WHIT">		</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.env.ie6Compat</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 14</span> </span><span class="WHIT">			</span><span class="KEYW">return</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 15</span>
+<span class='line'> 16</span> </span><span class="WHIT">		</span><span class="NAME">editor.addCommand</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'uicolor'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.dialogCommand</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'uicolor'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 17</span> </span><span class="WHIT">		</span><span class="NAME">editor.ui.addButton</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'UIColor'</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 18</span> </span><span class="WHIT">			</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 19</span> </span><span class="WHIT">				</span><span class="NAME">label</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">editor.lang.uicolor.title</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 20</span> </span><span class="WHIT">				</span><span class="NAME">command</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">'uicolor'</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 21</span> </span><span class="WHIT">				</span><span class="NAME">icon</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">this.path</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">'uicolor.gif'</span><span class="WHIT">
+<span class='line'> 22</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 23</span> </span><span class="WHIT">		</span><span class="NAME">CKEDITOR.dialog.add</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="STRN">'uicolor'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.path</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">'dialogs/uicolor.js'</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 24</span>
+<span class='line'> 25</span> </span><span class="WHIT">		</span><span class="COMM">// Load YUI js files.</span><span class="WHIT">
+<span class='line'> 26</span> </span><span class="WHIT">		</span><span class="NAME">CKEDITOR.scriptLoader.load</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.getUrl</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'> 28</span> </span><span class="WHIT">			</span><span class="STRN">'plugins/uicolor/yui/yui.js'</span><span class="WHIT">
+<span class='line'> 29</span> </span><span class="WHIT">		</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 30</span>
+<span class='line'> 31</span> </span><span class="WHIT">		</span><span class="COMM">// Load YUI css files.</span><span class="WHIT">
+<span class='line'> 32</span> </span><span class="WHIT">		</span><span class="NAME">editor.element.getDocument</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">appendStyleSheet</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">CKEDITOR.getUrl</span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'> 34</span> </span><span class="WHIT">				</span><span class="STRN">'plugins/uicolor/yui/assets/yui.css'</span><span class="WHIT">
+<span class='line'> 35</span> </span><span class="WHIT">		</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 36</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 37</span> </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 38</span> </span></pre></body></html>
