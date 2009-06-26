@@ -947,6 +947,8 @@ function onContactMenuPrepareVisibility() {
     deleteOption.removeClassName("disabled");
     moveOption.removeClassName("disabled");
   }
+	
+	return true;
 }
 
 function getMenus() {
