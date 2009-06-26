@@ -50,12 +50,10 @@ function initPreferences() {
 
   $("composeMessagesType").observe ("change", onComposeMessagesTypeChange);
 
-  alert (UserDefaults["ComposeMessagesType"]);
-  if (UserDefaults["ComposeMessagesType"] != "html") {
-    $("signature").style.display = 'block';
-    $("signature").style.visibility = '';
-    $('cke_signature').style.display = 'none';
-  }
+  if (!UserDefaults["ComposeMessagesType"])
+    UserDefaults["ComposeMessagesType"] = "text";
+
+  onComposeMessagesTypeChange ();
 }
 
 function onReplyPlacementListChange() {
@@ -72,6 +70,11 @@ function onReplyPlacementListChange() {
 function onComposeMessagesTypeChange () {
   var textArea = $('signature');
   var editor = $('cke_signature');
+
+  if (!editor) {
+    setTimeout ("onComposeMessagesTypeChange ()", 10);
+    return;
+  }
  
   if ($("composeMessagesType").value == 0) {
     textArea.style.display = 'block';

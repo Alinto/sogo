@@ -1,3 +1,8 @@
+2009-06-26  Cyril Robert <crobert@inverse.ca>
+
+	* UI/WebServerResources/UIxPreferences.js: Fixed a bug when
+	ComposeMessagesType isn't set, removed an "alert"
+
 2009-06-25  Cyril Robert <crobert@inverse.ca>
 
 	* SoObjects/Mailer/SOGoMailReply.m: Added proper blockquote
