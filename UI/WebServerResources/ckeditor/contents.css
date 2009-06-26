@@ -1,0 +1,27 @@
+/*
+Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
+For licensing, see LICENSE.html or http://ckeditor.com/license
+*/
+
+body
+{
+	/* Font */
+	font-family: Arial, Verdana, sans-serif;
+	font-size: 12px;
+
+	/* Text color */
+	color: #222;
+
+	/* Remove the background color to make it transparent */
+	background-color: #fff;
+}
+img:-moz-broken
+{
+	-moz-force-broken-image-icon : 1;
+	width : 24px;
+	height : 24px;
+}
+img, input, textarea
+{
+	cursor: default;
+}

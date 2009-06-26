@@ -32,6 +32,7 @@
   SOGoMailObject *sourceMail;
   NSString *field;
   NSString *currentValue;
+  BOOL htmlComposition;
 }
 
 - (void) setSourceMail: (SOGoMailObject *) newSourceMail;

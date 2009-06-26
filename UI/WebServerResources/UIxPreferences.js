@@ -30,25 +30,30 @@ function onChoiceChanged(event) {
 }
 
 function initPreferences() {
+  CKEDITOR.replace('signature',
+                     {
+                        skin: "v2",
+                        height: "90px",
+                        toolbar :
+                        [['Bold', 'Italic', '-', 'Link', 
+                          'Font','FontSize','-','TextColor',
+                          'BGColor']
+                        ] 
+                     }
+                    );
+
   _setupEvents(true);
   if (typeof (initAdditionalPreferences) != "undefined")
     initAdditionalPreferences();
   $("replyPlacementList").observe ("change", onReplyPlacementListChange);
   onReplyPlacementListChange();
 
-  var oFCKeditor = new FCKeditor ('signature');
-  oFCKeditor.BasePath = "/SOGo.woa/WebServerResources/fckeditor/";
-  oFCKeditor.ToolbarSet	= 'Basic';
-  oFCKeditor.ReplaceTextarea ();
-  $('signature___Frame').style.height = "150px";
-  $('signature___Frame').height = "150px";
-
-  if (UserDefaults["ComposeMessagesType"] != "html") {
-    $("signature").style.display = 'inline';
-    $('signature___Frame').style.display = 'none';
-  }
-
   $("composeMessagesType").observe ("change", onComposeMessagesTypeChange);
+
+  if (!UserDefaults["ComposeMessagesType"])
+    UserDefaults["ComposeMessagesType"] = "text";
+
+  onComposeMessagesTypeChange ();
 }
 
 function onReplyPlacementListChange() {
@@ -64,18 +69,21 @@ function onReplyPlacementListChange() {
 
 function onComposeMessagesTypeChange () {
   var textArea = $('signature');
-  var oEditor = FCKeditorAPI.GetInstance('signature');
-  var editor = $('signature___Frame');
+  var editor = $('cke_signature');
+
+  if (!editor) {
+    setTimeout ("onComposeMessagesTypeChange ()", 10);
+    return;
+  }
  
   if ($("composeMessagesType").value == 0) {
-    textArea.style.display = 'inline';
+    textArea.style.display = 'block';
+    textArea.style.visibility = '';
     editor.style.display = 'none';
-    textArea.value = oEditor.GetData();
   }
   else {
     textArea.style.display = 'none';
-    editor.style.display = '';
-    oEditor.SetHTML(textArea.value);
+    editor.style.display = 'block';
   }
 }
 

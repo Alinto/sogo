@@ -74,18 +74,21 @@
 
 - (NSString *) messageBody
 {
-  NSString *s;
-  NSUserDefaults *ud;
-
-  ud = [[context activeUser] userDefaults];
+  NSString *s, *msgid;
+  NSRange r;
   
   s = [sourceMail contentForEditing];
 
   if (s)
     {
-      if ([[ud objectForKey: @"ComposeMessagesType"] isEqualToString: @"html"])
+      if (htmlComposition)
         {
-          s = [NSString stringWithFormat: @"<blockquote type=\"cite\">%@</blockquote>", s];
+          msgid = [[sourceMail envelope] messageID];
+          r = NSMakeRange (1, [msgid length] - 2);
+          msgid = [msgid substringWithRange: r];
+          s = [NSString stringWithFormat: 
+               @"<blockquote type=\"cite\" cite=\"%@\">%@</blockquote>", 
+               msgid, s];
         }
       else
         {

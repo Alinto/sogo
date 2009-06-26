@@ -10,7 +10,7 @@
   className="UIxPageFrame"
   title="panelTitle"
   const:popup="YES"
-  const:jsFiles="UIxMailToSelection.js,fckeditor/fckeditor.js">
+  const:jsFiles="UIxMailToSelection.js,ckeditor/ckeditor.js">
   <script type="text/javascript">
     var mailIsReply = <var:string value="isMailReply"/>;
   </script>

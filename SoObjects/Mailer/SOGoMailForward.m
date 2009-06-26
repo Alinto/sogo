@@ -21,6 +21,7 @@
  */
 
 #import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGExtensions/NSString+misc.h>
 
 #import <SoObjects/SOGo/SOGoDateFormatter.h>
 #import <SoObjects/SOGo/SOGoUser.h>
@@ -34,6 +35,10 @@
 {
   if ((self = [super init]))
     {
+      NSUserDefaults *ud;
+      ud = [[context activeUser] userDefaults];
+      htmlComposition = [[ud objectForKey: @"ComposeMessagesType"] isEqualToString: @"html"];
+
       sourceMail = nil;
       currentValue = nil;
     }
@@ -53,6 +58,16 @@
   ASSIGN (sourceMail, newSourceMail);
 }
 
+- (NSString *) newLine
+{
+  NSString *rc = [NSString stringWithString: @" "];
+  
+  if (htmlComposition)
+    rc = [NSString stringWithString: @"<br/>"];
+
+  return rc;
+}
+
 - (NSString *) subject
 {
   return [sourceMail decodedSubject];
@@ -69,7 +84,14 @@
 
 - (NSString *) from
 {
-  return [[sourceMail mailHeaders] objectForKey: @"from"];
+  NSString *rc;
+
+  if (htmlComposition)
+    rc = [[[sourceMail mailHeaders] objectForKey: @"from"] stringByEscapingHTMLString];
+  else
+    rc = [[sourceMail mailHeaders] objectForKey: @"from"];
+
+  return rc;
 }
 
 - (NSString *) _headerField: (NSString *) fieldName
@@ -91,8 +113,15 @@
 
 - (NSString *) replyTo
 {
-  return ([NSString stringWithFormat: @"%@\n",
-		    [self _headerField: @"reply-to"]]);
+  NSString *rc;
+
+  if (htmlComposition)
+    rc = [NSString stringWithFormat: @"%@<br/>", 
+          [[self _headerField: @"reply-to"] stringByEscapingHTMLString]];
+  else
+    rc = ([NSString stringWithFormat: @"%@\n", [self _headerField: @"reply-to"]]);
+
+  return rc;
 }
 
 - (BOOL) hasOrganization
@@ -102,13 +131,26 @@
 
 - (NSString *) organization
 {
-  return ([NSString stringWithFormat: @"%@\n",
-		    [self _headerField: @"organization"]]);
+  NSString *rc;
+
+  if (htmlComposition)
+    rc = [NSString stringWithFormat: @"%@<br/>", [self _headerField: @"organization"]];
+  else
+    rc = [NSString stringWithFormat: @"%@\n", [self _headerField: @"organization"]];
+
+  return rc;
 }
 
 - (NSString *) to
 {
-  return [[sourceMail mailHeaders] objectForKey: @"to"];
+  NSString *rc;
+
+  if (htmlComposition)
+    rc = [[[sourceMail mailHeaders] objectForKey: @"to"] stringByEscapingHTMLString];
+  else
+    rc = [[sourceMail mailHeaders] objectForKey: @"to"];
+
+  return rc;
 }
 
 - (BOOL) hasCc
@@ -118,8 +160,15 @@
 
 - (NSString *) cc
 {
-  return ([NSString stringWithFormat: @"%@\n",
-		    [self _headerField: @"cc"]]);
+  NSString *rc;
+
+  if (htmlComposition)
+    rc = [NSString stringWithFormat: @"%@<br/>", 
+          [[self _headerField: @"cc"] stringByEscapingHTMLString]];
+  else
+    rc = ([NSString stringWithFormat: @"%@\n", [self _headerField: @"cc"]]);
+
+  return rc;
 }
 
 - (BOOL) hasNewsGroups
@@ -129,8 +178,14 @@
 
 - (NSString *) newsgroups
 {
-  return ([NSString stringWithFormat: @"%@\n",
-		    [self _headerField: @"newsgroups"]]);
+  NSString *rc;
+
+  if (htmlComposition)
+    rc = [NSString stringWithFormat: @"%@<br/>", [self _headerField: @"newsgroups"]];
+  else
+    rc = [NSString stringWithFormat: @"%@\n", [self _headerField: @"newsgroups"]];
+
+  return rc;
 }
 
 - (BOOL) hasReferences
@@ -140,8 +195,14 @@
 
 - (NSString *) references
 {
-  return ([NSString stringWithFormat: @"%@\n",
-		    [self _headerField: @"references"]]);
+  NSString *rc;
+
+  if (htmlComposition)
+    rc = [NSString stringWithFormat: @"%@<br/>", [self _headerField: @"references"]];
+  else
+    rc = [NSString stringWithFormat: @"%@\n", [self _headerField: @"references"]];
+
+  return rc;
 }
 
 - (NSString *) messageBody

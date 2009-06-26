@@ -10,7 +10,7 @@
   className="UIxPageFrame"
   title="title"
   const:popup="YES"
-  const:jsFiles="fckeditor/fckeditor.js"
+  const:jsFiles="ckeditor/ckeditor.js"
   >
   <form id="mainForm" var:href="ownPath">
     <div class="tabsContainer" id="preferencesTabs">
