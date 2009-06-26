@@ -2045,10 +2045,12 @@ function messageFlagCallback(http) {
 					var idx = flags.indexOf(flag);
 					flags.splice(idx, 1);
 				}
-				row.setAttribute("labels", flags.join(" "));
+				row.writeAttribute("labels", flags.join(" "));
+				row.toggleClassName("_selected");
+				row.toggleClassName("_selected");
       }
       else
-				row.setAttribute("labels", "");
+				row.writeAttribute("labels", "");
     }
   }
 }

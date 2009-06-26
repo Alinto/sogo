@@ -1,3 +1,8 @@
+2009-06-26  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Contacts/UIxContactsListViewContainer.[hm]: this class was
+	removed along with the template and moved to UIxContactFoldersView.
+
 2009-06-26  Cyril Robert <crobert@inverse.ca>
 
 	* UI/WebServerResources/UIxPreferences.js: Fixed a bug when

@@ -61,6 +61,11 @@ IMG.dragMessage
 TD.mailer_fieldname
 { width: 8em; }
 
+/* ContactsUI */
+
+DIV#contactFoldersList SPAN.toolbarButton
+{ padding: 2px; }
+
 /* SchedulerUI */
 
 DIV#daysView > DIV.hours > DIV.hour

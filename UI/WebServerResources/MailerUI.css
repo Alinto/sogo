@@ -23,7 +23,7 @@
 DIV#leftPanel
 {
   position: absolute;
-  top: 65px;
+  top: 70px;
   left: 0px;
   width: 15em;
   bottom: 0px;
@@ -184,11 +184,17 @@ DIV#folderTreeContent
 
 .titlediv
 {
-  height: 24px;
-  vertical-align: middle;
+  height: 2em;
+  vertical-align: bottom;
   padding-top: 6px;
   padding-left: 6px;
 }
+
+.titlediv
+{ line-height: 18px;
+  vertical-align: middle;
+  padding-top: 0px;
+  padding-left: 6px; }
 
 TABLE.titletable
 {
@@ -227,12 +233,6 @@ TABLE.titletable TD.titlecell SELECT
 
 DIV#folderTreeContent
 { -khtml-user-select: none;}
-
-DIV#folderTreeContent TABLE TD
-{ height: 18px;
-  border-top: 1px solid #fff;
-  margin: 0px;
-  padding: 0px; }
 
 /* mailbox tree (dtree) */
 DIV.dTreeNode SPAN.unseen

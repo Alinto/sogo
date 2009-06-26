@@ -97,24 +97,26 @@ function contactsListCallback(http) {
 				var tmp = document.createElement('div');
 				$(tmp).update(html);
 				table.replaceChild($(tmp).select("table tbody")[0], tbody);
-         
-				var rows = table.tBodies[0].rows;
-				for (var i = 0; i < rows.length; i++) {
-					var row = $(rows[i]);
-					row.observe("mousedown", onRowClick);
-					row.observe("dblclick", onContactRowDblClick);
-					row.observe("selectstart", listRowMouseDownHandler);
-					row.observe("contextmenu", onContactContextMenu);
-				}
-      }
+			}
       else {
-				// Add table (doesn't happen .. yet)
+				// Add table
 				div.update(http.responseText);
 				table = $("contactsList");
+				table.multiselect = true;
+				table.observe("mousedown", onContactSelectionChange);
 				configureSortableTableHeaders(table);
 				TableKit.Resizable.init(table, {'trueResize' : true, 'keepWidth' : true});
       }
       
+			var rows = table.tBodies[0].rows;
+			for (var i = 0; i < rows.length; i++) {
+				var row = $(rows[i]);
+				row.observe("mousedown", onRowClick);
+				row.observe("dblclick", onContactRowDblClick);
+				row.observe("selectstart", listRowMouseDownHandler);
+				row.observe("contextmenu", onContactContextMenu);
+			}
+
       if (sorting["attribute"] && sorting["attribute"].length > 0) {
 				var sortHeader;
 				if (sorting["attribute"] == "c_cn")
