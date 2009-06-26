@@ -105,5 +105,4 @@
       </div>
 
     <var:string value="errorAlertJavaScript" const:escapeHTML="NO" />
-  </var:if>
 </var:component>
