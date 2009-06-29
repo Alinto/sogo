@@ -1,14 +1,11 @@
 <?xml version='1.0' standalone='yes'?>
-  <var:component
+  <container
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:uix="OGo:uix"
     xmlns:label="OGo:label"
-    xmlns:rsrc="OGo:url"
-    className="UIxContactsListViewContainer"
-    selectorComponentClass="selectorComponentClass"
-    title="name">
+    xmlns:rsrc="OGo:url">
     <table id="contactsList" cellspacing="0">
       <thead>
         <tr class="tableview">
@@ -40,4 +37,4 @@
         </var:foreach>
       </tbody>
     </table>
-  </var:component>
+  </container>

@@ -74,34 +74,6 @@
   [ud setObject: moduleSettings forKey: module];
 }
 
-- (id) _selectActionForApplication: (NSString *) actionName
-{
-  SOGoContactFolders *folders;
-  NSString *url, *action;
-  WORequest *request;
-
-  folders = [self clientObject];
-  action = [NSString stringWithFormat: @"../personal/%@", actionName];
-
-  request = [[self context] request];
-
-  url = [[request uri] composeURLWithAction: action
-                       parameters: [self queryParameters]
-                       andHash: NO];
-
-  return [self redirectToLocation: url];
-}
-
-- (id) defaultAction
-{
-  return [self _selectActionForApplication: @"view"];
-}
-
-- (id) selectForMailerAction
-{
-  return [self _selectActionForApplication: @"mailer-contacts"];
-}
-
 - (void) _fillResults: (NSMutableDictionary *) results
 inFolder: (id <SOGoContactFolder>) folder
 withSearchOn: (NSString *) contact
@@ -356,6 +328,41 @@ withSearchOn: (NSString *) contact
 //                             inContext: context] == nil)
 //           ? contactFolder : nil);
 // }
+
+- (BOOL) isPopup
+{
+  return [[self queryParameterForKey: @"popup"] boolValue];
+}
+
+- (NSArray *) contactFolders
+{
+  SOGoContactFolders *folderContainer;
+
+  folderContainer = [self clientObject];
+
+  return [folderContainer subFolders];
+}
+
+- (NSString *) currentContactFolderId
+{
+  return [NSString stringWithFormat: @"/%@",
+                   [currentFolder nameInContainer]];
+}
+
+- (NSString *) currentContactFolderName
+{
+  return [currentFolder displayName];
+}
+
+- (NSString *) currentContactFolderOwner
+{
+  return [currentFolder ownerInContext: context];
+}
+
+- (NSString *) currentContactFolderClass
+{
+   return ([currentFolder isKindOfClass: [SOGoContactLDAPFolder class]]? @"remote" : @"local");
+}
 
 - (WOResponse *) saveDragHandleStateAction
 {

@@ -7,6 +7,12 @@
 
   categories = {
      SOGoContactFolders = {
+        slots = {
+           toolbar = {
+              protectedBy = "View";
+              value = "SOGoContactFolder.toolbar";
+           };
+        };
         methods = {
            view = {
               protectedBy = "View";

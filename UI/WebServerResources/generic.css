@@ -776,3 +776,9 @@ DIV.resize-handle
   DIV.tabsContainer
   { display: none; }
 }
+
+.genericHoverClass
+{
+  background-color: #f0f0f0 !important;
+  color: #000000 !important;
+}

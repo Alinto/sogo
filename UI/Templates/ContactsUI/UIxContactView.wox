@@ -1,16 +1,13 @@
 <?xml version='1.0' standalone='yes'?>
-  <var:component
+  <container
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:rsrc="OGo:url"
     xmlns:label="OGo:label"
-    xmlns:uix="OGo:uix"
-    className="UIxPageFrame"
-    title="name"
-    const:popup="YES"
+    xmlns:uix="OGo:uix">
     
-    ><h3 class="contactCardTitle"><var:string value="contactCardTitle" /></h3
+    <h3 class="contactCardTitle"><var:string value="contactCardTitle" /></h3
       
       ><div id="leftContactColumn" class="contactColumn"
       ><div id="primaryInfos"
@@ -72,4 +69,4 @@
             /></div
           ></var:if
         ></div
-      ></var:component>
+      ></container>

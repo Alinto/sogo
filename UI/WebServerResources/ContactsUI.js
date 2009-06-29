@@ -97,24 +97,27 @@ function contactsListCallback(http) {
 				var tmp = document.createElement('div');
 				$(tmp).update(html);
 				table.replaceChild($(tmp).select("table tbody")[0], tbody);
-         
-				var rows = table.tBodies[0].rows;
-				for (var i = 0; i < rows.length; i++) {
-					var row = $(rows[i]);
-					row.observe("mousedown", onRowClick);
-					row.observe("dblclick", onContactRowDblClick);
-					row.observe("selectstart", listRowMouseDownHandler);
-					row.observe("contextmenu", onContactContextMenu);
-				}
-      }
+			}
       else {
-				// Add table (doesn't happen .. yet)
+				// Add table
 				div.update(http.responseText);
 				table = $("contactsList");
+				table.multiselect = true;
+				table.observe("mousedown", onContactSelectionChange);
 				configureSortableTableHeaders(table);
 				TableKit.Resizable.init(table, {'trueResize' : true, 'keepWidth' : true});
+        configureDragAndDrop ();
       }
       
+			var rows = table.tBodies[0].rows;
+			for (var i = 0; i < rows.length; i++) {
+				var row = $(rows[i]);
+				row.observe("mousedown", onRowClick);
+				row.observe("dblclick", onContactRowDblClick);
+				row.observe("selectstart", listRowMouseDownHandler);
+				row.observe("contextmenu", onContactContextMenu);
+			}
+
       if (sorting["attribute"] && sorting["attribute"].length > 0) {
 				var sortHeader;
 				if (sorting["attribute"] == "c_cn")
@@ -219,8 +222,9 @@ function _onContactMenuAction(folderItem, action, refresh) {
 				return row.getAttribute("id");
       });
 
-    var url = ApplicationBaseURL + selectedFolderId + "/" + action + "?folder=" + folderId + "&uid="
-      + contactIds.join("&uid=");
+    var url = ApplicationBaseURL + selectedFolderId + "/" + action 
+              + "?folder=" + folderId + "&uid="
+              + contactIds.join("&uid=");
     
     if (refresh)
       triggerAjaxRequest(url, actionContactCallback, selectedFolderId);
@@ -945,6 +949,8 @@ function onContactMenuPrepareVisibility() {
     deleteOption.removeClassName("disabled");
     moveOption.removeClassName("disabled");
   }
+	
+	return true;
 }
 
 function getMenus() {
@@ -1056,5 +1062,107 @@ function initContacts(event) {
   sorting["attribute"] = "c_cn";
   sorting["ascending"] = true;
 }
+
+function configureDragAndDrop () {
+  var mainElement = new Element ("div", {id: "dragDropVisual"});
+  document.body.appendChild(mainElement);
+  log ("1");
+  mainElement.absolutize ();
+  mainElement.style.display = "none";
+
+  new Draggable ("dragDropVisual", 
+                 { 
+                   handle: "contactsList", 
+                   onStart: startDragging,
+                   onEnd: stopDragging,
+                   onDrag: whileDragging
+                 });
+  log ("2");
+
+  var drops = $$("ul#contactFolders li");
+  drops.each (function (drop) {
+              log ("3");
+                if (!drop.hasClassName ("remote"))
+                  Droppables.add (drop.id, 
+                                  {
+                                    hoverclass: "genericHoverClass",
+                                    onDrop: dropAction
+                                  });
+              });
+
+}
+
+function currentFolderIsRemote () {
+  rc = false;
+  var selectedFolders = $("contactFolders").getSelectedNodes();
+  if (selectedFolders.length > 0) {
+    var fromObject = $(selectedFolders[0]);
+    rc = fromObject.hasClassName ("remote");
+  }
+  return rc;
+}
+
+function containsVLF (ids) {
+  var rc = false;
+
+  for (var i=0; i < ids.length; i++)
+    if (ids[i].match ("\.vlf$") == ".vlf")
+      rc = true;
+
+  return rc;
+}
+
+function startDragging (itm, e) {
+  var handle = $("dragDropVisual");
+  var contacts = $('contactsList').getSelectedRowsId();
+  var count = contacts.length;
+
+  if (!containsVLF (contacts)) {
+    handle.style.display = "block";
+    handle.update (count);
+    if (e.shiftKey || currentFolderIsRemote ())
+      handle.addClassName ("copy");
+  }
+}
+
+function whileDragging (itm, e) {
+  var handle = $("dragDropVisual");
+  if (e.shiftKey || currentFolderIsRemote ())
+    handle.addClassName ("copy");
+  else if (handle.hasClassName ("copy"))
+    handle.removeClassName ("copy");
+}
+
+function stopDragging () {
+  var handle = $("dragDropVisual");
+  handle.style.display = "none";
+  if (handle.hasClassName ("copy"))
+    handle.removeClassName ("copy");
+}
+
+function dropAction (dropped, zone, e) {
+  var action = "move";
+  if ($("dragDropVisual").hasClassName ("copy"))
+    action = "copy";
+  dropSelectedContacts (action, zone.id.substr (1));
+}
+
+function dropSelectedContacts (action, toId) {
+  var selectedFolders = $("contactFolders").getSelectedNodes();
+  if (selectedFolders.length > 0) {
+    var contactIds = $('contactsList').getSelectedRowsId();
+    if (!containsVLF (contactIds)) {
+      var fromId = $(selectedFolders[0]).id;
+      if (!currentFolderIsRemote () || action != "move") {
+        var url = ApplicationBaseURL + fromId + "/" + action 
+                  + "?folder=" + toId + "&uid="
+                  + contactIds.join("&uid=");
+    
+        triggerAjaxRequest(url, actionContactCallback, fromId);
+      }
+    }
+  }
+}
+
 
 document.observe("dom:loaded", initContacts);
