@@ -253,7 +253,7 @@ function actionContactCallback(http) {
       var error = html.select("p").first().firstChild.nodeValue.trim();
       log("actionContactCallback failed: error " + http.status + " (" + error + ")");
       if (parseInt(http.status) == 403)
-				window.alert(labels["You don't have the required privileges to perform the operation."]);
+				window.alert(clabels["You don't have the required privileges to perform the operation."]);
       else if (error)
 				window.alert(labels[error]);
       refreshCurrentFolder();
@@ -777,6 +777,8 @@ function onAddressBookMenuPrepareVisibility() {
 					menuEntry.removeClassName("disabled");
       });
   }
+
+	return true;
 }
 
 function updateAddressBooksMenus() {
@@ -899,8 +901,7 @@ function onAddressBooksMenuPrepareVisibility() {
       sharingOption.addClassName("disabled");
     }
 
-    // disable the "remove" option when address book is public, otherwise
-    // enable it
+    // Disable the "remove" option when address book is public
     if (folderOwner == "nobody")
       removeOption.addClassName("disabled");
     else
@@ -914,7 +915,7 @@ function onAddressBooksMenuPrepareVisibility() {
 
 function onContactMenuPrepareVisibility() {
   var contactRows = document.menuTarget;
-  var selectedFolder = $("contactFolders").getSelectedNodes()[0];
+  var selectedFolder = $("contactFolders").getSelectedNodes().first();
   var options = { write: false,
                   aim: false };
 
@@ -925,9 +926,10 @@ function onContactMenuPrepareVisibility() {
   var moveOption = elements[7];
 
   $A(contactRows).each(function(contactRow) {
-      var emailCell = contactRow.down('td', 1);
+			var cells = contactRow.getElementsByTagName('td');
+			var emailCell = cells[1];
       options.write |= (emailCell.firstChild != null);
-      var aimCell = contactRow.down('td', 2);
+      var aimCell = cells[2];
       options.aim |= (aimCell.firstChild != null);
     });
 

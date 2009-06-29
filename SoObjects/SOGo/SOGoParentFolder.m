@@ -243,11 +243,6 @@ static SoSecurityManager *sm = nil;
   return nil;
 }
 
-- (void) _removeSubscribedSource: (NSString *) key
-{
-#warning TO BE IMPLEMENTED SOON FIXME
-}
-
 - (void) _appendSubscribedSource: (NSString *) sourceKey
 {
   SOGoGCSFolder *subscribedFolder;
@@ -257,12 +252,10 @@ static SoSecurityManager *sm = nil;
 		      inContainer: self];
   if (subscribedFolder
       && ![sm validatePermission: SOGoPerm_AccessObject
-	      onObject: subscribedFolder
-	      inContext: context])
-    [subFolders setObject: subscribedFolder
-		forKey: [subscribedFolder nameInContainer]];
-  else
-    [self _removeSubscribedSource: sourceKey];
+			onObject: subscribedFolder
+		       inContext: context])
+    [subscribedSubFolders setObject: subscribedFolder
+			     forKey: [subscribedFolder nameInContainer]];
 }
 
 - (NSException *) appendSubscribedSources
@@ -336,27 +329,16 @@ static SoSecurityManager *sm = nil;
   return error;
 }
 
-- (NSException *) initSubFoldersMatching: (NSString *) folderName
+- (NSException *) initSubFolders;
 {
-  NSString *login;
   NSException *error;
 
   if (!subFolders)
     {
       subFolders = [NSMutableDictionary new];
       error = [self appendPersonalSources];
-      if (!error
-          && !(folderName && [subFolders objectForKey: folderName]))
-	{
-	  error = [self appendSystemSources];
-	  if (!error
-              && !(folderName && [subFolders objectForKey: folderName]))
-	    {
-	      login = [[context activeUser] login];
-	      if ([login isEqualToString: owner])
-		error = [self appendSubscribedSources];
-	    }
-	}
+      if (!error)
+	error = [self appendSystemSources];
       if (error)
 	{
 	  [subFolders release];
@@ -369,15 +351,33 @@ static SoSecurityManager *sm = nil;
   return error;
 }
 
-// - (void) _appendSubscribedSourcesIfNeeded
-// {
-//   NSString *login;
+- (NSException *) initSubscribedSubFolders
+{
+  NSArray *subscribedReferences;
+  NSUserDefaults *settings;
+  NSEnumerator *allKeys;
+  NSString *currentKey, *login;
+  NSException *error;
 
-//   login = [[context activeUser] login];
-//   if ([login isEqualToString: owner])
-//     [self appendSubscribedSources];
-//   hasSubscribedSources = YES;
-// }
+  error = nil; /* we ignore non-DB errors at this time... */
+  login = [[context activeUser] login];
+
+  if (!subscribedSubFolders && [login isEqualToString: owner])
+    {
+      subscribedSubFolders = [NSMutableDictionary new];
+      settings = [[context activeUser] userSettings];
+      subscribedReferences = [[settings objectForKey: nameInContainer]
+			       objectForKey: @"SubscribedFolders"];
+      if ([subscribedReferences isKindOfClass: [NSArray class]])
+	{
+	  allKeys = [subscribedReferences objectEnumerator];
+	  while ((currentKey = [allKeys nextObject]))
+	    [self _appendSubscribedSource: currentKey];
+	}
+    }
+  
+  return error;
+}
 
 - (NSArray *) fetchContentObjectNames
 {
@@ -395,11 +395,8 @@ static SoSecurityManager *sm = nil;
   obj = [super lookupName: name inContext: lookupContext acquire: NO];
   if (!obj)
     {
-      if (!subFolders)
-        error = [self initSubFoldersMatching: name];
-      else
-	error = nil;
-
+      // Lookup in personal folders
+      error = [self initSubFolders];
       if (error)
 	{
 	  [self errorWithFormat: @"a database error occured: %@", [error reason]];
@@ -407,37 +404,48 @@ static SoSecurityManager *sm = nil;
 	}
       else
 	obj = [subFolders objectForKey: name];
-//       if (!obj && !hasSubscribedSources)
-// 	{
-// 	  [self _appendSubscribedSourcesIfNeeded];
-// 	  obj = [subFolders objectForKey: name];
-// 	}
+      
+      if (!obj)
+	{
+	  // Lookup in subscribed folders
+	  error = [self initSubscribedSubFolders];
+	  if (error)
+	    {
+	      [self errorWithFormat: @"a database error occured: %@", [error reason]];
+	      obj = [NSException exceptionWithHTTPStatus: 503];
+	    }
+	  else
+	    obj = [subscribedSubFolders objectForKey: name];
+	}
     }
-
+  
   return obj;
 }
 
 - (NSArray *) subFolders
 {
+  NSMutableArray *ma;
   NSException *error;
 
-  if (!subFolders)
+  error = [self initSubFolders];
+  if (error)
     {
-      error = [self initSubFoldersMatching: nil];
-      if (error)
-	{
-	  /* We exceptionnally raise the exception here because doPROPFIND:
-	     will not care for errors in its response from
-	     toManyRelationShipKeys, which may in turn trigger the
-	     disappearance of user folders in the SOGo extensions. */
-	  [error raise];
-	}
+      /* We exceptionnally raise the exception here because doPROPFIND:
+	 will not care for errors in its response from
+	 toManyRelationShipKeys, which may in turn trigger the
+	 disappearance of user folders in the SOGo extensions. */
+      [error raise];
     }
-//   if (!!hasSubscribedSources)
-//     [self _appendSubscribedSourcesIfNeeded];
+  
+  error = [self initSubscribedSubFolders];
+  if (error)
+    [error raise];
 
-  return [[subFolders allValues]
-	   sortedArrayUsingSelector: @selector (compare:)];
+  ma = [NSMutableArray arrayWithArray: [subFolders allValues]];
+  if ([subscribedSubFolders count])
+    [ma addObjectsFromArray: [subscribedSubFolders allValues]];
+
+  return [ma sortedArrayUsingSelector: @selector (compare:)];
 }
 
 - (NSArray *) toManyRelationshipKeys
