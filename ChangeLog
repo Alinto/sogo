@@ -1,6 +1,7 @@
 2009-06-29  Cyril Robert <crobert@inverse.ca>
 
 	* UI/WebServerResources/ContactsUI.js: Added drag & drop support!
+	* UI/WebServerResources/ContactsUI.js: Disabled drag & drop for lists
 
 2009-06-26  Francis Lachapelle  <flachapelle@inverse.ca>
 

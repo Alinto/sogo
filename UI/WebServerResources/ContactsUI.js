@@ -1102,13 +1102,27 @@ function currentFolderIsRemote () {
   return rc;
 }
 
+function containsVLF (ids) {
+  var rc = false;
+
+  for (var i=0; i < ids.length; i++)
+    if (ids[i].match ("\.vlf$") == ".vlf")
+      rc = true;
+
+  return rc;
+}
+
 function startDragging (itm, e) {
   var handle = $("dragDropVisual");
-  var count = $('contactsList').getSelectedRowsId().length;
-  handle.style.display = "block";
-  handle.update (count);
-  if (e.shiftKey || currentFolderIsRemote ())
-    handle.addClassName ("copy");
+  var contacts = $('contactsList').getSelectedRowsId();
+  var count = contacts.length;
+
+  if (!containsVLF (contacts)) {
+    handle.style.display = "block";
+    handle.update (count);
+    if (e.shiftKey || currentFolderIsRemote ())
+      handle.addClassName ("copy");
+  }
 }
 
 function whileDragging (itm, e) {
@@ -1137,13 +1151,15 @@ function dropSelectedContacts (action, toId) {
   var selectedFolders = $("contactFolders").getSelectedNodes();
   if (selectedFolders.length > 0) {
     var contactIds = $('contactsList').getSelectedRowsId();
-    var fromId = $(selectedFolders[0]).id;
-    if (!currentFolderIsRemote () || action != "move") {
-      var url = ApplicationBaseURL + fromId + "/" + action 
-                + "?folder=" + toId + "&uid="
-                + contactIds.join("&uid=");
+    if (!containsVLF (contactIds)) {
+      var fromId = $(selectedFolders[0]).id;
+      if (!currentFolderIsRemote () || action != "move") {
+        var url = ApplicationBaseURL + fromId + "/" + action 
+                  + "?folder=" + toId + "&uid="
+                  + contactIds.join("&uid=");
     
-      triggerAjaxRequest(url, actionContactCallback, fromId);
+        triggerAjaxRequest(url, actionContactCallback, fromId);
+      }
     }
   }
 }
