@@ -1,3 +1,7 @@
+2009-06-29  Cyril Robert <crobert@inverse.ca>
+
+	* UI/WebServerResources/ContactsUI.js: Added drag & drop support!
+
 2009-06-26  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Contacts/UIxContactsListViewContainer.[hm]: this class was

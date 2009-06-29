@@ -344,3 +344,20 @@ DIV.contactSelection INPUT.button
 
 DIV.contactSelection SPAN#selectionLabel
 { float: left; }
+
+DIV#dragDropVisual
+{
+  background-image: url(/SOGo.woa/WebServerResources/abcard.gif);
+  background-repeat: no-repeat;
+  background-position: 4px 2px;
+  width: 5px;
+  height: 20px;
+  padding-left: 24px;
+  padding-top: 5px;
+}
+
+DIV.copy
+{
+  background-image: url(/SOGo.woa/WebServerResources/add-contact.gif) !important; 
+  background-position: 1px -2px !important;
+}

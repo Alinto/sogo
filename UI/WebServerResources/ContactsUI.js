@@ -106,6 +106,7 @@ function contactsListCallback(http) {
 				table.observe("mousedown", onContactSelectionChange);
 				configureSortableTableHeaders(table);
 				TableKit.Resizable.init(table, {'trueResize' : true, 'keepWidth' : true});
+        configureDragAndDrop ();
       }
       
 			var rows = table.tBodies[0].rows;
@@ -221,8 +222,9 @@ function _onContactMenuAction(folderItem, action, refresh) {
 				return row.getAttribute("id");
       });
 
-    var url = ApplicationBaseURL + selectedFolderId + "/" + action + "?folder=" + folderId + "&uid="
-      + contactIds.join("&uid=");
+    var url = ApplicationBaseURL + selectedFolderId + "/" + action 
+              + "?folder=" + folderId + "&uid="
+              + contactIds.join("&uid=");
     
     if (refresh)
       triggerAjaxRequest(url, actionContactCallback, selectedFolderId);
@@ -1060,5 +1062,91 @@ function initContacts(event) {
   sorting["attribute"] = "c_cn";
   sorting["ascending"] = true;
 }
+
+function configureDragAndDrop () {
+  var mainElement = new Element ("div", {id: "dragDropVisual"});
+  document.body.appendChild(mainElement);
+  log ("1");
+  mainElement.absolutize ();
+  mainElement.style.display = "none";
+
+  new Draggable ("dragDropVisual", 
+                 { 
+                   handle: "contactsList", 
+                   onStart: startDragging,
+                   onEnd: stopDragging,
+                   onDrag: whileDragging
+                 });
+  log ("2");
+
+  var drops = $$("ul#contactFolders li");
+  drops.each (function (drop) {
+              log ("3");
+                if (!drop.hasClassName ("remote"))
+                  Droppables.add (drop.id, 
+                                  {
+                                    hoverclass: "genericHoverClass",
+                                    onDrop: dropAction
+                                  });
+              });
+
+}
+
+function currentFolderIsRemote () {
+  rc = false;
+  var selectedFolders = $("contactFolders").getSelectedNodes();
+  if (selectedFolders.length > 0) {
+    var fromObject = $(selectedFolders[0]);
+    rc = fromObject.hasClassName ("remote");
+  }
+  return rc;
+}
+
+function startDragging (itm, e) {
+  var handle = $("dragDropVisual");
+  var count = $('contactsList').getSelectedRowsId().length;
+  handle.style.display = "block";
+  handle.update (count);
+  if (e.shiftKey || currentFolderIsRemote ())
+    handle.addClassName ("copy");
+}
+
+function whileDragging (itm, e) {
+  var handle = $("dragDropVisual");
+  if (e.shiftKey || currentFolderIsRemote ())
+    handle.addClassName ("copy");
+  else if (handle.hasClassName ("copy"))
+    handle.removeClassName ("copy");
+}
+
+function stopDragging () {
+  var handle = $("dragDropVisual");
+  handle.style.display = "none";
+  if (handle.hasClassName ("copy"))
+    handle.removeClassName ("copy");
+}
+
+function dropAction (dropped, zone, e) {
+  var action = "move";
+  if ($("dragDropVisual").hasClassName ("copy"))
+    action = "copy";
+  dropSelectedContacts (action, zone.id.substr (1));
+}
+
+function dropSelectedContacts (action, toId) {
+  var selectedFolders = $("contactFolders").getSelectedNodes();
+  if (selectedFolders.length > 0) {
+    var contactIds = $('contactsList').getSelectedRowsId();
+    var fromId = $(selectedFolders[0]).id;
+    if (!currentFolderIsRemote () || action != "move") {
+      var url = ApplicationBaseURL + fromId + "/" + action 
+                + "?folder=" + toId + "&uid="
+                + contactIds.join("&uid=");
+    
+      triggerAjaxRequest(url, actionContactCallback, fromId);
+    }
+  }
+}
+
 
 document.observe("dom:loaded", initContacts);
