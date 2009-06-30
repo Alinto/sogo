@@ -25,10 +25,7 @@ LABEL#commentArea
 { height: 15em; }
 
 LABEL#commentArea textarea
-{ padding: 0;
-  margin: 0;
-  width: 380px;
-  height: 15em; }
+{ height: 15em; }
 
 SPAN.checkBoxList#participantsCB
 { height: 7em; }

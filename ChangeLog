@@ -1,7 +1,20 @@
 2009-06-29  Cyril Robert <crobert@inverse.ca>
 
-	* UI/WebServerResources/ContactsUI.js: Added drag & drop support!
+	* UI/WebServerResources/ContactsUI.js: Added drag & drop support
 	* UI/WebServerResources/ContactsUI.js: Disabled drag & drop for lists
+
+2009-06-29  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/SOGo/SOGoParentFolder.m ([SOGoParentFolder
+	-initSubFolders]): system folders (LDAP sources) are now loaded
+	unconditionally.
+	([SOGoFolderParent -initSubscribedSubFolders]): new method to load
+	only subscribed folders.
+	([SOGoParent -lookupName:inContext:acquire:]): we now properly
+	lookup in subscribed folders.
+	([SOGoParentFolder -subFolders]): since the subscribed folders are
+	now stored in its own dictionary, we must return keys from both
+	dictionaries.
 
 2009-06-26  Francis Lachapelle  <flachapelle@inverse.ca>
 
