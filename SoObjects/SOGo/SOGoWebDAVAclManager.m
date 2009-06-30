@@ -64,7 +64,7 @@ static NSNumber *yesObject = nil;
 		defaultRolesForPermission: permission];
       if ([roles firstObjectCommonWithArray: userRoles])
 	{
-	  NSLog (@"matched '%@': %@", permission, roles);
+// 	  NSLog (@"matched '%@': %@", permission, roles);
 	  result = YES;
 	}
       else
