@@ -250,7 +250,7 @@
     {
       currentRange = [currentRangePtr pointerValue];
       if (NSLocationInRange (testRange.location, *currentRange)
-	  || NSLocationInRange (NSMaxRange (testRange), *currentRange))
+	  || NSLocationInRange (currentRange->location, testRange))
 	response = YES;
     }
 

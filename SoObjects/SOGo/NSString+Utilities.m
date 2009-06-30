@@ -226,17 +226,13 @@ static NSMutableCharacterSet *urlStartChars = nil;
       matchRange.location = startLocation + 1;
 
       currentUrlRange = [selfCopy _rangeOfURLInRange: matchRange];
-      if ([ranges hasRangeIntersection: currentUrlRange])
-	rest.location = NSMaxRange (currentUrlRange);
-      else
-	{
-	  if (currentUrlRange.length > matchLength)
-	    [newRanges addNonNSObject: &currentUrlRange
-                             withSize: sizeof (NSRange)
-                                 copy: YES];
-	  rest.location = NSMaxRange (currentUrlRange);
-	}
-
+      if (![ranges hasRangeIntersection: currentUrlRange])
+	if (currentUrlRange.length > matchLength)
+	  [newRanges addNonNSObject: &currentUrlRange
+			   withSize: sizeof (NSRange)
+			       copy: YES];
+      
+      rest.location = NSMaxRange (currentUrlRange);
       length = [selfCopy length];
       rest.length = length - rest.location;
       matchRange = [selfCopy rangeOfString: match
@@ -258,7 +254,7 @@ static NSMutableCharacterSet *urlStartChars = nil;
       offset += ([newUrlText length] - [urlText length]);
 
       // Add range for further substitutions
-      currentUrlRange = NSMakeRange (currentUrlRange.location, [newUrlText length]);
+      currentUrlRange = NSMakeRange (rangePtr->location, [newUrlText length]);
       [ranges addNonNSObject: &currentUrlRange
                     withSize: sizeof (NSRange)
                         copy: YES];
