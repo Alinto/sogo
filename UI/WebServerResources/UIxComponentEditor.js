@@ -43,6 +43,7 @@ function onPopupUrlWindow(event) {
     }
     urlInput.value = newUrl;
   }
+	onWindowResize(event);
 
   return false;
 }
@@ -134,8 +135,29 @@ function onComponentEditorLoad(event) {
   $("repeatList").observe("change", onPopupRecurrenceWindow);
 	$("reminderHref").observe("click", onPopupReminderWindow);
 	$("reminderList").observe("change", onPopupReminderWindow);
+
+	Event.observe(window, "resize", onWindowResize);
+
   onPopupRecurrenceWindow(null);
 	onPopupReminderWindow(null);
+}
+
+function onWindowResize(event) {
+	var document = $("documentLabel");
+	var comment = $("commentArea");
+	var area = comment.select("textarea").first();
+	var offset = 6;
+	var height;
+
+	height = window.height() - comment.cumulativeOffset().top - offset;
+
+	if (document.visible())
+		height -= $("changeUrlButton").getHeight();
+	
+	area.setStyle({ height: (height - offset*2) + "px" });
+	comment.setStyle({ height: (height - offset) + "px" });
+	
+	return true;
 }
 
 function onPopupRecurrenceWindow(event) {
