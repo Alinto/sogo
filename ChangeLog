@@ -1,6 +1,7 @@
 2009-06-30  Cyril Robert <crobert@inverse.ca>
 
 	* UI/WebServerResources/MailerUI.js: Added drag & drop support!
+	* UI/MailPartViewers/UIxMailPartHTMLViewer.m: Removed an extra NSLog
 
 2009-06-29  Cyril Robert <crobert@inverse.ca>
 

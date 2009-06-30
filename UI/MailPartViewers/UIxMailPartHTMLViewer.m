@@ -426,7 +426,7 @@ _xmlCharsetForCharset (NSString *charset)
             }
           else
             {
-              NSLog (@"%@", _localName);
+              //NSLog (@"%@", _localName);
               [result appendFormat: @"</%@>", _localName];
             }
         }
