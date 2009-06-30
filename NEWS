@@ -3,6 +3,8 @@
 - improved search behavior of users folders (UIxContactsUserFolders)
 - the editor window in the web interface now appears directly when editing an exception occurence of a repeating event (no more dialog window, as in Lightning)
 - implemented the webdav sync spec from Cyrus Daboo, in order to reduce useless payload on databases
+- added HTML composition in the web mail module
+- added drag and drop in the addressbook module
 
 1.0-20090605 (1.0.2)
 --------------------
