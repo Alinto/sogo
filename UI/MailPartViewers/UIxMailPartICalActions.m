@@ -378,6 +378,38 @@
   return [self _changePartStatusAction: @"DECLINED"];
 }
 
+- (WOResponse *) addToCalendarAction
+{
+  iCalEvent *emailEvent;
+  SOGoAppointmentObject *eventObject;
+  NSString *iCalString;
+  WOResponse *response;
+
+  emailEvent = [self _emailEvent];
+  if (emailEvent)
+    {
+      eventObject = [self _eventObjectWithUID: [emailEvent uid]];      
+      if ([eventObject isNew])
+	{
+	  iCalString = [[emailEvent parent] versitString];
+	  [eventObject saveContentString: iCalString];
+	  response = [self responseWith204];
+	}
+      else
+	{
+	  response = [self responseWithStatus: 409];
+	}
+    }
+  else
+    {
+      response = [context response];
+      [response setStatus: 409];
+      response = [self responseWithStatus: 404];
+    }
+
+  return response;
+}
+
 - (WOResponse *) deleteFromCalendarAction
 {
   iCalEvent *emailEvent;

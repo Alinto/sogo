@@ -1,3 +1,16 @@
+2009-06-30  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/MailPartViewers/UIxMailPartICalActions.m
+	([UIxMailPartICalActions -addToCalendarAction]): new method to add
+	a calendar from an invitation (used to work?!).
+
+	* SoObjects/SOGo/NSString+Utilities.m ([NSString
+	-_handleURLs:textToMatch:prefix:inRanges:]): fixed offset
+	of range after replacement.
+
+	* SoObjects/SOGo/NSArray+Utilities.m ([NSArray
+	-hasRangeIntersection:]): fixed error in range comparison.
+
 2009-06-30  Cyril Robert <crobert@inverse.ca>
 
 	* UI/WebServerResources/MailerUI.js: Added drag & drop support!

@@ -33,6 +33,8 @@
 
 - (WOResponse *) acceptAction;
 - (WOResponse *) declineAction;
+- (WOResponse *) addToCalendarAction;
+- (WOResponse *) deleteFromCalendarAction;
 
 @end
 

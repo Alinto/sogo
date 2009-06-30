@@ -37,12 +37,12 @@
           protectedBy = "View";
           actionClass = "UIxMailPartICalAction";
           actionName  = "markTentative";
-        };
+	  }; */
         addToCalendar = {
           protectedBy = "View";
-          actionClass = "UIxMailPartICalAction";
+          actionClass = "UIxMailPartICalActions";
           actionName  = "addToCalendar";
-        }; */
+        };
         deleteFromCalendar = {
           protectedBy = "View";
           actionClass = "UIxMailPartICalActions";
