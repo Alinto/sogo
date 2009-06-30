@@ -805,3 +805,20 @@ DIV#rightDragHandle
   { position: static;
     overflow: visible; }
 }
+
+DIV#dragDropVisual
+{
+  background-image: url(/SOGo.woa/WebServerResources/message.gif);
+  background-repeat: no-repeat;
+  background-position: 4px 2px;
+  width: 5px;
+  height: 20px;
+  padding-left: 24px;
+  padding-top: 5px;
+}
+
+DIV.copy
+{
+  background-image: url(/SOGo.woa/WebServerResources/message-copy.gif) !important; 
+  background-position: 1px -2px !important;
+}
