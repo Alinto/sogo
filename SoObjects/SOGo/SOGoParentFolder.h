@@ -31,7 +31,7 @@
 
 @interface SOGoParentFolder : SOGoFolder
 {
-  NSMutableDictionary *subFolders;
+  NSMutableDictionary *subFolders, *subscribedSubFolders;
   NSString *OCSPath;
   Class subFolderClass;
   BOOL hasSubscribedSources;
