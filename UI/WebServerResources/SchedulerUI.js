@@ -390,7 +390,7 @@ function onViewEventCallback(http) {
 				div.down("P", 1).hide();
 
       if (data["description"].length) {
-				div.down("P", 2).update(data["description"]);
+				div.down("P", 2).update(data["description"].replace(/\r\n/g, "<BR/>"));
 				div.down("P", 2).show();
       } else
 				div.down("P", 2).hide();
