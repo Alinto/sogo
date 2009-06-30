@@ -31,7 +31,7 @@
       </var:foreach>
       </tr>
     <tr class="tableview"
-      ><td colspan="7" class="tbtv_navcell"
+      ><td var:colspan="columnsDisplayCount" class="tbtv_navcell"
 	><var:if condition="hasPrevious">
 	  <a href="#"
 	    idx="1"><var:string label:value="first"/></a> |
@@ -130,6 +130,12 @@
             ><var:if condition="currentColumn.value" const:value="Priority"
               ><td class="messagePriorityColumn"
                 ><var:string value="messagePriority" 
+                /><entity name="nbsp"
+                /></td
+            ></var:if
+          ><var:if condition="currentColumn.value" const:value="Size"
+              ><td class="messagePriorityColumn"
+                ><var:string value="messageSize" 
                 /><entity name="nbsp"
                 /></td
                 ></var:if>

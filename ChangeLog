@@ -2,6 +2,8 @@
 
 	* UI/WebServerResources/MailerUI.js: Added drag & drop support!
 	* UI/MailPartViewers/UIxMailPartHTMLViewer.m: Removed an extra NSLog
+	* UI/MailerUI/UIxMailListView.m: Added support for "Size" column, fixed a
+	bug when number of columns != 7.
 
 2009-06-29  Cyril Robert <crobert@inverse.ca>
 
