@@ -1068,7 +1068,6 @@ function initContacts(event) {
 function configureDragAndDrop () {
   var mainElement = new Element ("div", {id: "dragDropVisual"});
   document.body.appendChild(mainElement);
-  log ("1");
   mainElement.absolutize ();
   mainElement.style.display = "none";
 
@@ -1079,11 +1078,9 @@ function configureDragAndDrop () {
                    onEnd: stopDragging,
                    onDrag: whileDragging
                  });
-  log ("2");
 
   var drops = $$("ul#contactFolders li");
   drops.each (function (drop) {
-              log ("3");
                 if (!drop.hasClassName ("remote"))
                   Droppables.add (drop.id, 
                                   {

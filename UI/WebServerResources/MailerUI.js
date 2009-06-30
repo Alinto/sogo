@@ -660,6 +660,7 @@ function messageListCallback(http) {
       table = $('messageList');
       configureMessageListEvents(table);
       TableKit.Resizable.init(table, {'trueResize' : true, 'keepWidth' : true});
+      setTimeout ('configureDragAndDrop ();', 500);
     }
     configureMessageListBodyEvents(table);
 
@@ -2220,4 +2221,91 @@ Mailbox.prototype = {
 		this.children.push(mailbox);
 	}
 };
+
+
+
+
+function configureDragAndDrop () {
+  var mainElement = new Element ("div", {id: "dragDropVisual"});
+  document.body.appendChild(mainElement);
+  mainElement.absolutize ();
+  mainElement.style.display = "none";
+
+  new Draggable ("dragDropVisual", 
+                 { 
+                   handle: "messageList", 
+                   onStart: startDragging,
+                   onEnd: stopDragging,
+                   onDrag: whileDragging
+                 });
+
+  var drops = $$("div#dmailboxTree1 div.dTreeNode a.node span.nodeName");
+  drops.each (function (drop) {
+                  drop.identify ()
+                  Droppables.add (drop.id, 
+                                  {
+                                    hoverclass: "genericHoverClass",
+                                    onDrop: dropAction
+                                  });
+              });
+
+}
+
+function startDragging (itm, e) {
+  var handle = $("dragDropVisual");
+  var count = $('messageList').getSelectedRowsId().length;
+
+    handle.style.display = "block";
+    handle.update (count);
+    if (e.shiftKey)
+      handle.addClassName ("copy");
+}
+
+function whileDragging (itm, e) {
+  var handle = $("dragDropVisual");
+  if (e.shiftKey)
+    handle.addClassName ("copy");
+  else if (handle.hasClassName ("copy"))
+    handle.removeClassName ("copy");
+}
+
+function stopDragging () {
+  var handle = $("dragDropVisual");
+  handle.style.display = "none";
+  if (handle.hasClassName ("copy"))
+    handle.removeClassName ("copy");
+}
+
+function dropAction (dropped, zone, e) {
+  var action = "move";
+  var destination = zone.up ("div.dTreeNode").readAttribute ("dataname");
+  
+  if ($("dragDropVisual").hasClassName ("copy"))
+    action = "copy";
+
+  dropSelectedContacts (action, destination);
+}
+
+function dropSelectedContacts (action, targetMailbox) {
+  var messageList = $("messageList").down("TBODY");
+  var rows = messageList.getSelectedNodes();
+  var uids = new Array(); // message IDs
+  var paths = new Array(); // row IDs
+
+  for (var i = 0; i < rows.length; i++) {
+    var uid = rows[i].readAttribute("id").substr(4);
+    var path = Mailer.currentMailbox + "/" + uid;
+    rows[i].hide();
+    uids.push(uid);
+    paths.push(path);
+  }
+
+  var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/" + action + "Messages";
+  var parameters = "uid=" + uids.join(",") + "&folder=" + targetMailbox;
+  var data = { "id": uids, "mailbox": Mailer.currentMailbox, "path": paths, "folder": targetMailbox };
+  triggerAjaxRequest(url, refreshCurrentFolder, data, parameters,
+    { "Content-type": "application/x-www-form-urlencoded" });
+
+  return false;
+}
 
