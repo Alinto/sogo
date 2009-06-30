@@ -2252,6 +2252,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                                   XMLNS_CALDAV,
                                   components)
                                  asWebDAVValue];
+      [componentSet retain];
     }
 
   return componentSet;

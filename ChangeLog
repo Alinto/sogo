@@ -6,6 +6,8 @@
 	corresponding fields to "". Also, we make sure those fake fields
 	are not specified in the SQL query and we ensure all the fields
 	are only requested once each.
+	(-davCalendarComponentSet): we need to retain the returned
+	array to avoid a crash during the next access to the attribute.
 
 2009-06-30  Cyril Robert <crobert@inverse.ca>
 
