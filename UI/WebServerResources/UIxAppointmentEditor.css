@@ -54,19 +54,10 @@ SELECT
 { margin-left: 1px; }
 
 LABEL#commentArea
-{ height: 15em; }
+{ height: 17em; }
 
 LABEL#commentArea textarea
-{ padding-bottom: 0em;
-  top: 0px;
-  left: 8em;
-  width: 380px;
-  height: 15em;
-  vertical-align: bottom;
-  position: absolute;
-  padding: 0px;
-  margin: 0px;
-  margin-left: 1px; }
+{ height: 15.5em; }
 
 SPAN.checkBoxList#participantsCB
 { height: 7em; }
@@ -80,7 +71,7 @@ DIV#participants UL.contactList
 SPAN.checkBoxList SPAN.content LABEL
 { display: inline; }
 
-SPAN.content
+n0SPAN.content
 { position: absolute;
   line-height: 2em;
   top: -.25em;
