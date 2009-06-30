@@ -1,3 +1,12 @@
+2009-06-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-davCalendarMultiget, -davCalendarQuery): certain dav attribute
+	methods do not necessitate additional fields, we declare their
+	corresponding fields to "". Also, we make sure those fake fields
+	are not specified in the SQL query and we ensure all the fields
+	are only requested once each.
+
 2009-06-30  Cyril Robert <crobert@inverse.ca>
 
 	* UI/WebServerResources/MailerUI.js: Added drag & drop support!

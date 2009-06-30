@@ -1579,13 +1579,17 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   NSMutableArray *fields;
   NSDictionary *currentFilter;
   NSEnumerator *filterList;
-  NSString *additionalFilters, *baseURL;
+  NSString *additionalFilters, *baseURL, *currentField;
   NSMutableString *buffer;
   NSString **propertiesArray;
+  NSEnumerator *addFields;
   unsigned int count, max, propertiesCount;
 
   fields = [NSMutableArray arrayWithObjects: @"c_name", @"c_component", nil];
-  [fields addObjectsFromArray: [properties allValues]];
+  addFields = [[properties allValues] objectEnumerator];
+  while ((currentField = [addFields nextObject]))
+    if ([currentField length])
+      [fields addObjectUniquely: currentField];
   baseURL = [[self davURL] absoluteString];
 
   propertiesArray = [[properties allKeys] asPointersOfObjects];
@@ -1798,11 +1802,12 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 {
   NSObject <DOMElement> *element;
   NSDictionary *currentComponent, *components;
-  NSString *currentURL, *baseURL;
+  NSString *currentURL, *baseURL, *currentField;
   NSString **propertiesArray;
   NSMutableArray *urls, *fields;
   NSMutableString *buffer;
   unsigned int count, max, propertiesCount;
+  NSEnumerator *addFields;
 
   baseURL = [[self davURL] absoluteString];
 
@@ -1819,7 +1824,10 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   propertiesCount = [properties count];
 
   fields = [NSMutableArray arrayWithObjects: @"c_name", @"c_component", nil];
-  [fields addObjectsFromArray: [properties allValues]];
+  addFields = [[properties allValues] objectEnumerator];
+  while ((currentField = [addFields nextObject]))
+    if ([currentField length])
+      [fields addObjectUniquely: currentField];
 
   components = [self _fetchComponentsMatchingURLs: urls fields: fields];
   max = [urls count];
