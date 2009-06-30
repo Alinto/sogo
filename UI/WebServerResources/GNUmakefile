@@ -12,8 +12,8 @@ install ::
 	else \
 	  mkdir -p $(SOGO_WEBSERVERRESOURCESDIR); \
 	  cp $(WEBSERVER_RESOURCE_FILES) $(SOGO_WEBSERVERRESOURCESDIR); \
-		cp -r ckeditor $(SOGO_WEBSERVERRESOURCESDIR); \
-		cp -r scriptaculous $(SOGO_WEBSERVERRESOURCESDIR); \
+	  cp -r ckeditor $(SOGO_WEBSERVERRESOURCESDIR); \
+	  cp -r scriptaculous $(SOGO_WEBSERVERRESOURCESDIR); \
 	fi
 
 clean ::

@@ -127,7 +127,7 @@
 	  <script type="text/javascript" rsrc:src="HTMLTableElement.js"><!-- space --></script>
 	  <script type="text/javascript" rsrc:src="generic.js"><!-- space --></script>
 	  <script type="text/javascript" rsrc:src="SOGoDragHandles.js"><!-- space --></script>
-    <script type="text/javascript" rsrc:src="scriptaculous/scriptaculous.js"><!-- space --></script>
+	  <script type="text/javascript" rsrc:src="scriptaculous/scriptaculous.js"><!-- space --></script>
 	  <var:if condition="hasProductSpecificJavaScript"><script type="text/javascript"
 	      var:src="productJavaScriptURL"><!-- space --></script></var:if>
 	  <var:if condition="hasPageSpecificJavaScript"><script type="text/javascript"
