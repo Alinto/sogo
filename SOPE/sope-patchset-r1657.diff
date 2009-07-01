@@ -969,6 +969,15 @@ Index: sope-mime/NGImap4/NGImap4Connection.m
  #include "imCommon.h"
  
  @implementation NGImap4Connection
+@@ -66,7 +67,7 @@
+     self->creationTime = [[NSDate alloc] init];
+     
+     // TODO: retrieve from IMAP4 instead of using a default
+-    self->separator = imap4Separator;
++    self->separator = [imap4Separator copy];
+   }
+   return self;
+ }
 @@ -321,13 +322,15 @@
      return nil;
    if ([folderName characterAtIndex:0] == '/')
@@ -1671,7 +1680,13 @@ Index: sope-mime/NGImap4/ChangeLog
 ===================================================================
 --- sope-mime/NGImap4/ChangeLog	(revision 1660)
 +++ sope-mime/NGImap4/ChangeLog	(working copy)
-@@ -1,3 +1,39 @@
+@@ -1,3 +1,45 @@
++2009-07-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
++
++	* NGImap4Connection.m (-initWithClient:password:): we need to copy
++	the imap4Separator, otherwise it will be released when the connection
++	is deallocated.
++
 +2009-06-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 +
 +	* NSString+Imap4.m (-stringByEncodingImap4FolderName,
@@ -4024,6 +4039,22 @@ Index: sope-appserver/NGObjWeb/GNUmakefile.postamble
 -		$(INSTALL_ROOT_DIR)/$(GNUSTEP_MAKEFILES)/wobundle.make
 -endif
 +		$(DESTDIR)/$(GNUSTEP_MAKEFILES)/wobundle.make
+Index: sope-appserver/NGObjWeb/ChangeLog
+===================================================================
+--- sope-appserver/NGObjWeb/ChangeLog	(revision 1660)
++++ sope-appserver/NGObjWeb/ChangeLog	(working copy)
+@@ -1,3 +1,11 @@
++2009-07-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
++
++	* WOHttpAdaptor/WOHttpTransaction.m
++	(-deliverResponse:toRequest:onStream:): we test the content-length
++	and impose a content-type of text/plain when 0. This work-arounds
++	a bug in Mozilla clients where empty responses with a content-type
++	set to X/xml will trigger an exception.
++
+ 2009-06-10  Helge Hess  <helge.hess@opengroupware.org>
+ 
+ 	* DAVPropMap.plist: mapped {DAV:}current-user-principal (v4.9.37)
 Index: sope-appserver/NGObjWeb/WODirectAction.m
 ===================================================================
 --- sope-appserver/NGObjWeb/WODirectAction.m	(revision 1660)
@@ -4274,3 +4305,36 @@ Index: sope-appserver/NGObjWeb/SoObjects/SoObject.m
      }
    }
    
+Index: sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpTransaction.m
+===================================================================
+--- sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpTransaction.m	(revision 1660)
++++ sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpTransaction.m	(working copy)
+@@ -696,7 +696,7 @@
+   *(&out) = nil;
+ 
+   [self _httpValidateResponse:_response];
+-  
++
+   out = [(NGCTextStream *)[NGCTextStream alloc] initWithSource:_out];
+   
+   NS_DURING {
+@@ -705,6 +705,7 @@
+     id   body;
+     BOOL doZip;
+     BOOL isok = YES;
++    int length;
+     
+     doZip = [_response shouldZipResponseToRequest:_request];
+     
+@@ -738,7 +739,10 @@
+     
+     /* add content length header */
+     
+-    snprintf((char *)buf, sizeof(buf), "%d", [body length]);
++    if ((length = [body length]) == 0) {
++      [_response setHeader:@"text/plain" forKey:@"content-type"];
++    }
++    snprintf((char *)buf, sizeof(buf), "%d", length);
+     t1 = [[NSString alloc] initWithCString:(char *)buf];
+     [_response setHeader:t1 forKey:@"content-length"];
+     [t1 release]; t1 = nil;

@@ -1,7 +1,15 @@
+2009-07-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-lookupName:inContext:acquire:): handle "AsTask" and
+	"AsAppointment" url suffix only for the default "so" handler.
+
 2009-07-01  Cyril Robert <crobert@inverse.ca>
 
 	* SoObjects/SOGo/SOGoGCSFolder.m: Remove color from user settings on
 	unsubscribe.
+	* UI/MailerUI/UIxMailFolderActions.m (_trashedURLOfFolder:withCO:): Fixed
+	issue when deleting a folder with the same name as one already in the Trash.
 
 2009-06-30  Francis Lachapelle  <flachapelle@inverse.ca>
 
