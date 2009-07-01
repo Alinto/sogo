@@ -660,8 +660,8 @@ function messageListCallback(http) {
       table = $('messageList');
       configureMessageListEvents(table);
       TableKit.Resizable.init(table, {'trueResize' : true, 'keepWidth' : true});
-      setTimeout ('configureDragAndDrop ();', 500);
     }
+    configureDragAndDrop ();
     configureMessageListBodyEvents(table);
 
     var selected = http.callbackData;
@@ -1756,6 +1756,7 @@ function onLoadMailboxesCallback(http) {
 				checkAjaxRequestsState();
 				getFoldersState();
 				updateStatusFolders();
+        configureDragAndDrop ();
       }
     }
 		else
@@ -2231,6 +2232,9 @@ Mailbox.prototype = {
 
 
 function configureDragAndDrop () {
+  Droppables.empty ();
+  Draggables.empty ();
+
   var mainElement = new Element ("div", {id: "dragDropVisual"});
   document.body.appendChild(mainElement);
   mainElement.absolutize ();
