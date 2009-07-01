@@ -603,6 +603,7 @@ function appendAddressBook(name, folder) {
 																					 .replace("&gt;", ">", "g")));
     setEventsOnAddressBook(li);
     updateAddressBooksMenus();
+    configureDragAndDrop ();
   }
 
   return result;
@@ -1066,6 +1067,8 @@ function initContacts(event) {
 }
 
 function configureDragAndDrop () {
+  Droppables.empty ();
+  Draggables.empty ();
   var mainElement = new Element ("div", {id: "dragDropVisual"});
   document.body.appendChild(mainElement);
   mainElement.absolutize ();
