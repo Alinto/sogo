@@ -110,6 +110,18 @@
   return [dateFormatter formattedDateAndTime: messageDate];
 }
 
+- (NSString *) messageSize
+{
+  NSString *rc;
+  int size;
+
+  size = [[message valueForKey: @"size"] intValue];
+
+  rc = [NSString stringWithFormat: @"%dK", size/1024];
+
+  return rc;
+}
+
 //
 // Priorities are defined like this:
 //
@@ -651,7 +663,7 @@
   searchValue = [request formValueForKey: @"value"];
   if ([searchValue length])
     [self _setQualifierForCriteria: searchCriteria
-	  andValue: searchValue];
+                          andValue: searchValue];
 
   firstMessageNumber
     = ((specificMessage)
@@ -761,6 +773,13 @@
   [columnsMetaData setObject: [NSDictionary dictionaryWithObjects: tmpColumns
 					    forKeys: tmpKeys]
 		   forKey: @"Priority"];
+
+  tmpColumns
+    = [NSArray arrayWithObjects: @"tbtv_headercell", @"sizeHeader",
+	       @"Size", nil];
+  [columnsMetaData setObject: [NSDictionary dictionaryWithObjects: tmpColumns
+					    forKeys: tmpKeys]
+		   forKey: @"Size"];
   
   return columnsMetaData;
 }
@@ -777,11 +796,11 @@
   if (![defaultsOrder count])
     {
       defaultsOrder = [[NSUserDefaults standardUserDefaults]
-			arrayForKey: @"SOGoMailListViewColumnsOrder"];
+        arrayForKey: @"SOGoMailListViewColumnsOrder"];
       if (![defaultsOrder count])
-	defaultsOrder = [NSArray arrayWithObjects: @"Invisible",
-				 @"Attachment", @"Subject", @"From",
-				 @"Unread", @"Date", @"Priority", nil];
+        defaultsOrder = [NSArray arrayWithObjects: @"Invisible",
+                      @"Attachment", @"Subject", @"From",
+                      @"Unread", @"Date", @"Priority", nil];
     }
   userDefinedOrder = [NSMutableArray arrayWithArray: defaultsOrder];
 
@@ -800,6 +819,11 @@
 
   return [[self columnsMetaData] objectsForKeys: userDefinedOrder
 				 notFoundMarker: @""];
+}
+
+- (NSString *) columnsDisplayCount
+{
+  return [NSString stringWithFormat: @"%d", [[self columnsDisplayOrder] count]];
 }
 
 - (NSString *) columnTitle

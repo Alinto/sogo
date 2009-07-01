@@ -728,21 +728,26 @@ function statusFoldersCallback(http) {
 
 function updateStatusFolders(count, isDelta) {
 	var span = $("unseenCount");
-	var counter = span.select("SPAN").first();
+	var counter = null;
+  
+  if (span)
+    counter = span.select("SPAN").first();
 
-	if (typeof count == "undefined")
-		count = parseInt(counter.innerHTML);
-	else if (isDelta)
-		count += parseInt(counter.innerHTML);
-	counter.update(count);
-	if (count > 0) {
-		span.setStyle({ display: "inline" });
-		span.up("SPAN").addClassName("unseen");
-	}
-	else {
-		span.setStyle({ display: "none" });
-		span.up("SPAN").removeClassName("unseen");
-	}
+  if (counter && span) {
+	  if (typeof count == "undefined")
+		  count = parseInt(counter.innerHTML);
+	  else if (isDelta)
+		  count += parseInt(counter.innerHTML);
+	  counter.update(count);
+  	if (count > 0) {
+	  	span.setStyle({ display: "inline" });
+		  span.up("SPAN").addClassName("unseen");
+  	}
+	  else {
+		  span.setStyle({ display: "none" });
+  		span.up("SPAN").removeClassName("unseen");
+	  }
+  }
 }
 
 function onMessageContextMenu(event) {

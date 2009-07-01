@@ -1,7 +1,9 @@
 /* -*- Mode: java; tab-width: 2; c-tab-always-indent: t; indent-tabs-mode: t; c-basic-offset: 2 -*- */
 
 function savePreferences(sender) {
-  $("signaturePlacementList").disabled=false;
+  var sigList = $("signaturePlacementList");
+  if (sigList)
+    sigList.disabled=false;
 	$("mainForm").submit();
 
 	return false;
@@ -30,7 +32,12 @@ function onChoiceChanged(event) {
 }
 
 function initPreferences() {
-  CKEDITOR.replace('signature',
+  _setupEvents(true);
+  if (typeof (initAdditionalPreferences) != "undefined")
+    initAdditionalPreferences();
+
+  if ($("signature")) {
+    CKEDITOR.replace('signature',
                      {
                         skin: "v2",
                         height: "90px",
@@ -42,18 +49,16 @@ function initPreferences() {
                      }
                     );
 
-  _setupEvents(true);
-  if (typeof (initAdditionalPreferences) != "undefined")
-    initAdditionalPreferences();
-  $("replyPlacementList").observe ("change", onReplyPlacementListChange);
-  onReplyPlacementListChange();
+    $("replyPlacementList").observe ("change", onReplyPlacementListChange);
+    onReplyPlacementListChange();
 
-  $("composeMessagesType").observe ("change", onComposeMessagesTypeChange);
+    $("composeMessagesType").observe ("change", onComposeMessagesTypeChange);
 
-  if (!UserDefaults["ComposeMessagesType"])
-    UserDefaults["ComposeMessagesType"] = "text";
+    if (!UserDefaults["ComposeMessagesType"])
+      UserDefaults["ComposeMessagesType"] = "text";
 
-  onComposeMessagesTypeChange ();
+    onComposeMessagesTypeChange ();
+  }
 }
 
 function onReplyPlacementListChange() {

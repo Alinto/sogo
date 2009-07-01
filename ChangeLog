@@ -1,3 +1,8 @@
+2009-07-01  Cyril Robert <crobert@inverse.ca>
+
+	* SoObjects/SOGo/SOGoGCSFolder.m: Remove color from user settings on
+	unsubscribe.
+
 2009-06-30  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/MailPartViewers/UIxMailPartICalActions.m
@@ -11,10 +16,23 @@
 	* SoObjects/SOGo/NSArray+Utilities.m ([NSArray
 	-hasRangeIntersection:]): fixed error in range comparison.
 
+2009-06-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-davCalendarMultiget, -davCalendarQuery): certain dav attribute
+	methods do not necessitate additional fields, we declare their
+	corresponding fields to "". Also, we make sure those fake fields
+	are not specified in the SQL query and we ensure all the fields
+	are only requested once each.
+	(-davCalendarComponentSet): we need to retain the returned
+	array to avoid a crash during the next access to the attribute.
+
 2009-06-30  Cyril Robert <crobert@inverse.ca>
 
 	* UI/WebServerResources/MailerUI.js: Added drag & drop support!
 	* UI/MailPartViewers/UIxMailPartHTMLViewer.m: Removed an extra NSLog
+	* UI/MailerUI/UIxMailListView.m: Added support for "Size" column, fixed a
+	bug when number of columns != 7.
 
 2009-06-29  Cyril Robert <crobert@inverse.ca>
 
