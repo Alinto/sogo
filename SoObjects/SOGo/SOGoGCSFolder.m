@@ -651,9 +651,9 @@ static NSArray *childRecordFields = nil;
 
 #warning this code should be cleaned up
 - (void) _subscribeUser: (SOGoUser *) subscribingUser
-	       reallyDo: (BOOL) reallyDo
+               reallyDo: (BOOL) reallyDo
      fromMailInvitation: (BOOL) isMailInvitation
-	     inResponse: (WOResponse *) response
+             inResponse: (WOResponse *) response
 {
   NSMutableArray *folderSubscription;
   NSString *subscriptionPointer, *mailInvitationURL;
@@ -664,101 +664,105 @@ static NSArray *childRecordFields = nil;
     {
       [response setStatus: 403];
       [response appendContentString:
-		 @"You cannot (un)subscribe to a folder that you own!"];
+        @"You cannot (un)subscribe to a folder that you own!"];
     }
   else
     {
       ud = [subscribingUser userSettings];
       moduleSettings = [ud objectForKey: [container nameInContainer]];
       if (!(moduleSettings
-	    && [moduleSettings isKindOfClass: [NSMutableDictionary class]]))
-	{
-	  moduleSettings = [NSMutableDictionary dictionary];
-	  [ud setObject: moduleSettings forKey: [container nameInContainer]];
-	}
+            && [moduleSettings isKindOfClass: [NSMutableDictionary class]]))
+        {
+          moduleSettings = [NSMutableDictionary dictionary];
+          [ud setObject: moduleSettings forKey: [container nameInContainer]];
+        }
 
       folderSubscription
-	= [moduleSettings objectForKey: @"SubscribedFolders"];
+        = [moduleSettings objectForKey: @"SubscribedFolders"];
       if (!(folderSubscription
-	    && [folderSubscription isKindOfClass: [NSMutableArray class]]))
-	{
-	  folderSubscription = [NSMutableArray array];
-	  [moduleSettings setObject: folderSubscription
-			  forKey: @"SubscribedFolders"];
-	}
+            && [folderSubscription isKindOfClass: [NSMutableArray class]]))
+        {
+          folderSubscription = [NSMutableArray array];
+          [moduleSettings setObject: folderSubscription
+                             forKey: @"SubscribedFolders"];
+        }
 
       subscriptionPointer = [self folderReference];
       if (reallyDo)
-	[folderSubscription addObjectUniquely: subscriptionPointer];
+        [folderSubscription addObjectUniquely: subscriptionPointer];
       else
-	[folderSubscription removeObject: subscriptionPointer];
+        {
+          [[moduleSettings objectForKey: @"FolderColors"] 
+            removeObjectForKey: subscriptionPointer];
+          [folderSubscription removeObject: subscriptionPointer];
+        }
 
       [ud synchronize];
 
       if (isMailInvitation)
-	{
-	  mailInvitationURL = [[self soURLToBaseContainerForCurrentUser]
-				absoluteString];
-	  [response setStatus: 302];
-	  [response setHeader: mailInvitationURL
-		    forKey: @"location"];
-	}
+        {
+          mailInvitationURL = [[self soURLToBaseContainerForCurrentUser]
+            absoluteString];
+          [response setStatus: 302];
+          [response setHeader: mailInvitationURL
+                       forKey: @"location"];
+        }
       else
-	[response setStatus: 204];
+        [response setStatus: 204];
     }
 }
 
 - (WOResponse *) subscribe: (BOOL) reallyDo
-	      inTheNamesOf: (NSArray *) delegatedUsers
-	fromMailInvitation: (BOOL) isMailInvitation
-		 inContext: (WOContext *) localContext
+              inTheNamesOf: (NSArray *) delegatedUsers
+        fromMailInvitation: (BOOL) isMailInvitation
+                 inContext: (WOContext *) localContext
 {
   WOResponse *response;
   SOGoUser *currentUser;
 
   response = [localContext response];
   [response setHeader: @"text/plain; charset=utf-8"
-	    forKey: @"Content-Type"];
+    forKey: @"Content-Type"];
 
   currentUser = [localContext activeUser];
 
   if ([delegatedUsers count])
     {
       if (![currentUser isSuperUser])
-	{
-	  [response setStatus: 403];
-	  [response appendContentString:
-		      @"You cannot subscribe another user to any folder"
-		    @" unless you are a super-user."];
-	}
+        {
+          [response setStatus: 403];
+          [response appendContentString:
+            @"You cannot subscribe another user to any folder"
+            @" unless you are a super-user."];
+        }
       else
-	{
-	  // The current user is a superuser...
-	  SOGoUser *subscriptionUser;
-	  int i;
+        {
+          // The current user is a superuser...
+          SOGoUser *subscriptionUser;
+          int i;
 
-	  for (i = 0; i < [delegatedUsers count]; i++)
-	    {
-	      // We trust the passed user ID here as it might generate tons or LDAP
-	      // call but more importantly, cache propagation calls that will create
-	      // contention on GDNC.
-	      subscriptionUser = [SOGoUser userWithLogin: [delegatedUsers objectAtIndex: i]
-					   roles: nil
-					   trust: YES];
-	      
-	      [self _subscribeUser: subscriptionUser
-		    reallyDo: reallyDo
-		    fromMailInvitation: isMailInvitation
-		    inResponse: response];
-	    }
-	}
+          for (i = 0; i < [delegatedUsers count]; i++)
+            {
+              // We trust the passed user ID here as it might generate tons or LDAP
+              // call but more importantly, cache propagation calls that will create
+              // contention on GDNC.
+              subscriptionUser = [SOGoUser userWithLogin: [delegatedUsers objectAtIndex: i]
+                                                   roles: nil
+                                                   trust: YES];
+
+              [self _subscribeUser: subscriptionUser
+                          reallyDo: reallyDo
+                fromMailInvitation: isMailInvitation
+                        inResponse: response];
+            }
+        }
     }
   else
     {
       [self _subscribeUser: currentUser
-	    reallyDo: reallyDo
-	    fromMailInvitation: isMailInvitation
-	    inResponse: response];
+                  reallyDo: reallyDo
+        fromMailInvitation: isMailInvitation
+                inResponse: response];
     }
 
   return response;
@@ -773,9 +777,9 @@ static NSArray *childRecordFields = nil;
   attrs = [[document documentElement] attributes];
 
   o = [attrs namedItem: @"users"];
-  
+
   if (o) return [[o nodeValue] componentsSeparatedByString: @","];
- 
+
   return nil;
 }
 
@@ -783,16 +787,16 @@ static NSArray *childRecordFields = nil;
 {
   return [self subscribe: YES
             inTheNamesOf: [self _parseDAVDelegatedUser: queryContext]
-               fromMailInvitation: NO
-	       inContext: queryContext];
+      fromMailInvitation: NO
+               inContext: queryContext];
 }
 
 - (id <WOActionResults>) davUnsubscribe: (WOContext *) queryContext
 {
   return [self subscribe: NO
             inTheNamesOf: [self _parseDAVDelegatedUser: queryContext]
-	       fromMailInvitation: NO
-	       inContext: queryContext];
+      fromMailInvitation: NO
+               inContext: queryContext];
 }
 
 - (NSDictionary *) davSQLFieldsTable
@@ -828,7 +832,7 @@ static NSArray *childRecordFields = nil;
         [davSQLFields setObject: sqlField forKey: property];
       else
         [self errorWithFormat: @"DAV property '%@' has no matching SQL field,"
-              @" response could be incomplete", property];
+          @" response could be incomplete", property];
     }
 
   return davSQLFields;
@@ -857,9 +861,9 @@ static NSArray *childRecordFields = nil;
 
   if (qualifier)
     fetchSpec = [EOFetchSpecification
-                   fetchSpecificationWithEntityName: [folder folderName]
-                                          qualifier: qualifier
-                                      sortOrderings: nil];
+      fetchSpecificationWithEntityName: [folder folderName]
+                             qualifier: qualifier
+                         sortOrderings: nil];
   else
     fetchSpec = nil;
 
@@ -882,7 +886,7 @@ static NSArray *childRecordFields = nil;
   NSString *currentField;
 
   fields = [NSMutableArray arrayWithObjects: @"c_name", @"c_component",
-                           @"c_creationdate", @"c_lastmodified", nil];
+         @"c_creationdate", @"c_lastmodified", nil];
   addFields = [[properties allValues] objectEnumerator];
   while ((currentField = [addFields nextObject]))
     if ([currentField length])
@@ -891,17 +895,17 @@ static NSArray *childRecordFields = nil;
   if (syncToken)
     {
       qualifier = [EOQualifier qualifierWithQualifierFormat:
-                                 @"c_lastmodified > %d", syncToken];
+        @"c_lastmodified > %d", syncToken];
       mRecords = [NSMutableArray arrayWithArray: [self _fetchFields: fields
-                                                      withQualifier: qualifier
-                                                      ignoreDeleted: YES]];
+                                  withQualifier: qualifier
+                                  ignoreDeleted: YES]];
       qualifier = [EOQualifier qualifierWithQualifierFormat:
-                                 @"c_lastmodified > %d and c_deleted == 1",
-                               syncToken];
+        @"c_lastmodified > %d and c_deleted == 1",
+        syncToken];
       fields = [NSMutableArray arrayWithObjects: @"c_name", @"c_deleted", nil];
       [mRecords addObjectsFromArray: [self _fetchFields: fields
-                                          withQualifier: qualifier
-                                          ignoreDeleted: NO]];
+                      withQualifier: qualifier
+                      ignoreDeleted: NO]];
       records = mRecords;
     }
   else
@@ -948,30 +952,30 @@ static NSArray *childRecordFields = nil;
     {
       if (selectors[count]
           && [sogoObject respondsToSelector: selectors[count]])
-        result = [sogoObject performSelector: selectors[count]];
+       result = [sogoObject performSelector: selectors[count]];
       else
         result = nil;
 
       if (result)
         {
           propContent = [[davProperties objectAtIndex: count]
-                          asWebDAVTupleWithContent: result];
+                             asWebDAVTupleWithContent: result];
           [properties200 addObject: propContent];
         }
       else
         {
           propContent = [[davProperties objectAtIndex: count]
-                          asWebDAVTuple];
+            asWebDAVTuple];
           [properties404 addObject: propContent];
         }
     }
 
   if ([properties200 count])
     [propstats addObject: [self _davPropstat: properties200
-                                  withStatus: @"HTTP/1.1 200 OK"]];
+              withStatus: @"HTTP/1.1 200 OK"]];
   if ([properties404 count])
     [propstats addObject: [self _davPropstat: properties404
-                                  withStatus: @"HTTP/1.1 404 Not Found"]];
+              withStatus: @"HTTP/1.1 404 Not Found"]];
 
   return propstats;
 }
@@ -983,15 +987,15 @@ static NSArray *childRecordFields = nil;
                                     andBaseURL: (NSString *) baseURL
 {
   static NSString *status[] = { @"HTTP/1.1 404 Not Found",
-                                @"HTTP/1.1 201 Created",
-                                @"HTTP/1.1 200 OK" };
+      @"HTTP/1.1 201 Created",
+      @"HTTP/1.1 200 OK" };
   NSMutableArray *children;
   NSString *href;
   unsigned int statusIndex;
 
   children = [NSMutableArray arrayWithCapacity: 3];
   href = [NSString stringWithFormat: @"%@%@",
-                   baseURL, [record objectForKey: @"c_name"]];
+      baseURL, [record objectForKey: @"c_name"]];
   [children addObject: davElementWithContent (@"href", XMLNS_WEBDAV,
                                               href)];
   if (syncToken)
@@ -1010,14 +1014,14 @@ static NSArray *childRecordFields = nil;
   else
     statusIndex = 1;
 
-//   NSLog (@"webdav sync: %@ (%@)", href, status[statusIndex]);
+  //   NSLog (@"webdav sync: %@ (%@)", href, status[statusIndex]);
   [children addObject: davElementWithContent (@"status", XMLNS_WEBDAV,
                                               status[statusIndex])];
   if (statusIndex)
     [children
       addObjectsFromArray: [self _davPropstatsWithProperties: properties
-                                          andMethodSelectors: selectors
-                                                  fromRecord: record]];
+       andMethodSelectors: selectors
+               fromRecord: record]];
 
   return davElementWithContent (@"sync-response", XMLNS_WEBDAV, children);
 }
@@ -1055,10 +1059,10 @@ static NSArray *childRecordFields = nil;
       if (newToken < currentLM)
         newToken = currentLM;
       [syncResponses addObject: [self _syncResponseWithProperties: properties
-                                               andMethodSelectors: selectors
-                                                       fromRecord: record
-                                                        withToken: syncToken
-                                                       andBaseURL: baseURL]];
+            andMethodSelectors: selectors
+                    fromRecord: record
+                     withToken: syncToken
+                    andBaseURL: baseURL]];
     }
 
   NSZoneFree (NULL, selectors);
@@ -1130,9 +1134,9 @@ static NSArray *childRecordFields = nil;
          not "ObjectCreator" because the latter doesn't imply we can read
          properties from subobjects or even know their existence. */
       userCanAccessAllObjects = ([[self ownerInContext: localContext]
-                                   isEqualToString: login]
+                                       isEqualToString: login]
                                  || [[self aclsForUser: login]
-                                      containsObject: SOGoRole_ObjectEraser]);
+                                        containsObject: SOGoRole_ObjectEraser]);
     }
 }
 
@@ -1145,7 +1149,7 @@ static NSArray *childRecordFields = nil;
   NSArray *records, *uids;
 
   qs = [NSString stringWithFormat: @"c_object = '/%@'",
-		 [objectPathArray componentsJoinedByString: @"/"]];
+     [objectPathArray componentsJoinedByString: @"/"]];
   qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
   records = [[self ocsFolder] fetchAclMatchingQualifier: qualifier];
   uids = [[records valueForKey: @"c_uid"] uniqueObjects];
@@ -1154,7 +1158,7 @@ static NSArray *childRecordFields = nil;
 }
 
 - (NSArray *) _fetchAclsForUser: (NSString *) uid
-		forObjectAtPath: (NSString *) objectPath
+                forObjectAtPath: (NSString *) objectPath
 {
   EOQualifier *qualifier;
   NSArray *records;
@@ -1163,7 +1167,7 @@ static NSArray *childRecordFields = nil;
 
   // We look for the exact uid or any uid that begins with "@" (corresponding to groups)
   qs = [NSString stringWithFormat: @"(c_object = '/%@') AND (c_uid = '%@' OR c_uid LIKE '@%%')",
-		 objectPath, uid];
+     objectPath, uid];
   qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
   records = [[self ocsFolder] fetchAclMatchingQualifier: qualifier];
   acls = [NSMutableArray array];
@@ -1180,31 +1184,31 @@ static NSArray *childRecordFields = nil;
       record = [records objectAtIndex: i];
       currentUid = [record valueForKey: @"c_uid"];
       if ([currentUid isEqualToString: uid])
-	[acls addObject: [record valueForKey: @"c_role"]];
+                      [acls addObject: [record valueForKey: @"c_role"]];
       else
-	{
-	  group = [SOGoGroup groupWithIdentifier: currentUid];
-	  if (group)
-	    {
-	      members = [group members];
-	      for (j = 0; j < [members count]; j++)
-		{
-		  user = [members objectAtIndex: j];
-		  if ([[user login] isEqualToString: uid])
-		    {
-		      [acls addObject: [record valueForKey: @"c_role"]];
-		      break;
-		    }
-		}
-	    }
-	}
+        {
+          group = [SOGoGroup groupWithIdentifier: currentUid];
+          if (group)
+            {
+              members = [group members];
+              for (j = 0; j < [members count]; j++)
+                {
+                  user = [members objectAtIndex: j];
+                  if ([[user login] isEqualToString: uid])
+                    {
+                      [acls addObject: [record valueForKey: @"c_role"]];
+                      break;
+                    }
+                }
+            }
+        }
     }
- 
+
   return [acls uniqueObjects];
 }
 
 - (void) _cacheRoles: (NSArray *) roles
-	     forUser: (NSString *) uid
+             forUser: (NSString *) uid
      forObjectAtPath: (NSString *) objectPath
 {
   NSMutableDictionary *aclsForObject;
@@ -1239,23 +1243,23 @@ static NSArray *childRecordFields = nil;
     {
       acls = [self _fetchAclsForUser: uid forObjectAtPath: objectPath];
       if (!acls)
-	acls = [NSArray array];
+        acls = [NSArray array];
       [self _cacheRoles: acls forUser: uid forObjectAtPath: objectPath];
     }
 
   if (!([acls count] || [uid isEqualToString: defaultUserID]))
-    acls = [self aclsForUser: defaultUserID
-		 forObjectAtPath: objectPathArray];
+                    acls = [self aclsForUser: defaultUserID
+                             forObjectAtPath: objectPathArray];
 
   // If we still don't have ACLs defined for this particular resource,
   // let's go get the system-wide defaults, if any.
   if (![acls count])
     {
       if ([[container nameInContainer] isEqualToString: @"Calendar"]
-          || [[container nameInContainer] isEqualToString: @"Contacts"])
-	acls = [[NSUserDefaults standardUserDefaults] 
-		 objectForKey: [NSString stringWithFormat: @"SOGo%@DefaultRoles",
-					 [container nameInContainer]]];
+       || [[container nameInContainer] isEqualToString: @"Contacts"])
+        acls = [[NSUserDefaults standardUserDefaults] 
+          objectForKey: [NSString stringWithFormat: @"SOGo%@DefaultRoles",
+          [container nameInContainer]]];
     }
 
   return acls;
@@ -1275,33 +1279,33 @@ static NSArray *childRecordFields = nil;
     {
       usersAndGroups = [NSMutableArray arrayWithArray: users];
       for (i = 0; i < [usersAndGroups count]; i++)
-	{
-	  uid = [usersAndGroups objectAtIndex: i];
-	  if (![uid hasPrefix: @"@"])
-	    {
-	      // Prefix the UID with the character "@" when dealing with a group
-	      group = [SOGoGroup groupWithIdentifier: uid];
-	      if (group)
-		[usersAndGroups replaceObjectAtIndex: i
-				withObject: [NSString stringWithFormat: @"@%@", uid]];
-	    }
-	}
+        {
+          uid = [usersAndGroups objectAtIndex: i];
+          if (![uid hasPrefix: @"@"])
+            {
+              // Prefix the UID with the character "@" when dealing with a group
+              group = [SOGoGroup groupWithIdentifier: uid];
+              if (group)
+                [usersAndGroups replaceObjectAtIndex: i
+                                          withObject: [NSString stringWithFormat: @"@%@", uid]];
+            }
+        }
       objectPath = [objectPathArray componentsJoinedByString: @"/"];
       aclsForObject = [aclCache objectForKey: objectPath];
       if (aclsForObject)
-	[aclsForObject removeObjectsForKeys: usersAndGroups];
+        [aclsForObject removeObjectsForKeys: usersAndGroups];
       uids = [usersAndGroups componentsJoinedByString: @"') OR (c_uid = '"];
       qs = [NSString
-	     stringWithFormat: @"(c_object = '/%@') AND ((c_uid = '%@'))",
-	     objectPath, uids];
+        stringWithFormat: @"(c_object = '/%@') AND ((c_uid = '%@'))",
+        objectPath, uids];
       qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
       [[self ocsFolder] deleteAclMatchingQualifier: qualifier];
     }
 }
 
 - (void) _commitRoles: (NSArray *) roles
-	       forUID: (NSString *) uid
-	    forObject: (NSString *) objectPath
+               forUID: (NSString *) uid
+            forObject: (NSString *) objectPath
 {
   EOAdaptorChannel *channel;
   GCSFolder *folder;
@@ -1315,10 +1319,10 @@ static NSArray *childRecordFields = nil;
   while ((currentRole = [userRoles nextObject]))
     {
       SQL = [NSString stringWithFormat: @"INSERT INTO %@"
-		      @" (c_object, c_uid, c_role)"
-		      @" VALUES ('/%@', '%@', '%@')",
-		      [folder aclTableName],
-		      objectPath, uid, currentRole];
+        @" (c_object, c_uid, c_role)"
+        @" VALUES ('/%@', '%@', '%@')",
+        [folder aclTableName],
+        objectPath, uid, currentRole];
       [channel evaluateExpressionX: SQL];	    
     }
 
@@ -1340,17 +1344,17 @@ static NSArray *childRecordFields = nil;
       // Prefix the UID with the character "@" when dealing with a group
       group = [SOGoGroup groupWithIdentifier: uid];
       if (group)
-	aUID = [NSString stringWithFormat: @"@%@", uid];
+        aUID = [NSString stringWithFormat: @"@%@", uid];
     }
   [self removeAclsForUsers: [NSArray arrayWithObject: aUID]
-        forObjectAtPath: objectPathArray];
+           forObjectAtPath: objectPathArray];
 
   newRoles = [NSMutableArray arrayWithArray: roles];
   [newRoles removeObject: SOGoRole_AuthorizedSubscriber];
   [newRoles removeObject: SOGoRole_None];
   objectPath = [objectPathArray componentsJoinedByString: @"/"];
   [self _cacheRoles: newRoles forUser: uid
-	forObjectAtPath: objectPath];
+    forObjectAtPath: objectPath];
   if (![newRoles count])
     [newRoles addObject: SOGoRole_None];
 
@@ -1375,11 +1379,11 @@ static NSArray *childRecordFields = nil;
     {
       containerAcls = [container aclsForUser: uid];
       if ([containerAcls count] > 0)
-	{
+        {
 #warning this should be checked
-	  if ([containerAcls containsObject: SOGoRole_ObjectEraser])
-	    [acls addObject: SOGoRole_ObjectEraser];
-	}
+          if ([containerAcls containsObject: SOGoRole_ObjectEraser])
+                            [acls addObject: SOGoRole_ObjectEraser];
+        }
     }
 
   return acls;
@@ -1389,14 +1393,14 @@ static NSArray *childRecordFields = nil;
           forUser: (NSString *) uid
 {
   return [self setRoles: roles
-               forUser: uid
-               forObjectAtPath: [self pathArrayToFolder]];
+                forUser: uid
+        forObjectAtPath: [self pathArrayToFolder]];
 }
 
 - (void) removeAclsForUsers: (NSArray *) users
 {
   return [self removeAclsForUsers: users
-               forObjectAtPath: [self pathArrayToFolder]];
+                  forObjectAtPath: [self pathArrayToFolder]];
 }
 
 - (NSString *) defaultUserID
@@ -1409,7 +1413,7 @@ static NSArray *childRecordFields = nil;
 - (void) appendAttributesToDescription: (NSMutableString *) _ms
 {
   [super appendAttributesToDescription:_ms];
-  
+
   [_ms appendFormat:@" ocs=%@", [self ocsPath]];
 }
 

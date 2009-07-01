@@ -1,3 +1,8 @@
+2009-07-01  Cyril Robert <crobert@inverse.ca>
+
+	* SoObjects/SOGo/SOGoGCSFolder.m: Remove color from user settings on
+	unsubscribe.
+
 2009-06-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
