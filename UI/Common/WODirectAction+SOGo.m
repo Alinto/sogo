@@ -40,7 +40,7 @@
   response = [context response];
   [response setStatus: status];
   [response setHeader: @"text/plain; charset=utf-8" 
-	    forKey: @"Content-Type"];
+	    forKey: @"content-type"];
 
   return response;
 }
