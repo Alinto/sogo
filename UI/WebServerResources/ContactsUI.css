@@ -154,7 +154,8 @@ DIV#contactFoldersList LI
     background-repeat: no-repeat;
     background-position: 4px 2px;
     line-height: 20px;
-    padding-left: 20px;
+    height: 20px;
+    padding-left: 22px;
     margin: 0px;
     width: auto;
     white-space: nowrap;
