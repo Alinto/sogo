@@ -459,7 +459,7 @@ static NSString *spoolFolder = nil;
   id result;
   NGImap4Client *client;
 
-	client = [[self imap4Connection] client];
+  client = [[self imap4Connection] client];
   
   result = [self copyUIDs: uids toFolder: destinationFolder inContext: localContext];
   
