@@ -139,13 +139,33 @@
 			 withCO: (SOGoMailFolder *) co
 {
   NSURL *destURL;
-  NSString *trashFolderName, *folderName, *path;
+  NSString *trashFolderName, *folderName, *path, *testPath;
+  NGImap4Connection *connection;
+  int i = 1;
+  id test;
+
+  connection = [co imap4Connection];
 
   folderName = [[srcURL path] lastPathComponent];
   trashFolderName
     = [[co mailAccountFolder] trashFolderNameInContext: context];
   path = [NSString stringWithFormat: @"/%@/%@",
 		   trashFolderName, folderName];
+  testPath = path;
+  while ( i < 10 )
+    {
+      test = [[connection client] select: testPath];
+      if (test && [[test objectForKey: @"result"] boolValue])
+        {
+          testPath = [NSString stringWithFormat: @"%@%x", path, i];
+          i++;
+        }
+      else
+        {
+          path = testPath;
+          break;
+        }
+    }
   destURL = [[NSURL alloc] initWithScheme: [srcURL scheme]
 			   host: [srcURL host] path: path];
   [destURL autorelease];

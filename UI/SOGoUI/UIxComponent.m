@@ -602,7 +602,6 @@ static BOOL uixDebugEnabled = NO;
 
   response = [context response];
   [response setStatus: status];
-  [response setHeader: @"text/plain" forKey: @"Content-Type"];
 
   return response;
 }
