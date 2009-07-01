@@ -1,7 +1,9 @@
 /* -*- Mode: java; tab-width: 2; c-tab-always-indent: t; indent-tabs-mode: t; c-basic-offset: 2 -*- */
 
 function savePreferences(sender) {
-  $("signaturePlacementList").disabled=false;
+  var sigList = $("signaturePlacementList");
+  if (sigList)
+    sigList.disabled=false;
 	$("mainForm").submit();
 
 	return false;
