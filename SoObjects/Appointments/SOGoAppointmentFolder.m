@@ -64,6 +64,7 @@
 #import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoWebDAVAclManager.h>
 #import <SOGo/SOGoWebDAVValue.h>
+#import <SOGo/WORequest+SOGo.h>
 
 #import "iCalEntityObject+SOGo.h"
 #import "SOGoAppointmentObject.h"
@@ -1937,6 +1938,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   id obj;
   NSString *url;
   BOOL handledLater;
+  WORequest *rq;
 
   /* first check attributes directly bound to the application */
   handledLater = [self requestNamedIsHandledLater: _key];
@@ -1947,9 +1949,11 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       obj = [super lookupName:_key inContext:_ctx acquire:NO];
       if (!obj)
         {
-	  if ([self isValidContentName:_key])
+          rq = [_ctx request];
+	  if ([self isValidContentName:_key]
+              && [rq handledByDefaultHandler])
             {
-	      url = [[[_ctx request] uri] urlWithoutParameters];
+	      url = [[rq uri] urlWithoutParameters];
 	      if ([url hasSuffix: @"AsTask"])
 		obj = [SOGoTaskObject objectWithName: _key
 				      inContainer: self];
