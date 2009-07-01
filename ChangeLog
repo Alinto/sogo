@@ -8,6 +8,8 @@
 
 	* SoObjects/SOGo/SOGoGCSFolder.m: Remove color from user settings on
 	unsubscribe.
+	* UI/MailerUI/UIxMailFolderActions.m (_trashedURLOfFolder:withCO:): Fixed
+	issue when deleting a folder with the same name as one already in the Trash.
 
 2009-06-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
