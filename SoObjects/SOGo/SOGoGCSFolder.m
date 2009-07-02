@@ -658,7 +658,7 @@ static NSArray *childRecordFields = nil;
   NSMutableArray *folderSubscription;
   NSString *subscriptionPointer, *mailInvitationURL;
   NSUserDefaults *ud;
-  NSMutableDictionary *moduleSettings;
+  NSMutableDictionary *moduleSettings, *tmp;
 
   if ([owner isEqualToString: [subscribingUser login]])
     {
@@ -692,8 +692,18 @@ static NSArray *childRecordFields = nil;
         [folderSubscription addObjectUniquely: subscriptionPointer];
       else
         {
-          [[moduleSettings objectForKey: @"FolderColors"] 
-            removeObjectForKey: subscriptionPointer];
+          tmp = [moduleSettings objectForKey: @"FolderColors"];
+          if (tmp)
+            [tmp removeObjectForKey: subscriptionPointer];
+
+          tmp = [moduleSettings objectForKey: @"InactiveFolders"];
+          if (tmp)
+            [tmp removeObjectForKey: subscriptionPointer];
+
+          tmp = [moduleSettings objectForKey: @"FolderSyncTags"];
+          if (tmp)
+            [tmp removeObjectForKey: subscriptionPointer];
+
           [folderSubscription removeObject: subscriptionPointer];
         }
 

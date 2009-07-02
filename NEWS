@@ -3,14 +3,17 @@
 - improved search behavior of users folders (UIxContactsUserFolders)
 - the editor window in the web interface now appears directly when editing an exception occurence of a repeating event (no more dialog window, as in Lightning)
 - implemented the webdav sync spec from Cyrus Daboo, in order to reduce useless payload on databases
+- greatly reduced the number of SQL requests performed in many situations
 - added HTML composition in the web mail module
-- added drag and drop in the addressbook module
+- added drag and drop in the address book and email modules
+- improved the attendees modification dialog by implementing slots management
+- added the capability to display the size of messages in the mail module
 
 1.0-20090605 (1.0.2)
 --------------------
 - basic alarm implementation for the web interface
 - added Welsh translation, thanks to Iona Bailey
-- added Russh translation, thanks to Alex Kabakaev
+- added Russian translation, thanks to Alex Kabakaev
 - added support for Oracle RAC
 - added "scope" parameter to LDAP sources
 - now possible to use SSL (or TLS) for LDAP sources
