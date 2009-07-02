@@ -6,8 +6,9 @@
 - greatly reduced the number of SQL requests performed in many situations
 - added HTML composition in the web mail module
 - added drag and drop in the addressbook and mail modules
-- improved the attendees modification dialog by implementing slots management
+- improved the attendees modification dialog by implementing slots management and zooming
 - added the capability to display the size of messages in the mail module
+- added the capability of limiting the number of returned events from DAV requests
 
 1.0-20090605 (1.0.2)
 --------------------

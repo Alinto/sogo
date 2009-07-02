@@ -4,6 +4,7 @@ function savePreferences(sender) {
   var sigList = $("signaturePlacementList");
   if (sigList)
     sigList.disabled=false;
+
 	$("mainForm").submit();
 
 	return false;
@@ -22,6 +23,9 @@ function _setupEvents(enable) {
         widget.stopObserving("change", onChoiceChanged);
     }
   }
+
+  $("replyPlacementList").observe ("change", onReplyPlacementListChange);
+  $("composeMessagesType").observe ("change", onComposeMessagesTypeChange);
 }
 
 function onChoiceChanged(event) {
@@ -37,26 +41,6 @@ function initPreferences() {
     initAdditionalPreferences();
 
   if ($("signature")) {
-    CKEDITOR.replace('signature',
-                     {
-                        skin: "v2",
-                        height: "90px",
-                        toolbar :
-                        [['Bold', 'Italic', '-', 'Link', 
-                          'Font','FontSize','-','TextColor',
-                          'BGColor']
-                        ] 
-                     }
-                    );
-
-    $("replyPlacementList").observe ("change", onReplyPlacementListChange);
-    onReplyPlacementListChange();
-
-    $("composeMessagesType").observe ("change", onComposeMessagesTypeChange);
-
-    if (!UserDefaults["ComposeMessagesType"])
-      UserDefaults["ComposeMessagesType"] = "text";
-
     onComposeMessagesTypeChange ();
   }
 }
@@ -76,19 +60,27 @@ function onComposeMessagesTypeChange () {
   var textArea = $('signature');
   var editor = $('cke_signature');
 
-  if (!editor) {
-    setTimeout ("onComposeMessagesTypeChange ()", 10);
-    return;
-  }
- 
+  // Textmode
   if ($("composeMessagesType").value == 0) {
-    textArea.style.display = 'block';
-    textArea.style.visibility = '';
-    editor.style.display = 'none';
+    if (editor) {
+      CKEDITOR.instances.signature.removeListener ()
+      CKEDITOR.instances.signature.destroy (false);
+      CKEDITOR.instances.signature = null;
+      delete (CKEDITOR.instances.signature);
+    }
   }
   else {
-    textArea.style.display = 'none';
-    editor.style.display = 'block';
+    CKEDITOR.replace('signature',
+                     {
+                        skin: "v2",
+                        height: "90px",
+                        toolbar :
+                        [['Bold', 'Italic', '-', 'Link', 
+                          'Font','FontSize','-','TextColor',
+                          'BGColor']
+                        ] 
+                     }
+                    );
   }
 }
 

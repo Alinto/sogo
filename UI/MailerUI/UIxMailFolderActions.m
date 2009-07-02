@@ -52,7 +52,7 @@
   WOResponse *response;
   NGImap4Connection *connection;
   NSException *error;
-  NSString *folderName;
+  NSString *folderName, *path;
 
   co = [self clientObject];
 
@@ -62,12 +62,17 @@
       connection = [co imap4Connection];
       error = [connection createMailbox: folderName atURL: [co imap4URL]];
       if (error)
-	{
-	  response = [self responseWithStatus: 500];
-	  [response appendContentString: @"Unable to create folder."];
-	}
+        {
+          response = [self responseWithStatus: 500];
+          [response appendContentString: @"Unable to create folder."];
+        }
       else
-	response = [self responseWith204];
+        {
+          path = [NSString stringWithFormat: @"%@%@", 
+                  [[co imap4URL] path], folderName];
+          [[connection client] subscribe: path];
+          response = [self responseWith204];
+        }
     }
   else
     {
