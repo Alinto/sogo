@@ -799,8 +799,8 @@
         arrayForKey: @"SOGoMailListViewColumnsOrder"];
       if (![defaultsOrder count])
         defaultsOrder = [NSArray arrayWithObjects: @"Invisible",
-                      @"Attachment", @"Subject", @"From",
-                      @"Unread", @"Date", @"Priority", nil];
+				 @"Attachment", @"Subject", @"From",
+				 @"Unread", @"Date", @"Priority", @"Size", nil];
     }
   userDefinedOrder = [NSMutableArray arrayWithArray: defaultsOrder];
 

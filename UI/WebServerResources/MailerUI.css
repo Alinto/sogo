@@ -614,28 +614,24 @@ TABLE#messageList TD.messageFlagColumn IMG
   height: 14px; }
 
 TD#subjectHeader,
-TABLE#messageList TD.tbtv_subject_headercell,
-TABLE#messageList TD.mailer_unreadmailsubject,
 TABLE#messageList TD.mailer_readmailsubject
 { /*width: 40%;*/
   min-width: 35%; }
 
 TD#fromHeader,
-TABLE#messageList TD.tbtv_from_headercell,
 TABLE#messageList TD.messageAddressColumn
 { /*width: 35%;*/
   min-width: 30%;
   overflow: hidden; }
 
-TD#dateHeader,
-TABLE#messageList TD.tbtv_date_headercell
+TD#dateHeader
 { /*width: 25%;*/
   overflow: hidden; }
   
 TD#priorityHeader,
-TABLE#messageList TD.tbtv_priority_headercell
+TD#sizeHeader
 { /*width: 25%;*/
-  width: 10%;
+  width: 7%;
   overflow: hidden; }
 
 TABLE#messageList TR._selected TD
