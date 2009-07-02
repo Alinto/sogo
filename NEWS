@@ -5,7 +5,7 @@
 - implemented the webdav sync spec from Cyrus Daboo, in order to reduce useless payload on databases
 - greatly reduced the number of SQL requests performed in many situations
 - added HTML composition in the web mail module
-- added drag and drop in the address book and email modules
+- added drag and drop in the addressbook and mail modules
 - improved the attendees modification dialog by implementing slots management
 - added the capability to display the size of messages in the mail module
 
