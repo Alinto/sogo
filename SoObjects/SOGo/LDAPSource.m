@@ -906,6 +906,8 @@ static NSLock *lock;
 	  NSString *s;
 	  
 	  // FIXME
+
+	  // we should support MailFieldNames?
 	  s = [NSString stringWithFormat: @"(%@='%@')",
                         theAttribute, SafeLDAPCriteria (theValue)];
 	  qualifier = [EOQualifier qualifierWithQualifierFormat: s];
