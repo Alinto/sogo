@@ -4043,7 +4043,18 @@ Index: sope-appserver/NGObjWeb/ChangeLog
 ===================================================================
 --- sope-appserver/NGObjWeb/ChangeLog	(revision 1660)
 +++ sope-appserver/NGObjWeb/ChangeLog	(working copy)
-@@ -1,3 +1,11 @@
+@@ -1,3 +1,22 @@
++2009-07-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
++
++	* WOMessage.m (-setHeaders:, -setHeader:forKey:, headerForKey:,
++	-appendHeader:forKey:, -appendHeaders:forKey:, setHeaders:forKey:,
++	-headersForKey:): convert the specified header key to lowercase,
++	to ensure they are managed case-insensitively.
++	* WOHttpAdaptor/WOHttpTransaction.m
++	(-deliverResponse:toRequest:onStream:): if the content-type is
++	specified and already has "text/plain" as prefix, we don't
++	override it.
++
 +2009-07-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 +
 +	* WOHttpAdaptor/WOHttpTransaction.m
@@ -4154,6 +4165,88 @@ Index: sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.h
    BOOL          sidInUrl;
  
    /* 'ivar' associations */
+Index: sope-appserver/NGObjWeb/WOMessage.m
+===================================================================
+--- sope-appserver/NGObjWeb/WOMessage.m	(revision 1660)
++++ sope-appserver/NGObjWeb/WOMessage.m	(working copy)
+@@ -182,7 +182,7 @@
+   NSString *key;
+ 
+   keys = [_headers keyEnumerator];
+-  while ((key = [keys nextObject])) {
++  while ((key = [[keys nextObject] lowercaseString])) {
+     id value;
+     
+     value = [_headers objectForKey:key];
+@@ -198,34 +198,39 @@
+ }
+ 
+ - (void)setHeader:(NSString *)_header forKey:(NSString *)_key {
+-  [self->header setObject:[_header stringValue] forKey:_key];
++  [self->header setObject:[_header stringValue]
++                   forKey:[_key lowercaseString]];
+ }
+ - (NSString *)headerForKey:(NSString *)_key {
+-  return [[self->header objectEnumeratorForKey:_key] nextObject];
++  return [[self->header objectEnumeratorForKey:[_key lowercaseString]]
++           nextObject];
+ }
+ 
+ - (void)appendHeader:(NSString *)_header forKey:(NSString *)_key {
+-  [self->header addObject:_header forKey:_key];
++  [self->header addObject:_header forKey:[_key lowercaseString]];
+ }
+ - (void)appendHeaders:(NSArray *)_headers forKey:(NSString *)_key {
+-  [self->header addObjects:_headers forKey:_key];
++  [self->header addObjects:_headers forKey:[_key lowercaseString]];
+ }
+ 
+ - (void)setHeaders:(NSArray *)_headers forKey:(NSString *)_key {
+   NSEnumerator *e;
+   id value;
++  NSString *lowerKey;
+ 
++  lowerKey = [_key lowercaseString];
+   e = [_headers objectEnumerator];
+ 
+-  [self->header removeAllObjectsForKey:_key];
++  [self->header removeAllObjectsForKey:lowerKey];
+   
+   while ((value = [e nextObject]))
+-    [self->header addObject:value forKey:_key];
++    [self->header addObject:value forKey:lowerKey];
+ }
+ - (NSArray *)headersForKey:(NSString *)_key {
+   NSEnumerator *values;
+ 
+-  if ((values = [self->header objectEnumeratorForKey:_key])) {
++  if ((values
++       = [self->header objectEnumeratorForKey:[_key lowercaseString]])) {
+     NSMutableArray *array = nil;
+     id value = nil;
+     
+@@ -243,17 +248,14 @@
+   NSEnumerator *values;
+ 
+   if ((values = [self->header keyEnumerator])) {
+-    NSMutableArray *array  = nil;
++    NSMutableArray *array;
+     id name = nil;
+-    array = [[NSMutableArray alloc] init];
+-    
++    array = [NSMutableArray array];
++
+     while ((name = [values nextObject]))
+       [array addObject:name];
+ 
+-    name = [array copy];
+-    [array release];
+-    
+-    return [name autorelease];
++    return array;
+   }
+   return nil;
+ }
 Index: sope-appserver/NGObjWeb/SoObjects/SoObject.m
 ===================================================================
 --- sope-appserver/NGObjWeb/SoObjects/SoObject.m	(revision 1660)
@@ -4326,15 +4419,25 @@ Index: sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpTransaction.m
      
      doZip = [_response shouldZipResponseToRequest:_request];
      
-@@ -738,7 +739,10 @@
+@@ -738,7 +739,11 @@
      
      /* add content length header */
      
 -    snprintf((char *)buf, sizeof(buf), "%d", [body length]);
-+    if ((length = [body length]) == 0) {
++    if ((length = [body length]) == 0
++        && ![[_response headerForKey: @"content-type"] hasPrefix:@"text/plain"]) {
 +      [_response setHeader:@"text/plain" forKey:@"content-type"];
 +    }
 +    snprintf((char *)buf, sizeof(buf), "%d", length);
      t1 = [[NSString alloc] initWithCString:(char *)buf];
      [_response setHeader:t1 forKey:@"content-length"];
      [t1 release]; t1 = nil;
+@@ -766,7 +771,7 @@
+         NSString *value;
+ 	
+ 	if (!hasConnectionHeader) {
+-	  if ([fieldName caseInsensitiveCompare:@"connection"]==NSOrderedSame)
++	  if ([fieldName isEqualToString:@"connection"])
+ 	    hasConnectionHeader = YES;
+ 	}
+ 	
