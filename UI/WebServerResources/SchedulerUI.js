@@ -406,7 +406,9 @@ function onViewEventCallback(http) {
 }
 
 function editDoubleClickedEvent(event) {
-  if (this.recurrenceTime && !this.isException)
+	if (this.isException && this.recurrenceTime)
+		_editEventId(this.cname, this.calendar, "occurence" + this.recurrenceTime);
+  else if (this.recurrenceTime)
     _editRecurrenceDialog(this, "confirmEditing");
   else
     _editEventId(this.cname, this.calendar);
