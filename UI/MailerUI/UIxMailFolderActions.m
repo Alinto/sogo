@@ -62,12 +62,12 @@
       connection = [co imap4Connection];
       error = [connection createMailbox: folderName atURL: [co imap4URL]];
       if (error)
-	{
-	  response = [self responseWithStatus: 500];
-	  [response appendContentString: @"Unable to create folder."];
-	}
+        {
+          response = [self responseWithStatus: 500];
+          [response appendContentString: @"Unable to create folder."];
+        }
       else
-	response = [self responseWith204];
+        response = [self responseWith204];
     }
   else
     {
