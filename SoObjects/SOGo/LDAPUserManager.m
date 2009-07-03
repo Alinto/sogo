@@ -330,7 +330,11 @@ static NSLock *lock = nil;
 
   emails = [contact objectForKey: @"emails"];
   uid = [contact objectForKey: @"c_uid"];
-  systemEmail = [NSString stringWithFormat: @"%@@%@", uid, defaultMailDomain];
+  if ([uid rangeOfString: @"@"].location == NSNotFound)
+    systemEmail
+      = [NSString stringWithFormat: @"%@@%@", uid, defaultMailDomain];
+  else
+    systemEmail = uid;
   [emails addObjectUniquely: systemEmail];
   [contact setObject: [emails objectAtIndex: 0] forKey: @"c_email"];
 }
