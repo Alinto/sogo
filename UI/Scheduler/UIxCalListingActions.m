@@ -37,6 +37,7 @@
 
 #import <NGExtensions/NGCalendarDateRange.h>
 #import <NGExtensions/NSCalendarDate+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
 
 #import <SoObjects/SOGo/SOGoDateFormatter.h>
 #import <SoObjects/SOGo/SOGoUser.h>
@@ -591,59 +592,82 @@ _userStateInEvent (NSArray *event)
 	   withEvent: (NSArray *) event
 	  withNumber: (NSNumber *) number
 {
-  unsigned int currentDayStart, startSecs, endsSecs, currentStart, eventStart,
+  int currentDayStart, startSecs, endsSecs, currentStart, eventStart,
     eventEnd, offset, recurrenceTime;
   NSMutableArray *currentDay;
   NSMutableDictionary *eventBlock;
   iCalPersonPartStat userState;
 
-  startSecs = (unsigned int) [startDate timeIntervalSince1970];
-  endsSecs = (unsigned int) [endDate timeIntervalSince1970];
-  eventStart = [[event objectAtIndex: 4] unsignedIntValue];
-  eventEnd = [[event objectAtIndex: 5] unsignedIntValue];
-
-  if ([[event objectAtIndex: 12] boolValue]) // c_iscycle
-    recurrenceTime = [[event objectAtIndex: 14] unsignedIntValue]; // c_recurrence_id
+  eventStart = [[event objectAtIndex: 4] intValue];
+  if (eventStart < 0)
+    [self errorWithFormat: @"event '%@' has negative start: %d (skipped)",
+          [event objectAtIndex: 0], eventStart];
   else
-    recurrenceTime = 0;
-
-  currentStart = eventStart;
-  if (currentStart < startSecs)
     {
-      currentStart = startSecs;
-      offset = 0;
-    }
-  else
-    offset = ((currentStart - startSecs)
-	      / dayLength);
-  currentDay = [blocks objectAtIndex: offset];
-  currentDayStart = startSecs + dayLength * offset;
+      eventEnd = [[event objectAtIndex: 5] intValue];
+      if (eventEnd < 0)
+        [self errorWithFormat: @"event '%@' has negative end: %d (skipped)",
+              [event objectAtIndex: 0], eventEnd];
+      else
+        {
+          if (eventEnd < eventStart)
+            [self warnWithFormat: @"event '%@' has end < start: %d < %d",
+                  [event objectAtIndex: 0], eventEnd, eventStart];
 
-  if (eventEnd > endsSecs)
-    eventEnd = endsSecs;
+          startSecs = (unsigned int) [startDate timeIntervalSince1970];
+          endsSecs = (unsigned int) [endDate timeIntervalSince1970];
 
-  userState = _userStateInEvent (event);
-  while (currentDayStart + dayLength < eventEnd)
-    {
-      eventBlock = [self _eventBlockWithStart: currentStart
-			 end: currentDayStart + dayLength - 1
-			 number: number
-			 onDay: currentDayStart
-			 recurrenceTime: recurrenceTime
-			 userState: userState];
-      [currentDay addObject: eventBlock];
-      currentDayStart += dayLength;
-      currentStart = currentDayStart;
-      offset++;
-      currentDay = [blocks objectAtIndex: offset];
+          if ([[event objectAtIndex: 12] boolValue]) // c_iscycle
+            recurrenceTime = [[event objectAtIndex: 14] unsignedIntValue]; // c_recurrence_id
+          else
+            recurrenceTime = 0;
+
+          currentStart = eventStart;
+          if (currentStart < startSecs)
+            {
+              currentStart = startSecs;
+              offset = 0;
+            }
+          else
+            offset = ((currentStart - startSecs)
+                      / dayLength);
+          if (offset >= [blocks count])
+            [self errorWithFormat: "event '%@' has a computed offset that"
+                  @" overflows the amount of blocks (skipped)",
+                  [event objectAtIndex: 0]];
+          else
+            {
+              currentDay = [blocks objectAtIndex: offset];
+              currentDayStart = startSecs + dayLength * offset;
+
+              if (eventEnd > endsSecs)
+                eventEnd = endsSecs;
+
+              userState = _userStateInEvent (event);
+              while (currentDayStart + dayLength < eventEnd)
+                {
+                  eventBlock = [self _eventBlockWithStart: currentStart
+                                                      end: currentDayStart + dayLength - 1
+                                                   number: number
+                                                    onDay: currentDayStart
+                                           recurrenceTime: recurrenceTime
+                                                userState: userState];
+                  [currentDay addObject: eventBlock];
+                  currentDayStart += dayLength;
+                  currentStart = currentDayStart;
+                  offset++;
+                  currentDay = [blocks objectAtIndex: offset];
+                }
+              eventBlock = [self _eventBlockWithStart: currentStart
+                                                  end: eventEnd
+                                               number: number
+                                                onDay: currentDayStart
+                                       recurrenceTime: recurrenceTime
+                                            userState: userState];
+              [currentDay addObject: eventBlock];
+            }
+        }
     }
-  eventBlock = [self _eventBlockWithStart: currentStart
-		     end: eventEnd
-		     number: number
-		     onDay: currentDayStart
-		     recurrenceTime: recurrenceTime
-		     userState: userState];
-  [currentDay addObject: eventBlock];
 }
 
 - (void) _prepareEventBlocks: (NSMutableArray **) blocks

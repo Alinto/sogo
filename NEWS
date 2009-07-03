@@ -9,6 +9,9 @@
 - improved the attendees modification dialog by implementing slots management and zooming
 - added the capability to display the size of messages in the mail module
 - added the capability of limiting the number of returned events from DAV requests
+- added support for Cyrus Daboo's Webdav sync draft spec in the calendar and addressbook collections
+- added unicode support in the IMAP folder names
+- fixed some issues with the conversion of folder names in modified UTF-7
 
 1.0-20090605 (1.0.2)
 --------------------

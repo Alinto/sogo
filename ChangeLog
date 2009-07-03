@@ -1,5 +1,9 @@
 2009-07-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalListingActions.m (-eventsBlocksAction): added
+	sanity checks to avoid crashes when quick fields were wrongly
+	parsed.
+
 	* SoObjects/SOGo/LDAPUserManager.m (_fillContactMailRecords:): if
 	the user uid contains a "@", we set it directly as system email
 	rather than suffixing it with the default mail domain.
