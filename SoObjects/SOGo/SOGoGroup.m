@@ -202,7 +202,7 @@
       for (i = 0; i < [dns count]; i++)
 	{
 	  dn = [dns objectAtIndex: i];
-	  login = [um getLoginForDN: dn];
+	  login = [um getLoginForDN: [dn lowercaseString]];
 	  //NSLog(@"member = %@", login);
 	  user = [SOGoUser userWithLogin: login roles: nil];
 	  if (user)
