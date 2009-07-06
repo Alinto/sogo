@@ -253,7 +253,7 @@ static NSLock *lock;
      IMAPHostField: (NSString *) newIMAPHostField
      andBindFields: (NSString *) newBindFields
 {
-  ASSIGN (baseDN, newBaseDN);
+  ASSIGN (baseDN, [newBaseDN lowercaseString]);
   if (newIDField)
     ASSIGN (IDField, newIDField);
   if (newCNField)
@@ -491,7 +491,7 @@ static NSLock *lock;
   return [EOQualifier qualifierWithQualifierFormat: qs];
 }
 
-- (NSArray *) _contraintsFields
+- (NSArray *) _constraintsFields
 {
   NSMutableArray *fields;
   NSEnumerator *values;
@@ -514,12 +514,13 @@ static NSLock *lock;
 
       ud = [NSUserDefaults standardUserDefaults];
       searchAttributes = [NSMutableArray new];
+      [searchAttributes addObject: @"objectClass"];
       if (CNField)
 	[searchAttributes addObject: CNField];
       if (UIDField)
 	[searchAttributes addObject: UIDField];
       [searchAttributes addObjectsFromArray: mailFields];
-      [searchAttributes addObjectsFromArray: [self _contraintsFields]];
+      [searchAttributes addObjectsFromArray: [self _constraintsFields]];
       [searchAttributes addObjectsFromArray: commonSearchFields];
 
       // Add SOGoLDAPContactInfoAttribute from user defaults
