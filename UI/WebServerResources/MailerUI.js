@@ -2240,11 +2240,9 @@ function configureDragAndDrop () {
   mainElement.absolutize ();
   mainElement.style.display = "none";
 
-  var tbody = $$("TABLE#messageList tbody").first ();
-
   new Draggable ("dragDropVisual", 
                  { 
-                   handle: /*tbody.identify ()*/ "messageList", 
+                   handle: "messageList", 
                    onStart: startDragging,
                    onEnd: stopDragging,
                    onDrag: whileDragging

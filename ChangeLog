@@ -4,6 +4,8 @@
 	draggable)
 	* UI/WebServerResources/ContactsUI.js: Fixed Drag&Drop issue (header was
 	draggable)
+	* UI/WebServerResources/MailerUI.js: Revert
+	* UI/WebServerResources/ContactsUI.js: Revert
 
 2009-07-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
