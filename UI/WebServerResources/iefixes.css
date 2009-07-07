@@ -317,3 +317,7 @@ fieldset
 
 fieldset div, fieldset p
 { margin: 1.0em; }
+
+/* UIxMailEditor */
+DIV#headerArea
+{ padding-bottom: 0px; }
