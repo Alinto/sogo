@@ -348,7 +348,7 @@ DIV.contactSelection SPAN#selectionLabel
 
 DIV#dragDropVisual
 {
-  background-image: url(/SOGo.woa/WebServerResources/abcard.gif);
+  background-image: url(abcard.gif);
   background-repeat: no-repeat;
   background-position: 4px 2px;
   width: 5px;
@@ -359,6 +359,6 @@ DIV#dragDropVisual
 
 DIV.copy
 {
-  background-image: url(/SOGo.woa/WebServerResources/add-contact.gif) !important; 
+  background-image: url(add-contact.gif) !important; 
   background-position: 1px -2px !important;
 }
