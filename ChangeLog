@@ -9,6 +9,7 @@
 	* UI/WebServerResources/MailerUI.js: Fixed Mantis #45
 	* UI/WebServerResources/ContactsUI.js: Fixed Mantis #45
 	* UI/MailerUI/UIxMailListView.m: Made "Size" column sortable
+	* SoObjects/SOGo/SOGoGCSFolder.m: Fixed Mantis #48
 
 2009-07-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

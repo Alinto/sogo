@@ -655,10 +655,10 @@ static NSArray *childRecordFields = nil;
      fromMailInvitation: (BOOL) isMailInvitation
              inResponse: (WOResponse *) response
 {
-  NSMutableArray *folderSubscription;
+  NSMutableArray *folderSubscription, *tmpA;
   NSString *subscriptionPointer, *mailInvitationURL;
   NSUserDefaults *ud;
-  NSMutableDictionary *moduleSettings, *tmp;
+  NSMutableDictionary *moduleSettings, *tmpD;
 
   if ([owner isEqualToString: [subscribingUser login]])
     {
@@ -692,17 +692,17 @@ static NSArray *childRecordFields = nil;
         [folderSubscription addObjectUniquely: subscriptionPointer];
       else
         {
-          tmp = [moduleSettings objectForKey: @"FolderColors"];
-          if (tmp)
-            [tmp removeObjectForKey: subscriptionPointer];
+          tmpD = [moduleSettings objectForKey: @"FolderColors"];
+          if (tmpD)
+            [tmpD removeObjectForKey: subscriptionPointer];
 
-          tmp = [moduleSettings objectForKey: @"InactiveFolders"];
-          if (tmp)
-            [tmp removeObjectForKey: subscriptionPointer];
+          tmpA = [moduleSettings objectForKey: @"InactiveFolders"];
+          if (tmpA)
+            [tmpA removeObject: [self nameInContainer]];
 
-          tmp = [moduleSettings objectForKey: @"FolderSyncTags"];
-          if (tmp)
-            [tmp removeObjectForKey: subscriptionPointer];
+          tmpD = [moduleSettings objectForKey: @"FolderSyncTags"];
+          if (tmpD)
+            [tmpD removeObjectForKey: subscriptionPointer];
 
           [folderSubscription removeObject: subscriptionPointer];
         }
