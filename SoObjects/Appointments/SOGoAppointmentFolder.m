@@ -1491,7 +1491,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
           if (cEndDate)
             {
               filterString = [NSString stringWithFormat: 
-                                         @"(c_cycleenddate = NULL OR c_cycleenddate >= %@)",
+                                         @"(c_cycleenddate = NULL OR c_cycleenddate >= %d)",
                                        (int) [cEndDate timeIntervalSince1970]];
               [filters addObject: filterString];
             }
