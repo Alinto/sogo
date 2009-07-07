@@ -747,11 +747,17 @@ function onWindowResize(event) {
     var content = $("cke_contents_text");
     var height = Math.floor(window.height() - editor.offsetTop);
 
+    if (Prototype.Browser.IE) {
+      editor.style.top = 0;
+      height += 3;
+    }
+
     content.height = (height-60) + "px";
     content.style.height = (height-60) + "px";
     content.setStyle({ 'top': hr.offsetTop + 'px' });
   }
-  textarea.rows = Math.floor((window.height() - textarea.offsetTop) / rowheight);
+  else
+    textarea.rows = Math.floor((window.height() - textarea.offsetTop) / rowheight);
 }
 
 function onMailEditorClose(event) {

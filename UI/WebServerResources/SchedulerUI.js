@@ -1518,7 +1518,7 @@ function updateTaskStatus(event) {
     http.open("POST", url, false /* not async */);
     http.url = url;
     http.send("");
-    http.setRequestHeader("Content-Length", 0);
+//    http.setRequestHeader("Content-Length", 0);
     if (isHttpStatus204(http.status))
       refreshTasks();
   } else
