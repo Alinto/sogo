@@ -23,7 +23,7 @@
 	    ><var:string label:value="Preferred Phone" /></td
 	    ></tr>
       </thead>
-      <tbody>
+      <tbody id="contactsListTbody">
         <var:foreach list="contactInfos" item="currentContact">
           <tr class="tableview"
             var:id="currentContact.c_name"

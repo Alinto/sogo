@@ -106,8 +106,8 @@ function contactsListCallback(http) {
 				table.observe("mousedown", onContactSelectionChange);
 				configureSortableTableHeaders(table);
 				TableKit.Resizable.init(table, {'trueResize' : true, 'keepWidth' : true});
-        configureDragAndDrop ();
       }
+      configureDragAndDrop ();
       
 			var rows = table.tBodies[0].rows;
 			for (var i = 0; i < rows.length; i++) {
@@ -1076,7 +1076,7 @@ function configureDragAndDrop () {
 
   new Draggable ("dragDropVisual", 
                  { 
-                   handle: "contactsList", 
+                   handle: "contactsListTbody", 
                    onStart: startDragging,
                    onEnd: stopDragging,
                    onDrag: whileDragging

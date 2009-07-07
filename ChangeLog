@@ -1,3 +1,10 @@
+2009-07-07  Cyril Robert <crobert@inverse.ca>
+
+	* UI/WebServerResources/MailerUI.js: Fixed Drag&Drop issue (header was
+	draggable)
+	* UI/WebServerResources/ContactsUI.js: Fixed Drag&Drop issue (header was
+	draggable)
+
 2009-07-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxCalListingActions.m (-eventsBlocksAction): added
