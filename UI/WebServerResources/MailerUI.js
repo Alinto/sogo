@@ -1271,6 +1271,8 @@ function onHeaderClick(event) {
     newSortAttribute = "to";
   else if (headerId == "dateHeader")
     newSortAttribute = "date";
+  else if (headerId == "sizeHeader")
+    newSortAttribute = "size";
   else
     newSortAttribute = "arrival";
 

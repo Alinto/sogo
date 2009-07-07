@@ -8,6 +8,7 @@
 	* UI/WebServerResources/ContactsUI.js: Revert
 	* UI/WebServerResources/MailerUI.js: Fixed Mantis #45
 	* UI/WebServerResources/ContactsUI.js: Fixed Mantis #45
+	* UI/MailerUI/UIxMailListView.m: Made "Size" column sortable
 
 2009-07-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

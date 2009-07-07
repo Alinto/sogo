@@ -720,13 +720,13 @@
   columnsMetaData = [NSMutableDictionary dictionaryWithCapacity:8];
   
   tmpKeys = [NSArray arrayWithObjects: @"headerClass", @"headerId", @"value",
-		     nil];
+             nil];
   tmpColumns
     = [NSArray arrayWithObjects: @"tbtv_headercell sortableTableHeader",
-	       @"subjectHeader", @"Subject", nil];
+       @"subjectHeader", @"Subject", nil];
   [columnsMetaData setObject: [NSDictionary dictionaryWithObjects: tmpColumns
-					    forKeys: tmpKeys]
-		   forKey: @"Subject"];
+                                                          forKeys: tmpKeys]
+                      forKey: @"Subject"];
 
   tmpColumns
     = [NSArray arrayWithObjects: @"tbtv_headercell messageFlagColumn",
@@ -775,7 +775,7 @@
 		   forKey: @"Priority"];
 
   tmpColumns
-    = [NSArray arrayWithObjects: @"tbtv_headercell", @"sizeHeader",
+    = [NSArray arrayWithObjects: @"tbtv_headercell sortableTableHeader", @"sizeHeader",
 	       @"Size", nil];
   [columnsMetaData setObject: [NSDictionary dictionaryWithObjects: tmpColumns
 					    forKeys: tmpKeys]
