@@ -1,3 +1,11 @@
+2009-07-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoGCSFolder.m (-davSyncCollection:): added the
+	ability to specify additional filters for elements that must be
+	returned.
+	(-additionalWebdavSyncFilters): new method that returns a
+	parametrable where clause for reset queries.
+
 2009-07-07  Cyril Robert <crobert@inverse.ca>
 
 	* UI/WebServerResources/MailerUI.js: Fixed Drag&Drop issue (header was
