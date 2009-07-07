@@ -80,12 +80,14 @@
 
 static NGLogger *logger = nil;
 static NSNumber *sharedYes = nil;
+static int davCalendarStartTimeLimit = 0;
 
 + (void) initialize
 {
   NGLoggerManager *lm;
-  static BOOL     didInit = NO;
-
+  static BOOL didInit = NO;
+  NSUserDefaults *ud;
+  
   if (!didInit)
     {
       didInit = YES;
@@ -100,6 +102,10 @@ static NSNumber *sharedYes = nil;
       logger = [lm loggerForDefaultKey: @"SOGoAppointmentFolderDebugEnabled"];
 
       sharedYes = [[NSNumber numberWithBool: YES] retain];
+
+      ud = [NSUserDefaults standardUserDefaults];
+      davCalendarStartTimeLimit
+        = [ud integerForKey: @"SOGoDAVCalendarStartTimeLimit"];
     }
 }
 
@@ -1219,28 +1225,17 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   [r appendString: @"</D:href><D:status>HTTP/1.1 404 Not Found</D:status></D:response>"];
 }
 
-- (int) _getStartTimeLimit
-{
-  NSUserDefaults *ud;
-  int interval;
-  
-  ud = [NSUserDefaults standardUserDefaults];
-  interval = [ud integerForKey: @"SOGoDAVCalendarStartTimeLimit"];
-
-  return interval;
-}
-
 - (NSCalendarDate *) _getMaxStartDate
 {
-  NSCalendarDate *tmp, *rc = NULL;
-  int interval;
-  
-  interval = [self _getStartTimeLimit];
-  if (interval > 0)
+  NSCalendarDate *tmp, *rc;
+
+  if (davCalendarStartTimeLimit > 0)
     {
       tmp = [NSCalendarDate date];
-      rc = [tmp addTimeInterval: interval * -86400];
+      rc = [tmp addTimeInterval: davCalendarStartTimeLimit * -86400];
     }
+  else
+    rc = nil;
 
   return rc;
 }
@@ -1248,40 +1243,39 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 - (void) _enforceTimeLimitOnFilter: (NSMutableDictionary *) filter
 {
   NSCalendarDate *start, *end, *now;
-  int limit, interval, intervalStart, intervalEnd;
+  int interval, intervalStart, intervalEnd;
 
   start = [filter objectForKey: @"start"];
   end = [filter objectForKey: @"end"];
   now = [NSCalendarDate date];
-  limit = [self _getStartTimeLimit];
   interval = ([end timeIntervalSinceDate: start] / 86400);
   
-  if (limit > 0 && interval > limit)
+  if (davCalendarStartTimeLimit > 0 && interval > davCalendarStartTimeLimit)
     {
       if ([now compare: start] == NSOrderedDescending
           && [now compare: end] == NSOrderedAscending)
         {
           intervalStart = [now timeIntervalSinceDate: start] / 86400;
           intervalEnd = [end timeIntervalSinceDate: now] / 86400;
-          if (intervalStart > limit / 2)
+          if (intervalStart > davCalendarStartTimeLimit / 2)
             {
-              start = [now addTimeInterval: (limit / 2) * -86400];
+              start = [now addTimeInterval: (davCalendarStartTimeLimit / 2) * -86400];
               [filter setObject: start forKey: @"start"];
             }
-          if (intervalEnd > limit / 2)
+          if (intervalEnd > davCalendarStartTimeLimit / 2)
             {
-              end = [now addTimeInterval: (limit / 2) * 86400];
+              end = [now addTimeInterval: (davCalendarStartTimeLimit / 2) * 86400];
               [filter setObject: end forKey: @"end"];
             }
         }
       else if ([now compare: end] == NSOrderedDescending)
         {
-          start = [end addTimeInterval: limit * -86400];
+          start = [end addTimeInterval: davCalendarStartTimeLimit * -86400];
           [filter setObject: start forKey: @"start"];
         }
       else if ([now compare: start] == NSOrderedAscending)
         {
-          end = [start addTimeInterval: limit * 86400];
+          end = [start addTimeInterval: davCalendarStartTimeLimit * 86400];
           [filter setObject: end forKey: @"end"];
         }
     }
@@ -1307,14 +1301,13 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 - (void) _addDateRangeLimitToFilter: (NSMutableDictionary *) filter
 {
   NSCalendarDate *now;
-  int limit;
+  NSTimeInterval rangeLimit;
 
   now = [NSCalendarDate date];
-  limit = [self _getStartTimeLimit];
-
-  [filter setObject: [now addTimeInterval: (limit / 2) * -86400]
+  rangeLimit = (davCalendarStartTimeLimit / 2) * -86400;
+  [filter setObject: [now addTimeInterval: rangeLimit]
              forKey: @"start"];
-  [filter setObject: [now addTimeInterval: (limit / 2) * 86400]
+  [filter setObject: [now addTimeInterval: rangeLimit * -1]
              forKey: @"end"];
 }
 
@@ -1880,6 +1873,27 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   [r appendContentString:@"</D:multistatus>"];
 
   return r;
+}
+
+- (NSString *) additionalWebdavSyncFilters
+{
+  NSCalendarDate *startDate;
+  NSString *filter;
+  int startDateSecs;
+
+  startDate = [self _getMaxStartDate];
+  if (startDate)
+    {
+      startDateSecs = (int) [startDate timeIntervalSince1970];
+      filter = [NSString stringWithFormat: @"c_enddate = NULL"
+                         @" OR (c_enddate >= %d AND c_iscycle = 0)"
+                         @" OR (c_cycleenddate >= %d AND c_iscycle = 1)",
+                         startDateSecs, startDateSecs];
+    }
+  else
+    filter = @"";
+
+  return filter;
 }
 
 - (Class) objectClassForContent: (NSString *) content

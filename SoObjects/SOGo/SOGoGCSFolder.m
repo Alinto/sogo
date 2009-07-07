@@ -698,7 +698,7 @@ static NSArray *childRecordFields = nil;
 
           tmpA = [moduleSettings objectForKey: @"InactiveFolders"];
           if (tmpA)
-            [tmpA removeObject: [self nameInContainer]];
+            [tmpA removeObject: nameInContainer];
 
           tmpD = [moduleSettings objectForKey: @"FolderSyncTags"];
           if (tmpD)
@@ -881,6 +881,11 @@ static NSArray *childRecordFields = nil;
                ignoreDeleted: ignoreDeleted];
 }
 
+- (NSString *) additionalWebdavSyncFilters
+{
+  return @"";
+}
+
 - (NSArray *) _fetchSyncTokenFields: (NSDictionary *) properties
                   matchingSyncToken: (int) syncToken
 {
@@ -893,7 +898,7 @@ static NSArray *childRecordFields = nil;
   NSArray *records;
   EOQualifier *qualifier;
   NSEnumerator *addFields;
-  NSString *currentField;
+  NSString *currentField, *filter;
 
   fields = [NSMutableArray arrayWithObjects: @"c_name", @"c_component",
          @"c_creationdate", @"c_lastmodified", nil];
@@ -910,8 +915,8 @@ static NSArray *childRecordFields = nil;
                                   withQualifier: qualifier
                                   ignoreDeleted: YES]];
       qualifier = [EOQualifier qualifierWithQualifierFormat:
-        @"c_lastmodified > %d and c_deleted == 1",
-        syncToken];
+                                 @"c_lastmodified > %d and c_deleted == 1",
+                               syncToken];
       fields = [NSMutableArray arrayWithObjects: @"c_name", @"c_deleted", nil];
       [mRecords addObjectsFromArray: [self _fetchFields: fields
                       withQualifier: qualifier
@@ -919,8 +924,15 @@ static NSArray *childRecordFields = nil;
       records = mRecords;
     }
   else
-    records = [self _fetchFields: fields withQualifier: nil
-                   ignoreDeleted: YES];
+    {
+      filter = [self additionalWebdavSyncFilters];
+      if ([filter length])
+        qualifier = [EOQualifier qualifierWithQualifierFormat: filter];
+      else
+        qualifier = nil;
+      records = [self _fetchFields: fields withQualifier: qualifier
+                     ignoreDeleted: YES];
+    }
 
   return records;
 }
@@ -1115,6 +1127,7 @@ static NSArray *childRecordFields = nil;
   documentElement = (DOMElement *) [document documentElement];
   syncToken = [[documentElement firstElementWithTag: @"sync-token"
                                         inNamespace: XMLNS_WEBDAV] textValue];
+
   propElement = [documentElement firstElementWithTag: @"prop"
                                          inNamespace: XMLNS_WEBDAV];
 
@@ -1333,7 +1346,7 @@ static NSArray *childRecordFields = nil;
         @" VALUES ('/%@', '%@', '%@')",
         [folder aclTableName],
         objectPath, uid, currentRole];
-      [channel evaluateExpressionX: SQL];	    
+      [channel evaluateExpressionX: SQL];
     }
 
   [[channel adaptorContext] commitTransaction];
