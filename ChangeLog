@@ -6,6 +6,8 @@
 	draggable)
 	* UI/WebServerResources/MailerUI.js: Revert
 	* UI/WebServerResources/ContactsUI.js: Revert
+	* UI/WebServerResources/MailerUI.js: Fixed Mantis #45
+	* UI/WebServerResources/ContactsUI.js: Fixed Mantis #45
 
 2009-07-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

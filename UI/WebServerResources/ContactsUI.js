@@ -1147,6 +1147,11 @@ function dropAction (dropped, zone, e) {
   if ($("dragDropVisual").hasClassName ("copy"))
     action = "copy";
   dropSelectedContacts (action, zone.id.substr (1));
+  
+  if (action != "copy") {
+    var div = $('contactView');
+    div.innerHTML = "";
+  }
 }
 
 function dropSelectedContacts (action, toId) {
