@@ -14,6 +14,6 @@
       image = "tb-compose-security-flat-24x24.png"; },
     { link = "#";
       label = "Documents";
-      onclick = "return onPopupUrlWindow();";
+      onclick = "return onPopupAttachWindow();";
       image = "tb-compose-attach-flat-24x24.png"; } )
 )

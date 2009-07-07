@@ -20,28 +20,28 @@ function onSelectPrivacy(event) {
   }
 }
 
-function onPopupUrlWindow(event) {
+function onPopupAttachWindow(event) {
   if (event)
     preventDefault(event);
 
-  var urlInput = document.getElementById("url");
-  var newUrl = window.prompt(labels["Target:"], urlInput.value);
-  if (newUrl != null) {
+  var attachInput = document.getElementById("attach");
+  var newAttach = window.prompt(labels["Target:"], attachInput.value || "http://");
+  if (newAttach != null) {
     var documentHref = $("documentHref");
     var documentLabel = $("documentLabel");
     if (documentHref.childNodes.length > 0) {
-      documentHref.childNodes[0].nodeValue = newUrl;
-      if (newUrl.length > 0)
+      documentHref.childNodes[0].nodeValue = newAttach;
+      if (newAttach.length > 0)
 				documentLabel.setStyle({ display: "block" });
       else
 				documentLabel.setStyle({ display: "none" });
     }
     else {
-      documentHref.appendChild(document.createTextNode(newUrl)); 
-      if (newUrl.length > 0)
+      documentHref.appendChild(document.createTextNode(newAttach)); 
+      if (newAttach.length > 0)
 				documentLabel.setStyle({ display: "block" });
     }
-    urlInput.value = newUrl;
+    attachInput.value = newAttach;
   }
 	onWindowResize(event);
 
@@ -49,7 +49,7 @@ function onPopupUrlWindow(event) {
 }
 
 function onPopupDocumentWindow(event) {
-  var documentUrl = $("url");
+  var documentUrl = $("attach");
 
   preventDefault(event);
   window.open(documentUrl.value, "SOGo_Document");
@@ -90,7 +90,7 @@ function onChangeCalendar(event) {
 function initializeDocumentHref() {
   var documentHref = $("documentHref");
   var documentLabel = $("documentLabel");
-  var documentUrl = $("url");
+  var documentUrl = $("attach");
 
   documentHref.observe("click", onPopupDocumentWindow, false);
   documentHref.setStyle({ textDecoration: "underline", color: "#00f" });
@@ -99,8 +99,8 @@ function initializeDocumentHref() {
     documentLabel.setStyle({ display: "block" });
   }
 
-  var changeUrlButton = $("changeUrlButton");
-  changeUrlButton.observe("click", onPopupUrlWindow, false);
+  var changeUrlButton = $("changeAttachButton");
+  changeUrlButton.observe("click", onPopupAttachWindow, false);
 }
 
 function initializePrivacyMenu() {
@@ -152,7 +152,7 @@ function onWindowResize(event) {
 	height = window.height() - comment.cumulativeOffset().top - offset;
 
 	if (document.visible())
-		height -= $("changeUrlButton").getHeight();
+		height -= $("changeAttachButton").getHeight();
 	
 	area.setStyle({ height: (height - offset*2) + "px" });
 	comment.setStyle({ height: (height - offset) + "px" });

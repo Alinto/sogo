@@ -99,12 +99,12 @@
       <label id="documentLabel" style="display: none;"><var:string label:value="Document:"
 	  /><span class="content"
 	  ><a href="#" id="documentHref"><!-- space --></a
-	    ><a id="changeUrlButton" class="button" var:href="#"
+	    ><a id="changeAttachButton" class="button" var:href="#"
 	    ><var:string label:value="Change..."/></a
 	    ></span></label>
 
       <!-- hidden -->
-      <input type="hidden" name="url" id="url" var:value="url"/>
+      <input type="hidden" name="attach" id="attach" var:value="attach"/>
       <input type="hidden" name="privacy" id="privacy"
 	var:value="privacy"/>
       <input type="hidden" name="attendeesNames" id="attendeesNames"

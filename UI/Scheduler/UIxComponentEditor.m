@@ -203,7 +203,7 @@ iRANGE(2);
   [categories release];
   [cycle release];
   [cycleEnd release];
-  [url release];
+  [attachUrl release];
   [attendeesNames release];
   [attendeesUIDs release];
   [attendeesEmails release];
@@ -534,7 +534,7 @@ iRANGE(2);
 	  ASSIGN (title, [component summary]);
 	  ASSIGN (location, [component location]);
 	  ASSIGN (comment, [component comment]);
-	  ASSIGN (url, [[component url] absoluteString]);
+	  ASSIGN (attachUrl, [[component attach] absoluteString]);
 	  ASSIGN (privacy, [component accessClass]);
 	  ASSIGN (priority, [component priority]);
 	  ASSIGN (status, [component status]);
@@ -617,14 +617,14 @@ iRANGE(2);
   return title;
 }
 
-- (void) setUrl: (NSString *) _url
+- (void) setAttach: (NSString *) _attachUrl
 {
-  ASSIGN (url, _url);
+  ASSIGN (attachUrl, _attachUrl);
 }
 
-- (NSString *) url
+- (NSString *) attach
 {
-  return url;
+  return attachUrl;
 }
 
 - (NSString *) organizerName
@@ -1407,7 +1407,7 @@ RANGE(2);
 
 /* contact editor compatibility */
 
-- (NSString *) urlButtonClasses
+/*- (NSString *) urlButtonClasses
 {
   NSString *classes;
 
@@ -1417,7 +1417,7 @@ RANGE(2);
     classes = @"button _disabled";
 
   return classes;
-}
+  }*/
 
 - (void) _handleAttendeesEdition
 {
@@ -1711,7 +1711,7 @@ RANGE(2);
   [component setSummary: title];
   [component setLocation: location];
   [component setComment: comment];
-  [component setUrl: url];
+  [component setAttach: attachUrl];
   [component setAccessClass: privacy];
   [component setCategories: [category capitalizedString]];
   [self _handleAttendeesEdition];

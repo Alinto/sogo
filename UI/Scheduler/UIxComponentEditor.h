@@ -50,7 +50,7 @@
   NSString *location;
   SOGoAppointmentFolder *componentCalendar;
   NSString *comment;
-  NSString *url;
+  NSString *attachUrl;
   NSString *priority;
   NSString *privacy;
   NSString *status;
@@ -138,8 +138,8 @@
 - (void) setComment: (NSString *) _value;
 - (NSString *) comment;
 
-- (void) setUrl: (NSString *) _url;
-- (NSString *) url;
+- (void) setAttach: (NSString *) _attachUrl;
+- (NSString *) attach;
 
 - (void) setAttendeesNames: (NSString *) newAttendeesNames;
 - (NSString *) attendeesNames;

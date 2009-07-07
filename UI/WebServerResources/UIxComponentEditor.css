@@ -4,6 +4,9 @@ SELECT#calendarList
 #attendeesLabel
 { display: none; }
 
+A#changeAttachButton
+{ margin-left: 1em; }
+
 SPAN.datePicker INPUT.textField
 { width: 7em; }
 

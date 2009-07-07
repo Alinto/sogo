@@ -337,6 +337,34 @@
   return [self childrenWithTag: @"valarm"];
 }
 
+- (void) setAttach: (id) _value
+{
+  NSString *asString;
+
+  if ([_value isKindOfClass: [NSString class]])
+    asString = _value;
+  else if ([_value isKindOfClass: [NSURL class]])
+    asString = [_value absoluteString];
+  else
+    asString = @"";
+
+  [[self uniqueChildWithTag: @"attach"] setValue: 0 to: asString];
+}
+
+- (NSURL *) attach
+{
+  NSString *stringAttach;
+  NSURL *url;
+
+  stringAttach = [[self uniqueChildWithTag: @"attach"] value: 0];
+  url = [NSURL URLWithString: stringAttach];
+
+  if (!url && [stringAttach length] > 0)
+    url = [NSURL URLWithString: [NSString stringWithFormat: @"http://%@", stringAttach]];
+  
+  return url;
+}
+
 - (void) setUrl: (id) _value
 {
   NSString *asString;

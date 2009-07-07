@@ -81,9 +81,6 @@ n0SPAN.content
 SPAN.content A
 { line-height: 2em; }
 
-A#changeUrlButton
-{ margin-left: 1em; }
-
 A#detailsButton
 { position: absolute;
   right: 1em;
