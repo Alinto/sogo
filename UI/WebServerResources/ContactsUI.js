@@ -1076,7 +1076,7 @@ function configureDragAndDrop () {
 
   new Draggable ("dragDropVisual", 
                  { 
-                   handle: "contactsListTbody", 
+                   handle: "contactsList", 
                    onStart: startDragging,
                    onEnd: stopDragging,
                    onDrag: whileDragging

@@ -2244,7 +2244,7 @@ function configureDragAndDrop () {
 
   new Draggable ("dragDropVisual", 
                  { 
-                   handle: tbody.identify (), 
+                   handle: /*tbody.identify ()*/ "messageList", 
                    onStart: startDragging,
                    onEnd: stopDragging,
                    onDrag: whileDragging
