@@ -106,8 +106,8 @@ function contactsListCallback(http) {
 				table.observe("mousedown", onContactSelectionChange);
 				configureSortableTableHeaders(table);
 				TableKit.Resizable.init(table, {'trueResize' : true, 'keepWidth' : true});
-        configureDragAndDrop ();
       }
+      configureDragAndDrop ();
       
 			var rows = table.tBodies[0].rows;
 			for (var i = 0; i < rows.length; i++) {
@@ -1147,6 +1147,11 @@ function dropAction (dropped, zone, e) {
   if ($("dragDropVisual").hasClassName ("copy"))
     action = "copy";
   dropSelectedContacts (action, zone.id.substr (1));
+  
+  if (action != "copy") {
+    var div = $('contactView');
+    div.innerHTML = "";
+  }
 }
 
 function dropSelectedContacts (action, toId) {

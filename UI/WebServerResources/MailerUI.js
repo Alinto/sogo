@@ -2292,10 +2292,15 @@ function dropAction (dropped, zone, e) {
   if ($("dragDropVisual").hasClassName ("copy"))
     action = "copy";
 
-  dropSelectedContacts (action, destination);
+  dropSelectedMessages (action, destination);
+
+  if (action != "copy") {
+    var div = $('messageContent');
+    div.innerHTML = "";
+  }
 }
 
-function dropSelectedContacts (action, targetMailbox) {
+function dropSelectedMessages (action, targetMailbox) {
   var messageList = $("messageList").down("TBODY");
   var rows = messageList.getSelectedNodes();
   var uids = new Array(); // message IDs
@@ -2304,7 +2309,8 @@ function dropSelectedContacts (action, targetMailbox) {
   for (var i = 0; i < rows.length; i++) {
     var uid = rows[i].readAttribute("id").substr(4);
     var path = Mailer.currentMailbox + "/" + uid;
-    rows[i].hide();
+    if (action != "copy")
+      rows[i].hide();
     uids.push(uid);
     paths.push(path);
   }
