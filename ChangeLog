@@ -1,5 +1,9 @@
 2009-07-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-additionalWebdavSyncFilters): overriden method for returning a
+	clause that takes the DAV time limit into account.
+
 	* SoObjects/SOGo/SOGoGCSFolder.m (-davSyncCollection:): added the
 	ability to specify additional filters for elements that must be
 	returned.
