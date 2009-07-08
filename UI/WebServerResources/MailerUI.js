@@ -2159,13 +2159,17 @@ function configureDragAndDrop () {
 }
 
 function startDragging (itm, e) {
+	var target = Event.element(e);
+	if (target.up().up().tagName != "TBODY")
+		return false;
+
   var handle = $("dragDropVisual");
   var count = $('messageList').getSelectedRowsId().length;
 
-    handle.style.display = "block";
-    handle.update (count);
-    if (e.shiftKey)
-      handle.addClassName ("copy");
+	handle.style.display = "block";
+	handle.update (count);
+	if (e.shiftKey)
+		handle.addClassName ("copy");
 }
 
 function whileDragging (itm, e) {

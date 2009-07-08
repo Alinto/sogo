@@ -1115,6 +1115,10 @@ function containsVLF (ids) {
 }
 
 function startDragging (itm, e) {
+	var target = Event.element(e);
+	if (target.up().up().tagName != "TBODY")
+		return false;
+
   var handle = $("dragDropVisual");
   var contacts = $('contactsList').getSelectedRowsId();
   var count = contacts.length;
