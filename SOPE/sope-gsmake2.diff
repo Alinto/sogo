@@ -1360,30 +1360,6 @@ Index: sope-core/EOCoreData/GNUmakefile
  endif
  -include GNUmakefile.postamble
 --include fhs.make
-Index: sopex/GNUmakefile
-===================================================================
---- sopex/GNUmakefile	(révision 1632)
-+++ sopex/GNUmakefile	(copie de travail)
-@@ -1,6 +1,6 @@
- # GNUstep makefile
- 
---include ../config.make
-+include ../config.make
- include $(GNUSTEP_MAKEFILES)/common.make
- 
- ifeq ($(FOUNDATION_LIB),apple)
-Index: sopex/SOPEX/GNUmakefile
-===================================================================
---- sopex/SOPEX/GNUmakefile	(révision 1632)
-+++ sopex/SOPEX/GNUmakefile	(copie de travail)
-@@ -1,6 +1,6 @@
- # GNUstep makefile
- 
---include ../../config.make
-+include ../../config.make
- include $(GNUSTEP_MAKEFILES)/common.make
- include ./Version
- 
 Index: xmlrpc_call/GNUmakefile
 ===================================================================
 --- xmlrpc_call/GNUmakefile	(révision 1632)
