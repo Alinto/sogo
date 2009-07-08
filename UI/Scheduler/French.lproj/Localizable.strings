@@ -366,13 +366,13 @@
 "category_TRAVEL" = "Voyage";
 "category_VACATION" = "Absence";
 
-"repeat_NEVER" = "Ne se répète pas";
-"repeat_DAILY" = "Quotidiennement";
-"repeat_WEEKLY" = "Hebdomadairement";
-"repeat_BI-WEEKLY" = "Bi-hebdomadairement";
+"repeat_NEVER" = "Jamais";
+"repeat_DAILY" = "Quotidienne";
+"repeat_WEEKLY" = "Hebdomadaire";
+"repeat_BI-WEEKLY" = "Toutes les deux semaines";
 "repeat_EVERY WEEKDAY" = "Chaque jour ouvrable";
-"repeat_MONTHLY" = "Mensuellement";
-"repeat_YEARLY" = "Annuellement";
+"repeat_MONTHLY" = "Mensuelle";
+"repeat_YEARLY" = "Annuelle";
 "repeat_CUSTOM" = "Personnaliser...";
 
 "reminder_NONE" = "Pas de rappel";
