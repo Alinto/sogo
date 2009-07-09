@@ -8,7 +8,7 @@
 
   NSAMPMDesignation = (AM, PM);
   NSCurrencySymbol = "R$";
-  NSDateFormatString = "%A, %B %e %Y";
+  NSDateFormatString = "%A, %B de %e de %Y";
   NSDateTimeOrdering = DMYH;
   NSDecimalDigits = ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
   NSDecimalSeparator = ",";
@@ -26,7 +26,7 @@
   NSShortWeekDayNameArray = (Dom, Seg, Ter, Qua, Qui, Sex, Sab);
   NSThisDayDesignations = (hoje, agora);
   NSThousandsSeparator = ".";
-  NSTimeDateFormatString = "%A, %B %e, %Y %I:%M:%S %p %Z";
+  NSTimeDateFormatString = "%A, %B de %e de %Y %I:%M:%S %p %Z";
   NSTimeFormatString = "%I:%M:%S %p";
   NSWeekDayNameArray = (Domingo, Segunda, "Terça", Quarta, Quinta, Sexta, "Sábado");
   NSYearMonthWeekDesignations = (ano, "mês", semana);
