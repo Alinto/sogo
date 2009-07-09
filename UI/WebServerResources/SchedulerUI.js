@@ -1814,7 +1814,6 @@ function appendCalendar(folderName, folderPath) {
       calendarList.insertBefore(li, items[i]);
     else 
       calendarList.appendChild(li);
-    
     $(li).writeAttribute("id", folderPath);
     $(li).writeAttribute("owner", owner);
 
@@ -1832,9 +1831,9 @@ function appendCalendar(folderName, folderPath) {
 
     $(colorBox).addClassName("colorBox");
     $(colorBox).addClassName('calendarFolder' + folderPath.substr(1));
-
+		
 		// Check the checkbox (required for IE)
-		$(li).down("input.checkBox").checked = true;
+		li.getElementsByTagName("input")[0].checked = true;
 
     // Register events (doesn't work with Safari)
     setEventsOnCalendar($(checkBox), $(li));

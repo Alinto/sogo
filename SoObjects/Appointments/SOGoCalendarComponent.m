@@ -661,7 +661,8 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
 		  subject = [p getSubject];
 		  text = [p getBody];
 		  NSLog(@"Template: %@", pageName);
-		  NSLog(@"Sender => Recipient: %@ => %@", senderEmail, recipient);
+		  NSLog(@"Sender: %@", senderEmail);
+		  NSLog(@"Recipient: %@", recipient);
 		  NSLog(@"Subject: %@", subject);
 
 		  /* construct message */
