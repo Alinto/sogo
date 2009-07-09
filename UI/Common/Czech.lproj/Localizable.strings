@@ -1,0 +1,54 @@
+/* this file is in UTF-8 format! */
+
+/* toolbars */
+"Save" = "Uložit";
+"Close" = "Zavřít";
+"Edit User Rights" = "Upravit uživatelská oprávnění";
+
+"Home" = "Domů";
+"Calendar" = "Kalendář";
+"Address Book"	= "Adresář";
+"Mail" = "E-Mail";
+"Preferences" = "Předvolby";
+"Disconnect" = "Odpojit";
+"Right Administration" = "Administrace";
+"Log Console (dev.)" = "Konzole (dev.)";
+
+"User"			= "Uživatel";
+
+"Help"			= "Nápověda";
+
+"noJavascriptError" = "SOGo vyžaduje JavaScript. Ujistěte se prosím, že je povolen a aktivován v rámci nastavení Vašeho prohlížeče.";
+"noJavascriptRetry" = "Znovu";
+
+"Publish the Free/Busy information" = "Zveřejni informace o Volný/Zaneprázdněný";
+
+"Default Roles" = "Výchozí role";
+
+"Sorry, the user rights can not be configured for that object." = "Omlouváme se, ale uživatelská práva pro tento objekt nemohou být nastaveny.";
+
+/* generic.js */
+"Unable to subscribe to that folder!"
+	= "Není možne se přihlásit k odběru této složky!";
+"You cannot subscribe to a folder that you own!"
+      	= "Nemůžete se přihlásit k odběru své vlastní složky!";
+"Unable to unsubscribe from that folder!"
+	= "Není možné se odhlásit z odběru této složky!";
+"You cannot unsubscribe from a folder that you own!"
+      	= "Nemůžete se odhlásit z odběru své vlastní složky!";
+"Unable to rename that folder!" = "Není možné tuto složku přejmenovat!";
+"You have already subscribed to that folder!"
+     	= "Již jste přihlášeni k odběru této složky!";
+"The user rights cannot be edited for this object!"
+        = "Uživatelská práva pro tento objekt nemohou být upravena!";
+
+"You are not allowed to access this module or this system. Please contact your system administrator."
+= "Nemáte oprávnění pro přístup k tomuto modulu nebo systému. Kontaktujte prosím svého systémového administrátora.";
+"You don't have the required privileges to perform the operation."
+= "Nemáte dostatečná práva k provedení této operace.";
+
+/* alarms */
+"Reminder:" = "Upomínka:";
+"Start:" = "Začátek:";
+"Due Date:" = "Do dne:";
+"Location:" = "Místo:";

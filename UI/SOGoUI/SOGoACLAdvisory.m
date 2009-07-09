@@ -246,6 +246,24 @@
 
 @end
 
+@implementation SOGoACLBrazilianPortugueseAdditionAdvisory
+@end
+
+@implementation SOGoACLBrazilianPortugueseModificationAdvisory
+@end
+
+@implementation SOGoACLBrazilianPortugueseRemovalAdvisory
+@end
+
+@implementation SOGoACLCzechAdditionAdvisory
+@end
+
+@implementation SOGoACLCzechModificationAdvisory
+@end
+
+@implementation SOGoACLCzechRemovalAdvisory
+@end
+
 @implementation SOGoACLDutchAdditionAdvisory
 @end
 

@@ -1,0 +1,153 @@
+/* this file is in UTF-8 format! */
+
+"Addressbook" = "Catálogo";
+"Addresses" = "Contato";
+"Update" = "Atualizar";
+"Cancel" = "Cancelar";
+"Common" = "Comum";
+"Contact editor" = "Editor de Contatos";
+"Contact viewer" = "Visualizador de Contatos";
+"Email" = "Email";
+"Screen Name" = "Nome Apresentação";
+"Extended" = "Extendido";
+"Fax" = "Fax";
+"Firstname" = "Primeiro Nome";
+"Home" = "Residencial";
+"HomePhone" = "Telefone Residencial";
+"Lastname" = "Último Nome";
+"Location" = "Localização";
+"MobilePhone" = "Telefone Celular";
+"Name" = "Nome";
+"OfficePhone" = "Telefone Comercial";
+"Organization" = "Organização";
+"Work Phone" = "Telefone Comercial";
+"Phone" = "Telefone";
+"Phones" = "Telefones";
+"Postal" = "CEP";
+"Save" = "Salvar";
+"URL" = "URL";
+"Unit" = "Setor";
+"delete" = "apagar";
+"edit" = "editar";
+"invalidemailwarn" = "O email informado é inválido";
+"new" = "novo";
+"Preferred Phone"   = "Telefone Preferencial";
+
+/* Tooltips */
+
+"Create a new address book card" = "Cria um novo contato";
+"Create a new list" = "Cria uma nova lista";
+"Edit the selected card" = "Edita o contato selecionado";
+"Send a mail message" = "Envia uma mensagem de email";
+"Delete selected card or address book" = "Apaga o contato ou catálogo selecionado";
+
+"htmlMailFormat_UNKNOWN" = "Desconhecido";
+"htmlMailFormat_FALSE" = "Texto Puro";
+"htmlMailFormat_TRUE" = "HTML";
+
+"Name or Email" = "Nome ou Email";
+"Personal Addressbook" = "Catálogo Pessoal";
+"Search in Addressbook" = "Localizar no Catálogo";
+
+"New Card" = "Novo Contato";
+"New List" = "Nova Lista";
+"Properties" = "Propriedades";
+"Sharing..." = "Localizando...";
+"Write" = "Escrever";
+"Delete" = "Apagar";
+"Instant Message" = "Mensagem Instantânea";
+"Add..." = "Adicionar...";
+"Remove" = "Remover";
+
+"Please wait..." = "Por favor, aguarde...";
+"No possible subscription" = "Sem possibilidades de inscrição";
+
+"Preferred" = "Preferido";
+"Card for %@" = "Contato para %@";
+"Display Name: " = "Exibir Nome: ";
+"Email Address: " = "Endereço de Email: ";
+
+"Firstname: " = "Primeiro Nome: ";
+"Lastname: " = "Último Nome: ";
+"Nickname: " = "Apelido: ";
+
+"Telephone" = "Telefone";
+"Work: " = "Comercial: ";
+"Home: " = "Residencial: ";
+"Fax: " = "Fax: ";
+"Mobile: " = "Celular: ";
+"Pager: " = "Pager: ";
+
+"Title: " = "Título: ";
+"Service: " = "Serviço: ";
+"Company: " = "Empresa: ";
+"Street Address: " = "Endereço: ";
+"City: " = "Cidade: ";
+"State_Province:" = "Estado:";
+"ZIP_Postal Code:" = "CEP:";
+"Country: " = "País: ";
+"Web: " = "Web: ";
+
+"Work" = "Comercial";
+"Other Infos" = "Outras Informações";
+
+"Note: " = "Notas: ";
+"Timezone: " = "Fuso Horário: ";
+"Birthday: " = "Aniversário: ";
+"Freebusy URL: " = "URL Livre/Ocupado: ";
+
+"Add as..." = "Adicionar como...";
+"Recipient" = "Recipient";
+"Carbon Copy" = "Cópia Carbono";
+"Blind Carbon Copy" = "Cópia Carbono Oculta";
+
+"New Addressbook..." = "Novo Catálogo...";
+"Subscribe to an Addressbook..." = "Inscrever-se em um Catálogo...";
+"Remove the selected Addressbook" = "Remover o Catálogo selecionado";
+
+"Name of the Address Book" = "Nome do Catálogo";
+"Are you sure you want to delete the selected address book?"
+= "Você tem certeza que quer apagar o catálogo selecionado?";
+"You cannot remove nor unsubscribe from a public addressbook."
+= "Você não pode apagar nem retirar-se de uma catálogo público.";
+"You cannot remove nor unsubscribe from your personal addressbook."
+= "Você não pode apagar nem retirar-se de uma catálogo pessoal.";
+
+"Are you sure you want to delete the selected contacts?"
+= "Você tem certeza que quer apagar os contatos selecionados?";
+
+"You cannot delete the card of \"%{0}\"."
+= "Você não pode apagar o contato de \"%{0}\".";
+
+"Address Book Name" = "Nome do Catálogo";
+
+"You cannot subscribe to a folder that you own!"
+= "Você não pode inscrever-se em uma pasta que você é dono.";
+"Unable to subscribe to that folder!"
+= "Não foi possível inscrever-se a esta pasta.";
+
+"Default Roles" = "Papéis Padrão";
+"User rights for:" = "Direitos de:";
+
+"This person can add cards to this addressbook."
+= "Essa pessoa pode adicionar contatos ao meu catálogo.";
+"This person can edit the cards of this addressbook."
+= "Essa pessoa pode editar contatos deste catálogo.";
+"This person can list the content of this addressbook."
+= "Essa pessoa pode listar o conteudo deste catálogo.";
+"This person can read the cards of this addressbook."
+= "Essa pessoa pode ler os contatos deste catálogo.";
+"This person can erase cards from this addressbook."
+= "Essa pessoa pode apagar contatos deste catálogo.";
+
+"The selected contact has no email address."
+= "O contato selecionado não tem endereço de email.";
+
+"Please select a contact." = "Por favor, selecione um contato.";
+
+/* Error messages for move and copy */
+
+"SoAccessDeniedException" = "Você não pode gravar neste catálogo.";
+"Forbidden" = "Você não pode gravar neste catálogo.";
+"Invalid Contact" = "O contato selecionado não existe.";
+"Unknown Destination Folder" = "O catálogo de destino selecionado não existe.";

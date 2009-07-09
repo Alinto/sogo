@@ -1,0 +1,261 @@
+/* this file is in UTF-8 format! */
+
+/* Icon's label */
+"Create"      = "Vytvořit";
+"Empty Trash" = "Vyprázdnit koš";
+"Delete"      = "Smazat";
+"Expunge"     = "Vyškrtnout";
+"Forward"     = "Přeposlat";
+"Get Mail"    = "Vybrat maily";
+"Junk"        = "Nevyžádané";
+"Reply"       = "Odpovědět";
+"Reply All"   = "Odpovědět všem";
+"Print"       = "Tisk";
+"Stop"        = "Stop";
+"Write"       = "Napsat";
+
+"Send" = "Odeslat";
+"Contacts" = "Kontakty";
+"Attach" = "Přiložit";
+"Save" = "Uložit";
+"Priority" = "Priorita";
+
+/* Tooltips */
+
+"Send this message now" = "Odeslat tuto zprávu nyní";
+"Select a recipient from an Address Book" = "Zvolit příjemce z adresáře";
+"Include an attachment" = "Zahrnout přílohu";
+"Save this message" = "Uložit tuto zprávu";
+"Get new messages" = "Stáhnout nové zprávy";
+"Create a new message" = "Vytvořit novou zprávu";
+"Go to address book" = "Přejít do adresáře";
+"Reply to the message" = "Odpovědět na zprávu";
+"Reply to sender and all recipients" = "Odpovědět odesílateli a všem  příjemcům";
+"Forward selected message" = "Přeposlat označenou zprávu";
+"Delete selected message or folder" = "Smazat označenou zprávu nebo složku";
+"Mark the selected messages as junk" = "Označit vybrané zprávy jako nevyžádané";
+"Print this message" = "Tisknout tuto zprávu";
+"Stop the current transfer" = "Zastavit aktuální přesun";
+"Attachment" = "Příloha";
+"Unread" = "Nepřečtené";
+"Flagged" = "Oštítkované";
+
+/* Main Frame  */
+
+"Home"                 = "Domů"; 
+"Calendar"             = "Kalendář";
+"Addressbook"          = "Addresář";
+"Mail"                 = "E-Mail";
+"Right Administration" = "Administrace";
+
+"Help" = "Nápověda";
+
+/* Mail account main windows */
+
+"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Vítejte v SOGo Mailer. Využijte stromu složek nalevo pro procházení Vašimi mailovými účty!";
+
+"Read messages"       = "Číst zprávy";
+"Write a new message" = "Napsat zprávu";
+
+"Share: " = "Sdílet: ";
+"Account: " = "Účet: ";
+"Shared Account: " = "Sdílený účet: ";
+
+/* acls */
+"Default Roles" = "Výchozí role";
+"User rights for:" = "Uživatelská práva pro:";
+
+"List and see this folder" = "Prohlížet tuto složku";
+"Read mails from this folder" = "Číst maily v této složce";
+"Mark mails read and unread" = "Označit maily jako přečtené a nepřečtené";
+"Modify the flags of the mails in this folder" = "Upravit mailové štítky v této složce";
+"Insert, copy and move mails into this folder" = "Vložit, kopírovat a přesunout maily do této složky";
+"Post mails" = "Vyvěsit maily";
+"Add subfolders to this folder" = "Přidat podsložky této složce";
+"Remove this folder" = "Odebrat tuto složku";
+"Erase mails from this folder" = "Vymazat maily v této složce";
+"Expunge this folder" = "Vyškrtnout tuto složku";
+"Modify the acl of this folder" = "Upravit acl této složky";
+
+"Update" = "Aktualizace";
+"Cancel" = "Storno";
+
+/* Mail edition */
+
+"From"          = "Od";
+"Subject"       = "Předmět";
+"To"            = "Komu";
+"Cc"            = "Kopie";
+"Bcc"           = "Skrytá Kopie";
+"Reply-To"	= "Odpovědět komu";
+"Add address"   = "Přidat adresu";
+
+"Attachments:" = "Přílohy:";
+
+"to"            = "Komu";
+"cc"            = "Kopie";
+"bcc"           = "Skrytá kopie";
+
+"Addressbook"   = "Adresář";
+
+"Edit Draft..." = "Upravit koncept...";
+"Load Images" = "Nahrát obrázky";
+
+"highest" = "Nejvyšší";
+"high" = "Vysoká";
+"normal" = "Normální";
+"low" = "Nízká";
+"lowest" = "Nejnižší";
+
+"This mail is being sent from an unsecure network!" = "Tento mail je odesílán z nezabezpečené sítě!";
+
+/* Popup "show" */
+
+"all"     = "všechny";
+"read"    = "přečtené";
+"unread"  = "nepřečtené";
+"deleted" = "smazané";
+"flagged" = "oštítkované";
+
+/* MailListView */
+
+"Sender" = "Odesílatel";
+"Subject or Sender" = "Předmět nebo Odesílatel";
+"To or Cc" = "Komu nebo Kopie";
+"Entire Message" = "Celá zpráva";
+
+"Date"          = "Datum";
+"View"          = "Zobrazit";
+"All"           = "Všechny";
+"Unread"        = "Nepřečtené";
+"messages"      = "zprávy";
+
+"first"         = "Nejnovější";
+"previous"      = "Předchozí";
+"next"          = "Následující";
+"last"          = "Nejstarší";
+
+"msgnumber_to"  = "pro";
+"msgnumber_of"  = "o";
+
+"Mark Unread" = "Označit jako nepřečtené";
+"Mark Read"   = "Označit jako přečtené";
+
+"Untitled" = "Bez názvu";
+
+/* Tree */
+
+"SentFolderName"   = "Odeslané";
+"TrashFolderName"  = "Koš";
+"InboxFolderName"  = "Doručená pošta";
+"DraftsFolderName" = "Koncepty";
+"SieveFolderName"  = "Filtry";
+"Folders"          = "Složky"; /* title line */
+
+/* MailMoveToPopUp */
+
+"MoveTo"        = "Přesunout do &hellip;";
+
+/* Address Popup menu */
+"Add to Address Book..." = "Přidat do adresáře...";
+"Compose Mail To" = "Napsat mail pro";
+"Create Filter From Message..." = "Vytvořit filtr ze zprávy...";
+
+/* Image Popup menu */
+"Save Image" = "Uložit obrázek";
+
+/* Mailbox popup menus */
+"Open in New Mail Window" = "Otevřít v novém mailovém okně";
+"Copy Folder Location" = "Kopírovat adresu složky";
+"Subscribe..." = "Přihlásit se k odběru...";
+"Mark Folder Read..." = "Označit složku jako přečtenou...";
+"New Folder..." = "Nová složka...";
+"Compact This Folder" = "Zkompaktnět složku";
+"Search Messages..." = "Vyhledat zprávy...";
+"Sharing..." = "Sdílení...";
+"New Subfolder..." = "Nová podsložka...";
+"Rename Folder..." = "Přejmenovat složku...";
+"Delete Folder" = "Smazat složku";
+"Use This Folder For" = "Použít tuto složku pro";
+"Get Messages for Account" = "Stáhnout zprávy pro účet";
+
+/* Use This Folder menu */
+"Sent Messages" = "Odeslané zprávy";
+"Drafts" = "Koncepty";
+"Deleted Messages" = "Smazané zprávy";
+
+/* Message list popup menu */
+"Open Message In New Window" = "Otevřít zprávu v novém okně";
+"Reply to Sender Only" = "Odpovědět pouze odesílateli";
+"Reply to All" = "Odpovědět všem";
+"Forward" = "Přeposlat";
+"Edit As New..." = "Upravit jako novou...";
+"Move To" = "Přesunout do";
+"Copy To" = "Kopírovat do";
+"Label" = "Označkovat";
+"Mark" = "Označit";
+"Save As..." = "Uložit jako...";
+"Print Preview" = "Náhled tisku";
+"View Message Source" = "Zobrazit zdroj zprávy";
+"Print..." = "Tisk...";
+"Delete Message" = "Smazat zprávu";
+"Delete Selected Messages" = "Smazat označené zprávy";
+
+"This Folder" = "Tato složka";
+
+/* Label popup menu */
+"None" = "Žádný";
+"Important" = "Důležitý";
+"Work" = "Pracovní";
+"Personal" = "Osobní";
+"To Do" = "Třeba udělat";
+"Later" = "Později";
+
+/* Mark popup menu */
+"As Read" = "Jako přečtené";
+"Thread As Read" = "Vlákno jako přečtené";
+"As Read By Date..." = "Přečtené od data...";
+"All Read" = "Všechny přečtené";
+"Flag" = "Oštítkovat";
+"As Junk" = "Jako nevyžádané";
+"As Not Junk" = "Jako vyžádané";
+"Run Junk Mail Controls" = "Spustit kontrolu nevyžádaných";
+
+/* Folder operations */
+"Name :" = "Jméno :";
+"Enter the new name of your folder :"
+ = "Zadejte nový název Vaší složky :";
+"Do you really want to move this folder into the trash ?"
+ = "Opravdu chcete tuto složku vyhodit do koše ?";
+"Operation failed" = "Operace selhala";
+
+"Quota" = "Kvóta:";
+"quotasFormat" = "%{0}% využito z %{1} MB";
+
+"Please select a message." = "Vyberte zprávu prosím.";
+"Please select a message to print." = "Zvolte prosím zprávu, kterou chcete tisknout.";
+"Please select only one message to print." = "Zvolte pouze jednu zprávu, kterou chcete tisknout.";
+
+
+"The folder with name \"%{0}\" could not be created."
+= "Složka s názvem \"%{0}\" nemohla být vytvořen.";
+"This folder could not be renamed to \"%{0}\"."
+= "Tato složka nemohla být přejmenována na \"%{0}\".";
+"The folder could not be deleted."
+= "Tato složka nemohla být smazána.";
+"The trash could not be emptied."
+= "Koš nemohl být vyprázdněn.";
+"The folder functionality could not be changed."
+= "Funkce složky nemohla být změněna.";
+
+"You need to choose a non-virtual folder!" = "Musíte zvolit ne-virtuální složku!";
+
+"Moving a message into its own folder is impossible!"
+= "Je nemožné přesunout zprávu do své vlastní složky!";
+"Copying a message into its own folder is impossible!"
+= "Je nemožné zkopírovat zprávu do své vlastní složky!";
+
+/* Message editing */
+"error_validationfailed" = "Potvrzení selhalo";
+"error_missingsubject" = "Chybí předmět";
+"error_missingrecipients" = "Příjemci nebyli specifikováni";

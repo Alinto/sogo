@@ -1,6 +1,6 @@
 /* SOGoFolderAdvisory.h - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse inc.
+ * Copyright (C) 2007-2009 Inverse inc.
  *
  * Author: Ludovic Marcotte <ludovic@inverse.ca>
  *
@@ -51,6 +51,18 @@
 @end
 
 @interface SOGoFolderRemovalAdvisory : SOGoFolderAdvisory
+@end
+
+@interface SOGoFolderBrazilianPortugueseAdditionAdvisory : SOGoFolderAdditionAdvisory
+@end
+
+@interface SOGoFolderBrazilianPortugueseRemovalAdvisory : SOGoFolderRemovalAdvisory
+@end
+
+@interface SOGoFolderCzechAdditionAdvisory : SOGoFolderAdditionAdvisory
+@end
+
+@interface SOGoFolderCzechRemovalAdvisory : SOGoFolderRemovalAdvisory
 @end
 
 @interface SOGoFolderDutchAdditionAdvisory : SOGoFolderAdditionAdvisory

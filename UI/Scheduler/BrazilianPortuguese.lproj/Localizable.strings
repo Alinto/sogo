@@ -1,0 +1,508 @@
+/* this file is in UTF-8 format! */
+
+/* Tooltips */
+
+"Create a new event" = "Criar um novo evento";
+"Create a new task" = "Criar uma nova tarefa";
+"Edit this event or task" = "Editar este evento ou tarefa";
+"Delete this event or task" = "Apagar este evento ou tarefa";
+"Go to today" = "Ir para Hoje";
+"Switch to day view" = "Visualizar Dia";
+"Switch to week view" = "Visualizar Semana";
+"Switch to month view" = "Visualizar Mês";
+
+/* Tabs */
+"Date" = "Data";
+"Calendars" = "Calendários";
+
+/* Day */
+
+"Sunday" = "Domingo";
+"Monday" = "Segunda";
+"Tuesday" = "Terça";
+"Wednesday" = "Quarta";
+"Thursday" = "Quinta";
+"Friday" = "Sexta";
+"Saturday" = "Sábado";
+
+"Sun" = "Dom";
+"Mon" = "Seg";
+"Tue" = "Ter";
+"Wed" = "Qua";
+"Thu" = "Qui";
+"Fri" = "Sex";
+"Sat" = "Sab";
+
+"a2_Sunday" = "Do";
+"a2_Monday" = "Se";
+"a2_Tuesday" = "Te";
+"a2_Wednesday" = "Qu";
+"a2_Thursday" = "Qu";
+"a2_Friday" = "Se";
+"a2_Saturday" = "Sa";
+
+"dayLabelFormat" = "%m/%d/%Y";
+"today" = "Hoje";
+
+/* Week */
+
+"Week" = "Semana";
+"this week" = "esta semana";
+
+"Week %d" = "Semana %d";
+
+/* Month */
+
+"this month" = "este mês";
+
+"January" = "Janeiro";
+"February" = "Fevereiro";
+"March" = "Março";
+"April" = "Abril";
+"May" = "Maio";
+"June" = "Junho";
+"July" = "Julho";
+"August" = "Agosto";
+"September" = "Setembro";
+"October" = "Outubro";
+"November" = "Novembro";
+"December" = "Dezembro";
+
+"a3_January" = "Janeiro";
+"a3_February" = "Fevereiro";
+"a3_March" = "Março";
+"a3_April" = "Abril";
+"a3_May" = "Maio";
+"a3_June" = "Junho";
+"a3_July" = "Julho";
+"a3_August" = "Agosto";
+"a3_September" = "Setembro";
+"a3_October" = "Outubro";
+"a3_November" = "Novembro";
+"a3_December" = "Dezembro";
+
+/* Year */
+
+"this year" = "este ano";
+
+/* Menu */
+
+"Calendar" = "Calendário";
+"Contacts" = "Contatos";
+
+"New Calendar..." = "Novo Calendário...";
+"Delete Calendar" = "Apagar Calendário";
+"Sharing..." = "Compartilhamento...";
+"Export Calendar..." = "Exportar Calendário...";
+"Publish Calendar..." = "Publicar Calendário...";
+"Reload Remote Calendars" = "Recarregar Calendários Remotos";
+"Properties" = "Propriedades";
+
+"Compose E-Mail to All Attendees" = "Compor E-Mail para Todos os Participantes";
+"Compose E-Mail to Undecided Attendees" = "Compor E-Mail para os Participantes não confirmados";
+
+/* Folders */
+"Personal calendar" = "Calendário Pessoal";
+
+/* Misc */
+
+"OpenGroupware.org" = "OpenGroupware.org";
+"Forbidden" = "Proibido";
+
+/* acls */
+
+"Default Roles" = "Papéis Padrão";
+"User rights for:" = "Direitos de:";
+
+"label_Public" = "Público";
+"label_Private" = "Privado";
+"label_Confidential" = "Confidencial";
+
+"label_Viewer" = "Ver Tudo";
+"label_DAndTViewer" = "Ver Data e Hora";
+"label_Modifier" = "Modificar";
+"label_Responder" = "Responder Para";
+"label_None" = "Nenhum";
+
+"View All" = "Ver Tudo";
+"View the Date & Time" = "Ver Data e Hora";
+"Modify" = "Modificar";
+"Respond To" = "Responder Para";
+"None" = "Nenhum";
+
+"This person can create objects in my calendar."
+= "Esta pessoa pode criar objetos em meu calendário.";
+"This person can erase objects from my calendar."
+= "Esta pessoa pode apagar objetos em meu calendário.";
+
+/* Button Titles */
+
+"New Calendar..." = "Novo Calendário...";
+"Subscribe to a Calendar..." = "Inscrever-se em um Calendário...";
+"Remove the selected Calendar" = "Remover o Calendário selecionado";
+
+"Name of the Calendar" = "Nome deste Calendário";
+
+"new" = "Novo";
+"printview" = "Visualizar Impressão";
+"edit" = "Editar";
+"delete" = "Apagar";
+"proposal" = "Proposta";
+"Save and Close" = "Salvar e Fechar";
+"Close" = "Fechar";
+"Invite Attendees" = "Convidar Participantes";
+"Documents" = "Documentos";
+"Update" = "Atualizar";
+"Cancel" = "Cancelar";
+"show_rejected_apts" = "Exibir apontamentos rejeitados";
+"hide_rejected_apts" = "Ocultar apontamentos rejeitados";
+
+
+/* Schedule */
+
+"Schedule" = "Agenda";
+"No appointments found" = "Apontamentos não encontrados";
+"Meetings proposed by you" = "Reuniões propostas por você";
+"Meetings proposed to you" = "Reuniões propostas para você";
+"sched_startDateFormat" = "%d/%m %H:%M";
+"action" = "Ação";
+"accept" = "Aceitar";
+"decline" = "Declinar";
+"more attendees" = "Mais Participantes";
+"Hide already accepted and rejected appointments" = "Ocultar apontamentos já aceitos e rejeitados";
+"Show already accepted and rejected appointments" = "Exibir apontamentos já aceitos e rejeitados";
+
+
+/* Appointments */
+
+"Appointment viewer" = "Visualizador de Apontamentos";
+"Appointment editor" = "Editor de Apontamento";
+"Appointment proposal" = "Apontamento Proposto";
+"Appointment on" = "Apontamento em";
+"Start:" = "Inicio:";
+"End:" = "Fim:";
+"Due Date:" = "Data:";
+"Title:" = "Título:";
+"Calendar:" = "Calendário:";
+"Name" = "Nome";
+"Email" = "Email";
+"Status:" = "Status:";
+"% complete" = "% completado";
+"Location:" = "Localização:";
+"Priority:" = "Prioridade:";
+"Privacy" = "Privacidade";
+"Cycle" = "Ciclo";
+"Cycle End" = "Ciclo Final";
+"Categories" = "Categorias";
+"Classification" = "Classificação";
+"Duration" = "Duração";
+"Attendees:" = "Participantes:";
+"Resources" = "Recursos";
+"Organizer:" = "Organizador:";
+"Description:" = "Descrição:";
+"Document:" = "Documento:";
+"Category:" = "Categoria:";
+"Repeat:" = "Repetir:";
+"Reminder:" = "Lembrete:";
+
+"Target:" = "Target:";
+
+"attributes" = "atributos";
+"attendees" = "participantes";
+/* checkbox title */
+"is private" = "é privado";
+/* classification */
+"Public" = "Público";
+"Private" = "Privado";
+/* text used in overviews and tooltips */
+"empty title" = "Título Vazio";
+"private appointment" = "Apontamento privado";
+
+"Change..." = "Alterar...";
+
+/* Appointments (participation state) */
+
+"partStat_NEEDS-ACTION" = "Ações necessárias";
+"partStat_ACCEPTED" = "Aceitado";
+"partStat_DECLINED" = "Declinado";
+"partStat_TENTATIVE" = "Tentativa";
+"partStat_DELEGATED" = "Delegado";
+"partStat_OTHER" = "Outro";
+
+/* Appointments (error messages) */
+
+"Conflicts found!" = "Conflitos encontrados!";
+"Invalid iCal data!" = "Dados iCal inválidos!";
+"Could not create iCal data!" = "Não foi possível criar dados iCal!";
+
+/* Searching */
+
+"view_all" = "Tudo";
+"view_today" = "Hoje";
+"view_next7" = "Próximos 7 dias";
+"view_next14" = "Próximos 14 dias";
+"view_next31" = "Próximos 31 dias";
+"view_thismonth" = "Este Mês";
+"view_future" = "Todos os Eventos Futuros";
+"view_selectedday" = "Dia Selecionado";
+
+"View:" = "Visão:";
+"Title or Description" = "Título ou Descrição";
+
+"Search" = "Pesquisar";
+"Search attendees" = "Pesquisar participantes";
+"Search resources" = "Pesquisar recursos";
+"Search appointments" = "Pesquisar apontamentos";
+"Search in Anais" = "Pesquisar nos Anais";
+
+"All day Event" = "Evento diário";
+"check for conflicts" = "Checar conflitos";
+
+"Browse URL" = "Abrir URL";
+
+"newAttendee" = "Adicionar participante";
+
+/* calendar modes */
+
+"Overview" = "Visão Geral";
+"Chart" = "Fluxo";
+"List" = "Lista";
+"Columns" = "Colunas";
+
+/* Priorities */
+
+"prio_0" = "Not specified";
+"prio_1" = "Alta 3";
+"prio_2" = "Alta 2";
+"prio_3" = "Alta 1";
+"prio_4" = "Alta";
+"prio_5" = "Normal";
+"prio_6" = "Baixa";
+"prio_7" = "Baixa 1";
+"prio_8" = "Baixa 2";
+"prio_9" = "Baixa 3";
+
+/* access classes (privacy) */
+"PUBLIC_vevent" = "Evento Público";
+"CONFIDENTIAL_vevent" = "Evento Confidencial";
+"PRIVATE_vevent" = "Evento Privado";
+"PUBLIC_vtodo" = "Tarefa Pública";
+"CONFIDENTIAL_vtodo" = "Tarefa Confidencial";
+"PRIVATE_vtodo" = "Tarefa Privada";
+
+/* status type */
+"status_" = "Não especificado";
+"status_NOT-SPECIFIED" = "Não especificado";
+"status_TENTATIVE" = "Tentativa";
+"status_CONFIRMED" = "Confirmado";
+"status_CANCELLED" = "Cancelado";
+"status_NEEDS-ACTION" = "Ações Necessárias";
+"status_IN-PROCESS" = "Em Processamento";
+"status_COMPLETED" = "Completado";
+
+/* Cycles */
+
+"cycle_once" = "ciclo_uma_vez";
+"cycle_daily" = "cycle_diário";
+"cycle_weekly" = "cycle_semanal";
+"cycle_2weeks" = "cycle_2semanas";
+"cycle_4weeks" = "cycle_4semanas";
+"cycle_monthly" = "cycle_mensal";
+"cycle_weekday" = "cycle_semanal";
+"cycle_yearly" = "cycle_anual";
+
+"cycle_end_never" = "cycle_sem_fim";
+"cycle_end_until" = "cycle_fim_até";
+
+"Recurrence pattern" = "Padrão de Repetição";
+"Range of recurrence" = "Intervalo de Repetição";
+
+"Repeat" = "Repetir";
+"Daily" = "Diariamente";
+"Weekly" = "Semanalmente";
+"Monthly" = "Mensalmente";
+"Yearly" = "Anualmente";
+"Every" = "A cada";
+"Days" = "Dias";
+"Week(s)" = "Semana(s)";
+"On" = "Em";
+"Month(s)" = "Mês(es)";
+"The" = "O/A";
+"Recur on day(s)" = "Retorne em dia(s)";
+"Year(s)" = "Ano(s)";
+"cycle_of" = "de";
+"No end date" = "Sem data final";
+"Create" = "Criar";
+"appointment(s)" = "apontamento(s)";
+"Repeat until" = "Repetir até";
+
+"First" = "Primeiro";
+"Second" = "Segundo";
+"Third" = "Terceiro";
+"Fourth" = "Quarto";
+"Fift" = "Quinto";
+"Last" = "Último";
+
+/* Appointment categories */
+
+"category_NONE" = "Nenhum";
+"category_ANNIVERSARY" = "Aniversário";
+"category_BIRTHDAY" = "Nascimento";
+"category_BUSINESS" = "Negócios";
+"category_CALLS" = "Chamadas"; 
+"category_CLIENTS" = "Clientes";
+"category_COMPETITION" = "Competição";
+"category_CUSTOMER" = "Cliente";
+"category_FAVORITES" = "Favoritos";
+"category_FOLLOW UP" = "Continuação";
+"category_GIFTS" = "Presentes";
+"category_HOLIDAYS" = "Feriados";
+"category_IDEAS" = "Ideias";
+"category_ISSUES" = "Edições";
+"category_MISCELLANEOUS" = "Variedades";
+"category_PERSONAL" = "Pessoal";
+"category_PROJECTS" = "Projetos";
+"category_PUBLIC HOLIDAY" = "Feriado Nacional";
+"category_STATUS" = "Status";
+"category_SUPPLIERS" = "Fornecedores";
+"category_TRAVEL" = "Viagem";
+"category_VACATION" = "Férias";
+
+"repeat_NEVER" = "Sem repetição";
+"repeat_DAILY" = "Diariamente";
+"repeat_WEEKLY" = "Semanalmente";
+"repeat_BI-WEEKLY" = "Bi-semanal";
+"repeat_EVERY WEEKDAY" = "Cada dia útil";
+"repeat_MONTHLY" = "Mensalmente";
+"repeat_YEARLY" = "Anualmente";
+"repeat_CUSTOM" = "Personalizar...";
+
+"reminder_NONE" = "Não lembrar";
+"reminder_5_MINUTES_BEFORE" = "5 minutos antes";
+"reminder_10_MINUTES_BEFORE" = "10 minutos antes";
+"reminder_15_MINUTES_BEFORE" = "15 minutos antes";
+"reminder_30_MINUTES_BEFORE" = "30 minutos antes";
+"reminder_45_MINUTES_BEFORE" = "45 minutos antes";
+"reminder_1_HOUR_BEFORE" = "1 hora antes";
+"reminder_2_HOURS_BEFORE" = "2 horas antes";
+"reminder_5_HOURS_BEFORE" = "5 horas antes";
+"reminder_15_HOURS_BEFORE" = "15 horas antes";
+"reminder_1_DAY_BEFORE" = "1 dia antes";
+"reminder_2_DAYS_BEFORE" = "2 dias antes";
+"reminder_1_WEEK_BEFORE" = "1 semana antes";
+"reminder_CUSTOM" = "Personalizar...";
+
+"reminder_MINUTES" = "minutos";
+"reminder_HOURS" = "horas";
+"reminder_DAYS" = "dias";
+"reminder_BEFORE" = "antes";
+"reminder_AFTER" = "depois";
+"reminder_START" = "inicio do evento";
+"reminder_END" = "fim do evento";
+
+"zoom_400" = "400%";
+"zoom_200" = "200%";
+"zoom_100" = "100%";
+"zoom_50" = "50%";
+"zoom_25" = "25%";
+
+/* transparency */
+
+"Show Time as Free" = "Exibir Hora como Livre";
+
+/* validation errors */
+
+validate_notitle           = "Nenhum título informado, continue?";
+validate_invalid_startdate = "Campo Data Inicial incorreto!";
+validate_invalid_enddate   = "Campo Data Final incorreto!";
+validate_endbeforestart    = "A data que você informou ocorre antes da data inicial.";
+
+"Tasks" = "Tarefas";
+"Show completed tasks" = "Exibir tarefas completadas";
+
+/* tabs */
+"Task" = "Tarefa";
+"Event" = "Evento";
+"Recurrence" = "Recorrencia";
+
+/* toolbar */
+"New Event" = "Novo Evento";
+"New Task" = "Nova Tarefa";
+"Edit" = "Editar";
+"Delete" = "Apagar";
+"Go to Today" = "Ir para Hoje";
+"Day View" = "Visualizar Dia";
+"Week View" = "Visualizar Mês";
+"Month View" = "Visualizar Mês";
+
+"eventPartStatModificationError" = "Seu status de participação não pode ser modificado.";
+
+/* menu */
+"New Event..." = "Novo Evento...";
+"New Task..." = "Neva Tarefa...";
+"Edit Selected Event..." = "Editar o Evento Selecionado...";
+"Delete Selected Event" = "Apagar o Evento Selecionado";
+"Select All" = "Selecionar Tudo";
+"Workweek days only" = "Somente semanas úteis";
+"Tasks in View" = "Tarefas na vista";
+
+"eventDeleteConfirmation" = "Apagar permanentemente este evento.\nVocê gostaria de continuar?";
+"taskDeleteConfirmation" = "Apagar permanentemente esta tarefa.\nVocê gostaria de continuar?";
+
+"You cannot remove nor unsubscribe from your personal calendar."
+= "Você não pode remover nem retirar-se do seu calendário pessoal.";
+"Are you sure you want to delete the calendar \"%{0}\"?"
+= "Você tem certeza que quer apagar o calendário \"%{0}\"?";
+
+/* Legend */
+"Required participant" = "Participante Requerido";
+"Optional participant" = "Participante Opcional";
+"Chair" = "Cadeira";
+
+"Needs action" = "Ações necessárias";
+"Accepted" = "Aceitado";
+"Declined" = "Declinado";
+"Tentative" = "Tentativa";
+
+"Free" = "Livre";
+"Busy" = "Ocupado";
+"Maybe busy" = "Talvez ocupado";
+"No free-busy information" = "Sem informação Livre/Ocupado";
+
+/* FreeBusy panel buttons and labels */
+"Suggest time slot:" = "Sugerir espaço de tempo:";
+"Zoom:" = "Zoom:";
+"Previous slot" = "Espaço anterior";
+"Next slot" = "Próximo espaço";
+"Previous hour" = "Hora anterior";
+"Next hour" = "Próxima hora";
+"Only office hours" = "Somente horário comercial";
+
+/* apt list */
+"Title" = "Título";
+"Start" = "Início";
+"End" = "Fim";
+"Location" = "Localização";
+"(Private Event)" = "(Evento Privado)";
+
+vevent_class0 = "(Evento Público)";
+vevent_class1 = "(Evento Privado)";
+vevent_class2 = "(Evento Confidencial)";
+
+vtodo_class0 = "(Tarefa Pública)";
+vtodo_class1 = "(Tarefa Privada)";
+vtodo_class2 = "(Tarefa Confidencial)";
+
+"closeThisWindowMessage" = "Obrigado! Agora você já pode fechar esta janela ou visualização ";
+"Multicolumn Day View" = "Visão Diária Multicolunas";
+
+"Please select an event or a task." = "Por favor, selecione um evento ou tarefa.";
+
+"editRepeatingItem" = "O item que você está editando é um item repetitivo. Você quer editar todas as ocorrências deste ou somente este?";
+"button_thisOccurrenceOnly" = "Somente esta ocorrência";
+"button_allOccurrences" = "Todas as ocorrências";
+
+/* Properties dialog */
+"Name:" = "Nome:";
+"Color:" = "Cor:";
+"Tag:" = "Marca:";

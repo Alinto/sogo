@@ -40,6 +40,8 @@ Mailer_RESOURCE_FILES += \
 	product.plist	\
 
 Mailer_RESOURCE_FILES += \
+	SOGoMailBrazilianPortugueseForward.wo \
+	SOGoMailCzechForward.wo \
 	SOGoMailDutchForward.wo \
 	SOGoMailEnglishForward.wo \
 	SOGoMailFrenchForward.wo \
@@ -48,6 +50,8 @@ Mailer_RESOURCE_FILES += \
 	SOGoMailSpanishForward.wo \
 	SOGoMailWelshForward.wo \
 	SOGoMailRussianForward.wo \
+	SOGoMailBrazilianPortugueseReply.wo \
+	SOGoMailCzechReply.wo \
 	SOGoMailRussianReply.wo \
 	SOGoMailDutchReply.wo \
 	SOGoMailEnglishReply.wo \

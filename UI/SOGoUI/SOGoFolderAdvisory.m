@@ -1,6 +1,6 @@
 /* SOGoFolderAdvisory.m - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse inc.
+ * Copyright (C) 2007-2009 Inverse inc.
  *
  * Author: Ludovic Marcotte <ludovic@inverse.ca>
  *
@@ -217,6 +217,18 @@
 
 - (NSString *) folderMethod { return @"remove"; }
 
+@end
+
+@implementation SOGoFolderBrazilianPortugueseAdditionAdvisory
+@end
+
+@implementation SOGoFolderBrazilianPortugueseRemovalAdvisory
+@end
+
+@implementation SOGoFolderCzechAdditionAdvisory
+@end
+
+@implementation SOGoFolderCzechRemovalAdvisory
 @end
 
 @implementation SOGoFolderDutchAdditionAdvisory

@@ -6,7 +6,7 @@ BUNDLE_NAME = MainUI
 
 MainUI_PRINCIPAL_CLASS = MainUIProduct
 
-MainUI_LANGUAGES = Dutch English French German Italian Spanish Welsh Russian
+MainUI_LANGUAGES = BrazilianPortuguese Czech Dutch English French German Italian Spanish Welsh Russian
 
 MainUI_OBJC_FILES += \
 	MainUIProduct.m		\

@@ -1,0 +1,261 @@
+/* this file is in UTF-8 format! */
+
+/* Icon's label */
+"Create"      = "Criar";
+"Empty Trash" = "Esvaziar Lixeira";
+"Delete"      = "Apagar";
+"Expunge"     = "Expurgar";
+"Forward"     = "Encaminhar";
+"Get Mail"    = "Receber";
+"Junk"        = "Lixo Eletrônico";
+"Reply"       = "Responder";
+"Reply All"   = "Responder a Todos";
+"Print"       = "Imprimir";
+"Stop"        = "Parar";
+"Write"       = "Escrever";
+
+"Send" = "Enviar";
+"Contacts" = "Contatos";
+"Attach" = "Anexo";
+"Save" = "Salvar";
+"Priority" = "Prioridade";
+
+/* Tooltips */
+
+"Send this message now" = "Envia esta mensagem agora";
+"Select a recipient from an Address Book" = "Seleciona um destinatário de a partir de um Catálogo";
+"Include an attachment" = "Inclui um anexo";
+"Save this message" = "Salva esta mensagem";
+"Get new messages" = "Receber novas mensagens";
+"Create a new message" = "Cria uma nova mensagem";
+"Go to address book" = "Ir para Catálogo";
+"Reply to the message" = "Responder a esta mensagem";
+"Reply to sender and all recipients" = "Responder ao remetente e todos na mensagem";
+"Forward selected message" = "Encaminha a mensagem selecionada";
+"Delete selected message or folder" = "Apaga a mensagem ou pasta selecionada";
+"Mark the selected messages as junk" = "Marca a mensagem selecionada como Lixo Eletrônico";
+"Print this message" = "Imprimir esta mensagem";
+"Stop the current transfer" = "Interromper a transferência";
+"Attachment" = "Anexos";
+"Unread" = "Não Lido";
+"Flagged" = "Sinalizado";
+
+/* Main Frame  */
+
+"Home"                 = "Início"; 
+"Calendar"             = "Calendário";
+"Addressbook"          = "Catálogo";
+"Mail"                 = "Correio";
+"Right Administration" = "Administração de Direitos";
+
+"Help" = "Ajuda";
+
+/* Mail account main windows */
+
+"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Bem-Vindo ao SOGo WebMail. Use as pastas a esquerda para exibir suas contas de email!";
+
+"Read messages"       = "Ler mensagens";
+"Write a new message" = "Escrever uma nova mensagem";
+
+"Share: " = "Compartilhamento: ";
+"Account: " = "Conta: ";
+"Shared Account: " = "Conta Compartilhada: ";
+
+/* acls */
+"Default Roles" = "Papéis Padrão";
+"User rights for:" = "Direitos de:";
+
+"List and see this folder" = "Listar e ver esta pasta";
+"Read mails from this folder" = "Ler emails desta pasta";
+"Mark mails read and unread" = "Marcar emails como lido e não lido";
+"Modify the flags of the mails in this folder" = "Modificar a sinalização dos emails nesta pasta";
+"Insert, copy and move mails into this folder" = "Inserir, copiar e mover emails nesta pasta";
+"Post mails" = "Postar emails";
+"Add subfolders to this folder" = "Adicionar subpastas a esta pasta";
+"Remove this folder" = "Apagar esta pasta";
+"Erase mails from this folder" = "Apagar emails desta pasta";
+"Expunge this folder" = "Expurgar esta pasta";
+"Modify the acl of this folder" = "Modificar os direitos desta pasta";
+
+"Update" = "Atualizar";
+"Cancel" = "Cancelar";
+
+/* Mail edition */
+
+"From"          = "De";
+"Subject"       = "Assunto";
+"To"            = "Para";
+"Cc"            = "Cc";
+"Bcc"           = "Bcc";
+"Reply-To"	= "Responder-Para";
+"Add address"   = "Adicionar endereço";
+
+"Attachments:" = "Anexos:";
+
+"to"            = "Para";
+"cc"            = "Cc";
+"bcc"           = "Bcc";
+
+"Addressbook"   = "Catálogo";
+
+"Edit Draft..." = "Editar Rascunho...";
+"Load Images" = "Carregar Imagens";
+
+"highest" = "Muito Alta";
+"high" = "Alta";
+"normal" = "Normal";
+"low" = "Baixa";
+"lowest" = "Muito Baixa";
+
+"This mail is being sent from an unsecure network!" = "Este email está sendo enviado por uma rede não segura!";
+
+/* Popup "show" */
+
+"all"     = "todos";
+"read"    = "lido";
+"unread"  = "não lido";
+"deleted" = "apagados";
+"flagged" = "sinalizados";
+
+/* MailListView */
+
+"Sender" = "Remetente";
+"Subject or Sender" = "Assunto ou Remetente";
+"To or Cc" = "Para ou Cc";
+"Entire Message" = "Mensagem Inteira";
+
+"Date"          = "Data";
+"View"          = "Visão";
+"All"           = "Tudo";
+"Unread"        = "Não Lido";
+"messages"      = "mensagens";
+
+"first"         = "Primeiro";
+"previous"      = "Anterior";
+"next"          = "Próximo";
+"last"          = "Último";
+
+"msgnumber_to"  = "para";
+"msgnumber_of"  = "de";
+
+"Mark Unread" = "Marcar como Não Lido";
+"Mark Read"   = "Marcar como Lido";
+
+"Untitled" = "Sem título";
+
+/* Tree */
+
+"SentFolderName"   = "Enviados";
+"TrashFolderName"  = "Lixeira";
+"InboxFolderName"  = "Entrada";
+"DraftsFolderName" = "Rascunhos";
+"SieveFolderName"  = "Filtros";
+"Folders"          = "Pastas"; /* title line */
+
+/* MailMoveToPopUp */
+
+"MoveTo"        = "Mover &hellip;";
+
+/* Address Popup menu */
+"Add to Address Book..." = "Adicionar ao Catálogo...";
+"Compose Mail To" = "Escrever Mensagem Parana";
+"Create Filter From Message..." = "Criar Filtro Da Mensagem...";
+
+/* Image Popup menu */
+"Save Image" = "Salvar Imagem";
+
+/* Mailbox popup menus */
+"Open in New Mail Window" = "Abrir em uma Nova Janela";
+"Copy Folder Location" = "Copiar o Local da Pasta";
+"Subscribe..." = "Inscrever-se...";
+"Mark Folder Read..." = "Marcar Pasta como Lido...";
+"New Folder..." = "Nova Pasta...";
+"Compact This Folder" = "Compactar Esta Pasta";
+"Search Messages..." = "Procurar Mensagens...";
+"Sharing..." = "Compartilhamento...";
+"New Subfolder..." = "Nova Subpasta...";
+"Rename Folder..." = "Renomear Pasta...";
+"Delete Folder" = "Apagar Pasta";
+"Use This Folder For" = "Usar Esta Pasta Para";
+"Get Messages for Account" = "Receber Mensagens por Conta";
+
+/* Use This Folder menu */
+"Sent Messages" = "Enviar Mensagens";
+"Drafts" = "Rascunhos";
+"Deleted Messages" = "Mensagens Apagadas";
+
+/* Message list popup menu */
+"Open Message In New Window" = "Abrir Mensagens em uma Nova Janela";
+"Reply to Sender Only" = "Responder Somente para o Remetente";
+"Reply to All" = "Responder a Todos";
+"Forward" = "Encaminhar";
+"Edit As New..." = "Editar Como Novo...";
+"Move To" = "Mover Para";
+"Copy To" = "Copiar Para";
+"Label" = "Etiqueta";
+"Mark" = "Marcar";
+"Save As..." = "Salvar Como...";
+"Print Preview" = "Visualizar Impressão";
+"View Message Source" = "Ver Código-Fonte da Mensagem";
+"Print..." = "Imprimir...";
+"Delete Message" = "Apagar Mensagem";
+"Delete Selected Messages" = "Apagar Mensagens Selecionadas";
+
+"This Folder" = "Esta Pasta";
+
+/* Label popup menu */
+"None" = "Nenhum";
+"Important" = "Importante";
+"Work" = "Trabalho";
+"Personal" = "Pessoal";
+"To Do" = "Tarefa";
+"Later" = "Adiar";
+
+/* Mark popup menu */
+"As Read" = "Como Lido";
+"Thread As Read" = "Tarefa Como Lido";
+"As Read By Date..." = "Como Lido Por Data...";
+"All Read" = "Tudo Lido";
+"Flag" = "Sinalizado";
+"As Junk" = "Como Lixo Eletrônico";
+"As Not Junk" = "Como Não é Lixo Eletrônico";
+"Run Junk Mail Controls" = "Executar Controle de Lixo Eletrônico";
+
+/* Folder operations */
+"Name :" = "Nome :";
+"Enter the new name of your folder :"
+ = "Informe o novo nome de sua pasta :";
+"Do you really want to move this folder into the trash ?"
+ = "Você realmente quer mover esta pasta para a Lixeira ?";
+"Operation failed" = "Falha na Operação";
+
+"Quota" = "Quota:";
+"quotasFormat" = "%{0}% usedo em %{1} MB";
+
+"Please select a message." = "Por favor, selecione uma mensagem.";
+"Please select a message to print." = "Por favor, selecione a mensagem para imprimir.";
+"Please select only one message to print." = "Por favor, selecione somente uma mensagem para imprimir.";
+
+
+"The folder with name \"%{0}\" could not be created."
+= "A pasta com o nome \"%{0}\" não pode ser criada.";
+"This folder could not be renamed to \"%{0}\"."
+= "Esta pasta não pode ser renomeada para \"%{0}\".";
+"The folder could not be deleted."
+= "A pasta não pode ser apagada.";
+"The trash could not be emptied."
+= "A Lixeira não pode ser esvaziada.";
+"The folder functionality could not be changed."
+= "A funcionalidade da pasta não pode ser alterada";
+
+"You need to choose a non-virtual folder!" = "Você precisa escolher uma pasta não-virtual!";
+
+"Moving a message into its own folder is impossible!"
+= "Mover a mensagem em sua própria pasta é impossível!";
+"Copying a message into its own folder is impossible!"
+= "Copiar a mensagem em sua própria pasta é impossível!";
+
+/* Message editing */
+"error_validationfailed" = "Validação falhou";
+"error_missingsubject" = "Está faltando o Assunto";
+"error_missingrecipients" = "Sem destinatários selecionados";

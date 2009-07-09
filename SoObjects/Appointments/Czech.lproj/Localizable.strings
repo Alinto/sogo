@@ -1,0 +1,8 @@
+"Personal Calendar" = "Osobní kalendář";
+vevent_class0 = "(Veřejná událost)";
+vevent_class1 = "(Soukromá událost)";
+vevent_class2 = "(Skrytá událost)";
+
+vtodo_class0 = "(Veřejný úkol)";
+vtodo_class1 = "(Soukromý úkol)";
+vtodo_class2 = "(Skrytý úkol)";
