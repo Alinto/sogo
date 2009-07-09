@@ -917,6 +917,10 @@ function configureLinksInMessage() {
     else
       $(anchors[i]).observe("click", onMessageAnchorClick);
 
+  var attachments = messageDiv.select ("DIV.linked_attachment_body");
+  for (var i = 0; i < attachments.length; i++)
+    $(attachments[i]).observe("contextmenu", onAttachmentClick);
+
 	var images = messageDiv.select("IMG.mailer_imagecontent");
   for (var i = 0; i < images.length; i++)
     $(images[i]).observe("contextmenu", onImageClick);
@@ -1062,6 +1066,12 @@ function onImageClick(event) {
   return false;
 }
 
+function onAttachmentClick (event) {
+  popupMenu (event, 'attachmentMenu', this);
+  preventDefault (event);
+  return false;
+}
+
 function messageCallback(http) {
   var div = $('messageContent');
 
@@ -1170,6 +1180,15 @@ function onMenuViewMessageSource(event) {
 function saveImage(event) {
   var img = document.menuTarget;
   var url = img.getAttribute("src");
+  var urlAsAttachment = url.replace(/(\/[^\/]*)$/,"/asAttachment$1");
+
+  window.location.href = urlAsAttachment;
+}
+
+function saveAttachment(event) {
+  var div = document.menuTarget;
+  var link = div.select ("a").first ();
+  var url = link.getAttribute("href");
   var urlAsAttachment = url.replace(/(\/[^\/]*)$/,"/asAttachment$1");
 
   window.location.href = urlAsAttachment;
@@ -2048,6 +2067,7 @@ function getMenus() {
 																				saveAs, null,
 																				onMenuDeleteMessage);
   menus["imageMenu"] = new Array(saveImage);
+  menus["attachmentMenu"] = new Array (saveAttachment);
   menus["messageContentMenu"] = new Array(onMenuReplyToSender,
 																					onMenuReplyToAll,
 																					onMenuForwardMessage,

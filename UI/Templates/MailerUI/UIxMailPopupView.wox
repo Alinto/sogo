@@ -26,4 +26,9 @@
         <li id="save_image"><var:string label:value="Save Image"/></li>
       </ul>
     </div>
+    <div class="menu" id="attachmentMenu">
+    <ul>
+      <li id="save_attachment"><var:string label:value="Save Attachment"/></li>
+    </ul>
+  </div>
    </var:component>

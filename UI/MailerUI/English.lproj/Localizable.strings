@@ -164,6 +164,7 @@
 
 /* Image Popup menu */
 "Save Image" = "Save Image";
+"Save Attachment" = "Save Attachment";
 
 /* Mailbox popup menus */
 "Open in New Mail Window" = "Open in New Mail Window";

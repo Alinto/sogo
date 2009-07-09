@@ -164,6 +164,7 @@
 
 /* Image Popup menu */
 "Save Image" = "Сохранить изображение";
+"Save Attachment" = "Save Attachment";
 
 /* Mailbox popup menus */
 "Open in New Mail Window" = "Открыть в новом окне";

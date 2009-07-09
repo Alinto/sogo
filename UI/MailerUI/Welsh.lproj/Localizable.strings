@@ -164,6 +164,7 @@
 
 /* Image Popup menu */
 "Save Image" = "Cadw Delwedd";
+"Save Attachment" = "Save Attachment";
 
 /* Mailbox popup menus */
 "Open in New Mail Window" = "Agor mewn ffenestr Neges Newydd";

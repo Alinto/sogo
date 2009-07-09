@@ -145,6 +145,7 @@
 
 /* Image Popup menu */
 "Save Image" = "Afbeelding opslaan";
+"Save Attachment" = "Save Attachment";
 
 /* Mailbox popup menus */
 "Open in New Mail Window" = "In nieuw e-mailvenster openen";

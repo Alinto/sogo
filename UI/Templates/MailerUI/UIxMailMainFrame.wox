@@ -193,6 +193,12 @@
     </ul>
   </div>
 
+  <div class="menu" id="attachmentMenu">
+    <ul>
+      <li id="save_attachment"><var:string label:value="Save Attachment"/></li>
+    </ul>
+  </div>
+
   <div id="leftPanel">
     <div class="titlediv"><var:string label:value="Folders" /></div>
     <div id="folderTreeContent"><!-- space --></div>

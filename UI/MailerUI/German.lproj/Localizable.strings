@@ -162,6 +162,7 @@
 
 /* Image Popup menu */
 "Save Image" = "Bild speichern";
+"Save Attachment" = "Save Attachment";
 
 /* Mailbox popup menus */
 "Open in New Mail Window" = "In neuem Fenster öffnen";
