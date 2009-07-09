@@ -12,13 +12,13 @@
   NSDateTimeOrdering = DMYH;
   NSDecimalDigits = ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
   NSDecimalSeparator = ",";
-  NSEarlierTimeDesignations = (anterior, último, passado, atrás);
-  NSHourNameDesignations = ((0, meia-noite), (10, manhã), (12, meio-dia, almoço), (14, tarde), (19, noite));
+  NSEarlierTimeDesignations = (anterior, "último", passado, "atrás");
+  NSHourNameDesignations = ((0, meia-noite), (10, "manhã"), (12, meio-dia, "almoço"), (14, tarde), (19, noite));
   NSInternationalCurrencyString = BRL; /* ISO 4217 */
-  NSLaterTimeDesignations = (próxima);
-  NSMonthNameArray = (Janeiro, Fevereiro, Março, Abril, Maio, Junho, Julho, Agosto, Setembro, Outubro, Novembro, Dezembro);
-  NSNextDayDesignations = (amanhã);
-  NSNextNextDayDesignations = (dia seguinte);
+  NSLaterTimeDesignations = ("próxima");
+  NSMonthNameArray = (Janeiro, Fevereiro, "Março", Abril, Maio, Junho, Julho, Agosto, Setembro, Outubro, Novembro, Dezembro);
+  NSNextDayDesignations = ("amanhã");
+  NSNextNextDayDesignations = ("dia seguinte");
   NSPriorDayDesignations = (ontem);
   NSShortDateFormatString = "%e/%m/%y";
   NSShortMonthNameArray = (Jan, Fev, Mar, Abr, Mai, Jun, Jul, Ago, Set, Out, Nov, Dez);
@@ -28,8 +28,8 @@
   NSThousandsSeparator = ".";
   NSTimeDateFormatString = "%A, %B %e, %Y %I:%M:%S %p %Z";
   NSTimeFormatString = "%I:%M:%S %p";
-  NSWeekDayNameArray = (Domingo, Segunda, Terça, Quarta, Quinta, Sexta, Sábado);
-  NSYearMonthWeekDesignations = (ano, mês, semana);
+  NSWeekDayNameArray = (Domingo, Segunda, "Terça", Quarta, Quinta, Sexta, "Sábado");
+  NSYearMonthWeekDesignations = (ano, "mês", semana);
   NSPositiveCurrencyFormatString = "R$9.999,00";
   NSNegativeCurrencyFormatString = "(R$9.999,00)";
 }
