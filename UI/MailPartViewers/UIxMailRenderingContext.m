@@ -247,7 +247,8 @@ static BOOL showNamedTextAttachmentsInline = NO;
 	return [self iCalViewer];
     }
   
-  if ([mt isEqualToString:@"image"])
+  // Tiffs aren't well-supported
+  if ([mt isEqualToString:@"image"] && ![st isEqualToString: @"tiff"])
     {
       if ([self _shouldDisplayAsAttachment: _info])
 	return [self linkViewer];
