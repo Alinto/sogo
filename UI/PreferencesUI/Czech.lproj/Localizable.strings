@@ -1,0 +1,101 @@
+/* toolbar */
+"Save and Close" = "Uložit a zavřít";
+"Close" = "Zavřít";
+
+/* tabs */
+"General" = "Hlavní";
+"Calendar Options" = "Možnosti kalendáře";
+"Mail Options" = "Možnosti e-mailu";
+"Identities" = "Identity";
+"Password" = "Heslo";
+
+/* ooo */
+"I'm currently in the office" = "Momentálně jsem v kanceláři";
+"I'm currently out of the office" = "Momentálně jsem mimo kancelář";
+"AutoReply only once to each sender with the following text :"
+= "Automaticky odpovědět pouze jednou každému odesílateli následujícím textem :";
+
+/* d & t */
+"Current Time Zone :" = "Současné časové pásmo :";
+"Short Date Format :" = "Krátký formát data :";
+"Long Date Format :" = "Dlouhý formát data :";
+"Time Format :" = "Formát času :";
+
+"shortDateFmt_0" = "%m/%e/%Y";
+"shortDateFmt_1" = "%m/%e/%y";
+"shortDateFmt_2" = "%m/%d/%Y";
+"shortDateFmt_3" = "%m/%d/%y";
+"shortDateFmt_4" = "%y/%m/%d";
+"shortDateFmt_5" = "%Y-%m-%d";
+"shortDateFmt_6" = "%d-%b-%y";
+"shortDateFmt_7" = "";
+
+"longDateFmt_0" = "%A, %B %d, %Y";
+"longDateFmt_1" = "%B %d, %Y";
+"longDateFmt_2" = "%A, %d %B, %Y";
+"longDateFmt_3" = "%d %B, %Y";
+"longDateFmt_4" = "";
+
+"timeFmt_0" = "%I:%M %p";
+"timeFmt_1" = "%H:%M";
+"timeFmt_2" = "";
+
+/* calendar */
+"Week begins on :" = "Týden začíná v :";
+"Day start time :" = "Začátek dne :";
+"Day end time :" = "Konec dne :";
+"First week of year :" = "První týden roku :";
+"Enable reminders for Calendar items" = "Povolit upomínky pro položky v kalendáři";
+"Play a sound when a reminder comes due"
+= "Přehrát zvuk s upomínkou";
+"Default reminder :" = "Výchozí upomínka :";
+
+"firstWeekOfYear_January1" = "Začíná 1. ledna";
+"firstWeekOfYear_First4DayWeek" = "První 4-denní týden";
+"firstWeekOfYear_FirstFullWeek" = "První celý týden";
+
+"reminderTime_0000" = "0 minut";
+"reminderTime_0005" = "5 minut";
+"reminderTime_0010" = "10 minut";
+"reminderTime_0015" = "15 minut";
+"reminderTime_0030" = "30 minut";
+"reminderTime_0100" = "1 hodina";
+"reminderTime_0200" = "2 hodiny";
+"reminderTime_0400" = "4 hodiny";
+"reminderTime_0800" = "8 hodin";
+"reminderTime_1200" = "1/2 dne";
+"reminderTime_2400" = "1 den";
+"reminderTime_4800" = "2 dny";
+
+/* Mailer */
+"Show subscribed mailboxes only" = "Ukázat pouze odebírané mailové schránky";
+"Check for new mail:" = "Zkontrolovat novou poštu:";
+"messagecheck_manually" = "Manuálně";
+"messagecheck_every_minute" = "Každou minutu";
+"messagecheck_every_2_minutes" = "Každé 2 minuty";
+"messagecheck_every_5_minutes" = "Každých 5 minut";
+"messagecheck_every_10_minutes" = "Každých 10 minut";
+"messagecheck_every_20_minutes" = "Každých 20 minut";
+"messagecheck_every_30_minutes" = "Každých 30 minut";
+"messagecheck_once_per_hour" = "Jednou za hodinu";
+
+"Forward messages:" = "Přeposlat zprávy:";
+"messageforward_inline" = "Do řady";
+"messageforward_attached" = "Jako přílohu";
+
+"Default identity:" = "Výchozí identita:";
+"Manage identities..." = "Spravovat identity...";
+"Signature" = "Podpis";
+"replyplacement_above" = "Začít mou odpověď nad citací";
+"replyplacement_below" = "Začít mou odpověď pod citací";
+"And place my signature" = "A umístit můj podpis";
+"signatureplacement_above" = "pod odpověď";
+"signatureplacement_below" = "pod citaci";
+
+/* Additional Parameters */
+"Additional Parameters" = "Dodatečné parametry";
+
+/* password */
+"New password:" = "Nové heslo:";
+"Confirmation:" = "Potvrzení:";
+"Change" = "Změnit";

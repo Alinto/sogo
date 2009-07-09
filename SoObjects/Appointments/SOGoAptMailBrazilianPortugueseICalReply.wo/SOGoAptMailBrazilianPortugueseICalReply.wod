@@ -1,0 +1,39 @@
+IsSubject: WOConditional {
+  condition = isSubject;
+}
+
+IsBody: WOConditional {
+  condition = isSubject;
+  negate = YES;
+}
+
+summary: WOString {
+  value      = summary;
+  escapeHTML = NO;
+}
+
+attendee: WOString {
+  value      = attendeeName;
+  escapeHTML = NO;
+}
+
+HasAccepted: WOConditional {
+  condition = hasAccepted;
+}
+
+HasDeclined: WOConditional {
+  condition = hasDeclined;
+}
+
+HasNotAcceptedNotDeclined: WOConditional {
+  condition = hasNotAcceptedNotDeclined;
+} 
+
+HasSentBy: WOConditional {
+  condition = hasSentBy;
+}
+
+sentBy: WOString {
+  value = sentBy;
+  escapeHTML = NO;
+}

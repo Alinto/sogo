@@ -1,0 +1,508 @@
+/* this file is in UTF-8 format! */
+
+/* Tooltips */
+
+"Create a new event" = "vytvořit novou událost";
+"Create a new task" = "Vytvořit nový úkol";
+"Edit this event or task" = "Upravit tuto událost nebo úkol";
+"Delete this event or task" = "Smazat tuto událost nebo úkol";
+"Go to today" = "Jít na dnešek";
+"Switch to day view" = "Přepnout na denní zobrazení";
+"Switch to week view" = "Přepnout na týdenní zobrazení";
+"Switch to month view" = "Přepnout na měsíční zobrazení";
+
+/* Tabs */
+"Date" = "Datum";
+"Calendars" = "Kalendáře";
+
+/* Day */
+
+"Sunday" = "Neděle";
+"Monday" = "Pondělí";
+"Tuesday" = "Úterý";
+"Wednesday" = "Středa";
+"Thursday" = "Čtvrtek";
+"Friday" = "Pátek";
+"Saturday" = "Sobota";
+
+"Sun" = "Ne";
+"Mon" = "Po";
+"Tue" = "Út";
+"Wed" = "St";
+"Thu" = "čt";
+"Fri" = "Pá";
+"Sat" = "So";
+
+"a2_Sunday" = "Ne";
+"a2_Monday" = "Po";
+"a2_Tuesday" = "Út";
+"a2_Wednesday" = "St";
+"a2_Thursday" = "Čt";
+"a2_Friday" = "Pá";
+"a2_Saturday" = "So";
+
+"dayLabelFormat" = "%d/%m/%Y";
+"today" = "Dnes";
+
+/* Week */
+
+"Week" = "Týdent";
+"this week" = "tento týden";
+
+"Week %d" = "Týden %d";
+
+/* Month */
+
+"this month" = "tento měsíc";
+
+"January" = "Leden";
+"February" = "Únor";
+"March" = "Březen";
+"April" = "Duben";
+"May" = "Květen";
+"June" = "Červen";
+"July" = "Červenec";
+"August" = "Srpen";
+"September" = "Září";
+"October" = "Říjen";
+"November" = "Listopad";
+"December" = "Prosinec";
+
+"a3_January" = "Leden";
+"a3_February" = "Únor";
+"a3_March" = "Březen";
+"a3_April" = "Duben";
+"a3_May" = "Květen";
+"a3_June" = "Červen";
+"a3_July" = "Červenec";
+"a3_August" = "Srpen";
+"a3_September" = "Září";
+"a3_October" = "Říjen";
+"a3_November" = "Listopad";
+"a3_December" = "Prosinec";
+
+/* Year */
+
+"this year" = "letos";
+
+/* Menu */
+
+"Calendar" = "Kalendář";
+"Contacts" = "Kontakty";
+
+"New Calendar..." = "Nový kalendář...";
+"Delete Calendar" = "Smazat kalendář";
+"Sharing..." = "Sdílení...";
+"Export Calendar..." = "Exportovat kalendář...";
+"Publish Calendar..." = "Publikovat kalendář...";
+"Reload Remote Calendars" = "Nahrát vzdálené kalendáře";
+"Properties" = "Vlastnosti";
+
+"Compose E-Mail to All Attendees" = "Vytvořit e-mail pro všechny účastníky";
+"Compose E-Mail to Undecided Attendees" = "Vytvořit e-mail pro nerozhodnuté účastníky";
+
+/* Folders */
+"Personal calendar" = "Osobní kalendář";
+
+/* Misc */
+
+"OpenGroupware.org" = "OpenGroupware.org";
+"Forbidden" = "Zakázaná";
+
+/* acls */
+
+"Default Roles" = "Výchozí role";
+"User rights for:" = "Uživatelská práva pro:";
+
+"label_Public" = "Veřejné";
+"label_Private" = "Soukromé";
+"label_Confidential" = "Důvěrné";
+
+"label_Viewer" = "Zobrazit vše";
+"label_DAndTViewer" = "Zobrazit datum a čas";
+"label_Modifier" = "Upravit";
+"label_Responder" = "Odpovědět komu";
+"label_None" = "Žádný";
+
+"View All" = "Zobrazit vše";
+"View the Date & Time" = "Zobrazit datum a čas";
+"Modify" = "Upravit";
+"Respond To" = "Odpovědět komu";
+"None" = "Žádný";
+
+"This person can create objects in my calendar."
+= "Tato osoba může vytvářet objekty v mém kalendáři.";
+"This person can erase objects from my calendar."
+= "Tato osoba může mazat objekty z mého kalendáře.";
+
+/* Button Titles */
+
+"New Calendar..." = "Nový kalendář...";
+"Subscribe to a Calendar..." = "Přihlásit se k odběru kalendáře...";
+"Remove the selected Calendar" = "Odebrat zvolený kalendář";
+
+"Name of the Calendar" = "Název kalendáře";
+
+"new" = "Nový";
+"printview" = "Náhled tisku";
+"edit" = "Upravit";
+"delete" = "Smazat";
+"proposal" = "Návrh";
+"Save and Close" = "Uložit a zavřít";
+"Close" = "Zavřít";
+"Invite Attendees" = "Pozvat účastníky";
+"Documents" = "Dokumenty";
+"Update" = "Aktualizace";
+"Cancel" = "Storno";
+"show_rejected_apts" = "Ukázat odmítnuté schůzky";
+"hide_rejected_apts" = "Skrýt odmítnuté schhůzky";
+
+
+/* Schedule */
+
+"Schedule" = "Plán";
+"No appointments found" = "Nenalezeny žádné schůzky";
+"Meetings proposed by you" = "Schůzky navržené Vámi";
+"Meetings proposed to you" = "Schůzky navržené Vám";
+"sched_startDateFormat" = "%d/%m %H:%M";
+"action" = "Akce";
+"accept" = "Přijmout";
+"decline" = "Odmítnou";
+"more attendees" = "Více účastníků";
+"Hide already accepted and rejected appointments" = "Skrýt již přijaté a odmítnuté schůzky";
+"Show already accepted and rejected appointments" = "Zobrazit již přijaté a odmítnuté  schůzky";
+
+
+/* Appointments */
+
+"Appointment viewer" = "Zobrazit schůzky";
+"Appointment editor" = "Editovat schůzky";
+"Appointment proposal" = "Navrhnout schůzku";
+"Appointment on" = "Schůzka na";
+"Start:" = "Začátek:";
+"End:" = "Konec:";
+"Due Date:" = "Datum:";
+"Title:" = "Titulek:";
+"Calendar:" = "Kalendář:";
+"Name" = "Jméno";
+"Email" = "E-Mail";
+"Status:" = "Status:";
+"% complete" = "% hotovo";
+"Location:" = "Místo:";
+"Priority:" = "Priorita:";
+"Privacy" = "Soukromí";
+"Cycle" = "Cyklus opakování";
+"Cycle End" = "Konec cyklu";
+"Categories" = "Kategorie";
+"Classification" = "Klasifikace";
+"Duration" = "Trvání";
+"Attendees:" = "Účastníci:";
+"Resources" = "Zdroje";
+"Organizer:" = "Organizér:";
+"Description:" = "Popis:";
+"Document:" = "Dokument:";
+"Category:" = "Kategorie:";
+"Repeat:" = "Opakování:";
+"Reminder:" = "Upomínka:";
+
+"Target:" = "Cíl:";
+
+"attributes" = "atributy";
+"attendees" = "účastníci";
+/* checkbox title */
+"is private" = "je soukromý/á";
+/* classification */
+"Public" = "Veřejný";
+"Private" = "Soukromý";
+/* text used in overviews and tooltips */
+"empty title" = "Prázdný titulek";
+"private appointment" = "Soukromá schůzka";
+
+"Change..." = "Změnit...";
+
+/* Appointments (participation state) */
+
+"partStat_NEEDS-ACTION" = "Vyžaduje akci";
+"partStat_ACCEPTED" = "Přijatý/á";
+"partStat_DECLINED" = "Odmítnutý/á";
+"partStat_TENTATIVE" = "Nerozhodnutý/á";
+"partStat_DELEGATED" = "Delegovaný/á";
+"partStat_OTHER" = "Ostatní";
+
+/* Appointments (error messages) */
+
+"Conflicts found!" = "Nalezeno překrývání";
+"Invalid iCal data!" = "Neplatná iCal data";
+"Could not create iCal data!" = "Nebylo možné vytvořit iCal data!";
+
+/* Searching */
+
+"view_all" = "Všechna";
+"view_today" = "Dnes";
+"view_next7" = "Následujících 7 dní";
+"view_next14" = "Následujících 14 dní";
+"view_next31" = "Následujících 31 dní";
+"view_thismonth" = "Tento měsíc";
+"view_future" = "Všechny budoucí události";
+"view_selectedday" = "Zvolený den";
+
+"View:" = "Zobrazit:";
+"Title or Description" = "Titulek nebo popis";
+
+"Search" = "Vyhledat";
+"Search attendees" = "Vyhledat účastníky";
+"Search resources" = "Vyhledat zdroje";
+"Search appointments" = "Vyhledat schůzky";
+"Search in Anais" = "Vyhledat v Anais";
+
+"All day Event" = "Celodenní událost";
+"check for conflicts" = "Zkontrolovat překrývání";
+
+"Browse URL" = "Prozkoumat URL";
+
+"newAttendee" = "Přidat účastníka";
+
+/* calendar modes */
+
+"Overview" = "Přehled";
+"Chart" = "Tabulka";
+"List" = "Seznam";
+"Columns" = "Sloupy";
+
+/* Priorities */
+
+"prio_0" = "Nespecifikovaná";
+"prio_1" = "Vysoká";
+"prio_2" = "Vysoká";
+"prio_3" = "Vysoká";
+"prio_4" = "Vysoká";
+"prio_5" = "Normální";
+"prio_6" = "Nízká";
+"prio_7" = "Nízká";
+"prio_8" = "Nízká";
+"prio_9" = "Nízká";
+
+/* access classes (privacy) */
+"PUBLIC_vevent" = "Veřejná událost";
+"CONFIDENTIAL_vevent" = "Důvěrná událost";
+"PRIVATE_vevent" = "Soukromá událost";
+"PUBLIC_vtodo" = "Veřejný úkol";
+"CONFIDENTIAL_vtodo" = "Důvěrný úkol";
+"PRIVATE_vtodo" = "Osobní úkol";
+
+/* status type */
+"status_" = "Nespecifikovaný";
+"status_NOT-SPECIFIED" = "Nespecifikovaný";
+"status_TENTATIVE" = "Prozatimní";
+"status_CONFIRMED" = "Potvrzený";
+"status_CANCELLED" = "Zrušený";
+"status_NEEDS-ACTION" = "Vyžaduje akci";
+"status_IN-PROCESS" = "Probíhající";
+"status_COMPLETED" = "Hotov";
+
+/* Cycles */
+
+"cycle_once" = "cyklus_jednou";
+"cycle_daily" = "cyklus_denně";
+"cycle_weekly" = "cyklus_týdně";
+"cycle_2weeks" = "cyklus_2týdenní";
+"cycle_4weeks" = "cyklus_4týdenní";
+"cycle_monthly" = "cyklus_měsíční";
+"cycle_weekday" = "cycle_pracovnídny";
+"cycle_yearly" = "cycle_roční";
+
+"cycle_end_never" = "cyklus_konec_nikdy";
+"cycle_end_until" = "cycle_konec_do";
+
+"Recurrence pattern" = "Vzor opakování";
+"Range of recurrence" = "Rozsah opakování";
+
+"Repeat" = "Opakování";
+"Daily" = "Denní";
+"Weekly" = "Týdenní";
+"Monthly" = "Měsíční";
+"Yearly" = "Roční";
+"Every" = "Každých";
+"Days" = "Dní";
+"Week(s)" = "Týdnů";
+"On" = "V";
+"Month(s)" = "Měsíců";
+"The" = "";
+"Recur on day(s)" = "Opakovat ve dnech";
+"Year(s)" = "rocích";
+"cycle_of" = "";
+"No end date" = "Bez data konce";
+"Create" = "Vytvořit";
+"appointment(s)" = "schůzku/y";
+"Repeat until" = "Opakovat do";
+
+"First" = "První";
+"Second" = "Druhý";
+"Third" = "Třetí";
+"Fourth" = "Čtvrtý";
+"Fift" = "Pátý";
+"Last" = "Poslední";
+
+/* Appointment categories */
+
+"category_NONE" = "ˇŽádný";
+"category_ANNIVERSARY" = "Výročí";
+"category_BIRTHDAY" = "Narozeniny";
+"category_BUSINESS" = "Pracovní";
+"category_CALLS" = "Volání"; 
+"category_CLIENTS" = "Klietni";
+"category_COMPETITION" = "Soutěž";
+"category_CUSTOMER" = "Zákazník";
+"category_FAVORITES" = "Oblíbené";
+"category_FOLLOW UP" = "Následující";
+"category_GIFTS" = "Dárky";
+"category_HOLIDAYS" = "Prázdniny";
+"category_IDEAS" = "Nápady";
+"category_ISSUES" = "Problémy";
+"category_MISCELLANEOUS" = "Ostatní";
+"category_PERSONAL" = "Osobní";
+"category_PROJECTS" = "Projekty";
+"category_PUBLIC HOLIDAY" = "Státní svátek";
+"category_STATUS" = "Status";
+"category_SUPPLIERS" = "Dodavatelé";
+"category_TRAVEL" = "Cestování";
+"category_VACATION" = "Dovolená";
+
+"repeat_NEVER" = "Neopakuje se";
+"repeat_DAILY" = "Denně";
+"repeat_WEEKLY" = "Týdně";
+"repeat_BI-WEEKLY" = "Každý druhý týden";
+"repeat_EVERY WEEKDAY" = "Každý pracovní den";
+"repeat_MONTHLY" = "Měsíčně";
+"repeat_YEARLY" = "Ročně";
+"repeat_CUSTOM" = "Vlastní...";
+
+"reminder_NONE" = "Bez upomínky";
+"reminder_5_MINUTES_BEFORE" = "5 minut před";
+"reminder_10_MINUTES_BEFORE" = "10 minut před";
+"reminder_15_MINUTES_BEFORE" = "15 minut před";
+"reminder_30_MINUTES_BEFORE" = "30 minut před";
+"reminder_45_MINUTES_BEFORE" = "45 minut před";
+"reminder_1_HOUR_BEFORE" = "1 hodinu před";
+"reminder_2_HOURS_BEFORE" = "2 hodiny před";
+"reminder_5_HOURS_BEFORE" = "5 hodin před";
+"reminder_15_HOURS_BEFORE" = "15 hodin před";
+"reminder_1_DAY_BEFORE" = "1 den před";
+"reminder_2_DAYS_BEFORE" = "2 dny před";
+"reminder_1_WEEK_BEFORE" = "1 týden před";
+"reminder_CUSTOM" = "Vlastní...";
+
+"reminder_MINUTES" = "minuty";
+"reminder_HOURS" = "hodiny";
+"reminder_DAYS" = "dny";
+"reminder_BEFORE" = "před";
+"reminder_AFTER" = "po";
+"reminder_START" = "začátku/em události";
+"reminder_END" = "konci události";
+
+"zoom_400" = "400%";
+"zoom_200" = "200%";
+"zoom_100" = "100%";
+"zoom_50" = "50%";
+"zoom_25" = "25%";
+
+/* transparency */
+
+"Show Time as Free" = "Ukázat čas volně";
+
+/* validation errors */
+
+validate_notitle           = "Žádný titulek nebyl nastaven, pokračovat?";
+validate_invalid_startdate = "Chybné datum začátku!";
+validate_invalid_enddate   = "Chybné datum konce!";
+validate_endbeforestart    = "Zadané datum konce je před začátkem události.";
+
+"Tasks" = "Úkoly";
+"Show completed tasks" = "Ukázat hotové úkoly";
+
+/* tabs */
+"Task" = "Úkol";
+"Event" = "Událost";
+"Recurrence" = "Opakování";
+
+/* toolbar */
+"New Event" = "Nová událost";
+"New Task" = "Nový úkol";
+"Edit" = "Upravit";
+"Delete" = "Smazat";
+"Go to Today" = "Jít na dnešek";
+"Day View" = "Denní zobrazení";
+"Week View" = "Týdenní zobrazení";
+"Month View" = "Měsíční zobrazení";
+
+"eventPartStatModificationError" = "Status Vaší účasti nemohl být změněn.";
+
+/* menu */
+"New Event..." = "Nová událost...";
+"New Task..." = "Nový úkol...";
+"Edit Selected Event..." = "Upravit označenou událost...";
+"Delete Selected Event" = "Smazat označenou událost";
+"Select All" = "Vybrat vše";
+"Workweek days only" = "Pouze pracovní dny";
+"Tasks in View" = "Zobrazené úkoly";
+
+"eventDeleteConfirmation" = "Smazání této události je permanentní.\nChcete pokračovat?";
+"taskDeleteConfirmation" = "Smazání tohoto úkolu je permanentní.\nChcete pokračovat?";
+
+"You cannot remove nor unsubscribe from your personal calendar."
+= "Nemůžete odebrat nebo se odhlásit z odběru svého vlastního kalendáře.";
+"Are you sure you want to delete the calendar \"%{0}\"?"
+= "Opravdu chcete smazat kalendář \"%{0}\"?";
+
+/* Legend */
+"Required participant" = "Vyžadovaný účastník";
+"Optional participant" = "Nepovinný účastník";
+"Chair" = "Židle";
+
+"Needs action" = "Vyžaduje akci";
+"Accepted" = "Přijatý/á";
+"Declined" = "Odmítnutý/á";
+"Tentative" = "Nerozhodnutý/á";
+
+"Free" = "Volný";
+"Busy" = "Zaneprázdněný";
+"Maybe busy" = "Možná zaneprázdněný";
+"No free-busy information" = "Žádná informace o zaneprázdněnosti";
+
+/* FreeBusy panel buttons and labels */
+"Suggest time slot:" = "Navrhnout časovou přihrádku";
+"Zoom:" = "Přiblížit:";
+"Previous slot" = "Předchozí časová přihrádka";
+"Next slot" = "Další časová přihrádka";
+"Previous hour" = "Predchozí hodina";
+"Next hour" = "Další hodina";
+"Only office hours" = "Pouze úřední hodiny";
+
+/* apt list */
+"Title" = "Titulek";
+"Start" = "Začátek";
+"End" = "Konec";
+"Location" = "Místo";
+"(Private Event)" = "(Soukromá událost)";
+
+vevent_class0 = "(Veřejná událost)";
+vevent_class1 = "(Soukromá událost)";
+vevent_class2 = "(Důvěrná událost)";
+
+vtodo_class0 = "(Veřejný úkol)";
+vtodo_class1 = "(Soukromý úkol)";
+vtodo_class2 = "(Důvěrný úkol)";
+
+"closeThisWindowMessage" = "Děkujeme! Nyní můžete okno zavřít, nebo se podívat na vaše ";
+"Multicolumn Day View" = "Vícesloupkové denní zobrazení";
+
+"Please select an event or a task." = "Vyberte prosím událost nebo úkol.";
+
+"editRepeatingItem" = "Položka, kterou upravujete, se opakuje. Chcete opravit veškerá opakování nebo pouze tuto?";
+"button_thisOccurrenceOnly" = "Pouze toto opakování";
+"button_allOccurrences" = "Všechna opakování";
+
+/* Properties dialog */
+"Name:" = "Název:";
+"Color:" = "Barva:";
+"Tag:" = "Štítek:";

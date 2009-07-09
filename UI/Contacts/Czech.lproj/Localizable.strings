@@ -1,0 +1,153 @@
+/* this file is in UTF-8 format! */
+
+"Addressbook" = "Adresář";
+"Addresses" = "Adresy";
+"Update" = "Aktualizace";
+"Cancel" = "Storno";
+"Common" = "Common";
+"Contact editor" = "Editor kontaktů";
+"Contact viewer" = "Zobrazit kontakty";
+"Email" = "E-mail";
+"Screen Name" = "Zorazované jméno";
+"Extended" = "Rozšířené";
+"Fax" = "Fax";
+"Firstname" = "Křestní jméno";
+"Home" = "Bydliště";
+"HomePhone" = "Telefon domů";
+"Lastname" = "Příjmení";
+"Location" = "Místo";
+"MobilePhone" = "Mobilní telefon";
+"Name" = "Jméno";
+"OfficePhone" = "Telefon do kanceláře";
+"Organization" = "Organizace";
+"Work Phone" = "Pracovní telefon";
+"Phone" = "Telefon";
+"Phones" = "Telefony";
+"Postal" = "Pošta";
+"Save" = "Uložit";
+"URL" = "URL";
+"Unit" = "Jednotka";
+"delete" = "smazat";
+"edit" = "upravit";
+"invalidemailwarn" = "Specifikovaný e-mail je neplatný";
+"new" = "nový";
+"Preferred Phone"   = "Upřednostňovaný telefon";
+
+/* Tooltips */
+
+"Create a new address book card" = "Vytvořit novou kartu v adresáři";
+"Create a new list" = "Vytvořit nový seznam";
+"Edit the selected card" = "Upravit označenou kartu";
+"Send a mail message" = "Poslat mailovou zprávu";
+"Delete selected card or address book" = "Smazat označenou kartu nebo adresář";
+
+"htmlMailFormat_UNKNOWN" = "Neznámý";
+"htmlMailFormat_FALSE" = "Plain Text";
+"htmlMailFormat_TRUE" = "HTML";
+
+"Name or Email" = "Jméno nebo e-mail";
+"Personal Addressbook" = "Osobní adresář";
+"Search in Addressbook" = "Vyhledávat v adresáři";
+
+"New Card" = "Nová karta";
+"New List" = "Nový seznam";
+"Properties" = "Vlastnosti";
+"Sharing..." = "Sdílení...";
+"Write" = "Napsat";
+"Delete" = "Smazat";
+"Instant Message" = "Instant Message";
+"Add..." = "Přidat...";
+"Remove" = "Odebrat";
+
+"Please wait..." = "Čekejte prosím...";
+"No possible subscription" = "Žádný možný odběr";
+
+"Preferred" = "Upřednostňovaný";
+"Card for %@" = "Karta pro %@";
+"Display Name: " = "Zobrazované jméno: ";
+"Email Address: " = "E-Mail: ";
+
+"Firstname: " = "Křestní jméno: ";
+"Lastname: " = "Příjmení: ";
+"Nickname: " = "Přezdívka: ";
+
+"Telephone" = "Telefon";
+"Work: " = "Práce: ";
+"Home: " = "Domů: ";
+"Fax: " = "Fax: ";
+"Mobile: " = "Mobil: ";
+"Pager: " = "Pager: ";
+
+"Title: " = "Titul: ";
+"Service: " = "Služba: ";
+"Company: " = "Společnost: ";
+"Street Address: " = "Ulice: ";
+"City: " = "Město: ";
+"State_Province:" = "Stát/Provincie:";
+"ZIP_Postal Code:" = "PSČ:";
+"Country: " = "Země: ";
+"Web: " = "Web: ";
+
+"Work" = "Práce";
+"Other Infos" = "Ostatní info";
+
+"Note: " = "Poznámka: ";
+"Timezone: " = "Časové pásmo: ";
+"Birthday: " = "Narozeniny: ";
+"Freebusy URL: " = "Freebusy URL: ";
+
+"Add as..." = "Přidat jako...";
+"Recipient" = "Adresát";
+"Carbon Copy" = "Kopie";
+"Blind Carbon Copy" = "Skrytá kopie";
+
+"New Addressbook..." = "Nový adresář...";
+"Subscribe to an Addressbook..." = "Přihlásit se k odběru adresáře...";
+"Remove the selected Addressbook" = "Odebrat označený adresář";
+
+"Name of the Address Book" = "Názevv adresáře";
+"Are you sure you want to delete the selected address book?"
+= "Opravdu chcete odstranit označený adresář?";
+"You cannot remove nor unsubscribe from a public addressbook."
+= "Nemůžete odebrat, nebo se odhlásit od odběru z veřejného adresáře.";
+"You cannot remove nor unsubscribe from your personal addressbook."
+= "Nemůžete odebrat, nebo se odhlásit od odběru ze svého vlastního adresáře";
+
+"Are you sure you want to delete the selected contacts?"
+= "Opravdu chcete smazat označené kontakty?";
+
+"You cannot delete the card of \"%{0}\"."
+= "Nemůžete smazat kartu \"%{0}\".";
+
+"Address Book Name" = "Název adresáře";
+
+"You cannot subscribe to a folder that you own!"
+= "Nemůžete se přihlásit k odběru vlastní složky! ";
+"Unable to subscribe to that folder!"
+= "Nemůžete se přihlásit k odběru této složky!";
+
+"Default Roles" = "Výchozí role";
+"User rights for:" = "Uživatelská práva pro:";
+
+"This person can add cards to this addressbook."
+= "Tato osoba může přidávat karty do tohoto adresáře.";
+"This person can edit the cards of this addressbook."
+= "Tato osoba může upravovat karty v tomto adresáři.";
+"This person can list the content of this addressbook."
+= "Tato osoba si může prohlížet obsah tohoto adresáře.";
+"This person can read the cards of this addressbook."
+= "Tato osoba si může pročítat karty tohoto adresáře.";
+"This person can erase cards from this addressbook."
+= "Tato osoba může mazat karty z tohoto adresáře.";
+
+"The selected contact has no email address."
+= "Označený kontakt nemá žádné e-mailové adresy.";
+
+"Please select a contact." = "Vyberte prosím kontakt.";
+
+/* Error messages for move and copy */
+
+"SoAccessDeniedException" = "Nemůžete zapisovat do tohoto adresáře.";
+"Forbidden" = "Nemůžete zapisovat do tohoto adresáře.";
+"Invalid Contact" = "Označený kontakt již neexistuje.";
+"Unknown Destination Folder" = "Zvolený cílový adresář již neexistuje.";

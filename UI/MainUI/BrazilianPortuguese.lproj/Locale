@@ -1,0 +1,35 @@
+/* Brazilian Portuguese */
+{
+  NSLanguageName = "BrazilianPortuguese";
+  NSFormalName = "Portuguese";
+  NSLocaleCode = "pt_BR"; /* ISO 639-1 */
+  NSLanguageCode = "por"; /* ISO 639-2 */
+  NSParentContext = "";
+
+  NSAMPMDesignation = (AM, PM);
+  NSCurrencySymbol = "R$";
+  NSDateFormatString = "%A, %B %e %Y";
+  NSDateTimeOrdering = DMYH;
+  NSDecimalDigits = ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
+  NSDecimalSeparator = ",";
+  NSEarlierTimeDesignations = (anterior, "último", passado, "atrás");
+  NSHourNameDesignations = ((0, meia-noite), (10, "manhã"), (12, meio-dia, "almoço"), (14, tarde), (19, noite));
+  NSInternationalCurrencyString = BRL; /* ISO 4217 */
+  NSLaterTimeDesignations = ("próxima");
+  NSMonthNameArray = (Janeiro, Fevereiro, "Março", Abril, Maio, Junho, Julho, Agosto, Setembro, Outubro, Novembro, Dezembro);
+  NSNextDayDesignations = ("amanhã");
+  NSNextNextDayDesignations = ("dia seguinte");
+  NSPriorDayDesignations = (ontem);
+  NSShortDateFormatString = "%e/%m/%y";
+  NSShortMonthNameArray = (Jan, Fev, Mar, Abr, Mai, Jun, Jul, Ago, Set, Out, Nov, Dez);
+  NSShortTimeDateFormatString = "%e/%m/%y %I:%M %p";
+  NSShortWeekDayNameArray = (Dom, Seg, Ter, Qua, Qui, Sex, Sab);
+  NSThisDayDesignations = (hoje, agora);
+  NSThousandsSeparator = ".";
+  NSTimeDateFormatString = "%A, %B %e, %Y %I:%M:%S %p %Z";
+  NSTimeFormatString = "%I:%M:%S %p";
+  NSWeekDayNameArray = (Domingo, Segunda, "Terça", Quarta, Quinta, Sexta, "Sábado");
+  NSYearMonthWeekDesignations = (ano, "mês", semana);
+  NSPositiveCurrencyFormatString = "R$9.999,00";
+  NSNegativeCurrencyFormatString = "(R$9.999,00)";
+}

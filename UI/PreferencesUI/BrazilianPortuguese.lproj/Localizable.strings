@@ -1,0 +1,101 @@
+/* toolbar */
+"Save and Close" = "Salvar e Fechar";
+"Close" = "Fechar";
+
+/* tabs */
+"General" = "Geral";
+"Calendar Options" = "Calendário";
+"Mail Options" = "Correio";
+"Identities" = "Identidade";
+"Password" = "Senha";
+
+/* ooo */
+"I'm currently in the office" = "Eu estou no escritório";
+"I'm currently out of the office" = "Eu estou fora do escritório";
+"AutoReply only once to each sender with the following text :"
+= "AutoResponder somente uma vez a cada remetente com o seguinte texto :";
+
+/* d & t */
+"Current Time Zone :" = "Fuso Horário :";
+"Short Date Format :" = "Formato da Data (Curto) :";
+"Long Date Format :" = "Formato da Data (Longo) :";
+"Time Format :" = "Formato da Hora :";
+
+"shortDateFmt_0" = "%m/%e/%Y";
+"shortDateFmt_1" = "%m/%e/%y";
+"shortDateFmt_2" = "%m/%d/%Y";
+"shortDateFmt_3" = "%m/%d/%y";
+"shortDateFmt_4" = "%y/%m/%d";
+"shortDateFmt_5" = "%Y-%m-%d";
+"shortDateFmt_6" = "%d-%b-%y";
+"shortDateFmt_7" = "";
+
+"longDateFmt_0" = "%A, %B %d, %Y";
+"longDateFmt_1" = "%B %d, %Y";
+"longDateFmt_2" = "%A, %d %B, %Y";
+"longDateFmt_3" = "%d %B, %Y";
+"longDateFmt_4" = "";
+
+"timeFmt_0" = "%I:%M %p";
+"timeFmt_1" = "%H:%M";
+"timeFmt_2" = "";
+
+/* calendar */
+"Week begins on :" = "A Semana começa em :";
+"Day start time :" = "O Dia começa as :";
+"Day end time :" = "O Dia termina as :";
+"First week of year :" = "Primeira semana do ano :";
+"Enable reminders for Calendar items" = "Habilitar lembretes para os itens do Calendário";
+"Play a sound when a reminder comes due"
+= "Executar um som quando existir um lembrete";
+"Default reminder :" = "Lembrete padrão :";
+
+"firstWeekOfYear_January1" = "Inicia em 01 de janeiro";
+"firstWeekOfYear_First4DayWeek" = "Primeira semana com 4 dias";
+"firstWeekOfYear_FirstFullWeek" = "Primeira semana com 5 dias";
+
+"reminderTime_0000" = "0 minutos";
+"reminderTime_0005" = "5 minutos";
+"reminderTime_0010" = "10 minutos";
+"reminderTime_0015" = "15 minutos";
+"reminderTime_0030" = "30 minutos";
+"reminderTime_0100" = "1 hora";
+"reminderTime_0200" = "2 hours";
+"reminderTime_0400" = "4 horas";
+"reminderTime_0800" = "8 horas";
+"reminderTime_1200" = "1/2 dia";
+"reminderTime_2400" = "1 dia";
+"reminderTime_4800" = "2 dias";
+
+/* Mailer */
+"Show subscribed mailboxes only" = "Exibir somente caixas de correio inscritas";
+"Check for new mail:" = "Checar novos emails:";
+"messagecheck_manually" = "Manualmente";
+"messagecheck_every_minute" = "A cada minuto";
+"messagecheck_every_2_minutes" = "A cada 2 minutos";
+"messagecheck_every_5_minutes" = "A cada 5 minutos";
+"messagecheck_every_10_minutes" = "A cada 10 minutos";
+"messagecheck_every_20_minutes" = "A cada 20 minutos";
+"messagecheck_every_30_minutes" = "A cada 30 minutos";
+"messagecheck_once_per_hour" = "Uma vez por hora";
+
+"Forward messages:" = "Encaminhar mensagens:";
+"messageforward_inline" = "No corpo da mensagem";
+"messageforward_attached" = "Como anexo";
+
+"Default identity:" = "Identidade Padrão:";
+"Manage identities..." = "Gerenciar Identidades...";
+"Signature" = "Assinatura";
+"replyplacement_above" = "Começar minha resposta acima das citações";
+"replyplacement_below" = "Começar minha resposta abaixo das citações";
+"And place my signature" = "E colocar minha assinatura";
+"signatureplacement_above" = "abaixo da minha resposta";
+"signatureplacement_below" = "abaixo da citação";
+
+/* Additional Parameters */
+"Additional Parameters" = "Parâmetros Adicionais";
+
+/* password */
+"New password:" = "Nova senha:";
+"Confirmation:" = "Confirmação:";
+"Change" = "Alterar";

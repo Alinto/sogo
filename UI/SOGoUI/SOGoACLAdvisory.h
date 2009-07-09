@@ -1,6 +1,6 @@
 /* SOGoACLAdvisory.h - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse inc.
+ * Copyright (C) 2007-2009 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -63,6 +63,24 @@
 
 - (NSString *) aclMethod;
 
+@end
+
+@interface SOGoACLBrazilianPortugueseAdditionAdvisory : SOGoACLAdditionAdvisory
+@end
+
+@interface SOGoACLBrazilianPortugueseModificationAdvisory : SOGoACLModificationAdvisory
+@end
+
+@interface SOGoACLBrazilianPortugueseRemovalAdvisory : SOGoACLRemovalAdvisory
+@end
+
+@interface SOGoACLCzechAdditionAdvisory : SOGoACLAdditionAdvisory
+@end
+
+@interface SOGoACLCzechModificationAdvisory : SOGoACLModificationAdvisory
+@end
+
+@interface SOGoACLCzechRemovalAdvisory : SOGoACLRemovalAdvisory
 @end
 
 @interface SOGoACLDutchAdditionAdvisory : SOGoACLAdditionAdvisory

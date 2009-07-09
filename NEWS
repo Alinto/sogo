@@ -13,6 +13,8 @@
 - added unicode support in the IMAP folder names
 - fixed some issues with the conversion of folder names in modified UTF-7
 - component editor in web interface stores the document URL in the ATTACH property of the component, like in Lightning
+- added Czech translation, thanks to Šimon Halamásek
+- added Brazilian Portuguese translation, thanks to Alexandre Marcilio
 
 1.0-20090605 (1.0.2)
 --------------------

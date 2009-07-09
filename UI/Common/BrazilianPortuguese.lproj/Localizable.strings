@@ -1,0 +1,54 @@
+/* this file is in UTF-8 format! */
+
+/* toolbars */
+"Save" = "Salvar";
+"Close" = "Fechar";
+"Edit User Rights" = "Editar Direitos do Usuário";
+
+"Home" = "Início";
+"Calendar" = "Calendário";
+"Address Book"	= "Catálogo";
+"Mail" = "Correio";
+"Preferences" = "Preferências";
+"Disconnect" = "Desconectar";
+"Right Administration" = "Administração de Direitos";
+"Log Console (dev.)" = "Log Console (dev.)";
+
+"User" = "Usuário";
+
+"Help" = "Ajuda";
+
+"noJavascriptError" = "SOGo requer Javascript para rodar. Por favor, certifique-se que a opção está disponível e habilitada nas preferências de seu navegador.";
+"noJavascriptRetry" = "Repetir";
+
+"Publish the Free/Busy information" = "Divulgar a informação Livre/Ocupado";
+
+"Default Roles" = "Papéis Padrão";
+
+"Sorry, the user rights can not be configured for that object." = "Desculpe, os direitos de usuário não podem ser modificados para este objeto.";
+
+/* generic.js */
+"Unable to subscribe to that folder!"
+	= "Não foi possível inscrever-se nesta pasta!";
+"You cannot subscribe to a folder that you own!"
+      	= "Você não pode inscrever-se a uma pasta que é dono!";
+"Unable to unsubscribe from that folder!"
+	= "Não foi possível descadastrar-se desta pasta!";
+"You cannot unsubscribe from a folder that you own!"
+      	= "Você não pode descadastrar-se de uma pasta que você é dono!";
+"Unable to rename that folder!" = "Não foi possível renomear esta pasta!";
+"You have already subscribed to that folder!"
+     	= "Você já se inscreveu nesta pasta!";
+"The user rights cannot be edited for this object!"
+        = "Os direitos do usuário não podem ser editados para este objeto!";
+
+"You are not allowed to access this module or this system. Please contact your system administrator."
+= "Você não está liberado para acessar este módulo ou este sistema. Por favor, contate seu administrador de sistemas.";
+"You don't have the required privileges to perform the operation."
+= "Você não tem os privilégios requeridos para realizar esta operação.";
+
+/* alarms */
+"Reminder:" = "Lembrete:";
+"Start:" = "Inicio:";
+"Due Date:" = "Data:";
+"Location:" = "Localização:";
