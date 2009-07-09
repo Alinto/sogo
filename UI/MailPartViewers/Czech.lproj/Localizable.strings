@@ -1,0 +1,34 @@
+ACCEPTED = "přijaté";
+COMPLETED = "hotové";
+DECLINED = "odmítnuté";
+DELEGATED = "delegované";
+IN-PROCESS = "probíhající";
+NEEDS-ACTION = "vyžaduje akci";
+TENTATIVE = "prozatimní";
+organized_by_you = "vámi organizované";
+you_are_an_attendee = "účastníte se";
+add_info_text = "iMIP 'PŘIDAT' žádosti ještě není v SOGo podporováno.";
+publish_info_text = "Odesílatel Vás informuje o přiložené události.";
+cancel_info_text = "Vaše pozvánka nebo celá událost byla zrušena.";
+request_info_no_attendee = "navrhuje setkání účastníků. Tento mail jste obdrželi jako oznámení, nejste nastaveni jako účastník.";
+Appointment = "Schůzka";
+
+Organizer = "Organizér";
+Time = "Čas";
+Attendees = "Účastníci";
+request_info = "Vás zve k účasti na setkání.";
+"Add to calendar" = "Přidat do kalendáře";
+"Delete from calendar" = "Vymazat z kalendáře";
+"Update status" = "Aktualizovat status";
+Accept = "Přijmout";
+Decline = "Odmítnout";
+Tentative = "Prozatimní";
+"Update status in calendar" = "Aktualizovat status v kalendáři";
+reply_info_no_attendee = "Obdrželi jste odpověď k plánované události, ale odesílatel se události neúčastní.";
+reply_info = "Toto je odpověď na pozvánku k událost, kterou jste vytvořili vy.";
+
+"to" = "komu";
+
+"Untitled" = "Bez názvu";
+
+"Size" = "Velikost";

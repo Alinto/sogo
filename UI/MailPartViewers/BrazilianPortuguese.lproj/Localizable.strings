@@ -1,0 +1,34 @@
+ACCEPTED = "aceitado";
+COMPLETED = "completado";
+DECLINED = "declinado";
+DELEGATED = "apagado";
+IN-PROCESS = "em processamento";
+NEEDS-ACTION = "ações necessárias";
+TENTATIVE = "tentativa";
+organized_by_you = "organizado por você";
+you_are_an_attendee = "você é um participante";
+add_info_text = "As solicitações iMIP 'ADD' ainda não são suportadas pelo SOGo.";
+publish_info_text = "O solicitante lhe informa sobre um evento anexo.";
+cancel_info_text = "Seu convite ou evento foi cancelado.";
+request_info_no_attendee = "está propondo um reunião aos participantes. Você está recebendo este email como uma notificação, você não está agendado como um particiopante.";
+Appointment = "Apontamento";
+
+Organizer = "Organizador";
+Time = "Hora";
+Attendees = "Participantes";
+request_info = "convidou você para participar de uma reunião.";
+"Add to calendar" = "Adicionar ao calendário";
+"Delete from calendar" = "Apagar do calendário";
+"Update status" = "Atualizar status";
+Accept = "Aceitar";
+Decline = "Declinar";
+Tentative = "Tentativa";
+"Update status in calendar" = "Atualizar status no calendário";
+reply_info_no_attendee = "Você recebeu uma resposta de um evento agendado, mas o remetente da resposta não é um participante.";
+reply_info = "Esta é uma resposta de um convite feito por você.";
+
+"to" = "para";
+
+"Untitled" = "Sem título";
+
+"Size" = "Tamanho";
