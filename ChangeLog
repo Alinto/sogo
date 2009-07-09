@@ -2,6 +2,8 @@
 
 	* UI/MailPartViewers/UIxMailRenderingContext.m: Display .tiff as
 	attachments, some browsers don't support tiff.
+	* SoObjects/Mailer/SOGoDraftObject.m: Fixed content type for multipart
+	messages.
 
 2009-07-07  Francis Lachapelle  <flachapelle@inverse.ca>
 

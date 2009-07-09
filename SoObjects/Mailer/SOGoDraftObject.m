@@ -851,6 +851,9 @@ static BOOL        showTextAttachmentsInline  = NO;
   */
   NGMutableHashMap *map;
   NGMimeBodyPart   *bodyPart;
+  NSUserDefaults *ud;
+
+  ud = [[context activeUser] userDefaults];
   
   /* prepare header of body part */
 
@@ -859,7 +862,13 @@ static BOOL        showTextAttachmentsInline  = NO;
   // TODO: set charset in header!
   [map setObject: @"text/plain" forKey: @"content-type"];
   if (text)
-    [map setObject: contentTypeValue forKey: @"content-type"];
+    {
+      if ([[ud stringForKey: @"ComposeMessagesType"] isEqualToString: @"html"])
+             [map setObject: htmlContentTypeValue
+                     forKey: @"content-type"];
+      else
+        [map setObject: contentTypeValue forKey: @"content-type"];
+    }
 
 //   if ((body = text) != nil) {
 //     if ([body isKindOfClass: [NSString class]]) {
