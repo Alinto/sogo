@@ -4066,6 +4066,72 @@ Index: sope-appserver/NGObjWeb/ChangeLog
  2009-06-10  Helge Hess  <helge.hess@opengroupware.org>
  
  	* DAVPropMap.plist: mapped {DAV:}current-user-principal (v4.9.37)
+Index: sope-appserver/NGObjWeb/WebDAV/SoWebDAVRenderer.m
+===================================================================
+--- sope-appserver/NGObjWeb/WebDAV/SoWebDAVRenderer.m	(revision 1660)
++++ sope-appserver/NGObjWeb/WebDAV/SoWebDAVRenderer.m	(working copy)
+@@ -49,6 +49,8 @@
+ #define XMLNS_INTTASK \
+ @"{http://schemas.microsoft.com/mapi/id/{00062003-0000-0000-C000-000000000046}/}"
+ 
++static Class NSURLKlass = Nil;
++
+ @interface SoWebDAVRenderer(Privates)
+ - (BOOL)renderStatusResult:(id)_object withDefaultStatus:(int)_defStatus
+   inContext:(WOContext *)_ctx; 
+@@ -79,6 +81,8 @@
+   
+   if ((debugOn = [ud boolForKey:@"SoRendererDebugEnabled"]))
+     NSLog(@"enabled debugging in SoWebDAVRenderer (SoRendererDebugEnabled)");
++
++  NSURLKlass = [NSURL class];
+ }
+ 
+ + (id)sharedRenderer {
+@@ -616,16 +620,19 @@
+     [r appendContentString:s];
+   }
+   else {
++    s = [self stringForValue:value ofProperty:_key prefixes:nsToPrefix];
+     [r appendContentCharacter:'<'];
+     [r appendContentString:extName];
+-    [r appendContentCharacter:'>'];
+-          
+-    s = [self stringForValue:value ofProperty:_key prefixes:nsToPrefix];
+-    [r appendContentString:s];
+-          
+-    [r appendContentString:@"</"];
+-    [r appendContentString:extName];
+-    [r appendContentString:@">"];
++    if ([s length] > 0) {
++      [r appendContentCharacter:'>'];
++      [r appendContentString:s];
++      [r appendContentString:@"</"];
++      [r appendContentString:extName];
++      [r appendContentString:@">"];
++    }
++    else {
++      [r appendContentString:@"/>"];
++    }
+     if (formatOutput) [r appendContentCharacter:'\n'];
+   }
+ }
+@@ -694,8 +701,13 @@
+     }
+ 
+     /* tidy href */
+-    href = [self tidyHref:href baseURL:baseURL];
+-    
++    if (useRelativeURLs) {
++      if ([href isKindOfClass: NSURLKlass])
++        href = [href path];
++    }
++    else
++      href = [self tidyHref:href baseURL:baseURL];
++
+     /* tidy status */
+     stat = [self tidyStatus:stat];
+   }
 Index: sope-appserver/NGObjWeb/WODirectAction.m
 ===================================================================
 --- sope-appserver/NGObjWeb/WODirectAction.m	(revision 1660)
