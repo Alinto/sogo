@@ -27,6 +27,18 @@
 @implementation SOGoAptMailEnglishDeletion
 @end
 
+@interface SOGoAptMailBrazilianPortugueseDeletion : SOGoAptMailNotification
+@end
+
+@implementation SOGoAptMailBrazilianPortugueseDeletion
+@end
+
+@interface SOGoAptMailCzechDeletion : SOGoAptMailNotification
+@end
+
+@implementation SOGoAptMailCzechDeletion
+@end
+
 @interface SOGoAptMailFrenchDeletion : SOGoAptMailNotification
 @end
 

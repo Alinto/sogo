@@ -27,6 +27,18 @@
 @implementation SOGoAptMailEnglishInvitation
 @end
 
+@interface SOGoAptMailBrazilianPortugueseInvitation : SOGoAptMailNotification
+@end
+
+@implementation SOGoAptMailBrazilianPortugueseInvitation
+@end
+
+@interface SOGoAptMailCzechInvitation : SOGoAptMailNotification
+@end
+
+@implementation SOGoAptMailCzechInvitation
+@end
+
 @interface SOGoAptMailFrenchInvitation : SOGoAptMailNotification
 @end
 
