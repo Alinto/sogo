@@ -393,6 +393,11 @@
 		   [content lengthOfBytesUsingEncoding: NSUTF8StringEncoding]];
 }
 
+- (NSString *) davResourceType
+{
+  return @"";
+}
+
 - (NSException *) davMoveToTargetObject: (id) _target
 				newName: (NSString *) _name
 			      inContext: (id) _ctx
