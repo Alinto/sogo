@@ -345,7 +345,7 @@
 
 /* Appointment categories */
 
-"category_NONE" = "ˇŽádný";
+"category_NONE" = "Žádný";
 "category_ANNIVERSARY" = "Výročí";
 "category_BIRTHDAY" = "Narozeniny";
 "category_BUSINESS" = "Pracovní";
