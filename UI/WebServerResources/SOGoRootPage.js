@@ -31,7 +31,9 @@ function onLoginClick(event) {
 	var language = $("language");
 	
 	if (userName.length > 0) {
-		this.hide();
+		$("loginErrorMessage").hide();
+		$("noCookiesErrorMessage").hide();
+		this.disabled = true;
 		startAnimation($("animation"));
 
 		if (typeof(loginSuffix) != "undefined"
@@ -76,7 +78,7 @@ function onLoginCallback(http) {
 			if (cookieExists === 0) {
 				loginErrorMessage.hide();
 				noCookiesErrorMessage.show();
-				submitBtn.show();
+				submitBtn.disabled = false;
 				return false;
 			}
       
@@ -112,7 +114,7 @@ function onLoginCallback(http) {
 		else {
 			loginErrorMessage.show();
 			noCookiesErrorMessage.hide();
-			submitBtn.show();
+			submitBtn.disabled = false;
 		}
 	}
 }
