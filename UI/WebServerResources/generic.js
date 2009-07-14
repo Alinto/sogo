@@ -356,12 +356,13 @@ function getContrastingTextColor(bgColor) {
 }
 
 function triggerAjaxRequest(url, callback, userdata, content, headers) {
-	var http = createHTTPClient();
-	activeAjaxRequests++;
-	document.animTimer = setTimeout("checkAjaxRequestsState();", 250);
 	//url = appendDifferentiator(url);
 
+	var http = createHTTPClient();
 	if (http) {
+		activeAjaxRequests++;
+		document.animTimer = setTimeout("checkAjaxRequestsState();", 250);
+
 		http.open("POST", url, true);
 		http.url = url;
 		http.callback = callback;
