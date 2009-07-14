@@ -476,6 +476,14 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
   NSCalendarDate *recID, *newDate;
 
   // Compute time interval from previous event definition.
+  if (!originalCalendar)
+    {
+      if (content)
+	ASSIGN (originalCalendar, [iCalCalendar parseSingleFromSource: content]);
+      else
+	[self warnWithFormat: @"content not available, we will crash"];
+    }
+
   oldMaster = (iCalRepeatableEntityObject *)
     [originalCalendar firstChildWithTag: [self componentTag]];
   deltaSecs = [[newEvent startDate]
