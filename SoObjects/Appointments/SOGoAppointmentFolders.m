@@ -1,3 +1,4 @@
+
 /* SOGoAppointmentFolders.m - this file is part of SOGo
  *
  * Copyright (C) 2007 Inverse inc.
@@ -21,14 +22,17 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
 
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WORequest+So.h>
 #import <NGObjWeb/NSException+HTTP.h>
-
+#import <SaxObjC/XMLNamespaces.h>
 #import <SOGo/WORequest+SOGo.h>
+#import <SOGo/NSObject+DAV.h>
+#import <SOGo/SOGoWebDAVValue.h>
 #import "SOGoAppointmentFolder.h"
 
 #import "SOGoAppointmentFolders.h"
@@ -165,6 +169,34 @@
   [classes addObject: @"calendar-schedule"];
 
   return classes;
+}
+
+- (SOGoWebDAVValue *) davCalendarComponentSet
+{
+  static SOGoWebDAVValue *componentSet = nil;
+  NSMutableArray *components;
+
+  if (!componentSet)
+    {
+      components = [NSMutableArray array];
+      /* Totally hackish.... we use the "n1" prefix because we know our
+         extensions will assign that one to ..:caldav but we really need to
+         handle element attributes */
+      [components addObject: [SOGoWebDAVValue
+                               valueForObject: @"<n1:comp name=\"VEVENT\"/>"
+                                   attributes: nil]];
+      [components addObject: [SOGoWebDAVValue
+                               valueForObject: @"<n1:comp name=\"VTODO\"/>"
+                                   attributes: nil]];
+      componentSet
+        = [davElementWithContent (@"supported-calendar-component-set",
+                                  XMLNS_CALDAV,
+                                  components)
+                                 asWebDAVValue];
+      [componentSet retain];
+    }
+
+  return componentSet;
 }
 
 @end

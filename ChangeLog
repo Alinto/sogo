@@ -1,3 +1,9 @@
+2009-07-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolders.m
+	(-davCalendarComponentSet): new method, copied from
+	SOGoAppointmentFolder.
+
 2009-07-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoContentObject.m (-davResourceType): new
