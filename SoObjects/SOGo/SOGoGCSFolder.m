@@ -818,6 +818,7 @@ static NSArray *childRecordFields = nil;
       davSQLFieldsTable = [NSMutableDictionary new];
       [davSQLFieldsTable setObject: @"c_version" forKey: @"{DAV:}getetag"];
       [davSQLFieldsTable setObject: @"" forKey: @"{DAV:}getcontenttype"];
+      [davSQLFieldsTable setObject: @"" forKey: @"{DAV:}resourcetype"];
     }
 
   return davSQLFieldsTable;
