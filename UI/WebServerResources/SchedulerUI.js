@@ -1504,7 +1504,6 @@ function onShowCompletedTasks(event) {
 
 function updateTaskStatus(event) {
   var newStatus = (this.checked ? 1 : 0);
-  var http = createHTTPClient();
 
   if (isSafari() && !isSafari3()) {
     newStatus = (newStatus ? 0 : 1);
@@ -1513,12 +1512,19 @@ function updateTaskStatus(event) {
   url = (ApplicationBaseURL + this.parentNode.calendar
 				 + "/" + this.parentNode.cname + "/changeStatus?status=" + newStatus);
 
+  var http = createHTTPClient();
   if (http) {
     // TODO: add parameter to signal that we are only interested in OK
     http.open("POST", url, false /* not async */);
     http.url = url;
-    http.send("");
-//    http.setRequestHeader("Content-Length", 0);
+		try {
+			http.send("");
+		}
+		catch (e) {
+			/* IE7 tends to generate "tranaction aborted" errors for synchronous
+				 transactions returning HTTP code 204. */
+			log("exception during http.send (expected on IE7)");
+		}
     if (isHttpStatus204(http.status))
       refreshTasks();
   } else

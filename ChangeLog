@@ -1,3 +1,13 @@
+2009-07-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoUserFolder+Appointments.m
+	(-davCalendarUserAddressSet): we return the "MAILTO:" prefix in
+	lower case instead.
+
+	* SoObjects/Appointments/SOGoAppointmentFolders.m
+	(-davCalendarComponentSet): new method, copied from
+	SOGoAppointmentFolder.
+
 2009-07-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoContentObject.m (-davResourceType): new
