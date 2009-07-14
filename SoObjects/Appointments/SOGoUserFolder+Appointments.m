@@ -60,7 +60,7 @@
   while ((currentEmail = [emails nextObject]))
     {
       tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
-		     [NSString stringWithFormat: @"MAILTO:%@", currentEmail],
+		     [NSString stringWithFormat: @"mailto:%@", currentEmail],
 		     nil];
       [addresses addObject: tag];
     }
