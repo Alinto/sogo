@@ -278,17 +278,17 @@
     {
       sm = [SoSecurityManager sharedSecurityManager];
       if (![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
-	      onObject: co
-	      inContext: context])
-	{
-	  method = [NSString stringWithFormat:@"%@/%@.ics/editAsAppointment",
-			     [co soURL], objectId];
-	}
+                         onObject: co
+                        inContext: context])
+        {
+          method = [NSString stringWithFormat:@"%@/%@.ics/editAsAppointment",
+                 [co soURL], objectId];
+        }
       else
-	{
-	  method = [NSString stringWithFormat: @"%@/Calendar/personal/%@.vcf/editAsAppointment",
-			     [self userFolderPath], objectId];
-	}
+        {
+          method = [NSString stringWithFormat: @"%@/Calendar/personal/%@.vcf/editAsAppointment",
+                 [self userFolderPath], objectId];
+        }
       uri = [self completeHrefForMethod: method];
       result = [self redirectToLocation: uri];
     }
