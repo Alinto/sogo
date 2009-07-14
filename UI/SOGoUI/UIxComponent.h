@@ -107,6 +107,7 @@
 - (WOResponse *) redirectToLocation: (NSString *) newLocation;
 
 /* Debugging */
+- (NSString *) buildDate;
 - (BOOL) isUIxDebugEnabled;
 
 @end

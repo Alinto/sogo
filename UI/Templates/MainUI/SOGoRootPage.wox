@@ -12,7 +12,7 @@
   <div id="aboutBox" style="display:none;">
     <div>
       <p class="logo"><img const:alt="Scalable OGo" rsrc:src="sogo-logo.png"/></p>
-      <p>Version <var:string value="version"/></p>
+      <p>Version <var:string value="version"/> <span class="buildDate">(<var:string value="buildDate" />)</span></p>
       <p class="scroll"><var:string label:value="AboutBox" const:escapeHTML="NO"/></p>
       <img const:alt="Inverse" rsrc:src="inverse.png"/>
       <p class="links"><a href="http://www.scalableogo.org/" target="_new">www.scalableogo.org</a> / 
@@ -51,10 +51,10 @@
 		       /></label>
 	    <label>
 	      <input class="button" id="submit" name="submit" type="submit" label:value="Connect" />
-	      <div id="animation"><!-- animated gif! --></div>
 	    </label>
 	  </td>
 	</tr>
+        <tr><td colspan="2"><label id="animation"><!-- busy.gif! --></label></td></tr>
       </table>
       <p id="noCookiesErrorMessage" style="display: none;"><var:string label:value="cookiesNotEnabled"/></p>
       <p id="loginErrorMessage" style="display: none;"><var:string label:value="Wrong username or password."/></p>

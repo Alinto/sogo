@@ -22,6 +22,9 @@ function initLogin() {
 
 	var image = $("preparedAnimation");
 	image.parentNode.removeChild(image);
+
+	var submitBtn = $("submit");
+	submitBtn.disabled = false;
 }
 
 function onLoginClick(event) {

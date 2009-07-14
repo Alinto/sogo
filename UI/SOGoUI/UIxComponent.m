@@ -27,6 +27,8 @@
 #import <Foundation/NSPathUtilities.h>
 #import <Foundation/NSString.h>
 
+#import <Main/build.h>
+
 #import <NGObjWeb/SoHTTPAuthenticator.h>
 #import <NGObjWeb/SoObjects.h>
 #import <NGObjWeb/WOResourceManager.h>
@@ -641,7 +643,13 @@ static BOOL uixDebugEnabled = NO;
 
 /* debugging */
 
-- (BOOL)isUIxDebugEnabled {
+- (NSString *) buildDate
+{
+  return SOGoBuildDate;
+}
+
+- (BOOL)isUIxDebugEnabled
+{
   return uixDebugEnabled;
 }
 

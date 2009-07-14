@@ -1,5 +1,8 @@
 2009-07-14  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/SOGoUI/UIxComponent.m ([UIxComponent -buildDate]): moved
+	method from UIxPageFrame.
+
 	* SoObjects/Appointments/SOGoCalendarComponent.m
 	([SOGoCalendarComponent _updateRecurrenceIDsWithEvent:]): fixed a
 	crash that occurs when saving a recurrent task with

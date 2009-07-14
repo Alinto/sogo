@@ -29,8 +29,6 @@
 #import <SoObjects/SOGo/SOGoUserDefaults.h>
 #import <SoObjects/SOGo/NSDictionary+Utilities.h>
 
-#import <Main/build.h>
-
 #import "UIxPageFrame.h"
 
 static NSString *siteFavicon = nil;
@@ -91,11 +89,6 @@ static NSString *siteFavicon = nil;
 - (id) item
 {
   return item;
-}
-
-- (NSString *) buildDate
-{
-  return SOGoBuildDate;
 }
 
 - (NSString *) ownerInContext

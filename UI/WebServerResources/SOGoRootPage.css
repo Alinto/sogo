@@ -23,6 +23,13 @@ DIV#aboutBox DIV
   padding-bottom: 20px;
   width: 550px; }
 
+DIV#aboutBox SPAN.buildDate
+{ color: #666; }
+
+A#aboutClose
+{ padding-left: 10px;
+  padding-right: 10px; }
+
 A,
 A:link,
 A:visited
