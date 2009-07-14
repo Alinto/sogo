@@ -1,4 +1,4 @@
-1.0-2009xxyy (1.0.3)
+1.0-20090714 (1.0.3)
 --------------------
 - improved search behavior of users folders (UIxContactsUserFolders)
 - the editor window in the web interface now appears directly when editing an exception occurence of a repeating event (no more dialog window, as in Lightning)
