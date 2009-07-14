@@ -126,7 +126,7 @@
 	    <td id="locationHeader" class="headerCell headerLocation sortableTableHeader"><var:string label:value="Location"/></td>
 	  </tr>
         </thead>
-        <tbody></tbody>
+        <tbody><!-- events list --></tbody>
       </table>
     </div>
     <div id="rightDragHandle" class="dragHandle"><!-- space --></div>
