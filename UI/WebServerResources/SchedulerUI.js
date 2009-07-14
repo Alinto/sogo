@@ -663,7 +663,7 @@ function tasksListCallback(http) {
 				var calendar = escape(data[i][1]);
 				var cname = escape(data[i][0]);
 				listItem.setAttribute("id", calendar + "-" + cname);
-				listItem.addClassName(data[i][5]);
+				//listItem.addClassName(data[i][5]); // Classification
 				listItem.addClassName(data[i][6]);
 				listItem.calendar = calendar;
 				listItem.addClassName("calendarFolder" + calendar);
@@ -1521,15 +1521,19 @@ function updateTaskStatus(event) {
 			http.send("");
 		}
 		catch (e) {
-			/* IE7 tends to generate "tranaction aborted" errors for synchronous
+			/* IE7 tends to generate "transaction aborted" errors for synchronous
 				 transactions returning HTTP code 204. */
 			log("exception during http.send (expected on IE7)");
 		}
     if (isHttpStatus204(http.status))
       refreshTasks();
-  } else
-    log ("no http client?");
-
+		else if (parseInt(http.status) == 403) {
+			window.alert(clabels["You don't have the required privileges to perform the operation."]);
+			this.checked = !this.checked;
+		}
+		else
+			log ("updateTaskStatus: error (http code " + http.status + ")");
+  }
   return false;
 }
 
