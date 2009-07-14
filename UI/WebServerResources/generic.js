@@ -378,13 +378,13 @@ function triggerAjaxRequest(url, callback, userdata, content, headers) {
 					hasContentLength = true;
 				http.setRequestHeader(i, headers[i]);
 			}
-		}
+		} /*
 		if (!hasContentLength) {
 			var cLength = "0";
 			if (content)
 				cLength = "" + content.length;
 			http.setRequestHeader("Content-Length", "" + cLength);
-		}
+			} */
 		http.send(content ? content : "");
 	}
 	else {
@@ -550,7 +550,7 @@ function acceptMultiSelect(node) {
 }
 
 function onRowClick(event) {
-	var node = getTarget(event);
+	var node = Event.element(event);
 	var rowIndex = null;
 
 	if (node.tagName != 'TD' && node.tagName != 'LI')
@@ -565,13 +565,18 @@ function onRowClick(event) {
 	else if (node.tagName == 'LI') {
 		// Find index of clicked row
 		var list = node.parentNode;
-		var items = list.childNodesWithTag("li");
-		for (var i = 0; i < items.length; i++) {
-			if (items[i] == node) {
-				rowIndex = i;
-				break;
+		if (list) {
+			var items = list.childNodesWithTag("li");
+			for (var i = 0; i < items.length; i++) {
+				if (items[i] == node) {
+					rowIndex = i;
+					break;
+				}
 			}
 		}
+		else
+			// No parent; stop here
+			return true;
 	}
 
 	var initialSelection = $(node.parentNode).getSelectedNodes();
