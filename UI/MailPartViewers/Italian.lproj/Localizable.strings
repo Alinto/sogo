@@ -1,4 +1,4 @@
-﻿ACCEPTED = "accettato";
+ACCEPTED = "accettato";
 COMPLETED = "completato";
 DECLINED = "declinato";
 DELEGATED = "inviata delega";
