@@ -135,11 +135,17 @@ function onComponentEditorLoad(event) {
   $("repeatList").observe("change", onPopupRecurrenceWindow);
 	$("reminderHref").observe("click", onPopupReminderWindow);
 	$("reminderList").observe("change", onPopupReminderWindow);
+  $("summary").observe("keyup", onSummaryChange);
 
 	Event.observe(window, "resize", onWindowResize);
 
   onPopupRecurrenceWindow(null);
 	onPopupReminderWindow(null);
+  onSummaryChange (null);
+}
+
+function onSummaryChange (e) {
+  document.title = $("summary").value;
 }
 
 function onWindowResize(event) {

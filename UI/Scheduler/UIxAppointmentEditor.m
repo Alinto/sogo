@@ -218,12 +218,12 @@
       startDate = [self newStartDate];
       duration = [self queryParameterForKey:@"dur"];
       if ([duration length] > 0)
-	minutes = [duration intValue];
+        minutes = [duration intValue];
       else
-	minutes = 60;
+        minutes = 60;
       endDate
-	= [startDate dateByAddingYears: 0 months: 0 days: 0
-		     hours: 0 minutes: minutes seconds: 0];
+        = [startDate dateByAddingYears: 0 months: 0 days: 0
+                                 hours: 0 minutes: minutes seconds: 0];
     }
   else
     {
@@ -234,28 +234,28 @@
 
       startDate = [event startDate];
       daylightOffset = 0;
-      
+
       if ([co isNew] && [co isKindOfClass: [SOGoAppointmentOccurence class]])
-	{
-	  // We are creating a new exception in a recurrent event -- compute the daylight
-	  // saving time with respect to the first occurrence of the recurrent event.
-	  master = (iCalEvent*)[[event parent] firstChildWithTag: @"vevent"];
-	  firstDate = [master startDate];
-	  timeZone = [[context activeUser] timeZone];
-	  
-	  if ([timeZone isDaylightSavingTimeForDate: startDate] != [timeZone isDaylightSavingTimeForDate: firstDate])
-	    {
-	      daylightOffset = (signed int)[timeZone secondsFromGMTForDate: firstDate]
-		- (signed int)[timeZone secondsFromGMTForDate: startDate];
-	      startDate = [startDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds:daylightOffset];
-	    }
-	}
-      
+        {
+          // We are creating a new exception in a recurrent event -- compute the daylight
+          // saving time with respect to the first occurrence of the recurrent event.
+          master = (iCalEvent*)[[event parent] firstChildWithTag: @"vevent"];
+          firstDate = [master startDate];
+          timeZone = [[context activeUser] timeZone];
+
+          if ([timeZone isDaylightSavingTimeForDate: startDate] != [timeZone isDaylightSavingTimeForDate: firstDate])
+            {
+              daylightOffset = (signed int)[timeZone secondsFromGMTForDate: firstDate]
+                             - (signed int)[timeZone secondsFromGMTForDate: startDate];
+              startDate = [startDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds:daylightOffset];
+            }
+        }
+
       isAllDay = [event isAllDay];
       if (isAllDay)
-	endDate = [[event endDate] dateByAddingYears: 0 months: 0 days: -1];
+        endDate = [[event endDate] dateByAddingYears: 0 months: 0 days: -1];
       else
-	endDate = [[event endDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds:daylightOffset];
+        endDate = [[event endDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds:daylightOffset];
       isTransparent = ![event isOpaque];
     }
 
@@ -278,17 +278,17 @@
     {
       sm = [SoSecurityManager sharedSecurityManager];
       if (![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
-	      onObject: co
-	      inContext: context])
-	{
-	  method = [NSString stringWithFormat:@"%@/%@.ics/editAsAppointment",
-			     [co soURL], objectId];
-	}
+                         onObject: co
+                        inContext: context])
+        {
+          method = [NSString stringWithFormat:@"%@/%@.ics/editAsAppointment",
+                 [co soURL], objectId];
+        }
       else
-	{
-	  method = [NSString stringWithFormat: @"%@/Calendar/personal/%@.vcf/editAsAppointment",
-			     [self userFolderPath], objectId];
-	}
+        {
+          method = [NSString stringWithFormat: @"%@/Calendar/personal/%@.vcf/editAsAppointment",
+                 [self userFolderPath], objectId];
+        }
       uri = [self completeHrefForMethod: method];
       result = [self redirectToLocation: uri];
     }
