@@ -43,7 +43,7 @@
       <span class="checkBoxList"><var:string label:value="Category:" />
         <span class="content"><var:popup list="categoryList" item="item"
             label:noSelectionString="category_NONE"
-            string="itemCategoryText" selection="category"
+            string="item" selection="category"
             /> <var:string label:value="Calendar:" />
           <var:popup const:id="calendarList"
 	    var:disabled="isChildOccurence"
