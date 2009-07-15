@@ -1,3 +1,7 @@
+1.0-2009XXXX (1.0.4)
+--------------------
+- added "Reload" button to refresh the current view in the calendar
+
 1.0-20090714 (1.0.3)
 --------------------
 - improved search behavior of users folders (UIxContactsUserFolders)

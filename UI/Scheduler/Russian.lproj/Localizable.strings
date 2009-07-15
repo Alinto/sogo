@@ -10,6 +10,7 @@
 "Switch to day view" = "Перейти к обзору дня";
 "Switch to week view" = "Перейти к обзору недели";
 "Switch to month view" = "Перейти к обзору месяца";
+"Reload all calendars" = "Reload all calendars";
 
 /* Tabs */
 "Date" = "Дата";
@@ -433,6 +434,7 @@ validate_endbeforestart    = "The end date that you entered occurs before the st
 "Day View" = "День";
 "Week View" = "По неделям";
 "Month View" = "Месяц";
+"Reload" = "Reload";
 
 "eventPartStatModificationError" = "Невозможно изменить статус Вашего участия.";
 

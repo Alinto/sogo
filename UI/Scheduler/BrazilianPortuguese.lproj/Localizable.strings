@@ -10,6 +10,7 @@
 "Switch to day view" = "Visualizar Dia";
 "Switch to week view" = "Visualizar Semana";
 "Switch to month view" = "Visualizar Mês";
+"Reload all calendars" = "Reload all calendars";
 
 /* Tabs */
 "Date" = "Data";
@@ -434,6 +435,7 @@ validate_endbeforestart    = "A data que você informou ocorre antes da data ini
 "Day View" = "Visualizar Dia";
 "Week View" = "Visualizar Mês";
 "Month View" = "Visualizar Mês";
+"Reload" = "Reload";
 
 "eventPartStatModificationError" = "Seu status de participação não pode ser modificado.";
 

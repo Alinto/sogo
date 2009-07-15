@@ -846,6 +846,12 @@ function onMonthOverview() {
   return _ensureView("monthview");
 }
 
+function onCalendarReload() {
+	changeCalendarDisplay(null, currentView);
+
+	return false;
+}
+
 function scrollDayView(scrollEvent) {
   if (scrollEvent) {
     var contentView;

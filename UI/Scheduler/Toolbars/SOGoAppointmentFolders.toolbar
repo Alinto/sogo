@@ -46,5 +46,10 @@
       label="Month View";
       onclick = "return onMonthOverview();";
       image = "month-view.png";
-      tooltip = "Switch to month view"; } )
+      tooltip = "Switch to month view"; } ),
+  ( { link = "#";
+      label = "Reload";
+      onclick = "return onCalendarReload();";
+      image = "calendar-reload.png";
+      tooltip = "Reload all calendars"; } )
 )

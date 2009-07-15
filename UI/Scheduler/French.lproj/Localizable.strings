@@ -10,6 +10,7 @@
 "Switch to day view" = "Passer à la vue par jour";
 "Switch to week view" = "Passer à la vue par semaine";
 "Switch to month view" = "Passer à la vue par mois";
+"Reload all calendars" = "Actualiser tous les agendas";
 
 /* Tabs */
 "Date" = "Date";
@@ -432,6 +433,7 @@ validate_endbeforestart    = "La date de fin est avant la date de début.";
 "Day View" = "Par jour";
 "Week View" = "Par semaine";
 "Month View" = "Par mois";
+"Reload" = "Actualiser";
 
 "eventPartStatModificationError" = "Votre état de participation à l'événement n'a pas pu être modifié.";
 
