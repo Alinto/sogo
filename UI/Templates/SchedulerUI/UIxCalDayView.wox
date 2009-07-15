@@ -6,6 +6,16 @@
   xmlns:const="http://www.skyrix.com/od/constant"
   xmlns:rsrc="OGo:url"
   xmlns:label="OGo:label">
+
+  <div class="menu" id="currentViewMenu">
+    <ul>
+      <li><var:string label:value="New Event..."/></li>
+      <li><var:string label:value="New Task..."/></li>
+      <li><!-- separator --></li>
+      <li><var:string label:value="Previous Day"/></li>
+      <li><var:string label:value="Next Day"/></li>
+    </ul>
+  </div>
   <a href="#"
     class="leftNavigationArrow"
     var:date="prevDayQueryParameters.day"

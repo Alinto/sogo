@@ -29,12 +29,18 @@
 "dayLabelFormat" = "%d/%m/%Y";
 "today" = "vandaag";
 
+"Previous Day" = "Previous Day";
+"Next Day" = "Next Day";
+
 /* Week */
 
 "Week" = "Week";
 "this week" = "deze week";
 
 "Week %d" = "Week %d";
+
+"Previous Week" = "Previous Week";
+"Next Week" = "Next Week";
 
 /* Month */
 
@@ -65,6 +71,9 @@
 "a3_October" = "Okt";
 "a3_November" = "Nov";
 "a3_December" = "Dec";
+
+"Previous Month" = "Previous Month";
+"Next Month" = "Next Month";
 
 /* Year */
 

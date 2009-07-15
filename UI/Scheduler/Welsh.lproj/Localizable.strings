@@ -44,12 +44,18 @@
 "dayLabelFormat" = "%m/%d/%Y";
 "today" = "Heddiw";
 
+"Previous Day" = "Previous Day";
+"Next Day" = "Next Day";
+
 /* Week */
 
 "Week" = "wythnos";
 "this week" = "yr wythnos hon";
 
 "Week %d" = "Week %d";
+
+"Previous Week" = "Previous Week";
+"Next Week" = "Next Week";
 
 /* Month */
 
@@ -80,6 +86,9 @@
 "a3_October" = "Hydref";
 "a3_November" = "Tachwedd";
 "a3_December" = "Rhagfyr";
+
+"Previous Month" = "Previous Month";
+"Next Month" = "Next Month";
 
 /* Year */
 

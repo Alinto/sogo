@@ -44,12 +44,18 @@
 "dayLabelFormat" = "%d/%m/%Y";
 "today" = "Dnes";
 
+"Previous Day" = "Previous Day";
+"Next Day" = "Next Day";
+
 /* Week */
 
 "Week" = "Týdent";
 "this week" = "tento týden";
 
 "Week %d" = "Týden %d";
+
+"Previous Week" = "Previous Week";
+"Next Week" = "Next Week";
 
 /* Month */
 
@@ -80,6 +86,9 @@
 "a3_October" = "Říjen";
 "a3_November" = "Listopad";
 "a3_December" = "Prosinec";
+
+"Previous Month" = "Previous Month";
+"Next Month" = "Next Month";
 
 /* Year */
 

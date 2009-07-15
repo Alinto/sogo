@@ -722,6 +722,16 @@ function restoreCurrentDaySelection(div) {
   }
 }
 
+function loadPreviousView(event) {
+	var previousArrow = $$("A.leftNavigationArrow").first();
+	onCalendarGotoDay(previousArrow);
+}
+
+function loadNextView(event) {
+	var nextArrow = $$("A.rightNavigationArrow").first();
+	onCalendarGotoDay(nextArrow);
+}
+
 function changeDateSelectorDisplay(day, keepCurrentDay) {
   var url = ApplicationBaseURL + "dateselector";
   if (day) {
@@ -1120,11 +1130,43 @@ function calendarDisplayCallback(http) {
       && http.status == 200) {
     document.dayDisplayAjaxRequest = null;
     div.update(http.responseText);
+
     if (http.callbackData["view"])
       currentView = http.callbackData["view"];
     if (http.callbackData["day"])
       currentDay = http.callbackData["day"];
 
+		// Initialize contextual menu
+		var menu;
+		var observer;
+		if (currentView == 'dayview') {
+			menu = new Array(onMenuNewEventClick,
+											 onMenuNewTaskClick,
+											 "-",
+											 loadPreviousView,
+											 loadNextView);
+			observer = $("daysView");
+		}
+		else if (currentView == 'weekview') {
+			menu = new Array(onMenuNewEventClick,
+											 onMenuNewTaskClick,
+											 "-",
+											 loadPreviousView,
+											 loadNextView);
+			observer = $("daysView");
+		}
+		else {
+			menu = new Array(onMenuNewEventClick,
+											 onMenuNewTaskClick,
+											 "-",
+											 loadPreviousView,
+											 loadNextView);
+			observer = $("monthDaysView");
+		}
+		initMenu($("currentViewMenu"), menu);
+		observer.observe("contextmenu", function(event) {
+				popupMenu(event, 'currentViewMenu', this); });
+		
     var contentView;
     if (currentView == "monthview")
       contentView = $("calendarContent");

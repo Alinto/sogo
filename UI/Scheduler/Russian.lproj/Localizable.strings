@@ -44,12 +44,18 @@
 "dayLabelFormat" = "%d/%m/%Y";
 "today" = "Сегодня";
 
+"Previous Day" = "Previous Day";
+"Next Day" = "Next Day";
+
 /* Week */
 
 "Week" = "Неделя";
 "this week" = "эта неделя";
 
 "Week %d" = "Неделя %d";
+
+"Previous Week" = "Previous Week";
+"Next Week" = "Next Week";
 
 /* Month */
 
@@ -80,6 +86,9 @@
 "a3_October" = "Октября";
 "a3_November" = "Ноября";
 "a3_December" = "Декабря";
+
+"Previous Month" = "Previous Month";
+"Next Month" = "Next Month";
 
 /* Year */
 

@@ -47,12 +47,18 @@
 "dayLabelFormat" = "%d/%m/%Y";
 "today" = "Hoy";
 
+"Previous Day" = "Previous Day";
+"Next Day" = "Next Day";
+
 /* Week */
 
 "Week" = "Semana";
 "this week" = "esta semana";
 
 "Week %d" = "Semana %d";
+
+"Previous Week" = "Previous Week";
+"Next Week" = "Next Week";
 
 /* Month */
 
@@ -83,6 +89,9 @@
 "a3_October" = "Octubre";
 "a3_November" = "Noviembre";
 "a3_December" = "Diciembre";
+
+"Previous Month" = "Previous Month";
+"Next Month" = "Next Month";
 
 /* Year */
 

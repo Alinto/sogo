@@ -7,6 +7,15 @@
   xmlns:rsrc="OGo:url"
   xmlns:label="OGo:label">
 
+  <div class="menu" id="currentViewMenu">
+    <ul>
+      <li><var:string label:value="New Event..."/></li>
+      <li><var:string label:value="New Task..."/></li>
+      <li><!-- separator --></li>
+      <li><var:string label:value="Previous Month"/></li>
+      <li><var:string label:value="Next Month"/></li>
+    </ul>
+  </div>
   <a href="#"
     class="leftNavigationArrow"
     var:date="prevMonthQueryParameters.month"
