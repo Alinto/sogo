@@ -13,7 +13,7 @@
       onclick = "return onSelectPrivacy(event);";
       image = "tb-compose-security-flat-24x24.png"; },
     { link = "#";
-      label = "Documents";
+      label = "Attach";
       onclick = "return onPopupAttachWindow();";
       image = "tb-compose-attach-flat-24x24.png"; } )
 )
