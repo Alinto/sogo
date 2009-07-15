@@ -23,7 +23,7 @@
   </div>
 
   <label><span class="content">
-    <span id="allDay"><input id="isAllDay" class="checkBox"
+    <span id="allDay"><input id="isAllDay" name="isAllDay" class="checkBox"
         type="checkbox" var:selection="isAllDay"
         var:checked="isAllDay"
         /> <var:string label:value="All day Event"
@@ -44,7 +44,7 @@
         /></span></span>
   <label><span class="content">
     <span id="isTransparent"><input class="checkBox"
-        type="checkbox" var:selection="isTransparent"
+        type="checkbox" name="isTransparent" var:selection="isTransparent"
         var:checked="isTransparent"
         /> <var:string label:value="Show Time as Free"
         /></span></span></label>
