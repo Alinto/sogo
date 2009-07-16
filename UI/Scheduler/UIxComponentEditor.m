@@ -791,54 +791,18 @@ iRANGE(2);
 
 - (NSArray *) categoryList
 {
-  static NSArray *categoryItems = nil;
   NSMutableArray *categoryList;
-  unsigned int count, max;
-  NSString *categoryItem, *newCategoryItem;
+  NSArray *categoryLabels;
 
-  if (!categoryItems)
-    {
-      categoryItems = [NSArray arrayWithObjects: @"ANNIVERSARY",
-                               @"BIRTHDAY",
-                               @"BUSINESS",
-                               @"CALLS", 
-                               @"CLIENTS",
-                               @"COMPETITION",
-                               @"CUSTOMER",
-                               @"FAVORITES",
-                               @"FOLLOW UP",
-                               @"GIFTS",
-                               @"HOLIDAYS",
-                               @"IDEAS",
-                               @"ISSUES",
-                               @"MISCELLANEOUS",
-                               @"PERSONAL",
-                               @"PROJECTS",
-                               @"PUBLIC HOLIDAY",
-                               @"STATUS",
-                               @"SUPPLIERS",
-                               @"TRAVEL",
-                               @"VACATION",
-                              nil];
-      [categoryItems retain];
-    }
+  categoryLabels = [[self labelForKey: @"category_labels"]
+                     componentsSeparatedByString: @","];
+  categoryList
+    = [NSMutableArray arrayWithCapacity: [categoryLabels count] + 1];
+  if ([category length] && ![categoryLabels containsObject: category])
+    [categoryList addObject: category];
+  [categoryList addObjectsFromArray: categoryLabels];
 
-  max = [categoryItems count];
-  categoryList = [NSMutableArray arrayWithCapacity: max + 1];
-
-  for (count = 0; count < max; count++)
-    {
-      categoryItem = [categoryItems objectAtIndex: count];
-      newCategoryItem
-        = [self labelForKey: [NSString stringWithFormat: @"category_%@",
-                                       categoryItem]];
-      [categoryList addObject: newCategoryItem];
-    }
-  if ([categories count])
-    [categoryList addObjectsFromArray: categories];
-
-  return [[categoryList uniqueObjects]
-           sortedArrayUsingSelector: @selector (localizedCaseInsensitiveCompare:)];
+  return categoryList;
 }
 
 - (void) setCategories: (NSArray *) _categories

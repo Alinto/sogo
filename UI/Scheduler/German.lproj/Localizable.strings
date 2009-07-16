@@ -352,28 +352,8 @@
 
 /* Appointment categories */
 
-"category_NONE" = "Keine";
-"category_ANNIVERSARY" = "Jubiläum";
-"category_BIRTHDAY" = "Geburtstag";
-"category_BUSINESS" = "Geschäftlich";
-"category_CALLS" = "Anrufe"; 
-"category_CLIENTS" = "Kunden";
-"category_COMPETITION" = "Konkurrenz";
-"category_CUSTOMER" = "Auftraggeber";
-"category_FAVORITES" = "Favoriten";
-"category_FOLLOW UP" = "Kurzfristig";
-"category_GIFTS" = "Geschenke";
-"category_HOLIDAYS" = "Urlaub";
-"category_IDEAS" = "Ideen";
-"category_ISSUES" = "Probleme";
-"category_MISCELLANEOUS" = "Andere";
-"category_PERSONAL" = "Persönlich";
-"category_PROJECTS" = "Projekte";
-"category_PUBLIC HOLIDAY" = "Feiertage";
-"category_STATUS" = "Zustand";
-"category_SUPPLIERS" = "Lieferanten";
-"category_TRAVEL" = "Reisen";
-"category_VACATION" = "Ferien";
+"category_none" = "Keine";
+"category_labels" = "Jubiläum,Geburtstag,Geschäft,Anrufe,Klienten,Konkurrenz,Kunde,Favoriten,Nachgehen,Geschenke,Ferien,Ideen,Fragen,Verschiedenes,Persönlich,Projekte,Feiertag,Status,Lieferanten,Reise,Urlaub";
 
 "repeat_NEVER" = "wiederholt sich nicht";
 "repeat_DAILY" = "täglich";
