@@ -1505,8 +1505,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
   color = [[self calendarColor] uppercaseString];
 
-  return color;
-//   return [NSString stringWithFormat: @"%@FF", color];
+//   return color;
+  return [NSString stringWithFormat: @"%@FF", color];
 }
 
 - (NSException *) setDavCalendarColor: (NSString *) newColor
@@ -2239,8 +2239,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       login = [[context activeUser] login];
       if ([login isEqualToString: [self ownerInContext: self]])
         {
-          [colType addObject: [NSArray arrayWithObjects: @"schedule-calendar",
-                                                         XMLNS_CALDAV, nil]];
+//           [colType addObject: [NSArray arrayWithObjects: @"schedule-calendar",
+//                                                          XMLNS_CALDAV, nil]];
           [colType addObject: [NSArray arrayWithObjects: @"schedule-inbox",
                                                          XMLNS_CALDAV, nil]];
           [colType addObject: [NSArray arrayWithObjects: @"schedule-outbox",
