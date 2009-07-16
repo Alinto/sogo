@@ -1,5 +1,17 @@
 /* this file is in UTF-8 format! */
 
+/* Tooltips */
+
+"Create a new event" = "Create a new event";
+"Create a new task" = "Create a new task";
+"Edit this event or task" = "Edit this event or task";
+"Delete this event or task" = "Delete this event or task";
+"Go to today" = "Naar vandaag gaan";
+"Switch to day view" = "Switch to day view";
+"Switch to week view" = "Switch to week view";
+"Switch to month view" = "Switch to month view";
+"Reload all calendars" = "Reload all calendars";
+
 /* Day */
 
 "Sunday" = "Zondag";
@@ -337,28 +349,8 @@
 
 /* Appointment categories */
 
-"category_NONE" = "Geen categorie";
-"category_ANNIVERSARY" = "Jubileum";
-"category_BIRTHDAY" = "Verjaardag";
-"category_BUSINESS" = "Bedrijfsmatig";
-"category_CALLS" = "Telefoongesprekken"; 
-"category_CLIENTS" = "Cliënten";
-"category_COMPETITION" = "Competitie";
-"category_CUSTOMER" = "Klant";
-"category_FAVORITES" = "Favorieten";
-"category_FOLLOW UP" = "Opvolgen";
-"category_GIFTS" = "Geschenken";
-"category_HOLIDAYS" = "Vakanties";
-"category_IDEAS" = "Ideën";
-"category_ISSUES" = "Uitdagingen";
-"category_MISCELLANEOUS" = "Anderen";
-"category_PERSONAL" = "Persoonlijk";
-"category_PROJECTS" = "Projecten";
-"category_PUBLIC HOLIDAY" = "Feestdagen";
-"category_STATUS" = "Status";
-"category_SUPPLIERS" = "Leverancier";
-"category_TRAVEL" = "Reizen";
-"category_VACATION" = "Op vakantie";
+"category_none" = "Geen categorie";
+"category_labels" = "Cliënten,Concurrentie,Diversen,Favorieten,Giften,Ideeën,Klant,Kwesties,Leveranciers,Nationale feestdag,Persoonlijk,Projecten,Reizen,Status,Telefoongesprekken,Trouwdag,Vakantie,Verjaardag,Vervolggesprek,Vrije dagen,Zaken";
 
 "repeat_NEVER" = "herhaalt zich niet";
 "repeat_DAILY" = "dagelijks";

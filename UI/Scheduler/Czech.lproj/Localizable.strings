@@ -6,7 +6,7 @@
 "Create a new task" = "Vytvořit nový úkol";
 "Edit this event or task" = "Upravit tuto událost nebo úkol";
 "Delete this event or task" = "Smazat tuto událost nebo úkol";
-"Go to today" = "Jít na dnešek";
+"Go to today" = "Přejde na dnešní den";
 "Switch to day view" = "Přepnout na denní zobrazení";
 "Switch to week view" = "Přepnout na týdenní zobrazení";
 "Switch to month view" = "Přepnout na měsíční zobrazení";
@@ -355,28 +355,8 @@
 
 /* Appointment categories */
 
-"category_NONE" = "Žádný";
-"category_ANNIVERSARY" = "Výročí";
-"category_BIRTHDAY" = "Narozeniny";
-"category_BUSINESS" = "Pracovní";
-"category_CALLS" = "Volání"; 
-"category_CLIENTS" = "Klietni";
-"category_COMPETITION" = "Soutěž";
-"category_CUSTOMER" = "Zákazník";
-"category_FAVORITES" = "Oblíbené";
-"category_FOLLOW UP" = "Následující";
-"category_GIFTS" = "Dárky";
-"category_HOLIDAYS" = "Prázdniny";
-"category_IDEAS" = "Nápady";
-"category_ISSUES" = "Problémy";
-"category_MISCELLANEOUS" = "Ostatní";
-"category_PERSONAL" = "Osobní";
-"category_PROJECTS" = "Projekty";
-"category_PUBLIC HOLIDAY" = "Státní svátek";
-"category_STATUS" = "Status";
-"category_SUPPLIERS" = "Dodavatelé";
-"category_TRAVEL" = "Cestování";
-"category_VACATION" = "Dovolená";
+"category_none" = "Žádný";
+"category_labels" = "Výročí,Narozeniny,Obchod,Hovory,Klienti,Soutěže,Zákazník,Oblíbené,Sledování,Dárky,Volno,Nápady,Problémy,Různé,Osobní,Projekty,Veřejné prázdniny,Stav,Dodavatelé,Cesta,Dovolená";
 
 "repeat_NEVER" = "Neopakuje se";
 "repeat_DAILY" = "Denně";

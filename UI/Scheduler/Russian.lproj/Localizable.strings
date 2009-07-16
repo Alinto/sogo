@@ -354,28 +354,8 @@
 
 /* Appointment categories */
 
-"category_NONE" = "None";
-"category_ANNIVERSARY" = "Anniversary";
-"category_BIRTHDAY" = "Birthday";
-"category_BUSINESS" = "Business";
-"category_CALLS" = "Calls"; 
-"category_CLIENTS" = "Clients";
-"category_COMPETITION" = "Competition";
-"category_CUSTOMER" = "Customer";
-"category_FAVORITES" = "Favorites";
-"category_FOLLOW UP" = "Follow up";
-"category_GIFTS" = "Gifts";
-"category_HOLIDAYS" = "Holidays";
-"category_IDEAS" = "Ideas";
-"category_ISSUES" = "Issues";
-"category_MISCELLANEOUS" = "Miscellaneous";
-"category_PERSONAL" = "Personal";
-"category_PROJECTS" = "Projects";
-"category_PUBLIC HOLIDAY" = "Public Holiday";
-"category_STATUS" = "Status";
-"category_SUPPLIERS" = "Suppliers";
-"category_TRAVEL" = "Travel";
-"category_VACATION" = "Vacation";
+"category_none" = "None";
+"category_labels" = "Anniversary,Birthday,Business,Calls,Clients,Competition,Customer,Favorites,Follow up,Gifts,Holidays,Ideas,Issues,Miscellaneous,Personal,Projects,Public Holiday,Status,Suppliers,Travel,Vacation";
 
 "repeat_NEVER" = "Does not repeat";
 "repeat_DAILY" = "Daily";

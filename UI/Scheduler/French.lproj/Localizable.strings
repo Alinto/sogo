@@ -6,10 +6,10 @@
 "Create a new task" = "Créer une nouvelle tâche";
 "Edit this event or task" = "Modifier l'événement ou la tâche sélectionnée";
 "Delete this event or task" = "Supprimer l'événement ou la tâche sélectionnée";
-"Go to today" = "Aller à la journée d'aujourd'hui";
-"Switch to day view" = "Passer à la vue par jour";
-"Switch to week view" = "Passer à la vue par semaine";
-"Switch to month view" = "Passer à la vue par mois";
+"Go to today" = "Revenir à la date d'aujourd'hui";
+"Switch to day view" = "Afficher la journée";
+"Switch to week view" = "Afficher la semaine";
+"Switch to month view" = "Afficher le mois";
 "Reload all calendars" = "Actualiser tous les agendas";
 
 /* Tabs */
@@ -188,14 +188,14 @@
 "Appointment proposal" = "Proposition de rendez-vous";
 "Appointment on" = "Rendez-vous le";
 "Start:" = "Début :";
-"End:" = "Fin :";
-"Due Date:" = "Échéance :";
+"End:" = "Au :";
+"Due Date:" = "Fin prévue :";
 "Title:" = "Titre :";
 "Calendar:" = "Agenda :";
 "Name" = "Nom";
 "Email" = "Email";
 "Status:" = "Statut :";
-"% complete" = "% complété";
+"% complete" = "% d'achèvement";
 "Location:" = "Lieu :";
 "Priority:" = "Priorité";
 "Privacy" = "Confidentialité";
@@ -210,7 +210,7 @@
 "Description:" = "Description :";
 "Document:" = "Document :";
 "Category:" = "Catégorie :";
-"Repeat:" = "Répéter :";
+"Repeat:" = "Répétition :";
 "Reminder:" = "Rappel :";
 
 "Target:" = "Destination :";
@@ -245,14 +245,14 @@
 
 /* Searching */
 
-"view_all" = "Tous";
-"view_today" = "Aujourd'hui";
-"view_next7" = "Les 7 prochains jours";
-"view_next14" = "Les 14 prochains jours";
-"view_next31" = "Les 31 prochains jours";
-"view_thismonth" = "Ce mois-ci";
-"view_future" = "Tous à venir";
-"view_selectedday" = "Le jour sélectionné";
+"view_all" = "Tous les événements";
+"view_today" = "Événements du jour";
+"view_next7" = "Événements des 7 prochains jours";
+"view_next14" = "Événements des 14 prochains jours";
+"view_next31" = "Événements des 31 prochains jours";
+"view_thismonth" = "Événements du mois en cours";
+"view_future" = "Tous les événements futurs";
+"view_selectedday" = "Jour courant";
 
 "View:" = "Voir :";
 "Title or Description" = "Le titre ou la description";
@@ -353,28 +353,8 @@
 
 /* Appointment categories */
 
-"category_NONE" = "Aucune";
-"category_ANNIVERSARY" = "Anniversaire";
-"category_BIRTHDAY" = "Anniversaire (de nais.)";
-"category_BUSINESS" = "Business";
-"category_CALLS" = "Appels"; 
-"category_CLIENTS" = "Clients";
-"category_COMPETITION" = "Compétition";
-"category_CUSTOMER" = "Client";
-"category_FAVORITES" = "Favoris";
-"category_FOLLOW UP" = "Suivi";
-"category_GIFTS" = "Cadeaux";
-"category_HOLIDAYS" = "Vacances";
-"category_IDEAS" = "Idées";
-"category_ISSUES" = "Problèmes";
-"category_MISCELLANEOUS" = "Divers";
-"category_PERSONAL" = "Personnel";
-"category_PROJECTS" = "Projets";
-"category_PUBLIC HOLIDAY" = "Public Holiday";
-"category_STATUS" = "Statut";
-"category_SUPPLIERS" = "Fournisseurs";
-"category_TRAVEL" = "Voyage";
-"category_VACATION" = "Absence";
+"category_none" = "Aucune";
+"category_labels" = "Anniversaire,Affaire,Appels,Clients,Compétitions,Congrès,Consommation,Préférés,Suivis,Cadeaux,Congés,Idées,Problèmes,Divers,Personnel,Projets,Jour férié,Réunion,Fournisseurs,Voyages,Professionnel";
 
 "repeat_NEVER" = "Jamais";
 "repeat_DAILY" = "Quotidienne";
@@ -439,9 +419,9 @@ validate_endbeforestart    = "La date de fin est avant la date de début.";
 "Edit" = "Éditer";
 "Delete" = "Effacer";
 "Go to Today" = "Aujourd'hui";
-"Day View" = "Par jour";
-"Week View" = "Par semaine";
-"Month View" = "Par mois";
+"Day View" = "Journée";
+"Week View" = "Semaine";
+"Month View" = "Mois";
 "Reload" = "Actualiser";
 
 "eventPartStatModificationError" = "Votre état de participation à l'événement n'a pas pu être modifié.";
