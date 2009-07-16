@@ -615,6 +615,19 @@ iRANGE(2);
 
 - (NSString *) title
 {
+  SOGoObject <SOGoComponentOccurence> *co;
+  NSString *tag;
+
+  co = [self clientObject];
+  if ([co isNew] && [co isKindOfClass: [SOGoCalendarComponent class]])
+    {
+      tag = [co componentTag];
+      if ([tag isEqualToString: @"vevent"])
+        [self setTitle: [self labelForKey: @"New Event"]];
+      else if ([tag isEqualToString: @"vtodo"])
+        [self setTitle: [self labelForKey: @"New Task"]];
+    }
+
   return title;
 }
 
