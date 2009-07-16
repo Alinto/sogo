@@ -53,6 +53,7 @@
 #import <SoObjects/Appointments/SOGoTaskObject.h>
 #import <SoObjects/SOGo/iCalEntityObject+Utilities.h>
 #import <SoObjects/SOGo/LDAPUserManager.h>
+#import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/NSDictionary+Utilities.h>
 #import <SoObjects/SOGo/NSString+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
@@ -285,7 +286,7 @@ iRANGE(2);
     {
       simpleCategory = [[compCategories componentsSeparatedByString: @","]
 			 objectAtIndex: 0];
-      ASSIGN (category, [simpleCategory uppercaseString]);
+      ASSIGN (category, simpleCategory);
     }
 }
 
@@ -538,8 +539,8 @@ iRANGE(2);
 	  ASSIGN (privacy, [component accessClass]);
 	  ASSIGN (priority, [component priority]);
 	  ASSIGN (status, [component status]);
-	  ASSIGN (categories,
-		  [[component categories] componentsWithSafeSeparator: ',']);
+          ASSIGN (categories,
+                  [[component categories] componentsWithSafeSeparator: ',']);
 	  ASSIGN (organizer, [component organizer]);
 	  [self _loadCategories];
 	  [self _loadAttendees];
@@ -791,6 +792,9 @@ iRANGE(2);
 - (NSArray *) categoryList
 {
   static NSArray *categoryItems = nil;
+  NSMutableArray *categoryList;
+  unsigned int count, max;
+  NSString *categoryItem, *newCategoryItem;
 
   if (!categoryItems)
     {
@@ -819,7 +823,22 @@ iRANGE(2);
       [categoryItems retain];
     }
 
-  return categoryItems;
+  max = [categoryItems count];
+  categoryList = [NSMutableArray arrayWithCapacity: max + 1];
+
+  for (count = 0; count < max; count++)
+    {
+      categoryItem = [categoryItems objectAtIndex: count];
+      newCategoryItem
+        = [self labelForKey: [NSString stringWithFormat: @"category_%@",
+                                       categoryItem]];
+      [categoryList addObject: newCategoryItem];
+    }
+  if ([categories count])
+    [categoryList addObjectsFromArray: categories];
+
+  return [[categoryList uniqueObjects]
+           sortedArrayUsingSelector: @selector (localizedCaseInsensitiveCompare:)];
 }
 
 - (void) setCategories: (NSArray *) _categories
@@ -832,7 +851,7 @@ iRANGE(2);
   return categories;
 }
 
-- (void) setCategory: (NSArray *) newCategory
+- (void) setCategory: (NSString *) newCategory
 {
   ASSIGN (category, newCategory);
 }
@@ -840,12 +859,6 @@ iRANGE(2);
 - (NSString *) category
 {
   return category;
-}
-
-- (NSString *) itemCategoryText
-{
-  return [self labelForKey:
-		 [NSString stringWithFormat: @"category_%@", item]];
 }
 
 - (NSArray *) repeatList
@@ -1713,7 +1726,7 @@ RANGE(2);
   [component setComment: comment];
   [component setAttach: attachUrl];
   [component setAccessClass: privacy];
-  [component setCategories: [category capitalizedString]];
+  [component setCategories: category];
   [self _handleAttendeesEdition];
   [self _handleOrganizer];
   clientObject = [self clientObject];

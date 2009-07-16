@@ -110,7 +110,6 @@
 - (NSArray *) categoryList;
 - (void) setCategories: (NSArray *) _categories;
 - (NSArray *) categories;
-- (NSString *) itemCategoryText;
 
 - (NSArray *) priorities;
 - (void) setPriority: (NSString *) _priority;

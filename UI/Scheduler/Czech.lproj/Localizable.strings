@@ -10,6 +10,7 @@
 "Switch to day view" = "Přepnout na denní zobrazení";
 "Switch to week view" = "Přepnout na týdenní zobrazení";
 "Switch to month view" = "Přepnout na měsíční zobrazení";
+"Reload all calendars" = "Reload all calendars";
 
 /* Tabs */
 "Date" = "Datum";
@@ -443,6 +444,7 @@ validate_endbeforestart    = "Zadané datum konce je před začátkem události.
 "Day View" = "Denní zobrazení";
 "Week View" = "Týdenní zobrazení";
 "Month View" = "Měsíční zobrazení";
+"Reload" = "Reload";
 
 "eventPartStatModificationError" = "Status Vaší účasti nemohl být změněn.";
 

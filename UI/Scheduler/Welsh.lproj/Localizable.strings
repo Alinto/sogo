@@ -10,6 +10,7 @@
 "Switch to day view" = "Newid i olygfa diwrnod";
 "Switch to week view" = "Newid i olygfa wythnos";
 "Switch to month view" = "Newid i olygfa mis";
+"Reload all calendars" = "Reload all calendars";
 
 /* Tabs */
 "Date" = "Dyddiad";
@@ -434,6 +435,7 @@ validate_endbeforestart    = "Mae'r dyddiad gorffen sydd wedi'i roi yn digwydd c
 "Day View" = "Golygfa diwrnod";
 "Week View" = "Golygfa wythnos";
 "Month View" = "Golygfa mis";
+"Reload" = "Reload";
 
 "eventPartStatModificationError" = "Ni fedrwyd newid statws eich cyfranogiad.";
 

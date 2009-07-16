@@ -10,6 +10,7 @@
 "Switch to day view" = "Zur Tagesansicht wechseln";
 "Switch to week view" = "Zur Wochenansicht wechseln";
 "Switch to month view" = "Zur wehrwöchigen Ansicht wechseln";
+"Reload all calendars" = "Reload all calendars";
 
 /* Tabs */
 "Date" = "Datum";
@@ -441,6 +442,7 @@ validate_endbeforestart    = "Ihr Beginn ist nach dem Ende";
 "Day View" = "Tagesansicht";
 "Week View" = "Wochenansicht";
 "Month View" = "Monatsansicht";
+"Reload" = "Reload";
 
 "eventPartStatModificationError" = "Ihre Teilnahme an dem Termin kann nicht geändert werden.";
 

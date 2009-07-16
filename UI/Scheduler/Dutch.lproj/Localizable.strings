@@ -426,6 +426,7 @@ validate_endbeforestart    = "Het begin vindt plaats vóór het einde.";
 "Day View" = "Dagoverzicht";
 "Week View" = "Weekoverzicht";
 "Month View" = "Maandoverzicht";
+"Reload" = "Reload";
 
 "eventPartStatModificationError" = "Uw participatiestatus kon niet worden gewijzigd.";
 
@@ -437,6 +438,7 @@ validate_endbeforestart    = "Het begin vindt plaats vóór het einde.";
 "Select All" = "Alles selecteren";
 "Workweek days only" = "Alleen werkdagen weergeven";
 "Tasks in View" = "Taken in binnen het zicht";
+"Reload all calendars" = "Reload all calendars";
 
 "eventDeleteConfirmation" = "Weet u zeker dat u deze afspraak wilt verwijderen?";
 "taskDeleteConfirmation" = "Weet u zeker dat u deze taak wilt verwijderen?";

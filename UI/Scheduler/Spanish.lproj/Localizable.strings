@@ -13,6 +13,7 @@
 "Switch to day view" = "Cambiar a vista diaria";
 "Switch to week view" = "Cambiar a vista semanal";
 "Switch to month view" = "Cambiar a vista mensual";
+"Reload all calendars" = "Reload all calendars";
 
 /* Tabs */
 "Date" = "Fecha";
@@ -447,6 +448,7 @@ validate_endbeforestart    = "Su fecha/hora de comienzo es posterio a la de fina
 "Day View" = "Vista diaria";
 "Week View" = "Vista semanal";
 "Month View" = "Vista mensual";
+"Reload" = "Reload";
 
 "eventPartStatModificationError" = "Su estado de participación no puede ser actualizado.";
 

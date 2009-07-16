@@ -1,7 +1,15 @@
+<<<<<<< variant A
 1.0-2009mmdd (1.0.4)
 --------------------
 - added contextual menu in web calendar views
 
+>>>>>>> variant B
+1.0-2009XXXX (1.0.4)
+--------------------
+- added "Reload" button to refresh the current view in the calendar
+
+####### Ancestor
+======= end
 1.0-20090714 (1.0.3)
 --------------------
 - improved search behavior of users folders (UIxContactsUserFolders)
