@@ -41,7 +41,7 @@ DIV#categoriesListWrapper
   height:230px; 
   padding:2px; }
 
-div.colorBox
+DIV.colorBox
 { border: 1px solid #333333;
   font-size: 80%;
   font-weight: normal;
@@ -49,8 +49,10 @@ div.colorBox
   margin: 0 3px 0 0;
   width: 1em; }
 
-tr.categoryListRow
+TR.categoryListRow
 { background: #FFFFFF; }
-tr._selected
+TR._selected
 { background: #333333; }
 
+TD.categoryListCell
+{ -moz-user-select: none; }
