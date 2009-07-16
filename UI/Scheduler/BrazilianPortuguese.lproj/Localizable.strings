@@ -6,7 +6,7 @@
 "Create a new task" = "Criar uma nova tarefa";
 "Edit this event or task" = "Editar este evento ou tarefa";
 "Delete this event or task" = "Apagar este evento ou tarefa";
-"Go to today" = "Ir para Hoje";
+"Go to today" = "Vai para hoje";
 "Switch to day view" = "Visualizar Dia";
 "Switch to week view" = "Visualizar Semana";
 "Switch to month view" = "Visualizar Mês";
@@ -346,28 +346,8 @@
 
 /* Appointment categories */
 
-"category_NONE" = "Nenhum";
-"category_ANNIVERSARY" = "Aniversário";
-"category_BIRTHDAY" = "Nascimento";
-"category_BUSINESS" = "Negócios";
-"category_CALLS" = "Chamadas"; 
-"category_CLIENTS" = "Clientes";
-"category_COMPETITION" = "Competição";
-"category_CUSTOMER" = "Cliente";
-"category_FAVORITES" = "Favoritos";
-"category_FOLLOW UP" = "Continuação";
-"category_GIFTS" = "Presentes";
-"category_HOLIDAYS" = "Feriados";
-"category_IDEAS" = "Ideias";
-"category_ISSUES" = "Edições";
-"category_MISCELLANEOUS" = "Variedades";
-"category_PERSONAL" = "Pessoal";
-"category_PROJECTS" = "Projetos";
-"category_PUBLIC HOLIDAY" = "Feriado Nacional";
-"category_STATUS" = "Status";
-"category_SUPPLIERS" = "Fornecedores";
-"category_TRAVEL" = "Viagem";
-"category_VACATION" = "Férias";
+"category_none" = "Nenhum";
+"category_labels" = "Aniversário,Negócios,Ligações,Concorrência,Cliente,Favoritos,Acompanhamento,Presentes,Feriados,Idéias,Problemas,Miscelânea,Pessoal,Projetos,Feriado público,Posição,Fornecedores,Viagem,Férias";
 
 "repeat_NEVER" = "Sem repetição";
 "repeat_DAILY" = "Diariamente";

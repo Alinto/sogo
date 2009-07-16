@@ -42,7 +42,7 @@
             /></span></label>
       <span class="checkBoxList"><var:string label:value="Category:" />
         <span class="content"><var:popup list="categoryList" item="item"
-            label:noSelectionString="category_NONE"
+            label:noSelectionString="category_none"
             string="item" selection="category"
             /> <var:string label:value="Calendar:" />
           <var:popup const:id="calendarList"

@@ -345,28 +345,8 @@
 
 /* Appointment categories */
 
-"category_NONE" = "Dim";
-"category_ANNIVERSARY" = "Penblwydd";
-"category_BIRTHDAY" = "Penblwydd";
-"category_BUSINESS" = "Busnes";
-"category_CALLS" = "Galwadau"; 
-"category_CLIENTS" = "Clientau";
-"category_COMPETITION" = "Cystadleuaeth";
-"category_CUSTOMER" = "Cwsmer";
-"category_FAVORITES" = "Ffefrynnau";
-"category_FOLLOW UP" = "Dilyn lan";
-"category_GIFTS" = "Anrhegion";
-"category_HOLIDAYS" = "Gwyliau";
-"category_IDEAS" = "Syniadau";
-"category_ISSUES" = "Canlyniadau";
-"category_MISCELLANEOUS" = "Amrywiol";
-"category_PERSONAL" = "Personol";
-"category_PROJECTS" = "Projectau";
-"category_PUBLIC HOLIDAY" = "Gwyliau Cyhoeddus";
-"category_STATUS" = "Statws";
-"category_SUPPLIERS" = "Cyflenwyr";
-"category_TRAVEL" = "Teithio";
-"category_VACATION" = "Gwyliau";
+"category_none" = "Dim";
+"category_labels" = "Amrywiol,Anrhegion,Busnes,Canlyniadau,Clientau,Cwsmer,Cyflenwyr,Cystadleuaeth,Dilyn lan,Ffefrynnau,Galwadau,Gwyliau,Gwyliau Cyhoeddus,Penblwydd,Personol,Projectau,Statws,Syniadau,Teithio";
 
 "repeat_NEVER" = "Ddim yn ailadrodd";
 "repeat_DAILY" = "Dyddiol";

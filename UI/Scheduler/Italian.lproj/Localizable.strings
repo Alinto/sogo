@@ -6,7 +6,7 @@
 "Create a new task" = "Crea una nuova attività";
 "Edit this event or task" = "Modifica questo evento o attività";
 "Delete this event or task" = "Cancella questo evento o attività";
-"Go to today" = "Oggi";
+"Go to today" = "Vai a Oggi";
 "Switch to day view" = "Giorno";
 "Switch to week view" = "Settimana";
 "Switch to month view" = "Mese";
@@ -346,28 +346,8 @@
 
 /* Appointment categories */
 
-"category_NONE" = "Nessuna";
-"category_ANNIVERSARY" = "Anniversario";
-"category_BIRTHDAY" = "Compleanno";
-"category_BUSINESS" = "Lavoro";
-"category_CALLS" = "Chiamare"; 
-"category_CLIENTS" = "Clienti";
-"category_COMPETITION" = "Gara";
-"category_CUSTOMER" = "Cliente";
-"category_FAVORITES" = "Preferiti";
-"category_FOLLOW UP" = "Supplementari";
-"category_GIFTS" = "Regali";
-"category_HOLIDAYS" = "Vacanze";
-"category_IDEAS" = "Idee";
-"category_ISSUES" = "Inconvegnenti";
-"category_MISCELLANEOUS" = "Varie";
-"category_PERSONAL" = "Personale";
-"category_PROJECTS" = "Progetto";
-"category_PUBLIC HOLIDAY" = "Festività";
-"category_STATUS" = "Stato";
-"category_SUPPLIERS" = "Fornitore";
-"category_TRAVEL" = "Viaggio";
-"category_VACATION" = "Ferie";
+"category_none" = "Nessuna";
+"category_labels" = "Anniversari,Compleanni,Lavoro,Chiamate,Clienti,Competizioni,Compratori,Preferiti,Incontri,Regali,Vacanze,Idee,Problemi,Varie,Personale,Progetti,Giorno festivo,Stato,Fornitori,Viaggio,Chiusura";
 
 "repeat_NEVER" = "Non si ripete";
 "repeat_DAILY" = "Quotidianamente";
