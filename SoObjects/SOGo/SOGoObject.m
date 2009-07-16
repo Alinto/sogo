@@ -307,19 +307,18 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
 
 - (void) setOwner: (NSString *) newOwner
 {
+  NSString *uid;
+
+  uid = [[context activeUser] login];
+  activeUserIsOwner = [newOwner isEqualToString: uid];
+
   ASSIGN (owner, newOwner);
 }
 
 - (NSString *) ownerInContext: (id) localContext
 {
-  NSString *uid;
-
   if (!owner)
-    {
-      owner = [container ownerInContext: context];
-      uid = [[localContext activeUser] login];
-      activeUserIsOwner = [owner isEqualToString: uid];
-    }
+    [self setOwner: [container ownerInContext: localContext]];
 
   return owner;
 }
