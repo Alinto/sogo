@@ -13,6 +13,7 @@
 "Mail Options" = "Opciones de correo";
 "Identities" = "Identidades";
 "Password" = "Contraseña";
+"Categories" = "Categories";
 
 /* ooo */
 "I'm currently in the office" = "Ahora estoy disponible";
@@ -111,3 +112,6 @@
 "New password:" = "Contraseña nueva:";
 "Confirmation:" = "Confirmar contraseña nueva:"; /* ??? */
 "Change" = "Cambiar";
+
+"category_none" = "Ninguna";
+"category_labels" = "Aniversario,Cumpleaños,Negocios,Llamadas,Clientes,Competición,Trabajo,Favoritos,Seguimiento,Regalos,Fiestas,Ideas,Asuntos,Varios,Personal,Proyectos,Vacaciones públicas,Estado,Proveedores,Viajes,Vacaciones";

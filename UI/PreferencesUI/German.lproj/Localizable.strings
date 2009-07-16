@@ -8,6 +8,7 @@
 "Mail Options" = "E-Mail";
 "Identities" = "Identität";
 "Password" = "Passwort";
+"Categories" = "Categories";
 
 /* ooo */
 "I'm currently in the office" = "Ich bin zurzeit im Hause";
@@ -100,3 +101,7 @@
 "New password:" = "Neues Passwort:";
 "Confirmation:" = "Bestätigung:";
 "Change" = "Ändern";
+
+"category_none" = "Keine";
+"category_labels" = "Jubiläum,Geburtstag,Geschäft,Anrufe,Klienten,Konkurrenz,Kunde,Favoriten,Nachgehen,Geschenke,Ferien,Ideen,Fragen,Verschiedenes,Persönlich,Projekte,Feiertag,Status,Lieferanten,Reise,Urlaub";
+

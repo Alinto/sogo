@@ -8,6 +8,7 @@
 "Mail Options" = "Courrier";
 "Identities" = "Identités";
 "Password" = "Mot de passe";
+"Categories" = "Catégories";
 
 /* ooo */
 "I'm currently in the office" = "Je suis présent";
@@ -100,3 +101,7 @@
 "New password:" = "Nouveau mot de passe :";
 "Confirmation:" = "Confirmation :";
 "Change" = "Changer";
+
+"category_none" = "Aucune";
+"category_labels" = "Anniversaire,Affaire,Appels,Clients,Compétitions,Congrès,Consommation,Préférés,Suivis,Cadeaux,Congés,Idées,Problèmes,Divers,Personnel,Projets,Jour férié,Réunion,Fournisseurs,Voyages,Professionnel";
+

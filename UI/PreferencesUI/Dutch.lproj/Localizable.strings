@@ -8,6 +8,7 @@
 "Mail Options" = "E-mail";
 "Identities" = "Identiteit";
 "Password" = "Wachtwoord";
+"Categories" = "Categories";
 
 /* ooo */
 "I'm currently in the office" = "Ik ben op kantoor";
@@ -99,3 +100,7 @@
 "New password:" = "Nieuw wachtwoord:";
 "Confirmation:" = "Bevestig wachtwoord:";
 "Change" = "Veranderen";
+
+"category_none" = "Geen categorie";
+"category_labels" = "Cliënten,Concurrentie,Diversen,Favorieten,Giften,Ideeën,Klant,Kwesties,Leveranciers,Nationale feestdag,Persoonlijk,Projecten,Reizen,Status,Telefoongesprekken,Trouwdag,Vakantie,Verjaardag,Vervolggesprek,Vrije dagen,Zaken";
+

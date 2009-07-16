@@ -615,7 +615,7 @@ iRANGE(2);
 
 - (NSString *) title
 {
-  SOGoObject <SOGoComponentOccurence> *co;
+  SOGoCalendarComponent *co;
   NSString *tag;
 
   co = [self clientObject];
@@ -806,9 +806,13 @@ iRANGE(2);
 {
   NSMutableArray *categoryList;
   NSArray *categoryLabels;
+  NSUserDefaults *defaults;
 
-  categoryLabels = [[self labelForKey: @"category_labels"]
-                     componentsSeparatedByString: @","];
+  defaults = [[context activeUser] userDefaults];
+  categoryLabels = [defaults arrayForKey: @"CalendarCategories"];
+  if (!categoryLabels)
+    categoryLabels = [[self labelForKey: @"category_labels"]
+                       componentsSeparatedByString: @","];
   categoryList
     = [NSMutableArray arrayWithCapacity: [categoryLabels count] + 1];
   if ([category length] && ![categoryLabels containsObject: category])

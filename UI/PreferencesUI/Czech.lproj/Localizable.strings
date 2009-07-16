@@ -8,6 +8,7 @@
 "Mail Options" = "Možnosti e-mailu";
 "Identities" = "Identity";
 "Password" = "Heslo";
+"Categories" = "Categories";
 
 /* ooo */
 "I'm currently in the office" = "Momentálně jsem v kanceláři";
@@ -99,3 +100,7 @@
 "New password:" = "Nové heslo:";
 "Confirmation:" = "Potvrzení:";
 "Change" = "Změnit";
+
+"category_none" = "Žádný";
+"category_labels" = "Výročí,Narozeniny,Obchod,Hovory,Klienti,Soutěže,Zákazník,Oblíbené,Sledování,Dárky,Volno,Nápady,Problémy,Různé,Osobní,Projekty,Veřejné prázdniny,Stav,Dodavatelé,Cesta,Dovolená";
+

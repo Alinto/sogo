@@ -8,6 +8,7 @@
 "Mail Options" = "Opsiynau Ebost";
 "Identities" = "hunaniaethau";
 "Password" = "Cyfrinair";
+"Categories" = "Categories";
 
 /* ooo */
 "I'm currently in the office" = "Yr wyf yn y swyddfa ar hyn o bryd";
@@ -102,3 +103,7 @@
 "New password:" = "New password:";
 "Confirmation:" = "Confirmation:";
 "Change" = "Change";
+
+"category_none" = "Dim";
+"category_labels" = "Amrywiol,Anrhegion,Busnes,Canlyniadau,Clientau,Cwsmer,Cyflenwyr,Cystadleuaeth,Dilyn lan,Ffefrynnau,Galwadau,Gwyliau,Gwyliau Cyhoeddus,Penblwydd,Personol,Projectau,Statws,Syniadau,Teithio";
+

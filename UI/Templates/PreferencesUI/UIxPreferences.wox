@@ -80,6 +80,36 @@
 	      const:id="firstWeek"
 	      string="itemFirstWeekText" selection="userFirstWeek"
 	      /></label><br/>
+    <label><var:string label:value="Categories"/></label><br/>
+    <div style="overflow:auto; height:230px; padding:2px;"
+      ><table id="categoriesList" cellspacing="0" width="100%">
+      <thead>
+        <tr class="tableview"
+          ><td const:class="tbtv_headercell" const:id="nameTableHeader"
+            ><var:string var:value="nameLabel" /></td
+          ><td const:class="tbtv_headercell" const:width="20%" const:id="colorTableHeader"
+            ><var:string var:value="colorLabel" /></td
+          ></tr
+        ></thead>
+      <tbody>
+        <var:foreach list="categories" item="category">
+          <tr const:class="categoryListRow"
+            ><td const:class="categoryListCell"
+              ><var:string var:value="category.name"/></td
+            ><td const:class="categoryListCell"
+              ><div const:class="colorBox"><var:string var:value="category.color"
+                  /></div></td
+            ></tr>
+        </var:foreach>
+      </tbody>
+    </table></div>
+    <input type="hidden" const:id="categoriesValue" 
+      const:name="categoriesValue" var:value="categoriesValue"/>
+    <br/>
+    <label><input type="button" class="button"
+        id="categoryAdd" label:value="Add"/></label>
+    <label><input type="button" class="button"
+        id="categoryDelete" label:value="Delete"/></label>
 <!-- 	  <br/> -->
 <!-- 	  <label><input class="checkBox" -->
 <!-- 	      type="checkbox" var:selection="reminderEnabled" -->

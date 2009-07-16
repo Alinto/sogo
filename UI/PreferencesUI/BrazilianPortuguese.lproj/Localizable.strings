@@ -8,6 +8,7 @@
 "Mail Options" = "Correio";
 "Identities" = "Identidade";
 "Password" = "Senha";
+"Categories" = "Categories";
 
 /* ooo */
 "I'm currently in the office" = "Eu estou no escritório";
@@ -99,3 +100,7 @@
 "New password:" = "Nova senha:";
 "Confirmation:" = "Confirmação:";
 "Change" = "Alterar";
+
+"category_none" = "Nenhum";
+"category_labels" = "Aniversário,Negócios,Ligações,Concorrência,Cliente,Favoritos,Acompanhamento,Presentes,Feriados,Idéias,Problemas,Miscelânea,Pessoal,Projetos,Feriado público,Posição,Fornecedores,Viagem,Férias";
+

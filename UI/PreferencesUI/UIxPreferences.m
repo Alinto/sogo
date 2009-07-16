@@ -24,6 +24,7 @@
 #import <Foundation/NSString.h>
 #import <Foundation/NSTimeZone.h>
 #import <Foundation/NSUserDefaults.h>
+#import <Foundation/NSPropertyList.h>
 
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WORequest.h>
@@ -656,6 +657,90 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
 - (BOOL) shouldDisplayPasswordChange
 {
   return shouldDisplayPasswordChange;
+}
+
+- (NSString *) nameLabel
+{
+  return [self labelForKey: @"Name"];
+}
+
+- (NSString *) colorLabel
+{
+  return [self labelForKey: @"Color"];
+}
+
+- (NSArray *) categories
+{
+  NSDictionary *element;
+  NSArray *k, *v, *names;
+  NSMutableArray *rc, *colors;
+  int i, count;
+
+  names = [userDefaults arrayForKey: @"CalendarCategories"];
+  if (names)
+    colors = [NSMutableArray arrayWithArray: 
+                  [userDefaults arrayForKey: @"CalendarCategoriesColors"]];
+  else
+    {
+      names = [[self labelForKey: @"category_labels"]
+                componentsSeparatedByString: @","];
+      
+      count = [names count];
+      colors = [NSMutableArray arrayWithCapacity: count];
+      for (i = 0; i < count; i++)
+        [colors addObject: @"#F0F0F0"];
+    }
+
+  rc = [NSMutableArray array];
+  k = [NSArray arrayWithObjects: @"name", @"color", nil];
+
+  count = [names count];
+  for (i = 0; i < count; i++)
+    {
+      v = [NSArray arrayWithObjects: [names objectAtIndex: i],
+                                     [colors objectAtIndex: i], nil];
+
+      element = [NSDictionary dictionaryWithObjects: v
+                                         forKeys: k];
+      [rc addObject: element];
+    }
+
+  return rc;
+}
+
+
+- (NSString *) categoriesValue
+{
+  return @"";
+}
+
+- (void) setCategoriesValue: (NSString *) value
+{
+  NSData *data;
+  NSString *error;
+  NSPropertyListFormat format;
+  NSDictionary *plist;
+
+  data = [value dataUsingEncoding: NSUTF8StringEncoding];
+  plist = [NSPropertyListSerialization propertyListFromData: data
+                                           mutabilityOption: NSPropertyListImmutable
+                                                     format: &format
+                                           errorDescription: &error];
+  
+  if(!plist)
+    {
+      NSLog(error);
+      [error release];
+    }
+  else
+    {
+      [userDefaults setObject: [plist objectAtIndex: 0] 
+                       forKey: @"CalendarCategories"];
+      [userDefaults setObject: [plist objectAtIndex: 1] 
+                       forKey: @"CalendarCategoriesColors"];
+      NSLog ([plist description]);
+    }
+  
 }
 
 @end

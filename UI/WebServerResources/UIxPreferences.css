@@ -32,3 +32,20 @@ DIV#identitiesView
   width: 390px;
   max-width: 390px;
   height: 145px; }
+
+TABLE#messageList
+{ width: 100%; }
+
+div.colorBox
+{ border: 1px solid #333333;
+  font-size: 80%;
+  font-weight: normal;
+  height: 0.75em;
+  margin: 0 3px 0 0;
+  width: 1em; }
+
+tr.categoryListRow
+{ background: #FFFFFF; }
+tr._selected
+{ background: #333333; }
+

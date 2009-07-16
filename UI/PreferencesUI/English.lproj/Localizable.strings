@@ -8,6 +8,7 @@
 "Mail Options" = "Mail Options";
 "Identities" = "Identities";
 "Password" = "Password";
+"Categories" = "Categories";
 
 /* ooo */
 "I'm currently in the office" = "I'm currently in the office";
@@ -102,3 +103,7 @@
 "New password:" = "New password:";
 "Confirmation:" = "Confirmation:";
 "Change" = "Change";
+
+"category_none" = "None";
+"category_labels" = "Anniversary,Birthday,Business,Calls,Clients,Competition,Customer,Favorites,Follow up,Gifts,Holidays,Ideas,Issues,Miscellaneous,Personal,Projects,Public Holiday,Status,Suppliers,Travel,Vacation";
+

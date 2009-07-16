@@ -8,6 +8,7 @@
 "Mail Options" = "Почта";
 "Identities" = "Identities";
 "Password" = "Пароль";
+"Categories" = "Categories";
 
 /* ooo */
 "I'm currently in the office" = "Я на рабочем месте";
@@ -107,3 +108,6 @@
 "New password:" = "Новый пароль:";
 "Confirmation:" = "Повтор нового пароля:";
 "Change" = "Изменить";
+
+"category_none" = "None";
+"category_labels" = "Anniversary,Birthday,Business,Calls,Clients,Competition,Customer,Favorites,Follow up,Gifts,Holidays,Ideas,Issues,Miscellaneous,Personal,Projects,Public Holiday,Status,Suppliers,Travel,Vacation";
