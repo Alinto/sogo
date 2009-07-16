@@ -81,8 +81,8 @@
 	      string="itemFirstWeekText" selection="userFirstWeek"
 	      /></label><br/>
     <label><var:string label:value="Categories"/></label><br/>
-    <div style="overflow:auto; height:230px; padding:2px;"
-      ><table id="categoriesList" cellspacing="0" width="100%">
+    <div id="categoriesListWrapper"
+      ><table id="categoriesList" cellspacing="0">
       <thead>
         <tr class="tableview"
           ><td const:class="tbtv_headercell" const:id="nameTableHeader"

@@ -33,8 +33,13 @@ DIV#identitiesView
   max-width: 390px;
   height: 145px; }
 
-TABLE#messageList
-{ width: 100%; }
+TABLE#categoriesList
+{ width: 95%; }
+
+DIV#categoriesListWrapper
+{ overflow:auto; 
+  height:230px; 
+  padding:2px; }
 
 div.colorBox
 { border: 1px solid #333333;

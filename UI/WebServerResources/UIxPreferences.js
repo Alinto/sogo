@@ -67,8 +67,8 @@ function resetTableActions () {
       row.observe("selectstart", listRowMouseDownHandler);
       var tds = row.childElements ();
       tds[0].observe("mousedown", endAllEditables);
-      tds[1].observe("mousedown", endAllEditables);
       tds[0].observe ("dblclick", onNameEdit);
+      tds[1].observe("mousedown", endAllEditables);
       tds[1].childElements ()[0].observe ("dblclick", onColorEdit);
   }
 }
@@ -129,7 +129,7 @@ function onColorEdit (e) {
 														);
   cPicker.focus();
 
-  preventDefault(event);
+  preventDefault(e);
 }
 
 function onColorPickerChoice (newColor) {
