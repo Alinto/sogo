@@ -2163,7 +2163,8 @@ function configureDragAndDrop () {
                    handle: "messageList", 
                    onStart: startDragging,
                    onEnd: stopDragging,
-                   onDrag: whileDragging
+                   onDrag: whileDragging,
+                   scroll: "folderTreeContent"
                  });
 
   var drops = $$("div#dmailboxTree1 div.dTreeNode a.node span.nodeName");

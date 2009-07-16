@@ -349,6 +349,7 @@ var Draggable = Class.create({
     }
 
     if(this.options.scroll) {
+      Position.includeScrollOffsets = true;
       if (this.options.scroll == window) {
         var where = this._getWindowScroll(this.options.scroll);
         this.originalScrollLeft = where.left;
@@ -358,6 +359,8 @@ var Draggable = Class.create({
         this.originalScrollTop = this.options.scroll.scrollTop;
       }
     }
+    else
+      Position.includeScrollOffsets = false;
 
     Draggables.notify('onStart', this, event);
 
@@ -468,6 +471,7 @@ var Draggable = Class.create({
     this.stopScrolling();
     this.finishDrag(event, true);
     Event.stop(event);
+    Position.includeScrollOffsets = false;
   },
 
   draw: function(point) {

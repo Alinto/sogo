@@ -1079,7 +1079,8 @@ function configureDragAndDrop () {
                    handle: "contactsList", 
                    onStart: startDragging,
                    onEnd: stopDragging,
-                   onDrag: whileDragging
+                   onDrag: whileDragging,
+                   scroll: window
                  });
 
   var drops = $$("ul#contactFolders li");
