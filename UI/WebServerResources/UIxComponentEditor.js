@@ -142,6 +142,10 @@ function onComponentEditorLoad(event) {
   onPopupRecurrenceWindow(null);
 	onPopupReminderWindow(null);
   onSummaryChange (null);
+
+	var summary = $("summary");
+	summary.focus();
+	summary.selectText(0, summary.value.length);
 }
 
 function onSummaryChange (e) {
