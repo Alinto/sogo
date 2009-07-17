@@ -1996,7 +1996,6 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 {
   NSDictionary *response;
   NSMutableArray *content;
-  SOGoWebDAVValue *cdata;
   NSString *escapedData;
 
   content = [NSMutableArray array];
@@ -2006,12 +2005,10 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     {
       [content addObject: davElementWithContent (@"request-status", XMLNS_CALDAV,
 						 @"2.0;Success")];
-      escapedData = [NSString stringWithFormat: @"<![CDATA[%@]]>",
+      escapedData = [NSString stringWithFormat: @"%@",
                               [calendarData stringByEscapingXMLString]];
-      cdata = [SOGoWebDAVValue valueForObject: escapedData
-                                   attributes: nil];
       [content addObject: davElementWithContent (@"calendar-data", XMLNS_CALDAV,
-                                                 cdata)];
+                                                 escapedData)];
     }
   else
       [content addObject:
@@ -2129,10 +2126,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   if (tags)
     {
       [response setStatus: 200];
-      [response appendContentString:@"<?xml version=\"1.0\""
-		@" encoding=\"utf-8\"?>"];
+      [response appendContentString:@"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
       [response setHeader: @"application/xml; charset=utf-8"
-		forKey: @"Content-Type"];
+                   forKey: @"Content-Type"];
       [response appendContentString:
 		  [tags asWebDavStringWithNamespaces: nil]];
     }

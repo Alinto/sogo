@@ -56,7 +56,7 @@
 - (void) setEmail: (NSString *)_s
 {
   [self setValue: 0
-        to: [NSString stringWithFormat: @"MAILTO:%@", _s]];
+        to: [NSString stringWithFormat: @"mailto:%@", _s]];
 }
 
 - (NSString *) email

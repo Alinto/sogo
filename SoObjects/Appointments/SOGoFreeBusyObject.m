@@ -82,7 +82,6 @@ static unsigned int freebusyRangeEnd = 0;
 
   person = [iCalPerson new];
   [person autorelease];
-  [person setCn: [contactInfos objectForKey: @"cn"]];
   [person setEmail: [contactInfos objectForKey: @"c_email"]];
 
   return person;
