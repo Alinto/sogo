@@ -21,7 +21,7 @@
            mailer-contacts = {
               protectedBy = "View";
               pageName    = "UIxContactFoldersView";
-              actionName  = "selectForMailer";
+              actionName  = "mailerContacts";
            };
            contactSearch = {
               protectedBy = "<public>";
