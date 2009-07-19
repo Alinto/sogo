@@ -2123,7 +2123,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   if (tags)
     {
       [response setStatus: 200];
-      [response appendContentString:@"<?xml version=\"1.0\""
+      [response appendContentString: @"<?xml version=\"1.0\""
                 @" encoding=\"utf-8\"?>"];
       [response setHeader: @"application/xml; charset=utf-8"
                    forKey: @"Content-Type"];
