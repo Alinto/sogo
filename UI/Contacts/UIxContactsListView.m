@@ -34,11 +34,8 @@
 - (id) init
 {
   if ((self = [super init]))
-    {
-      selectorComponentClass = nil;
-      contactInfos = nil;
-    }
-
+    contactInfos = nil;
+  
   return self;
 }
 
@@ -58,18 +55,6 @@
 - (NSDictionary *) currentContact
 {
   return currentContact;
-}
-
-- (id <WOActionResults>) mailerContactsAction
-{
-  selectorComponentClass = @"UIxContactsMailerSelection";
-
-  return self;
-}
-
-- (NSString *) selectorComponentClass
-{
-  return selectorComponentClass;
 }
 
 - (NSString *) defaultSortKey

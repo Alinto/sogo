@@ -74,9 +74,35 @@
   [ud setObject: moduleSettings forKey: module];
 }
 
+- (id <WOActionResults>) mailerContactsAction
+{
+  selectorComponentClass = @"UIxContactsMailerSelection";
+
+  return self;
+}
+
+- (NSString *) selectorComponentClass
+{
+  return selectorComponentClass;
+}
+
+- (WOElement *) selectorComponent
+{
+  WOElement *newComponent;
+
+  newComponent = [self pageWithName: selectorComponentClass];
+
+  return newComponent;
+}
+
+- (BOOL) hasContactSelectionButtons
+{
+  return (selectorComponentClass != nil);
+}
+
 - (void) _fillResults: (NSMutableDictionary *) results
-inFolder: (id <SOGoContactFolder>) folder
-withSearchOn: (NSString *) contact
+             inFolder: (id <SOGoContactFolder>) folder
+	 withSearchOn: (NSString *) contact
 {
   NSEnumerator *folderResults;
   NSDictionary *currentContact;

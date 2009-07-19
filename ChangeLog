@@ -10,6 +10,12 @@
 	* UI/Scheduler/UIxCalFilterPanel.m (-selectedFilter): return
 	"view_today" as default filter.
 
+2009-07-17  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView
+	-mailerContactsAction]): restored method lost with
+	UIxContactsListViewContainer.
+
 2009-07-17  Cyril Robert <crobert@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
