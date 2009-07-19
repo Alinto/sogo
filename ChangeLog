@@ -1,5 +1,8 @@
 2009-07-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/SOGoUI/UIxComponent.m (-responseWithStatus:): revert the
+	default content-type to text/plain; charset=utf-8.
+
 	* UI/WebServerResources/SchedulerUI.js: initialize the
 	"listFilter" global var depending on the value of the filter
 	popup.
