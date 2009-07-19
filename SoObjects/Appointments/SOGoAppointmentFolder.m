@@ -1996,7 +1996,6 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 {
   NSDictionary *response;
   NSMutableArray *content;
-  NSString *escapedData;
 
   content = [NSMutableArray array];
 
@@ -2005,10 +2004,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     {
       [content addObject: davElementWithContent (@"request-status", XMLNS_CALDAV,
 						 @"2.0;Success")];
-      escapedData = [NSString stringWithFormat: @"%@",
-                              [calendarData stringByEscapingXMLString]];
       [content addObject: davElementWithContent (@"calendar-data", XMLNS_CALDAV,
-                                                 escapedData)];
+                                                 [calendarData stringByEscapingXMLString])];
     }
   else
       [content addObject:
@@ -2126,7 +2123,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   if (tags)
     {
       [response setStatus: 200];
-      [response appendContentString:@"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
+      [response appendContentString:@"<?xml version=\"1.0\""
+                @" encoding=\"utf-8\"?>"];
       [response setHeader: @"application/xml; charset=utf-8"
                    forKey: @"Content-Type"];
       [response appendContentString:
