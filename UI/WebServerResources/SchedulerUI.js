@@ -2071,7 +2071,7 @@ function initCalendars() {
   
     if (!$(document.body).hasClassName("popup")) {
         var node = $("filterpopup");
-        node.value = listFilter;
+        listFilter = node.value;
         initDateSelectorEvents();
         initCalendarSelector();
         configureSearchField();

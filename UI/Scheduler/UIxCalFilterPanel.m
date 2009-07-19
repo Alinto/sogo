@@ -109,7 +109,13 @@ static NSArray *filters = nil;
 
 - (NSString *) selectedFilter
 {
-  return [self queryParameterForKey: @"filterpopup"];
+  NSString *selectedFilter;
+
+  selectedFilter = [self queryParameterForKey: @"filterpopup"];
+  if (![selectedFilter length])
+    selectedFilter = @"view_today";
+
+  return selectedFilter;
 }
 
 @end /* UIxCalFilterPanel */
