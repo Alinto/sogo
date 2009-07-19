@@ -1,3 +1,4 @@
+/* -*- Mode: java; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /************************************************************************************************************
 @fileoverview
 JS Color picker

@@ -1,4 +1,5 @@
-/* -*- Mode: java; tab-width: 2; c-tab-always-indent: t; indent-tabs-mode: t; c-basic-offset: 2 -*- */
+/* -*- Mode: java; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
+
 
 /*
 	Copyright (C) 2005 SKYRIX Software AG

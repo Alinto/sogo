@@ -1,3 +1,4 @@
+/* -*- Mode: java; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*--------------------------------------------------|
   | dTree 2.05 | www.destroydrop.com/javascript/tree/ |
   |---------------------------------------------------|

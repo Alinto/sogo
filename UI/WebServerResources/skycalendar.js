@@ -1,3 +1,4 @@
+/* -*- Mode: java; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 // Title: Tigra Calendar
 // Description: See the demo at url
 // URL: http://www.softcomplex.com/products/tigra_calendar/
