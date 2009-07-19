@@ -1,3 +1,4 @@
+/* -*- Mode: java; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*
 *
 * Copyright (c) 2007 Andrew Tetlaw & Millstream Web Software

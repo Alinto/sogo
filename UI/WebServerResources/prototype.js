@@ -1,3 +1,4 @@
+/* -*- Mode: java; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*  Prototype JavaScript framework, version 1.6.0.3
  *  (c) 2005-2009 Sam Stephenson
  *

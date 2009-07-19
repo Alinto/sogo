@@ -1,3 +1,5 @@
+/* -*- Mode: java; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
+
 /**
  * This work is licensed under a Creative Commons Attribution 3.0 License
  * (http://creativecommons.org/licenses/by/3.0/).
