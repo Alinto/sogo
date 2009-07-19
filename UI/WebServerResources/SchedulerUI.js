@@ -2070,6 +2070,8 @@ function initCalendars() {
     sorting["ascending"] = true;
   
     if (!$(document.body).hasClassName("popup")) {
+        var node = $("filterpopup");
+        node.value = listFilter;
         initDateSelectorEvents();
         initCalendarSelector();
         configureSearchField();
