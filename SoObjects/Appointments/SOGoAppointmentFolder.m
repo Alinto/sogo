@@ -2216,29 +2216,37 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   NSMutableArray *colType;
   NSArray *gdRT, *gdVEventCol, *gdVTodoCol;
   NSString *login;
+  WORequest *request;
 
   colType = [NSMutableArray arrayWithCapacity: 10];
   [colType addObject: @"collection"];
   [colType addObject: [NSArray arrayWithObjects: @"calendar", XMLNS_CALDAV, nil]];
 
-  gdRT = [self groupDavResourceType];
-  gdVEventCol = [NSArray arrayWithObjects: [gdRT objectAtIndex: 0],
-                         XMLNS_GROUPDAV, nil];
-  [colType addObject: gdVEventCol];
-  gdVTodoCol = [NSArray arrayWithObjects: [gdRT objectAtIndex: 1],
-                        XMLNS_GROUPDAV, nil];
-  [colType addObject: gdVTodoCol];
-  if ([nameInContainer isEqualToString: @"personal"])
+  // WARNING
+  // don't touch unless you're going to re-test caldav sync 
+  // with an iPhone AND lightning
+  request = [context request];
+  if (![request isIPhone])
     {
-      login = [[context activeUser] login];
-      if ([login isEqualToString: [self ownerInContext: self]])
+      gdRT = [self groupDavResourceType];
+      gdVEventCol = [NSArray arrayWithObjects: [gdRT objectAtIndex: 0],
+                  XMLNS_GROUPDAV, nil];
+      [colType addObject: gdVEventCol];
+      gdVTodoCol = [NSArray arrayWithObjects: [gdRT objectAtIndex: 1],
+                 XMLNS_GROUPDAV, nil];
+      [colType addObject: gdVTodoCol];
+      if ([nameInContainer isEqualToString: @"personal"])
         {
-//           [colType addObject: [NSArray arrayWithObjects: @"schedule-calendar",
-//                                                          XMLNS_CALDAV, nil]];
-          [colType addObject: [NSArray arrayWithObjects: @"schedule-inbox",
-                                                         XMLNS_CALDAV, nil]];
-          [colType addObject: [NSArray arrayWithObjects: @"schedule-outbox",
-                                                         XMLNS_CALDAV, nil]];
+          login = [[context activeUser] login];
+          if ([login isEqualToString: [self ownerInContext: self]])
+            {
+              //           [colType addObject: [NSArray arrayWithObjects: @"schedule-calendar",
+              //                                                          XMLNS_CALDAV, nil]];
+              [colType addObject: [NSArray arrayWithObjects: @"schedule-inbox",
+                XMLNS_CALDAV, nil]];
+              [colType addObject: [NSArray arrayWithObjects: @"schedule-outbox",
+                XMLNS_CALDAV, nil]];
+            }
         }
     }
 

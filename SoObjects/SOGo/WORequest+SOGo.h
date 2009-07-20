@@ -29,6 +29,7 @@
 
 - (BOOL) handledByDefaultHandler;
 - (NSDictionary *) davPatchedPropertiesWithTopTag: (NSString *) topTag;
+- (BOOL) isIPhone;
 
 @end
 
