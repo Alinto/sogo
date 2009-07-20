@@ -2,6 +2,8 @@
 --------------------
 - added contextual menu in web calendar views
 - added "Reload" button to refresh the current view in the calendar
+- fixed freebusy support for Apple iCal
+- added support for the calendar application of the iPhone OS v3
 
 1.0-20090714 (1.0.3)
 --------------------
