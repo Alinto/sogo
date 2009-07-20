@@ -25,6 +25,7 @@
 
 #import <NGObjWeb/SoObjectRequestHandler.h>
 #import <NGObjWeb/WOApplication.h>
+#import <NGObjWeb/WEClientCapabilities.h>
 
 #import <DOM/DOMProtocols.h>
 
@@ -101,5 +102,23 @@
 
   return patchedProperties;
 }
+
+- (BOOL) isIPhone
+{
+  WEClientCapabilities *cc;
+  BOOL rc;
+
+  rc = NO;
+  cc = [self clientCapabilities];
+  if ([[cc userAgentType] isEqualToString: @"AppleDAVAccess"])
+    {
+      NSRange r = [[cc userAgent] rangeOfString: @"iPhone"];
+      if (r.location != NSNotFound)
+        rc = YES;
+    }
+
+  return rc;
+}
+
 
 @end

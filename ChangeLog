@@ -4,6 +4,14 @@
 	(-caldavFreeBusyRequest:): the list of recipients is now deduced
 	from the list of attendees specified in the VFREEBUSY.
 
+2009-07-20  Cyril Robert <crobert@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m (davResourceType): Removed
+	a few things for the iPhone calDAV sync (schedule-inbox, schedule-outbox,
+	vevent-collection, vtodo-collection).
+	* SoObjects/SOGo/WORequest+SOGo.m (isIPhone): Added new method to detect
+	iPhone's DAV client.
+
 2009-07-20  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m

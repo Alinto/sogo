@@ -55,6 +55,9 @@
 
 - (void) setEmail: (NSString *)_s
 {
+  // WARNING
+  // don't touch unless you're going to re-test caldav sync 
+  // with an iPhone AND lightning
   [self setValue: 0
         to: [NSString stringWithFormat: @"mailto:%@", _s]];
 }
