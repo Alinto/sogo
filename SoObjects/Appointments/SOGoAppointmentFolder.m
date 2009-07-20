@@ -67,6 +67,7 @@
 #import <SOGo/WORequest+SOGo.h>
 
 #import "iCalEntityObject+SOGo.h"
+#import "iCalPerson+SOGo.h"
 #import "SOGoAppointmentObject.h"
 #import "SOGoAppointmentFolders.h"
 #import "SOGoFreeBusyObject.h"
@@ -1990,7 +1991,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return obj;
 }
 
-- (NSDictionary *) freebusyResponseForRecipient: (NSString *) recipient
+- (NSDictionary *) freebusyResponseForRecipient: (iCalPerson *) recipient
 				       withUser: (SOGoUser *) user
 				andCalendarData: (NSString *) calendarData
 {
@@ -1999,7 +2000,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
   content = [NSMutableArray array];
 
-  [content addObject: davElementWithContent (@"recipient", XMLNS_CALDAV, recipient)];
+  [content addObject: davElementWithContent (@"recipient",
+                                             XMLNS_CALDAV, [recipient email])];
   if (user)
     {
       [content addObject: davElementWithContent (@"request-status", XMLNS_CALDAV,
@@ -2016,51 +2018,45 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return response;
 }
 
-- (NSDictionary *) caldavFreeBusyRequestOnRecipient: (NSString *) recipient
+- (NSDictionary *) caldavFreeBusyRequestOnRecipient: (iCalPerson *) recipient
                                             withUID: (NSString *) uid
                                        andOrganizer: (iCalPerson *) organizer
 					       from: (NSCalendarDate *) start
 						 to: (NSCalendarDate *) to
 {
-  LDAPUserManager *um;
   SOGoUser *user;
-  NSString *lRecipient, *login, *calendarData;
+  NSString *login, *calendarData;
   SOGoFreeBusyObject *freebusy;
 
-  user = nil;
-  calendarData = nil;
-
-  lRecipient = [recipient lowercaseString];
-  if ([lRecipient hasPrefix: @"mailto:"])
+  login = [recipient uid];
+  if ([login length])
     {
-      um = [LDAPUserManager sharedUserManager];
-      login = [um getUIDForEmail: [lRecipient substringFromIndex: 7]];
-      if ([login length])
-	{
-	  user = [SOGoUser userWithLogin: login roles: nil];
-	  freebusy = [[user homeFolderInContext: context]
+      user = [SOGoUser userWithLogin: login roles: nil];
+      freebusy = [[user homeFolderInContext: context]
 		       freeBusyObject: @"freebusy.ifb"
-		       inContext: context];
-	  calendarData = [freebusy contentAsStringWithMethod: @"REPLY"
-                                                      andUID: uid
-                                                andOrganizer: organizer
-                                                        from: start to: to];
-	}
+                            inContext: context];
+      calendarData = [freebusy contentAsStringWithMethod: @"REPLY"
+                                                  andUID: uid
+                                            andOrganizer: organizer
+                                                    from: start to: to];
+    }
+  else
+    {
+      user = nil;
+      calendarData = nil;
     }
 
   return [self freebusyResponseForRecipient: recipient
-	       withUser: user
-	       andCalendarData: calendarData];
+                                   withUser: user
+                            andCalendarData: calendarData];
 }
 
 - (NSDictionary *) caldavFreeBusyRequest: (iCalFreeBusy *) freebusy
-				    from: (NSString *) originator
-				      to: (NSArray *) recipients
 {
   NSDictionary *responseElement;
   NSMutableArray *elements;
-  NSString *recipient, *uid;
-  iCalPerson *organizer;
+  NSString *uid;
+  iCalPerson *recipient, *organizer;
   NSEnumerator *allRecipients;
   NSCalendarDate *startDate, *endDate;
 
@@ -2068,9 +2064,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   [freebusy fillStartDate: &startDate andEndDate: &endDate];
   uid = [freebusy uid];
   organizer = [freebusy organizer];
-  allRecipients = [recipients objectEnumerator];
+  allRecipients = [[freebusy attendees] objectEnumerator];
   while ((recipient = [allRecipients nextObject]))
-    [elements addObject: [self caldavFreeBusyRequestOnRecipient: recipient
+    [elements addObject: [self caldavFreeBusyRequestOnRecipient: recipient 
                                                         withUID: uid
                                                    andOrganizer: organizer
                                                            from: startDate
@@ -2150,8 +2146,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   element = [[calendar allObjects] objectAtIndex: 0];
   tag = [[element tag] uppercaseString];
   if ([tag isEqualToString: @"VFREEBUSY"])
-    tags = [self caldavFreeBusyRequest: (iCalFreeBusy *) element
-		 from: originator to: recipients];
+    tags = [self caldavFreeBusyRequest: (iCalFreeBusy *) element];
   else if ([tag isEqualToString: @"VEVENT"])
     tags = [self caldavEventRequest: (iCalEvent *) element
 		 withContent: iCalString
