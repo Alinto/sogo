@@ -1999,6 +1999,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
   content = [NSMutableArray array];
 
+  // WARNING
+  // don't touch unless you're going to re-test caldav sync 
+  // with an iPhone AND lightning
   [content addObject: davElementWithContent (@"recipient", XMLNS_CALDAV, recipient)];
   if (user)
     {
@@ -2122,6 +2125,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   response = [context response];
   if (tags)
     {
+      // WARNING
+      // don't touch unless you're going to re-test caldav sync 
+      // with an iPhone AND lightning
       [response setStatus: 200];
       [response appendContentString: @"<?xml version=\"1.0\""
                 @" encoding=\"utf-8\"?>"];
