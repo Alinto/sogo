@@ -1,3 +1,13 @@
+2009-07-20  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder
+	-fetchFields:from:to:title:component:additionalFilters:includeProtectedInformation:):
+	avoid returning repeating events when no end date is
+	defined. Ultimately, we should return the first occurrence of
+	repeating events when no end date is defined and therefore, move
+	the logic into iCalRecurrenceCalculators.
+
 2009-07-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/SOGoUI/UIxComponent.m (-responseWithStatus:): revert the

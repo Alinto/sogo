@@ -997,7 +997,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
   /* fetch recurrent apts now. we do NOT consider events with no cycle end. */
 //  || _endDate || filters)
-  if (canCycle)
+  if (canCycle && _endDate)
     {
       where = [NSString stringWithFormat: @"%@ AND c_iscycle = 1", baseWhere];
       qualifier = [EOQualifier qualifierWithQualifierFormat: [where substringFromIndex: 4]];
