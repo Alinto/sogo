@@ -1,3 +1,9 @@
+2009-07-21  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailBodyPart.m ([SOGoMailBodyPart
+	-stringByEscapingURL]): the UTF-8 encoding is now specified for the
+	filename of an attachment.
+
 2009-07-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m

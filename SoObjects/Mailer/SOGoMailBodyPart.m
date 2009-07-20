@@ -31,6 +31,7 @@
 #import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NGBase64Coding.h>
 #import <NGExtensions/NGQuotedPrintableCoding.h>
 #import <NGImap4/NGImap4Connection.h>
@@ -401,8 +402,9 @@ static BOOL debugOn = NO;
 	    {
 	      fileName = [self filename];
 	      if ([fileName length])
-		[response setHeader: [NSString stringWithFormat: @"attachment; filename=%@", fileName]
-			  forKey: @"content-disposition"];
+		[response setHeader: [NSString stringWithFormat: @"attachment; filename*=\"utf-8''%@\"",
+					       [fileName stringByEscapingURL]]
+			     forKey: @"content-disposition"];
 	    }
 
 	  etag = [self davEntityTag];
