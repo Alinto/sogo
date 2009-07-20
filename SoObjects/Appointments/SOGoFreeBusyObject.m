@@ -80,9 +80,8 @@ static unsigned int freebusyRangeEnd = 0;
   um = [LDAPUserManager sharedUserManager];
   contactInfos = [um contactInfosForUserWithUIDorEmail: uid];
 
-  // WARNING
-  // don't touch unless you're going to re-test caldav sync 
-  // with an iPhone AND lightning
+  /* iCal.app compatibility:
+     - don't add "cn"; */
   person = [iCalPerson new];
   [person autorelease];
   [person setEmail: [contactInfos objectForKey: @"c_email"]];

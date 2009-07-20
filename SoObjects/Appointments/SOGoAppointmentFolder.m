@@ -2000,9 +2000,6 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
   content = [NSMutableArray array];
 
-  // WARNING
-  // don't touch unless you're going to re-test caldav sync 
-  // with an iPhone AND lightning
   [content addObject: davElementWithContent (@"recipient",
                                              XMLNS_CALDAV, [recipient email])];
   if (user)
@@ -2223,9 +2220,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   [colType addObject: @"collection"];
   [colType addObject: [NSArray arrayWithObjects: @"calendar", XMLNS_CALDAV, nil]];
 
-  // WARNING
-  // don't touch unless you're going to re-test caldav sync 
-  // with an iPhone AND lightning
+  /* iPhone compatibility: we can only return a caldav "calendar"
+     resourcetype. Anything else will prevent the iPhone from querying the
+     collection. */
   request = [context request];
   if (![request isIPhone])
     {
@@ -2241,8 +2238,6 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
           login = [[context activeUser] login];
           if ([login isEqualToString: [self ownerInContext: self]])
             {
-              //           [colType addObject: [NSArray arrayWithObjects: @"schedule-calendar",
-              //                                                          XMLNS_CALDAV, nil]];
               [colType addObject: [NSArray arrayWithObjects: @"schedule-inbox",
                 XMLNS_CALDAV, nil]];
               [colType addObject: [NSArray arrayWithObjects: @"schedule-outbox",
