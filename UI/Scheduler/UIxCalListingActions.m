@@ -321,6 +321,8 @@ static NSArray *tasksFields = nil;
   folders = [[clientObject subFolders] objectEnumerator];
   while ((currentFolder = [folders nextObject]))
     {
+      if (![component isEqualToString: @"vtodo"] || [currentFolder showCalendarTasks])
+        {
       if ([currentFolder isActive])
 	{
 	  currentInfos
@@ -344,6 +346,7 @@ static NSArray *tasksFields = nil;
 					 notFoundMarker: marker]];
 	    }
 	}
+        }
     }
 
   return infos;
@@ -409,7 +412,7 @@ static NSArray *tasksFields = nil;
   folders = [[clientObject subFolders] objectEnumerator];
   while ((currentFolder = [folders nextObject]))
     {
-      if ([currentFolder isActive])
+      if ([currentFolder isActive] && [currentFolder showCalendarAlarms])
 	{
 	  NSDictionary *entry;
 	  NSArray *alarms;

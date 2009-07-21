@@ -1803,7 +1803,7 @@ function onCalendarModify(event) {
     var url = ApplicationBaseURL + calendarID + "/properties";
     var windowID = sanitizeWindowName(calendarID + " properties");
     var properties = window.open(url, windowID,
-                                 "width=300,height=100,resizable=0");
+                                 "width=300,height=150,resizable=0");
     properties.focus();
 }
 
@@ -1823,6 +1823,8 @@ function updateCalendarProperties(calendarID, calendarName, calendarColor) {
     }
 
     appendStyleElement(nodeID, calendarColor);
+    //This is bad
+    setTimeout ("refreshTasks ()", 200);
 }
 
 function onCalendarNew(event) {

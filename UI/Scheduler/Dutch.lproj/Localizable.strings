@@ -492,3 +492,6 @@ vtodo_class2 = "(Vertrouwelijke taak)";
 "Name:" = "Naam:";
 "Color:" = "Kleur:";
 "Tag:" = "Markering:";
+
+"Show alarms" = "Show alarms";
+"Show tasks" = "Show tasks";

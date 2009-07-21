@@ -696,6 +696,14 @@ static NSArray *childRecordFields = nil;
           if (tmpD)
             [tmpD removeObjectForKey: subscriptionPointer];
 
+          tmpD = [moduleSettings objectForKey: @"FolderShowAlarms"];
+          if (tmpD)
+            [tmpD removeObjectForKey: subscriptionPointer];
+
+          tmpD = [moduleSettings objectForKey: @"FolderShowTasks"];
+          if (tmpD)
+            [tmpD removeObjectForKey: subscriptionPointer];
+
           tmpA = [moduleSettings objectForKey: @"InactiveFolders"];
           if (tmpA)
             [tmpA removeObject: nameInContainer];

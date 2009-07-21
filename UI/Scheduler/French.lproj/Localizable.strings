@@ -494,3 +494,6 @@ vtodo_class2 = "(Tâche confidentielle)";
 "Name:" = "Nom :";
 "Color:" = "Couleur :";
 "Tag:" = "Label :";
+
+"Show alarms" = "Afficher les alarmes";
+"Show tasks" =  "Afficher les tâches";

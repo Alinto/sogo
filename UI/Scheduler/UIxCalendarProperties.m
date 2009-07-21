@@ -87,10 +87,34 @@
   [calendar setSyncTag: newTag];
 }
 
+- (BOOL) showCalendarAlarms
+{
+  return [calendar showCalendarAlarms];
+}
+
+- (void) setShowCalendarAlarms: (BOOL) new
+{
+  [calendar setShowCalendarAlarms: new];
+}
+
+- (BOOL) showCalendarTasks
+{
+  return [calendar showCalendarTasks];
+}
+
+- (void) setShowCalendarTasks: (BOOL) new
+{
+  [calendar setShowCalendarTasks: new];
+}
+
 - (BOOL) shouldTakeValuesFromRequest: (WORequest *) request
                            inContext: (WOContext*) context
 {
-  return YES;
+  NSString *method;
+
+  method = [[request uri] lastPathComponent];
+
+  return [method isEqualToString: @"saveProperties"];
 }
 
 - (id <WOActionResults>) savePropertiesAction

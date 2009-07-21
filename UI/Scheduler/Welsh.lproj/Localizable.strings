@@ -486,3 +486,6 @@ vtodo_class2 = "(Tasg gyhoeddus)";
 "Name:" = "Enw:";
 "Color:" = "Lliw:";
 "Tag:" = "Tag:";
+
+"Show alarms" = "Show alarms";
+"Show tasks" = "Show tasks";

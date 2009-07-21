@@ -501,3 +501,6 @@ vtodo_class2 = "(Tarea confidencial)";
 "Name:" = "Nombre:";
 "Color:" = "Color:";
 "Tag:" = "Redacción:";
+
+"Show alarms" = "Show alarms";
+"Show tasks" = "Show tasks";

@@ -497,3 +497,6 @@ vtodo_class2 = "(Tarefa Confidencial)";
 "Name:" = "Nome:";
 "Color:" = "Cor:";
 "Tag:" = "Marca:";
+
+"Show alarms" = "Show alarms";
+"Show tasks" = "Show tasks";

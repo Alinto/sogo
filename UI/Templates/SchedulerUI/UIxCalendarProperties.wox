@@ -36,7 +36,15 @@
 	    id="calendarSyncTag"
 	    class="textField"
 	    var:value="calendarSyncTag"
-	    /></span></div>
+      /></span></div>
+      <div><span class="label"><var:string label:value="Show alarms" /></span
+        ><span class="content"><input type="checkbox" const:class="checkBox" 
+          id="showCalendarAlarms" var:checked="showCalendarAlarms" /></span
+        ></div>
+      <div><span class="label"><var:string label:value="Show tasks" /></span
+        ><span class="content"><input type="checkbox" const:class="checkBox" 
+          id="showCalendarTasks" var:checked="showCalendarTasks" /></span
+        ></div>
       <div id="buttons">
 	<input type="button"
 	const:class="button"

@@ -496,3 +496,6 @@ vtodo_class2 = "(Confidential task)";
 "Name:" = "Название:";
 "Color:" = "Цвет:";
 "Tag:" = "Tag:";
+
+"Show alarms" = "Show alarms";
+"Show tasks" = "Show tasks";

@@ -38,5 +38,8 @@
 - (NSString *) calendarColor;
 - (void) setCalendarColor: (NSString *) newColor;
 
+- (BOOL) showCalendarAlarms;
+- (void) setShowCalendarAlarms: (BOOL) new;
+
 
 @end

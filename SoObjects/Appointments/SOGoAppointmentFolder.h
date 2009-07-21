@@ -131,6 +131,12 @@
 - (NSString *) roleForComponentsWithAccessClass: (iCalAccessClass) accessClass
 					forUser: (NSString *) uid;
 
+- (BOOL) showCalendarAlarms;
+- (void) setShowCalendarAlarms: (BOOL) new;
+
+- (BOOL) showCalendarTasks;
+- (void) setShowCalendarTasks: (BOOL) new;
+
 @end
 
 #endif /* __Appointments_SOGoAppointmentFolder_H__ */

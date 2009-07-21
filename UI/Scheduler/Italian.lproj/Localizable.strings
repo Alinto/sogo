@@ -498,3 +498,6 @@ vtodo_class2 = "(Attività confidenziale)";
 "Name:" = "Nome:";
 "Color:" = "Colore:";
 "Tag:" = "Etichetta:";
+
+"Show alarms" = "Show alarms";
+"Show tasks" = "Show tasks";

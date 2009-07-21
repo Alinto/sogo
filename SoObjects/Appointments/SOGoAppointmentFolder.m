@@ -319,6 +319,92 @@ static int davCalendarStartTimeLimit = 0;
   [settings synchronize];
 }
 
+- (BOOL) showCalendarAlarms
+{
+  NSUserDefaults *settings;
+  NSDictionary *values;
+  id test;
+  BOOL show = YES;
+
+  settings = [[context activeUser] userSettings];
+  values = [[settings objectForKey: @"Calendar"]
+             objectForKey: @"FolderShowAlarms"];
+  test = [values objectForKey: [self folderReference]];
+  if (test)
+    show = [test boolValue];
+
+  return show;
+}
+
+- (void) setShowCalendarAlarms: (BOOL) new
+{
+  NSUserDefaults *settings;
+  NSMutableDictionary *calendarSettings;
+  NSMutableDictionary *values;
+
+  settings = [[context activeUser] userSettings];
+  calendarSettings = [settings objectForKey: @"Calendar"];
+
+  if (!calendarSettings)
+    {
+      calendarSettings = [NSMutableDictionary dictionary];
+      [settings setObject: calendarSettings
+                   forKey: @"Calendar"];
+    }
+  values = [calendarSettings objectForKey: @"FolderShowAlarms"];
+  if (!values)
+    {
+      values = [NSMutableDictionary dictionary];
+      [calendarSettings setObject: values forKey: @"FolderShowAlarms"];
+    }
+  [values setObject: [NSNumber numberWithBool: new] forKey: [self folderReference]];
+  [settings synchronize];
+}
+
+- (BOOL) showCalendarTasks
+{
+  NSUserDefaults *settings;
+  NSDictionary *values;
+  id test;
+  BOOL show = YES;
+
+  settings = [[context activeUser] userSettings];
+  values = [[settings objectForKey: @"Calendar"]
+             objectForKey: @"FolderShowTasks"];
+  test = [values objectForKey: [self folderReference]];
+  if (test)
+    show = [test boolValue];
+
+  return show;
+}
+
+- (void) setShowCalendarTasks: (BOOL) new
+{
+  NSUserDefaults *settings;
+  NSMutableDictionary *calendarSettings;
+  NSMutableDictionary *values;
+
+  settings = [[context activeUser] userSettings];
+  calendarSettings = [settings objectForKey: @"Calendar"];
+
+  if (!calendarSettings)
+    {
+      calendarSettings = [NSMutableDictionary dictionary];
+      [settings setObject: calendarSettings
+                   forKey: @"Calendar"];
+    }
+  values = [calendarSettings objectForKey: @"FolderShowTasks"];
+  if (!values)
+    {
+      values = [NSMutableDictionary dictionary];
+      [calendarSettings setObject: values forKey: @"FolderShowTasks"];
+    }
+  [values setObject: [NSNumber numberWithBool: new] forKey: [self folderReference]];
+  [settings synchronize];
+}
+
+
+
 - (NSString *) syncTag
 {
   NSUserDefaults *settings;
