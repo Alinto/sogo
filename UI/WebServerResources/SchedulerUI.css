@@ -581,7 +581,8 @@ DIV.monthView DIV.dayHeader
   margin-right: 2px;
   text-align: right;
   cursor: pointer;
-  color: #666; }
+  color: #666;
+  -moz-user-select: none; }
 
 DIV.monthView DIV.days
 { top: 2em;
