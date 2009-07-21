@@ -32,6 +32,7 @@
   if ((self = [super init]))
     {
       calendar = [self clientObject];
+      reloadTasks = NO;
     }
 
   return self;
@@ -94,6 +95,8 @@
 
 - (void) setShowCalendarAlarms: (BOOL) new
 {
+  if (new != [calendar showCalendarAlarms])
+    reloadTasks = YES;
   [calendar setShowCalendarAlarms: new];
 }
 
@@ -104,6 +107,8 @@
 
 - (void) setShowCalendarTasks: (BOOL) new
 {
+  if (new != [calendar showCalendarTasks])
+    reloadTasks = YES;
   [calendar setShowCalendarTasks: new];
 }
 
@@ -119,7 +124,11 @@
 
 - (id <WOActionResults>) savePropertiesAction
 {
-  return [self jsCloseWithRefreshMethod: nil];
+  NSString *action = nil;
+
+  if (reloadTasks)
+    action = @"refreshTasks()";
+  return [self jsCloseWithRefreshMethod: action];
 }
 
 @end

@@ -29,6 +29,7 @@
 @interface UIxCalendarProperties : UIxComponent
 {
   SOGoAppointmentFolder *calendar;
+  BOOL reloadTasks;
 }
 
 - (NSString *) calendarName;

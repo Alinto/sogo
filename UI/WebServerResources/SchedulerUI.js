@@ -1823,8 +1823,6 @@ function updateCalendarProperties(calendarID, calendarName, calendarColor) {
     }
 
     appendStyleElement(nodeID, calendarColor);
-    //This is bad
-    setTimeout ("refreshTasks ()", 200);
 }
 
 function onCalendarNew(event) {
