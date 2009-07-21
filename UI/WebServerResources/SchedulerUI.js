@@ -377,7 +377,7 @@ function onViewEventCallback(http) {
             }
 
             // Put the event's data in the DIV
-            div.down("h1").update(data["summary"]);
+            div.down("h1").update(data["summary"].replace(/\r?\n/g, "<BR/>"));
             if (parseInt(data["isAllDay"]) == 0) {
                 div.down("P", 0).down("SPAN", 1).update(data["startTime"]);
                 div.down("P", 0).show();
@@ -390,7 +390,7 @@ function onViewEventCallback(http) {
                 div.down("P", 1).hide();
 
             if (data["description"].length) {
-                div.down("P", 2).update(data["description"].replace(/\r\n/g, "<BR/>"));
+                div.down("P", 2).update(data["description"].replace(/\r?\n/g, "<BR/>"));
                 div.down("P", 2).show();
             } else
                 div.down("P", 2).hide();
@@ -1037,7 +1037,7 @@ function newBaseEventDIV(eventRep, event, eventText) {
     var textDiv = $(document.createElement("div"));
     innerDiv.appendChild(textDiv);
     textDiv.addClassName("text");
-    textDiv.appendChild(document.createTextNode(eventText));
+    textDiv.update(eventText.replace(/(\\r)?\\n/g, "<BR/>"));
 
     if (event[2] != null) {
         // Status field is defined -- user can read event
