@@ -91,56 +91,37 @@
   return [NSArray arrayWithObject: tag];
 }
 
+- (NSArray *) _davPersonalCalendarURL
+{
+  NSArray *tag;
+  SOGoAppointmentFolders *parent;
+
+  parent = [self privateCalendars: @"Calendar" inContext: context];
+  tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
+                 [NSString stringWithFormat: @"%@personal/", [[parent davURL] path]],
+		 nil];
+
+  return [NSArray arrayWithObject: tag];
+}
+
 - (NSArray *) davCalendarScheduleInboxURL
 {
-  NSArray *tag;
-  SOGoAppointmentFolders *parent;
-
-  parent = [self privateCalendars: @"Calendar" inContext: context];
-  tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
-                 [NSString stringWithFormat: @"%@personal/", [[parent davURL] path]],
-		 nil];
-
-  return [NSArray arrayWithObject: tag];
+  return [self _davPersonalCalendarURL];
 }
 
-- (NSString *) davCalendarScheduleOutboxURL
+- (NSArray *) davCalendarScheduleOutboxURL
 {
-  NSArray *tag;
-  SOGoAppointmentFolders *parent;
-
-  parent = [self privateCalendars: @"Calendar" inContext: context];
-  tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
-                 [NSString stringWithFormat: @"%@personal/", [[parent davURL] path]],
-		 nil];
-
-  return [NSArray arrayWithObject: tag];
+  return [self _davPersonalCalendarURL];
 }
 
-- (NSString *) davDropboxHomeURL
+- (NSArray *) davDropboxHomeURL
 {
-  NSArray *tag;
-  SOGoAppointmentFolders *parent;
-
-  parent = [self privateCalendars: @"Calendar" inContext: context];
-  tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
-                 [NSString stringWithFormat: @"%@personal/", [[parent davURL] path]],
-		 nil];
-
-  return [NSArray arrayWithObject: tag];
+  return [self _davPersonalCalendarURL];
 }
 
-- (NSString *) davNotificationsURL
+- (NSArray *) davNotificationsURL
 {
-  NSArray *tag;
-  SOGoAppointmentFolders *parent;
-
-  parent = [self privateCalendars: @"Calendar" inContext: context];
-  tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
-                 [NSString stringWithFormat: @"%@personal/", [[parent davURL] path]],
-		 nil];
-
-  return [NSArray arrayWithObject: tag];
+  return [self _davPersonalCalendarURL];
 }
 
 - (WOResponse *) _prepareResponseFromContext: (WOContext *) queryContext
