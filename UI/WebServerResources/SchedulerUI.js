@@ -686,7 +686,10 @@ function tasksListCallback(http) {
                 var selectedNodesId = http.callbackData;
                 for (var i = 0; i < selectedNodesId.length; i++) {
                     // 	log(selectedNodesId[i] + " (" + i + ") is selected");
-                    $(selectedNodesId[i]).selectElement();
+                    var node = $(selectedNodesId[i]);
+                    if (node) {
+                        node.selectElement();
+                    }
                 }
             }
             else
