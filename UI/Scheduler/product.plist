@@ -234,7 +234,7 @@
 	  protectedBy = "ViewAllComponent";
 	  pageName    = "UIxTaskEditor"; 
 	};
-	save = { 
+	save = {
 	  protectedBy = "ModifyComponent";
 	  pageName    = "UIxTaskEditor"; 
 	  actionName  = "save";

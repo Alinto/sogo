@@ -323,29 +323,29 @@ static NSArray *tasksFields = nil;
     {
       if (![component isEqualToString: @"vtodo"] || [currentFolder showCalendarTasks])
         {
-      if ([currentFolder isActive])
-	{
-	  currentInfos
-	    = [[currentFolder fetchCoreInfosFrom: startDate
-			      to: endDate
-			      title: title
-			      component: component] objectEnumerator];
+          if ([currentFolder isActive])
+            {
+              currentInfos
+                = [[currentFolder fetchCoreInfosFrom: startDate
+                                                  to: endDate
+                                               title: title
+                                           component: component] objectEnumerator];
 
-	  while ((newInfo = [currentInfos nextObject]))
-	    {
-	      [newInfo setObject: [currentFolder nameInContainer]
-		       forKey: @"c_folder"];
-	      [newInfo setObject: [currentFolder ownerInContext: context]
-		       forKey: @"c_owner"];
-	      if (![[newInfo objectForKey: @"c_title"] length])
+              while ((newInfo = [currentInfos nextObject]))
+                {
+                  [newInfo setObject: [currentFolder nameInContainer]
+                              forKey: @"c_folder"];
+                  [newInfo setObject: [currentFolder ownerInContext: context]
+                              forKey: @"c_owner"];
+                  if (![[newInfo objectForKey: @"c_title"] length])
 		[self _fixComponentTitle: newInfo withType: component];
-	      // Possible improvement: only call _fixDates if event is recurrent
-	      // or the view range span a daylight saving time change
-	      [self _fixDates: newInfo];
-	      [infos addObject: [newInfo objectsForKeys: fields
-					 notFoundMarker: marker]];
-	    }
-	}
+                  // Possible improvement: only call _fixDates if event is recurrent
+                  // or the view range span a daylight saving time change
+                  [self _fixDates: newInfo];
+                  [infos addObject: [newInfo objectsForKeys: fields
+                                             notFoundMarker: marker]];
+                }
+            }
         }
     }
 
@@ -970,8 +970,7 @@ _computeBlocksPosition (NSArray *blocks)
 		 forComponentOfType: @"vtodo"] objectEnumerator];
   showCompleted = [[request formValueForKey: @"show-completed"] intValue];
 
-  task = [tasks nextObject];
-  while (task)
+  while (task = [tasks nextObject])
     {
       statusCode = [[task objectAtIndex: 2] intValue];
       if (statusCode != 1 || showCompleted)
@@ -983,7 +982,6 @@ _computeBlocksPosition (NSArray *blocks)
 	  [filteredTask addObject: statusFlag];
 	  [filteredTasks addObject: filteredTask];
 	}
-      task = [tasks nextObject];
     }
   [filteredTasks sortUsingSelector: @selector (compareTasksAscending:)];
 
