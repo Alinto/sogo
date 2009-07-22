@@ -75,6 +75,7 @@ function resetTableActions () {
 
 function makeEditable (element) {
   element.addClassName ("editing");
+  element.removeClassName ("categoryListCell");
   var tmp = element.innerHTML;
   element.innerHTML = "";
   var textField = new Element ("input", {"type": "text", 
@@ -98,6 +99,7 @@ function endEditable (element) {
   var tmp = element.childElements ().first ().value;
   element.innerHTML = tmp;
   element.removeClassName ("editing");
+  element.addClassName ("categoryListCell");
 }
 
 function endAllEditables (e) {
