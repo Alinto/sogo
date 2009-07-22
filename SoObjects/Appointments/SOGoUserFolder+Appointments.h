@@ -33,9 +33,9 @@
 - (NSArray *) davCalendarUserAddressSet;
 - (NSArray *) davCalendarHomeSet;
 - (NSArray *) davCalendarScheduleInboxURL;
-- (NSString *) davCalendarScheduleOutboxURL;
-- (NSString *) davDropboxHomeURL;
-- (NSString *) davNotificationsURL;
+- (NSArray *) davCalendarScheduleOutboxURL;
+- (NSArray *) davDropboxHomeURL;
+- (NSArray *) davNotificationsURL;
 
 @end
 
