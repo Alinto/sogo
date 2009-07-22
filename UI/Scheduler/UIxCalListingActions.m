@@ -970,8 +970,7 @@ _computeBlocksPosition (NSArray *blocks)
 		 forComponentOfType: @"vtodo"] objectEnumerator];
   showCompleted = [[request formValueForKey: @"show-completed"] intValue];
 
-  task = [tasks nextObject];
-  while (task)
+  while (task = [tasks nextObject])
     {
       statusCode = [[task objectAtIndex: 2] intValue];
       if (statusCode != 1 || showCompleted)
@@ -983,7 +982,6 @@ _computeBlocksPosition (NSArray *blocks)
 	  [filteredTask addObject: statusFlag];
 	  [filteredTasks addObject: filteredTask];
 	}
-      task = [tasks nextObject];
     }
   [filteredTasks sortUsingSelector: @selector (compareTasksAscending:)];
 
