@@ -64,7 +64,6 @@ function resetTableActions () {
   for (var i = 0; i < r.length; i++) {
       var row = $(r[i]);
       row.observe("mousedown", onRowClick);
-      row.observe("selectstart", listRowMouseDownHandler);
       var tds = row.childElements ();
       tds[0].observe("mousedown", endAllEditables);
       tds[0].observe ("dblclick", onNameEdit);
