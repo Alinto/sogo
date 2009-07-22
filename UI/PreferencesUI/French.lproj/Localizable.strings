@@ -11,6 +11,8 @@
 "Categories" = "Catégories";
 "Name" = "Nom";
 "Color" = "Couleur";
+"Add" = "Ajouter";
+"Delete" = "Supprimer";
 
 /* ooo */
 "I'm currently in the office" = "Je suis présent";
