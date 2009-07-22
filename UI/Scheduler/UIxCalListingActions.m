@@ -338,7 +338,7 @@ static NSArray *tasksFields = nil;
                   [newInfo setObject: [currentFolder ownerInContext: context]
                               forKey: @"c_owner"];
                   if (![[newInfo objectForKey: @"c_title"] length])
-		[self _fixComponentTitle: newInfo withType: component];
+                    [self _fixComponentTitle: newInfo withType: component];
                   // Possible improvement: only call _fixDates if event is recurrent
                   // or the view range span a daylight saving time change
                   [self _fixDates: newInfo];
