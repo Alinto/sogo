@@ -1,5 +1,9 @@
 2009-07-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-davPOSTRequest:withContentType:inContext:) we use a simple comma
+	as recipient separator but with trim the resulting elements.
+
 	* SoObjects/SOGo/NSArray+Utilities.m (-trimmedComponents): new
 	method that returns a trimmed/stripped version of the strings
 	contained in the array.

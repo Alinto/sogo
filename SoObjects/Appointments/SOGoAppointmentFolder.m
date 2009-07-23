@@ -2262,9 +2262,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 	originator = [originator substringFromIndex: 7];  
 
       recipients = [[request headerForKey: @"recipient"]
-		     componentsSeparatedByString: @", "];
+		     componentsSeparatedByString: @","];
       obj = [self caldavScheduleRequest: [request contentAsString]
-		  from: originator to: recipients];
+		  from: originator to: [recipients trimmedComponents]];
     }
   else
     obj = [super davPOSTRequest: request withContentType: cType
