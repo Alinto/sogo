@@ -19,6 +19,7 @@
     var activeComponent = '<var:string value="clientObject.nameInContainer"/>';
   </script>
 
+  <var:if condition="eventIsReadOnly" const:negate="YES">
   <div class="menu" id="privacy-menu">
     <ul id="itemPrivacyList" class="choiceMenu">
       <var:foreach list="privacyClasses" item="item">
@@ -165,4 +166,122 @@
 	    var:value="reminderReference"/>
     </div>
   </form>
+  </var:if>
+  <var:if condition="eventIsReadOnly">
+    <form var:href="saveURL" name="editform" onsubmit="return validateAptEditor();">
+    <div id="eventView">
+      <label><var:string label:value="Title:" /><span class="content"
+          ><var:string var:value="title"
+            /></span></label>
+      <label><var:string label:value="Location:" /><span class="content"
+          ><var:string var:value="location"
+            /></span></label>
+      <label><var:string label:value="Category:" />
+        <span class="content"><var:string var:value="category"
+            /></span></label>
+      <!--      <label><var:string label:value="Calendar:" />
+          <span class="content"><var:string var:value="calendarDisplayName"
+      /></span></label> -->
+      <label><var:string label:value="Priority:" />
+         <span class="content"><var:string var:value="priority"/>
+      </span></label>
+      <var:if condition="hasOrganizer"
+	><label id="organizerLabel"><var:string label:value="Organizer:"
+	    /><span class="content"><var:string
+	      value="organizerName"/></span></label>
+      </var:if>
+      <label id="attendeesLabel"><var:string label:value="Attendees:"
+	  /><span class="content"
+	  ><span id="attendeesHref" class="nomenu"><!-- space --></span></span></label>
+      <hr />
+      <span class="checkBoxList"><var:string label:value="Start:" />
+    <span class="content"><var:string var:value="startDateString"
+        /></span></span>
+    <span class="checkBoxList"><var:string label:value="End:" />
+    <span class="content"><var:string var:value="endDateString"
+        /></span></span>
+  <hr />
+  <label><var:string label:value="Repeat:" />
+       <span class="content"><var:string var:value="repeatLabel"
+          /> <a href="#" id="repeatHref" style="display: none;"
+             ><var:string label:value="Edit"/></a></span></label>
+       <!--<label><var:string label:value="Reminder:" />
+      <span class="content"><var:popup list="reminderList" item="item"
+         const:disabledValue="-"
+         label:noSelectionString="reminder_NONE"
+          const:name="reminderList"
+	 const:id="reminderList"
+         string="itemReminderText" var:selection="reminder"
+         /> <a href="#" id="reminderHref" style="display: none;"
+             ><var:string label:value="Edit"/></a></span></label>
+      <hr />-->
+      <label id="commentArea"><var:string label:value="Description:"
+          /><span class="content"><var:string var:value="comment" /></span></label>
+      <label id="documentLabel" style="display: none;"><var:string label:value="Document:"
+	  /><span class="content"
+	  ><a href="#" id="documentHref"><!-- space --></a
+	    ></span></label>
+
+     <input type="hidden" name="attach" id="attach" var:value="attach"/>
+      <input type="hidden" name="privacy" id="privacy"
+	var:value="privacy"/>
+      <input type="hidden" name="attendeesNames" id="attendeesNames"
+	var:value="attendeesNames"/>
+      <input type="hidden" name="attendeesUIDs" id="attendeesUIDs"
+	var:value="attendeesUIDs"/>
+      <input type="hidden" name="attendeesEmails" id="attendeesEmails"
+	var:value="attendeesEmails"/>
+      <input type="hidden" name="attendeesStates" id="attendeesStates"
+	var:value="attendeesStates"/>
+      <input type="hidden" name="calendarFoldersList"
+	id="calendarFoldersList"
+	var:value="calendarsFoldersList"/>
+
+      <input type="hidden" name="repeatType"
+	id="repeatType"
+	var:value="repeatType"/>
+      <input type="hidden" name="repeat1"
+	id="repeat1"
+	var:value="repeat1"/>
+      <input type="hidden" name="repeat2"
+	id="repeat2"
+	var:value="repeat2"/>
+      <input type="hidden" name="repeat3"
+	id="repeat3"
+	var:value="repeat3"/>
+      <input type="hidden" name="repeat4"
+	id="repeat4"
+	var:value="repeat4"/>
+      <input type="hidden" name="repeat5"
+	id="repeat5"
+	var:value="repeat5"/>
+      <input type="hidden" name="repeat6"
+	id="repeat6"
+	var:value="repeat6"/>
+      <input type="hidden" name="repeat7"
+	id="repeat7"
+	var:value="repeat7"/>
+
+     <input type="hidden" name="range1"
+	id="range1"
+	var:value="range1"/>
+     <input type="hidden" name="range2"
+	id="range2"
+	var:value="range2"/>
+
+     <input type="hidden" name="reminderQuantity"
+	    id="reminderQuantity"
+	    var:value="reminderQuantity"/>
+     <input type="hidden" name="reminderUnit"
+	    id="reminderUnit"
+	    var:value="reminderUnit"/>
+     <input type="hidden" name="reminderRelation"
+	    id="reminderRelation"
+	    var:value="reminderRelation"/>
+     <input type="hidden" name="reminderReference"
+	    id="reminderReference"
+	    var:value="reminderReference"/>
+  </div>
+  </form>
+  </var:if>
 </var:component>

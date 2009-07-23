@@ -50,6 +50,7 @@
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>
 #import <SoObjects/Appointments/SOGoAppointmentFolders.h>
 #import <SoObjects/Appointments/SOGoAppointmentObject.h>
+#import <SoObjects/Appointments/SOGoAppointmentOccurence.h>
 #import <SoObjects/Appointments/SOGoTaskObject.h>
 #import <SoObjects/SOGo/iCalEntityObject+Utilities.h>
 #import <SoObjects/SOGo/LDAPUserManager.h>
@@ -873,6 +874,18 @@ iRANGE(2);
     text = [self labelForKey: [NSString stringWithFormat: @"repeat_%@", item]];
 
   return text;
+}
+
+- (NSString *) repeatLabel
+{
+  NSString *rc;
+
+  if ([self repeat])
+    rc = [self labelForKey: [NSString stringWithFormat: @"repeat_%@", [self repeat]]];
+  else
+    rc = [self labelForKey: @"repeat_NEVER"];
+
+  return rc;
 }
 
 - (NSArray *) reminderList
@@ -1927,6 +1940,136 @@ RANGE(2);
 
 
   return toolbarFilename;
+}
+
+
+- (BOOL) ownerIsAttendee: (SOGoUser *) ownerUser
+         andClientObject: (SOGoContentObject
+                           <SOGoComponentOccurence> *) clientObject
+{
+  BOOL isOrganizer, rc = NO;
+
+  isOrganizer = [component userIsOrganizer: ownerUser];
+  if (isOrganizer)
+    isOrganizer = ![ownerUser hasEmail: [[component organizer] sentBy]];
+
+  if ([[component attendees] count]
+      && [component userIsParticipant: ownerUser]
+      && !isOrganizer
+      && ![[component tag] isEqualToString: @"VTODO"])
+    rc = YES;
+
+  return rc;
+}
+
+- (BOOL) delegateIsAttendee: (SOGoUser *) ownerUser
+            andClientObject: (SOGoContentObject
+                              <SOGoComponentOccurence> *) clientObject
+{
+  SoSecurityManager *sm;
+  SOGoUser *currentUser;
+  BOOL rc = NO;
+
+  currentUser = [context activeUser];
+  sm = [SoSecurityManager sharedSecurityManager];
+
+  if (![sm validatePermission: SOGoCalendarPerm_ModifyComponent
+                     onObject: clientObject
+                    inContext: context])
+    rc = [self ownerIsAttendee: ownerUser
+               andClientObject: clientObject];
+  else if (![sm validatePermission: SOGoCalendarPerm_RespondToComponent
+                          onObject: clientObject
+                         inContext: context]
+           && [[component attendees] count]
+           && [component userIsParticipant: ownerUser]
+           && ![component userIsOrganizer: ownerUser])
+    rc = YES;
+  else
+    rc = YES;
+
+  return rc;
+}
+
+- (BOOL) eventIsReadOnly
+{
+  SOGoContentObject <SOGoComponentOccurence> *clientObject;
+  SOGoUser *ownerUser;
+  BOOL rc = NO;
+
+  clientObject = [self clientObject];
+  ownerUser = [SOGoUser userWithLogin: [clientObject ownerInContext: context]
+                                roles: nil];
+
+  if ([ownerUser isEqual: [context activeUser]])
+    rc = [self ownerIsAttendee: ownerUser
+               andClientObject: clientObject];
+  else
+    rc = [self delegateIsAttendee: ownerUser
+                  andClientObject: clientObject];
+
+
+  return rc;
+}
+
+- (NSString *) startDateString
+{
+  NSCalendarDate *startDate;
+  NSCalendarDate *firstDate;
+  NSTimeZone *timeZone;
+  iCalEvent *master;
+  signed int daylightOffset;
+
+  startDate = [component startDate];
+  daylightOffset = 0;
+
+  if ([component isKindOfClass: [SOGoAppointmentOccurence class]])
+    {
+      master = (iCalEvent*)[[component parent] firstChildWithTag: @"vevent"];
+      firstDate = [master startDate];
+      timeZone = [[context activeUser] timeZone];
+
+      if ([timeZone isDaylightSavingTimeForDate: startDate] != [timeZone isDaylightSavingTimeForDate: firstDate])
+        {
+          daylightOffset = (signed int)[timeZone secondsFromGMTForDate: firstDate]
+                         - (signed int)[timeZone secondsFromGMTForDate: startDate];
+          startDate = [startDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds:daylightOffset];
+        }
+    }
+  [startDate setTimeZone: [[context activeUser] timeZone]];
+
+  return [startDate description];
+}
+
+- (NSString *) endDateString
+{
+  NSCalendarDate *startDate, *endDate;
+  NSCalendarDate *firstDate;
+  NSTimeZone *timeZone;
+  iCalEvent *master;
+  signed int daylightOffset;
+
+  startDate = [component startDate];
+  daylightOffset = 0;
+
+  if ([component isKindOfClass: [SOGoAppointmentOccurence class]])
+    {
+      master = (iCalEvent*)[[component parent] firstChildWithTag: @"vevent"];
+      firstDate = [master startDate];
+      timeZone = [[context activeUser] timeZone];
+
+      if ([timeZone isDaylightSavingTimeForDate: startDate] != [timeZone isDaylightSavingTimeForDate: firstDate])
+        {
+          daylightOffset = (signed int)[timeZone secondsFromGMTForDate: firstDate]
+                         - (signed int)[timeZone secondsFromGMTForDate: startDate];
+          startDate = [startDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds:daylightOffset];
+        }
+    }
+
+  endDate = [[component endDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds:daylightOffset];
+  [endDate setTimeZone: [[context activeUser] timeZone]];
+
+  return [endDate description];
 }
 
 @end

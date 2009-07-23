@@ -309,21 +309,27 @@ function onAllDayChanged(event) {
 function initTimeWidgets(widgets) {
   this.timeWidgets = widgets;
 
-  widgets['start']['date'].observe("change", this.onAdjustTime, false);
-  widgets['start']['hour'].observe("change", this.onAdjustTime, false);
-  widgets['start']['minute'].observe("change", this.onAdjustTime, false);
+  if (widgets['start']['date']) {
+    widgets['start']['date'].observe("change", this.onAdjustTime, false);
+    widgets['start']['hour'].observe("change", this.onAdjustTime, false);
+    widgets['start']['minute'].observe("change", this.onAdjustTime, false);
+  }
 
-  widgets['end']['date'].observe("change", this.onAdjustTime, false);
-  widgets['end']['hour'].observe("change", this.onAdjustTime, false);
-  widgets['end']['minute'].observe("change", this.onAdjustTime, false);
+  if (widgets['end']['date']) {
+    widgets['end']['date'].observe("change", this.onAdjustTime, false);
+    widgets['end']['hour'].observe("change", this.onAdjustTime, false);
+    widgets['end']['minute'].observe("change", this.onAdjustTime, false);
+  }
 
   var allDayLabel = $("allDay");
-  var input = $(allDayLabel).childNodesWithTag("input")[0];
-  input.observe("change", onAllDayChanged.bindAsEventListener(input));
-  if (input.checked) {
-    for (var type in widgets) {
-      widgets[type]['hour'].disabled = true;
-      widgets[type]['minute'].disabled = true;
+  if (allDayLabel) {
+    var input = $(allDayLabel).childNodesWithTag("input")[0];
+    input.observe("change", onAllDayChanged.bindAsEventListener(input));
+    if (input.checked) {
+      for (var type in widgets) {
+        widgets[type]['hour'].disabled = true;
+        widgets[type]['minute'].disabled = true;
+      }
     }
   }
 }
@@ -333,8 +339,11 @@ function refreshAttendees() {
   var attendeesNames = $("attendeesNames").value;
   var attendeesEmails = $("attendeesEmails").value.split(",");
   var attendeesStates = $("attendeesStates").value.split(",");
-  var attendeesMenu = $("attendeesMenu").down("ul");
   var attendeesHref = $("attendeesHref");
+  var attendeesMenu = null;
+
+  if ($("attendeesMenu"))
+    attendeesMenu = $("attendeesMenu").down("ul");
   
   // Remove link of attendees
   for (var i = 0; i < attendeesHref.childNodes.length; i++)
@@ -342,7 +351,7 @@ function refreshAttendees() {
 
   // Remove attendees from menu
   var menuItems = $$("DIV#attendeesMenu LI.attendee");
-  if (menuItems)
+  if (menuItems && attendeesMenu)
     for (var i = 0; i < menuItems.length; i++)
       attendeesMenu.removeChild(menuItems[i]);
   
@@ -355,7 +364,8 @@ function refreshAttendees() {
     attendeesNames = attendeesNames.split(",");
     for (var i = 0; i < attendeesEmails.length; i++) {
       var node = document.createElement("li");
-      attendeesMenu.appendChild(node);
+      if (attendeesMenu)
+        attendeesMenu.appendChild(node);
       $(node).writeAttribute("email", attendeesEmails[i]);
       $(node).addClassName("attendee");
       $(node).addClassName(attendeesStates[i]);
@@ -374,7 +384,8 @@ function initializeAttendeesHref() {
   var attendeesLabel = $("attendeesLabel");
   var attendeesNames = $("attendeesNames");
 
-  attendeesHref.observe("click", onAttendeesHrefClick, false);
+  if (!attendeesHref.hasClassName ("nomenu"))
+    attendeesHref.observe("click", onAttendeesHrefClick, false);
   refreshAttendees();
 }
 
@@ -399,7 +410,8 @@ function getMenus() {
 																							null);
   
   var attendeesMenu = $('attendeesMenu');
-  attendeesMenu.prepareVisibility = onAttendeesMenuPrepareVisibility;
+  if (attendeesMenu)
+    attendeesMenu.prepareVisibility = onAttendeesMenuPrepareVisibility;
 
   return { "attendeesMenu": AppointmentEditor.attendeesMenu };
 }

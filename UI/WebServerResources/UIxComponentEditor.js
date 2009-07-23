@@ -100,42 +100,53 @@ function initializeDocumentHref() {
   }
 
   var changeUrlButton = $("changeAttachButton");
-  changeUrlButton.observe("click", onPopupAttachWindow, false);
+  if (changeUrlButton)
+    changeUrlButton.observe("click", onPopupAttachWindow, false);
 }
 
 function initializePrivacyMenu() {
-  var privacy = $("privacy").value.toUpperCase();
-  var privacyMenu = $("privacy-menu").childNodesWithTag("ul")[0];
-  var menuEntries = $(privacyMenu).childNodesWithTag("li");
-  var chosenNode;
-  if (privacy == "CONFIDENTIAL")
-    chosenNode = menuEntries[1];
-  else if (privacy == "PRIVATE")
-    chosenNode = menuEntries[2];
-  else
-    chosenNode = menuEntries[0];
-  privacyMenu.chosenNode = chosenNode;
-  $(chosenNode).addClassName("_chosen");
+  if ($("privacy-menu")) {
+    var privacy = $("privacy").value.toUpperCase();
+    var privacyMenu = $("privacy-menu").childNodesWithTag("ul")[0];
+    var menuEntries = $(privacyMenu).childNodesWithTag("li");
+    var chosenNode;
+    if (privacy == "CONFIDENTIAL")
+      chosenNode = menuEntries[1];
+    else if (privacy == "PRIVATE")
+      chosenNode = menuEntries[2];
+    else
+      chosenNode = menuEntries[0];
+    privacyMenu.chosenNode = chosenNode;
+    $(chosenNode).addClassName("_chosen");
+  }
 }
 
 function onComponentEditorLoad(event) {
   initializeDocumentHref();
   initializePrivacyMenu();
   var list = $("calendarList");
-  list.observe("change", onChangeCalendar, false);
-  list.fire("mousedown");
+  if (list) {
+    list.observe("change", onChangeCalendar, false);
+    list.fire("mousedown");
+  }
 
-  var menuItems = $("itemPrivacyList").childNodesWithTag("li");
-  for (var i = 0; i < menuItems.length; i++)
-		menuItems[i].observe("mousedown",
-												 onMenuSetClassification.bindAsEventListener(menuItems[i]),
-												 false);
+  if ($("itemPrivacyList")) {
+    var menuItems = $("itemPrivacyList").childNodesWithTag("li");
+    for (var i = 0; i < menuItems.length; i++)
+  		menuItems[i].observe("mousedown",
+	  											 onMenuSetClassification.bindAsEventListener(menuItems[i]),
+		  										 false);
+  }
 
   $("repeatHref").observe("click", onPopupRecurrenceWindow);
-  $("repeatList").observe("change", onPopupRecurrenceWindow);
-	$("reminderHref").observe("click", onPopupReminderWindow);
-	$("reminderList").observe("change", onPopupReminderWindow);
-  $("summary").observe("keyup", onSummaryChange);
+  if ($("repeatList"))
+    $("repeatList").observe("change", onPopupRecurrenceWindow);
+  if ($("reminderHref"))
+    $("reminderHref").observe("click", onPopupReminderWindow);
+  if ($("reminderList"))
+    $("reminderList").observe("change", onPopupReminderWindow);
+  if ($("summary"))
+    $("summary").observe("keyup", onSummaryChange);
 
 	Event.observe(window, "resize", onWindowResize);
 
@@ -144,12 +155,15 @@ function onComponentEditorLoad(event) {
   onSummaryChange (null);
 
 	var summary = $("summary");
-	summary.focus();
-	summary.selectText(0, summary.value.length);
+  if (summary) {
+  	summary.focus();
+	  summary.selectText(0, summary.value.length);
+  }
 }
 
 function onSummaryChange (e) {
-  document.title = $("summary").value;
+  if ($("summary"))
+    document.title = $("summary").value;
 }
 
 function onWindowResize(event) {
@@ -161,10 +175,15 @@ function onWindowResize(event) {
 
 	height = window.height() - comment.cumulativeOffset().top - offset;
 
-	if (document.visible())
-		height -= $("changeAttachButton").getHeight();
+	if (document.visible()) {
+    if ($("changeAttachButton"))
+  		height -= $("changeAttachButton").getHeight();
+    else
+      height -= $("documentHref").getHeight();
+  }
 	
-	area.setStyle({ height: (height - offset*2) + "px" });
+  if (area)
+    area.setStyle({ height: (height - offset*2) + "px" });
 	comment.setStyle({ height: (height - offset) + "px" });
 	
 	return true;
@@ -176,7 +195,7 @@ function onPopupRecurrenceWindow(event) {
 
   var repeatHref = $("repeatHref");
 
-  if ($("repeatList").value == 7) {
+  if ($("repeatList") && $("repeatList").value == 7) {
     repeatHref.show();
     if (event)
       window.open(ApplicationBaseURL + "editRecurrence", null, 
@@ -194,13 +213,13 @@ function onPopupReminderWindow(event) {
 
   var reminderHref = $("reminderHref");
 
-  if ($("reminderList").value == 15) {
+  if ($("reminderList") && $("reminderList").value == 15) {
     reminderHref.show();
     if (event)
       window.open(ApplicationBaseURL + "editReminder", null, 
 									"width=250,height=150");
   }
-  else
+  else if (reminderHref)
     reminderHref.hide();
 
   return false;
