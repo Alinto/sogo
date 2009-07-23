@@ -292,7 +292,7 @@
 {
   NSMutableArray *folders;
   NSEnumerator *subfolders;
-  SOGoGCSFolder *currentFolder;
+  SOGoGCSFolder *subfolder;
   NSString *folderName;
   NSMutableDictionary *currentDictionary;
   SoSecurityManager *securityManager;
@@ -307,20 +307,20 @@
   [folders autorelease];
 
   subfolders = [[parentFolder subFolders] objectEnumerator];
-  while ((currentFolder = [subfolders nextObject]))
+  while ((subfolder = [subfolders nextObject]))
     {
       if (![securityManager validatePermission: SOGoPerm_AccessObject
-			    onObject: currentFolder inContext: context])
+			    onObject: subfolder inContext: context])
 	{
 	  folderName = [NSString stringWithFormat: @"/%@/%@",
 				 [parentFolder nameInContainer],
-				 [currentFolder nameInContainer]];
+				 [subfolder nameInContainer]];
 	  currentDictionary
 	    = [NSMutableDictionary dictionaryWithCapacity: 3];
-	  [currentDictionary setObject: [currentFolder displayName]
+	  [currentDictionary setObject: [subfolder displayName]
 			     forKey: @"displayName"];
 	  [currentDictionary setObject: folderName forKey: @"name"];
-	  [currentDictionary setObject: [currentFolder folderType]
+	  [currentDictionary setObject: [subfolder folderType]
 			     forKey: @"type"];
 	  [folders addObject: currentDictionary];
 	}
