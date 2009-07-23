@@ -43,6 +43,8 @@
 
 - (BOOL) containsCaseInsensitiveString: (NSString *) match;
 
+- (NSArray *) trimmedComponents;
+
 #ifdef GNUSTEP_BASE_LIBRARY
 - (void) makeObjectsPerform: (SEL) selector
                  withObject: (id) object1

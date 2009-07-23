@@ -115,12 +115,8 @@
 
   flattenedArray = [NSMutableArray array];
   objects = [self objectEnumerator];
-  currentObject = [objects nextObject];
-  while (currentObject)
-    {
-      [flattenedArray addObjectsFromArray: currentObject];
-      currentObject = [objects nextObject];
-    }
+  while ((currentObject = [objects nextObject]))
+    [flattenedArray addObjectsFromArray: currentObject];
 
   return flattenedArray;
 }
@@ -194,6 +190,23 @@
       currentString = [objects nextObject];
 
   return response;
+}
+
+- (NSArray *) trimmedComponents
+{
+  NSMutableArray *newComponents;
+  NSString *currentString;
+  unsigned int count, max; 
+
+  max = [self count];
+  newComponents = [NSMutableArray arrayWithCapacity: max];
+  for (count = 0; count < max; count++)
+    {
+      currentString = [[self objectAtIndex: count] stringByTrimmingSpaces];
+      [newComponents addObject: currentString];
+    }
+
+  return newComponents;
 }
 
 @end
