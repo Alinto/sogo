@@ -2068,6 +2068,32 @@ function onWindowResize(event) {
             day.setStyle({ width: (label.getWidth()-1) + "px" });
         }
     }
+  drawNowLine ();
+}
+
+function drawNowLine () {
+  var d = new Date();
+  var hours = d.getHours();
+  var minutes = d.getMinutes();
+  var test = $$("DIV#daysView DIV.days DIV.day");
+  // day view
+  if (test.length == 1)
+    var targets = $$("DIV#daysView DIV.days DIV.day DIV.events DIV.clickableHourCell");
+  else
+    var targets = $$("DIV#daysView DIV.days DIV.dayOfToday DIV.events DIV.clickableHourCell");
+  
+  var target = targets[hours];
+
+  if (target) {
+    var div = $("nowLineDisplay");
+    if (!div)
+      div = new Element ("div", {'id': 'nowLineDisplay'});
+    
+    div.style.top = parseInt (((minutes * target.offsetHeight) / 60) - 1) + "px";
+    target.appendChild (div);
+    
+    setTimeout ("drawNowLine ();", 60000); // 1 min.
+  }
 }
 
 function initCalendars() {

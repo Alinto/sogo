@@ -1534,3 +1534,12 @@ DIV#daysView DIV[class~="event"].lasts95
 
 DIV#daysView DIV[class~="event"].lasts96
 { height: 100.000000%; }
+
+DIV#nowLineDisplay
+{
+  position: relative;
+  width: 100%;
+  height: 2px;
+  background: red;
+  z-index: 100;
+}
