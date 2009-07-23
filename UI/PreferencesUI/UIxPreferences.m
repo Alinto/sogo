@@ -719,7 +719,7 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
   NSData *data;
   NSString *error;
   NSPropertyListFormat format;
-  NSDictionary *plist;
+  NSArray *plist;
 
   data = [value dataUsingEncoding: NSUTF8StringEncoding];
   plist = [NSPropertyListSerialization propertyListFromData: data
