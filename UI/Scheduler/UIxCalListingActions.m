@@ -86,7 +86,7 @@ static NSArray *tasksFields = nil;
     {
       tasksFields = [NSArray arrayWithObjects: @"c_name", @"c_folder",
 			     @"c_status", @"c_title", @"c_enddate",
-			     @"c_classification", nil];
+			     @"c_classification", @"editable", nil];
       [tasksFields retain];
     }
 }
@@ -311,6 +311,7 @@ static NSArray *tasksFields = nil;
   NSMutableArray *infos;
   NSNull *marker;
   SOGoAppointmentFolders *clientObject;
+  NSString *role;
 
   infos = [NSMutableArray array];
 
@@ -333,12 +334,26 @@ static NSArray *tasksFields = nil;
 
               while ((newInfo = [currentInfos nextObject]))
                 {
+                  if ([fields containsObject: @"editable"])
+                    {
+                      role = 
+                        [currentFolder roleForComponentsWithAccessClass:
+                         [[newInfo objectForKey: @"c_classification"] intValue]
+                         forUser: [[context activeUser] login]];
+                      if ([role isEqualToString: @"ComponentModifier"] 
+                          || [role length] == 0)
+                        [newInfo setObject: [NSNumber numberWithInt: 1]
+                                    forKey: @"editable"];
+                      else
+                        [newInfo setObject: [NSNumber numberWithInt: 0]
+                                    forKey: @"editable"];
+                    }
                   [newInfo setObject: [currentFolder nameInContainer]
                               forKey: @"c_folder"];
                   [newInfo setObject: [currentFolder ownerInContext: context]
                               forKey: @"c_owner"];
                   if (![[newInfo objectForKey: @"c_title"] length])
-                    [self _fixComponentTitle: newInfo withType: component];
+		                [self _fixComponentTitle: newInfo withType: component];
                   // Possible improvement: only call _fixDates if event is recurrent
                   // or the view range span a daylight saving time change
                   [self _fixDates: newInfo];

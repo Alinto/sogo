@@ -64,7 +64,6 @@ function resetTableActions () {
   for (var i = 0; i < r.length; i++) {
       var row = $(r[i]);
       row.observe("mousedown", onRowClick);
-      row.observe("selectstart", listRowMouseDownHandler);
       var tds = row.childElements ();
       tds[0].observe("mousedown", endAllEditables);
       tds[0].observe ("dblclick", onNameEdit);
@@ -75,6 +74,7 @@ function resetTableActions () {
 
 function makeEditable (element) {
   element.addClassName ("editing");
+  element.removeClassName ("categoryListCell");
   var tmp = element.innerHTML;
   element.innerHTML = "";
   var textField = new Element ("input", {"type": "text", 
@@ -98,6 +98,7 @@ function endEditable (element) {
   var tmp = element.childElements ().first ().value;
   element.innerHTML = tmp;
   element.removeClassName ("editing");
+  element.addClassName ("categoryListCell");
 }
 
 function endAllEditables (e) {

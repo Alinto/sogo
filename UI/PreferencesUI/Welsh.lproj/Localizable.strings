@@ -9,6 +9,10 @@
 "Identities" = "hunaniaethau";
 "Password" = "Cyfrinair";
 "Categories" = "Categories";
+"Name" = "Name";
+"Color" = "Color";
+"Add" = "Add";
+"Delete" = "Delete";
 
 /* ooo */
 "I'm currently in the office" = "Yr wyf yn y swyddfa ar hyn o bryd";

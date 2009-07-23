@@ -744,6 +744,7 @@ function onWindowResize(event) {
       setTimeout ('onWindowResize ()', 100);
       return;
     }
+    editor.absolutize ();
     var content = $("cke_contents_text");
     var height = Math.floor(window.height() - editor.offsetTop);
 

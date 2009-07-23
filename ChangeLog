@@ -1,3 +1,8 @@
+2009-07-22  Cyril Robert <crobert@inverse.ca>
+
+	* UI/Scheduler/UIxCalListingActions.m: Added "editable" field to tasks, so
+	that the UI can disable the checkboxes next to them.
+
 2009-07-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoUserFolder+Appointments.m
