@@ -54,7 +54,7 @@ static LDAPUserManager *um = nil;
 {
   NSString *mail;
 
-  mail = [self value: 0  ofAttribute: @"SENT-BY"];
+  mail = [self value: 0 ofAttribute: @"SENT-BY"];
 
   return ([mail length] > 7);
 }
@@ -63,7 +63,7 @@ static LDAPUserManager *um = nil;
 {
   NSString *mail;
   
-  mail = [self value: 0  ofAttribute: @"SENT-BY"];
+  mail = [self value: 0 ofAttribute: @"SENT-BY"];
 
   if ([mail length] > 7)
     {
