@@ -2449,7 +2449,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 - (NSString *) roleForComponentsWithAccessClass: (iCalAccessClass) accessClass
 					forUser: (NSString *) uid
 {
-  NSString *accessRole, *prefix, *currentRole, *suffix;
+  NSString *accessRole, *ownerLogin, *prefix, *currentRole, *suffix;
   NSEnumerator *acls;
   NSMutableDictionary *userRoles;
 
@@ -2468,22 +2468,28 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       userRoles = [NSMutableDictionary dictionaryWithCapacity: 3];
       [aclMatrix setObject: userRoles forKey: uid];
     }
-
+  
   accessRole = [userRoles objectForKey: prefix];
   if (!accessRole)
     {
-      acls = [[self aclsForUser: uid] objectEnumerator];
-      currentRole = [acls nextObject];
-      while (currentRole && !accessRole)
-	if ([currentRole hasPrefix: prefix])
-	  {
-	    suffix = [currentRole substringFromIndex: [prefix length]];
-	    accessRole = [NSString stringWithFormat: @"Component%@", suffix];
-	  }
-	else
-	  currentRole = [acls nextObject];
-      if (!accessRole)
+      ownerLogin = [self ownerInContext: context];
+      if ([ownerLogin isEqualToString: uid])
 	accessRole = @"";
+      else
+	{
+	  acls = [[self aclsForUser: uid] objectEnumerator];
+	  currentRole = [acls nextObject];
+	  while (currentRole && !accessRole)
+	    if ([currentRole hasPrefix: prefix])
+	      {
+		suffix = [currentRole substringFromIndex: [prefix length]];
+		accessRole = [NSString stringWithFormat: @"Component%@", suffix];
+	      }
+	    else
+	      currentRole = [acls nextObject];
+	  if (!accessRole)
+	    accessRole = @"";
+	}
       [userRoles setObject: accessRole forKey: prefix];
     }
 

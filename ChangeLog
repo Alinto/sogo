@@ -1,3 +1,10 @@
+2009-07-27  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder
+	-roleForComponentsWithAccessClass:forUser:]): now returns an empty
+	string when user is owner of the calendar.
+
 2009-07-23  Cyril Robert <crobert@inverse.ca>
 
 	* UI/Scheduler/UIxComponentEditor.m (repeatLabel), (ownerIsAttendee),
