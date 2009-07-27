@@ -347,7 +347,10 @@ function refreshAttendeesRO () {
   
   if (attendeesNames.length > 0) {
     // Update attendees link and show label
-    attendeesLabel.setStyle({ display: "block" });
+    if (attendeesLabel)
+      attendeesLabel.setStyle({ display: "block" });
+    if ($("attendeesDiv"))
+      $("attendeesDiv").setStyle({display: "block"});
 
     // Update attendees in menu
     attendeesNames = attendeesNames.split(",");
