@@ -138,15 +138,21 @@ function onComponentEditorLoad(event) {
 		  										 false);
   }
 
-  $("repeatHref").observe("click", onPopupRecurrenceWindow);
-  if ($("repeatList"))
-    $("repeatList").observe("change", onPopupRecurrenceWindow);
-  if ($("reminderHref"))
-    $("reminderHref").observe("click", onPopupReminderWindow);
-  if ($("reminderList"))
-    $("reminderList").observe("change", onPopupReminderWindow);
-  if ($("summary"))
-    $("summary").observe("keyup", onSummaryChange);
+  var tmp = $("repeatHref");
+  if (tmp)
+    tmp.observe("click", onPopupRecurrenceWindow);
+  tmp = $("repeatList");
+  if (tmp)
+    tmp.observe("change", onPopupRecurrenceWindow);
+  tmp = $("reminderHref");
+  if (tmp)
+    tmp.observe("click", onPopupReminderWindow);
+  tmp = $("reminderList");
+  if (tmp)
+    tmp.observe("change", onPopupReminderWindow);
+  tmp = $("summary");
+  if (tmp)
+    tmp.observe("keyup", onSummaryChange);
 
 	Event.observe(window, "resize", onWindowResize);
 
@@ -159,6 +165,18 @@ function onComponentEditorLoad(event) {
   	summary.focus();
 	  summary.selectText(0, summary.value.length);
   }
+
+  tmp = $("okButton");
+  if (tmp)
+    tmp.observe ("click", onOkButtonClick);
+  tmp = $("cancelButton");
+  if (tmp)
+    tmp.observe ("click", onCancelButtonClick);
+
+  if (tmp)
+    window.resizeTo(430,540)
+
+
 }
 
 function onSummaryChange (e) {
@@ -169,22 +187,37 @@ function onSummaryChange (e) {
 function onWindowResize(event) {
 	var document = $("documentLabel");
 	var comment = $("commentArea");
-	var area = comment.select("textarea").first();
-	var offset = 6;
-	var height;
+  if (comment) {
+  	var area = comment.select("textarea").first();
+  	var offset = 6;
+	  var height;
 
-	height = window.height() - comment.cumulativeOffset().top - offset;
+  	height = window.height() - comment.cumulativeOffset().top - offset;
 
-	if (document.visible()) {
-    if ($("changeAttachButton"))
-  		height -= $("changeAttachButton").getHeight();
-    else
-      height -= $("documentHref").getHeight();
-  }
+  	if (document.visible()) {
+      if ($("changeAttachButton"))
+  	  	height -= $("changeAttachButton").getHeight();
+      else
+        height -= $("documentHref").getHeight();
+    }
 	
-  if (area)
-    area.setStyle({ height: (height - offset*2) + "px" });
-	comment.setStyle({ height: (height - offset) + "px" });
+    if (area)
+      area.setStyle({ height: (height - offset*2) + "px" });
+  	comment.setStyle({ height: (height - offset) + "px" });
+  }
+  else {
+    $("eventView").style.height = window.height () + "px";
+    var height = window.height() - 120;
+    var tmp = $("generalDiv");
+    if (tmp)
+      height -= tmp.offsetHeight;
+    tmp = $("descriptionDiv");
+    if (tmp)
+      height -= tmp.offsetHeight;
+
+    $("attendeesDiv").style.height = height + "px";
+    $("attendeesMenu").style.height = (height - 20) + "px";
+  }
 	
 	return true;
 }
@@ -195,13 +228,14 @@ function onPopupRecurrenceWindow(event) {
 
   var repeatHref = $("repeatHref");
 
-  if ($("repeatList") && $("repeatList").value == 7) {
+  var repeatList = $("repeatList");
+  if (repeatList && repeatList.value == 7) {
     repeatHref.show();
     if (event)
       window.open(ApplicationBaseURL + "editRecurrence", null, 
 									"width=500,height=400");
   }
-  else
+  else if (repeatHref)
     repeatHref.hide();
 
   return false;
@@ -213,7 +247,8 @@ function onPopupReminderWindow(event) {
 
   var reminderHref = $("reminderHref");
 
-  if ($("reminderList") && $("reminderList").value == 15) {
+  var reminderList = $("reminderList");
+  if (reminderList && reminderList.value == 15) {
     reminderHref.show();
     if (event)
       window.open(ApplicationBaseURL + "editReminder", null, 
@@ -223,6 +258,24 @@ function onPopupReminderWindow(event) {
     reminderHref.hide();
 
   return false;
+}
+
+function onOkButtonClick (e) {
+  var item = $("replyList");
+  var value = parseInt(item.options[item.selectedIndex].value);
+  var action = "";
+  
+  if (value == 0)
+    action = 'accept';
+  else if (value == 1)
+    action = 'decline';
+
+  if (action != "")
+    modifyEvent (item, action);
+}
+
+function onCancelButtonClick (e) {
+  window.close ();
 }
 
 document.observe("dom:loaded", onComponentEditorLoad);

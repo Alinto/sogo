@@ -334,15 +334,55 @@ function initTimeWidgets(widgets) {
   }
 }
 
+function refreshAttendeesRO () {
+  var attendeesNames = $("attendeesNames").value;
+  var attendeesEmails = $("attendeesEmails").value.split(",");
+  var attendeesStates = $("attendeesStates").value.split(",");
+  var attendeesMenu = $("attendeesMenu");
+
+  if (attendeesMenu) {
+    for (var i = 0; i < attendeesMenu.childNodes.length; i++)
+      attendeesMenu.removeChild (attendeesMenu.childNodes[i]);
+  }
+  
+  if (attendeesNames.length > 0) {
+    // Update attendees link and show label
+    attendeesLabel.setStyle({ display: "block" });
+
+    // Update attendees in menu
+    attendeesNames = attendeesNames.split(",");
+    for (var i = 0; i < attendeesEmails.length; i++) {
+      var node = document.createElement("div");
+      if (attendeesMenu)
+        attendeesMenu.appendChild(node);
+      $(node).writeAttribute("email", attendeesEmails[i]);
+      $(node).addClassName("attendee");
+      $(node).addClassName(attendeesStates[i]);
+      node.appendChild(document.createTextNode(attendeesNames[i]));
+      $(node).observe("click", onMailTo);
+    }
+  }
+  else {
+    // Hide link of attendees
+    attendeesLabel.setStyle({ display: "none" });
+    if ($("attendeesDiv"))
+      $("attendeesDiv").setStyle({display: "none"});
+  }
+
+}
+
 function refreshAttendees() {
   var attendeesLabel = $("attendeesLabel");
   var attendeesNames = $("attendeesNames").value;
   var attendeesEmails = $("attendeesEmails").value.split(",");
   var attendeesStates = $("attendeesStates").value.split(",");
   var attendeesHref = $("attendeesHref");
-  var attendeesMenu = null;
+  var attendeesMenu = $("attendeesMenu");
 
-  if ($("attendeesMenu"))
+  if (!attendeesHref)
+    return refreshAttendeesRO ();
+
+  if (attendeesMenu)
     attendeesMenu = $("attendeesMenu").down("ul");
   
   // Remove link of attendees
@@ -384,7 +424,7 @@ function initializeAttendeesHref() {
   var attendeesLabel = $("attendeesLabel");
   var attendeesNames = $("attendeesNames");
 
-  if (!attendeesHref.hasClassName ("nomenu"))
+  if (attendeesHref && !attendeesHref.hasClassName ("nomenu"))
     attendeesHref.observe("click", onAttendeesHrefClick, false);
   refreshAttendees();
 }

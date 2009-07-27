@@ -27,6 +27,7 @@
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSValue.h>
 #import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSURL.h>
 
@@ -793,6 +794,11 @@ iRANGE(2);
   return location;
 }
 
+- (BOOL) hasLocation
+{
+  return [location length] > 0;
+}
+
 - (void) setComment: (NSString *) _value
 {
   ASSIGN (comment, _value);
@@ -801,6 +807,11 @@ iRANGE(2);
 - (NSString *) comment
 {
   return comment;
+}
+
+- (BOOL) hasComment
+{
+  return [comment length] > 0;
 }
 
 - (NSArray *) categoryList
@@ -841,6 +852,11 @@ iRANGE(2);
 - (NSString *) category
 {
   return category;
+}
+
+- (BOOL) hasCategory
+{
+  return [category length] > 0;
 }
 
 - (NSArray *) repeatList
@@ -935,6 +951,38 @@ iRANGE(2);
   ASSIGN(repeat, newRepeat);
 }
 
+- (BOOL) hasRepeat
+{
+  return [repeat length] > 0;
+}
+
+- (NSString *) itemReplyText
+{
+  NSString *word;
+
+  if ([item intValue] == iCalPersonPartStatAccepted)
+    word = @"ACCEPTED";
+  else if ([item intValue] == iCalPersonPartStatDeclined)
+    word = @"DECLINED";
+
+  return [self labelForKey: [NSString stringWithFormat: @"partStat_%@", word]];
+}
+
+- (NSArray *) replyList
+{
+  return [NSArray arrayWithObjects: 
+          [NSNumber numberWithInt: iCalPersonPartStatAccepted], 
+          [NSNumber numberWithInt: iCalPersonPartStatDeclined], nil];
+}
+
+- (NSNumber *) reply
+{
+  iCalPersonPartStat participationStatus;
+
+  participationStatus = [[component findParticipant: [context activeUser]] participationStatus];
+  return [NSNumber numberWithInt: participationStatus];
+}
+
 - (NSString *) _permissionForEditing
 {
   NSString *perm;
@@ -1013,6 +1061,11 @@ iRANGE(2);
   return componentCalendar;
 }
 
+- (NSString *) componentCalendarName
+{
+  return [componentCalendar displayName];
+}
+
 - (void) setComponentCalendar: (SOGoAppointmentFolder *) _componentCalendar
 {
   ASSIGN(componentCalendar, _componentCalendar);
@@ -1046,6 +1099,11 @@ iRANGE(2);
 - (NSString *) priority
 {
   return priority;
+}
+
+- (BOOL) hasPriority
+{
+  return [priority length] > 0;
 }
 
 - (NSArray *) privacyClasses
@@ -1832,7 +1890,6 @@ RANGE(2);
 		andClientObject: (SOGoContentObject
 				  <SOGoComponentOccurence> *) clientObject
 {
-  iCalPersonPartStat participationStatus;
   NSString *toolbarFilename;
   BOOL isOrganizer;
 
@@ -1844,9 +1901,7 @@ RANGE(2);
   isOrganizer = [component userIsOrganizer: ownerUser];
 
   if (isOrganizer)
-    {
-      isOrganizer = ![ownerUser hasEmail: [[component organizer] sentBy]];
-    }
+    isOrganizer = ![ownerUser hasEmail: [[component organizer] sentBy]];
 
   if ([[component attendees] count]
       && [component userIsParticipant: ownerUser]
@@ -1855,22 +1910,13 @@ RANGE(2);
       // so we also ignore the participation status of tasks in the
       // web interface.
       && ![[component tag] isEqualToString: @"VTODO"])
-    {
-      participationStatus
-	= [[component findParticipant: ownerUser] participationStatus];
-      if (participationStatus == iCalPersonPartStatAccepted)
-	toolbarFilename = @"SOGoAppointmentObjectDecline.toolbar";
-      else if (participationStatus == iCalPersonPartStatDeclined)
-	toolbarFilename = @"SOGoAppointmentObjectAccept.toolbar";
-      else
-	toolbarFilename = @"SOGoAppointmentObjectAcceptOrDecline.toolbar";
-    }
+    toolbarFilename = @"SOGoEmpty.toolbar";
   else
     {
       if ([clientObject isKindOfClass: [SOGoAppointmentObject class]])
-	toolbarFilename = @"SOGoAppointmentObject.toolbar";
+        toolbarFilename = @"SOGoAppointmentObject.toolbar";
       else
-	toolbarFilename = @"SOGoTaskObject.toolbar";
+        toolbarFilename = @"SOGoTaskObject.toolbar";
     }
 
   return toolbarFilename;
@@ -1882,7 +1928,6 @@ RANGE(2);
 {
   SoSecurityManager *sm;
   NSString *toolbarFilename, *adminToolbar;
-  iCalPersonPartStat participationStatus;
   SOGoUser *currentUser;
 
   if ([clientObject isKindOfClass: [SOGoAppointmentObject class]])
@@ -1894,29 +1939,12 @@ RANGE(2);
   sm = [SoSecurityManager sharedSecurityManager];
 
   if (![sm validatePermission: SOGoCalendarPerm_ModifyComponent
-	   onObject: clientObject
-	   inContext: context])
+                     onObject: clientObject
+                    inContext: context])
     toolbarFilename = [self _toolbarForOwner: ownerUser
-			    andClientObject: clientObject];
-  else if (![sm validatePermission: SOGoCalendarPerm_RespondToComponent
-		onObject: clientObject
-		inContext: context]
-	   && [[component attendees] count]
-	   && [component userIsParticipant: ownerUser]
-	   && ![component userIsOrganizer: ownerUser])
-    {
-      participationStatus
-	= [[component findParticipant: ownerUser] participationStatus];
-      /* Lightning does not manage participation status within tasks */
-      if (participationStatus == iCalPersonPartStatAccepted)
-	toolbarFilename = @"SOGoAppointmentObjectDecline.toolbar";
-      else if (participationStatus == iCalPersonPartStatDeclined)
-	toolbarFilename = @"SOGoAppointmentObjectAccept.toolbar";
-      else
-	toolbarFilename = @"SOGoAppointmentObjectAcceptOrDecline.toolbar";
-    }
+                             andClientObject: clientObject];
   else
-    toolbarFilename = @"SOGoComponentClose.toolbar";
+    toolbarFilename = @"SOGoEmpty.toolbar";
 
   return toolbarFilename;
 }
@@ -1943,11 +1971,12 @@ RANGE(2);
 }
 
 
-- (BOOL) ownerIsAttendee: (SOGoUser *) ownerUser
+- (int) ownerIsAttendee: (SOGoUser *) ownerUser
          andClientObject: (SOGoContentObject
                            <SOGoComponentOccurence> *) clientObject
 {
-  BOOL isOrganizer, rc = NO;
+  BOOL isOrganizer;
+  int rc = 0;
 
   isOrganizer = [component userIsOrganizer: ownerUser];
   if (isOrganizer)
@@ -1957,18 +1986,18 @@ RANGE(2);
       && [component userIsParticipant: ownerUser]
       && !isOrganizer
       && ![[component tag] isEqualToString: @"VTODO"])
-    rc = YES;
+    rc = 1;
 
   return rc;
 }
 
-- (BOOL) delegateIsAttendee: (SOGoUser *) ownerUser
+- (int) delegateIsAttendee: (SOGoUser *) ownerUser
             andClientObject: (SOGoContentObject
                               <SOGoComponentOccurence> *) clientObject
 {
   SoSecurityManager *sm;
   SOGoUser *currentUser;
-  BOOL rc = NO;
+  int rc = 0;
 
   currentUser = [context activeUser];
   sm = [SoSecurityManager sharedSecurityManager];
@@ -1984,18 +2013,18 @@ RANGE(2);
            && [[component attendees] count]
            && [component userIsParticipant: ownerUser]
            && ![component userIsOrganizer: ownerUser])
-    rc = YES;
+    rc = 1;
   else
-    rc = YES;
+    rc = 2; // not invited, just RO
 
   return rc;
 }
 
-- (BOOL) eventIsReadOnly
+- (int) getEventRWType
 {
   SOGoContentObject <SOGoComponentOccurence> *clientObject;
   SOGoUser *ownerUser;
-  BOOL rc = NO;
+  int rc = 0;
 
   clientObject = [self clientObject];
   ownerUser = [SOGoUser userWithLogin: [clientObject ownerInContext: context]
@@ -2008,14 +2037,22 @@ RANGE(2);
     rc = [self delegateIsAttendee: ownerUser
                   andClientObject: clientObject];
 
-
   return rc;
 }
 
-- (NSString *) startDateString
+- (BOOL) eventIsReadOnly
 {
-  NSCalendarDate *startDate;
-  NSCalendarDate *firstDate;
+  return [self getEventRWType] != 0;
+}
+
+- (BOOL) userIsAttendee
+{
+  return [self getEventRWType] == 1;
+}
+
+- (NSCalendarDate *) getDateFor: (NSString *) when
+{
+  NSCalendarDate *startDate, *endDate, *firstDate, *rc;
   NSTimeZone *timeZone;
   iCalEvent *master;
   signed int daylightOffset;
@@ -2037,39 +2074,25 @@ RANGE(2);
         }
     }
   [startDate setTimeZone: [[context activeUser] timeZone]];
+  endDate = [[component endDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds:daylightOffset];
+  [endDate setTimeZone: [[context activeUser] timeZone]];
+  
+  if ([when isEqualToString: @"start"])
+    rc = startDate;
+  else
+    rc = endDate;
 
-  return [startDate description];
+  return rc;
+}
+
+- (NSString *) startDateString
+{
+  return [[self getDateFor: @"start"] description];
 }
 
 - (NSString *) endDateString
 {
-  NSCalendarDate *startDate, *endDate;
-  NSCalendarDate *firstDate;
-  NSTimeZone *timeZone;
-  iCalEvent *master;
-  signed int daylightOffset;
-
-  startDate = [component startDate];
-  daylightOffset = 0;
-
-  if ([component isKindOfClass: [SOGoAppointmentOccurence class]])
-    {
-      master = (iCalEvent*)[[component parent] firstChildWithTag: @"vevent"];
-      firstDate = [master startDate];
-      timeZone = [[context activeUser] timeZone];
-
-      if ([timeZone isDaylightSavingTimeForDate: startDate] != [timeZone isDaylightSavingTimeForDate: firstDate])
-        {
-          daylightOffset = (signed int)[timeZone secondsFromGMTForDate: firstDate]
-                         - (signed int)[timeZone secondsFromGMTForDate: startDate];
-          startDate = [startDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds:daylightOffset];
-        }
-    }
-
-  endDate = [[component endDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds:daylightOffset];
-  [endDate setTimeZone: [[context activeUser] timeZone]];
-
-  return [endDate description];
+  return [[self getDateFor: @"end"] description];
 }
 
 @end

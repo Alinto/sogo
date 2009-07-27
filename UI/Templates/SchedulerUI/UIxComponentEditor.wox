@@ -168,60 +168,100 @@
   </form>
   </var:if>
   <var:if condition="eventIsReadOnly">
-    <form var:href="saveURL" name="editform" onsubmit="return validateAptEditor();">
     <div id="eventView">
-      <label><var:string label:value="Title:" /><span class="content"
-          ><var:string var:value="title"
-            /></span></label>
-      <label><var:string label:value="Location:" /><span class="content"
-          ><var:string var:value="location"
-            /></span></label>
-      <label><var:string label:value="Category:" />
-        <span class="content"><var:string var:value="category"
-            /></span></label>
-      <!--      <label><var:string label:value="Calendar:" />
-          <span class="content"><var:string var:value="calendarDisplayName"
-      /></span></label> -->
-      <label><var:string label:value="Priority:" />
-         <span class="content"><var:string var:value="priority"/>
-      </span></label>
-      <var:if condition="hasOrganizer"
-	><label id="organizerLabel"><var:string label:value="Organizer:"
-	    /><span class="content"><var:string
-	      value="organizerName"/></span></label>
-      </var:if>
-      <label id="attendeesLabel"><var:string label:value="Attendees:"
-	  /><span class="content"
-	  ><span id="attendeesHref" class="nomenu"><!-- space --></span></span></label>
-      <hr />
-      <span class="checkBoxList"><var:string label:value="Start:" />
-    <span class="content"><var:string var:value="startDateString"
-        /></span></span>
-    <span class="checkBoxList"><var:string label:value="End:" />
-    <span class="content"><var:string var:value="endDateString"
-        /></span></span>
-  <hr />
-  <label><var:string label:value="Repeat:" />
-       <span class="content"><var:string var:value="repeatLabel"
-          /> <a href="#" id="repeatHref" style="display: none;"
-             ><var:string label:value="Edit"/></a></span></label>
-       <!--<label><var:string label:value="Reminder:" />
+      <div id="generalDiv">
+        <label class="content calendarName"><var:string var:value="componentCalendarName" />
+        </label>
+    <label class="title titleNoSpace"><var:string label:value="General:" />
+      <span class="content headerContent">
+      </span>
+    </label>
+  <label><var:string label:value="Title:" />
+    <span class="content"><var:string var:value="title"/></span>
+  </label>
+  <var:if condition="hasLocation">
+    <label><var:string label:value="Location:" />
+      <span class="content"><var:string var:value="location" /></span>
+    </label>
+  </var:if>
+  <var:if condition="hasCategory">
+    <label><var:string label:value="Category:" />
+      <span class="content"><var:string var:value="category" /></span>
+    </label>
+  </var:if>
+  <var:if condition="hasPriority">
+    <label><var:string label:value="Priority:" />
+      <span class="content"><var:string var:value="priority"/></span>
+    </label>
+  </var:if>
+  <label><var:string label:value="Start:" />
+    <span class="content"><var:string var:value="startDateString" /></span>
+  </label>
+  <label><var:string label:value="End:" />
+    <span class="content"><var:string var:value="endDateString" /></span>
+  </label>
+  <var:if condition="hasRepeat">
+    <label><var:string label:value="Repeat:" />
+      <span class="content"><var:string var:value="repeatLabel" /></span>
+    </label>
+  </var:if>
+  <label id="documentLabel" style="display: none;"><var:string label:value="Document:" />
+    <span class="content"><a href="#" id="documentHref"><!-- space --></a></span>
+  </label>
+  <var:if condition="hasOrganizer">
+    <label id="organizerLabel"><var:string label:value="Organizer:"/>
+      <span class="content"><var:string value="organizerName"/></span>
+    </label>
+  </var:if>
+  <var:if condition="userIsAttendee">
+    <label><var:string label:value="Reply:" />
+      <span class="content"><var:popup list="replyList" item="item"
+          const:disabledValue="-"
+          label:noSelectionString="partStat_NEEDS-ACTION"
+          const:name="replyList"
+          const:id="replyList"
+          string="itemReplyText"
+          var:selection="reply" /></span>
+    </label>
+    <!--TODO: I'm not sure how to send this
+    <label><var:string label:value="Reminder:" />
       <span class="content"><var:popup list="reminderList" item="item"
-         const:disabledValue="-"
-         label:noSelectionString="reminder_NONE"
+          const:disabledValue="-"
+          label:noSelectionString="reminder_NONE"
           const:name="reminderList"
-	 const:id="reminderList"
-         string="itemReminderText" var:selection="reminder"
-         /> <a href="#" id="reminderHref" style="display: none;"
-             ><var:string label:value="Edit"/></a></span></label>
-      <hr />-->
-      <label id="commentArea"><var:string label:value="Description:"
-          /><span class="content"><var:string var:value="comment" /></span></label>
-      <label id="documentLabel" style="display: none;"><var:string label:value="Document:"
+          const:id="reminderList"
+          string="itemReminderText"
+          var:selection="reminder"
+          const:onchange="?" /></span>
+    </label>-->
+  </var:if>
+    </div>
+    <div id="attendeesDiv">
+      <label class="title"><var:string label:value="Attendees:" />
+        <span class="content headerContent">
+        </span>
+      </label>
+      <label id="attendeesLabel">
+        <span class="content"><div id="attendeesMenu" class="fakeTextArea">
+        </div></span>
+      </label>
+    </div>
+    <var:if condition="hasComment">
+      <div id="descriptionDiv">
+        <label class="title"><var:string label:value="Description:" />
+          <span class="content headerContent">
+          </span>
+        </label>
+        <label><span class="content fixedHeight">
+            <div class="fakeTextArea"><var:string var:value="comment" /></div>
+          </span>
+        </label>
+    </div>
+  </var:if>
+  <!--
+  <label id="attendeesLabel"><var:string label:value="Attendees:"
 	  /><span class="content"
-	  ><a href="#" id="documentHref"><!-- space --></a
-	    ></span></label>
-
+    ><a href="#" id="attendeesHref"</a></span></label>x-->
      <input type="hidden" name="attach" id="attach" var:value="attach"/>
       <input type="hidden" name="privacy" id="privacy"
 	var:value="privacy"/>
@@ -281,7 +321,15 @@
      <input type="hidden" name="reminderReference"
 	    id="reminderReference"
 	    var:value="reminderReference"/>
+
+    <div id="windowButtons">
+      <span class="content">
+        <a id="cancelButton" href="#" class="button"
+          ><var:string label:value="Cancel"/></a>
+        <a id="okButton" href="#" class="button"
+          ><var:string label:value="OK"/></a>
+      </span>
+    </div>
   </div>
-  </form>
   </var:if>
 </var:component>

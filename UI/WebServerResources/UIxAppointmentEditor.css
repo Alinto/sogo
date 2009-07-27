@@ -121,20 +121,22 @@ A#attendeesHref
 { color: #00f;
   text-decoration: underline; }
 
-DIV#attendeesMenu LI
+DIV#attendeesMenu *
 { padding-left: 20px; }
 
-DIV#attendeesMenu LI.accepted
+DIV#
+
+DIV#attendeesMenu .accepted
 { background-image: url("accepted.png");
   background-repeat: no-repeat;
   background-position: 5px center; }
 
-DIV#attendeesMenu LI.needs-action
+DIV#attendeesMenu .needs-action
 { background-image: url("needs-action.png");
   background-repeat: no-repeat;
   background-position: 5px center; }
 
-DIV#attendeesMenu LI.declined
+DIV#attendeesMenu .declined
 { background-image: url("declined.png");
   background-repeat: no-repeat;
   background-position: 5px center; }

@@ -57,7 +57,8 @@ SchedulerUI_RESOURCE_FILES += \
 	Toolbars/SOGoAppointmentObjectDecline.toolbar \
 	Toolbars/SOGoAppointmentObjectAcceptOrDecline.toolbar \
 	Toolbars/SOGoTaskObject.toolbar \
-	Toolbars/SOGoComponentClose.toolbar
+	Toolbars/SOGoComponentClose.toolbar \
+	Toolbars/SOGoEmpty.toolbar
 
 SchedulerUI_LOCALIZED_RESOURCE_FILES += \
 	Localizable.strings		\

@@ -41,3 +41,53 @@ LABEL#commentArea textarea
   padding: 0px;
   margin: 0px;
   margin-left: 1px; }
+
+SPAN.headerContent
+{
+  width: 80%;
+  height: 1px;
+  background: #aaaaaa;
+  top: 0.9em;
+}
+LABEL.title
+{
+  margin-top: 20px;
+  font-weight: bold;
+}
+LABEL.titleNoSpace
+{
+  margin-top: 0px;
+}
+
+DIV#windowButtons
+{
+  width: 100%;
+  position: absolute;
+  bottom: 4em;
+}
+
+LABEL.calendarName
+{ text-align: right;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 97%;
+} 
+
+DIV#attendeesMenu
+{ overflow: auto; }
+
+DIV.fakeTextArea
+{ overflow: auto;
+  background: white;
+  border-width: 2px;
+  border-style: inset; 
+  padding: 2px;
+  height: 100%;
+}
+
+DIV#descriptionDiv {
+  height: 80px;
+}
+SPAN.fixedHeight {
+  height: 60px;
+}
