@@ -339,6 +339,7 @@ function refreshAttendeesRO () {
   var attendeesEmails = $("attendeesEmails").value.split(",");
   var attendeesStates = $("attendeesStates").value.split(",");
   var attendeesMenu = $("attendeesMenu");
+  var attendeesLabel = $("attendeesLabel");
 
   if (attendeesMenu) {
     for (var i = 0; i < attendeesMenu.childNodes.length; i++)
