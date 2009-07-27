@@ -124,8 +124,6 @@ A#attendeesHref
 DIV#attendeesMenu *
 { padding-left: 20px; }
 
-DIV#
-
 DIV#attendeesMenu .accepted
 { background-image: url("accepted.png");
   background-repeat: no-repeat;
