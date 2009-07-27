@@ -314,9 +314,7 @@ static NSArray *tasksFields = nil;
   NSString *role;
 
   infos = [NSMutableArray array];
-
   marker = [NSNull null];
-
   clientObject = [self clientObject];
 
   folders = [[clientObject subFolders] objectEnumerator];
@@ -336,18 +334,18 @@ static NSArray *tasksFields = nil;
                 {
                   if ([fields containsObject: @"editable"])
                     {
-                      role = 
-                        [currentFolder roleForComponentsWithAccessClass:
-                         [[newInfo objectForKey: @"c_classification"] intValue]
-                         forUser: [[context activeUser] login]];
-                      if ([role isEqualToString: @"ComponentModifier"] 
-                          || [role length] == 0)
-                        [newInfo setObject: [NSNumber numberWithInt: 1]
-                                    forKey: @"editable"];
-                      else
-                        [newInfo setObject: [NSNumber numberWithInt: 0]
-                                    forKey: @"editable"];
-                    }
+		      role = 
+			[currentFolder roleForComponentsWithAccessClass:
+						 [[newInfo objectForKey: @"c_classification"] intValue]
+								forUser: userLogin];
+		      if ([role isEqualToString: @"ComponentModifier"] 
+			  || [role length] == 0)
+			[newInfo setObject: [NSNumber numberWithInt: 1]
+				    forKey: @"editable"];
+		      else
+			[newInfo setObject: [NSNumber numberWithInt: 0]
+				    forKey: @"editable"];
+		    }
                   [newInfo setObject: [currentFolder nameInContainer]
                               forKey: @"c_folder"];
                   [newInfo setObject: [currentFolder ownerInContext: context]
