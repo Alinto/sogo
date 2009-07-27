@@ -6,6 +6,7 @@
 - added support for the calendar application of the iPhone OS v3
 - added the possibility to disable alarms or tasks from Web calendars
 - added support for printing cards
+- the event/task summary dialog is now similar to Lightning
 
 1.0-20090714 (1.0.3)
 --------------------
