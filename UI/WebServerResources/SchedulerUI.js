@@ -1044,7 +1044,10 @@ function newBaseEventDIV(eventRep, event, eventText) {
     textDiv.addClassName("text");
     textDiv.update(eventText.replace(/(\\r)?\\n/g, "<BR/>"));
 
-    if (event[2] != null) {
+    if (event[2] == null) {
+        eventDiv.observe("selectstart", listRowMouseDownHandler);
+    }
+    else {
         // Status field is defined -- user can read event
         eventDiv.observe("mousedown", listRowMouseDownHandler);
         eventDiv.observe("click", onCalendarSelectEvent);

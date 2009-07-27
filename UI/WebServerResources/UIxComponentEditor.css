@@ -60,18 +60,17 @@ LABEL.titleNoSpace
 }
 
 DIV#windowButtons
-{
-  width: 100%;
-  position: absolute;
-  bottom: 4em;
-}
+{ position: absolute;
+  bottom: 2em;
+  left: auto;
+  right: 2em; }
 
 LABEL.calendarName
 { text-align: right;
   margin-top: 10px;
   margin-bottom: 10px;
   width: 97%;
-} 
+}
 
 DIV#attendeesMenu
 { overflow: auto; }
@@ -83,6 +82,7 @@ DIV.fakeTextArea
   border-style: inset; 
   padding: 2px;
   height: 100%;
+  white-space: pre-wrap;
 }
 
 DIV#descriptionDiv {

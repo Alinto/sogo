@@ -323,12 +323,10 @@
 	    var:value="reminderReference"/>
 
     <div id="windowButtons">
-      <span class="content">
-        <a id="cancelButton" href="#" class="button"
-          ><var:string label:value="Cancel"/></a>
-        <a id="okButton" href="#" class="button"
-          ><var:string label:value="OK"/></a>
-      </span>
+      <a id="cancelButton" href="#" class="button"
+        ><var:string label:value="Cancel"/></a>
+      <a id="okButton" href="#" class="button"
+        ><var:string label:value="OK"/></a>
     </div>
   </div>
   </var:if>
