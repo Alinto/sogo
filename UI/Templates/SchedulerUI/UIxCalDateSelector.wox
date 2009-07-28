@@ -36,11 +36,10 @@
           ></var:month-label>
       <var:month-title class="contentStyle"
         ><span var:class="extraStyle"
-          ><a href="#"
-            onclick="return onDaySelect(this);"
-            var:day="currentDay.shortDateString"
-            ><var:string value="currentDay.dayOfMonth"/></a
-            ></span
+	       var:day="currentDay.shortDateString" 
+	       onclick="return onDaySelect(this);"
+          ><var:string value="currentDay.dayOfMonth"/>
+            </
           ></var:month-title
         ></var:month-overview>
   </div>

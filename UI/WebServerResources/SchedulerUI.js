@@ -804,9 +804,9 @@ function changeCalendarDisplay(data, newView) {
                     document.selectedDate.deselect();
 	
                 // Select day in date selector
-                var selectedLink = $$('table#dateSelectorTable a[day='+day+']');
+                var selectedLink = $$('table#dateSelectorTable span[day='+day+']');
                 if (selectedLink.length > 0) {
-                    selectedCell = selectedLink[0].up(1);
+                    selectedCell = selectedLink[0].getParentWithTagName("td");
                     selectedCell.selectElement();
                     document.selectedDate = selectedCell;
                 }
@@ -1178,8 +1178,7 @@ function calendarDisplayCallback(http) {
             observer = $("monthDaysView");
         }
         initMenu($("currentViewMenu"), menu);
-        observer.observe("contextmenu", function(event) {
-                popupMenu(event, 'currentViewMenu', this); });
+        observer.observe("contextmenu", onMenuCurrentView);
 		
         var contentView;
         if (currentView == "monthview")
@@ -1766,6 +1765,10 @@ function onMenuSharing(event) {
     }
 }
 
+function onMenuCurrentView(event) {
+    popupMenu(event, 'currentViewMenu', this);
+}
+
 function configureDragHandles() {
     var handle = $("verticalDragHandle");
     if (handle) {
@@ -1784,7 +1787,7 @@ function configureDragHandles() {
 
 function initCalendarSelector() {
     var selector = $("calendarSelector");
-    updateCalendarStatus();
+    updateCalendarStatus(); // triggers the initial events refresh
     selector.changeNotification = updateCalendarsList;
 
     var list = $("calendarList");
