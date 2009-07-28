@@ -1,0 +1,4 @@
+#!/bin/sh
+set -e
+userdel sogo||true
+update-rc.d SOGo remove ||true

@@ -1,0 +1,22 @@
+Source: sogo
+Priority: optional
+Maintainer: Cyril Robert <crobert@inverse.ca>
+Build-Depends: debhelper (>= 7), autotools-dev, gnustep-base-common, gnustep-base-runtime, gnustep-make, libsope-appserver-dev, libsope-core-dev, libsope-ldap-dev, libsope-mime-dev, libsope-xml-dev
+Section: web
+Standards-Version: 3.7.3
+
+Package: sogo
+Section: web
+Architecture: i386
+Depends: gnustep-base-common, gnustep-base-runtime, libsope-core, libsope-appserver, libsope-ldap, libsope-cards
+Description: SOGo
+ SOGo is a groupware server built around OpenGroupware.org (OGo) and
+ the SOPE application server.  It focuses on scalability.
+ The Inverse edition of this project has many feature enhancements:
+ - CalDAV and GroupDAV compliance
+ - full handling of vCard as well as vCalendar/iCalendar formats
+ - support for folder sharing and ACLs
+ The Web interface has been rewritten in an AJAX fashion to provided a faster
+ UI for the users, consistency in look and feel with the Mozilla applications,
+ and to reduce the load of the transactions on the server.
+

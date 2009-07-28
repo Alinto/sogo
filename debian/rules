@@ -1,0 +1,92 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+export DH_VERBOSE=1
+
+config.status: configure
+	dh_testdir
+LDFLAGS="-Wl,-z,defs" ./configure
+
+
+#Architecture
+build: build-arch build-indep
+
+build-arch: build-arch-stamp
+build-arch-stamp:  config.status 
+
+	# Add here commands to compile the arch part of the package.
+	#$(MAKE)
+	touch $@
+
+build-indep: build-indep-stamp
+build-indep-stamp:  config.status 
+
+	# Add here commands to compile the indep part of the package.
+	#$(MAKE) doc
+	touch $@
+
+clean: 
+	dh_testdir
+	dh_testroot
+	rm -f build-arch-stamp build-indep-stamp 
+	make clean
+	dh_clean 
+
+install: install-indep install-arch
+install-indep:
+	dh_testdir
+	dh_testroot
+	dh_clean -k -i 
+	dh_installdirs -i
+	dh_install -i
+
+install-arch:
+	dh_testdir
+	dh_testroot
+	dh_clean -k -s 
+	dh_installdirs -s
+
+	$(MAKE) DESTDIR=$(CURDIR)/debian/tmp GNUSTEP_INSTALLATION_DOMAIN=SYSTEM  install
+	mkdir -p debian/tmp/etc/init.d/sogod
+	mkdir -p debian/tmp/etc/cron.daily
+	mkdir -p debian/tmp/var/run/sogo
+	mkdir -p debian/tmp/var/log/sogo
+	mkdir -p debian/tmp/var/spool/sogo
+	mkdir -p debian/tmp/etc/default
+	mkdir -p debian/tmp/etc/apache2/conf.d
+	mkdir -p debian/tmp/usr/sbin
+	mkdir -p debian/tmp/usr/share/GNUstep/Tools
+	echo "DAEMON=/usr/sbin/sogod" >> debian/tmp/etc/default/sogo
+	cp Scripts/sogo-init.d-debian debian/tmp/etc/init.d/sogod
+	cp Scripts/tmpwatch debian/tmp/etc/cron.daily/sogo-tmpwatch
+	cp Apache/SOGo.conf debian/tmp/etc/apache2/conf.d/
+	mv debian/tmp/usr/sbin/sogod debian/tmp/usr/share/GNUstep/Tools
+	cp Scripts/sogod-wrapper debian/tmp/usr/sbin/sogod
+
+	dh_install -s
+
+binary-common:
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs ChangeLog
+	dh_installdocs
+	dh_installexamples
+	dh_installman
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_makeshlibs
+	dh_installdeb
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary-indep: build-indep install-indep
+	$(MAKE) -f debian/rules DH_OPTIONS=-i binary-common
+
+# Build architecture dependant packages using the common target.
+binary-arch: build-arch install-arch
+	$(MAKE) -f debian/rules DH_OPTIONS=-s binary-common
+
+binary: binary-arch binary-indep
+.PHONY: build clean binary-indep binary-arch binary install install-indep install-arch 
