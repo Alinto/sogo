@@ -220,41 +220,40 @@ TABLE#dateSelectorTable
 #dateSelector TABLE,
 #dateSelector TABLE TABLE
 { border-collapse: collapse;
+  text-align: center;
   margin: 0px auto;
   width: 100%; }
 
-#dateSelector TABLE#dateSelectorTable TD TABLE TD
-{ width: 0px; /* temp hack */ }
+TABLE#dateSelectorTable TD TABLE TD
+{ width: 5px; /* temp hack */ }
 
-#dateSelector TABLE#dateSelectorTable TD TABLE TD.activeDay,
-#dateSelector TABLE#dateSelectorTable TD TABLE TD.inactiveDay,
-#dateSelector TABLE#dateSelectorTable TD TABLE TD.dayOfToday
-{ width: 1em; }
+TABLE#dateSelectorTable TD TABLE TD.activeDay,
+TABLE#dateSelectorTable TD TABLE TD.inactiveDay,
+TABLE#dateSelectorTable TD TABLE TD.dayOfToday
+{ width: 100%; }
 
-#dateSelector TABLE TABLE TD
+#dateSelector TABLE TABLE TD.activeDay,
+#dateSelector TABLE TABLE TD.inactiveDay,
+#dateSelector TABLE TABLE TD.dayOfToday
 { cursor: pointer;
   margin: 0px;
   padding: 0px;
-  border: 1px solid #fff; 
-  text-align: center; }
+  border: 1px solid #fff; }
 
-#dateSelector TABLE TABLE TD:hover
+#dateSelectorTable TABLE TD.activeDay:hover,
+#dateSelectorTable TABLE TD.inactiveDay:hover
 { border: 1px solid #deebf7; }
 
-#dateSelector TD SPAN
-{ text-align: center;
-  display: block; }
+#dateSelectorTable TABLE TD.activeDay:active,
+#dateSelectorTable TABLE TD.inactiveDay:active
+{ background-color: #ddd; }
 
-#dateSelector TD SPAN A
-{ color: #000;
-  background: inherit;
-  text-decoration: none; }
+#dateSelectorTable TD SPAN
+{ display: block;
+  color: #000;
+  background: inherit; }
 
-#dateSelector TD:active
-{ background-color: #ddd;
-  border: 1px solid #deebf7; }
-
-#dateSelector TD.inactiveDay A
+#dateSelector TD.inactiveDay SPAN
 { color: #dedfde; }
 
 #dateSelector TD.dayOfToday
@@ -264,7 +263,7 @@ TABLE#dateSelectorTable
 #dateSelector TD.dayOfToday._selected
 { background-color: #4b6983; }
 
-#dateSelector TD._selected A
+#dateSelectorTable TABLE TD._selected SPAN
 { color: #fff; }
 
 TABLE#eventsList
