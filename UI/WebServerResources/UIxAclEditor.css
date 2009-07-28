@@ -1,5 +1,3 @@
-/* test */
-
 DIV.acls
 { position: absolute;
   top: 4em;
@@ -61,7 +59,8 @@ UL#userList
   list-style-image: none; }
 
 UL#userList LI
-{ margin-left: 3px; }
+{ cursor: pointer;
+  margin-left: 3px; }
 
 UL#userList > LI._selected
 { background: #4b6983 !important;
