@@ -2,6 +2,15 @@ Index: debian/control
 ===================================================================
 --- debian/control	(revision 1660)
 +++ debian/control	(working copy)
+@@ -1,7 +1,7 @@
+ Source: sope
+ Priority: extra
+ Maintainer: Sebastian Ley <ley@debian.org>
+-Build-Depends: debhelper (>= 4.0.0), dpatch, gnustep-make-ogo, gobjc | objc-compiler, libfoundation1.1-dev, libobjc1, libxml2-dev, libldap2-dev | libldap-dev, libssl-dev, zlib1g-dev, libpq-dev | postgresql-dev, libecpg-dev, apache-dev, apache2-threaded-dev | apache2-prefork-dev | apache2-dev, autotools-dev
++Build-Depends: debhelper (>= 4.0.0), dpatch, gnustep-make, gobjc | objc-compiler, libxml2-dev, libldap2-dev | libldap-dev, libssl-dev, zlib1g-dev, libpq-dev | postgresql-dev, apache2-threaded-dev | apache2-prefork-dev | apache2-dev, autotools-dev
+ Standards-Version: 3.6.1
+ 
+ Package: libsope4.9-dev
 @@ -265,18 +265,3 @@
   .
   This parser enables SOPE's SAX engine to parse iCal and vCard files.
@@ -96,7 +105,7 @@ Index: debian/rules
  		$(MAKE) $(MAKE_FLAGS) all
  
  	cp -R sope-appserver/mod_ngobjweb sope-appserver/mod_ngobjweb-apache2
-@@ -119,18 +122,18 @@
+@@ -119,21 +122,21 @@
  	# Add here commands to install the package into debian/tmp
  	CFLAGS="$(CFLAGS)" . $(GNUSTEP_SETUP); \
  		$(MAKE) $(MAKE_FLAGS) install \
@@ -119,8 +128,13 @@ Index: debian/rules
 -		GNUSTEP_INSTALLATION_DIR=$(CURDIR)/debian/tmp/usr/lib/apache2/modules
 +		GNUSTEP_INSTALLATION_DOMAIN=$(CURDIR)/debian/tmp/usr/lib/apache2/modules
  
- 	install -m 644 debian/500mod_ngobjweb.info $(CURDIR)/debian/libapache-mod-ngobjweb/usr/lib/apache/1.3
- 	install -m 644 debian/ngobjweb.load $(CURDIR)/debian/libapache2-mod-ngobjweb/etc/apache2/mods-available
+-	install -m 644 debian/500mod_ngobjweb.info $(CURDIR)/debian/libapache-mod-ngobjweb/usr/lib/apache/1.3
+-	install -m 644 debian/ngobjweb.load $(CURDIR)/debian/libapache2-mod-ngobjweb/etc/apache2/mods-available
++	#install -m 644 debian/500mod_ngobjweb.info $(CURDIR)/debian/libapache-mod-ngobjweb/usr/lib/apache/1.3
++	#install -m 644 debian/ngobjweb.load $(CURDIR)/debian/libapache2-mod-ngobjweb/etc/apache2/mods-available
+ 
+ # Build architecture-independent files here.
+ binary-indep: build install
 Index: debian/libsope-ldap_SOPEVER_-dev.install
 ===================================================================
 --- debian/libsope-ldap_SOPEVER_-dev.install	(revision 1660)
