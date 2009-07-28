@@ -39,7 +39,7 @@
 	       var:day="currentDay.shortDateString" 
 	       onclick="return onDaySelect(this);"
           ><var:string value="currentDay.dayOfMonth"/>
-            </
-          ></var:month-title
-        ></var:month-overview>
+        </span
+      ></var:month-title
+    ></var:month-overview>
   </div>
