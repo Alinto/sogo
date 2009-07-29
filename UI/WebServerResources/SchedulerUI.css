@@ -71,12 +71,11 @@ UL#tasksList, UL#calendarList
 
 UL#calendarList
 { clear: left;
-  width: 100%;
-  height: 10.5em;
-  margin: 0px; }
+  height: 10.5em; }
 
 UL#calendarList LI
-{ white-space: nowrap; }
+{ cursor: pointer;
+  white-space: nowrap; }
 
 UL#tasksList
 { position: absolute;
@@ -86,7 +85,8 @@ UL#tasksList
   bottom: .25em; }
 
 UL#tasksList LI
-{ width: 100%;
+{ cursor: pointer;
+  width: 100%;
   white-space: nowrap; }
 
 UL#tasksList LI.overdue
