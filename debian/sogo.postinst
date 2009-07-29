@@ -2,17 +2,16 @@
 set -e
 
 /usr/sbin/groupadd -f -K GID_MIN=100 -K GID_MAX=500 sogo
-USERS=\`getent passwd|grep sogo|sed -e 's/\([a-zA-Z]*:\)\(.*\)/\1/g'\`
+USERS=`getent passwd | grep sogo | sed -e 's/\([a-zA-Z]*\):.*/\1/g'`
 
 
-if [ \"\$USERS\" != \"sogo:\" ] ; then
-echo \"Adding user sogo\"
-useradd -d /tmp -g sogo -K UID_MIN=100 -K UID_MAX=500 -K PASS_MAX_DAYS=-1 -s
-/bin/false sogo
+if [ "$USERS" != "sogo" ] ; then
+  echo "Adding user sogo"
+  useradd -d /tmp -g sogo -K UID_MIN=100 -K UID_MAX=500 -K PASS_MAX_DAYS=-1 -s /bin/false sogo
 fi
 
-chown sogo /var/run/sogo
-chown sogo /var/spool/sogo
-chown sogo /var/log/sogo
+chown -R sogo /var/run/sogo
+chown -R sogo /var/spool/sogo
+chown -R sogo /var/log/sogo
 update-rc.d sogod defaults
 /sbin/ldconfig

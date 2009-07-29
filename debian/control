@@ -8,7 +8,7 @@ Standards-Version: 3.7.3
 Package: sogo
 Section: web
 Architecture: i386
-Depends: gnustep-base-common, gnustep-base-runtime, libsope-core, libsope-appserver, libsope-ldap, libsope-cards
+Depends: gnustep-base-common, gnustep-base-runtime, libsope-core4.9, libsope-appserver4.9, libsope-ldap4.9
 Description: SOGo
  SOGo is a groupware server built around OpenGroupware.org (OGo) and
  the SOPE application server.  It focuses on scalability.
