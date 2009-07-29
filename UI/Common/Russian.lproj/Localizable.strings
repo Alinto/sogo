@@ -21,6 +21,7 @@
 "noJavascriptError" = "SOGo requires Javascript to run. Please make sure this option is available and activated within your browser preferences.";
 "noJavascriptRetry" = "Повторить попытку";
 
+"Owner:" = "Owner:";
 "Publish the Free/Busy information" = "Публиковать информацию о занятом/свободном времени";
 
 "Default Roles" = "Контроль доступа для всех";

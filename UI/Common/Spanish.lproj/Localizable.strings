@@ -24,6 +24,7 @@
 "noJavascriptError" = "SOGo requiere Javascript. Por favor, active Javascript en su navegador.";
 "noJavascriptRetry" = "Reintentar";
 
+"Owner:" = "Owner:";
 "Publish the Free/Busy information" = "Publicar información de disponibilidad";
 
 "Default Roles" = "Roles por defecto";
