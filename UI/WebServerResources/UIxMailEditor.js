@@ -749,7 +749,8 @@ function onWindowResize(event) {
     var height = Math.floor(window.height() - editor.offsetTop);
 
     if (Prototype.Browser.IE) {
-      editor.style.top = 0;
+      editor.style.width = '';
+      editor.style.height = '';
       height += 3;
     }
 
