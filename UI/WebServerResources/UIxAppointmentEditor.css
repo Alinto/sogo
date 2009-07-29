@@ -121,14 +121,13 @@ A#attendeesHref
 { color: #00f;
   text-decoration: underline; }
 
-DIV#attendeesMenu *
-{ cursor: pointer;
-  padding-left: 20px;
-  background-repeat: no-repeat;
-  background-position: 5px center; }
+DIV#attendeesMenu LI
+{ padding-left: 10px; }
 
-DIV#attendeesMenu *:hover
-{ text-decoration: underline; }
+DIV#attendeesMenu .attendee
+{ background-repeat: no-repeat;
+  background-position: 5px center;
+  padding-left: 22px; }
 
 DIV#attendeesMenu .accepted
 { background-image: url("accepted.png"); }
@@ -138,3 +137,11 @@ DIV#attendeesMenu .needs-action
 
 DIV#attendeesMenu .declined
 { background-image: url("declined.png"); }
+
+/* read-only view */
+DIV#attendeesMenu DIV
+{ cursor: pointer;
+  padding-left: 20px; }
+    
+DIV#attendeesMenu DIV:hover
+{ text-decoration: underline; }
