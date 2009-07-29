@@ -46,7 +46,7 @@ install-arch:
 	dh_installdirs -s
 
 	$(MAKE) DESTDIR=$(CURDIR)/debian/tmp GNUSTEP_INSTALLATION_DOMAIN=SYSTEM  install
-	mkdir -p debian/tmp/etc/init.d/sogod
+	mkdir -p debian/tmp/etc/init.d
 	mkdir -p debian/tmp/etc/cron.daily
 	mkdir -p debian/tmp/var/run/sogo
 	mkdir -p debian/tmp/var/log/sogo
