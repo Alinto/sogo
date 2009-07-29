@@ -2082,9 +2082,8 @@ function drawNowLine () {
   var d = new Date();
   var hours = d.getHours();
   var minutes = d.getMinutes();
-  var test = $$("DIV#daysView DIV.days DIV.day");
-  // day view
-  if (test.length == 1) {
+
+  if (currentView == "dayview") {
     var today = new Date ();
     var m = parseInt(today.getMonth ()) + 1;
     var d = today.getDate ();
@@ -2096,7 +2095,7 @@ function drawNowLine () {
     var targets = $$("DIV#daysView DIV.days DIV.day[day=" + day 
                      + "] DIV.events DIV.clickableHourCell");
   }
-  else
+  else if (currentView == "weekview")
     var targets = $$("DIV#daysView DIV.days DIV.dayOfToday DIV.events DIV.clickableHourCell");
   
   if (targets) {
