@@ -2075,7 +2075,8 @@ function onWindowResize(event) {
             day.setStyle({ width: (label.getWidth()-1) + "px" });
         }
     }
-  drawNowLine ();
+    if (!$(document.body).hasClassName("popup"))
+        drawNowLine ();
 }
 
 function drawNowLine () {
