@@ -29,12 +29,12 @@ function onOKClick(event) {
 
 function onColorClick(event) {
   var cPicker = window.open(ApplicationBaseURL + "colorPicker", "colorPicker",
-														"width=250,height=200,resizable=0,scrollbars=0"
-														+ "toolbar=0,location=0,directories=0,status=0,"
-														+ "menubar=0,copyhistory=0", "test"
-														);
+                            "width=250,height=200,resizable=0,scrollbars=0"
+                            + "toolbar=0,location=0,directories=0,status=0,"
+                            + "menubar=0,copyhistory=0", "test"
+                            );
   cPicker.focus();
-
+  
   preventDefault(event);
 }
 
