@@ -9,9 +9,11 @@
   xmlns:label="OGo:label"
   className="UIxComponentEditor"
   componentCalendar="componentCalendar"
+  eventIsReadOnly="eventIsReadOnly"
   var:component="event"
   var:saveURL="saveURL">
 
+  <var:if condition="eventIsReadOnly" const:negate="YES">
   <div class="menu" id="attendeesMenu">
     <ul>
       <li><var:string label:value="Invite Attendees"/>...</li>
@@ -21,7 +23,6 @@
       <li class="separator"><!-- separator --></li>
     </ul>
   </div>
-
   <label><span class="content">
     <span id="allDay"><input id="isAllDay" name="isAllDay" class="checkBox"
         type="checkbox" var:selection="isAllDay"
@@ -48,4 +49,25 @@
         var:checked="isTransparent"
         /> <var:string label:value="Show Time as Free"
         /></span></span></label>
+  </var:if>
+  <var:if condition="eventIsReadOnly">
+  <var:if condition="isAllDay">
+  <label><var:string label:value="Start:" />
+    <span class="content"><var:string var:value="aptStartDateText"/> (<var:string label:value="All day Event"/>)</span>
+  </label>
+  </var:if>
+  <var:if condition="isAllDay" const:negate="YES">
+  <label><var:string label:value="Start:" />
+    <span class="content"><var:string var:value="aptStartDateTimeText" /></span>
+  </label>
+  <label><var:string label:value="End:" />
+    <span class="content"><var:string var:value="aptEndDateTimeText" /></span>
+  </label>
+  </var:if>
+  <var:if condition="isTransparent">
+  <label><span class="content">
+    <span id="isTransparent"><var:string label:value="Show Time as Free"
+        /></span></span></label>
+  </var:if>
+  </var:if>
 </var:component>

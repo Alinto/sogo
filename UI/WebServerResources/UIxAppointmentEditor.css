@@ -122,19 +122,19 @@ A#attendeesHref
   text-decoration: underline; }
 
 DIV#attendeesMenu *
-{ padding-left: 20px; }
+{ cursor: pointer;
+  padding-left: 20px;
+  background-repeat: no-repeat;
+  background-position: 5px center; }
+
+DIV#attendeesMenu *:hover
+{ text-decoration: underline; }
 
 DIV#attendeesMenu .accepted
-{ background-image: url("accepted.png");
-  background-repeat: no-repeat;
-  background-position: 5px center; }
+{ background-image: url("accepted.png"); }
 
 DIV#attendeesMenu .needs-action
-{ background-image: url("needs-action.png");
-  background-repeat: no-repeat;
-  background-position: 5px center; }
+{ background-image: url("needs-action.png"); }
 
 DIV#attendeesMenu .declined
-{ background-image: url("declined.png");
-  background-repeat: no-repeat;
-  background-position: 5px center; }
+{ background-image: url("declined.png"); }

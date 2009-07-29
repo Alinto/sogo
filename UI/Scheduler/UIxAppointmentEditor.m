@@ -1,6 +1,6 @@
 /* UIxAppointmentEditor.m - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse inc.
+ * Copyright (C) 2007-2009 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -59,6 +59,8 @@
 
 - (id) init
 {
+  SOGoUser *user;
+
   if ((self = [super init]))
     {
       aptStartDate = nil;
@@ -68,6 +70,9 @@
       isAllDay = NO;
       isTransparent = NO;
       componentCalendar = nil;
+
+      user = [[self context] activeUser];
+      ASSIGN (dateFormatter, [user dateFormatterInContext: context]);
     }
 
   return self;
@@ -79,6 +84,7 @@
   [[event parent] release];
   [aptStartDate release];
   [aptEndDate release];
+  [dateFormatter release];
   [componentCalendar release];
   [super dealloc];
 }
@@ -167,6 +173,22 @@
   ASSIGN (componentCalendar, _componentCalendar);
 }
 
+/* read-only event */
+- (NSString *) aptStartDateText
+{
+  return [dateFormatter formattedDate: aptStartDate];
+}
+
+- (NSString *) aptStartDateTimeText
+{
+  return [dateFormatter formattedDateAndTime: aptStartDate];
+}
+
+- (NSString *) aptEndDateTimeText
+{
+  return [dateFormatter formattedDateAndTime: aptEndDate];
+}
+
 /* actions */
 - (NSCalendarDate *) newStartDate
 {
@@ -207,11 +229,14 @@
 {
   NSCalendarDate *startDate, *endDate;
   NSString *duration;
+  NSTimeZone *timeZone;
   unsigned int minutes;
   SOGoObject <SOGoComponentOccurence> *co;
 
   [self event];
   co = [self clientObject];
+  timeZone = [[context activeUser] timeZone];
+
   if ([co isNew]
       && [co isKindOfClass: [SOGoCalendarComponent class]])
     {
@@ -228,7 +253,6 @@
   else
     {
       NSCalendarDate *firstDate;
-      NSTimeZone *timeZone;
       iCalEvent *master;
       signed int daylightOffset;
 
@@ -241,7 +265,6 @@
           // saving time with respect to the first occurrence of the recurrent event.
           master = (iCalEvent*)[[event parent] firstChildWithTag: @"vevent"];
           firstDate = [master startDate];
-          timeZone = [[context activeUser] timeZone];
 
           if ([timeZone isDaylightSavingTimeForDate: startDate] != [timeZone isDaylightSavingTimeForDate: firstDate])
             {
@@ -259,7 +282,10 @@
       isTransparent = ![event isOpaque];
     }
 
+  [startDate setTimeZone: timeZone];
   ASSIGN (aptStartDate, startDate);
+
+  [endDate setTimeZone: timeZone];
   ASSIGN (aptEndDate, endDate);
 
   return self;
@@ -392,7 +418,6 @@
   NSDictionary *data;
   NSCalendarDate *firstDate, *eventDate;
   NSTimeZone *timeZone;
-  SOGoDateFormatter *dateFormatter;
   SOGoUser *user;
   SOGoCalendarComponent *co;
   iCalEvent *master;
@@ -404,7 +429,6 @@
   result = [self responseWithStatus: 200];
   user = [context activeUser];
   timeZone = [user timeZone];
-  dateFormatter = [user dateFormatterInContext: context];
   eventDate = [event startDate];
   [eventDate setTimeZone: timeZone];
   co = [self clientObject];

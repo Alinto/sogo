@@ -1,6 +1,6 @@
 /* UIxAppointmentEditor.h - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse inc.
+ * Copyright (C) 2007-2009 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -31,11 +31,12 @@
 @interface UIxAppointmentEditor : UIxComponent
 {
   iCalEvent *event;
-  SOGoAppointmentFolder *componentCalendar;
   BOOL isAllDay, isTransparent;
   NSCalendarDate *aptStartDate;
   NSCalendarDate *aptEndDate;
   NSString *item;
+  SOGoAppointmentFolder *componentCalendar;
+  SOGoDateFormatter *dateFormatter;
 }
 
 /* template values */
@@ -54,6 +55,10 @@
 
 - (void) setAptEndDate: (NSCalendarDate *) newAptEndDate;
 - (NSCalendarDate *) aptEndDate;
+
+- (NSString *) aptStartDateText;
+- (NSString *) aptStartDateTimeText;
+- (NSString *) aptEndDateTimeText;
 
 @end
 

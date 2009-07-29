@@ -1,6 +1,6 @@
 /* UIxTaskEditor.h - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse inc.
+ * Copyright (C) 2007-2009 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -39,6 +39,7 @@
   BOOL hasStartDate;
   BOOL hasDueDate;
   NSString *item;
+  SOGoDateFormatter *dateFormatter;
 }
 
 /* template values */
@@ -51,6 +52,10 @@
 
 - (void) setTaskDueDate: (NSCalendarDate *) _date;
 - (NSCalendarDate *) taskDueDate;
+
+- (NSString *) taskStartDateTimeText;
+- (NSString *) taskDueDateTimeText;
+- (NSString *) statusDateText;
 
 @end
 

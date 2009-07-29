@@ -50,6 +50,8 @@
 
 - (id) init
 {
+  SOGoUser *user;
+
   if ((self = [super init]))
     {
       taskStartDate = nil;
@@ -61,6 +63,9 @@
       statusPercent = nil;
       item = nil;
       todo = nil;
+
+      user = [[self context] activeUser];
+      ASSIGN (dateFormatter, [user dateFormatterInContext: context]);
     }
 
   return self;
@@ -73,6 +78,7 @@
   [statusDate release];
   [status release];
   [statusPercent release];
+  [dateFormatter release];
   [[todo parent] release];
   [super dealloc];
 }
@@ -165,6 +171,12 @@
 
 - (NSString *) itemStatusText
 {
+  if (!item)
+    {
+      item = status;
+      if (!item)
+	item = @"NOT-SPECIFIED";
+    }
   return [self labelForKey: [NSString stringWithFormat: @"status_%@", item]];
 }
 
@@ -219,6 +231,23 @@
   return statusPercent;
 }
 
+/* viewing read-only tasks */
+
+- (NSString *) taskStartDateTimeText
+{
+  return [dateFormatter formattedDateAndTime: taskStartDate];
+}
+
+- (NSString *) taskDueDateTimeText
+{
+  return [dateFormatter formattedDateAndTime: taskDueDate];
+}
+
+- (NSString *) statusDateText
+{
+  return [dateFormatter formattedDate: statusDate];
+}
+
 /* actions */
 - (NSCalendarDate *) newStartDate
 {
@@ -259,20 +288,27 @@
 {
   NSCalendarDate *startDate, *dueDate;
   NSString *duration;
+  NSTimeZone *timeZone;
   unsigned int minutes;
 
   [self todo];
   if (todo)
     {
+      timeZone = [[context activeUser] timeZone];
       startDate = [todo startDate];
       dueDate = [todo due];
       hasStartDate = (startDate != nil);
       hasDueDate = (dueDate != nil);
       ASSIGN (status, [todo status]);
       if ([status isEqualToString: @"COMPLETED"])
-	ASSIGN (statusDate, [todo completed]);
+	{
+	  ASSIGN (statusDate, [todo completed]);
+	  [statusDate setTimeZone: timeZone];
+	}
       else
-	ASSIGN (statusDate, [self newStartDate]);
+	{
+	  ASSIGN (statusDate, [self newStartDate]);
+	}
       ASSIGN (statusPercent, [todo percentComplete]);
     }
   else
@@ -292,7 +328,10 @@
       ASSIGN (statusPercent, @"");
     }
 
+  [startDate setTimeZone: timeZone];
   ASSIGN (taskStartDate, startDate);
+  
+  [dueDate setTimeZone: timeZone];
   ASSIGN (taskDueDate, dueDate);
 
   /* here comes the code for initializing repeat, reminder and isAllDay... */
@@ -389,7 +428,6 @@
   NSDictionary *data;
   NSCalendarDate *startDate, *dueDate;
   NSTimeZone *timeZone;
-  SOGoDateFormatter *dateFormatter;
   SOGoUser *user;
   BOOL resetAlarm;
 
@@ -398,7 +436,6 @@
   result = [self responseWithStatus: 200];
   user = [context activeUser];
   timeZone = [user timeZone];
-  dateFormatter = [user dateFormatterInContext: context];
   startDate = [todo startDate];
   [startDate setTimeZone: timeZone];
   dueDate = [todo due];

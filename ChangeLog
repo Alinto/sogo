@@ -1,3 +1,26 @@
+2009-07-29  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Scheduler/UIxTaskEditor.m ([UIxTaskEditor
+	-taskStartDateTimeText]): new method to return a localized
+	description of the start date and time.
+	([UIxTasEditor -taskDueDateTimeText]): idem for the due date and
+	time.
+	([UIxTaskEditor -statusDateText]): idem for the status (task
+	completed) date.
+
+	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor -reply]):
+	the participation status of the calendar's owner is now returned
+	instead of the participation status of the active user.
+	([UIxComponentEditor -getDateFor:]): deleted, no longer needed.
+
+	* UI/Scheduler/UIxAppointmentEditor.m ([UIxAppointmentEditor
+	-aptStartDateText]): new method to return a localized description
+	of the start date.
+	([UIxAppointmentEditor -aptStartDateTimeText]): idem for the start
+	date and time.
+	([UIxAppointmentEditor -aptEndDateTimeText]): idem for the end
+	date and time.
+
 2009-07-29  Cyril Robert <crobert@inverse.ca>
 
 	* SoObjects/Contacts/SOGoContactGCSFolder.m: Added c_o as a search field.

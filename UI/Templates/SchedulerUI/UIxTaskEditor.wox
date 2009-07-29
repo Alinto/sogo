@@ -9,9 +9,11 @@
   xmlns:label="OGo:label"
   className="UIxComponentEditor"
   componentCalendar="componentCalendar"
+  eventIsReadOnly="eventIsReadOnly"
   var:component="todo"
   var:saveURL="saveURL">
 
+  <var:if condition="eventIsReadOnly" const:negate="YES">
   <span class="checkBoxList"><var:string label:value="Start:" />
     <span class="content"><input var:checked="hasStartDate"
 	id="startDateCB" type="checkbox" class="checkBox"
@@ -53,4 +55,23 @@
 	var:disabled="statusPercentDisabled"
 	/><var:string label:value="% complete"
 	/></span></span>
+  </var:if>
+  <var:if condition="eventIsReadOnly">
+  <var:if condition="hasStartDate">
+  <label><var:string label:value="Start:" />
+    <span class="content"><var:string var:value="taskStartDateTimeText" /></span>
+  </label>
+  </var:if>
+  <var:if condition="hasDueDate">
+  <label><var:string label:value="Due Date:" />
+    <span class="content"><var:string var:value="taskDueDateTimeText" /></span>
+  </label>
+  </var:if>
+  <span class="checkBoxList"><var:string label:value="Status:" />
+    <span class="content"><var:string var:value="itemStatusText"
+        /><var:if condition="statusDateDisabled" const:negate="YES"> <var:string var:value="statusDateText"/></var:if
+	><var:if condition="statusPercentDisabled" const:negate="YES"> (<var:string var:value="statusPercent"/> <var:string label:value="% complete"/>)</var:if>
+	</span></span>
+  </var:if>
+
 </var:component>

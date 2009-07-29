@@ -122,61 +122,59 @@ function initializePrivacyMenu() {
 }
 
 function onComponentEditorLoad(event) {
-  initializeDocumentHref();
-  initializePrivacyMenu();
-  var list = $("calendarList");
-  if (list) {
-    list.observe("change", onChangeCalendar, false);
-    list.fire("mousedown");
-  }
-
-  if ($("itemPrivacyList")) {
-    var menuItems = $("itemPrivacyList").childNodesWithTag("li");
-    for (var i = 0; i < menuItems.length; i++)
-  		menuItems[i].observe("mousedown",
-	  											 onMenuSetClassification.bindAsEventListener(menuItems[i]),
-		  										 false);
-  }
-
-  var tmp = $("repeatHref");
-  if (tmp)
-    tmp.observe("click", onPopupRecurrenceWindow);
-  tmp = $("repeatList");
-  if (tmp)
-    tmp.observe("change", onPopupRecurrenceWindow);
-  tmp = $("reminderHref");
-  if (tmp)
-    tmp.observe("click", onPopupReminderWindow);
-  tmp = $("reminderList");
-  if (tmp)
-    tmp.observe("change", onPopupReminderWindow);
-  tmp = $("summary");
-  if (tmp)
-    tmp.observe("keyup", onSummaryChange);
-
-	Event.observe(window, "resize", onWindowResize);
-
-  onPopupRecurrenceWindow(null);
-	onPopupReminderWindow(null);
-  onSummaryChange (null);
-
-	var summary = $("summary");
-  if (summary) {
+    initializeDocumentHref();
+    initializePrivacyMenu();
+    var list = $("calendarList");
+    if (list) {
+        list.observe("change", onChangeCalendar, false);
+        list.fire("mousedown");
+    }
+    
+    if ($("itemPrivacyList")) {
+        var menuItems = $("itemPrivacyList").childNodesWithTag("li");
+        for (var i = 0; i < menuItems.length; i++)
+            menuItems[i].observe("mousedown",
+                                 onMenuSetClassification.bindAsEventListener(menuItems[i]),
+                                 false);
+    }
+    
+    var tmp = $("repeatHref");
+    if (tmp)
+        tmp.observe("click", onPopupRecurrenceWindow);
+    tmp = $("repeatList");
+    if (tmp)
+        tmp.observe("change", onPopupRecurrenceWindow);
+    tmp = $("reminderHref");
+    if (tmp)
+        tmp.observe("click", onPopupReminderWindow);
+    tmp = $("reminderList");
+    if (tmp)
+        tmp.observe("change", onPopupReminderWindow);
+    tmp = $("summary");
+    if (tmp)
+        tmp.observe("keyup", onSummaryChange);
+    
+    Event.observe(window, "resize", onWindowResize);
+    
+    onPopupRecurrenceWindow(null);
+    onPopupReminderWindow(null);
+    onSummaryChange (null);
+    
+    var summary = $("summary");
+    if (summary) {
   	summary.focus();
-	  summary.selectText(0, summary.value.length);
-  }
-
-  tmp = $("okButton");
-  if (tmp)
-    tmp.observe ("click", onOkButtonClick);
-  tmp = $("cancelButton");
-  if (tmp)
-    tmp.observe ("click", onCancelButtonClick);
-
-  if (tmp)
-    window.resizeTo(430,540)
-
-
+        summary.selectText(0, summary.value.length);
+    }
+    
+    tmp = $("okButton");
+    if (tmp)
+        tmp.observe ("click", onOkButtonClick);
+    tmp = $("cancelButton");
+    if (tmp)
+        tmp.observe ("click", onCancelButtonClick);
+    
+    if (tmp)
+        window.resizeTo(430,540);
 }
 
 function onSummaryChange (e) {
@@ -185,60 +183,60 @@ function onSummaryChange (e) {
 }
 
 function onWindowResize(event) {
-	var document = $("documentLabel");
-	var comment = $("commentArea");
-  if (comment) {
+    var document = $("documentLabel");
+    var comment = $("commentArea");
+    if (comment) {
   	var area = comment.select("textarea").first();
   	var offset = 6;
-	  var height;
-
+        var height;
+        
   	height = window.height() - comment.cumulativeOffset().top - offset;
-
+        
   	if (document.visible()) {
-      if ($("changeAttachButton"))
+            if ($("changeAttachButton"))
   	  	height -= $("changeAttachButton").getHeight();
-      else
-        height -= $("documentHref").getHeight();
-    }
+            else
+                height -= $("documentHref").getHeight();
+        }
 	
-    if (area)
-      area.setStyle({ height: (height - offset*2) + "px" });
+        if (area)
+            area.setStyle({ height: (height - offset*2) + "px" });
   	comment.setStyle({ height: (height - offset) + "px" });
-  }
-  else {
-    $("eventView").style.height = window.height () + "px";
-    var height = window.height() - 120;
-    var tmp = $("generalDiv");
-    if (tmp)
-      height -= tmp.offsetHeight;
-    tmp = $("descriptionDiv");
-    if (tmp)
-      height -= tmp.offsetHeight;
-
-    $("attendeesDiv").style.height = height + "px";
-    $("attendeesMenu").style.height = (height - 20) + "px";
-  }
-	
-	return true;
+    }
+    else {
+        $("eventView").style.height = window.height () + "px";
+        var height = window.height() - 120;
+        var tmp = $("generalDiv");
+        if (tmp)
+            height -= tmp.offsetHeight;
+        tmp = $("descriptionDiv");
+        if (tmp)
+            height -= tmp.offsetHeight;
+        
+        $("attendeesDiv").style.height = height + "px";
+        $("attendeesMenu").style.height = (height - 20) + "px";
+    }
+    
+    return true;
 }
 
 function onPopupRecurrenceWindow(event) {
-  if (event)
-    preventDefault(event);
-
-  var repeatHref = $("repeatHref");
-
-  var repeatList = $("repeatList");
-  if (repeatList && repeatList.value == 7) {
-    repeatHref.show();
     if (event)
-      window.open(ApplicationBaseURL + "editRecurrence", null, 
-									"width=500,height=400");
-  }
-  else if (repeatHref)
-    repeatHref.hide();
-
-  return false;
+        preventDefault(event);
+    
+    var repeatHref = $("repeatHref");
+    
+    var repeatList = $("repeatList");
+    if (repeatList && repeatList.value == 7) {
+        repeatHref.show();
+        if (event)
+            window.open(ApplicationBaseURL + "editRecurrence", null, 
+                        "width=500,height=400");
+    }
+    else if (repeatHref)
+        repeatHref.hide();
+    
+    return false;
 }
 
 function onPopupReminderWindow(event) {

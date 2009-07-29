@@ -978,8 +978,14 @@ iRANGE(2);
 - (NSNumber *) reply
 {
   iCalPersonPartStat participationStatus;
+  LDAPUserManager *um;
+  NSString *owner, *ownerEmail;
 
-  participationStatus = [[component findParticipant: [context activeUser]] participationStatus];
+  um = [LDAPUserManager sharedUserManager];
+  owner = [componentCalendar ownerInContext: context];
+  ownerEmail = [um getEmailForUID: owner];
+  // We assume the owner is part of the participants
+  participationStatus = [[component findParticipantWithEmail: (id)ownerEmail] participationStatus];
   return [NSNumber numberWithInt: participationStatus];
 }
 
@@ -2048,51 +2054,6 @@ RANGE(2);
 - (BOOL) userIsAttendee
 {
   return [self getEventRWType] == 1;
-}
-
-- (NSCalendarDate *) getDateFor: (NSString *) when
-{
-  NSCalendarDate *startDate, *endDate, *firstDate, *rc;
-  NSTimeZone *timeZone;
-  iCalEvent *master;
-  signed int daylightOffset;
-
-  startDate = [component startDate];
-  daylightOffset = 0;
-
-  if ([component isKindOfClass: [SOGoAppointmentOccurence class]])
-    {
-      master = (iCalEvent*)[[component parent] firstChildWithTag: @"vevent"];
-      firstDate = [master startDate];
-      timeZone = [[context activeUser] timeZone];
-
-      if ([timeZone isDaylightSavingTimeForDate: startDate] != [timeZone isDaylightSavingTimeForDate: firstDate])
-        {
-          daylightOffset = (signed int)[timeZone secondsFromGMTForDate: firstDate]
-                         - (signed int)[timeZone secondsFromGMTForDate: startDate];
-          startDate = [startDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds:daylightOffset];
-        }
-    }
-  [startDate setTimeZone: [[context activeUser] timeZone]];
-  endDate = [[component endDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds:daylightOffset];
-  [endDate setTimeZone: [[context activeUser] timeZone]];
-  
-  if ([when isEqualToString: @"start"])
-    rc = startDate;
-  else
-    rc = endDate;
-
-  return rc;
-}
-
-- (NSString *) startDateString
-{
-  return [[self getDateFor: @"start"] description];
-}
-
-- (NSString *) endDateString
-{
-  return [[self getDateFor: @"end"] description];
 }
 
 @end

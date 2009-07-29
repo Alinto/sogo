@@ -42,7 +42,7 @@
             var:value="location"
             /></span></label>
       <span class="checkBoxList"><var:string label:value="Category:" />
-        <span class="content"><var:popup name="category" list="categoryList" item="item"
+        <span class="content"><var:popup list="categoryList" item="item"
             label:noSelectionString="category_none"
             string="item" selection="category"
             /> <var:string label:value="Calendar:" />
@@ -194,12 +194,7 @@
       <span class="content"><var:string var:value="priority"/></span>
     </label>
   </var:if>
-  <label><var:string label:value="Start:" />
-    <span class="content"><var:string var:value="startDateString" /></span>
-  </label>
-  <label><var:string label:value="End:" />
-    <span class="content"><var:string var:value="endDateString" /></span>
-  </label>
+  <var:component-content />
   <var:if condition="hasRepeat">
     <label><var:string label:value="Repeat:" />
       <span class="content"><var:string var:value="repeatLabel" /></span>
@@ -325,8 +320,8 @@
     <div id="windowButtons">
       <a id="cancelButton" href="#" class="button"
         ><var:string label:value="Cancel"/></a>
-      <a id="okButton" href="#" class="button"
-        ><var:string label:value="OK"/></a>
+      <var:if condition="userIsAttendee"><a id="okButton" href="#" class="button"
+        ><var:string label:value="OK"/></a></var:if>
     </div>
   </div>
   </var:if>
