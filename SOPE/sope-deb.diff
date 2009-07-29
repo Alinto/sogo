@@ -95,17 +95,26 @@ Index: debian/rules
  build-stamp: patch-stamp
  	dh_testdir
  
-@@ -69,6 +69,9 @@
+@@ -69,16 +69,10 @@
  	ln -s /usr/share/misc/config.sub sope-core/NGStreams/config.sub
  
  	CFLAGS="$(CFLAGS)" . $(GNUSTEP_SETUP); \
+-		$(MAKE) $(MAKE_FLAGS) all
 +		./configure --with-gnustep
-+
-+	CFLAGS="$(CFLAGS)" . $(GNUSTEP_SETUP); \
- 		$(MAKE) $(MAKE_FLAGS) all
  
- 	cp -R sope-appserver/mod_ngobjweb sope-appserver/mod_ngobjweb-apache2
-@@ -119,21 +122,21 @@
+-	cp -R sope-appserver/mod_ngobjweb sope-appserver/mod_ngobjweb-apache2
+-
+ 	CFLAGS="$(CFLAGS)" . $(GNUSTEP_SETUP); \
+-		$(MAKE) $(MAKE_FLAGS) APXS=/usr/bin/apxs -C sope-appserver/mod_ngobjweb all
+-	
+-	CFLAGS="$(CFLAGS)" . $(GNUSTEP_SETUP); \
+-		$(MAKE) $(MAKE_FLAGS) APXS="/usr/bin/apxs2" APXS_INCLUDE_DIRS="$(shell apxs2 -q EXTRA_INCLUDES)"\
+-		-C sope-appserver/mod_ngobjweb-apache2 all
++		$(MAKE) $(MAKE_FLAGS) all
+ 
+ 	touch build-stamp
+ 
+@@ -119,21 +113,21 @@
  	# Add here commands to install the package into debian/tmp
  	CFLAGS="$(CFLAGS)" . $(GNUSTEP_SETUP); \
  		$(MAKE) $(MAKE_FLAGS) install \
