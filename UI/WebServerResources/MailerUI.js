@@ -640,8 +640,9 @@ function messageListCallback(http) {
                 row.selectElement();
                 lastClickedRow = row.rowIndex - $(row).up('table').down('thead').getElementsByTagName('tr').length;  
                 var rowPosition = row.rowIndex * row.getHeight();
-                if (rowPosition > div.getHeight())
-                    div.scrollTop = rowPosition; // scroll to selected message
+                if (rowPosition < div.scrollTop 
+                    || rowPosition > div.scrollTop + div.getHeight ())
+                  div.scrollTop = rowPosition; // scroll to selected message
             }
             else
                 $("messageContent").update();
