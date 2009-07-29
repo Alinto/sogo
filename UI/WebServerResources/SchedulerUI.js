@@ -2084,22 +2084,34 @@ function drawNowLine () {
   var minutes = d.getMinutes();
   var test = $$("DIV#daysView DIV.days DIV.day");
   // day view
-  if (test.length == 1)
-    var targets = $$("DIV#daysView DIV.days DIV.day DIV.events DIV.clickableHourCell");
+  if (test.length == 1) {
+    var today = new Date ();
+    var m = parseInt(today.getMonth ()) + 1;
+    var d = today.getDate ();
+    if (m < 10)
+      m = "0" + m;
+    if (d < 10)
+      d = "0" + d;
+    var day = today.getFullYear () + "" + m + "" + d;
+    var targets = $$("DIV#daysView DIV.days DIV.day[day=" + day 
+                     + "] DIV.events DIV.clickableHourCell");
+  }
   else
     var targets = $$("DIV#daysView DIV.days DIV.dayOfToday DIV.events DIV.clickableHourCell");
   
-  var target = targets[hours];
+  if (targets) {
+    var target = targets[hours];
 
-  if (target) {
-    var div = $("nowLineDisplay");
-    if (!div)
-      div = new Element ("div", {'id': 'nowLineDisplay'});
+    if (target) {
+      var div = $("nowLineDisplay");
+      if (!div)
+        div = new Element ("div", {'id': 'nowLineDisplay'});
     
-    div.style.top = parseInt (((minutes * target.offsetHeight) / 60) - 1) + "px";
-    target.appendChild (div);
+      div.style.top = parseInt (((minutes * target.offsetHeight) / 60) - 1) + "px";
+      target.appendChild (div);
     
-    setTimeout ("drawNowLine ();", 60000); // 1 min.
+      setTimeout ("drawNowLine ();", 60000); // 1 min.
+    }
   }
 }
 
