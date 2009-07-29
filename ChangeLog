@@ -1,3 +1,7 @@
+2009-07-29  Cyril Robert <crobert@inverse.ca>
+
+	* SoObjects/Contacts/SOGoContactGCSFolder.m: Added c_o as a search field.
+
 2009-07-27  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m

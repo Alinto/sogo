@@ -223,8 +223,9 @@
                      @"(c_givenname isCaseInsensitiveLike: '%@%%') OR "
 		     @"(c_cn isCaseInsensitiveLike: '%@%%') OR "
                      @"(c_mail isCaseInsensitiveLike: '%@%%') OR "
-                     @"(c_telephonenumber isCaseInsensitiveLike: '%%%@%%')",
-                     filter, filter, filter, filter, filter];
+                     @"(c_telephonenumber isCaseInsensitiveLike: '%%%@%%') OR "
+                     @"(c_o isCaseInsensitiveLike: '%%%@%%')",
+                     filter, filter, filter, filter, filter, filter];
       qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
     }
   else
