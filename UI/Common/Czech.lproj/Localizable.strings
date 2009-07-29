@@ -21,6 +21,7 @@
 "noJavascriptError" = "SOGo vyžaduje JavaScript. Ujistěte se prosím, že je povolen a aktivován v rámci nastavení Vašeho prohlížeče.";
 "noJavascriptRetry" = "Znovu";
 
+"Owner:" = "Owner:";
 "Publish the Free/Busy information" = "Zveřejni informace o Volný/Zaneprázdněný";
 
 "Default Roles" = "Výchozí role";

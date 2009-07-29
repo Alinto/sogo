@@ -20,8 +20,6 @@
 "noJavascriptRetry" = "Réessayer";
 
 "Owner:" = "Propriétaire :";
-"Associated Users:" = "Utilisateurs associés :";
-"(Unchecked = assistant, checked = delegate)" = "(Coché = assistant, décoché = délégué)";
 "Publish the Free/Busy information" = "Publier l'occupation du temps";
 
 "Default Roles" = "Rôles par défaut";

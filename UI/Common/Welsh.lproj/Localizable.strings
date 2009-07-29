@@ -21,6 +21,7 @@
 "noJavascriptError" = "Mae angen Javascript ar SOGo i redeg. Sicrhewch fod yr opsiwn ar gael ac yn actifedig yn newisiadau eich porwr.";
 "noJavascriptRetry" = "Ailgynnig";
 
+"Owner:" = "Owner:";
 "Publish the Free/Busy information" = "Cyhoddwch y wybodaeth Rhydd/Brysur";
 
 "Default Roles" = "Rolau Gwreiddiol";
