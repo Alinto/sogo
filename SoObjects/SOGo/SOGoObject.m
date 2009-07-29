@@ -1136,6 +1136,8 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
 
   app = [WOApplication application];
   page = [app pageWithName: pageName inContext: context];
+  if (page == nil)
+    [self errorWithFormat: @"Template %@ doesn't exist.", pageName];
   [page setACLObject: self];
   [page setRecipientUID: uid];
   [page send];
