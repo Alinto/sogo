@@ -203,11 +203,9 @@
   <label id="documentLabel" style="display: none;"><var:string label:value="Document:" />
     <span class="content"><a href="#" id="documentHref"><!-- space --></a></span>
   </label>
-  <var:if condition="hasOrganizer">
-    <label id="organizerLabel"><var:string label:value="Organizer:"/>
-      <span class="content"><var:string value="organizerName"/></span>
-    </label>
-  </var:if>
+  <label id="organizerLabel"><var:string label:value="Organizer:"/>
+    <span class="content"><var:string value="organizerName"/></span>
+  </label>
   <var:if condition="userIsAttendee">
     <label><var:string label:value="Reply:" />
       <span class="content"><var:popup list="replyList" item="item"
