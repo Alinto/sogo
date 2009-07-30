@@ -46,6 +46,7 @@ Mailer_RESOURCE_FILES += \
 	SOGoMailEnglishForward.wo \
 	SOGoMailFrenchForward.wo \
 	SOGoMailGermanForward.wo \
+	SOGoMailHungarianForward.wo \
 	SOGoMailItalianForward.wo \
 	SOGoMailSpanishForward.wo \
 	SOGoMailWelshForward.wo \
@@ -57,6 +58,7 @@ Mailer_RESOURCE_FILES += \
 	SOGoMailEnglishReply.wo \
 	SOGoMailFrenchReply.wo \
 	SOGoMailGermanReply.wo \
+	SOGoMailHungarianReply.wo \
 	SOGoMailItalianReply.wo \
 	SOGoMailSpanishReply.wo \
 	SOGoMailWelshReply.wo

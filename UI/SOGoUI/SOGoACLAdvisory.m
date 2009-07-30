@@ -300,6 +300,15 @@
 @implementation SOGoACLGermanRemovalAdvisory
 @end
 
+@implementation SOGoACLHungarianAdditionAdvisory
+@end
+
+@implementation SOGoACLHungarianModificationAdvisory
+@end
+
+@implementation SOGoACLHungarianRemovalAdvisory
+@end
+
 @implementation SOGoACLItalianModificationAdvisory
 @end
 

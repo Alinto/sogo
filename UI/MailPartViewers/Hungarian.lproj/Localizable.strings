@@ -1,0 +1,34 @@
+ACCEPTED = "elfogadott";
+COMPLETED = "befejezett";
+DECLINED = "elutasított";
+DELEGATED = "továbbküldött";
+IN-PROCESS = "folyamatban";
+NEEDS-ACTION = "intézkedés szükséges";
+TENTATIVE = "bizonytalan";
+organized_by_you = "ön által szervezett";
+you_are_an_attendee = "ön egy résztvevő";
+add_info_text = "iMIP 'ADD' kérés a SOGo által nem támogatott.";
+publish_info_text = "Ez az üzenet egy eseményről szóló meghívót tartalmaz.";
+cancel_info_text = "A meghívást vagy az eseményt törölték.";
+request_info_no_attendee = "javasol egy találkozót a résztvevőknek. Ön tájékoztatásul kapja ezt az üzenetet, nincs a résztvevők között.";
+Appointment = "Találkozó";
+
+Organizer = "Szervező";
+Time = "Idő";
+Attendees = "Résztvevők";
+request_info = "meghívja önt résztvevőnek egy találkozóra.";
+"Add to calendar" = "Hozzáadás a naptárhoz";
+"Delete from calendar" = "Törlés a naptárból";
+"Update status" = "Állapot frissítése";
+Accept = "Elfogad";
+Decline = "Elutasít";
+Tentative = "Bizonytalan";
+"Update status in calendar" = "Állapot frissítése a naptárban";
+reply_info_no_attendee = "Ön választ kapott egy találkozóra, a feladó azonban nem résztvevő.";
+reply_info = "Ez egy válasz az ön által kiküldött meghívásra.";
+
+"to" = "címzett";
+
+"Untitled" = "Névtelen";
+
+"Size" = "Méret";

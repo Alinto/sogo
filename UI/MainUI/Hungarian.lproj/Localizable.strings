@@ -1,0 +1,39 @@
+/* this file is in UTF-8 format! */
+
+"title" = "SOGo";
+
+"Username:" = "Felhasználó:";
+"Password:" = "Jelszó:";
+
+"Connect" = "Kapcsolódás";
+
+"Wrong username or password." = "Hibás felhasználónév vagy jelszó.";
+"cookiesNotEnabled" = "Nem tud bejelentkezni, mivel a böngészőjében a cookie-k ki vannak kapcsolva. Kérem engedélyezze a cookie-kat a böngészője beállításaiban, majd próbálja újra.";
+
+"browserNotCompatible" = "A böngészője nem támogatja ennek az oldalnak a megjelnítését. Javasoljuk a Firefox használatát. Kattintson az alábi linkre a legújabb verzió letöltéséhez.";
+"alternativeBrowsers" = "További megoldásként az alábbi, kompatibilis böngészőket használhatja";
+"alternativeBrowserSafari" = "A Safari böngésző is használható.";
+"Download" = "Letöltés";
+
+"Language:" = "Nyelv:";
+"choose" = "Válasszon ...";
+"Czech" = "Česky";
+"Dutch" = "Nederlands";
+"English" = "English";
+"French" = "Français";
+"German" = "Deutsch";
+"Hungarian" = "Magyar";
+"Italian" = "Italiano";
+"BrazilianPortuguese" = "Português brasileiro";
+"Russian" = "Русский";
+"Spanish" = "Español";
+"Welsh" = "Cymraeg";
+
+"About" = "Névjegy";
+"AboutBox" = "A SOGo az OpenGroupware.org (OGo) és a SOPE alkalmazás szerverre épülő csoportmunka szerver, amely a skálázhatóságra összpontosít.<br/><br/>
+A SOGo egy AJAX alapú webes felültet biztosít, továbbá több desktop kliens programot is támogat olyan szabványos protokollokon keresztül, mint a CalDAV, a CardDAV és a GroupDAV.<br/><br/>
+Copyright © 2006-2009 Inverse inc.<br/>
+Copyright © 2002-2005 SKYRIX Software AG<br/><br/>
+A szoftver a <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2. licensz alapján kerül terjesztésre<br/>
+A szoftver egyes részei a GNU LGPL version 2. licensz alapján kerülnek terjesztésre.<br/><br/>
+Ez egy ingyenes szoftver: ön jogosult változtatni és továbbterjeszteni. Nincs garancia, a törvány által megengedett mértékben.";

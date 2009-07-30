@@ -6,7 +6,7 @@ BUNDLE_NAME = ContactsUI
 
 ContactsUI_PRINCIPAL_CLASS = ContactsUIProduct
 
-ContactsUI_LANGUAGES = BrazilianPortuguese Czech Dutch English French German Italian Spanish Welsh Russian
+ContactsUI_LANGUAGES = BrazilianPortuguese Czech Dutch English French German Hungarian Italian Spanish Welsh Russian
 
 ContactsUI_OBJC_FILES =			\
 	UIxContactsUserFolders.m \

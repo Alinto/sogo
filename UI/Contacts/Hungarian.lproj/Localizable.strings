@@ -1,0 +1,153 @@
+/* this file is in UTF-8 format! */
+
+"Addressbook" = "Címjegyzék";
+"Addresses" = "Címek";
+"Update" = "Mentés";
+"Cancel" = "Mégsem";
+"Common" = "Közös";
+"Contact editor" = "Kapcsolatszerkesztő";
+"Contact viewer" = "Kapcsolat betekintő";
+"Email" = "Email";
+"Screen Name" = "Fedőnév";
+"Extended" = "Kiterjesztett";
+"Fax" = "Fax";
+"Firstname" = "Keresztnév";
+"Home" = "Otthoni";
+"HomePhone" = "Otthoni telefon";
+"Lastname" = "Vezetéknév";
+"Location" = "Hely";
+"MobilePhone" = "Mobil telefon";
+"Name" = "Név";
+"OfficePhone" = "Hivatali telefon";
+"Organization" = "Szervezet";
+"Work Phone" = "Munkahelyi telefon";
+"Phone" = "Telefon";
+"Phones" = "Telefonszámok";
+"Postal" = "Irányítószám";
+"Save" = "Mentés";
+"URL" = "URL";
+"Unit" = "Egység";
+"delete" = "Töröl";
+"edit" = "Szerkeszt";
+"invalidemailwarn" = "A megadótt emailcím érvénytelen";
+"new" = "új";
+"Preferred Phone"   = "Preferált telefon";
+
+/* Tooltips */
+
+"Create a new address book card" = "Új névjegykártya készítése";
+"Create a new list" = "Új csoportlista készítése";
+"Edit the selected card" = "A kijelölt névjegy szerkesztése";
+"Send a mail message" = "Email üzenet küldése";
+"Delete selected card or address book" = "Kijelölt névjegy vagy címjegyzék törlése";
+
+"htmlMailFormat_UNKNOWN" = "Ismeretlen";
+"htmlMailFormat_FALSE" = "Egyszerű szöveg";
+"htmlMailFormat_TRUE" = "HTML";
+
+"Name or Email" = "Név vagy email";
+"Personal Addressbook" = "Személyes címjegyzék";
+"Search in Addressbook" = "Keresés a címjegyzékben";
+
+"New Card" = "Új névjegy";
+"New List" = "Új csoportlista";
+"Properties" = "Tulajdonságok";
+"Sharing..." = "Megosztás...";
+"Write" = "Üzenet írása";
+"Delete" = "Törlés";
+"Instant Message" = "Azonnali üzenet";
+"Add..." = "Hozzáadás...";
+"Remove" = "Törlés";
+
+"Please wait..." = "Kérem várjon...";
+"No possible subscription" = "Nincs mappa, melyre feliratkozhat";
+
+"Preferred" = "Preferált";
+"Card for %@" = "Névjegy: %@";
+"Display Name: " = "Megjelenítendő név: ";
+"Email Address: " = "Email cím: ";
+
+"Firstname: " = "Keresztnév: ";
+"Lastname: " = "Vezetéknév: ";
+"Nickname: " = "Becenév: ";
+
+"Telephone" = "Telefon";
+"Work: " = "Munkahely: ";
+"Home: " = "Otthon: ";
+"Fax: " = "Fax: ";
+"Mobile: " = "Mobil: ";
+"Pager: " = "Személyhívó: ";
+
+"Title: " = "Cím: ";
+"Service: " = "Szolgáltatás: ";
+"Company: " = "Vállalat: ";
+"Street Address: " = "Cím: ";
+"City: " = "Város: ";
+"State_Province:" = "Állam/tartomány:";
+"ZIP_Postal Code:" = "Irányítószám:";
+"Country: " = "Ország: ";
+"Web: " = "Web: ";
+
+"Work" = "Munkahely";
+"Other Infos" = "Egyéb";
+
+"Note: " = "Megjegyzés: ";
+"Timezone: " = "Időzóna: ";
+"Birthday: " = "Születésnap: ";
+"Freebusy URL: " = "Foglaltság URL: ";
+
+"Add as..." = "Hozzáadás mint...";
+"Recipient" = "Címzett";
+"Carbon Copy" = "Másolat";
+"Blind Carbon Copy" = "Titkos másolat";
+
+"New Addressbook..." = "Új címjegyzék...";
+"Subscribe to an Addressbook..." = "Feliratkozás címjegyzékre...";
+"Remove the selected Addressbook" = "Kijelölt címjegyzék törlése";
+
+"Name of the Address Book" = "A címjegyzék neve";
+"Are you sure you want to delete the selected address book?"
+= "Biztosan törli a kijelölt címjegyzéket?";
+"You cannot remove nor unsubscribe from a public addressbook."
+= "Nem lehet törölni vagy leiratkozni a publikus címjegyzékről.";
+"You cannot remove nor unsubscribe from your personal addressbook."
+= "Nem lehet törölni vagy leiratkozni a személyes címjegyzékről.";
+
+"Are you sure you want to delete the selected contacts?"
+= "Biztosan törli a kijelölt kapcsolatokat?";
+
+"You cannot delete the card of \"%{0}\"."
+= "Az alábbi névjegy nem törölhető:  \"%{0}\".";
+
+"Address Book Name" = "Címjegyzék neve";
+
+"You cannot subscribe to a folder that you own!"
+= "Saját tulajdonú mappára nem lehet feliratkozni.";
+"Unable to subscribe to that folder!"
+= "Erre a mappára nem lehet feliratkozni.";
+
+"Default Roles" = "Alapértelmezett jogok";
+"User rights for:" = "Felhasználói jogosultságok:";
+
+"This person can add cards to this addressbook."
+= "Az alábbi személy hozzáadhat névjegyeket ehhez a címjegyzékhez.";
+"This person can edit the cards of this addressbook."
+= "Az alábbi személy szerkesztheti a névjegyeket ebben a címjegyzékben.";
+"This person can list the content of this addressbook."
+= "Az alábbi személy kilistázhatja a névjegyeket ebben a címjegyzékben.";
+"This person can read the cards of this addressbook."
+= "Az alábbi személy olvashatja a névjegyeket ebben a címjegyzékben.";
+"This person can erase cards from this addressbook."
+= "Az alábbi személy névjegyeket törölhet ebből a címjegyzékből.";
+
+"The selected contact has no email address."
+= "A kiválasztott kapcsolat nem rendelkezik email címmel.";
+
+"Please select a contact." = "Kérem válasszon egy kapcsolatot.";
+
+/* Error messages for move and copy */
+
+"SoAccessDeniedException" = "Ön nem írhat ebbe a címjegyzékbe.";
+"Forbidden" = "Ön nem írhat ebbe a címjegyzékbe.";
+"Invalid Contact" = "A kijelölt kapcsolat már nem létezik.";
+"Unknown Destination Folder" = "A kijelölt címjegyzék már nem elérhető.";

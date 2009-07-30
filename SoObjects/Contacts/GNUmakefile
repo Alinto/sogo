@@ -22,7 +22,7 @@ Contacts_RESOURCE_FILES +=		\
 	Version				\
 	product.plist			\
 
-Contacts_LANGUAGES = BrazilianPortuguese Czech Dutch English French German Italian Spanish Welsh Russian
+Contacts_LANGUAGES = BrazilianPortuguese Czech Dutch English French German Hungarian Italian Spanish Welsh Russian
 
 Contacts_LOCALIZED_RESOURCE_FILES = Localizable.strings
 

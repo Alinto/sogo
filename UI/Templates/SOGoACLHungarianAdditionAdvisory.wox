@@ -1,0 +1,27 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE container>
+<container 
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label">
+
+<var:if condition="isSubject">
+    <var:string value="currentUserName" const:escapeHTML="NO"/> hozzáadásra került
+</var:if>
+
+<var:if condition="isBody">
+<var:string value="currentUserName" const:escapeHTML="NO"/> hozzáadásra került a <var:string const:value='"' const:escapeHTML="NO"/><var:string value="resourceName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> mappa jogosultsági listájához.
+
+A mappára közvetlenül feliratkozhat a következő link használatával:
+    <var:string value="httpAdvisoryURL" const:escapeHTML="NO"/>subscribe?mail-invitation=YES
+
+illetve később is feliratkozhat a SOGo webes felületéről.
+
+A mappa távolról is elérhető a következő URL megadásával:
+
+<var:string value="httpFolderURL" const:escapeHTML="NO"/>
+</var:if>
+
+</container>

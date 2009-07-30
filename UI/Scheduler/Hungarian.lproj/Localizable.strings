@@ -1,0 +1,508 @@
+/* this file is in UTF-8 format! */
+
+/* Tooltips */
+
+"Create a new event" = "Új esemény hozzáadása";
+"Create a new task" = "Új feladat hozzáadása";
+"Edit this event or task" = "Esemény vagy feladat szerkesztése";
+"Delete this event or task" = "Esemény vagy feladat törlése";
+"Go to today" = "Ugrás a mai napra";
+"Switch to day view" = "Napi nézetre váltás";
+"Switch to week view" = "Heti nézetre váltás";
+"Switch to month view" = "Havi nézetre váltás";
+
+/* Tabs */
+"Date" = "Dátum";
+"Calendars" = "Naptárak";
+
+/* Day */
+
+"Sunday" = "Vasárnap";
+"Monday" = "Hétfő";
+"Tuesday" = "Kedd";
+"Wednesday" = "Szerda";
+"Thursday" = "Csütörtök";
+"Friday" = "Péntek";
+"Saturday" = "Szombat";
+
+"Sun" = "Vas";
+"Mon" = "Hét";
+"Tue" = "Ked";
+"Wed" = "Sze";
+"Thu" = "Csü";
+"Fri" = "Pén";
+"Sat" = "Szo";
+
+"a2_Sunday" = "Va";
+"a2_Monday" = "Hé";
+"a2_Tuesday" = "Ke";
+"a2_Wednesday" = "Sz";
+"a2_Thursday" = "Cs";
+"a2_Friday" = "Pé";
+"a2_Saturday" = "Sz";
+
+"dayLabelFormat" = "%Y.%m.%d";
+"today" = "Ma";
+
+/* Week */
+
+"Week" = "Hét";
+"this week" = "aktuális hét";
+
+"Week %d" = "%d. hét";
+
+/* Month */
+
+"this month" = "aktuális hónap";
+
+"January" = "Január";
+"February" = "Február";
+"March" = "Március";
+"April" = "Április";
+"May" = "Május";
+"June" = "Június";
+"July" = "Július";
+"August" = "Augusztus";
+"September" = "Szeptember";
+"October" = "Október";
+"November" = "November";
+"December" = "December";
+
+"a3_January" = "Január";
+"a3_February" = "Február";
+"a3_March" = "Március";
+"a3_April" = "Április";
+"a3_May" = "Május";
+"a3_June" = "Június";
+"a3_July" = "Július";
+"a3_August" = "Augusztus";
+"a3_September" = "Szeptember";
+"a3_October" = "Október";
+"a3_November" = "November";
+"a3_December" = "December";
+
+/* Year */
+
+"this year" = "aktuális év";
+
+/* Menu */
+
+"Calendar" = "Naptár";
+"Contacts" = "Kapcsolatok";
+
+"New Calendar..." = "Új naptár...";
+"Delete Calendar" = "Naptár törlése";
+"Sharing..." = "Megosztás...";
+"Export Calendar..." = "Naptár exportálása...";
+"Publish Calendar..." = "Naptár közzététele...";
+"Reload Remote Calendars" = "Távoli naptárak frissítése";
+"Properties" = "Tulajdonságok";
+
+"Compose E-Mail to All Attendees" = "Üzenet küldése az összes résztvevőnek";
+"Compose E-Mail to Undecided Attendees" = "Üzenet küldése az bizonytalan résztvevőnek";
+
+/* Folders */
+"Personal calendar" = "Személyes naptár";
+
+/* Misc */
+
+"OpenGroupware.org" = "OpenGroupware.org";
+"Forbidden" = "Tiltott";
+
+/* acls */
+
+"Default Roles" = "Alapértelmezett jogok";
+"User rights for:" = "Felhasználói jogosultságok:";
+
+"label_Public" = "Nyilvános";
+"label_Private" = "Magán";
+"label_Confidential" = "Bizalmas";
+
+"label_Viewer" = "Összes információ megtekintése";
+"label_DAndTViewer" = "Dátum és idő megtekintése";
+"label_Modifier" = "Módosítás";
+"label_Responder" = "Megválaszolás";
+"label_None" = "Semmi";
+
+"View All" = "Összes adat megtekintése";
+"View the Date & Time" = "Dátum és idő megtekintése";
+"Modify" = "Módosítás";
+"Respond To" = "Megválaszolás";
+"None" = "Semmi";
+
+"This person can create objects in my calendar."
+= "Ez a személy új naptárbejegyzéseket hozhat létre.";
+"This person can erase objects from my calendar."
+= "Ez a személy naptárbejegyzéseket törölhet.";
+
+/* Button Titles */
+
+"New Calendar..." = "Új naptár...";
+"Subscribe to a Calendar..." = "Feliratkozás naptárra...";
+"Remove the selected Calendar" = "Kijelölt naptár törlése";
+
+"Name of the Calendar" = "A naptár neve:";
+
+"new" = "Új";
+"printview" = "Nyomtatási nézet";
+"edit" = "Szerkesztés";
+"delete" = "Törlés";
+"proposal" = "Javaslat";
+"Save and Close" = "Mentés és bezárás";
+"Close" = "Bezárás";
+"Invite Attendees" = "Résztvevők meghívása";
+"Documents" = "Dokumentumok";
+"Update" = "Mentés";
+"Cancel" = "Mégsem";
+"show_rejected_apts" = "Visszautasított találkozók mutatása";
+"hide_rejected_apts" = "Visszautasított találkozók elrejtése";
+
+
+/* Schedule */
+
+"Schedule" = "Ütemezés";
+"No appointments found" = "Nincs találkozó";
+"Meetings proposed by you" = "Ön által javasolt találkozók";
+"Meetings proposed to you" = "Önnek javasolt találkozók";
+"sched_startDateFormat" = "%m.%d %H:%M";
+"action" = "Válasz";
+"accept" = "Elfogadás";
+"decline" = "Visszautasítás";
+"more attendees" = "További résztvevők";
+"Hide already accepted and rejected appointments" = "Már elfogadott, valamint visszautasított találkozók elrejtése.";
+"Show already accepted and rejected appointments" = "Már elfogadott, valamint visszautasított találkozók megmutatása";
+
+
+/* Appointments */
+
+"Appointment viewer" = "Találkozó betekintő";
+"Appointment editor" = "Találkozó szerkesztő";
+"Appointment proposal" = "Találkozó ajánló";
+"Appointment on" = "Találkozó ekkor";
+"Start:" = "Kezdete:";
+"End:" = "Vége:";
+"Due Date:" = "Lejárat:";
+"Title:" = "Cím:";
+"Calendar:" = "Naptár:";
+"Name" = "Név";
+"Email" = "Email";
+"Status:" = "Állapot";
+"% complete" = "% kész";
+"Location:" = "Hely:";
+"Priority:" = "Prioritás:";
+"Privacy" = "Adatvédelem";
+"Cycle" = "Ismétlődés";
+"Cycle End" = "Ismétlődés vége";
+"Categories" = "Kategória";
+"Classification" = "Besorolás";
+"Duration" = "Időtartam";
+"Attendees:" = "Résztvevők:";
+"Resources" = "Erőforrások";
+"Organizer:" = "Szervező:";
+"Description:" = "Leírás:";
+"Document:" = "Dokumentum:";
+"Category:" = "Kategória:";
+"Repeat:" = "Ismétlés:";
+"Reminder:" = "Emlékeztető:";
+
+"Target:" = "Cél:";
+
+"attributes" = "tulajdonságok";
+"attendees" = "résztvevők";
+/* checkbox title */
+"is private" = "magán";
+/* classification */
+"Public" = "nyilvános";
+"Private" = "magán";
+/* text used in overviews and tooltips */
+"empty title" = "Üres cím";
+"private appointment" = "Magántalálkozó";
+
+"Change..." = "Módosít...";
+
+/* Appointments (participation state) */
+
+"partStat_NEEDS-ACTION" = "Foglalkozni kell vele";
+"partStat_ACCEPTED" = "Elfogadott";
+"partStat_DECLINED" = "Visszautasított";
+"partStat_TENTATIVE" = "Bizonytalan";
+"partStat_DELEGATED" = "Átadott";
+"partStat_OTHER" = "Egyéb";
+
+/* Appointments (error messages) */
+
+"Conflicts found!" = "Ütközés van!";
+"Invalid iCal data!" = "Érvénytelen iCal adat!";
+"Could not create iCal data!" = "Nem lehet iCal adatot létrehozni!";
+
+/* Searching */
+
+"view_all" = "Összes";
+"view_today" = "Mai";
+"view_next7" = "Következő 7 nap";
+"view_next14" = "Következő 14 nap";
+"view_next31" = "Következő 31 nap";
+"view_thismonth" = "Aktuális hónap";
+"view_future" = "Összes jövőbeni esemény";
+"view_selectedday" = "Kijelölt nap";
+
+"View:" = "Nézet:";
+"Title or Description" = "Cím vagy leírás";
+
+"Search" = "Keresés";
+"Search attendees" = "Résztvevők keresése";
+"Search resources" = "Erőforrások keresése";
+"Search appointments" = "Találkozók keresése";
+"Search in Anais" = "Anais keresése";
+
+"All day Event" = "Egésznapos esemény";
+"check for conflicts" = "Ütközés ellenőrzése";
+
+"Browse URL" = "URL tallózása";
+
+"newAttendee" = "Résztvevő hozzáadása";
+
+/* calendar modes */
+
+"Overview" = "Áttekintés";
+"Chart" = "Diagram";
+"List" = "Lista";
+"Columns" = "Oszlopok";
+
+/* Priorities */
+
+"prio_0" = "Nincs megadva";
+"prio_1" = "Magas";
+"prio_2" = "Magas";
+"prio_3" = "Magas";
+"prio_4" = "Magas";
+"prio_5" = "Normál";
+"prio_6" = "Alacsony";
+"prio_7" = "Alacsony";
+"prio_8" = "Alacsony";
+"prio_9" = "Alacsony";
+
+/* access classes (privacy) */
+"PUBLIC_vevent" = "Nyilvános esemény";
+"CONFIDENTIAL_vevent" = "Bizalmas esemény";
+"PRIVATE_vevent" = "Magán esemény";
+"PUBLIC_vtodo" = "Nyilvános feladat";
+"CONFIDENTIAL_vtodo" = "Bizalmas feladat";
+"PRIVATE_vtodo" = "Magán feladat";
+
+/* status type */
+"status_" = "Nincs megadva";
+"status_NOT-SPECIFIED" = "Nincs megadva";
+"status_TENTATIVE" = "Bizonytalan";
+"status_CONFIRMED" = "Megerősített";
+"status_CANCELLED" = "Törölt";
+"status_NEEDS-ACTION" = "Foglalkozni kell vele";
+"status_IN-PROCESS" = "Folyamatban";
+"status_COMPLETED" = "Kész van ";
+
+/* Cycles */
+
+"cycle_once" = "egyszer";
+"cycle_daily" = "naponta";
+"cycle_weekly" = "hetente";
+"cycle_2weeks" = "kéthetente";
+"cycle_4weeks" = "négyhetente";
+"cycle_monthly" = "havonta";
+"cycle_weekday" = "minden hétköznap";
+"cycle_yearly" = "évente";
+
+"cycle_end_never" = "nincs befejezés";
+"cycle_end_until" = "eddig a napig";
+
+"Recurrence pattern" = "Ismétlődés ciklusa";
+"Range of recurrence" = "Ismétlődés tartománya";
+
+"Repeat" = "Ismétlődik";
+"Daily" = "Naponta";
+"Weekly" = "Hetente";
+"Monthly" = "Havonta";
+"Yearly" = "Évente";
+"Every" = "Minden";
+"Days" = "naponként";
+"Week(s)" = "hetenként";
+"On" = "";
+"Month(s)" = "hónaponként";
+"The" = "A";
+"Recur on day(s)" = "Az alábbi napon";
+"Year(s)" = "Év";
+"cycle_of" = "ciklus";
+"No end date" = "Nincs befejezés";
+"Create" = "Létrehozás";
+"appointment(s)" = "találkozó(k)";
+"Repeat until" = "Ismétlődés eddig";
+
+"First" = "Első";
+"Second" = "Második";
+"Third" = "Harmadik";
+"Fourth" = "Negyedik";
+"Fift" = "Ötödik";
+"Last" = "Utolsó";
+
+/* Appointment categories */
+
+"category_NONE" = "Nincs";
+"category_ANNIVERSARY" = "Évforduló";
+"category_BIRTHDAY" = "Születésnap";
+"category_BUSINESS" = "Üzleti";
+"category_CALLS" = "Meghívás"; 
+"category_CLIENTS" = "Ügyfelek";
+"category_COMPETITION" = "Versenytársak";
+"category_CUSTOMER" = "Vevő";
+"category_FAVORITES" = "Kedvencek";
+"category_FOLLOW UP" = "Nyomonkövetés";
+"category_GIFTS" = "Ajándékozás";
+"category_HOLIDAYS" = "Szabadság";
+"category_IDEAS" = "Ötletek";
+"category_ISSUES" = "Ügyek";
+"category_MISCELLANEOUS" = "Egyéb";
+"category_PERSONAL" = "Személyes";
+"category_PROJECTS" = "Projektek";
+"category_PUBLIC HOLIDAY" = "Állami ünnep";
+"category_STATUS" = "Állapot";
+"category_SUPPLIERS" = "Szállítók";
+"category_TRAVEL" = "Utazás";
+"category_VACATION" = "Szünidő";
+
+"repeat_NEVER" = "Nem ismétlődik";
+"repeat_DAILY" = "Naponta";
+"repeat_WEEKLY" = "Hetente";
+"repeat_BI-WEEKLY" = "Kéthetente";
+"repeat_EVERY WEEKDAY" = "Minden hétköznap";
+"repeat_MONTHLY" = "Havonta";
+"repeat_YEARLY" = "Évente";
+"repeat_CUSTOM" = "Egyéni...";
+
+"reminder_NONE" = "Nincs emlékeztető";
+"reminder_5_MINUTES_BEFORE" = "5 perccel előtte";
+"reminder_10_MINUTES_BEFORE" = "10 perccel előtte";
+"reminder_15_MINUTES_BEFORE" = "15 perccel előtte";
+"reminder_30_MINUTES_BEFORE" = "30 perccel előtte";
+"reminder_45_MINUTES_BEFORE" = "45 perccel előtte";
+"reminder_1_HOUR_BEFORE" = "1 órával előtte";
+"reminder_2_HOURS_BEFORE" = "2 órával előtte";
+"reminder_5_HOURS_BEFORE" = "5 órával előtte";
+"reminder_15_HOURS_BEFORE" = "15 órával előtte";
+"reminder_1_DAY_BEFORE" = "1 nappal előtte";
+"reminder_2_DAYS_BEFORE" = "2 nappal előtte";
+"reminder_1_WEEK_BEFORE" = "1 héttel előtte";
+"reminder_CUSTOM" = "Egyéni...";
+
+"reminder_MINUTES" = "perccel";
+"reminder_HOURS" = "órával";
+"reminder_DAYS" = "nappal";
+"reminder_BEFORE" = "előtte";
+"reminder_AFTER" = "utána";
+"reminder_START" = "az esemény kezdődik";
+"reminder_END" = "az esemény végződik";
+
+"zoom_400" = "400%";
+"zoom_200" = "200%";
+"zoom_100" = "100%";
+"zoom_50" = "50%";
+"zoom_25" = "25%";
+
+/* transparency */
+
+"Show Time as Free" = "Ne jelezzen foglaltságot";
+
+/* validation errors */
+
+validate_notitle           = "A cím nincs megadva, folytatja?";
+validate_invalid_startdate = "Événytelen kezdődátum!";
+validate_invalid_enddate   = "Érvénytelen befejező dátum!";
+validate_endbeforestart    = "A megadott befejező dátum korábbi, mint a kezdődátum.";
+
+"Tasks" = "Feladatok";
+"Show completed tasks" = "Befejezett feladatok megjelenítése";
+
+/* tabs */
+"Task" = "Feladat";
+"Event" = "Esemény";
+"Recurrence" = "Ismétlődés";
+
+/* toolbar */
+"New Event" = "Új esemény";
+"New Task" = "Új feladat";
+"Edit" = "Szerkesztés";
+"Delete" = "Törlés";
+"Go to Today" = "Mai nap";
+"Day View" = "Napi nézet";
+"Week View" = "Heti nézet";
+"Month View" = "Havi nézet";
+
+"eventPartStatModificationError" = "A résztvevői állapota nem módosítható.";
+
+/* menu */
+"New Event..." = "Új esemény...";
+"New Task..." = "Új feladat...";
+"Edit Selected Event..." = "Kijelölt esemény szerkesztése...";
+"Delete Selected Event" = "Kijelölt esemény törlése";
+"Select All" = "Összes kijelölése";
+"Workweek days only" = "Csak hétköznapok";
+"Tasks in View" = "Feladatok megjelenítése";
+
+"eventDeleteConfirmation" = "Az esemény törlése végleges.\nFolytatja?";
+"taskDeleteConfirmation" = "A feladat törlése végleges.\nFolytatja?";
+
+"You cannot remove nor unsubscribe from your personal calendar."
+= "Nem törölhet, valamint nem iratkozhat le egy személyes naptárról.";
+"Are you sure you want to delete the calendar \"%{0}\"?"
+= "Biztosan törli ezt a naptárat: \"%{0}\"?";
+
+/* Legend */
+"Required participant" = "Kötelező résztvevő";
+"Optional participant" = "Nem kötelező résztvevő";
+"Chair" = "Szék";
+
+"Needs action" = "Foglalkozni kell vele";
+"Accepted" = "Elfogadott";
+"Declined" = "Visszautasított";
+"Tentative" = "Bizonytalan";
+
+"Free" = "Szabad";
+"Busy" = "Foglalt";
+"Maybe busy" = "Bizonytalan";
+"No free-busy information" = "Nincs foglaltsági információ";
+
+/* FreeBusy panel buttons and labels */
+"Suggest time slot:" = "Javasolt időablak:";
+"Zoom:" = "Nagyítás:";
+"Previous slot" = "Előző ablak";
+"Next slot" = "Következő ablak";
+"Previous hour" = "Előző óra";
+"Next hour" = "Következő óra";
+"Only office hours" = "Csak munkaidő";
+
+/* apt list */
+"Title" = "Cím";
+"Start" = "Kezdés";
+"End" = "Befejezés";
+"Location" = "Hely";
+"(Private Event)" = "(Magán esemény)";
+
+vevent_class0 = "(Nyilvános esemény)";
+vevent_class1 = "(Magán esemény)";
+vevent_class2 = "(Bizalmas esemény)";
+
+vtodo_class0 = "(Nyilvános feladat)";
+vtodo_class1 = "(Magán feladat)";
+vtodo_class2 = "(Bizalmas feladat)";
+
+"closeThisWindowMessage" = "Köszönjük! Most már bezárhatja az ablakot vagy megtekintheti a ";
+"Multicolumn Day View" = "Többoszlopos napi nézet";
+
+"Please select an event or a task." = "Kérem válasszon egy eseményt vagy feladatot.";
+
+"editRepeatingItem" = "Ön egy ismétlődő eseményt jelölt ki. Az összes előfordulását szerkeszti, vagy csak ezt az időpontot?";
+"button_thisOccurrenceOnly" = "Csak ezt az egy időpontot";
+"button_allOccurrences" = "Az összes előfordulást";
+
+/* Properties dialog */
+"Name:" = "Név:";
+"Color:" = "Szín:";
+"Tag:" = "Cimke:";

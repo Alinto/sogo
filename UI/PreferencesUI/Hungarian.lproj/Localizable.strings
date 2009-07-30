@@ -1,0 +1,104 @@
+/* toolbar */
+"Save and Close" = "Mentés és bezárás";
+"Close" = "Bezárás";
+
+/* tabs */
+"General" = "Általános";
+"Calendar Options" = "Naptár";
+"Mail Options" = "Levelezés";
+"Identities" = "Identitások";
+"Password" = "Jelszó";
+
+/* ooo */
+"I'm currently in the office" = "Jelenleg az irodában vagyok";
+"I'm currently out of the office" = "Jelenleg az irodán kívül vagyok";
+"AutoReply only once to each sender with the following text :"
+= "Automatikus válasz minden feladónak csak egy alkalommal :";
+
+/* d & t */
+"Current Time Zone :" = "Időzóna :";
+"Short Date Format :" = "Rövid dátumformátum :";
+"Long Date Format :" = "Hosszú dátumformátum :";
+"Time Format :" = "Időformátum :";
+
+"shortDateFmt_0" = "%Y.%m.%d";
+"shortDateFmt_1" = "%m/%e/%y";
+"shortDateFmt_2" = "%m/%d/%Y";
+"shortDateFmt_3" = "%m/%d/%y";
+"shortDateFmt_4" = "%y/%m/%d";
+"shortDateFmt_5" = "%Y-%m-%d";
+"shortDateFmt_6" = "%d-%b-%y";
+"shortDateFmt_7" = "";
+
+"longDateFmt_0" = "%Y %B %d, %A";
+"longDateFmt_1" = "%B %d, %Y";
+"longDateFmt_2" = "%A, %d %B, %Y";
+"longDateFmt_3" = "%d %B, %Y";
+"longDateFmt_4" = "";
+
+"timeFmt_0" = "%H:%M";
+"timeFmt_1" = "%I:%M %p";
+"timeFmt_2" = "";
+
+/* calendar */
+"Week begins on :" = "Hét kezdőnapja:";
+"Day start time :" = "Nap kezdete:";
+"Day end time :" = "Nap vége:";
+"First week of year :" = "Év első hete:";
+"Enable reminders for Calendar items" = "Emlékeztető engedélyezése a naptárbejegyzésekhez";
+"Play a sound when a reminder comes due"
+= "Hang lejátszása az emlékeztetőhöz";
+"Default reminder :" = "Alapértelmezett emlékeztető:";
+
+"firstWeekOfYear_January1" = "Január 1-jétől";
+"firstWeekOfYear_First4DayWeek" = "Első 4 napos héttől";
+"firstWeekOfYear_FirstFullWeek" = "Első teljes héttől";
+
+"reminderTime_0000" = "0 perc";
+"reminderTime_0005" = "5 perc";
+"reminderTime_0010" = "10 perc";
+"reminderTime_0015" = "15 perc";
+"reminderTime_0030" = "30 perc";
+"reminderTime_0100" = "1 óra";
+"reminderTime_0200" = "2 óra";
+"reminderTime_0400" = "4 óra";
+"reminderTime_0800" = "8 óra";
+"reminderTime_1200" = "1/2 nap";
+"reminderTime_2400" = "1 nap";
+"reminderTime_4800" = "2 nap";
+
+/* Mailer */
+"Show subscribed mailboxes only" = "Csak azok a fiókok mutatása, amelyre feliratkozott";
+"Check for new mail:" = "Új üzenetek letöltése:";
+"messagecheck_manually" = "Kézi";
+"messagecheck_every_minute" = "Percenként";
+"messagecheck_every_2_minutes" = "Kétpercenként";
+"messagecheck_every_5_minutes" = "Ötpercenként";
+"messagecheck_every_10_minutes" = "Tízpercenként";
+"messagecheck_every_20_minutes" = "Húszpercenként";
+"messagecheck_every_30_minutes" = "Harminc percenként";
+"messagecheck_once_per_hour" = "Óránként";
+
+"Forward messages:" = "Üzenetek továbbítása:";
+"messageforward_inline" = "Levélként";
+"messageforward_attached" = "Mellékletként";
+
+"Default identity:" = "Alapértelmezett identitás:";
+"Manage identities..." = "Identitások kezelése...";
+"Signature" = "Aláírás";
+"replyplacement_above" = "Válasz elhelyezése az idézet fölött";
+"replyplacement_below" = "Válasz elhelyezése az idézet alatt";
+"And place my signature" = "Aláírás beszúrása";
+"signatureplacement_above" = "az üzenetem alá";
+"signatureplacement_below" = "az idézet alá";
+"Compose messages in" = "Üzenet formátuma";
+"composemessagestype_html" = "HTML";
+"composemessagestype_text" = "Egyszerű szöveg";
+
+/* Additional Parameters */
+"Additional Parameters" = "További beállítások";
+
+/* password */
+"New password:" = "Új jelszó:";
+"Confirmation:" = "Megerősítés:";
+"Change" = "Megváltoztat";

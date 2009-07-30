@@ -51,6 +51,12 @@
 @implementation SOGoAptMailGermanDeletion
 @end
 
+@interface SOGoAptMailHungarianDeletion : SOGoAptMailNotification
+@end
+
+@implementation SOGoAptMailHungarianDeletion
+@end
+
 @interface SOGoAptMailItalianDeletion : SOGoAptMailNotification
 @end
 

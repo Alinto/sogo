@@ -255,6 +255,12 @@
 @implementation SOGoFolderGermanRemovalAdvisory
 @end
 
+@implementation SOGoFolderHungarianAdditionAdvisory
+@end
+
+@implementation SOGoFolderHungarianRemovalAdvisory
+@end
+
 @implementation SOGoFolderItalianAdditionAdvisory
 @end
 

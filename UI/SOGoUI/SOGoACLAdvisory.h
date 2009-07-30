@@ -119,6 +119,15 @@
 @interface SOGoACLGermanRemovalAdvisory : SOGoACLRemovalAdvisory
 @end
 
+@interface SOGoACLHungarianAdditionAdvisory : SOGoACLAdditionAdvisory
+@end
+
+@interface SOGoACLHungarianModificationAdvisory : SOGoACLModificationAdvisory
+@end
+
+@interface SOGoACLHungarianRemovalAdvisory : SOGoACLRemovalAdvisory
+@end
+
 @interface SOGoACLItalianAdditionAdvisory : SOGoACLAdditionAdvisory
 @end
 

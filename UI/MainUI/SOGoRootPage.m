@@ -51,7 +51,7 @@ static NSArray *supportedLanguages = nil;
 + (void) initialize
 {
   if (!supportedLanguages)
-    supportedLanguages = [NSArray arrayWithObjects: @"Czech", @"Dutch", @"English", @"French", @"German", @"Italian", @"BrazilianPortuguese", @"Russian", @"Spanish", @"Welsh", nil];
+    supportedLanguages = [NSArray arrayWithObjects: @"Czech", @"Dutch", @"English", @"French", @"German", @"Hungarian", @"Italian", @"BrazilianPortuguese", @"Russian", @"Spanish", @"Welsh", nil];
 }
 
 /* accessors */

@@ -1,0 +1,8 @@
+"Personal Calendar" = "Személyes naptár";
+vevent_class0 = "(Nyilvános esemény)";
+vevent_class1 = "(Magán esemény)";
+vevent_class2 = "(Bizalmas esemény)";
+
+vtodo_class0 = "(Nyilvános feladat)";
+vtodo_class1 = "(Magán feladat)";
+vtodo_class2 = "(Bizalmas feladat)";

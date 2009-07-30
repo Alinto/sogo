@@ -1,0 +1,263 @@
+/* this file is in UTF-8 format! */
+
+/* Icon's label */
+"Create"      = "Új üzenet";
+"Empty Trash" = "Lomtár ürítése";
+"Delete"      = "Törlés";
+"Expunge"     = "Megjelölés töröltként";
+"Forward"     = "Továbbítás";
+"Get Mail"    = "Letöltés";
+"Junk"        = "Szemét";
+"Reply"       = "Válasz";
+"Reply All"   = "Válasz mindenkinek";
+"Print"       = "Nyomtatás";
+"Stop"        = "Leállítás";
+"Write"       = "Írás";
+
+"Send" = "Küldés";
+"Contacts" = "Kapcsolatok";
+"Attach" = "Melléklet";
+"Save" = "Mentés";
+"Priority" = "Sürgősség";
+"Size" = "Méret";
+
+/* Tooltips */
+
+"Send this message now" = "Üzenet azonnali küldése";
+"Select a recipient from an Address Book" = "Címzett kiválasztása egy címjegyzékből";
+"Include an attachment" = "Melléklet hozzáadása";
+"Save this message" = "Üzenet mentése";
+"Get new messages" = "Új üzenetek letöltése";
+"Create a new message" = "Új üzenet létrehozása";
+"Go to address book" = "Címjegyzék";
+"Reply to the message" = "Válasz az üzenetre";
+"Reply to sender and all recipients" = "Válasz a feladónak és az összes címzettnek";
+"Forward selected message" = "A kijelölt üzenet továbbítása";
+"Delete selected message or folder" = "A kijelölt üzenet vagy mappa törlése";
+"Mark the selected messages as junk" = "Kijelölt üzenetek megjelölése, mint szemét";
+"Print this message" = "Üzenet nyomtatása";
+"Stop the current transfer" = "Küldés megszakítása";
+"Attachment" = "Melléklet";
+"Unread" = "Olvasatlan";
+"Flagged" = "Csillagozott";
+
+/* Main Frame  */
+
+"Home"                 = "Kezdőlap"; 
+"Calendar"             = "Naptár";
+"Addressbook"          = "Címjegyzék";
+"Mail"                 = "Üzenetek";
+"Right Administration" = "Jogosultságok kezelése";
+
+"Help" = "Súgó";
+
+/* Mail account main windows */
+
+"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Üdvözöljük a SOGo levelező rendszerben. A baloldali fában tallózhat a levelező fiókjai között.";
+
+"Read messages"       = "Üzenetek olvasása";
+"Write a new message" = "Új üzenet írása";
+
+"Share: " = "Megosztás: ";
+"Account: " = "Fiók: ";
+"Shared Account: " = "Megosztott fiók: ";
+
+/* acls */
+"Default Roles" = "Alapértelmezett jogok";
+"User rights for:" = "Felhasználói jogosultság:";
+
+"List and see this folder" = "Mappa megtekintése és listázása";
+"Read mails from this folder" = "Üzenetek olvasása a mappában";
+"Mark mails read and unread" = "Üzenetek olvasottnak vagy olvasatlannak jelölése";
+"Modify the flags of the mails in this folder" = "Üzenetek megjelölésének megváltoztatása a mappában";
+"Insert, copy and move mails into this folder" = "Üzenetek beillesztése, másolása, mozgatása a mappában";
+"Post mails" = "Üzenetek küldése";
+"Add subfolders to this folder" = "Almappa hozzáadása a mappához";
+"Remove this folder" = "Mappa törlése";
+"Erase mails from this folder" = "Üzenetek törlése a mappából";
+"Expunge this folder" = "Mappa megjelölése töröltként";
+"Modify the acl of this folder" = "Mappa jogosultságainak szerkesztése";
+
+"Update" = "Mentés";
+"Cancel" = "Mégsem";
+
+/* Mail edition */
+
+"From"          = "Feladó";
+"Subject"       = "Tárgy";
+"To"            = "Címzett";
+"Cc"            = "Másolat";
+"Bcc"           = "Titkos másolat";
+"Reply-To"	= "Válaszcím";
+"Add address"   = "Cím hozzáadása";
+
+"Attachments:" = "Mellékletek:";
+
+"to"            = "Címzett";
+"cc"            = "Másolat";
+"bcc"           = "Titkos másolat";
+
+"Addressbook"   = "Címjegyzék";
+
+"Edit Draft..." = "Piszkozat szerkesztése...";
+"Load Images" = "Képek betöltése";
+
+"highest" = "nagyon sürgős";
+"high" = "sürgős";
+"normal" = "átlagos";
+"low" = "nem nagyon sürgős";
+"lowest" = "nem sürgős";
+
+"This mail is being sent from an unsecure network!" = "A levelet nem biztonságos hálózatból készül elküldeni!";
+
+/* Popup "show" */
+
+"all"     = "összes";
+"read"    = "olvasott";
+"unread"  = "olvasatlan";
+"deleted" = "törölt";
+"flagged" = "csillagozott";
+
+/* MailListView */
+
+"Sender" = "Feladó";
+"Subject or Sender" = "Tárgy vagy feladó";
+"To or Cc" = "Címzett vagy másolat";
+"Entire Message" = "A teljes üzenet";
+
+"Date"          = "Dátum";
+"View"          = "Nézet";
+"All"           = "Összes";
+"Unread"        = "Olvasatlan";
+"messages"      = "üzenetek";
+
+"first"         = "Első";
+"previous"      = "Előző";
+"next"          = "Következő";
+"last"          = "Utolsó";
+
+"msgnumber_to"  = "to";
+"msgnumber_of"  = "of";
+
+"Mark Unread" = "Megjelölés olvasatlanként";
+"Mark Read"   = "Megjelölés olvasottként";
+
+"Untitled" = "Névtelen";
+
+/* Tree */
+
+"SentFolderName"   = "Elküldött üzenetek";
+"TrashFolderName"  = "Lomtár";
+"InboxFolderName"  = "Beérkezett üzenetek";
+"DraftsFolderName" = "Piszkozatok";
+"SieveFolderName"  = "Szűrők";
+"Folders"          = "Mappák"; /* title line */
+
+/* MailMoveToPopUp */
+
+"MoveTo"        = "Áthelyezés ide: &hellip;";
+
+/* Address Popup menu */
+"Add to Address Book..." = "Hozzáadás a címjegyzékhez...";
+"Compose Mail To" = "Üzenet írása";
+"Create Filter From Message..." = "Szűrő létrehozása az üzenet alapján...";
+
+/* Image Popup menu */
+"Save Image" = "Kép mentése";
+"Save Attachment" = "Melléklet mentése";
+
+/* Mailbox popup menus */
+"Open in New Mail Window" = "Megnyitás új üzenet ablakban";
+"Copy Folder Location" = "Mappa helyének másolása";
+"Subscribe..." = "Feliratkozás...";
+"Mark Folder Read..." = "Mappa megjelölése olvasottként...";
+"New Folder..." = "Új mappa...";
+"Compact This Folder" = "Mappa tömörítése";
+"Search Messages..." = "Üzenetek keresése...";
+"Sharing..." = "Megosztás...";
+"New Subfolder..." = "Új almappa...";
+"Rename Folder..." = "Mappa átnevezése...";
+"Delete Folder" = "Mappa törlése";
+"Use This Folder For" = "Mappa használata az alábbira:";
+"Get Messages for Account" = "Fiók üzeneteinek letöltése";
+
+/* Use This Folder menu */
+"Sent Messages" = "Elküldött üzenetek";
+"Drafts" = "Piszkozatok";
+"Deleted Messages" = "Törölt üzenetek";
+
+/* Message list popup menu */
+"Open Message In New Window" = "Üzenet megnyitása új ablakban";
+"Reply to Sender Only" = "Válasz csak a feladónak";
+"Reply to All" = "Válasz mindenkinek";
+"Forward" = "Továbbítás";
+"Edit As New..." = "Szerkesztés újként...";
+"Move To" = "Áthelyezés";
+"Copy To" = "Másolás";
+"Label" = "Cimke";
+"Mark" = "Megjelölés";
+"Save As..." = "Mentés másként...";
+"Print Preview" = "Nyomtatási kép";
+"View Message Source" = "Üzenet forrása";
+"Print..." = "Nyomtatás...";
+"Delete Message" = "Üzenet törlése";
+"Delete Selected Messages" = "Kiválasztott üzenetek törlése";
+
+"This Folder" = "Aktulis mappa";
+
+/* Label popup menu */
+"None" = "Nincs cimke";
+"Important" = "Fontos";
+"Work" = "Hivatalos";
+"Personal" = "Személyes";
+"To Do" = "Teendő";
+"Later" = "Később";
+
+/* Mark popup menu */
+"As Read" = "Olvasottként";
+"Thread As Read" = "Olvasott témacsoportonként";
+"As Read By Date..." = "Olvasás dátuma szerint...";
+"All Read" = "Mindet olvasottként";
+"Flag" = "Csillagozottként";
+"As Junk" = "Szemétként";
+"As Not Junk" = "Nem szemétként";
+"Run Junk Mail Controls" = "Levélszemétgyűjtő futtatása";
+
+/* Folder operations */
+"Name :" = "Név:";
+"Enter the new name of your folder :"
+ = "Adja meg az új mappa nevét:";
+"Do you really want to move this folder into the trash ?"
+ = "Biztosan lomtárba kívánja helyezni ezt a mappát ?";
+"Operation failed" = "A művelet megszakadt";
+
+"Quota" = "Tárhely:";
+"quotasFormat" = "Felhasznált: %{0}%,összes: %{1} MB";
+
+"Please select a message." = "Kérem válasszon egy üzenetet.";
+"Please select a message to print." = "Kérem válasszon ki egy üzenetet a nyomtatáshoz.";
+"Please select only one message to print." = "Kérem csak egy üzenetet válasszon a nyomtatáshoz.";
+
+
+"The folder with name \"%{0}\" could not be created."
+= "\"%{0}\" néven nem hozható létre a mappa.";
+"This folder could not be renamed to \"%{0}\"."
+= "\"%{0}\" névre nem nevezhető át a mappa.";
+"The folder could not be deleted."
+= "A mappa nem törölhető.";
+"The trash could not be emptied."
+= "A lomtár nem üríthető.";
+"The folder functionality could not be changed."
+= "A mappa funkciója nem változtatható meg.";
+
+"You need to choose a non-virtual folder!" = "Egy nem virtuális mappát lehet csak választani!";
+
+"Moving a message into its own folder is impossible!"
+= "Egy üzenet nem helyezhető át a saját mappájába!";
+"Copying a message into its own folder is impossible!"
+= "Egy üzenet nem másolható át a saját mappájába!";
+
+/* Message editing */
+"error_validationfailed" = "Az ellenőrzés végrehatása nem sikerült";
+"error_missingsubject" = "Az üzenet tárgya hiányzik";
+"error_missingrecipients" = "Nincsenek címzettek megadva";

@@ -71,6 +71,15 @@
 @end
 
 
+@interface SOGoAptMailHungarianUpdate : SOGoAptMailNotification
+{
+}
+@end
+
+@implementation SOGoAptMailHungarianUpdate
+@end
+
+
 @interface SOGoAptMailItalianUpdate : SOGoAptMailNotification
 {
 }
