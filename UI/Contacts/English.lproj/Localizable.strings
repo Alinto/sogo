@@ -33,6 +33,10 @@
 "new" = "new";
 "Preferred Phone"   = "Preferred Phone";
 
+"Move To" = "Move To";
+"Copy To" = "Copy To";
+"Add to:" = "Add to:";
+
 /* Tooltips */
 
 "Create a new address book card" = "Create a new address book card";
@@ -64,37 +68,42 @@
 
 "Preferred" = "Preferred";
 "Card for %@" = "Card for %@";
-"Display Name: " = "Display Name: ";
-"Email Address: " = "Email Address: ";
+"Display Name:" = "Display Name:";
+"Email:" = "Email:";
+"Additional Email:" = "Additional Email:";
 
-"Firstname: " = "Firstname: ";
-"Lastname: " = "Lastname: ";
-"Nickname: " = "Nickname: ";
+"Phone Number:" = "Phone Number:";
+"Prefers to receive messages formatted as:" = "Prefers to receive messages formatted as:";
+"Screen Name:" = "Screen Name:";
+
+"First:" = "First:";
+"Last:" = "Last:";
+"Nickname:" = "Nickname:";
 
 "Telephone" = "Telephone";
-"Work: " = "Work: ";
-"Home: " = "Home: ";
-"Fax: " = "Fax: ";
-"Mobile: " = "Mobile: ";
-"Pager: " = "Pager: ";
+"Work:" = "Work:";
+"Home:" = "Home:";
+"Fax:" = "Fax:";
+"Mobile:" = "Mobile:";
+"Pager:" = "Pager:";
 
-"Title: " = "Title: ";
-"Service: " = "Service: ";
-"Company: " = "Company: ";
-"Street Address: " = "Street Address: ";
-"City: " = "City: ";
+"Title:" = "Title:";
+"Service:" = "Service:";
+"Company:" = "Company:";
+"Street Address:" = "Street Address:";
+"City:" = "City: ";
 "State_Province:" = "State/Province:";
 "ZIP_Postal Code:" = "ZIP/Postal Code:";
-"Country: " = "Country: ";
-"Web: " = "Web: ";
+"Country:" = "Country:";
+"Web:" = "Web:";
 
 "Work" = "Work";
 "Other Infos" = "Other Infos";
 
-"Note: " = "Note: ";
-"Timezone: " = "Timezone: ";
-"Birthday: " = "Birthday: ";
-"Freebusy URL: " = "Freebusy URL: ";
+"Note:" = "Note:";
+"Timezone:" = "Timezone:";
+"Birthday:" = "Birthday:";
+"Freebusy URL:" = "Freebusy URL:";
 
 "Add as..." = "Add as...";
 "Recipient" = "Recipient";

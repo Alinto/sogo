@@ -1,5 +1,15 @@
 /* this file is in UTF-8 format! */
 
+"Contact" = "Contact";
+"Address" = "Address";
+"Other" = "Other";
+
+"Name" = "Név";
+"Internet" = "Internet";
+"Phones" = "Telefonszámok";
+"Home" = "Otthoni";
+"Work" = "Munkahely";
+
 "Addressbook" = "Címjegyzék";
 "Addresses" = "Címek";
 "Update" = "Mentés";
@@ -12,17 +22,14 @@
 "Extended" = "Kiterjesztett";
 "Fax" = "Fax";
 "Firstname" = "Keresztnév";
-"Home" = "Otthoni";
 "HomePhone" = "Otthoni telefon";
 "Lastname" = "Vezetéknév";
 "Location" = "Hely";
 "MobilePhone" = "Mobil telefon";
-"Name" = "Név";
 "OfficePhone" = "Hivatali telefon";
 "Organization" = "Szervezet";
 "Work Phone" = "Munkahelyi telefon";
 "Phone" = "Telefon";
-"Phones" = "Telefonszámok";
 "Postal" = "Irányítószám";
 "Save" = "Mentés";
 "URL" = "URL";
@@ -32,6 +39,10 @@
 "invalidemailwarn" = "A megadótt emailcím érvénytelen";
 "new" = "új";
 "Preferred Phone"   = "Preferált telefon";
+
+"Move To" = "Move To";
+"Copy To" = "Copy To";
+"Add to:" = "Add to:";
 
 /* Tooltips */
 
@@ -64,37 +75,42 @@
 
 "Preferred" = "Preferált";
 "Card for %@" = "Névjegy: %@";
-"Display Name: " = "Megjelenítendő név: ";
-"Email Address: " = "Email cím: ";
+"Display:" = "Megjelenítendő név:";
+"Display Name:" = "Megjelenítendő név:";
+"Email:" = "Email cím:";
+"Additional Email:" = "Additional Email:";
 
-"Firstname: " = "Keresztnév: ";
-"Lastname: " = "Vezetéknév: ";
-"Nickname: " = "Becenév: ";
+"Phone Number:" = "Phone Number:";
+"Prefers to receive messages formatted as:" = "Prefers to receive messages formatted as:";
+"Screen Name:" = "Fedőnév:";
+
+"First:" = "Keresztnév:";
+"Last:" = "Vezetéknév:";
+"Nickname:" = "Becenév:";
 
 "Telephone" = "Telefon";
-"Work: " = "Munkahely: ";
-"Home: " = "Otthon: ";
-"Fax: " = "Fax: ";
-"Mobile: " = "Mobil: ";
-"Pager: " = "Személyhívó: ";
+"Work:" = "Munkahely:";
+"Home:" = "Otthon:";
+"Fax:" = "Fax:";
+"Mobile:" = "Mobil:";
+"Pager:" = "Személyhívó:";
 
-"Title: " = "Cím: ";
-"Service: " = "Szolgáltatás: ";
-"Company: " = "Vállalat: ";
-"Street Address: " = "Cím: ";
-"City: " = "Város: ";
+"Title:" = "Cím:";
+"Service:" = "Szolgáltatás:";
+"Company:" = "Vállalat:";
+"Street Address:" = "Cím:";
+"City:" = "Város:";
 "State_Province:" = "Állam/tartomány:";
 "ZIP_Postal Code:" = "Irányítószám:";
-"Country: " = "Ország: ";
-"Web: " = "Web: ";
+"Country:" = "Ország:";
+"Web Page:" = "Web:";
 
-"Work" = "Munkahely";
 "Other Infos" = "Egyéb";
 
-"Note: " = "Megjegyzés: ";
-"Timezone: " = "Időzóna: ";
-"Birthday: " = "Születésnap: ";
-"Freebusy URL: " = "Foglaltság URL: ";
+"Note:" = "Megjegyzés:";
+"Timezone:" = "Időzóna:";
+"Birthday:" = "Születésnap:";
+"Freebusy URL:" = "Foglaltság URL:";
 
 "Add as..." = "Hozzáadás mint...";
 "Recipient" = "Címzett";
