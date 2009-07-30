@@ -140,6 +140,8 @@
 - (void) setAttach: (NSString *) _attachUrl;
 - (NSString *) attach;
 
+- (BOOL) hasAttendees;
+
 - (void) setAttendeesNames: (NSString *) newAttendeesNames;
 - (NSString *) attendeesNames;
 

@@ -744,6 +744,11 @@ iRANGE(2);
 //  return [item keysWithFormat: @"%{fullName} <%{email}>"];
 //}
 
+- (BOOL) hasAttendees
+{
+  return ([[component attendees] count] > 0);
+}
+
 - (void) setAttendeesNames: (NSString *) newAttendeesNames
 {
   ASSIGN (attendeesNames, newAttendeesNames);
@@ -1536,7 +1541,7 @@ RANGE(2);
   owner = [componentCalendar ownerInContext: context];
   login = [[context activeUser] login];
   isOwner = [owner isEqualToString: login];
-  hasAttendees = ([[component attendees] count] > 0);
+  hasAttendees = [self hasAttendees];
   organizerEmail = [[component organizer] email];
   hasOrganizer = ([organizerEmail length] > 0);
 
