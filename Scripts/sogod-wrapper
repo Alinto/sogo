@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # SOGo daemon wrapper
 #
@@ -50,6 +50,7 @@ else
     echo "Can't find sogod"
     exit 1
 fi
+echo $sogod
 
 if [ -f $GNUSTEP_MAKEFILES/GNUstep.sh ]; then
     . $GNUSTEP_MAKEFILES/GNUstep.sh

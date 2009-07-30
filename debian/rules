@@ -54,13 +54,11 @@ install-arch:
 	mkdir -p debian/tmp/etc/default
 	mkdir -p debian/tmp/etc/apache2/conf.d
 	mkdir -p debian/tmp/usr/sbin
-	mkdir -p debian/tmp/usr/share/GNUstep/Tools
-	echo "DAEMON=/usr/sbin/sogod" >> debian/tmp/etc/default/sogo
+	echo "DAEMON=/usr/sbin/sogod-launcher" >> debian/tmp/etc/default/sogo
 	cp Scripts/sogo-init.d-debian debian/tmp/etc/init.d/sogod
 	cp Scripts/tmpwatch debian/tmp/etc/cron.daily/sogo-tmpwatch
-	cp Apache/SOGo.conf debian/tmp/etc/apache2/conf.d/
-	mv debian/tmp/usr/sbin/sogod debian/tmp/usr/share/GNUstep/Tools
-	cp Scripts/sogod-wrapper debian/tmp/usr/sbin/sogod
+	cp Apache/SOGo-debian.conf debian/tmp/etc/apache2/conf.d/SOGo.conf
+	cp Scripts/sogod-wrapper debian/tmp/usr/sbin/sogod-launcher
 
 	dh_install -s
 

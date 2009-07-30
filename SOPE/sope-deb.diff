@@ -1,3 +1,10 @@
+Index: debian/sope_SOPEVER_-versitsaxdriver.install
+===================================================================
+--- debian/sope_SOPEVER_-versitsaxdriver.install  (revision 1660)
++++ debian/sope_SOPEVER_-versitsaxdriver.install  (working copy)
+@@ -1 +1,2 @@
+ usr/lib/sope-*/saxdrivers/versitSaxDriver.sax
++usr/lib/GNUstep/SaxDrivers-4.9/versitSaxDriver.sax
 Index: debian/control
 ===================================================================
 --- debian/control	(revision 1660)
@@ -38,6 +45,14 @@ Index: debian/libsope-gdl1-_SOPEVER_-dev.install
 -usr/include/GDLAccess
 +usr/include/GNUstep/GDLAccess
  usr/lib/libGDLAccess.so
+Index: debian/sope_SOPEVER_-appserver.install
+===================================================================
+--- debian/sope_SOPEVER_-appserver.install  (revision 1660)
++++ debian/sope_SOPEVER_-appserver.install  (working copy)
+@@ -1 +1,2 @@
+-usr/sbin/sope-*
++usr/lib/GNUstep/SoProducts-4.9
++usr/lib/GNUstep/WOxElemBuilders-4.9
 Index: debian/control.in
 ===================================================================
 --- debian/control.in	(revision 1660)
@@ -93,6 +108,31 @@ Index: debian/libsope-ical_SOPEVER_-dev.install
 -usr/include/NGiCal
 +usr/include/GNUstep/NGiCal
  usr/lib/libNGiCal.so
+Index: debian/sope_SOPEVER_-libxmlsaxdriver.install
+===================================================================
+--- debian/sope_SOPEVER_-libxmlsaxdriver.install  (revision 1660)
++++ debian/sope_SOPEVER_-libxmlsaxdriver.install  (working copy)
+@@ -1 +1,2 @@
+ usr/lib/sope-*/saxdrivers/libxmlSAXDriver.sax
++usr/lib/GNUstep/SaxDrivers-4.9/libxmlSAXDriver.sax
+Index: debian/libsope-appserver_SOPEVER_.install
+===================================================================
+--- debian/libsope-appserver_SOPEVER_.install (revision 1660)
++++ debian/libsope-appserver_SOPEVER_.install (working copy)
+@@ -6,5 +6,6 @@
+ usr/lib/libSoOFS.so.*
+ usr/lib/libWEPrototype.so.*
+ usr/share/sope-*/ngobjweb
++usr/lib/GNUstep/Libraries/Resources/NGObjWeb
+ usr/lib/sope-*/products
+ usr/lib/sope-*/wox-builders
+Index: debian/sope_SOPEVER_-stxsaxdriver.install
+===================================================================
+--- debian/sope_SOPEVER_-stxsaxdriver.install (revision 1660)
++++ debian/sope_SOPEVER_-stxsaxdriver.install (working copy)
+@@ -1 +1,2 @@
+ usr/lib/sope-*/saxdrivers/STXSaxDriver.sax
++usr/lib/GNUstep/SaxDrivers-4.9/STXSaxDriver.sax
 Index: debian/rules
 ===================================================================
 --- debian/rules	(revision 1660)
@@ -176,6 +216,13 @@ Index: debian/libsope-ldap_SOPEVER_-dev.install
 -usr/include/NGLdap
 +usr/include/GNUstep/NGLdap
  usr/lib/libNGLdap.so
+Index: debian/sope_SOPEVER_-gdl1-postgresql.install
+===================================================================
+--- debian/sope_SOPEVER_-gdl1-postgresql.install  (revision 1660)
++++ debian/sope_SOPEVER_-gdl1-postgresql.install  (working copy)
+@@ -1 +1 @@
+-usr/lib/sope-*/dbadaptors/PostgreSQL.gdladaptor
++usr/lib/GNUstep/GDLAdaptors-4.9/PostgreSQL.gdladaptor
 Index: debian/libsope-mime_SOPEVER_-dev.install
 ===================================================================
 --- debian/libsope-mime_SOPEVER_-dev.install	(revision 1660)

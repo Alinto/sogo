@@ -7,7 +7,7 @@ USERS=`getent passwd | grep sogo | sed -e 's/\([a-zA-Z]*\):.*/\1/g'`
 
 if [ "$USERS" != "sogo" ] ; then
   echo "Adding user sogo"
-  useradd -d /tmp -g sogo -K UID_MIN=100 -K UID_MAX=500 -K PASS_MAX_DAYS=-1 -s /bin/false sogo
+  useradd -d /home/sogo -g sogo -m -K UID_MIN=100 -K UID_MAX=500 -K PASS_MAX_DAYS=-1 -s /bin/bash sogo
 fi
 
 chown -R sogo /var/run/sogo
