@@ -254,8 +254,8 @@
 
     SOGoComponentOccurence = {
       methods = {
-	confirmEditing = { 
-	  protectedBy = "ModifyComponent";
+	confirmEditing = {
+	  protectedBy = "ViewAllComponent";
 	  pageName    = "UIxOccurenceDialog";
 	};
 	confirmDeletion = { 
