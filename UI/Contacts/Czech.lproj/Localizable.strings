@@ -64,37 +64,37 @@
 
 "Preferred" = "Upřednostňovaný";
 "Card for %@" = "Karta pro %@";
-"Display Name: " = "Zobrazované jméno: ";
-"Email Address: " = "E-Mail: ";
+"Display Name:" = "Zobrazované jméno:";
+"Email:" = "E-Mail:";
 
-"Firstname: " = "Křestní jméno: ";
-"Lastname: " = "Příjmení: ";
-"Nickname: " = "Přezdívka: ";
+"First:" = "Křestní jméno:";
+"Last:" = "Příjmení:";
+"Nickname:" = "Přezdívka:";
 
 "Telephone" = "Telefon";
-"Work: " = "Práce: ";
-"Home: " = "Domů: ";
-"Fax: " = "Fax: ";
-"Mobile: " = "Mobil: ";
-"Pager: " = "Pager: ";
+"Work:" = "Práce:";
+"Home:" = "Domů:";
+"Fax:" = "Fax:";
+"Mobile:" = "Mobil:";
+"Pager:" = "Pager:";
 
-"Title: " = "Titul: ";
-"Service: " = "Služba: ";
-"Company: " = "Společnost: ";
-"Street Address: " = "Ulice: ";
-"City: " = "Město: ";
+"Title:" = "Titul:";
+"Service:" = "Služba:";
+"Company:" = "Společnost:";
+"Street Address:" = "Ulice:";
+"City:" = "Město:";
 "State_Province:" = "Stát/Provincie:";
 "ZIP_Postal Code:" = "PSČ:";
-"Country: " = "Země: ";
-"Web: " = "Web: ";
+"Country:" = "Země:";
+"Web:" = "Web:";
 
 "Work" = "Práce";
 "Other Infos" = "Ostatní info";
 
-"Note: " = "Poznámka: ";
-"Timezone: " = "Časové pásmo: ";
-"Birthday: " = "Narozeniny: ";
-"Freebusy URL: " = "Freebusy URL: ";
+"Note:" = "Poznámka:";
+"Timezone:" = "Časové pásmo:";
+"Birthday:" = "Narozeniny:";
+"Freebusy URL:" = "Freebusy URL:";
 
 "Add as..." = "Přidat jako...";
 "Recipient" = "Adresát";

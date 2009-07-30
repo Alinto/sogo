@@ -64,37 +64,37 @@
 
 "Preferred" = "Preferido";
 "Card for %@" = "Contato para %@";
-"Display Name: " = "Exibir Nome: ";
-"Email Address: " = "Endereço de Email: ";
+"Display Name:" = "Exibir Nome:";
+"Email:" = "Endereço de Email:";
 
-"Firstname: " = "Primeiro Nome: ";
-"Lastname: " = "Último Nome: ";
-"Nickname: " = "Apelido: ";
+"First:" = "Primeiro Nome:";
+"Last:" = "Último Nome:";
+"Nickname:" = "Apelido:";
 
 "Telephone" = "Telefone";
-"Work: " = "Comercial: ";
-"Home: " = "Residencial: ";
-"Fax: " = "Fax: ";
-"Mobile: " = "Celular: ";
-"Pager: " = "Pager: ";
+"Work:" = "Comercial:";
+"Home:" = "Residencial:";
+"Fax:" = "Fax:";
+"Mobile:" = "Celular:";
+"Pager:" = "Pager:";
 
-"Title: " = "Título: ";
-"Service: " = "Serviço: ";
-"Company: " = "Empresa: ";
-"Street Address: " = "Endereço: ";
-"City: " = "Cidade: ";
+"Title:" = "Título:";
+"Service:" = "Serviço:";
+"Company:" = "Empresa:";
+"Street Address:" = "Endereço:";
+"City:" = "Cidade:";
 "State_Province:" = "Estado:";
 "ZIP_Postal Code:" = "CEP:";
-"Country: " = "País: ";
-"Web: " = "Web: ";
+"Country:" = "País:";
+"Web:" = "Web:";
 
 "Work" = "Comercial";
 "Other Infos" = "Outras Informações";
 
-"Note: " = "Notas: ";
-"Timezone: " = "Fuso Horário: ";
-"Birthday: " = "Aniversário: ";
-"Freebusy URL: " = "URL Livre/Ocupado: ";
+"Note:" = "Notas:";
+"Timezone:" = "Fuso Horário:";
+"Birthday:" = "Aniversário:";
+"Freebusy URL:" = "URL Livre/Ocupado:";
 
 "Add as..." = "Adicionar como...";
 "Recipient" = "Recipient";
