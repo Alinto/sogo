@@ -748,15 +748,17 @@ function onWindowResize(event) {
     var content = $("cke_contents_text");
     var height = Math.floor(window.height() - editor.offsetTop);
 
+    content.height = (height-60) + "px";
+    content.style.height = (height-60) + "px";
+
     if (Prototype.Browser.IE) {
       editor.style.width = '';
       editor.style.height = '';
       height += 3;
     }
-
-    content.height = (height-60) + "px";
-    content.style.height = (height-60) + "px";
-    content.setStyle({ 'top': hr.offsetTop + 'px' });
+    else {
+      content.setStyle({ 'top': hr.offsetTop + 'px' });
+    }
   }
   else
     textarea.rows = Math.floor((window.height() - textarea.offsetTop) / rowheight);
