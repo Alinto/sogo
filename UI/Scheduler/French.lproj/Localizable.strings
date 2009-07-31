@@ -499,3 +499,12 @@ vtodo_class2 = "(Tâche confidentielle)";
 
 "Show alarms" = "Afficher les alarmes";
 "Show tasks" =  "Afficher les tâches";
+
+/* Error messages */
+"dayFieldInvalid" = "Veuillez spécifier un chiffre superieur ou égal à 1 dans le champ Jours.";
+"weekFieldInvalid" = "Veuillez spécifier un chiffre superieur ou égal à 1 dans le champ Semaine(s).";
+"monthFieldInvalid" = "Veuillez spécifier un chiffre superieur ou égal à 1 dans le champ Mois.";
+"monthDayFieldInvalid" = "Veuillez spécifier un chiffre superieur ou égal à 1 dans la journée du mois.";
+"yearFieldInvalid" = "Veuillez spécifier un chiffre superieur ou égal à 1 dans le champ Année(s).";
+"appointmentFieldInvalid" = "Veuillez spécifier un chiffre superieur ou égal à 1 dans le champ rendez-vous.";
+"recurrenceUnsupported" = "Ce type de récurrence n\\'est pas supporté.";

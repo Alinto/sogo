@@ -12,6 +12,15 @@
   const:popup="YES"
   const:jsFiles="skycalendar.js">
 
+  <script type="text/javascript">
+    var dayFieldInvalid = '<var:string label:value="dayFieldInvalid"/>';
+    var weekFieldInvalid = '<var:string label:value="weekFieldInvalid"/>';
+    var monthFieldInvalid = '<var:string label:value="monthFieldInvalid"/>';
+    var monthDayFieldInvalid = '<var:string label:value="monthDayFieldInvalid"/>';
+    var yearFieldInvalid = '<var:string label:value="yearFieldInvalid"/>';
+    var appointmentFieldInvalid = '<var:string label:value="appointmentFieldInvalid"/>';
+    var recurrenceUnsupported = '<var:string label:value="recurrenceUnsupported"/>';
+  </script>
   <form name="recurrence_form" id="recurrence_form" href="editRecurrence">
     <div id="recurrence_pattern" style="display: none;">
       <span class="caption"><var:string label:value="Recurrence pattern"/></span>

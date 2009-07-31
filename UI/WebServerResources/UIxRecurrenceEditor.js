@@ -204,7 +204,7 @@ function handleDailyRecurrence() {
     }
 
     if (showError)
-      window.alert("Please specify a numerical value in the Days field greater or equal to 1.");
+      window.alert(dayFieldInvalid);
   }
   else {
     validate = true;
@@ -231,7 +231,7 @@ function handleWeeklyRecurrence() {
   }
 
   if (showError)
-    window.alert("Please specify a numerical value in the Week(s) field greater or equal to 1.");
+    window.alert(weekFieldInvalid);
 
   return validate;
 }
@@ -244,7 +244,7 @@ function handleMonthlyRecurrence() {
   // FIXME - right now we do not support rules
   //         such as The Second Tuesday...
   if (radioValue == 0)
-    window.alert("This type of recurrence is currently unsupported.");
+    window.alert(recurrenceUnsupported);
   else {
     // We check if the monthlyMonthsField really contains an integer
     var showError = true;
@@ -264,17 +264,14 @@ function handleMonthlyRecurrence() {
     }
 
     if (showError)
-      window.alert("Please specify a numerical value in the Month(s) field greater or equal to 1.");
+      window.alert(monthFieldInvalid);
   }
 
   return validate;
 }
 
 function validateYearlyRecurrence() {
-	var errors = ["Please specify a numerical value in the Year(s)"
-								+ " field greater or equal to 1.",
-								"Please specify a numerical value in the month day"
-								+ " field greater or equal to 1."];
+	var errors = [yearFieldInvalid, monthDayFieldInvalid];
 
 	var errorToShow = 0;
 	var fieldValue = "" + $('yearlyYearsField').value;
@@ -307,7 +304,7 @@ function handleYearlyRecurrence() {
   // FIXME - right now we do not support rules
   //         such as Every Second Tuesday of February
   if (radioValue == 1)
-    window.alert("This type of recurrence is currently unsupported.");
+    window.alert(recurrenceUnsupported);
   else {
 		if (validateYearlyRecurrence()) {
 			var fieldValue = "" + $('yearlyYearsField').value;
@@ -355,7 +352,7 @@ function handleRange() {
     }
 
     if (showError)
-      window.alert("Please specify a numerical value in the Appointment(s) field  greater or equal to 1.");
+      window.alert(appointmentFieldInvalid);
   }
   else if (radioValue == 2) {
     validate = true;
@@ -392,11 +389,22 @@ function onEditorCancelClick(event) {
   window.close();
 }
 
+function escapeAlertMessages () {
+  dayFieldInvalid = dayFieldInvalid.decodeEntities ();
+  weekFieldInvalid = weekFieldInvalid.decodeEntities ();
+  monthFieldInvalid = monthFieldInvalid.decodeEntities ();
+  monthDayFieldInvalid = monthDayFieldInvalid.decodeEntities ();
+  yearFieldInvalid = yearFieldInvalid.decodeEntities ();
+  appointmentFieldInvalid = appointmentFieldInvalid.decodeEntities ();
+  recurrenceUnsupported = recurrenceUnsupported.decodeEntities ();
+}
+
 function onRecurrenceLoadHandler() {
   initializeFormValues();
   initializeSelectors();
   initializeWindowButtons();
   assignCalendar('endDate_date');
+  escapeAlertMessages ();
 }
 
 document.observe("dom:loaded", onRecurrenceLoadHandler);

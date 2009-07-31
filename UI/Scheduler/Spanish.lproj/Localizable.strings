@@ -506,3 +506,12 @@ vtodo_class2 = "(Tarea confidencial)";
 
 "Show alarms" = "Show alarms";
 "Show tasks" = "Show tasks";
+
+/* Error messages */
+"dayFieldInvalid" = "Please specify a numerical value in the Days field greater or equal to 1.";
+"weekFieldInvalid" = "Please specify a numerical value in the Week(s) field greater or equal to 1.";
+"monthFieldInvalid" = "Please specify a numerical value in the Month(s) field greater or equal to 1.";
+"monthDayFieldInvalid" = "Please specify a numerical value in the month day field greater or equal to 1.";
+"yearFieldInvalid" = "Please specify a numerical value in the Year(s) field greater or equal to 1.";
+"appointmentFieldInvalid" = "Please specify a numerical value in the Appointment(s) field  greater or equal to 1.";
+"recurrenceUnsupported" = "This type of recurrence is currently unsupported.";
