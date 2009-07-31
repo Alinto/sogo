@@ -1,6 +1,6 @@
 /* UIxCalMainView.m - this file is part of SOGo
  *
- * Copyright (C) 2006, 2007 Inverse inc.
+ * Copyright (C) 2006-2009 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -360,10 +360,12 @@ static BOOL shouldDisplayWeekend = NO;
       moduleSettings = [NSMutableDictionary dictionary];
       [ud setObject: moduleSettings forKey: module];
     }
-  
-  [moduleSettings setObject: theView
-		     forKey: @"View"];
-  [ud synchronize];
+  if (![theView isEqualToString: (NSString*)[moduleSettings objectForKey: @"View"]])
+    {
+      [moduleSettings setObject: theView
+			 forKey: @"View"];
+      [ud synchronize];
+    }
 }
 
 /* current day related */
