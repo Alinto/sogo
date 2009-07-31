@@ -106,9 +106,11 @@ UL#tasksList LI.important SPAN
 { color: #f00 !important;
   background-image: url(important.png);
   background-repeat: no-repeat;
-  background-position: 5px 2px;
-  padding-left: 15px;
+  background-position: 3px 2px;
+  padding-left: 10px;
 }
+UL#tasksList LI SPAN
+{ padding-left: 10px; }
 
 UL#tasksList LI[class~="_selected"].overdue
 { color: #fff !important;
