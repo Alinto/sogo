@@ -475,10 +475,38 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
 
 - (NSArray *) messageCheckList
 {
-  return [NSArray arrayWithObjects: @"manually", @"every_minute",
+  NSArray *defaultList;
+  NSMutableArray *rc;
+  NSString *tmp;
+  int i, count;
+
+  defaultList = [NSMutableArray arrayWithArray: 
+                 [[NSUserDefaults standardUserDefaults]
+                  arrayForKey: @"SOGoMailPollingIntervals"]];
+  if ([defaultList count] > 0)
+    {
+      NSLog (@"defaultsValue: %@", defaultList);
+      rc = [NSMutableArray arrayWithObjects: @"manually", nil];
+      count = [defaultList  count];
+      for (i = 0; i < count; i++)
+        {
+          int value = [[defaultList objectAtIndex: i] intValue];
+          if (value == 1)
+            tmp = @"every_minute";
+          else if (value == 60)
+            tmp = @"once_per_hour";
+          else
+            tmp = [NSString stringWithFormat: @"every_%d_minutes", value];
+          [rc addObject: tmp];
+        }
+    }
+  else
+    rc = [NSArray arrayWithObjects: @"manually", @"every_minute",
 		  @"every_2_minutes", @"every_5_minutes", @"every_10_minutes",
 		  @"every_20_minutes", @"every_30_minutes", @"once_per_hour",
 		  nil];
+
+  return rc;
 }
 
 - (NSString *) itemMessageCheckText
