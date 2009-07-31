@@ -664,7 +664,7 @@ function tasksListCallback(http) {
                 var cname = escape(data[i][0]);
                 listItem.setAttribute("id", calendar + "-" + cname);
                 //listItem.addClassName(data[i][5]); // Classification
-                listItem.addClassName(data[i][7]);
+                listItem.addClassName(data[i][8]);
                 listItem.calendar = calendar;
                 listItem.addClassName("calendarFolder" + calendar);
                 listItem.cname = cname;
@@ -672,6 +672,9 @@ function tasksListCallback(http) {
                 input.setAttribute("type", "checkbox");
                 if (parseInt(data[i][6]) == 0)
                   input.setAttribute ("disabled", true);
+                if (parseInt(data[i][7]) == 1) {
+                  listItem.addClassName ("important");
+                }
                 listItem.appendChild(input);
                 input.observe("click", updateTaskStatus, true);
                 input.setAttribute("value", "1");
@@ -679,7 +682,10 @@ function tasksListCallback(http) {
                     input.setAttribute("checked", "checked");
                 $(input).addClassName("checkBox");
 
-                listItem.appendChild(document.createTextNode(data[i][3]));
+                var t = new Element ("span");
+                t.update (data[i][3]);
+                //listItem.appendChild(document.createTextNode(data[i][3]));
+                listItem.appendChild (t);
             }
 
             list.scrollTop = list.previousScroll;

@@ -86,7 +86,7 @@ static NSArray *tasksFields = nil;
     {
       tasksFields = [NSArray arrayWithObjects: @"c_name", @"c_folder",
 			     @"c_status", @"c_title", @"c_enddate",
-			     @"c_classification", @"editable", nil];
+			     @"c_classification", @"editable", @"c_priority", nil];
       [tasksFields retain];
     }
 }
