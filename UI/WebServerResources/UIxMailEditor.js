@@ -714,10 +714,13 @@ function onWindowResize(event) {
 	var attachmentswidth = 0;
 	if (attachmentsarea.style.display) {
 		attachmentswidth = attachmentsarea.getWidth();
-		// Resize of attachment list is b0rken under IE7
-		//    fromfield = $(document).getElementsByClassName('headerField',
-		//						   headerarea)[0];
-		//    $("attachments").setStyle({ height: (headerarea.getHeight() - fromfield.getHeight() - 10) + 'px' });
+    fromfield = $(document).getElementsByClassName('headerField', headerarea)[0];
+    var height = headerarea.getHeight() - fromfield.getHeight() - 10;
+    if (Prototype.Browser.IE)
+      $("attachments").setStyle({ height: (height-9) + 'px' });
+    else
+      $("attachments").setStyle({ height: height + 'px' });
+
 	}
 	var subjectfield = headerarea.down("div#subjectRow span.headerField");
 	var subjectinput = headerarea.down("div#subjectRow input.textField");
@@ -744,7 +747,6 @@ function onWindowResize(event) {
       setTimeout ('onWindowResize ()', 100);
       return;
     }
-    editor.absolutize ();
     var content = $("cke_contents_text");
     var height = Math.floor(window.height() - editor.offsetTop);
 
