@@ -491,13 +491,16 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
       for (i = 0; i < count; i++)
         {
           int value = [[defaultList objectAtIndex: i] intValue];
+          tmp = nil;
           if (value == 1)
             tmp = @"every_minute";
           else if (value == 60)
             tmp = @"once_per_hour";
-          else
+          else if (value == 2 || value == 5 || value == 10 
+                   || value == 20 || value == 30)
             tmp = [NSString stringWithFormat: @"every_%d_minutes", value];
-          [rc addObject: tmp];
+          if (tmp)
+            [rc addObject: tmp];
         }
     }
   else
