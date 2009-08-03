@@ -21,7 +21,6 @@
  */
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
-#import <Foundation/NSDistributedNotificationCenter.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSLock.h>
 #import <Foundation/NSString.h>
@@ -309,7 +308,7 @@ static NSLock *lock = nil;
       if (!currentUser)
 	{
 	  currentUser = [NSMutableDictionary dictionary];
-	  [[SOGoCache sharedCache] cacheAttributes: currentUser  forLogin: login];
+	  [[SOGoCache sharedCache] cacheValues: currentUser  ofType: @"attributes"  forLogin: login];
 	}
       [currentUser setObject: password forKey: @"password"];
     }
@@ -417,34 +416,18 @@ static NSLock *lock = nil;
 #endif
   key = [newUser objectForKey: @"c_uid"];
   if (key)
-    [[SOGoCache sharedCache] cacheAttributes: newUser  forLogin: key];
+    {
+      [[SOGoCache sharedCache] cacheValues: newUser  ofType: @"attributes"  forLogin: key];
+    }
+
   emails = [[newUser objectForKey: @"emails"] objectEnumerator];
   while ((key = [emails nextObject]))
     {
-      [[SOGoCache sharedCache] cacheAttributes: newUser  forLogin: key];
+      [[SOGoCache sharedCache] cacheValues: newUser  ofType: @"attributes"  forLogin: key];
     }
 #if defined(THREADSAFE)
   [lock unlock];
 #endif
-
-  // We propagate the loaded LDAP attributes to other sogod instances
-  // which will cache them in SOGoCache (excluding for the instance
-  // that actually posts the notification)
-  if ([newUser objectForKey: @"c_uid"]) 
-    {
-      NSMutableDictionary *d;
-      
-      d = [NSMutableDictionary dictionary];
-      [d setObject: newUser  forKey: @"values"];
-      [d setObject: [newUser objectForKey: @"c_uid"]
-	 forKey: @"uid"];
-      
-      [(NSDistributedNotificationCenter *)[NSDistributedNotificationCenter defaultCenter]
-	postNotificationName: @"SOGoUserAttributesHaveLoaded"
-	object: nil
-	userInfo: d
-	deliverImmediately: YES];
-    }
 }
 
 - (NSDictionary *) contactInfosForUserWithUIDorEmail: (NSString *) uid

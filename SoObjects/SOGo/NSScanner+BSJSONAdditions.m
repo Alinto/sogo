@@ -255,9 +255,12 @@ NSString *jsonNullString = @"null";
 
 - (BOOL)scanJSONNumber:(NSNumber **)number
 {
-  NSDecimal decimal;
-  BOOL result = [self scanDecimal:&decimal];
-  *number = [NSDecimalNumber decimalNumberWithDecimal:decimal];
+  //NSDecimal decimal;
+  //BOOL result = [self scanDecimal:&decimal];
+  //*number = [NSDecimalNumber decimalNumberWithDecimal:decimal];
+  int value;
+  BOOL result = [self scanInt: &value];
+  *number = [NSNumber numberWithInt: value];
   return result;
 }
 

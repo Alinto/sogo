@@ -1,6 +1,6 @@
 /* NSDictionary+DAV.m - this file is part of SOGo
  *
- * Copyright (C) 2008 Inverse inc.
+ * Copyright (C) 2008-2009 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
