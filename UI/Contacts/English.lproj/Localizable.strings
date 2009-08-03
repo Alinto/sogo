@@ -1,5 +1,9 @@
 /* this file is in UTF-8 format! */
 
+"Contact" = "Contact";
+"Address" = "Address";
+"Other" = "Other";
+
 "Addressbook" = "Addressbook";
 "Addresses" = "Addresses";
 "Update" = "Update";
@@ -25,7 +29,7 @@
 "Phones" = "Phones";
 "Postal" = "Postal";
 "Save" = "Save";
-"URL" = "URL";
+"Internet" = "Internet";
 "Unit" = "Unit";
 "delete" = "delete";
 "edit" = "edit";
@@ -68,6 +72,7 @@
 
 "Preferred" = "Preferred";
 "Card for %@" = "Card for %@";
+"Display:" = "Display:";
 "Display Name:" = "Display Name:";
 "Email:" = "Email:";
 "Additional Email:" = "Additional Email:";
@@ -95,7 +100,7 @@
 "State_Province:" = "State/Province:";
 "ZIP_Postal Code:" = "ZIP/Postal Code:";
 "Country:" = "Country:";
-"Web:" = "Web:";
+"Web Page:" = "Web Page:";
 
 "Work" = "Work";
 "Other Infos" = "Other Infos";
