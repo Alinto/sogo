@@ -1,3 +1,11 @@
+2009-08-03  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* Dropped the current caching subsystem based on
+	GNUstep's DO and replaced it with memcached. This
+	is much more efficient and scalable than DO and will
+	also prevent obscure libffi/libffcall crashes on
+	various platforms.
+
 2009-08-03  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Scheduler/UIxCalView.m ([UIxCalView -setCurrentView:]): avoid

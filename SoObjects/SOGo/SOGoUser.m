@@ -23,7 +23,6 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
-#import <Foundation/NSDistributedNotificationCenter.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSNull.h>
 #import <Foundation/NSTimeZone.h>
@@ -257,6 +256,9 @@ _timeValue (NSString *key)
 {
   LDAPUserManager *um;
   NSString *realUID;
+
+  _defaults = nil;
+  _settings = nil;
   
   // We propagate the cache if we do NOT trust the login names.
   // When trusting login names, we 'assume' we're dealing with a
@@ -300,6 +302,8 @@ _timeValue (NSString *key)
 
 - (void) dealloc
 {
+  [_defaults release];
+  [_settings release];
   [allEmails release];
   [currentPassword release];
   [cn release];
@@ -454,7 +458,6 @@ _timeValue (NSString *key)
 				uid: login
 				fieldName: @"c_defaults"
 				shouldPropagate: propagateCache];
-  [o autorelease];
 
   return o;
 }
@@ -467,113 +470,91 @@ _timeValue (NSString *key)
 				uid: login
 				fieldName: @"c_settings"
 				shouldPropagate: propagateCache];
-  [o autorelease];
 
   return o;
 }
 
 - (NSUserDefaults *) userDefaults
 {
-  SOGoUserDefaults *defaults;
   NSDictionary *values;
-  NSMutableDictionary *d;
 
-  defaults = [[SOGoCache sharedCache] userDefaultsForLogin: login];
-
-  if (!defaults)    
+  if (!_defaults)    
     {
-      defaults = [self primaryUserDefaults];
-      if (defaults)
+      _defaults = [self primaryUserDefaults];
+      if (_defaults)
 	{
-          [defaults fetchProfile];
-	  values = [defaults values];
-	  
+	  values = [[SOGoCache sharedCache] userDefaultsForLogin: login];
+
 	  if (values)
 	    {
-	      // See explanation in -language
-	      [self invalidateLanguage];
-
-	      // Required parameters for the Web interface. This will trigger the
-	      // preferences to load so it's important to leave those calls here.
-	      if (![[defaults stringForKey: @"ReplyPlacement"] length])
-		[defaults setObject: defaultReplyPlacement forKey: @"ReplyPlacement"];
-	      if (![[defaults stringForKey: @"SignaturePlacement"] length])
-		[defaults setObject: defaultSignaturePlacement forKey: @"SignaturePlacement"];
-	      if (![[defaults stringForKey: @"MessageForwarding"] length])
-		[defaults setObject: defaultMessageForwarding forKey: @"MessageForwarding"];
-	      if (![[defaults stringForKey: @"MessageCheck"] length])
-		[defaults setObject: defaultMessageCheck forKey: @"MessageCheck"];
-
-	      // We propagate the loaded user defaults to other sogod instances
-	      // which will cache them in SOGoCache (including for the instance
-	      // that actually posts the notification)
-	      d = [NSMutableDictionary dictionary];
-	      [d setObject: values forKey: @"values"];
-	      [d setObject: login forKey: @"uid"];
-	      [d setObject: [SOGoProfileURL absoluteString]  forKey: @"url"];
-
-	      [[SOGoCache sharedCache] setDefaults: defaults
-				       forLogin: login key: @"defaults"];
-	      
-	      if (propagateCache)
-		[(NSDistributedNotificationCenter *)[NSDistributedNotificationCenter defaultCenter]
-						    postNotificationName: @"SOGoUserDefaultsHaveLoaded"
-						    object: nil
-						    userInfo: d
-						    deliverImmediately: YES];
+	      [_defaults setValues: values];
 	    }
+	  else
+	    {
+	      [_defaults fetchProfile];
+	      values = [_defaults values];
+	      
+	      if (values)
+		{		  
+		  // Required parameters for the Web interface. This will trigger the
+		  // preferences to load so it's important to leave those calls here.
+		  if (![[_defaults stringForKey: @"ReplyPlacement"] length])
+		    [_defaults setObject: defaultReplyPlacement forKey: @"ReplyPlacement"];
+		  if (![[_defaults stringForKey: @"SignaturePlacement"] length])
+		    [_defaults setObject: defaultSignaturePlacement forKey: @"SignaturePlacement"];
+		  if (![[_defaults stringForKey: @"MessageForwarding"] length])
+		    [_defaults setObject: defaultMessageForwarding forKey: @"MessageForwarding"];
+		  if (![[_defaults stringForKey: @"MessageCheck"] length])
+		    [_defaults setObject: defaultMessageCheck forKey: @"MessageCheck"];
+
+		  [[SOGoCache sharedCache] cacheValues: [_defaults values]  ofType: @"defaults"  forLogin: login];
+		}
+	    }
+	  
+	  // See explanation in -language
+	  [self invalidateLanguage];
 	}
     }
   //else
   //  NSLog(@"User defaults cache hit for %@", login);
 
-  return (NSUserDefaults *) defaults;
+  return (NSUserDefaults *) _defaults;
 }
 
 - (NSUserDefaults *) userSettings
 {
-  SOGoUserDefaults *settings;
   NSDictionary *values;
 
-  settings = [[SOGoCache sharedCache] userSettingsForLogin: login];
-
-  if (!settings)    
+  if (!_settings)    
     {
-      NSMutableDictionary *d;
-
-      settings = [self primaryUserSettings];
-      if (settings)
+      _settings = [self primaryUserSettings];
+      if (_settings)
 	{
-	  [settings fetchProfile];
-	  values = [settings values];
+	  values = [[SOGoCache sharedCache] userSettingsForLogin: login];
+	  
 	  if (values)
 	    {
-	      // See explanation in -language
-	      [self invalidateLanguage];
-
-	      // We propagate the loaded user settings to other sogod instances
-	      // which will cache them in SOGoCache (including for the instance
-	      // that actually posts the notification)
-	      d = [NSMutableDictionary dictionary];
-	      [d setObject: values forKey: @"values"];
-	      [d setObject: login  forKey: @"uid"];
-	      [d setObject: [SOGoProfileURL absoluteString]  forKey: @"url"];
-
-	      [[SOGoCache sharedCache] setDefaults: settings  forLogin: login  key: @"settings"];
-	      
-	      if (propagateCache)
-		[(NSDistributedNotificationCenter *)[NSDistributedNotificationCenter defaultCenter]
-						    postNotificationName: @"SOGoUserSettingsHaveLoaded"
-						    object: nil
-						    userInfo: d
-						    deliverImmediately: YES];
+	      [_settings setValues: values];
 	    }
+	  else
+	    {
+	      [_settings fetchProfile];
+	      values = [_settings values];
+	      
+	      if (values)
+		{
+		  [[SOGoCache sharedCache] cacheValues: values  ofType: @"settings"  forLogin: login];
+		}
+	    }
+	  
+	  // See explanation in -language
+	  [self invalidateLanguage];
 	}
     }
   //else
   //  NSLog(@"User settings cache hit for %@", login);
 
-  return (NSUserDefaults *) settings;
+  return (NSUserDefaults *) _settings;
 }
 
 - (void) invalidateLanguage
@@ -586,7 +567,7 @@ _timeValue (NSString *key)
   if (![language length])
     {
       language = [[self userDefaults] stringForKey: @"Language"];
-      // This is a hack until we handle the connection errors to the db a
+      // This is a workaround until we handle the connection errors to the db in a
       // better way. It enables us to avoid retrieving the userDefaults too
       // many times when the DB is down, causing a huge delay.
       if (![language length])

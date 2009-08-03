@@ -1,6 +1,6 @@
 /*
-  Copyright (C) 2005 SKYRIX Software AG
   Copyright (C) 2008-2009 Inverse inc.
+  Copyright (C) 2005 SKYRIX Software AG
 
   This file is part of SOGo.
 
@@ -43,7 +43,6 @@
   NSURL    *url;
   NSString *uid;
   NSString *fieldName;
-  NSCalendarDate *lastFetch;
   NSMutableDictionary *values;
   BOOL propagateCache;
 

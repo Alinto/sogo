@@ -22,26 +22,16 @@
  */
 
 /*
- * [ Structure ]
- * users: key = user ID         value = NSMutableDictionary instance
- * value: key = @"user"         value = SOGOUser instance
- *        key = @"cleanupDate"  value = NSDate instance
- *        key = @"defaults"     value = SOGoUserDefaults instance
- *        key = @"settings"     value = SOGoUserDefaults instance
- *        key = @"attributes"   value = NSDictionary instance (attributes from LDAP)
+ * [ Cache Structure ]
  *
- * [ Workflows - processes A and B ]
- *
- * A cache user defaults and posts the notification
- * B ....
- *
- * B crashes
- * B receives a notificaion update
+ * users               value = instances of SOGoUser > flushed after the completion of every SOGo requests
+ * <uid>+defaults      value = NSDictionary instance > user's defaults
+ * <uid>+settings      value = NSDictionary instance > user's settings
+ * <uid>+attributes    value = NSMutableDictionary instance > user's LDAP attributes
  */
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
-#import <Foundation/NSDistributedNotificationCenter.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSLock.h>
 #import <Foundation/NSString.h>
@@ -57,6 +47,8 @@
 
 #import "SOGoCache.h"
 
+#import "NSDictionary+BSJSONAdditions.h"
+
 // We define the default value for cleaning up cached
 // users' preferences. This value should be relatively
 // high to avoid useless database calls.
@@ -64,6 +56,8 @@ static NSTimeInterval cleanupInterval = 300;
 
 static NSMutableDictionary *cache = nil;
 static NSMutableDictionary *users = nil;
+
+static NSString *memcachedServerName = @"localhost";
 
 static SOGoCache *sharedCache = nil;
 
@@ -91,7 +85,7 @@ static NSLock *lock;
   [lock lock];
 #endif
   if (!sharedCache)
-    sharedCache = [self new];
+    sharedCache = [[self alloc] init];
 #if defined(THREADSAFE)
   [lock unlock];
 #endif
@@ -105,6 +99,10 @@ static NSLock *lock;
   [lock lock];
 #endif
   [cache removeAllObjects];
+
+  // This is essential for refetching the cached values in case something has changed
+  // accross various sogod processes
+  [users removeAllObjects];
 #if defined(THREADSAFE)
   [lock unlock];
 #endif
@@ -115,41 +113,11 @@ static NSLock *lock;
   if ((self = [super init]))
     {
       NSString *cleanupSetting;
-
+      memcached_return error;
+      
       cache = [[NSMutableDictionary alloc] init];
       users = [[NSMutableDictionary alloc] init];
       
-      // We register ourself for notifications
-      [[NSDistributedNotificationCenter defaultCenter]
-	addObserver: self
-	selector: @selector(_userAttributesHaveLoaded:)
-	name: @"SOGoUserAttributesHaveLoaded"
-	object: nil];
-
-      [[NSDistributedNotificationCenter defaultCenter]
-	addObserver: self
-	selector: @selector(_userDefaultsHaveLoaded:)
-	name: @"SOGoUserDefaultsHaveLoaded"
-	object: nil];
-
-      [[NSDistributedNotificationCenter defaultCenter]
-	addObserver: self
-	selector: @selector(_userDefaultsHaveChanged:)
-	name: @"SOGoUserDefaultsHaveChanged"
-	object: nil];
-      
-      [[NSDistributedNotificationCenter defaultCenter]
-	addObserver: self
-	selector: @selector(_userSettingsHaveLoaded:)
-	name: @"SOGoUserSettingsHaveLoaded"
-	object: nil];
-
-      [[NSDistributedNotificationCenter defaultCenter]
-	addObserver: self
-	selector: @selector(_userSettingsHaveChanged:)
-	name: @"SOGoUserSettingsHaveChanged"
-	object: nil];
-
       // We fire our timer that will cleanup cache entries
       cleanupSetting = [[NSUserDefaults standardUserDefaults] 
 			 objectForKey: @"SOGoCacheCleanupInterval"];
@@ -157,13 +125,16 @@ static NSLock *lock;
       if (cleanupSetting && [cleanupSetting doubleValue] > 0.0)
 	cleanupInterval = [cleanupSetting doubleValue];
       
-      _cleanupTimer = [NSTimer scheduledTimerWithTimeInterval: cleanupInterval
-			       target: self
-			       selector: @selector(_cleanupSources)
-			       userInfo: nil
-			       repeats: YES];
-      [self logWithFormat: @"Cache cleanup interval set every %f seconds",
+      [self logWithFormat: @"Cache cleanup interval set every %f seconds for memcached",
 	    cleanupInterval];
+
+      handle = memcached_create(NULL);
+
+      if (handle)
+	{
+	  servers = memcached_server_list_append(NULL, [memcachedServerName UTF8String], 11211, &error);
+	  error = memcached_server_push(handle, servers);
+	}
     }
 
   return self;
@@ -171,31 +142,8 @@ static NSLock *lock;
 
 - (void) dealloc
 {
-  [[NSDistributedNotificationCenter defaultCenter]
-    removeObserver: self
-    name: @"SOGoUserAttributesHaveLoaded"
-    object: nil];
-
-  [[NSDistributedNotificationCenter defaultCenter]
-    removeObserver: self
-    name: @"SOGoUserDefaultsHaveLoaded"
-    object: nil];
-
-  [[NSDistributedNotificationCenter defaultCenter]
-    removeObserver: self
-    name: @"SOGoUserDefaultsHaveChanged"
-    object: nil];
-
-  [[NSDistributedNotificationCenter defaultCenter]
-    removeObserver: self
-    name: @"SOGoUserSettingsHaveLoaded"
-    object: nil];
-  
-  [[NSDistributedNotificationCenter defaultCenter]
-    removeObserver: self
-    name: @"SOGoUserSettingsHaveChanged"
-    object: nil];
-
+  memcached_server_free(servers);
+  memcached_free(handle);
   [cache release];
   [users release];
   [super dealloc];
@@ -269,21 +217,10 @@ static NSLock *lock;
 
 - (void) registerUser: (SOGoUser *) user
 { 
-  NSData *cleanupDate;
-
 #if defined(THREADSAFE)
   [lock lock];
 #endif
-
-  cleanupDate = [[NSDate date] addTimeInterval: [SOGoCache cleanupInterval]];
-  
-  if (![users objectForKey: [user login]])
-    [users setObject: [NSMutableDictionary dictionary]  forKey: [user login]];
-
-  [[users objectForKey: [user login]] setObject: user  forKey: @"user"];
-  [[users objectForKey: [user login]] setObject: [[NSDate date] addTimeInterval: [SOGoCache cleanupInterval]]
-				      forKey: @"cleanupDate"];
-
+  [users setObject: user  forKey: [user login]];
 #if defined(THREADSAFE)
   [lock unlock];
 #endif
@@ -291,260 +228,92 @@ static NSLock *lock;
 
 - (id) userNamed: (NSString *) name
 {
-  return [[users objectForKey: name] objectForKey: @"user"];
+  return [users objectForKey: name];
 }
 
-- (void) cacheAttributes: (NSDictionary *) theAttributes
-		forLogin: (NSString *) theLogin
+//
+// For non-blocking cache method, see memcached_behavior_set and MEMCACHED_BEHAVIOR_NO_BLOCK
+// memcached is thread-safe so no need to lock here.
+//
+- (void) cacheValues: (NSDictionary *) theAttributes
+	      ofType: (NSString *) theType
+	    forLogin: (NSString *) theLogin
 {
-  if (![users objectForKey: theLogin])
-    [users setObject: [NSMutableDictionary dictionary]  forKey: theLogin];
+  memcached_return error;
+  const char *key, *value;
+  unsigned int len, vlen;
 
-  [[users objectForKey: theLogin] setObject: theAttributes  forKey: @"attributes"];
-  [[users objectForKey: theLogin] setObject: [[NSDate date] addTimeInterval: [SOGoCache cleanupInterval]]
-				  forKey: @"cleanupDate"];
+  if (!handle)
+    return;
+
+  key = [[NSString stringWithFormat: @"%@+%@", theLogin, theType] UTF8String];
+  len = strlen(key);
+
+  value = [[theAttributes jsonStringValue] UTF8String];
+  vlen = strlen(value);
+
+  error = memcached_set(handle, key, len, value, vlen, cleanupInterval, 0);
+
+  if (error != MEMCACHED_SUCCESS)
+    [self logWithFormat: @"memcached error: unable to cache values with subtype %@ for user %@", theType, theLogin];
+  //else
+  //[self logWithFormat: @"memcached: cached values (%s) with subtype %@ for user %@", value, theType, theLogin];
 }
+
+- (NSDictionary *) _valuesOfType: (NSString *) theType
+                        forLogin: (NSString *) theLogin
+{
+  NSDictionary *d;
+
+  memcached_return rc;
+  const char *key;
+  char *s;
+  unsigned int len, vlen, flags;
+
+  if (!handle)
+    return nil;
+
+  key = [[NSString stringWithFormat: @"%@+%@", theLogin, theType] UTF8String];
+  len = strlen(key);
+  d = nil;
+
+  s = memcached_get(handle, key, len, &vlen, &flags, &rc);
+
+  if (rc == MEMCACHED_SUCCESS && s)
+    {
+      NSString *v;
+
+      v = [NSString stringWithUTF8String: s];
+      d = [NSDictionary dictionaryWithJSONString: v];
+      //[self logWithFormat: @"read values (%@) for subtype %@ for user %@", [d description], theType, theLogin];
+
+      free(s);
+    }
+
+  return d;
+}
+
 
 - (NSMutableDictionary *) userAttributesForLogin: (NSString *) theLogin
 {
-  return [[users objectForKey: theLogin] objectForKey: @"attributes"];
+  id o;
+
+  o = [self _valuesOfType: @"attributes"  forLogin: theLogin];
+
+  if (o)
+    return [NSMutableDictionary dictionaryWithDictionary: o];
+
+  return nil;
 }
 
-- (SOGoUserDefaults *) userDefaultsForLogin: (NSString *) theLogin
+- (NSDictionary *) userDefaultsForLogin: (NSString *) theLogin
 {
-  return [[users objectForKey: theLogin] objectForKey: @"defaults"];
+  return [self _valuesOfType: @"defaults"  forLogin: theLogin];
 }
 
-- (SOGoUserDefaults *) userSettingsForLogin: (NSString *) theLogin
+- (NSDictionary *) userSettingsForLogin: (NSString *) theLogin
 {
-  return [[users objectForKey: theLogin] objectForKey: @"settings"];
-}
-
-//
-//
-//
-- (void) setDefaults: (SOGoUserDefaults *) theDefaults
-	    forLogin: (NSString *) theLogin
-		 key: (NSString *) theKey
-{
-  if (![users objectForKey: theLogin])
-    [users setObject: [NSMutableDictionary dictionary]  forKey: theLogin];
-  
-  [[users objectForKey: theLogin] setObject: theDefaults  forKey: theKey];
-  [[users objectForKey: theLogin] setObject: [[NSDate date] addTimeInterval: [SOGoCache cleanupInterval]]
-				  forKey: @"cleanupDate"];
-
-  //NSLog(@"Set %@ to %@", theKey, [users objectForKey: theLogin]);
-}
-
-//
-// Notification callbacks.
-//
-- (void) _cacheValues: (NSDictionary *) theValues
-                login: (NSString *) theLogin
-	          url: (NSString *) theURL
-		  key: (NSString *) theKey
-{
-  SOGoUserDefaults *defaults;
-  NSURL *url;
-  
-#if defined(THREADSAFE)
-  [lock lock];
-#endif
-  url = [[[NSURL alloc] initWithString: theURL] autorelease];
-  
-  defaults = [[[SOGoUserDefaults alloc] initWithTableURL: url
-					uid: theLogin
-					fieldName: [NSString stringWithFormat: @"c_%@", theKey]
-					shouldPropagate: YES]
-	       autorelease];
-  [defaults setValues: theValues];
-  [self setDefaults: defaults  forLogin: theLogin  key: theKey];
-
-#if defined(THREADSAFE)
-  [lock unlock];
-#endif
-}
-
-//
-//
-//
-- (void) _userAttributesHaveLoaded: (NSNotification *) theNotification
-{
-  NSString *uid;
-
-  uid = [[theNotification userInfo] objectForKey: @"uid"];
-  //NSLog(@"Caching user attributes for UID: %@", uid);
-  if (![self userAttributesForLogin: uid])
-    {
-      NSEnumerator *emails;
-      NSDictionary *values;
-      NSString *key;
-      
-      if (![users objectForKey: uid])
-	[users setObject: [NSMutableDictionary dictionary]  forKey: uid];
-
-      values = [[theNotification userInfo] objectForKey: @"values"];
-      [self cacheAttributes: values  forLogin: uid];
-
-      emails = [[values objectForKey: @"emails"] objectEnumerator];
-      while ((key = [emails nextObject]))
-	{
-	  [self cacheAttributes: values  forLogin: key];
-	}
-
-      [[users objectForKey: uid] setObject: [[NSDate date] addTimeInterval: [SOGoCache cleanupInterval]]
-				 forKey: @"cleanupDate"];
-    }
-}
-
-//
-//
-//
-- (void) _userDefaultsHaveLoaded: (NSNotification *) theNotification
-{
-  NSString *uid;
-
-  uid = [[theNotification userInfo] objectForKey: @"uid"];
-  //NSLog(@"Loading user defaults for UID: %@", uid);
-  if (![self userDefaultsForLogin: uid])
-    {
-      [self _cacheValues: [[theNotification userInfo] objectForKey: @"values"]
-	    login: uid
-	    url: [[theNotification userInfo] objectForKey: @"url"]
-	    key: @"defaults"];
-    }
-}
-
-//
-//
-//
-- (void) _userDefaultsHaveChanged: (NSNotification *) theNotification
-{
-  SOGoUser *user;
-  SOGoUserDefaults *defaults;
-  NSString *uid;
-
-  uid = [[theNotification userInfo] objectForKey: @"uid"];
-
-  // When the user defaults changed, we must invalidate the 
-  // ivar language for the user object.
-  user = [self userNamed: uid];
-  if (user)
-    [user invalidateLanguage];
-
-  //NSLog(@"Updating user defaults for UID: %@", uid);
-  defaults = (SOGoUserDefaults *)[self userDefaultsForLogin: uid];
-  if (defaults)
-    {
-#if defined(THREADSAFE)
-      [lock lock];
-#endif
-      [defaults setValues: [[theNotification userInfo] objectForKey: @"values"]];
-      [[users objectForKey: uid] setObject: [[NSDate date] addTimeInterval: [SOGoCache cleanupInterval]]
-				 forKey: @"cleanupDate"];
-#if defined(THREADSAFE)
-      [lock unlock];
-#endif
-    }
-  else
-    {
-      [self _cacheValues: [[theNotification userInfo] objectForKey: @"values"]
-	    login: uid
-	    url: [[theNotification userInfo] objectForKey: @"url"]
-	    key: @"defaults"];
-    }
-}
-
-//
-//
-//
-- (void) _userSettingsHaveLoaded: (NSNotification *) theNotification
-{
-  NSString *uid;
-
-  uid = [[theNotification userInfo] objectForKey: @"uid"];
-  //NSLog(@"Loading user settings for UID: %@", uid);
-  if (![self userSettingsForLogin: uid])
-    {
-      [self _cacheValues: [[theNotification userInfo] objectForKey: @"values"]
-	    login: uid
-	    url: [[theNotification userInfo] objectForKey: @"url"]
-	    key: @"settings"];
-    }
-}
-
-//
-//
-//
-- (void) _userSettingsHaveChanged: (NSNotification *) theNotification
-{
-  SOGoUserDefaults *settings;
-  NSString *uid;
-  
-  uid = [[theNotification userInfo] objectForKey: @"uid"];
-  //NSLog(@"Updating user settings for UID: %@", uid);
-  settings = (SOGoUserDefaults *)[self userSettingsForLogin: uid];
-  if (settings)
-    {
-#if defined(THREADSAFE)
-      [lock lock];
-#endif
-      [settings setValues: [[theNotification userInfo] objectForKey: @"values"]];
-      [[users objectForKey: uid] setObject: [[NSDate date] addTimeInterval: [SOGoCache cleanupInterval]]
-				 forKey: @"cleanupDate"];
-#if defined(THREADSAFE)
-      [lock unlock];
-#endif
-    }
-  else
-    {
-      [self _cacheValues: [[theNotification userInfo] objectForKey: @"values"]
-	    login: uid
-	    url: [[theNotification userInfo] objectForKey: @"url"]
-	    key: @"settings"];
-    }
-}
-
-//
-//
-//
-- (void) _cleanupSources
-{
-  NSDictionary *currentEntry;
-  NSEnumerator *userIDs;
-  NSString *currentID;
-  NSDate *now;
-  
-  unsigned int count;
-
-#if defined(THREADSAFE)
-  [lock lock];
-#endif
-
-  now = [NSDate date];
-
-  // We cleanup the user cache
-  userIDs = [[users allKeys] objectEnumerator];
-  count = 0;
-  while ((currentID = [userIDs nextObject]))
-    {
-      currentEntry = [users objectForKey: currentID];
-      
-      if ([now earlierDate: [currentEntry objectForKey: @"cleanupDate"]] == now)
-	{
-	  [users removeObjectForKey: currentID];
-	  count++;
-	}
-    }
-  
-  if (count)
-    [self logWithFormat: @"cleaned %d users records from users cache",
-	  count];
-
-#if defined(THREADSAFE)
-  [lock unlock];
-#endif
+  return [self _valuesOfType: @"settings"  forLogin: theLogin];
 }
 
 @end
