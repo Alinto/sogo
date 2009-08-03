@@ -684,7 +684,6 @@ function tasksListCallback(http) {
 
                 var t = new Element ("span");
                 t.update (data[i][3]);
-                //listItem.appendChild(document.createTextNode(data[i][3]));
                 listItem.appendChild (t);
             }
 
