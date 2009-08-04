@@ -103,40 +103,7 @@ function insertContact(inputNode, contactName, contactEmail) {
     inputNode.value = value;
 }
 
-function toggleAttachments() {
-    var div = $("attachmentsArea");
-    var style = "" + div.getStyle("display");
-    if (style.length)
-        div.setStyle({ display: "" });
-    else
-        div.setStyle({ display: "block" });
 
-    return false;
-}
-
-function updateInlineAttachmentList(sender, attachments) {
-    var count = 0;
-
-    var div = $("attachmentsArea");
-    if (attachments)
-        count = attachments.length;
-
-    if (count) {
-        var text  = "";
-        for (var i = 0; i < count; i++) {
-            text = text + attachments[i];
-            text = text + '<br />';
-        }
-
-        var e = $('compose_attachments_list');
-        e.innerHTML = text;
-        var style = "" + div.getStyle("display");
-        if (!style.length)
-            div.setStyle({display: "block"});
-    }
-    else
-        div.setStyle({display: ""});
-}
 /* mail editor */
 
 function validateEditorInput(sender) {
@@ -216,10 +183,6 @@ function clickedEditorAttach(sender) {
     }
 
     return false;
-}
-
-function onAddAttachment() {
-    return clickedEditorAttach(null);
 }
 
 function onAttachmentChange(event) {
@@ -618,7 +581,7 @@ function getMenus() {
     return { "attachmentsMenu": new Array(null, onRemoveAttachments,
                                           onSelectAllAttachments,
                                           "-",
-                                          onAddAttachment, null) };
+                                          clickedEditorAttach, null) };
 }
 
 function onRemoveAttachments() {
@@ -720,7 +683,6 @@ function onWindowResize(event) {
             $("attachments").setStyle({ height: (height-9) + 'px' });
         else
             $("attachments").setStyle({ height: height + 'px' });
-
     }
     var subjectfield = headerarea.down("div#subjectRow span.headerField");
     var subjectinput = headerarea.down("div#subjectRow input.textField");
