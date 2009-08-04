@@ -26,6 +26,8 @@
 
 #import <Foundation/NSObject.h>
 
+#include <libmemcached/memcached.h>
+
 @class NSMutableDictionary;
 @class NSString;
 @class NSTimer;
@@ -39,6 +41,8 @@
 {
   @private
     NSTimer *_cleanupTimer;
+    memcached_server_st *servers;
+    memcached_st *handle;
 }
 
 + (NSTimeInterval) cleanupInterval;
@@ -54,15 +58,13 @@
 - (void) registerUser: (SOGoUser *) user;
 - (id) userNamed: (NSString *) name;
 
-- (void) cacheAttributes: (NSDictionary *) theAttributes
-		forLogin: (NSString *) theLogin;
 - (NSMutableDictionary *) userAttributesForLogin: (NSString *) theLogin;
-- (SOGoUserDefaults *) userDefaultsForLogin: (NSString *) theLogin;
-- (SOGoUserDefaults *) userSettingsForLogin: (NSString *) theLogin;
+- (NSDictionary *) userDefaultsForLogin: (NSString *) theLogin;
+- (NSDictionary *) userSettingsForLogin: (NSString *) theLogin;
 
-- (void) setDefaults: (SOGoUserDefaults *) theDefaults
-	    forLogin: (NSString *) theLogin
-		 key: (NSString *) theKey;
+- (void) cacheValues: (NSDictionary *) theAttributes
+	      ofType: (NSString *) theType
+	    forLogin: (NSString *) theLogin;
 
 @end
 

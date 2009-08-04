@@ -21,7 +21,6 @@
 */
 
 #import <Foundation/NSCalendarDate.h>
-#import <Foundation/NSDistributedNotificationCenter.h>
 #import <Foundation/NSPropertyList.h>
 #import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSValue.h>
@@ -74,7 +73,6 @@ static NSString *uidColumnName = @"c_uid";
 - (void) dealloc
 {
   [values release];
-  [lastFetch release];
   [url release];
   [uid release];
   [fieldName release];
@@ -160,7 +158,6 @@ static NSString *uidColumnName = @"c_uid";
 		[values addEntriesFromDictionary: v];
 	    }
 	  
-	  ASSIGN(lastFetch, [NSCalendarDate date]);
 	  defFlags.modified = NO;
 	  rc = YES;
 	}
@@ -295,25 +292,10 @@ static NSString *uidColumnName = @"c_uid";
 
   if (rc)
     {
-      NSMutableDictionary *d;
-      
-      d = [NSMutableDictionary dictionary];
-      [d setObject: values forKey: @"values"];
-      [d setObject: uid  forKey: @"uid"];
-      [d setObject: [url absoluteString]  forKey: @"url"];
-
-      [[SOGoCache sharedCache] setDefaults: self
-			       forLogin: uid
-			       key: ([fieldName isEqualToString: @"c_defaults"] ? @"defaults" : @"settings")];
-
       if (propagateCache)
-	[(NSDistributedNotificationCenter *)[NSDistributedNotificationCenter defaultCenter]
-					    postNotificationName: ([fieldName isEqualToString: @"c_defaults"]
-								   ? @"SOGoUserDefaultsHaveChanged"
-								   : @"SOGoUserSettingsHaveChanged")
-					    object: nil
-					    userInfo: d
-					    deliverImmediately: YES];
+	[[SOGoCache sharedCache] cacheValues: values
+				 ofType: ([fieldName isEqualToString: @"c_defaults"] ? @"defaults" : @"settings")
+				 forLogin: uid];
     }
 
   return rc;
@@ -344,7 +326,6 @@ static NSString *uidColumnName = @"c_uid";
   
   values = [[NSMutableDictionary alloc] init];
   [values addEntriesFromDictionary: theValues];
-  ASSIGN(lastFetch, [NSCalendarDate date]);
   defFlags.modified = NO;
   defFlags.isNew = NO;
 }
@@ -429,8 +410,6 @@ static NSString *uidColumnName = @"c_uid";
 - (void) flush
 {
   [values removeAllObjects];
-  [lastFetch release];
-  lastFetch = nil;
   defFlags.modified = NO;
   defFlags.isNew = NO;
 }
