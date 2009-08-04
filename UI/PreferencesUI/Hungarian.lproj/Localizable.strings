@@ -102,3 +102,7 @@
 "New password:" = "Új jelszó:";
 "Confirmation:" = "Megerősítés:";
 "Change" = "Megváltoztat";
+
+/* Event+task categories */
+"category_none" = "Nincs";
+"category_labels" = "Évforduló,Születésnap,Üzleti,Meghívás,Ügyfelek,Versenytársak,Vevő,Kedvencek,Nyomonkövetés,Ajándékozás,Szabadság,Ötletek,Ügyek,Egyéb,Személyes,Projektek,Állami ünnep,Állapot,Szállítók,Utazás,Szünidő";

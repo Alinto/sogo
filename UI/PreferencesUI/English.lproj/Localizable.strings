@@ -108,6 +108,7 @@
 "Confirmation:" = "Confirmation:";
 "Change" = "Change";
 
+/* Event+task categories */
 "category_none" = "None";
 "category_labels" = "Anniversary,Birthday,Business,Calls,Clients,Competition,Customer,Favorites,Follow up,Gifts,Holidays,Ideas,Issues,Miscellaneous,Personal,Projects,Public Holiday,Status,Suppliers,Travel,Vacation";
 
