@@ -110,7 +110,7 @@ UL#tasksList LI.important SPAN
   padding-left: 10px;
 }
 UL#tasksList LI SPAN
-{ padding-left: 10px; }
+{ padding-left: 2px; }
 
 UL#tasksList LI[class~="_selected"].overdue
 { color: #fff !important;
