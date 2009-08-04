@@ -151,7 +151,6 @@
 "Save and Close" = "Mentés és bezárás";
 "Close" = "Bezárás";
 "Invite Attendees" = "Résztvevők meghívása";
-"Documents" = "Dokumentumok";
 "Update" = "Mentés";
 "Cancel" = "Mégsem";
 "show_rejected_apts" = "Visszautasított találkozók mutatása";
@@ -345,28 +344,8 @@
 
 /* Appointment categories */
 
-"category_NONE" = "Nincs";
-"category_ANNIVERSARY" = "Évforduló";
-"category_BIRTHDAY" = "Születésnap";
-"category_BUSINESS" = "Üzleti";
-"category_CALLS" = "Meghívás"; 
-"category_CLIENTS" = "Ügyfelek";
-"category_COMPETITION" = "Versenytársak";
-"category_CUSTOMER" = "Vevő";
-"category_FAVORITES" = "Kedvencek";
-"category_FOLLOW UP" = "Nyomonkövetés";
-"category_GIFTS" = "Ajándékozás";
-"category_HOLIDAYS" = "Szabadság";
-"category_IDEAS" = "Ötletek";
-"category_ISSUES" = "Ügyek";
-"category_MISCELLANEOUS" = "Egyéb";
-"category_PERSONAL" = "Személyes";
-"category_PROJECTS" = "Projektek";
-"category_PUBLIC HOLIDAY" = "Állami ünnep";
-"category_STATUS" = "Állapot";
-"category_SUPPLIERS" = "Szállítók";
-"category_TRAVEL" = "Utazás";
-"category_VACATION" = "Szünidő";
+"category_none" = "Nincs";
+"category_labels" = "Évforduló,Születésnap,Üzleti,Meghívás,Ügyfelek,Versenytársak,Vevő,Kedvencek,Nyomonkövetés,Ajándékozás,Szabadság,Ötletek,Ügyek,Egyéb,Személyes,Projektek,Állami ünnep,Állapot,Szállítók,Utazás,Szünidő";
 
 "repeat_NEVER" = "Nem ismétlődik";
 "repeat_DAILY" = "Naponta";
