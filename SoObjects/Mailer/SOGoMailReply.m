@@ -108,6 +108,9 @@
 
 @end
 
+@implementation SOGoMailBrazilianPortugueseReply
+@end
+
 @implementation SOGoMailCzechReply
 @end
 
@@ -123,6 +126,9 @@
 @implementation SOGoMailGermanReply
 @end
 
+@implementation SOGoMailHungarianReply
+@end
+
 @implementation SOGoMailItalianReply
 @end
 
@@ -130,4 +136,7 @@
 @end
 
 @implementation SOGoMailRussianReply
+@end
+
+@implementation SOGoMailWelshReply
 @end

@@ -225,6 +225,9 @@
 
 @end
 
+@implementation SOGoMailBrazilianPortugueseForward
+@end
+
 @implementation SOGoMailCzechForward
 @end
 
@@ -240,6 +243,9 @@
 @implementation SOGoMailGermanForward
 @end
 
+@implementation SOGoMailHungarianForward
+@end
+
 @implementation SOGoMailItalianForward
 @end
 
@@ -247,4 +253,7 @@
 @end
 
 @implementation SOGoMailRussianForward
+@end
+
+@implementation SOGoMailWelshForward
 @end
