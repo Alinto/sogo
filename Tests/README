@@ -7,6 +7,11 @@ setup
 2) edit testconfig.py to suit your environment
 3) run the test scripts
 
+runnable scripts
+----------------
+
+webdav-sync.py
+
 other
 -----
 

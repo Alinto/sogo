@@ -69,6 +69,7 @@
 #import "SOGoUser.h"
 #import "SOGoWebDAVAclManager.h"
 #import "WORequest+SOGo.h"
+#import "WOResponse+SOGo.h"
 
 #import "SOGoGCSFolder.h"
 
@@ -896,7 +897,7 @@ static NSArray *childRecordFields = nil;
 }
 
 - (NSArray *) _fetchSyncTokenFields: (NSDictionary *) properties
-                  matchingSyncToken: (int) syncToken
+                  matchingSyncToken: (NSString *) syncToken
 {
   /* TODO:
      - validation:
@@ -908,6 +909,7 @@ static NSArray *childRecordFields = nil;
   EOQualifier *qualifier;
   NSEnumerator *addFields;
   NSString *currentField, *filter;
+  int syncTokenInt;
 
   fields = [NSMutableArray arrayWithObjects: @"c_name", @"c_component",
          @"c_creationdate", @"c_lastmodified", nil];
@@ -916,16 +918,17 @@ static NSArray *childRecordFields = nil;
     if ([currentField length])
       [fields addObjectUniquely: currentField];
 
-  if (syncToken)
+  if ([syncToken length])
     {
+      syncTokenInt = [syncToken intValue];
       qualifier = [EOQualifier qualifierWithQualifierFormat:
-        @"c_lastmodified > %d", syncToken];
+                                 @"c_lastmodified > %d", syncTokenInt];
       mRecords = [NSMutableArray arrayWithArray: [self _fetchFields: fields
-                                  withQualifier: qualifier
-                                  ignoreDeleted: YES]];
+                                                      withQualifier: qualifier
+                                                      ignoreDeleted: YES]];
       qualifier = [EOQualifier qualifierWithQualifierFormat:
                                  @"c_lastmodified > %d and c_deleted == 1",
-                               syncToken];
+                               syncTokenInt];
       fields = [NSMutableArray arrayWithObjects: @"c_name", @"c_deleted", nil];
       [mRecords addObjectsFromArray: [self _fetchFields: fields
                       withQualifier: qualifier
@@ -1090,10 +1093,10 @@ static NSArray *childRecordFields = nil;
       if (newToken < currentLM)
         newToken = currentLM;
       [syncResponses addObject: [self _syncResponseWithProperties: properties
-            andMethodSelectors: selectors
-                    fromRecord: record
-                     withToken: syncToken
-                    andBaseURL: baseURL]];
+                                               andMethodSelectors: selectors
+                                                       fromRecord: record
+                                                        withToken: syncToken
+                                                       andBaseURL: baseURL]];
     }
 
   NSZoneFree (NULL, selectors);
@@ -1122,15 +1125,12 @@ static NSArray *childRecordFields = nil;
   NSString *syncToken;
   NSDictionary *properties;
   NSArray *records;
-  int syncTokenInt;
 
   r = [context response];
-  [r setStatus: 207];
   [r setContentEncoding: NSUTF8StringEncoding];
   [r setHeader: @"text/xml; charset=\"utf-8\"" forKey: @"content-type"];
   [r setHeader: @"no-cache" forKey: @"pragma"];
   [r setHeader: @"no-cache" forKey: @"cache-control"];
-  [r appendContentString:@"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"];
 
   document = [[context request] contentAsDOMDocument];
   documentElement = (DOMElement *) [document documentElement];
@@ -1139,15 +1139,21 @@ static NSArray *childRecordFields = nil;
 
   propElement = [documentElement firstElementWithTag: @"prop"
                                          inNamespace: XMLNS_WEBDAV];
-
-  syncTokenInt = [syncToken intValue];
   properties = [self parseDAVRequestedProperties: propElement];
   records = [self _fetchSyncTokenFields: properties
-                      matchingSyncToken: syncTokenInt];
-  [self _appendComponentProperties: [properties allKeys]
-                       fromRecords: records
-                 matchingSyncToken: syncTokenInt
-                        toResponse: r];
+                      matchingSyncToken: syncToken];
+  if (![syncToken length] || [records count])
+    {
+      [r setStatus: 207];
+      [r appendContentString: @"<?xml version=\"1.0\""
+         @" encoding=\"utf-8\"?>\r\n"];
+      [self _appendComponentProperties: [properties allKeys]
+                           fromRecords: records
+                     matchingSyncToken: [syncToken intValue]
+                            toResponse: r];
+    }
+  else
+    [r appendDAVError: davElement (@"valid-sync-token", XMLNS_WEBDAV)];
 
   return r;
 }
