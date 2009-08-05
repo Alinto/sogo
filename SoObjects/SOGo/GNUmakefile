@@ -58,6 +58,7 @@ SOGo_HEADER_FILES = \
 	DOMNode+SOGo.h			\
 	\
 	WORequest+SOGo.h		\
+	WOResponse+SOGo.h		\
 	WOContext+SOGo.h
 
 #	SOGoCustomGroupFolder.m		\
@@ -106,6 +107,7 @@ SOGo_OBJC_FILES = \
 	DOMNode+SOGo.m			\
 	\
 	WORequest+SOGo.m		\
+	WOResponse+SOGo.m		\
 	WOContext+SOGo.m
 
 SOGo_RESOURCE_FILES = \
