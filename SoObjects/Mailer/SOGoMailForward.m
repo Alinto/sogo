@@ -225,6 +225,9 @@
 
 @end
 
+@implementation SOGoMailCzechForward
+@end
+
 @implementation SOGoMailDutchForward
 @end
 

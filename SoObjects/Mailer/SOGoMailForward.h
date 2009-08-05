@@ -39,6 +39,9 @@
 
 @end
 
+@interface SOGoMailCzechForward : SOGoMailForward
+@end
+
 @interface SOGoMailDutchForward : SOGoMailForward
 @end
 

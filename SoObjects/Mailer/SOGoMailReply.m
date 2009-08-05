@@ -108,6 +108,9 @@
 
 @end
 
+@implementation SOGoMailCzechReply
+@end
+
 @implementation SOGoMailDutchReply
 @end
 

@@ -44,6 +44,9 @@
 
 @end
 
+@interface SOGoMailCzechReply : SOGoMailReply
+@end
+
 @interface SOGoMailDutchReply : SOGoMailReply
 @end
 
