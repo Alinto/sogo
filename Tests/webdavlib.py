@@ -204,11 +204,10 @@ class _WD_XMLTreeElement:
         if ns_text is not None:
             text = text + ns_text
 
-        count = len(self.children)
-        if count > 0:
+        if len(self.children) > 0:
             text = text + ">"
-            for x in range(0, count):
-                text = text + self.children[x].render()
+            for child in self.children:
+                text = text + child.render()
             text = text + "</" + self.tag + ">"
         else:
             text = text + "/>"
