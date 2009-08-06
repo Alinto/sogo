@@ -48,3 +48,6 @@ AssertionError: event creation/modification: expected status code '403' (receive
 
 - Always set a doc string on the test methods, especially for complex test
   cases
+
+- When writing tests, be aware that contrary to unit tests, functional tests
+  often imply a logical order between the different steps
