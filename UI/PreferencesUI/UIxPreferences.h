@@ -39,7 +39,7 @@
   NSCalendarDate *today;
   NSMutableArray *hours;
   NSArray *daysOfWeek;
-  BOOL hasChanged;
+  BOOL hasChanged, composeMessageTypeHasChanged;
 }
 
 @end

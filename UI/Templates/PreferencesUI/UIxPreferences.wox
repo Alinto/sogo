@@ -105,11 +105,12 @@
     </table></div>
     <input type="hidden" const:id="categoriesValue" 
       const:name="categoriesValue" var:value="categoriesValue"/>
-    <br/>
-    <label><input type="button" class="button"
-        id="categoryAdd" label:value="Add"/></label>
-    <label><input type="button" class="button"
-        id="categoryDelete" label:value="Delete"/></label>
+    <div id="windowButtons">
+      <label><input type="button" class="button"
+      id="categoryAdd" label:value="Add"/></label>
+      <label><input type="button" class="button"
+      id="categoryDelete" label:value="Delete"/></label>
+    </div>
 <!-- 	  <br/> -->
 <!-- 	  <label><input class="checkBox" -->
 <!-- 	      type="checkbox" var:selection="reminderEnabled" -->

@@ -1,3 +1,10 @@
+2009-08-06  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/PreferencesUI/UIxPreferences.m ([UIxPreferences
+	-defaultAction]): if the compose message type (HTML or plain text)
+	has changed, reload the page (don't close it). This is a fix for a
+	bug with disabling or enabling the CKEDITOR dynamically (in JavaScript).
+
 2009-08-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoGCSFolder.m (-davSyncCollection): enhanced to

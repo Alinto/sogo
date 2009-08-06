@@ -97,6 +97,8 @@
 "signatureplacement_above" = "pod odpověď";
 "signatureplacement_below" = "pod citaci";
 
+"composeMessageChanged" = "Changing your messages composition type requires to save your preferences immediately. Continue?";
+
 /* Additional Parameters */
 "Additional Parameters" = "Dodatečné parametry";
 

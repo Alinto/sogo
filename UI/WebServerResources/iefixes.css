@@ -321,3 +321,11 @@ fieldset div, fieldset p
 /* UIxMailEditor */
 DIV#headerArea
 { padding-bottom: 0px; }
+
+/* UIxPreferences */
+TEXTAREA#signature
+{ height: 33em;
+  overflow: auto; }
+
+TABLE#categoriesList
+{ width: auto; }

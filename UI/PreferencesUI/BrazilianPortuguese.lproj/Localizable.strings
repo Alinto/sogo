@@ -97,6 +97,8 @@
 "signatureplacement_above" = "abaixo da minha resposta";
 "signatureplacement_below" = "abaixo da citação";
 
+"composeMessageChanged" = "Changing your messages composition type requires to save your preferences immediately. Continue?";
+
 /* Additional Parameters */
 "Additional Parameters" = "Parâmetros Adicionais";
 
