@@ -68,10 +68,6 @@
 	      item="item" string="itemOrganizerText"
 	      var:selection="organizerIdentity"/>
 	  </span></label></var:if>-->
-      <label id="attendeesLabel"><var:string label:value="Attendees:"
-	  /><span class="content"
-	  ><a href="#" id="attendeesHref"><!-- space --></a></span></label>
-      <hr />
       <var:component-content />
       <hr />
       <label><var:string label:value="Repeat:" />
@@ -231,6 +227,7 @@
     </label>-->
   </var:if>
     </div>
+    <var:if condition="hasAttendees">
     <div id="attendeesDiv">
       <label class="title"><var:string label:value="Attendees:" />
         <span class="content headerContent">
@@ -241,6 +238,7 @@
         </div></span>
       </label>
     </div>
+    </var:if>
     <var:if condition="hasComment">
       <div id="descriptionDiv">
         <label class="title"><var:string label:value="Description:" />
@@ -253,11 +251,8 @@
         </label>
     </div>
   </var:if>
-  <!--
-  <label id="attendeesLabel"><var:string label:value="Attendees:"
-	  /><span class="content"
-    ><a href="#" id="attendeesHref"</a></span></label>x-->
-     <input type="hidden" name="attach" id="attach" var:value="attach"/>
+
+      <input type="hidden" name="attach" id="attach" var:value="attach"/>
       <input type="hidden" name="privacy" id="privacy"
 	var:value="privacy"/>
       <input type="hidden" name="attendeesNames" id="attendeesNames"

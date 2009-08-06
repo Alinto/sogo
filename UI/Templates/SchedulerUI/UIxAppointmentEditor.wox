@@ -13,6 +13,10 @@
   var:component="event"
   var:saveURL="saveURL">
 
+      <label id="attendeesLabel"><var:string label:value="Attendees:"
+	  /><span class="content"
+	  ><a href="#" id="attendeesHref"><!-- space --></a></span></label>
+      <hr />
   <var:if condition="eventIsReadOnly" const:negate="YES">
   <div class="menu" id="attendeesMenu">
     <ul>
