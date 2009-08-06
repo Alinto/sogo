@@ -44,6 +44,12 @@
 
 @end
 
+@interface SOGoMailBrazilianPortugueseReply : SOGoMailReply
+@end
+
+@interface SOGoMailCzechReply : SOGoMailReply
+@end
+
 @interface SOGoMailDutchReply : SOGoMailReply
 @end
 
@@ -56,6 +62,9 @@
 @interface SOGoMailGermanReply : SOGoMailReply
 @end
 
+@interface SOGoMailHungarianReply : SOGoMailReply
+@end
+
 @interface SOGoMailItalianReply : SOGoMailReply
 @end
 
@@ -63,6 +72,9 @@
 @end
 
 @interface SOGoMailRussianReply : SOGoMailReply
+@end
+
+@interface SOGoMailWelshReply : SOGoMailReply
 @end
 
 #endif /* SOGOMAILREPLY_H */

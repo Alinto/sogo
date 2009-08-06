@@ -1,3 +1,18 @@
+2009-08-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoGCSFolder.m (-davSyncCollection): enhanced to
+	return a DAV error with the "valid-sync-token" condition tag when
+	a token is provided while the collection is empty.
+
+	* SoObjects/SOGo/WOResponse+SOGo.m: new class module.
+	(-appendDAVError:): utility method that adds and formats the XML
+	body of a DAV error, with the error condition passed as argument.
+
+2009-08-05  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+        * Added missing files for Hungarian translation
+	* Fixed the reply / forward ops for many translations
+
 2009-08-03  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* Dropped the current caching subsystem based on

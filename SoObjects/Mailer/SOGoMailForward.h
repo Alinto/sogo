@@ -39,6 +39,12 @@
 
 @end
 
+@interface SOGoMailBrazilianPortugueseForward : SOGoMailForward
+@end
+
+@interface SOGoMailCzechForward : SOGoMailForward
+@end
+
 @interface SOGoMailDutchForward : SOGoMailForward
 @end
 
@@ -51,6 +57,9 @@
 @interface SOGoMailGermanForward : SOGoMailForward
 @end
 
+@interface SOGoMailHungarianForward : SOGoMailForward
+@end
+
 @interface SOGoMailItalianForward : SOGoMailForward
 @end
 
@@ -58,6 +67,9 @@
 @end
 
 @interface SOGoMailRussianForward : SOGoMailForward
+@end
+
+@interface SOGoMailWelshForward : SOGoMailForward
 @end
 
 #endif /* SOGOMAILFORWARD_H */

@@ -7,6 +7,7 @@
 - added the possibility to disable alarms or tasks from Web calendars
 - added support for printing cards
 - the event/task summary dialog is now similar to Lightning
+- replaced GNUstep's DO subsystem with memcached
 
 1.0-20090714 (1.0.3)
 --------------------

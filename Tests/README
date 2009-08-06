@@ -1,0 +1,19 @@
+setup
+-----
+
+(you need "python-xml" and "python-m2crypto" in order to run the scripts)
+
+1) copy testconfig.py.in to testconfig.py (make sure to never EVER add it to monotone)
+2) edit testconfig.py to suit your environment
+3) run the test scripts
+
+runnable scripts
+----------------
+
+webdav-sync.py
+
+other
+-----
+
+propfind.py - a sample implementation of a PROPFIND request using webdavlib
+

@@ -1,0 +1,4 @@
+hostname = "localhost"
+port = "80"
+username = "myuser"
+password = "mypass"
