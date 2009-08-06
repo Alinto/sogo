@@ -10,7 +10,9 @@ setup
 runnable scripts
 ----------------
 
-webdav-sync.py
+all.py - run all scripts below at once
+webdavsync.py
+davacl.py
 
 other scripts
 -------------
