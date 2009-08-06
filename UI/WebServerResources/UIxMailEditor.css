@@ -151,10 +151,13 @@ UL#attachments LI
 UL#attachments LI IMG
 { vertical-align: bottom; }
 
-#pageContent TEXTAREA
+#pageContent TEXTAREA,
+#cke_text
 { position: absolute;
-  left: 0em;
-  right: 0em;
-  bottom: 0em;
-  top: 999em;
-  width: 99%; }
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /*top: 999em;*/ }
+
+#pageContent TEXTAREA
+{ width: 99%; }
