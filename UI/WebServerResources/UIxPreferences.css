@@ -15,31 +15,29 @@ DIV#general LABEL
   margin-left: 0px;
   white-space: normal; }
 
-DIV#mailOptionsView TEXTAREA
-{ width: 420px;
-  height: 4em; }
-
 DIV#passwordView
 { padding-top: 3em;
   padding-right: 10em; }
 
 DIV#identitiesView
-{ padding-top: 5px;
-  padding-left: 5px; }
+{ padding: 5px 5px 5px 0px;
+  overflow: hidden; }
 
-#signature
-{ overflow: auto;
-  width: 390px;
-  max-width: 390px;
-  height: 145px; }
+TEXTAREA#signature
+{ height: 100%;
+  width: 100%; }
 
 TABLE#categoriesList
-{ width: 95%; }
+{ width: 100%; }
 
 DIV#categoriesListWrapper
-{ overflow:auto; 
-  height:230px; 
-  padding:2px; }
+{ overflow: auto;
+  position: absolute;
+  bottom: 30px;
+  right: 0;
+  top: 8em;
+  left: 0;
+  padding: 2px; }
 
 DIV.colorBox
 { border: 1px solid #333333;
@@ -56,3 +54,14 @@ TR._selected
 
 TD.categoryListCell
 { -moz-user-select: none; }
+
+DIV#windowButtons
+{ position: fixed;
+  top: auto;
+  bottom: 0px;
+  left: 0px;
+  right: 25px;
+  height: 3.5em;
+  line-height: 2em;
+  vertical-align: middle;
+  text-align: right; }

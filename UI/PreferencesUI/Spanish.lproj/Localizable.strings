@@ -109,6 +109,8 @@
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Plain text";
 
+"composeMessageChanged" = "Changing your messages composition type requires to save your preferences immediately. Continue?";
+
 /* Additional Parameters */
 "Additional Parameters" = "Additional Parameters";
 

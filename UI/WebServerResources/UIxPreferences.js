@@ -6,8 +6,9 @@ function savePreferences(sender) {
         sigList.disabled=false;
 
     serializeCategories (null);
-    $("mainForm").submit();
 
+    $("mainForm").submit();
+    
     return false;
 }
 
@@ -27,7 +28,7 @@ function _setupEvents(enable) {
 
     $("replyPlacementList").observe ("change", onReplyPlacementListChange);
     $("composeMessagesType").observe ("change", onComposeMessagesTypeChange);
-    $("categoriesValue").value = "prout";
+    $("categoriesValue").value = "";
 }
 
 function onChoiceChanged(event) {
@@ -52,23 +53,21 @@ function initPreferences() {
     for (var i=0; i<r.length; i++)
         r[i].identify ();
     table.multiselect = true;
-    TableKit.Resizable.init(table, 
-                            {'trueResize' : true, 'keepWidth' : true});
     resetTableActions ();
     $("categoryAdd").observe ("click", onCategoryAdd);
     $("categoryDelete").observe ("click", onCategoryDelete);
 }
 
-function resetTableActions () {
+function resetTableActions() {
     var r = $$("TABLE#categoriesList tbody tr");
     for (var i = 0; i < r.length; i++) {
         var row = $(r[i]);
         row.observe("mousedown", onRowClick);
-        var tds = row.childElements ();
+        var tds = row.childElements();
         tds[0].observe("mousedown", endAllEditables);
-        tds[0].observe ("dblclick", onNameEdit);
+        tds[0].observe("dblclick", onNameEdit);
         tds[1].observe("mousedown", endAllEditables);
-        tds[1].childElements ()[0].observe ("dblclick", onColorEdit);
+        tds[1].childElements()[0].observe ("dblclick", onColorEdit);
     }
 }
 
@@ -198,14 +197,15 @@ function serializeCategories (e) {
 
 
 function resetCategoriesColors (e) {
-    var divs = $$("DIV.colorBox");
+    var divs = $$("TABLE#categoriesList DIV.colorBox");
 
     for (var i = 0; i < divs.length; i++) {
-        var d = $(divs[i]);
+        var d = divs[i];
         var color = d.innerHTML;
         d.showColor = color;
-        d.style.background = color;
-        d.innerHTML = "&nbsp;";
+        if (color != "undefined")
+            d.setStyle({ backgroundColor: color });
+        d.update("&nbsp;");
     }
 }
 
@@ -220,32 +220,40 @@ function onReplyPlacementListChange() {
     }
 }
 
-function onComposeMessagesTypeChange () {
+function onComposeMessagesTypeChange(event) {
     var textArea = $('signature');
-    var editor = $('cke_signature');
-
-    // Textmode
-    if ($("composeMessagesType").value == 0) {
-        textArea.style.height = "340px";
-        if (editor) {
-            CKEDITOR.instances.signature.removeListener ()
-                CKEDITOR.instances.signature.destroy (false);
-            CKEDITOR.instances.signature = null;
-            delete (CKEDITOR.instances.signature);
+    
+    if (event) {
+        // Due to a limitation of CKEDITOR, we reload the page when the user
+	// changes the composition mode to avoid Javascript errors.
+        var saveAndReload = confirm(labels["composeMessageChanged"]);
+        if (saveAndReload)
+            return savePreferences();
+        else {
+            // Restore previous value of composeMessagesType
+             $("composeMessagesType").stopObserving("change", onComposeMessagesTypeChange);
+            $("composeMessagesType").value = ((Event.element(event).value == 1)?"0":"1");
+            Event.element(event).blur();
+            $("composeMessagesType").observe("change", onComposeMessagesTypeChange);
+            return false;
         }
     }
-    else {
+
+    if ($("composeMessagesType").value == 1) {
+        // HTML mode
         CKEDITOR.replace('signature',
                          {
                              skin: "v2",
-                                 height: "280px",
+                                 resizable: CKEDITOR.DIALOG_RESIZE_NONE,
+                                 height: "290px",
                                  toolbar :
                              [['Bold', 'Italic', '-', 'Link', 
                                'Font','FontSize','-','TextColor',
                                'BGColor']
                               ] 
-                                 }
+                          }
                          );
+        CKEDITOR.config.disableObjectResizing = true;
     }
 }
 

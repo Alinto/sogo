@@ -87,6 +87,7 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
       ASSIGN (daysOfWeek,
 	      [locale objectForKey: NSWeekDayNameArray]);
       hasChanged = NO;
+      composeMessageTypeHasChanged = NO;
     }
 
   return self;
@@ -633,7 +634,11 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
 
 - (void) setUserComposeMessagesType: (NSString *) newType
 {
-  [userDefaults setObject: newType forKey: @"ComposeMessagesType"];
+  if (![[self userComposeMessagesType] isEqualToString: newType])
+    {
+      composeMessageTypeHasChanged = YES;
+      [userDefaults setObject: newType forKey: @"ComposeMessagesType"];
+    }
 }
 
 
@@ -652,11 +657,18 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
   if ([[request method] isEqualToString: @"POST"])
     {
       [userDefaults synchronize];
-      if (hasChanged)
-	method = @"window.location.reload()";
+      if (composeMessageTypeHasChanged)
+	// Due to a limitation of CKEDITOR, we reload the page when the user
+	// changes the composition mode to avoid Javascript errors.
+	results = self;
       else
-	method = nil;
-      results = [self jsCloseWithRefreshMethod: method];
+	{
+	  if (hasChanged)
+	    method = @"window.location.reload()";
+	  else
+	    method = nil;
+	  results = [self jsCloseWithRefreshMethod: method];
+	}
     }
   else
     results = self;

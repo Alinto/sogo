@@ -95,6 +95,8 @@
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Egyszerű szöveg";
 
+"composeMessageChanged" = "Changing your messages composition type requires to save your preferences immediately. Continue?";
+
 /* Additional Parameters */
 "Additional Parameters" = "További beállítások";
 

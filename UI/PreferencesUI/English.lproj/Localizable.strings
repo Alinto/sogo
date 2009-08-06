@@ -88,6 +88,7 @@
 "messageforward_inline" = "Inline";
 "messageforward_attached" = "As Attachment";
 
+/* Identities */
 "Default identity:" = "Default identity:";
 "Manage identities..." = "Manage identities...";
 "Signature" = "Signature";
@@ -99,6 +100,8 @@
 "Compose messages in" = "Compose messages in";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Plain text";
+
+"composeMessageChanged" = "Changing your messages composition type requires to save your preferences immediately. Continue?";
 
 /* Additional Parameters */
 "Additional Parameters" = "Additional Parameters";
