@@ -2,3 +2,6 @@ hostname = "localhost"
 port = "80"
 username = "myuser"
 password = "mypass"
+
+subscriber_username = "otheruser"
+subscriber_password = "otherpass"

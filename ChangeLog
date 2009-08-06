@@ -1,5 +1,13 @@
 2009-08-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Tests/davacl.py: new functional testsuite for DAV acls on
+	Calendar collections, most rights and featured are covered.
+	Possible improvements are mentionned in the "TODO" section.
+
+	* SoObjects/Appointments/SOGoCalendarComponent.m (-aclsForUser:):
+	don't adjust roles based on the component access class if the
+	component is new.
+
 	* Tests/webdavlib.py (WebDAVClient._prepare_headers): we don't set
 	the "content-length" header if the body is None.
 	(HTTPSimpleQuery.render): method must take a "self" parameter.

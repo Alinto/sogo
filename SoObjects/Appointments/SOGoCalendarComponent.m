@@ -929,13 +929,16 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
   return [newComponent saveContentString: [calendar versitString]];
 }
 
+#warning Should we not remove the concept of Organizer and Participant roles?
 - (NSString *) _roleOfOwner: (iCalRepeatableEntityObject *) component
 {
   NSString *role;
   iCalPerson *organizer;
   SOGoUser *ownerUser;
 
-  if (component)
+  if (isNew)
+    role = SOGoCalendarRole_Organizer;
+  else
     {
       organizer = [component organizer];
       if ([[organizer rfc822Email] length] > 0)
@@ -951,8 +954,6 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
       else
 	role = SOGoCalendarRole_Organizer;
     }
-  else
-    role = SOGoCalendarRole_Organizer;
 
   return role;
 }
@@ -991,25 +992,31 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
     [roles addObject: ownerRole];
   else
     {
-      if (component)
-	{
-	  aclUser = [SOGoUser userWithLogin: uid roles: nil];
-	  if ([component userIsOrganizer: aclUser])
-	    [roles addObject: SOGoCalendarRole_Organizer];
-	  else if ([component userIsParticipant: aclUser])
-	    [roles addObject: SOGoCalendarRole_Participant];
-	  accessRole = [container roleForComponentsWithAccessClass:
-				    [component symbolicAccessClass]
-				  forUser: uid];
-	  if ([accessRole length] > 0)
-	    {
-	      [roles addObject: accessRole];
-	      [roles addObject: [self _compiledRoleForOwner: ownerRole
-				      andUser: accessRole]];
-	    }
-	}
-      else if ([roles containsObject: SOGoRole_ObjectCreator])
-	[roles addObject: SOGoCalendarRole_Organizer];
+      if (isNew)
+        {
+          if ([roles containsObject: SOGoRole_ObjectCreator])
+            [roles addObject: SOGoCalendarRole_Organizer];
+        }
+      else
+        {
+          if (component)
+            {
+              aclUser = [SOGoUser userWithLogin: uid roles: nil];
+              if ([component userIsOrganizer: aclUser])
+                [roles addObject: SOGoCalendarRole_Organizer];
+              else if ([component userIsParticipant: aclUser])
+                [roles addObject: SOGoCalendarRole_Participant];
+              accessRole
+                = [container roleForComponentsWithAccessClass: [component symbolicAccessClass]
+                                                      forUser: uid];
+              if ([accessRole length] > 0)
+                {
+                  [roles addObject: accessRole];
+                  [roles addObject: [self _compiledRoleForOwner: ownerRole
+                                                        andUser: accessRole]];
+                }
+            }
+        }
     }
 
   return roles;
