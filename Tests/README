@@ -12,8 +12,39 @@ runnable scripts
 
 webdav-sync.py
 
-other
------
+other scripts
+-------------
 
 propfind.py - a sample implementation of a PROPFIND request using webdavlib
 
+* developers
+------------
+
+- Test methods are always prefixed with "test". Sometimes, it's easier to
+track down a problem by enabling only one test at a time. One possible method
+is to replace "def test" with "def xtest" and replace it back when the
+problems are solved.
+
+- Test failures start with "FAIL:". Those are the ones that indicate possible
+  bugs in the application, if the test is well written.
+  For example like this:
+
+======================================================================
+FAIL: 'modify' PUBLIC, 'view all' PRIVATE, 'view d&t' confidential
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./davacl.py", line 75, in testModifyPublicViewAllPrivateViewDConfidential
+    self._testRights({ "pu": "m", "pr": "v", "co": "d" })
+  File "./davacl.py", line 119, in _testRights
+    self._testCreate(rights)
+  File "./davacl.py", line 165, in _testCreate
+    exp_code)
+  File "./davacl.py", line 107, in _putEvent
+    % (exp_status, put.response["status"]))
+AssertionError: event creation/modification: expected status code '403' (received '201')
+
+- Test errors start with "ERRORS" and most likely indicate a bug in the test
+  code itself.
+
+- Always set a doc string on the test methods, especially for complex test
+  cases
