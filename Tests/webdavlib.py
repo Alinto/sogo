@@ -18,8 +18,9 @@ class WebDAVClient:
 
     def _prepare_headers(self, query, body):
         headers = { "User-Agent": "Mozilla/5.0",
-                    "content-length": len(body),
                     "authorization": "Basic %s" % self.simpleauth_hash }
+        if body is not None:
+            headers["content-length"] = len(body)
         if query.__dict__.has_key("query") and query.depth is not None:
             headers["depth"] = query.depth
         if query.__dict__.has_key("content_type"):
@@ -45,16 +46,8 @@ class HTTPSimpleQuery:
         self.start = -1
         self.duration = -1
 
-    def render():
+    def render(self):
         return None
-
-class HTTPGET(HTTPSimpleQuery):
-    method = "GET"
-
-class HTTPQuery(HTTPSimpleQuery):
-    def __init__(self, url, content_type):
-        HTTPSimpleQuery.__init__(self, url)
-        self.content_type = content_type
 
     def set_response(self, http_response):
         headers = {}
@@ -66,6 +59,14 @@ class HTTPQuery(HTTPSimpleQuery):
                           "version": http_response.version,
                           "body": http_response.read() }
 
+class HTTPGET(HTTPSimpleQuery):
+    method = "GET"
+
+class HTTPQuery(HTTPSimpleQuery):
+    def __init__(self, url, content_type):
+        HTTPSimpleQuery.__init__(self, url)
+        self.content_type = content_type
+
 class HTTPPUT(HTTPQuery):
     method = "PUT"
 
@@ -75,6 +76,9 @@ class HTTPPUT(HTTPQuery):
 
     def render(self):
         return self.content
+
+class HTTPPOST(HTTPPUT):
+    method = "POST"
 
 class WebDAVQuery(HTTPQuery):
     method = None
@@ -137,6 +141,22 @@ class WebDAVPROPFIND(WebDAVQuery):
         for prop in properties:
             prop_tag = self.render_tag(prop)
             props.append(_WD_XMLTreeElement(prop_tag))
+
+class WebDAVCalendarMultiget(WebDAVREPORT):
+    def __init__(self, url, properties, hrefs):
+        WebDAVQuery.__init__(self, url)
+        multiget_tag = self.ns_mgr.register("calendar-multiget", "urn:ietf:params:xml:ns:caldav")
+        self.top_node = _WD_XMLTreeElement(multiget_tag)
+        props = _WD_XMLTreeElement("prop")
+        self.top_node.append(props)
+        for prop in properties:
+            prop_tag = self.render_tag(prop)
+            props.append(_WD_XMLTreeElement(prop_tag))
+
+        for href in hrefs:
+            href_node = _WD_XMLTreeElement("href")
+            self.top_node.append(href_node)
+            href_node.append(_WD_XMLTreeTextNode(href))
 
 class WebDAVSyncQuery(WebDAVREPORT):
     def __init__(self, url, token, properties):
@@ -204,11 +224,10 @@ class _WD_XMLTreeElement:
         if ns_text is not None:
             text = text + ns_text
 
-        count = len(self.children)
-        if count > 0:
+        if len(self.children) > 0:
             text = text + ">"
-            for x in range(0, count):
-                text = text + self.children[x].render()
+            for child in self.children:
+                text = text + child.render()
             text = text + "</" + self.tag + ">"
         else:
             text = text + "/>"

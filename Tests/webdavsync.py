@@ -40,9 +40,9 @@ class WebdavSyncTest(unittest.TestCase):
         #   empty collection:
         #     without a token (query1)
         #     with a token (query2)
-        #   non-empty collection:
+        #   (when done, non-empty collection:
         #     without a token (query3)
-        #     with a token (query4)
+        #     with a token (query4))
 
         query1 = webdavlib.WebDAVSyncQuery(resource, None, [ "getetag" ])
         self.client.execute(query1)

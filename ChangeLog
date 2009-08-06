@@ -1,3 +1,10 @@
+2009-08-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Tests/webdavlib.py (WebDAVClient._prepare_headers): we don't set
+	the "content-length" header if the body is None.
+	(HTTPSimpleQuery.render): method must take a "self" parameter.
+	(WebDAVCalendarMultiget.__init__): added transaction class.
+
 2009-08-06  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/PreferencesUI/UIxPreferences.m ([UIxPreferences
