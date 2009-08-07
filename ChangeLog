@@ -1,5 +1,7 @@
 2009-08-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Tests/test-davacl.py: added tests for the Contacts module.
+
 	* Tests/all.py: modified to load and run all the test modules
 	found in the current directory, as long as they are prefixed by
 	"test-".
