@@ -9,9 +9,10 @@ import xml.xpath
 import time
 
 # TODO:
-# - we don't test "respond" yet
-# - addressbook acls
-# ? testcase for "calendar-query"
+# - cal: we don't test "respond" yet
+# - ab: testcase for addressbook-query, webdav-sync (no "calendar-data"
+#       equivalent)
+# ? cal: testcase for "calendar-query"
 # - test rights validity:
 #   - send invalid rights to SOGo and expect failures
 #   - refetch the set of rights and make sure it matches what was set
