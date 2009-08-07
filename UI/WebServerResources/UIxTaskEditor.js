@@ -156,16 +156,18 @@ function addContact(tag, fullContactName, contactId, contactName, contactEmail) 
 }
 
 function onTimeControlCheck(checkBox) {
-  var inputs = checkBox.parentNode.getElementsByTagName("input");
-  var selects = checkBox.parentNode.getElementsByTagName("select");
-  for (var i = 0; i < inputs.length; i++)
-    if (inputs[i] != checkBox)
-      inputs[i].disabled = !checkBox.checked;
-  for (var i = 0; i < selects.length; i++)
-    if (selects[i] != checkBox)
-      selects[i].disabled = !checkBox.checked;
+    if (checkBox) {
+        var inputs = checkBox.parentNode.getElementsByTagName("input");
+        var selects = checkBox.parentNode.getElementsByTagName("select");
+        for (var i = 0; i < inputs.length; i++)
+            if (inputs[i] != checkBox)
+                inputs[i].disabled = !checkBox.checked;
+        for (var i = 0; i < selects.length; i++)
+            if (selects[i] != checkBox)
+                selects[i].disabled = !checkBox.checked;
 	if (checkBox.id == "dueDateCB")
-		$("reminderList").disabled = !checkBox.checked;
+            $("reminderList").disabled = !checkBox.checked;
+    }
 }
 
 function saveEvent(sender) {
@@ -294,26 +296,29 @@ function onStatusListChange(event) {
 
 function initializeStatusLine() {
   var statusList = $("statusList");
-  statusList.observe("mouseup", onStatusListChange, false);
+  if (statusList)
+      statusList.observe("mouseup", onStatusListChange, false);
 }
 
 function onTaskEditorLoad() {
-	assignCalendar('startTime_date');
-	assignCalendar('dueTime_date');
-	assignCalendar('statusTime_date');
+    assignCalendar('startTime_date');
+    assignCalendar('dueTime_date');
+    assignCalendar('statusTime_date');
+    
+    if (readOnly == false) {
+        var widgets = {'start': {'date': $("startTime_date"),
+                                 'hour': $("startTime_time_hour"),
+                                 'minute': $("startTime_time_minute")},
+                       'due':   {'date': $("dueTime_date"),
+                                 'hour': $("dueTime_time_hour"),
+                                 'minute': $("dueTime_time_minute")}};
+        initTimeWidgets(widgets);
+    }
 
-	var widgets = {'start': {'date': $("startTime_date"),
-													 'hour': $("startTime_time_hour"),
-													 'minute': $("startTime_time_minute")},
-								 'due':   {'date': $("dueTime_date"),
-													 'hour': $("dueTime_time_hour"),
-													 'minute': $("dueTime_time_minute")}};
-	initTimeWidgets(widgets);
-	
-	// Enable or disable the reminder list
-	onTimeControlCheck($("dueDateCB"));
+    // Enable or disable the reminder list
+    onTimeControlCheck($("dueDateCB"));
 
-  initializeStatusLine();
+    initializeStatusLine();
 }
 
 document.observe("dom:loaded", onTaskEditorLoad);

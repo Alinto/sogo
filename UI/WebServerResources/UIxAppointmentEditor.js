@@ -461,16 +461,18 @@ function getMenus() {
 }
 
 function onAppointmentEditorLoad() {
-    assignCalendar('startTime_date');
-    assignCalendar('endTime_date');
-    
-    var widgets = {'start': {'date': $("startTime_date"),
-                             'hour': $("startTime_time_hour"),
-                             'minute': $("startTime_time_minute")},
-                   'end': {'date': $("endTime_date"),
-                           'hour': $("endTime_time_hour"),
-                           'minute': $("endTime_time_minute")}};
-    initTimeWidgets(widgets);
+    if (readOnly == false) {
+        assignCalendar('startTime_date');
+        assignCalendar('endTime_date');
+        
+        var widgets = {'start': {'date': $("startTime_date"),
+                                 'hour': $("startTime_time_hour"),
+                                 'minute': $("startTime_time_minute")},
+                       'end': {'date': $("endTime_date"),
+                               'hour': $("endTime_time_hour"),
+                               'minute': $("endTime_time_minute")}};
+        initTimeWidgets(widgets);
+    }
     initializeAttendeesHref();
 }
 

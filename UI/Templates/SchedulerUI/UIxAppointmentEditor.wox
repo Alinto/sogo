@@ -13,10 +13,6 @@
   var:component="event"
   var:saveURL="saveURL">
 
-      <label id="attendeesLabel"><var:string label:value="Attendees:"
-	  /><span class="content"
-	  ><a href="#" id="attendeesHref"><!-- space --></a></span></label>
-      <hr />
   <var:if condition="eventIsReadOnly" const:negate="YES">
   <div class="menu" id="attendeesMenu">
     <ul>
@@ -27,6 +23,10 @@
       <li class="separator"><!-- separator --></li>
     </ul>
   </div>
+      <label id="attendeesLabel"><var:string label:value="Attendees:"
+	  /><span class="content"
+	  ><a href="#" id="attendeesHref"><!-- space --></a></span></label>
+      <hr />
   <label><span class="content">
     <span id="allDay"><input id="isAllDay" name="isAllDay" class="checkBox"
         type="checkbox" var:selection="isAllDay"
