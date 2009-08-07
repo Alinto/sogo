@@ -17,18 +17,76 @@ import time
 #   - refetch the set of rights and make sure it matches what was set
 #     originally
 
-# rights:
-#   v: view all
-#   d: view date and time
-#   m: modify
-#   r: respond
-# short rights notation: { "c": create,
-#                          "d": delete,
-#                          "pu": public,
-#                          "pr": private,
-#                          "co": confidential }
+class DAVAclTest(unittest.TestCase):
+    resource = None
 
-resource = '/SOGo/dav/%s/Calendar/test-dav-acl/' % username
+    def setUp(self):
+        self.client = webdavlib.WebDAVClient(hostname, port,
+                                             username, password)
+        delete = webdavlib.WebDAVDELETE(self.resource)
+        self.client.execute(delete)
+        mkcol = webdavlib.WebDAVMKCOL(self.resource)
+        self.client.execute(mkcol)
+        self.assertEquals(mkcol.response["status"], 201,
+                          "preparation: failure creating collection"
+                          "(code = %d)" % mkcol.response["status"])
+        self.subscriber_client = webdavlib.WebDAVClient(hostname, port,
+                                                        subscriber_username,
+                                                        subscriber_password)
+
+    def tearDown(self):
+        delete = webdavlib.WebDAVDELETE(self.resource)
+        self.client.execute(delete)
+
+    def rightsToSOGoRights(self, rights):
+        self.fail("subclass must implement this method")
+
+    def xpath_query(self, query, top_node):
+        xpath_context = xml.xpath.CreateContext(top_node)
+        xpath_context.setNamespaces({ "D": "DAV:",
+                                      "C": "urn:ietf:params:xml:ns:caldav" })
+        return xml.xpath.Evaluate(query, None, xpath_context)
+
+    def setupRights(self, rights):
+        rights_str = "".join(["<%s/>" % x for x in self.rightsToSOGoRights(rights) ])
+        aclQuery = """<acl-query xmlns="urn:inverse:params:xml:ns:inverse-dav">
+<set-roles user="%s">%s</set-roles>
+</acl-query>""" % (subscriber_username, rights_str)
+
+        post = webdavlib.HTTPPOST(self.resource, aclQuery, "application/xml")
+        self.client.execute(post)
+        self.assertEquals(post.response["status"], 204,
+                          "rights modification: failure to set '%s' (status: %d)"
+                          % (rights_str, post.response["status"]))
+
+    def _versitLine(self, line):
+        key, value = line.split(":")
+        semicolon = key.find(";")
+        if semicolon > -1:
+            key = key[:semicolon]
+
+        return (key, value)
+
+    def versitDict(self, event):
+        versitStruct = {}
+        for line in event.splitlines():
+            (key, value) = self._versitLine(line)
+            if not (key == "BEGIN" or key == "END"):
+                versitStruct[key] = value
+
+        return versitStruct
+
+# Calendar:
+#   rights:
+#     v: view all
+#     d: view date and time
+#     m: modify
+#     r: respond
+#   short rights notation: { "c": create,
+#                            "d": delete,
+#                            "pu": public,
+#                            "pr": private,
+#                            "co": confidential }
 
 event_template = """BEGIN:VCALENDAR
 VERSION:2.0
@@ -48,30 +106,17 @@ DTSTAMP:20090805T100000Z
 END:VEVENT
 END:VCALENDAR"""
 
-class DAVAclTest(unittest.TestCase):
+class DAVCalendarAclTest(DAVAclTest):
+    resource = '/SOGo/dav/%s/Calendar/test-dav-acl/' % username
+
     def setUp(self):
+        DAVAclTest.setUp(self)
         self.classToICSClass = { "pu": "PUBLIC",
                                  "pr": "PRIVATE",
                                  "co": "CONFIDENTIAL" }
-        self.client = webdavlib.WebDAVClient(hostname, port,
-                                             username, password)
-        delete = webdavlib.WebDAVDELETE(resource)
-        self.client.execute(delete)
-        mkcol = webdavlib.WebDAVMKCOL(resource)
-        self.client.execute(mkcol)
-        self.assertEquals(mkcol.response["status"], 201,
-                          "preparation: failure creating collection"
-                          "(code = %d)" % mkcol.response["status"])
         self._putEvent(self.client, "public.ics", "PUBLIC")
         self._putEvent(self.client, "private.ics", "PRIVATE")
         self._putEvent(self.client, "confidential.ics", "CONFIDENTIAL")
-        self.subscriber_client = webdavlib.WebDAVClient(hostname, port,
-                                                        subscriber_username,
-                                                        subscriber_password)
-
-    def tearDown(self):
-        delete = webdavlib.WebDAVDELETE(resource)
-        self.client.execute(delete)
 
     def testViewAllPublic(self):
         """'view all' on a specific class (PUBLIC)"""
@@ -97,15 +142,9 @@ class DAVAclTest(unittest.TestCase):
         """no right given"""
         self._testRights({})
 
-    def _xpath_query(self, query, top_node):
-        xpath_context = xml.xpath.CreateContext(top_node)
-        xpath_context.setNamespaces({ "D": "DAV:",
-                                      "C": "urn:ietf:params:xml:ns:caldav" })
-        return xml.xpath.Evaluate(query, None, xpath_context)
-
     def _putEvent(self, client, filename,
                   event_class = "PUBLIC", exp_status = 201):
-        url = "%s%s" % (resource, filename)
+        url = "%s%s" % (self.resource, filename)
         event = event_template % { "class": event_class,
                                    "filename": filename }
         put = webdavlib.HTTPPUT(url, event, "text/calendar; charset=utf-8")
@@ -116,7 +155,7 @@ class DAVAclTest(unittest.TestCase):
                           % (filename, exp_status, put.response["status"]))
 
     def _deleteEvent(self, client, filename, exp_status = 204):
-        url = "%s%s" % (resource, filename)
+        url = "%s%s" % (self.resource, filename)
         delete = webdavlib.WebDAVDELETE(url)
         client.execute(delete)
         self.assertEquals(delete.response["status"], exp_status,
@@ -125,14 +164,14 @@ class DAVAclTest(unittest.TestCase):
                           % (filename, exp_status, delete.response["status"]))
 
     def _testRights(self, rights):
-        self._setupRights(rights)
+        self.setupRights(rights)
         self._testCreate(rights)
         self._testEventRight("pu", rights)
         self._testEventRight("pr", rights)
         self._testEventRight("co", rights)
         self._testDelete(rights)
 
-    def _rightsToSOGoRights(self, rights):
+    def rightsToSOGoRights(self, rights):
         sogoRights = []
         if rights.has_key("c") and rights["c"]:
             sogoRights.append("ObjectCreator")
@@ -153,18 +192,6 @@ class DAVAclTest(unittest.TestCase):
                 sogoRights.append(sogo_right)
 
         return sogoRights
-
-    def _setupRights(self, rights):
-        rights_str = "".join(["<%s/>" % x for x in self._rightsToSOGoRights(rights) ])
-        aclQuery = """<acl-query xmlns="urn:inverse:params:xml:ns:inverse-dav">
-<set-roles user="%s">%s</set-roles>
-</acl-query>""" % (subscriber_username, rights_str)
-
-        post = webdavlib.HTTPPOST(resource, aclQuery, "application/xml")
-        self.client.execute(post)
-        self.assertEquals(post.response["status"], 204,
-                          "rights modification: failure to set '%s' (status: %d)"
-                          % (rights_str, post.response["status"]))
 
     def _testCreate(self, rights):
         if rights.has_key("c") and rights["c"]:
@@ -203,7 +230,7 @@ class DAVAclTest(unittest.TestCase):
 
     def _getEvent(self, event_class):
         icsClass = self.classToICSClass[event_class]
-        url = "%s%s.ics" % (resource, icsClass.lower())
+        url = "%s%s.ics" % (self.resource, icsClass.lower())
         get = webdavlib.HTTPGET(url)
         self.subscriber_client.execute(get)
 
@@ -218,19 +245,19 @@ class DAVAclTest(unittest.TestCase):
                                    response_tag = "D:response"):
         event = None
 
-        response_nodes = self._xpath_query("/D:multistatus/%s" % response_tag,
-                                           top_node)
+        response_nodes = self.xpath_query("/D:multistatus/%s" % response_tag,
+                                          top_node)
         for response_node in response_nodes:
-            href_node = self._xpath_query("D:href", response_node)[0]
+            href_node = self.xpath_query("D:href", response_node)[0]
             href = href_node.childNodes[0].nodeValue
             if href.endswith(filename):
-                propstat_nodes = self._xpath_query("D:propstat", response_node)
+                propstat_nodes = self.xpath_query("D:propstat", response_node)
                 for propstat_node in propstat_nodes:
-                    status_node = self._xpath_query("D:status",
-                                                    propstat_node)[0]
+                    status_node = self.xpath_query("D:status",
+                                                   propstat_node)[0]
                     status = status_node.childNodes[0].nodeValue
-                    data_nodes = self._xpath_query("D:prop/C:calendar-data",
-                                                   propstat_node)
+                    data_nodes = self.xpath_query("D:prop/C:calendar-data",
+                                                  propstat_node)
                     if status.endswith("200 OK"):
                         if (len(data_nodes) > 0
                             and len(data_nodes[0].childNodes) > 0):
@@ -248,7 +275,7 @@ class DAVAclTest(unittest.TestCase):
 
         icsClass = self.classToICSClass[event_class]
         filename = "%s.ics" % icsClass.lower()
-        propfind = webdavlib.WebDAVPROPFIND(resource,
+        propfind = webdavlib.WebDAVPROPFIND(self.resource,
                                             ["{urn:ietf:params:xml:ns:caldav}calendar-data"],
                                             1)
         self.subscriber_client.execute(propfind)
@@ -262,8 +289,8 @@ class DAVAclTest(unittest.TestCase):
         event = None
 
         icsClass = self.classToICSClass[event_class]
-        url = "%s%s.ics" % (resource, icsClass.lower())
-        multiget = webdavlib.WebDAVCalendarMultiget(resource,
+        url = "%s%s.ics" % (self.resource, icsClass.lower())
+        multiget = webdavlib.WebDAVCalendarMultiget(self.resource,
                                                     ["{urn:ietf:params:xml:ns:caldav}calendar-data"],
                                                     [ url ])
         self.subscriber_client.execute(multiget)
@@ -277,8 +304,8 @@ class DAVAclTest(unittest.TestCase):
         event = None
 
         icsClass = self.classToICSClass[event_class]
-        url = "%s%s.ics" % (resource, icsClass.lower())
-        sync_query = webdavlib.WebDAVSyncQuery(resource, None,
+        url = "%s%s.ics" % (self.resource, icsClass.lower())
+        sync_query = webdavlib.WebDAVSyncQuery(self.resource, None,
                                                ["{urn:ietf:params:xml:ns:caldav}calendar-data"])
         self.subscriber_client.execute(sync_query)
         if sync_query.response["status"] != 403:
@@ -324,7 +351,7 @@ class DAVAclTest(unittest.TestCase):
                           "CREATED": "20090805T100000Z",
                           "DTSTAMP": "20090805T100000Z",
                           "X-SOGO-SECURE": "YES" }
-        event_dict = self._versitDict(event)
+        event_dict = self.versitDict(event)
         for key in event_dict.keys():
             self.assertTrue(expected_dict.has_key(key),
                             "key '%s' of secure event not expected" % key)
@@ -338,23 +365,6 @@ class DAVAclTest(unittest.TestCase):
                             "expected key '%s' not found in secure event"
                             % key)
 
-    def _versitLine(self, line):
-        key, value = line.split(":")
-        semicolon = key.find(";")
-        if semicolon > -1:
-            key = key[:semicolon]
-
-        return (key, value)
-
-    def _versitDict(self, event):
-        versitDict = {}
-        for line in event.splitlines():
-            (key, value) = self._versitLine(line)
-            if not (key == "BEGIN" or key == "END"):
-                versitDict[key] = value
-
-        return versitDict
-
     def _testModify(self, event_class, right):
         if right == "m":
             exp_code = 204
@@ -365,5 +375,250 @@ class DAVAclTest(unittest.TestCase):
         self._putEvent(self.subscriber_client, filename, icsClass,
                        exp_code)
 
+# Addressbook:
+#   short rights notation: { "c": create,
+#                            "d": delete,
+#                            "e": edit,
+#                            "v": view }
+
+class DAVAddressBookAclTest(DAVAclTest):
+    resource = '/SOGo/dav/%s/Contacts/test-dav-acl/' % username
+    cards = { "new.vcf": """BEGIN:VCARD
+VERSION:3.0
+PRODID:-//Inverse//Card Generator//EN
+UID:NEWTESTCARD
+N:New;Carte
+FN:Carte 'new'
+ORG:societe;service
+NICKNAME:surnom
+ADR;TYPE=work:adr2 societe;;adr societe;ville societe;etat soc;code soc;pays soc
+ADR;TYPE=home:rue perso 2;;rue perso;ville perso;etat perso;code post perso;pays perso
+TEL;TYPE=work:+1 514 123-3372
+TEL;TYPE=home:tel dom
+TEL;TYPE=cell:portable
+TEL;TYPE=fax:fax
+TEL;TYPE=pager:pager
+X-MOZILLA-HTML:FALSE
+EMAIL;TYPE=work:address.email@domaine.ca
+EMAIL;TYPE=home:address.email@domaine2.com
+URL;TYPE=home:web perso
+TITLE:fonction
+URL;TYPE=work:page soc
+CUSTOM1:divers1
+CUSTOM2:divers2
+CUSTOM3:divers3
+CUSTOM4:divers4
+NOTE:Remarque
+X-AIM:pseudo aim
+END:VCARD""",
+              "old.vcf": """BEGIN:VCARD
+VERSION:3.0
+PRODID:-//Inverse//Card Generator//EN
+UID:NEWTESTCARD
+N:Old;Carte
+FN:Carte 'old'
+ORG:societe;service
+NICKNAME:surnom
+ADR;TYPE=work:adr2 societe;;adr societe;ville societe;etat soc;code soc;pays soc
+ADR;TYPE=home:rue perso 2;;rue perso;ville perso;etat perso;code post perso;pays perso
+TEL;TYPE=work:+1 514 123-3372
+TEL;TYPE=home:tel dom
+TEL;TYPE=cell:portable
+TEL;TYPE=fax:fax
+TEL;TYPE=pager:pager
+X-MOZILLA-HTML:FALSE
+EMAIL;TYPE=work:address.email@domaine.ca
+EMAIL;TYPE=home:address.email@domaine2.com
+URL;TYPE=home:web perso
+TITLE:fonction
+URL;TYPE=work:page soc
+CUSTOM1:divers1
+CUSTOM2:divers2
+CUSTOM3:divers3
+CUSTOM4:divers4
+NOTE:Remarque
+X-AIM:pseudo aim
+END:VCARD""",
+              "new-modified.vcf": """BEGIN:VCARD
+VERSION:3.0
+PRODID:-//Inverse//Card Generator//EN
+UID:NEWTESTCARD
+N:New;Carte modifiee
+FN:Carte modifiee 'new'
+ORG:societe;service
+NICKNAME:surnom
+ADR;TYPE=work:adr2 societe;;adr societe;ville societe;etat soc;code soc;pays soc
+ADR;TYPE=home:rue perso 2;;rue perso;ville perso;etat perso;code post perso;pays perso
+TEL;TYPE=work:+1 514 123-3372
+TEL;TYPE=home:tel dom
+TEL;TYPE=cell:portable
+TEL;TYPE=fax:fax
+TEL;TYPE=pager:pager
+X-MOZILLA-HTML:FALSE
+EMAIL;TYPE=work:address.email@domaine.ca
+EMAIL;TYPE=home:address.email@domaine2.com
+URL;TYPE=home:web perso
+TITLE:fonction
+URL;TYPE=work:page soc
+CUSTOM1:divers1
+CUSTOM2:divers2
+CUSTOM3:divers3
+CUSTOM4:divers4
+NOTE:Remarque
+X-AIM:pseudo aim
+END:VCARD""",
+              "old-modified.vcf": """BEGIN:VCARD
+VERSION:3.0
+PRODID:-//Inverse//Card Generator//EN
+UID:NEWTESTCARD
+N:Old;Carte modifiee
+FN:Carte modifiee 'old'
+ORG:societe;service
+NICKNAME:surnom
+ADR;TYPE=work:adr2 societe;;adr societe;ville societe;etat soc;code soc;pays soc
+ADR;TYPE=home:rue perso 2;;rue perso;ville perso;etat perso;code post perso;pays perso
+TEL;TYPE=work:+1 514 123-3372
+TEL;TYPE=home:tel dom
+TEL;TYPE=cell:portable
+TEL;TYPE=fax:fax
+TEL;TYPE=pager:pager
+X-MOZILLA-HTML:FALSE
+EMAIL;TYPE=work:address.email@domaine.ca
+EMAIL;TYPE=home:address.email@domaine2.com
+URL;TYPE=home:web perso
+TITLE:fonction
+URL;TYPE=work:page soc
+CUSTOM1:divers1
+CUSTOM2:divers2
+CUSTOM3:divers3
+CUSTOM4:divers4
+NOTE:Remarque
+X-AIM:pseudo aim
+END:VCARD""" }
+
+    def setUp(self):
+        DAVAclTest.setUp(self)
+        self._putCard(self.client, "old.vcf", 201)
+
+    def testView(self):
+        """'view' only"""
+        self._testRights({ "v": True })
+
+    def testEdit(self):
+        """'edit' only"""
+        self._testRights({ "e": True })
+
+    def testCreateOnly(self):
+        """'create' only"""
+        self._testRights({ "c": True })
+
+    def testDeleteOnly(self):
+        """'delete' only"""
+        self._testRights({ "d": True })
+
+    def testCreateDelete(self):
+        """'create' only"""
+        self._testRights({ "c": True,
+                           "d": True })
+
+    def testViewCreate(self):
+        """'view' and 'create'"""
+        self._testRights({ "c": True,
+                           "v": True })
+
+    def testViewDelete(self):
+        """'view' and 'delete'"""
+        self._testRights({ "d": True,
+                           "v": True })
+
+    def testEditCreate(self):
+        """'edit' and 'create'"""
+        self._testRights({ "c": True,
+                           "e": True })
+
+    def testEditDelete(self):
+        """'edit' and 'delete'"""
+        self._testRights({ "d": True,
+                           "e": True })
+
+    def rightsToSOGoRights(self, rights):
+        sogoRightsTable = { "c": "ObjectCreator",
+                            "d": "ObjectEraser",
+                            "v": "ObjectViewer",
+                            "e": "ObjectEditor" }
+
+        sogoRights = []
+        for k in rights.keys():
+            sogoRights.append(sogoRightsTable[k])
+
+        return sogoRights
+
+    def _testRights(self, rights):
+        self.setupRights(rights)
+        self._testCreate(rights)
+        self._testView(rights)
+        self._testEdit(rights)
+        self._testDelete(rights)
+
+    def _putCard(self, client, filename, exp_status, real_card = None):
+        url = "%s%s" % (self.resource, filename)
+        if real_card is None:
+            real_card = filename
+        card = self.cards[real_card]
+        put = webdavlib.HTTPPUT(url, card, "text/x-vcard; charset=utf-8")
+        client.execute(put)
+        self.assertEquals(put.response["status"], exp_status,
+                          "%s: card creation/modification:"
+                          " expected status code '%d' (received '%d')"
+                          % (filename, exp_status, put.response["status"]))
+
+    def _getCard(self, client, filename, exp_status):
+        url = "%s%s" % (self.resource, filename)
+        get = webdavlib.HTTPGET(url)
+        client.execute(get)
+        self.assertEquals(get.response["status"], exp_status,
+                          "%s: card get:"
+                          " expected status code '%d' (received '%d')"
+                          % (filename, exp_status, get.response["status"]))
+
+    def _deleteCard(self, client, filename, exp_status):
+        url = "%s%s" % (self.resource, filename)
+        delete = webdavlib.WebDAVDELETE(url)
+        client.execute(delete)
+        self.assertEquals(delete.response["status"], exp_status,
+                          "%s: card deletion:"
+                          " expected status code '%d' (received '%d')"
+                          % (filename, exp_status, delete.response["status"]))
+
+    def _testCreate(self, rights):
+        if rights.has_key("c") and rights["c"]:
+            exp_code = 201
+        else:
+            exp_code = 403
+        self._putCard(self.subscriber_client, "new.vcf", exp_code)
+
+    def _testView(self, rights):
+        if ((rights.has_key("v") and rights["v"])
+            or (rights.has_key("e") and rights["e"])):
+            exp_code = 200
+        else:
+            exp_code = 403
+        self._getCard(self.subscriber_client, "old.vcf", exp_code)
+
+    def _testEdit(self, rights):
+        if rights.has_key("e") and rights["e"]:
+            exp_code = 204
+        else:
+            exp_code = 403
+        self._putCard(self.subscriber_client, "old.vcf", exp_code, "old-modified.vcf")
+
+    def _testDelete(self, rights):
+        if rights.has_key("d") and rights["d"]:
+            exp_code = 204
+        else:
+            exp_code = 403
+        self._deleteCard(self.subscriber_client, "old.vcf", exp_code)
+
 if __name__ == "__main__":
     unittest.main()
+
