@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from testconfig import hostname, port, username, password
+from config import hostname, port, username, password
 
 import webdavlib
 
