@@ -22,7 +22,7 @@ SPAN.content
 
 SPAN.content > INPUT.textField,
 LABEL#commentArea textarea
-{ width: 380px; }
+{ max-width: 380px; }
 
 LABEL, SPAN.checkBoxList
 { display: block;
@@ -34,12 +34,13 @@ LABEL, SPAN.checkBoxList
   width: 100%; }
 
 LABEL#commentArea textarea
-{ padding-bottom: 0em;
-  top: 0px;
+{ position: absolute;
+  top: 0;
+  width: 100%;
   left: 8em;
-  position: absolute;
-  padding: 0px;
+  right: 1em;
   margin: 0px;
+  margin: auto;
   margin-left: 1px; }
 
 SPAN.headerContent
@@ -51,7 +52,7 @@ SPAN.headerContent
 }
 LABEL.title
 {
-  margin-top: 20px;
+  margin-top: 1em;
   font-weight: bold;
 }
 LABEL.titleNoSpace
@@ -66,10 +67,13 @@ DIV#windowButtons
   right: 2em; }
 
 LABEL.calendarName
-{ text-align: right;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  width: 97%;
+{ background-color: #fff;
+  border-bottom: 1px solid #555;
+  font-weight: bold;
+  text-align: right;
+  margin: 0;
+  padding: 10px;
+  width: auto;
 }
 
 DIV#attendeesMenu
@@ -81,13 +85,9 @@ DIV.fakeTextArea
   border-width: 2px;
   border-style: inset; 
   padding: 2px;
-  height: 100%;
-  white-space: pre-wrap;
-}
+  height: 100px;
+  white-space: pre-wrap; }
 
-DIV#descriptionDiv {
-  height: 80px;
-}
-SPAN.fixedHeight {
-  height: 60px;
-}
+DIV#descriptionDiv,
+DIV#attendeesDiv
+{ height: 120px; }

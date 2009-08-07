@@ -17,6 +17,8 @@
   <script type="text/javascript">
     var activeCalendar = '<var:string value="clientObject.container.nameInContainer"/>';
     var activeComponent = '<var:string value="clientObject.nameInContainer"/>';
+    var readOnly = <var:if condition="eventIsReadOnly">true</var:if><var:if condition="eventIsReadOnly"
+    const:negate="YES">false</var:if>;
   </script>
 
   <var:if condition="eventIsReadOnly" const:negate="YES">
@@ -164,13 +166,12 @@
   </form>
   </var:if>
   <var:if condition="eventIsReadOnly">
+        <label class="calendarName"><var:string var:value="componentCalendarName" />
+        </label>
     <div id="eventView">
       <div id="generalDiv">
-        <label class="content calendarName"><var:string var:value="componentCalendarName" />
-        </label>
     <label class="title titleNoSpace"><var:string label:value="General:" />
-      <span class="content headerContent">
-      </span>
+      <span class="content headerContent"><!-- line --></span>
     </label>
   <label><var:string label:value="Title:" />
     <span class="content"><var:string var:value="title"/></span>
@@ -230,8 +231,7 @@
     <var:if condition="hasAttendees">
     <div id="attendeesDiv">
       <label class="title"><var:string label:value="Attendees:" />
-        <span class="content headerContent">
-        </span>
+        <span class="content headerContent"><!-- line --></span>
       </label>
       <label id="attendeesLabel">
         <span class="content"><div id="attendeesMenu" class="fakeTextArea">
@@ -242,10 +242,9 @@
     <var:if condition="hasComment">
       <div id="descriptionDiv">
         <label class="title"><var:string label:value="Description:" />
-          <span class="content headerContent">
-          </span>
+          <span class="content headerContent"><!-- line --></span>
         </label>
-        <label><span class="content fixedHeight">
+        <label><span class="content">
             <div class="fakeTextArea"><var:string var:value="comment" /></div>
           </span>
         </label>

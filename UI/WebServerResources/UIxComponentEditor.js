@@ -43,8 +43,8 @@ function onPopupAttachWindow(event) {
     }
     attachInput.value = newAttach;
   }
-	onWindowResize(event);
-
+  onWindowResize(event);
+  
   return false;
 }
 
@@ -183,27 +183,31 @@ function onSummaryChange (e) {
 }
 
 function onWindowResize(event) {
-    var document = $("documentLabel");
     var comment = $("commentArea");
     if (comment) {
-  	var area = comment.select("textarea").first();
-  	var offset = 6;
+        // Resize comment area of read-write component
+        var document = $("documentLabel");
+        var area = comment.select("textarea").first();
+        var offset = 6;
         var height;
         
-  	height = window.height() - comment.cumulativeOffset().top - offset;
+        height = window.height() - comment.cumulativeOffset().top - offset;
         
-  	if (document.visible()) {
+        if (document.visible()) {
+            // Component has an attachment
             if ($("changeAttachButton"))
-  	  	height -= $("changeAttachButton").getHeight();
+                height -= $("changeAttachButton").getHeight();
             else
                 height -= $("documentHref").getHeight();
         }
-	
+        
         if (area)
             area.setStyle({ height: (height - offset*2) + "px" });
-  	comment.setStyle({ height: (height - offset) + "px" });
+
+        comment.setStyle({ height: (height - offset) + "px" });
     }
     else {
+        // Resize attendees area of a read-only component
         $("eventView").style.height = window.height () + "px";
         var height = window.height() - 120;
         var tmp = $("generalDiv");
@@ -213,8 +217,11 @@ function onWindowResize(event) {
         if (tmp)
             height -= tmp.offsetHeight;
         
-        $("attendeesDiv").style.height = height + "px";
-        $("attendeesMenu").style.height = (height - 20) + "px";
+        tmp = $("attendeesDiv");
+        if (tmp) {
+            tmp.style.height = height + "px";
+            $("attendeesMenu").style.height = (height - 20) + "px";
+        }
     }
     
     return true;
