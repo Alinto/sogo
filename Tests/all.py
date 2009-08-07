@@ -11,8 +11,9 @@ if __name__ == "__main__":
             __import__(mod[:-3])
 
     if len(modules) > 0:
-        print "Test modules: '%s'" % "', '".join(modules)
         suite = loader.loadTestsFromNames(modules)
+        print "%d tests in modules: '%s'" % (suite.countTestCases(),
+                                             "', '".join(modules))
         runner = unittest.TextTestRunner()
         runner.run(suite)
     else:
