@@ -676,11 +676,12 @@ function onWindowResize(event) {
     var attachmentsarea = $("attachmentsArea");
     var attachmentswidth = 0;
     if (attachmentsarea.style.display) {
+        // Resize attachments list
         attachmentswidth = attachmentsarea.getWidth();
         fromfield = $(document).getElementsByClassName('headerField', headerarea)[0];
         var height = headerarea.getHeight() - fromfield.getHeight() - 10;
         if (Prototype.Browser.IE)
-            $("attachments").setStyle({ height: (height-9) + 'px' });
+            $("attachments").setStyle({ height: (height - 13) + 'px' });
         else
             $("attachments").setStyle({ height: height + 'px' });
     }
@@ -706,23 +707,22 @@ function onWindowResize(event) {
     if (composeMode == "html") {
         var editor = $('cke_text');
         if (editor == null) {
-            setTimeout ('onWindowResize ()', 100);
+            onWindowResize.defer();
             return;
         }
+        var ck_top = $("cke_top_text");
+        var ck_bottom = $("cke_bottom_text");
         var content = $("cke_contents_text");
-        var height = Math.floor(window.height() - editor.offsetTop);
-
-        content.height = (height-60) + "px";
-        content.style.height = (height-60) + "px";
-
+        var top = hr.offsetTop;
+        var height = Math.floor(window.height() - top - ck_top.getHeight() - ck_bottom.getHeight());
+        
         if (Prototype.Browser.IE) {
             editor.style.width = '';
             editor.style.height = '';
-            height += 3;
         }
-        else {
-            content.setStyle({ 'top': hr.offsetTop + 'px' });
-        }
+
+        editor.setStyle({ top: (top + 2) + 'px' });
+        content.setStyle({ height: height + 'px' });
     }
     else
         textarea.rows = Math.floor((window.height() - textarea.offsetTop) / rowheight);
