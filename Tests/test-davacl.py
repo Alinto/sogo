@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from testconfig import hostname, port, username, password, subscriber_username, subscriber_password
+from config import hostname, port, username, password, subscriber_username, subscriber_password
 
 import sys
 import unittest
@@ -22,11 +22,11 @@ import time
 #   d: view date and time
 #   m: modify
 #   r: respond
-# rights = { "c": create,
-#            "d": delete,
-#            "pu": public,
-#            "pr": private,
-#            "co": confidential }
+# short rights notation: { "c": create,
+#                          "d": delete,
+#                          "pu": public,
+#                          "pr": private,
+#                          "co": confidential }
 
 resource = '/SOGo/dav/%s/Calendar/test-dav-acl/' % username
 
@@ -103,7 +103,8 @@ class DAVAclTest(unittest.TestCase):
                                       "C": "urn:ietf:params:xml:ns:caldav" })
         return xml.xpath.Evaluate(query, None, xpath_context)
 
-    def _putEvent(self, client, filename, event_class = "PUBLIC", exp_status = 201):
+    def _putEvent(self, client, filename,
+                  event_class = "PUBLIC", exp_status = 201):
         url = "%s%s" % (resource, filename)
         event = event_template % { "class": event_class,
                                    "filename": filename }
@@ -179,6 +180,9 @@ class DAVAclTest(unittest.TestCase):
         else:
             exp_code = 403
         self._deleteEvent(self.subscriber_client, "public.ics", exp_code)
+        self._deleteEvent(self.subscriber_client, "private.ics", exp_code)
+        self._deleteEvent(self.subscriber_client, "confidential.ics",
+                          exp_code)
 
     def _testEventRight(self, event_class, rights):
         if rights.has_key(event_class):
@@ -210,7 +214,8 @@ class DAVAclTest(unittest.TestCase):
 
         return event
 
-    def _calendarDataInMultistatus(self, top_node, filename, response_tag = "D:response"):
+    def _calendarDataInMultistatus(self, top_node, filename,
+                                   response_tag = "D:response"):
         event = None
 
         response_nodes = self._xpath_query("/D:multistatus/%s" % response_tag,
@@ -310,7 +315,8 @@ class DAVAclTest(unittest.TestCase):
                           "PRODID": "-//Inverse//Event Generator//EN",
                           "SEQUENCE": "0",
                           "TRANSP": "OPAQUE",
-                          "UID": "12345-%s-%s.ics" % (icsClass, icsClass.lower()),
+                          "UID": "12345-%s-%s.ics" % (icsClass,
+                                                      icsClass.lower()),
                           "SUMMARY": "(%s event)" % icsClass.capitalize(),
                           "DTSTART": "20090805T100000Z",
                           "DTEND": "20090805T140000Z",
