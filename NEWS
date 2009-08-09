@@ -8,7 +8,7 @@
 - added support for printing cards
 - the event/task summary dialog is now similar to Lightning
 - replaced GNUstep's DO subsystem with memcached
-- added unit tests for DAV operations
+- added functional tests for DAV operations
 
 1.0-20090714 (1.0.3)
 --------------------
