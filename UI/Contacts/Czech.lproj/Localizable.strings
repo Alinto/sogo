@@ -1,5 +1,10 @@
 /* this file is in UTF-8 format! */
 
+"Contact" = "Contact";
+"Address" = "Address";
+"Other" = "Other";
+
+"Address Books" = "Adresboeken";
 "Addressbook" = "Adresář";
 "Addresses" = "Adresy";
 "Update" = "Aktualizace";
@@ -25,12 +30,17 @@
 "Phones" = "Telefony";
 "Postal" = "Pošta";
 "Save" = "Uložit";
+"Internet" = "Internet";
 "Unit" = "Jednotka";
 "delete" = "smazat";
 "edit" = "upravit";
 "invalidemailwarn" = "Specifikovaný e-mail je neplatný";
 "new" = "nový";
 "Preferred Phone"   = "Upřednostňovaný telefon";
+
+"Move To" = "Move To";
+"Copy To" = "Copy To";
+"Add to:" = "Add to:";
 
 /* Tooltips */
 
@@ -63,8 +73,14 @@
 
 "Preferred" = "Upřednostňovaný";
 "Card for %@" = "Karta pro %@";
+"Display:" = "Display:";
 "Display Name:" = "Zobrazované jméno:";
 "Email:" = "E-Mail:";
+"Additional Email:" = "Additional Email:";
+
+"Phone Number:" = "Phone Number:";
+"Prefers to receive messages formatted as:" = "Prefers to receive messages formatted as:";
+"Screen Name:" = "Screen Name:";
 
 "First:" = "Křestní jméno:";
 "Last:" = "Příjmení:";
@@ -80,6 +96,8 @@
 "Title:" = "Titul:";
 "Service:" = "Služba:";
 "Company:" = "Společnost:";
+"Department:" = "Department:";
+"Organization:" = "Organization:";
 "Address:" = "Ulice:";
 "City:" = "Město:";
 "State_Province:" = "Stát/Provincie:";

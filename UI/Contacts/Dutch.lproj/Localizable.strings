@@ -4,40 +4,51 @@
 "Address" = "Adres";
 "Other" = "Overige";
 
-"Name"              = "Naam";
-"Internet"          = "Internet";
-"Phones"            = "Telefoonnummers";
+"Address Books" = "Adresboeken";
+"Addressbook" = "Addressbook";
+"Addresses" = "Adressen";
+"Update" = "Opslaan";
+"Cancel" = "Annuleren";
+"Common" = "Algemeen";
+"Contact editor" = "Contactinformatie bijwerken";
+"Contact viewer" = "Contactinformatie bekijken";
+"Email" = "E-mail";
+"Screen Name" = "Weergavenaam";
+"Extended" = "Uitgebreide informatie";
+"Fax" = "Fax";
+"Firstname" = "Voornaam";
 "Home" = "Privé";
-"Work" = "Werk";
-
-"Address Books"     = "Adresboeken";
-"Addresses"         = "Adressen";
-"Update"	    = "Opslaan";
-"Cancel"            = "Annuleren";
-"Common"            = "Algemeen";
-"Contact editor"    = "Contactinformatie bijwerken";
-"Contact viewer"    = "Contactinformatie bekijken";
-"Email"             = "E-mail";
-"Screen Name"	    = "Weergavenaam";
-"Extended"          = "Uitgebreide informatie";
-"Fax"               = "Fax";
-"Firstname"         = "Voornaam";
-"HomePhone"         = "Privé";
-"Lastname"          = "Achternaam";
-"Location"          = "Adres";
-"MobilePhone"       = "Mobiel";
-"OfficePhone"       = "Kantoor";
-"Organization"      = "Organisatie";
-"Work Phone"	    = "Werk";
-"Phone"             = "Telefoon";
-"Postal"            = "Postcode";
-"Save"              = "Opslaan";
-"Unit"              = "Afdeling";
-"delete"            = "Verwijderen";
-"edit"              = "Bewerken";
-"invalidemailwarn"  = "E-mailadres is ongeldig. Wilt u toch doorgaan?";
-"new"               = "Nieuw";
+"HomePhone" = "Privé";
+"Lastname" = "Achternaam";
+"Location" = "Adres";
+"MobilePhone" = "Mobiel";
+"Name" = "Naam";
+"OfficePhone" = "Kantoor";
+"Organization" = "Organisatie";
+"Work Phone" = "Werk";
+"Phone" = "Telefoon";
+"Phones" = "Telefoonnummers";
+"Postal" = "Postcode";
+"Save" = "Opslaan";
+"Internet" = "Internet";
+"Unit" = "Afdeling";
+"delete" = "Verwijderen";
+"edit" = "Bewerken";
+"invalidemailwarn" = "E-mailadres is ongeldig. Wilt u toch doorgaan?";
+"new" = "Nieuw";
 "Preferred Phone"   = "Voorkeurstelefoon";
+
+"Move To" = "Move To";
+"Copy To" = "Copy To";
+"Add to:" = "Add to:";
+
+/* Tooltips */
+
+"Create a new address book card" = "Create a new address book card";
+"Create a new list" = "Create a new list";
+"Edit the selected card" = "Edit the selected card";
+"Send a mail message" = "Send a mail message";
+"Delete selected card or address book" = "Delete selected card or address book";
 
 "htmlMailFormat_UNKNOWN" = "Onbekend";
 "htmlMailFormat_FALSE" = "Platte tekst";
@@ -83,6 +94,8 @@
 "Pager:" = "Pieper:";
 
 "Title:" = "Titel:";
+"Service:" = "Service:";
+"Company:" = "Company:";
 "Department:" = "Afdeling:";
 "Organization:" = "Organisatie:";
 "Address:" = "Adres:";
@@ -92,6 +105,7 @@
 "Country:" = "Land:";
 "Web Page:" = "Website:";
 
+"Work" = "Werk";
 "Other Infos" = "Overige";
 
 "Note:" = "Notitie:";
@@ -119,6 +133,9 @@
 "Are you sure you want to delete the selected contacts?"
 = "Weet u zeker dat u de geselecteerde contactpersonen wilt verwijderen?";
 
+"You cannot delete the card of \"%{0}\"."
+= "You cannot delete the card of \"%{0}\".";
+
 "Address Book Name" = "Naam van het adresboek";
 
 "You cannot subscribe to a folder that you own!"
@@ -144,3 +161,10 @@
 = "De geselecteerde contactpersoon heeft geen e-mailadres.";
 
 "Please select a contact." = "Selecteer een contactpersoon.";
+
+/* Error messages for move and copy */
+
+"SoAccessDeniedException" = "You cannot write to this address book.";
+"Forbidden" = "You cannot write to this address book.";
+"Invalid Contact" = "The selected contact no longer exists.";
+"Unknown Destination Folder" = "The chosen destination address book no longer exists.";

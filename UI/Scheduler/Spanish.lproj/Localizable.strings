@@ -1,7 +1,4 @@
 /* this file is in UTF-8 format! */
-/* Author: erny@yaco.es */
-/* Based on: rev 1397 */
-/* Last update: 2008-04-04 */
 
 /* Tooltips */
 
@@ -28,6 +25,7 @@
 "Thursday" = "Jueves";
 "Friday" = "Viernes";
 "Saturday" = "Sábado";
+"DayOfTheMonth" = "DayOfTheMonth";
 
 "Sun" = "Dom";
 "Mon" = "Lun";
@@ -99,6 +97,7 @@
 "this year" = "este año";
 
 /* Menu */
+
 "Calendar" = "Calendario";
 "Contacts" = "Contactos";
 
@@ -110,10 +109,8 @@
 "Reload Remote Calendars" = "Recargar calendarios remotos";
 "Properties" = "Propiedades";
 
-"Compose E-Mail to All Attendees"
-	= "Crear correo para todos los asistentes";
-"Compose E-Mail to Undecided Attendees" 
-	= "Crear correo para todos los asistentes indecisos (sin confirmación)";
+"Compose E-Mail to All Attendees" = "Crear correo para todos los asistentes";
+"Compose E-Mail to Undecided Attendees" = "Crear correo para todos los asistentes indecisos (sin confirmación)";
 
 /* Folders */
 "Personal calendar" = "Calendario personal";
@@ -121,7 +118,7 @@
 /* Misc */
 
 "OpenGroupware.org" = "OpenGroupware.org";
-"Forbidden" = "Prohibido"; 
+"Forbidden" = "Prohibido";
 
 /* acls */
 
@@ -145,9 +142,9 @@
 "None" = "Ninguno";
 
 "This person can create objects in my calendar."
-        = "Esta persona puede crear elementos en mi calendario.";
+= "Esta persona puede crear elementos en mi calendario.";
 "This person can erase objects from my calendar."
-        = "Esta persona puede eliminar elementos de mi calendario.";
+= "Esta persona puede eliminar elementos de mi calendario.";
 
 /* Button Titles */
 
@@ -165,6 +162,7 @@
 "Save and Close" = "Guardar y cerrar";
 "Close" = "Cerrar";
 "Invite Attendees" = "Invitar asistentes";
+"Attach" = "Attach";
 "Update" = "Actualizar";
 "Cancel" = "Cancelar";
 "show_rejected_apts" = "Mostrar citas rechazadas";
@@ -208,7 +206,7 @@
 "Cycle End" = "Fin repetición";
 "Categories" = "Categorías";
 "Classification" = "Privacidad";
-"Duration" = "Duración"; 
+"Duration" = "Duración";
 "Attendees:" = "Asistentes:";
 "Resources" = "Recursos";
 "Organizer:" = "Organizador:";
@@ -394,6 +392,7 @@
 "reminder_AFTER" = "after";
 "reminder_START" = "the event starts";
 "reminder_END" = "the event ends";
+"Reminder Details" = "Reminder Details";
 
 "zoom_400" = "400%";
 "zoom_200" = "200%";
@@ -491,8 +490,8 @@ vtodo_class2 = "(Tarea confidencial)";
 
 "closeThisWindowMessage" = "¡Gracias! Ya puede cerrar esta ventana.";
 "Multicolumn Day View" = "Vista diaria multicolumna";
-"Please select an event or a task." 
-	= "Seleccione un evento o tarea, por favor";
+
+"Please select an event or a task." = "Seleccione un evento o tarea, por favor";
 
 "editRepeatingItem" = "El elemento que está editando es un elemento repetitivo. ¿Quiere editar todas sus ocurrencias o sólo la que ha señalado?";
 "button_thisOccurrenceOnly" = "Sólo esta ocurrencia";

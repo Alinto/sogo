@@ -1,11 +1,11 @@
 /* this file is in UTF-8 format! */
 
 /* Icon's label */
-
 "Create"      = "Aanmaken";
 "Empty Trash" = "Prullenbak leegmaken";
 "Delete"      = "Verwijderen";
 "Expunge"     = "Leegmaken";
+"Forward"     = "Doorsturen";
 "Get Mail"    = "E-mail ophalen";
 "Junk"        = "Ongewenst";
 "Reply"       = "Beantwoorden";
@@ -13,9 +13,6 @@
 "Print"       = "Afdrukken";
 "Stop"        = "Stoppen";
 "Write"       = "Opstellen";
-"Attachment"  = "Bijlage";
-"Unread"      = "Ongelezen";
-"Flagged"     = "Gemarkeerd";
 
 "Send" = "Verzenden";
 "Contacts" = "Adresboek";
@@ -24,6 +21,26 @@
 "Priority" = "Prioriteit";
 "Size" = "Size";
 
+/* Tooltips */
+
+"Send this message now" = "Send this message now";
+"Select a recipient from an Address Book" = "Select a recipient from an Address Book";
+"Include an attachment" = "Include an attachment";
+"Save this message" = "Save this message";
+"Get new messages" = "Get new messages";
+"Create a new message" = "Create a new message";
+"Go to address book" = "Go to address book";
+"Reply to the message" = "Reply to the message";
+"Reply to sender and all recipients" = "Reply to sender and all recipients";
+"Forward selected message" = "Forward selected message";
+"Delete selected message or folder" = "Delete selected message or folder";
+"Mark the selected messages as junk" = "Mark the selected messages as junk";
+"Print this message" = "Print this message";
+"Stop the current transfer" = "Stop the current transfer";
+"Attachment" = "Bijlage";
+"Unread" = "Ongelezen";
+"Flagged" = "Gemarkeerd";
+
 /* Main Frame  */
 
 "Home"                 = "Start"; 
@@ -31,6 +48,7 @@
 "Addressbook"          = "Adresboek";
 "Mail"                 = "E-mail";
 "Right Administration" = "Machtigingen beheren";
+
 "Help" = "Help";
 
 /* Mail account main windows */
@@ -74,10 +92,16 @@
 "Add address"   = "Adres toevoegen";
 
 "Attachments:" = "Bijlage:";
+"Open" = "Open";
+"Select All" = "Select All";
+"Attach Web Page..." = "Attach Web Page...";
+"Attach File(s)..." = "Attach File(s)...";
 
 "to"            = "aan";
 "cc"            = "cc";
 "bcc"           = "bcc";
+
+"Addressbook"   = "Adresboek";
 
 "Edit Draft..." = "Concept aanpassen...";
 "Load Images" = "Afbeeldingen laden";
@@ -106,6 +130,7 @@
 "Entire Message" = "Volledig bericht";
 
 "Date"          = "Datum";
+"View"          = "View";
 "All"           = "Alle";
 "Unread"        = "Ongelezen";
 "messages"      = "berichten";
@@ -118,7 +143,7 @@
 "msgnumber_to"  = "tot";
 "msgnumber_of"  = "van";
 
-"Mark Unread" = "Als ongelezen markeren"; 
+"Mark Unread" = "Als ongelezen markeren";
 "Mark Read"   = "Als gelezen markeren";
 
 "Untitled" = "(geen onderwerp)";
@@ -130,11 +155,11 @@
 "InboxFolderName"  = "Postvak IN";
 "DraftsFolderName" = "Concepten";
 "SieveFolderName"  = "Berichtregel";
-"Folders"          = "Mappen"; 
+"Folders"          = "Mappen"; /* title line */
 
 /* MailMoveToPopUp */
 
-"MoveTo" = "Verplaatsen naar";
+"MoveTo"        = "Verplaatsen naar";
 
 /* Address Popup menu */
 "Add to Address Book..." = "Aan adresboek toevoegen";
@@ -216,6 +241,7 @@
 "Please select a message." = "Selecteer een bericht.";
 "Please select a message to print." = "Selecteer een bericht om af te drukken.";
 "Please select only one message to print." = "Selecteer een enkel bericht om af te drukken.";
+
 
 "The folder with name \"%{0}\" could not be created."
 = "De map met naam \"%{0}\" kan niet gemaakt worden.";

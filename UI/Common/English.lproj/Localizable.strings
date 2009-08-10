@@ -14,9 +14,9 @@
 "Right Administration" = "Right Administration";
 "Log Console (dev.)" = "Log Console (dev.)";
 
-"User"			= "User";
+"User" = "User";
 
-"Help"			= "Help";
+"Help" = "Help";
 
 "noJavascriptError" = "SOGo requires Javascript to run. Please make sure this option is available and activated within your browser preferences.";
 "noJavascriptRetry" = "Retry";

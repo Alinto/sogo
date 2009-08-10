@@ -38,14 +38,14 @@
 "Print this message" = "Argraffu'r neges";
 "Stop the current transfer" = "Stopio'r trosglwyddiad presennol";
 "Attachment" = "Atodiad";
-"Unread" = "Heb ei ddarllen";
+"Unread" = "Heb ddarllen";
 "Flagged" = "Wedi fflagio";
 
 /* Main Frame  */
 
 "Home"                 = "Hafan"; 
 "Calendar"             = "Calendr";
-"Addressbook"          = "Llyfr Cyfeiriadau";
+"Addressbook"          = "Llyfr Cyfeiradau";
 "Mail"                 = "Ebost";
 "Right Administration" = "Hawl Gweinyddwr";
 
@@ -92,6 +92,10 @@
 "Add address"   = "Ychwanegu cyfeiriad";
 
 "Attachments:" = "Atodiadau:";
+"Open" = "Open";
+"Select All" = "Select All";
+"Attach Web Page..." = "Attach Web Page...";
+"Attach File(s)..." = "Attach File(s)...";
 
 "to"            = "At";
 "cc"            = "Cc";

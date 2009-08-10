@@ -141,8 +141,10 @@
 "Respond To" = "Rispondi a";
 "None" = "Nessuno";
 
-"This person can create objects in my calendar." = "Questa persona può inserire elementi nel mio calendario.";
-"This person can erase objects from my calendar." = "Questa persona può rimuovere elementi dal mio calendario.";
+"This person can create objects in my calendar."
+= "Questa persona può inserire elementi nel mio calendario.";
+"This person can erase objects from my calendar."
+= "Questa persona può rimuovere elementi dal mio calendario.";
 
 /* Button Titles */
 
@@ -273,7 +275,6 @@
 
 "newAttendee" = "Nuovo partecipante";
 
-
 /* calendar modes */
 
 "Overview" = "Panoramica";
@@ -391,6 +392,7 @@
 "reminder_AFTER" = "after";
 "reminder_START" = "the event starts";
 "reminder_END" = "the event ends";
+"Reminder Details" = "Reminder Details";
 
 "zoom_400" = "400%";
 "zoom_200" = "200%";
@@ -462,7 +464,9 @@ validate_endbeforestart    = "La data finale specificata è precedente alla data
 "Maybe busy" = "Probabilmente occupato";
 "No free-busy information" = "Informazione non disponibile";
 
-/* FreeBusy panel buttons */
+/* FreeBusy panel buttons and labels */
+"Suggest time slot:" = "Periodo suggerito:";
+"Zoom:" = "Zoom:";
 "Previous slot" = "Precedente";
 "Next slot" = "Successivo";
 "Previous hour" = "Ora precedente";
@@ -488,7 +492,6 @@ vtodo_class2 = "(Attività confidenziale)";
 "Multicolumn Day View" = "Vista per giorno multi-colonna";
 
 "Please select an event or a task." = "Per favore seleziona un evento o un'attività.";
-"Suggest time slot:" = "Periodo suggerito:";
 
 "editRepeatingItem" = "L'elemento che si sta modificando è un elemento ripetuto. Si vogliono modificare tutte le sue occorrenze o solo questa?";
 "button_thisOccurrenceOnly" = "Solamente questa occorrenza";

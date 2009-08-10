@@ -25,6 +25,7 @@
 "Thursday" = "Čtvrtek";
 "Friday" = "Pátek";
 "Saturday" = "Sobota";
+"DayOfTheMonth" = "DayOfTheMonth";
 
 "Sun" = "Ne";
 "Mon" = "Po";
@@ -339,10 +340,10 @@
 "Week(s)" = "Týdnů";
 "On" = "V";
 "Month(s)" = "Měsíců";
-"The" = "";
+"The" = "The";
 "Recur on day(s)" = "Opakovat ve dnech";
 "Year(s)" = "rocích";
-"cycle_of" = "";
+"cycle_of" = "of";
 "No end date" = "Bez data konce";
 "Create" = "Vytvořit";
 "appointment(s)" = "schůzku/y";
@@ -391,6 +392,7 @@
 "reminder_AFTER" = "po";
 "reminder_START" = "začátku/em události";
 "reminder_END" = "konci události";
+"Reminder Details" = "Reminder Details";
 
 "zoom_400" = "400%";
 "zoom_200" = "200%";

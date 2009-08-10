@@ -88,6 +88,7 @@
 "messageforward_inline" = "Do řady";
 "messageforward_attached" = "Jako přílohu";
 
+/* Identities */
 "Default identity:" = "Výchozí identita:";
 "Manage identities..." = "Spravovat identity...";
 "Signature" = "Podpis";
@@ -96,6 +97,9 @@
 "And place my signature" = "A umístit můj podpis";
 "signatureplacement_above" = "pod odpověď";
 "signatureplacement_below" = "pod citaci";
+"Compose messages in" = "Compose messages in";
+"composemessagestype_html" = "HTML";
+"composemessagestype_text" = "Plain text";
 
 "composeMessageChanged" = "Changing your messages composition type requires to save your preferences immediately. Continue?";
 
@@ -107,6 +111,7 @@
 "Confirmation:" = "Potvrzení:";
 "Change" = "Změnit";
 
+/* Event+task categories */
 "category_none" = "Žádný";
 "category_labels" = "Výročí,Narozeniny,Obchod,Hovory,Klienti,Soutěže,Zákazník,Oblíbené,Sledování,Dárky,Volno,Nápady,Problémy,Různé,Osobní,Projekty,Veřejné prázdniny,Stav,Dodavatelé,Cesta,Dovolená";
 

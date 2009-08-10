@@ -1,8 +1,3 @@
-/* this file is in UTF-8 format! */
-/* Author: erny@yaco.es */
-/* Based on: rev 1397 */
-/* Last update: 2008-04-04 */
-
 ACCEPTED = "confirmado";
 COMPLETED = "completado";
 DECLINED = "rechazado";

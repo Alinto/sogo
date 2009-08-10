@@ -19,6 +19,7 @@
 "Attach" = "Přiložit";
 "Save" = "Uložit";
 "Priority" = "Priorita";
+"Size" = "Size";
 
 /* Tooltips */
 
@@ -44,7 +45,7 @@
 
 "Home"                 = "Domů"; 
 "Calendar"             = "Kalendář";
-"Addressbook"          = "Addresář";
+"Addressbook"          = "Adresář";
 "Mail"                 = "E-Mail";
 "Right Administration" = "Administrace";
 
@@ -91,6 +92,10 @@
 "Add address"   = "Přidat adresu";
 
 "Attachments:" = "Přílohy:";
+"Open" = "Open";
+"Select All" = "Select All";
+"Attach Web Page..." = "Attach Web Page...";
+"Attach File(s)..." = "Attach File(s)...";
 
 "to"            = "Komu";
 "cc"            = "Kopie";
@@ -163,6 +168,7 @@
 
 /* Image Popup menu */
 "Save Image" = "Uložit obrázek";
+"Save Attachment" = "Save Attachment";
 
 /* Mailbox popup menus */
 "Open in New Mail Window" = "Otevřít v novém mailovém okně";

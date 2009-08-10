@@ -4,12 +4,7 @@
 "Address" = "Address";
 "Other" = "Other";
 
-"Name" = "Név";
-"Internet" = "Internet";
-"Phones" = "Telefonszámok";
-"Home" = "Otthoni";
-"Work" = "Munkahely";
-
+"Address Books" = "Adresboeken";
 "Addressbook" = "Címjegyzék";
 "Addresses" = "Címek";
 "Update" = "Mentés";
@@ -22,16 +17,20 @@
 "Extended" = "Kiterjesztett";
 "Fax" = "Fax";
 "Firstname" = "Keresztnév";
+"Home" = "Otthoni";
 "HomePhone" = "Otthoni telefon";
 "Lastname" = "Vezetéknév";
 "Location" = "Hely";
 "MobilePhone" = "Mobil telefon";
+"Name" = "Név";
 "OfficePhone" = "Hivatali telefon";
 "Organization" = "Szervezet";
 "Work Phone" = "Munkahelyi telefon";
 "Phone" = "Telefon";
+"Phones" = "Telefonszámok";
 "Postal" = "Irányítószám";
 "Save" = "Mentés";
+"Internet" = "Internet";
 "Unit" = "Egység";
 "delete" = "Töröl";
 "edit" = "Szerkeszt";
@@ -97,6 +96,8 @@
 "Title:" = "Cím:";
 "Service:" = "Szolgáltatás:";
 "Company:" = "Vállalat:";
+"Department:" = "Department:";
+"Organization:" = "Organization:";
 "Address:" = "Cím:";
 "City:" = "Város:";
 "State_Province:" = "Állam/tartomány:";
@@ -104,6 +105,7 @@
 "Country:" = "Ország:";
 "Web Page:" = "Web:";
 
+"Work" = "Munkahely";
 "Other Infos" = "Egyéb";
 
 "Note:" = "Megjegyzés:";

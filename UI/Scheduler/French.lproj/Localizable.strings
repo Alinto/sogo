@@ -25,6 +25,7 @@
 "Thursday" = "Jeudi";
 "Friday" = "Vendredi";
 "Saturday" = "Samedi";
+"DayOfTheMonth" = "DayOfTheMonth";
 
 "Sun" = "Dim";
 "Mon" = "Lun";
@@ -94,7 +95,6 @@
 /* Year */
 
 "this year" = "Cette année";
-
 
 /* Menu */
 
@@ -168,7 +168,9 @@
 "show_rejected_apts" = "Afficher les rendez-vous refusés";
 "hide_rejected_apts" = "Cacher les rendez-vous refusés";
 
+
 /* Schedule */
+
 "Schedule" = "Suivi de rendez-vous";
 "No appointments found" = "Aucun rendez-vous";
 "Meetings proposed by you" = "Rendez-vous que vous proposez";
@@ -180,6 +182,7 @@
 "more attendees" = "Autres participants";
 "Hide already accepted and rejected appointments" = "Cacher les invitations refusées";
 "Show already accepted and rejected appointments" = "Montrer aussi les invitations refusées";
+
 
 /* Appointments */
 
@@ -260,8 +263,8 @@
 "Title or Description" = "Le titre ou la description";
 
 "Search" = "Rechercher";
-"Search attendees"	="Recherche de participants";
-"Search resources"	="Recherche de ressources";
+"Search attendees" = "Recherche de participants";
+"Search resources" = "Recherche de ressources";
 "Search appointments" = "Recherche de rendez-vous";
 "Search in Anais" = "Recherche par Anaïs";
 
@@ -389,6 +392,7 @@
 "reminder_AFTER" = "after";
 "reminder_START" = "the event starts";
 "reminder_END" = "the event ends";
+"Reminder Details" = "Reminder Details";
 
 "zoom_400" = "400%";
 "zoom_200" = "200%";
@@ -460,8 +464,9 @@ validate_endbeforestart    = "La date de fin est avant la date de début.";
 "Maybe busy" = "Peut-être occupé";
 "No free-busy information" = "Pas d'information";
 
-/* FreeBusy panel buttons */
+/* FreeBusy panel buttons and labels */
 "Suggest time slot:" = "Suggérer un créneau horaire :";
+"Zoom:" = "Zoom:";
 "Previous slot" = "Précédent";
 "Next slot" = "Prochain";
 "Previous hour" = "Heure précédente";
@@ -498,7 +503,7 @@ vtodo_class2 = "(Tâche confidentielle)";
 "Tag:" = "Label :";
 
 "Show alarms" = "Afficher les alarmes";
-"Show tasks" =  "Afficher les tâches";
+"Show tasks" = "Afficher les tâches";
 
 /* Error messages */
 "dayFieldInvalid" = "Veuillez spécifier un chiffre superieur ou égal à 1 dans le champ Jours.";

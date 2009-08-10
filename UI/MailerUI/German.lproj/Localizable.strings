@@ -1,11 +1,11 @@
 /* this file is in UTF-8 format! */
 
 /* Icon's label */
-
 "Create"      = "Erstellen";
 "Empty Trash" = "Papierkorb leeren";
 "Delete"      = "Löschen";
 "Expunge"     = "Expunge";
+"Forward"     = "Weiterleiten";
 "Get Mail"    = "Abrufen";
 "Junk"        = "Junk";
 "Reply"       = "Antworten";
@@ -13,9 +13,6 @@
 "Print"       = "Drucken";
 "Stop"        = "Stopp";
 "Write"       = "Verfassen";
-"Attachment"  = "Anhang";
-"Unread"      = "Ungelesen";
-"Flagged"     = "Markiert";
 
 "Send" = "Senden";
 "Contacts" = "Kontakte";
@@ -40,6 +37,9 @@
 "Mark the selected messages as junk" = "Gewählte Nachricht(en) als Junk einstufen";
 "Print this message" = "Gewählte Nachricht drucken";
 "Stop the current transfer" = "Derzeitige Übertragung stoppen";
+"Attachment" = "Anhang";
+"Unread" = "Ungelesene";
+"Flagged" = "Markiert";
 
 /* Main Frame  */
 
@@ -48,6 +48,7 @@
 "Addressbook"          = "Adressbuch";
 "Mail"                 = "E-Mail";
 "Right Administration" = "Verwaltung";
+
 "Help" = "Hilfe";
 
 /* Mail account main windows */
@@ -91,10 +92,16 @@
 "Add address"   = "Adresse hinzufügen";
 
 "Attachments:" = "Anhänge:";
+"Open" = "Open";
+"Select All" = "Select All";
+"Attach Web Page..." = "Attach Web Page...";
+"Attach File(s)..." = "Attach File(s)...";
 
 "to"            = "An";
 "cc"            = "CC";
 "bcc"           = "BCC";
+
+"Addressbook"   = "Adressbuch";
 
 "Edit Draft..." = "Entwurf bearbeiten...";
 "Load Images" = "Load Images";
@@ -123,6 +130,7 @@
 "Entire Message" = "Nachrichtentext";
 
 "Date"          = "Datum";
+"View"          = "View";
 "All"           = "Alle";
 "Unread"        = "Ungelesene";
 "messages"      = "Nachricht(en)";
@@ -135,7 +143,7 @@
 "msgnumber_to"  = "bis";
 "msgnumber_of"  = "von";
 
-"Mark Unread" = "Als ungelesen markieren"; 
+"Mark Unread" = "Als ungelesen markieren";
 "Mark Read"   = "Als gelesen markieren";
 
 "Untitled" = "ohne Titel";
@@ -147,11 +155,11 @@
 "InboxFolderName"  = "Posteingang";
 "DraftsFolderName" = "Entwürfe";
 "SieveFolderName"  = "Filter";
-"Folders"          = "Ordner"; 
+"Folders"          = "Ordner"; /* title line */
 
 /* MailMoveToPopUp */
 
-"MoveTo" = "Verschieben nach";
+"MoveTo"        = "Verschieben nach";
 
 /* Address Popup menu */
 "Add to Address Book..." = "Zu Adressbuch hinzufügen";
@@ -233,6 +241,7 @@
 "Please select a message." = "Sie müssen eine Nachricht auswählen.";
 "Please select a message to print." = "Sie müssen eine Nachricht zum Drucken auswählen.";
 "Please select only one message to print." = "Bitte wählen Sie nur eine Nachricht zum Drucken aus.";
+
 
 "The folder with name \"%{0}\" could not be created."
 = "Der Ordner mit dem Namen \"%{0}\" konnte nicht erzeugt werden.";

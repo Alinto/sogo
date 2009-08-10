@@ -10,6 +10,7 @@
 "Switch to day view" = "Napi nézetre váltás";
 "Switch to week view" = "Heti nézetre váltás";
 "Switch to month view" = "Havi nézetre váltás";
+"Reload all calendars" = "Reload all calendars";
 
 /* Tabs */
 "Date" = "Dátum";
@@ -24,6 +25,7 @@
 "Thursday" = "Csütörtök";
 "Friday" = "Péntek";
 "Saturday" = "Szombat";
+"DayOfTheMonth" = "DayOfTheMonth";
 
 "Sun" = "Vas";
 "Mon" = "Hét";
@@ -44,12 +46,18 @@
 "dayLabelFormat" = "%Y.%m.%d";
 "today" = "Ma";
 
+"Previous Day" = "Previous Day";
+"Next Day" = "Next Day";
+
 /* Week */
 
 "Week" = "Hét";
 "this week" = "aktuális hét";
 
 "Week %d" = "%d. hét";
+
+"Previous Week" = "Previous Week";
+"Next Week" = "Next Week";
 
 /* Month */
 
@@ -80,6 +88,9 @@
 "a3_October" = "Október";
 "a3_November" = "November";
 "a3_December" = "December";
+
+"Previous Month" = "Previous Month";
+"Next Month" = "Next Month";
 
 /* Year */
 
@@ -151,6 +162,7 @@
 "Save and Close" = "Mentés és bezárás";
 "Close" = "Bezárás";
 "Invite Attendees" = "Résztvevők meghívása";
+"Attach" = "Attach";
 "Update" = "Mentés";
 "Cancel" = "Mégsem";
 "show_rejected_apts" = "Visszautasított találkozók mutatása";
@@ -203,6 +215,8 @@
 "Category:" = "Kategória:";
 "Repeat:" = "Ismétlés:";
 "Reminder:" = "Emlékeztető:";
+"General:" = "General:";
+"Reply:" = "Reply:";
 
 "Target:" = "Cél:";
 
@@ -324,7 +338,7 @@
 "Every" = "Minden";
 "Days" = "naponként";
 "Week(s)" = "hetenként";
-"On" = "";
+"On" = "On";
 "Month(s)" = "hónaponként";
 "The" = "A";
 "Recur on day(s)" = "Az alábbi napon";
@@ -378,6 +392,7 @@
 "reminder_AFTER" = "utána";
 "reminder_START" = "az esemény kezdődik";
 "reminder_END" = "az esemény végződik";
+"Reminder Details" = "Reminder Details";
 
 "zoom_400" = "400%";
 "zoom_200" = "200%";
@@ -413,6 +428,7 @@ validate_endbeforestart    = "A megadott befejező dátum korábbi, mint a kezd�
 "Day View" = "Napi nézet";
 "Week View" = "Heti nézet";
 "Month View" = "Havi nézet";
+"Reload" = "Reload";
 
 "eventPartStatModificationError" = "A résztvevői állapota nem módosítható.";
 
@@ -485,6 +501,9 @@ vtodo_class2 = "(Bizalmas feladat)";
 "Name:" = "Név:";
 "Color:" = "Szín:";
 "Tag:" = "Cimke:";
+
+"Show alarms" = "Show alarms";
+"Show tasks" = "Show tasks";
 
 /* Error messages */
 "dayFieldInvalid" = "Please specify a numerical value in the Days field greater or equal to 1.";

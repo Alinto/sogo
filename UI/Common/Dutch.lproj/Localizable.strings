@@ -1,3 +1,5 @@
+/* this file is in UTF-8 format! */
+
 /* toolbars */
 "Save" = "Opslaan";
 "Close" = "Sluiten";
@@ -27,16 +29,24 @@
 "Sorry, the user rights can not be configured for that object." = "De machtigingen kunnen niet worden ingesteld voor dit object.";
 
 /* generic.js */
-"Unable to subscribe to that folder!" = "Het is niet mogelijk om te abonneren op deze map.";
-"You cannot subscribe to a folder that you own!" = "Het is niet mogelijk om u te abonneren op uw eigen mappen.";
-"Unable to unsubscribe from that folder!" = "Het is niet mogelijk om u hiervan uit te schrijven.";
-"You cannot unsubscribe from a folder that you own!" = "Het is niet mogelijk om u uit te schrijven van uw eigen mappen.";
+"Unable to subscribe to that folder!"
+	= "Het is niet mogelijk om te abonneren op deze map.";
+"You cannot subscribe to a folder that you own!"
+      	= "Het is niet mogelijk om u te abonneren op uw eigen mappen.";
+"Unable to unsubscribe from that folder!"
+	= "Het is niet mogelijk om u hiervan uit te schrijven.";
+"You cannot unsubscribe from a folder that you own!"
+      	= "Het is niet mogelijk om u uit te schrijven van uw eigen mappen.";
 "Unable to rename that folder!" = "Het is niet mogelijk om deze map te hernoemen.";
-"You have already subscribed to that folder!" = "U bent al op deze map geabonneerd!";
-"The user rights cannot be edited for this object!" = "De machtigingen kunnen niet worden aangepast voor dit object!";
+"You have already subscribed to that folder!"
+     	= "U bent al op deze map geabonneerd!";
+"The user rights cannot be edited for this object!"
+        = "De machtigingen kunnen niet worden aangepast voor dit object!";
 
-"You are not allowed to access this module or this system. Please contact your system administrator." = "U hebt geen toegang tot deze module of dit systeem. Neem contact op met uw systeem beheerder.";
-"You don't have the required privileges to perform the operation." = "Voor deze actie heeft u niet de benodigde rechten.";
+"You are not allowed to access this module or this system. Please contact your system administrator."
+= "U hebt geen toegang tot deze module of dit systeem. Neem contact op met uw systeem beheerder.";
+"You don't have the required privileges to perform the operation."
+= "Voor deze actie heeft u niet de benodigde rechten.";
 
 /* alarms */
 "Reminder:" = "Alarm:";

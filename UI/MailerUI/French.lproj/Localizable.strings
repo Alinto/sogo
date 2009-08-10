@@ -1,11 +1,11 @@
 /* this file is in UTF-8 format! */
 
 /* Icon's label */
-
 "Create"      = "Créer";
 "Empty Trash" = "Vider la corbeille";
 "Delete"      = "Supprimer";
 "Expunge"     = "Purger";
+"Forward"     = "Transférer";
 "Get Mail"    = "Relever";
 "Junk"        = "Indésirable";
 "Reply"       = "Répondre";
@@ -13,9 +13,6 @@
 "Print"       = "Imprimer";
 "Stop"        = "Stop";
 "Write"       = "Écrire";
-"Attachment"  = "Documents joints";
-"Unread"      = "Non-lus";
-"Flagged"     = "Marqués";
 
 "Send" = "Envoyer";
 "Contacts" = "Contacts";
@@ -40,6 +37,9 @@
 "Mark the selected messages as junk" = "Marquer les messages sélectionnés comme indésirables";
 "Print this message" = "Imprimer ce message";
 "Stop the current transfer" = "Arrêter le transfert courant";
+"Attachment" = "Documents joints";
+"Unread" = "Non lus";
+"Flagged" = "Marqués";
 
 /* Main Frame  */
 
@@ -48,6 +48,7 @@
 "Addressbook"          = "Adresses";
 "Mail"                 = "Mail";
 "Right Administration" = "Administration";
+
 "Help" = "Aide";
 
 /* Mail account main windows */
@@ -91,10 +92,16 @@
 "Add address"   = "Ajouter Adresse";
 
 "Attachments:" = "Pièces jointes :";
+"Open" = "Open";
+"Select All" = "Select All";
+"Attach Web Page..." = "Attach Web Page...";
+"Attach File(s)..." = "Attach File(s)...";
 
 "to"            = "Pour";
 "cc"            = "Copie à";
 "bcc"           = "Copie cachée à";
+
+"Addressbook"   = "Adresses";
 
 "Edit Draft..." = "Modifier le brouillon...";
 "Load Images" = "Télécharger les images";
@@ -123,6 +130,7 @@
 "Entire Message" = "Message Complet";
 
 "Date"          = "Date";
+"View"          = "View";
 "All"           = "Tous";
 "Unread"        = "Non lus";
 "messages"      = "message(s)";
@@ -135,7 +143,7 @@
 "msgnumber_to"  = "à";
 "msgnumber_of"  = "de";
 
-"Mark Unread" = "Marquer comme non lu"; 
+"Mark Unread" = "Marquer comme non lu";
 "Mark Read"   = "Marquer comme lu";
 
 "Untitled" = "Sans titre";
@@ -147,11 +155,11 @@
 "InboxFolderName"  = "Courrier entrant";
 "DraftsFolderName" = "Brouillons";
 "SieveFolderName"  = "Filtres";
-"Folders"          = "Dossiers"; 
+"Folders"          = "Dossiers"; /* title line */
 
 /* MailMoveToPopUp */
 
-"MoveTo" = "Déplacer vers";
+"MoveTo"        = "Déplacer vers";
 
 /* Address Popup menu */
 "Add to Address Book..." = "Ajouter au carnet d'adresses";
@@ -233,6 +241,7 @@
 "Please select a message." = "Veuillez sélectionner un message.";
 "Please select a message to print." = "Veuillez sélectionner un message à imprimer.";
 "Please select only one message to print." = "Veuillez ne sélectionner qu'un seul message à imprimer.";
+
 
 "The folder with name \"%{0}\" could not be created."
 = "Le dossier intitulé \"%{0}\" n'a pas pu être créé.";

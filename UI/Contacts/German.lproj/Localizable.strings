@@ -4,40 +4,43 @@
 "Address" = "Adresse";
 "Other" = "Sonstiges";
 
-"Name"              = "Name";
-"Internet"          = "Internet";
-"Phones"            = "Telefon";
+"Address Books" = "Adressbücher";
+"Addressbook" = "Addressbook";
+"Addresses" = "Adressen";
+"Update" = "Speichern";
+"Cancel" = "Abbrechen";
+"Common" = "Name";
+"Contact editor" = "Kontakt bearbeiten";
+"Contact viewer" = "Kontakt anzeigen";
+"Email" = "E-Mail";
+"Screen Name" = "Messenger-Name";
+"Extended" = "Erweiterte Information";
+"Fax" = "Fax";
+"Firstname" = "Vorname";
 "Home" = "Privat";
-"Work" = "Dienstlich";
-
-"Address Books"     = "Adressbücher";
-"Addresses"         = "Adressen";
-"Update"	    = "Speichern";
-"Cancel"            = "Abbrechen";
-"Common"            = "Name";
-"Contact editor"    = "Kontakt bearbeiten";
-"Contact viewer"    = "Kontakt anzeigen";
-"Email"             = "E-Mail";
-"Screen Name"	    = "Messenger-Name";
-"Extended"          = "Erweiterte Information";
-"Fax"               = "Fax";
-"Firstname"         = "Vorname";
-"HomePhone"         = "Privat";
-"Lastname"          = "Name";
-"Location"          = "Adresse";
-"MobilePhone"       = "Mobil";
-"OfficePhone"       = "Dienstlich";
-"Organization"      = "Organisation";
-"Work Phone"	    = "Dienstlich";
-"Phone"             = "Telefon";
-"Postal"            = "PLZ";
-"Save"              = "Speichern";
-"Unit"              = "Abteilung";
-"delete"            = "Löschen";
-"edit"              = "Bearbeiten";
-"invalidemailwarn"  = "Adressfeld der E-Mail ist ungültig. Wollen Sie trotzdem fortfahren?";
-"new"               = "Neu";
+"HomePhone" = "Privat";
+"Lastname" = "Name";
+"Location" = "Adresse";
+"MobilePhone" = "Mobil";
+"Name" = "Name";
+"OfficePhone" = "Dienstlich";
+"Organization" = "Organisation";
+"Work Phone" = "Dienstlich";
+"Phone" = "Telefon";
+"Phones" = "Telefon";
+"Postal" = "PLZ";
+"Save" = "Speichern";
+"Internet" = "Internet";
+"Unit" = "Abteilung";
+"delete" = "Löschen";
+"edit" = "Bearbeiten";
+"invalidemailwarn" = "Adressfeld der E-Mail ist ungültig. Wollen Sie trotzdem fortfahren?";
+"new" = "Neu";
 "Preferred Phone"   = "Bevorzugt";
+
+"Move To" = "Verschieben in";
+"Copy To" = "Kopieren in";
+"Add to:" = "Hinzufügen zu:";
 
 /* Tooltips */
 
@@ -91,6 +94,8 @@
 "Pager:" = "Pager:";
 
 "Title:" = "Titel:";
+"Service:" = "Service:";
+"Company:" = "Company:";
 "Department:" = "Abteilung:";
 "Organization:" = "Organisation:";
 "Address:" = "Adresse:";
@@ -100,6 +105,7 @@
 "Country:" = "Land:";
 "Web Page:" = "Webseite:";
 
+"Work" = "Dienstlich";
 "Other Infos" = "Andere";
 
 "Note:" = "Notizen:";
@@ -162,7 +168,3 @@
 "Forbidden" = "Sie können nicht auf dieses Adressbuch schreiben.";
 "Invalid Contact" = "Der gewählte Kontakt existiert nicht mehr.";
 "Unknown Destination Folder" = "Das gewählte Ziel-Adressbuch existiert nicht mehr.";
-
-"Move To" = "Verschieben in";
-"Copy To" = "Kopieren in";
-"Add to:" = "Hinzufügen zu:";

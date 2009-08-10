@@ -4,14 +4,7 @@
 "Address" = "Indirizzo";
 "Other" = "Altro";
 
-"Name" = "Nome";
-"Internet" = "Email";
-"Phones" = "Numeri di telefono";
-"Home" = "Personale";
-"Work" = "Lavoro";
-
 "Address Books" = "Rubrica";
-
 "Addressbook" = "Rubrica";
 "Addresses" = "Indirizzi";
 "Update" = "Aggiorna";
@@ -37,12 +30,17 @@
 "Phones" = "Telefoni";
 "Postal" = "CAP";
 "Save" = "Salva";
+"Internet" = "Email";
 "Unit" = "Unità";
 "delete" = "cancella";
 "edit" = "modifica";
 "invalidemailwarn" = "L'indirizzo email specificato non è valido";
 "new" = "nuovo";
 "Preferred Phone"   = "Telefono lavoro";
+
+"Move To" = "Sposta in ";
+"Copy To" = "Copia in ";
+"Add to:" = "Add to:";
 
 /* Tooltips */
 
@@ -81,8 +79,7 @@
 "Additional Email:" = "Email aggiuntiva:";
 
 "Phone Number:" = "Numero di telefono:";
-"Prefers to receive messages formatted as:"
-= "Formato preferito per i messaggi di posta:";
+"Prefers to receive messages formatted as:" = "Formato preferito per i messaggi di posta:";
 "Screen Name:" = "Nome Instant Messenger:";
 
 "First:" = "Nome:";
@@ -99,15 +96,15 @@
 "Title:" = "Titolo:";
 "Service:" = "Service:";
 "Company:" = "Società:";
-"Address:" = "Indirizzo:";
+"Department:" = "Reparto:";
+"Organization:" = "Società:";
 "Address:" = "Indirizzo:";
 "City:" = "Città:";
 "State_Province:" = "Provincia:";
 "ZIP_Postal Code:" = "CAP:";
 "Country:" = "Nazione:";
 "Web Page:" = "Pagina Web:";
-"Department:" = "Reparto:";
-"Organization:" = "Società:";
+
 "Work" = "Lavoro";
 "Other Infos" = "Altre informazioni";
 
@@ -120,9 +117,6 @@
 "Recipient" = "Destinatario";
 "Carbon Copy" = "Copia Carbone";
 "Blind Carbon Copy" = "Copia Carbone Nascosta";
-
-"Move To" = "Sposta in ";
-"Copy To" = "Copia in ";
 
 "New Addressbook..." = "Nuova rubrica...";
 "Subscribe to an Addressbook..." = "Sottoscrivi una rubrica...";
@@ -138,6 +132,9 @@
 
 "Are you sure you want to delete the selected contacts?"
 = "Sei sicuro di voler eliminare i contatti selezionati?";
+
+"You cannot delete the card of \"%{0}\"."
+= "You cannot delete the card of \"%{0}\".";
 
 "Address Book Name" = "Nome della Rubrica";
 
@@ -164,3 +161,10 @@
 = "Il contatto selezionato non dispone di indirizzo email.";
 
 "Please select a contact." = "Per favore seleziona un contatto.";
+
+/* Error messages for move and copy */
+
+"SoAccessDeniedException" = "You cannot write to this address book.";
+"Forbidden" = "You cannot write to this address book.";
+"Invalid Contact" = "The selected contact no longer exists.";
+"Unknown Destination Folder" = "The chosen destination address book no longer exists.";

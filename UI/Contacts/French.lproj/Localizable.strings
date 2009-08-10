@@ -4,40 +4,43 @@
 "Address" = "Adresses";
 "Other" = "Informations complémentaires";
 
-"Name"              = "Identité";
-"Internet"          = "E-mail";
-"Phones"            = "Numéros de téléphone";
-"Home" = "Personnelle";
-"Work" = "Professionnelle";
-
-"Address Books"      = "Carnet d'adresses";
-"Addresses"         = "Adresses";
+"Address Books" = "Carnet d'adresses";
+"Addressbook" = "Addressbook";
+"Addresses" = "Adresses";
 "Update" = "Mettre à jour";
-"Cancel"            = "Annuler";
-"Common"            = "Identité";
-"Contact editor"    = "Éditer le contact";
-"Contact viewer"    = "Visualiser le contact";
-"Email"             = "Adresse électronique";
-"Screen Name"	    = "Pseudo";
-"Extended"          = "Informations complémentaires";
-"Fax"               = "Fax";
-"Firstname"         = "Prénom";
-"HomePhone"         = "Domicile";
-"Lastname"          = "Nom";
-"Location"          = "Lieux";
-"MobilePhone"       = "Mobile";
-"OfficePhone"       = "Bureau";
-"Organization"      = "Société";
+"Cancel" = "Annuler";
+"Common" = "Identité";
+"Contact editor" = "Éditer le contact";
+"Contact viewer" = "Visualiser le contact";
+"Email" = "Adresse électronique";
+"Screen Name" = "Pseudo";
+"Extended" = "Informations complémentaires";
+"Fax" = "Fax";
+"Firstname" = "Prénom";
+"Home" = "Personnelle";
+"HomePhone" = "Domicile";
+"Lastname" = "Nom";
+"Location" = "Lieux";
+"MobilePhone" = "Mobile";
+"Name" = "Identité";
+"OfficePhone" = "Bureau";
+"Organization" = "Société";
 "Work Phone" = "Travail";
-"Phone"             = "Téléphone";
-"Postal"            = "Professionnelle";
-"Save"              = "Sauvegarder";
-"Unit"              = "Département";
-"delete"            = "Effacer";
-"edit"              = "Éditer";
-"invalidemailwarn"  = "Le champ de l'adresse électronique est invalide";
-"new"               = "Nouveau";
+"Phone" = "Téléphone";
+"Phones" = "Numéros de téléphone";
+"Postal" = "Professionnelle";
+"Save" = "Sauvegarder";
+"Internet" = "E-mail";
+"Unit" = "Département";
+"delete" = "Effacer";
+"edit" = "Éditer";
+"invalidemailwarn" = "Le champ de l'adresse électronique est invalide";
+"new" = "Nouveau";
 "Preferred Phone"   = "Numéro préféré";
+
+"Move To" = "Déplacer vers";
+"Copy To" = "Copier vers";
+"Add to:" = "Ajouter à:";
 
 /* Tooltips */
 
@@ -91,6 +94,8 @@
 "Pager:" = "Téléavertisseur :";
 
 "Title:" = "Fonction :";
+"Service:" = "Service:";
+"Company:" = "Company:";
 "Department:" = "Service :";
 "Organization:" = "Société :";
 "Address:" = "Adresse :";
@@ -100,6 +105,7 @@
 "Country:" = "Pays :";
 "Web Page:" = "Page Web:";
 
+"Work" = "Professionnelle";
 "Other Infos" = "Informations complémentaires";
 
 "Note:" = "Remarques :";
@@ -162,7 +168,3 @@
 "Forbidden" = "Vous ne pouvez pas ajouter de fiches à ce carnet.";
 "Invalid Contact" = "La fiche sélectionnée n'existe plus.";
 "Unknown Destination Folder" = "Le carnet d'adresses choisi n'existe plus.";
-
-"Move To" = "Déplacer vers";
-"Copy To" = "Copier vers";
-"Add to:" = "Ajouter à:";

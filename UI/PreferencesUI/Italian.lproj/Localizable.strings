@@ -17,7 +17,8 @@
 /* ooo */
 "I'm currently in the office" = "Sono in ufficio";
 "I'm currently out of the office" = "Sono fuori ufficio";
-"AutoReply only once to each sender with the following text :" = "Rispondi automaticamente solo una volta ad ogni mittente usando questo testo:";
+"AutoReply only once to each sender with the following text :"
+= "Rispondi automaticamente solo una volta ad ogni mittente usando questo testo:";
 
 /* d & t */
 "Current Time Zone :" = "Fuso orario:";
@@ -50,7 +51,8 @@
 "Day end time :" = "La giornata lavorativa termina alle ore:";
 "First week of year :" = "Prima settimana dell'anno:";
 "Enable reminders for Calendar items" = "Abilita promemoria per gli eventi del Calendario";
-"Play a sound when a reminder comes due" = "Riproduci un suono quando un promemoria è attivo";
+"Play a sound when a reminder comes due"
+= "Riproduci un suono quando un promemoria è attivo";
 "Default reminder :" = "Promemoria predefinito:";
 
 "firstWeekOfYear_January1" = "Inizia l'1 gennaio";
@@ -86,6 +88,7 @@
 "messageforward_inline" = "Parte del messaggio";
 "messageforward_attached" = "Allegato";
 
+/* Identities */
 "Default identity:" = "Identità principale:";
 "Manage identities..." = "Gestisci identità...";
 "Signature" = "Firma";
@@ -108,5 +111,7 @@
 "Confirmation:" = "Ripeti nuova password:";
 "Change" = "Cambia Password";
 
+/* Event+task categories */
 "category_none" = "Nessuna";
 "category_labels" = "Anniversari,Compleanni,Lavoro,Chiamate,Clienti,Competizioni,Compratori,Preferiti,Incontri,Regali,Vacanze,Idee,Problemi,Varie,Personale,Progetti,Giorno festivo,Stato,Fornitori,Viaggio,Chiusura";
+

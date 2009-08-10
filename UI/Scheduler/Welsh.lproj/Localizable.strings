@@ -25,6 +25,7 @@
 "Thursday" = "Iau";
 "Friday" = "Gwener";
 "Saturday" = "Sadwrn";
+"DayOfTheMonth" = "DayOfTheMonth";
 
 "Sun" = "Sul";
 "Mon" = "Llu";
@@ -264,7 +265,8 @@
 "Search" = "Chwilio";
 "Search attendees" = "Chwilio mynychwyr";
 "Search resources" = "Chwilio adnoddau";
-"Search appointments" = "Chwilio apwyntiadau";"Search in Anais" = "Chwilio yn Anais";
+"Search appointments" = "Chwilio apwyntiadau";
+"Search in Anais" = "Search in Anais";
 
 "All day Event" = "Digwyddiad trwy'r dydd";
 "check for conflicts" = "Gwirio gwrthdaro";
@@ -383,6 +385,15 @@
 "reminder_1_WEEK_BEFORE" = "1 wythnos o flaen";
 "reminder_CUSTOM" = "Cwstwm...";
 
+"reminder_MINUTES" = "minutes";
+"reminder_HOURS" = "hours";
+"reminder_DAYS" = "days";
+"reminder_BEFORE" = "before";
+"reminder_AFTER" = "after";
+"reminder_START" = "the event starts";
+"reminder_END" = "the event ends";
+"Reminder Details" = "Reminder Details";
+
 "zoom_400" = "400%";
 "zoom_200" = "200%";
 "zoom_100" = "100%";
@@ -433,6 +444,8 @@ validate_endbeforestart    = "Mae'r dyddiad gorffen sydd wedi'i roi yn digwydd c
 "eventDeleteConfirmation" = "Bydd dileu y digwyddiad yn barhaol.\nHoffech barhau?";
 "taskDeleteConfirmation" = "Bydd dileu'r dasg yma'n barhaol.\nHoffech barhau?";
 
+"You cannot remove nor unsubscribe from your personal calendar."
+= "You cannot remove nor unsubscribe from your personal calendar.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "A ydych yn sicr eich bod eisiau dileu'r calendr \"%{0}\"?";
 

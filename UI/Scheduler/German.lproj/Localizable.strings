@@ -25,6 +25,7 @@
 "Thursday" = "Donnerstag";
 "Friday" = "Freitag";
 "Saturday" = "Samstag";
+"DayOfTheMonth" = "DayOfTheMonth";
 
 "Sun" = "So";
 "Mon" = "Mo";
@@ -161,12 +162,15 @@
 "Save and Close" = "Speichern und schließen";
 "Close" = "Schließen";
 "Invite Attendees" = "Teilnehmer einladen";
+"Attach" = "Attach";
 "Update" = "Speichern";
 "Cancel" = "Abbrechen";
 "show_rejected_apts" = "Abgelehnte Termine anzeigen";
 "hide_rejected_apts" = "Abgelehnte Termine ausblenden";
 
+
 /* Schedule */
+
 "Schedule" = "Terminplan";
 "No appointments found" = "Keine Termine gefunden";
 "Meetings proposed by you" = "Von Ihnen vorgeschlagene Termine";
@@ -178,6 +182,7 @@
 "more attendees" = "Weitere Teilnehmer";
 "Hide already accepted and rejected appointments" = "Abgelehnte und angenommene Termine ausblenden";
 "Show already accepted and rejected appointments" = "Abgelehnte und angenommene Termine anzeigen";
+
 
 /* Appointments */
 
@@ -212,7 +217,6 @@
 "Reminder:" = "Alarm:";
 "General:" = "General:";
 "Reply:" = "Reply:";
-
 
 "Target:" = "Destination :";
 
@@ -259,8 +263,8 @@
 "Title or Description" = "Titel oder Beschreibung";
 
 "Search" = "Suchen";
-"Search attendees"	="Teilnehmer suchen";
-"Search resources"	="Ressourcen suchen";
+"Search attendees" = "Teilnehmer suchen";
+"Search resources" = "Ressourcen suchen";
 "Search appointments" = "Termine suchen";
 "Search in Anais" = "Suche über Anaïs";
 
@@ -460,8 +464,9 @@ validate_endbeforestart    = "Ihr Beginn ist nach dem Ende";
 "Maybe busy" = "Vielleicht beschäftigt";
 "No free-busy information" = "Keine Verfügbarkeitsinformationen";
 
-/* FreeBusy panel buttons */
+/* FreeBusy panel buttons and labels */
 "Suggest time slot:" = "Termin vorschlagen:";
+"Zoom:" = "Zoom:";
 "Previous slot" = "Vorheriger";
 "Next slot" = "Nächster";
 "Previous hour" = "Vorherige Stunde";
@@ -475,7 +480,6 @@ validate_endbeforestart    = "Ihr Beginn ist nach dem Ende";
 "Location" = "Ort";
 "(Private Event)" = "(Privater Termin)";
 
-/* event list */
 vevent_class0 = "(Öffentlicher Termin)";
 vevent_class1 = "(Privater Termin)";
 vevent_class2 = "(Vertraulicher Termin)";

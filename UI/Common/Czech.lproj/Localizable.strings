@@ -14,9 +14,9 @@
 "Right Administration" = "Administrace";
 "Log Console (dev.)" = "Konzole (dev.)";
 
-"User"			= "Uživatel";
+"User" = "Uživatel";
 
-"Help"			= "Nápověda";
+"Help" = "Nápověda";
 
 "noJavascriptError" = "SOGo vyžaduje JavaScript. Ujistěte se prosím, že je povolen a aktivován v rámci nastavení Vašeho prohlížeče.";
 "noJavascriptRetry" = "Znovu";

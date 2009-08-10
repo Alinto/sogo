@@ -92,6 +92,10 @@
 "Add address"   = "Cím hozzáadása";
 
 "Attachments:" = "Mellékletek:";
+"Open" = "Open";
+"Select All" = "Select All";
+"Attach Web Page..." = "Attach Web Page...";
+"Attach File(s)..." = "Attach File(s)...";
 
 "to"            = "Címzett";
 "cc"            = "Másolat";

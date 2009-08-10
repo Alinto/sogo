@@ -12,6 +12,10 @@
 "Switch to month view" = "Switch to month view";
 "Reload all calendars" = "Reload all calendars";
 
+/* Tabs */
+"Date" = "Date";
+"Calendars" = "Agenda's";
+
 /* Day */
 
 "Sunday" = "Zondag";
@@ -21,6 +25,7 @@
 "Thursday" = "Donderdag";
 "Friday" = "Vrijdag";
 "Saturday" = "Zaterdag";
+"DayOfTheMonth" = "DayOfTheMonth";
 
 "Sun" = "Zo";
 "Mon" = "Ma";
@@ -93,7 +98,6 @@
 
 /* Menu */
 
-"Calendars" = "Agenda's";
 "Calendar" = "Agenda";
 "Contacts" = "Adresboek";
 
@@ -164,7 +168,9 @@
 "show_rejected_apts" = "Geweigerde afspraken weergeven";
 "hide_rejected_apts" = "Geweigerde afspraken verbergen";
 
+
 /* Schedule */
+
 "Schedule" = "Planning";
 "No appointments found" = "Geen afspraken gevonden";
 "Meetings proposed by you" = "Door u voorgestelde vergaderingen";
@@ -176,6 +182,7 @@
 "more attendees" = "Andere deelnemers";
 "Hide already accepted and rejected appointments" = "Reeds geaccepteerde/geweigerde afspraken verbergen";
 "Show already accepted and rejected appointments" = "Reeds geaccepteerde/geweigerde afspraken weergeven";
+
 
 /* Appointments */
 
@@ -215,13 +222,11 @@
 
 "attributes" = "attributen";
 "attendees" = "deelnemers";
-
 /* checkbox title */
 "is private" = "is privé";
 /* classification */
 "Public" = "Publiek";
 "Private" = "Privé";
-
 /* text used in overviews and tooltips */
 "empty title" = "geen titel";
 "private appointment" = "Privé-afspraak";
@@ -258,8 +263,8 @@
 "Title or Description" = "Titel of Omschrijving";
 
 "Search" = "Zoeken";
-"Search attendees"	="Deelnemers zoeken";
-"Search resources"	="Resources zoeken";
+"Search attendees" = "Deelnemers zoeken";
+"Search resources" = "Resources zoeken";
 "Search appointments" = "Afspraken zoeken";
 "Search in Anais" = "Zoeken in Anais???";
 
@@ -267,6 +272,8 @@
 "check for conflicts" = "Op conflicten controleren";
 
 "Browse URL" = "Naar URL gaan";
+
+"newAttendee" = "Add attendee";
 
 /* calendar modes */
 
@@ -385,6 +392,7 @@
 "reminder_AFTER" = "after";
 "reminder_START" = "the event starts";
 "reminder_END" = "the event ends";
+"Reminder Details" = "Reminder Details";
 
 "zoom_400" = "400%";
 "zoom_200" = "200%";
@@ -432,7 +440,6 @@ validate_endbeforestart    = "Het begin vindt plaats vóór het einde.";
 "Select All" = "Alles selecteren";
 "Workweek days only" = "Alleen werkdagen weergeven";
 "Tasks in View" = "Taken in binnen het zicht";
-"Reload all calendars" = "Reload all calendars";
 
 "eventDeleteConfirmation" = "Weet u zeker dat u deze afspraak wilt verwijderen?";
 "taskDeleteConfirmation" = "Weet u zeker dat u deze taak wilt verwijderen?";
@@ -457,8 +464,9 @@ validate_endbeforestart    = "Het begin vindt plaats vóór het einde.";
 "Maybe busy" = "Waarschijnlijk bezet";
 "No free-busy information" = "Geen beschikbaarheidsinformatie";
 
-/* FreeBusy panel buttons */
+/* FreeBusy panel buttons and labels */
 "Suggest time slot:" = "Tijdzone:";
+"Zoom:" = "Zoom:";
 "Previous slot" = "Vorige";
 "Next slot" = "Volgende";
 "Previous hour" = "Vorig uur";
@@ -472,7 +480,6 @@ validate_endbeforestart    = "Het begin vindt plaats vóór het einde.";
 "Location" = "Plaats";
 "(Private Event)" = "(Privé-afspraak)";
 
-/* event list */
 vevent_class0 = "(Publieke afspraak)";
 vevent_class1 = "(Privé-afspraak)";
 vevent_class2 = "(Vertrouwelijke afspraak)";

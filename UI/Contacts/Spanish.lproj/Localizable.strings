@@ -1,19 +1,15 @@
 /* this file is in UTF-8 format! */
-/* Author: erny@yaco.es */
-/* Based on: rev 1403 */
-/* Last update: 2008-04-26 */
-/* Note: There may appear other labels than in the english version of    */
-/* Localizable.strings, because the file was not in sync with the actual */
-/* used labels used in the templates.					 */
 
+"Contact" = "Contacto";
 "Address" = "Dirección";
-"Addressbook" = "Libreta de direcciones";
+"Other" = "Otros datos";
+
 "Address Books" = "Libretas de direcciones";
+"Addressbook" = "Libreta de direcciones";
 "Addresses" = "Direcciones";
 "Update" = "Guardar";
 "Cancel" = "Cancelar";
 "Common" = "Común";
-"Contact" = "Contacto";
 "Contact editor" = "Modificar contacto";
 "Contact viewer" = "Mostrar contacto";
 "Email" = "Email";
@@ -34,6 +30,7 @@
 "Phones" = "Teléfonos";
 "Postal" = "Dirección oficina";
 "Save" = "Guardar";
+"Internet" = "Internet";
 "Unit" = "Unidad";
 "delete" = "borrar";
 "edit" = "modificar";
@@ -41,14 +38,17 @@
 "new" = "nuevo";
 "Preferred Phone"   = "Teléfono preferido";
 
+"Move To" = "Move To";
+"Copy To" = "Copy To";
+"Add to:" = "Add to:";
+
 /* Tooltips */
 
 "Create a new address book card" = "Añadir un nuevo contacto";
 "Create a new list" = "Crear una nueva lista";
 "Edit the selected card" = "Modificar el contacto seleccionado";
 "Send a mail message" = "Enviar un correo";
-"Delete selected card or address book" 
-        = "Borrar contacto o libreta de direcciones seleccionados";
+"Delete selected card or address book" = "Borrar contacto o libreta de direcciones seleccionados";
 
 "htmlMailFormat_UNKNOWN" = "Desconocido";
 "htmlMailFormat_FALSE" = "Texto plano";
@@ -73,41 +73,44 @@
 
 "Preferred" = "Preferido";
 "Card for %@" = "Contacto para %@";
+"Display:" = "Nombre mostrado:";
+"Display Name:" = "Display Name:";
+"Email:" = "Correo electrónico:";
+"Additional Email:" = "Correo electrónico:";
 
+"Phone Number:" = "Phone Number:";
+"Prefers to receive messages formatted as:" = "Formato de mensajes preferido:";
+"Screen Name:" = "Nombre IM:";
 
 "First:" = "Nombre:";
 "Last:" = "Apellidos:";
-"Display:" = "Nombre mostrado:";
 "Nickname:" = "Alias:";
-"Email:" = "Correo electrónico:";
-"Additional Email:" = "Correo electrónico:";
-"Screen Name:" = "Nombre IM:";
-"Prefers to receive messages formatted as:" =
-	"Formato de mensajes preferido:";
 
 "Telephone" = "Teléfono";
 "Work:" = "Trabajo:";
 "Home:" = "Casa:";
 "Fax:" = "Fax:";
-"Pager:" = "Busca:";
 "Mobile:" = "Móvil:";
+"Pager:" = "Busca:";
 
+"Title:" = "Título:";
+"Service:" = "Service:";
+"Company:" = "Company:";
+"Department:" = "Departamento:";
+"Organization:" = "Organización:";
 "Address:" = "Domicilio:";
 "City:" = "Ciudad:";
 "State_Province:" = "Estado/Provincia:";
 "ZIP_Postal Code:" = "Código postal:";
 "Country:" = "País:";
 "Web Page:" = "Web:";
-"Title:" = "Título:";
-"Department:" = "Departamento:";
-"Organization:" = "Organización:";
 
 "Work" = "Trabajo";
-"Other" = "Otros datos";
+"Other Infos" = "Other Infos";
 
-"Birthday:" = "Fecha nacimiento:";
-"Timezone:" = "Zona horaria:";
 "Note:" = "Nota:";
+"Timezone:" = "Zona horaria:";
+"Birthday:" = "Fecha nacimiento:";
 "Freebusy URL:" = "URL disponibilidad:";
 
 "Add as..." = "Aádir como...";
@@ -130,6 +133,9 @@
 "Are you sure you want to delete the selected contacts?"
 = "¿Está seguro/a que desea borrar el/los contacto(s) seleccionado(s)?";
 
+"You cannot delete the card of \"%{0}\"."
+= "You cannot delete the card of \"%{0}\".";
+
 "Address Book Name" = "Nombre de la libreta";
 
 "You cannot subscribe to a folder that you own!"
@@ -141,17 +147,24 @@
 "User rights for:" = "Permisos para:";
 
 "This person can add cards to this addressbook."
-        = "Esta persona puede añadir nuevos contactos a esta libreta.";
+= "Esta persona puede añadir nuevos contactos a esta libreta.";
 "This person can edit the cards of this addressbook."
-        = "Esta persona puede modificar los contactos de esta libreta.";
+= "Esta persona puede modificar los contactos de esta libreta.";
 "This person can list the content of this addressbook."
-        = "Esta persona puede listar los contactos de esta libreta.";
+= "Esta persona puede listar los contactos de esta libreta.";
 "This person can read the cards of this addressbook."
-        = "Esta persona puede leer los contactos de esta libreta.";
+= "Esta persona puede leer los contactos de esta libreta.";
 "This person can erase cards from this addressbook."
-        = "Esta persona puede borrar los contactos de esta libreta.";
+= "Esta persona puede borrar los contactos de esta libreta.";
 
 "The selected contact has no email address."
 = "El contacto seleccionado no tiene dirección de correo electrónico.";
 
 "Please select a contact." = "Seleccione un contacto, por favor.";
+
+/* Error messages for move and copy */
+
+"SoAccessDeniedException" = "You cannot write to this address book.";
+"Forbidden" = "You cannot write to this address book.";
+"Invalid Contact" = "The selected contact no longer exists.";
+"Unknown Destination Folder" = "The chosen destination address book no longer exists.";

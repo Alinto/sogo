@@ -19,6 +19,7 @@
 "Attach" = "Anexo";
 "Save" = "Salvar";
 "Priority" = "Prioridade";
+"Size" = "Size";
 
 /* Tooltips */
 
@@ -91,6 +92,10 @@
 "Add address"   = "Adicionar endereço";
 
 "Attachments:" = "Anexos:";
+"Open" = "Open";
+"Select All" = "Select All";
+"Attach Web Page..." = "Attach Web Page...";
+"Attach File(s)..." = "Attach File(s)...";
 
 "to"            = "Para";
 "cc"            = "Cc";
@@ -163,6 +168,7 @@
 
 /* Image Popup menu */
 "Save Image" = "Salvar Imagem";
+"Save Attachment" = "Save Attachment";
 
 /* Mailbox popup menus */
 "Open in New Mail Window" = "Abrir em uma Nova Janela";

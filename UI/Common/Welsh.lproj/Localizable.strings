@@ -14,9 +14,9 @@
 "Right Administration" = "Hawl Gweinyddu";
 "Log Console (dev.)" = "Consol Log (dev.)";
 
-"User"			= "Defnyddiwr";
+"User" = "Defnyddiwr";
 
-"Help"			= "Help";
+"Help" = "Help";
 
 "noJavascriptError" = "Mae angen Javascript ar SOGo i redeg. Sicrhewch fod yr opsiwn ar gael ac yn actifedig yn newisiadau eich porwr.";
 "noJavascriptRetry" = "Ailgynnig";

@@ -1,7 +1,4 @@
 /* this file is in UTF-8 format! */
-/* Author: erny@yaco.es */
-/* Based on: rev 1397 */
-/* Last update: 2008-04-02 */
 
 /* Icon's label */
 "Create"      = "Redactar";
@@ -16,9 +13,6 @@
 "Print"       = "Imprimir";
 "Stop"        = "Detener";
 "Write"       = "Redactar";
-"Attachment"  = "Attachment";
-"Unread"      = "Unread";
-"Flagged"     = "Flagged";
 
 "Send" = "Enviar";
 "Contacts" = "Contactos";
@@ -43,6 +37,9 @@
 "Mark the selected messages as junk" = "Marcar los mensajes seleccionados como basura";
 "Print this message" = "Imprimir este mensaje";
 "Stop the current transfer" = "Detener la transferencia actual";
+"Attachment" = "Attachment";
+"Unread" = "No leído";
+"Flagged" = "Flagged";
 
 /* Main Frame  */
 
@@ -95,6 +92,10 @@
 "Add address"   = "Añadir dirección";
 
 "Attachments:" = "Attachments:";
+"Open" = "Open";
+"Select All" = "Select All";
+"Attach Web Page..." = "Attach Web Page...";
+"Attach File(s)..." = "Attach File(s)...";
 
 "to"            = "Para";
 "cc"            = "Cc";
@@ -240,6 +241,7 @@
 "Please select a message." = "Seleccione un mensaje primero.";
 "Please select a message to print." = "Seleccione el mensaje que desea imprimir.";
 "Please select only one message to print." = "Para imprimir, seleccione sólo un mensaje.";
+
 
 "The folder with name \"%{0}\" could not be created."
 = "The folder with name \"%{0}\" could not be created.";

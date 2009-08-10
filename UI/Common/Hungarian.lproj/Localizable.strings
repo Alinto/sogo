@@ -14,13 +14,14 @@
 "Right Administration" = "Jogosultság szerkesztése";
 "Log Console (dev.)" = "Log Console (dev.)";
 
-"User"			= "Felhasználó";
+"User" = "Felhasználó";
 
-"Help"			= "Súgó";
+"Help" = "Súgó";
 
 "noJavascriptError" = "A SOGo-nak Javascript futtatási környezetre van szüksége. Kérem győződjön meg, hogy böngészője támogatja-e, illetve be van-e kapcsolva ez az opció.";
 "noJavascriptRetry" = "Újra";
 
+"Owner:" = "Owner:";
 "Publish the Free/Busy information" = "Foglaltsági információ nyilvánossá tétele";
 
 "Default Roles" = "Alapértelmezett jogok";

@@ -8,6 +8,11 @@
 "Mail Options" = "Levelezés";
 "Identities" = "Identitások";
 "Password" = "Jelszó";
+"Categories" = "Categories";
+"Name" = "Name";
+"Color" = "Color";
+"Add" = "Add";
+"Delete" = "Delete";
 
 /* ooo */
 "I'm currently in the office" = "Jelenleg az irodában vagyok";
@@ -83,6 +88,7 @@
 "messageforward_inline" = "Levélként";
 "messageforward_attached" = "Mellékletként";
 
+/* Identities */
 "Default identity:" = "Alapértelmezett identitás:";
 "Manage identities..." = "Identitások kezelése...";
 "Signature" = "Aláírás";
@@ -108,3 +114,4 @@
 /* Event+task categories */
 "category_none" = "Nincs";
 "category_labels" = "Évforduló,Születésnap,Üzleti,Meghívás,Ügyfelek,Versenytársak,Vevő,Kedvencek,Nyomonkövetés,Ajándékozás,Szabadság,Ötletek,Ügyek,Egyéb,Személyes,Projektek,Állami ünnep,Állapot,Szállítók,Utazás,Szünidő";
+

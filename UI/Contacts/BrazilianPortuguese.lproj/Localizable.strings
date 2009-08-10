@@ -1,5 +1,10 @@
 /* this file is in UTF-8 format! */
 
+"Contact" = "Contact";
+"Address" = "Address";
+"Other" = "Other";
+
+"Address Books" = "Adresboeken";
 "Addressbook" = "Catálogo";
 "Addresses" = "Contato";
 "Update" = "Atualizar";
@@ -25,12 +30,17 @@
 "Phones" = "Telefones";
 "Postal" = "CEP";
 "Save" = "Salvar";
+"Internet" = "Internet";
 "Unit" = "Setor";
 "delete" = "apagar";
 "edit" = "editar";
 "invalidemailwarn" = "O email informado é inválido";
 "new" = "novo";
 "Preferred Phone"   = "Telefone Preferencial";
+
+"Move To" = "Move To";
+"Copy To" = "Copy To";
+"Add to:" = "Add to:";
 
 /* Tooltips */
 
@@ -63,8 +73,14 @@
 
 "Preferred" = "Preferido";
 "Card for %@" = "Contato para %@";
+"Display:" = "Display:";
 "Display Name:" = "Exibir Nome:";
 "Email:" = "Endereço de Email:";
+"Additional Email:" = "Additional Email:";
+
+"Phone Number:" = "Phone Number:";
+"Prefers to receive messages formatted as:" = "Prefers to receive messages formatted as:";
+"Screen Name:" = "Screen Name:";
 
 "First:" = "Primeiro Nome:";
 "Last:" = "Último Nome:";
@@ -80,11 +96,14 @@
 "Title:" = "Título:";
 "Service:" = "Serviço:";
 "Company:" = "Empresa:";
+"Department:" = "Department:";
+"Organization:" = "Organization:";
 "Address:" = "Endereço:";
 "City:" = "Cidade:";
 "State_Province:" = "Estado:";
 "ZIP_Postal Code:" = "CEP:";
 "Country:" = "País:";
+"Web Page:" = "Web Page:";
 
 "Work" = "Comercial";
 "Other Infos" = "Outras Informações";
