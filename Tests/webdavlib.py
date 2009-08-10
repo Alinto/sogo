@@ -21,7 +21,7 @@ class WebDAVClient:
                     "authorization": "Basic %s" % self.simpleauth_hash }
         if body is not None:
             headers["content-length"] = len(body)
-        if query.__dict__.has_key("query") and query.depth is not None:
+        if query.__dict__.has_key("depth") and query.depth is not None:
             headers["depth"] = query.depth
         if query.__dict__.has_key("content_type"):
             headers["content-type"] = query.content_type

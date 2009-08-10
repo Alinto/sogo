@@ -1,5 +1,8 @@
 2009-08-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Tests/webdavlib.py (WebDAVClient._prepare_headers): fixed a typo
+	causing the "depth" parameter to never be issued in query heades.
+
 	* SoObjects/Appointments/SOGoAppointmentObject.m
 	(+webdavAclManager): don't register "respond-to-component" as
 	abstract, otherwise it won't appear in the returned list.
