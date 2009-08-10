@@ -15,7 +15,6 @@ quiet = False
 (opts, args) = getopt.getopt(sys.argv[1:], "d:q", ["depth=", "quiet"])
 
 for pair in opts:
-    print pair
     if (pair[0] == "-d" or pair[0] == "--depth"):
         depth = pair[1]
     elif (pair[0] == "-q" or pair[0] == "--quiet"):
@@ -37,3 +36,8 @@ else:
 client = webdavlib.WebDAVClient(hostname, port, username, password)
 propfind = webdavlib.WebDAVPROPFIND(resource, properties, depth)
 client.execute(propfind)
+print propfind.response["body"]
+
+# if propfind.response.has_key("document"):
+#     print ("document tree: %s"
+#            % xml.etree.ElementTree.dump(propfind.response["document"]))
