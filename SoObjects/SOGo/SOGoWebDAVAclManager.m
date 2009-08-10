@@ -64,7 +64,7 @@ static NSNumber *yesObject = nil;
 		defaultRolesForPermission: permission];
       if ([roles firstObjectCommonWithArray: userRoles])
 	{
-// 	  NSLog (@"matched '%@': %@", permission, roles);
+ 	  // NSLog (@"matched '%@': %@", permission, roles);
 	  result = YES;
 	}
       else
@@ -93,9 +93,9 @@ static NSNumber *yesObject = nil;
     {
       aclTree = [NSMutableDictionary new];
       [self registerDAVPermission: davElement (@"all", @"DAV:")
-	    abstract: YES
-	    withEquivalent: nil
-	    asChildOf: nil];
+                         abstract: YES
+                   withEquivalent: nil
+                        asChildOf: nil];
     }
 
   return self;
@@ -142,8 +142,8 @@ static NSNumber *yesObject = nil;
   identifier = [davPermission keysWithFormat: @"{%{ns}}%{method}"];
   if ([aclTree objectForKey: identifier])
     [self warnWithFormat:
-	    @"entry '%@' already exists in DAV permissions table",
-	  identifier];
+            @"entry '%@' already exists in DAV permissions table",
+          identifier];
   [aclTree setObject: newEntry forKey: identifier];
   [newEntry setObject: davPermission forKey: @"permission"];
   if (abstract)
@@ -175,17 +175,18 @@ static NSNumber *yesObject = nil;
   NSEnumerator *children;
   BOOL appended, childrenAppended;
 
+  // NSLog (@"attempt to add permission: %@",
+  //        [permission objectForKey: @"permission"]);
   appended = YES;
   if (matchSOGoPerms)
     {
       sogoPermission = [permission objectForKey: @"equivalent"];
       if (sogoPermission
 	  && [soClass userRoles: userRoles havePermission: sogoPermission])
-	[davPermissions
-	  addObject: [permission objectForKey: @"permission"]];
+	[davPermissions addObject: [permission objectForKey: @"permission"]];
       else
 	appended = NO;
-//       NSLog (@"permission '%@' appended: %d", sogoPermission, appended);
+      // NSLog (@"permission '%@' appended: %d", sogoPermission, appended);
     }
   else
     [davPermissions
@@ -196,14 +197,16 @@ static NSNumber *yesObject = nil;
     {
       childrenAppended = YES;
       while ((childPermission = [children nextObject]))
-	childrenAppended = (childrenAppended
-			    && [self _fillArray: davPermissions
-				     withPermission: childPermission
-				     forUserRoles: userRoles
-				     withSoClass: soClass
-				     matchSOGoPerms: (matchSOGoPerms && !appended)]);
+	childrenAppended &= [self _fillArray: davPermissions
+                              withPermission: childPermission
+                                forUserRoles: userRoles
+                                 withSoClass: soClass
+                              matchSOGoPerms: (matchSOGoPerms
+                                               && !appended)];
       if (childrenAppended && !appended)
 	{
+          // NSLog (@"  adding perm '%@' because children were appended",
+          //        [permission objectForKey: @"permission"]);
 	  [davPermissions
 	    addObject: [permission objectForKey: @"permission"]];
 	  appended = YES;
