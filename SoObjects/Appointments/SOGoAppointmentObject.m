@@ -100,10 +100,10 @@
 	withEquivalent: nil
 	asChildOf: davElement (@"write", nsD)];
       [aclManager
-	registerDAVPermission: davElement (@"respond-to-component", nsI)
-	abstract: YES
-	withEquivalent: SOGoCalendarPerm_RespondToComponent
-	asChildOf: davElement (@"write-content", nsD)];
+        registerDAVPermission: davElement (@"respond-to-component", nsI)
+                     abstract: NO
+               withEquivalent: SOGoCalendarPerm_RespondToComponent
+                    asChildOf: davElement (@"write-content", nsD)];
       [aclManager registerDAVPermission: davElement (@"admin", nsI)
 		  abstract: YES
 		  withEquivalent: nil

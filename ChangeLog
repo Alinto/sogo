@@ -1,3 +1,9 @@
+2009-08-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	(+webdavAclManager): don't register "respond-to-component" as
+	abstract, otherwise it won't appear in the returned list.
+
 2009-08-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* Tests/test-davacl.py: added tests for the Contacts module.
