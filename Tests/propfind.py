@@ -6,6 +6,7 @@ import webdavlib
 
 import sys
 import getopt
+import xml.dom.ext
 
 def parseArguments():
     arguments = {}
@@ -36,8 +37,9 @@ else:
 client = webdavlib.WebDAVClient(hostname, port, username, password)
 propfind = webdavlib.WebDAVPROPFIND(resource, properties, depth)
 client.execute(propfind)
-print propfind.response["body"]
 
-# if propfind.response.has_key("document"):
-#     print ("document tree: %s"
-#            % xml.etree.ElementTree.dump(propfind.response["document"]))
+print "response:\n\n%s" % propfind.response["body"]
+
+if propfind.response.has_key("document"):
+    print "document tree:"
+    xml.dom.ext.PrettyPrint(propfind.response["document"])
