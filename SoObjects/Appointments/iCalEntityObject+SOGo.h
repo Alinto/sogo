@@ -37,6 +37,8 @@ NSNumber *iCalDistantFutureNumber;
 - (BOOL) userIsParticipant: (SOGoUser *) user;
 - (BOOL) userIsOrganizer: (SOGoUser *) user;
 
+- (iCalPerson *) userAsParticipant: (SOGoUser *) user;
+
 - (NSArray *) attendeeUIDs;
 - (BOOL) isStillRelevant;
 

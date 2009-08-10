@@ -6,6 +6,10 @@
 
 2009-08-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/iCalEntityObject+SOGo.m
+	(-userAsParticipant): new method that returns the "PARTICIPANT"
+	entity of the SOGoUser passed as parameter, if found.
+
 	* Tests/webdavlib.py (WebDAVClient._prepare_headers): fixed a typo
 	causing the "depth" parameter to never be issued in query heades.
 

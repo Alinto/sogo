@@ -96,6 +96,22 @@ _computeAllDayOffset()
   return isParticipant;
 }
 
+- (iCalPerson *) userAsParticipant: (SOGoUser *) user
+{
+  NSEnumerator *participants;
+  iCalPerson *currentParticipant, *userParticipant;
+
+  userParticipant = nil;
+
+  participants = [[self participants] objectEnumerator];
+  while (!userParticipant
+	 && (currentParticipant = [participants nextObject]))
+    if ([user hasEmail: [currentParticipant rfc822Email]])
+      userParticipant = currentParticipant;
+
+  return userParticipant;
+}
+
 - (BOOL) userIsOrganizer: (SOGoUser *) user
 {
   NSString *mail;
