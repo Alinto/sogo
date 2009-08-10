@@ -308,9 +308,14 @@ static NSLock *lock = nil;
       if (!currentUser)
 	{
 	  currentUser = [NSMutableDictionary dictionary];
-	  [[SOGoCache sharedCache] cacheValues: currentUser  ofType: @"attributes"  forLogin: login];
 	}
+
+      // It's important to cache the password here as we might have cached the user's entry
+      // in -contactInfosForUserWithUIDorEmail: and if we don't set the password and recache the
+      // entry, the password would never be cached for the user unless its entry expires from
+      // memcached's internal cache.
       [currentUser setObject: password forKey: @"password"];
+      [[SOGoCache sharedCache] cacheValues: currentUser  ofType: @"attributes"  forLogin: login];
     }
   else
     checkOK = NO;
@@ -448,10 +453,15 @@ static NSLock *lock = nil;
       if (!([currentUser objectForKey: @"emails"]
 	    && [currentUser objectForKey: @"cn"]))
 	{
-	  if (!currentUser)
+	  // We make sure that we either have no occurence of a cache entry or that
+	  // we have an occurence with only a cached password. In the latter case, we
+	  // update the entry with the remaining information and recache the value.
+	  if (!currentUser || ([currentUser count] == 1 && [currentUser objectForKey: @"password"]))
 	    {
 	      newUser = YES;
-	      currentUser = [NSMutableDictionary dictionary];
+
+	      if (!currentUser)
+		currentUser = [NSMutableDictionary dictionary];
 	    }
 	  else
 	    newUser = NO;

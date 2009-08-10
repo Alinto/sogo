@@ -1,3 +1,9 @@
+2009-08-10  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* SoObjects/SOGo/LDAPUserManager.m
+	Fixed an issue where the LDAP entries wouldn't be
+	cached properly in memcached.
+
 2009-08-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* Tests/webdavlib.py (WebDAVClient._prepare_headers): fixed a typo
