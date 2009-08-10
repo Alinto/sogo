@@ -37,7 +37,6 @@
 "Phones" = "Telefoni";
 "Postal" = "CAP";
 "Save" = "Salva";
-"URL" = "Pagina Web";
 "Unit" = "Unità";
 "delete" = "cancella";
 "edit" = "modifica";
@@ -86,8 +85,6 @@
 = "Formato preferito per i messaggi di posta:";
 "Screen Name:" = "Nome Instant Messenger:";
 
-"Firstname:" = "Nome:";
-"Lastname:" = "Cognome:";
 "First:" = "Nome:";
 "Last:" = "Cognome";
 "Nickname:" = "Soprannome:";
@@ -102,13 +99,12 @@
 "Title:" = "Titolo:";
 "Service:" = "Service:";
 "Company:" = "Società:";
-"Street Address:" = "Indirizzo:";
+"Address:" = "Indirizzo:";
 "Address:" = "Indirizzo:";
 "City:" = "Città:";
 "State_Province:" = "Provincia:";
 "ZIP_Postal Code:" = "CAP:";
 "Country:" = "Nazione:";
-"Web:" = "Pagina Web:";
 "Web Page:" = "Pagina Web:";
 "Department:" = "Reparto:";
 "Organization:" = "Società:";
@@ -142,8 +138,6 @@
 
 "Are you sure you want to delete the selected contacts?"
 = "Sei sicuro di voler eliminare i contatti selezionati?";
-"You cannot delete the selected contact(s)"
-= "Non puoi eliminare il contatto selezionato.";
 
 "Address Book Name" = "Nome della Rubrica";
 

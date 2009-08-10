@@ -489,8 +489,6 @@ vtodo_class2 = "(Attività confidenziale)";
 
 "Please select an event or a task." = "Per favore seleziona un evento o un'attività.";
 "Suggest time slot:" = "Periodo suggerito:";
-"From" = "Da";
-"To" = "A";
 
 "editRepeatingItem" = "L'elemento che si sta modificando è un elemento ripetuto. Si vogliono modificare tutte le sue occorrenze o solo questa?";
 "button_thisOccurrenceOnly" = "Solamente questa occorrenza";

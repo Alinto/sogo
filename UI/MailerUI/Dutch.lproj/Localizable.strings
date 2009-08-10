@@ -100,8 +100,6 @@
 
 /* MailListView */
 
-"View:"         = "Bekijken:";
-
 "Sender" = "Afzender";
 "Subject or Sender" = "Onderwerp of afzender";
 "To or Cc" = "Ontvanger (Aan of Cc)";

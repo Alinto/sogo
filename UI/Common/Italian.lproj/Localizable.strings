@@ -17,8 +17,6 @@
 "User"			= "Utente";
 "Owner:" 		= "Proprietario:";
 "Help"			= "Aiuto";
-"Add..."		= "Aggiungi...";
-"Remove"		= "Rimuovi...";
 
 "noJavascriptError" = "SOGo ha bisogno di Javascript per essere eseguito. Verifica che questo elemento sia presente ed attivato nelle preferenze del browser";
 "noJavascriptRetry" = "Riprova";

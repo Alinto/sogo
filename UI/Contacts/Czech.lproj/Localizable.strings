@@ -25,7 +25,6 @@
 "Phones" = "Telefony";
 "Postal" = "Pošta";
 "Save" = "Uložit";
-"URL" = "URL";
 "Unit" = "Jednotka";
 "delete" = "smazat";
 "edit" = "upravit";
@@ -81,12 +80,12 @@
 "Title:" = "Titul:";
 "Service:" = "Služba:";
 "Company:" = "Společnost:";
-"Street Address:" = "Ulice:";
+"Address:" = "Ulice:";
 "City:" = "Město:";
 "State_Province:" = "Stát/Provincie:";
 "ZIP_Postal Code:" = "PSČ:";
 "Country:" = "Země:";
-"Web:" = "Web:";
+"Web Page:" = "Web:";
 
 "Work" = "Práce";
 "Other Infos" = "Ostatní info";

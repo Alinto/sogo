@@ -117,8 +117,6 @@
 
 /* MailListView */
 
-"View:"         = "Anzeigen :";
-
 "Sender" = "Absender";
 "Subject or Sender" = "Betreff oder Absender";
 "To or Cc" = "Empfänger (An oder CC)";

@@ -8,7 +8,6 @@
 "Address Book"	= "Adressbuch";
 "Mail" = "Mail";
 "Preferences" = "Einstellungen";
-"Logoff" = "Beenden";
 "Disconnect" = "Beenden";
 "Right Administration" = "Rechte Administration";
 "Log Console (dev.)" = "Journal (dev.)";
@@ -20,11 +19,7 @@
 "noJavascriptError" = "SOGo benötigt Javascript. Bitte aktivieren Sie Javascript in Ihrem Browser.";
 "noJavascriptRetry" = "Erneut versuchen";
 
-"Add..." = "Hinzufügen...";
-"Remove" = "Löschen";
 "Owner:" = "Besitzer:";
-"Associated Users:" = "Verbundene Benutzer:";
-"(Unchecked = assistant, checked = delegate)" = "(Nicht ausgewählt = Assistent, Ausgewählt = Teilnehmer)";
 "Publish the Free/Busy information" = "Verfügbarkeitsinformationen veröffentlichen";
 
 "Default Roles" = "Standardrechte";

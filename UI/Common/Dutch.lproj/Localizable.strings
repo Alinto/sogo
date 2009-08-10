@@ -19,11 +19,7 @@
 "noJavascriptError" = "SOGo heeft Javascript nodig om te functioneren. U dient Javascript in uw browser in te schakelen.";
 "noJavascriptRetry" = "Opnieuw proberen";
 
-"Add..." = "Toevoegen...";
-"Remove" = "Verwijderen";
 "Owner:" = "Eigenaar:";
-"Associated Users:" = "Gerelateerde gebruikers:";
-"(Unchecked = assistant, checked = delegate)" = "(uitgevinkt = assistent, aangevinkt = deelnemer)";
 "Publish the Free/Busy information" = "Beschikbaarheidsinformatie publiceren";
 
 "Default Roles" = "Standaardmachtigingen";

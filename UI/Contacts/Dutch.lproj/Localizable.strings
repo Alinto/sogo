@@ -32,7 +32,6 @@
 "Phone"             = "Telefoon";
 "Postal"            = "Postcode";
 "Save"              = "Opslaan";
-"URL"               = "Website";
 "Unit"              = "Afdeling";
 "delete"            = "Verwijderen";
 "edit"              = "Bewerken";
@@ -119,8 +118,6 @@
 
 "Are you sure you want to delete the selected contacts?"
 = "Weet u zeker dat u de geselecteerde contactpersonen wilt verwijderen?";
-"You cannot delete the selected contact(s)"
-= "U kunt deze contactpersonen niet verwijderen.";
 
 "Address Book Name" = "Naam van het adresboek";
 

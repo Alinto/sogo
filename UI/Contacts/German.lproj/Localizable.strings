@@ -32,7 +32,6 @@
 "Phone"             = "Telefon";
 "Postal"            = "PLZ";
 "Save"              = "Speichern";
-"URL"               = "Webseite";
 "Unit"              = "Abteilung";
 "delete"            = "Löschen";
 "edit"              = "Bearbeiten";
@@ -128,8 +127,6 @@
 "Are you sure you want to delete the selected contacts?"
 = "Wollen Sie wirklich die gewählten Karten löschen?";
 
-"You cannot delete the selected contact(s)"
-= "Gewählte Karten können nicht gelöscht werden.";
 "You cannot delete the card of \"%{0}\"."
 = "Sie können die Karte von \"%{0}\" nicht löschen.";
 

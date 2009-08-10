@@ -32,7 +32,6 @@
 "Phone" = "Telefon";
 "Postal" = "Irányítószám";
 "Save" = "Mentés";
-"URL" = "URL";
 "Unit" = "Egység";
 "delete" = "Töröl";
 "edit" = "Szerkeszt";
@@ -98,7 +97,7 @@
 "Title:" = "Cím:";
 "Service:" = "Szolgáltatás:";
 "Company:" = "Vállalat:";
-"Street Address:" = "Cím:";
+"Address:" = "Cím:";
 "City:" = "Város:";
 "State_Province:" = "Állam/tartomány:";
 "ZIP_Postal Code:" = "Irányítószám:";

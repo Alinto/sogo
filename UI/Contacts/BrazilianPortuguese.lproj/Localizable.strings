@@ -25,7 +25,6 @@
 "Phones" = "Telefones";
 "Postal" = "CEP";
 "Save" = "Salvar";
-"URL" = "URL";
 "Unit" = "Setor";
 "delete" = "apagar";
 "edit" = "editar";
@@ -81,12 +80,11 @@
 "Title:" = "Título:";
 "Service:" = "Serviço:";
 "Company:" = "Empresa:";
-"Street Address:" = "Endereço:";
+"Address:" = "Endereço:";
 "City:" = "Cidade:";
 "State_Province:" = "Estado:";
 "ZIP_Postal Code:" = "CEP:";
 "Country:" = "País:";
-"Web:" = "Web:";
 
 "Work" = "Comercial";
 "Other Infos" = "Outras Informações";

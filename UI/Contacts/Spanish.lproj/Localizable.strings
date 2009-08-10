@@ -34,7 +34,6 @@
 "Phones" = "Teléfonos";
 "Postal" = "Dirección oficina";
 "Save" = "Guardar";
-"URL" = "Web";
 "Unit" = "Unidad";
 "delete" = "borrar";
 "edit" = "modificar";
@@ -79,7 +78,7 @@
 "First:" = "Nombre:";
 "Last:" = "Apellidos:";
 "Display:" = "Nombre mostrado:";
-"Nickname: " = "Alias:";
+"Nickname:" = "Alias:";
 "Email:" = "Correo electrónico:";
 "Additional Email:" = "Correo electrónico:";
 "Screen Name:" = "Nombre IM:";
@@ -130,8 +129,6 @@
 
 "Are you sure you want to delete the selected contacts?"
 = "¿Está seguro/a que desea borrar el/los contacto(s) seleccionado(s)?";
-"You cannot delete the selected contact(s)"
-= "No puede borrar el/los contacto(s) seleccionado(s).";
 
 "Address Book Name" = "Nombre de la libreta";
 

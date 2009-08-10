@@ -117,8 +117,6 @@
 
 /* MailListView */
 
-"View:"         = "Voir :";
-
 "Sender" = "Expéditeur";
 "Subject or Sender" = "Sujet ou expéditeur";
 "To or Cc" = "Pour ou Copie à";

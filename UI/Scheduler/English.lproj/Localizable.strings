@@ -25,6 +25,7 @@
 "Thursday" = "Thursday";
 "Friday" = "Friday";
 "Saturday" = "Saturday";
+"DayOfTheMonth" = "DayOfTheMonth";
 
 "Sun" = "Sun";
 "Mon" = "Mon";
@@ -391,6 +392,7 @@
 "reminder_AFTER" = "after";
 "reminder_START" = "the event starts";
 "reminder_END" = "the event ends";
+"Reminder Details" = "Reminder Details";
 
 "zoom_400" = "400%";
 "zoom_200" = "200%";

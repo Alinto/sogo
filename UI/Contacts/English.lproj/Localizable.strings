@@ -4,6 +4,7 @@
 "Address" = "Address";
 "Other" = "Other";
 
+"Address Books" = "Adresboeken";
 "Addressbook" = "Addressbook";
 "Addresses" = "Addresses";
 "Update" = "Update";
@@ -95,7 +96,9 @@
 "Title:" = "Title:";
 "Service:" = "Service:";
 "Company:" = "Company:";
-"Street Address:" = "Street Address:";
+"Department:" = "Department:";
+"Organization:" = "Organization:";
+"Address:" = "Address:";
 "City:" = "City: ";
 "State_Province:" = "State/Province:";
 "ZIP_Postal Code:" = "ZIP/Postal Code:";
