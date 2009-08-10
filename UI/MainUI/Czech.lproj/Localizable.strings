@@ -17,16 +17,17 @@
 
 "Language:" = "Jazyk:";
 "choose" = "Vybrat ...";
+"Czech" = "Česky";
 "Dutch" = "Nederlands";
 "English" = "English";
 "French" = "Français";
 "German" = "Deutsch";
 "Hungarian" = "Magyar";
 "Italian" = "Italiano";
+"BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
 "Spanish" = "Español";
 "Welsh" = "Cymraeg";
-"Czech" = "Česky";
 
 "About" = "O";
 "AboutBox" = "SOGo  is a groupware server built around OpenGroupware.org (OGo) and the SOPE application server.  It focuses on scalability.<br/><br/>

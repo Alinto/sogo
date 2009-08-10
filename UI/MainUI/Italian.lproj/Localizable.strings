@@ -8,6 +8,7 @@
 "Connect" = "Entra";
 
 "Wrong username or password." = "Username o password non corretti.";
+"cookiesNotEnabled" = "You cannot login because your browser's cookies are disabled. Please enable cookies in your browser's settings and try again.";
 
 "browserNotCompatible" = "La versione del browser utilizzato non è supportata. Raccomandiamo l'utilizzo di Firefox. Clicca sul link per scaricarne l'ultima versione disponibile.";
 "alternativeBrowsers" = "Alternativamente, puoi utilizzare questi browser compatibili";

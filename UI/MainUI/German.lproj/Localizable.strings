@@ -8,10 +8,11 @@
 "Connect" = "Anmelden";
 
 "Wrong username or password." = "Falscher Benutzername oder falsches Passwort";
-"cookiesNotEnabled" ="Verbindung zu SOGo ist nicht möglich, da Cookies in Ihrem Browser deaktiviert sind. Bitte aktivieren Sie Cookies in Ihrem Browser.";
-"browserNotCompatible"="Wir haben festgestellt, dass Ihre Browserversion im Moment nicht von SOGo unterstützt wird. Klicken Sie auf den Link, um die letzte Version von Firefox zu installieren.";
-"alternativeBrowsers"="Sie können auch die folgenden Browser benutzen";
-"alternativeBrowserSafari"="Sie können auch Safari benutzen.";
+"cookiesNotEnabled" = "Verbindung zu SOGo ist nicht möglich, da Cookies in Ihrem Browser deaktiviert sind. Bitte aktivieren Sie Cookies in Ihrem Browser.";
+
+"browserNotCompatible" = "Wir haben festgestellt, dass Ihre Browserversion im Moment nicht von SOGo unterstützt wird. Klicken Sie auf den Link, um die letzte Version von Firefox zu installieren.";
+"alternativeBrowsers" = "Sie können auch die folgenden Browser benutzen";
+"alternativeBrowserSafari" = "Sie können auch Safari benutzen.";
 "Download" = "Herunterladen";
 
 "Language:" = "Sprache:";

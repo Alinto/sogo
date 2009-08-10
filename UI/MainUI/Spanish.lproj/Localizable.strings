@@ -1,7 +1,4 @@
 /* this file is in UTF-8 format! */
-/* Author: erny@yaco.es */
-/* Based on: rev 1397 */
-/* Last update: 2008-04-05 */
 
 "title" = "SOGo";
 
@@ -11,6 +8,7 @@
 "Connect" = "Conectar";
 
 "Wrong username or password." = "Nombre de usuario o contraseña incorrectos.";
+"cookiesNotEnabled" = "You cannot login because your browser's cookies are disabled. Please enable cookies in your browser's settings and try again.";
 
 "browserNotCompatible" = "Hemos detectado que este sistema no soporta su versión del navegador. Recomendamos usar Firefox. Haga clic en el siguiente enlace para descargar la versión más reciente de este navegador.";
 "alternativeBrowsers" = "Alternativamente, también puede usar uno se los siguientes navegadores compatibles: ";
