@@ -32,6 +32,7 @@
 #import <NGCards/iCalEvent.h>
 #import <NGCards/iCalEventChanges.h>
 #import <NGCards/iCalPerson.h>
+#import <NGCards/NSCalendarDate+NGCards.h>
 #import <SaxObjC/XMLNamespaces.h>
 
 #import <SoObjects/SOGo/iCalEntityObject+Utilities.h>
@@ -1245,52 +1246,129 @@
   return @"IPM.Appointment";
 }
 
-//
-// If we see "X-SOGo: NoGroupsDecomposition" in the HTTP headers, we
-// simply invoke super's PUTAction.
-//
-- (id) PUTAction: (WOContext *) _ctx
+- (NSDictionary *) _partStatsFromCalendar: (iCalCalendar *) calendar
+{
+  NSMutableDictionary *partStats;
+  NSArray *allEvents;
+  int count, max;
+  iCalEvent *currentEvent;
+  iCalPerson *ownerParticipant;
+  NSString *key;
+  SOGoUser *ownerUser;
+
+  ownerUser = [SOGoUser userWithLogin: owner roles: nil];
+
+  allEvents = [calendar events];
+  max = [allEvents count];
+  partStats = [NSMutableDictionary dictionaryWithCapacity: max];
+
+  for (count = 0; count < max; count++)
+    {
+      currentEvent = [allEvents objectAtIndex: count];
+      ownerParticipant = [currentEvent userAsParticipant: ownerUser];
+      if (ownerParticipant)
+        {
+          if (count == 0)
+            key = @"master";
+          else
+            key = [[currentEvent recurrenceId] iCalFormattedDateTimeString];
+          [partStats setObject: ownerParticipant forKey: key];
+        }
+    }
+
+  return partStats;
+}
+
+- (void) _setupResponseCalendarInRequest: (WORequest *) rq
+{
+  iCalCalendar *calendar, *putCalendar;
+  NSData *newContent;
+  NSArray *keys;
+  NSDictionary *partStats, *newPartStats;
+  NSString *partStat, *key;
+  int count, max;
+
+  calendar = [self calendar: NO secure: NO];
+  partStats = [self _partStatsFromCalendar: calendar];
+  keys = [partStats allKeys];
+  max = [keys count];
+  if (max > 0)
+    {
+      putCalendar = [iCalCalendar parseSingleFromSource: [rq contentAsString]];
+      newPartStats = [self _partStatsFromCalendar: putCalendar];
+      if ([keys isEqualToArray: [newPartStats allKeys]])
+        {
+          for (count = 0; count < max; count++)
+            {
+              key = [keys objectAtIndex: count];
+              partStat = [[newPartStats objectForKey: key] partStat];
+              [[partStats objectForKey: key] setPartStat: partStat];
+            }
+        }
+    }
+
+  newContent = [[calendar versitString]
+                         dataUsingEncoding: [rq contentEncoding]];
+  [rq setContent: newContent];
+}
+
+- (void) _decomposeGroupsInRequest: (WORequest *) rq
 {
   iCalCalendar *calendar;
   NSArray *allEvents;
   iCalEvent *event;
-  WORequest *rq;
-
-  BOOL b;
   int i;
+  BOOL modified;
 
-  rq = [_ctx request];
+  // If we decomposed at least one group, let's rewrite the content
+  // of the request. Otherwise, leave it as is in case this rewrite
+  // isn't totaly lossless.
+  calendar = [iCalCalendar parseSingleFromSource: [rq contentAsString]];
 
-  if ([[rq headersForKey: @"X-SOGo"] containsObject: @"NoGroupsDecomposition"])
-    return [super PUTAction: _ctx];
-
-  //NSLog(@"Content from request: %@",  [rq contentAsString]);
-
-  // The algorithm is pretty straightforward: 
+  // The algorithm is pretty straightforward:
   //
   // We get all events
   //   We get all attendees
   //     If some are groups, we decompose them
   // We regenerate the iCalendar string
   //
-  calendar = [iCalCalendar parseSingleFromSource: [rq contentAsString]];
   allEvents = [calendar events];
-  b = NO;
+  modified = NO;
 
   for (i = 0; i < [allEvents count]; i++)
     {
       event = [allEvents objectAtIndex: i];
-      if ([self expandGroupsInEvent: event])
-	b = YES;
+      modified |= [self expandGroupsInEvent: event];
     }
-
-  //NSLog(@"Content from calendar:secure: %@", [calendar versitString]);
 
   // If we decomposed at least one group, let's rewrite the content
   // of the request. Otherwise, leave it as is in case this rewrite
   // isn't totaly lossless.
-  if (b)
+  if (modified)
     [rq setContent: [[calendar versitString] dataUsingEncoding: [rq contentEncoding]]];
+}
+
+//
+// If we see "X-SOGo: NoGroupsDecomposition" in the HTTP headers, we
+// simply invoke super's PUTAction.
+//
+- (id) PUTAction: (WOContext *) _ctx
+{
+  WORequest *rq;
+  NSArray *roles;
+
+  rq = [_ctx request];
+
+  roles = [[context activeUser] rolesForObject: self inContext: context];
+  if ([roles containsObject: @"ComponentResponder"]
+      && ![roles containsObject: @"ComponentModifier"])
+    [self _setupResponseCalendarInRequest: rq];
+  else
+    {
+      if (![[rq headersForKey: @"X-SOGo"]
+                         containsObject: @"NoGroupsDecomposition"])
+        [self _decomposeGroupsInRequest: rq];
+    }
 
   return [super PUTAction: _ctx];
 }

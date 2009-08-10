@@ -6,6 +6,13 @@
 
 2009-08-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentObject.m (-PUTAction):
+	modified to handle the case where the active user has the "respond
+	to" permission, in which case we grab the copy of the iCalendar
+	which is already in the DB and modify the partstats thereof based
+	on the entries found in the uploaded iCalendar. The latter is
+	discarded silently to avoid any further change.
+
 	* SoObjects/Appointments/iCalEntityObject+SOGo.m
 	(-userAsParticipant): new method that returns the "PARTICIPANT"
 	entity of the SOGoUser passed as parameter, if found.

@@ -9,14 +9,31 @@ import xml.xpath
 import time
 
 # TODO:
-# - cal: we don't test "respond" yet
+# - cal: complete test for "modify": "respond to" causes a 204 but no actual
+#        modification should occur
 # - ab: testcase for addressbook-query, webdav-sync (no "calendar-data"
 #       equivalent)
-# ? cal: testcase for "calendar-query"
+# - cal: testcase for "calendar-query"
 # - test rights validity:
 #   - send invalid rights to SOGo and expect failures
 #   - refetch the set of rights and make sure it matches what was set
 #     originally
+#   - test "current-user-acl-set"
+
+def fetchUserEmail(login):
+    client = webdavlib.WebDAVClient(hostname, port,
+                                    username, password)
+    resource = '/SOGo/dav/%s/' % login
+    propfind = webdavlib.WebDAVPROPFIND(resource,
+                                        ["{urn:ietf:params:xml:ns:caldav}calendar-user-address-set"],
+                                        0)
+    client.execute(propfind)
+    xpath_context = xml.xpath.CreateContext(propfind.response["document"])
+    xpath_context.setNamespaces({ "D": "DAV:",
+                                  "C": "urn:ietf:params:xml:ns:caldav" })
+    nodes = xml.xpath.Evaluate('/D:multistatus/D:response/D:propstat/D:prop/C:calendar-user-address-set/D:href', None, xpath_context)
+
+    return nodes[0].childNodes[0].nodeValue
 
 class DAVAclTest(unittest.TestCase):
     resource = None
@@ -102,15 +119,18 @@ DTEND:20090805T140000Z
 CLASS:%(class)s
 DESCRIPTION:%(class)s description
 LOCATION:location
-CREATED:20090805T100000Z
+%(organizer_line)s%(attendee_line)sCREATED:20090805T100000Z
 DTSTAMP:20090805T100000Z
 END:VEVENT
 END:VCALENDAR"""
 
 class DAVCalendarAclTest(DAVAclTest):
     resource = '/SOGo/dav/%s/Calendar/test-dav-acl/' % username
+    user_email = None
 
     def setUp(self):
+        if self.user_email is None:
+            self.user_email = fetchUserEmail(username)
         DAVAclTest.setUp(self)
         self.classToICSClass = { "pu": "PUBLIC",
                                  "pr": "PRIVATE",
@@ -139,15 +159,32 @@ class DAVCalendarAclTest(DAVAclTest):
         """'create', 'delete', 'view d&t' PUBLIC, 'modify' PRIVATE"""
         self._testRights({ "c": True, "d": True, "pu": "d", "pr": "m" })
 
+    def testCreateRespondToPublic(self):
+        """'create', 'respond to' PUBLIC"""
+        self._testRights({ "c": True, "pu": "r" })
+
     def testNothing(self):
         """no right given"""
         self._testRights({})
 
     def _putEvent(self, client, filename,
-                  event_class = "PUBLIC", exp_status = 201):
+                  event_class = "PUBLIC",
+                  exp_status = 201,
+                  organizer = None, attendee = None,
+                  partstat = "NEEDS-ACTION"):
         url = "%s%s" % (self.resource, filename)
+        if organizer is not None:
+            organizer_line = "ORGANIZER:%s\n" % organizer
+        else:
+            organizer_line = ""
+        if attendee is not None:
+            attendee_line = "ATTENDEE;PARTSTAT=%s:%s\n" % (partstat, attendee)
+        else:
+            attendee_line = ""
         event = event_template % { "class": event_class,
-                                   "filename": filename }
+                                   "filename": filename,
+                                   "organizer_line": organizer_line,
+                                   "attendee_line": attendee_line }
         put = webdavlib.HTTPPUT(url, event, "text/calendar; charset=utf-8")
         client.execute(put)
         self.assertEquals(put.response["status"], exp_status,
@@ -219,19 +256,24 @@ class DAVCalendarAclTest(DAVAclTest):
             right = None
 
         event = self._getEvent(event_class)
-        self._checkEventRight("GET", event, event_class, right)
+        self._checkViewEventRight("GET", event, event_class, right)
         event = self._propfindEvent(event_class)
-        self._checkEventRight("PROPFIND", event, event_class, right)
+        self._checkViewEventRight("PROPFIND", event, event_class, right)
         event = self._multigetEvent(event_class)
-        self._checkEventRight("multiget", event, event_class, right)
+        self._checkViewEventRight("multiget", event, event_class, right)
         event = self._webdavSyncEvent(event_class)
-        self._checkEventRight("webdav-sync", event, event_class, right)
+        self._checkViewEventRight("webdav-sync", event, event_class, right)
 
         self._testModify(event_class, right)
+        self._testRespondTo(event_class, right)
 
-    def _getEvent(self, event_class):
+    def _getEvent(self, event_class, is_invitation = False):
         icsClass = self.classToICSClass[event_class]
-        url = "%s%s.ics" % (self.resource, icsClass.lower())
+        if is_invitation:
+            filename = "invitation-%s" % icsClass.lower()
+        else:
+            filename = "%s" % icsClass.lower()
+        url = "%s%s.ics" % (self.resource, filename)
         get = webdavlib.HTTPGET(url)
         self.subscriber_client.execute(get)
 
@@ -315,7 +357,7 @@ class DAVCalendarAclTest(DAVAclTest):
 
         return event
 
-    def _checkEventRight(self, operation, event, event_class, right):
+    def _checkViewEventRight(self, operation, event, event_class, right):
         if right is None:
             self.assertEquals(event, None,
                               "None right expecting event invisibility for"
@@ -327,8 +369,10 @@ class DAVCalendarAclTest(DAVAclTest):
             if right == "v" or right == "r" or right == "m":
                 icsClass = self.classToICSClass[event_class]
                 complete_event = (event_template % { "class": icsClass,
-                                                     "filename": "%s.ics" % icsClass.lower() })
-                self.assertTrue(event == complete_event,
+                                                     "filename": "%s.ics" % icsClass.lower(),
+                                                     "organizer_line": "",
+                                                     "attendee_line": ""})
+                self.assertTrue(event.strip() == complete_event.strip(),
                                 "Right '%s' should return complete event"
                                 " during operation '%s'"
                                 % (right, operation))
@@ -367,7 +411,7 @@ class DAVCalendarAclTest(DAVAclTest):
                             % key)
 
     def _testModify(self, event_class, right):
-        if right == "m":
+        if right == "m" or right == "r":
             exp_code = 204
         else:
             exp_code = 403
@@ -375,6 +419,42 @@ class DAVCalendarAclTest(DAVAclTest):
         filename = "%s.ics" % icsClass.lower()
         self._putEvent(self.subscriber_client, filename, icsClass,
                        exp_code)
+
+    def _testRespondTo(self, event_class, right):
+        icsClass = self.classToICSClass[event_class]
+        filename = "invitation-%s.ics" % icsClass.lower()
+        self._putEvent(self.client, filename, icsClass,
+                       201,
+                       "mailto:nobody@somewhere.com", self.user_email,
+                       "NEEDS-ACTION")
+
+        if right == "m" or right == "r":
+            exp_code = 204
+        else:
+            exp_code = 403
+
+        # here we only do 'passive' validation: if a user has a "respond to"
+        # right, only the attendee entry will me modified. The change of
+        # organizer must thus be silently ignored below.
+        self._putEvent(self.subscriber_client, filename, icsClass,
+                       exp_code, "mailto:someone@nowhere.com", self.user_email,
+                       "ACCEPTED")
+        if exp_code == 204:
+            att_line = "ATTENDEE;PARTSTAT=ACCEPTED:%s\n" % self.user_email
+            if right == "r":
+                exp_event = event_template % {"class": icsClass,
+                                              "filename": filename,
+                                              "organizer_line": "ORGANIZER:mailto:nobody@somewhere.com\n",
+                                              "attendee_line": att_line}
+            else:
+                exp_event = event_template % {"class": icsClass,
+                                              "filename": filename,
+                                              "organizer_line": "ORGANIZER:mailto:someone@nowhere.com\n",
+                                              "attendee_line": att_line}
+            event = self._getEvent(event_class, True).replace("\r", "")
+            self.assertEquals(exp_event.strip(), event.strip(),
+                              "'respond to' event does not match:\nreceived:\n"
+                              "%s\nexpected:\n%s" % (event, exp_event))
 
 # Addressbook:
 #   short rights notation: { "c": create,

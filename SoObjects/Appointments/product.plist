@@ -41,7 +41,7 @@
 	"ModifyComponent" = ( "Owner", "ComponentModifier", "ObjectEditor" );
 	"RespondToComponent" = ( "Owner", "ComponentModifier", "ComponentResponder" );
 	"Access Object" = ( "Owner", "Organizer", "ObjectCreator", "ObjectEraser", "Participant", "ComponentModifier", "ComponentResponder", "ComponentViewer", "ComponentDAndTViewer" );
-	"Change Images and Files" = ( "Owner", "Organizer", "ComponentModifier", "ObjectEditor" );
+	"Change Images and Files" = ( "Owner", "Organizer", "ComponentModifier", "ComponentResponder", "ObjectEditor" );
       	"Access Contents Information" = ( "Owner", "Organizer", "Participant", "ComponentModifier", "ComponentResponder", "ComponentViewer", "ComponentDAndTViewer" );
         "WebDAV Access" = ( "Owner", "Organizer", "ObjectCreator", "ObjectEraser", "Participant", "ComponentModifier", "ComponentResponder", "ComponentViewer", "ComponentDAndTViewer" );
       };
@@ -61,7 +61,7 @@
 	"ModifyComponent" = ( "Owner", "ComponentModifier" );
 	"RespondToComponent" = ( "Participant", "ComponentModifier", "ComponentResponder" );
 	"Access Object" = ( "Owner", "Organizer", "Participant", "ComponentModifier", "ComponentResponder", "ComponentViewer", "ComponentDAndTViewer" );
-	"Change Images and Files" = ( "Owner", "Organizer", "ComponentModifier" );
+	"Change Images and Files" = ( "Owner", "Organizer", "ComponentModifier", "ComponentResponder" );
       	"Access Contents Information" = ( "Owner", "Organizer", "Participant", "ComponentModifier", "ComponentResponder", "ComponentViewer", "ComponentDAndTViewer" );
         "WebDAV Access" = ( "Owner", "Organizer", "Participant", "ComponentModifier", "ComponentResponder", "ComponentViewer", "ComponentDAndTViewer" );
       };
