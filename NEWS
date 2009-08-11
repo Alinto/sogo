@@ -1,14 +1,18 @@
 1.0-2009mmdd (1.0.4)
 --------------------
 - added contextual menu in web calendar views
-- added "Reload" button to refresh the current view in the calendar
+- added "Reload" button to refresh the current view in the calendar module
 - fixed freebusy support for Apple iCal
 - added support for the calendar application of the iPhone OS v3
 - added the possibility to disable alarms or tasks from Web calendars
 - added support for printing cards
+- added a default title when creating a new task or event
+- the completion checkbox of read-only tasks is now disabled
 - the event/task summary dialog is now similar to Lightning
+- added the current time as a line in the calendar module
 - replaced GNUstep's DO subsystem with memcached
 - added functional tests for DAV operations
+- added Hungarian translation, thanks to Sándor Kuti
 
 1.0-20090714 (1.0.3)
 --------------------
