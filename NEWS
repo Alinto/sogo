@@ -1,4 +1,4 @@
-1.0-2009mmdd (1.0.4)
+1.0-20090811 (1.0.4)
 --------------------
 - added contextual menu in web calendar views
 - added "Reload" button to refresh the current view in the calendar module
@@ -11,7 +11,8 @@
 - the event/task summary dialog is now similar to Lightning
 - added the current time as a line in the calendar module
 - replaced GNUstep's DO subsystem with memcached
-- added functional tests for DAV operations
+- added functional tests for DAV operations and fixed some issues related to
+  permissions
 - added Hungarian translation, thanks to Sándor Kuti
 
 1.0-20090714 (1.0.3)
