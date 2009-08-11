@@ -9,6 +9,7 @@
 - the event/task summary dialog is now similar to Lightning
 - replaced GNUstep's DO subsystem with memcached
 - added functional tests for DAV operations
+- added the necessary files to build Debian packages
 
 1.0-20090714 (1.0.3)
 --------------------
