@@ -620,10 +620,12 @@
 	  // the attendee, we add the user to the SENT-BY attribute.
 	  if (b && ![[currentUser login] isEqualToString: [theOwnerUser login]])
 	    {
-	      NSString *currentEmail;
+	      NSString *currentEmail, *quotedEmail;
 	      currentEmail = [[currentUser allEmails] objectAtIndex: 0];
-	      [otherAttendee addAttribute: @"SENT-BY"
-			     value: [NSString stringWithFormat: @"\"MAILTO:%@\"", currentEmail]];
+              quotedEmail = [NSString stringWithFormat: @"\"MAILTO:%@\"",
+                                      currentEmail];
+	      [otherAttendee setValue: 0 ofAttribute: @"SENT-BY"
+                                   to: quotedEmail];
 	    }
 	  else
 	    {
@@ -672,10 +674,12 @@
       currentUser = [context activeUser];
       if (![[currentUser login] isEqualToString: [theOwnerUser login]])
 	{
-	  NSString *currentEmail;
-	  currentEmail = [[currentUser allEmails] objectAtIndex: 0];
-	  [attendee addAttribute: @"SENT-BY"
-		    value: [NSString stringWithFormat: @"\"MAILTO:%@\"", currentEmail]];
+          NSString *currentEmail, *quotedEmail;
+          currentEmail = [[currentUser allEmails] objectAtIndex: 0];
+          quotedEmail = [NSString stringWithFormat: @"\"MAILTO:%@\"",
+                                  currentEmail];
+          [attendee setValue: 0 ofAttribute: @"SENT-BY"
+                          to: quotedEmail];
 	}
       else
 	{
@@ -1130,7 +1134,8 @@
   return [self changeParticipationStatus: _status forRecurrenceId: nil];
 }
 
-- (NSException *) changeParticipationStatus: (NSString *) _status forRecurrenceId: (NSCalendarDate *) _recurrenceId
+- (NSException *) changeParticipationStatus: (NSString *) _status
+                            forRecurrenceId: (NSCalendarDate *) _recurrenceId
 {
   iCalCalendar *calendar;
   iCalEvent *event;

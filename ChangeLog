@@ -1,3 +1,13 @@
+2009-08-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxComponentEditor.m
+	(-takeValuesFromRequest:inContext:): same as below, for the organizer.
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	(-changeParticipationStatus:forRecurrenceId): when setting the
+	"SENT-BY" attribute value, we need to use "setValue:0.." instead
+	"addValue:" to avoid invalid accumulation of values.
+
 2009-08-11  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor

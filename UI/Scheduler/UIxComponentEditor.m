@@ -1559,11 +1559,13 @@ RANGE(2);
 
       if (!isOwner)
 	{
-	  NSString *currentEmail;
+	  NSString *currentEmail, *quotedEmail;
 	  
 	  currentEmail = [[[context activeUser] allEmails] objectAtIndex: 0];
-	  [organizer addAttribute: @"SENT-BY"
-		     value: [NSString stringWithFormat: @"\"MAILTO:%@\"", currentEmail]];
+          quotedEmail = [NSString stringWithFormat: @"\"MAILTO:%@\"",
+                                  currentEmail];
+          [organizer setValue: 0 ofAttribute: @"SENT-BY"
+                           to: quotedEmail];
 	}
     }
   else
