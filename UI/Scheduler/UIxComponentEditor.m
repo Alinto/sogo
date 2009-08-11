@@ -1535,24 +1535,22 @@ RANGE(2);
 {
   NSString *organizerEmail;
   NSString *owner, *login;
-  BOOL isOwner, hasOrganizer, hasAttendees;
+  BOOL isOwner;
 
   //owner = [[self clientObject] ownerInContext: context];
   owner = [componentCalendar ownerInContext: context];
   login = [[context activeUser] login];
   isOwner = [owner isEqualToString: login];
   hasAttendees = [self hasAttendees];
-  organizerEmail = [[component organizer] email];
-  hasOrganizer = ([organizerEmail length] > 0);
 
 #if 1
-  ASSIGN (organizer, [iCalPerson elementWithTag: @"organizer"]);
-  [component setOrganizer: organizer];
-  
   if (hasAttendees)
     {
       SOGoUser *user;
       id identity;
+
+      ASSIGN (organizer, [iCalPerson elementWithTag: @"organizer"]);
+      [component setOrganizer: organizer];
 
       user = [SOGoUser userWithLogin: owner roles: nil];
       identity = [user defaultIdentity];
@@ -1568,7 +1566,15 @@ RANGE(2);
 		     value: [NSString stringWithFormat: @"\"MAILTO:%@\"", currentEmail]];
 	}
     }
+  else
+    {
+      organizer = nil;
+    }
+  [component setOrganizer: organizer];
 #else 
+  BOOL hasOrganizer, hasAttendees;
+  organizerEmail = [[component organizer] email];
+  hasOrganizer = ([organizerEmail length] > 0);
   if (hasOrganizer)
     {
       if (isOwner && !hasAttendees)
@@ -1924,7 +1930,8 @@ RANGE(2);
     toolbarFilename = @"SOGoEmpty.toolbar";
   else
     {
-      if ([clientObject isKindOfClass: [SOGoAppointmentObject class]])
+      if ([clientObject isKindOfClass: [SOGoAppointmentObject class]]
+	  || [clientObject isKindOfClass: [SOGoAppointmentOccurence class]])
         toolbarFilename = @"SOGoAppointmentObject.toolbar";
       else
         toolbarFilename = @"SOGoTaskObject.toolbar";

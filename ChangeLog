@@ -1,3 +1,16 @@
+2009-08-11  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
+	-_handleOrganizer]): remove organizer when the event has no attendee.
+	([UIxComponentEditor -_toolbarForOwner:andClientObject:]): return
+	the proper toolbar when editing the occurrence of a repeating event.
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	([SOGoAppointmentObject -saveComponent:]): when removing a single
+	attendee from an event, the organizer is no longer defined;
+	therefore, we must check if the owner is the organizer of the
+	previous version of the event, not the new event.
+
 2009-08-10  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/SOGo/LDAPUserManager.m
