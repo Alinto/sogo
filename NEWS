@@ -1,5 +1,6 @@
-1.0-20090811 (1.0.4)
+1.0-20090812 (1.0.4)
 --------------------
+- added ability to create and modify event categories in the preferences
 - added contextual menu in web calendar views
 - added "Reload" button to refresh the current view in the calendar module
 - fixed freebusy support for Apple iCal
