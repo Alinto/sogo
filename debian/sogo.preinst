@@ -13,7 +13,7 @@ set -e
 
 if test "x$1" == "xinstall" && test -z "$2"
 then
-  if ! id sogo; then
+  if ! id sogo 2> /dev/null; then
     groupadd -f -K GID_MIN=100 -K GID_MAX=500 sogo
     useradd -d /home/sogo -g sogo -m -K UID_MIN=100 -K UID_MAX=500 -K PASS_MAX_DAYS=-1 -s /bin/bash sogo
   fi
