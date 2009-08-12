@@ -1,3 +1,6 @@
-etc/*
-usr/*
-var/*
+etc/default/sogo
+usr/sbin/*
+usr/lib/GNUstep/*
+usr/lib/lib*
+usr/include/GNUstep/*
+usr/share/lintian/*
