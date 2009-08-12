@@ -1533,9 +1533,8 @@ RANGE(2);
 
 - (void) _handleOrganizer
 {
-  NSString *organizerEmail;
   NSString *owner, *login;
-  BOOL isOwner;
+  BOOL isOwner, hasAttendees;
 
   //owner = [[self clientObject] ownerInContext: context];
   owner = [componentCalendar ownerInContext: context];
@@ -1574,7 +1573,8 @@ RANGE(2);
     }
   [component setOrganizer: organizer];
 #else 
-  BOOL hasOrganizer, hasAttendees;
+  NSString *organizerEmail;
+  BOOL hasOrganizer;
   organizerEmail = [[component organizer] email];
   hasOrganizer = ([organizerEmail length] > 0);
   if (hasOrganizer)
