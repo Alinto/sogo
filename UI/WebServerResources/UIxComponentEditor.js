@@ -1,124 +1,124 @@
 /* -*- Mode: java; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 function onPopupAttendeesWindow(event) {
-  if (event)
-    preventDefault(event);
-  window.open(ApplicationBaseURL + "/editAttendees", null, 
-							"width=803,height=573");
+    if (event)
+        preventDefault(event);
+    window.open(ApplicationBaseURL + "/editAttendees", null, 
+                "width=803,height=573");
 
-  return false;
+    return false;
 }
 
 function onSelectPrivacy(event) {
-  if (event.button == 0 || (isSafari() && event.button == 1)) {
-    var node = getTarget(event);
-    if (node.tagName != 'BUTTON')
-      node = $(node).up("button");
-    popupToolbarMenu(node, "privacy-menu");
-    Event.stop(event);
-    //       preventDefault(event);
-  }
+    if (event.button == 0 || (isSafari() && event.button == 1)) {
+        var node = getTarget(event);
+        if (node.tagName != 'BUTTON')
+            node = $(node).up("button");
+        popupToolbarMenu(node, "privacy-menu");
+        Event.stop(event);
+        //       preventDefault(event);
+    }
 }
 
 function onPopupAttachWindow(event) {
-  if (event)
-    preventDefault(event);
+    if (event)
+        preventDefault(event);
 
-  var attachInput = document.getElementById("attach");
-  var newAttach = window.prompt(labels["Target:"], attachInput.value || "http://");
-  if (newAttach != null) {
-    var documentHref = $("documentHref");
-    var documentLabel = $("documentLabel");
-    if (documentHref.childNodes.length > 0) {
-      documentHref.childNodes[0].nodeValue = newAttach;
-      if (newAttach.length > 0)
-				documentLabel.setStyle({ display: "block" });
-      else
-				documentLabel.setStyle({ display: "none" });
+    var attachInput = document.getElementById("attach");
+    var newAttach = window.prompt(labels["Target:"], attachInput.value || "http://");
+    if (newAttach != null) {
+        var documentHref = $("documentHref");
+        var documentLabel = $("documentLabel");
+        if (documentHref.childNodes.length > 0) {
+            documentHref.childNodes[0].nodeValue = newAttach;
+            if (newAttach.length > 0)
+                documentLabel.setStyle({ display: "block" });
+            else
+                documentLabel.setStyle({ display: "none" });
+        }
+        else {
+            documentHref.appendChild(document.createTextNode(newAttach)); 
+            if (newAttach.length > 0)
+                documentLabel.setStyle({ display: "block" });
+        }
+        attachInput.value = newAttach;
     }
-    else {
-      documentHref.appendChild(document.createTextNode(newAttach)); 
-      if (newAttach.length > 0)
-				documentLabel.setStyle({ display: "block" });
-    }
-    attachInput.value = newAttach;
-  }
-  onWindowResize(event);
+    onWindowResize(event);
   
-  return false;
+    return false;
 }
 
 function onPopupDocumentWindow(event) {
-  var documentUrl = $("attach");
+    var documentUrl = $("attach");
 
-  preventDefault(event);
-  window.open(documentUrl.value, "SOGo_Document");
+    preventDefault(event);
+    window.open(documentUrl.value, "SOGo_Document");
 
-  return false;
+    return false;
 }
 
 function onMenuSetClassification(event) {
-  event.cancelBubble = true;
+    event.cancelBubble = true;
 
-  var classification = this.getAttribute("classification");
-  if (this.parentNode.chosenNode)
-    this.parentNode.chosenNode.removeClassName("_chosen");
-  this.addClassName("_chosen");
-  this.parentNode.chosenNode = this;
+    var classification = this.getAttribute("classification");
+    if (this.parentNode.chosenNode)
+        this.parentNode.chosenNode.removeClassName("_chosen");
+    this.addClassName("_chosen");
+    this.parentNode.chosenNode = this;
 
-  var privacyInput = $("privacy");
-  privacyInput.value = classification;
+    var privacyInput = $("privacy");
+    privacyInput.value = classification;
 }
 
 function onChangeCalendar(event) {
-  var calendars = $("calendarFoldersList").value.split(",");
-  var form = document.forms["editform"];
-  var urlElems = form.getAttribute("action").split("?");
-  var choice = calendars[this.value];
-  var urlParam = "moveToCalendar=" + choice;
-  if (urlElems.length == 1)
-    urlElems.push(urlParam);
-  else
-    urlElems[2] = urlParam;
+    var calendars = $("calendarFoldersList").value.split(",");
+    var form = document.forms["editform"];
+    var urlElems = form.getAttribute("action").split("?");
+    var choice = calendars[this.value];
+    var urlParam = "moveToCalendar=" + choice;
+    if (urlElems.length == 1)
+        urlElems.push(urlParam);
+    else
+        urlElems[2] = urlParam;
 
-  while (urlElems.length > 2)
-    urlElems.pop();
+    while (urlElems.length > 2)
+        urlElems.pop();
 
-  form.setAttribute("action", urlElems.join("?"));
+    form.setAttribute("action", urlElems.join("?"));
 }
 
 function initializeDocumentHref() {
-  var documentHref = $("documentHref");
-  var documentLabel = $("documentLabel");
-  var documentUrl = $("attach");
+    var documentHref = $("documentHref");
+    var documentLabel = $("documentLabel");
+    var documentUrl = $("attach");
 
-  documentHref.observe("click", onPopupDocumentWindow, false);
-  documentHref.setStyle({ textDecoration: "underline", color: "#00f" });
-  if (documentUrl.value.length > 0) {
-    documentHref.appendChild(document.createTextNode(documentUrl.value));
-    documentLabel.setStyle({ display: "block" });
-  }
+    documentHref.observe("click", onPopupDocumentWindow, false);
+    documentHref.setStyle({ textDecoration: "underline", color: "#00f" });
+    if (documentUrl.value.length > 0) {
+        documentHref.appendChild(document.createTextNode(documentUrl.value));
+        documentLabel.setStyle({ display: "block" });
+    }
 
-  var changeUrlButton = $("changeAttachButton");
-  if (changeUrlButton)
-    changeUrlButton.observe("click", onPopupAttachWindow, false);
+    var changeUrlButton = $("changeAttachButton");
+    if (changeUrlButton)
+        changeUrlButton.observe("click", onPopupAttachWindow, false);
 }
 
 function initializePrivacyMenu() {
-  if ($("privacy-menu")) {
-    var privacy = $("privacy").value.toUpperCase();
-    var privacyMenu = $("privacy-menu").childNodesWithTag("ul")[0];
-    var menuEntries = $(privacyMenu).childNodesWithTag("li");
-    var chosenNode;
-    if (privacy == "CONFIDENTIAL")
-      chosenNode = menuEntries[1];
-    else if (privacy == "PRIVATE")
-      chosenNode = menuEntries[2];
-    else
-      chosenNode = menuEntries[0];
-    privacyMenu.chosenNode = chosenNode;
-    $(chosenNode).addClassName("_chosen");
-  }
+    if ($("privacy-menu")) {
+        var privacy = $("privacy").value.toUpperCase();
+        var privacyMenu = $("privacy-menu").childNodesWithTag("ul")[0];
+        var menuEntries = $(privacyMenu).childNodesWithTag("li");
+        var chosenNode;
+        if (privacy == "CONFIDENTIAL")
+            chosenNode = menuEntries[1];
+        else if (privacy == "PRIVATE")
+            chosenNode = menuEntries[2];
+        else
+            chosenNode = menuEntries[0];
+        privacyMenu.chosenNode = chosenNode;
+        $(chosenNode).addClassName("_chosen");
+    }
 }
 
 function onComponentEditorLoad(event) {
@@ -178,8 +178,8 @@ function onComponentEditorLoad(event) {
 }
 
 function onSummaryChange (e) {
-  if ($("summary"))
-    document.title = $("summary").value;
+    if ($("summary"))
+        document.title = $("summary").value;
 }
 
 function onWindowResize(event) {
@@ -247,40 +247,40 @@ function onPopupRecurrenceWindow(event) {
 }
 
 function onPopupReminderWindow(event) {
-  if (event)
-    preventDefault(event);
-
-  var reminderHref = $("reminderHref");
-
-  var reminderList = $("reminderList");
-  if (reminderList && reminderList.value == 15) {
-    reminderHref.show();
     if (event)
-      window.open(ApplicationBaseURL + "editReminder", null, 
-									"width=250,height=150");
-  }
-  else if (reminderHref)
-    reminderHref.hide();
+        preventDefault(event);
 
-  return false;
+    var reminderHref = $("reminderHref");
+
+    var reminderList = $("reminderList");
+    if (reminderList && reminderList.value == 15) {
+        reminderHref.show();
+        if (event)
+            window.open(ApplicationBaseURL + "editReminder", null, 
+                        "width=250,height=150");
+    }
+    else if (reminderHref)
+        reminderHref.hide();
+
+    return false;
 }
 
 function onOkButtonClick (e) {
-  var item = $("replyList");
-  var value = parseInt(item.options[item.selectedIndex].value);
-  var action = "";
+    var item = $("replyList");
+    var value = parseInt(item.options[item.selectedIndex].value);
+    var action = "";
   
-  if (value == 0)
-    action = 'accept';
-  else if (value == 1)
-    action = 'decline';
+    if (value == 0)
+        action = 'accept';
+    else if (value == 1)
+        action = 'decline';
 
-  if (action != "")
-    modifyEvent (item, action);
+    if (action != "")
+        modifyEvent (item, action);
 }
 
 function onCancelButtonClick (e) {
-  window.close ();
+    window.close ();
 }
 
 document.observe("dom:loaded", onComponentEditorLoad);

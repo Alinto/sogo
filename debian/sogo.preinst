@@ -1,0 +1,32 @@
+#!/bin/bash
+
+set -e
+
+# summary of how this script can be called:
+#        * <new-preinst> `install'
+#        * <new-preinst> `install' <old-version>
+#        * <new-preinst> `upgrade' <old-version>
+#        * <old-preinst> `abort-upgrade' <new-version>
+#
+# for details, see http://www.debian.org/doc/debian-policy/ or
+# the debian-policy package
+
+if test "x$1" == "xinstall" && test -z "$2"
+then
+  if ! id sogo 1> /dev/null 2>&1; then
+    groupadd -f -K GID_MIN=100 -K GID_MAX=500 sogo
+    useradd -d /home/sogo -g sogo -m -K UID_MIN=100 -K UID_MAX=500 -K PASS_MAX_DAYS=-1 -s /bin/bash sogo
+  fi
+
+  for dir in run spool log
+  do
+    if ! test -d /var/$dir/sogo
+    then
+      install -m 750 -o sogo -g sogo -d /var/$dir/sogo
+    fi
+  done
+fi
+
+#DEBHELPER#
+
+exit 0

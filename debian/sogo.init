@@ -1,5 +1,14 @@
 #! /bin/bash
 
+### BEGIN INIT INFO
+# Provides:          sogo
+# Required-Start:    $network
+# Required-Stop:     $network
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: SOGo server
+### END INIT INFO
+
 # SOGo init script for Debian GNU/Linux
 #
 # Copyright (C) 2007-2009 Inverse inc.
@@ -23,13 +32,13 @@
 # Boston, MA 02111-1307, USA.
 
 # specify more if you are using a load-balancer
-PREFORK=3
+PREFORK=1
 SOGO_ARGS=""
 USER=sogo
 
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
-DAEMON=/usr/sbin/sogod
+DAEMON=/usr/sbin/sogod-wrapper
 NAME=sogod
 DESC="Scalable OpenGroupware.Org"
 
@@ -70,17 +79,17 @@ case "$1" in
 		ppid="`ps --pid ${ppid} -o pid=`"
 		if [ -n "$ppid" ]
 		then
-		    echo "  $DAEMON $a already running. Skipped."
+		    echo "  $NAME $a already running. Skipped."
 		else
 		    rm -f ${PIDFILE}${a}
 		    start-stop-daemon -c $USER \
 			-b --start --quiet --exec $DAEMON $a
-		    echo "  $DAEMON $a (stale pid file removed)"
+		    echo "  $NAME $a (stale pid file removed)"
 		fi
 	    else
 		start-stop-daemon -c $USER \
 		    -b --start --quiet --exec $DAEMON $a
-		echo "  $DAEMON $a"
+		echo "  $NAME $a"
 	    fi
 	done
 	;;
@@ -100,13 +109,13 @@ case "$1" in
 		then
 		    if kill $ppid >& /dev/null
 		    then
-			echo "  $DAEMON $a stopped"
+			echo "  $NAME $a stopped"
 		    fi
 		else
-		    echo "  $DAEMON $a not running"
+		    echo "  $NAME $a not running"
 		fi
 	    else
-		echo "  $DAEMON $a not running"
+		echo "  $NAME $a not running"
 	    fi
 	done
 
@@ -127,7 +136,7 @@ case "$1" in
 		    then
 			kill -9 $pid >& /dev/null
 		    fi
-		    echo "  $DAEMON $a killed"
+		    echo "  $NAME $a killed"
 		fi
 	    fi
             rm -f ${PIDFILE}${a}
@@ -159,7 +168,7 @@ case "$1" in
 	    fi
 	    start-stop-daemon -c $USER \
 		-b --start --quiet --exec $DAEMON $a
-            echo "  $DAEMON $a"
+            echo "  $NAME $a"
 	done
 	;;
 

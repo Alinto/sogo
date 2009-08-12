@@ -274,6 +274,13 @@
 	} 
       else
 	{
+	  // TODO : if [theEvent recurrenceId], only update this occurrence
+	  // in attendee's calendar
+
+	  // TODO : when updating the master event, handle exception dates
+	  // in attendee's calendar (add exception dates and remove matching
+	  // occurrences) -- see _updateRecurrenceIDsWithEvent:
+	  
 	  iCalString = [[theEvent parent] versitString];
 	}
       
@@ -508,46 +515,44 @@
   // as the event's UID might get modified in SOGoCalendarComponent: -saveComponent:
   [super saveComponent: newEvent];
 
-  if ([newEvent userIsOrganizer: ownerUser])
+  if ([self isNew])
     {
-      if ([self isNew])
+      // New event -- send invitation to all attendees
+      attendees = [newEvent attendeesWithoutUser: ownerUser];
+      if ([attendees count])
 	{
-	  // New event -- send invitation to all attendees
-	  attendees = [newEvent attendeesWithoutUser: ownerUser];
-	  if ([attendees count])
-	    {
-	      [self _handleAddedUsers: attendees fromEvent: newEvent];
-	      [self sendEMailUsingTemplateNamed: @"Invitation"
-		    forObject: [newEvent itipEntryWithMethod: @"request"]
-		    previousObject: nil
-		    toAttendees: attendees];
-	    }
-
-	  if (![[newEvent attendees] count])
-	    [[newEvent uniqueChildWithTag: @"organizer"] setValue: 0
-							 to: @""];
+	  [self _handleAddedUsers: attendees fromEvent: newEvent];
+	  [self sendEMailUsingTemplateNamed: @"Invitation"
+				  forObject: [newEvent itipEntryWithMethod: @"request"]
+			     previousObject: nil
+				toAttendees: attendees];
 	}
+    }
+  else
+    {
+      // Event is modified -- sent update status to all attendees
+      // and modify their calendars.
+      recurrenceId = [newEvent recurrenceId];
+      if (recurrenceId == nil)
+	oldEvent = [self component: NO secure: NO];
       else
 	{
-	  // Event is modified -- sent update status to all attendees
-	  // and modify their calendars.
-	  recurrenceId = [newEvent recurrenceId];
-	  if (recurrenceId == nil)
-	    oldEvent = [self component: NO secure: NO];
-	  else
-	    {
-	      // If recurrenceId is defined, find the specified occurence
-	      // within the repeating vEvent.
-	      recurrenceTime = [NSString stringWithFormat: @"%f", [recurrenceId timeIntervalSince1970]];
-	      oldEvent = (iCalEvent*)[self lookupOccurence: recurrenceTime];
-	      if (oldEvent == nil)
-		// If no occurence found, create one
-		oldEvent = (iCalEvent*)[self newOccurenceWithID: recurrenceTime];
-	    }
+	  // If recurrenceId is defined, find the specified occurence
+	  // within the repeating vEvent.
+	  recurrenceTime = [NSString stringWithFormat: @"%f", [recurrenceId timeIntervalSince1970]];
+	  oldEvent = (iCalEvent*)[self lookupOccurence: recurrenceTime];
+	  if (oldEvent == nil)
+	    // If no occurence found, create one
+	    oldEvent = (iCalEvent*)[self newOccurenceWithID: recurrenceTime];
+	}
+      
+      if ([[[oldEvent parent] firstChildWithTag: @"vevent"] userIsOrganizer: ownerUser])
+	{
+	  // The owner is the organizer of the event; handle the modifications
+	  
 	  [self _handleUpdatedEvent: newEvent fromOldEvent: oldEvent];
 	  
 	  // The sequence has possibly been increased -- resave the event.
-	  // This will also take care of a decomposed group.
 	  [super saveComponent: newEvent];
 	}
     }
@@ -615,10 +620,12 @@
 	  // the attendee, we add the user to the SENT-BY attribute.
 	  if (b && ![[currentUser login] isEqualToString: [theOwnerUser login]])
 	    {
-	      NSString *currentEmail;
+	      NSString *currentEmail, *quotedEmail;
 	      currentEmail = [[currentUser allEmails] objectAtIndex: 0];
-	      [otherAttendee addAttribute: @"SENT-BY"
-			     value: [NSString stringWithFormat: @"\"MAILTO:%@\"", currentEmail]];
+              quotedEmail = [NSString stringWithFormat: @"\"MAILTO:%@\"",
+                                      currentEmail];
+	      [otherAttendee setValue: 0 ofAttribute: @"SENT-BY"
+                                   to: quotedEmail];
 	    }
 	  else
 	    {
@@ -667,10 +674,12 @@
       currentUser = [context activeUser];
       if (![[currentUser login] isEqualToString: [theOwnerUser login]])
 	{
-	  NSString *currentEmail;
-	  currentEmail = [[currentUser allEmails] objectAtIndex: 0];
-	  [attendee addAttribute: @"SENT-BY"
-		    value: [NSString stringWithFormat: @"\"MAILTO:%@\"", currentEmail]];
+          NSString *currentEmail, *quotedEmail;
+          currentEmail = [[currentUser allEmails] objectAtIndex: 0];
+          quotedEmail = [NSString stringWithFormat: @"\"MAILTO:%@\"",
+                                  currentEmail];
+          [attendee setValue: 0 ofAttribute: @"SENT-BY"
+                          to: quotedEmail];
 	}
       else
 	{
@@ -1125,7 +1134,8 @@
   return [self changeParticipationStatus: _status forRecurrenceId: nil];
 }
 
-- (NSException *) changeParticipationStatus: (NSString *) _status forRecurrenceId: (NSCalendarDate *) _recurrenceId
+- (NSException *) changeParticipationStatus: (NSString *) _status
+                            forRecurrenceId: (NSCalendarDate *) _recurrenceId
 {
   iCalCalendar *calendar;
   iCalEvent *event;

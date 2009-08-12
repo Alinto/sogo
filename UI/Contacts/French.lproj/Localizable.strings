@@ -160,7 +160,7 @@
 "The selected contact has no email address."
 = "Cette personne n'a pas d'adresse courriel.";
 
-"Please select a contact." = "Veuillez sélectionner un contact..";
+"Please select a contact." = "Veuillez sélectionner un contact.";
 
 /* Error messages for move and copy */
 

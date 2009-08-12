@@ -126,7 +126,8 @@ A.toolbarButton
 { text-decoration: none; }
 
 UL#contactFolders
-{ list-style-type: none;
+{ display: block;
+  list-style-type: none;
   list-style-image: none;
   clear: both;
   cursor: default;
@@ -135,13 +136,16 @@ UL#contactFolders
   position: absolute; /* required for Safari & IE */
   top: 62px; /* leave space for the mini addressbook */
   bottom: 0px;
-  width: 100%;
-  height: 100%;
+  left: 0;
+  right: 0;
+  width: auto;
   margin: 0px;
   padding: 0px;
+  overflow: auto;
+  overflow-x: hidden;
   border-top: 2px solid #222;
   border-left: 2px solid #222;
-  border-right: 1px solid #fff;
+  border-right: 0px;
   border-bottom: 1px solid #fff;
   -moz-border-top-colors: #9c9a94 #000;
   -moz-border-left-colors: #9c9a94 #000;
