@@ -1,0 +1,13 @@
+/var/log/sogo/*.log {
+	daily
+	missingok
+	rotate 7
+	compress
+	delaycompress
+	notifempty
+	create 640 sogo sogo
+	sharedscripts
+	postrotate
+		/etc/init.d/sogod restart > /dev/null
+	endscript
+}
