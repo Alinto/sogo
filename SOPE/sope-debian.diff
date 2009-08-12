@@ -352,12 +352,6 @@
  
  On Debian systems, the complete text of the GNU Lesser General
  Public License can be found in `/usr/share/common-licenses/LGPL'.
---- sope-4.9.r1660.orig/debian/sope_SOPEVER_-appserver.install
-+++ sope-4.9.r1660/debian/sope_SOPEVER_-appserver.install
-@@ -1 +1,2 @@
--usr/sbin/sope-*
-+usr/lib/GNUstep/SoProducts-*/*
-+usr/lib/GNUstep/WOxElemBuilders-*/*
 --- sope-4.9.r1660.orig/debian/libsope-appserver_SOPEVER_-dev.install
 +++ sope-4.9.r1660/debian/libsope-appserver_SOPEVER_-dev.install
 @@ -1,11 +1,10 @@
@@ -379,6 +373,11 @@
  usr/lib/libNGObjWeb.so
  usr/lib/libWOXML.so
  usr/lib/libWOExtensions.so
+@@ -13,3 +12,4 @@
+ usr/lib/libNGXmlRpc.so
+ usr/lib/libSoOFS.so
+ usr/lib/libWEPrototype.so
++usr/share/GNUstep/Makefiles/*
 --- sope-4.9.r1660.orig/debian/control
 +++ sope-4.9.r1660/debian/control
 @@ -1,8 +1,9 @@
