@@ -1,3 +1,12 @@
+sogo (1.0.4) unstable; urgency=low
+
+  * New release
+  * debian/control:
+    - bumped standards-version
+    - updated dependencies
+
+ -- Inverse Support <support@inverse.ca>  Tue, 11 Aug 2009 18:22:41 -0400
+
 sogo (1.0.3) UNRELEASED; urgency=low
 
   * Initial package

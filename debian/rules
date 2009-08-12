@@ -1,90 +1,79 @@
 #!/usr/bin/make -f
 # -*- makefile -*-
 export DH_VERBOSE=1
+# export DH_OPTIONS="-p sogo"
 
-config.status: configure
+config.make: configure
 	dh_testdir
-LDFLAGS="-Wl,-z,defs" ./configure
-
+	./configure
 
 #Architecture
 build: build-arch build-indep
 
 build-arch: build-arch-stamp
-build-arch-stamp:  config.status 
-
-	# Add here commands to compile the arch part of the package.
-	#$(MAKE)
+build-arch-stamp:  config.make 
+#	 Add here commands to compile the arch part of the package.
+	$(MAKE)
 	touch $@
 
 build-indep: build-indep-stamp
-build-indep-stamp:  config.status 
-
-	# Add here commands to compile the indep part of the package.
-	#$(MAKE) doc
+build-indep-stamp:  config.make 
+#	 Add here commands to compile the indep part of the package.
+#	$(MAKE) doc
 	touch $@
 
 clean: 
 	dh_testdir
 	dh_testroot
 	rm -f build-arch-stamp build-indep-stamp 
-	make clean
+	if [ -f config.make ]; then make clean; fi
 	dh_clean 
 
-install: install-indep install-arch
+install: install-arch
 install-indep:
 	dh_testdir
 	dh_testroot
-	dh_clean -k -i 
+	dh_prep -i
 	dh_installdirs -i
 	dh_install -i
 
-install-arch:
+install-arch: build-arch
 	dh_testdir
 	dh_testroot
-	dh_clean -k -s 
-	dh_installdirs -s
+	dh_prep -i
+#	dh_installdirs -s
 
-	$(MAKE) DESTDIR=$(CURDIR)/debian/tmp GNUSTEP_INSTALLATION_DOMAIN=SYSTEM  install
-	mkdir -p debian/tmp/etc/init.d
-	mkdir -p debian/tmp/etc/cron.daily
-	mkdir -p debian/tmp/var/run/sogo
-	mkdir -p debian/tmp/var/log/sogo
-	mkdir -p debian/tmp/var/spool/sogo
+	$(MAKE) DESTDIR=$(CURDIR)/debian/tmp GNUSTEP_INSTALLATION_DOMAIN=SYSTEM install
 	mkdir -p debian/tmp/etc/default
-	mkdir -p debian/tmp/etc/apache2/conf.d
-	mkdir -p debian/tmp/usr/sbin
-	echo "DAEMON=/usr/sbin/sogod-launcher" >> debian/tmp/etc/default/sogo
-	cp Scripts/sogo-init.d-debian debian/tmp/etc/init.d/sogod
-	cp Scripts/tmpwatch debian/tmp/etc/cron.daily/sogo-tmpwatch
-	cp Apache/SOGo-debian.conf debian/tmp/etc/apache2/conf.d/SOGo.conf
-	cp Scripts/sogod-wrapper debian/tmp/usr/sbin/sogod-launcher
+	cp Scripts/sogo-default debian/tmp/etc/default/sogo
+	cp Scripts/sogod-wrapper debian/tmp/usr/sbin/sogod-wrapper
+	mkdir -p debian/tmp/usr/share/lintian/overrides
+	cp debian/sogo.overrides debian/tmp/usr/share/lintian/overrides/sogo
 
-	dh_install -s
+binary-indep: build-indep install-indep
 
-binary-common:
+# Build architecture dependant packages using the common target.
+binary-arch: build-arch install-arch
 	dh_testdir
 	dh_testroot
+	dh_installinit -r
+	dh_installlogrotate
+	dh_installcron
 	dh_installchangelogs ChangeLog
 	dh_installdocs
 	dh_installexamples
 	dh_installman
+	dh_install
 	dh_link
 	dh_strip
 	dh_compress
 	dh_fixperms
 	dh_makeshlibs
+	dh_shlibdeps
 	dh_installdeb
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb
 
-binary-indep: build-indep install-indep
-	$(MAKE) -f debian/rules DH_OPTIONS=-i binary-common
-
-# Build architecture dependant packages using the common target.
-binary-arch: build-arch install-arch
-	$(MAKE) -f debian/rules DH_OPTIONS=-s binary-common
-
-binary: binary-arch binary-indep
+binary: binary-arch
 .PHONY: build clean binary-indep binary-arch binary install install-indep install-arch 
