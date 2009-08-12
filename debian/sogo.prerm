@@ -12,11 +12,6 @@ set -e
 #          <conflicting-package> <version>
 # for details, see /usr/share/doc/packaging-manual/
 
-if test "x$1" == "xremove"
-then
-  /etc/init.d/sogo stop
-fi
-
 #DEBHELPER#
 
 exit 0
