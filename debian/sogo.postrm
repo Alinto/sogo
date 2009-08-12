@@ -19,6 +19,9 @@ case "$1" in
         if test "x$1" == "xpurge"
         then
             userdel -r sogo || true
+            rm -rf /var/spool/sogo
+            rm -rf /var/log/sogo
+            rm -rf /var/run/sogo
         fi
         ;;
 
