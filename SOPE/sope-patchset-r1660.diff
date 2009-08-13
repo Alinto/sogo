@@ -1,3 +1,39 @@
+Index: sope-ldap/NGLdap/NGLdapEntry.m
+===================================================================
+--- sope-ldap/NGLdap/NGLdapEntry.m	(revision 1660)
++++ sope-ldap/NGLdap/NGLdapEntry.m	(working copy)
+@@ -105,14 +105,16 @@
+ - (NGLdapAttribute *)attributeWithName:(NSString *)_name {
+   NSEnumerator    *e;
+   NGLdapAttribute *a;
+-  
++  NSString        *upperName;
++
+   if (_name == nil)
+     return nil;
+ 
++  upperName = [_name uppercaseString];
+   e = [self->attributes objectEnumerator];
+ 
+   while ((a = [e nextObject])) {
+-    if ([[a attributeName] isEqualToString:_name])
++    if ([[[a attributeName] uppercaseString] isEqualToString:upperName])
+       return a;
+   }
+   return nil;
+Index: sope-ldap/NGLdap/ChangeLog
+===================================================================
+--- sope-ldap/NGLdap/ChangeLog	(revision 1660)
++++ sope-ldap/NGLdap/ChangeLog	(working copy)
+@@ -1,3 +1,8 @@
++2009-08-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
++
++	* NGLdapEntry.m (-attributeWithName:): attribute names are now
++	accessed in a case-insensitive way.
++
+ 2009-04-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+ 
+ 	* NGLdapConnection.m (useSSL,startTLS): new method enabling
 Index: sope-mime/NGImap4/NGImap4Functions.m
 ===================================================================
 --- sope-mime/NGImap4/NGImap4Functions.m	(revision 1660)

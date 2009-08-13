@@ -1,0 +1,18 @@
+fileformat:
+-----------
+Property list:
+
+{
+  ldif_record = "dn: xxxxx\nfield: xxxx\n...";
+  preferences = ( settingsdict, defaultsdict );
+  tables = { "c_path4" = {
+                displayname = "c_folder_name";
+                records = { c_name = c_content1;
+                            c_name2 = c_content2;
+                            ... };
+                acl = { userA = ( role1, role2, ...);
+                        userB = ( role1, role2, ...);
+                        ... };
+             },
+             ... };
+}

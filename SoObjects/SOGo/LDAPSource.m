@@ -660,6 +660,9 @@ static NSLock *lock;
   NSString *currentAttribute, *value;
 
   contactEntry = [NSMutableDictionary dictionary];
+  [contactEntry setObject: [ldapEntry dn] forKey: @"dn"];
+  [contactEntry setObject: [ldapEntry objectClasses]
+                   forKey: @"objectClasses"];
   attributes = [[self _searchAttributes] objectEnumerator];
   while ((currentAttribute = [attributes nextObject]))
     {

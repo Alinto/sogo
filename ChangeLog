@@ -1,5 +1,17 @@
 2009-08-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/LDAPSource.m: the objectClass are now all added
+	to the return user records.
+
+	* Tools/NSDictionary+SOGoTool.m (-userRecordAsLDIFEntry): new
+	method that converts a user record as returned by LDAPSource to a
+	compliant LDIF entry.
+
+	* Tools/NSDictionary+SOGoTool.[hm]: new category module.
+
+	* Tools/SOGoToolBackup.m: new "sogo-tool" utility that backs up
+	user data following the file-format specified in README.backup
+
 	* Tools/SOGoToolRemoveDoubles.m: new "sogo-tool" utility method
 	implementing the old "sogo-contacts-removedoubles" utility.
 

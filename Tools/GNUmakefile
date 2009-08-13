@@ -10,8 +10,11 @@ $(SOGO_TOOL)_OBJC_FILES += \
 	sogo-tool.m \
 	\
 	SOGoTool.m \
+	SOGoToolBackup.m \
 	SOGoToolCheckDoubles.m \
-	SOGoToolRemoveDoubles.m
+	SOGoToolRemoveDoubles.m \
+	\
+	NSDictionary+SOGoTool.m
 
 TOOL_NAME = $(SOGO_TOOL)
 
