@@ -1,0 +1,146 @@
+DIV#verticalDragHandle
+{
+    cursor: e-resize;
+    top: 4em;
+    left: 15em;
+    width: 5px;
+    bottom: 0px;
+}
+
+.titlediv
+{ 
+    vertical-align: bottom;
+    padding-top: 2em;
+    padding-left: 6px;
+}
+
+DIV#administrationModules
+{
+    position: absolute;
+    top: 5em;
+    left: 0;
+    width: 15em;
+    bottom: 2px;
+    margin: 0px;
+    padding: 0px;
+    overflow: hidden;
+}
+
+DIV#administrationModules UL
+{
+    display: block;
+    list-style-type: none;
+    list-style-image: none;
+    clear: both;
+    cursor: default;
+    color: #000;
+    background: #fff;
+    position: absolute; /* required for Safari & IE */
+    top: 0px;
+    bottom: 0px;
+    left: 0;
+    right: 0;
+    width: auto;
+    margin: 0px;
+    padding: 0px;
+    overflow: auto;
+    overflow-x: hidden;
+    border-top: 2px solid #222;
+    border-left: 2px solid #222;
+    border-right: 0px;
+    border-bottom: 1px solid #fff;
+    -moz-border-top-colors: #9c9a94 #000;
+    -moz-border-left-colors: #9c9a94 #000;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+}
+
+DIV#administrationModules UL LI
+{
+    cursor: pointer;
+    line-height: 20px;
+    height: 20px;
+    padding-left: 0.5em;
+    margin: 0px;
+    width: auto;
+    white-space: nowrap;
+}
+
+DIV#rightPanel
+{
+    position: absolute;
+    top: 2em;
+    left: 15em;
+    margin-left: 5px;
+    right: 0px;
+    bottom: 0px;
+    height: 100%;
+    overflow: hidden;
+}
+
+DIV#rightPanel > SPAN
+{
+    float: left;
+}
+
+DIV#rightPanel H1
+{
+    display: inline;
+    font-size: 14px;
+    margin: 0.5em 0 5px 0;
+}
+
+DIV#rightPanel H1 A
+{
+    color: #000;
+}
+
+DIV#rightPanel H1 SPAN
+{
+    float: left;
+    margin-right: 5px;
+    text-align: right;
+    width: 15px;
+}
+
+DIV#rightPanel H1 SPAN IMG
+{
+    margin: 3px 0;
+}
+
+DIV#rightPanel SPAN DIV
+{
+    background-color: #eee;
+    margin: 0.5em 10px 0.5em 20px;
+    padding: 1em;
+}
+
+DIV#rightPanel SPAN DIV P
+{
+    margin: 0;
+    padding: 0;
+}
+
+DIV#filterPanel
+{ 
+    n0padding-top: 5px; 
+    width: auto;
+}
+
+DIV#administrationContent
+{
+    position: absolute;
+    left: 0;
+    right: 1em;
+    top: 3em;
+    bottom: 3em;
+    background-color: #fff;
+    padding: .5em;
+    overflow: auto;
+    border-bottom: 1px solid #fff;
+    border-right: 1px solid #fff;
+    border-top: 2px solid #222;
+    border-left: 2px solid #222;
+    -moz-border-top-colors: #9c9a94 #000 transparent;
+    -moz-border-left-colors: #9c9a94 #000 transparent;
+}
