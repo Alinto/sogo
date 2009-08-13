@@ -77,7 +77,7 @@
 
 - (void) usage
 {
-  fprintf (stderr, "backup folder user|ALL\n\n"
+  fprintf (stderr, "backup directory user|ALL\n\n"
 	   "         folder     the folder where backup files will be stored\n"
 	   "         user       the user of whom to save the data\n");
 }
