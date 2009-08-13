@@ -36,22 +36,6 @@ function usersSearchCallback(http) {
 	div.update();
 }
 
-function onFolderSearchKeyDown(event) { log ("onFolderSearchKeyDown");
-    var div = $("administrationContent");
-    
-    if (!div.clean) {
-	var oldD = $("d");
-	if (oldD) {
-	    oldD.remove();
-	    delete d;
-	}
-	div.clean = true;
-    }
-    
-    if (this.timer)
-	startAnimation($("pageContent"), $("filterPanel"));
-}
-
 function buildUsersTree(treeDiv, response) {
     d = new dTree("d");
     d.config.folderLlinks = true;
@@ -237,14 +221,11 @@ function onToggleDescription(event) {
 	if (desc.visible()) {
 	    desc.hide();
 	    img.src = ResourcesURL + "/arrow-rit-sharp.gif";
-	    //div.setStyle({ top: (filter.cumulativeOffset().top + 10) + "px" });
-	    //h1.setStyle({ float: "left" });
             filter.setStyle({ float: "right", clear: "none" });
 	}
 	else {
 	    desc.show();
 	    img.src = ResourcesURL + "/arrow-dwn.gif"; 
-	    //h1.setStyle({ float: "none" });
             filter.setStyle({ float: "none", clear: "left" });
 	}
     }
