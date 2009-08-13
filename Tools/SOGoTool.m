@@ -24,6 +24,9 @@
 
 #import "SOGoTool.h"
 
+/* TODO:
+   - log facility, handling verbose mode */
+
 @implementation SOGoTool
 
 + (NSString *) command
