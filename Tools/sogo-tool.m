@@ -31,6 +31,10 @@
 
 #import "SOGoTool.h"
 
+/* TODO:
+   - help for modules
+   - have a help syntax/mechanism similar to the one in monotone */
+
 @interface SOGoToolDispatcher : NSObject
 {
   NSMutableDictionary *tools;

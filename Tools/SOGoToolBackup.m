@@ -40,6 +40,11 @@
 #import "NSDictionary+SOGoTool.h"
 #import "SOGoToolBackup.h"
 
+/* TODO:
+   - respond to "--help backup"
+   - allow more than one user specifier on the command-line
+*/
+
 @implementation SOGoToolBackup
 
 + (NSString *) command
@@ -149,7 +154,7 @@
   BOOL rc;
   NSString *identifier;
 
-  if ([arguments count] == 2)
+  if ([arguments count] > 1)
     {
       ASSIGN (directory, [arguments objectAtIndex: 0]);
       identifier = [arguments objectAtIndex: 1];
