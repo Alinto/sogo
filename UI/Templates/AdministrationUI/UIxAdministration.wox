@@ -1,0 +1,31 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE var:component>
+<var:component xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label"
+  className="UIxPageFrame"
+  title="title"
+  const:jsFiles="dtree.js">
+
+  <div id="leftPanel">
+    <div class="titlediv"><var:string label:value="Modules" /></div>
+    <div id="administrationModules">
+      <ul>
+	<li id="ACLs" class="_selected"><var:string label:value="ACLs"/></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="dragHandle" id="verticalDragHandle"><!-- space --></div>
+
+  <div id="rightPanel">
+    <span><h1><a href="#" id="moduleDescription"><span><img rsrc:src="arrow-rit-sharp.gif"/></span><var:string label:value="ACLs_title"/></a></h1>
+    <div style="display: none;"><var:string label:value="ACLs_description" const:escapeHTML="NO"/></div></span>
+    <var:component className="UIxAdministrationFilterPanel" qualifier="qualifier" />
+    <div id="administrationContent"><!-- space --></div>
+  </div>
+
+  <var:string value="errorAlertJavaScript" const:escapeHTML="NO" />
+</var:component>
