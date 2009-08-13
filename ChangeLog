@@ -1,3 +1,17 @@
+2009-08-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Tools/SOGoToolRemoveDoubles.m: new "sogo-tool" utility method
+	implementing the old "sogo-contacts-removedoubles" utility.
+
+	* Tools/SOGoToolCheckDoubles.m: new "sogo-tool" utility method
+	implementing the old "sogo-contacts-checkdoubles" utility.
+
+	* Tools/SOGoTool.m: new class module implementing the base class
+	for all management modules for "sogo-tool".
+
+	* Tools/sogo-tool.m: new command-line tool that offers a generic
+	utility for SOGo administration.
+
 2009-08-12  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/MainUI/Version (SUBMINOR_VERSION): 1.0.4 release.

@@ -1,4 +1,4 @@
-/* sogo-ab-checkdoubles.m - this file is part of SOGo
+/* SOGoToolCheckDoubles.m - this file is part of SOGo
  *
  * Copyright (C) 2009 Inverse inc.
  *
@@ -25,7 +25,6 @@
    - make sure we don't end up using 3000 different channels because of the
    amount of tables we need to wander */
 
-#import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
 #import <Foundation/NSObject.h>
@@ -38,38 +37,41 @@
 #import <GDLContentStore/GCSFolderManager.h>
 #import <GDLContentStore/GCSFolder.h>
 
-typedef void (*NSUserDefaultsInitFunction) ();
+#import "SOGoToolCheckDoubles.h"
 
-static unsigned int ContactsCountWarningLimit = 1000;
+@implementation SOGoToolCheckDoubles
 
-// static void
-// NSLogInhibitor (NSString *message)
-// {
-// }
++ (NSString *) command
+{
+  return @"check-doubles";
+}
 
-@interface SOGoDoublesChecker : NSObject
++ (NSString *) description
+{
+  return @"check user addressbooks with duplicate contacts";
+}
 
-- (BOOL) run;
-
-@end
-
-@implementation SOGoDoublesChecker
-
-+ (void) initialize
+- (id) init
 {
   NSUserDefaults *ud;
-  NSNumber *warningLimit;
+  NSNumber *SOGoContactsCountWarningLimit;
 
-//   _NSLog_printf_handler = NSLogInhibitor;
+  if ((self = [super init]))
+    {
+      ud = [NSUserDefaults standardUserDefaults];
+      SOGoContactsCountWarningLimit
+        = [ud objectForKey: @"SOGoContactsCountWarningLimit"];
+      if (SOGoContactsCountWarningLimit)
+        warningLimit
+          = [SOGoContactsCountWarningLimit unsignedIntValue];
+      else
+        warningLimit = 1000;
 
-  ud = [NSUserDefaults standardUserDefaults];
-  [ud addSuiteNamed: @"sogod"];
-  warningLimit = [ud objectForKey: @"SOGoContactsCountWarningLimit"];
-  if (warningLimit)
-    ContactsCountWarningLimit = [warningLimit unsignedIntValue];
+      fprintf (stderr, "The warning limit for folder records is set at %u\n",
+               warningLimit);
+    }
 
-  fprintf (stderr, "The warning limit for folder records is set at %u\n",
-	   ContactsCountWarningLimit);
+  return self;
 }
 
 - (void) processIndexResults: (EOAdaptorChannel *) channel
@@ -89,7 +91,7 @@ static unsigned int ContactsCountWarningLimit = 1000;
       if (currentFolder)
 	{
 	  recordsCount = [currentFolder recordsCountByExcludingDeleted: YES];
-	  if (recordsCount > ContactsCountWarningLimit)
+	  if (recordsCount > warningLimit)
 	    {
 	      fprintf (stderr, "'%s' (id: '%s'), of '%s': %u entries\n",
 		       [[folderRow objectForKey: @"c_foldername"]
@@ -127,7 +129,8 @@ static unsigned int ContactsCountWarningLimit = 1000;
       ex = [channel evaluateExpressionX: sqlString];
       if (ex)
 	{
-	  fprintf (stderr, "an exception occured during the fetching of folder names");
+	  fprintf (stderr, "an exception occured during the fetching of"
+                   " folder names");
 	  [ex raise];
 	  rc = NO;
 	}
@@ -163,26 +166,3 @@ static unsigned int ContactsCountWarningLimit = 1000;
 }
 
 @end
-
-int
-main (int argc, char **argv, char **env)
-{
-  NSAutoreleasePool *pool;
-  SOGoDoublesChecker *checker;
-  int rc;
-
-  rc = 0;
-
-  pool = [NSAutoreleasePool new];
-
-  checker = [SOGoDoublesChecker new];
-  if ([checker run])
-    rc = 0;
-  else
-    rc = -1;
-  [checker release];
-
-  [pool release];
-
-  return rc;
-}

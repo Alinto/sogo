@@ -7,10 +7,12 @@ ADDITIONAL_CPPFLAGS += \
 	-DSOGO_LIBDIR="\"$(SOGO_LIBDIR)\""
 
 ADDITIONAL_INCLUDE_DIRS += \
-	-I../SOPE/ -D_GNU_SOURCE
+	-D_GNU_SOURCE -I../SOPE/ -I../SoObjects/
 
 ADDITIONAL_LIB_DIRS += \
-	-L../SOPE/GDLContentStore/$(GNUSTEP_OBJ_DIR)/ -lGDLContentStore
+	-L../SoObjects/SOGo/$(GNUSTEP_OBJ_DIR)/ -lSOGo \
+	-L../SOPE/GDLContentStore/$(GNUSTEP_OBJ_DIR)/ -lGDLContentStore \
+	-L../SOPE/NGCards/$(GNUSTEP_OBJ_DIR)/ -lNGCards
 
 SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib
 

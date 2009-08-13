@@ -1,4 +1,4 @@
-/* sogo-ab-removedoubles.m - this file is part of SOGo
+/* SOGoToolRemoveDoubles.m - this file is part of SOGo
  *
  * Copyright (C) 2009 Inverse inc.
  *
@@ -20,7 +20,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-/* TODO: NSUserDefaults bootstrapping for using different backends */
+/* TODO:
+   - show usage */
 
 #include <stdio.h>
 
@@ -45,7 +46,7 @@
 #import <GDLContentStore/GCSFolderManager.h>
 #import <GDLContentStore/GCSFolder.h>
 
-typedef void (*NSUserDefaultsInitFunction) ();
+#import "SOGoToolRemoveDoubles.h"
 
 @interface NGVList (RemoveDoubles)
 
@@ -73,17 +74,16 @@ typedef void (*NSUserDefaultsInitFunction) ();
 
 @end
 
-@interface SOGoDoublesRemover : NSObject
-@end
+@implementation SOGoToolRemoveDoubles
 
-@implementation SOGoDoublesRemover
-
-+ (void) initialize
++ (NSString *) command
 {
-  NSUserDefaults *ud;
+  return @"remove-doubles";
+}
 
-  ud = [NSUserDefaults standardUserDefaults];
-  [ud addSuiteNamed: @"sogod"];
++ (NSString *) description
+{
+  return @"remove duplicate contacts from the specified user addressbook";
 }
 
 - (void) feedDoubleEmails: (NSMutableDictionary *) doubleEmails
@@ -522,47 +522,27 @@ typedef void (*NSUserDefaultsInitFunction) ();
   return rc;
 }
 
-@end
-
-static void
-Usage (const char *name)
+- (void) usage
 {
-  const char *slash, *start;
-
-  slash = strrchr (name, '/');
-  if (slash)
-    start = slash + 1;
-  else
-    start = name;
-  fprintf (stderr, "Usage: %s USER FOLDER\n\n"
+  fprintf (stderr, "Usage: remove-doubles USER FOLDER\n\n"
 	   "         USER       the owner of the contact folder\n"
-	   "         FOLDER     the id of the folder to clean up\n",
-	   start);
+	   "         FOLDER     the id of the folder to clean up\n");
 }
 
-int
-main (int argc, char **argv, char **env)
+- (BOOL) run
 {
-  NSAutoreleasePool *pool;
-  SOGoDoublesRemover *remover;
-  int rc;
+  BOOL rc;
 
-  rc = -1;
-
-  pool = [NSAutoreleasePool new];
-
-  if (argc > 2)
-    {
-      remover = [SOGoDoublesRemover new];
-      if ([remover runWithFolder: [NSString stringWithFormat: @"%s", argv[2]]
-		   andUser: [NSString stringWithFormat: @"%s", argv[1]]])
-	rc = 0;
-      [remover release];
-    }
+  if ([arguments count] == 2)
+    rc = [self runWithFolder: [arguments objectAtIndex: 1]
+                     andUser: [arguments objectAtIndex: 0]];
   else
-    Usage (argv[0]);
-
-  [pool release];
+    {
+      [self usage];
+      rc = NO;
+    }
 
   return rc;
 }
+
+@end
