@@ -187,13 +187,7 @@ DIV#folderTreeContent
 .titlediv
 {
   height: 2em;
-  vertical-align: bottom;
-  padding-top: 6px;
-  padding-left: 6px;
-}
-
-.titlediv
-{ line-height: 18px;
+  line-height: 18px;
   vertical-align: middle;
   padding-top: 0px;
   padding-left: 6px; }
