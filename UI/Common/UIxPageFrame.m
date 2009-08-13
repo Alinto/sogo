@@ -100,8 +100,8 @@ static NSString *siteFavicon = nil;
 {
   return (@"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
           @"<!DOCTYPE html"
-          @" PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\""
-          @" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">");
+          @" PUBLIC \"-//W3C//DTD XHTML 1.1//EN\""
+          @" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">");
 }
 
 /* Help URL/target */
@@ -151,6 +151,11 @@ static NSString *siteFavicon = nil;
 - (NSString *) relativePreferencesPath
 {
   return [self relativePathToUserFolderSubPath: @"preferences"];
+}
+
+- (NSString *) relativeAdministrationPath
+{
+  return [self relativePathToUserFolderSubPath: @"Administration/"];
 }
 
 - (NSString *) logoffPath
@@ -357,6 +362,11 @@ static NSString *siteFavicon = nil;
 - (BOOL) isMail
 {
   return [self _moduleIs: @"MailerUI"];
+}
+
+- (BOOL) isAdministration
+{
+  return [self _moduleIs: @"AdministrationUI"];
 }
 
 - (void) setToolbar: (NSString *) newToolbar

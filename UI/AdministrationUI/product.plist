@@ -1,0 +1,22 @@
+{ /* -*-javascript-*- */
+  requires = ( MAIN, MainUI, CommonUI );
+
+  publicResources = (
+  );
+
+  factories = {
+  };
+
+  categories = {
+     SOGoUserFolder = {
+	slots = {
+	};
+	methods = {
+	   Administration = {
+	      protectedBy = "View";
+	      pageName = "UIxAdministration";
+	   };
+	};
+     };
+  };
+}

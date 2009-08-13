@@ -131,6 +131,7 @@ var SOGoDragHandlesInterface = {
     
         document.body.setAttribute('style', '');
         document.body.setStyle({ cursor: "default" });
+        this.fire("handle:dragged");
 
         Event.stop(event);
     },
