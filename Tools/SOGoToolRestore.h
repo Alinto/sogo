@@ -27,6 +27,8 @@
 
 typedef enum SOGoToolRestoreMode {
   SOGoToolRestoreFolderMode,
+  SOGoToolRestoreFolderDestructiveMode,
+  SOGoToolRestoreListFoldersMode,
   SOGoToolRestorePreferencesMode
 } SOGoToolRestoreMode;
 

@@ -47,7 +47,21 @@
    - write methods in GDLContentStore to get/update displayname
      and storing roles */ 
 
+#import <NGExtensions/NGBundleManager.h>
+
 @implementation SOGoToolRestore
+
++ (void) initialize
+{
+  NGBundleManager *bm;
+
+  /* we need to load the SOGo bundles here because OGoContentStore make use of
+     certain categories found therein */
+  bm = [NGBundleManager defaultBundleManager];
+  [bm setBundleSearchPaths: [NSArray arrayWithObject: SOGO_LIBDIR]];
+  [[bm bundleWithName: @"Appointments" type: @"SOGo"] load];
+  [[bm bundleWithName: @"Contacts" type: @"SOGo"] load];
+}
 
 + (NSString *) command
 {
@@ -82,7 +96,7 @@
 
 - (void) usage
 {
-  fprintf (stderr, "restore directory user [-f folder|-p]\n\n"
+  fprintf (stderr, "restore [-l|-f/-F folder/ALL|-p] directory user\n\n"
 	   "         folder     the folder where backup files will be stored\n"
 	   "         user       the user of whom to save the data\n");
 }
@@ -133,54 +147,70 @@
   return rc;
 }
 
-- (BOOL) parseModeArguments: (NSArray *) modeArguments
+- (int) parseModeArguments
 {
   NSString *mode;
-  BOOL rc;
+  int count, max;
 
-  rc = NO;
-
-  mode = [modeArguments objectAtIndex: 0];
-  if ([mode isEqualToString: @"-f"])
+  max = [arguments count];
+  if (max > 0)
     {
-      rc = YES;
-      restoreMode = SOGoToolRestoreFolderMode;
-      if ([modeArguments count] == 2)
+      mode = [arguments objectAtIndex: 0];
+      count = 1;
+      if ([mode isEqualToString: @"-f"]
+          || [mode isEqualToString: @"-F"])
         {
-          restoreFolder = [NSString stringWithFormat: @"/Users/%@/%@",
-                                    userID,
-                                    [modeArguments objectAtIndex: 1]];
-          [restoreFolder retain];
+          if ([mode hasSuffix: @"f"])
+            restoreMode = SOGoToolRestoreFolderMode;
+          else
+            restoreMode = SOGoToolRestoreFolderDestructiveMode;
+          if (max > 1)
+            {
+              count++;
+              ASSIGN (restoreFolder, [arguments objectAtIndex: 1]);
+            }
+          else
+            {
+              count = 0;
+              NSLog (@"missing 'folder' parameter");
+            }
+        }
+      else if ([mode isEqualToString: @"-l"])
+        restoreMode = SOGoToolRestoreListFoldersMode;
+      else if ([mode isEqualToString: @"-p"])
+        restoreMode = SOGoToolRestorePreferencesMode;
+      else
+        {
+          count = 0;
+          if ([mode hasPrefix: @"-"])
+            NSLog (@"specified mode is invalid");
+          else
+            NSLog (@"missing 'mode' parameter");
         }
     }
-  else if ([mode isEqualToString: @"-p"])
-    {
-      rc = YES;
-      restoreMode = SOGoToolRestorePreferencesMode;
-    }
   else
-    [self usage];
+    count = 0;
 
-  return rc;
+  return count;
 }
 
 - (BOOL) parseArguments
 {
   BOOL rc;
   NSString *identifier;
-  NSArray *modeArguments;
-  int max;
+  NSArray *newArguments;
+  int count, max;
 
-  max = [arguments count];
-  if ([arguments count] > 2)
+  count = [self parseModeArguments];
+  max = [arguments count] - count;
+  if (max == 2)
     {
-      ASSIGN (directory, [arguments objectAtIndex: 0]);
-      identifier = [arguments objectAtIndex: 1];
-      modeArguments
-        = [arguments subarrayWithRange: NSMakeRange (2, max - 2)];
+      newArguments
+        = [arguments subarrayWithRange: NSMakeRange (count, max)];
+      ASSIGN (directory, [newArguments objectAtIndex: 0]);
+      identifier = [newArguments objectAtIndex: 1];
       rc = ([self checkDirectory]
-            && [self fetchUserID: identifier]
-            && [self parseModeArguments: modeArguments]);
+            && [self fetchUserID: identifier]);
     }
   else
     {
@@ -335,30 +365,93 @@
   return rc;
 }
 
+- (BOOL) createFolder: (NSString *) folder
+               withFM: (GCSFolderManager *) fm
+{
+  NSArray *pathElements;
+  NSException *error;
+  NSString *folderType;
+  BOOL rc;
+
+  pathElements = [folder componentsSeparatedByString: @"/"];
+  if ([[pathElements objectAtIndex: 3] isEqualToString: @"Contacts"])
+    folderType = @"Contact";
+  else
+    folderType = @"Appointment";
+
+  error = [fm createFolderOfType: folderType
+                        withName: [pathElements objectAtIndex: 4]
+                          atPath: folder];
+  if (error)
+    {
+      rc = NO;
+      NSLog (@"an error occured during folder creation: %@", error);
+    }
+  else
+    rc = YES;
+
+  return rc;
+}
+
 - (BOOL) restoreFolder: (NSString *) folder
            withContent: (NSDictionary *) content
+           destructive: (BOOL) isDestructive
 {
   GCSFolderManager *fm;
   GCSFolder *gcsFolder;
+  NSException *error;
+  BOOL rc;
+
+  rc = YES;
 
   fm = [GCSFolderManager defaultFolderManager];
   gcsFolder = [fm folderAtPath: folder];
+  if (gcsFolder && isDestructive)
+    {
+      error = [fm deleteFolderAtPath: folder];
+      if (error)
+        {
+          rc = NO;
+          NSLog (@"an error occured during folder deletion: %@", error);
+        }
+      else
+        gcsFolder = nil;
+    }
+  if (rc)
+    {
+      if (!gcsFolder)
+        {
+          rc = [self createFolder: folder withFM: fm];
+          if (rc)
+            {
+              gcsFolder = [fm folderAtPath: folder];
+              if (!gcsFolder)
+                {
+                  rc = NO;
+                  NSLog (@"missing folder '%@' could not be recreated",
+                         folder);
+                }
+            }
+        }
 
-  return ([self restoreDisplayName: [content objectForKey: @"displayname"]
-                          ofFolder: gcsFolder
-                            withFM: fm]
-          && [self restoreACL: [content objectForKey: @"acl"]
-                     ofFolder: gcsFolder]
-          && [self restoreRecords: [content objectForKey: @"records"]
-                         ofFolder: gcsFolder]);
+      rc &= ([self restoreDisplayName: [content objectForKey: @"displayname"]
+                             ofFolder: gcsFolder
+                               withFM: fm]
+             && [self restoreACL: [content objectForKey: @"acl"]
+                        ofFolder: gcsFolder]
+             && [self restoreRecords: [content objectForKey: @"records"]
+                            ofFolder: gcsFolder]);
+    }
+
+  return rc;
 }
 
-- (BOOL)
- restoreSpecifiedUserFolderFromUserRecord: (NSDictionary *) userRecord
+- (BOOL) restoreUserFolderFromUserRecord: (NSDictionary *) userRecord
+                             destructive: (BOOL) isDestructive
 {
   NSDictionary *tables, *content;
   NSArray *restoreFolders;
-  NSString *currentFolder;
+  NSString *currentFolder, *folderPath;
   int count, max;
   BOOL rc;
 
@@ -367,10 +460,14 @@
   tables = [userRecord objectForKey: @"tables"];
   if (tables)
     {
-      if (restoreFolder)
-        restoreFolders = [NSArray arrayWithObject: restoreFolder];
-      else
+      if ([restoreFolder isEqualToString: @"ALL"])
         restoreFolders = [tables allKeys];
+      else
+        {
+          folderPath = [NSString stringWithFormat: @"/Users/%@/%@",
+                                 userID, restoreFolder];
+          restoreFolders = [NSArray arrayWithObject: folderPath];
+        }
       max = [restoreFolders count];
       for (count = 0; count < max; count++)
         {
@@ -378,12 +475,44 @@
           content = [tables objectForKey: currentFolder];
           if (content)
             rc &= [self restoreFolder: currentFolder
-                          withContent: content];
+                          withContent: content
+                          destructive: isDestructive];
           else
             {
               rc = NO;
               NSLog (@"no user table with that name");
             }
+        }
+    }
+  else
+    {
+      rc = NO;
+      NSLog (@"no table information found in backup file");
+    }
+
+  return rc;
+}
+
+- (BOOL) listRestorableFolders: (NSDictionary *) userRecord
+{
+  BOOL rc;
+  NSDictionary *tables, *currentFolder;
+  NSEnumerator *tableKeys;
+  NSString *key, *folderKey;
+  int folderPrefixLen;
+
+  tables = [userRecord objectForKey: @"tables"];
+  if (tables)
+    {
+      NSLog (@"Restorable folders:");
+      folderPrefixLen = 8 + [userID length];
+      tableKeys = [[tables allKeys] objectEnumerator];
+      while ((key = [tableKeys nextObject]))
+        {
+          currentFolder = [tables objectForKey: key];
+          folderKey = [key substringFromIndex: folderPrefixLen];
+          NSLog (@"  '%@': %@",
+                 [currentFolder objectForKey: @"displayname"], folderKey);
         }
     }
   else
@@ -436,7 +565,13 @@
   if (userRecord)
     {
       if (restoreMode == SOGoToolRestoreFolderMode)
-        rc = [self restoreSpecifiedUserFolderFromUserRecord: userRecord];
+        rc = [self restoreUserFolderFromUserRecord: userRecord
+                                       destructive: NO];
+      else if (restoreMode == SOGoToolRestoreFolderDestructiveMode)
+        rc = [self restoreUserFolderFromUserRecord: userRecord
+                                       destructive: YES];
+      else if (restoreMode == SOGoToolRestoreListFoldersMode)
+        rc = [self listRestorableFolders: userRecord];
       else
         rc = [self restoreUserPreferencesFromUserRecord: userRecord];
     }
