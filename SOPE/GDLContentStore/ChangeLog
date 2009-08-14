@@ -1,3 +1,9 @@
+2009-08-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* GCSFolder.m (-deleteAclWithSpecification:): enable the deletion
+	of the complete list if a nil specification is passed as
+	parameter, previously we would ignore such as call.
+
 2009-06-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* GCSFolderManager.m: replaced invocations of NSLog with

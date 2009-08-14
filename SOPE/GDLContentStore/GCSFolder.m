@@ -1256,39 +1256,36 @@ static NSArray *contentFieldNames = nil;
 
 - (void) deleteAclWithSpecification: (EOFetchSpecification *) _fs
 {
-  EOQualifier      *qualifier;
   EOAdaptorChannel *channel;
   NSException      *error;
   NSMutableString  *sql;
+  NSString *qSql;
   
-  qualifier     = [_fs qualifier];
-  if (qualifier)
-    {
-      sql = [NSMutableString stringWithCapacity:256];
-      [sql appendString:@"DELETE FROM "];
-      [sql appendString:[self aclTableName]];
-      [sql appendString:@" WHERE "];
-      [sql appendString:[self _sqlForQualifier:qualifier]];
+  sql = [NSMutableString stringWithCapacity:256];
+  [sql appendString:@"DELETE FROM "];
+  [sql appendString:[self aclTableName]];
+  qSql = [self _sqlForQualifier: [_fs qualifier]];
+  if (qSql)
+    [sql appendFormat:@" WHERE %@", qSql];
   
-      /* open channel */
+  /* open channel */
 
-      if ((channel = [self acquireAclChannel]) == nil) {
-	[self errorWithFormat:@"could not open acl channel!"];
-	return;
-      }
+  if ((channel = [self acquireAclChannel]) == nil) {
+    [self errorWithFormat:@"could not open acl channel!"];
+    return;
+  }
   
-      /* run SQL */
-      [[channel adaptorContext] beginTransaction];
-      if ((error = [channel evaluateExpressionX:sql]) != nil) {
-	[self errorWithFormat:@"%s: cannot execute acl-fetch SQL '%@': %@", 
-	      __PRETTY_FUNCTION__, sql, error];
-	[self releaseChannel:channel];
-	return;
-      }
-      
-      [[channel adaptorContext] commitTransaction];
-      [self releaseChannel:channel];
-    }
+  /* run SQL */
+  [[channel adaptorContext] beginTransaction];
+  if ((error = [channel evaluateExpressionX:sql]) != nil) {
+    [self errorWithFormat:@"%s: cannot execute acl-fetch SQL '%@': %@", 
+          __PRETTY_FUNCTION__, sql, error];
+    [self releaseChannel:channel];
+    return;
+  }
+  
+  [[channel adaptorContext] commitTransaction];
+  [self releaseChannel:channel];
 }
 
 - (unsigned int) recordsCountByExcludingDeleted: (BOOL) excludeDeleted
