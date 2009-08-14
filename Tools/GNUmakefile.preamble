@@ -10,13 +10,7 @@ ADDITIONAL_INCLUDE_DIRS += \
 	-D_GNU_SOURCE -I../SOPE/ -I../SoObjects/
 
 ADDITIONAL_LIB_DIRS += \
-	-L../SoObjects/SOGo/$(GNUSTEP_OBJ_DIR)/ -lSOGo \
+	-L../SoObjects/SOGo/SOGo.framework -lSOGo \
 	-L../SOPE/GDLContentStore/$(GNUSTEP_OBJ_DIR)/ -lGDLContentStore \
-	-L../SOPE/NGCards/$(GNUSTEP_OBJ_DIR)/ -lNGCards
-
-SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib
-
-$(SOGOD)_TOOL_LIBS += \
-	-lGDLContentStore	\
-	-lGDLAccess		\
-	-lNGExtensions
+	-L../SOPE/NGCards/$(GNUSTEP_OBJ_DIR)/ -lNGCards \
+         -L/usr/local/lib -L/usr/lib
