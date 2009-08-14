@@ -3,6 +3,15 @@
 	* Tools/SOGoToolRestore.m: new "sogo-tool" utility that restores
 	the specified user data previously created by the "backup"
 	command.
+	(+initialize): load the "Appointments.SOGo" and "Contacts.SOGo"
+	bundle in order to access some categories found therein that are
+	used by OGoContentStore.
+	(-parseModeArguments) mode arguments are now put at the beginning
+	of the command parameter string. Added "-F" mode that acts
+	"destructivelly". Added "-l" mode that enables the listing of
+	folders previously backed up.
+	(-createFolder:withFM:): new method that enables the restoration
+	of folders that were previously deleted.
 
 	* Tools/SOGoToolBackup.m (-extractUserPreferences:intoRecord:): we
 	must extract the values of the user defaults in order to put them
