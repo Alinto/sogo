@@ -1,3 +1,10 @@
+2009-08-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Tools/SOGoToolBackup.m (-extractUserPreferences:intoRecord:): we
+	must extract the values of the user defaults in order to put them
+	in the record dictionary. Putting the defaults themselves will
+	only produce serialized strings.
+
 2009-08-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/LDAPSource.m: the objectClass are now all added

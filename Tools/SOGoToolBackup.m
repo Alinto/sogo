@@ -36,11 +36,13 @@
 #import <SOGo/LDAPSource.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
 
 #import "NSDictionary+SOGoTool.h"
 #import "SOGoToolBackup.h"
 
 /* TODO:
+   - handle database connectivity errors
    - respond to "--help backup"
    - allow more than one user specifier on the command-line
 */
@@ -328,11 +330,13 @@
 {
   SOGoUser *sogoUser;
   NSArray *preferences;
+  NSDictionary *defaultsValues, *settingsValues;
 
   sogoUser = [SOGoUser userWithLogin: uid roles: nil];
-  preferences = [NSArray arrayWithObjects:
-                           [sogoUser userDefaults],
-                         [sogoUser userSettings], nil];
+  defaultsValues = [[sogoUser userDefaults] values];
+  settingsValues = [[sogoUser userSettings] values];
+  preferences = [NSArray arrayWithObjects: defaultsValues, settingsValues,
+                         nil];
   [userRecord setObject: preferences forKey: @"preferences"];
 
   return YES;
