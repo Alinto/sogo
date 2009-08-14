@@ -13,6 +13,7 @@ AutoReqProv:  off
 Requires:     gnustep-base sope%{sope_major_version}%{sope_minor_version}-core httpd sope%{sope_major_version}%{sope_minor_version}-core sope%{sope_major_version}%{sope_minor_version}-appserver sope%{sope_major_version}%{sope_minor_version}-ldap sope%{sope_major_version}%{sope_minor_version}-cards sope%{sope_major_version}%{sope_minor_version}-gdl1-contentstore memcached libmemcached
 BuildRoot:    %{_tmppath}/%{name}-%{version}-%{release}
 BuildPreReq:  gcc-objc gnustep-base gnustep-make sope%{sope_major_version}%{sope_minor_version}-appserver-devel sope%{sope_major_version}%{sope_minor_version}-core-devel sope%{sope_major_version}%{sope_minor_version}-ldap-devel sope%{sope_major_version}%{sope_minor_version}-mime-devel sope%{sope_major_version}%{sope_minor_version}-xml-devel sope%{sope_major_version}%{sope_minor_version}-gdl1-devel libmemcached-devel
+
 %description
 SOGo is a groupware server built around OpenGroupware.org (OGo) and
 the SOPE application server.  It focuses on scalability.
@@ -26,15 +27,17 @@ The Web interface has been rewritten in an AJAX fashion to provided a faster
 UI for the users, consistency in look and feel with the Mozilla applications,
 and to reduce the load of the transactions on the server.
 
-%package -n sogo-tools
-Summary:      Command-line tools for SOGo
+%package -n sogo-tool
+Summary:      Command-line toolsuite for SOGo
 Group:        Productivity/Groupware
 AutoReqProv:  off
 
-%description -n sogo-tools
-Command-line tools for SOGo:
-  sogo-contacts-checkdoubles - check excessive amounts of records in addressbooks
-  sogo-contacts-removedoubles - intelligently remove contacts that may exist in addressbooks
+%description -n sogo-tool
+Administrative tool for SOGo that provides the following internal commands:
+  backup          -- backup user folders
+  restore         -- restore user folders
+  remove-doubles  -- remove duplicate contacts from the user addressbooks
+  check-doubles   -- list user addressbooks with duplicate contacts
 
 %package -n sogo-devel
 Summary:      Development headers and libraries for SOGo
@@ -64,7 +67,7 @@ Requires:     sope%{sope_major_version}%{sope_minor_version}-gdl1
 AutoReqProv:  off
 
 %description -n sope%{sope_major_version}%{sope_minor_version}-gdl1-contentstore-devel
-This package contains the header files for the SOPE GDLContentStore library.
+This package contains the header files for SOPE's GDLContentStore library.
 
 SOPE is a framework for developing web applications and services. The
 name "SOPE" (SKYRiX Object Publishing Environment) is inspired by ZOPE.
@@ -89,7 +92,7 @@ SOPE versit parsing library for iCal and VCard formats
 ########################################
 %prep
 rm -fr ${RPM_BUILD_ROOT}
-%setup -q -n SOGo
+%setup -q -n SOGo-%{sogo_version}
 
 # ****************************** build ********************************
 %build
@@ -105,7 +108,7 @@ ppc64-*)
   ldflags="";; 
 esac
 
-make CC="$cc" LDFLAGS="$ldflags"
+make CC="$cc" LDFLAGS="$ldflags" messages=yes
 
 # ****************************** install ******************************
 %install
@@ -125,6 +128,7 @@ make DESTDIR=${RPM_BUILD_ROOT} \
      install
 mkdir -p ${RPM_BUILD_ROOT}/etc/init.d
 mkdir -p ${RPM_BUILD_ROOT}/etc/cron.daily
+mkdir -p ${RPM_BUILD_ROOT}/etc/sysconfig
 mkdir -p ${RPM_BUILD_ROOT}/etc/httpd/conf.d
 mkdir -p ${RPM_BUILD_ROOT}/usr/sbin
 mkdir -p ${RPM_BUILD_ROOT}/var/run/sogo
@@ -134,6 +138,9 @@ cp Apache/SOGo.conf ${RPM_BUILD_ROOT}/etc/httpd/conf.d/
 cp Scripts/tmpwatch ${RPM_BUILD_ROOT}/etc/cron.daily/sogo-tmpwatch
 cp Scripts/sogo-init.d-redhat ${RPM_BUILD_ROOT}/etc/init.d/sogod
 cp Scripts/sogod-wrapper ${RPM_BUILD_ROOT}/usr/sbin/sogod
+chmod 755 ${RPM_BUILD_ROOT}/usr/sbin/sogod
+chmod 755 ${RPM_BUILD_ROOT}/etc/init.d/sogod
+cp Scripts/sogo-default ${RPM_BUILD_ROOT}/etc/sysconfig/sogo
 rm -rf ${RPM_BUILD_ROOT}%{prefix}/Tools/test_quick_extract
 
 # ****************************** clean ********************************
@@ -168,10 +175,11 @@ rm -fr ${RPM_BUILD_ROOT}
 %{prefix}/Library/WOxElemBuilders-%{sope_version}/SOGoElements.wox
 
 %config %{_sysconfdir}/httpd/conf.d/SOGo.conf
-%doc ChangeLog README NEWS Scripts/sql-update-20070724.sh Scripts/sql-update-20070822.sh Scripts/sql-update-20080303.sh Scripts/sql-update-101_to_102.sh
+%config %{_sysconfdir}/sysconfig/sogo
+%doc ChangeLog README NEWS Scripts/sql-update-20070724.sh Scripts/sql-update-20070822.sh Scripts/sql-update-20080303.sh
 
-%files -n sogo-tools
-%{prefix}/Tools/Admin/sogo-contacts-*
+%files -n sogo-tool
+%{prefix}/Tools/Admin/sogo-tool
 
 %files -n sogo-devel
 %{prefix}/Library/Headers/SOGo
