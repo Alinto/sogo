@@ -84,6 +84,17 @@
 	      <a id="preferencesBannerLink"
 		var:href="relativePreferencesPath"
 		><var:string label:value="Preferences" /></a>
+	      <var:if condition="isSuperUser">
+		|
+		<var:if condition="isAdministration">
+		    <span class="active"><var:string label:value="Admnistration"
+		      /></span>
+		</var:if>
+		<var:if condition="isAdministration" const:negate="YES">
+		  <a id="administrationBannerLink" var:href="relativeAdministrationPath"
+		    ><var:string label:value="Administration" /></a>
+		</var:if>
+	      </var:if>
 	      <var:if condition="context.isUIxDebugEnabled"
 		>| <a id="consoleBannerLink"
 		  href="#"><var:string

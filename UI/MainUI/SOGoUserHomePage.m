@@ -384,18 +384,12 @@ static NSString *LDAPContactInfoAttribute = nil;
   SOGoUserFolder *userFolder;
 
   folderType = [self queryParameterForKey: @"type"];
-  if ([folderType length])
-    {
-      userFolder = [self clientObject];
-      folders
-        = [userFolder foldersOfType: folderType
-                             forUID: [userFolder ownerInContext: context]];
-      result = [self _foldersResponseForResults: folders];
-    }
-  else
-    result = [NSException exceptionWithHTTPStatus: 400
-                                           reason: @"missing 'type' parameter"];
-
+  userFolder = [self clientObject];
+  folders
+    = [userFolder foldersOfType: folderType
+			 forUID: [userFolder ownerInContext: context]];
+  result = [self _foldersResponseForResults: folders];
+  
   return result;
 }
 
