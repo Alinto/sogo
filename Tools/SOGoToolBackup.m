@@ -79,7 +79,7 @@
 
 - (void) usage
 {
-  fprintf (stderr, "backup directory user|ALL\n\n"
+  fprintf (stderr, "backup directory ALL|user1 [user2] ...\n\n"
 	   "         folder     the folder where backup files will be stored\n"
 	   "         user       the user of whom to save the data\n");
 }
@@ -116,51 +116,51 @@
   return rc;
 }
 
-- (BOOL) fetchUserIDs: (NSString *) identifier
+- (BOOL) fetchUserIDs: (NSArray *) users
 {
-  BOOL rc;
   LDAPUserManager *lm;
   NSDictionary *infos;
-  NSString *userID;
-  NSArray *allUsers;
+  NSString *user;
+  id allUsers;
+  int count, max;
 
   lm = [LDAPUserManager sharedUserManager];
-  if ([identifier isEqualToString: @"ALL"])
-    {
-      rc = YES;
-      allUsers = [lm fetchUsersMatching: @"."];
-      ASSIGN (userIDs, [allUsers objectsForKey: @"c_uid"
-                                notFoundMarker: nil]);
-    }
+  max = [users count];
+  user = [users objectAtIndex: 0];
+  if (max == 1 && [user isEqualToString: @"ALL"])
+    allUsers = [lm fetchUsersMatching: @"."];
   else
     {
-      infos = [lm contactInfosForUserWithUIDorEmail: identifier];
-      userID = [infos objectForKey: @"c_uid"];
-      if (userID)
+      allUsers = [NSMutableArray array];
+      for (count = 0; count < max; count++)
         {
-          rc = YES;
-          ASSIGN (userIDs, [NSArray arrayWithObject: userID]);
-        }
-      else
-        {
-          rc = NO;
-          NSLog (@"user '%@' not found", identifier);
+          user = [users objectAtIndex: count];
+          infos = [lm contactInfosForUserWithUIDorEmail: user];
+          if (infos)
+            [allUsers addObject: infos];
+          else
+            NSLog (@"user '%@' unknown", user);
         }
     }
 
-  return rc;
+  ASSIGN (userIDs, [allUsers objectsForKey: @"c_uid" notFoundMarker: nil]);
+
+  return ([userIDs count] > 0);
 }
 
 - (BOOL) parseArguments
 {
   BOOL rc;
-  NSString *identifier;
+  NSRange rest;
+  int max;
 
-  if ([arguments count] > 1)
+  max = [arguments count];
+  if (max > 1)
     {
       ASSIGN (directory, [arguments objectAtIndex: 0]);
-      identifier = [arguments objectAtIndex: 1];
-      rc = ([self checkDirectory] && [self fetchUserIDs: identifier]);
+      rest = NSMakeRange (1, max - 1);
+      rc = ([self checkDirectory]
+            && [self fetchUserIDs: [arguments subarrayWithRange: rest]]);
     }
   else
     {
@@ -287,7 +287,7 @@
     {
       folder = [NSString stringWithFormat: @"%@/%@",
                          basePath, [folders objectAtIndex: count]];
-      NSLog (@"folder %d: %@", count, folder);
+      // NSLog (@"folder %d: %@", count, folder);
       [self extractFolder: folder withFM: fm
                intoRecord: tables];
     }

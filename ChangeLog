@@ -1,5 +1,8 @@
 2009-08-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Tools/SOGoToolBackup.m (-parseArguments): modified to either
+	accept "ALL" or a list of identifiers as arguments.
+
 	* Tools/SOGoToolRestore.m: new "sogo-tool" utility that restores
 	the specified user data previously created by the "backup"
 	command.
