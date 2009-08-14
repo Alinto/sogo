@@ -176,7 +176,7 @@ rm -fr ${RPM_BUILD_ROOT}
 
 %config %{_sysconfdir}/httpd/conf.d/SOGo.conf
 %config %{_sysconfdir}/sysconfig/sogo
-%doc ChangeLog README NEWS Scripts/sql-update-20070724.sh Scripts/sql-update-20070822.sh Scripts/sql-update-20080303.sh
+%doc ChangeLog README NEWS Scripts/sql-update-20070724.sh Scripts/sql-update-20070822.sh Scripts/sql-update-20080303.sh Scripts/sql-update-101_to_102.sh
 
 %files -n sogo-tool
 %{prefix}/Tools/Admin/sogo-tool
