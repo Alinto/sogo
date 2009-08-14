@@ -1,5 +1,9 @@
 2009-08-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Tools/SOGoToolRestore.m: new "sogo-tool" utility that restores
+	the specified user data previously created by the "backup"
+	command.
+
 	* Tools/SOGoToolBackup.m (-extractUserPreferences:intoRecord:): we
 	must extract the values of the user defaults in order to put them
 	in the record dictionary. Putting the defaults themselves will

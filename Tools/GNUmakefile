@@ -11,6 +11,7 @@ $(SOGO_TOOL)_OBJC_FILES += \
 	\
 	SOGoTool.m \
 	SOGoToolBackup.m \
+	SOGoToolRestore.m \
 	SOGoToolCheckDoubles.m \
 	SOGoToolRemoveDoubles.m \
 	\
