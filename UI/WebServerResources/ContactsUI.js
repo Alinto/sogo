@@ -1037,9 +1037,17 @@ function onDocumentKeydown(event) {
         }
 }
 
+function fixSearchFieldPosition () {
+    var panel = $("filterPanel");
+    panel.style.position = "relative";
+    panel.style.top = "3px";
+}
+
 function initContacts(event) {
-    if ($(document.body).hasClassName("popup"))
+    if ($(document.body).hasClassName("popup")) {
         configureSelectionButtons();
+        fixSearchFieldPosition ();
+    }
     else if (Prototype.Browser.Gecko)
         Event.observe(document, "keypress", onDocumentKeydown); // for FF2
     else

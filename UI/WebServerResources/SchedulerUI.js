@@ -7,7 +7,7 @@ var listFilter = 'view_today';
 var listOfSelection = null;
 var selectedCalendarCell;
 
-var showCompletedTasks = 0;
+var showCompletedTasks;;
 
 var currentDay = '';
 
@@ -1354,9 +1354,12 @@ function refreshEvents() {
                           + "&filterpopup=" + listFilter);
 }
 
-function refreshTasks() {
+function refreshTasks(setUserDefault) {
+    var url = "taskslist?show-completed=" + showCompletedTasks;
+    if (setUserDefault == 1)
+      url += "&setud=1";
     refreshAlarms();
-    return _loadTasksHref("taskslist?show-completed=" + showCompletedTasks);
+    return _loadTasksHref(url);
 }
 
 function refreshEventsAndDisplay() {
@@ -1560,7 +1563,7 @@ function changeMonthCalendarDisplayOfSelectedDay(node) {
 function onShowCompletedTasks(event) {
     showCompletedTasks = (this.checked ? 1 : 0);
 
-    return refreshTasks();
+    return refreshTasks(1);
 }
 
 function updateTaskStatus(event) {
@@ -2039,6 +2042,8 @@ function configureLists() {
 
     var input = $("showHideCompletedTasks");
     input.observe("click", onShowCompletedTasks);
+    if (showCompletedTasks)
+      input.checked = true;
 
     list = $("eventsList");
     list.multiselect = true;
@@ -2123,6 +2128,7 @@ function drawNowLine () {
 function initCalendars() {
     sorting["attribute"] = "start";
     sorting["ascending"] = true;
+    showCompletedTasks = UserDefaults['ShowCompletedTasks'];
   
     if (!$(document.body).hasClassName("popup")) {
         var node = $("filterpopup");

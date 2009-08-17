@@ -8,7 +8,7 @@ Standards-Version: 3.8.2
 Package: sogo
 Section: web
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, tmpreaper
+Depends: ${shlibs:Depends}, ${misc:Depends}, tmpreaper, apache2
 Suggests: nginx
 Description: a modern and scalable groupware
  SOGo is a groupware server built around OpenGroupware.org (OGo) and
