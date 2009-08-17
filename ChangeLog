@@ -1,3 +1,8 @@
+2009-08-17  Cyril Robert <crobert@inverse.ca>
+
+	* UI/Scheduler/UIxCalListingActions.m: Added support for new user default:
+	ShowCompletedTasks.
+
 2009-08-17  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/SOGo/LDAPSource.m

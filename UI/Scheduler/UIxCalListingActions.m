@@ -27,6 +27,7 @@
 #import <Foundation/NSString.h>
 #import <Foundation/NSTimeZone.h>
 #import <Foundation/NSValue.h>
+#import <Foundation/NSUserDefaults.h>
 
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
@@ -967,9 +968,10 @@ _computeBlocksPosition (NSArray *blocks)
 
 - (WOResponse *) tasksListAction
 {
+  NSUserDefaults *ud;
   NSEnumerator *tasks;
   NSMutableArray *filteredTasks, *filteredTask;
-  BOOL showCompleted;
+  BOOL showCompleted, setUserDefault;
   NSArray *task;
   int statusCode;
   unsigned int endDateStamp;
@@ -982,6 +984,15 @@ _computeBlocksPosition (NSArray *blocks)
   tasks = [[self _fetchFields: tasksFields
 		 forComponentOfType: @"vtodo"] objectEnumerator];
   showCompleted = [[request formValueForKey: @"show-completed"] intValue];
+  setUserDefault = [[request formValueForKey: @"setud"] intValue];
+  if (setUserDefault)
+    {
+      ud = [[context activeUser] userDefaults];
+      [ud setObject: [NSNumber numberWithInt: showCompleted]
+             forKey: @"ShowCompletedTasks"];
+      [ud synchronize];
+    }
+  
 
   while (task = [tasks nextObject])
     {
