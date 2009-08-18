@@ -1,5 +1,5 @@
 {
-  requires = ( MAIN, CommonUI );
+  requires = ( MAIN, Appointments, CommonUI );
 
   publicResources = (
   );
