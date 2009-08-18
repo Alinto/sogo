@@ -10,6 +10,7 @@
 "Address Book"	= "Címjegyzék";
 "Mail" = "Üzenetek";
 "Preferences" = "Beállítások";
+"Administration" = "Administration";
 "Disconnect" = "Kilépés";
 "Right Administration" = "Jogosultság szerkesztése";
 "Log Console (dev.)" = "Log Console (dev.)";
