@@ -321,44 +321,42 @@ static NSArray *tasksFields = nil;
   folders = [[clientObject subFolders] objectEnumerator];
   while ((currentFolder = [folders nextObject]))
     {
-      if (![component isEqualToString: @"vtodo"] || [currentFolder showCalendarTasks])
+      if ([currentFolder isActive]
+          && (![component isEqualToString: @"vtodo"] || [currentFolder showCalendarTasks]))
         {
-          if ([currentFolder isActive])
-            {
-              currentInfos
-                = [[currentFolder fetchCoreInfosFrom: startDate
-                                                  to: endDate
-                                               title: title
-                                           component: component] objectEnumerator];
+          currentInfos
+            = [[currentFolder fetchCoreInfosFrom: startDate
+                                              to: endDate
+                                           title: title
+                                       component: component] objectEnumerator];
 
-              while ((newInfo = [currentInfos nextObject]))
+          while ((newInfo = [currentInfos nextObject]))
+            {
+              if ([fields containsObject: @"editable"])
                 {
-                  if ([fields containsObject: @"editable"])
-                    {
-		      role = 
-			[currentFolder roleForComponentsWithAccessClass:
-						 [[newInfo objectForKey: @"c_classification"] intValue]
-								forUser: userLogin];
-		      if ([role isEqualToString: @"ComponentModifier"] 
-			  || [role length] == 0)
-			[newInfo setObject: [NSNumber numberWithInt: 1]
-				    forKey: @"editable"];
-		      else
-			[newInfo setObject: [NSNumber numberWithInt: 0]
-				    forKey: @"editable"];
-		    }
-                  [newInfo setObject: [currentFolder nameInContainer]
-                              forKey: @"c_folder"];
-                  [newInfo setObject: [currentFolder ownerInContext: context]
-                              forKey: @"c_owner"];
-                  if (![[newInfo objectForKey: @"c_title"] length])
-		                [self _fixComponentTitle: newInfo withType: component];
-                  // Possible improvement: only call _fixDates if event is recurrent
-                  // or the view range span a daylight saving time change
-                  [self _fixDates: newInfo];
-                  [infos addObject: [newInfo objectsForKeys: fields
-                                             notFoundMarker: marker]];
+                  role =
+                    [currentFolder roleForComponentsWithAccessClass:
+                                             [[newInfo objectForKey: @"c_classification"] intValue]
+                                                            forUser: userLogin];
+                  if ([role isEqualToString: @"ComponentModifier"] 
+                      || [role length] == 0)
+                    [newInfo setObject: [NSNumber numberWithInt: 1]
+                                forKey: @"editable"];
+                  else
+                    [newInfo setObject: [NSNumber numberWithInt: 0]
+                                forKey: @"editable"];
                 }
+              [newInfo setObject: [currentFolder nameInContainer]
+                          forKey: @"c_folder"];
+              [newInfo setObject: [currentFolder ownerInContext: context]
+                          forKey: @"c_owner"];
+              if (![[newInfo objectForKey: @"c_title"] length])
+                [self _fixComponentTitle: newInfo withType: component];
+              // Possible improvement: only call _fixDates if event is recurrent
+              // or the view range span a daylight saving time change
+              [self _fixDates: newInfo];
+              [infos addObject: [newInfo objectsForKeys: fields
+                                         notFoundMarker: marker]];
             }
         }
     }
@@ -994,7 +992,7 @@ _computeBlocksPosition (NSArray *blocks)
     }
   
 
-  while (task = [tasks nextObject])
+  while ((task = [tasks nextObject]))
     {
       statusCode = [[task objectAtIndex: 2] intValue];
       if (statusCode != 1 || showCompleted)
