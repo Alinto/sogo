@@ -280,10 +280,10 @@ DIV#daysView DIV.event.lasts96  { height:  96em; }
 DIV#attendeesMenu LI.separator
 { padding-left: 0px; }
 
-SPAN.content A
+#eventView SPAN.content A
 { line-height: 2.5em; }
 
-SPAN.content > INPUT.textField
+#eventView SPAN.content > INPUT.textField
 { width: 99%; }
 
 /* UIxAttendeesEditor */
@@ -308,14 +308,24 @@ TABLE
 { empty-cells: show; }
 
 /* UIxCalendarProperties */
+
 BUTTON#colorButton
 { margin-top: 2px; }
 
+DIV#propertiesView FIELDSET
+{ margin: 0.5em;
+  padding: 5px; }
+
+DIV#propertiesView LEGEND
+{ margin-bottom: 5px; }
+
 /* UIxMailPartICalViewer */
-fieldset
+
+#messageContent FIELDSET
 { padding: 0.5em 1.0em; }
 
-fieldset div, fieldset p
+#messageContent FIELDSET DIV,
+#messageContent FIELDSET P
 { margin: 1.0em; }
 
 /* UIxMailEditor */
