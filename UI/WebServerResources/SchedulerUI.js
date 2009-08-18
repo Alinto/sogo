@@ -23,6 +23,8 @@ var usersRightsWindowWidth = 502;
 
 var calendarEvents = null;
 
+var preventAutoScroll = false;
+
 var userStates = [ "needs-action", "accepted", "declined", "tentative" ];
 
 function newEvent(sender, type) {
@@ -873,29 +875,31 @@ function onCalendarReload() {
 }
 
 function scrollDayView(scrollEvent) {
-    if (scrollEvent) {
-        var contentView;
-        var eventRow = $(scrollEvent);
-        var eventBlocks = selectCalendarEvent(eventRow.calendar, eventRow.cname, eventRow.recurrenceTime);
-        var firstEvent = eventBlocks.first();
-    
-        if (currentView == "monthview")
-            contentView = firstEvent.up("DIV.day");
-        else
-            contentView = $("daysView");
-    
-        var top = firstEvent.cumulativeOffset()[1] - contentView.scrollTop;
+    if (!preventAutoScroll) {
+        if (scrollEvent) {
+            var contentView;
+            var eventRow = $(scrollEvent);
+            var eventBlocks = selectCalendarEvent(eventRow.calendar, eventRow.cname, eventRow.recurrenceTime);
+            var firstEvent = eventBlocks.first();
 
-        // Don't scroll if the event is visible to the user
-        if (top < contentView.cumulativeOffset()[1])
-            contentView.scrollTop = firstEvent.cumulativeOffset()[1] - contentView.cumulativeOffset()[1];
-        else if (top > contentView.cumulativeOffset()[1] + contentView.getHeight() - firstEvent.getHeight())
-            contentView.scrollTop = firstEvent.cumulativeOffset()[1] - contentView.cumulativeOffset()[1];
-    }
-    else if (currentView != "monthview") {
-        var contentView = $("daysView");
-        var hours = (contentView.childNodesWithTag("div")[0]).childNodesWithTag("div");
-        contentView.scrollTop = hours[dayStartHour].offsetTop;
+            if (currentView == "monthview")
+              contentView = firstEvent.up("DIV.day");
+            else
+              contentView = $("daysView");
+
+            var top = firstEvent.cumulativeOffset()[1] - contentView.scrollTop;
+
+            // Don't scroll if the event is visible to the user
+            if (top < contentView.cumulativeOffset()[1])
+              contentView.scrollTop = firstEvent.cumulativeOffset()[1] - contentView.cumulativeOffset()[1];
+            else if (top > contentView.cumulativeOffset()[1] + contentView.getHeight() - firstEvent.getHeight())
+              contentView.scrollTop = firstEvent.cumulativeOffset()[1] - contentView.cumulativeOffset()[1];
+        }
+        else if (currentView != "monthview") {
+            var contentView = $("daysView");
+            var hours = (contentView.childNodesWithTag("div")[0]).childNodesWithTag("div");
+            contentView.scrollTop = hours[dayStartHour].offsetTop;
+        }
     }
 }
 
@@ -1144,11 +1148,23 @@ function newMonthEventDIV(eventRep, event) {
 
 function calendarDisplayCallback(http) {
     var div = $("calendarView");
+    var daysView = $("daysView");
+    var position = -1;
+
+    if (daysView)
+      position = daysView.scrollTop;
+
+    if (position != -1)
+      preventAutoScroll = true;
 
     if (http.readyState == 4
         && http.status == 200) {
         document.dayDisplayAjaxRequest = null;
         div.update(http.responseText);
+
+        // DOM has changed
+        if (preventAutoScroll)
+          $("daysView").scrollTop = position;
 
         if (http.callbackData["view"])
             currentView = http.callbackData["view"];
