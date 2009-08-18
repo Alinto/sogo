@@ -10,6 +10,7 @@
 "Address Book"	= "Carnet d'adresses";
 "Mail" = "Courrier";
 "Preferences" = "Préférences";
+"Administration" = "Administration";
 "Disconnect" = "Quitter";
 "Right Administration" = "Partage";
 "Log Console (dev.)" = "Journal (dév.)";

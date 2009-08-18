@@ -10,6 +10,7 @@
 "Address Book"	= "Adressbuch";
 "Mail" = "Mail";
 "Preferences" = "Einstellungen";
+"Administration" = "Administration";
 "Disconnect" = "Beenden";
 "Right Administration" = "Rechte Administration";
 "Log Console (dev.)" = "Journal (dev.)";

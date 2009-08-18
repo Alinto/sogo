@@ -10,6 +10,7 @@
 "Address Book"	= "Adresboek";
 "Mail" = "E-mail";
 "Preferences" = "Instellingen";
+"Administration" = "Administration";
 "Disconnect" = "Uitloggen";
 "Right Administration" = "Machtigingen beheren";
 "Log Console (dev.)" = " (dev.)";

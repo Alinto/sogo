@@ -10,6 +10,7 @@
 "Address Book"	= "Rubrica";
 "Mail" = "Posta";
 "Preferences" = "Preferenze";
+"Administration" = "Administration";
 "Disconnect" = "Disconnetti";
 "Right Administration" = "Amministrazione permessi";
 "Log Console (dev.)" = "Log Console (dev.)";

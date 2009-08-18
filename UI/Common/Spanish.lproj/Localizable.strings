@@ -10,6 +10,7 @@
 "Address Book"	= "Libreta de direcciones";
 "Mail" = "Correo";
 "Preferences" = "Preferencias";
+"Administration" = "Administration";
 "Disconnect" = "Cerrar sesión";
 "Right Administration" = "Administración de permisos";
 "Log Console (dev.)" = "Consola registro de actividad (dev.)";

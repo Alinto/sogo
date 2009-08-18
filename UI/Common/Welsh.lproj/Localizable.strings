@@ -10,6 +10,7 @@
 "Address Book"	= "Llyfr Cyfeiriadau";
 "Mail" = "Post";
 "Preferences" = "Dewisiadau";
+"Administration" = "Administration";
 "Disconnect" = "Datgysylltu";
 "Right Administration" = "Hawl Gweinyddu";
 "Log Console (dev.)" = "Consol Log (dev.)";

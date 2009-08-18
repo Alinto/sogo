@@ -10,6 +10,7 @@
 "Address Book"	= "Adresář";
 "Mail" = "E-Mail";
 "Preferences" = "Předvolby";
+"Administration" = "Administration";
 "Disconnect" = "Odpojit";
 "Right Administration" = "Administrace";
 "Log Console (dev.)" = "Konzole (dev.)";
