@@ -1,3 +1,11 @@
+2009-08-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoGCSFolder.m
+	(-initializeQuickTablesAclsInContext:): don't give the right to
+	view everything to users who can delete objects. This may cause
+	deletion from working from a web method, but everyone who uses
+	such as configuration will probably use DAV instead.
+
 2009-08-18  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Scheduler/UIxCalendarProperties.m ([UIxCalendarProperties
