@@ -431,6 +431,7 @@ function onMailboxTreeItemClick(event) {
         var table = $("messageList");
         var head = table.tHead;
         var body = table.tBodies[0];
+        body.deselectAll ();
         for (var i = body.rows.length; i > 0; i--)
             body.deleteRow(i-1);
         if (head.rows[1])
