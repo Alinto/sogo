@@ -40,9 +40,12 @@ function onOKClick(event) {
           save = false;
       }
       else if (originalTag
-               && !originalTag.value.blank()
-               && tag != originalTag.value)
-          save = confirm(labels["tagHasChanged"]);
+               && !originalTag.value.blank()) {
+          if (tag != originalTag.value)
+              save = confirm(labels["tagHasChanged"]);
+      }
+      else
+          save = confirm(labels["tagWasAdded"]);
   }
   else if (originalTag
            && !originalTag.value.blank())
