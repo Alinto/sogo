@@ -285,28 +285,7 @@ function refreshFolderByType(type) {
 }
 
 function createHTTPClient() {
-    // http://developer.apple.com/internet/webcontent/xmlhttpreq.html
-    if (typeof XMLHttpRequest != "undefined")
-        return new XMLHttpRequest();
-
-    try { return new ActiveXObject("Msxml2.XMLHTTP"); } 
-    catch (e) { }
-    try { return new ActiveXObject("Microsoft.XMLHTTP"); } 
-    catch (e) { }
-
-    return null;
-}
-
-function appendDifferentiator(url) {
-    var url_nocache = url;
-    var position = url.indexOf('?', 0);
-    if (position < 0)
-        url_nocache += '?';
-    else
-        url_nocache += '&';
-    url_nocache += 'differentiator=' + Math.floor(Math.random()*50000);
-
-    return url_nocache;
+    return new XMLHttpRequest();
 }
 
 function onAjaxRequestStateChange(http) {
@@ -357,8 +336,6 @@ function getContrastingTextColor(bgColor) {
 }
 
 function triggerAjaxRequest(url, callback, userdata, content, headers) {
-    //url = appendDifferentiator(url);
-
     var http = createHTTPClient();
     if (http) {
         activeAjaxRequests++;
