@@ -49,7 +49,8 @@ install-arch: build-arch
 	cp Scripts/sogod-wrapper debian/tmp/usr/sbin/sogod-wrapper
 	mkdir -p debian/tmp/usr/share/lintian/overrides
 	cp debian/sogo.overrides debian/tmp/usr/share/lintian/overrides/sogo
-	cp Apache/SOGo-debian.conf /etc/apache2/conf.d/SOGo.conf
+	mkdir -p debian/tmp/etc/apache2/conf.d
+	cp Apache/SOGo-debian.conf debian/tmp/etc/apache2/conf.d/SOGo.conf
 
 binary-indep: build-indep install-indep
 
