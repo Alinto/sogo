@@ -1822,8 +1822,12 @@ function onCalendarModify(event) {
     var calendarID = selected.getAttribute("id");
     var url = ApplicationBaseURL + calendarID + "/properties";
     var windowID = sanitizeWindowName(calendarID + " properties");
-    var properties = window.open(url, windowID,
-                                 "width=300,height=150,resizable=0");
+    if (calendarID == "/personal")
+        var properties = window.open(url, windowID,
+                                     "width=310,height=250,resizable=0");
+    else
+        var properties = window.open(url, windowID,
+                                     "width=310,height=270,resizable=0");
     properties.focus();
 }
 

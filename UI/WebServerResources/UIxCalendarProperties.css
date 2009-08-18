@@ -1,9 +1,12 @@
 DIV#propertiesView
 { overflow: hidden;
-  padding: 5px 5px 0 0; }
+  padding: 5px 5px 0 5px; }
 
 DIV
 { clear: both; }
+
+FIELDSET
+{ margin-bottom: 5px; }
 
 SPAN.label
 { cursor: default;
@@ -16,12 +19,8 @@ SPAN.label
 
 SPAN.content
 { display: block;
-  height: 2em;
   line-height: 1.5em;
   vertical-align: middle; }
-
-SPAN.content INPUT
-{ margin-top: 0; }
 
 BUTTON#colorButton
 { display: none;

@@ -1,3 +1,19 @@
+2009-08-18  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Scheduler/UIxCalendarProperties.m ([UIxCalendarProperties
+	-allCalendarSyncTags]): new method that returns a concatenated
+	string of all the sync tags of the other calendars.
+	([UIxCalendarProperties -mustSynchronize]): new method that
+	returns true if the calendar must be synchronized, ie if it's the
+	personal calendar.
+	([UIxCalendarProperties -synchronizeCalendar]): new method that
+	returns true if the calendar must be synchronized or is set to be synchronized.
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder -_setCalendarProperty:forKey:]): new
+	common method for all methods that need to set a property in the
+	user's settings.
+
 2009-08-17  Cyril Robert <crobert@inverse.ca>
 
 	* UI/Scheduler/UIxCalListingActions.m: Added support for new user default:

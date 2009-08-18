@@ -21,10 +21,39 @@ function onOKClick(event) {
   var calendarName = $("calendarName");
   var calendarColor = $("calendarColor");
   var calendarID = $("calendarID");
+  var save = true;
+  var tag = $("calendarSyncTag").value;
+  var originalTag = $("originalCalendarSyncTag");
+  var allTags = $("allCalendarSyncTags");
 
-  window.opener.updateCalendarProperties(calendarID.value,
-                                         calendarName.value,
-                                         calendarColor.value);
+  if (allTags)
+      allTags = allTags.value.split(",");
+  
+  if ($("synchronizeCalendar").checked) {
+      if (tag.blank()) {
+          alert(labels["tagNotDefined"]);
+          save = false;
+      }
+      else if (allTags
+               && allTags.indexOf(tag) > -1) {
+          alert(labels["tagAlreadyExists"]);
+          save = false;
+      }
+      else if (originalTag
+               && !originalTag.value.blank()
+               && tag != originalTag.value)
+          save = confirm(labels["tagHasChanged"]);
+  }
+  else if (originalTag
+           && !originalTag.value.blank())
+      save = confirm(labels["tagWasRemoved"]);
+  
+  if (save)
+      window.opener.updateCalendarProperties(calendarID.value,
+                                             calendarName.value,
+                                             calendarColor.value);
+  else
+      Event.stop(event);
 }
 
 function onColorClick(event) {

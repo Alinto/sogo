@@ -20,7 +20,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import "SOGoUI/UIxComponent.h"
+#import <SOGoUI/UIxComponent.h>
 
 @class NSString;
 
@@ -42,5 +42,13 @@
 - (BOOL) showCalendarAlarms;
 - (void) setShowCalendarAlarms: (BOOL) new;
 
+- (BOOL) synchronizeCalendar;
+- (void) setSynchronizeCalendar: (BOOL) new;
+
+- (NSString *) originalCalendarSyncTag;
+- (NSString *) allCalendarSyncTags;
+- (BOOL) mustSynchronize;
+- (NSString *) calendarSyncTag;
+- (void) setCalendarSyncTag: (NSString *) newTag;
 
 @end

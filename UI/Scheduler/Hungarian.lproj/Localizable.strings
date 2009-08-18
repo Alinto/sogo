@@ -500,8 +500,12 @@ vtodo_class2 = "(Bizalmas feladat)";
 /* Properties dialog */
 "Name:" = "Név:";
 "Color:" = "Szín:";
+
+"Synchronization" = "Synchronization";
+"Synchronize" = "Synchronize";
 "Tag:" = "Cimke:";
 
+"Display" = "Display";
 "Show alarms" = "Show alarms";
 "Show tasks" = "Show tasks";
 
@@ -513,3 +517,7 @@ vtodo_class2 = "(Bizalmas feladat)";
 "yearFieldInvalid" = "Please specify a numerical value in the Year(s) field greater or equal to 1.";
 "appointmentFieldInvalid" = "Please specify a numerical value in the Appointment(s) field  greater or equal to 1.";
 "recurrenceUnsupported" = "This type of recurrence is currently unsupported.";
+"tagNotDefined" = "You must specify a tag if you want to synchronize this calendar.";
+"tagAlreadyExists" = "The tag you specified is already associated to another calendar.";
+"tagHasChanged" = "If you change your calendar's tag, you'll need to reload the data on your mobile device.\nContinue?";
+"tagWasRemoved" = "If you remove this calendar from synchronization, you'll need to reload the data on your mobile device.\nContinue?";

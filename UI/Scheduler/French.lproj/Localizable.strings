@@ -500,8 +500,12 @@ vtodo_class2 = "(Tâche confidentielle)";
 /* Properties dialog */
 "Name:" = "Nom :";
 "Color:" = "Couleur :";
+
+"Synchronization" = "Synchronization";
+"Synchronize" = "Synchronize";
 "Tag:" = "Label :";
 
+"Display" = "Display";
 "Show alarms" = "Afficher les alarmes";
 "Show tasks" = "Afficher les tâches";
 
@@ -513,3 +517,7 @@ vtodo_class2 = "(Tâche confidentielle)";
 "yearFieldInvalid" = "Veuillez spécifier un chiffre superieur ou égal à 1 dans le champ Année(s).";
 "appointmentFieldInvalid" = "Veuillez spécifier un chiffre superieur ou égal à 1 dans le champ rendez-vous.";
 "recurrenceUnsupported" = "Ce type de récurrence n\\'est pas supporté.";
+"tagNotDefined" = "You must specify a tag if you want to synchronize this calendar.";
+"tagAlreadyExists" = "The tag you specified is already associated to another calendar.";
+"tagHasChanged" = "If you change your calendar's tag, you'll need to reload the data on your mobile device.\nContinue?";
+"tagWasRemoved" = "If you remove this calendar from synchronization, you'll need to reload the data on your mobile device.\nContinue?";

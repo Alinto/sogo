@@ -546,7 +546,7 @@
 	    oldEvent = (iCalEvent*)[self newOccurenceWithID: recurrenceTime];
 	}
       
-      if ([[[oldEvent parent] firstChildWithTag: @"vevent"] userIsOrganizer: ownerUser])
+      if ([[[oldEvent parent] firstChildWithTag: [self componentTag]] userIsOrganizer: ownerUser])
 	{
 	  // The owner is the organizer of the event; handle the modifications
 	  

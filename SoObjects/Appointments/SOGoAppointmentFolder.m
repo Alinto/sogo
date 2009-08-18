@@ -279,6 +279,44 @@ static int davCalendarStartTimeLimit = 0;
   return objectClass;
 }
 
+- (void) _setCalendarProperty: (id) theValue
+                       forKey: (NSString *) theKey
+{
+  NSUserDefaults *settings;
+  NSMutableDictionary *calendarSettings;
+  NSMutableDictionary *values;
+  
+  settings = [[context activeUser] userSettings];
+  calendarSettings = [settings objectForKey: @"Calendar"];
+  if (!calendarSettings)
+    {
+      calendarSettings = [NSMutableDictionary dictionary];
+      [settings setObject: calendarSettings
+		forKey: @"Calendar"];
+    }
+  values = [calendarSettings objectForKey: theKey];
+  if (theValue)
+    {
+      if (!values)
+	{
+	  // Create the property dictionary
+	  values = [NSMutableDictionary dictionary];
+	  [calendarSettings setObject: values forKey: theKey];
+	}
+      [values setObject: theValue forKey: [self folderReference]];
+    }
+  else if (values)
+    {
+      // Remove the property for the calendar
+      [values removeObjectForKey: [self folderReference]];
+      if ([values count] == 0)
+	// Also remove the property dictionary when empty
+	[calendarSettings removeObjectForKey: theKey];
+    }
+
+  [settings synchronize];
+}
+
 - (NSString *) calendarColor
 {
   NSUserDefaults *settings;
@@ -297,26 +335,12 @@ static int davCalendarStartTimeLimit = 0;
 
 - (void) setCalendarColor: (NSString *) newColor
 {
-  NSUserDefaults *settings;
-  NSMutableDictionary *calendarSettings;
-  NSMutableDictionary *colors;
-
-  settings = [[context activeUser] userSettings];
-  calendarSettings = [settings objectForKey: @"Calendar"];
-  if (!calendarSettings)
-    {
-      calendarSettings = [NSMutableDictionary dictionary];
-      [settings setObject: calendarSettings
-		forKey: @"Calendar"];
-    }
-  colors = [calendarSettings objectForKey: @"FolderColors"];
-  if (!colors)
-    {
-      colors = [NSMutableDictionary dictionary];
-      [calendarSettings setObject: colors forKey: @"FolderColors"];
-    }
-  [colors setObject: newColor forKey: [self folderReference]];
-  [settings synchronize];
+  if ([newColor length])
+    [self _setCalendarProperty: newColor
+			forKey: @"FolderColors"];
+  else
+    [self _setCalendarProperty: nil
+			forKey: @"FolderColors"];
 }
 
 - (BOOL) showCalendarAlarms
@@ -338,27 +362,12 @@ static int davCalendarStartTimeLimit = 0;
 
 - (void) setShowCalendarAlarms: (BOOL) new
 {
-  NSUserDefaults *settings;
-  NSMutableDictionary *calendarSettings;
-  NSMutableDictionary *values;
-
-  settings = [[context activeUser] userSettings];
-  calendarSettings = [settings objectForKey: @"Calendar"];
-
-  if (!calendarSettings)
-    {
-      calendarSettings = [NSMutableDictionary dictionary];
-      [settings setObject: calendarSettings
-                   forKey: @"Calendar"];
-    }
-  values = [calendarSettings objectForKey: @"FolderShowAlarms"];
-  if (!values)
-    {
-      values = [NSMutableDictionary dictionary];
-      [calendarSettings setObject: values forKey: @"FolderShowAlarms"];
-    }
-  [values setObject: [NSNumber numberWithBool: new] forKey: [self folderReference]];
-  [settings synchronize];
+  if (new)
+    [self _setCalendarProperty: nil
+			forKey: @"FolderShowAlarms"];    
+  else
+    [self _setCalendarProperty: [NSNumber numberWithBool: new]
+			forKey: @"FolderShowAlarms"];
 }
 
 - (BOOL) showCalendarTasks
@@ -380,30 +389,13 @@ static int davCalendarStartTimeLimit = 0;
 
 - (void) setShowCalendarTasks: (BOOL) new
 {
-  NSUserDefaults *settings;
-  NSMutableDictionary *calendarSettings;
-  NSMutableDictionary *values;
-
-  settings = [[context activeUser] userSettings];
-  calendarSettings = [settings objectForKey: @"Calendar"];
-
-  if (!calendarSettings)
-    {
-      calendarSettings = [NSMutableDictionary dictionary];
-      [settings setObject: calendarSettings
-                   forKey: @"Calendar"];
-    }
-  values = [calendarSettings objectForKey: @"FolderShowTasks"];
-  if (!values)
-    {
-      values = [NSMutableDictionary dictionary];
-      [calendarSettings setObject: values forKey: @"FolderShowTasks"];
-    }
-  [values setObject: [NSNumber numberWithBool: new] forKey: [self folderReference]];
-  [settings synchronize];
+  if (new)
+    [self _setCalendarProperty: nil
+			forKey: @"FolderShowTasks"];
+  else
+    [self _setCalendarProperty: [NSNumber numberWithBool: new]
+			forKey: @"FolderShowTasks"];
 }
-
-
 
 - (NSString *) syncTag
 {
@@ -421,29 +413,73 @@ static int davCalendarStartTimeLimit = 0;
   return syncTag;
 }
 
-#warning this code shares a lot with the colour code
 - (void) setSyncTag: (NSString *) newSyncTag
 {
+  if ([newSyncTag length])
+    {
+      // Check for duplicated tags
+      NSUserDefaults *settings;
+      NSMutableDictionary *calendarSettings;
+      NSMutableDictionary *syncTags;
+      NSEnumerator *keysList;
+      NSString *key;
+      BOOL hasDuplicate;
+
+      hasDuplicate = NO;
+      settings = [[context activeUser] userSettings];
+      calendarSettings = [settings objectForKey: @"Calendar"];
+      if (calendarSettings)
+	{
+	  syncTags = [calendarSettings objectForKey: @"FolderSyncTags"];
+	  if (syncTags)
+	    {
+	      keysList = [syncTags keyEnumerator];
+	      while ((key = (NSString*)[keysList nextObject])) {
+		if (![key isEqualToString: [self folderReference]]
+		    && [(NSString*)[syncTags objectForKey: key] isEqualToString: newSyncTag])
+		  {
+		    hasDuplicate = YES;
+		    break;
+		  }
+	      }
+	    }
+	}
+      if (!hasDuplicate)
+	[self _setCalendarProperty: newSyncTag
+			    forKey: @"FolderSyncTags"];
+    }
+  else
+    {
+      [self _setCalendarProperty: nil
+			  forKey: @"FolderSyncTags"];
+    }
+}
+
+- (BOOL) synchronizeCalendar
+{
   NSUserDefaults *settings;
-  NSMutableDictionary *calendarSettings;
-  NSMutableDictionary *syncTags;
+  NSDictionary *values;
+  id test;
+  BOOL synchronize = NO;
 
   settings = [[context activeUser] userSettings];
-  calendarSettings = [settings objectForKey: @"Calendar"];
-  if (!calendarSettings)
-    {
-      calendarSettings = [NSMutableDictionary dictionary];
-      [settings setObject: calendarSettings
-		forKey: @"Calendar"];
-    }
-  syncTags = [calendarSettings objectForKey: @"FolderSyncTags"];
-  if (!syncTags)
-    {
-      syncTags = [NSMutableDictionary dictionary];
-      [calendarSettings setObject: syncTags forKey: @"FolderSyncTags"];
-    }
-  [syncTags setObject: newSyncTag forKey: [self folderReference]];
-  [settings synchronize];
+  values = [[settings objectForKey: @"Calendar"]
+             objectForKey: @"FolderSynchronize"];
+  test = [values objectForKey: [self folderReference]];
+  if (test)
+    synchronize = [test boolValue];
+
+  return synchronize;
+}
+
+- (void) setSynchronizeCalendar: (BOOL) new
+{
+  if (new)
+    [self _setCalendarProperty: [NSNumber numberWithBool: new]
+			forKey: @"FolderSynchronize"];
+  else
+    [self _setCalendarProperty: nil
+			forKey: @"FolderSynchronize"];
 }
 
 /* logging */

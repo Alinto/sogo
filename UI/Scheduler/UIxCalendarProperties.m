@@ -20,6 +20,9 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSEnumerator.h>
+
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>
 
@@ -76,6 +79,59 @@
 - (void) setCalendarColor: (NSString *) newColor
 {
   [calendar setCalendarColor: newColor];
+}
+
+- (BOOL) synchronizeCalendar
+{
+  return [self mustSynchronize] || [calendar synchronizeCalendar];
+}
+
+- (void) setSynchronizeCalendar: (BOOL) new
+{
+  [calendar setSynchronizeCalendar: new];
+}
+
+- (NSString *) originalCalendarSyncTag
+{
+  return [calendar syncTag];
+}
+
+- (NSString *) allCalendarSyncTags
+{
+  NSUserDefaults *settings;
+  NSMutableDictionary *calendarSettings;
+  NSMutableDictionary *syncTags;
+  NSEnumerator *keysList;
+  NSMutableArray *tags;
+  NSString *key, *result;
+
+  settings = [[context activeUser] userSettings];
+  calendarSettings = [settings objectForKey: @"Calendar"];
+  if (calendarSettings)
+    {
+      syncTags = [calendarSettings objectForKey: @"FolderSyncTags"];
+      if (syncTags)
+	{
+	  tags = [NSMutableArray arrayWithCapacity: [syncTags count]];
+	  keysList = [syncTags keyEnumerator];
+	  while ((key = (NSString*)[keysList nextObject])) {
+	    if (![key isEqualToString: [calendar folderReference]])
+	      [tags addObject: [syncTags objectForKey: key]];
+	  }
+	}
+    }
+  
+  if (!tags)
+    result = @"";
+  else
+    result = [tags componentsJoinedByString: @","];
+
+  return result;
+}
+
+- (BOOL) mustSynchronize
+{
+  return [[calendar nameInContainer] isEqualToString: @"personal"];
 }
 
 - (NSString *) calendarSyncTag

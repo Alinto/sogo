@@ -66,6 +66,9 @@
 - (NSString *) syncTag;
 - (void) setSyncTag: (NSString *) newSyncTag;
 
+- (BOOL) synchronizeCalendar;
+- (void) setSynchronizeCalendar: (BOOL) new;
+
 /* selection */
 
 - (NSArray *) calendarUIDs;
