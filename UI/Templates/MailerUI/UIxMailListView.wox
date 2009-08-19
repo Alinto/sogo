@@ -70,6 +70,9 @@
             /><var:if condition="isMessageFlagged"
                 ><img rsrc:src="flag.png" 
               /></var:if
+            ><var:if condition="isMessageFlagged" const:negate="YES"
+                ><img rsrc:src="flag-col.png" 
+              /></var:if
             ></td
           ></var:if>
           <var:if condition="currentColumn.value" const:value="Attachment"
