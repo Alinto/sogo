@@ -88,7 +88,19 @@ static NSString *LDAPContactInfoAttribute = nil;
 - (id <WOActionResults>) defaultAction
 {
   SOGoUserFolder *co;
+  NSUserDefaults *ud;
+  NSString *userDefinedModule;
   NSURL *moduleURL;
+
+  ud = [[context activeUser] userDefaults];
+  userDefinedModule = [ud stringForKey: @"SOGoUIxDefaultModule"];
+  if (userDefinedModule)
+    {
+      if ([userDefinedModule isEqualToString: @"Last"])
+        userDefinedModule = [ud stringForKey: @"SOGoUIxLastModule"];
+
+      defaultModule = userDefinedModule;
+    }
 
   co = [self clientObject];
   moduleURL = [NSURL URLWithString: defaultModule

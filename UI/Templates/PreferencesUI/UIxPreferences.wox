@@ -55,7 +55,12 @@
 	    <var:popup list="timeFormatsList" item="item"
 	      const:id="timeFormat"
 	      string="itemTimeFormatText" selection="userTimeFormat"
-	      /></label>
+        /></label><br/>
+    <label><var:string label:value="Default module :"/>
+      <var:popup list="availableModules" item="item"
+        const:id="defaultModule"
+        string="itemModuleText" selection="userDefaultModule"
+        /></label>
 	</div>
       </div>
       <var:if condition="userHasCalendarAccess">

@@ -115,3 +115,10 @@
 "category_none" = "Nincs";
 "category_labels" = "Évforduló,Születésnap,Üzleti,Meghívás,Ügyfelek,Versenytársak,Vevő,Kedvencek,Nyomonkövetés,Ajándékozás,Szabadság,Ötletek,Ügyek,Egyéb,Személyes,Projektek,Állami ünnep,Állapot,Szállítók,Utazás,Szünidő";
 
+/* Default module */
+"Calendar" = "Calendar";
+"Contacts" = "Address Book";
+"Mail" = "Mail";
+"Last" = "Last used";
+"Default module :" = "Default module :"; 
+

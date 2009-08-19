@@ -111,3 +111,10 @@
 "category_none" = "Keine";
 "category_labels" = "Jubiläum,Geburtstag,Geschäft,Anrufe,Klienten,Konkurrenz,Kunde,Favoriten,Nachgehen,Geschenke,Ferien,Ideen,Fragen,Verschiedenes,Persönlich,Projekte,Feiertag,Status,Lieferanten,Reise,Urlaub";
 
+/* Default module */
+"Calendar" = "Calendar";
+"Contacts" = "Address Book";
+"Mail" = "Mail";
+"Last" = "Last used";
+"Default module :" = "Default module :"; 
+

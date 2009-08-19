@@ -195,69 +195,69 @@
   NSMutableDictionary *uniqueContacts;
   unsigned int i, j;
   NSSortDescriptor *commonNameDescriptor;
-  
+
   searchText = [self queryParameterForKey: @"search"];
   if ([searchText length] > 0)
     {
-      //NSLog(@"Search all contacts: %@", searchText);
+      NSLog(@"Search all contacts: %@", searchText);
       NS_DURING
-	folders = [[self clientObject] subFolders];
+        folders = [[self clientObject] subFolders];
       NS_HANDLER
-	/* We need to specifically test for @"SOGoDBException", which is
-	   raised explicitly in SOGoParentFolder. Any other exception should
-	   be re-raised. */
-	if ([[localException name] isEqualToString: @"SOGoDBException"])
-	  folders = nil;
-	else
-	  [localException raise];
+        /* We need to specifically test for @"SOGoDBException", which is
+           raised explicitly in SOGoParentFolder. Any other exception should
+           be re-raised. */
+        if ([[localException name] isEqualToString: @"SOGoDBException"])
+          folders = nil;
+        else
+          [localException raise];
       NS_ENDHANDLER
-      sortedFolders = [NSMutableArray arrayWithCapacity: [folders count]];
+        sortedFolders = [NSMutableArray arrayWithCapacity: [folders count]];
       uniqueContacts = [NSMutableDictionary dictionary];
       /* We first search in LDAP folders (in case of duplicated entries in GCS folders) */
       for (i = 0; i < [folders count]; i++)
-	{
-	  folder = [folders objectAtIndex: i];
-	  if ([folder isKindOfClass: [SOGoContactLDAPFolder class]])
-	    [sortedFolders insertObject: folder atIndex: 0];
-	  else
-	    [sortedFolders addObject: folder];
-	}
+        {
+          folder = [folders objectAtIndex: i];
+          if ([folder isKindOfClass: [SOGoContactLDAPFolder class]])
+        [sortedFolders insertObject: folder atIndex: 0];
+          else
+            [sortedFolders addObject: folder];
+        }
       for (i = 0; i < [sortedFolders count]; i++)
-	{
-	  folder = [sortedFolders objectAtIndex: i];
-	  //NSLog(@"  Address book: %@ (%@)", [folder displayName], [folder class]);
-	  contacts = [folder lookupContactsWithFilter: searchText
-			     sortBy: @"c_cn"
-			     ordering: NSOrderedAscending];
-	  for (j = 0; j < [contacts count]; j++)
-	    {
-	      contact = [contacts objectAtIndex: j];
-	      mail = [contact objectForKey: @"c_mail"];
-	      //NSLog(@"   found %@ (%@)", [contact objectForKey: @"displayName"], mail);
-	      if ([mail isNotNull] && [uniqueContacts objectForKey: mail] == nil)
-		[uniqueContacts setObject: contact forKey: mail];
-	    }
-	}      
+        {
+          folder = [sortedFolders objectAtIndex: i];
+          //NSLog(@"  Address book: %@ (%@)", [folder displayName], [folder class]);
+          contacts = [folder lookupContactsWithFilter: searchText
+                                               sortBy: @"c_cn"
+                                             ordering: NSOrderedAscending];
+          for (j = 0; j < [contacts count]; j++)
+            {
+              contact = [contacts objectAtIndex: j];
+              mail = [contact objectForKey: @"c_mail"];
+              //NSLog(@"   found %@ (%@)", [contact objectForKey: @"displayName"], mail);
+              if ([mail isNotNull] && [uniqueContacts objectForKey: mail] == nil)
+                                         [uniqueContacts setObject: contact forKey: mail];
+            }
+        }      
       if ([uniqueContacts count] > 0)
-	{
-	  // Sort the contacts by display name
-	  commonNameDescriptor = [[[NSSortDescriptor alloc] initWithKey: @"c_cn"
-							     ascending:YES] autorelease];
-	  descriptors = [NSArray arrayWithObjects: commonNameDescriptor, nil];
-	  sortedContacts = [[uniqueContacts allValues] sortedArrayUsingDescriptors: descriptors];
-	}
+        {
+          // Sort the contacts by display name
+          commonNameDescriptor = [[[NSSortDescriptor alloc] initWithKey: @"c_cn"
+                                                              ascending:YES] autorelease];
+          descriptors = [NSArray arrayWithObjects: commonNameDescriptor, nil];
+          sortedContacts = [[uniqueContacts allValues] sortedArrayUsingDescriptors: descriptors];
+        }
       else
-	sortedContacts = [NSArray array];
+        sortedContacts = [NSArray array];
       data = [NSDictionary dictionaryWithObjectsAndKeys: searchText, @"searchText",
-			                                 sortedContacts, @"contacts",
-			                                 nil];
+           sortedContacts, @"contacts",
+           nil];
       result = [self responseWithStatus: 200];
       [(WOResponse*)result appendContentString: [data jsonRepresentation]];
     }
   else
     result = [NSException exceptionWithHTTPStatus: 400
-			  reason: @"missing 'search' parameter"];  
-  
+                                           reason: @"missing 'search' parameter"];  
+
   return result;
 }
 
@@ -268,23 +268,23 @@
   NSString *searchText;
   id <WOActionResults> result;
   LDAPUserManager *um;
-  
+
   searchText = [self queryParameterForKey: @"search"];
   if ([searchText length] > 0)
     {
       um = [LDAPUserManager sharedUserManager];
       contacts 
-	= [self _responseForResults: [um fetchContactsMatching: searchText]];
+        = [self _responseForResults: [um fetchContactsMatching: searchText]];
       data = [NSDictionary dictionaryWithObjectsAndKeys: searchText, @"searchText",
-			                                 contacts, @"contacts",
-			                                 nil];
+           contacts, @"contacts",
+           nil];
       result = [self responseWithStatus: 200];
       [(WOResponse*)result appendContentString: [data jsonRepresentation]];
     }
   else
     result = [NSException exceptionWithHTTPStatus: 400
-			  reason: @"missing 'search' parameter"];
-  
+                                           reason: @"missing 'search' parameter"];
+
   return result;
 }
 
@@ -300,8 +300,8 @@
   securityManager = [SoSecurityManager sharedSecurityManager];
 
   //   return (([securityManager validatePermission: SoPerm_AccessContentsInformation
-  //                             onObject: contactFolder
-  //                             inContext: context] == nil)
+            //                             onObject: contactFolder
+           //                             inContext: context] == nil)
 
   folders = [NSMutableArray new];
   [folders autorelease];
@@ -310,20 +310,20 @@
   while ((subfolder = [subfolders nextObject]))
     {
       if (![securityManager validatePermission: SOGoPerm_AccessObject
-			    onObject: subfolder inContext: context])
-	{
-	  folderName = [NSString stringWithFormat: @"/%@/%@",
-				 [parentFolder nameInContainer],
-				 [subfolder nameInContainer]];
-	  currentDictionary
-	    = [NSMutableDictionary dictionaryWithCapacity: 3];
-	  [currentDictionary setObject: [subfolder displayName]
-			     forKey: @"displayName"];
-	  [currentDictionary setObject: folderName forKey: @"name"];
-	  [currentDictionary setObject: [subfolder folderType]
-			     forKey: @"type"];
-	  [folders addObject: currentDictionary];
-	}
+                                      onObject: subfolder inContext: context])
+        {
+          folderName = [NSString stringWithFormat: @"/%@/%@",
+                     [parentFolder nameInContainer],
+                     [subfolder nameInContainer]];
+          currentDictionary
+            = [NSMutableDictionary dictionaryWithCapacity: 3];
+          [currentDictionary setObject: [subfolder displayName]
+                                forKey: @"displayName"];
+          [currentDictionary setObject: folderName forKey: @"name"];
+          [currentDictionary setObject: [subfolder folderType]
+                                forKey: @"type"];
+          [folders addObject: currentDictionary];
+        }
     }
 
   return folders;
@@ -339,21 +339,39 @@
 
 //   upperContainer = [[[self clientObject] container] container];
 //   userFolder = [SOGoUserFolder objectWithName: uid
-//                                inContainer: upperContainer];
-//   contactFolders = [SOGoUserFolder lookupName: @"Contacts"
-// 				   inContext: context
-// 				   acquire: NO];
-//   contactFolder = [contactFolders lookupName: @"personal"
-// 				  inContext: context
-// 				  acquire: NO];
+   //                                inContainer: upperContainer];
+   //   contactFolders = [SOGoUserFolder lookupName: @"Contacts"
+                             // 				   inContext: context
+                                // 				   acquire: NO];
+                                //   contactFolder = [contactFolders lookupName: @"personal"
+                                                          // 				  inContext: context
+                                                            // 				  acquire: NO];
 
-//   securityManager = [SoSecurityManager sharedSecurityManager];
+                                                            //   securityManager = [SoSecurityManager sharedSecurityManager];
 
-//   return (([securityManager validatePermission: SoPerm_AccessContentsInformation
-//                             onObject: contactFolder
-//                             inContext: context] == nil)
-//           ? contactFolder : nil);
-// }
+                                                            //   return (([securityManager validatePermission: SoPerm_AccessContentsInformation
+                                                                      //                             onObject: contactFolder
+                                                                     //                             inContext: context] == nil)
+                                                                                //           ? contactFolder : nil);
+                                                                                // }
+
+- (void) checkDefaultModulePreference
+{
+  NSUserDefaults *ud;
+  NSString *pref;
+
+  if (![self isPopup])
+    {
+      ud = [[context activeUser] userDefaults];
+      pref = [ud stringForKey: @"SOGoUIxDefaultModule"];
+
+      if (pref && [pref isEqualToString: @"Last"])
+        {
+          [ud setObject: @"Contacts" forKey: @"SOGoUIxLastModule"];
+          [ud synchronize];
+        }
+    }
+}
 
 - (BOOL) isPopup
 {
@@ -364,6 +382,7 @@
 {
   SOGoContactFolders *folderContainer;
 
+  [self checkDefaultModulePreference];
   folderContainer = [self clientObject];
 
   return [folderContainer subFolders];
@@ -372,7 +391,7 @@
 - (NSString *) currentContactFolderId
 {
   return [NSString stringWithFormat: @"/%@",
-                   [currentFolder nameInContainer]];
+         [currentFolder nameInContainer]];
 }
 
 - (NSString *) currentContactFolderName
@@ -387,26 +406,26 @@
 
 - (NSString *) currentContactFolderClass
 {
-   return ([currentFolder isKindOfClass: [SOGoContactLDAPFolder class]]? @"remote" : @"local");
+  return ([currentFolder isKindOfClass: [SOGoContactLDAPFolder class]]? @"remote" : @"local");
 }
 
 - (WOResponse *) saveDragHandleStateAction
 {
   WORequest *request;
   NSString *dragHandle;
-  
+
   [self _setupContext];
   request = [context request];
- 
+
   if ((dragHandle = [request formValueForKey: @"vertical"]) != nil)
-    [moduleSettings setObject: dragHandle
-		    forKey: @"DragHandleVertical"];
+                   [moduleSettings setObject: dragHandle
+                                      forKey: @"DragHandleVertical"];
   else if ((dragHandle = [request formValueForKey: @"horizontal"]) != nil)
-    [moduleSettings setObject: dragHandle
-		    forKey: @"DragHandleHorizontal"];
+                        [moduleSettings setObject: dragHandle
+                                           forKey: @"DragHandleHorizontal"];
   else
     return [self responseWithStatus: 400];
-  
+
   [ud synchronize];
 
   return [self responseWithStatus: 204];

@@ -43,11 +43,28 @@
 
 @implementation UIxCalMainView
 
+- (void) checkDefaultModulePreference
+{
+  NSUserDefaults *userd;
+  NSString *pref;
+
+  userd = [[context activeUser] userDefaults];
+  pref = [userd stringForKey: @"SOGoUIxDefaultModule"];
+
+  if (pref && [pref isEqualToString: @"Last"])
+    {
+      [userd setObject: @"Calendar" forKey: @"SOGoUIxLastModule"];
+      [userd synchronize];
+    }
+}
+
 - (void) _setupContext
 {
   SOGoUser *activeUser;
   NSString *module;
   SOGoAppointmentFolders *clientObject;
+
+  [self checkDefaultModulePreference];
 
   activeUser = [context activeUser];
   clientObject = [self clientObject];

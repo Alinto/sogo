@@ -486,7 +486,6 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
                   arrayForKey: @"SOGoMailPollingIntervals"]];
   if ([defaultList count] > 0)
     {
-      NSLog (@"defaultsValue: %@", defaultList);
       rc = [NSMutableArray arrayWithObjects: @"manually", nil];
       count = [defaultList  count];
       for (i = 0; i < count; i++)
@@ -645,6 +644,42 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
 - (void) setUserSignaturePlacement: (NSString *) newSignaturePlacement
 {
   [userDefaults setObject: newSignaturePlacement forKey: @"SignaturePlacement"];
+}
+
+- (NSArray *) availableModules
+{
+  NSMutableArray *rc, *modules;
+  int i, count;
+
+  modules = [NSMutableArray arrayWithObjects: @"Calendar", @"Mail", nil];
+  rc = [NSMutableArray arrayWithObjects: @"Last", @"Contacts", nil];
+  count = [modules count];
+
+  for (i = 0; i < count; i++)
+    if ([user canAccessModule: [modules objectAtIndex: i]])
+      [rc addObject: [modules objectAtIndex: i]];
+
+  return rc;
+}
+
+- (NSString *) itemModuleText
+{
+  return [self labelForKey: item];
+}
+
+- (NSString *) userDefaultModule
+{
+  NSUserDefaults *ud;
+  ud = [user userDefaults];
+
+  return [ud stringForKey: @"SOGoUIxDefaultModule"];
+}
+
+- (void) setUserDefaultModule: (NSString *) newValue
+{
+  NSUserDefaults *ud;
+  ud = [user userDefaults];
+  [ud setObject: newValue forKey: @"SOGoUIxDefaultModule"];
 }
 
 - (id <WOActionResults>) defaultAction

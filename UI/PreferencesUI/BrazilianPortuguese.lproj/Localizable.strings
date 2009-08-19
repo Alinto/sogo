@@ -115,3 +115,9 @@
 "category_none" = "Nenhum";
 "category_labels" = "Aniversário,Negócios,Ligações,Concorrência,Cliente,Favoritos,Acompanhamento,Presentes,Feriados,Idéias,Problemas,Miscelânea,Pessoal,Projetos,Feriado público,Posição,Fornecedores,Viagem,Férias";
 
+/* Default module */
+"Calendar" = "Calendar";
+"Contacts" = "Address Book";
+"Mail" = "Mail";
+"Last" = "Last used";
+"Default module :" = "Default module :";

@@ -115,3 +115,10 @@
 "category_none" = "Nessuna";
 "category_labels" = "Anniversari,Compleanni,Lavoro,Chiamate,Clienti,Competizioni,Compratori,Preferiti,Incontri,Regali,Vacanze,Idee,Problemi,Varie,Personale,Progetti,Giorno festivo,Stato,Fornitori,Viaggio,Chiusura";
 
+/* Default module */
+"Calendar" = "Calendar";
+"Contacts" = "Address Book";
+"Mail" = "Mail";
+"Last" = "Last used";
+"Default module :" = "Default module :"; 
+

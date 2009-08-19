@@ -1,3 +1,16 @@
+2009-08-19  Cyril Robert <crobert@inverse.ca>
+
+	* UI/MainUI/SOGoUserHomePage.m (defaultAction): Added support for SOGoUIxDefaultModule
+	* UI/PreferencesUI/UIxPreferences.m: Added: availableModules,
+	itemModuleText, userDefaultModule, setUserDefaultModule to support 
+	SOGoUIxDefaultModule in the preferences UI.
+	* UI/Contacts/UIxContactFoldersView.m (checkDefaultModulePreference): Added
+	to support "Last" SOGoUIxDefaultModule value.
+	* UI/MailerUI/UIxMailListView.m (checkDefaultModulePreference): Added to
+	support "Last" SOGoUIxDefaultModule value.
+	* UI/Scheduler/UIxCalMainView.m (checkDefaultModulePreference): Added to
+	support "Last" SOGoUIxDefaultModule value.
+
 2009-08-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoObject.m (-parseETagList:): greatly

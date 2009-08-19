@@ -115,3 +115,9 @@
 "category_none" = "Žádný";
 "category_labels" = "Výročí,Narozeniny,Obchod,Hovory,Klienti,Soutěže,Zákazník,Oblíbené,Sledování,Dárky,Volno,Nápady,Problémy,Různé,Osobní,Projekty,Veřejné prázdniny,Stav,Dodavatelé,Cesta,Dovolená";
 
+/* Default module */
+"Calendar" = "Calendar";
+"Contacts" = "Address Book";
+"Mail" = "Mail";
+"Last" = "Last used";
+"Default module :" = "Default module :";

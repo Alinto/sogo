@@ -470,6 +470,21 @@
   return 1;
 }
 
+- (void) checkDefaultModulePreference
+{
+  NSUserDefaults *ud;
+  NSString *pref;
+
+  ud = [[context activeUser] userDefaults];
+  pref = [ud stringForKey: @"SOGoUIxDefaultModule"];
+
+  if (pref && [pref isEqualToString: @"Last"])
+    {
+      [ud setObject: @"Mail" forKey: @"SOGoUIxLastModule"];
+      [ud synchronize];
+    }
+}
+
 - (NSArray *) messages 
 {
   NSMutableArray *unsortedMsgs;
@@ -479,6 +494,8 @@
 
   unsigned len, i, count;
   NSRange r;
+
+  [self checkDefaultModulePreference];
   
   if (!messages)
     {

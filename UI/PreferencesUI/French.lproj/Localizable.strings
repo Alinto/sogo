@@ -111,3 +111,9 @@
 "category_none" = "Aucune";
 "category_labels" = "Anniversaire,Affaire,Appels,Clients,Compétitions,Congrès,Consommation,Préférés,Suivis,Cadeaux,Congés,Idées,Problèmes,Divers,Personnel,Projets,Jour férié,Réunion,Fournisseurs,Voyages,Professionnel";
 
+/* Default module */
+"Calendar" = "Agenda";
+"Contacts" = "Carnet d'adresses";
+"Mail" = "Courrier";
+"Last" = "Dernier utilisé";
+"Default module :" = "Module par défaut :";

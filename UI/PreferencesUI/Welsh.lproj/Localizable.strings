@@ -115,3 +115,10 @@
 "category_none" = "Dim";
 "category_labels" = "Amrywiol,Anrhegion,Busnes,Canlyniadau,Clientau,Cwsmer,Cyflenwyr,Cystadleuaeth,Dilyn lan,Ffefrynnau,Galwadau,Gwyliau,Gwyliau Cyhoeddus,Penblwydd,Personol,Projectau,Statws,Syniadau,Teithio";
 
+/* Default module */
+"Calendar" = "Calendar";
+"Contacts" = "Address Book";
+"Mail" = "Mail";
+"Last" = "Last used";
+"Default module :" = "Default module :"; 
+
