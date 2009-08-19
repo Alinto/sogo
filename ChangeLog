@@ -1,3 +1,14 @@
+2009-08-21  Cyril Robert <crobert@inverse.ca>
+
+	* UI/Contacts/UIxListView.m: Implementation, allows VLISTs to be displayed.
+	* UI/Contacts/UIxListView.m (checkListReferences): Added list integrity
+	verification (make sure all references are valid).
+
+2009-08-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Tests/webdavlib.py (WebDAVQuery.xpath_evaluate): new method to
+	facilitate xpath evaluation from tests.
+
 2009-08-20  Cyril Robert <crobert@inverse.ca>
 
 	* UI/Common/UIxParentFolderActions.m (createFolderAction): Mantis 2040:
