@@ -237,6 +237,7 @@
 "Please select a message." = "Пожалуйста выберите сообщение.";
 "Please select a message to print." = "Пожалуйста выберите сообщение для отправки на печать.";
 "Please select only one message to print." = "Пожалуйста выберите только одно сообщение для печати.";
+"The message you have selected doesn't exist anymore." = "The message you have selected doesn't exist anymore.";
 
 
 "The folder with name \"%{0}\" could not be created."

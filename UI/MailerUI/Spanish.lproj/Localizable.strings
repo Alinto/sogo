@@ -241,6 +241,7 @@
 "Please select a message." = "Seleccione un mensaje primero.";
 "Please select a message to print." = "Seleccione el mensaje que desea imprimir.";
 "Please select only one message to print." = "Para imprimir, seleccione sólo un mensaje.";
+"The message you have selected doesn't exist anymore." = "The message you have selected doesn't exist anymore.";
 
 
 "The folder with name \"%{0}\" could not be created."

@@ -241,6 +241,9 @@
 "Please select a message." = "Kérem válasszon egy üzenetet.";
 "Please select a message to print." = "Kérem válasszon ki egy üzenetet a nyomtatáshoz.";
 "Please select only one message to print." = "Kérem csak egy üzenetet válasszon a nyomtatáshoz.";
+"The message you have selected doesn't exist anymore." = "The message you have selected doesn't exist anymore.";
+
+
 
 
 "The folder with name \"%{0}\" could not be created."

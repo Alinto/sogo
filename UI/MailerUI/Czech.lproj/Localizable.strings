@@ -241,6 +241,7 @@
 "Please select a message." = "Vyberte zprávu prosím.";
 "Please select a message to print." = "Zvolte prosím zprávu, kterou chcete tisknout.";
 "Please select only one message to print." = "Zvolte pouze jednu zprávu, kterou chcete tisknout.";
+"The message you have selected doesn't exist anymore." = "The message you have selected doesn't exist anymore.";
 
 
 "The folder with name \"%{0}\" could not be created."

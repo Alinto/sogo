@@ -1149,6 +1149,10 @@ function messageCallback(http) {
                 storeCachedMessage(cachedMessage);
         }
     }
+    else if (http.status == 404) {
+        alert (labels["The message you have selected doesn't exist anymore."]);
+        window.location.reload ();
+    }
     else
         log("messageCallback: problem during ajax request: " + http.status);
 }

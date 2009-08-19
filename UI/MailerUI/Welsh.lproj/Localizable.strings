@@ -241,6 +241,7 @@
 "Please select a message." = "Dewiswch neges.";
 "Please select a message to print." = "Dewiswch neges i'w argraffu.";
 "Please select only one message to print." = "Dewiswch un neges yn unig i'w argraffu.";
+"The message you have selected doesn't exist anymore." = "The message you have selected doesn't exist anymore.";
 
 
 "The folder with name \"%{0}\" could not be created."

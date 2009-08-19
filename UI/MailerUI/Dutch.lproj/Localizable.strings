@@ -241,6 +241,7 @@
 "Please select a message." = "Selecteer een bericht.";
 "Please select a message to print." = "Selecteer een bericht om af te drukken.";
 "Please select only one message to print." = "Selecteer een enkel bericht om af te drukken.";
+"The message you have selected doesn't exist anymore." = "The message you have selected doesn't exist anymore.";
 
 
 "The folder with name \"%{0}\" could not be created."
