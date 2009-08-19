@@ -2,6 +2,9 @@
 --------------------
 - added backup/restore tools for all user's data (calendars, address books, preferences, etc.)
 - added Web administrative interface (right now, only for ACLs)
+- added the "Starred" column in the webmail module to match Thunderbird's behavior
+- improved the calendar properties dialog to be able to enable/disabled calendars for synchronization
+- the default module can now be set on a per-user basis
 
 1.0-20090812 (1.0.4)
 --------------------
