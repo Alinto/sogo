@@ -1,3 +1,9 @@
+sogo (X) unstable; urgency=low
+
+  * Install a default Apache 2 configuration file.
+
+ -- Inverse Support <support@inverse.ca>  Wed, 19 Aug 2009 09:42:15 -0400
+
 sogo (1.0.4) unstable; urgency=low
 
   * New release
