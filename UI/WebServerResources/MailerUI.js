@@ -110,6 +110,23 @@ function onMenuSharing(event) {
 
 /* mail list DOM changes */
 
+function flagMailInWindow (win, msguid, flagged) {
+    var row = win.$("row_" + msguid);
+
+    if (row) {
+        var col = $$("TR#row_"+msguid+" TD.messageFlag").first ();
+        var img = col.childElements ().first ();
+        if (flagged) {
+            img.src = img.src.replace (/-col/, "");
+            img.addClassName ("messageIsFlagged");
+        }
+        else {
+            img.src = img.src.replace (/.png/, "-col.png");
+            img.removeClassName ("messageIsFlagged");
+        }
+    }
+}
+
 function markMailInWindow(win, msguid, markread) {
     var row = win.$("row_" + msguid);
     var subjectCell = win.$("div_" + msguid);
@@ -209,7 +226,8 @@ function mailListMarkMessage(event) {
         action = 'markMessageUnread';
         markread = false;
     }
-    var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/" + msguid + "/" + action;
+    var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/" 
+      + msguid + "/" + action;
 
     var data = { "window": window, "msguid": msguid, "markread": markread };
     triggerAjaxRequest(url, mailListMarkMessageCallback, data);
@@ -222,6 +240,35 @@ function mailListMarkMessageCallback(http) {
     if (isHttpStatus204(http.status)) {
         var data = http.callbackData;
         markMailInWindow(data["window"], data["msguid"], data["markread"]);
+    }
+    else {
+        alert("Message Mark Failed (" + http.status + "): " + http.statusText);
+        window.location.reload();
+    }
+}
+
+
+function mailListFlagMessageToggle (e) {
+    var msguid = this.ancestors ().first ().id.split ("_")[1];
+    var img = this.childElements ().first ();
+
+    var action = "markMessageFlagged";
+    var flagged = true;
+    if (img.hasClassName ("messageIsFlagged")) {
+        action = "markMessageUnflagged";
+        flagged = false;
+    }
+        
+    var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/" 
+      + msguid + "/" + action;
+    var data = { "window": window, "msguid": msguid, "flagged": flagged };
+
+    triggerAjaxRequest(url, mailListFlagMessageToggleCallback, data);
+}
+function mailListFlagMessageToggleCallback (http) {
+    if (isHttpStatus204(http.status)) {
+        var data = http.callbackData;
+        flagMailInWindow(data["window"], data["msguid"], data["flagged"]);
     }
     else {
         alert("Message Mark Failed (" + http.status + "): " + http.statusText);
@@ -674,6 +721,7 @@ function messageListCallback(http) {
         var msg = data.replace(/^(.*\n)*.*<p>((.*\n)*.*)<\/p>(.*\n)*.*$/, "$2");
         log("messageListCallback: problem during ajax request (readyState = " + http.readyState + ", status = " + http.status + ", response = " + msg + ")");
     }
+    initFlagIcons ();
 }
 
 function getStatusFolders() {
@@ -1404,6 +1452,12 @@ function openInbox(node) {
     tree.selectedEntry = node;
     node.selectElement();
     mailboxTree.o(1);
+}
+
+function initFlagIcons () {
+    var icons = $$("TABLE#messageList TBODY TR.mailer_listcell_regular TD.messageFlag");
+    for (var i = 0; i < icons.length; i++) 
+      icons[i].onclick = mailListFlagMessageToggle;
 }
 
 function initMailer(event) {

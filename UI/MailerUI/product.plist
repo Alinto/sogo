@@ -246,6 +246,16 @@
 	  actionClass = "UIxMailActions";
 	  actionName  = "forward";
 	};
+  markMessageUnflagged = {
+    protectedBy = "View";
+	  actionClass = "UIxMailActions";
+	  actionName  = "markMessageUnflagged";
+  };
+  markMessageFlagged = {
+    protectedBy = "View";
+	  actionClass = "UIxMailActions";
+	  actionName  = "markMessageFlagged";
+  };
 	markMessageUnread = {
 	  protectedBy = "View";
 	  actionClass = "UIxMailActions";

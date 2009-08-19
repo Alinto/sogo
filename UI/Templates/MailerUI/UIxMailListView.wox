@@ -10,7 +10,7 @@
     <tr class="tableview"
       ><var:foreach list="columnsDisplayOrder" item="currentColumn">
         <td var:class="currentColumn.headerClass" var:id="currentColumn.headerId">
-          <var:if condition="currentColumn.value" const:value="Invisible">
+          <var:if condition="currentColumn.value" const:value="Flagged">
             <img rsrc:src="empty.gif" width="100%" height="100%" const:title="" />
           </var:if>
           <var:if condition="currentColumn.value" const:value="Attachment">
@@ -20,7 +20,7 @@
           <var:if condition="currentColumn.value" const:value="Unread">
             <img rsrc:src="title_read_14x14.png" label:title="$currentColumn.value" />
           </var:if>
-          <var:if condition="currentColumn.value" const:value="Invisible" const:negate="YES">
+          <var:if condition="currentColumn.value" const:value="Flagged" const:negate="YES">
             <var:if condition="currentColumn.value" const:value="Attachment" const:negate="YES">
               <var:if condition="currentColumn.value" const:value="Unread" const:negate="YES">
                 <var:string var:value="columnTitle" />
@@ -65,15 +65,15 @@
     <var:foreach list="messages" item="message">
       <tr var:class="messageRowStyleClass" var:id="msgRowID" var:labels="msgLabels"
         ><var:foreach list="columnsDisplayOrder" item="currentColumn"
-          ><var:if condition="currentColumn.value" const:value="Invisible"
-            ><td class="messageFlagColumn"><var:entity name="nbsp"
-            /><var:if condition="isMessageFlagged"
-                ><img rsrc:src="flag.png" 
+          ><var:if condition="currentColumn.value" const:value="Flagged"
+            ><td class="messageFlagColumn messageFlag"
+              ><var:if condition="isMessageFlagged"
+                ><img rsrc:src="flag.png" const:class="messageIsFlagged" 
               /></var:if
-          ><!--<var:if condition="isMessageFlagged" const:negate="YES"
+            ><var:if condition="isMessageFlagged" const:negate="YES"
                 ><img rsrc:src="flag-col.png" 
               /></var:if
-            >--></td
+            ></td
           ></var:if>
           <var:if condition="currentColumn.value" const:value="Attachment"
             ><td class="messageFlagColumn"

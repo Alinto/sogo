@@ -11,6 +11,10 @@
 	* UI/Scheduler/UIxCalMainView.m (checkDefaultModulePreference): Added to
 	support "Last" SOGoUIxDefaultModule value.
 	* UI/MailerUI/UIxMailListView.m (isMessageFlagged): Added for Mantis 1428
+	* UI/MailerUI/UIxMailActions.m (markMessageFlaggedAction, 
+	markMessageUnflaggedAction): Added to support flagging
+	* UI/MailerUI/UIxMailListView.m: Renamed Invisible to Flagged
+	* UI/MailerUI/UIxMailMainFrame.m: Renamed Invisible to Flagged
 
 2009-08-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

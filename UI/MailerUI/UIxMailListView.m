@@ -755,10 +755,10 @@
 
   tmpColumns
     = [NSArray arrayWithObjects: @"tbtv_headercell messageFlagColumn",
-	       @"invisibleHeader", @"Invisible", nil];
+	       @"invisibleHeader", @"Flagged", nil];
   [columnsMetaData setObject: [NSDictionary dictionaryWithObjects: tmpColumns
 					    forKeys: tmpKeys]
-		   forKey: @"Invisible"];
+		   forKey: @"Flagged"];
 
   tmpColumns
     = [NSArray arrayWithObjects: @"tbtv_headercell messageFlagColumn",
@@ -823,7 +823,7 @@
       defaultsOrder = [[NSUserDefaults standardUserDefaults]
         arrayForKey: @"SOGoMailListViewColumnsOrder"];
       if (![defaultsOrder count])
-        defaultsOrder = [NSArray arrayWithObjects: @"Invisible",
+        defaultsOrder = [NSArray arrayWithObjects: @"Flagged",
 				 @"Attachment", @"Subject", @"From",
 				 @"Unread", @"Date", @"Priority", @"Size", nil];
     }

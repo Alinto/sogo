@@ -91,6 +91,37 @@
 
 /* active message */
 
+- (id) markMessageUnflaggedAction 
+{
+  id response;
+  SOGoMailFolder *mailFolder;
+
+  response = [[self clientObject] removeFlags: @"\\Flagged"];
+  if (!response)
+    {
+      mailFolder = [[self clientObject] container];
+      response = [self responseWith204];
+    }
+    
+  return response;
+}
+
+- (id) markMessageFlaggedAction 
+{
+  id response;
+  SOGoMailFolder *mailFolder;
+
+  response = [[self clientObject] addFlags: @"\\Flagged"];
+  if (!response)
+    {
+      mailFolder = [[self clientObject] container];
+      response = [self responseWith204];
+    }
+
+  return response;
+}
+
+
 - (id) markMessageUnreadAction 
 {
   id response;
