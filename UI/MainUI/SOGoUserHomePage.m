@@ -65,18 +65,18 @@ static NSString *LDAPContactInfoAttribute = nil;
 
       defaultModule = [ud stringForKey: @"SOGoUIxDefaultModule"];
       if (defaultModule)
-	{
-	  if (!([defaultModule isEqualToString: @"Calendar"]
-		|| [defaultModule isEqualToString: @"Contacts"]
-		|| [defaultModule isEqualToString: @"Mail"]))
-	    {
-	      [self logWithFormat: @"default module '%@' not accepted (must be"
-		    @"'Calendar', 'Contacts' or 'Mail')", defaultModule];
-	      defaultModule = @"Calendar";
-	    }
-	}
+        {
+          if (!([defaultModule isEqualToString: @"Calendar"]
+             || [defaultModule isEqualToString: @"Contacts"]
+             || [defaultModule isEqualToString: @"Mail"]))
+            {
+              [self logWithFormat: @"default module '%@' not accepted (must be"
+                @"'Calendar', 'Contacts' or 'Mail')", defaultModule];
+              defaultModule = @"Calendar";
+            }
+        }
       else
-	defaultModule = @"Calendar";
+        defaultModule = @"Calendar";
       [self logWithFormat: @"default module set to '%@'", defaultModule];
       [defaultModule retain];
 
