@@ -10,6 +10,7 @@
 	support "Last" SOGoUIxDefaultModule value.
 	* UI/Scheduler/UIxCalMainView.m (checkDefaultModulePreference): Added to
 	support "Last" SOGoUIxDefaultModule value.
+	* UI/MailerUI/UIxMailListView.m (isMessageFlagged): Added for Mantis 1428
 
 2009-08-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

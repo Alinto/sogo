@@ -67,7 +67,10 @@
         ><var:foreach list="columnsDisplayOrder" item="currentColumn"
           ><var:if condition="currentColumn.value" const:value="Invisible"
             ><td class="messageFlagColumn"><var:entity name="nbsp"
-            /></td
+            /><var:if condition="isMessageFlagged"
+                ><img rsrc:src="flag.png" 
+              /></var:if
+            ></td
           ></var:if>
           <var:if condition="currentColumn.value" const:value="Attachment"
             ><td class="messageFlagColumn"

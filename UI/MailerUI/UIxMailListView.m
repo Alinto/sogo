@@ -236,6 +236,14 @@
   return [flags containsObject:@"seen"];
 }
 
+- (BOOL) isMessageFlagged
+{
+  NSArray *flags;
+  
+  flags = [[self message] valueForKey:@"flags"];
+  return [flags containsObject:@"flagged"];
+}
+
 - (NSString *) messageUidString 
 {
   return [[[self message] valueForKey:@"uid"] stringValue];
