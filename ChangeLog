@@ -1,3 +1,11 @@
+2009-08-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoObject.m (-parseETagList:): greatly
+	simplified method by using the "trimmedComponents" utility method.
+
+	* SoObjects/SOGo/SOGoContentObject.m (-PUTAction:): removed "new"
+	hack. Sanitized var names.
+
 2009-08-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoGCSFolder.m

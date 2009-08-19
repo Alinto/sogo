@@ -901,32 +901,16 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
 }
 
 /* etag support */
+- (NSArray *) parseETagList: (NSString *) list
+{
+  NSArray *etags;
 
-- (NSArray *)parseETagList:(NSString *)_c {
-  NSMutableArray *ma;
-  NSArray  *etags;
-  unsigned i, count;
-  
-  if ([_c length] == 0)
-    return nil;
-  if ([_c isEqualToString:@"*"])
-    return nil;
-  
-  etags = [_c componentsSeparatedByString:@","];
-  count = [etags count];
-  ma    = [NSMutableArray arrayWithCapacity:count];
-  for (i = 0; i < count; i++) {
-    NSString *etag;
-    
-    etag = [[etags objectAtIndex:i] stringByTrimmingSpaces];
-#if 0 /* this is non-sense, right? */
-    if ([etag hasPrefix:@"\""] && [etag hasSuffix:@"\""])
-      etag = [etag substringWithRange:NSMakeRange(1, [etag length] - 2)];
-#endif
-    
-    if (etag != nil) [ma addObject:etag];
-  }
-  return ma;
+  if (![list length] || [list isEqualToString:@"*"])
+    etags = nil;
+  else
+    etags = [[list componentsSeparatedByString: @","] trimmedComponents];
+
+  return etags;
 }
 
 - (NSException *)checkIfMatchCondition:(NSString *)_c inContext:(id)_ctx {

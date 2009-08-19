@@ -273,8 +273,8 @@
   WORequest *rq;
   NSException *error;
   unsigned int baseVersion;
-  id etag, tmp;
-  BOOL needsLocation;
+  NSArray *etags;
+  NSString *etag;
   WOResponse *response;
 
   error = [self matchesRequestConditionInContext: _ctx];
@@ -284,30 +284,6 @@
     {
       rq = [_ctx request];
   
-      /* check whether its a request to the 'special' 'new' location */
-      /*
-	Note: this is kinda hack. The OGo ZideStore detects writes to 'new' as
-	object creations and will assign a server side identifier. Most
-	current GroupDAV clients rely on this behaviour, so we reproduce it
-	here.
-	A correct client would loop until it has a name which doesn't not
-	yet exist (by using if-none-match).
-      */
-      needsLocation = NO;
-
-      tmp = [[self nameInContainer] stringByDeletingPathExtension];
-      if ([tmp isEqualToString: @"new"])
-	{
-	  tmp = [self globallyUniqueObjectId];
-	  needsLocation = YES;
-
-	  [self debugWithFormat:
-		  @"reassigned a new location for special new-location: %@", tmp];
-
-	  /* kinda dangerous */
-	  ASSIGNCOPY (nameInContainer, tmp);
-	}
-  
       /* determine base version from etag in if-match header */
       /*
 	Note: The -matchesRequestConditionInContext: already checks whether the
@@ -316,25 +292,26 @@
 	commit.
 	(between the check and the update a change could have been done)
       */
-      tmp = [rq headerForKey: @"if-match"];
-      tmp = [self parseETagList: tmp];
-      etag = nil;
-      if ([tmp count] > 0) {
-	if ([tmp count] > 1) {
-	  /*
-	    Note: we would have to attempt a save for _each_ of the etags being
-	    passed in! In practice most WebDAV clients submit exactly one
-	    etag.
-	  */
-	  [self warnWithFormat:
-		  @"Got multiple if-match etags from client, only attempting to "
-		@"save with the first: %@", tmp];
-	}
-	
-	etag = [tmp objectAtIndex: 0];
-      }
+      etags = [self parseETagList: [rq headerForKey: @"if-match"]];
+      if ([etags count] > 0)
+        {
+          if ([etags count] > 1)
+            {
+              /*
+                Note: we would have to attempt a save for _each_ of the etags
+                being passed in! In practice most WebDAV clients submit
+                exactly one etag.
+              */
+              [self warnWithFormat:
+                      @"Got multiple if-match etags from client, only"
+                    @" attempting to save with the first: %@", etags];
+            }
+          etag = [etags objectAtIndex: 0];
+        }
+      else
+        etag = nil;
       baseVersion = (isNew ? 0 : version);
-  
+
       /* attempt a save */
       
       error = [self saveContentString: [rq contentAsString]
@@ -357,12 +334,7 @@
  
 	  etag = [self davEntityTag];
 	  if (etag)
-	    {
-	      [response setHeader: etag forKey: @"etag"];
-	      if (needsLocation)
-		[response setHeader: [self baseURLInContext:_ctx] 
-			  forKey: @"location"];
-	    }
+            [response setHeader: etag forKey: @"etag"];
 	}
     }
   
