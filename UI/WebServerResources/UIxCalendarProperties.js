@@ -22,26 +22,27 @@ function onOKClick(event) {
   var calendarColor = $("calendarColor");
   var calendarID = $("calendarID");
   var save = true;
-  var tag = $("calendarSyncTag").value;
+  var tag = $("calendarSyncTag");
   var originalTag = $("originalCalendarSyncTag");
   var allTags = $("allCalendarSyncTags");
 
   if (allTags)
       allTags = allTags.value.split(",");
   
-  if ($("synchronizeCalendar").checked) {
-      if (tag.blank()) {
+  if (tag
+      && $("synchronizeCalendar").checked) {
+      if (tag.value.blank()) {
           alert(labels["tagNotDefined"]);
           save = false;
       }
       else if (allTags
-               && allTags.indexOf(tag) > -1) {
+               && allTags.indexOf(tag.value) > -1) {
           alert(labels["tagAlreadyExists"]);
           save = false;
       }
       else if (originalTag
                && !originalTag.value.blank()) {
-          if (tag != originalTag.value)
+          if (tag.value != originalTag.value)
               save = confirm(labels["tagHasChanged"]);
       }
       else
