@@ -601,7 +601,7 @@ function onRowClick(event) {
             parentNode.fire("mousedown");
         }
     }
-    if (rowIndex)
+    if (rowIndex != null)
         lastClickedRow = rowIndex;
 
     return true;
