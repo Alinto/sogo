@@ -458,6 +458,22 @@ static NSArray *tasksFields = nil;
   return response;
 }
 
+- (void) checkFilterValue
+{
+  NSString *filter;
+  NSUserDefaults *ud;
+
+  filter = [[context request] formValueForKey: @"filterpopup"];
+  if ([filter length] 
+      && ![filter isEqualToString: @"view_all"]
+      && ![filter isEqualToString: @"view_future"])
+    {
+      ud = [[context activeUser] userDefaults];
+      [ud setObject: filter forKey: @"CalendarDefaultFilter"];
+      [ud synchronize];
+    }
+}
+
 - (WOResponse *) eventsListAction
 {
   NSArray *oldEvent;
@@ -468,6 +484,7 @@ static NSArray *tasksFields = nil;
   NSString *sort, *ascending;
 
   [self _setupContext];
+  [self checkFilterValue];
 
   newEvents = [NSMutableArray array];
   events = [[self _fetchFields: eventsFields
