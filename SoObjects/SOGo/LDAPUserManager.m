@@ -339,7 +339,7 @@ static NSLock *lock = nil;
       = [NSString stringWithFormat: @"%@@%@", uid, defaultMailDomain];
   else
     systemEmail = uid;
-  [emails addObjectUniquely: systemEmail];
+  [emails addObject: systemEmail];
   [contact setObject: [emails objectAtIndex: 0] forKey: @"c_email"];
 }
 

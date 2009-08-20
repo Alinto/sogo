@@ -16,6 +16,8 @@
 	* UI/PreferencesUI/UIxPreferences.m: Support for MailSignature setting.
 	Mantis 113.
 	* SoObjects/SOGo/SOGoUser.m (migrateSignature): Added. Mantis 113.
+	* SoObjects/SOGo/LDAPUserManager.m: Changed addObjectUniquely to addObject.
+	Mantis 113.
 
 2009-08-19  Cyril Robert <crobert@inverse.ca>
 
