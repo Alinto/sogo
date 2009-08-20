@@ -562,6 +562,7 @@ function dateSelectorCallback(http) {
         var content = http.responseText;
         setDateSelectorContent(content);
         cachedDateSelectors[http.callbackData] = content;
+        changeCalendarDisplay( { "day": currentDay } );
     }
     else
         log ("dateSelectorCallback Ajax error");
@@ -1528,6 +1529,8 @@ function onCalendarSelectDay(event) {
 
     if (needRefresh)
         refreshEvents();
+
+    changeCalendarDisplay( { "day": currentDay } );
 }
 
 function changeWeekCalendarDisplayOfSelectedDay(node) {
