@@ -21,6 +21,7 @@
 
 #import <Foundation/NSValue.h>
 #import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSUserDefaults.h>
 
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WORequest.h>
@@ -35,6 +36,8 @@
   if ((self = [super init]))
     {
       isDisabled = NO;
+      format = nil;
+      jsFormat = nil;
     }
 
   return self;
@@ -110,31 +113,63 @@
 
 - (NSString *) formattedDateString
 {
-  char buf[22];
+  NSMutableString *buf;
+  NSString *_day, *_month, *_year, *_syear;
 
-  if ([self useISOFormats]) {
-    sprintf(buf, "%04d-%02d-%02d",
-	    [[self year]  intValue],
-	    [[self month] intValue],
-	    [[self day]  intValue]);
-  }
-  else {
-    sprintf(buf, "%02d/%02d/%04d",
-	    [[self day] intValue],
-	    [[self month] intValue],
-	    [[self year] intValue]);
-  }
-  return [NSString stringWithCString:buf];
+  if (!format)
+    [self setupFormat];
+
+  _day = [NSString stringWithFormat: @"%02d", [[self day] intValue]];
+  _month = [NSString stringWithFormat: @"%02d", [[self month] intValue]];
+  _year = [NSString stringWithFormat: @"%04d", [[self year] intValue]];
+  _syear = [NSString stringWithFormat: @"%02d", [[self year] intValue] % 100];
+
+  buf = [NSMutableString stringWithString: jsFormat];
+  [buf replaceString: @"dd" withString: _day];
+  [buf replaceString: @"mm" withString: _month];
+  [buf replaceString: @"yyyy" withString: _year];
+  [buf replaceString: @"yy" withString: _syear];
+
+  return buf;
 }
 
 - (NSString *) dateFormat
 {
-  return [self useISOFormats] ? @"%Y-%m-%d" : @"%d/%m/%Y";
+  if (!format)
+    [self setupFormat];
+  return format;
 }
 
 - (NSString *) jsDateFormat
 {
-  return [self useISOFormats] ? @"yyyy-mm-dd" : @"dd/mm/yyyy";
+  if (!format)
+    [self setupFormat];
+  return jsFormat;
+}
+
+- (void) setupFormat
+{
+  NSUserDefaults *ud;
+  NSMutableString *tmp;
+  
+  ud = [[[self context] activeUser] userDefaults];
+  tmp = [NSMutableString stringWithString: 
+         [ud stringForKey: @"ShortDateFormat"]];
+  if (!tmp)
+    {
+      if ([self useISOFormats])
+        tmp = [NSMutableString stringWithString: @"%Y-%m-%d"];
+      else
+        tmp = [NSMutableString stringWithString: @"%d/%m/%Y"];
+    }
+
+  format = [NSString stringWithString: tmp];
+
+  [tmp replaceString: @"%d" withString: @"dd"];
+  [tmp replaceString: @"%m" withString: @"mm"];
+  [tmp replaceString: @"%Y" withString: @"yyyy"];
+  [tmp replaceString: @"%y" withString: @"yy"];
+  jsFormat = [NSString stringWithString: tmp];
 }
 
 /* action */

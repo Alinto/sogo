@@ -4,6 +4,8 @@
 	return a 409 code when a folder with the same name exists.
 	* SoObjects/SOGo/SOGoParentFolder.m (hasLocalSubFolderNamed): Added for
 	Mantis 2040.
+	* UI/Scheduler/UIxDatePicker.m: Fix to use user-defined format, if any.
+	Mantis 1911.
 
 2009-08-19  Cyril Robert <crobert@inverse.ca>
 
