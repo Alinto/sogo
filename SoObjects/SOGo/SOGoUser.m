@@ -869,16 +869,27 @@ _timeValue (NSString *key)
   return [[defaultAccount objectForKey: @"identities"] objectAtIndex: 0];
 }
 
-- (NSString *) signature
+- (void) migrateSignature
 {
   NSString *signature;
+  NSUserDefaults *ud;
 
-  signature = [[self userDefaults] stringForKey: @"MailSignature"];
-  // Old style
-  if (![signature length])
-    signature = [[self primaryIdentity] objectForKey: @"signature"];
+  signature = [[self primaryIdentity] objectForKey: @"signature"];
 
-  return signature;
+  if ([signature length])
+    {
+      ud = [self userDefaults];
+      [ud setObject: signature forKey: @"MailSignature"];
+      [ud removeObjectForKey: @"MailAccounts"];
+      [ud synchronize];
+    }
+}
+
+- (NSString *) signature
+{
+  [self migrateSignature];
+
+  return [[self userDefaults] stringForKey: @"MailSignature"];
 }
 
 - (NSString *) replyPlacement

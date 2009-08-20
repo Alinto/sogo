@@ -571,12 +571,8 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
 {
   NSString *signature;
 
-  signature = [userDefaults stringForKey: @"MailSignature"];
-  // Old style
-  if (![signature length])
-    signature = [[user defaultIdentity] objectForKey: @"signature"];
-
-  return signature;
+  [user migrateSignature];
+  return [userDefaults stringForKey: @"MailSignature"];
 }
 
 - (void) setSignature: (NSString *) newSignature
