@@ -35,15 +35,12 @@
   id       year;
   NSString *label;
   BOOL isDisabled;
-  NSString *format;
-  NSString *jsFormat;
 }
 
 - (NSString *) dateID;
 - (NSString *) dateFormat;
 - (NSString *) jsDateFormat;
 - (BOOL) useISOFormats;
-- (void) setupFormat;
 @end
 
 #endif /* UIXDATEPICKER_H */

@@ -6,6 +6,7 @@
 	Mantis 2040.
 	* UI/Scheduler/UIxDatePicker.m: Fix to use user-defined format, if any.
 	Mantis 1911.
+	* UI/Scheduler/UIxDatePicker.m: Removed changes from 1911: too many issues.
 
 2009-08-19  Cyril Robert <crobert@inverse.ca>
 
