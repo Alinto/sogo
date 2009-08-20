@@ -632,7 +632,7 @@ function lineBreakCount(str){
 
 function hasSignature() {
     try {
-        return(UserDefaults.MailAccounts[0].identities[0].signature.length > 0);
+        return(UserDefaults["MailSignature"].length > 0);
     } catch(e) {
         return false;
     }

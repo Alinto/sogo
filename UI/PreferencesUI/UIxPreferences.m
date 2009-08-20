@@ -569,14 +569,19 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
 
 - (NSString *) signature
 {
-  return [[user defaultIdentity] objectForKey: @"signature"];
+  NSString *signature;
+
+  signature = [userDefaults stringForKey: @"MailSignature"];
+  // Old style
+  if (![signature length])
+    signature = [[user defaultIdentity] objectForKey: @"signature"];
+
+  return signature;
 }
 
 - (void) setSignature: (NSString *) newSignature
 {
-  [[user defaultIdentity] setObject: newSignature
-			  forKey: @"signature"];
-  [user saveMailAccounts];
+  [userDefaults setObject: newSignature forKey: @"MailSignature"];
 }
 
 - (NSArray *) replyPlacementList

@@ -413,6 +413,7 @@ _timeValue (NSString *key)
       [self logWithFormat: @"'SOGoDefaultMailDomain' is not set"];
       doSave = NO;
     }
+  doSave = NO;
   if (doSave)
     [[self userDefaults] setObject: [self mailAccounts]
 			 forKey: @"MailAccounts"];
@@ -870,7 +871,14 @@ _timeValue (NSString *key)
 
 - (NSString *) signature
 {
-  return [[self primaryIdentity] objectForKey: @"signature"];
+  NSString *signature;
+
+  signature = [[self userDefaults] stringForKey: @"MailSignature"];
+  // Old style
+  if (![signature length])
+    signature = [[self primaryIdentity] objectForKey: @"signature"];
+
+  return signature;
 }
 
 - (NSString *) replyPlacement

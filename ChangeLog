@@ -11,6 +11,10 @@
 	CalendarDefaultFilter user default. Mantis 112
 	* UI/Scheduler/UIxCalListingActions.m (checkFilterValue): Added to support
 	CalendarDefaultFilter user default. Mantis 112
+	* SoObjects/SOGo/SOGoUser.m: Changed "signature" setting's place: MailSignature
+	Mantis 113.
+	* UI/PreferencesUI/UIxPreferences.m: Support for MailSignature setting.
+	Mantis 113.
 
 2009-08-19  Cyril Robert <crobert@inverse.ca>
 
