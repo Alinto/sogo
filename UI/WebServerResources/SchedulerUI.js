@@ -1056,6 +1056,7 @@ function newBaseEventDIV(eventRep, event, eventText) {
 
     if (event[2] == null) {
         eventDiv.observe("selectstart", listRowMouseDownHandler);
+        eventDiv.observe("click", onCalendarSelectEvent);
     }
     else {
         // Status field is defined -- user can read event
