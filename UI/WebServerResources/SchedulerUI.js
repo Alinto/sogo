@@ -1163,8 +1163,9 @@ function calendarDisplayCallback(http) {
         div.update(http.responseText);
 
         // DOM has changed
-        if (preventAutoScroll)
-          $("daysView").scrollTop = position;
+        daysView = $("daysView");
+        if (preventAutoScroll && daysView)
+          daysView.scrollTop = position;
 
         if (http.callbackData["view"])
             currentView = http.callbackData["view"];
