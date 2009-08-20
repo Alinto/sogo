@@ -43,6 +43,7 @@
      	= "Você já se inscreveu nesta pasta!";
 "The user rights cannot be edited for this object!"
         = "Os direitos do usuário não podem ser editados para este objeto!";
+"A folder by that name already exists." = "A folder by that name already exists.";
 
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Você não está liberado para acessar este módulo ou este sistema. Por favor, contate seu administrador de sistemas.";

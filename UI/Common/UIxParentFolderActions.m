@@ -42,20 +42,26 @@
   name = [[context request] formValueForKey: @"name"];
   if ([name length] > 0)
     {
-      response = (WOResponse *) [[self clientObject] newFolderWithName: name
-						     nameInContainer: &nameInContainer];
-      if (!response)
-	{
-	  response = [self responseWithStatus: 201];
-	  [response setHeader: @"text/plain; charset=us-ascii"
-		    forKey: @"content-type"];
-	  [response appendContentString: nameInContainer];
-	}
+      if (![[self clientObject] hasLocalSubFolderNamed: name])
+        {
+          response = (WOResponse *) [[self clientObject] newFolderWithName: name
+                                                           nameInContainer: &nameInContainer];
+          if (!response)
+            {
+              response = [self responseWithStatus: 201];
+              [response setHeader: @"text/plain; charset=us-ascii"
+                forKey: @"content-type"];
+              [response appendContentString: nameInContainer];
+            }
+        }
+      else
+        response = [NSException exceptionWithHTTPStatus: 409
+                                                 reason: @"That name already exists"];
     }
   else
     response = [NSException exceptionWithHTTPStatus: 400
-                            reason: @"The name is missing"];
-  
+                                             reason: @"The name is missing"];
+
   return response;
 }
 

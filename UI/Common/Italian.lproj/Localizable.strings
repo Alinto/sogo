@@ -43,6 +43,7 @@
      	= "Hai già sottoscritto la cartella!";
 "The user rights cannot be edited for this object!"
         = "I permessi di questo oggetto non possono essere modificati!";
+"A folder by that name already exists." = "A folder by that name already exists.";
 
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Non sei abilitato ad accedere a questo modulo. Contatta il tuo amministratore di sistema.";

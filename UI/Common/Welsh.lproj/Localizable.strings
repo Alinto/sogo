@@ -43,6 +43,7 @@
      	= "Yr ydych wedi tanysgrifio eisoes i'r ffolder yna!";
 "The user rights cannot be edited for this object!"
         = "Ni all hawliau'r defnyddiwr cael eu golygu ar gyfer y gwrthrych hwn!";
+"A folder by that name already exists." = "A folder by that name already exists.";
 
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Nid oes gennych caniatad mynediad i'r modiwl hwn na'r system hwn. Cysylltwch a'r Gweinyddwr Systemau os gwelwch yn dda.";

@@ -43,6 +43,7 @@
      	= "Vous êtes déja abonné à ce dossier.";
 "The user rights cannot be edited for this object!"
         = "Les droits sur cet objet ne peuvent pas être édités.";
+"A folder by that name already exists." = "Un dossier du même nom existe déjà.";
 
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Vous n'êtes pas autorisé à accéder à ce module ou ce système. Veuillez contacter votre administrateur système.";

@@ -1636,6 +1636,9 @@ function createFolderCallback(http) {
             if (data.okCB)
                 data.okCB(data.name, "/" + http.responseText, UserLogin);
         }
+        else if (http.status == 409) {
+            alert (clabels["A folder by that name already exists."]);
+        }
         else {
             if (data.notOkCB)
                 data.notOkCB(name);

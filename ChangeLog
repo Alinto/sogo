@@ -1,3 +1,10 @@
+2009-08-20  Cyril Robert <crobert@inverse.ca>
+
+	* UI/Common/UIxParentFolderActions.m (createFolderAction): Mantis 2040:
+	return a 409 code when a folder with the same name exists.
+	* SoObjects/SOGo/SOGoParentFolder.m (hasLocalSubFolderNamed): Added for
+	Mantis 2040.
+
 2009-08-19  Cyril Robert <crobert@inverse.ca>
 
 	* UI/MainUI/SOGoUserHomePage.m (defaultAction): Added support for SOGoUIxDefaultModule

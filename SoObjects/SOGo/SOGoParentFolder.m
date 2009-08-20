@@ -448,6 +448,27 @@ static SoSecurityManager *sm = nil;
   return [ma sortedArrayUsingSelector: @selector (compare:)];
 }
 
+- (BOOL) hasLocalSubFolderNamed: (NSString *) name
+{
+  NSArray *subs;
+  NSException *error;
+  int i, count;
+  BOOL rc = NO;
+
+  error = [self initSubFolders];
+  if (error)
+    [error raise];
+    
+  subs = [subFolders allValues];
+  count = [subs count];
+
+  for (i = 0; i < count; i++)
+    if ([name isEqualToString: [[subs objectAtIndex: i] displayName]])
+      rc = YES;
+
+  return rc;
+}
+
 - (NSArray *) toManyRelationshipKeys
 {
   NSEnumerator *sortedSubFolders;
