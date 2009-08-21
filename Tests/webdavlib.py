@@ -1,11 +1,15 @@
+import cStringIO
 import httplib
 import M2Crypto.httpslib
 import time
 import xml.sax.saxutils
 import xml.dom.ext.reader.Sax2
+import xml.xpath
 import sys
 
 class WebDAVClient:
+    user_agent = "Mozilla/5.0"
+
     def __init__(self, hostname, port, username, password, forcessl = False):
         if port == "443" or forcessl:
             self.conn = M2Crypto.httpslib.HTTPSConnection(hostname, int(port),
@@ -17,7 +21,7 @@ class WebDAVClient:
                                 .encode('base64')[:-1])
 
     def _prepare_headers(self, query, body):
-        headers = { "User-Agent": "Mozilla/5.0",
+        headers = { "User-Agent": self.user_agent,
                     "authorization": "Basic %s" % self.simpleauth_hash }
         if body is not None:
             headers["content-length"] = len(body)
@@ -89,6 +93,7 @@ class WebDAVQuery(HTTPQuery):
         self.ns_mgr = _WD_XMLNS_MGR()
         self.top_node = None
         self.xml_response = None
+        self.xpath_namespace = { "D": "DAV:" }
 
     def render(self):
         if self.top_node is not None:
@@ -118,8 +123,17 @@ class WebDAVQuery(HTTPQuery):
             and (headers["content-type"].startswith("application/xml")
                  or headers["content-type"].startswith("text/xml"))
             and int(headers["content-length"]) > 0):
-            dom_response = xml.dom.ext.reader.Sax2.FromXml(self.response["body"])
+            reader = xml.dom.ext.reader.Sax2.Reader()
+            stream = cStringIO.StringIO(self.response["body"])
+            dom_response = reader.fromStream(stream)
             self.response["document"] = dom_response.documentElement
+
+    def xpath_evaluate(self, query, top_node = None):
+        if top_node is None:
+            top_node = self.response["document"]
+        xpath_context = xml.xpath.CreateContext(top_node)
+        xpath_context.setNamespaces(self.xpath_namespace)
+        return xml.xpath.Evaluate(query, None, xpath_context)
 
 class WebDAVMKCOL(WebDAVQuery):
     method = "MKCOL"

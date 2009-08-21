@@ -5,7 +5,6 @@ from config import hostname, port, username, password, subscriber_username, subs
 import sys
 import unittest
 import webdavlib
-import xml.xpath
 import time
 
 # TODO:
@@ -27,11 +26,11 @@ def fetchUserEmail(login):
     propfind = webdavlib.WebDAVPROPFIND(resource,
                                         ["{urn:ietf:params:xml:ns:caldav}calendar-user-address-set"],
                                         0)
+    propfind.xpath_namespace = { "D": "DAV:",
+                                 "C": "urn:ietf:params:xml:ns:caldav" }
     client.execute(propfind)
-    xpath_context = xml.xpath.CreateContext(propfind.response["document"])
-    xpath_context.setNamespaces({ "D": "DAV:",
-                                  "C": "urn:ietf:params:xml:ns:caldav" })
-    nodes = xml.xpath.Evaluate('/D:multistatus/D:response/D:propstat/D:prop/C:calendar-user-address-set/D:href', None, xpath_context)
+    nodes = propfind.xpath_evaluate('/D:multistatus/D:response/D:propstat/D:prop/C:calendar-user-address-set/D:href',
+                                    None)
 
     return nodes[0].childNodes[0].nodeValue
 
@@ -58,12 +57,6 @@ class DAVAclTest(unittest.TestCase):
 
     def rightsToSOGoRights(self, rights):
         self.fail("subclass must implement this method")
-
-    def xpath_query(self, query, top_node):
-        xpath_context = xml.xpath.CreateContext(top_node)
-        xpath_context.setNamespaces({ "D": "DAV:",
-                                      "C": "urn:ietf:params:xml:ns:caldav" })
-        return xml.xpath.Evaluate(query, None, xpath_context)
 
     def setupRights(self, rights):
         rights_str = "".join(["<%s/>" % x for x in self.rightsToSOGoRights(rights) ])
@@ -284,23 +277,24 @@ class DAVCalendarAclTest(DAVAclTest):
 
         return event
 
-    def _calendarDataInMultistatus(self, top_node, filename,
+    def _calendarDataInMultistatus(self, query, filename,
                                    response_tag = "D:response"):
         event = None
 
-        response_nodes = self.xpath_query("/D:multistatus/%s" % response_tag,
-                                          top_node)
+        query.xpath_namespace = { "D": "DAV:",
+                                  "C": "urn:ietf:params:xml:ns:caldav" }
+        response_nodes = query.xpath_evaluate("/D:multistatus/%s" % response_tag)
         for response_node in response_nodes:
-            href_node = self.xpath_query("D:href", response_node)[0]
+            href_node = query.xpath_evaluate("D:href", response_node)[0]
             href = href_node.childNodes[0].nodeValue
             if href.endswith(filename):
-                propstat_nodes = self.xpath_query("D:propstat", response_node)
+                propstat_nodes = query.xpath_evaluate("D:propstat", response_node)
                 for propstat_node in propstat_nodes:
-                    status_node = self.xpath_query("D:status",
-                                                   propstat_node)[0]
+                    status_node = query.xpath_evaluate("D:status",
+                                                       propstat_node)[0]
                     status = status_node.childNodes[0].nodeValue
-                    data_nodes = self.xpath_query("D:prop/C:calendar-data",
-                                                  propstat_node)
+                    data_nodes = query.xpath_evaluate("D:prop/C:calendar-data",
+                                                      propstat_node)
                     if status.endswith("200 OK"):
                         if (len(data_nodes) > 0
                             and len(data_nodes[0].childNodes) > 0):
@@ -323,8 +317,7 @@ class DAVCalendarAclTest(DAVAclTest):
                                             1)
         self.subscriber_client.execute(propfind)
         if propfind.response["status"] != 403:
-            event = self._calendarDataInMultistatus(propfind.response["document"],
-                                                    filename)
+            event = self._calendarDataInMultistatus(propfind, filename)
 
         return event
 
@@ -338,8 +331,7 @@ class DAVCalendarAclTest(DAVAclTest):
                                                     [ url ])
         self.subscriber_client.execute(multiget)
         if multiget.response["status"] != 403:
-            event = self._calendarDataInMultistatus(multiget.response["document"],
-                                                    url)
+            event = self._calendarDataInMultistatus(multiget, url)
 
         return event
 
@@ -352,8 +344,8 @@ class DAVCalendarAclTest(DAVAclTest):
                                                ["{urn:ietf:params:xml:ns:caldav}calendar-data"])
         self.subscriber_client.execute(sync_query)
         if sync_query.response["status"] != 403:
-            event = self._calendarDataInMultistatus(sync_query.response["document"],
-                                                    url, "D:sync-response")
+            event = self._calendarDataInMultistatus(sync_query, url,
+                                                    "D:sync-response")
 
         return event
 
