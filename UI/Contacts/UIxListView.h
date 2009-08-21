@@ -24,10 +24,12 @@
 #define UIXLISTVIEW_H
 
 #import <SOGoUI/UIxComponent.h>
+#import <SoObjects/Contacts/SOGoContactGCSList.h>
 
 @interface UIxListView : UIxComponent
 {
   NGVList *list;
+  SOGoContactGCSList *co;
   id item;
 }
 

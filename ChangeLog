@@ -1,6 +1,8 @@
 2009-08-21  Cyril Robert <crobert@inverse.ca>
 
 	* UI/Contacts/UIxListView.m: Implementation, allows VLISTs to be displayed.
+	* UI/Contacts/UIxListView.m (checkListReferences): Added list integrity
+	verification (make sure all references are valid).
 
 2009-08-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

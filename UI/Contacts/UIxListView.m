@@ -24,6 +24,7 @@
 #import <NGObjWeb/WOResponse.h>
 #import <NGCards/NGVList.h>
 #import <NGCards/NGVCard.h>
+#import <NGCards/NGVCardReference.h>
 
 #import "UIxListView.h"
 
@@ -61,20 +62,56 @@
 {
   NSString *rc;
 
-  rc = [NSString stringWithFormat: @"%@ <%@>", [item fn], [item email]];
+  rc = [NSString stringWithFormat: @"%@ <%@>", 
+     [item fn], [item email]];
 
   return rc;
+}
+
+- (void) checkListReferences
+{
+  NSMutableArray *invalid;
+  NGVCardReference *card;
+  int i, count;
+  id test;
+
+  invalid = [NSMutableArray array];
+
+  count = [[list cardReferences] count];
+  for (i = 0; i < count; i++)
+    {
+      card = [[list cardReferences] objectAtIndex: i];
+      test = [[co container] lookupName: [card reference] 
+                              inContext: context
+                                acquire: NO];
+      if ([test isKindOfClass: [NSException class]])
+        {
+          NSLog (@"%@ not found", [card reference]);
+          [invalid addObject: [card copy]];
+        }
+    }
+
+  count = [invalid count];
+  if (count > 0)
+    {
+      for (i = 0; i < count; i++)
+        [list deleteCardReference: [invalid objectAtIndex: i]];
+      [co save];
+    }
 }
 
 - (id <WOActionResults>) defaultAction
 {
   id rc;
 
-  list = [[self clientObject] vList];
-  //TODO: make sure references are valid
+  co = [self clientObject];
+  list = [co vList];
 
   if (list)
-    rc = self;
+    {
+      [self checkListReferences];
+      rc = self;
+    }
   else
     rc = [NSException exceptionWithHTTPStatus: 404 /* Not Found */
                                        reason: @"could not locate contact"];
