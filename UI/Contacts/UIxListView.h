@@ -26,6 +26,10 @@
 #import <SOGoUI/UIxComponent.h>
 
 @interface UIxListView : UIxComponent
+{
+  NGVList *list;
+  id item;
+}
 
 @end
 

@@ -20,8 +20,66 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <NGObjWeb/NSException+HTTP.h>
+#import <NGObjWeb/WOResponse.h>
+#import <NGCards/NGVList.h>
+#import <NGCards/NGVCard.h>
+
 #import "UIxListView.h"
 
 @implementation UIxListView
+
+
+- (NSString *) listName
+{
+  return [list fn];
+}
+
+- (BOOL) hasNickname
+{
+  return [list nickname] != nil;
+}
+- (NSString *) listNickname
+{
+  return [list nickname];
+}
+
+- (BOOL) hasDescription
+{
+  return [list description] != nil;
+}
+- (NSString *) listDescription
+{
+  return [list description];
+}
+
+- (NSArray *) components
+{
+  return [list cardReferences];
+}
+- (NSString *) itemText
+{
+  NSString *rc;
+
+  rc = [NSString stringWithFormat: @"%@ <%@>", [item fn], [item email]];
+
+  return rc;
+}
+
+- (id <WOActionResults>) defaultAction
+{
+  id rc;
+
+  list = [[self clientObject] vList];
+  //TODO: make sure references are valid
+
+  if (list)
+    rc = self;
+  else
+    rc = [NSException exceptionWithHTTPStatus: 404 /* Not Found */
+                                       reason: @"could not locate contact"];
+
+  return rc;
+}
 
 @end
