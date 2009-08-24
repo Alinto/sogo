@@ -182,79 +182,79 @@
       // Retrieve the email addresses from the specified address book
       // and contact IDs
       folders = (SOGoContactFolders *)[[[self clientObject] container] privateContacts: @"Contacts"
-								       inContext: nil];
+                                                                             inContext: nil];
       folder = [folders lookupName: folderId
-			inContext: nil
-			acquire: NO];
+                         inContext: nil
+                           acquire: NO];
       if (folder)
-	{
-	  uids = [contactsId objectEnumerator];
-	  uid = [uids nextObject];
-        
-	  addresses = [NSMutableArray new];
-        
-	  while (uid)
-	    {
-	      contact = [folder lookupName: uid
-				inContext: [self context]
-				acquire: NO];
-	      if (![(NSObject*)contact isKindOfClass: [NSException class]])
-		{
-		  // We fetch the preferred email address of the contact or
-		  // the first defined email address
-		  card = [contact vCard];
-		  email = [card preferredEMail];
-		  if (email == nil)
-		    email = (NSString*)[card firstChildWithTag: @"EMAIL"];
-		  if (email)
-		    {
-		      email = [NSString stringWithFormat: @"<%@>", email];
+        {
+          uids = [contactsId objectEnumerator];
+          uid = [uids nextObject];
 
-		      // We append the contact's name
-		      fn = [NSMutableString stringWithString: [card fn]];
-		      if ([fn length] == 0)
-			{
-			  n = [card n];
-			  if (n)
-			    {
-			      max = [n count];
-			      if (max > 0)
-				{
-				  if (max > 1)
-				    fn = [NSMutableString stringWithFormat: @"%@ %@", [n objectAtIndex: 1], [n objectAtIndex: 0]];
-				  else
-				    fn = [NSMutableString stringWithString: [n objectAtIndex: 0]];
-				}
-			    }
-			}
-		      if (fn)
-			{
-			  [fn appendFormat: @" %@", email];
-			  [addresses addObject: fn];
-			}
-		      else
-			[addresses addObject: email];
-		    }
-		}
-	      uid = [uids nextObject];
-	    }
+          addresses = [NSMutableArray new];
 
-	  if ([addresses count] > 0)
-	    parameters = [NSString stringWithFormat: @"?mailto=%@", [addresses componentsJoinedByString: @","]];
-	}
+          while (uid)
+            {
+              contact = [folder lookupName: uid
+                                 inContext: [self context]
+                                   acquire: NO];
+              if (![(NSObject*)contact isKindOfClass: [NSException class]])
+                {
+                  // We fetch the preferred email address of the contact or
+                  // the first defined email address
+                  card = [contact vCard];
+                  email = [card preferredEMail];
+                  if (email == nil)
+                    email = (NSString*)[card firstChildWithTag: @"EMAIL"];
+                  if (email)
+                    {
+                      email = [NSString stringWithFormat: @"<%@>", email];
+
+                      // We append the contact's name
+                      fn = [NSMutableString stringWithString: [card fn]];
+                      if ([fn length] == 0)
+                        {
+                          n = [card n];
+                          if (n)
+                            {
+                              max = [n count];
+                              if (max > 0)
+                                {
+                                  if (max > 1)
+                                    fn = [NSMutableString stringWithFormat: @"%@ %@", [n objectAtIndex: 1], [n objectAtIndex: 0]];
+                                  else
+                                    fn = [NSMutableString stringWithString: [n objectAtIndex: 0]];
+                                }
+                            }
+                        }
+                      if (fn)
+                        {
+                          [fn appendFormat: @" %@", email];
+                          [addresses addObject: fn];
+                        }
+                      else
+                        [addresses addObject: email];
+                    }
+                }
+              uid = [uids nextObject];
+            }
+
+          if ([addresses count] > 0)
+            parameters = [NSString stringWithFormat: @"?mailto=%@", [addresses componentsJoinedByString: @","]];
+        }
     }
   else if ([[request formValues] objectForKey: @"mailto"])
     // We use the email addresses defined in the request
     parameters = [[request formValues] asURLParameters];
-  
+
   if (!parameters)
     // No parameter passed; simply open the compose window
     parameters = @"?mailto=";
 
   newLocation = [NSString stringWithFormat: @"%@/%@/compose%@",
-			  [co baseURLInContext: context],
-			  firstAccount,
-			  parameters];
+                 [co baseURLInContext: context],
+                 firstAccount,
+                 parameters];
 
   return [self redirectToLocation: newLocation];
 }
