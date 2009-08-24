@@ -24,6 +24,7 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
 
+#import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOResponse.h>
 #import <Foundation/NSPropertyList.h>

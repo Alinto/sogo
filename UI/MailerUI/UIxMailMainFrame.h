@@ -40,6 +40,8 @@
 - (WOResponse *) saveDragHandleStateAction;
 - (WOResponse *) saveFoldersStateAction;
 
+- (NSString *) formattedMailtoString: (NGVCard *) card;
+
 @end
 
 #endif /* UIXMAILMAINFRAME_H */

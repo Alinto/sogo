@@ -32,6 +32,9 @@
   NGVList *list;
 }
 
+- (NGVList *) vList;
+- (void) save;
+
 @end
 
 #endif /* SOGOCONTACTGCSLIST_H */

@@ -25,6 +25,7 @@
 #import <Foundation/NSUserDefaults.h>
 
 #import <NGCards/NGVCard.h>
+#import <NGCards/NGVCardReference.h>
 #import <NGCards/NGVList.h>
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WORequest.h>
@@ -203,7 +204,7 @@
                                    acquire: NO];
               if ([contact isKindOfClass: [SOGoContactGCSList class]])
                 {
-                  list = [contact vList];
+                  list = [(SOGoContactGCSList *)contact vList];
                   cards = [list cardReferences];
                   count = [cards count];
                   for (i = 0; i < count; i++)
@@ -247,10 +248,10 @@
   NSArray *n;
   unsigned int max;
 
-  if ([card respondsToSelector: @selector (preferredEMail)])
+  if ([card isKindOfClass: [NGVCard class]])
     email = [card preferredEMail];
   else
-    email = [card email];
+    email = [(NGVCardReference *)card email];
 
   if (email == nil)
     email = (NSString*)[card firstChildWithTag: @"EMAIL"];
@@ -282,7 +283,7 @@
           rc = fn;
         }
       else
-        rc = email;
+        rc = [NSMutableString stringWithString: email];
     }
 
   return rc;

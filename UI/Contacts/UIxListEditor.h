@@ -33,6 +33,8 @@
   id reference;
 }
 
+- (BOOL) cardReferences: (NSArray *) references contain: (NSString *) ref;
+
 @end
 
 #endif /* UIXLISTEDITOR_H */
