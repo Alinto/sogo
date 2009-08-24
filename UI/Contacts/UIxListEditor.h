@@ -24,8 +24,14 @@
 #define UIXLISTEDITOR_H
 
 #import <SOGoUI/UIxComponent.h>
+#import <SoObjects/Contacts/SOGoContactGCSList.h>
 
 @interface UIxListEditor : UIxComponent
+{
+  NGVList *list;
+  SOGoContactGCSList *co;
+  id reference;
+}
 
 @end
 

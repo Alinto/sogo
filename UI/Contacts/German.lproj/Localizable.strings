@@ -168,3 +168,12 @@
 "Forbidden" = "Sie können nicht auf dieses Adressbuch schreiben.";
 "Invalid Contact" = "Der gewählte Kontakt existiert nicht mehr.";
 "Unknown Destination Folder" = "Das gewählte Ziel-Adressbuch existiert nicht mehr.";
+
+/* Lists */
+"List details" = "List details";
+"List name:" = "List name:";
+"List nickname:" = "List nickname:";
+"List description:" = "List description:";
+"Members" = "Members";
+"Contacts" = "Contacts";
+"Add" = "Add";

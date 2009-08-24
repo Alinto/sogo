@@ -168,3 +168,12 @@
 "Forbidden" = "Ön nem írhat ebbe a címjegyzékbe.";
 "Invalid Contact" = "A kijelölt kapcsolat már nem létezik.";
 "Unknown Destination Folder" = "A kijelölt címjegyzék már nem elérhető.";
+
+/* Lists */
+"List details" = "List details";
+"List name:" = "List name:";
+"List nickname:" = "List nickname:";
+"List description:" = "List description:";
+"Members" = "Members";
+"Contacts" = "Contacts";
+"Add" = "Add";

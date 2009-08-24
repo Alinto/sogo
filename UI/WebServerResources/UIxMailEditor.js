@@ -360,9 +360,33 @@ function onContactBlur(event) {
     MailEditor.currentField = null;
 }
 
+function findPos(obj) {
+    var curleft = curtop = 0;
+    if (obj.offsetParent) {
+        do {
+            curleft += obj.offsetLeft;
+            curtop += obj.offsetTop;
+        } while (obj = obj.offsetParent);
+    }
+    return [curleft,curtop];
+}
+
 function performSearch() {
     // Perform address completion
-    if (MailEditor.currentField) {
+    var reference = $("referenceList");
+    if (reference) {
+        var field = reference.down ("TD.editing INPUT");
+        if (field && field.value.trim().length > 2) {
+            /*var pos = findPos (field);
+            $('contactsMenu').absolutize ();
+            $('contactsMenu').style.top = pos[1];*/
+            var urlstr = window.location.href + "/../../contactSearch?search="
+              + encodeURIComponent (field.value.trim());
+            document.contactLookupAjaxRequest =
+                triggerAjaxRequest(urlstr, performSearchCallback, field);
+        }
+    }
+    else if (MailEditor.currentField) {
         if (document.contactLookupAjaxRequest) {
             // Abort any pending request
             document.contactLookupAjaxRequest.aborted = true;
@@ -402,6 +426,8 @@ function performSearchCallback(http) {
                     var contact = data.contacts[i];
                     var completeEmail = contact["c_cn"] + " <" + contact["c_mail"] + ">";
                     var node = new Element('li', { 'address': completeEmail });
+                    node.writeAttribute("mail", contact["c_mail"]);
+                    node.writeAttribute("name", contact["c_cn"]);
                     var matchPosition = completeEmail.toLowerCase().indexOf(data.searchText.toLowerCase());
                     var matchBefore = completeEmail.substring(0, matchPosition);
                     var matchText = completeEmail.substring(matchPosition, matchPosition + data.searchText.length);
@@ -417,8 +443,8 @@ function performSearchCallback(http) {
                 }
 
                 // Show popup menu
-                var offsetScroll = Element.cumulativeScrollOffset(MailEditor.currentField);
-                var offset = Element.cumulativeOffset(MailEditor.currentField);
+                var offsetScroll = Element.cumulativeScrollOffset(input);
+                var offset = Element.cumulativeOffset(input);
                 var top = offset[1] - offsetScroll[1] + node.offsetHeight + 3;
                 var height = 'auto';
                 var heightDiff = window.height() - offset[1];
@@ -445,6 +471,12 @@ function performSearchCallback(http) {
                     // Single result
                     var contact = data.contacts[0];
                     input.uid = contact["c_name"];
+                    if ($("referenceList")) {
+                        var line = $(input).ancestors().first();
+                        line.writeAttribute ("card", contact["c_name"]);
+                        line.writeAttribute ("name", contact["c_cn"]);
+                        line.writeAttribute ("mail", contact["c_mail"]);
+                    }
                     var completeEmail = contact["c_cn"] + " <" + contact["c_mail"] + ">";
                     if (contact["c_cn"].substring(0, input.value.length).toUpperCase()
                         == input.value.toUpperCase())
@@ -469,6 +501,16 @@ function performSearchCallback(http) {
 }
 
 function onAddressResultClick(event) {
+    var reference = $("referenceList");
+    if (reference) {
+        var field = reference.down ("TD.editing INPUT");
+        var td = reference.down ("TD.editing");
+        td.writeAttribute ("card", this.uid);
+        td.writeAttribute ("mail", this.readAttribute("mail"));
+        td.writeAttribute ("name", this.readAttribute("name"));
+        field.value = $(this).readAttribute("address");
+        endAllEditables ();
+    }
     if (MailEditor.currentField) {
         MailEditor.currentField.uid = this.uid;
         MailEditor.currentField.value = $(this).readAttribute("address");
@@ -492,6 +534,7 @@ function initTabIndex(addressList, subjectField, msgArea) {
 
 function initMailEditor() {
     var list = $("attachments");
+    if (!list) return;
     $(list).attachMenu("attachmentsMenu");
     var elements = $(list).childNodesWithTag("li");
     for (var i = 0; i < elements.length; i++)
@@ -669,6 +712,8 @@ function onSelectPriority(event) {
 }
 
 function onWindowResize(event) {
+    if (!document.pageform)
+      return;
     var textarea = document.pageform.text;
     var rowheight = (Element.getHeight(textarea) / textarea.rows);
     var headerarea = $("headerArea");

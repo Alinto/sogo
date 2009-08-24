@@ -152,3 +152,12 @@
 "Forbidden" = "Ni fedrwch ysgrifennu i'r llyfr cyfeiriadau hwn.";
 "Invalid Contact" = "Nid yw'r cyswllt dewisol yn bodoli mwyach.";
 "Unknown Destination Folder" = "Nid yw'r llyfr cyfeiriadau dewisol yn bodoli mwyach.";
+
+/* Lists */
+"List details" = "List details";
+"List name:" = "List name:";
+"List nickname:" = "List nickname:";
+"List description:" = "List description:";
+"Members" = "Members";
+"Contacts" = "Contacts";
+"Add" = "Add";

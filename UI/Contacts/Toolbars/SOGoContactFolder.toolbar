@@ -7,9 +7,9 @@
      onclick = "newContact(this); return false;";
      tooltip = "Create a new address book card"; },
    { link = "new_list";
-     enabled = "NO";
      label="New List";
      image="new-list.png";
+     onclick = "newList(this); return false;";
      tooltip = "Create a new list"; }
   ),
   (

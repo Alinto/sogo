@@ -153,3 +153,12 @@
 "Forbidden" = "You cannot write to this address book.";
 "Invalid Contact" = "The selected contact no longer exists.";
 "Unknown Destination Folder" = "The chosen destination address book no longer exists.";
+
+/* Lists */
+"List details" = "List details";
+"List name:" = "List name:";
+"List nickname:" = "List nickname:";
+"List description:" = "List description:";
+"Members" = "Members";
+"Contacts" = "Contacts";
+"Add" = "Add";

@@ -78,6 +78,11 @@
               protectedBy = "View";
               pageName    = "UIxContactsListView";
            };
+           contactSearch = {
+              protectedBy = "<public>";
+              pageName    = "UIxContactsListView";
+              actionName  = "contactSearch";
+           };
            newcontact = {
               protectedBy = "<public>";
               pageName    = "UIxContactEditor";

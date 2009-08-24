@@ -168,3 +168,12 @@
 "Forbidden" = "Você não pode gravar neste catálogo.";
 "Invalid Contact" = "O contato selecionado não existe.";
 "Unknown Destination Folder" = "O catálogo de destino selecionado não existe.";
+
+/* Lists */
+"List details" = "List details";
+"List name:" = "List name:";
+"List nickname:" = "List nickname:";
+"List description:" = "List description:";
+"Members" = "Members";
+"Contacts" = "Contacts";
+"Add" = "Add";

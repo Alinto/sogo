@@ -168,3 +168,12 @@
 "Forbidden" = "Nemůžete zapisovat do tohoto adresáře.";
 "Invalid Contact" = "Označený kontakt již neexistuje.";
 "Unknown Destination Folder" = "Zvolený cílový adresář již neexistuje.";
+
+/* Lists */
+"List details" = "List details";
+"List name:" = "List name:";
+"List nickname:" = "List nickname:";
+"List description:" = "List description:";
+"Members" = "Members";
+"Contacts" = "Contacts";
+"Add" = "Add";

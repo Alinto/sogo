@@ -25,6 +25,7 @@
 #import <Foundation/NSUserDefaults.h>
 
 #import <NGCards/NGVCard.h>
+#import <NGCards/NGVList.h>
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
@@ -32,6 +33,8 @@
 #import <NGExtensions/NSString+misc.h>
 
 #import <Contacts/SOGoContactObject.h>
+#import <Contacts/SOGoContactGCSList.h>
+#import <Contacts/SOGoContactGCSEntry.h>
 #import <Contacts/SOGoContactFolders.h>
 
 #import <SoObjects/Mailer/SOGoMailObject.h>
@@ -154,18 +157,18 @@
 
 - (id <WOActionResults>) composeAction
 {
-  id <SOGoContactObject> contact;
-  NSArray *accounts, *contactsId, *n;
-  NSString *firstAccount, *newLocation, *parameters, *folderId, *uid, *email;
-  NSMutableString *fn;
+  id contact;
+  NSArray *accounts, *contactsId, *cards;
+  NSString *firstAccount, *newLocation, *parameters, *folderId, *uid;
   NSEnumerator *uids;
   NSMutableArray *addresses;
   NGVCard *card;
+  NGVList *list;
   SOGoMailAccounts *co;
   SOGoContactFolders *folders;
   SOGoParentFolder *folder;
   WORequest *request;
-  unsigned int max;
+  int i, count;
 
   parameters = nil;
   co = [self clientObject];
@@ -198,43 +201,21 @@
               contact = [folder lookupName: uid
                                  inContext: [self context]
                                    acquire: NO];
-              if (![(NSObject*)contact isKindOfClass: [NSException class]])
+              if ([contact isKindOfClass: [SOGoContactGCSList class]])
+                {
+                  list = [contact vList];
+                  cards = [list cardReferences];
+                  count = [cards count];
+                  for (i = 0; i < count; i++)
+                    [addresses addObject: 
+                     [self formattedMailtoString: [cards objectAtIndex: i]]];
+                }
+              else if ([contact isKindOfClass: [SOGoContactGCSEntry class]])
                 {
                   // We fetch the preferred email address of the contact or
                   // the first defined email address
                   card = [contact vCard];
-                  email = [card preferredEMail];
-                  if (email == nil)
-                    email = (NSString*)[card firstChildWithTag: @"EMAIL"];
-                  if (email)
-                    {
-                      email = [NSString stringWithFormat: @"<%@>", email];
-
-                      // We append the contact's name
-                      fn = [NSMutableString stringWithString: [card fn]];
-                      if ([fn length] == 0)
-                        {
-                          n = [card n];
-                          if (n)
-                            {
-                              max = [n count];
-                              if (max > 0)
-                                {
-                                  if (max > 1)
-                                    fn = [NSMutableString stringWithFormat: @"%@ %@", [n objectAtIndex: 1], [n objectAtIndex: 0]];
-                                  else
-                                    fn = [NSMutableString stringWithString: [n objectAtIndex: 0]];
-                                }
-                            }
-                        }
-                      if (fn)
-                        {
-                          [fn appendFormat: @" %@", email];
-                          [addresses addObject: fn];
-                        }
-                      else
-                        [addresses addObject: email];
-                    }
+                  [addresses addObject: [self formattedMailtoString: card]];
                 }
               uid = [uids nextObject];
             }
@@ -257,6 +238,54 @@
                  parameters];
 
   return [self redirectToLocation: newLocation];
+}
+
+- (NSString *) formattedMailtoString: (NGVCard *) card
+{
+  NSString *email;
+  NSMutableString *fn, *rc = nil;
+  NSArray *n;
+  unsigned int max;
+
+  if ([card respondsToSelector: @selector (preferredEMail)])
+    email = [card preferredEMail];
+  else
+    email = [card email];
+
+  if (email == nil)
+    email = (NSString*)[card firstChildWithTag: @"EMAIL"];
+
+  if (email)
+    {
+      email = [NSString stringWithFormat: @"<%@>", email];
+
+      // We append the contact's name
+      fn = [NSMutableString stringWithString: [card fn]];
+      if ([fn length] == 0)
+        {
+          n = [card n];
+          if (n)
+            {
+              max = [n count];
+              if (max > 0)
+                {
+                  if (max > 1)
+                    fn = [NSMutableString stringWithFormat: @"%@ %@", [n objectAtIndex: 1], [n objectAtIndex: 0]];
+                  else
+                    fn = [NSMutableString stringWithString: [n objectAtIndex: 0]];
+                }
+            }
+        }
+      if (fn)
+        {
+          [fn appendFormat: @" %@", email];
+          rc = fn;
+        }
+      else
+        rc = email;
+    }
+
+  return rc;
 }
 
 - (WOResponse *) getFoldersStateAction

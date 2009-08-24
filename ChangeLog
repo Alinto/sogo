@@ -1,3 +1,10 @@
+2009-08-24  Cyril Robert <crobert@inverse.ca>
+
+	* UI/MailerUI/UIxMailMainFrame.m: Refactoring + added vLists support.
+	* UI/Contacts/UIxListEditor.m: Implementation.
+	* UI/Contacts/UIxContactsListView.m (contactSearchAction): added to support
+	search in a single folder.
+
 2009-08-21  Cyril Robert <crobert@inverse.ca>
 
 	* UI/Contacts/UIxListView.m: Implementation, allows VLISTs to be displayed.

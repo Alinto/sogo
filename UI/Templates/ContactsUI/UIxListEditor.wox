@@ -9,4 +9,67 @@
     className="UIxPageFrame"
     title="name"
     const:popup="YES"
-    >Unimplemented</var:component>
+    const:jsFiles="UIxMailEditor.js"
+    >
+    <div class="popupMenu" id="contactsMenu">
+      <ul></ul>
+    </div>
+    <form var:href="saveURL" name="editform"
+      onsubmit="return validateListEditor();">
+      <div id="listEditor">
+        <h3><var:string label:value="List details" /></h3>
+        <table><tr><td><var:string label:value="List name:"/></td>
+            <td><input type="text" const:id="name" const:name="name"
+                var:value="name" class="textField" /></td></tr>
+          <tr><td><var:string label:value="List nickname:"/></td>
+            <td><input type="text" const:id="nickname" const:name="nickname"
+                var:value="nickname" class="textField" /></td></tr>
+          <tr><td><var:string label:value="List description:"/></td>
+            <td><input type="text" const:id="description" const:name="description"
+                var:value="description" class="textField" /></td></tr>
+        </table>
+        <h3><var:string label:value="Members" /></h3>
+        <div id="referenceListWrapper">
+          <table id="referenceList" cellspacing="0">
+            <thead>
+              <tr class="tableview">
+                <td const:class="tbtv_headercell" const:id="nameTableHeader">
+                  <var:string label:value="Contacts" />
+                </td>
+              </tr>
+            </thead>
+            <tbody>
+              <var:foreach list="references" item="reference">
+                <tr const:class="referenceListRow">
+                  <td const:class="referenceListCell" var:card="reference.id">
+                    <var:string var:value="reference.name"/>
+                </td></tr>
+              </var:foreach>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <input type="hidden" name="referencesValue" id="referencesValue"
+        var:value="referencesValue" />
+      <div id="windowButtons">
+        <label><input type="button" class="button"
+            id="referenceAdd" label:value="Add"/></label>
+        <label><input type="button" class="button"
+            id="referenceDelete" label:value="Delete"/></label>
+      </div>
+      <div id="buttons">
+        <input
+          id="cancelButton"
+          type="button"
+          class="button"
+          label:value="Cancel"
+          name="cancel"/>
+        <var:if condition="canCreateOrModify"
+          ><input
+            type="submit"
+            class="button"
+            label:value="Save"
+            name="submit" /></var:if>
+      </div>
+    </form>
+  </var:component>

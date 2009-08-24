@@ -19,6 +19,12 @@
   02111-1307, USA.
 */
 
+#import <Foundation/Foundation.h>
+#import <SoObjects/SOGo/NSArray+Utilities.h>
+#import <SoObjects/SOGo/NSDictionary+Utilities.h>
+#import <SoObjects/SOGo/NSString+Utilities.h>
+
+#import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSString+misc.h>
@@ -102,6 +108,66 @@
 
   return contactInfos;
 }
+
+- (id <WOActionResults>) contactSearchAction
+{
+  id <WOActionResults> result;
+  id <SOGoContactFolder> folder;
+  NSString *searchText, *mail;
+  NSDictionary *contact, *data;
+  NSArray *contacts, *descriptors, *sortedContacts;
+  NSMutableDictionary *uniqueContacts;
+  unsigned int i;
+  NSSortDescriptor *commonNameDescriptor;
+
+  searchText = [self queryParameterForKey: @"search"];
+  if ([searchText length] > 0)
+    {
+      NS_DURING
+        folder = [self clientObject];
+      NS_HANDLER
+        if ([[localException name] isEqualToString: @"SOGoDBException"])
+          folder = nil;
+        else
+          [localException raise];
+      NS_ENDHANDLER
+
+      uniqueContacts = [NSMutableDictionary dictionary];
+      contacts = [folder lookupContactsWithFilter: searchText
+                                           sortBy: @"c_cn"
+                                         ordering: NSOrderedAscending];
+      for (i = 0; i < [contacts count]; i++)
+        {
+          contact = [contacts objectAtIndex: i];
+          mail = [contact objectForKey: @"c_mail"];
+          if ([mail isNotNull] && [uniqueContacts objectForKey: mail] == nil)
+            [uniqueContacts setObject: contact forKey: mail];
+        }
+
+      if ([uniqueContacts count] > 0)
+        {
+          // Sort the contacts by display name
+          commonNameDescriptor = [[[NSSortDescriptor alloc] initWithKey: @"c_cn"
+                                                              ascending:YES] autorelease];
+          descriptors = [NSArray arrayWithObjects: commonNameDescriptor, nil];
+          sortedContacts = [[uniqueContacts allValues] sortedArrayUsingDescriptors: descriptors];
+        }
+      else
+        sortedContacts = [NSArray array];
+
+      data = [NSDictionary dictionaryWithObjectsAndKeys: searchText, @"searchText",
+           sortedContacts, @"contacts", nil];
+      result = [self responseWithStatus: 200];
+
+      [(WOResponse*)result appendContentString: [data jsonRepresentation]];
+    }
+  else
+    result = [NSException exceptionWithHTTPStatus: 400
+                                           reason: @"missing 'search' parameter"];  
+
+  return result;
+}
+
 
 /* actions */
 

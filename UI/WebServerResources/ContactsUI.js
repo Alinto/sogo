@@ -501,6 +501,11 @@ function newContact(sender) {
     return false; /* stop following the link */
 }
 
+function newList(sender) {
+    openContactWindow(URLForFolderID(Contact.currentAddressBook) + "/newlist");
+    return false;
+}
+
 function onFolderSelectionChange(event) {
     var folderList = $("contactFolders");
     var nodes = folderList.getSelectedNodes();
@@ -1039,8 +1044,10 @@ function onDocumentKeydown(event) {
 
 function fixSearchFieldPosition () {
     var panel = $("filterPanel");
-    panel.style.position = "relative";
-    panel.style.top = "3px";
+    if (panel) {
+        panel.style.position = "relative";
+        panel.style.top = "3px";
+    }
 }
 
 function initContacts(event) {
