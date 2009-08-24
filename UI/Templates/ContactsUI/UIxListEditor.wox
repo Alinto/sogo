@@ -18,7 +18,7 @@
       onsubmit="return validateListEditor();">
       <div id="listEditor">
         <h3><var:string label:value="List details" /></h3>
-        <table><tr><td><var:string label:value="List name:"/></td>
+        <table><tr><td width="20%"><var:string label:value="List name:"/></td>
             <td><input type="text" const:id="name" const:name="name"
                 var:value="name" class="textField" /></td></tr>
           <tr><td><var:string label:value="List nickname:"/></td>

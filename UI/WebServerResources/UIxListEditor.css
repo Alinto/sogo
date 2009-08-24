@@ -1,0 +1,57 @@
+TABLE#referenceList
+{ width: 100%; }
+
+TD.referenceListCell
+{ background: white; }
+
+DIV#referenceListWrapper
+{ background: white;
+  overflow: auto;
+  position: relative;
+  right: 0;
+  top: 0;
+  left: 0;
+  height: 33em;
+  margin: 2px; }
+
+TR.referenceListRow
+{ background: #FFFFFF;
+  height: 2.5em; }
+TR._selected
+{ background: #333333; }
+
+TD.referenceListCell
+{ -moz-user-select: none; }
+
+DIV#windowButtons
+{ position: fixed;
+  top: auto;
+  bottom: 5em;
+  left: 0px;
+  right: 25px;
+  height: 3.5em;
+  line-height: 2em;
+  vertical-align: middle;
+  text-align: right; }
+
+DIV#buttons
+{ position: fixed;
+  top: auto;
+  bottom: 0px;
+  left: 0px;
+  right: 25px;
+  height: 3.5em;
+  line-height: 2em;
+  vertical-align: middle;
+  text-align: right; }
+
+h3 {
+  margin-bottom: 2px !important;
+  margin-left: 5px !important;
+}
+
+INPUT.textField {
+  width: 250px;
+  position: relative;
+  right: 0px;
+}
