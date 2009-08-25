@@ -43,6 +43,8 @@
 
 - (WOResponse *) saveDragHandleStateAction;
 
+- (BOOL) isPopup;
+
 @end
 
 #endif /* UIXCONTACTFOLDERSVIEW_H */

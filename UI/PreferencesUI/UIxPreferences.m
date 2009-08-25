@@ -569,8 +569,6 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
 
 - (NSString *) signature
 {
-  NSString *signature;
-
   [user migrateSignature];
   return [userDefaults stringForKey: @"MailSignature"];
 }

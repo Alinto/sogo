@@ -147,6 +147,8 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 - (NSArray *) rolesForObject: (NSObject *) object
                    inContext: (WOContext *) context;
 
+- (void) migrateSignature;
+
 @end
 
 #endif /* __SOGoUser_H__ */

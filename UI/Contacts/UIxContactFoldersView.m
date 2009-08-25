@@ -357,18 +357,18 @@
 
 - (void) checkDefaultModulePreference
 {
-  NSUserDefaults *ud;
+  NSUserDefaults *clientUD;
   NSString *pref;
 
   if (![self isPopup])
     {
-      ud = [[context activeUser] userDefaults];
-      pref = [ud stringForKey: @"SOGoUIxDefaultModule"];
+      clientUD = [[context activeUser] userDefaults];
+      pref = [clientUD stringForKey: @"SOGoUIxDefaultModule"];
 
       if (pref && [pref isEqualToString: @"Last"])
         {
-          [ud setObject: @"Contacts" forKey: @"SOGoUIxLastModule"];
-          [ud synchronize];
+          [clientUD setObject: @"Contacts" forKey: @"SOGoUIxLastModule"];
+          [clientUD synchronize];
         }
     }
 }

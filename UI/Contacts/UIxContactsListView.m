@@ -28,6 +28,7 @@
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSString+misc.h>
+#import <NGExtensions/NSNull+misc.h>
 
 #import <Contacts/SOGoContactObject.h>
 #import <Contacts/SOGoContactFolder.h>
