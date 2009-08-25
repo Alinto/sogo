@@ -5,6 +5,9 @@
 - added the "Starred" column in the webmail module to match Thunderbird's behavior
 - improved the calendar properties dialog to be able to enable/disabled calendars for synchronization
 - the default module can now be set on a per-user basis
+- a context menu is now available for tasks
+- added the capability of creating and managing lists of contacts (same as in Thunderbird)
+- added support for short date format in the calendar views
 
 1.0-20090812 (1.0.4)
 --------------------
