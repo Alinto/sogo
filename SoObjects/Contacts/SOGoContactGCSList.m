@@ -61,6 +61,25 @@
   return list;
 }
 
+- (NSException *) copyToFolder: (SOGoGCSFolder *) newFolder
+{
+  NGVList *newList;
+  NSString *newUID;
+  SOGoContactGCSList *newGList;
+
+  // Change the contact UID
+  newUID = [self globallyUniqueObjectId];
+  newList = [self vList];
+
+  [newList setUid: newUID];
+
+  newGList = [[self class] objectWithName:
+                [NSString stringWithFormat: @"%@.vlf", newUID]
+                               inContainer: newFolder];
+
+  return [newGList saveContentString: [newList versitString]];
+}
+
 /* DAV */
 
 - (NSString *) davContentType

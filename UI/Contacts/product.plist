@@ -183,11 +183,6 @@
               protectedBy = "Access Contents Information";
               pageName    = "UIxListView";
            };
-           delete = {
-              protectedBy = "Delete Objects";
-              pageName    = "UIxListView";
-              actionName  = "delete";
-           };
            edit = {
               protectedBy = "Access Contents Information";
               pageName    = "UIxListEditor";

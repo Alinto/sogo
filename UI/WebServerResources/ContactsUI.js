@@ -221,6 +221,14 @@ function _onContactMenuAction(folderItem, action, refresh) {
                 return row.getAttribute("id");
             });
 
+        for (var i = 0; i < contactIds.length; i++) {
+            if (contactIds[i].endsWith ("vlf")) {
+                alert (labels["Lists can't be moved or copied."]);
+                return false;
+            }
+        }
+        
+
         var url = ApplicationBaseURL + selectedFolderId + "/" + action 
             + "?folder=" + folderId + "&uid="
             + contactIds.join("&uid=");
@@ -1123,16 +1131,6 @@ function currentFolderIsRemote () {
     return rc;
 }
 
-function containsVLF (ids) {
-    var rc = false;
-
-    for (var i=0; i < ids.length; i++)
-        if (ids[i].match ("\.vlf$") == ".vlf")
-            rc = true;
-
-    return rc;
-}
-
 function startDragging (itm, e) {
     var target = Event.element(e);
     if (target.up().up().tagName != "TBODY")
@@ -1142,12 +1140,10 @@ function startDragging (itm, e) {
     var contacts = $('contactsList').getSelectedRowsId();
     var count = contacts.length;
     
-    if (!containsVLF (contacts)) {
-        handle.show();
-        handle.update (count);
-        if (e.shiftKey || currentFolderIsRemote ())
-            handle.addClassName ("copy");
-    }
+    handle.show();
+    handle.update (count);
+    if (e.shiftKey || currentFolderIsRemote ())
+      handle.addClassName ("copy");
 }
 
 function whileDragging (itm, e) {
@@ -1178,15 +1174,19 @@ function dropSelectedContacts (action, toId) {
     var selectedFolders = $("contactFolders").getSelectedNodes();
     if (selectedFolders.length > 0) {
         var contactIds = $('contactsList').getSelectedRowsId();
-        if (!containsVLF (contactIds)) {
-            var fromId = $(selectedFolders[0]).id;
-            if (!currentFolderIsRemote () || action != "move") {
-                var url = ApplicationBaseURL + fromId + "/" + action 
-                    + "?folder=" + toId + "&uid="
-                    + contactIds.join("&uid=");
-    
-                triggerAjaxRequest(url, actionContactCallback, fromId);
+        for (var i = 0; i < contactIds.length; i++) {
+            if (contactIds[i].endsWith ("vlf")) {
+                alert (labels["Lists can't be moved or copied."]);
+                return false;
             }
+        }
+        var fromId = $(selectedFolders[0]).id;
+        if (!currentFolderIsRemote () || action != "move") {
+            var url = ApplicationBaseURL + fromId + "/" + action 
+              + "?folder=" + toId + "&uid="
+              + contactIds.join("&uid=");
+
+            triggerAjaxRequest(url, actionContactCallback, fromId);
         }
     }
 }

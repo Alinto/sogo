@@ -1,3 +1,8 @@
+2009-08-25  Cyril Robert <crobert@inverse.ca>
+
+	* SoObjects/Contacts/SOGoContactGCSList.m (copyToFolder): Implementation to
+	support copying lists.
+
 2009-08-24  Cyril Robert <crobert@inverse.ca>
 
 	* UI/MailerUI/UIxMailMainFrame.m: Refactoring + added vLists support.
