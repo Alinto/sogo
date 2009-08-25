@@ -221,6 +221,11 @@ _timeValue (NSString *key)
 }
 
 + (SOGoUser *) userWithLogin: (NSString *) newLogin
+{
+  return [self userWithLogin: newLogin  roles: nil];
+}
+
++ (SOGoUser *) userWithLogin: (NSString *) newLogin
 		       roles: (NSArray *) newRoles
 {
   return [self userWithLogin: newLogin  roles: newRoles  trust: NO];

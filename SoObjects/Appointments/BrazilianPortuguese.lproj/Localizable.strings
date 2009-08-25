@@ -6,3 +6,20 @@ vevent_class2 = "(Evento Confidencial)";
 vtodo_class0 = "(Tarefa Pública)";
 vtodo_class1 = "(Tarefa Privada)";
 vtodo_class2 = "(Tarefa Confidencial)";
+
+/* Receipts */
+"Title:" = "Title:";
+"Start:" = "Start:";
+"End:" = "End:";
+
+"Receipt: users invited to a meeting" = "Receipt: users invited to a meeting";
+"You have invited the following attendees(s):" = "You have invited the following attendees(s):";
+"... to attend the following event:" = "... to attend the following event:";
+
+"Receipt: invitation updated" = "Receipt: invitation updated";
+"The following attendees(s):" = "The following attendees(s):"
+"... have been notified of the changes to the following event:" = "... have been notified of the changes to the following event:";
+
+"Receipt: attendees removed from an event" = "Receipt: attendees removed from an event";
+"You have removed the following attendees(s):" = "You have removed the following attendees(s):";
+"... from the following event:" = "... from the following event:";

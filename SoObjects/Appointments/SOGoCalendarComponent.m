@@ -41,18 +41,20 @@
 #import <NGMime/NGMimeMultipartBody.h>
 #import <NGMail/NGMimeMessage.h>
 
-#import <SoObjects/SOGo/iCalEntityObject+Utilities.h>
-#import <SoObjects/SOGo/LDAPUserManager.h>
-#import <SoObjects/SOGo/NSCalendarDate+SOGo.h>
-#import <SoObjects/SOGo/SOGoMailer.h>
-#import <SoObjects/SOGo/SOGoGroup.h>
-#import <SoObjects/SOGo/SOGoPermissions.h>
-#import <SoObjects/SOGo/SOGoUser.h>
-#import <SoObjects/SOGo/WORequest+SOGo.h>
-#import <SoObjects/Appointments/SOGoAppointmentFolder.h>
+#import <SOGo/iCalEntityObject+Utilities.h>
+#import <SOGo/LDAPUserManager.h>
+#import <SOGo/NSCalendarDate+SOGo.h>
+#import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/SOGoMailer.h>
+#import <SOGo/SOGoGroup.h>
+#import <SOGo/SOGoPermissions.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/WORequest+SOGo.h>
+#import <Appointments/SOGoAppointmentFolder.h>
 
 #import "SOGoAptMailICalReply.h"
 #import "SOGoAptMailNotification.h"
+#import "SOGoAptMailReceipt.h"
 #import "iCalEntityObject+SOGo.h"
 #import "iCalPerson+SOGo.h"
 #import "iCalRepeatableEntityObject+SOGo.h"
@@ -60,6 +62,7 @@
 #import "SOGoComponentOccurence.h"
 
 static BOOL sendEMailNotifications = NO;
+static BOOL sendEMailReceipts = NO;
 
 @implementation SOGoCalendarComponent
 
@@ -75,6 +78,8 @@ static BOOL sendEMailNotifications = NO;
       ud = [NSUserDefaults standardUserDefaults];
       sendEMailNotifications
         = [ud boolForKey: @"SOGoAppointmentSendEMailNotifications"];
+      sendEMailReceipts
+        = [ud boolForKey: @"SOGoAppointmentSendEMailReceipts"];
     }
 }
 
@@ -587,7 +592,7 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
 
   uid = [[LDAPUserManager sharedUserManager] getUIDForEmail: email];
 
-  return [[SOGoUser userWithLogin: uid roles: nil] timeZone];
+  return [[SOGoUser userWithLogin: uid] timeZone];
 }
 
 - (void) sendEMailUsingTemplateNamed: (NSString *) newPageName
@@ -616,7 +621,7 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
       if (count)
 	{
 	  /* sender */
-	  ownerUser = [SOGoUser userWithLogin: owner roles: nil];
+	  ownerUser = [SOGoUser userWithLogin: owner];
 	  //currentUser = [context activeUser];
 	  //shortSenderEmail = [[currentUser allEmails] objectAtIndex: 0];
 	  //  senderEmail = [NSString stringWithFormat: @"%@ <%@>",
@@ -752,7 +757,7 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
       /* get WOApplication instance */
       app = [WOApplication application];
 
-      //ownerUser = [SOGoUser userWithLogin: owner roles: nil];
+      //ownerUser = [SOGoUser userWithLogin: owner];
       ownerUser = from;
       language = [ownerUser language];
       /* create page name */
@@ -831,13 +836,62 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
   SOGoUser *ownerUser;
 
   event = [newComponent itipEntryWithMethod: @"reply"];
-  ownerUser = [SOGoUser userWithLogin: owner roles: nil];
+  ownerUser = [SOGoUser userWithLogin: owner];
   if (![event userIsOrganizer: ownerUser])
     {
       organizer = [event organizer];
       attendee = [event findParticipant: ownerUser];
       [event setAttendees: [NSArray arrayWithObject: attendee]];
       [self sendIMIPReplyForEvent: event from: from to: organizer];
+    }
+}
+
+- (void) sendReceiptEmailUsingTemplateNamed: (NSString *) template
+                                  forObject: (iCalRepeatableEntityObject *) object
+                                         to: (NSArray *) attendees
+{
+  NSString *pageName, *mailDate, *mailText, *fullSenderEmail, *senderEmail;
+  SOGoAptMailReceipt *page;
+  NGMutableHashMap *headerMap;
+  NGMimeMessage *msg;
+  SOGoUser *currentUser;
+  NSDictionary *identity;
+
+  if (sendEMailReceipts && [attendees count])
+    {
+      pageName = [NSString stringWithFormat: @"SOGoAptMail%@Receipt",
+                           template];
+      page = [[WOApplication application] pageWithName: pageName
+                                             inContext: context];
+      [page setApt: object];
+      [page setRecipients: attendees];
+
+      currentUser = [context activeUser];
+      identity = [currentUser primaryIdentity];
+
+      /* construct message */
+      headerMap = [NGMutableHashMap hashMapWithCapacity: 5];
+      fullSenderEmail = [identity keysWithFormat: @"%{fullName} <%{email}>"];
+      [headerMap setObject: fullSenderEmail forKey: @"from"];
+      [headerMap setObject: fullSenderEmail forKey: @"to"];
+      mailDate = [[NSCalendarDate date] rfc822DateString];
+      [headerMap setObject: mailDate forKey: @"date"];
+      [headerMap setObject: [page getSubject] forKey: @"subject"];
+      [headerMap setObject: @"1.0" forKey: @"MIME-Version"];
+      [headerMap setObject: @"text/plain; charset=utf-8"
+                    forKey: @"content-type"];
+      msg = [NGMimeMessage messageWithHeader: headerMap];
+
+      /* text part */
+      mailText = [page getBody];
+      [msg setBody: [mailText dataUsingEncoding: NSUTF8StringEncoding]];
+
+      /* send the damn thing */
+      senderEmail = [identity objectForKey: @"email"];
+      [[SOGoMailer sharedMailer]
+		    sendMimePart: msg
+		    toRecipients: [NSArray arrayWithObject: senderEmail]
+                          sender: senderEmail];
     }
 }
 
@@ -863,7 +917,7 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
   iCalEntityObject *component;
   SOGoUser *user;
 
-  user = [SOGoUser userWithLogin: uid roles: nil];
+  user = [SOGoUser userWithLogin: uid];
   component = [self component: NO secure: NO];
 
   return [component findParticipant: user];
@@ -943,7 +997,7 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
       organizer = [component organizer];
       if ([[organizer rfc822Email] length] > 0)
 	{
-	  ownerUser = [SOGoUser userWithLogin: owner roles: nil];
+	  ownerUser = [SOGoUser userWithLogin: owner];
 	  if ([component userIsOrganizer: ownerUser])
 	    role = SOGoCalendarRole_Organizer;
 	  else if ([component userIsParticipant: ownerUser])
@@ -1001,7 +1055,7 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
         {
           if (component)
             {
-              aclUser = [SOGoUser userWithLogin: uid roles: nil];
+              aclUser = [SOGoUser userWithLogin: uid];
               if ([component userIsOrganizer: aclUser])
                 [roles addObject: SOGoCalendarRole_Organizer];
               else if ([component userIsParticipant: aclUser])

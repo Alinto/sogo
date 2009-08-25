@@ -75,6 +75,8 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 
 + (NSString *) language;
 
++ (SOGoUser *) userWithLogin: (NSString *) newLogin;
+
 + (SOGoUser *) userWithLogin: (NSString *) login
 		       roles: (NSArray *) roles;
 

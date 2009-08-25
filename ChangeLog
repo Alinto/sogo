@@ -1,3 +1,13 @@
+2009-08-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUser.m (+userWithLogin:): new constructor
+	designed to avoid the need to pass a nil role parameter.
+
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	(-sendReceiptEmailUsingTemplateNamed:forObject:to:) new method
+	that enables the sending of receipts to an event modifier in case
+	of an invitation, modification or deletion.
+
 2009-08-25  Cyril Robert <crobert@inverse.ca>
 
 	* SoObjects/Contacts/SOGoContactGCSList.m (copyToFolder): Implementation to
