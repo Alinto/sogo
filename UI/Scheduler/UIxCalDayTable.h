@@ -43,6 +43,8 @@
   NSMutableArray *hoursToDisplay;
   NSArray *weekDays;
   SOGoDateFormatter *dateFormatter;
+  NSUserDefaults *ud;
+  NSMutableString *timeFormat;
 }
 
 - (void) setNumberOfDays: (NSNumber *) aNumber;

@@ -2,6 +2,7 @@
 
 	* SoObjects/Contacts/SOGoContactGCSList.m (copyToFolder): Implementation to
 	support copying lists.
+	* UI/Scheduler/UIxCalDayTable.m: Added support for TimeFormat default.
 
 2009-08-24  Cyril Robert <crobert@inverse.ca>
 

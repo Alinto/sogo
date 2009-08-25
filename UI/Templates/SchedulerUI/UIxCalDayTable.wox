@@ -28,7 +28,7 @@
   <div id="daysView" var:class="daysViewClasses">
     <div class="hours">
       <var:foreach list="hoursToDisplay" item="currentTableHour"
-	><div class="hour"><var:string value="currentTableHour" />:00</div
+	><div class="hour"><var:string value="currentTableHour" /></div
 	  ></var:foreach>
     </div>
 

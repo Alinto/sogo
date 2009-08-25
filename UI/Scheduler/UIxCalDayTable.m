@@ -119,6 +119,12 @@
 - (NSArray *) hoursToDisplay
 {
   unsigned int currentHour, lastHour;
+  
+  // For later
+  ud = [[context activeUser] userDefaults];
+  timeFormat = [NSMutableString stringWithString: [ud stringForKey: @"TimeFormat"]];
+  if (!timeFormat || [timeFormat length] == 0)
+    timeFormat = [NSMutableString stringWithString: @"%H:00"];
 
   if (!hoursToDisplay)
     {
@@ -178,7 +184,19 @@
 
 - (NSString *) currentTableHour
 {
-  return currentTableHour;
+  int hour;
+  NSCalendarDate *tmp;
+  NSString *formatted = currentTableHour, *parse;
+
+  hour = [currentTableHour intValue];
+  parse = [NSString stringWithFormat: @"2000-01-01 %02d:00", hour];
+
+  tmp = [NSCalendarDate dateWithString: parse
+                        calendarFormat: @"%Y-%m-%d %H:%M"];
+  if (tmp)
+    formatted = [tmp descriptionWithCalendarFormat: timeFormat];
+
+  return formatted;
 }
 
 - (NSString *) currentAppointmentHour
