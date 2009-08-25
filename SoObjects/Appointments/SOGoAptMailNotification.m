@@ -196,9 +196,13 @@ static NSTimeZone *UTC = nil;
 
 - (NSString *) getBody
 {
+  NSString *body;
+
   [self setIsSubject:NO];
 
-  return [[self generateResponse] contentAsString];
+  body = [[self generateResponse] contentAsString];
+
+  return [body stringByTrimmingCharactersInSet: wsSet];
 }
 
 @end

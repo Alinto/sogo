@@ -30,12 +30,12 @@
 
 - (BOOL) sequenceShouldBeIncreased
 {
-  NSString *properties[] = {@"organizer", @"startDate", @"endDate",
-			    @"due", @"duration",
-			    @"rdate", @"rrule", @"exdate", @"exrule",
-			    @"status", @"location",
-			    //@"summary", @"comment",
-			    nil};
+  static NSString *properties[] = {@"organizer", @"startDate", @"endDate",
+                                   @"due", @"duration",
+                                   @"rdate", @"rrule", @"exdate", @"exrule",
+                                   @"status", @"location",
+                                   //@"summary", @"comment",
+                                   nil};
   NSString **currentProperty;
   BOOL updateRequired;
 

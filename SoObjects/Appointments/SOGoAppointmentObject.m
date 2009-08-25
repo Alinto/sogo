@@ -241,7 +241,7 @@
 	  // present in the master component. If not, we add it with a participation
 	  // status set to "DECLINED".
 
-	  user = [SOGoUser userWithLogin: theUID roles: nil];
+	  user = [SOGoUser userWithLogin: theUID];
 	  person = [iCalPerson elementWithTag: @"attendee"];
 	  [person setCn: [user cn]];
 	  [person setEmail: [[user allEmails] objectAtIndex: 0]];
@@ -408,6 +408,8 @@
 	forObject: [newEvent itipEntryWithMethod: @"request"]
 	previousObject: oldEvent
 	toAttendees: updateAttendees];
+  [self sendReceiptEmailUsingTemplateNamed: @"Update"
+                                 forObject: newEvent to: updateAttendees];
 }
 
 - (void) _handleAddedUsers: (NSArray *) attendees
@@ -447,6 +449,8 @@
 	    forObject: [newEvent itipEntryWithMethod: @"cancel"]
 	    previousObject: oldEvent
 	    toAttendees: attendees];
+      [self sendReceiptEmailUsingTemplateNamed: @"Deletion"
+                                     forObject: newEvent to: attendees];
     }
 
   attendees = [changes insertedAttendees];
@@ -470,8 +474,10 @@
 	  NSEnumerator *enumerator;
 	  iCalPerson *currentAttendee;
 	  NSString *currentUID;
+          NSArray *updatedAttendees;
 	  
-	  enumerator = [[newEvent attendees] objectEnumerator];
+          updatedAttendees = [newEvent attendees];
+	  enumerator = [updatedAttendees objectEnumerator];
 	  while ((currentAttendee = [enumerator nextObject]))
 	    {
 	      currentUID = [currentAttendee uid];
@@ -480,6 +486,10 @@
 		      forUID: currentUID
 		      owner: owner];
 	    }
+
+          [self sendReceiptEmailUsingTemplateNamed: @"Update"
+                                         forObject: newEvent
+                                                to: updatedAttendees];
 	}
     }
 
@@ -488,26 +498,28 @@
       NSArray *originalAttendees;
 
       originalAttendees = [NSArray arrayWithArray: [newEvent attendees]];
-      
+
       // Send an invitation to new attendees
       [self _handleAddedUsers: attendees fromEvent: newEvent];
       [self sendEMailUsingTemplateNamed: @"Invitation"
 	    forObject: [newEvent itipEntryWithMethod: @"request"]
 	    previousObject: oldEvent
 	    toAttendees: attendees];
+      [self sendReceiptEmailUsingTemplateNamed: @"Invitation"
+                                     forObject: newEvent to: attendees];
     }
 }
 
 - (void) saveComponent: (iCalEvent *) newEvent
 {
-  iCalEvent *oldEvent;
+  iCalEvent *oldEvent, *oldMasterEvent;
   NSArray *attendees;
   NSCalendarDate *recurrenceId;
   NSString *recurrenceTime;
   SOGoUser *ownerUser;
 
   [[newEvent parent] setMethod: @""];
-  ownerUser = [SOGoUser userWithLogin: owner roles: nil];
+  ownerUser = [SOGoUser userWithLogin: owner];
 
   [self expandGroupsInEvent: newEvent];
 
@@ -526,6 +538,8 @@
 				  forObject: [newEvent itipEntryWithMethod: @"request"]
 			     previousObject: nil
 				toAttendees: attendees];
+          [self sendReceiptEmailUsingTemplateNamed: @"Invitation"
+                                         forObject: newEvent to: attendees];
 	}
     }
   else
@@ -545,8 +559,10 @@
 	    // If no occurence found, create one
 	    oldEvent = (iCalEvent*)[self newOccurenceWithID: recurrenceTime];
 	}
-      
-      if ([[[oldEvent parent] firstChildWithTag: [self componentTag]] userIsOrganizer: ownerUser])
+
+      oldMasterEvent
+        = (iCalEvent *) [[oldEvent parent] firstChildWithTag: [self componentTag]];
+      if ([oldMasterEvent userIsOrganizer: ownerUser])
 	{
 	  // The owner is the organizer of the event; handle the modifications
 	  
@@ -697,7 +713,7 @@
       // If the current user isn't the organizer of the event
       // that has just been updated, we update the event and
       // send a notification
-      ownerUser = [SOGoUser userWithLogin: owner roles: nil];
+      ownerUser = [SOGoUser userWithLogin: owner];
       if (!(ex || [event userIsOrganizer: ownerUser]))
 	{
 	  if ([[attendee rsvp] isEqualToString: @"true"]
@@ -802,7 +818,7 @@
   newEvent = [self component: NO secure: NO];
   [newEvent removeAllAlarms];
   [[newEvent parent] setMethod: @""];
-  
+
   recipientsEnum = [recipients objectEnumerator];
   while ((recipient = [recipientsEnum nextObject]))
     if ([[recipient lowercaseString] hasPrefix: @"mailto:"])
@@ -890,15 +906,16 @@
 		// We must add an occurence to a non-existing event -- simply retrieve
 		// the event from the organizer's calendar
 		if (ownerEventObject == nil)
-		  ownerEventObject = [self _lookupEvent: [newEvent uid] forUID: ownerUID];
+		  ownerEventObject = [self _lookupEvent: [newEvent uid] 
+                                                 forUID: ownerUID];
 
 		newEvent = [ownerEventObject component: NO  secure: NO];
 		attendees = [newEvent attendees];
 		found = NO;
 
-		// We check if the attendee that was added to a single occurence is
-		// present in the master component. If not, we add it with a participation
-		// status set to "DECLINED"
+		/* We check if the attendee that was added to a single
+                   occurence is present in the master component. If not, we
+                   add it with a participation status set to "DECLINED" */
 		for (i = 0; i < [attendees count]; i++)
 		  {
 		    if ([[attendees objectAtIndex: i] hasSameEmailAddress: person])
@@ -907,7 +924,7 @@
 			break;
 		      }
 		  }
-		
+
 		if (!found)
 		  {
 		    [person setParticipationStatus: iCalPersonPartStatDeclined];
@@ -938,6 +955,11 @@
 	[elements
 	  addObject: [self _caldavSuccessCodeWithRecipient: recipient]];
       }
+
+  [self sendReceiptEmailUsingTemplateNamed: (isUpdate
+                                             ? @"Update" : @"Invitation")
+                                 forObject: emailEvent
+                                        to: [newEvent participants]];
 
   return elements;
 }
@@ -979,6 +1001,10 @@
 	[elements
 	  addObject: [self _caldavSuccessCodeWithRecipient: recipient]];
       }
+
+  [self sendReceiptEmailUsingTemplateNamed: @"Deletion"
+                                 forObject: event
+                                        to: [event participants]];
 
   return elements;
 }
@@ -1091,8 +1117,7 @@
   event = [self component: NO secure: NO];
   [[event parent] setMethod: @""];
   ownerUser = [SOGoUser userWithLogin: [[LDAPUserManager sharedUserManager]
-					 getUIDForEmail: originator]
-			roles: nil];
+					 getUIDForEmail: originator]];
   attendee = [event findParticipant: ownerUser];
   eventUID = [event uid];
 
@@ -1173,7 +1198,7 @@
       // actually occured. The particpation change will of
       // course be on the attendee that is the owner of the
       // calendar where the participation change has occured.
-      ownerUser = [SOGoUser userWithLogin: owner roles: nil];
+      ownerUser = [SOGoUser userWithLogin: owner];
       
       attendee = [event findParticipant: ownerUser];
       if (attendee)
@@ -1202,7 +1227,7 @@
 
   if ([[context request] handledByDefaultHandler])
     {
-      ownerUser = [SOGoUser userWithLogin: owner roles: nil];
+      ownerUser = [SOGoUser userWithLogin: owner];
       event = [self component: NO secure: NO];
 
       if (occurence == nil)
@@ -1235,6 +1260,9 @@
 		    forObject: [occurence itipEntryWithMethod: @"cancel"]
 		    previousObject: nil
 		    toAttendees: attendees];
+              [self sendReceiptEmailUsingTemplateNamed: @"Deletion"
+                                             forObject: occurence
+                                                    to: attendees];
 	    }
 	}
       else if ([occurence userIsParticipant: ownerUser])
@@ -1266,7 +1294,7 @@
   NSString *key;
   SOGoUser *ownerUser;
 
-  ownerUser = [SOGoUser userWithLogin: owner roles: nil];
+  ownerUser = [SOGoUser userWithLogin: owner];
 
   allEvents = [calendar events];
   max = [allEvents count];

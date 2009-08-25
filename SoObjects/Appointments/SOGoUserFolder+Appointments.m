@@ -55,7 +55,7 @@
 
   addresses = [NSMutableArray array];
 
-  ownerUser = [SOGoUser userWithLogin: owner roles: nil];
+  ownerUser = [SOGoUser userWithLogin: owner];
   emails = [[ownerUser allEmails] objectEnumerator];
   while ((currentEmail = [emails nextObject]))
     {
@@ -224,7 +224,7 @@
   value = [value substringFromIndex: NSMaxRange (substringRange)];
   substringRange = [value rangeOfString: @"/Calendar"];
   value = [value substringToIndex: substringRange.location];
-  collection = [[SOGoUser userWithLogin: value roles: nil]
+  collection = [[SOGoUser userWithLogin: value]
 		 homeFolderInContext: context];
   if (collection)
     [collections addObject: collection];

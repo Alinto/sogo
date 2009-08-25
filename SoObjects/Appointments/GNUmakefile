@@ -33,6 +33,7 @@ Appointments_OBJC_FILES = \
 	SOGoAptMailDeletion.m		\
 	SOGoAptMailICalReply.m		\
 	SOGoAptMailUpdate.m		\
+	SOGoAptMailReceipt.m		\
 
 Appointments_RESOURCE_FILES +=		\
 	Version				\

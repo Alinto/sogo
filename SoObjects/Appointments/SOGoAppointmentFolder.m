@@ -2153,7 +2153,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   login = [recipient uid];
   if ([login length])
     {
-      user = [SOGoUser userWithLogin: login roles: nil];
+      user = [SOGoUser userWithLogin: login];
       freebusy = [[user homeFolderInContext: context]
 		       freeBusyObject: @"freebusy.ifb"
                             inContext: context];
@@ -2677,8 +2677,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   rc = [super create];
   if (rc)
     {
-      ownerUser = [SOGoUser userWithLogin: [self ownerInContext: context]
-			    roles: nil];
+      ownerUser = [SOGoUser userWithLogin: [self ownerInContext: context]];
       userSettings = [ownerUser userSettings];
       calendarSettings = [userSettings objectForKey: @"Calendar"];
       if (!calendarSettings)
@@ -2986,8 +2985,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 //   calendarFolders = [NSMutableArray new];
 //   [calendarFolders autorelease];
 
-//   calendarUser = [SOGoUser userWithLogin: [self ownerInContext: context]
-// 			   roles: nil];
+//   calendarUser = [SOGoUser userWithLogin: [self ownerInContext: context]];
 //   userCalendar = [NSMutableDictionary new];
 //   [userCalendar autorelease];
 //   [userCalendar setObject: @"/" forKey: @"folder"];

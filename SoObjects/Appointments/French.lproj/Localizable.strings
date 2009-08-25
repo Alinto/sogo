@@ -6,3 +6,20 @@ vevent_class2 = "(Événement confidentiel)";
 vtodo_class0 = "(Tâche publique)";
 vtodo_class1 = "(Tâche privée)";
 vtodo_class2 = "(Tâche confidentielle)";
+
+/* Receipts */
+"Title:" = "Title:";
+"Start:" = "Start:";
+"End:" = "End:";
+
+"Receipt: users invited to a meeting" = "Acc. de réception : vous avez ajouté des participants à une réunion";
+"You have invited the following attendees(s):" = "Vous avez invité les personnes suivantes :";
+"... to attend the following event:" = "... à participer à cette réunion :";
+
+"Receipt: invitation updated" = "Acc. de réception : invitation mise à jour";
+"The following attendees(s):" = "Les participants suivants :"
+"... have been notified of the changes to the following event:" = "... ont été avisés des changements apportés à cette réunion :";
+
+"Receipt: attendees removed from an event" = "Acc. de réception: invitations annulées";
+"You have removed the following attendees(s):" = "Les utilisateurs suivants :";
+"... from the following event:" = "... ne sont plus invités à cette réunion :";
