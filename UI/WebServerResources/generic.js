@@ -1620,7 +1620,7 @@ function createFolder(name, okCB, notOkCB) {
             document.newFolderAjaxRequest.aborted = true;
             document.newFolderAjaxRequest.abort();
         }
-        var url = ApplicationBaseURL + "/createFolder?name=" + name;
+        var url = ApplicationBaseURL + "/createFolder?name=" + escape(name.utf8encode());
         document.newFolderAjaxRequest
             = triggerAjaxRequest(url, createFolderCallback,
                                  {name: name,
