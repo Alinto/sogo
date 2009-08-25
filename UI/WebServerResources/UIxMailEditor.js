@@ -533,6 +533,9 @@ function initTabIndex(addressList, subjectField, msgArea) {
 }
 
 function initMailEditor() {
+    if (composeMode != "html")
+        $("text").style.display = "block";
+
     var list = $("attachments");
     if (!list) return;
     $(list).attachMenu("attachmentsMenu");

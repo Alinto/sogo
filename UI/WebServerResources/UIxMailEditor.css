@@ -161,3 +161,6 @@ UL#attachments LI IMG
 
 #pageContent TEXTAREA
 { width: 99%; }
+
+DIV#text
+{ display: none; }
