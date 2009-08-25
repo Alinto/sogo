@@ -522,3 +522,7 @@ vtodo_class2 = "(Vertrouwelijke taak)";
 "tagHasChanged" = "If you change your calendar's tag, you'll need to reload the data on your mobile device.\nContinue?";
 "tagWasAdded" = "If you want to synchronize this calendar, you'll need to reload the data on your mobile device.\nContinue?";
 "tagWasRemoved" = "If you remove this calendar from synchronization, you'll need to reload the data on your mobile device.\nContinue?";
+
+"Open Task..." = "Open Task...";
+"Mark Completed" = "Mark Completed";
+"Delete Task" = "Delete Task";

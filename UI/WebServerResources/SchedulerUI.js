@@ -688,6 +688,8 @@ function tasksListCallback(http) {
                 var t = new Element ("span");
                 t.update (data[i][3]);
                 listItem.appendChild (t);
+
+                listItem.attachMenu ("tasksListMenu");
             }
 
             list.scrollTop = list.previousScroll;
@@ -1593,32 +1595,7 @@ function updateTaskStatus(event) {
     if (isSafari() && !isSafari3()) {
         newStatus = (newStatus ? 0 : 1);
     }
-
-    url = (ApplicationBaseURL + this.parentNode.calendar
-           + "/" + this.parentNode.cname + "/changeStatus?status=" + newStatus);
-
-    var http = createHTTPClient();
-    if (http) {
-        // TODO: add parameter to signal that we are only interested in OK
-        http.open("POST", url, false /* not async */);
-        http.url = url;
-        try {
-            http.send("");
-        }
-        catch (e) {
-            /* IE7 tends to generate "transaction aborted" errors for synchronous
-               transactions returning HTTP code 204. */
-            log("exception during http.send (expected on IE7)");
-        }
-        if (isHttpStatus204(http.status))
-            refreshTasks();
-        else if (parseInt(http.status) == 403) {
-            window.alert(clabels["You don't have the required privileges to perform the operation."]);
-            this.checked = !this.checked;
-        }
-        else
-            log ("updateTaskStatus: error (http code " + http.status + ")");
-    }
+    _updateTaskCompletion (this.parentNode, newStatus);
     return false;
 }
 
@@ -1771,11 +1748,37 @@ function getMenus() {
                                        null, "-", onMenuSharing);
     menus["searchMenu"] = new Array(setSearchCriteria);
 
+    menus["tasksListMenu"] = new Array (editEvent, newTask, "-", 
+                                        marksTasksAsCompleted, deleteEvent);
+
     var calendarsMenu = $("calendarsMenu");
     if (calendarsMenu)
         calendarsMenu.prepareVisibility = onCalendarsMenuPrepareVisibility;
 
     return menus;
+}
+
+function newTask () {
+    return newEvent(this, 'task');
+}
+
+function marksTasksAsCompleted () {
+    var selectedTasks = $$("UL#tasksList LI._selected");
+
+    for (var i = 0; i < selectedTasks.length; i++) {
+        var task = selectedTasks[i];
+        _updateTaskCompletion (task, 1);
+    }
+}
+
+function _updateTaskCompletion (task, value) {
+    var checkBox = task.down ("INPUT");
+    url = (ApplicationBaseURL + task.calendar
+           + "/" + task.cname + "/changeStatus?status=" + value);
+
+    triggerAjaxRequest(url, refreshTasks, null);
+
+    return false;
 }
 
 function onMenuSharing(event) {

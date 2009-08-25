@@ -62,6 +62,16 @@
     </ul>
   </div>
 
+  <div class="menu" id="tasksListMenu">
+    <ul>
+      <li><var:string label:value="Open Task..."/></li>
+      <li><var:string label:value="New Task..."/></li>
+      <li><!-- separator --></li>
+      <li><var:string label:value="Mark Completed"/></li>
+      <li><var:string label:value="Delete Task"/></li>
+    </ul>
+  </div>
+
   <div class="menu" id="calendarsMenu">
     <ul>
       <li><var:string label:value="Modify"/></li>
