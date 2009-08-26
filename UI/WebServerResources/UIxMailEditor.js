@@ -581,15 +581,14 @@ function initMailEditor() {
     if (composeMode == "html") {
         CKEDITOR.replace('text',
                          {
-                             skin: "v2",
-                                 toolbar :
+                             toolbar :
                              [['Bold', 'Italic', '-', 'NumberedList', 
                                'BulletedList', '-', 'Link', 'Unlink', 'Image', 
                                'JustifyLeft','JustifyCenter','JustifyRight',
                                'JustifyBlock','Font','FontSize','-','TextColor',
                                'BGColor']
                               ] 
-                                 }
+                          }
                          );
     }
 
@@ -762,8 +761,8 @@ function onWindowResize(event) {
         var ck_bottom = $("cke_bottom_text");
         var content = $("cke_contents_text");
         var top = hr.offsetTop;
-        ck_bottom.ancestors ().first ().style.display = "none";
         var height = Math.floor(window.height() - top - ck_top.getHeight() - ck_bottom.getHeight());
+        height = height - 15;
         
         if (Prototype.Browser.IE) {
             editor.style.width = '';

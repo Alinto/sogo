@@ -5,13 +5,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 CKEDITOR.editorConfig = function( config )
 {
-	// Define changes to default configuration here. For example:
-	// config.language = 'fr';
+  config.uiColor = '#D4D0C8';
 	config.skin = 'kama';
-  //TODO: This should work to remove the bottom DOM information, but doesn't
-  // This way is on an instance of the config object
-  config.removePlugins = "elementspath,kplahj";
+  config.removePlugins = "elementspath,maximize,resize";
 };
-
-// This way is global / static
-CKEDITOR.config.removePlugins = "elementspath,kplahj";

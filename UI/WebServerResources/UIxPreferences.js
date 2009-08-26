@@ -225,7 +225,7 @@ function onComposeMessagesTypeChange(event) {
     
     if (event) {
         // Due to a limitation of CKEDITOR, we reload the page when the user
-	// changes the composition mode to avoid Javascript errors.
+        // changes the composition mode to avoid Javascript errors.
         var saveAndReload = confirm(labels["composeMessageChanged"]);
         if (saveAndReload)
             return savePreferences();
@@ -243,17 +243,14 @@ function onComposeMessagesTypeChange(event) {
         // HTML mode
         CKEDITOR.replace('signature',
                          {
-                             skin: "v2",
-                                 resizable: CKEDITOR.DIALOG_RESIZE_NONE,
-                                 height: "290px",
-                                 toolbar :
+                           height: "290px",
+                           toolbar :
                              [['Bold', 'Italic', '-', 'Link', 
                                'Font','FontSize','-','TextColor',
                                'BGColor']
                               ] 
                           }
                          );
-        CKEDITOR.config.disableObjectResizing = true;
     }
 }
 
