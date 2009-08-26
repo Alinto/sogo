@@ -1,6 +1,9 @@
 config.make
 shared_debug_obj
 obj
+err
+log
+build.log
 imgs-.*
 diff
 .*\.bak$
