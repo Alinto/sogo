@@ -1,5 +1,13 @@
 2009-08-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MainUI/SOGoUserHomePage.m (-defaultAction): when the user has
+	never logged in or switched module, the SOGoUIxLastModule
+	preference would never be set, causing a crash when the moduleURL
+	was created, because of a nil parameter. Also, the "defaultModule"
+	global variable was set to the userDefinedModule, which is
+	simply wrong as the global variable impacts all the users and need
+	to be kept intact.
+
 	* SoObjects/Appointments/SOGoAptMailReceipt.[hm]: new module
 	containing the template code for sending event receipts.
 

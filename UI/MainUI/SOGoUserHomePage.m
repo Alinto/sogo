@@ -98,12 +98,12 @@ static NSString *LDAPContactInfoAttribute = nil;
     {
       if ([userDefinedModule isEqualToString: @"Last"])
         userDefinedModule = [ud stringForKey: @"SOGoUIxLastModule"];
-
-      defaultModule = userDefinedModule;
     }
+  if (!userDefinedModule)
+    userDefinedModule = defaultModule;
 
   co = [self clientObject];
-  moduleURL = [NSURL URLWithString: defaultModule
+  moduleURL = [NSURL URLWithString: userDefinedModule
 		     relativeToURL: [co soURL]];
 
   return [self redirectToLocation: [moduleURL absoluteString]];
