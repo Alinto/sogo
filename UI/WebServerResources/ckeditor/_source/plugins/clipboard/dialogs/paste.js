@@ -11,7 +11,7 @@ CKEDITOR.dialog.add( 'paste', function( editor )
 		title : editor.lang.clipboard.title,
 
 		minWidth : CKEDITOR.env.ie && CKEDITOR.env.quirks ? 370 : 350,
-		minHeight : CKEDITOR.env.ie && CKEDITOR.env.quirks ? 250 : 240,
+		minHeight : CKEDITOR.env.quirks ? 250 : 245,
 		htmlToLoad : '<!doctype html><script type="text/javascript">'
 				+ 'window.onload = function()'
 				+ '{'
@@ -21,7 +21,12 @@ CKEDITOR.dialog.add( 'paste', function( editor )
 						+ 'document.designMode = "on";'
 					+ 'var iframe = new window.parent.CKEDITOR.dom.element( frameElement );'
 					+ 'var dialog = iframe.getCustomData( "dialog" );'
-					+ 'dialog.fire( "iframeAdded", { iframe : iframe } );'
+		      + ''
+					+ 'iframe.getFrameDocument().on( "keydown", function( e )\
+						{\
+							if ( e.data.getKeystroke() == 27 )\
+								dialog.hide();\
+						});'
 				+ '};'
 				+ '</script><style>body { margin: 3px; height: 95%; } </style><body></body>',
 
@@ -99,6 +104,12 @@ CKEDITOR.dialog.add( 'paste', function( editor )
 				this.getParentEditor().document.getBody().$.contentEditable = 'true';
 		},
 
+		onLoad : function()
+		{
+			if ( ( CKEDITOR.env.ie7Compat || CKEDITOR.env.ie6Compat ) && editor.lang.dir == 'rtl' )
+				this.parts.contents.setStyle( 'overflow', 'hidden' );
+		},
+
 		onOk : function()
 		{
 			var container = this.getContentElement( 'general', 'editing_area' ).getElement(),
@@ -106,7 +117,9 @@ CKEDITOR.dialog.add( 'paste', function( editor )
 				editor = this.getParentEditor(),
 				html = iframe.$.contentWindow.document.body.innerHTML;
 
-			editor.insertHtml( html );
+			setTimeout( function(){
+				editor.insertHtml( html );
+			}, 0 );
 
 		},
 

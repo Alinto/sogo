@@ -7,8 +7,8 @@
 	<script type="text/javascript" src="../test.js"></script>
 	<script type="text/javascript">
 	//<![CDATA[
-
-CKEDITOR.test.addTestCase( (function()
+var testcase;
+CKEDITOR.test.addTestCase( testcase = (function()
 {
 	// Local reference to the "assert" object.
 	var assert = CKEDITOR.test.assert;
@@ -73,6 +73,11 @@ CKEDITOR.test.addTestCase( (function()
 		test_htmlEncode2 : function()
 		{
 			assert.areSame( 'Test\'s &amp; "quote"', CKEDITOR.tools.htmlEncode( 'Test\'s & "quote"' ) );
+		},
+
+		test_htmlEncode_3874 : function()
+		{
+			assert.areSame( 'line1\nline2', CKEDITOR.tools.htmlEncode( 'line1\nline2' ) );
 		},
 
 		test_cssStyleToDomStyle1 : function()
@@ -147,10 +152,15 @@ CKEDITOR.test.addTestCase( (function()
 			assert.areSame( 'silver', clone.cars.Porsche.color );
 		},
 
+		test_repeat : function()
+		{
+			assert.areSame( '&nbsp;&nbsp;&nbsp;', CKEDITOR.tools.repeat( '&nbsp;', 3 ) );
+		},
+
 		name : document.title
 	};
 })() );
-
+//window.onload = testcase.test_htmlEncode_3874;
 	//]]>
 	</script>
 </head>

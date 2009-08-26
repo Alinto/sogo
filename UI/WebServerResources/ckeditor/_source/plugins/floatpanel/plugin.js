@@ -121,6 +121,9 @@ CKEDITOR.plugins.add( 'floatpanel',
 				if ( corner == 3 || corner == 4 )
 					top += offsetParent.$.offsetHeight - 1;
 
+				// Memorize offsetParent by it's ID.
+				this._.panel._.offsetParentId = offsetParent.getId();
+
 				element.setStyles(
 					{
 						top : top + 'px',
@@ -180,7 +183,7 @@ CKEDITOR.plugins.add( 'floatpanel',
 					},
 					this );
 
-				setTimeout( function()
+				CKEDITOR.tools.setTimeout( function()
 					{
 						if ( rtl )
 							left -= element.$.offsetWidth;
@@ -211,15 +214,8 @@ CKEDITOR.plugins.add( 'floatpanel',
 								panel._.currentBlock.element.setStyle( 'display', 'none' ).removeStyle( 'display' );
 							}
 
-							if ( !CKEDITOR.env.gecko || panel.isLoaded )
-							{
-								// IE7 needs some time (setting the delay to 0ms won't work) to refresh
-								// the scrollHeight. (#3174)
-								if ( CKEDITOR.env.ie && CKEDITOR.env.version >= 7 )
-									setTimeout( setHeight, 50 );
-								else
-									setHeight();
-							}
+							if ( panel.isLoaded )
+								setHeight();
 							else
 								panel.onLoad = setHeight;
 						}
@@ -227,7 +223,7 @@ CKEDITOR.plugins.add( 'floatpanel',
 							element.getFirst().removeStyle( 'height' );
 
 						// Set the IFrame focus, so the blur event gets fired.
-						setTimeout( function()
+						CKEDITOR.tools.setTimeout( function()
 							{
 								if ( definition.voiceLabel )
 								{
@@ -244,9 +240,12 @@ CKEDITOR.plugins.add( 'floatpanel',
 									iframe.focus();
 								else
 									iframe.$.contentWindow.focus();
-							}, 0);
-					}, 0);
 
+								// We need this get fired manually because of unfired focus() function.
+								if ( CKEDITOR.env.ie && !CKEDITOR.env.quirks )
+									this.allowBlur( true );
+							}, 0, this);
+					}, 0, this);
 				this.visible = 1;
 
 				if ( this.onShow )
@@ -276,6 +275,10 @@ CKEDITOR.plugins.add( 'floatpanel',
 
 			showAsChild : function( panel, blockName, offsetParent, corner, offsetX, offsetY )
 			{
+				// Skip reshowing of child which is already visible.
+				if ( this._.activeChild == panel && panel._.panel._.offsetParentId == offsetParent.getId() )
+					return;
+
 				this.hideChild();
 
 				panel.onHide = CKEDITOR.tools.bind( function()

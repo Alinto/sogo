@@ -5,7 +5,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 CKEDITOR.plugins.add( 'menubutton',
 {
-	requires : [ 'button' ],
+	requires : [ 'button', 'contextmenu' ],
 	beforeInit : function( editor )
 	{
 		editor.ui.addHandler( CKEDITOR.UI_MENUBUTTON, CKEDITOR.ui.menuButton.handler );

@@ -27,6 +27,7 @@ CKEDITOR.plugins.add( 'colorbutton',
 					label : title,
 					title : title,
 					className : 'cke_button_' + name.toLowerCase(),
+					modes : { wysiwyg : 1 },
 
 					panel :
 					{
@@ -54,7 +55,7 @@ CKEDITOR.plugins.add( 'colorbutton',
 		function renderColors( panel, type )
 		{
 			var output = [],
-				colors = CKEDITOR.config.colorButton_colors.split( ',' );
+				colors = config.colorButton_colors.split( ',' );
 
 			var clickFn = CKEDITOR.tools.addFunction( function( color, type )
 				{
@@ -76,6 +77,7 @@ CKEDITOR.plugins.add( 'colorbutton',
 						style.apply( editor.document );
 					else
 						style.remove( editor.document );
+					editor.fire( 'saveSnapshot' );
 				});
 
 			// Render the "Automatic" button.
@@ -139,7 +141,24 @@ CKEDITOR.plugins.add( 'colorbutton',
 	}
 });
 
+/**
+ * Whether to enable the "More Colors..." button in the color selectors.
+ * @default false
+ * @type Boolean
+ * @example
+ * config.colorButton_enableMore = false;
+ */
 CKEDITOR.config.colorButton_enableMore = false;
+
+/**
+ * Defines the colors to be displayed in the color selectors. It's a string
+ * containing the hexadecimal notation for HTML colors, without the "#" prefix.
+ * @type String
+ * @default '000,800000,8B4513,2F4F4F,008080,000080,4B0082,696969,B22222,A52A2A,DAA520,006400,40E0D0,0000CD,800080,808080,F00,FF8C00,FFD700,008000,0FF,00F,EE82EE,A9A9A9,FFA07A,FFA500,FFFF00,00FF00,AFEEEE,ADD8E6,DDA0DD,D3D3D3,FFF0F5,FAEBD7,FFFFE0,F0FFF0,F0FFFF,F0F8FF,E6E6FA,FFF'
+ * @example
+ * // Brazil colors only.
+ * config.colorButton_colors = '00923E,F8C100,28166F';
+ */
 CKEDITOR.config.colorButton_colors =
 	'000,800000,8B4513,2F4F4F,008080,000080,4B0082,696969,' +
 	'B22222,A52A2A,DAA520,006400,40E0D0,0000CD,800080,808080,' +
@@ -147,6 +166,17 @@ CKEDITOR.config.colorButton_colors =
 	'FFA07A,FFA500,FFFF00,00FF00,AFEEEE,ADD8E6,DDA0DD,D3D3D3,' +
 	'FFF0F5,FAEBD7,FFFFE0,F0FFF0,F0FFFF,F0F8FF,E6E6FA,FFF';
 
+/**
+ * Holds the style definition to be used to apply the text foreground color.
+ * @type Object
+ * @example
+ * // This is basically the default setting value.
+ * config.colorButton_foreStyle =
+ *     {
+ *         element : 'span',
+ *         styles : { 'color' : '#(color)' }
+ *     };
+ */
 CKEDITOR.config.colorButton_foreStyle =
 	{
 		element		: 'span',
@@ -154,6 +184,17 @@ CKEDITOR.config.colorButton_foreStyle =
 		overrides	: [ { element : 'font', attributes : { 'color' : null } } ]
 	};
 
+/**
+ * Holds the style definition to be used to apply the text background color.
+ * @type Object
+ * @example
+ * // This is basically the default setting value.
+ * config.colorButton_backStyle =
+ *     {
+ *         element : 'span',
+ *         styles : { 'background-color' : '#(color)' }
+ *     };
+ */
 CKEDITOR.config.colorButton_backStyle =
 	{
 		element		: 'span',

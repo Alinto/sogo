@@ -209,20 +209,22 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				this.preview = CKEDITOR.document.getById( 'previewImage' );
 
 				var editor = this.getParentEditor(),
-					element = this.getParentEditor().getSelection().getSelectedElement();
+					sel = this.getParentEditor().getSelection(),
+					element = sel.getSelectedElement(),
+					link = element && element.getAscendant( 'a' );
 
 				// Copy of the image
 				this.originalElement = editor.document.createElement( 'img' );
 				this.originalElement.setAttribute( 'alt', '' );
 				this.originalElement.setCustomData( 'isReady', 'false' );
 
-				if ( element && element.getName() == 'a' )
+				if ( link )
 				{
-					this.linkElement = element;
+					this.linkElement = link;
 					this.linkEditMode = true;
 
 					// Look for Image element.
-					var linkChildren = element.getChildren();
+					var linkChildren = link.getChildren();
 					if ( linkChildren.count() == 1 )			// 1 child.
 					{
 						var childTagName = linkChildren.getItem( 0 ).getName();
@@ -237,9 +239,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					}
 					// Fill out all fields.
 					if ( dialogType == 'image' )
-						this.setupContent( LINK, element );
+						this.setupContent( LINK, link );
 				}
-				else if ( element && element.getName() == 'img' && !element.getAttribute( '_cke_protected_html' ) )
+
+				if ( element && element.getName() == 'img' && !element.getAttribute( '_cke_protected_html' ) )
 					this.imageEditMode = 'img';
 				else if ( element && element.getName() == 'input' && element.getAttribute( 'type' ) && element.getAttribute( 'type' ) == 'image' )
 					this.imageEditMode = 'input';
@@ -261,8 +264,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				// Edit existing Image.
 				if ( this.imageEditMode )
 				{
-					var imgTagName = this.imageEditMode,
-						removeObj = this.imageElement;
+					var imgTagName = this.imageEditMode;
 
 					// Image dialog and Input element.
 					if ( dialogType == 'image' && imgTagName == 'input' && confirm( editor.lang.image.button2Img ) )
@@ -271,9 +273,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						imgTagName = 'img';
 						this.imageElement = editor.document.createElement( 'img' );
 						this.imageElement.setAttribute( 'alt', '' );
-						removeObj.insertBeforeMe( this.imageElement );
-						removeObj.remove( false );
-
+						editor.insertElement( this.imageElement );
 					}
 					// ImageButton dialog and Image element.
 					else if ( dialogType != 'image' && imgTagName == 'img' && confirm( editor.lang.image.img2Button ))
@@ -287,8 +287,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								alt : ''
 							}
 						);
-						removeObj.insertBeforeMe( this.imageElement );
-						removeObj.remove( false );
+						editor.insertElement( this.imageElement );
 					}
 				}
 				else	// Create a new image.
@@ -320,11 +319,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						//Insert a new Link.
 						if ( !this.linkEditMode )
 						{
-							this.linkElement.append( this.imageElement, false );
-							editor.insertElement( this.linkElement );
+							editor.insertElement(this.linkElement);
+							this.linkElement.append(this.imageElement, false);
 						}
-						else 	//Link already exists, image not.
-							this.linkElement.append( this.imageElement, false );
+						else	 //Link already exists, image not.
+							editor.insertElement(this.imageElement );
 					}
 					else
 						editor.insertElement( this.imageElement );
@@ -334,18 +333,24 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					//Add a new link element.
 					if ( !this.linkEditMode && this.addLink )
 					{
-						this.imageElement.insertBeforeMe( this.linkElement );
+						editor.insertElement( this.linkElement );
 						this.imageElement.appendTo( this.linkElement );
 					}
 					//Remove Link, Image exists.
 					else if ( this.linkEditMode && !this.addLink )
-						this.linkElement.remove( true );
+					{
+						editor.getSelection().selectElement( this.linkElement );
+						editor.insertElement( this.imageElement );
+					}
 				}
 			},
 			onLoad : function()
 			{
 				if ( dialogType != 'image' )
 					this.hidePage( 'Link' );		//Hide Link tab.
+				var doc = this._.element.getDocument();
+				this.addFocusable( doc.getById( 'btnResetSize' ), 5 );
+				this.addFocusable( doc.getById( 'btnLockSizes' ), 5 );
 			},
 			onHide : function()
 			{
@@ -417,13 +422,18 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 											{
 												if ( type == IMAGE )
 												{
-													var dialog = this.getDialog();
-													var url = element.getAttribute( '_cke_saved_src' );
-													if ( !url )
-														url = element.getAttribute( 'src' );
-													dialog.dontResetSize = true;
-													this.setValue( url );		// And call this.onChange()
-													this.focus();
+													var url = element.getAttribute( '_cke_saved_src' ) || element.getAttribute( 'src' );
+													var field = this;
+
+													this.getDialog().dontResetSize = true;
+
+													// In IE7 the dialog is being rendered improperly when loading
+													// an image with a long URL. So we need to delay it a bit. (#4122)
+													setTimeout( function()
+														{
+															field.setValue( url );		// And call this.onChange()
+															field.focus();
+														}, 0 );
 												}
 											},
 											commit : function( type, element )
@@ -506,6 +516,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 													[
 														{
 															type : 'text',
+															width: '40px',
 															id : 'txtWidth',
 															labelLayout : 'horizontal',
 															label : editor.lang.image.width,
@@ -552,6 +563,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 														{
 															type : 'text',
 															id : 'txtHeight',
+															width: '40px',
 															labelLayout : 'horizontal',
 															label : editor.lang.image.height,
 															onKeyUp : onSizeChange,
@@ -598,7 +610,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 												},
 												{
 													type : 'html',
-													style : 'position:relative;top:10px;height:50px;',
+													style : 'margin-top:10px;width:40px;height:40px;',
 													onLoad : function()
 													{
 														// Activate Reset button
@@ -612,11 +624,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 																}, this.getDialog() );
 															resetButton.on( 'mouseover', function()
 																{
-																	this.addClass( 'BtnOver' );
+																	this.addClass( 'cke_btn_over' );
 																}, resetButton );
 															resetButton.on( 'mouseout', function()
 																{
-																	this.removeClass( 'BtnOver' );
+																	this.removeClass( 'cke_btn_over' );
 																}, resetButton );
 														}
 														// Activate (Un)LockRatio button
@@ -640,19 +652,19 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 																}, this.getDialog() );
 															ratioButton.on( 'mouseover', function()
 																{
-																	this.addClass( 'BtnOver' );
+																	this.addClass( 'cke_btn_over' );
 																}, ratioButton );
 															ratioButton.on( 'mouseout', function()
 																{
-																	this.removeClass( 'BtnOver' );
+																	this.removeClass( 'cke_btn_over' );
 																}, ratioButton );
 														}
 													},
 													html : '<div>'+
-														'<div title="' + editor.lang.image.lockRatio +
-														'" class="cke_btn_locked" id="btnLockSizes"></div>' +
-														'<div title="' + editor.lang.image.resetSize +
-														'" class="cke_btn_reset" id="btnResetSize"></div>'+
+														'<a href="javascript:void(0)" tabindex="-1" title="' + editor.lang.image.lockRatio +
+														'" class="cke_btn_locked" id="btnLockSizes"></a>' +
+														'<a href="javascript:void(0)" tabindex="-1" title="' + editor.lang.image.resetSize +
+														'" class="cke_btn_reset" id="btnResetSize"></a>'+
 														'</div>'
 												}
 											]
@@ -665,6 +677,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 												{
 													type : 'text',
 													id : 'txtBorder',
+													width: '60px',
 													labelLayout : 'horizontal',
 													label : editor.lang.image.border,
 													'default' : '',
@@ -706,6 +719,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 												{
 													type : 'text',
 													id : 'txtHSpace',
+													width: '60px',
 													labelLayout : 'horizontal',
 													label : editor.lang.image.hSpace,
 													'default' : '',
@@ -753,6 +767,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 												{
 													type : 'text',
 													id : 'txtVSpace',
+													width : '60px',
 													labelLayout : 'horizontal',
 													label : editor.lang.image.vSpace,
 													'default' : '',
@@ -798,7 +813,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 													type : 'select',
 													labelLayout : 'horizontal',
 													widths : [ '35%','65%' ],
-													style : 'width:100%',
+													style : 'width:90px',
 													label : editor.lang.image.align,
 													'default' : '',
 													items :
@@ -967,6 +982,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							type : 'file',
 							id : 'upload',
 							label : editor.lang.image.btnUpload,
+							style: 'height:40px',
 							size : 38
 						},
 						{
@@ -1009,7 +1025,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								{
 									id : 'cmbLangDir',
 									type : 'select',
-									style : 'width : 100%;',
+									style : 'width : 100px;',
 									label : editor.lang.common.langDir,
 									'default' : '',
 									items :

@@ -42,7 +42,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				return setState.call( this, editor, CKEDITOR.TRISTATE_OFF );
 			else
 			{
-				while ( listItem && ( listItem = listItem.getPrevious() ) )
+				while ( listItem && ( listItem = listItem.getPrevious( CKEDITOR.dom.walker.whitespaces( true ) ) ) )
 				{
 					if ( listItem.getName && listItem.getName() == 'li' )
 						return setState.call( this, editor, CKEDITOR.TRISTATE_OFF );
@@ -69,7 +69,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				indentStep = this.indentClassMap[ indentClass ];
 			}
 			if ( ( this.name == 'outdent' && !indentStep ) ||
-					( this.name == 'indent' && indentStep == editor.config.indentClass.length ) )
+					( this.name == 'indent' && indentStep == editor.config.indentClasses.length ) )
 				return setState.call( this, editor, CKEDITOR.TRISTATE_DISABLED );
 			return setState.call( this, editor, CKEDITOR.TRISTATE_OFF );
 		}
@@ -116,7 +116,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		// list's DOM tree itself. The array model demands that it knows as much as
 		// possible about the surrounding lists, we need to feed it the further
 		// ancestor node that is still a list.
-		var listParents = listNode.getParents();
+		var listParents = listNode.getParents( true );
 		for ( var i = 0 ; i < listParents.length ; i++ )
 		{
 			if ( listParents[i].getName && listNodeNames[ listParents[i].getName() ] )
@@ -144,8 +144,49 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		// Convert the array back to a DOM forest (yes we might have a few subtrees now).
 		// And replace the old list with the new forest.
 		var newList = CKEDITOR.plugins.list.arrayToList( listArray, database, null, editor.config.enterMode, 0 );
+
+		// Avoid nested <li> after outdent even they're visually same,
+		// recording them for later refactoring.(#3982)
+		if ( this.name == 'outdent' )
+		{
+			var parentLiElement;
+			if ( ( parentLiElement = listNode.getParent() ) && parentLiElement.is( 'li' ) )
+			{
+				var children = newList.listNode.getChildren(),
+					pendingLis = [],
+					count = children.count(),
+					child;
+
+				for ( i = count - 1 ; i >= 0 ; i-- )
+				{
+					if( ( child = children.getItem( i ) ) && child.is && child.is( 'li' )  )
+						pendingLis.push( child );
+				}
+			}
+		}
+
 		if ( newList )
 			newList.listNode.replace( listNode );
+
+		// Move the nested <li> to be appeared after the parent.
+		if ( pendingLis && pendingLis.length )
+		{
+			for (  i = 0; i < pendingLis.length ; i++ )
+			{
+				var li = pendingLis[ i ],
+					followingList = li;
+
+				// Nest preceding <ul>/<ol> inside current <li> if any.
+				while( ( followingList = followingList.getNext() ) &&
+					   followingList.is &&
+					   followingList.getName() in listNodeNames )
+				{
+					li.append( followingList );
+				}
+
+				li.insertAfter( parentLiElement );
+			}
+		}
 
 		// Clean up the markers.
 		CKEDITOR.dom.element.clearAllMarkers( database );
@@ -153,9 +194,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	function indentBlock( editor, range )
 	{
-		var iterator = range.createIterator();
+		var iterator = range.createIterator(),
+			enterMode = editor.config.enterMode;
 		iterator.enforceRealBlocks = true;
-
+		iterator.enlargeBr = enterMode != CKEDITOR.ENTER_BR;
 		var block;
 		while ( ( block = iterator.getNextParagraph() ) )
 		{

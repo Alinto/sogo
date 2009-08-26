@@ -18,11 +18,20 @@ CKEDITOR.dialog.add( 'pastefromword', function( editor )
 						+ 'document.designMode = "on";'
 					+ 'var iframe = new window.parent.CKEDITOR.dom.element( frameElement );'
 					+ 'var dialog = iframe.getCustomData( "dialog" );'
+		      + ''
+					+ 'iframe.getFrameDocument().on( "keydown", function( e )\
+						{\
+							if ( e.data.getKeystroke() == 27 )\
+								dialog.hide();\
+						});'
 					+ 'dialog.fire( "iframeAdded", { iframe : iframe } );'
 				+ '};'
 				+ '</script><style>body { margin: 3px; height: 95%; } </style><body></body>',
 		cleanWord : function( editor, html, ignoreFont, removeStyles )
 		{
+			// Remove comments [SF BUG-1481861].
+			html = html.replace(/<\!--[\s\S]*?-->/g, '' ) ;
+
 			html = html.replace(/<o:p>\s*<\/o:p>/g, '') ;
 			html = html.replace(/<o:p>[\s\S]*?<\/o:p>/g, '&nbsp;') ;
 
@@ -30,8 +39,8 @@ CKEDITOR.dialog.add( 'pastefromword', function( editor )
 			html = html.replace( /\s*mso-[^:]+:[^;"]+;?/gi, '' ) ;
 
 			// Remove margin styles.
-			html = html.replace( /\s*MARGIN: 0cm 0cm 0pt\s*;/gi, '' ) ;
-			html = html.replace( /\s*MARGIN: 0cm 0cm 0pt\s*"/gi, "\"" ) ;
+			html = html.replace( /\s*MARGIN: 0(?:cm|in) 0(?:cm|in) 0pt\s*;/gi, '' ) ;
+			html = html.replace( /\s*MARGIN: 0(?:cm|in) 0(?:cm|in) 0pt\s*"/gi, "\"" ) ;
 
 			html = html.replace( /\s*TEXT-INDENT: 0cm\s*;/gi, '' ) ;
 			html = html.replace( /\s*TEXT-INDENT: 0cm\s*"/gi, "\"" ) ;
@@ -87,9 +96,6 @@ CKEDITOR.dialog.add( 'pastefromword', function( editor )
 
 			// Remove Tags with XML namespace declarations: <o:p><\/o:p>
 			html = html.replace(/<\/?\w+:[^>]*>/gi, '' ) ;
-
-			// Remove comments [SF BUG-1481861].
-			html = html.replace(/<\!--[\s\S]*?-->/g, '' ) ;
 
 			html = html.replace( /<(U|I|STRIKE)>&nbsp;<\/\1>/g, '&nbsp;' ) ;
 
@@ -227,6 +233,11 @@ CKEDITOR.dialog.add( 'pastefromword', function( editor )
 			if ( CKEDITOR.env.ie )
 				this.getParentEditor().document.getBody().$.contentEditable = 'true';
 		},
+		onLoad : function()
+		{
+			if ( ( CKEDITOR.env.ie7Compat || CKEDITOR.env.ie6Compat ) && editor.lang.dir == 'rtl' )
+				this.parts.contents.setStyle( 'overflow', 'hidden' );
+		},
 		contents :
 		[
 			{
@@ -236,7 +247,7 @@ CKEDITOR.dialog.add( 'pastefromword', function( editor )
 				[
 					{
 						type : 'html',
-						style : 'white-space: normal;',
+						style : 'white-space:normal;width:346px;display:block',
 						onShow : function()
 						{
 							/*
@@ -279,12 +290,13 @@ CKEDITOR.dialog.add( 'pastefromword', function( editor )
 								type : 'checkbox',
 								id : 'ignoreFontFace',
 								label : editor.lang.pastefromword.ignoreFontFace,
-								'default' : true
+								'default' : editor.config.pasteFromWordIgnoreFontFace
 							},
 							{
 								type : 'checkbox',
 								id : 'removeStyle',
-								label : editor.lang.pastefromword.removeStyle
+								label : editor.lang.pastefromword.removeStyle,
+								'default' : editor.config.pasteFromWordRemoveStyle
 							}
 						]
 					}

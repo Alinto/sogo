@@ -10,9 +10,20 @@
 	float: left;
 }
 
+.cke_skin_office2003 .cke_browser_ie .cke_rcombo
+{
+	#float: none;
+	#display: inline;
+}
+
 .cke_skin_office2003 .cke_rtl .cke_rcombo
 {
 	float: right;
+}
+
+.cke_skin_office2003 .cke_browser_ie .cke_rcombo
+{
+	#float: none;
 }
 
 .cke_skin_office2003 .cke_rcombopanel
@@ -60,6 +71,7 @@
 	opacity: 0.70; /* Safari, Opera and Mozilla */
 
 	_background-image: url(images/sprites.png);
+	_background-image: url(images/sprites_ie6.png);
 	_background-position: 0 -962px;
 	_background-repeat: repeat-x;
 }
@@ -95,6 +107,7 @@
 	text-overflow: ellipsis;
 	overflow: hidden;
 	display: inline-block;
+	vertical-align: top;
 }
 
 .cke_skin_office2003 .cke_ltr .cke_rcombo .cke_text
@@ -127,8 +140,9 @@
 {
 	display: inline-block;
 
-	background-position: center center;
-	background-image: url(images/arrowdown.gif);
+	background-position: 5px -1002px;
+	background-image: url(images/sprites.png);
+	background-image: url(images/sprites_ie6.png);
 	background-repeat: no-repeat;
 
 	border-top: 1px solid #8f8f73;

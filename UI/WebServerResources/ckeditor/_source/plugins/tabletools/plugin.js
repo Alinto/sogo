@@ -416,7 +416,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		}
 	}
 
-	CKEDITOR.plugins.add( 'tabletools',
+	// Context menu on table caption incorrect (#3834)
+	var contextMenuTags = { thead : 1, tbody : 1, tfoot : 1, td : 1, tr : 1, th : 1 };
+
+	CKEDITOR.plugins.tabletools =
 	{
 		init : function( editor )
 		{
@@ -544,12 +547,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							getItems : function()
 							{
 								var cells = getSelectedCells( editor.getSelection() );
-
 								return {
 									tablecell_insertBefore : CKEDITOR.TRISTATE_OFF,
 									tablecell_insertAfter : CKEDITOR.TRISTATE_OFF,
 									tablecell_delete : CKEDITOR.TRISTATE_OFF,
-									tablecell_properties : cells.length == 1 ? CKEDITOR.TRISTATE_OFF : CKEDITOR.TRISTATE_DISABLED
+									tablecell_properties : cells.length > 0 ? CKEDITOR.TRISTATE_OFF : CKEDITOR.TRISTATE_DISABLED
 								};
 							}
 						},
@@ -674,9 +676,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						if ( !element )
 							return null;
 
-							var isCell	= !element.is( 'table' ) && element.hasAscendant( 'table' ) ;
-
-							if ( isCell )
+						while ( element )
+						{
+							if ( element.getName() in contextMenuTags )
 							{
 								return {
 									tablecell : CKEDITOR.TRISTATE_OFF,
@@ -684,10 +686,16 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									tablecolumn : CKEDITOR.TRISTATE_OFF
 								};
 							}
+							element = element.getParent();
+						}
 
-							return null;
+						return null;
 					} );
 			}
-		}
-	} );
+		},
+
+		getSelectedCells : getSelectedCells
+
+	};
+	CKEDITOR.plugins.add( 'tabletools', CKEDITOR.plugins.tabletools );
 })();

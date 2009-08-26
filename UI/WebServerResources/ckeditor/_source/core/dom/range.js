@@ -300,10 +300,12 @@ CKEDITOR.dom.range = function( document )
 	// text node and non-empty elements unless it's being bookmark text.
 	function elementBoundaryEval( node )
 	{
-		// Reject any text node unless it's being bookmark.
+		// Reject any text node unless it's being bookmark
+		// OR it's spaces. (#3883)
 		return node.type != CKEDITOR.NODE_TEXT
-		       && node.getName() in CKEDITOR.dtd.$removeEmpty
-			   || node.getParent().hasAttribute( '_fck_bookmark' );
+			    && node.getName() in CKEDITOR.dtd.$removeEmpty
+			    || !CKEDITOR.tools.trim( node.getText() )
+			    || node.getParent().hasAttribute( '_fck_bookmark' );
 	}
 
 	CKEDITOR.dom.range.prototype =
@@ -1171,20 +1173,19 @@ CKEDITOR.dom.range = function( document )
 
 					walker.guard = boundaryGuard;
 
+					enlargeable = walker.lastBackward();
 
-					if ( ( enlargeable = walker.lastBackward() ) )
-					{
-						// It's the body which stop the enlaring if no block boundary found.
-						blockBoundary = blockBoundary || body;
+					// It's the body which stop the enlarging if no block boundary found.
+					blockBoundary = blockBoundary || body;
 
-						// Start the range at different position by comparing
-						// the document position of it with 'enlargeable' node.
-						this.setStartAt(
-								blockBoundary,
-								blockBoundary.contains( enlargeable ) ?
-									CKEDITOR.POSITION_AFTER_START :
-									CKEDITOR.POSITION_AFTER_END );
-					}
+					// Start the range at different position by comparing
+					// the document position of it with 'enlargeable' node.
+					this.setStartAt(
+							blockBoundary,
+							!blockBoundary.is( 'br' ) &&
+							( !enlargeable || blockBoundary.contains( enlargeable ) ) ?
+								CKEDITOR.POSITION_AFTER_START :
+								CKEDITOR.POSITION_AFTER_END );
 
 					// Enlarging the end boundary.
 					walkerRange = this.clone();
@@ -1198,19 +1199,19 @@ CKEDITOR.dom.range = function( document )
 					blockBoundary = null;
 					// End the range right before the block boundary node.
 
-					if ( ( enlargeable = walker.lastForward() ) )
-					{
-						// It's the body which stop the enlaring if no block boundary found.
-						blockBoundary = blockBoundary || body;
+					enlargeable = walker.lastForward();
 
-						// Start the range at different position by comparing
-						// the document position of it with 'enlargeable' node.
-						this.setEndAt(
-								blockBoundary,
-								blockBoundary.contains( enlargeable ) ?
-									CKEDITOR.POSITION_BEFORE_END :
-									CKEDITOR.POSITION_BEFORE_START );
-					}
+					// It's the body which stop the enlarging if no block boundary found.
+					blockBoundary = blockBoundary || body;
+
+					// Start the range at different position by comparing
+					// the document position of it with 'enlargeable' node.
+					this.setEndAt(
+							blockBoundary,
+							!blockBoundary.is( 'br' ) &&
+							( !enlargeable || blockBoundary.contains( enlargeable ) ) ?
+								CKEDITOR.POSITION_BEFORE_END :
+								CKEDITOR.POSITION_BEFORE_START );
 					// We must include the <br> at the end of range if there's
 					// one and we're expanding list item contents
 					if ( tailBr )
@@ -1600,7 +1601,31 @@ CKEDITOR.dom.range = function( document )
 			}
 
 			if ( editableElement )
-				this.moveToPosition( editableElement, CKEDITOR.POSITION_AFTER_START );
+			{
+				this.moveToPosition(editableElement, CKEDITOR.POSITION_AFTER_START);
+				return true;
+			}
+			else
+				return false;
+		},
+
+		/**
+		 * Get the single node enclosed within the range if there's one.
+		 */
+		getEnclosedNode : function()
+		{
+			var walkerRange = this.clone(),
+				walker = new CKEDITOR.dom.walker( walkerRange ),
+				isNotBookmarks = CKEDITOR.dom.walker.bookmark( true ),
+				isNotWhitespaces = CKEDITOR.dom.walker.whitespaces( true ),
+				evaluator = function( node )
+				{
+					return isNotWhitespaces( node ) && isNotBookmarks( node );
+				};
+			walkerRange.evaluator = evaluator;
+			var node = walker.next();
+			walker.reset();
+			return node && node.equals( walker.previous() ) ? node : null;
 		},
 
 		getTouchedStartNode : function()

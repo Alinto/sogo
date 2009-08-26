@@ -6,12 +6,14 @@
 	<script type="text/javascript" src="../../../ckeditor.js"></script>
 	<script type="text/javascript" src="../../test.js"></script>
 	<script type="text/javascript">
-
-CKEDITOR.plugins.load( 'htmldataprocessor' );
-
-	</script>
-	<script type="text/javascript">
 	//<![CDATA[
+
+// Load the required plugins and launch the runner.
+CKEDITOR.test.deferRunner = true;
+CKEDITOR.plugins.load( 'htmldataprocessor' , function()
+{
+ CKEDITOR.test.runner.run();
+} );
 
 var testCase;
 
@@ -84,9 +86,7 @@ CKEDITOR.test.addTestCase( testCase = (function()
 
 		test_toDataFormat_3 : function()
 		{
-			var element = new CKEDITOR.dom.element.createFromHtml( '<div><x:x><p>Test</p></div>' );
-
-			assert.areSame( '<x:x><p>Test</p></x:x>', getDataProcessor().toDataFormat( element.getHtml() ) );
+			assert.areSame( '<div><x:x><p>Test</p></x:x></div>', getDataProcessor().toDataFormat( '<div><x:x><p>Test</p></div>' ) );
 		},
 
 		test_toDataFormat_ticket_2774 : function()
@@ -240,11 +240,102 @@ CKEDITOR.test.addTestCase( testCase = (function()
 			assert.areSame( html , dataProcessor.toDataFormat( protectedHtml ) );
 		},
 
+		test_ticket_3591 : function()
+		{
+			var editor = CKEDITOR.instances.editor1,
+				dataProcessor = editor.dataProcessor;
+
+			dataProcessor.writer = new CKEDITOR.htmlParser.basicWriter();
+			var html = getTextAreaValue( '_TEXTAREA_3591' );
+			var protectedHtml = dataProcessor.toHtml( html );
+
+			assert.areSame( getTextAreaValue( CKEDITOR.env.ie ? '_TEXTAREA_3591_protected_ie' : '_TEXTAREA_3591_protected' ),
+				protectedHtml );
+			assert.areSame( getTextAreaValue( '_TEXTAREA_3591' ),
+				dataProcessor.toDataFormat( protectedHtml ) );
+		},
+
+		test_ticket_3591_2 : function()
+		{
+			var editor = CKEDITOR.instances.editor1,
+				dataProcessor = editor.dataProcessor;
+
+			dataProcessor.writer = new CKEDITOR.htmlParser.basicWriter();
+			dataProcessor.writer.sortAttributes = true;
+
+			var html = getTextAreaValue( '_TEXTAREA_3591_2' );
+			var protectedHtml = dataProcessor.toHtml( html );
+
+			assert.areSame( getTextAreaValue( '_TEXTAREA_3591_2' ),
+				dataProcessor.toDataFormat( protectedHtml ) );
+		},
+
+		test_ticket_3869_1 : function()
+		{
+			var editor = CKEDITOR.instances.editor1,
+				dataProcessor = editor.dataProcessor;
+
+			dataProcessor.writer = new CKEDITOR.htmlParser.basicWriter();
+			var html = getTextAreaValue( '_TEXTAREA_3869_1' );
+			var protectedHtml = dataProcessor.toHtml( html );
+
+			assert.areSame( html , dataProcessor.toDataFormat( protectedHtml ) );
+		},
+
+		test_ticket_3869_2 : function()
+		{
+			var editor = CKEDITOR.instances.editor1,
+				dataProcessor = editor.dataProcessor,
+				config = editor.config;
+
+			config.protectedSource.push( /<\?[\s\S]*?\?>/g );   // PHP Code
+			config.protectedSource.push( /<%[\s\S]*?%>/g );   // ASP Code
+			config.protectedSource.push( /(<asp:[^\>]+>[\s|\S]*?<\/asp:[^\>]+>)|(<asp:[^\>]+\/>)/gi );   // ASP.Net Code
+			config.protectedSource.push(/<gallery[\s\S]*?<\/gallery>/gi );	// custom protected source
+			config.protectedSource.push(/<options[\s\S]*?<\/options>/gi );
+			dataProcessor.writer = new CKEDITOR.htmlParser.basicWriter();
+			var html = getTextAreaValue( '_TEXTAREA_3869_2' );
+			var protectedHtml = dataProcessor.toHtml( html );
+
+			assert.areSame( html , dataProcessor.toDataFormat( protectedHtml ) );
+		},
+
+		/**
+		 * Test empty value attributes.
+		 */
+		test_ticket_3884 : function()
+		{
+			var editor = CKEDITOR.instances.editor1,
+				dataProcessor = editor.dataProcessor;
+			dataProcessor.writer = new CKEDITOR.htmlParser.basicWriter();
+			dataProcessor.writer.sortAttributes = true;
+
+			assert.areSame( '<p><a href="" name="">emptylink</a></p>',
+				dataProcessor.toDataFormat( dataProcessor.toHtml( '<p><a href="" name="">emptylink</a></p>' ) ) );
+		},
+
+		test_innerHtmlComments_ticket_3801 : function()
+		{
+			var editor = CKEDITOR.instances.editor1,
+				dataProcessor = editor.dataProcessor;
+
+			dataProcessor.writer = new CKEDITOR.htmlParser.basicWriter();
+
+			for ( var i = 1; i <= 7; i++ )
+			{
+				var html = getTextAreaValue( '_TEXTAREA_3801_' + i );
+				var protectedHtml = dataProcessor.toHtml( html );
+
+				assert.areSame( getTextAreaValue( '_TEXTAREA_3801_' + i ),
+					dataProcessor.toDataFormat( protectedHtml ) );
+			}
+		},
+
 		name : document.title
 	};
 })() );
 
-//window.onload = testCase.test_ticket_3407;
+//window.onload = testCase.test_ticket_3884;
 	//]]>
 	</script>
 </head>
@@ -256,5 +347,40 @@ CKEDITOR.test.addTestCase( testCase = (function()
 <![endif]>
 <![endif]--><td><%Response.Write(now())%></td><td><asp:control_name id="some_id" runat="server"/></td><td><?php
 include ("head.html"); ?></td></tr></tbody></table><noscript>Your browser doesn't support JavaScript</noscript></textarea>
+	<textarea id="_TEXTAREA_3591"><object><param /><param /><embed></embed></object></textarea>
+	<textarea id="_TEXTAREA_3591_protected"><cke:object><cke:param></cke:param><cke:param></cke:param><cke:embed></cke:embed></cke:object></textarea>
+	<textarea id="_TEXTAREA_3591_protected_ie"><?xml:namespace prefix="cke" /><cke:object><cke:param></cke:param><cke:param></cke:param><cke:embed></cke:embed></cke:object></textarea>
+ 	<textarea id="_TEXTAREA_3801_1"><!-- foo --><p>bar</p></textarea>
+ 	<textarea id="_TEXTAREA_3801_2"><p><!-- foo -->bar</p></textarea>
+ 	<textarea id="_TEXTAREA_3801_3"><!-- foo --><p><!-- foo -->bar</p></textarea>
+ 	<textarea id="_TEXTAREA_3801_4"><p>bar</p><!-- foo --></textarea>
+ 	<textarea id="_TEXTAREA_3801_5">bar<!-- foo --></textarea>
+ 	<textarea id="_TEXTAREA_3801_6"><!-- foo -->bar</textarea>
+ 	<textarea id="_TEXTAREA_3801_7"><p><!-- foo -->bar</p><p><!-- foo -->bar</p></textarea>
+	<textarea id="_TEXTAREA_3869_1">#3869<script language="Javascript" type="text/javascript">
+	<!--
+		alert('-->');
+	//-->
+	</script></textarea>
+	<textarea id="_TEXTAREA_3869_2">#3869&lt;gallery&gt;
+	file.jpg
+	&lt;options name="test1" value="value1"&gt;&lt;/options&gt;
+	&lt;options name="test2" value="value2"&gt;&lt;/options&gt;
+	&lt;/gallery&gt;&lt;?
+		echo '&lt;script type="text/javascript"&gt;';
+		echo '&lt;!--alert("--&gt;");//--&gt;';
+		echo '&lt;/script&gt;';
+	?&gt;&lt;!--&lt;%Response.Write(now())%&gt;//--&gt;invalid&lt;?
+		echo 'bbb&lt;script&gt;
+		&lt;!--
+		ccc();&lt;!-- &lt;/script&gt;&lt;!-- &lt;/script&gt;
+		//--&gt;&lt;/script&gt;
+		&lt;script&gt;&lt;!--
+		&lt;!--
+		ffff();
+		//--&gt;&lt;/script&gt;
+		ddd';
+	?&gt;html</textarea>
+	<textarea id="_TEXTAREA_3591_2"><object classid="clsid"><param name="movie" value="movie.swf" /><embed src="movie.swf" type="application/x-shockwave-flash"></embed></object></textarea>
 </body>
 </html>

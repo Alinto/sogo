@@ -655,6 +655,7 @@ CKEDITOR.lang['fa'] =
 	about :
 	{
 		title : 'About CKEditor', // MISSING
+		dlgTitle : 'About CKEditor', // MISSING
 		moreInfo : 'For licensing information please visit our web site:', // MISSING
 		copy : 'Copyright &copy; $1. All rights reserved.' // MISSING
 	},

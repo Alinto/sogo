@@ -19,6 +19,9 @@ CKEDITOR.plugins.add( 'domiterator' );
 
 		this.range = range;
 		this.forceBrBreak = false;
+
+		// Whether include <br>s into the enlarged range.(#3730).
+		this.enlargeBr = true;
 		this.enforceRealBlocks = false;
 
 		this._ || ( this._ = {} );
@@ -45,7 +48,8 @@ CKEDITOR.plugins.add( 'domiterator' );
 			if ( !this._.lastNode )
 			{
 				range = this.range.clone();
-				range.enlarge( this.forceBrBreak ? CKEDITOR.ENLARGE_LIST_ITEM_CONTENTS : CKEDITOR.ENLARGE_BLOCK_CONTENTS );
+				range.enlarge( this.forceBrBreak || !this.enlargeBr ?
+							   CKEDITOR.ENLARGE_LIST_ITEM_CONTENTS : CKEDITOR.ENLARGE_BLOCK_CONTENTS );
 
 				var walker = new CKEDITOR.dom.walker( range ),
 					ignoreBookmarkTextEvaluator = CKEDITOR.dom.walker.bookmark( true, true );
@@ -57,12 +61,32 @@ CKEDITOR.plugins.add( 'domiterator' );
 				walker.evaluator = ignoreBookmarkTextEvaluator;
 				var lastNode = walker.previous();
 				this._.lastNode = lastNode.getNextSourceNode( true );
+
+				// We may have an empty text node at the end of block due to [3770].
+				// If that node is the lastNode, it would cause our logic to leak to the
+				// next block.(#3887)
+				if ( this._.lastNode &&
+						this._.lastNode.type == CKEDITOR.NODE_TEXT &&
+						!CKEDITOR.tools.trim( this._.lastNode.getText( ) ) &&
+						this._.lastNode.getParent().isBlockBoundary() )
+				{
+					var testRange = new CKEDITOR.dom.range( range.document );
+					testRange.moveToPosition( this._.lastNode, CKEDITOR.POSITION_AFTER_END );
+					if ( testRange.checkEndOfBlock() )
+					{
+						var path = new CKEDITOR.dom.elementPath( testRange.endContainer );
+						var lastBlock = path.block || path.blockLimit;
+						this._.lastNode = lastBlock.getNextSourceNode( true );
+					}
+				}
+
 				// Probably the document end is reached, we need a marker node.
 				if ( !this._.lastNode )
 				{
-						this._.lastNode = range.document.createText( '' );
-						this._.lastNode.insertAfter( lastNode );
+					this._.lastNode = this._.docEndMarker = range.document.createText( '' );
+					this._.lastNode.insertAfter( lastNode );
 				}
+
 				// Let's reuse this variable.
 				range = null;
 			}
@@ -180,6 +204,9 @@ CKEDITOR.plugins.add( 'domiterator' );
 				if ( includeNode )
 					range.setEndAt( currentNode, CKEDITOR.POSITION_AFTER_END );
 
+				currentNode = currentNode.getNextSourceNode( continueFromSibling, null, lastNode );
+				isLast = !currentNode;
+
 				// We have found a block boundary. Let's close the range and move out of the
 				// loop.
 				if ( ( closeRange || isLast ) && range )
@@ -187,10 +214,16 @@ CKEDITOR.plugins.add( 'domiterator' );
 					var boundaryNodes = range.getBoundaryNodes(),
 						startPath = new CKEDITOR.dom.elementPath( range.startContainer ),
 						endPath = new CKEDITOR.dom.elementPath( range.endContainer );
+
+					// Drop the range if it only contains bookmark nodes.(#4087)
 					if ( boundaryNodes.startNode.equals( boundaryNodes.endNode )
-							&& boundaryNodes.startNode.getParent().equals( startPath.blockLimit )
-							&& boundaryNodes.startNode.type == CKEDITOR.NODE_ELEMENT && boundaryNodes.startNode.getAttribute( '_fck_bookmark' ) )
+						&& boundaryNodes.startNode.getParent().equals( startPath.blockLimit )
+						&& boundaryNodes.startNode.type == CKEDITOR.NODE_ELEMENT
+						&& boundaryNodes.startNode.getAttribute( '_fck_bookmark' ) )
+					{
 						range = null;
+						this._.nextNode = null;
+					}
 					else
 						break;
 				}
@@ -198,7 +231,6 @@ CKEDITOR.plugins.add( 'domiterator' );
 				if ( isLast )
 					break;
 
-				currentNode = currentNode.getNextSourceNode( continueFromSibling, null, lastNode );
 			}
 
 			// Now, based on the processed range, look for (or create) the block to be returned.
@@ -207,6 +239,7 @@ CKEDITOR.plugins.add( 'domiterator' );
 				// If no range has been found, this is the end.
 				if ( !range )
 				{
+					this._.docEndMarker && this._.docEndMarker.remove();
 					this._.nextNode = null;
 					return null;
 				}
@@ -287,11 +320,16 @@ CKEDITOR.plugins.add( 'domiterator' );
 
 			if ( removeLastBr )
 			{
+				// Ignore bookmark nodes.(#3783)
+				var bookmarkGuard = CKEDITOR.dom.walker.bookmark( false, true );
+
 				var lastChild = block.getLast();
 				if ( lastChild && lastChild.type == CKEDITOR.NODE_ELEMENT && lastChild.getName() == 'br' )
 				{
 					// Take care not to remove the block expanding <br> in non-IE browsers.
-					if ( CKEDITOR.env.ie || lastChild.getPrevious() || lastChild.getNext() )
+					if ( CKEDITOR.env.ie
+						 || lastChild.getPrevious( bookmarkGuard )
+						 || lastChild.getNext( bookmarkGuard ) )
 						lastChild.remove();
 				}
 			}

@@ -39,8 +39,7 @@ if ( !CKEDITOR.loader )
 			'core/dom/node'			: [ 'core/dom/domobject', 'core/tools' ],
 			'core/dom/nodelist'		: [ 'core/dom/node' ],
 			'core/dom/domobject'	: [ 'core/dom/event' ],
-			'core/dom/domwalker'	: [ 'core/dom/node', 'core/dom/element', 'core/dom/document' ],
-			'core/dom/range'		: [ 'core/dom/document', 'core/dom/documentfragment', 'core/dom/element', 'core/dom/domwalker', 'core/dom/walker' ],
+			'core/dom/range'		: [ 'core/dom/document', 'core/dom/documentfragment', 'core/dom/element', 'core/dom/walker' ],
 			'core/dom/text'			: [ 'core/dom/node', 'core/dom/domobject' ],
 			'core/dom/walker'		: [ 'core/dom/node' ],
 			'core/dom/window'		: [ 'core/dom/domobject' ],
@@ -107,7 +106,7 @@ if ( !CKEDITOR.loader )
 			return path;
 		})();
 
-		var timestamp = '95MI';
+		var timestamp = '97KD';
 
 		var getUrl = function( resource )
 		{
@@ -118,6 +117,8 @@ if ( !CKEDITOR.loader )
 				( resource.indexOf( '?' ) >= 0 ? '&' : '?' ) +
 				't=' + timestamp;
 		};
+
+		var pendingLoad = [];
 
 		/** @lends CKEDITOR.loader */
 		return {
@@ -130,6 +131,57 @@ if ( !CKEDITOR.loader )
 			 */
 			loadedScripts : [],
 
+			loadPending : function()
+			{
+				var scriptName = pendingLoad.shift();
+
+				if ( !scriptName )
+					return;
+
+				var scriptSrc = getUrl( '_source/' + scriptName + '.js' );
+
+				var script = document.createElement( 'script' );
+				script.type = 'text/javascript';
+				script.src = scriptSrc;
+
+				function onScriptLoaded()
+				{
+					// Append this script to the list of loaded scripts.
+					CKEDITOR.loader.loadedScripts.push( scriptName );
+
+					// Load the next.
+					CKEDITOR.loader.loadPending();
+				}
+
+				// We must guarantee the execution order of the scripts, so we
+				// need to load them one by one. (#4145)
+				// The followin if/else block has been taken from the scriptloader core code.
+				if ( CKEDITOR.env.ie )
+				{
+					/** @ignore */
+					script.onreadystatechange = function()
+					{
+						if ( script.readyState == 'loaded' || script.readyState == 'complete' )
+						{
+							script.onreadystatechange = null;
+							onScriptLoaded();
+						}
+					};
+				}
+				else
+				{
+					/** @ignore */
+					script.onload = function()
+					{
+						// Some browsers, such as Safari, may call the onLoad function
+						// immediately. Which will break the loading sequence. (#3661)
+						setTimeout( function() { onScriptLoaded( scriptName ); }, 0 );
+					};
+				}
+
+				document.body.appendChild( script );
+			},
+
 			/**
 			 * Loads a specific script, including its dependencies. This is not a
 			 * synchronous loading, which means that the code the be loaded will
@@ -137,7 +189,7 @@ if ( !CKEDITOR.loader )
 			 * @example
 			 * CKEDITOR.loader.load( 'core/dom/element' );
 			 */
-			load : function( scriptName )
+			load : function( scriptName, defer )
 			{
 				// Check if the script has already been loaded.
 				if ( scriptName in this.loadedScripts )
@@ -154,24 +206,25 @@ if ( !CKEDITOR.loader )
 
 				// Load all dependencies first.
 				for ( var i = 0 ; i < dependencies.length ; i++ )
-					this.load( dependencies[ i ] );
-
-				// Append this script to the list of loaded scripts.
-				this.loadedScripts.push( scriptName );
+					this.load( dependencies[ i ], true );
 
 				var scriptSrc = getUrl( '_source/' + scriptName + '.js' );
 
 				// Append the <script> element to the DOM.
 				if ( document.body )
 				{
-					var script = document.createElement( 'script' );
-					script.type = 'text/javascript';
-					script.src = scriptSrc;
+					pendingLoad.push( scriptName );
 
-					document.body.appendChild( script );
+					if ( !defer )
+						this.loadPending();
 				}
 				else
+				{
+					// Append this script to the list of loaded scripts.
+					this.loadedScripts.push( scriptName );
+
 					document.write( '<script src="' + scriptSrc + '" type="text/javascript"><\/script>' );
+				}
 			}
 		};
 	})();

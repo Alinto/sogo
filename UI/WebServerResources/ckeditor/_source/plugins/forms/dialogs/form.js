@@ -9,7 +9,7 @@ CKEDITOR.dialog.add( 'form', function( editor )
 		action : 1,
 		id : 1,
 		method : 1,
-		encoding : 1,
+		enctype : 1,
 		target : 1
 	};
 
@@ -119,7 +119,7 @@ CKEDITOR.dialog.add( 'form', function( editor )
 								accessKey : 'I'
 							},
 							{
-								id : 'encoding',
+								id : 'enctype',
 								type : 'select',
 								label : editor.lang.form.encoding,
 								style : 'width:100%',

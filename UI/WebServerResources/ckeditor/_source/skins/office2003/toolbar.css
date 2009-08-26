@@ -14,9 +14,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 .cke_skin_office2003 a.cke_toolbox_collapser,
 .cke_skin_office2003 a:hover.cke_toolbox_collapser
 {
-	background-image: url(images/arrowtop.gif);
+	background-image: url(images/sprites.png);
+	_background-image: url(images/sprites_ie6.png);
+	background-position: 3px -1026px; /* +3px +4px */
 	background-repeat: no-repeat;
-	background-position: center center;
 	width: 11px;
 	height: 11px;
 	float: right;
@@ -34,14 +35,19 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 .cke_skin_office2003 a.cke_toolbox_collapser_min,
 .cke_skin_office2003 a:hover.cke_toolbox_collapser_min
 {
-	background-image: url(images/arrowleft.gif);
+	/* arrowleft.gif*/
+	background-image: url(images/sprites.png);
+	_background-image: url(images/sprites_ie6.png);
+	background-position: 4px -1047px; /* +4px +3px */
+	background-repeat: no-repeat;
 	margin: 2px;
 }
 
 .cke_skin_office2003 .cke_rtl a.cke_toolbox_collapser_min,
 .cke_skin_office2003 .cke_rtl a:hover.cke_toolbox_collapser_min
 {
-	background-image: url(images/arrowright.gif);
+	/* arrowright.gif*/
+	background-position: 4px -1068px; /* +2px +3px */
 }
 
 .cke_skin_office2003 .cke_toolbar
@@ -67,9 +73,20 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	height: 28px;
 }
 
+.cke_skin_office2003 .cke_browser_ie .cke_toolgroup
+{
+	#float: none;
+	#display: inline;
+}
+
 .cke_skin_office2003 .cke_rtl .cke_toolgroup
 {
 	float: right;
+}
+
+.cke_skin_office2003 .cke_browser_ie .cke_rtl .cke_toolgroup
+{
+	#float: none;
 }
 
 .cke_skin_office2003 .cke_separator
@@ -81,9 +98,20 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	height: 16px;
 }
 
+.cke_skin_office2003 .cke_browser_ie .cke_separator
+{
+	#float: none;
+	#display: inline;
+}
+
 .cke_skin_office2003 .cke_rtl .cke_separator
 {
 	float: right;
+}
+
+.cke_skin_office2003 .cke_browser_ie .cke_rtl .cke_separator
+{
+	#float: none;
 }
 
 .cke_skin_office2003 .cke_break
@@ -108,10 +136,21 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	float: left;
 }
 
+.cke_skin_office2003 .cke_browser_ie .cke_toolbar_start
+{
+	#float: none;
+	#display: inline;
+}
+
 .cke_skin_office2003 .cke_rtl .cke_toolbar_start
 {
     background-position: -27px -816px;
     float: right;
+}
+
+.cke_skin_office2003 .cke_browser_ie .cke_rtl .cke_toolbar_start
+{
+	#float: none;
 }
 
 .cke_skin_office2003 .cke_toolbar_end
@@ -126,21 +165,30 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	float: left;
 }
 
+.cke_skin_office2003 .cke_browser_ie .cke_toolbar_end
+{
+	#float: none;
+	#display: inline;
+}
+
 .cke_skin_office2003 .cke_rtl .cke_toolbar_end
 {
     background-position: -29px -907px;
     float: right;
 }
 
+.cke_skin_office2003 .cke_browser_ie .cke_rtl .cke_toolbar_end
+{
+	#float: none;
+}
+
 .cke_skin_office2003 .cke_button a,
+.cke_skin_office2003 .cke_button a:hover,
+.cke_skin_office2003 .cke_button a:focus,
+.cke_skin_office2003 .cke_button a:active,
 .cke_skin_office2003 .cke_button a.cke_off
 {
 	border: solid 1px transparent;
-	filter: alpha(opacity=70); /* IE */
-	opacity: 0.70; /* Safari, Opera and Mozilla */
-	display: inline-block;
-	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
 	border-radius: 3px;
 	outline: none;
 	padding-top: 2px;
@@ -154,6 +202,16 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	_border: none;
 	_margin: 3px 1px 1px 1px;
 	cursor: default;
+	display: inline-block;
+}
+
+.cke_skin_office2003 .cke_button a,
+.cke_skin_office2003 .cke_button a.cke_off
+{
+	filter: alpha(opacity=70); /* IE */
+	opacity: 0.70; /* Safari, Opera and Mozilla */
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
 }
 
 .cke_skin_office2003 .cke_hc .cke_button a,
@@ -244,6 +302,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	display: none;
 	padding-left: 3px;
 	vertical-align: 3px;
+	cursor: default;
 
 	_background-image: url(images/sprites_ie6.png);
 	_background-position: 0 -970px;
@@ -276,7 +335,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 .cke_skin_office2003 .cke_accessibility
 {
 	position: absolute;
-	top: -1000000px;
+	display: block;
+	width: 0;
+	height: 0;
+	overflow: hidden;
 }
 
 .cke_skin_office2003 .cke_button .cke_buttonarrow
@@ -284,14 +346,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	display: inline-block;
 	height: 18px;
 	width: 8px;
-	background-position: right center;
-	background-image: url(images/arrowdown.gif);
+	background-position: 2px -1004px;
+	background-image: url(images/sprites.png);
+	_background-image: url(images/sprites_ie6.png);
 	background-repeat: no-repeat;
 }
 
 .cke_skin_office2003 .cke_rtl .cke_button .cke_buttonarrow
 {
-	background-position: left center;
+	background-position: 0 -1004px;
 }
 
 /*** Firefox 2 ***/

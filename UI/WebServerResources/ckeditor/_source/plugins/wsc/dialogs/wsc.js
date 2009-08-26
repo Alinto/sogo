@@ -55,7 +55,7 @@ CKEDITOR.dialog.add( 'checkspell', function( editor )
 				initAndSpell( dialog );
 			}
 			else if ( i++ == 180 )								// Timeout: 180 * 250ms = 45s.
-				_cancelOnError( errorMsg );
+				window._cancelOnError( errorMsg );
 		};
 	}
 
@@ -78,7 +78,7 @@ CKEDITOR.dialog.add( 'checkspell', function( editor )
 
 		// global var is used in FCK specific core
 		// change on equal var used in fckplugin.js
-		gFCKPluginName = 'wsc';
+		window.gFCKPluginName = 'wsc';
 
 		LangComparer.setDefaulLangCode( editor.config.defaultLanguage );
 

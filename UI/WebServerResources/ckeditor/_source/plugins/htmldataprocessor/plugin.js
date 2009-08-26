@@ -6,7 +6,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 (function()
 {
 	// Regex to scan for &nbsp; at the end of blocks, which are actually placeholders.
-	var tailNbspRegex = /^[\t\r\n ]*&nbsp;$/;
+	// Safari transforms the &nbsp; to \xa0. (#4172)
+	var tailNbspRegex = /^[\t\r\n ]*(?:&nbsp;|\xa0)$/;
 
 	var protectedSourceMarker = '{cke_protected}';
 
@@ -72,12 +73,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	delete blockLikeTags.pre;
 	var defaultDataFilterRules =
 	{
-		elementNames :
-		[
-			// Elements that cause problems in wysiwyg mode.
-			[ ( /^(object|embed|param)$/ ), 'cke:$1' ]
-		],
-
 		attributeNames :
 		[
 			// Event attributes (onXYZ) must not be directly set. They can become
@@ -90,17 +85,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	for ( i in blockLikeTags )
 		defaultDataBlockFilterRules.elements[ i ] = extendBlockForDisplay;
-
-	/**
-	 * IE sucks with dynamic 'name' attribute after element is created, '_cke_saved_name' is used instead for this attribute.
-	 */
-	var removeName = function( element )
-	{
-		var attribs = element.attributes;
-
-		if ( attribs._cke_saved_name )
-			delete attribs.name;
-	};
 
 	var defaultHtmlFilterRules =
 		{
@@ -124,6 +108,23 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 			elements :
 			{
+				$ : function( element )
+				{
+					// Remove duplicated attributes - #3789.
+					var attribs = element.attributes;
+
+					if ( attribs )
+					{
+						var attributeNames = [ 'name', 'href', 'src' ],
+							savedAttributeName;
+						for ( var i = 0 ; i < attributeNames.length ; i++ )
+						{
+							savedAttributeName = '_cke_saved_' + attributeNames[ i ];
+							savedAttributeName in attribs && ( delete attribs[ attributeNames[ i ] ] );
+						}
+					}
+				},
+
 				embed : function( element )
 				{
 					var parent = element.parent;
@@ -132,35 +133,30 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					// and height attributes from it.
 					if ( parent && parent.name == 'object' )
 					{
-						element.attributes.width = parent.attributes.width;
-						element.attributes.height = parent.attributes.height;
+						var parentWidth = parent.attributes.width,
+							parentHeight = parent.attributes.height;
+						parentWidth && ( element.attributes.width = parentWidth );
+						parentHeight && ( element.attributes.height = parentHeight );
 					}
 				},
-
-				img : function( element )
+				// Restore param elements into self-closing.
+				param : function( param )
 				{
-					var attribs = element.attributes;
-
-					if ( attribs._cke_saved_name )
-						delete attribs.name;
-					if ( attribs._cke_saved_src )
-						delete attribs.src;
+					param.children = [];
+					param.isEmpty = true;
+					return param;
 				},
 
+				// Remove empty link but not empty anchor.(#3829)
 				a : function( element )
 				{
-					var attribs = element.attributes;
-
-					if ( attribs._cke_saved_name )
-						delete attribs.name;
-					if ( attribs._cke_saved_href )
-						delete attribs.href;
-				},
-
-				input : removeName,
-				textarea : removeName,
-				select : removeName,
-				form : removeName
+					if ( !( element.children.length ||
+							element.attributes.name ||
+							element.attributes._cke_saved_name ) )
+					{
+						return false;
+					}
+				}
 			},
 
 			attributes :
@@ -205,6 +201,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	var protectStyleTagsRegex = /<(style)(?=[ >])[^>]*>[^<]*<\/\1>/gi;
 	var encodedTagsRegex = /<cke:encoded>([^<]*)<\/cke:encoded>/gi;
+	var protectElementNamesRegex = /(<\/?)((?:object|embed|param).*?>)/gi;
+	var protectSelfClosingRegex = /<cke:param(.*?)\/>/gi;
 
 	function protectStyleTagsMatch( match )
 	{
@@ -214,6 +212,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	function protectStyleTags( html )
 	{
 		return html.replace( protectStyleTagsRegex, protectStyleTagsMatch );
+	}
+	function protectElementsNames( html )
+	{
+		return html.replace( protectElementNamesRegex, '$1cke:$2');
+	}
+	function protectSelfClosingElements( html )
+	{
+		return html.replace( protectSelfClosingRegex, '<cke:param$1></cke:param>' );
 	}
 
 	function unprotectEncodedTagsMatch( match, encoded )
@@ -228,11 +234,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	function protectSource( data, protectRegexes )
 	{
+		var protectedHtml = [],
+			tempRegex = /<\!--\{cke_temp\}(\d*?)-->/g;
 		var regexes =
 			[
 				// First of any other protection, we must protect all comments
 				// to avoid loosing them (of course, IE related).
-				/<!--[\s\S]*?-->/g,
+				(/<!--[\s\S]*?-->/g),
 
 				// Script tags will also be forced to be protected, otherwise
 				// IE will execute them.
@@ -247,10 +255,22 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		{
 			data = data.replace( regexes[i], function( match )
 				{
-					return '<!--' + protectedSourceMarker + encodeURIComponent( match ).replace( /--/g, '%2D%2D' ) + '-->';
+					match = match.replace( tempRegex, 		// There could be protected source inside another one. (#3869).
+						function( $, id )
+						{
+							return protectedHtml[ id ];
+						}
+					);
+					return  '<!--{cke_temp}' + ( protectedHtml.push( match ) - 1 ) + '-->';
 				});
 		}
-
+		data = data.replace( tempRegex,	function( $, id )
+			{
+				return '<!--' + protectedSourceMarker +
+						encodeURIComponent( protectedHtml[ id ] ).replace( /--/g, '%2D%2D' ) +
+						'-->';
+			}
+		);
 		return data;
 	}
 
@@ -298,11 +318,20 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			if ( CKEDITOR.env.ie )
 				data = protectStyleTags( data );
 
+			// Certain elements has problem to go through DOM operation, protect
+			// them by prefixing 'cke' namespace.(#3591)
+			data = protectElementsNames( data );
+
+			// All none-IE browsers ignore self-closed custom elements,
+			// protecting them into open-close.(#3591)
+			data = protectSelfClosingElements( data );
+
 			// Call the browser to help us fixing a possibly invalid HTML
 			// structure.
 			var div = document.createElement( 'div' );
-			div.innerHTML = data;
-			data = div.innerHTML;
+			// Add fake character to workaround IE comments bug. (#3801)
+			div.innerHTML = 'a' + data;
+			data = div.innerHTML.substr( 1 );
 
 			if ( CKEDITOR.env.ie )
 				data = unprotectEncodedTags( data );
@@ -331,4 +360,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	};
 })();
 
+/**
+ * Whether to force using "&" instead of "&amp;amp;" in elements attributes
+ * values. It's not recommended to change this setting for compliance with the
+ * W3C XHTML 1.0 standards
+ * (<a href="http://www.w3.org/TR/xhtml1/#C_12">C.12, XHTML 1.0</a>).
+ * @type Boolean
+ * @default false
+ * @example
+ * config.forceSimpleAmpersand = false;
+ */
 CKEDITOR.config.forceSimpleAmpersand = false;

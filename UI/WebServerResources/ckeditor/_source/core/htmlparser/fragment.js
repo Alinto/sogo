@@ -104,24 +104,34 @@ CKEDITOR.htmlParser.fragment = function()
 
 			// If the target is the fragment and this element can't go inside
 			// body (if fixForBody).
-			if ( fixForBody && !target.type && !CKEDITOR.dtd.$body[ element.name ] )
+			if ( fixForBody && !target.type )
 			{
-				var savedCurrent = currentNode;
+				var elementName, realElementName;
+				if ( element.attributes
+					 && ( realElementName =
+						  element.attributes[ '_cke_real_element_type' ] ) )
+					elementName = realElementName;
+				else
+					elementName =  element.name;
+				if ( !( elementName in CKEDITOR.dtd.$body ) )
+				{
+					var savedCurrent = currentNode;
 
-				// Create a <p> in the fragment.
-				currentNode = target;
-				parser.onTagOpen( fixForBody, {} );
+					// Create a <p> in the fragment.
+					currentNode = target;
+					parser.onTagOpen( fixForBody, {} );
 
-				// The new target now is the <p>.
-				target = currentNode;
+					// The new target now is the <p>.
+					target = currentNode;
 
-				if ( enforceCurrent )
-					currentNode = savedCurrent;
+					if ( enforceCurrent )
+						currentNode = savedCurrent;
+				}
 			}
 
 			// Rtrim empty spaces on block end boundary. (#3585)
 			if ( element._.isBlockLike
-				 && !inPre )
+				 && element.name != 'pre' )
 			{
 
 				var length = element.children.length,
@@ -282,6 +292,13 @@ CKEDITOR.htmlParser.fragment = function()
 				// addElement changed the currentNode.
 				if ( candidate == currentNode )
 					currentNode = currentNode.parent;
+			}
+			// The tag is not actually closing anything, thus we need invalidate
+			// the pending elements.(#3862)
+			else
+			{
+				pendingInline.splice( 0, index );
+				index = 0;
 			}
 
 			// Check if there is any pending tag to be closed.

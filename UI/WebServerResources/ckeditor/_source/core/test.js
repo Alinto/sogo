@@ -30,6 +30,8 @@ CKEDITOR.test =
 	 */
 	assert : YAHOO.util.Assert,
 
+	runner : YAHOO.tool.TestRunner,
+
 	/**
 	 * Adds a test case to the test runner.
 	 * @param {Object} testCase The test case object. See other tests for
@@ -55,8 +57,9 @@ CKEDITOR.test =
 
 	/**
 	 * Gets the inner HTML of an element, for testing purposes.
+	 * @param {Boolean} stripLineBreaks Assign 'false' to avoid trimming line-breaks.
 	 */
-	getInnerHtml : function( elementOrId )
+	getInnerHtml : function( elementOrId , stripLineBreaks )
 	{
 		var html;
 
@@ -65,10 +68,27 @@ CKEDITOR.test =
 		else if ( elementOrId.getHtml )
 			html = elementOrId.getHtml();
 		else
-			html = elementOrId.innerHTML || '';
+			html = elementOrId.innerHTML    // retrieve from innerHTML
+				   || elementOrId.value;    // retrieve from value
 
+		return CKEDITOR.test.fixHtml( html, stripLineBreaks );
+	},
+
+	fixHtml : function( html, stripLineBreaks )
+	{
 		html = html.toLowerCase();
-		html = html.replace( /[\n\r]/g, '' );
+
+		if ( stripLineBreaks !== false )
+			html = html.replace( /[\n\r]/g, '' );
+		else
+			html = html.replace( /\r/g, '' );    // Normalize CRLF.
+
+		function sorter( a, b )
+		{
+			var nameA = a[ 0 ];
+			var nameB = b[ 0 ];
+			return nameA < nameB ? -1 : nameA > nameB ? 1 : 0;
+		}
 
 		html = html.replace( /<\w[^>]*/g, function( match )
 			{
@@ -79,11 +99,25 @@ CKEDITOR.test =
 					{
 						if ( attName == 'style' )
 						{
-							// Safari adds some extra space to the end.
-							attValue = attValue.replace( /\s+/g, '' );
+							// Reorganize the style rules so they are sorted by name.
 
-							// IE doesn't add the final ";"
-							attValue = attValue.replace( /([^"';\s])\s*(["']?)$/, '$1;$2' );
+							var rules = [];
+
+							// Push all rules into an Array.
+							attValue.replace( /(?:"| |;|^ )\s*([^ :]+?)\s*:\s*([^;"]+?)\s*(?=;|"|$)/g, function( match, name, value )
+								{
+									rules.push( [ name, value ] );
+								});
+
+							// Sort the Array.
+							rules.sort( sorter );
+
+							// Transform each rule entry into a string name:value.
+							for ( var i = 0 ; i < rules.length ; i++ )
+								rules[ i ] = rules[ i ].join( ':' );
+
+							// Join all rules with commas, removing spaces and adding an extra comma to the end.
+							attValue = '"' + rules && ( rules.join( ';' ).replace( /\s+/g, '' ) + ';' );
 						}
 
 						// IE may have 'class' more than once.
@@ -101,12 +135,7 @@ CKEDITOR.test =
 						return '';
 					} );
 
-				attribs.sort( function( a, b )
-					{
-						var nameA = a[ 0 ];
-						var nameB = b[ 0 ];
-						return nameA < nameB ? -1 : nameA > nameB ? 1 : 0;
-					} );
+				attribs.sort( sorter );
 
 				var ret = match.replace( /\s{2,}/g, ' ' );
 
@@ -120,5 +149,36 @@ CKEDITOR.test =
 			} );
 
 		return html;
-	}
+	},
+
+	/**
+	 * Wrapper of CKEDITOR.dom.element::getAttribute for style text normalization.
+	 * @param element
+	 * @param attrName
+	 */
+	getAttribute : function( element, attrName )
+	{
+		var retval = element.getAttribute( attrName );
+		if ( attrName == 'style' )
+		{
+			// 1. Lower case property name.
+			// 2. Add space after colon.
+			// 3. Strip whitepsaces around semicolon.
+			// 4. Always end with semicolon
+			return retval.replace( /(?:^|;)\s*([A-Z-_]+)(:\s*)/ig,
+				function( match, property, colon )
+				{
+					return property.toLowerCase() + ': ';
+				} )
+				.replace( /\s+(?:;\s*|$)/g, ';' )
+				.replace( /([^;])$/g, '$1;' );
+		}
+
+		return retval;
+	},
+
+	/**
+	 * Whether control the runner manually instead of running on window onload.
+	 */
+	deferRunner : false
 };

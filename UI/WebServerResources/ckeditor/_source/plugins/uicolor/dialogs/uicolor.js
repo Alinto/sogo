@@ -13,7 +13,7 @@ CKEDITOR.dialog.add( 'uicolor', function( editor )
 	{
 		// Convert HEX representation to RGB, stripping # char.
 		if ( /^#/.test( color ) )
-			color = YAHOO.util.Color.hex2rgb( color.substr( 1 ) );
+			color = window.YAHOO.util.Color.hex2rgb( color.substr( 1 ) );
 		picker.setValue( color, true );
 		// Refresh picker UI.
 		picker.refresh( 'cke_uicolor_picker' );
@@ -41,7 +41,7 @@ CKEDITOR.dialog.add( 'uicolor', function( editor )
 				);
 
 			// Create new color picker widget.
-			picker = new YAHOO.widget.ColorPicker( "cke_uicolor_picker",
+			picker = new window.YAHOO.widget.ColorPicker( "cke_uicolor_picker",
 				{
 					showhsvcontrols : true,
 					showhexcontrols : true,
@@ -81,6 +81,10 @@ CKEDITOR.dialog.add( 'uicolor', function( editor )
 		{
 			dialog = this;
 			this.setupContent();
+
+			// #3808
+			if ( CKEDITOR.env.ie7Compat )
+				dialog.parts.contents.setStyle( 'overflow', 'hidden' );
 		},
 		contents : [
 			{

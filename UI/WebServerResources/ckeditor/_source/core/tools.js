@@ -227,14 +227,32 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				return span.getHtml();
 			};
 
-			this.htmlEncode = ( standard( '>' ) == '>' ) ?
+			var fix1 = ( standard( '\n' ).toLowerCase() == '<br>' ) ?
+				function( text )
+				{
+					// #3874 IE and Safari encode line-break into <br>
+					return standard( text ).replace( /<br>/gi, '\n' );
+				} :
+				standard;
+
+			var fix2 = ( standard( '>' ) == '>' ) ?
 				function( text )
 				{
 					// WebKit does't encode the ">" character, which makes sense, but
 					// it's different than other browsers.
-					return standard( text ).replace( />/g, '&gt;' );
+					return fix1( text ).replace( />/g, '&gt;' );
 				} :
-				standard;
+				fix1;
+
+			var fix3 = ( standard( '  ' ) == '&nbsp; ' ) ?
+				function( text )
+				{
+					// #3785 IE8 changes spaces (>= 2) to &nbsp;
+					return fix2( text ).replace( /&nbsp;/g, ' ' );
+				} :
+				fix2;
+
+			this.htmlEncode = fix3;
 
 			return this.htmlEncode( text );
 		},
@@ -501,7 +519,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			{
 				return length + ( decimalRegex.test( length ) ? 'px' : '' );
 			};
-		})()
+		})(),
+
+		repeat : function( str, times )
+		{
+			return new Array( times + 1 ).join( str );
+		}
 	};
 })();
 

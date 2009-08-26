@@ -157,6 +157,7 @@ body .cke_dialog
 .cke_skin_office2003 .cke_dialog_title
 {
 	background-image: url(images/sprites.png);
+	_background-image: url(images/sprites_ie6.png);
 	background-position: 0 -678px;
 	background-repeat: repeat-x;
 	font-weight: bold;
@@ -171,6 +172,7 @@ body .cke_dialog
 .cke_skin_office2003 .cke_browser_ie.cke_rtl .cke_dialog_title
 {
 	position: static !important;
+	unicode-bidi: bidi-override;
 }
 
 .cke_skin_office2003 .cke_dialog_contents
@@ -309,6 +311,7 @@ body .cke_dialog
 	 */
 	_width: 99%;
 	overflow: auto;
+	resize: none;
 }
 
 .cke_skin_office2003 div.cke_dialog_ui_input_textarea
@@ -359,6 +362,7 @@ body .cke_dialog
 .cke_skin_office2003 span.cke_dialog_ui_button
 {
 	background-image: url(images/sprites.png);
+	_background-image: url(images/sprites_ie6.png);
 	background-position: 0 -678px;
 	background-repeat: repeat-x;
 	border: #0E3460 1px solid;
@@ -447,7 +451,8 @@ body .cke_dialog
 .cke_skin_office2003 .cke_rtl .cke_dialog_close_button
 {
 	left: 10px;
-	_left: 22px;
+	_left: 16px;
+	_top: 6px;
 }
 
 .cke_skin_office2003 .cke_browser_ie6.cke_rtl .cke_dialog_close_button
@@ -498,7 +503,7 @@ body .cke_dialog
 	text-align: center;
 }
 
-.cke_skin_office2003 .cke_dialog .cke_btn_reset
+.cke_skin_office2003 .cke_dialog a.cke_btn_reset
 {
 	float: right;
 	background-position: 0 -32px;
@@ -510,13 +515,13 @@ body .cke_dialog
 	font-size: 1px;
 }
 
-.cke_skin_office2003 .cke_rtl .cke_dialog .cke_btn_reset
+.cke_skin_office2003 .cke_rtl .cke_dialog a.cke_btn_reset
 {
 	float: left;
 }
 
-.cke_skin_office2003 .cke_dialog .cke_btn_locked,
-.cke_skin_office2003 .cke_dialog .cke_btn_unlocked
+.cke_skin_office2003 .cke_dialog a.cke_btn_locked,
+.cke_skin_office2003 .cke_dialog a.cke_btn_unlocked
 {
 	float: left;
 	background-position: 0 0;
@@ -528,13 +533,13 @@ body .cke_dialog
 	font-size: 1px;
 }
 
-.cke_skin_office2003 .cke_dialog .cke_btn_locked,
-.cke_skin_office2003 .cke_dialog .cke_btn_unlocked
+.cke_skin_office2003 .cke_rtl .cke_dialog a.cke_btn_locked,
+.cke_skin_office2003 .cke_rtl .cke_dialog a.cke_btn_unlocked
 {
 	float: right;
 }
 
-.cke_skin_office2003 .cke_dialog .cke_btn_unlocked
+.cke_skin_office2003 .cke_dialog a.cke_btn_unlocked
 {
 	background-position: 0 -16px;
 	background-image: url(images/mini.gif);

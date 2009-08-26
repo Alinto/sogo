@@ -430,10 +430,7 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 
 						case 'style':
 							// IE does not return inline styles via getAttribute(). See #2947.
-							var styleText = this.$.style.cssText;
-							return styleText.toLowerCase().replace(
-								/\s*(?:;\s*|$)/, ';').replace(
-									/([^;])$/, '$1;');
+							return this.$.style.cssText;
 					}
 
 					return standard.call( this, name );
@@ -644,16 +641,16 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 		},
 
 		/**
-		 * @param ignoreEmpty Skip empty text nodes.
+		 * @param {Function} evaluator Filtering the result node.
 		 */
-		getLast : function( ignoreEmpty )
+		getLast : function( evaluator )
 		{
-			var $ = this.$.lastChild;
-			if ( ignoreEmpty && $ && ( $.nodeType == CKEDITOR.NODE_TEXT )
-					&& !CKEDITOR.tools.trim( $.nodeValue ) )
-				return new CKEDITOR.dom.node( $ ).getPrevious( true );
-			else
-				return $ ? new CKEDITOR.dom.node( $ ) : null;
+			var last = this.$.lastChild,
+				retval = last && new CKEDITOR.dom.node( last );
+			if ( retval && evaluator && !evaluator( retval ) )
+				retval = retval.getPrevious( evaluator );
+
+			return retval;
 		},
 
 		getStyle : function( name )
@@ -774,7 +771,7 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 								// outerHTML of the element is not displaying the class attribute.
 								// Note : I was not able to reproduce it outside the editor,
 								// but I've faced it while working on the TC of #1391.
-								if ( this.getAttribute( 'class' ) > 0 )
+								if ( this.getAttribute( 'class' ) )
 									return true;
 
 							// Attributes to be ignored.
@@ -1223,12 +1220,14 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 			// Append the offsets for the entire element hierarchy.
 			var elementPosition = this.getDocumentPosition();
 			offset += elementPosition.y;
-			// Scroll the window to the desired position, if not already visible.
-			var currentScroll = win.getScrollPosition().y;
 
-			// Though the computed offset value maybe out of range ( e.g.
-			// a negative value ), browser will try to scroll as much as possible. (#3692)
-			win.$.scrollTo( 0, offset > 0 ? offset : 0 );
+			// offset value might be out of range(nagative), fix it(#3692).
+			offset = offset < 0 ? 0 : offset;
+
+			// Scroll the window to the desired position, if not already visible(#3795).
+			var currentScroll = win.getScrollPosition().y;
+			if ( offset > currentScroll || offset < currentScroll - winHeight )
+				win.$.scrollTo( 0, offset );
 		},
 
 		setState : function( state )

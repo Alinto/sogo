@@ -81,6 +81,12 @@ CKEDITOR.test.addTestCase( (function()
 			assert.areEqual( 'My test', element.$.innerHTML, 'the innerHTML doesn\'t match' );
 		},
 
+		test_createFromHtml2 : function()
+		{
+			var element = new CKEDITOR.dom.element.createFromHtml( '<div><x:x><p>Test</p></div>' );
+			assert.areNotEqual( 'Test', element.getChild( 0, 0 ).innerHTML );
+		},
+
 		test_append1 : function()
 		{
 			var element = new CKEDITOR.dom.element( document.getElementById( 'append' ) );
@@ -170,7 +176,7 @@ CKEDITOR.test.addTestCase( (function()
 			var element = new CKEDITOR.dom.element( document.getElementById( 'test1' ) );
 			element.setAttribute( 'style', 'position: absolute;' );
 
-			assert.areEqual( 'position: absolute;', element.getAttribute( 'style' ) );
+			assert.areEqual( 'position: absolute;', CKEDITOR.test.getAttribute( element, 'style' ) );
 		},
 
 		test_setAttribute3 : function()
@@ -199,7 +205,7 @@ CKEDITOR.test.addTestCase( (function()
 				'rows'	: 5 });
 
 			assert.areSame( 'Test', document.getElementById( 'test1' ).className, 'class is wrong' );
-			assert.areEqual( 'position: absolute;', element.getAttribute( 'style'), 'style is wrong' );
+			assert.areEqual( 'position: absolute;', CKEDITOR.test.getAttribute( element, 'style'), 'style is wrong' );
 			assert.areEqual( 'TestName', document.getElementById( 'test1' ).name, 'name is wrong' );
 			assert.areEqual( 5, document.getElementById( 'test1' ).rows, 'rows is wrong' );
 		},
@@ -372,31 +378,31 @@ CKEDITOR.test.addTestCase( (function()
 		test_getAttribute_tabindex1 : function()
 		{
 			var element = new CKEDITOR.dom.element( document.getElementById( 'tabIndex10' ) );
-			assert.areEqual( 10, element.getAttribute( 'tabindex' ) );
+			assert.areEqual( 10, CKEDITOR.test.getAttribute( element, 'tabindex' ) );
 		},
 
 		test_getAttribute_tabindex2 : function()
 		{
 			var element = new CKEDITOR.dom.element( document.getElementById( 'tabIndexDef' ) );
-			assert.isNull( element.getAttribute( 'tabindex' ) );
+			assert.isNull( CKEDITOR.test.getAttribute( element, 'tabindex' ) );
 		},
 
 		test_getAttribute_tabindex3 : function()
 		{
 			var element = new CKEDITOR.dom.element( document.getElementById( 'tabIndexInputDef' ) );
-			assert.isNull( element.getAttribute( 'tabindex' ) );
+			assert.isNull( CKEDITOR.test.getAttribute( element, 'tabindex' ) );
 		},
 
 		test_getAttribute_tabindex4 : function()
 		{
 			var element = new CKEDITOR.dom.element( document.getElementById( 'tabIndexInput20' ) );
-			assert.areEqual( 20, element.getAttribute( 'tabindex' ) );
+			assert.areEqual( 20, CKEDITOR.test.getAttribute( element, 'tabindex' ) );
 		},
 
 		test_getAttribute_tabindex5 : function()
 		{
 			var element = new CKEDITOR.dom.element( document.getElementById( 'tabIndexScriptDef' ) );
-			assert.areEqual( null, element.getAttribute( 'tabindex' ) );
+			assert.areEqual( null, CKEDITOR.test.getAttribute( element, 'tabindex' ) );
 		},
 
 		/**
@@ -406,13 +412,13 @@ CKEDITOR.test.addTestCase( (function()
 		{
 			var element = new CKEDITOR.dom.element( document.getElementById( 'testExpandoAttributes' ) );
 
-			assert.areEqual( 1, element.getAttribute( 'tabindex' ), 'tabindex is wrong' );
+			assert.areEqual( 1, CKEDITOR.test.getAttribute( element, 'tabindex' ), 'tabindex is wrong' );
 			element.removeAttribute( 'tabindex' );
 
-			assert.areEqual( 'hasExpando', element.getAttribute( 'class' ), 'class is wrong' );
+			assert.areEqual( 'hasExpando', CKEDITOR.test.getAttribute( element, 'class' ), 'class is wrong' );
 			element.removeAttribute( 'class' );
 
-			assert.areEqual( 'float: right;', element.getAttribute( 'style' ) );
+			assert.areEqual( 'float: right;', CKEDITOR.test.getAttribute( element, 'style' ) );
 
 			element.removeAttribute( 'style' );
 			element.removeAttribute( 'id' );
@@ -505,12 +511,24 @@ CKEDITOR.test.addTestCase( (function()
 			assert.isTrue( element.hasAttributes() );
 		},
 
+		/**
+		 * Test detecting of 'class' attribute in IE6/7.
+		 */
+		test_hasAttributes_4075 : function()
+		{
+			if ( !CKEDITOR.env.ie && ( CKEDITOR.env.ie7Compat || CKEDITOR.env.ie6Compat ) )
+				return;
+			var element = new CKEDITOR.dom.element( 'span' );
+			element.setAttribute( 'class', 'value' );
+			assert.isTrue( element.hasAttributes(), 'Failed to detect "class" attribute existence.' );
+		},
+
 		test_getDocumentPosition : function()
 		{
 			// Assign the page location of the element.
 			YAHOO.util.Dom.setXY('DocPositionTarget', [ 350, 450 ] );
 			var pos = CKEDITOR.document.getById( 'DocPositionTarget' ).getDocumentPosition();
-			if ( !CKEDITOR.env.ie )
+			if ( !CKEDITOR.env.ie || CKEDITOR.env.ie8 )
 			{
 				assert.areEqual( 350, pos.x, 'Position coordinates:x relative to document doesn\'t match.' );
 				assert.areEqual( 450, pos.y, 'Position coordinates:y relative to document doesn\'t match.' );
@@ -521,6 +539,19 @@ CKEDITOR.test.addTestCase( (function()
 				assert.areEqual( 448, pos.y, 'Position coordinates:y relative to document doesn\'t match.' );
 			}
 		},
+
+		// Test get last non-spaces child node.
+		test_getLast : function()
+		{
+			var element = new CKEDITOR.dom.element( document.getElementById( 'append' ) );
+			var span1 = new CKEDITOR.dom.element( 'span' );
+			element.append( span1 );
+			element.append( new CKEDITOR.dom.text( ' ' ) );
+			element.append( new CKEDITOR.dom.text( ' ' ) );
+			var last = element.getLast( CKEDITOR.dom.walker.whitespaces( true ) );
+			assert.areSame( span1.$, last.$ );
+		},
+
 
 		name : document.title
 	};

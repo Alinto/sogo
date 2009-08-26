@@ -99,7 +99,14 @@ CKEDITOR.ui.button.prototype =
 		// Get the command name.
 		var command = this.command;
 
-		if ( command )
+		if ( this.modes )
+		{
+			editor.on( 'mode', function()
+				{
+					this.setState( this.modes[ editor.mode ] ? CKEDITOR.TRISTATE_OFF : CKEDITOR.TRISTATE_DISABLED );
+				}, this);
+		}
+		else if ( command )
 		{
 			// Get the command instance.
 			command = editor.getCommand( command );
@@ -130,7 +137,6 @@ CKEDITOR.ui.button.prototype =
 				' class="', classes, '" href="javascript:void(\'', ( this.title || '' ).replace( "'", '' ), '\')"' +
 				' title="', this.title, '"' +
 				' tabindex="-1"' +
-				' role="button"' +
 				' hidefocus="true"' );
 
 		// Some browsers don't cancel key events in the keydown but in the

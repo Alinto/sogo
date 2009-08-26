@@ -133,7 +133,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								saveSelection();
 							});
 
-						editor.window.on( 'blur', function()
+						// Check document selection before 'blur' fired, this
+						// will prevent us from breaking text selection somewhere
+						// else on the host page.(#3909)
+						editor.document.on( 'beforedeactivate', function()
 							{
 								// Disable selections from being saved.
 								saveEnabled = false;
@@ -488,7 +491,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						}
 
 						testRange.setEndPoint( 'StartToStart', range );
-						var distance = testRange.text.length;
+						// IE report line break as CRLF with range.text but
+						// only LF with textnode.nodeValue, normalize them to avoid
+						// breaking character counting logic below. (#3949)
+						var distance = testRange.text.replace( /(\r\n|\r)/g, '\n' ).length;
 
 						while ( distance > 0 )
 							distance -= siblings[ --i ].nodeValue.length;
@@ -777,7 +783,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		{
 			if ( this.isLocked )
 			{
-				var range = new CKEDITOR.dom.range();
+				var range = new CKEDITOR.dom.range( this.document );
 				range.setStartBefore( element );
 				range.setEndAfter( element );
 
@@ -855,7 +861,20 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				{
 					var range = ranges[ i ];
 					var nativeRange = this.document.$.createRange();
-					nativeRange.setStart( range.startContainer.$, range.startOffset );
+					var startContainer = range.startContainer;
+
+					// In FF2, if we have a collapsed range, inside an empty
+					// element, we must add something to it otherwise the caret
+					// will not be visible.
+					if ( range.collapsed &&
+						( CKEDITOR.env.gecko && CKEDITOR.env.version < 10900 ) &&
+						startContainer.type == CKEDITOR.NODE_ELEMENT &&
+						!startContainer.getChildCount() )
+					{
+						startContainer.appendText( '' );
+					}
+
+					nativeRange.setStart( startContainer.$, range.startOffset );
 					nativeRange.setEnd( range.endContainer.$, range.endOffset );
 
 					// Select the range.
@@ -927,10 +946,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 CKEDITOR.dom.range.prototype.select =
 	CKEDITOR.env.ie ?
 		// V2
-		function()
+		function( forceExpand )
 		{
 			var collapsed = this.collapsed;
-			var isStartMakerAlone;
+			var isStartMarkerAlone;
 			var dummySpan;
 
 			var bookmark = this.createBookmark();
@@ -963,19 +982,11 @@ CKEDITOR.dom.range.prototype.select =
 			}
 			else
 			{
-// The isStartMakerAlone logic comes from V2. It guarantees that the lines
-// will expand and that the cursor will be blinking on the right place.
-// Actually, we are using this flag just to avoid using this hack in all
-// situations, but just on those needed.
-
-// But, in V3, somehow it is not interested on working whe hitting SHIFT+ENTER
-// inside text. So, let's jsut leave the hack happen always.
-
-// I'm still leaving the code here just in case. We may find some other IE
-// weirdness and uncommenting this stuff may be useful.
-
-//				isStartMakerAlone = ( !startNode.hasPrevious() || ( startNode.getPrevious().is && startNode.getPrevious().is( 'br' ) ) )
-//					&& !startNode.hasNext();
+				// The isStartMarkerAlone logic comes from V2. It guarantees that the lines
+				// will expand and that the cursor will be blinking on the right place.
+				// Actually, we are using this flag just to avoid using this hack in all
+				// situations, but just on those needed.
+				isStartMarkerAlone = forceExpand || !startNode.hasPrevious() || ( startNode.getPrevious().is && startNode.getPrevious().is( 'br' ) );
 
 				// Append a temporary <span>&#65279;</span> before the selection.
 				// This is needed to avoid IE destroying selections inside empty
@@ -986,14 +997,14 @@ CKEDITOR.dom.range.prototype.select =
 				dummySpan.setHtml( '&#65279;' );	// Zero Width No-Break Space (U+FEFF). See #1359.
 				dummySpan.insertBefore( startNode );
 
-//				if ( isStartMakerAlone )
-//				{
+				if ( isStartMarkerAlone )
+				{
 					// To expand empty blocks or line spaces after <br>, we need
 					// instead to have any char, which will be later deleted using the
 					// selection.
 					// \ufeff = Zero Width No-Break Space (U+FEFF). (#1359)
 					this.document.createText( '\ufeff' ).insertBefore( startNode );
-//				}
+				}
 			}
 
 			// Remove the markers (reset the position, because of the changes in the DOM tree).
@@ -1002,8 +1013,8 @@ CKEDITOR.dom.range.prototype.select =
 
 			if ( collapsed )
 			{
-//				if ( isStartMakerAlone )
-//				{
+				if ( isStartMarkerAlone )
+				{
 					// Move the selection start to include the temporary \ufeff.
 					ieRange.moveStart( 'character', -1 );
 
@@ -1011,9 +1022,9 @@ CKEDITOR.dom.range.prototype.select =
 
 					// Remove our temporary stuff.
 					this.document.$.selection.clear();
-//				}
-//				else
-//					ieRange.select();
+				}
+				else
+					ieRange.select();
 
 				dummySpan.remove();
 			}

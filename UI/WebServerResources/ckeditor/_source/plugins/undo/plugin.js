@@ -69,30 +69,28 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					undoManager.save();
 				});
 
+			// Registering keydown on every document recreation.(#3844)
+			editor.on( 'contentDom', function()
+				{
+					editor.document.on( 'keydown', function( event )
+						{
+							// Do not capture CTRL hotkeys.
+							if ( !event.data.$.ctrlKey && !event.data.$.metaKey )
+								undoManager.type( event );
+						});
+				});
+
+			// Always save an undo snapshot - the previous mode might have
+			// changed editor contents.
+			editor.on( 'beforeModeUnload', function()
+				{
+					editor.mode == 'wysiwyg' && undoManager.save( true );
+				});
+
 			// Make the undo manager available only in wysiwyg mode.
 			editor.on( 'mode', function()
 				{
-					if ( editor.mode == 'wysiwyg' )
-					{
-						if ( !undoManager.enabled )
-						{
-							undoManager.enabled = true;
-
-							editor.document.on( 'keydown', function( event )
-								{
-									// Do not capture CTRL hotkeys.
-									if ( !event.data.$.ctrlKey && !event.data.$.metaKey )
-										undoManager.type( event );
-								});
-
-							// Always save an undo snapshot - the previous mode might have changed
-							// editor contents.
-							undoManager.save( true );
-						}
-					}
-					else
-						undoManager.enabled = false;
-
+					undoManager.enabled = editor.mode == 'wysiwyg';
 					undoManager.onChange();
 				});
 
@@ -481,4 +479,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	};
 })();
 
+/**
+ * The number of undo steps to be saved. The higher this setting value the more
+ * memory is used for it.
+ * @type Number
+ * @default 20
+ * @example
+ * config.undoStackSize = 50;
+ */
 CKEDITOR.config.undoStackSize = 20;

@@ -9,8 +9,8 @@
 var testList =
 [
 	'core/ajax',
+	'core/bootstrap',
 	'core/ckeditor',
-//	'core/ckeditor2',
 	'core/editor',
 	'core/env',
 	'core/event',
@@ -24,15 +24,21 @@ var testList =
 	'core/dom/node',
 	'core/dom/range',
 	'core/dom/text',
+	'core/dom/walker',
 	'core/dom/window',
 	'core/htmlparser/fragment',
+	'core/htmlparser/htmlparser',
+	'plugins/domiterator/domiterator',
 	'plugins/htmldataprocessor/htmldataprocessor',
+	'plugins/link/link',
 	'plugins/list/list',
 	'plugins/styles/styles',
 	'plugins/selection/selection'
 ];
 
 var currentTest;
+var currentTime;
+var totalTime;
 var totalFailed = 0;
 var totalPassed = 0;
 
@@ -48,11 +54,18 @@ function onTestStart( data )
 {
 	var div = document.getElementById('testLogger').appendChild( document.createElement( 'div' ) );
 	div.className = 'testEntry';
-	div.innerHTML = 'Testing "' + data.testCase.name + '"...';
+	div.innerHTML = 'Testing "<a href="' + currentTest + '.html" target="_blank">' + data.testCase.name + '</a>"...';
+
+	currentTime = new Date();
+
+	if ( !totalTime )
+		totalTime = currentTime;
 }
 
 function onTestComplete( data )
 {
+	var finishTime = new Date();
+
 	var failed = data.results.failed;
 	var passed = data.results.passed;
 
@@ -63,7 +76,7 @@ function onTestComplete( data )
 	else
 		html = '<span class="testPass">PASS</span>';
 
-	html += ' <a href="' + currentTest + '.html" target="_blank">Test case "' + data.testCase.name + '"</a> (' + failed + ' failed / ' + passed + ' passed)';
+	html += ' Test "<a href="' + currentTest + '.html" target="_blank">' + data.testCase.name + '</a>" (' + failed + ' failed / ' + passed + ' passed) - ' + ( finishTime - currentTime ) + 'ms';
 
 	var div = document.getElementById('testLogger').lastChild;
 	div.innerHTML = html;
@@ -73,6 +86,7 @@ function onTestComplete( data )
 
 	document.getElementById('testFailed').innerHTML = totalFailed;
 	document.getElementById('testPassed').innerHTML = totalPassed;
+	document.getElementById('totalTime').innerHTML = finishTime - totalTime;
 
 	document.title = totalFailed + ' failed / ' + totalPassed + ' passed - CKEditor Core Tests Runner';
 
@@ -92,7 +106,7 @@ window.onload = function()
 	</script>
 </head>
 <body>
-	<h1>CKEditor Core Tests Runner (<span id="testFailed">0</span> failed / <span id="testPassed">0</span> passed)</h1>
+	<h1>CKEditor Core Tests Runner (<span id="testFailed">0</span> failed / <span id="testPassed">0</span> passed) - <span id="totalTime">0</span>ms</h1>
 	<iframe id="testFrame" src="javascript:;" style="position: absolute; width: 50px; height: 50px; left: -1000px">
 	</iframe>
 	<div id="testLogger" class="testAll"></div>

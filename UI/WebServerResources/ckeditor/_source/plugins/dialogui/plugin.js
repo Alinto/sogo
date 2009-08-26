@@ -233,7 +233,12 @@ CKEDITOR.plugins.add( 'dialogui' );
 				{
 					// IE BUG: Text input fields in IE at 100% would exceed a <td> or inline
 					// container's width, so need to wrap it inside a <div>.
-					var html = [ '<div class="cke_dialog_ui_input_', elementDefinition.type, '"><input ' ];
+					var html = [ '<div class="cke_dialog_ui_input_', elementDefinition.type, '"' ];
+
+					if ( elementDefinition.width )
+						html.push( 'style="width:'+ elementDefinition.width +'" ' );
+
+					html.push( '><input ' );
 					for ( var i in attributes )
 						html.push( i + '="' + attributes[i] + '" ' );
 					html.push( ' /></div>' );
@@ -332,11 +337,13 @@ CKEDITOR.plugins.add( 'dialogui' );
 					if ( elementDefinition[ 'default' ] )
 						attributes.checked = 'checked';
 					_.checkbox = new CKEDITOR.ui.dialog.uiElement( dialog, myDefinition, html, 'input', null, attributes );
-					html.push( ' ', CKEDITOR.tools.htmlEncode( elementDefinition.label ) );
+					html.push( ' <label for="', attributes.id, '">',
+							CKEDITOR.tools.htmlEncode( elementDefinition.label ),
+							'</label>' );
 					return html.join( '' );
 				};
 
-				CKEDITOR.ui.dialog.uiElement.call( this, dialog, elementDefinition, htmlList, 'label', null, null, innerHTML );
+				CKEDITOR.ui.dialog.uiElement.call( this, dialog, elementDefinition, htmlList, 'span', null, null, innerHTML );
 			},
 
 			/**
@@ -393,21 +400,23 @@ CKEDITOR.plugins.add( 'dialogui' );
 										id : null,
 										title : title
 									}, true ),
-							inputHtml = [],
 							inputAttributes =
 							{
 								type : 'radio',
 								'class' : 'cke_dialog_ui_radio_input',
 								name : commonName,
 								value : value
-							};
+							},
+							inputHtml = [];
 						if ( me._['default'] == value )
 							inputAttributes.checked = 'checked';
 						cleanInnerDefinition( inputDefinition );
 						cleanInnerDefinition( labelDefinition );
 						children.push( new CKEDITOR.ui.dialog.uiElement( dialog, inputDefinition, inputHtml, 'input', null, inputAttributes ) );
-						new CKEDITOR.ui.dialog.uiElement( dialog, labelDefinition, inputHtmlList, 'label', null, null,
-							   inputHtml.join( '' ) + ' ' + item[0] );
+						inputHtml.push( ' ' );
+						new CKEDITOR.ui.dialog.uiElement( dialog, labelDefinition, inputHtml, 'label', null, { 'for' : inputAttributes.id },
+							   item[0] );
+						inputHtmlList.push( inputHtml.join( '' ) );
 					}
 					new CKEDITOR.ui.dialog.hbox( dialog, [], inputHtmlList, html );
 					return html.join( '' );
@@ -596,6 +605,7 @@ CKEDITOR.plugins.add( 'dialogui' );
 							' allowtransparency="0"' +
 							' class="cke_dialog_ui_input_file"' +
 							' id="', _.frameId, '"' +
+							' title="', elementDefinition.label, '"' +
 							' src="javascript:void(' ];
 
 					html.push(
@@ -812,7 +822,8 @@ CKEDITOR.plugins.add( 'dialogui' );
 				enable : function()
 				{
 					this._.disabled = false;
-					this.getElement().removeClass( 'disabled' );
+					var element = this.getElement();
+					element && element.removeClass( 'disabled' );
 				},
 
 				/**
@@ -895,7 +906,11 @@ CKEDITOR.plugins.add( 'dialogui' );
 					var me = this.selectParentTab();
 
 					// GECKO BUG: setTimeout() is needed to workaround invisible selections.
-					setTimeout( function(){ me.getInputElement().$.focus(); }, 0 );
+					setTimeout( function()
+						{
+							var element = me.getInputElement();
+							element && element.$.focus();
+						}, 0 );
 				},
 
 				/**
@@ -907,7 +922,15 @@ CKEDITOR.plugins.add( 'dialogui' );
 					var me = this.selectParentTab();
 
 					// GECKO BUG: setTimeout() is needed to workaround invisible selections.
-					setTimeout( function(){ var e = me.getInputElement().$; e.focus(); e.select(); }, 0 );
+					setTimeout( function()
+						{
+							var e = me.getInputElement();
+							if ( e )
+							{
+								e.$.focus();
+								e.$.select();
+							}
+						}, 0 );
 				},
 
 				/**
@@ -1233,6 +1256,10 @@ CKEDITOR.plugins.add( 'dialogui' );
 						if ( CKEDITOR.env.isCustomDomain() )
 							frameDocument.$.domain = document.domain;
 
+						var size = '';
+						if ( elementDefinition.size )
+							size = elementDefinition.size - ( CKEDITOR.env.ie  ? 7 : 0 );	// "Browse" button is bigger in IE.
+
 						frameDocument.$.write( [ '<html><head><title></title></head><body style="margin: 0; overflow: hidden; background: transparent;">',
 								'<form enctype="multipart/form-data" method="POST" action="',
 								CKEDITOR.tools.htmlEncode( elementDefinition.action ),
@@ -1240,7 +1267,7 @@ CKEDITOR.plugins.add( 'dialogui' );
 								'<input type="file" name="',
 								CKEDITOR.tools.htmlEncode( elementDefinition.id || 'cke_upload' ),
 								'" size="',
-								CKEDITOR.tools.htmlEncode( elementDefinition.size || '' ),
+								CKEDITOR.tools.htmlEncode( size > 0 ? size : "" ),
 								'" />',
 								'</form>',
 								'</body></html>' ].join( '' ) );

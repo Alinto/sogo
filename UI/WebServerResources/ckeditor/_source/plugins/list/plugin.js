@@ -116,7 +116,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					for ( i = 0 ; i < item.contents.length ; i++ )
 						currentListItem.append( item.contents[i].clone( true, true ) );
 
-					if ( currentListItem.type == CKEDITOR.NODE_DOCUMENT_FRAGMENT )
+					if ( currentListItem.type == CKEDITOR.NODE_DOCUMENT_FRAGMENT
+						 && currentIndex != listArray.length - 1 )
 					{
 						if ( currentListItem.getLast()
 								&& currentListItem.getLast().type == CKEDITOR.NODE_ELEMENT
@@ -176,9 +177,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	function onSelectionChange( evt )
 	{
-		var elements = evt.data.path.elements;
+		var path = evt.data.path,
+			blockLimit = path.blockLimit,
+			elements = path.elements,
+			element;
 
-		for ( var i = 0 ; i < elements.length ; i++ )
+		// Grouping should only happen under blockLimit.(#3940).
+		for ( var i = 0 ; i < elements.length && ( element = elements[ i ] )
+			  && !element.equals( blockLimit ); i++ )
 		{
 			if ( listNodeNames[ elements[i].getName() ] )
 			{
@@ -335,14 +341,23 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		}
 
 		var newList = CKEDITOR.plugins.list.arrayToList( listArray, database, null, editor.config.enterMode );
-		// If groupObj.root is the last element in its parent, or its nextSibling is a <br>, then we should
-		// not add a <br> after the final item. So, check for the cases and trim the <br>.
-		if ( !groupObj.root.getNext() || groupObj.root.getNext().$.nodeName.toLowerCase() == 'br' )
+
+		// Compensate <br> before/after the list node if the surrounds are non-blocks.(#3836)
+		var docFragment = newList.listNode, boundaryNode, siblingNode;
+		function compensateBrs( isStart )
 		{
-			if ( newList.listNode.getLast().$.nodeName.toLowerCase() == 'br' )
-				newList.listNode.getLast().remove();
+			if ( ( boundaryNode = docFragment[ isStart ? 'getFirst' : 'getLast' ]() )
+				 && !( boundaryNode.is && boundaryNode.isBlockBoundary() )
+				 && ( siblingNode = groupObj.root[ isStart ? 'getPrevious' : 'getNext' ]
+				      ( CKEDITOR.dom.walker.whitespaces( true ) ) )
+				 && !( siblingNode.is && siblingNode.isBlockBoundary( { br : 1 } ) ) )
+				editor.document.createElement( 'br' )[ isStart ? 'insertBefore' : 'insertAfter' ]( boundaryNode );
 		}
-		newList.listNode.replace( groupObj.root );
+		compensateBrs( true );
+		compensateBrs();
+
+		var rootParent = groupObj.root.getParent();
+		docFragment.replace( groupObj.root );
 	}
 
 	function listCommand( name, type )
@@ -387,6 +402,18 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						ranges[ 0 ].selectNodeContents( paragraph );
 					selection.selectRanges( ranges );
 				}
+				// Maybe a single range there enclosing the whole list,
+				// turn on the list state manually(#4129).
+				else
+				{
+					var range = ranges.length == 1 && ranges[ 0 ],
+						enclosedNode = range && range.getEnclosedNode();
+					if ( enclosedNode && enclosedNode.is
+						&& this.type == enclosedNode.getName() )
+					{
+						setState.call( this, editor, CKEDITOR.TRISTATE_ON );
+					}
+				}
 			}
 
 			var bookmarks = selection.createBookmarks( true );
@@ -398,17 +425,21 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 			while ( ranges.length > 0 )
 			{
-				var range = ranges.shift(),
-					boundaryNodes = range.getBoundaryNodes(),
+				range = ranges.shift();
+
+				var boundaryNodes = range.getBoundaryNodes(),
 					startNode = boundaryNodes.startNode,
 					endNode = boundaryNodes.endNode;
+
 				if ( startNode.type == CKEDITOR.NODE_ELEMENT && startNode.getName() == 'td' )
 					range.setStartAt( boundaryNodes.startNode, CKEDITOR.POSITION_AFTER_START );
+
 				if ( endNode.type == CKEDITOR.NODE_ELEMENT && endNode.getName() == 'td' )
 					range.setEndAt( boundaryNodes.endNode, CKEDITOR.POSITION_BEFORE_END );
 
 				var iterator = range.createIterator(),
 					block;
+
 				iterator.forceBrBreak = ( this.state == CKEDITOR.TRISTATE_OFF );
 
 				while ( ( block = iterator.getNextParagraph() ) )
@@ -416,12 +447,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					var path = new CKEDITOR.dom.elementPath( block ),
 						listNode = null,
 						processedFlag = false,
-						blockLimit = path.blockLimit;
+						blockLimit = path.blockLimit,
+						element;
 
 					// First, try to group by a list ancestor.
-					for ( var i = 0 ; i < path.elements.length ; i++ )
+					for ( var i = 0 ; i < path.elements.length &&
+						  ( element = path.elements[ i ] ) && !element.equals( blockLimit ); i++ )
 					{
-						var element = path.elements[i];
 						if ( listNodeNames[ element.getName() ] )
 						{
 							// If we've encountered a list inside a block limit
@@ -486,12 +518,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				var mergeSibling, listCommand = this;
 				( mergeSibling = function( rtl ){
 
-					var sibling = listNode[ rtl ? 'getPrevious' : 'getNext' ].call( listNode, true );
+					var sibling = listNode[ rtl ?
+						'getPrevious' : 'getNext' ]( CKEDITOR.dom.walker.whitespaces( true ) );
 					if ( sibling && sibling.getName &&
 					     sibling.getName() == listCommand.type )
 					{
 						sibling.remove();
-						sibling.moveChildren( listNode );
+						// Move children order by merge direction.(#3820)
+						sibling.moveChildren( listNode, rtl ? true : false );
 					}
 				} )();
 				mergeSibling( true );

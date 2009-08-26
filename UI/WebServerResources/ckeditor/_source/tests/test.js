@@ -87,6 +87,7 @@ document.write(
 			runner.subscribe(runner.TEST_CASE_COMPLETE_EVENT, window.parent.onTestComplete);
 		}
 
-		runner.run();
+		if ( !CKEDITOR.test.deferRunner )
+			runner.run();
 	};
 })();

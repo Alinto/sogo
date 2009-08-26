@@ -35,6 +35,9 @@ CKEDITOR.tools.extend( CKEDITOR.dom.window.prototype,
 		 */
 		focus : function()
 		{
+			// Webkit is sometimes failed to focus iframe, blur it first(#3835).
+			if( CKEDITOR.env.webkit && this.$.parent )
+				this.$.parent.focus();
 			this.$.focus();
 		},
 

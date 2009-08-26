@@ -828,7 +828,8 @@ CKEDITOR.dialog.add( 'link', function( editor )
 						type : 'file',
 						id : 'upload',
 						label : editor.lang.common.upload,
-						size : 38
+						style: 'height:40px',
+						size : 29
 					},
 					{
 						type : 'fileButton',
@@ -867,7 +868,7 @@ CKEDITOR.dialog.add( 'link', function( editor )
 										id : 'advLangDir',
 										label : editor.lang.link.langDir,
 										'default' : '',
-										style : 'width: 100%;',
+										style : 'width:110px',
 										items :
 										[
 											[ editor.lang.link.langDirNotSet, '' ],
@@ -880,6 +881,7 @@ CKEDITOR.dialog.add( 'link', function( editor )
 									{
 										type : 'text',
 										id : 'advAccessKey',
+										width : '80px',
 										label : editor.lang.link.acccessKey,
 										maxLength : 1,
 										setup : setupAdvParams,
@@ -905,6 +907,7 @@ CKEDITOR.dialog.add( 'link', function( editor )
 										type : 'text',
 										label : editor.lang.link.langCode,
 										id : 'advLangCode',
+										width : '110px',
 										'default' : '',
 										setup : setupAdvParams,
 										commit : commitAdvParams
@@ -914,6 +917,7 @@ CKEDITOR.dialog.add( 'link', function( editor )
 										type : 'text',
 										label : editor.lang.link.tabIndex,
 										id : 'advTabIndex',
+										width : '80px',
 										maxLength : 5,
 										setup : setupAdvParams,
 										commit : commitAdvParams
@@ -1017,16 +1021,16 @@ CKEDITOR.dialog.add( 'link', function( editor )
 				{
 					selection.selectElement( element );
 				}
-				else
+				else if ( ( element = rangeRoot.getAscendant( 'img', true ) ) &&
+						 element.getAttribute( '_cke_real_element_type' ) &&
+						 element.getAttribute( '_cke_real_element_type' ) == 'anchor' )
 				{
-					element = rangeRoot.getAscendant( 'img', true );
-					if ( element && element.getAttribute( '_cke_real_element_type' ) && element.getAttribute( '_cke_real_element_type' ) == 'anchor' )
-					{
-						this.fakeObj = element;
-						element = editor.restoreRealElement( this.fakeObj );
-						selection.selectElement( this.fakeObj );
-					}
+					this.fakeObj = element;
+					element = editor.restoreRealElement( this.fakeObj );
+					selection.selectElement( this.fakeObj );
 				}
+				else
+					element = null;
 			}
 
 			this.setupContent( parseLink.apply( this, [ editor, element ] ) );

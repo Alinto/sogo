@@ -20,8 +20,9 @@ CKEDITOR.test.addTestCase( (function()
 		 */
 		test_addExternal : function()
 		{
+			var path = '_tests/';
 			CKEDITOR.plugins.addExternal( 'myplugin',
-			'tests/core/plugins/myplugins/sample/', 'my_plugin.js' );
+			path + 'core/plugins/myplugins/sample/', 'my_plugin.js' );
 
 			CKEDITOR.plugins.load( 'myplugin', function(){
 				this.resume( function(){

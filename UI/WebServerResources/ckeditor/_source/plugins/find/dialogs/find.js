@@ -711,7 +711,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 											dialog.getValueOf( 'replace', 'txtReplaceCaseChk' ),
 											dialog.getValueOf( 'replace', 'txtReplaceWordChk' ),
 											false, true ) )
-										;
+										{ /*jsl:pass*/ }
 
 										if ( finder.replaceCounter )
 										{

@@ -54,4 +54,11 @@ CKEDITOR.plugins.add( 'image',
 	}
 } );
 
+/**
+ * Whether to remove links when emptying the link URL field in the image dialog.
+ * @type Boolean
+ * @default true
+ * @example
+ * config.image_removeLinkByEmptyURL = false;
+ */
 CKEDITOR.config.image_removeLinkByEmptyURL = true;

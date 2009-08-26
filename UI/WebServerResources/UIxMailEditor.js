@@ -762,6 +762,7 @@ function onWindowResize(event) {
         var ck_bottom = $("cke_bottom_text");
         var content = $("cke_contents_text");
         var top = hr.offsetTop;
+        ck_bottom.ancestors ().first ().style.display = "none";
         var height = Math.floor(window.height() - top - ck_top.getHeight() - ck_bottom.getHeight());
         
         if (Prototype.Browser.IE) {

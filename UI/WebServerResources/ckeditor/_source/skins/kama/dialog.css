@@ -11,7 +11,6 @@ body .cke_dialog
 
 .cke_skin_kama .cke_dialog_body
 {
-	position: relative;
 	z-index: 1;
 	border: solid 1px #ddd;
 	padding: 5px;
@@ -50,9 +49,17 @@ body .cke_dialog
 	margin-bottom: 22px;
 }
 
+.cke_skin_kama .cke_browser_iequirks.cke_single_page .cke_dialog_title,
+.cke_skin_kama .cke_browser_ie6.cke_single_page .cke_dialog_title,
+.cke_skin_kama .cke_browser_ie7.cke_single_page .cke_dialog_title
+{
+	margin-bottom: 10px;
+}
+
 .cke_skin_kama .cke_browser_ie.cke_rtl .cke_dialog_title
 {
 	position: static !important;
+	unicode-bidi: bidi-override;
 }
 
 .cke_skin_kama .cke_dialog_contents
@@ -122,7 +129,7 @@ body .cke_dialog
 .cke_skin_kama a:hover.cke_dialog_tab,
 .cke_skin_kama a:visited.cke_dialog_tab
 {
-	background-image: url(sprites.png);
+	background-image: url(images/sprites.png);
 	background-repeat: repeat-x;
 	background-position: 0 -1323px;
 
@@ -174,6 +181,14 @@ body .cke_dialog
 	margin-top: 10px;
 }
 
+/* IE7 + IE quirks */
+.cke_skin_kama .cke_browser_ie7.cke_single_page .cke_dialog_contents
+{
+	margin-top: -10px;
+	position: relative;
+	margin-bottom: -22px;
+}
+
 .cke_skin_kama .cke_dialog_ui_vbox table,
 .cke_skin_kama .cke_dialog_ui_hbox table
 {
@@ -215,6 +230,7 @@ body .cke_dialog
 	 */
 	_width: 99%;
 	overflow: auto;
+	resize: none;
 }
 
 .cke_skin_kama div.cke_dialog_ui_input_textarea
@@ -264,46 +280,73 @@ body .cke_dialog
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 	border-radius: 5px;
-	background: transparent url(sprites.png) repeat-x scroll 0 -1069px;
+	background: transparent url(images/sprites.png) repeat-x scroll 0 -1069px;
 	_background: none;
 	padding: 5px 0;
 }
 
+.cke_skin_kama .cke_browser_iequirks a.cke_dialog_ui_button
+{
+	padding: 0;
+}
+
 /* IE6 buttons. */
+.cke_skin_kama .cke_browser_ie6 a.cke_dialog_ui_button span
+{
+	width: 70px;
+}
+
+.cke_skin_kama .cke_browser_iequirks a.cke_dialog_ui_button span,
+.cke_skin_kama .cke_browser_iequirks a.cke_dialog_ui_button span
+{
+	width: 100px;
+}
+
+.cke_skin_kama .cke_browser_iequirks a.cke_dialog_ui_button span,
 .cke_skin_kama .cke_browser_iequirks a.cke_dialog_ui_button span,
 .cke_skin_kama .cke_browser_ie6 a.cke_dialog_ui_button span
 {
-	/*border: #53D9F0 1px solid;*/
-	padding: 5px 20px;
+	padding: 5px 15px;
 	text-align: center;
 	color: #3b3b1f;
 	background: #53D9F0 none;
 	display: inline-block;
 	cursor: default;
 }
+/* END IE6 buttons. */
+
+.cke_skin_kama .cke_browser_webkit a.cke_dialog_ui_button span.cke_dialog_ui_button
+{
+	margin: 0;
+}
+.cke_skin_kama .cke_browser_webkit a.cke_dialog_ui_button
+{
+	float: right;
+	padding-top: 3px;
+	padding-bottom: 2px;
+	margin: 2px 0;
+}
+
+.cke_skin_kama a.cke_dialog_ui_button_ok span,
+.cke_skin_kama a.cke_dialog_ui_button_cancel span
+{
+	padding-right: 20px;
+	padding-left: 20px;
+}
 
 .cke_skin_kama a.cke_dialog_ui_button_ok
 {
 	background-position: 0 -1143px;
-	text-align: left;
 }
 
 .cke_skin_kama a.cke_dialog_ui_button_ok span
 {
-	background: transparent url(sprites.png) no-repeat scroll right -1219px;
-	min-width: 60px;
-	padding-right: 20px;
-	text-align: left;
+	background: transparent url(images/sprites.png) no-repeat scroll right -1219px;
 }
 
 .cke_skin_kama .cke_rtl a.cke_dialog_ui_button_ok span
 {
 	background-position: left -1219px;
-}
-
-.cke_skin_kama .cke_browser_ie7 a.cke_dialog_ui_button_ok span
-{
-	margin-right: 40px;
 }
 
 .cke_skin_kama .cke_browser_iequirks a.cke_dialog_ui_button_ok span,
@@ -320,9 +363,7 @@ body .cke_dialog
 
 .cke_skin_kama a.cke_dialog_ui_button_cancel span
 {
-	background: transparent url(sprites.png) no-repeat scroll right -1245px;
-	padding-right: 20px;
-	padding-left: 20px;
+	background: transparent url(images/sprites.png) no-repeat scroll right -1245px;
 }
 
 .cke_skin_kama .cke_rtl a.cke_dialog_ui_button_cancel span
@@ -403,8 +444,34 @@ body .cke_dialog
 .cke_skin_kama .cke_dialog_footer_buttons span.cke_dialog_ui_button
 {
 	margin: 7px 0;
+	width: 60px;
 	text-align: center;
 }
+
+/* Firefox2 buttons */
+.cke_skin_kama .cke_browser_gecko18 .cke_dialog_footer_buttons a.cke_dialog_ui_button
+{
+	display: block;
+	padding: 0;
+}
+
+.cke_skin_kama .cke_browser_gecko18 .cke_dialog_footer_buttons span.cke_dialog_ui_button
+{
+	padding-bottom: 5px;
+	padding-top: 6px;
+	margin-bottom: 0;
+}
+
+.cke_skin_kama .cke_browser_gecko18 .cke_dialog_footer_buttons .cke_dialog_ui_button_ok .cke_dialog_ui_button
+{
+	background-position: right -1214px;
+}
+
+.cke_skin_kama .cke_browser_gecko18 .cke_dialog_footer_buttons .cke_dialog_ui_button_cancel .cke_dialog_ui_button
+{
+	background-position: right -1242px;
+}
+/* END Firefox2 buttons */
 
 .cke_skin_kama strong
 {
@@ -415,7 +482,7 @@ body .cke_dialog
 
 .cke_skin_kama .cke_dialog_close_button
 {
-	background-image: url(sprites.png);
+	background-image: url(images/sprites.png);
 	background-repeat: no-repeat;
 	background-position: 0 -1022px;
 	position: absolute;
@@ -427,7 +494,6 @@ body .cke_dialog
 
 	/* IE 6 */
 	_background-image: url(images/sprites_ie6.png);
-	_background-position: 0 -713px;
 }
 
 .cke_skin_kama .cke_dialog_close_button span
@@ -443,29 +509,51 @@ body .cke_dialog
 .cke_skin_kama .cke_ltr .cke_dialog_close_button
 {
 	right: 10px;
-	_right: 22px;
+}
+
+.cke_skin_kama .cke_browser_ie8.cke_rtl .cke_dialog_close_button
+{
+	left: 8px;
 }
 
 .cke_skin_kama .cke_rtl .cke_dialog_close_button
 {
 	left: 10px;
-	_left: 22px;
 }
 
-.cke_skin_kama .cke_browser_ie6.cke_rtl .cke_dialog_close_button
+.cke_skin_kama .cke_browser_ie7.cke_rtl .cke_dialog_close_button
 {
-	position: relative;
-	float: left;
-	margin-top: -55px;
-	margin-left: -7px;
+	left: 16px;
+	top: 0;
 }
 
-.cke_skin_kama .cke_browser_iequirks.cke_rtl.cke_single_page .cke_dialog_close_button
+/*.cke_skin_kama .cke_browser_ie6.cke_rtl .cke_dialog_close_button
 {
-	margin-top: -32px;
+	left: 16px;
+}*/
+
+/* IE7 + IE quirks */
+.cke_skin_kama .cke_browser_ie7.cke_rtl .cke_dialog_close_button
+{
+	position: absolute;
+	left: 10px;
+	top: 5px;
 }
 
-.cke_skin_kama .cke_browser_iequirks.cke_ltr .cke_dialog_close_button
+/* IE7 + IE quirks */
+.cke_skin_kama .cke_browser_ie7.cke_single_page .cke_dialog_footer
+{
+	margin-top: 22px;
+}
+
+.cke_skin_kama .cke_browser_ie6 .cke_dialog_close_button,
+.cke_skin_kama .cke_browser_iequirks .cke_dialog_close_button
+{
+	top: 7px;
+}
+
+/* IE7 + IE quirks */
+.cke_skin_kama .cke_browser_ie7.cke_ltr .cke_dialog_close_button
 {
 	margin-top: 0;
 }
@@ -500,7 +588,7 @@ body .cke_dialog
 	text-align: center;
 }
 
-.cke_skin_kama .cke_dialog .cke_btn_reset
+.cke_skin_kama .cke_dialog a.cke_btn_reset
 {
 	float: right;
 	background-position: 0 -32px;
@@ -512,13 +600,13 @@ body .cke_dialog
 	font-size: 1px;
 }
 
-.cke_skin_kama .cke_rtl .cke_dialog .cke_btn_reset
+.cke_skin_kama .cke_rtl .cke_dialog a.cke_btn_reset
 {
 	float: left;
 }
 
-.cke_skin_kama .cke_dialog .cke_btn_locked,
-.cke_skin_kama .cke_dialog .cke_btn_unlocked
+.cke_skin_kama .cke_dialog a.cke_btn_locked,
+.cke_skin_kama .cke_dialog a.cke_btn_unlocked
 {
 	float: left;
 	background-position: 0 0;
@@ -530,13 +618,13 @@ body .cke_dialog
 	font-size: 1px;
 }
 
-.cke_skin_kama .cke_dialog .cke_btn_locked,
-.cke_skin_kama .cke_dialog .cke_btn_unlocked
+.cke_skin_kama .cke_rtl .cke_dialog a.cke_btn_locked,
+.cke_skin_kama .cke_rtl .cke_dialog a.cke_btn_unlocked
 {
 	float: right;
 }
 
-.cke_skin_kama .cke_dialog .cke_btn_unlocked
+.cke_skin_kama .cke_dialog a.cke_btn_unlocked
 {
 	background-position: 0 -16px;
 	background-image: url(images/mini.gif);
