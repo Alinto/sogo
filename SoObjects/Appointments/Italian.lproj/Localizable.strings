@@ -17,7 +17,7 @@ vtodo_class2 = "(Attività confidenziale)";
 "... to attend the following event:" = "... to attend the following event:";
 
 "Receipt: invitation updated" = "Receipt: invitation updated";
-"The following attendees(s):" = "The following attendees(s):"
+"The following attendees(s):" = "The following attendees(s):";
 "... have been notified of the changes to the following event:" = "... have been notified of the changes to the following event:";
 
 "Receipt: attendees removed from an event" = "Receipt: attendees removed from an event";

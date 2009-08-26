@@ -17,7 +17,7 @@ vtodo_class2 = "(Tâche confidentielle)";
 "... to attend the following event:" = "... à participer à cette réunion :";
 
 "Receipt: invitation updated" = "Acc. de réception : invitation mise à jour";
-"The following attendees(s):" = "Les participants suivants :"
+"The following attendees(s):" = "Les participants suivants :";
 "... have been notified of the changes to the following event:" = "... ont été avisés des changements apportés à cette réunion :";
 
 "Receipt: attendees removed from an event" = "Acc. de réception: invitations annulées";
