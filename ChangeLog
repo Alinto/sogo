@@ -1,3 +1,8 @@
+2009-08-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAptMailReceipt.[hm]: new module
+	containing the template code for sending event receipts.
+
 2009-08-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUser.m (+userWithLogin:): new constructor
