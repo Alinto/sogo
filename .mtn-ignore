@@ -3,7 +3,7 @@ shared_debug_obj
 obj
 err
 log
-build.log
+build\.log
 imgs-.*
 diff
 .*\.bak$
