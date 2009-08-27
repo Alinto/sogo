@@ -29,6 +29,8 @@ class WebDAVClient:
             headers["depth"] = query.depth
         if query.__dict__.has_key("content_type"):
             headers["content-type"] = query.content_type
+        if not query.__dict__.has_key("accept-language"):
+            headers["accept-language"] = 'en-us,en;q=0.5'
 
         query_headers = query.prepare_headers()
         if query_headers is not None:
