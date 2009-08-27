@@ -245,6 +245,11 @@
   return rType;
 }
 
+- (BOOL) davIsCollection
+{
+  return YES;
+}
+
 /* web dav acl helper */
 - (void) _fillArrayWithPrincipalsOwnedBySelf: (NSMutableArray *) hrefs
 {
@@ -261,6 +266,17 @@
   while ((currentKey = [children nextObject]))
     [[self lookupName: currentKey inContext: context
 	   acquire: NO] _fillArrayWithPrincipalsOwnedBySelf: hrefs];
+}
+
+
+- (NSArray *) davGroupMemberSet
+{
+  return [NSArray array];
+}
+
+- (NSArray *) davGroupMembership
+{
+  return [NSArray array];
 }
 
 /* folder type */

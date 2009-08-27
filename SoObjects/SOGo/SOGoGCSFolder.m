@@ -650,26 +650,34 @@ static NSArray *childRecordFields = nil;
   return cTag;
 }
 
-#warning this code should be cleaned up
-- (void) _subscribeUser: (SOGoUser *) subscribingUser
-               reallyDo: (BOOL) reallyDo
-     fromMailInvitation: (BOOL) isMailInvitation
-             inResponse: (WOResponse *) response
+- (BOOL) userIsSubscriber: (NSString *) subscribingUser
+{
+  SOGoUser *sogoUser;
+  NSDictionary *moduleSettings;
+  NSArray *folderSubscription;
+
+  sogoUser = [SOGoUser userWithLogin: subscribingUser roles: nil];
+  moduleSettings = [[sogoUser userSettings]
+                     objectForKey: [container nameInContainer]];
+  folderSubscription = [moduleSettings objectForKey: @"SubscribedFolders"];
+
+  return [folderSubscription containsObject: [self folderReference]];
+}
+
+- (BOOL) subscribeUser: (NSString *) subscribingUser
+              reallyDo: (BOOL) reallyDo
 {
   NSMutableArray *folderSubscription, *tmpA;
-  NSString *subscriptionPointer, *mailInvitationURL;
+  NSString *subscriptionPointer;
   NSUserDefaults *ud;
   NSMutableDictionary *moduleSettings, *tmpD;
+  SOGoUser *sogoUser;
+  BOOL rc;
 
-  if ([owner isEqualToString: [subscribingUser login]])
+  sogoUser = [SOGoUser userWithLogin: subscribingUser roles: nil];
+  if (sogoUser)
     {
-      [response setStatus: 403];
-      [response appendContentString:
-        @"You cannot (un)subscribe to a folder that you own!"];
-    }
-  else
-    {
-      ud = [subscribingUser userSettings];
+      ud = [sogoUser userSettings];
       moduleSettings = [ud objectForKey: [container nameInContainer]];
       if (!(moduleSettings
             && [moduleSettings isKindOfClass: [NSMutableDictionary class]]))
@@ -687,7 +695,7 @@ static NSArray *childRecordFields = nil;
           [moduleSettings setObject: folderSubscription
                              forKey: @"SubscribedFolders"];
         }
-
+  
       subscriptionPointer = [self folderReference];
       if (reallyDo)
         [folderSubscription addObjectUniquely: subscriptionPointer];
@@ -717,82 +725,21 @@ static NSArray *childRecordFields = nil;
         }
 
       [ud synchronize];
-
-      if (isMailInvitation)
-        {
-          mailInvitationURL = [[self soURLToBaseContainerForCurrentUser]
-            absoluteString];
-          [response setStatus: 302];
-          [response setHeader: mailInvitationURL
-                       forKey: @"location"];
-        }
-      else
-        [response setStatus: 204];
-    }
-}
-
-- (WOResponse *) subscribe: (BOOL) reallyDo
-              inTheNamesOf: (NSArray *) delegatedUsers
-        fromMailInvitation: (BOOL) isMailInvitation
-                 inContext: (WOContext *) localContext
-{
-  WOResponse *response;
-  SOGoUser *currentUser;
-
-  response = [localContext response];
-  [response setHeader: @"text/plain; charset=utf-8"
-    forKey: @"Content-Type"];
-
-  currentUser = [localContext activeUser];
-
-  if ([delegatedUsers count])
-    {
-      if (![currentUser isSuperUser])
-        {
-          [response setStatus: 403];
-          [response appendContentString:
-            @"You cannot subscribe another user to any folder"
-            @" unless you are a super-user."];
-        }
-      else
-        {
-          // The current user is a superuser...
-          SOGoUser *subscriptionUser;
-          int i;
-
-          for (i = 0; i < [delegatedUsers count]; i++)
-            {
-              // We trust the passed user ID here as it might generate tons or LDAP
-              // call but more importantly, cache propagation calls that will create
-              // contention on GDNC.
-              subscriptionUser = [SOGoUser userWithLogin: [delegatedUsers objectAtIndex: i]
-                                                   roles: nil
-                                                   trust: YES];
-
-              [self _subscribeUser: subscriptionUser
-                          reallyDo: reallyDo
-                fromMailInvitation: isMailInvitation
-                        inResponse: response];
-            }
-        }
+      rc = YES;
     }
   else
-    {
-      [self _subscribeUser: currentUser
-                  reallyDo: reallyDo
-        fromMailInvitation: isMailInvitation
-                inResponse: response];
-    }
+    rc = NO;
 
-  return response;
+  return rc;
 }
 
-- (NSArray *) _parseDAVDelegatedUser: (WOContext *) queryContext
+- (NSArray *) _parseDAVDelegatedUsers
 {
   id <DOMDocument> document;
   id <DOMNamedNodeMap> attrs;
   id o;
-  document = [[queryContext request] contentAsDOMDocument];
+
+  document = [[context request] contentAsDOMDocument];
   attrs = [[document documentElement] attributes];
 
   o = [attrs namedItem: @"users"];
@@ -802,20 +749,65 @@ static NSArray *childRecordFields = nil;
   return nil;
 }
 
+- (WOResponse *) _davSubscribe: (BOOL) reallyDo
+{
+  WOResponse *response;
+  SOGoUser *currentUser;
+  NSArray *delegatedUsers;
+  NSString *userLogin;
+  int count, max;
+
+  response = [context response];
+  [response setHeader: @"text/plain; charset=utf-8"
+    forKey: @"Content-Type"];
+  [response setStatus: 204];
+
+  currentUser = [context activeUser];
+  delegatedUsers = [self _parseDAVDelegatedUsers];
+
+  max = [delegatedUsers count];
+  if (max)
+    {
+      if ([currentUser isSuperUser])
+        {
+          /* We trust the passed user ID here as it might generate tons or
+             LDAP call but more importantly, cache propagation calls that will
+             create contention on GDNC. */
+          for (count = 0; count < max; count++)
+            [self subscribeUser: [delegatedUsers objectAtIndex: count]
+                       reallyDo: reallyDo];
+        }
+      else
+        {
+          [response setStatus: 403];
+          [response appendContentString: @"You cannot subscribe another user"
+                    @" to any folder unless you are a super-user."];
+        }
+    }
+  else
+    {
+      userLogin = [currentUser login];
+      if ([owner isEqualToString: userLogin])
+        {
+          [response setStatus: 403];
+          [response appendContentString:
+                      @"You cannot (un)subscribe to a folder that you own!"];
+        }
+      else
+        [self subscribeUser: userLogin reallyDo: reallyDo];
+    }
+
+  return response;
+}
+
 - (id <WOActionResults>) davSubscribe: (WOContext *) queryContext
 {
-  return [self subscribe: YES
-            inTheNamesOf: [self _parseDAVDelegatedUser: queryContext]
-      fromMailInvitation: NO
-               inContext: queryContext];
+  return [self _davSubscribe: YES];
 }
 
 - (id <WOActionResults>) davUnsubscribe: (WOContext *) queryContext
 {
-  return [self subscribe: NO
-            inTheNamesOf: [self _parseDAVDelegatedUser: queryContext]
-      fromMailInvitation: NO
-               inContext: queryContext];
+  return [self _davSubscribe: NO];
 }
 
 - (NSDictionary *) davSQLFieldsTable

@@ -76,24 +76,48 @@
   isMailInvitation = [mailInvitationParam boolValue];
 }
 
+- (WOResponse *) _subscribeAction: (BOOL) reallyDo
+{
+  WOResponse *response;
+  NSURL *mailInvitationURL;
+
+  response = [context response];
+  [response setHeader: @"text/plain; charset=utf-8"
+               forKey: @"Content-Type"];
+
+  [self _setupContext];
+  if ([owner isEqualToString: login])
+    {
+      [response setStatus: 403];
+      [response appendContentString:
+                  @"You cannot (un)subscribe to a folder that you own!"];
+    }
+  else
+    {
+      [clientObject subscribeUser: login reallyDo: reallyDo];
+      if (isMailInvitation)
+        {
+          mailInvitationURL
+            = [clientObject soURLToBaseContainerForCurrentUser];
+          [response setStatus: 302];
+          [response setHeader: [mailInvitationURL absoluteString]
+                       forKey: @"location"];
+        }
+      else
+        [response setStatus: 204];
+    }
+
+  return response;
+}
+
 - (WOResponse *) subscribeAction
 {
-  [self _setupContext];
-
-  return [clientObject subscribe: YES
-		       inTheNamesOf: nil
-		       fromMailInvitation: isMailInvitation
-		       inContext: context];
+  return [self _subscribeAction: YES];
 }
 
 - (WOResponse *) unsubscribeAction
 {
-  [self _setupContext];
-
-  return [clientObject subscribe: NO
-		       inTheNamesOf: nil
-		       fromMailInvitation: isMailInvitation
-		       inContext: context];
+  return [self _subscribeAction: NO];
 }
 
 - (WOResponse *) canAccessContentAction

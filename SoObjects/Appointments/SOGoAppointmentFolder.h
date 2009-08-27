@@ -140,6 +140,10 @@
 - (BOOL) showCalendarTasks;
 - (void) setShowCalendarTasks: (BOOL) new;
 
+- (NSArray *) proxySubscribersWithWriteAccess: (BOOL) hasWriteAccess;
+- (NSException *) setProxySubscribers: (NSArray *) newSubscribers
+                      withWriteAccess: (BOOL) hasWriteAccess;
+
 @end
 
 #endif /* __Appointments_SOGoAppointmentFolder_H__ */

@@ -3055,4 +3055,122 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return (![inactiveFolders containsObject: nameInContainer]);
 }
 
+- (NSArray *) requiredProxyRolesWithWriteAccess: (BOOL) hasWriteAccess
+{
+  static NSArray *writeAccessRoles = nil;
+  static NSArray *readAccessRoles = nil;
+
+  if (!writeAccessRoles)
+    {
+      writeAccessRoles = [NSArray arrayWithObjects:
+                                    SOGoCalendarRole_ConfidentialModifier,
+                                  SOGoRole_ObjectCreator,
+                                  SOGoRole_ObjectEraser,
+                                  SOGoCalendarRole_PrivateModifier,
+                                  SOGoCalendarRole_PublicModifier,
+                                  nil];
+      [writeAccessRoles retain];
+    }
+
+  if (!readAccessRoles)
+    {
+      readAccessRoles = [NSArray arrayWithObjects:
+                                   SOGoCalendarRole_ConfidentialViewer,
+                                 SOGoCalendarRole_PrivateViewer,
+                                 SOGoCalendarRole_PublicViewer,
+                                 nil];
+      [readAccessRoles retain];
+    }
+
+  return (hasWriteAccess) ? writeAccessRoles : readAccessRoles;
+}
+
+- (BOOL)          _user: (NSString *) user
+ isProxyWithWriteAccess: (BOOL) hasWriteAccess
+{
+  NSArray *userRoles, *reqRoles;
+  BOOL isProxy;
+
+  if ([self userIsSubscriber: user])
+    {
+      userRoles = [[self aclsForUser: user]
+                    sortedArrayUsingSelector: @selector (compare:)];
+      reqRoles = [self requiredProxyRolesWithWriteAccess: hasWriteAccess];
+      isProxy = [reqRoles isEqualToArray: userRoles];
+    }
+  else
+    isProxy = NO;
+
+  return isProxy;
+}
+
+- (NSArray *) proxySubscribersWithWriteAccess: (BOOL) hasWriteAccess
+{
+  NSMutableArray *subscribers;
+  NSEnumerator *aclUsers;
+  NSString *currentUser, *defaultUser;
+
+  subscribers = [NSMutableArray array];
+
+  defaultUser = [self defaultUserID];
+  aclUsers = [[self aclUsers] objectEnumerator];
+  while ((currentUser = [aclUsers nextObject]))
+    {
+      if (![currentUser isEqualToString: defaultUser]
+          && [self             _user: currentUser
+              isProxyWithWriteAccess: hasWriteAccess])
+        [subscribers addObject: currentUser];
+    }
+
+  return subscribers;
+}
+
+- (NSException *) setProxySubscribers: (NSArray *) newSubscribers
+                      withWriteAccess: (BOOL) hasWriteAccess
+{
+  int count, max;
+  NSArray *oldSubscribers;
+  NSString *login, *reason;
+  NSException *error;
+
+  error = nil;
+
+  max = [newSubscribers count];
+  for (count = 0; !error && count < max; count++)
+    {
+      login = [newSubscribers objectAtIndex: count];
+      if (![SOGoUser userWithLogin: login roles: nil])
+        {
+          reason = [NSString stringWithFormat: @"User '%@' does not exist.", login];
+          error = [NSException exceptionWithHTTPStatus: 403 reason: reason];
+        }
+    }
+
+  if (!error)
+    {
+      oldSubscribers = [self proxySubscribersWithWriteAccess: hasWriteAccess];
+      for (count = 0; !error && count < max; count++)
+        {
+          login = [newSubscribers objectAtIndex: count];
+          [self
+            setRoles: [self requiredProxyRolesWithWriteAccess: hasWriteAccess]
+             forUser: login];
+          [self subscribeUser: login reallyDo: YES];
+        }
+
+      max = [oldSubscribers count];
+      for (count = 0; count < max; count++)
+        {
+          login = [oldSubscribers objectAtIndex: count];
+          if (![newSubscribers containsObject: login])
+            {
+              [self subscribeUser: login reallyDo: NO];
+              [self removeAclsForUsers: [NSArray arrayWithObject: login]];
+            }
+        }
+    }
+
+  return error;
+}
+
 @end /* SOGoAppointmentFolder */

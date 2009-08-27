@@ -25,7 +25,11 @@
 
 #import <SOGo/SOGoParentFolder.h>
 
+@class NSArray;
+
 @interface SOGoAppointmentFolders : SOGoParentFolder
+
+- (NSArray *) proxyFoldersWithWriteAccess: (BOOL) hasWriteAccess;
 
 @end
 

@@ -1653,7 +1653,7 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
 	}
       else
 	exception
-	  = [NSException exceptionWithHTTPStatus: 404
+	  = [NSException exceptionWithHTTPStatus: 403
 			 reason: [NSString stringWithFormat:
 					     @"Property '%@' cannot be set.",
 					   currentProp]];

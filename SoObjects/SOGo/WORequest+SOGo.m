@@ -103,22 +103,32 @@
   return patchedProperties;
 }
 
-- (BOOL) isIPhone
+- (BOOL) isAppleDAVWithSubstring: (NSString *) osSubstring
 {
   WEClientCapabilities *cc;
   BOOL rc;
+  NSRange r;
 
-  rc = NO;
   cc = [self clientCapabilities];
   if ([[cc userAgentType] isEqualToString: @"AppleDAVAccess"])
     {
-      NSRange r = [[cc userAgent] rangeOfString: @"iPhone"];
-      if (r.location != NSNotFound)
-        rc = YES;
+      r = [[cc userAgent] rangeOfString: osSubstring];
+      rc = (r.location != NSNotFound);
     }
+  else
+    rc = NO;
 
   return rc;
 }
 
+- (BOOL) isIPhone
+{
+  return [self isAppleDAVWithSubstring: @"iPhone/"];
+}
+
+- (BOOL) isICal
+{
+  return [self isAppleDAVWithSubstring: @"Mac OS X/10."];
+}
 
 @end
