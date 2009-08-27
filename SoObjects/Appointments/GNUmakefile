@@ -28,6 +28,8 @@ Appointments_OBJC_FILES = \
 	SOGoFreeBusyObject.m		\
 	SOGoUserFolder+Appointments.m	\
 	\
+	SOGoCalendarProxy.m \
+	\
 	SOGoAptMailNotification.m	\
 	SOGoAptMailInvitation.m		\
 	SOGoAptMailDeletion.m		\

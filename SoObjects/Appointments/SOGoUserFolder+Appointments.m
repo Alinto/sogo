@@ -30,10 +30,12 @@
 #import <NGExtensions/NSString+misc.h>
 #import <SaxObjC/XMLNamespaces.h>
 
+#import <SOGo/SOGoGCSFolder.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/NSObject+DAV.h>
 #import <SOGo/NSString+DAV.h>
 
+#import "SOGoAppointmentFolders.h"
 #import "SOGoUserFolder+Appointments.h"
 
 @interface SOGoUserFolder (private)
@@ -429,6 +431,49 @@
 //     <C:schedule-inbox-URL/>
 //     <C:schedule-outbox-URL/>
 //   </D:prop>
+}
+
+- (void) _addFolders: (NSEnumerator *) folders
+        withGroupTag: (NSString *) groupTag
+             toArray: (NSMutableArray *) groups
+{
+  SOGoAppointmentFolder *currentFolder;
+  NSString *folderOwner;
+  NSArray *tag;
+
+  while ((currentFolder = [folders nextObject]))
+    {
+      folderOwner = [currentFolder ownerInContext: context];
+      tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
+                     [NSString stringWithFormat: @"/SOGo/dav/%@/%@/",
+                               folderOwner, groupTag],
+                     nil];
+      [groups addObject: tag];
+    }
+}
+
+- (NSArray *) davGroupMembership
+{
+  SOGoAppointmentFolders *calendars;
+  NSArray *writeFolders, *readFolders;
+  NSMutableArray *groups;
+
+  groups = [NSMutableArray array];
+
+  [self ownerInContext: context];
+
+  calendars = [self privateCalendars: @"Calendar" inContext: context];
+  writeFolders = [calendars proxyFoldersWithWriteAccess: YES];
+  [self _addFolders: [writeFolders objectEnumerator]
+       withGroupTag: @"calendar-proxy-write"
+            toArray: groups];
+
+  readFolders = [calendars proxyFoldersWithWriteAccess: NO];
+  [self _addFolders: [readFolders objectEnumerator]
+       withGroupTag: @"calendar-proxy-read"
+            toArray: groups];
+
+  return groups;
 }
 
 @end

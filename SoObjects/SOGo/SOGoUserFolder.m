@@ -43,6 +43,7 @@
 
 #import <Appointments/SOGoAppointmentFolders.h>
 #import <Appointments/SOGoFreeBusyObject.h>
+#import <Appointments/SOGoCalendarProxy.h>
 #import <Contacts/SOGoContactFolders.h>
 #import <Mailer/SOGoMailAccounts.h>
 
@@ -53,6 +54,7 @@
 #import "LDAPUserManager.h"
 #import "SOGoPermissions.h"
 #import "SOGoUser.h"
+#import "WORequest+SOGo.h"
 
 #import "SOGoUserFolder.h"
 
@@ -84,11 +86,21 @@ static NSString *LDAPContactInfoAttribute = nil;
 
   currentUser = [context activeUser];
   if ([currentUser canAccessModule: @"Calendar"])
-    [children addObject: @"Calendar"];
+    {
+      [children addObject: @"Calendar"];
+      /* support for caldav-proxy, which is currently limited to iCal but may
+         be enabled for others later, once we sort out the consistency between
+         subscribe folders and "proxy collections". */
+      if ([[context request] isICal])
+        {
+          [children addObject: @"calendar-proxy-write"];
+          [children addObject: @"calendar-proxy-read"];
+        }
+    }
   [children addObject: @"Contacts"];
   if ([currentUser canAccessModule: @"Mail"])
     [children addObject: @"Mail"];
-  [children addObject: @"Preferences"];
+  // [children addObject: @"Preferences"];
 
   return children;
 }
@@ -529,6 +541,17 @@ static NSString *LDAPContactInfoAttribute = nil;
   return [$(@"SOGoFreeBusyObject") objectWithName: _key inContainer: self];
 }
 
+- (id) calendarProxy: (NSString *) name withWriteAccess: (BOOL) hasWrite
+{
+  id calendarProxy;
+
+  calendarProxy = [$(@"SOGoCalendarProxy") objectWithName: name
+                                              inContainer: self];
+  [calendarProxy setWriteAccess: hasWrite];
+
+  return calendarProxy;  
+}
+
 - (id) lookupName: (NSString *) _key
         inContext: (WOContext *) _ctx
           acquire: (BOOL) _flag
@@ -541,23 +564,29 @@ static NSString *LDAPContactInfoAttribute = nil;
   if (!obj)
     {
       currentUser = [_ctx activeUser];
-      if ([_key isEqualToString: @"Calendar"])
-	{
-	  if ([currentUser canAccessModule: _key])
+      if ([currentUser canAccessModule: @"Calendar"])
+        {
+          if ([_key isEqualToString: @"Calendar"])
 	    obj = [self privateCalendars: @"Calendar" inContext: _ctx];
+          else if ([_key isEqualToString: @"freebusy.ifb"])
+            obj = [self freeBusyObject:_key inContext: _ctx];
+          else if ([_key isEqualToString: @"calendar-proxy-write"])
+            obj = [self calendarProxy: _key withWriteAccess: YES];
+          else if ([_key isEqualToString: @"calendar-proxy-read"])
+            obj = [self calendarProxy: _key withWriteAccess: NO];
 	}
-      else if ([_key isEqualToString: @"Contacts"])
+
+      if (!obj
+          && [_key isEqualToString: @"Mail"]
+          && [currentUser canAccessModule: @"Mail"])
+        obj = [self mailAccountsFolder: _key inContext: _ctx];
+
+      if (!obj && [_key isEqualToString: @"Contacts"])
         obj = [self privateContacts: _key inContext: _ctx];
-      else if ([_key isEqualToString: @"Mail"])
-	{
-	  if ([currentUser canAccessModule: _key])
-	    obj = [self mailAccountsFolder: _key inContext: _ctx];
-	}
-      else if ([_key isEqualToString: @"Preferences"])
-        obj = [$(@"SOGoPreferencesFolder") objectWithName: _key
-		inContainer: self];
-      else if ([_key isEqualToString: @"freebusy.ifb"])
-        obj = [self freeBusyObject:_key inContext: _ctx];
+
+      // else if ([_key isEqualToString: @"Preferences"])
+      //   obj = [$(@"SOGoPreferencesFolder") objectWithName: _key
+      //   	inContainer: self];
 
       if (!obj)
         obj = [NSException exceptionWithHTTPStatus: 404 /* Not Found */];
@@ -584,9 +613,16 @@ static NSString *LDAPContactInfoAttribute = nil;
 	   getCNForUID: nameInContainer];
 }
 
-- (BOOL) davIsCollection
+- (NSArray *) davPrincipalURL
 {
-  return YES;
+  NSArray *principalURL;
+  NSString *selfDAVPath;
+
+  selfDAVPath = [[self davURL] path];
+  principalURL = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
+                          selfDAVPath, nil];
+
+  return [NSArray arrayWithObject: principalURL];
 }
 
 @end /* SOGoUserFolder */

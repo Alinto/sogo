@@ -1,6 +1,6 @@
-/* WORequest+SOGo.h - this file is part of SOGo
+/* SOGoCalendarProxy.h - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse inc.
+ * Copyright (C) 2009 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -20,20 +20,18 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef WOREQUEST_SOGo_H
-#define WOREQUEST_SOGo_H
+#ifndef SOGOCALENDARPROXY_H
+#define SOGOCALENDARPROXY_H
 
-#import <NGObjWeb/WORequest.h>
+#import <SOGo/SOGoFolder.h>
 
-@interface WORequest (SOGoSOPEUtilities)
+@interface SOGoCalendarProxy : SOGoFolder
+{
+  BOOL hasWriteAccess;
+}
 
-- (BOOL) handledByDefaultHandler;
-- (NSDictionary *) davPatchedPropertiesWithTopTag: (NSString *) topTag;
-
-- (BOOL) isAppleDAVWithSubstring: (NSString *) osSubstring;
-- (BOOL) isIPhone;
-- (BOOL) isICal;
+- (void) setWriteAccess: (BOOL) newHasWriteAccess;
 
 @end
 
-#endif /* WOREQUEST_SOGo_H */
+#endif /* SOGOCALENDARPROXY_H */

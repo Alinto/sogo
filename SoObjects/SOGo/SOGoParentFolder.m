@@ -107,6 +107,7 @@ static SoSecurityManager *sm = nil;
     {
       subFolders = nil;
       OCSPath = nil;
+      subscribedSubFolders = nil;
       subFolderClass = Nil;
 //       hasSubscribedSources = NO;
     }
@@ -116,6 +117,7 @@ static SoSecurityManager *sm = nil;
 
 - (void) dealloc
 {
+  [subscribedSubFolders release];
   [subFolders release];
   [OCSPath release];
   [super dealloc];
@@ -353,11 +355,11 @@ static SoSecurityManager *sm = nil;
 
 - (NSException *) initSubscribedSubFolders
 {
-  NSArray *subscribedReferences;
-  NSUserDefaults *settings;
-  NSEnumerator *allKeys;
-  NSString *currentKey, *login;
+  NSString *login;
   NSException *error;
+
+  if (!subFolderClass)
+    subFolderClass = [[self class] subFolderClass];
 
   error = nil; /* we ignore non-DB errors at this time... */
   login = [[context activeUser] login];
@@ -365,17 +367,9 @@ static SoSecurityManager *sm = nil;
   if (!subscribedSubFolders && [login isEqualToString: owner])
     {
       subscribedSubFolders = [NSMutableDictionary new];
-      settings = [[context activeUser] userSettings];
-      subscribedReferences = [[settings objectForKey: nameInContainer]
-			       objectForKey: @"SubscribedFolders"];
-      if ([subscribedReferences isKindOfClass: [NSArray class]])
-	{
-	  allKeys = [subscribedReferences objectEnumerator];
-	  while ((currentKey = [allKeys nextObject]))
-	    [self _appendSubscribedSource: currentKey];
-	}
+      error = [self appendSubscribedSources];
     }
-  
+
   return error;
 }
 

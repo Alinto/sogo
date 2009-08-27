@@ -1,5 +1,47 @@
 2009-08-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoCalendarProxy.[hm]: new class module
+	implementing the caldav proxy collections mentionned below. This
+	is a subclass of SOGoFolder.
+
+	* SoObjects/SOGo/WORequest+SOGo.m (-isAppleDAVWithSubstring:): new
+	method.
+	(-isICal): new method.
+
+	* SoObjects/SOGo/SOGoUserFolder.m
+	(-calendarProxy:withWriteAccess:): new method that instantiate a
+	proxy collections for read and write delegations.
+
+	* SoObjects/SOGo/SOGoParentFolder.m (-initSubscribedFolders): we
+	now make use of appendSubcribedSources with which we shared code.
+
+	* SoObjects/SOGo/SOGoGCSFolder.m (-subscribeUser:reallyDo:): new
+	simplified and published version of
+	subscribe:inTheNamesOf:fromMailInvitation:inContext:.
+
+	* SoObjects/SOGo/SOGoFolder.m (-davGroupMemberSet)
+	(davGroupMembership): new DAV accessors that return an empty
+	array.
+
+	* SoObjects/Appointments/SOGoUserFolder+Appointments.m
+	(-davGroupMembership): new DAV accessor.
+
+	* SoObjects/Appointments/SOGoAppointmentFolders.m
+	(-toManyRelationshipKeys): overriden method for iCal: we don't
+	list the folders to which the current user is subscribed to
+	(because the iCal paradigm now requires calendar proxying), we
+	don't list the folders to which a delegator has subscribed to
+	either nor any of his/her secondary calendars.
+	(-proxyFoldersWithWriteAccess:): new methods that returns the list
+	of personal folder on which we are allowed to act as a proxy.
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-requiredProxyRolesWithWriteAccess:):  new method that returnes
+	the roles required for read/write proxying of users.
+	(-proxySubscribersWithWriteAccess:)
+	(setProxySubscribers:withWriteAccess:): new accessors making use
+	of the new method above.
+
 	* Tests/test-caldav-scheduling.py: new set of tests for CalDAV
 	scheduling (iTIP-over-DAV) operations. Implemented 9 scenarios for
 	invitation delegation.

@@ -8,6 +8,7 @@
 - a context menu is now available for tasks
 - added the capability of creating and managing lists of contacts (same as in Thunderbird)
 - added support for short date format in the calendar views
+- added support for iCal delegation
 
 1.0-20090812 (1.0.4)
 --------------------

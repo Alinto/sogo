@@ -26,16 +26,25 @@
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
 
-#import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest+So.h>
 #import <NGObjWeb/NSException+HTTP.h>
+
 #import <SaxObjC/XMLNamespaces.h>
+
 #import <SOGo/WORequest+SOGo.h>
 #import <SOGo/NSObject+DAV.h>
 #import <SOGo/SOGoWebDAVValue.h>
+#import <SOGo/SOGoUser.h>
 #import "SOGoAppointmentFolder.h"
 
 #import "SOGoAppointmentFolders.h"
+
+@interface SOGoParentFolder (Private)
+
+- (NSException *) initSubscribedSubFolders;
+
+@end
 
 @implementation SOGoAppointmentFolders
 
@@ -52,6 +61,36 @@
 - (NSString *) defaultFolderName
 {
   return [self labelForKey: @"Personal Calendar"];
+}
+
+- (NSArray *) toManyRelationshipKeys
+{
+  NSEnumerator *sortedSubFolders;
+  SOGoGCSFolder *currentFolder;
+  NSString *login;
+  NSMutableArray *keys;
+
+  login = [[context activeUser] login];
+  if ([[context request] isICal])
+    {
+      keys = [NSMutableArray array];
+      if ([owner isEqualToString: login])
+        {
+          sortedSubFolders = [[self subFolders] objectEnumerator];
+          while ((currentFolder = [sortedSubFolders nextObject]))
+            {
+              if ([[currentFolder ownerInContext: context]
+                    isEqualToString: owner])
+                [keys addObject: [currentFolder nameInContainer]];
+            }
+        }
+      else
+        [keys addObject: @"personal"];
+    }
+  else
+    keys = (NSMutableArray *) [super toManyRelationshipKeys];
+
+  return keys;
 }
 
 - (NSString *) _fetchPropertyWithName: (NSString *) propertyName
@@ -197,6 +236,37 @@
     }
 
   return componentSet;
+}
+
+- (NSArray *) proxyFoldersWithWriteAccess: (BOOL) hasWriteAccess
+{
+  NSMutableArray *proxyFolders;
+  NSArray *proxySubscribers;
+  NSEnumerator *folders;
+  SOGoAppointmentFolder *currentFolder;
+  NSString *folderOwner, *currentUser;
+
+  proxyFolders = [NSMutableArray new];
+
+  currentUser = [[context activeUser] login];
+
+  [self initSubscribedSubFolders];
+  folders = [subscribedSubFolders objectEnumerator];
+  while ((currentFolder = [folders nextObject]))
+    {
+      folderOwner = [currentFolder ownerInContext: context];
+      /* we currently only list the users of which we have subscribed to the
+         personal folder */
+      if ([[currentFolder realNameInContainer] isEqualToString: @"personal"])
+        {
+          proxySubscribers
+            = [currentFolder proxySubscribersWithWriteAccess: hasWriteAccess];
+          if ([proxySubscribers containsObject: currentUser])
+            [proxyFolders addObject: currentFolder];
+        }
+    }
+
+  return proxyFolders;
 }
 
 @end

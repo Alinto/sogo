@@ -87,10 +87,9 @@
 - (NSException *) delete;
 - (void) renameTo: (NSString *) newName;
 
-- (WOResponse *) subscribe: (BOOL) reallyDo
-	      inTheNamesOf: (NSArray *) delegatedUsers
-	fromMailInvitation: (BOOL) isMailInvitation
-		 inContext: (WOContext *) localContext;
+- (BOOL) subscribeUser: (NSString *) subscribingUser
+              reallyDo: (BOOL) reallyDo;
+- (BOOL) userIsSubscriber: (NSString *) subscribingUser;
 
 - (void) initializeQuickTablesAclsInContext: (WOContext *) localContext;
 
