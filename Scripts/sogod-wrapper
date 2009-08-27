@@ -60,7 +60,7 @@ else
 fi
 
 woport=`defaults read sogod WOPort`
-if [ "$?" == "0" ]
+if [ "$?" -eq 0 ]
 then
   startport=`echo $woport | awk '{print $3}' | sed -e 's/\(.*:\)//'`
 else
@@ -74,6 +74,11 @@ else
   let "port=$startport + $1 - 1"
 fi
 listen=`echo $woport | awk '{ print $3 }' | sed -e 's/\([0-9]\+\)$/'$port'/g'`
+
+if [ -z "$listen" ]
+then
+  listen=$port
+fi
 
 # echo "SOGOD: $sogod -WOPort $listen" 2>&1
 
