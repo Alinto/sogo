@@ -189,6 +189,56 @@
   return iCalPersonPartStatOther;
 }
 
+- (void) _setValueOfMailtoAttribute: (NSString *) name
+                                 to: (NSString *) value
+{
+  if ([value length] && ![value hasPrefix: @"\""])
+    value = [NSString stringWithFormat: @"\"%@\"", value];
+
+  [self setValue: 0 ofAttribute: name to: value];
+}
+
+- (NSString *) _valueOfMailtoAttribute: (NSString *) name
+{
+  NSString *mailTo;
+
+  mailTo = [self value: 0 ofAttribute: name];
+  if ([mailTo hasPrefix: @"\""])
+    mailTo
+      = [mailTo substringWithRange: NSMakeRange (0, [mailTo length] - 2)];
+
+  return mailTo;
+}
+
+- (void) setDelegatedTo: (NSString *) newDelegate
+{
+  [self _setValueOfMailtoAttribute: @"delegated-to" to: newDelegate];
+}
+
+- (NSString *) delegatedTo
+{
+  return [self _valueOfMailtoAttribute: @"delegated-to"];
+}
+
+- (void) setDelegatedFrom: (NSString *) newDelegator
+{
+  [self _setValueOfMailtoAttribute: @"delegated-from" to: newDelegator];
+}
+
+- (NSString *) delegatedFrom
+{
+  return [self _valueOfMailtoAttribute: @"delegated-from"];
+}
+
+- (void) setSentBy: (NSString *) newSentBy
+{
+  [self _setValueOfMailtoAttribute: @"sent-by" to: newSentBy];
+}
+
+- (NSString *) sentBy
+{
+  return [self _valueOfMailtoAttribute: @"sent-by"];
+}
 
 /* comparison */
 

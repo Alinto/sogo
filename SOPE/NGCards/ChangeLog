@@ -1,5 +1,9 @@
 2009-08-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* iCalPerson.m (-setDelegatedTo:, -setDelegatedFrom:)
+	(-setSentBy:): new helper methods to set the corresponding
+	attributes, properly formatted. The getters were added too.
+
 	* iCalEntityObject.m (-removeFromAttendees:): new helper method to
 	remove a specific attendee from the list.
 

@@ -66,6 +66,15 @@ typedef enum {
 - (NSString *)partStat;
 - (NSString *)partStatWithDefault;
 
+- (void) setDelegatedTo: (NSString *) newDelegate;
+- (NSString *) delegatedTo;
+
+- (void) setDelegatedFrom: (NSString *) newDelegatee;
+- (NSString *) delegatedFrom;
+
+- (void) setSentBy: (NSString *) newDelegatee;
+- (NSString *) sentBy;
+
 - (void)setParticipationStatus:(iCalPersonPartStat)_status;
 - (iCalPersonPartStat)participationStatus;
 
