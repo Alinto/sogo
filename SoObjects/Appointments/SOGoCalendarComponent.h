@@ -70,7 +70,7 @@
 			  from: (SOGoUser *) from
 			    to: (iCalPerson *) recipient;
 - (void) sendResponseToOrganizer: (iCalRepeatableEntityObject *) newComponent
-			   from: (SOGoUser *) owner;
+                            from: (SOGoUser *) owner;
 
 - (void) sendReceiptEmailUsingTemplateNamed: (NSString *) template
                                   forObject: (iCalRepeatableEntityObject *) object

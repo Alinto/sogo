@@ -194,12 +194,15 @@
 #warning most of SOGoCalendarComponent and SOGoComponentOccurence share the same external interface... \
   they should be siblings or SOGoComponentOccurence the parent class of SOGoCalendarComponent...
 - (NSException *) changeParticipationStatus: (NSString *) newStatus
+                               withDelegate: (iCalPerson *) delegate
 {
   NSCalendarDate *date;
 
   date = [component recurrenceId];
 
-  return [container changeParticipationStatus: newStatus forRecurrenceId: date];
+  return [container changeParticipationStatus: newStatus
+                                 withDelegate: delegate
+                              forRecurrenceId: date];
 }
 
 @end

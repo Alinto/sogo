@@ -28,6 +28,7 @@
 @class NSException;
 
 @class iCalCalendar;
+@class iCalPerson;
 @class iCalRepeatableEntityObject;
 @class SOGoCalendarComponent;
 
@@ -55,7 +56,8 @@
 - (void) setMasterComponent: (iCalRepeatableEntityObject *) newMaster;
 - (void) setIsNew: (BOOL) newIsNew;
 
-- (NSException *) changeParticipationStatus: (NSString *) newPartStat;
+- (NSException *) changeParticipationStatus: (NSString *) newPartStat
+                               withDelegate: (iCalPerson *) delegate;
 
 @end
 

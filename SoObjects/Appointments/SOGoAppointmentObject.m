@@ -581,11 +581,13 @@
 //   participation state has changed.
 // - uid is the actual UID of the user for whom we must
 //   update the calendar event (with the participation change)
+// - delegate is the delegated attendee if any
 //
 // This method is called multiple times, in order to update the
 // status of the attendee in calendars for the particular event UID.
 // 
 - (NSException *) _updateAttendee: (iCalPerson *) attendee
+                     withDelegate: (iCalPerson *) delegate
                         ownerUser: (SOGoUser *) theOwnerUser
 		      forEventUID: (NSString *) eventUID
 		 withRecurrenceId: (NSCalendarDate *) recurrenceId
@@ -596,9 +598,10 @@
   SOGoAppointmentObject *eventObject;
   iCalCalendar *calendar;
   iCalEntityObject *event;
-  iCalPerson *otherAttendee;
-  NSString *iCalString, *recurrenceTime;
+  iCalPerson *otherAttendee, *otherDelegate;
+  NSString *iCalString, *recurrenceTime, *delegateEmail;
   NSException *error;
+  BOOL addDelegate, removeDelegate;
 
   error = nil;
 
@@ -623,15 +626,52 @@
 	    event = [eventObject newOccurenceWithID: recurrenceTime];
 	}
 
-      if ([[event sequence] compare: sequence]
-	  == NSOrderedSame)
+      if ([[event sequence] compare: sequence] == NSOrderedSame)
 	{
 	  SOGoUser *currentUser;
 
 	  currentUser = [context activeUser];
 	  otherAttendee = [event findParticipant: theOwnerUser];
+
+          delegateEmail = [otherAttendee delegatedTo];
+          if ([delegateEmail length])
+            delegateEmail = [delegateEmail substringFromIndex: 7];
+          if ([delegateEmail length])
+            otherDelegate = [event findParticipantWithEmail: delegateEmail];
+          else
+            otherDelegate = NO;
+
+          /* we handle the addition/deletion of delegated users */
+          addDelegate = NO;
+          removeDelegate = NO;
+          if (delegate)
+            {
+              if (otherDelegate)
+                {
+                  if (![delegate hasSameEmailAddress: otherDelegate])
+                    {
+                      removeDelegate = YES;
+                      addDelegate = YES;
+                    }
+                }
+              else
+                addDelegate = YES;
+            }
+          else
+            {
+              if (otherDelegate)
+                removeDelegate = YES;
+            }
+
+          if (removeDelegate)
+            [event removeFromAttendees: otherDelegate];
+          if (addDelegate)
+            [event addToAttendees: delegate];
+
 	  [otherAttendee setPartStat: [attendee partStat]];
-	  
+          [otherAttendee setDelegatedTo: [attendee delegatedTo]];
+          [otherAttendee setDelegatedFrom: [attendee delegatedFrom]];
+
 	  // If one has accepted / declined an invitation on behalf of
 	  // the attendee, we add the user to the SENT-BY attribute.
 	  if (b && ![[currentUser login] isEqualToString: [theOwnerUser login]])
@@ -663,12 +703,13 @@
 
 
 //
-// This method is invoked only from the SOGo Web interface.
+// This method is invoked from the SOGo Web interface.
 //
 // - theOwnerUser is owner of the calendar where the attendee
 //   participation state has changed.
 //
 - (NSException *) _handleAttendee: (iCalPerson *) attendee
+                     withDelegate: (iCalPerson *) delegate
                         ownerUser: (SOGoUser *) theOwnerUser
 		     statusChange: (NSString *) newStatus
 			  inEvent: (iCalEvent *) event
@@ -730,11 +771,12 @@
 	  if (organizerUID)
 	    // Update the attendee in organizer's calendar.
 	    ex = [self _updateAttendee: attendee
-		       ownerUser: theOwnerUser
-		       forEventUID: [event uid]
-		       withRecurrenceId: [event recurrenceId]
-		       withSequence: [event sequence]
-		       forUID: organizerUID
+                          withDelegate: delegate
+                             ownerUser: theOwnerUser
+                           forEventUID: [event uid]
+                      withRecurrenceId: [event recurrenceId]
+                          withSequence: [event sequence]
+                                forUID: organizerUID
 		       shouldAddSentBy: YES];
 	}
 
@@ -748,26 +790,19 @@
       int i;
 
       attendees = [event attendees];
-
       for (i = 0; i < [attendees count]; i++)
 	{
 	  att = [attendees objectAtIndex: i];
-	  
-	  if (att == attendee) continue;
-	  
-	  uid = [[LDAPUserManager sharedUserManager]
-		  getUIDForEmail: [att rfc822Email]];
-
-	  if (uid)
-	    {
-	      [self _updateAttendee: attendee
-		    ownerUser: theOwnerUser
-		    forEventUID: [event uid]
-		    withRecurrenceId: [event recurrenceId]
-		    withSequence: [event sequence]
-		    forUID: uid
-		    shouldAddSentBy: YES];
-	    }
+	  uid = [att uid];
+          if (uid && att != attendee)
+            [self _updateAttendee: attendee
+                     withDelegate: delegate
+                        ownerUser: theOwnerUser
+                      forEventUID: [event uid]
+                 withRecurrenceId: [event recurrenceId]
+                     withSequence: [event sequence]
+                           forUID: uid
+                  shouldAddSentBy: YES];
 	}
     }
 
@@ -1021,6 +1056,7 @@
 // be propagated to the organizer and the other attendees.
 //
 - (void) takeAttendeeStatus: (iCalPerson *) attendee
+               withDelegate: (iCalPerson *) delegate
 		       from: (SOGoUser *) ownerUser
 	   withRecurrenceId: (NSCalendarDate*) recurrenceId
 {
@@ -1042,60 +1078,56 @@
 	// If no occurence found, create one
 	event = (iCalEvent*)[self newOccurenceWithID: recurrenceTime];      
     }
-  
+
   // Find attendee within event
   localAttendee = [event findParticipantWithEmail: [attendee rfc822Email]];
   if (localAttendee)
     {
       // Update the attendee's status
+#warning this code should probably not exist, as a REPLY POST will be followed \
+  by a PUT
       [localAttendee setPartStat: [attendee partStat]];
+      [localAttendee setDelegatedTo: [attendee delegatedTo]];
+      [localAttendee setDelegatedFrom: [attendee delegatedFrom]];
       [self saveComponent: event];
-      
+
       NSArray *attendees;
       iCalPerson *att;
       NSString *uid;
       int i;
-      
-      // We update the copy of the organizer, only
-      // if it's a local user.
+
+      /* We update the copy of the organizer, only if it's a local user. */
 #warning add a check for only local users
       uid = [[event organizer] uid];
       if (uid)
 	[self _updateAttendee: attendee
-	      ownerUser: ownerUser
-	      forEventUID: [event uid]
-	      withRecurrenceId: [event recurrenceId]
-	      withSequence: [event sequence]
-	      forUID: uid
+                 withDelegate: delegate
+                    ownerUser: ownerUser
+                  forEventUID: [event uid]
+             withRecurrenceId: [event recurrenceId]
+                 withSequence: [event sequence]
+                       forUID: uid
 	      shouldAddSentBy: NO];
-      
-      attendees = [event attendees];
 
+      attendees = [event attendees];
       for (i = 0; i < [attendees count]; i++)
 	{
 	  att = [attendees objectAtIndex: i];
-	  
-	  if (att == attendee) continue;
-	  
-	  uid = [[LDAPUserManager sharedUserManager]
-		  getUIDForEmail: [att rfc822Email]];
-	  
-	  if (uid)
-	    {		
-	      // We skip the update that correspond to the owner
-	      // since the CalDAV client will already have updated
-	      // the actual event.
-	      if ([ownerUser hasEmail: [att rfc822Email]]) 
-		continue;
-	      
-	      [self _updateAttendee: attendee
-		    ownerUser: ownerUser
-		    forEventUID: [event uid]
-		    withRecurrenceId: [event recurrenceId]
-		    withSequence: [event sequence]
-		    forUID: uid
-		    shouldAddSentBy: NO];
-	    }
+          uid = [att uid];
+	  if (uid
+              && !(att == attendee || att == delegate
+                   /* We skip the update that correspond to the owner since
+                      the CalDAV client will already have updated the actual
+                      event. */
+                   || [ownerUser hasEmail: [att rfc822Email]]))
+            [self _updateAttendee: attendee
+                     withDelegate: delegate
+                        ownerUser: ownerUser
+                      forEventUID: [event uid]
+                 withRecurrenceId: [event recurrenceId]
+                     withSequence: [event sequence]
+                           forUID: uid
+                  shouldAddSentBy: NO];
 	}
     }
   else
@@ -1107,9 +1139,9 @@
 {
   NSMutableArray *elements;
   NSEnumerator *recipientsEnum;
-  NSString *recipient, *uid, *eventUID;
+  NSString *recipient, *uid, *eventUID, *delegateEmail;
   iCalEvent *event;
-  iCalPerson *attendee, *person;
+  iCalPerson *attendee, *person, *delegate;
   SOGoAppointmentObject *recipientEvent;
   SOGoUser *ownerUser;
 
@@ -1120,6 +1152,16 @@
 					 getUIDForEmail: originator]];
   attendee = [event findParticipant: ownerUser];
   eventUID = [event uid];
+
+  delegate = nil;
+  delegateEmail = [attendee delegatedTo];
+  if ([delegateEmail length])
+    {
+      delegateEmail = [delegateEmail substringFromIndex: 7];
+      if ([delegateEmail length])
+        delegate
+          = [event findParticipantWithEmail: delegateEmail];
+    }
 
   recipientsEnum = [recipients objectEnumerator];
   while ((recipient = [recipientsEnum nextObject]))
@@ -1134,9 +1176,10 @@
 	    if ([recipientEvent isNew])
 	      [recipientEvent saveComponent: event];
 	    else
-	      [recipientEvent takeAttendeeStatus: attendee
-			      from: ownerUser
-			      withRecurrenceId: [event recurrenceId]];
+              [recipientEvent takeAttendeeStatus: attendee
+                                    withDelegate: delegate
+                                            from: ownerUser
+                                withRecurrenceId: [event recurrenceId]];
 	  }
 
 	// Send reply to recipient/organizer
@@ -1154,12 +1197,15 @@
 //
 // This method is invoked only from the SOGo Web interface.
 //
-- (NSException *) changeParticipationStatus: (NSString *) _status
+- (NSException *) changeParticipationStatus: (NSString *) status
+                               withDelegate: (iCalPerson *) delegate
 {
-  return [self changeParticipationStatus: _status forRecurrenceId: nil];
+  return [self changeParticipationStatus: status withDelegate: delegate
+                         forRecurrenceId: nil];
 }
 
 - (NSException *) changeParticipationStatus: (NSString *) _status
+                               withDelegate: (iCalPerson *) delegate
                             forRecurrenceId: (NSCalendarDate *) _recurrenceId
 {
   iCalCalendar *calendar;
@@ -1193,19 +1239,20 @@
     }
   if (event)
     {
-      // owerUser will actually be the owner of the calendar
+      // ownerUser will actually be the owner of the calendar
       // where the participation change on the event has
       // actually occured. The particpation change will of
       // course be on the attendee that is the owner of the
       // calendar where the participation change has occured.
       ownerUser = [SOGoUser userWithLogin: owner];
-      
+
       attendee = [event findParticipant: ownerUser];
       if (attendee)
 	ex = [self _handleAttendee: attendee
-		   ownerUser: ownerUser
-		   statusChange: _status
-		   inEvent: event];
+                      withDelegate: delegate
+                         ownerUser: ownerUser
+                      statusChange: _status
+                           inEvent: event];
       else
         ex = [NSException exceptionWithHTTPStatus: 404 // Not Found
                           reason: @"user does not participate in this "
@@ -1268,7 +1315,8 @@
       else if ([occurence userIsParticipant: ownerUser])
 	// The current user deletes the occurence; let the organizer know that
 	// the user has declined this occurence.
-	[self changeParticipationStatus: @"DECLINED" forRecurrenceId: recurrenceId];
+	[self changeParticipationStatus: @"DECLINED" withDelegate: nil
+                        forRecurrenceId: recurrenceId];
     }
 }
 

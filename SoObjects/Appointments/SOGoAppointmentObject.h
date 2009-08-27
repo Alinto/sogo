@@ -47,11 +47,14 @@
 
 @interface SOGoAppointmentObject : SOGoCalendarComponent
 
-- (NSException *) changeParticipationStatus: (NSString *) _status;
-- (NSException *) changeParticipationStatus: (NSString *) _status
+- (NSException *) changeParticipationStatus: (NSString *) status
+                               withDelegate: (iCalPerson *) delegate;
+- (NSException *) changeParticipationStatus: (NSString *) status
+                               withDelegate: (iCalPerson *) delegate
 			    forRecurrenceId: (NSCalendarDate *) _recurrenceId;
 
 - (void) takeAttendeeStatus: (iCalPerson *) attendee
+               withDelegate: (iCalPerson *) delegate
 		       from: (SOGoUser *) originator
 	   withRecurrenceId: (NSCalendarDate*) recurrenceId;
 

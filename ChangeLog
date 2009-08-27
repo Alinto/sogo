@@ -1,5 +1,21 @@
 2009-08-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Tests/test-caldav-scheduling.py: new set of tests for CalDAV
+	scheduling (iTIP-over-DAV) operations. Implemented 9 scenarios for
+	invitation delegation.
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	(_updateAttendee:withDelegate:ownerUser:forEventUID:withRecurrenceId:):
+	added "withDelegate:" parameter in order to be able to add or
+	remove the delegate corresponding to the attendee delegation. We
+	also adjust the "delegated-to:" and "delegated-from:" in the
+	corresponding attendee element from the event copy.
+	(-postCalDAVReplyTo:from:): deduce the delegate from the matching
+	attendee and pass it as parameter to subsequent method calls.
+	(-takeAttendeeStatus:withDelegate:from:withRecurrenceId:)
+	(changeParticipationStatus:withDelegate:forRecurrenceId:): take a
+	new "withDelegate:" parameter.
+
 	* Tests/webdavlib.py (HTTPQuery.__init__): the content-type is no
 	longer passed as parameter and should be directly set by the
 	client as an attribute.

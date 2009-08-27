@@ -516,14 +516,16 @@
 
 - (id) acceptAction
 {
-  [[self clientObject] changeParticipationStatus: @"ACCEPTED"];
+  [[self clientObject] changeParticipationStatus: @"ACCEPTED"
+                                    withDelegate: nil];
 
   return self;
 }
 
 - (id) declineAction
 {
-  [[self clientObject] changeParticipationStatus: @"DECLINED"];
+  [[self clientObject] changeParticipationStatus: @"DECLINED"
+                                    withDelegate: nil];
 
   return self;
 }
