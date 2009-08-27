@@ -1,5 +1,8 @@
 2009-08-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* iCalEntityObject.m (-removeFromAttendees:): new helper method to
+	remove a specific attendee from the list.
+
 	* NSArray+NGCards.m (-renderedForCards): empty values are not
 	returned, so as to avoid rendering attributes that do not have a
 	value.

@@ -302,6 +302,23 @@
   [self addChild: _person];
 }
 
+- (void) removeFromAttendees: (iCalPerson *) oldAttendee
+{
+  NSMutableArray *newAttendees;
+  int count, max;
+
+  newAttendees = [NSMutableArray arrayWithArray: [self attendees]];
+  max = [newAttendees count];
+  for (count = max - 1; count > -1; count--)
+    {
+      if ([[newAttendees objectAtIndex: count]
+            hasSameEmailAddress: oldAttendee])
+        [newAttendees removeObjectAtIndex: count];
+    }
+
+  [self setAttendees: newAttendees];
+}
+
 - (void) setAttendees: (NSArray *) attendees
 {
   [self removeAllAttendees];

@@ -106,10 +106,12 @@ typedef enum
 - (void) setStatus: (NSString *) _value;
 - (NSString *) status;
 
-- (void) removeAllAttendees;
 - (void) addToAttendees: (iCalPerson *) _person;
 - (NSArray *) attendees;
 - (void) setAttendees: (NSArray *) attendees;
+
+- (void) removeFromAttendees: (iCalPerson *) oldAttendee;
+- (void) removeAllAttendees;
 
 /* categorize attendees into participants and resources */
 - (NSArray *) participants;
