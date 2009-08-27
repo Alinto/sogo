@@ -64,7 +64,8 @@ class DAVAclTest(unittest.TestCase):
 <set-roles user="%s">%s</set-roles>
 </acl-query>""" % (subscriber_username, rights_str)
 
-        post = webdavlib.HTTPPOST(self.resource, aclQuery, "application/xml")
+        post = webdavlib.HTTPPOST(self.resource, aclQuery)
+        post.content_type = "application/xml"
         self.client.execute(post)
         self.assertEquals(post.response["status"], 204,
                           "rights modification: failure to set '%s' (status: %d)"
@@ -178,7 +179,8 @@ class DAVCalendarAclTest(DAVAclTest):
                                    "filename": filename,
                                    "organizer_line": organizer_line,
                                    "attendee_line": attendee_line }
-        put = webdavlib.HTTPPUT(url, event, "text/calendar; charset=utf-8")
+        put = webdavlib.HTTPPUT(url, event)
+        put.content_type = "text/calendar; charset=utf-8"
         client.execute(put)
         self.assertEquals(put.response["status"], exp_status,
                           "%s: event creation/modification:"
@@ -326,7 +328,7 @@ class DAVCalendarAclTest(DAVAclTest):
 
         icsClass = self.classToICSClass[event_class]
         url = "%s%s.ics" % (self.resource, icsClass.lower())
-        multiget = webdavlib.WebDAVCalendarMultiget(self.resource,
+        multiget = webdavlib.CalDAVCalendarMultiget(self.resource,
                                                     ["{urn:ietf:params:xml:ns:caldav}calendar-data"],
                                                     [ url ])
         self.subscriber_client.execute(multiget)
@@ -638,7 +640,8 @@ END:VCARD""" }
         if real_card is None:
             real_card = filename
         card = self.cards[real_card]
-        put = webdavlib.HTTPPUT(url, card, "text/x-vcard; charset=utf-8")
+        put = webdavlib.HTTPPUT(url, card)
+        put.content_type = "text/x-vcard; charset=utf-8"
         client.execute(put)
         self.assertEquals(put.response["status"], exp_status,
                           "%s: card creation/modification:"

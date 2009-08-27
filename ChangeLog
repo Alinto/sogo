@@ -1,3 +1,12 @@
+2009-08-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Tests/webdavlib.py (HTTPQuery.__init__): the content-type is no
+	longer passed as parameter and should be directly set by the
+	client as an attribute.
+	(HTTPSimpleQuery.prepare_headers): new method to enable
+	query-specific headers.
+	(CalDAVPOST.__init__): new query type
+
 2009-08-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MainUI/SOGoUserHomePage.m (-defaultAction): when the user has

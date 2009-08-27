@@ -20,7 +20,7 @@ class WebDAVClient:
         self.simpleauth_hash = (("%s:%s" % (username, password))
                                 .encode('base64')[:-1])
 
-    def _prepare_headers(self, query, body):
+    def prepare_headers(self, query, body):
         headers = { "User-Agent": self.user_agent,
                     "authorization": "Basic %s" % self.simpleauth_hash }
         if body is not None:
@@ -30,6 +30,11 @@ class WebDAVClient:
         if query.__dict__.has_key("content_type"):
             headers["content-type"] = query.content_type
 
+        query_headers = query.prepare_headers()
+        if query_headers is not None:
+            for key in query_headers.keys():
+                headers[key] = query_headers[key]
+
         return headers
 
     def execute(self, query):
@@ -37,7 +42,7 @@ class WebDAVClient:
 
         query.start = time.time()
         self.conn.request(query.method, query.url,
-                          body, self._prepare_headers(query, body))
+                          body, self.prepare_headers(query, body))
         query.set_response(self.conn.getresponse());
         query.duration = time.time() - query.start
 
@@ -49,6 +54,9 @@ class HTTPSimpleQuery:
         self.response = None
         self.start = -1
         self.duration = -1
+
+    def prepare_headers(self):
+        return {}
 
     def render(self):
         return None
@@ -67,15 +75,15 @@ class HTTPGET(HTTPSimpleQuery):
     method = "GET"
 
 class HTTPQuery(HTTPSimpleQuery):
-    def __init__(self, url, content_type):
+    def __init__(self, url):
         HTTPSimpleQuery.__init__(self, url)
-        self.content_type = content_type
+        self.content_type = "application/octet-stream"
 
 class HTTPPUT(HTTPQuery):
     method = "PUT"
 
-    def __init__(self, url, content, content_type = "application/octet-stream"):
-        HTTPQuery.__init__(self, url, content_type)
+    def __init__(self, url, content):
+        HTTPQuery.__init__(self, url)
         self.content = content
 
     def render(self):
@@ -88,7 +96,8 @@ class WebDAVQuery(HTTPQuery):
     method = None
 
     def __init__(self, url, depth = None):
-        HTTPQuery.__init__(self, url, "application/xml; charset=\"utf-8\"")
+        HTTPQuery.__init__(self, url)
+        self.content_type = "application/xml; charset=\"utf-8\""
         self.depth = depth
         self.ns_mgr = _WD_XMLNS_MGR()
         self.top_node = None
@@ -156,7 +165,32 @@ class WebDAVPROPFIND(WebDAVQuery):
             prop_tag = self.render_tag(prop)
             props.append(_WD_XMLTreeElement(prop_tag))
 
-class WebDAVCalendarMultiget(WebDAVREPORT):
+class CalDAVPOST(WebDAVQuery):
+    method = "POST"
+
+    def __init__(self, url, content,
+                 originator = None, recipients = None):
+        WebDAVQuery.__init__(self, url)
+        self.content_type = "text/calendar; charset=utf-8"
+        self.originator = originator
+        self.recipients = recipients
+        self.content = content
+
+    def prepare_headers(self):
+        headers = WebDAVQuery.prepare_headers(self)
+
+        if self.originator is not None:
+            headers["originator"] = self.originator
+
+        if self.recipients is not None:
+            headers["recipient"] = ",".join(self.recipients)
+
+        return headers
+
+    def render(self):
+        return self.content
+
+class CalDAVCalendarMultiget(WebDAVREPORT):
     def __init__(self, url, properties, hrefs):
         WebDAVQuery.__init__(self, url)
         multiget_tag = self.ns_mgr.register("calendar-multiget", "urn:ietf:params:xml:ns:caldav")
