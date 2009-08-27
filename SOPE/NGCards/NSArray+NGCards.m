@@ -114,12 +114,9 @@
 
   purified = [NSMutableArray arrayWithCapacity: [self count]];
   strings = [self objectEnumerator];
-  string = [strings nextObject];
-  while (string)
-    {
+  while ((string = [strings nextObject]))
+    if ([string length] > 0)
       [purified addObject: [string escapedForCards]];
-      string = [strings nextObject];
-    }
 
   return purified;
 }

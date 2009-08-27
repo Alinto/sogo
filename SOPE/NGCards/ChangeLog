@@ -1,3 +1,12 @@
+2009-08-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* NSArray+NGCards.m (-renderedForCards): empty values are not
+	returned, so as to avoid rendering attributes that do not have a
+	value.
+
+	* CardVersitRenderer.m (-renderElement:): we avoid outputting
+	attribute keys if no non-empty value has been returned.
+
 2009-07-17  Cyril Robert <crobert@inverse.ca>
 
 	* iCalPerson.m: Lowercased MAILTO to make it work with iCal.

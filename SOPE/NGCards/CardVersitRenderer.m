@@ -75,33 +75,33 @@
       [rendering appendString: [tag uppercaseString]];
       attributes = [anElement attributes];
       keys = [[attributes allKeys] objectEnumerator];
-      key = [keys nextObject];
-      while (key)
+      while ((key = [keys nextObject]))
         {
 	  NSString *s;
 	  int i, c;
 
           renderedAttrs = [[attributes objectForKey: key] renderedForCards];
-	  [rendering appendFormat: @";%@=", [key uppercaseString]];
 	  c = [renderedAttrs count];
+          if (c > 0)
+            {
+              [rendering appendFormat: @";%@=", [key uppercaseString]];
 
-	  for (i = 0; i < c; i++)
-	    {
-	      s = [renderedAttrs objectAtIndex: i];
+              for (i = 0; i < c; i++)
+                {
+                  s = [renderedAttrs objectAtIndex: i];
 	      
-	      // We MUST quote attribute values that have a ":" in them and that
-	      // not already quoted
-	      if ([s length] > 2 && [s rangeOfString: @":"].length &&
-		  [s characterAtIndex: 0] != '"' && ![s hasSuffix: @"\""])
-		s = [NSString stringWithFormat: @"\"%@\"", s];
+                  /* We MUST quote attribute values that have a ":" in them
+                     and that not already quoted */
+                  if ([s length] > 2 && [s rangeOfString: @":"].length &&
+                      [s characterAtIndex: 0] != '"' && ![s hasSuffix: @"\""])
+                    s = [NSString stringWithFormat: @"\"%@\"", s];
 	      
-	      [rendering appendFormat: @"%@", s];
+                  [rendering appendFormat: @"%@", s];
 
-	      if (i+1 < c)
-		[rendering appendString: @","];
-	    }
-	     
-          key = [keys nextObject];
+                  if (i+1 < c)
+                    [rendering appendString: @","];
+                }
+            }
         }
 
       values = [anElement values];
