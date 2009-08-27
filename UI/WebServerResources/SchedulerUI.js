@@ -562,7 +562,6 @@ function dateSelectorCallback(http) {
         var content = http.responseText;
         setDateSelectorContent(content);
         cachedDateSelectors[http.callbackData] = content;
-        changeCalendarDisplay( { "day": currentDay } );
     }
     else
         log ("dateSelectorCallback Ajax error");
@@ -822,7 +821,8 @@ function changeCalendarDisplay(data, newView) {
                 }
 	
                 // Scroll to event
-                scrollDayView(scrollEvent);	
+                if (scrollEvent)
+                    scrollDayView(scrollEvent);
 
                 return false;
             }
@@ -916,19 +916,17 @@ function refreshCalendarEvents(scrollEvent) {
     var todayDate = new Date();
     var sd;
     var ed;
+
+    if (!currentDay)
+        currentDay = todayDate.getDayString();
+
     if (currentView == "dayview") {
-        if (currentDay)
-            sd = currentDay;
-        else
-            sd = todayDate.getDayString();
+        sd = currentDay;
         ed = sd;
     }
     else if (currentView == "weekview") {
         var startDate;
-        if (currentDay)
-            startDate = currentDay.asDate();
-        else
-            startDate = todayDate;
+        startDate = currentDay.asDate();
         startDate = startDate.beginOfWeek();
         sd = startDate.getDayString();
         var endDate = new Date();
@@ -938,10 +936,7 @@ function refreshCalendarEvents(scrollEvent) {
     }
     else {
         var monthDate;
-        if (currentDay)
-            monthDate = currentDay.asDate();
-        else
-            monthDate = todayDate;
+        monthDate = currentDay.asDate();
         monthDate.setDate(1);
         sd = monthDate.beginOfWeek().getDayString();
 
@@ -1155,12 +1150,11 @@ function calendarDisplayCallback(http) {
     var daysView = $("daysView");
     var position = -1;
 
+    // Check the previous view to restore the scrolling position
     if (daysView)
       position = daysView.scrollTop;
-
-    if (position != -1)
-      preventAutoScroll = true;
-
+    preventAutoScroll = (position != -1);
+    
     if (http.readyState == 4
         && http.status == 200) {
         document.dayDisplayAjaxRequest = null;
