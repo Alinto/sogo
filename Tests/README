@@ -1,7 +1,8 @@
 setup
 -----
 
-(you need "python-xml" and "python-m2crypto" in order to run the scripts on Debian)
+(you need "python-xml", "python-vobject" and "python-m2crypto" in order to run
+ the scripts on Debian)
 
 1) copy config.py.in to config.py (make sure to never EVER add it to monotone)
 2) edit config.py to suit your environment
