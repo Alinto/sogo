@@ -60,23 +60,24 @@ function buildUsersTree(treeDiv, response) {
     var multiplier = ((isUserDialog) ? 1 : 2);
     
     if (response.length) {
-	var lines = response.split("\n");
-	for (var i = 0; i < lines.length; i++) {
-	    if (lines[i].length > 0)
-		addUserLineToTree(d, 1 + i * multiplier, lines[i]);
-	}
-	treeDiv.appendChild(d.domObject ());
-	treeDiv.clean = false;
-	for (var i = 0; i < lines.length - 1; i++) {
-	    if (lines[i].length > 0) {
-		if (!isUserDialog) {
-		    var toggle = $("tgd" + (1 + i * 2));
-		    toggle.observe ("click", onUserNodeToggle);
-		}
-		var sd = $("sd" + (1 + i * multiplier));
-		sd.observe("click", onTreeItemClick);
-	    }
-	}
+        var lines = response.split("\n");
+        for (var i = 0; i < lines.length; i++) {
+            if (lines[i].length > 0)
+              addUserLineToTree(d, 1 + i * multiplier, lines[i]);
+        }
+        treeDiv.innerHTML = "";
+        treeDiv.appendChild(d.domObject ());
+        treeDiv.clean = false;
+        for (var i = 0; i < lines.length - 1; i++) {
+            if (lines[i].length > 0) {
+                if (!isUserDialog) {
+                    var toggle = $("tgd" + (1 + i * 2));
+                    toggle.observe ("click", onUserNodeToggle);
+                }
+                var sd = $("sd" + (1 + i * multiplier));
+                sd.observe("click", onTreeItemClick);
+            }
+        }
     }
 }
 
@@ -86,13 +87,13 @@ function addUserLineToTree(tree, parent, line) {
     var userInfos = line.split(":");
     var email = userInfos[1] + " &lt;" + userInfos[2] + "&gt;";
     if (userInfos[3] && !userInfos[3].empty())
-	email += ", " + userInfos[3]; // extra contact info
+      email += ", " + userInfos[3]; // extra contact info
     tree.add(parent, 0, email, 0, '#', userInfos[0], 'person',
-	     '', '',
-	     ResourcesURL + '/abcard.gif',
-	     ResourcesURL + '/abcard.gif');
+             '', '',
+             ResourcesURL + '/abcard.gif',
+             ResourcesURL + '/abcard.gif');
     tree.add(parent + 1, parent, labels["Please wait..."], 0, '#', null,
-	     null, '', '', icon, icon);
+             null, '', '', icon, icon);
 }
 
 function onTreeItemClick(event) {
