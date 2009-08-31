@@ -47,33 +47,27 @@ function Node(id, pid, name, isParent, url, dataname, datatype, title, target,
 function dTree(objName) {
     this.obj = objName;
     this.config = {
-    target: null,
-    hideRoot: false,
-    folderLinks: true,
-    useSelection: true,
-    useCookies: false,
-    useLines: true,
-    useIcons: true,
-    useStatusText: false,
-    closeSameLevel: false,
-    inOrder: false
+      target: null,
+      useCookies: false
     };
     this.icon = {
-    root: 'img/base.gif',
-    folder: 'img/folder.gif',
-    folderOpen: 'img/folderopen.gif',
-    node: 'img/page.gif',
-    empty: 'img/empty.gif',
-    line: 'img/line.gif',
-    join: 'img/join.gif',
-    joinBottom: 'img/joinbottom.gif',
-    plus: 'img/plus.gif',
-    plusBottom: 'img/plusbottom.gif',
-    minus: 'img/minus.gif',
-    minusBottom: 'img/minusbottom.gif',
-    nlPlus: 'img/nolines_plus.gif',
-    nlMinus: 'img/nolines_minus.gif'
+      root: 'img/base.gif',
+      folder: 'img/folder.gif',
+      folderOpen: 'img/folderopen.gif',
+      node: 'img/page.gif',
+      empty: 'img/empty.gif',
+      line: 'img/line.gif',
+      join: 'img/join.gif',
+      joinBottom: 'img/joinbottom.gif',
+      plus: 'img/plus.gif',
+      plusBottom: 'img/plusbottom.gif',
+      minus: 'img/minus.gif',
+      minusBottom: 'img/minusbottom.gif',
+      nlPlus: 'img/nolines_plus.gif',
+      nlMinus: 'img/nolines_minus.gif'
     };
+    this.images = {};
+    this.objects = {};
     this.aNodes = [];
     this.aIndent = [];
     this.root = new Node(-1);
@@ -103,6 +97,26 @@ dTree.prototype = {
                                                    iconOpen, open, false, hasUnseen);
     },
 
+    preload: function () {
+        this.images['line']        = new Element ("img", {"src": this.icon.line});
+        this.images['empty']       = new Element ("img", {"src": this.icon.empty});
+        this.images['plus']        = new Element ("img", {"src": this.icon.plus});
+        this.images['minus']       = new Element ("img", {"src": this.icon.minus});
+        this.images['plusbottom']  = new Element ("img", {"src": this.icon.plusBottom});
+        this.images['minusbottom'] = new Element ("img", {"src": this.icon.minusBottom});
+        this.images['join']        = new Element ("img", {"src": this.icon.join});
+        this.images['joinbottom']  = new Element ("img", {"src": this.icon.joinBottom});
+
+        this.objects['link'] = new Element ("a", {"href": "#"});
+        this.objects['nodelink'] = new Element ("a", {"href": "#", "class": "node"});
+        this.objects['div']  = new Element ("div");
+        this.objects['nodediv']  = new Element ("div", {"class": "dTreeNode"});
+        this.objects['clipdiv'] = new Element ("div", {"class": "clip"});
+        this.objects['namespan'] = new Element ("span", {"class": "nodeName"});
+        this.objects['image'] = new Element ("img");
+    },
+    
+
     // Open/close all nodes
     openAll: function() {
         this.oAll(true);
@@ -112,27 +126,21 @@ dTree.prototype = {
     },
 
     // Outputs the tree to the page
-    toString: function() {
-        var str = '<div class="dtree" id="' + this.obj + '">\n';
-        if (document.getElementById) {
-            if (this.config.useCookies)
-                this.selectedNode = this.getSelected();
-            str += this.addNode(this.root);
-        } else str += 'Browser not supported.';
-        str += '</div>';
+    domObject: function() {
+        var div = this.objects["div"].cloneNode (true);
+        div.id = this.obj;
+        div.addClassName ("dtree");
+        if (this.config.useCookies)
+          this.selectedNode = this.getSelected();
+        this.addNode (this.root, div);
         if (!this.selectedFound) this.selectedNode = null;
         this.completed = true;
-        return str;
-    },
-    valueOf: function() {
-        return this.toString();
+        return div;
     },
 
     // Creates the tree structure
-    addNode: function(pNode) {
-        var str = '';
+    addNode: function(pNode, container) {
         var n=0;
-        if (this.config.inOrder) n = pNode._ai;
         for (n; n<this.aNodes.length; n++) {
             if (this.aNodes[n].pid == pNode.id) {
                 var cn = this.aNodes[n];
@@ -141,88 +149,111 @@ dTree.prototype = {
                 this.setCS(cn);
                 if (!cn.target && this.config.target) cn.target = this.config.target;
                 if (cn._hc && !cn._io && this.config.useCookies) cn._io = this.isOpen(cn.id);
-                if (!this.config.folderLinks && cn._hc) cn.url = null;
-                if (this.config.useSelection && cn.id == this.selectedNode && !this.selectedFound) {
+                if (cn.id == this.selectedNode && !this.selectedFound) {
                     cn._is = true;
                     this.selectedNode = n;
                     this.selectedFound = true;
                 }
-                str += this.node(cn, n);
+                this.node(cn, n, container);
                 if (cn._ls) break;
             }
         }
-        return str;
     },
 
     // Creates the node icon, url and text
-    node: function(node, nodeId) {
-        var str = '';
-
+    node: function(node, nodeId, container) {
+        var rc;
         this.aNodes[nodeId] = node;
-        if (this.root.id != node.pid || !this.config.hideRoot) {
-            str += '<div class="dTreeNode"';
-            if (node.datatype) str += ' datatype="' + dTreeQuote(node.datatype) + '"';
-            if (node.dataname) str += ' dataname="' + dTreeQuote(node.dataname) + '"';
-            str += '>' + this.indent(node, nodeId);
-            if (node.url) {
-                str += '<a id="s' + this.obj + nodeId + '" class="node" href="' + dTreeQuote(node.url) + '"';
-                if (node.title) str += ' title="' + dTreeQuote(node.title) + '"';
-                if (node.target) str += ' target="' + dTreeQuote(node.target) + '"';
-                if (this.config.useStatusText) str += ' onmouseover="window.status=\'' + dTreeQuote(node.name) + '\';return true;" onmouseout="window.status=\'\';return true;" ';
-                if (this.config.useSelection && ((node._hc && this.config.folderLinks) || !node._hc))
-                    str += ' onclick="' + this.obj + '.s(' + nodeId + ');"';
-                str += '>';
+        if (this.root.id != node.pid) {
+            var div = this.objects['nodediv'].cloneNode (true);
+            if (node.datatype) 
+              div.writeAttribute ("datatype", dTreeQuote(node.datatype));
+            if (node.dataname)
+              div.writeAttribute ("dataname", dTreeQuote(node.dataname));
+            this.indent (node, nodeId, div);
+
+            var link = this.objects['nodelink'].cloneNode (true);
+            link.id = 's' + this.obj + nodeId;
+            link.href = dTreeQuote(node.url);
+            if (node.title)
+              link.writeAttribute ("title", dTreeQuote(node.title));
+            if (node.target)
+              link.writeAttribute ("target", dTreeQuote(node.target));
+            link.observe ("click", this.s.bindAsEventListener(this, parseInt(nodeId)));
+
+            if (!node.icon) 
+              node.icon = (this.root.id == node.pid) ? 
+                this.icon.root : ((node._hc) ? this.icon.folder : this.icon.node);
+            if (!node.iconOpen) 
+              node.iconOpen = (node._hc) ? 
+                this.icon.folderOpen : this.icon.node;
+
+            if (this.root.id == node.pid) {
+                node.icon = this.icon.root;
+                node.iconOpen = this.icon.root;
             }
-            else if ((!this.config.folderLinks || !node.url) && node._hc && node.pid != this.root.id)
-                str += '<a href="#" onclick="' + this.obj + '.o(' + nodeId + ');" class="node">';
-            if (this.config.useIcons) {
-                if (!node.icon) node.icon = (this.root.id == node.pid) ? this.icon.root : ((node._hc) ? this.icon.folder : this.icon.node);
-                if (!node.iconOpen) node.iconOpen = (node._hc) ? this.icon.folderOpen : this.icon.node;
-                if (this.root.id == node.pid) {
-                    node.icon = this.icon.root;
-                    node.iconOpen = this.icon.root;
-                }
-                str += '<img id="i' + this.obj + nodeId + '" src="' + ((node._io) ? node.iconOpen : node.icon) + '" alt="" />';
-            }
-            str += '<span class="nodeName';
+
+            var img = this.objects['image'].cloneNode (true);
+            img.id = 'i' + this.obj + nodeId;
+            img.src = ((node._io) ? node.iconOpen : node.icon);
+
+            var span = this.objects['namespan'].cloneNode (true);
             if (!node.isParent)
-                str += ' leaf';
+              span.addClassName ("leaf");
             if (node.hasUnseen)
-                str += ' unseen';
-            str += '">' + node.name + '</span>';
-            if (node.url || ((!this.config.folderLinks || !node.url) && node._hc)) str += '</a>';
-            str += '</div>';
+              span.addClassName ("unseen");
+            span.update (node.name);
+
+            link.appendChild (img);
+            link.appendChild (span);
+            div.appendChild (link);
+            if (container)
+              container.appendChild (div);
+            else
+              rc = div;
         }
         if (node._hc) {
-            str += '<div id="d' + this.obj + nodeId + '" class="clip" style="display:' + ((this.root.id == node.pid || node._io) ? 'block' : 'none') + ';">';
-            str += this.addNode(node);
-            str += '</div>';
+            var div = this.objects['clipdiv'].cloneNode (true);
+            div.id = 'd' + this.obj + nodeId;
+            div.setStyle ({"display": 
+                          ((this.root.id == node.pid || node._io) ? 
+                           'block' : 'none')});
+            this.addNode(node, div);
+            if (container)
+              container.appendChild (div);
         }
         this.aIndent.pop();
-
-        return str;
+        return rc;
     },
 
     // Adds the empty and line icons
-    indent: function(node, nodeId) {
-        var str = '';
-        if (this.root.id != node.pid)
-            {
-                
-                for (var n=0; n<this.aIndent.length; n++)
-                    str += '<img src="' + ( (this.aIndent[n] == 1 && this.config.useLines) ? this.icon.line : this.icon.empty ) + '" alt="" />';
-                (node._ls) ? this.aIndent.push(0) : this.aIndent.push(1);
-                if (node._hc)
-                    {
-                        str += '<a href="#" id="tg' + this.obj + nodeId + '" onclick="return ' + this.obj + '.o(' + nodeId + ');"><img id="j' + this.obj + nodeId + '" src="';
-                        if (!this.config.useLines) str += (node._io) ? this.icon.nlMinus : this.icon.nlPlus;
-                        else str += ( (node._io) ? ((node._ls && this.config.useLines) ? this.icon.minusBottom : this.icon.minus) : ((node._ls && this.config.useLines) ? this.icon.plusBottom : this.icon.plus ) );
-                        str += '" alt="" /></a>';
-                    }
-                else
-                    str += '<img src="' + ( (this.config.useLines) ? ((node._ls) ? this.icon.joinBottom : this.icon.join ) : this.icon.empty) + '" alt="" />';
+    indent: function(node, nodeId, container) {
+        if (this.root.id != node.pid) {
+            for (var n=0; n<this.aIndent.length; n++) {
+                var img = (this.aIndent[n] == 1) ? 
+                  this.images['line'] : this.images['empty'];
+                container.appendChild (img.cloneNode (true));
             }
-        return str;
+            (node._ls) ? this.aIndent.push(0) : this.aIndent.push(1);
+            if (node._hc) {
+                var link = this.objects['link'].cloneNode (true);
+                link.id = 'tg' + this.obj + nodeId;
+                link.observe ("click", this.o.bindAsEventListener(this, parseInt(nodeId)));
+                var img;
+                if (node._io)
+                  img = ((node._ls) ? this.images['minusbottom'] : this.images['minus']);
+                else
+                  img = ((node._ls) ? this.images['plusbottom'] : this.images['plus']);
+                img = img.cloneNode (true);
+                img.id = 'j' + this.obj + nodeId;
+                link.appendChild (img);
+                container.appendChild (link);
+            }
+            else {
+                var img = ((node._ls) ? this.images['joinbottom'] : this.images['join']);
+                container.appendChild (img.cloneNode (true));
+            }
+        }
     },
 
     // Checks if a node has any children and if it is the last sibling
@@ -242,10 +273,10 @@ dTree.prototype = {
     },
 
     // Highlights the selected node
-    s: function(id) {
-        if (!this.config.useSelection) return;
+    s: function(id, withEvent) {
+        if (withEvent)
+          id = withEvent;
         var cn = this.aNodes[id];
-        if (cn._hc && !this.config.folderLinks) return;
         if (this.selectedNode != id) {
             if (this.selectedNode || this.selectedNode==0) {
                 eOld = document.getElementById("s" + this.obj + this.selectedNode);
@@ -259,11 +290,12 @@ dTree.prototype = {
     },
 
     // Toggle Open or close
-    o: function(id) {
+    o: function(id, withEvent) {
+        if (withEvent)
+          id = withEvent;
         var cn = this.aNodes[id];
         this.nodeStatus(!cn._io, id, cn._ls);
         cn._io = !cn._io;
-        if (this.config.closeSameLevel) this.closeLevel(cn);
         if (this.config.useCookies) this.updateCookie();
         
         return false;
@@ -326,14 +358,10 @@ dTree.prototype = {
     nodeStatus: function(status, id, bottom) {
         eDiv = document.getElementById('d' + this.obj + id);
         if (eDiv) {
-            eJoin = document.getElementById('j' + this.obj + id);
-            if (this.config.useIcons) {
+            eJoin = $('j' + this.obj + id);
                 eIcon = document.getElementById('i' + this.obj + id);
                 eIcon.src = (status) ? this.aNodes[id].iconOpen : this.aNodes[id].icon;
-            }
-            eJoin.src = (this.config.useLines)?
-                ((status)?((bottom)?this.icon.minusBottom:this.icon.minus):((bottom)?this.icon.plusBottom:this.icon.plus)):
-                ((status)?this.icon.nlMinus:this.icon.nlPlus);
+            eJoin.src = ((status)?((bottom)?this.icon.minusBottom:this.icon.minus):((bottom)?this.icon.plusBottom:this.icon.plus));
             eDiv.style.display = (status) ? 'block': 'none';
         }
     },

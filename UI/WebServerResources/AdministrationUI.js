@@ -38,7 +38,6 @@ function usersSearchCallback(http) {
 
 function buildUsersTree(treeDiv, response) {
     d = new dTree("d");
-    d.config.folderLlinks = true;
     d.config.hideRoot = true;
     d.icon.root = ResourcesURL + '/tbtv_account_17x17.gif';
     d.icon.folder = ResourcesURL + '/tbtv_leaf_corner_17x17.png';
@@ -54,6 +53,7 @@ function buildUsersTree(treeDiv, response) {
     d.icon.nlPlus = ResourcesURL + '/tbtv_corner_plus_17x17.gif';
     d.icon.nlMinus = ResourcesURL + '/tbtv_corner_minus_17x17.gif';
     d.icon.empty = ResourcesURL + '/empty.gif';
+    d.preload ();
     d.add(0, -1, '');
     
     var isUserDialog = false;
@@ -65,7 +65,7 @@ function buildUsersTree(treeDiv, response) {
 	    if (lines[i].length > 0)
 		addUserLineToTree(d, 1 + i * multiplier, lines[i]);
 	}
-	treeDiv.update(d);
+	treeDiv.appendChild(d.domObject ());
 	treeDiv.clean = false;
 	for (var i = 0; i < lines.length - 1; i++) {
 	    if (lines[i].length > 0) {
@@ -129,23 +129,22 @@ function foldersSearchCallback(http) {
 	    var folders = response.split(";");
 	    var user = http.callbackData["user"];
 	    
-	    var str = '';
+	    dd.innerHTML = '';
 	    for (var i = 1; i < folders.length - 1; i++) {
-		str += addFolderBranchToTree (d, user, folders[i], nodeId, i, false);
-		log (i + " = " + folders[i]);
+		      dd.appendChild(addFolderBranchToTree (d, user, folders[i], nodeId, i, false));
+      		log (i + " = " + folders[i]);
 	    }
-	    str += addFolderBranchToTree (d, user, folders[folders.length-1], nodeId,
-					  (folders.length - 1), true);
+	    dd.appendChild (addFolderBranchToTree (d, user, folders[folders.length-1], nodeId,
+					  (folders.length - 1), true));
 	    log ((folders.length - 1) + " = " + folders[folders.length-1]);
-	    dd.update(str);
 	    for (var i = 1; i < folders.length; i++) {
-		var sd = $("sd" + (nodeId + i));
-		sd.observe("click", onTreeItemClick);
-		sd.observe("dblclick", onFolderOpen);
+      		var sd = $("sd" + (nodeId + i));
+      		sd.observe("click", onTreeItemClick);
+      		sd.observe("dblclick", onFolderOpen);
 	    }
 	}
 	else {
-	    dd.update(addFolderNotFoundNode (d, nodeId));
+	    dd.appendChild (addFolderNotFoundNode (d, nodeId));
 	    var sd = $("sd" + (nodeId + 1));
 	    sd.observe("click", onTreeItemClick);
 	}
@@ -169,7 +168,7 @@ function addFolderBranchToTree(tree, user, folder, nodeId, subId, isLast) {
     var node = new Node(subId, nodeId, name, 0, '#', folderId,
 			folderInfos[2] + '-folder', '', '', icon, icon);
     node._ls = isLast;
-    var content = tree.node(node, (nodeId + subId));
+    var content = tree.node(node, (nodeId + subId), null);
     
     return content;
 }
@@ -179,7 +178,7 @@ function addFolderNotFoundNode (tree, nodeId) {
     var node = new Node(1, nodeId, labels["No possible subscription"], 0, '#',
 			null, null, '', '', icon, icon);
     node._ls = true;
-    return tree.node(node, (nodeId + 1));
+    return tree.node(node, (nodeId + 1), null);
 }
 
 function onFolderOpen(event) {

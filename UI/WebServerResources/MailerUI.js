@@ -478,7 +478,7 @@ function onMailboxTreeItemClick(event) {
         var table = $("messageList");
         var head = table.tHead;
         var body = table.tBodies[0];
-        body.deselectAll ();
+        if (body.deselectAll) body.deselectAll ();
         for (var i = body.rows.length; i > 0; i--)
             body.deleteRow(i-1);
         if (head.rows[1])
@@ -1518,9 +1518,7 @@ function initMailboxTree() {
     if (node)
         node.parentNode.removeChild(node);
     mailboxTree = new dTree("mailboxTree");
-    mailboxTree.config.folderLinks = true;
     mailboxTree.config.hideRoot = true;
-
     mailboxTree.icon.root = ResourcesURL + "/tbtv_account_17x17.gif";
     mailboxTree.icon.folder = ResourcesURL + "/tbtv_leaf_corner_17x17.png";
     mailboxTree.icon.folderOpen	= ResourcesURL + "/tbtv_leaf_corner_17x17.png";
@@ -1535,6 +1533,7 @@ function initMailboxTree() {
     mailboxTree.icon.nlPlus = ResourcesURL + "/tbtv_corner_plus_17x17.gif";
     mailboxTree.icon.nlMinus = ResourcesURL + "/tbtv_corner_minus_17x17.gif";
     mailboxTree.icon.empty = ResourcesURL + "/empty.gif";
+    mailboxTree.preload ();
 
     mailboxTree.add(0, -1, '');
 
@@ -1548,7 +1547,8 @@ function initMailboxTree() {
 
 function updateMailboxTreeInPage() {
     var treeContent = $("folderTreeContent");
-    treeContent.update(mailboxTree);
+    //treeContent.update(mailboxTree.toString ());
+    treeContent.appendChild(mailboxTree.domObject ());
 
     var inboxFound = false;
     var tree = $("mailboxTree");
