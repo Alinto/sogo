@@ -1,4 +1,4 @@
-1.0-2009xxxx (1.0.5)
+1.0-2009xxxx (1.1.0)
 --------------------
 - added backup/restore tools for all user's data (calendars, address books, preferences, etc.)
 - added Web administrative interface (right now, only for ACLs)
@@ -9,6 +9,7 @@
 - added the capability of creating and managing lists of contacts (same as in Thunderbird)
 - added support for short date format in the calendar views
 - added support for iCal delegation
+- rewrote dTree.js to include major optimizations
 
 1.0-20090812 (1.0.4)
 --------------------
