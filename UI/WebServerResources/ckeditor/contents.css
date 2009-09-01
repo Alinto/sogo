@@ -33,3 +33,9 @@ img, input, textarea
 {
 	cursor: default;
 }
+blockquote[type~="cite"]
+{
+    border-left: 1px solid blue;
+    padding-left: 10px;
+    margin: 0;
+}
