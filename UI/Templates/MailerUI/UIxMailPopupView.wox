@@ -6,6 +6,7 @@
     xmlns:label="OGo:label"
     className="UIxPageFrame"
     title="title"
+    const:jsFiles="SOGoAutoCompletion.js"
     const:popup="YES">
   <script type="text/javascript">
     var messageName = '<var:string value="clientObject.relativeImap4Name"/>';

@@ -32,163 +32,162 @@
 var lastIndex = currentIndex;
 
 function sanitizedCn(cn) {
-  var parts;
-  parts = cn.split(', ');
-  if(parts.length == 1)
-    return cn;
-  return parts[0];
+    var parts;
+    parts = cn.split(', ');
+    if(parts.length == 1)
+        return cn;
+    return parts[0];
 }
 
 function hasAddress(email) {
-  var e = $(email);
-  if(e)
-    return true;
-  return false;
+    var e = $(email);
+    if(e)
+        return true;
+    return false;
 }
 
 function checkAddresses() {
-  alert("addressCount: " + this.getAddressCount() + " currentIndex: " + currentIndex + " lastIndex: " + lastIndex);
+    alert("addressCount: " + this.getAddressCount() + " currentIndex: " + currentIndex + " lastIndex: " + lastIndex);
 }
 
 function fancyAddRow(shouldEdit, text, type) {
-  var addr = $('addr_' + lastIndex);
-  if (addr && addr.value == '') {
-    var input = $('subjectField');
-    if (input && input.value != '') {
-      input.focus();
-      input.select();
-      return;
+    var addr = $('addr_' + lastIndex);
+    if (addr && addr.value == '') {
+        var input = $('subjectField');
+        if (input && input.value != '') {
+            input.focus();
+            input.select();
+            return;
+        }
     }
-  }
-  var addressList = $("addressList").tBodies[0];
-  var lastChild = $("lastRow");
+    var addressList = $("addressList").tBodies[0];
+    var lastChild = $("lastRow");
   
-  currentIndex++;
-  var proto = lastChild.previous("tr");
-  var row = proto.cloneNode(true);
-  row.writeAttribute("id", 'row_' + currentIndex);
-  var rowNodes = row.childNodesWithTag("td");
-  var select = $(rowNodes[0]).childNodesWithTag("select")[0];
-  select.name = 'popup_' + currentIndex;
-  select.value = (type? type : proto.down("select").value);
-  var input = $(rowNodes[1]).childNodesWithTag("input")[0];
-  input.name  = 'addr_' + currentIndex;
-  input.id = 'addr_' + currentIndex;
-  input.value = text;
-	input.stopObserving("keydown", onContactKeydown);
+    currentIndex++;
+    var proto = lastChild.previous("tr");
+    var row = proto.cloneNode(true);
+    row.writeAttribute("id", 'row_' + currentIndex);
+    var rowNodes = row.childNodesWithTag("td");
+    var select = $(rowNodes[0]).childNodesWithTag("select")[0];
+    select.name = 'popup_' + currentIndex;
+    select.value = (type? type : proto.down("select").value);
+    var input = $(rowNodes[1]).childNodesWithTag("input")[0];
+    input.name  = 'addr_' + currentIndex;
+    input.id = 'addr_' + currentIndex;
+    input.value = text;
+    input.stopObserving("keydown");
+    input.stopObserving("blur");
 
-  addressList.insertBefore(row, lastChild);
+    addressList.insertBefore(row, lastChild);
 
-  if (shouldEdit) {
-    input.writeAttribute("autocomplete", "off");
-    input.observe("keydown", onContactKeydown); // bind listener for address completion
-		input.observe("blur", onContactBlur);
-    input.focus();
-    input.select();
-  }
+    if (shouldEdit) {
+        input.addInterface(SOGoAutoCompletionInterface);
+        input.focus();
+        input.select();
+    }
 }
 
 function addressFieldGotFocus(sender) {
-  var idx;
+    var idx;
   
-  idx = this.getIndexFromIdentifier(sender.id);
-  if (lastIndex == idx) return;
-  this.removeLastEditedRowIfEmpty();
-  onWindowResize(null);
+    idx = this.getIndexFromIdentifier(sender.id);
+    if (lastIndex == idx) return;
+    this.removeLastEditedRowIfEmpty();
+    onWindowResize(null);
 
-  return false;
+    return false;
 }
 
 function addressFieldLostFocus(sender) {
-  lastIndex = this.getIndexFromIdentifier(sender.id);
+    lastIndex = this.getIndexFromIdentifier(sender.id);
 
-	if (sender.confirmedValue) {
-		sender.value = sender.confirmedValue;
-		sender.confirmedValue = false;
-	}
-	
-  var addresses = sender.value.split(',');
-  if (addresses.length > 0) {
-    sender.value = addresses[0].strip();
-    for (var i = 1; i < addresses.length; i++) {
-      var addr = addresses[i].strip();
-      if (addr.length > 0)
-				fancyAddRow(false, addr, $(sender).up("tr").down("select").value);
+    if (sender.confirmedValue) {
+        sender.value = sender.confirmedValue;
+        sender.confirmedValue = false;
     }
-  }
-  onWindowResize(null);
+	
+    var addresses = sender.value.split(',');
+    if (addresses.length > 0) {
+        sender.value = addresses[0].strip();
+        for (var i = 1; i < addresses.length; i++) {
+            var addr = addresses[i].strip();
+            if (addr.length > 0)
+                fancyAddRow(false, addr, $(sender).up("tr").down("select").value);
+        }
+    }
+    onWindowResize(null);
 
-  return false;
+    return false;
 }
 
 function removeLastEditedRowIfEmpty() {
-  var addr, addressList, senderRow;
+    var addr, addressList, senderRow;
   
-  addressList = $("addressList").tBodies[0];
+    addressList = $("addressList").tBodies[0];
   
-  if (lastIndex == 0 && addressList.childNodes.length <= 2) return;
-  addr = $('addr_' + lastIndex);
-  if (!addr) return;
-  if (addr.value.strip() != '') return;
-  senderRow = $("row_" + lastIndex);
-	addressList.removeChild(senderRow);
+    if (lastIndex == 0 && addressList.childNodes.length <= 2) return;
+    addr = $('addr_' + lastIndex);
+    if (!addr) return;
+    if (addr.value.strip() != '') return;
+    senderRow = $("row_" + lastIndex);
+    addressList.removeChild(senderRow);
 }
 
 function getIndexFromIdentifier(id) {
-  return id.split('_')[1];
+    return id.split('_')[1];
 }
 
 function getAddressIDs() {
-  var addressList, rows, i, count, addressIDs;
+    var addressList, rows, i, count, addressIDs;
 
-  addressIDs = new Array();
+    addressIDs = new Array();
 
-  addressList = $("addressList").tBodies[0];
-  rows  = addressList.childNodes;
-  count = rows.length;
+    addressList = $("addressList").tBodies[0];
+    rows  = addressList.childNodes;
+    count = rows.length;
 
-  for (i = 0; i < count; i++) {
-    var row, rowId;
+    for (i = 0; i < count; i++) {
+        var row, rowId;
     
-    row = rows[i];
-    rowId = row.id;
-    if (rowId && rowId != 'lastRow') {
-      var idx;
+        row = rows[i];
+        rowId = row.id;
+        if (rowId && rowId != 'lastRow') {
+            var idx;
 
-      idx = this.getIndexFromIdentifier(rowId);
-      addressIDs.push(idx);
+            idx = this.getIndexFromIdentifier(rowId);
+            addressIDs.push(idx);
+        }
     }
-  }
-  return addressIDs;
+    return addressIDs;
 }
 
 function getAddressCount() {
-  var addressCount, addressIDs, i, count;
+    var addressCount, addressIDs, i, count;
   
-  addressCount = 0;
-  addressIDs   = this.getAddressIDs();
-  count        = addressIDs.length;
-  for (i = 0; i < count; i++) {
-    var idx, input;
+    addressCount = 0;
+    addressIDs   = this.getAddressIDs();
+    count        = addressIDs.length;
+    for (i = 0; i < count; i++) {
+        var idx, input;
 
-    idx   = addressIDs[i];
-    input = $('addr_' + idx);
-    if (input && input.value != '')
-      addressCount++;
-  }
-  return addressCount;
+        idx   = addressIDs[i];
+        input = $('addr_' + idx);
+        if (input && input.value != '')
+            addressCount++;
+    }
+    return addressCount;
 }
 
 function hasRecipients() {
-  var count;
+    var count;
   
-  count = this.getAddressCount();
+    count = this.getAddressCount();
 
-  return (count > 0);
+    return (count > 0);
 }
 
 function initMailToSelection() {
-  currentIndex = lastIndex = $$("table#addressList tr").length - 2;
+    currentIndex = lastIndex = $$("table#addressList tr").length - 2;
 }
 
 document.observe("dom:loaded", initMailToSelection);

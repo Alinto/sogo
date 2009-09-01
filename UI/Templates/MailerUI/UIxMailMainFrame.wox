@@ -7,7 +7,7 @@
   xmlns:label="OGo:label"
   className="UIxPageFrame"
   title="title"
-  const:jsFiles="dtree.js,MailerUIdTree.js">
+  const:jsFiles="dtree.js,MailerUIdTree.js,SOGoAutoCompletion.js">
   <script type="text/javascript">
     var textMailAccounts = '<var:string value="mailAccounts" const:escapeHTML="NO"/>';
     var textDefaultColumnsOrder = '<var:string value="defaultColumnsOrder" const:escapeHTML="NO"/>';

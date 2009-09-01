@@ -139,11 +139,11 @@ function clickedEditorSend(sender) {
   
     var lastRow = $("lastRow");
     lastRow.down("select").name = "popup_last";
-  
+    
     window.shouldPreserve = true;
     document.pageform.action = "send";
     document.pageform.submit();
-  
+    
     return false;
 }
 
@@ -299,233 +299,13 @@ function onTextMouseDown(event) {
     }
 }
 
-/* address completion */
-
-function onContactKeydown(event) {
-    if (event.ctrlKey || event.metaKey) {
-        this.focussed = true;
-        return;
-    }
-    if (event.keyCode == Event.KEY_TAB) {
-        if (this.confirmedValue)
-            this.value = this.confirmedValue;
-        if (document.currentPopupMenu)
-            hideMenu(document.currentPopupMenu);
-    }
-    else if (event.keyCode == 0
-             || event.keyCode == Event.KEY_BACKSPACE
-             || event.keyCode == 32  // Space
-             || event.keyCode > 47) {
-        this.confirmedValue = null;
-        MailEditor.selectedIndex = -1;
-        MailEditor.currentField = this;
-        if (MailEditor.delayedSearch)
-            window.clearTimeout(MailEditor.delayedSearch);
-        MailEditor.delayedSearch = window.setTimeout("performSearch()", MailEditor.delay);
-    }
-    else if (event.keyCode == Event.KEY_RETURN) {
-        preventDefault(event);
-        if (this.confirmedValue)
-            this.value = this.confirmedValue;
-        $(this).select();
-        if (document.currentPopupMenu)
-            hideMenu(document.currentPopupMenu);
-        MailEditor.selectedIndex = -1;
-    }
-    else if ($('contactsMenu').getStyle('visibility') == 'visible') {
-        if (event.keyCode == Event.KEY_UP) { // Up arrow
-            if (MailEditor.selectedIndex > 0) {
-                var contacts = $('contactsMenu').select("li");
-                contacts[MailEditor.selectedIndex--].removeClassName("selected");
-                this.value = contacts[MailEditor.selectedIndex].readAttribute("address");
-                contacts[MailEditor.selectedIndex].addClassName("selected");
-            }
-        }
-        else if (event.keyCode == Event.KEY_DOWN) { // Down arrow
-            var contacts = $('contactsMenu').select("li");
-            if (contacts.size() - 1 > MailEditor.selectedIndex) {
-                if (MailEditor.selectedIndex >= 0)
-                    contacts[MailEditor.selectedIndex].removeClassName("selected");
-                MailEditor.selectedIndex++;
-                this.value = contacts[MailEditor.selectedIndex].readAttribute("address");
-                contacts[MailEditor.selectedIndex].addClassName("selected");
-            }
-        }
-    }
-}
-
-function onContactBlur(event) {
-    if (MailEditor.delayedSearch)
-        window.clearTimeout(MailEditor.delayedSearch);
-    MailEditor.currentField = null;
-}
-
-function findPos(obj) {
-    var curleft = curtop = 0;
-    if (obj.offsetParent) {
-        do {
-            curleft += obj.offsetLeft;
-            curtop += obj.offsetTop;
-        } while (obj = obj.offsetParent);
-    }
-    return [curleft,curtop];
-}
-
-function performSearch() {
-    // Perform address completion
-    var reference = $("referenceList");
-    if (reference) {
-        var field = reference.down ("TD.editing INPUT");
-        if (field && field.value.trim().length > 2) {
-            /*var pos = findPos (field);
-            $('contactsMenu').absolutize ();
-            $('contactsMenu').style.top = pos[1];*/
-            var urlstr = window.location.href + "/../../contactSearch?search="
-              + encodeURIComponent (field.value.trim());
-            document.contactLookupAjaxRequest =
-                triggerAjaxRequest(urlstr, performSearchCallback, field);
-        }
-    }
-    else if (MailEditor.currentField) {
-        if (document.contactLookupAjaxRequest) {
-            // Abort any pending request
-            document.contactLookupAjaxRequest.aborted = true;
-            document.contactLookupAjaxRequest.abort();
-        }
-        if (MailEditor.currentField.value.trim().length > 2) {
-            var urlstr = (UserFolderURL + "Contacts/allContactSearch?search="
-                          + encodeURIComponent(MailEditor.currentField.value));
-            document.contactLookupAjaxRequest =
-                triggerAjaxRequest(urlstr, performSearchCallback, MailEditor.currentField);
-        }
-        else {
-            if (document.currentPopupMenu)
-                hideMenu(document.currentPopupMenu);
-        }
-    }
-}
-
-function performSearchCallback(http) {
-    if (http.readyState == 4) {
-        var menu = $('contactsMenu');
-        var list = menu.down("ul");
-    
-        var input = http.callbackData;
-    
-        if (http.status == 200) {
-            var start = input.value.length;
-            var data = http.responseText.evalJSON(true);
-
-            if (data.contacts.length > 1) {
-                list.select("li").each(function(item) {
-                        item.remove();
-                    });
-	
-                // Populate popup menu
-                for (var i = 0; i < data.contacts.length; i++) {
-                    var contact = data.contacts[i];
-                    var completeEmail = contact["c_cn"] + " <" + contact["c_mail"] + ">";
-                    var node = new Element('li', { 'address': completeEmail });
-                    node.writeAttribute("mail", contact["c_mail"]);
-                    node.writeAttribute("name", contact["c_cn"]);
-                    var matchPosition = completeEmail.toLowerCase().indexOf(data.searchText.toLowerCase());
-                    var matchBefore = completeEmail.substring(0, matchPosition);
-                    var matchText = completeEmail.substring(matchPosition, matchPosition + data.searchText.length);
-                    var matchAfter = completeEmail.substring(matchPosition + data.searchText.length);
-                    list.appendChild(node);
-                    node.uid = contact["c_name"];
-                    node.appendChild(document.createTextNode(matchBefore));
-                    node.appendChild(new Element('strong').update(matchText));
-                    node.appendChild(document.createTextNode(matchAfter));
-                    if (contact["contactInfo"])
-                        node.appendChild(document.createTextNode(" (" + contact["contactInfo"] + ")"));
-                    $(node).observe("mousedown", onAddressResultClick);
-                }
-
-                // Show popup menu
-                var offsetScroll = Element.cumulativeScrollOffset(input);
-                var offset = Element.cumulativeOffset(input);
-                var top = offset[1] - offsetScroll[1] + node.offsetHeight + 3;
-                var height = 'auto';
-                var heightDiff = window.height() - offset[1];
-                var nodeHeight = node.getHeight();
-
-                if ((data.contacts.length * nodeHeight) > heightDiff)
-                    // Limit the size of the popup to the window height, minus 12 pixels
-                    height = parseInt(heightDiff/nodeHeight) * nodeHeight - 12 + 'px';
-
-                menu.setStyle({ top: top + "px",
-                            left: offset[0] + "px",
-                            height: height,
-                            visibility: "visible" });
-                menu.scrollTop = 0;
-
-                document.currentPopupMenu = menu;
-                $(document.body).observe("click", onBodyClickMenuHandler);
-            }
-            else {
-                if (document.currentPopupMenu)
-                    hideMenu(document.currentPopupMenu);
-
-                if (data.contacts.length == 1) {
-                    // Single result
-                    var contact = data.contacts[0];
-                    input.uid = contact["c_name"];
-                    if ($("referenceList")) {
-                        var line = $(input).ancestors().first();
-                        line.writeAttribute ("card", contact["c_name"]);
-                        line.writeAttribute ("name", contact["c_cn"]);
-                        line.writeAttribute ("mail", contact["c_mail"]);
-                    }
-                    var completeEmail = contact["c_cn"] + " <" + contact["c_mail"] + ">";
-                    if (contact["c_cn"].substring(0, input.value.length).toUpperCase()
-                        == input.value.toUpperCase())
-                        input.value = completeEmail;
-                    else
-                        // The result matches email address, not user name
-                        input.value += ' >> ' + completeEmail;
-                    input.confirmedValue = completeEmail;
-	  
-                    var end = input.value.length;
-                    $(input).selectText(start, end);
-
-                    MailEditor.selectedIndex = -1;
-                }
-            }
-        }
-        else
-            if (document.currentPopupMenu)
-                hideMenu(document.currentPopupMenu);
-        document.contactLookupAjaxRequest = null;
-    }
-}
-
-function onAddressResultClick(event) {
-    var reference = $("referenceList");
-    if (reference) {
-        var field = reference.down ("TD.editing INPUT");
-        var td = reference.down ("TD.editing");
-        td.writeAttribute ("card", this.uid);
-        td.writeAttribute ("mail", this.readAttribute("mail"));
-        td.writeAttribute ("name", this.readAttribute("name"));
-        field.value = $(this).readAttribute("address");
-        endAllEditables ();
-    }
-    if (MailEditor.currentField) {
-        MailEditor.currentField.uid = this.uid;
-        MailEditor.currentField.value = $(this).readAttribute("address");
-        MailEditor.currentField.confirmedValue = MailEditor.currentField.value;
-    }
-}
-
 function initTabIndex(addressList, subjectField, msgArea) {
     var i = 1;
     addressList.select("input.textField").each(function (input) {
             if (!input.readAttribute("readonly")) {
                 input.writeAttribute("tabindex", i++);
-                input.writeAttribute("autocomplete", "off");
-                input.observe("keydown", onContactKeydown); // bind listener for address completion
-                input.observe("blur", onContactBlur);
+                input.addInterface(SOGoAutoCompletionInterface);
+                input.uidField = "c_name";
             }
         });
     subjectField.writeAttribute("tabindex", i++);
@@ -590,11 +370,22 @@ function initMailEditor() {
                               ] 
                           }
                          );
+        if (focusField == textarea)
+            focusCKEditor();
     }
 
     Event.observe(window, "resize", onWindowResize);
     Event.observe(window, "beforeunload", onMailEditorClose);
     onWindowResize.defer();
+}
+
+function focusCKEditor(event) {
+    if (CKEDITOR.status != 'basic_ready')
+        setTimeout("focusCKEditor()", 100);
+    else
+        // CKEditor reports being ready but it's still not focusable;
+        // we wait for a few more milliseconds
+        setTimeout("CKEDITOR.instances.text.focus()", 500);
 }
 
 function initializePriorityMenu() {
