@@ -114,14 +114,14 @@ function flagMailInWindow (win, msguid, flagged) {
     var row = win.$("row_" + msguid);
 
     if (row) {
-        var col = $$("TR#row_"+msguid+" TD.messageFlag").first ();
-        var img = col.childElements ().first ();
+        var col = row.select("TD.messageFlag").first();
+        var img = col.select("img").first();
         if (flagged) {
-            img.src = img.src.replace (/-col/, "");
-            img.addClassName ("messageIsFlagged");
+            img.setAttribute("src", ResourcesURL + "/flag.png");
+            img.addClassName("messageIsFlagged");
         }
         else {
-            img.src = img.src.replace (/.png/, "-col.png");
+            img.setAttribute("src", ResourcesURL + "/dot.png");
             img.removeClassName ("messageIsFlagged");
         }
     }
@@ -142,7 +142,7 @@ function markMailInWindow(win, msguid, markread) {
                     img.removeClassName("mailerUnreadIcon");
                     img.addClassName("mailerReadIcon");
                     img.setAttribute("id", "readdiv_" + msguid);
-                    img.setAttribute("src", ResourcesURL + "/icon_read.gif");
+                    img.setAttribute("src", ResourcesURL + "/dot.png");
                     var title = img.getAttribute("title-markunread");
                     if (title)
                         img.setAttribute("title", title);
@@ -1460,7 +1460,7 @@ function openInbox(node) {
 
 function initFlagIcons () {
     var icons = $$("TABLE#messageList TBODY TR.mailer_listcell_regular TD.messageFlag");
-    for (var i = 0; i < icons.length; i++) 
+    for (var i = 0; i < icons.length; i++)
       icons[i].onclick = mailListFlagMessageToggle;
 }
 

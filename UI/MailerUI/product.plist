@@ -52,11 +52,8 @@
 		     "message-mail.png",
 		     "message-mail-read.png",
 
-		     "icon_mark_flagged.gif",
-		     "icon_mark_read.gif",
-		     "icon_mark_unflagged.gif",
-		     "icon_mark_unread.gif",
-		     "icon_read.gif",
+		     "dot.png",
+		     "flag.png",
 		     "icon_unread.gif",
 
 		     "title_attachment_14x14.png",

@@ -71,7 +71,7 @@
                 ><img rsrc:src="flag.png" const:class="messageIsFlagged" 
               /></var:if
             ><var:if condition="isMessageFlagged" const:negate="YES"
-                ><img rsrc:src="flag-col.png" 
+                ><img rsrc:src="dot.png" 
               /></var:if
             ></td
           ></var:if>
@@ -110,7 +110,7 @@
           ><var:if condition="currentColumn.value" const:value="Unread"
             ><td class="messageFlagColumn"
               ><var:if condition="isMessageRead"
-                ><img rsrc:src="icon_read.gif"
+                ><img rsrc:src="dot.png"
                 class="mailerReadIcon"
                 label:title="Mark Unread"
                 label:title-markread="Mark Read"
