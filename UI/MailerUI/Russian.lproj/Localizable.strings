@@ -92,6 +92,10 @@
 "Add address"   = "Добавить адрес";
 
 "Attachments:" = "Вложения:";
+"Open" = "Open";
+"Select All" = "Select All";
+"Attach Web Page..." = "Attach Web Page...";
+"Attach File(s)..." = "Attach File(s)...";
 
 "to"            = "Кому";
 "cc"            = "Копия";
