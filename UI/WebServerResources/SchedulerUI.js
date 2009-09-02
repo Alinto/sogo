@@ -1738,7 +1738,7 @@ function getMenus() {
     menus["calendarsMenu"] = new Array(onCalendarModify,
                                        "-",
                                        onCalendarNew, onCalendarRemove,
-                                       "-", null, null, "-",
+                                       "-", onCalendarExport, null, "-",
                                        null, "-", onMenuSharing);
     menus["searchMenu"] = new Array(setSearchCriteria);
 
@@ -1876,6 +1876,17 @@ function onCalendarNew(event) {
 function onCalendarAdd(event) {
     openUserFolderSelector(onFolderSubscribeCB, "calendar");
     preventDefault(event);
+}
+function onCalendarExport(event) {
+    var node = $("calendarList").getSelectedNodes().first();
+    var owner = node.getAttribute("owner");
+    var folderId = node.getAttribute("id");
+    if (owner == UserLogin) {
+        var folderIdElements = folderId.split(":");
+        var id = folderIdElements[0].replace (/^\/+/g, '');
+        var url = ApplicationBaseURL + "/" + id + "/export";
+        window.location.href = url;
+    }
 }
 
 function setEventsOnCalendar(checkBox, li) {

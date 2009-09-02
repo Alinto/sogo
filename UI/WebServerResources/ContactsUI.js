@@ -214,7 +214,9 @@ function onFolderMenuHide(event) {
 
 function _onContactMenuAction(folderItem, action, refresh) {
     var selectedFolders = $("contactFolders").getSelectedNodes();
-    var folderId = $(folderItem).readAttribute("folderId").substring(1);
+    var folderId = $(folderItem).readAttribute("folderId");
+    if (folderId)
+      folderId = folderId.substring (1);
     if (Object.isArray(document.menuTarget) && selectedFolders.length > 0) {
         var selectedFolderId = $(selectedFolders[0]).readAttribute("id");
         var contactIds = $(document.menuTarget).collect(function(row) {
@@ -227,7 +229,6 @@ function _onContactMenuAction(folderItem, action, refresh) {
                 return false;
             }
         }
-        
 
         var url = ApplicationBaseURL + selectedFolderId + "/" + action 
             + "?folder=" + folderId + "&uid="
@@ -246,6 +247,19 @@ function onContactMenuCopy(event) {
 
 function onContactMenuMove(event) {
     _onContactMenuAction(this, "move", true);
+}
+
+function onMenuExportContact (event) {
+    var selectedFolders = $("contactFolders").getSelectedNodes();
+    var selectedFolderId = $(selectedFolders[0]).readAttribute("id");
+    if (selectedFolderId != "/shared") {
+        var contactIds = $(document.menuTarget).collect(function(row) {
+                                                        return row.getAttribute("id");
+                                                        });
+        var url = ApplicationBaseURL + selectedFolderId + "/export"
+          + "?uid=" + contactIds.join("&uid=");
+        window.location.href = url;
+    }
 }
 
 function actionContactCallback(http) {
@@ -977,7 +991,8 @@ function getMenus() {
     menus["contactMenu"] = new Array(onMenuEditContact, "-",
                                      onMenuWriteToContact, onMenuAIMContact,
                                      "-", onMenuDeleteContact, "-",
-                                     "moveContactMenu", "copyContactMenu");
+                                     "moveContactMenu", "copyContactMenu", 
+                                     onMenuExportContact);
     menus["searchMenu"] = new Array(setSearchCriteria);
    
     var contactFoldersMenu = $("contactFoldersMenu");

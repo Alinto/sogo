@@ -34,6 +34,11 @@
 #import <Contacts/SOGoContactFolder.h>
 #import <Contacts/SOGoContactFolders.h>
 
+#import <NGCards/NGVCard.h>
+#import <NGCards/NGVList.h>
+#import <SoObjects/Contacts/SOGoContactGCSEntry.h>
+#import <SoObjects/Contacts/SOGoContactGCSList.h>
+
 #import "UIxContactsListView.h"
 
 @implementation UIxContactsListView
@@ -177,5 +182,46 @@
 {
   return YES;
 }
+
+
+- (id <WOActionResults>) exportAction
+{
+  WORequest *request;
+  id <WOActionResults> response;
+  NSArray *contactsId;
+  NSEnumerator *uids;
+  NSString *uid;
+  id currentChild;
+  id sourceFolder;
+  NSMutableString *content;
+
+  content = [NSMutableString string];
+  request = [context request];
+  if ( (contactsId = [request formValuesForKey: @"uid"]) )
+    {
+      sourceFolder = [self clientObject];
+      uids = [contactsId objectEnumerator];
+      while ((uid = [uids nextObject]))
+        {
+          currentChild = [sourceFolder lookupName: uid
+                                        inContext: [self context]
+                                          acquire: NO];
+          if ([currentChild respondsToSelector: @selector (vCard)])
+            [content appendFormat: [[currentChild vCard] ldifString]];
+          else if ([currentChild respondsToSelector: @selector (vList)])
+            [content appendFormat: [[currentChild vList] ldifString]];
+        }
+    }
+  response = [[WOResponse alloc] init];
+  [response autorelease];
+  [response setHeader: @"text/directory" 
+               forKey:@"content-type"];
+  [response setHeader: @"attachment;filename=SavedContacts.ldif" 
+               forKey: @"Content-Disposition"];
+  [response setContent: [content dataUsingEncoding: NSUTF8StringEncoding]];
+  
+  return response;
+}
+
 
 @end /* UIxContactsListView */

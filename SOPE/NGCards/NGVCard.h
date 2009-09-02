@@ -157,6 +157,7 @@ typedef enum
 - (NSString *) preferredEMail;
 - (NSString *) preferredTel;
 - (CardElement *) preferredAdr;
+- (NSString *) ldifString;
 
 @end
 

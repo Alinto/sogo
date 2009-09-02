@@ -79,6 +79,11 @@
 	  actionClass = "UIxCalListingActions";
 	  actionName = "findPossibleSlot";
 	};
+	export = {
+	  protectedBy = "View";
+	  actionClass = "UIxCalListingActions";
+	  actionName = "export";
+	};
 	dayview = {
 	  protectedBy = "View";
 	  pageName    = "UIxCalDayView"; 
@@ -144,6 +149,11 @@
 	  pageName    = "UIxCalView"; 
 	  actionName  = "redirectForUIDs";
 	};
+  export = {
+    protectedBy = "View";
+    pageName    = "UIxCalView";
+    actionName  = "export";
+  };
 	userRights = {
 	  protectedBy = "ReadAcls";
 	  pageName    = "UIxCalUserRightsEditor";

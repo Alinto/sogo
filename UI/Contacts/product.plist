@@ -98,6 +98,11 @@
               pageName    = "UIxContactsListView";
               actionName  = "mailerContacts";
            };
+           export = {
+              protectedBy = "View";
+              pageName    = "UIxContactsListView";
+              actionName  = "export";
+           };
 	   userRights = {
 	      protectedBy = "ReadAcls";
 	      pageName    = "UIxContactsUserRightsEditor";

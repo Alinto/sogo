@@ -197,4 +197,36 @@
   return [self childrenWithTag: @"card"];
 }
 
+- (NSString *) ldifString
+{
+  NSMutableString *rc;
+  NSMutableArray *array;
+  NGVCardReference *tmp;
+  int i, count;
+
+  rc = [NSMutableString string];
+
+  [rc appendFormat: @"dn: cn=%@\n", [self fn]];
+  [rc appendFormat: @"objectclass: top\nobjectclass: groupOfNames\n"];
+  [rc appendFormat: @"cn: %@\n", [self fn]];
+  if ([self nickname])
+    [rc appendFormat: @"mozillaNickname: %@\n", [self nickname]];
+  if ([self description])
+    [rc appendFormat: @"description: %@\n", [self description]];
+
+  array = [self cardReferences];
+  count = [array count];
+  for (i = 0; i < count; i++)
+    {
+      tmp = [array objectAtIndex: i];
+      [rc appendFormat: @"member: cn=%@,mail=%@\n",
+        [tmp fn], [tmp email]];
+    }
+
+  [rc appendFormat: @"\n"];
+
+  return rc;
+}
+
+
 @end

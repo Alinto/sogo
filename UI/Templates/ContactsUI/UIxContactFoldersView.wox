@@ -49,6 +49,7 @@
 	<li><!-- separator --></li>
 	<li><var:string label:value="Move To" /></li>
 	<li><var:string label:value="Copy To" /></li>
+	<li><var:string label:value="Export" /></li>
       </ul>
     </div>
 

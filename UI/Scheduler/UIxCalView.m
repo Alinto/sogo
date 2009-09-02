@@ -31,11 +31,16 @@
 #import <NGCards/NGCards.h>
 
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>
+#import <SoObjects/Appointments/SOGoAppointmentObject.h>
 #import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/SOGoObject.h>
 
 #import <SOGoUI/SOGoAptFormatter.h>
+
+#import <NGCards/iCalCalendar.h>
+#import <NGCards/iCalEvent.h>
+#import <GDLContentStore/GCSFolder.h>
 
 #import "UIxCalView.h"
 
@@ -631,5 +636,62 @@ static BOOL shouldDisplayWeekend = NO;
   [uri release];
   return r;
 }
+
+
+- (WOResponse *) exportAction
+{
+  WOResponse *response;
+  SOGoAppointmentFolder *folder;
+  SOGoAppointmentObject *appt;
+  NSArray *array, *values, *fields;
+  NSMutableString *rc;
+  iCalCalendar *calendar, *component;
+  int i, count;
+
+  fields = [NSArray arrayWithObjects: @"c_name", @"c_content", nil];
+  rc = [NSMutableString string];
+
+  response = [[WOResponse alloc] init];
+  [response autorelease];
+
+  folder = [self clientObject];
+  calendar = [iCalCalendar groupWithTag: @"vcalendar"];
+
+  array = [[folder ocsFolder] fetchFields: fields matchingQualifier: nil];
+  count = [array count];
+  for (i = 0; i < count; i++)
+    {
+      appt = [folder lookupName: [[array objectAtIndex: i] objectForKey: @"c_name"]
+                      inContext: [self context]
+                        acquire: NO];
+
+      component = [appt calendar: NO secure: NO];
+      values = [component events];
+      if (values && [values count])
+        [calendar addChildren: values];
+      values = [component todos];
+      if (values && [values count])
+        [calendar addChildren: values];
+      values = [component journals];
+      if (values && [values count])
+        [calendar addChildren: values];
+      values = [component freeBusys];
+      if (values && [values count])
+        [calendar addChildren: values];
+      values = [component childrenWithTag: @"vtimezone"];
+      if (values && [values count])
+        [calendar addChildren: values];
+    }
+  NSLog ([calendar versitString]);
+  
+  [response setHeader: @"text/calendar" 
+               forKey:@"content-type"];
+  [response setHeader: @"attachment;filename=Calendar.ics" 
+               forKey: @"Content-Disposition"];
+  [response setContent: [[calendar versitString] dataUsingEncoding: NSUTF8StringEncoding]];
+  
+  return response;
+}
+
 
 @end /* UIxCalView */

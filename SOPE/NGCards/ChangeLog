@@ -1,3 +1,8 @@
+2009-09-02  Cyril Robert <crobert@inverse.ca>
+
+	* NGVCard.m (ldifString): Added, to support exporting
+	* NGVList.m (ldifString): Added, to support exporting
+
 2009-08-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* iCalPerson.m (-setDelegatedTo:, -setDelegatedFrom:)

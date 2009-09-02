@@ -508,4 +508,100 @@
   return str;
 }
 
+
+- (NSString *) ldifString
+{
+  NSMutableString *rc;
+  NSString *buffer;
+  NSMutableArray *array;
+  id tmp;
+
+  rc = [NSMutableString string];
+
+  [rc appendFormat: @"dn: cn=%@,mail=%@\n", [self fn], [self preferredEMail]];
+  [rc appendFormat: @"objectclass: top\nobjectclass: person\nobjectclass: "
+    @"organizationalPerson\nobjectclass: inetOrgPerson\nobjectclass: "
+    @"mozillaAbPersonObsolete\n"];
+  [rc appendFormat: @"givenName: %@\n", [[self n] objectAtIndex: 1]];
+  [rc appendFormat: @"sn: %@\n", [[self n] objectAtIndex: 0]];
+  [rc appendFormat: @"cn: %@\n", [self fn]];
+  [rc appendFormat: @"mail: %@\n", [self preferredEMail]];
+  [rc appendFormat: @"modifytimestamp: 0Z\n"];
+
+  buffer = [self nickname];
+  if (buffer && [buffer length] > 0)
+    [rc appendFormat: @"mozillaNickname: %@\n", buffer];
+
+  array = [NSMutableArray arrayWithArray: [self childrenWithTag: @"email"]];
+  [array removeObjectsInArray: [self childrenWithTag: @"email"
+                 andAttribute: @"type"
+                  havingValue: @"pref"]];
+  if ([array count])
+    {
+      buffer = [[array objectAtIndex: [array count]-1] value: 0];
+
+      if ([buffer caseInsensitiveCompare: [self preferredEMail]] != NSOrderedSame)
+        [rc appendFormat: @"mozillaSecondEmail: %@\n", buffer];
+    }
+
+  array = [self childrenWithTag: @"tel" andAttribute: @"type" havingValue: @"home"];
+  if ([array count])
+    [rc appendFormat: @"homePhone: %@\n", [[array objectAtIndex: 0] value: 0]];
+  array = [self childrenWithTag: @"tel" andAttribute: @"type" havingValue: @"fax"];
+  if ([array count])
+    [rc appendFormat: @"fax: %@\n", [[array objectAtIndex: 0] value: 0]];
+  array = [self childrenWithTag: @"tel" andAttribute: @"type" havingValue: @"cell"];
+  if ([array count])
+    [rc appendFormat: @"mobile: %@\n", [[array objectAtIndex: 0] value: 0]];
+  array = [self childrenWithTag: @"tel" andAttribute: @"type" havingValue: @"pager"];
+  if ([array count])
+    [rc appendFormat: @"pager: %@\n", [[array objectAtIndex: 0] value: 0]];
+
+  array = [self childrenWithTag: @"adr" andAttribute: @"type" havingValue: @"home"];
+  if ([array count])
+    {
+      tmp = [array objectAtIndex: 0];
+      [rc appendFormat: @"homeStreet: %@\n", [tmp value: 0]];
+      [rc appendFormat: @"mozillaHomeLocalityName: %@\n", [tmp value: 1]];
+      [rc appendFormat: @"mozillaHomeState: %@\n", [tmp value: 2]];
+      [rc appendFormat: @"mozillaHomePostalCode: %@\n", [tmp value: 3]];
+      [rc appendFormat: @"mozillaHomeCountryName: %@\n", [tmp value: 4]];
+    }
+
+  array = [self org];
+  if (array && [array count])
+    [rc appendFormat: @"o: %@\n", [array objectAtIndex: 0]];
+
+  array = [self childrenWithTag: @"adr" andAttribute: @"type" havingValue: @"work"];
+  if ([array count])
+    {
+      tmp = [array objectAtIndex: 0];
+      [rc appendFormat: @"street: %@\n", [tmp value: 0]];
+      [rc appendFormat: @"l: %@\n", [tmp value: 1]];
+      [rc appendFormat: @"st: %@\n", [tmp value: 2]];
+      [rc appendFormat: @"postalCode: %@\n", [tmp value: 3]];
+      [rc appendFormat: @"c: %@\n", [tmp value: 4]];
+    }
+
+  array = [self childrenWithTag: @"tel" andAttribute: @"type" havingValue: @"work"];
+  if ([array count])
+    [rc appendFormat: @"telephoneNumber: %@\n", [[array objectAtIndex: 0] value: 0]];
+
+  array = [self childrenWithTag: @"url" andAttribute: @"type" havingValue: @"work"];
+  if ([array count])
+    [rc appendFormat: @"workurl: %@\n", [[array objectAtIndex: 0] value: 0]];
+
+  array = [self childrenWithTag: @"url" andAttribute: @"type" havingValue: @"home"];
+  if ([array count])
+    [rc appendFormat: @"homeurl: %@\n", [[array objectAtIndex: 0] value: 0]];
+
+  tmp = [self note];
+  if (tmp && [tmp length])
+    [rc appendFormat: @"description: %@\n", tmp];
+
+  [rc appendFormat: @"\n"];
+
+  return rc;
+}
+
 @end /* NGVCard */

@@ -64,6 +64,8 @@
 - (void) deleteCardReference: (NGVCardReference *) cardRef;
 - (NSArray *) cardReferences;
 
+- (NSString *) ldifString;
+
 @end
 
 #endif /* NGVLIST_H */
