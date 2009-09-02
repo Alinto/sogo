@@ -712,12 +712,9 @@ static BOOL shouldDisplayWeekend = NO;
 
   if (fileContent && [fileContent length])
     {
-      NSLog (@"FILE: %@", fileContent);
       additions = [iCalCalendar parseSingleFromSource: fileContent];
       if (additions)
         {
-          NSLog (@"Events: %d", [[additions events] count]);
-
           components = [additions events];
           count = [components count];
           for (i = 0; i < count; i++)
