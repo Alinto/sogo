@@ -154,6 +154,11 @@
     pageName    = "UIxCalView";
     actionName  = "export";
   };
+  import = {
+    protectedBy = "View";
+    pageName    = "UIxCalView";
+    actionName  = "import";
+  };
 	userRights = {
 	  protectedBy = "ReadAcls";
 	  pageName    = "UIxCalUserRightsEditor";

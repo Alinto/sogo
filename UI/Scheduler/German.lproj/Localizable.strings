@@ -105,6 +105,9 @@
 "Delete Calendar" = "Kalender löschen";
 "Sharing..." = "Benutzerrechte...";
 "Export Calendar..." = "Kalender exportieren...";
+"Import Events..." = "Import Events...";
+"Select file..." = "Select file...";
+"Upload" = "Upload";
 "Publish Calendar..." = "Kalender publizieren...";
 "Reload Remote Calendars" = "Externe Kalender neu laden";
 "Properties" = "Einstellungen";

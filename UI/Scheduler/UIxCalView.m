@@ -23,6 +23,7 @@
 #import <NGObjWeb/SoSecurityManager.h>
 #import <NGObjWeb/SoUser.h>
 #import <NGObjWeb/WOResponse.h>
+#import <NGObjWeb/WORequest.h>
 #import <NGExtensions/NGCalendarDateRange.h>
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSNull+misc.h>
@@ -693,5 +694,49 @@ static BOOL shouldDisplayWeekend = NO;
   return response;
 }
 
+- (WOResponse *) importAction
+{
+  SOGoAppointmentFolder *folder;
+  NSArray *components;
+  WORequest *request;
+  NSString *fileContent;
+  NSData *data;
+  iCalCalendar *additions;
+  int i, count;
+
+  request = [context request];
+  folder = [self clientObject];
+  data = (NSData *)[request formValueForKey: @"calendarFile"];
+  fileContent = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
+  [fileContent autorelease];
+
+  if (fileContent && [fileContent length])
+    {
+      NSLog (@"FILE: %@", fileContent);
+      additions = [iCalCalendar parseSingleFromSource: fileContent];
+      if (additions)
+        {
+          NSLog (@"Events: %d", [[additions events] count]);
+
+          components = [additions events];
+          count = [components count];
+          for (i = 0; i < count; i++)
+            [folder importComponent: [components objectAtIndex: i]];
+          components = [additions todos];
+          count = [components count];
+          for (i = 0; i < count; i++)
+            [folder importComponent: [components objectAtIndex: i]];
+          components = [additions journals];
+          count = [components count];
+          for (i = 0; i < count; i++)
+            [folder importComponent: [components objectAtIndex: i]];
+          components = [additions freeBusys];
+          count = [components count];
+          for (i = 0; i < count; i++)
+            [folder importComponent: [components objectAtIndex: i]];
+        }
+    }
+  return [self redirectToLocation: @"../view"];
+}
 
 @end /* UIxCalView */

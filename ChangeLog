@@ -1,7 +1,10 @@
 2009-09-02  Cyril Robert <crobert@inverse.ca>
 
-	* UI/Contacts/UIxContactsListView.m (exportAction): Added
-	* UI/Scheduler/UIxCalView.m (exportAction): Added
+	* UI/Contacts/UIxContactsListView.m (exportAction): Added to support export.
+	* UI/Scheduler/UIxCalView.m (exportAction): Added to support export.
+	* SoObjects/Appointments/SOGoAppointmentFolder.m (importComponent): Added to
+	support import.
+	* UI/Scheduler/UIxCalView.m (importAction): Added to support import.
 
 2009-08-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

@@ -105,6 +105,9 @@
 "Delete Calendar" = "Delete Calendar";
 "Sharing..." = "Sharing...";
 "Export Calendar..." = "Export Calendar...";
+"Import Events..." = "Import Events...";
+"Select file..." = "Select file...";
+"Upload" = "Upload";
 "Publish Calendar..." = "Publish Calendar...";
 "Reload Remote Calendars" = "Reload Remote Calendars";
 "Properties" = "Properties";

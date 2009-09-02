@@ -1738,8 +1738,8 @@ function getMenus() {
     menus["calendarsMenu"] = new Array(onCalendarModify,
                                        "-",
                                        onCalendarNew, onCalendarRemove,
-                                       "-", onCalendarExport, null, "-",
-                                       null, "-", onMenuSharing);
+                                       "-", onCalendarExport, onCalendarImport,
+                                       null, "-", null, "-", onMenuSharing);
     menus["searchMenu"] = new Array(setSearchCriteria);
 
     menus["tasksListMenu"] = new Array (editEvent, newTask, "-", 
@@ -1887,6 +1887,35 @@ function onCalendarExport(event) {
         var url = ApplicationBaseURL + "/" + id + "/export";
         window.location.href = url;
     }
+}
+
+function onCalendarImport(event) {
+    var node = $("calendarList").getSelectedNodes().first();
+    var folderId = node.getAttribute("id");
+
+    var url = ApplicationBaseURL + folderId + "/import";
+    $("uploadForm").action = url;
+    $("uploadCancel").onclick = hideCalendarImport;
+    $("calendarFile").value = "";
+
+    var cellPosition = node.cumulativeOffset();
+    var cellDimensions = node.getDimensions();
+    var left = cellDimensions['width'] - 20;
+    var top = cellPosition[1];
+
+    var div = $("uploadDialog");
+    div.style.top = top + "px";
+    div.style.left = left + "px";
+    div.style.display = "block";
+}
+function hideCalendarImport () {
+    $("uploadDialog").style.display = "none";
+}
+function validateUploadForm () {
+    rc = false;
+    if ($("calendarFile").value.length)
+      rc = true;
+    return rc;
 }
 
 function setEventsOnCalendar(checkBox, li) {

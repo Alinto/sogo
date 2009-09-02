@@ -291,39 +291,46 @@ TABLE#eventsList TH
 TABLE#eventsList TH
 { white-space: pre; }
 
-DIV#eventDialog 
+DIV#uploadDialog
+{ border-width: 1px;
+  width: 260px;
+  height: 118px;
+  }
+
+DIV.dialog 
 { position: absolute;
   top: 100px;
   left: 75px;
-  width: 200px;
   z-index: 50; }
 
-DIV#eventDialog DIV
+DIV.dialog DIV
 { border: 1px solid #444;
   /*height: 100px;*/
   background-color: #fff;
   padding: 5px; }
 
-DIV#eventDialog.left
+DIV.dialog.left
 { background-image: url("dialog-left.png");
   background-repeat: no-repeat;
   background-position: top left; }
 
-DIV#eventDialog.left DIV
+DIV.dialog.left DIV
 { border-left: 0;
   margin-left: 19px;
   text-align: left; }
 
-DIV#eventDialog.right
+DIV.dialog.right
 { background-image: url("dialog-right.png");
   background-repeat: no-repeat;
   background-position: top right; }
   
-DIV#eventDialog.right DIV
+DIV.dialog.right DIV
 { border-right: 0;
   margin-right: 19px;
   text-align: right; }
 
+DIV#eventDialog
+{ width: 200px; }
 DIV#eventDialog H1,
 DIV#eventDialog P
 { font-size: 10px;

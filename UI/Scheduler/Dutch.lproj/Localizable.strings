@@ -105,6 +105,9 @@
 "Delete Calendar" = "Agenda verwijderen";
 "Sharing..." = "Delen...";
 "Export Calendar..." = "Agenda exporteren...";
+"Import Events..." = "Import Events...";
+"Select file..." = "Select file...";
+"Upload" = "Upload";
 "Publish Calendar..." = "Agenda publiceren...";
 "Reload Remote Calendars" = "Externe agenda vernieuwen";
 "Properties" = "Instellingen";

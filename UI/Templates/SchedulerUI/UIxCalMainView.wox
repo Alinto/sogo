@@ -80,6 +80,7 @@
       <li><var:string label:value="Delete Calendar"/></li>
       <li><!-- separator --></li>
       <li><var:string label:value="Export Calendar..."/></li>
+      <li><var:string label:value="Import Events..."/></li>
       <li><var:string label:value="Publish Calendar..."/></li>
       <li><!-- separator --></li>
       <li><var:string label:value="Reload Remote Calendars"/></li>
@@ -88,12 +89,25 @@
     </ul>
   </div>
   
-  <div id="eventDialog" style="display: none;">
+  <div id="eventDialog" style="display: none;" class="dialog">
     <div>
       <h1><!-- space --></h1>
       <p id="startTime"><span class="label"><var:string label:value="Start:" /></span> <span><!-- space --></span></p>
       <p id="location"><span class="label"><var:string label:value="Location:" /></span> <span><!-- space --></span></p>
       <p id="description"><!-- space --></p>
+    </div>
+  </div>
+
+  <div id="uploadDialog" style="display: none" class="dialog left">
+    <div>
+      <h3><var:string label:value="Select file..."/></h3>
+      <form name="uploadForm" id="uploadForm" method="post"
+        enctype="multipart/form-data"
+        onsubmit="return validateUploadForm()">
+        <p><input type="file" name="calendarFile" id="calendarFile" /></p>
+        <p><input class="button" type="submit" const:id="uploadSubmit" label:value="Upload"/>
+          <input class="button" type="button" const:id="uploadCancel" label:value="Cancel"/></p>
+      </form>
     </div>
   </div>
 

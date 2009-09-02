@@ -105,6 +105,9 @@
 "Delete Calendar" = "Naptár törlése";
 "Sharing..." = "Megosztás...";
 "Export Calendar..." = "Naptár exportálása...";
+"Import Events..." = "Import Events...";
+"Select file..." = "Select file...";
+"Upload" = "Upload";
 "Publish Calendar..." = "Naptár közzététele...";
 "Reload Remote Calendars" = "Távoli naptárak frissítése";
 "Properties" = "Tulajdonságok";

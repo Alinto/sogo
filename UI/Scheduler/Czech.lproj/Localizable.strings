@@ -105,6 +105,9 @@
 "Delete Calendar" = "Smazat kalendář";
 "Sharing..." = "Sdílení...";
 "Export Calendar..." = "Exportovat kalendář...";
+"Import Events..." = "Import Events...";
+"Select file..." = "Select file...";
+"Upload" = "Upload";
 "Publish Calendar..." = "Publikovat kalendář...";
 "Reload Remote Calendars" = "Nahrát vzdálené kalendáře";
 "Properties" = "Vlastnosti";
