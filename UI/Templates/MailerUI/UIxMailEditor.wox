@@ -37,7 +37,7 @@
     </ul>
   </div>
 
-  <form const:href="send" name="pageform" enctype="multipart/form-data" autocomplete="off">
+  <form const:href="" name="pageform" enctype="multipart/form-data" autocomplete="off">
     <input type="hidden" name="priority" id="priority"
 	var:value="priority"/>
 
