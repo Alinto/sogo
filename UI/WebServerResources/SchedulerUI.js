@@ -1928,10 +1928,12 @@ function uploadCompleted (response) {
 
     var div = $("uploadResults");
     $("uploadOK").onclick = hideImportResults;
-    $("uploadResultsContent").update (data.message);
-
-    if (data.imported > 0)
-      refreshCurrentFolder ();
+    if (data.imported <= 0)
+      $("uploadResultsContent").update (labels["An error occured while importing calendar."]);
+    else {
+        $("uploadResultsContent").update (labels["Imported events:"] + " " + data.imported);
+        refreshCurrentFolder ();
+    }
 
     hideCalendarImport ();
     $("uploadResults").style.display = "block";

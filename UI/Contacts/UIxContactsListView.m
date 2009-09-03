@@ -261,13 +261,6 @@
 
   [rc setObject: [NSNumber numberWithInt: imported]
          forKey: @"imported"];
-  if (imported <= 0)
-    [rc setObject: [self labelForKey: @"An error occured while importing contacts."]
-           forKey: @"message"];
-  else
-    [rc setObject: [NSString stringWithFormat: @"%@ %d", 
-     [self labelForKey: @"Imported contacts:"], imported]
-           forKey: @"message"];
 
   response = [self responseWithStatus: 200];
   [response setHeader: @"text/html" 
