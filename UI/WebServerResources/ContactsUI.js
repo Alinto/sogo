@@ -655,6 +655,35 @@ function onFolderUnsubscribeCB(folderId) {
     onFolderSelectionChange();
 }
 
+function onAddressBookImport(event) {
+    var node = $("contactFolders").getSelectedNodes().first();
+    var folderId = node.getAttribute("id");
+
+    var url = ApplicationBaseURL + folderId + "/import";
+    $("uploadForm").action = url;
+    $("uploadCancel").onclick = hideContactsImport;
+    $("contactsFile").value = "";
+
+    var cellPosition = node.cumulativeOffset();
+    var cellDimensions = node.getDimensions();
+    var left = cellDimensions['width'] - 20;
+    var top = cellPosition[1];
+
+    var div = $("uploadDialog");
+    div.style.top = top + "px";
+    div.style.left = left + "px";
+    div.style.display = "block";
+}
+function hideContactsImport () {
+    $("uploadDialog").style.display = "none";
+}
+function validateUploadForm () {
+    rc = false;
+    if ($("contactsFile").value.length)
+      rc = true;
+    return rc;
+}
+
 function onAddressBookRemove(event) {
     var selector = $("contactFolders");
     var nodes = selector.getSelectedNodes();
@@ -986,7 +1015,8 @@ function onContactMenuPrepareVisibility() {
 function getMenus() {
     var menus = {};
     menus["contactFoldersMenu"] = new Array(onAddressBookModify, "-", newContact,
-                                            null, "-", onAddressBookRemove, "-",
+                                            null, "-", onAddressBookImport, 
+                                            onAddressBookRemove, "-",
                                             onMenuSharing);
     menus["contactMenu"] = new Array(onMenuEditContact, "-",
                                      onMenuWriteToContact, onMenuAIMContact,

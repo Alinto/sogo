@@ -782,3 +782,41 @@ DIV.resize-handle
   background-color: #f0f0f0 !important;
   color: #000000 !important;
 }
+
+DIV#uploadDialog
+{ border-width: 1px;
+  width: 260px;
+  height: 118px;
+  }
+
+DIV.dialog 
+{ position: absolute;
+  top: 100px;
+  left: 75px;
+  z-index: 50; }
+
+DIV.dialog DIV
+{ border: 1px solid #444;
+  /*height: 100px;*/
+  background-color: #fff;
+  padding: 5px; }
+
+DIV.dialog.left
+{ background-image: url("dialog-left.png");
+  background-repeat: no-repeat;
+  background-position: top left; }
+
+DIV.dialog.left DIV
+{ border-left: 0;
+  margin-left: 19px;
+  text-align: left; }
+
+DIV.dialog.right
+{ background-image: url("dialog-right.png");
+  background-repeat: no-repeat;
+  background-position: top right; }
+  
+DIV.dialog.right DIV
+{ border-right: 0;
+  margin-right: 19px;
+  text-align: right; }

@@ -35,6 +35,10 @@
   NSArray *contactInfos;
 }
 
+- (void) importLdifData: (NSString *) ldifData;
+- (void) importVcardData: (NSString *) vcardData;
+- (void) importVcard: (NGVCard *) card;
+
 @end
 
 #endif /* __UIxContactsListView_H__ */

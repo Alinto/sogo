@@ -25,6 +25,19 @@
     </var:if>
     </style>
 
+  <div id="uploadDialog" style="display: none" class="dialog left">
+    <div>
+      <h3><var:string label:value="Select file..."/></h3>
+      <form name="uploadForm" id="uploadForm" method="post"
+        enctype="multipart/form-data"
+        onsubmit="return validateUploadForm()">
+        <p><input type="file" name="contactsFile" id="contactsFile" /></p>
+        <p><input class="button" type="submit" const:id="uploadSubmit" label:value="Upload"/>
+          <input class="button" type="button" const:id="uploadCancel" label:value="Cancel"/></p>
+      </form>
+    </div>
+  </div>
+    
     <div class="menu" id="contactFoldersMenu">
       <ul>
 	<li><var:string label:value="Properties" /></li>
@@ -32,6 +45,7 @@
 	<li><var:string label:value="New Card" /></li>
 	<li><var:string label:value="New List" /></li>
 	<li><!-- separator --></li>
+	<li><var:string label:value="Import cards" /></li>
 	<li><var:string label:value="Delete" /></li>
 	<li><!-- separator --></li>
 	<li><var:string label:value="Sharing..." /></li>

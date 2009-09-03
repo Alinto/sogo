@@ -165,3 +165,6 @@
 "Lists can't be moved or copied." = "Lists can't be moved or copied.";
 
 "Export" = "Export";
+"Import cards" = "Import cards";
+"Select file..." = "Select file...";
+"Upload" = "Upload";

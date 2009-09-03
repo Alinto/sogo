@@ -103,6 +103,11 @@
               pageName    = "UIxContactsListView";
               actionName  = "export";
            };
+           import = {
+              protectedBy = "View";
+              pageName    = "UIxContactsListView";
+              actionName  = "import";
+           };
 	   userRights = {
 	      protectedBy = "ReadAcls";
 	      pageName    = "UIxContactsUserRightsEditor";

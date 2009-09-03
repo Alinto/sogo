@@ -1,3 +1,7 @@
+2009-09-03  Cyril Robert <crobert@inverse.ca>
+
+	* UI/Contacts/UIxContactsListView.m: Added ldif / vcard import
+
 2009-09-02  Cyril Robert <crobert@inverse.ca>
 
 	* UI/Contacts/UIxContactsListView.m (exportAction): Added to support export.

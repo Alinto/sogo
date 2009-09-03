@@ -27,6 +27,7 @@
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOResponse.h>
+#import <NGObjWeb/WORequest.h>
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSNull+misc.h>
 
@@ -37,7 +38,10 @@
 #import <NGCards/NGVCard.h>
 #import <NGCards/NGVList.h>
 #import <SoObjects/Contacts/SOGoContactGCSEntry.h>
+#import <SoObjects/Contacts/SOGoContactLDIFEntry.h>
 #import <SoObjects/Contacts/SOGoContactGCSList.h>
+#import <SoObjects/Contacts/SOGoContactGCSFolder.h>
+#import <GDLContentStore/GCSFolder.h>
 
 #import "UIxContactsListView.h"
 
@@ -192,7 +196,7 @@
   NSEnumerator *uids;
   NSString *uid;
   id currentChild;
-  id sourceFolder;
+  SOGoContactGCSFolder *sourceFolder;
   NSMutableString *content;
 
   content = [NSMutableString string];
@@ -221,6 +225,110 @@
   [response setContent: [content dataUsingEncoding: NSUTF8StringEncoding]];
   
   return response;
+}
+
+- (id <WOActionResults>) importAction
+{
+  WORequest *request;
+  NSData *data;
+  NSString *fileContent;
+
+
+  request = [context request];
+  data = (NSData *)[request formValueForKey: @"contactsFile"];
+  fileContent = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
+  [fileContent autorelease];
+
+  if (fileContent && [fileContent length])
+    {
+      if ([fileContent hasPrefix: @"dn:"])
+        [self importLdifData: fileContent];
+      else
+        [self importVcardData: fileContent];
+    }
+  return [self redirectToLocation: @"../view"];
+}
+
+- (void) importLdifData: (NSString *) ldifData
+{
+  SOGoContactGCSFolder *folder;
+  NSString *key, *value;
+  NSArray *ldifContacts, *lines, *components;
+  NSMutableDictionary *entry;
+  NGVCard *vCard;
+  NSString *uid;
+  int i,j,count,linesCount;
+
+  folder = [self clientObject];
+  ldifContacts = [ldifData componentsSeparatedByString: @"\ndn"];
+  count = [ldifContacts count];
+
+  for (i = 0; i < count; i++)
+    {
+      SOGoContactLDIFEntry *ldifEntry;
+      entry = [NSMutableDictionary dictionary];
+      lines = [[ldifContacts objectAtIndex: i] 
+               componentsSeparatedByString: @"\n"];
+
+      linesCount = [lines count];
+      for (j = 0; j < linesCount; j++)
+        {
+          components = [[lines objectAtIndex: j] 
+                 componentsSeparatedByString: @": "];
+          if ([components count] == 2)
+            {
+              key = [components objectAtIndex: 0];
+              value = [components objectAtIndex: 1];
+
+              if ([key length] == 0)
+                key = @"dn";
+
+              [entry setObject: value forKey: key];
+            }
+          else
+            {
+              break;
+            }
+        }
+      uid = [folder globallyUniqueObjectId];
+      ldifEntry = [SOGoContactLDIFEntry contactEntryWithName: uid
+                                               withLDIFEntry: entry
+                                                 inContainer: folder];
+      if (ldifEntry)
+        {
+          vCard = [ldifEntry vCard];
+          [self importVcard: vCard];
+          
+        }
+    }
+}
+
+- (void) importVcardData: (NSString *) vcardData
+{
+  NGVCard *card;
+
+  card = [NGVCard parseSingleFromSource: vcardData];
+  [self importVcard: card];
+}
+
+- (void) importVcard: (NGVCard *) card
+{
+  NSString *uid, *name;
+  SOGoContactGCSFolder *folder;
+  NSException *ex;
+
+  if (card)
+    {
+      folder = [self clientObject];
+      uid = [folder globallyUniqueObjectId];
+      name = [NSString stringWithFormat: @"%@.vcf", uid];
+      [card setUid: uid];
+      ex = [[folder ocsFolder] writeContent: [card versitString]
+                                     toName: name
+                                baseVersion: 0];
+      if (ex)
+        NSLog (@"write failed: %@", ex);
+    }
 }
 
 
