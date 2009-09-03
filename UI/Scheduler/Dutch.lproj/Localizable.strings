@@ -111,6 +111,10 @@
 "Publish Calendar..." = "Agenda publiceren...";
 "Reload Remote Calendars" = "Externe agenda vernieuwen";
 "Properties" = "Instellingen";
+"Import" = "Import";
+"OK" = "OK";
+"An error occured while importing calendar." = "An error occured while importing calendar.";
+"Imported events:" = "Imported events:";
 
 "Compose E-Mail to All Attendees" = "E-mail aan alle deelnemers opstellen";
 "Compose E-Mail to Undecided Attendees" = "E-mail aan deelnemers opstellen die nog niet hebben gereageerd";

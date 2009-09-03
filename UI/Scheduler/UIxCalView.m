@@ -20,6 +20,11 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/Foundation.h>
+#import <SoObjects/SOGo/NSArray+Utilities.h>
+#import <SoObjects/SOGo/NSDictionary+Utilities.h>
+#import <SoObjects/SOGo/NSString+Utilities.h>
+
 #import <NGObjWeb/SoSecurityManager.h>
 #import <NGObjWeb/SoUser.h>
 #import <NGObjWeb/WOResponse.h>
@@ -697,20 +702,25 @@ static BOOL shouldDisplayWeekend = NO;
 - (WOResponse *) importAction
 {
   SOGoAppointmentFolder *folder;
+  NSMutableDictionary *rc;
   NSArray *components;
   WORequest *request;
+  WOResponse *response;
   NSString *fileContent;
   NSData *data;
   iCalCalendar *additions;
-  int i, count;
+  int i, count, imported;
 
+  imported = 0;
+  rc = [NSMutableDictionary dictionary];
   request = [context request];
   folder = [self clientObject];
   data = (NSData *)[request formValueForKey: @"calendarFile"];
   fileContent = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
   [fileContent autorelease];
 
-  if (fileContent && [fileContent length])
+  if (fileContent && [fileContent length] 
+      && [fileContent hasPrefix: @"BEGIN:"])
     {
       additions = [iCalCalendar parseSingleFromSource: fileContent];
       if (additions)
@@ -718,22 +728,39 @@ static BOOL shouldDisplayWeekend = NO;
           components = [additions events];
           count = [components count];
           for (i = 0; i < count; i++)
-            [folder importComponent: [components objectAtIndex: i]];
+            if ([folder importComponent: [components objectAtIndex: i]])
+              imported++;
           components = [additions todos];
           count = [components count];
           for (i = 0; i < count; i++)
-            [folder importComponent: [components objectAtIndex: i]];
+            if ([folder importComponent: [components objectAtIndex: i]])
+              imported++;
           components = [additions journals];
           count = [components count];
           for (i = 0; i < count; i++)
-            [folder importComponent: [components objectAtIndex: i]];
+            if ([folder importComponent: [components objectAtIndex: i]])
+              imported++;
           components = [additions freeBusys];
           count = [components count];
           for (i = 0; i < count; i++)
-            [folder importComponent: [components objectAtIndex: i]];
+            if ([folder importComponent: [components objectAtIndex: i]])
+              imported++;
         }
     }
-  return [self redirectToLocation: @"../view"];
+
+  [rc setObject: [NSNumber numberWithInt: imported]
+         forKey: @"imported"];
+  if (imported <= 0)
+    [rc setObject: [self labelForKey: @"An error occured while importing calendar."]
+           forKey: @"message"];
+  else
+    [rc setObject: [NSString stringWithFormat: @"%@ %d", 
+     [self labelForKey: @"Imported events:"], imported]
+                forKey: @"message"];
+
+  response = [self responseWithStatus: 200];
+  [(WOResponse*)response appendContentString: [rc jsonRepresentation]];
+  return response;
 }
 
 @end /* UIxCalView */

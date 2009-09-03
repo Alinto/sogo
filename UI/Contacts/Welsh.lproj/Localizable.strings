@@ -167,3 +167,7 @@
 "Import cards" = "Import cards";
 "Select file..." = "Select file...";
 "Upload" = "Upload";
+"Import" = "Import";
+"OK" = "OK";
+"An error occured while importing contacts." = "An error occured while importing contacts.";
+"Imported contacts:" = "Imported contacts:";

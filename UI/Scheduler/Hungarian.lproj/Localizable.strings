@@ -111,6 +111,10 @@
 "Publish Calendar..." = "Naptár közzététele...";
 "Reload Remote Calendars" = "Távoli naptárak frissítése";
 "Properties" = "Tulajdonságok";
+"Import" = "Import";
+"OK" = "OK";
+"An error occured while importing calendar." = "An error occured while importing calendar.";
+"Imported events:" = "Imported events:";
 
 "Compose E-Mail to All Attendees" = "Üzenet küldése az összes résztvevőnek";
 "Compose E-Mail to Undecided Attendees" = "Üzenet küldése az bizonytalan résztvevőnek";

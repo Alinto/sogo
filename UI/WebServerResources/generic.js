@@ -1672,4 +1672,54 @@ function onHeaderClick(event) {
     window.alert("generic headerClick");
 }
 
+/**
+*
+*  AJAX IFRAME METHOD (AIM)
+*  http://www.webtoolkit.info/
+*
+**/
+ 
+AIM = {
+	frame : function(c) {
+		var d = new Element ('div');
+    var n = d.identify ();
+		d.innerHTML = '<iframe style="display:none" src="about:blank" id="' 
+      + n + '" name="' + n + '" onload="AIM.loaded(\'' + n + '\')"></iframe>';
+		document.body.appendChild(d);
+		var i = $(n); // TODO: useful?
+		if (c && typeof(c.onComplete) == 'function')
+      i.onComplete = c.onComplete;
+		return n;
+	},
+ 
+	form : function(f, name) {
+		f.writeAttribute('target', name);
+	},
+ 
+	submit : function(f, c) {
+		AIM.form(f, AIM.frame(c));
+		if (c && typeof(c.onStart) == 'function')
+			return c.onStart();
+		else
+			return true;
+	},
+ 
+	loaded : function(id) {
+		var i = $(id);
+		if (i.contentDocument)
+			var d = i.contentDocument;
+		else if (i.contentWindow)
+			var d = i.contentWindow.document;
+		else
+			var d = window.frames[id].document;
+		if (d.location.href == "about:blank")
+			return;
+ 
+		if (typeof(i.onComplete) == 'function')
+			i.onComplete(d.body.innerHTML);
+	}
+ 
+}
+
+
 document.observe("dom:loaded", onLoadHandler);

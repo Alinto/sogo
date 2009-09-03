@@ -1,6 +1,8 @@
 2009-09-03  Cyril Robert <crobert@inverse.ca>
 
 	* UI/Contacts/UIxContactsListView.m: Added ldif / vcard import
+	* UI/Contacts/UIxContactsListView.m: Changed return types to know how many
+	cards were imported.
 
 2009-09-02  Cyril Robert <crobert@inverse.ca>
 

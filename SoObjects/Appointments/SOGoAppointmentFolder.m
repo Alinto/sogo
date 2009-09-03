@@ -3173,7 +3173,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return error;
 }
 
-- (void) importComponent: (iCalEntityObject *) event
+- (BOOL) importComponent: (iCalEntityObject *) event
 {
   SOGoAppointmentObject *object;
   NSString *uid;
@@ -3186,7 +3186,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   content = 
     [NSString stringWithFormat: @"BEGIN:VCALENDAR\n%@END:VCALENDAR\n", 
      [event versitString]];
-  [object saveContentString: content];
+  return ([object saveContentString: content] == nil);
 }
 
 @end /* SOGoAppointmentFolder */

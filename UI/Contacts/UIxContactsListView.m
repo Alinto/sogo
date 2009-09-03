@@ -230,26 +230,47 @@
 - (id <WOActionResults>) importAction
 {
   WORequest *request;
+  WOResponse *response;
   NSData *data;
+  NSMutableDictionary *rc;
   NSString *fileContent;
+  int imported = 0;
 
 
   request = [context request];
+  rc = [NSMutableDictionary dictionary];
   data = (NSData *)[request formValueForKey: @"contactsFile"];
-  fileContent = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
+  fileContent = [[NSString alloc] initWithData: data 
+                                      encoding: NSUTF8StringEncoding];
   [fileContent autorelease];
 
   if (fileContent && [fileContent length])
     {
       if ([fileContent hasPrefix: @"dn:"])
-        [self importLdifData: fileContent];
+        imported = [self importLdifData: fileContent];
+      else if ([fileContent hasPrefix: @"BEGIN:"])
+        imported = [self importVcardData: fileContent];
       else
-        [self importVcardData: fileContent];
+        imported = 0;
     }
-  return [self redirectToLocation: @"../view"];
+
+  [rc setObject: [NSNumber numberWithInt: imported]
+         forKey: @"imported"];
+  if (imported <= 0)
+    [rc setObject: [self labelForKey: @"An error occured while importing contacts."]
+           forKey: @"message"];
+  else
+    [rc setObject: [NSString stringWithFormat: @"%@ %d", 
+     [self labelForKey: @"Imported contacts:"], imported]
+           forKey: @"message"];
+
+  response = [self responseWithStatus: 200];
+  [(WOResponse*)response appendContentString: [rc jsonRepresentation]];
+
+  return response;
 }
 
-- (void) importLdifData: (NSString *) ldifData
+- (int) importLdifData: (NSString *) ldifData
 {
   SOGoContactGCSFolder *folder;
   NSString *key, *value;
@@ -258,6 +279,7 @@
   NGVCard *vCard;
   NSString *uid;
   int i,j,count,linesCount;
+  int rc = 0;
 
   folder = [self clientObject];
   ldifContacts = [ldifData componentsSeparatedByString: @"\ndn"];
@@ -297,25 +319,33 @@
       if (ldifEntry)
         {
           vCard = [ldifEntry vCard];
-          [self importVcard: vCard];
+          if ([self importVcard: vCard])
+            rc++;
           
         }
     }
+  return rc;
 }
 
-- (void) importVcardData: (NSString *) vcardData
+- (int) importVcardData: (NSString *) vcardData
 {
   NGVCard *card;
+  int rc;
 
+  rc = 0;
   card = [NGVCard parseSingleFromSource: vcardData];
-  [self importVcard: card];
+  if ([self importVcard: card])
+    rc = 1;
+
+  return rc;
 }
 
-- (void) importVcard: (NGVCard *) card
+- (BOOL) importVcard: (NGVCard *) card
 {
   NSString *uid, *name;
   SOGoContactGCSFolder *folder;
   NSException *ex;
+  BOOL rc = NO;
 
   if (card)
     {
@@ -328,7 +358,11 @@
                                 baseVersion: 0];
       if (ex)
         NSLog (@"write failed: %@", ex);
+      else
+        rc = YES;
     }
+
+  return rc;
 }
 
 

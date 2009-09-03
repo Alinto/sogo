@@ -111,6 +111,10 @@
 "Publish Calendar..." = "Pubblica calendario...";
 "Reload Remote Calendars" = "Aggiorna calendari remoti";
 "Properties" = "Proprietà";
+"Import" = "Import";
+"OK" = "OK";
+"An error occured while importing calendar." = "An error occured while importing calendar.";
+"Imported events:" = "Imported events:";
 
 "Compose E-Mail to All Attendees" = "Invia Email a tutti gli invitati";
 "Compose E-Mail to Undecided Attendees" = "Invia Email agli invitati indecisi";

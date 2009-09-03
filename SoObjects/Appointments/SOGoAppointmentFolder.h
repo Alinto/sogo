@@ -144,7 +144,7 @@
 - (NSException *) setProxySubscribers: (NSArray *) newSubscribers
                       withWriteAccess: (BOOL) hasWriteAccess;
 
-- (void) importComponent: (iCalEntityObject *) event;
+- (BOOL) importComponent: (iCalEntityObject *) event;
 
 @end
 

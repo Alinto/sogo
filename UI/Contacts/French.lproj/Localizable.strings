@@ -183,3 +183,7 @@
 "Import cards" = "Importer des contacts";
 "Select file..." = "Sélectionner un fichier...";
 "Upload" = "Ajouter";
+"Import" = "Import";
+"OK" = "OK";
+"An error occured while importing contacts." = "Une erreur s'est produite lors de l'importation.";
+"Imported contacts:" = "Contacts importés:";

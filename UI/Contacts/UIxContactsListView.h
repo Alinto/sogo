@@ -35,9 +35,9 @@
   NSArray *contactInfos;
 }
 
-- (void) importLdifData: (NSString *) ldifData;
-- (void) importVcardData: (NSString *) vcardData;
-- (void) importVcard: (NGVCard *) card;
+- (int) importLdifData: (NSString *) ldifData;
+- (int) importVcardData: (NSString *) vcardData;
+- (BOOL) importVcard: (NGVCard *) card;
 
 @end
 

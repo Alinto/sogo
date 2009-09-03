@@ -1904,18 +1904,39 @@ function onCalendarImport(event) {
     var top = cellPosition[1];
 
     var div = $("uploadDialog");
+    var res = $("uploadResults");
     div.style.top = top + "px";
+    res.style.top = top + "px";
     div.style.left = left + "px";
+    res.style.left = left + "px";
     div.style.display = "block";
 }
 function hideCalendarImport () {
     $("uploadDialog").style.display = "none";
+}
+function hideImportResults () {
+    $("uploadResults").style.display = "none";
 }
 function validateUploadForm () {
     rc = false;
     if ($("calendarFile").value.length)
       rc = true;
     return rc;
+}
+function uploadCompleted (response) {
+    response = response.replace (/<pre>/, "");
+    response = response.replace (/<\/pre>/, "");
+    data = response.evalJSON (true);
+
+    var div = $("uploadResults");
+    $("uploadOK").onclick = hideImportResults;
+    $("uploadResultsContent").update (data.message);
+
+    if (data.imported > 0)
+      refreshCurrentFolder ();
+
+    hideCalendarImport ();
+    $("uploadResults").style.display = "block";
 }
 
 function setEventsOnCalendar(checkBox, li) {

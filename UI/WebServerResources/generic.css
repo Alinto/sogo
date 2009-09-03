@@ -783,11 +783,13 @@ DIV.resize-handle
   color: #000000 !important;
 }
 
-DIV#uploadDialog
+DIV#uploadDialog,DIV#uploadResults
 { border-width: 1px;
   width: 260px;
-  height: 118px;
-  }
+  height: 127px; }
+DIV#uploadDialog DIV,DIV#uploadResults DIV
+{ width: 260px;
+  height: 115px; }
 
 DIV.dialog 
 { position: absolute;

@@ -103,11 +103,21 @@
       <h3><var:string label:value="Select file..."/></h3>
       <form name="uploadForm" id="uploadForm" method="post"
         enctype="multipart/form-data"
-        onsubmit="return validateUploadForm()">
+        onsubmit="return AIM.submit(this, {'onStart' : validateUploadForm, 
+        'onComplete' : uploadCompleted})">
         <p><input type="file" name="calendarFile" id="calendarFile" /></p>
         <p><input class="button" type="submit" const:id="uploadSubmit" label:value="Upload"/>
           <input class="button" type="button" const:id="uploadCancel" label:value="Cancel"/></p>
       </form>
+    </div>
+  </div>
+
+  <div id="uploadResults" style="display: none" class="dialog left">
+    <div>
+      <h3><var:string label:value="Import"/></h3>
+      <p id="uploadResultsContent"></p>
+      <p><input class="button" type="button" const:id="uploadOK" 
+          label:value="OK"/></p>
     </div>
   </div>
 
