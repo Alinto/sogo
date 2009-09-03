@@ -1924,8 +1924,6 @@ function validateUploadForm () {
     return rc;
 }
 function uploadCompleted (response) {
-    response = response.replace (/<pre>/, "");
-    response = response.replace (/<\/pre>/, "");
     data = response.evalJSON (true);
 
     var div = $("uploadResults");

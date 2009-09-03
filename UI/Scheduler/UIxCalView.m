@@ -707,7 +707,7 @@ static BOOL shouldDisplayWeekend = NO;
   WORequest *request;
   WOResponse *response;
   NSString *fileContent;
-  NSData *data;
+  id data;
   iCalCalendar *additions;
   int i, count, imported;
 
@@ -715,9 +715,15 @@ static BOOL shouldDisplayWeekend = NO;
   rc = [NSMutableDictionary dictionary];
   request = [context request];
   folder = [self clientObject];
-  data = (NSData *)[request formValueForKey: @"calendarFile"];
-  fileContent = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
-  [fileContent autorelease];
+  data = [request formValueForKey: @"calendarFile"];
+  if ([data respondsToSelector: @selector(isEqualToString:)])
+    fileContent = (NSString *) data;
+  else
+    {
+      fileContent = [[NSString alloc] initWithData: (NSData *) data 
+                                          encoding: NSUTF8StringEncoding];
+      [fileContent autorelease];
+    }
 
   if (fileContent && [fileContent length] 
       && [fileContent hasPrefix: @"BEGIN:"])
@@ -759,6 +765,8 @@ static BOOL shouldDisplayWeekend = NO;
                 forKey: @"message"];
 
   response = [self responseWithStatus: 200];
+  [response setHeader: @"text/html" 
+               forKey: @"content-type"];
   [(WOResponse*)response appendContentString: [rc jsonRepresentation]];
   return response;
 }

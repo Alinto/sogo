@@ -231,7 +231,7 @@
 {
   WORequest *request;
   WOResponse *response;
-  NSData *data;
+  id data;
   NSMutableDictionary *rc;
   NSString *fileContent;
   int imported = 0;
@@ -239,10 +239,15 @@
 
   request = [context request];
   rc = [NSMutableDictionary dictionary];
-  data = (NSData *)[request formValueForKey: @"contactsFile"];
-  fileContent = [[NSString alloc] initWithData: data 
-                                      encoding: NSUTF8StringEncoding];
-  [fileContent autorelease];
+  data = [request formValueForKey: @"contactsFile"];
+  if ([data respondsToSelector: @selector(isEqualToString:)])
+    fileContent = (NSString *) data;
+  else
+    {
+      fileContent = [[NSString alloc] initWithData: (NSData *) data 
+                                          encoding: NSUTF8StringEncoding];
+      [fileContent autorelease];
+    }
 
   if (fileContent && [fileContent length])
     {
@@ -265,6 +270,8 @@
            forKey: @"message"];
 
   response = [self responseWithStatus: 200];
+  [response setHeader: @"text/html" 
+               forKey: @"content-type"];
   [(WOResponse*)response appendContentString: [rc jsonRepresentation]];
 
   return response;
