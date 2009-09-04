@@ -145,6 +145,7 @@ function foldersSearchCallback(http) {
 	    }
 	}
 	else {
+	    dd.innerHTML = '';
 	    dd.appendChild (addFolderNotFoundNode (d, nodeId));
 	    var sd = $("sd" + (nodeId + 1));
 	    sd.observe("click", onTreeItemClick);
