@@ -726,7 +726,8 @@ function onAddressBookRemove(event) {
         }
         else {
             var folderId = node.getAttribute("id");
-            unsubscribeFromFolder(folderId, owner, onFolderUnsubscribeCB, folderId);
+            var folderUrl = ApplicationBaseURL + folderId;
+            unsubscribeFromFolder(folderUrl, owner, onFolderUnsubscribeCB, folderId);
         }
     }
 

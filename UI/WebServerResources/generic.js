@@ -47,43 +47,6 @@ var Alarms = new Array();
 var activeAjaxRequests = 0;
 var removeFolderRequestCount = 0;
 
-/* a W3C compliant document.all */
-function getAllScopeElements(scope) {
-    var elements = new Array();
-
-    for (var i = 0; i < scope.childNodes.length; i++)
-        if (typeof(scope.childNodes[i]) == "object"
-            && scope.childNodes[i].tagName
-            && scope.childNodes[i].tagName != '')
-            {
-                elements.push(scope.childNodes[i]);
-                var childElements = getAllElements(scope.childNodes[i]);
-                if (childElements.length > 0)
-                    elements.push(childElements);
-            }
-
-    return elements;
-}
-
-function getAllElements(scope) {
-    var elements;
-
-    if (scope == null)
-        scope = document;
-
-    if (scope == document
-        && allDocumentElements != null)
-        elements = allDocumentElements;
-    else
-        {
-            elements = getAllScopeElements(scope);
-            if (scope == document)
-                allDocumentElements = elements;
-        }
-
-    return elements;
-}
-
 function createElement(tagName, id, classes,
                        attributes, htmlAttributes,
                        parentNode) {
@@ -107,18 +70,6 @@ function createElement(tagName, id, classes,
         parentNode.appendChild(newElement);
 
     return $(newElement);
-}
-
-function ml_stripActionInURL(url) {
-    if (url[url.length - 1] != '/') {
-        var i;
-
-        i = url.lastIndexOf("/");
-        if (i != -1) url = url.substring(0, i);
-    }
-    if (url[url.length - 1] != '/') // ensure trailing slash
-        url = url + "/";
-    return url;
 }
 
 function URLForFolderID(folderID) {
@@ -340,7 +291,7 @@ function triggerAjaxRequest(url, callback, userdata, content, headers) {
     if (http) {
         activeAjaxRequests++;
         document.animTimer = setTimeout("checkAjaxRequestsState();", 250);
-
+        
         http.open("POST", url, true);
         http.url = url;
         http.callback = callback;
@@ -1111,17 +1062,17 @@ function folderUnsubscriptionCallback(http) {
     }
 }
 
-function unsubscribeFromFolder(folder, owner, refreshCallback,
+function unsubscribeFromFolder(folderUrl, owner, refreshCallback,
                                refreshCallbackData) {
     if (document.body.hasClassName("popup")) {
-        window.opener.unsubscribeFromFolder(folder, refreshCallback,
+        window.opener.unsubscribeFromFolder(folderUrl, owner, refreshCallback,
                                             refreshCallbackData);
     }
     else {
-        if (owner.startsWith('/'))
+        if (owner.charAt(0) == '/')
             owner = owner.substring(1);
         if (owner != UserLogin) {
-            var url = (ApplicationBaseURL + folder + "/unsubscribe");
+            var url = folderUrl + "/unsubscribe";
             removeFolderRequestCount++;
             var rfCbData = { method: refreshCallback, data: refreshCallbackData };
             triggerAjaxRequest(url, folderUnsubscriptionCallback, rfCbData);

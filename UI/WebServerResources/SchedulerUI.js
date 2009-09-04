@@ -2069,9 +2069,11 @@ function onCalendarRemove(event) {
                     deletePersonalCalendar(folderIdElements[0]);
                 }
             }
-            else
-                unsubscribeFromFolder(folderId, owner,
+            else {
+                var folderUrl = ApplicationBaseURL + folderId;
+                unsubscribeFromFolder(folderUrl, owner,
                                       onFolderUnsubscribeCB, folderId);
+            }
         }
     }
   
