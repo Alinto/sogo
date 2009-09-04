@@ -939,6 +939,9 @@ function onSearchBlur(event) {
 }
 
 function onSearchKeyDown(event) {
+    if (event.keyCode == Event.KEY_TAB)
+        return false;
+    
     if (this.timer)
         clearTimeout(this.timer);
 

@@ -24,14 +24,14 @@ function onSearchFormSubmit() {
 }
 
 function usersSearchCallback(http) {
-  document.userFoldersRequest = null;
-  var div = $("folders");
-  if (http.status == 200) {
-    var response = http.responseText;
-		buildUsersTree(div, http.responseText)
-  }
-  else if (http.status == 404)
-    div.update();
+    document.userFoldersRequest = null;
+    var div = $("folders");
+    if (http.status == 200) {
+        var response = http.responseText;
+        buildUsersTree(div, http.responseText);
+    }
+    else if (http.status == 404)
+        div.update();
 }
 
 function addUserLineToTree(tree, parent, line) {
@@ -223,20 +223,25 @@ function onConfirmFolderSelection(event) {
 }
 
 function onFolderSearchKeyDown(event) {
+    if (event.ctrlKey
+        || event.metaKey
+        || event.keyCode == Event.KEY_TAB)
+        return;
+    
   var div = $("folders");
-  
+
   if (!div.clean) {
-		var oldD = $("d");
-		if (oldD) {
-			oldD.remove();
-			delete d;
-		}
-    div.clean = true;
-		$("addButton").disabled = true;
+      var oldD = $("d"); // the folders tree
+      if (oldD) {
+          oldD.remove();
+          delete d;
+      }
+      div.clean = true;
+      $("addButton").disabled = true;
   }
   
   if (this.timer)
-    startAnimation($("pageContent"), $("filterPanel"));
+      startAnimation($("pageContent"), $("filterPanel"));
 }
 
 function initUserFoldersWindow() {

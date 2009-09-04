@@ -1,11 +1,11 @@
 DIV#filterPanel
-{ position: absolute;
+{ position: absolute; n0border: 1px dotted blue;
   text-align: center;
   width: auto;
-  line-height: 3em;
+  n0line-height: 3em;
   top: 0;
-  left: 1em;
-  right: 1em; }
+  left: 0;
+  padding: 3px 1em 0; }
 
 SPAN.searchBox
 { float: none !important; }
