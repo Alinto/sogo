@@ -109,6 +109,8 @@
 
   settings = [[context activeUser] userSettings];
   calendarSettings = [settings objectForKey: @"Calendar"];
+  tags = nil;
+
   if (calendarSettings)
     {
       syncTags = [calendarSettings objectForKey: @"FolderSyncTags"];
