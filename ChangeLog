@@ -11,6 +11,12 @@
 	userRecordAsLDIFEntry.
 	* UI/Contacts/UIxContactsListView.m: Removed import/export actions
 	* UI/Scheduler/UIxCalView.m: Removed import/export actions
+	* SoObjects/Contacts/NGVCard+SOGo.m: Added a new category to remove a
+	circular dependency issue.
+	* SoObjects/Contacts/NGVList+SOGo.m: Added a new category to remove a
+	circular dependency issue.
+	* UI/Contacts/UIxContactFolderActions.m: Changed import instructions to use
+	the new category.
 
 2009-09-03  Cyril Robert <crobert@inverse.ca>
 

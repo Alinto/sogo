@@ -2,6 +2,8 @@
 
 	* NGVCard.m: Made use of NSDictionary+Utilities' userRecordAsLDIFEntry.
 	* NGVList.m: Made use of NSDictionary+Utilities' userRecordAsLDIFEntry.
+	* NGVCard.m (ldifString): Moved to a category in SOGo
+	* NGVList.m (ldifString): Moved to a category in SOGo
 
 2009-09-02  Cyril Robert <crobert@inverse.ca>
 

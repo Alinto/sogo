@@ -9,6 +9,8 @@ Contacts_PRINCIPAL_CLASS = SOGoContactsProduct
 
 Contacts_OBJC_FILES =			\
 	Product.m			\
+	NGVCard+SOGo.m \
+	NGVList+SOGo.m \
 	SOGoFolder+CardDAV.m		\
 	SOGoContactFolders.m		\
 	SOGoContactGCSEntry.m		\

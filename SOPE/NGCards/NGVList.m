@@ -25,8 +25,6 @@
 #import <Foundation/NSString.h>
 #import <Foundation/NSDictionary.h>
 
-#import "../../SoObjects/SOGo/NSDictionary+Utilities.h"
-
 #import "NGVCardReference.h"
 
 #import "NGVList.h"
@@ -199,44 +197,5 @@
 {
   return [self childrenWithTag: @"card"];
 }
-
-- (NSString *) ldifString
-{
-  NSMutableString *rc;
-  NSArray *array;
-  NSMutableArray *members;
-  NGVCardReference *tmp;
-  NSMutableDictionary *entry;
-  int i, count;
-
-  entry = [NSMutableDictionary dictionary];
-
-  [entry setObject: [NSString stringWithFormat: @"cn=%@", [self fn]]
-            forKey: @"dn"];
-  [entry setObject: [NSArray arrayWithObjects: @"top", @"groupOfNames", nil]
-            forKey: @"objectclass"];
-  [entry setObject: [self fn] forKey: @"cn"];
-  if ([self nickname])
-    [entry setObject: [self nickname] forKey: @"mozillaNickname"];
-  if ([self description])
-    [entry setObject: [self description] forKey: @"description"];
-
-  array = [self cardReferences];
-  count = [array count];
-  members = [NSMutableArray array];
-  for (i = 0; i < count; i++)
-    {
-      tmp = [array objectAtIndex: i];
-      [members addObject: [NSString stringWithFormat: 
-                           @"cn=%@,mail=%@", [tmp fn], [tmp email]]];
-    }
-  [entry setObject: members forKey: @"member"];
-
-  rc = [NSMutableString stringWithString: [entry userRecordAsLDIFEntry]];
-  [rc appendFormat: @"\n"];
-
-  return rc;
-}
-
 
 @end
