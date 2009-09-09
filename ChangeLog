@@ -1,3 +1,17 @@
+2009-09-09  Cyril Robert <crobert@inverse.ca>
+
+	* Tools/NSDictionary+SOGoTool.m: Removed, all methods were moved to
+	SoObjects/NSDictionary+Utilities.m, or SoObjects/NSString+Utilities.m
+	* UI/Contacts/UIxContactFolderActions.m: New class to handle actions on a
+	single contacts folder. (import/export)
+	* UI/Scheduler/UIxCalFolderActions.m: New class to handle actions on a
+	single agenda folder. (import/export)
+	* SoObjects/SOGo/NSDictionary+Utilities.m: Added userRecordAsLDIFEntry.
+	* SoObjects/SOGo/NSString+Utilities.m: Added methods useful for 
+	userRecordAsLDIFEntry.
+	* UI/Contacts/UIxContactsListView.m: Removed import/export actions
+	* UI/Scheduler/UIxCalView.m: Removed import/export actions
+
 2009-09-03  Cyril Robert <crobert@inverse.ca>
 
 	* UI/Contacts/UIxContactsListView.m: Added ldif / vcard import

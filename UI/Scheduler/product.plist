@@ -79,11 +79,6 @@
 	  actionClass = "UIxCalListingActions";
 	  actionName = "findPossibleSlot";
 	};
-	export = {
-	  protectedBy = "View";
-	  actionClass = "UIxCalListingActions";
-	  actionName = "export";
-	};
 	dayview = {
 	  protectedBy = "View";
 	  pageName    = "UIxCalDayView"; 
@@ -151,12 +146,12 @@
 	};
   export = {
     protectedBy = "View";
-    pageName    = "UIxCalView";
+    actionClass = "UIxCalFolderActions";
     actionName  = "export";
   };
   import = {
     protectedBy = "View";
-    pageName    = "UIxCalView";
+    actionClass = "UIxCalFolderActions";
     actionName  = "import";
   };
 	userRights = {

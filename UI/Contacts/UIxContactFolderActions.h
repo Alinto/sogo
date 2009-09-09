@@ -29,11 +29,13 @@
 
 @protocol SOGoContactObject;
 
-@interface UIxContactsListView : UIxComponent
+@interface UIxContactFolderActions : UIxComponent
 {
-  NSDictionary *currentContact;
-  NSArray *contactInfos;
 }
+
+- (int) importLdifData: (NSString *) ldifData;
+- (int) importVcardData: (NSString *) vcardData;
+- (BOOL) importVcard: (NGVCard *) card;
 
 @end
 

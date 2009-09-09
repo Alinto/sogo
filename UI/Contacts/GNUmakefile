@@ -20,7 +20,8 @@ ContactsUI_OBJC_FILES =			\
 	UIxListView.m		\
 	UIxListEditor.m		\
 	UIxContactsListView.m		\
-	UIxContactFoldersView.m
+	UIxContactFoldersView.m \
+	UIxContactFolderActions.m 
 
 ContactsUI_RESOURCE_FILES +=		\
 	Version				\

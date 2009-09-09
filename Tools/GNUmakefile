@@ -14,8 +14,6 @@ $(SOGO_TOOL)_OBJC_FILES += \
 	SOGoToolRestore.m \
 	SOGoToolCheckDoubles.m \
 	SOGoToolRemoveDoubles.m \
-	\
-	NSDictionary+SOGoTool.m
 
 TOOL_NAME = $(SOGO_TOOL)
 

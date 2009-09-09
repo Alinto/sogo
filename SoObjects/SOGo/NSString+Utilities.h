@@ -62,6 +62,9 @@
 - (BOOL) boolValue;
 #endif
 
+// LDIF
+- (BOOL) _isLDIFSafe;
+
 @end
 
 #endif /* NSSTRING_URL_H */

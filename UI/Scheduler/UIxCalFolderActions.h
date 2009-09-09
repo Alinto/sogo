@@ -27,12 +27,8 @@
 @class NSDictionary;
 @class NSString;
 
-@protocol SOGoContactObject;
-
-@interface UIxContactsListView : UIxComponent
+@interface UIxCalFolderActions : UIxComponent
 {
-  NSDictionary *currentContact;
-  NSArray *contactInfos;
 }
 
 @end

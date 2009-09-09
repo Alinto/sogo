@@ -35,6 +35,9 @@
 - (NSString *) jsonRepresentation;
 - (NSString *) keysWithFormat: (NSString *) keyFormat;
 
+// LDIF methods
+- (NSString *) userRecordAsLDIFEntry;
+
 @end
 
 @interface NSMutableDictionary (SOGoDictionaryUtilities)

@@ -35,10 +35,10 @@
 #import <SOGo/LDAPUserManager.h>
 #import <SOGo/LDAPSource.h>
 #import <SOGo/NSArray+Utilities.h>
+#import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
 
-#import "NSDictionary+SOGoTool.h"
 #import "SOGoToolBackup.h"
 
 /* TODO:

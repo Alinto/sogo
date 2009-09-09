@@ -100,12 +100,12 @@
            };
            export = {
               protectedBy = "View";
-              pageName    = "UIxContactsListView";
+              actionClass = "UIxContactFolderActions";
               actionName  = "export";
            };
            import = {
               protectedBy = "View";
-              pageName    = "UIxContactsListView";
+              actionClass = "UIxContactFolderActions";
               actionName  = "import";
            };
 	   userRights = {

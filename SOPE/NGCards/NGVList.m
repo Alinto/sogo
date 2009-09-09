@@ -23,6 +23,9 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSDictionary.h>
+
+#import "../../SoObjects/SOGo/NSDictionary+Utilities.h"
 
 #import "NGVCardReference.h"
 
@@ -200,29 +203,36 @@
 - (NSString *) ldifString
 {
   NSMutableString *rc;
-  NSMutableArray *array;
+  NSArray *array;
+  NSMutableArray *members;
   NGVCardReference *tmp;
+  NSMutableDictionary *entry;
   int i, count;
 
-  rc = [NSMutableString string];
+  entry = [NSMutableDictionary dictionary];
 
-  [rc appendFormat: @"dn: cn=%@\n", [self fn]];
-  [rc appendFormat: @"objectclass: top\nobjectclass: groupOfNames\n"];
-  [rc appendFormat: @"cn: %@\n", [self fn]];
+  [entry setObject: [NSString stringWithFormat: @"cn=%@", [self fn]]
+            forKey: @"dn"];
+  [entry setObject: [NSArray arrayWithObjects: @"top", @"groupOfNames", nil]
+            forKey: @"objectclass"];
+  [entry setObject: [self fn] forKey: @"cn"];
   if ([self nickname])
-    [rc appendFormat: @"mozillaNickname: %@\n", [self nickname]];
+    [entry setObject: [self nickname] forKey: @"mozillaNickname"];
   if ([self description])
-    [rc appendFormat: @"description: %@\n", [self description]];
+    [entry setObject: [self description] forKey: @"description"];
 
   array = [self cardReferences];
   count = [array count];
+  members = [NSMutableArray array];
   for (i = 0; i < count; i++)
     {
       tmp = [array objectAtIndex: i];
-      [rc appendFormat: @"member: cn=%@,mail=%@\n",
-        [tmp fn], [tmp email]];
+      [members addObject: [NSString stringWithFormat: 
+                           @"cn=%@,mail=%@", [tmp fn], [tmp email]]];
     }
+  [entry setObject: members forKey: @"member"];
 
+  rc = [NSMutableString stringWithString: [entry userRecordAsLDIFEntry]];
   [rc appendFormat: @"\n"];
 
   return rc;

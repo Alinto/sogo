@@ -1,3 +1,8 @@
+2009-09-09  Cyril Robert <crobert@inverse.ca>
+
+	* NGVCard.m: Made use of NSDictionary+Utilities' userRecordAsLDIFEntry.
+	* NGVList.m: Made use of NSDictionary+Utilities' userRecordAsLDIFEntry.
+
 2009-09-02  Cyril Robert <crobert@inverse.ca>
 
 	* NGVCard.m (ldifString): Added, to support exporting

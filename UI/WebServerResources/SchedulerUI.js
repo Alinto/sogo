@@ -1932,7 +1932,7 @@ function uploadCompleted (response) {
       $("uploadResultsContent").update (labels["An error occured while importing calendar."]);
     else {
         $("uploadResultsContent").update (labels["Imported events:"] + " " + data.imported);
-        refreshCurrentFolder ();
+        refreshEventsAndDisplay ();
     }
 
     hideCalendarImport ();
