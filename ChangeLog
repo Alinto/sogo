@@ -1,3 +1,14 @@
+2009-09-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-_getMaxStartDate): do not compute the start date if the active
+	user is a super user.
+	(_enforceTimeLimitOnFilter:withStartDate:andEndDate:): same as
+	above.
+
+	* SoObjects/SOGo/SOGoUser.m (-rolesForObject:inContext:): directly
+	invoke [self isSuperUser]
+
 2009-09-03  Cyril Robert <crobert@inverse.ca>
 
 	* UI/Contacts/UIxContactsListView.m: Added ldif / vcard import
