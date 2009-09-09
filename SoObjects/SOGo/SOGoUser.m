@@ -974,7 +974,7 @@ _timeValue (NSString *key)
   if (sogoRoles)
     [rolesForObject addObjectsFromArray: sogoRoles];
 
-  if ((superUsernames && [superUsernames containsObject: login])
+  if ([self isSuperUser]
       || [[object ownerInContext: context] isEqualToString: login])
     [rolesForObject addObject: SoRole_Owner];
   else if ([object isKindOfClass: [SOGoObject class]])

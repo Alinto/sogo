@@ -35,8 +35,8 @@
 #import <Contacts/SOGoContactFolder.h>
 #import <Contacts/SOGoContactFolders.h>
 
-#import <NGCards/NGVCard.h>
-#import <NGCards/NGVList.h>
+#import <SoObjects/Contacts/NGVCard+SOGo.h>
+#import <SoObjects/Contacts/NGVList+SOGo.h>
 #import <SoObjects/Contacts/SOGoContactGCSEntry.h>
 #import <SoObjects/Contacts/SOGoContactLDIFEntry.h>
 #import <SoObjects/Contacts/SOGoContactGCSList.h>

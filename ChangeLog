@@ -1,3 +1,14 @@
+2009-09-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-_getMaxStartDate): do not compute the start date if the active
+	user is a super user.
+	(_enforceTimeLimitOnFilter:withStartDate:andEndDate:): same as
+	above.
+
+	* SoObjects/SOGo/SOGoUser.m (-rolesForObject:inContext:): directly
+	invoke [self isSuperUser]
+
 2009-09-09  Cyril Robert <crobert@inverse.ca>
 
 	* Tools/NSDictionary+SOGoTool.m: Removed, all methods were moved to
@@ -11,6 +22,12 @@
 	userRecordAsLDIFEntry.
 	* UI/Contacts/UIxContactsListView.m: Removed import/export actions
 	* UI/Scheduler/UIxCalView.m: Removed import/export actions
+	* SoObjects/Contacts/NGVCard+SOGo.m: Added a new category to remove a
+	circular dependency issue.
+	* SoObjects/Contacts/NGVList+SOGo.m: Added a new category to remove a
+	circular dependency issue.
+	* UI/Contacts/UIxContactFolderActions.m: Changed import instructions to use
+	the new category.
 
 2009-09-03  Cyril Robert <crobert@inverse.ca>
 
