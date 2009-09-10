@@ -62,8 +62,16 @@
       if (folder)
         {
           imported = [folder loadWebCalendar: [r formValueForKey: @"url"]];
-          [rc setObject: @"Web Calendar" forKey: @"displayname"];
-          [rc setObject: name forKey: @"name"];
+          
+          if (imported >= 0)
+            {
+              [rc setObject: @"Web Calendar" forKey: @"displayname"];
+              [rc setObject: name forKey: @"name"];
+            }
+          else
+            {
+              [folder delete];
+            }
           [rc setObject: [NSNumber numberWithInt: imported] 
                  forKey: @"imported"];
         }

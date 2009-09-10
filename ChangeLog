@@ -16,6 +16,8 @@
 	method to [SOGoAppointmentFolder importCalendar:].
 	* SoObjects/Appointments/SOGoWebAppointmentFolder.m (delete): Wrap the
 	parent method to remove the calendar for the user's settings.
+	* SoObjects/Appointments/SOGoWebAppointmentFolder.m: Added some error
+	management, for when the url is invalid / not ical / etc.
 
 2009-09-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

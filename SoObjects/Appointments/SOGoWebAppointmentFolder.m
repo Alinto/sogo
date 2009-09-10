@@ -53,6 +53,10 @@
           [[self ocsFolder] deleteAllContent];
           imported = [self importCalendar: calendar];
         }
+      else
+        {
+          imported = -1;
+        }
     }
   
   return imported;

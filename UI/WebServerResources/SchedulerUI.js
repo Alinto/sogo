@@ -1905,10 +1905,15 @@ function onCalendarWebAdd(event) {
 }
 function addWebCalendarCallback (http) {
     var data = http.responseText.evalJSON(true);
-    appendCalendar(data.displayname, "/" + data.name);
-    refreshEvents();
-    refreshTasks();
-    changeCalendarDisplay();
+    if (data.imported > 0) {
+        appendCalendar(data.displayname, "/" + data.name);
+        refreshEvents();
+        refreshTasks();
+        changeCalendarDisplay();
+    }
+    else {
+        alert (labels["An error occured while importing calendar."]);
+    }
 }
 
 function onCalendarExport(event) {
