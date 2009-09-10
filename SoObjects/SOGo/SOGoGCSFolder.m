@@ -1192,6 +1192,7 @@ static NSArray *childRecordFields = nil;
   NSArray *records;
   NSMutableArray *acls;
   NSString *qs;
+  BOOL foundUserAcls;
 
   // We look for the exact uid or any uid that begins with "@" (corresponding to groups)
   qs = [NSString stringWithFormat: @"(c_object = '/%@') AND (c_uid = '%@' OR c_uid LIKE '@%%')",
@@ -1207,13 +1208,21 @@ static NSArray *childRecordFields = nil;
   SOGoGroup *group;
   SOGoUser *user;
 
+  foundUserAcls = NO;
+
   for (i = 0; i < [records count]; i ++)
     {
       record = [records objectAtIndex: i];
       currentUid = [record valueForKey: @"c_uid"];
       if ([currentUid isEqualToString: uid])
-                      [acls addObject: [record valueForKey: @"c_role"]];
-      else
+        {
+          [acls addObject: [record valueForKey: @"c_role"]];
+          foundUserAcls = YES;
+        }
+    }
+  if (!foundUserAcls)
+    {
+      for (i = 0; i < [records count]; i ++)
         {
           group = [SOGoGroup groupWithIdentifier: currentUid];
           if (group)

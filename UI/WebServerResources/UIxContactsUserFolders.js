@@ -11,7 +11,7 @@ function onSearchFormSubmit() {
   }
   else {
     var url = (UserFolderURL
-               + "usersSearch?search=" + encodedValue);
+               + "usersSearch?search=" + encodedValue + "&excludeGroups=1");
     if (document.userFoldersRequest) {
       document.userFoldersRequest.aborted = true;
       document.userFoldersRequest.abort();

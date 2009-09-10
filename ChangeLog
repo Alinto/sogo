@@ -58,6 +58,8 @@
 	parent method to remove the calendar for the user's settings.
 	* SoObjects/Appointments/SOGoWebAppointmentFolder.m: Added some error
 	management, for when the url is invalid / not ical / etc.
+	* SoObjects/SOGo/SOGoGCSFolder.m (_fetchAclsForUser: forObjectAtPath:):
+	Ignore group acls if we found acls for the user.
 
 2009-09-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
