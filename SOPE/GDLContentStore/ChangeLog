@@ -1,3 +1,8 @@
+2009-09-10  Cyril Robert <crobert@inverse.ca>
+
+	* GCSFolder.m (deleteAllContent): New method to delete everything in the
+	folder (use with caution).
+
 2009-08-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* GCSFolder.m (-deleteAclWithSpecification:): enable the deletion

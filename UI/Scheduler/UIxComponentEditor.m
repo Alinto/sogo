@@ -49,6 +49,7 @@
 #import <SoObjects/Appointments/iCalEntityObject+SOGo.h>
 #import <SoObjects/Appointments/iCalPerson+SOGo.h>
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>
+#import <SoObjects/Appointments/SOGoWebAppointmentFolder.h>
 #import <SoObjects/Appointments/SOGoAppointmentFolders.h>
 #import <SoObjects/Appointments/SOGoAppointmentObject.h>
 #import <SoObjects/Appointments/SOGoAppointmentOccurence.h>
@@ -2045,18 +2046,23 @@ RANGE(2);
 {
   SOGoContentObject <SOGoComponentOccurence> *clientObject;
   SOGoUser *ownerUser;
-  int rc = 0;
+  int rc;
 
   clientObject = [self clientObject];
   ownerUser = [SOGoUser userWithLogin: [clientObject ownerInContext: context]
                                 roles: nil];
 
-  if ([ownerUser isEqual: [context activeUser]])
-    rc = [self ownerIsAttendee: ownerUser
-               andClientObject: clientObject];
+  if ([componentCalendar isKindOfClass: [SOGoWebAppointmentFolder class]])
+    rc = 1;
   else
-    rc = [self delegateIsAttendee: ownerUser
-                  andClientObject: clientObject];
+    {
+      if ([ownerUser isEqual: [context activeUser]])
+        rc = [self ownerIsAttendee: ownerUser
+                   andClientObject: clientObject];
+      else
+        rc = [self delegateIsAttendee: ownerUser
+                      andClientObject: clientObject];
+    }
 
   return rc;
 }

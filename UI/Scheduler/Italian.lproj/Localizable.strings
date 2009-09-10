@@ -533,3 +533,6 @@ vtodo_class2 = "(Attività confidenziale)";
 "Open Task..." = "Open Task...";
 "Mark Completed" = "Mark Completed";
 "Delete Task" = "Delete Task";
+
+"Subscribe to a web calendar..." = "Subscribe to a web calendar...";
+"URL of the Calendar" = "URL of the Calendar";

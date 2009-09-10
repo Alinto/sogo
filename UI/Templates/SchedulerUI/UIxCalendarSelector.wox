@@ -21,6 +21,10 @@ div.colorBox.calendarFolder<var:string value="currentCalendar.folder" />
 	    label:title="New Calendar..."
 	    /></span></a>
       <a href="#" class="toolbarButton"
+	><span class="toolbarButton"><img rsrc:src="add-web-calendar.png"
+	    label:title="Subscribe to a web calendar..."
+	    /></span></a>
+      <a href="#" class="toolbarButton"
 	><span class="toolbarButton"><img rsrc:src="add-user-calendar.png"
 	    label:title="Subscribe to a Calendar..."
 	    /></span></a>

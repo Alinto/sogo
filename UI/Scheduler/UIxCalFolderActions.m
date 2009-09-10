@@ -20,7 +20,6 @@
 */
 
 #import <Foundation/Foundation.h>
-#import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/NSDictionary+Utilities.h>
 #import <SoObjects/SOGo/NSString+Utilities.h>
 
@@ -98,13 +97,12 @@
 {
   SOGoAppointmentFolder *folder;
   NSMutableDictionary *rc;
-  NSArray *components;
   WORequest *request;
   WOResponse *response;
   NSString *fileContent;
   id data;
   iCalCalendar *additions;
-  int i, count, imported;
+  int imported;
 
   imported = 0;
   rc = [NSMutableDictionary dictionary];
@@ -124,29 +122,7 @@
       && [fileContent hasPrefix: @"BEGIN:"])
     {
       additions = [iCalCalendar parseSingleFromSource: fileContent];
-      if (additions)
-        {
-          components = [additions events];
-          count = [components count];
-          for (i = 0; i < count; i++)
-            if ([folder importComponent: [components objectAtIndex: i]])
-              imported++;
-          components = [additions todos];
-          count = [components count];
-          for (i = 0; i < count; i++)
-            if ([folder importComponent: [components objectAtIndex: i]])
-              imported++;
-          components = [additions journals];
-          count = [components count];
-          for (i = 0; i < count; i++)
-            if ([folder importComponent: [components objectAtIndex: i]])
-              imported++;
-          components = [additions freeBusys];
-          count = [components count];
-          for (i = 0; i < count; i++)
-            if ([folder importComponent: [components objectAtIndex: i]])
-              imported++;
-        }
+      imported = [folder importCalendar: additions];
     }
 
   [rc setObject: [NSNumber numberWithInt: imported]

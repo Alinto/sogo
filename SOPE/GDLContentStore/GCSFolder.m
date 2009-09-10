@@ -1092,6 +1092,57 @@ static NSArray *contentFieldNames = nil;
   return error;
 }
 
+- (NSException *) deleteAllContent {
+    NSException *error = nil;
+    NSString *query;
+    EOAdaptorChannel *storeChannel, *quickChannel;
+
+    if ((storeChannel = [self acquireStoreChannel]) == nil) {
+        [self errorWithFormat:@"could not open storage channel!"];
+        return nil;
+    }
+    if (ofFlags.sameTableForQuick)
+      quickChannel = nil;
+    else
+      {
+        quickChannel = [self acquireQuickChannel];
+        if (!quickChannel)
+          {
+            [self errorWithFormat:@"could not open quick channel!"];
+            [self releaseChannel:storeChannel];
+            return nil;
+          }
+    }
+
+    if (!ofFlags.sameTableForQuick) [[quickChannel adaptorContext] beginTransaction];
+    [[storeChannel adaptorContext] beginTransaction];
+
+    query = [NSString stringWithFormat: @"DELETE FROM %@", [self storeTableName]];
+    error = [storeChannel evaluateExpressionX:query];
+    if (error)
+      [self errorWithFormat: @"%s: cannot delete content '%@': %@", 
+        __PRETTY_FUNCTION__, query, error];
+    else if (!ofFlags.sameTableForQuick) {
+        /* content row deleted, now delete the quick row */
+        query = [NSString stringWithFormat: @"DELETE FROM %@", [self quickTableName]];
+        error = [quickChannel evaluateExpressionX: query];
+        if (error)
+          [self errorWithFormat: @"%s: cannot delete quick row '%@': %@", 
+            __PRETTY_FUNCTION__, query, error];
+    }
+
+    /* release channels and return */
+    [[storeChannel adaptorContext] commitTransaction];
+    [self releaseChannel:storeChannel];
+
+    if (!ofFlags.sameTableForQuick) {
+        [[quickChannel adaptorContext] commitTransaction];
+        [self releaseChannel:quickChannel];
+    }
+
+    return error;
+}
+
 - (NSException *)deleteFolder {
   EOAdaptorChannel *channel;
   NSString *delsql;

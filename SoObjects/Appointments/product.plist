@@ -11,6 +11,24 @@
     SOGoAppointmentFolders = {
       superclass = "SOGoParentFolder";
     };
+    SOGoWebAppointmentFolder = {
+        superclass = "SOGoGCSFolder";
+        defaultRoles = {
+            "Access Contents Information" = ( "Owner", "PublicResponder", "PublicModifier", "PublicViewer", "PublicDAndTViewer", "PrivateResponder", "PrivateModifier", "PrivateViewer", "PrivateDAndTViewer", "ConfidentialResponder", "ConfidentialModifier", "ConfidentialViewer", "ConfidentialDAndTViewer" );
+            "ViewWholePublicRecords" = ( "Owner", "PublicResponder", "PublicModifier", "PublicViewer" );
+            "ViewWholePrivateRecords" = ( "Owner", "PrivateResponder", "PrivateModifier", "PrivateViewer" );
+            "ViewWholeConfidentialRecords" = ( "Owner", "ConfidentialResponder", "ConfidentialModifier", "ConfidentialViewer" );
+            "ViewDAndTOfPublicRecords" = ( "Owner", "PublicDAndTViewer" );
+            "ViewDAndTOfPrivateRecords" = ( "Owner", "PrivateDAndTViewer" );
+            "ViewDAndTOfConfidentialRecords" = ( "Owner", "ConfidentialDAndTViewer" );
+            "ModifyPublicRecords" = ( );
+            "ModifyPrivateRecords" = ( );
+            "ModifyConfidentialRecords" = ( );
+            "RespondToPublicRecords" = ( );
+            "RespondToPrivateRecords" = ( );
+            "RespondToConfidentialRecords" = ( );
+        };
+    };
     SOGoAppointmentFolder = {
       superclass = "SOGoGCSFolder";
       defaultRoles = {

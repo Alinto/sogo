@@ -40,6 +40,16 @@
 	  protectedBy = "View";
 	  pageName    = "UIxCalMainView";
 	};
+  addWebCalendar = {
+      protectedBy = "View";
+      actionClass = "UIxCalMainActions";
+      actionName  = "addWebCalendar";
+  };
+  reloadWebCalendars = {
+      protectedBy = "View";
+      actionClass = "UIxCalMainActions";
+      actionName  = "reloadWebCalendars";
+  };
 	saveDragHandleState = {
 	  protectedBy = "View";
 	  pageName    = "UIxCalMainView";
