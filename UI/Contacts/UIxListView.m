@@ -119,4 +119,31 @@
   return rc;
 }
 
+- (WOResponse *) propertiesAction
+{
+  NSMutableArray *data;
+  NGVCardReference *card;
+  WOResponse *rc;
+  int i, count;
+
+  data = [NSMutableArray array];
+  co = [self clientObject];
+  list = [co vList];
+
+  count = [[list cardReferences] count];
+  for (i = 0; i < count; i++)
+    {
+      card = [[list cardReferences] objectAtIndex: i];
+      [data addObject: [NSArray arrayWithObjects: [card reference], [card fn], 
+        [card email], nil]];
+    }
+
+  rc = [context response];
+  [rc setHeader: @"text/plain; charset=utf-8"
+         forKey: @"content-type"];
+  [rc appendContentString: [data jsonRepresentation]];
+
+  return rc;
+}
+
 @end

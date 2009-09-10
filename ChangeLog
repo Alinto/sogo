@@ -60,6 +60,8 @@
 	management, for when the url is invalid / not ical / etc.
 	* SoObjects/SOGo/SOGoGCSFolder.m (_fetchAclsForUser: forObjectAtPath:):
 	Ignore group acls if we found acls for the user.
+	* UI/Contacts/UIxListView.m (propertiesAction): Added to list references
+	from a vList.
 
 2009-09-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

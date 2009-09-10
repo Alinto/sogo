@@ -568,14 +568,38 @@ function onConfirmContactSelection(event) {
     var rows = contactsList.getSelectedRows();
     for (i = 0; i < rows.length; i++) {
         var cid = rows[i].getAttribute("id");
-        var cname = '' + rows[i].getAttribute("contactname");
-        var email = '' + rows[i].cells[1].innerHTML;
+        if (cid.endsWith (".vlf")) {
+            addListToOpener (tag, Contact.currentAddressBook, 
+                             currentAddressBookName, cid);
+        }
+        else {
+          var cname = '' + rows[i].getAttribute("contactname");
+          var email = '' + rows[i].cells[1].innerHTML;
 		
-        window.opener.addContact(tag, currentAddressBookName + '/' + cname,
-                                 cid, cname, email);
+          window.opener.addContact(tag, currentAddressBookName + '/' + cname,
+                                   cid, cname, email);
+        }
     }
 
     preventDefault(event);
+}
+
+function addListToOpener (tag, aBookId, aBookName, listId) {
+    var url = ApplicationBaseURL + "/" + aBookId + "/" + listId + "/properties";
+    triggerAjaxRequest (url, addListToOpenerCallback, {
+                        "aBookId": aBookId, 
+                        "aBookName": aBookName,
+                        "tag": tag
+                        });
+}
+function addListToOpenerCallback (http) {
+    var data = http.callbackData;
+    var received = http.responseText.evalJSON (true);
+    for (var i = 0; i < received.length; i++) {
+        var contact = received[i];
+        window.opener.addContact(data.tag, data.aBookName + '/' + contact[1],
+                                   contact[0], contact[1], contact[2]);
+    }
 }
 
 function refreshContacts(cname) {

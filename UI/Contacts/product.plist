@@ -193,6 +193,11 @@
               protectedBy = "Access Contents Information";
               pageName    = "UIxListView";
            };
+           properties = {
+               protectedBy = "Access Contents Information";
+               pageName    = "UIxListView";
+               actionName  = "properties";
+           };
            edit = {
               protectedBy = "Access Contents Information";
               pageName    = "UIxListEditor";
