@@ -1,3 +1,30 @@
+2009-09-10  Cyril Robert <crobert@inverse.ca>
+
+	* SoObjects/Appointments/SOGoWebAppointmentFolder.m: New
+	SOGoAppointmentFolder subclass to manage iCal subscriptions.
+	* UI/Scheduler/UIxCalMainActions.m: New action class to handle actions on
+	the main calendar.
+	* SoObjects/Appointments/SOGoAppointmentFolder.m (importCalendar:): New
+	method to import everything from an iCalCalendar. (Refactoring from 
+	UIxCalFolderActions)
+	* SoObjects/Appointments/SOGoAppointmentFolders.m (webCalendarIds): New
+	method to get uids of web calendar folders.
+	(_fetchPersonalFolders: withChannel:): Wrap the parent method to replace web
+	calendar folders with the correct class: SOGoWebAppointmentFolder. It also
+	removes invalid references in the WebCalendars setting.
+	* UI/Scheduler/UIxCalFolderActions.m (importAction): Moved a big part of the 
+	method to [SOGoAppointmentFolder importCalendar:].
+	* SoObjects/Appointments/SOGoWebAppointmentFolder.m (delete): Wrap the
+	parent method to remove the calendar for the user's settings.
+	* SoObjects/Appointments/SOGoWebAppointmentFolder.m: Added some error
+	management, for when the url is invalid / not ical / etc.
+
+2009-09-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxComponentEditor.m (-setComment,comment):
+	properly substitute the form-provided "\r\n" sequences with "\n"
+	sequences and vice-versa.
+
 2009-09-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m

@@ -533,3 +533,6 @@ vtodo_class2 = "(Tâche confidentielle)";
 "Open Task..." = "Ouvrir la tâche...";
 "Mark Completed" = "Marquer comme accomplie";
 "Delete Task" = "Supprimer la tâche";
+
+"Subscribe to a web calendar..." = "S'inscrire à un agenda en ligne...";
+"URL of the Calendar" = "URL de l'agenda";

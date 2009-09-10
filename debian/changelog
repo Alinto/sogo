@@ -1,8 +1,9 @@
 sogo (X) unstable; urgency=low
 
   * Install a default Apache 2 configuration file.
+  * Added a dependency on sope4.9-libxmlsaxdriver.
 
- -- Inverse Support <support@inverse.ca>  Wed, 19 Aug 2009 09:42:15 -0400
+ -- Inverse Support <support@inverse.ca>  Wed, 10 Sept 2009 09:42:15 -0400
 
 sogo (1.0.4) unstable; urgency=low
 

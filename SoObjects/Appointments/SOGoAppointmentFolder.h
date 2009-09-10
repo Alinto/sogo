@@ -48,6 +48,7 @@
 @class NSString;
 @class NSTimeZone;
 @class GCSFolder;
+@class iCalCalendar;
 
 @interface SOGoAppointmentFolder : SOGoGCSFolder
 {
@@ -145,6 +146,7 @@
                       withWriteAccess: (BOOL) hasWriteAccess;
 
 - (BOOL) importComponent: (iCalEntityObject *) event;
+- (int) importCalendar: (iCalCalendar *) calendar;
 
 @end
 

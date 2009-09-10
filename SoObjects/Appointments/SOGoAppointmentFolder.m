@@ -3196,4 +3196,41 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return ([object saveContentString: content] == nil);
 }
 
+- (int) importCalendar: (iCalCalendar *) calendar
+{
+  NSArray *components;
+  int imported, count, i;
+  
+  imported = 0;
+
+  if (calendar)
+    {
+      components = [calendar events];
+      count = [components count];
+      for (i = 0; i < count; i++)
+        if ([self importComponent: [components objectAtIndex: i]])
+          imported++;
+
+      components = [calendar todos];
+      count = [components count];
+      for (i = 0; i < count; i++)
+        if ([self importComponent: [components objectAtIndex: i]])
+          imported++;
+
+      components = [calendar journals];
+      count = [components count];
+      for (i = 0; i < count; i++)
+        if ([self importComponent: [components objectAtIndex: i]])
+          imported++;
+
+      components = [calendar freeBusys];
+      count = [components count];
+      for (i = 0; i < count; i++)
+        if ([self importComponent: [components objectAtIndex: i]])
+          imported++;
+    }
+
+  return imported;
+}
+
 @end /* SOGoAppointmentFolder */

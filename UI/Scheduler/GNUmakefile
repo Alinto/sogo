@@ -31,6 +31,7 @@ SchedulerUI_OBJC_FILES =		\
 	UIxAptTableView.m		\
 					\
 	UIxCalListingActions.m		\
+	UIxCalMainActions.m		\
 					\
 	UIxAttendeesEditor.m		\
 	UIxComponentEditor.m		\

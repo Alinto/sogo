@@ -29,6 +29,7 @@
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest+So.h>
 #import <NGObjWeb/NSException+HTTP.h>
+#import <GDLAccess/EOAdaptorChannel.h>
 
 #import <SaxObjC/XMLNamespaces.h>
 
@@ -37,6 +38,7 @@
 #import <SOGo/SOGoWebDAVValue.h>
 #import <SOGo/SOGoUser.h>
 #import "SOGoAppointmentFolder.h"
+#import "SOGoWebAppointmentFolder.h"
 
 #import "SOGoAppointmentFolders.h"
 
@@ -267,6 +269,66 @@
     }
 
   return proxyFolders;
+}
+
+- (NSArray *) webCalendarIds
+{
+  NSUserDefaults *us;
+  NSDictionary *tmp, *calendars;
+  NSArray *rc;
+  
+  rc = nil;
+
+  us = [[context activeUser] userSettings];
+  tmp = [us objectForKey: @"Calendar"];
+  if (tmp)
+    {
+      calendars = [tmp objectForKey: @"WebCalendars"];
+      if (calendars)
+        rc = [calendars allKeys];
+    }
+
+  if (!rc)
+    rc = [NSArray array];
+
+  return rc;
+}
+
+- (NSException *) _fetchPersonalFolders: (NSString *) sql
+                            withChannel: (EOAdaptorChannel *) fc
+{
+  int count, max;
+  NSArray *webCalendarIds;
+  NSString *name;
+  SOGoAppointmentFolder *old;
+  SOGoWebAppointmentFolder *folder;
+  NSException *error;
+  BOOL isWebRequest;
+
+  isWebRequest = [[context request] handledByDefaultHandler];
+  error = [super _fetchPersonalFolders: sql withChannel: fc];
+
+  webCalendarIds = [self webCalendarIds];
+  max = [webCalendarIds count];
+  if (!error && max)
+    {
+      for (count = 0; count < max; count++)
+        {
+          name = [webCalendarIds objectAtIndex: count];
+          if (isWebRequest)
+            {
+              old = [subFolders objectForKey: name];
+              folder = [SOGoWebAppointmentFolder objectWithName: name 
+                                                    inContainer: self];
+              [folder setOCSPath: [old ocsPath]];
+              [subFolders setObject: folder forKey: name];
+            }
+          else
+            [subFolders removeObjectForKey: name];
+        }
+    }
+
+  return error;
 }
 
 @end

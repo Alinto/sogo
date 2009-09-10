@@ -56,6 +56,15 @@ function initPreferences() {
     resetTableActions ();
     $("categoryAdd").observe ("click", onCategoryAdd);
     $("categoryDelete").observe ("click", onCategoryDelete);
+
+    // Disable placement (after) if composing in HTML
+    if ($("composeMessagesType")) {
+        if ($("composeMessagesType").value == 1) {
+            $("replyPlacementList").selectedIndex = 0;
+            $("replyPlacementList").disabled = 1;
+            onReplyPlacementListChange ();
+        }
+    }
 }
 
 function resetTableActions() {

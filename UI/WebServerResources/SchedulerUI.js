@@ -872,9 +872,21 @@ function onMonthOverview() {
 }
 
 function onCalendarReload() {
-    changeCalendarDisplay(null, currentView);
-
+    reloadWebCalendars ();
     return false;
+}
+
+function reloadWebCalendars () {
+    var url = ApplicationBaseURL + "reloadWebCalendars";
+    if (document.reloadWebCalAjaxRequest) {
+        document.reloadWebCalAjaxRequest.aborted = true;
+        document.reloadWebCalAjaxRequest.abort();
+    }
+    document.reloadWebCalAjaxRequest
+        = triggerAjaxRequest(url, reloadWebCalendarsCallback);
+}
+function reloadWebCalendarsCallback (http) {
+    changeCalendarDisplay(null, currentView);
 }
 
 function scrollDayView(scrollEvent) {
@@ -1830,8 +1842,9 @@ function initCalendarSelector() {
 
     var links = $("calendarSelectorButtons").childNodesWithTag("a");
     $(links[0]).observe("click", onCalendarNew);
-    $(links[1]).observe("click", onCalendarAdd);
-    $(links[2]).observe("click", onCalendarRemove);
+    $(links[1]).observe("click", onCalendarWebAdd);
+    $(links[2]).observe("click", onCalendarAdd);
+    $(links[3]).observe("click", onCalendarRemove);
 }
 
 function onCalendarModify(event) {
@@ -1877,6 +1890,32 @@ function onCalendarAdd(event) {
     openUserFolderSelector(onFolderSubscribeCB, "calendar");
     preventDefault(event);
 }
+
+function onCalendarWebAdd(event) {
+    var calendarUrl = window.prompt(labels["URL of the Calendar"], "");
+    if (calendarUrl) {
+        if (document.addWebCalendarRequest) {
+            document.addWebCalendarRequest.aborted = true;
+            document.addWebCalendarRequest.abort ();
+        }
+        var url = ApplicationBaseURL + "/addWebCalendar?url=" + escape (calendarUrl);
+        document.addWebCalendarRequest = 
+          triggerAjaxRequest (url, addWebCalendarCallback);
+    }
+}
+function addWebCalendarCallback (http) {
+    var data = http.responseText.evalJSON(true);
+    if (data.imported > 0) {
+        appendCalendar(data.displayname, "/" + data.name);
+        refreshEvents();
+        refreshTasks();
+        changeCalendarDisplay();
+    }
+    else {
+        alert (labels["An error occured while importing calendar."]);
+    }
+}
+
 function onCalendarExport(event) {
     var node = $("calendarList").getSelectedNodes().first();
     var owner = node.getAttribute("owner");
