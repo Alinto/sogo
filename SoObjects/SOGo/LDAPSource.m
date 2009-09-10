@@ -663,12 +663,12 @@ static NSLock *lock;
   contactEntry = [NSMutableDictionary dictionary];
   [contactEntry setObject: [ldapEntry dn] forKey: @"dn"];
   classes = [ldapEntry objectClasses];
+  attributes = [[self _searchAttributes] objectEnumerator];
 
   if (classes)
     {
       [contactEntry setObject: classes
 		       forKey: @"objectClasses"];
-      attributes = [[self _searchAttributes] objectEnumerator];
 
       if ([classes containsObject: @"group"] ||
 	  [classes containsObject: @"groupOfNames"] ||
