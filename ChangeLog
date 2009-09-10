@@ -1,3 +1,9 @@
+2009-09-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxComponentEditor.m (-setComment,comment):
+	properly substitute the form-provided "\r\n" sequences with "\n"
+	sequences and vice-versa.
+
 2009-09-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m

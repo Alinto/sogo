@@ -806,12 +806,13 @@ iRANGE(2);
 
 - (void) setComment: (NSString *) _value
 {
-  ASSIGN (comment, _value);
+#warning should we do the same for "location" and "summary"? What about ContactsUI?
+  ASSIGN (comment, [_value stringByReplacingString: @"\r\n" withString: @"\n"]);
 }
 
 - (NSString *) comment
 {
-  return comment;
+  return [comment stringByReplacingString: @"\n" withString: @"\r\n"];
 }
 
 - (BOOL) hasComment
