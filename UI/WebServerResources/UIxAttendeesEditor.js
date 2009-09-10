@@ -13,11 +13,7 @@ var attendeesEditor = {
     delay: 500,
     delayedSearch: false,
     currentField: null,
-    selectedIndex: -1,
-    names: null,
-    UIDs: null,
-    emails: null,
-    states: null
+    selectedIndex: -1
 };
 
 
@@ -48,12 +44,12 @@ function onContactKeydown(event) {
         var row = $(this).up("tr").next();
         this.blur(); // triggers checkAttendee function call
         var input = row.down("input");
-        if (input.readOnly)
-            newAttendee(null);
-        else {
+        if (input) {
             input.focussed = true;
             input.activate();
         }
+        else
+            newAttendee(null);
     }
     else if (event.keyCode == 0
              || event.keyCode == 8 // Backspace
@@ -579,15 +575,12 @@ function onNextSlotClick (event) {
 
 function onEditorOkClick(event) {
     preventDefault(event);
-   
-    attendeesEditor.names = new Array();
-    attendeesEditor.UIDs = new Array();
-    attendeesEditor.emails = new Array();
-    attendeesEditor.states = new Array();
-
+    
+    var attendees = window.opener.attendees;
+    var newAttendees = new Hash();
     var table = $("freeBusy");
     var inputs = table.getElementsByTagName("input");
-    for (var i = 0; i < inputs.length - 2; i++) {
+    for (var i = 0; i < inputs.length - 1; i++) {
         var row = $(inputs[i]).up("tr");
         var name = extractEmailName(inputs[i].value);
         var email = extractEmailAddress(inputs[i].value);
@@ -599,24 +592,15 @@ function onEditorOkClick(event) {
                 name = inputs[i].uid;
             else
                 name = email;
-        var state = "needs-action";
-        if (row.hasClassName("accepted"))
-            state = "accepted";
-        else if (row.hasClassName("declined"))
-            state = "declined";
-        var pos = attendeesEditor.emails.indexOf(email);
-        if (pos == -1)
-            pos = attendeesEditor.emails.length;
-        attendeesEditor.names[pos] = name;
-        attendeesEditor.UIDs[pos] = uid;
-        attendeesEditor.emails[pos] = email;
-        attendeesEditor.states[pos] = state;
+        var attendee = attendees.get(email);
+        if (!attendee)
+            attendee = new Hash({'email': email,
+                                 'name': name,
+                                 'uid': uid,
+                                 'partstat': 'needs-action'});
+        newAttendees.set(email, attendee);
     }
-    parent$("attendeesNames").value = attendeesEditor.names.join(",");
-    parent$("attendeesUIDs").value = attendeesEditor.UIDs.join(",");
-    parent$("attendeesEmails").value = attendeesEditor.emails.join(",");
-    parent$("attendeesStates").value = attendeesEditor.states.join(",");
-    window.opener.refreshAttendees();
+    window.opener.refreshAttendees(newAttendees.toJSON());
 
     updateParentDateFields("startTime", "startTime");
     updateParentDateFields("endTime", "endTime");
@@ -746,15 +730,11 @@ function prepareTableRows() {
 }
 
 function prepareAttendees() {
-    var value = parent$("attendeesNames").value;
     var tableAttendees = $("freeBusyAttendees");
     var tableData = $("freeBusyData");
-    if (value.length > 0) {
-        attendeesEditor.names = parent$("attendeesNames").value.split(",");
-        attendeesEditor.UIDs = parent$("attendeesUIDs").value.split(",");
-        attendeesEditor.emails = parent$("attendeesEmails").value.split(",");
-        attendeesEditor.states = parent$("attendeesStates").value.split(",");
+    var attendees = window.opener.attendees;
 
+    if (attendees && attendees.keys()) {
         var tbodyAttendees = tableAttendees.tBodies[0];
         var modelAttendee = tbodyAttendees.rows[tbodyAttendees.rows.length - 1];
         var newAttendeeRow = tbodyAttendees.rows[tbodyAttendees.rows.length - 2];
@@ -763,42 +743,38 @@ function prepareAttendees() {
         var modelData = tbodyData.rows[tbodyData.rows.length - 1];
         var newDataRow = tbodyData.rows[tbodyData.rows.length - 2];
 
-        for (var i = 0; i < attendeesEditor.names.length; i++) {
-            var row = modelAttendee.cloneNode(true);
-            tbodyAttendees.insertBefore(row, newAttendeeRow);
-            $(row).removeClassName("attendeeModel");
-            $(row).addClassName(attendeesEditor.states[i]);
-            var input = $(row).down("input");
-            var value = "";
-            if (attendeesEditor.names[i].length > 0
-                && attendeesEditor.names[i] != attendeesEditor.emails[i])
-                value += attendeesEditor.names[i] + " ";
-            value += "<" + attendeesEditor.emails[i] + ">";
-            input.value = value;
-            if (attendeesEditor.UIDs[i].length > 0)
-                input.uid = attendeesEditor.UIDs[i];
-            input.setAttribute("name", "");
-            input.setAttribute("modified", "0");
-            input.observe("blur", checkAttendee);
-            input.observe("keydown", onContactKeydown);
+        attendees.values().each(function(attendee) {
+                attendee = $H(attendee);
+                var row = modelAttendee.cloneNode(true);
+                tbodyAttendees.insertBefore(row, newAttendeeRow);
+                $(row).removeClassName("attendeeModel");
+                $(row).addClassName(attendee.get('partstat'));
+                var input = $(row).down("input");
+                var value = attendee.get('name');
+                if (value)
+                    value += " ";
+                else
+                    value = "";
+                value += "<" + attendee.get('email') + ">";
+                input.value = value;
+                if (attendee.get('uid'))
+                    input.uid = attendee.get('uid');
+                input.setAttribute("name", "");
+                input.setAttribute("modified", "0");
+                input.observe("blur", checkAttendee);
+                input.observe("keydown", onContactKeydown);
 	 
-            row = modelData.cloneNode(true);
-            tbodyData.insertBefore(row, newDataRow);
-            $(row).removeClassName("dataModel");
+                row = modelData.cloneNode(true);
+                tbodyData.insertBefore(row, newDataRow);
+                $(row).removeClassName("dataModel");
 	 
-            displayFreeBusyForNode(input);
-        }
-    }
-    else {
-        attendeesEditor.names = new Array();
-        attendeesEditor.UIDs = new Array();
-        attendeesEditor.emails = new Array();
-        //newAttendee(null);
+                displayFreeBusyForNode(input);
+            });
     }
 
-    var inputs = tableAttendees.select("input");
-    inputs[inputs.length - 2].setAttribute("autocomplete", "off");
-    inputs[inputs.length - 2].observe("click", newAttendee);
+    // Activate "Add attendee" button
+    var links = tableAttendees.select("TR.futureAttendee TD A");
+    links.first().observe("click", newAttendee);
 }
 
 function onWindowResize(event) {

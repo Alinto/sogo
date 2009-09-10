@@ -761,7 +761,7 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
       ownerUser = from;
       language = [ownerUser language];
       /* create page name */
-      pageName
+      pageName 
 	= [NSString stringWithFormat: @"SOGoAptMail%@ICalReply", language];
       /* construct message content */
       p = [app pageWithName: pageName inContext: context];
@@ -778,13 +778,13 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
        * at all. Mail.app shows the rich content alternative _only_
        * so we'll stick with multipart/mixed for the time being.
        */
-      [headerMap setObject: @"multipart/mixed" forKey: @"content-type"];
-      [headerMap setObject: @"1.0" forKey: @"MIME-Version"];
       [headerMap setObject: [attendee mailAddress] forKey: @"from"];
       [headerMap setObject: [recipient mailAddress] forKey: @"to"];
       mailDate = [[NSCalendarDate date] rfc822DateString];
       [headerMap setObject: mailDate forKey: @"date"];
       [headerMap setObject: [p getSubject] forKey: @"subject"];
+      [headerMap setObject: @"1.0" forKey: @"MIME-Version"];
+      [headerMap setObject: @"multipart/mixed" forKey: @"content-type"];
       msg = [NGMimeMessage messageWithHeader: headerMap];
 
       NSLog (@"sending 'REPLY' from %@ to %@",

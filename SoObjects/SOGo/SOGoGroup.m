@@ -204,7 +204,7 @@
 	  dn = [dns objectAtIndex: i];
 	  login = [um getLoginForDN: [dn lowercaseString]];
 	  //NSLog(@"member = %@", login);
-	  user = [SOGoUser userWithLogin: login roles: nil];
+	  user = [SOGoUser userWithLogin: login  roles: nil];
 	  if (user)
 	    [array addObject: user];
 	}
@@ -213,7 +213,7 @@
       for (i = 0; i < [uids count]; i++)
 	{
 	  login = [uids objectAtIndex: i];
-	  NSLog(@"member = %@", login);
+	  //NSLog(@"member = %@", login);
 	  user = [SOGoUser userWithLogin: login  roles: nil];
 	  
 	  if (user)

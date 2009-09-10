@@ -658,14 +658,27 @@ static NSLock *lock;
   NSMutableDictionary *contactEntry;
   NSEnumerator *attributes;
   NSString *currentAttribute, *value;
+  NSArray *classes;
 
   contactEntry = [NSMutableDictionary dictionary];
   [contactEntry setObject: [ldapEntry dn] forKey: @"dn"];
+  classes = [ldapEntry objectClasses];
 
-  if ([ldapEntry objectClasses])
-    [contactEntry setObject: [ldapEntry objectClasses]
-                     forKey: @"objectClasses"];
-  attributes = [[self _searchAttributes] objectEnumerator];
+  if (classes)
+    {
+      [contactEntry setObject: classes
+		       forKey: @"objectClasses"];
+      attributes = [[self _searchAttributes] objectEnumerator];
+
+      if ([classes containsObject: @"group"] ||
+	  [classes containsObject: @"groupOfNames"] ||
+	  [classes containsObject: @"groupOfUniqueNames"] ||
+	  [classes containsObject: @"posixGroup"])
+	{
+	  [contactEntry setObject: [NSNumber numberWithInt: 1]
+			   forKey: @"isGroup"];
+	}
+    }
   while ((currentAttribute = [attributes nextObject]))
     {
       value = [[ldapEntry attributeWithName: currentAttribute]
@@ -887,10 +900,12 @@ static NSLock *lock;
 
 - (NGLdapEntry *) lookupGroupEntryByEmail: (NSString *) theEmail
 {
+#warning We should support MailFieldNames
   return [self lookupGroupEntryByAttribute: @"mail"
 	       andValue: theEmail];
 }
 
+// This method should accept multiple attributes
 - (NGLdapEntry *) lookupGroupEntryByAttribute: (NSString *) theAttribute 
 				     andValue: (NSString *) theValue
 {
@@ -911,9 +926,6 @@ static NSLock *lock;
 	  EOQualifier *qualifier;
 	  NSString *s;
 	  
-	  // FIXME
-
-	  // we should support MailFieldNames?
 	  s = [NSString stringWithFormat: @"(%@='%@')",
                         theAttribute, SafeLDAPCriteria (theValue)];
 	  qualifier = [EOQualifier qualifierWithQualifierFormat: s];

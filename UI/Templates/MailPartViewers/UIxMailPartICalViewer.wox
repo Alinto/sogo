@@ -10,7 +10,7 @@
   <!-- TODO: add iMIP actions -->
 
   <input id="iCalendarAttachment" type="hidden"
-    var:value="pathToAttachment"/>
+	var:value="pathToAttachment"/>
 
   <var:if condition="couldParseCalendar" const:negate="1">
     <fieldset>
@@ -23,10 +23,13 @@
   </var:if>
 
   <var:if condition="couldParseCalendar">
+    <div class="popupMenu" id="contactsMenu">
+      <ul></ul>
+    </div>
     <fieldset>
       <legend>
 	<var:string label:value="Appointment"/>:
-	<var:string value="inEvent.summary" /> <!-- TODO: shorted title -->
+	<strong><var:string value="inEvent.summary" /></strong> <!-- TODO: shorted title -->
 
 	<var:if condition="isLoggedInUserTheOrganizer">
 	  (<var:string label:value="organized_by_you"/>)
@@ -50,6 +53,25 @@
 		const:value="DECLINED" const:negate="YES">
 		<input id="iCalendarDecline" class="button"
 		  type="button" label:value="Decline"/>
+	      </var:if>
+	      <var:if condition="currentUserAttendee.partStatWithDefault"
+		const:value="DELEGATED" const:negate="YES">
+		<input id="editDelegate" class="button"
+		  type="button" label:value="Delegate ..." />
+		<span id="delegateEditor" style="display: none;">
+		  <var:string label:value="Delegate to" /> 
+		    <input name="delegatedTo" id="delegatedTo" type="text" />
+		    <input class="button" type="button" id="iCalendarDelegate" name="delegateOK" value="OK" />
+		</span>
+	      </var:if>
+	      <var:if condition="currentUserAttendee.partStatWithDefault"
+		const:value="DELEGATED">
+		<span id="delegateEditor">
+		  <var:string label:value="Delegate to" /> 
+		    <input name="delegatedTo" id="delegatedTo" type="text" var:value="currentUserAttendee.delegatedTo.rfc822Email" var:uid="currentUserAttendee.delegatedTo.rfc822Email" style="display: none;" />
+		    <a var:href="currentUserAttendee.delegatedTo" name="delegatedToLink" id="delegatedToLink"><var:string value="currentUserAttendee.delegatedTo.rfc822Email" /></a>
+		    <input class="button" type="button" id="iCalendarDelegate" name="delegateOK" value="OK" />
+		</span>
 	      </var:if>
 	      <!-- <input id="iCalendarTentative" class="button"
 	      type="button" label:value="Tentative"/> -->
@@ -197,11 +219,12 @@
 	  
 	  <tr>
 	    <td valign="top"><var:string label:value="Attendees"/>:</td>
-	    <td>
+	    <td id="iCalAttendees">
 	      <var:foreach list="authorativeEvent.participants" item="attendee">
-		<a var:href="attendee.email"><var:string value="attendeeForDisplay"/></a>
-		(<var:string label:value="$attendee.partStatWithDefault" />)
-		<br />
+		<var:if condition="attendee.delegatedTo" const:negate="YES"><!-- don't show attendees that delegated the invitation --><span var:class="currentAttendeeClass"><a var:href="attendee.email">
+		  <var:string value="attendeeForDisplay"/></a>
+		(<var:string label:value="$attendee.partStatWithDefault" /><var:if condition="attendee.delegatedTo"> <var:string label:value="to" /> <var:string value="attendee.delegatedTo.rfc822Email" /></var:if><var:if condition="attendee.delegatedFrom">, <var:string label:value="delegated from" /> <var:string value="attendee.delegatedFrom.rfc822Email" /></var:if>)</span>
+		<br /></var:if>
 	      </var:foreach>
 	    </td>
 	  </tr>

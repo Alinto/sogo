@@ -183,15 +183,17 @@ function deleteEvent() {
     return false;
 }
 
-function modifyEvent(sender, modification) {
+function modifyEvent(sender, modification, parameters) {
     var currentLocation = '' + window.location;
     var arr = currentLocation.split("/");
     arr[arr.length-1] = modification;
 
     document.modifyEventAjaxRequest = triggerAjaxRequest(arr.join("/"),
                                                          modifyEventCallback,
-                                                         modification);
-
+                                                         modification,
+                                                         parameters,
+                                                         { "Content-type": "application/x-www-form-urlencoded" });
+    
     return false;
 }
 
@@ -224,6 +226,11 @@ function modifyEventCallback(http) {
                 window.opener.setTimeout("refreshEventsAndDisplay();", 100);
                 window.setTimeout("window.close();", 100);
             }
+        }
+        else if (http.status == 403) {
+            var data = http.responseText;
+            var msg = data.replace(/^(.*\n)*.*<p>((.*\n)*.*)<\/p>(.*\n)*.*$/, "$2");
+            window.alert(clabels[msg]?clabels[msg]:msg);
         }
         else {
             // 	 log("showing alert...");

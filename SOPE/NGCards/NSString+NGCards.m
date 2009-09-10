@@ -329,4 +329,17 @@ static NSString *commaSeparator = nil;
   return components;
 }
 
+- (NSString *) rfc822Email
+{
+  unsigned idx;
+
+  idx = NSMaxRange([self rangeOfString:@":"]);
+
+  if ((idx > 0) && ([self length] > idx))
+    return [self substringFromIndex: idx];
+
+  return self;
+}
+
+
 @end

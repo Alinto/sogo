@@ -130,15 +130,25 @@ function onComponentEditorLoad(event) {
         list.fire("mousedown");
     }
     
-    if ($("itemPrivacyList")) {
-        var menuItems = $("itemPrivacyList").childNodesWithTag("li");
+    var tmp = $("itemPrivacyList");
+    if (tmp) {
+        var menuItems = tmp.childNodesWithTag("li");
         for (var i = 0; i < menuItems.length; i++)
             menuItems[i].observe("mousedown",
                                  onMenuSetClassification.bindAsEventListener(menuItems[i]),
                                  false);
     }
     
-    var tmp = $("repeatHref");
+    tmp = $("replyList");
+    if (tmp) {
+        tmp.observe("change", onReplyChange);
+        tmp = $("delegatedTo");
+        tmp.addInterface(SOGoAutoCompletionInterface);
+        tmp.uidField = "c_mail";
+        tmp.excludeGroups = true;
+        tmp.animationParent=$("delegateEditor");
+    }
+    tmp = $("repeatHref");
     if (tmp)
         tmp.observe("click", onPopupRecurrenceWindow);
     tmp = $("repeatList");
@@ -180,6 +190,21 @@ function onComponentEditorLoad(event) {
 function onSummaryChange (e) {
     if ($("summary"))
         document.title = $("summary").value;
+}
+
+function onReplyChange(event) {
+    var delegateEditor = $("delegateEditor");
+    if (this.value == 2) {
+        // Delegated
+        delegateEditor.show();
+        $("delegatedTo").focus();
+    }
+    else {
+        delegateEditor.hide();
+    }
+    onWindowResize(null);
+
+    return true;
 }
 
 function onWindowResize(event) {
@@ -269,14 +294,19 @@ function onOkButtonClick (e) {
     var item = $("replyList");
     var value = parseInt(item.options[item.selectedIndex].value);
     var action = "";
+    var parameters = "";
   
     if (value == 0)
         action = 'accept';
     else if (value == 1)
         action = 'decline';
+    else if (value == 2) {
+        var url = ApplicationBaseURL + activeCalendar + '/' + activeComponent;
+        document.modifyEventAjaxRequest = delegateInvitation(url, modifyEventCallback);
+    }
 
     if (action != "")
-        modifyEvent (item, action);
+        modifyEvent (item, action, parameters);
 }
 
 function onCancelButtonClick (e) {

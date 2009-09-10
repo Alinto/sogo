@@ -195,11 +195,13 @@
   NSMutableDictionary *uniqueContacts;
   unsigned int i, j;
   NSSortDescriptor *commonNameDescriptor;
+  BOOL excludeGroups;
 
   searchText = [self queryParameterForKey: @"search"];
   if ([searchText length] > 0)
     {
       NSLog(@"Search all contacts: %@", searchText);
+      excludeGroups = [[self queryParameterForKey: @"excludeGroups"] boolValue];
       NS_DURING
         folders = [[self clientObject] subFolders];
       NS_HANDLER
@@ -218,7 +220,7 @@
         {
           folder = [folders objectAtIndex: i];
           if ([folder isKindOfClass: [SOGoContactLDAPFolder class]])
-        [sortedFolders insertObject: folder atIndex: 0];
+	    [sortedFolders insertObject: folder atIndex: 0];
           else
             [sortedFolders addObject: folder];
         }
@@ -234,8 +236,10 @@
               contact = [contacts objectAtIndex: j];
               mail = [contact objectForKey: @"c_mail"];
               //NSLog(@"   found %@ (%@)", [contact objectForKey: @"displayName"], mail);
-              if ([mail isNotNull] && [uniqueContacts objectForKey: mail] == nil)
-                                         [uniqueContacts setObject: contact forKey: mail];
+              if ([mail isNotNull]
+		  && [uniqueContacts objectForKey: mail] == nil
+		  && !(excludeGroups && [contact objectForKey: @"isGroup"]))
+		[uniqueContacts setObject: contact forKey: mail];
             }
         }      
       if ([uniqueContacts count] > 0)

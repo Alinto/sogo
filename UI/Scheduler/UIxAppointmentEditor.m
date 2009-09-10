@@ -46,6 +46,7 @@
 #import <SoObjects/SOGo/SOGoDateFormatter.h>
 #import <SoObjects/SOGo/SOGoContentObject.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
+#import <SoObjects/Appointments/iCalPerson+SOGo.h>
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>
 #import <SoObjects/Appointments/SOGoAppointmentObject.h>
 #import <SoObjects/Appointments/SOGoAppointmentOccurence.h>
@@ -528,6 +529,54 @@
                                     withDelegate: nil];
 
   return self;
+}
+
+- (id) delegateAction
+{
+//  BOOL receiveUpdates;
+  NSString *delegatedEmail, *delegatedUid;
+  iCalPerson *delegatedAttendee;
+  SOGoUser *user;
+  WORequest *request;
+  WOResponse *response;
+
+  response = nil;
+  request = [context request];
+  delegatedEmail = [request formValueForKey: @"to"];
+  if ([delegatedEmail length])
+    {
+      user = [context activeUser];
+      delegatedAttendee = [iCalPerson new];
+      [delegatedAttendee setEmail: delegatedEmail];
+      delegatedUid = [delegatedAttendee uid];
+      if (delegatedUid)
+	{
+	  SOGoUser *delegatedUser;
+	  delegatedUser = [SOGoUser userWithLogin: delegatedUid];
+	  [delegatedAttendee setCn: [delegatedUser cn]];
+	}
+      
+      [delegatedAttendee setRole: @"REQ-PARTICIPANT"];
+      [delegatedAttendee setRsvp: @"TRUE"];
+      [delegatedAttendee setParticipationStatus: iCalPersonPartStatNeedsAction];
+      [delegatedAttendee setDelegatedFrom:
+	       [NSString stringWithFormat: @"mailto:%@", [[user allEmails] objectAtIndex: 0]]];
+      
+//      receiveUpdates = [[request formValueForKey: @"receiveUpdates"] boolValue];
+//      if (receiveUpdates)
+//	[delegatedAttendee setRole: @"NON-PARTICIPANT"];
+
+      response = (WOResponse*)[[self clientObject] changeParticipationStatus: @"DELEGATED"
+						   withDelegate: delegatedAttendee];
+    }
+  else
+    response = [NSException exceptionWithHTTPStatus: 400
+					     reason: @"missing 'to' parameter"];
+
+  if (!response)
+    response = [self responseWithStatus: 200];
+
+  return response;
 }
 
 @end

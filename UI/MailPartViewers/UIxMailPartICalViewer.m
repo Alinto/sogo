@@ -376,6 +376,18 @@
   return [[self authorativeEvent] userIsParticipant: [context activeUser]];
 }
 
+- (NSString *) currentAttendeeClass
+{
+  NSString *cssClass;
+
+  cssClass = [[attendee partStatWithDefault] lowercaseString];
+
+  if ([[attendee rfc822Email] isEqualToString: [self loggedInUserEMail]])
+    cssClass = [cssClass stringByAppendingString: @" attendeeUser"];
+
+  return cssClass;
+}
+
 /* derived fields */
 
 - (NSString *) organizerDisplayName

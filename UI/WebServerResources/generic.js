@@ -1602,6 +1602,26 @@ function createFolderCallback(http) {
     }
 }
 
+/* invitation delegation */
+function delegateInvitation(componentUrl, callbackFunction, callbackData) {
+    var input = $("delegatedTo");
+    var delegatedTo = null;
+    if (input.uid != null)
+        delegatedTo = input.uid;
+    else if (input.value.blank())
+        alert(clabels["noEmailForDelegation"]);
+    else
+        delegatedTo = input.value;
+    
+    if (delegatedTo) {
+        var receiveUpdates = false; //confirm("Do you want to keep receiving updates on the event?");
+        var urlstr = componentUrl + "/delegate";
+        var parameters = "to=" + delegatedTo + "&receiveUpdates=" + (receiveUpdates?"YES":"NO");
+        return triggerAjaxRequest(urlstr, callbackFunction, callbackData, parameters,
+                                  { "Content-type": "application/x-www-form-urlencoded" });
+    }
+}
+
 function onFinalLoadHandler(event) {
     var safetyNet = $("javascriptSafetyNet");
     if (safetyNet)
@@ -1623,7 +1643,6 @@ function getMenus() {
 }
 
 function onHeaderClick(event) {
-    window.alert("generic headerClick");
 }
 
 /**

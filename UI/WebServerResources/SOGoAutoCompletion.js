@@ -4,6 +4,7 @@
 // using this interface.
 var SOGoAutoCompletionInterface = {
     uidField: "c_name",
+    excludeGroups: false,
     animationParent: null,
     selectedIndex: -1,
     delay: 0.750,
@@ -90,7 +91,9 @@ var SOGoAutoCompletionInterface = {
         if (input.value.trim().length > 2) {
 	    var urlstr = (UserFolderURL + "Contacts/allContactSearch?search="
                           + encodeURIComponent(input.value));
-            if (input.animationParent)
+	    if (input.excludeGroups)
+		urlstr += "&excludeGroups=1";
+	    if (input.animationParent)
 		startAnimation(input.animationParent);
             document.contactLookupAjaxRequest =
                 triggerAjaxRequest(urlstr, input.performSearchCallback.bind(input), input);

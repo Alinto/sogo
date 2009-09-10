@@ -28,6 +28,11 @@
           actionClass = "UIxMailPartICalActions";
           actionName  = "decline";
         };
+        delegate = {
+          protectedBy = "View";
+          actionClass = "UIxMailPartICalActions";
+          actionName  = "delegate";
+        };
 	updateUserStatus = {
           protectedBy = "View";
           actionClass = "UIxMailPartICalActions";

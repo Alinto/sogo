@@ -124,7 +124,8 @@ A#attendeesHref
 DIV#attendeesMenu LI
 { padding-left: 10px; }
 
-DIV#attendeesMenu .attendee
+DIV#attendeesMenu .attendee,
+DIV#attendeesMenu DIV
 { background-repeat: no-repeat;
   background-position: 5px center;
   padding-left: 22px; }
@@ -138,10 +139,12 @@ DIV#attendeesMenu .needs-action
 DIV#attendeesMenu .declined
 { background-image: url("declined.png"); }
 
+DIV#attendeesMenu .delegated
+{ background-image: url("delegated.png"); }
+
+DIV#attendeesMenu .delegate
+{ margin-left: 10px; }
+
 /* read-only view */
 DIV#attendeesMenu DIV
-{ cursor: pointer;
-  padding-left: 20px; }
-    
-DIV#attendeesMenu DIV:hover
-{ text-decoration: underline; }
+{ padding-left: 20px; }

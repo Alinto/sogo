@@ -12,13 +12,14 @@
   title="name"
   var:toolbar="toolbar"
   const:cssFiles="UIxComponentEditor.css"
-  const:jsFiles="skycalendar.js,UIxComponentEditor.js">
+  const:jsFiles="skycalendar.js,UIxComponentEditor.js,SOGoAutoCompletion.js">
 
   <script type="text/javascript">
     var activeCalendar = '<var:string value="clientObject.container.nameInContainer"/>';
     var activeComponent = '<var:string value="clientObject.nameInContainer"/>';
     var readOnly = <var:if condition="eventIsReadOnly">true</var:if><var:if condition="eventIsReadOnly"
     const:negate="YES">false</var:if>;
+    var attendees = <var:string value="jsonAttendees" const:escapeHTML="NO" />;
   </script>
 
   <var:if condition="eventIsReadOnly" const:negate="YES">
@@ -106,14 +107,7 @@
       <input type="hidden" name="attach" id="attach" var:value="attach"/>
       <input type="hidden" name="privacy" id="privacy"
 	var:value="privacy"/>
-      <input type="hidden" name="attendeesNames" id="attendeesNames"
-	var:value="attendeesNames"/>
-      <input type="hidden" name="attendeesUIDs" id="attendeesUIDs"
-	var:value="attendeesUIDs"/>
-      <input type="hidden" name="attendeesEmails" id="attendeesEmails"
-	var:value="attendeesEmails"/>
-      <input type="hidden" name="attendeesStates" id="attendeesStates"
-	var:value="attendeesStates"/>
+      <input type="hidden" name="attendees" id="attendees" />
       <input type="hidden" name="calendarFoldersList"
 	id="calendarFoldersList"
 	var:value="calendarsFoldersList"/>
@@ -166,6 +160,9 @@
   </form>
   </var:if>
   <var:if condition="eventIsReadOnly">
+  <div class="popupMenu" id="contactsMenu">
+    <ul></ul>
+  </div>
         <label class="calendarName"><var:string var:value="componentCalendarName" />
         </label>
     <div id="eventView">
@@ -215,6 +212,23 @@
           string="itemReplyText"
           var:selection="reply" /></span>
     </label>
+    <var:if condition="ownerAsAttendee.delegatedTo" const:negate="YES">
+    <label id="delegateEditor" style="display: none;">
+      <span class="content">
+        <input name="delegatedTo" id="delegatedTo" type="text" var:value="ownerAsAttendee.delegatedTo" var:uid="delegatedTo" />
+	<br />
+	<input type="checkbox" name="delegateReceiveUpdates" /> <var:string label:value="Keep sending me updates" />
+      </span>
+    </label>
+    </var:if><var:if condition="ownerAsAttendee.delegatedTo">
+    <label id="delegateEditor">
+      <span class="content">
+        <input name="delegatedTo" id="delegatedTo" type="text" var:value="ownerAsAttendee.delegatedTo.rfc822Email" var:uid="ownerAsAttendee.delegatedTo.rfc822Email" />
+	<br />
+	<input type="checkbox" name="delegateReceiveUpdates" /> <var:string label:value="Keep sending me updates" />
+      </span>
+    </label>
+    </var:if>
     <!--TODO: I'm not sure how to send this
     <label><var:string label:value="Reminder:" />
       <span class="content"><var:popup list="reminderList" item="item"
@@ -235,6 +249,9 @@
       </label>
       <label id="attendeesLabel">
         <span class="content"><div id="attendeesMenu" class="fakeTextArea">
+	  <var:foreach list="component.participants" item="attendee">
+	    <var:if condition="attendee.delegatedTo" const:negate="YES"><div var:class="attendee.partStatWithDefault.lowercaseString"><a var:href="attendee.email" var:email="attendee.email.rfc822Email"><var:string value="attendeeForDisplay" /></a><var:if condition="attendee.delegatedFrom"> (<var:string label:value="delegated from" /> <var:string value="attendee.delegatedFrom.rfc822Email" />)</var:if></div></var:if>
+	  </var:foreach>
         </div></span>
       </label>
     </div>

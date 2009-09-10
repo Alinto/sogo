@@ -246,7 +246,7 @@
 "partStat_ACCEPTED" = "Accepted";
 "partStat_DECLINED" = "Declined";
 "partStat_TENTATIVE" = "Tentative";
-"partStat_DELEGATED" = "Delegated";
+"partStat_DELEGATED" = "Delegated to";
 "partStat_OTHER" = "Other";
 
 /* Appointments (error messages) */

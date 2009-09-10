@@ -60,7 +60,6 @@ Appointments_COMPONENTS +=	\
 	SOGoAptMailDutchDeletion.wo	\
 	SOGoAptMailDutchUpdate.wo	\
 	SOGoAptMailEnglishInvitation.wo	\
-	SOGoAptMailEnglishICalReply.wo	\
 	SOGoAptMailEnglishDeletion.wo	\
 	SOGoAptMailEnglishUpdate.wo	\
 	SOGoAptMailFrenchInvitation.wo	\

@@ -204,8 +204,10 @@ sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/create-accou
 sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/day-view-multicolumn.png
 sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/day-view.png
 sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/declined.png
+sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/delegated.png
 sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/dialog-left.png
 sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/dialog-right.png
+sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/dot.png
 sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/edit.png
 sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/empty.gif
 sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/event-gradient.png
@@ -217,7 +219,6 @@ sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/icon-forward
 sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/icon-forwarded.png
 sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/icon-new.png
 sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/icon-replied.png
-sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/icon_read.gif
 sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/icon_unread.gif
 sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/important.png
 sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/inverse.png

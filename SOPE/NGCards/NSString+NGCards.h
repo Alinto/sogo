@@ -1,6 +1,6 @@
 /* NSString+NGCards.h - this file is part of SOPE
  *
- * Copyright (C) 2006 Inverse inc.
+ * Copyright (C) 2006-2009 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -35,6 +35,7 @@
 - (NSArray *) asCardAttributeValues;
 - (NSString *) escapedForCards;
 - (NSString *) unescapedFromCard;
+- (NSString *) rfc822Email;
 
 - (NSTimeInterval) durationAsTimeInterval;
 - (NSCalendarDate *) asCalendarDate;

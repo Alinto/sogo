@@ -1,0 +1,17 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE container>
+<container 
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label">
+
+<var:if condition="isSubject">
+  [Event Invitation Reply] <var:string value="summary" const:escapeHTML="NO" />
+</var:if>
+
+ <var:if condition="isSubject" const:negate="YES">
+<var:string value="attendeeName" /><var:if condition="hasSentBy"> (sent by <var:string value="sentBy" />)</var:if> has <var:if condition="attendee.partStatWithDefault" const:value="DELEGATED">delegated the invitation to <var:string value="attendee.delegatedTo.rfc822Email" />.</var:if><var:if condition="attendee.partStatWithDefault" const:value="DELEGATED" const:negate="YES"><var:if condition="hasAccepted">accepted</var:if><var:if condition="hasDeclined">declined</var:if><var:if condition="hasNotAcceptedNotDeclined">not yet decided upon</var:if> your event invitation.</var:if>
+</var:if>
+</container>

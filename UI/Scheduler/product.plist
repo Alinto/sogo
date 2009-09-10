@@ -230,6 +230,11 @@
 	  pageName    = "UIxAppointmentEditor"; 
 	  actionName  = "decline";
 	};
+        delegate = {
+          protectedBy = "RespondToComponent";
+          actionClass = "UIxAppointmentEditor";
+          actionName  = "delegate";
+        };
       };
     };
 

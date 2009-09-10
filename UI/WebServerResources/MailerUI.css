@@ -310,44 +310,6 @@ tr.mailer_listcell_regular td a
   text-decoration: none;
 }
 
-IMG.mailerReadIcon
-{ 
-/*   TODO
- */
-}
-
-DIV.mailer_readicon
-{
-  /* TODO: use Thunderbird icon */
-  background-image: url(icon_read.gif);
-  background-repeat: no-repeat;
-  background-position: 0px 4px;
-}
-
-DIV.mailer_readicon a
-{
-  width: 17px;
-  height: 17px;
-  margin: 0px auto;
-  display: block;
-}
-
-DIV.mailerUnreadIcon
-{
-  /* TODO: use Thunderbird icon */
-  background-image: url(icon_unread.gif);
-  background-repeat: no-repeat;
-  background-position: 0px 4px;
-}
-
-DIV.mailer_unreadicon a
-{
-  width: 17px;
-  height: 17px;
-  margin: 0px auto;
-  display: block;
-}
-
 /* fields (key/value UI), eg used in mail viewer */
 INPUT#editDraftButton
 {
@@ -814,3 +776,40 @@ DIV.copy
   background-image: url(message-copy.gif) !important; 
   background-position: 1px -2px !important;
 }
+
+/* UIxMailPartICalViewer */
+
+#iCalAttendees SPAN
+{ background-repeat: no-repeat;
+  background-position: 5px center;
+  padding-left: 22px;
+  padding-right: 4px; }
+
+#iCalAttendees .accepted
+{ background-image: url("accepted.png"); }
+
+#iCalAttendees .needs-action
+{ background-image: url("needs-action.png"); }
+
+#iCalAttendees .declined
+{ background-image: url("declined.png"); }
+
+#iCalAttendees .delegated
+{ background-image: url("delegated.png"); }
+
+#iCalAttendees .attendeeUser,
+#iCalAttendees .attendeeUser A
+{ font-weight: bold; }
+
+#delegateEditor
+{ padding-left: 5px; }
+
+#delegatedTo
+{ width: 220px; }
+
+#delegatedTo
+{ background-image: url("abcard.gif");
+  background-repeat: no-repeat;
+  background-position: 4px center;
+  padding: 2px 2px 2px 24px;
+  width: 220px; }

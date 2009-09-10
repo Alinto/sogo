@@ -121,6 +121,14 @@ TABLE#freeBusyAttendees TR.futureAttendee INPUT
 { background-image: none;
   color: #aaa; }
 
+TABLE#freeBusyAttendees TR.futureAttendee TD,
+TABLE#freeBusyData TR.futureData TD
+{ border: 0;
+  line-height: 3em; }
+
+TABLE#freeBusyAttendees TR.futureAttendee TD A
+{ margin-left: 24px; }
+
 SPAN.freeBusyZoneElement
 { display: block;
   float: left;

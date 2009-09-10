@@ -511,9 +511,15 @@ function onMailboxMenuMove(event) {
         rows[i].hide();
         uids.push(uid);
         paths.push(path);
+        // Remove references to closed popups
+        for (var j = Mailer.popups.length - 1; j > -1; j--)
+            if (!Mailer.popups[j].open || Mailer.popups[j].closed)
+                Mailer.popups.splice(j,1);
+        // Close message popup if opened
         for (var j = 0; j < Mailer.popups.length; j++)
             if (Mailer.popups[j].messageUID == path) {
                 Mailer.popups[j].close();
+                Mailer.popups.splice(j,1);
                 break;
             }
     }
@@ -670,7 +676,7 @@ function messageListCallback(http) {
             addressHeaderCell.setAttribute("id", newRows[0].cells[addrIndex].getAttribute("id"));
             table.replaceChild(tmp.firstChild.tBodies[0], tbody);
             configureMessageListEvents(table);
-        }
+         }
         else {
             // Add table
             div.update(http.responseText);
@@ -1012,6 +1018,46 @@ function configureiCalLinksInMessage() {
                            onICalendarButtonClick.bindAsEventListener(button));
         }
     }
+
+    var button = $("iCalendarDelegate");
+    if (button) {
+        button.observe("click", onICalendarDelegate);
+        var delegatedTo = $("delegatedTo");
+        delegatedTo.addInterface(SOGoAutoCompletionInterface);
+        delegatedTo.uidField = "c_mail";
+        delegatedTo.excludeGroups = true;
+        
+        var editDelegate = $("editDelegate");
+        if (editDelegate)
+            // The user delegates the invitation
+            editDelegate.observe("click", function(event) {
+                    $("delegateEditor").show();
+                    $("delegatedTo").focus();
+                    this.hide();
+                });
+
+        var delegatedToLink = $("delegatedToLink");
+        if (delegatedToLink) {
+            // The user already delegated the invitation and wants
+            // to change the delegated attendee
+            delegatedToLink.stopObserving("click");
+            delegatedToLink.observe("click", function(event) {
+                    $("delegatedTo").show();
+                    $("delegatedTo").focus();
+                    this.hide();
+                    Event.stop(event);
+                });
+        }
+    }
+}
+
+function onICalendarDelegate(event) {
+    var link = $("iCalendarAttachment").value;
+    if (link) {
+        var currentMsg = Mailer.currentMailbox + "/"
+            + Mailer.currentMessages[Mailer.currentMailbox];
+        delegateInvitation(link, ICalendarButtonCallback, currentMsg);
+    }
 }
 
 function onICalendarButtonClick(event) {
@@ -1041,8 +1087,13 @@ function ICalendarButtonCallback(http) {
                 break;
             }
     }
+    else if (http.status == 403) {
+        var data = http.responseText;
+        var msg = data.replace(/^(.*\n)*.*<p>((.*\n)*.*)<\/p>(.*\n)*.*$/, "$2");
+        window.alert(clabels[msg]?clabels[msg]:msg);
+    }
     else
-        window.alert("received code: " + http.status);
+        window.alert("received code: " + http.status + "\nerror: " + http.responseText);
 }
 
 function resizeMailContent() {

@@ -35,6 +35,8 @@
 #import <NGCards/NSCalendarDate+NGCards.h>
 #import <SaxObjC/XMLNamespaces.h>
 
+#import <SOPE/NGCards/NSString+NGCards.h>
+
 #import <SoObjects/SOGo/iCalEntityObject+Utilities.h>
 #import <SoObjects/SOGo/LDAPUserManager.h>
 #import <SoObjects/SOGo/NSArray+Utilities.h>
@@ -400,8 +402,8 @@
       currentUID = [currentAttendee uid];
       if (currentUID)
 	[self _addOrUpdateEvent: newEvent
-	      forUID: currentUID
-	      owner: owner];
+			 forUID: currentUID
+			  owner: owner];
     }
 
   [self sendEMailUsingTemplateNamed: @"Update"
@@ -425,8 +427,8 @@
       currentUID = [currentAttendee uid];
       if (currentUID)
 	[self _addOrUpdateEvent: newEvent
-	      forUID: currentUID
-	      owner: owner];
+			 forUID: currentUID
+			  owner: owner];
     }
 }
 
@@ -483,8 +485,8 @@
 	      currentUID = [currentAttendee uid];
 	      if (currentUID)
 		[self _addOrUpdateEvent: newEvent
-		      forUID: currentUID
-		      owner: owner];
+				 forUID: currentUID
+				  owner: owner];
 	    }
 
           [self sendReceiptEmailUsingTemplateNamed: @"Update"
@@ -635,7 +637,7 @@
 
           delegateEmail = [otherAttendee delegatedTo];
           if ([delegateEmail length])
-            delegateEmail = [delegateEmail substringFromIndex: 7];
+            delegateEmail = [delegateEmail rfc822Email];
           if ([delegateEmail length])
             otherDelegate = [event findParticipantWithEmail: delegateEmail];
           else
@@ -664,7 +666,22 @@
             }
 
           if (removeDelegate)
-            [event removeFromAttendees: otherDelegate];
+	    {
+	      while (otherDelegate)
+		{
+		  [event removeFromAttendees: otherDelegate];
+		  
+		  // Verify if the delegate was already delegated
+		  delegateEmail = [otherDelegate delegatedTo];
+		  if ([delegateEmail length])
+		    delegateEmail = [delegateEmail rfc822Email];
+		  
+		  if ([delegateEmail length])
+		    otherDelegate = [event findParticipantWithEmail: delegateEmail];
+		  else
+		    otherDelegate = NO;
+		}
+	    }
           if (addDelegate)
             [event addToAttendees: delegate];
 
@@ -721,7 +738,50 @@
   ex = nil;
 
   currentStatus = [attendee partStat];
-  if ([currentStatus caseInsensitiveCompare: newStatus]
+
+  iCalPerson *otherAttendee, *otherDelegate;
+  NSString *delegateEmail;
+  BOOL addDelegate, removeDelegate;
+  
+  otherAttendee = attendee;
+  
+  delegateEmail = [otherAttendee delegatedTo];
+  if ([delegateEmail length])
+    delegateEmail = [delegateEmail rfc822Email];
+  
+  if ([delegateEmail length])
+    otherDelegate = [event findParticipantWithEmail: delegateEmail];
+  else
+    otherDelegate = NO;
+  
+  /* We handle the addition/deletion of delegated users */
+  addDelegate = NO;
+  removeDelegate = NO;
+  if (delegate)
+    {
+      if (otherDelegate)
+	{
+	  // There was already a delegated
+	  if (![delegate hasSameEmailAddress: otherDelegate])
+	    {
+	      // The delegated has changed
+	      removeDelegate = YES;
+	      addDelegate = YES;
+	    }
+	}
+      else
+	// There was no previous delegated
+	addDelegate = YES;
+    }
+  else
+    {
+      if (otherDelegate)
+	// The user has removed the delegated
+	removeDelegate = YES;
+    }
+ 
+  if (addDelegate || removeDelegate
+      || [currentStatus caseInsensitiveCompare: newStatus]
       != NSOrderedSame)
     {
       [attendee setPartStat: newStatus];
@@ -745,7 +805,70 @@
 	  // we don't want to keep the previous SENT-BY attribute there.
 	  [(NSMutableDictionary *)[attendee attributes] removeObjectForKey: @"SENT-BY"];
 	}
+ 
+      [attendee setDelegatedTo: [delegate email]];
 
+      NSString *delegatedUID;
+      NSMutableArray *delegates;
+      
+      if (removeDelegate)
+	{
+	  delegates = [NSMutableArray new];
+
+	  while (otherDelegate)
+	    {
+	      [delegates addObject: otherDelegate];
+
+	      delegatedUID = [otherDelegate uid];	  
+	      if (delegatedUID)
+		// Delegated attendee is a local user; remove event from his calendar
+		[self _removeEventFromUID: delegatedUID
+				    owner: [theOwnerUser login]
+			 withRecurrenceId: [event recurrenceId]];
+	      
+	      [event removeFromAttendees: otherDelegate];
+
+	      // Verify if the delegate was already delegated
+	      delegateEmail = [otherDelegate delegatedTo];
+	      if ([delegateEmail length])
+		delegateEmail = [delegateEmail rfc822Email];
+	      
+	      if ([delegateEmail length])
+		otherDelegate = [event findParticipantWithEmail: delegateEmail];
+	      else
+		otherDelegate = NO;
+	    }
+	  
+	  [self sendEMailUsingTemplateNamed: @"Deletion"
+				  forObject: [event itipEntryWithMethod: @"cancel"]
+			     previousObject: nil
+				toAttendees: delegates];
+	  [self sendReceiptEmailUsingTemplateNamed: @"Deletion"
+					 forObject: event
+						to: delegates];
+	  [delegates release];
+	}
+
+      if (addDelegate)
+	{
+	  delegatedUID = [delegate uid];
+	  delegates = [NSArray arrayWithObject: delegate];
+	  [event addToAttendees: delegate];
+	
+	  if (delegatedUID)
+	    // Delegated attendee is a local user; add event to his calendar
+	    [self _addOrUpdateEvent: event
+			     forUID: delegatedUID
+			      owner: [theOwnerUser login]];
+
+	  [self sendEMailUsingTemplateNamed: @"Invitation"
+				  forObject: [event itipEntryWithMethod: @"request"]
+			     previousObject: nil
+				toAttendees: delegates];
+	  [self sendReceiptEmailUsingTemplateNamed: @"Invitation"
+					 forObject: event to: delegates];
+	}
+      
       // We generate the updated iCalendar file and we save it
       // in the database.
       newContent = [[event parent] versitString];
@@ -794,7 +917,9 @@
 	{
 	  att = [attendees objectAtIndex: i];
 	  uid = [att uid];
-          if (uid && att != attendee)
+          if (uid
+	      && att != attendee
+	      && ![uid isEqualToString: delegatedUID])
             [self _updateAttendee: attendee
                      withDelegate: delegate
                         ownerUser: theOwnerUser
@@ -1097,7 +1222,6 @@
       int i;
 
       /* We update the copy of the organizer, only if it's a local user. */
-#warning add a check for only local users
       uid = [[event organizer] uid];
       if (uid)
 	[self _updateAttendee: attendee
@@ -1200,7 +1324,8 @@
 - (NSException *) changeParticipationStatus: (NSString *) status
                                withDelegate: (iCalPerson *) delegate
 {
-  return [self changeParticipationStatus: status withDelegate: delegate
+  return [self changeParticipationStatus: status
+			    withDelegate: delegate
                          forRecurrenceId: nil];
 }
 
@@ -1240,27 +1365,37 @@
   if (event)
     {
       // ownerUser will actually be the owner of the calendar
-      // where the participation change on the event has
-      // actually occured. The particpation change will of
-      // course be on the attendee that is the owner of the
-      // calendar where the participation change has occured.
+      // where the participation change on the event occurs. The particpation
+      // change will be on the attendee corresponding to the ownerUser.
       ownerUser = [SOGoUser userWithLogin: owner];
 
       attendee = [event findParticipant: ownerUser];
       if (attendee)
-	ex = [self _handleAttendee: attendee
-                      withDelegate: delegate
-                         ownerUser: ownerUser
-                      statusChange: _status
-                           inEvent: event];
+	{
+	  if (delegate
+	      && ![[delegate email] isEqualToString: [attendee delegatedTo]])
+	    {
+	      if ([event isParticipant: [[delegate email] rfc822Email]])
+		ex = [NSException exceptionWithHTTPStatus: 403
+						   reason: @"delegate is a participant"];
+	      else if ([SOGoGroup groupWithEmail: [[delegate email] rfc822Email]])
+		ex = [NSException exceptionWithHTTPStatus: 403
+						   reason: @"delegate is a group"];
+	    }
+	  if (ex == nil)
+	    ex = [self _handleAttendee: attendee
+			  withDelegate: delegate
+			     ownerUser: ownerUser
+			  statusChange: _status
+			       inEvent: event];
+	}
       else
         ex = [NSException exceptionWithHTTPStatus: 404 // Not Found
-                          reason: @"user does not participate in this "
-                          @"calendar event"];
+					   reason: @"user does not participate in this calendar event"];
     }
   else
     ex = [NSException exceptionWithHTTPStatus: 500 // Server Error
-                      reason: @"unable to parse event record"];
+				       reason: @"unable to parse event record"];
   
   return ex;
 }

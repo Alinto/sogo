@@ -23,7 +23,9 @@
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSEnumerator.h>
 
+#import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 
 #import <NGExtensions/NSNull+misc.h>
@@ -199,183 +201,95 @@
   return chosenEvent;
 }
 
-#warning this is code copied from SOGoAppointmentObject...
-- (void) _updateAttendee: (iCalPerson *) attendee
-               ownerUser: (SOGoUser *) theOwnerUser
-	       forEventUID: (NSString *) eventUID
-	       withRecurrenceId: (NSCalendarDate *) recurrenceId
-	       withSequence: (NSNumber *) sequence
-	       forUID: (NSString *) uid
-	       shouldAddSentBy: (BOOL) b
-{
-  SOGoAppointmentObject *eventObject;
-  iCalCalendar *calendar;
-  iCalEvent *event;
-  iCalPerson *otherAttendee;
-  NSArray *events;
-  NSString *iCalString, *recurrenceTime;
-
-  eventObject = [self _eventObjectWithUID: eventUID
-		      forUser: [SOGoUser userWithLogin: uid roles: nil]];
-  if (![eventObject isNew])
-    {
-      if (recurrenceId == nil)
-	{
-	  // We must update main event and all its occurences (if any).
-	  calendar = [eventObject calendar: NO secure: NO];
-	  event = (iCalEvent *)[calendar firstChildWithTag: [eventObject componentTag]];
-	  events = [calendar allObjects];
-	}
-      else
-	{
-	  // If recurrenceId is defined, find the specified occurence
-	  // within the repeating vEvent.
-	  recurrenceTime = [NSString stringWithFormat: @"%f", [recurrenceId timeIntervalSince1970]];
-	  event = (iCalEvent *)[eventObject lookupOccurence: recurrenceTime];
-	  
-	  if (event == nil)
-	    // If no occurence found, create one
-	    event = (iCalEvent *)[eventObject newOccurenceWithID: recurrenceTime];
-	  
-	  events = [NSArray arrayWithObject: event];
-	}
-
-      if ([[event sequence] compare: sequence]
-	  == NSOrderedSame)
-	{
-	  SOGoUser *currentUser;
-	  int i;
-	  
-	  currentUser = [context activeUser];
-	  
-	  for (i = 0; i < [events count]; i++)
-	    {
-	      event = [events objectAtIndex: i];
-
-	      otherAttendee = [event findParticipant: theOwnerUser];
-	      [otherAttendee setPartStat: [attendee partStat]];
-	  
-	      // If one has accepted / declined an invitation on behalf of
-	      // the attendee, we add the user to the SENT-BY attribute.
-	      if (b && ![[currentUser login] isEqualToString: [theOwnerUser login]])
-		{
-		  NSString *currentEmail;
-		  currentEmail = [[currentUser allEmails] objectAtIndex: 0];
-		  [otherAttendee addAttribute: @"SENT-BY"
-				 value: [NSString stringWithFormat: @"\"MAILTO:%@\"", currentEmail]];
-		}
-	      else
-		{
-		  // We must REMOVE any SENT-BY here. This is important since if A accepted
-		  // the event for B and then, B changes by himself his participation status,
-		  // we don't want to keep the previous SENT-BY attribute there.
-		  [(NSMutableDictionary *)[otherAttendee attributes] removeObjectForKey: @"SENT-BY"];
-		}
-	    }
-	  iCalString = [[event parent] versitString];
-	  [eventObject saveContentString: iCalString];
-	}
-    }
-}
-
 - (WOResponse *) _changePartStatusAction: (NSString *) newStatus
+                            withDelegate: (iCalPerson *) delegate
 {
   WOResponse *response;
   SOGoAppointmentObject *eventObject;
   iCalEvent *chosenEvent;
-  iCalPerson *user;
-  iCalCalendar *emailCalendar, *calendar;
-  NSString *rsvp, *method, *organizerUID;
+  //NSException *ex;
 
   chosenEvent = [self _setupChosenEventAndEventObject: &eventObject];
   if (chosenEvent)
     {
-      user = [chosenEvent findParticipant: [context activeUser]];
-      [user setPartStat: newStatus];
-      calendar = [chosenEvent parent];
-
-      emailCalendar = [[self _emailEvent] parent];
-      method = [[emailCalendar method] lowercaseString];
-      if ([method isEqualToString: @"request"])
-	{
-	  [calendar setMethod: @""];
-	  rsvp = [[user rsvp] lowercaseString];
-	}
-      else
-	rsvp = nil;
-
-      // We generate the updated iCalendar file and we save it
-      // in the database.
-      [eventObject saveContentString: [calendar versitString]];
-
-      // Send a notification to the organizer if necessary
-      if ([rsvp isEqualToString: @"true"] &&
-	  [chosenEvent isStillRelevant])
-	[eventObject sendResponseToOrganizer: chosenEvent
-		     from: [context activeUser]];
-
-      organizerUID = [[chosenEvent organizer] uid];
-      if (organizerUID)
-	// Update the event in the organizer's calendar
-	[self _updateAttendee: user
-	      ownerUser: [context activeUser]
-	      forEventUID: [chosenEvent uid]
-	      withRecurrenceId: [chosenEvent recurrenceId]
-	      withSequence: [chosenEvent sequence]
-	      forUID: organizerUID
-	      shouldAddSentBy: YES];
-
-      // We update the calendar of all participants that are
-      // local to the system. This is useful in case user A accepts
-      // invitation from organizer B and users C, D, E who are also
-      // attendees need to verify if A has accepted.
-      NSArray *attendees;
-      iCalPerson *att;
-      NSString *uid;
-      int i;
-
-      attendees = [chosenEvent attendees];
-
-      for (i = 0; i < [attendees count]; i++)
-	{
-	  att = [attendees objectAtIndex: i];
-	  
-	  if (att == user) continue;
-	  
-	  uid = [[LDAPUserManager sharedUserManager]
-		  getUIDForEmail: [att rfc822Email]];
-
-	  if (uid)
-	    {
-	      [self _updateAttendee: user
-		    ownerUser: [context activeUser]
-		    forEventUID: [chosenEvent uid]
-		    withRecurrenceId: [chosenEvent recurrenceId]
-		    withSequence: [chosenEvent sequence]
-		    forUID: uid
-		    shouldAddSentBy: YES];
-	    }
-	}
-
-      response = [self responseWith204];
+      response = (WOResponse*)[eventObject changeParticipationStatus: newStatus
+							withDelegate: delegate
+						     forRecurrenceId: [chosenEvent recurrenceId]];
+//      if (ex)
+//	response = ex; //[self responseWithStatus: 500];
+//      else
+      if (!response)
+	response = [self responseWith204];
     }
   else
     {
       response = [context response];
       [response setStatus: 409];
     }
-
+  
   return response;
 }
 
+//- (BOOL) shouldTakeValuesFromRequest: (WORequest *) request
+//			   inContext: (WOContext*) localContext
+//{
+//  return YES;
+//}
+
 - (WOResponse *) acceptAction
 {
-  return [self _changePartStatusAction: @"ACCEPTED"];
+  return [self _changePartStatusAction: @"ACCEPTED"
+			  withDelegate: nil];
 }
 
 - (WOResponse *) declineAction
 {
-  return [self _changePartStatusAction: @"DECLINED"];
+  return [self _changePartStatusAction: @"DECLINED"
+			  withDelegate: nil];
+}
+
+- (WOResponse *) delegateAction
+{
+//  BOOL receiveUpdates;
+  NSString *delegatedEmail, *delegatedUid;
+  iCalPerson *delegatedAttendee;
+  SOGoUser *user;
+  WORequest *request;
+  WOResponse *response;
+
+  request = [context request];
+  delegatedEmail = [request formValueForKey: @"to"];
+  if ([delegatedEmail length])
+    {
+      user = [context activeUser];
+      delegatedAttendee = [iCalPerson new];
+      [delegatedAttendee setEmail: delegatedEmail];
+      delegatedUid = [delegatedAttendee uid];
+      if (delegatedUid)
+	{
+	  SOGoUser *delegatedUser;
+	  delegatedUser = [SOGoUser userWithLogin: delegatedUid];
+	  [delegatedAttendee setCn: [delegatedUser cn]];
+	}
+      
+      [delegatedAttendee setRole: @"REQ-PARTICIPANT"];
+      [delegatedAttendee setRsvp: @"TRUE"];
+      [delegatedAttendee setParticipationStatus: iCalPersonPartStatNeedsAction];
+      [delegatedAttendee setDelegatedFrom:
+	       [NSString stringWithFormat: @"mailto:%@", [[user allEmails] objectAtIndex: 0]]];
+      
+//      receiveUpdates = [[request formValueForKey: @"receiveUpdates"] boolValue];
+//      if (receiveUpdates)
+//	[delegatedAttendee setRole: @"NON-PARTICIPANT"];
+
+      response = [self _changePartStatusAction: @"DELEGATED"
+				  withDelegate: delegatedAttendee];
+    }
+  else
+    response = [NSException exceptionWithHTTPStatus: 400
+					     reason: @"missing 'to' parameter"];
+  
+  return response;
 }
 
 - (WOResponse *) addToCalendarAction

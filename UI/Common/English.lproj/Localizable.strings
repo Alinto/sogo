@@ -50,6 +50,10 @@
 "You don't have the required privileges to perform the operation."
 = "You don't have the required privileges to perform the operation.";
 
+"noEmailForDelegation" = "You must specify the address to which you want to delegate your invitation.";
+"delegate is a participant" = "The delegate is already a participant.";
+"delegate is a group" = "The specified address corresponds to a group. You can only delegate to a unique person.";
+
 /* alarms */
 "Reminder:" = "Reminder:";
 "Start:" = "Start:";

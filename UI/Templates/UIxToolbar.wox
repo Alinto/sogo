@@ -50,6 +50,6 @@
               /></span
             ></var:if>
         </var:foreach>
-      <img id="progressIndicator" rsrc:src="busy.gif" />
+	<img id="progressIndicator" rsrc:src="busy.gif" />
     </div>
   </var:if>

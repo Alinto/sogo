@@ -85,9 +85,29 @@ DIV.fakeTextArea
   border-width: 2px;
   border-style: inset; 
   padding: 2px;
-  height: 100px;
-  white-space: pre-wrap; }
+  height: 100px; }
 
 DIV#descriptionDiv,
 DIV#attendeesDiv
 { height: 120px; }
+
+DIV#descriptionDiv DIV.fakeTextArea
+{ line-height: 1.5em;
+  padding: 2px 4px;
+  white-space: pre-wrap; }
+
+#delegateEditor
+{ padding-bottom: 1em; }
+
+#delegatedTo
+{ background-image: url("abcard.gif");
+  background-repeat: no-repeat;
+  background-position: 4px center;
+  padding: 2px 2px 2px 24px;
+  width: 260px; }
+
+IMG#progressIndicator
+{ float: none;
+  position: absolute;
+  right: 1em;
+  margin: 0 5px; }

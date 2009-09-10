@@ -205,7 +205,7 @@
   mailTo = [self value: 0 ofAttribute: name];
   if ([mailTo hasPrefix: @"\""])
     mailTo
-      = [mailTo substringWithRange: NSMakeRange (0, [mailTo length] - 2)];
+      = [mailTo substringWithRange: NSMakeRange (1, [mailTo length] - 2)];
 
   return mailTo;
 }

@@ -186,8 +186,13 @@ static NSCharacterSet *wsSet  = nil;
 
 - (NSString *) getBody
 {
+  NSString *body;
+
   isSubject = NO;
-  return [[self generateResponse] contentAsString];
+
+  body = [[self generateResponse] contentAsString];
+
+  return [body stringByTrimmingCharactersInSet: wsSet];
 }
 
 @end

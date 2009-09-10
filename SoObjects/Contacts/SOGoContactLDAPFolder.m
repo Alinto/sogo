@@ -251,6 +251,10 @@
 	data = @"";
       [newRecord setObject: data forKey: @"c_telephonenumber"];
 
+      data = [oldRecord objectForKey: @"isGroup"];
+      if (data)
+	[newRecord setObject: data forKey: @"isGroup"];
+
       contactInfo = [ud stringForKey: @"SOGoLDAPContactInfoAttribute"];
       if ([contactInfo length] > 0) {
 	data = [oldRecord objectForKey: contactInfo];

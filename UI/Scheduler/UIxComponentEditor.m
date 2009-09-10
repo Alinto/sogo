@@ -58,6 +58,7 @@
 #import <SoObjects/SOGo/LDAPUserManager.h>
 #import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/NSDictionary+Utilities.h>
+#import <SoObjects/SOGo/NSScanner+BSJSONAdditions.h>
 #import <SoObjects/SOGo/NSString+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
@@ -168,10 +169,9 @@ iRANGE(2);
       componentOwner = @"";
       organizer = nil;
       //organizerIdentity = nil;
-      attendeesNames = nil;
-      attendeesUIDs = nil;
-      attendeesEmails = nil;
-      attendeesStates = nil;
+      ownerAsAttendee = nil;
+      attendee = nil;
+      jsonAttendees = nil;
       calendarList = nil;
       repeat = nil;
       reminder = nil;
@@ -202,16 +202,15 @@ iRANGE(2);
   [location release];
   [organizer release];
   //[organizerIdentity release];
+  [ownerAsAttendee release];
   [comment release];
   [priority release];
   [categories release];
   [cycle release];
   [cycleEnd release];
   [attachUrl release];
-  [attendeesNames release];
-  [attendeesUIDs release];
-  [attendeesEmails release];
-  [attendeesStates release];
+  [attendee release];
+  [jsonAttendees release];
   [calendarList release];
 
   [reminder release];
@@ -241,42 +240,44 @@ iRANGE(2);
 - (void) _loadAttendees
 {
   NSEnumerator *attendees;
+  NSMutableDictionary *currentAttendeeData;
   iCalPerson *currentAttendee;
-  NSMutableString *names, *uids, *emails, *states;
   NSString *uid;
   LDAPUserManager *um;
 
-  names = [NSMutableString string];
-  uids = [NSMutableString string];
-  emails = [NSMutableString string];
-  states = [NSMutableString string];
+  jsonAttendees = [NSMutableDictionary new];
   um = [LDAPUserManager sharedUserManager];
 
   attendees = [[component attendees] objectEnumerator];
   while ((currentAttendee = [attendees nextObject]))
     {
-      if ([[currentAttendee cn] length])
-	[names appendFormat: @"%@,", [currentAttendee cn]];
-      else
-	[names appendFormat: @"%@,", [currentAttendee rfc822Email]];
+      currentAttendeeData = [NSMutableDictionary dictionary];
 
-      [emails appendFormat: @"%@,", [currentAttendee rfc822Email]];
+      if ([[currentAttendee cn] length])
+	[currentAttendeeData setObject: [currentAttendee cn] 
+				forKey: @"name"];
+
+      [currentAttendeeData setObject: [currentAttendee rfc822Email] 
+			      forKey: @"email"];
+      
       uid = [um getUIDForEmail: [currentAttendee rfc822Email]];
       if (uid != nil)
-	[uids appendFormat: @"%@,", uid];
-      else
-	[uids appendString: @","];
-      [states appendFormat: @"%@,",
-	      [[currentAttendee partStat] lowercaseString]];
-    }
+	[currentAttendeeData setObject: uid 
+				forKey: @"uid"];
 
-  if ([names length] > 0)
-    {
-      ASSIGN (attendeesNames, [names substringToIndex: [names length] - 1]);
-      ASSIGN (attendeesUIDs, [uids substringToIndex: [uids length] - 1]);
-      ASSIGN (attendeesEmails,
-	      [emails substringToIndex: [emails length] - 1]);
-      ASSIGN (attendeesStates, [states substringToIndex: [states length] - 1]);
+      [currentAttendeeData setObject: [[currentAttendee partStat] lowercaseString]
+			      forKey: @"partstat"];
+
+      if ([[currentAttendee delegatedTo] length])
+	[currentAttendeeData setObject: [[currentAttendee delegatedTo] rfc822Email]
+				forKey: @"delegated-to"];
+
+      if ([[currentAttendee delegatedFrom] length])
+	[currentAttendeeData setObject: [[currentAttendee delegatedFrom] rfc822Email]
+				forKey: @"delegated-from"];
+
+      [jsonAttendees setObject: currentAttendeeData
+			forKey: [currentAttendee rfc822Email]];
     }
 }
 
@@ -526,6 +527,8 @@ iRANGE(2);
 {
 //   iCalRecurrenceRule *rrule;
   SOGoObject *co;
+  LDAPUserManager *um;
+  NSString *owner, *ownerEmail;
 
   if (!component)
     {
@@ -545,6 +548,7 @@ iRANGE(2);
           ASSIGN (categories,
                   [[component categories] componentsWithSafeSeparator: ',']);
 	  ASSIGN (organizer, [component organizer]);
+	  
 	  [self _loadCategories];
 	  [self _loadAttendees];
 	  [self _loadRRules];
@@ -555,6 +559,11 @@ iRANGE(2);
 	  if ([componentCalendar isKindOfClass: [SOGoCalendarComponent class]])
 	    componentCalendar = [componentCalendar container];
 	  [componentCalendar retain];
+	
+	  um = [LDAPUserManager sharedUserManager];
+	  owner = [componentCalendar ownerInContext: context];
+	  ownerEmail = [um getEmailForUID: owner];
+	  ASSIGN (ownerAsAttendee, [component findParticipantWithEmail: (id)ownerEmail]);
 	}
     }
 //   /* cycles */
@@ -750,44 +759,32 @@ iRANGE(2);
   return ([[component attendees] count] > 0);
 }
 
-- (void) setAttendeesNames: (NSString *) newAttendeesNames
+- (void) setAttendee: (id) _attendee
 {
-  ASSIGN (attendeesNames, newAttendeesNames);
+  ASSIGN (attendee, _attendee);
 }
 
-- (NSString *) attendeesNames
+- (id) attendee
 {
-  return attendeesNames;
+  return attendee;
 }
 
-- (void) setAttendeesUIDs: (NSString *) newAttendeesUIDs
+- (NSString *) attendeeForDisplay
 {
-  ASSIGN (attendeesUIDs, newAttendeesUIDs);
+  NSString *fn, *result;
+
+  fn = [attendee cnWithoutQuotes];
+  if ([fn length])
+    result = fn;
+  else
+    result = [attendee rfc822Email];
+  
+  return result;
 }
 
-- (NSString *) attendeesUIDs
+- (NSString *) jsonAttendees
 {
-  return attendeesUIDs;
-}
-
-- (void) setAttendeesEmails: (NSString *) newAttendeesEmails
-{
-  ASSIGN (attendeesEmails, newAttendeesEmails);
-}
-
-- (NSString *) attendeesEmails
-{
-  return attendeesEmails;
-}
-
-- (void) setAttendeesStates: (NSString *) newAttendeesStates
-{
-  ASSIGN (attendeesStates, newAttendeesStates);
-}
-
-- (NSString *) attendeesStates
-{
-  return attendeesStates;
+  return [jsonAttendees jsonRepresentation];
 }
 
 - (void) setLocation: (NSString *) _value
@@ -971,6 +968,10 @@ iRANGE(2);
     word = @"ACCEPTED";
   else if ([item intValue] == iCalPersonPartStatDeclined)
     word = @"DECLINED";
+  else if ([item intValue] == iCalPersonPartStatDelegated)
+    word = @"DELEGATED";
+  else
+    word = @"UNKNOWN";
 
   return [self labelForKey: [NSString stringWithFormat: @"partStat_%@", word]];
 }
@@ -978,21 +979,18 @@ iRANGE(2);
 - (NSArray *) replyList
 {
   return [NSArray arrayWithObjects: 
-          [NSNumber numberWithInt: iCalPersonPartStatAccepted], 
-          [NSNumber numberWithInt: iCalPersonPartStatDeclined], nil];
+	   [NSNumber numberWithInt: iCalPersonPartStatAccepted], 
+	   [NSNumber numberWithInt: iCalPersonPartStatDeclined],
+	   [NSNumber numberWithInt: iCalPersonPartStatDelegated],
+		  nil];
 }
 
 - (NSNumber *) reply
 {
   iCalPersonPartStat participationStatus;
-  LDAPUserManager *um;
-  NSString *owner, *ownerEmail;
 
-  um = [LDAPUserManager sharedUserManager];
-  owner = [componentCalendar ownerInContext: context];
-  ownerEmail = [um getEmailForUID: owner];
-  // We assume the owner is part of the participants
-  participationStatus = [[component findParticipantWithEmail: (id)ownerEmail] participationStatus];
+  participationStatus = [ownerAsAttendee participationStatus];
+
   return [NSNumber numberWithInt: participationStatus];
 }
 
@@ -1141,19 +1139,6 @@ iRANGE(2);
 - (NSString *) privacy
 {
   return privacy;
-}
-
-- (NSArray *) statusTypes
-{
-  static NSArray *statusTypes = nil;
-
-  if (!statusTypes)
-    {
-      statusTypes = [NSArray arrayWithObjects: @"", @"TENTATIVE", @"CONFIRMED", @"CANCELLED", nil];
-      [statusTypes retain];
-    }
-
-  return statusTypes;
 }
 
 - (void) setStatus: (NSString *) _status
@@ -1499,26 +1484,35 @@ RANGE(2);
 
 - (void) _handleAttendeesEdition
 {
-  NSArray *names, *emails;
   NSMutableArray *newAttendees;
   unsigned int count, max;
   NSString *currentEmail;
   iCalPerson *currentAttendee;
+  NSString *json;
+  NSDictionary *attendeesData;
+  NSArray *attendees;
+  NSDictionary *currentData;
+  NSScanner *jsonScanner;
+  WORequest *request;
 
-  newAttendees = [NSMutableArray new];
-  if ([attendeesNames length] > 0)
+  request = [context request];
+  json = [request formValueForKey: @"attendees"];
+  attendees = [NSArray array];
+  jsonScanner = [NSScanner scannerWithString: json];
+  if ([jsonScanner scanJSONObject: &attendeesData])
     {
-      names = [attendeesNames componentsSeparatedByString: @","];
-      emails = [attendeesEmails componentsSeparatedByString: @","];
-      max = [emails count];
+      newAttendees = [NSMutableArray new];
+      attendees = [attendeesData allValues];
+      max = [attendees count];
       for (count = 0; count < max; count++)
 	{
-	  currentEmail = [emails objectAtIndex: count];
+	  currentData = [attendees objectAtIndex: count];
+	  currentEmail = [currentData objectForKey: @"email"];
 	  currentAttendee = [component findParticipantWithEmail: currentEmail];
 	  if (!currentAttendee)
 	    {
 	      currentAttendee = [iCalPerson elementWithTag: @"attendee"];
-	      [currentAttendee setCn: [names objectAtIndex: count]];
+	      [currentAttendee setCn: [currentData objectForKey: @"name"]];
 	      [currentAttendee setEmail: currentEmail];
 	      [currentAttendee setRole: @"REQ-PARTICIPANT"];
 	      [currentAttendee setRsvp: @"TRUE"];
@@ -1527,10 +1521,11 @@ RANGE(2);
 	    }
 	  [newAttendees addObject: currentAttendee];
 	}
+      [component setAttendees: newAttendees];
+      [newAttendees release];
     }
-
-  [component setAttendees: newAttendees];
-  [newAttendees release];
+  else
+    NSLog(@"Error scanning following JSON:\n%@", json);  
 }
 
 - (void) _handleOrganizer

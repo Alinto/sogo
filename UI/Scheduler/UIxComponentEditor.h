@@ -38,6 +38,7 @@
 {
   iCalRepeatableEntityObject *component;
   id item;
+  id attendee;
 
   NSString *saveURL;
   NSMutableArray *calendarList;
@@ -59,13 +60,11 @@
   NSDictionary *cycle;
   NSString *cycleEnd;
   iCalPerson *organizer;
+  iCalPerson *ownerAsAttendee;
   NSString *componentOwner;
   NSString *dateFormat;
 
-  NSString *attendeesNames;
-  NSString *attendeesUIDs;
-  NSString *attendeesEmails;
-  NSString *attendeesStates;
+  NSMutableDictionary *jsonAttendees;
 
   NSString *reminder;
   NSString *reminderQuantity;
@@ -121,7 +120,6 @@
 - (NSString *) privacy;
 - (NSString *) itemPrivacyText;
 
-- (NSArray *) statusTypes;
 - (void) setStatus: (NSString *) _status;
 - (NSString *) status;
 - (NSString *) itemStatusText;
@@ -142,14 +140,7 @@
 
 - (BOOL) hasAttendees;
 
-- (void) setAttendeesNames: (NSString *) newAttendeesNames;
-- (NSString *) attendeesNames;
-
-- (void) setAttendeesUIDs: (NSString *) newAttendeesUIDs;
-- (NSString *) attendeesUIDs;
-
-- (void) setAttendeesEmails: (NSString *) newAttendeesEmails;
-- (NSString *) attendeesEmails;
+- (NSString *) jsonAttendees;
 
 - (NSString *) repeat;
 - (void) setRepeat: (NSString *) newRepeat;

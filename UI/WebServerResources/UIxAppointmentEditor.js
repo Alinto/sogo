@@ -99,44 +99,6 @@ function validateAptEditor() {
     return true;
 }
 
-function toggleDetails() {
-    var div = $("details");
-    var buttons = $("buttons");
-    var buttonsHeight = buttons.clientHeight * 3;
-
-    if (div.style.visibility) {
-        div.style.visibility = null;
-        window.resizeBy(0, -(div.clientHeight + buttonsHeight));
-        $("detailsButton").innerHTML = labels["Show Details"];
-    } else {
-        div.style.visibility = 'visible;';
-        window.resizeBy(0, (div.clientHeight + buttonsHeight));
-        $("detailsButton").innerHTML = labels["Hide Details"];
-    }
-
-    return false;
-}
-
-function toggleCycleVisibility(node, nodeName, hiddenValue) {
-    var spanNode = $(nodeName);
-    var newVisibility = ((node.value == hiddenValue) ? null : 'visible;');
-    spanNode.style.visibility = newVisibility;
-
-    if (nodeName == 'cycleSelectionFirstLevel') {
-        var otherSpanNode = $('cycleSelectionSecondLevel');
-        if (!newVisibility)
-            {
-                otherSpanNode.superVisibility = otherSpanNode.style.visibility;
-                otherSpanNode.style.visibility = null;
-            }
-        else
-            {
-                otherSpanNode.style.visibility = otherSpanNode.superVisibility;
-                otherSpanNode.superVisibility = null;
-            }
-    }
-}
-
 function onAttendeesMenuPrepareVisibility()
 {
     var composeToUndecidedAttendees = $('composeToUndecidedAttendees');
@@ -201,8 +163,10 @@ function addContact(tag, fullContactName, contactId, contactName, contactEmail) 
 }
 
 function saveEvent(sender) {
-    if (validateAptEditor())
+    if (validateAptEditor()) {
+        document.forms['editform'].attendees.value = attendees.toJSON();
         document.forms['editform'].submit();
+    }
 
     return false;
 }
@@ -335,51 +299,22 @@ function initTimeWidgets(widgets) {
 }
 
 function refreshAttendeesRO () {
-    var attendeesNames = $("attendeesNames").value;
-    var attendeesEmails = $("attendeesEmails").value.split(",");
-    var attendeesStates = $("attendeesStates").value.split(",");
     var attendeesMenu = $("attendeesMenu");
     var attendeesLabel = $("attendeesLabel");
-
-    if (attendeesMenu) {
-        for (var i = 0; i < attendeesMenu.childNodes.length; i++)
-            attendeesMenu.removeChild (attendeesMenu.childNodes[i]);
-    }
-  
-    if (attendeesNames.length > 0) {
-        // Update attendees link and show label
-        if (attendeesLabel)
-            attendeesLabel.setStyle({ display: "block" });
-        if ($("attendeesDiv"))
-            $("attendeesDiv").setStyle({display: "block"});
-
-        // Update attendees in menu
-        attendeesNames = attendeesNames.split(",");
-        for (var i = 0; i < attendeesEmails.length; i++) {
-            var node = document.createElement("div");
-            if (attendeesMenu)
-                attendeesMenu.appendChild(node);
-            $(node).writeAttribute("email", attendeesEmails[i]);
-            $(node).addClassName("attendee");
-            $(node).addClassName(attendeesStates[i]);
-            node.appendChild(document.createTextNode(attendeesNames[i]));
-            $(node).observe("click", onMailTo);
-        }
-    }
-    else {
-        // Hide link of attendees
-        attendeesLabel.setStyle({ display: "none" });
-        if ($("attendeesDiv"))
-            $("attendeesDiv").setStyle({display: "none"});
-    }
-
+    var attendeesDiv = $("attendeesDiv");
+    
+    attendeesLabel.setStyle({ display: "block" });
+    attendeesDiv.setStyle({display: "block"});
+    
+    // Register "click" event on each attendee's email
+    var attendees = attendeesMenu.getElementsByTagName('a');
+    $A(attendees).each(function(attendee) {
+            $(attendee).observe("click", onMailTo);
+        });
 }
 
-function refreshAttendees() {
+function refreshAttendees(newAttendees) {
     var attendeesLabel = $("attendeesLabel");
-    var attendeesNames = $("attendeesNames").value;
-    var attendeesEmails = $("attendeesEmails").value.split(",");
-    var attendeesStates = $("attendeesStates").value.split(",");
     var attendeesHref = $("attendeesHref");
     var attendeesMenu = $("attendeesMenu");
 
@@ -398,29 +333,60 @@ function refreshAttendees() {
     if (menuItems && attendeesMenu)
         for (var i = 0; i < menuItems.length; i++)
             attendeesMenu.removeChild(menuItems[i]);
-  
-    if (attendeesNames.length > 0) {
-        // Update attendees link and show label
-        attendeesHref.appendChild(document.createTextNode(attendeesNames));
-        attendeesLabel.setStyle({ display: "block" });
+    
+    if (newAttendees)
+        attendees = $H(newAttendees.evalJSON(true));
 
-        // Update attendees in menu
-        attendeesNames = attendeesNames.split(",");
-        for (var i = 0; i < attendeesEmails.length; i++) {
-            var node = document.createElement("li");
-            if (attendeesMenu)
-                attendeesMenu.appendChild(node);
-            $(node).writeAttribute("email", attendeesEmails[i]);
-            $(node).addClassName("attendee");
-            $(node).addClassName(attendeesStates[i]);
-            node.appendChild(document.createTextNode(attendeesNames[i]));
-            $(node).observe("click", onMailTo);
-        }
+    if (attendees.keys().length > 0) {
+        // Update attendees link and show label
+        var names = new Array();
+        attendees.values().each(function(attendee) {
+                attendee = $H(attendee);
+                var name = attendee.get('name') || attendee.get('email');
+                if (!attendee.get('delegated-to'))
+                    names.push(name);
+
+                if (attendeesMenu) {
+                    var delegatedTo = attendee.get('delegated-to');
+                    if (!attendee.get('delegated-from') || delegatedTo) {
+                        var node = document.createElement("li");
+                        attendeesMenu.appendChild(node);
+                        setupAttendeeNode(node, attendee);
+                    }
+                    if (delegatedTo) {
+                        var delegate = attendees.get(delegatedTo);
+                        var node = document.createElement("li");
+                        attendeesMenu.appendChild(node);
+                        setupAttendeeNode(node, $H(delegate), true);
+                    }
+                }
+            });
+        attendeesHref.appendChild(document.createTextNode(names.join(", ")));
+        attendeesLabel.setStyle({ display: "block" });
     }
     else {
         // Hide link of attendees
         attendeesLabel.setStyle({ display: "none" });
     }
+}
+
+function setupAttendeeNode(aNode, aAttendee, isDelegate) {
+    // Construct the display string from common name and/or email address.
+    var name = aAttendee.get('name');
+    var email = aAttendee.get('email');
+//    if (name)
+//        name += ' <' + email + '>';
+//    else
+//        name = email;
+    name = name || email;
+    
+    $(aNode).writeAttribute("email", email);
+    $(aNode).addClassName("attendee");
+    $(aNode).addClassName(aAttendee.get('partstat'));
+    if (isDelegate)
+        $(aNode).addClassName("delegate");
+    aNode.appendChild(document.createTextNode(name));
+    $(aNode).observe("click", onMailTo);
 }
 
 function initializeAttendeesHref() {
@@ -443,6 +409,8 @@ function onMailTo(event) {
     var target = getTarget(event);
     var address = target.firstChild.nodeValue.trim() + " <" + target.readAttribute("email") + ">";
     openMailTo(address);
+    Event.stop(event);
+    return false;
 }
 
 function getMenus() {
@@ -473,6 +441,10 @@ function onAppointmentEditorLoad() {
                                'minute': $("endTime_time_minute")}};
         initTimeWidgets(widgets);
     }
+
+    // Extend JSON representation of attendees
+    attendees = $H(attendees);
+
     initializeAttendeesHref();
 }
 

@@ -55,8 +55,8 @@
               <div><table id="freeBusyAttendees" cellspacing="0" cellpadding="0">
                 <tbody>
 	          <tr class="futureAttendee"
-	            ><td class="attendees"><input type="text" class="textField"
-		    readonly="readonly" label:value="newAttendee" /></td
+	            ><td class="attendees"><a href="#" class="button"
+		    readonly="readonly"><var:string label:value="newAttendee" /></a></td
 	          ></tr>
 	          <tr class="attendeeModel"
 	            ><td class="attendees"><input type="text" class="textField" /></td

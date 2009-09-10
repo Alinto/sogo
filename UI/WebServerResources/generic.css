@@ -759,7 +759,7 @@ DIV.resize-handle
   position: absolute;
   top: 0;
   left: 0;
-  max-height: 2em; }
+  max-height: 2em; } /* will be set in JavaScript when setting drag handles */
 
 @media print
 {
@@ -779,8 +779,8 @@ DIV.resize-handle
 
 .genericHoverClass
 {
-  background-color: #f0f0f0 !important;
-  color: #000000 !important;
+  background-color: #0033cc !important;
+  color: #fff !important;
 }
 
 DIV#uploadDialog,DIV#uploadResults

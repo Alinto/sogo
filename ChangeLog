@@ -1,3 +1,43 @@
+2009-09-10  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
+	-_handleAttendeesEdition]): the attendees list is now submited as
+	a JSON string.
+	([UIxComponentEditor -_loadAttendees]): constructs a dictionary
+	with the attendees' information that will be passed as a JSON
+	string to the template.
+
+	* UI/MailPartViewers/UIxMailPartICalViewer.m
+	([UIxMailPartICalViewer -currentAttendeeClass]): new method that
+	returns the attendee's partstat as the CSS class and adds
+	"attendeeUser" if the attendee is the active user.
+
+	* UI/MailPartViewers/UIxMailPartICalActions.m (-): added delegateAction.
+
+	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView
+	-allContactSearchAction]): added the possibility to pass the form
+	parameter "excludeLists" in order to avoid returning groups.
+
+	* SoObjects/SOGo/LDAPSource.m ([LDAPSource
+	_convertLDAPEntryToContact:]): added a key named "isList" to the
+	data representation of the LDAP entry if it matches specific objectClasses.
+
+	* SoObjects/Appointments/SOGoAptMailICalReply.m
+	([SOGoAptMailICalReply -getBody]): trim spaces before returning
+	the body.
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	([SOGoAppointmentObject
+	-_handleAttendee:withDelegate:ownerUser:statusChange:inEvent:]):
+	added support for invitation delegation.
+	([SOGoAppointementObject
+	-_updateAttendee:withDelegate:ownerUser:forEventUID:withRecurrenceId:withSequence:forUID:shouldAddSentBy:]):
+	fixed the case of chained delegates.
+	([SOGoAppointmentObject
+	-changeParticipationStatus:withDelegate:forRecurrenceId:]): when
+	delegating an invitation, verify that the delegated is not already
+	a participant nor a group of users.
+
 2009-09-10  Cyril Robert <crobert@inverse.ca>
 
 	* SoObjects/Appointments/SOGoWebAppointmentFolder.m: New
