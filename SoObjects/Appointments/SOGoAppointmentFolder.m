@@ -81,7 +81,8 @@
 
 static NGLogger *logger = nil;
 static NSNumber *sharedYes = nil;
-static int davCalendarStartTimeLimit = 0;
+static int davCalendarStartTimeLimit, davTimeLimitSeconds,
+  davTimeHalfLimitSeconds;
 
 + (void) initialize
 {
@@ -107,6 +108,10 @@ static int davCalendarStartTimeLimit = 0;
       ud = [NSUserDefaults standardUserDefaults];
       davCalendarStartTimeLimit
         = [ud integerForKey: @"SOGoDAVCalendarStartTimeLimit"];
+      davTimeLimitSeconds = davCalendarStartTimeLimit * 86400;
+      /* 86400 / 2 = 43200. We hardcode that value in order to avoid
+         integer and float confusion. */
+      davTimeHalfLimitSeconds = davCalendarStartTimeLimit * 43200;
     }
 }
 
@@ -1350,12 +1355,12 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
 - (NSCalendarDate *) _getMaxStartDate
 {
-  NSCalendarDate *tmp, *rc;
+  NSCalendarDate *now, *rc;
 
-  if (davCalendarStartTimeLimit > 0)
+  if (davCalendarStartTimeLimit > 0 && ![[context activeUser] isSuperUser])
     {
-      tmp = [NSCalendarDate date];
-      rc = [tmp addTimeInterval: davCalendarStartTimeLimit * -86400];
+      now = [NSCalendarDate date];
+      rc = [now addTimeInterval: -davTimeLimitSeconds];
     }
   else
     rc = nil;
@@ -1364,42 +1369,44 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 }
 
 - (void) _enforceTimeLimitOnFilter: (NSMutableDictionary *) filter
+                     withStartDate: (NSCalendarDate *) startDate
+                        andEndDate: (NSCalendarDate *) endDate
 {
-  NSCalendarDate *start, *end, *now;
+  NSCalendarDate *now;
   int interval, intervalStart, intervalEnd;
 
-  start = [filter objectForKey: @"start"];
-  end = [filter objectForKey: @"end"];
-  now = [NSCalendarDate date];
-  interval = ([end timeIntervalSinceDate: start] / 86400);
-  
-  if (davCalendarStartTimeLimit > 0 && interval > davCalendarStartTimeLimit)
+  if (davCalendarStartTimeLimit > 0 && ![[context activeUser] isSuperUser])
     {
-      if ([now compare: start] == NSOrderedDescending
-          && [now compare: end] == NSOrderedAscending)
+      interval = ([endDate timeIntervalSinceDate: startDate] / 86400);
+      if (interval > davCalendarStartTimeLimit)
         {
-          intervalStart = [now timeIntervalSinceDate: start] / 86400;
-          intervalEnd = [end timeIntervalSinceDate: now] / 86400;
-          if (intervalStart > davCalendarStartTimeLimit / 2)
+          now = [NSCalendarDate date];
+          if ([now compare: startDate] == NSOrderedDescending
+              && [now compare: endDate] == NSOrderedAscending)
             {
-              start = [now addTimeInterval: (davCalendarStartTimeLimit / 2) * -86400];
-              [filter setObject: start forKey: @"start"];
+              intervalStart = [now timeIntervalSinceDate: startDate] / 86400;
+              intervalEnd = [endDate timeIntervalSinceDate: now] / 86400;
+              if (intervalStart > davCalendarStartTimeLimit / 2)
+                {
+                  startDate = [now addTimeInterval: -davTimeHalfLimitSeconds];
+                  [filter setObject: startDate forKey: @"start"];
+                }
+              if (intervalEnd > davCalendarStartTimeLimit / 2)
+                {
+                  endDate = [now addTimeInterval: davTimeHalfLimitSeconds];
+                  [filter setObject: endDate forKey: @"end"];
+                }
             }
-          if (intervalEnd > davCalendarStartTimeLimit / 2)
+          else if ([now compare: endDate] == NSOrderedDescending)
             {
-              end = [now addTimeInterval: (davCalendarStartTimeLimit / 2) * 86400];
-              [filter setObject: end forKey: @"end"];
+              startDate = [endDate addTimeInterval: -davTimeLimitSeconds];
+              [filter setObject: startDate forKey: @"start"];
             }
-        }
-      else if ([now compare: end] == NSOrderedDescending)
-        {
-          start = [end addTimeInterval: davCalendarStartTimeLimit * -86400];
-          [filter setObject: start forKey: @"start"];
-        }
-      else if ([now compare: start] == NSOrderedAscending)
-        {
-          end = [start addTimeInterval: davCalendarStartTimeLimit * 86400];
-          [filter setObject: end forKey: @"end"];
+          else if ([now compare: startDate] == NSOrderedAscending)
+            {
+              endDate = [startDate addTimeInterval: davTimeLimitSeconds];
+              [filter setObject: endDate forKey: @"end"];
+            }
         }
     }
 }
@@ -1407,30 +1414,30 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 - (void) _appendTimeRange: (id <DOMElement>) timeRangeElement
                  toFilter: (NSMutableDictionary *) filter
 {
-  NSCalendarDate *parsedDate;
+  NSCalendarDate *startDate, *endDate;
 
-  parsedDate = [[timeRangeElement attribute: @"start"] asCalendarDate];
-  if (!parsedDate)
-    parsedDate = [NSCalendarDate distantPast];
-  [filter setObject: parsedDate forKey: @"start"];
-  parsedDate = [[timeRangeElement attribute: @"end"] asCalendarDate];
-  if (!parsedDate)
-    parsedDate = [NSCalendarDate distantFuture];
-  [filter setObject: parsedDate forKey: @"end"];
+  startDate = [[timeRangeElement attribute: @"start"] asCalendarDate];
+  if (!startDate)
+    startDate = [NSCalendarDate distantPast];
+  [filter setObject: startDate forKey: @"start"];
 
-  [self _enforceTimeLimitOnFilter: filter];
+  endDate = [[timeRangeElement attribute: @"end"] asCalendarDate];
+  if (!endDate)
+    endDate = [NSCalendarDate distantFuture];
+  [filter setObject: endDate forKey: @"end"];
+
+  [self _enforceTimeLimitOnFilter: filter
+                    withStartDate: startDate andEndDate: endDate];
 }
 
 - (void) _addDateRangeLimitToFilter: (NSMutableDictionary *) filter
 {
   NSCalendarDate *now;
-  NSTimeInterval rangeLimit;
 
   now = [NSCalendarDate date];
-  rangeLimit = (davCalendarStartTimeLimit / 2) * -86400;
-  [filter setObject: [now addTimeInterval: rangeLimit]
+  [filter setObject: [now addTimeInterval: davTimeHalfLimitSeconds]
              forKey: @"start"];
-  [filter setObject: [now addTimeInterval: rangeLimit * -1]
+  [filter setObject: [now addTimeInterval: -davTimeHalfLimitSeconds]
              forKey: @"end"];
 }
 
