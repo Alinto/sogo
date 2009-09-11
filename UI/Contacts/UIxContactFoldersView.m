@@ -220,7 +220,7 @@
         {
           folder = [folders objectAtIndex: i];
           if ([folder isKindOfClass: [SOGoContactLDAPFolder class]])
-	    [sortedFolders insertObject: folder atIndex: 0];
+            [sortedFolders insertObject: folder atIndex: 0];
           else
             [sortedFolders addObject: folder];
         }
@@ -237,9 +237,9 @@
               mail = [contact objectForKey: @"c_mail"];
               //NSLog(@"   found %@ (%@)", [contact objectForKey: @"displayName"], mail);
               if ([mail isNotNull]
-		  && [uniqueContacts objectForKey: mail] == nil
-		  && !(excludeGroups && [contact objectForKey: @"isGroup"]))
-		[uniqueContacts setObject: contact forKey: mail];
+                  && [uniqueContacts objectForKey: mail] == nil
+                  && !(excludeGroups && [contact objectForKey: @"isGroup"]))
+                        [uniqueContacts setObject: contact forKey: mail];
             }
         }      
       if ([uniqueContacts count] > 0)
