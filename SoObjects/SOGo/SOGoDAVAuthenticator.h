@@ -19,8 +19,8 @@
   02111-1307, USA.
 */
 
-#ifndef __Main_SOGoDAVAuthenticator_H__
-#define __Main_SOGoDAVAuthenticator_H__
+#ifndef _SOGoDAVAuthenticator_H__
+#define _SOGoDAVAuthenticator_H__
 
 #import <NGObjWeb/SoHTTPAuthenticator.h>
 
@@ -50,4 +50,4 @@
 
 @end
 
-#endif /* __Main_SOGoDAVAuthenticator_H__ */
+#endif /* _SOGoDAVAuthenticator_H__ */

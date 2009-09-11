@@ -216,11 +216,12 @@ static NSLock *lock;
 }
 
 - (void) registerUser: (SOGoUser *) user
+             withName: (NSString *) userName
 { 
 #if defined(THREADSAFE)
   [lock lock];
 #endif
-  [users setObject: user  forKey: [user login]];
+  [users setObject: user forKey: userName];
 #if defined(THREADSAFE)
   [lock unlock];
 #endif
@@ -264,11 +265,11 @@ static NSLock *lock;
                         forLogin: (NSString *) theLogin
 {
   NSDictionary *d;
-
   memcached_return rc;
   const char *key;
   char *s;
-  unsigned int len, vlen, flags;
+  unsigned int len, flags;
+  size_t vlen;
 
   if (!handle)
     return nil;

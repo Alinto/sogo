@@ -1,3 +1,36 @@
+2009-09-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MainUI/SOGoUserHomePage.m (-logoffAction): adjusted to handle
+	the case where then authenticator doesn't handle authentication
+	cookies. In such cases, this method should theorically never be
+	invoked though.
+
+	* UI/Common/UIxPageFrame.m (-canLogoff): new bool accessor that
+	returns whether the current authenticator handles user
+	disconnection or not, in which case we hide the "logoff" link in
+	the UIxPageFrame.
+
+	* SoObjects/SOGo/SOGoCache.m (-registerUser:withName:): adjusted
+	method to take an additional "userName" parameter in order to
+	store users with the username used at login time rather than their
+	user id. This is especially useful when using indirect binds.
+
+	* SoObjects/SOGo/LDAPSource.m (-_qualifierForUIDFilter:): we
+	include the bindFields in the request if they are specified in the
+	configuration.
+
+	* Main/SOGo.m (-authenticatorInContext:): we no return an instance
+	of SOGoProxyAuthenticator if "SOGoTrustProxyAuthentication" is
+	set in the configuration.
+
+	* SoObjects/SOGo/SOGoProxyAuthenticator.[mh]: new class module
+	that defines an authenticator that unconditionnaly trusts and
+	handle authentication done proxy-side. SOGo uses that
+	authenticator when the "SOGoTrustProxyAuthentication" user default
+	is set. The username is taken from the "x-webobjects-remote-user"
+	http header, you may have to adapt your proxy configuration
+	accordingly.
+
 2009-09-10  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor

@@ -270,7 +270,7 @@ static NSString *LDAPContactInfoAttribute = nil;
   SOGoWebAuthenticator *auth;
   id container;
   NSCalendarDate *date;
-  NSString *userName;
+  NSString *userName, *cookieName;
 
   container = [[self clientObject] container];
 
@@ -281,21 +281,27 @@ static NSString *LDAPContactInfoAttribute = nil;
   [response setStatus: 302];
   [response setHeader: [container baseURLInContext: context]
 	    forKey: @"location"];
-  auth = [[self clientObject] authenticatorInContext: context];
 
   date = [NSCalendarDate calendarDate];
   [date setTimeZone: [NSTimeZone timeZoneWithAbbreviation: @"GMT"]];
 
-  cookie = [WOCookie cookieWithName: [auth cookieNameInContext: context]
-		     value: @"discard"];
-  [cookie setPath: @"/"];
-  [cookie setExpires: [date yesterday]];
-  [response addCookie: cookie];
+  auth = [[self clientObject] authenticatorInContext: context];
+  if ([auth respondsToSelector: @selector (cookieNameInContext:)])
+    cookieName = [auth cookieNameInContext: context];
+  else
+    cookieName = nil;
+  if (cookieName)
+    {
+      cookie = [WOCookie cookieWithName: cookieName value: @"discard"];
+      [cookie setPath: @"/"];
+      [cookie setExpires: [date yesterday]];
+      [response addCookie: cookie];
+    }
 
   [response setHeader: [date rfc822DateString] forKey: @"Last-Modified"];
-  [response setHeader: @"no-store, no-cache, must-revalidate, max-age=0"
-	    forKey: @"Cache-Control"];
-  [response setHeader: @"post-check=0, pre-check=0" forKey: @"Cache-Control"];
+  [response setHeader: @"no-store, no-cache, must-revalidate."
+            @" max-age=0, post-check=0, pre-check=0"
+               forKey: @"Cache-Control"];
   [response setHeader: @"no-cache" forKey: @"Pragma"];
 
   return response;

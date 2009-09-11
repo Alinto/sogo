@@ -45,6 +45,7 @@ SOGo_HEADER_FILES = \
 	\
 	SOGoAuthenticator.h		\
 	SOGoDAVAuthenticator.h		\
+	SOGoProxyAuthenticator.h	\
 	SOGoWebAuthenticator.h		\
 	SOGoWebDAVAclManager.h		\
 	SOGoWebDAVValue.h		\
@@ -94,6 +95,7 @@ SOGo_OBJC_FILES = \
 	NSURL+DAV.m	  		\
 	\
 	SOGoDAVAuthenticator.m		\
+	SOGoProxyAuthenticator.m		\
 	SOGoWebAuthenticator.m		\
 	SOGoWebDAVAclManager.m		\
 	SOGoWebDAVValue.m		\

@@ -246,7 +246,7 @@ _timeValue (NSString *key)
       if (user)
 	{
 	  [user autorelease];
- 	  [cache registerUser: user];
+ 	  [cache registerUser: user withName: newLogin];
 	}
     }
   if (newRoles)

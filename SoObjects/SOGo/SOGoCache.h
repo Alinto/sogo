@@ -55,7 +55,8 @@
 - (id) objectNamed: (NSString *) name
        inContainer: (SOGoObject *) container;
 
-- (void) registerUser: (SOGoUser *) user;
+- (void) registerUser: (SOGoUser *) user
+             withName: (NSString *) userName;
 - (id) userNamed: (NSString *) name;
 
 - (NSMutableDictionary *) userAttributesForLogin: (NSString *) theLogin;

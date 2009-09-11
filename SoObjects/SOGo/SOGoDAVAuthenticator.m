@@ -27,7 +27,6 @@
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSObject+Logs.h>
-#import <NGLdap/NGLdapConnection.h>
 
 #import "LDAPUserManager.h"
 #import "SOGoPermissions.h"

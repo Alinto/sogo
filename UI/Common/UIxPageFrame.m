@@ -25,9 +25,10 @@
 
 #import <NGObjWeb/WOResourceManager.h>
 
-#import <SoObjects/SOGo/SOGoUser.h>
-#import <SoObjects/SOGo/SOGoUserDefaults.h>
-#import <SoObjects/SOGo/NSDictionary+Utilities.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
+#import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/SOGoWebAuthenticator.h>
 
 #import "UIxPageFrame.h"
 
@@ -387,6 +388,20 @@ static NSString *siteFavicon = nil;
 
   return ([user respondsToSelector: @selector (isSuperUser)]
 	  && [user isSuperUser]);
+}
+
+- (BOOL) canLogoff
+{
+  BOOL canLogoff;
+  id auth;
+
+  auth = [[self clientObject] authenticatorInContext: context];
+  if ([auth respondsToSelector: @selector (cookieNameInContext:)])
+    canLogoff = ([[auth cookieNameInContext: context] length] > 0);
+  else
+    canLogoff = NO;
+
+  return canLogoff;
 }
 
 - (BOOL) userHasCalendarAccess

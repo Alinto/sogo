@@ -121,7 +121,8 @@ static NSArray *supportedLanguages = nil;
       oldLocation = [[self clientObject] baseURLInContext: context];
       response
 	= [self redirectToLocation: [NSString stringWithFormat: @"%@/%@",
-					      oldLocation, login]];
+					      oldLocation,
+                                              [login stringByEscapingURL]]];
     }
 
   return response;

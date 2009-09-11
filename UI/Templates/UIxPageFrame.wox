@@ -46,8 +46,10 @@
 	    ><var:if condition="context.isUIxDebugEnabled"
 	      ><div id="logConsole"><!-- space --></div></var:if>
 	    <div id="linkBanner" class="linkbanner">
-	      <a id="logoff" var:href="logoffPath"
-		><var:string label:value="Disconnect" /></a>
+              <var:if condition="canLogoff"
+                ><a id="logoff" var:href="logoffPath"
+		><var:string label:value="Disconnect" /></a
+                  ></var:if>
 	      <var:if condition="userHasCalendarAccess">
 		<var:if condition="isCalendar">
 		  <span class="active"><var:string label:value="Calendar"

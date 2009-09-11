@@ -48,6 +48,7 @@
 #import <SoObjects/SOGo/SOGoCache.h>
 #import <SoObjects/SOGo/SOGoDAVAuthenticator.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
+#import <SoObjects/SOGo/SOGoProxyAuthenticator.h>
 #import <SoObjects/SOGo/SOGoUserFolder.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/SOGoWebAuthenticator.h>
@@ -66,6 +67,8 @@ static BOOL doCrashOnSessionCreate = NO;
 static BOOL hasCheckedTables = NO;
 static BOOL debugRequests = NO;
 static BOOL debugLeaks = NO;
+
+static BOOL trustProxyAuthentication;
 
 #ifdef GNUSTEP_BASE_LIBRARY
 static BOOL debugObjectAllocation = NO;
@@ -120,6 +123,8 @@ static BOOL debugObjectAllocation = NO;
   /* require Authenticated role for View and WebDAV */
   [sInfo declareRoles: basicRoles asDefaultForPermission: SoPerm_View];
   [sInfo declareRoles: basicRoles asDefaultForPermission: SoPerm_WebDAVAccess];
+
+  trustProxyAuthentication = [ud boolForKey: @"SOGoTrustProxyAuthentication"];
 }
 
 - (id) init
@@ -269,10 +274,15 @@ static BOOL debugObjectAllocation = NO;
 {
   id authenticator;
 
-  if ([[context request] handledByDefaultHandler])
-    authenticator = [SOGoWebAuthenticator sharedSOGoWebAuthenticator];
+  if (trustProxyAuthentication)
+    authenticator = [SOGoProxyAuthenticator sharedSOGoProxyAuthenticator];
   else
-    authenticator = [SOGoDAVAuthenticator sharedSOGoDAVAuthenticator];
+    {
+      if ([[context request] handledByDefaultHandler])
+        authenticator = [SOGoWebAuthenticator sharedSOGoWebAuthenticator];
+      else
+        authenticator = [SOGoDAVAuthenticator sharedSOGoDAVAuthenticator];
+    }
 
   return authenticator;
 }
