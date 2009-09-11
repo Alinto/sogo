@@ -524,7 +524,9 @@ function newContact(sender) {
 }
 
 function newList(sender) {
-    openContactWindow(URLForFolderID(Contact.currentAddressBook) + "/newlist");
+    var li = $(Contact.currentAddressBook);
+    if (!li.hasClassName ("remote"))
+      openContactWindow(URLForFolderID(Contact.currentAddressBook) + "/newlist");
     return false;
 }
 
