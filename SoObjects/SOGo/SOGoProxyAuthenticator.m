@@ -37,6 +37,10 @@
 
 #import "SOGoProxyAuthenticator.h"
 
+#warning we need to adjust this class for managing the "authorization" \
+  header provided by authenticators like "Basic", which do not provide \
+  a "remote_user" variable.
+
 @implementation SOGoProxyAuthenticator
 
 + (id) sharedSOGoProxyAuthenticator
