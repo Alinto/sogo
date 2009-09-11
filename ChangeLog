@@ -1,3 +1,8 @@
+2009-09-11  Cyril Robert <crobert@inverse.ca>
+
+	* UI/Contacts/UIxContactFoldersView.m (allContactSearchAction): Added 
+	support for excludeLists, to prevent listing vList entries.
+
 2009-09-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MainUI/SOGoUserHomePage.m (-logoffAction): adjusted to handle

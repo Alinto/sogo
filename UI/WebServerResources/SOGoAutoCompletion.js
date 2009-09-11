@@ -10,6 +10,9 @@ var SOGoAutoCompletionInterface = {
     delay: 0.750,
     delayedSearch: false,
     menu: null,
+    baseUrl: null,
+    onListAdded: null,
+    endEditable: null,
 
     bind: function () {
       this.menu = $('contactsMenu');
@@ -30,6 +33,10 @@ var SOGoAutoCompletionInterface = {
             this.uid = null;
           if (document.currentPopupMenu)
             hideMenu(document.currentPopupMenu);
+          if (this.endEditable)
+            this.endEditable ();
+          if (this.onListAdded)
+            this.onListAdded ();
       }
       else if (event.keyCode == 0
                || event.keyCode == Event.KEY_BACKSPACE
@@ -49,6 +56,10 @@ var SOGoAutoCompletionInterface = {
           if (document.currentPopupMenu)
             hideMenu(document.currentPopupMenu);
           this.selectedIndex = -1;
+          if (this.endEditable)
+            this.endEditable ();
+          if (this.onListAdded)
+            this.onListAdded ();
       }
       else if (this.menu.getStyle('visibility') == 'visible') {
           if (event.keyCode == Event.KEY_UP) { // Up arrow
@@ -58,6 +69,11 @@ var SOGoAutoCompletionInterface = {
                   this.value = contacts[this.selectedIndex].readAttribute("address");
                   this.uid = contacts[this.selectedIndex].uid;
                   contacts[this.selectedIndex].addClassName("selected");
+                  var e = contacts[this.selectedIndex];
+                  this.card = e.card;
+                  this.mail = e.mail;
+                  this.name = e.uname;
+                  this.container = e.container;
               }
           }
           else if (event.keyCode == Event.KEY_DOWN) { // Down arrow
@@ -69,10 +85,15 @@ var SOGoAutoCompletionInterface = {
                   this.value = contacts[this.selectedIndex].readAttribute("address");
                   this.uid = contacts[this.selectedIndex].uid;
                   contacts[this.selectedIndex].addClassName("selected");
+                  var e = contacts[this.selectedIndex];
+                  this.card = e.card;
+                  this.mail = e.mail;
+                  this.name = e.uname;
+                  this.container = e.container;
               }
           }
       }
-               },
+    },
 
     onBlur: function (event) {
         if (this.delayedSearch)
@@ -93,8 +114,12 @@ var SOGoAutoCompletionInterface = {
         if (input.value.trim().length > 2) {
             var urlstr = (UserFolderURL + "Contacts/allContactSearch?search="
                           + encodeURIComponent(input.value));
+            if (input.baseUrl)
+              urlstr = input.baseUrl + encodeURIComponent(input.value);
             if (input.excludeGroups)
               urlstr += "&excludeGroups=1";
+            if (input.excludeLists)
+              urlstr += "&excludeLists=1";
             if (input.animationParent)
               startAnimation(input.animationParent);
             document.contactLookupAjaxRequest =
@@ -125,14 +150,25 @@ var SOGoAutoCompletionInterface = {
                     // Populate popup menu
                     for (var i = 0; i < data.contacts.length; i++) {
                         var contact = data.contacts[i];
-                        var completeEmail = contact["c_cn"] + " <" + contact["c_mail"] + ">";
+                        var completeEmail = contact["c_cn"];
+                        if (contact["c_mail"])
+                          completeEmail += " <" + contact["c_mail"] + ">";
                         var node = new Element('li', { 'address': completeEmail });
                         var matchPosition = completeEmail.toLowerCase().indexOf(data.searchText.toLowerCase());
                         var matchBefore = completeEmail.substring(0, matchPosition);
                         var matchText = completeEmail.substring(matchPosition, matchPosition + data.searchText.length);
                         var matchAfter = completeEmail.substring(matchPosition + data.searchText.length);
                         list.appendChild(node);
-                        node.uid = contact["c_mail"];
+                        node.uid = contact['c_mail'];
+                        node.card = contact['c_name'];
+                        if (contact['c_name'].endsWith (".vlf")) {
+                            node.container = contact['container'];
+                        }
+                        else {
+                            node.mail = contact['c_mail'];
+                            node.uname = contact['c_cn'];
+                            node.container = contact['container'];
+                        }
                         node.appendChild(document.createTextNode(matchBefore));
                         node.appendChild(new Element('strong').update(matchText));
                         node.appendChild(document.createTextNode(matchAfter));
@@ -143,9 +179,7 @@ var SOGoAutoCompletionInterface = {
 
                     // Show popup menu
                     var offsetScroll = Element.cumulativeScrollOffset(input);
-                    var offset = Element.positionedOffset(input);
-                    if (offset.top == 0)
-                      offset = Element.cumulativeOffset(input);
+                    var offset = Element.cumulativeOffset(input);
                     var top = offset[1] - offsetScroll[1] + node.offsetHeight + 3;
                     var height = 'auto';
                     var heightDiff = window.height() - offset[1];
@@ -165,7 +199,7 @@ var SOGoAutoCompletionInterface = {
                     $(document.body).stopObserving("click");
                     $(document.body).observe("click", onBodyClickMenuHandler);
                 }
-                else {
+                else { // Only one result
                     if (document.currentPopupMenu)
                       hideMenu(document.currentPopupMenu);
 
@@ -173,19 +207,29 @@ var SOGoAutoCompletionInterface = {
                         // Single result
                         var contact = data.contacts[0];
                         input.uid = contact[this.uidField];
-                        var completeEmail = contact["c_cn"] + " <" + contact["c_mail"] + ">";
-                        if (contact["c_cn"].substring(0, input.value.length).toUpperCase()
-                            == input.value.toUpperCase())
-                          input.value = completeEmail;
-                        else
-                          // The result matches email address, not user name
-                          input.value += ' >> ' + completeEmail;
-                        input.confirmedValue = completeEmail;
+                        if (contact['c_name'].endsWith (".vlf") && this.onListAdded) {
+                            this.container = contact['container'];
+                            this.card = contact['c_name'];
+                            this.onListAdded ();
+                        }
+                        else {
+                            input.card = contact['c_name'];
+                            input.mail = contact['c_mail'];
+                            input.name = contact['c_cn'];
+                            var completeEmail = contact["c_cn"] + " <" + contact["c_mail"] + ">";
+                            if (contact["c_cn"].substring(0, input.value.length).toUpperCase()
+                                == input.value.toUpperCase())
+                              input.value = completeEmail;
+                            else
+                              // The result matches email address, not user name
+                              input.value += ' >> ' + completeEmail;
+                            input.confirmedValue = completeEmail;
 
-                        var end = input.value.length;
-                        $(input).selectText(start, end);
+                            var end = input.value.length;
+                            $(input).selectText(start, end);
 
-                        this.selectedIndex = -1;
+                            this.selectedIndex = -1;
+                        }
                     }
                 }
             }
@@ -201,9 +245,21 @@ var SOGoAutoCompletionInterface = {
         if (e.tagName != 'LI')
           e = e.up('LI');
         if (e) {
+            var card = e.card;
+            this.card = card;
+            if (card.endsWith (".vlf") && this.onListAdded) {
+                this.container = e.container;
+                this.onListAdded ();
+            }
+            else {
+                this.mail = e.mail;
+                this.name = e.uname;
+            }
             this.uid = e.uid;
-            this.value = e.readAttribute("address");
+            this.value = e.address;
             this.confirmedValue = this.value;
+            if (this.endEditable)
+              this.endEditable ();
         }
     }
 };

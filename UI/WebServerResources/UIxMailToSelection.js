@@ -53,10 +53,10 @@ function checkAddresses() {
 function fancyAddRow(shouldEdit, text, type) {
     var addr = $('addr_' + lastIndex);
     if (addr && addr.value == '') {
-        var input = $('subjectField');
-        if (input && input.value != '') {
-            input.focus();
-            input.select();
+        var sub = $('subjectField');
+        if (sub && sub.value != '') {
+            sub.focus();
+            sub.select();
             return;
         }
     }
@@ -84,8 +84,40 @@ function fancyAddRow(shouldEdit, text, type) {
         input.addInterface(SOGoAutoCompletionInterface);
         input.focus();
         input.select();
+        input.onListAdded = expandContactList;
     }
 }
+
+function expandContactList (e) {
+    var url = UserFolderURL + "Contacts/" + this.container + "/" 
+      + this.card + "/properties";
+    triggerAjaxRequest (url, expandContactListCallback, this);
+}
+function expandContactListCallback (http) {
+    if (http.readyState == 4) {
+        var input = http.callbackData;
+        if (http.status == 200) {
+            var data = http.responseText.evalJSON(true);
+            if (data.length >= 1) {
+                var text = data[0][2];
+                if (data[0][1].length)
+                  text = data[0][1] + " <" + data[0][2] + ">";
+                input.value = text;
+            }
+            if (data.length > 1) {
+                for (var i = 1; i < data.length; i++) {
+                    var text = data[i][2];
+                    if (data[i][1].length)
+                      text = data[i][1] + " <" + data[i][2] + ">";
+                    fancyAddRow(false, text, $(input).up("tr").down("select").value);
+                }
+            }
+            //subsequent attempts must be ignored
+            input.onListAdded = null;
+        }
+    }
+}
+
 
 function addressFieldGotFocus(sender) {
     var idx;

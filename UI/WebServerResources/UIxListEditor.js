@@ -14,26 +14,47 @@ function makeEditable (element) {
     textField.value = tmp.trim ();
     textField.value = textField.value.replace (/&lt;/, "<");
     textField.value = textField.value.replace (/&gt;/, ">");
-    textField.observe ("keydown", interceptEnter);
     element.appendChild (textField);
+    textField.addInterface (SOGoAutoCompletionInterface);
     textField.focus ();
     textField.select ();
+    textField.excludeLists = 1;
+    textField.menu = $("contactsMenu");
+    textField.endEditable = endEditable;
+    textField.addAnother = onReferenceAdd;
+    textField.baseUrl = window.location.href + "/../../contactSearch?search=";
 }
 
-function interceptEnter (e) {
-    if (e.keyCode == Event.KEY_RETURN) {
-        endAllEditables (null);
-        preventDefault (e);
-        return false;
+function endEditable (event, element) {
+    var card;
+    var name;
+    var mail;
+
+    if (element) {
+      card = element.readAttribut("card");
+      mail = element.readAttribute("mail");
+      name = element.readAttribute("name");
     }
     else {
-        onContactKeydown(e);
+      if ($(this).tagName == "INPUT") {
+          element = this.ancestors ().first ();
+          card = this.readAttribute ("card");
+          name = this.readAttribute ("name");
+          mail = this.readAttribute ("mail");
+      }
+      else {
+          element = this;
+          card = element.childElements ().first ().readAttribute ("card");
+          mail = element.childElements ().first ().readAttribute ("mail");
+          name = element.childElements ().first ().readAttribute ("name");
+      }
     }
-}
+    element.writeAttribute ("card", card);
+    element.writeAttribute ("name", name);
+    element.writeAttribute ("mail", mail);
 
-function endEditable (element) {
     var tmp = "";
-    if (element.readAttribute ("card")) {
+    if (card) {
         var tmp = element.childElements ().first ().value;
         tmp = tmp.replace (/</, "&lt;");
         tmp = tmp.replace (/>/, "&gt;");
@@ -50,7 +71,7 @@ function endAllEditables (e) {
     var r = $$("TABLE#referenceList tbody tr td");
     for (var i=0; i<r.length; i++) {
         if (r[i] != this && r[i].hasClassName ("editing"))
-            endEditable ($(r[i]));
+            endEditable (null, $(r[i]));
     }
 }
 

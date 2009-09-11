@@ -195,13 +195,14 @@
   NSMutableDictionary *uniqueContacts;
   unsigned int i, j;
   NSSortDescriptor *commonNameDescriptor;
-  BOOL excludeGroups;
+  BOOL excludeGroups, excludeLists;
 
   searchText = [self queryParameterForKey: @"search"];
   if ([searchText length] > 0)
     {
       NSLog(@"Search all contacts: %@", searchText);
       excludeGroups = [[self queryParameterForKey: @"excludeGroups"] boolValue];
+      excludeLists = [[self queryParameterForKey: @"excludeLists"] boolValue];
       NS_DURING
         folders = [[self clientObject] subFolders];
       NS_HANDLER
@@ -235,11 +236,20 @@
             {
               contact = [contacts objectAtIndex: j];
               mail = [contact objectForKey: @"c_mail"];
-              //NSLog(@"   found %@ (%@)", [contact objectForKey: @"displayName"], mail);
+              //NSLog(@"   found %@ (%@) ? %@", [contact objectForKey: @"c_name"], mail,
+              //      [contact description]);
               if ([mail isNotNull]
                   && [uniqueContacts objectForKey: mail] == nil
                   && !(excludeGroups && [contact objectForKey: @"isGroup"]))
-                        [uniqueContacts setObject: contact forKey: mail];
+                [uniqueContacts setObject: contact forKey: mail];
+              else if (!excludeLists 
+                       && [[contact objectForKey: @"c_name"] hasSuffix: @".vlf"])
+                {
+                  [contact setObject: [folder nameInContainer] 
+                              forKey: @"container"];
+                  [uniqueContacts setObject: contact 
+                                     forKey: [contact objectForKey: @"c_name"]]; 
+                }
             }
         }      
       if ([uniqueContacts count] > 0)

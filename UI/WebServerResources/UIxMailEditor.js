@@ -306,6 +306,7 @@ function initTabIndex(addressList, subjectField, msgArea) {
                 input.writeAttribute("tabindex", i++);
                 input.addInterface(SOGoAutoCompletionInterface);
                 input.uidField = "c_name";
+                input.onListAdded = expandContactList;
             }
         });
     subjectField.writeAttribute("tabindex", i++);

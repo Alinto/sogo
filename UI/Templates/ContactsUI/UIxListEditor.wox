@@ -9,7 +9,7 @@
     className="UIxPageFrame"
     title="name"
     const:popup="YES"
-    const:jsFiles="UIxMailEditor.js"
+    const:jsFiles="UIxMailEditor.js,SOGoAutoCompletion.js"
     >
     <div class="popupMenu" id="contactsMenu">
       <ul></ul>
