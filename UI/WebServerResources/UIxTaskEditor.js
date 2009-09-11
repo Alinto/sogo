@@ -96,11 +96,11 @@ function toggleDetails() {
   if (div.style.visibility) {
     div.style.visibility = null;
     window.resizeBy(0, -(div.clientHeight + buttonsHeight));
-    $("detailsButton").innerHTML = labels["Show Details"];
+    $("detailsButton").innerHTML = label ("Show Details");
   } else {
     div.style.visibility = 'visible;';
     window.resizeBy(0, (div.clientHeight + buttonsHeight));
-    $("detailsButton").innerHTML = labels["Hide Details"];
+    $("detailsButton").innerHTML = label ("Hide Details");
   }
 
   return false;

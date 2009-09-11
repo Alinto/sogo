@@ -112,13 +112,13 @@ function validateEditorInput(sender) {
    
     field = document.pageform.subject;
     if (field.value == "")
-        errortext = errortext + labels["error_missingsubject"] + "\n";
+        errortext = errortext + label ("error_missingsubject") + "\n";
 
     if (!hasRecipients())
-        errortext = errortext + labels["error_missingrecipients"] + "\n";
+        errortext = errortext + label ("error_missingrecipients") + "\n";
    
     if (errortext.length > 0) {
-        alert(labels["error_validationfailed"] + ":\n" + errortext);
+        alert(label ("error_validationfailed") + ":\n" + errortext);
         return false;
     }
 

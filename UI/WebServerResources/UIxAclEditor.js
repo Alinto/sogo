@@ -101,7 +101,7 @@ function subscribeToFolder(refreshCallback, refreshCallbackData) {
 										 refreshCallbackData["folder"]);
 	}
 	else
-		refreshCallbackData["window"].alert(clabels["You cannot subscribe to a folder that you own!"]);
+		refreshCallbackData["window"].alert(label ("You cannot subscribe to a folder that you own!"));
 	return result;
 }
 

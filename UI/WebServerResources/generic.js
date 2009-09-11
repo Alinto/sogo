@@ -1025,7 +1025,7 @@ function folderSubscriptionCallback(http) {
                 http.callbackData["method"](http.callbackData["data"]);
         }
         else
-            window.alert(clabels["Unable to subscribe to that folder!"]);
+            window.alert(label ("Unable to subscribe to that folder!"));
         document.subscriptionAjaxRequest = null;
     }
     else
@@ -1050,7 +1050,7 @@ function subscribeToFolder(refreshCallback, refreshCallbackData) {
                                                               rfCbData);
     }
     else
-        refreshCallbackData["window"].alert(clabels["You cannot subscribe to a folder that you own!"]);
+        refreshCallbackData["window"].alert(label ("You cannot subscribe to a folder that you own!"));
 }
 
 function folderUnsubscriptionCallback(http) {
@@ -1061,7 +1061,7 @@ function folderUnsubscriptionCallback(http) {
                 http.callbackData["method"](http.callbackData["data"]);
         }
         else
-            window.alert(clabels["Unable to unsubscribe from that folder!"]);
+            window.alert(label ("Unable to unsubscribe from that folder!"));
     }
 }
 
@@ -1081,7 +1081,7 @@ function unsubscribeFromFolder(folderUrl, owner, refreshCallback,
             triggerAjaxRequest(url, folderUnsubscriptionCallback, rfCbData);
         }
         else
-            window.alert(clabels["You cannot unsubscribe from a folder that you own!"]);
+            window.alert(label ("You cannot unsubscribe from a folder that you own!"));
     }
 }
 
@@ -1232,21 +1232,21 @@ function showAlarmCallback(http) {
         && http.status == 200) {
         if (http.responseText.length) {
             var data = http.responseText.evalJSON(true);
-            var msg = clabels["Reminder:"] + " " + data["summary"] + "\n";
+            var msg = label ("Reminder:") + " " + data["summary"] + "\n";
             if (data["startDate"]) {
-                msg += clabels["Start:"] + " " + data["startDate"];
+                msg += label ("Start:") + " " + data["startDate"];
                 if (parseInt(data["isAllDay"]) == 0)
                     msg += " - " + data["startTime"];
                 msg += "\n";
             }
             if (data["dueDate"]) {
-                msg += clabels["Due Date:"] + " " + data["dueDate"];
+                msg += label ("Due Date:") + " " + data["dueDate"];
                 if (data["dueTime"])
                     msg += " - " + data["dueTime"];
                 msg += "\n";
             }
             if (data["location"].length)
-                msg += "\n" + clabels["Location:"] + " " + data["location"];
+                msg += "\n" + label ("Location:") + " " + data["location"];
             if (data["description"].length)
                 msg += "\n\n" + data["description"];
 
@@ -1591,7 +1591,7 @@ function createFolderCallback(http) {
                 data.okCB(data.name, "/" + http.responseText, UserLogin);
         }
         else if (http.status == 409) {
-            alert (clabels["A folder by that name already exists."]);
+            alert (label ("A folder by that name already exists."));
         }
         else {
             if (data.notOkCB)
@@ -1609,7 +1609,7 @@ function delegateInvitation(componentUrl, callbackFunction, callbackData) {
     if (input.uid != null)
         delegatedTo = input.uid;
     else if (input.value.blank())
-        alert(clabels["noEmailForDelegation"]);
+        alert(label ("noEmailForDelegation"));
     else
         delegatedTo = input.value;
     
@@ -1692,6 +1692,19 @@ AIM = {
 			i.onComplete(d.body.innerHTML);
 	}
  
+}
+
+function label (title) {
+    var rc = title;
+
+    if (labels[title]) {
+        rc = labels[title];
+    }
+    else if (clabels[title]) {
+        rc = clabels[title];
+    }
+    
+    return rc;
 }
 
 

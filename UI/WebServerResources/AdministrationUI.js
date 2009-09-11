@@ -92,7 +92,7 @@ function addUserLineToTree(tree, parent, line) {
              '', '',
              ResourcesURL + '/abcard.gif',
              ResourcesURL + '/abcard.gif');
-    tree.add(parent + 1, parent, labels["Please wait..."], 0, '#', null,
+    tree.add(parent + 1, parent, label ("Please wait..."), 0, '#', null,
              null, '', '', icon, icon);
 }
 
@@ -177,7 +177,7 @@ function addFolderBranchToTree(tree, user, folder, nodeId, subId, isLast) {
 
 function addFolderNotFoundNode (tree, nodeId) {
     var icon = ResourcesURL + '/icon_unread.gif';
-    var node = new Node(1, nodeId, labels["No possible subscription"], 0, '#',
+    var node = new Node(1, nodeId, label ("No possible subscription"), 0, '#',
 			null, null, '', '', icon, icon);
     node._ls = true;
     return tree.node(node, (nodeId + 1), null);

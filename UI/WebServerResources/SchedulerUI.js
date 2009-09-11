@@ -87,7 +87,7 @@ function editEvent() {
         var nodes = listOfSelection.getSelectedRows();
 
         if (nodes.length == 0) {
-            window.alert(labels["Please select an event or a task."]);
+            window.alert(label ("Please select an event or a task."));
             return false;
         }
 
@@ -101,7 +101,7 @@ function editEvent() {
             _editEventId(selectedCalendarCell[0].cname,
                          selectedCalendarCell[0].calendar);
     } else {
-        window.alert(labels["Please select an event or a task."]);
+        window.alert(label ("Please select an event or a task."));
     }
 
     return false; /* stop following the link */
@@ -124,9 +124,9 @@ function deleteEvent() {
         if (nodes.length > 0) {
             var label = "";
             if (listOfSelection == $("tasksList"))
-                label = labels["taskDeleteConfirmation"];
+                label = label ("taskDeleteConfirmation");
             else
-                label = labels["eventDeleteConfirmation"];
+                label = label ("eventDeleteConfirmation");
 
             if (nodes.length == 1
                 && nodes[0].recurrenceTime) {
@@ -157,7 +157,7 @@ function deleteEvent() {
                 }
             }
         } else {
-            window.alert(labels["Please select an event or a task."]);
+            window.alert(label ("Please select an event or a task."));
         }
     }
     else if (selectedCalendarCell) {
@@ -165,7 +165,7 @@ function deleteEvent() {
             _editRecurrenceDialog(selectedCalendarCell[0], "confirmDeletion");
         }
         else {
-            var label = labels["eventDeleteConfirmation"];
+            var label = label ("eventDeleteConfirmation");
             if (confirm(label)) {
                 if (document.deleteEventAjaxRequest) {
                     document.deleteEventAjaxRequest.aborted = true;
@@ -178,7 +178,7 @@ function deleteEvent() {
         }
     }
     else
-        window.alert(labels["Please select an event or a task."]);
+        window.alert(label ("Please select an event or a task."));
 
     return false;
 }
@@ -208,12 +208,12 @@ function closeInvitationWindow() {
     closePseudoWin.style.top = "0px;";
     closePseudoWin.style.left = "0px;";
     closePseudoWin.style.right = "0px;";
-    closePseudoWin.appendChild(document.createTextNode(labels["closeThisWindowMessage"]));
+    closePseudoWin.appendChild(document.createTextNode(label ("closeThisWindowMessage")));
 
     var calLink = document.createElement("a");
     closePseudoWin.appendChild(calLink);
     calLink.href = ApplicationBaseURL;
-    calLink.appendChild(document.createTextNode(labels["Calendar"].toLowerCase()));
+    calLink.appendChild(document.createTextNode(label ("Calendar").toLowerCase()));
 }
 
 function modifyEventCallback(http) {
@@ -234,7 +234,7 @@ function modifyEventCallback(http) {
         }
         else {
             // 	 log("showing alert...");
-            window.alert(labels["eventPartStatModificationError"]);
+            window.alert(label ("eventPartStatModificationError"));
         }
         document.modifyEventAjaxRequest = null;
     }
@@ -295,7 +295,7 @@ function deleteEventCallback(http) {
             }
         }
         else if (parseInt(http.status) == 403)
-            window.alert(clabels["You don't have the required privileges to perform the operation."]);
+            window.alert(label ("You don't have the required privileges to perform the operation."));
         else
             log ("deleteEventCallback Ajax error (" + http.status + ")");
     }
@@ -1888,7 +1888,7 @@ function updateCalendarProperties(calendarID, calendarName, calendarColor) {
 }
 
 function onCalendarNew(event) {
-    createFolder(window.prompt(labels["Name of the Calendar"], ""),
+    createFolder(window.prompt(label ("Name of the Calendar"), ""),
                  appendCalendar);
     preventDefault(event);
 }
@@ -1899,7 +1899,7 @@ function onCalendarAdd(event) {
 }
 
 function onCalendarWebAdd(event) {
-    var calendarUrl = window.prompt(labels["URL of the Calendar"], "");
+    var calendarUrl = window.prompt(label ("URL of the Calendar"), "");
     if (calendarUrl) {
         if (document.addWebCalendarRequest) {
             document.addWebCalendarRequest.aborted = true;
@@ -1919,7 +1919,7 @@ function addWebCalendarCallback (http) {
         changeCalendarDisplay();
     }
     else {
-        alert (labels["An error occured while importing calendar."]);
+        alert (label ("An error occured while importing calendar."));
     }
 }
 
@@ -1975,9 +1975,9 @@ function uploadCompleted (response) {
     var div = $("uploadResults");
     $("uploadOK").onclick = hideImportResults;
     if (data.imported <= 0)
-      $("uploadResultsContent").update (labels["An error occured while importing calendar."]);
+      $("uploadResultsContent").update (label ("An error occured while importing calendar."));
     else {
-        $("uploadResultsContent").update (labels["Imported events:"] + " " + data.imported);
+        $("uploadResultsContent").update (label ("Imported events:") + " " + data.imported);
         refreshEventsAndDisplay ();
     }
 
@@ -2009,7 +2009,7 @@ function appendCalendar(folderName, folderPath) {
     //log ("append name: " + folderName + "; path: " + folderPath + "; owner: " + owner);
 
     if ($(folderPath))
-        window.alert(clabels["You have already subscribed to that folder!"]);
+        window.alert(label ("You have already subscribed to that folder!"));
     else {
         var calendarList = $("calendarList");
         var items = calendarList.select("li");

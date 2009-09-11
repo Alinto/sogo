@@ -235,7 +235,7 @@ function onComposeMessagesTypeChange(event) {
     if (event) {
         // Due to a limitation of CKEDITOR, we reload the page when the user
         // changes the composition mode to avoid Javascript errors.
-        var saveAndReload = confirm(labels["composeMessageChanged"]);
+        var saveAndReload = confirm(label ("composeMessageChanged"));
         if (saveAndReload)
             return savePreferences();
         else {
