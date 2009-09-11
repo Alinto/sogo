@@ -74,7 +74,7 @@
 
   <div class="menu" id="calendarsMenu">
     <ul>
-      <li><var:string label:value="Modify"/></li>
+      <li><var:string label:value="Properties"/></li>
       <li><!-- separator --></li>
       <li><var:string label:value="New Calendar..."/></li>
       <li><var:string label:value="Delete Calendar"/></li>
