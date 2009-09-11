@@ -44,6 +44,8 @@
 "The user rights cannot be edited for this object!"
         = "Os direitos do usuário não podem ser editados para este objeto!";
 "A folder by that name already exists." = "A folder by that name already exists.";
+"You cannot create a list in a shared address book." 
+        = "You cannot create a list in a shared address book.";
 
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Você não está liberado para acessar este módulo ou este sistema. Por favor, contate seu administrador de sistemas.";
