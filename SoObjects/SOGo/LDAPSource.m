@@ -424,8 +424,10 @@ static NSLock *lock;
 					  binddn: userDN
 					  credentials: passwordToCheck];
 	      NS_HANDLER
-		NS_ENDHANDLER
-		}
+                ;
+              NS_ENDHANDLER
+                ;
+            }
 	  [bindConnection release];
 	}
     }
@@ -473,7 +475,8 @@ static NSLock *lock;
 
 - (EOQualifier *) _qualifierForUIDFilter: (NSString *) uid
 {
-  NSString *mailFormat, *fieldFormat, *escapedUid;
+  NSString *mailFormat, *fieldFormat, *escapedUid, *currentField;
+  NSEnumerator *bindFieldsEnum;
   NSMutableString *qs;
 
   escapedUid = SafeLDAPCriteria (uid);
@@ -481,9 +484,15 @@ static NSLock *lock;
   fieldFormat = [NSString stringWithFormat: @"(%%@='%@')", escapedUid];
   mailFormat = [[mailFields stringsWithFormat: fieldFormat]
 		 componentsJoinedByString: @" OR "];
-  qs = [NSMutableString string];
-  
-  [qs appendFormat: (@"(%@='%@') OR %@"), UIDField, escapedUid, mailFormat];
+  qs = [NSMutableString stringWithFormat: @"(%@='%@') OR %@",
+                        UIDField, escapedUid, mailFormat];
+  if (bindFields)
+    {
+      bindFieldsEnum = [[bindFields componentsSeparatedByString: @","]
+                         objectEnumerator];
+      while ((currentField = [bindFieldsEnum nextObject]))
+        [qs appendFormat: @" OR (%@='%@')", currentField, escapedUid];
+    }
 
   if (_filter && [_filter length])
     [qs appendFormat: @" AND %@", _filter];
