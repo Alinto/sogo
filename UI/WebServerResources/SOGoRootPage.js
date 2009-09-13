@@ -3,8 +3,9 @@
 function initLogin() {
 	var date = new Date();
 	date.setTime(date.getTime() - 86400000);
-	document.cookie = ("0xHIGHFLYxSOGo=discard; path=/"
-										 + "; expires=" + date.toGMTString());
+	document.cookie = ("0xHIGHFLYxSOGo=discarded"
+                           + "; expires=" + date.toGMTString()
+		           + "; path=/");
 
 	var about = $("about");
 	if (about) {
@@ -48,7 +49,9 @@ function onLoginClick(event) {
 											"&password=" + encodeURIComponent(password);
 		if (language)
 			parameters += (language.value == "WONoSelectionString")?"":("&language=" + language.value);
-		document.cookie = "";
+        /// Discarded as it seems to create a cookie for nothing. To discard
+        //  a cookie in JS, have a look here: http://www.quirksmode.org/js/cookies.html
+	//	document.cookie = "";
 		triggerAjaxRequest(url, onLoginCallback, null, (parameters),
 											 { "Content-type": "application/x-www-form-urlencoded",
 													 "Content-length": parameters.length,

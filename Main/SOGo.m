@@ -461,6 +461,11 @@ static BOOL debugObjectAllocation = NO;
 
 /* session management */
 
+- (NSString *) sessionIDFromRequest: (WORequest *) _rq
+{
+  return nil;
+}
+
 - (id) createSessionForRequest: (WORequest *) _request
 {
   [self warnWithFormat: @"session creation requested!"];

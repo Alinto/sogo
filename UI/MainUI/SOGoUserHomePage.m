@@ -290,7 +290,7 @@ static NSString *LDAPContactInfoAttribute = nil;
     cookieName = [auth cookieNameInContext: context];
   else
     cookieName = nil;
-  if (cookieName)
+  if ([cookieName length])
     {
       cookie = [WOCookie cookieWithName: cookieName value: @"discard"];
       [cookie setPath: @"/"];
@@ -299,7 +299,7 @@ static NSString *LDAPContactInfoAttribute = nil;
     }
 
   [response setHeader: [date rfc822DateString] forKey: @"Last-Modified"];
-  [response setHeader: @"no-store, no-cache, must-revalidate."
+  [response setHeader: @"no-store, no-cache, must-revalidate,"
             @" max-age=0, post-check=0, pre-check=0"
                forKey: @"Cache-Control"];
   [response setHeader: @"no-cache" forKey: @"Pragma"];

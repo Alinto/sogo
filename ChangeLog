@@ -1,3 +1,15 @@
+2009-09-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/SOGoRootPage.js (onLoginClick): avoid
+	setting an empty string as value to "document.cookie" since this
+	will actually create a cookie.
+
+	* UI/MainUI/SOGoUserHomePage.m (-logoffAction): fixed a typo in
+	the "cache-control" header.
+
+	* Main/SOGo.m (-sessionIDFromRequest:): overriden method that
+	returns nil to avoid any session cookie to be set by SOPE.
+
 2009-09-11  Cyril Robert <crobert@inverse.ca>
 
 	* UI/Contacts/UIxContactFoldersView.m (allContactSearchAction): Added 

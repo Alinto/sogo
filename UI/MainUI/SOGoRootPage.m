@@ -89,6 +89,8 @@ static NSArray *supportedLanguages = nil;
       authCookie = [WOCookie cookieWithName: [auth cookieNameInContext: context]
 			     value: cookieValue];
       [authCookie setPath: @"/"];
+      /* enable this when we have code to determine whether request is HTTPS:
+         [authCookie setIsSecure: YES]; */
       [response addCookie: authCookie];
 
       if (language && [supportedLanguages containsObject: language])
