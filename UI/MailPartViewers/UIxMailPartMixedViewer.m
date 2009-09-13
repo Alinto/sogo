@@ -23,16 +23,7 @@
 #import <UI/MailerUI/WOContext+UIxMailer.h>
 
 #import "UIxMailRenderingContext.h"
-
-#import "UIxMailPartViewer.h"
-
-@interface UIxMailPartMixedViewer : UIxMailPartViewer
-{
-  id           childInfo;
-  unsigned int childIndex;
-}
-
-@end
+#import "UIxMailPartMixedViewer.h"
 
 @implementation UIxMailPartMixedViewer
 
