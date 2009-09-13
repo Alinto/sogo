@@ -42,6 +42,7 @@
 @class NSData;
 @class NSDictionary;
 @class NSException;
+@class NSMutableArray;
 @class NSString;
 
 @class NGImap4Envelope;
