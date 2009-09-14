@@ -209,8 +209,15 @@ static NSString *siteFavicon = nil;
 
 - (NSString *) commonLocalizableStrings
 {
-  return [NSString stringWithFormat: @"var clabels = %@;",
-		   [self _stringsForFramework: nil]];
+  NSString *rc;
+
+  if (isPopup)
+    rc = @"";
+  else
+    rc = [NSString stringWithFormat: @"var clabels = %@;",
+          [self _stringsForFramework: nil]];
+
+  return rc;
 }
 
 - (NSString *) productLocalizableStrings

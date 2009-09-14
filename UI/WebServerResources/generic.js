@@ -1696,12 +1696,17 @@ AIM = {
 
 function label (title) {
     var rc = title;
+    if (!logWindow) {
+        logWindow = window;
+        while (logWindow.opener)
+            logWindow = logWindow.opener;
+    }
 
     if (labels[title]) {
         rc = labels[title];
     }
-    else if (clabels[title]) {
-        rc = clabels[title];
+    else if (logWindow.clabels[title]) {
+        rc = logWindow.clabels[title];
     }
     
     return rc;
