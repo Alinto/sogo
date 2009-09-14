@@ -525,10 +525,10 @@ function newContact(sender) {
 
 function newList(sender) {
     var li = $(Contact.currentAddressBook);
-    if (!li.hasClassName ("remote"))
-      openContactWindow(URLForFolderID(Contact.currentAddressBook) + "/newlist");
-    else
+    if (li.hasClassName ("remote"))
       alert (label ("You cannot create a list in a shared address book."));
+    else
+      openContactWindow(URLForFolderID(Contact.currentAddressBook) + "/newlist");
     return false;
 }
 
