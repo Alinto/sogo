@@ -98,7 +98,7 @@
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Texte";
 
-"composeMessageChanged" = "Changer la composition des messages nécessite d'enregistrer immédiatement vos préférences.\nVoulez-vous continuez?";
+"composeMessageChanged" = "Changer la composition des messages nécessite d'enregistrer immédiatement vos préférences.\nVoulez-vous continuer?";
 
 /* Additional Parameters */
 "Additional Parameters" = "Paramètres supplémentaires";
