@@ -10,6 +10,10 @@
 - added support for short date format in the calendar views
 - added support for iCal delegation
 - rewrote dTree.js to include major optimizations
+- added WebAuth support
+- added support for remote ICS subscriptions
+- added support for ICS and vCard/LDIF import
+- added support for event delegation (resend an invitation to someone else)
 
 1.0-20090812 (1.0.4)
 --------------------
