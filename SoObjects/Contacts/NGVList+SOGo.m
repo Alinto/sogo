@@ -25,10 +25,11 @@
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
 
-#import <SOGo/NSDictionary+Utilities.h>
-#import "NGVList+SOGo.h"
-
 #import <NGCards/NGVCardReference.h>
+
+#import <SOGo/NSDictionary+Utilities.h>
+
+#import "NGVList+SOGo.h"
 
 @implementation NGVList (SOGoExtensions)
 

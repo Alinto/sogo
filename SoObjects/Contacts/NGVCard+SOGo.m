@@ -26,6 +26,7 @@
 #import <Foundation/NSString.h>
 
 #import <SOGo/NSDictionary+Utilities.h>
+
 #import "NGVCard+SOGo.h"
 
 @implementation NGVCard (SOGoExtensions)
