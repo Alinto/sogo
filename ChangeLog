@@ -1,3 +1,8 @@
+2009-09-14  Cyril Robert <crobert@inverse.ca>
+
+	* UI/Common/UIxPageFrame.m (commonLocalizableStrings): clabels are no longer
+	necessary in popup windows.
+
 2009-09-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/SOGoRootPage.js (onLoginClick): avoid
