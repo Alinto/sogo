@@ -59,9 +59,9 @@
       defaultRoles = {
 	"Change Images And Files"  = ( "Owner", "ObjectEditor", "PROPPATCHer" );
 	"View" = ( "Owner", "ObjectViewer", "ObjectEditor" );
-	"Access Object" = ( "Authenticated", "AuthorizedSubscriber" );
+	"Access Object" = ( "Owner", "AuthorizedSubscriber" );
 	"Access Contents Information" = ( "Owner", "ObjectViewer", "ObjectEditor" );
-	"WebDAV Access" = ( "Authenticated", "AuthorizedSubscriber" );
+	"WebDAV Access" = ( "Owner", "AuthorizedSubscriber" );
         "Delete Object" = ( "Owner" );
         "Delete Objects" = ( "Owner", "ObjectEraser" );
       };
