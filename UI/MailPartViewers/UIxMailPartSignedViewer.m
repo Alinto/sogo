@@ -170,11 +170,10 @@
 
   success = NO;
 
-  store = X509_STORE_new();
-
+  store = X509_STORE_new ();
   if (store)
     {
-      lookup = X509_STORE_add_lookup(store,X509_LOOKUP_file());
+      lookup = X509_STORE_add_lookup (store, X509_LOOKUP_file());
       if (lookup)
         {
           X509_LOOKUP_load_file (lookup, NULL, X509_FILETYPE_DEFAULT);
