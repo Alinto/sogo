@@ -132,7 +132,7 @@ static BOOL showNamedTextAttachmentsInline = NO;
   /* Note: we cannot cache the multipart viewers, because it can be nested */
   // TODO: temporary workaround (treat it like a plain mixed part)
 
-  return [self mixedViewer];
+  return [viewer pageWithName: @"UIxMailPartSignedViewer"];
 }
 
 - (WOComponent *) alternativeViewer

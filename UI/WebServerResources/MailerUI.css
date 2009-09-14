@@ -331,6 +331,19 @@ INPUT#loadImagesButton
   right: 1em;
 }
 
+#signedImage
+{
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+.popup #signedImage
+{
+  top: 54px;
+  right: 5px;
+}
+
 TABLE.mailer_fieldtable
 { top: 0px;
   left: 0px;

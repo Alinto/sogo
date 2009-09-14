@@ -14,6 +14,7 @@
 - added support for remote ICS subscriptions
 - added support for ICS and vCard/LDIF import
 - added support for event delegation (resend an invitation to someone else)
+- added alpha support for checking and displaying signed messages
 
 1.0-20090812 (1.0.4)
 --------------------

@@ -20,6 +20,7 @@ MailPartViewers_OBJC_FILES += \
 	UIxMailPartImageViewer.m	\
 	UIxMailPartLinkViewer.m		\
 	UIxMailPartMixedViewer.m	\
+	UIxMailPartSignedViewer.m	\
 	UIxMailPartAlternativeViewer.m	\
 	UIxMailPartMessageViewer.m	\
 	UIxMailPartICalViewer.m		\

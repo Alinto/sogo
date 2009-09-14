@@ -156,7 +156,7 @@
 
 - (NSData *) content
 {
-  return [[self clientPart] fetchBLOB];
+  return [[self clientObject] fetchBLOB];
 }
 
 - (NSString *) flatContentAsString

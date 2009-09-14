@@ -1,3 +1,13 @@
+2009-09-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MailPartViewers/UIxMailPartSignedViewer.[hm]: new module
+	class that implements the viewer for multipart/signed messages.
+
+	* UI/WebServerResources/MailerUI.js (configureSignatureFlagImage):
+	new method that check whether the message being displayed is
+	signed and if so, displays the proper image depending on the
+	validation status.
+
 2009-09-14  Cyril Robert <crobert@inverse.ca>
 
 	* UI/Common/UIxPageFrame.m (commonLocalizableStrings): clabels are no longer

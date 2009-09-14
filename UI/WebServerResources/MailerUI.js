@@ -947,6 +947,7 @@ function loadMessage(idx) {
     }
 
     configureLoadImagesButton();
+    configureSignatureFlagImage();
 }
 
 function configureLoadImagesButton() {
@@ -962,6 +963,30 @@ function configureLoadImagesButton() {
         displayLoadImages == null ||
         displayLoadImages.value == 0) {
         loadImagesButton.setStyle({ display: 'none' });
+    }
+}
+
+function configureSignatureFlagImage() {
+    var signedPart = $("signedMessage");
+    if (signedPart) {
+        var loadImagesButton = $("loadImagesButton");
+        var parentNode = loadImagesButton.parentNode;
+        var valid = parseInt(signedPart.getAttribute("valid"));
+        var flagImage;
+        var error = null;
+        if (valid) {
+            flagImage = "signature-ok.png";
+        } else {
+            flagImage = "signature-not-ok.png";
+            error = signedPart.getAttribute("error");
+        }
+        var attrs = { src: ResourcesURL + "/" + flagImage };
+        if (error) {
+            attrs["title"] = error;
+        }
+        var newImg = createElement("img", "signedImage", null,
+                                   null, attrs);
+        loadImagesButton.parentNode.insertBefore(newImg, loadImagesButton.nextSibling);
     }
 }
 
@@ -1190,6 +1215,7 @@ function messageCallback(http) {
         configureLinksInMessage();
         resizeMailContent();
         configureLoadImagesButton();
+        configureSignatureFlagImage();
 		
         if (http.callbackData) {
             var cachedMessage = new Array();
