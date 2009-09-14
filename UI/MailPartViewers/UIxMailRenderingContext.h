@@ -43,7 +43,6 @@
   WOComponent  *viewer;       /* non-retained! */
   WOContext    *context;      /* non-retained! */
   NSDictionary *flatContents; /* IMAP4 name to NSData */
-  BOOL unsafe;
 }
 
 - (id) initWithViewer: (WOComponent *) _viewer
@@ -52,7 +51,6 @@
 /* state */
 
 - (void) reset;
-- (void) setUnsafe: (BOOL) b;
 
 /* fetching */
 

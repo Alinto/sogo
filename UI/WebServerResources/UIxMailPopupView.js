@@ -10,21 +10,8 @@ function initPopupMailer(event) {
     configureLinksInMessage();
     resizeMailContent();
 
-    var loadImagesButton = $("loadImagesButton");
-    if (loadImagesButton)
-        loadImagesButton.observe("click",
-                                 onMessageLoadImages.bindAsEventListener(loadImagesButton));
-
     configureLoadImagesButton();
     configureSignatureFlagImage();
-}
-
-function onMessageLoadImages(event) {
-    var msguid = window.opener.Mailer.currentMessages[window.opener.Mailer.currentMailbox];
-    var url = (window.opener.ApplicationBaseURL + window.opener.encodeURI(window.opener.Mailer.currentMailbox) + "/"
-               + msguid + "/view?noframe=1&unsafe=1");
-    document.messageAjaxRequest
-        = triggerAjaxRequest(url, messageCallback, msguid);
 }
 
 function onICalendarButtonClick(event) {

@@ -28,11 +28,9 @@
 @interface UIxMailPartHTMLViewer : UIxMailPartViewer
 {
   id handler;
-  BOOL unsafe;
 }
 
 - (NSString *) flatContentAsString;
-- (void) setUnsafe: (BOOL) b;
 
 @end
 

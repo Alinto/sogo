@@ -208,17 +208,14 @@ static NSString *mailETag = nil;
 {
   UIxMailRenderingContext *mctx;
   WORequest *request;
-  NSString *unsafe;
 
   request = [_ctx request];
-  unsafe = [request formValueForKey: @"unsafe"];
  
   if (mailETag != nil)
     [[_ctx response] setHeader:mailETag forKey:@"etag"];
 
   mctx = [[UIxMailRenderingContext alloc] initWithViewer: self
 					  context: _ctx];
-  [mctx setUnsafe: (unsafe != nil ? YES : NO)];
   [_ctx pushMailRenderingContext: mctx];
   [mctx release];
 

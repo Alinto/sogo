@@ -1,5 +1,15 @@
 2009-09-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/MailerUI.js (configureLoadImagesButton):
+	retrieve all "img" elements with an "unsafe-src" attribute and
+	remember them in an array attached to $("messageContent").
+
+	* UI/MailPartViewers/UIxMailPartHTMLViewer.m
+	(-startElement:namespace:rawName:attributes:): treat tag names as
+	lowercase (xhtml compliance). Replace all "src" tagnames with
+	"unsafe-src" for distant images. No longer take an "unsafe" url
+	parameter into account.
+
 	* UI/MailPartViewers/UIxMailPartSignedViewer.[hm]: new module
 	class that implements the viewer for multipart/signed messages.
 

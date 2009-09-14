@@ -680,7 +680,7 @@ function messageListCallback(http) {
         else {
             // Add table
             div.update(http.responseText);
-            table = $('messageList');
+            table = $("messageList");
             configureMessageListEvents(table);
             TableKit.Resizable.init(table, {'trueResize' : true, 'keepWidth' : true});
             configureDraggables();
@@ -953,15 +953,22 @@ function loadMessage(idx) {
 function configureLoadImagesButton() {
     // We show/hide the "Load Images" button
     var loadImagesButton = $("loadImagesButton");
-    var displayLoadImages = $("displayLoadImages");
+    var content = $("messageContent");
+    var hiddenImgs = [];
+    var imgs = content.select("IMG");
+    $(imgs).each(function(img) {
+            var unsafeSrc = img.getAttribute("unsafe-src");
+            if (unsafeSrc && unsafeSrc.length > 0) {
+                hiddenImgs.push(img);
+            }
+        });
+    content.hiddenImgs = hiddenImgs;
 
     if (typeof(loadImagesButton) == "undefined" ||
         loadImagesButton == null ) {
         return;
     }
-    if (typeof(displayLoadImages) == "undefined" ||
-        displayLoadImages == null ||
-        displayLoadImages.value == 0) {
+    if (hiddenImgs.length == 0) {
         loadImagesButton.setStyle({ display: 'none' });
     }
 }
@@ -1021,8 +1028,7 @@ function configureLinksInMessage() {
 
     var loadImagesButton = $("loadImagesButton");
     if (loadImagesButton)
-        loadImagesButton.observe("click",
-                                 onMessageLoadImages.bindAsEventListener(loadImagesButton));
+        $(loadImagesButton).observe("click", onMessageLoadImages);
 
     configureiCalLinksInMessage();
 }
@@ -1176,11 +1182,18 @@ function onMessageEditDraft(event) {
 }
 
 function onMessageLoadImages(event) {
-    var msguid = Mailer.currentMessages[Mailer.currentMailbox];
-    var url = (ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/"
-               + msguid + "/view?noframe=1&unsafe=1");
-    document.messageAjaxRequest
-        = triggerAjaxRequest(url, messageCallback, msguid);
+    var content = $("messageContent");
+    $(content.hiddenImgs).each(function(img) {
+            var unSafeSrc = img.getAttribute("unsafe-src");
+            log ("unsafesrc: " + unSafeSrc);
+            img.src = img.getAttribute("unsafe-src");
+        });
+
+    delete content.hiddenImgs;
+    var loadImagesButton = $("loadImagesButton");
+    loadImagesButton.setStyle({ display: 'none' });
+
+    Event.stop(event);
 }
 
 function onEmailAddressClick(event) {

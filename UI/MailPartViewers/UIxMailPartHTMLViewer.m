@@ -111,8 +111,6 @@ _xmlCharsetForCharset (NSString *charset)
   BOOL inStyle;
   BOOL inCSSDeclaration;
   BOOL hasEmbeddedCSS;
-  BOOL hasExternalImages;
-  BOOL unsafe;
   xmlCharEncoding contentEncoding;
 }
 
@@ -126,8 +124,8 @@ _xmlCharsetForCharset (NSString *charset)
 {
   if (!BannedTags)
     {
-      BannedTags = [NSArray arrayWithObjects: @"SCRIPT", @"LINK", @"BASE",
-                            @"META", @"TITLE", nil];
+      BannedTags = [NSArray arrayWithObjects: @"script", @"link", @"base",
+                            @"meta", @"title", nil];
       [BannedTags retain];
     }
 }
@@ -151,16 +149,6 @@ _xmlCharsetForCharset (NSString *charset)
   [result release];
   [css release];
   [super dealloc];
-}
-
-- (BOOL) hasExternalImages
-{
-  return hasExternalImages;
-}
-
-- (void) setUnsafe: (BOOL) b
-{
-  unsafe = b;
 }
 
 - (void) setContentEncoding: (xmlCharEncoding) newContentEncoding
@@ -290,28 +278,28 @@ _xmlCharsetForCharset (NSString *charset)
            attributes: (id <SaxAttributes>) _attributes
 {
   unsigned int count, max;
-  NSString *name, *value, *cid, *upperName;
+  NSString *name, *value, *cid, *lowerName;
   NSMutableString *resultPart;
   BOOL skipAttribute;
 
   showWhoWeAre();
 
-  upperName = [_localName uppercaseString];
+  lowerName = [_localName lowercaseString];
   if (inStyle || ignoreContent)
     ;
-  else if ([upperName isEqualToString: @"BASE"])
+  else if ([lowerName isEqualToString: @"base"])
     ;
-  else if ([upperName isEqualToString: @"META"])
+  else if ([lowerName isEqualToString: @"meta"])
     ;
-  else if ([upperName isEqualToString: @"BODY"])
+  else if ([lowerName isEqualToString: @"body"])
     inBody = YES;
-  else if ([upperName isEqualToString: @"STYLE"])
+  else if ([lowerName isEqualToString: @"style"])
     inStyle = YES;
   else if (inBody)
     {
-      if ([BannedTags containsObject: upperName])
+      if ([BannedTags containsObject: lowerName])
         {
-          ignoreTag = [upperName copy];
+          ignoreTag = [lowerName copy];
           ignoreContent = YES;
         }
       else
@@ -323,10 +311,10 @@ _xmlCharsetForCharset (NSString *charset)
           for (count = 0; count < max; count++)
             {
               skipAttribute = NO;
-              name = [[_attributes nameAtIndex: count] uppercaseString];
+              name = [[_attributes nameAtIndex: count] lowercaseString];
               if ([name hasPrefix: @"ON"])
                 skipAttribute = YES;
-              else if ([name isEqualToString: @"SRC"])
+              else if ([name isEqualToString: @"src"])
                 {
                   value = [_attributes valueAtIndex: count];
                   if ([value hasPrefix: @"cid:"])
@@ -336,17 +324,17 @@ _xmlCharsetForCharset (NSString *charset)
                       value = [attachmentIds objectForKey: cid];
                       skipAttribute = (value == nil);
                     }
-                  else if ([upperName isEqualToString: @"IMG"])
+                  else if ([lowerName isEqualToString: @"img"])
                     {
-                      hasExternalImages = YES;
-                      
-                      if (!unsafe) skipAttribute = YES;
+                      /* [resultPart appendString:
+                        @"src=\"/SOGo.woa/WebServerResources/empty.gif\""]; */
+                      name = @"unsafe-src";
                     }
                   else
                     skipAttribute = YES;
                 }
-              else if ([name isEqualToString: @"HREF"]
-                       || [name isEqualToString: @"ACTION"])
+              else if ([name isEqualToString: @"href"]
+                       || [name isEqualToString: @"action"])
                 {
                   value = [_attributes valueAtIndex: count];
                   skipAttribute = ([value rangeOfString: @"://"].location
@@ -391,15 +379,15 @@ _xmlCharsetForCharset (NSString *charset)
           namespace: (NSString *) _ns
             rawName: (NSString *) _rawName
 {
-  NSString *upperName;
+  NSString *lowerName;
 
   showWhoWeAre();
 
-  upperName = [_localName uppercaseString];
+  lowerName = [_localName lowercaseString];
 
   if (ignoreContent)
     {
-      if ([upperName isEqualToString: ignoreTag])
+      if ([lowerName isEqualToString: ignoreTag])
         {
           ignoreContent = NO;
           [ignoreTag release];
@@ -410,7 +398,7 @@ _xmlCharsetForCharset (NSString *charset)
     {
       if (inStyle)
         {
-          if ([upperName isEqualToString: @"STYLE"])
+          if ([lowerName isEqualToString: @"style"])
             {
               inStyle = NO;
               inCSSDeclaration = NO;
@@ -418,7 +406,7 @@ _xmlCharsetForCharset (NSString *charset)
         }
       else if (inBody)
         {
-          if ([upperName isEqualToString: @"BODY"])
+          if ([lowerName isEqualToString: @"body"])
             {
               inBody = NO;
               if (css)
@@ -624,15 +612,9 @@ _xmlCharsetForCharset (NSString *charset)
     }
 
   [handler setContentEncoding: enc];
-  [handler setUnsafe: unsafe];
 
   [parser setContentHandler: handler];
   [parser parseFromSource: preparsedContent];
-}
-
-- (BOOL) hasExternalImages
-{
-  return [handler hasExternalImages];
 }
 
 - (NSString *) cssContent
@@ -659,23 +641,6 @@ _xmlCharsetForCharset (NSString *charset)
     [self _parseContent];
       
   return [handler result];
-}
-
-- (void) setUnsafe: (BOOL) b
-{
-  unsafe = b;
-}
-
-- (BOOL) displayLoadImages
-{
-  BOOL b;
-
-  b = [handler hasExternalImages];
-
-  if (b && unsafe)
-    return NO;
-
-  return b;
 }
 
 @end

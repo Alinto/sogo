@@ -87,11 +87,6 @@ static BOOL showNamedTextAttachmentsInline = NO;
   flatContents = nil;
 }
 
-- (void) setUnsafe: (BOOL) b
-{
-  unsafe = b;
-}
-
 /* fetching */
 
 - (NSDictionary *) flatContents
@@ -161,7 +156,6 @@ static BOOL showNamedTextAttachmentsInline = NO;
   id o;
   
   o = [viewer pageWithName: @"UIxMailPartHTMLViewer"];
-  [o setUnsafe: unsafe];
   
   return o;
 }

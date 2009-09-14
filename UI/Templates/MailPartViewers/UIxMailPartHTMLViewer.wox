@@ -7,8 +7,6 @@
   xmlns:rsrc="OGo:url"
   xmlns:label="OGo:label">
   <var:string value="cssContent" const:escapeHTML="NO" />
-  <input type="hidden" name="displayLoadImages" const:id="displayLoadImages"
-	 var:value="displayLoadImages"/>
   <div class="SOGoHTMLMail-CSS-Delimiter mailer_htmlcontent"
     ><var:string value="flatContentAsString" const:escapeHTML="NO" /></div>
 </container>
