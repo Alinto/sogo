@@ -89,8 +89,8 @@ function fancyAddRow(shouldEdit, text, type) {
 }
 
 function expandContactList (e) {
-    var url = UserFolderURL + "Contacts/" + this.container + "/" 
-      + this.card + "/properties";
+    var url = UserFolderURL + "Contacts/" + this.readAttribute("container") + "/" 
+      + this.readAttribute("card") + "/properties";
     triggerAjaxRequest (url, expandContactListCallback, this);
 }
 function expandContactListCallback (http) {

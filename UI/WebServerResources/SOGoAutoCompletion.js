@@ -70,10 +70,10 @@ var SOGoAutoCompletionInterface = {
                   this.uid = contacts[this.selectedIndex].uid;
                   contacts[this.selectedIndex].addClassName("selected");
                   var e = contacts[this.selectedIndex];
-                  this.card = e.card;
-                  this.mail = e.mail;
-                  this.name = e.uname;
-                  this.container = e.container;
+                  this.writeAttribute("card", e.readAttribute("card"));
+                  this.writeAttribute("mail", e.readAttribute("mail"));
+                  this.writeAttribute("name", e.readAttribute("uname"));
+                  this.writeAttribute("container", e.readAttribute("container"));
               }
           }
           else if (event.keyCode == Event.KEY_DOWN) { // Down arrow
@@ -86,10 +86,10 @@ var SOGoAutoCompletionInterface = {
                   this.uid = contacts[this.selectedIndex].uid;
                   contacts[this.selectedIndex].addClassName("selected");
                   var e = contacts[this.selectedIndex];
-                  this.card = e.card;
-                  this.mail = e.mail;
-                  this.name = e.uname;
-                  this.container = e.container;
+                  this.writeAttribute("card", e.readAttribute("card"));
+                  this.writeAttribute("mail", e.readAttribute("mail"));
+                  this.writeAttribute("name", e.readAttribute("uname"));
+                  this.writeAttribute("container", e.readAttribute("container"));
               }
           }
       }
@@ -159,15 +159,15 @@ var SOGoAutoCompletionInterface = {
                         var matchText = completeEmail.substring(matchPosition, matchPosition + data.searchText.length);
                         var matchAfter = completeEmail.substring(matchPosition + data.searchText.length);
                         list.appendChild(node);
-                        node.uid = contact['c_mail'];
-                        node.card = contact['c_name'];
+                        node.writeAttribute ("card", contact['c_name']);
+                        node.writeAttribute ("uid", contact['c_mail']);
                         if (contact['c_name'].endsWith (".vlf")) {
-                            node.container = contact['container'];
+                            node.writeAttribute("container", contact['container']);
                         }
                         else {
-                            node.mail = contact['c_mail'];
-                            node.uname = contact['c_cn'];
-                            node.container = contact['container'];
+                            node.writeAttribute("mail", contact['c_mail']);
+                            node.writeAttribute("uname", contact['c_cn']);
+                            node.writeAttribute("container", contact['container']);
                         }
                         node.appendChild(document.createTextNode(matchBefore));
                         node.appendChild(new Element('strong').update(matchText));
@@ -208,14 +208,14 @@ var SOGoAutoCompletionInterface = {
                         var contact = data.contacts[0];
                         input.uid = contact[this.uidField];
                         if (contact['c_name'].endsWith (".vlf") && this.onListAdded) {
-                            this.container = contact['container'];
-                            this.card = contact['c_name'];
+                            this.writeAttribute("container", contact['container']);
+                            this.writeAttribute("card", contact['c_name']);
                             this.onListAdded ();
                         }
                         else {
-                            input.card = contact['c_name'];
-                            input.mail = contact['c_mail'];
-                            input.name = contact['c_cn'];
+                            input.writeAttribute("card", contact['c_name']);
+                            input.writeAttribute("mail", contact['c_mail']);
+                            input.writeAttribute("name", contact['c_cn']);
                             var completeEmail = contact["c_cn"] + " <" + contact["c_mail"] + ">";
                             if (contact["c_cn"].substring(0, input.value.length).toUpperCase()
                                 == input.value.toUpperCase())
@@ -245,18 +245,18 @@ var SOGoAutoCompletionInterface = {
         if (e.tagName != 'LI')
           e = e.up('LI');
         if (e) {
-            var card = e.card;
-            this.card = card;
+            var card = e.readAttribute("card");
+            this.writeAttribute("card", card);
             if (card.endsWith (".vlf") && this.onListAdded) {
-                this.container = e.container;
+                this.writeAttribute("container", e.readAttribute("container"));
                 this.onListAdded ();
             }
             else {
-                this.mail = e.mail;
-                this.name = e.uname;
+                this.writeAttribute("mail", e.readAttribute("mail"));
+                this.writeAttribute("name", e.readAttribute("uname"));
             }
-            this.uid = e.uid;
-            this.value = e.address;
+            this.writeAttribute("uid", e.readAttribute("uid"));
+            this.value = e.readAttribute("address");
             this.confirmedValue = this.value;
             if (this.endEditable)
               this.endEditable ();
