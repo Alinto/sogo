@@ -102,7 +102,7 @@ function validateAptEditor() {
 function onAttendeesMenuPrepareVisibility()
 {
     var composeToUndecidedAttendees = $('composeToUndecidedAttendees');
-    var attendeesStates = $('attendeesStates').value;
+    var attendeesStates = $('attendeesMenu').innerHTML;
   
     if (attendeesStates.indexOf("needs-action") < 0)
         composeToUndecidedAttendees.addClassName("disabled");
