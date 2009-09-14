@@ -1,0 +1,13 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE div>
+<div xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label"
+  class="mailer_plaincontent signed"
+  const:id="signedMessage"
+  var:valid="validSignature"
+  var:error="validationError"
+  ><var:string value="flatContentAsString" const:escapeHTML="NO"
+    /></div>
