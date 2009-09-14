@@ -2,7 +2,8 @@
 
 	* UI/WebServerResources/MailerUI.js (configureLoadImagesButton):
 	retrieve all "img" elements with an "unsafe-src" attribute and
-	remember them in an array attached to $("messageContent").
+	remember them in an array attached to $("messageContent"). We also
+	void using "delete" on the stored array because IE 7 is too dumb.
 
 	* UI/MailPartViewers/UIxMailPartHTMLViewer.m
 	(-startElement:namespace:rawName:attributes:): treat tag names as

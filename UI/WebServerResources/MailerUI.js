@@ -1189,7 +1189,7 @@ function onMessageLoadImages(event) {
             img.src = img.getAttribute("unsafe-src");
         });
 
-    delete content.hiddenImgs;
+    content.hiddenImgs = null;
     var loadImagesButton = $("loadImagesButton");
     loadImagesButton.setStyle({ display: 'none' });
 
