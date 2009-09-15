@@ -37,10 +37,6 @@
 
 #import "SOGoProxyAuthenticator.h"
 
-#warning we need to adjust this class for managing the "authorization" \
-  header provided by authenticators like "Basic", which do not provide \
-  a "remote_user" variable.
-
 @implementation SOGoProxyAuthenticator
 
 + (id) sharedSOGoProxyAuthenticator
@@ -93,6 +89,8 @@
 {
   NSString *remoteUser;
 
+  /* If such a header is not provided by the proxy, SOPE will attempt to
+     deduce it from the "Authorization" header. */
   remoteUser = [[context request] headerForKey: @"x-webobjects-remote-user"];
 
   return remoteUser;
