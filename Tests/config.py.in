@@ -1,3 +1,6 @@
+# setup: username must be super-user or have read-access to PUBLIC events in
+#        both attendee and delegate's personal calendar
+
 hostname = "localhost"
 port = "80"
 username = "myuser"
