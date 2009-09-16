@@ -100,7 +100,7 @@
 
   <div id="uploadDialog" style="display: none" class="dialog left">
     <div>
-      <h3><var:string label:value="Select file..."/></h3>
+      <h3><var:string label:value="Select iCalendar file (*.ics)..."/></h3>
       <form name="uploadForm" id="uploadForm" method="post"
         enctype="multipart/form-data"
         onsubmit="return AIM.submit(this, {'onStart' : validateUploadForm, 

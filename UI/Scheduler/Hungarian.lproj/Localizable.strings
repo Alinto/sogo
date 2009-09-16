@@ -106,7 +106,7 @@
 "Sharing..." = "Megosztás...";
 "Export Calendar..." = "Naptár exportálása...";
 "Import Events..." = "Import Events...";
-"Select file..." = "Select file...";
+"Select iCalendar file (*.ics)..." = "Select iCalendar file (*.ics)...";
 "Upload" = "Upload";
 "Publish Calendar..." = "Naptár közzététele...";
 "Reload Remote Calendars" = "Távoli naptárak frissítése";

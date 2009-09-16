@@ -106,7 +106,7 @@
 "Sharing..." = "Rhannu...";
 "Export Calendar..." = "Allfudo Calendr...";
 "Import Events..." = "Import Events...";
-"Select file..." = "Select file...";
+"Select iCalendar file (*.ics)..." = "Select iCalendar file (*.ics)...";
 "Upload" = "Upload";
 "Publish Calendar..." = "Cyhoeddi Calendr...";
 "Reload Remote Calendars" = "Ail-lwytho Calendrau Anghysbell";

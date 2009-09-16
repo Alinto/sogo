@@ -106,7 +106,7 @@
 "Sharing..." = "Sharing...";
 "Export Calendar..." = "Export Calendar...";
 "Import Events..." = "Import Events...";
-"Select file..." = "Select file...";
+"Select iCalendar file (*.ics)..." = "Select iCalendar file (*.ics)...";
 "Upload" = "Upload";
 "Publish Calendar..." = "Publish Calendar...";
 "Reload Remote Calendars" = "Reload Remote Calendars";

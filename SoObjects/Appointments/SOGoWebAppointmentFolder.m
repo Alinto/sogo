@@ -44,6 +44,13 @@
   if (url)
     {
       data = [NSData dataWithContentsOfURL: url];
+
+      if (!data && [[location lowercaseString] hasPrefix: @"https"]) 
+	{
+	  NSLog(@"WARNING: Your GNUstep installation might not have SSL support.");
+	  return -1;
+	}
+
       contents = [[NSString alloc] initWithData: data 
                                        encoding: NSUTF8StringEncoding];
       [contents autorelease];

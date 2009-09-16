@@ -1,3 +1,10 @@
+2009-09-16  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* Updated the ICSimport text to be more specific
+	* We now warn for no SSL bundle in GNUstep when
+	trying to load a remote ICS file and it's failing
+	over SSL. It's a guess but it's better than nothing.
+
 2009-09-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoGCSFolder.m (-lookupName:inContext:acquire:):
