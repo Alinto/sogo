@@ -1,5 +1,10 @@
 2009-09-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoGCSFolder.m (-lookupName:inContext:acquire:):
+	instanciated objects may be queried twice during the same session,
+	before being saved into the database. Therefore we cache them to
+	avoid losing their version number.
+
 	* UI/WebServerResources/AdministrationUI.js,
 	UI/WebServerResources/ContactsUI.js,
 	UI/WebServerResources/MailerUI.js,

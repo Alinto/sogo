@@ -62,6 +62,7 @@
 #import "NSString+DAV.h"
 
 #import "DOMNode+SOGo.h"
+#import "SOGoCache.h"
 #import "SOGoContentObject.h"
 #import "SOGoGroup.h"
 #import "SOGoParentFolder.h"
@@ -591,6 +592,10 @@ static NSArray *childRecordFields = nil;
 	      [obj setIsNew: YES];
 	    }
 	}
+
+      if (obj)
+	[[SOGoCache sharedCache]
+          registerObject: obj withName: key inContainer: self];
     }
 
   return obj;
