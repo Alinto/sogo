@@ -225,7 +225,7 @@ function _onContactMenuAction(folderItem, action, refresh) {
 
         for (var i = 0; i < contactIds.length; i++) {
             if (contactIds[i].endsWith ("vlf")) {
-                alert (label ("Lists can't be moved or copied."));
+                alert (getLabel("Lists can't be moved or copied."));
                 return false;
             }
         }
@@ -274,7 +274,7 @@ function actionContactCallback(http) {
             var error = html.select("p").first().firstChild.nodeValue.trim();
             log("actionContactCallback failed: error " + http.status + " (" + error + ")");
             if (parseInt(http.status) == 403)
-                window.alert(label ("You don't have the required privileges to perform the operation."));
+                window.alert(getLabel("You don't have the required privileges to perform the operation."));
             else if (error)
                 window.alert(labels[error]);
             refreshCurrentFolder();
@@ -396,7 +396,7 @@ function onToolbarEditSelectedContacts(event) {
     var rows = contactsList.getSelectedRowsId();
 
     if (rows.length == 0) {
-        window.alert(label ("Please select a contact."));
+        window.alert(getLabel("Please select a contact."));
         return false;
     }
 
@@ -433,7 +433,7 @@ function onToolbarDeleteSelectedContacts(event) {
     var rows = contactsList.getSelectedRowsId();
 
     if (rows.length) {
-        var label = label ("Are you sure you want to delete the selected contacts?");
+        var label = getLabel("Are you sure you want to delete the selected contacts?");
         if (window.confirm(label)) {
             for (var i = 0; i < rows.length; i++) {
                 delete cachedContacts[Contact.currentAddressBook + "/" + rows[i]];
@@ -446,7 +446,7 @@ function onToolbarDeleteSelectedContacts(event) {
         }
     }
     else {
-        window.alert(label ("Please select a contact."));
+        window.alert(getLabel("Please select a contact."));
     }
 
     return false;
@@ -526,7 +526,7 @@ function newContact(sender) {
 function newList(sender) {
     var li = $(Contact.currentAddressBook);
     if (li.hasClassName ("remote"))
-      alert (label ("You cannot create a list in a shared address book."));
+      alert (getLabel("You cannot create a list in a shared address book."));
     else
       openContactWindow(URLForFolderID(Contact.currentAddressBook) + "/newlist");
     return false;
@@ -615,7 +615,7 @@ function refreshContacts(cname) {
 }
 
 function onAddressBookNew(event) {
-    createFolder(window.prompt(label ("Name of the Address Book"), ""),
+    createFolder(window.prompt(getLabel("Name of the Address Book"), ""),
                  appendAddressBook);
     preventDefault(event);
 }
@@ -723,9 +723,9 @@ function uploadCompleted (response) {
     var div = $("uploadResults");
     $("uploadOK").onclick = hideImportResults;
     if (data.imported <= 0)
-      $("uploadResultsContent").update (label ("An error occured while importing contacts."));
+      $("uploadResultsContent").update (getLabel("An error occured while importing contacts."));
     else {
-        $("uploadResultsContent").update (label ("Imported contacts:") + " " + data.imported);
+        $("uploadResultsContent").update (getLabel("Imported contacts:") + " " + data.imported);
         refreshCurrentFolder ();
     }
 
@@ -741,7 +741,7 @@ function onAddressBookRemove(event) {
         node.deselect();
         var owner = node.getAttribute("owner");
         if (owner == "nobody") {
-            var label = label ("You cannot remove nor unsubscribe from a public addressbook.");
+            var label = getLabel("You cannot remove nor unsubscribe from a public addressbook.");
             window.alert(label);
         }
         else if (owner == UserLogin) {
@@ -764,12 +764,12 @@ function onAddressBookRemove(event) {
 
 function deletePersonalAddressBook(folderId) {
     if (folderId == "personal") {
-        var label = label ("You cannot remove nor unsubscribe from your personal addressbook.");
+        var label = getLabel("You cannot remove nor unsubscribe from your personal addressbook.");
         window.alert(label);
     }
     else {
         var label
-            = label ("Are you sure you want to delete the selected address book?");
+            = getLabel("Are you sure you want to delete the selected address book?");
         if (window.confirm(label)) {
             if (document.deletePersonalABAjaxRequest) {
                 document.deletePersonalABAjaxRequest.aborted = true;
@@ -944,7 +944,7 @@ function onAddressBookModify(event) {
 
     if (UserLogin == selected.getAttribute("owner")) {
         var currentName = selected.innerHTML;
-        var newName = window.prompt(label ("Address Book Name"),
+        var newName = window.prompt(getLabel("Address Book Name"),
                                     currentName);
         if (newName && newName.length > 0
             && newName != currentName) {
@@ -954,7 +954,7 @@ function onAddressBookModify(event) {
                                {node: selected, name: newName});
         }
     } else
-        window.alert(label ("Unable to rename that folder!"));
+        window.alert(getLabel("Unable to rename that folder!"));
 }
 
 function folderRenameCallback(http) {
@@ -1271,7 +1271,7 @@ function dropSelectedContacts (action, toId) {
         var contactIds = $('contactsList').getSelectedRowsId();
         for (var i = 0; i < contactIds.length; i++) {
             if (contactIds[i].endsWith ("vlf")) {
-                alert (label ("Lists can't be moved or copied."));
+                alert (getLabel("Lists can't be moved or copied."));
                 return false;
             }
         }

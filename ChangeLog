@@ -1,3 +1,20 @@
+2009-09-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/AdministrationUI.js,
+	UI/WebServerResources/ContactsUI.js,
+	UI/WebServerResources/MailerUI.js,
+	UI/WebServerResources/MailerUIdTree.js,
+	UI/WebServerResources/SchedulerUI.js,
+	UI/WebServerResources/UIxAclEditor.js,
+	UI/WebServerResources/UIxCalendarProperties.js,
+	UI/WebServerResources/UIxComponentEditor.js,
+	UI/WebServerResources/UIxContactsUserFolders.js,
+	UI/WebServerResources/UIxMailEditor.js,
+	UI/WebServerResources/UIxPreferences.js,
+	UI/WebServerResources/UIxTaskEditor.js,
+	UI/WebServerResources/generic.js: renamed the function "label" to
+	"getLabel" to avoid overriding local function variables.
+
 2009-09-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/MailerUI.js (configureLoadImagesButton):
