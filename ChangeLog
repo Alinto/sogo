@@ -895,8 +895,8 @@
 2009-06-23  Cyril Robert <crobert@inverse.ca>
 
 	* SoObjects/Mailer/NSString+Mail.m (stringByConvertingCRLNToHTML): Added
-	* UI/MailPartViewers/UIxMailPartTextViewer.m (stringByConvertingCRLNToHTML): 
-		Removed 
+	* UI/MailPartViewers/UIxMailPartTextViewer.m (stringByConvertingCRLNToHTML):
+		Removed
 	* SoObjects/Mailer/SOGoDraftObject.m: Added support for html content type
 	* SoObjects/Mailer/SOGoMailObject+Draft.m: Added support for html content
 	type in mail reply
@@ -1113,7 +1113,7 @@
 
 	* UI/WebServerResources/UIxAttendeesEditor.js: Added everything needed for
 	the findSlot action. Fixes for allday events. Fixed scrolling issues
-	
+
 	* UI/Scheduler/UIxCalListingActions.h (findPossibleSlotAction): Added header.
 
 2009-06-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
@@ -1128,7 +1128,7 @@
 	quickly determine whether a user can access a component
 	informations.
 	(-initializeQuickTablesAclsInContext:): new method that
-	initializes the new ivar above. 
+	initializes the new ivar above.
 	(-davCalendarQuery:, -davCalendarMultiget:): invoke the new method
 	above.
 
@@ -1485,7 +1485,7 @@
 	an exception when looking up contacts and the LDAP-part
 	of SOGo is misconfigured and warn the admin (by adding
 	a log entry) about it.
-	
+
 2009-03-31  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Scheduler/UIxCalListingActions.m ([UIxCalListingActions
