@@ -1,3 +1,7 @@
+2009-09-17  Cyril Robert <crobert@inverse.ca>
+
+	* UI/Contacts/UIxListEditor.m: Renamed "name" to "listName"
+
 2009-09-16  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* Updated the ICSimport text to be more specific

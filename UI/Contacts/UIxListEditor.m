@@ -38,11 +38,11 @@
 @implementation UIxListEditor
 
 
-- (NSString *) name
+- (NSString *) listName
 {
   return [list fn];
 }
-- (void) setName: (NSString *) newName
+- (void) setListName: (NSString *) newName
 {
   [list setFn: newName];
 }

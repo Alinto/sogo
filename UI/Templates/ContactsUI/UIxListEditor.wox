@@ -19,10 +19,10 @@
       <div id="listEditor">
         <h3><var:string label:value="List details" /></h3>
         <table><tr><td width="20%"><var:string label:value="List name:"/></td>
-            <td><input type="text" const:id="name" const:name="name"
-                var:value="name" class="textField" /></td></tr>
+            <td><input type="text" const:id="listName" const:name="listName"
+                var:value="listName" class="textField" /></td></tr>
           <tr><td><var:string label:value="List nickname:"/></td>
-            <td><input type="text" const:id="nickname" const:name="nickname"
+            <td><input type="text" const:id="nicktname" const:name="nickname"
                 var:value="nickname" class="textField" /></td></tr>
           <tr><td><var:string label:value="List description:"/></td>
             <td><input type="text" const:id="description" const:name="description"
