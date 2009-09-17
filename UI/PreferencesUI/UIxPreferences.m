@@ -627,7 +627,14 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
 
 - (NSString *) userComposeMessagesType
 {
-  return [userDefaults stringForKey: @"ComposeMessagesType"];
+  NSString *userComposeMessagesType;
+
+  userComposeMessagesType
+    = [userDefaults stringForKey: @"ComposeMessagesType"];
+  if (!userComposeMessagesType)
+    userComposeMessagesType = @"text";
+
+  return userComposeMessagesType;
 }
 
 - (void) setUserComposeMessagesType: (NSString *) newType

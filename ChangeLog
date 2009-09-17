@@ -1,3 +1,11 @@
+2009-09-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/PreferencesUI/UIxPreferences.m (-userComposeMessagesType):
+	return a default value of @"text" if the default compose type has
+	never been changed by the user. Otherwise, saving the preferences
+	will never enable the window to be closed since the new value will
+	always be different from nil.
+
 2009-09-17  Cyril Robert <crobert@inverse.ca>
 
 	* UI/Contacts/UIxListEditor.m: Renamed "name" to "listName"
