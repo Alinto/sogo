@@ -1,5 +1,8 @@
 2009-09-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Tests/test-config.py: new functional test to validate the test
+	configuration file.
+
 	* UI/PreferencesUI/UIxPreferences.m (-userComposeMessagesType):
 	return a default value of @"text" if the default compose type has
 	never been changed by the user. Otherwise, saving the preferences
