@@ -22,7 +22,7 @@
             <td><input type="text" const:id="listName" const:name="listName"
                 var:value="listName" class="textField" /></td></tr>
           <tr><td><var:string label:value="List nickname:"/></td>
-            <td><input type="text" const:id="nicktname" const:name="nickname"
+            <td><input type="text" const:id="nickname" const:name="nickname"
                 var:value="nickname" class="textField" /></td></tr>
           <tr><td><var:string label:value="List description:"/></td>
             <td><input type="text" const:id="description" const:name="description"
