@@ -5,10 +5,12 @@ function savePreferences(sender) {
     if (sigList)
         sigList.disabled=false;
 
-    serializeCategories (null);
+    if ($("categoriesList")) {
+        serializeCategories(null);
+    }
 
     $("mainForm").submit();
-    
+
     return false;
 }
 
@@ -47,15 +49,17 @@ function initPreferences() {
         onComposeMessagesTypeChange ();
     }
 
-    resetCategoriesColors (null);
     var table = $("categoriesList");
-    var r = $$("TABLE#categoriesList tbody tr");
-    for (var i=0; i<r.length; i++)
-        r[i].identify ();
-    table.multiselect = true;
-    resetTableActions ();
-    $("categoryAdd").observe ("click", onCategoryAdd);
-    $("categoryDelete").observe ("click", onCategoryDelete);
+    if (table) {
+        resetCategoriesColors (null);
+        var r = $$("TABLE#categoriesList tbody tr");
+        for (var i=0; i<r.length; i++)
+            r[i].identify ();
+        table.multiselect = true;
+        resetTableActions ();
+        $("categoryAdd").observe ("click", onCategoryAdd);
+        $("categoryDelete").observe ("click", onCategoryDelete);
+    }
 
     // Disable placement (after) if composing in HTML
     if ($("composeMessagesType")) {
@@ -203,7 +207,6 @@ function serializeCategories (e) {
 
     $("categoriesValue").value = "(" + names + ", " + colors + ")";
 }
-
 
 function resetCategoriesColors (e) {
     var divs = $$("TABLE#categoriesList DIV.colorBox");

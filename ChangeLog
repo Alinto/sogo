@@ -1,3 +1,13 @@
+2009-09-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/generic.js (onLoadHandler): don't trigger
+	the alarm refresh if the "calendarBannerLink" link is not
+	available (when calendar is disabled).
+
+	* UI/WebServerResources/UIxPreferences.js (initPreferences)
+	(savePreferences): don't bother with the categoriesList if it's
+	not accessible (when calendar is disabled).
+
 2009-09-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* Tests/test-config.py: new functional test to validate the test

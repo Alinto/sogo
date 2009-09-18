@@ -1482,7 +1482,9 @@ function onLoadHandler(event) {
     queryParameters = parseQueryParameters('' + window.location);
     if (!$(document.body).hasClassName("popup")) {
         initLogConsole();
-        refreshAlarms();
+        if ($("calendarBannerLink")) {
+            refreshAlarms();
+        }
     }
     initCriteria();
     configureSearchField();
