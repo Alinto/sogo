@@ -44,7 +44,6 @@
   NSString *uid;
   NSString *fieldName;
   NSMutableDictionary *values;
-  BOOL propagateCache;
 
   struct
   {
@@ -56,8 +55,7 @@
 
 - (id) initWithTableURL: (NSURL *) theURL
 		    uid: (NSString *) theUID
-	      fieldName: (NSString *) theFieldName
-  	shouldPropagate: (BOOL) b;
+	      fieldName: (NSString *) theFieldName;
 
 /* value access */
 - (void) setValues: (NSDictionary *) theValues;

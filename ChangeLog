@@ -1,3 +1,15 @@
+2009-09-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUserDefaults.m
+	(-initWithTableURL:uid:fieldName:): removed the "shouldPropagete"
+	parameter.
+	(-primaryStoreProfile): we now propagate the values in the cache
+	unconditionally.
+
+	* SoObjects/SOGo/SOGoUser.m (-initWithLogin:roles:trust:):
+	the trust no longer prevent user settings and defaults to
+	propagate in the cache, since we no longer use gdnc for it.
+
 2009-09-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/generic.js (onLoadHandler): don't trigger

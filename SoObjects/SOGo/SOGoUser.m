@@ -265,13 +265,6 @@ _timeValue (NSString *key)
   _defaults = nil;
   _settings = nil;
   
-  // We propagate the cache if we do NOT trust the login names.
-  // When trusting login names, we 'assume' we're dealing with a
-  // super user doing kungfu with the system. We definitively don't
-  // want to propagate the cache to other sogod instances when
-  // dealing with massive number of ops.
-  propagateCache = !b;
-
   if ([newLogin isEqualToString: @"anonymous"]
       || [newLogin isEqualToString: @"freebusy"])
     realUID = newLogin;
@@ -461,9 +454,8 @@ _timeValue (NSString *key)
   SOGoUserDefaults *o;
 
   o = [[SOGoUserDefaults alloc] initWithTableURL: SOGoProfileURL
-				uid: login
-				fieldName: @"c_defaults"
-				shouldPropagate: propagateCache];
+                                             uid: login
+                                       fieldName: @"c_defaults"];
 
   return o;
 }
@@ -473,9 +465,8 @@ _timeValue (NSString *key)
   SOGoUserDefaults *o;
 
   o = [[SOGoUserDefaults alloc] initWithTableURL: SOGoProfileURL
-				uid: login
-				fieldName: @"c_settings"
-				shouldPropagate: propagateCache];
+                                             uid: login
+                                       fieldName: @"c_settings"];
 
   return o;
 }

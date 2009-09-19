@@ -46,7 +46,6 @@ static NSString *uidColumnName = @"c_uid";
 - (id) initWithTableURL: (NSURL *) theURL
 		    uid: (NSString *) theUID
 	      fieldName: (NSString *) theFieldName
-	shouldPropagate: (BOOL) b
 {
   if ((self = [self init]))
     {
@@ -57,7 +56,6 @@ static NSString *uidColumnName = @"c_uid";
 	  url = [theURL copy];
 	  uid = [theUID copy];
 	  defFlags.ready = YES;
-	  propagateCache = b;
 	}
       else
 	{
@@ -291,12 +289,9 @@ static NSString *uidColumnName = @"c_uid";
     [self errorWithFormat: @"failed to generate SQL for storing defaults"];
 
   if (rc)
-    {
-      if (propagateCache)
-	[[SOGoCache sharedCache] cacheValues: values
-				 ofType: ([fieldName isEqualToString: @"c_defaults"] ? @"defaults" : @"settings")
-				 forLogin: uid];
-    }
+    [[SOGoCache sharedCache] cacheValues: values
+                                  ofType: ([fieldName isEqualToString: @"c_defaults"] ? @"defaults" : @"settings")
+                                forLogin: uid];
 
   return rc;
 }
