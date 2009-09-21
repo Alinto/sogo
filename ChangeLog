@@ -1,3 +1,8 @@
+2009-09-21  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	*  SOPE/NGCards/versitCardsSaxDriver/VSSaxDriver.m
+	Avoid lameness when handling QP-encoded content.
+
 2009-09-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/MailerUI.js (updateMailboxTreeInPage):

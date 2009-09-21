@@ -31,6 +31,7 @@
 #import "VSSaxDriver.h"
 #import <SaxObjC/SaxException.h>
 #import <NGExtensions/NGQuotedPrintableCoding.h>
+#import <NGExtensions/NSString+Encoding.h>
 #import <NGCards/NSString+NGCards.h>
 #import "common.h"
 
@@ -860,8 +861,25 @@ static NSCharacterSet *whitespaceCharSet = nil;
       // TODO: make the encoding check more generic
       if ([tagAttributes containsObject: @"ENCODING=QUOTED-PRINTABLE"])
         {
-          // TODO: QP is charset specific! The one below decodes in Unicode!
-          tagValue = [tagValue stringByDecodingQuotedPrintable];
+	  NSString *charset;
+	  NSData *d;
+	  int i;
+
+	  d = [[tagValue dataUsingEncoding: NSASCIIStringEncoding]
+		dataByDecodingQuotedPrintable];
+	  
+	  // Let's find the charset.
+	  charset = @"utf-8";
+
+	  for (i = 0; i < [tagAttributes count]; i++)
+	    {
+	      charset = [[tagAttributes objectAtIndex: i] lowercaseString];
+
+	      if ([charset hasPrefix: @"charset"])
+		charset = [charset substringFromIndex: 8];
+	    }
+
+          tagValue = [NSString stringWithData: d  usingEncodingNamed: charset];
           [tagAttributes removeObject: @"ENCODING=QUOTED-PRINTABLE"];
         }
     
