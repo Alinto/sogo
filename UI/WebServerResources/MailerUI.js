@@ -1656,6 +1656,10 @@ function updateMailboxTreeInPage() {
         }
     }
     if (Mailer.quotas && parseInt(Mailer.quotas.maxQuota) > 0) {
+        var quotaDiv = $("quotaIndicator");
+        if (quotaDiv) {
+            treeContent.removeChild(quotaDiv);
+        }
         // Build quota indicator, show values in MB
         var percents = (Math.round(Mailer.quotas.usedSpace * 10000
                                    / Mailer.quotas.maxQuota)
@@ -1664,7 +1668,9 @@ function updateMailboxTreeInPage() {
         var format = getLabel("quotasFormat");
         var text = format.formatted(percents,
                                     Math.round(Mailer.quotas.maxQuota/10.24)/100);
-        var quotaDiv = new Element('div', { 'class': 'quota', 'info': text });
+        quotaDiv = new Element('div', { 'id': 'quotaIndicator',
+                                        'class': 'quota',
+                                        'info': text });
         var levelDiv = new Element('div', { 'class': 'level' });
         var valueDiv = new Element('div', { 'class': 'value ' + level, 'style': 'width: ' + ((percents > 100)?100:percents) + '%' });
         var marksDiv = new Element('div', { 'class': 'marks' });
@@ -1676,7 +1682,6 @@ function updateMailboxTreeInPage() {
         levelDiv.insert(marksDiv);
         levelDiv.insert(textP);
         quotaDiv.insert(levelDiv);
-		
         treeContent.insertBefore(quotaDiv, tree);
     }
 }

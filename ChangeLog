@@ -1,3 +1,9 @@
+2009-09-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/MailerUI.js (updateMailboxTreeInPage):
+	we assign the "quotaIndicator" to the quota DIV and when replacing
+	it, we ensure the DIV doesn't already exists.
+
 2009-09-21  Cyril Robert <crobert@inverse.ca>
 
 	* UI/Scheduler/UIxCalMainActions.m (displayNameForUrl:): The calendar's
