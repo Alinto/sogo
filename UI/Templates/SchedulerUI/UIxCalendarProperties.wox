@@ -23,6 +23,12 @@
 	    class="textField"
 	    var:value="calendarName"
 	    /></span></div>
+    <var:if condition="isWebCalendar"
+      ><div const:id="webCalendarUrl"><span class="label"
+      ><var:string label:value="URL:"/></span
+      ><span class="content" var:title="webCalendarURL"
+      ><var:string var:value="webCalendarURL"/>
+      </span></div></var:if>
       <div><span class="label"><var:string
 	    label:value="Color:"
 	    /></span><span class="content"

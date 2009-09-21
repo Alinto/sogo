@@ -42,7 +42,7 @@
   WOResponse *response;
   SOGoWebAppointmentFolder *folder;
   NSURL *url;
-  NSString *name;
+  NSString *name, *displayName;
   NSMutableDictionary *rc;
   int imported = 0;
 
@@ -53,7 +53,8 @@
   url = [NSURL URLWithString: [r formValueForKey: @"url"]];
   if (url)
     {
-      [[self clientObject] newFolderWithName: @"Web Calendar"
+      displayName = [self displayNameForUrl: [r formValueForKey: @"url"]];
+      [[self clientObject] newFolderWithName: displayName
                              nameInContainer: &name];
       [self saveUrl: url forCalendar: name];
       folder = [[self clientObject] lookupName: name
@@ -65,7 +66,7 @@
           
           if (imported >= 0)
             {
-              [rc setObject: @"Web Calendar" forKey: @"displayname"];
+              [rc setObject: displayName forKey: @"displayname"];
               [rc setObject: name forKey: @"name"];
             }
           else
@@ -80,6 +81,20 @@
   response = [self responseWithStatus: 200];
   [response appendContentString: [rc jsonRepresentation]];
   return response;
+}
+
+- (NSString *) displayNameForUrl: (NSString *) calendarURL
+{
+  NSString *rc, *tmp;
+
+  tmp = [calendarURL lastPathComponent];
+  if (tmp)
+    rc = [tmp stringByDeletingSuffix: @".ics"];
+  else
+    rc = [self labelForKey: @"Web Calendar"];
+
+
+  return rc;
 }
 
 - (void) saveUrl: (NSURL *) calendarURL

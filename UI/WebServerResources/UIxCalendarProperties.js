@@ -1,6 +1,9 @@
 /* -*- Mode: java; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 function onLoadCalendarProperties() {
+  if ($("webCalendarUrl"))
+    window.resizeTo(500,360);
+
   var colorButton = $("colorButton");
   var calendarColor = $("calendarColor");
   colorButton.setStyle({ "backgroundColor": calendarColor.value, display: "inline" });

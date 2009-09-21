@@ -1,3 +1,10 @@
+2009-09-21  Cyril Robert <crobert@inverse.ca>
+
+	* UI/Scheduler/UIxCalMainActions.m (displayNameForUrl:): The calendar's
+	display name is extracted from the URL for web calendars.
+	* UI/Scheduler/UIxCalendarProperties.m (webCalendarURL, isWebCalendar):
+	Added new methods to display a web calendar's url in the properties dialog.
+
 2009-09-21  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
         * Updated the contact import text to be more

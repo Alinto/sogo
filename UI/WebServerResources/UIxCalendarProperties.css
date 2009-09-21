@@ -41,3 +41,7 @@ DIV#buttons
 
 INPUT#calendarSyncTag
 { width: 7em; }
+
+#webCalendarUrl span.content
+{ white-space:nowrap; 
+  overflow: hidden; }

@@ -172,6 +172,31 @@
   [calendar setShowCalendarTasks: new];
 }
 
+- (NSString *) webCalendarURL
+{
+  NSUserDefaults *settings;
+  NSMutableDictionary *calendarSettings;
+  NSMutableDictionary *webCalendars;
+  NSString *rc;
+
+  settings = [[context activeUser] userSettings];
+  calendarSettings = [settings objectForKey: @"Calendar"];
+
+  if (calendarSettings)
+    {
+      webCalendars = [calendarSettings objectForKey: @"WebCalendars"];
+      if (webCalendars)
+        rc = [webCalendars objectForKey: [calendar nameInContainer]];
+    }
+
+  return rc;
+}
+
+- (BOOL) isWebCalendar
+{
+  return ([self webCalendarURL] != nil);
+}
+
 - (BOOL) shouldTakeValuesFromRequest: (WORequest *) request
                            inContext: (WOContext*) context
 {
