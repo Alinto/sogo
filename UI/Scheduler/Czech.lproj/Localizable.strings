@@ -106,7 +106,7 @@
 "Sharing..." = "Sdílení...";
 "Export Calendar..." = "Exportovat kalendář...";
 "Import Events..." = "Import Events...";
-"Select file..." = "Select file...";
+"Select iCalendar file (*.ics)..." = "Select iCalendar file (*.ics)...";
 "Upload" = "Upload";
 "Publish Calendar..." = "Publikovat kalendář...";
 "Reload Remote Calendars" = "Nahrát vzdálené kalendáře";

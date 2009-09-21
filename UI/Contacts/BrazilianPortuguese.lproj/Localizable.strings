@@ -180,8 +180,8 @@
 "Lists can't be moved or copied." = "Lists can't be moved or copied.";
 
 "Export" = "Export";
-"Import cards" = "Import cards";
-"Select file..." = "Select file...";
+"Import Cards" = "Import Cards";
+"Select LDIF or vCard file..." = "Select LDIF or vCard file...";
 "Upload" = "Upload";
 "Import" = "Import";
 "OK" = "OK";

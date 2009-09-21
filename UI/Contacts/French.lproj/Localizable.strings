@@ -180,8 +180,8 @@
 "Lists can't be moved or copied." = "Les listes ne peuvent pas être déplacées ou copiées.";
 
 "Export" = "Exporter";
-"Import cards" = "Importer des contacts";
-"Select file..." = "Sélectionner un fichier...";
+"Import Cards" = "Importer des contacts";
+"Select LDIF or vCard file..." = "Sélectionner un fichier. LDIF ou vCard..";
 "Upload" = "Ajouter";
 "Import" = "Import";
 "OK" = "OK";

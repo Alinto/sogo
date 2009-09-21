@@ -1,3 +1,8 @@
+2009-09-21  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+        * Updated the contact import text to be more
+	precise with regard to support input formats.
+
 2009-09-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUserDefaults.m
@@ -37,7 +42,7 @@
 
 2009-09-16  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
-	* Updated the ICSimport text to be more specific
+	* Updated the ICS import text to be more specific
 	* We now warn for no SSL bundle in GNUstep when
 	trying to load a remote ICS file and it's failing
 	over SSL. It's a guess but it's better than nothing.
