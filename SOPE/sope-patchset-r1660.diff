@@ -402,7 +402,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    return [self->normer normalizeListRightsResponse:[self processCommand:cmd]];
  }
  
-@@ -1187,12 +1216,88 @@
+@@ -1187,12 +1216,86 @@
    if ((_folder = [self _folder2ImapFolder:_folder]) == nil)
      return nil;
    
@@ -418,72 +418,70 @@ Index: sope-mime/NGImap4/NGImap4Client.m
 +  NSDictionary *d;
 +  NSCalendarDate *envDate;
 +
-+  result = [[[NSMutableDictionary alloc] init] autorelease];
++  result = [NSMutableDictionary dictionary];
 +  [result setObject: [NSNumber numberWithBool: NO]  forKey: @"result"];
 +
 +  // _sortSpec: [REVERSE] {DATE,FROM,SUBJECT}
 +  d = [self searchWithQualifier: _qual];
 +    
-+  if ((d = [d objectForKey: @"RawResponse"]))
-+    {
-+      NSMutableDictionary *dict;
-+      NSArray *a, *s_a;
-+      BOOL b;
-+      int i;
++  if ((d = [d objectForKey: @"RawResponse"])) {
++    NSMutableDictionary *dict;
++    NSArray *a, *s_a;
++    BOOL b;
++    int i;
 +
-+      a = [d objectForKey: @"search"];      
-+      d = [self fetchUids: a  parts: [NSArray arrayWithObject: @"ENVELOPE"]];
++    a = [d objectForKey: @"search"];
++    if ([a isNotEmpty]) {
++      d = [self fetchUids: a parts: [NSArray arrayWithObject: @"ENVELOPE"]];
 +      a = [d objectForKey: @"fetch"];
-+     
 +
-+      dict = [[[NSMutableDictionary alloc] init] autorelease];
++      dict = [NSMutableDictionary dictionary];
 +      b = YES;
 +
-+      for (i = 0; i < [a count]; i++) 
-+	{
-+	  NGImap4Envelope *env;
-+	  id o, uid, s;
++      for (i = 0; i < [a count]; i++) {
++        NGImap4Envelope *env;
++        id o, uid, s;
 +
-+	  o = [a objectAtIndex: i];
-+	  env = [o objectForKey: @"envelope"];
-+	  uid = [o objectForKey: @"uid"];
++        o = [a objectAtIndex: i];
++        env = [o objectForKey: @"envelope"];
++        uid = [o objectForKey: @"uid"];
 +
-+	  if ([_sortSpec rangeOfString: @"SUBJECT"].length)
-+	    {
-+	      s = [env subject];	      
-+	      if ([s isKindOfClass: [NSData class]])
-+		s = [[[NSString alloc] initWithData: s  encoding: NSUTF8StringEncoding] autorelease];
++        if ([_sortSpec rangeOfString: @"SUBJECT"].length) {
++          s = [env subject];
++          if ([s isKindOfClass: [NSData class]])
++            s = [[[NSString alloc] initWithData: s  encoding: NSUTF8StringEncoding] autorelease];
 +	      
-+	      [dict setObject: (s != nil ? s : (id)@"")  forKey: uid];
-+	    }
-+	  else if ([_sortSpec rangeOfString: @"FROM"].length)
-+	    {
-+	      s =  [[[env from] lastObject] email];
-+	      [dict setObject: (s != nil ? s : (id)@"")  forKey: uid];
-+	    }
-+	  else
-+	    {
-+ 	      envDate = [env date];
-+ 	      if (!envDate)
-+ 		envDate = [NSCalendarDate date];
-+	      [dict setObject: envDate forKey: uid];
-+	      b = NO;
-+	    }
-+	}
++          [dict setObject: (s != nil ? s : (id)@"")  forKey: uid];
++        }
++        else if ([_sortSpec rangeOfString: @"FROM"].length) {
++          s =  [[[env from] lastObject] email];
++          [dict setObject: (s != nil ? s : (id)@"")  forKey: uid];
++        }
++        else {
++          envDate = [env date];
++          if (!envDate)
++            envDate = [NSCalendarDate date];
++          [dict setObject: envDate forKey: uid];
++          b = NO;
++        }
++      }
 +      
 +      if (b)
 +      	s_a = [dict keysSortedByValueUsingSelector: @selector(caseInsensitiveCompare:)];
 +      else
 +      	s_a = [dict keysSortedByValueUsingSelector: @selector(compare:)];
 +
-+      if ([_sortSpec rangeOfString: @"REVERSE"].length)
-+	{
-+	  s_a = [[s_a reverseObjectEnumerator] allObjects];
-+	}
++      if ([_sortSpec rangeOfString: @"REVERSE"].length)	{
++        s_a = [[s_a reverseObjectEnumerator] allObjects];
++      }
 +      
-+      [result setObject: [NSNumber numberWithBool: YES]  forKey: @"result"];
-+      [result setObject: s_a  forKey: @"sort"];
 +    }
++    else {
++      s_a = [NSArray array];
++    }
++    [result setObject: [NSNumber numberWithBool: YES]  forKey: @"result"];
++    [result setObject: s_a  forKey: @"sort"];
++  }
 +
 +  return result;
 +}
@@ -492,7 +490,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  - (NSException *)_processCommandParserException:(NSException *)_exception {
    [self logWithFormat:@"ERROR(%s): catched IMAP4 parser exception %@: %@",
  	__PRETTY_FUNCTION__, [_exception name], [_exception reason]];
-@@ -1412,21 +1517,24 @@
+@@ -1412,21 +1515,24 @@
        return nil;
    }
  
@@ -525,7 +523,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  }
  
  - (NSString *)_imapFolder2Folder:(NSString *)_folder {
-@@ -1442,10 +1550,16 @@
+@@ -1442,10 +1548,16 @@
        return nil;
    }
    
