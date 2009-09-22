@@ -1,3 +1,13 @@
+2009-09-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MailerUI/UIxMailListView.m (+initialize): new method
+	initialized the two new global NSArray: defaultColumnOrder
+	(hardcoded values), udColumnOrder (system default values).
+	(-columnsDisplayOrder): we now cache the resulting set of keys. 
+	We also test for the presence of invalid keys by comparing the
+	configured array with the hardcoded one above.
+	(-setCurrentColumn:, currentColumn): new accessors.
+
 2009-09-21  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	*  SOPE/NGCards/versitCardsSaxDriver/VSSaxDriver.m
