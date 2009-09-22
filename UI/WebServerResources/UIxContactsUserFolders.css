@@ -11,9 +11,10 @@ SPAN.searchBox
 { float: none !important; }
 
 IMG#progressIndicator
-{ float: right;
-  margin: 0;
-  padding: 1em; }
+{ float: none;
+  position: absolute;
+  right: 1em;
+  margin: 7px 5px; }}
 
 INPUT#searchValue
 { margin: 0px; }
