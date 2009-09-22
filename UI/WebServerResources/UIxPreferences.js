@@ -1,15 +1,29 @@
 /* -*- Mode: java; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 function savePreferences(sender) {
+    var sendForm = true;
+
     var sigList = $("signaturePlacementList");
     if (sigList)
-        sigList.disabled=false;
+        sigList.disabled = false;
 
     if ($("categoriesList")) {
         serializeCategories(null);
     }
 
-    $("mainForm").submit();
+    if ($("dayStartTime")) {
+        var start = $("dayStartTime");
+        var selectedStart = parseInt(start.options[start.selectedIndex].value);
+        var end = $("dayEndTime");
+        var selectedEnd = parseInt(end.options[end.selectedIndex].value);
+        if (selectedStart >= selectedEnd) {
+            alert (getLabel ("Day start time must be prior to day end time."));
+            sendForm = false;
+        }
+    }
+
+    if (sendForm)
+      $("mainForm").submit();
 
     return false;
 }

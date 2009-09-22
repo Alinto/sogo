@@ -47,6 +47,7 @@
 "Week begins on :" = "Premier jour de la semaine :";
 "Day start time :" = "Début de la journée :";
 "Day end time :" = "Fin de la journée :";
+"Day start time must be prior to day end time." = "Le début de la journée doit être avant la fin de la journée.";
 "First week of year :" = "Première semaine de l'année :";
 "Enable reminders for Calendar items" = "Activer les rappels pour les éléments du calendrier";
 "Play a sound when a reminder comes due" = "Émettre un signal sonore à l'échéance du rappel";

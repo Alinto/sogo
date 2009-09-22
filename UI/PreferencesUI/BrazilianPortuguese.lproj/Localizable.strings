@@ -49,6 +49,7 @@
 "Week begins on :" = "A Semana começa em :";
 "Day start time :" = "O Dia começa as :";
 "Day end time :" = "O Dia termina as :";
+"Day start time must be prior to day end time." = "Day start time must be prior to day end time.";
 "First week of year :" = "Primeira semana do ano :";
 "Enable reminders for Calendar items" = "Habilitar lembretes para os itens do Calendário";
 "Play a sound when a reminder comes due"
