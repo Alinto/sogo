@@ -80,8 +80,8 @@
         }
     }
 
-  filename = [NSString stringWithFormat: @"attachment;filename=%@.ldif", 
-              [self labelForKey: @"Contacts"]];
+  filename = [NSString stringWithFormat: @"attachment;filename=\"%@.ldif\"", 
+              [folder displayName]];
   response = [context response];
   [response setHeader: @"text/directory; charset=utf-8" 
                forKey: @"content-type"];

@@ -1,3 +1,8 @@
+2009-09-22  Cyril Robert <crobert@inverse.ca>
+
+	* UI/Scheduler/UIxCalFolderActions.m (exportAction): Used bareFetchFields from
+	SOGoAppointmentFolder instead of fetchFields from SOGoGCSFolder.
+
 2009-09-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailerUI/UIxMailListView.m (+initialize): new method

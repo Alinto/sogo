@@ -58,7 +58,12 @@
   folder = [self clientObject];
   calendar = [iCalCalendar groupWithTag: @"vcalendar"];
 
-  array = [[folder ocsFolder] fetchFields: fields matchingQualifier: nil];
+  array = [folder bareFetchFields: fields
+                             from: nil
+                               to: nil
+                            title: nil
+                        component: nil
+                additionalFilters: nil];
   count = [array count];
   for (i = 0; i < count; i++)
     {
@@ -84,8 +89,8 @@
         [calendar addChildren: values];
     }
   
-  filename = [NSString stringWithFormat: @"attachment;filename=%@.ics",
-              [self labelForKey: @"Calendar"]];
+  filename = [NSString stringWithFormat: @"attachment;filename=\"%@.ics\"",
+              [folder displayName]];
   [response setHeader: @"text/calendar; charset=utf-8" 
                forKey:@"content-type"];
   [response setHeader: filename 
