@@ -91,7 +91,7 @@
   
   filename = [NSString stringWithFormat: @"attachment;filename=\"%@.ics\"",
               [folder displayName]];
-  [response setHeader: @"text/calendar; charset=utf-8" 
+  [response setHeader: @"application/octet-stream; charset=utf-8" 
                forKey:@"content-type"];
   [response setHeader: filename 
                forKey: @"Content-Disposition"];
