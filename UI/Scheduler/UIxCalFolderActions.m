@@ -46,6 +46,7 @@
   SOGoAppointmentObject *appt;
   NSArray *array, *values, *fields;
   NSMutableString *rc;
+  NSString *filename;
   iCalCalendar *calendar, *component;
   int i, count;
 
@@ -82,11 +83,12 @@
       if (values && [values count])
         [calendar addChildren: values];
     }
-  NSLog ([calendar versitString]);
   
+  filename = [NSString stringWithFormat: @"attachment;filename=%@.ics",
+              [self labelForKey: @"Calendar"]];
   [response setHeader: @"text/calendar; charset=utf-8" 
                forKey:@"content-type"];
-  [response setHeader: @"attachment;filename=Calendar.ics" 
+  [response setHeader: filename 
                forKey: @"Content-Disposition"];
   [response setContent: [[calendar versitString] dataUsingEncoding: NSUTF8StringEncoding]];
   

@@ -56,7 +56,7 @@
   id <WOActionResults> response;
   NSArray *contactsId;
   NSEnumerator *uids;
-  NSString *uid;
+  NSString *uid, *filename;
   id currentChild;
   SOGoContactGCSFolder *sourceFolder;
   NSMutableString *content;
@@ -79,10 +79,13 @@
             [content appendFormat: [[currentChild vList] ldifString]];
         }
     }
+
+  filename = [NSString stringWithFormat: @"attachment;filename=%@.ldif", 
+              [self labelForKey: @"Contacts"]];
   response = [context response];
   [response setHeader: @"text/directory; charset=utf-8" 
                forKey: @"content-type"];
-  [response setHeader: @"attachment;filename=SavedContacts.ldif" 
+  [response setHeader: filename 
                forKey: @"Content-Disposition"];
   [response setContent: [content dataUsingEncoding: NSUTF8StringEncoding]];
   
