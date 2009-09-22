@@ -81,7 +81,7 @@
     }
 
   filename = [NSString stringWithFormat: @"attachment;filename=\"%@.ldif\"", 
-              [folder displayName]];
+              [sourceFolder displayName]];
   response = [context response];
   [response setHeader: @"application/octet-stream; charset=utf-8" 
                forKey: @"content-type"];
