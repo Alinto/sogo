@@ -49,10 +49,23 @@
                      @"organizationalPerson", @"inetOrgPerson", 
                      @"mozillaAbPersonObsolete", nil]
             forKey: @"objectclass"];
-  [entry setObject: [[self n] objectAtIndex: 1] forKey: @"givenName"];
-  [entry setObject: [[self n] objectAtIndex: 0] forKey: @"sn"];
-  [entry setObject: [self fn] forKey: @"cn"];
-  [entry setObject: [self preferredEMail] forKey: @"mail"];
+  
+  tmp = ([[self n] count] > 1 ? [[self n] objectAtIndex: 1] : nil);
+  if (tmp)
+    [entry setObject: tmp  forKey: @"givenName"];
+  
+  tmp = ([[self n] count] ? [[self n] objectAtIndex: 0] : nil);
+  if (tmp)
+    [entry setObject: tmp  forKey: @"sn"];
+
+  tmp = [self fn];
+  if (tmp)
+    [entry setObject: tmp  forKey: @"cn"];
+  
+  tmp = [self preferredEMail];
+  if (tmp)
+    [entry setObject: tmp forKey: @"mail"];
+  
   [entry setObject: @"0Z" forKey: @"modifytimestamp"];
 
   buffer = [self nickname];
