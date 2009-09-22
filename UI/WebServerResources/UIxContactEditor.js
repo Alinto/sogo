@@ -80,21 +80,25 @@ function copyContact(type, email, uid, sn,
 };
 
 function validateContactEditor() {
-  var e;
+  var rc = true;
   
-  e = $('workMail');
-  if (e.value.length == 0)
-    return true;
-  if (uixEmailRegex.test(e.value) != true)
-    return confirm(labels.invalidemailwarn);
+  var e = $('workMail');
+  if (e.value.length > 0
+      && !uixEmailRegex.test(e.value))
+    {
+      alert(getLabel ("invalidemailwarn"));
+      rc = false;
+    }
 
   e = $('homeMail');
-  if (e.value.length == 0)
-    return true;
-  if (uixEmailRegex.test(e.value) != true)
-    return confirm(labels.invalidemailwarn);
+  if (e.value.length > 0
+      && !uixEmailRegex.test(e.value))
+    {
+      alert(getLabel ("invalidemailwarn"));
+      rc = false;
+    }
 
-  return true;
+  return rc;
 }
 
 function showCoords(node) {
