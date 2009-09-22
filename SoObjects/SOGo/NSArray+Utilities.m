@@ -121,6 +121,24 @@
   return flattenedArray;
 }
 
+- (NSDictionary *) flattenedDictionaries
+{
+  NSMutableDictionary *newDict;
+  NSDictionary *currentDictionary;
+  int count, max;
+
+  newDict = [NSMutableDictionary dictionary];
+
+  max = [self count];
+  for (count = 0; count < max; count++)
+    {
+      currentDictionary = [self objectAtIndex: count];
+      [newDict addEntriesFromDictionary: currentDictionary];
+    }
+
+  return newDict;
+}
+
 - (NSArray *) uniqueObjects
 {
   NSMutableArray *newArray;

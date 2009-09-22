@@ -33,6 +33,7 @@
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/NSException+HTTP.h>
+#import <NGExtensions/NGHashMap.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+Encoding.h>
@@ -613,6 +614,7 @@ static BOOL debugSoParts       = NO;
   // TODO: is the name correct or does it also fetch other parts?
   NSMutableDictionary *flatContents;
   unsigned i, count;
+  NSArray *results;
   id result;
   
   [self debugWithFormat: @"fetch keys: %@", _fetchKeys];
@@ -622,8 +624,9 @@ static BOOL debugSoParts       = NO;
   result = [result valueForKey: @"RawResponse"]; // hackish
 
   // Note: -valueForKey: doesn't work!
-  result = [(NSDictionary *)result objectForKey: @"fetch"]; 
-  
+  results = [(NGHashMap *)result objectsForKey: @"fetch"];
+  result = [results flattenedDictionaries];
+
   count        = [_fetchKeys count];
   flatContents = [NSMutableDictionary dictionaryWithCapacity:count];
   for (i = 0; i < count; i++) {

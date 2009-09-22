@@ -12,6 +12,16 @@
 
 2009-09-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailObject.m (-fetchPlainTextParts:):
+	handle the fact that the "fetch" key in a RawResponse (NGHashMap)
+	may not be the only response. Since [NGHashMap objectForKey:]
+	returns only the first one, we use the new "flattenedDictionaries"
+	to make sure we can retrieve all requested keys.
+
+	* SoObjects/SOGo/NSArray+Utilities.m (-flattenedDictionaries): new
+	method that merges the keys and values of all contained
+	dictionaries into one single dictionary.
+
 	* Tests/webdavlib.py (_WD_XMLTreeElement.__init__): added a new
 	optional parameter "attributes" that enables the setting of
 	element attributes during the rendering of the element.

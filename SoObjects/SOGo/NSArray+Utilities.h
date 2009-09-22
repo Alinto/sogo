@@ -38,6 +38,7 @@
 - (NSArray *) objectsForKey: (NSString *) key
 	     notFoundMarker: (id) marker;
 - (NSArray *) flattenedArray;
+- (NSDictionary *) flattenedDictionaries;
 
 - (NSArray *) uniqueObjects;
 
