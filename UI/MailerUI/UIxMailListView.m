@@ -41,6 +41,7 @@
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSString+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
 
 #import <EOControl/EOQualifier.h>
 
@@ -55,9 +56,31 @@
 
 #import "UIxMailListView.h"
 
+static NSArray *defaultColumnOrder = nil;
+static NSArray *udColumnOrder = nil;
+
 #define messagesPerPage 50
 
 @implementation UIxMailListView
+
++ (void) initialize
+{
+  if (!defaultColumnOrder)
+    {
+      defaultColumnOrder = [NSArray arrayWithObjects: @"Flagged",
+                                    @"Attachment", @"Subject", @"From",
+                                    @"Unread", @"Date", @"Priority", @"Size",
+                                    nil];
+      [defaultColumnOrder retain];
+    }
+
+  if (!udColumnOrder)
+    {
+      udColumnOrder = [[NSUserDefaults standardUserDefaults]
+                        arrayForKey: @"SOGoMailListViewColumnsOrder"];
+      [udColumnOrder retain];
+    }
+}
 
 - (id) init
 {
@@ -69,6 +92,7 @@
       user = [context activeUser];
       ASSIGN (dateFormatter, [user dateFormatterInContext: context]);
       ASSIGN (userTimeZone, [user timeZone]);
+      userDefinedOrder = nil;
       folderType = 0;
       currentColumn = nil;
     }
@@ -85,6 +109,7 @@
   [dateFormatter release];
   [userTimeZone release];
   [currentColumn release];
+  [userDefinedOrder release];
   [super dealloc];
 }
 
@@ -811,35 +836,47 @@
 
 - (NSArray *) columnsDisplayOrder
 {
-  NSMutableArray *userDefinedOrder;
+  NSMutableArray *testColumns;
   NSArray *defaultsOrder;
   NSUserDefaults *ud;
   unsigned int i;
 
-  ud = [[context activeUser] userSettings];
-  defaultsOrder = [ud arrayForKey: @"SOGoMailListViewColumnsOrder"];
-  if (![defaultsOrder count])
+  if (!userDefinedOrder)
     {
-      defaultsOrder = [[NSUserDefaults standardUserDefaults]
-        arrayForKey: @"SOGoMailListViewColumnsOrder"];
+      ud = [[context activeUser] userSettings];
+      defaultsOrder = [ud arrayForKey: @"SOGoMailListViewColumnsOrder"];
       if (![defaultsOrder count])
-        defaultsOrder = [NSArray arrayWithObjects: @"Flagged",
-				 @"Attachment", @"Subject", @"From",
-				 @"Unread", @"Date", @"Priority", @"Size", nil];
-    }
-  userDefinedOrder = [NSMutableArray arrayWithArray: defaultsOrder];
+        {
+          defaultsOrder = udColumnOrder;
+          if (![defaultsOrder count])
+            defaultsOrder = defaultColumnOrder;
+        }
+      userDefinedOrder = [defaultsOrder mutableCopy];
 
-  if ([self showToAddress])
-    {
-      i = [userDefinedOrder indexOfObject: @"From"];
-      if (i != NSNotFound)
-	[userDefinedOrder replaceObjectAtIndex: i withObject: @"To"];
-    }
-  else
-    {
-      i = [userDefinedOrder indexOfObject: @"To"];
-      if (i != NSNotFound)
-	[userDefinedOrder replaceObjectAtIndex: i withObject: @"From"];
+      testColumns = [userDefinedOrder mutableCopy];
+      [testColumns removeObjectsInArray: defaultColumnOrder];
+      if ([testColumns count] > 0)
+        {
+          [self errorWithFormat: @"one or more column names specified in"
+                @" SOGoMailListViewColumnsOrder are invalid: '%@'",
+                [testColumns componentsJoinedByString: @"', '"]];
+          [self errorWithFormat: @"  falling back on hardcoded column order"];
+          userDefinedOrder = [defaultColumnOrder mutableCopy];
+        }
+      [testColumns release];
+
+      if ([self showToAddress])
+        {
+          i = [userDefinedOrder indexOfObject: @"From"];
+          if (i != NSNotFound)
+            [userDefinedOrder replaceObjectAtIndex: i withObject: @"To"];
+        }
+      else
+        {
+          i = [userDefinedOrder indexOfObject: @"To"];
+          if (i != NSNotFound)
+            [userDefinedOrder replaceObjectAtIndex: i withObject: @"From"];
+        }
     }
 
   return [[self columnsMetaData] objectsForKeys: userDefinedOrder
@@ -849,6 +886,16 @@
 - (NSString *) columnsDisplayCount
 {
   return [NSString stringWithFormat: @"%d", [[self columnsDisplayOrder] count]];
+}
+
+- (void) setCurrentColumn: (NSDictionary *) newCurrentColumn
+{
+  ASSIGN (currentColumn, newCurrentColumn);
+}
+
+- (NSDictionary *) currentColumn
+{
+  return currentColumn;
 }
 
 - (NSString *) columnTitle
