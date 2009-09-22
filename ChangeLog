@@ -2,19 +2,27 @@
 
         * Updated the documentation for the Invisible -> Flagged
 	mail column change.
-	* SoObjects/Contacts/NGVCard+SOGo.m - better error-handling. 
+	* SoObjects/Contacts/NGVCard+SOGo.m - better error-handling.
 
 2009-09-22  Cyril Robert <crobert@inverse.ca>
 
-	* UI/Scheduler/UIxCalFolderActions.m (exportAction): Used bareFetchFields from
-	SOGoAppointmentFolder instead of fetchFields from SOGoGCSFolder.
+	* UI/Scheduler/UIxCalFolderActions.m (exportAction): Used
+	bareFetchFields from SOGoAppointmentFolder instead of fetchFields
+	from SOGoGCSFolder.
 
 2009-09-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Tests/webdavlib.py (_WD_XMLTreeElement.__init__): added a new
+	optional parameter "attributes" that enables the setting of
+	element attributes during the rendering of the element.
+
+	* Tests/webdavlib.py (CalDAVCalendarQuery): new subclass of
+	WebDAVReport that handles "calendar-query" reports.
 
 	* UI/MailerUI/UIxMailListView.m (+initialize): new method
 	initialized the two new global NSArray: defaultColumnOrder
 	(hardcoded values), udColumnOrder (system default values).
-	(-columnsDisplayOrder): we now cache the resulting set of keys. 
+	(-columnsDisplayOrder): we now cache the resulting set of keys.
 	We also test for the presence of invalid keys by comparing the
 	configured array with the hardcoded one above.
 	(-setCurrentColumn:, currentColumn): new accessors.

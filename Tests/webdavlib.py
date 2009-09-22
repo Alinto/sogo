@@ -208,6 +208,33 @@ class CalDAVCalendarMultiget(WebDAVREPORT):
             self.top_node.append(href_node)
             href_node.append(_WD_XMLTreeTextNode(href))
 
+class CalDAVCalendarQuery(WebDAVREPORT):
+    def __init__(self, url, properties, component = None, timerange = None):
+        WebDAVQuery.__init__(self, url)
+        multiget_tag = self.ns_mgr.register("calendar-query", "urn:ietf:params:xml:ns:caldav")
+        self.top_node = _WD_XMLTreeElement(multiget_tag)
+        props = _WD_XMLTreeElement("prop")
+        self.top_node.append(props)
+        for prop in properties:
+            prop_tag = self.render_tag(prop)
+            props.append(_WD_XMLTreeElement(prop_tag))
+
+        if component is not None:
+            filter_tag = self.ns_mgr.register("filter",
+                                              "urn:ietf:params:xml:ns:caldav")
+            compfilter_tag = self.ns_mgr.register("comp-filter",
+                                                  "urn:ietf:params:xml:ns:caldav")
+            filter_node = _WD_XMLTreeElement(filter_tag)
+            cal_filter_node = _WD_XMLTreeElement(compfilter_tag,
+                                                 { "name": "VCALENDAR" })
+            comp_node = _WD_XMLTreeElement(compfilter_tag,
+                                           { "name": component })
+            ## TODO
+            # if timerange is not None:
+            cal_filter_node.append(comp_node)
+            filter_node.append(cal_filter_node)
+            self.top_node.append(filter_node)
+
 class WebDAVSyncQuery(WebDAVREPORT):
     def __init__(self, url, token, properties):
         WebDAVQuery.__init__(self, url)
@@ -261,9 +288,10 @@ class _WD_XMLNS_MGR:
         return newTag
 
 class _WD_XMLTreeElement:
-    def __init__(self, tag):
+    def __init__(self, tag, attributes = {}):
         self.tag = tag
         self.children = []
+        self.attributes = attributes
 
     def append(self, child):
         self.children.append(child)
@@ -273,6 +301,9 @@ class _WD_XMLTreeElement:
 
         if ns_text is not None:
             text = text + ns_text
+
+        for k in self.attributes:
+            text = text + " %s=\"%s\"" % (k, self.attributes[k])
 
         if len(self.children) > 0:
             text = text + ">"
