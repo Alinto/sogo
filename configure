@@ -9,6 +9,11 @@
 
 # ******************** variables ****************
 
+TOPDIR="$(cd `dirname $0`; pwd)"
+
+# we ensure that the configure script is run from TOPDIR
+cd $TOPDIR
+
 CFG_ARGS="$0 $1 $2 $3 $4 $5 $6 $7 $8 $9"
 
 ARG_BEQUIET=0
@@ -211,11 +216,15 @@ genConfigMake() {
   fi
   
   echo "# GNUstep environment configuration" > $ARG_CFGMAKE
+
   cfgwrite "#   created by: '$CFG_ARGS'"
   cfgwrite ""
   
   cfgwrite "# Note: you can override any option as a 'make' parameter, eg:"
   cfgwrite "#         $MAKE debug=yes"
+  cfgwrite ""
+
+  cfgwrite "TOPDIR:=$TOPDIR"
   cfgwrite ""
   
   #cfgwrite "# print on the cmdline that this file is being used"
@@ -227,6 +236,7 @@ genConfigMake() {
   cfgwrite "SOGO_MINOR_VERSION=9"
   cfgwrite "SOPE_MAJOR_VERSION=4"
   cfgwrite "SOPE_MINOR_VERSION=9"
+  cfgwrite ""
   
   if test $ARG_WITH_DEBUG = 1; then
     cfgwrite "# configured to produce debugging code";
@@ -290,6 +300,8 @@ genConfigMake() {
       cfgwrite "ADDITIONAL_CPPFLAGS += -DLDAP_CONFIG=1"
       cfgwrite "ldap_config:=yes"
   fi  
+
+  cfgwrite "include \$(TOPDIR)/general.make"
 }
 
 checkLinking() {
