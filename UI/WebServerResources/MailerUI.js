@@ -1475,7 +1475,8 @@ function configureMessageListBodyEvents(table) {
                     cell.observe("dblclick", onMessageDoubleClick.bindAsEventListener(cell));
                 else if (cellType == "Unread") {
                     var img = $(cell.childNodesWithTag("img")[0]);
-                    img.observe("click", mailListMarkMessage.bindAsEventListener(img));
+                    if (img)
+                      img.observe("click", mailListMarkMessage.bindAsEventListener(img));
                 }
             }
         }
