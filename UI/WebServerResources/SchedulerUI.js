@@ -1860,12 +1860,22 @@ function onCalendarModify(event) {
     var calendarID = selected.getAttribute("id");
     var url = ApplicationBaseURL + calendarID + "/properties";
     var windowID = sanitizeWindowName(calendarID + " properties");
+    var width = 310;
+    var height = 270;
+    if (UserSettings['Calendar'] 
+        && UserSettings['Calendar']['WebCalendars']) {
+        var webCalendars = UserSettings['Calendar']['WebCalendars'];
+        var realID = calendarID.substr (1, calendarID.length - 1);
+        if (webCalendars[realID]) {
+            width = 500;
+            height = 360;
+        }
+    }
     if (calendarID == "/personal")
-        var properties = window.open(url, windowID,
-                                     "width=310,height=250,resizable=0");
-    else
-        var properties = window.open(url, windowID,
-                                     "width=310,height=270,resizable=0");
+      height = 250;
+
+    var properties = window.open(url, windowID,
+                                 "width="+width+",height="+height+",resizable=0");
     properties.focus();
 }
 
