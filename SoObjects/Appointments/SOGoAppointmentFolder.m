@@ -3206,6 +3206,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   if (calendar)
     {
       components = [[calendar events] mutableCopy];
+      [components autorelease];
       [components addObjectsFromArray: [calendar todos]];
       [components addObjectsFromArray: [calendar journals]];
       [components addObjectsFromArray: [calendar freeBusys]];
