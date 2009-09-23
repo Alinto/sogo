@@ -1,3 +1,8 @@
+2009-09-23  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* UI/PreferencesUI/UIxPreferences.m 
+	We now fallback to the default system selected day.
+
 2009-09-22  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
         * Updated the documentation for the Invisible -> Flagged
