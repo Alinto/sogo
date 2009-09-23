@@ -3191,39 +3191,25 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   object = [SOGoAppointmentObject objectWithName: uid
                                     inContainer: self];
   content = 
-    [NSString stringWithFormat: @"BEGIN:VCALENDAR\n%@END:VCALENDAR\n", 
+    [NSString stringWithFormat: @"BEGIN:VCALENDAR\n%@\nEND:VCALENDAR", 
      [event versitString]];
   return ([object saveContentString: content] == nil);
 }
 
 - (int) importCalendar: (iCalCalendar *) calendar
 {
-  NSArray *components;
+  NSMutableArray *components;
   int imported, count, i;
   
   imported = 0;
 
   if (calendar)
     {
-      components = [calendar events];
-      count = [components count];
-      for (i = 0; i < count; i++)
-        if ([self importComponent: [components objectAtIndex: i]])
-          imported++;
+      components = [[calendar events] mutableCopy];
+      [components addObjectsFromArray: [calendar todos]];
+      [components addObjectsFromArray: [calendar journals]];
+      [components addObjectsFromArray: [calendar freeBusys]];
 
-      components = [calendar todos];
-      count = [components count];
-      for (i = 0; i < count; i++)
-        if ([self importComponent: [components objectAtIndex: i]])
-          imported++;
-
-      components = [calendar journals];
-      count = [components count];
-      for (i = 0; i < count; i++)
-        if ([self importComponent: [components objectAtIndex: i]])
-          imported++;
-
-      components = [calendar freeBusys];
       count = [components count];
       for (i = 0; i < count; i++)
         if ([self importComponent: [components objectAtIndex: i]])

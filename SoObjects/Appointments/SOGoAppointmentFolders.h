@@ -30,6 +30,7 @@
 @interface SOGoAppointmentFolders : SOGoParentFolder
 
 - (NSArray *) proxyFoldersWithWriteAccess: (BOOL) hasWriteAccess;
+- (NSArray *) webCalendarIds;
 
 @end
 

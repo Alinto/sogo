@@ -44,6 +44,7 @@
   NSURL *url;
   NSString *name, *displayName;
   NSMutableDictionary *rc;
+  SOGoAppointmentFolders *folders;
   int imported = 0;
 
   r = [context request];
@@ -53,13 +54,14 @@
   url = [NSURL URLWithString: [r formValueForKey: @"url"]];
   if (url)
     {
+      folders = [self clientObject];
       displayName = [self displayNameForUrl: [r formValueForKey: @"url"]];
-      [[self clientObject] newFolderWithName: displayName
-                             nameInContainer: &name];
+      [folders newFolderWithName: displayName
+                 nameInContainer: &name];
       [self saveUrl: url forCalendar: name];
-      folder = [[self clientObject] lookupName: name
-                                     inContext: context
-                                       acquire: NO];
+      folder = [folders lookupName: name
+                         inContext: context
+                           acquire: NO];
       if (folder)
         {
           imported = [folder loadWebCalendar: [r formValueForKey: @"url"]];

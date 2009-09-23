@@ -1,3 +1,11 @@
+2009-09-23  Cyril Robert <crobert@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m (importComponent:): Fixed 
+	addition of BEGIN/END block.
+	* SoObjects/Appointments/SOGoWebAppointmentFolder.m (deleteAllContent):
+	Created deleteAllContent to be able to change it in the store bundle.
+	* UI/Scheduler/UIxCalMainActions.m (addWebCalendarAction): Small improvement.
+
 2009-09-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/SOGoAutoCompletion.js

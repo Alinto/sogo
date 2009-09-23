@@ -28,6 +28,7 @@
 @interface SOGoWebAppointmentFolder : SOGoAppointmentFolder
 
 - (int) loadWebCalendar: (NSString *) location;
+- (void) deleteAllContent;
 
 
 @end

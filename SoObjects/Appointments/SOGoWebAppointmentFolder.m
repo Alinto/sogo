@@ -31,6 +31,11 @@
 
 @implementation SOGoWebAppointmentFolder
 
+- (void) deleteAllContent
+{
+  [[self ocsFolder] deleteAllContent];
+}
+
 - (int) loadWebCalendar: (NSString *) location
 {
   NSURL *url;
@@ -57,7 +62,7 @@
       calendar = [iCalCalendar parseSingleFromSource: contents];
       if (calendar)
         {
-          [[self ocsFolder] deleteAllContent];
+          [self deleteAllContent];
           imported = [self importCalendar: calendar];
         }
       else
