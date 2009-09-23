@@ -72,7 +72,7 @@ var SOGoAutoCompletionInterface = {
                   var e = contacts[this.selectedIndex];
                   this.writeAttribute("card", e.readAttribute("card"));
                   this.writeAttribute("mail", e.readAttribute("mail"));
-                  this.writeAttribute("name", e.readAttribute("uname"));
+                  this.writeAttribute("uname", e.readAttribute("uname"));
                   this.writeAttribute("container", e.readAttribute("container"));
               }
           }
@@ -88,7 +88,7 @@ var SOGoAutoCompletionInterface = {
                   var e = contacts[this.selectedIndex];
                   this.writeAttribute("card", e.readAttribute("card"));
                   this.writeAttribute("mail", e.readAttribute("mail"));
-                  this.writeAttribute("name", e.readAttribute("uname"));
+                  this.writeAttribute("uname", e.readAttribute("uname"));
                   this.writeAttribute("container", e.readAttribute("container"));
               }
           }
@@ -215,7 +215,7 @@ var SOGoAutoCompletionInterface = {
                         else {
                             input.writeAttribute("card", contact['c_name']);
                             input.writeAttribute("mail", contact['c_mail']);
-                            input.writeAttribute("name", contact['c_cn']);
+                            input.writeAttribute("uname", contact['c_cn']);
                             var completeEmail = contact["c_cn"] + " <" + contact["c_mail"] + ">";
                             if (contact["c_cn"].substring(0, input.value.length).toUpperCase()
                                 == input.value.toUpperCase())
@@ -253,7 +253,7 @@ var SOGoAutoCompletionInterface = {
             }
             else {
                 this.writeAttribute("mail", e.readAttribute("mail"));
-                this.writeAttribute("name", e.readAttribute("uname"));
+                this.writeAttribute("uname", e.readAttribute("uname"));
             }
             this.writeAttribute("uid", e.readAttribute("uid"));
             this.value = e.readAttribute("address");

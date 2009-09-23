@@ -1,3 +1,11 @@
+2009-09-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/SOGoAutoCompletion.js
+	(SOGoAutoCompletionInterface.onKeyDown): (needs review) we don't
+	overwrite the input's name attributes with the "uname". Otherwise
+	the form will not have the correct data when submitted and the
+	to/cc/bcc fields will be ignored.
+
 2009-09-23  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* UI/PreferencesUI/UIxPreferences.m 

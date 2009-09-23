@@ -93,6 +93,7 @@ function expandContactList (e) {
       + this.readAttribute("card") + "/properties";
     triggerAjaxRequest (url, expandContactListCallback, this);
 }
+
 function expandContactListCallback (http) {
     if (http.readyState == 4) {
         var input = http.callbackData;
@@ -117,7 +118,6 @@ function expandContactListCallback (http) {
         }
     }
 }
-
 
 function addressFieldGotFocus(sender) {
     var idx;
