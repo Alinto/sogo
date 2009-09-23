@@ -318,7 +318,7 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
 
 - (NSString *) userWeekStartDay
 {
-  return [userDefaults objectForKey: @"WeekStartDay"];
+  return [NSString stringWithFormat: @"%d", [user firstDayOfWeek]];;
 }
 
 - (void) setUserWeekStartDay: (NSString *) newDay
