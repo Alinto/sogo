@@ -110,13 +110,26 @@
 {
   NSMutableArray *purified;
   NSString *string;
-  NSEnumerator *strings;
+  int count, max, lastInsert;
 
-  purified = [NSMutableArray arrayWithCapacity: [self count]];
-  strings = [self objectEnumerator];
-  while ((string = [strings nextObject]))
-    if ([string length] > 0)
-      [purified addObject: [string escapedForCards]];
+  max = [self count];
+  purified = [NSMutableArray arrayWithCapacity: max];
+
+  lastInsert = -1;
+  for (count = 0; count < max; count++)
+    {
+      string = [self objectAtIndex: count];
+      if ([string length] > 0)
+        {
+          while (lastInsert < (count - 1))
+            {
+              [purified addObject: @""];
+              lastInsert++;
+            }
+          [purified addObject: [string escapedForCards]];
+          lastInsert = count;
+        }
+    }
 
   return purified;
 }

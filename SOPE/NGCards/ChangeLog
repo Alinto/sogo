@@ -1,3 +1,8 @@
+2009-09-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* NSArray+NGCards.m (-renderedForCards): insert the non-blank
+	values at their correct positions by inserting empty strings.
+
 2009-09-10  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* iCalPerson.m ([iCalPerson -_valueOfMailtoAttribute:]): fixed the
