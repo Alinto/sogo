@@ -58,6 +58,8 @@
   folder = [self clientObject];
   calendar = [iCalCalendar groupWithTag: @"vcalendar"];
 
+  /* We have to use bareFetchFields because we don't want to process anything
+   * (RRULES for example) */
   array = [folder bareFetchFields: fields
                              from: nil
                                to: nil

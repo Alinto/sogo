@@ -631,6 +631,7 @@ static int davCalendarStartTimeLimit, davTimeLimitSeconds,
   sql = [NSString stringWithFormat: @"%@%@%@%@",
          dateSqlString, titleSqlString, componentSqlString,
          filterSqlString];
+  /* sql is empty when we fetch everything (all parameters are nil) */
   if ([sql length] > 0)
     sql = [sql substringFromIndex: 4];
   else
