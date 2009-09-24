@@ -101,11 +101,12 @@
   if ([array count])
     {
       tmp = [array objectAtIndex: 0];
-      [entry setObject: [tmp value: 0] forKey: @"homeStreet"];
-      [entry setObject: [tmp value: 1] forKey: @"mozillaHomeLocalityName"];
-      [entry setObject: [tmp value: 2] forKey: @"mozillaHomeState"];
-      [entry setObject: [tmp value: 3] forKey: @"mozillaHomePostalCode"];
-      [entry setObject: [tmp value: 4] forKey: @"mozillaHomeCountryName"];
+      [entry setObject: [tmp value: 1] forKey: @"mozillaHomeStreet2"];
+      [entry setObject: [tmp value: 2] forKey: @"homeStreet"];
+      [entry setObject: [tmp value: 3] forKey: @"mozillaHomeLocalityName"];
+      [entry setObject: [tmp value: 4] forKey: @"mozillaHomeState"];
+      [entry setObject: [tmp value: 5] forKey: @"mozillaHomePostalCode"];
+      [entry setObject: [tmp value: 6] forKey: @"mozillaHomeCountryName"];
     }
 
   array = [self org];
@@ -116,11 +117,12 @@
   if ([array count])
     {
       tmp = [array objectAtIndex: 0];
-      [entry setObject: [tmp value: 0] forKey: @"street"];
-      [entry setObject: [tmp value: 1] forKey: @"l"];
-      [entry setObject: [tmp value: 2] forKey: @"st"];
-      [entry setObject: [tmp value: 3] forKey: @"postalCode"];
-      [entry setObject: [tmp value: 4] forKey: @"c"];
+      [entry setObject: [tmp value: 1] forKey: @"mozillaWorkStreet2"];
+      [entry setObject: [tmp value: 2] forKey: @"street"];
+      [entry setObject: [tmp value: 3] forKey: @"l"];
+      [entry setObject: [tmp value: 4] forKey: @"st"];
+      [entry setObject: [tmp value: 5] forKey: @"postalCode"];
+      [entry setObject: [tmp value: 6] forKey: @"c"];
     }
 
   array = [self childrenWithTag: @"tel" andAttribute: @"type" havingValue: @"work"];

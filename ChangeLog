@@ -2,6 +2,8 @@
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m (bareFetchFields:): Handled
 	the Exception when all conditions are nil.
+	* SoObjects/Contacts/NGVCard+SOGo.m (ldifString): Made corrections
+	reflecting from the fixes in NGVCard to properly format an address.
 
 2009-09-23  Cyril Robert <crobert@inverse.ca>
 
