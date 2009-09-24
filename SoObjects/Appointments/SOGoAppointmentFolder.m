@@ -628,9 +628,13 @@ static int davCalendarStartTimeLimit, davTimeLimitSeconds,
 
   /* prepare mandatory fields */
 
-  sql = [[NSString stringWithFormat: @"%@%@%@%@",
-		   dateSqlString, titleSqlString, componentSqlString,
-		   filterSqlString] substringFromIndex: 4];
+  sql = [NSString stringWithFormat: @"%@%@%@%@",
+         dateSqlString, titleSqlString, componentSqlString,
+         filterSqlString];
+  if ([sql length] > 0)
+    sql = [sql substringFromIndex: 4];
+  else
+    sql = nil;
   
   /* fetch non-recurrent apts first */
   qualifier = [EOQualifier qualifierWithQualifierFormat: sql];

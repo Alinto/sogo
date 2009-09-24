@@ -1,3 +1,8 @@
+2009-09-24  Cyril Robert <crobert@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m (bareFetchFields:): Handled
+	the Exception when all conditions are nil.
+
 2009-09-23  Cyril Robert <crobert@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m (importComponent:): Fixed 
