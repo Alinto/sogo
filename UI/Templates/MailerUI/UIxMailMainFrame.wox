@@ -26,6 +26,10 @@
      { height: <var:string value="mailboxContentStyle" />; }
   </var:if>
   </style>
+  
+  <div id="signatureFlagMessage" style="display: none" class="dialog right">
+  </div>
+  
   <div class="menu" id="accountIconMenu">
     <ul>
       <li><var:string label:value="Subscribe..." /></li>

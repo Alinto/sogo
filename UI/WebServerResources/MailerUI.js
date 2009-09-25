@@ -980,21 +980,44 @@ function configureSignatureFlagImage() {
         var parentNode = loadImagesButton.parentNode;
         var valid = parseInt(signedPart.getAttribute("valid"));
         var flagImage;
-        var error = null;
-        if (valid) {
-            flagImage = "signature-ok.png";
-        } else {
-            flagImage = "signature-not-ok.png";
-            error = signedPart.getAttribute("error");
+
+        if (valid)
+          flagImage = "signature-ok.png";
+        else
+          flagImage = "signature-not-ok.png";
+
+        var error = signedPart.getAttribute("error");
+        var newImg = createElement("img", "signedImage", null, null,
+                                   { src: ResourcesURL + "/" + flagImage });
+
+        var msgDiv = $("signatureFlagMessage");
+        if (msgDiv && error) {
+            var formattedMessage = error.replace("\n", "<br/>");
+            msgDiv.innerHTML = "<div>" + formattedMessage + "</div>";
+            newImg.observe("mouseover", showSignatureMessage);
+            newImg.observe("mouseout", hideSignatureMessage);
         }
-        var attrs = { src: ResourcesURL + "/" + flagImage };
-        if (error) {
-            attrs["title"] = error;
-        }
-        var newImg = createElement("img", "signedImage", null,
-                                   null, attrs);
         loadImagesButton.parentNode.insertBefore(newImg, loadImagesButton.nextSibling);
     }
+}
+
+function showSignatureMessage () {
+    var div = $("signatureFlagMessage");
+    if (div) {
+        var node = $("signedImage");
+        var cellPosition = node.cumulativeOffset();
+        var divDimensions = div.getDimensions();
+        var left = cellPosition[0] - divDimensions['width'];
+        var top = cellPosition[1];
+        div.style.top = top + "px";
+        div.style.left = left + "px";
+        div.style.display = "block";
+    }
+}
+function hideSignatureMessage () {
+    var div = $("signatureFlagMessage");
+    if (div)
+      div.style.display = "none";
 }
 
 function configureLinksInMessage() {
