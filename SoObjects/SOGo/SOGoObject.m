@@ -1,7 +1,7 @@
 /* SOGoGCSFolder.m - this file is part of SOGo
  *
  *  Copyright (C) 2004-2005 SKYRIX Software AG
- *  Copyright (C) 2006-2008 Inverse inc.
+ *  Copyright (C) 2006-2009 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -51,7 +51,6 @@
 #import <NGCards/NSDictionary+NGCards.h>
 #import <UI/SOGoUI/SOGoACLAdvisory.h>
 
-#import "LDAPUserManager.h"
 #import "NSArray+Utilities.h"
 #import "NSCalendarDate+SOGo.h"
 #import "NSDictionary+Utilities.h"

@@ -32,10 +32,10 @@
 #import <Foundation/NSString.h>
 #import <Foundation/NSEnumerator.h>
 
-#import <SoObjects/SOGo/LDAPUserManager.h>
+#import <SoObjects/SOGo/SOGoUserManager.h>
 
 #import "SOGoContactGCSFolder.h"
-#import "SOGoContactLDAPFolder.h"
+#import "SOGoContactSourceFolder.h"
 #import "SOGoContactFolders.h"
 
 @implementation SOGoContactFolders
@@ -52,20 +52,20 @@
 
 - (NSException *) appendSystemSources
 {
-  LDAPUserManager *um;
+  SOGoUserManager *um;
   NSEnumerator *sourceIDs;
   NSString *currentSourceID, *srcDisplayName;
-  SOGoContactLDAPFolder *currentFolder;
+  SOGoContactSourceFolder *currentFolder;
 
-  um = [LDAPUserManager sharedUserManager];
+  um = [SOGoUserManager sharedUserManager];
   sourceIDs = [[um addressBookSourceIDs] objectEnumerator]; 
   while ((currentSourceID = [sourceIDs nextObject]))
     {
       srcDisplayName = [um displayNameForSourceWithID: currentSourceID];
-      currentFolder = [SOGoContactLDAPFolder folderWithName: currentSourceID
-					     andDisplayName: srcDisplayName
-					     inContainer: self];
-      [currentFolder setLDAPSource: [um sourceWithID: currentSourceID]];
+      currentFolder = [SOGoContactSourceFolder folderWithName: currentSourceID
+					       andDisplayName: srcDisplayName
+					       inContainer: self];
+      [currentFolder setSource: [um sourceWithID: currentSourceID]];
       [subFolders setObject: currentFolder forKey: currentSourceID];
     }
 

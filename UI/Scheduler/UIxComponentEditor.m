@@ -55,7 +55,7 @@
 #import <SoObjects/Appointments/SOGoAppointmentOccurence.h>
 #import <SoObjects/Appointments/SOGoTaskObject.h>
 #import <SoObjects/SOGo/iCalEntityObject+Utilities.h>
-#import <SoObjects/SOGo/LDAPUserManager.h>
+#import <SoObjects/SOGo/SOGoUserManager.h>
 #import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/NSDictionary+Utilities.h>
 #import <SoObjects/SOGo/NSScanner+BSJSONAdditions.h>
@@ -243,10 +243,10 @@ iRANGE(2);
   NSMutableDictionary *currentAttendeeData;
   iCalPerson *currentAttendee;
   NSString *uid;
-  LDAPUserManager *um;
+  SOGoUserManager *um;
 
   jsonAttendees = [NSMutableDictionary new];
-  um = [LDAPUserManager sharedUserManager];
+  um = [SOGoUserManager sharedUserManager];
 
   attendees = [[component attendees] objectEnumerator];
   while ((currentAttendee = [attendees nextObject]))
@@ -527,7 +527,7 @@ iRANGE(2);
 {
 //   iCalRecurrenceRule *rrule;
   SOGoObject *co;
-  LDAPUserManager *um;
+  SOGoUserManager *um;
   NSString *owner, *ownerEmail;
 
   if (!component)
@@ -560,7 +560,7 @@ iRANGE(2);
 	    componentCalendar = [componentCalendar container];
 	  [componentCalendar retain];
 	
-	  um = [LDAPUserManager sharedUserManager];
+	  um = [SOGoUserManager sharedUserManager];
 	  owner = [componentCalendar ownerInContext: context];
 	  ownerEmail = [um getEmailForUID: owner];
 	  ASSIGN (ownerAsAttendee, [component findParticipantWithEmail: (id)ownerEmail]);

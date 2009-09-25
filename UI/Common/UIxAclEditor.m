@@ -1,6 +1,6 @@
 /* UIxAclEditor.m - this file is part of SOGo
  *
- * Copyright (C) 2006, 2007 Inverse inc.
+ * Copyright (C) 2006-2009 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -29,7 +29,7 @@
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/SoSecurityManager.h>
 #import <NGCards/iCalPerson.h>
-#import <SoObjects/SOGo/LDAPUserManager.h>
+#import <SoObjects/SOGo/SOGoUserManager.h>
 #import <SoObjects/SOGo/SOGoContentObject.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
 #import <SoObjects/SOGo/NSArray+Utilities.h>
@@ -74,10 +74,10 @@
 
 - (NSString *) _displayNameForUID: (NSString *) uid
 {
-  LDAPUserManager *um;
+  SOGoUserManager *um;
   NSString *s;
   
-  um = [LDAPUserManager sharedUserManager];
+  um = [SOGoUserManager sharedUserManager];
   s = [uid hasPrefix: @"@"] ? [uid substringFromIndex: 1] : uid;
 
   return [NSString stringWithFormat: @"%@ <%@>",

@@ -1,4 +1,4 @@
-/* LDAPUserManager.m - this file is part of SOGo
+/* SOGoUserManager.m - this file is part of SOGo
  *
  * Copyright (C) 2007-2009 Inverse inc.
  *
@@ -29,10 +29,14 @@
 #import <Foundation/NSValue.h>
 #import <NGExtensions/NSObject+Logs.h>
 
-#import "NSArray+Utilities.h"
-#import "LDAPSource.h"
-#import "LDAPUserManager.h"
-#import "SOGoCache.h"
+#include "NSArray+Utilities.h"
+#include "SOGoSource.h"
+#include "SOGoUserManager.h"
+#include "SOGoCache.h"
+#include "SOGoSource.h"
+
+#include "LDAPSource.h"
+#include "SQLSource.h"
 
 static NSString *defaultMailDomain = nil;
 static NSString *LDAPContactInfoAttribute = nil;
@@ -43,7 +47,7 @@ static BOOL forceImapLoginWithEmail = NO;
 static NSLock *lock = nil;
 #endif
 
-@implementation LDAPUserManager
+@implementation SOGoUserManager
 
 + (void) initialize
 {
@@ -97,17 +101,25 @@ static NSLock *lock = nil;
 
 - (void) _registerSource: (NSDictionary *) udSource
 {
+  NSString *sourceID, *value, *type;
   NSMutableDictionary *metadata;
-  LDAPSource *ldapSource;
-  NSString *sourceID, *value;
+  id<SOGoSource> ldapSource;
+  Class c;
   
   sourceID = [udSource objectForKey: @"id"];
-  ldapSource = [LDAPSource sourceFromUDSource: udSource];
-  if (sourceID)
-    [sources setObject: ldapSource forKey: sourceID];
+  type = [udSource objectForKey: @"type"];
+
+  if (!type || [type caseInsensitiveCompare: @"ldap"] == NSOrderedSame)
+    c = [LDAPSource class];
   else
-    [self errorWithFormat: @"id field missing in a LDAP source,"
-	  @" check the SOGoLDAPSources defaults"];
+    c = [SQLSource class];
+
+  ldapSource = [c sourceFromUDSource: udSource];
+  if (sourceID)
+    [_sources setObject: ldapSource forKey: sourceID];
+  else
+    [self errorWithFormat: @"id field missing in an user source,"
+	  @" check the SOGoUserSources defaults"];
   metadata = [NSMutableDictionary dictionary];
   value = [udSource objectForKey: @"canAuthenticate"];
   if (value)
@@ -121,27 +133,46 @@ static NSLock *lock = nil;
   value = [udSource objectForKey: @"MailFieldNames"];
   if (value)
     [metadata setObject: value forKey: @"MailFieldNames"];
-  [sourcesMetadata setObject: metadata forKey: sourceID];
+  [_sourcesMetadata setObject: metadata forKey: sourceID];
 }
 
-- (void) _prepareLDAPSourcesWithDefaults: (NSUserDefaults *) ud
+- (void) _prepareSourcesWithDefaults: (NSUserDefaults *) ud
 {
-  id udSources;
+  id o, sources;
   unsigned int count, max;
 
-  sources = [NSMutableDictionary new];
-  sourcesMetadata = [NSMutableDictionary new];
+  _sources = [[NSMutableDictionary alloc] init];
+  _sourcesMetadata = [[NSMutableDictionary alloc] init];
 
-  udSources = [ud arrayForKey: @"SOGoLDAPSources"];
-  
-  if (udSources && [udSources isKindOfClass: [NSArray class]])
+  sources = [NSMutableArray array];
+  o = [ud arrayForKey: @"SOGoLDAPSources"];
+
+  if (o)
     {
-      max = [udSources count];
+      [self errorWithFormat: @"Using depecrated SOGoLDAPSources default. You should now use SOGoUserSources."];
+
+      if ([o isKindOfClass: [NSArray class]])
+	  [sources addObjectsFromArray: o];
+      else
+	[self errorWithFormat: @"SOGoLDAPSources is NOT an array. Check your defaults. You should now use SOGoUserSources nonetheless."];
+    }
+  
+  o = [ud arrayForKey: @"SOGoUserSources"];
+
+  if (o)
+    {
+      if ([o isKindOfClass: [NSArray class]])
+	  [sources addObjectsFromArray: o];
+      else
+	[self errorWithFormat: @"SOGoUserSources is NOT an array. Check your defaults."];
+    }
+
+  if ([sources count])
+    {
+      max = [sources count];
       for (count = 0; count < max; count++)
-	[self _registerSource: [udSources objectAtIndex: count]];
-    } 
-  else
-    [self errorWithFormat: @"SOGoLDAPSources is not defined or it is not an array. Check your defaults."];
+	[self _registerSource: [sources objectAtIndex: count]];
+    }
 }
 
 - (id) init
@@ -152,9 +183,9 @@ static NSLock *lock = nil;
     {
       ud = [NSUserDefaults standardUserDefaults];
 
-      sources = nil;
-      sourcesMetadata = nil;
-      [self _prepareLDAPSourcesWithDefaults: ud];
+      _sources = nil;
+      _sourcesMetadata = nil;
+      [self _prepareSourcesWithDefaults: ud];
     }
 
   return self;
@@ -162,14 +193,14 @@ static NSLock *lock = nil;
 
 - (void) dealloc
 {
-  [sources release];
-  [sourcesMetadata release];
+  [_sources release];
+  [_sourcesMetadata release];
   [super dealloc];
 }
 
 - (NSArray *) sourceIDs
 {
-  return [sources allKeys];
+  return [_sources allKeys];
 }
 
 - (NSArray *) _sourcesOfType: (NSString *) sourceType
@@ -180,10 +211,10 @@ static NSLock *lock = nil;
   NSNumber *canAuthenticate;
 
   sourceIDs = [NSMutableArray array];
-  allIDs = [[sources allKeys] objectEnumerator];
+  allIDs = [[_sources allKeys] objectEnumerator];
   while ((currentID = [allIDs nextObject])) 
     {
-      canAuthenticate = [[sourcesMetadata objectForKey: currentID]
+      canAuthenticate = [[_sourcesMetadata objectForKey: currentID]
 			  objectForKey: sourceType];
       if ([canAuthenticate boolValue])
 	[sourceIDs addObject: currentID];
@@ -194,7 +225,7 @@ static NSLock *lock = nil;
 
 - (NSDictionary *) metadataForSourceID: (NSString *) sourceID
 {
-  return [sourcesMetadata objectForKey: sourceID];
+  return [_sourcesMetadata objectForKey: sourceID];
 }
 
 - (NSArray *) authenticationSourceIDs
@@ -209,14 +240,14 @@ static NSLock *lock = nil;
 
 - (LDAPSource *) sourceWithID: (NSString *) sourceID
 {
-  return [sources objectForKey: sourceID];
+  return [_sources objectForKey: sourceID];
 }
 
 - (NSString *) displayNameForSourceWithID: (NSString *) sourceID
 {
   NSDictionary *metadata;
 
-  metadata = [sourcesMetadata objectForKey: sourceID];
+  metadata = [_sourcesMetadata objectForKey: sourceID];
 
   return [metadata objectForKey: @"displayName"];
 }
@@ -267,20 +298,20 @@ static NSLock *lock = nil;
   return [contactInfos objectForKey: @"c_uid"];
 }
 
-- (BOOL) _ldapCheckLogin: (NSString *) login
-	     andPassword: (NSString *) password
+- (BOOL) _sourceCheckLogin: (NSString *) login
+               andPassword: (NSString *) password
 { 
-  BOOL checkOK;
-  LDAPSource *ldapSource;
+  id<SOGoSource> ldapSource;
   NSEnumerator *authIDs;
   NSString *currentID;
-
+  BOOL checkOK;
+  
   checkOK = NO;
 
   authIDs = [[self authenticationSourceIDs] objectEnumerator];
   while (!checkOK && (currentID = [authIDs nextObject]))
     {
-      ldapSource = [sources objectForKey: currentID];
+      ldapSource = [_sources objectForKey: currentID];
       checkOK = [ldapSource checkLogin: login andPassword: password];
     }
 
@@ -302,7 +333,7 @@ static NSLock *lock = nil;
   dictPassword = [currentUser objectForKey: @"password"];
   if (currentUser && dictPassword)
     checkOK = ([dictPassword isEqualToString: password]);
-  else if ([self _ldapCheckLogin: login andPassword: password])
+  else if ([self _sourceCheckLogin: login andPassword: password])
     {
       checkOK = YES;
       if (!currentUser)
@@ -329,8 +360,8 @@ static NSLock *lock = nil;
 
 - (void) _fillContactMailRecords: (NSMutableDictionary *) contact
 {
-  NSMutableArray *emails;
   NSString *uid, *systemEmail;
+  NSMutableArray *emails;
 
   emails = [contact objectForKey: @"emails"];
   uid = [contact objectForKey: @"c_uid"];
@@ -367,7 +398,7 @@ static NSLock *lock = nil;
   ldapSources = [[self authenticationSourceIDs] objectEnumerator];
   while ((sourceID = [ldapSources nextObject]))
     {
-      currentSource = [sources objectForKey: sourceID];
+      currentSource = [_sources objectForKey: sourceID];
       userEntry = [currentSource lookupContactEntryWithUIDorEmail: uid];
       if (userEntry)
 	{
@@ -522,7 +553,7 @@ static NSLock *lock = nil;
 	  email = [userEntry objectForKey: @"mail"];
 	  if (email && ![emails containsObject: email])
 	    [emails addObject: email];
-	  email = [userEntry objectForKey: @"mozillaSecondEmail"];
+	  email = [userEntry objectForKey: @"mozillasecondemail"];
 	  if (email && ![emails containsObject: email])
 	    [emails addObject: email];
 	  email = [userEntry objectForKey: @"xmozillasecondemail"];
@@ -551,15 +582,15 @@ static NSLock *lock = nil;
 			    matching: (NSString *) filter
 {
   NSMutableArray *contacts;
-  NSEnumerator *ldapSources;
+  NSEnumerator *sources;
   NSString *sourceID;
-  LDAPSource *currentSource;
+  id currentSource;
 
   contacts = [NSMutableArray array];
-  ldapSources = [sourcesList objectEnumerator];
-  while ((sourceID = [ldapSources nextObject]))
+  sources = [sourcesList objectEnumerator];
+  while ((sourceID = [sources nextObject]))
     {
-      currentSource = [sources objectForKey: sourceID];
+      currentSource = [_sources objectForKey: sourceID];
       [contacts addObjectsFromArray:
 		  [currentSource fetchContactsMatching: filter]];
     }
@@ -586,7 +617,7 @@ static NSLock *lock = nil;
   LDAPSource *currentSource;
 
   login = nil;
-  ldapSources = [[sources allValues] objectEnumerator];
+  ldapSources = [[_sources allValues] objectEnumerator];
   while ((currentSource = [ldapSources nextObject]))
     {
       if ([theDN hasSuffix: [currentSource baseDN]])

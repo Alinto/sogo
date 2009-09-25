@@ -42,7 +42,7 @@
 #import <NGMail/NGMimeMessage.h>
 
 #import <SOGo/iCalEntityObject+Utilities.h>
-#import <SOGo/LDAPUserManager.h>
+#import <SOGo/SOGoUserManager.h>
 #import <SOGo/NSCalendarDate+SOGo.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/SOGoMailer.h>
@@ -590,7 +590,7 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
 {
   NSString *uid;
 
-  uid = [[LDAPUserManager sharedUserManager] getUIDForEmail: email];
+  uid = [[SOGoUserManager sharedUserManager] getUIDForEmail: email];
 
   return [[SOGoUser userWithLogin: uid] timeZone];
 }
@@ -926,10 +926,10 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
 - (iCalPerson *) iCalPersonWithUID: (NSString *) uid
 {
   iCalPerson *person;
-  LDAPUserManager *um;
+  SOGoUserManager *um;
   NSDictionary *contactInfos;
 
-  um = [LDAPUserManager sharedUserManager];
+  um = [SOGoUserManager sharedUserManager];
   contactInfos = [um contactInfosForUserWithUIDorEmail: uid];
 
   person = [iCalPerson new];

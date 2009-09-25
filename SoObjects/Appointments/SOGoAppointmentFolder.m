@@ -57,7 +57,7 @@
 #import <SOGo/NSObject+DAV.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoCache.h>
-#import <SOGo/LDAPUserManager.h>
+#import <SOGo/SOGoUserManager.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
@@ -2873,7 +2873,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 {
   /* Note: can return NSNull objects in the array! */
   NSMutableArray    *uids;
-  LDAPUserManager *um;
+  SOGoUserManager *um;
   unsigned          i, count;
   iCalPerson *person;
   NSString   *email;
@@ -2883,7 +2883,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     {
       count = [_persons count];
       uids  = [NSMutableArray arrayWithCapacity:count + 1];
-      um    = [LDAPUserManager sharedUserManager];
+      um    = [SOGoUserManager sharedUserManager];
   
       for (i = 0; i < count; i++)
 	{

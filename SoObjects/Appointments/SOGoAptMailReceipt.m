@@ -27,13 +27,13 @@
 #import <NGCards/iCalEvent.h>
 #import <NGCards/iCalPerson.h>
 
-#import <SOGo/LDAPUserManager.h>
+#import <SOGo/SOGoUserManager.h>
 #import <SOGo/SOGoDateFormatter.h>
 #import <SOGo/SOGoUser.h>
 
 #import "SOGoAptMailReceipt.h"
 
-static LDAPUserManager *um = nil;
+static SOGoUserManager *um = nil;
 
 
 @implementation SOGoAptMailReceipt
@@ -41,7 +41,7 @@ static LDAPUserManager *um = nil;
 + (void) initialize
 {
   if (!um)
-    um = [LDAPUserManager sharedUserManager];
+    um = [SOGoUserManager sharedUserManager];
 }
 
 - (id) init

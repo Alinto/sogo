@@ -31,7 +31,7 @@
 #import <SoObjects/SOGo/SOGoMailer.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/SOGoObject.h>
-#import <SoObjects/SOGo/LDAPUserManager.h>
+#import <SoObjects/SOGo/SOGoUserManager.h>
 #import <SoObjects/SOGo/NSCalendarDate+SOGo.h>
 #import <SoObjects/SOGo/NSString+Utilities.h>
 
@@ -203,7 +203,7 @@
   fullMail = [NSString stringWithFormat: @"%@ <%@>",
 		       [identity objectForKey: @"fullName"], from];
 
-  recipient = [[LDAPUserManager sharedUserManager]
+  recipient = [[SOGoUserManager sharedUserManager]
 		getFullEmailForUID: recipientUID];
 
   headerMap = [NGMutableHashMap hashMapWithCapacity: 5];

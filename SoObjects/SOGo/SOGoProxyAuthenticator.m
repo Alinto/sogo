@@ -31,7 +31,6 @@
 
 #import <NGExtensions/NSObject+Logs.h>
 
-#import "LDAPUserManager.h"
 #import "SOGoPermissions.h"
 #import "SOGoUser.h"
 

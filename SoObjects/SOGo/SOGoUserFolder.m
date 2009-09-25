@@ -1,5 +1,6 @@
 /*
   Copyright (C) 2004-2005 SKYRIX Software AG
+  Copyright (C) 2007-2009 Inverse inc.
 
   This file is part of OpenGroupware.org.
 
@@ -51,7 +52,7 @@
 
 #import "NSArray+Utilities.h"
 #import "NSDictionary+Utilities.h"
-#import "LDAPUserManager.h"
+#import "SOGoUserManager.h"
 #import "SOGoPermissions.h"
 #import "SOGoUser.h"
 #import "WORequest+SOGo.h"
@@ -229,7 +230,7 @@ static NSString *LDAPContactInfoAttribute = nil;
   results = [NSMutableDictionary dictionary];
 
   contacts
-    = [[LDAPUserManager sharedUserManager] fetchUsersMatching: uid];
+    = [[SOGoUserManager sharedUserManager] fetchUsersMatching: uid];
   enumerator = [contacts objectEnumerator];
   while ((contact = [enumerator nextObject]))
     {
@@ -328,13 +329,13 @@ static NSString *LDAPContactInfoAttribute = nil;
 {
   NSArray *users, *owners;
   NSString *ownerMatch;
-  LDAPUserManager *um;
+  SOGoUserManager *um;
 
   owners = [NSMutableArray array];
   if (davOwnerMatch)
     {
       ownerMatch = [self _userFromDAVuser: davOwnerMatch];
-      um = [LDAPUserManager sharedUserManager];
+      um = [SOGoUserManager sharedUserManager];
       users = [[um fetchUsersMatching: ownerMatch]
 		 sortedArrayUsingSelector: @selector (caseInsensitiveDisplayNameCompare:)];
       owners = [users objectsForKey: @"c_uid" notFoundMarker: nil];
@@ -391,7 +392,7 @@ static NSString *LDAPContactInfoAttribute = nil;
 
 - (NSString *) _davFetchUsersMatching: (NSString *) user
 {
-  LDAPUserManager *um;
+  SOGoUserManager *um;
   NSMutableString *fetch;
   NSDictionary *currentUser;
   NSString *field, *login;
@@ -402,7 +403,7 @@ static NSString *LDAPContactInfoAttribute = nil;
   fetch = [NSMutableString string];
 
   login = [[context activeUser] login];
-  um = [LDAPUserManager sharedUserManager];
+  um = [SOGoUserManager sharedUserManager];
 
   // We sort our array - this is pretty useful for the
   // SOGo Integrator extension, among other things.
@@ -609,7 +610,7 @@ static NSString *LDAPContactInfoAttribute = nil;
 
 - (NSString *) davDisplayName
 {
-  return [[LDAPUserManager sharedUserManager]
+  return [[SOGoUserManager sharedUserManager]
 	   getCNForUID: nameInContainer];
 }
 

@@ -35,7 +35,7 @@
 #import <NGObjWeb/SoClassSecurityInfo.h>
 #import <NGObjWeb/NSException+HTTP.h>
 
-#import <SoObjects/SOGo/LDAPUserManager.h>
+#import <SoObjects/SOGo/SOGoUserManager.h>
 #import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/SOGoContentObject.h>
 #import <SoObjects/SOGo/SOGoGCSFolder.h>
@@ -61,7 +61,7 @@
 
   baseFolder = [[clientObject container] nameInContainer];
 
-  um = [LDAPUserManager sharedUserManager];
+  um = [SOGoUserManager sharedUserManager];
   ud = [activeUser userSettings];
   moduleSettings = [ud objectForKey: baseFolder];
   if (!moduleSettings)

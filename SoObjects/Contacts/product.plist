@@ -20,7 +20,7 @@
     SOGoContactGCSList = {
       superclass = "SOGoContentObject";
     };
-    SOGoContactLDAPFolder = {
+    SOGoContactSourceFolder = {
       superclass = "SOGoGCSFolder";
       protectedBy = "Access Contents Information";
       defaultRoles = {

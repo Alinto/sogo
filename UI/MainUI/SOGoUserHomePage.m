@@ -36,7 +36,7 @@
 #import <NGExtensions/NSObject+Logs.h>
 
 #import <Appointments/SOGoFreeBusyObject.h>
-#import <SoObjects/SOGo/LDAPUserManager.h>
+#import <SoObjects/SOGo/SOGoUserManager.h>
 #import <SoObjects/SOGo/SOGoWebAuthenticator.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/SOGoUserFolder.h>
@@ -334,6 +334,8 @@ static NSString *LDAPContactInfoAttribute = nil;
     {
       contact = [allUsers objectAtIndex: i];
       uid = [contact objectForKey: @"c_uid"];
+
+      // We do NOT return the current authenticated user.
       if (![uid isEqualToString: login])
         {
           if ([LDAPContactInfoAttribute length])
@@ -360,9 +362,9 @@ static NSString *LDAPContactInfoAttribute = nil;
 {
   NSString *contact;
   id <WOActionResults> result;
-  LDAPUserManager *um;
+  SOGoUserManager *um;
 
-  um = [LDAPUserManager sharedUserManager];
+  um = [SOGoUserManager sharedUserManager];
   contact = [self queryParameterForKey: @"search"];
   if ([contact length])
     {

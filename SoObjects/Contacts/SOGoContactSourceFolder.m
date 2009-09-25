@@ -1,4 +1,4 @@
-/* SOGoContactLDAPFolder.m - this file is part of SOGo
+/* SOGoContactSourceFolder.m - this file is part of SOGo
  *
  * Copyright (C) 2006-2009 Inverse inc.
  *
@@ -40,14 +40,13 @@
 #import <SaxObjC/XMLNamespaces.h>
 
 #import <SoObjects/SOGo/SOGoPermissions.h>
-#import <SoObjects/SOGo/LDAPSource.h>
 #import <SoObjects/SOGo/NSString+Utilities.h>
 #import "SOGoContactLDIFEntry.h"
-#import "SOGoContactLDAPFolder.h"
+#import "SOGoContactSourceFolder.h"
 
 @class WOContext;
 
-@implementation SOGoContactLDAPFolder
+@implementation SOGoContactSourceFolder
 
 #warning this should be unified within SOGoFolder
 - (void) appendObject: (NSDictionary *) object
@@ -111,7 +110,7 @@
   if ((self = [super init]))
     {
       entries = nil;
-      ldapSource = nil;
+      source = nil;
     }
 
   return self;
@@ -133,13 +132,13 @@
 - (void) dealloc
 {
   [entries release];
-  [ldapSource release];
+  [source release];
   [super dealloc];
 }
 
-- (void) setLDAPSource: (LDAPSource *) newLDAPSource
+- (void) setSource: (id) newSource
 {
-  ASSIGN (ldapSource, newLDAPSource);
+  ASSIGN (source, newSource);
 }
 
 - (NSString *) groupDavResourceType
@@ -166,17 +165,15 @@
         inContext: (WOContext *) lookupContext
           acquire: (BOOL) acquire
 {
-  id obj;
   NSDictionary *ldifEntry;
-
-  //NSLog (@"looking up name '%@'...", objectName);
+  id obj;
 
   /* first check attributes directly bound to the application */
   obj = [super lookupName: objectName inContext: lookupContext acquire: NO];
 
   if (!obj)
     {
-      ldifEntry = [ldapSource lookupContactEntry: objectName];
+      ldifEntry = [source lookupContactEntry: objectName];
       if (ldifEntry)
 	obj = [SOGoContactLDIFEntry contactEntryWithName: objectName
 				    withLDIFEntry: ldifEntry
@@ -190,7 +187,7 @@
 
 - (NSArray *) toOneRelationshipKeys
 {
-  return [ldapSource allEntryIDs];
+  return [source allEntryIDs];
 }
 
 - (NSArray *) _flattenedRecords: (NSArray *) records
@@ -218,7 +215,7 @@
       [newRecord setObject: [oldRecord objectForKey: @"c_name"]
 		 forKey: @"c_name"];
 
-      data = [oldRecord objectForKey: @"displayName"];
+      data = [oldRecord objectForKey: @"displayname"];
       if (!data)
 	data = [oldRecord objectForKey: @"c_cn"];
       if (!data)
@@ -230,7 +227,7 @@
 	data = @"";
       [newRecord setObject: data forKey: @"c_mail"];
 
-      data = [oldRecord objectForKey: @"nsAIMid"];
+      data = [oldRecord objectForKey: @"nsaimid"];
       if (![data length])
 	data = [oldRecord objectForKey: @"nscpaimscreenname"];
       if (![data length])
@@ -242,15 +239,17 @@
 	data = @"";
       [newRecord setObject: data forKey: @"c_o"];
 
-      data = [oldRecord objectForKey: @"telephoneNumber"];
+      data = [oldRecord objectForKey: @"telephonenumber"];
       if (![data length])
 	data = [oldRecord objectForKey: @"cellphone"];
       if (![data length])
-	data = [oldRecord objectForKey: @"homePhone"];
+	data = [oldRecord objectForKey: @"homephone"];
       if (![data length])
 	data = @"";
       [newRecord setObject: data forKey: @"c_telephonenumber"];
 
+      // Custom attribute for group-lookups. See LDAPSource.m where
+      // it's set.
       data = [oldRecord objectForKey: @"isGroup"];
       if (data)
 	[newRecord setObject: data forKey: @"isGroup"];
@@ -281,7 +280,7 @@
   if (filter && [filter length] > 0)
     {
       records = [self _flattenedRecords:
-			[ldapSource fetchContactsMatching: filter]];
+			[source fetchContactsMatching: filter]];
       ordering
         = [EOSortOrdering sortOrderingWithKey: sortKey
                           selector: ((sortOrdering == NSOrderedDescending)

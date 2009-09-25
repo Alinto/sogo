@@ -1,3 +1,16 @@
+2009-09-25  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* Renamed SoObjects/Contacts/SOGoContactLDAPFolder to
+	SoObjects/Contacts/SOGoContactSourceFolder
+	* Renamed SoObjects/SOGo/LDAPUserManager to
+	SoObjects/SOGo/SOGoserManager.m
+	* Added SoObjects/SOGo/SOGoSource.h and
+	SoObjects/SOGo/SQLSource.{h,m}
+	We now support authentication and address book sources
+	coming from a SQL database. This can be used concurrently
+	with LDAP sources. Modified many classes to reflect this
+	change.
+
 2009-09-24  Cyril Robert <crobert@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m (bareFetchFields:): Handled

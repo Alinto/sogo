@@ -32,7 +32,7 @@
 #import <NGCards/iCalFreeBusy.h>
 #import <NGCards/iCalPerson.h>
 
-#import <SOGo/LDAPUserManager.h>
+#import <SOGo/SOGoUserManager.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoPermissions.h>
 
@@ -74,10 +74,10 @@ static unsigned int freebusyRangeEnd = 0;
 - (iCalPerson *) iCalPersonWithUID: (NSString *) uid
 {
   iCalPerson *person;
-  LDAPUserManager *um;
+  SOGoUserManager *um;
   NSDictionary *contactInfos;
 
-  um = [LDAPUserManager sharedUserManager];
+  um = [SOGoUserManager sharedUserManager];
   contactInfos = [um contactInfosForUserWithUIDorEmail: uid];
 
   /* iCal.app compatibility:

@@ -33,7 +33,7 @@
 #import <GDLContentStore/GCSFolder.h>
 #import <GDLContentStore/NSURL+GCS.h>
 
-#import <SOGo/LDAPUserManager.h>
+#import <SOGo/SOGoUserManager.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
@@ -130,10 +130,10 @@
 - (BOOL) fetchUserID: (NSString *) identifier
 {
   BOOL rc;
-  LDAPUserManager *lm;
+  SOGoUserManager *lm;
   NSDictionary *infos;
 
-  lm = [LDAPUserManager sharedUserManager];
+  lm = [SOGoUserManager sharedUserManager];
   infos = [lm contactInfosForUserWithUIDorEmail: identifier];
   ASSIGN (userID, [infos objectForKey: @"c_uid"]);
   if (userID)

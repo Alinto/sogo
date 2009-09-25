@@ -1,8 +1,8 @@
-/* iCalPerson+SOGo.h - this file is part of SOGo
+/* SOGoSource.h - this file is part of SOGo
  *
- * Copyright (C) 2007-2009 Inverse inc.
+ * Copyright (C) 2009 Inverse inc.
  *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Author: Ludovic Marcotte <lmarcotte@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,20 +20,30 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef ICALPERSON_SOGO_H
-#define ICALPERSON_SOGO_H
+#ifndef SOGOSOURCE_H
+#define SOGOSOURCE_H
 
-#import <NGCards/iCalPerson.h>
+#import <Foundation/NSObject.h>
 
+@class NSDictionary;
 @class NSString;
 
-@interface iCalPerson (SOGoExtension)
+@protocol SOGoSource
 
-- (NSString *) mailAddress;
-- (NSString *) uid;
-- (BOOL) hasSentBy;
-- (NSString *) sentBy;
++ (id) sourceFromUDSource: (NSDictionary *) udSource;
+
+- (id) initFromUDSource: (NSDictionary *) udSource;
+
+- (BOOL) checkLogin: (NSString *) login
+	andPassword: (NSString *) password;
+
+- (NSDictionary *) lookupContactEntry: (NSString *) theID;
+- (NSDictionary *) lookupContactEntryWithUIDorEmail: (NSString *) entryID;
+
+- (NSArray *) allEntryIDs;
+- (NSArray *) fetchContactsMatching: (NSString *) filter;
+- (NSString *) sourceID;
 
 @end
 
-#endif /* ICALPERSON_SOGO_H */
+#endif /* SOGOSOURCE_H */

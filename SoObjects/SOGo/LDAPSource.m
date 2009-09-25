@@ -32,7 +32,6 @@
 #import <NGLdap/NGLdapAttribute.h>
 #import <NGLdap/NGLdapEntry.h>
 
-#import "LDAPUserManager.h"
 #import "NSArray+Utilities.h"
 #import "NSString+Utilities.h"
 
@@ -68,16 +67,16 @@ static NSLock *lock;
 				      @"title",
 				    @"company",
 				    @"o",
-				    @"displayName",
+				    @"displayname",
 				    @"modifytimestamp",
-				    @"mozillaHomeState",
-				    @"mozillaHomeUrl",
+				    @"mozillahomestate",
+				    @"mozillahomeurl",
 				    @"homeurl",
 				    @"st",
 				    @"region",
-				    @"mozillaCustom2",
+				    @"mozillacustom2",
 				    @"custom2",
-				    @"mozillaHomeCountryName",
+				    @"mozillahomecountryname",
 				    @"description",
 				    @"notes",
 				    @"department",
@@ -87,36 +86,36 @@ static NSLock *lock;
 				    @"mobile",
 				    @"cellphone",
 				    @"carphone",
-				    @"mozillaCustom1",
+				    @"mozillacustom1",
 				    @"custom1",
-				    @"mozillaNickname",
+				    @"mozillanickname",
 				    @"xmozillanickname",
-				    @"mozillaWorkUrl",
+				    @"mozillaworkurl",
 				    @"workurl",
 				    @"fax",
-				    @"facsimileTelephoneNumber",
-				    @"telephoneNumber",
-				    @"mozillaHomeStreet",
-				    @"mozillaSecondEmail",
+				    @"facsimiletelephonenumber",
+				    @"telephonenumber",
+				    @"mozillahomestreet",
+				    @"mozillasecondemail",
 				    @"xmozillasecondemail",
-				    @"mozillaCustom4",
+				    @"mozillacustom4",
 				    @"custom4",
-				    @"nsAIMid",
+				    @"nsaimid",
 				    @"nscpaimscreenname",
 				    @"street",
-				    @"streetAddress",
-				    @"postOfficeBox",
-				    @"homePhone",
+				    @"streetaddress",
+				    @"postofficebox",
+				    @"homephone",
 				    @"cn",
 				    @"commonname",
-				    @"givenName",
-				    @"mozillaHomePostalCode",
-				    @"mozillaHomeLocalityName",
-				    @"mozillaWorkStreet2",
-				    @"mozillaUseHtmlMail",
+				    @"givenname",
+				    @"mozillahomepostalcode",
+				    @"mozillahomelocalityname",
+				    @"mozillaworkstreet2",
+				    @"mozillausehtmlmail",
 				    @"xmozillausehtmlmail",
-				    @"mozillaHomeStreet2",
-				    @"postalCode",
+				    @"mozillahomestreet2",
+				    @"postalcode",
 				    @"zip",
 				    @"c",
 				    @"countryname",
@@ -125,13 +124,13 @@ static NSLock *lock;
 				    @"mail",
 				    @"sn",
 				    @"surname",
-				    @"mozillaCustom3",
+				    @"mozillacustom3",
 				    @"custom3",
 				    @"l",
 				    @"locality",
 				    @"birthyear",
-				    @"serialNumber",
-				    @"calFBURL", @"proxyAddresses",
+				    @"serialnumber",
+				    @"calfburl", @"proxyaddresses",
 				    nil];	
       [commonSearchFields retain];
 
@@ -224,7 +223,7 @@ static NSLock *lock;
   ASSIGN (_filter, [udSource objectForKey: @"filter"]);
   ASSIGN (_scope, ([udSource objectForKey: @"scope"]
                    ? [udSource objectForKey: @"scope"]
-                   : @"sub"));
+                   : (id)@"sub"));
   
   return self;
 }
@@ -611,7 +610,7 @@ static NSLock *lock;
   NSMutableArray *emails;
   NSArray *allValues;
 
-  emails = [NSMutableArray new];
+  emails = [[NSMutableArray alloc] init];
   emailFields = [mailFields objectEnumerator];
   while ((currentFieldName = [emailFields nextObject]))
     {
@@ -667,34 +666,56 @@ static NSLock *lock;
   NSMutableDictionary *contactEntry;
   NSEnumerator *attributes;
   NSString *currentAttribute, *value;
-  NSArray *classes;
+  NSMutableArray *classes;
+  id o;
 
   contactEntry = [NSMutableDictionary dictionary];
   [contactEntry setObject: [ldapEntry dn] forKey: @"dn"];
-  classes = [ldapEntry objectClasses];
   attributes = [[self _searchAttributes] objectEnumerator];
+
+  // We get our objectClass attribute values. We lowercase
+  // everything for ease of search after.
+  o = [ldapEntry objectClasses];
+  classes = nil;
+
+  if (o)
+    {
+      int i, c;
+
+      classes = [NSMutableArray arrayWithArray: o];
+      c = [classes count];
+      for (i = 0; i < c; i++)
+	[classes replaceObjectAtIndex: i
+		 withObject: [[classes objectAtIndex: i] lowercaseString]];
+    }
 
   if (classes)
     {
       [contactEntry setObject: classes
-		       forKey: @"objectClasses"];
+		       forKey: @"objectclasses"];
 
+      // We check if our entry is a group. If so, we set the
+      // 'isGroup' custom attribute.
       if ([classes containsObject: @"group"] ||
-	  [classes containsObject: @"groupOfNames"] ||
-	  [classes containsObject: @"groupOfUniqueNames"] ||
-	  [classes containsObject: @"posixGroup"])
+	  [classes containsObject: @"groupofnames"] ||
+	  [classes containsObject: @"groupofuniquenames"] ||
+	  [classes containsObject: @"posixgroup"])
 	{
 	  [contactEntry setObject: [NSNumber numberWithInt: 1]
 			   forKey: @"isGroup"];
 	}
     }
+
   while ((currentAttribute = [attributes nextObject]))
     {
       value = [[ldapEntry attributeWithName: currentAttribute]
 		stringValueAtIndex: 0];
+
+      // It's important here to set our attributes' key in lowercase.
       if (value)
-	[contactEntry setObject: value forKey: currentAttribute];
+	[contactEntry setObject: value forKey: [currentAttribute lowercaseString]];
     }
+
   value = [[ldapEntry attributeWithName: IDField] stringValueAtIndex: 0];
   if (!value)
     value = @"";

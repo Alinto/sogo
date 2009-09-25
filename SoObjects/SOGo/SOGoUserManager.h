@@ -1,4 +1,4 @@
-/* LDAPUserManager.h - this file is part of SOGo
+/* SOGoUserManager.h - this file is part of SOGo
  *
  * Copyright (C) 2007-2009 Inverse inc.
  *
@@ -20,8 +20,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef LDAPUSERMANAGER_H
-#define LDAPUSERMANAGER_H
+#ifndef SOGOUSERMANAGER_H
+#define SOGOUSERMANAGER_H
 
 #import <Foundation/NSObject.h>
 
@@ -33,11 +33,11 @@
 
 @class LDAPSource;
 
-@interface LDAPUserManager : NSObject
+@interface SOGoUserManager : NSObject
 {
   @private
-    NSMutableDictionary *sources;
-    NSMutableDictionary *sourcesMetadata;
+    NSMutableDictionary *_sources;
+    NSMutableDictionary *_sourcesMetadata;
 }
 
 + (id) sharedUserManager;
@@ -67,4 +67,4 @@
 
 @end
 
-#endif /* LDAPUSERMANAGER_H */
+#endif /* SOGOUSERMANAGER_H */

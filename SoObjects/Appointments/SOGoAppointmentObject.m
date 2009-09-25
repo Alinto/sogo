@@ -38,7 +38,7 @@
 #import <SOPE/NGCards/NSString+NGCards.h>
 
 #import <SoObjects/SOGo/iCalEntityObject+Utilities.h>
-#import <SoObjects/SOGo/LDAPUserManager.h>
+#import <SoObjects/SOGo/SOGoUserManager.h>
 #import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/NSObject+DAV.h>
 #import <SoObjects/SOGo/SOGoObject.h>
@@ -971,7 +971,7 @@
   BOOL isUpdate, hasChanged;
   
   elements = [NSMutableArray array];
-  ownerUID = [[LDAPUserManager sharedUserManager]
+  ownerUID = [[SOGoUserManager sharedUserManager]
 	       getUIDForEmail: originator];
   eventOwner = [self iCalPersonWithUID: ownerUID];
   emailEvent = [self component: NO secure: NO];
@@ -1138,7 +1138,7 @@
 
   elements = [NSMutableArray array];
 
-  ownerUID = [[LDAPUserManager sharedUserManager]
+  ownerUID = [[SOGoUserManager sharedUserManager]
 		    getUIDForEmail: originator];
   event = [self component: NO secure: NO];
   recipientsEnum = [recipients objectEnumerator];
@@ -1272,7 +1272,7 @@
   elements = [NSMutableArray array];
   event = [self component: NO secure: NO];
   [[event parent] setMethod: @""];
-  ownerUser = [SOGoUser userWithLogin: [[LDAPUserManager sharedUserManager]
+  ownerUser = [SOGoUser userWithLogin: [[SOGoUserManager sharedUserManager]
 					 getUIDForEmail: originator]];
   attendee = [event findParticipant: ownerUser];
   eventUID = [event uid];

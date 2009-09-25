@@ -25,12 +25,14 @@
 
 #import <Foundation/NSObject.h>
 
+#include "SOGoSource.h"
+
 @class NSDictionary;
 @class NSString;
 @class NGLdapConnection;
 @class NGLdapEntry;
 
-@interface LDAPSource : NSObject
+@interface LDAPSource : NSObject <SOGoSource>
 {
   NSString *sourceID;
   NSString *bindDN;

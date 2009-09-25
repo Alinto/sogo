@@ -32,7 +32,7 @@
 #import <GDLContentStore/GCSFolder.h>
 #import <GDLContentStore/NSURL+GCS.h>
 
-#import <SOGo/LDAPUserManager.h>
+#import <SOGo/SOGoUserManager.h>
 #import <SOGo/LDAPSource.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
@@ -118,13 +118,13 @@
 
 - (BOOL) fetchUserIDs: (NSArray *) users
 {
-  LDAPUserManager *lm;
+  SOGoUserManager *lm;
   NSDictionary *infos;
   NSString *user;
   id allUsers;
   int count, max;
 
-  lm = [LDAPUserManager sharedUserManager];
+  lm = [SOGoUserManager sharedUserManager];
   max = [users count];
   user = [users objectAtIndex: 0];
   if (max == 1 && [user isEqualToString: @"ALL"])
@@ -302,11 +302,11 @@
   NSEnumerator *ldapSources;
   NSString *sourceID;
   LDAPSource *currentSource;
-  LDAPUserManager *lm;
+  SOGoUserManager *lm;
   NSDictionary *userEntry;
   BOOL done;
 
-  lm = [LDAPUserManager sharedUserManager];
+  lm = [SOGoUserManager sharedUserManager];
 
   done = NO;
   ldapSources = [[lm authenticationSourceIDs] objectEnumerator];

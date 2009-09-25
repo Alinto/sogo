@@ -53,21 +53,6 @@
 
 @implementation SOGoContactGCSFolder
 
-/* name lookup */
-
-//- (id <SOGoContactObject>) lookupContactWithId: (NSString *) recordId
-//{
-//  SOGoContactGCSEntry *contact;
-//
-//  if ([recordId length] > 0)
-//    contact = [SOGoContactGCSEntry objectWithName: recordId
-//                                   inContainer: self];
-//  else
-//    contact = nil;
-//
-//  return contact;
-//}
-
 - (Class) objectClassForContent: (NSString *) content
 {
   CardGroup *cardEntry;
@@ -171,44 +156,6 @@
   return obj;
 }
 
-// - (id) lookupName: (NSString *) _key
-//         inContext: (WOContext *) _ctx
-//           acquire: (BOOL) _flag
-// {
-//   id obj;
-//   BOOL isPut;
-
-//   isPut = NO;
-//   obj = [super lookupName:_key inContext:_ctx acquire:NO];
-  
-//   if (!obj)
-//     {
-//       if ([[[_ctx request] method] isEqualToString: @"PUT"])
-// 	{
-// 	  if ([_key isEqualToString: @"PUT"])
-// 	    isPut = YES;
-// 	  else
-
-// 	    obj = [SOGoContactGCSEntry objectWithName: _key
-// 				       inContainer: self];
-// 	}
-//       else
-//         obj = [self lookupContactWithId: _key];
-//     }
-//   if (!(obj || isPut))
-//     obj = [NSException exceptionWithHTTPStatus:404 /* Not Found */];
-
-// #if 0
-//     if ([[self ocsFolder] versionOfContentWithName:_key])
-// #endif
-//       return [self contactWithName:_key inContext:_ctx];
-//   }
-
-//   /* return 404 to stop acquisition */
-//   return obj;
-// }
-
-/* fetching */
 - (EOQualifier *) _qualifierForFilter: (NSString *) filter
 {
   NSString *qs;
@@ -304,8 +251,6 @@
     }
   else
     records = nil;
-  //  else
-  //[self errorWithFormat:@"(%s): fetch failed!", __PRETTY_FUNCTION__];
 
   [self debugWithFormat:@"fetched %i records.", [records count]];
   return records;
@@ -387,7 +332,7 @@
   NSComparisonResult comparison;
 
   if ([NSStringFromClass([otherFolder class])
-			isEqualToString: @"SOGoContactLDAPFolder"])
+			isEqualToString: @"SOGoContactSourceFolder"])
     comparison = NSOrderedAscending;
   else
     comparison = [super compare: otherFolder];

@@ -120,7 +120,7 @@
         };
      };
      
-     SOGoContactLDAPFolder = {
+     SOGoContactSourceFolder = {
         slots = {
            toolbar = {
               protectedBy = "View";

@@ -1,6 +1,6 @@
 /* UIxContactFoldersView.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2008 Inverse inc.
+ * Copyright (C) 2006-2009 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -38,7 +38,7 @@
 #import <GDLContentStore/GCSFolder.h>
 #import <GDLContentStore/GCSFolderManager.h>
 
-#import <SoObjects/SOGo/LDAPUserManager.h>
+#import <SoObjects/SOGo/SOGoUserManager.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/NSArray+Utilities.h>
@@ -47,7 +47,7 @@
 #import <SoObjects/Contacts/SOGoContactFolders.h>
 #import <SoObjects/Contacts/SOGoContactFolder.h>
 #import <SoObjects/Contacts/SOGoContactGCSFolder.h>
-#import <SoObjects/Contacts/SOGoContactLDAPFolder.h>
+#import <SoObjects/Contacts/SOGoContactSourceFolder.h>
 
 #import "UIxContactFoldersView.h"
 
@@ -220,7 +220,7 @@
       for (i = 0; i < [folders count]; i++)
         {
           folder = [folders objectAtIndex: i];
-          if ([folder isKindOfClass: [SOGoContactLDAPFolder class]])
+          if ([folder isKindOfClass: [SOGoContactSourceFolder class]])
             [sortedFolders insertObject: folder atIndex: 0];
           else
             [sortedFolders addObject: folder];
@@ -281,12 +281,12 @@
   NSArray *contacts;
   NSString *searchText;
   id <WOActionResults> result;
-  LDAPUserManager *um;
+  SOGoUserManager *um;
 
   searchText = [self queryParameterForKey: @"search"];
   if ([searchText length] > 0)
     {
-      um = [LDAPUserManager sharedUserManager];
+      um = [SOGoUserManager sharedUserManager];
       contacts 
         = [self _responseForResults: [um fetchContactsMatching: searchText]];
       data = [NSDictionary dictionaryWithObjectsAndKeys: searchText, @"searchText",
@@ -420,7 +420,7 @@
 
 - (NSString *) currentContactFolderClass
 {
-  return ([currentFolder isKindOfClass: [SOGoContactLDAPFolder class]]? @"remote" : @"local");
+  return ([currentFolder isKindOfClass: [SOGoContactSourceFolder class]]? @"remote" : @"local");
 }
 
 - (WOResponse *) saveDragHandleStateAction

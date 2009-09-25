@@ -37,7 +37,7 @@
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 
-#import "LDAPUserManager.h"
+#import "SOGoUserManager.h"
 #import "NSArray+Utilities.h"
 #import "SOGoCache.h"
 #import "SOGoDateFormatter.h"
@@ -259,7 +259,7 @@ _timeValue (NSString *key)
 	       roles: (NSArray *) newRoles
 	       trust: (BOOL) b
 {
-  LDAPUserManager *um;
+  SOGoUserManager *um;
   NSString *realUID;
 
   _defaults = nil;
@@ -274,7 +274,7 @@ _timeValue (NSString *key)
 	realUID = newLogin;
       else
 	{
-	  um = [LDAPUserManager sharedUserManager];
+	  um = [SOGoUserManager sharedUserManager];
 	  realUID = [[um contactInfosForUserWithUIDorEmail: newLogin]
 		      objectForKey: @"c_uid"];
 	}
@@ -327,9 +327,9 @@ _timeValue (NSString *key)
 - (id) _fetchFieldForUser: (NSString *) field
 {
   NSDictionary *contactInfos;
-  LDAPUserManager *um;
+  SOGoUserManager *um;
 
-  um = [LDAPUserManager sharedUserManager];
+  um = [SOGoUserManager sharedUserManager];
   contactInfos = [um contactInfosForUserWithUIDorEmail: login];
 
   return [contactInfos objectForKey: field];
@@ -406,7 +406,7 @@ _timeValue (NSString *key)
       [self logWithFormat: @"'SOGoFallbackIMAP4Server' is not set"];
       doSave = NO;
     }
-  if (![LDAPUserManager defaultMailDomainIsConfigured])
+  if (![SOGoUserManager defaultMailDomainIsConfigured])
     {
       [self logWithFormat: @"'SOGoDefaultMailDomain' is not set"];
       doSave = NO;
@@ -724,7 +724,7 @@ _timeValue (NSString *key)
   NSArray *mails;
   unsigned int count, max;
 
-  imapLogin = [[LDAPUserManager sharedUserManager] getImapLoginForUID: login];
+  imapLogin = [[SOGoUserManager sharedUserManager] getImapLoginForUID: login];
   imapServer = [self _fetchFieldForUser: @"c_imaphostname"];
   if (!imapServer)
     imapServer = fallbackIMAP4Server;

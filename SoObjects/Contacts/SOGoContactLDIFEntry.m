@@ -82,11 +82,11 @@
 {
   NSString *info;
 
-  info = [ldifEntry objectForKey: @"telephoneNumber"];
+  info = [ldifEntry objectForKey: @"telephonenumber"];
   if (info)
     [vCard addTel: info
            types: [NSArray arrayWithObjects: @"work", @"voice", @"pref", nil]];
-  info = [ldifEntry objectForKey: @"homePhone"];
+  info = [ldifEntry objectForKey: @"homephone"];
   if (info)
     [vCard addTel: info
            types: [NSArray arrayWithObjects: @"home", @"voice", nil]];
@@ -123,7 +123,7 @@
       [vcard setVClass: @"PUBLIC"];
       [vcard setProdID: @"-//Inverse inc./SOGo 1.0//EN"];
       [vcard setProfile: @"vCard"];
-      info = [ldifEntry objectForKey: @"displayName"];
+      info = [ldifEntry objectForKey: @"displayname"];
       if (!(info && [info length] > 0))
         info = [ldifEntry objectForKey: @"cn"];
       [vcard setFn: info];
@@ -131,14 +131,14 @@
       if (!surname)
         surname = [ldifEntry objectForKey: @"surname"];
       [vcard setNWithFamily: surname
-             given: [ldifEntry objectForKey: @"givenName"]
+             given: [ldifEntry objectForKey: @"givenname"]
              additional: nil
              prefixes: nil
              suffixes: nil];
       info = [ldifEntry objectForKey: @"title"];
       if (info)
         [vcard setTitle: info];
-      info = [ldifEntry objectForKey: @"mozillaNickname"];
+      info = [ldifEntry objectForKey: @"mozillanickname"];
       if (info)
         [vcard setNickname: info];
       
@@ -162,7 +162,7 @@
       [self _setPhonesOfVCard: vcard];
 
       streetAddress = [ldifEntry objectForKey: @"street"];
-      if (!streetAddress) streetAddress = [ldifEntry objectForKey: @"streetAddress"];
+      if (!streetAddress) streetAddress = [ldifEntry objectForKey: @"streetaddress"];
 
       location = [ldifEntry objectForKey: @"l"];
       if (!location) location = [ldifEntry objectForKey: @"locality"];
@@ -170,7 +170,7 @@
       region = [ldifEntry objectForKey: @"st"];
       if (!region) region = [ldifEntry objectForKey: @"region"];
 
-      postalCode = [ldifEntry objectForKey: @"postalCode"];
+      postalCode = [ldifEntry objectForKey: @"postalcode"];
       if (!postalCode) postalCode = [ldifEntry objectForKey: @"zip"];
 
       country = [ldifEntry objectForKey: @"c"];
@@ -217,7 +217,7 @@
       for (count = 1; count < 5; count++)
 	{
 	  info = [ldifEntry objectForKey:
-			      [NSString stringWithFormat: @"mozillaCustom%d",
+			      [NSString stringWithFormat: @"mozillacustom%d",
 					count]];
 	  if (info)
 	    [vcard addChildWithTag: [NSString stringWithFormat: @"CUSTOM%d",

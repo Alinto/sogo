@@ -1,6 +1,6 @@
-/* SOGoContactLDAPFolder.h - this file is part of SOGo
+/* SOGoContactSourceFolder.h - this file is part of SOGo
  *
- * Copyright (C) 2006 Inverse inc.
+ * Copyright (C) 2006-2009 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -20,19 +20,19 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef SOGOCONTACTLDAPFOLDER_H
-#define SOGOCONTACTLDAPFOLDER_H
+#ifndef SOGOCONTACTSOURCEFOLDER_H
+#define SOGOCONTACTSOURCEFOLDER_H
 
 #import "SOGoContactFolder.h"
 #import "SOGoFolder+CardDAV.h"
 
 @class NSMutableDictionary;
 
-@class LDAPSource;
+#import "../SOGo/SOGoSource.h"
 
-@interface SOGoContactLDAPFolder : SOGoFolder <SOGoContactFolder>
+@interface SOGoContactSourceFolder : SOGoFolder <SOGoContactFolder>
 {
-  LDAPSource *ldapSource;
+  id source;
   NSMutableDictionary *entries;
 }
 
@@ -42,9 +42,9 @@
 - (id) initWithName: (NSString *) newName
      andDisplayName: (NSString *) newDisplayName
 	inContainer: (id) newContainer;
-- (void) setLDAPSource: (LDAPSource *) newLdapSource;
+- (void) setSource: (id) newSource;
 
 @end
 
 
-#endif /* SOGOCONTACTLDAPFOLDER_H */
+#endif /* SOGOCONTACTSOURCEFOLDER_H */

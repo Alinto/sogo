@@ -1,6 +1,6 @@
 /* UIxUserRightsEditor.m - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse inc.
+ * Copyright (C) 2007-2009 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -24,7 +24,7 @@
 #import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/WORequest.h>
-#import <SoObjects/SOGo/LDAPUserManager.h>
+#import <SoObjects/SOGo/SOGoUserManager.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
 #import <SoObjects/SOGo/SOGoObject.h>
 #import <SoObjects/SOGo/SOGoGroup.h>
@@ -81,9 +81,9 @@ static BOOL sendACLAdvisories = NO;
 
 - (NSString *) userDisplayName
 {
-  LDAPUserManager *um;
+  SOGoUserManager *um;
 
-  um = [LDAPUserManager sharedUserManager];
+  um = [SOGoUserManager sharedUserManager];
 
   return [NSString stringWithFormat: @"%@ <%@>",
 		   [um getCNForUID: uid],
@@ -94,7 +94,7 @@ static BOOL sendACLAdvisories = NO;
 {
   BOOL response;
   NSString *newUID;
-  LDAPUserManager *um;
+  SOGoUserManager *um;
   SOGoObject *clientObject;
   SOGoGroup *group;
 
@@ -106,7 +106,7 @@ static BOOL sendACLAdvisories = NO;
       if (!defaultUserID)
 	ASSIGN (defaultUserID, [[self clientObject] defaultUserID]);
 
-      um = [LDAPUserManager sharedUserManager];
+      um = [SOGoUserManager sharedUserManager];
       if ([newUID isEqualToString: defaultUserID]
 	  || [[um getEmailForUID: newUID] length] > 0)
 	{

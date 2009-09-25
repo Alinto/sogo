@@ -1,6 +1,6 @@
 /* SOGoWebAuthenticator.m - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse inc.
+ * Copyright (C) 2007-2009 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -37,7 +37,7 @@
 
 #import <UI/MainUI/SOGoRootPage.h>
 
-#import "LDAPUserManager.h"
+#import "SOGoUserManager.h"
 #import "SOGoPermissions.h"
 #import "SOGoUser.h"
 
@@ -88,11 +88,11 @@
 	   password: (NSString *) _pwd
 {
   BOOL accept;
-  LDAPUserManager *um;
+  SOGoUserManager *um;
 
   if ([authMethod isEqualToString: @"LDAP"])
     {
-      um = [LDAPUserManager sharedUserManager];
+      um = [SOGoUserManager sharedUserManager];
       accept = [um checkLogin: _login andPassword: _pwd];
     }
   else

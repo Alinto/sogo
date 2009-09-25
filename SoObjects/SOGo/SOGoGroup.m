@@ -51,7 +51,7 @@
 #import <Foundation/NSString.h>
 
 #include "LDAPSource.h"
-#include "LDAPUserManager.h"
+#include "SOGoUserManager.h"
 #include "SOGoUser.h"
 
 #import <NGLdap/NGLdapConnection.h>
@@ -117,12 +117,12 @@
   if (!theValue)
     return nil;
 
-  allSources = [[LDAPUserManager sharedUserManager] sourceIDs];
+  allSources = [[SOGoUserManager sharedUserManager] sourceIDs];
   o = nil;
 
   for (i = 0; i < [allSources count]; i++)
     {
-      source = [[LDAPUserManager sharedUserManager] sourceWithID: [allSources objectAtIndex: i]];
+      source = [[SOGoUserManager sharedUserManager] sourceWithID: [allSources objectAtIndex: i]];
       entry = [source performSelector: theSelector
 		      withObject: theValue];
 
@@ -167,7 +167,7 @@
   NSString *dn, *login;
   SOGoUser *user;
   NSArray *o;
-  LDAPUserManager *um;
+  SOGoUserManager *um;
   int i, c;
 
   array = [NSMutableArray array];
@@ -196,7 +196,7 @@
   // We deal with a static group, let's add the members
   if (c)
     {
-      um = [LDAPUserManager sharedUserManager];
+      um = [SOGoUserManager sharedUserManager];
 
       // We add members for whom we have their associated DN
       for (i = 0; i < [dns count]; i++)

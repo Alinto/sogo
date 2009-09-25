@@ -1,6 +1,6 @@
 /* iCalPerson+SOGo.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2008 Inverse inc.
+ * Copyright (C) 2007-2009 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -21,10 +21,11 @@
  */
 
 #import <Foundation/NSString.h>
+#import <SOGo/SOGoUserManager.h>
 
 #import "iCalPerson+SOGo.h"
 
-static LDAPUserManager *um = nil;
+static SOGoUserManager *um = nil;
 
 @implementation iCalPerson (SOGoExtension)
 
@@ -45,7 +46,7 @@ static LDAPUserManager *um = nil;
 - (NSString *) uid
 {
   if (!um)
-    um = [LDAPUserManager sharedUserManager];
+    um = [SOGoUserManager sharedUserManager];
 
   return [um getUIDForEmail: [self rfc822Email]];
 }

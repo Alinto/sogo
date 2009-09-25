@@ -23,8 +23,9 @@ SOGo_HEADER_FILES = \
 	SOGoParentFolder.h		\
 	SOGoUserFolder.h		\
 	\
-	LDAPUserManager.h		\
+	SOGoUserManager.h		\
 	LDAPSource.h			\
+	SQLSource.h			\
 	SOGoUserDefaults.h		\
 	SOGoDateFormatter.h		\
 	SOGoPermissions.h		\
@@ -76,8 +77,9 @@ SOGo_OBJC_FILES = \
 	\
 	SOGoDateFormatter.m		\
 	SOGoPermissions.m		\
-	LDAPUserManager.m		\
+	SOGoUserManager.m		\
 	LDAPSource.m			\
+	SQLSource.m			\
 	SOGoUserDefaults.m		\
 	iCalEntityObject+Utilities.m	\
 	NSArray+DAV.m			\
