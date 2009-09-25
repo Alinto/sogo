@@ -32,3 +32,8 @@ reply_info = "Questa è una risposta ad un invito ad un evento organizzato da te
 "Untitled" = "Senza titolo";
 
 "Size" = "Dimensione";
+
+"Digital signature is not valid" = "Digital signature is not valid";
+"Message is signed" = "Message is signed";
+"Subject" = "Subject";
+"Issuer" = "Issuer";

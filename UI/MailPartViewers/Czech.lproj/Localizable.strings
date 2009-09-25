@@ -32,3 +32,8 @@ reply_info = "Toto je odpověď na pozvánku k událost, kterou jste vytvořili 
 "Untitled" = "Bez názvu";
 
 "Size" = "Velikost";
+
+"Digital signature is not valid" = "Digital signature is not valid";
+"Message is signed" = "Message is signed";
+"Subject" = "Subject";
+"Issuer" = "Issuer";

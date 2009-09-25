@@ -32,3 +32,8 @@ reply_info = "Dyma ymateb i wahoddiad i digwyddiad a wnaed gennych chi.";
 "Untitled" = "heb deitl";
 
 "Size" = "maint";
+
+"Digital signature is not valid" = "Digital signature is not valid";
+"Message is signed" = "Message is signed";
+"Subject" = "Subject";
+"Issuer" = "Issuer";

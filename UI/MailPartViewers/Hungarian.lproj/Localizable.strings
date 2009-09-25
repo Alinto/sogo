@@ -31,4 +31,9 @@ reply_info = "Ez egy válasz az ön által kiküldött meghívásra.";
 
 "Untitled" = "Névtelen";
 
+"Digital signature is not valid" = "Digital signature is not valid";
+"Message is signed" = "Message is signed";
+"Subject" = "Subject";
+"Issuer" = "Issuer";
+
 "Size" = "Méret";

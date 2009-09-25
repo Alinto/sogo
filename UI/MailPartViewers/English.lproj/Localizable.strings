@@ -32,3 +32,8 @@ reply_info = "This is a reply to an event invitation done by you.";
 "Untitled" = "Untitled";
 
 "Size" = "Size";
+
+"Digital signature is not valid" = "Digital signature is not valid";
+"Message is signed" = "Message is signed";
+"Subject" = "Subject";
+"Issuer" = "Issuer";

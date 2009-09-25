@@ -31,4 +31,10 @@ reply_info = "Это ответ на Ваше приглашение на мер
 
 "Untitled" = "Без названия";
 
+
+"Digital signature is not valid" = "Digital signature is not valid";
+"Message is signed" = "Message is signed";
+"Subject" = "Subject";
+"Issuer" = "Issuer";
+
 "Size" = "Размер";

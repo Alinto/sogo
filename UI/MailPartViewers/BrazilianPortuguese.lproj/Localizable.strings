@@ -32,3 +32,8 @@ reply_info = "Esta é uma resposta de um convite feito por você.";
 "Untitled" = "Sem título";
 
 "Size" = "Tamanho";
+
+"Digital signature is not valid" = "Digital signature is not valid";
+"Message is signed" = "Message is signed";
+"Subject" = "Subject";
+"Issuer" = "Issuer";

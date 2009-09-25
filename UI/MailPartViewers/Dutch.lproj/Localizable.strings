@@ -32,3 +32,8 @@ reply_info = "Dit is een antwoord op een door u verstuurde uitnodiging.";
 "Untitled" = "Geen titel";
 
 "Size" = "Grootte";
+
+"Digital signature is not valid" = "Digital signature is not valid";
+"Message is signed" = "Message is signed";
+"Subject" = "Subject";
+"Issuer" = "Issuer";
