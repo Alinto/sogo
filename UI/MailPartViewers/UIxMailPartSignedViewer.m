@@ -3,6 +3,7 @@
  * Copyright (C) 2009 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *         Ludovic Marcotte <lmarcotte@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -153,6 +154,29 @@
       content = [[body stringByDetectingURLs]
                   stringByConvertingCRLNToHTML];
     }
+  else if ([mimeType isEqualToString: @"multipart/alternative"])
+    {
+      NSArray *parts;
+      int i;
+      
+      parts = [(NGMimeMultipartBody *)[messagePart body] parts];
+
+      for (i = 0; i < [parts count]; i++)
+	{
+	  mimeType = [[parts objectAtIndex: i] contentType];
+
+	  if ([mimeType isEqualToString: @"text/plain"])
+	    {
+	      body = [[[parts objectAtIndex: i] body] stringByEscapingHTMLString];
+	      content = [[body stringByDetectingURLs]
+			  stringByConvertingCRLNToHTML];
+	      break;
+	    }
+	  else
+	    content = nil;
+	}
+     
+    }
   else
     {
       NSLog (@"unhandled mime type in multipart/signed: '%@'", mimeType);
@@ -201,12 +225,16 @@
 
 - (void) _processMessage
 {
-  BIO *msgBio, *inData;
-  X509_STORE *x509Store;
-  PKCS7 *p7;
-  int err;
+  NSString *issuer, *subject;
   NSData *signedData;
+  
+  STACK_OF(X509) *certs;
+  X509_STORE *x509Store;
+  BIO *msgBio, *inData;
   char sslError[1024];
+  PKCS7 *p7;
+  int err, i;
+ 
 
   *sslError = 0;
 
@@ -216,7 +244,41 @@
   msgBio = BIO_new_mem_buf ((void *) [signedData bytes], [signedData length]);
 
   inData = NULL;
-  p7 = SMIME_read_PKCS7 (msgBio, &inData);
+  p7 = SMIME_read_PKCS7(msgBio, &inData);
+
+  subject = nil;
+  issuer = nil;
+  certs = NULL;
+  
+  i = OBJ_obj2nid(p7->type);
+  
+  if (i == NID_pkcs7_signed)
+    {
+      X509 *x;
+
+      certs=p7->d.sign->cert;
+
+      if (sk_X509_num(certs) > 0)
+	{
+	  BIO *buf;
+	  char p[256];
+
+	  memset(p, 0, 256);
+	  x = sk_X509_value(certs,0);
+	  buf = BIO_new(BIO_s_mem());
+	  X509_NAME_print_ex(buf, X509_get_subject_name(x), 0,  XN_FLAG_FN_SN);
+	  BIO_gets(buf, p, 256);
+	  subject = [NSString stringWithUTF8String: p];
+
+	  memset(p, 0, 256);
+	  X509_NAME_print_ex(buf, X509_get_issuer_name(x), 0,  XN_FLAG_FN_SN);
+	  BIO_gets(buf, p, 256);
+	  issuer = [NSString stringWithUTF8String: p];
+
+	  BIO_free(buf);
+	}
+    }
+ 
   err = ERR_get_error();
   if (err)
     {
@@ -231,7 +293,7 @@
 
       err = ERR_get_error();
       if (err)
-        ERR_error_string_n (err, sslError, 1023);
+        ERR_error_string_n(err, sslError, 1023);
 
       if (x509Store)
         X509_STORE_free (x509Store);
@@ -241,9 +303,18 @@
   if (inData)
     BIO_free (inData);
 
-  if (!validSignature)
-    validationError = [NSString stringWithFormat: @"%s", sslError];
+  validationMessage = [NSMutableString string];
 
+  if (!validSignature)
+    [validationMessage appendString: [self labelForKey: @"Digital signature is not valid"]];
+  else
+    [validationMessage appendString: [self labelForKey: @"Message is signed"]];
+  
+  if (issuer && subject)
+    [validationMessage appendFormat: @"\n%@: %@\n%@: %@",
+		   [self labelForKey: @"Subject"], subject,
+		     [self labelForKey: @"Issuer"], issuer];
+		   
   processed = YES;
 }
 
@@ -255,12 +326,12 @@
   return validSignature;
 }
 
-- (NSString *) validationError
+- (NSString *) validationMessage
 {
   if (!processed)
     [self _processMessage];
 
-  return validationError;
+  return validationMessage;
 }
 
 @end

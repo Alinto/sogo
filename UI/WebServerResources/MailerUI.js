@@ -992,7 +992,7 @@ function configureSignatureFlagImage() {
 
         var msgDiv = $("signatureFlagMessage");
         if (msgDiv && error) {
-            var formattedMessage = error.replace("\n", "<br/>");
+            var formattedMessage = error.replace(/\n/g, "<br/>");
             msgDiv.innerHTML = "<div>" + formattedMessage + "</div>";
             newImg.observe("mouseover", showSignatureMessage);
             newImg.observe("mouseout", hideSignatureMessage);

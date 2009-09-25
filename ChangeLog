@@ -13,6 +13,9 @@
 	* SoObjects/SOGo/LDAPSource.m 
 	We trim the bind field value prior to adding it to our
 	LDAP search filter.
+	* UI/MailPartViewers/UIxMailPartSignedViewer.m and friends:
+	We now show more information on the S/MIME encoded messages.
+	We also handle correctly multipart/alternative messages.
 
 2009-09-24  Cyril Robert <crobert@inverse.ca>
 

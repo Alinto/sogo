@@ -8,6 +8,6 @@
   class="mailer_plaincontent signed"
   const:id="signedMessage"
   var:valid="validSignature"
-  var:error="validationError"
+  var:error="validationMessage"
   ><var:string value="flatContentAsString" const:escapeHTML="NO"
     /></div>

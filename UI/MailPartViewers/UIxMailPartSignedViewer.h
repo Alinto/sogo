@@ -25,7 +25,7 @@
 
 #import "UIxMailPartViewer.h"
 
-@class NSString;
+@class NSMutableString;
 @class NGPart;
 
 @interface UIxMailPartSignedViewer : UIxMailPartViewer
@@ -34,13 +34,13 @@
   NGPart *messagePart;
 
   BOOL validSignature;
-  NSString *validationError;
+  NSMutableString *validationMessage;
 }
 
 - (NSString *) flatContentAsString;
 
 - (BOOL) validSignature;
-- (NSString *) validationError;
+- (NSString *) validationMessage;
 
 @end
 
