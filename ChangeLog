@@ -10,6 +10,9 @@
 	coming from a SQL database. This can be used concurrently
 	with LDAP sources. Modified many classes to reflect this
 	change.
+	* SoObjects/SOGo/LDAPSource.m 
+	We trim the bind field value prior to adding it to our
+	LDAP search filter.
 
 2009-09-24  Cyril Robert <crobert@inverse.ca>
 

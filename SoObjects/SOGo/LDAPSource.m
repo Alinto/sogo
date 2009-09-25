@@ -490,7 +490,7 @@ static NSLock *lock;
       bindFieldsEnum = [[bindFields componentsSeparatedByString: @","]
                          objectEnumerator];
       while ((currentField = [bindFieldsEnum nextObject]))
-        [qs appendFormat: @" OR (%@='%@')", currentField, escapedUid];
+        [qs appendFormat: @" OR (%@='%@')", [currentField stringByTrimmingSpaces], escapedUid];
     }
 
   if (_filter && [_filter length])
