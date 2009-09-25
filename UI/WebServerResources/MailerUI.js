@@ -992,7 +992,9 @@ function configureSignatureFlagImage() {
 
         var msgDiv = $("signatureFlagMessage");
         if (msgDiv && error) {
-            var formattedMessage = error.replace(/\n/g, "<br/>");
+            // First line in a h1, others each in a p
+            var formattedMessage = "<h1>" + error.replace(/\n/, "</h1><p>");
+            formattedMessage = formattedMessage.replace(/\n/g, "</p><p>") + "</p>";
             msgDiv.innerHTML = "<div>" + formattedMessage + "</div>";
             newImg.observe("mouseover", showSignatureMessage);
             newImg.observe("mouseout", hideSignatureMessage);
@@ -1009,8 +1011,8 @@ function showSignatureMessage () {
         var divDimensions = div.getDimensions();
         var left = cellPosition[0] - divDimensions['width'];
         var top = cellPosition[1];
-        div.style.top = top + "px";
-        div.style.left = left + "px";
+        div.style.top = (top + 5) + "px";
+        div.style.left = (left + 5) + "px";
         div.style.display = "block";
     }
 }

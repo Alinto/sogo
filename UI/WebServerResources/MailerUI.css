@@ -826,3 +826,12 @@ DIV.copy
   background-position: 4px center;
   padding: 2px 2px 2px 24px;
   width: 220px; }
+
+DIV#signatureFlagMessage DIV 
+{ text-align: left !important; }
+
+DIV#signatureFlagMessage H1,
+DIV#signatureFlagMessage P
+{ font-size: 10px;
+  margin: 0;
+  padding: 0; }
