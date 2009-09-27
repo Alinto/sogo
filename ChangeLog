@@ -1,3 +1,8 @@
+2009-09-27  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* Reworked the UIxMailPartSignedViewer to inherit
+	from UIxMailPartMixedViewer.
+
 2009-09-25  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* Renamed SoObjects/Contacts/SOGoContactLDAPFolder to

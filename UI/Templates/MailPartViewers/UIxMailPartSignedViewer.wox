@@ -9,5 +9,14 @@
   const:id="signedMessage"
   var:valid="validSignature"
   var:error="validationMessage"
-  ><var:string value="flatContentAsString" const:escapeHTML="NO"
-    /></div>
+>
+  <div>
+    <var:foreach list="bodyInfo.parts" item="childInfo" index="childIndex">
+      <div>
+        <var:component value="contentViewerComponent" 
+                       bodyInfo="childInfo"
+		       partPath="childPartPath" />
+      </div>
+    </var:foreach>
+  </div>
+</div>

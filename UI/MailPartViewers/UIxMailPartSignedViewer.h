@@ -23,21 +23,17 @@
 #ifndef UIXMAILPARTSIGNEDVIEWER_H
 #define UIXMAILPARTSIGNEDVIEWER_H
 
-#import "UIxMailPartViewer.h"
+#import "UIxMailPartMixedViewer.h"
 
 @class NSMutableString;
 @class NGPart;
 
-@interface UIxMailPartSignedViewer : UIxMailPartViewer
+@interface UIxMailPartSignedViewer : UIxMailPartMixedViewer
 {
   BOOL processed;
-  NGPart *messagePart;
-
   BOOL validSignature;
   NSMutableString *validationMessage;
 }
-
-- (NSString *) flatContentAsString;
 
 - (BOOL) validSignature;
 - (NSString *) validationMessage;
