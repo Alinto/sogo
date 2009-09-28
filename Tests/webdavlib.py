@@ -167,6 +167,21 @@ class WebDAVPROPFIND(WebDAVQuery):
             prop_tag = self.render_tag(prop)
             props.append(_WD_XMLTreeElement(prop_tag))
 
+class WebDAVMOVE(WebDAVQuery):
+    method = "MOVE"
+    destination = None
+    host = None
+
+    def prepare_headers(self):
+        headers = WebDAVQuery.prepare_headers(self)
+        print "DESTINATION", self.destination
+        if self.destination is not None:
+            headers["Destination"] = self.destination
+        if self.host is not None:
+            headers["Host"] = self.host
+        return headers
+
+
 class CalDAVPOST(WebDAVQuery):
     method = "POST"
 
