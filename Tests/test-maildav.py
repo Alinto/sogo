@@ -56,8 +56,6 @@ class DAVMailCollectionTest(DAVMailTest):
 
     self.resource = '/SOGo/dav/%s/Mail/%s/' \
         % (username, self.user_email)
-    self.davResource = '/SOGo/dav/%s/Mail/%s/' \
-        % (username, self.user_email)
 
     DAVMailTest.setUp(self)
 
@@ -82,7 +80,7 @@ class DAVMailCollectionTest(DAVMailTest):
 #              "(code = %d)" % move.response["status"])
 
   def _makeCollection (self, name, status = 201):
-    url = "%s%s" % (self.davResource, name)
+    url = "%s%s" % (self.resource, name)
     mkcol = webdavlib.WebDAVMKCOL(url)
     self.client.execute(mkcol)
     self.assertEquals(mkcol.response["status"], status,
@@ -90,7 +88,7 @@ class DAVMailCollectionTest(DAVMailTest):
               "(code = %d)" % mkcol.response["status"])
 
   def _deleteCollection (self, name, status = 204):
-    url = "%sfolder%s" % (self.davResource, name)
+    url = "%sfolder%s" % (self.resource, name)
     delete = webdavlib.WebDAVDELETE(url)
     self.client.execute(delete)
     self.assertEquals(delete.response["status"], status,
@@ -99,7 +97,7 @@ class DAVMailCollectionTest(DAVMailTest):
 
   def _putMessage(self, client, filename,
                   exp_status = 201):
-    url = "%s%s" % (self.davResource, filename)
+    url = "%s%s" % (self.resource, filename)
     put = webdavlib.HTTPPUT(url, message)
     put.content_type = "text/plain; charset=utf-8"
     client.execute(put)
