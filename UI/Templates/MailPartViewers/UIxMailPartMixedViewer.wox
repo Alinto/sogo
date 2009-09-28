@@ -1,17 +1,16 @@
 <?xml version="1.0" standalone="yes"?>
+<!DOCTYPE div>
 <div xmlns="http://www.w3.org/1999/xhtml"
-     xmlns:var="http://www.skyrix.com/od/binding"
-     xmlns:const="http://www.skyrix.com/od/constant"
-     xmlns:rsrc="OGo:url"
-     xmlns:label="OGo:label"
->
-  <div>
-    <var:foreach list="bodyInfo.parts" item="childInfo" index="childIndex">
-      <div>
-        <var:component value="contentViewerComponent" 
-                       bodyInfo="childInfo"
-		       partPath="childPartPath" />
-      </div>
-    </var:foreach>
-  </div>
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label"
+  >
+  <var:foreach list="bodyInfo.parts" item="childInfo" index="childIndex">
+    <div>
+      <var:component value="contentViewerComponent" 
+	bodyInfo="childInfo"
+	partPath="childPartPath" />
+    </div>
+  </var:foreach>
 </div>
