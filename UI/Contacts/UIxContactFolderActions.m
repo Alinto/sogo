@@ -207,24 +207,24 @@
 
 - (BOOL) importVcard: (NGVCard *) card
 {
-  NSString *uid, *name;
+  NSString *uid;
   SOGoContactGCSFolder *folder;
-  NSException *ex;
+  SOGoContactGCSEntry *contact;
   BOOL rc = NO;
 
   if (card)
     {
       folder = [self clientObject];
       uid = [folder globallyUniqueObjectId];
-      name = [NSString stringWithFormat: @"%@.vcf", uid];
+
       [card setUid: uid];
-      ex = [[folder ocsFolder] writeContent: [card versitString]
-                                     toName: name
-                                baseVersion: 0];
-      if (ex)
-        NSLog (@"write failed: %@", ex);
-      else
-        rc = YES;
+      contact = [SOGoContactGCSEntry objectWithName: uid
+                                        inContainer: folder];
+      [contact setIsNew: YES];
+      
+      [contact saveContentString: [card versitString]];
+      
+      rc = YES;
     }
 
   return rc;
