@@ -4,6 +4,12 @@
 	* SoObjects/Appointments/SOGoAptMailICalReply.m: Added Spanish definition.
 	* SoObjects/Appointments/SOGoAptMailDeletion.m: Added Spanish definition.
 	* SoObjects/Appointments/SOGoAptMailUpdate.m: Added Spanish definition.
+	* SoObjects/SOGo/NSString+Utilities.m (stringByEscapingURLPart): Added to
+	fix the URL parts for MailDAV
+	* SoObjects/Mailer/SOGoMailAccount.m (toManyRelationshipKeys): Added the
+	"folder" prefix for MailDAV compatibility.
+	* SoObjects/SOGo/SOGoObject.m (_urlPreferringParticle:): Fixed URL escaping
+	to make paths work in MailDAV.
 
 2009-09-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

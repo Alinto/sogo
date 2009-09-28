@@ -185,7 +185,7 @@ static NSString *fallbackIMAP4Server = nil;
       [folders addObjectsFromArray: additionalFolders];
     }
   
-  return folders;
+  return [folders stringsWithFormat: @"folder%@"];
 }
 
 - (BOOL) supportsQuotas
