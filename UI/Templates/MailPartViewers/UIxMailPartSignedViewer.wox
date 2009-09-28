@@ -5,18 +5,15 @@
   xmlns:const="http://www.skyrix.com/od/constant"
   xmlns:rsrc="OGo:url"
   xmlns:label="OGo:label"
-  class="mailer_plaincontent signed"
+  class="signed"
   const:id="signedMessage"
   var:valid="validSignature"
-  var:error="validationMessage"
->
-  <div>
-    <var:foreach list="bodyInfo.parts" item="childInfo" index="childIndex">
-      <div>
-        <var:component value="contentViewerComponent" 
-                       bodyInfo="childInfo"
-		       partPath="childPartPath" />
-      </div>
-    </var:foreach>
-  </div>
+  var:error="validationMessage">
+  <var:foreach list="bodyInfo.parts" item="childInfo" index="childIndex">
+    <div>
+      <var:component value="contentViewerComponent" 
+	bodyInfo="childInfo"
+	partPath="childPartPath" />
+    </div>
+  </var:foreach>
 </div>
