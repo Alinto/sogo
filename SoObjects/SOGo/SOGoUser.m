@@ -146,7 +146,8 @@ _timeValue (NSString *key)
 		    @" was renamed to 'SOGoProfileURL'"];
 	    }
 	}
-      SOGoProfileURL = [[NSURL alloc] initWithString: profileURL];
+      if (profileURL)
+        SOGoProfileURL = [[NSURL alloc] initWithString: profileURL];
     }
   if (!fallbackIMAP4Server)
     ASSIGN (fallbackIMAP4Server,
