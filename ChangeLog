@@ -2,6 +2,10 @@
 
 	* Reworked the UIxMailPartSignedViewer to inherit
 	from UIxMailPartMixedViewer.
+	* UI/WebServerResources/SchedulerUI.js
+	We allow empty calendar imports.
+	* Avoid assumptions for .ics presence on URL
+	subscriptions.
 
 2009-09-25  Ludovic Marcotte  <lmarcotte@inverse.ca>
 

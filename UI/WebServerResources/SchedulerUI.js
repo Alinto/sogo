@@ -1922,7 +1922,7 @@ function onCalendarWebAdd(event) {
 }
 function addWebCalendarCallback (http) {
     var data = http.responseText.evalJSON(true);
-    if (data.imported > 0) {
+    if (data.imported >= 0) {
         appendCalendar(data.displayname, "/" + data.name);
         refreshEvents();
         refreshTasks();

@@ -91,7 +91,12 @@
 
   tmp = [calendarURL lastPathComponent];
   if (tmp)
-    rc = [tmp stringByDeletingSuffix: @".ics"];
+    {
+      if ([[tmp pathExtension] caseInsensitiveCompare: @"ics"] == NSOrderedSame)
+	rc = [tmp substringToIndex: [tmp length] - 4];
+      else
+	rc = tmp;
+    }
   else
     rc = [self labelForKey: @"Web Calendar"];
 
