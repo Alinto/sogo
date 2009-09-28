@@ -1984,7 +1984,7 @@ function uploadCompleted (response) {
 
     var div = $("uploadResults");
     $("uploadOK").onclick = hideImportResults;
-    if (data.imported <= 0)
+    if (data.imported < 0)
       $("uploadResultsContent").update (getLabel("An error occured while importing calendar."));
     else {
         $("uploadResultsContent").update (getLabel("Imported events:") + " " + data.imported);
