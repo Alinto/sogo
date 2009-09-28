@@ -88,3 +88,11 @@
 @implementation SOGoAptMailItalianUpdate
 @end
 
+@interface SOGoAptMailSpanishUpdate : SOGoAptMailNotification
+{
+}
+@end
+
+@implementation SOGoAptMailSpanishUpdate
+@end
+

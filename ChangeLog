@@ -1,3 +1,15 @@
+2009-09-28  Cyril Robert <crobert@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAptMailInvitation.m: Added Spanish definition.
+	* SoObjects/Appointments/SOGoAptMailICalReply.m: Added Spanish definition.
+	* SoObjects/Appointments/SOGoAptMailDeletion.m: Added Spanish definition.
+	* SoObjects/Appointments/SOGoAptMailUpdate.m: Added Spanish definition.
+
+2009-09-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUser.m (+initialize): avoid a crash when
+	SOGoProfileURL is not set.
+
 2009-09-27  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* Reworked the UIxMailPartSignedViewer to inherit

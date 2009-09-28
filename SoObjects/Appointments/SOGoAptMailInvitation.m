@@ -69,3 +69,9 @@
 @implementation SOGoAptMailRussianInvitation
 @end
 
+@interface SOGoAptMailSpanishInvitation : SOGoAptMailNotification
+@end
+
+@implementation SOGoAptMailSpanishInvitation
+@end
+

@@ -3195,6 +3195,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   [event setUid: uid];
   object = [SOGoAppointmentObject objectWithName: uid
                                     inContainer: self];
+  [object setIsNew: YES];
   content = 
     [NSString stringWithFormat: @"BEGIN:VCALENDAR\n%@\nEND:VCALENDAR", 
      [event versitString]];
