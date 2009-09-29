@@ -96,6 +96,8 @@ SEL SOGoSelectorForPropertyGetter (NSString *property)
 	    [getterMap setObject: [NSValue valueWithPointer: propSel]
 		       forKey: property];
 	}
+      else
+        propSel = NULL;
     }
 
   return propSel;
@@ -124,6 +126,8 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
 	    [setterMap setObject: [NSValue valueWithPointer: propSel]
 		       forKey: property];
 	}
+      else
+        propSel = NULL;
     }
 
   return propSel;

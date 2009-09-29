@@ -1,5 +1,9 @@
 2009-09-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoObject.m (SOGoSelectorForPropertyGetter)
+	(SOGoSelectorForPropertySetter): fixed a case where propSel should
+	be initialized to NULL.
+
 	* SoObjects/SOGo/SOGoGroup.m (-members): we now cache the array of
 	members as an ivar.
 	(-hasMemberWithUID): new self-explicit method.
