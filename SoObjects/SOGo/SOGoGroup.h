@@ -27,6 +27,7 @@
 
 @class LDAPSource;
 @class NSArray;
+@class NSMutableArray;
 @class NSString;
 @class NGLdapEntry;
 
@@ -36,6 +37,7 @@
     NSString *_identifier;
     NGLdapEntry *_entry;
     LDAPSource *_source;
+    NSMutableArray *_members;
 }
 
 + (id) groupWithIdentifier: (NSString *) theID;
@@ -44,6 +46,8 @@
     andSourceSelector: (SEL) theSelector;
 
 - (NSArray *) members;
+
+- (BOOL) hasMemberWithUID: (NSString *) memberUID;
 
 @end
 
