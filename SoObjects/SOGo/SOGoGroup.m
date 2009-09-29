@@ -71,6 +71,7 @@
       ASSIGN(_identifier, theID);
       ASSIGN(_source, theSource);
       ASSIGN(_entry, theEntry);
+      _members = nil;
     }
 
   return self;
@@ -81,6 +82,7 @@
   RELEASE(_identifier);
   RELEASE(_source);
   RELEASE(_entry);
+  RELEASE(_members);
 
   [super dealloc];
 }
@@ -90,12 +92,15 @@
   NSString *uid;
 
   uid = [theID hasPrefix: @"@"] ? [theID substringFromIndex: 1] : theID;
-  return [SOGoGroup groupWithValue: uid andSourceSelector: @selector (lookupGroupEntryByUID:)];
+
+  return [SOGoGroup groupWithValue: uid
+                 andSourceSelector: @selector (lookupGroupEntryByUID:)];
 }
 
 + (id) groupWithEmail: (NSString *) theEmail
 {
-  return [SOGoGroup groupWithValue: theEmail andSourceSelector: @selector (lookupGroupEntryByEmail:)];
+  return [SOGoGroup groupWithValue: theEmail
+                 andSourceSelector: @selector (lookupGroupEntryByEmail:)];
 }
 
 //
@@ -163,71 +168,92 @@
 - (NSArray *) members
 {
   NSMutableArray *dns, *uids;
-  NSMutableArray *array;
   NSString *dn, *login;
   SOGoUser *user;
   NSArray *o;
   SOGoUserManager *um;
   int i, c;
 
-  array = [NSMutableArray array];
-  uids = [NSMutableArray array];
-  dns = [NSMutableArray array];
-
-  // We check if it's a static group
-  //NSLog(@"attributes = %@", [_entry attributes]);
-  
-  // Fetch "members" - we get DNs
-  o = [[_entry attributeWithName: @"member"] allStringValues];
-  if (o) [dns addObjectsFromArray: o];
-
-  // Fetch "uniqueMembers" - we get DNs
-  o = [[_entry attributeWithName: @"uniqueMember"] allStringValues];
-  if (o) [dns addObjectsFromArray: o];
-  
-  // Fetch "memberUid" - we get UID (like login names)
-  o = [[_entry attributeWithName: @"memberUid"] allStringValues];
-  if (o) [uids addObjectsFromArray: o];
-
-  c = [dns count] + [uids count];
-
-  NSLog(@"members count (static group): %d", c);
-
-  // We deal with a static group, let's add the members
-  if (c)
+  if (!_members)
     {
-      um = [SOGoUserManager sharedUserManager];
+      _members = [NSMutableArray new];
+      uids = [NSMutableArray array];
+      dns = [NSMutableArray array];
 
-      // We add members for whom we have their associated DN
-      for (i = 0; i < [dns count]; i++)
-	{
-	  dn = [dns objectAtIndex: i];
-	  login = [um getLoginForDN: [dn lowercaseString]];
-	  //NSLog(@"member = %@", login);
-	  user = [SOGoUser userWithLogin: login  roles: nil];
-	  if (user)
-	    [array addObject: user];
-	}
+      // We check if it's a static group
+      //NSLog(@"attributes = %@", [_entry attributes]);
+  
+      // Fetch "members" - we get DNs
+      o = [[_entry attributeWithName: @"member"] allStringValues];
+      if (o) [dns addObjectsFromArray: o];
 
-      // We add members for whom we have their associated login name
-      for (i = 0; i < [uids count]; i++)
-	{
-	  login = [uids objectAtIndex: i];
-	  //NSLog(@"member = %@", login);
-	  user = [SOGoUser userWithLogin: login  roles: nil];
-	  
-	  if (user)
-	    [array addObject: user];
-	}
-    }
-  else
-    {
-      // We deal with a dynamic group, let's search all users for whom
-      // memberOf is equal to our group's DN.
-      // We also need to look for labelelURI?
+      // Fetch "uniqueMembers" - we get DNs
+      o = [[_entry attributeWithName: @"uniqueMember"] allStringValues];
+      if (o) [dns addObjectsFromArray: o];
+  
+      // Fetch "memberUid" - we get UID (like login names)
+      o = [[_entry attributeWithName: @"memberUid"] allStringValues];
+      if (o) [uids addObjectsFromArray: o];
+
+      c = [dns count] + [uids count];
+
+      NSLog(@"members count (static group): %d", c);
+
+      // We deal with a static group, let's add the members
+      if (c)
+        {
+          um = [SOGoUserManager sharedUserManager];
+
+          // We add members for whom we have their associated DN
+          for (i = 0; i < [dns count]; i++)
+            {
+              dn = [dns objectAtIndex: i];
+              login = [um getLoginForDN: [dn lowercaseString]];
+              //NSLog(@"member = %@", login);
+              user = [SOGoUser userWithLogin: login  roles: nil];
+              if (user)
+                [_members addObject: user];
+            }
+
+          // We add members for whom we have their associated login name
+          for (i = 0; i < [uids count]; i++)
+            {
+              login = [uids objectAtIndex: i];
+              //NSLog(@"member = %@", login);
+              user = [SOGoUser userWithLogin: login  roles: nil];
+              
+              if (user)
+                [_members addObject: user];
+            }
+        }
+      else
+        {
+          // We deal with a dynamic group, let's search all users for whom
+          // memberOf is equal to our group's DN.
+          // We also need to look for labelelURI?
+        }
     }
   
-  return array;
+  return _members;
+}
+
+- (BOOL) hasMemberWithUID: (NSString *) memberUID
+{
+  int count, max;
+  NSString *currentUID;
+  BOOL rc;
+
+  rc = NO;
+
+  [self members];
+  max = [_members count];
+  for (count = 0; !rc && count < max; count++)
+    {
+      currentUID = [[_members objectAtIndex: count] login];
+      rc = [memberUID isEqualToString: currentUID];
+    }
+
+  return rc;
 }
 
 @end

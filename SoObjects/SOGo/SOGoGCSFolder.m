@@ -1190,61 +1190,71 @@ static NSArray *childRecordFields = nil;
   return uids;
 }
 
+- (NSArray *) _aclsFromUserRoles: (NSArray *) records
+                     matchingUID: (NSString *) uid
+{
+  int count, max;
+  NSDictionary *record;
+  NSMutableArray *acls;
+  NSString *currentUID;
+
+  acls = [NSMutableArray array];
+
+  max = [records count];
+  for (count = 0; count < max; count++)
+    {
+      record = [records objectAtIndex: count];
+      currentUID = [record valueForKey: @"c_uid"];
+      if ([currentUID isEqualToString: uid])
+        [acls addObject: [record valueForKey: @"c_role"]];
+    }
+
+  return acls;
+}
+
+- (NSArray *) _aclsFromGroupRoles: (NSArray *) records
+                      matchingUID: (NSString *) uid
+{
+  int count, max;
+  NSDictionary *record;
+  NSString *currentUID;
+  SOGoGroup *group;
+  NSMutableArray *acls;
+
+  acls = [NSMutableArray array];
+
+  max = [records count];
+  for (count = 0; count < max; count++)
+    {
+      record = [records objectAtIndex: count];
+      currentUID = [record valueForKey: @"c_uid"];
+      if ([currentUID hasPrefix: @"@"])
+        {
+          group = [SOGoGroup groupWithIdentifier: currentUID];
+          if (group && [group hasMemberWithUID: uid])
+            [acls addObject: [record valueForKey: @"c_role"]];
+        }
+    }
+
+  return acls;
+}
+
 - (NSArray *) _fetchAclsForUser: (NSString *) uid
                 forObjectAtPath: (NSString *) objectPath
 {
   EOQualifier *qualifier;
-  NSArray *records;
-  NSMutableArray *acls;
+  NSArray *records, *acls;
   NSString *qs;
-  BOOL foundUserAcls;
 
   // We look for the exact uid or any uid that begins with "@" (corresponding to groups)
   qs = [NSString stringWithFormat: @"(c_object = '/%@') AND (c_uid = '%@' OR c_uid LIKE '@%%')",
-     objectPath, uid];
+                 objectPath, uid];
   qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
   records = [[self ocsFolder] fetchAclMatchingQualifier: qualifier];
-  acls = [NSMutableArray array];
 
-  unsigned int i, j;
-  NSArray *members;
-  NSDictionary *record;
-  NSString *currentUid;
-  SOGoGroup *group;
-  SOGoUser *user;
-
-  foundUserAcls = NO;
-
-  for (i = 0; i < [records count]; i ++)
-    {
-      record = [records objectAtIndex: i];
-      currentUid = [record valueForKey: @"c_uid"];
-      if ([currentUid isEqualToString: uid])
-        {
-          [acls addObject: [record valueForKey: @"c_role"]];
-          foundUserAcls = YES;
-        }
-    }
-  if (!foundUserAcls)
-    {
-      for (i = 0; i < [records count]; i ++)
-        {
-          group = [SOGoGroup groupWithIdentifier: currentUid];
-          if (group)
-            {
-              members = [group members];
-              for (j = 0; j < [members count]; j++)
-                {
-                  user = [members objectAtIndex: j];
-                  if ([[user login] isEqualToString: uid])
-                    {
-                      [acls addObject: [record valueForKey: @"c_role"]];
-                      break;
-                    }
-                }
-            }
-        }
-    }
+  acls = [self _aclsFromUserRoles: records matchingUID: uid];
+  if (![acls count])
+    acls = [self _aclsFromGroupRoles: records matchingUID: uid];
 
   return [acls uniqueObjects];
 }

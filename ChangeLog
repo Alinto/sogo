@@ -1,5 +1,14 @@
 2009-09-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoGroup.m (-members): we now cache the array of
+	members as an ivar.
+	(-hasMemberWithUID): new self-explicit method.
+
+	* SoObjects/SOGo/SOGoGCSFolder.m
+	(_fetchAclsForUser:forObjectAtPath:): refactored method to make it
+	actually work for group searches, without unitialized data and to
+	clarify code.
+
 	* SoObjects/SOGo/SOGoObject.m
 	(_urlPreferringParticle:overThisOne:): instead of risking
 	confusion between SOPE, NSURL and friends, we revert this change
