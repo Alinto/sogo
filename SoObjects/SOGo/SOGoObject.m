@@ -1143,12 +1143,11 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
 {
   NSURL *serverURL, *url;
   NSMutableArray *path;
-  NSString *baseURL, *urlMethod, *fullHost, *part;
+  NSString *baseURL, *urlMethod, *fullHost;
   NSNumber *port;
-  int count, max;
 
   serverURL = [context serverURL];
-  baseURL = [self baseURLInContext: context];
+  baseURL = [[self baseURLInContext: context] stringByUnescapingURL];
   path = [NSMutableArray arrayWithArray: [baseURL componentsSeparatedByString:
 						    @"/"]];
   if ([baseURL hasPrefix: @"http"])
@@ -1164,14 +1163,6 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
 	[path replaceObjectAtIndex: 2 withObject: expected];
       else
 	[path insertObject: expected atIndex: 2];
-    }
-
-  max = [path count];
-  for (count = 3; count < max; count++)
-    {
-      part = [path objectAtIndex: count];
-      [path replaceObjectAtIndex: count
-                      withObject: [part stringByEscapingURLPart]];
     }
 
   port = [serverURL port];

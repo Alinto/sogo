@@ -1,3 +1,14 @@
+2009-09-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoObject.m
+	(_urlPreferringParticle:overThisOne:): instead of risking
+	confusion between SOPE, NSURL and friends, we revert this change
+	(see below) and choose other ways to avoid escaping of "@", "%",
+	etc...
+
+	* SoObjects/SOGo/NSString+Utilities.m (-stringByEscapingURLPart):
+	(revert) removed useless method.
+
 2009-09-28  Cyril Robert <crobert@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAptMailInvitation.m: Added Spanish definition.

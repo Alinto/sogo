@@ -304,19 +304,6 @@ static NSMutableCharacterSet *urlStartChars = nil;
   return [self doubleQuotedString];
 }
 
-- (NSString *) stringByEscapingURLPart
-{
-  NSString *rc;
-
-  rc = [self stringByUnescapingURL];
-  rc = [rc stringByReplacingString: @"@"
-                        withString: @"%40"];
-  rc = [rc stringByReplacingString: @" "
-                        withString: @"%20"];
-
-  return rc;
-}
-
 - (NSString *) asCSSIdentifier
 {
   NSMutableString *cssIdentifier;

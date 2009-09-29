@@ -44,8 +44,6 @@
 
 - (NSString *) doubleQuotedString;
 
-- (NSString *) stringByEscapingURLPart;
-
 - (NSString *) jsonRepresentation;
 
 - (NSString *) asCSSIdentifier;
