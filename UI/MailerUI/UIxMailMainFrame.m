@@ -43,6 +43,7 @@
 #import <SoObjects/Mailer/SOGoMailAccounts.h>
 #import <SoObjects/SOGo/NSDictionary+URL.h>
 #import <SoObjects/SOGo/NSArray+Utilities.h>
+#import <SoObjects/SOGo/NSString+Utilities.h>
 #import <SoObjects/SOGo/NSDictionary+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/SOGoUserFolder.h>
@@ -175,7 +176,7 @@
 {
   id contact;
   NSArray *accounts, *contactsId, *cards;
-  NSString *firstAccount, *newLocation, *parameters, *folderId, *uid;
+  NSString *firstAccount, *firstEscapedAccount, *newLocation, *parameters, *folderId, *uid;
   NSEnumerator *uids;
   NSMutableArray *addresses;
   NGVCard *card;
@@ -192,7 +193,8 @@
   // We use the first mail account
   accounts = [[context activeUser] mailAccounts];
   firstAccount = [[accounts objectsForKey: @"name" notFoundMarker: nil]
-		   objectAtIndex: 0];
+                  objectAtIndex: 0];
+  firstEscapedAccount = [firstAccount asCSSIdentifier];
   request = [context request];
   
   if ((folderId = [request formValueForKey: @"folder"]) &&
@@ -237,7 +239,8 @@
             }
 
           if ([addresses count] > 0)
-            parameters = [NSString stringWithFormat: @"?mailto=%@", [addresses componentsJoinedByString: @","]];
+            parameters = [NSString stringWithFormat: @"?mailto=%@", 
+                          [addresses componentsJoinedByString: @","]];
         }
     }
   else if ([[request formValues] objectForKey: @"mailto"])
@@ -250,7 +253,7 @@
 
   newLocation = [NSString stringWithFormat: @"%@/%@/compose%@",
                  [co baseURLInContext: context],
-                 firstAccount,
+                 firstEscapedAccount,
                  parameters];
 
   return [self redirectToLocation: newLocation];

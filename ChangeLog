@@ -16,6 +16,8 @@
 	PUT on a non-existing object.
 	* UI/MailerUI/UIxMailMainFrame.m (mailAccounts): Changed the return value to
 	include both the account name and display name.
+	* UI/MailerUI/UIxMailMainFrame.m: Fixed an error when composing from the
+	Address Book module.
 
 2009-09-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
