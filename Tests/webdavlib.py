@@ -155,6 +155,9 @@ class WebDAVDELETE(WebDAVQuery):
 class WebDAVREPORT(WebDAVQuery):
     method = "REPORT"
 
+class WebDAVGET(WebDAVQuery):
+    method = "GET"
+
 class WebDAVPROPFIND(WebDAVQuery):
     method = "PROPFIND"
 
@@ -180,6 +183,20 @@ class WebDAVMOVE(WebDAVQuery):
         if self.host is not None:
             headers["Host"] = self.host
         return headers
+
+class WebDAVPUT(WebDAVQuery):
+    method = "PUT"
+
+    def __init__(self, url, content):
+        WebDAVQuery.__init__(self, url)
+        self.content_type = "text/plain; charset=utf-8"
+        self.content = content
+    
+    def prepare_headers(self):
+        return WebDAVQuery.prepare_headers(self)
+
+    def render(self):
+        return self.content
 
 
 class CalDAVPOST(WebDAVQuery):

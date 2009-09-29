@@ -365,19 +365,6 @@ static BOOL        showTextAttachmentsInline  = NO;
   return IMAP4ID;
 }
 
-- (int) _IMAP4IDFromAppendResult: (NSDictionary *) result
-{
-  NSDictionary *results;
-  NSString *flag, *newIdString;
-
-  results = [[result objectForKey: @"RawResponse"]
-	      objectForKey: @"ResponseResult"];
-  flag = [results objectForKey: @"flag"];
-  newIdString = [[flag componentsSeparatedByString: @" "] objectAtIndex: 2];
-
-  return [newIdString intValue];
-}
-
 - (NSException *) save
 {
   NGImap4Client *client;
@@ -405,7 +392,7 @@ static BOOL        showTextAttachmentsInline  = NO;
     {
       if (IMAP4ID > -1)
 	error = [imap4 markURLDeleted: [self imap4URL]];
-      IMAP4ID = [self _IMAP4IDFromAppendResult: result];
+      IMAP4ID = [self IMAP4IDFromAppendResult: result];
       [self storeInfo];
     }
   else
@@ -695,7 +682,7 @@ static BOOL        showTextAttachmentsInline  = NO;
   else
     {
   // TODO: use subject for filename?
-//   error = [newDraft saveAttachment:content withName:@"forward.mail"];
+//   error = [newDraft saveAttachment:content withName:@"forward.eml"];
       signature = [currentUser signature];
       if ([signature length])
 	[self setText: [NSString stringWithFormat: @"\n-- \n%@", signature]];
@@ -936,7 +923,7 @@ static BOOL        showTextAttachmentsInline  = NO;
   if ([_ext isEqualToString: @"gif"])  return @"image/gif";
   if ([_ext isEqualToString: @"jpg"])  return @"image/jpeg";
   if ([_ext isEqualToString: @"jpeg"]) return @"image/jpeg";
-  if ([_ext isEqualToString: @"mail"]) return @"message/rfc822";
+  if ([_ext isEqualToString: @"eml"]) return @"message/rfc822";
   return @"application/octet-stream";
 }
 

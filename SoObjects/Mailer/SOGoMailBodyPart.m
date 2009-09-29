@@ -446,7 +446,7 @@ static BOOL debugOn = NO;
       return NSClassFromString(@"SOGoVCardMailBodyPart");
     break;
   case 4:
-    if ([pe isEqualToString:@"mail"])
+    if ([pe isEqualToString:@"eml"])
       return NSClassFromString(@"SOGoMessageMailBodyPart");
     break;
   default:

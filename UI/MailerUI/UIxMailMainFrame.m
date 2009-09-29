@@ -43,6 +43,7 @@
 #import <SoObjects/Mailer/SOGoMailAccounts.h>
 #import <SoObjects/SOGo/NSDictionary+URL.h>
 #import <SoObjects/SOGo/NSArray+Utilities.h>
+#import <SoObjects/SOGo/NSDictionary+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/SOGoUserFolder.h>
 #import <SOGoUI/UIxComponent.h>
@@ -84,15 +85,29 @@
 
 /* accessors */
 
-#warning this method is a duplication of SOGoMailAccounts:toManyRelationShipKeys
 - (NSString *) mailAccounts
 {
-  NSArray *accounts, *accountNames;
+  SOGoMailAccounts *accounts;
+  NSDictionary *accountKeys;
+  NSArray *keys, *entry;
+  NSMutableArray *values;
+  NSString *key;
+  int i, max;
 
-  accounts = [[context activeUser] mailAccounts];
-  accountNames = [accounts objectsForKey: @"name" notFoundMarker: nil];
+  accounts = [self clientObject];
+  accountKeys = [accounts accountKeys];
+  keys = [accountKeys allKeys];
+  values = [NSMutableArray array];
 
-  return [accountNames jsonRepresentation];
+  max = [keys count];
+  for (i = 0; i < max; i++)
+    {
+      key = [keys objectAtIndex: i];
+      entry = [NSArray arrayWithObjects: key, [accountKeys objectForKey: key], nil];
+      [values addObject: entry];
+    }
+
+  return [values jsonRepresentation];
 }
 
 - (NSString *) defaultColumnsOrder

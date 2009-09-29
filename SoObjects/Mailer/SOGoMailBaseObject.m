@@ -21,6 +21,7 @@
 
 #import <Foundation/NSCharacterSet.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSDictionary.h>
 
 #import <NGObjWeb/SoObject+SoDAV.h>
 #import <NGExtensions/NSNull+misc.h>
@@ -228,6 +229,19 @@ static BOOL debugOn = YES;
 - (NSArray *) aclsForUser: (NSString *) uid
 {
   return nil;
+}
+
+- (int) IMAP4IDFromAppendResult: (NSDictionary *) result
+{
+  NSDictionary *results;
+  NSString *flag, *newIdString;
+
+  results = [[result objectForKey: @"RawResponse"]
+                     objectForKey: @"ResponseResult"];
+  flag = [results objectForKey: @"flag"];
+  newIdString = [[flag componentsSeparatedByString: @" "] objectAtIndex: 2];
+
+  return [newIdString intValue];
 }
 
 @end /* SOGoMailBaseObject */

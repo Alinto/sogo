@@ -1,3 +1,22 @@
+2009-09-29  Cyril Robert <crobert@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailFolder.m (PUTAction:, _appendMessageData:usingId:):
+	Added new methods to enable MailDAV PUT on a collection.
+	* SoObjects/Mailer/SOGoMailBaseObject.m (IMAP4IDFromAppendResult:): Moved
+	here, since SOGoDraftObject and SOGoMailFolder need it.
+	* SoObjects/Mailer/SOGoDraftObject.m (_IMAP4IDFromAppendResult): Removed, 
+	replaced by [SOGoMailBaseObject IMAP4IDFromAppendResult:].
+	* SoObjects/SOGo/SOGoObject.m: Changed file extension from "mail" to "eml".
+	* SoObjects/Mailer/SOGoMailAccount.m: Added accountName to fix errors in MailDAV.
+	* SoObjects/Mailer/SOGoMailAccounts.m: Added management for account names
+	to fix errors in MailDAV.
+	* SoObjects/Mailer/SOGoMailFolder.m (appendMessage:): Added this method to
+	facilitate the PUT from a SOGoMailObject.
+	* SoObjects/Mailer/SOGoMailObject.m (PUTAction:): Added to enable MailDAV
+	PUT on a non-existing object.
+	* UI/MailerUI/UIxMailMainFrame.m (mailAccounts): Changed the return value to
+	include both the account name and display name.
+
 2009-09-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoObject.m (SOGoSelectorForPropertyGetter)

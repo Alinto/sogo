@@ -19,6 +19,7 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
@@ -27,6 +28,7 @@
 #import <NGExtensions/NSObject+Logs.h>
 
 #import "../SOGo/NSArray+Utilities.h"
+#import "../SOGo/NSString+Utilities.h"
 #import "../SOGo/SOGoUser.h"
 #import "SOGoMailAccount.h"
 
@@ -41,21 +43,58 @@
 //   return [[container nameInContainer] isEqualToString: userLogin];
 // }
 
-- (NSArray *) toManyRelationshipKeys
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      accountKeys = nil;
+    }
+
+  return self;
+}
+
+- (void) dealloc
+{
+  [accountKeys release];
+  [super dealloc];
+}
+
+- (void) _initAccountKeys
 {
   NSArray *accounts;
+  NSString *currentName;
+  int count, max;
 
-  accounts = [[context activeUser] mailAccounts];
+  if (!accountKeys)
+    {
+      accountKeys = [NSMutableDictionary new];
 
-  return [accounts objectsForKey: @"name" notFoundMarker: nil];
+      accounts = [[context activeUser] mailAccounts];
+      max = [accounts count];
+      for (count = 0; count < max; count++)
+        {
+          currentName = [[accounts objectAtIndex: count] objectForKey: @"name"];
+          [accountKeys setObject: currentName
+                          forKey: [currentName asCSSIdentifier]];
+        }
+    }
+}
+
+- (NSDictionary *) accountKeys
+{
+  [self _initAccountKeys];
+
+  return accountKeys;
+}
+
+- (NSArray *) toManyRelationshipKeys
+{
+  [self _initAccountKeys];
+
+  return [accountKeys allKeys];
 }
 
 /* name lookup */
-
-- (BOOL) isValidMailAccountName: (NSString *) _key
-{
-  return [[self toManyRelationshipKeys] containsObject: _key];
-}
 
 // - (id) mailAccountWithName: (NSString *) _key
 // 		 inContext: (id) _ctx
@@ -76,10 +115,11 @@
 // }
 
 - (id) lookupName: (NSString *) _key
-	inContext: (id) _ctx
-	  acquire: (BOOL) _flag
+        inContext: (id) _ctx
+          acquire: (BOOL) _flag
 {
   id obj;
+  NSString *accountName;
 //   NSString *userLogin;
 
 //   userLogin = [[context activeUser] login];
@@ -96,10 +136,15 @@
   obj = [super lookupName:_key inContext:_ctx acquire:NO];
   if (!obj)
     {
-      if ([self isValidMailAccountName: _key])
-	obj = [SOGoMailAccount objectWithName: _key inContainer: self];
+      [self _initAccountKeys];
+      accountName = [accountKeys objectForKey: _key];
+      if ([accountName length])
+        {
+          obj = [SOGoMailAccount objectWithName: _key inContainer: self];
+          [obj setAccountName: accountName];
+        }
       else
-	obj = [NSException exceptionWithHTTPStatus: 404 /* Not Found */];
+        obj = [NSException exceptionWithHTTPStatus: 404 /* Not Found */];
     }
 
   return obj;

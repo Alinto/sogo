@@ -42,11 +42,14 @@
 
 @interface SOGoMailAccount : SOGoMailBaseObject
 {
+  NSString *accountName;
   SOGoMailFolder *inboxFolder;
   SOGoDraftsFolder *draftsFolder;
   SOGoSentFolder *sentFolder;
   SOGoTrashFolder *trashFolder;
 }
+
+- (void) setAccountName: (NSString *) newAccountName;
 
 - (BOOL) supportsQuotas;
 

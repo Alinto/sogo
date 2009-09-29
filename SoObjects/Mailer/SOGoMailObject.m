@@ -1239,4 +1239,34 @@ static BOOL debugSoParts       = NO;
   return debugOn;
 }
 
+
+// For DAV PUT
+- (id) PUTAction: (WOContext *) _ctx
+{
+  WORequest *rq;
+  NSException *error;
+  WOResponse *response;
+  SOGoMailFolder *folder;
+  int imap4id;
+
+  error = [self matchesRequestConditionInContext: _ctx];
+  if (error)
+    response = (WOResponse *) error;
+  else
+    {
+      rq = [_ctx request];
+      folder = [self container];
+
+      if ([self doesMailExist])
+        response = [NSException exceptionWithHTTPStatus: 403
+                                                 reason: @"Can't overwrite messages"];
+      else
+        response = [folder appendMessage: [rq content]
+                               inContext: _ctx
+                                 usingId: &imap4id];
+    }
+
+  return response;
+}
+
 @end /* SOGoMailObject */

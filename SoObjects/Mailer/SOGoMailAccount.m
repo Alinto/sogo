@@ -121,6 +121,7 @@ static NSString *fallbackIMAP4Server = nil;
       draftsFolder = nil;
       sentFolder = nil;
       trashFolder = nil;
+      accountName = nil;
     }
 
   return self;
@@ -132,7 +133,13 @@ static NSString *fallbackIMAP4Server = nil;
   [draftsFolder release];
   [sentFolder release];
   [trashFolder release];
+  [accountName release];
   [super dealloc];  
+}
+
+- (void) setAccountName: (NSString *) newAccountName
+{
+  ASSIGN (accountName, newAccountName);
 }
 
 /* shared accounts */
@@ -142,7 +149,7 @@ static NSString *fallbackIMAP4Server = nil;
   NSString *s;
   NSRange  r;
   
-  s = [self nameInContainer];
+  s = accountName;
   r = [s rangeOfString:@"@"];
   if (r.length == 0) /* regular HTTP logins are never a shared mailbox */
     return NO;
@@ -275,7 +282,7 @@ static NSString *fallbackIMAP4Server = nil;
   NSDictionary *mailAccount;
   NSString *username, *escUsername, *hostString;
 
-  mailAccount = [[context activeUser] accountWithName: nameInContainer];
+  mailAccount = [[context activeUser] accountWithName: accountName];
   if (mailAccount)
     {
       username = [mailAccount objectForKey: @"userName"];
@@ -536,21 +543,19 @@ static NSString *fallbackIMAP4Server = nil;
 
 - (NSString *) shortTitle
 {
-  NSString *s, *login, *host;
+  NSString *login, *host;
   NSRange r;
 
-  s = [self nameInContainer];
-  
-  r = [s rangeOfString:@"@"];
+  r = [accountName rangeOfString:@"@"];
   if (r.length > 0)
     {
-      login = [s substringToIndex:r.location];
-      host  = [s substringFromIndex:(r.location + r.length)];
+      login = [accountName substringToIndex:r.location];
+      host  = [accountName substringFromIndex:(r.location + r.length)];
     }
   else
     {
       login = nil;
-      host  = s;
+      host  = accountName;
     }
   
   r = [host rangeOfString:@"."];

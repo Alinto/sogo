@@ -259,7 +259,7 @@ static NSString *spoolFolder = nil;
 	  max = [uids count];
 	  for (count = 0; count < max; count++)
 	    {
-	      filename = [NSString stringWithFormat: @"%@.mail",
+	      filename = [NSString stringWithFormat: @"%@.eml",
 				   [uids objectAtIndex: count]];
 	      [filenames addObject: filename];
 	    }
@@ -1100,6 +1100,83 @@ static NSString *spoolFolder = nil;
 - (NSString *) displayName
 {
   return [self nameInContainer];
+}
+
+// For DAV PUT
+- (NSException *) _appendMessageData: (NSData *) data
+                             usingId: (int *) imap4id;
+{
+  NGImap4Client *client;
+  NSString *folderName;
+  NSException *error;
+  id result;
+
+  error = nil;
+  client = [imap4 client];
+
+  folderName = [imap4 imap4FolderNameForURL: [self imap4URL]];
+  result = [client append: data toFolder: folderName withFlags: nil];
+
+  if ([[result objectForKey: @"result"] boolValue])
+      *imap4id = [self IMAP4IDFromAppendResult: result];
+  else
+    error = [NSException exceptionWithHTTPStatus: 500 /* Server Error */
+                                          reason: @"Failed to store message"];
+
+  return error;
+}
+
+- (id) appendMessage: (NSData *) message
+           inContext: (WOContext *) _ctx
+             usingId: (int *) imap4id
+{
+  NSException *error;
+  WOResponse *response;
+  NSString *location;
+  id msg;
+
+  error = [self _appendMessageData: message
+                           usingId: imap4id];
+
+  if (error)
+    response = (WOResponse *) error;
+  else
+    {
+      response = [_ctx response];
+      [response setStatus: 201];
+      msg = [SOGoMailObject objectWithName: 
+             [NSString stringWithFormat: @"%d", imap4id] 
+                               inContainer: self];
+      if (msg)
+        {
+          location = [NSString stringWithFormat: @"%@%d.eml",
+                      [self davURL], *imap4id];
+          [response setHeader: location forKey: @"location"];
+        }
+    }
+
+  return response;
+}
+
+- (id) PUTAction: (WOContext *) _ctx
+{
+  WORequest *rq;
+  NSException *error;
+  WOResponse *response;
+  int imap4id;
+
+  error = [self matchesRequestConditionInContext: _ctx];
+  if (error)
+    response = (WOResponse *) error;
+  else
+    {
+      rq = [_ctx request];
+      response = [self appendMessage: [rq content]
+                           inContext: _ctx
+                             usingId: &imap4id];
+    }
+
+  return response;
 }
 
 @end /* SOGoMailFolder */

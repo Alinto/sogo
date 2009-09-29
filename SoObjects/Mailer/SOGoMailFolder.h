@@ -94,6 +94,10 @@ typedef enum {
 - (NSString *) userSpoolFolderPath;
 - (BOOL) ensureSpoolFolderPath;
 
+- (id) appendMessage: (NSData *) message
+           inContext: (WOContext *) _ctx
+             usingId: (int *) imap4id;
+
 @end
 
 @interface SOGoSpecialMailFolder : SOGoMailFolder

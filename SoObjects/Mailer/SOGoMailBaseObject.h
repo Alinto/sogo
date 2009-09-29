@@ -78,6 +78,8 @@
 
 - (BOOL) isBodyPartKey: (NSString *) key;
 
+- (int) IMAP4IDFromAppendResult: (NSDictionary *) result;
+
 @end
 
 #endif /* __Mailer_SOGoMailBaseObject_H__ */

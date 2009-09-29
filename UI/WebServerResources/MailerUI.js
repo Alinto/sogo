@@ -1656,7 +1656,7 @@ function initMailboxTree() {
     mailboxTree.pendingRequests = mailAccounts.length;
     activeAjaxRequests += mailAccounts.length;
     for (var i = 0; i < mailAccounts.length; i++) {
-        var url = ApplicationBaseURL + encodeURI(mailAccounts[i]) + "/mailboxes";
+        var url = ApplicationBaseURL + encodeURI(mailAccounts[i][0]) + "/mailboxes";
         triggerAjaxRequest(url, onLoadMailboxesCallback, mailAccounts[i]);
     }
 }
@@ -1875,9 +1875,9 @@ function onLoadMailboxesCallback(http) {
     //       }
 }
 
-function buildMailboxes(accountName, encoded) {
-    var account = new Mailbox("account", accountName);
-    var accountIndex = mailAccounts.indexOf(accountName);
+function buildMailboxes(accountKeys, encoded) {
+    var account = new Mailbox("account", accountKeys);
+    var accountIndex = mailAccounts.indexOf(accountKeys);
     var data = encoded.evalJSON(true);
     var mailboxes = data.mailboxes;
     var unseen = (data.status? data.status.unseen : 0);
@@ -2290,7 +2290,14 @@ document.observe("dom:loaded", initMailer);
 
 function Mailbox(type, name, unseen) {
     this.type = type;
-    this.name = name;
+    if (typeof (name) == "object" && name.length == 2) {
+        this.name = name[0];
+        this.displayName = name[1];
+    }
+    else {
+        this.name = name;
+        this.displayName = name;
+    }
     this.unseen = unseen;
     this.parentFolder = null;
     this.children = new Array();
@@ -2322,7 +2329,8 @@ Mailbox.prototype = {
 
         var i = 0;
         while (!mailbox && i < this.children.length)
-            if (this.children[i].name == name)
+            if (this.children[i].name == name 
+                || this.children[i].displayName == name)
                 mailbox = this.children[i];
             else
                 i++;

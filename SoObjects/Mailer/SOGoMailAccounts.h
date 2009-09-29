@@ -38,10 +38,15 @@
 */
 
 @class NSArray;
+@class NSMutableDictionary;
 
 @interface SOGoMailAccounts : SOGoFolder
+{
+  NSMutableDictionary *accountKeys;
+}
 
 - (NSArray *) toManyRelationshipKeys;
+- (NSDictionary *) accountKeys;
 
 @end
 
