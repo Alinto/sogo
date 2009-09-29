@@ -1876,7 +1876,7 @@ function onLoadMailboxesCallback(http) {
 }
 
 function buildMailboxes(accountKeys, encoded) {
-    var account = new Mailbox("account", accountKeys);
+    var account = new Mailbox("account", accountKeys[0], null, accountKeys[1]);
     var accountIndex = mailAccounts.indexOf(accountKeys);
     var data = encoded.evalJSON(true);
     var mailboxes = data.mailboxes;
@@ -2288,16 +2288,13 @@ function getMenus() {
 
 document.observe("dom:loaded", initMailer);
 
-function Mailbox(type, name, unseen) {
+function Mailbox(type, name, unseen, displayName) {
     this.type = type;
-    if (typeof (name) == "object" && name.length == 2) {
-        this.name = name[0];
-        this.displayName = name[1];
-    }
-    else {
-        this.name = name;
-        this.displayName = name;
-    }
+    this.name = name;
+    if (displayName)
+      this.displayName = displayName;
+    else
+      this.displayName = name;
     this.unseen = unseen;
     this.parentFolder = null;
     this.children = new Array();
