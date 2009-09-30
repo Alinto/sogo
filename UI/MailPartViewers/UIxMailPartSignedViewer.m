@@ -98,60 +98,63 @@
   subject = nil;
   issuer = nil;
   certs = NULL;
-  
-  i = OBJ_obj2nid(p7->type);
-  
-  if (i == NID_pkcs7_signed)
+
+  if (p7)
     {
-      X509 *x;
-
-      certs=p7->d.sign->cert;
-
-      if (sk_X509_num(certs) > 0)
+      i = OBJ_obj2nid(p7->type);
+      
+      if (i == NID_pkcs7_signed)
 	{
-	  BIO *buf;
-	  char p[256];
-
-	  memset(p, 0, 256);
-	  x = sk_X509_value(certs,0);
-	  buf = BIO_new(BIO_s_mem());
-	  X509_NAME_print_ex(buf, X509_get_subject_name(x), 0,  XN_FLAG_FN_SN);
-	  BIO_gets(buf, p, 256);
-	  subject = [NSString stringWithUTF8String: p];
-
-	  memset(p, 0, 256);
-	  X509_NAME_print_ex(buf, X509_get_issuer_name(x), 0,  XN_FLAG_FN_SN);
-	  BIO_gets(buf, p, 256);
-	  issuer = [NSString stringWithUTF8String: p];
-
-	  BIO_free(buf);
+	  X509 *x;
+	  
+	  certs=p7->d.sign->cert;
+	  
+	  if (sk_X509_num(certs) > 0)
+	    {
+	      BIO *buf;
+	      char p[256];
+	      
+	      memset(p, 0, 256);
+	      x = sk_X509_value(certs,0);
+	      buf = BIO_new(BIO_s_mem());
+	      X509_NAME_print_ex(buf, X509_get_subject_name(x), 0,  XN_FLAG_FN_SN);
+	      BIO_gets(buf, p, 256);
+	      subject = [NSString stringWithUTF8String: p];
+	      
+	      memset(p, 0, 256);
+	      X509_NAME_print_ex(buf, X509_get_issuer_name(x), 0,  XN_FLAG_FN_SN);
+	      BIO_gets(buf, p, 256);
+	      issuer = [NSString stringWithUTF8String: p];
+	      
+	      BIO_free(buf);
+	    }
 	}
-    }
- 
-  err = ERR_get_error();
-  if (err)
-    {
-      ERR_error_string_n (err, sslError, 1023);
-      validSignature = NO;
-    }
-  else
-    {
-      x509Store = [self _setupVerify];
-      validSignature = (PKCS7_verify(p7, NULL, x509Store, inData,
-                                     NULL, PKCS7_DETACHED) == 1);
-
+      
       err = ERR_get_error();
       if (err)
-        ERR_error_string_n(err, sslError, 1023);
-
-      if (x509Store)
-        X509_STORE_free (x509Store);
+	{
+	  ERR_error_string_n (err, sslError, 1023);
+	  validSignature = NO;
+	}
+      else
+	{
+	  x509Store = [self _setupVerify];
+	  validSignature = (PKCS7_verify(p7, NULL, x509Store, inData,
+					 NULL, PKCS7_DETACHED) == 1);
+	  
+	  err = ERR_get_error();
+	  if (err)
+	    ERR_error_string_n(err, sslError, 1023);
+	  
+	  if (x509Store)
+	    X509_STORE_free (x509Store);
+	}
+      
+      BIO_free (msgBio);
+      if (inData)
+	BIO_free (inData); 
     }
-
-  BIO_free (msgBio);
-  if (inData)
-    BIO_free (inData);
-
+  
   validationMessage = [NSMutableString string];
 
   if (!validSignature)
