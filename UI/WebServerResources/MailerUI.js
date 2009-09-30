@@ -1824,7 +1824,7 @@ function updateMailboxMenus() {
 
         var submenuIds = new Array();
         for (var i = 0; i < mailAccounts.length; i++) {
-            var menuEntry = mailboxMenuNode("account", mailAccounts[i]);
+            var menuEntry = mailboxMenuNode("account", mailAccounts[i][1]);
             menu.appendChild(menuEntry);
             var mailbox = accounts[mailAccounts[i]];
             var newSubmenuId = generateMenuForMailbox(mailbox,
@@ -1877,7 +1877,6 @@ function onLoadMailboxesCallback(http) {
 
 function buildMailboxes(accountKeys, encoded) {
     var account = new Mailbox("account", accountKeys[0], null, accountKeys[1]);
-    var accountIndex = mailAccounts.indexOf(accountKeys);
     var data = encoded.evalJSON(true);
     var mailboxes = data.mailboxes;
     var unseen = (data.status? data.status.unseen : 0);
