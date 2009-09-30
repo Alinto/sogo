@@ -149,11 +149,11 @@
 	  if (x509Store)
 	    X509_STORE_free (x509Store);
 	}
-      
-      BIO_free (msgBio);
-      if (inData)
-	BIO_free (inData); 
     }
+  
+  BIO_free (msgBio);
+  if (inData)
+    BIO_free (inData);
   
   validationMessage = [NSMutableString string];
 
