@@ -53,7 +53,6 @@
 
   NSDictionary *modulesConstraints;
 
-  NGLdapConnection *ldapConnection;
   NSMutableArray *searchAttributes;
 }
 

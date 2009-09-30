@@ -1,5 +1,11 @@
 2009-09-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/LDAPSource.m (-init): removed "ldapConnection"
+	ivar, since we now always use it as an autoreleased local value.
+	(-_ldapConnection): modified implementation of
+	"_initLDAPConnection" that now returns an autoreleased instance of
+	NGLdapConnection or nil.
+
 	* UI/MailerUI/UIxMailMainFrame.m (-_setupContext): if
 	"moduleSettings" is non-nil, we don't reset it in the user
 	defaults.
