@@ -78,10 +78,9 @@
   moduleSettings = [ud objectForKey: module];
   if (!moduleSettings)
     {
-      moduleSettings = [NSMutableDictionary new];
-      [moduleSettings autorelease];
+      moduleSettings = [NSMutableDictionary dictionary];
+      [ud setObject: moduleSettings forKey: module];
     }
-  [ud setObject: moduleSettings forKey: module];
 }
 
 /* accessors */
@@ -212,7 +211,7 @@
           uids = [contactsId objectEnumerator];
           uid = [uids nextObject];
 
-          addresses = [NSMutableArray new];
+          addresses = [NSMutableArray array];
 
           while (uid)
             {
