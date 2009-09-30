@@ -117,12 +117,12 @@
 	      memset(p, 0, 256);
 	      x = sk_X509_value(certs,0);
 	      buf = BIO_new(BIO_s_mem());
-	      X509_NAME_print_ex(buf, X509_get_subject_name(x), 0,  XN_FLAG_FN_SN);
+	      X509_NAME_print_ex(buf, X509_get_subject_name(x), 0, XN_FLAG_ONELINE & ~ASN1_STRFLGS_ESC_MSB);
 	      BIO_gets(buf, p, 256);
 	      subject = [NSString stringWithUTF8String: p];
 	      
 	      memset(p, 0, 256);
-	      X509_NAME_print_ex(buf, X509_get_issuer_name(x), 0,  XN_FLAG_FN_SN);
+	      X509_NAME_print_ex(buf, X509_get_issuer_name(x), 0, XN_FLAG_ONELINE & ~ASN1_STRFLGS_ESC_MSB);
 	      BIO_gets(buf, p, 256);
 	      issuer = [NSString stringWithUTF8String: p];
 	      
