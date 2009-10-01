@@ -31,7 +31,8 @@ function savePreferences(sender) {
 function _setupEvents(enable) {
     var widgets = [ "timezone", "shortDateFormat", "longDateFormat",
                     "timeFormat", "weekStartDay", "dayStartTime", "dayEndTime",
-                    "firstWeek", "messageCheck", "subscribedFoldersOnly" ];
+                    "firstWeek", "messageCheck", "subscribedFoldersOnly",
+                    "language"];
     for (var i = 0; i < widgets.length; i++) {
         var widget = $(widgets[i]);
         if (widget) {

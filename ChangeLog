@@ -6,6 +6,9 @@
 	received, references, davDisplayName, to
 	* Tests/test-maildav.py (testPROPFIND): Added tests for the new MailDAV
 	PROPFIND.
+	* UI/PreferencesUI/UIxPreferences.m (languages, language, setLanguage:,
+	languageText): Added to support changing the language from the Preferences
+	dialog.
 
 2009-10-01  Cyril Robert  <crobert@inverse.ca>
 

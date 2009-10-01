@@ -827,4 +827,27 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
   
 }
 
+- (NSArray *) languages
+{
+  return [NSArray arrayWithObjects: @"Czech", @"Dutch", @"English", @"French", 
+          @"German", @"Hungarian", @"Italian", @"BrazilianPortuguese", 
+          @"Russian", @"Spanish", @"Welsh", nil];
+}
+
+- (NSString *) language
+{
+  return [userDefaults objectForKey: @"Language"];
+}
+
+- (void) setLanguage: (NSString *) newLanguage
+{
+  if ([[self languages] containsObject: newLanguage])
+    [userDefaults setObject: newLanguage forKey: @"Language"];
+}
+
+- (NSString *) languageText
+{
+  return [self labelForKey: item];
+}
+
 @end

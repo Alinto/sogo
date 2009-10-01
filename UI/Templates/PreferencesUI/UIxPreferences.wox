@@ -35,6 +35,12 @@
 <!-- 	</var:if> -->
       </ul>
       <div id="generalView" class="tab">
+  <label><var:string label:value="Language :"/>
+	  <var:popup list="languages" item="item"
+	    const:id="language"
+      string="languageText" 
+      selection="language"
+      label:noSelectionString="choose" /></label><br/>
 	<label><var:string label:value="Current Time Zone :"/>
 	  <var:popup list="timeZonesList" item="item"
 	    const:id="timezone"
