@@ -1269,4 +1269,184 @@ static BOOL debugSoParts       = NO;
   return response;
 }
 
+// For DAV REPORT
+- (id) _fetchProperty: (NSString *) property
+{
+  NSArray *parts;
+  id rc, msgs;
+
+  rc = nil;
+
+  if (property)
+    {
+      parts = [NSArray arrayWithObjects: property, nil];
+      
+      msgs = [self fetchParts: parts];
+      msgs = [msgs valueForKey: @"fetch"];
+      if ([msgs count]) {
+          rc = [msgs objectAtIndex: 0];
+      }
+    }
+
+  return rc;
+}
+
+- (BOOL) _hasFlag: (NSString *) flag
+{
+  BOOL rc;
+  NSDictionary *values;
+  NSArray *flags;
+
+  rc = NO;
+  values = [self _fetchProperty: @"FLAGS"];
+
+  if (values)
+    {
+      flags = [values objectForKey: @"flags"];
+      rc = [flags containsObject: flag];
+    }
+  return rc;
+}
+
+- (NSString *) _emailAddressesFrom: (NSArray *) enveloppeAddresses
+{
+  //voir spec
+  NSMutableArray *addresses;
+  NSString *rc;
+  NGImap4EnvelopeAddress *address;
+  NSString *email;
+  int count, max;
+
+  rc = nil;
+  max = [enveloppeAddresses count];
+
+  if (max > 0)
+    {
+      addresses = [NSMutableArray array];
+      for (count = 0; count < max; count++)
+        {
+          address = [enveloppeAddresses objectAtIndex: count];
+          email = [NSString stringWithFormat: @"%@", [address email]];
+
+          [addresses addObject: email];
+        }
+      rc = [addresses componentsJoinedByString: @", "];
+    }
+
+  return rc;
+}
+
+// Properties
+
+//{urn:schemas:httpmail:}
+
+// date already exists, but this one is the correct format
+- (NSString *) davDate
+{
+  return [[self date] 
+          descriptionWithCalendarFormat: @"%a, %d %b %Y %H:%M:%S %z"];
+}
+
+- (BOOL) hasAttachment
+{
+  return ([[self fetchAttachmentIds] count] > 0);
+}
+
+- (BOOL) read
+{
+  return [self _hasFlag: @"seen"];
+}
+
+- (NSString *) textDescription
+{
+  return [NSString stringWithFormat: @"<![CDATA[%@]]>", [self contentAsString]];
+}
+
+
+//{urn:schemas:mailheader:}
+
+- (NSString *) cc
+{
+  return [self _emailAddressesFrom: [self ccEnvelopeAddresses]];
+}
+
+- (NSString *) from
+{
+  return [self _emailAddressesFrom: [self fromEnvelopeAddresses]];
+}
+
+- (NSString *) inReplyTo
+{
+  return [[self envelope] inReplyTo];
+}
+
+- (NSString *) messageId
+{
+  return [[self envelope] messageID];
+}
+
+- (NSString *) received
+{
+  NSDictionary *fetch;
+  NSData *data;
+  NSString *value, *rc;
+  NSRange range;
+
+  rc = nil;
+  fetch = [self _fetchProperty: @"BODY[HEADER.FIELDS (RECEIVED)]"];
+
+  if ([fetch count])
+    {
+      data = [fetch objectForKey: @"header"];
+      value = [[NSString alloc] initWithData: data 
+                                    encoding: NSUTF8StringEncoding];
+      range = [value rangeOfString: @"received:"
+                           options: NSCaseInsensitiveSearch
+                             range: NSMakeRange (10, [value length]-11)];
+      if (range.length)
+        {
+          // We want to keep the first part
+          range.length = range.location;
+          range.location = 0;
+          rc = [[value substringWithRange: range] stringByTrimmingSpaces];
+        }
+      else
+        rc = [value stringByTrimmingSpaces];
+
+      [value release];
+    }
+
+  return rc;
+}
+
+- (NSString *) references
+{
+  NSDictionary *fetch;
+  NSData *data;
+  NSString *value, *rc;;
+
+  rc = nil;
+  fetch = [self _fetchProperty: @"BODY[HEADER.FIELDS (REFERENCES)]"];
+
+  if ([fetch count])
+    {
+      data = [fetch objectForKey: @"header"];
+      value = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
+      rc = [[value substringFromIndex: 11] stringByTrimmingSpaces];
+      [value release];
+    }
+
+  return rc;
+}
+
+- (NSString *) davDisplayName
+{
+  return [self subject];
+}
+
+- (NSString *) to
+{
+  return [self _emailAddressesFrom: [self toEnvelopeAddresses]];
+}
+
 @end /* SOGoMailObject */

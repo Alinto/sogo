@@ -1,3 +1,12 @@
+2009-10-01  Cyril Robert <crobert@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailObject.m: Added methods required for PROPFIND /
+	REPORT: _fetchProperty:, _hasFlag:, _emailAddressesFrom:, davDate,
+	hasAttachment, read, textDescription, cc, from, inReplyTo, messageId,
+	received, references, davDisplayName, to
+	* Tests/test-maildav.py (testPROPFIND): Added tests for the new MailDAV
+	PROPFIND.
+
 2009-10-01  Cyril Robert  <crobert@inverse.ca>
 
 	* SoObjects/Mailer/SOGoMailFolder.m

@@ -26,15 +26,19 @@ message1 = """Return-Path: <cyril@cyril.dev>
 Received: from cyril.dev (localhost [127.0.0.1])
          by cyril.dev (Cyrus v2.3.8-Debian-2.3.8-1) with LMTPA;
          Tue, 29 Sep 2009 07:42:16 -0400
+Received: from aloha.dev (localhost [127.0.0.1])
+         by aloha.dev (Cyrus v2.3.8-Debian-2.3.8-1) with LMTPA;
+         Tue, 29 Sep 2009 07:42:16 -0400
 X-Virus-Scanned: Debian amavisd-new at inverse.ca
 Message-ID: <4AC1F296.5060801@cyril.dev>
+References: <4AC3BF1B.3010806@inverse.ca>
 Date: Tue, 29 Sep 2009 07:42:14 -0400
 From: Cyril <cyril@cyril.dev>
 Organization: Inverse inc.
 User-Agent: Thunderbird 2.0.0.22 (Macintosh/20090605)
 MIME-Version: 1.0
 To: jacques@cyril.dev
-CC: support@inverse.ca
+CC: support@inverse.ca, user10@cyril.dev
 Subject: Hallo
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
@@ -47,6 +51,9 @@ Can you read me?
 -- 
 Cyril <cyril@cyril.dev>
 """
+message1_received = """Received: from cyril.dev (localhost [127.0.0.1])
+         by cyril.dev (Cyrus v2.3.8-Debian-2.3.8-1) with LMTPA;
+         Tue, 29 Sep 2009 07:42:16 -0400"""
 
 class DAVMailCollectionTest(unittest.TestCase):
   resource = '/SOGo/dav/%s/Mail/' % username
@@ -92,6 +99,23 @@ class DAVMailCollectionTest(unittest.TestCase):
                       "%s: event creation/modification:"
                       " expected status code '%d' (received '%d')"
                       % (filename, exp_status, put.response["status"]))
+
+  def _testProperty (self, url, property, expected):
+      propfind = webdavlib.WebDAVPROPFIND(url, (property, ), 0)
+      self.client.execute(propfind)
+      key = property.replace("{urn:schemas:httpmail:}", "a:")
+      key = key.replace("{urn:schemas:mailheader:}", "a:")
+      tmp = propfind.xpath_evaluate("/D:multistatus/D:response/D:propstat/D:prop")
+      prop = tmp[0].firstChild;
+      result = None
+
+      if prop:
+          result = prop._get_firstChild()._get_nodeValue()
+          #print key, result
+
+      self.assertEquals(result, expected,
+                      "failure in propfind"
+                      "(%s != %s)" % (result, expected))
 
   def testMKCOL(self):
     """Folder creation"""
@@ -152,6 +176,43 @@ class DAVMailCollectionTest(unittest.TestCase):
                       "(code = %d)" % get.response["status"])
 
     self._deleteCollection ("test-dav-mail")
+
+  def testPROPFIND(self):
+    """Message properties"""
+    self._deleteCollection ("test-dav-mail")
+    self._makeCollection ("test-dav-mail")
+
+    url = "%s%s" % (self.resource, "foldertest-dav-mail/")
+    put = webdavlib.HTTPPUT (url, message1)
+    put.content_type = "message/rfc822"
+    self.client.execute (put)
+    self.assertEquals(put.response["status"], 201,
+                      "failure putting message"
+                      "(code = %d)" % put.response["status"])
+
+    itemLocation = put.response["headers"]["location"]
+    tests = (("{urn:schemas:httpmail:}date", "Tue, 29 Sep 2009 11:42:14 GMT"),
+             ("{urn:schemas:httpmail:}hasattachment", "0"),
+             ("{urn:schemas:httpmail:}read", "0"),
+             ("{urn:schemas:httpmail:}textdescription", 
+               "<![CDATA[%s]]>" % message1),
+             ("{urn:schemas:httpmail:}unreadcount", None),
+             ("{urn:schemas:mailheader:}cc","support@inverse.ca, user10@cyril.dev"),
+             ("{urn:schemas:mailheader:}date", "Tue, 29 Sep 2009 11:42:14 GMT"),
+             ("{urn:schemas:mailheader:}from", "Cyril <cyril@cyril.dev>"),
+             ("{urn:schemas:mailheader:}in-reply-to", None),
+             ("{urn:schemas:mailheader:}message-id","<4AC1F296.5060801@cyril.dev>"),
+             ("{urn:schemas:mailheader:}received", message1_received),
+             ("{urn:schemas:mailheader:}references", "<4AC3BF1B.3010806@inverse.ca>"),
+             ("{urn:schemas:mailheader:}subject", "Hallo"),
+             ("{urn:schemas:mailheader:}to", "jacques@cyril.dev"))
+
+    for test in tests:
+        property, expected = test
+        self._testProperty(itemLocation, property, expected)
+
+    self._deleteCollection ("test-dav-mail")
+
 
 if __name__ == "__main__":
   unittest.main()
