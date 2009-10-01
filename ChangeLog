@@ -7,6 +7,14 @@
 
 2009-10-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Tests/test-webdavlib.py: new test script for testing the
+	webdavlib library itself.
+	(HTTPUnparsedURLTest.testURLParse): new test case for the new
+	HTTPUnparsedURL class.
+
+	* Tests/webdavlib.py (HTTPUnparsedURL): new utility class for
+	consistently parsing url strings
+
 	* Tests/test-maildav.py (DAVMailCollectionTest.testPUT): fixed to
 	delete the test collection prior to the test
 

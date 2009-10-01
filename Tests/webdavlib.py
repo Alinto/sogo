@@ -1,11 +1,46 @@
 import cStringIO
 import httplib
 import M2Crypto.httpslib
+import re
 import time
 import xml.sax.saxutils
 import xml.dom.ext.reader.Sax2
 import xml.xpath
 import sys
+
+xmlns_dav = "DAV:"
+xmlns_caldav = "urn:ietf:params:xml:ns:caldav"
+xmlns_inversedav = "urn:inverse:params:xml:ns:inverse-dav"
+
+url_re = None
+
+class HTTPUnparsedURL:
+    def __init__(self, url):
+        self._parse(url)
+
+    def _parse(self, url):
+        # ((proto)://((username(:(password)?)@)?hostname(:(port))))(path)?
+#        if url_re is None:
+        url_parts = url.split("?")
+        alpha_match = "[a-zA-Z0-9]+"
+        num_match = "[0-9]+"
+        pattern = ("((%s)://(((%s)(:(%s)?)@)?(%s)(:(%s))))?(/.*)"
+                   % (alpha_match, alpha_match, alpha_match,
+                      alpha_match, num_match))
+        url_re = re.compile(pattern)
+        re_match = url_re.match(url_parts[0])
+        if re_match is None:
+            raise Exception, "URL expression could not be parsed: %s" % url
+
+        (trash, self.protocol, trash, trash, self.username, trash,
+         self.password, self.hostname, trash, self.port, self.path) = re_match.groups()
+
+        self.parameters = {}
+        if len(url_parts) > 1:
+            param_elms = url_parts[1].split("&")
+            for param_pair in param_elms:
+                parameter = param_pair.split("=")
+                self.parameters[parameter[0]] = parameter[1]
 
 class WebDAVClient:
     user_agent = "Mozilla/5.0"
