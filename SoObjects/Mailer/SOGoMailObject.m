@@ -1359,6 +1359,7 @@ static BOOL debugSoParts       = NO;
 
 - (NSString *) textDescription
 {
+#warning We should send the content as an NSData
   return [NSString stringWithFormat: @"<![CDATA[%@]]>", [self contentAsString]];
 }
 
