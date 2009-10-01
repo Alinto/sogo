@@ -1,4 +1,4 @@
-ifeq ($(test-unitialized),yes)
+ifeq ($(test-uninitialized),yes)
 ifeq ($(debug),yes)
 ADDITIONAL_OBJCFLAGS=-O1
 else
