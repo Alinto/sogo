@@ -63,7 +63,7 @@ class DAVMailCollectionTest(unittest.TestCase):
     self.resource = '/SOGo/dav/%s/Mail/%s_A_%s/' \
         % (username,
            username.replace("@", "_A_").replace (".", "_D_"),
-           mailserver)
+           mailserver.replace (".", "_D_"))
 
   ## helper methods
   def _makeCollection (self, name, status = 201):
@@ -121,7 +121,7 @@ class DAVMailCollectionTest(unittest.TestCase):
 
     # message creation on collection url
     url = "%s%s" % (self.resource, "foldertest-dav-mail/")
-    put = webdavlib.WebDAVPUT (url, message1)
+    put = webdavlib.HTTPPUT (url, message1)
     self.client.execute (put)
     self.assertEquals(put.response["status"], 201,
                       "failure putting message"
@@ -136,7 +136,7 @@ class DAVMailCollectionTest(unittest.TestCase):
 
     # message creation with explicit filename
     url = "%s%s" % (self.resource, "foldertest-dav-mail/blabla.eml")
-    put = webdavlib.WebDAVPUT (url, message1)
+    put = webdavlib.HTTPPUT (url, message1)
     self.client.execute (put)
     self.assertEquals(put.response["status"], 201,
                       "failure putting message"
