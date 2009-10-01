@@ -97,10 +97,10 @@ static BOOL debugObjectAllocation = NO;
 #endif
   debugRequests = [ud boolForKey: @"SOGoDebugRequests"];
   debugLeaks = [ud boolForKey: @"SOGoDebugLeaks"];
-  /* vMem size check - default is 200MB */
+  /* vMem size check - default is 384MB */
     
   tmp = [ud objectForKey: @"SxVMemLimit"];
-  vMemSizeLimit = ((tmp != nil) ? [tmp intValue] : 200);
+  vMemSizeLimit = ((tmp != nil) ? [tmp intValue] : 384);
   if (vMemSizeLimit > 0)
     NSLog(@"Note: vmem size check enabled: shutting down app when "
 	  @"vmem > %d MB", vMemSizeLimit);

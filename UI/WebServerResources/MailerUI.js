@@ -1876,7 +1876,9 @@ function onLoadMailboxesCallback(http) {
 }
 
 function buildMailboxes(accountKeys, encoded) {
-    var account = new Mailbox("account", accountKeys[0], null, accountKeys[1]);
+    var account = new Mailbox("account", accountKeys[0], 
+                              undefined, //necessary, null will cause issues
+                              accountKeys[1]);
     var data = encoded.evalJSON(true);
     var mailboxes = data.mailboxes;
     var unseen = (data.status? data.status.unseen : 0);
