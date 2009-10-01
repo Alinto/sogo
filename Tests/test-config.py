@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from config import hostname, port, username, password, subscriber_username, attendee1, attendee1_delegate
+from config import hostname, port, username, password, mailserver, subscriber_username, attendee1, attendee1_delegate
 
 import unittest
 
@@ -35,6 +35,11 @@ class CalDAVITIPDelegationTest(unittest.TestCase):
         self.assertEquals(subscriber_username, attendee1,
                           "'subscriber_username' and 'attendee1'"
                           + " must be the same user")
+
+        try:
+            test = mailserver
+        except:
+            self.fail("'mailserver' is not defined")
 
         userHash = {}
         userList = [ username, subscriber_username, attendee1_delegate ]

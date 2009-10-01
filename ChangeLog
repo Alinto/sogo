@@ -1,3 +1,9 @@
+2009-10-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Tests/test-maildav.py (DAVMailCollectionTest._putMessage):
+	messages have "message/rfc822" mime-type.
+	(DAVMailCollectionTest.setUp): use servername
+
 2009-09-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/LDAPSource.m (-init): removed "ldapConnection"

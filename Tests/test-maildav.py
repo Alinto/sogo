@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from config import hostname, port, username, password, subscriber_username, subscriber_password
+from config import hostname, port, username, password, mailserver, subscriber_username, subscriber_password
 
 import sys
 import unittest
@@ -9,40 +9,18 @@ import time
 
 def fetchUserEmail(login):
   client = webdavlib.WebDAVClient(hostname, port,
-                  username, password)
+                                  username, password)
   resource = '/SOGo/dav/%s/' % login
   propfind = webdavlib.WebDAVPROPFIND(resource,
-                    ["{urn:ietf:params:xml:ns:caldav}calendar-user-address-set"],
-                    0)
+                                      ["{urn:ietf:params:xml:ns:caldav}calendar-user-address-set"],
+                                      0)
   propfind.xpath_namespace = { "D": "DAV:",
-                 "C": "urn:ietf:params:xml:ns:caldav" }
+                               "C": "urn:ietf:params:xml:ns:caldav" }
   client.execute(propfind)
   nodes = propfind.xpath_evaluate('/D:multistatus/D:response/D:propstat/D:prop/C:calendar-user-address-set/D:href',
-                  None)
+                                  None)
 
   return nodes[0].childNodes[0].nodeValue
-
-class DAVMailTest(unittest.TestCase):
-  resource = None
-
-  def setUp(self):
-    self.client = webdavlib.WebDAVClient(hostname, port,
-                       username, password)
-    #delete = webdavlib.WebDAVDELETE(self.davResource)
-    #self.client.execute(delete)
-    #mkcol = webdavlib.WebDAVMKCOL(self.resource)
-    #self.client.execute(mkcol)
-    #self.assertEquals(mkcol.response["status"], 201,
-    #          "preparation: failure creating collection"
-    #          "(code = %d)" % mkcol.response["status"])
-    #self.subscriber_client = webdavlib.WebDAVClient(hostname, port,
-    #                        subscriber_username,
-    #                        subscriber_password)
-
-#  def tearDown(self):
-    #delete = webdavlib.WebDAVDELETE(self.davResource)
-    #self.client.execute(delete)
-
 
 message1 = """Return-Path: <cyril@cyril.dev>
 Received: from cyril.dev (localhost [127.0.0.1])
@@ -70,22 +48,22 @@ Can you read me?
 Cyril <cyril@cyril.dev>
 """
 
-class DAVMailCollectionTest(DAVMailTest):
+class DAVMailCollectionTest(unittest.TestCase):
   resource = '/SOGo/dav/%s/Mail/' % username
   user_email = None
 
   def setUp(self):
+    self.client = webdavlib.WebDAVClient(hostname, port,
+                                         username, password)
     if self.user_email is None:
       self.user_email = fetchUserEmail(username)
       if self.user_email.startswith ("mailto:"):
         self.user_email = self.user_email[7:]
 
-    self.resource = '/SOGo/dav/%s/Mail/%s/' \
-        % (username, self.user_email)
-    self.resource = self.resource.replace ("@", "_A_")
-    self.resource = self.resource.replace (".", "_D_")
-
-    DAVMailTest.setUp(self)
+    self.resource = '/SOGo/dav/%s/Mail/%s_A_%s/' \
+        % (username,
+           username.replace("@", "_A_").replace (".", "_D_"),
+           mailserver)
 
   def testGeneric(self):
     """Test folder creation / listing"""
@@ -114,29 +92,29 @@ class DAVMailCollectionTest(DAVMailTest):
     put = webdavlib.WebDAVPUT (url, message1)
     self.client.execute (put)
     self.assertEquals(put.response["status"], 201,
-              "failure putting message"
-              "(code = %d)" % put.response["status"])
+                      "failure putting message"
+                      "(code = %d)" % put.response["status"])
 
     itemLocation = put.response["headers"]["location"]
     get = webdavlib.WebDAVGET (itemLocation)
     self.client.execute (get)
     self.assertEquals(get.response["status"], 200,
-              "failure getting item"
-              "(code = %d)" % get.response["status"])
+                      "failure getting item"
+                      "(code = %d)" % get.response["status"])
 
     url = "%s%s" % (self.resource, "foldertest-dav-mail/blabla.eml")
     put = webdavlib.WebDAVPUT (url, message1)
     self.client.execute (put)
     self.assertEquals(put.response["status"], 201,
-              "failure putting message"
-              "(code = %d)" % put.response["status"])
-
+                      "failure putting message"
+                      "(code = %d)" % put.response["status"])
+    
     itemLocation = put.response["headers"]["location"]
     get = webdavlib.WebDAVGET (itemLocation)
     self.client.execute (get)
     self.assertEquals(get.response["status"], 200,
-              "failure getting item"
-              "(code = %d)" % get.response["status"])
+                      "failure getting item"
+                      "(code = %d)" % get.response["status"])
 
     self._deleteCollection ("test-dav-mail")
 
@@ -160,13 +138,12 @@ class DAVMailCollectionTest(DAVMailTest):
                   exp_status = 201):
     url = "%s%s" % (self.resource, filename)
     put = webdavlib.HTTPPUT(url, message)
-    put.content_type = "text/plain; charset=utf-8"
+    put.content_type = "message/rfc822"
     client.execute(put)
     self.assertEquals(put.response["status"], exp_status,
-              "%s: event creation/modification:"
-              " expected status code '%d' (received '%d')"
-              % (filename, exp_status, put.response["status"]))
+                      "%s: event creation/modification:"
+                      " expected status code '%d' (received '%d')"
+                      % (filename, exp_status, put.response["status"]))
 
 if __name__ == "__main__":
   unittest.main()
-
