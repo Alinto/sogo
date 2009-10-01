@@ -1,5 +1,8 @@
 2009-10-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Tests/test-maildav.py (DAVMailCollectionTest.testPUT): fixed to
+	delete the test collection prior to the test
+
 	* SoObjects/Appointments/SOGoAppointmentFolders.m
 	(-proxyFoldersWithWriteAccess:): return an autoreleased
 	"proxyFolders" to avoid a leak.

@@ -65,59 +65,7 @@ class DAVMailCollectionTest(unittest.TestCase):
            username.replace("@", "_A_").replace (".", "_D_"),
            mailserver)
 
-  def testGeneric(self):
-    """Test folder creation / listing"""
-    self._makeCollection ("test-dav-mail-%40-abc")
-    self._deleteCollection ("test-dav-mail-%40-abc")
-    self._makeCollection ("test-dav-mail-@-def")
-    self._deleteCollection ("test-dav-mail-@-def")
-    self._makeCollection ("test-dav-mail-%20-ghi")
-    self._deleteCollection ("test-dav-mail-%20-ghi")
-    self._makeCollection ("test-dav-mail-%25-jkl", 500)
-
-    # Test MOVE
-#    self._makeCollection ("test-dav-mail-movable")
-#    url = "%sfolder%s" % (self.resource, "test-dav-mail-movable")
-#    move = webdavlib.WebDAVMOVE (url)
-#    move.destination = "http://cyril.dev%s%s2" % (self.resource, "test-dav-mail-movable")
-#    move.host = "cyril.dev"
-#    self.client.execute (move)
-#    self.assertEquals(move.response["status"], 204,
-#              "failure creating collection"
-#              "(code = %d)" % move.response["status"])
-
-    #Test PUT
-    self._makeCollection ("test-dav-mail")
-    url = "%s%s" % (self.resource, "foldertest-dav-mail/")
-    put = webdavlib.WebDAVPUT (url, message1)
-    self.client.execute (put)
-    self.assertEquals(put.response["status"], 201,
-                      "failure putting message"
-                      "(code = %d)" % put.response["status"])
-
-    itemLocation = put.response["headers"]["location"]
-    get = webdavlib.WebDAVGET (itemLocation)
-    self.client.execute (get)
-    self.assertEquals(get.response["status"], 200,
-                      "failure getting item"
-                      "(code = %d)" % get.response["status"])
-
-    url = "%s%s" % (self.resource, "foldertest-dav-mail/blabla.eml")
-    put = webdavlib.WebDAVPUT (url, message1)
-    self.client.execute (put)
-    self.assertEquals(put.response["status"], 201,
-                      "failure putting message"
-                      "(code = %d)" % put.response["status"])
-    
-    itemLocation = put.response["headers"]["location"]
-    get = webdavlib.WebDAVGET (itemLocation)
-    self.client.execute (get)
-    self.assertEquals(get.response["status"], 200,
-                      "failure getting item"
-                      "(code = %d)" % get.response["status"])
-
-    self._deleteCollection ("test-dav-mail")
-
+  ## helper methods
   def _makeCollection (self, name, status = 201):
     url = "%s%s" % (self.resource, name)
     mkcol = webdavlib.WebDAVMKCOL(url)
@@ -144,6 +92,64 @@ class DAVMailCollectionTest(unittest.TestCase):
                       "%s: event creation/modification:"
                       " expected status code '%d' (received '%d')"
                       % (filename, exp_status, put.response["status"]))
+
+  def testMKCOL(self):
+    """Folder creation"""
+    self._makeCollection ("test-dav-mail-%40-abc")
+    self._deleteCollection ("test-dav-mail-%40-abc")
+    self._makeCollection ("test-dav-mail-@-def")
+    self._deleteCollection ("test-dav-mail-@-def")
+    self._makeCollection ("test-dav-mail-%20-ghi")
+    self._deleteCollection ("test-dav-mail-%20-ghi")
+    self._makeCollection ("test-dav-mail-%25-jkl", 500)
+
+    # Test MOVE
+#    self._makeCollection ("test-dav-mail-movable")
+#    url = "%sfolder%s" % (self.resource, "test-dav-mail-movable")
+#    move = webdavlib.WebDAVMOVE (url)
+#    move.destination = "http://cyril.dev%s%s2" % (self.resource, "test-dav-mail-movable")
+#    move.host = "cyril.dev"
+#    self.client.execute (move)
+#    self.assertEquals(move.response["status"], 204,
+#              "failure creating collection"
+#              "(code = %d)" % move.response["status"])
+
+  def testPUT(self):
+    """Message creation"""
+    self._deleteCollection ("test-dav-mail")
+    self._makeCollection ("test-dav-mail")
+
+    # message creation on collection url
+    url = "%s%s" % (self.resource, "foldertest-dav-mail/")
+    put = webdavlib.WebDAVPUT (url, message1)
+    self.client.execute (put)
+    self.assertEquals(put.response["status"], 201,
+                      "failure putting message"
+                      "(code = %d)" % put.response["status"])
+
+    itemLocation = put.response["headers"]["location"]
+    get = webdavlib.WebDAVGET (itemLocation)
+    self.client.execute (get)
+    self.assertEquals(get.response["status"], 200,
+                      "failure getting item"
+                      "(code = %d)" % get.response["status"])
+
+    # message creation with explicit filename
+    url = "%s%s" % (self.resource, "foldertest-dav-mail/blabla.eml")
+    put = webdavlib.WebDAVPUT (url, message1)
+    self.client.execute (put)
+    self.assertEquals(put.response["status"], 201,
+                      "failure putting message"
+                      "(code = %d)" % put.response["status"])
+    
+    itemLocation = put.response["headers"]["location"]
+    get = webdavlib.WebDAVGET (itemLocation)
+    self.client.execute (get)
+    self.assertEquals(get.response["status"], 200,
+                      "failure getting item"
+                      "(code = %d)" % get.response["status"])
+
+    self._deleteCollection ("test-dav-mail")
 
 if __name__ == "__main__":
   unittest.main()
