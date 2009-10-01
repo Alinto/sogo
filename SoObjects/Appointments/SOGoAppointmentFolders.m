@@ -200,8 +200,7 @@
   NSMutableArray *classes;
   NSArray *primaryClasses;
 
-  classes = [NSMutableArray new];
-  [classes autorelease];
+  classes = [NSMutableArray array];
 
   primaryClasses = [super davComplianceClassesInContext: _ctx];
   if (primaryClasses)
@@ -248,7 +247,7 @@
   SOGoAppointmentFolder *currentFolder;
   NSString *folderOwner, *currentUser;
 
-  proxyFolders = [NSMutableArray new];
+  proxyFolders = [NSMutableArray array];
 
   currentUser = [[context activeUser] login];
 

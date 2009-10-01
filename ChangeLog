@@ -1,5 +1,9 @@
 2009-10-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolders.m
+	(-proxyFoldersWithWriteAccess:): return an autoreleased
+	"proxyFolders" to avoid a leak.
+
 	* Tests/test-maildav.py (DAVMailCollectionTest._putMessage):
 	messages have "message/rfc822" mime-type.
 	(DAVMailCollectionTest.setUp): use servername
