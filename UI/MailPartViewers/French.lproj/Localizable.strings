@@ -36,4 +36,7 @@ reply_info = "Ceci est une réponse à un événement que vous avez organisé.";
 "Digital signature is not valid" = "Signature digitale non-valide";
 "Message is signed" = "Message signé";
 "Subject" = "Sujet";
+"From" = "Expéditeur";
+"Date" = "Date";
+"To" = "Destinataire";
 "Issuer" = "Émetteur";
