@@ -122,6 +122,7 @@ class DAVMailCollectionTest(unittest.TestCase):
     # message creation on collection url
     url = "%s%s" % (self.resource, "foldertest-dav-mail/")
     put = webdavlib.HTTPPUT (url, message1)
+    put.content_type = "message/rfc822; charset=utf-8"
     self.client.execute (put)
     self.assertEquals(put.response["status"], 201,
                       "failure putting message"
@@ -137,6 +138,7 @@ class DAVMailCollectionTest(unittest.TestCase):
     # message creation with explicit filename
     url = "%s%s" % (self.resource, "foldertest-dav-mail/blabla.eml")
     put = webdavlib.HTTPPUT (url, message1)
+    put.content_type = "message/rfc822; charset=utf-8"
     self.client.execute (put)
     self.assertEquals(put.response["status"], 201,
                       "failure putting message"
