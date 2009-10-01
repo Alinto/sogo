@@ -1133,32 +1133,18 @@ static NSString *spoolFolder = nil;
   NSException *error;
   WOResponse *response;
   NSString *location;
-  id msg;
 
   error = [self _appendMessageData: message
                            usingId: imap4id];
-
   if (error)
     response = (WOResponse *) error;
   else
     {
       response = [_ctx response];
       [response setStatus: 201];
-      msg = [SOGoMailObject objectWithName: 
-             [NSString stringWithFormat: @"%d", *imap4id] 
-                               inContainer: self];
-      if (msg && [msg doesMailExist])
-        {
-          location = [NSString stringWithFormat: @"%@%d.eml",
-                      [self davURL], *imap4id];
-          [response setHeader: location forKey: @"location"];
-        }
-      else
-        {
-          response = (WOResponse *) 
-            [NSException exceptionWithHTTPStatus: 500
-                                          reason: @"Failed to store message"];
-        }
+      location = [NSString stringWithFormat: @"%@%d.eml",
+                           [self davURL], *imap4id];
+      [response setHeader: location forKey: @"location"];
     }
 
   return response;

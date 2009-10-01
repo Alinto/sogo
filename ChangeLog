@@ -1,3 +1,10 @@
+2009-10-01  Cyril Robert  <crobert@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailFolder.m
+	(-appendMessage:inContext:usingId:): we no longer instantiate the
+	message to check whether it exists since we trust the fact that we
+	would receive an error from NGImap if the creation failed.
+
 2009-10-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* Tests/test-maildav.py (DAVMailCollectionTest.testPUT): fixed to
