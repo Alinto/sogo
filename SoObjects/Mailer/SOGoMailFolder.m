@@ -1118,7 +1118,10 @@ static NSString *spoolFolder = nil;
   result = [client append: data toFolder: folderName withFlags: nil];
 
   if ([[result objectForKey: @"result"] boolValue])
+    {
       *imap4id = [self IMAP4IDFromAppendResult: result];
+      [client unselect];
+    }
   else
     error = [NSException exceptionWithHTTPStatus: 500 /* Server Error */
                                           reason: @"Failed to store message"];
