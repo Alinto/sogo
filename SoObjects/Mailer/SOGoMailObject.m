@@ -1279,7 +1279,7 @@ static BOOL debugSoParts       = NO;
 
   if (property)
     {
-      parts = [NSArray arrayWithObjects: property, nil];
+      parts = [NSArray arrayWithObject: property];
       
       msgs = [self fetchParts: parts];
       msgs = [msgs valueForKey: @"fetch"];
