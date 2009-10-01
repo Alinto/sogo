@@ -11,3 +11,5 @@ subscriber_password = "otherpass"
 
 attendee1 = "user@domain.com"
 attendee1_delegate = "otheruser@domain.com"
+
+mailserver = "imaphost"
