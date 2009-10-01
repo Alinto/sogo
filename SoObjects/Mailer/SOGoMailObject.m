@@ -1262,7 +1262,6 @@ static BOOL debugSoParts       = NO;
                                                  reason: @"Can't overwrite messages"];
       else
         response = [folder appendMessage: [rq content]
-                               inContext: _ctx
                                  usingId: &imap4id];
     }
 
@@ -1310,7 +1309,6 @@ static BOOL debugSoParts       = NO;
 
 - (NSString *) _emailAddressesFrom: (NSArray *) enveloppeAddresses
 {
-  //voir spec
   NSMutableArray *addresses;
   NSString *rc;
   NGImap4EnvelopeAddress *address;
@@ -1404,7 +1402,9 @@ static BOOL debugSoParts       = NO;
       range = [value rangeOfString: @"received:"
                            options: NSCaseInsensitiveSearch
                              range: NSMakeRange (10, [value length]-11)];
-      if (range.length)
+      if (range.length 
+          && range.location < [value length]
+          && range.length < [value length])
         {
           // We want to keep the first part
           range.length = range.location;

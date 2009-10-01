@@ -1119,7 +1119,8 @@ static NSString *spoolFolder = nil;
 
   if ([[result objectForKey: @"result"] boolValue])
     {
-      *imap4id = [self IMAP4IDFromAppendResult: result];
+      if (imap4id)
+        *imap4id = [self IMAP4IDFromAppendResult: result];
       [client unselect];
     }
   else
@@ -1130,7 +1131,6 @@ static NSString *spoolFolder = nil;
 }
 
 - (id) appendMessage: (NSData *) message
-           inContext: (WOContext *) _ctx
              usingId: (int *) imap4id
 {
   NSException *error;
@@ -1143,7 +1143,7 @@ static NSString *spoolFolder = nil;
     response = (WOResponse *) error;
   else
     {
-      response = [_ctx response];
+      response = [context response];
       [response setStatus: 201];
       location = [NSString stringWithFormat: @"%@%d.eml",
                            [self davURL], *imap4id];
@@ -1167,7 +1167,6 @@ static NSString *spoolFolder = nil;
     {
       rq = [_ctx request];
       response = [self appendMessage: [rq content]
-                           inContext: _ctx
                              usingId: &imap4id];
     }
 
