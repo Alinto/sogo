@@ -278,7 +278,9 @@
   
   rc = nil;
 
-  us = [[context activeUser] userSettings];
+  us = [[SOGoUser userWithLogin: [self ownerInContext: nil]]
+	 userDefaults];
+ 
   tmp = [us objectForKey: @"Calendar"];
   if (tmp)
     {
