@@ -65,7 +65,12 @@ class preferences:
     get.cookie = self.cookie
     self.client.execute (get)
     content = eval (get.response['body'])
-    return content[preference]
+    result = None
+    try:
+      result = content[preference]
+    except:
+      pass
+    return result
 
 
 # Simple main to test this class
