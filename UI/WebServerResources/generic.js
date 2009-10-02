@@ -601,12 +601,12 @@ function popupMenu(event, menuId, target) {
         popup.setStyle({ top: menuTop + "px",
                     left: menuLeft + "px",
                     visibility: "visible" });
-		
+
         document.currentPopupMenu = popup;
-		
+
         $(document.body).observe("click", onBodyClickMenuHandler);
     }
-	
+
 }
 
 function getParentMenu(node) {
@@ -907,7 +907,7 @@ function onSearchMouseDown(event) {
         Event.stop(event);
 }
 
-function onSearchFocus() {
+function onSearchFocus(event) {
     ghostPhrase = this.ghostPhrase;
     if (this.value == ghostPhrase) {
         this.value = "";
@@ -939,15 +939,15 @@ function onSearchBlur(event) {
 }
 
 function onSearchKeyDown(event) {
-    if (event.keyCode == Event.KEY_TAB)
+    if (event.keyCode == Event.KEY_TAB
+        || event.ctrlKey
+        || event.metaKey)
         return false;
     
     if (this.timer)
         clearTimeout(this.timer);
 
-    if (event.ctrlKey || event.metaKey)
-        return;
-    else if (event.keyCode == Event.KEY_RETURN) {
+    if (event.keyCode == Event.KEY_RETURN) {
         onSearchFormSubmit();
         preventDefault(event);
     }
@@ -1210,7 +1210,7 @@ function triggerNextAlarm() {
         var url = next[0] + '/' + next[1];
         var alarmTime = parseInt(next[2]);
         var delay = alarmTime;
-        if (alarmTime > 0) delay -= utc;				
+        if (alarmTime > 0) delay -= utc;
         var d = new Date(alarmTime*1000);
         log ("now = " + now.toUTCString());
         log ("next event " + url + " in " + delay + " seconds (on " + d.toUTCString() + ")");
@@ -1256,7 +1256,7 @@ function showAlarmCallback(http) {
             log("showAlarmCallback ajax error: no data received");
     }
     else {
-        log("showAlarmCallback ajax error (" + http.status + "): " + http.url);		
+        log("showAlarmCallback ajax error (" + http.status + "): " + http.url);
     }
 
     triggerNextAlarm();
@@ -1647,55 +1647,6 @@ function getMenus() {
 function onHeaderClick(event) {
 }
 
-/**
-*
-*  AJAX IFRAME METHOD (AIM)
-*  http://www.webtoolkit.info/
-*
-**/
- 
-AIM = {
-	frame : function(c) {
-		var d = new Element ('div');
-    var n = d.identify ();
-		d.innerHTML = '<iframe style="display:none" src="about:blank" id="' 
-      + n + '" name="' + n + '" onload="AIM.loaded(\'' + n + '\')"></iframe>';
-		document.body.appendChild(d);
-		var i = $(n); // TODO: useful?
-		if (c && typeof(c.onComplete) == 'function')
-      i.onComplete = c.onComplete;
-		return n;
-	},
- 
-	form : function(f, name) {
-		f.writeAttribute('target', name);
-	},
- 
-	submit : function(f, c) {
-		AIM.form(f, AIM.frame(c));
-		if (c && typeof(c.onStart) == 'function')
-			return c.onStart();
-		else
-			return true;
-	},
- 
-	loaded : function(id) {
-		var i = $(id);
-		if (i.contentDocument)
-			var d = i.contentDocument;
-		else if (i.contentWindow)
-			var d = i.contentWindow.document;
-		else
-			var d = window.frames[id].document;
-		if (d.location.href == "about:blank")
-			return;
- 
-		if (typeof(i.onComplete) == 'function')
-			i.onComplete(d.body.innerHTML);
-	}
- 
-}
-
 function getLabel(title) {
     var rc = title;
     if (!logWindow) {
@@ -1714,5 +1665,53 @@ function getLabel(title) {
     return rc;
 }
 
+/**
+ *
+ *  AJAX IFRAME METHOD (AIM)
+ *  http://www.webtoolkit.info/
+ *
+ **/
+ 
+AIM = {
+    frame : function(c) {
+        var d = new Element ('div');
+        var n = d.identify ();
+        d.innerHTML = '<iframe style="display:none" src="about:blank" id="' 
+        + n + '" name="' + n + '" onload="AIM.loaded(\'' + n + '\')"></iframe>';
+        document.body.appendChild(d);
+        var i = $(n); // TODO: useful?
+        if (c && typeof(c.onComplete) == 'function')
+            i.onComplete = c.onComplete;
+        return n;
+    },
+ 
+    form : function(f, name) {
+        f.writeAttribute('target', name);
+    },
+ 
+    submit : function(f, c) {
+        AIM.form(f, AIM.frame(c));
+        if (c && typeof(c.onStart) == 'function')
+            return c.onStart();
+        else
+            return true;
+    },
+ 
+    loaded : function(id) {
+        var i = $(id);
+        if (i.contentDocument)
+            var d = i.contentDocument;
+        else if (i.contentWindow)
+            var d = i.contentWindow.document;
+        else
+            var d = window.frames[id].document;
+        if (d.location.href == "about:blank")
+            return;
+ 
+        if (typeof(i.onComplete) == 'function')
+            i.onComplete(d.body.innerHTML);
+    }
+ 
+}
 
 document.observe("dom:loaded", onLoadHandler);
