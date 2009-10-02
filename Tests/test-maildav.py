@@ -100,7 +100,7 @@ class DAVMailCollectionTest(unittest.TestCase):
                       " expected status code '%d' (received '%d')"
                       % (filename, exp_status, put.response["status"]))
 
-  def _testProperty (self, url, property, expected):
+  def _testProperty (self, url, property, expected, isDate = 0):
       propfind = webdavlib.WebDAVPROPFIND(url, (property, ), 0)
       self.client.execute(propfind)
       key = property.replace("{urn:schemas:httpmail:}", "a:")
@@ -112,6 +112,10 @@ class DAVMailCollectionTest(unittest.TestCase):
       if prop:
           result = prop._get_firstChild()._get_nodeValue()
           #print key, result
+
+      if isDate:
+          tstruct = time.strptime (result, "%a, %d %b %Y %H:%M:%S %Z")
+          result = int (time.mktime (tstruct))
 
       self.assertEquals(result, expected,
                       "failure in propfind"
@@ -191,25 +195,26 @@ class DAVMailCollectionTest(unittest.TestCase):
                       "(code = %d)" % put.response["status"])
 
     itemLocation = put.response["headers"]["location"]
-    tests = (("{urn:schemas:httpmail:}date", "Tue, 29 Sep 2009 11:42:14 GMT"),
-             ("{urn:schemas:httpmail:}hasattachment", "0"),
-             ("{urn:schemas:httpmail:}read", "0"),
+    tests = (("{urn:schemas:httpmail:}date", 1254242534, 1),
+             ("{urn:schemas:httpmail:}hasattachment", "0", 0),
+             ("{urn:schemas:httpmail:}read", "0", 0),
              ("{urn:schemas:httpmail:}textdescription", 
-               "<![CDATA[%s]]>" % message1),
-             ("{urn:schemas:httpmail:}unreadcount", None),
-             ("{urn:schemas:mailheader:}cc","support@inverse.ca, user10@cyril.dev"),
-             ("{urn:schemas:mailheader:}date", "Tue, 29 Sep 2009 11:42:14 GMT"),
-             ("{urn:schemas:mailheader:}from", "Cyril <cyril@cyril.dev>"),
-             ("{urn:schemas:mailheader:}in-reply-to", None),
-             ("{urn:schemas:mailheader:}message-id","<4AC1F296.5060801@cyril.dev>"),
-             ("{urn:schemas:mailheader:}received", message1_received),
-             ("{urn:schemas:mailheader:}references", "<4AC3BF1B.3010806@inverse.ca>"),
-             ("{urn:schemas:mailheader:}subject", "Hallo"),
-             ("{urn:schemas:mailheader:}to", "jacques@cyril.dev"))
+               "<![CDATA[%s]]>" % message1, 0),
+             ("{urn:schemas:httpmail:}unreadcount", None, 0),
+             ("{urn:schemas:mailheader:}cc","support@inverse.ca, user10@cyril.dev", 0),
+             ("{urn:schemas:mailheader:}date", 1254242534, 1),
+             ("{urn:schemas:mailheader:}from", "Cyril <cyril@cyril.dev>", 0),
+             ("{urn:schemas:mailheader:}in-reply-to", None, 0),
+             ("{urn:schemas:mailheader:}message-id","<4AC1F296.5060801@cyril.dev>", 0),
+             ("{urn:schemas:mailheader:}received", message1_received, 0),
+             ("{urn:schemas:mailheader:}references",
+               "<4AC3BF1B.3010806@inverse.ca>", 0),
+             ("{urn:schemas:mailheader:}subject", "Hallo", 0),
+             ("{urn:schemas:mailheader:}to", "jacques@cyril.dev", 0))
 
     for test in tests:
-        property, expected = test
-        self._testProperty(itemLocation, property, expected)
+        property, expected, isDate = test
+        self._testProperty(itemLocation, property, expected, isDate)
 
     self._deleteCollection ("test-dav-mail")
 
