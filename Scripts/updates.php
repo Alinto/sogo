@@ -22,7 +22,7 @@
  */
 
 /* This script handles the automatic propagation of extensions pertaining to a
-   SOGo site */
+   SOGo site. It requires PHP 4.1.0 or later. */
 $plugins
 = array( "sogo-connector@inverse.ca"
          => array( "application" => "thunderbird",
@@ -45,12 +45,12 @@ $applications
                    <em:minVersion>1.5</em:minVersion>
                    <em:maxVersion>2.0.*</em:maxVersion>" );
 
-$pluginname = $HTTP_GET_VARS["plugin"];
+$pluginname = $_GET["plugin"];
 $plugin =& $plugins[$pluginname];
 $application =& $applications[$plugin["application"]];
 
 if ( $plugin ) {
-  $platform = $HTTP_GET_VARS["platform"];
+  $platform = $_GET["platform"];
   if ( $platform
        && file_exists( $platform . "/" . $plugin["filename"] ) ) {
     $plugin["filename"] = $platform . "/" . $plugin["filename"];
