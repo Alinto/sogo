@@ -1,3 +1,16 @@
+2009-10-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Tests/webdavlib.py (MailDAVMailQuery): new class that implements
+	the "mail-query" DAV REPORT.
+	(WebDAVQuery._initProperties): new helper methods invoked by
+	PROPFIND and REPORT classes at initialization to format the "prop"
+	part of their query.
+	(HTTPUnparsedURL._parse): accept more valid URL characters.
+
+	* Tests/test-maildav.py
+	(DAVMailCollectionTest.testREPORTMailQuery): new method with
+	initial tests for "mail-query" report.
+
 2009-10-01  Cyril Robert <crobert@inverse.ca>
 
 	* SoObjects/Mailer/SOGoMailObject.m: Added methods required for PROPFIND /

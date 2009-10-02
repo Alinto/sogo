@@ -22,7 +22,7 @@ class HTTPUnparsedURL:
         # ((proto)://((username(:(password)?)@)?hostname(:(port))))(path)?
 #        if url_re is None:
         url_parts = url.split("?")
-        alpha_match = "[a-zA-Z0-9]+"
+        alpha_match = "[a-zA-Z0-9%\._-]+"
         num_match = "[0-9]+"
         pattern = ("((%s)://(((%s)(:(%s)?)@)?(%s)(:(%s))))?(/.*)"
                    % (alpha_match, alpha_match, alpha_match,
@@ -139,7 +139,15 @@ class WebDAVQuery(HTTPQuery):
         self.ns_mgr = _WD_XMLNS_MGR()
         self.top_node = None
         self.xml_response = None
-        self.xpath_namespace = { "D": "DAV:" }
+        self.xpath_namespace = { "D": xmlns_dav }
+
+    # helper for PROPFIND and REPORT (only)
+    def _initProperties(self, properties):
+        props = _WD_XMLTreeElement("prop")
+        self.top_node.append(props)
+        for prop in properties:
+            prop_tag = self.render_tag(prop)
+            props.append(_WD_XMLTreeElement(prop_tag))
 
     def render(self):
         if self.top_node is not None:
@@ -199,11 +207,8 @@ class WebDAVPROPFIND(WebDAVQuery):
     def __init__(self, url, properties, depth = None):
         WebDAVQuery.__init__(self, url, depth)
         self.top_node = _WD_XMLTreeElement("propfind")
-        props = _WD_XMLTreeElement("prop")
-        self.top_node.append(props)
-        for prop in properties:
-            prop_tag = self.render_tag(prop)
-            props.append(_WD_XMLTreeElement(prop_tag))
+        if properties is not None and len(properties) > 0:
+            self._initProperties(properties)
 
 class WebDAVMOVE(WebDAVQuery):
     method = "MOVE"
@@ -262,13 +267,10 @@ class CalDAVPOST(WebDAVQuery):
 class CalDAVCalendarMultiget(WebDAVREPORT):
     def __init__(self, url, properties, hrefs):
         WebDAVQuery.__init__(self, url)
-        multiget_tag = self.ns_mgr.register("calendar-multiget", "urn:ietf:params:xml:ns:caldav")
+        multiget_tag = self.ns_mgr.register("calendar-multiget", xmlns_caldav)
         self.top_node = _WD_XMLTreeElement(multiget_tag)
-        props = _WD_XMLTreeElement("prop")
-        self.top_node.append(props)
-        for prop in properties:
-            prop_tag = self.render_tag(prop)
-            props.append(_WD_XMLTreeElement(prop_tag))
+        if properties is not None and len(properties) > 0:
+            self._initProperties(properties)
 
         for href in hrefs:
             href_node = _WD_XMLTreeElement("href")
@@ -278,19 +280,16 @@ class CalDAVCalendarMultiget(WebDAVREPORT):
 class CalDAVCalendarQuery(WebDAVREPORT):
     def __init__(self, url, properties, component = None, timerange = None):
         WebDAVQuery.__init__(self, url)
-        multiget_tag = self.ns_mgr.register("calendar-query", "urn:ietf:params:xml:ns:caldav")
+        multiget_tag = self.ns_mgr.register("calendar-query", xmlns_caldav)
         self.top_node = _WD_XMLTreeElement(multiget_tag)
-        props = _WD_XMLTreeElement("prop")
-        self.top_node.append(props)
-        for prop in properties:
-            prop_tag = self.render_tag(prop)
-            props.append(_WD_XMLTreeElement(prop_tag))
+        if properties is not None and len(properties) > 0:
+            self._initProperties(properties)
 
         if component is not None:
             filter_tag = self.ns_mgr.register("filter",
-                                              "urn:ietf:params:xml:ns:caldav")
+                                              xmlns_caldav)
             compfilter_tag = self.ns_mgr.register("comp-filter",
-                                                  "urn:ietf:params:xml:ns:caldav")
+                                                  xmlns_caldav)
             filter_node = _WD_XMLTreeElement(filter_tag)
             cal_filter_node = _WD_XMLTreeElement(compfilter_tag,
                                                  { "name": "VCALENDAR" })
@@ -312,11 +311,47 @@ class WebDAVSyncQuery(WebDAVREPORT):
         if token is not None:
             sync_token.append(_WD_XMLTreeTextNode(token))
 
-        props = _WD_XMLTreeElement("prop")
-        self.top_node.append(props)
-        for prop in properties:
-            prop_tag = self.render_tag(prop)
-            props.append(_WD_XMLTreeElement(prop_tag))
+        if properties is not None and len(properties) > 0:
+            self._initProperties(properties)
+
+class MailDAVMailQuery(WebDAVREPORT):
+    def __init__(self, url, properties, filters = None, sort = None):
+        WebDAVQuery.__init__(self, url)
+        mailquery_tag = self.ns_mgr.register("mail-query",
+                                             xmlns_inversedav)
+        self.top_node = _WD_XMLTreeElement(mailquery_tag)
+        if properties is not None and len(properties) > 0:
+            self._initProperties(properties)
+
+        if filters is not None and len(filters) > 0:
+            self._initFilters(filters)
+
+        if sort is not None and len(sort) > 0:
+            self._initSort(sort)
+
+    def _initFilters(self, filters):
+        mailfilter_tag = self.ns_mgr.register("mail-filters",
+                                              xmlns_inversedav)
+        mailfilter_node = _WD_XMLTreeElement(mailfilter_tag)
+        self.top_node.append(mailfilter_node)
+        for filterk in filters.keys():
+            filter_tag = self.ns_mgr.register(filterk,
+                                              xmlns_inversedav)
+            filter_node = _WD_XMLTreeElement(filter_tag,
+                                             filters[filterk])
+            mailfilter_node.append(filter_node)
+
+    def _initSort(self, sort):
+        sort_tag = self.ns_mgr.register("sort", xmlns_inversedav)
+        sort_node = _WD_XMLTreeElement(sort_tag)
+        self.top_node.append(sort_node)
+        sort_subtag = self.ns_mgr.register(sort[0], xmlns_inversedav)
+        if len(sort) > 1:
+            attributes = sort[1]
+        else:
+            attributes = {}
+        sort_subnode = _WD_XMLTreeElement(sort_subtag, attributes)
+        sort_node.append(sort_subnode)
 
 # private classes to handle XML stuff
 class _WD_XMLNS_MGR:
@@ -339,7 +374,7 @@ class _WD_XMLNS_MGR:
         return new_nssym
 
     def register(self, tag, namespace):
-        if namespace != "DAV:":
+        if namespace != xmlns_dav:
             if self.xmlns.has_key(namespace):
                 key = self.xmlns[namespace]
             else:
