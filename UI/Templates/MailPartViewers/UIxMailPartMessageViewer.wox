@@ -15,9 +15,9 @@
       <span class="fieldName"><var:string label:value="Date"/>:</span>
       <var:string value="envelope.date" 
 	formatter="context.mailDateFormatter"/><br/>
+      <span class="fieldName"><var:string label:value="To"/>:</span>
+      <var:string value="toAddresses"/><br/>
       <div class="bodyAdditionalFields">
-	<span class="fieldName"><var:string label:value="To"/>:</span>
-	<var:string value="toAddresses"/><br/>
 	<var:if condition="envelope.hasCC">
 	  <span class="fieldName"><var:string label:value="CC"/>:</span>
 	  <var:string value="ccAddresses"/>
