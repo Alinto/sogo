@@ -47,6 +47,7 @@
 #import <SoObjects/SOGo/NSDictionary+Utilities.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
 #import <SoObjects/SOGo/SOGoUser.h>
+#import <SoObjects/SOGo/NSCalendarDate+SOGo.h>
 
 #import "NSString+Mail.h"
 #import "NSData+Mail.h"
