@@ -33,6 +33,7 @@ Message-ID: <4AC1F29sept6.5060801@cyril.dev>
 Date: Tue, 29 Sep 2009 07:42:14 -0400
 From: Cyril <message1from@cyril.dev>
 User-Agent: Thunderbird 2.0.0.22 (Macintosh/20090605)
+References: <4AC3BF1B.3010806@inverse.ca>
 MIME-Version: 1.0
 To: message1to@cyril.dev
 CC: message1cc@cyril.dev, user10@cyril.dev
@@ -535,8 +536,8 @@ class DAVMailCollectionTest(unittest.TestCase):
              ("{urn:schemas:mailheader:}received", message1_received, 0),
              ("{urn:schemas:mailheader:}references",
                "<4AC3BF1B.3010806@inverse.ca>", 0),
-             ("{urn:schemas:mailheader:}subject", "Hallo", 0),
-             ("{urn:schemas:mailheader:}to", "jacques@cyril.dev", 0))
+             ("{urn:schemas:mailheader:}subject", "message1subject", 0),
+             ("{urn:schemas:mailheader:}to", "message1to@cyril.dev", 0))
 
     for test in tests:
         property, expected, isDate = test

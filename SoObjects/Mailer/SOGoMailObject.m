@@ -1341,8 +1341,7 @@ static BOOL debugSoParts       = NO;
 // date already exists, but this one is the correct format
 - (NSString *) davDate
 {
-  return [[self date] 
-          descriptionWithCalendarFormat: @"%a, %d %b %Y %H:%M:%S %z"];
+  return [[self date] rfc822DateString]; 
 }
 
 - (BOOL) hasAttachment
@@ -1401,7 +1400,7 @@ static BOOL debugSoParts       = NO;
                                     encoding: NSUTF8StringEncoding];
       range = [value rangeOfString: @"received:"
                            options: NSCaseInsensitiveSearch
-                             range: NSMakeRange (10, [value length]-11)];
+                             range: NSMakeRange (10, [value length] - 11)];
       if (range.length 
           && range.location < [value length]
           && range.length < [value length])
@@ -1433,7 +1432,8 @@ static BOOL debugSoParts       = NO;
     {
       data = [fetch objectForKey: @"header"];
       value = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
-      rc = [[value substringFromIndex: 11] stringByTrimmingSpaces];
+      if (value && [value length] > 11)
+        rc = [[value substringFromIndex: 11] stringByTrimmingSpaces];
       [value release];
     }
 
