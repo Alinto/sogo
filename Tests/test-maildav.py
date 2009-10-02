@@ -240,12 +240,13 @@ class DAVMailCollectionTest(unittest.TestCase):
 
   def testMKCOL(self):
     """Folder creation"""
-    self._makeCollection("test-dav-mail-%40-abc")
     self._deleteCollection("test-dav-mail-%40-abc")
-    self._makeCollection("test-dav-mail-@-def")
     self._deleteCollection("test-dav-mail-@-def")
-    self._makeCollection("test-dav-mail-%20-ghi")
     self._deleteCollection("test-dav-mail-%20-ghi")
+
+    self._makeCollection("test-dav-mail-%40-abc")
+    self._makeCollection("test-dav-mail-@-def")
+    self._makeCollection("test-dav-mail-%20-ghi")
     self._makeCollection("test-dav-mail-%25-jkl", 500)
 
     # Test MOVE
