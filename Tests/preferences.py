@@ -46,7 +46,7 @@ class preferences:
   def set (self, preference, value):
     formKey = self.preferencesMap[preference]
     content = "%s=%s" % (formKey, value)
-    url = "/SOGo/so/cyril/preferences"
+    url = "/SOGo/so/%s/preferences" % self.login
 
     post = HTTPPreferencesPOST (url, content)
     post.content_type = "application/x-www-form-urlencoded"
@@ -60,7 +60,7 @@ class preferences:
                        % post.response["status"])
 
   def get (self, preference):
-    url = "/SOGo/so/cyril/preferences/jsonDefaults"
+    url = "/SOGo/so/%s/preferences/jsonDefaults" % self.login
     get = HTTPPreferencesGET (url)
     get.cookie = self.cookie
     self.client.execute (get)
