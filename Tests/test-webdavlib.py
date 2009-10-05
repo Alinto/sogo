@@ -28,5 +28,23 @@ class HTTPUnparsedURLTest(unittest.TestCase):
         self.assertEquals(testURL.port, None)
         self.assertEquals(testURL.path, "/folder/folder/simplereference")
 
+        pathURL = "http://user:secret@bla.com/hooray"
+        testURL = HTTPUnparsedURL(pathURL)
+        self.assertEquals(testURL.protocol, "http")
+        self.assertEquals(testURL.username, "user")
+        self.assertEquals(testURL.password, "secret")
+        self.assertEquals(testURL.hostname, "bla.com")
+        self.assertEquals(testURL.port, None)
+        self.assertEquals(testURL.path, "/hooray")
+
+        pathURL = "http://user@bla.com:80/hooray"
+        testURL = HTTPUnparsedURL(pathURL)
+        self.assertEquals(testURL.protocol, "http")
+        self.assertEquals(testURL.username, "user")
+        self.assertEquals(testURL.password, None)
+        self.assertEquals(testURL.hostname, "bla.com")
+        self.assertEquals(testURL.port, "80")
+        self.assertEquals(testURL.path, "/hooray")
+
 if __name__ == "__main__":
     unittest.main()

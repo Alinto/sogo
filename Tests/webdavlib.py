@@ -24,7 +24,7 @@ class HTTPUnparsedURL:
         url_parts = url.split("?")
         alpha_match = "[a-zA-Z0-9%\._-]+"
         num_match = "[0-9]+"
-        pattern = ("((%s)://(((%s)(:(%s)?)@)?(%s)(:(%s))))?(/.*)"
+        pattern = ("((%s)://(((%s)(:(%s))?@)?(%s)(:(%s))?))?(/.*)"
                    % (alpha_match, alpha_match, alpha_match,
                       alpha_match, num_match))
         url_re = re.compile(pattern)

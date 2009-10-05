@@ -310,8 +310,8 @@ class DAVMailCollectionTest(unittest.TestCase):
       expected_hrefs[href] = True
 
     received_count = 0
-    query = webdavlib.MailDAVMailQuery(self.resource, ["displayname"],
-                                       filter[0])
+    url = "%sfolder%s" % (self.resource, "test-dav-mail")
+    query = webdavlib.MailDAVMailQuery(url, ["displayname"], filter[0])
     self.client.execute(query)
     self.assertEquals(query.response["status"], 207,
                       "filter %s:\n\tunexpected status: %d"

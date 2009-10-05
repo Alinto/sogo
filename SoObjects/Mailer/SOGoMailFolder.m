@@ -34,17 +34,25 @@
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSFileManager+Extensions.h>
 
+#import <DOM/DOMElement.h>
+#import <DOM/DOMProtocols.h>
+#import <SaxObjC/XMLNamespaces.h>
+
 #import <NGImap4/NGImap4Connection.h>
 #import <NGImap4/NGImap4Client.h>
 
-#import <SoObjects/SOGo/SOGoPermissions.h>
-#import <SoObjects/SOGo/SOGoUser.h>
-#import <SoObjects/SOGo/NSArray+Utilities.h>
+#import <SOGo/DOMNode+SOGo.h>
+#import <SOGo/NSArray+Utilities.h>
+#import <SOGo/SOGoPermissions.h>
+#import <SOGo/SOGoUser.h>
 
+#import "EOQualifier+MailDAV.h"
 #import "SOGoMailObject.h"
 #import "SOGoMailAccount.h"
 #import "SOGoMailManager.h"
 #import "SOGoMailFolder.h"
+
+#define XMLNS_INVERSEDAV @"urn:inverse:params:xml:ns:inverse-dav"
 
 static NSString *defaultUserID =  @"anyone";
 
@@ -1102,7 +1110,159 @@ static NSString *spoolFolder = nil;
   return [self nameInContainer];
 }
 
-// For DAV PUT
+- (NSDictionary *) davIMAPFieldsTable
+{
+  static NSMutableDictionary *davIMAPFieldsTable = nil;
+
+  if (!davIMAPFieldsTable)
+    {
+      davIMAPFieldsTable = [NSMutableDictionary new];
+      [davIMAPFieldsTable setObject: @"BODY[HEADER.FIELDS (DATE)]"
+                             forKey: @"{urn:schemas:httpmail:}date"];
+      [davIMAPFieldsTable setObject: @""
+                             forKey: @"{urn:schemas:httpmail:}hasattachment"];
+      [davIMAPFieldsTable setObject: @""
+                             forKey: @"{urn:schemas:httpmail:}read"];
+      [davIMAPFieldsTable setObject: @"BODY"
+                             forKey: @"{urn:schemas:httpmail:}textdescription"];
+      [davIMAPFieldsTable setObject: @"BODY[HEADER.FIELDS (CC)]"
+                             forKey: @"{urn:schemas:mailheader:}cc"];
+      [davIMAPFieldsTable setObject: @"BODY[HEADER.FIELDS (DATE)]"
+                             forKey: @"{urn:schemas:mailheader:}date"];
+      [davIMAPFieldsTable setObject: @"BODY[HEADER.FIELDS (FROM)]"
+                             forKey: @"{urn:schemas:mailheader:}from"];
+      [davIMAPFieldsTable setObject: @"BODY[HEADER.FIELDS (INREPLYTO)]"
+                             forKey: @"{urn:schemas:mailheader:}in-reply-to"];
+      [davIMAPFieldsTable setObject: @"BODY[HEADER.FIELDS (MESSAGEID)]"
+                             forKey: @"{urn:schemas:mailheader:}message-id"];
+      [davIMAPFieldsTable setObject: @"BODY[HEADER.FIELDS (RECEIVED)]"
+                             forKey: @"{urn:schemas:mailheader:}received"];
+      [davIMAPFieldsTable setObject: @"BODY[HEADER.FIELDS (REFERENCES)]"
+                             forKey: @"{urn:schemas:mailheader:}references"];
+      [davIMAPFieldsTable setObject: @"BODY[HEADER.FIELDS (SUBJECT)]"
+                             forKey: @"{urn:schemas:mailheader:}displayname"];
+      [davIMAPFieldsTable setObject: @"BODY[HEADER.FIELDS (TO)]"
+                             forKey: @"{urn:schemas:mailheader:}to"];
+    }
+
+  return davIMAPFieldsTable;
+}
+
+- (NSDictionary *) _davIMAPFieldsForProperties: (NSArray *) properties
+{
+  NSMutableDictionary *davIMAPFields;
+  NSDictionary *davIMAPFieldsTable;
+  NSString *imapField, *property;
+  unsigned int count, max;
+
+  davIMAPFieldsTable = [self davIMAPFieldsTable];
+
+  max = [properties count];
+  davIMAPFields = [NSMutableDictionary dictionaryWithCapacity: max];
+  for (count = 0; count < max; count++)
+    {
+      property = [properties objectAtIndex: count];
+      imapField = [davIMAPFieldsTable objectForKey: property];
+      if (imapField)
+        [davIMAPFields setObject: imapField forKey: property];
+      else
+        [self errorWithFormat: @"DAV property '%@' has no matching IMAP field,"
+          @" response could be incomplete", property];
+    }
+
+  return davIMAPFields;
+}
+
+- (NSDictionary *) parseDAVRequestedProperties: (DOMElement *) propElement
+{
+  NSArray *properties;
+  NSDictionary *imapFieldsTable;
+
+  properties = [propElement flatPropertyNameOfSubElements];
+  imapFieldsTable = [self _davIMAPFieldsForProperties: properties];
+
+  return imapFieldsTable;
+}
+
+- (NSString *) _mailSortingFromSortElement: (DOMElement *) sortElement
+{
+  NSArray *imapFields;
+  NSString *davReverseAttr;
+  NSMutableString *imapSortCriteria;
+
+  imapSortCriteria = [NSMutableString string];
+
+  imapFields = [[self parseDAVRequestedProperties: sortElement] allValues];
+  davReverseAttr = [[sortElement attribute: @"order"] uppercaseString];
+  if ([davReverseAttr isEqualToString: @"descending"])
+    [imapSortCriteria appendString: @"REVERSE "];
+  else if ([davReverseAttr length]
+           && ![davReverseAttr isEqualToString: @"ascending"])
+    [self errorWithFormat: @"unrecognized sort order: '%@'",
+          davReverseAttr];
+  [imapSortCriteria
+    appendString: [imapFields componentsJoinedByString: @" "]];
+
+  return imapSortCriteria;
+}
+
+- (NSArray *) _fetchMessageProperties: (NSDictionary *) properties
+                    matchingQualifier: (EOQualifier *) searchQualifier
+                           andSorting: (NSString *) sorting
+{
+#warning not implemented
+  return nil;
+}
+
+- (void) _appendProperties: (NSArray *) keys
+              fromMessages: (NSArray *) messages
+                toResponse: (WOResponse *) response
+{
+#warning not implemented
+}
+
+- (id) davMailQuery: (id) queryContext
+{
+  WOResponse *r;
+  id <DOMDocument> document;
+  DOMElement *documentElement, *propElement, *filterElement, *sortElement;
+  NSDictionary *properties;
+  NSArray *messages;
+  EOQualifier *searchQualifier;
+  NSString *sorting;
+
+  r = [context response];
+  [r setContentEncoding: NSUTF8StringEncoding];
+  [r setHeader: @"text/xml; charset=\"utf-8\"" forKey: @"content-type"];
+  [r setHeader: @"no-cache" forKey: @"pragma"];
+  [r setHeader: @"no-cache" forKey: @"cache-control"];
+
+  document = [[context request] contentAsDOMDocument];
+  documentElement = (DOMElement *) [document documentElement];
+
+  propElement = [documentElement firstElementWithTag: @"prop"
+                                         inNamespace: XMLNS_WEBDAV];
+  properties = [self parseDAVRequestedProperties: propElement];
+  filterElement = [documentElement firstElementWithTag: @"mail-filters"
+                                           inNamespace: XMLNS_INVERSEDAV];
+  searchQualifier = [EOQualifier
+                      qualifierFromMailDAVMailFilters: filterElement];
+  sortElement = [documentElement firstElementWithTag: @"sort"
+                                         inNamespace: XMLNS_INVERSEDAV];
+  sorting = [self _mailSortingFromSortElement: sortElement];
+
+  messages = [self _fetchMessageProperties: properties
+                         matchingQualifier: searchQualifier
+                                andSorting: sorting];
+  [r setStatus: 207];
+  [r appendContentString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"];
+  [self _appendProperties: [properties allKeys]
+             fromMessages: messages
+               toResponse: r];
+
+  return r;
+}
+
 - (NSException *) _appendMessageData: (NSData *) data
                              usingId: (int *) imap4id;
 {
