@@ -4,6 +4,8 @@
 	* Tests/webdavlib.py: Fixed errors in the URL regexp.
 	* SoObjects/Mailer/EOQualifier+MailDAV.m: New category to generate IMAP 
 	qualifiers from DAV filters. (REPORT)
+	* SoObjects/Mailer/EOQualifier+MailDAV.m: Formatted dates using
+	([NSCalendarDate rfc822DateString]).
 
 2009-10-04  Ludovic Marcotte  <lmarcotte@inverse.ca>
 

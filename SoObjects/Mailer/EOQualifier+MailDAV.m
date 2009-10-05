@@ -29,6 +29,7 @@
 #import <SOGo/DOMNode+SOGo.h>
 
 #import <NGCards/NSString+NGCards.h>
+#import <SoObjects/SOGo/NSCalendarDate+SOGo.h>
 
 #import "EOQualifier+MailDAV.h"
 
@@ -62,13 +63,16 @@
                   endDate = [[current attribute: @"to"] asCalendarDate];
                   if (startDate && [startDate isEqual: endDate])
                     [qualifiers addObject: 
-                     [NSString stringWithFormat: @"(on = '%@')", startDate]];
+                     [NSString stringWithFormat: @"(on = '%@')", 
+                      [startDate rfc822DateString]]];
                   else if (startDate)
                     [qualifiers addObject: 
-                     [NSString stringWithFormat: @"(since > '%@')", startDate]];
+                     [NSString stringWithFormat: @"(since > '%@')", 
+                      [startDate rfc822DateString]]];
                   if (endDate)
                     [qualifiers addObject: 
-                     [NSString stringWithFormat: @"(before < '%@')", endDate]];
+                     [NSString stringWithFormat: @"(before < '%@')", 
+                      [endDate rfc822DateString]]];
                 }
               // Sent date
               else if ([[current tagName] isEqualToString: @"date"])
@@ -77,13 +81,16 @@
                   endDate = [[current attribute: @"to"] asCalendarDate];
                   if (startDate && [startDate isEqual: endDate])
                     [qualifiers addObject: 
-                     [NSString stringWithFormat: @"(senton = '%@')", startDate]];
+                     [NSString stringWithFormat: @"(senton = '%@')", 
+                      [startDate rfc822DateString]]];
                   else if (startDate)
                     [qualifiers addObject: 
-                     [NSString stringWithFormat: @"(sentsince > '%@')", startDate]];
+                     [NSString stringWithFormat: @"(sentsince > '%@')", 
+                      [startDate rfc822DateString]]];
                   if (endDate)
                     [qualifiers addObject: 
-                     [NSString stringWithFormat: @"(sentbefore < '%@')", endDate]];
+                     [NSString stringWithFormat: @"(sentbefore < '%@')", 
+                      [endDate rfc822DateString]]];
                 }
               // Sequence
               else if ([[current tagName] isEqualToString: @"sequence"])
