@@ -1,3 +1,10 @@
+2009-10-05  Cyril Robert <crobert@inverse.ca>
+
+	* Tests/test-webdavlib.py: Added new tests for the URL parser / regexp.
+	* Tests/webdavlib.py: Fixed errors in the URL regexp.
+	* SoObjects/Mailer/EOQualifier+MailDAV.m: New category to generate IMAP 
+	qualifiers from DAV filters. (REPORT)
+
 2009-10-04  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
         * Adjusted the Welsh and Dutch templates for
