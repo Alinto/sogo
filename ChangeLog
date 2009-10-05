@@ -1,5 +1,9 @@
 2009-10-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Tests/test-maildav.py (DAVMailCollectionTest._testFilter): fixed
+	to use the "test-dav-mail" folder name as collection during the
+	tests.
+
 	* SoObjects/Mailer/SOGoMailFolder.m (-davMailQuery): new method
 	implementing the "mail-query" REPORT for Inverse's maildav
 	protocol.
