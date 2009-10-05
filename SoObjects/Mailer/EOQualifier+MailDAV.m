@@ -42,10 +42,13 @@
   id <DOMNodeList> list;
   DOMElement *current;
   NSCalendarDate *startDate, *endDate;
-  int count, max;
+  int count, max, intValue;
+  NSString *negate;
 
   qualifiers = [NSMutableArray array];
   qual = nil;
+
+#warning Qualifiers may be invalid, need to be tested
 
   list = [mailFilters childNodes];
   if (list)
@@ -56,6 +59,12 @@
           current = [list objectAtIndex: count];
           if ([current nodeType] == DOM_ELEMENT_NODE)
             {
+              // Negate condition
+              if ([current attribute: @"not"])
+                negate = @"NOT ";
+              else
+                negate = @"";
+
               // Received date
               if ([[current tagName] isEqualToString: @"receive-date"])
                 {
@@ -63,16 +72,16 @@
                   endDate = [[current attribute: @"to"] asCalendarDate];
                   if (startDate && [startDate isEqual: endDate])
                     [qualifiers addObject: 
-                     [NSString stringWithFormat: @"(on = '%@')", 
-                      [startDate rfc822DateString]]];
+                     [NSString stringWithFormat: @"%@(on = '%@')", 
+                      negate, [startDate rfc822DateString]]];
                   else if (startDate)
                     [qualifiers addObject: 
-                     [NSString stringWithFormat: @"(since > '%@')", 
-                      [startDate rfc822DateString]]];
+                     [NSString stringWithFormat: @"%@(since > '%@')", 
+                      negate, [startDate rfc822DateString]]];
                   if (endDate)
                     [qualifiers addObject: 
-                     [NSString stringWithFormat: @"(before < '%@')", 
-                      [endDate rfc822DateString]]];
+                     [NSString stringWithFormat: @"%@(before < '%@')", 
+                      negate, [endDate rfc822DateString]]];
                 }
               // Sent date
               else if ([[current tagName] isEqualToString: @"date"])
@@ -81,16 +90,16 @@
                   endDate = [[current attribute: @"to"] asCalendarDate];
                   if (startDate && [startDate isEqual: endDate])
                     [qualifiers addObject: 
-                     [NSString stringWithFormat: @"(senton = '%@')", 
-                      [startDate rfc822DateString]]];
+                     [NSString stringWithFormat: @"%@(senton = '%@')", 
+                      negate, [startDate rfc822DateString]]];
                   else if (startDate)
                     [qualifiers addObject: 
-                     [NSString stringWithFormat: @"(sentsince > '%@')", 
-                      [startDate rfc822DateString]]];
+                     [NSString stringWithFormat: @"%@(sentsince > '%@')", 
+                      negate, [startDate rfc822DateString]]];
                   if (endDate)
                     [qualifiers addObject: 
-                     [NSString stringWithFormat: @"(sentbefore < '%@')", 
-                      [endDate rfc822DateString]]];
+                     [NSString stringWithFormat: @"%@(sentbefore < '%@')", 
+                      negate, [endDate rfc822DateString]]];
                 }
               // Sequence
               else if ([[current tagName] isEqualToString: @"sequence"])
@@ -103,7 +112,8 @@
                   buffer = [current attribute: @"uid"];
                   if (buffer)
                     [qualifiers addObject: 
-                     [NSString stringWithFormat: @"(uid = '%@')", buffer]];
+                     [NSString stringWithFormat: @"%@(uid = '%@')", 
+                      negate, buffer]];
                 }
               // From
               else if ([[current tagName] isEqualToString: @"from"])
@@ -111,7 +121,8 @@
                   buffer = [current attribute: @"from"];
                   if (buffer)
                     [qualifiers addObject: 
-                     [NSString stringWithFormat: @"(from = '%@')", buffer]];
+                     [NSString stringWithFormat: @"%@(from doesContain: '%@')",
+                      negate, buffer]];
                 }
               // To
               else if ([[current tagName] isEqualToString: @"to"])
@@ -119,9 +130,83 @@
                   buffer = [current attribute: @"to"];
                   if (buffer)
                     [qualifiers addObject: 
-                     [NSString stringWithFormat: @"(to = '%@')", buffer]];
+                     [NSString stringWithFormat: @"%@(to doesContain: '%@')", 
+                      negate, buffer]];
                 }
-
+              // Size
+              else if ([[current tagName] isEqualToString: @"size"])
+                {
+                  intValue = [[current attribute: @"min"] intValue];
+                  [qualifiers addObject: 
+                   [NSString stringWithFormat: @"%@(larger > '%d')", 
+                    negate, intValue]];
+                  intValue = [[current attribute: @"max"] intValue];
+                  if (intValue)
+                    [qualifiers addObject: 
+                     [NSString stringWithFormat: @"%@(smaller < '%d')", 
+                      negate, intValue]];
+                }
+              // Answered
+              else if ([[current tagName] isEqualToString: @"answered"])
+                {
+                  intValue = [[current attribute: @"answered"] intValue];
+                  if (intValue)
+                    [qualifiers addObject: [NSString stringWithFormat: 
+                      @"%@(answered)", negate]];
+                  intValue = [[current attribute: @"unanswered"] intValue];
+                  if (intValue)
+                    [qualifiers addObject: [NSString stringWithFormat: 
+                      @"%@(unanswered)", negate]];
+                }
+              // Draft
+              else if ([[current tagName] isEqualToString: @"draft"])
+                {
+                  intValue = [[current attribute: @"draft"] intValue];
+                  if (intValue)
+                    [qualifiers addObject: [NSString stringWithFormat: 
+                      @"%@(draft)", negate]];
+                }
+              // Flagged
+              else if ([[current tagName] isEqualToString: @"flagged"])
+                {
+                  intValue = [[current attribute: @"flagged"] intValue];
+                  if (intValue)
+                    [qualifiers addObject: [NSString stringWithFormat: 
+                      @"%@(flagged)", negate]];
+                }
+              // Recent
+              else if ([[current tagName] isEqualToString: @"recent"])
+                {
+                  intValue = [[current attribute: @"recent"] intValue];
+                  if (intValue)
+                    [qualifiers addObject: [NSString stringWithFormat: 
+                      @"%@(recent)", negate]];
+                }
+              // Seen
+              else if ([[current tagName] isEqualToString: @"seen"])
+                {
+                  intValue = [[current attribute: @"seen"] intValue];
+                  if (intValue)
+                    [qualifiers addObject: [NSString stringWithFormat: 
+                      @"%@(seen)", negate]];
+                }
+              // Deleted
+              else if ([[current tagName] isEqualToString: @"deleted"])
+                {
+                  intValue = [[current attribute: @"deleted"] intValue];
+                  if (intValue)
+                    [qualifiers addObject: [NSString stringWithFormat: 
+                      @"%@(deleted)", negate]];
+                }
+              // Keywords
+              else if ([[current tagName] isEqualToString: @"keywords"])
+                {
+                  buffer = [current attribute: @"keywords"];
+                  if (buffer)
+                    [qualifiers addObject: 
+                     [NSString stringWithFormat: @"%@(keywords doesContain: '%@')", 
+                      negate, buffer]];
+                }
             }
         }
     }

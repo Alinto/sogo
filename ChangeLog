@@ -6,6 +6,7 @@
 	qualifiers from DAV filters. (REPORT)
 	* SoObjects/Mailer/EOQualifier+MailDAV.m: Formatted dates using
 	([NSCalendarDate rfc822DateString]).
+	* SoObjects/Mailer/EOQualifier+MailDAV.m: Added NOT and extra fields.
 
 2009-10-04  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
