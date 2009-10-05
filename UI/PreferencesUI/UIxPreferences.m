@@ -59,11 +59,11 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
     {
       ud = [NSUserDefaults standardUserDefaults];
       shouldDisplayPasswordChange
-	= [ud boolForKey: @"SOGoUIxUserCanChangePassword"];
+        = [ud boolForKey: @"SOGoUIxUserCanChangePassword"];
       shouldDisplayAdditionalPreferences
-	= [ud boolForKey: @"SOGoUIxAdditionalPreferences"];
+        = [ud boolForKey: @"SOGoUIxAdditionalPreferences"];
       defaultShowSubscribedFoldersOnly
-	= [ud boolForKey: @"SOGoMailShowSubscribedFoldersOnly"];
+        = [ud boolForKey: @"SOGoMailShowSubscribedFoldersOnly"];
       defaultsRead = YES;
     }
 }
@@ -85,7 +85,7 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
       //locale = [context valueForKey: @"locale"];
       ASSIGN (locale, [[WOApplication application] localeForLanguageNamed: language]);
       ASSIGN (daysOfWeek,
-	      [locale objectForKey: NSWeekDayNameArray]);
+              [locale objectForKey: NSWeekDayNameArray]);
       hasChanged = NO;
       composeMessageTypeHasChanged = NO;
     }
@@ -132,7 +132,7 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
   inTheOffice = [userDefaults objectForKey: @"InTheOffice"];
 
   return ((!inTheOffice || [inTheOffice boolValue])
-	  ? @"YES" : @"NO");
+          ? @"YES" : @"NO");
 }
 
 - (void) setInTheOffice: (NSString *) newValue
@@ -153,7 +153,7 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
 - (NSArray *) timeZonesList
 {
   return [[NSTimeZone knownTimeZoneNames]
-	   sortedArrayUsingSelector: @selector (localizedCaseInsensitiveCompare:)];
+           sortedArrayUsingSelector: @selector (localizedCaseInsensitiveCompare:)];
 }
 
 - (NSString *) userTimeZone
@@ -182,12 +182,12 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
       key = [NSString stringWithFormat: @"shortDateFmt_%d", nbr];
       currentFormat = [self labelForKey: key];
       if ([currentFormat length] > 0)
-	{
-	  [shortDateFormatsList addObject: currentFormat];
-	  nbr++;
-	}
+        {
+          [shortDateFormatsList addObject: currentFormat];
+          nbr++;
+        }
       else
-	done = YES;
+        done = YES;
     }
 
   return shortDateFormatsList;
@@ -196,7 +196,7 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
 - (NSString *) itemShortDateFormatText
 {
   return [today descriptionWithCalendarFormat: item
-		locale: locale];
+                                       locale: locale];
   //locale: [context valueForKey: @"locale"]];
 }
 
@@ -226,12 +226,12 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
       key = [NSString stringWithFormat: @"longDateFmt_%d", nbr];
       currentFormat = [self labelForKey: key];
       if ([currentFormat length] > 0)
-	{
-	  [longDateFormatsList addObject: currentFormat];
-	  nbr++;
-	}
+        {
+          [longDateFormatsList addObject: currentFormat];
+          nbr++;
+        }
       else
-	done = YES;
+        done = YES;
     }
 
   return longDateFormatsList;
@@ -240,7 +240,7 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
 - (NSString *) itemLongDateFormatText
 {
   return [today descriptionWithCalendarFormat: item
-		locale: locale];
+                                       locale: locale];
   //locale: [context valueForKey: @"locale"]];
 }
 
@@ -270,12 +270,12 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
       key = [NSString stringWithFormat: @"timeFmt_%d", nbr];
       currentFormat = [self labelForKey: key];
       if ([currentFormat length] > 0)
-	{
-	  [timeFormatsList addObject: currentFormat];
-	  nbr++;
-	}
+        {
+          [timeFormatsList addObject: currentFormat];
+          nbr++;
+        }
       else
-	done = YES;
+        done = YES;
     }
 
   return timeFormatsList;
@@ -284,8 +284,8 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
 - (NSString *) itemTimeFormatText
 {
   return [today descriptionWithCalendarFormat: item
-		locale: locale];
-		//locale: [context valueForKey: @"locale"]];
+                                       locale: locale];
+  //locale: [context valueForKey: @"locale"]];
 }
 
 - (NSString *) userTimeFormat
@@ -334,8 +334,8 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
     {
       hours = [[NSMutableArray alloc] initWithCapacity: 24];
       for (currentHour = 0; currentHour < 24; currentHour++)
-	[hours addObject: [NSString stringWithFormat: @"%.2d:00",
-				    currentHour]];
+        [hours addObject: [NSString stringWithFormat: @"%.2d:00",
+                                    currentHour]];
     }
 
   return hours;
@@ -376,16 +376,16 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
 - (NSArray *) firstWeekList
 {
   return [NSArray arrayWithObjects: 
-		    SOGoWeekStartJanuary1,
-		  SOGoWeekStartFirst4DayWeek,
-		  SOGoWeekStartFirstFullWeek,
-		  nil];
+                    SOGoWeekStartJanuary1,
+                  SOGoWeekStartFirst4DayWeek,
+                  SOGoWeekStartFirstFullWeek,
+                  nil];
 }
 
 - (NSString *) itemFirstWeekText
 {
   return [self labelForKey: [NSString stringWithFormat: @"firstWeekOfYear_%@",
-				      item]];
+                                      item]];
 }
 
 - (NSString *) userFirstWeek
@@ -405,7 +405,7 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
   reminderEnabled = [userDefaults objectForKey: @"ReminderEnabled"];
 
   return ((!reminderEnabled || [reminderEnabled boolValue])
-	  ? @"YES" : @"NO");
+          ? @"YES" : @"NO");
 }
 
 - (void) setReminderEnabled: (NSString *) newValue
@@ -420,7 +420,7 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
   remindWithASound = [userDefaults objectForKey: @"RemindWithASound"];
 
   return ((!remindWithASound || [remindWithASound boolValue])
-	  ? @"YES" : @"NO");
+          ? @"YES" : @"NO");
 }
 
 - (void) setRemindWithASound: (NSString *) newValue
@@ -431,14 +431,14 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
 - (NSArray *) reminderTimesList
 {
   return [NSArray arrayWithObjects: @"0000", @"0005", @"0010", @"0015",
-		  @"0030", @"0100", @"0200", @"0400", @"0800", @"1200",
-		  @"2400", @"4800", nil];
+                  @"0030", @"0100", @"0200", @"0400", @"0800", @"1200",
+                  @"2400", @"4800", nil];
 }
 
 - (NSString *) itemReminderTimeText
 {
   return [self labelForKey:
-		 [NSString stringWithFormat: @"reminderTime_%@", item]];
+                 [NSString stringWithFormat: @"reminderTime_%@", item]];
 }
 
 - (NSString *) userReminderTime
@@ -482,8 +482,8 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
   int i, count;
 
   defaultList = [NSMutableArray arrayWithArray: 
-                 [[NSUserDefaults standardUserDefaults]
-                  arrayForKey: @"SOGoMailPollingIntervals"]];
+                                  [[NSUserDefaults standardUserDefaults]
+                                    arrayForKey: @"SOGoMailPollingIntervals"]];
   if ([defaultList count] > 0)
     {
       rc = [NSMutableArray arrayWithObjects: @"manually", nil];
@@ -505,9 +505,9 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
     }
   else
     rc = [NSArray arrayWithObjects: @"manually", @"every_minute",
-		  @"every_2_minutes", @"every_5_minutes", @"every_10_minutes",
-		  @"every_20_minutes", @"every_30_minutes", @"once_per_hour",
-		  nil];
+                  @"every_2_minutes", @"every_5_minutes", @"every_10_minutes",
+                  @"every_20_minutes", @"every_30_minutes", @"once_per_hour",
+                  nil];
 
   return rc;
 }
@@ -515,7 +515,7 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
 - (NSString *) itemMessageCheckText
 {
   return [self labelForKey:
-		 [NSString stringWithFormat: @"messagecheck_%@", item]];
+                 [NSString stringWithFormat: @"messagecheck_%@", item]];
 }
 
 - (NSString *) userMessageCheck
@@ -536,7 +536,7 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
 - (NSString *) itemMessageForwardingText
 {
   return [self labelForKey:
-		 [NSString stringWithFormat: @"messageforward_%@", item]];
+                 [NSString stringWithFormat: @"messageforward_%@", item]];
 }
 
 - (NSString *) userMessageForwarding
@@ -549,9 +549,9 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
   [userDefaults setObject: newMessageForwarding forKey: @"MessageForwarding"];
 }
 
-// 	<label><var:string label:value="Default identity:"/>
-// 	  <var:popup list="identitiesList" item="item"
-// 	    string="itemIdentityText" selection="defaultIdentity"/></label>
+// <label><var:string label:value="Default identity:"/>
+//   <var:popup list="identitiesList" item="item"
+//     string="itemIdentityText" selection="defaultIdentity"/></label>
 - (NSArray *) identitiesList
 {
   NSDictionary *primaryAccount;
@@ -586,7 +586,7 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
 - (NSString *) itemReplyPlacementText
 {
   return [self labelForKey:
-		 [NSString stringWithFormat: @"replyplacement_%@", item]];
+                 [NSString stringWithFormat: @"replyplacement_%@", item]];
 }
 
 - (NSString *) userReplyPlacement
@@ -607,7 +607,7 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
 - (NSString *) itemSignaturePlacementText
 {
   return [self labelForKey:
-		 [NSString stringWithFormat: @"signatureplacement_%@", item]];
+                 [NSString stringWithFormat: @"signatureplacement_%@", item]];
 }
 
 - (NSString *) userSignaturePlacement
@@ -699,17 +699,17 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
     {
       [userDefaults synchronize];
       if (composeMessageTypeHasChanged)
-	// Due to a limitation of CKEDITOR, we reload the page when the user
-	// changes the composition mode to avoid Javascript errors.
-	results = self;
+        // Due to a limitation of CKEDITOR, we reload the page when the user
+        // changes the composition mode to avoid Javascript errors.
+        results = self;
       else
-	{
-	  if (hasChanged)
-	    method = @"window.location.reload()";
-	  else
-	    method = nil;
-	  results = [self jsCloseWithRefreshMethod: method];
-	}
+        {
+          if (hasChanged)
+            method = @"window.location.reload()";
+          else
+            method = nil;
+          results = [self jsCloseWithRefreshMethod: method];
+        }
     }
   else
     results = self;
@@ -782,10 +782,10 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
   for (i = 0; i < count; i++)
     {
       v = [NSArray arrayWithObjects: [names objectAtIndex: i],
-                                     [colors objectAtIndex: i], nil];
+              [colors objectAtIndex: i], nil];
 
       element = [NSDictionary dictionaryWithObjects: v
-                                         forKeys: k];
+                                            forKeys: k];
       [rc addObject: element];
     }
 
@@ -830,8 +830,8 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
 - (NSArray *) languages
 {
   return [NSArray arrayWithObjects: @"Czech", @"Dutch", @"English", @"French", 
-          @"German", @"Hungarian", @"Italian", @"BrazilianPortuguese", 
-          @"Russian", @"Spanish", @"Welsh", nil];
+                  @"German", @"Hungarian", @"Italian", @"BrazilianPortuguese", 
+                  @"Russian", @"Spanish", @"Welsh", nil];
 }
 
 - (NSString *) language
