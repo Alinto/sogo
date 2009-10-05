@@ -22,4 +22,7 @@
     = davCollectionQuery;
   "{urn:inverse:params:xml:ns:inverse-dav}acl-query" = davAclQuery;
   "{urn:inverse:params:xml:ns:inverse-dav}user-query" = davUserQuery;
+
+  /* Inverse MailDAV */
+  "{urn:inverse:params:xml:ns:inverse-dav}mail-query" = davMailQuery;
 }
