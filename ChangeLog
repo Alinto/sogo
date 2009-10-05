@@ -1,12 +1,34 @@
+2009-10-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailFolder.m (-davMailQuery): new method
+	implementing the "mail-query" REPORT for Inverse's maildav
+	protocol.
+	(-parseDAVRequestedProperties:): new method making use of the
+	"davIMAPFieldsTable" method below for parsing fields in the
+	mail-query request.
+	(-_mailSortingFromSortElement:): new method to parse the "sort"
+	element of mail-query requests.
+	(-_fetchMessageProperties:matchingQualifier:andSorting:): new
+	stub for a method that will fetch the IMAP messages based on the
+	criteria found above.
+	(-_appendProperties:fromMessages:toResponse:) new stub for a
+	method that will add the content of the resulting set of message
+	properties to the DAV response.
+
 2009-10-05  Cyril Robert <crobert@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailFolder.m (-davIMAPFieldsTable): new
+	method designed to match maildav properties on mail objects with
+	IMAP fields, for PROPFIND and REPORT methods.
+
 	* Tests/test-webdavlib.py: Added new tests for the URL parser / regexp.
+
 	* Tests/webdavlib.py: Fixed errors in the URL regexp.
+
 	* SoObjects/Mailer/EOQualifier+MailDAV.m: New category to generate IMAP 
 	qualifiers from DAV filters. (REPORT)
-	* SoObjects/Mailer/EOQualifier+MailDAV.m: Formatted dates using
-	([NSCalendarDate rfc822DateString]).
-	* SoObjects/Mailer/EOQualifier+MailDAV.m: Added NOT and extra fields.
+	Formatted dates using ([NSCalendarDate rfc822DateString]). Added
+	NOT and extra fields.
 
 2009-10-04  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
