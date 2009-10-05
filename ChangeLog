@@ -1,3 +1,9 @@
+2009-10-04  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+        * Adjusted the Welsh and Dutch templates for
+	mail invitations - we were missing classes resulting
+	in crashers.
+
 2009-10-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* Tests/webdavlib.py (MailDAVMailQuery): new class that implements

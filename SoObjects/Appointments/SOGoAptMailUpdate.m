@@ -22,40 +22,36 @@
 #include "SOGoAptMailNotification.h"
 
 @interface SOGoAptMailEnglishUpdate : SOGoAptMailNotification
-{
-}
 @end
 
 @implementation SOGoAptMailEnglishUpdate
 @end
 
 @interface SOGoAptMailRussianUpdate : SOGoAptMailNotification
-{
-}
 @end
 
 @implementation SOGoAptMailRussianUpdate
 @end
 
 @interface SOGoAptMailBrazilianPortugueseUpdate : SOGoAptMailNotification
-{
-}
 @end
 
 @implementation SOGoAptMailBrazilianPortugueseUpdate
 @end
 
 @interface SOGoAptMailCzechUpdate : SOGoAptMailNotification
-{
-}
 @end
 
 @implementation SOGoAptMailCzechUpdate
 @end
 
+@interface SOGoAptMailDutchUpdate : SOGoAptMailNotification
+@end
+
+@implementation SOGoAptMailDutchUpdate
+@end
+
 @interface SOGoAptMailFrenchUpdate : SOGoAptMailNotification
-{
-}
 @end
 
 @implementation SOGoAptMailFrenchUpdate
@@ -63,8 +59,6 @@
 
 
 @interface SOGoAptMailGermanUpdate : SOGoAptMailNotification
-{
-}
 @end
 
 @implementation SOGoAptMailGermanUpdate
@@ -72,8 +66,6 @@
 
 
 @interface SOGoAptMailHungarianUpdate : SOGoAptMailNotification
-{
-}
 @end
 
 @implementation SOGoAptMailHungarianUpdate
@@ -81,18 +73,19 @@
 
 
 @interface SOGoAptMailItalianUpdate : SOGoAptMailNotification
-{
-}
 @end
 
 @implementation SOGoAptMailItalianUpdate
 @end
 
 @interface SOGoAptMailSpanishUpdate : SOGoAptMailNotification
-{
-}
 @end
 
 @implementation SOGoAptMailSpanishUpdate
 @end
 
+@interface SOGoAptMailWelshUpdate : SOGoAptMailNotification
+@end
+
+@implementation SOGoAptMailWelshUpdate
+@end

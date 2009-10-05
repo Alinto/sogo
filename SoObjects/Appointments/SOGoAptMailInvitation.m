@@ -39,6 +39,12 @@
 @implementation SOGoAptMailCzechInvitation
 @end
 
+@interface SOGoAptMailDutchInvitation : SOGoAptMailNotification
+@end
+
+@implementation SOGoAptMailDutchInvitation
+@end
+
 @interface SOGoAptMailFrenchInvitation : SOGoAptMailNotification
 @end
 
@@ -75,3 +81,8 @@
 @implementation SOGoAptMailSpanishInvitation
 @end
 
+@interface SOGoAptMailWelshInvitation : SOGoAptMailNotification
+@end
+
+@implementation SOGoAptMailWelshInvitation
+@end

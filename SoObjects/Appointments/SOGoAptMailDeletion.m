@@ -39,6 +39,12 @@
 @implementation SOGoAptMailCzechDeletion
 @end
 
+@interface SOGoAptMailDutchDeletion : SOGoAptMailNotification
+@end
+
+@implementation SOGoAptMailDutchDeletion
+@end
+
 @interface SOGoAptMailFrenchDeletion : SOGoAptMailNotification
 @end
 
@@ -75,3 +81,8 @@
 @implementation SOGoAptMailSpanishDeletion
 @end
 
+@interface SOGoAptMailWelshDeletion : SOGoAptMailNotification
+@end
+
+@implementation SOGoAptMailWelshDeletion
+@end
