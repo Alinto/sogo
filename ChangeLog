@@ -1,3 +1,9 @@
+2009-10-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/NSArray+DAV.m (-asDAVPropstatWithStatus:): new
+	method that creates a "PROPSTAT" element with the specified
+	status.
+
 2009-10-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* Tests/test-maildav.py (DAVMailCollectionTest._testFilter): fixed
