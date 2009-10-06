@@ -25,6 +25,7 @@
 
 #import <Foundation/NSArray.h>
 
+@class NSDictionary;
 @class NSMutableDictionary;
 @class NSString;
 
@@ -32,6 +33,8 @@
 
 - (NSString *)
  asWebDavStringWithNamespaces: (NSMutableDictionary *) namespaces;
+
+- (NSDictionary *) asDAVPropstatWithStatus: (NSString *) status;
 
 @end
 

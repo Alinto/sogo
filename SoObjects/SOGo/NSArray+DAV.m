@@ -20,8 +20,11 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
+
+#import <SaxObjC/XMLNamespaces.h>
 
 #import "NSObject+DAV.h"
 
@@ -46,6 +49,19 @@
     }
 
   return webdavString;
+}
+
+- (NSDictionary *) asDAVPropstatWithStatus: (NSString *) status
+{
+  NSMutableArray *propstat;
+
+  propstat = [NSMutableArray arrayWithCapacity: 2];
+  [propstat addObject: davElementWithContent (@"prop", XMLNS_WEBDAV,
+                                              self)];
+  [propstat addObject: davElementWithContent (@"status", XMLNS_WEBDAV,
+                                              status)];
+
+  return davElementWithContent (@"propstat", XMLNS_WEBDAV, propstat);
 }
 
 @end

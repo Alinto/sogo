@@ -77,6 +77,10 @@
 - (Class) objectClassForComponentName: (NSString *) componentName;
 - (Class) objectClassForContent: (NSString *) content;
 
+- (id) createChildComponentWithRecord: (NSDictionary *) record;
+- (id) createChildComponentWithName: (NSString *) newName
+                         andContent: (NSString *) newContent;
+
 - (NSArray *) fetchContentObjectNames;
 
 /* folder type */
