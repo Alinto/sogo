@@ -115,7 +115,7 @@
   <div id="uploadResults" style="display: none" class="dialog left">
     <div>
       <h3><var:string label:value="Import"/></h3>
-      <p id="uploadResultsContent"<!-- empty --></p>
+      <p id="uploadResultsContent"><!-- empty --></p>
       <p><input class="button" type="button" const:id="uploadOK" 
           label:value="OK"/></p>
     </div>
