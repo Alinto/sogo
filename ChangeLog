@@ -1,5 +1,10 @@
 2009-10-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailFolder.m (_appendMessageData:usingId):
+	we no longer need to unselect the folder where the "append"
+	happens since it worked around a deeper bug in sope-mime which has
+	been fixed in the patchset.
+
 	* SoObjects/SOGo/SOGoGCSFolder.m
 	(-createChildComponentWithRecord:): made method public.
 	(-createChildComponentWithName:andContent:): made method public.

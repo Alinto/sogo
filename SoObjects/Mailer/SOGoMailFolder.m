@@ -649,7 +649,6 @@ static NSString *spoolFolder = nil;
 
 - (NSException *) delete
 {
-  /* Note: overrides SOGoObject -delete */
   return [[self imap4Connection] deleteMailboxAtURL:[self imap4URL]];
 }
 
@@ -1281,7 +1280,6 @@ static NSString *spoolFolder = nil;
     {
       if (imap4id)
         *imap4id = [self IMAP4IDFromAppendResult: result];
-      [client unselect];
     }
   else
     error = [NSException exceptionWithHTTPStatus: 500 /* Server Error */
