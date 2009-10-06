@@ -864,7 +864,7 @@ Index: sope-mime/NGImap4/EOQualifier+IMAPAdditions.m
 +- (NSString *)imap4OperatorForDateKeyword:(NSString *)dkey
 +andComparisonSelector:(SEL)lselector {
 +  NSString *operatorPrefix, *dateOperator;
-+  if ([key isEqualToString: @"date"])
++  if ([dkey isEqualToString: @"date"])
 +    operatorPrefix = @"sent";
 +  else
 +    operatorPrefix = @"";
