@@ -1239,7 +1239,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   //c = [self objectClassForComponentName: [object objectForKey: @"c_component"]];
 
 #warning TODO: determine why this commented invocation takes so long...
-  // sogoObject = [self _createChildComponentWithRecord: object];
+  // sogoObject = [self createChildComponentWithRecord: object];
 
   sogoObject = [SOGoCalendarComponent objectWithRecord: object
                                            inContainer: self];
