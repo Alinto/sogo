@@ -120,11 +120,8 @@
 {
   unsigned int currentHour, lastHour;
   
-  // For later
-  ud = [[context activeUser] userDefaults];
-  timeFormat = [NSMutableString stringWithString: [ud stringForKey: @"TimeFormat"]];
-  if (!timeFormat || [timeFormat length] == 0)
-    timeFormat = [NSMutableString stringWithString: @"%H:00"];
+  // For later in method currentTableHour
+  timeFormat = [[context activeUser] timeFormat];
 
   if (!hoursToDisplay)
     {

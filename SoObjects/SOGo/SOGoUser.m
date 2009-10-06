@@ -58,6 +58,7 @@ static NSString *defaultReplyPlacement = nil;
 static NSString *defaultSignaturePlacement = nil;
 static NSString *defaultMessageForwarding = nil;
 static NSString *defaultMessageCheck = nil;
+static NSString *defaultTimeFormat = nil;
 static NSArray *superUsernames = nil;
 static NSURL *SOGoProfileURL = nil;
 // static BOOL acceptAnyUser = NO;
@@ -89,13 +90,19 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 static int
 _timeValue (NSString *key)
 {
-  int time;
+  int i, time;
 
-  if (key && [key length] > 1)
-    time = [[key substringToIndex: 2] intValue];
+  if (key && [key length] > 0)
+    {
+      i = [key rangeOfString: @":"].location;
+      if (i != NSNotFound)
+	time = [[key substringToIndex: i] intValue];
+      else
+	time = [key intValue];
+    }
   else
     time = -1;
-
+  
   return time;
 }
 
@@ -190,6 +197,12 @@ _timeValue (NSString *key)
       ASSIGN (defaultMessageCheck, [ud stringForKey: @"SOGoMailMessageCheck"]);
       if (!defaultMessageCheck)
 	ASSIGN (defaultMessageCheck, @"manually");
+    }
+  if (!defaultTimeFormat)
+    {
+      ASSIGN (defaultTimeFormat, [ud stringForKey: @"SOGoTimeFormat"]);
+      if (!defaultTimeFormat)
+	ASSIGN (defaultTimeFormat, @"%H:00");
     }
 
   if (!superUsernames)
@@ -662,6 +675,17 @@ _timeValue (NSString *key)
   return limit;
 }
 
+- (NSString *) timeFormat
+{
+  NSString *timeFormat;
+
+  timeFormat = [[self userDefaults] stringForKey: @"TimeFormat"];
+  if (!timeFormat)
+    timeFormat = defaultTimeFormat;
+
+  return timeFormat;
+}
+
 - (NSCalendarDate *) firstWeekOfYearForDate: (NSCalendarDate *) date
 {
   NSString *firstWeekRule;
@@ -891,17 +915,39 @@ _timeValue (NSString *key)
 
 - (NSString *) replyPlacement
 {
-  return [[self userDefaults] stringForKey: @"ReplyPlacement"];
+  NSString *replyPlacement = [[self userDefaults] stringForKey: @"ReplyPlacement"];
+
+  if (!replyPlacement)
+    replyPlacement = defaultReplyPlacement;
+
+  return replyPlacement;
 }
 
 - (NSString *) signaturePlacement
 {
-  return [[self userDefaults] stringForKey: @"SignaturePlacement"];
+  NSString *signaturePlacement;
+
+  if ([[self replyPlacement] isEqualToString: @"below"])
+    // When replying to an email, if the reply is below the quoted text,
+    // the signature must also be below the quoted text.
+    signaturePlacement = @"below";
+  else
+    {
+      signaturePlacement = [[self userDefaults] stringForKey: @"SignaturePlacement"];
+      if (!signaturePlacement)
+	signaturePlacement = defaultSignaturePlacement;
+    }
+  
+  return signaturePlacement;
 }
 
 - (NSString *) messageForwarding
 {
-  return [[self userDefaults] stringForKey: @"MessageForwarding"];
+  NSString *messageForwarding = [[self userDefaults] stringForKey: @"MessageForwarding"];
+  if (!messageForwarding)
+    messageForwarding = defaultMessageForwarding;
+
+  return messageForwarding;
 }
 
 /* folders */

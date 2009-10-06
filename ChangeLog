@@ -1,3 +1,33 @@
+2009-10-06  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUser.m (_timeValue): improved parsing to
+	support single integers (not only the XY:00 form).
+	(-timeFormat): returns the user's time format or system
+	(SOGoTimeFormat) default if not defined.
+	(-replyPlacement): honor the system defaults (SOGoMailReplyPlacement).
+	(-signaturePlacement): honor the system defaults
+	(SOGoMailSignaturePlacement).
+	(-messageForwarding): honor the system defaults (SOGoMailMessageForwarding).
+
+	* SoObjects/Mailer/SOGoMailObject+Draft.m (-contentForReply):
+	reply and signature placement properly honors system defaults
+	(SOGoMailReplyPlacement and SOGoMailSignaturePlacement).
+
+	* UI/PreferencesUI/UIxPreferences.m (-userTimeFormat): honor the
+	system defaults through the SOGoUser class.
+	(-userDayStartTime): idem.
+	(-userDayEndTime): idem.
+	(-userMessageForwarding): idem.
+	(-repyPlacement): idem. 
+	(-signaturePlacement): idem.
+
+	* UI/Scheduler/UIxCalDayTable.m (-hoursToDisplay): honor the
+	system defaults through the SOGoUser class.
+
+	* UI/WebServerResources/UIxPreferences.js (-initPreferences): fix
+	to properly set the initial status of the signature placement
+	select field.
+
 2009-10-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* Tests/test-maildav.py (DAVMailCollectionTest._testFilter): fixed

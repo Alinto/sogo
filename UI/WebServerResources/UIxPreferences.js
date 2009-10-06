@@ -81,8 +81,8 @@ function initPreferences() {
         if ($("composeMessagesType").value == 1) {
             $("replyPlacementList").selectedIndex = 0;
             $("replyPlacementList").disabled = 1;
-            onReplyPlacementListChange ();
         }
+        onReplyPlacementListChange ();
     }
 }
 

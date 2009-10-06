@@ -290,7 +290,7 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
 
 - (NSString *) userTimeFormat
 {
-  return [userDefaults objectForKey: @"TimeFormat"];
+  return [user timeFormat];
 }
 
 - (void) setUserTimeFormat: (NSString *) newFormat
@@ -318,7 +318,7 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
 
 - (NSString *) userWeekStartDay
 {
-  return [NSString stringWithFormat: @"%d", [user firstDayOfWeek]];;
+  return [NSString stringWithFormat: @"%d", [user firstDayOfWeek]];
 }
 
 - (void) setUserWeekStartDay: (NSString *) newDay
@@ -343,13 +343,7 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
 
 - (NSString *) userDayStartTime
 {
-  NSString *time;
-
-  time = [userDefaults objectForKey: @"DayStartTime"];
-  if (!time)
-    time = @"08:00";
-
-  return time;
+  return [NSString stringWithFormat: @"%02d:00", [user dayStartHour]];
 }
 
 - (void) setUserDayStartTime: (NSString *) newTime
@@ -359,13 +353,7 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
 
 - (NSString *) userDayEndTime
 {
-  NSString *time;
-
-  time = [userDefaults objectForKey: @"DayEndTime"];
-  if (!time)
-    time = @"18:00";
-
-  return time;
+  return [NSString stringWithFormat: @"%02d:00", [user dayEndHour]];  
 }
 
 - (void) setUserDayEndTime: (NSString *) newTime
@@ -375,7 +363,7 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
 
 - (NSArray *) firstWeekList
 {
-  return [NSArray arrayWithObjects: 
+  return [NSArray arrayWithObjects:
                     SOGoWeekStartJanuary1,
                   SOGoWeekStartFirst4DayWeek,
                   SOGoWeekStartFirstFullWeek,
@@ -541,7 +529,7 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
 
 - (NSString *) userMessageForwarding
 {
-  return [userDefaults stringForKey: @"MessageForwarding"];
+  return [user messageForwarding];
 }
 
 - (void) setUserMessageForwarding: (NSString *) newMessageForwarding
@@ -591,7 +579,7 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
 
 - (NSString *) userReplyPlacement
 {
-  return [userDefaults stringForKey: @"ReplyPlacement"];
+  return [user replyPlacement];
 }
 
 - (void) setUserReplyPlacement: (NSString *) newReplyPlacement
@@ -612,7 +600,7 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
 
 - (NSString *) userSignaturePlacement
 {
-  return [userDefaults stringForKey: @"SignaturePlacement"];
+  return [user signaturePlacement];
 }
 
 - (NSArray *) composeMessagesType

@@ -117,6 +117,8 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 - (unsigned int) dayStartHour;
 - (unsigned int) dayEndHour;
 
+- (NSString *) timeFormat;
+
 - (NSCalendarDate *) firstWeekOfYearForDate: (NSCalendarDate *) date;
 - (unsigned int) weekNumberForDate: (NSCalendarDate *) date;
 

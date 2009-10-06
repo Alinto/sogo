@@ -44,7 +44,7 @@
   NSArray *weekDays;
   SOGoDateFormatter *dateFormatter;
   NSUserDefaults *ud;
-  NSMutableString *timeFormat;
+  NSString *timeFormat;
 }
 
 - (void) setNumberOfDays: (NSNumber *) aNumber;
