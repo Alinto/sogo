@@ -57,6 +57,7 @@
 #import "NSDictionary+Utilities.h"
 
 #import "NSArray+Utilities.h"
+#import "NSArray+DAV.h"
 #import "NSObject+DAV.h"
 #import "NSString+Utilities.h"
 #import "NSString+DAV.h"
@@ -531,18 +532,18 @@ static NSArray *childRecordFields = nil;
   return Nil;
 }
 
-- (id) _createChildComponentWithRecord: (NSDictionary *) record
+- (id) createChildComponentWithRecord: (NSDictionary *) record
 {
   Class klazz;
 
   klazz = [self objectClassForComponentName:
-		  [record objectForKey: @"c_component"]];
+                       [record objectForKey: @"c_component"]];
 
   return [klazz objectWithRecord: record inContainer: self];
 }
 
-- (id) _createChildComponentWithName: (NSString *) newName
-			  andContent: (NSString *) newContent
+- (id) createChildComponentWithName: (NSString *) newName
+                         andContent: (NSString *) newContent
 {
   Class klazz;
   NSDictionary *record;
@@ -581,14 +582,14 @@ static NSArray *childRecordFields = nil;
 	    [childRecords setObject: record forKey: key];
 	}
       if (record)
-	obj = [self _createChildComponentWithRecord: record];
+	obj = [self createChildComponentWithRecord: record];
       else
 	{
 	  request = [localContext request];
 	  if ([[request method] isEqualToString: @"PUT"])
 	    {
-	      obj = [self _createChildComponentWithName: key
-			  andContent: [request contentAsString]];
+	      obj = [self createChildComponentWithName: key
+                                            andContent: [request contentAsString]];
 	      [obj setIsNew: YES];
 	    }
 	}
@@ -928,8 +929,8 @@ static NSArray *childRecordFields = nil;
                                syncTokenInt];
       fields = [NSMutableArray arrayWithObjects: @"c_name", @"c_deleted", nil];
       [mRecords addObjectsFromArray: [self _fetchFields: fields
-                      withQualifier: qualifier
-                      ignoreDeleted: NO]];
+                                          withQualifier: qualifier
+                                          ignoreDeleted: NO]];
       records = mRecords;
     }
   else
@@ -944,22 +945,6 @@ static NSArray *childRecordFields = nil;
     }
 
   return records;
-}
-
-/* These methods are the optimal ones to generate propstats for DAV reports,
-   it should be used in other subclasses. */
-- (NSDictionary *) _davPropstat: (NSArray *) properties
-                     withStatus: (NSString *) status
-{
-  NSMutableArray *propstat;
-
-  propstat = [NSMutableArray arrayWithCapacity: 2];
-  [propstat addObject: davElementWithContent (@"prop", XMLNS_WEBDAV,
-                                              properties)];
-  [propstat addObject: davElementWithContent (@"status", XMLNS_WEBDAV,
-                                              status)];
-
-  return davElementWithContent (@"propstat", XMLNS_WEBDAV, propstat);
 }
 
 - (NSArray *) _davPropstatsWithProperties: (NSArray *) davProperties
@@ -978,12 +963,12 @@ static NSArray *childRecordFields = nil;
   properties200 = [NSMutableArray arrayWithCapacity: max];
   properties404 = [NSMutableArray arrayWithCapacity: max];
 
-  sogoObject = [self _createChildComponentWithRecord: record];
+  sogoObject = [self createChildComponentWithRecord: record];
   for (count = 0; count < max; count++)
     {
       if (selectors[count]
           && [sogoObject respondsToSelector: selectors[count]])
-       result = [sogoObject performSelector: selectors[count]];
+        result = [sogoObject performSelector: selectors[count]];
       else
         result = nil;
 
@@ -996,17 +981,17 @@ static NSArray *childRecordFields = nil;
       else
         {
           propContent = [[davProperties objectAtIndex: count]
-            asWebDAVTuple];
+                          asWebDAVTuple];
           [properties404 addObject: propContent];
         }
     }
 
   if ([properties200 count])
-    [propstats addObject: [self _davPropstat: properties200
-              withStatus: @"HTTP/1.1 200 OK"]];
+    [propstats addObject: [properties200
+                            asDAVPropstatWithStatus: @"HTTP/1.1 200 OK"]];
   if ([properties404 count])
-    [propstats addObject: [self _davPropstat: properties404
-              withStatus: @"HTTP/1.1 404 Not Found"]];
+    [propstats addObject: [properties404
+                            asDAVPropstatWithStatus: @"HTTP/1.1 404 Not Found"]];
 
   return propstats;
 }
@@ -1018,15 +1003,15 @@ static NSArray *childRecordFields = nil;
                                     andBaseURL: (NSString *) baseURL
 {
   static NSString *status[] = { @"HTTP/1.1 404 Not Found",
-      @"HTTP/1.1 201 Created",
-      @"HTTP/1.1 200 OK" };
+                                @"HTTP/1.1 201 Created",
+                                @"HTTP/1.1 200 OK" };
   NSMutableArray *children;
   NSString *href;
   unsigned int statusIndex;
 
   children = [NSMutableArray arrayWithCapacity: 3];
   href = [NSString stringWithFormat: @"%@%@",
-      baseURL, [record objectForKey: @"c_name"]];
+                   baseURL, [record objectForKey: @"c_name"]];
   [children addObject: davElementWithContent (@"href", XMLNS_WEBDAV,
                                               href)];
   if (syncToken)
@@ -1051,8 +1036,8 @@ static NSArray *childRecordFields = nil;
   if (statusIndex)
     [children
       addObjectsFromArray: [self _davPropstatsWithProperties: properties
-       andMethodSelectors: selectors
-               fromRecord: record]];
+                                          andMethodSelectors: selectors
+                                                  fromRecord: record]];
 
   return davElementWithContent (@"sync-response", XMLNS_WEBDAV, children);
 }

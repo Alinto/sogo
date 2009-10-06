@@ -1,5 +1,9 @@
 2009-10-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoGCSFolder.m
+	(-createChildComponentWithRecord:): made method public.
+	(-createChildComponentWithName:andContent:): made method public.
+
 	* SoObjects/SOGo/NSArray+DAV.m (-asDAVPropstatWithStatus:): new
 	method that creates a "PROPSTAT" element with the specified
 	status.
