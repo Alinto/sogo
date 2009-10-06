@@ -252,7 +252,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    return [self->normer normalizeStatusResponse:[self processCommand:cmd]];
  }
  
-@@ -663,20 +678,21 @@
+@@ -663,24 +678,28 @@
    if ((_newName = [self _folder2ImapFolder:_newName]) == nil)
      return nil;
    
@@ -279,7 +279,14 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    return [self->normer normalizeResponse:[self processCommand:command]];
  }
  
-@@ -820,23 +836,23 @@
+ - (NSDictionary *)delete:(NSString *)_name {
++  if ([self->selectedFolder isEqualToString:_name]) {
++    [self unselect];
++  }
+   return [self _performCommand:@"delete" onFolder:_name];
+ }
+ - (NSDictionary *)create:(NSString *)_name {
+@@ -820,23 +839,23 @@
    return [self->normer normalizeResponse:[self processCommand:cmd]];
  }
  
@@ -309,7 +316,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  		    seqstr, _flag ? '+' : '-', flagstr];
    
    return [self->normer normalizeResponse:[self processCommand:cmd]];
-@@ -967,11 +983,12 @@
+@@ -967,11 +986,12 @@
    descr = @"Could not process qualifier for imap search "; 
    descr = [descr stringByAppendingString:reason];           
    
@@ -325,7 +332,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  }
  
  - (NSString *)_searchExprForQual:(EOQualifier *)_qualifier {
-@@ -1093,7 +1110,18 @@
+@@ -1093,7 +1113,18 @@
       Eg: UID SORT ( DATE REVERSE SUBJECT ) UTF-8 TODO
    */
    NSString *tmp;
@@ -344,7 +351,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    if ([_sortSpec isKindOfClass:[NSArray class]])
      tmp = [self _generateIMAP4SortOrderings:_sortSpec];
    else if ([_sortSpec isKindOfClass:[EOSortOrdering class]])
-@@ -1107,9 +1135,10 @@
+@@ -1107,9 +1138,10 @@
      tmp = @"DATE";
    }
    
@@ -357,7 +364,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  }
  - (NSDictionary *)sort:(NSArray *)_sortOrderings
    qualifier:(EOQualifier *)_qual
-@@ -1130,7 +1159,7 @@
+@@ -1130,7 +1162,7 @@
      return nil;
    }
    
@@ -366,7 +373,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    return [self->normer normalizeSearchResponse:[self processCommand:s]];
  }
  
-@@ -1142,7 +1171,7 @@
+@@ -1142,7 +1174,7 @@
    if ((_folder = [self _folder2ImapFolder:_folder]) == nil)
      return nil;
    
@@ -375,7 +382,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    return [self->normer normalizeGetACLResponse:[self processCommand:cmd]];
  }
  
-@@ -1155,7 +1184,7 @@
+@@ -1155,7 +1187,7 @@
      return nil;
    
    cmd = [NSString stringWithFormat:@"setacl \"%@\" \"%@\" \"%@\"",
@@ -384,7 +391,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    return [self->normer normalizeResponse:[self processCommand:cmd]];
  }
  
-@@ -1166,7 +1195,7 @@
+@@ -1166,7 +1198,7 @@
      return nil;
    
    cmd = [NSString stringWithFormat:@"deleteacl \"%@\" \"%@\"",
@@ -393,7 +400,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    return [self->normer normalizeResponse:[self processCommand:cmd]];
  }
  
-@@ -1177,7 +1206,7 @@
+@@ -1177,7 +1209,7 @@
      return nil;
    
    cmd = [NSString stringWithFormat:@"listrights \"%@\" \"%@\"",
@@ -402,7 +409,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    return [self->normer normalizeListRightsResponse:[self processCommand:cmd]];
  }
  
-@@ -1187,12 +1216,94 @@
+@@ -1187,12 +1219,94 @@
    if ((_folder = [self _folder2ImapFolder:_folder]) == nil)
      return nil;
    
@@ -498,7 +505,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  - (NSException *)_processCommandParserException:(NSException *)_exception {
    [self logWithFormat:@"ERROR(%s): catched IMAP4 parser exception %@: %@",
  	__PRETTY_FUNCTION__, [_exception name], [_exception reason]];
-@@ -1412,21 +1523,24 @@
+@@ -1412,21 +1526,24 @@
        return nil;
    }
  
@@ -531,7 +538,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  }
  
  - (NSString *)_imapFolder2Folder:(NSString *)_folder {
-@@ -1442,10 +1556,16 @@
+@@ -1442,10 +1559,16 @@
        return nil;
    }
    
@@ -1389,8 +1396,12 @@ Index: sope-mime/NGImap4/ChangeLog
 ===================================================================
 --- sope-mime/NGImap4/ChangeLog	(revision 1660)
 +++ sope-mime/NGImap4/ChangeLog	(working copy)
-@@ -1,3 +1,57 @@
+@@ -1,3 +1,61 @@
 +2009-10-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
++
++	* NGImap4Client.m (-delete:): if the folder we want to delete is
++	the same as self->selectedFolder, we unselect it first to ensure a
++	"SELECT" happens if a new folder with the same name is created.
 +
 +	* EOQualifier+IMAPAdditions.m
 +	(-imap4OperatorForDateKeyword:andComparisonSelector:): modified
