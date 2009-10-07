@@ -28,7 +28,7 @@
 #import <NGCards/iCalToDo.h>
 #import <NGCards/iCalEventChanges.h>
 #import <NGCards/iCalPerson.h>
-#import <SOGo/LDAPUserManager.h>
+#import <SOGo/SOGoUserManager.h>
 
 #import <SoObjects/SOGo/SOGoMailer.h>
 
