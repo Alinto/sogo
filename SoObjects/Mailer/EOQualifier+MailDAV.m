@@ -39,7 +39,7 @@
 {
   NSMutableArray *args, *formats;
   NSArray *flags, *strings, *dates;
-  NSString *valueA, *valueB, *tagName, *format;
+  NSString *valueA, *valueB, *tagName, *format, *negate;
   id <DOMNodeList> list;
   DOMElement *current;
   NSCalendarDate *startDate, *endDate;
@@ -65,7 +65,9 @@
             {
               // Negate condition
               if ([current attribute: @"not"])
-                [formats addObject: @"NOT "];
+                negate = [NSMutableString stringWithString: @"NOT "];
+              else
+                negate = [NSMutableString string];
 
               tagName = [current tagName];
 
@@ -74,26 +76,26 @@
                 {
                   startDate = [[current attribute: @"from"] asCalendarDate];
                   endDate = [[current attribute: @"to"] asCalendarDate];
+                  datesAreEqual = NO;
                   if (startDate)
                     {
                       if (endDate && [startDate isEqual: endDate])
                         {
                           [formats addObject: [NSString stringWithFormat: 
-                                               @"%@ = %%@", tagName]];
+                                               @"%@%@ = %%@", negate, tagName]];
                           datesAreEqual = YES;
                         }
                       else
                         {
                           [formats addObject: [NSString stringWithFormat: 
-                                               @"%@ > %%@", tagName]];
-                          datesAreEqual = NO;
+                                               @"%@%@ > %%@", negate, tagName]];
                         }
                       [args addObject: startDate];
                     }
                   if (endDate && !datesAreEqual)
                     {
                       [formats addObject: [NSString stringWithFormat: 
-                                           @"%@ < %%@", tagName]];
+                                           @"%@%@ < %%@", negate, tagName]];
                       [args addObject: endDate];
                     }
                 }
@@ -112,7 +114,8 @@
                   if (!valueB)
                     valueB = @"*";
 
-                  [formats addObject: @"uid = %@"];
+                  [formats addObject: [NSString stringWithFormat: 
+                                       @"%@uid = %%@", negate]];
                   [args addObject: [NSString stringWithFormat: @"%@:%@",
                                     valueA, valueB]];
                 }
@@ -122,20 +125,23 @@
                   valueA = [current attribute: @"min"];
                   if (valueA)
                     {
-                      [formats addObject: @"size > %@"];
+                      [formats addObject: [NSString stringWithFormat: 
+                                           @"%@size > %%@", negate]];
                       [args addObject: valueA];
                     }
                   valueA = [current attribute: @"max"];
                   if (valueA)
                     {
-                      [formats addObject: @"size < %@"];
+                      [formats addObject: [NSString stringWithFormat: 
+                                           @"%@size < %%@", negate]];
                       [args addObject: valueA];
                     }
                 }
               // All flags
               else if ([flags containsObject: tagName])
                 {
-                  [formats addObject: @"flags doesContain: %@"];
+                  [formats addObject: [NSString stringWithFormat: 
+                                       @"%@flags doesContain: %%@", negate]];
                   [args addObject: tagName];
                 }
               // All strings
@@ -145,7 +151,7 @@
                   if (valueA)
                     {
                       format = [NSString stringWithFormat: 
-                                @"%@ doesContain: %%@", tagName];
+                                @"%@%@ doesContain: %%@", negate, tagName];
                       [formats addObject: format];
                       [args addObject: valueA];
                     }
