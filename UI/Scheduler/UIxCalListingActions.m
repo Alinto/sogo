@@ -60,8 +60,8 @@
 static NSArray *eventsFields = nil;
 static NSArray *tasksFields = nil;
 
-#define dayLength 86400
-#define quarterLength 900
+#define dayLength       86400
+#define quarterLength   900
 
 #define intervalSeconds 900
 #define offsetHours     24 * 5
@@ -354,7 +354,8 @@ static NSArray *tasksFields = nil;
                 [self _fixComponentTitle: newInfo withType: component];
               // Possible improvement: only call _fixDates if event is recurrent
               // or the view range span a daylight saving time change
-              [self _fixDates: newInfo];
+	      if (dayBasedView)
+		[self _fixDates: newInfo];
               [infos addObject: [newInfo objectsForKeys: fields
                                          notFoundMarker: marker]];
             }
@@ -918,6 +919,7 @@ _computeBlocksPosition (NSArray *blocks)
   NSArray *events, *event, *eventsBlocks;
   NSMutableArray *allDayBlocks, *blocks, *currentDay;
   NSNumber *eventNbr;
+  BOOL isAllDay;
 
   [self _setupContext];
 
@@ -931,7 +933,8 @@ _computeBlocksPosition (NSArray *blocks)
     {
       event = [events objectAtIndex: count];
       eventNbr = [NSNumber numberWithUnsignedInt: count];
-      if (dayBasedView && [[event objectAtIndex: 7] boolValue])
+      isAllDay = [[event objectAtIndex: 7] boolValue];
+      if (dayBasedView && isAllDay)
 	[self _fillBlocks: allDayBlocks withEvent: event withNumber: eventNbr];
       else
 	[self _fillBlocks: blocks withEvent: event withNumber: eventNbr];
