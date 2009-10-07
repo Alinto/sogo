@@ -128,9 +128,12 @@
   for (i = 0; i < [allSources count]; i++)
     {
       source = [[SOGoUserManager sharedUserManager] sourceWithID: [allSources objectAtIndex: i]];
-      entry = [source performSelector: theSelector
-		      withObject: theValue];
 
+      // Our different sources might not all implements groups support
+      if ([source respondsToSelector: theSelector])
+	entry = [source performSelector: theSelector
+			withObject: theValue];
+      
       if (entry)
 	break;
 
