@@ -8,6 +8,8 @@
 	* SoObjects/Mailer/EOQualifier+MailDAV.m (buildQualifierFromFilters:):
 	Removed, everything is now done in (qualifierFromMailDAVMailFilters:).
 	(qualifierFromMailDAVMailFilters:): Removed all parentheses in qualifier.
+	* SoObjects/Mailer/EOQualifier+MailDAV.m (qualifierFromMailDAVMailFilters:):
+	Fixed segfault when there are no filters.
 
 2009-10-07  Francis Lachapelle  <flachapelle@inverse.ca>
 

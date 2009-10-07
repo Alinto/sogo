@@ -37,6 +37,7 @@
 
 + (id) qualifierFromMailDAVMailFilters: (DOMElement *) mailFilters
 {
+  EOQualifier *qualifier;
   NSMutableArray *args, *formats;
   NSArray *flags, *strings, *dates;
   NSString *valueA, *valueB, *tagName, *format, *negate;
@@ -52,6 +53,7 @@
              @"keywords", @"body", nil];
   dates = [NSArray arrayWithObjects: @"date", @"receive-date", nil];
 
+  formats = nil;
   list = [mailFilters childNodes];
   if (list)
     {
@@ -160,9 +162,16 @@
         }
     }
 
-  format = [formats componentsJoinedByString: @" AND "];
-  return [EOQualifier qualifierWithQualifierFormat: format
-                                         arguments: args];
+  if (formats)
+    {
+      format = [formats componentsJoinedByString: @" AND "];
+      qualifier = [EOQualifier qualifierWithQualifierFormat: format
+                                                  arguments: args];
+    }
+  else
+    qualifier = nil;
+
+  return qualifier;
 }
 
 @end
