@@ -238,7 +238,7 @@ class DAVMailCollectionTest(unittest.TestCase):
                       "failure in propfind"
                       "(%s != %s)" % (result, expected))
 
-  def DISABLEDtestMKCOL(self):
+  def testMKCOL(self):
     """Folder creation"""
     self._deleteCollection("test-dav-mail-%40-abc")
     self._deleteCollection("test-dav-mail-@-def")
@@ -260,7 +260,7 @@ class DAVMailCollectionTest(unittest.TestCase):
 #              "failure creating collection"
 #              "(code = %d)" % move.response["status"])
 
-  def DISABLEDtestPUT(self):
+  def testPUT(self):
     """Message creation"""
     self._deleteCollection("test-dav-mail")
     self._makeCollection("test-dav-mail")
@@ -515,7 +515,7 @@ class DAVMailCollectionTest(unittest.TestCase):
 
     self._deleteCollection("test-dav-mail")
 
-  def DISABLEDtestPROPFIND(self):
+  def testPROPFIND(self):
     """Message properties"""
     self._deleteCollection ("test-dav-mail")
     self._makeCollection ("test-dav-mail")
