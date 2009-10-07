@@ -43,8 +43,12 @@
 
 #import <SOGo/DOMNode+SOGo.h>
 #import <SOGo/NSArray+Utilities.h>
+#import <SOGo/NSString+DAV.h>
+#import <SOGo/NSArray+DAV.h>
+#import <SOGo/NSObject+DAV.h>
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
+#import <SOGo/WORequest+SOGo.h>
 
 #import "EOQualifier+MailDAV.h"
 #import "SOGoMailObject.h"
@@ -1139,7 +1143,7 @@ static NSString *spoolFolder = nil;
       [davIMAPFieldsTable setObject: @"BODY[HEADER.FIELDS (REFERENCES)]"
                              forKey: @"{urn:schemas:mailheader:}references"];
       [davIMAPFieldsTable setObject: @"BODY[HEADER.FIELDS (SUBJECT)]"
-                             forKey: @"{urn:schemas:mailheader:}displayname"];
+                             forKey: @"{DAV:}displayname"];
       [davIMAPFieldsTable setObject: @"BODY[HEADER.FIELDS (TO)]"
                              forKey: @"{urn:schemas:mailheader:}to"];
     }
@@ -1209,15 +1213,121 @@ static NSString *spoolFolder = nil;
                     matchingQualifier: (EOQualifier *) searchQualifier
                            andSorting: (NSString *) sorting
 {
-#warning not implemented
-  return nil;
+  NGImap4Client *client;
+  NSDictionary *response;
+  NSArray *messages;
+
+  client = [[self imap4Connection] client];
+  [imap4 selectFolder: [self imap4URL]];
+
+  if ([sorting length])
+    response = [client sort: sorting 
+                  qualifier: searchQualifier
+                   encoding: @"UTF-8"];
+  else
+    response = [client searchWithQualifier: searchQualifier];
+
+   if ([[response objectForKey: @"result"] boolValue])
+     messages = [response objectForKey: @"search"];
+   else
+     messages = nil;
+
+  return messages;
 }
 
-- (void) _appendProperties: (NSArray *) keys
+- (NSArray *) _davPropstatsWithProperties: (NSArray *) davProperties
+                       andMethodSelectors: (SEL *) selectors
+                              fromMessage: (NSString *) messageId
+{
+  SOGoMailObject *message;
+  unsigned int count, max;
+  NSMutableArray *properties200, *properties404, *propstats;
+  NSDictionary *propContent;
+  NSString *messageUrl;
+  id result;
+
+  propstats = [NSMutableArray arrayWithCapacity: 2];
+
+  max = [davProperties count];
+  properties200 = [NSMutableArray arrayWithCapacity: max];
+  properties404 = [NSMutableArray arrayWithCapacity: max];
+
+  message = [self lookupName: messageId
+                   inContext: context
+                     acquire: NO];
+  for (count = 0; count < max; count++)
+    {
+      if (selectors[count]
+          && [message respondsToSelector: selectors[count]])
+        result = [message performSelector: selectors[count]];
+      else
+        result = nil;
+
+      if (result)
+        {
+          propContent = [[davProperties objectAtIndex: count]
+                             asWebDAVTupleWithContent: result];
+          [properties200 addObject: propContent];
+        }
+      else
+        {
+          propContent = [[davProperties objectAtIndex: count]
+                          asWebDAVTuple];
+          [properties404 addObject: propContent];
+        }
+    }
+
+  messageUrl = [NSString stringWithFormat: @"%@%@.eml", 
+               [self davURL], messageId];
+  [propstats addObject: davElementWithContent (@"href", XMLNS_WEBDAV, 
+                                               messageUrl)];
+
+  if ([properties200 count])
+    [propstats addObject: [properties200
+                            asDAVPropstatWithStatus: @"HTTP/1.1 200 OK"]];
+  if ([properties404 count])
+    [propstats addObject: [properties404
+                            asDAVPropstatWithStatus: @"HTTP/1.1 404 Not Found"]];
+
+  return propstats;
+}
+
+- (void) _appendProperties: (NSArray *) properties
               fromMessages: (NSArray *) messages
                 toResponse: (WOResponse *) response
 {
-#warning not implemented
+  NSDictionary *davElement;
+  NSArray *propstats;
+  NSMutableArray *all;
+  NSString *message, *davString;
+  SEL *selectors;
+  int max, count;
+
+  max = [properties count];
+  selectors = NSZoneMalloc (NULL, sizeof (max * sizeof (SEL)));
+
+  for (count = 0; count < max; count++)
+    selectors[count]
+      = SOGoSelectorForPropertyGetter ([properties objectAtIndex: count]);
+
+  max = [messages count];
+  all = [NSMutableArray array];
+  for (count = 0; count < max; count++)
+    {
+      message = [[messages objectAtIndex: count] stringValue];
+      propstats = [self _davPropstatsWithProperties: properties
+                                 andMethodSelectors: selectors
+                                         fromMessage: message];
+      davElement = davElementWithContent (@"response", XMLNS_WEBDAV, 
+                                          propstats);
+
+      [all addObject: davElement];
+    }
+
+  davString = [davElementWithContent (@"multistatus", XMLNS_WEBDAV, all)
+               asWebDavStringWithNamespaces: nil];
+  [response appendContentString: davString];
+  NSZoneFree (NULL, selectors);
 }
 
 - (id) davMailQuery: (id) queryContext

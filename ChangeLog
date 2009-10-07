@@ -1,3 +1,22 @@
+2009-10-07  Cyril Robert <crobert@inverse.ca>
+
+	* SoObjects/Mailer/EOQualifier+MailDAV.m (buildQualifierFromFilters:): Now
+	returns an EOQualifier, fixed qualifier formats and constructor, refactored
+	to regroup code.
+	* Tests/test-maildav.py (testREPORTMailQuery): Disabled a few tests that 
+	don't pass for now.
+
+2009-10-06  Cyril Robert <crobert@inverse.ca>
+
+	* SoObjects/Mailer/EOQualifier+MailDAV.m (_formattedDate:): New method to
+	format a date correctly for imap search qualifiers.
+	(buildQualifierFromFilters:): Fixed selectors in qualifier strings, and
+	fixed date formatting.
+	* SoObjects/Mailer/SOGoMailFolder.m
+	(_fetchMessageProperties:matchingQualifier:andSorting:): Implementation.
+	(_davPropstatsWithProperties:andMethodSelectors:fromMessage:): Implementation.
+	(_appendProperties:fromMessages:toResponse:): Implementation.
+
 2009-10-07  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Scheduler/UIxCalListingActions.m
@@ -90,8 +109,8 @@
 
 	* SoObjects/Mailer/EOQualifier+MailDAV.m: New category to generate IMAP
 	qualifiers from DAV filters. (REPORT)
-	Formatted dates using ([NSCalendarDate rfc822DateString]). Added
-	NOT and extra fields.
+	(buildQualifierFromFilters:): Formatted dates using [NSCalendarDate 
+	rfc822DateString]. Added NOT and extra fields.
 
 2009-10-04  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
