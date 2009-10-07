@@ -47,6 +47,8 @@
 - (NSArray *) toManyRelationshipKeys;
 - (NSArray *) subFolders;
 
+- (BOOL) hasLocalSubFolderNamed: (NSString *) name;
+
 - (NSException *) newFolderWithName: (NSString *) name
 		 andNameInContainer: (NSString *) newNameInContainer;
 - (NSException *) newFolderWithName: (NSString *) name

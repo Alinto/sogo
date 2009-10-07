@@ -17,6 +17,13 @@
 
 2009-10-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	2009-10-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoParentFolder.m (-hasLocalSubfolderNamed):
+	rewritten parts of the method to better fit our coding standards.
+	Exported method in the SOGoParentFolder.h to avoid warnings where
+	it's used.
+
 	* SoObjects/Appointments/SOGoAppointmentFolders.m
 	(_fetchPersonalFolders:withChannel:): we now skip unexisting
 	folders declared in the list of web folder ids to avoid problems.

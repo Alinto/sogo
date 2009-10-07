@@ -446,19 +446,21 @@ static SoSecurityManager *sm = nil;
 {
   NSArray *subs;
   NSException *error;
+  NSString *currentDisplayName;
   int i, count;
-  BOOL rc = NO;
+  BOOL rc;
+
+  rc = NO;
 
   error = [self initSubFolders];
-  if (error)
-    [error raise];
     
   subs = [subFolders allValues];
   count = [subs count];
-
-  for (i = 0; i < count; i++)
-    if ([name isEqualToString: [[subs objectAtIndex: i] displayName]])
-      rc = YES;
+  for (i = 0; !rc && i < count; i++)
+    {
+      currentDisplayName = [[subs objectAtIndex: i] displayName];
+      rc = [name isEqualToString: currentDisplayName];
+    }
 
   return rc;
 }
