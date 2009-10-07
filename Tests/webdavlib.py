@@ -345,13 +345,10 @@ class MailDAVMailQuery(WebDAVREPORT):
         sort_tag = self.ns_mgr.register("sort", xmlns_inversedav)
         sort_node = _WD_XMLTreeElement(sort_tag)
         self.top_node.append(sort_node)
-        sort_subtag = self.ns_mgr.register(sort[0], xmlns_inversedav)
-        if len(sort) > 1:
-            attributes = sort[1]
-        else:
-            attributes = {}
-        sort_subnode = _WD_XMLTreeElement(sort_subtag, attributes)
-        sort_node.append(sort_subnode)
+
+        for item in sort:
+            sort_subnode = _WD_XMLTreeElement(self.render_tag(item))
+            sort_node.append(sort_subnode)
 
 # private classes to handle XML stuff
 class _WD_XMLNS_MGR:

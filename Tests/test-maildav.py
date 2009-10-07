@@ -36,7 +36,7 @@ User-Agent: Thunderbird 2.0.0.22 (Macintosh/20090605)
 References: <4AC3BF1B.3010806@inverse.ca>
 MIME-Version: 1.0
 To: message1to@cyril.dev
-CC: message1cc@cyril.dev, user10@cyril.dev
+CC: 2message1cc@cyril.dev, user10@cyril.dev
 Subject: message1subject
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
@@ -60,7 +60,7 @@ User-Agent: Thunderbird 2.0.0.22 (Macintosh/20090605)
 MIME-Version: 1.0
 From: Cyril <message2from@cyril.dev>
 To: message2to@cyril.dev
-CC: message2cc@cyril.dev
+CC: 3message2cc@cyril.dev
 Subject: message2subject
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
@@ -152,7 +152,7 @@ User-Agent: Thunderbird 2.0.0.22 (Macintosh/20090605)
 MIME-Version: 1.0
 From: Cyril <message3from@cyril.dev>
 To: message3to@cyril.dev
-CC: message3cc@cyril.dev
+CC: 1message3cc@cyril.dev
 Subject: Hallo
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
@@ -329,6 +329,34 @@ class DAVMailCollectionTest(unittest.TestCase):
     self.assertEquals(len(filter[1]), received_count,
                       "filter %s:\n\tunexpected amount of refs: %d"
                       % (filter[0], received_count))
+
+  def _testSort(self, sortOrder):
+    expected_hrefs = sortOrder[1]
+    expected_count = len(expected_hrefs)
+
+    received_count = 0
+    url = "%sfolder%s" % (self.resource, "test-dav-mail")
+    query = webdavlib.MailDAVMailQuery(url, ["displayname"],
+                                       None, sortOrder[0])
+    self.client.execute(query)
+    self.assertEquals(query.response["status"], 207,
+                      "sortOrder %s:\n\tunexpected status: %d"
+                      % (sortOrder[0], query.response["status"]))
+    query.xpath_namespace = { "D": "DAV:",
+                              "I": "urn:inverse:params:xml:ns:inverse-dav" }
+    response_nodes = query.xpath_evaluate("/D:multistatus/D:response")
+    for response_node in response_nodes:
+      href_node = query.xpath_evaluate("D:href", response_node)[0]
+      href = href_node.childNodes[0].nodeValue
+      received_count = received_count + 1
+      self.assertEquals(expected_hrefs[received_count], href,
+                        "sortOrder %s:\n\tunexpected href: %s (expecting: %s)"
+                        % (sortOrder[0], href,
+                           expected_hrefs[received_count]))
+
+    self.assertEquals(expected_count, received_count,
+                      "sortOrder %s:\n\tunexpected amount of refs: %d"
+                      % (sortOrder[0], received_count))
 
   def testREPORTMailQuery(self):
     """mail-query"""
@@ -552,12 +580,32 @@ class DAVMailCollectionTest(unittest.TestCase):
     self._testFilters(filters)
 
     # 1. test sort: (receive-date) ARRIVAL
+    self._testSort(([ "{urn:schemas:mailheader:}received" ],
+                    [ msg2Loc, msg3Loc, msg1Loc ]))
+
     # 1. test sort: (date) DATE
+    self._testSort(([ "{urn:schemas:mailheader:}date" ],
+                    [ msg1Loc, msg2Loc, msg3Loc ]))
+
     # 1. test sort: CC
+    self._testSort(([ "{urn:schemas:mailheader:}cc" ],
+                    [ msg3Loc, msg1Loc, msg2Loc ]))
+
     # 1. test sort: FROM
+    self._testSort(([ "{urn:schemas:mailheader:}from" ],
+                    [ msg1Loc, msg2Loc, msg3Loc ]))
+
     # 1. test sort: SIZE
+    self._testSort(([ "{DAV:}getcontentlength" ],
+                    [ msg3Loc, msg1Loc, msg2Loc ]))
+
     # 1. test sort: SUBJECT
+    self._testSort(([ "{urn:schemas:mailheader:}displayName" ],
+                    [ msg3Loc, msg1Loc, msg2Loc ]))
+
     # 1. test sort: TO
+    self._testSort(([ "{urn:schemas:mailheader:}to" ],
+                    [ msg1Loc, msg2Loc, msg3Loc ]))
 
     self._deleteCollection("test-dav-mail")
 
@@ -581,7 +629,7 @@ class DAVMailCollectionTest(unittest.TestCase):
              ("{urn:schemas:httpmail:}textdescription", 
                "<![CDATA[%s]]>" % message1, 0),
              ("{urn:schemas:httpmail:}unreadcount", None, 0),
-             ("{urn:schemas:mailheader:}cc","message1cc@cyril.dev, user10@cyril.dev", 0),
+             ("{urn:schemas:mailheader:}cc","2message1cc@cyril.dev, user10@cyril.dev", 0),
              ("{urn:schemas:mailheader:}date", "Mon, 28 Sep 2009 11:42:14 GMT", 0),
              ("{urn:schemas:mailheader:}from", "Cyril <message1from@cyril.dev>", 0),
              ("{urn:schemas:mailheader:}in-reply-to", None, 0),

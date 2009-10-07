@@ -19,6 +19,14 @@
 
 2009-10-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Tests/webdavlib.py (MailDAVMailQuery._initSort): we now accept
+	multiple sort parameters.
+
+	* Tests/test-maildav.py (DAVMailCollectionTest._testSort): new
+	method to test sorting messages.
+	(DAVMailCollectionTest.testREPORTMailQuery): added some tests for
+	"SORT".
+
 	* SoObjects/SOGo/SOGoParentFolder.m (-hasLocalSubfolderNamed):
 	rewritten parts of the method to better fit our coding standards.
 	Exported method in the SOGoParentFolder.h to avoid warnings where
