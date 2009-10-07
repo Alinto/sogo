@@ -35,7 +35,7 @@
 
 @implementation EOQualifier (SOGoMailDAVExtension)
 
-+ (EOQualifier *) buildQualifierFromFilters: (DOMElement *) mailFilters
++ (id) qualifierFromMailDAVMailFilters: (DOMElement *) mailFilters
 {
   NSMutableArray *args, *formats;
   NSArray *flags, *strings, *dates;
@@ -79,13 +79,13 @@
                       if (endDate && [startDate isEqual: endDate])
                         {
                           [formats addObject: [NSString stringWithFormat: 
-                                               @"(%@ = %%@", tagName]];
+                                               @"%@ = %%@", tagName]];
                           datesAreEqual = YES;
                         }
                       else
                         {
                           [formats addObject: [NSString stringWithFormat: 
-                                               @"(%@ > %%@", tagName]];
+                                               @"%@ > %%@", tagName]];
                           datesAreEqual = NO;
                         }
                       [args addObject: startDate];
@@ -93,7 +93,7 @@
                   if (endDate && !datesAreEqual)
                     {
                       [formats addObject: [NSString stringWithFormat: 
-                                           @"(%@ < %%@", tagName]];
+                                           @"%@ < %%@", tagName]];
                       [args addObject: endDate];
                     }
                 }
@@ -112,7 +112,7 @@
                   if (!valueB)
                     valueB = @"*";
 
-                  [formats addObject: @"(uid = %@)"];
+                  [formats addObject: @"uid = %@"];
                   [args addObject: [NSString stringWithFormat: @"%@:%@",
                                     valueA, valueB]];
                 }
@@ -122,20 +122,20 @@
                   valueA = [current attribute: @"min"];
                   if (valueA)
                     {
-                      [formats addObject: @"(size > %@)"];
+                      [formats addObject: @"size > %@"];
                       [args addObject: valueA];
                     }
                   valueA = [current attribute: @"max"];
                   if (valueA)
                     {
-                      [formats addObject: @"(size < %@)"];
+                      [formats addObject: @"size < %@"];
                       [args addObject: valueA];
                     }
                 }
               // All flags
               else if ([flags containsObject: tagName])
                 {
-                  [formats addObject: @"(flags doesContain: %@)"];
+                  [formats addObject: @"flags doesContain: %@"];
                   [args addObject: tagName];
                 }
               // All strings
@@ -145,7 +145,7 @@
                   if (valueA)
                     {
                       format = [NSString stringWithFormat: 
-                                @"(%@ doesContain: %%@)", tagName];
+                                @"%@ doesContain: %%@", tagName];
                       [formats addObject: format];
                       [args addObject: valueA];
                     }
@@ -157,16 +157,6 @@
   format = [formats componentsJoinedByString: @" AND "];
   return [EOQualifier qualifierWithQualifierFormat: format
                                          arguments: args];
-}
-
-
-+ (id) qualifierFromMailDAVMailFilters: (DOMElement *) mailFilters
-{
-  EOQualifier *newQualifier;
-
-  newQualifier = [EOQualifier buildQualifierFromFilters: mailFilters];
-
-  return newQualifier;
 }
 
 @end

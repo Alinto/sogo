@@ -5,17 +5,9 @@
 	to regroup code.
 	* Tests/test-maildav.py (testREPORTMailQuery): Disabled a few tests that 
 	don't pass for now.
-
-2009-10-06  Cyril Robert <crobert@inverse.ca>
-
-	* SoObjects/Mailer/EOQualifier+MailDAV.m (_formattedDate:): New method to
-	format a date correctly for imap search qualifiers.
-	(buildQualifierFromFilters:): Fixed selectors in qualifier strings, and
-	fixed date formatting.
-	* SoObjects/Mailer/SOGoMailFolder.m
-	(_fetchMessageProperties:matchingQualifier:andSorting:): Implementation.
-	(_davPropstatsWithProperties:andMethodSelectors:fromMessage:): Implementation.
-	(_appendProperties:fromMessages:toResponse:): Implementation.
+	* SoObjects/Mailer/EOQualifier+MailDAV.m (buildQualifierFromFilters:):
+	Removed, everything is now done in (qualifierFromMailDAVMailFilters:).
+	(qualifierFromMailDAVMailFilters:): Removed all parentheses in qualifier.
 
 2009-10-07  Francis Lachapelle  <flachapelle@inverse.ca>
 
@@ -30,6 +22,17 @@
 	folders declared in the list of web folder ids to avoid problems.
 	When such id is found, it is also reported in the logs to inform
 	the administrator of this inconsistency.
+
+2009-10-06  Cyril Robert <crobert@inverse.ca>
+
+	* SoObjects/Mailer/EOQualifier+MailDAV.m (_formattedDate:): New method to
+	format a date correctly for imap search qualifiers.
+	(buildQualifierFromFilters:): Fixed selectors in qualifier strings, and
+	fixed date formatting.
+	* SoObjects/Mailer/SOGoMailFolder.m
+	(_fetchMessageProperties:matchingQualifier:andSorting:): Implementation.
+	(_davPropstatsWithProperties:andMethodSelectors:fromMessage:): Implementation.
+	(_appendProperties:fromMessages:toResponse:): Implementation.
 
 2009-10-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

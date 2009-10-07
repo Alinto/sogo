@@ -529,14 +529,14 @@ class DAVMailCollectionTest(unittest.TestCase):
                       "(code = %d)" % put.response["status"])
 
     itemLocation = put.response["headers"]["location"]
-    tests = (("{urn:schemas:httpmail:}date", 1254242534, 1),
+    tests = (("{urn:schemas:httpmail:}date", 1254156134, 1),
              ("{urn:schemas:httpmail:}hasattachment", "0", 0),
              ("{urn:schemas:httpmail:}read", "0", 0),
              ("{urn:schemas:httpmail:}textdescription", 
                "<![CDATA[%s]]>" % message1, 0),
              ("{urn:schemas:httpmail:}unreadcount", None, 0),
              ("{urn:schemas:mailheader:}cc","message1cc@cyril.dev, user10@cyril.dev", 0),
-             ("{urn:schemas:mailheader:}date", "Tue, 29 Sep 2009 11:42:14 GMT", 0),
+             ("{urn:schemas:mailheader:}date", "Mon, 28 Sep 2009 11:42:14 GMT", 0),
              ("{urn:schemas:mailheader:}from", "Cyril <message1from@cyril.dev>", 0),
              ("{urn:schemas:mailheader:}in-reply-to", None, 0),
              ("{urn:schemas:mailheader:}message-id","<4AC1F29sept6.5060801@cyril.dev>", 0),
