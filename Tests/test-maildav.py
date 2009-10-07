@@ -490,6 +490,37 @@ class DAVMailCollectionTest(unittest.TestCase):
 
     ## 1. test filter: size
     #   LARGER, SMALLER
+    #1 848
+    #2 4308
+    #3 699
+    filters = (({ "size": { "min": "300",
+                            "max": "300" }},
+                []),
+               ({ "size": { "min": "800",
+                            "max": "800" }},
+                []),
+               ({ "size": { "min": "5000",
+                            "max": "5000" }},
+                []),
+               ({ "size": { "min": "838",
+                            "max": "838" }},
+                [ msg1Loc ]),
+               ({ "size": { "min": "699",
+                            "max": "4308" }},
+                [ msg1Loc, msg2Loc, msg3Loc ]),
+               ({ "size": { "min": "700",
+                            "max": "4308" }},
+                [ msg1Loc, msg2Loc ]),
+               ({ "size": { "min": "698",
+                            "max": "848" }},
+                [ msg1Loc, msg3Loc ]),
+               ({ "size": { "min": "300",
+                            "max": "5000" },
+                  "size": { "min": "840",
+                            "max": "850",
+                            "not": "true" }},
+                [ msg2Loc, msg3Loc ]))
+
     ## 1. test filter: answered
     #   ANSWERED, UNANSWERED
     ## 1. test filter: draft
@@ -504,6 +535,21 @@ class DAVMailCollectionTest(unittest.TestCase):
     #   DELETED
     ## 1. test filter: keywords
     #   KEYWORD x
+
+    ## 1. test filter: multiple combinations
+    filters = (({ "body": { "match": "Hello" },
+                  "cc": { "match": "message1cc" }},
+                [ msg1Loc ]),
+               ({ "to": { "match": "message" },
+                  "uid": { "from": "1",
+                           "to": "2" }},
+                [ msg1Loc, msg2Loc ]),
+               ({ "to": { "match": "message" },
+                  "uid": { "from": "1",
+                           "to": "2" },
+                  "cc": { "match": "message3cc" }},
+                []))
+    self._testFilters(filters)
 
     # 1. test sort: (receive-date) ARRIVAL
     # 1. test sort: (date) DATE
@@ -551,7 +597,6 @@ class DAVMailCollectionTest(unittest.TestCase):
         self._testProperty(itemLocation, property, expected, isDate)
 
     self._deleteCollection ("test-dav-mail")
-
 
 if __name__ == "__main__":
   unittest.main()
