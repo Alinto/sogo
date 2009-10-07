@@ -47,7 +47,7 @@
 	(-userDayStartTime): idem.
 	(-userDayEndTime): idem.
 	(-userMessageForwarding): idem.
-	(-repyPlacement): idem. 
+	(-repyPlacement): idem.
 	(-signaturePlacement): idem.
 
 	* UI/Scheduler/UIxCalDayTable.m (-hoursToDisplay): honor the
@@ -88,7 +88,7 @@
 
 	* Tests/webdavlib.py: Fixed errors in the URL regexp.
 
-	* SoObjects/Mailer/EOQualifier+MailDAV.m: New category to generate IMAP 
+	* SoObjects/Mailer/EOQualifier+MailDAV.m: New category to generate IMAP
 	qualifiers from DAV filters. (REPORT)
 	Formatted dates using ([NSCalendarDate rfc822DateString]). Added
 	NOT and extra fields.
@@ -171,7 +171,7 @@
 	Added new methods to enable MailDAV PUT on a collection.
 	* SoObjects/Mailer/SOGoMailBaseObject.m (IMAP4IDFromAppendResult:): Moved
 	here, since SOGoDraftObject and SOGoMailFolder need it.
-	* SoObjects/Mailer/SOGoDraftObject.m (_IMAP4IDFromAppendResult): Removed, 
+	* SoObjects/Mailer/SOGoDraftObject.m (_IMAP4IDFromAppendResult): Removed,
 	replaced by [SOGoMailBaseObject IMAP4IDFromAppendResult:].
 	* SoObjects/SOGo/SOGoObject.m: Changed file extension from "mail" to "eml".
 	* SoObjects/Mailer/SOGoMailAccount.m: Added accountName to fix errors in MailDAV.
@@ -249,7 +249,7 @@
 	coming from a SQL database. This can be used concurrently
 	with LDAP sources. Modified many classes to reflect this
 	change.
-	* SoObjects/SOGo/LDAPSource.m 
+	* SoObjects/SOGo/LDAPSource.m
 	We trim the bind field value prior to adding it to our
 	LDAP search filter.
 	* UI/MailPartViewers/UIxMailPartSignedViewer.m and friends:
@@ -265,7 +265,7 @@
 
 2009-09-23  Cyril Robert <crobert@inverse.ca>
 
-	* SoObjects/Appointments/SOGoAppointmentFolder.m (importComponent:): Fixed 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m (importComponent:): Fixed
 	addition of BEGIN/END block.
 	* SoObjects/Appointments/SOGoWebAppointmentFolder.m (deleteAllContent):
 	Created deleteAllContent to be able to change it in the store bundle.
@@ -281,7 +281,7 @@
 
 2009-09-23  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
-	* UI/PreferencesUI/UIxPreferences.m 
+	* UI/PreferencesUI/UIxPreferences.m
 	We now fallback to the default system selected day.
 
 2009-09-22  Ludovic Marcotte  <lmarcotte@inverse.ca>
@@ -452,7 +452,7 @@
 
 2009-09-11  Cyril Robert <crobert@inverse.ca>
 
-	* UI/Contacts/UIxContactFoldersView.m (allContactSearchAction): Added 
+	* UI/Contacts/UIxContactFoldersView.m (allContactSearchAction): Added
 	support for excludeLists, to prevent listing vList entries.
 
 2009-09-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
@@ -535,14 +535,14 @@
 	* UI/Scheduler/UIxCalMainActions.m: New action class to handle actions on
 	the main calendar.
 	* SoObjects/Appointments/SOGoAppointmentFolder.m (importCalendar:): New
-	method to import everything from an iCalCalendar. (Refactoring from 
+	method to import everything from an iCalCalendar. (Refactoring from
 	UIxCalFolderActions)
 	* SoObjects/Appointments/SOGoAppointmentFolders.m (webCalendarIds): New
 	method to get uids of web calendar folders.
 	(_fetchPersonalFolders: withChannel:): Wrap the parent method to replace web
 	calendar folders with the correct class: SOGoWebAppointmentFolder. It also
 	removes invalid references in the WebCalendars setting.
-	* UI/Scheduler/UIxCalFolderActions.m (importAction): Moved a big part of the 
+	* UI/Scheduler/UIxCalFolderActions.m (importAction): Moved a big part of the
 	method to [SOGoAppointmentFolder importCalendar:].
 	* SoObjects/Appointments/SOGoWebAppointmentFolder.m (delete): Wrap the
 	parent method to remove the calendar for the user's settings.
@@ -579,7 +579,7 @@
 	* UI/Scheduler/UIxCalFolderActions.m: New class to handle actions on a
 	single agenda folder. (import/export)
 	* SoObjects/SOGo/NSDictionary+Utilities.m: Added userRecordAsLDIFEntry.
-	* SoObjects/SOGo/NSString+Utilities.m: Added methods useful for 
+	* SoObjects/SOGo/NSString+Utilities.m: Added methods useful for
 	userRecordAsLDIFEntry.
 	* UI/Contacts/UIxContactsListView.m: Removed import/export actions
 	* UI/Scheduler/UIxCalView.m: Removed import/export actions
@@ -727,7 +727,7 @@
 	* UI/Scheduler/UIxDatePicker.m: Fix to use user-defined format, if any.
 	Mantis 1911.
 	* UI/Scheduler/UIxDatePicker.m: Removed changes from 1911: too many issues.
-	* UI/Scheduler/UIxCalFilterPanel.m (selectedFilter): Added support for 
+	* UI/Scheduler/UIxCalFilterPanel.m (selectedFilter): Added support for
 	CalendarDefaultFilter user default. Mantis 112
 	* UI/Scheduler/UIxCalListingActions.m (checkFilterValue): Added to support
 	CalendarDefaultFilter user default. Mantis 112
@@ -743,7 +743,7 @@
 
 	* UI/MainUI/SOGoUserHomePage.m (defaultAction): Added support for SOGoUIxDefaultModule
 	* UI/PreferencesUI/UIxPreferences.m: Added: availableModules,
-	itemModuleText, userDefaultModule, setUserDefaultModule to support 
+	itemModuleText, userDefaultModule, setUserDefaultModule to support
 	SOGoUIxDefaultModule in the preferences UI.
 	* UI/Contacts/UIxContactFoldersView.m (checkDefaultModulePreference): Added
 	to support "Last" SOGoUIxDefaultModule value.
@@ -752,7 +752,7 @@
 	* UI/Scheduler/UIxCalMainView.m (checkDefaultModulePreference): Added to
 	support "Last" SOGoUIxDefaultModule value.
 	* UI/MailerUI/UIxMailListView.m (isMessageFlagged): Added for Mantis 1428
-	* UI/MailerUI/UIxMailActions.m (markMessageFlaggedAction, 
+	* UI/MailerUI/UIxMailActions.m (markMessageFlaggedAction,
 	markMessageUnflaggedAction): Added to support flagging
 	* UI/MailerUI/UIxMailListView.m: Renamed Invisible to Flagged
 	* UI/MailerUI/UIxMailMainFrame.m: Renamed Invisible to Flagged
@@ -1095,7 +1095,7 @@
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	(freebusyResponseForRecipient): Removed CDATA tag
-	* SoObjects/Appointments/SOGoFreeBusyObject.m (iCalPersonWithUID): Removed 
+	* SoObjects/Appointments/SOGoFreeBusyObject.m (iCalPersonWithUID): Removed
 	setCn, since iCal fails when present.
 
 2009-07-16  Francis Lachapelle  <flachapelle@inverse.ca>
@@ -1611,9 +1611,9 @@
 
 2009-06-01  Cyril Robert <crobert@inverse.ca>
 
-	* UI/WebServerResources/UIxContactsUserFolders.js (onSearchFormSubmit): 
+	* UI/WebServerResources/UIxContactsUserFolders.js (onSearchFormSubmit):
 	Fixed encoding issue/crash.
-	* SoObjects/Appointments/SOGoAppointmentFolder.m (_parseCalendarFilter): 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m (_parseCalendarFilter):
 	Added support for default SOGoDAVCalendarStartTimeLimit, which is the
 	maximum number of days for dav queries.
 	Added: _enforceTimeLimitOnFilter, _getMaxStartDate and _getStartTimeLimit
@@ -1955,7 +1955,7 @@
 	* UI/MailPartViewers/UIxMailPartICalActions.m
 	([UIxMailPartICalActions -_eventObjectWithUID:forUser:]): when
 	looking for an event for a specific user, we now search into all
-	the user's calendar folders. 
+	the user's calendar folders.
 
 	* UI/MailPartViewers/UIxMailPartICalViewer.m
 	([UIxMailPartICalViewer -startCalendarDate]): new method that returns
@@ -2174,7 +2174,7 @@
 	
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	([SOGoAppointmentFolder
-	-fixupCycleRecord:_recordcycleRange:_rfirstInstanceCalendarDateRange:_firforViewRange:_viewRange]): 
+	-fixupCycleRecord:_recordcycleRange:_rfirstInstanceCalendarDateRange:_firforViewRange:_viewRange]):
 	propagate the start date of the cycle so it can be used later to
 	adjust the timezone.
 	* ([SOGoAppointmentFolder
@@ -2228,7 +2228,7 @@
 	We now correctly escape caracters that can be
 	present in the filename prior to initalizing
 	the NSURL instance.
-	* UI/MailerUI/UIxMailAccountActions.m 
+	* UI/MailerUI/UIxMailAccountActions.m
 	We correctly intialize the "unseen" variable
 	to nil in _statusFolders.
 
@@ -2331,7 +2331,7 @@
 
 	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView
 	-allContactSearchAction]): replaced references to "displayName" by
-	"c_cn", following changes made on 2009-02-06. 
+	"c_cn", following changes made on 2009-02-06.
 
 	* SoObjects/Contacts/SOGoContactGCSFolder.m ([SOGoContactGCSFolder
 	-_qualifierForFilter:]): changed search in email address to match
@@ -2539,7 +2539,7 @@
 	They are both arrays in which we set strings,
 	for example :
 	SOGoCalendarDefaultRoles = ("ObjectCreator", "PublicViewer");
-	SOGoContactsDefaultRoles = ("ObjectEditor"); 
+	SOGoContactsDefaultRoles = ("ObjectEditor");
 
 2008-12-30  Francis Lachapelle  <flachapelle@inverse.ca>
 
@@ -2558,7 +2558,7 @@
 
 	* UI/Scheduler/UIxAppointmentEditor.m ([UIxAppointmentEditor
 	-defaultAction]): idem.
-	([UIxAppointmentEditor -viewAction]): idem. 
+	([UIxAppointmentEditor -viewAction]): idem.
 
 2008-12-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
@@ -2677,7 +2677,7 @@
 	([SOGoAppointmentObject
 	-_updateAttendee:ownerUser:forEventUID:withRecurrenceId:withSequence:forUID:shouldAddSentBy:]):
 	if an attendee accepts all events, on the master event of a
-	repeating event will be updated; occurrences will no longer be affected.  
+	repeating event will be updated; occurrences will no longer be affected.
 	([SOGoAppointmentObject -postCalDAVEventRequestTo:from:]): when
 	dealing with an occurrence of a repeating event, the function now
 	proprly update each attendee's calendar.
@@ -2795,7 +2795,7 @@
 2008-11-26  Ludovic Marcotte  <lmarcotte@inverse.ca>	
 
 	* SoObjects/SOGo/SOGoGCSFolder.m
-	We correctly wrap ACL additions around a 
+	We correctly wrap ACL additions around a
 	database transaction.
 	* Updated the code wrt acting on behalf of
 	someone else to speed up things and also to
@@ -3011,39 +3011,39 @@
 2008-10-03  Cyril Robert <crobert@inverse.ca>
   * SoObjects/Mailer/SOGoMailFolder.m
     Added copyUIDs and moveUIDs
-      
+
   * UI/MailerUI/UIxMailActions.m
     Removed copyAction and moveAction
-    
+
   * UI/MailerUI/UIxMailFolderActions.m
     Added copyMessagesAction and moveMessagesAction
-  
+
   * UI/WebServerResources/MailerUI.js
     Removed _onMailboxMenuAction
     Modified onMailboxMenuCopy and onMailboxMenuMove
-    
+
   Copying/Moving messages is now done with one POST.
 	Fixed bug #1893
 
 2008-10-02  Cyril Robert <crobert@inverse.ca>
 
   * SoObjects/Mailer/SOGoMailFolder.m
-    Modified zip command acces path, defaults to /usr/bin/zip, 
+    Modified zip command acces path, defaults to /usr/bin/zip,
     overwritable by sogo defaults
-    
+
   * UI/MailPartViewers/UIxMailPartViewer.m
     Added - (NSString *) mimeImageUrl to get an icon path for attachments
-    
+
   * UI/MailerUI/UIxMailListView.m
     Added:
       - (NSArray *) columnsDisplayOrder
       Returns the current columns order, either from sogo defaults or user defaults.
       - (NSDictionary *) columnsMetaData
       Returns an array of metadata (id, class) for columns header.
-      
+
   * UI/MailerUI/UIxMailMainFrame.m
     Added - (NSString *) defaultColumnsOrder to get the order from a js call.
-    
+
   Summary:
   * Columns in UIxMailListView can now be changed
   * "Priority" column is smaller
@@ -3093,7 +3093,7 @@
 	Added archiveUIDs method to create an archive from email uids
 	* UI/MailerUI/UIxMailFolderActions.h
 	* UI/MailerUI/UIxMailFolderActions.m
-	Added saveMessagesAction method to handle the /saveMessages call 
+	Added saveMessagesAction method to handle the /saveMessages call
 	* UI/MailerUI/product.plist
 	Added a definition for saveMessages
 
@@ -3317,7 +3317,7 @@
 	* SoObjects/Mailer/SOGoDraftObject.m ([SOGoDraftObject
 	-addRecipients:recipientstoArray:array]): same as below.
 
-	* SoObjects/Mailer/SOGoDraftObject.m: 
+	* SoObjects/Mailer/SOGoDraftObject.m:
 	([SOGoDraftObject -addEMailsOfAddresses:_addrstoArray:_ma]): test
 	if the returned email is nil before adding it to the array.
 
@@ -3639,7 +3639,7 @@
 2008-07-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoWebAuthenticator.m ([SOGoWebAuthenticator -checkLogin:_loginpassword:_pwd]),
-	SoObjects/SOGo/SOGoDAVAuthenticator.m ([SOGoDAVAuthenticator -checkLogin:_loginpassword:_pwd]): 
+	SoObjects/SOGo/SOGoDAVAuthenticator.m ([SOGoDAVAuthenticator -checkLogin:_loginpassword:_pwd]):
 	disable "bypass" authentification method, since it doesn't work anyway.
 
 	* SoObjects/SOGo/SOGoWebAuthenticator.m ([SOGoWebAuthenticator -init]),
@@ -3753,7 +3753,7 @@
 	module that handle occurences within events.
 
 	* SoObjects/Appointments/SOGoTaskOccurence.[hm]: new class
-	module that handle occurences within todos. 
+	module that handle occurences within todos.
 
 2008-07-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
@@ -3866,7 +3866,7 @@
 
 2008-07-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
-	* SoObjects/Appointments/SOGoAppointmentFolders.m ([SOGoAppointmentFolders -davCreateCalendarCollection:newNameinContext:createContext]): 
+	* SoObjects/Appointments/SOGoAppointmentFolders.m ([SOGoAppointmentFolders -davCreateCalendarCollection:newNameinContext:createContext]):
 	new method that execute a "MKCALENDAR" request.
 
 	* SoObjects/SOGo/SOGoObject.m (SOGoSelectorForPropertyGetter): new
@@ -4915,13 +4915,13 @@
 
 2007-12-12  Ludovic Marcotte  <ludovic@inverse.ca>
 
-	* UI/MailPartViewers/UIxMailRenderingContext.{h,m} 
+	* UI/MailPartViewers/UIxMailRenderingContext.{h,m}
 	Removed template caching which added very little
 	and created re-entrant issues.
 	
-	* UI/MailPartViewers/UIxMailPartHTMLViewer.m 
+	* UI/MailPartViewers/UIxMailPartHTMLViewer.m
 	Added a hack (and stated so in the source file)
-	to avoid what seems to be a bug in libxml. 
+	to avoid what seems to be a bug in libxml.
 
 2007-12-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
@@ -4952,7 +4952,7 @@
 
 2007-12-07  Ludovic Marcotte  <ludovic@inverse.ca>
 
-	* UI/MailPartViewers/UIxMailRenderingContext.m 
+	* UI/MailPartViewers/UIxMailRenderingContext.m
 	We treat multipart/appledouble like multipart/mixed
 	for now. That allows the user to save both parts.
 
@@ -5104,7 +5104,7 @@
 	* UI/Templates/SOGoACLGermanModificationAdvisory.wox
 	Added the capabilities to email notifications when ACLs have
 	changed on a DAV collection or an IMAP mailbox. Also added
-	new templates (3 .wox) to deal with this. 
+	new templates (3 .wox) to deal with this.
 
 	* UI/WebServerResources/ContactsUI.js
 	UI/WebServerResources/SchedulerUI.js
@@ -5310,7 +5310,7 @@
 	event. This is required	so the proper calender is selected when
 	you view an event to which you don't have write access.
 
-	* UI/Common/UIxAclEditor.m ([UIxAclEditor -currentUserIsOwner]): 
+	* UI/Common/UIxAclEditor.m ([UIxAclEditor -currentUserIsOwner]):
 	also returns true for super users.
 
 2007-11-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
@@ -5550,7 +5550,7 @@
 	* UI/WebServerResources/MailerUI.js
 	We now check for empty selection and warn the
 	user about it when deleting messages
- 
+
 	* SoObjects/Mailer/SOGoDraftObject.m
 	Correctly check for the presence of a subject
 	before attempting to forward a message from
@@ -5559,11 +5559,11 @@
 	* SoObjects/Mailer/SOGoMailObject+Draft.m
 	We no longer use "[Fwd: ]" but simply "Fwd:"
 	when forwarding email messages.
- 
+
 	* SoObjects/SOGo/SOGoUser.m
 	Modified the default forwarding format to be
 	inline instead of "attachment".
- 
+
 	* SoObjects/Mailer/SOGoDraftObject.m
 	We now create and use a NGMimeContentDispositionHeaderField
 	in order to avoid encoding the whole Content-Disposition
@@ -5826,7 +5826,7 @@
 2007-11-03  Ludovic Marcotte  <ludovic@inverse.ca>
 
 	* UI/Scheduler/UIxAppointmentEditor.m
-	Fixed monthly recurrences support. 
+	Fixed monthly recurrences support.
 
 2007-11-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
@@ -6132,9 +6132,9 @@
 
 2007-10-19  Francis Lachapelle  <flachapelle@inverse.ca>
 
-	* SoObjects/SOGo/SOGoUser.m 
+	* SoObjects/SOGo/SOGoUser.m
 	([SOGoUser -rolesForObject:objectinContext:context]): allow
-	multiple super usernames to be defined. The user default 
+	multiple super usernames to be defined. The user default
 	SOGoSuperUsername is renamed SOGoSuperUsernames and must be
 	an array.
 
@@ -6179,7 +6179,7 @@
 	that change the purpose of the active folder to "Sent", "Drafts"
 	or "Trash".
 
-	* UI/SOGoUI/SOGoACLAdvisory.m ([SOGoACLAdvisory -subject]): 
+	* UI/SOGoUI/SOGoACLAdvisory.m ([SOGoACLAdvisory -subject]):
 	returns the subject as quoted-printable.
 
 	* UI/SOGoUI/SOGoACLAdvisory.[hm]: added two intermediary classes:
@@ -6221,7 +6221,7 @@
 	Implemented event/task priority support.
 
 	* SoObjects/Contacts/SOGoContactGCSFolder.m
-	Added CardDAV support. 
+	Added CardDAV support.
 
 	* SoObjects/SOGo/LDAPUserManager.m and SOGoUser.m
 	Implemented From: based on LDAP results based on
@@ -6233,7 +6233,7 @@
 	We avoid replacing "\r\n" and "\n" with <br /> and
 	rather use CSS capabilities for proper formatting.
 	This is _WAY_ faster on very large mails.
- 
+
 2007-10-10  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Scheduler/UIxComponentEditor.m
@@ -6263,7 +6263,7 @@
 
 2007-09-28  Francis Lachapelle  <flachapelle@inverse.ca>
 
-	* SoObjects/Mailer/SOGoDraftObject.m 
+	* SoObjects/Mailer/SOGoDraftObject.m
 	([SOGoDraftObject -isValidAttachmentName:_name]): removed
 	constraint on space in file name.
 	([SOGoDraftObject -saveAttachment:_attachwithMetadata:metadata]):
@@ -6273,16 +6273,16 @@
 
 2007-09-25  Francis Lachapelle  <flachapelle@inverse.ca>
 
-	* SoObjects/Appointments/SOGoAptMailNotification.m 
+	* SoObjects/Appointments/SOGoAptMailNotification.m
 	([SOGoAptMailNotification -appointmentURL]): set personal as the
 	default calendar where to add the event.
 
-	* UI/MainUI/SOGoUserHomePage.m ([SOGoUserHomePage +initialize]): 
+	* UI/MainUI/SOGoUserHomePage.m ([SOGoUserHomePage +initialize]):
 	activate the SOGoUIxDefaultModule user defaults.
 
 2007-09-21  Francis Lachapelle  <flachapelle@inverse.ca>
 
-	* UI/SOGoUI/UIxComponent.m 
+	* UI/SOGoUI/UIxComponent.m
 	([UIxComponent -shortUserNameForDisplay]): returns the string
 	"wrongusernamepassword" when authentication failed.
 
@@ -6876,7 +6876,7 @@
 	([SOGoUser -primaryIdentity]): new method return the first
 	identity of the first account.
 
-	* SoObjects/Mailer/SOGoMailFolder.m ([SOGoMailFolder -httpURLForAdvisoryToUser:uid]): 
+	* SoObjects/Mailer/SOGoMailFolder.m ([SOGoMailFolder -httpURLForAdvisoryToUser:uid]):
 
 	* SoObjects/Mailer/SOGoMailAccount.m ([SOGoMailAccount
 	-isInDraftsFolder]): returns NO.
@@ -7432,7 +7432,7 @@
 
 	* SoObjects/SOGo/NSNumber+Utilities.m: initial import.
 	* SoObjects/SOGo/NSNull+Utilities.m: initial import.
-	* UI/Scheduler/UIxCalTasksListView.m ([WOResponse -tasksListAction]): 
+	* UI/Scheduler/UIxCalTasksListView.m ([WOResponse -tasksListAction]):
 	new method that returns a json-formatted array of the visible tasks
 	for the current user.
 
@@ -7627,7 +7627,7 @@
 	but for inclusion of the application/x-sogo-notification part,
 	which will be handled by the Lightning enhancer plugin.
 
-	* UI/MailerUI/UIxMailFolderActions.m ([UIxMailFolderActions -subscribeAction]) 
+	* UI/MailerUI/UIxMailFolderActions.m ([UIxMailFolderActions -subscribeAction])
 	([UIxMailFolderActions -unsubscribeAction]): new stub methods that
 	do nothing yet since imap folder subscription is not handled yet.
 
@@ -7785,11 +7785,11 @@
 	* SoObjects/SOGo/SOGoPermissions.m: added the new role
 	"SOGoMailRole_MessageEraser".
 
-	* UI/Common/UIxAclEditor.m ([UIxAclEditor -defaultUserID]) 
+	* UI/Common/UIxAclEditor.m ([UIxAclEditor -defaultUserID])
 	([UIxAclEditor -_prepareUsers]): take the new SOGoObject's
 	"defaultUserID" method into account.
 
-	* UI/Common/UIxUserRightsEditor.m ([UIxUserRightsEditor -userIsDefaultUser]) 
+	* UI/Common/UIxUserRightsEditor.m ([UIxUserRightsEditor -userIsDefaultUser])
 	([UIxUserRightsEditor -_initRights]): take the new SOGoObject's
 	"defaultUserID" method into account.
 
@@ -7932,7 +7932,7 @@
 	NSDeserializer. This way, we obtain a mutable dictionary rather
 	than an immutable one.
 
-	* SoObjects/Mailer/SOGoDraftObject.m ([SOGoDraftObject -bodyPartForText]) 
+	* SoObjects/Mailer/SOGoDraftObject.m ([SOGoDraftObject -bodyPartForText])
 	([SOGoDraftObject -mimeMessageForContentWithHeaderMap:]): use the
 	constant string "contentTypeValue".
 	contentTypeValue is now set back to iso-8859-1 since NGMime
@@ -7944,9 +7944,9 @@
 	-checkLogin:loginToCheckandPassword:passwordToCheck]): if a
 	"bindFields" value is present in the user defaults, use the
 	specified fields to find the dn of the user to bind.
-	([LDAPSource -allEntryIDs]) 
-	([LDAPSource -fetchContactsMatching:match]) 
-	([LDAPSource -lookupContactEntry:entryID]) 
+	([LDAPSource -allEntryIDs])
+	([LDAPSource -fetchContactsMatching:match])
+	([LDAPSource -lookupContactEntry:entryID])
 	([LDAPSource -lookupContactEntryWithUIDorEmail:uid]):
 	bind and unbind the connection on each request.
 
@@ -8154,12 +8154,12 @@
 
 2007-04-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
-	* UI/Common/UIxUserRightsEditor.m ([UIxUserRightsEditor -defaultAction]) 
+	* UI/Common/UIxUserRightsEditor.m ([UIxUserRightsEditor -defaultAction])
 	([UIxUserRightsEditor -saveUserRightsAction]): new action methods
 	which should never be overriden.
-	([UIxUserRightsEditor -appendRight:newRight]) 
-	([UIxUserRightsEditor -removeRight:right]) 
-	([UIxUserRightsEditor -appendExclusiveRight:newRightfromList:list]) 
+	([UIxUserRightsEditor -appendRight:newRight])
+	([UIxUserRightsEditor -removeRight:right])
+	([UIxUserRightsEditor -appendExclusiveRight:newRightfromList:list])
 	([UIxUserRightsEditor -removeAllRightsFromList:list]): new utility
 	methods that can be used by the subclasses.
 	([UIxUserRightsEditor -prepareRightsForm]): new method that should
@@ -8242,7 +8242,7 @@
 	-removeAclsForUsers:usersforObjectAtPath:objectPathArray]): idem.
 	([SOGoFolder
 	-setRoles:rolesforUser:uidforObjectAtPath:objectPathArray]): idem.
-	([SOGoFolder -setRoleForUsers:uidsto:role]) 
+	([SOGoFolder -setRoleForUsers:uidsto:role])
 	([SOGoFolder -setRoleForUsers:uidsto:role]): removed method.
 
 	* SoObjects/SOGo/SOGoObject.m ([SOGoObject -acls]): stub method
@@ -8926,7 +8926,7 @@
 
 	* SoObjects/SOGo/NSString+Utilities.[hm]: old "NSString+URL"
 	renamed.
-	([NSString -davMethodToObjC]): method that returns the method name 
+	([NSString -davMethodToObjC]): method that returns the method name
 	for a DAV property implementation.
 
 	* SoObjects/SOGo/NSArray+Utilities.m: new extension module to
@@ -9091,7 +9091,7 @@
 	* SoObjects/Mailer/SOGoDraftObject.m ([NSString
 	-asQPSubjectString]): new method that returns the special QP
 	string with its qp declaration for email subjects.
-	([SOGoDraftObject -bodyPartForText]) 
+	([SOGoDraftObject -bodyPartForText])
 	([SOGoDraftObject -mimeMessageForContentWithHeaderMap:]): don't
 	double-encode data in UTF-8.
 
@@ -9170,9 +9170,9 @@
 	* UI/WebServerResources/SchedulerUI.js: same strip down as for
 	generic.js below.
 
-	* UI/Contacts/UIxContactsListViewContainer.m ([UIxContactsListViewContainer -additionalAddressBooks]) 
-	([UIxContactsListViewContainer -additionalFolders]) 
-	([UIxContactsListViewContainer -setCurrentAdditionalFolder:newCurrentAdditionalFolder]) 
+	* UI/Contacts/UIxContactsListViewContainer.m ([UIxContactsListViewContainer -additionalAddressBooks])
+	([UIxContactsListViewContainer -additionalFolders])
+	([UIxContactsListViewContainer -setCurrentAdditionalFolder:newCurrentAdditionalFolder])
 	([UIxContactsListViewContainer -currentAdditionalFolder]): new
 	methods to handle the external addressbooks a user has subscribed
 	too, by retriving them from his preferences.
@@ -9507,8 +9507,8 @@
 	* UI/Contacts/UIxContactsListView.m ([UIxContactsListView
 	-calendarsContactsAction]): new method.
 
-	* UI/Contacts/UIxContactSelector.m ([UIxContactSelector -setCheckedBoxes:boxes]) 
-	([UIxContactSelector -setHasCheckBoxes:aBool]) 
+	* UI/Contacts/UIxContactSelector.m ([UIxContactSelector -setCheckedBoxes:boxes])
+	([UIxContactSelector -setHasCheckBoxes:aBool])
 	([UIxContactSelector -isCheckBoxChecked]): new accessors method to
 	permit the drawing of checkboxes instead of card icons.
 
@@ -9622,7 +9622,7 @@
 	* UI/Scheduler/UIxAppointmentEditor.m: indicate DTSTAMP with "GMT"
 	as timezone.
 
-	* SoObjects/SOGo/NSCalendarDate+SOGo.m ([NSCalendarDate -adjustedDate]) 
+	* SoObjects/SOGo/NSCalendarDate+SOGo.m ([NSCalendarDate -adjustedDate])
 	([NSCalendarDate -driftedDate]): methods made useless by a better
 	comprehension of the NSTimeZone API...
 
@@ -9661,7 +9661,7 @@
 	* UI/Scheduler/UIxCalView.m ([UIxCalView -dayStartHour]): returns 0.
 	([UIxCalView -dayEndHour]): returns 24.
 
-	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView -defaultAction]) 
+	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView -defaultAction])
 	([UIxContactFoldersView -newAction]): invoke
 	_selectActionForApplication: on self with the proper attribute too.
 
@@ -9682,7 +9682,7 @@
 
 	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView
 	-defaultAction]): keep the url parameters when redirecting.
-	([UIxContactFoldersView -selectForSchedulerAction]) 
+	([UIxContactFoldersView -selectForSchedulerAction])
 	([UIxContactFoldersView -selectForMailerAction]): new action
 	methods for the /scheduler-contacts and /mailer-contacts invocations.
 
@@ -9924,7 +9924,7 @@
 	* UI/MainUI/SOGoUserHomePage.[hm]: made a subclass of UIxComponent
 	instead of SoComponent.
 
-	* SoObjects/Appointments/SOGoAppointmentObject.m: 
+	* SoObjects/Appointments/SOGoAppointmentObject.m:
 	([SOGoAppointmentObject -viewTimeZoneForPerson:_person]): returns
 	[self serverTimeZone] instead of "EST" (which was removed).
 
@@ -9980,7 +9980,7 @@
 	* UI/WebServerResources/UIxAppointmentEditor.js: convert the
 	form's time values to integers before comparing them.
 
-	* UI/Scheduler/UIxCalAptListView.m ([UIxCalAptListView -currentStartTime]) 
+	* UI/Scheduler/UIxCalAptListView.m ([UIxCalAptListView -currentStartTime])
 	([UIxCalAptListView -currentEndTime]): initialize the resulting
 	dates timezone with [self viewTimeZone].
 
@@ -10013,7 +10013,7 @@
 	-takeValuesFromRequest:_rqinContext:_ctx]): enhanced method to
 	take the values from the hour and minute INPUTs when data is
 	POSTed since we no longer use the UIxTimeSelector component.
-	([UIxTimeDateControl -selectableHours]) 
+	([UIxTimeDateControl -selectableHours])
 	([UIxTimeDateControl -selectableMinutes]): new methods used by the
 	template SELECTs to display reasonable and acceptable values
 	instead of all the possibilities.
@@ -10026,14 +10026,14 @@
 	* UI/Scheduler/UIxTimeDateControl.h: separated interface from
 	UIxTimeDateControl.m.
 
-	* UI/Scheduler/UIxCalDayTable.m ([UIxCalDayTable -currentAppointmentDay]) 
+	* UI/Scheduler/UIxCalDayTable.m ([UIxCalDayTable -currentAppointmentDay])
 	([UIxCalDayTable -currentAppointmentHour]): new methods that
 	returns correctly formatted values used as attributes for JS code.
 
 	* UI/Contacts/UIxContactSelector.m ([UIxContactSelector
 	-initialContactsAsString]): renamed implementation of
 	initialParticipants.
-	([UIxContactSelector -currentContactId]) 
+	([UIxContactSelector -currentContactId])
 	([UIxContactSelector -currentContactName]): new methods used when
 	listing the initial contacts in the widget. Currently, both return
 	the person's cn but the latter should ultimately return a user
@@ -10076,15 +10076,15 @@
 	* UI/Scheduler/UIxCalDayView.m ([UIxCalDayView -labelForDay]):
 	removed method.
 
-	* UI/Scheduler/UIxCalWeekView.m ([UIxCalWeekView -weekBeforePrevWeekQueryParameters]) 
-	([UIxCalWeekView -prevWeekQueryParameters]) 
-	([UIxCalWeekView -nextWeekQueryParameters]) 
+	* UI/Scheduler/UIxCalWeekView.m ([UIxCalWeekView -weekBeforePrevWeekQueryParameters])
+	([UIxCalWeekView -prevWeekQueryParameters])
+	([UIxCalWeekView -nextWeekQueryParameters])
 	([UIxCalWeekView -weekAfterNextWeekQueryParameters]): new methods
 	that return the dates relatively to the current day.
-	([UIxCalWeekView -lastWeekName]) 
-	([UIxCalWeekView -currentWeekName]) 
-	([UIxCalWeekView -nextWeekName]) 
-	([UIxCalWeekView -weekAfterNextWeekName]) 
+	([UIxCalWeekView -lastWeekName])
+	([UIxCalWeekView -currentWeekName])
+	([UIxCalWeekView -nextWeekName])
+	([UIxCalWeekView -weekAfterNextWeekName])
 	([UIxCalWeekView -_weekNumberWithOffsetFromToday:offset]): new
 	methods that returns the label for the corresponding weeks.
 
@@ -10101,7 +10101,7 @@
 	method to return the current day as a string formatted depending
 	on the current locale.
 
-	* UI/Scheduler/UIxCalAptListView.m ([UIxCalAptListView -startDate]) 
+	* UI/Scheduler/UIxCalAptListView.m ([UIxCalAptListView -startDate])
 	([UIxCalAptListView -endDate]): "today" is now the default filter
 	for displayed events.
 	([UIxCalAptListView -currentSerialDay]): new method returning the
@@ -10125,7 +10125,7 @@
 	functions here since the same code was used across the 3
 	applications.
 
-	* UI/Scheduler/UIxCalAptListView.m ([UIxCalAptListView -startDate]) 
+	* UI/Scheduler/UIxCalAptListView.m ([UIxCalAptListView -startDate])
 	([UIxCalAptListView -endDate]): return the required dates needed
 	depending on the value given to the "filterpopup" url parameter.
 
@@ -10211,7 +10211,7 @@
 	new class method that returns an iCalPerson based on the UID given
 	as param.
 
-	* UI/Contacts/UIxContactsListViewContainerBase.m: 
+	* UI/Contacts/UIxContactsListViewContainerBase.m:
 	UIxContactsListViewContainer renamed to serve as a base class for
 	the contact lists in both the contact editor and the contact
 	selectors.
@@ -10492,7 +10492,7 @@
 	* UI/MailerUI/UIxMailFormatter.m ([UIxMailDateFormatter
 	-setTimeZone:newTimeZone]): new accessor to specify the timezone.
 
-	* UI/MailerUI/UIxMailFilterPanel.m ([UIxMailFilterPanel -setSearchCriteria:]) 
+	* UI/MailerUI/UIxMailFilterPanel.m ([UIxMailFilterPanel -setSearchCriteria:])
 	([UIxMailFilterPanel -searchCriteria]): new methods, similar to
 	s/Criteria/Text/ to handle the "criteria" form parameter.
 
