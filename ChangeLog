@@ -17,8 +17,6 @@
 
 2009-10-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
-	2009-10-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
-
 	* SoObjects/SOGo/SOGoParentFolder.m (-hasLocalSubfolderNamed):
 	rewritten parts of the method to better fit our coding standards.
 	Exported method in the SOGoParentFolder.h to avoid warnings where
