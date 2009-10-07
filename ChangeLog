@@ -1,3 +1,11 @@
+2009-10-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolders.m
+	(_fetchPersonalFolders:withChannel:): we now skip unexisting
+	folders declared in the list of web folder ids to avoid problems.
+	When such id is found, it is also reported in the logs to inform
+	the administrator of this inconsistency.
+
 2009-10-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Mailer/SOGoMailFolder.m (_appendMessageData:usingId):

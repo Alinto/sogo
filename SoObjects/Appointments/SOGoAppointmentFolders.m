@@ -29,6 +29,8 @@
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest+So.h>
 #import <NGObjWeb/NSException+HTTP.h>
+#import <NGExtensions/NSObject+Logs.h>
+
 #import <GDLAccess/EOAdaptorChannel.h>
 
 #import <SaxObjC/XMLNamespaces.h>
@@ -309,20 +311,27 @@
   isWebRequest = [[context request] handledByDefaultHandler];
   error = [super _fetchPersonalFolders: sql withChannel: fc];
 
-  webCalendarIds = [self webCalendarIds];
-  max = [webCalendarIds count];
-  if (!error && max)
+  if (!error)
     {
+      webCalendarIds = [self webCalendarIds];
+      max = [webCalendarIds count];
       for (count = 0; count < max; count++)
         {
           name = [webCalendarIds objectAtIndex: count];
           if (isWebRequest)
             {
               old = [subFolders objectForKey: name];
-              folder = [SOGoWebAppointmentFolder objectWithName: name 
-                                                    inContainer: self];
-              [folder setOCSPath: [old ocsPath]];
-              [subFolders setObject: folder forKey: name];
+              if (old)
+                {
+                  folder = [SOGoWebAppointmentFolder objectWithName: name
+                                                        inContainer: self];
+                  [folder setOCSPath: [old ocsPath]];
+                  [subFolders setObject: folder forKey: name];
+                }
+              else
+                [self errorWithFormat: @"webcalendar inconsistency: folder with"
+                      @" name '%@' was not found in the database,"
+                      @" conversion skipped", name];
             }
           else
             [subFolders removeObjectForKey: name];
