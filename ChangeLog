@@ -1,3 +1,16 @@
+2009-10-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/LDAPSource.m (-_searchAttributes): we already
+	have knowledge of the LDAPContactInfoAttribute so we no longer
+	need to fetch it from the user defaults.
+
+	* SoObjects/Contacts/SOGoContactLDIFEntry.m
+	(-initWithName:withLDIFEntry:inContainer:): we no longer retain
+	"container" in order to avoid a leak.
+	(-vCard): we now use the "VCARD" profile, all in upper case. We
+	first resolve the full name using "c_cn", which is the special key
+	used by the LDAP sources to access the fullname attribute.
+
 2009-10-08  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/PreferencesUI/UIxPreferences.m (-shortDateFormatsList): added
@@ -10,7 +23,7 @@
 	-userLongDateFormat, -setUserLongDateFormat): new "default" option
 	support, like for the short date format.
 	(- timeFormatsList, -itemTimeFormatText, -setUserTimeFormat): new
-	"default" option support, like for the short date format. 
+	"default" option support, like for the short date format.
 
 2009-10-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

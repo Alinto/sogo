@@ -39,8 +39,9 @@
 #import <EOControl/EOSortOrdering.h>
 #import <SaxObjC/XMLNamespaces.h>
 
-#import <SoObjects/SOGo/SOGoPermissions.h>
-#import <SoObjects/SOGo/NSString+Utilities.h>
+#import <SOGo/SOGoPermissions.h>
+#import <SOGo/NSString+Utilities.h>
+
 #import "SOGoContactLDIFEntry.h"
 #import "SOGoContactSourceFolder.h"
 
