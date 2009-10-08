@@ -26,6 +26,8 @@
 "Long Date Format :" = "Formato da Data (Longo) :";
 "Time Format :" = "Formato da Hora :";
 
+"default" = "Default";
+
 "shortDateFmt_0" = "%d-%b-%y";
 
 "shortDateFmt_1" = "%d-%m-%y";
@@ -48,7 +50,7 @@
 "shortDateFmt_14" = "%Y.%m.%d";
 
 "shortDateFmt_15" = "";
-
+   
 "longDateFmt_0" = "%A, %B %d, %Y";
 "longDateFmt_1" = "%B %d, %Y";
 "longDateFmt_2" = "%A, %d %B, %Y";
