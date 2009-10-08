@@ -1,3 +1,17 @@
+2009-10-08  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/PreferencesUI/UIxPreferences.m (-shortDateFormatsList): added
+	"default" option.
+	(-itemShortDateFormatText): added formatting for "default" option.
+	(-userShortDateFormat): falls back to "default" if not set for the user.
+	(-setUserShortDateFormat): removes user default if set to
+	"default".
+	(-longDateFormatsList, -itemLongDateFormatText,
+	-userLongDateFormat, -setUserLongDateFormat): new "default" option
+	support, like for the short date format.
+	(- timeFormatsList, -itemTimeFormatText, -setUserTimeFormat): new
+	"default" option support, like for the short date format. 
+
 2009-10-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* Tests/webdavlib.py (MailDAVMailQuery._initSort): now handles the

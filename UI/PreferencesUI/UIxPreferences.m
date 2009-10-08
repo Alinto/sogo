@@ -173,7 +173,7 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
   unsigned int nbr;
   BOOL done;
 
-  shortDateFormatsList = [NSMutableArray array];
+  shortDateFormatsList = [NSMutableArray arrayWithObject: @"default"];
 
   nbr = 0;
   done = NO;
@@ -195,19 +195,41 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
 
 - (NSString *) itemShortDateFormatText
 {
-  return [today descriptionWithCalendarFormat: item
-                                       locale: locale];
-  //locale: [context valueForKey: @"locale"]];
+  NSString *todayText, *shortDateFormatText;
+
+  if ([item isEqualToString: @"default"])
+    {
+      todayText = [today descriptionWithCalendarFormat: [locale objectForKey: NSShortDateFormatString]
+                                                locale: locale];
+      shortDateFormatText = [NSString stringWithFormat: @"%@ (%@)",
+                                     [self labelForKey: item],
+                                      todayText];
+    }
+  else
+    shortDateFormatText = [today descriptionWithCalendarFormat: item
+                                                        locale: locale];
+
+  return shortDateFormatText;
 }
 
 - (NSString *) userShortDateFormat
 {
-  return [userDefaults objectForKey: @"ShortDateFormat"];
+  NSString *shortDateFormat;
+ 
+  shortDateFormat = [userDefaults objectForKey: @"ShortDateFormat"];
+
+  if (!shortDateFormat)
+    shortDateFormat = @"default";
+
+  return shortDateFormat;
 }
 
 - (void) setUserShortDateFormat: (NSString *) newFormat
 {
-  [userDefaults setObject: newFormat forKey: @"ShortDateFormat"];
+  if ([newFormat isEqualToString: @"default"])
+    [userDefaults removeObjectForKey: @"ShortDateFormat"];
+  else
+    [userDefaults setObject: newFormat forKey: @"ShortDateFormat"];
 }
 
 - (NSArray *) longDateFormatsList
@@ -217,7 +239,7 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
   unsigned int nbr;
   BOOL done;
 
-  longDateFormatsList = [NSMutableArray array];
+  longDateFormatsList = [NSMutableArray arrayWithObject: @"default"];
 
   nbr = 0;
   done = NO;
@@ -234,24 +256,47 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
         done = YES;
     }
 
+  if (![longDateFormatsList containsObject: [self userLongDateFormat]])
+    [longDateFormatsList addObject: [self userLongDateFormat]];
+  
   return longDateFormatsList;
 }
 
 - (NSString *) itemLongDateFormatText
 {
-  return [today descriptionWithCalendarFormat: item
-                                       locale: locale];
-  //locale: [context valueForKey: @"locale"]];
+  NSString *todayText, *longDateFormatText;
+
+  if ([item isEqualToString: @"default"])
+    {
+      todayText = [today descriptionWithCalendarFormat: [locale objectForKey: NSDateFormatString]
+                                                locale: locale];
+      longDateFormatText = [NSString stringWithFormat: @"%@ (%@)",
+                                    [self labelForKey: item],
+                                     todayText];
+    }
+  else
+    longDateFormatText = [today descriptionWithCalendarFormat: item
+                                                       locale: locale];
 }
 
 - (NSString *) userLongDateFormat
 {
-  return [userDefaults objectForKey: @"LongDateFormat"];
+  NSString *longDateFormat;
+ 
+  longDateFormat = [userDefaults objectForKey: @"LongDateFormat"];
+
+  if (!longDateFormat)
+    longDateFormat = @"default";
+
+  return longDateFormat;
 }
 
 - (void) setUserLongDateFormat: (NSString *) newFormat
 {
-  [userDefaults setObject: newFormat forKey: @"LongDateFormat"];
+  if ([newFormat isEqualToString: @"default"])
+    [userDefaults removeObjectForKey: @"LongDateFormat"];
+  else
+    [userDefaults setObject: newFormat forKey: @"LongDateFormat"];
 }
 
 - (NSArray *) timeFormatsList
@@ -261,7 +306,7 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
   unsigned int nbr;
   BOOL done;
 
-  timeFormatsList = [NSMutableArray array];
+  timeFormatsList = [NSMutableArray arrayWithObject: @"default"];
 
   nbr = 0;
   done = NO;
@@ -283,9 +328,21 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
 
 - (NSString *) itemTimeFormatText
 {
-  return [today descriptionWithCalendarFormat: item
-                                       locale: locale];
-  //locale: [context valueForKey: @"locale"]];
+  NSString *todayText, *timeFormatText;
+
+  if ([item isEqualToString: @"default"])
+    {
+      todayText = [today descriptionWithCalendarFormat: [locale objectForKey: NSTimeFormatString]
+                                                locale: locale];
+      timeFormatText = [NSString stringWithFormat: @"%@ (%@)",
+                                [self labelForKey: item],
+                                 todayText];
+    }
+  else
+    timeFormatText = [today descriptionWithCalendarFormat: item
+                                                   locale: locale];
+
+  return timeFormatText;
 }
 
 - (NSString *) userTimeFormat
@@ -295,7 +352,10 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
 
 - (void) setUserTimeFormat: (NSString *) newFormat
 {
-  [userDefaults setObject: newFormat forKey: @"TimeFormat"];
+  if ([newFormat isEqualToString: @"default"])
+    [userDefaults removeObjectForKey: @"TimeFormat"];
+  else
+    [userDefaults setObject: newFormat forKey: @"TimeFormat"];
 }
 
 - (NSArray *) daysList

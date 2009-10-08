@@ -42,6 +42,8 @@
   BOOL hasChanged, composeMessageTypeHasChanged;
 }
 
+- (NSString *) userLongDateFormat;
+
 @end
 
 #endif /* UIXPREFERENCES_H */
