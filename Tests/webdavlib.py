@@ -315,7 +315,8 @@ class WebDAVSyncQuery(WebDAVREPORT):
             self._initProperties(properties)
 
 class MailDAVMailQuery(WebDAVREPORT):
-    def __init__(self, url, properties, filters = None, sort = None):
+    def __init__(self, url, properties, filters = None,
+                 sort = None, ascending = True):
         WebDAVQuery.__init__(self, url)
         mailquery_tag = self.ns_mgr.register("mail-query",
                                              xmlns_inversedav)
@@ -327,7 +328,7 @@ class MailDAVMailQuery(WebDAVREPORT):
             self._initFilters(filters)
 
         if sort is not None and len(sort) > 0:
-            self._initSort(sort)
+            self._initSort(sort, ascending)
 
     def _initFilters(self, filters):
         mailfilter_tag = self.ns_mgr.register("mail-filters",
@@ -341,9 +342,13 @@ class MailDAVMailQuery(WebDAVREPORT):
                                              filters[filterk])
             mailfilter_node.append(filter_node)
 
-    def _initSort(self, sort):
+    def _initSort(self, sort, ascending):
         sort_tag = self.ns_mgr.register("sort", xmlns_inversedav)
-        sort_node = _WD_XMLTreeElement(sort_tag)
+        if ascending:
+            sort_attrs = { "order": "ascending" }
+        else:
+            sort_attrs = { "order": "descending" }
+        sort_node = _WD_XMLTreeElement(sort_tag, sort_attrs)
         self.top_node.append(sort_node)
 
         for item in sort:

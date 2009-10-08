@@ -1,15 +1,37 @@
+2009-10-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Tests/webdavlib.py (MailDAVMailQuery._initSort): now handles the
+	"order" attribute from the "ascending" parameter.
+
+	* Tests/test-maildav.py (DAVMailCollectionTest._testSort): added a
+	boolean "ascending" parameter that defaults to True.
+	(DAVMailCollectionTest.testREPORTMailQueryFilters): method
+	replacing the filter part of testREPORTMailQuery.
+	(DAVMailCollectionTest.testREPORTMailQuerySort): method
+	replacing the sort part of testREPORTMailQuery.
+
+	* SoObjects/Mailer/SOGoMailFolder.m (_sortElementIsAscending:):
+	new method that determines whether the sort ordering is ascending
+	or not.
+	(_sortOrderingsFromSortElement:): new method relacing
+	"_mailSortingFromSortElement:", that returns an array of
+	EOSortOrdering instances based on the "sort" element passed as
+	parameter.
+
 2009-10-07  Cyril Robert <crobert@inverse.ca>
 
-	* SoObjects/Mailer/EOQualifier+MailDAV.m (buildQualifierFromFilters:): Now
-	returns an EOQualifier, fixed qualifier formats and constructor, refactored
-	to regroup code.
-	* Tests/test-maildav.py (testREPORTMailQuery): Disabled a few tests that 
-	don't pass for now.
+	* SoObjects/Mailer/EOQualifier+MailDAV.m
+	(buildQualifierFromFilters:): Now returns an EOQualifier, fixed
+	qualifier formats and constructor, refactored to regroup code.
+	* Tests/test-maildav.py (testREPORTMailQuery): Disabled a few
+	tests that don't pass for now.
 	* SoObjects/Mailer/EOQualifier+MailDAV.m (buildQualifierFromFilters:):
 	Removed, everything is now done in (qualifierFromMailDAVMailFilters:).
-	(qualifierFromMailDAVMailFilters:): Removed all parentheses in qualifier.
-	* SoObjects/Mailer/EOQualifier+MailDAV.m (qualifierFromMailDAVMailFilters:):
-	Fixed segfault when there are no filters.
+	(qualifierFromMailDAVMailFilters:): Removed all parentheses in
+	qualifier.
+	* SoObjects/Mailer/EOQualifier+MailDAV.m
+	(qualifierFromMailDAVMailFilters:): Fixed segfault when there are
+	no filters.
 
 2009-10-07  Francis Lachapelle  <flachapelle@inverse.ca>
 

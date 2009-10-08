@@ -38,6 +38,8 @@
 #import <DOM/DOMProtocols.h>
 #import <SaxObjC/XMLNamespaces.h>
 
+#import <EOControl/EOSortOrdering.h>
+
 #import <NGImap4/NGImap4Connection.h>
 #import <NGImap4/NGImap4Client.h>
 
@@ -1151,84 +1153,108 @@ static NSString *spoolFolder = nil;
   return davIMAPFieldsTable;
 }
 
-- (NSDictionary *) _davIMAPFieldsForProperties: (NSArray *) properties
+- (BOOL) _sortElementIsAscending: (DOMElement *) sortElement
 {
-  NSMutableDictionary *davIMAPFields;
-  NSDictionary *davIMAPFieldsTable;
-  NSString *imapField, *property;
-  unsigned int count, max;
-
-  davIMAPFieldsTable = [self davIMAPFieldsTable];
-
-  max = [properties count];
-  davIMAPFields = [NSMutableDictionary dictionaryWithCapacity: max];
-  for (count = 0; count < max; count++)
-    {
-      property = [properties objectAtIndex: count];
-      imapField = [davIMAPFieldsTable objectForKey: property];
-      if (imapField)
-        [davIMAPFields setObject: imapField forKey: property];
-      else
-        [self errorWithFormat: @"DAV property '%@' has no matching IMAP field,"
-          @" response could be incomplete", property];
-    }
-
-  return davIMAPFields;
-}
-
-- (NSDictionary *) parseDAVRequestedProperties: (DOMElement *) propElement
-{
-  NSArray *properties;
-  NSDictionary *imapFieldsTable;
-
-  properties = [propElement flatPropertyNameOfSubElements];
-  imapFieldsTable = [self _davIMAPFieldsForProperties: properties];
-
-  return imapFieldsTable;
-}
-
-- (NSString *) _mailSortingFromSortElement: (DOMElement *) sortElement
-{
-  NSArray *imapFields;
   NSString *davReverseAttr;
-  NSMutableString *imapSortCriteria;
+  BOOL orderIsAscending;
 
-  imapSortCriteria = [NSMutableString string];
+  orderIsAscending = YES;
 
-  imapFields = [[self parseDAVRequestedProperties: sortElement] allValues];
-  davReverseAttr = [[sortElement attribute: @"order"] uppercaseString];
+  davReverseAttr = [sortElement attribute: @"order"];
   if ([davReverseAttr isEqualToString: @"descending"])
-    [imapSortCriteria appendString: @"REVERSE "];
+    orderIsAscending = NO;
   else if ([davReverseAttr length]
            && ![davReverseAttr isEqualToString: @"ascending"])
     [self errorWithFormat: @"unrecognized sort order: '%@'",
           davReverseAttr];
-  [imapSortCriteria
-    appendString: [imapFields componentsJoinedByString: @" "]];
 
-  return imapSortCriteria;
+  return orderIsAscending;
+}
+
+- (NSArray *) _sortOrderingsFromSortElement: (DOMElement *) sortElement
+{
+  NSArray *davSortCriterias;
+  NSMutableArray *sortOrderings;
+  SEL sortOrderingOrder;
+  NSString *davSortVerb, *imapSortVerb;
+  EOSortOrdering *currentOrdering;
+  static NSMutableDictionary *criteriasMap = nil;
+  int count, max;
+
+  if (!criteriasMap)
+    {
+      criteriasMap = [NSMutableDictionary new];
+      [criteriasMap setObject: @"ARRIVAL"
+                       forKey: @"{urn:schemas:mailheader:}received"];
+      [criteriasMap setObject: @"DATE"
+                       forKey: @"{urn:schemas:mailheader:}date"];
+      [criteriasMap setObject: @"FROM"
+                       forKey: @"{urn:schemas:mailheader:}from"];
+      [criteriasMap setObject: @"TO"
+                       forKey: @"{urn:schemas:mailheader:}to"];
+      [criteriasMap setObject: @"CC"
+                       forKey: @"{urn:schemas:mailheader:}cc"];
+      [criteriasMap setObject: @"SUBJECT"
+                       forKey: @"{DAV:}displayname"];
+      [criteriasMap setObject: @"SUBJECT"
+                       forKey: @"{urn:schemas:mailheader:}subject"];
+      [criteriasMap setObject: @"SIZE"
+                       forKey: @"{DAV:}getcontentlength"];
+    }
+
+  sortOrderings = [NSMutableArray array];
+
+  if ([self _sortElementIsAscending: sortElement])
+    sortOrderingOrder = EOCompareAscending;
+  else
+    sortOrderingOrder = EOCompareDescending;
+
+  davSortCriterias = [sortElement flatPropertyNameOfSubElements];
+  max = [davSortCriterias count];
+  for (count = 0; count < max; count++)
+    {
+      davSortVerb = [davSortCriterias objectAtIndex : count];
+      imapSortVerb = [criteriasMap objectForKey: davSortVerb];
+      if (imapSortVerb)
+        {
+          currentOrdering
+            = [EOSortOrdering sortOrderingWithKey: imapSortVerb
+                                         selector: sortOrderingOrder];
+          [sortOrderings addObject: currentOrdering];
+        }
+      else
+        [self errorWithFormat: @"unrecognized sort key: '%@'", davSortVerb];
+    }
+
+  return sortOrderings;
 }
 
 - (NSArray *) _fetchMessageProperties: (NSDictionary *) properties
                     matchingQualifier: (EOQualifier *) searchQualifier
-                           andSorting: (NSString *) sorting
+                     andSortOrderings: (NSArray *) sortOrderings
 {
   NGImap4Client *client;
   NSDictionary *response;
   NSArray *messages;
+  NSString *resultKey;
 
   client = [[self imap4Connection] client];
   [imap4 selectFolder: [self imap4URL]];
 
-  if ([sorting length])
-    response = [client sort: sorting 
-                  qualifier: searchQualifier
-                   encoding: @"UTF-8"];
+  if ([sortOrderings count])
+    {
+      response = [client sort: sortOrderings qualifier: searchQualifier
+                     encoding: @"UTF-8"];
+      resultKey = @"sort";
+    }
   else
-    response = [client searchWithQualifier: searchQualifier];
+    {
+      response = [client searchWithQualifier: searchQualifier];
+      resultKey = @"search";
+    }
 
    if ([[response objectForKey: @"result"] boolValue])
-     messages = [response objectForKey: @"search"];
+     messages = [response objectForKey: resultKey];
    else
      messages = nil;
 
@@ -1278,7 +1304,7 @@ static NSString *spoolFolder = nil;
     }
 
   messageUrl = [NSString stringWithFormat: @"%@%@.eml", 
-               [self davURL], messageId];
+                         [self davURL], messageId];
   [propstats addObject: davElementWithContent (@"href", XMLNS_WEBDAV, 
                                                messageUrl)];
 
@@ -1325,20 +1351,60 @@ static NSString *spoolFolder = nil;
     }
 
   davString = [davElementWithContent (@"multistatus", XMLNS_WEBDAV, all)
-               asWebDavStringWithNamespaces: nil];
+                asWebDavStringWithNamespaces: nil];
   [response appendContentString: davString];
   NSZoneFree (NULL, selectors);
 }
 
+- (NSDictionary *) _davIMAPFieldsForProperties: (NSArray *) properties
+{
+  NSMutableDictionary *davIMAPFields;
+  NSDictionary *davIMAPFieldsTable;
+  NSString *imapField, *property;
+  unsigned int count, max;
+
+  davIMAPFieldsTable = [self davIMAPFieldsTable];
+
+  max = [properties count];
+  davIMAPFields = [NSMutableDictionary dictionaryWithCapacity: max];
+  for (count = 0; count < max; count++)
+    {
+      property = [properties objectAtIndex: count];
+      imapField = [davIMAPFieldsTable objectForKey: property];
+      if (imapField)
+        [davIMAPFields setObject: imapField forKey: property];
+      else
+        [self errorWithFormat: @"DAV property '%@' has no matching IMAP field,"
+          @" response could be incomplete", property];
+    }
+
+  return davIMAPFields;
+}
+
+- (NSDictionary *) parseDAVRequestedProperties: (DOMElement *) propElement
+{
+  NSArray *properties;
+  NSDictionary *imapFieldsTable;
+
+  properties = [propElement flatPropertyNameOfSubElements];
+  imapFieldsTable = [self _davIMAPFieldsForProperties: properties];
+
+  return imapFieldsTable;
+}
+
+/* TODO:
+   - populate only required keys in returned SOGoMailObject rather that
+     fetching the whole envelope and stuff
+   - use EOSortOrdering rather than an NSString
+ */
 - (id) davMailQuery: (id) queryContext
 {
   WOResponse *r;
   id <DOMDocument> document;
   DOMElement *documentElement, *propElement, *filterElement, *sortElement;
   NSDictionary *properties;
-  NSArray *messages;
+  NSArray *messages, *sortOrderings;
   EOQualifier *searchQualifier;
-  NSString *sorting;
 
   r = [context response];
   [r setContentEncoding: NSUTF8StringEncoding];
@@ -1358,11 +1424,11 @@ static NSString *spoolFolder = nil;
                       qualifierFromMailDAVMailFilters: filterElement];
   sortElement = [documentElement firstElementWithTag: @"sort"
                                          inNamespace: XMLNS_INVERSEDAV];
-  sorting = [self _mailSortingFromSortElement: sortElement];
+  sortOrderings = [self _sortOrderingsFromSortElement: sortElement];
 
   messages = [self _fetchMessageProperties: properties
                          matchingQualifier: searchQualifier
-                                andSorting: sorting];
+                          andSortOrderings: sortOrderings];
   [r setStatus: 207];
   [r appendContentString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"];
   [self _appendProperties: [properties allKeys]

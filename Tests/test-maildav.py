@@ -7,6 +7,9 @@ import unittest
 import webdavlib
 import time
 
+# TODO
+#  add test with multiple sort criterias
+
 def fetchUserEmail(login):
   client = webdavlib.WebDAVClient(hostname, port,
                                   username, password)
@@ -330,14 +333,14 @@ class DAVMailCollectionTest(unittest.TestCase):
                       "filter %s:\n\tunexpected amount of refs: %d"
                       % (filter[0], received_count))
 
-  def _testSort(self, sortOrder):
+  def _testSort(self, sortOrder, ascending = True):
     expected_hrefs = sortOrder[1]
     expected_count = len(expected_hrefs)
 
     received_count = 0
     url = "%sfolder%s" % (self.resource, "test-dav-mail")
     query = webdavlib.MailDAVMailQuery(url, ["displayname"],
-                                       None, sortOrder[0])
+                                       None, sortOrder[0], ascending)
     self.client.execute(query)
     self.assertEquals(query.response["status"], 207,
                       "sortOrder %s:\n\tunexpected status: %d"
@@ -348,18 +351,18 @@ class DAVMailCollectionTest(unittest.TestCase):
     for response_node in response_nodes:
       href_node = query.xpath_evaluate("D:href", response_node)[0]
       href = href_node.childNodes[0].nodeValue
-      received_count = received_count + 1
       self.assertEquals(expected_hrefs[received_count], href,
                         "sortOrder %s:\n\tunexpected href: %s (expecting: %s)"
                         % (sortOrder[0], href,
                            expected_hrefs[received_count]))
+      received_count = received_count + 1
 
     self.assertEquals(expected_count, received_count,
                       "sortOrder %s:\n\tunexpected amount of refs: %d"
                       % (sortOrder[0], received_count))
 
-  def testREPORTMailQuery(self):
-    """mail-query"""
+  def testREPORTMailQueryFilters(self):
+    """mail-query filters"""
     self._deleteCollection("test-dav-mail")
     self._makeCollection("test-dav-mail")
 
@@ -549,6 +552,7 @@ class DAVMailCollectionTest(unittest.TestCase):
                             "not": "true" }},
                 [ msg2Loc, msg3Loc ]))
 
+    print "message flags are not handled yet"
     ## 1. test filter: answered
     #   ANSWERED, UNANSWERED
     ## 1. test filter: draft
@@ -579,33 +583,57 @@ class DAVMailCollectionTest(unittest.TestCase):
                 []))
     self._testFilters(filters)
 
+    self._deleteCollection("test-dav-mail")
+
+  def testREPORTMailQuerySort(self):
+    """mail-query sort"""
+    self._deleteCollection("test-dav-mail")
+    self._makeCollection("test-dav-mail")
+
+    msg1Loc = self._putMessage(self.client, "test-dav-mail", message1)
+    parsed = webdavlib.HTTPUnparsedURL(msg1Loc)
+    msg1Path = parsed.path
+    msg2Loc = self._putMessage(self.client, "test-dav-mail", message2)
+    parsed = webdavlib.HTTPUnparsedURL(msg2Loc)
+    msg2Path = parsed.path
+    msg3Loc = self._putMessage(self.client, "test-dav-mail", message3)
+    parsed = webdavlib.HTTPUnparsedURL(msg3Loc)
+    msg3Path = parsed.path
+
     # 1. test sort: (receive-date) ARRIVAL
     self._testSort(([ "{urn:schemas:mailheader:}received" ],
-                    [ msg2Loc, msg3Loc, msg1Loc ]))
+                    [ msg1Loc, msg2Loc, msg3Loc ]))
 
     # 1. test sort: (date) DATE
     self._testSort(([ "{urn:schemas:mailheader:}date" ],
+                    [ msg2Loc, msg1Loc, msg3Loc ]))
+
+    # 1. test sort: FROM
+    self._testSort(([ "{urn:schemas:mailheader:}from" ],
+                    [ msg1Loc, msg2Loc, msg3Loc ]))
+
+    # 1. test sort: TO
+    self._testSort(([ "{urn:schemas:mailheader:}to" ],
                     [ msg1Loc, msg2Loc, msg3Loc ]))
 
     # 1. test sort: CC
     self._testSort(([ "{urn:schemas:mailheader:}cc" ],
                     [ msg3Loc, msg1Loc, msg2Loc ]))
 
-    # 1. test sort: FROM
-    self._testSort(([ "{urn:schemas:mailheader:}from" ],
-                    [ msg1Loc, msg2Loc, msg3Loc ]))
+    # 1. test sort: SUBJECT
+    self._testSort(([ "{DAV:}displayname" ],
+                    [ msg3Loc, msg1Loc, msg2Loc ]))
+    self._testSort(([ "{urn:schemas:mailheader:}subject" ],
+                    [ msg3Loc, msg1Loc, msg2Loc ]))
 
     # 1. test sort: SIZE
     self._testSort(([ "{DAV:}getcontentlength" ],
                     [ msg3Loc, msg1Loc, msg2Loc ]))
 
-    # 1. test sort: SUBJECT
-    self._testSort(([ "{urn:schemas:mailheader:}displayName" ],
-                    [ msg3Loc, msg1Loc, msg2Loc ]))
-
-    # 1. test sort: TO
-    self._testSort(([ "{urn:schemas:mailheader:}to" ],
-                    [ msg1Loc, msg2Loc, msg3Loc ]))
+    # 1. test sort: REVERSE CC
+    self._testSort(([ "{urn:schemas:mailheader:}cc" ],
+                    [ msg2Loc, msg1Loc, msg3Loc ]),
+                    False)
 
     self._deleteCollection("test-dav-mail")
 
@@ -629,11 +657,15 @@ class DAVMailCollectionTest(unittest.TestCase):
              ("{urn:schemas:httpmail:}textdescription", 
                "<![CDATA[%s]]>" % message1, 0),
              ("{urn:schemas:httpmail:}unreadcount", None, 0),
-             ("{urn:schemas:mailheader:}cc","2message1cc@cyril.dev, user10@cyril.dev", 0),
-             ("{urn:schemas:mailheader:}date", "Mon, 28 Sep 2009 11:42:14 GMT", 0),
-             ("{urn:schemas:mailheader:}from", "Cyril <message1from@cyril.dev>", 0),
+             ("{urn:schemas:mailheader:}cc",
+              "2message1cc@cyril.dev, user10@cyril.dev", 0),
+             ("{urn:schemas:mailheader:}date",
+              "Mon, 28 Sep 2009 11:42:14 GMT", 0),
+             ("{urn:schemas:mailheader:}from",
+              "Cyril <message1from@cyril.dev>", 0),
              ("{urn:schemas:mailheader:}in-reply-to", None, 0),
-             ("{urn:schemas:mailheader:}message-id","<4AC1F29sept6.5060801@cyril.dev>", 0),
+             ("{urn:schemas:mailheader:}message-id",
+              "<4AC1F29sept6.5060801@cyril.dev>", 0),
              ("{urn:schemas:mailheader:}received", message1_received, 0),
              ("{urn:schemas:mailheader:}references",
                "<4AC3BF1B.3010806@inverse.ca>", 0),
