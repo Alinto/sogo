@@ -277,6 +277,8 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
   else
     longDateFormatText = [today descriptionWithCalendarFormat: item
                                                        locale: locale];
+
+  return longDateFormatText;
 }
 
 - (NSString *) userLongDateFormat
