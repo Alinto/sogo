@@ -130,7 +130,8 @@ static NSLock *lock;
 				    @"locality",
 				    @"birthyear",
 				    @"serialnumber",
-				    @"calfburl", @"proxyaddresses",
+				    @"calfburl",
+                                    @"proxyaddresses",
 				    nil];	
       [commonSearchFields retain];
 
@@ -497,10 +498,6 @@ static NSLock *lock;
 {
   if (!searchAttributes)
     {
-      NSUserDefaults *ud;
-      NSString *attribute;
-
-      ud = [NSUserDefaults standardUserDefaults];
       searchAttributes = [NSMutableArray new];
       [searchAttributes addObject: @"objectClass"];
       if (CNField)
@@ -512,17 +509,14 @@ static NSLock *lock;
       [searchAttributes addObjectsFromArray: commonSearchFields];
 
       // Add SOGoLDAPContactInfoAttribute from user defaults
-      attribute = [ud stringForKey: @"SOGoLDAPContactInfoAttribute"];
-      if ([attribute length] > 0 &&
-	  ![searchAttributes containsObject: attribute])
-	[searchAttributes addObject: attribute];
+      if ([LDAPContactInfoAttribute length])
+        [searchAttributes addObjectUniquely: LDAPContactInfoAttribute];
 
       // Add IMAP hostname from user defaults
-      if (IMAPHostField && [IMAPHostField length] > 0 &&
-	  ![searchAttributes containsObject: IMAPHostField])
-	[searchAttributes addObject: IMAPHostField];
+      if ([IMAPHostField length])
+        [searchAttributes addObjectUniquely: IMAPHostField];
     }
-  
+
   return searchAttributes;
 }
 

@@ -32,7 +32,21 @@
 #import "SOGoContactGCSEntry.h"
 #import "SOGoContactLDIFEntry.h"
 
+static NSString *sogoContactInfoAttribute = nil;
+
 @implementation SOGoContactLDIFEntry
+
++ (void) initialize
+{
+  NSUserDefaults *ud;
+
+  if (!sogoContactInfoAttribute)
+    {
+      ud = [NSUserDefaults standardUserDefaults];
+      ASSIGN (sogoContactInfoAttribute,
+              [ud stringForKey: @"SOGoLDAPContactInfoAttribute"]);
+    }
+}
 
 + (SOGoContactLDIFEntry *) contactEntryWithName: (NSString *) newName
                                   withLDIFEntry: (NSDictionary *) newEntry
@@ -54,7 +68,6 @@
 {
   self = [self init];
   ASSIGN (name, newName);
-  ASSIGN (container, newContainer);
   ASSIGN (ldifEntry, newEntry);
   vcard = nil;
 
@@ -122,35 +135,36 @@
       vcard = [[NGVCard alloc] initWithUid: [self nameInContainer]];
       [vcard setVClass: @"PUBLIC"];
       [vcard setProdID: @"-//Inverse inc./SOGo 1.0//EN"];
-      [vcard setProfile: @"vCard"];
-      info = [ldifEntry objectForKey: @"displayname"];
-      if (!(info && [info length] > 0))
-        info = [ldifEntry objectForKey: @"cn"];
+      [vcard setProfile: @"VCARD"];
+      info = [ldifEntry objectForKey: @"c_cn"];
+      if (![info length])
+        {
+          info = [ldifEntry objectForKey: @"displayname"];
+          if (![info length])
+            info = [ldifEntry objectForKey: @"cn"];
+        }
       [vcard setFn: info];
       surname = [ldifEntry objectForKey: @"sn"];
       if (!surname)
         surname = [ldifEntry objectForKey: @"surname"];
       [vcard setNWithFamily: surname
-             given: [ldifEntry objectForKey: @"givenname"]
-             additional: nil
-             prefixes: nil
-             suffixes: nil];
+                      given: [ldifEntry objectForKey: @"givenname"]
+                 additional: nil
+                   prefixes: nil
+                   suffixes: nil];
       info = [ldifEntry objectForKey: @"title"];
       if (info)
         [vcard setTitle: info];
       info = [ldifEntry objectForKey: @"mozillanickname"];
       if (info)
         [vcard setNickname: info];
-      
-      // If SOGoLDAPContactInfoAttribute is defined, we set it
-      // as the NOTE value in order for Thunderbird (or any other
-      // CardDAV client) to display it.
-      key = [[NSUserDefaults standardUserDefaults]
-	      stringForKey: @"SOGoLDAPContactInfoAttribute"];
 
-      if (!key)
+      /* If SOGoLDAPContactInfoAttribute is defined, we set as the NOTE value
+         in order for Thunderbird (or any other CardDAV client) to display it. */
+      if (sogoContactInfoAttribute)
+        key = sogoContactInfoAttribute;
+      else
 	key = @"description";
-
       info = [ldifEntry objectForKey: key];
       if (info)
         [vcard setNote: info];
@@ -162,22 +176,27 @@
       [self _setPhonesOfVCard: vcard];
 
       streetAddress = [ldifEntry objectForKey: @"street"];
-      if (!streetAddress) streetAddress = [ldifEntry objectForKey: @"streetaddress"];
+      if (!streetAddress)
+        streetAddress = [ldifEntry objectForKey: @"streetaddress"];
 
       location = [ldifEntry objectForKey: @"l"];
-      if (!location) location = [ldifEntry objectForKey: @"locality"];
+      if (!location)
+        location = [ldifEntry objectForKey: @"locality"];
 
       region = [ldifEntry objectForKey: @"st"];
-      if (!region) region = [ldifEntry objectForKey: @"region"];
+      if (!region)
+        region = [ldifEntry objectForKey: @"region"];
 
       postalCode = [ldifEntry objectForKey: @"postalcode"];
-      if (!postalCode) postalCode = [ldifEntry objectForKey: @"zip"];
+      if (!postalCode)
+        postalCode = [ldifEntry objectForKey: @"zip"];
 
       country = [ldifEntry objectForKey: @"c"];
-      if (!country) country = [ldifEntry objectForKey: @"countryname"];
+      if (!country)
+        country = [ldifEntry objectForKey: @"countryname"];
 
       element = [CardElement elementWithTag: @"adr"
-                             attributes: nil values: nil];
+                                 attributes: nil values: nil];
       [element setValue: 0 ofAttribute: @"type" to: @"work"];
 
       if (streetAddress)
@@ -199,7 +218,8 @@
                              attributes: nil values: nil];
       org = [ldifEntry objectForKey: @"o"];
       orgunit = [ldifEntry objectForKey: @"ou"];
-      if (!orgunit) orgunit = [ldifEntry objectForKey: @"orgunit"];
+      if (!orgunit)
+        orgunit = [ldifEntry objectForKey: @"orgunit"];
       
       if (org)
 	[element setValue: 0 to: org];
