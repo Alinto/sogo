@@ -14,7 +14,7 @@
 - added support for remote ICS subscriptions
 - added support for ICS and vCard/LDIF import
 - added support for event delegation (resend an invitation to someone else)
-- added inital support for checking and displaying S/MIME signed messages
+- added initial support for checking and displaying S/MIME signed messages
 - added support SQL-based authentication sources and address books
 - added support for Sieve filters (Vacation and Forward)
 
