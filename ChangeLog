@@ -5,6 +5,8 @@
 	SOGoForwardEnabled defaults. One Sieve right now is
 	support and we assume the Sieve server is the same
 	as the IMAP server, running on port 2000.
+	* Cleaned up everything related to the old Sieve stuff
+	which was now useless with our new implementation.
 
 2009-10-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

@@ -1,5 +1,5 @@
 { /* -*-java-*- */
-  requires = ( MAIN, MainUI, CommonUI, Mailer, MailPartViewers ); /* , Sieve */
+  requires = ( MAIN, MainUI, CommonUI, Mailer, MailPartViewers );
 
   publicResources = ("generic.js",
 		     "UIxAppointmentEditor.js",
@@ -446,81 +446,6 @@
 	};
       };
     };
-
-    /* Sieve */
-
-//     SOGoSieveScriptsFolder = {
-//       slots = {
-// 	toolbar = {
-// 	  protectedBy = "View";
-// 	  value = (
-// 		   (
-// 	    {
-// 	      link  = "getMail";
-// 	      image = "tb-mail-getmail-flat-24x24.png";
-// 	      cssClass = "tbicon_getmail"; label = "Get Mail";
-// 	    },
-// 	    {
-// 	      link     = "#"; // "compose"; // target = "_blank";
-// 	      onclick  = "clickedNewFilter(this); return false";
-// 	      image = "tb-mail-write-flat-24x24.png";
-// 	      cssClass = "tbicon_compose"; label = "New Filter";
-// 	    },
-// 		    ),
-// 		   (
-// 	    { link = "#";
-// 	      cssClass = "tbicon_delete"; label = "Delete"; },
-// 		    ),
-// 		   );
-// 	};
-//       };
-//       methods = {
-// 	view = {
-// 	  protectedBy = "View";
-// 	  pageName    = "UIxFilterList";
-// 	};
-// 	create = {
-// 	  protectedBy = "View";
-// 	  pageName    = "UIxFilterList";
-// 	  actionName  = "create";
-// 	};
-//       };
-//     };
-
-//     SOGoSieveScriptObject = {
-//       slots = {
-// 	toolbar = {
-// 	  protectedBy = "View";
-// 	  value = (
-// 		   ( { link  = "#";
-// 		       onclick  = "clickedEditorSave(this);return false;";
-// 		       image = "tb-mail-file-flat-24x24.png";
-// 		       cssClass = "tbicon_save"; label = "Save"; },
-// 	    { link = "#";
-// 	      onclick  = "clickedEditorDelete(this);return false;";
-// 	      image = "tb-mail-delete-flat-24x24.png";
-// 	      cssClass = "tbicon_delete"; label = "Delete"; },
-// 		     )
-// 		   );
-// 	};
-//       };
-//       methods = {
-// 	edit = {
-// 	  protectedBy = "View";
-// 	  pageName    = "UIxSieveEditor";
-// 	  actionName  = "edit";
-// 	};
-// 	save = {
-// 	  protectedBy = "View";
-// 	  pageName    = "UIxSieveEditor";
-// 	  actionName  = "save";
-// 	};
-// 	delete = {
-// 	  protectedBy = "View";
-// 	  pageName    = "UIxSieveEditor";
-// 	  actionName  = "delete";
-// 	};
-//   }
   };
 }
 
