@@ -6,6 +6,8 @@
 "General" = "Général";
 "Calendar Options" = "Calendrier";
 "Mail Options" = "Courrier";
+"Vacation" = "Absence prolongée";
+"Forward" = "Transfert";
 "Identities" = "Identités";
 "Password" = "Mot de passe";
 "Categories" = "Catégories";
@@ -14,17 +16,29 @@
 "Add" = "Ajouter";
 "Delete" = "Supprimer";
 
-/* ooo */
-"I'm currently in the office" = "Je suis présent";
-"I'm currently out of the office" = "Je suis absent";
-"AutoReply only once to each sender with the following text :"
-= "Répondre automatiquement avec le texte suivant, une seule fois par expéditeur :";
+/* vacation (auto-reply) */
+"Enable vacation auto reply" = "Enable vacation auto reply";
+"Auto reply message :" = "Auto reply message :";
+"Email addresses (separated by commas) :" = "Email addresses (separated by commas) :";
+"Days between responses :" = "Days between responses :";
+"Do not send responses to mailing lists" = "Do not send responses to mailing lists";
+"Please specify your message and your email addresses for which you want to enable auto reply."
+= "Veuillez définir un message et vos adresses pour lesquelles pour désirez activer une réponse automatique.";
+
+/* forward messages */
+"Forward incoming messages" = "Forward incoming messages";
+"Forward to address :" = "Forward to address :";
+"Keep a copy" = "Keep a copy";
+"Please specify an address to which you want to forward your messages."
+= "Veuillez définir une adresse à laquelle vous désirez transférer automatiquement vos nouveaux messages.";
 
 /* d & t */
 "Current Time Zone :" = "Fuseau horaire en cours :";
 "Short Date Format :" = "Style de date courte :";
 "Long Date Format :" = "Style de date longue :";
 "Time Format :" = "Style de l'heure :";
+
+"default" = "Défaut";
 
 "shortDateFmt_0" = "%d-%b-%y";
 

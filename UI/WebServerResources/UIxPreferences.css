@@ -19,7 +19,8 @@ DIV#passwordView
 { padding-top: 3em;
   padding-right: 10em; }
 
-DIV#identitiesView
+DIV#identitiesView,
+DIV#vacationView
 { padding: 5px 5px 5px 0px;
   overflow: hidden; }
 
@@ -65,3 +66,14 @@ DIV#windowButtons
   line-height: 2em;
   vertical-align: middle;
   text-align: right; }
+
+#vacation, #forward
+{ padding-left: 2.5em; }
+#vacation label
+{ margin-left: 0; }
+#vacation TEXTAREA
+{ width: 100%; }
+#vacation TEXTAREA#autoReplyText
+{ height: 100px; }
+#vacation TEXTAREA#autoReplyEmailAddresses
+{ height: 50px; }

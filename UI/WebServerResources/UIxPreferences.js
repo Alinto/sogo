@@ -22,6 +22,21 @@ function savePreferences(sender) {
         }
     }
 
+    if ($("enableVacation") && $("enableVacation").checked) {
+        if ($("autoReplyText").value.strip().length == 0
+            || $("autoReplyEmailAddresses").value.strip().length == 0) {
+            alert(getLabel("Please specify your message and your email addresses for which you want to enable auto reply."));
+            sendForm = false;
+        }
+    }
+
+    if ($("enableForward") && $("enableForward").checked) {
+        if ($("forwardAddress").value.strip().length == 0) {
+            alert(getLabel("Please specify an address to which you want to forward your messages."));
+            sendForm = false;
+        }
+    }
+
     if (sendForm)
       $("mainForm").submit();
 

@@ -25,6 +25,7 @@
 #import <Foundation/NSTimeZone.h>
 #import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSPropertyList.h>
+#import <Foundation/NSValue.h>
 
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WORequest.h>
@@ -48,6 +49,8 @@ static BOOL defaultsRead = NO;
 static BOOL shouldDisplayPasswordChange = NO;
 static BOOL shouldDisplayAdditionalPreferences = NO;
 static BOOL defaultShowSubscribedFoldersOnly = NO;
+static BOOL vacationEnabled = NO;
+static BOOL forwardEnabled = NO;
 
 @implementation UIxPreferences
 
@@ -64,6 +67,10 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
         = [ud boolForKey: @"SOGoUIxAdditionalPreferences"];
       defaultShowSubscribedFoldersOnly
         = [ud boolForKey: @"SOGoMailShowSubscribedFoldersOnly"];
+      vacationEnabled
+	= [ud boolForKey: @"SOGoVacationEnabled"];
+      forwardEnabled
+	= [ud boolForKey: @"SOGoForwardEnabled"];
       defaultsRead = YES;
     }
 }
@@ -88,6 +95,25 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
               [locale objectForKey: NSWeekDayNameArray]);
       hasChanged = NO;
       composeMessageTypeHasChanged = NO;
+
+      if (vacationEnabled)
+	{
+	  vacationOptions = [userDefaults objectForKey: @"Vacation"];
+	  if (!vacationOptions)
+	    {
+	      vacationOptions = [NSMutableDictionary dictionary];
+	      [userDefaults setObject: vacationOptions forKey: @"Vacation"];
+	    }
+	}
+      if (forwardEnabled)
+	{
+	  forwardOptions = [userDefaults objectForKey: @"Forward"];
+	  if (!forwardOptions)
+	    {
+	      forwardOptions = [NSMutableDictionary dictionary];
+	      [userDefaults setObject: forwardOptions forKey: @"Forward"];
+	    }
+	}
     }
 
   return self;
@@ -123,31 +149,6 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
 - (NSString *) item
 {
   return item;
-}
-
-- (NSString *) inTheOffice
-{
-  NSString *inTheOffice;
-
-  inTheOffice = [userDefaults objectForKey: @"InTheOffice"];
-
-  return ((!inTheOffice || [inTheOffice boolValue])
-          ? @"YES" : @"NO");
-}
-
-- (void) setInTheOffice: (NSString *) newValue
-{
-  [userDefaults setObject: newValue forKey: @"InTheOffice"];
-}
-
-- (void) setAutoReplyText: (NSString *) newAutoReplyText
-{
-  [userDefaults setObject: newAutoReplyText forKey: @"AutoReplyText"];
-}
-
-- (NSString *) autoReplyText
-{
-  return [userDefaults objectForKey: @"AutoReplyText"];
 }
 
 - (NSArray *) timeZonesList
@@ -504,10 +505,7 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
 /* Mailer */
 - (void) setShowSubscribedFoldersOnly: (BOOL) showSubscribedFoldersOnly
 {
-  if (showSubscribedFoldersOnly)
-    [userDefaults setBool: YES forKey: @"showSubscribedFoldersOnly"];
-  else
-    [userDefaults setBool: NO forKey: @"showSubscribedFoldersOnly"];
+  [userDefaults setBool: showSubscribedFoldersOnly forKey: @"showSubscribedFoldersOnly"]; // should be capitalized ..
 }
 
 - (BOOL) showSubscribedFoldersOnly
@@ -696,11 +694,167 @@ static BOOL defaultShowSubscribedFoldersOnly = NO;
     }
 }
 
-
 - (void) setUserSignaturePlacement: (NSString *) newSignaturePlacement
 {
   [userDefaults setObject: newSignaturePlacement forKey: @"SignaturePlacement"];
 }
+
+/* mail autoreply (vacation) */
+
+- (BOOL) isVacationEnabled
+{
+  return vacationEnabled;
+}
+
+- (void) setEnableVacation: (BOOL) enableVacation
+{
+  [vacationOptions setObject: [NSNumber numberWithBool: enableVacation]
+		    forKey: @"enabled"];
+}
+
+- (BOOL) enableVacation
+{
+  return [[vacationOptions objectForKey: @"enabled"] boolValue];
+}
+
+- (void) setAutoReplyText: (NSString *) theText
+{
+  [vacationOptions setObject: theText
+		      forKey: @"autoReplyText"];
+}
+
+- (NSString *) autoReplyText
+{
+  return [vacationOptions objectForKey: @"autoReplyText"];
+}
+
+- (void) setAutoReplyEmailAddresses: (NSString *) theAddresses
+{
+  NSArray *addresses;
+
+  addresses = [[theAddresses componentsSeparatedByString: @","] trimmedComponents];
+  
+  [vacationOptions setObject: addresses
+		      forKey: @"autoReplyEmailAddresses"];
+}
+
+- (NSString *) autoReplyEmailAddresses
+{
+  NSArray *addressesList;
+  NSMutableArray *newAddressesList;
+  NSString *address;
+  unsigned int i;
+
+  addressesList = [vacationOptions objectForKey: @"autoReplyEmailAddresses"];
+  if (!addressesList)
+    {
+      newAddressesList = [NSMutableArray new];
+      [newAddressesList autorelease];
+      addressesList = [NSMutableArray arrayWithArray: [user allEmails]];
+      for (i = 0; i < [addressesList count]; i++)
+	{
+	  address = [addressesList objectAtIndex: i];
+	  if (![newAddressesList containsObject: address])
+	    [newAddressesList addObject: address];
+	}
+      addressesList = newAddressesList;
+    }
+
+  return [addressesList componentsJoinedByString: @", "];
+}
+
+- (NSArray *) daysBetweenResponsesList
+{
+  static NSArray* daysBetweenResponses = nil;
+
+  if (!daysBetweenResponses)
+    {
+      daysBetweenResponses = [NSArray arrayWithObjects: @"1", @"2", @"3", @"5", @"7", @"14", @"21", @"30", nil];
+      [daysBetweenResponses retain];
+    }
+
+  return daysBetweenResponses;
+}
+
+- (void) setDaysBetweenResponses: (NSNumber *) theDays
+{
+  [vacationOptions setObject: theDays
+		      forKey: @"daysBetweenResponse"];
+}
+
+- (NSString *) daysBetweenResponses
+{
+  NSString *days;
+
+  days = [vacationOptions objectForKey: @"daysBetweenResponse"];
+  if (!days)
+    days = @"7"; // defaults to 7 days
+
+  return days;
+}
+
+- (void) setIgnoreLists: (BOOL) ignoreLists
+{
+  [vacationOptions setObject: [NSNumber numberWithBool: ignoreLists]
+		      forKey: @"ignoreLists"];
+}
+
+- (BOOL) ignoreLists
+{
+  NSNumber *obj;
+  BOOL ignore;
+
+  obj = [vacationOptions objectForKey: @"ignoreLists"];
+
+  if (obj == nil)
+    ignore = YES; // defaults to true
+  else
+    ignore = [obj boolValue];
+
+  return ignore;
+}
+
+/* mail forward */
+
+- (BOOL) isForwardEnabled
+{
+  return forwardEnabled;
+}
+
+- (void) setEnableForward: (BOOL) enableForward
+{
+  [forwardOptions setObject: [NSNumber numberWithBool: enableForward]
+		     forKey: @"enabled"];
+}
+
+- (BOOL) enableForward
+{
+  return [[forwardOptions objectForKey: @"enabled"] boolValue];
+}
+
+- (void) setForwardAddress: (NSString *) forwardAddress
+{
+  [forwardOptions setObject: forwardAddress
+		     forKey: @"forwardAddress"];
+}
+
+- (NSString *) forwardAddress
+{
+  return [forwardOptions objectForKey: @"forwardAddress"];
+}
+
+- (void) setForwardKeepCopy: (BOOL) keepCopy
+{
+  [forwardOptions setObject: [NSNumber numberWithBool: keepCopy]
+		     forKey: @"keepCopy"];
+}
+
+- (BOOL) forwardKeepCopy
+{
+  return [[forwardOptions objectForKey: @"keepCopy"] boolValue];
+}
+
+/* main */
 
 - (NSArray *) availableModules
 {

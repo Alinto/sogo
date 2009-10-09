@@ -38,7 +38,8 @@
   NSUserDefaults *userDefaults;
   NSCalendarDate *today;
   NSMutableArray *hours;
-  NSArray *daysOfWeek;
+  NSArray *daysOfWeek, *daysBetweenResponsesList;
+  NSMutableDictionary *vacationOptions, *forwardOptions;
   BOOL hasChanged, composeMessageTypeHasChanged;
 }
 

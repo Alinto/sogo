@@ -6,6 +6,9 @@
 "General" = "General";
 "Calendar Options" = "Calendar Options";
 "Mail Options" = "Mail Options";
+"Signature" = "Signature";
+"Vacation" = "Vacation";
+"Forward" = "Forward";
 "Identities" = "Identities";
 "Password" = "Password";
 "Categories" = "Categories";
@@ -14,11 +17,21 @@
 "Add" = "Add";
 "Delete" = "Delete";
 
-/* ooo */
-"I'm currently in the office" = "I'm currently in the office";
-"I'm currently out of the office" = "I'm currently out of the office";
-"AutoReply only once to each sender with the following text :"
-= "AutoReply only once to each sender with the following text :";
+/* vacation (auto-reply) */
+"Enable vacation auto reply" = "Enable vacation auto reply";
+"Auto reply message :" = "Auto reply message :";
+"Email addresses (separated by commas) :" = "Email addresses (separated by commas) :";
+"Days between responses :" = "Days between responses :";
+"Do not send responses to mailing lists" = "Do not send responses to mailing lists";
+"Please specify your message and your email addresses for which you want to enable auto reply."
+= "Please specify your message and your email addresses for which you want to enable auto reply.";
+
+/* forward messages */
+"Forward incoming messages" = "Forward incoming messages";
+"Forward to address :" = "Forward to address :";
+"Keep a copy" = "Keep a copy";
+"Please specify an address to which you want to forward your messages."
+= "Please specify an address to which you want to forward your messages.";
 
 /* d & t */
 "Current Time Zone :" = "Current Time Zone :";
@@ -108,7 +121,6 @@
 /* Identities */
 "Default identity:" = "Default identity:";
 "Manage identities..." = "Manage identities...";
-"Signature" = "Signature";
 "replyplacement_above" = "Start my reply above the quote";
 "replyplacement_below" = "Start my reply below the quote";
 "And place my signature" = "And place my signature";
