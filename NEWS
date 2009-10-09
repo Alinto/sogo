@@ -16,6 +16,7 @@
 - added support for event delegation (resend an invitation to someone else)
 - added alpha support for checking and displaying signed messages
 - added support SQL-based authentication sources and address books
+- added support for Sieve filters (Vacation and Forward)
 
 1.0-20090812 (1.0.4)
 --------------------
