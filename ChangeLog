@@ -1,3 +1,11 @@
+2009-10-08  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* Added filters support (Vacation and Forward) which
+	can be enabled using the SOGoVacationEnabled and
+	SOGoForwardEnabled defaults. One Sieve right now is
+	support and we assume the Sieve server is the same
+	as the IMAP server, running on port 2000.
+
 2009-10-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/LDAPSource.m (-_searchAttributes): we already

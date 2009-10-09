@@ -32,7 +32,10 @@
 
 #import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/NSDictionary+Utilities.h>
+#import <SoObjects/SOGo/NSString+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
+#import <SoObjects/SOGo/SOGoUserFolder.h>
+#import <SoObjects/Mailer/SOGoMailAccount.h>
 #import "../../Main/SOGo.h"
 
 #import "UIxPreferences.h"
@@ -901,7 +904,21 @@ static BOOL forwardEnabled = NO;
   request = [context request];
   if ([[request method] isEqualToString: @"POST"])
     {
+      SOGoMailAccount *account;
+      id mailAccounts;
+      id folder;
+     
       [userDefaults synchronize];
+      
+      mailAccounts = [[[context activeUser] mailAccounts] objectAtIndex: 0];
+      folder = [[self clientObject] mailAccountsFolder: @"Mail"
+				inContext: context];
+      account = [folder lookupName: [[mailAccounts objectForKey: @"name"] asCSSIdentifier]
+		    inContext: context
+		    acquire: NO];
+      
+      [account updateFilters];
+
       if (composeMessageTypeHasChanged)
         // Due to a limitation of CKEDITOR, we reload the page when the user
         // changes the composition mode to avoid Javascript errors.

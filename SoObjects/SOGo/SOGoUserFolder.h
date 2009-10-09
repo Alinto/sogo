@@ -55,6 +55,9 @@
 - (id) freeBusyObject: (NSString *) _key
             inContext: (WOContext *) _ctx;
 
+- (id) mailAccountsFolder: (NSString *) _key
+                inContext: (WOContext *) _ctx;
+
 @end
 
 #endif /* __SOGo_SOGoUserFolder_H__ */
