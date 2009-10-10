@@ -59,7 +59,7 @@
 
 - (NSArray *) cards
 {
-  return [[cards copy] autorelease];;
+  return [[cards copy] autorelease];
 }
 
 /* state */
