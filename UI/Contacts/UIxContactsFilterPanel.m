@@ -31,19 +31,13 @@
 
 @implementation UIxContactsFilterPanel
 
-static NSArray      *filters           = nil;
+static NSMutableArray *filters = nil;
 
 + (void) initialize
 {
-  NSMutableDictionary *md;
-  NSMutableArray *ma;
-  
-  md = [[NSMutableDictionary alloc] initWithCapacity:8];
-  ma = [[NSMutableArray alloc] initWithCapacity:4];
-
-  filters           = [ma copy];
-  [md release]; md = nil;
-  [ma release]; ma = nil;
+#warning how useful is this?
+  if (!filters)
+    filters = [[NSMutableArray alloc] initWithCapacity:4];
 }
 
 - (id) init
@@ -68,12 +62,12 @@ static NSArray      *filters           = nil;
 
 - (void) setSearchText: (NSString *)_txt
 {
-  ASSIGNCOPY(searchText, _txt);
+  ASSIGNCOPY (searchText, _txt);
 }
 
 - (void) setSearchCriteria: (NSString *)_txt
 {
-  ASSIGNCOPY(searchText, _txt);
+  ASSIGNCOPY (searchText, _txt);
 }
 
 - (NSString *) searchText

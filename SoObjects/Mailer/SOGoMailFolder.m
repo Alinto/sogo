@@ -355,7 +355,8 @@ static NSString *spoolFolder = nil;
   NSMutableArray *zipTaskArguments;
   WOResponse *response;
   int i;
-  
+
+#warning this method should be rewritten according to our coding styles  
   spoolPath = [self userSpoolFolderPath];
   if ( ![self ensureSpoolFolderPath] ) {
     error = [NSException exceptionWithHTTPStatus: 500 

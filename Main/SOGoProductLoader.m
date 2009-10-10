@@ -84,6 +84,7 @@ static NSString *productDirectoryName = @"SOGo";
 
   if (!searchPathes)
     {
+#warning we should work on searchPathes directly instead of ma
       ma = [NSMutableArray arrayWithCapacity: 6];
 
       [self _addGNUstepSearchPathesToArray: ma];

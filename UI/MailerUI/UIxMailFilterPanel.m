@@ -52,6 +52,7 @@ static NSArray *filters = nil;
   NSMutableArray *ma;
   unsigned i;
   
+#warning why not populate "filters" directly, as an NSMutableArray?
   md = [[NSMutableDictionary alloc] initWithCapacity:8];
   ma = [[NSMutableArray alloc] initWithCapacity:4];
 

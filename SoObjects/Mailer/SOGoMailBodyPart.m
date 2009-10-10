@@ -115,6 +115,7 @@ static BOOL debugOn = NO;
   if (pathToPart != nil)
     return ([pathToPart isNotNull] ? (id)pathToPart : nil);
   
+#warning partToPart should be populated directly
   p = [[NSMutableArray alloc] initWithCapacity:8];
   for (obj = self; [obj isKindOfClass:[SOGoMailBodyPart class]]; 
        obj = [obj container]) {

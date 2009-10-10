@@ -1424,7 +1424,7 @@ static BOOL debugSoParts       = NO;
 {
   NSDictionary *fetch;
   NSData *data;
-  NSString *value, *rc;;
+  NSString *value, *rc;
 
   rc = nil;
   fetch = [self _fetchProperty: @"BODY[HEADER.FIELDS (REFERENCES)]"];
