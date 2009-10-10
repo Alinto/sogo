@@ -147,6 +147,7 @@ static BOOL debugObjectAllocation = NO;
       /* setup resource manager */
       rm = [[WEResourceManager alloc] init];
       [self setResourceManager:rm];
+      [rm release];
     }
 
   return self;
@@ -406,9 +407,9 @@ static BOOL debugObjectAllocation = NO;
 - (WOResponse *) dispatchRequest: (WORequest *) _request
 {
   static NSArray *runLoopModes = nil;
+  static BOOL debugOn = NO;
   WOResponse *resp;
   NSDate *startDate, *endDate;
-  NSAutoreleasePool *pool;
 
   if (debugRequests)
     {
@@ -420,9 +421,15 @@ static BOOL debugObjectAllocation = NO;
   cache = [SOGoCache sharedCache];
   if (debugLeaks)
     {
-      GSDebugAllocationActive (YES);
-      GSDebugAllocationList (NO);
-      pool = [NSAutoreleasePool new];
+      if (debugOn)
+        {
+          NSLog (@"allocated classes:\n%s", GSDebugAllocationList (YES));
+        }
+      else
+        {
+          debugOn = YES;
+          GSDebugAllocationActive (YES);
+        }
     }
 
   resp = [super dispatchRequest: _request];
@@ -433,15 +440,6 @@ static BOOL debugObjectAllocation = NO;
       endDate = [NSDate date];
       [self logWithFormat: @"request took %f seconds to execute",
 	    [endDate timeIntervalSinceDate: startDate]];
-    }
-
-  if (debugLeaks)
-    {
-      [resp retain];
-      [pool release];
-      [resp autorelease];
-      NSLog (@"allocated classes:\n%s", GSDebugAllocationList (YES));
-      GSDebugAllocationActive (NO);
     }
 
   if (![self isTerminating])
