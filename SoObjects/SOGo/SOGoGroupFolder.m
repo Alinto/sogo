@@ -113,6 +113,7 @@ static NGLogger *logger = nil;
   if ((luids = [self uids]) == nil)
     return;
   
+#warning we should populate "uidToFolder" directly
   count = [luids count];
   ma = [NSMutableArray arrayWithCapacity:count + 1];
   md = [NSMutableDictionary dictionaryWithCapacity:count];
