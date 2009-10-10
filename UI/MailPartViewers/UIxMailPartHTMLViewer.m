@@ -148,6 +148,7 @@ _xmlCharsetForCharset (NSString *charset)
 {
   [result release];
   [css release];
+  [ignoreTag release];
   [super dealloc];
 }
 

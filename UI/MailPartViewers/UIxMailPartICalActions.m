@@ -66,6 +66,7 @@
     eventString = [[NSString alloc] initWithData: content
 				    encoding: NSISOLatin1StringEncoding];
   emailCalendar = [iCalCalendar parseSingleFromSource: eventString];
+  [eventString release];
 
   return (iCalEvent *) [emailCalendar firstChildWithTag: @"vevent"];
 }

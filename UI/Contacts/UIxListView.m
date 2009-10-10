@@ -71,7 +71,7 @@
 - (void) checkListReferences
 {
   NSMutableArray *invalid;
-  NGVCardReference *card;
+  NGVCardReference *card, *cardCopy;
   int i, count;
   id test;
 
@@ -87,7 +87,9 @@
       if ([test isKindOfClass: [NSException class]])
         {
           NSLog (@"%@ not found", [card reference]);
-          [invalid addObject: [card copy]];
+          cardCopy = [card copy];
+          [invalid addObject: cardCopy];
+          [cardCopy release];
         }
     }
 
@@ -135,7 +137,7 @@
     {
       card = [[list cardReferences] objectAtIndex: i];
       [data addObject: [NSArray arrayWithObjects: [card reference], [card fn], 
-        [card email], nil]];
+                                [card email], nil]];
     }
 
   rc = [context response];

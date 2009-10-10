@@ -1,5 +1,15 @@
 2009-10-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailPartViewers/UIxMailPartICalActions.m (-_emailEvent):
+	"eventString" is now released to avoid a leak.
+
+	* UI/MailPartViewers/UIxMailPartHTMLViewer.m (-dealloc): ignoreTag
+	is released, to avoid a leak if the HTML content was not compliant.
+
+	* UI/Contacts/UIxListView.m (-checkListReferences): the copy of
+	"card" must be released once put in the "invalid" array, in order
+	to avoid a leak.
+
 	* Main/SOGo.m (-init): released "rm" when no longer needed.
 	(-dispatchRequest:): simplified leak catching code.
 
