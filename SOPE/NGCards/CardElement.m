@@ -576,6 +576,7 @@
 /* NSMutableCopying */
 - (id) mutableCopyWithZone: (NSZone *) aZone
 {
+#warning this method really is the same as "copyWithZone:"
   CardElement *new;
   NSString *newTag, *newGroup;
 
