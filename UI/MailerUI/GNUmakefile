@@ -36,8 +36,6 @@ MailerUI_OBJC_FILES += \
 #	UIxMailReplyAction.m		\
 #	UIxMailForwardAction.m		\
 # 	UIxFilterList.m			\
-# 	\
-# 	UIxSieveEditor.m
 
 MailerUI_RESOURCE_FILES += \
 	Version		\

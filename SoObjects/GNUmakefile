@@ -7,7 +7,6 @@ SUBPROJECTS = \
 	SOGo		\
 	Appointments	\
 	Contacts	\
-	Mailer		\
-#	Sieve		\
+	Mailer
 
 include $(GNUSTEP_MAKEFILES)/aggregate.make

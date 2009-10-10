@@ -13,18 +13,15 @@
 	* Main/SOGo.m (-init): released "rm" when no longer needed.
 	(-dispatchRequest:): simplified leak catching code.
 
-2009-10-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+2009-10-08  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
-	* SoObjects/SOGo/LDAPSource.m (-_searchAttributes): we already
-	have knowledge of the LDAPContactInfoAttribute so we no longer
-	need to fetch it from the user defaults.
-
-	* SoObjects/Contacts/SOGoContactLDIFEntry.m
-	(-initWithName:withLDIFEntry:inContainer:): we no longer retain
-	"container" in order to avoid a leak.
-	(-vCard): we now use the "VCARD" profile, all in upper case. We
-	first resolve the full name using "c_cn", which is the special key
-	used by the LDAP sources to access the fullname attribute.
+	* Added filters support (Vacation and Forward) which
+	can be enabled using the SOGoVacationEnabled and
+	SOGoForwardEnabled defaults. One Sieve right now is
+	support and we assume the Sieve server is the same
+	as the IMAP server, running on port 2000.
+	* Cleaned up everything related to the old Sieve stuff
+	which was now useless with our new implementation.
 
 2009-10-08  Francis Lachapelle  <flachapelle@inverse.ca>
 
@@ -41,6 +38,17 @@
 	"default" option support, like for the short date format.
 
 2009-10-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/LDAPSource.m (-_searchAttributes): we already
+	have knowledge of the LDAPContactInfoAttribute so we no longer
+	need to fetch it from the user defaults.
+
+	* SoObjects/Contacts/SOGoContactLDIFEntry.m
+	(-initWithName:withLDIFEntry:inContainer:): we no longer retain
+	"container" in order to avoid a leak.
+	(-vCard): we now use the "VCARD" profile, all in upper case. We
+	first resolve the full name using "c_cn", which is the special key
+	used by the LDAP sources to access the fullname attribute.
 
 	* Tests/webdavlib.py (MailDAVMailQuery._initSort): now handles the
 	"order" attribute from the "ascending" parameter.

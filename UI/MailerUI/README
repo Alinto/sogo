@@ -40,7 +40,6 @@ Class Hierarchy
         UIxMailToolbar
         UIxMailTree
         UIxMailView
-        UIxSieveEditor
       UIxMailSortableTableHeader
     UIxMailEditorAttach.m
     UIxMailFilterPanel

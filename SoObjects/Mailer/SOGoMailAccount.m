@@ -15,7 +15,7 @@
   License for more details.
 
   You should have received a copy of the GNU Lesser General Public
-  License along with OGo; see the file COPYING.  If not, write to the
+  License along with SOGo; see the file COPYING.  If not, write to the
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
@@ -29,12 +29,14 @@
 #import <NGObjWeb/SoHTTPAuthenticator.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGStreams/NGInternetSocketAddress.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
 #import <NGImap4/NGImap4Connection.h>
 #import <NGImap4/NGImap4Client.h>
 #import <NGImap4/NGImap4Context.h>
+#import <NGImap4/NGSieveClient.h>
 
 #import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
@@ -52,11 +54,12 @@
 static NSArray *rootFolderNames = nil;
 static NSString *inboxFolderName = @"INBOX";
 static NSString *draftsFolderName = @"Drafts";
-static NSString *sieveFolderName = @"Filters";
 static NSString *sentFolderName = nil;
 static NSString *trashFolderName = nil;
-static NSString *sharedFolderName = @""; // TODO: add English default
+static NSString *sharedFolderName = @"";     // TODO: add English default
 static NSString *otherUsersFolderName = @""; // TODO: add English default
+static NSString *sieveScriptName = @"sogo";
+
 static BOOL defaultShowSubscribedFoldersOnly = NO;
 // this is temporary, until we allow users to manage their own accounts
 static NSString *fallbackIMAP4Server = nil;
@@ -91,15 +94,10 @@ static NSString *fallbackIMAP4Server = nil;
 
   NSLog(@"Note: using shared-folders name:      '%@'", sharedFolderName);
   NSLog(@"Note: using other-users-folders name: '%@'", otherUsersFolderName);
-  if ([ud boolForKey: @"SOGoEnableSieveFolder"])
-    rootFolderNames = [[NSArray alloc] initWithObjects:
-				        draftsFolderName, 
-				        sieveFolderName, 
-				      nil];
-  else
-    rootFolderNames = [[NSArray alloc] initWithObjects:
-				        draftsFolderName, 
-				       nil];
+
+  rootFolderNames = [[NSArray alloc] initWithObjects:
+				       draftsFolderName, 
+				     nil];
 
   if (!fallbackIMAP4Server)
     {
@@ -205,6 +203,147 @@ static NSString *fallbackIMAP4Server = nil;
 
   return [capability containsObject: @"quota"];
 }
+
+- (BOOL) updateFilters
+{
+  NSMutableString *header, *script;
+  NGInternetSocketAddress *address;
+  NSDictionary *result, *values;
+  NSUserDefaults *ud;
+  NGSieveClient *client;
+  NSString *v;
+  BOOL b;
+
+  if (![[NSUserDefaults standardUserDefaults] boolForKey: @"SOGoVacationEnabled"] &&
+      ![[NSUserDefaults standardUserDefaults] boolForKey: @"SOGoForwardEnabled"])
+    return YES;
+
+  ud = [[context activeUser] userDefaults];
+  b = NO;
+
+  header = [NSMutableString stringWithString: @"require ["];
+  script = [NSMutableString string];
+
+  // Right now, we handle Sieve filters here and only for vacation
+  // and forwards. Traditional filters support (for fileinto, for
+  // example) will be added later.
+  values = [ud objectForKey: @"Vacation"];
+
+  // We handle vacation messages.
+  // See http://ietfreport.isoc.org/idref/draft-ietf-sieve-vacation/
+  if (values && [[values objectForKey: @"enabled"] boolValue])
+    {
+      NSArray *addresses;
+      NSString *text;
+      BOOL ignore;
+      int days, i;
+            
+      days = [[values objectForKey: @"daysBetweenResponse"] intValue];
+      addresses = [values objectForKey: @"autoReplyEmailAddresses"];
+      ignore = [[values objectForKey: @"ignoreLists"] boolValue];
+      text = [values objectForKey: @"autoReplyText"];
+      b = YES;
+
+      if (days == 0)
+	days = 7;
+
+      [header appendString: @"\"vacation\""];
+      
+      // Skip mailing lists
+      if (ignore)
+	[script appendString: @"if allof ( not exists [\"list-help\", \"list-unsubscribe\", \"list-subscribe\", \"list-owner\", \"list-post\", \"list-archive\", \"list-id\", \"Mailing-List\"], not header :comparator \"i;ascii-casemap\" :is \"Precedence\" [\"list\", \"bulk\", \"junk\"], not header :comparator \"i;ascii-casemap\" :matches \"To\" \"Multiple recipients of*\" ) {"];
+      
+      [script appendFormat: @"vacation :days %d :addresses [", days];
+
+      for (i = 0; i < [addresses count]; i++)
+	{
+	  [script appendFormat: @"\"%@\"", [addresses objectAtIndex: i]];
+	  
+	  if (i == [addresses count]-1)
+	    [script appendString: @"] "];
+	  else
+	    [script appendString: @", "];
+	}
+      
+      [script appendFormat: @"text:\r\n%@\r\n.\r\n;\r\n", text];
+      
+      if (ignore)
+	[script appendString: @"}\r\n"];
+    }
+
+
+  // We handle mail forward
+  values = [ud objectForKey: @"Forward"];
+
+  if (values && [[values objectForKey: @"enabled"] boolValue])
+    {
+      b = YES;
+      
+      v = [values objectForKey: @"forwardAddress"];
+
+      if (v && [v length] > 0)
+	[script appendFormat: @"redirect \"%@\";\r\n", v];
+
+      if ([[values objectForKey: @"keepCopy"] boolValue])
+	[script appendString: @"keep;\r\n"];
+    }
+  
+  if ([header compare: @"require ["] != NSOrderedSame)
+    {
+      [header appendString: @"];\r\n"];
+      [script insertString: header  atIndex: 0];
+    }
+
+  // We connect to our Sieve server and upload the script
+  address =  [NGInternetSocketAddress addressWithPort: 2000
+				      onHost: [[self imap4URL] host]];
+
+  client = [NGSieveClient clientWithAddress: address];
+  
+  if (!client) {
+    [self errorWithFormat: @"Sieve connection failed on %@", [address description]];
+    return NO;
+  }
+  
+  result = [client login: [[self imap4URL] user]  password:[self imap4Password]];
+  
+  if (![[result valueForKey:@"result"] boolValue]) {
+    [self errorWithFormat: @"Could not login '%@' (%@) on Sieve server: %@: %@",
+	  [[self imap4URL] user], [self imap4Password], client, result];
+    [client closeConnection];
+    return NO;
+  }
+
+  // We delete the existing Sieve script
+  result = [client deleteScript: sieveScriptName];
+  
+  if (![[result valueForKey:@"result"] boolValue]) {
+    [self logWithFormat:@"WARNING: Could not delete Sieve script - continuing...: %@", result];
+  }
+
+  // We put and activate the script only if we actually have a script
+  // that does something...
+  if (b)
+    {
+      result = [client putScript: sieveScriptName  script: script];
+      
+      if (![[result valueForKey:@"result"] boolValue]) {
+	[self errorWithFormat:@"Could not upload Sieve script: %@", result];
+	[client closeConnection];	
+	return NO;
+      }
+      
+      result = [client setActiveScript: sieveScriptName];
+      if (![[result valueForKey:@"result"] boolValue]) {
+	[self errorWithFormat:@"Could not enable Sieve script: %@", result];
+	[client closeConnection];
+	return NO;
+      }
+  }
+
+  return YES;
+}
+
 
 /* hierarchy */
 
@@ -407,11 +546,6 @@ static NSString *fallbackIMAP4Server = nil;
 
   return folderName;
 }
-
-// - (NSString *) sieveFolderNameInContext: (id) _ctx
-// {
-//   return sieveFolderName;
-// }
 
 - (NSString *) sentFolderNameInContext: (id)_ctx
 {
