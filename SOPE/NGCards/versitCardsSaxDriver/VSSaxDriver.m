@@ -95,7 +95,7 @@
 - (id) initEndTag: (NSString *) _tag
 {
   type = 'E';
-  tagName = [_tag copy];
+  ASSIGN (tagName, _tag);
 
   return self;
 }

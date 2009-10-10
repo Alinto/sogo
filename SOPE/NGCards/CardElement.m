@@ -557,10 +557,15 @@
 - (id) copyWithZone: (NSZone *) aZone
 {
   CardElement *new;
+  NSString *newTag, *newGroup;
 
   new = [[self class] new];
-  [new setTag: [tag copyWithZone: aZone]];
-  [new setGroup: [group copyWithZone: aZone]];
+  newTag = [tag copyWithZone: aZone];
+  [new setTag: newTag];
+  [newTag release];
+  newGroup = [group copyWithZone: aZone];
+  [new setGroup: newGroup];
+  [newGroup release];
   [new setValuesAsCopy: [self deepCopyOfArray: values withZone: aZone]];
   [new setAttributesAsCopy: [self deepCopyOfDictionary: attributes
 				  withZone: aZone]];
@@ -572,10 +577,15 @@
 - (id) mutableCopyWithZone: (NSZone *) aZone
 {
   CardElement *new;
+  NSString *newTag, *newGroup;
 
   new = [[self class] new];
-  [new setTag: [tag mutableCopyWithZone: aZone]];
-  [new setGroup: [group mutableCopyWithZone: aZone]];
+  newTag = [tag copyWithZone: aZone];
+  [new setTag: newTag];
+  [newTag release];
+  newGroup = [group copyWithZone: aZone];
+  [new setGroup: newGroup];
+  [newGroup release];
   [new setValuesAsCopy: [self deepCopyOfArray: values withZone: aZone]];
   [new setAttributesAsCopy: [self deepCopyOfDictionary: attributes
 				  withZone: aZone]];

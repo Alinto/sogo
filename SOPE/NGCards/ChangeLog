@@ -1,3 +1,9 @@
+2009-10-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* CardElement.m (-copyWithZone:): we release the "tag" and the
+	"group" copy to avoid a leak.
+	(-mutableCopyWithZone): same as above.
+
 2009-09-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* NSArray+NGCards.m (-renderedForCards): insert the non-blank
