@@ -1,3 +1,10 @@
+2009-10-12  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* Updated patchset to support properly windows-1250
+	charset instead of fallbacking stupidly to iso-8859-1
+	* Updated version number to 1.1.0
+	* Fixed type for the "Administration" module 
+
 2009-10-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailPartViewers/UIxMailPartICalActions.m (-_emailEvent):

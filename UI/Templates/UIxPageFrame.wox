@@ -89,7 +89,7 @@
 	      <var:if condition="isSuperUser">
 		|
 		<var:if condition="isAdministration">
-		    <span class="active"><var:string label:value="Admnistration"
+		    <span class="active"><var:string label:value="Administration"
 		      /></span>
 		</var:if>
 		<var:if condition="isAdministration" const:negate="YES">
