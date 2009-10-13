@@ -186,10 +186,10 @@
   id <WOActionResults> result;
   id <SOGoContactFolder> folder;
   NSString *searchText, *mail;
-  NSDictionary *contact, *data;
+  NSDictionary *data;
   NSArray *folders, *contacts, *descriptors, *sortedContacts;
   NSMutableArray *sortedFolders;
-  NSMutableDictionary *uniqueContacts;
+  NSMutableDictionary *contact, *uniqueContacts;
   unsigned int i, j;
   NSSortDescriptor *commonNameDescriptor;
   BOOL excludeGroups, excludeLists;
