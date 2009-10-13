@@ -547,6 +547,7 @@
     {
       user = [context activeUser];
       delegatedAttendee = [iCalPerson new];
+      [delegatedAttendee autorelease];
       [delegatedAttendee setEmail: delegatedEmail];
       delegatedUid = [delegatedAttendee uid];
       if (delegatedUid)

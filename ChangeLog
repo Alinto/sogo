@@ -1,5 +1,11 @@
 2009-10-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxAppointmentEditor.m (-delegateAction): same as
+	below.
+
+	* UI/MailPartViewers/UIxMailPartICalActions.m (-delegateAction):
+	delegatedAttendee is autoreleased to avoid a leak.
+
 	* SoObjects/SOGo/LDAPSource.m (-dealloc): we release the
 	"searchAttributes" ivar, even though LDAPSource instances are
 	never deallocated.
