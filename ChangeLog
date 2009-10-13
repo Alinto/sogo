@@ -1,3 +1,9 @@
+2009-10-13  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m (-
+	_handleAttendee:withDelegate:ownerUser:statusChange:inEvent:):
+	added proper initialization of variable.
+
 2009-10-12  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* Updated patchset to support properly windows-1250
@@ -19,6 +25,20 @@
 
 	* Main/SOGo.m (-init): released "rm" when no longer needed.
 	(-dispatchRequest:): simplified leak catching code.
+
+2009-10-09  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/PreferencesUI/UIxPreferences.m (+initialize, -init,
+	-isVacationEnabled, -setEnableVacation:, -enableVacation,
+	-setAutoReplyText:, -autoReplyText, -setAutoReplyEmailAddresses:,
+	-autoReplyEmailAddresses, -daysBetweenResponsesList,
+	-setDaysBetweenResponses:, -daysBetweenResponses,
+	-setIgnoreLists:. -ignoreLists, -isForwardEnabled,
+	-setEnableForward:, -enableForward, -setForwardAddress:,
+	-forwardAddress, -setForwardKeepCopy:, -forwardKeepCopy): added
+	web elements to set an auto-reply message and forward address in
+	the preferences window.
+	(-inTheOffice, setInTheOffice:): removed useless methods.
 
 2009-10-08  Ludovic Marcotte  <lmarcotte@inverse.ca>
 

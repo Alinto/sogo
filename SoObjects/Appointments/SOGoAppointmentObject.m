@@ -808,7 +808,7 @@
  
       [attendee setDelegatedTo: [delegate email]];
 
-      NSString *delegatedUID;
+      NSString *delegatedUID = nil;
       NSMutableArray *delegates;
       
       if (removeDelegate)
