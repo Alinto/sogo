@@ -813,7 +813,7 @@
       
       if (removeDelegate)
 	{
-	  delegates = [NSMutableArray new];
+	  delegates = [NSMutableArray array];
 
 	  while (otherDelegate)
 	    {
@@ -846,7 +846,6 @@
 	  [self sendReceiptEmailUsingTemplateNamed: @"Deletion"
 					 forObject: event
 						to: delegates];
-	  [delegates release];
 	}
 
       if (addDelegate)
@@ -939,7 +938,7 @@
   NSMutableArray *element;
   NSDictionary *code;
 
-  element = [NSMutableArray new];
+  element = [NSMutableArray array];
   [element addObject: davElementWithContent (@"recipient", XMLNS_CALDAV,
 					     recipient)];
   [element addObject: davElementWithContent (@"request-status",
@@ -947,7 +946,6 @@
 					     @"2.0;Success")];
   code = davElementWithContent (@"response", XMLNS_CALDAV,
 				element);
-  [element release];
 
   return code;
 }

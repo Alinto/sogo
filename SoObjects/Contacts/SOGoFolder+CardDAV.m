@@ -94,8 +94,7 @@
       if ([(NSArray *) ranges count]
 	  && [(NSArray *) [[ranges objectAtIndex: 0] childNodes] count])
 	{
-	  filterData = [NSMutableDictionary new];
-	  [filterData autorelease];
+	  filterData = [NSMutableDictionary dictionary];
 	  [filterData setObject: [[(NSArray *)[[ranges objectAtIndex: 0] childNodes] lastObject] data]
 		      forKey: [filterElement attribute: @"name"]];
 	}

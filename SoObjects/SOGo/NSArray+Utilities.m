@@ -185,7 +185,7 @@
     }
   representation = [NSString stringWithFormat: @"[%@]",
 			     [jsonElements componentsJoinedByString: @", "]];
-  [jsonElements release];
+  [jsonElements autorelease];
 
   return representation;
 }

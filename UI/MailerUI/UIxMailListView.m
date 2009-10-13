@@ -751,8 +751,7 @@ static NSArray *udColumnOrder = nil;
   NSEnumerator *flags;
   NSString *currentFlag;
 
-  labels = [NSMutableArray new];
-  [labels autorelease];
+  labels = [NSMutableArray array];
 
   flags = [[message objectForKey: @"flags"] objectEnumerator];
   while ((currentFlag = [flags nextObject]))

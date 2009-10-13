@@ -48,9 +48,7 @@
 {
   NSMutableString *cardString;
 
-  cardString = [NSMutableString new];
-  [cardString autorelease];
-
+  cardString = [NSMutableString string];
   if (value && [value length] > 0)
     {
       if (label)
@@ -129,7 +127,7 @@
   NSString *email, *mailTo;
   NSMutableArray *emails;
 
-  emails = [NSMutableArray new];
+  emails = [NSMutableArray array];
   mailTo = nil;
 
   [emails addObjectsFromArray: [card childrenWithTag: @"email"]];
@@ -150,8 +148,6 @@
 			   @" onclick=\"return openMailTo('%@ <%@>');\">"
 			   @"%@</a>", email, [card fn], email, email];
     }
-
-  [emails release];
 
   return [self _cardStringWithLabel: @"Additional Email:"
                value: mailTo];
@@ -276,8 +272,7 @@
   city = [homeAdr value: 3];
   prov = [homeAdr value: 4];
 
-  data = [NSMutableString new];
-  [data autorelease];
+  data = [NSMutableString string];
   [data appendString: city];
   if ([city length] > 0 && [prov length] > 0)
     [data appendString: @", "];
@@ -294,8 +289,7 @@
   postalCode = [homeAdr value: 5];
   country = [homeAdr value: 6];
 
-  data = [NSMutableString new];
-  [data autorelease];
+  data = [NSMutableString string];
   [data appendString: postalCode];
   if ([postalCode length] > 0 && [country length] > 0)
     [data appendFormat: @", ", country];
@@ -417,8 +411,7 @@
   city = [workAdr value: 3];
   prov = [workAdr value: 4];
 
-  data = [NSMutableString new];
-  [data autorelease];
+  data = [NSMutableString string];
   [data appendString: city];
   if ([city length] > 0 && [prov length] > 0)
     [data appendString: @", "];
@@ -435,8 +428,7 @@
   postalCode = [workAdr value: 5];
   country = [workAdr value: 6];
 
-  data = [NSMutableString new];
-  [data autorelease];
+  data = [NSMutableString string];
   [data appendString: postalCode];
   if ([postalCode length] > 0 && [country length] > 0)
     [data appendFormat: @", ", country];
@@ -513,13 +505,13 @@
 
 - (id <WOActionResults>) vcardAction
 {
+#warning this method is unused
   WOResponse *response;
 
   card = [[self clientObject] vCard];
   if (card)
     {
-      response = [WOResponse new];
-      [response autorelease];
+      response = [context response];
       [response setHeader: @"text/vcard" forKey: @"Content-type"];
       [response appendContentString: [card versitString]];
     }

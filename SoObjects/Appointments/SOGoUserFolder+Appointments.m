@@ -327,10 +327,10 @@
   NSMutableArray *response, *props;
   NSDictionary *keyTuple;
 
-  response = [NSMutableArray new];
+  response = [NSMutableArray array];
   [response addObject: davElementWithContent (@"href", XMLNS_WEBDAV,
 					      [collection davURL])];
-  props = [NSMutableArray new];
+  props = [NSMutableArray array];
   max = [properties count];
   for (count = 0; count < max; count++)
     {
@@ -360,8 +360,6 @@
 					       props))];
   [responses addObject: davElementWithContent (@"response", XMLNS_WEBDAV,
 					       response)];
-  [props release];
-  [response release];
 }
 
 - (void) _appendProperties: (NSArray *) properties
@@ -396,16 +394,14 @@
   document = [[context request] contentAsDOMDocument];
   documentElement = [document documentElement];
 
-  matches = [NSMutableDictionary new];
-  properties = [NSMutableArray new];
+  matches = [NSMutableDictionary dictionary];
+  properties = [NSMutableArray array];
   [self _fillPrincipalMatches: matches andProperties: properties
 	fromElement: documentElement];
   collections = [self _principalCollectionsMatching: matches];
   r = [self _prepareResponseFromContext: queryContext];
   [self _appendProperties: properties ofCollections: collections
 	toResponse: r];
-  [properties release];
-  [matches release];
 
   return r;
 //        @"<D:response><D:href>/SOGo/dav/wsourdeau/</D:href>"
