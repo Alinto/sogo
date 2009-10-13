@@ -1099,6 +1099,7 @@ function configureiCalLinksInMessage() {
             delegatedToLink.stopObserving("click");
             delegatedToLink.observe("click", function(event) {
                     $("delegatedTo").show();
+                    $("iCalendarDelegate").show();
                     $("delegatedTo").focus();
                     this.hide();
                     Event.stop(event);
@@ -1110,8 +1111,12 @@ function configureiCalLinksInMessage() {
 function onICalendarDelegate(event) {
     var link = $("iCalendarAttachment").value;
     if (link) {
-        var currentMsg = Mailer.currentMailbox + "/"
-            + Mailer.currentMessages[Mailer.currentMailbox];
+        var currentMsg;
+        if ($(document.body).hasClassName("popup"))
+            currentMsg = mailboxName + "/" + messageName;
+        else
+            currentMsg = Mailer.currentMailbox + "/"
+                + Mailer.currentMessages[Mailer.currentMailbox];
         delegateInvitation(link, ICalendarButtonCallback, currentMsg);
     }
 }
@@ -1130,26 +1135,36 @@ function onICalendarButtonClick(event) {
 }
 
 function ICalendarButtonCallback(http) {
-    if (isHttpStatus204(http.status)) {
-        var oldMsg = http.callbackData;
-        var msg = Mailer.currentMailbox + "/" + Mailer.currentMessages[Mailer.currentMailbox];
-        deleteCachedMessage(oldMsg);
-        if (oldMsg == msg) {
-            loadMessage(Mailer.currentMessages[Mailer.currentMailbox]);
-        }
-        for (var i = 0; i < Mailer.popups.length; i++)
-            if (Mailer.popups[i].messageUID == oldMsg) {
-                Mailer.popups[i].location.reload();
-                break;
+    if ($(document.body).hasClassName("popup")) {
+        if (window.opener && window.opener.open && !window.opener.closed)
+            window.opener.ICalendarButtonCallback(http);
+        else
+            window.location.reload();
+    }
+    else {
+        log ("ICalendarButtonCallback");
+        if (isHttpStatus204(http.status)) {
+            var oldMsg = http.callbackData;
+            var msg = Mailer.currentMailbox + "/" + Mailer.currentMessages[Mailer.currentMailbox]; log (oldMsg + " => " + msg);
+            deleteCachedMessage(oldMsg);
+            if (oldMsg == msg) {
+                loadMessage(Mailer.currentMessages[Mailer.currentMailbox]);
             }
+            for (var i = 0; i < Mailer.popups.length; i++) {
+                if (Mailer.popups[i].messageUID == oldMsg) {
+                    Mailer.popups[i].location.reload();
+                    break;
+                }
+            }
+        }
+        else if (http.status == 403) {
+            var data = http.responseText;
+            var msg = data.replace(/^(.*\n)*.*<p>((.*\n)*.*)<\/p>(.*\n)*.*$/, "$2");
+            window.alert(clabels[msg]?clabels[msg]:msg);
+        }
+        else
+            window.alert("received code: " + http.status + "\nerror: " + http.responseText);
     }
-    else if (http.status == 403) {
-        var data = http.responseText;
-        var msg = data.replace(/^(.*\n)*.*<p>((.*\n)*.*)<\/p>(.*\n)*.*$/, "$2");
-        window.alert(clabels[msg]?clabels[msg]:msg);
-    }
-    else
-        window.alert("received code: " + http.status + "\nerror: " + http.responseText);
 }
 
 function resizeMailContent() {

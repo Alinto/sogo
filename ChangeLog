@@ -1,5 +1,9 @@
 2009-10-13  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/WebServerResources/MailerUI.js (-ICalendarButtonCallback):
+	delegate the execution of this method to the parent when called
+	from a popup window. This way, popups are properly reloaded when necessary.
+
 	* SoObjects/Appointments/SOGoAppointmentObject.m (-
 	_handleAttendee:withDelegate:ownerUser:statusChange:inEvent:):
 	added proper initialization of variable.
