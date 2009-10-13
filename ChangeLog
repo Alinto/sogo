@@ -1,5 +1,9 @@
 2009-10-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/LDAPSource.m (-dealloc): we release the
+	"searchAttributes" ivar, even though LDAPSource instances are
+	never deallocated.
+
 	* SoObjects/Mailer/SOGoMailObject+Draft.m (-contentForEditing):
 	"keys" must be autoreleased to avoid a leak.
 

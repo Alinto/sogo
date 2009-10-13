@@ -196,6 +196,7 @@ static NSLock *lock;
   [sourceID release];
   [modulesConstraints release];
   [_scope release];
+  [searchAttributes release];
   [super dealloc];
 }
 
