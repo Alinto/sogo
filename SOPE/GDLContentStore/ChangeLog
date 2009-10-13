@@ -1,3 +1,9 @@
+2009-10-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* GCSFolder.m (_tableRequirementForFields:andOrQualifier:): fixed
+	a double release of "allFields" occuring in the rare case where
+	the amount of fields would be 0.
+
 2009-09-10  Cyril Robert <crobert@inverse.ca>
 
 	* GCSFolder.m (deleteAllContent): New method to delete everything in the

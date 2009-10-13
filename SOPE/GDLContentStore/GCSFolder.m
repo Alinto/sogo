@@ -295,7 +295,7 @@ static NSArray *contentFieldNames = nil;
   unsigned int fieldCount;
 
   requirement = noTableRequired;
-  allFields = [NSMutableArray new];
+  allFields = [NSMutableArray array];
   if ([fields count])
     [allFields addObjectsFromArray: fields];
   quFields = [[qualifier allQualifierKeys] allObjects];
@@ -314,13 +314,8 @@ static NSArray *contentFieldNames = nil;
 	requirement |= quickTableRequired;
     }
   else
-    {
-      [allFields release];
-      [NSException raise: @"GCSFolderMissingFieldNames"
-		   format: @"No field specified for query"];
-    }
-
-  [allFields release];
+    [NSException raise: @"GCSFolderMissingFieldNames"
+                format: @"No field specified for query"];
 
   return requirement;
 }
@@ -456,7 +451,7 @@ static NSArray *contentFieldNames = nil;
 	[sql appendString: [self storeTableName]];
     }
 
-  whereSql = [NSMutableArray new];
+  whereSql = [NSMutableArray array];
   if (qualifier)
     {
       whereString = [NSString stringWithFormat: @"(%@)",
@@ -476,7 +471,6 @@ static NSArray *contentFieldNames = nil;
   if ([whereSql count])
     [sql appendFormat: @" WHERE %@",
 	 [whereSql componentsJoinedByString: @" AND "]];
-  [whereSql release];
 
   sortOrderings = [spec sortOrderings];
   if ([sortOrderings count] > 0)
