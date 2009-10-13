@@ -1,3 +1,14 @@
+2009-10-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailObject+Draft.m (-contentForEditing):
+	"keys" must be autoreleased to avoid a leak.
+
+	* UI/Common/UIxAclEditor.m (-setUserUIDs): we need to retain the
+	array of user ids to avoid a zombie.
+
+	* UI/Common/UIxPageFrame.m (-dealloc): we release
+	additionalCSSFiles to avoid a leak.
+
 2009-10-12  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* Updated patchset to support properly windows-1250
