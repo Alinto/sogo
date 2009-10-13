@@ -213,8 +213,7 @@ static NSString *spoolFolder = nil;
   NSArray *result;
   NSString *currentFolderName, *prefix;
 
-  deepSubfolders = [NSMutableArray new];
-  [deepSubfolders autorelease];
+  deepSubfolders = [NSMutableArray array];
 
   prefix = [self absoluteImap4Name];
 
@@ -1174,12 +1173,12 @@ static NSString *spoolFolder = nil;
 
 - (NSArray *) _sortOrderingsFromSortElement: (DOMElement *) sortElement
 {
+  static NSMutableDictionary *criteriasMap = nil;
   NSArray *davSortCriterias;
   NSMutableArray *sortOrderings;
   SEL sortOrderingOrder;
   NSString *davSortVerb, *imapSortVerb;
   EOSortOrdering *currentOrdering;
-  static NSMutableDictionary *criteriasMap = nil;
   int count, max;
 
   if (!criteriasMap)

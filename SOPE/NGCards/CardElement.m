@@ -165,8 +165,7 @@
   attrValues = [attributes objectForCaseInsensitiveKey: anAttribute];
   if (!attrValues)
     {
-      attrValues = [NSMutableArray new];
-      [attrValues autorelease];
+      attrValues = [NSMutableArray array];
       [attributes setObject: attrValues forKey: anAttribute];
     }
 
@@ -362,8 +361,7 @@
   attrValues = [attributes objectForCaseInsensitiveKey: anAttribute];
   if (!attrValues)
     {
-      attrValues = [NSMutableArray new];
-      [attrValues autorelease];
+      attrValues = [NSMutableArray array];
       [attributes setObject: attrValues forKey: anAttribute];
     }
 

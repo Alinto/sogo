@@ -306,7 +306,7 @@ _xmlCharsetForCharset (NSString *charset)
         }
       else
         {
-          resultPart = [NSMutableString new];
+          resultPart = [NSMutableString string];
           [resultPart appendFormat: @"<%@", _rawName];
 
           max = [_attributes count];
@@ -353,7 +353,6 @@ _xmlCharsetForCharset (NSString *charset)
 
           [resultPart appendString: @">"];
           [result appendString: resultPart];
-          [resultPart release];
         }
     }
 }

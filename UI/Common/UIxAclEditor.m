@@ -161,7 +161,10 @@
 - (void) setUserUIDS: (NSString *) retainedUsers
 {
   if ([retainedUsers length] > 0)
-    savedUIDs = [retainedUsers componentsSeparatedByString: @","];
+    {
+      savedUIDs = [retainedUsers componentsSeparatedByString: @","];
+      [savedUIDs retain];
+    }
   else
     savedUIDs = [NSArray new];
 }

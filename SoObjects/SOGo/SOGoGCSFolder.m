@@ -444,6 +444,7 @@ static NSArray *childRecordFields = nil;
   NSURL *folderLocation;
   NSString *sql;
 
+#warning SOGoFolder should have the corresponding method
   [displayName release];
   displayName = nil;
 

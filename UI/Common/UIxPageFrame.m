@@ -53,6 +53,7 @@ static NSString *siteFavicon = nil;
       title = nil;
       toolbar = nil;
       additionalJSFiles = nil;
+      additionalCSSFiles = nil;
     }
 
   return self;
@@ -64,6 +65,7 @@ static NSString *siteFavicon = nil;
   [title release];
   [toolbar release];
   [additionalJSFiles release];
+  [additionalCSSFiles release];
   [super dealloc];
 }
 

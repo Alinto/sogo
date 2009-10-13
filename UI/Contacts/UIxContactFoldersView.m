@@ -67,10 +67,7 @@
   ud = [activeUser userSettings];
   moduleSettings = [ud objectForKey: module];
   if (!moduleSettings)
-    {
-      moduleSettings = [NSMutableDictionary new];
-      [moduleSettings autorelease];
-    }
+    moduleSettings = [NSMutableDictionary dictionary];
   [ud setObject: moduleSettings forKey: module];
 }
 
@@ -317,8 +314,7 @@
             //                             onObject: contactFolder
            //                             inContext: context] == nil)
 
-  folders = [NSMutableArray new];
-  [folders autorelease];
+  folders = [NSMutableArray array];
 
   subfolders = [[parentFolder subFolders] objectEnumerator];
   while ((subfolder = [subfolders nextObject]))

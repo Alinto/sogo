@@ -26,6 +26,8 @@
 #import <NGCards/NGVCard.h>
 #import <NGCards/NGVCardReference.h>
 
+#import <SOGo/NSArray+Utilities.h>
+
 #import "UIxListView.h"
 
 @implementation UIxListView

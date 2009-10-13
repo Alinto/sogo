@@ -263,7 +263,7 @@ static BOOL        showTextAttachmentsInline  = NO;
 
   if ([self _ensureDraftFolderPath])
     {
-      infos = [NSMutableDictionary new];		
+      infos = [NSMutableDictionary dictionary];
       [infos setObject: headers forKey: @"headers"];
       if (text)
 	[infos setObject: text forKey: @"text"];
@@ -287,8 +287,6 @@ static BOOL        showTextAttachmentsInline  = NO;
 	  error = [NSException exceptionWithHTTPStatus:500 /* server error */
 			       reason: @"could not write draft info!"];
 	}
-
-      [infos release];
     }
   else
     {
@@ -470,13 +468,13 @@ static BOOL        showTextAttachmentsInline  = NO;
   NSMutableArray *to, *addrs, *allRecipients;
   NSArray *envelopeAddresses, *userEmails;
 
-  allRecipients = [NSMutableArray new];
+  allRecipients = [NSMutableArray array];
   userEmails = [[context activeUser] allEmails];
   [allRecipients addObjectsFromArray: userEmails];
 
   to = [NSMutableArray arrayWithCapacity: 2];
 
-  addrs = [NSMutableArray new];
+  addrs = [NSMutableArray array];
   envelopeAddresses = [_envelope replyTo];
   if ([envelopeAddresses count])
     [addrs setArray: envelopeAddresses];
@@ -530,9 +528,6 @@ static BOOL        showTextAttachmentsInline  = NO;
 
       [to release];
     }
-
-  [allRecipients release];
-  [addrs release];
 }
 
 - (NSArray *) _attachmentBodiesFromPaths: (NSArray *) paths

@@ -328,10 +328,7 @@
       ud = [[context activeUser] userSettings];
       mailSettings = [ud objectForKey: @"Mail"];
       if (!mailSettings)
-	{
-	  mailSettings = [NSMutableDictionary new];
-	  [mailSettings autorelease];
-	}
+        mailSettings = [NSMutableDictionary dictionary];
       [ud setObject: mailSettings forKey: @"Mail"];
       [mailSettings setObject: [co traversalFromMailAccount]
 		    forKey: [NSString stringWithFormat: @"%@Folder",

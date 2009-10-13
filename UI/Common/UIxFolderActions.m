@@ -65,10 +65,7 @@
   ud = [activeUser userSettings];
   moduleSettings = [ud objectForKey: baseFolder];
   if (!moduleSettings)
-    {
-      moduleSettings = [NSMutableDictionary new];
-      [moduleSettings autorelease];
-    }
+    moduleSettings = [NSMutableDictionary dictionary];
   [ud setObject: moduleSettings forKey: baseFolder];
 
   mailInvitationParam
