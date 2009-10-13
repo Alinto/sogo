@@ -47,9 +47,9 @@
 
   struct
   {
-    int modified: 1;
-    int isNew: 1;
-    int ready: 1;
+    BOOL modified;
+    BOOL isNew;
+    BOOL ready;
   } defFlags;
 }
 

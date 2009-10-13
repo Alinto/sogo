@@ -57,6 +57,13 @@ static NSTimeInterval cleanupInterval = 300;
 static NSMutableDictionary *cache = nil;
 static NSMutableDictionary *users = nil;
 
+// localCache is used to avoid going all the time to the memcached server during
+// each request. We'll cache the value we got from memcached for the duration
+// of the current request - which is good enough for pretty much all caces. We 
+// surely don't want to get new defaults/settings during the _same_ requests, it
+// could produce relatively strange behaviors
+static NSMutableDictionary *localCache = nil;
+
 static NSString *memcachedServerName = @"localhost";
 
 static SOGoCache *sharedCache = nil;
@@ -103,6 +110,7 @@ static NSLock *lock;
   // This is essential for refetching the cached values in case something has changed
   // accross various sogod processes
   [users removeAllObjects];
+  [localCache removeAllObjects];
 #if defined(THREADSAFE)
   [lock unlock];
 #endif
@@ -117,6 +125,7 @@ static NSLock *lock;
       
       cache = [[NSMutableDictionary alloc] init];
       users = [[NSMutableDictionary alloc] init];
+      localCache = [[NSMutableDictionary alloc] init];
       
       // We fire our timer that will cleanup cache entries
       cleanupSetting = [[NSUserDefaults standardUserDefaults] 
@@ -146,6 +155,7 @@ static NSLock *lock;
   memcached_free(handle);
   [cache release];
   [users release];
+  [localCache release];
   [super dealloc];
 }
 
@@ -265,30 +275,42 @@ static NSLock *lock;
                         forLogin: (NSString *) theLogin
 {
   NSDictionary *d;
-  memcached_return rc;
+  NSString *k;
+
   const char *key;
-  char *s;
-  unsigned int len, flags;
-  size_t vlen;
+  unsigned int len;
 
   if (!handle)
     return nil;
 
-  key = [[NSString stringWithFormat: @"%@+%@", theLogin, theType] UTF8String];
+  k = [NSString stringWithFormat: @"%@+%@", theLogin, theType];
+  key = [k UTF8String];
   len = strlen(key);
-  d = nil;
 
-  s = memcached_get(handle, key, len, &vlen, &flags, &rc);
+  d = [localCache objectForKey: k];
 
-  if (rc == MEMCACHED_SUCCESS && s)
+  if (!d)
     {
-      NSString *v;
+      memcached_return rc;
+      unsigned int flags;
+      size_t vlen;
+      char *s;
 
-      v = [NSString stringWithUTF8String: s];
-      d = [NSDictionary dictionaryWithJSONString: v];
-      //[self logWithFormat: @"read values (%@) for subtype %@ for user %@", [d description], theType, theLogin];
-
-      free(s);
+      s = memcached_get(handle, key, len, &vlen, &flags, &rc);
+      
+      if (rc == MEMCACHED_SUCCESS && s)
+	{
+	  NSString *v;
+	  
+	  v = [NSString stringWithUTF8String: s];
+	  d = [NSDictionary dictionaryWithJSONString: v];
+	  //[self logWithFormat: @"read values (%@) for subtype %@ for user %@", [d description], theType, theLogin];
+	  
+	  // Cache the value in our localCache
+	  [localCache setObject: d  forKey: k];
+	  
+	  free(s);
+	}
     }
 
   return d;

@@ -56,6 +56,7 @@ static NSString *uidColumnName = @"c_uid";
 	  url = [theURL copy];
 	  uid = [theUID copy];
 	  defFlags.ready = YES;
+	  defFlags.isNew = YES;
 	}
       else
 	{
@@ -134,7 +135,7 @@ static NSString *uidColumnName = @"c_uid";
   
 	  /* fetch values */
 	  row = [channel fetchAttributes: attrs withZone: NULL];
-	  defFlags.isNew = (row == nil);
+	  defFlags.isNew = !row;
 	  [channel cancelFetch];
   
 	  /* remember values */
@@ -307,7 +308,7 @@ static NSString *uidColumnName = @"c_uid";
 
   [self fetchProfile];
   if (values)
-    jsonRep = [values jsonRepresentation];
+    jsonRep = [values jsonStringValue];
   else
     jsonRep = @"{}";
 
@@ -400,13 +401,6 @@ static NSString *uidColumnName = @"c_uid";
 
   /* refetch */
   return [self primaryFetchProfile];
-}
-
-- (void) flush
-{
-  [values removeAllObjects];
-  defFlags.modified = NO;
-  defFlags.isNew = NO;
 }
 
 /* typed accessors */

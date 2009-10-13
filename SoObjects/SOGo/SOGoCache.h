@@ -30,7 +30,6 @@
 
 @class NSMutableDictionary;
 @class NSString;
-@class NSTimer;
 @class NSUserDefaults;
 
 @class SOGoObject;
@@ -40,7 +39,6 @@
 @interface SOGoCache : NSObject
 {
   @private
-    NSTimer *_cleanupTimer;
     memcached_server_st *servers;
     memcached_st *handle;
 }

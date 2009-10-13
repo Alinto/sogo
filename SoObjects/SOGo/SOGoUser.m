@@ -507,16 +507,23 @@ _timeValue (NSString *key)
 	      
 	      if (values)
 		{		  
-		  // Required parameters for the Web interface. This will trigger the
-		  // preferences to load so it's important to leave those calls here.
-		  if (![[_defaults stringForKey: @"ReplyPlacement"] length])
-		    [_defaults setObject: defaultReplyPlacement forKey: @"ReplyPlacement"];
-		  if (![[_defaults stringForKey: @"SignaturePlacement"] length])
-		    [_defaults setObject: defaultSignaturePlacement forKey: @"SignaturePlacement"];
-		  if (![[_defaults stringForKey: @"MessageForwarding"] length])
-		    [_defaults setObject: defaultMessageForwarding forKey: @"MessageForwarding"];
+		  BOOL b;
+		  
+		  b = NO;
+
 		  if (![[_defaults stringForKey: @"MessageCheck"] length])
-		    [_defaults setObject: defaultMessageCheck forKey: @"MessageCheck"];
+		    {
+		      [_defaults setObject: defaultMessageCheck forKey: @"MessageCheck"];
+		      b = YES;
+		    }
+		  if (![[_defaults stringForKey: @"TimeZone"] length])
+		    {
+		      [_defaults setObject: [serverTimeZone name] forKey: @"TimeZone"];
+		      b = YES;
+		    }
+		  
+		  if (b)
+		    [_defaults synchronize];
 
 		  [[SOGoCache sharedCache] cacheValues: [_defaults values]  ofType: @"defaults"  forLogin: login];
 		}
@@ -1047,7 +1054,7 @@ _timeValue (NSString *key)
 /* module access */
 - (BOOL) canAccessModule: (NSString *) module
 {
-  NSString *accessValue;
+  id accessValue;
 
   accessValue = [self _fetchFieldForUser:
 			[NSString stringWithFormat: @"%@Access", module]];

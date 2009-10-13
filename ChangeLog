@@ -1,3 +1,22 @@
+2009-10-13  Ludovic Marcotte  <lmarcotte@inverse.ca>
+ 
+	* SoObjects/SOGo/NSDictionary+BSJSONAdditions.m
+        Fixed the objCType comparison on GNUstep for boolean
+        values - we must consider 'c' and 'C'
+        * SoObjects/SOGo/SOGoCache.m
+        Introduce a localCache static variable to avoid going
+        to memcached all the time. We'll cache values during
+        the request and flush them after.
+        * SoObjects/SOGo/SOGoUser.m
+        Modified -userDefaults to set the timezone when prefs
+        have first been set.
+        * SoObjects/SOGo/SOGoUserDefaults.m
+        Reworked the logic in order to use the correct UPDATE/INSERT
+        statement when prefs exist or not. Also cleaned up the
+        types definition.
+        * UI/PreferencesUI/UIxPreferences.m
+        Removed worthless NSLog() call.
+
 2009-10-13  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/MailerUI.js (-ICalendarButtonCallback):

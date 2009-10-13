@@ -97,9 +97,10 @@ const int jsonDoNotIndent = -1;
     jsonString = jsonNullString;
   else if ([value respondsToSelector:@selector(objCType)]) { // NSNumber - representing true, false, and any form of numeric
     NSNumber *number = (NSNumber *)value;
-    if (((*[number objCType]) == 'c') && ([number boolValue] == YES)) // true
+    const char *t = [number objCType];
+    if (((*t == 'c') || *t == 'C') && ([number boolValue] == YES)) // true
       jsonString = jsonTrueString;
-    else if (((*[number objCType]) == 'c') && ([number boolValue] == NO)) // false
+    else if (((*t == 'c') || *t == 'C') && ([number boolValue] == NO)) // false
       jsonString = jsonFalseString;
     else // attempt to handle as a decimal number - int, fractional, exponential
       // TODO: values converted from exponential json to dict and back to json do not format as exponential again

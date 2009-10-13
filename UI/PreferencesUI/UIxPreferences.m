@@ -1043,7 +1043,6 @@ static BOOL forwardEnabled = NO;
                        forKey: @"CalendarCategories"];
       [userDefaults setObject: [plist objectAtIndex: 1] 
                        forKey: @"CalendarCategoriesColors"];
-      NSLog ([plist description]);
     }
   
 }
