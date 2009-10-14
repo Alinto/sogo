@@ -1,3 +1,10 @@
+2009-10-14  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Scheduler/UIxComponentEditor.m (-getEventRWType): the user
+	is not an attendee when dealing with web calendars.
+	(-_toolbarForOwner:andClientObject:): no toolbar should appear
+	when dealing with web calendars.
+
 2009-10-14  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* UI/Scheduler/UIxCalMainActions.m
@@ -8,7 +15,7 @@
  
 	* SoObjects/SOGo/NSDictionary+BSJSONAdditions.m
         Fixed the objCType comparison on GNUstep for boolean
-        values - we must consider 'c' and 'C'
+        values - we must consider 'c' and 'C'.
         * SoObjects/SOGo/SOGoCache.m
         Introduce a localCache static variable to avoid going
         to memcached all the time. We'll cache values during
