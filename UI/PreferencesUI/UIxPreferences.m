@@ -742,28 +742,33 @@ static BOOL forwardEnabled = NO;
 		      forKey: @"autoReplyEmailAddresses"];
 }
 
-- (NSString *) autoReplyEmailAddresses
+- (NSString *) defaultEmailAddresses
 {
   NSArray *addressesList;
-  NSMutableArray *newAddressesList;
+  NSMutableArray *uniqueAddressesList;
   NSString *address;
   unsigned int i;
 
-  addressesList = [vacationOptions objectForKey: @"autoReplyEmailAddresses"];
-  if (!addressesList)
+  uniqueAddressesList = [NSMutableArray array];
+  addressesList = [NSMutableArray arrayWithArray: [user allEmails]];
+   for (i = 0; i < [addressesList count]; i++)
     {
-      newAddressesList = [NSMutableArray array];
-      addressesList = [NSMutableArray arrayWithArray: [user allEmails]];
-      for (i = 0; i < [addressesList count]; i++)
-	{
-	  address = [addressesList objectAtIndex: i];
-	  if (![newAddressesList containsObject: address])
-	    [newAddressesList addObject: address];
-	}
-      addressesList = newAddressesList;
+      address = [addressesList objectAtIndex: i];
+      if (![uniqueAddressesList containsObject: address])
+	[uniqueAddressesList addObject: address];
     }
 
-  return [addressesList componentsJoinedByString: @", "];
+  return [uniqueAddressesList componentsJoinedByString: @", "];
+}
+
+- (NSString *) autoReplyEmailAddresses
+{
+  NSArray *addressesList;
+ 
+  addressesList = [vacationOptions objectForKey: @"autoReplyEmailAddresses"];
+
+  return (addressesList?
+	  [addressesList componentsJoinedByString: @", "] : [self defaultEmailAddresses]);
 }
 
 - (NSArray *) daysBetweenResponsesList

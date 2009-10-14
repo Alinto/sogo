@@ -1,5 +1,14 @@
 2009-10-14  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/PreferencesUI/UIxPreferences.m (-defaultEmailAddresses): new
+	method that returns a string representation of all the user's
+	email addresses.
+
+	* UI/WebServerResources/UIxPreferences.js
+	(addDefaultEmailAddresses): new function that make sure all of the
+	user's default email addresses appear in the addresses textarea of
+	the vacation tab.
+
 	* UI/WebServerResources/SchedulerUI.js (changeCalendarDisplay):
 	don't highlight the day selection when in the day view.
 	(eventsListCallback): don't popup event window when

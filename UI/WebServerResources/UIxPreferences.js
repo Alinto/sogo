@@ -70,25 +70,40 @@ function onChoiceChanged(event) {
     _setupEvents(false);
 }
 
+function addDefaultEmailAddresses() {
+    var defaultAddresses = $("defaultEmailAddresses").value.split(/, */);
+    var addresses = $("autoReplyEmailAddresses").value.split(/, */);
+
+    defaultAddresses.each(function(adr) {
+            for (var i = 0; i < addresses.length; i++)
+                if (adr == addresses[i])
+                    break;
+            if (i == addresses.length)
+                addresses.push(adr);
+        });
+    
+    $("autoReplyEmailAddresses").value = addresses.join(", ");
+}
+
 function initPreferences() {
     _setupEvents(true);
     if (typeof (initAdditionalPreferences) != "undefined")
         initAdditionalPreferences();
 
     if ($("signature")) {
-        onComposeMessagesTypeChange ();
+        onComposeMessagesTypeChange();
     }
 
     var table = $("categoriesList");
     if (table) {
-        resetCategoriesColors (null);
+        resetCategoriesColors(null);
         var r = $$("TABLE#categoriesList tbody tr");
-        for (var i=0; i<r.length; i++)
-            r[i].identify ();
+        for (var i= 0; i < r.length; i++)
+            r[i].identify();
         table.multiselect = true;
-        resetTableActions ();
-        $("categoryAdd").observe ("click", onCategoryAdd);
-        $("categoryDelete").observe ("click", onCategoryDelete);
+        resetTableActions();
+        $("categoryAdd").observe("click", onCategoryAdd);
+        $("categoryDelete").observe("click", onCategoryDelete);
     }
 
     // Disable placement (after) if composing in HTML
@@ -99,6 +114,9 @@ function initPreferences() {
         }
         onReplyPlacementListChange ();
     }
+
+    if ($("addDefaultEmailAddresses"))
+        $("addDefaultEmailAddresses").observe("click", addDefaultEmailAddresses);
 }
 
 function resetTableActions() {

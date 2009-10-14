@@ -187,7 +187,6 @@
 			  var:checked="enableVacation" />
 	    <var:string label:value="Enable vacation auto reply"/></label>
 	  <div id="vacation">
-	    
 	    <label><var:string label:value="Auto reply message :"/><br/>
 	    <textarea const:name="autoReplyText"
 		      const:id="autoReplyText"
@@ -195,9 +194,15 @@
 	    </label><br/>
 	    
 	    <label><var:string label:value="Email addresses (separated by commas) :"/><br/>
+	    <input type="hidden"
+		   const:id="defaultEmailAddresses"
+		   var:value="defaultEmailAddresses" />
 	    <textarea const:name="autoReplyEmailAddresses"
 		      const:id="autoReplyEmailAddresses"
-		      var:value="autoReplyEmailAddresses" />
+		      var:value="autoReplyEmailAddresses" /><br/>
+	    <span><input type="button" class="button"
+	    	id="addDefaultEmailAddresses"
+		label:value="Add default email addresses" /></span>
 	    </label><br/>
 
 	    <label><var:string label:value="Days between responses :"/> 
