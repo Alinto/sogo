@@ -1919,13 +1919,14 @@ RANGE(2);
   if (isOrganizer)
     isOrganizer = ![ownerUser hasEmail: [[component organizer] sentBy]];
 
-  if ([[component attendees] count]
-      && [component userIsParticipant: ownerUser]
-      && !isOrganizer
-      // Lightning does not manage participation status within tasks,
-      // so we also ignore the participation status of tasks in the
-      // web interface.
-      && ![[component tag] isEqualToString: @"VTODO"])
+  if ([componentCalendar isKindOfClass: [SOGoWebAppointmentFolder class]]
+      || ([[component attendees] count]
+	  && [component userIsParticipant: ownerUser]
+	  && !isOrganizer
+	  // Lightning does not manage participation status within tasks,
+	  // so we also ignore the participation status of tasks in the
+	  // web interface.
+	  && ![[component tag] isEqualToString: @"VTODO"]))
     toolbarFilename = @"SOGoEmpty.toolbar";
   else
     {
@@ -2048,7 +2049,7 @@ RANGE(2);
                                 roles: nil];
 
   if ([componentCalendar isKindOfClass: [SOGoWebAppointmentFolder class]])
-    rc = 1;
+    rc = 2;
   else
     {
       if ([ownerUser isEqual: [context activeUser]])
