@@ -118,7 +118,7 @@
       webCalendars = [NSMutableDictionary dictionary];
       [calSettings setObject: webCalendars forKey: @"WebCalendars"];
     }
-  [webCalendars setObject: calendarURL forKey: calendarName];
+  [webCalendars setObject: [calendarURL absoluteString]  forKey: calendarName];
   [settings synchronize];
 }
 

@@ -323,7 +323,7 @@ static NSString *LDAPContactInfoAttribute = nil;
   [response setHeader: @"text/plain; charset=utf-8"
 	    forKey: @"Content-Type"];
 
-  responseString = [NSMutableString new];
+  responseString = [NSMutableString string];
 
   // We sort our array - this is pretty useful for the Web
   // interface of SOGo.
@@ -353,7 +353,6 @@ static NSString *LDAPContactInfoAttribute = nil;
         }
     }
   [response appendContentString: responseString];
-  [responseString release];
 
   return response;
 }

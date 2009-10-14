@@ -240,8 +240,7 @@
   NSCalendarDate *startDate;
   NSTimeZone *dtz;
 
-  title = [NSMutableString new];
-  [title autorelease];
+  title = [NSMutableString string];
 
   dtz        = [self displayTZ];
   startDate  = [_apt valueForKey: @"startDate"];

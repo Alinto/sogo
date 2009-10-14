@@ -176,9 +176,7 @@
   NSMutableArray *hours;
   unsigned int h;
 
-  hours = [NSMutableArray new];
-  [hours autorelease];
-
+  hours = [NSMutableArray array];
   for (h = startHour; h < (endHour + 1); h++)
     [hours addObject: [NSNumber numberWithInt: h]];
 
@@ -210,9 +208,7 @@
   NSMutableArray *minutes;
   unsigned int m;
 
-  minutes = [NSMutableArray new];
-  [minutes autorelease];
-
+  minutes = [NSMutableArray array];
   for (m = 0; m < 60; m += 15)
     [minutes addObject: [NSNumber numberWithInt: m]];
 

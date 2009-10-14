@@ -10,6 +10,12 @@
 	(-_toolbarForOwner:andClientObject:): no toolbar should appear
 	when dealing with web calendars.
 
+2009-10-14  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* UI/Scheduler/UIxCalMainActions.m
+	We store the string value of the URL in our
+	prefs, not the NSURL instance.
+
 2009-10-13  Ludovic Marcotte  <lmarcotte@inverse.ca>
  
 	* SoObjects/SOGo/NSDictionary+BSJSONAdditions.m
@@ -40,6 +46,20 @@
 	added proper initialization of variable.
 
 2009-10-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxComponentEditor.m (-setComponent:): we invoke
+	_loadAttendee only when "jsonAttendees" is not set, even though
+	that condition should always be true.
+
+	* UI/PreferencesUI/UIxPreferences.m (-setCategoriesValue): we use
+	[self errorWithFormat:] rather than NSLog to output
+	deserialization errors.
+
+	* UI/Scheduler/UIxAppointmentEditor.m (-delegateAction): same as
+	below.
+
+	* UI/MailPartViewers/UIxMailPartICalActions.m (-delegateAction):
+	delegatedAttendee is autoreleased to avoid a leak.
 
 	* SoObjects/SOGo/LDAPSource.m (-dealloc): we release the
 	"searchAttributes" ivar, even though LDAPSource instances are
