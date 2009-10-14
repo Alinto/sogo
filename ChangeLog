@@ -29,6 +29,20 @@
 
 2009-10-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxComponentEditor.m (-setComponent:): we invoke
+	_loadAttendee only when "jsonAttendees" is not set, even though
+	that condition should always be true.
+
+	* UI/PreferencesUI/UIxPreferences.m (-setCategoriesValue): we use
+	[self errorWithFormat:] rather than NSLog to output
+	deserialization errors.
+
+	* UI/Scheduler/UIxAppointmentEditor.m (-delegateAction): same as
+	below.
+
+	* UI/MailPartViewers/UIxMailPartICalActions.m (-delegateAction):
+	delegatedAttendee is autoreleased to avoid a leak.
+
 	* SoObjects/SOGo/LDAPSource.m (-dealloc): we release the
 	"searchAttributes" ivar, even though LDAPSource instances are
 	never deallocated.

@@ -264,6 +264,7 @@
     {
       user = [context activeUser];
       delegatedAttendee = [iCalPerson new];
+      [delegatedAttendee autorelease];
       [delegatedAttendee setEmail: delegatedEmail];
       delegatedUid = [delegatedAttendee uid];
       if (delegatedUid)
@@ -272,7 +273,6 @@
 	  delegatedUser = [SOGoUser userWithLogin: delegatedUid];
 	  [delegatedAttendee setCn: [delegatedUser cn]];
 	}
-      
       [delegatedAttendee setRole: @"REQ-PARTICIPANT"];
       [delegatedAttendee setRsvp: @"TRUE"];
       [delegatedAttendee setParticipationStatus: iCalPersonPartStatNeedsAction];
