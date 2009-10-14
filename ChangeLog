@@ -1,3 +1,9 @@
+2009-10-14  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* UI/Scheduler/UIxCalMainActions.m
+	We store the string value of the URL in our
+	prefs, not the NSURL instance.
+
 2009-10-13  Ludovic Marcotte  <lmarcotte@inverse.ca>
  
 	* SoObjects/SOGo/NSDictionary+BSJSONAdditions.m
