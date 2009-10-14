@@ -604,7 +604,9 @@ function eventsListCallback(http) {
                 row.hour = startDate.getHourString();
                 row.observe("mousedown", onRowClick);
                 row.observe("selectstart", listRowMouseDownHandler);
-                row.observe("dblclick", editDoubleClickedEvent);
+                if (data[i][2] != null)
+                    // Status is defined -- event is readable
+                    row.observe("dblclick", editDoubleClickedEvent);
                 row.attachMenu("eventsListMenu");
 
                 var td = $(document.createElement("td"));

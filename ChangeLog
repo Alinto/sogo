@@ -2,6 +2,8 @@
 
 	* UI/WebServerResources/SchedulerUI.js (changeCalendarDisplay):
 	don't highlight the day selection when in the day view.
+	(eventsListCallback): don't popup event window when
+	double-clicking on D&T events in the top list of the calendar module.
 
 	* UI/Scheduler/UIxCalListingActions.m (_fixDates:): start/end
 	dates must be adjust for DST only when dealing with the day based
