@@ -269,21 +269,22 @@ static NSArray *tasksFields = nil;
   static NSString *fields[] = { @"startDate", @"c_startdate",
 				@"endDate", @"c_enddate" };
   
-  for (count = 0; count < 2; count++)
-    {
-      aDateField = fields[count * 2];
-      aDate = [aRecord objectForKey: aDateField];
-      if ([userTimeZone isDaylightSavingTimeForDate: aDate] != 
-	  [userTimeZone isDaylightSavingTimeForDate: startDate])
-	{
-	  daylightOffset = (signed int)[userTimeZone secondsFromGMTForDate: aDate]
-	    - (signed int)[userTimeZone secondsFromGMTForDate: startDate];
-	  aDate = [aDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds:daylightOffset];
-	  [aRecord setObject: aDate forKey: aDateField];	  
-	  aDateValue = [NSNumber numberWithInt: [aDate timeIntervalSince1970]];
-	  [aRecord setObject: aDateValue forKey: fields[count * 2 + 1]];
-	}
-    }
+  if (dayBasedView)
+    for (count = 0; count < 2; count++)
+      {
+	aDateField = fields[count * 2];
+	aDate = [aRecord objectForKey: aDateField];
+	if ([userTimeZone isDaylightSavingTimeForDate: aDate] != 
+	    [userTimeZone isDaylightSavingTimeForDate: startDate])
+	  {
+	    daylightOffset = (signed int)[userTimeZone secondsFromGMTForDate: aDate]
+	      - (signed int)[userTimeZone secondsFromGMTForDate: startDate];
+	    aDate = [aDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds:daylightOffset];
+	    [aRecord setObject: aDate forKey: aDateField];	  
+	    aDateValue = [NSNumber numberWithInt: [aDate timeIntervalSince1970]];
+	    [aRecord setObject: aDateValue forKey: fields[count * 2 + 1]];
+	  }
+      }
   
   aDateValue = [aRecord objectForKey: @"c_recurrence_id"];
   aDate = [aRecord objectForKey: @"cycleStartDate"];
@@ -354,8 +355,7 @@ static NSArray *tasksFields = nil;
                 [self _fixComponentTitle: newInfo withType: component];
               // Possible improvement: only call _fixDates if event is recurrent
               // or the view range span a daylight saving time change
-	      if (dayBasedView)
-		[self _fixDates: newInfo];
+	      [self _fixDates: newInfo];
               [infos addObject: [newInfo objectsForKeys: fields
                                          notFoundMarker: marker]];
             }

@@ -1,5 +1,10 @@
 2009-10-14  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/Scheduler/UIxCalListingActions.m (_fixDates:): start/end
+	dates must be adjust for DST only when dealing with the day based
+	view. No change is required for the month view, except for the
+	recurrence IDs.
+
 	* UI/Scheduler/UIxComponentEditor.m (-getEventRWType): the user
 	is not an attendee when dealing with web calendars.
 	(-_toolbarForOwner:andClientObject:): no toolbar should appear
