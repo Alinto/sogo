@@ -610,22 +610,23 @@ function eventsListCallback(http) {
                 var td = $(document.createElement("td"));
                 row.appendChild(td);
                 td.observe("mousedown", listRowMouseDownHandler, true);
-                td.appendChild(document.createTextNode(data[i][3]));
+                td.appendChild(document.createTextNode(data[i][3])); // title
 
                 td = $(document.createElement("td"));
                 row.appendChild(td);
                 td.observe("mousedown", listRowMouseDownHandler, true);
-                td.appendChild(document.createTextNode(data[i][16]));
+                td.appendChild(document.createTextNode(data[i][16])); // start date
 
                 td = $(document.createElement("td"));
                 row.appendChild(td);
                 td.observe("mousedown", listRowMouseDownHandler, true);
-                td.appendChild(document.createTextNode(data[i][17]));
+                td.appendChild(document.createTextNode(data[i][17])); // end date
       
                 td = $(document.createElement("td"));
                 row.appendChild(td);
                 td.observe("mousedown", listRowMouseDownHandler, true);
-                td.appendChild(document.createTextNode(data[i][6]));
+                if (data[i][6])
+                    td.appendChild(document.createTextNode(data[i][6])); // location
             }
 
             if (sorting["attribute"] && sorting["attribute"].length > 0) {
@@ -811,9 +812,10 @@ function changeCalendarDisplay(data, newView) {
                     });
 
                 // Select new day
-                divs.each(function(div) {
-                        div.addClassName('selectedDay');
-                    });
+                if (currentView != 'dayview')
+                    divs.each(function(div) {
+                            div.addClassName('selectedDay');
+                        });
 	
                 // Deselect day in date selector
                 if (document.selectedDate)
@@ -1073,6 +1075,7 @@ function newBaseEventDIV(eventRep, event, eventText) {
     if (event[2] == null) {
         eventDiv.observe("selectstart", listRowMouseDownHandler);
         eventDiv.observe("click", onCalendarSelectEvent);
+        eventDiv.observe("dblclick", Event.stop);
     }
     else {
         // Status field is defined -- user can read event
@@ -1510,7 +1513,7 @@ function selectCalendarEvent(calendar, cname, recurrenceTime) {
     return selection;
 }
 
-function onCalendarSelectEvent() {
+function onCalendarSelectEvent(event) {
     selectCalendarEvent(this.calendar, this.cname, this.recurrenceTime);
 
     // Select event in events list
