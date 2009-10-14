@@ -791,10 +791,12 @@ DIV.copy
 }
 
 /* UIxMailPartICalViewer */
+#iCalAttendees
+{ padding: 0; }
 
 #iCalAttendees SPAN
 { background-repeat: no-repeat;
-  background-position: 5px center;
+  background-position: 5px 1px;
   padding-left: 22px;
   padding-right: 4px; }
 
