@@ -30,6 +30,8 @@
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WORequest.h>
 
+#import <NGExtensions/NSObject+Logs.h>
+
 #import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/NSDictionary+Utilities.h>
 #import <SoObjects/SOGo/NSString+Utilities.h>
@@ -369,8 +371,7 @@ static BOOL forwardEnabled = NO;
   NSMutableArray *daysList;
   unsigned int currentDay;
 
-  daysList = [NSMutableArray new];
-  [daysList autorelease];
+  daysList = [NSMutableArray array];
   for (currentDay = 0; currentDay < 7; currentDay++)
     [daysList addObject: [NSString stringWithFormat: @"%d", currentDay]];
 
@@ -751,8 +752,7 @@ static BOOL forwardEnabled = NO;
   addressesList = [vacationOptions objectForKey: @"autoReplyEmailAddresses"];
   if (!addressesList)
     {
-      newAddressesList = [NSMutableArray new];
-      [newAddressesList autorelease];
+      newAddressesList = [NSMutableArray array];
       addressesList = [NSMutableArray arrayWithArray: [user allEmails]];
       for (i = 0; i < [addressesList count]; i++)
 	{
@@ -1031,10 +1031,10 @@ static BOOL forwardEnabled = NO;
                                            mutabilityOption: NSPropertyListImmutable
                                                      format: &format
                                            errorDescription: &error];
-  
-  if(!plist)
+  if (!plist)
     {
-      NSLog(error);
+      [self errorWithFormat: @"an error occured during deserialization"
+                             @" of categories: %@", error];
       [error release];
     }
   else
@@ -1045,7 +1045,6 @@ static BOOL forwardEnabled = NO;
                        forKey: @"CalendarCategoriesColors"];
       NSLog ([plist description]);
     }
-  
 }
 
 - (NSArray *) languages

@@ -550,7 +550,8 @@ iRANGE(2);
 	  ASSIGN (organizer, [component organizer]);
 	  
 	  [self _loadCategories];
-	  [self _loadAttendees];
+          if (!jsonAttendees)
+            [self _loadAttendees];
 	  [self _loadRRules];
 	  [self _loadAlarms];
 
