@@ -1,3 +1,14 @@
+2009-10-15  Cyril Robert <crobert@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolders.m
+	(+webdavAclManager): Added to fix issues with iPhones (3.1.2)
+	* SoObjects/Appointments/SOGoAppointmentFolder.m 
+	(+webdavAclManager): Changed write-properties and write-content to
+	non-abstract, and set the equivalent for write-content to 
+	SoPerm_AddDocumentsImagesAndFiles
+	* SoObjects/SOGo/SOGoWebDAVAclManager.m (-copyWithZone:): Added to allow
+	object copy (useful for SOGoAppointmentFolders)
+
 2009-10-15  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
         * Added SOPE/NGCards/TimeZones/* - generated from

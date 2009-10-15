@@ -262,4 +262,14 @@ static NSNumber *yesObject = nil;
 		 [aclTree objectForKey: @"{DAV:}all"]];
 }
 
+- (id) copyWithZone: (NSZone *) aZone
+{
+  SOGoWebDAVAclManager *x;
+
+  x = [[SOGoWebDAVAclManager allocWithZone: aZone] init];
+  x->aclTree = [aclTree mutableCopyWithZone: aZone];
+
+  return x;
+}
+
 @end

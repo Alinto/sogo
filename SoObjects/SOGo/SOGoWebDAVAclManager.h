@@ -33,7 +33,7 @@
 @class SOGoUser;
 @class SOGoWebDAVValue;
 
-@interface SOGoWebDAVAclManager : NSObject
+@interface SOGoWebDAVAclManager : NSObject <NSCopying>
 {
   NSMutableDictionary *aclTree;
 }

@@ -221,13 +221,13 @@ static int davCalendarStartTimeLimit, davTimeLimitSeconds,
 		  asChildOf: davElement (@"write", XMLNS_WEBDAV)];
       [aclManager
 	registerDAVPermission: davElement (@"write-properties", XMLNS_WEBDAV)
-	abstract: YES
+	abstract: NO
 	withEquivalent: SoPerm_ChangePermissions /* hackish */
 	asChildOf: davElement (@"write", XMLNS_WEBDAV)];
       [aclManager
 	registerDAVPermission: davElement (@"write-content", XMLNS_WEBDAV)
-	abstract: YES
-	withEquivalent: nil
+	abstract: NO
+	withEquivalent: SoPerm_AddDocumentsImagesAndFiles
 	asChildOf: davElement (@"write", XMLNS_WEBDAV)];
       [aclManager registerDAVPermission: davElement (@"admin", nsI)
 		  abstract: YES

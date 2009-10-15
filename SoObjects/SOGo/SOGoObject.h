@@ -82,6 +82,8 @@ SEL SOGoSelectorForPropertySetter (NSString *property);
 
 - (id) initWithName: (NSString *) _name inContainer:(id)_container;
 
++ (SOGoWebDAVAclManager *) webdavAclManager;
+
 /* accessors */
 
 - (NSString *) nameInContainer;

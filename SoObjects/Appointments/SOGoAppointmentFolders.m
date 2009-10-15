@@ -39,6 +39,10 @@
 #import <SOGo/NSObject+DAV.h>
 #import <SOGo/SOGoWebDAVValue.h>
 #import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoParentFolder.h>
+#import <SOGo/SOGoPermissions.h>
+#import <SOGo/SOGoWebDAVAclManager.h>
+
 #import "SOGoAppointmentFolder.h"
 #import "SOGoWebAppointmentFolder.h"
 
@@ -339,6 +343,32 @@
     }
 
   return error;
+}
+
++ (SOGoWebDAVAclManager *) webdavAclManager
+{
+  static SOGoWebDAVAclManager *aclManager = nil;
+
+  if (!aclManager)
+    {
+      aclManager = [[super webdavAclManager] copy];
+      [aclManager 
+        registerDAVPermission: davElement (@"write", XMLNS_WEBDAV)
+                     abstract: NO
+               withEquivalent: SoPerm_AddDocumentsImagesAndFiles
+                    asChildOf: davElement (@"all", XMLNS_WEBDAV)];
+      [aclManager
+        registerDAVPermission: davElement (@"write-properties", XMLNS_WEBDAV)
+                     abstract: YES
+               withEquivalent: SoPerm_AddDocumentsImagesAndFiles
+                    asChildOf: davElement (@"write", XMLNS_WEBDAV)];
+      [aclManager
+        registerDAVPermission: davElement (@"write-content", XMLNS_WEBDAV)
+                     abstract: YES
+               withEquivalent: SoPerm_AddDocumentsImagesAndFiles
+                    asChildOf: davElement (@"write", XMLNS_WEBDAV)];
+    }
+  return aclManager;
 }
 
 @end
