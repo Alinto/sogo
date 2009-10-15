@@ -205,6 +205,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %{prefix}/Library/Libraries/libNGCards.so.*
 %{prefix}/Library/SaxDrivers-%{sope_major_version}.%{sope_minor_version}/*.sax
 %{prefix}/Library/SaxMappings
+%{prefix}/Library/Libraries/Resources/NGCards
 
 %files -n sope%{sope_major_version}%{sope_minor_version}-cards-devel
 %{prefix}/Library/Headers/NGCards

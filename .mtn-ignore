@@ -11,7 +11,6 @@ diff
 .*\.d$
 .*\.log$
 .*\.ifb$
-.*\.ics
 .*\.vcf$
 .*\.old$
 .*\.SOGo$

@@ -72,6 +72,7 @@
 - (NSArray *) todos;
 - (NSArray *) journals;
 - (NSArray *) freeBusys;
+- (NSArray *) timezones;
 
 - (void) addTimeZone: (iCalTimeZone *) iTZ;
 - (iCalTimeZone *) timeZoneWithId: (NSString *) tzId;

@@ -1,6 +1,6 @@
 /* iCalTimeZone.m - this file is part of SOPE
  *
- * Copyright (C) 2006 Inverse inc.
+ * Copyright (C) 2006-2009 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -21,17 +21,88 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSBundle.h>
 #import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSData.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSFileManager.h>
+#import <Foundation/NSPathUtilities.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSTimeZone.h>
 
 #import "NSCalendarDate+NGCards.h"
 #import "NSString+NGCards.h"
+
+#import "iCalCalendar.h"
 #import "iCalTimeZonePeriod.h"
 
 #import "iCalTimeZone.h"
 
+static NSMutableDictionary *cache;
+
+
 @implementation iCalTimeZone
+
++ (void) initialize
+{
+  cache = [[NSMutableDictionary alloc] init];
+}
+
++ (iCalTimeZone *) timeZoneForName: (NSString *) theName
+{
+  iCalTimeZone *o;
+  
+  o = [cache objectForKey: theName];
+
+  if (!o)
+    {
+      NSFileManager *fm;
+      NSEnumerator *e;
+      NSArray *paths;
+      NSString *path;
+      BOOL b;
+
+      paths = NSSearchPathForDirectoriesInDomains(NSAllLibrariesDirectory,
+						  NSAllDomainsMask,
+						  YES);
+      fm = [NSFileManager defaultManager];
+
+      if ([paths count] > 0)
+	{   
+	  e = [paths objectEnumerator];
+	  while ((path = [e nextObject]))
+	    {
+	      path = [NSString stringWithFormat: @"%@/Libraries/Resources/NGCards/TimeZones", path];
+	      
+	      if ([fm fileExistsAtPath: path  isDirectory: &b] && b)
+		{
+		  iCalCalendar *calendar;
+		  NSString *s;
+		  NSData *d;
+		  
+		  s = [NSString stringWithFormat: @"%@/%@.ics", path, theName];
+		  
+		  d = [NSData dataWithContentsOfFile: s];
+		  s = [[NSString alloc] initWithData: d
+					encoding: NSUTF8StringEncoding];
+		  AUTORELEASE(s);
+
+  
+		  calendar = [iCalCalendar parseSingleFromSource: s];
+		  o = [[calendar timezones] lastObject];
+
+		  if (o)
+		    [cache setObject: o  forKey: theName];
+
+		  return o;
+		}
+
+	    }
+	}
+    }
+
+  return o;
+}
 
 - (Class) classForTag: (NSString *) classTag
 {

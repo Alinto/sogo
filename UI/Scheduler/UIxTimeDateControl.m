@@ -24,7 +24,6 @@
 #import <Foundation/NSValue.h>
 
 #import <NGObjWeb/SoObjects.h>
-
 #import <SOGo/NSCalendarDate+SOGo.h>
 
 #import "UIxTimeDateControl.h"
@@ -76,7 +75,9 @@
   timeZone = [[context activeUser] timeZone];
   if (!_date)
     _date = [NSCalendarDate date];
+
   [_date setTimeZone: timeZone];
+
   [self _setDate: _date];
 
   minuteValue = [_date minuteOfHour];
@@ -250,6 +251,7 @@
   NSTimeZone *timeZone;
 
   timeZone = [[context activeUser] timeZone];
+
   /* call super, so that the form values are applied on the popups */
   [super takeValuesFromRequest:_rq inContext:_ctx];
 

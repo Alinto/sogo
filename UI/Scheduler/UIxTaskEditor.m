@@ -518,6 +518,25 @@
       [todo setStatus: @""];
       [todo setPercentComplete: @""];
     }
+
+  if ([[self clientObject] isNew])
+    {
+      iCalTimeZone *tz;
+      
+      tz = [iCalTimeZone timeZoneForName: [[[context activeUser] timeZone] name]];
+      
+      if (hasStartDate || hasDueDate)
+	{
+	  [[todo parent] addTimeZone: tz];
+	}
+
+      if (hasStartDate)
+	[[todo uniqueChildWithTag: @"dtstart"] setTimeZone: tz];
+
+      if (hasDueDate)
+	[[todo uniqueChildWithTag: @"due"] setTimeZone: tz];
+    }
+
 }
 
 // TODO: add tentatively

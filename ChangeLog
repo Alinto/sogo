@@ -1,3 +1,20 @@
+2009-10-15  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+        * Added SOPE/NGCards/TimeZones/* - generated from
+	the official Olson databases. This is to allow SOGo
+	to include VTIMEZONE components on _new_ events or
+	tasks, which fix the problem we had with
+	recurring events over DST changes.
+	* SOPE/NGCards/iCalTimeZone.m
+	Introduced a cache for timezone files and added
+	a method to get it based on its name
+	* UI/Scheduler/UIxAppointmentEditor.m
+	UI/Scheduler/UIxTaskEditor.m
+	Modified the event/task editor to properly
+	add the timezone component for new events/tasks
+	* Updated the sogo.spec file to include the
+	new timezone files.
+
 2009-10-15  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/AdministrationUI.js (help): new function

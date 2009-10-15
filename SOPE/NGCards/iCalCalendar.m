@@ -187,6 +187,7 @@
 
 /* collection */
 
+#warning should we return timezones too?
 - (NSArray *) allObjects
 {
   NSMutableArray *ma;

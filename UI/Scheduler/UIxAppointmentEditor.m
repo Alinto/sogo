@@ -492,10 +492,11 @@
                      inContext: (WOContext *) _ctx
 {
   int nbrDays;
-
+  
   [self event];
-
+  
   [super takeValuesFromRequest: _rq inContext: _ctx];
+
 
   if (isAllDay)
     {
@@ -508,6 +509,16 @@
     {
       [event setStartDate: aptStartDate];
       [event setEndDate: aptEndDate];
+    }
+  
+  if ([[self clientObject] isNew])
+    {
+      iCalTimeZone *tz;
+      
+      tz = [iCalTimeZone timeZoneForName: [[[context activeUser] timeZone] name]];
+      [[event parent] addTimeZone: tz];
+      [[event uniqueChildWithTag: @"dtstart"] setTimeZone: tz];
+      [[event uniqueChildWithTag: @"dtend"] setTimeZone: tz];
     }
 
   [event setTransparency: (isTransparent? @"TRANSPARENT" : @"OPAQUE")];
