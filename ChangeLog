@@ -1,3 +1,8 @@
+2009-10-15  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/AdministrationUI.js (help): new function
+	to display the help from the toolbar instead of the module title.
+
 2009-10-15  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* UI/MailerUI/UIxMailAccountActions.m

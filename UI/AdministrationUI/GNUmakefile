@@ -18,8 +18,8 @@ AdministrationUI_RESOURCE_FILES += \
 	Version		\
 	product.plist	
 
-#AdministrationUI_RESOURCE_FILES += \
-#	Toolbars/UIxAdministration.toolbar
+AdministrationUI_RESOURCE_FILES += \
+	Toolbars/UIxAdministration.toolbar
 
 AdministrationUI_LOCALIZED_RESOURCE_FILES += \
 	Localizable.strings		\

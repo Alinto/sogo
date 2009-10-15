@@ -4,6 +4,8 @@ var d;
 var usersRightsWindowHeight = 220;
 var usersRightsWindowWidth = 450;
 
+/* ACLs module */
+
 function onSearchFormSubmit() {
     var searchValue = $("searchValue");
     var encodedValue = encodeURI(searchValue.value);
@@ -191,12 +193,7 @@ function onFolderOpen(event) {
     openAclWindow(urlstr);
 }
 
-function toggleDisplay(elementID) {
-    var e = $(elementID);
-    if (e) {
-	e.toggle();
-    }
-}
+/* Common functions */
 
 function configureDragHandles() {
     var handle = $("verticalDragHandle");
@@ -205,46 +202,35 @@ function configureDragHandles() {
         handle.leftBlock = $("administrationModules");
         handle.rightBlock = $("rightPanel");
         handle.leftMargin = 100;
-	document.observe("handle:dragged", onWindowResize);
     }
 }
 
-function onToggleDescription(event) {
-    var desc = this.up().next("div");
-    var span = this.up("span");
-    var h1 = this.up("h1");
-    var filter = $("filterPanel");
-    
-    var div = $("administrationContent");
-    var img = span.down("img");
-    if (event) {
-	// Toggle only if user clicks on the link
-	if (desc.visible()) {
-	    desc.hide();
-	    img.src = ResourcesURL + "/arrow-rit-sharp.gif";
-            filter.setStyle({ float: "right", clear: "none" });
-	}
-	else {
-	    desc.show();
-	    img.src = ResourcesURL + "/arrow-dwn.gif"; 
-            filter.setStyle({ float: "none", clear: "left" });
-	}
-    }
-    div.setStyle({ top: (filter.cumulativeOffset().top + 10) + "px" });
-}
+function help() {
+    var div = $("helpDialog");
+    var title = div.select('H3').first();
+    var description = div.select('DIV DIV')[0];
+    var module = $$("#administrationModules LI._selected").first();
 
-function onWindowResize(event) {
-    var f = onToggleDescription.bind($("moduleDescription"));
-    f(null);
+    var cellPosition = module.cumulativeOffset();
+    var cellDimensions = module.getDimensions();
+    var left = cellDimensions.width - 20;
+    var top = cellPosition.top + 3;
+
+    div.setStyle({ top: top + 'px',
+                left: left + 'px' });
+    title.update($("moduleTitle").innerHTML);
+    description.update($("moduleDescription").innerHTML);
+
+    div.show();
 }
 
 function initAdministration() {
+    $("helpDialogClose").observe("click", function(event) {
+            $("helpDialog").hide();
+        });
+
     var searchValue = $("searchValue");
     searchValue.focus();
-
-    $("moduleDescription").observe("click", onToggleDescription);
-
-    Event.observe(window, "resize", onWindowResize);
 }
 
 document.observe("dom:loaded", initAdministration);

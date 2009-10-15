@@ -7,7 +7,16 @@
   xmlns:label="OGo:label"
   className="UIxPageFrame"
   title="title"
+  const:toolbar="UIxAdministration.toolbar"
   const:jsFiles="dtree.js">
+
+  <div id="helpDialog" style="display: none" class="dialog left">
+    <div>
+      <h3><!-- module title --></h3>
+      <div><!-- module description --></div>
+      <p class="button"><a href="#" class="button" id="helpDialogClose"><var:string label:value="Close"/></a></p>
+    </div>
+  </div>
 
   <div id="leftPanel">
     <div class="titlediv"><var:string label:value="Modules" /></div>
@@ -21,8 +30,8 @@
   <div class="dragHandle" id="verticalDragHandle"><!-- space --></div>
 
   <div id="rightPanel">
-    <span><h1><a href="#" id="moduleDescription"><span><img rsrc:src="arrow-rit-sharp.gif"/></span><var:string label:value="ACLs_title"/></a></h1>
-    <div style="display: none;"><var:string label:value="ACLs_description" const:escapeHTML="NO"/></div></span>
+    <span><h1 id="moduleTitle"><var:string label:value="ACLs_title"/></h1>
+    <div id="moduleDescription" style="display: none"><var:string label:value="ACLs_description" const:escapeHTML="NO"/></div></span>
     <var:component className="UIxAdministrationFilterPanel" qualifier="qualifier" />
     <div id="administrationContent"><!-- space --></div>
   </div>

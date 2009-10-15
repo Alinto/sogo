@@ -1,4 +1,4 @@
-/* UIxPreferences.h - this file is part of SOGo
+/* UIxAdministration.h - this file is part of SOGo
  *
  * Copyright (C) 2009 Inverse inc.
  *
