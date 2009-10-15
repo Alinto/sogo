@@ -1142,10 +1142,9 @@ function ICalendarButtonCallback(http) {
             window.location.reload();
     }
     else {
-        log ("ICalendarButtonCallback");
         if (isHttpStatus204(http.status)) {
             var oldMsg = http.callbackData;
-            var msg = Mailer.currentMailbox + "/" + Mailer.currentMessages[Mailer.currentMailbox]; log (oldMsg + " => " + msg);
+            var msg = Mailer.currentMailbox + "/" + Mailer.currentMessages[Mailer.currentMailbox];
             deleteCachedMessage(oldMsg);
             if (oldMsg == msg) {
                 loadMessage(Mailer.currentMessages[Mailer.currentMailbox]);
