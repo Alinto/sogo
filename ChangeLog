@@ -1,3 +1,10 @@
+2009-10-15  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* UI/MailerUI/UIxMailAccountActions.m
+	We check if the server supports quota prior to asking for
+	the value. The patchset has also been updated for faster
+	access of the server's capabilities.
+
 2009-10-14  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/PreferencesUI/UIxPreferences.m (-defaultEmailAddresses): new

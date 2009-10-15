@@ -170,40 +170,50 @@
 
 - (WOResponse *) listMailboxesAction
 {
-  id infos, inboxQuota;  
   SOGoMailAccount *co;
-  SOGoMailFolder *inbox;
-  NGImap4Client *client;
   NSEnumerator *rawFolders;
   NSArray *folders;
   NSDictionary *data;
-  NSString *inboxName;
-  NSUserDefaults *ud;
   WOResponse *response;
-  float quota;
+  id inboxQuota;
 
-  ud = [NSUserDefaults standardUserDefaults];
   co = [self clientObject];
 
   rawFolders = [[co allFolderPaths] objectEnumerator];
   folders = [self _jsonFolders: rawFolders];
+  inboxQuota = nil;
 
   // Retrieve INBOX quota
-  quota = [ud floatForKey: @"SOGoSoftQuotaRatio"];
-  inbox = [co inboxFolderInContext: context];
-  inboxName = [NSString stringWithFormat: @"/%@", [inbox relativeImap4Name]];
-  client = [[inbox imap4Connection] client];
-  infos = [[client getQuotaRoot: [inbox relativeImap4Name]] objectForKey: @"quotas"];
-  inboxQuota = [infos objectForKey: inboxName];
-  if (quota != 0 && inboxQuota != nil)
+  if ([co supportsQuotas])
     {
-      // A soft quota ration is imposed for all users
-      quota = quota * [(NSNumber*)[inboxQuota objectForKey: @"maxQuota"] intValue];
-      inboxQuota = [NSDictionary dictionaryWithObjectsAndKeys:
-				 [NSNumber numberWithFloat: (long)(quota+0.5)], @"maxQuota",
-				 [inboxQuota objectForKey: @"usedSpace"], @"usedSpace",
-				 nil];
+      SOGoMailFolder *inbox;
+      NGImap4Client *client;
+      NSString *inboxName;
+      NSUserDefaults *ud;
+      id infos;
+      
+      float quota;
+
+      ud = [NSUserDefaults standardUserDefaults];
+      quota = [ud floatForKey: @"SOGoSoftQuotaRatio"];
+      inbox = [co inboxFolderInContext: context];
+      inboxName = [NSString stringWithFormat: @"/%@", [inbox relativeImap4Name]];
+      client = [[inbox imap4Connection] client];
+      infos = [[client getQuotaRoot: [inbox relativeImap4Name]] objectForKey: @"quotas"];
+      inboxQuota = [infos objectForKey: inboxName];
+      if (quota != 0 && inboxQuota != nil)
+	{
+	  // A soft quota ration is imposed for all users
+	  quota = quota * [(NSNumber*)[inboxQuota objectForKey: @"maxQuota"] intValue];
+	  inboxQuota = [NSDictionary dictionaryWithObjectsAndKeys:
+				       [NSNumber numberWithFloat: (long)(quota+0.5)], @"maxQuota",
+				     [inboxQuota objectForKey: @"usedSpace"], @"usedSpace",
+				     nil];
+	} 
     }
+
+  // The parameter order is important here, as if the server doesn't support
+  // quota, inboxQuota will be nil and it'll terminate the list of objects/keys.
   data = [NSDictionary dictionaryWithObjectsAndKeys: folders, @"mailboxes",
 		       [self _statusFolders], @"status",
 		       inboxQuota, @"quotas",

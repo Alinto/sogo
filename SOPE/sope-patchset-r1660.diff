@@ -134,7 +134,25 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  @end
  
  /*
-@@ -195,11 +199,14 @@
+@@ -110,6 +114,8 @@
+ static BOOL         ImapDebugEnabled   = NO;
+ static NSArray      *Imap4SystemFlags  = nil;
+ 
++static NSMutableDictionary *capabilities;
++
+ - (BOOL)useSSL {
+   return self->useSSL;
+ }
+@@ -140,6 +146,8 @@
+ 
+   Imap4SystemFlags = [[NSArray alloc] initWithObjects: @"seen", @"answered",
+ 				      @"deleted", @"draft", nil];
++
++  capabilities = [[NSMutableDictionary alloc] init];
+ }
+ 
+ /* constructors */
+@@ -195,11 +203,14 @@
      self->debug            = ImapDebugEnabled;
      self->responseReceiver = [[NSMutableArray alloc] initWithCapacity:128];
      self->normer = [[NGImap4ResponseNormalizer alloc] initWithClient:self];
@@ -149,7 +167,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    [self removeFromConnectionRegister];
    [self->normer           release];
    [self->text             release];
-@@ -457,8 +464,8 @@
+@@ -457,8 +468,8 @@
  - (void)reconnect {
    if ([self->context lastException] != nil)
      return;
@@ -160,7 +178,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    self->tagId = 0;
    [self openConnection];
  
-@@ -481,6 +488,7 @@
+@@ -481,6 +492,7 @@
    */
    NGHashMap *map;
    NSString  *s, *log;
@@ -168,7 +186,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  
    if (self->isLogin )
      return nil;
-@@ -499,7 +507,11 @@
+@@ -499,7 +511,11 @@
    
    self->isLogin = NO;
    
@@ -181,7 +199,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  }
  
  - (NSDictionary *)logout {
-@@ -508,6 +520,8 @@
+@@ -508,6 +524,8 @@
  
    map = [self processCommand:@"logout"];
    [self closeConnection];
@@ -190,7 +208,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    
    return [self->normer normalizeResponse:map];
  }
-@@ -547,7 +561,7 @@
+@@ -547,7 +565,7 @@
      if (!(_pattern = [self _folder2ImapFolder:_pattern]))
        return nil;
    
@@ -199,7 +217,30 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    map = [self processCommand:s];
    
    if (self->delimiter == nil) {
-@@ -591,7 +605,7 @@
+@@ -563,9 +581,20 @@
+ }
+ 
+ - (NSDictionary *)capability {
++  NSDictionary *result;
+   id capres;
+-  capres = [self processCommand:@"capability"];
+-  return [self->normer normalizeCapabilityRespone:capres];
++  
++  result = [capabilities objectForKey: [self->address description]];
++
++  if (!result)
++    {
++      capres = [self processCommand:@"capability"];
++      result = [self->normer normalizeCapabilityRespone:capres];
++  
++      if (result)
++	[capabilities setObject:  result  forKey: [self->address description]];
++    }
++  return result;
+ }
+ 
+ - (NSDictionary *)lsub:(NSString *)_folder pattern:(NSString *)_pattern {
+@@ -591,7 +620,7 @@
        return nil;
    }
    
@@ -208,7 +249,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    map = [self processCommand:s];
  
    if (self->delimiter == nil) {
-@@ -617,24 +631,25 @@
+@@ -617,24 +646,25 @@
        'flags'       - array of strings (eg (answered,flagged,draft,seen);
        'RawResponse' - the raw IMAP4 response
     */
@@ -243,7 +284,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  - (NSDictionary *)status:(NSString *)_folder flags:(NSArray *)_flags {
    NSString *cmd;
    
-@@ -646,7 +661,7 @@
+@@ -646,7 +676,7 @@
      return nil;
    
    cmd     = [NSString stringWithFormat:@"status \"%@\" (%@)",
@@ -252,7 +293,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    return [self->normer normalizeStatusResponse:[self processCommand:cmd]];
  }
  
-@@ -663,24 +678,28 @@
+@@ -663,24 +693,28 @@
    if ((_newName = [self _folder2ImapFolder:_newName]) == nil)
      return nil;
    
@@ -286,7 +327,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    return [self _performCommand:@"delete" onFolder:_name];
  }
  - (NSDictionary *)create:(NSString *)_name {
-@@ -820,23 +839,23 @@
+@@ -820,23 +854,23 @@
    return [self->normer normalizeResponse:[self processCommand:cmd]];
  }
  
@@ -316,7 +357,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  		    seqstr, _flag ? '+' : '-', flagstr];
    
    return [self->normer normalizeResponse:[self processCommand:cmd]];
-@@ -967,11 +986,12 @@
+@@ -967,11 +1001,12 @@
    descr = @"Could not process qualifier for imap search "; 
    descr = [descr stringByAppendingString:reason];           
    
@@ -332,7 +373,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  }
  
  - (NSString *)_searchExprForQual:(EOQualifier *)_qualifier {
-@@ -1093,7 +1113,18 @@
+@@ -1093,7 +1128,18 @@
       Eg: UID SORT ( DATE REVERSE SUBJECT ) UTF-8 TODO
    */
    NSString *tmp;
@@ -351,7 +392,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    if ([_sortSpec isKindOfClass:[NSArray class]])
      tmp = [self _generateIMAP4SortOrderings:_sortSpec];
    else if ([_sortSpec isKindOfClass:[EOSortOrdering class]])
-@@ -1107,9 +1138,10 @@
+@@ -1107,9 +1153,10 @@
      tmp = @"DATE";
    }
    
@@ -364,7 +405,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  }
  - (NSDictionary *)sort:(NSArray *)_sortOrderings
    qualifier:(EOQualifier *)_qual
-@@ -1130,7 +1162,7 @@
+@@ -1130,7 +1177,7 @@
      return nil;
    }
    
@@ -373,7 +414,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    return [self->normer normalizeSearchResponse:[self processCommand:s]];
  }
  
-@@ -1142,7 +1174,7 @@
+@@ -1142,7 +1189,7 @@
    if ((_folder = [self _folder2ImapFolder:_folder]) == nil)
      return nil;
    
@@ -382,7 +423,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    return [self->normer normalizeGetACLResponse:[self processCommand:cmd]];
  }
  
-@@ -1155,7 +1187,7 @@
+@@ -1155,7 +1202,7 @@
      return nil;
    
    cmd = [NSString stringWithFormat:@"setacl \"%@\" \"%@\" \"%@\"",
@@ -391,7 +432,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    return [self->normer normalizeResponse:[self processCommand:cmd]];
  }
  
-@@ -1166,7 +1198,7 @@
+@@ -1166,7 +1213,7 @@
      return nil;
    
    cmd = [NSString stringWithFormat:@"deleteacl \"%@\" \"%@\"",
@@ -400,7 +441,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    return [self->normer normalizeResponse:[self processCommand:cmd]];
  }
  
-@@ -1177,7 +1209,7 @@
+@@ -1177,7 +1224,7 @@
      return nil;
    
    cmd = [NSString stringWithFormat:@"listrights \"%@\" \"%@\"",
@@ -409,7 +450,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    return [self->normer normalizeListRightsResponse:[self processCommand:cmd]];
  }
  
-@@ -1187,12 +1219,94 @@
+@@ -1187,12 +1234,94 @@
    if ((_folder = [self _folder2ImapFolder:_folder]) == nil)
      return nil;
    
@@ -505,7 +546,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  - (NSException *)_processCommandParserException:(NSException *)_exception {
    [self logWithFormat:@"ERROR(%s): catched IMAP4 parser exception %@: %@",
  	__PRETTY_FUNCTION__, [_exception name], [_exception reason]];
-@@ -1412,21 +1526,24 @@
+@@ -1412,21 +1541,24 @@
        return nil;
    }
  
@@ -538,7 +579,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  }
  
  - (NSString *)_imapFolder2Folder:(NSString *)_folder {
-@@ -1442,10 +1559,16 @@
+@@ -1442,10 +1574,16 @@
        return nil;
    }
    
