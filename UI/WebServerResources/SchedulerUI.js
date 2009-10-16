@@ -601,7 +601,8 @@ function eventsListCallback(http) {
                 var startDate = new Date();
                 startDate.setTime(data[i][4] * 1000);
                 row.day = startDate.getDayString();
-                row.hour = startDate.getHourString();
+                if (!data[i][7])
+                    row.hour = startDate.getHourString(); // event is not all day
                 row.observe("mousedown", onRowClick);
                 row.observe("selectstart", listRowMouseDownHandler);
                 if (data[i][2] != null)
@@ -827,13 +828,15 @@ function changeCalendarDisplay(data, newView) {
                 var selectedLink = $$('table#dateSelectorTable span[day='+day+']');
                 if (selectedLink.length > 0) {
                     selectedCell = selectedLink[0].getParentWithTagName("td");
-                    selectedCell.selectElement();
+                    $(selectedCell).selectElement();
                     document.selectedDate = selectedCell;
                 }
 	
                 // Scroll to event
-                if (scrollEvent)
+                if (scrollEvent) {
+                    preventAutoScroll = false;
                     scrollDayView(scrollEvent);
+                }
 
                 return false;
             }
@@ -913,13 +916,15 @@ function scrollDayView(scrollEvent) {
             else
               contentView = $("daysView");
 
-            var top = firstEvent.cumulativeOffset()[1] - contentView.scrollTop;
-
-            // Don't scroll if the event is visible to the user
-            if (top < contentView.cumulativeOffset()[1])
-              contentView.scrollTop = firstEvent.cumulativeOffset()[1] - contentView.cumulativeOffset()[1];
-            else if (top > contentView.cumulativeOffset()[1] + contentView.getHeight() - firstEvent.getHeight())
-              contentView.scrollTop = firstEvent.cumulativeOffset()[1] - contentView.cumulativeOffset()[1];
+            // Don't scroll to an all-day event
+            if (typeof eventRow.hour != "undefined") {
+                var top = firstEvent.cumulativeOffset()[1] - contentView.scrollTop;
+                // Don't scroll if the event is visible to the user
+                if (top < contentView.cumulativeOffset()[1])
+                    contentView.scrollTop = firstEvent.cumulativeOffset()[1] - contentView.cumulativeOffset()[1];
+                else if (top > contentView.cumulativeOffset()[1] + contentView.getHeight() - firstEvent.getHeight())
+                    contentView.scrollTop = firstEvent.cumulativeOffset()[1] - contentView.cumulativeOffset()[1];
+            }
         }
         else if (currentView != "monthview") {
             var contentView = $("daysView");
@@ -1020,7 +1025,10 @@ function refreshCalendarEventsCallback(http) {
             }
             onWindowResize(null);
         }
-        scrollDayView(http.callbackData["scrollEvent"]);
+        if (http.callbackData["scrollEvent"]) {
+            preventAutoScroll = false;
+            scrollDayView(http.callbackData["scrollEvent"]);
+        }
     }
     else
         log("AJAX error when refreshing calendar events");

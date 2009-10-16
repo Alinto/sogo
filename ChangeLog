@@ -1,5 +1,12 @@
 2009-10-16  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/WebServerResources/SchedulerUI.js (eventsListCallback): don't
+	set the hour attribute for all-day events.
+	(changeCalendarDisplay): enable auto-scroll when scrolling
+	to an event (!).
+	(refreshCalendarEventsCallback): idem.
+	(scrollDayView): don't scroll when selecting an all-day event.
+
 	* UI/Scheduler/UIxComponentEditor.m (-_loadRRules): the repeat
 	rule interval can be set unconditionally for weekly rules. When an
 	end date or repeat count is defined, the rule must be considered
