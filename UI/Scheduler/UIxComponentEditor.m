@@ -351,6 +351,7 @@ iRANGE(2);
       else if ([rule frequency] == iCalRecurrenceFrequenceWeekly)
 	{
 	  repeatType = @"1";
+	  [self setRepeat1: [NSString stringWithFormat: @"%d", [rule repeatInterval]]];
 
 	  if (![rule byDayMask])
 	    {
@@ -361,7 +362,6 @@ iRANGE(2);
 	    }
 	  else
 	    {
-	      [self setRepeat1: [NSString stringWithFormat: @"%d", [rule repeatInterval]]];
 	      [self setRepeat2: [self _dayMaskToInteger: [rule byDayMask]]];
 	    }
 	}
@@ -411,6 +411,7 @@ iRANGE(2);
       // We decode the proper end date, recurrences count, etc.
       if ([rule repeatCount])
 	{
+	  repeat = @"CUSTOM";
 	  [self setRange1: @"1"];
 	  [self setRange2: [rule namedValue: @"count"]];
 	}
@@ -418,6 +419,7 @@ iRANGE(2);
 	{
 	  NSCalendarDate *date;
 	  
+	  repeat = @"CUSTOM";
 	  date = [[rule untilDate] copy];
 	  [date setTimeZone: [[context activeUser] timeZone]];
 	  [self setRange1: @"2"];
@@ -1681,14 +1683,17 @@ RANGE(2);
 	    [theRule setFrequency: iCalRecurrenceFrequenceWeekly];
 	    [theRule setInterval: [self repeat1]];
 
-	    v = [[self repeat2] componentsSeparatedByString: @","];
-	    c = [v count];
-	    mask = 0;
-
-	    while (c--)
-	      mask |= 1 << ([[v objectAtIndex: c] intValue]);
-	
-	    [theRule setByDayMask: mask];
+	    if ([[self repeat2] length])
+	      {
+		v = [[self repeat2] componentsSeparatedByString: @","];
+		c = [v count];
+		mask = 0;
+		
+		while (c--)
+		  mask |= 1 << ([[v objectAtIndex: c] intValue]);
+		
+		[theRule setByDayMask: mask];
+	      }
 	  }
       }
       break;

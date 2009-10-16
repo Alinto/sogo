@@ -1,3 +1,12 @@
+2009-10-16  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Scheduler/UIxComponentEditor.m (-_loadRRules): the repeat
+	rule interval can be set unconditionally for weekly rules. When an
+	end date or repeat count is defined, the rule must be considered
+	"custom" in the web interface.
+	(_handleCustomRRule:): fixed a bug that would set a day mask even
+	when it was not defined. The day mask is optional in the RRULE definition.
+
 2009-10-15  Cyril Robert <crobert@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolders.m
