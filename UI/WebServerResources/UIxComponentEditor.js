@@ -260,6 +260,7 @@ function onPopupRecurrenceWindow(event) {
     
     var repeatList = $("repeatList");
     if (repeatList && repeatList.value == 7) {
+        // Custom repeat rule
         repeatHref.show();
         if (event)
             window.open(ApplicationBaseURL + "editRecurrence", null, 
