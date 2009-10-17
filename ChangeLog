@@ -1,3 +1,9 @@
+2009-10-17  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* UI/WebServerResources/UIxListEditor.js (endEditable): 
+	We use "uname" instead of "name" when reading back the 
+	values from the autocompletion code.
+
 2009-10-16  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/SchedulerUI.js (eventsListCallback): don't

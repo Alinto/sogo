@@ -33,22 +33,23 @@ function endEditable (event, element) {
     if (element) {
       card = element.readAttribut("card");
       mail = element.readAttribute("mail");
-      name = element.readAttribute("name");
+      name = element.readAttribute("uname");
     }
     else {
       if ($(this).tagName == "INPUT") {
           element = this.ancestors ().first ();
           card = this.readAttribute ("card");
-          name = this.readAttribute ("name");
+          name = this.readAttribute ("uname");
           mail = this.readAttribute ("mail");
       }
       else {
           element = this;
           card = element.childElements ().first ().readAttribute ("card");
           mail = element.childElements ().first ().readAttribute ("mail");
-          name = element.childElements ().first ().readAttribute ("name");
+          name = element.childElements ().first ().readAttribute ("uname");
       }
     }
+
     element.writeAttribute ("card", card);
     element.writeAttribute ("name", name);
     element.writeAttribute ("mail", mail);
