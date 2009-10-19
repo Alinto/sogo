@@ -1,5 +1,9 @@
 2009-10-19  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* SoObjects/SOGo/NSCalendarDate+SOGo.m: lower the values of
+	secondsOfDistantFuture and secondsOfDistantPast to solve a problem
+	with 64bit environment.
+
 	* UI/Scheduler/UIxAppointmentEditor.m
 	(-startDateIsEqualToEndDate): new method that returns whether or
 	not the start date is identical to the end date (used for all-day events).
