@@ -1,3 +1,8 @@
+2009-10-19  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* iCalDateTime.m (-setTimeZone:): don't add the time in case of an
+	all-day component.
+
 2009-10-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* CardElement.m (-copyWithZone:): we release the "tag" and the
