@@ -59,6 +59,11 @@
   <label><var:string label:value="Start:" />
     <span class="content"><var:string var:value="aptStartDateText"/> (<var:string label:value="All day Event"/>)</span>
   </label>
+  <var:if condition="startDateIsEqualToEndDate" const:negate="YES">
+  <label><var:string label:value="End:" />
+    <span class="content"><var:string var:value="aptEndDateText" /></span>
+  </label>
+  </var:if>
   </var:if>
   <var:if condition="isAllDay" const:negate="YES">
   <label><var:string label:value="Start:" />

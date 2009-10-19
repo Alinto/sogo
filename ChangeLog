@@ -1,3 +1,9 @@
+2009-10-19  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Scheduler/UIxAppointmentEditor.m
+	(-startDateIsEqualToEndDate): new method that returns whether or
+	not the start date is identical to the end date (used for all-day events).
+
 2009-10-19  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentObject.m

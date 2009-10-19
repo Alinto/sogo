@@ -185,9 +185,19 @@
   return [dateFormatter formattedDateAndTime: aptStartDate];
 }
 
+- (NSString *) aptEndDateText
+{
+  return [dateFormatter formattedDate: aptEndDate];
+}
+
 - (NSString *) aptEndDateTimeText
 {
   return [dateFormatter formattedDateAndTime: aptEndDate];
+}
+
+- (BOOL) startDateIsEqualToEndDate
+{
+  return [aptStartDate isEqualToDate: aptEndDate];
 }
 
 /* actions */
