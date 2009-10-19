@@ -546,6 +546,7 @@
     }
   else
     {
+      BOOL hasOrganizer;
       // Event is modified -- sent update status to all attendees
       // and modify their calendars.
       recurrenceId = [newEvent recurrenceId];
@@ -562,12 +563,12 @@
 	    oldEvent = (iCalEvent*)[self newOccurenceWithID: recurrenceTime];
 	}
 
-      oldMasterEvent
-        = (iCalEvent *) [[oldEvent parent] firstChildWithTag: [self componentTag]];
-      if ([oldMasterEvent userIsOrganizer: ownerUser])
+      oldMasterEvent = (iCalEvent *) [[oldEvent parent] firstChildWithTag: [self componentTag]];
+      hasOrganizer = [[[oldMasterEvent organizer] email] length];
+
+      if (!hasOrganizer || [oldMasterEvent userIsOrganizer: ownerUser])
 	{
 	  // The owner is the organizer of the event; handle the modifications
-	  
 	  [self _handleUpdatedEvent: newEvent fromOldEvent: oldEvent];
 	  
 	  // The sequence has possibly been increased -- resave the event.

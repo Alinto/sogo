@@ -1,3 +1,10 @@
+2009-10-19  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	(saveComponent:) - in case of an update, we check
+	if no organizer was specified when handling 
+	attendees addition to the event.
+
 2009-10-17  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* UI/WebServerResources/UIxListEditor.js (endEditable): 
