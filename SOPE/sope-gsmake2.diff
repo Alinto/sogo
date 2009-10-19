@@ -2,12 +2,6 @@ Index: configure
 ===================================================================
 --- configure	(révision 1632)
 +++ configure	(copie de travail)
-@@ -1,4 +1,4 @@
--#!/bin/bash
-+#!/bin/sh
- 
- #
- # Note: When adding make options to this script, ensure that the source still
 @@ -15,8 +15,9 @@
  ARG_NOCREATE=0
  ARG_PREFIX=""
