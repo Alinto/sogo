@@ -72,7 +72,11 @@
     newTZId = nil;
 
   [self setValue: 0 ofAttribute: @"tzid" to: newTZId];
-  [self setDateTime: dateTime];
+
+  if ([self isAllDay])
+    [self setDate: dateTime];
+  else
+    [self setDateTime: dateTime];
 }
 
 - (iCalTimeZone *) timeZone
