@@ -1,3 +1,15 @@
+--- sope-4.9.r1660.orig/configure
++++ sope-4.9.r1660/configure
+@@ -427,8 +427,8 @@
+   checkLinking "ldap"        optional;
+   checkLinking "ssl"         required; # TODO: make optional
+   checkLinking "pq"          optional;
+-  checkLinking "sqlite3"     optional;
+   checkLinking "mysqlclient" optional;
++  checkLinking "sqlite3"     optional;
+ }
+ 
+ function runIt() {
 --- sope-4.9.r1660.orig/debian/sope_SOPEVER_-gdl1-postgresql.install
 +++ sope-4.9.r1660/debian/sope_SOPEVER_-gdl1-postgresql.install
 @@ -1 +1 @@
@@ -11,7 +23,15 @@
  usr/lib/libNGiCal.so
 --- sope-4.9.r1660.orig/debian/changelog
 +++ sope-4.9.r1660/debian/changelog
-@@ -1,3 +1,13 @@
+@@ -1,3 +1,21 @@
++sope (4.9.r1660-2) unstable; urgency=low
++
++  * debian/control:
++    - we now build the sopeXX-gdl1-mysql package.
++  * updated SOPE patchset from SOGo 1.1.0.
++
++ -- Inverse Support <support@inverse.ca>  Mon, 19 Oct 2009 16:36:29 -0400
++
 +sope (4.9.r1660-1) unstable; urgency=low
 +
 +  * debian/control:
@@ -187,6 +207,10 @@
 @@ -1 +1 @@
 -usr/lib/sope-*/saxdrivers/libxmlSAXDriver.sax
 +usr/lib/GNUstep/SaxDrivers-*/libxmlSAXDriver.sax
+--- sope-4.9.r1660.orig/debian/sope_SOPEVER_-gdl1-mysql.install
++++ sope-4.9.r1660/debian/sope_SOPEVER_-gdl1-mysql.install
+@@ -0,0 +1 @@
++usr/lib/GNUstep/GDLAdaptors-*/MySQL.gdladaptor
 --- sope-4.9.r1660.orig/debian/control.in
 +++ sope-4.9.r1660/debian/control.in
 @@ -1,8 +1,9 @@
@@ -388,7 +412,7 @@
 -Build-Depends: debhelper (>= 4.0.0), dpatch, gnustep-make-ogo, gobjc | objc-compiler, libfoundation1.1-dev, libobjc1, libxml2-dev, libldap2-dev | libldap-dev, libssl-dev, zlib1g-dev, libpq-dev | postgresql-dev, libecpg-dev, apache-dev, apache2-threaded-dev | apache2-prefork-dev | apache2-dev, autotools-dev
 -Standards-Version: 3.6.1
 +Maintainer: Inverse Support <support@inverse.ca>
-+Build-Depends: debhelper (>= 4.0.0), gnustep-make, libgnustep-base-dev, gobjc | objc-compiler, libxml2-dev, libldap2-dev | libldap-dev, libssl-dev, zlib1g-dev, libpq-dev | postgresql-dev, autotools-dev
++Build-Depends: debhelper (>= 4.0.0), gnustep-make, libgnustep-base-dev, gobjc | objc-compiler, libxml2-dev, libldap2-dev | libldap-dev, libssl-dev, zlib1g-dev, libpq-dev | postgresql-dev, libmysqlclient-dev (>= 5.1), autotools-dev
 +Standards-Version: 3.8.2
  
  Package: libsope4.9-dev
@@ -456,7 +480,37 @@
  Description: Development files for the GNUstep database libraries
   SOPE is a framework for developing web applications and services. The
   name "SOPE" (SKYRiX Object Publishing Environment) is inspired by ZOPE.
-@@ -264,19 +265,3 @@
+@@ -224,14 +225,27 @@
+ Architecture: any
+ Depends: ${shlibs:Depends}, ${misc:Depends}
+ Provides: sope-db-connector
+-Recommends: postgresql (>= 7.2.0)
++Suggests: postgresql (>= 8.2)
+ Description: PostgreSQL connector for SOPE's fork of the GNUstep database environment
+  SOPE is a framework for developing web applications and services. The
+  name "SOPE" (SKYRiX Object Publishing Environment) is inspired by ZOPE.
+  .
+  This package contains the postgresql connector for SOPE's fork of the
+  GNUstep database libraries.
+-     
++
++Package: sope4.9-gdl1-mysql
++Section: web
++Architecture: any
++Depends: ${shlibs:Depends}, ${misc:Depends}
++Provides: sope-db-connector
++Recommends: postgresql (>= 7.2.0)
++Description: MySQL connector for SOPE's fork of the GNUstep database environment
++ SOPE is a framework for developing web applications and services. The
++ name "SOPE" (SKYRiX Object Publishing Environment) is inspired by ZOPE.
++ .
++ This package contains the mysql connector for SOPE's fork of the
++ GNUstep database libraries.
++
+ Package: sope4.9-stxsaxdriver
+ Section: web
+ Architecture: any
+@@ -264,19 +278,3 @@
   name "SOPE" (SKYRiX Object Publishing Environment) is inspired by ZOPE.
   .
   This parser enables SOPE's SAX engine to parse iCal and vCard files.
@@ -519,17 +573,11 @@
 +usr/lib/GNUstep/WOxElemBuilders-*/*
 --- sope-4.9.r1660.orig/debian/patches/sope-gsmake2.diff
 +++ sope-4.9.r1660/debian/patches/sope-gsmake2.diff
-@@ -0,0 +1,3150 @@
+@@ -0,0 +1,3144 @@
 +Index: configure
 +===================================================================
 +--- configure	(révision 1632)
 ++++ configure	(copie de travail)
-+@@ -1,4 +1,4 @@
-+-#!/bin/bash
-++#!/bin/sh
-+ 
-+ #
-+ # Note: When adding make options to this script, ensure that the source still
 +@@ -15,8 +15,9 @@
 + ARG_NOCREATE=0
 + ARG_PREFIX=""
@@ -3672,7 +3720,43 @@
 +--include fhs.make
 --- sope-4.9.r1660.orig/debian/patches/sope-patchset-r1660.diff
 +++ sope-4.9.r1660/debian/patches/sope-patchset-r1660.diff
-@@ -0,0 +1,4511 @@
+@@ -0,0 +1,4781 @@
++Index: sope-ldap/NGLdap/NGLdapEntry.m
++===================================================================
++--- sope-ldap/NGLdap/NGLdapEntry.m	(revision 1660)
+++++ sope-ldap/NGLdap/NGLdapEntry.m	(working copy)
++@@ -105,14 +105,16 @@
++ - (NGLdapAttribute *)attributeWithName:(NSString *)_name {
++   NSEnumerator    *e;
++   NGLdapAttribute *a;
++-  
+++  NSString        *upperName;
+++
++   if (_name == nil)
++     return nil;
++ 
+++  upperName = [_name uppercaseString];
++   e = [self->attributes objectEnumerator];
++ 
++   while ((a = [e nextObject])) {
++-    if ([[a attributeName] isEqualToString:_name])
+++    if ([[[a attributeName] uppercaseString] isEqualToString:upperName])
++       return a;
++   }
++   return nil;
++Index: sope-ldap/NGLdap/ChangeLog
++===================================================================
++--- sope-ldap/NGLdap/ChangeLog	(revision 1660)
+++++ sope-ldap/NGLdap/ChangeLog	(working copy)
++@@ -1,3 +1,8 @@
+++2009-08-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+++
+++	* NGLdapEntry.m (-attributeWithName:): attribute names are now
+++	accessed in a case-insensitive way.
+++
++ 2009-04-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
++ 
++ 	* NGLdapConnection.m (useSSL,startTLS): new method enabling
 +Index: sope-mime/NGImap4/NGImap4Functions.m
 +===================================================================
 +--- sope-mime/NGImap4/NGImap4Functions.m	(revision 1660)
@@ -3773,7 +3857,25 @@
 + @end
 + 
 + /*
-+@@ -195,11 +199,14 @@
++@@ -110,6 +114,8 @@
++ static BOOL         ImapDebugEnabled   = NO;
++ static NSArray      *Imap4SystemFlags  = nil;
++ 
+++static NSMutableDictionary *capabilities;
+++
++ - (BOOL)useSSL {
++   return self->useSSL;
++ }
++@@ -140,6 +146,8 @@
++ 
++   Imap4SystemFlags = [[NSArray alloc] initWithObjects: @"seen", @"answered",
++ 				      @"deleted", @"draft", nil];
+++
+++  capabilities = [[NSMutableDictionary alloc] init];
++ }
++ 
++ /* constructors */
++@@ -195,11 +203,14 @@
 +     self->debug            = ImapDebugEnabled;
 +     self->responseReceiver = [[NSMutableArray alloc] initWithCapacity:128];
 +     self->normer = [[NGImap4ResponseNormalizer alloc] initWithClient:self];
@@ -3788,7 +3890,7 @@
 +   [self removeFromConnectionRegister];
 +   [self->normer           release];
 +   [self->text             release];
-+@@ -457,8 +464,8 @@
++@@ -457,8 +468,8 @@
 + - (void)reconnect {
 +   if ([self->context lastException] != nil)
 +     return;
@@ -3799,7 +3901,7 @@
 +   self->tagId = 0;
 +   [self openConnection];
 + 
-+@@ -481,6 +488,7 @@
++@@ -481,6 +492,7 @@
 +   */
 +   NGHashMap *map;
 +   NSString  *s, *log;
@@ -3807,7 +3909,7 @@
 + 
 +   if (self->isLogin )
 +     return nil;
-+@@ -499,7 +507,11 @@
++@@ -499,7 +511,11 @@
 +   
 +   self->isLogin = NO;
 +   
@@ -3820,7 +3922,7 @@
 + }
 + 
 + - (NSDictionary *)logout {
-+@@ -508,6 +520,8 @@
++@@ -508,6 +524,8 @@
 + 
 +   map = [self processCommand:@"logout"];
 +   [self closeConnection];
@@ -3829,7 +3931,7 @@
 +   
 +   return [self->normer normalizeResponse:map];
 + }
-+@@ -547,7 +561,7 @@
++@@ -547,7 +565,7 @@
 +     if (!(_pattern = [self _folder2ImapFolder:_pattern]))
 +       return nil;
 +   
@@ -3838,7 +3940,30 @@
 +   map = [self processCommand:s];
 +   
 +   if (self->delimiter == nil) {
-+@@ -591,7 +605,7 @@
++@@ -563,9 +581,20 @@
++ }
++ 
++ - (NSDictionary *)capability {
+++  NSDictionary *result;
++   id capres;
++-  capres = [self processCommand:@"capability"];
++-  return [self->normer normalizeCapabilityRespone:capres];
+++  
+++  result = [capabilities objectForKey: [self->address description]];
+++
+++  if (!result)
+++    {
+++      capres = [self processCommand:@"capability"];
+++      result = [self->normer normalizeCapabilityRespone:capres];
+++  
+++      if (result)
+++	[capabilities setObject:  result  forKey: [self->address description]];
+++    }
+++  return result;
++ }
++ 
++ - (NSDictionary *)lsub:(NSString *)_folder pattern:(NSString *)_pattern {
++@@ -591,7 +620,7 @@
 +       return nil;
 +   }
 +   
@@ -3847,7 +3972,7 @@
 +   map = [self processCommand:s];
 + 
 +   if (self->delimiter == nil) {
-+@@ -617,24 +631,25 @@
++@@ -617,24 +646,25 @@
 +       'flags'       - array of strings (eg (answered,flagged,draft,seen);
 +       'RawResponse' - the raw IMAP4 response
 +    */
@@ -3882,7 +4007,7 @@
 + - (NSDictionary *)status:(NSString *)_folder flags:(NSArray *)_flags {
 +   NSString *cmd;
 +   
-+@@ -646,7 +661,7 @@
++@@ -646,7 +676,7 @@
 +     return nil;
 +   
 +   cmd     = [NSString stringWithFormat:@"status \"%@\" (%@)",
@@ -3891,7 +4016,7 @@
 +   return [self->normer normalizeStatusResponse:[self processCommand:cmd]];
 + }
 + 
-+@@ -663,20 +678,21 @@
++@@ -663,24 +693,28 @@
 +   if ((_newName = [self _folder2ImapFolder:_newName]) == nil)
 +     return nil;
 +   
@@ -3918,7 +4043,14 @@
 +   return [self->normer normalizeResponse:[self processCommand:command]];
 + }
 + 
-+@@ -820,23 +836,23 @@
++ - (NSDictionary *)delete:(NSString *)_name {
+++  if ([self->selectedFolder isEqualToString:_name]) {
+++    [self unselect];
+++  }
++   return [self _performCommand:@"delete" onFolder:_name];
++ }
++ - (NSDictionary *)create:(NSString *)_name {
++@@ -820,23 +854,23 @@
 +   return [self->normer normalizeResponse:[self processCommand:cmd]];
 + }
 + 
@@ -3948,7 +4080,7 @@
 + 		    seqstr, _flag ? '+' : '-', flagstr];
 +   
 +   return [self->normer normalizeResponse:[self processCommand:cmd]];
-+@@ -967,11 +983,12 @@
++@@ -967,11 +1001,12 @@
 +   descr = @"Could not process qualifier for imap search "; 
 +   descr = [descr stringByAppendingString:reason];           
 +   
@@ -3964,7 +4096,7 @@
 + }
 + 
 + - (NSString *)_searchExprForQual:(EOQualifier *)_qualifier {
-+@@ -1093,7 +1110,18 @@
++@@ -1093,7 +1128,18 @@
 +      Eg: UID SORT ( DATE REVERSE SUBJECT ) UTF-8 TODO
 +   */
 +   NSString *tmp;
@@ -3983,7 +4115,7 @@
 +   if ([_sortSpec isKindOfClass:[NSArray class]])
 +     tmp = [self _generateIMAP4SortOrderings:_sortSpec];
 +   else if ([_sortSpec isKindOfClass:[EOSortOrdering class]])
-+@@ -1107,9 +1135,10 @@
++@@ -1107,9 +1153,10 @@
 +     tmp = @"DATE";
 +   }
 +   
@@ -3996,7 +4128,7 @@
 + }
 + - (NSDictionary *)sort:(NSArray *)_sortOrderings
 +   qualifier:(EOQualifier *)_qual
-+@@ -1130,7 +1159,7 @@
++@@ -1130,7 +1177,7 @@
 +     return nil;
 +   }
 +   
@@ -4005,7 +4137,7 @@
 +   return [self->normer normalizeSearchResponse:[self processCommand:s]];
 + }
 + 
-+@@ -1142,7 +1171,7 @@
++@@ -1142,7 +1189,7 @@
 +   if ((_folder = [self _folder2ImapFolder:_folder]) == nil)
 +     return nil;
 +   
@@ -4014,7 +4146,7 @@
 +   return [self->normer normalizeGetACLResponse:[self processCommand:cmd]];
 + }
 + 
-+@@ -1155,7 +1184,7 @@
++@@ -1155,7 +1202,7 @@
 +     return nil;
 +   
 +   cmd = [NSString stringWithFormat:@"setacl \"%@\" \"%@\" \"%@\"",
@@ -4023,7 +4155,7 @@
 +   return [self->normer normalizeResponse:[self processCommand:cmd]];
 + }
 + 
-+@@ -1166,7 +1195,7 @@
++@@ -1166,7 +1213,7 @@
 +     return nil;
 +   
 +   cmd = [NSString stringWithFormat:@"deleteacl \"%@\" \"%@\"",
@@ -4032,7 +4164,7 @@
 +   return [self->normer normalizeResponse:[self processCommand:cmd]];
 + }
 + 
-+@@ -1177,7 +1206,7 @@
++@@ -1177,7 +1224,7 @@
 +     return nil;
 +   
 +   cmd = [NSString stringWithFormat:@"listrights \"%@\" \"%@\"",
@@ -4041,7 +4173,7 @@
 +   return [self->normer normalizeListRightsResponse:[self processCommand:cmd]];
 + }
 + 
-+@@ -1187,12 +1216,88 @@
++@@ -1187,12 +1234,94 @@
 +   if ((_folder = [self _folder2ImapFolder:_folder]) == nil)
 +     return nil;
 +   
@@ -4057,72 +4189,78 @@
 ++  NSDictionary *d;
 ++  NSCalendarDate *envDate;
 ++
-++  result = [[[NSMutableDictionary alloc] init] autorelease];
+++  result = [NSMutableDictionary dictionary];
 ++  [result setObject: [NSNumber numberWithBool: NO]  forKey: @"result"];
 ++
 ++  // _sortSpec: [REVERSE] {DATE,FROM,SUBJECT}
 ++  d = [self searchWithQualifier: _qual];
 ++    
-++  if ((d = [d objectForKey: @"RawResponse"]))
-++    {
-++      NSMutableDictionary *dict;
-++      NSArray *a, *s_a;
-++      BOOL b;
-++      int i;
+++  if ((d = [d objectForKey: @"RawResponse"])) {
+++    NSMutableDictionary *dict;
+++    NSArray *a, *s_a;
+++    BOOL b;
+++    int i;
 ++
-++      a = [d objectForKey: @"search"];      
-++      d = [self fetchUids: a  parts: [NSArray arrayWithObject: @"ENVELOPE"]];
+++    a = [d objectForKey: @"search"];
+++    if ([a isNotEmpty]) {
+++      d = [self fetchUids: a
+++                    parts: [NSArray arrayWithObjects: @"ENVELOPE",
+++                                    @"RFC822.SIZE", nil]];
 ++      a = [d objectForKey: @"fetch"];
-++     
 ++
-++      dict = [[[NSMutableDictionary alloc] init] autorelease];
+++      dict = [NSMutableDictionary dictionary];
 ++      b = YES;
 ++
-++      for (i = 0; i < [a count]; i++) 
-++	{
-++	  NGImap4Envelope *env;
-++	  id o, uid, s;
+++      for (i = 0; i < [a count]; i++) {
+++        NGImap4Envelope *env;
+++        id o, uid, s;
 ++
-++	  o = [a objectAtIndex: i];
-++	  env = [o objectForKey: @"envelope"];
-++	  uid = [o objectForKey: @"uid"];
+++        o = [a objectAtIndex: i];
+++        env = [o objectForKey: @"envelope"];
+++        uid = [o objectForKey: @"uid"];
 ++
-++	  if ([_sortSpec rangeOfString: @"SUBJECT"].length)
-++	    {
-++	      s = [env subject];	      
-++	      if ([s isKindOfClass: [NSData class]])
-++		s = [[[NSString alloc] initWithData: s  encoding: NSUTF8StringEncoding] autorelease];
+++        if ([_sortSpec rangeOfString: @"SUBJECT"].length) {
+++          s = [env subject];
+++          if ([s isKindOfClass: [NSData class]])
+++            s = [[[NSString alloc] initWithData: s  encoding: NSUTF8StringEncoding] autorelease];
 ++	      
-++	      [dict setObject: (s != nil ? s : (id)@"")  forKey: uid];
-++	    }
-++	  else if ([_sortSpec rangeOfString: @"FROM"].length)
-++	    {
-++	      s =  [[[env from] lastObject] email];
-++	      [dict setObject: (s != nil ? s : (id)@"")  forKey: uid];
-++	    }
-++	  else
-++	    {
-++ 	      envDate = [env date];
-++ 	      if (!envDate)
-++ 		envDate = [NSCalendarDate date];
-++	      [dict setObject: envDate forKey: uid];
-++	      b = NO;
-++	    }
-++	}
+++          [dict setObject: (s != nil ? s : (id)@"")  forKey: uid];
+++        }
+++        else if ([_sortSpec rangeOfString: @"FROM"].length) {
+++          s =  [[[env from] lastObject] email];
+++          [dict setObject: (s != nil ? s : (id)@"")  forKey: uid];
+++        }
+++        else if ([_sortSpec rangeOfString: @"SIZE"].length) {
+++          s = [o objectForKey: @"size"];
+++          [dict setObject: (s != nil ? s : [NSNumber numberWithInt: 0])
+++                   forKey: uid];
+++          b = NO;
+++        }
+++        else {
+++          envDate = [env date];
+++          if (!envDate)
+++            envDate = [NSCalendarDate date];
+++          [dict setObject: envDate forKey: uid];
+++          b = NO;
+++        }
+++      }
 ++      
 ++      if (b)
 ++      	s_a = [dict keysSortedByValueUsingSelector: @selector(caseInsensitiveCompare:)];
 ++      else
 ++      	s_a = [dict keysSortedByValueUsingSelector: @selector(compare:)];
 ++
-++      if ([_sortSpec rangeOfString: @"REVERSE"].length)
-++	{
-++	  s_a = [[s_a reverseObjectEnumerator] allObjects];
-++	}
+++      if ([_sortSpec rangeOfString: @"REVERSE"].length)	{
+++        s_a = [[s_a reverseObjectEnumerator] allObjects];
+++      }
 ++      
-++      [result setObject: [NSNumber numberWithBool: YES]  forKey: @"result"];
-++      [result setObject: s_a  forKey: @"sort"];
 ++    }
+++    else {
+++      s_a = [NSArray array];
+++    }
+++    [result setObject: [NSNumber numberWithBool: YES]  forKey: @"result"];
+++    [result setObject: s_a  forKey: @"sort"];
+++  }
 ++
 ++  return result;
 ++}
@@ -4131,7 +4269,7 @@
 + - (NSException *)_processCommandParserException:(NSException *)_exception {
 +   [self logWithFormat:@"ERROR(%s): catched IMAP4 parser exception %@: %@",
 + 	__PRETTY_FUNCTION__, [_exception name], [_exception reason]];
-+@@ -1412,21 +1517,24 @@
++@@ -1412,21 +1541,24 @@
 +       return nil;
 +   }
 + 
@@ -4164,7 +4302,7 @@
 + }
 + 
 + - (NSString *)_imapFolder2Folder:(NSString *)_folder {
-+@@ -1442,10 +1550,16 @@
++@@ -1442,10 +1574,16 @@
 +       return nil;
 +   }
 +   
@@ -4472,6 +4610,167 @@
 +   }
 +   result = [NSArray arrayWithObjects:objs count:cnt];
 +   if (objs) free(objs);
++Index: sope-mime/NGImap4/EOQualifier+IMAPAdditions.m
++===================================================================
++--- sope-mime/NGImap4/EOQualifier+IMAPAdditions.m	(revision 1660)
+++++ sope-mime/NGImap4/EOQualifier+IMAPAdditions.m	(working copy)
++@@ -53,13 +53,13 @@
++   if (FlagKeyWords) return;
++ 
++   ud = [NSUserDefaults standardUserDefaults];
++-  FlagKeyWords = [[NSArray alloc] initWithObjects: @"answered", @"deleted",
++-                            @"draft", @"flagged", @"new", @"old", @"recent",
++-                            @"seen", @"unanswered", @"undeleted", @"undraft",
++-                            @"unflagged", @"unseen", nil];
++-  OtherKeyWords = [[NSArray alloc] initWithObjects:
++-                             @"bcc", @"body", @"cc", @"from", @"subject",
++-                             @"text", @"to", @"keyword", @"unkeyword", nil];
+++  FlagKeyWords = [[NSArray alloc] initWithObjects: @"ANSWERED", @"DELETED",
+++                            @"DRAFT", @"FLAGGED", @"NEW", @"OLD", @"RECENT",
+++                            @"SEEN", @"UNANSWERED", @"UNDELETED", @"UNDRAFT",
+++                            @"UNFLAGGED", @"UNSEEN", nil];
+++  OtherKeyWords = [[NSArray alloc] initWithObjects: @"ALL", @"BCC", @"BODY",
+++                                   @"CC", @"FROM", @"SUBJECT", @"TEXT", @"TO",
+++                                   @"KEYWORD", @"UID", @"UNKEYWORD", nil];
++   
++   debugOn = [ud boolForKey:@"ImapDebugQualifierGeneration"];
++ }
++@@ -266,10 +266,10 @@
++   
++   enumerator = [lvalue objectEnumerator];
++   while ((lvalue = [enumerator nextObject]) != nil) {
++-    lvalue = [lvalue lowercaseString];
+++    lvalue = [lvalue uppercaseString];
++         
++     if ([FlagKeyWords containsObject:lvalue]) {
++-      if (insertNot) [search appendString:@"not "];
+++      if (insertNot) [search appendString:@"NOT "];
++       [search appendString:lvalue];
++     }
++     else {
++@@ -280,15 +280,31 @@
++   return nil;
++ }
++ 
++-- (NSString *)imap4OperatorForDateComparisonSelector:(SEL)lselector {
+++- (NSString *)imap4OperatorForDateKeyword:(NSString *)dkey
+++andComparisonSelector:(SEL)lselector {
+++  NSString *operatorPrefix, *dateOperator, *imap4Operator;
+++
++   if (sel_eq(lselector, EOQualifierOperatorEqual))
++-    return @" senton ";
++-  if (sel_eq(lselector, EOQualifierOperatorGreaterThan))
++-    return @" sentsince ";
++-  if (sel_eq(lselector, EOQualifierOperatorLessThan))
++-    return @" sentbefore ";
++-  
++-  return nil;
+++    dateOperator = @"ON";
+++  else if (sel_eq(lselector, EOQualifierOperatorGreaterThan))
+++    dateOperator = @"SINCE";
+++  else if (sel_eq(lselector, EOQualifierOperatorLessThan))
+++    dateOperator = @"BEFORE";
+++  else
+++    dateOperator = nil;
+++ 
+++  if (dateOperator) {
+++    if ([dkey isEqualToString: @"DATE"])
+++      operatorPrefix = @"SENT";
+++    else
+++      operatorPrefix = @"";
+++    imap4Operator = [NSString stringWithFormat: @"%@%@ ",
+++                              operatorPrefix, dateOperator];
+++  }
+++  else
+++    imap4Operator = nil;
+++
+++  return imap4Operator;
++ }
++ 
++ - (NSException *)appendToImap4SearchString:(NSMutableString *)search 
++@@ -300,11 +316,11 @@
++   id       lvalue;
++   SEL      lselector;
++   
++-  lkey      = [[self key] lowercaseString];
+++  lkey      = [[self key] uppercaseString];
++   lvalue    = [self value];
++   lselector = [self selector];
++     
++-  if ([lkey isEqualToString:@"flags"]) {
+++  if ([lkey isEqualToString:@"FLAGS"]) {
++     /* NOTE: special "not" processing! */
++     return [self appendFlagsCheckToImap4SearchString:search 
++                  insertNot:insertNot];
++@@ -312,9 +328,9 @@
++   
++   /* not a flag */
++   if (insertNot) 
++-    [search appendString:@"not "];
+++    [search appendString:@"NOT "];
++   
++-  if ([lkey isEqualToString:@"date"]) {
+++  if ([lkey isEqualToString:@"DATE"] || [lkey isEqualToString:@"RECEIVE-DATE"]) {
++     NSString *s;
++     
++     if (![lvalue isKindOfClass:[NSCalendarDate class]]) {
++@@ -322,35 +338,38 @@
++ 		     @"expected a NSDate as value"];
++     }
++     
++-    if ((s = [self imap4OperatorForDateComparisonSelector:lselector]) == nil)
+++    if ((s = [self imap4OperatorForDateKeyword:lkey
+++                         andComparisonSelector:lselector]) == nil)
++       return [self invalidImap4SearchQualifier:@"unexpected selector"];
++     
++-    // TODO: operator created but NOT added?
+++    [search appendString:s];
++     
++     // TODO: much faster without descriptionWithCalendarFormat:?!
++-    s = [lvalue descriptionWithCalendarFormat:@"%d-%b-%Y"];
+++    s = [lvalue descriptionWithCalendarFormat:@"\"%d-%b-%Y\""];
++     [search appendString:s];
++     return nil;
++   }
++ 
++-  if ([lkey isEqualToString:@"uid"]) {
++-    if (!sel_eq(lselector, EOQualifierOperatorEqual))
+++  if ([lkey isEqualToString:@"UID"]) {
+++    if (!sel_eq(lselector, EOQualifierOperatorEqual)) {
++       return [self invalidImap4SearchQualifier:@"unexpected qualifier 2"];
+++    }
++     
++-    [search appendString:@"uid "];
+++    [search appendString:@"UID "];
++     [search appendString:[lvalue stringValue]];
++     return nil;
++   }
++   
++-  if ([lkey isEqualToString:@"size"]) {
+++  if ([lkey isEqualToString:@"SIZE"]) {
++     if (sel_eq(lselector, EOQualifierOperatorGreaterThan))
++-      [search appendString:@"larger "];
+++      [search appendString:@"LARGER "];
++     else if (sel_eq(lselector, EOQualifierOperatorLessThan))
++-      [search appendString:@"smaller "];
+++      [search appendString:@"SMALLER "];
++     else
++       return [self invalidImap4SearchQualifier:@"unexpected qualifier 3"];
++         
++     [search appendString:[lvalue stringValue]];
+++
++     return nil;
++   }
++   
++@@ -386,7 +405,7 @@
++   if (!sel_eq(lselector, EOQualifierOperatorEqual))
++     return [self invalidImap4SearchQualifier:@"unexpected qualifier 5"];
++   
++-  [search appendString:@"header "];
+++  [search appendString:@"HEADER "];
++   [search appendString:lkey];
++   [search appendString:@" \""];
++   [search appendString:[lvalue stringValue]];
 +Index: sope-mime/NGImap4/NGImap4ResponseParser.m
 +===================================================================
 +--- sope-mime/NGImap4/NGImap4ResponseParser.m	(revision 1660)
@@ -4956,7 +5255,23 @@
 +===================================================================
 +--- sope-mime/NGImap4/ChangeLog	(revision 1660)
 ++++ sope-mime/NGImap4/ChangeLog	(working copy)
-+@@ -1,3 +1,45 @@
++@@ -1,3 +1,61 @@
+++2009-10-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+++
+++	* NGImap4Client.m (-delete:): if the folder we want to delete is
+++	the same as self->selectedFolder, we unselect it first to ensure a
+++	"SELECT" happens if a new folder with the same name is created.
+++
+++	* EOQualifier+IMAPAdditions.m
+++	(-imap4OperatorForDateKeyword:andComparisonSelector:): modified
+++	operator handler to handle "receive-date" search key as well as
+++	"date", prefixing the real filter with "sent" or not.
+++
+++2009-09-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+++
+++	* NGImap4Client.m (_sopeSORT:qualifier:encoding:): added support
+++	for sorting by message size.
+++
 ++2009-07-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 ++
 ++	* NGImap4Connection.m (-initWithClient:password:): we need to copy
@@ -6399,7 +6714,7 @@
 +===================================================================
 +--- sope-mime/NGMime/NGMimeType.m	(revision 1660)
 ++++ sope-mime/NGMime/NGMimeType.m	(working copy)
-+@@ -120,30 +120,27 @@
++@@ -120,30 +120,30 @@
 +   
 +   /* some unsupported, but known encoding */
 +   else if ([charset isEqualToString:@"ks_c_5601-1987"]) {
@@ -6433,13 +6748,16 @@
 ++    encoding = NSKOI8RStringEncoding;
 +   }
 +-  
+++  else if ([charset isEqualToString:@"windows-1250"]) {
+++    encoding = NSWindowsCP1250StringEncoding;
+++  }
 ++  else if ([charset isEqualToString:@"windows-1251"]) {
 ++    encoding = NSWindowsCP1251StringEncoding;
 ++  }
 +   else if ([charset isEqualToString:@"windows-1252"]) {
 +     encoding = NSWindowsCP1252StringEncoding;
 +   }
-+@@ -152,7 +149,7 @@
++@@ -152,7 +152,7 @@
 +   }
 +   else if ([charset isEqualToString:@"x-unknown"] ||
 +            [charset isEqualToString:@"unknown"]) {
@@ -6448,7 +6766,7 @@
 +   }
 +   /* ISO Latin 9 */
 + #if !(NeXT_Foundation_LIBRARY || APPLE_Foundation_LIBRARY)
-+@@ -166,7 +163,7 @@
++@@ -166,7 +166,7 @@
 +   else {
 +     [self logWithFormat:@"%s: unknown charset '%@'",
 +           __PRETTY_FUNCTION__, _s];
@@ -6457,7 +6775,7 @@
 +   }
 +   return encoding;
 + }
-+@@ -385,23 +382,26 @@
++@@ -385,23 +385,26 @@
 + }
 + 
 + - (BOOL)valueNeedsQuotes:(NSString *)_parameterValue {
@@ -8194,3 +8512,37 @@
  
  libNGStreams_INCLUDE_DIRS += \
  	-I$(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS) \
+--- sope-4.9.r1660.orig/.configure-test-3896/GNUmakefile
++++ sope-4.9.r1660/.configure-test-3896/GNUmakefile
+@@ -0,0 +1,8 @@
++include ../config.make
++include $(GNUSTEP_MAKEFILES)/common.make
++CTOOL_NAME           := linktest
++linktest_C_FILES := dummytool.c
++linktest_TOOL_LIBS  += -lpq
++SYSTEM_LIB_DIR += $(CONFIGURE_SYSTEM_LIB_DIR)
++SYSTEM_LIB_DIR      += -L/usr/local/pgsql/lib -L/usr/local/lib -L/usr/lib
++include $(GNUSTEP_MAKEFILES)/ctool.make
+--- sope-4.9.r1660.orig/.configure-test-3896/out.log
++++ sope-4.9.r1660/.configure-test-3896/out.log
+@@ -0,0 +1,2 @@
++This is gnustep-make 2.0.8. Type 'make print-gnustep-make-help' for help.
++Making all for ctool linktest...
+--- sope-4.9.r1660.orig/.configure-test-3896/dummytool.c
++++ sope-4.9.r1660/.configure-test-3896/dummytool.c
+@@ -0,0 +1,7 @@
++// Note: do not remove, used by ../configure
++
++#include <stdio.h>
++
++int main(int argc, char **argv) {
++  return 0;
++}
+--- sope-4.9.r1660.orig/.configure-test-3896/err.log
++++ sope-4.9.r1660/.configure-test-3896/err.log
+@@ -0,0 +1,5 @@
++make[2]: *** wait: Aucun processus enfant. Arrêt.
++make[2]: *** Attente des tâches non terminées....
++make[2]: *** wait: Aucun processus enfant. Arrêt.
++make[1]: *** [linktest.all.ctool.variables] Interrompre
++make: *** [linktest] Interrompre
