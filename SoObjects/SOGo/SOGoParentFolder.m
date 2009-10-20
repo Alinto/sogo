@@ -20,6 +20,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
@@ -28,6 +29,7 @@
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoSecurityManager.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGObjWeb/WOMessage.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <GDLContentStore/GCSChannelManager.h>
 #import <GDLContentStore/GCSFolderManager.h>
@@ -452,6 +454,7 @@ static SoSecurityManager *sm = nil;
 
   rc = NO;
 
+#warning check error here
   error = [self initSubFolders];
     
   subs = [subFolders allValues];
@@ -481,7 +484,76 @@ static SoSecurityManager *sm = nil;
 
 - (NSException *) davCreateCollection: (NSString *) pathInfo
 			    inContext: (WOContext *) localContext
-{
+{  
+  id <DOMDocument> document;
+  //
+  // We check if we got a MKCOL with the addressbook resource on the
+  // calendar-homeset collection (/Calendar). If so, we abort the
+  // operation and return the proper error code.
+  //
+  // See http://tools.ietf.org/html/rfc5689 for all details.
+  //
+  document = [[localContext request] contentAsDOMDocument];
+  
+  // If a payload was specified, lets get it in order to see
+  // if we must accept or reject the MKCOL operation. If we 
+  // don't have any payload (what SOGo Connector / Integrators
+  // sends right now), we proceed as before.
+  if (document)
+    {
+      NSMutableArray *supportedTypes;
+      id <DOMNodeList> children;
+      DOMElement *element;
+      NSException *error;
+      NSArray *allTypes;
+      id o;
+
+      BOOL supported;
+      int i;
+
+      error = [self initSubFolders];
+      supported = YES;
+
+      if (error)
+	{
+	  [self errorWithFormat: @"a database error occured: %@", [error reason]];
+	  return [NSException exceptionWithHTTPStatus: 503];
+	}
+      
+      // We assume "personal" exists. In fact, if it doesn't, something
+      // is seriously broken.
+      allTypes = [[subFolders objectForKey: @"personal"] davResourceType];
+      supportedTypes = [NSMutableArray array];
+      
+      for (i = 0; i < [allTypes count]; i++)
+	{
+	  o = [allTypes objectAtIndex: i];
+	  if ([o isKindOfClass: [NSArray class]])
+	    o = [o objectAtIndex: 0];
+	  
+	  [supportedTypes addObject: o];
+	}
+      
+      children = [[(NSArray *)[[document documentElement] getElementsByTagName: @"resourcetype"]
+			      lastObject] childNodes];
+      
+      // We check if all the provided types are supported.
+      // In case one of them is not, we reject the operation.
+      for (i = 0; i < [children length]; i++)
+	{
+	  element = [children objectAtIndex: i];
+	  
+	  if ([element  nodeType] == DOM_ELEMENT_NODE &&
+	      ![supportedTypes containsObject: [element nodeName]])
+	    supported = NO;
+	}
+      
+      if (!supported)
+	{
+	  return [NSException exceptionWithHTTPStatus: 403];
+	}
+    }
+
   return [self newFolderWithName: pathInfo
 	       andNameInContainer: pathInfo];
 }

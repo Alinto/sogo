@@ -1,4 +1,4 @@
-This package was debianized by Cyril <support@inverse.ca> on
+This package was debianized by Inverse <support@inverse.ca> on
 Mon, 27 Jul 2009 10:57:51 -0400.
 
 It was downloaded from http://www.scalableogo.org/fr/downloads/backend.html
@@ -6,11 +6,9 @@ It was downloaded from http://www.scalableogo.org/fr/downloads/backend.html
 Upstream Authors:
 
     Inverse inc. <support@inverse.ca>
-    Skyric AG <sales@skyrix.com>
 
 Copyright:
 
-    Copyright (C) 2004-2005 SKYRIX Software AG
     Copyright (C) 2006-2009 Inverse inc.
 
 License:
@@ -29,5 +27,5 @@ License:
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-The Debian packaging is (C) 2009, Cyril <support@inverse.ca> and
+The Debian packaging is (c) 2009, Inverse <support@inverse.ca> and
 is licensed under the GPL, see `/usr/share/common-licenses/GPL-2'.
