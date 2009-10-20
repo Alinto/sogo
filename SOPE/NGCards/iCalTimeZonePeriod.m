@@ -99,12 +99,19 @@
   return dayOfWeek;
 }
 
+- (NSCalendarDate *) startDate
+{
+  return [(iCalDateTime *) [self uniqueChildWithTag: @"dtstart"]
+			   dateTime];
+}
+
 - (NSCalendarDate *) _occurenceForDate: (NSCalendarDate *) refDate
 			       byRRule: (iCalRecurrenceRule *) rrule
 {
   NSCalendarDate *tmpDate;
   NSString *byDay;
   int dayOfWeek, dateDayOfWeek, offset, pos;
+  NSCalendarDate *tzStart;
 
   byDay = [rrule namedValue: @"byday"];
   dayOfWeek = [self dayOfWeekFromRruleDay: [rrule byDayMask]];
@@ -113,9 +120,12 @@
     /* if byday = "SU", instead of "1SU"... */
     pos = 1;
 
+  tzStart = [self startDate];
+  [tzStart setTimeZone: [NSTimeZone timeZoneWithName: @"GMT"]];
   tmpDate = [NSCalendarDate dateWithYear: [refDate yearOfCommonEra]
 			    month: [[rrule namedValue: @"bymonth"] intValue]
-			    day: 1 hour: 0 minute: 0 second: 0
+			    day: 1 hour: [tzStart hourOfDay]
+			    minute: [tzStart minuteOfHour] second: 0
 			    timeZone: [NSTimeZone timeZoneWithName: @"GMT"]];
   tmpDate = [tmpDate addYear: 0 month: ((pos > 0) ? 0 : 1)
 		     day: 0 hour: 0 minute: 0
@@ -126,7 +136,7 @@
   if (pos > 0)
     offset = (dayOfWeek - dateDayOfWeek) + ((pos - 1) * 7);
   else
-    offset = (dayOfWeek - dateDayOfWeek) + ((pos + 1) * 7);
+    offset = (dayOfWeek - dateDayOfWeek) + (pos * 7);
 
   tmpDate = [tmpDate addYear: 0 month: 0 day: offset
 		     hour: 0 minute: 0 second: 0];
