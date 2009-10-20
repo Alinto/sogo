@@ -126,7 +126,7 @@
   if (pos > 0)
     offset = (dayOfWeek - dateDayOfWeek) + ((pos - 1) * 7);
   else
-    offset = (dateDayOfWeek - dayOfWeek) + (pos * 7);
+    offset = (dayOfWeek - dateDayOfWeek) + ((pos + 1) * 7);
 
   tmpDate = [tmpDate addYear: 0 month: 0 day: offset
 		     hour: 0 minute: 0 second: 0];
