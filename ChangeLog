@@ -5,7 +5,11 @@
 	-davCreateCollection:inContext:
 	We check, prior to creating the resource, if
 	where we create it is a supported target.
-	
+	* SOPE/NGCards/iCalTimeZonePeriod.m 
+	-_occurenceForDate:byRRule:
+	We correctly compute the number of shifting days
+	during DST changes.
+
 2009-10-19  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/SOGo/NSCalendarDate+SOGo.m: lower the values of

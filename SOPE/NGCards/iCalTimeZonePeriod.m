@@ -110,6 +110,7 @@
   dayOfWeek = [self dayOfWeekFromRruleDay: [rrule byDayMask]];
   pos = [[byDay substringToIndex: 2] intValue];
   if (!pos)
+    /* if byday = "SU", instead of "1SU"... */
     pos = 1;
 
   tmpDate = [NSCalendarDate dateWithYear: [refDate yearOfCommonEra]
@@ -119,9 +120,14 @@
   tmpDate = [tmpDate addYear: 0 month: ((pos > 0) ? 0 : 1)
 		     day: 0 hour: 0 minute: 0
 		     second: -[self _secondsOfOffset: @"tzoffsetfrom"]];
+
   dateDayOfWeek = [tmpDate dayOfWeek];
-// #warning FIXME
-  offset = (dayOfWeek - dateDayOfWeek) + ((pos -1 ) * 7);
+
+  if (pos > 0)
+    offset = (dayOfWeek - dateDayOfWeek) + ((pos - 1) * 7);
+  else
+    offset = (dateDayOfWeek - dayOfWeek) + (pos * 7);
+
   tmpDate = [tmpDate addYear: 0 month: 0 day: offset
 		     hour: 0 minute: 0 second: 0];
 
