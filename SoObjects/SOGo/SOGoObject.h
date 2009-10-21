@@ -93,6 +93,7 @@ SEL SOGoSelectorForPropertySetter (NSString *property);
 - (NSURL *) soURL;
 - (NSURL *) soURLToBaseContainerForUser: (NSString *) uid;
 - (NSURL *) soURLToBaseContainerForCurrentUser;
+- (NSString *) davURLAsString;
 
 - (NSString *) labelForKey: (NSString *) key;
 

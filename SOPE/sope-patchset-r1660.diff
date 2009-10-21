@@ -4315,7 +4315,13 @@ Index: sope-appserver/NGObjWeb/ChangeLog
 ===================================================================
 --- sope-appserver/NGObjWeb/ChangeLog	(revision 1660)
 +++ sope-appserver/NGObjWeb/ChangeLog	(working copy)
-@@ -1,3 +1,22 @@
+@@ -1,3 +1,28 @@
++2009-10-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
++
++	* WebDAV/SoObjectResultEntry.m (-valueForKey:): we now take
++	WOUseRelativeURLs into account when the "href" key is requested,
++	to work around a bug in iCal 4.
++
 +2009-07-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 +
 +	* WOMessage.m (-setHeaders:, -setHeader:forKey:, headerForKey:,
@@ -4338,6 +4344,77 @@ Index: sope-appserver/NGObjWeb/ChangeLog
  2009-06-10  Helge Hess  <helge.hess@opengroupware.org>
  
  	* DAVPropMap.plist: mapped {DAV:}current-user-principal (v4.9.37)
+Index: sope-appserver/NGObjWeb/DAVPropMap.plist
+===================================================================
+--- sope-appserver/NGObjWeb/DAVPropMap.plist	(revision 1660)
++++ sope-appserver/NGObjWeb/DAVPropMap.plist	(working copy)
+@@ -157,6 +157,7 @@
+   "{urn:ietf:params:xml:ns:caldav}supported-calendar-data" =
+      davSupportedCalendarDataTypes;
+   "{urn:ietf:params:xml:ns:caldav}calendar-description" = davDescription;
++  "{urn:ietf:params:xml:ns:caldav}calendar-timezone" = davCalendarTimeZone;
+ 
+   /* CardDAV */
+   "{urn:ietf:params:xml:ns:carddav}addressbook-home-set" = davAddressbookHomeSet;
+Index: sope-appserver/NGObjWeb/WebDAV/SoObjectResultEntry.m
+===================================================================
+--- sope-appserver/NGObjWeb/WebDAV/SoObjectResultEntry.m	(revision 1660)
++++ sope-appserver/NGObjWeb/WebDAV/SoObjectResultEntry.m	(working copy)
+@@ -25,7 +25,14 @@
+ @implementation SoObjectResultEntry
+ 
+ static BOOL debugOn = NO;
++static BOOL useRelativeURLs = NO;
+ 
+++ (void) initialize
++{
++  useRelativeURLs = [[NSUserDefaults standardUserDefaults]
++		      boolForKey: @"WOUseRelativeURLs"];
++}
++
+ - (id)initWithURI:(NSString *)_href object:(id)_o values:(NSDictionary *)_d {
+   if ((self = [super init])) {
+     if (debugOn) {
+@@ -85,10 +92,36 @@
+   return YES;
+ }
+ 
++- (NSString *)_relativeHREF {
++  NSString *newHREF;
++  NSRange hostRange;
++
++  if ([self->href hasPrefix: @"/"])
++    return self->href;
++  else {
++    hostRange = [self->href rangeOfString: @"://"];
++    if (hostRange.length > 0) {
++      newHREF = [self->href substringFromIndex: NSMaxRange (hostRange)];
++      hostRange = [newHREF rangeOfString: @"/"];
++      if (hostRange.length > 0) {
++	newHREF = [newHREF substringFromIndex: hostRange.location];
++      }
++    } else {
++      newHREF = self->href;
++    }
++
++    return newHREF;
++  }
++}
++
+ - (id)valueForKey:(NSString *)_key {
+-  if ([_key isEqualToString:@"{DAV:}href"])
+-    return self->href;
+-  
++  if ([_key isEqualToString:@"{DAV:}href"]) {
++    if (useRelativeURLs)
++      return [self _relativeHREF];
++    else
++      return self->href;
++  }
++
+   if ([_key isEqualToString:@"{DAV:}status"])
+     return nil;
+   
 Index: sope-appserver/NGObjWeb/WebDAV/SoWebDAVRenderer.m
 ===================================================================
 --- sope-appserver/NGObjWeb/WebDAV/SoWebDAVRenderer.m	(revision 1660)

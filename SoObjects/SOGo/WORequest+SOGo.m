@@ -131,4 +131,9 @@
   return [self isAppleDAVWithSubstring: @"Mac OS X/10."];
 }
 
+- (BOOL) isICal4
+{
+  return [self isAppleDAVWithSubstring: @"iCal/4."];
+}
+
 @end

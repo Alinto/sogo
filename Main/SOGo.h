@@ -39,6 +39,8 @@
 - (NSDictionary *) currentLocaleConsideringLanguages:(NSArray *)_langs;
 - (NSDictionary *) localeForLanguageNamed:(NSString *)_name;
 
+- (NSString *) davURLAsString;
+
 @end
 
 #endif /* MAIN_SOGO_H */

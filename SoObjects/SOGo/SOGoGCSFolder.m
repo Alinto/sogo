@@ -1065,7 +1065,7 @@ static NSArray *childRecordFields = nil;
 
   newToken = 0;
 
-  baseURL = [[self davURL] absoluteString];
+  baseURL = [self davURLAsString];
 
   max = [records count];
   syncResponses = [NSMutableArray arrayWithCapacity: max + 1];

@@ -261,7 +261,7 @@ static NSString *LDAPContactInfoAttribute = nil;
   NSEnumerator *foldersEnum;
   SOGoUser *ownerUser;
 
-  baseHREF = [[container davURL] absoluteString];
+  baseHREF = [container davURLAsString];
   if ([baseHREF hasSuffix: @"/"])
     baseHREF = [baseHREF substringToIndex: [baseHREF length] - 1];
   foldersEnum = [folders objectEnumerator];
@@ -617,11 +617,9 @@ static NSString *LDAPContactInfoAttribute = nil;
 - (NSArray *) davPrincipalURL
 {
   NSArray *principalURL;
-  NSString *selfDAVPath;
 
-  selfDAVPath = [[self davURL] path];
   principalURL = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
-                          selfDAVPath, nil];
+                          [self davURLAsString], nil];
 
   return [NSArray arrayWithObject: principalURL];
 }

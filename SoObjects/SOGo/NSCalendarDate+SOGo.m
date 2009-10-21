@@ -113,9 +113,18 @@ static NSString *rfc822Months[] = {@"", @"Jan", @"Feb", @"Mar", @"Apr",
 	      timeZoneShift];
 }
 
+/* <<<<<<< variant A
+#define secondsOfDistantFuture 1073741823.0
+#define secondsOfDistantPast -1518491648.0
+>>>>>>> variant B */
 #define secondsOfDistantFuture 1073741823.0
 #define secondsOfDistantPast -1073741823.0
 
+/*
+####### Ancestor
+#define secondsOfDistantFuture 63113990400.0
+#define secondsOfDistantPast -63113817600.0
+======= end */
 
 + (id) distantFuture
 {
