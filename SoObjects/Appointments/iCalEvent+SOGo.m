@@ -123,8 +123,8 @@
 
   if ([startDate isNotNull])
     {
-      if (isAllDay)
-	NSLog (@"start date...");
+//      if (isAllDay)
+//	NSLog (@"start date...");
       [row setObject: [self quickRecordDateAsNumber: startDate
 			    withOffset: 0 forAllDay: isAllDay]
 	   forKey: @"c_startdate"];

@@ -197,7 +197,7 @@ static NSString *LDAPContactInfoAttribute = nil;
   intervals = interval / intervalSeconds; /* slices of 15 minutes */
   freeBusyItems = NSZoneCalloc (NULL, intervals, sizeof (int));
   [self _fillFreeBusyItems: freeBusyItems count: intervals
-	withRecords: [fb fetchFreeBusyInfosFrom: startDate to: endDate]
+	       withRecords: [fb fetchFreeBusyInfosFrom: startDate to: endDate]
         fromStartDate: startDate toEndDate: endDate];
 
   response = [NSMutableString string];
