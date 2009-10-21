@@ -145,7 +145,7 @@
     {
       component = [[components objectAtIndex: count] email];
       if (component)
-	[formattedComponents addObject: component];
+	[formattedComponents addObject: [component decodedSubject]];
     }
 
   return [formattedComponents componentsJoinedByString: @", "];

@@ -23,7 +23,10 @@ request_info = "meghívja önt résztvevőnek egy találkozóra.";
 Accept = "Elfogad";
 Decline = "Elutasít";
 Tentative = "Bizonytalan";
+"Delegate ..." = "Delegate ...";
+"Delegated to" = "Delegated to";
 "Update status in calendar" = "Állapot frissítése a naptárban";
+
 reply_info_no_attendee = "Ön választ kapott egy találkozóra, a feladó azonban nem résztvevő.";
 reply_info = "Ez egy válasz az ön által kiküldött meghívásra.";
 
@@ -31,9 +34,12 @@ reply_info = "Ez egy válasz az ön által kiküldött meghívásra.";
 
 "Untitled" = "Névtelen";
 
+"Size" = "Méret";
+
 "Digital signature is not valid" = "Digital signature is not valid";
 "Message is signed" = "Message is signed";
 "Subject" = "Subject";
+"From" = "From";
+"Date" = "Date";
+"To" = "To";
 "Issuer" = "Issuer";
-
-"Size" = "Méret";

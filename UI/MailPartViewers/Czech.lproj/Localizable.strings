@@ -23,7 +23,10 @@ request_info = "Vás zve k účasti na setkání.";
 Accept = "Přijmout";
 Decline = "Odmítnout";
 Tentative = "Prozatimní";
+"Delegate ..." = "Delegate ...";
+"Delegated to" = "Delegated to";
 "Update status in calendar" = "Aktualizovat status v kalendáři";
+
 reply_info_no_attendee = "Obdrželi jste odpověď k plánované události, ale odesílatel se události neúčastní.";
 reply_info = "Toto je odpověď na pozvánku k událost, kterou jste vytvořili vy.";
 
@@ -36,4 +39,7 @@ reply_info = "Toto je odpověď na pozvánku k událost, kterou jste vytvořili 
 "Digital signature is not valid" = "Digital signature is not valid";
 "Message is signed" = "Message is signed";
 "Subject" = "Subject";
+"From" = "From";
+"Date" = "Date";
+"To" = "To";
 "Issuer" = "Issuer";

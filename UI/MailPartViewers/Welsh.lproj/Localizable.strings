@@ -23,7 +23,10 @@ request_info = "yn eich gwahodd i gyfarfod.";
 Accept = "Derbyn";
 Decline = "Gwrthod";
 Tentative = "Petrus";
+"Delegate ..." = "Delegate ...";
+"Delegated to" = "Delegated to";
 "Update status in calendar" = "Diweddaru statws yn y calendr";
+
 reply_info_no_attendee = "Rydych wedi derbyn ymateb i digwyddiad ond nid yw'r anfonwr yn cyfranogwr.";
 reply_info = "Dyma ymateb i wahoddiad i digwyddiad a wnaed gennych chi.";
 
@@ -36,4 +39,7 @@ reply_info = "Dyma ymateb i wahoddiad i digwyddiad a wnaed gennych chi.";
 "Digital signature is not valid" = "Digital signature is not valid";
 "Message is signed" = "Message is signed";
 "Subject" = "Subject";
+"From" = "From";
+"Date" = "Date";
+"To" = "To";
 "Issuer" = "Issuer";

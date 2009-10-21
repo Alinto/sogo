@@ -59,7 +59,7 @@
 		<input id="editDelegate" class="button"
 		  type="button" label:value="Delegate ..." />
 		<span id="delegateEditor" style="display: none;">
-		  <var:string label:value="Delegate to" /> 
+		  <var:string label:value="Delegated to" /> 
 		    <input name="delegatedTo" id="delegatedTo" type="text" />
 		    <input class="button" type="button" id="iCalendarDelegate" name="delegateOK" value="OK" />
 		</span>
@@ -67,10 +67,10 @@
 	      <var:if condition="currentUserAttendee.partStatWithDefault"
 		const:value="DELEGATED">
 		<span id="delegateEditor">
-		  <var:string label:value="Delegate to" /> 
+		  <var:string label:value="Delegated to" /> 
 		    <input name="delegatedTo" id="delegatedTo" type="text" var:value="currentUserAttendee.delegatedTo.rfc822Email" var:uid="currentUserAttendee.delegatedTo.rfc822Email" style="display: none;" />
 		    <a var:href="currentUserAttendee.delegatedTo" name="delegatedToLink" id="delegatedToLink"><var:string value="currentUserAttendee.delegatedTo.rfc822Email" /></a>
-		    <input class="button" type="button" id="iCalendarDelegate" name="delegateOK" value="OK" />
+		    <input class="button" type="button" style="display: none;" id="iCalendarDelegate" name="delegateOK" value="OK" />
 		</span>
 	      </var:if>
 	      <!-- <input id="iCalendarTentative" class="button"
