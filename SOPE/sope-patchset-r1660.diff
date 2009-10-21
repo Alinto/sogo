@@ -4217,6 +4217,19 @@ Index: sope-core/NGExtensions/EOExt.subproj/EOGlobalID+Ext.m
  #import <EOControl/EOGlobalID.h>
  #import <Foundation/NSString.h>
  
+Index: sope-core/NGStreams/GNUmakefile.preamble
+===================================================================
+--- sope-core/NGStreams/GNUmakefile.preamble	(revision 1660)
++++ sope-core/NGStreams/GNUmakefile.preamble	(working copy)
+@@ -1,6 +1,7 @@
+ # compilation settings
+ 
+-MACHCPU = $(shell echo $$MACHTYPE | cut -f 1 -d '-')
++# MACHCPU = $(shell echo $$MACHTYPE | cut -f 1 -d '-')
++MACHCPU = $(shell uname -m)
+ 
+ libNGStreams_INCLUDE_DIRS += \
+ 	-I$(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS) \
 Index: sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.h
 ===================================================================
 --- sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.h	(revision 1660)
