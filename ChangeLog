@@ -1,3 +1,23 @@
+2009-10-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-davCalendarTimeZone): new DAV accessor that returns the
+	user's timezone.
+
+	* SoObjects/Appointments/SOGoUserFolder+Appointments.m
+	(-davCalendarScheduleInboxURL, davCalendarScheduleOutboxURL):
+	return nil if used with iCal 4.
+
+	* SoObjects/SOGo/SOGoContentObject.m (-davResourceType): removed
+	useless method.
+
+	* SoObjects/SOGo/SOGoObject.m (-davURLAsString): new method that
+	returns the resource url as a string, by taking WOUseRelativeURLs
+	into account.
+
+	* SoObjects/SOGo/WORequest+SOGo.m (-isICal4): new method that
+	determines whether to work-around iCal4 calamities.
+
 2009-10-21  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Scheduler/UIxCalListingActions.m

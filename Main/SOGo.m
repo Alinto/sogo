@@ -67,6 +67,7 @@ static BOOL doCrashOnSessionCreate = NO;
 static BOOL hasCheckedTables = NO;
 static BOOL debugRequests = NO;
 static BOOL debugLeaks = NO;
+static BOOL useRelativeURLs = NO;
 
 static BOOL trustProxyAuthentication;
 
@@ -125,6 +126,7 @@ static BOOL debugObjectAllocation = NO;
   [sInfo declareRoles: basicRoles asDefaultForPermission: SoPerm_WebDAVAccess];
 
   trustProxyAuthentication = [ud boolForKey: @"SOGoTrustProxyAuthentication"];
+  useRelativeURLs = [ud boolForKey: @"WOUseRelativeURLs"];
 }
 
 - (id) init
@@ -605,6 +607,15 @@ static BOOL debugObjectAllocation = NO;
 - (NSURL *) davURL
 {
   return [self _urlPreferringParticle: @"dav" overThisOne: @"so"];
+}
+
+- (NSString *) davURLAsString
+{
+  NSURL *davURL;
+
+  davURL = [self davURL];
+
+  return (useRelativeURLs ? [davURL path] : [davURL absoluteString]);
 }
 
 - (NSURL *) soURL

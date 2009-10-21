@@ -35,6 +35,8 @@
 #import <SOGo/NSObject+DAV.h>
 #import <SOGo/NSString+DAV.h>
 
+#import <SOGo/WORequest+SOGo.h>
+
 #import "SOGoAppointmentFolders.h"
 #import "SOGoUserFolder+Appointments.h"
 
@@ -88,7 +90,7 @@
 
   parent = [self privateCalendars: @"Calendar" inContext: context];
   tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
-                 [[parent davURL] path], nil];
+                 [parent davURLAsString], nil];
 
   return [NSArray arrayWithObject: tag];
 }
@@ -100,7 +102,8 @@
 
   parent = [self privateCalendars: @"Calendar" inContext: context];
   tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
-                 [NSString stringWithFormat: @"%@personal/", [[parent davURL] path]],
+                 [NSString stringWithFormat: @"%@personal/",
+			   [parent davURLAsString]],
 		 nil];
 
   return [NSArray arrayWithObject: tag];
@@ -108,22 +111,50 @@
 
 - (NSArray *) davCalendarScheduleInboxURL
 {
-  return [self _davPersonalCalendarURL];
+  NSArray *url;
+
+  if ([[context request] isICal4])
+    url = nil;
+  else
+    url = [self _davPersonalCalendarURL];
+
+  return url;
 }
 
 - (NSArray *) davCalendarScheduleOutboxURL
 {
-  return [self _davPersonalCalendarURL];
+  NSArray *url;
+
+  if ([[context request] isICal4])
+    url = nil;
+  else
+    url = [self _davPersonalCalendarURL];
+
+  return url;
 }
 
 - (NSArray *) davDropboxHomeURL
 {
-  return [self _davPersonalCalendarURL];
+  NSArray *url;
+
+  if ([[context request] isICal4])
+    url = nil;
+  else
+    url = [self _davPersonalCalendarURL];
+
+  return url;
 }
 
 - (NSArray *) davNotificationsURL
 {
-  return [self _davPersonalCalendarURL];
+  NSArray *url;
+
+  if ([[context request] isICal4])
+    url = nil;
+  else
+    url = [self _davPersonalCalendarURL];
+
+  return url;
 }
 
 - (WOResponse *) _prepareResponseFromContext: (WOContext *) queryContext
@@ -329,7 +360,7 @@
 
   response = [NSMutableArray array];
   [response addObject: davElementWithContent (@"href", XMLNS_WEBDAV,
-					      [collection davURL])];
+					      [collection davURLAsString])];
   props = [NSMutableArray array];
   max = [properties count];
   for (count = 0; count < max; count++)

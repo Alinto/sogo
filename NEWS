@@ -8,7 +8,8 @@
 - a context menu is now available for tasks
 - added the capability of creating and managing lists of contacts (same as in Thunderbird)
 - added support for short date format in the calendar views
-- added support for iCal delegation
+- added support for iCal delegation (iCal 3)
+- added preliminary support for iCal 4
 - rewrote dTree.js to include major optimizations
 - added WebAuth support
 - added support for remote ICS subscriptions

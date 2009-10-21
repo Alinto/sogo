@@ -46,6 +46,7 @@
 #import <NGCards/iCalDateTime.h>
 #import <NGCards/iCalPerson.h>
 #import <NGCards/iCalRecurrenceCalculator.h>
+#import <NGCards/iCalTimeZone.h>
 #import <NGCards/NSString+NGCards.h>
 #import <NGExtensions/NGCalendarDateRange.h>
 #import <NGExtensions/NSNull+misc.h>
@@ -1674,6 +1675,24 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
 - (NSException *) setDavCalendarOrder: (NSString *) newColor
 {
+  /* we fail silently */
+  return nil;
+}
+
+- (NSString *) davCalendarTimeZone
+{
+  SOGoUser *ownerUser;
+  NSString *ownerTimeZone;
+
+  ownerUser = [SOGoUser userWithLogin: [self ownerInContext: context]];
+  ownerTimeZone = [[ownerUser timeZone] name];
+
+  return [[iCalTimeZone timeZoneForName: ownerTimeZone] versitString];
+}
+
+- (NSException *) setDavCalendarTimeZone: (NSString *) newTimeZone
+{
+  /* we fail silently */
   return nil;
 }
 
@@ -1687,8 +1706,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   response = [NSMutableArray array];
   subFolders = [[container subFolders] objectEnumerator];
   while ((currentFolder = [subFolders nextObject]))
-    [response addObject: davElementWithContent (@"href", XMLNS_WEBDAV,
-						[currentFolder davURL])];
+    [response
+      addObject: davElementWithContent (@"href", XMLNS_WEBDAV,
+					[currentFolder davURLAsString])];
   responseValue = [davElementWithContent (@"calendar-free-busy-set", XMLNS_CALDAV, response)
 					 asWebDAVValue];
 
@@ -1720,7 +1740,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   while ((currentField = [addFields nextObject]))
     if ([currentField length])
       [fields addObjectUniquely: currentField];
-  baseURL = [[self davURL] absoluteString];
+  baseURL = [self davURLAsString];
 
   propertiesArray = [[properties allKeys] asPointersOfObjects];
   propertiesCount = [properties count];
@@ -1813,7 +1833,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   max = [urls count];
   cNames = [NSMutableDictionary dictionaryWithCapacity: max];
   baseURL = [self davURL];
-  baseURLString = [baseURL absoluteString];
+  baseURLString = [self davURLAsString];
 
   for (count = 0; count < max; count++)
     {
@@ -1939,7 +1959,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   unsigned int count, max, propertiesCount;
   NSEnumerator *addFields;
 
-  baseURL = [[self davURL] absoluteString];
+  baseURL = [self davURLAsString];
 
   urls = [NSMutableArray array];
   max = [refs length];
@@ -2358,7 +2378,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
      resourcetype. Anything else will prevent the iPhone from querying the
      collection. */
   request = [context request];
-  if (![request isIPhone])
+  if (!([request isIPhone] || [request isICal4]))
     {
       gdRT = [self groupDavResourceType];
       gdVEventCol = [NSArray arrayWithObjects: [gdRT objectAtIndex: 0],

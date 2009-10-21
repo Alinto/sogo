@@ -68,6 +68,7 @@
 
 static BOOL kontactGroupDAV = YES;
 static BOOL sendACLAdvisories = NO;
+static BOOL useRelativeURLs = NO;
 
 static NSDictionary *reportMap = nil;
 static NSMutableDictionary *setterMap = nil;
@@ -178,6 +179,7 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
   ud = [NSUserDefaults standardUserDefaults];
   kontactGroupDAV = ![ud boolForKey:@"SOGoDisableKontact34GroupDAVHack"];
   sendACLAdvisories = [ud boolForKey: @"SOGoACLsSendEMailNotifications"];
+  useRelativeURLs = [ud boolForKey: @"WOUseRelativeURLs"];
 
   if (!reportMap)
     {
@@ -463,7 +465,7 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
   NSString *usersUrl;
 
   usersUrl = [NSString stringWithFormat: @"%@%@/",
-		       [[WOApplication application] davURL], owner];
+		       [[WOApplication application] davURLAsString], owner];
   ownerHREF = davElementWithContent (@"href", @"DAV:", usersUrl);
 
   return [davElementWithContent (@"owner", @"DAV:", ownerHREF)
@@ -491,7 +493,7 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
   /* WOApplication has no support for the DAV methods we define here so we
      use the user's principal object as a reference */
   usersUrl = [NSString stringWithFormat: @"%@%@/",
-		       [[WOApplication application] davURL], owner];
+		       [[WOApplication application] davURLAsString], owner];
   collectionHREF = davElementWithContent (@"href", @"DAV:", usersUrl);
 
   return [davElementWithContent (@"principal-collection-set",
@@ -553,7 +555,7 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
   if ([roles count])
     {
       principalURL = [NSString stringWithFormat: @"%@%@/",
-			       [[WOApplication application] davURL],
+			       [[WOApplication application] davURLAsString],
 			       currentUID];
       userHREF = davElementWithContent (@"href", @"DAV:", principalURL);
       [currentAce addObject: davElementWithContent (@"principal", @"DAV:",
@@ -670,7 +672,7 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
   NSString *davURL, *userLogin;
   NSArray *principalURL;
 
-  davURL = [[WOApplication application] davURL];
+  davURL = [[WOApplication application] davURLAsString];
   userLogin = [[context activeUser] login];
   principalURL
     = [NSArray arrayWithObject: [NSString stringWithFormat: @"%@%@/", davURL,
@@ -680,15 +682,11 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
 
 - (void) _fillArrayWithPrincipalsOwnedBySelf: (NSMutableArray *) hrefs
 {
-  NSString *url;
   NSArray *roles;
 
   roles = [[context activeUser] rolesForObject: self inContext: context];
   if ([roles containsObject: SoRole_Owner])
-    {
-      url = [[self davURL] absoluteString];
-      [hrefs addObject: url];
-    }
+    [hrefs addObject: [self davURLAsString]];
 }
 
 - (NSDictionary *)
@@ -1187,6 +1185,15 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
 - (NSURL *) davURL
 {
   return [self _urlPreferringParticle: @"dav" overThisOne: @"so"];
+}
+
+- (NSString *) davURLAsString
+{
+  NSURL *davURL;
+
+  davURL = [self davURL];
+
+  return (useRelativeURLs ? [davURL path] : [davURL absoluteString]);
 }
 
 - (NSURL *) soURL

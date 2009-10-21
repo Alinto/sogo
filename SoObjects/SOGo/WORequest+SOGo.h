@@ -33,6 +33,7 @@
 - (BOOL) isAppleDAVWithSubstring: (NSString *) osSubstring;
 - (BOOL) isIPhone;
 - (BOOL) isICal;
+- (BOOL) isICal4;
 
 @end
 

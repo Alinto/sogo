@@ -51,7 +51,7 @@
 
   parent = [self privateContacts: @"Contacts" inContext: context];
   tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
-                 [[parent davURL] path], nil];
+                 [parent davURLAsString], nil];
 
   return [NSArray arrayWithObject: tag];
 }
