@@ -1,3 +1,13 @@
+2009-10-21  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Scheduler/UIxCalListingActions.m
+	(-_loadScheduleLimitsForUsers:): we must not consider users not
+	part of the system (no uid).
+
+	* UI/WebServerResources/UIxAttendeesEditor.js
+	(redisplayFreeBusyZone): removed logic around start/end
+	minutes. It was breaking the display of an event spanning multiple days.
+
 2009-10-20  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* Added missing timezones

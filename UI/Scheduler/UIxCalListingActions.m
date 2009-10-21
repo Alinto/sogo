@@ -63,11 +63,11 @@ static NSArray *tasksFields = nil;
 #define dayLength       86400
 #define quarterLength   900
 
-#define intervalSeconds 900
-#define offsetHours     24 * 5
-#define offsetSeconds   offsetHours * 60 * 60
-#define offsetBlocks    offsetHours * 4
-#define maxBlocks       offsetBlocks * 2
+#define intervalSeconds 900                      // number of seconds in 15 minutes
+#define offsetHours     24 * 5                   // number of hours in invitation window
+#define offsetSeconds   offsetHours * 60 * 60    // number of seconds in invitation window
+#define offsetBlocks    offsetHours * 4          // number of 15-minute blocks in invitation window
+#define maxBlocks       offsetBlocks * 2         // maximum number of blocks to search for a free slot (10 days)
 
 @implementation UIxCalListingActions
 
@@ -1048,9 +1048,9 @@ _computeBlocksPosition (NSArray *blocks)
   int itemCount = (offsetBlocks + maxBlocks) * 15 * 60;
 
   user = [SOGoUser userWithLogin: uid roles: nil];
-  fbObject = [[user homeFolderInContext: context] 
-              freeBusyObject: @"freebusy.ifb" 
-              inContext: context];
+  fbObject = [[user homeFolderInContext: context]
+              freeBusyObject: @"freebusy.ifb"
+		   inContext: context];
 
   end = [start addTimeInterval: itemCount];
 
@@ -1113,7 +1113,7 @@ _computeBlocksPosition (NSArray *blocks)
 
           if (type == 1)
             for (count = startInterval; count < endInterval; count++)
-              *(fb + count) = 1;
+	      *(fb + count) = 1;
         }
     }
 
@@ -1269,12 +1269,15 @@ _computeBlocksPosition (NSArray *blocks)
     {
       ud = [[SOGoUser userWithLogin: [users objectAtIndex: count]
                               roles: nil] userDefaults];
-      from = [NSCalendarDate dateWithString: [ud objectForKey: @"DayStartTime"]
-                             calendarFormat: @"%H:%M"];
-      to = [NSCalendarDate dateWithString: [ud objectForKey: @"DayEndTime"]
-                             calendarFormat: @"%H:%M"];
-      maxFrom = (NSCalendarDate *)[from laterDate: maxFrom];
-      maxTo = (NSCalendarDate *)[to earlierDate: maxTo];
+      if (ud)
+	{
+	  from = [NSCalendarDate dateWithString: [ud objectForKey: @"DayStartTime"]
+				 calendarFormat: @"%H:%M"];
+	  to = [NSCalendarDate dateWithString: [ud objectForKey: @"DayEndTime"]
+			       calendarFormat: @"%H:%M"];
+	  maxFrom = (NSCalendarDate *)[from laterDate: maxFrom];
+	  maxTo = (NSCalendarDate *)[to earlierDate: maxTo];
+	}
     }
 
   return [NSArray arrayWithObjects: maxFrom, maxTo, nil];

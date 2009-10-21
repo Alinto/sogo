@@ -244,6 +244,7 @@ function redisplayFreeBusyZone() {
     var stMinute = parseInt($("startTime_time_minute").value) / 15;
     var etHour = parseInt($("endTime_time_hour").value);
     var etMinute = parseInt($("endTime_time_minute").value) / 15;
+
     if (stHour < displayStartHour) {
         stHour = displayStartHour;
         stMinute = 0;
@@ -259,20 +260,6 @@ function redisplayFreeBusyZone() {
     if (etHour > displayEndHour + 1) {
         etHour = displayEndHour;
         etMinute = 0;
-    }
-    if (stHour > etHour) {
-        var swap = etHour;
-        etHour = stHour;
-        stHour = swap;
-        swap = etMinute;
-        etMinute = stMinute;
-        stMinute = etMinute;
-    } else {
-        if (stMinute > etMinute) {
-            var swap = etMinute;
-            etMinute = stMinute;
-            stMinute = swap;
-        }
     }
 
     var deltaCells = (etHour - stHour) + ((displayEndHour - displayStartHour + 1) * addDays);
@@ -294,7 +281,7 @@ function redisplayFreeBusyZone() {
         }
         deltaSpans--;
     }
-    scrollToEvent ();
+    scrollToEvent();
 }
 
 function newAttendee(event) {
@@ -446,7 +433,7 @@ function resetAllFreeBusys() {
     var table = $("freeBusy");
     var inputs = table.getElementsByTagName("input");
 
-    for (var i = 0; i < inputs.length - 2; i++) {
+    for (var i = 0; i < inputs.length - 1; i++) {
         var currentInput = inputs[i];
         currentInput.hasfreebusy = false;
         displayFreeBusyForNode(inputs[i]);
@@ -475,10 +462,10 @@ function findSlot (direction) {
     var et = window.timeWidgets['end']['hour'].value
         + ":" + window.timeWidgets['end']['minute'].value;
 
-    for (var i = 0; i < inputs.length - 2; i++)
-        {
+    for (var i = 0; i < inputs.length - 1; i++) {
+        if (inputs[i].uid)
             userList += "," + inputs[i].uid;
-        }
+    }
 
     // Abort any pending request
     if (document.findSlotAjaxRequest) {
@@ -486,12 +473,12 @@ function findSlot (direction) {
         document.findSlotAjaxRequest.abort();
     }
     var urlstr = (ApplicationBaseURL
-                  + "/findPossibleSlot?direction=" + direction
-                  + "&uids=" + escape (userList)
-                  + "&startDate=" + escape (sd)
-                  + "&startTime=" + escape (st)
-                  + "&endDate=" + escape (ed)
-                  + "&endTime=" + escape (et)
+                  + "findPossibleSlot?direction=" + direction
+                  + "&uids=" + escape(userList)
+                  + "&startDate=" + escape(sd)
+                  + "&startTime=" + escape(st)
+                  + "&endDate=" + escape(ed)
+                  + "&endTime=" + escape(et)
                   + "&isAllDay=" + isAllDay
                   + "&onlyOfficeHours=" + ($("onlyOfficeHours").checked + 0));
     document.findSlotAjaxRequest = triggerAjaxRequest(urlstr,
@@ -514,7 +501,7 @@ function scrollToEvent () {
     var spans = $$('TR#currentEventPosition TH SPAN');
     for (var i = 0; i < spans.length; i++) {
         scroll += spans[i].getWidth (spans[i]);
-        if (spans[i].hasClassName ("busy")) {
+        if (spans[i].hasClassName("busy")) {
             scroll -= 20 * spans[i].getWidth (spans[i]);
             break;
         }
@@ -536,33 +523,32 @@ function toggleOfficeHours () {
 }
 
 function updateSlotDisplayCallback(http) {
-    var data = http.responseText.evalJSON (true);
-    var start = new Date ();
-    var end = new Date ();
+    var data = http.responseText.evalJSON(true);
+    var start = new Date();
+    var end = new Date();
     var cb = redisplayFreeBusyZone;
 
-    start.setFullYear (parseInt (data[0]['startDate'].substr (0, 4)),
-                       parseInt (data[0]['startDate'].substr (4, 2)) - 1,
-                       parseInt (data[0]['startDate'].substr (6, 2)));
-    end.setFullYear (parseInt (data[0]['endDate'].substr (0, 4)),
-                     parseInt (data[0]['endDate'].substr (4, 2)) - 1,
-                     parseInt (data[0]['endDate'].substr (6, 2)));
-  
-    window.timeWidgets['end']['date'].setValueAsDate (end);
-    window.timeWidgets['end']['hour'].value = cleanInt (data[0]['endHour']);
-    window.timeWidgets['end']['minute'].value = cleanInt (data[0]['endMinute']);
+    start.setFullYear(parseInt (data[0]['startDate'].substr(0, 4)),
+                      parseInt (data[0]['startDate'].substr(4, 2)) - 1,
+                      parseInt (data[0]['startDate'].substr(6, 2)));
+    end.setFullYear(parseInt (data[0]['endDate'].substr(0, 4)),
+                    parseInt (data[0]['endDate'].substr(4, 2)) - 1,
+                    parseInt (data[0]['endDate'].substr(6, 2)));
+    
+    window.timeWidgets['end']['date'].setValueAsDate(end);
+    window.timeWidgets['end']['hour'].value = cleanInt(data[0]['endHour']);
+    window.timeWidgets['end']['minute'].value = cleanInt(data[0]['endMinute']);
 
-    if (window.timeWidgets['start']['date'].valueAsShortDateString () !=
-        data[0]['startDate'])
-        {
-            cb = onTimeDateWidgetChange;
-        }
+    if (window.timeWidgets['start']['date'].valueAsShortDateString() !=
+        data[0]['startDate']) {
+        cb = onTimeDateWidgetChange;
+    }
 
-    window.timeWidgets['start']['date'].setValueAsDate (start);
-    window.timeWidgets['start']['hour'].value = cleanInt (data[0]['startHour']);
-    window.timeWidgets['start']['minute'].value = cleanInt (data[0]['startMinute']);
-
-    cb ();
+    window.timeWidgets['start']['date'].setValueAsDate(start);
+    window.timeWidgets['start']['hour'].value = cleanInt(data[0]['startHour']);
+    window.timeWidgets['start']['minute'].value = cleanInt(data[0]['startMinute']);
+    
+    cb();
 }
 
 function onPreviousSlotClick (event) {
