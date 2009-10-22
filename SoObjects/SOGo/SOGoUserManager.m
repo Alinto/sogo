@@ -173,6 +173,10 @@ static NSLock *lock = nil;
       for (count = 0; count < max; count++)
 	[self _registerSource: [sources objectAtIndex: count]];
     }
+  else
+    {
+      [self errorWithFormat: @"No authentication sources defined - nobody will be able to login. Check your defaults."];
+    }
 }
 
 - (id) init
