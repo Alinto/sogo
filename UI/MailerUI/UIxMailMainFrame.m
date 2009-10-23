@@ -279,7 +279,8 @@
 
       // We append the contact's name
       fn = [NSMutableString stringWithString: [card fn]];
-      if ([fn length] == 0)
+      if ([fn length] == 0
+	  && [card isKindOfClass: [NGVCard class]])
         {
           n = [card n];
           if (n)
@@ -294,7 +295,7 @@
                 }
             }
         }
-      if (fn)
+      if ([fn length] > 0)
         {
           [fn appendFormat: @" %@", email];
           rc = fn;
