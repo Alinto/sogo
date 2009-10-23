@@ -480,11 +480,13 @@
  Description: Development files for the GNUstep database libraries
   SOPE is a framework for developing web applications and services. The
   name "SOPE" (SKYRiX Object Publishing Environment) is inspired by ZOPE.
-@@ -224,14 +225,27 @@
+@@ -223,15 +224,28 @@
+ Section: web
  Architecture: any
  Depends: ${shlibs:Depends}, ${misc:Depends}
- Provides: sope-db-connector
+-Provides: sope-db-connector
 -Recommends: postgresql (>= 7.2.0)
++Provides: sope4.9-db-connector
 +Suggests: postgresql (>= 8.2)
  Description: PostgreSQL connector for SOPE's fork of the GNUstep database environment
   SOPE is a framework for developing web applications and services. The
@@ -498,8 +500,8 @@
 +Section: web
 +Architecture: any
 +Depends: ${shlibs:Depends}, ${misc:Depends}
-+Provides: sope-db-connector
-+Recommends: postgresql (>= 7.2.0)
++Provides: sope4.9-db-connector
++Recommends: mysql-server (>= 5.0)
 +Description: MySQL connector for SOPE's fork of the GNUstep database environment
 + SOPE is a framework for developing web applications and services. The
 + name "SOPE" (SKYRiX Object Publishing Environment) is inspired by ZOPE.
@@ -8512,37 +8514,3 @@
  
  libNGStreams_INCLUDE_DIRS += \
  	-I$(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS) \
---- sope-4.9.r1660.orig/.configure-test-3896/GNUmakefile
-+++ sope-4.9.r1660/.configure-test-3896/GNUmakefile
-@@ -0,0 +1,8 @@
-+include ../config.make
-+include $(GNUSTEP_MAKEFILES)/common.make
-+CTOOL_NAME           := linktest
-+linktest_C_FILES := dummytool.c
-+linktest_TOOL_LIBS  += -lpq
-+SYSTEM_LIB_DIR += $(CONFIGURE_SYSTEM_LIB_DIR)
-+SYSTEM_LIB_DIR      += -L/usr/local/pgsql/lib -L/usr/local/lib -L/usr/lib
-+include $(GNUSTEP_MAKEFILES)/ctool.make
---- sope-4.9.r1660.orig/.configure-test-3896/out.log
-+++ sope-4.9.r1660/.configure-test-3896/out.log
-@@ -0,0 +1,2 @@
-+This is gnustep-make 2.0.8. Type 'make print-gnustep-make-help' for help.
-+Making all for ctool linktest...
---- sope-4.9.r1660.orig/.configure-test-3896/dummytool.c
-+++ sope-4.9.r1660/.configure-test-3896/dummytool.c
-@@ -0,0 +1,7 @@
-+// Note: do not remove, used by ../configure
-+
-+#include <stdio.h>
-+
-+int main(int argc, char **argv) {
-+  return 0;
-+}
---- sope-4.9.r1660.orig/.configure-test-3896/err.log
-+++ sope-4.9.r1660/.configure-test-3896/err.log
-@@ -0,0 +1,5 @@
-+make[2]: *** wait: Aucun processus enfant. Arrêt.
-+make[2]: *** Attente des tâches non terminées....
-+make[2]: *** wait: Aucun processus enfant. Arrêt.
-+make[1]: *** [linktest.all.ctool.variables] Interrompre
-+make: *** [linktest] Interrompre
