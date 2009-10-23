@@ -136,7 +136,6 @@
 {
   [entries release];
   [source release];
-  [displayName release];
   [super dealloc];
 }
 
