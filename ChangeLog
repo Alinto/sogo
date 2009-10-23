@@ -3,6 +3,7 @@
 	* SoObjects/Contacts/SOGoContactSourceFolder.m
 	(-initWithName:andDisplayName:inContainer:): use the source name
 	when the displayname is nil.
+	(-dealloc): we release the display name to avoid a leak.
 
 	* SoObjects/SOGo/SOGoUserManager.m (_registerSource:): added
 	sanity checks and warnings to the user.
