@@ -1,3 +1,8 @@
+2009-10-23  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+        * SoObjects/SOGo/SOGoUserFolder.m (-subFoldersFromFolder:)
+	Addded a check to NOT return web calendars in this query.
+
 2009-10-23  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/MailerUI/UIxMailMainFrame.m (-formattedMailtoString:): fixed
