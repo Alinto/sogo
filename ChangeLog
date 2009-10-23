@@ -2314,7 +2314,7 @@
 2009-03-24  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUser.m ([SOGoUser -invalidateLanguage]):
-	new method to invalidate the language ivar.	
+	new method to invalidate the language ivar.
 
 	* UI/MainUI/SOGoRootPage.m ([SOGoRootPage -connectAction]): must
 	invalidate user's language ivar when it changes.
@@ -2467,10 +2467,10 @@
 
 	* UI/MainUI/SOGoRootPage.m ([SOGoRootPage -version]): new method
 	that returns the application version.
-	
+
 	* SOPE/NGCards/iCalDateTime.m ([iCalDateTime -dateTime]): when not
 	defined, the timezone is now guessed from the date of the current object.
-	
+
 2009-03-18  Ludovic Marcotte <lmarcotte@inverse.ca>
 
         * Updated the documentation for the SOGo
@@ -2548,7 +2548,7 @@
 	* UI/Scheduler/UIxCalListingActions.m ([UIxCalListingActions
 	-_fixDates:]): moved corrections for daylight saving time in this
 	new method.
-	
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	([SOGoAppointmentFolder
 	-fixupCycleRecord:_recordcycleRange:_rfirstInstanceCalendarDateRange:_firforViewRange:_viewRange]):
@@ -2890,7 +2890,7 @@
 	this new method.
 
 2009-01-06  Ludovic Marcotte  <lmarcotte@inverse.ca>
-	
+
 	* SoObjects/Appointments/SOGoCalendarComponent.m
 	([SOGoCalendarComponent -_filterComponent:]):
 	We now set the proper component summary just like
@@ -3040,7 +3040,7 @@
 	at once.
 
 2008-12-14  Ludovic Marcotte  <lmarcotte@inverse.ca>
-	
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	([SOGoAppointmentFolder -_buildStripFieldsFromFields:]):
 	Don't strip the c_isopaque for the DAndTViewer role.
@@ -3114,7 +3114,7 @@
 	([UIxMailPartICalActions -_setupChosenEventAndEventObject:]):
 	fixed comparison of the calendar and email event when dealing with
 	an occurence of a repeating event.
-	([UIxMailPartICalActions -_updateAttendee:ownerUser:forEventUID:withRecurrenceId:forUID:shouldAddSentBy:]):	
+	([UIxMailPartICalActions -_updateAttendee:ownerUser:forEventUID:withRecurrenceId:forUID:shouldAddSentBy:]):
 	fixed handling of status update for one occurence of a repeating event.
 
 	* SoObjects/Appointments/SOGoAppointmentObject.m
@@ -3169,7 +3169,7 @@
         * We no longer show the previous/new location
 	if it's empty in the invitation update templates.
 
-2008-11-26  Ludovic Marcotte  <lmarcotte@inverse.ca>	
+2008-11-26  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/SOGo/SOGoGCSFolder.m
 	We correctly wrap ACL additions around a
@@ -3285,7 +3285,7 @@
 	the SENT-BY into account.
 
 2008-11-11  Ludovic Marcotte  <lmarcotte@inverse.ca>
-	
+
 	* Fixed a couple of issues in the new pref caching
 	  subsystem.
 	* Cleaned up the caching code and activated
@@ -3344,7 +3344,7 @@
 	* UI/Contacts/UIxContactFoldersView.m ([WOActionResults
 	allContactSearchAction]): returned array is now properly
 	initialized if no result is found.
-	
+
 2008-10-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailerUI/UIxMailListView.m ([UIxMailListView
@@ -3596,8 +3596,8 @@
 2008-09-08  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/SOGo/LDAPSource.m ([LDAPSource
-	-checkLogin:loginToCheckandPassword:passwordToCheck])	
-	([LDAPSource -allEntryIDs])	
+	-checkLogin:loginToCheckandPassword:passwordToCheck])
+	([LDAPSource -allEntryIDs])
 	([LDAPSource -fetchContactsMatching:match])
 	([LDAPSource -lookupContactEntry:entryID])
 	([LDAPSource -lookupContactEntryWithUIDorEmail:uid]): catch any
@@ -3716,7 +3716,7 @@
 	found, we try "body"->"parts".
 
 2008-08-26  Francis Lachapelle  <flachapelle@inverse.ca>
-	
+
 	* UI/MailerUI/UIxMailMainFrame.m ([composeAction]): build the
 	contact's fullname from its card's attribute "n" if "fn" is
 	not defined.
@@ -3836,7 +3836,7 @@
 	UI/WebServerResources/tbtv_leaf_corner_17x17.gif
 	UI/WebServerResources/tbtv_sent_17x17.gif
 	UI/WebServerResources/tbtv_trash_17x17.gif
-	
+
 2008-08-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/PreferencesUI/UIxAdditionalPreferences.[hm]: new template
@@ -5142,7 +5142,7 @@
 	per-connection cache mechanism.
 
 2008-01-16  Ludovic Marcotte  <ludovic@inverse.ca>
-	
+
 	* Minor adjustments / bug fixes to previous commit.
 
 2008-01-14  Ludovic Marcotte  <ludovic@inverse.ca>
@@ -5166,7 +5166,7 @@
 	comma-separated list of email addresses.
 
 2007-12-21  Ludovic Marcotte  <ludovic@inverse.ca>
-	
+
 	* UI/Contacts/UIxContactView.m
 	Modified -secondaryEmail so that we always get
 	the "last" email address in case no preferred
@@ -5223,7 +5223,7 @@
 	encoded by SOPE.
 
 	* SoObjects/Mailer/SOGoDraftObject.m
-	Minor cleanups.	
+	Minor cleanups.
 
 2007-12-13  Francis Lachapelle  <flachapelle@inverse.ca>
 
@@ -5295,7 +5295,7 @@
 	* UI/MailPartViewers/UIxMailRenderingContext.{h,m}
 	Removed template caching which added very little
 	and created re-entrant issues.
-	
+
 	* UI/MailPartViewers/UIxMailPartHTMLViewer.m
 	Added a hack (and stated so in the source file)
 	to avoid what seems to be a bug in libxml.
@@ -5640,9 +5640,9 @@
 	* SoObjects/Mailer/SOGoDraftObject.m
 	Modified _fillInReplyAddresses:replyToAll:envelope:
 	so that if there's no recipient, we add at least
-	ourself to the list.	
+	ourself to the list.
 	Fixed a mem leak in the same method.
-	
+
 2007-11-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailPartViewers/UIxMailRenderingContext.m
@@ -6622,12 +6622,12 @@
 	* UI/WebServerResources/MailerUI.js
 	We check if at least one message is selected
 	before performing a Reply/Reply All/Forward
-	
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	and others - implemented support for recurring
 	events (with some known limitations right now,
 	all soon to be fixed).
-	
+
 2007-10-04  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* Main/SOGo.m ([SOGo -isUserName:_keyinContext:_ctx]): removed
@@ -6796,7 +6796,7 @@
 	* UI/SOGoUI/UIxComponent.m ([UIxComponent -responseWith204]): new
 	method that returns a WOResponse initialized with the 204 status
 	code.
-	
+
 	* UI/MailerUI/UIxMailListView.m ([UIxMailListView -sortedUIDs]):
 	always use a "not deleted" search qualifier along with the user
 	qualifier (if present).
@@ -9102,7 +9102,7 @@
 	* SoObjects/SOGo/NSArray+Utilities.m: added an implementation of
 	makeObjectsPerform:withObject:withObject: for GNUstep
 	compatibility.
-	
+
 	* OGoContentStore/GNUmakefile, Protocols/common.make,
 	SoObjects/common.make, UI/common.make: install in
 	GNUSTEP_INSTALLATION_DIR instead of GNUSTEP_USER_DIR.
@@ -10999,5 +10999,5 @@
 	SOGoDefaultMailDomain preference key.
 
 2006-06-15	ludovic@inverse.ca
-	
+
 	* Initial import of SOGo from trunk.
