@@ -3,6 +3,8 @@
 	* UI/MailerUI/UIxMailMainFrame.m (-formattedMailtoString:): fixed
 	the case when dealing with a NGVCardReference (from a list) with
 	no FN attribute and no N attribute.
+	(-composeAction): fixed the case when dealing with a contact with
+	no email address.
 
 	* UI/Scheduler/UIxComponentEditor.m (-calendarList): added proper
 	verification of deletion rights on the current calendar and

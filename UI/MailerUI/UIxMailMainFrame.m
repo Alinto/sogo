@@ -175,7 +175,7 @@
 {
   id contact;
   NSArray *accounts, *contactsId, *cards;
-  NSString *firstAccount, *firstEscapedAccount, *newLocation, *parameters, *folderId, *uid;
+  NSString *firstAccount, *firstEscapedAccount, *newLocation, *parameters, *folderId, *uid, *formattedMail;
   NSEnumerator *uids;
   NSMutableArray *addresses;
   NGVCard *card;
@@ -224,15 +224,20 @@
                   cards = [list cardReferences];
                   count = [cards count];
                   for (i = 0; i < count; i++)
-                    [addresses addObject: 
-                     [self formattedMailtoString: [cards objectAtIndex: i]]];
+		    {
+		      formattedMail = [self formattedMailtoString: [cards objectAtIndex: i]];
+		      if (formattedMail)
+			[addresses addObject: formattedMail];
+		    }
                 }
               else if ([contact isKindOfClass: [SOGoContactGCSEntry class]])
                 {
                   // We fetch the preferred email address of the contact or
                   // the first defined email address
                   card = [contact vCard];
-                  [addresses addObject: [self formattedMailtoString: card]];
+		  formattedMail = [self formattedMailtoString: card];
+		  if (formattedMail)
+		    [addresses addObject: formattedMail];
                 }
               uid = [uids nextObject];
             }
