@@ -1,3 +1,9 @@
+2009-10-23  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Scheduler/UIxComponentEditor.m (-calendarList): added proper
+	verification of deletion rights on the current calendar and
+	creation rights on other calendars.
+
 2009-10-22  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUserManager.m
