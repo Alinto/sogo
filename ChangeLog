@@ -7,6 +7,25 @@
 	* SoObjects/SOGo/SOGoUserManager.m (_registerSource:): added
 	sanity checks and warnings to the user.
 
+2009-10-23  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+        * SoObjects/SOGo/SOGoUserFolder.m (-subFoldersFromFolder:)
+	Addded a check to NOT return web calendars in this query.
+
+2009-10-23  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/MailerUI/UIxMailMainFrame.m (-formattedMailtoString:): fixed
+	the case when dealing with a NGVCardReference (from a list) with
+	no FN attribute and no N attribute.
+	(-composeAction): fixed the case when dealing with a contact with
+	no email address.
+	(-composeAction): fixed the case when dealing with a contact from
+	an LDAP source.
+
+	* UI/Scheduler/UIxComponentEditor.m (-calendarList): added proper
+	verification of deletion rights on the current calendar and
+	creation rights on other calendars.
+
 2009-10-22  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUserManager.m

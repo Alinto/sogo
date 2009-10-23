@@ -170,7 +170,8 @@ static NSString *LDAPContactInfoAttribute = nil;
       if (![securityManager validatePermission: SOGoPerm_AccessObject
 			    onObject: currentFolder inContext: context]
 	  && [[currentFolder ownerInContext: context]
-	       isEqualToString: folderOwner])
+	       isEqualToString: folderOwner]
+	  && [NSStringFromClass([currentFolder class]) compare: @"SOGoWebAppointmentFolder"] != NSOrderedSame)
 	{
 	  folderName = [NSString stringWithFormat: @"/%@/%@",
 				 [parentFolder nameInContainer],

@@ -37,6 +37,7 @@
 #import <Contacts/SOGoContactGCSList.h>
 #import <Contacts/SOGoContactGCSEntry.h>
 #import <Contacts/SOGoContactFolders.h>
+#import <Contacts/SOGoContactLDIFEntry.h>
 
 #import <SoObjects/Mailer/SOGoMailObject.h>
 #import <SoObjects/Mailer/SOGoMailAccount.h>
@@ -175,7 +176,7 @@
 {
   id contact;
   NSArray *accounts, *contactsId, *cards;
-  NSString *firstAccount, *firstEscapedAccount, *newLocation, *parameters, *folderId, *uid;
+  NSString *firstAccount, *firstEscapedAccount, *newLocation, *parameters, *folderId, *uid, *formattedMail;
   NSEnumerator *uids;
   NSMutableArray *addresses;
   NGVCard *card;
@@ -224,16 +225,23 @@
                   cards = [list cardReferences];
                   count = [cards count];
                   for (i = 0; i < count; i++)
-                    [addresses addObject: 
-                     [self formattedMailtoString: [cards objectAtIndex: i]]];
+		    {
+		      formattedMail = [self formattedMailtoString: [cards objectAtIndex: i]];
+		      if (formattedMail)
+			[addresses addObject: formattedMail];
+		    }
                 }
-              else if ([contact isKindOfClass: [SOGoContactGCSEntry class]])
+              else if ([contact isKindOfClass: [SOGoContactGCSEntry class]]
+		       || [contact isKindOfClass: [SOGoContactLDIFEntry class]])
                 {
                   // We fetch the preferred email address of the contact or
                   // the first defined email address
                   card = [contact vCard];
-                  [addresses addObject: [self formattedMailtoString: card]];
+		  formattedMail = [self formattedMailtoString: card];
+		  if (formattedMail)
+		    [addresses addObject: formattedMail];
                 }
+	      
               uid = [uids nextObject];
             }
 
@@ -279,7 +287,8 @@
 
       // We append the contact's name
       fn = [NSMutableString stringWithString: [card fn]];
-      if ([fn length] == 0)
+      if ([fn length] == 0
+	  && [card isKindOfClass: [NGVCard class]])
         {
           n = [card n];
           if (n)
@@ -294,7 +303,7 @@
                 }
             }
         }
-      if (fn)
+      if ([fn length] > 0)
         {
           [fn appendFormat: @" %@", email];
           rc = fn;
