@@ -5,6 +5,8 @@
 	no FN attribute and no N attribute.
 	(-composeAction): fixed the case when dealing with a contact with
 	no email address.
+	(-composeAction): fixed the case when dealing with a contact from
+	an LDAP source.
 
 	* UI/Scheduler/UIxComponentEditor.m (-calendarList): added proper
 	verification of deletion rights on the current calendar and

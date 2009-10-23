@@ -37,6 +37,7 @@
 #import <Contacts/SOGoContactGCSList.h>
 #import <Contacts/SOGoContactGCSEntry.h>
 #import <Contacts/SOGoContactFolders.h>
+#import <Contacts/SOGoContactLDIFEntry.h>
 
 #import <SoObjects/Mailer/SOGoMailObject.h>
 #import <SoObjects/Mailer/SOGoMailAccount.h>
@@ -230,7 +231,8 @@
 			[addresses addObject: formattedMail];
 		    }
                 }
-              else if ([contact isKindOfClass: [SOGoContactGCSEntry class]])
+              else if ([contact isKindOfClass: [SOGoContactGCSEntry class]]
+		       || [contact isKindOfClass: [SOGoContactLDIFEntry class]])
                 {
                   // We fetch the preferred email address of the contact or
                   // the first defined email address
@@ -239,6 +241,7 @@
 		  if (formattedMail)
 		    [addresses addObject: formattedMail];
                 }
+	      
               uid = [uids nextObject];
             }
 
