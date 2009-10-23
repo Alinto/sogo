@@ -1,3 +1,11 @@
+2009-10-22  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUserManager.m
+	Modified so that we throw a warning when there are
+	no authentication sources defined.
+
+	* Updated all guides in preparation for the release.
+
 2009-10-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
