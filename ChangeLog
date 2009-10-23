@@ -1,5 +1,9 @@
 2009-10-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactSourceFolder.m
+	(-initWithName:andDisplayName:inContainer:): use the source name
+	when the displayname is nil.
+
 	* SoObjects/SOGo/SOGoUserManager.m (_registerSource:): added
 	sanity checks and warnings to the user.
 
