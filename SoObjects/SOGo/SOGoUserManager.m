@@ -104,36 +104,54 @@ static NSLock *lock = nil;
   NSString *sourceID, *value, *type;
   NSMutableDictionary *metadata;
   id<SOGoSource> ldapSource;
+  BOOL isAddressBook;
   Class c;
   
   sourceID = [udSource objectForKey: @"id"];
-  type = [udSource objectForKey: @"type"];
+  if ([sourceID length] > 0)
+    {
+      type = [udSource objectForKey: @"type"];
 
-  if (!type || [type caseInsensitiveCompare: @"ldap"] == NSOrderedSame)
-    c = [LDAPSource class];
-  else
-    c = [SQLSource class];
+      if (!type || [type caseInsensitiveCompare: @"ldap"] == NSOrderedSame)
+        c = [LDAPSource class];
+      else
+        c = [SQLSource class];
 
-  ldapSource = [c sourceFromUDSource: udSource];
-  if (sourceID)
-    [_sources setObject: ldapSource forKey: sourceID];
+      ldapSource = [c sourceFromUDSource: udSource];
+      if (sourceID)
+        [_sources setObject: ldapSource forKey: sourceID];
+      else
+        [self errorWithFormat: @"id field missing in an user source,"
+              @" check the SOGoUserSources defaults"];
+      metadata = [NSMutableDictionary dictionary];
+      value = [udSource objectForKey: @"canAuthenticate"];
+      if (value)
+        [metadata setObject: value forKey: @"canAuthenticate"];
+      value = [udSource objectForKey: @"isAddressBook"];
+      if (value)
+        {
+          [metadata setObject: value forKey: @"isAddressBook"];
+          isAddressBook = [value boolValue];
+        }
+      else
+        isAddressBook = NO;
+      value = [udSource objectForKey: @"displayName"];
+      if (value)
+        [metadata setObject: value forKey: @"displayName"];
+      else
+        {
+          if (isAddressBook)
+            [self errorWithFormat: @"addressbook source '%@' has"
+                  @" no displayname", sourceID];
+        }
+      value = [udSource objectForKey: @"MailFieldNames"];
+      if (value)
+        [metadata setObject: value forKey: @"MailFieldNames"];
+      [_sourcesMetadata setObject: metadata forKey: sourceID];
+    }
   else
-    [self errorWithFormat: @"id field missing in an user source,"
-	  @" check the SOGoUserSources defaults"];
-  metadata = [NSMutableDictionary dictionary];
-  value = [udSource objectForKey: @"canAuthenticate"];
-  if (value)
-    [metadata setObject: value forKey: @"canAuthenticate"];
-  value = [udSource objectForKey: @"isAddressBook"];
-  if (value)
-    [metadata setObject: value forKey: @"isAddressBook"];
-  value = [udSource objectForKey: @"displayName"];
-  if (value)
-    [metadata setObject: value forKey: @"displayName"];
-  value = [udSource objectForKey: @"MailFieldNames"];
-  if (value)
-    [metadata setObject: value forKey: @"MailFieldNames"];
-  [_sourcesMetadata setObject: metadata forKey: sourceID];
+    [self errorWithFormat: @"attempted to register a contact/user source"
+          @" without id (skipped)"];
 }
 
 - (void) _prepareSourcesWithDefaults: (NSUserDefaults *) ud

@@ -124,6 +124,8 @@
   if ((self = [self initWithName: newName
 		    inContainer: newContainer]))
     {
+      if (![newDisplayName length])
+        newDisplayName = newName;
       ASSIGN (displayName, newDisplayName);
     }
 
