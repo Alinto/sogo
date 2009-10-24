@@ -17,19 +17,19 @@
 "Delete" = "Supprimer";
 
 /* vacation (auto-reply) */
-"Enable vacation auto reply" = "Enable vacation auto reply";
-"Auto reply message :" = "Auto reply message :";
-"Email addresses (separated by commas) :" = "Email addresses (separated by commas) :";
+"Enable vacation auto reply" = "Activer message d'absense prolongée";
+"Auto reply message :" = "Message de réponse automatique :";
+"Email addresses (separated by commas) :" = "Adresses courriels (séparées par des virgules) :";
 "Add default email addresses" = "Ajouter les adresses par défaut";
-"Days between responses :" = "Days between responses :";
-"Do not send responses to mailing lists" = "Do not send responses to mailing lists";
+"Days between responses :" = "Nombre de jours entre réponses :";
+"Do not send responses to mailing lists" = "Ne pas envoyer les réponses aux listes de diffusion";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Veuillez définir un message et vos adresses pour lesquelles pour désirez activer une réponse automatique.";
 
 /* forward messages */
-"Forward incoming messages" = "Forward incoming messages";
-"Forward to address :" = "Forward to address :";
-"Keep a copy" = "Keep a copy";
+"Forward incoming messages" = "Transférer les messages entrant";
+"Forward to address :" = "Adresse de destination :";
+"Keep a copy" = "Garder une copie";
 "Please specify an address to which you want to forward your messages."
 = "Veuillez définir une adresse à laquelle vous désirez transférer automatiquement vos nouveaux messages.";
 

@@ -1,3 +1,10 @@
+2009-10-24  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+        * Updated the Czech translation - patch from
+	Milos Wimmer <wimmer@zcu.cz>
+	* Added a French translation of the new Vaction
+	and Forward preference tabs.
+
 2009-10-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Contacts/SOGoContactSourceFolder.m

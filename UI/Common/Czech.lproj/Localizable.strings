@@ -8,10 +8,10 @@
 "Home" = "Domů";
 "Calendar" = "Kalendář";
 "Address Book"	= "Adresář";
-"Mail" = "E-Mail";
+"Mail" = "Pošta";
 "Preferences" = "Předvolby";
-"Administration" = "Administration";
-"Disconnect" = "Odpojit";
+"Administration" = "Administrace";
+"Disconnect" = "Odhlásit";
 "Right Administration" = "Administrace";
 "Log Console (dev.)" = "Konzole (dev.)";
 

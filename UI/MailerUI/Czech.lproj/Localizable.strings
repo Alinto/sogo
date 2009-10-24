@@ -6,10 +6,10 @@
 "Delete"      = "Smazat";
 "Expunge"     = "Vyškrtnout";
 "Forward"     = "Přeposlat";
-"Get Mail"    = "Vybrat maily";
+"Get Mail"    = "Přijmout";
 "Junk"        = "Nevyžádané";
 "Reply"       = "Odpovědět";
-"Reply All"   = "Odpovědět všem";
+"Reply All"   = "Odp. všem";
 "Print"       = "Tisk";
 "Stop"        = "Stop";
 "Write"       = "Napsat";
@@ -19,7 +19,7 @@
 "Attach" = "Přiložit";
 "Save" = "Uložit";
 "Priority" = "Priorita";
-"Size" = "Size";
+"Size" = "Velikost";
 
 /* Tooltips */
 
@@ -83,7 +83,7 @@
 
 /* Mail edition */
 
-"From"          = "Od";
+"From"          = "Odesílatel";
 "Subject"       = "Předmět";
 "To"            = "Komu";
 "Cc"            = "Kopie";
@@ -150,7 +150,7 @@
 
 /* Tree */
 
-"SentFolderName"   = "Odeslané";
+"SentFolderName"   = "Odeslaná pošta";
 "TrashFolderName"  = "Koš";
 "InboxFolderName"  = "Doručená pošta";
 "DraftsFolderName" = "Koncepty";
@@ -176,7 +176,7 @@
 "Subscribe..." = "Přihlásit se k odběru...";
 "Mark Folder Read..." = "Označit složku jako přečtenou...";
 "New Folder..." = "Nová složka...";
-"Compact This Folder" = "Zkompaktnět složku";
+"Compact This Folder" = "Provést údržbu složky";
 "Search Messages..." = "Vyhledat zprávy...";
 "Sharing..." = "Sdílení...";
 "New Subfolder..." = "Nová podsložka...";

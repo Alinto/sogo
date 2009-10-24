@@ -1,11 +1,11 @@
 /* this file is in UTF-8 format! */
 
-"Contact" = "Contact";
-"Address" = "Address";
-"Other" = "Other";
+"Contact" = "Kontakt";
+"Address" = "Adresa";
+"Other" = "Ostatní";
 
-"Address Books" = "Addressbooks";
-"Addressbook" = "Adresář";
+"Address Books" = "Složky kontaktů";
+"Addressbook" = "Složka kontaktů";
 "Addresses" = "Adresy";
 "Update" = "Aktualizace";
 "Cancel" = "Storno";
@@ -13,7 +13,7 @@
 "Contact editor" = "Editor kontaktů";
 "Contact viewer" = "Zobrazit kontakty";
 "Email" = "E-mail";
-"Screen Name" = "Zorazované jméno";
+"Screen Name" = "Zobrazované jméno";
 "Extended" = "Rozšířené";
 "Fax" = "Fax";
 "Firstname" = "Křestní jméno";
@@ -38,28 +38,28 @@
 "new" = "nový";
 "Preferred Phone"   = "Upřednostňovaný telefon";
 
-"Move To" = "Move To";
-"Copy To" = "Copy To";
-"Add to:" = "Add to:";
+"Move To" = "Přesunout do";
+"Copy To" = "Kopírovat do";
+"Add to:" = "Přidat do:";
 
 /* Tooltips */
 
-"Create a new address book card" = "Vytvořit novou kartu v adresáři";
-"Create a new list" = "Vytvořit nový seznam";
-"Edit the selected card" = "Upravit označenou kartu";
-"Send a mail message" = "Poslat mailovou zprávu";
-"Delete selected card or address book" = "Smazat označenou kartu nebo adresář";
+"Create a new address book card" = "Vytvořit nový kontakt";
+"Create a new list" = "Vytvořit novou skupinu";
+"Edit the selected card" = "Upravit označený kontakt";
+"Send a mail message" = "Poslat zprávu";
+"Delete selected card or address book" = "Smazat označený kontakt nebo složku kontaktů";
 
 "htmlMailFormat_UNKNOWN" = "Neznámý";
 "htmlMailFormat_FALSE" = "Plain Text";
 "htmlMailFormat_TRUE" = "HTML";
 
 "Name or Email" = "Jméno nebo e-mail";
-"Personal Addressbook" = "Osobní adresář";
-"Search in Addressbook" = "Vyhledávat v adresáři";
+"Personal Addressbook" = "Osobní kontakty";
+"Search in Addressbook" = "Vyhledávat v kontaktech";
 
-"New Card" = "Nová karta";
-"New List" = "Nový seznam";
+"New Card" = "Nový kontakt";
+"New List" = "Nová skupina";
 "Properties" = "Vlastnosti";
 "Sharing..." = "Sdílení...";
 "Write" = "Napsat";
@@ -73,13 +73,13 @@
 
 "Preferred" = "Upřednostňovaný";
 "Card for %@" = "Karta pro %@";
-"Display:" = "Display:";
+"Display:" = "Zobrazované jméno:";
 "Display Name:" = "Zobrazované jméno:";
-"Email:" = "E-Mail:";
-"Additional Email:" = "Additional Email:";
+"Email:" = "E-mail:";
+"Additional Email:" = "Další e-mail:";
 
 "Phone Number:" = "Phone Number:";
-"Prefers to receive messages formatted as:" = "Prefers to receive messages formatted as:";
+"Prefers to receive messages formatted as:" = "Upředňostnovaný formát zpráv:";
 "Screen Name:" = "Screen Name:";
 
 "First:" = "Křestní jméno:";
@@ -87,26 +87,26 @@
 "Nickname:" = "Přezdívka:";
 
 "Telephone" = "Telefon";
-"Work:" = "Práce:";
+"Work:" = "Zaměstnání:";
 "Home:" = "Domů:";
 "Fax:" = "Fax:";
-"Mobile:" = "Mobil:";
+"Mobile:" = "Mobilní telefon:";
 "Pager:" = "Pager:";
 
-"Title:" = "Titul:";
+"Title:" = "Pozice:";
 "Service:" = "Služba:";
 "Company:" = "Společnost:";
-"Department:" = "Department:";
-"Organization:" = "Organization:";
-"Address:" = "Ulice:";
+"Department:" = "Oddělení:";
+"Organization:" = "Společnost:";
+"Address:" = "Adresa:";
 "City:" = "Město:";
 "State_Province:" = "Stát/Provincie:";
 "ZIP_Postal Code:" = "PSČ:";
 "Country:" = "Země:";
 "Web Page:" = "Web:";
 
-"Work" = "Práce";
-"Other Infos" = "Ostatní info";
+"Work" = "Zaměstnání";
+"Other Infos" = "Ostatní informace";
 
 "Note:" = "Poznámka:";
 "Timezone:" = "Časové pásmo:";
@@ -118,13 +118,13 @@
 "Carbon Copy" = "Kopie";
 "Blind Carbon Copy" = "Skrytá kopie";
 
-"New Addressbook..." = "Nový adresář...";
-"Subscribe to an Addressbook..." = "Přihlásit se k odběru adresáře...";
-"Remove the selected Addressbook" = "Odebrat označený adresář";
+"New Addressbook..." = "Nová složka kontaktů...";
+"Subscribe to an Addressbook..." = "Přihlásit se k odběru složky kontaktů...";
+"Remove the selected Addressbook" = "Smazat složku kontaktů";
 
-"Name of the Address Book" = "Názevv adresáře";
+"Name of the Address Book" = "Názevv složky kontaktů";
 "Are you sure you want to delete the selected address book?"
-= "Opravdu chcete odstranit označený adresář?";
+= "Opravdu chcete odstranit označenou složku kontaktů?";
 "You cannot remove nor unsubscribe from a public addressbook."
 = "Nemůžete odebrat, nebo se odhlásit od odběru z veřejného adresáře.";
 "You cannot remove nor unsubscribe from your personal addressbook."
@@ -134,7 +134,7 @@
 = "Opravdu chcete smazat označené kontakty?";
 
 "You cannot delete the card of \"%{0}\"."
-= "Nemůžete smazat kartu \"%{0}\".";
+= "Nemůžete smazat kontakt \"%{0}\".";
 
 "Address Book Name" = "Název adresáře";
 
@@ -147,15 +147,15 @@
 "User rights for:" = "Uživatelská práva pro:";
 
 "This person can add cards to this addressbook."
-= "Tato osoba může přidávat karty do tohoto adresáře.";
+= "Tato osoba může přidávat kontakty do této složky.";
 "This person can edit the cards of this addressbook."
-= "Tato osoba může upravovat karty v tomto adresáři.";
+= "Tato osoba může upravovat kontakty v této složce.";
 "This person can list the content of this addressbook."
-= "Tato osoba si může prohlížet obsah tohoto adresáře.";
+= "Tato osoba si může prohlížet obsah této složky.";
 "This person can read the cards of this addressbook."
-= "Tato osoba si může pročítat karty tohoto adresáře.";
+= "Tato osoba si může pročítat kontakty této složky.";
 "This person can erase cards from this addressbook."
-= "Tato osoba může mazat karty z tohoto adresáře.";
+= "Tato osoba může mazat kontakty z této složky.";
 
 "The selected contact has no email address."
 = "Označený kontakt nemá žádné e-mailové adresy.";
@@ -179,11 +179,12 @@
 "Add" = "Add";
 "Lists can't be moved or copied." = "Lists can't be moved or copied.";
 
-"Export" = "Export";
-"Import Cards" = "Import Cards";
-"Select LDIF or vCard file..." = "Select LDIF or vCard file...";
+"Export" = "Exportovat";
+"Import Cards" = "Importovat kontakty";
+"Select LDIF or vCard file..." = "Zvolte LDIF nebo vCard soubor...";
 "Upload" = "Upload";
 "Import" = "Import";
 "OK" = "OK";
-"An error occured while importing contacts." = "An error occured while importing contacts.";
-"Imported contacts:" = "Imported contacts:";
+"An error occured while importing contacts." = "Při importu došlo k chybě.";
+
+"Imported contacts:" = "Importováno kontaktů:";

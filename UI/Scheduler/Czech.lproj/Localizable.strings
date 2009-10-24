@@ -105,16 +105,16 @@
 "Delete Calendar" = "Smazat kalendář";
 "Sharing..." = "Sdílení...";
 "Export Calendar..." = "Exportovat kalendář...";
-"Import Events..." = "Import Events...";
-"Select iCalendar file (*.ics)..." = "Select iCalendar file (*.ics)...";
+"Import Events..." = "Importovat události...";
+"Select iCalendar file (*.ics)..." = "Zvolte iCalendar soubor (*.ics)...";
 "Upload" = "Upload";
 "Publish Calendar..." = "Publikovat kalendář...";
 "Reload Remote Calendars" = "Nahrát vzdálené kalendáře";
 "Properties" = "Vlastnosti";
 "Import" = "Import";
 "OK" = "OK";
-"An error occured while importing calendar." = "An error occured while importing calendar.";
-"Imported events:" = "Imported events:";
+"An error occured while importing calendar." = "Při importu událostí došlo k chybě.";
+"Imported events:" = "Importováno událostí:";
 
 "Compose E-Mail to All Attendees" = "Vytvořit e-mail pro všechny účastníky";
 "Compose E-Mail to Undecided Attendees" = "Vytvořit e-mail pro nerozhodnuté účastníky";
@@ -200,7 +200,7 @@
 "Start:" = "Začátek:";
 "End:" = "Konec:";
 "Due Date:" = "Datum:";
-"Title:" = "Titulek:";
+"Title:" = "Název:";
 "Calendar:" = "Kalendář:";
 "Name" = "Jméno";
 "Email" = "E-Mail";
@@ -225,7 +225,7 @@
 "General:" = "General:";
 "Reply:" = "Reply:";
 
-"Target:" = "Cíl:";
+"Target:" = "Vložte adresu webové stránky nebo dokumentu.";
 
 "attributes" = "atributy";
 "attendees" = "účastníci";
@@ -235,7 +235,7 @@
 "Public" = "Veřejný";
 "Private" = "Soukromý";
 /* text used in overviews and tooltips */
-"empty title" = "Prázdný titulek";
+"empty title" = "Prázdný název";
 "private appointment" = "Soukromá schůzka";
 
 "Change..." = "Změnit...";
@@ -258,7 +258,7 @@
 /* Searching */
 
 "view_all" = "Všechna";
-"view_today" = "Dnes";
+"view_today" = "Dnešní události";
 "view_next7" = "Následujících 7 dní";
 "view_next14" = "Následujících 14 dní";
 "view_next31" = "Následujících 31 dní";
@@ -267,7 +267,7 @@
 "view_selectedday" = "Zvolený den";
 
 "View:" = "Zobrazit:";
-"Title or Description" = "Titulek nebo popis";
+"Title or Description" = "Název nebo popis";
 
 "Search" = "Vyhledat";
 "Search attendees" = "Vyhledat účastníky";
@@ -413,13 +413,13 @@
 
 /* validation errors */
 
-validate_notitle           = "Žádný titulek nebyl nastaven, pokračovat?";
+validate_notitle           = "Název nebyl nastaven, pokračovat?";
 validate_invalid_startdate = "Chybné datum začátku!";
 validate_invalid_enddate   = "Chybné datum konce!";
 validate_endbeforestart    = "Zadané datum konce je před začátkem události.";
 
 "Tasks" = "Úkoly";
-"Show completed tasks" = "Ukázat hotové úkoly";
+"Show completed tasks" = "Zobrazit dokončené úkoly";
 
 /* tabs */
 "Task" = "Úkol";
@@ -431,11 +431,11 @@ validate_endbeforestart    = "Zadané datum konce je před začátkem události.
 "New Task" = "Nový úkol";
 "Edit" = "Upravit";
 "Delete" = "Smazat";
-"Go to Today" = "Jít na dnešek";
-"Day View" = "Denní zobrazení";
-"Week View" = "Týdenní zobrazení";
-"Month View" = "Měsíční zobrazení";
-"Reload" = "Reload";
+"Go to Today" = "Dnešní den";
+"Day View" = "Den";
+"Week View" = "Týden";
+"Month View" = "Měsíc";
+"Reload" = "Aktualizace";
 
 "eventPartStatModificationError" = "Status Vaší účasti nemohl být změněn.";
 
@@ -481,7 +481,7 @@ validate_endbeforestart    = "Zadané datum konce je před začátkem události.
 "Only office hours" = "Pouze úřední hodiny";
 
 /* apt list */
-"Title" = "Titulek";
+"Title" = "Název";
 "Start" = "Začátek";
 "End" = "Konec";
 "Location" = "Místo";
@@ -535,5 +535,5 @@ vtodo_class2 = "(Důvěrný úkol)";
 "Delete Task" = "Delete Task";
 
 "Subscribe to a web calendar..." = "Subscribe to a web calendar...";
-"URL of the Calendar" = "URL of the Calendar";
-"Web Calendar" = "Web Calendar";
+"URL of the Calendar" = "Adresa vzdáleného kalendáře na webu";
+"Web Calendar" = "Vzdálený kalendář na webu";
