@@ -512,7 +512,7 @@ vtodo_class2 = "(Tâche confidentielle)";
 "Synchronize" = "Synchroniser";
 "Tag:" = "Label :";
 
-"Display" = "Display";
+"Display" = "Affichage";
 "Show alarms" = "Afficher les alarmes";
 "Show tasks" = "Afficher les tâches";
 
