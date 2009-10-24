@@ -508,8 +508,8 @@ vtodo_class2 = "(Tâche confidentielle)";
 "Name:" = "Nom :";
 "Color:" = "Couleur :";
 
-"Synchronization" = "Synchronization";
-"Synchronize" = "Synchronize";
+"Synchronization" = "Synchronisation";
+"Synchronize" = "Synchroniser";
 "Tag:" = "Label :";
 
 "Display" = "Display";
