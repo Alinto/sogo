@@ -10,6 +10,13 @@
 	properties window.
 	* Updated the French translation with regard to
 	event delegation support.
+	* UI/Scheduler/UIxCalListingActions.m
+	We now handle BOOL as real BOOL when storing them
+	in the prefs instead of going with NSNumber. No
+	need to do that and our JSON generator/parser
+	will handle this properly. This avoid a dump
+	crash when toying with the "Show completed tasks"
+	toggle in the calendar module.
 
 2009-10-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

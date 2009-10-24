@@ -1006,8 +1006,8 @@ _computeBlocksPosition (NSArray *blocks)
   if (setUserDefault)
     {
       ud = [[context activeUser] userDefaults];
-      [ud setObject: [NSNumber numberWithInt: showCompleted]
-             forKey: @"ShowCompletedTasks"];
+      [ud setBool: showCompleted
+           forKey: @"ShowCompletedTasks"];
       [ud synchronize];
     }
   
