@@ -1025,10 +1025,9 @@ function refreshCalendarEventsCallback(http) {
             }
             onWindowResize(null);
         }
-        if (http.callbackData["scrollEvent"]) {
+        if (http.callbackData["scrollEvent"])
             preventAutoScroll = false;
-            scrollDayView(http.callbackData["scrollEvent"]);
-        }
+        scrollDayView(http.callbackData["scrollEvent"]);
     }
     else
         log("AJAX error when refreshing calendar events");
