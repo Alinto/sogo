@@ -1639,22 +1639,23 @@ RANGE(2);
       //
     case 0:
       {
-	if ([[self repeat2] intValue] > 0)
+	[theRule setFrequency: iCalRecurrenceFrequenceDaily];
+	
+	if ([[self repeat1] intValue] > 0)
 	  {
-	    [theRule setFrequency: iCalRecurrenceFrequenceDaily];
-
-	    if ([[self repeat1] intValue] == 0)
-	      {
-		[theRule setInterval: [self repeat2]];
-	      }
-	    else
-	      {
-		[theRule setByDayMask: (iCalWeekDayMonday
-					|iCalWeekDayTuesday
-					|iCalWeekDayWednesday
-					|iCalWeekDayThursday
-					|iCalWeekDayFriday)];
-	      }
+	    [theRule setByDayMask: (iCalWeekDayMonday
+				    |iCalWeekDayTuesday
+				    |iCalWeekDayWednesday
+				    |iCalWeekDayThursday
+				    |iCalWeekDayFriday)];
+	  }
+	else
+	  {
+	    // Make sure we haven't received any junk....
+	    if ([[self repeat2] intValue] < 1)
+	      [self setRepeat2: @"1"];
+	    
+	    [theRule setInterval: [self repeat2]];
 	  }
       }
       break;
