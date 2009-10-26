@@ -1,3 +1,4 @@
+/* -*- Mode: java; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 function validateListEditor () {
     serializeReferences ();
     return true;
@@ -8,9 +9,8 @@ function makeEditable (element) {
     element.removeClassName ("referenceListCell");
     var tmp = element.innerHTML;
     element.innerHTML = "";
-    var textField = new Element ("input", {"type": "text", 
-                                           "width": "90%"});
-    textField.style.width = "90%";
+    var textField = new Element ("input", {"type": "text" });
+    textField.setStyle({ "width": "98%" });
     textField.value = tmp.trim ();
     textField.value = textField.value.replace (/&lt;/, "<");
     textField.value = textField.value.replace (/&gt;/, ">");
@@ -29,9 +29,9 @@ function endEditable (event, element) {
     var card;
     var name;
     var mail;
-
+    
     if (element) {
-      card = element.readAttribut("card");
+      card = element.readAttribute("card");
       mail = element.readAttribute("mail");
       name = element.readAttribute("uname");
     }

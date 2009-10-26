@@ -1,8 +1,31 @@
+TABLE.details
+{ float: right;
+  margin-right: 14px;
+  text-align: right; }
+
+TABLE.details TD
+{ padding: 0; }
+
 TABLE#referenceList
 { width: 100%; }
 
+DIV.frame
+{ border-top: 1px solid #909090;
+  border-left: 1px solid #909090;
+  border-bottom: 1px solid #FFFFFF;
+  border-right: 1px solid #FFFFFF;
+  margin: 5px 15px;
+  padding: 5px; }
+
+DIV.frame INPUT.button
+{ margin-top: 5px; }
+
+TR.tableview TD
+{ text-align: right; }
+
 TD.referenceListCell
-{ background: white; }
+{ background: white;
+  text-align: left; }
 
 DIV#referenceListWrapper
 { background: white;
@@ -23,17 +46,6 @@ TR._selected
 TD.referenceListCell
 { -moz-user-select: none; }
 
-DIV#windowButtons
-{ position: fixed;
-  top: auto;
-  bottom: 5em;
-  left: 0px;
-  right: 25px;
-  height: 3.5em;
-  line-height: 2em;
-  vertical-align: middle;
-  text-align: right; }
-
 DIV#buttons
 { position: fixed;
   top: auto;
@@ -46,6 +58,7 @@ DIV#buttons
   text-align: right; }
 
 h3 {
+  clear: both;
   margin-bottom: 2px !important;
   margin-left: 5px !important;
 }

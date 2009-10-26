@@ -18,7 +18,7 @@
       onsubmit="return validateListEditor();">
       <div id="listEditor">
         <h3><var:string label:value="List details" /></h3>
-        <table><tr><td width="20%"><var:string label:value="List name:"/></td>
+        <table class="details" cellspacing="0"><tr><td width="30%"><var:string label:value="List name:"/></td>
             <td><input type="text" const:id="listName" const:name="listName"
                 var:value="listName" class="textField" /></td></tr>
           <tr><td><var:string label:value="List nickname:"/></td>
@@ -29,6 +29,7 @@
                 var:value="description" class="textField" /></td></tr>
         </table>
         <h3><var:string label:value="Members" /></h3>
+	<div class="frame">
         <div id="referenceListWrapper">
           <table id="referenceList" cellspacing="0">
             <thead>
@@ -48,14 +49,13 @@
             </tbody>
           </table>
         </div>
-      </div>
       <input type="hidden" name="referencesValue" id="referencesValue"
         var:value="referencesValue" />
-      <div id="windowButtons">
         <label><input type="button" class="button"
             id="referenceAdd" label:value="Add"/></label>
         <label><input type="button" class="button"
             id="referenceDelete" label:value="Delete"/></label>
+	</div>
       </div>
       <div id="buttons">
         <input
