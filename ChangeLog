@@ -1,6 +1,9 @@
 2009-10-25  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
         * Fixed many compilation warnings
+	* Updated the Mobile Device Configuration Guide
+	in order to document the iPhone OS 3.x configuration
+	settings (iPhone / iPod)
 
 2009-10-24  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
