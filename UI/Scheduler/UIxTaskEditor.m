@@ -35,6 +35,8 @@
 #import <NGCards/iCalPerson.h>
 #import <NGCards/iCalToDo.h>
 #import <NGCards/iCalTrigger.h>
+#import <NGCards/iCalTimeZone.h>
+#import <NGCards/iCalDateTime.h>
 
 #import <SoObjects/SOGo/NSDictionary+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
@@ -458,10 +460,10 @@
   
   data = [NSDictionary dictionaryWithObjectsAndKeys:
 		       [todo tag], @"component",
-		       (startDate? [dateFormatter formattedDate: startDate] : @""), @"startDate",
-		       (startDate? [dateFormatter formattedTime: startDate] : @""), @"startTime",
-		       (dueDate? [dateFormatter formattedDate: dueDate] : @""), @"dueDate",
-		       (dueDate? [dateFormatter formattedTime: dueDate] : @""), @"dueTime",
+		       (startDate? (id)[dateFormatter formattedDate: startDate] : (id)@""), @"startDate",
+		       (startDate? (id)[dateFormatter formattedTime: startDate] : (id)@""), @"startTime",
+		       (dueDate? (id)[dateFormatter formattedDate: dueDate] : (id)@""), @"dueDate",
+		       (dueDate? (id)[dateFormatter formattedTime: dueDate] : (id)@""), @"dueTime",
 		       ([todo hasRecurrenceRules]? @"1": @"0"), @"isReccurent",
 		       [todo summary], @"summary",
 		       [todo location], @"location",
@@ -531,10 +533,10 @@
 	}
 
       if (hasStartDate)
-	[[todo uniqueChildWithTag: @"dtstart"] setTimeZone: tz];
+	[(iCalDateTime *)[todo uniqueChildWithTag: @"dtstart"] setTimeZone: tz];
 
       if (hasDueDate)
-	[[todo uniqueChildWithTag: @"due"] setTimeZone: tz];
+	[(iCalDateTime *)[todo uniqueChildWithTag: @"due"] setTimeZone: tz];
     }
 
 }

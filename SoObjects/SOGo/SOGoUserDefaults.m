@@ -36,6 +36,7 @@
 
 #import "NSObject+Utilities.h"
 
+#import "NSDictionary+BSJSONAdditions.h"
 #import "SOGoUserDefaults.h"
 #import "SOGoCache.h"
 

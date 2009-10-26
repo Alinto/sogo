@@ -40,6 +40,8 @@
 #import <NGCards/iCalPerson.h>
 #import <NGCards/iCalTrigger.h>
 #import <NGCards/iCalRecurrenceRule.h>
+#import <NGCards/iCalTimeZone.h>
+#import <NGCards/iCalDateTime.h>
 
 #import <SoObjects/SOGo/NSDictionary+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
@@ -527,8 +529,8 @@
       
       tz = [iCalTimeZone timeZoneForName: [[[context activeUser] timeZone] name]];
       [[event parent] addTimeZone: tz];
-      [[event uniqueChildWithTag: @"dtstart"] setTimeZone: tz];
-      [[event uniqueChildWithTag: @"dtend"] setTimeZone: tz];
+      [(iCalDateTime *)[event uniqueChildWithTag: @"dtstart"] setTimeZone: tz];
+      [(iCalDateTime *)[event uniqueChildWithTag: @"dtend"] setTimeZone: tz];
     }
 
   [event setTransparency: (isTransparent? @"TRANSPARENT" : @"OPAQUE")];

@@ -1,3 +1,7 @@
+2009-10-25  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+        * Fixed many compilation warnings
+
 2009-10-24  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
         * Updated the Czech translation - patch from
