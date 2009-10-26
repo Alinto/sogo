@@ -12,6 +12,8 @@
 	* Updated the Mobile Device Configuration Guide
 	in order to document the iPhone OS 3.x configuration
 	settings (iPhone / iPod)
+	* UI/Scheduler/UIxComponentEditor.m (_handleCustomRRule:)
+	Improved the robustness of the code.
 
 2009-10-24  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
