@@ -475,7 +475,7 @@ function onContactDeleteEventCallback(http) {
         }
         else if (parseInt(http.status) == 403) {
             var row = $(http.callbackData);
-            var displayName = row.down("TD.displayName").firstChild.nodeValue.trim();
+            var displayName = row.readAttribute("contactname");
             Contact.deleteContactsRequestCount--;
             window.alert(labels["You cannot delete the card of \"%{0}\"."].formatted(displayName));
         }
@@ -935,7 +935,9 @@ function setEventsOnAddressBook(folder) {
 
     node.observe("mousedown", listRowMouseDownHandler);
     node.observe("click", onRowClick);
-    node.observe("dblclick", onAddressBookModify);
+    if (UserLogin == node.readAttribute("owner"))
+        // Only the owner of the addressbook can rename it
+        node.observe("dblclick", onAddressBookModify);
 }
 
 function onAddressBookModify(event) {

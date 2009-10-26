@@ -1,3 +1,11 @@
+2009-10-26  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/ContactsUI.js
+	(onContactDeleteEventCallback): fixed retrieval of card name when
+	deletion is not possible (caused by a possible bug in prototype.js).
+	(setEventsOnAddressBook): don't observe the double-click event on
+	addressbooks not owned by the user.
+
 2009-10-25  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
         * Fixed many compilation warnings
