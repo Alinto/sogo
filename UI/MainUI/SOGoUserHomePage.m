@@ -340,7 +340,7 @@ static NSString *LDAPContactInfoAttribute = nil;
         {
           if ([LDAPContactInfoAttribute length])
             {
-              contactInfo = [contact objectForKey: LDAPContactInfoAttribute];
+              contactInfo = [contact objectForKey: [LDAPContactInfoAttribute lowercaseString]];
               if (!contactInfo)
                 contactInfo = @"";
             }

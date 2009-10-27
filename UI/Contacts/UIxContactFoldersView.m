@@ -150,7 +150,7 @@
   if ([results count] > 0)
     {
       sud = [NSUserDefaults standardUserDefaults];
-      infoKey = [sud stringForKey: @"SOGoLDAPContactInfoAttribute"];
+      infoKey = [[sud stringForKey: @"SOGoLDAPContactInfoAttribute"] lowercaseString];
       contacts = [results objectEnumerator];
       contact = [contacts nextObject];
       while (contact)

@@ -162,7 +162,7 @@ static NSString *sogoContactInfoAttribute = nil;
       /* If SOGoLDAPContactInfoAttribute is defined, we set as the NOTE value
          in order for Thunderbird (or any other CardDAV client) to display it. */
       if (sogoContactInfoAttribute)
-        key = sogoContactInfoAttribute;
+        key = [sogoContactInfoAttribute lowercaseString];
       else
 	key = @"description";
       info = [ldifEntry objectForKey: key];

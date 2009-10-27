@@ -68,7 +68,7 @@ static NSLock *lock = nil;
 	  defaultMailDomain = @"localhost";
 	}
 
-      LDAPContactInfoAttribute = [ud stringForKey: @"SOGoLDAPContactInfoAttribute"];
+      LDAPContactInfoAttribute = [[ud stringForKey: @"SOGoLDAPContactInfoAttribute"] lowercaseString];
       [LDAPContactInfoAttribute retain];
     }
   if (!forceImapLoginWithEmail)

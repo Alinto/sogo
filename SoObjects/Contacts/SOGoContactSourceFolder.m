@@ -257,7 +257,7 @@
       if (data)
 	[newRecord setObject: data forKey: @"isGroup"];
 
-      contactInfo = [ud stringForKey: @"SOGoLDAPContactInfoAttribute"];
+      contactInfo = [[ud stringForKey: @"SOGoLDAPContactInfoAttribute"] lowercaseString];
       if ([contactInfo length] > 0) {
 	data = [oldRecord objectForKey: contactInfo];
 	if ([data length] > 0)

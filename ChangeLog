@@ -10,6 +10,9 @@
 	* Documentation/SOGo Installation Guide.odt
 	Updated to set WOUseRelativeURLs to YES instead
 	of NO by default.
+	* We now correctly lowercase the SOGoLDAPContactInfoAttribute
+	attribute everywhere.
+
 
 2009-10-26  Francis Lachapelle  <flachapelle@inverse.ca>
 

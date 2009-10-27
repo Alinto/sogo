@@ -71,7 +71,7 @@ static NSString *LDAPContactInfoAttribute = nil;
     {
       ud = [NSUserDefaults standardUserDefaults];
       LDAPContactInfoAttribute
-	= [ud stringForKey: @"SOGoLDAPContactInfoAttribute"];
+	= [[ud stringForKey: @"SOGoLDAPContactInfoAttribute"] lowercaseString];
       [LDAPContactInfoAttribute retain];
     }
 }
