@@ -60,14 +60,27 @@
 {
   return [list cardReferences];
 }
-- (NSString *) itemText
+
+- (NSString *) itemHref
 {
-  NSString *rc;
+  return [NSString stringWithFormat: @"mailto:%@",
+          [item email]];
+}
 
-  rc = [NSString stringWithFormat: @"%@ <%@>", 
-     [item fn], [item email]];
+- (NSString *) itemOnclick
+{
+  return [NSString stringWithFormat: @"return openMailTo('%@ <%@>');",
+          [item fn], [item email]];
+}
 
-  return rc;
+- (NSString *) itemName
+{
+  return [item fn];
+}
+
+- (NSString *) itemEmail
+{
+  return [item email];
 }
 
 - (void) checkListReferences
