@@ -19,7 +19,10 @@
     </var:if>
     <ul class="listComponents">
       <var:foreach list="components" item="item">
-        <li><var:string value="itemText"/></li>
+        <li><var:string var:value="itemName"/> 
+          <a var:href="itemHref" var:onclick="itemOnclick">
+            &lt;<var:string var:value="itemEmail"/>&gt;</a>
+        </li>
       </var:foreach>
     </ul>
   </var:component>
