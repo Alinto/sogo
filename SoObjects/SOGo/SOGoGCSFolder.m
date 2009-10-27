@@ -392,7 +392,7 @@ static NSArray *childRecordFields = nil;
 
   if (sendFolderAdvisories)
     {
-      user = [context activeUser];
+      user = [SOGoUser userWithLogin: [self ownerInContext: context]];
       pageName = [NSString stringWithFormat: @"SOGoFolder%@%@Advisory",
 			   [user language], template];
 
