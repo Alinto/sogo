@@ -7,6 +7,9 @@
 	nevertheless be the currently logged on user, as
 	it's this particular user that triggered the
 	creation of the collection.
+	* Documentation/SOGo Installation Guide.odt
+	Updated to set WOUseRelativeURLs to YES instead
+	of NO by default.
 
 2009-10-26  Francis Lachapelle  <flachapelle@inverse.ca>
 
