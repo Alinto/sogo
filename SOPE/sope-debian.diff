@@ -1,15 +1,3 @@
---- sope-4.9.r1660.orig/configure
-+++ sope-4.9.r1660/configure
-@@ -427,8 +427,8 @@
-   checkLinking "ldap"        optional;
-   checkLinking "ssl"         required; # TODO: make optional
-   checkLinking "pq"          optional;
--  checkLinking "sqlite3"     optional;
-   checkLinking "mysqlclient" optional;
-+  checkLinking "sqlite3"     optional;
- }
- 
- function runIt() {
 --- sope-4.9.r1660.orig/debian/sope_SOPEVER_-gdl1-postgresql.install
 +++ sope-4.9.r1660/debian/sope_SOPEVER_-gdl1-postgresql.install
 @@ -1 +1 @@
@@ -47,14 +35,15 @@
    * New upstream release.
 --- sope-4.9.r1660.orig/debian/rules
 +++ sope-4.9.r1660/debian/rules
-@@ -7,13 +7,15 @@
+@@ -7,13 +7,16 @@
  #export DH_VERBOSE=1
  
  # Include dpatch stuff.
 -include /usr/share/dpatch/dpatch.make
 +# include /usr/share/dpatch/dpatch.make
 +
-+PATCHES = sope-gsmake2.diff sope-patchset-r1660.diff
++PATCHES = sope-gsmake2.diff sope-patchset-r1660.diff debian-build-mysql.diff
++RPATCHES = debian-build-mysql.diff sope-patchset-r1660.diff sope-gsmake2.diff
  
  CFLAGS = -Wall -g
  #WARN: doesn't compile/package if HAS_LIBRARY_* options not present (since we use configure now)
@@ -65,7 +54,7 @@
  
  include Version
  SOPEVER=$(MAJOR_VERSION).$(MINOR_VERSION)
-@@ -50,17 +52,17 @@
+@@ -50,17 +53,17 @@
  		done; \
  		rm controlfiles.tmp; \
  	fi
@@ -89,7 +78,7 @@
  	dh_testdir
  
  	-mv sope-core/NGStreams/config.guess sope-core/NGStreams/config.guess.upstream
-@@ -71,14 +73,14 @@
+@@ -71,14 +74,14 @@
  	CFLAGS="$(CFLAGS)" . $(GNUSTEP_SETUP); \
  		$(MAKE) $(MAKE_FLAGS) all
  
@@ -111,7 +100,7 @@
  
  	touch build-stamp
  
-@@ -87,12 +89,14 @@
+@@ -87,12 +90,14 @@
  	dh_testroot
  	rm -f configure-stamp
  	rm -f build-stamp
@@ -128,7 +117,7 @@
  		rm sope-core/NGStreams/config.sub; \
  	fi
  	if [ -f sope-core/NGStreams/config.guess.upstream ]; then \
-@@ -102,8 +106,8 @@
+@@ -102,8 +107,8 @@
  		mv sope-core/NGStreams/config.sub.upstream sope-core/NGStreams/config.sub; \
  	fi
  
@@ -139,7 +128,7 @@
  
  	-. $(GNUSTEP_SETUP); $(MAKE) clean
  	-. $(GNUSTEP_SETUP); $(MAKE) distclean
-@@ -116,24 +120,24 @@
+@@ -116,24 +121,24 @@
  	dh_clean -k 
  	dh_installdirs
  
@@ -173,7 +162,7 @@
  
  # Build architecture-independent files here.
  binary-indep: build install
-@@ -172,5 +176,28 @@
+@@ -172,5 +177,28 @@
  	dh_md5sums
  	dh_builddeb
  
@@ -192,13 +181,13 @@
 +unpatch:
 +	if test -f patch-stamp; \
 +	then \
-+	    for patch in $(PATCHES); \
++	    for patch in $(RPATCHES); \
 +	    do \
 +	      patch -p0 -R < debian/patches/$$patch; \
 +	      rm -f debian/patches/$$patch.stamp; \
 +	    done; \
++	    rm -f patch-stamp; \
 +	fi
-+	rm -f patch-stamp
 +
  binary: binary-indep binary-arch
  .PHONY: build clean binary-indep binary-arch binary install configure
@@ -8644,13 +8633,19 @@
 + 	    hasConnectionHeader = YES;
 + 	}
 + 	
---- sope-4.9.r1660.orig/sope-core/NGStreams/GNUmakefile.preamble
-+++ sope-4.9.r1660/sope-core/NGStreams/GNUmakefile.preamble
-@@ -1,6 +1,6 @@
- # compilation settings
- 
--MACHCPU = $(shell echo $$MACHTYPE | cut -f 1 -d '-')
-+MACHCPU = $(shell /usr/bin/arch)
- 
- libNGStreams_INCLUDE_DIRS += \
- 	-I$(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS) \
+--- sope-4.9.r1660.orig/debian/patches/debian-build-mysql.diff
++++ sope-4.9.r1660/debian/patches/debian-build-mysql.diff
+@@ -0,0 +1,13 @@
++diff -durpN sope-4.9.r1660.orig/configure sope-4.9.r1660/configure
++--- configure.orig	2009-10-28 09:46:53.000000000 -0400
+++++ configure	2009-10-28 09:48:41.000000000 -0400
++@@ -475,8 +475,8 @@ checkDependencies() {
++     checkLinking "ssl"         required; # TODO: make optional
++   fi
++   checkLinking "pq"          optional;
++-  checkLinking "sqlite3"     optional;
++   checkLinking "mysqlclient" optional;
+++  checkLinking "sqlite3"     optional;
++ }
++ 
++ runIt() {
