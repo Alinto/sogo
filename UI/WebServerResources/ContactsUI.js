@@ -717,15 +717,17 @@ function validateUploadForm () {
       rc = true;
     return rc;
 }
-function uploadCompleted (response) {
-    data = response.evalJSON (true);
+function uploadCompleted(response) {
+    data = response.evalJSON(true);
 
     var div = $("uploadResults");
     $("uploadOK").onclick = hideImportResults;
     if (data.imported <= 0)
-      $("uploadResultsContent").update (getLabel("An error occured while importing contacts."));
+        $("uploadResultsContent").update(getLabel("An error occured while importing contacts."));
+    else if (data.imported == 0)
+        $("uploadResultsContent").update(getLabel("No card was imported."));
     else {
-        $("uploadResultsContent").update (getLabel("Imported contacts:") + " " + data.imported);
+        $("uploadResultsContent").update(getLabel("A total of %{0} cards were imported in the addressbook.").formatted(data.imported));
         refreshCurrentFolder ();
     }
 

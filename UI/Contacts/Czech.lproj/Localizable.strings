@@ -178,13 +178,11 @@
 "Contacts" = "Contacts";
 "Add" = "Add";
 "Lists can't be moved or copied." = "Lists can't be moved or copied.";
-
 "Export" = "Exportovat";
 "Import Cards" = "Importovat kontakty";
-"Select LDIF or vCard file..." = "Zvolte LDIF nebo vCard soubor...";
+"Select a vCard or LDIF file." = "Zvolte LDIF nebo vCard soubor.";
 "Upload" = "Upload";
-"Import" = "Import";
-"OK" = "OK";
+"Done" = "Done";
 "An error occured while importing contacts." = "Při importu došlo k chybě.";
-
-"Imported contacts:" = "Importováno kontaktů:";
+"No card was imported." = "No card was imported.";
+"A total of %{0} cards were imported in the addressbook." = "A total of %{0} cards were imported in the addressbook.";

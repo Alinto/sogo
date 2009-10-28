@@ -106,15 +106,16 @@
 "Sharing..." = "Megosztás...";
 "Export Calendar..." = "Naptár exportálása...";
 "Import Events..." = "Import Events...";
-"Select iCalendar file (*.ics)..." = "Select iCalendar file (*.ics)...";
+"Import Events" = "Import Events";
+"Select an iCalendar file (.ics)." = "Select an iCalendar file (.ics).";
 "Upload" = "Upload";
 "Publish Calendar..." = "Naptár közzététele...";
 "Reload Remote Calendars" = "Távoli naptárak frissítése";
 "Properties" = "Tulajdonságok";
-"Import" = "Import";
-"OK" = "OK";
+"Done" = "Done";
 "An error occured while importing calendar." = "An error occured while importing calendar.";
-"Imported events:" = "Imported events:";
+"No event was imported." = "No event was imported.";
+"A total of %{0} events were imported in the calendar." = "A total of %{0} events were imported in the calendar.";
 
 "Compose E-Mail to All Attendees" = "Üzenet küldése az összes résztvevőnek";
 "Compose E-Mail to Undecided Attendees" = "Üzenet küldése az bizonytalan résztvevőnek";

@@ -27,6 +27,9 @@ TD.referenceListCell
 { background: white;
   text-align: left; }
 
+TABLE#referenceList TD INPUT
+{ width: 98%; }
+
 DIV#referenceListWrapper
 { background: white;
   overflow: auto;
@@ -37,9 +40,10 @@ DIV#referenceListWrapper
   height: 33em;
   margin: 2px; }
 
+DIV#referenceListWrapper TR,
 TR.referenceListRow
 { background: #FFFFFF;
-  height: 2.5em; }
+  line-height: 2em; }
 TR._selected
 { background: #333333; }
 
@@ -57,7 +61,7 @@ DIV#buttons
   vertical-align: middle;
   text-align: right; }
 
-h3 {
+H3 {
   clear: both;
   margin-bottom: 2px !important;
   margin-left: 5px !important;

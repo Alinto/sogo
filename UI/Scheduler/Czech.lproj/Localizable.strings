@@ -106,15 +106,16 @@
 "Sharing..." = "Sdílení...";
 "Export Calendar..." = "Exportovat kalendář...";
 "Import Events..." = "Importovat události...";
-"Select iCalendar file (*.ics)..." = "Zvolte iCalendar soubor (*.ics)...";
+"Import Events" = "Importovat události";
+"Select an iCalendar file (.ics)." = "Zvolte iCalendar soubor (*.ics).";
 "Upload" = "Upload";
 "Publish Calendar..." = "Publikovat kalendář...";
 "Reload Remote Calendars" = "Nahrát vzdálené kalendáře";
 "Properties" = "Vlastnosti";
-"Import" = "Import";
-"OK" = "OK";
+"Done" = "Done";
 "An error occured while importing calendar." = "Při importu událostí došlo k chybě.";
-"Imported events:" = "Importováno událostí:";
+"No event was imported." = "No event was imported.";
+"A total of %{0} events were imported in the calendar." = "A total of %{0} events were imported in the calendar.";
 
 "Compose E-Mail to All Attendees" = "Vytvořit e-mail pro všechny účastníky";
 "Compose E-Mail to Undecided Attendees" = "Vytvořit e-mail pro nerozhodnuté účastníky";

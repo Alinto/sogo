@@ -100,13 +100,14 @@
 
   <div id="uploadDialog" style="display: none" class="dialog left">
     <div>
-      <h3><var:string label:value="Select iCalendar file (*.ics)..."/></h3>
+      <h3><var:string label:value="Import Events"/></h3>
+      <p><var:string label:value="Select an iCalendar file (.ics)."/></p>
       <form name="uploadForm" id="uploadForm" method="post"
         enctype="multipart/form-data"
         onsubmit="return AIM.submit(this, {'onStart' : validateUploadForm, 
         'onComplete' : uploadCompleted})">
         <p><input type="file" name="calendarFile" id="calendarFile" /></p>
-        <p><input class="button" type="submit" const:id="uploadSubmit" label:value="Upload"/>
+        <p class="buttons"><input class="button" type="submit" const:id="uploadSubmit" label:value="Upload"/>
           <input class="button" type="button" const:id="uploadCancel" label:value="Cancel"/></p>
       </form>
     </div>
@@ -114,10 +115,10 @@
 
   <div id="uploadResults" style="display: none" class="dialog left">
     <div>
-      <h3><var:string label:value="Import"/></h3>
+      <h3><var:string label:value="Import Events"/></h3>
       <p id="uploadResultsContent"><!-- empty --></p>
-      <p><input class="button" type="button" const:id="uploadOK" 
-          label:value="OK"/></p>
+      <p class="buttons"><input class="button" type="button" const:id="uploadOK" 
+          label:value="Done"/></p>
     </div>
   </div>
 

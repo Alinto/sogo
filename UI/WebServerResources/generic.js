@@ -165,9 +165,8 @@ function openUserFolderSelector(callback, type) {
 function openContactWindow(url, wId) {
     if (!wId)
         wId = "_blank";
-    else {
+    else
         wId = sanitizeWindowName(wId);
-    }
 
     var w = window.open(url, wId,
                         "width=450,height=600,resizable=0,location=0");
@@ -181,9 +180,8 @@ function openMailComposeWindow(url, wId) {
 
     if (!wId)
         wId = "_blank";
-    else {
+    else
         wId = sanitizeWindowName(wId);
-    }
 
     if (document.body.hasClassName("popup"))
         parentWindow = window.opener;
@@ -1608,8 +1606,8 @@ function createFolderCallback(http) {
 function delegateInvitation(componentUrl, callbackFunction, callbackData) {
     var input = $("delegatedTo");
     var delegatedTo = null;
-    if (input.uid != null)
-        delegatedTo = input.uid;
+    if (input.readAttribute("uid") != null)
+        delegatedTo = input.readAttribute("uid");
     else if (input.value.blank())
         alert(getLabel("noEmailForDelegation"));
     else

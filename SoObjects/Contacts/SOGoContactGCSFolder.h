@@ -33,6 +33,7 @@
 @interface SOGoContactGCSFolder : SOGoGCSFolder <SOGoContactFolder>
 
 - (void) fixupContactRecord: (NSMutableDictionary *) contactRecord;
+- (NSDictionary *) lookupContactWithName: (NSString *) aName;
 
 @end
 

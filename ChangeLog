@@ -1,3 +1,29 @@
+2009-10-28  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/UIxMailToSelection.js: removed duplicated
+	functionality in addressFieldLostFocus. Removed the ability to set
+	an auto-completion text field to read-only.
+
+	* UI/WebServerResources/UIxListEditor.js: refactoring.
+
+	* UI/WebServerResources/ContactsUI.js: Improved text of import
+	cards dialog.
+
+	* UI/WebServerResources/SchedulerUI.js: Improved text of import
+	events dialog.
+
+	* UI/Contacts/UIxListEditor.m (-setReferencesValue:): rewrote
+	method since only the contacts IDs are received from the web
+	interface. The names and emails are retrieve from the addressbook.
+
+	* SoObjects/Contacts/SOGoContactGCSFolder.m
+	(-lookupContactWithName): new method that returns a dictionary
+	with the attributes of a contact.
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	(-changeParticipationStatus:withDelegate:forRecurrenceId:): added
+	exception when delegated user is the organizer.
+
 2009-10-28  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
         * UI/MailPartViewers/UIxMailPartICalActions.m
@@ -20,7 +46,6 @@
 	of NO by default.
 	* We now correctly lowercase the SOGoLDAPContactInfoAttribute
 	attribute everywhere.
-
 
 2009-10-26  Francis Lachapelle  <flachapelle@inverse.ca>
 

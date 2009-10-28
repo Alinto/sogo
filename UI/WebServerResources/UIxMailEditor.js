@@ -54,7 +54,7 @@ function addContact(tag, fullContactName, contactId, contactName, contactEmail) 
         }
 
         if (!stop) {
-            fancyAddRow(false, "");
+            fancyAddRow("");
             var row = $("row_" + currentIndex);
             var td = $(row.childNodesWithTag("td")[0]);
             var select = $(td.childNodesWithTag("select")[0]);
@@ -306,7 +306,8 @@ function initTabIndex(addressList, subjectField, msgArea) {
                 input.writeAttribute("tabindex", i++);
                 input.addInterface(SOGoAutoCompletionInterface);
                 input.uidField = "c_name";
-                input.onListAdded = expandContactList;
+                input.observe("autocompletion:changedlist", expandContactList);
+                //input.onListAdded = expandContactList;
             }
         });
     subjectField.writeAttribute("tabindex", i++);
@@ -328,7 +329,7 @@ function initMailEditor() {
     if (listContent.length > 0)
         $("attachmentsArea").setStyle({ display: "block" });
 
-    var textarea = $("text");
+     var textarea = $("text");
   
     var textContent = textarea.getValue();
     if (hasSignature()) {
