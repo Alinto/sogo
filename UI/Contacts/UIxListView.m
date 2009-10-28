@@ -1,6 +1,6 @@
 /* UIxListView.m - this file is part of SOGo
  *
- * Copyright (C) 2008 Inverse inc.
+ * Copyright (C) 2008-2009 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -70,7 +70,7 @@
 - (NSString *) itemOnclick
 {
   return [NSString stringWithFormat: @"return openMailTo('%@ <%@>');",
-          [item fn], [item email]];
+		   [[item fn] stringByReplacingString: @"\""  withString: @""], [item email]];
 }
 
 - (NSString *) itemName

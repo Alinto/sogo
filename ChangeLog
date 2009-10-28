@@ -1,5 +1,8 @@
 2009-10-28  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/Contacts/UIxContactView.m (-primaryEmail, -secondaryEmail):
+	remove double-quotes from FN attribute to avoid JavaScript errors.
+
 	* UI/WebServerResources/UIxMailToSelection.js: removed duplicated
 	functionality in addressFieldLostFocus. Removed the ability to set
 	an auto-completion text field to read-only.
