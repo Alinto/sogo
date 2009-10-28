@@ -70,7 +70,7 @@
 - (NSString *) itemOnclick
 {
   return [NSString stringWithFormat: @"return openMailTo('%@ <%@>');",
-		   [[item fn] stringByReplacingString: @"\""  withString: @""], [item email]];
+		   [item fn], [item email]];
 }
 
 - (NSString *) itemName
