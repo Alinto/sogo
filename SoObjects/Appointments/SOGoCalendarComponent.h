@@ -55,9 +55,6 @@
 
 - (BOOL) expandGroupsInEvent: (iCalEvent *) theEvent;
 
-// - (NSException *) primarySaveContentString: (NSString *) _iCalString;
-// - (NSException *) primaryDelete;
-
 - (void) saveComponent: (iCalRepeatableEntityObject *) newObject;
 
 /* mail notifications */
@@ -75,8 +72,6 @@
 - (void) sendReceiptEmailUsingTemplateNamed: (NSString *) template
                                   forObject: (iCalRepeatableEntityObject *) object
                                          to: (NSArray *) recipients;
-
-// - (BOOL) isOrganizerOrOwner: (SOGoUser *) user;
 
 - (iCalPerson *) findParticipantWithUID: (NSString *) uid;
 

@@ -1,3 +1,11 @@
+2009-10-28  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+        * UI/MailPartViewers/UIxMailPartICalActions.m
+	(_setupChosenEventAndEventObject:) - we now 
+	correctly save the event contained in the mail
+	when clicking on Accept/Decline/Delegate into
+	the user's calendar if it's not in there already.
+
 2009-10-27  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
         * SoObjects/SOGo/SOGoGCSFolder.m (create)

@@ -1,6 +1,6 @@
 /* UIxMailPartICalActions.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2008 Inverse inc.
+ * Copyright (C) 2007-2009 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -55,9 +55,9 @@
 
 - (iCalEvent *) _emailEvent
 {
-  NSData *content;
-  NSString *eventString;
   iCalCalendar *emailCalendar;
+  NSString *eventString;
+  NSData *content;
 
   content = [[self clientObject] fetchBLOB];
   eventString = [[NSString alloc] initWithData: content
@@ -65,6 +65,7 @@
   if (!eventString)
     eventString = [[NSString alloc] initWithData: content
 				    encoding: NSISOLatin1StringEncoding];
+
   emailCalendar = [iCalCalendar parseSingleFromSource: eventString];
   [eventString release];
 
@@ -109,6 +110,7 @@
 
 - (SOGoAppointmentObject *) _eventObjectWithUID: (NSString *) uid
 {
+#warning this will not work if Bob reads emails of Alice and accepts events for her
   return [self _eventObjectWithUID: uid forUser: [context activeUser]];
 }
 
@@ -158,12 +160,15 @@
     {
       *eventObject = [self _eventObjectWithUID: [emailEvent uid]];
       if ([*eventObject isNew])
-	chosenEvent = emailEvent;
+	{
+	  chosenEvent = emailEvent;
+	  [*eventObject saveContentString: [[emailEvent parent] versitString]];
+	}
       else
 	{
 	  if ([emailEvent recurrenceId])
 	    {
-	      // Event attached to email is not completed -- retrieve it
+	      // Event attached to email is not complete -- retrieve it
 	      // from the database.
 	      NSString *recurrenceTime;
 
