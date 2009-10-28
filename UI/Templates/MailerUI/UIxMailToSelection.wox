@@ -13,7 +13,8 @@
     <table id="addressList" cellpadding="0" cellspacing="0"
       ><tbody
       ><var:foreach list="addressLists" item="addressList"
-        ><var:foreach list="addressList" item="address">
+        ><var:foreach list
+="addressList" item="address">
           <tr class="addressListElement" var:id="currentRowId">
             <td class="headerField">
             <var:popup name="currentPopUpId"
@@ -37,7 +38,7 @@
         </var:foreach>
       </var:foreach>
       <tr class="addressListElement" id="lastRow">
-        <td class="headerField" onclick="fancyAddRow(true,'');">
+        <td class="headerField" onclick="fancyAddRow('');">
         <var:popup name="currentPopUpId"
               list="headers"
               item="item"
@@ -45,7 +46,7 @@
               />
         </td>
         <td class="headerInput">
-          <span class="headerInput"><input onfocus="fancyAddRow(true,'');"
+          <span class="headerInput"><input onfocus="fancyAddRow('');"
             readonly="1"
             type="text"
             class="textField" /></span>

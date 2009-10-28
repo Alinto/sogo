@@ -224,6 +224,36 @@
   return newRecords;
 }
 
+- (NSDictionary *) lookupContactWithName: (NSString *) aName
+{
+  NSArray *fields, *dbRecords, *records;
+  NSDictionary *record;
+  EOQualifier *qualifier;
+  NSString *qs;
+
+  fields = folderListingFields;
+  record = nil;
+ 
+  if (aName && [aName length] > 0)
+    {
+      aName = [[aName stringByReplacingString: @"\\"  withString: @"\\\\"]
+                 stringByReplacingString: @"'"  withString: @"\\'\\'"];
+      qs = [NSString stringWithFormat: @"(c_name isCaseInsensitiveLike: '%@')", aName];
+      qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
+
+      dbRecords = [[self ocsFolder] fetchFields: fields
+			      matchingQualifier: qualifier];
+
+      if ([dbRecords count] > 0)
+	{
+	  records = [self _flattenedRecords: dbRecords];
+	  record = [records lastObject];
+	}
+    }
+  
+  return record;
+}
+
 - (NSArray *) lookupContactsWithFilter: (NSString *) filter
                                 sortBy: (NSString *) sortKey
                               ordering: (NSComparisonResult) sortOrdering

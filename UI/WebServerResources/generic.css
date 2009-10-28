@@ -778,18 +778,22 @@ DIV.resize-handle
 }
 
 .genericHoverClass
-{
-  background-color: #0033cc !important;
-  color: #fff !important;
-}
+{ background-color: #0033cc !important;
+  color: #fff !important; }
 
-DIV#uploadDialog,DIV#uploadResults
+DIV#uploadDialog, DIV#uploadResults
 { border-width: 1px;
-  width: 260px;
-  height: 127px; }
-DIV#uploadDialog DIV,DIV#uploadResults DIV
-{ width: 260px;
-  height: 115px; }
+  width: 260px; }
+
+DIV#uploadDialog DIV, DIV#uploadResults DIV
+{ width: 260px; }
+
+DIV.dialog H3
+{ margin-top: 0; }
+
+DIV.dialog P.buttons
+{ margin-bottom: 0;
+  text-align: right;}
 
 DIV.dialog 
 { position: absolute;
@@ -799,7 +803,6 @@ DIV.dialog
 
 DIV.dialog DIV
 { border: 1px solid #444;
-  /*height: 100px;*/
   background-color: #fff;
   padding: 5px; }
 

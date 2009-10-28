@@ -53,6 +53,7 @@
 = "Non disponi dei privilegi richiesti per eseguire questa operazione.";
 
 "noEmailForDelegation" = "You must specify the address to which you want to delegate your invitation.";
+"delegate is organizer" = "The delegate is the organizer. Please specify a different delegate.";
 "delegate is a participant" = "The delegate is already a participant.";
 "delegate is a group" = "The specified address corresponds to a group. You can only delegate to a unique person.";
 

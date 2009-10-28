@@ -230,10 +230,9 @@ function modifyEventCallback(http) {
         else if (http.status == 403) {
             var data = http.responseText;
             var msg = data.replace(/^(.*\n)*.*<p>((.*\n)*.*)<\/p>(.*\n)*.*$/, "$2");
-            window.alert(clabels[msg]?clabels[msg]:msg);
+            window.alert(getLabel(msg));
         }
         else {
-            // 	 log("showing alert...");
             window.alert(getLabel("eventPartStatModificationError"));
         }
         document.modifyEventAjaxRequest = null;
@@ -1991,18 +1990,20 @@ function validateUploadForm () {
       rc = true;
     return rc;
 }
-function uploadCompleted (response) {
-    data = response.evalJSON (true);
+function uploadCompleted(response) {
+    data = response.evalJSON(true);
 
     var div = $("uploadResults");
     $("uploadOK").onclick = hideImportResults;
     if (data.imported < 0)
-      $("uploadResultsContent").update (getLabel("An error occured while importing calendar."));
+        $("uploadResultsContent").update(getLabel("An error occured while importing calendar."));
+    else if (data.imported == 0)
+        $("uploadResultsContent").update(getLabel("No event was imported."));
     else {
-        $("uploadResultsContent").update (getLabel("Imported events:") + " " + data.imported);
-        refreshEventsAndDisplay ();
+        $("uploadResultsContent").update(getLabel("A total of %{0} events were imported in the calendar.").formatted(data.imported));
+        refreshEventsAndDisplay();
     }
-
+    
     hideCalendarImport ();
     $("uploadResults").style.display = "block";
 }

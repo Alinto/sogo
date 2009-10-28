@@ -820,7 +820,7 @@
 	    {
 	      [delegates addObject: otherDelegate];
 
-	      delegatedUID = [otherDelegate uid];	  
+	      delegatedUID = [otherDelegate uid];
 	      if (delegatedUID)
 		// Delegated attendee is a local user; remove event from his calendar
 		[self _removeEventFromUID: delegatedUID
@@ -1336,11 +1336,12 @@
   iCalEvent *event;
   iCalPerson *attendee;
   NSException *ex;
-  SOGoUser *ownerUser;
-  NSString *recurrenceTime;
+  SOGoUser *ownerUser, *delegatedUser;
+  NSString *recurrenceTime, *delegatedUid;
 
   event = nil;
   ex = nil;
+  delegatedUser = nil;
 
   calendar = [self calendar: NO secure: NO];
   if (calendar)
@@ -1374,6 +1375,12 @@
 	  if (delegate
 	      && ![[delegate email] isEqualToString: [attendee delegatedTo]])
 	    {
+	      delegatedUid = [delegate uid];
+	      if (delegatedUid)
+		delegatedUser = [SOGoUser userWithLogin: delegatedUid];
+	      if (delegatedUser != nil && [event userIsOrganizer: delegatedUser])
+		ex = [NSException exceptionWithHTTPStatus: 403
+						   reason: @"delegate is organizer"];		
 	      if ([event isParticipant: [[delegate email] rfc822Email]])
 		ex = [NSException exceptionWithHTTPStatus: 403
 						   reason: @"delegate is a participant"];

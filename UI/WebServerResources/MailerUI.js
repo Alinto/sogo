@@ -1082,6 +1082,7 @@ function configureiCalLinksInMessage() {
         delegatedTo.addInterface(SOGoAutoCompletionInterface);
         delegatedTo.uidField = "c_mail";
         delegatedTo.excludeGroups = true;
+        delegatedTo.excludeLists = true;
         
         var editDelegate = $("editDelegate");
         if (editDelegate)
@@ -1159,7 +1160,7 @@ function ICalendarButtonCallback(http) {
         else if (http.status == 403) {
             var data = http.responseText;
             var msg = data.replace(/^(.*\n)*.*<p>((.*\n)*.*)<\/p>(.*\n)*.*$/, "$2");
-            window.alert(clabels[msg]?clabels[msg]:msg);
+            window.alert(getLabel(msg));
         }
         else
             window.alert("received code: " + http.status + "\nerror: " + http.responseText);

@@ -50,7 +50,7 @@ function checkAddresses() {
     alert("addressCount: " + this.getAddressCount() + " currentIndex: " + currentIndex + " lastIndex: " + lastIndex);
 }
 
-function fancyAddRow(shouldEdit, text, type) {
+function fancyAddRow(text, type) {
     var addr = $('addr_' + lastIndex);
     if (addr && addr.value == '') {
         var sub = $('subjectField');
@@ -80,17 +80,16 @@ function fancyAddRow(shouldEdit, text, type) {
 
     addressList.insertBefore(row, lastChild);
 
-    if (shouldEdit) {
-        input.addInterface(SOGoAutoCompletionInterface);
-        input.focus();
-        input.select();
-        input.onListAdded = expandContactList;
-    }
+    input.addInterface(SOGoAutoCompletionInterface);
+    input.focus();
+    input.select();
+    input.observe("autocompletion:changedlist", expandContactList);
 }
 
 function expandContactList (e) {
-    var url = UserFolderURL + "Contacts/" + this.readAttribute("container") + "/" 
-      + this.readAttribute("card") + "/properties";
+    var container = $(e).memo;
+    var url = UserFolderURL + "Contacts/" + container + "/"
+        + this.readAttribute("uid") + "/properties";
     triggerAjaxRequest (url, expandContactListCallback, this);
 }
 
@@ -99,6 +98,7 @@ function expandContactListCallback (http) {
         var input = http.callbackData;
         if (http.status == 200) {
             var data = http.responseText.evalJSON(true);
+            // TODO: Should check for duplicated entries
             if (data.length >= 1) {
                 var text = data[0][2];
                 if (data[0][1].length)
@@ -110,11 +110,9 @@ function expandContactListCallback (http) {
                     var text = data[i][2];
                     if (data[i][1].length)
                       text = data[i][1] + " <" + data[i][2] + ">";
-                    fancyAddRow(false, text, $(input).up("tr").down("select").value);
+                    fancyAddRow(text, $(input).up("tr").down("select").value);
                 }
             }
-            //subsequent attempts must be ignored
-            input.onListAdded = null;
         }
     }
 }
@@ -132,19 +130,14 @@ function addressFieldGotFocus(sender) {
 
 function addressFieldLostFocus(sender) {
     lastIndex = this.getIndexFromIdentifier(sender.id);
-
-    if (sender.confirmedValue) {
-        sender.value = sender.confirmedValue;
-        sender.confirmedValue = false;
-    }
-	
+    
     var addresses = sender.value.split(',');
     if (addresses.length > 0) {
         sender.value = addresses[0].strip();
         for (var i = 1; i < addresses.length; i++) {
             var addr = addresses[i].strip();
             if (addr.length > 0)
-                fancyAddRow(false, addr, $(sender).up("tr").down("select").value);
+                fancyAddRow(addr, $(sender).up("tr").down("select").value);
         }
     }
     onWindowResize(null);

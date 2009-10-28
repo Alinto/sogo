@@ -11,6 +11,9 @@
     const:popup="YES"
     const:jsFiles="UIxMailEditor.js,SOGoAutoCompletion.js"
     >
+    <script type="text/javascript">
+      var activeAddressBook = '<var:string value="clientObject.container.nameInContainer"/>';
+    </script>
     <div class="popupMenu" id="contactsMenu">
       <ul></ul>
     </div>
@@ -42,8 +45,11 @@
             <tbody>
               <var:foreach list="references" item="reference">
                 <tr const:class="referenceListRow">
-                  <td const:class="referenceListCell" var:card="reference.id">
-                    <var:string var:value="reference.name"/>
+		  <td const:class="referenceListCell">
+		    <input var:uid="reference.id"
+			   var:value="reference.name"
+			   const:style="display: none"/>
+                    <span><var:string var:value="reference.name"/></span>
                 </td></tr>
               </var:foreach>
             </tbody>

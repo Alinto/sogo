@@ -90,57 +90,53 @@
 
 - (void) setReferencesValue: (NSString *) value
 {
-  NSData *data;
-  NSDictionary *references;
-  NSArray *values, *initialReferences;
-  NSString *error, *currentReference;
-  NSPropertyListFormat format;
+  NSDictionary *values;
+  NSArray *references, *initialReferences;
+  NSString *currentReference;
   int i, count;
   NGVCardReference *cardReference;
+  SOGoContactGCSFolder *folder;
+  
+  references = [value componentsSeparatedByString: @","];
+  if ([references count])
+    {
+      folder = [[self clientObject] container];
 
-  data = [value dataUsingEncoding: NSUTF8StringEncoding];
-  references = [NSPropertyListSerialization propertyListFromData: data
-                                                mutabilityOption: NSPropertyListImmutable
-                                                          format: &format
-                                                errorDescription: &error];
-  if(!references)
-    {
-      NSLog(error);
-      [error release];
-    }
-  else
-    {
-      // Remove from list
+      // Remove from the list the cards that were deleted
       initialReferences = [list cardReferences];
       count = [initialReferences count];
-
+      
       for (i = 0; i < count; i++)
         {
           cardReference = [initialReferences objectAtIndex: i];
-          if (![[references allKeys] containsObject: [cardReference reference]])
+          if (![references containsObject: [cardReference reference]])
             [list deleteCardReference: cardReference];
         }
-
-      // Add new objects
-      initialReferences = [list cardReferences];
-      count = [[references allKeys] count];
-
+      
+      // Add new cards
+      count = [references count];
+      
       for (i = 0; i < count; i++)
         {
-          currentReference = [[references allKeys] objectAtIndex: i];
+          currentReference = [references objectAtIndex: i];
           if (![self cardReferences: initialReferences 
                             contain: currentReference])
             {
-              NSLog (@"Adding a new cardRef");
-              values = [references objectForKey: currentReference];
-              cardReference = [NGVCardReference elementWithTag: @"card"];
-              [cardReference setFn: [values objectAtIndex: 0]];
-              [cardReference setEmail: [values objectAtIndex: 1]];
-              [cardReference setReference: currentReference];
-              [list addCardReference: cardReference];
-            }
-        }
-    }
+              // Search contact
+	      values = [folder lookupContactWithName: currentReference];
+	      if (values)
+		{
+		  
+		  cardReference = [NGVCardReference elementWithTag: @"card"];
+		  [cardReference setFn: [values objectForKey: @"c_cn"]];
+		  [cardReference setEmail: [values objectForKey: @"c_mail"]];
+		  [cardReference setReference: currentReference];
+		  
+		  [list addCardReference: cardReference];
+		}
+	    }
+	}
+    }  
 }
 - (BOOL) cardReferences: (NSArray *) references
                 contain: (NSString *) ref

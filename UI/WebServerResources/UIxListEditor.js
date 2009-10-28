@@ -1,150 +1,144 @@
 /* -*- Mode: java; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 function validateListEditor () {
-    serializeReferences ();
-    return true;
+    return serializeReferences();
 }
 
 function makeEditable (element) {
-    element.addClassName ("editing");
-    element.removeClassName ("referenceListCell");
-    var tmp = element.innerHTML;
-    element.innerHTML = "";
-    var textField = new Element ("input", {"type": "text" });
-    textField.setStyle({ "width": "98%" });
-    textField.value = tmp.trim ();
-    textField.value = textField.value.replace (/&lt;/, "<");
-    textField.value = textField.value.replace (/&gt;/, ">");
-    element.appendChild (textField);
-    textField.addInterface (SOGoAutoCompletionInterface);
-    textField.focus ();
-    textField.select ();
-    textField.excludeLists = 1;
-    textField.menu = $("contactsMenu");
-    textField.endEditable = endEditable;
-    textField.addAnother = onReferenceAdd;
-    textField.baseUrl = window.location.href + "/../../contactSearch?search=";
+    element.addClassName("editing");
+    element.removeClassName("referenceListCell");
+
+    var span = element.down("SPAN");
+    span.update();
+
+    var textField = element.down("INPUT");
+    textField.show();
+    textField.focus();
+    textField.select();
+    
+    return true;
 }
 
-function endEditable (event, element) {
-    var card;
-    var name;
-    var mail;
+function endEditable(event, textField) {
+    if (!textField)
+        textField = this;
+ 
+    var uid = textField.readAttribute("uid");
+    var cell = textField.up("TD");
+    var textSpan = cell.down("SPAN");
     
-    if (element) {
-      card = element.readAttribute("card");
-      mail = element.readAttribute("mail");
-      name = element.readAttribute("uname");
-    }
-    else {
-      if ($(this).tagName == "INPUT") {
-          element = this.ancestors ().first ();
-          card = this.readAttribute ("card");
-          name = this.readAttribute ("uname");
-          mail = this.readAttribute ("mail");
-      }
-      else {
-          element = this;
-          card = element.childElements ().first ().readAttribute ("card");
-          mail = element.childElements ().first ().readAttribute ("mail");
-          name = element.childElements ().first ().readAttribute ("uname");
-      }
-    }
+    cell.removeClassName("editing");
+    cell.addClassName("referenceListCell");
+    textField.hide();
 
-    element.writeAttribute ("card", card);
-    element.writeAttribute ("name", name);
-    element.writeAttribute ("mail", mail);
-
-    var tmp = "";
-    if (card) {
-        var tmp = element.childElements ().first ().value;
+    if (uid) {
+        var tmp = textField.value;
         tmp = tmp.replace (/</, "&lt;");
         tmp = tmp.replace (/>/, "&gt;");
-        element.innerHTML = tmp;
-        element.removeClassName ("editing");
-        element.addClassName ("referenceListCell");
+        textSpan.update(tmp);
     }
     else {
-        element.ancestors ().first ().remove ();
+        cell.up("TR").remove();
     }
+
+    if (event)
+        Event.stop(event);
+    
+    return false;
 }
 
 function endAllEditables (e) {
-    var r = $$("TABLE#referenceList tbody tr td");
-    for (var i=0; i<r.length; i++) {
-        if (r[i] != this && r[i].hasClassName ("editing"))
-            endEditable (null, $(r[i]));
+    var r = $$("TABLE#referenceList TBODY TR TD");
+    for (var i = 0; i < r.length; i++) {
+        var element = $(r[i]);
+        if (r[i] != this && element.hasClassName("editing"))
+            endEditable(null, element.down("INPUT"));
     }
 }
 
 function onNameEdit (e) {
-    endAllEditables ();
-    if (!this.hasClassName ("editing")) {
+    endAllEditables();
+    if (!this.hasClassName("editing")) {
         makeEditable (this);
     }
 }
 
 function onReferenceAdd (e) {
-    var row = new Element ("tr");
-    var nametd = new Element ("td").update ("");
+    var tablebody = $("referenceList").tBodies[0];
+    var row = new Element("tr");
+    var td = new Element("td");
+    var textField = new Element("input");
+    var span = new Element("span");
 
     row.addClassName ("referenceListRow");
-    nametd.addClassName ("referenceListCell");
+    row.observe("mousedown", onRowClick);
+    td.addClassName ("referenceListCell");
+    td.observe("mousedown", endAllEditables);
+    td.observe("dblclick", onNameEdit);
+    textField.addInterface(SOGoAutoCompletionInterface);
+    textField.addressBook = activeAddressBook;
+    textField.excludeLists = true;
+    textField.observe("autocompletion:changed", endEditable);
 
-    row.appendChild (nametd);
-    $("referenceList").tBodies[0].appendChild (row);
-    makeEditable (nametd);
+    td.appendChild(textField);
+    td.appendChild(span);
+    row.appendChild (td);
+    tablebody.appendChild(row);
+    tablebody.deselectAll();
+    row.selectElement();
 
-    resetTableActions ();
+    makeEditable(td);
 }
 
-function onReferenceDelete (e) {
+function onReferenceDelete(e) {
     var list = $('referenceList').down("TBODY");;
     var rows = list.getSelectedNodes();
     var count = rows.length;
 
-    for (var i=0; i < count; i++) {
-        rows[i].remove ();
+    for (var i = 0; i < count; i++) {
+        rows[i].remove();
     }
 }
 
-function serializeReferences (e) {
-    var r = $$("TABLE#referenceList tbody tr");
-    var cards = "{";
-
+function serializeReferences(e) {
+    var r = $$("TABLE#referenceList TBODY TR INPUT");
+    var cards = new Array();
     for (var i = 0; i < r.length; i++) {
-        var td = r[i].childElements ().first ();
-        var card = td.readAttribute ("card");
-        var name = td.readAttribute ("name");
-        var mail = td.readAttribute ("mail");
-        cards += "\"" + card + "\" = (\""+name+"\", \""+mail+"\");";
+        var uid = $(r[i]).readAttribute("uid");
+        if (uid)
+            cards.push(uid);
     }
-    cards = cards + "}";
-
-    $("referencesValue").value = cards;
+    $("referencesValue").value = cards.join(",");
+    return true;
 }
 
-function resetTableActions () {
-    var r = $$("TABLE#referenceList tbody tr");
+function resetTableActions() {
+    var r = $$("TABLE#referenceList TBODY TR");
     for (var i = 0; i < r.length; i++) {
         var row = $(r[i]);
         row.observe("mousedown", onRowClick);
-        var td = row.childElements().first ();
+        var td = row.down("TD");
         td.observe("mousedown", endAllEditables);
         td.observe("dblclick", onNameEdit);
+        var textField = td.down("INPUT");
+        textField.addInterface(SOGoAutoCompletionInterface);
+        textField.addressBook = activeAddressBook;
+        textField.excludeLists = true;
+        textField.confirmedValue = textField.value;
+        textField.observe("autocompletion:changed", endEditable);
     }
 }
 
 function onEditorCancelClick(event) {
-	preventDefault(event);
-	window.close();
+    preventDefault(event);
+    window.close();
 }
 
-function initListEditor () {
+function initListEditor() {
     var table = $("referenceList");
     table.multiselect = true;
-    resetTableActions ();
-    $("referenceAdd").observe ("click", onReferenceAdd);
-    $("referenceDelete").observe ("click", onReferenceDelete);
+    resetTableActions();
+    $("referenceAdd").observe("click", onReferenceAdd);
+    $("referenceDelete").observe("click", onReferenceDelete);
     $("cancelButton").observe("click", onEditorCancelClick);
 }
 

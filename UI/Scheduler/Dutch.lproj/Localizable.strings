@@ -106,15 +106,16 @@
 "Sharing..." = "Delen...";
 "Export Calendar..." = "Agenda exporteren...";
 "Import Events..." = "Import Events...";
-"Select iCalendar file (*.ics)..." = "Select iCalendar file (*.ics)...";
+"Import Events" = "Import Events";
+"Select an iCalendar file (.ics)." = "Select an iCalendar file (.ics).";
 "Upload" = "Upload";
 "Publish Calendar..." = "Agenda publiceren...";
 "Reload Remote Calendars" = "Externe agenda vernieuwen";
 "Properties" = "Instellingen";
-"Import" = "Import";
-"OK" = "OK";
+"Done" = "Done";
 "An error occured while importing calendar." = "An error occured while importing calendar.";
-"Imported events:" = "Imported events:";
+"No event was imported." = "No event was imported.";
+"A total of %{0} events were imported in the calendar." = "A total of %{0} events were imported in the calendar.";
 
 "Compose E-Mail to All Attendees" = "E-mail aan alle deelnemers opstellen";
 "Compose E-Mail to Undecided Attendees" = "E-mail aan deelnemers opstellen die nog niet hebben gereageerd";

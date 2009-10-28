@@ -106,15 +106,17 @@
 "Sharing..." = "Sharing...";
 "Export Calendar..." = "Экспортировать календарь...";
 "Import Events..." = "Import Events...";
-"Select iCalendar file (*.ics)..." = "Select iCalendar file (*.ics)...";
+"Import Events" = "Import Events";
+"Select an iCalendar file (.ics)." = "Select an iCalendar file (.ics).";
 "Upload" = "Upload";
 "Publish Calendar..." = "Опубликовать календарь...";
 "Reload Remote Calendars" = "Обновить удаленные календари";
 "Properties" = "Свойства";
-"Import" = "Import";
-"OK" = "OK";
+"Done" = "Done";
 "An error occured while importing calendar." = "An error occured while importing calendar.";
-"Imported events:" = "Imported events:";
+"No event was imported." = "No event was imported.";
+"A total of %{0} events were imported in the calendar." = "A total of %{0} events were imported in the calendar.";
+
 
 "Compose E-Mail to All Attendees" = "Составить сообщение ко всем приглашенным";
 "Compose E-Mail to Undecided Attendees" = "Составить сообщение ко всем не решившим приглашенным";
