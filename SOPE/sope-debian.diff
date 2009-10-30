@@ -210,7 +210,7 @@
 -Build-Depends: debhelper (>= 4.0.0), dpatch, gnustep-make-ogo, gobjc | objc-compiler, libfoundation1.1-dev, libobjc1, libxml2-dev, libldap2-dev | libldap-dev, libssl-dev, zlib1g-dev, libpq-dev | postgresql-dev, libecpg-dev, apache-dev, apache2-threaded-dev | apache2-prefork-dev | apache2-dev, autotools-dev
 -Standards-Version: 3.6.1
 +Maintainer: Inverse Support <support@inverse.ca>
-+Build-Depends: debhelper (>= 4.0.0), gnustep-make, libgnustep-base-dev, gobjc | objc-compiler, libxml2-dev, libldap2-dev | libldap-dev, libssl-dev, zlib1g-dev, libpq-dev | postgresql-dev, libmysqlclient-dev (>= 5.1), autotools-dev
++Build-Depends: debhelper (>= 4.0.0), gnustep-make, libgnustep-base-dev, gobjc | objc-compiler, libxml2-dev, libldap2-dev | libldap-dev, libssl-dev, zlib1g-dev, libpq-dev | postgresql-dev, libmysqlclient-dev (>= 5.0) | libmysqlclient15-dev (>= 5.0), autotools-dev
 +Standards-Version: 3.8.2
  
  Package: libsope_SOPEVER_-dev
@@ -433,7 +433,7 @@
 -Build-Depends: debhelper (>= 4.0.0), dpatch, gnustep-make-ogo, gobjc | objc-compiler, libfoundation1.1-dev, libobjc1, libxml2-dev, libldap2-dev | libldap-dev, libssl-dev, zlib1g-dev, libpq-dev | postgresql-dev, libecpg-dev, apache-dev, apache2-threaded-dev | apache2-prefork-dev | apache2-dev, autotools-dev
 -Standards-Version: 3.6.1
 +Maintainer: Inverse Support <support@inverse.ca>
-+Build-Depends: debhelper (>= 4.0.0), gnustep-make, libgnustep-base-dev, gobjc | objc-compiler, libxml2-dev, libldap2-dev | libldap-dev, libssl-dev, zlib1g-dev, libpq-dev | postgresql-dev, libmysqlclient-dev (>= 5.1), autotools-dev
++Build-Depends: debhelper (>= 4.0.0), gnustep-make, libgnustep-base-dev, gobjc | objc-compiler, libxml2-dev, libldap2-dev | libldap-dev, libssl-dev, zlib1g-dev, libpq-dev | postgresql-dev, libmysqlclient-dev (>= 5.0) | libmysqlclient15-dev (>= 5.0), autotools-dev
 +Standards-Version: 3.8.2
  
  Package: libsope4.9-dev
