@@ -1,5 +1,9 @@
 2009-10-30  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/WebServerResources/SchedulerUI.js: the events list is now
+	refreshed in the AJAX callback. This avoid seeing an empty table
+	while refreshing the events list.
+
 	* UI/WebServerResources/UIxPreferences.js
 	(addDefaultEmailAddresses): fixed issue in vacation tab when
 	adding the defaults values to a empty list.

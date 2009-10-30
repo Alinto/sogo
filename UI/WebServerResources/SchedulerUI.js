@@ -581,6 +581,11 @@ function eventsListCallback(http) {
         var table = $("eventsList");
         lastClickedRow = -1; // from generic.js
 
+        var rows = table.select("TBODY TR");
+        rows.each(function(e) {
+                e.remove();
+            });
+        
         if (http.responseText.length > 0) {
             var data = http.responseText.evalJSON(true);
             for (var i = 0; i < data.length; i++) {
@@ -1322,10 +1327,6 @@ function _loadEventHref(href) {
     var url = ApplicationBaseURL + href;
     document.eventsListAjaxRequest
         = triggerAjaxRequest(url, eventsListCallback, href);
-
-    var table = $("eventsList").tBodies[0];
-    while (table.rows.length > 0)
-        table.removeChild(table.rows[0]);
 
     return false;
 }
