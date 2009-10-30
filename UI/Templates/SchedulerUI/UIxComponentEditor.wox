@@ -15,8 +15,8 @@
   const:jsFiles="skycalendar.js,UIxComponentEditor.js,SOGoAutoCompletion.js">
 
   <script type="text/javascript">
-    var activeCalendar = '<var:string value="clientObject.container.nameInContainer"/>';
-    var activeComponent = '<var:string value="clientObject.nameInContainer"/>';
+    var activeCalendar = '<var:string value="componentCalendar.nameInContainer"/>';
+    var activeComponent = '<var:if condition="isChildOccurence"><var:string value="clientObject.container.nameInContainer"/>/</var:if><var:string value="clientObject.nameInContainer"/>';
     var readOnly = <var:if condition="eventIsReadOnly">true</var:if><var:if condition="eventIsReadOnly"
     const:negate="YES">false</var:if>;
     var attendees = <var:string value="jsonAttendees" const:escapeHTML="NO" />;
