@@ -1,11 +1,21 @@
 /* -*- Mode: java; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
+var ComponentEditor = {
+    attendeesWindow: null,
+    recurrenceWindow: null,
+    reminderWindow: null
+};
+
 function onPopupAttendeesWindow(event) {
     if (event)
         preventDefault(event);
-    window.open(ApplicationBaseURL + "/editAttendees", null, 
-                "width=803,height=573");
-
+    if (ComponentEditor.attendeesWindow && ComponentEditor.attendeesWindow.open && !ComponentEditor.attendeesWindow.closed)
+        ComponentEditor.attendeesWindow.focus();
+    else
+        ComponentEditor.attendeesWindow = window.open(ApplicationBaseURL + "/editAttendees",
+                                                      sanitizeWindowName(activeCalendar + activeComponent + "Attendees"),
+                                                      "width=803,height=573");
+    
     return false;
 }
 
@@ -165,6 +175,7 @@ function onComponentEditorLoad(event) {
         tmp.observe("keyup", onSummaryChange);
     
     Event.observe(window, "resize", onWindowResize);
+    Event.observe(window, "beforeunload", onComponentEditorClose);
     
     onPopupRecurrenceWindow(null);
     onPopupReminderWindow(null);
@@ -205,6 +216,15 @@ function onReplyChange(event) {
     onWindowResize(null);
 
     return true;
+}
+
+function onComponentEditorClose(event) {
+    if (ComponentEditor.attendeesWindow && ComponentEditor.attendeesWindow.open && !ComponentEditor.attendeesWindow.closed)
+        ComponentEditor.attendeesWindow.close();
+    if (ComponentEditor.recurrenceWindow && ComponentEditor.recurrenceWindow.open && !ComponentEditor.recurrenceWindow.closed)
+        ComponentEditor.recurrenceWindow.close();
+    if (ComponentEditor.reminderWindow && ComponentEditor.reminderWindow.open && !ComponentEditor.reminderWindow.closed)
+        ComponentEditor.reminderWindow.close();
 }
 
 function onWindowResize(event) {
@@ -262,9 +282,14 @@ function onPopupRecurrenceWindow(event) {
     if (repeatList && repeatList.value == 7) {
         // Custom repeat rule
         repeatHref.show();
-        if (event)
-            window.open(ApplicationBaseURL + "editRecurrence", null, 
-                        "width=500,height=400");
+        if (event) {
+            if (ComponentEditor.recurrenceWindow && ComponentEditor.recurrenceWindow.open && !ComponentEditor.recurrenceWindow.closed)
+                ComponentEditor.recurrenceWindow.focus();
+            else
+                ComponentEditor.recurrenceWindow = window.open(ApplicationBaseURL + "editRecurrence",
+                                                               sanitizeWindowName(activeCalendar + activeComponent + "Recurrence"),
+                                                               "width=500,height=400");
+        }
     }
     else if (repeatHref)
         repeatHref.hide();
@@ -281,9 +306,14 @@ function onPopupReminderWindow(event) {
     var reminderList = $("reminderList");
     if (reminderList && reminderList.value == 15) {
         reminderHref.show();
-        if (event)
-            window.open(ApplicationBaseURL + "editReminder", null, 
-                        "width=250,height=150");
+        if (event) {
+            if (ComponentEditor.reminderWindow && ComponentEditor.reminderWindow.open && !ComponentEditor.reminderWindow.closed)
+                ComponentEditor.reminderWindow.focus();
+            else
+                ComponentEditor.reminderWindow = window.open(ApplicationBaseURL + "editReminder",
+                                                             sanitizeWindowName(activeCalendar + activeComponent + "Reminder"),
+                                                             "width=250,height=150");
+        }
     }
     else if (reminderHref)
         reminderHref.hide();
