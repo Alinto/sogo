@@ -72,7 +72,10 @@ function onChoiceChanged(event) {
 
 function addDefaultEmailAddresses() {
     var defaultAddresses = $("defaultEmailAddresses").value.split(/, */);
-    var addresses = $("autoReplyEmailAddresses").value.split(/, */);
+    var addresses = $("autoReplyEmailAddresses").value.trim();
+    
+    if (addresses) addresses = addresses.split(/, */);
+    else addresses = new Array();
 
     defaultAddresses.each(function(adr) {
             for (var i = 0; i < addresses.length; i++)

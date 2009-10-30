@@ -1,5 +1,9 @@
 2009-10-30  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/WebServerResources/UIxPreferences.js
+	(addDefaultEmailAddresses): fixed issue in vacation tab when
+	adding the defaults values to a empty list.
+
 	* UI/WebServerResources/UIxComponentEditor.js
 	(onComponentEditorClose): new method that closes definition popup
 	windows associated to the event (attendees/recurrence/reminder).
