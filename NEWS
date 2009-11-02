@@ -1,4 +1,8 @@
-1.0-20091028 (1.1.0)
+1.1-yyyymmdd (1.1.1)
+--------------------
+- improved handling of popup windows when closing the parent window
+
+1.1-20091028 (1.1.0)
 --------------------
 - added backup/restore tools for all user's data (calendars, address books, preferences, etc.)
 - added Web administrative interface (right now, only for ACLs)
