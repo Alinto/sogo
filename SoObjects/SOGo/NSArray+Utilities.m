@@ -174,18 +174,12 @@
   NSEnumerator *elements;
   NSString *representation;
 
-  jsonElements = [NSMutableArray new];
-
+  jsonElements = [NSMutableArray array];
   elements = [self objectEnumerator];
-  currentElement = [elements nextObject];
-  while (currentElement)
-    {
-      [jsonElements addObject: [currentElement jsonRepresentation]];
-      currentElement = [elements nextObject];
-    }
+  while ((currentElement = [elements nextObject]))
+    [jsonElements addObject: [currentElement jsonRepresentation]];
   representation = [NSString stringWithFormat: @"[%@]",
 			     [jsonElements componentsJoinedByString: @", "]];
-  [jsonElements autorelease];
 
   return representation;
 }
