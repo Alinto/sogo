@@ -21,13 +21,12 @@
   <div id="attendeesView">
     <div id="freeBusyViewButtons">
       <var:string label:value="Suggest time slot:"/>
+      <span class="buttons"><a id="nextSlot" href="#" class="button"
+        ><span><var:string label:value="Next slot" /></span></a>
       <a id="previousSlot" href="#" class="button"
-	><var:string label:value="Previous slot" /></a>
-      <a id="nextSlot" href="#" class="button"
-        ><var:string label:value="Next slot" /></a><label
-        ><input class="checkbox" type="checkbox" checked="1" id="onlyOfficeHours"
-            /><var:string label:value="Only office hours" 
-            /></label>
+        ><span><var:string label:value="Previous slot" /></span></a></span>
+      <input class="checkbox" type="checkbox" 
+          checked="1" id="onlyOfficeHours" /><var:string label:value="Only office hours" />
     </div>
     <div id="freeBusyView">
       <table id="freeBusy" cellspacing="0" cellpadding="0"
@@ -56,7 +55,8 @@
                 <tbody>
 	          <tr class="futureAttendee"
 	            ><td class="attendees"><a href="#" class="button"
-		    readonly="readonly"><var:string label:value="newAttendee" /></a></td
+                  readonly="readonly"><span
+                    ><var:string label:value="newAttendee" /></span></a></td
 	          ></tr>
 	          <tr class="attendeeModel"
 	            ><td class="attendees"><input type="text" class="textField" /></td
@@ -90,15 +90,15 @@
 	</ul>
       </div>
       <div id="freeBusyReplicas">
-	<div><var:string label:value="Start:"
-            /><var:component className="UIxTimeDateControl"
+        <div><span><var:string label:value="Start:"
+            /></span><var:component className="UIxTimeDateControl"
             const:controlID="startTime"
             date="aptStartDate"
             const:dayStartHour="0"
             const:dayEndHour="23"
             /></div>
-	<div><var:string label:value="End:"
-            /><var:component className="UIxTimeDateControl"
+      <div><span><var:string label:value="End:"
+            /></span><var:component className="UIxTimeDateControl"
             const:controlID="endTime"
             date="aptEndDate"
             const:dayStartHour="0"
@@ -107,10 +107,10 @@
       </div>
       <div id="windowButtons">
 	<hr />
+	<a id="okButton" href="#" class="button actionButton"
+    ><span><var:string label:value="OK"/></span></a>
 	<a id="cancelButton" href="#" class="button"
-	  ><var:string label:value="Cancel"/></a>
-	<a id="okButton" href="#" class="button"
-	  ><var:string label:value="OK"/></a>
+    ><span><var:string label:value="Cancel"/></span></a>
       </div>
     </div>
   </div>

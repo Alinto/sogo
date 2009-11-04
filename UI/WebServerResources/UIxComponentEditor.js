@@ -22,8 +22,8 @@ function onPopupAttendeesWindow(event) {
 function onSelectPrivacy(event) {
     if (event.button == 0 || (isSafari() && event.button == 1)) {
         var node = getTarget(event);
-        if (node.tagName != 'BUTTON')
-            node = $(node).up("button");
+        if (node.tagName != 'A')
+            node = $(node).up("A");
         popupToolbarMenu(node, "privacy-menu");
         Event.stop(event);
         //       preventDefault(event);

@@ -551,12 +551,14 @@ function updateSlotDisplayCallback(http) {
     cb();
 }
 
-function onPreviousSlotClick (event) {
-    findSlot (-1);
+function onPreviousSlotClick(event) {
+    findSlot(-1);
+    this.blur(); // required by IE
 }
 
-function onNextSlotClick (event) {
-    findSlot (1);
+function onNextSlotClick(event) {
+    findSlot(1);
+    this.blur(); // required by IE
 }
 
 function onEditorOkClick(event) {

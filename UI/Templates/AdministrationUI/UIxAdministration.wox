@@ -14,7 +14,7 @@
     <div>
       <h3><!-- module title --></h3>
       <div><!-- module description --></div>
-      <p class="button"><a href="#" class="button" id="helpDialogClose"><var:string label:value="Close"/></a></p>
+      <a href="#" class="button" id="helpDialogClose"><span><var:string label:value="Close"/></span></a>
     </div>
   </div>
 

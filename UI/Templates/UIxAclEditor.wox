@@ -21,22 +21,18 @@
 	  var:value="userUIDS"/>
 	<var:if condition="hasOwner">
 	  <label><var:string label:value="Owner:"/>
-	    <span class="value"><strong><var:string value="ownerName"/></strong></span></label><br/>
+	    <span class="value"><strong><var:string value="ownerName"/></strong></span></label>
 	</var:if>
       </div>
       <div class="userSelector" id="userRoles">
 	<var:if condition="canModifyAcls">
-	  <input id="defaultRolesBtn" type="button"
-	    class="button" label:value="Default Roles"/>
 	  <div id="userSelectorButtons">
-	    <a href="#"
-	      class="button"><img rsrc:src="add-contact.gif"
-		label:title="Add..."
-		/></a>
-	    <a href="#"
-	      class="button"><img rsrc:src="remove-contact.gif"
-		label:title="Remove"
-		/></a>
+      <a href="#" id="defaultRolesBtn" class="button"><span>
+          <var:string label:value="Default Roles" /></span></a>
+      <a href="#" id="aclAddUser" class="smallToolbarButton"><span>
+          <img rsrc:src="add-contact.gif" label:title="Add..." /></span></a>
+      <a href="#" id="aclDeleteUser" class="smallToolbarButton"><span>
+          <img rsrc:src="remove-contact.gif" label:title="Remove" /></span></a>
 	  </div>
 	</var:if>
 	<ul id="userList" multiselect="yes">

@@ -10,7 +10,7 @@
   const:toolbar="none"
   const:popup="YES"
   title="title">
-  <form const:href="saveProperties" name="propertiesform">
+  <form const:href="saveProperties" name="propertiesform" id="propertiesform">
     <input type="hidden" const:name="calendarID" const:id="calendarID"
       var:value="calendarID"/>
     <div id="propertiesView">
@@ -27,7 +27,7 @@
       ><div const:id="webCalendarUrl"><span class="label"
       ><var:string label:value="URL:"/></span
       ><span class="content" var:title="webCalendarURL"
-      ><var:string var:value="webCalendarURL"/>
+      ><a var:href="webCalendarURL" target="_new"><var:string var:value="webCalendarURL"/></a>
       </span></div></var:if>
       <div><span class="label"><var:string
 	    label:value="Color:"
@@ -76,16 +76,11 @@
         ></div>
       </fieldset>
       <div id="buttons">
-	<input type="button"
-	const:class="button"
-	label:value="Cancel"
-	const:id="cancelButton"
-	name="cancelButton"/>
-      <input type="submit"
-	const:class="button"
-	label:value="OK"
-	const:id="okButton"
-	name="okButton"/>
+        <a href="#" class="button actionButton" id="okButton" 
+          name="okButton">
+          <span><var:string label:value="OK" /></span></a>
+        <a href="#" class="button" id="cancelButton" name="cancelButton">
+          <span><var:string label:value="Cancel" /></span></a>
       </div>
     </div>
   </form>

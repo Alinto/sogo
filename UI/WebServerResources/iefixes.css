@@ -27,20 +27,10 @@ TD.tbtv_navcell
 DIV#windowButtons
 { height: 3em; }
 
-A.button,
 INPUT.button
 { border: 1px solid #fff;
   border-right: 1px solid #666;
   border-bottom: 1px solid #666; }
-
-A.button
-{ color: #000;
-  padding: 1px 4px; }
-
-A.button IMG
-{ margin: 1px; }
-
-/* UIxAclEditor */
 
 DIV#userRoles
 {  }
@@ -63,8 +53,8 @@ TD.mailer_fieldname
 
 /* ContactsUI */
 
-DIV#contactFoldersList SPAN.toolbarButton
-{ padding: 2px; }
+/*DIV#contactFoldersList SPAN.toolbarButton
+{ padding: 2px; } */
 
 /* SchedulerUI */
 
@@ -321,6 +311,9 @@ DIV#propertiesView LEGEND
 
 /* UIxMailPartICalViewer */
 
+.clear
+{ padding-top: 0; }
+
 #messageContent FIELDSET
 { padding: 0.5em 1.0em; }
 
@@ -332,10 +325,61 @@ DIV#propertiesView LEGEND
 DIV#headerArea
 { padding-bottom: 0px; }
 
-/* UIxPreferences */
-TEXTAREA#signature
-{ height: 33em;
-  overflow: auto; }
-
 TABLE#categoriesList
 { width: auto; }
+
+DIV#categoriesListWrapper
+{ top: 92px; }
+
+DIV#windowButtons
+{ bottom: 11px; }
+
+TABLE.frame,
+TABLE.framenocaption
+{ margin-top: -4px; }
+
+TABLE.frame TBODY
+{ padding: 20px; }
+
+UL#calendarList
+{ height: 100px; }
+
+A.toolbarButton SPAN, 
+A.toolbarButton:hover SPAN {
+  height: 50px;
+  padding: 5px 2px 6px 5px;
+}
+A.smallToolbarButton, A.smallToolbarButton:hover,
+A.smallToolbarButton SPAN, A.smallToolbarButton:hover SPAN
+{ height: 33px; }
+
+A.toolbarButton:active SPAN {
+    background-position: auto; /*broken*/
+}
+A.toolbarButton, A.toolbarButton SPAN, A.button, A.button SPAN
+{ color: #535D6D; }
+
+DIV#toolbar
+{ overflow: hidden; }
+
+INPUT#statusPercent
+{ width: 2em !important; }
+
+DIV.bottomToolbar
+{ position: relative; display: block; }
+
+DIV#referencesListWrapper
+{ margin-bottom: 0px; }
+
+DIV#listEditor TABLE TBODY TR TD:first-child
+{ margin-bottom: 0px;
+  padding-bottom: 0px; }
+
+A#aboutClose
+{ top: 25px;}
+
+DIV#uploadDialog P,
+DIV#uploadResults P
+{ margin: 5px;
+  padding: 0; }
+

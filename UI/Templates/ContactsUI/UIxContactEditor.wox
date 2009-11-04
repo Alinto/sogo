@@ -9,11 +9,10 @@
     title="name"
     const:popup="YES"
     >
-    <form var:href="saveURL" name="editform"
-      onsubmit="return validateContactEditor()">
+    <form var:href="saveURL" name="editform" id="mainForm">
 
-      <var:if condition="isNew"><div id="addressBookSelector">
-	<style type="text/css">DIV#editorTabs { top: 3.0em; };</style>
+  <var:if condition="isNew"><div id="addressBookSelector">
+	<style type="text/css">DIV#editorTabs { top: 4.5em; };</style>
 	<var:string label:value="Add to:" />
 	<var:popup const:id="addressBooksList"
 		   list="addressBooksList" item="addressBookItem"
@@ -24,14 +23,18 @@
 
       <div class="tabsContainer" id="editorTabs">
         <ul>
-          <li target="baseInfos"><var:string label:value="Contact" /></li>
-          <li target="addressesInfos"><var:string label:value="Address" /></li>
-          <li target="otherInfos"><var:string label:value="Other" /></li>
+          <li target="baseInfos">
+            <span><var:string label:value="Contact" /></span>
+          </li>
+          <li target="addressesInfos">
+            <span><var:string label:value="Address" /></span></li>
+          <li target="otherInfos">
+            <span><var:string label:value="Other" /></span></li>
         </ul>
 
         <div id="baseInfos" class="tab">
-	  <span class="caption"><var:string label:value="Name" /></span>
-          <table>
+          <span class="caption"><var:string label:value="Name" /></span>
+          <table class="frame">
             <tr>
               <td>
                 <label><var:string label:value="First:" />
@@ -66,8 +69,8 @@
               </td>
             </tr>
           </table>
-	  <span class="caption"><var:string label:value="Internet" /></span>
-          <table id="emailInfos">
+          <span class="caption"><var:string label:value="Internet" /></span>
+          <table class="frame" id="emailInfos">
             <tr>
               <td>
                 <label><var:string label:value="Email:" />
@@ -106,8 +109,8 @@
               </td>
             </tr>
 	  </table>
-	  <span class="caption"><var:string label:value="Phones" /></span>
-          <table>
+    <span class="caption"><var:string label:value="Phones" /></span>
+          <table class="frame">
             <tr>
               <td>
                 <label><var:string label:value="Work:" />
@@ -167,7 +170,7 @@
 
         <div id="addressesInfos" class="tab">
 	  <span class="caption"><var:string label:value="Home" /></span>
-          <table>
+          <table class="frame">
             <tr>
               <td colspan="2">
                 <label><var:string label:value="Address:" />
@@ -223,8 +226,8 @@
               </td>
             </tr>
           </table> 
-	  <span class="caption"><var:string label:value="Work" /></span>
-	  <table>
+          <span class="caption"><var:string label:value="Work" /></span>
+          <table class="frame">
             <tr>
               <td colspan="2">
                 <label>
@@ -234,8 +237,8 @@
                     var:value="snapshot.title" />
                 </label>
               </td>
-	    </tr>
-	    <tr>
+            </tr>
+            <tr>
               <td colspan="2">
                 <label>
                   <var:string label:value="Department:" />
@@ -311,7 +314,7 @@
         </div>
 
         <div id="otherInfos" class="tab">
-          <table>
+          <table class="framenocaption">
             <tr>
               <td class="firstColumn">
                 <label><var:string label:value="Birthday:" />
@@ -345,18 +348,13 @@
         </div>
       </div>
       <div id="buttons">
-        <input
-	  id="cancelButton"
-          type="button"
-          class="button"
-          label:value="Cancel"
-          name="cancel"/>
         <var:if condition="canCreateOrModify"
-	><input
-	    type="submit"
-	    class="button"
-	    label:value="Save"
-	    name="submit" /></var:if>
+          ><a class="button actionButton" name="submit" id="submitButton"> 
+            <span><var:string label:value="Save" /></span>
+          </a></var:if>
+        <a id="cancelButton" class="button" name="cancel">
+          <span><var:string label:value="Cancel"/></span>
+        </a>
       </div>
     </form>
   </var:component>

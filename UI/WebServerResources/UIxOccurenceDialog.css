@@ -11,3 +11,6 @@ DIV#leftButtons
 
 DIV#rightButtons
 { text-align: right; }
+
+A#thisButton
+{ float: left !important; }

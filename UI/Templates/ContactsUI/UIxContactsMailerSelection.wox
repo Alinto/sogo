@@ -9,16 +9,10 @@
   xmlns:rsrc="OGo:url"
   id="contactSelectionButtons">
   <span id="selectionLabel"><var:string label:value="Add as..."/></span><br/>
-  <input type="submit"
-    class="button"
-    label:value="Recipient"
-    name="to"/><br/>
-  <input type="submit"
-      class="button"
-    label:value="Carbon Copy"
-    name="cc"/><br/>
-  <input type="submit"
-    class="button"
-    label:value="Blind Carbon Copy"
-    name="bcc"/>
+  <p id="mailerSelectionContainer"><a href="#" class="button" name="to">
+      <span><var:string label:value="Recipient" /></span></a>
+    <br/><a href="#" class="button" name="cc">
+      <span><var:string label:value="Carbon Copy" /></span></a>
+  <br/><a href="#" class="button" name="bcc">
+      <span><var:string label:value="Blind Carbon Copy" /></span></a></p>
 </span>

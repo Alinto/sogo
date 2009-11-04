@@ -15,6 +15,7 @@
   <var:component className="UIxContactsFilterPanel" qualifier="qualifier" />
   <div id="folders"><!-- space --></div>
   <div id="buttons">
-    <input type="submit" id="addButton" class="button" label:value="Add..." const:disabled="YES" />
+    <a id="addButton" class="button actionButton disabled" href="#">
+      <span><var:string label:value="Add..." /></span></a>
   </div>
 </var:component>

@@ -15,24 +15,25 @@
   <form id="mainForm" var:href="ownPath">
     <div class="tabsContainer" id="preferencesTabs">
       <ul>
-	<li target="generalView"><var:string
-	    label:value="General"/></li>
+        <li target="generalView"><span>
+            <var:string label:value="General" /></span></li>
 	<var:if condition="userHasCalendarAccess">
-	  <li target="calendarOptionsView"><var:string
-	      label:value="Calendar Options"/></li>
+    <li target="calendarOptionsView"><span><var:string
+          label:value="Calendar Options"/></span></li>
 	</var:if>
 	<var:if condition="userHasMailAccess">
-	  <li target="mailOptionsView"><var:string
-	      label:value="Mail Options"/></li>
-	  <li target="identitiesView"><var:string
-	      label:value="Signature"/></li>
-	  <var:if condition="isVacationEnabled"><li target="vacationView"><var:string
-	      label:value="Vacation"/></li></var:if>
-	  <var:if condition="isForwardEnabled"><li target="forwardView"><var:string
-	      label:value="Forward"/></li></var:if>
+    <li target="mailOptionsView"><span><var:string
+          label:value="Mail Options"/></span></li>
+    <li target="identitiesView"><span><var:string
+          label:value="Signature"/></span></li>
+    <var:if condition="isVacationEnabled"><li target="vacationView"><span><var:string
+            label:value="Vacation"/></span></li></var:if>
+    <var:if condition="isForwardEnabled"><li target="forwardView"><span><var:string
+            label:value="Forward"/></span></li></var:if>
 	</var:if>
 	<var:if condition="shouldDisplayAdditionalPreferences">
- 	  <li target="additionalView"><var:string label:value="Additional Parameters"/></li>
+    <li target="additionalView"><span>
+        <var:string label:value="Additional Parameters"/></span></li>
  	</var:if>
 <!--	<var:if condition="shouldDisplayPasswordChange"> -->
 <!-- 	  <li target="passwordView"><var:string label:value="Password"/></li> -->
@@ -95,7 +96,7 @@
 	      const:id="firstWeek"
 	      string="itemFirstWeekText" selection="userFirstWeek"
 	      /></label><br/>
-    <label><var:string label:value="Categories"/></label><br/>
+    <span class="caption"><var:string label:value="Categories"/></span>
     <div id="categoriesListWrapper"
       ><table id="categoriesList" cellspacing="0">
       <thead>
@@ -118,14 +119,16 @@
         </var:foreach>
       </tbody>
     </table></div>
+    <div class="bottomToolbar">
+      <a const:id="categoryAdd" class="bottomButton" href="#">
+        <span><img rsrc:src="add-icon.png" label:title="Add" />
+      </span></a>
+      <a const:id="categoryDelete" class="bottomButton" href="#">
+        <span><img rsrc:src="remove-icon.png" label:title="Delete" />
+      </span></a>
+    </div>
     <input type="hidden" const:id="categoriesValue" 
       const:name="categoriesValue" var:value="categoriesValue"/>
-    <div id="windowButtons">
-      <label><input type="button" class="button"
-      id="categoryAdd" label:value="Add"/></label>
-      <label><input type="button" class="button"
-      id="categoryDelete" label:value="Delete"/></label>
-    </div>
 <!-- 	  <br/> -->
 <!-- 	  <label><input class="checkBox" -->
 <!-- 	      type="checkbox" var:selection="reminderEnabled" -->
@@ -180,11 +183,11 @@
 	    var:value="signature" />
 	</div>
 	<var:if condition="isVacationEnabled">
-	<div id="vacationView" class="tab">
+    <div id="vacationView" class="tab">
 	    <label><input type="checkbox" 
 	                  const:name="enableVacation"
-			  const:id="enableVacation"
-			  var:checked="enableVacation" />
+                    const:id="enableVacation"
+                    var:checked="enableVacation" />
 	    <var:string label:value="Enable vacation auto reply"/></label>
 	  <div id="vacation">
 	    <label><var:string label:value="Auto reply message :"/><br/>
@@ -195,14 +198,14 @@
 	    
 	    <label><var:string label:value="Email addresses (separated by commas) :"/><br/>
 	    <input type="hidden"
-		   const:id="defaultEmailAddresses"
-		   var:value="defaultEmailAddresses" />
+        const:id="defaultEmailAddresses"
+        var:value="defaultEmailAddresses" />
 	    <textarea const:name="autoReplyEmailAddresses"
-		      const:id="autoReplyEmailAddresses"
-		      var:value="autoReplyEmailAddresses" /><br/>
-	    <span><input type="button" class="button"
-	    	id="addDefaultEmailAddresses"
-		label:value="Add default email addresses" /></span>
+        const:id="autoReplyEmailAddresses"
+        var:value="autoReplyEmailAddresses" /><br/>
+      <span><a href="#" class="button" id="addDefaultEmailAddresses"><span>
+            <var:string label:value="Add default email addresses" /></span></a>
+      </span>
 	    </label><br/>
 
 	    <label><var:string label:value="Days between responses :"/> 

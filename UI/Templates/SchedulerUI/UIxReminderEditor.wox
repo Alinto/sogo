@@ -14,7 +14,7 @@
   <form name="reminder_form" id="reminder_form" href="editReminder">
     <div id="reminder_pattern">
       <span class="caption"><var:string label:value="Reminder Details"/></span>
-      <table class="section">
+      <table class="frame">
 	<tr><td>
 	  <input type="text" id="quantityField"
 		 class="textField"
@@ -34,10 +34,10 @@
     </div>
   
     <div id="windowButtons">
+      <a id="okButton" href="#" class="button actionButton"
+        ><span><var:string label:value="OK"/></span></a>
       <a id="cancelButton" href="#" class="button"
-        ><var:string label:value="Cancel"/></a>
-      <a id="okButton" href="#" class="button"
-        ><var:string label:value="OK"/></a>
+        ><span><var:string label:value="Cancel"/></span></a>
     </div>
   </form>
 

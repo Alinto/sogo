@@ -17,7 +17,8 @@
       <img const:alt="Inverse" rsrc:src="inverse.png"/>
       <p class="links"><a href="http://www.scalableogo.org/" target="_new">www.scalableogo.org</a> / 
       <a href="http://www.inverse.ca/" target="_new">www.inverse.ca</a></p>
-      <p><a id="aboutClose" href="#" class="button">OK</a></p>
+    <p><a id="aboutClose" href="#" class="button">
+        <span><var:string label:value="OK" /></span></a></p>
     </div>
   </div>
   <div id="linkBanner" class="linkbanner">
@@ -50,7 +51,8 @@
 		       label:noSelectionString="choose"
 		       /></label>
 	    <label>
-	      <input class="button" id="submit" name="submit" type="submit" label:value="Connect" />
+	      <a href="#" class="button" id="submit" name="submit">
+	      <span><var:string label:value="Connect" /></span></a>
 	    </label>
 	  </td>
 	</tr>

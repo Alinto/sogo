@@ -71,7 +71,7 @@ DIV#participants UL.contactList
 SPAN.checkBoxList SPAN.content LABEL
 { display: inline; }
 
-n0SPAN.content
+SPAN.content
 { position: absolute;
   line-height: 2em;
   top: -.25em;

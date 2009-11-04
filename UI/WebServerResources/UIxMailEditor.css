@@ -23,8 +23,8 @@ DIV.addressList
 TABLE#addressList
 { border-bottom: 1px solid #fff;
   border-right: 1px solid #fff;
-  border-top: 1px solid #444;
-  border-left: 1px solid #444;
+  border-top: 1px solid #909090;
+  border-left: 1px solid #909090;
   border-spacing: 0px;
   margin: 0px;
   padding: 0px;
@@ -52,7 +52,8 @@ TABLE#addressList TD.headerInput
   padding-right: 4px; }
 
 TABLE#addressList TD.headerInput INPUT
-{ border: 0px;
+{ background: #fff !important;
+  border: 0px;
   margin: 0px;
   padding: 0px;
   width: 100%; }
@@ -68,8 +69,9 @@ DIV#subjectRow SPAN.headerField
 { float: left; }
 
 DIV#subjectRow INPUT
-{ background-image: none;
-  padding: 0px 2px 0px 4px; }
+{ background: #fff;
+  margin-left: 2px;
+  padding: 0px 2px 0px 2px; }
 
 div#compose_internetmarker
 { padding:          8px;
@@ -163,4 +165,5 @@ UL#attachments LI IMG
 { width: 99%; }
 
 TEXTAREA#text
-{ display: none; }
+{ display: none;
+  background: #fff; }

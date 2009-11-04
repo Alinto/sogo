@@ -96,6 +96,7 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 /* properties */
 - (NSArray *) allEmails;
 - (BOOL) hasEmail: (NSString *) email;
+- (NSString *) systemEmail;
 - (NSString *) cn;
 - (NSURL *) freeBusyURL;
 

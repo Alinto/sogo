@@ -53,8 +53,8 @@
 	class="textField"
 	var:value="statusPercent"
 	var:disabled="statusPercentDisabled"
-	/><var:string label:value="% complete"
-	/></span></span>
+  /><span><var:string label:value="% complete"
+    /></span></span></span>
   </var:if>
   <var:if condition="eventIsReadOnly">
   <var:if condition="hasStartDate">

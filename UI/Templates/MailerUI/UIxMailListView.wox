@@ -30,7 +30,7 @@
         </td>
       </var:foreach>
       </tr>
-    <tr class="tableview"
+    <tr id="messageCountHeader" class="tableview"
       ><td var:colspan="columnsDisplayCount" class="tbtv_navcell"
 	><var:if condition="hasPrevious">
 	  <a href="#"

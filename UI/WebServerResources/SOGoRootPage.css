@@ -1,5 +1,5 @@
 BODY
-{ background-color: #dad3cc;
+{ background-color: #E6E7E6;
   text-align: center; }
 
 IMG#preparedAnimation
@@ -27,8 +27,9 @@ DIV#aboutBox SPAN.buildDate
 { color: #666; }
 
 A#aboutClose
-{ padding-left: 10px;
-  padding-right: 10px; }
+{ position: relative;
+  margin-right: 10px;
+  top: -10px; }
 
 A,
 A:link,
@@ -98,20 +99,11 @@ IMG#splash
   padding: 0px 0px 0px 0px; }
 
 DIV#loginScreen INPUT.textField
-{ border: 1px solid #333;
-  width: 187px; }
+{ width: 187px; }
 
-DIV#loginScreen INPUT.textField,
-DIV#loginScreen SELECT
-{ border: 1px solid #333;
-  -moz-border-top-colors: #333;
-  -moz-border-left-colors: #333;
-  -moz-border-right-colors: #333;
-  -moz-border-bottom-colors: #333;
-}
-
-DIV#loginScreen INPUT#submit
-{ margin-top: 10px; }
+DIV#loginScreen A#submit,
+DIV#loginScreen A#submit SPAN
+{ color: #535D6D; }
 
 IMG#progressIndicator
 { width: 16px;

@@ -24,7 +24,7 @@
   <form name="recurrence_form" id="recurrence_form" href="editRecurrence">
     <div id="recurrence_pattern" style="display: none;">
       <span class="caption"><var:string label:value="Recurrence pattern"/></span>
-      <table class="section">
+      <table class="frame">
         <tr>
           <th>
             <var:string label:value="Repeat"/>
@@ -207,7 +207,7 @@
   
     <div id="range_of_recurrence" style="display: none;">
       <span class="caption"><var:string label:value="Range of recurrence"/></span>
-      <table class="section">
+      <table class="frame">
         <tr>
           <td>
             <input name="rangeRadioButtonName" value="0" id="rangeRadioButton" type="radio"
@@ -247,10 +247,10 @@
     </div>
   
     <div id="windowButtons">
+      <a id="okButton" href="#" class="button actionButton"
+        ><span><var:string label:value="OK"/></span></a>
       <a id="cancelButton" href="#" class="button"
-        ><var:string label:value="Cancel"/></a>
-      <a id="okButton" href="#" class="button"
-        ><var:string label:value="OK"/></a>
+        ><span><var:string label:value="Cancel"/></span></a>
     </div>
   </form>
 

@@ -26,23 +26,23 @@ DIV#userSelectorHeader
 DIV#userSelector SPAN
 { display: block; }
 
-INPUT#defaultRolesBtn
+A#defaultRolesBtn
 { float: right;
-  margin-right: 1em; }
+  margin-right: 1em;
+  margin-top: 5px;}
 
 DIV#userRoles
 { height: 100%; }
 
 #userSelectorButtons
 { margin-left: 1em;
-  padding-top: 2px;
   padding-bottom: 2px; }
 
 UL#userList
 { position: absolute;
   left: 0px;
   right: 0px;
-  top: 30px;
+  top: 40px;
   bottom: 33px;
   padding: 0px;
   margin: 0px;
@@ -50,18 +50,15 @@ UL#userList
   overflow: auto;
   border-bottom: 1px solid #fff;
   border-right: 1px solid #fff;
-  border-top: 2px solid #222;
-  border-left: 2px solid #222;
-  background-color: #fff;
-  -moz-border-top-colors: #9c9a94 #000 transparent;
-  -moz-border-left-colors: #9c9a94 #000 transparent;
+  border-top: 1px solid #909090;
+  border-left: 1px solid #909090;
+  background-color: #CCDDEC;
   list-style-type: none;
   list-style-image: none; }
 
 UL#userList LI
 { cursor: pointer;
-  margin-left: 3px; }
+  padding-left: 3px; }
 
-UL#userList > LI._selected
-{ background: #4b6983 !important;
-  color: #fff !important; }
+DIV#userSelectorButtons A.smallToolbarButton
+{ float: left; }

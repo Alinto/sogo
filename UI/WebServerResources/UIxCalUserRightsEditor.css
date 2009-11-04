@@ -21,10 +21,11 @@ DIV.calendarUserRights SPAN
   line-height: 2em;
   margin-right: 1em;
   text-align: right;
-  width: 200px; }
+  width: 220px; }
 
 DIV.calendarUserRights HR
 { border: 0; }
+
 DIV.buttons
 { text-align: right;
   margin: 1em;

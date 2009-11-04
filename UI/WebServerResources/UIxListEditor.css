@@ -9,46 +9,55 @@ TABLE.details TD
 TABLE#referenceList
 { width: 100%; }
 
-DIV.frame
-{ border-top: 1px solid #909090;
-  border-left: 1px solid #909090;
-  border-bottom: 1px solid #FFFFFF;
-  border-right: 1px solid #FFFFFF;
-  margin: 5px 15px;
-  padding: 5px; }
+TABLE#referenceList THEAD TD
+{ padding-right: 2px; }
 
-DIV.frame INPUT.button
-{ margin-top: 5px; }
-
-TR.tableview TD
-{ text-align: right; }
+TABLE#referenceList TBODY TD TR
+{ background: #CCDDEC;
+  text-align: left;}
 
 TD.referenceListCell
-{ background: white;
-  text-align: left; }
+{ padding-left: 2em;
+  background: #CCDDEC;
+  text-align: left;}
 
 TABLE#referenceList TD INPUT
-{ width: 98%; }
+{ width: 97%; }
 
 DIV#referenceListWrapper
-{ background: white;
+{ background: #CCDDEC;
   overflow: auto;
   position: relative;
   right: 0;
   top: 0;
   left: 0;
-  height: 33em;
+  height: 300px;
+  border-left: 1px solid #9B9B9B;
   margin: 2px; }
 
 DIV#referenceListWrapper TR,
 TR.referenceListRow
-{ background: #FFFFFF;
+{ background: #CCDDEC;
   line-height: 2em; }
-TR._selected
-{ background: #333333; }
 
 TD.referenceListCell
 { -moz-user-select: none; }
+
+TD.referenceListCell SPAN,
+TD.referenceListCell INPUT
+{ margin-left: 3px; }
+
+DIV#windowButtons
+{ position: fixed;
+  top: auto;
+  bottom: 5em;
+  left: 0px;
+  right: 25px;
+  height: 3.5em;
+  line-height: 2em;
+  vertical-align: middle;
+  text-align: right; }
+
 
 DIV#buttons
 { position: fixed;
@@ -58,17 +67,14 @@ DIV#buttons
   right: 25px;
   height: 3.5em;
   line-height: 2em;
+  color: #535D6D;
   vertical-align: middle;
   text-align: right; }
 
-H3 {
-  clear: both;
-  margin-bottom: 2px !important;
-  margin-left: 5px !important;
-}
+td {color: #535D6D;}
 
-INPUT.textField {
-  width: 250px;
-  position: relative;
-  right: 0px;
-}
+DIV#listEditor
+{ padding: 5px; }
+
+TD.editing
+{ text-align: left; }

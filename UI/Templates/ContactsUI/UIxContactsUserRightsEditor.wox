@@ -43,10 +43,11 @@
 	  label:value="This person can erase cards from this addressbook."/></label>
     </div>
     <div class="buttons">
-      <input const:name="updateButton" id="updateButton"
-	class="button" type="submit" label:value="Update"/>
-      <input const:name="cancelButton" id="cancelButton"
-	class="button" type="button" label:value="Cancel"/>
+      <a href="#" const:name="updateButton" id="updateButton" 
+        class="button actionButton">
+        <span><var:string label:value="Update" /></span></a>
+      <a href="#" const:name="cancelButton" id="cancelButton" class="button">
+        <span><var:string label:value="Cancel" /></span></a>
     </div>
   </form>
 </var:component>

@@ -716,9 +716,9 @@ function messageListCallback(http) {
                 var sortImage = createElement("img", "messageSortImage", "sortImage");
                 sortHeader.insertBefore(sortImage, sortHeader.firstChild);
                 if (sorting["ascending"])
-                    sortImage.src = ResourcesURL + "/title_sortdown_12x12.png";
+                    sortImage.src = ResourcesURL + "/arrow-down.png";
                 else
-                    sortImage.src = ResourcesURL + "/title_sortup_12x12.png";
+                    sortImage.src = ResourcesURL + "/arrow-up.png";
             }
         }
     }
@@ -1070,6 +1070,7 @@ function configureiCalLinksInMessage() {
         var button = $(key);
         if (button) {
             button.action = buttons[key];
+            button.stopObserving("click");
             button.observe("click",
                            onICalendarButtonClick.bindAsEventListener(button));
         }
@@ -1077,6 +1078,7 @@ function configureiCalLinksInMessage() {
 
     var button = $("iCalendarDelegate");
     if (button) {
+        button.stopObserving("click");
         button.observe("click", onICalendarDelegate);
         var delegatedTo = $("delegatedTo");
         delegatedTo.addInterface(SOGoAutoCompletionInterface);
@@ -1085,13 +1087,15 @@ function configureiCalLinksInMessage() {
         delegatedTo.excludeLists = true;
         
         var editDelegate = $("editDelegate");
-        if (editDelegate)
+        if (editDelegate) {
             // The user delegates the invitation
+            editDelegate.stopObserving("click");
             editDelegate.observe("click", function(event) {
                     $("delegateEditor").show();
                     $("delegatedTo").focus();
                     this.hide();
                 });
+        }
 
         var delegatedToLink = $("delegatedToLink");
         if (delegatedToLink) {
@@ -1120,6 +1124,8 @@ function onICalendarDelegate(event) {
                 + Mailer.currentMessages[Mailer.currentMailbox];
         delegateInvitation(link, ICalendarButtonCallback, currentMsg);
     }
+    this.blur(); // required by IE
+    Event.stop(event);
 }
 
 function onICalendarButtonClick(event) {
@@ -1133,6 +1139,9 @@ function onICalendarButtonClick(event) {
     }
     else
         log("no link");
+
+    this.blur(); // Required by IE
+    Event.stop(event);
 }
 
 function ICalendarButtonCallback(http) {
@@ -1143,8 +1152,8 @@ function ICalendarButtonCallback(http) {
             window.location.reload();
     }
     else {
+        var oldMsg = http.callbackData;
         if (isHttpStatus204(http.status)) {
-            var oldMsg = http.callbackData;
             var msg = Mailer.currentMailbox + "/" + Mailer.currentMessages[Mailer.currentMailbox];
             deleteCachedMessage(oldMsg);
             if (oldMsg == msg) {
@@ -1152,7 +1161,11 @@ function ICalendarButtonCallback(http) {
             }
             for (var i = 0; i < Mailer.popups.length; i++) {
                 if (Mailer.popups[i].messageUID == oldMsg) {
-                    Mailer.popups[i].location.reload();
+                    // Don't reload, just close;
+                    // Reloading the popup would disconnect the popup from the parent
+                    //Mailer.popups[i].location.reload();
+                    Mailer.popups[i].close();
+                    Mailer.popups.splice(i,1);
                     break;
                 }
             }
@@ -1160,7 +1173,15 @@ function ICalendarButtonCallback(http) {
         else if (http.status == 403) {
             var data = http.responseText;
             var msg = data.replace(/^(.*\n)*.*<p>((.*\n)*.*)<\/p>(.*\n)*.*$/, "$2");
-            window.alert(getLabel(msg));
+            for (var i = 0; i < Mailer.popups.length; i++) {
+                if (Mailer.popups[i].messageUID == oldMsg) {
+                    // Show the alert in the proper popup window
+                    Mailer.popups[i].alert(getLabel(msg));
+                    break;
+                }
+            }
+            if (i == Mailer.popups.length)
+                window.alert(getLabel(msg));
         }
         else
             window.alert("received code: " + http.status + "\nerror: " + http.responseText);

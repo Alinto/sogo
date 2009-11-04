@@ -44,10 +44,11 @@
 	  label:value="This person can erase objects from my calendar."/></label>
     </div>
     <div class="buttons">
-      <input const:name="cancelButton" id="cancelButton"
-	class="button" type="button" label:value="Cancel"/>
-      <input const:name="updateButton" id="updateButton"
-	class="button" type="submit" label:value="Update"/>
+      <a href="#" const:name="updateButton" id="updateButton" 
+        class="button actionButton">
+        <span><var:string label:value="Update" /></span></a>
+      <a href="#" const:name="cancelButton" id="cancelButton" class="button">
+        <span><var:string label:value="Cancel" /></span></a>
     </div>
   </form>
 </var:component>

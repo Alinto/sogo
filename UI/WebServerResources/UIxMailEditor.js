@@ -499,8 +499,8 @@ function onSelectAllAttachments() {
 function onSelectPriority(event) {
     if (event.button == 0 || (isSafari() && event.button == 1)) {
         var node = getTarget(event);
-        if (node.tagName != 'BUTTON')
-            node = $(node).up("button");
+        if (node.tagName != 'A')
+            node = $(node).up("A");
         popupToolbarMenu(node, "priority-menu");
         Event.stop(event);
     }
@@ -532,7 +532,12 @@ function onWindowResize(event) {
     subjectinput.setStyle({ width: (window.width()
                                     - $(subjectfield).getWidth()
                                     - attachmentswidth
-                                    - 16) + 'px' });
+                                    - 12) + 'px' });
+    // Resize from field
+    $("fromSelect").setStyle({ width: (window.width()
+                                       - $("fromField").getWidth()
+                                       - attachmentswidth
+                                       - 10) + 'px' });
 
     // Resize address fields
     var addresslist = $('addressList');

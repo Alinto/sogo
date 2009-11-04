@@ -1,3 +1,10 @@
+2009-11-04  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* Major refresh of CSS stylesheets.
+	* UI/WebServerResources/SOGoAutoCompletion.js
+	(performSearchCallback): fixed position of popup menu when used in
+	the contacts list editor.
+
 2009-11-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/NSDictionary+Utilities.m
@@ -56,6 +63,15 @@
 	correctly save the event contained in the mail
 	when clicking on Accept/Decline/Delegate into
 	the user's calendar if it's not in there already.
+
+2009-10-27  Cyril Robert <crobert@inverse.ca>
+
+	* UI/Common/UIxPageFrame.m (userEmail): Added to display the user's email
+	address in the linkBanner.
+	* UI/Contacts/UIxListView.m 
+	(itemHref, itemName, itemEmail): Added to allow clickable email addresses in
+	UIxListView.
+	(itemText): Removed, no longer needed.
 
 2009-10-27  Ludovic Marcotte  <lmarcotte@inverse.ca>
 

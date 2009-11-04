@@ -169,7 +169,7 @@ function openContactWindow(url, wId) {
         wId = sanitizeWindowName(wId);
 
     var w = window.open(url, wId,
-                        "width=450,height=600,resizable=0,location=0");
+                        "width=450,height=530,resizable=0,location=0");
     w.focus();
 
     return w;
@@ -914,13 +914,13 @@ function onSearchFocus(event) {
         this.selectElement();
     }
 
-    this.setStyle({ color: "#000" });
+    this.setStyle({ color: "#535D6D" });
 }
 
 function onSearchBlur(event) {
     if (!this.value || this.value.blank()) {
         this.setAttribute("modified", "");
-        this.setStyle({ color: "#aaa" });
+        this.setStyle({ color: "#909090" });
         this.value = this.ghostPhrase;
         search["value"] = "";
         if (this.lastSearch != "") {
@@ -929,10 +929,10 @@ function onSearchBlur(event) {
         }
     } else if (this.value == this.ghostPhrase) {
         this.setAttribute("modified", "");
-        this.setStyle({ color: "#aaa" });
+        this.setStyle({ color: "#909090" });
     } else {
         this.setAttribute("modified", "yes");
-        this.setStyle({ color: "#000" });
+        this.setStyle({ color: "#535D6D" });
     }
 }
 
@@ -983,7 +983,7 @@ function initCriteria() {
             if (searchValue.value == '') {
                 searchValue.value = firstOption.innerHTML;
                 searchValue.setAttribute("modified", "");
-                searchValue.setStyle({ color: "#aaa" });
+                searchValue.setStyle({ color: "#909090" });
             }
             // Set the checkmark to the first option
             if (searchOptions.chosenNode)
@@ -1373,41 +1373,41 @@ function onTabClick(event) {
     //container.activeTab.show();
 }
 
-function enableAnchor(anchor) {
-    var classStr = '' + anchor.getAttribute("class");
-    var position = classStr.indexOf("_disabled", 0);
-    if (position > -1) {
-        var disabledHref = anchor.getAttribute("disabled-href");
-        if (disabledHref)
-            anchor.setAttribute("href", disabledHref);
-        var disabledOnclick = anchor.getAttribute("disabled-onclick");
-        if (disabledOnclick)
-            anchor.setAttribute("onclick", disabledOnclick);
-        anchor.removeClassName("_disabled");
-        anchor.setAttribute("disabled-href", null);
-        anchor.setAttribute("disabled-onclick", null);
-        anchor.disabled = 0;
-        anchor.enabled = 1;
-    }
-}
+//function enableAnchor(anchor) {
+//    var classStr = '' + anchor.getAttribute("class");
+//    var position = classStr.indexOf("_disabled", 0);
+//    if (position > -1) {
+//        var disabledHref = anchor.getAttribute("disabled-href");
+//        if (disabledHref)
+//            anchor.setAttribute("href", disabledHref);
+//        var disabledOnclick = anchor.getAttribute("disabled-onclick");
+//        if (disabledOnclick)
+//            anchor.setAttribute("onclick", disabledOnclick);
+//        anchor.removeClassName("_disabled");
+//        anchor.setAttribute("disabled-href", null);
+//        anchor.setAttribute("disabled-onclick", null);
+//        anchor.disabled = 0;
+//        anchor.enabled = 1;
+//    }
+//}
 
-function disableAnchor(anchor) {
-    var classStr = '' + anchor.getAttribute("class");
-    var position = classStr.indexOf("_disabled", 0);
-    if (position < 0) {
-        var href = anchor.getAttribute("href");
-        if (href)
-            anchor.setAttribute("disabled-href", href);
-        var onclick = anchor.getAttribute("onclick");
-        if (onclick)
-            anchor.setAttribute("disabled-onclick", onclick);
-        anchor.addClassName("_disabled");
-        anchor.setAttribute("href", "#");
-        anchor.setAttribute("onclick", "return false;");
-        anchor.disabled = 1;
-        anchor.enabled = 0;
-    }
-}
+//function disableAnchor(anchor) {
+//    var classStr = '' + anchor.getAttribute("class");
+//    var position = classStr.indexOf("_disabled", 0);
+//    if (position < 0) {
+//        var href = anchor.getAttribute("href");
+//        if (href)
+//            anchor.setAttribute("disabled-href", href);
+//        var onclick = anchor.getAttribute("onclick");
+//        if (onclick)
+//            anchor.setAttribute("disabled-onclick", onclick);
+//        anchor.addClassName("_disabled");
+//        anchor.setAttribute("href", "#");
+//        anchor.setAttribute("onclick", "return false;");
+//        anchor.disabled = 1;
+//        anchor.enabled = 0;
+//    }
+//}
 
 function d2h(d) {
     var hD = "0123456789abcdef";

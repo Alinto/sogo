@@ -8,7 +8,7 @@ DIV#leftPanel
 
 DIV#schedulerTabs
 { position: absolute;
-  top: 0.5em;
+  top: 22px;
   left: .2em;
   right: .2em;
   height: 14em; }
@@ -56,14 +56,11 @@ UL#tasksList, UL#calendarList
 { cursor: default;
   margin: 0px;
   padding: 0px;
-  border-bottom: 1px solid #fff;
-  border-right: 1px solid #fff;
-  border-top: 2px solid #222;
-  border-left: 2px solid #222;
-  background-color: #fff;
-  -khtml-user-select: none;
-  -moz-border-top-colors: #9c9a94 #000 transparent;
-  -moz-border-left-colors: #9c9a94 #000 transparent;
+  border-top: 1px solid #909090;
+  border-left: 1px solid #909090;
+  border-bottom: 1px solid #FFFFFF;
+  border-right: 1px solid #FFFFFF;
+  background-color: #CCDDEC;
   list-style-type: none;
   list-style-image: none;
   overflow: auto;
@@ -71,7 +68,7 @@ UL#tasksList, UL#calendarList
 
 UL#calendarList
 { clear: left;
-  height: 10.5em; }
+  height: 10em; }
 
 UL#calendarList LI
 { cursor: pointer;
@@ -123,7 +120,7 @@ UL#tasksList LI[class~="_selected"].duetoday
 UL#tasksList LI[class~="_selected"].duelater,
 UL#tasksList LI[class~="_selected"].completed
 { color: #fff !important;
-  background-color: #999 !important; }
+  background-color: #9ABCD8 !important; }
 
 DIV#rightPanel
 { position: absolute;
@@ -140,12 +137,13 @@ DIV#rightPanel
 DIV#eventsListView
 { cursor: default;
   position: absolute;
-  background-color: #fff;
+  background-color: #FFFFFF;
   top: 2.5em;
   left: 0px;
   right: 0px;
   height: 15.5em;
   overflow: hidden;
+  border-left: 1px solid #9B9B9B;
   overflow-y: auto; }
 
 DIV#calendarView
@@ -185,11 +183,12 @@ DIV#dateSelectorView
 
 #dateSelector
 { margin: 0px auto;
+  height: 13.5em;
   background-color: #fff;
-  border-top: 1px solid #fff; 
-  border-left: 1px solid #fff;
-  border-right: 1px solid #aaa;
-  border-bottom: 1px solid #aaa; }
+  border-top: 1px solid #FFFFFF !important;
+  border-left: 1px solid #FFFFFF !important;
+  border-bottom: 1px solid #909090 !important;
+  border-right: 1px solid #909090 !important; }
 
 #dateSelector > .header
 { background-color: #efefef;
@@ -202,10 +201,12 @@ DIV#dateSelectorView
   border: 0px; }
 
 #dateSelector > .header #leftArrow
-{ float: left; }
+{ float: left;
+  margin-top: 3px; }
 
 #dateSelector > .header #rightArrow
 { float: right;
+  margin-top: 3px;
   margin-right: 2px; }
 
 #dateSelector > .header SPAN
@@ -252,7 +253,7 @@ TABLE#dateSelectorTable TD TABLE TD.dayOfToday
 
 #dateSelectorTable TABLE TD.activeDay:hover,
 #dateSelectorTable TABLE TD.inactiveDay:hover
-{ border: 1px solid #deebf7; }
+{ border: 1px solid #CCDDEC; }
 
 #dateSelectorTable TABLE TD.activeDay:active,
 #dateSelectorTable TABLE TD.inactiveDay:active
@@ -267,11 +268,8 @@ TABLE#dateSelectorTable TD TABLE TD.dayOfToday
 { color: #dedfde; }
 
 #dateSelector TD.dayOfToday
-{ background-color: #deebf7;
-  border: 1px solid #deebf7; }
-
-#dateSelector TD.dayOfToday._selected
-{ background-color: #4b6983; }
+{ background-color: #CCDDEC;
+  border: 1px solid #CCDDEC; }
 
 #dateSelectorTable TABLE TD._selected SPAN
 { color: #fff; }
@@ -308,7 +306,7 @@ DIV#eventDialog p#description
 ._unfocused#dateSelector TD._selected,
 UL._unfocused > LI._selected,
 TABLE._unfocused#eventsList TR._selected TD
-{ background-color: #d4d0c8 !important;
+{ background-color: #B3CCE2 !important;
   color: #fff !important; }
 
 SPAN.dayCellLabel
@@ -320,7 +318,7 @@ SPAN.weeksHeader,
 SPAN.monthsHeader
 { display: block;
   white-space: nowrap;
-  background-color: #d4d0c8;
+  background-color: #DFDFDF;
   overflow: hidden;
   width: 100%;
   margin: 0px;
@@ -389,10 +387,10 @@ SPAN.day0
 { font-size: x-large; }
 
 SPAN.day0, SPAN.week0, SPAN.month0
-{ border-top: 1px solid #828482 !important;
-  border-left: 1px solid #828482 !important;
-  border-bottom: 1px solid #fff !important;
-  border-right: 1px solid #fff !important;
+{ border-top: 1px solid #909090 !important;
+  border-left: 1px solid #909090 !important;
+  border-bottom: 1px solid #FFFFFF !important;
+  border-right: 1px solid #FFFFFF !important;
   background-color: #ddd; }
 
 A.leftNavigationArrow
@@ -452,7 +450,7 @@ DIV#calendarHeader DIV.dayLabels
 DIV#calendarHeader DIV.dayLabels DIV.day
 { text-align: center;
   color: #666;
-  background-color: #f0f0f0; }
+  background-color: #E7E7E7; }
 
 DIV#calendarHeader SPAN.dayOfWeek
 { font-size: medium; }
@@ -533,30 +531,30 @@ DIV.monthView > DIV.headerDay
 { text-align: center;
   cursor: default;
   padding-top: .5em;
-  border-left: 2px solid #ccc !important;
-  border-top: 2px solid #ccc !important;
+  border-left: 1px solid #909090 !important;
+  border-top: 1px solid #909090 !important;
   top: 0px;
   color: #666;
   height: 1.5em;
   font-weight: bold;
-  background-color: #f0f0f0; }
+  background-color: #E7E7E7; }
 
 DIV.dayOfToday
-{ background-color: #deebf7; }
+{ background-color: #CCDDEC; }
 
 DIV.dayOfToday DIV.outOfDay
 { background-color: #d6dfe9; }
 
 DIV.outOfDay, DIV.weekEndDay,
 DIV.weekEndDay DIV.outOfDay
-{ background-color: #f4f4f4; }
+{ background-color: #E6E7E6; }
 
 DIV.dayOfAnotherMonth
 { background-color: #e7efef; }
 
 DIV.monthView DIV.dayHeader
-{ background-color: #f0f0f0;
-  margin-right: 2px;
+{ margin-right: 0px;
+  padding-right: 2px;
   text-align: right;
   cursor: pointer;
   color: #666;
@@ -571,8 +569,8 @@ DIV.monthView DIV.days
 
 DIV.monthView DIV.day
 { position: absolute;
-  border-left: 2px solid #ccc;
-  border-top: 2px solid #ccc;
+  border-left: 1px solid #909090;
+  border-top: 1px solid #909090;
   min-height: 4em;
   overflow: auto;
   overflow-x: hidden; }
@@ -684,8 +682,7 @@ DIV.daysViewFor1Days DIV.day
 DIV.monthView DIV.headerDay,
 DIV.monthView DIV.day,
 DIV.daysViewFor7Days DIV.day
-{ width: 14.2857%;
-  width: 14.1%; }
+{ width: 14.2%; }
 
 DIV.monthView DIV.day0,
 DIV.daysViewFor7Days DIV.day0
@@ -869,7 +866,7 @@ DIV.event > DIV.eventInside
   top: 2px;
   bottom: 2px;
   left: 1px;
-  right: 2px; }
+  right: 1px; }
 
 DIV.event._selected > DIV.eventInside
 { -moz-opacity: 0.7;
@@ -1526,3 +1523,12 @@ DIV#nowLineDisplay
   background: red;
   z-index: 49;
 }
+
+DIV#freeBusyReplicas INPUT.textField
+{ width: 7em; }
+DIV#freeBusyReplicas a.calendarButton {
+ right: 0px; }
+DIV#freeBusyReplicas DIV
+{ display: inline-block; height: 2em; }
+TD.attendees A.button
+{ float: left; left: 19px; margin-top: 5px; }

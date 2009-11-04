@@ -22,11 +22,14 @@
   </div>
   <div id="windowButtons">
     <div id="leftButtons">
-      <input type="button" id="thisButton" const:class="button" label:value="button_thisOccurrenceOnly"/>
+      <a class="button actionButton" id="thisButton" href="#">
+        <span><var:string label:value="button_thisOccurrenceOnly"/></span></a>
     </div>
     <div id="rightButtons">
-      <input type="submit" id="cancelButton" const:class="button" label:value="Cancel"/>
-      <input type="button" id="allButton" const:class="button" label:value="button_allOccurrences"/>
+      <a class="button actionButton" id="allButton" href="#">
+        <span><var:string label:value="button_allOccurrences"/></span></a>
+      <a class="button" id="cancelButton" href="#">
+        <span><var:string label:value="Cancel"/></span></a>
     </div>
   </div>
 </var:component>

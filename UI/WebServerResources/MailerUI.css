@@ -47,11 +47,12 @@ DIV#rightPanel
 DIV#mailboxContent
 { cursor: default;
   position: absolute;
-  background-color: #fff;
+  background-color: #FFFFFF;
   top: 2.5em;
   left: 0px;
   right: 0px;
   height: 15.5em;
+  border-left: 1px solid #9B9B9B;
   overflow: auto;
   overflow-x: hidden; }
 
@@ -76,15 +77,13 @@ DIV#messageContent P IMG
   margin-right: 1em; }
 
 DIV#folderTreeContent
-{ border-top: 2px solid #222;
-  border-left: 2px solid #222;
-  border-right: 1px solid #fff;
-  border-bottom: 1px solid #fff;
-  -moz-border-top-colors: #9c9a94 #000;
-  -moz-border-left-colors: #9c9a94 #000;
+{ border-top: 1px solid #909090;
+  border-left: 1px solid #909090;
+  border-bottom: 1px solid #FFFFFF;
+  border-right: 1px solid #FFFFFF;
   position: absolute;
-  color: #000;
-  background: #fff;
+  background: #CCDDEC;
+  color: #535D6D;
   width: auto;
   top: 2em;
   bottom: 0px;
@@ -352,7 +351,7 @@ TABLE.mailer_fieldtable
   overflow-y: auto;
   overflow-x: hidden;
   border-bottom: 1px solid #808080;
-  background: #d4d0c8;
+  background: #DDDDDD;
   width: 100%; }
 
 DIV.mailer_mailcontent
@@ -607,7 +606,7 @@ TD#sizeHeader
 
 TABLE#messageList TR._selected TD
 { 
-  background-color: #4b6983;
+  background-color: #9ABCD8;
   color: #fff;
 }
 
@@ -790,6 +789,18 @@ DIV.copy
   background-position: 1px -2px !important;
 }
 
+DIV#signatureFlagMessage DIV 
+{ text-align: left !important; }
+
+DIV#signatureFlagMessage H1,
+DIV#signatureFlagMessage P
+{ font-size: 10px;
+  margin: 0;
+  padding: 0; }
+
+TR#messageCountHeader TD
+{ border-top: none; }
+
 /* UIxMailPartICalViewer */
 #iCalAttendees
 { padding: 0; }
@@ -829,11 +840,27 @@ DIV.copy
   padding: 2px 2px 2px 24px;
   width: 220px; }
 
-DIV#signatureFlagMessage DIV 
-{ text-align: left !important; }
+DIV#iCalendarToolbar A.button
+{ float: left;
+  vertical-align: middle;}
 
-DIV#signatureFlagMessage H1,
-DIV#signatureFlagMessage P
-{ font-size: 10px;
-  margin: 0;
-  padding: 0; }
+DIV#iCalendarToolbar
+{ padding: 0; }
+
+SPAN#delegateEditor
+{ line-height: 23px;
+  vertical-align: middle; }
+
+INPUT#delegatedTo
+{ float: left; }
+
+SPAN.floatLeft
+{ float: left;
+  padding: 0 5px; }
+
+A#iCalendarDeleteFromCalendar
+{ float: left; }
+
+A#iCalendarAddToCalendar
+{ border-left: 2px solid #E6E7E6;
+  margin-left: 5px;}

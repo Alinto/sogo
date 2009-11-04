@@ -107,8 +107,11 @@
         onsubmit="return AIM.submit(this, {'onStart' : validateUploadForm, 
         'onComplete' : uploadCompleted})">
         <p><input type="file" name="calendarFile" id="calendarFile" /></p>
-        <p class="buttons"><input class="button" type="submit" const:id="uploadSubmit" label:value="Upload"/>
-          <input class="button" type="button" const:id="uploadCancel" label:value="Cancel"/></p>
+        <p><a href="#" class="button actionButton" id="uploadSubmit"
+            onclick="if($('uploadForm').onsubmit()) $('uploadForm').submit()">
+            <span><var:string label:value="Upload" /></span></a>
+          <a href="#" class="button" const:id="uploadCancel">
+            <span><var:string label:value="Cancel" /></span></a></p>
       </form>
     </div>
   </div>
@@ -117,32 +120,33 @@
     <div>
       <h3><var:string label:value="Import Events"/></h3>
       <p id="uploadResultsContent"><!-- empty --></p>
-      <p class="buttons"><input class="button" type="button" const:id="uploadOK" 
-          label:value="Done"/></p>
+      <p><a href="#" class="button" const:id="uploadOK">
+          <span><var:string label:value="Done" /></span></a></p>
     </div>
   </div>
 
   <div id="leftPanel">
     <div class="tabsContainer" id="schedulerTabs">
       <ul>
-	<li target="dateSelectorView"><var:string label:value="Date" /></li>
-	<li target="calendarSelectorView"><var:string label:value="Calendars" /></li>
+        <li target="dateSelectorView"
+          ><span><var:string label:value="Date" /></span></li>
+        <li target="calendarSelectorView"
+          ><span><var:string label:value="Calendars" /></span></li>
       </ul>
 
-      <div id="dateSelectorView"
-	class="tab"
-	><var:component className="UIxCalDateSelector"
-	  selectedDate="thisMonth"
-	  /></div>
+      <div id="dateSelectorView" class="tab"
+        ><var:component className="UIxCalDateSelector"
+          selectedDate="thisMonth"
+          /></div>
       <div id="calendarSelectorView" class="tab"
-	><var:component className="UIxCalendarSelector"
-	  var:calendarFolders="calendarFolders" /></div>
+        ><var:component className="UIxCalendarSelector"
+          var:calendarFolders="calendarFolders" /></div>
     </div>
 
     <div id="tasksListView">
       <label><input id="showHideCompletedTasks"
-	  type="checkbox" class="checkBox"
-	  /><var:string label:value="Show completed tasks"/></label>
+          type="checkbox" class="checkBox"
+          /><var:string label:value="Show completed tasks"/></label>
       <ul id="tasksList"><!-- space --></ul>
     </div>
   </div>

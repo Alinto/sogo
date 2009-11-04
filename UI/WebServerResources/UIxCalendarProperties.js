@@ -1,20 +1,20 @@
 /* -*- Mode: java; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 function onLoadCalendarProperties() {
-  var colorButton = $("colorButton");
-  var calendarColor = $("calendarColor");
-  colorButton.setStyle({ "backgroundColor": calendarColor.value, display: "inline" });
-  colorButton.observe("click", onColorClick);
-
-  var cancelButton = $("cancelButton");
-  cancelButton.observe("click", onCancelClick);
-
-  var okButton = $("okButton");
-  okButton.observe("click", onOKClick);
+    var colorButton = $("colorButton");
+    var calendarColor = $("calendarColor");
+    colorButton.setStyle({ "backgroundColor": calendarColor.value, display: "inline" });
+    colorButton.observe("click", onColorClick);
+    
+    var cancelButton = $("cancelButton");
+    cancelButton.observe("click", onCancelClick);
+    
+    var okButton = $("okButton");
+    okButton.observe("click", onOKClick);
 }
 
 function onCancelClick(event) {
-  window.close();
+    window.close();
 }
 
 function onOKClick(event) {
@@ -52,10 +52,12 @@ function onOKClick(event) {
            && !originalTag.value.blank())
       save = confirm(getLabel("tagWasRemoved"));
   
-  if (save)
+  if (save) {
       window.opener.updateCalendarProperties(calendarID.value,
                                              calendarName.value,
                                              calendarColor.value);
+      $("propertiesform").submit();
+  }
   else
       Event.stop(event);
 }

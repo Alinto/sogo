@@ -1,8 +1,7 @@
 DIV#filterPanel
-{ position: absolute; n0border: 1px dotted blue;
+{ position: absolute;
   text-align: center;
   width: auto;
-  n0line-height: 3em;
   top: 0;
   left: 0;
   padding: 3px 1em 0; }
@@ -25,16 +24,14 @@ DIV#folders
   right: 1em;
   top: 3em;
   bottom: 3em;
-  background-color: #fff;
+  background-color: #CCDDEC;
   padding: .5em;
   padding-top: 0px;
   overflow: auto;
-  border-bottom: 1px solid #fff;
-  border-right: 1px solid #fff;
-  border-top: 2px solid #222;
-  border-left: 2px solid #222;
-  -moz-border-top-colors: #9c9a94 #000 transparent;
-  -moz-border-left-colors: #9c9a94 #000 transparent; }
+  border-top: 1px solid #909090;
+  border-left: 1px solid #909090;
+  border-bottom: 1px solid #FFFFFF;
+  border-right: 1px solid #FFFFFF; }
 
 DIV#folders DIV
 { width: auto; }

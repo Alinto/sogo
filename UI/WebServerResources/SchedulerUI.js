@@ -648,9 +648,9 @@ function eventsListCallback(http) {
                     var sortImage = createElement("img", "messageSortImage", "sortImage");
                     sortHeader.insertBefore(sortImage, sortHeader.firstChild);
                     if (sorting["ascending"])
-                        sortImage.src = ResourcesURL + "/title_sortdown_12x12.png";
+                        sortImage.src = ResourcesURL + "/arrow-down.png";
                     else
-                        sortImage.src = ResourcesURL + "/title_sortup_12x12.png";
+                        sortImage.src = ResourcesURL + "/arrow-up.png";
                 }
             }
         }
@@ -1711,26 +1711,26 @@ function updateCalendarsList(method) {
     }
 }
 
-function validateBrowseURL(input) {
-    var button = $("browseURLBtn");
+//function validateBrowseURL(input) {
+//    var button = $("browseURLBtn");
+//
+//    if (input.value.length) {
+//        if (!button.enabled)
+//            enableAnchor(button);
+//    } else if (!button.disabled)
+//        disableAnchor(button);
+//}
 
-    if (input.value.length) {
-        if (!button.enabled)
-            enableAnchor(button);
-    } else if (!button.disabled)
-        disableAnchor(button);
-}
-
-function browseURL(anchor, event) {
-    if (event.button == 0) {
-        var input = $("url");
-        var url = input.value;
-        if (url.length)
-            window.open(url, '_blank');
-    }
-
-    return false;
-}
+//function browseURL(anchor, event) {
+//    if (event.button == 0) {
+//        var input = $("url");
+//        var url = input.value;
+//        if (url.length)
+//            window.open(url, '_blank');
+//    }
+//
+//    return false;
+//}
 
 function onCalendarsMenuPrepareVisibility() {
     var folders = $("calendarList");
@@ -1797,7 +1797,6 @@ function marksTasksAsCompleted () {
 }
 
 function _updateTaskCompletion (task, value) {
-    var checkBox = task.down ("INPUT");
     url = (ApplicationBaseURL + task.calendar
            + "/" + task.cname + "/changeStatus?status=" + value);
 
@@ -1878,10 +1877,8 @@ function onCalendarModify(event) {
         && UserSettings['Calendar']['WebCalendars']) {
         var webCalendars = UserSettings['Calendar']['WebCalendars'];
         var realID = calendarID.substr (1, calendarID.length - 1);
-        if (webCalendars[realID]) {
-            width = 500;
-            height = 360;
-        }
+        if (webCalendars[realID])
+            height = 290;
     }
     if (calendarID == "/personal")
       height = 250;
@@ -1963,7 +1960,6 @@ function onCalendarImport(event) {
 
     var url = ApplicationBaseURL + folderId + "/import";
     $("uploadForm").action = url;
-    $("uploadCancel").onclick = hideCalendarImport;
     $("calendarFile").value = "";
 
     var cellPosition = node.cumulativeOffset();
@@ -1973,19 +1969,17 @@ function onCalendarImport(event) {
 
     var div = $("uploadDialog");
     var res = $("uploadResults");
-    div.style.top = top + "px";
-    res.style.top = top + "px";
-    div.style.left = left + "px";
-    res.style.left = left + "px";
-    div.style.display = "block";
+    res.setStyle({ top: top + "px", left: left + "px" });
+    div.setStyle({ top: top + "px", left: left + "px" });
+    div.show();
 }
-function hideCalendarImport () {
-    $("uploadDialog").style.display = "none";
+function hideCalendarImport(event) {
+    $("uploadDialog").hide();
 }
-function hideImportResults () {
-    $("uploadResults").style.display = "none";
+function hideImportResults(event) {
+    $("uploadResults").hide();
 }
-function validateUploadForm () {
+function validateUploadForm() {
     rc = false;
     if ($("calendarFile").value.length)
       rc = true;
@@ -1995,7 +1989,6 @@ function uploadCompleted(response) {
     data = response.evalJSON(true);
 
     var div = $("uploadResults");
-    $("uploadOK").onclick = hideImportResults;
     if (data.imported < 0)
         $("uploadResultsContent").update(getLabel("An error occured while importing calendar."));
     else if (data.imported == 0)
@@ -2005,8 +1998,8 @@ function uploadCompleted(response) {
         refreshEventsAndDisplay();
     }
     
-    hideCalendarImport ();
-    $("uploadResults").style.display = "block";
+    hideCalendarImport();
+    $("uploadResults").show();
 }
 
 function setEventsOnCalendar(checkBox, li) {
@@ -2294,6 +2287,9 @@ function initCalendars() {
         configureLists();
         $("calendarList").attachMenu("calendarsMenu");
         $(document.body).observe("click", onBodyClickHandler);
+        // Calendar import form
+        $("uploadCancel").observe("click", hideCalendarImport);
+        $("uploadOK").observe("click", hideImportResults);
     }
 
     onWindowResize.defer();

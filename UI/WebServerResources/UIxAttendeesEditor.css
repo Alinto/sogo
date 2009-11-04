@@ -21,12 +21,10 @@ DIV#freeBusyView
   left: 0px;
   right: 0px;
   overflow: hidden;
-  border-top: 2px solid #222;
-  border-left: 2px solid #222;
+  border-top: 1px solid #909090;
+  border-left: 1px solid #909090;
   border-right: 1px solid #fff;
-  border-bottom: 1px solid #fff;
-  -moz-border-top-colors: #9c9a94 #000;
-  -moz-border-left-colors: #9c9a94 #000; }
+  border-bottom: 1px solid #fff; }
 
 TABLE
 { border-collapse: separated;
@@ -127,7 +125,7 @@ TABLE#freeBusyData TR.futureData TD
   line-height: 3em; }
 
 TABLE#freeBusyAttendees TR.futureAttendee TD A
-{ margin-left: 24px; }
+{ margin-left: 20px; }
 
 SPAN.freeBusyZoneElement
 { display: block;
@@ -210,10 +208,22 @@ DIV#freeBusyViewButtons
 { position: absolute;
   margin: 0px;
   border: 0px;
-  padding: 3px;
-  height: 2em;
+  padding: 0px 3px 3px 3px;
+  line-height: 2em;
   top: 0px;
-  left: 16em; }
+  right: 0;
+  padding-right: 16em; /* leave space for the next/previous buttons */
+  text-align: right;
+  left: auto; }
+
+DIV#freeBusyViewButtons SPAN.buttons
+{ position: absolute;
+  top: 0px;
+  left: auto;
+  right: 0px; }
+
+DIV#freeBusyViewButtons INPUT
+{ clear: none; }
 
 DIV#freeBusyZoomButtons
 { position: absolute;
@@ -224,20 +234,9 @@ DIV#freeBusyZoomButtons
   top: 0px;
   right: 0px; }
 
-DIV#freeBusyButtons
-{ position: absolute;
-  top: 7em;
-  left: 0px;
-  text-align: left;
-  width: 20em;
-  height: 2em; }
-
-DIV#freeBusyButtons A.button
-{ width: 5em; }
-
 DIV#freeBusyReplicas
 { position: absolute;
-  top: 6em;
+  top: 5em;
   right: 0px;
   width: 30em;
   height: 4em; }
@@ -256,3 +255,12 @@ DIV#windowButtons
 .officeHour
 { color: #666 !important;
   font-weight: bold !important; }
+
+SPAN.content INPUT,
+SPAN.content SELECT,
+SPAN.content SPAN,
+SPAN.timeDateControl INPUT,
+SPAN.timeDateControl SELECT,
+SPAN.timeDateControl SPAN,
+DIV#freeBusyReplicas SPAN
+{ vertical-align: top; }

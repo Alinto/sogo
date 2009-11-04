@@ -399,6 +399,11 @@ static NSString *siteFavicon = nil;
 	  && [user isSuperUser]);
 }
 
+- (NSString *) userEmail
+{
+  return [[context activeUser] systemEmail];
+}
+
 - (BOOL) canLogoff
 {
   BOOL canLogoff;

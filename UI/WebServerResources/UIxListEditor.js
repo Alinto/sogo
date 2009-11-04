@@ -78,12 +78,13 @@ function onReferenceAdd (e) {
     textField.addressBook = activeAddressBook;
     textField.excludeLists = true;
     textField.observe("autocompletion:changed", endEditable);
+    textField.addClassName("textField");
 
     td.appendChild(textField);
     td.appendChild(span);
     row.appendChild (td);
     tablebody.appendChild(row);
-    tablebody.deselectAll();
+    $(tablebody).deselectAll();
     row.selectElement();
 
     makeEditable(td);
@@ -97,6 +98,7 @@ function onReferenceDelete(e) {
     for (var i = 0; i < count; i++) {
         rows[i].remove();
     }
+    return false;
 }
 
 function serializeReferences(e) {
@@ -129,8 +131,13 @@ function resetTableActions() {
 }
 
 function onEditorCancelClick(event) {
-    preventDefault(event);
-    window.close();
+	preventDefault(event);
+	window.close();
+}
+
+function onEditorSubmitClick(event) {
+  if (validateListEditor())
+    $("mainForm").submit();
 }
 
 function initListEditor() {
@@ -140,6 +147,7 @@ function initListEditor() {
     $("referenceAdd").observe("click", onReferenceAdd);
     $("referenceDelete").observe("click", onReferenceDelete);
     $("cancelButton").observe("click", onEditorCancelClick);
+    $("submitButton").observe("click", onEditorSubmitClick);
 }
 
 document.observe("dom:loaded", initListEditor);

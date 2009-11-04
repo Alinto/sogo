@@ -134,8 +134,15 @@ function onFnNewValue(event) {
 }
 
 function onEditorCancelClick(event) {
-	preventDefault(event);
-	window.close();
+    this.blur();
+    preventDefault(event);
+    window.close();
+}
+
+function onEditorSubmitClick(event) {
+  if (validateContactEditor())
+      $('mainForm').submit();
+  this.blur();
 }
 
 function initEditorForm() {
@@ -145,6 +152,7 @@ function initEditorForm() {
   $("givenName").onkeyup = onFnNewValue;
 
   $("cancelButton").observe("click", onEditorCancelClick);
+  $("submitButton").observe("click", onEditorSubmitClick);
 }
 
 document.observe("dom:loaded", initEditorForm);

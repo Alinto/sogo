@@ -18,7 +18,6 @@ function onICalendarButtonClick(event) {
     var link = $("iCalendarAttachment").value;
     if (link) {
         var urlstr = link + "/" + this.action;
-        var currentMsg;
         if (window.opener && window.opener.open && !window.opener.closed && window.messageUID) {
             var c = window.opener;
             window.opener.triggerAjaxRequest(urlstr,

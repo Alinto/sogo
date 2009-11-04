@@ -13,6 +13,9 @@ SPAN.datePicker INPUT.textField
 SPAN.timeDateControl A.button
 { border: 0; }
 
+SPAN.timeDateControl A:hover
+{ text-decoration: none; }
+
 SPAN.content
 { position: absolute;
   line-height: 2em;
@@ -111,3 +114,11 @@ IMG#progressIndicator
   position: absolute;
   right: 1em;
   margin: 0 5px; }
+
+SPAN.content INPUT,
+SPAN.content SELECT,
+SPAN.content SPAN,
+SPAN.timeDateControl INPUT,
+SPAN.timeDateControl SELECT,
+SPAN.timeDateControl SPAN
+{ vertical-align: top; }

@@ -11,18 +11,6 @@ DIV#windowButtons
 DIV#pageContent
 { padding: 1em; }
 
-TABLE.section
-{ border: 1px solid #aaa;
-  margin-top: -.5em;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 1em;
-  padding: 1em;
-  -moz-border-radius: 6px;
-  table-layout: auto;
-  text-align: right;
-  width: 100%; }
-
 TABLE TH
 { font-weight: normal;
   text-align: right;
@@ -33,17 +21,6 @@ TABLE TD
 
 TABLE TD.label
 { width: 11em; }
-
-SPAN.caption
-{ display: inline-block;
-  position: relative;
-  text-align: center;
-  cursor: default;
-  background-color: #d4d0c8;
-  width: auto;
-  padding: .25em;
-  margin-left: 7px;
-  border: 0px; }
 
 INPUT.textField
 { margin: 0 0.7em 0 0;

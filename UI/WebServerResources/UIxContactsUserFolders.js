@@ -108,22 +108,25 @@ function onUserNodeToggle(event) {
 }
 
 function onTreeItemClick(event) {
-	preventDefault(event);
-
-	var topNode = $("d");
-	if (topNode.selectedEntry)
-		topNode.selectedEntry.deselect();
-	this.selectElement();
-	topNode.selectedEntry = this;
-
-	if (window.opener.userFolderType == "user")
-		$("addButton").disabled = false;
-	else {
-		var dataname = this.parentNode.getAttribute("dataname");
-		if (!dataname)
-			dataname = "";
-		$("addButton").disabled = (dataname.indexOf(":") == -1);
-	};
+    preventDefault(event);
+    
+    var topNode = $("d");
+    if (topNode.selectedEntry)
+        topNode.selectedEntry.deselect();
+    this.selectElement();
+    topNode.selectedEntry = this;
+    
+    if (window.opener.userFolderType == "user")
+        $("addButton").removeClassName("disabled");
+    else {
+        var dataname = this.parentNode.getAttribute("dataname");
+        if (!dataname)
+            dataname = "";
+        if (dataname.indexOf(":") == -1)
+            $("addButton").addClassName("disabled");
+        else
+            $("addButton").removeClassName("disabled");
+    };
 }
 
 function foldersSearchCallback(http) {
@@ -191,35 +194,38 @@ function addFolderNotFoundNode (tree, nodeId) {
 }
 
 function onConfirmFolderSelection(event) {
-  var topNode = $("d");
-  if (topNode && topNode.selectedEntry) {
-    var node = topNode.selectedEntry.parentNode;
-    var folder = node.getAttribute("dataname");
-
-    var folderName;
-    if (window.opener.userFolderType == "user") {
-			var span = $(topNode.selectedEntry).down("SPAN.nodeName");
-			var email = (span.innerHTML
-									 .replace("&lt;", "<", "g")
-									 .replace("&gt;", ">", "g"));
-      folderName = email;
+    if (!this.hasClassName("disabled")) {
+        var topNode = $("d");
+        if (topNode && topNode.selectedEntry) {
+            var node = topNode.selectedEntry.parentNode;
+            var folder = node.getAttribute("dataname");
+            
+            var folderName;
+            if (window.opener.userFolderType == "user") {
+                var span = $(topNode.selectedEntry).down("SPAN.nodeName");
+                var email = (span.innerHTML
+                             .replace("&lt;", "<", "g")
+                             .replace("&gt;", ">", "g"));
+                folderName = email;
+            }
+            else {
+                var resource = $(topNode.selectedEntry).down("SPAN.nodeName");
+                var user = $(node.parentNode.previousSibling).down("SPAN.nodeName");
+                var email = (user.innerHTML
+                             .replace("&lt;", "<", "g")
+                             .replace("&gt;", ">", "g"));
+                folderName = resource.innerHTML + ' (' + email + ')';
+            }
+            folderName = folderName.replace(/>,.*(\))?$/, ">)$1", "g");
+            
+            var data = { folderName: folderName, folder: folder, window: window };
+            if (parent$(accessToSubscribedFolder(folder)))
+                window.alert(getLabel("You have already subscribed to that folder!"));
+            else
+                window.opener.subscribeToFolder(window.opener.userFolderCallback, data);
+            this.blur(); // required by IE
+        }
     }
-    else {
-			var resource = $(topNode.selectedEntry).down("SPAN.nodeName");
-			var user = $(node.parentNode.previousSibling).down("SPAN.nodeName");
-			var email = (user.innerHTML
-									 .replace("&lt;", "<", "g")
-									 .replace("&gt;", ">", "g"));
-			folderName = resource.innerHTML + ' (' + email + ')';
-		}
-		folderName = folderName.replace(/>,.*(\))?$/, ">)$1", "g");
-
-    var data = { folderName: folderName, folder: folder, window: window };
-    if (parent$(accessToSubscribedFolder(folder)))
-      window.alert(getLabel("You have already subscribed to that folder!"));
-    else
-      window.opener.subscribeToFolder(window.opener.userFolderCallback, data);
-  }
 }
 
 function onFolderSearchKeyDown(event) {
@@ -237,7 +243,7 @@ function onFolderSearchKeyDown(event) {
           delete d;
       }
       div.clean = true;
-      $("addButton").disabled = true;
+      $("addButton").addClassName("disabled");
   }
   
   if (this.timer)

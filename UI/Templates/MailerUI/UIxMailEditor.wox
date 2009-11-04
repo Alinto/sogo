@@ -51,8 +51,8 @@
       </ul>
     </div>
     <div id="headerArea">
-      <span class="headerField"><var:string label:value="From" />:</span>
-      <var:popup const:name="from"
+      <span class="headerField" const:id="fromField"><var:string label:value="From" />:</span>
+      <var:popup const:name="from" const:id="fromSelect"
 	list="fromEMails"
 	item="item"
 	selection="from"

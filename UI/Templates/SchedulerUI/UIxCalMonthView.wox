@@ -20,7 +20,7 @@
     class="leftNavigationArrow"
     var:date="prevMonthQueryParameters.month"
     onclick="return onCalendarGotoDay(this);"
-    ><img rsrc:src="arrow-lft-sharp.gif"/></a>
+    ><img rsrc:src="arrow-left.png"/></a>
   <span class="monthsHeader">
     <span class="month2"><a href="#"
         var:date="monthBeforePrevMonthQueryParameters.month"
@@ -48,7 +48,7 @@
     class="rightNavigationArrow"
     var:date="nextMonthQueryParameters.month"
     onclick="return onCalendarGotoDay(this);"
-    ><img rsrc:src="arrow-rit-sharp.gif"/></a>
+    ><img rsrc:src="arrow-right.png"/></a>
 
   <div id="calendarContent">
     <div class="monthView">

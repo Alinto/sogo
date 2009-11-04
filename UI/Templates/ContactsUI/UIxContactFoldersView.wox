@@ -22,6 +22,7 @@
     </var:if><var:if condition="contactsListContentStyle">
       DIV#contactsListContent
        { height: <var:string value="contactsListContentStyle" />; }
+    </var:if><var:if condition="isPopup">
     </var:if>
     </style>
 
@@ -34,8 +35,11 @@
         onsubmit="return AIM.submit(this, {'onStart' : validateUploadForm, 
         'onComplete' : uploadCompleted})">
         <p><input type="file" name="contactsFile" id="contactsFile" /></p>
-        <p class="buttons"><input class="button" type="submit" const:id="uploadSubmit" label:value="Upload"/>
-          <input class="button" type="button" const:id="uploadCancel" label:value="Cancel"/></p>
+        <p><a href="#" class="button actionButton" id="uploadSubmit"
+            onclick="if($('uploadForm').onsubmit()) $('uploadForm').submit()">
+            <span><var:string label:value="Upload" /></span></a>
+          <a href="#" class="button" const:id="uploadCancel">
+            <span><var:string label:value="Cancel" /></span></a></p>
       </form>
     </div>
   </div>
@@ -44,8 +48,8 @@
     <div>
       <h3><var:string label:value="Import Cards"/></h3>
       <p id="uploadResultsContent"><!-- empty --></p>
-      <p class="buttons"><input class="button" type="button" const:id="uploadOK" 
-          label:value="Done"/></p>
+      <p><a href="#" class="button" const:id="uploadOK">
+          <span><var:string label:value="Done" /></span></a></p>
     </div>
   </div>
     
@@ -78,50 +82,55 @@
       </ul>
     </div>
 
-      <!--	var:if condition="isPopup" const:negate="YES" -->
-      <!--          <var:if condition="hideFolderTree" const:negate="YES" -->
-      <div class="contactFoldersList" id="contactFoldersList">
-	<div class="titlediv"
-	  ><var:string label:value="Address Books"
-	    /></div>
-	<!-- var:if var:condition="isPopup" const:negate="YES" -->
-	<div class="toolbar" id="abToolbar">
-	  <a href="#" class="toolbarButton"
-	    ><span class="toolbarButton"
-	      ><img rsrc:src="add-addressbook.png" label:title="New Addressbook..."
-		/></span></a
-	    ><a href="#" class="toolbarButton"
-	    ><span class="toolbarButton"
-	      ><img rsrc:src="add-user-addressbook.png" label:title="Subscribe to an Addressbook..."
-		/></span></a
-	    ><a href="#" class="toolbarButton"
-	    ><span class="toolbarButton"
-	      ><img rsrc:src="remove-addressbook.png" label:title="Remove the selected Addressbook"
-		/></span></a
-	    ></div><!-- var:if -->
-
-	<ul id="contactFolders">
-	  <var:foreach list="contactFolders" item="currentFolder"
-	    ><li var:id="currentContactFolderId"
-	      var:owner="currentContactFolderOwner"
-	      var:class="currentContactFolderClass"
-	      ><var:string value="currentContactFolderName" /></li
-	      ></var:foreach
-	    >
-	</ul>
-
-	<var:if condition="hasContactSelectionButtons">
-	  <div class="contactSelection">
-	    <var:component value="selectorComponent" />
-	  </div>
-	</var:if>
+    <div class="contactFoldersList" id="contactFoldersList">
+      <div class="tabsContainer" id="smallToolbarContainer">
+        <ul>
+          <li target="abToolbar">
+            <span><var:string label:value="Address Books" /></span>
+          </li>
+        </ul>
+        <div id="abToolbar" class="tab">
+          <a href="#" class="smallToolbarButton">
+            <span><img rsrc:src="add-addressbook.png" 
+                label:title="New Addressbook..."/>
+            </span>
+          </a>
+          <a href="#" class="smallToolbarButton">
+            <span>
+              <img rsrc:src="add-user-addressbook.png" 
+                label:title="Subscribe to an Addressbook..." />
+            </span>
+          </a>
+          <a href="#" class="smallToolbarButton">
+            <span>
+              <img rsrc:src="remove-addressbook.png" 
+                label:title="Remove the selected Addressbook"/>
+            </span>
+          </a>
+        </div>
       </div>
 
-      <div class="dragHandle" id="dragHandle"><!-- space --></div>
-      <!-- var:if -->
+      <ul id="contactFolders">
+        <var:foreach list="contactFolders" item="currentFolder"
+          ><li var:id="currentContactFolderId"
+            var:owner="currentContactFolderOwner"
+            var:class="currentContactFolderClass"
+            ><var:string value="currentContactFolderName" /></li
+          ></var:foreach
+        >
+      </ul>
 
-      <div id="rightPanel">
-	<var:component className="UIxContactsFilterPanel" qualifier="qualifier" />
+      <var:if condition="hasContactSelectionButtons">
+        <div class="contactSelection">
+          <var:component value="selectorComponent" />
+        </div>
+      </var:if>
+    </div>
+
+    <div class="dragHandle" id="dragHandle"><!-- space --></div>
+
+    <div id="rightPanel">
+      <var:component className="UIxContactsFilterPanel" qualifier="qualifier" />
 
 	<div id="contactsListContent"><!-- space --></div>
 

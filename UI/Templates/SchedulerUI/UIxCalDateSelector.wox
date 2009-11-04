@@ -7,10 +7,9 @@
     id="dateSelector">
     <div class="header">
       <a href="#" id="rightArrow" var:date="nextMonthAsString"
-        ><img id="next" rsrc:src="arrow-rit-sharp.gif"
-          /></a>
+        ><img id="next" rsrc:src="arrow-right.png"/></a>
       <a href="#" id="leftArrow" var:date="prevMonthAsString"
-        ><img id="previous" rsrc:src="arrow-lft-sharp.gif" />
+        ><img id="previous" rsrc:src="arrow-left.png" />
       </a><span id="monthLabel" var:month="headerMonthValue"
 	><var:string value="headerMonthString" /></span
 	><span id="yearLabel"><var:string value="headerYearString" /></span>

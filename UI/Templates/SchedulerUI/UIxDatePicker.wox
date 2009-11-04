@@ -14,12 +14,12 @@
       var:value="formattedDateString"
       size="12"
       /><a href="#"
-      class="button"
+      class="calendarButton"
       var:inputId="dateID"
       onclick="return popupCalendar(this);"
-      ><img rsrc:src="choose-date.png"
+      ><span><img rsrc:src="choose-date.png"
         var:title="label"
         var:alt="label"
-        /></a
+        /></span></a
       >
   </span>

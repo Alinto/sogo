@@ -141,9 +141,9 @@ function contactsListCallback(http) {
                     var sortImage = createElement("img", "messageSortImage", "sortImage");
                     sortHeader.insertBefore(sortImage, sortHeader.firstChild);
                     if (sorting["ascending"])
-                        sortImage.src = ResourcesURL + "/title_sortdown_12x12.png";
+                        sortImage.src = ResourcesURL + "/arrow-down.png";
                     else
-                        sortImage.src = ResourcesURL + "/title_sortup_12x12.png";
+                        sortImage.src = ResourcesURL + "/arrow-up.png";
                 }
             }
             
@@ -585,7 +585,10 @@ function onConfirmContactSelection(event) {
         }
     }
 
-    preventDefault(event);
+    this.blur(); // required by IE
+    Event.stop(event);
+
+    return false;
 }
 
 function addListToOpener (tag, aBookId, aBookName, listId) {
@@ -689,7 +692,6 @@ function onAddressBookImport(event) {
 
     var url = ApplicationBaseURL + folderId + "/import";
     $("uploadForm").action = url;
-    $("uploadCancel").onclick = hideContactsImport;
     $("contactsFile").value = "";
 
     var cellPosition = node.cumulativeOffset();
@@ -699,17 +701,16 @@ function onAddressBookImport(event) {
 
     var div = $("uploadDialog");
     var res = $("uploadResults");
-    div.style.top = top + "px";
-    res.style.top = top + "px";
-    div.style.left = left + "px";
-    res.style.left = left + "px";
-    div.style.display = "block";
+    res.setStyle({ top: top + "px", left: left + "px" });
+    div.setStyle({ top: top + "px", left: left + "px" });
+    div.show();
 }
-function hideContactsImport () {
-    $("uploadDialog").style.display = "none";
+function hideContactsImport(event) {
+    $("uploadDialog").hide();
 }
+
 function hideImportResults () {
-    $("uploadResults").style.display = "none";
+    $("uploadResults").hide();
 }
 function validateUploadForm () {
     rc = false;
@@ -721,18 +722,17 @@ function uploadCompleted(response) {
     data = response.evalJSON(true);
 
     var div = $("uploadResults");
-    $("uploadOK").onclick = hideImportResults;
     if (data.imported <= 0)
         $("uploadResultsContent").update(getLabel("An error occured while importing contacts."));
     else if (data.imported == 0)
         $("uploadResultsContent").update(getLabel("No card was imported."));
     else {
         $("uploadResultsContent").update(getLabel("A total of %{0} cards were imported in the addressbook.").formatted(data.imported));
-        refreshCurrentFolder ();
+        refreshCurrentFolder();
     }
 
-    hideContactsImport ();
-    $("uploadResults").style.display = "block";
+    hideContactsImport();
+    $("uploadResults").show();
 }
 
 function onAddressBookRemove(event) {
@@ -1092,9 +1092,10 @@ function getMenus() {
 function configureSelectionButtons() {
     var container = $("contactSelectionButtons");
     if (container) {
-        var buttons = container.select("input");
-        for (var i = 0; i < buttons.length; i++)
+        var buttons = container.select("A.button");
+        for (var i = 0; i < buttons.length; i++) {
             $(buttons[i]).observe("click", onConfirmContactSelection);
+        }
     }
 }
 
@@ -1153,7 +1154,7 @@ function fixSearchFieldPosition () {
     var panel = $("filterPanel");
     if (panel) {
         panel.style.position = "relative";
-        panel.style.top = "3px";
+        panel.style.top = "7px";
     }
 }
 
@@ -1162,10 +1163,16 @@ function initContacts(event) {
         configureSelectionButtons();
         fixSearchFieldPosition ();
     }
-    else if (Prototype.Browser.Gecko)
-        Event.observe(document, "keypress", onDocumentKeydown); // for FF2
-    else
-        Event.observe(document, "keydown", onDocumentKeydown);
+    else {
+        // Addressbook import form
+        $("uploadCancel").observe("click", hideContactsImport);
+        $("uploadOK").observe("click", hideImportResults);
+
+        if (Prototype.Browser.Gecko)
+            Event.observe(document, "keypress", onDocumentKeydown); // for FF2
+        else
+            Event.observe(document, "keydown", onDocumentKeydown);        
+    }
     configureAbToolbar();
     configureAddressBooks();
     updateAddressBooksMenus();
@@ -1178,10 +1185,10 @@ function initContacts(event) {
         configureSortableTableHeaders(table);
         TableKit.Resizable.init(table, {'trueResize' : true, 'keepWidth' : true});
     }
-	
+        
     onWindowResize.defer();
     Event.observe(window, "resize", onWindowResize);
-	
+    
     // Default sort options
     sorting["attribute"] = "c_cn";
     sorting["ascending"] = true;

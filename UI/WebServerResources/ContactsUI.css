@@ -33,11 +33,12 @@ DIV#rightPanel
 DIV#contactsListContent
 { cursor: default;
   position: absolute;
-  background-color: #fff;
-  top: 2.5em;
+  background-color: #FFFFFF;
+  top: 27px;
   left: 0px;
   right: 0px;
   height: 15.5em;
+  border-left: 1px solid #9B9B9B;
   overflow: auto;
   overflow-x: hidden; }
 
@@ -103,7 +104,7 @@ TABLE.titletable TD.titlecell SELECT
 
 DIV#contactFoldersList
 { position: absolute;
-  top: 6em;
+  top: 65px;
   left: 0px;
   width: 15em;
   bottom: 0px;
@@ -132,9 +133,9 @@ UL#contactFolders
   clear: both;
   cursor: default;
   color: #000;
-  background: #fff;
+  background: #CCDDEC;
   position: absolute; /* required for Safari & IE */
-  top: 62px; /* leave space for the mini addressbook */
+  top: 73px; /* leave space for the mini addressbook */
   bottom: 0px;
   left: 0;
   right: 0;
@@ -143,17 +144,15 @@ UL#contactFolders
   padding: 0px;
   overflow: auto;
   overflow-x: hidden;
-  border-top: 2px solid #222;
-  border-left: 2px solid #222;
-  border-right: 0px;
-  border-bottom: 1px solid #fff;
-  -moz-border-top-colors: #9c9a94 #000;
-  -moz-border-left-colors: #9c9a94 #000;
+  border-top: 1px solid #909090;
+  border-left: 1px solid #909090;
+  border-bottom: 1px solid #FFFFFF;
+  border-right: 1px solid #FFFFFF;
   -moz-user-select: none;
   -khtml-user-select: none;
 }
 
-DIV#contactFoldersList LI
+UL#contactFolders LI
 {
     background-repeat: no-repeat;
     background-position: 4px 2px;
@@ -269,14 +268,11 @@ DIV.contactColumn H4
   margin: .2em 0px;
   margin-left: -1em;
   font-weight: bold;
+  background: #9ABCD8;
   color: #fff;
-  background: #4b6983;
   width: 100%;
   padding: .1em .2em;
 }
-
-INPUT#searchValue:focus
-{ color: #000; }
 
 /* drag handles */
 DIV#dragHandle
@@ -311,10 +307,11 @@ BODY.popup DIV#dragHandle
 { top: 6em; }
 
 BODY.popup DIV#contactsListContent
-{ height: 8em; }
+{ height: 8em;
+  top: 34px; }
 
 BODY.popup DIV#contactFoldersList
-{ top: 4em; }
+{ top: 50px; }
 
 BODY.popup DIV#rightDragHandle
 { top: 10em; }
@@ -331,13 +328,13 @@ DIV.contactSelection
   padding: 1em;
   left: 0px;
   right: 0px;
+  height: 90px;
   text-align: right;
-  background: #d4d0c8;
+  background: #E6E7E6;
   border-top: 1px solid #fff;
   border-left: 0px;
   border-right: 0px;
   border-bottom: 0px;
-  -moz-border-top-colors: #efebe7;
 }
 
 DIV.contactSelection > DIV.calendar
@@ -367,6 +364,11 @@ DIV.copy
   background-image: url(add-contact.gif) !important; 
   background-position: 1px -2px !important;
 }
+
+DIV#smallToolbarContainer
+{ bottom: auto !important;
+  top: 2em !important;
+  right: 0px; }
 
 
 @media print
