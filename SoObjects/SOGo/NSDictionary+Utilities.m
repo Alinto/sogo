@@ -29,10 +29,11 @@
 #import <Foundation/NSCharacterSet.h>
 
 #import <NGExtensions/NGBase64Coding.h>
-#import <SoObjects/SOGo/NSString+Utilities.h>
 
 #import "NSArray+Utilities.h"
 #import "NSObject+Utilities.h"
+#import "NSString+Utilities.h"
+
 #import "NSDictionary+Utilities.h"
 
 @implementation NSDictionary (SOGoDictionaryUtilities)
@@ -43,15 +44,14 @@
   NSMutableData *content;
   NSDictionary *newDictionary;
 
-  content = [NSMutableData new];
+  content = [NSMutableData data];
   [content appendBytes: "{" length: 1];
   [content appendData: [NSData dataWithContentsOfFile: file]];
   [content appendBytes: "}" length: 1];
   serialized = [[NSString alloc] initWithData: content
 				 encoding: NSUTF8StringEncoding];
-  [content release];
+  [serialized autorelease];
   newDictionary = [serialized propertyList];
-  [serialized release];
 
   return newDictionary;
 }
@@ -62,20 +62,17 @@
   NSString *representation, *currentKey, *currentValue, *currentPair;
   NSEnumerator *keys;
 
-  values = [NSMutableArray new];
+  values = [NSMutableArray array];
   keys = [[self allKeys] objectEnumerator];
-  currentKey = [keys nextObject];
-  while (currentKey)
+  while ((currentKey = [keys nextObject]))
     {
       currentValue = [[self objectForKey: currentKey] jsonRepresentation];
       currentPair = [NSString stringWithFormat: @"%@: %@",
 			      [currentKey jsonRepresentation], currentValue];
       [values addObject: currentPair];
-      currentKey = [keys nextObject];
     }
   representation = [NSString stringWithFormat: @"{%@}",
 			     [values componentsJoinedByString: @", "]];
-  [values release];
 
   return representation;
 }
@@ -202,6 +199,4 @@
 		 @" the number of keys."];
 }
 
-
 @end
-
