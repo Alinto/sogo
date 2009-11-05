@@ -20,10 +20,3 @@ Class Hierarchy
 TODO
 ====
 - why is SOGoUserFolder an OCS folder?
-
-
-Defaults
-========
-
-AgenorCacheCheckInterval - int (default: 1 hour == 3600s)
-- how often to flush the LDAP caches
