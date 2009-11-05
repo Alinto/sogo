@@ -32,8 +32,8 @@ function initLogin() {
     submitBtn.disabled = false;
 }
 
-function onFieldKeyDown (event) {
-    if (event.keyCode == Event.KEY_RETURN)
+function onFieldKeyDown(event) {
+    if (event.keyCode == Event.KEY_RETURN && $("password").value.length > 0)
         return onLoginClick (event);
 }
 

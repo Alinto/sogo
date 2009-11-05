@@ -1069,7 +1069,7 @@ function onContactMenuPrepareVisibility() {
 function getMenus() {
     var menus = {};
     menus["contactFoldersMenu"] = new Array(onAddressBookModify, "-", newContact,
-                                            null, "-", onAddressBookImport, 
+                                            newList, "-", onAddressBookImport, 
                                             onAddressBookRemove, "-",
                                             onMenuSharing);
     menus["contactMenu"] = new Array(onMenuEditContact, "-",

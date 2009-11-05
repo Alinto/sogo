@@ -1,3 +1,11 @@
+2009-11-05  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/ContactsUI.js (getMenus): activated the
+	list creation option of the addresbooks contextual menu.
+
+	* UI/WebServerResources/SOGoRootPage.js (onFieldKeyDown): don't
+	submit the form if no password is typed.
+
 2009-11-04  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* Major refresh of CSS stylesheets.
