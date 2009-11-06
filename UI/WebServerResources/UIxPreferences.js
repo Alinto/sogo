@@ -60,7 +60,10 @@ function _setupEvents(enable) {
 
     $("replyPlacementList").observe ("change", onReplyPlacementListChange);
     $("composeMessagesType").observe ("change", onComposeMessagesTypeChange);
-    $("categoriesValue").value = "";
+
+    var categoriesValue = $("categoriesValue");
+    if (categoriesValue)
+        categoriesValue.value = "";
 }
 
 function onChoiceChanged(event) {

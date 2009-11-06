@@ -1,3 +1,9 @@
+2009-11-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/UIxPreferences.js (_setupEvents): we check
+	whether "categoriesValue" resolves properly before assigning it
+	a new value.
+
 2009-11-05  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/ContactsUI.js (getMenus): activated the
