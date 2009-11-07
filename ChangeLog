@@ -1,3 +1,15 @@
+2009-11-07  Ludovic Marcotte <lmarcotte@inverse.ca>
+
+	* SoObjects/SOGo/SOGoCache.m - if we get a JSON
+	error when trying to convert our string coming
+	from memcached, we don't store it to the cache
+	and we log the error.
+	* Modified the code so we always use lower-case
+	headers prior to sending mails. This is to avoid
+	an uber-lameness in SOPE. Also added warnings
+	around that code so we can get rid of SOPE-mime,
+	we'll do things cleanly.
+
 2009-11-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/UIxPreferences.js (_setupEvents): we check

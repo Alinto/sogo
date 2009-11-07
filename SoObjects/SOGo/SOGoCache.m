@@ -304,11 +304,13 @@ static NSLock *lock;
 	  
 	  v = [NSString stringWithUTF8String: s];
 	  d = [NSDictionary dictionaryWithJSONString: v];
-	  //[self logWithFormat: @"read values (%@) for subtype %@ for user %@", [d description], theType, theLogin];
 	  
 	  // Cache the value in our localCache
-	  [localCache setObject: d  forKey: k];
-	  
+	  if (d)
+	    [localCache setObject: d  forKey: k];
+	  else
+	    [self errorWithFormat: @"Unable to convert (%@) to a JSON string for type: %@ and login: %@", v, theType, theLogin];
+	    
 	  free(s);
 	}
     }

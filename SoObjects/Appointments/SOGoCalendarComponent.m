@@ -673,10 +673,6 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
 
 		  subject = [p getSubject];
 		  text = [p getBody];
-		  NSLog(@"Template: %@", pageName);
-		  NSLog(@"Sender: %@", senderEmail);
-		  NSLog(@"Recipient: %@", recipient);
-		  NSLog(@"Subject: %@", subject);
 
 		  /* construct message */
 		  headerMap = [NGMutableHashMap hashMapWithCapacity: 5];
@@ -686,6 +682,7 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
 		   * at all. Mail.app shows the rich content alternative _only_
 		   * so we'll stick with multipart/mixed for the time being.
 		   */
+#warning SOPE is just plain stupid here - if you change the case of keys, it will break the encoding of fields
 		  [headerMap setObject: @"multipart/mixed" forKey: @"content-type"];
 		  [headerMap setObject: @"1.0" forKey: @"MIME-Version"];
 		  [headerMap setObject: senderEmail forKey: @"from"];
@@ -778,6 +775,7 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
        * at all. Mail.app shows the rich content alternative _only_
        * so we'll stick with multipart/mixed for the time being.
        */
+#warning SOPE is just plain stupid here - if you change the case of keys, it will break the encoding of fields
       [headerMap setObject: [attendee mailAddress] forKey: @"from"];
       [headerMap setObject: [recipient mailAddress] forKey: @"to"];
       mailDate = [[NSCalendarDate date] rfc822DateString];
@@ -786,9 +784,6 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
       [headerMap setObject: @"1.0" forKey: @"MIME-Version"];
       [headerMap setObject: @"multipart/mixed" forKey: @"content-type"];
       msg = [NGMimeMessage messageWithHeader: headerMap];
-
-      NSLog (@"sending 'REPLY' from %@ to %@",
-	     [attendee mailAddress], [recipient mailAddress]);
 
       /* multipart body */
       body = [[NGMimeMultipartBody alloc] initWithPart: msg];
@@ -870,6 +865,7 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
       identity = [currentUser primaryIdentity];
 
       /* construct message */
+#warning SOPE is just plain stupid here - if you change the case of keys, it will break the encoding of fields
       headerMap = [NGMutableHashMap hashMapWithCapacity: 5];
       fullSenderEmail = [identity keysWithFormat: @"%{fullName} <%{email}>"];
       [headerMap setObject: fullSenderEmail forKey: @"from"];
