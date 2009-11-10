@@ -114,7 +114,7 @@
 
 	  <script type="text/javascript">
 	    var ApplicationBaseURL = '<var:string value="applicationPath"/>';
-	    var ResourcesURL = '/SOGo.woa/WebServerResources';
+	    var ResourcesURL = '/<var:string value="applicationPath"/>.woa/WebServerResources';
 	    <var:if condition="isSuperUser"
 	      >var IsSuperUser = true;
 	    </var:if>
