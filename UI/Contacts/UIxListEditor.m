@@ -235,7 +235,7 @@
     {
       [co save];
       if ([[[[self context] request] formValueForKey: @"nojs"] intValue])
-                   result = [self redirectToLocation: [self applicationPath]];
+                   result = [self redirectToLocation: [self modulePath]];
       else
         {
           jsRefreshMethod

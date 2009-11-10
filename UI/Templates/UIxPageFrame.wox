@@ -113,7 +113,7 @@
 	  <div id="javascriptSafetyNet"><!-- space --></div>
 
 	  <script type="text/javascript">
-	    var ApplicationBaseURL = '<var:string value="applicationPath"/>';
+	    var ApplicationBaseURL = '<var:string value="modulePath"/>';
 	    var ResourcesURL = '<var:string value="applicationPath"/>.woa/WebServerResources';
 	    <var:if condition="isSuperUser"
 	      >var IsSuperUser = true;

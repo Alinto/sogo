@@ -1,3 +1,10 @@
+2009-11-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/SOGoUI/UIxComponent.m (-applicationPath): new method that
+	really returns the name of the WO application.
+	(-modulePath): renamed the old applicationPath method to be more
+	accurate about its purpose.
+
 2009-11-07  Ludovic Marcotte <lmarcotte@inverse.ca>
 
 	* SoObjects/SOGo/SOGoCache.m - if we get a JSON

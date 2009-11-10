@@ -60,7 +60,8 @@
 - (NSString *)ownMethodName;
 
 - (NSString *)userFolderPath;
-- (NSString *) applicationPath;
+- (NSString *)applicationPath;
+- (NSString *)modulePath;
 
 - (NSString *)ownPath;
 - (NSString *)relativePathToUserFolderSubPath:(NSString *)_sub;
