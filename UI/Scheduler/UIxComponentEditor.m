@@ -1494,35 +1494,38 @@ RANGE(2);
 
   request = [context request];
   json = [request formValueForKey: @"attendees"];
-  attendees = [NSArray array];
-  jsonScanner = [NSScanner scannerWithString: json];
-  if ([jsonScanner scanJSONObject: &attendeesData])
+  if ([json length])
     {
-      newAttendees = [NSMutableArray new];
-      attendees = [attendeesData allValues];
-      max = [attendees count];
-      for (count = 0; count < max; count++)
+      attendees = [NSArray array];
+      jsonScanner = [NSScanner scannerWithString: json];
+      if ([jsonScanner scanJSONObject: &attendeesData])
 	{
-	  currentData = [attendees objectAtIndex: count];
-	  currentEmail = [currentData objectForKey: @"email"];
-	  currentAttendee = [component findParticipantWithEmail: currentEmail];
-	  if (!currentAttendee)
+	  newAttendees = [NSMutableArray new];
+	  attendees = [attendeesData allValues];
+	  max = [attendees count];
+	  for (count = 0; count < max; count++)
 	    {
-	      currentAttendee = [iCalPerson elementWithTag: @"attendee"];
-	      [currentAttendee setCn: [currentData objectForKey: @"name"]];
-	      [currentAttendee setEmail: currentEmail];
-	      [currentAttendee setRole: @"REQ-PARTICIPANT"];
-	      [currentAttendee setRsvp: @"TRUE"];
-	      [currentAttendee
-		setParticipationStatus: iCalPersonPartStatNeedsAction];
+	      currentData = [attendees objectAtIndex: count];
+	      currentEmail = [currentData objectForKey: @"email"];
+	      currentAttendee = [component findParticipantWithEmail: currentEmail];
+	      if (!currentAttendee)
+		{
+		  currentAttendee = [iCalPerson elementWithTag: @"attendee"];
+		  [currentAttendee setCn: [currentData objectForKey: @"name"]];
+		  [currentAttendee setEmail: currentEmail];
+		  [currentAttendee setRole: @"REQ-PARTICIPANT"];
+		  [currentAttendee setRsvp: @"TRUE"];
+		  [currentAttendee
+		    setParticipationStatus: iCalPersonPartStatNeedsAction];
+		}
+	      [newAttendees addObject: currentAttendee];
 	    }
-	  [newAttendees addObject: currentAttendee];
+	  [component setAttendees: newAttendees];
+	  [newAttendees release];
 	}
-      [component setAttendees: newAttendees];
-      [newAttendees release];
+      else
+	NSLog(@"Error scanning following JSON:\n%@", json);  
     }
-  else
-    NSLog(@"Error scanning following JSON:\n%@", json);  
 }
 
 - (void) _handleOrganizer
