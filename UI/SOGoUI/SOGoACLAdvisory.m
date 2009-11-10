@@ -206,13 +206,14 @@
   recipient = [[SOGoUserManager sharedUserManager]
 		getFullEmailForUID: recipientUID];
 
+#warning SOPE is just plain stupid here - if you change the case of keys, it will break the encoding of fields
   headerMap = [NGMutableHashMap hashMapWithCapacity: 5];
   [headerMap setObject: @"multipart/alternative" forKey: @"content-type"];
-  [headerMap setObject: fullMail forKey: @"From"];
-  [headerMap setObject: recipient forKey: @"To"];
+  [headerMap setObject: fullMail forKey: @"from"];
+  [headerMap setObject: recipient forKey: @"to"];
   date = [[NSCalendarDate date] rfc822DateString];
-  [headerMap setObject: date forKey: @"Date"];
-  [headerMap setObject: [self subject] forKey: @"Subject"];
+  [headerMap setObject: date forKey: @"date"];
+  [headerMap setObject: [self subject] forKey: @"subject"];
   message = [NGMimeMessage messageWithHeader: headerMap];
 
   body = [[NGMimeMultipartBody alloc] initWithPart: message];

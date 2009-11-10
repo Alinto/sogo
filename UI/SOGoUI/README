@@ -1,7 +1,0 @@
-Defaults
-========
-
-
-Name			Value	Synopsis
-------------------------------------------------------------------------------
-SOGoUIxDebugEnabled	BOOL	Trigger display of debug UI. Default is NO.
