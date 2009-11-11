@@ -329,6 +329,15 @@ static BOOL uixDebugEnabled = NO;
 
 - (NSString *) applicationPath
 {
+  NSString *appName;
+
+  appName = [[context request] applicationName];
+
+  return [NSString stringWithFormat: @"/%@", appName];
+}
+
+- (NSString *) modulePath
+{
   SOGoObject *currentClient, *parent;
   BOOL found;
   Class objectClass, userFolderClass;

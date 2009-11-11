@@ -58,7 +58,7 @@ static NSArray *supportedLanguages = nil;
 
 - (NSString *) connectURL
 {
-  return [NSString stringWithFormat: @"%@connect", [self applicationPath]];
+  return [NSString stringWithFormat: @"%@/connect", [self applicationPath]];
 }
 
 /* actions */
