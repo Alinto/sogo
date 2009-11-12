@@ -27,31 +27,20 @@
 # along with this program; see the file COPYING.  If not, write to
 # the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
-
-# sogod		Scalable OpenGroupware.org (Inverse edition)
-
-PREFORK=1
-SOGO_ARGS=""
-USER=sogo
-
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
-. /etc/rc.d/init.d/functions
-
-if [ -z "$GNUSTEP_SYSTEM_ROOT" ]
-then
-  . /usr/GNUstep/System/Library/Makefiles/GNUstep.sh
-fi
-
-REAL_DAEMON=sogod
-DAEMON=/usr/sbin/sogod
-NAME=sogod
+NAME=sogo
+DAEMON=/usr/GNUstep/System/Tools/Admin/sogod
 DESC="Scalable OpenGroupware.Org (Inverse edition)"
 
-PIDFILE=/var/run/sogo/sogod.
+USER=$NAME
+PREFORK=1
 
-if [ -f /etc/sysconfig/sogo ]; then
-    . /etc/sysconfig/sogo
+PIDFILE=/var/run/$NAME/$NAME.pid
+LOGFILE=/var/log/$NAME/$NAME.log
+
+if [ -f /etc/sysconfig/$NAME ]; then
+    . /etc/sysconfig/$NAME
 fi
 
 if [ ! -x $DAEMON ]; then
@@ -69,114 +58,95 @@ checkDir() {
 
     if [ `/usr/bin/stat "$directory" -c %U` != "$USER" ]
     then
-	echo "$directory is not owned by the sogo user."
+	echo "$directory is not owned by the '$USER' user."
 	exit 1
     fi
 }
 
-checkDir /var/run/sogo
-checkDir /var/spool/sogo
+checkDir /var/run/$NAME
+checkDir /var/spool/$NAME
+checkDir /var/log/$NAME
 
-#set -e
+. /etc/rc.d/init.d/functions
+if [ -z "$GNUSTEP_SYSTEM_ROOT" ]
+then
+  . /usr/GNUstep/System/Library/Makefiles/GNUstep.sh
+fi
+
+DAEMON_OPTS="-WOWorkersCount $PREFORK -WOPidFile $PIDFILE -WOLogFile $LOGFILE"
 
 start() {
     echo $"Starting $DESC: "
-    for ((a=1; a <= PREFORK ; a++))
-    do
-        ppid="`cat ${PIDFILE}${a} 2> /dev/null`"
-	if [ -n "$ppid" ]
+    pid="`cat $PIDFILE 2> /dev/null`"
+    if [ -n "$pid" ]
+    then
+        pid="`ps --pid ${pid} -o pid=`"
+	if [ -n "$pid" ]
 	then
-            ppid="`ps --pid ${ppid} -o pid=`"
-	    if [ -n "$ppid" ]
-	    then
-		echo "  $DAEMON $a already running. Skipped."
-	    else
-		rm -f ${PIDFILE}${a}
-		daemon --user="$USER" "$DAEMON" $a
-		echo "  $DAEMON $a (stale pid file removed)"
-	    fi
+	    echo "  $NAME already running. Skipped."
 	else
-	    daemon --user="$USER" "$DAEMON" $a
-            echo "  $DAEMON $a"
+	    rm -f $PIDFILE
+	    daemon --user="$USER" --pidfile="$PIDFILE" "$DAEMON" $DAEMON_OPTS
+	    echo "  $NAME (stale pid file removed)"
 	fi
-    done
+    else
+	daemon --user="$USER" --pidfile="$PIDFILE" "$DAEMON" $DAEMON_OPTS
+        echo "  $NAME"
+    fi
 }
 
 stop() {
     echo $"Stopping $DESC: "
-    su "$USER" -c '/usr/bin/killall gdnc >& /dev/null'
     # We kill the parent processes with SIGTERM so that they
     # can exit gracefully.
-    for ((a=1; a <= PREFORK ; a++))
-    do
-        ppid="`cat ${PIDFILE}${a} 2> /dev/null`"
-	if [ -n "$ppid" ]
+    pid="`cat $PIDFILE 2> /dev/null`"
+    if [ -n "$pid" ]
+    then
+        pid="`ps --pid ${pid} -o pid=`"
+	if [ -n "$pid" ]
 	then
-            ppid="`ps --pid ${ppid} -o pid=`"
-	    if [ -n "$ppid" ]
+	    if kill $pid >& /dev/null
 	    then
-		if kill $ppid >& /dev/null
-		then
-		    echo "  $DAEMON $a stopped"
-		fi
-	    else
-		echo "  $DAEMON $a not running"
+                sleep 1
+                pid="`ps --pid ${pid} -o pid=`"
+	        if [ -n "$pid" ]
+	        then
+		    echo "  $NAME stopped"
+                else
+		    kill -9 $pid >& /dev/null
+		    echo "  $NAME killed"
+                fi
+	        rm -f $PIDFILE
 	    fi
 	else
-	    echo "  $DAEMON $a not running"
+	    echo "  $NAME not running"
 	fi
-    done
-
-    sleep 1
-    # We kill the parent and child processes with SIGKILL to make sure they
-    # really are shutdown, and then we remove their pidfile.
-    for ((a=1; a <= PREFORK ; a++))
-    do
-	ppid="`cat ${PIDFILE}${a} 2> /dev/null`"
-	if [ -n "$ppid" ]
-	then
-            ppid="`ps --pid ${ppid} -o pid= 2> /dev/null`"
-	    if [ -n "$ppid" ]
-	    then
-		kill -9 $ppid >& /dev/null
-		pid="`ps --ppid ${ppid} -o pid= 2> /dev/null`"
-		if [ -n "$pid" ]
-		then
-		    kill -9 $pid >& /dev/null
-		fi
-		echo "  $DAEMON $a killed"
-	    fi
-	fi
-        rm -f ${PIDFILE}${a}
-    done
+    else
+	echo "  $NAME not running"
+    fi
 }
 
 restart() {
     echo $"Restarting $DESC: "
-    su "$USER" -c '/usr/bin/killall gdnc >& /dev/null'
-    for ((a=1; a <= PREFORK ; a++))
-    do
-	ppid="`cat ${PIDFILE}${a} 2> /dev/null`"
-	if [ -n "$ppid" ]
+    pid="`cat $PIDFILE 2> /dev/null`"
+    if [ -n "$pid" ]
+    then
+        pid="`ps --pid ${pid} -o pid=`"
+	if [ -n "$pid" ]
 	then
-            ppid="`ps --pid ${ppid} -o pid=`"
-	    if [ -n "$ppid" ]
+	    if kill $pid >& /dev/null
 	    then
-		kill $ppid >& /dev/null
-		sleep 1
+                sleep 1
+                pid="`ps --pid ${pid} -o pid=`"
+	        if [ -n "$pid" ]
+	        then
+		    kill -9 $pid >& /dev/null
+                fi
 	    fi
-            ppid="`ps --pid ${ppid} -o pid=`"
-	    if [ -n "$ppid" ]
-	    then
-		pid="`ps --ppid ${ppid} -o pid=`"
-		kill -9 $ppid >& /dev/null
-		kill -9 $pid >& /dev/null
-	    fi
-            rm -f ${PIDFILE}${a}
 	fi
-        daemon --user="$USER" "$DAEMON" $a
-        echo "  $DAEMON $a"
-    done
+    fi
+    daemon --user="$USER" --pidfile="$PIDFILE" "$DAEMON" $DAEMON_OPTS
+    echo "  $NAME"
 }
 
 case "$1" in
@@ -186,15 +156,15 @@ case "$1" in
   stop)
 	stop
 	;;
-  restart|force-reload)
+  restart)
 	restart
 	;;
   status)
-  	status $REAL_DAEMON
+  	status -p "$PIDFILE" $DAEMON
 	;;
   *)
 	N=/etc/init.d/$NAME
-	echo "Usage: $N {start|stop|restart|force-reload|status}" >&2
+	echo "Usage: $N {start|stop|restart|status}" >&2
 	exit 1
 	;;
 esac

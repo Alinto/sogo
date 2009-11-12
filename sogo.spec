@@ -137,7 +137,7 @@ mkdir -p ${RPM_BUILD_ROOT}/var/spool/sogo
 cp Apache/SOGo.conf ${RPM_BUILD_ROOT}/etc/httpd/conf.d/
 cp Scripts/tmpwatch ${RPM_BUILD_ROOT}/etc/cron.daily/sogo-tmpwatch
 cp Scripts/sogo-init.d-redhat ${RPM_BUILD_ROOT}/etc/init.d/sogod
-cp Scripts/sogod-wrapper ${RPM_BUILD_ROOT}/usr/sbin/sogod
+cp Scripts/sogod-wrapper ${RPM_BUILD_ROOT}/usr/sbin/sogod-wrapper
 chmod 755 ${RPM_BUILD_ROOT}/usr/sbin/sogod
 chmod 755 ${RPM_BUILD_ROOT}/etc/init.d/sogod
 cp Scripts/sogo-default ${RPM_BUILD_ROOT}/etc/sysconfig/sogo

@@ -82,5 +82,4 @@ fi
 
 # echo "SOGOD: $sogod -WOPort $listen" 2>&1
 
-exec $sogod -WOPort $listen >> /var/log/sogo/sogod-$port.log 2>&1 &
-echo $! > $PIDFILE
+exec $sogod -WOPort $listen -WOLogFile /var/log/sogo/sogod.log -WOPidFile $PIDFILE

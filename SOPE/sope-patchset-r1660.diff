@@ -1,7 +1,7 @@
 Index: sope-ldap/NGLdap/NGLdapEntry.m
 ===================================================================
---- sope-ldap/NGLdap/NGLdapEntry.m	(revision 1660)
-+++ sope-ldap/NGLdap/NGLdapEntry.m	(working copy)
+--- sope-ldap/NGLdap/NGLdapEntry.m	(révision 1660)
++++ sope-ldap/NGLdap/NGLdapEntry.m	(copie de travail)
 @@ -105,14 +105,16 @@
  - (NGLdapAttribute *)attributeWithName:(NSString *)_name {
    NSEnumerator    *e;
@@ -23,8 +23,8 @@ Index: sope-ldap/NGLdap/NGLdapEntry.m
    return nil;
 Index: sope-ldap/NGLdap/ChangeLog
 ===================================================================
---- sope-ldap/NGLdap/ChangeLog	(revision 1660)
-+++ sope-ldap/NGLdap/ChangeLog	(working copy)
+--- sope-ldap/NGLdap/ChangeLog	(révision 1660)
++++ sope-ldap/NGLdap/ChangeLog	(copie de travail)
 @@ -1,3 +1,8 @@
 +2009-08-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 +
@@ -36,8 +36,8 @@ Index: sope-ldap/NGLdap/ChangeLog
  	* NGLdapConnection.m (useSSL,startTLS): new method enabling
 Index: sope-gdl1/PostgreSQL/PostgreSQL72Channel.m
 ===================================================================
---- sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(revision 1660)
-+++ sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(working copy)
+--- sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(révision 1660)
++++ sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(copie de travail)
 @@ -713,6 +713,39 @@
    return ms;
  }
@@ -80,8 +80,8 @@ Index: sope-gdl1/PostgreSQL/PostgreSQL72Channel.m
  @implementation PostgreSQL72Channel(PrimaryKeyGeneration)
 Index: sope-gdl1/MySQL/MySQL4Channel.m
 ===================================================================
---- sope-gdl1/MySQL/MySQL4Channel.m	(revision 1660)
-+++ sope-gdl1/MySQL/MySQL4Channel.m	(working copy)
+--- sope-gdl1/MySQL/MySQL4Channel.m	(révision 1660)
++++ sope-gdl1/MySQL/MySQL4Channel.m	(copie de travail)
 @@ -755,6 +755,39 @@
    return pkey;
  }
@@ -124,8 +124,8 @@ Index: sope-gdl1/MySQL/MySQL4Channel.m
  void __link_MySQL4Channel() {
 Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
 ===================================================================
---- sope-gdl1/Oracle8/OracleAdaptorChannel.m	(revision 1660)
-+++ sope-gdl1/Oracle8/OracleAdaptorChannel.m	(working copy)
+--- sope-gdl1/Oracle8/OracleAdaptorChannel.m	(révision 1660)
++++ sope-gdl1/Oracle8/OracleAdaptorChannel.m	(copie de travail)
 @@ -1,7 +1,7 @@
  /*
  **  OracleAdaptorChannel.m
@@ -389,8 +389,8 @@ Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
  				    @"  c_lastmodified INTEGER NOT NULL,\n"
 Index: sope-gdl1/Oracle8/OracleAdaptorChannelController.m
 ===================================================================
---- sope-gdl1/Oracle8/OracleAdaptorChannelController.m	(revision 1660)
-+++ sope-gdl1/Oracle8/OracleAdaptorChannelController.m	(working copy)
+--- sope-gdl1/Oracle8/OracleAdaptorChannelController.m	(révision 1660)
++++ sope-gdl1/Oracle8/OracleAdaptorChannelController.m	(copie de travail)
 @@ -31,6 +31,8 @@
  #import <Foundation/Foundation.h>
  #import <GDLAccess/EOSQLExpression.h>
@@ -437,8 +437,8 @@ Index: sope-gdl1/Oracle8/OracleAdaptorChannelController.m
  
 Index: sope-mime/NGImap4/NGImap4Functions.m
 ===================================================================
---- sope-mime/NGImap4/NGImap4Functions.m	(revision 1660)
-+++ sope-mime/NGImap4/NGImap4Functions.m	(working copy)
+--- sope-mime/NGImap4/NGImap4Functions.m	(révision 1660)
++++ sope-mime/NGImap4/NGImap4Functions.m	(copie de travail)
 @@ -367,3 +367,16 @@
  }
  
@@ -458,8 +458,8 @@ Index: sope-mime/NGImap4/NGImap4Functions.m
 +}
 Index: sope-mime/NGImap4/NGImap4Client.h
 ===================================================================
---- sope-mime/NGImap4/NGImap4Client.h	(revision 1660)
-+++ sope-mime/NGImap4/NGImap4Client.h	(working copy)
+--- sope-mime/NGImap4/NGImap4Client.h	(révision 1660)
++++ sope-mime/NGImap4/NGImap4Client.h	(copie de travail)
 @@ -62,6 +62,8 @@
    NGImap4ResponseNormalizer *normer;
    NSMutableArray            *responseReceiver;  
@@ -488,8 +488,8 @@ Index: sope-mime/NGImap4/NGImap4Client.h
  - (NSDictionary *)copyUid:(unsigned)_uid    toFolder:(NSString *)_folder;
 Index: sope-mime/NGImap4/NGImap4Client.m
 ===================================================================
---- sope-mime/NGImap4/NGImap4Client.m	(revision 1660)
-+++ sope-mime/NGImap4/NGImap4Client.m	(working copy)
+--- sope-mime/NGImap4/NGImap4Client.m	(révision 1660)
++++ sope-mime/NGImap4/NGImap4Client.m	(copie de travail)
 @@ -24,6 +24,8 @@
  #include "NGImap4Client.h"
  #include "NGImap4Context.h"
@@ -1001,8 +1001,8 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  - (void)setContext:(NGImap4Context *)_ctx {
 Index: sope-mime/NGImap4/NGSieveClient.m
 ===================================================================
---- sope-mime/NGImap4/NGSieveClient.m	(revision 1660)
-+++ sope-mime/NGImap4/NGSieveClient.m	(working copy)
+--- sope-mime/NGImap4/NGSieveClient.m	(révision 1660)
++++ sope-mime/NGImap4/NGSieveClient.m	(copie de travail)
 @@ -294,8 +294,8 @@
        return con;
    }
@@ -1037,8 +1037,8 @@ Index: sope-mime/NGImap4/NGSieveClient.m
    /* write */
 Index: sope-mime/NGImap4/NGImap4Connection.h
 ===================================================================
---- sope-mime/NGImap4/NGImap4Connection.h	(revision 1660)
-+++ sope-mime/NGImap4/NGImap4Connection.h	(working copy)
+--- sope-mime/NGImap4/NGImap4Connection.h	(révision 1660)
++++ sope-mime/NGImap4/NGImap4Connection.h	(copie de travail)
 @@ -89,6 +89,9 @@
  
  - (NSArray *)subfoldersForURL:(NSURL *)_url;
@@ -1051,8 +1051,8 @@ Index: sope-mime/NGImap4/NGImap4Connection.h
  
 Index: sope-mime/NGImap4/NGImap4Connection.m
 ===================================================================
---- sope-mime/NGImap4/NGImap4Connection.m	(revision 1660)
-+++ sope-mime/NGImap4/NGImap4Connection.m	(working copy)
+--- sope-mime/NGImap4/NGImap4Connection.m	(révision 1660)
++++ sope-mime/NGImap4/NGImap4Connection.m	(copie de travail)
 @@ -22,6 +22,7 @@
  #include "NGImap4Connection.h"
  #include "NGImap4MailboxInfo.h"
@@ -1191,8 +1191,8 @@ Index: sope-mime/NGImap4/NGImap4Connection.m
    /* create */
 Index: sope-mime/NGImap4/NGImap4ResponseNormalizer.m
 ===================================================================
---- sope-mime/NGImap4/NGImap4ResponseNormalizer.m	(revision 1660)
-+++ sope-mime/NGImap4/NGImap4ResponseNormalizer.m	(working copy)
+--- sope-mime/NGImap4/NGImap4ResponseNormalizer.m	(révision 1660)
++++ sope-mime/NGImap4/NGImap4ResponseNormalizer.m	(copie de travail)
 @@ -76,22 +76,6 @@
    return self;
  }
@@ -1290,8 +1290,8 @@ Index: sope-mime/NGImap4/NGImap4ResponseNormalizer.m
    if (objs) free(objs);
 Index: sope-mime/NGImap4/EOQualifier+IMAPAdditions.m
 ===================================================================
---- sope-mime/NGImap4/EOQualifier+IMAPAdditions.m	(revision 1660)
-+++ sope-mime/NGImap4/EOQualifier+IMAPAdditions.m	(working copy)
+--- sope-mime/NGImap4/EOQualifier+IMAPAdditions.m	(révision 1660)
++++ sope-mime/NGImap4/EOQualifier+IMAPAdditions.m	(copie de travail)
 @@ -53,13 +53,13 @@
    if (FlagKeyWords) return;
  
@@ -1451,8 +1451,8 @@ Index: sope-mime/NGImap4/EOQualifier+IMAPAdditions.m
    [search appendString:[lvalue stringValue]];
 Index: sope-mime/NGImap4/NGImap4ResponseParser.m
 ===================================================================
---- sope-mime/NGImap4/NGImap4ResponseParser.m	(revision 1660)
-+++ sope-mime/NGImap4/NGImap4ResponseParser.m	(working copy)
+--- sope-mime/NGImap4/NGImap4ResponseParser.m	(révision 1660)
++++ sope-mime/NGImap4/NGImap4ResponseParser.m	(copie de travail)
 @@ -31,6 +31,7 @@
  @interface NGImap4ResponseParser(ParsingPrivates)
  - (BOOL)_parseNumberUntaggedResponse:(NGMutableHashMap *)result_;
@@ -1931,8 +1931,8 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
            self->serverResponseDebug = 
 Index: sope-mime/NGImap4/ChangeLog
 ===================================================================
---- sope-mime/NGImap4/ChangeLog	(revision 1660)
-+++ sope-mime/NGImap4/ChangeLog	(working copy)
+--- sope-mime/NGImap4/ChangeLog	(révision 1660)
++++ sope-mime/NGImap4/ChangeLog	(copie de travail)
 @@ -1,3 +1,61 @@
 +2009-10-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 +
@@ -1997,8 +1997,8 @@ Index: sope-mime/NGImap4/ChangeLog
  	* NGImap4Connection.m: some fix for folders ending with a slash (OGo
 Index: sope-mime/NGImap4/NGImap4ConnectionManager.m
 ===================================================================
---- sope-mime/NGImap4/NGImap4ConnectionManager.m	(revision 1660)
-+++ sope-mime/NGImap4/NGImap4ConnectionManager.m	(working copy)
+--- sope-mime/NGImap4/NGImap4ConnectionManager.m	(révision 1660)
++++ sope-mime/NGImap4/NGImap4ConnectionManager.m	(copie de travail)
 @@ -38,6 +38,9 @@
    debugCache   = [ud boolForKey:@"NGImap4EnableIMAP4CacheDebug"];
    poolingOff   = [ud boolForKey:@"NGImap4DisableIMAP4Pooling"];
@@ -2124,8 +2124,8 @@ Index: sope-mime/NGImap4/NGImap4ConnectionManager.m
  /* client object */
 Index: sope-mime/NGImap4/NSString+Imap4.m
 ===================================================================
---- sope-mime/NGImap4/NSString+Imap4.m	(revision 1660)
-+++ sope-mime/NGImap4/NSString+Imap4.m	(working copy)
+--- sope-mime/NGImap4/NSString+Imap4.m	(révision 1660)
++++ sope-mime/NGImap4/NSString+Imap4.m	(copie de travail)
 @@ -20,117 +20,86 @@
    02111-1307, USA.
  */
@@ -2688,8 +2688,8 @@ Index: sope-mime/NGImap4/NSString+Imap4.m
 -}
 Index: sope-mime/NGImap4/NGImap4Functions.h
 ===================================================================
---- sope-mime/NGImap4/NGImap4Functions.h	(revision 1660)
-+++ sope-mime/NGImap4/NGImap4Functions.h	(working copy)
+--- sope-mime/NGImap4/NGImap4Functions.h	(révision 1660)
++++ sope-mime/NGImap4/NGImap4Functions.h	(copie de travail)
 @@ -58,4 +58,6 @@
                      id<NGImap4Folder>_folder);
  BOOL _createSubFolderWithName(id<NGImap4Folder> self, NSString *_name, BOOL _app);
@@ -2699,8 +2699,8 @@ Index: sope-mime/NGImap4/NGImap4Functions.h
  #endif /* __NGMime_NGImap4_NGImap4Functions_H__ */
 Index: sope-mime/NGMail/NGMailAddressParser.h
 ===================================================================
---- sope-mime/NGMail/NGMailAddressParser.h	(revision 1660)
-+++ sope-mime/NGMail/NGMailAddressParser.h	(working copy)
+--- sope-mime/NGMail/NGMailAddressParser.h	(révision 1660)
++++ sope-mime/NGMail/NGMailAddressParser.h	(copie de travail)
 @@ -24,7 +24,9 @@
  
  #import <Foundation/NSObject.h>
@@ -2737,8 +2737,8 @@ Index: sope-mime/NGMail/NGMailAddressParser.h
  
 Index: sope-mime/NGMail/NGMimeMessageGenerator.m
 ===================================================================
---- sope-mime/NGMail/NGMimeMessageGenerator.m	(revision 1660)
-+++ sope-mime/NGMail/NGMimeMessageGenerator.m	(working copy)
+--- sope-mime/NGMail/NGMimeMessageGenerator.m	(révision 1660)
++++ sope-mime/NGMail/NGMimeMessageGenerator.m	(copie de travail)
 @@ -86,37 +86,40 @@
    char         *des    = NULL;
    unsigned int cnt;
@@ -2803,8 +2803,8 @@ Index: sope-mime/NGMail/NGMimeMessageGenerator.m
      unsigned    isoEndLen = 2;
 Index: sope-mime/NGMail/NGMailAddressParser.m
 ===================================================================
---- sope-mime/NGMail/NGMailAddressParser.m	(revision 1660)
-+++ sope-mime/NGMail/NGMailAddressParser.m	(working copy)
+--- sope-mime/NGMail/NGMailAddressParser.m	(révision 1660)
++++ sope-mime/NGMail/NGMailAddressParser.m	(copie de travail)
 @@ -52,9 +52,9 @@
    StrClass = [NSString class];
  }
@@ -2948,8 +2948,8 @@ Index: sope-mime/NGMail/NGMailAddressParser.m
    self->dataPos   = 0;
 Index: sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m
 ===================================================================
---- sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m	(revision 1660)
-+++ sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m	(working copy)
+--- sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m	(révision 1660)
++++ sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m	(copie de travail)
 @@ -19,88 +19,45 @@
    02111-1307, USA.
  */
@@ -3353,8 +3353,8 @@ Index: sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m
  #if 0  
 Index: sope-mime/NGMime/NGMimeMultipartBodyParser.m
 ===================================================================
---- sope-mime/NGMime/NGMimeMultipartBodyParser.m	(revision 1660)
-+++ sope-mime/NGMime/NGMimeMultipartBodyParser.m	(working copy)
+--- sope-mime/NGMime/NGMimeMultipartBodyParser.m	(révision 1660)
++++ sope-mime/NGMime/NGMimeMultipartBodyParser.m	(copie de travail)
 @@ -428,6 +428,7 @@
    NSString   *boundary     = nil;
    NSArray    *rawBodyParts = nil;
@@ -3378,8 +3378,8 @@ Index: sope-mime/NGMime/NGMimeMultipartBodyParser.m
    if (rawBodyParts) {
 Index: sope-mime/NGMime/NGMimeHeaderFieldGeneratorSet.m
 ===================================================================
---- sope-mime/NGMime/NGMimeHeaderFieldGeneratorSet.m	(revision 1660)
-+++ sope-mime/NGMime/NGMimeHeaderFieldGeneratorSet.m	(working copy)
+--- sope-mime/NGMime/NGMimeHeaderFieldGeneratorSet.m	(révision 1660)
++++ sope-mime/NGMime/NGMimeHeaderFieldGeneratorSet.m	(copie de travail)
 @@ -77,6 +77,7 @@
      [rfc822Set setGenerator:gen forField:@"bcc"];
      [rfc822Set setGenerator:gen forField:Fields->from];
@@ -3390,8 +3390,8 @@ Index: sope-mime/NGMime/NGMimeHeaderFieldGeneratorSet.m
    
 Index: sope-mime/NGMime/NGMimeType.m
 ===================================================================
---- sope-mime/NGMime/NGMimeType.m	(revision 1660)
-+++ sope-mime/NGMime/NGMimeType.m	(working copy)
+--- sope-mime/NGMime/NGMimeType.m	(révision 1660)
++++ sope-mime/NGMime/NGMimeType.m	(copie de travail)
 @@ -120,30 +120,30 @@
    
    /* some unsupported, but known encoding */
@@ -3496,8 +3496,8 @@ Index: sope-mime/NGMime/NGMimeType.m
  - (NSString *)stringValue {
 Index: sope-mime/NGMime/NGMimeBodyPart.m
 ===================================================================
---- sope-mime/NGMime/NGMimeBodyPart.m	(revision 1660)
-+++ sope-mime/NGMime/NGMimeBodyPart.m	(working copy)
+--- sope-mime/NGMime/NGMimeBodyPart.m	(révision 1660)
++++ sope-mime/NGMime/NGMimeBodyPart.m	(copie de travail)
 @@ -31,18 +31,6 @@
    return 2;
  }
@@ -3534,8 +3534,8 @@ Index: sope-mime/NGMime/NGMimeBodyPart.m
  - (NSString *)contentId {
 Index: sope-mime/NGMime/ChangeLog
 ===================================================================
---- sope-mime/NGMime/ChangeLog	(revision 1660)
-+++ sope-mime/NGMime/ChangeLog	(working copy)
+--- sope-mime/NGMime/ChangeLog	(révision 1660)
++++ sope-mime/NGMime/ChangeLog	(copie de travail)
 @@ -1,3 +1,25 @@
 +2008-09-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 +
@@ -3564,8 +3564,8 @@ Index: sope-mime/NGMime/ChangeLog
  	* fixes for OGo bug #789 (reply-to QP encoding)
 Index: sope-mime/NGMime/NGMimeContentTypeHeaderFieldGenerator.m
 ===================================================================
---- sope-mime/NGMime/NGMimeContentTypeHeaderFieldGenerator.m	(revision 1660)
-+++ sope-mime/NGMime/NGMimeContentTypeHeaderFieldGenerator.m	(working copy)
+--- sope-mime/NGMime/NGMimeContentTypeHeaderFieldGenerator.m	(révision 1660)
++++ sope-mime/NGMime/NGMimeContentTypeHeaderFieldGenerator.m	(copie de travail)
 @@ -36,8 +36,7 @@
    NGMimeType    *type = nil; // only one content-type field
    NSString      *tmp  = nil;
@@ -3704,8 +3704,8 @@ Index: sope-mime/NGMime/NGMimeContentTypeHeaderFieldGenerator.m
      }
 Index: sope-mime/NGMime/NGMimePartGenerator.m
 ===================================================================
---- sope-mime/NGMime/NGMimePartGenerator.m	(revision 1660)
-+++ sope-mime/NGMime/NGMimePartGenerator.m	(working copy)
+--- sope-mime/NGMime/NGMimePartGenerator.m	(révision 1660)
++++ sope-mime/NGMime/NGMimePartGenerator.m	(copie de travail)
 @@ -155,8 +155,9 @@
    BOOL     isMultiValue, isFirst;
    
@@ -3729,8 +3729,8 @@ Index: sope-mime/NGMime/NGMimePartGenerator.m
    
 Index: sope-mime/NGMime/NGMimeBodyParser.m
 ===================================================================
---- sope-mime/NGMime/NGMimeBodyParser.m	(revision 1660)
-+++ sope-mime/NGMime/NGMimeBodyParser.m	(working copy)
+--- sope-mime/NGMime/NGMimeBodyParser.m	(révision 1660)
++++ sope-mime/NGMime/NGMimeBodyParser.m	(copie de travail)
 @@ -67,7 +67,10 @@
    if (_data == nil) return nil;
    
@@ -3768,8 +3768,8 @@ Index: sope-mime/NGMime/NGMimeBodyParser.m
  }
 Index: sope-mime/NGMime/NGMimePartParser.h
 ===================================================================
---- sope-mime/NGMime/NGMimePartParser.h	(revision 1660)
-+++ sope-mime/NGMime/NGMimePartParser.h	(working copy)
+--- sope-mime/NGMime/NGMimePartParser.h	(révision 1660)
++++ sope-mime/NGMime/NGMimePartParser.h	(copie de travail)
 @@ -117,6 +117,7 @@
      BOOL parserParseRawBodyDataOfPart:1;
      BOOL parserBodyParserForPart:1;
@@ -3790,8 +3790,8 @@ Index: sope-mime/NGMime/NGMimePartParser.h
  @interface NSObject(NGMimePartParser)
 Index: sope-mime/NGMime/NGMimePartParser.m
 ===================================================================
---- sope-mime/NGMime/NGMimePartParser.m	(revision 1660)
-+++ sope-mime/NGMime/NGMimePartParser.m	(working copy)
+--- sope-mime/NGMime/NGMimePartParser.m	(révision 1660)
++++ sope-mime/NGMime/NGMimePartParser.m	(copie de travail)
 @@ -227,7 +227,7 @@
  }
  
@@ -3815,8 +3815,8 @@ Index: sope-mime/NGMime/NGMimePartParser.m
      : [NGMimeType mimeType:[ctype stringValue]];
 Index: sope-mime/NGMime/NGMimeAddressHeaderFieldGenerator.m
 ===================================================================
---- sope-mime/NGMime/NGMimeAddressHeaderFieldGenerator.m	(revision 1660)
-+++ sope-mime/NGMime/NGMimeAddressHeaderFieldGenerator.m	(working copy)
+--- sope-mime/NGMime/NGMimeAddressHeaderFieldGenerator.m	(révision 1660)
++++ sope-mime/NGMime/NGMimeAddressHeaderFieldGenerator.m	(copie de travail)
 @@ -105,10 +105,10 @@
      }
      
@@ -3901,8 +3901,8 @@ Index: sope-mime/NGMime/NGMimeAddressHeaderFieldGenerator.m
    return data;
 Index: sope-mime/NGMime/NGMimeContentDispositionHeaderFieldGenerator.m
 ===================================================================
---- sope-mime/NGMime/NGMimeContentDispositionHeaderFieldGenerator.m	(revision 1660)
-+++ sope-mime/NGMime/NGMimeContentDispositionHeaderFieldGenerator.m	(working copy)
+--- sope-mime/NGMime/NGMimeContentDispositionHeaderFieldGenerator.m	(révision 1660)
++++ sope-mime/NGMime/NGMimeContentDispositionHeaderFieldGenerator.m	(copie de travail)
 @@ -49,80 +49,70 @@
    
    // TODO: move the stuff below to some NSString or NSData category?
@@ -4037,8 +4037,8 @@ Index: sope-mime/NGMime/NGMimeContentDispositionHeaderFieldGenerator.m
  }
 Index: sope-core/NGExtensions/NGExtensions/NSString+Ext.h
 ===================================================================
---- sope-core/NGExtensions/NGExtensions/NSString+Ext.h	(revision 1660)
-+++ sope-core/NGExtensions/NGExtensions/NSString+Ext.h	(working copy)
+--- sope-core/NGExtensions/NGExtensions/NSString+Ext.h	(révision 1660)
++++ sope-core/NGExtensions/NGExtensions/NSString+Ext.h	(copie de travail)
 @@ -30,6 +30,7 @@
  
  @interface NSString(GSAdditions)
@@ -4075,8 +4075,8 @@ Index: sope-core/NGExtensions/NGExtensions/NSString+Ext.h
  /* specific to libFoundation */
 Index: sope-core/NGExtensions/FdExt.subproj/NSString+Ext.m
 ===================================================================
---- sope-core/NGExtensions/FdExt.subproj/NSString+Ext.m	(revision 1660)
-+++ sope-core/NGExtensions/FdExt.subproj/NSString+Ext.m	(working copy)
+--- sope-core/NGExtensions/FdExt.subproj/NSString+Ext.m	(révision 1660)
++++ sope-core/NGExtensions/FdExt.subproj/NSString+Ext.m	(copie de travail)
 @@ -39,18 +39,6 @@
          : (NSString *)[[self copy] autorelease];
  }
@@ -4164,8 +4164,8 @@ Index: sope-core/NGExtensions/FdExt.subproj/NSString+Ext.m
  - (BOOL)isAbsoluteURL
 Index: sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m
 ===================================================================
---- sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m	(revision 1660)
-+++ sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m	(working copy)
+--- sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m	(révision 1660)
++++ sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m	(copie de travail)
 @@ -140,8 +140,12 @@
  
  
@@ -4207,8 +4207,8 @@ Index: sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m
  static char *iconv_wrapper(id self, char *_src, unsigned _srcLen,
 Index: sope-core/NGExtensions/EOExt.subproj/EOGlobalID+Ext.m
 ===================================================================
---- sope-core/NGExtensions/EOExt.subproj/EOGlobalID+Ext.m	(revision 1660)
-+++ sope-core/NGExtensions/EOExt.subproj/EOGlobalID+Ext.m	(working copy)
+--- sope-core/NGExtensions/EOExt.subproj/EOGlobalID+Ext.m	(révision 1660)
++++ sope-core/NGExtensions/EOExt.subproj/EOGlobalID+Ext.m	(copie de travail)
 @@ -19,6 +19,7 @@
    02111-1307, USA.
  */
@@ -4217,10 +4217,84 @@ Index: sope-core/NGExtensions/EOExt.subproj/EOGlobalID+Ext.m
  #import <EOControl/EOGlobalID.h>
  #import <Foundation/NSString.h>
  
+Index: sope-core/NGStreams/NGStreams/NGDatagramSocket.h
+===================================================================
+--- sope-core/NGStreams/NGStreams/NGDatagramSocket.h	(révision 1660)
++++ sope-core/NGStreams/NGStreams/NGDatagramSocket.h	(copie de travail)
+@@ -69,7 +69,7 @@
+ + (id)socketBoundToAddress:(id<NGSocketAddress>)_address;
+ 
+ #if !defined(WIN32)
+-+ (BOOL)socketPair:(id<NGSocket>[2])_pair inDomain:(id<NGSocketDomain>)_domain;
+++ (BOOL)socketPair:(id<NGSocket>[2])_pair;
+ #endif
+ 
+ // accessors
+Index: sope-core/NGStreams/NGStreams/NGActiveSocket.h
+===================================================================
+--- sope-core/NGStreams/NGStreams/NGActiveSocket.h	(révision 1660)
++++ sope-core/NGStreams/NGStreams/NGActiveSocket.h	(copie de travail)
+@@ -60,7 +60,7 @@
+ - (id)initWithDomain:(id<NGSocketDomain>)_domain; // designated initializer
+ 
+ #if !defined(WIN32)
+-+ (BOOL)socketPair:(id<NGSocket>[2])_pair inDomain:(id<NGSocketDomain>)_domain;
+++ (BOOL)socketPair:(id<NGSocket>[2])_pair;
+ #endif
+ 
+ // ******************** operations ********************
+Index: sope-core/NGStreams/NGDatagramSocket.m
+===================================================================
+--- sope-core/NGStreams/NGDatagramSocket.m	(révision 1660)
++++ sope-core/NGStreams/NGDatagramSocket.m	(copie de travail)
+@@ -25,6 +25,8 @@
+ #endif
+ 
+ #include <NGStreams/NGDescriptorFunctions.h>
++#include <NGStreams/NGLocalSocketAddress.h>
++#include <NGStreams/NGLocalSocketDomain.h>
+ #include "NGDatagramSocket.h"
+ #include "NGDatagramPacket.h"
+ #include "NGSocketExceptions.h"
+@@ -55,19 +57,21 @@
+ 
+ #if !defined(WIN32) || defined(__CYGWIN32__)
+ 
+-+ (BOOL)socketPair:(id<NGSocket>[2])_pair inDomain:(id<NGSocketDomain>)_domain {
+++ (BOOL)socketPair:(id<NGSocket>[2])_pair {
+   int fds[2];
++  NGLocalSocketDomain *domain;
+ 
+   _pair[0] = nil;
+   _pair[1] = nil;
+ 
+-  if (socketpair([_domain socketDomain], SOCK_DGRAM, [_domain protocol],
++  domain = [NGLocalSocketDomain domain];
++  if (socketpair([domain socketDomain], SOCK_DGRAM, [domain protocol],
+                  fds) == 0) {
+     NGDatagramSocket *s1 = nil;
+     NGDatagramSocket *s2 = nil;
+     
+-    s1 = [[self alloc] _initWithDomain:_domain descriptor:fds[0]];
+-    s2 = [[self alloc] _initWithDomain:_domain descriptor:fds[1]];
++    s1 = [[self alloc] _initWithDomain:domain descriptor:fds[0]];
++    s2 = [[self alloc] _initWithDomain:domain descriptor:fds[1]];
+     s1 = AUTORELEASE(s1);
+     s2 = AUTORELEASE(s2);
+ 
+@@ -112,7 +116,7 @@
+         break;
+     }
+     [[[NGCouldNotCreateSocketException alloc]
+-              initWithReason:reason domain:_domain] raise];
++              initWithReason:reason domain:domain] raise];
+     return NO;
+   }
+ }
 Index: sope-core/NGStreams/GNUmakefile.preamble
 ===================================================================
---- sope-core/NGStreams/GNUmakefile.preamble	(revision 1660)
-+++ sope-core/NGStreams/GNUmakefile.preamble	(working copy)
+--- sope-core/NGStreams/GNUmakefile.preamble	(révision 1660)
++++ sope-core/NGStreams/GNUmakefile.preamble	(copie de travail)
 @@ -1,6 +1,7 @@
  # compilation settings
  
@@ -4230,10 +4304,119 @@ Index: sope-core/NGStreams/GNUmakefile.preamble
  
  libNGStreams_INCLUDE_DIRS += \
  	-I$(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS) \
+Index: sope-core/NGStreams/ChangeLog
+===================================================================
+--- sope-core/NGStreams/ChangeLog	(révision 1660)
++++ sope-core/NGStreams/ChangeLog	(copie de travail)
+@@ -1,3 +1,14 @@
++2009-11-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
++
++	* NGActiveSocket.m (+socketPair): removed the domain: parameter as
++	only AF_LOCAL is permitted. Assign a default instance of
++	NGLocalSocketAddress to the sockets to "declare" the sockets as
++	connected.
++
++	* NGActiveSocket.m (-setSendTimeout, -setReceiveTimeout): make use
++	of those methods to actually configure the timeouts on the socket
++	objects (via setsockopt and SO_RCVTIMEO and SO_SNDTIMEO).
++
+ 2009-03-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+ 
+ 	* GNUmakefile.preamble: add machine-type to include path (eg i386) (v4.7.57)
+Index: sope-core/NGStreams/NGActiveSocket.m
+===================================================================
+--- sope-core/NGStreams/NGActiveSocket.m	(révision 1660)
++++ sope-core/NGStreams/NGActiveSocket.m	(copie de travail)
+@@ -62,6 +62,8 @@
+ #include "common.h"
+ 
+ #include <NGStreams/NGDescriptorFunctions.h>
++#include <NGStreams/NGLocalSocketAddress.h>
++#include <NGStreams/NGLocalSocketDomain.h>
+ #include "NGActiveSocket.h"
+ #include "NGSocketExceptions.h"
+ #include "NGSocket+private.h"
+@@ -83,29 +85,35 @@
+ 
+ #if !defined(WIN32) || defined(__CYGWIN32__)
+ 
+-+ (BOOL)socketPair:(id<NGSocket>[2])_pair inDomain:(id<NGSocketDomain>)_domain {
+++ (BOOL)socketPair:(id<NGSocket>[2])_pair {
+   int fds[2];
++  NGLocalSocketDomain *domain;
+ 
+   _pair[0] = nil;
+   _pair[1] = nil;
+ 
+-  if (socketpair([_domain socketDomain], SOCK_STREAM, [_domain protocol],
++  domain = [NGLocalSocketDomain domain];
++  if (socketpair([domain socketDomain], SOCK_STREAM, [domain protocol],
+                  fds) == 0) {
+     NGActiveSocket *s1 = nil;
+     NGActiveSocket *s2 = nil;
++    NGLocalSocketAddress *address;
+     
+-    s1 = [[self alloc] _initWithDomain:_domain descriptor:fds[0]];
+-    s2 = [[self alloc] _initWithDomain:_domain descriptor:fds[1]];
++    s1 = [[self alloc] _initWithDomain:domain descriptor:fds[0]];
++    s2 = [[self alloc] _initWithDomain:domain descriptor:fds[1]];
+     s1 = [s1 autorelease];
+     s2 = [s2 autorelease];
+ 
++    address = [NGLocalSocketAddress address];
+     if ((s1 != nil) && (s2 != nil)) {
+       s1->mode           = NGStreamMode_readWrite;
+       s1->receiveTimeout = 0.0;
+       s1->sendTimeout    = 0.0;
++      ASSIGN(s1->remoteAddress, address);
+       s2->mode           = NGStreamMode_readWrite;
+       s2->receiveTimeout = 0.0;
+       s2->sendTimeout    = 0.0;
++      ASSIGN(s2->remoteAddress, address);
+ 
+       _pair[0] = s1;
+       _pair[1] = s2;
+@@ -152,7 +160,7 @@
+         break;
+     }
+     [[[NGCouldNotCreateSocketException alloc]
+-              initWithReason:reason domain:_domain] raise];
++              initWithReason:reason domain:domain] raise];
+     return NO;
+   }
+ }
+@@ -507,6 +515,13 @@
+ }
+ 
+ - (void)setSendTimeout:(NSTimeInterval)_timeout {
++  struct timeval tv;
++
++  if ([self isConnected]) {
++    tv.tv_sec = (int) _timeout;
++    tv.tv_usec = 0;
++    setsockopt(self->fd, SOL_SOCKET, SO_SNDTIMEO, &tv, sizeof (struct timeval));
++  }
+   self->sendTimeout = _timeout;
+ }
+ - (NSTimeInterval)sendTimeout {
+@@ -514,6 +529,13 @@
+ }
+ 
+ - (void)setReceiveTimeout:(NSTimeInterval)_timeout {
++  struct timeval tv;
++
++  if ([self isConnected]) {
++    tv.tv_sec = (int) _timeout;
++    tv.tv_usec = 0;
++    setsockopt(self->fd, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof (struct timeval));
++  }
+   self->receiveTimeout = _timeout;
+ }
+ - (NSTimeInterval)receiveTimeout {
 Index: sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.h
 ===================================================================
---- sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.h	(revision 1660)
-+++ sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.h	(working copy)
+--- sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.h	(révision 1660)
++++ sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.h	(copie de travail)
 @@ -19,6 +19,8 @@
    02111-1307, USA.
  */
@@ -4254,8 +4437,8 @@ Index: sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.h
    id<NSObject,SaxEntityResolver> entityResolver;
 Index: sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.m
 ===================================================================
---- sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.m	(revision 1660)
-+++ sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.m	(working copy)
+--- sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.m	(révision 1660)
++++ sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.m	(copie de travail)
 @@ -200,10 +200,10 @@
    return self->entityResolver;
  }
@@ -4271,8 +4454,8 @@ Index: sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.m
  
 Index: sope-appserver/mod_ngobjweb/GNUmakefile
 ===================================================================
---- sope-appserver/mod_ngobjweb/GNUmakefile	(revision 1660)
-+++ sope-appserver/mod_ngobjweb/GNUmakefile	(working copy)
+--- sope-appserver/mod_ngobjweb/GNUmakefile	(révision 1660)
++++ sope-appserver/mod_ngobjweb/GNUmakefile	(copie de travail)
 @@ -82,7 +82,7 @@
  
  CFLAGS  = -Wall -I. -fPIC \
@@ -4292,10 +4475,1270 @@ Index: sope-appserver/mod_ngobjweb/GNUmakefile
  
  install-usr-libexec :: all
  	$(INSTALL_PROGRAM) $(product) /usr/libexec/httpd/
+Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
+===================================================================
+--- sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m	(révision 1660)
++++ sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m	(copie de travail)
+@@ -1,5 +1,6 @@
+ /*
+   Copyright (C) 2000-2005 SKYRIX Software AG
++  Copyright (C) 2009 Inverse inc.
+ 
+   This file is part of SOPE.
+ 
+@@ -19,9 +20,29 @@
+   02111-1307, USA.
+ */
+ 
+-#import <Foundation/Foundation.h>
+-#include <NGObjWeb/NGObjWeb.h>
++#import <Foundation/NSAutoreleasePool.h>
++#import <Foundation/NSCalendarDate.h>
++#import <Foundation/NSData.h>
++#import <Foundation/NSException.h>
++#import <Foundation/NSFileHandle.h>
++#import <Foundation/NSProcessInfo.h>
++#import <Foundation/NSRunLoop.h>
++#import <Foundation/NSTimer.h>
++#import <Foundation/NSThread.h>
++#import <Foundation/NSUserDefaults.h>
++#import <Foundation/NSValue.h>
+ 
++#import <NGObjWeb/WOAdaptor.h>
++#import <NGObjWeb/WOApplication.h>
++#import <NGExtensions/NSObject+Logs.h>
++#import <NGStreams/NGActiveSocket.h>
++#import <NGStreams/NGCTextStream.h>
++#import <NGStreams/NGInternetSocketAddress.h>
++#import <NGStreams/NGNetUtilities.h>
++#import <NGStreams/NGPassiveSocket.h>
++
++#import "UnixSignalHandler.h"
++
+ #if defined(__CYGWIN32__) || defined(__MINGW32__)
+ 
+ int WOWatchDogApplicationMain
+@@ -39,199 +60,795 @@
+ #include <time.h>
+ #include <string.h>
+ 
+-static pid_t    child = -1;
+-static NSString *pidFile = nil;
+-static time_t   lastFailExit = 0;
+-static unsigned failExitCount = 0;
+-static BOOL     killedChild = NO;
++static NSTimeInterval respawnDelay; /* seconds */
+ 
+-static void killChild(void) {
+-  if (child > 0) {
+-    int status;
+-    
+-    fprintf(stderr, "watchdog[%i]: terminating child %i ..\n", getpid(), child);
+-    
+-    if (kill(child, SIGTERM) == 0) {
+-      waitpid(child, &status, 0);
+-      killedChild = YES;
+-      
+-      fprintf(stderr, "  terminated child %i",  child);
+-      
+-      if (WIFEXITED(status))
+-        fprintf(stderr, " exit=%i", WEXITSTATUS(status));
+-      if (WIFSIGNALED(status))
+-        fprintf(stderr, " signal=%i", WTERMSIG(status));
+-      
+-      fprintf(stderr, ".\n");
+-      fflush(stderr);
+-      
+-      child = -1;
+-      return;
++typedef enum {
++  WOChildStatusDown = 0,
++  WOChildStatusSpawning,
++  WOChildStatusReady,
++  WOChildStatusBusy,
++  WOChildStatusExcessive,
++  WOChildStatusMax
++} WOChildStatus;
++
++@class WOWatchDog;
++
++@interface WOWatchDogChild : NSObject <RunLoopEvents>
++{
++  int pid;
++  int counter;
++  NGActiveSocket *controlSocket;
++  WOChildStatus status;
++  WOWatchDog *watchDog;
++  NSCalendarDate *lastSpawn;
++}
++
++- (void) setWatchDog: (WOWatchDog *) newWatchDog;
++
++- (void) setPid: (int) newPid;
++- (int) pid;
++
++- (void) setControlSocket: (NGActiveSocket *) newSocket;
++- (NGActiveSocket *) controlSocket;
++
++- (void) setStatus: (WOChildStatus) newStatus;
++- (WOChildStatus) status;
++
++- (void) setLastSpawn: (NSCalendarDate *) newLastSpawn;
++- (NSCalendarDate *) lastSpawn;
++
++- (BOOL) readMessage;
++
++- (void) notify;
++- (void) terminate;
++
++@end
++
++@interface WOWatchDog : NSObject <RunLoopEvents>
++{
++  NSString *appName;
++  int argc;
++  const char **argv;
++
++  BOOL terminate;
++  BOOL willTerminate;
++
++  NGPassiveSocket *listeningSocket;
++
++  int numberOfChildren;
++  NSMutableArray *children;
++  NSMutableArray *readyChildren;
++  NSMutableArray *downChildren;
++}
++
+++ (id) sharedWatchDog;
++
++- (void) declareChildReady: (WOWatchDogChild *) readyChild;
++- (void) declareChildDown: (WOWatchDogChild *) readyChild;
++
++- (int) run: (NSString *) appName
++       argc: (int) argc
++       argv: (const char **) argv;
++
++@end
++
++@implementation WOWatchDogChild
++
+++ (WOWatchDogChild *) watchDogChild
++{
++  WOWatchDogChild *newChild;
++
++  newChild = [self new];
++  [newChild autorelease];
++
++  return newChild;
++}
++
++- (id) init
++{
++  if ((self = [super init]))
++    {
++      pid = -1;
++      controlSocket = nil;
++      status = WOChildStatusDown;
++      counter = 0;
++      lastSpawn = nil;
+     }
+-    else if (kill(child, SIGKILL)) {
+-      waitpid(child, &status, 0);
+-      killedChild = YES;
+-      
+-      fprintf(stderr, "  killed child %i",  child);
+-      
+-      if (WIFEXITED(status))
+-        fprintf(stderr, " exit=%i", WEXITSTATUS(status));
+-      if (WIFSIGNALED(status))
+-        fprintf(stderr, " signal=%i", WTERMSIG(status));
+-      
+-      fprintf(stderr, ".\n");
+-      fflush(stderr);
+-      
+-      child = -1;
+-      return;
++
++  return self;
++}
++
++- (void) dealloc
++{
++  NSRunLoop *runLoop;
++
++  runLoop = [NSRunLoop currentRunLoop];
++  [runLoop removeEvent: (void *) [controlSocket fileDescriptor]
++                  type: ET_RDESC
++               forMode: NSDefaultRunLoopMode
++                   all: YES];
++  [controlSocket release];
++  [lastSpawn release];
++  [super dealloc];
++}
++
++- (void) setWatchDog: (WOWatchDog *) newWatchDog
++{
++  watchDog = newWatchDog;
++}
++
++- (void) setPid: (int) newPid
++{
++  pid = newPid;
++}
++
++- (int) pid
++{
++  return pid;
++}
++
++- (void) setControlSocket: (NGActiveSocket *) newSocket
++{
++  NSRunLoop *runLoop;
++
++  runLoop = [NSRunLoop currentRunLoop];
++  if (controlSocket)
++    [runLoop removeEvent: (void *) [controlSocket fileDescriptor]
++                    type: ET_RDESC
++                 forMode: NSDefaultRunLoopMode
++                     all: YES];
++  ASSIGN (controlSocket, newSocket);
++  if (controlSocket)
++    [runLoop addEvent: (void *) [controlSocket fileDescriptor]
++                 type: ET_RDESC
++              watcher: self
++              forMode: NSDefaultRunLoopMode];
++}
++
++- (NGActiveSocket *) controlSocket
++{
++  return controlSocket;
++}
++
++- (void) setStatus: (WOChildStatus) newStatus
++{
++  status = newStatus;
++}
++
++- (WOChildStatus) status
++{
++  return status;
++}
++
++- (void) setLastSpawn: (NSCalendarDate *) newLastSpawn
++{
++  ASSIGN(lastSpawn, newLastSpawn);
++}
++
++- (NSCalendarDate *) lastSpawn
++{
++  return lastSpawn;
++}
++
++// - (void) logStatus
++// {
++//   NSLog (@"%d served %d requests", pid, counter);
++//   if (status == WOChildStatusBusy)
++//     NSLog (@"child (%d) is busy", pid);
++//   else if (status == WOChildStatusReady)
++//     NSLog (@"child (%d) is ready", pid);
++//   else if (status == WOChildStatusDown)
++//     NSLog (@"child (%d) has shutdown", pid);
++// }
++
++- (BOOL) readMessage
++{
++  WOChildMessage message;
++  BOOL rc;
++
++  if ([controlSocket readBytes: &message
++                         count: sizeof (WOChildMessage)] == NGStreamError) {
++    rc = NO;
++    NSLog (@"FAILURE receiving status for child %d", pid);
++  }
++  else {
++    rc = YES;
++    if (message == WOChildMessageAccept) {
++      status = WOChildStatusBusy;
+     }
++    else if (message == WOChildMessageReady) {
++      status = WOChildStatusReady;
++      [watchDog declareChildReady: self];
++    }
++    else if (message == WOChildMessageShutdown) {
++      status = WOChildStatusDown;
++      [watchDog declareChildDown: self];
++    }
++    // NSLog (@"message read status (%d):", pid);
++    // [self logStatus];
+   }
++
++  return rc;
+ }
+ 
+-static void _writePid(NSString *pidFile) {
+-  if ([pidFile length] > 0) {
+-    FILE *pf;
+-      
+-    if ((pf = fopen([pidFile cString], "w"))) {
+-      fprintf(pf, "%i\n", getpid());
+-      fflush(pf);
+-      fclose(pf);
++- (BOOL) _sendMessage: (WOChildMessage) message
++{
++  return ([controlSocket writeBytes: &message
++                              count: sizeof (WOChildMessage)] != NGStreamError
++          && [self readMessage]);
++}
++
++- (void) _kill
++{
++  NSLog (@"we send a terminate signal to child %d", pid);
++  status = WOChildStatusDown;
++  kill (pid, SIGTERM);
++  [NSThread sleepForTimeInterval: 1];
++  kill (pid, SIGKILL);
++}
++
++- (void) notify
++{
++  WOChildMessage message;
++
++  counter++;
++  message = WOChildMessageAccept;
++  if (![self _sendMessage: message]) {
++    NSLog (@"FAILURE notifying child %d", pid);
++    [self _kill];
++  }
++}
++
++- (void) terminate
++{
++  WOChildMessage message;
++
++  if (status == WOChildStatusDown) {
++    NSLog (@"child is already down");
++  } else {
++    // NSLog (@"terminating child %d", pid);
++    [controlSocket setSendTimeout: 1.0];
++    [controlSocket setReceiveTimeout: 4.0];
++
++    message = WOChildMessageShutdown;
++    if (!([self _sendMessage: message])) {
++      NSLog (@"FAILURE terminating child %d", pid);
++      [self _kill];
+     }
+   }
+ }
+-static void _delPid(void) {
+-  if ([pidFile length] > 0) {
+-    if (unlink([pidFile cString]) == 0)
+-      pidFile = nil;
++
++- (void) delayedTerminate
++{
++  // NSLog (@"delayed terminate on child %d (wait: %d)", pid,
++  //        waitpid(pid, NULL, WNOHANG));
++  [NSTimer scheduledTimerWithTimeInterval: 0.1
++                                   target: self
++                                 selector: @selector (terminate)
++                                 userInfo: nil
++                                  repeats: NO];
++}
++
++- (void) receivedEvent: (void*)data
++		  type: (RunLoopEventType)type
++		 extra: (void*)extra
++	       forMode: (NSString*)mode
++{
++  [self readMessage];
++}
++
++@end
++
++@implementation WOWatchDog
++
+++ (id) sharedWatchDog
++{
++  static WOWatchDog *sharedWatchDog = nil;
++
++  if (!sharedWatchDog)
++    sharedWatchDog = [self new];
++
++  return sharedWatchDog;
++}
++
++- (id) init
++{
++  if ((self = [super init]))
++    {
++      listeningSocket = NULL;
++      terminate = NO;
++      willTerminate = NO;
++
++      numberOfChildren = 0;
++      children = [[NSMutableArray alloc] initWithCapacity: 10];
++      readyChildren = [[NSMutableArray alloc] initWithCapacity: 10];
++      downChildren = [[NSMutableArray alloc] initWithCapacity: 10];
++    }
++
++  return self;
++}
++
++- (void) _releaseListeningSocket
++{
++  if (listeningSocket) {
++    [[NSRunLoop currentRunLoop] removeEvent: (void *) [listeningSocket fileDescriptor]
++                                       type: ET_RDESC
++                                    forMode: NSDefaultRunLoopMode
++                                        all: YES];
++    [listeningSocket release];
++    listeningSocket = nil;
+   }
+ }
+ 
+-static void exitWatchdog(void) {
+-  killChild();
+-  _delPid();
++- (void) dealloc
++{
++  [self _releaseListeningSocket];
++  [appName release];
++  [children release];
++  [super dealloc];
+ }
+ 
+-static void wsignalHandler(int _signal) {
+-  switch (_signal) {
+-  case SIGINT:
+-    /* Control-C */
+-    fprintf(stderr, "[%i]: watchdog handling signal ctrl-c ..\n", getpid());
+-    killChild();
+-    exit(0);
+-    /* shouldn't get here */
+-    abort();
++- (void) _runChildWithControlSocket: (NGActiveSocket *) controlSocket
++{
++  WOApplication *app;
++  extern char **environ;
+ 
+-  case SIGSEGV:
+-    /* Coredump ! */
+-    fprintf(stderr,
+-            "[%i]: watchdog handling segmentation fault "
+-            "(SERIOUS PROBLEM) ..\n",
+-            getpid());
+-    killChild();
+-    exit(123);
+-    /* shouldn't get here */
+-    abort();
++  [NSProcessInfo initializeWithArguments: (char **) argv
++                                   count: argc
++                             environment: environ];
++  NGInitTextStdio();
++  app = [NSClassFromString(appName) new];
++  [app autorelease];
++  [app setListeningSocket: listeningSocket];
++  [app setControlSocket: controlSocket];
++  [app run];
++}
+ 
+-  case SIGTERM:
+-    /* TERM signal (kill 'pid') */
+-    fprintf(stderr, "[%i]: watchdog handling SIGTERM ..\n", getpid());
+-    killChild();
+-    exit(0);
+-    /* shouldn't get here */
+-    abort();
+-    
+-  case SIGHUP:
+-    /* HUP signal (restart children) */
+-    fprintf(stderr, "[%i]: watchdog handling SIGHUP ..\n", getpid());
+-    killChild();
+-    killedChild = YES;
+-    signal(_signal, wsignalHandler);
+-    return;
+-    
+-  case SIGCHLD:
+-    break;
+-    
+-  default:
+-    fprintf(stderr, "[%i]: watchdog handling signal %i ..\n",
+-            getpid(), _signal);
+-    break;
++- (void) receivedEvent: (void*)data
++		  type: (RunLoopEventType)type
++		 extra: (void*)extra
++	       forMode: (NSString*)mode
++{
++  int nextId;
++  WOWatchDogChild *child;
++
++  // NSLog (@"have a child accept the connection");
++  nextId = [readyChildren count] - 1;
++  if (nextId > -1)
++    {
++      child = [readyChildren objectAtIndex: nextId];
++      [readyChildren removeObjectAtIndex: nextId];
++      [child notify];
++    }
++  // else
++  //   NSLog (@"all children busy");
++}
++
++- (void) _cleanupSignalAndEventHandlers
++{
++  int count;
++  NGActiveSocket *controlSocket;
++  NSRunLoop *runLoop;
++
++  [[UnixSignalHandler sharedHandler] removeObserver: self];
++
++  runLoop = [NSRunLoop currentRunLoop];
++  [runLoop removeEvent: (void *) [listeningSocket fileDescriptor]
++                  type: ET_RDESC
++               forMode: NSDefaultRunLoopMode
++                   all: YES];
++
++  for (count = 0; count < numberOfChildren; count++) {
++    controlSocket = [[children objectAtIndex: count] controlSocket];
++    if (controlSocket)
++      [runLoop removeEvent: (void *) [controlSocket fileDescriptor]
++                      type: ET_RDESC
++                   forMode: NSDefaultRunLoopMode
++                       all: YES];
+   }
+-  fflush(stderr);
+-  
+-  switch (_signal) {
+-    case SIGTERM:
+-    case SIGINT:
+-    case SIGKILL:
+-    case SIGILL:
+-      killChild();
+-      exit(0);
+-      break;
+-      
+-    case SIGHUP:
+-      killChild();
+-      break;
+-      
+-    case SIGCHLD: {
+-      int   returnStatus;
+-      pid_t result;
+-      
+-      //      NSLog(@"SIGNAL: SIGCHLD");
+-      // fetch return state
+-      
+-      do {
+-        result = waitpid(-1, &returnStatus, WNOHANG);
+-        if (result > 0) {
+-          fprintf(stderr, "[%i]: process %i exited with code %i",
+-                  getpid(), (int)result, WEXITSTATUS(returnStatus));
++}
+ 
+-          if (WIFSIGNALED(returnStatus)) {
+-            fprintf(stderr, " (terminated due to signal %i%s)",
+-                    WTERMSIG(returnStatus),
+-                    WCOREDUMP(returnStatus) ? ", coredump" : "");
+-          }
+-          if (WIFSTOPPED(returnStatus)) {
+-            fprintf(stderr, " (stopped due to signal %i)",
+-                    WSTOPSIG(returnStatus));
+-          }
+-          
+-          fprintf(stderr, "\n");
+-          fflush(stderr);
++- (BOOL) _spawnChild: (WOWatchDogChild *) child
++{
++  NGActiveSocket *pair[2];
++  BOOL isChild;
++  int childPid;
++  extern char **environ;
++
++  isChild = NO;
++
++  if ([NGActiveSocket socketPair: pair]) {
++    childPid = fork ();
++    if (childPid == 0) {
++      setsid ();
++      // stdin = freopen ("/dev/null", "w+", stdin);
++      // stderr = freopen ("/dev/null", "w+", stderr);
++      isChild = YES;
++      [self _cleanupSignalAndEventHandlers];
++      [self _runChildWithControlSocket: pair[0]];
++    } else if (childPid > 0) {
++      [self logWithFormat: @"child spawned with pid %d", childPid];
++      [child setPid: childPid];
++      [child setStatus: WOChildStatusSpawning];
++      [child setControlSocket: pair[1]];
++      [child setLastSpawn: [NSCalendarDate date]];
++      // [self logWithFormat: @"parent ready for child: %d", childPid];
++    } else {
++      perror ("fork");
++    }
++  }
++
++  return isChild;
++}
++
++- (void) _ensureNumberOfChildren
++{
++  int currentNumber, delta, count, min, max;
++  WOWatchDogChild *child;
++
++  currentNumber = [children count];
++  if (currentNumber < numberOfChildren) {
++      delta = numberOfChildren - currentNumber;
++      for (count = 0; count < delta; count++) {
++        child = [WOWatchDogChild watchDogChild];
++        [child setWatchDog: self];
++        [children addObject: child];
++        [downChildren addObject: child];
++      }
++      [self logWithFormat: @"preparing %d children", delta];
++  }
++  else if (currentNumber > numberOfChildren) {
++    delta = currentNumber - numberOfChildren;
++    max = [downChildren count];
++    if (max > delta)
++      min = max - delta;
++    else
++      min = 0;
++    for (count = max - 1; count >= min; count--) {
++      child = [downChildren objectAtIndex: count];
++      [downChildren removeObjectAtIndex: count];
++      [children removeObject: child];
++      delta--;
++      [self logWithFormat: @"%d processes purged from pool", delta];
++    }
++
++    max = [readyChildren count];
++    if (max > delta)
++      max -= delta;
++    for (count = max - 1; count > -1; count--) {
++      child = [readyChildren objectAtIndex: count];
++      [readyChildren removeObjectAtIndex: count];
++      [child terminate];
++      [child setStatus: WOChildStatusExcessive];
++      delta--;
++    }
++    [self logWithFormat: @"%d processes left to terminate", delta];
++  }
++}
++
++- (void) _noop
++{
++}
++
++- (BOOL) _ensureChildren
++{
++  int count, max;
++  WOWatchDogChild *child;
++  BOOL isChild, delayed;
++  NSCalendarDate *now, *nextSpawn;
++
++  isChild = NO;
++
++  if (!willTerminate) {
++    [self _ensureNumberOfChildren];
++    max = [downChildren count];
++    for (count = max - 1; !isChild && count > -1; count--) {
++      delayed = NO;
++      child = [downChildren objectAtIndex: count];
++
++      if ([child status] == WOChildStatusExcessive)
++        [children removeObject: child];
++      else {
++        now = [NSCalendarDate date];
++        nextSpawn = [[child lastSpawn] addYear: 0 month: 0 day: 0
++                                          hour: 0 minute: 0
++                                        second: respawnDelay];
++        if ([nextSpawn earlierDate: now] == nextSpawn)
++          isChild = [self _spawnChild: child];
++        else {
++          delayed = YES;
++          [self logWithFormat:
++                  @"avoiding to respawn child before %@", nextSpawn];
++          [NSTimer
++            scheduledTimerWithTimeInterval: respawnDelay
++                                    target: self
++                                  selector: @selector (_noop)
++                                  userInfo: nil
++                                   repeats: NO];
+         }
+       }
+-      while (result > 0);
+-      
+-      break;
++      if (!delayed)
++        [downChildren removeObjectAtIndex: count];
+     }
+-    
+-    default:
+-      fprintf(stderr, "watchdog[%i]: caught signal %i\n", getpid(), _signal);
+-      break;
+   }
+-  signal(_signal, wsignalHandler);
++
++  return isChild;
+ }
+ 
+-static void signalHandler(int _signal) {
+-  fprintf(stderr, "[%i]: handling signal %i ..\n",
+-          getpid(), _signal);
+-  fflush(stderr);
+-  
+-  switch (_signal) {
+-    case SIGPIPE:
+-      fprintf(stderr, "[%i]: caught signal SIGPIPE\n", getpid());
+-      break;
+-      
+-    default:
+-      fprintf(stderr, "[%i]: caught signal %i\n", getpid(), _signal);
+-      break;
++/* SOPE on GNUstep does not need to parse the argument line, since the
++   arguments will be put in the NSArgumentDomain. I don't know about
++   libFoundation but OSX is supposed to act the same way. */
++- (NGInternetSocketAddress *) _listeningAddress
++{
++  NGInternetSocketAddress *listeningAddress;
++  id port, allow;
++
++  listeningAddress = nil;
++
++  allow
++    = [[NSUserDefaults standardUserDefaults] objectForKey:@"WOHttpAllowHost"];
++  port = [NSClassFromString(appName) port];
++  if ([port isKindOfClass: [NSString class]]) {
++    if ([port isEqualToString: @"auto"]) {
++      listeningAddress
++        = [[NGInternetSocketAddress alloc] initWithPort:0 onHost:@"127.0.0.1"];
++      [listeningAddress autorelease];
++    } else if ([port rangeOfString: @":"].location == NSNotFound && !allow)
++      port = [NSString stringWithFormat: @"127.0.0.1:%@", port];
+   }
+-  signal(_signal, signalHandler);
++  else {
++    if (allow)
++      listeningAddress =
++        [NGInternetSocketAddress wildcardAddressWithPort:[port intValue]];
++    else
++      port = [NSString stringWithFormat: @"127.0.0.1:%@", port];
++  }
++
++  if (!listeningAddress)
++    listeningAddress = (NGInternetSocketAddress *) NGSocketAddressFromString(port);
++
++  return listeningAddress;
+ }
+ 
++- (BOOL) _prepareListeningSocket
++{
++  NGInternetSocketAddress *addr;
++  BOOL rc;
++  int backlog;
++
++  addr = [self _listeningAddress];
++  NS_DURING {
++    listeningSocket = [[NGPassiveSocket alloc] initWithDomain: [addr domain]];
++    [listeningSocket bindToAddress: addr];
++    backlog = [[NSUserDefaults standardUserDefaults]
++                integerForKey: @"WOListenQueueSize"];
++    if (!backlog)
++      backlog = 5;
++    [listeningSocket listenWithBacklog: backlog];
++    [self logWithFormat: @"listening on %@:%d", [addr address], [addr port]];
++    [[NSRunLoop currentRunLoop] addEvent: (void *) [listeningSocket fileDescriptor]
++                                    type: ET_RDESC
++                                 watcher: self
++                                 forMode: NSDefaultRunLoopMode];
++    rc = YES;
++  }
++  NS_HANDLER {
++    // [self logWithFormat:@"failure listening on address 127.0.0.1:%d", port];
++    rc = NO;
++  }
++  NS_ENDHANDLER;
++
++  return rc;
++}
++
++- (WOWatchDogChild *) _childWithPID: (pid_t) childPid
++{
++  WOWatchDogChild *currentChild, *child;
++  int count;
++
++  child = nil;
++  for (count = 0; !child && count < numberOfChildren; count++) {
++    currentChild = [children objectAtIndex: count];
++    if ([currentChild pid] == childPid)
++      child = currentChild;
++  }
++
++  return child;
++}
++
++- (void) _handleSIGPIPE:(NSNumber *)_signal {
++  // NSLog (@"received SIGPIPE");
++}
++
++/* BUG:
++  - when relying only on SIGCHLD, we miss some of them (signal blocking?)
++  - when relying on [WOWatchDogChild terminate], we exit before all processes
++  are down, this is the least worse of the two. */
++- (void) _handleSIGCHLD:(NSNumber *)_signal {
++  WOWatchDogChild *child;
++  pid_t childPid;
++  int status, code;
++
++  // NSLog (@"received SIGCHLD");
++  childPid = wait(&status);
++  if (childPid > -1) {
++    code = WEXITSTATUS(status);
++    if (code != 0)
++      NSLog (@"child %d exited with code %i", childPid, code);
++    if (WIFSIGNALED(status))
++      NSLog (@" (terminated due to signal %i%@)",
++             WTERMSIG(status),
++             WCOREDUMP(status) ? @", coredump" : @"");
++    if (WIFSTOPPED(status))
++      NSLog (@" (stopped due to signal %i)", WSTOPSIG(status));
++    child = [self _childWithPID: childPid];
++    if (child) {
++      [child setStatus: WOChildStatusDown];
++      [self declareChildDown: child];
++      if (willTerminate && [downChildren count] == numberOfChildren) {
++        NSLog (@"all child exited");
++        terminate = YES;
++      }
++    }
++  }
++  else
++    NSLog (@"no pid received");
++}
++
++- (void) _handleTermination:(NSNumber *)_signal {
++  WOWatchDogChild *child;
++  int count, max;
++
++  if (!willTerminate) {
++    NSLog (@"Terminating with signal %@", _signal);
++    [self _releaseListeningSocket];
++    willTerminate = YES;
++    max = [children count];
++    for (count = 0; count < max; count++) {
++      child = [children objectAtIndex: count];
++      if ([child status] != WOChildStatusDown)
++        [child delayedTerminate];
++    }
++  }
++}
++
++- (void) _handleSIGHUP:(NSNumber *)_signal {
++  [NSTimer scheduledTimerWithTimeInterval: 1.0
++                                   target: self
++                                 selector: @selector (_ensureWorkersCount)
++                                 userInfo: nil
++                                  repeats: NO];
++}
++
++- (void) _setupSignals
++{
++#if !defined(__MINGW32__) && !defined(NeXT_Foundation_LIBRARY)
++  UnixSignalHandler *us;
++
++  us = [UnixSignalHandler sharedHandler];
++  [us addObserver:self selector:@selector(_handleSIGPIPE:)
++        forSignal:SIGPIPE immediatelyNotifyOnSignal:YES];
++  [us addObserver:self selector:@selector(_handleSIGCHLD:)
++        forSignal:SIGCHLD immediatelyNotifyOnSignal:YES];
++  [us addObserver:self selector:@selector(_handleTermination:)
++        forSignal:SIGINT immediatelyNotifyOnSignal:YES];
++  [us addObserver:self selector:@selector(_handleTermination:)
++        forSignal:SIGTERM immediatelyNotifyOnSignal:YES];
++  // [us addObserver:self selector:@selector(_handleSIGKILL:)
++  //       forSignal:SIGKILL immediatelyNotifyOnSignal:YES];
++  [us addObserver:self selector:@selector(_handleSIGHUP:)
++        forSignal:SIGHUP immediatelyNotifyOnSignal:YES];
++#endif
++}
++
++- (void) declareChildReady: (WOWatchDogChild *) readyChild
++{
++  [readyChildren addObject: readyChild];
++}
++
++- (void) declareChildDown: (WOWatchDogChild *) downChild
++{
++  if (![downChildren containsObject: downChild])
++    [downChildren addObject: downChild];
++}
++
++- (void) _ensureWorkersCount
++{
++  int newNumberOfChildren;
++  NSUserDefaults *ud;
++
++  ud = [NSUserDefaults standardUserDefaults];
++  [ud synchronize];
++  newNumberOfChildren = [ud integerForKey: @"WOHttpAdaptorForkCount"];
++  if (newNumberOfChildren)
++    [self logWithFormat: @"user default 'WOHttpAdaptorForkCount' has been"
++          " replaced with 'WOWorkersCount'"];
++  else
++    newNumberOfChildren = [ud integerForKey: @"WOWorkersCount"];
++  if (newNumberOfChildren < 1)
++    newNumberOfChildren = 1;
++  numberOfChildren = newNumberOfChildren;
++  [NSTimer scheduledTimerWithTimeInterval: 0.1
++                                   target: self
++                                 selector: @selector (_noop)
++                                 userInfo: nil
++                                  repeats: NO];
++}
++
++/* WOPidFile, WOPort */
++- (void) _processArguments
++{
++  NSArray *arguments;
++  NSProcessInfo *processInfo;
++
++  processInfo = [NSProcessInfo processInfo];
++  arguments = [processInfo arguments];
++}
++
++- (int) run: (NSString *) newAppName
++       argc: (int) newArgC argv: (const char **) newArgV
++{
++  NSRunLoop *runLoop;
++  NSDate *limitDate;
++
++  willTerminate = NO;
++
++  ASSIGN(appName, newAppName);
++  argc = newArgC;
++  argv = newArgV;
++
++  [self _processArguments];
++  if ([self _prepareListeningSocket]) {
++    [self _setupSignals];
++    [self _ensureWorkersCount];
++
++    // NSLog (@"ready to process requests");
++    runLoop = [NSRunLoop currentRunLoop];
++    terminate = NO;
++    while (!terminate) {
++      // [self logWithFormat: @"watchdog loop"];
++      NS_DURING {
++        terminate = [self _ensureChildren];
++        if (!terminate) {
++          limitDate = [runLoop limitDateForMode:NSDefaultRunLoopMode];
++          [runLoop runMode: NSDefaultRunLoopMode beforeDate: limitDate];
++        }
++      }
++      NS_HANDLER {
++        terminate = YES;
++        [self errorWithFormat:
++                @"an exception occured in runloop %@", localException];
++      }
++      NS_ENDHANDLER;
++    }
++
++    [[UnixSignalHandler sharedHandler] removeObserver: self];
++  }
++
++  return 0;
++}
++
++@end
++
++static BOOL _writePid(NSString *pidFile) {
++  NSString *pid;
++  BOOL rc;
++
++  pid = [NSString stringWithFormat: @"%d", getpid()];
++  rc = [pid writeToFile: pidFile atomically: NO];
++
++  return rc;
++}
++
+ int WOWatchDogApplicationMain
+ (NSString *appName, int argc, const char *argv[])
+ {
+   NSAutoreleasePool *pool;
+   NSUserDefaults *ud;
++  NSString *logFile, *pidFile;
++  int rc, stdErrNo;
++  pid_t childPid;
++  NSProcessInfo *processInfo;
+ 
+   pool = [[NSAutoreleasePool alloc] init];
+ #if LIB_FOUNDATION_LIBRARY || defined(GS_PASS_ARGUMENTS)
+@@ -241,179 +858,61 @@
+                    environment:(void*)environ];
+   }
+ #endif
+-  
++
+   ud = [NSUserDefaults standardUserDefaults];
+-  
+-  /* default is to use the watch dog! */
+-  /* Note: the Defaults.plist is not yet loaded at this stage! */
+-  if ([ud objectForKey:@"WOUseWatchDog"] != nil) {
+-    if (![ud boolForKey:@"WOUseWatchDog"])
+-      return WOApplicationMain(appName, argc, argv);
+-  }
+-  
+-  /* watch dog */
+-  {
+-    int      failCount = 0;
+-    int      forkCount = 0;
+-    BOOL     repeat    = YES;
+-    BOOL     isVerbose = NO;  
+-    
+-    isVerbose = [[ud objectForKey:@"watchdog_verbose"] boolValue];
+-    pidFile   = [[[ud objectForKey:@"watchdog_pidfile"] stringValue] copy];
+-    
+-    /* write current pid to pidfile */
+-    _writePid(pidFile);
+-    
+-    /* register exit handler */
+-    atexit(exitWatchdog);
+-    
+-    /* register signal handlers of watch dog */
+-    signal(SIGPIPE, wsignalHandler);
+-    signal(SIGCHLD, wsignalHandler);
+-    signal(SIGINT,  wsignalHandler);
+-    signal(SIGTERM, wsignalHandler);
+-    signal(SIGKILL, wsignalHandler);
+-    signal(SIGHUP,  wsignalHandler);
+-    
+-    /* loop */
+-    
+-    while (repeat) {
+-      time_t clientStartTime;
+-      
+-      clientStartTime = time(NULL);
+-      killedChild = NO;
+-      
+-      if ((child = fork()) == -1) {
+-        fprintf(stderr, "[%i]: fork failed: %s\n", getpid(), strerror(errno));
+-        failCount++;
+-        
+-        if (failCount > 5) {
+-          fprintf(stderr, "  fork failed %i times, sleeping 60 seconds ..\n",
+-                  failCount);
+-          sleep(60);
+-        }
+-        else {
+-          sleep(1);
+-        }
+-      }
+-      else {
+-        if (child == 0) {
+-          /* child process */
+-          signal(SIGPIPE, SIG_DFL);
+-          signal(SIGCHLD, SIG_DFL);
+-          signal(SIGINT,  SIG_DFL);
+-          signal(SIGTERM, SIG_DFL);
+-          signal(SIGKILL, SIG_DFL);
+-          
+-          if (isVerbose)
+-            fprintf(stderr, "starting child %i ..\n", getpid());
++  processInfo = [NSProcessInfo processInfo];
+ 
+-          pidFile = [pidFile stringByAppendingPathExtension:@"child"];
+-          _writePid(pidFile);
+-          
+-          atexit(_delPid);
+-          
+-          exit(WOApplicationMain(appName, argc, argv));
+-          
+-          /* shouldn't even get here ! */
+-          fprintf(stderr, "internal server error !\n");
+-          abort();
+-        }
+-        else {
+-          /* parent (watch dog) */
+-          int      status = 0;
+-          pid_t    result = 0;
+-          time_t   clientStopTime;
+-          unsigned uptime;
+-          
+-          forkCount++;
+-          
+-          if (isVerbose) {
+-            fprintf(stderr, "forked child process %i (#%i) ..\n",
+-                    child, forkCount);
+-          }
+-          
+-          failCount = 0;
+-          status    = 0;
+-          
+-          if ((result = waitpid(child, &status, 0)) == -1) {
+-            if (killedChild) {
+-              killedChild = NO;
+-              continue;
+-            }
+-            
+-            fprintf(stderr,
+-                    "### waiting for child %i (#%i) failed: %s\n",
+-                    child, forkCount, strerror(errno));
+-            continue;
+-          }
++  logFile = [ud objectForKey: @"WOLogFile"];
++  if (!logFile)
++    logFile = [NSString stringWithFormat: @"/var/log/%@/%@.log",
++                        [processInfo processName],
++                        [processInfo processName]];
++  stdErrNo = dup(fileno(stderr));
++  stdout = freopen([logFile cString], "a", stdout);
++  stderr = freopen([logFile cString], "a", stderr);
++  if (stdout && stderr) {
++    if ([ud boolForKey: @"WONoDetach"])
++      childPid = 0;
++    else
++      childPid = fork();
+ 
+-          clientStopTime = time(NULL);
+-          uptime = clientStopTime - clientStartTime;
+-          
+-          if (WIFSIGNALED(status)) {
+-            fprintf(stderr,
+-                    "### child %i (#%i) was terminated by signal %i "
+-                    "(uptime=%ds).\n",
+-                    child, forkCount, WTERMSIG(status), uptime);
+-            
+-            lastFailExit  = time(NULL);
+-            failExitCount++;
+-          }
+-          else if (WIFEXITED(status)) {
+-            unsigned exitCode;
+-            
+-            if ((exitCode = WEXITSTATUS(status)) != 0) {
+-              time_t now;
+-              
+-              now = time(NULL);
+-
+-              if (uptime < 3) {
+-                if (failExitCount > 0) {
+-                  unsigned secsSinceLastFail;
+-                
+-                  secsSinceLastFail = (now - lastFailExit);
+-                
+-                  if (secsSinceLastFail > 120) {
+-                    /* reset fail count */
+-                    failExitCount = 0;
+-                  }
+-                  else if (failExitCount > 20) {
+-                    printf("### child %i (#%i) already failed %i times "
+-                           "in the last %i seconds, stopping watchdog !\n",
+-                           child, forkCount, failExitCount, secsSinceLastFail);
+-                    repeat = NO;
+-                  }
+-                }
+-              }              
+-              failExitCount++;
+-              lastFailExit  = now;
+-              
+-              fprintf(stderr,
+-                      "### child %i (#%i) exited with status %i "
+-                      "(#fails=%i, uptime=%ds).\n",
+-                      child, forkCount, exitCode, failExitCount, uptime);
+-            }
+-            else {
+-              fprintf(stderr,
+-                      "### child %i (#%i) exited successfully (uptime=%ds).\n",
+-                      child, forkCount, uptime);
+-            }
+-            
+-            if (exitCode == 123) // ???
+-              repeat = NO;
+-          }
+-          else {
+-            fprintf(stderr,
+-                    "### abnormal termination of child %i (#%i) status=%i"
+-                    "(was not signaled nor exited).",
+-                    child, forkCount, status);
+-          }
+-        }
++    if (childPid) {
++      rc = 0;
++    }
++    else {
++      pidFile = [ud objectForKey: @"WOPidFile"];
++      if (!pidFile)
++        pidFile = [NSString stringWithFormat: @"/var/run/%@/%@.pid",
++                            [processInfo processName],
++                            [processInfo processName]];
++      if (_writePid(pidFile)) {
++        respawnDelay = [ud integerForKey: @"WORespawnDelay"];
++        if (!respawnDelay)
++          respawnDelay = 5;
++        /* default is to use the watch dog! */
++        /* Note: the Defaults.plist is not yet loaded at this stage! */
++        if ([ud objectForKey:@"WOUseWatchDog"] != nil
++            && ![ud boolForKey:@"WOUseWatchDog"])
++          rc = WOApplicationMain(appName, argc, argv);
++        else
++          rc = [[WOWatchDog sharedWatchDog] run: appName argc: argc argv: argv];
+       }
++      else {
++        NSLog (@"unable to open pid file: %@", pidFile);
++        rc = -1;
++      }
+     }
+-    return 0;
+   }
++  else {
++    stdout = fdopen(stdErrNo, "a");
++    stderr = fdopen(stdErrNo, "a");
++    fprintf(stderr, "failed to redirect output channels to log file '%s'\n",
++            [logFile cString]);
++  }
++
++  [pool release];
++
++  return rc;
+ }
+ #endif
+ 
+@@ -421,8 +920,8 @@
+ 
+ @interface NSUserDefaults(ServerDefaults)
+ + (id)hackInServerDefaults:(NSUserDefaults *)_ud
+-  withAppDomainPath:(NSString *)_appDomainPath
+-  globalDomainPath:(NSString *)_globalDomainPath;
++         withAppDomainPath:(NSString *)_appDomainPath
++          globalDomainPath:(NSString *)_globalDomainPath;
+ @end
+ 
+ int WOWatchDogApplicationMainWithServerDefaults
+@@ -437,7 +936,7 @@
+   {
+     extern char **environ;
+     [NSProcessInfo initializeWithArguments:(void*)argv count:argc
+-                   environment:(void*)environ];
++                               environment:(void*)environ];
+   }
+ #endif
+   
+@@ -446,8 +945,8 @@
+     
+     ud = [NSUserDefaults standardUserDefaults];
+     sd = [defClass hackInServerDefaults:ud
+-                   withAppDomainPath:appDomainPath
+-                   globalDomainPath:globalDomainPath];
++                      withAppDomainPath:appDomainPath
++                       globalDomainPath:globalDomainPath];
+ 
+ #if 0    
+     if (((sd == nil) || (sd == ud)) && (appDomainPath != nil)) {
 Index: sope-appserver/NGObjWeb/GNUmakefile.postamble
 ===================================================================
---- sope-appserver/NGObjWeb/GNUmakefile.postamble	(revision 1660)
-+++ sope-appserver/NGObjWeb/GNUmakefile.postamble	(working copy)
+--- sope-appserver/NGObjWeb/GNUmakefile.postamble	(révision 1660)
++++ sope-appserver/NGObjWeb/GNUmakefile.postamble	(copie de travail)
 @@ -23,14 +23,20 @@
  
  # install makefiles
@@ -4326,8 +5769,8 @@ Index: sope-appserver/NGObjWeb/GNUmakefile.postamble
 +		$(DESTDIR)/$(GNUSTEP_MAKEFILES)/wobundle.make
 Index: sope-appserver/NGObjWeb/WOMessage+XML.m
 ===================================================================
---- sope-appserver/NGObjWeb/WOMessage+XML.m	(revision 1660)
-+++ sope-appserver/NGObjWeb/WOMessage+XML.m	(working copy)
+--- sope-appserver/NGObjWeb/WOMessage+XML.m	(révision 1660)
++++ sope-appserver/NGObjWeb/WOMessage+XML.m	(copie de travail)
 @@ -84,7 +84,7 @@
      id builder;
      
@@ -4339,9 +5782,32 @@ Index: sope-appserver/NGObjWeb/WOMessage+XML.m
    /* cache DOM structure */
 Index: sope-appserver/NGObjWeb/ChangeLog
 ===================================================================
---- sope-appserver/NGObjWeb/ChangeLog	(revision 1660)
-+++ sope-appserver/NGObjWeb/ChangeLog	(working copy)
-@@ -1,3 +1,33 @@
+--- sope-appserver/NGObjWeb/ChangeLog	(révision 1660)
++++ sope-appserver/NGObjWeb/ChangeLog	(copie de travail)
+@@ -1,3 +1,56 @@
++2009-11-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
++
++	* WOCoreApplication.m (-setControlSocket, -controlSocket)
++	(-setListeningSocket, -listeningSocke): new helper accessors for
++	the new watchdog mechanism.
++
++	* WOHttpAdaptor/WOHttpAdaptor.m: slightly refactored to use the
++	control socket provided by the watchdog.
++
++	* WOWatchDogApplicationMain.m: rewritten the watchdog mechanism:
++	- added WOWatchDog and WOWatchDogChild classes
++	- make use of UnixSignalHandler
++	- added support for preforked preocesses (WOWorkersCount)
++	- detach watchdog processes from terminal by default (WONoDetach)
++	- redirect stderr and stdout to file
++	  (WOLogFile = /var/log/[name]/[name].log)
++	- write pid file
++	  (WOPidFile = /var/run/[name]/[name].pid)
++	- use "127.0.0.1:port" as default bind address, unless
++	  WOHTTPAllowHost is specified
++	- added support for delaying process respawning
++	  (WORespawnDelay = 5 seconds)
++
 +2009-10-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 +
 +	* WOMessage+XML.m (-contentAsDOMDocument): do not retain "dom" as
@@ -4377,8 +5843,8 @@ Index: sope-appserver/NGObjWeb/ChangeLog
  	* DAVPropMap.plist: mapped {DAV:}current-user-principal (v4.9.37)
 Index: sope-appserver/NGObjWeb/DAVPropMap.plist
 ===================================================================
---- sope-appserver/NGObjWeb/DAVPropMap.plist	(revision 1660)
-+++ sope-appserver/NGObjWeb/DAVPropMap.plist	(working copy)
+--- sope-appserver/NGObjWeb/DAVPropMap.plist	(révision 1660)
++++ sope-appserver/NGObjWeb/DAVPropMap.plist	(copie de travail)
 @@ -157,6 +157,7 @@
    "{urn:ietf:params:xml:ns:caldav}supported-calendar-data" =
       davSupportedCalendarDataTypes;
@@ -4389,8 +5855,8 @@ Index: sope-appserver/NGObjWeb/DAVPropMap.plist
    "{urn:ietf:params:xml:ns:carddav}addressbook-home-set" = davAddressbookHomeSet;
 Index: sope-appserver/NGObjWeb/WebDAV/SoObjectResultEntry.m
 ===================================================================
---- sope-appserver/NGObjWeb/WebDAV/SoObjectResultEntry.m	(revision 1660)
-+++ sope-appserver/NGObjWeb/WebDAV/SoObjectResultEntry.m	(working copy)
+--- sope-appserver/NGObjWeb/WebDAV/SoObjectResultEntry.m	(révision 1660)
++++ sope-appserver/NGObjWeb/WebDAV/SoObjectResultEntry.m	(copie de travail)
 @@ -25,7 +25,14 @@
  @implementation SoObjectResultEntry
  
@@ -4448,8 +5914,8 @@ Index: sope-appserver/NGObjWeb/WebDAV/SoObjectResultEntry.m
    
 Index: sope-appserver/NGObjWeb/WebDAV/SoWebDAVRenderer.m
 ===================================================================
---- sope-appserver/NGObjWeb/WebDAV/SoWebDAVRenderer.m	(revision 1660)
-+++ sope-appserver/NGObjWeb/WebDAV/SoWebDAVRenderer.m	(working copy)
+--- sope-appserver/NGObjWeb/WebDAV/SoWebDAVRenderer.m	(révision 1660)
++++ sope-appserver/NGObjWeb/WebDAV/SoWebDAVRenderer.m	(copie de travail)
 @@ -49,6 +49,8 @@
  #define XMLNS_INTTASK \
  @"{http://schemas.microsoft.com/mapi/id/{00062003-0000-0000-C000-000000000046}/}"
@@ -4514,8 +5980,8 @@ Index: sope-appserver/NGObjWeb/WebDAV/SoWebDAVRenderer.m
    }
 Index: sope-appserver/NGObjWeb/WODirectAction.m
 ===================================================================
---- sope-appserver/NGObjWeb/WODirectAction.m	(revision 1660)
-+++ sope-appserver/NGObjWeb/WODirectAction.m	(working copy)
+--- sope-appserver/NGObjWeb/WODirectAction.m	(révision 1660)
++++ sope-appserver/NGObjWeb/WODirectAction.m	(copie de travail)
 @@ -46,7 +46,7 @@
  }
  - (id)initWithContext:(WOContext *)_ctx {
@@ -4549,8 +6015,8 @@ Index: sope-appserver/NGObjWeb/WODirectAction.m
  
 Index: sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.m
 ===================================================================
---- sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.m	(revision 1660)
-+++ sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.m	(working copy)
+--- sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.m	(révision 1660)
++++ sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.m	(copie de travail)
 @@ -216,6 +216,12 @@
        assocCount++;
      }
@@ -4566,8 +6032,8 @@ Index: sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.m
    
 Index: sope-appserver/NGObjWeb/DynamicElements/_WOComplexHyperlink.m
 ===================================================================
---- sope-appserver/NGObjWeb/DynamicElements/_WOComplexHyperlink.m	(revision 1660)
-+++ sope-appserver/NGObjWeb/DynamicElements/_WOComplexHyperlink.m	(working copy)
+--- sope-appserver/NGObjWeb/DynamicElements/_WOComplexHyperlink.m	(révision 1660)
++++ sope-appserver/NGObjWeb/DynamicElements/_WOComplexHyperlink.m	(copie de travail)
 @@ -41,6 +41,7 @@
    WOAssociation *string;
    WOAssociation *target;
@@ -4599,8 +6065,8 @@ Index: sope-appserver/NGObjWeb/DynamicElements/_WOComplexHyperlink.m
      return NO;
 Index: sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.h
 ===================================================================
---- sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.h	(revision 1660)
-+++ sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.h	(working copy)
+--- sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.h	(révision 1660)
++++ sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.h	(copie de travail)
 @@ -41,7 +41,8 @@
    WOAssociation *pageName;
    WOAssociation *actionClass;
@@ -4613,8 +6079,8 @@ Index: sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.h
    /* 'ivar' associations */
 Index: sope-appserver/NGObjWeb/WOMessage.m
 ===================================================================
---- sope-appserver/NGObjWeb/WOMessage.m	(revision 1660)
-+++ sope-appserver/NGObjWeb/WOMessage.m	(working copy)
+--- sope-appserver/NGObjWeb/WOMessage.m	(révision 1660)
++++ sope-appserver/NGObjWeb/WOMessage.m	(copie de travail)
 @@ -182,7 +182,7 @@
    NSString *key;
  
@@ -4695,8 +6161,8 @@ Index: sope-appserver/NGObjWeb/WOMessage.m
  }
 Index: sope-appserver/NGObjWeb/SoObjects/SoObject.m
 ===================================================================
---- sope-appserver/NGObjWeb/SoObjects/SoObject.m	(revision 1660)
-+++ sope-appserver/NGObjWeb/SoObjects/SoObject.m	(working copy)
+--- sope-appserver/NGObjWeb/SoObjects/SoObject.m	(révision 1660)
++++ sope-appserver/NGObjWeb/SoObjects/SoObject.m	(copie de travail)
 @@ -39,22 +39,34 @@
  static int debugLookup  = -1;
  static int debugBaseURL = -1;
@@ -4844,11 +6310,115 @@ Index: sope-appserver/NGObjWeb/SoObjects/SoObject.m
      }
    }
    
+Index: sope-appserver/NGObjWeb/NGObjWeb/WOAdaptor.h
+===================================================================
+--- sope-appserver/NGObjWeb/NGObjWeb/WOAdaptor.h	(révision 1660)
++++ sope-appserver/NGObjWeb/NGObjWeb/WOAdaptor.h	(copie de travail)
+@@ -27,6 +27,13 @@
+ @class NSString, NSDictionary;
+ @class WOCoreApplication;
+ 
++typedef enum {
++  WOChildMessageAccept = 0,
++  WOChildMessageReady,
++  WOChildMessageShutdown,
++  WOChildMessageMax
++} WOChildMessage;
++
+ @interface WOAdaptor : NSObject
+ {
+ @protected
+Index: sope-appserver/NGObjWeb/NGObjWeb/WOCoreApplication.h
+===================================================================
+--- sope-appserver/NGObjWeb/NGObjWeb/WOCoreApplication.h	(révision 1660)
++++ sope-appserver/NGObjWeb/NGObjWeb/WOCoreApplication.h	(copie de travail)
+@@ -31,6 +31,8 @@
+ @class WOAdaptor, WORequest, WOResponse, WORequestHandler;
+ @class NSBundle;
+ 
++@class NGActiveSocket, NGPassiveSocket;
++
+ NGObjWeb_EXPORT NSString *WOApplicationWillFinishLaunchingNotification;
+ NGObjWeb_EXPORT NSString *WOApplicationDidFinishLaunchingNotification;
+ NGObjWeb_EXPORT NSString *WOApplicationWillTerminateNotification;
+@@ -41,6 +43,9 @@
+   NSRecursiveLock *lock;
+   NSLock          *requestLock;
+ 
++  NGActiveSocket *controlSocket;
++  NGPassiveSocket *listeningSocket;
++
+   struct {
+     BOOL isTerminating:1;
+   } cappFlags;
+@@ -55,6 +60,14 @@
+ - (void)activateApplication;
+ - (void)deactivateApplication;
+ 
++/* Watchdog helpers */
++
++- (void)setControlSocket: (NGActiveSocket *) newSocket;
++- (NGActiveSocket *)controlSocket;
++
++- (void)setListeningSocket: (NGPassiveSocket *) newSocket;
++- (NGPassiveSocket *)listeningSocket;
++
+ /* adaptors */
+ 
+ - (NSArray *)adaptors;
+Index: sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpAdaptor.h
+===================================================================
+--- sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpAdaptor.h	(révision 1660)
++++ sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpAdaptor.h	(copie de travail)
+@@ -46,7 +46,6 @@
+   NSMutableArray         *delayedResponses;
+ }
+ 
+-+ (BOOL)optionLogStream;
+ + (BOOL)optionLogPerf;
+ 
+ @end
 Index: sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpTransaction.m
 ===================================================================
---- sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpTransaction.m	(revision 1660)
-+++ sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpTransaction.m	(working copy)
-@@ -696,7 +696,7 @@
+--- sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpTransaction.m	(révision 1660)
++++ sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpTransaction.m	(copie de travail)
+@@ -48,8 +48,8 @@
+ NSString *WOAsyncResponseReadyNotificationName =
+   @"WOAsyncResponseReadyNotification";
+ NSString *WOAsyncResponse = @"WOAsyncResponse";
++static BOOL     WOHttpAdaptor_LogStream      = NO;
+ 
+-
+ @interface WOCoreApplication(SimpleParserSelection)
+ 
+ - (BOOL)shouldUseSimpleHTTPParserForTransaction:(id)_tx;
+@@ -85,13 +85,14 @@
+   ud = [NSUserDefaults standardUserDefaults];
+   useSimpleParser = [ud boolForKey:@"WOHttpTransactionUseSimpleParser"];
+   doCore = [[ud objectForKey:@"WOCoreOnHTTPAdaptorException"] boolValue]?1:0;
++  WOHttpAdaptor_LogStream = [ud boolForKey:@"WOHttpAdaptor_LogStream"];
+   
+   adLogPath = [[ud stringForKey:@"WOAdaptorLogPath"] copy];
+   if (adLogPath == nil) adLogPath = @"";
+ }
+ 
+ - (BOOL)optionLogStream {
+-  return [WOHttpAdaptor optionLogStream];
++  return WOHttpAdaptor_LogStream;
+ }
+ - (BOOL)optionLogPerf {
+   return perfLogger ? YES : NO;
+@@ -108,6 +109,9 @@
+   NSAssert(_app,    @"missing application ...");
+   self->socket      = [_socket retain];
+   self->application = [_app    retain];
++  if ([[_app recordingPath] length] > 0)
++    WOHttpAdaptor_LogStream = YES;
++
+   return self;
+ }
+ 
+@@ -696,7 +700,7 @@
    *(&out) = nil;
  
    [self _httpValidateResponse:_response];
@@ -4857,7 +6427,7 @@ Index: sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpTransaction.m
    out = [(NGCTextStream *)[NGCTextStream alloc] initWithSource:_out];
    
    NS_DURING {
-@@ -705,6 +705,7 @@
+@@ -705,6 +709,7 @@
      id   body;
      BOOL doZip;
      BOOL isok = YES;
@@ -4865,7 +6435,7 @@ Index: sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpTransaction.m
      
      doZip = [_response shouldZipResponseToRequest:_request];
      
-@@ -738,7 +739,11 @@
+@@ -738,7 +743,11 @@
      
      /* add content length header */
      
@@ -4878,7 +6448,7 @@ Index: sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpTransaction.m
      t1 = [[NSString alloc] initWithCString:(char *)buf];
      [_response setHeader:t1 forKey:@"content-length"];
      [t1 release]; t1 = nil;
-@@ -766,7 +771,7 @@
+@@ -766,7 +775,7 @@
          NSString *value;
  	
  	if (!hasConnectionHeader) {
@@ -4887,3 +6457,478 @@ Index: sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpTransaction.m
  	    hasConnectionHeader = YES;
  	}
  	
+Index: sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpAdaptor.m
+===================================================================
+--- sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpAdaptor.m	(révision 1660)
++++ sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpAdaptor.m	(copie de travail)
+@@ -71,18 +71,13 @@
+ 
+ static NGLogger *logger                      = nil;
+ static NGLogger *perfLogger                  = nil;
+-static BOOL     WOHttpAdaptor_LogStream      = NO;
+ static BOOL     WOContactSNS                 = NO;
+ static BOOL     WOCoreOnHTTPAdaptorException = NO;
+ static int      WOHttpAdaptorSendTimeout     = 10;
+ static int      WOHttpAdaptorReceiveTimeout  = 10;
+-static int      WOHttpAdaptorForkCount       = 0;
+ static id       allow                        = nil;
+ static BOOL     debugOn                      = NO;
+ 
+-+ (BOOL)optionLogStream {
+-  return WOHttpAdaptor_LogStream;
+-}
+ + (BOOL)optionLogPerf {
+   return perfLogger != nil ? YES : NO;
+ }
+@@ -108,8 +103,6 @@
+   logger     = [lm loggerForClass:self];
+   perfLogger = [lm loggerForDefaultKey:@"WOProfileHttpAdaptor"];
+ 
+-  WOHttpAdaptor_LogStream = [ud boolForKey:@"WOHttpAdaptor_LogStream"];
+-
+   // TODO: this should be queried on demand to allow different defaults
+   WOContactSNS = [[ud objectForKey:@"WOContactSNS"] boolValue];
+ 
+@@ -134,9 +127,6 @@
+     allow = [allow copy];
+   }
+   
+-  WOHttpAdaptorForkCount = 
+-    [[ud objectForKey:@"WOHttpAdaptorForkCount"] intValue];
+-  
+   if (WOCoreOnHTTPAdaptorException)
+     [logger warnWithFormat:@"will dump core on HTTP adaptor exception!"];
+ }
+@@ -219,33 +209,31 @@
+                      application:_application])) {
+     id arg = nil;
+     
+-    if ([[_application recordingPath] length] > 0)
+-      WOHttpAdaptor_LogStream = YES;
+-    
+     [self _registerForSignals];
++    if (![_application controlSocket]) {
++      if ([_args count] < 1)
++        self->address = [self addressFromDefaultsOfApplication:_application];
++      else
++        self->address = [self addressFromArguments:_args];
+     
+-    if ([_args count] < 1)
+-      self->address = [self addressFromDefaultsOfApplication:_application];
+-    else
+-      self->address = [self addressFromArguments:_args];
++      self->address = [self->address retain];
+     
+-    self->address = [self->address retain];
++      if (self->address == nil) {
++        [_application errorWithFormat:
++                        @"got no address for HTTP server (using arg '%@')", arg];
++        [self release];
++        return nil;
++      }
+     
+-    if (self->address == nil) {
+-      [_application errorWithFormat:
+-                      @"got no address for HTTP server (using arg '%@')", arg];
+-      [self release];
+-      return nil;
+-    }
+-    
+-    if (!WOContactSNS) {
+-      [_application logWithFormat:@"%@ listening on address %@",
++      if (!WOContactSNS) {
++        [_application logWithFormat:@"%@ listening on address %@",
+                       NSStringFromClass([self class]),
+                       [(id)self->address stringValue]];
++      }
+     }
+     
+     self->lock = [[NSRecursiveLock alloc] init];
+-    
++      
+     self->maxThreadCount = [[WOCoreApplication workerThreadCount] intValue];
+     
+     [self setSendTimeout:WOHttpAdaptorSendTimeout];
+@@ -270,145 +258,76 @@
+   return self->address;
+ }
+ 
+-/* forking */
+-
+-static pid_t *childPIDs       = NULL;
+-static BOOL  isForkMaster     = YES;
+-
+-- (void)forkChildren {
+-  unsigned i;
+-
+-  if (WOHttpAdaptorForkCount == 0)
+-    return;
+-
+-  [self logWithFormat:@"Note: forking %d children for socket processing.",
+-	  WOHttpAdaptorForkCount];
+-  
+-#if !defined(__MINGW32__)
+-  [[UnixSignalHandler sharedHandler]
+-    addObserver:self selector:@selector(handleSIGCHLD:)
+-    forSignal:SIGCHLD immediatelyNotifyOnSignal:NO];
+-#endif
+-  
+-  childPIDs = calloc(WOHttpAdaptorForkCount + 1, sizeof(pid_t));
+-  for (i = 0; i < WOHttpAdaptorForkCount; i++) {
+-    childPIDs[i] = fork();
+-    
+-    if (childPIDs[i] == 0) {
+-      /* child */
+-      isForkMaster = NO;
+-      return;
+-    }
+-    else if (childPIDs[i] > 0)
+-      printf("Note: successfully forked child: %i\n", childPIDs[i]);
+-    else
+-      [self errorWithFormat:@"failed to fork child %i.", i];
+-  }
+-}
+-- (void)killChildren {
+-  int i;
+-  
+-  if (!isForkMaster)
+-    return;
+-  
+-  for (i = 0; i < WOHttpAdaptorForkCount; i++) {
+-    if (childPIDs[i] != 0)
+-      kill(childPIDs[i], SIGKILL);
+-  }
+-}
+-
+-- (void)checkStatusOfChildren {
+-  /*
+-    Note: currently this does not refork crashed processes. Reforking is harder
+-          than it may sound because the crash can happen at arbitary execution
+-	  states.
+-	  That is, the "master process" is not virgin anymore, eg it might have
+-	  open database connections.
+-	  
+-	  So the solution might be to refork the whole cluster once a minimum
+-	  backend threshold is reached.
+-  */
+-  unsigned int i;
+-  
+-  if (!isForkMaster)
+-    return;
+-  
+-  for (i = 0; i < WOHttpAdaptorForkCount; i++) {
+-    pid_t result;
+-    int   status;
+-    
+-    if (childPIDs[i] == 0)
+-      continue;
+-    
+-    result = waitpid(childPIDs[i], &status, WNOHANG);
+-    if (result == 0) /* did not exit yet */
+-      continue;
+-    
+-    if (result == -1) { /* error */
+-      [self errorWithFormat:@"failed to get status of child %i: %s", 
+-	      childPIDs[i], strerror(errno)];
+-      continue;
+-    }
+-
+-    [self logWithFormat:@"Note: child %i terminated.", childPIDs[i]];
+-    childPIDs[i] = 0;
+-  }
+-}
+-
+ /* events */
+ 
+ - (void)handleSIGPIPE:(int)_signal {
+   [self warnWithFormat:@"caught SIGPIPE !"];
+ }
+-- (void)handleSIGCHLD:(int)_signal {
+-  [self checkStatusOfChildren];
+-}
+ 
+ - (void)registerForEvents {
+   int backlog;
++  NGActiveSocket *controlSocket;
++  WOChildMessage message;
++
++  controlSocket = [[WOCoreApplication application] controlSocket];
++  if (controlSocket) {
++    ASSIGN(self->socket, [[WOCoreApplication application] listeningSocket]);
++    [[NSNotificationCenter defaultCenter]
++                         addObserver:self
++                            selector:@selector(acceptControlMessage:)
++                                name:NSFileObjectBecameActiveNotificationName
++                              object:nil];
++    [(WORunLoop *)[WORunLoop currentRunLoop]
++              addFileObject:controlSocket
++              activities:NSPosixReadableActivity
++              forMode:NSDefaultRunLoopMode];
++    message = WOChildMessageReady;
++    [controlSocket safeWriteBytes: &message
++                            count: sizeof (WOChildMessage)];
++    // [self logWithFormat: @"notified the watchdog that we are ready"];
++  }
++  else {
++    backlog = [[WOCoreApplication listenQueueSize] intValue];
+   
+-  backlog = [[WOCoreApplication listenQueueSize] intValue];
++    if (backlog == 0)
++      backlog = 5;
+   
+-  if (backlog == 0)
+-    backlog = 5;
++    [self->socket release]; self->socket = nil;
+   
+-  [self->socket release]; self->socket = nil;
++    self->socket =
++      [[NGPassiveSocket alloc] initWithDomain:[self->address domain]];
+   
+-  self->socket =
+-    [[NGPassiveSocket alloc] initWithDomain:[self->address domain]];
++    [self->socket bindToAddress:self->address];
+   
+-  [self->socket bindToAddress:self->address];
+-  
+-  if ([[self->address domain] isEqual:[NGInternetSocketDomain domain]]) {
+-    if ([(NGInternetSocketAddress *)self->address port] == 0) {
+-      /* let the kernel choose an IP address */
++    if ([[self->address domain] isEqual:[NGInternetSocketDomain domain]]) {
++      if ([(NGInternetSocketAddress *)self->address port] == 0) {
++        /* let the kernel choose an IP address */
+       
+-      [self debugWithFormat:@"bound to wildcard: %@", self->address];
+-      [self debugWithFormat:@"got local: %@", [self->socket localAddress]];
++        [self debugWithFormat:@"bound to wildcard: %@", self->address];
++        [self debugWithFormat:@"got local: %@", [self->socket localAddress]];
+       
+-      self->address = [[self->socket localAddress] retain];
++        self->address = [[self->socket localAddress] retain];
+       
+-      [self logWithFormat:@"bound to kernel assigned address %@: %@",
++        [self logWithFormat:@"bound to kernel assigned address %@: %@",
+               self->address, self->socket];
++      }
+     }
+-  }
+   
+-  [self->socket listenWithBacklog:backlog];
++    [self->socket listenWithBacklog:backlog];
+   
+-  [[NSNotificationCenter defaultCenter]
++    [[NSNotificationCenter defaultCenter]
+                          addObserver:self selector:@selector(acceptConnection:)
+-                         name:NSFileObjectBecameActiveNotificationName
+-                         object:self->socket];
+-  [(WORunLoop *)[WORunLoop currentRunLoop]
++                                name:NSFileObjectBecameActiveNotificationName
++                              object:self->socket];
++
++    [(WORunLoop *)[WORunLoop currentRunLoop]
+               addFileObject:self->socket
+               activities:NSPosixReadableActivity
+               forMode:NSDefaultRunLoopMode];
+-  
+-  [self forkChildren];
++  }
+ }
++
+ - (void)unregisterForEvents {
+-  [self killChildren];
+-  
+   [(WORunLoop *)[WORunLoop currentRunLoop]
+               removeFileObject:self->socket forMode:NSDefaultRunLoopMode];
+   [[NSNotificationCenter defaultCenter] removeObserver:self];
+@@ -603,52 +522,97 @@
+   return _connection;
+ }
+ 
++- (NGActiveSocket *)_accept {
++  NGActiveSocket *connection;
++
++  NS_DURING {
++    connection = [self->socket accept];
++    if (!connection)
++      [self _serverCatched:[self->socket lastException]];
++    else
++      [self debugWithFormat:@"accepted connection: %@", connection];
++  }
++  NS_HANDLER {
++    connection = nil;
++    [self _serverCatched:localException];
++  }
++  NS_ENDHANDLER;
++
++  return connection;
++}
++
++- (void)_handleConnection:(NGActiveSocket *)connection {
++  if (connection != nil) {
++    if (self->maxThreadCount <= 1) {
++      NS_DURING
++        [self _handleAcceptedConnection:[connection retain]];
++      NS_HANDLER
++        [self _serverCatched:localException];
++      NS_ENDHANDLER;
++    }
++    else {
++      [NSThread detachNewThreadSelector:
++                  @selector(_handleAcceptedConnectionInThread:)
++                               toTarget:self
++                             withObject:[connection retain]];
++      [self logWithFormat:@"detached new thread for request."];
++      //[NSThread sleepUntilDate:[NSDate dateWithTimeIntervalSinceNow:10]];
++    }
++    connection = nil;
++  }
++}
++
++- (void) acceptControlMessage: (NSNotification *) aNotification
++{
++  NGActiveSocket *controlSocket, *connection;
++  WOChildMessage message;
++  NSAutoreleasePool *pool;
++
++  // NSLog (@"received control message");
++  controlSocket = [aNotification object];
++  // [self logWithFormat:@"child accepting message from socket: %@", controlSocket];
++  while (![controlSocket safeReadBytes: &message
++                                 count: sizeof (WOChildMessage)])
++    NSLog (@"renotifying watchdog");
++  if (message == WOChildMessageAccept) {
++    pool = [NSAutoreleasePool new];
++    // NSLog (@"  accepting");
++    connection = [self _accept];
++    // NSLog (@"  AAAAAAAAAAAAAA   accepted. Handling request.");
++    if ([controlSocket safeWriteBytes: &message
++                                count: sizeof (WOChildMessage)])
++      ;
++      // NSLog (@"      1 notified watchdog");
++    [self _handleConnection: connection];
++    message = WOChildMessageReady;
++    // NSLog (@"  BBBBBBBBBBBBBB    Request handled. Notify watchdog.");
++    [controlSocket safeWriteBytes: &message count: sizeof (WOChildMessage)];
++      // NSLog (@"      2 notified watchdog");
++    // NSLog (@"  CCCCCCCCCCCCCC    done.");
++    [pool release];
++  }
++  else if (message == WOChildMessageShutdown) {
++    [controlSocket safeWriteBytes: &message
++                            count: sizeof (WOChildMessage)];
++    [[WOCoreApplication application] terminate];
++  }
++}
++
+ - (void)acceptConnection:(id)_notification {
++  NGActiveSocket *connection;
+ #if USE_POOLS
+   NSAutoreleasePool *pool;
+-  *(&pool) = [[NSAutoreleasePool alloc] init];
++
++  pool = [[NSAutoreleasePool alloc] init];
+ #endif
+   {
+-    NGActiveSocket *connection;
+-    
+-    NS_DURING {
+-      *(&connection) = (NGActiveSocket *)[self->socket accept];
+-      if (connection == nil)
+-        [self _serverCatched:[self->socket lastException]];
+-      else
+-        [self debugWithFormat:@"accepted connection: %@", connection];
+-    }
+-    NS_HANDLER {
+-      connection = nil;
+-      [self _serverCatched:localException];
+-    }
+-    NS_ENDHANDLER;
+-    
+-    connection = (NGActiveSocket *)[self _checkAccessOnConnection:connection];
+-    
+-    if (connection != nil) {
+-      if (self->maxThreadCount <= 1) {
+-        NS_DURING
+-          [self _handleAcceptedConnection:[connection retain]];
+-        NS_HANDLER
+-          [self _serverCatched:localException];
+-        NS_ENDHANDLER;
+-      }
+-      else {
+-        [NSThread detachNewThreadSelector:
+-		    @selector(_handleAcceptedConnectionInThread:)
+-                  toTarget:self
+-                  withObject:[connection retain]];
+-        [self logWithFormat:@"detached new thread for request."];
+-        //[NSThread sleepUntilDate:[NSDate dateWithTimeIntervalSinceNow:10]];
+-      }
+-      connection = nil;
+-    }
++    connection = [self _checkAccessOnConnection:[self _accept]];
++    [self _handleConnection: connection];
+   }
+ #if USE_POOLS
+   [pool release]; pool = nil;
+ #endif
+-  
++
+   if (self->isTerminated) {
+     if (self->socket) {
+       [[NSNotificationCenter defaultCenter]
+Index: sope-appserver/NGObjWeb/WOCoreApplication.m
+===================================================================
+--- sope-appserver/NGObjWeb/WOCoreApplication.m	(révision 1660)
++++ sope-appserver/NGObjWeb/WOCoreApplication.m	(copie de travail)
+@@ -190,6 +190,9 @@
+           forSignal:SIGHUP immediatelyNotifyOnSignal:NO];
+     }
+ #endif
++    
++    controlSocket = nil;
++    listeningSocket = nil;
+   }
+   return self;
+ }
+@@ -202,9 +205,32 @@
+   [self->adaptors    release];
+   [self->requestLock release];
+   [self->lock        release];
++  [self->listeningSocket release];
++  [self->controlSocket release];
+   [super dealloc];
+ }
+ 
++/* Watchdog helpers */
++- (void)setControlSocket: (NGActiveSocket *) newSocket
++{
++  ASSIGN(self->controlSocket, newSocket);
++}
++
++- (NGActiveSocket *)controlSocket
++{
++  return self->controlSocket;
++}
++
++- (void)setListeningSocket: (NGPassiveSocket *) newSocket
++{
++  ASSIGN(self->listeningSocket, newSocket);
++}
++
++- (NGPassiveSocket *)listeningSocket
++{
++  return self->listeningSocket;
++}
++
+ /* NGLogging */
+ 
+ + (id)logger {
+@@ -786,7 +812,9 @@
+   id woport;
+   id addr;
+   
+-  woport = [[self userDefaults] objectForKey:@"WOPort"];
++  woport = [[self userDefaults] objectForKey:@"p"];
++  if (!woport)
++    woport = [[self userDefaults] objectForKey:@"WOPort"];
+   if ([woport isKindOfClass:[NSNumber class]])
+     return woport;
+   woport = [woport stringValue];
