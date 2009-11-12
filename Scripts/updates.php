@@ -67,15 +67,15 @@ if ( $plugin ) {
 <!DOCTYPE RDF>
 <RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
   xmlns:em="http://www.mozilla.org/2004/em-rdf#">
-  <Description about="urn:mozilla:extension:<?= $pluginname ?>">
+  <Description about="urn:mozilla:extension:<?php echo $pluginname ?>">
     <em:updates>
       <Seq>
         <li>
           <Description>
-            <em:version><?= $plugin["version"] ?></em:version>
+            <em:version><?php echo $plugin["version"] ?></em:version>
             <em:targetApplication>
-              <Description><?= $applications[$plugin["application"]] ?>
-		<em:updateLink>http://inverse.ca/downloads/extensions/<?= $plugin["filename"] ?></em:updateLink>
+              <Description><?php echo $applications[$plugin["application"]] ?>
+		<em:updateLink>http://inverse.ca/downloads/extensions/<?php echo $plugin["filename"] ?></em:updateLink>
 	      </Description>
             </em:targetApplication>
           </Description>
@@ -89,3 +89,4 @@ if ( $plugin ) {
   header("Content-type: text/plain; charset=utf-8", true, 404);
   echo( 'Plugin not found' );
 }
+?>
