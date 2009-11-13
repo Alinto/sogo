@@ -138,7 +138,7 @@ cp Apache/SOGo.conf ${RPM_BUILD_ROOT}/etc/httpd/conf.d/
 cp Scripts/tmpwatch ${RPM_BUILD_ROOT}/etc/cron.daily/sogo-tmpwatch
 cp Scripts/sogo-init.d-redhat ${RPM_BUILD_ROOT}/etc/init.d/sogod
 cp Scripts/sogod-wrapper ${RPM_BUILD_ROOT}/usr/sbin/sogod-wrapper
-chmod 755 ${RPM_BUILD_ROOT}/usr/sbin/sogod
+chmod 755 ${RPM_BUILD_ROOT}/usr/sbin/sogod-wrapper
 chmod 755 ${RPM_BUILD_ROOT}/etc/init.d/sogod
 cp Scripts/sogo-default ${RPM_BUILD_ROOT}/etc/sysconfig/sogo
 rm -rf ${RPM_BUILD_ROOT}%{prefix}/Tools/test_quick_extract
@@ -153,7 +153,7 @@ rm -fr ${RPM_BUILD_ROOT}
 
 /etc/init.d/sogod
 /etc/cron.daily/sogo-tmpwatch
-/usr/sbin/sogod
+/usr/sbin/sogod-wrapper
 /var/run/sogo
 /var/log/sogo
 /var/spool/sogo
