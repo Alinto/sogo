@@ -424,9 +424,7 @@ static BOOL debugObjectAllocation = NO;
   if (debugLeaks)
     {
       if (debugOn)
-        {
-          NSLog (@"allocated classes:\n%s", GSDebugAllocationList (YES));
-        }
+        NSLog (@"allocated classes:\n%s", GSDebugAllocationList (YES));
       else
         {
           debugOn = YES;
@@ -435,7 +433,7 @@ static BOOL debugObjectAllocation = NO;
     }
 
   resp = [super dispatchRequest: _request];
-  [SOGoCache killCache];
+  [cache killCache];
 
   if (debugRequests)
     {

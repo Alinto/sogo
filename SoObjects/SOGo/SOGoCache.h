@@ -38,6 +38,9 @@
 
 @interface SOGoCache : NSObject
 {
+  NSMutableDictionary *localCache;
+  NSMutableDictionary *cache;
+  NSMutableDictionary *users;
   @private
     memcached_server_st *servers;
     memcached_st *handle;
@@ -45,7 +48,8 @@
 
 + (NSTimeInterval) cleanupInterval;
 + (SOGoCache *) sharedCache;
-+ (void) killCache;
+
+- (void) killCache;
 
 - (void) registerObject: (id) object
 	       withName: (NSString *) name

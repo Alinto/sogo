@@ -54,19 +54,7 @@
 // high to avoid useless database calls.
 static NSTimeInterval cleanupInterval = 300;
 
-static NSMutableDictionary *cache = nil;
-static NSMutableDictionary *users = nil;
-
-// localCache is used to avoid going all the time to the memcached server during
-// each request. We'll cache the value we got from memcached for the duration
-// of the current request - which is good enough for pretty much all caces. We 
-// surely don't want to get new defaults/settings during the _same_ requests, it
-// could produce relatively strange behaviors
-static NSMutableDictionary *localCache = nil;
-
 static NSString *memcachedServerName = @"localhost";
-
-static SOGoCache *sharedCache = nil;
 
 #if defined(THREADSAFE)
 static NSLock *lock;
@@ -74,12 +62,12 @@ static NSLock *lock;
 
 @implementation SOGoCache
 
+#if defined(THREADSAFE)
 + (void) initialize
 {
-#if defined(THREADSAFE)
   lock = [NSLock new];
-#endif
 }
+#endif
 
 + (NSTimeInterval) cleanupInterval
 {
@@ -88,6 +76,8 @@ static NSLock *lock;
 
 + (SOGoCache *) sharedCache
 {
+  static SOGoCache *sharedCache = nil;
+
 #if defined(THREADSAFE)
   [lock lock];
 #endif
@@ -100,7 +90,7 @@ static NSLock *lock;
   return sharedCache;
 }
 
-+ (void) killCache
+- (void) killCache
 {
 #if defined(THREADSAFE)
   [lock lock];
@@ -125,6 +115,12 @@ static NSLock *lock;
       
       cache = [[NSMutableDictionary alloc] init];
       users = [[NSMutableDictionary alloc] init];
+
+      // localCache is used to avoid going all the time to the memcached server during
+      // each request. We'll cache the value we got from memcached for the duration
+      // of the current request - which is good enough for pretty much all caces. We 
+      // surely don't want to get new defaults/settings during the _same_ requests, it
+      // could produce relatively strange behaviors
       localCache = [[NSMutableDictionary alloc] init];
       
       // We fire our timer that will cleanup cache entries
