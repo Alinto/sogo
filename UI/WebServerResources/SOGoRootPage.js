@@ -33,8 +33,12 @@ function initLogin() {
 }
 
 function onFieldKeyDown(event) {
-    if (event.keyCode == Event.KEY_RETURN && $("password").value.length > 0)
-        return onLoginClick (event);
+    if (event.keyCode == Event.KEY_RETURN)
+        if ($("password").value.length > 0
+            && $("userName").value.length > 0)
+            return onLoginClick (event);
+        else
+            Event.stop(event);
 }
 
 function onLoginClick(event) {
