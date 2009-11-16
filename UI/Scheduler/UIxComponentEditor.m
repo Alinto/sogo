@@ -1500,7 +1500,7 @@ RANGE(2);
       jsonScanner = [NSScanner scannerWithString: json];
       if ([jsonScanner scanJSONObject: &attendeesData])
 	{
-	  newAttendees = [NSMutableArray new];
+	  newAttendees = [NSMutableArray array];
 	  attendees = [attendeesData allValues];
 	  max = [attendees count];
 	  for (count = 0; count < max; count++)
@@ -1521,7 +1521,6 @@ RANGE(2);
 	      [newAttendees addObject: currentAttendee];
 	    }
 	  [component setAttendees: newAttendees];
-	  [newAttendees release];
 	}
       else
 	NSLog(@"Error scanning following JSON:\n%@", json);  
