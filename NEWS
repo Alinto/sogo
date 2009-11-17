@@ -1,6 +1,8 @@
 1.1-yyyymmdd (1.1.1)
 --------------------
 - improved handling of popup windows when closing the parent window
+- major refresh of CSS
+- handling of preforked processes by SOPE/SOGo (load balancer is no longer needed)
 
 1.1-20091028 (1.1.0)
 --------------------
