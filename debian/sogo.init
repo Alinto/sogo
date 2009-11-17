@@ -81,7 +81,7 @@ DAEMON_OPTS="-WOWorkersCount $PREFORK -WOPidFile $PIDFILE -WOLogFile $LOGFILE"
 case "$1" in
   start)
 	echo -n "Starting $DESC: "
-	start-stop-daemon --start --quiet --pidfile $PIDFILE --exec $DAEMON -- $DAEMON_OPTS || true
+	start-stop-daemon -c $USER --start --quiet --pidfile $PIDFILE --exec $DAEMON -- $DAEMON_OPTS || true
 	echo "$NAME."
 	;;
   stop)
@@ -93,7 +93,7 @@ case "$1" in
 	echo -n "Restarting $DESC: "
 	start-stop-daemon --stop --quiet --pidfile $PIDFILE --exec $DAEMON || true
 	sleep 1
-	start-stop-daemon --start --quiet --pidfile $PIDFILE --exec $DAEMON -- $DAEMON_OPTS || true
+	start-stop-daemon -c $USER --start --quiet --pidfile $PIDFILE --exec $DAEMON -- $DAEMON_OPTS || true
 	echo "$NAME."
 	;;
   status)
