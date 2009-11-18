@@ -42,26 +42,28 @@ Mailer_RESOURCE_FILES += \
 
 Mailer_RESOURCE_FILES += \
 	SOGoMailBrazilianPortugueseForward.wo \
-	SOGoMailCzechForward.wo \
-	SOGoMailDutchForward.wo \
-	SOGoMailEnglishForward.wo \
-	SOGoMailFrenchForward.wo \
-	SOGoMailGermanForward.wo \
-	SOGoMailHungarianForward.wo \
-	SOGoMailItalianForward.wo \
-	SOGoMailSpanishForward.wo \
-	SOGoMailWelshForward.wo \
-	SOGoMailRussianForward.wo \
 	SOGoMailBrazilianPortugueseReply.wo \
+	SOGoMailCzechForward.wo \
 	SOGoMailCzechReply.wo \
-	SOGoMailRussianReply.wo \
+	SOGoMailDutchForward.wo \
 	SOGoMailDutchReply.wo \
+	SOGoMailEnglishForward.wo \
 	SOGoMailEnglishReply.wo \
+	SOGoMailFrenchForward.wo \
 	SOGoMailFrenchReply.wo \
+	SOGoMailGermanForward.wo \
 	SOGoMailGermanReply.wo \
+	SOGoMailHungarianForward.wo \
 	SOGoMailHungarianReply.wo \
+	SOGoMailItalianForward.wo \
 	SOGoMailItalianReply.wo \
+	SOGoMailRussianForward.wo \
+	SOGoMailRussianReply.wo \
+	SOGoMailSpanishForward.wo \
 	SOGoMailSpanishReply.wo \
+	SOGoMailSwedishForward.wo \
+	SOGoMailSwedishReply.wo \
+	SOGoMailWelshForward.wo \
 	SOGoMailWelshReply.wo
 
 

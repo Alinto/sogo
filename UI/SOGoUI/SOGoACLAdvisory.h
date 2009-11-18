@@ -137,6 +137,15 @@
 @interface SOGoACLItalianRemovalAdvisory : SOGoACLRemovalAdvisory
 @end
 
+@interface SOGoACLRussianAdditionAdvisory : SOGoACLAdditionAdvisory
+@end
+
+@interface SOGoACLRussianModificationAdvisory : SOGoACLModificationAdvisory
+@end
+
+@interface SOGoACLRussianRemovalAdvisory : SOGoACLRemovalAdvisory
+@end
+
 @interface SOGoACLSpanishAdditionAdvisory : SOGoACLAdditionAdvisory
 @end
 
@@ -146,13 +155,13 @@
 @interface SOGoACLSpanishRemovalAdvisory : SOGoACLRemovalAdvisory
 @end
 
-@interface SOGoACLRussianAdditionAdvisory : SOGoACLAdditionAdvisory
+@interface SOGoACLSwedishAdditionAdvisory : SOGoACLAdditionAdvisory
 @end
 
-@interface SOGoACLRussianModificationAdvisory : SOGoACLModificationAdvisory
+@interface SOGoACLSwedishModificationAdvisory : SOGoACLModificationAdvisory
 @end
 
-@interface SOGoACLRussianRemovalAdvisory : SOGoACLRemovalAdvisory
+@interface SOGoACLSwedishRemovalAdvisory : SOGoACLRemovalAdvisory
 @end
 
 #endif /* SOGOACLADVISORY_H */

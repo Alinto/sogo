@@ -122,11 +122,10 @@
           if (![self cardReferences: initialReferences 
                             contain: currentReference])
             {
-              // Search contact
+              // Search contact by vCard UID
 	      values = [folder lookupContactWithName: currentReference];
 	      if (values)
 		{
-		  
 		  cardReference = [NGVCardReference elementWithTag: @"card"];
 		  [cardReference setFn: [values objectForKey: @"c_cn"]];
 		  [cardReference setEmail: [values objectForKey: @"c_mail"]];

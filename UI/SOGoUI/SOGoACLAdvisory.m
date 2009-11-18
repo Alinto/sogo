@@ -319,6 +319,15 @@
 @implementation SOGoACLItalianRemovalAdvisory
 @end
 
+@implementation SOGoACLRussianAdditionAdvisory
+@end
+
+@implementation SOGoACLRussianModificationAdvisory
+@end
+
+@implementation SOGoACLRussianRemovalAdvisory
+@end
+
 @implementation SOGoACLSpanishAdditionAdvisory
 @end
 
@@ -328,11 +337,12 @@
 @implementation SOGoACLSpanishRemovalAdvisory
 @end
 
-@implementation SOGoACLRussianAdditionAdvisory
+@implementation SOGoACLSwedishAdditionAdvisory
 @end
 
-@implementation SOGoACLRussianModificationAdvisory
+@implementation SOGoACLSwedishModificationAdvisory
 @end
 
-@implementation SOGoACLRussianRemovalAdvisory
+@implementation SOGoACLSwedishRemovalAdvisory
 @end
+
