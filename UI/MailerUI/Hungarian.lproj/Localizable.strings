@@ -244,8 +244,6 @@
 "The message you have selected doesn't exist anymore." = "The message you have selected doesn't exist anymore.";
 
 
-
-
 "The folder with name \"%{0}\" could not be created."
 = "\"%{0}\" néven nem hozható létre a mappa.";
 "This folder could not be renamed to \"%{0}\"."

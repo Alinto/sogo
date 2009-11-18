@@ -213,10 +213,10 @@
       NS_ENDHANDLER
         sortedFolders = [NSMutableArray arrayWithCapacity: [folders count]];
       uniqueContacts = [NSMutableDictionary dictionary];
-      /* We first search in LDAP folders (in case of duplicated entries in GCS folders) */
       for (i = 0; i < [folders count]; i++)
         {
           folder = [folders objectAtIndex: i];
+	  /* We first search in LDAP folders (in case of duplicated entries in GCS folders) */
           if ([folder isKindOfClass: [SOGoContactSourceFolder class]])
             [sortedFolders insertObject: folder atIndex: 0];
           else

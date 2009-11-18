@@ -101,16 +101,22 @@
 @interface SOGoFolderItalianRemovalAdvisory : SOGoFolderRemovalAdvisory
 @end
 
+@interface SOGoFolderRussianAdditionAdvisory : SOGoFolderAdditionAdvisory
+@end
+
+@interface SOGoFolderRussianRemovalAdvisory : SOGoFolderRemovalAdvisory
+@end
+
 @interface SOGoFolderSpanishAdditionAdvisory : SOGoFolderAdditionAdvisory
 @end
 
 @interface SOGoFolderSpanishRemovalAdvisory : SOGoFolderRemovalAdvisory
 @end
 
-@interface SOGoFolderRussianAdditionAdvisory : SOGoFolderAdditionAdvisory
+@interface SOGoFolderSwedishAdditionAdvisory : SOGoFolderAdditionAdvisory
 @end
 
-@interface SOGoFolderRussianRemovalAdvisory : SOGoFolderRemovalAdvisory
+@interface SOGoFolderSwedishRemovalAdvisory : SOGoFolderRemovalAdvisory
 @end
 
 #endif /* SOGOFOLDERADVISORY_H */

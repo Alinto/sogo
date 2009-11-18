@@ -81,6 +81,12 @@
 @implementation SOGoAptMailSpanishInvitation
 @end
 
+@interface SOGoAptMailSwedishInvitation : SOGoAptMailNotification
+@end
+
+@implementation SOGoAptMailSwedishInvitation
+@end
+
 @interface SOGoAptMailWelshInvitation : SOGoAptMailNotification
 @end
 

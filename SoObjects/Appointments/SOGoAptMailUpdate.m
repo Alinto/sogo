@@ -84,6 +84,12 @@
 @implementation SOGoAptMailSpanishUpdate
 @end
 
+@interface SOGoAptMailSwedishUpdate : SOGoAptMailNotification
+@end
+
+@implementation SOGoAptMailSwedishUpdate
+@end
+
 @interface SOGoAptMailWelshUpdate : SOGoAptMailNotification
 @end
 
