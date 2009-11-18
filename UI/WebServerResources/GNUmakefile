@@ -22,3 +22,8 @@ clean ::
 distclean :: clean
 
 uninstall ::
+	@if [ -L "$(SOGO_WEBSERVERRESOURCESDIR)" ]; then \
+	  echo "$(SOGO_WEBSERVERRESOURCESDIR) is a symbolic link (for development?). Uninstallation skipped."; \
+	else \
+	  rm -rf $(SOGO_WEBSERVERRESOURCESDIR); \
+	fi
