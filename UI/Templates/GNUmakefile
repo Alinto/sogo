@@ -40,3 +40,8 @@ clean ::
 distclean :: clean
 
 uninstall ::
+	@if [ -L "$(SOGO_TEMPLATESDIR)" ]; then \
+	  echo "$(SOGO_TEMPLATESDIR) is a symbolic link (for development?). Uninstallation skipped."; \
+	else \
+	  rm -rf $(SOGO_TEMPLATESDIR); \
+	fi
