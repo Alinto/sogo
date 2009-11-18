@@ -65,6 +65,8 @@
 // LDIF
 - (BOOL) _isLDIFSafe;
 
+- (BOOL) isJSONString;
+
 @end
 
 #endif /* NSSTRING_URL_H */

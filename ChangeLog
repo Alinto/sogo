@@ -1,5 +1,9 @@
 2009-11-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/NSString+Utilities.m (-isJSONString): new utility
+	method that determines whether the current string is a json
+	document.
+
 	* SoObjects/SOGo/NSDictionary+BSJSONAdditions.m
 	(+dictionaryWithJSONString:): this constructor now explicitly
 	returns an NSMutableDictionary to avoid messing with mutable
