@@ -1,0 +1,79 @@
+OldAptStartDate: WOString {
+  value      = oldStartDate;
+  dateformat = "%d/%m/%y";
+  escapeHTML = NO;
+}
+
+OldAptStartTime: WOString {
+  value      = oldStartDate;
+  dateformat = "%H:%M";
+  escapeHTML = NO;
+}
+
+IsNotOldAllDay: WOConditional {
+  condition = previousApt.isAllDay;
+  negate    = YES;
+}
+
+NewAptStartDate: WOString {
+  value      = newStartDate;
+  dateformat = "%d/%m/%y";
+  escapeHTML = NO;
+}
+
+NewAptStartTime: WOString {
+  value      = newStartDate;
+  dateformat = "%H:%M";
+  escapeHTML = NO;
+}
+
+IsNotNewAllDay: WOConditional {
+  condition = apt.isAllDay;
+  negate    = YES;
+}
+
+Organizer: WOString {
+  value = organizerName;
+  escapeHTML = NO;
+}
+
+OldAptLocation: WOString {
+  value = previousApt.location;
+  escapeHTML = NO;
+}
+
+NewAptLocation: WOString {
+  value = apt.location;
+  escapeHTML = NO;
+}
+
+IsSubject: WOConditional {
+  condition = isSubject;
+}
+
+IsBody: WOConditional {
+  condition = isSubject;
+  negate    = YES;
+}
+
+Summary: WOString {
+  value = summary;
+  escapeHTML = NO;
+}
+
+HasNewLocation: WOConditional {
+  condition = hasNewLocation;
+}
+
+HasOldLocation: WOConditional {
+  condition = hasOldLocation;
+}
+
+HasSentBy: WOConditional {
+  condition = hasSentBy;
+}
+
+sentBy: WOString {
+  value = sentBy;
+  escapeHTML = NO;
+}

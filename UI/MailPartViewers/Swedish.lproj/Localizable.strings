@@ -1,0 +1,45 @@
+ACCEPTED = "accepterad";
+COMPLETED = "avslutad";
+DECLINED = "avböjd";
+DELEGATED = "delegerad";
+IN-PROCESS = "pågående";
+NEEDS-ACTION = "behöver åtgärd";
+TENTATIVE = "preliminär";
+organized_by_you = "organiserad av dig";
+you_are_an_attendee = "du är en deltagare";
+add_info_text = "iMIP 'ADD' stöds inte ännu av SOGo.";
+publish_info_text = "Avsändaren informerar dig om bifogad händelse.";
+cancel_info_text = "Din inbjudan eller hela händelsen har ställts in.";
+request_info_no_attendee = "föreslår ett möte till deltagarna. Du har fått meddelandet som information, men är inte planerad som deltagare.";
+Appointment = "Möte";
+
+Organizer = "Organisatör";
+Time = "Tid";
+Attendees = "Deltagare";
+request_info = "bjuder in dig att delta i ett möte.";
+"Add to calendar" = "Lägg till i kalendern";
+"Delete from calendar" = "Ta bort från kalendern";
+"Update status" = "Uppdatera status";
+Accept = "Acceptera";
+Decline = "Avböj";
+Tentative = "Preliminär";
+"Delegate ..." = "Delegera ...";
+"Delegated to" = "Delegerad till";
+"Update status in calendar" = "Uppdatera status i kalendern";
+
+reply_info_no_attendee = "Du har fått ett svar till en planerad händelse som avsändaren inte är inbjuden till.";
+reply_info = "Du har fått ett svar till en händelse inbjuden av dig.";
+
+"to" = "till";
+
+"Untitled" = "Ingen rubrik";
+
+"Size" = "Storlek";
+
+"Digital signature is not valid" = "Digital signatur är ogiltig";
+"Message is signed" = "Meddelandet är signerat";
+"Subject" = "Ämne";
+"From" = "Från";
+"Date" = "Datum";
+"To" = "Till";
+"Issuer" = "Utfärdat av";

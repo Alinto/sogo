@@ -1,0 +1,27 @@
+IsSubject: WOConditional {
+  condition = isSubject;
+}
+
+IsBody: WOConditional {
+  condition = isSubject;
+  negate = YES;
+}
+
+organizer: WOString {
+  value = organizerName;
+  escapeHTML = NO;
+}
+
+summary: WOString {
+  value = summary;
+  escapeHTML = NO;
+}
+
+HasSentBy: WOConditional {
+  condition = hasSentBy;
+}
+
+sentBy: WOString {
+  value = sentBy;
+  escapeHTML = NO;
+}

@@ -1,0 +1,168 @@
+/* toolbar */
+"Save and Close" = "Spara och stäng";
+"Close" = "Stäng";
+
+/* tabs */
+"General" = "Allmänt";
+"Calendar Options" = "Kalenderinställningar";
+"Mail Options" = "E-postinställningar";
+"Signature" = "Signatur";
+"Vacation" = "Frånvaro";
+"Forward" = "Vidarebefordring";
+"Identities" = "Identiteter";
+"Password" = "Lösenord";
+"Categories" = "Kategorier";
+"Name" = "Namn";
+"Color" = "Färg";
+"Add" = "Lägg till";
+"Delete" = "Ta bort";
+
+/* vacation (auto-reply) */
+"Enable vacation auto reply" = "Aktivera frånvaro auto-svar";
+"Auto reply message :" = "Auto-svar meddelande:";
+"Email addresses (separated by commas) :" = "E-post adresser (kommaseparerade):";
+"Add default email addresses" = "Lägg till standard e-postadress";
+"Days between responses :" = "Dagar mellan svar:";
+"Do not send responses to mailing lists" = "Skicka inte svar till utskickslistor";
+"Please specify your message and your email addresses for which you want to enable auto reply."
+= "Skriv meddelandet och ange din e-postadress som du vill aktivera auto-svar.";
+
+/* forward messages */
+"Forward incoming messages" = "Vidarebefordra inkommande meddelanden";
+"Forward to address :" = "Vidarebefordra till adress:";
+"Keep a copy" = "Spara en kopia";
+"Please specify an address to which you want to forward your messages."
+= "Ange adressen du vill vidarebefordra dina meddelanden till.";
+
+/* d & t */
+"Current Time Zone :" = "Gällande tidszon:";
+"Short Date Format :" = "Kort datumformat:";
+"Long Date Format :" = "Långt datumformat:";
+"Time Format :" = "Tidsformat:";
+
+"default" = "Standard";
+
+"shortDateFmt_0" = "%d-%b-%y";
+
+"shortDateFmt_1" = "%d-%m-%y";
+"shortDateFmt_2" = "%d/%m/%y";
+"shortDateFmt_3" = "%e/%m/%y";
+
+"shortDateFmt_4" = "%d-%m-%Y";
+"shortDateFmt_5" = "%d/%m/%Y";
+
+"shortDateFmt_6" = "%m-%d-%y";
+"shortDateFmt_7" = "%m/%d/%y";
+"shortDateFmt_8" = "%m/%e/%y";
+
+"shortDateFmt_9" = "%y-%m-%d";
+"shortDateFmt_10" = "%y/%m/%d";
+"shortDateFmt_11" = "%y.%m.%d";
+
+"shortDateFmt_12" = "%Y-%m-%d";
+"shortDateFmt_13" = "%Y/%m/%d";
+"shortDateFmt_14" = "%Y.%m.%d";
+
+"shortDateFmt_15" = "";
+   
+"longDateFmt_0" = "%A, %B %d, %Y";
+"longDateFmt_1" = "%B %d, %Y";
+"longDateFmt_2" = "%A, %d %B, %Y";
+"longDateFmt_3" = "%d %B, %Y";
+"longDateFmt_4" = "";
+
+"timeFmt_0" = "%I:%M %p";
+"timeFmt_1" = "%H:%M";
+"timeFmt_2" = "";
+
+/* calendar */
+"Week begins on :" = "Veckan börjar med:";
+"Day start time :" = "Dagen börjar kl:";
+"Day end time :" = "Dagen slutar kl:";
+"Day start time must be prior to day end time." = "Dagens starttid måste vara före dagens sluttid.";
+"First week of year :" = "Första veckan på året:";
+"Enable reminders for Calendar items" = "Aktivera påminnelser för kalenderposter";
+"Play a sound when a reminder comes due"
+= "Spela upp ett ljud vid en påminnelse";
+"Default reminder :" = "Standardpåminnelse:";
+
+"firstWeekOfYear_January1" = "Börjar den 1 januari";
+"firstWeekOfYear_First4DayWeek" = "Första 4-dagarsveckan på året";
+"firstWeekOfYear_FirstFullWeek" = "Första hela veckan på året";
+
+"reminderTime_0000" = "0 minuter";
+"reminderTime_0005" = "5 minuter";
+"reminderTime_0010" = "10 minuter";
+"reminderTime_0015" = "15 minuter";
+"reminderTime_0030" = "30 minuter";
+"reminderTime_0100" = "1 timme";
+"reminderTime_0200" = "2 timmar";
+"reminderTime_0400" = "4 timmar";
+"reminderTime_0800" = "8 timmar";
+"reminderTime_1200" = "1/2 dag";
+"reminderTime_2400" = "1 dag";
+"reminderTime_4800" = "2 dagar";
+
+/* Mailer */
+"Show subscribed mailboxes only" = "Visa endast prenumrerade postlådor";
+"Check for new mail:" = "Hämta ny post:";
+"messagecheck_manually" = "Manuellt";
+"messagecheck_every_minute" = "Varje minut";
+"messagecheck_every_2_minutes" = "Varje 2 minuter";
+"messagecheck_every_5_minutes" = "Varje 5 minuter";
+"messagecheck_every_10_minutes" = "Varje 10 minuter";
+"messagecheck_every_20_minutes" = "Varje 20 minuter";
+"messagecheck_every_30_minutes" = "Varje 30 minuter";
+"messagecheck_once_per_hour" = "Varje timme";
+
+"Forward messages:" = "Vidarebefordra meddelanden:";
+"messageforward_inline" = "Infogade";
+"messageforward_attached" = "Bifogade";
+
+/* Identities */
+"Default identity:" = "Standardidentitet:";
+"Manage identities..." = "Redigera identiteter...";
+"replyplacement_above" = "Börja mitt svar ovanför det infogade meddelandet";
+"replyplacement_below" = "Börja mitt svar under det infogade meddelandet";
+"And place my signature" = "Lägg till min signatur";
+"signatureplacement_above" = "under mitt svar";
+"signatureplacement_below" = "under det infogade meddelandet";
+"Compose messages in" = "Skriv meddelanden i";
+"composemessagestype_html" = "HTML";
+"composemessagestype_text" = "Oformaterad text";
+
+"composeMessageChanged" = "Ändring av din meddelandekodning sparar dina inställingar direkt. Fortsätt?";
+
+/* Additional Parameters */
+"Additional Parameters" = "Övriga parametrar";
+
+/* password */
+"New password:" = "Nytt lösenord:";
+"Confirmation:" = "Bekräfta:";
+"Change" = "Ändra";
+
+/* Event+task categories */
+"category_none" = "Ingen";
+"category_labels" = "Arbete,Diverse,Favoriter,Födelsedagar,Helgdagar,Idéer,Kunder,Ledighet,Leverantörer,Personligt,Presenter,Projekt,Resor,Status,Telefonsamtal,Tävlingar,Uppföljning,Ärenden";
+
+/* Default module */
+"Calendar" = "Kalender";
+"Contacts" = "Adressbok";
+"Mail" = "E-post";
+"Last" = "Senast använd";
+"Default module :" = "Standardmodul:";
+
+"Language :" = "Språk:";
+"choose" = "Välj ...";
+"Czech" = "Česky";
+"Dutch" = "Nederlands";
+"English" = "English";
+"French" = "Français";
+"German" = "Deutsch";
+"Hungarian" = "Magyar";
+"Italian" = "Italiano";
+"BrazilianPortuguese" = "Português brasileiro";
+"Russian" = "Русский";
+"Spanish" = "Español";
+"Swedish" = "Svenska";
+"Welsh" = "Cymraeg";

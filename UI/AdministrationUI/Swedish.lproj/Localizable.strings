@@ -1,0 +1,15 @@
+/* this file is in UTF-8 format! */
+
+"Help" = "Hjälp";
+"Close" = "Stäng";
+
+"Modules" = "Moduler";
+
+/* Modules short names */
+"ACLs" = "Åtkomsträttigheter";
+
+/* Modules titles */
+"ACLs_title" = "Hantering av åtkomsträttigheter för användarmappar";
+
+/* Modules descriptions */
+"ACLs_description" = "<p>Administrationsmodulen för åtkomsträttigheter möjliggör ändring av åtkomsträttigheter för användarens kalendrar och adressböcker.</p><p>För att ändra åtkomsträttigheter på en användarmapp, skriv användarnamnet i sökfältet uppe i fönstret och dubbelklicka på önskad mapp.</p>";

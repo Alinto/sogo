@@ -1,0 +1,17 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE container>
+<container 
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label">
+
+<var:if condition="isSubject">
+  [Svar på händelseinbjudan] <var:string value="summary" const:escapeHTML="NO" />
+</var:if>
+
+ <var:if condition="isSubject" const:negate="YES">
+<var:string value="attendeeName" /><var:if condition="hasSentBy"> (skickat av <var:string value="sentBy" />)</var:if> har <var:if condition="attendee.partStatWithDefault" const:value="DELEGATED">delegerat inbjudan till <var:string value="attendee.delegatedTo.rfc822Email" />.</var:if><var:if condition="attendee.partStatWithDefault" const:value="DELEGATED" const:negate="YES"><var:if condition="hasAccepted">accepterat</var:if><var:if condition="hasDeclined">avböjt</var:if><var:if condition="hasNotAcceptedNotDeclined">inte bestämt sig gällande</var:if> din händelseinbjudan.</var:if>
+</var:if>
+</container>

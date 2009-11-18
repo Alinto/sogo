@@ -1,0 +1,25 @@
+"Personal Calendar" = "Personlig kalender";
+vevent_class0 = "(Publik händelse)";
+vevent_class1 = "(Privat händelse)";
+vevent_class2 = "(Konfidentiell händelse)";
+
+vtodo_class0 = "(Publik uppgift)";
+vtodo_class1 = "(Privat uppgift)";
+vtodo_class2 = "(Konfidentiell uppgift)";
+
+/* Receipts */
+"Title:" = "Titel:";
+"Start:" = "Start:";
+"End:" = "Slut:";
+
+"Receipt: users invited to a meeting" = "Kvitto: användare inbjudna till ett möte";
+"You have invited the following attendees(s):" = "Du har bjudit in följande deltagare:";
+"... to attend the following event:" = "... att delta i följande händelse:";
+
+"Receipt: invitation updated" = "Kvitto: inbjudan uppdaterad";
+"The following attendees(s):" = "Följande deltagare:";
+"... have been notified of the changes to the following event:" = "... har blivit informerade om ändringarna i följande händelse:";
+
+"Receipt: attendees removed from an event" = "Kvitto: deltagare bottagna från en händelse";
+"You have removed the following attendees(s):" = "Du har tagit bort följande deltagare:";
+"... from the following event:" = "... från följande händelse:";

@@ -1,0 +1,268 @@
+/* this file is in UTF-8 format! */
+
+/* Icon's label */
+"Create"      = "Skapa";
+"Empty Trash" = "Töm papperskorgen";
+"Delete"      = "Ta bort";
+"Expunge"     = "Radera";
+"Forward"     = "Vidarebefordra";
+"Get Mail"    = "Hämta";
+"Junk"        = "Skräppost";
+"Reply"       = "Svara";
+"Reply All"   = "Svara alla";
+"Print"       = "Skriv ut";
+"Stop"        = "Stopp";
+"Write"       = "Skriv";
+
+"Send" = "Skicka";
+"Contacts" = "Kontakter";
+"Attach" = "Bifoga";
+"Save" = "Spara";
+"Priority" = "Prioritet";
+"Size" = "Storlek";
+
+/* Tooltips */
+
+"Send this message now" = "Skicka meddelandet nu";
+"Select a recipient from an Address Book" = "Välj en mottagare ur en adressbok";
+"Include an attachment" = "Lägg till en bilaga";
+"Save this message" = "Spara meddelandet";
+"Get new messages" = "Hämta nya meddelanden";
+"Create a new message" = "Skapa ett nytt meddelande";
+"Go to address book" = "Gå till adressboken";
+"Reply to the message" = "Svara avsändaren";
+"Reply to sender and all recipients" = "Svara avsändaren och även alla mottagare";
+"Forward selected message" = "Vidarebefordra meddelandet";
+"Delete selected message or folder" = "Ta bort markerat meddelande eller mapp";
+"Mark the selected messages as junk" = "Märk de markerade meddelandena som skräp";
+"Print this message" = "Skriv ut detta meddelande";
+"Stop the current transfer" = "Stoppa pågående överföring";
+"Attachment" = "Bilagor";
+"Unread" = "Oläst";
+"Flagged" = "Märkt";
+
+/* Main Frame  */
+
+"Home"                 = "Hem"; 
+"Calendar"             = "Kalender";
+"Addressbook"          = "Adressbok";
+"Mail"                 = "E-post";
+"Right Administration" = "Rättighetsadministration";
+
+"Help" = "Hjälp";
+
+/* Mail account main windows */
+
+"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Välkommen till SOGo Mailer. Använd mappvisaren på vänster sida för att bläddra i dina e-post konton!";
+
+"Read messages"       = "Läs meddelanden";
+"Write a new message" = "Skriv ett nytt meddelande";
+
+"Share: " = "Dela ut: ";
+"Account: " = "Konto: ";
+"Shared Account: " = "Delat konto: ";
+
+/* acls */
+"Default Roles" = "Standardroller";
+"User rights for:" = "Användarrättigheter till:";
+
+"List and see this folder" = "Lista och titta i mappen";
+"Read mails from this folder" = "Läsa meddelanden i mappen";
+"Mark mails read and unread" = "Markera meddelanden som lästa och olästa";
+"Modify the flags of the mails in this folder" = "Ändra märkningen av meddelanden i mappen";
+"Insert, copy and move mails into this folder" = "Lägga in, kopiera och flytta meddelanden till mappen";
+"Post mails" = "Skicka meddelanden";
+"Add subfolders to this folder" = "Lägga till undermappar till mappen";
+"Remove this folder" = "Ta bort mappen";
+"Erase mails from this folder" = "Radera meddelanden från mappen";
+"Expunge this folder" = "Radera mappen";
+"Modify the acl of this folder" = "Ändra åtkomsträttigheter på mappen";
+
+"Update" = "Uppdatera";
+"Cancel" = "Avbryt";
+
+/* Mail edition */
+
+"From"          = "Från";
+"Subject"       = "Ämne";
+"To"            = "Till";
+"Cc"            = "Kopia";
+"Bcc"           = "Dold kopia";
+"Reply-To"	= "Svar-till";
+"Add address"   = "Lägg till adress";
+
+"Attachments:" = "Bilagor:";
+"Open" = "Öppna";
+"Select All" = "Välj alla";
+"Attach Web Page..." = "Bifoga webbsida...";
+"Attach File(s)..." = "Bifoga fil(er)...";
+
+"to"            = "Till";
+"cc"            = "Kopia";
+"bcc"           = "Dold kopia";
+
+"Addressbook"   = "Adressbok";
+
+"Edit Draft..." = "Redigera utkast...";
+"Load Images" = "Ladda bilder";
+
+"highest" = "Högst";
+"high" = "Hög";
+"normal" = "Normal";
+"low" = "Låg";
+"lowest" = "Lägst";
+
+"This mail is being sent from an unsecure network!" = "Meddelandet skickas över en osäker nätverksförbindelse!";
+
+/* Popup "show" */
+
+"all"     = "alla";
+"read"    = "läst";
+"unread"  = "oläst";
+"deleted" = "borttaget";
+"flagged" = "märkt";
+
+/* MailListView */
+
+"Sender" = "Avsändare";
+"Subject or Sender" = "Ämne eller avsändare";
+"To or Cc" = "Till eller kopia";
+"Entire Message" = "Hela meddelandet";
+
+"Date"          = "Datum";
+"View"          = "Visa";
+"All"           = "Alla";
+"Unread"        = "Oläst";
+"messages"      = "meddelanden";
+
+"first"         = "Första";
+"previous"      = "Föregående";
+"next"          = "Nästa";
+"last"          = "Sista";
+
+"msgnumber_to"  = "till";
+"msgnumber_of"  = "av";
+
+"Mark Unread" = "Märk som oläst";
+"Mark Read"   = "Märk som läst";
+
+"Untitled" = "Ämne saknas";
+
+/* Tree */
+
+"SentFolderName"   = "Skickat";
+"TrashFolderName"  = "Papperskorgen";
+"InboxFolderName"  = "Inkorgen";
+"DraftsFolderName" = "Utkast";
+"SieveFolderName"  = "Filter";
+"Folders"          = "Mappar"; /* title line */
+
+/* MailMoveToPopUp */
+
+"MoveTo"        = "Flytta &hellip;";
+
+/* Address Popup menu */
+"Add to Address Book..." = "Lägg till i adressbok...";
+"Compose Mail To" = "Skriv meddelande till";
+"Create Filter From Message..." = "Skapa filter från ett meddelande...";
+
+/* Image Popup menu */
+"Save Image" = "Spara bild";
+"Save Attachment" = "Spara bilaga";
+
+/* Mailbox popup menus */
+"Open in New Mail Window" = "Öppna i nytt fönster";
+"Copy Folder Location" = "Kopiera mappens sökväg";
+"Subscribe..." = "Prenumrera...";
+"Mark Folder Read..." = "Märk mapp som läst...";
+"New Folder..." = "Ny mapp...";
+"Compact This Folder" = "Komprimera mapp";
+"Search Messages..." = "Sök meddelanden...";
+"Sharing..." = "Dela ut...";
+"New Subfolder..." = "Ny undermapp...";
+"Rename Folder..." = "Byt namn på mapp...";
+"Delete Folder" = "Ta bort mapp";
+"Use This Folder For" = "Använd mapp till";
+"Get Messages for Account" = "Hämta nya meddelanden för konto";
+
+/* Use This Folder menu */
+"Sent Messages" = "Skickade meddelanden";
+"Drafts" = "Utkast";
+"Deleted Messages" = "Borttagna meddelanden";
+
+/* Message list popup menu */
+"Open Message In New Window" = "Öppna meddelande i nytt fönster";
+"Reply to Sender Only" = "Svara endast avsändaren";
+"Reply to All" = "Svara alla";
+"Forward" = "Vidarebefordra";
+"Edit As New..." = "Redigera som nytt...";
+"Move To" = "Flytta till";
+"Copy To" = "Kopiera till";
+"Label" = "Etikett";
+"Mark" = "Märk";
+"Save As..." = "Spara som...";
+"Print Preview" = "Förhandsgranska";
+"View Message Source" = "Visa meddelandets källkod";
+"Print..." = "Skriv ut...";
+"Delete Message" = "Ta bort meddelande";
+"Delete Selected Messages" = "Ta bort markerade meddelanden";
+
+"This Folder" = "Den här mappen";
+
+/* Label popup menu */
+"None" = "Inget";
+"Important" = "Viktigt";
+"Work" = "Arbete";
+"Personal" = "Personligt";
+"To Do" = "Att göra";
+"Later" = "Senare";
+
+/* Mark popup menu */
+"As Read" = "Som läst";
+"Thread As Read" = "Hela tråden som läst";
+"As Read By Date..." = "Som lästa efter datum...";
+"All Read" = "Alla som lästa";
+"Flag" = "Lägg till märke";
+"As Junk" = "Som skräp";
+"As Not Junk" = "Som icke skräp";
+"Run Junk Mail Controls" = "Kör skräppostkontroll";
+
+/* Folder operations */
+"Name :" = "Namn: ";
+"Enter the new name of your folder :"
+ = "Skriv namnet på mappen: ";
+"Do you really want to move this folder into the trash ?"
+ = "Vill du verkligen flytta mappen till papperskorgen?";
+"Operation failed" = "Operationen misslyckades";
+
+"Quota" = "Disktilldelning";
+"quotasFormat" = "%{0}% använt av %{1} MB";
+
+"Please select a message." = "Markera ett meddelande.";
+"Please select a message to print." = "Markera meddelandet som ska skrivas ut.";
+"Please select only one message to print." = "Markera bara ett meddelande som ska skrivas ut.";
+"The message you have selected doesn't exist anymore." = "The message you have selected doesn't exist anymore.";
+
+
+"The folder with name \"%{0}\" could not be created."
+= "Mappen \"%{0}\" kunde inte skapas.";
+"This folder could not be renamed to \"%{0}\"."
+= "Mappen kunde inte byta namn till \"%{0}\".";
+"The folder could not be deleted."
+= "Mappen kunde inte tas bort.";
+"The trash could not be emptied."
+= "Papperskorgen kunde inte tömmas.";
+"The folder functionality could not be changed."
+= "Mappens funktion kunde inte ändras.";
+
+"You need to choose a non-virtual folder!" = "Du måste välja en icke virtuell mapp!";
+
+"Moving a message into its own folder is impossible!"
+= "Det är inte möjligt att flytta ett meddelande till samma mapp!";
+"Copying a message into its own folder is impossible!"
+= "Det är inte möjligt att kopiera ett meddelande till samma mapp!";
+
+/* Message editing */
+"error_validationfailed" = "Validering har misslyckats";
+"error_missingsubject" = "Ämne saknas";
+"error_missingrecipients" = "Ingen mottagare är angiven";
