@@ -1,3 +1,11 @@
+2009-11-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Main/SOGo.m (+initialize): removed the "debugObjectAllocation" global
+	variable since "debugLeaks" has the same meaning. Instantiate a
+	"SOGoStartupLogger" object in order to avoid using NSLog when the
+	parent process is starting, in order to work-around the caching of
+	the pid in NSLog.
+
 2009-11-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoCache.m: "cache", "users" and "localCache"
