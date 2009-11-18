@@ -11,9 +11,10 @@ install ::
 	  echo "$(SOGO_WEBSERVERRESOURCESDIR) is a symbolic link (for development?). Installation skipped."; \
 	else \
 	  mkdir -p $(SOGO_WEBSERVERRESOURCESDIR); \
-	  cp $(WEBSERVER_RESOURCE_FILES) $(SOGO_WEBSERVERRESOURCESDIR); \
-	  cp -r ckeditor $(SOGO_WEBSERVERRESOURCESDIR); \
-	  cp -r scriptaculous $(SOGO_WEBSERVERRESOURCESDIR); \
+	  cp $(WEBSERVER_RESOURCE_FILES) $(SOGO_WEBSERVERRESOURCESDIR)/; \
+	  cp -r ckeditor $(SOGO_WEBSERVERRESOURCESDIR)/; \
+	  rm -rf $(SOGO_WEBSERVERRESOURCESDIR)/ckeditor/_source; \
+	  cp -r scriptaculous $(SOGO_WEBSERVERRESOURCESDIR)/; \
 	fi
 
 clean ::
