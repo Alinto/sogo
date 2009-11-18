@@ -1,5 +1,10 @@
 2009-11-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/NSDictionary+BSJSONAdditions.m
+	(+dictionaryWithJSONString:): this constructor now explicitly
+	returns an NSMutableDictionary to avoid messing with mutable
+	copies and useless allocation/deallocation in the callers.
+
 	* Main/SOGo.m (+initialize): removed the "debugObjectAllocation" global
 	variable since "debugLeaks" has the same meaning. Instantiate a
 	"SOGoStartupLogger" object in order to avoid using NSLog when the
