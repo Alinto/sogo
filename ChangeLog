@@ -1,3 +1,9 @@
+2009-11-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxComponentEditor.m (-_handleAttendeeData): make
+	direct use of the JSON constructor of NSDictionary rather than
+	instantiating an NSScanner. This simplifies the code.
+
 2009-11-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/NSString+Utilities.m (-isJSONString): new utility

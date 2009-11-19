@@ -46,22 +46,22 @@
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
 
-#import <SoObjects/Appointments/iCalEntityObject+SOGo.h>
-#import <SoObjects/Appointments/iCalPerson+SOGo.h>
-#import <SoObjects/Appointments/SOGoAppointmentFolder.h>
-#import <SoObjects/Appointments/SOGoWebAppointmentFolder.h>
-#import <SoObjects/Appointments/SOGoAppointmentFolders.h>
-#import <SoObjects/Appointments/SOGoAppointmentObject.h>
-#import <SoObjects/Appointments/SOGoAppointmentOccurence.h>
-#import <SoObjects/Appointments/SOGoTaskObject.h>
-#import <SoObjects/SOGo/iCalEntityObject+Utilities.h>
-#import <SoObjects/SOGo/SOGoUserManager.h>
-#import <SoObjects/SOGo/NSArray+Utilities.h>
-#import <SoObjects/SOGo/NSDictionary+Utilities.h>
-#import <SoObjects/SOGo/NSScanner+BSJSONAdditions.h>
-#import <SoObjects/SOGo/NSString+Utilities.h>
-#import <SoObjects/SOGo/SOGoUser.h>
-#import <SoObjects/SOGo/SOGoPermissions.h>
+#import <Appointments/iCalEntityObject+SOGo.h>
+#import <Appointments/iCalPerson+SOGo.h>
+#import <Appointments/SOGoAppointmentFolder.h>
+#import <Appointments/SOGoWebAppointmentFolder.h>
+#import <Appointments/SOGoAppointmentFolders.h>
+#import <Appointments/SOGoAppointmentObject.h>
+#import <Appointments/SOGoAppointmentOccurence.h>
+#import <Appointments/SOGoTaskObject.h>
+#import <SOGo/iCalEntityObject+Utilities.h>
+#import <SOGo/SOGoUserManager.h>
+#import <SOGo/NSArray+Utilities.h>
+#import <SOGo/NSDictionary+BSJSONAdditions.h>
+#import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/NSString+Utilities.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoPermissions.h>
 
 #import "../../Main/SOGo.h"
 
@@ -1489,7 +1489,6 @@ RANGE(2);
   NSDictionary *attendeesData;
   NSArray *attendees;
   NSDictionary *currentData;
-  NSScanner *jsonScanner;
   WORequest *request;
 
   request = [context request];
@@ -1497,8 +1496,8 @@ RANGE(2);
   if ([json length])
     {
       attendees = [NSArray array];
-      jsonScanner = [NSScanner scannerWithString: json];
-      if ([jsonScanner scanJSONObject: &attendeesData])
+      attendeesData = [NSDictionary dictionaryWithJSONString: json];
+      if (attendeesData)
 	{
 	  newAttendees = [NSMutableArray array];
 	  attendees = [attendeesData allValues];
