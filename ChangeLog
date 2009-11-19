@@ -1,5 +1,13 @@
 2009-11-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SQLSource.m (-checkLogin:andPassword:):
+	(_lookupContactEntry:considerEmail:, -allEntryIDS)
+	(_lookupContactEntry:consideringEmail:, fetchContactsMatching:):
+	check whether the channel is valid before using it or report an
+	error otherwise. Also, we release the channel after our
+	operations, to avoid creating hundreds of biglions of useless
+	and stalled connections.
+
 	* SoObjects/SOGo/SOGoUser.m (-userDefaults, -userSettings): the
 	cache handling has now been put in the SOGoUserDefaults class.
 	(-primaryUserDefaults, -primaryUserSettings): removed useless

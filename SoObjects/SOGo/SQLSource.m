@@ -157,33 +157,41 @@
   GCSChannelManager *cm;
   NSException *ex;
   NSString *sql;
+  BOOL rc;
+
+  rc = NO;
 
   cm = [GCSChannelManager defaultChannelManager];
   channel = [cm acquireOpenChannelForURL: _viewURL];
-  
-  sql = [NSString stringWithFormat: (@"SELECT c_password"
-				     @" FROM %@"
-				     @" WHERE c_uid = '%@'"),
-		  [_viewURL gcsTableName], login];
+  if (channel)
+    {  
+      sql = [NSString stringWithFormat: (@"SELECT c_password"
+                                         @" FROM %@"
+                                         @" WHERE c_uid = '%@'"),
+                      [_viewURL gcsTableName], login];
 
-  ex = [channel evaluateExpressionX: sql];
-
-  if (!ex)
-    {
-      NSDictionary *row;
-      NSArray *attrs;
-      NSString *value;
-
-      attrs = [channel describeResults: NO];
-      row = [channel fetchAttributes: attrs  withZone: NULL];
-      value = [row objectForKey: @"c_password"];
+      ex = [channel evaluateExpressionX: sql];
+      if (!ex)
+        {
+          NSDictionary *row;
+          NSArray *attrs;
+          NSString *value;
+          
+          attrs = [channel describeResults: NO];
+          row = [channel fetchAttributes: attrs  withZone: NULL];
+          value = [row objectForKey: @"c_password"];
       
-      return [self _isPassword: password  equalTo: value];
+          rc = [self _isPassword: password  equalTo: value];
+        }
+      else
+        [self errorWithFormat: @"could not run SQL '%@': %@", sql, ex];
+      [cm releaseChannel: channel];
     }
   else
-    [self errorWithFormat: @"could not run SQL '%@': %@", sql, ex];
+    [self errorWithFormat:@"failed to acquire channel for URL: %@",
+          [_viewURL absoluteString]];
 
-  return NO;
+  return rc;
 }
 
 - (NSDictionary *) _lookupContactEntry: (NSString *) theID
@@ -193,43 +201,47 @@
   GCSChannelManager *cm;
   NSException *ex;
   NSString *sql;
+  NSMutableDictionary *response;
+
+  response = nil;
 
   cm = [GCSChannelManager defaultChannelManager];
   channel = [cm acquireOpenChannelForURL: _viewURL];
-  
-  if (!b)
-    sql = [NSString stringWithFormat: (@"SELECT *"
-				       @" FROM %@"
-				       @" WHERE c_uid = '%@'"),
-		    [_viewURL gcsTableName], theID];
-  else
-    sql = [NSString stringWithFormat: (@"SELECT *"
-				       @" FROM %@"
-				       @" WHERE c_uid = '%@' OR"
-				       @" LOWER(mail) = '%@'"),
-		    [_viewURL gcsTableName], theID, [theID lowercaseString]];
-
-  ex = [channel evaluateExpressionX: sql];
-
-  if (!ex)
+  if (channel)
     {
-      NSMutableDictionary *d;
+      if (!b)
+        sql = [NSString stringWithFormat: (@"SELECT *"
+                                           @" FROM %@"
+                                           @" WHERE c_uid = '%@'"),
+                        [_viewURL gcsTableName], theID];
+      else
+        sql = [NSString stringWithFormat: (@"SELECT *"
+                                           @" FROM %@"
+                                           @" WHERE c_uid = '%@' OR"
+                                           @" LOWER(mail) = '%@'"),
+                        [_viewURL gcsTableName], theID, [theID lowercaseString]];
 
-      d = [NSMutableDictionary dictionaryWithDictionary: [channel fetchAttributes: 
-								       [channel describeResults: NO]
-								     withZone: NULL]];
+      ex = [channel evaluateExpressionX: sql];
+      if (!ex)
+        {
+          response = [[channel fetchAttributes: [channel describeResults: NO]
+                                      withZone: NULL] mutableCopy];
+          [response autorelease];
 
-      // We have to do this here since we do not manage modules constraints right
-      // now over a SQL backend.
-      [d setObject: [NSNumber numberWithBool: YES]  forKey: @"CalendarAccess"];
-      [d setObject: [NSNumber numberWithBool: YES]  forKey: @"MailAccess"];
-
-      return d;
+          // We have to do this here since we do not manage modules
+          // constraints right now over a SQL backend.
+          [response setObject: [NSNumber numberWithBool: YES] forKey: @"CalendarAccess"];
+          [response setObject: [NSNumber numberWithBool: YES] forKey: @"MailAccess"];
+        }
+      else
+        [self errorWithFormat: @"could not run SQL '%@': %@", sql, ex];
+      [cm releaseChannel: channel];
     }
   else
-    [self errorWithFormat: @"could not run SQL '%@': %@", sql, ex];
+    [self errorWithFormat:@"failed to acquire channel for URL: %@",
+          [_viewURL absoluteString]];
 
-  return nil;
+  return response;
 }
 
 
@@ -255,30 +267,35 @@
 
   cm = [GCSChannelManager defaultChannelManager];
   channel = [cm acquireOpenChannelForURL: _viewURL];
-  
-  sql = [NSString stringWithFormat: (@"SELECT c_uid"
-				     @"  FROM %@"),
-		  [_viewURL gcsTableName]];
-
-  ex = [channel evaluateExpressionX: sql];
-
-  if (!ex)
+  if (channel)
     {
-      NSDictionary *row;
-      NSArray *attrs;
-      NSString *value;
+      sql = [NSString stringWithFormat: @"SELECT c_uid FROM %@",
+                      [_viewURL gcsTableName]];
 
-      attrs = [channel describeResults: NO];
+      ex = [channel evaluateExpressionX: sql];
+      if (!ex)
+        {
+          NSDictionary *row;
+          NSArray *attrs;
+          NSString *value;
 
-      while ((row = [channel fetchAttributes: attrs  withZone: NULL]))
-	{
-	  value = [row objectForKey: @"c_uid"];
-	  if (value)
-	    [results addObject: value];
-	}
+          attrs = [channel describeResults: NO];
+          
+          while ((row = [channel fetchAttributes: attrs withZone: NULL]))
+            {
+              value = [row objectForKey: @"c_uid"];
+              if (value)
+                [results addObject: value];
+            }
+        }
+      else
+        [self errorWithFormat: @"could not run SQL '%@': %@", sql, ex];
+      [cm releaseChannel: channel];
     }
   else
-    [self errorWithFormat: @"could not run SQL '%@': %@", sql, ex];
+    [self errorWithFormat:@"failed to acquire channel for URL: %@",
+          [_viewURL absoluteString]];
+
   
   return results;
 }
@@ -289,34 +306,40 @@
   NSMutableArray *results;
   GCSChannelManager *cm;
   NSException *ex;
-  NSString *sql;
+  NSString *sql, *lowerFilter;
   
   results = [NSMutableArray array];
 
   cm = [GCSChannelManager defaultChannelManager];
   channel = [cm acquireOpenChannelForURL: _viewURL];
- 
-  sql = [NSString stringWithFormat: (@"SELECT *"
-				     @" FROM %@"
-				     @" WHERE LOWER(c_cn) LIKE '%%%@%%' OR LOWER(mail) LIKE '%%%@%%'"),
-		  [_viewURL gcsTableName], [filter lowercaseString], [filter lowercaseString]];
-
-  ex = [channel evaluateExpressionX: sql];
-
-  if (!ex)
+  if (channel)
     {
-      NSDictionary *row;
-      NSArray *attrs;
+      lowerFilter = [filter lowercaseString];
+      sql = [NSString stringWithFormat: (@"SELECT *"
+                                         @" FROM %@"
+                                         @" WHERE LOWER(c_cn) LIKE '%%%@%%'"
+                                         @"    OR LOWER(mail) LIKE '%%%@%%'"),
+                      [_viewURL gcsTableName],
+                      lowerFilter, lowerFilter];
 
-      attrs = [channel describeResults: NO];
+      ex = [channel evaluateExpressionX: sql];
+      if (!ex)
+        {
+          NSDictionary *row;
+          NSArray *attrs;
 
-      while ((row = [channel fetchAttributes: attrs  withZone: NULL]))
-	{
-	  [results addObject: row];
-	}
+          attrs = [channel describeResults: NO];
+
+          while ((row = [channel fetchAttributes: attrs withZone: NULL]))
+            [results addObject: row];
+        }
+      else
+        [self errorWithFormat: @"could not run SQL '%@': %@", sql, ex];
+      [cm releaseChannel: channel];
     }
   else
-    [self errorWithFormat: @"could not run SQL '%@': %@", sql, ex];
+    [self errorWithFormat:@"failed to acquire channel for URL: %@",
+          [_viewURL absoluteString]];
   
   return results;
 }
