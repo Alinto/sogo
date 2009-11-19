@@ -48,6 +48,8 @@
 
 - (EOAdaptorChannel *)acquireOpenChannelForURL:(NSURL *)_url;
 - (void)releaseChannel:(EOAdaptorChannel *)_channel;
+- (void)releaseChannel:(EOAdaptorChannel *)_channel
+           immediately:(BOOL)_immediately;
 
 /* checking for tables */
 

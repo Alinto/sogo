@@ -1,3 +1,9 @@
+2009-11-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* GCSChannelManager.m (-releaseChannel:immediately:): new method
+	that enables the immediate release of channels, for handling
+	connection errors.
+
 2009-10-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* GCSFolder.m (_tableRequirementForFields:andOrQualifier:): fixed

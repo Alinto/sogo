@@ -378,6 +378,12 @@ static NSTimeInterval ChannelCollectionTimer = 5 * 60;
 
 - (void) releaseChannel: (EOAdaptorChannel *) _channel
 {
+  [self releaseChannel: _channel immediately: NO];
+}
+
+- (void) releaseChannel: (EOAdaptorChannel *) _channel
+            immediately: (BOOL) _immediately
+{
   GCSChannelHandle *handle;
   BOOL keepOpen;
 
@@ -387,13 +393,14 @@ static NSTimeInterval ChannelCollectionTimer = 5 * 60;
   handle = [self findBusyChannelHandleForChannel: _channel];
   if (handle)
     {
-      handle = [handle retain];
+      [handle retain];
 
       ASSIGN (handle->lastReleaseTime, [NSCalendarDate date]);
       [busyChannels removeObject: handle];
 
       keepOpen = NO;
-      if ([_channel isOpen] && [handle age] < ChannelExpireAge)
+      if (!_immediately && [_channel isOpen]
+          && [handle age] < ChannelExpireAge)
 	{
 	  keepOpen = YES;
 	  // TODO: consider age
