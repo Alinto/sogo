@@ -82,7 +82,7 @@
 
 - (NSString *) jsonRepresentation;
 
-- (BOOL) fetchProfile;
+- (void) fetchProfile;
 
 /* saving changes */
 

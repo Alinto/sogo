@@ -35,6 +35,7 @@
 #import <GDLAccess/EOAttribute.h>
 
 #import "NSObject+Utilities.h"
+#import "NSString+Utilities.h"
 
 #import "NSDictionary+BSJSONAdditions.h"
 #import "SOGoUserDefaults.h"
@@ -53,11 +54,11 @@ static NSString *uidColumnName = @"c_uid";
       if (theURL && [theUID length] > 0
 	  && [theFieldName length] > 0)
 	{
-	  fieldName = [theFieldName copy];
-	  url = [theURL copy];
-	  uid = [theUID copy];
-	  defFlags.ready = YES;
-	  defFlags.isNew = YES;
+	  ASSIGN (fieldName, theFieldName);
+	  ASSIGN (url, theURL);
+	  ASSIGN (uid, theUID);
+	  defFlags.ready = NO;
+	  defFlags.isNew = NO;
 	}
       else
 	{
@@ -98,142 +99,193 @@ static NSString *uidColumnName = @"c_uid";
 
 /* operation */
 
-- (BOOL) primaryFetchProfile
+- (NSString *) _fetchJSONProfileFromDB
 {
   GCSChannelManager *cm;
   EOAdaptorChannel *channel;
-  NSDictionary *row;
+  NSDictionary *row, *plist;
   NSException *ex;
   NSString *sql, *value, *error;
   NSArray *attrs;
-  BOOL rc;
   NSData *plistData;
 
-  rc = NO;
-  
+  value = nil;
+
   cm = [GCSChannelManager defaultChannelManager];
   channel = [cm acquireOpenChannelForURL: [self tableURL]];
   if (channel)
     {
       /* generate SQL */
       defFlags.ready = YES;
-      sql = [NSString stringWithFormat: (@"SELECT %@"
-					 @"  FROM %@"
-					 @" WHERE %@ = '%@'"),
-		      fieldName, [[self tableURL] gcsTableName],
-		      uidColumnName, [self uid]];
-      
-      values = [[NSMutableDictionary alloc] init];
-
+      sql = [NSString stringWithFormat: @"SELECT %@ FROM %@ WHERE %@ = '%@'",
+                      fieldName, [[self tableURL] gcsTableName],
+                      uidColumnName, [self uid]];
       /* run SQL */
       ex = [channel evaluateExpressionX: sql];
       if (ex)
-	[self errorWithFormat:@"could not run SQL '%@': %@", sql, ex];
+        [self errorWithFormat:@"could not run SQL '%@': %@", sql, ex];
       else
-	{
-	  /* fetch schema */
-	  attrs = [channel describeResults: NO /* don't beautify */];
-  
-	  /* fetch values */
-	  row = [channel fetchAttributes: attrs withZone: NULL];
-	  defFlags.isNew = !row;
-	  [channel cancelFetch];
-  
-	  /* remember values */
-	  value = [row objectForKey: fieldName];
-	  if ([value isNotNull])
-	    {
-	      id v;
-	      
-	      value = [value stringByReplacingString: @"''"
-			     withString: @"'"];
-	      value = [value stringByReplacingString: @"\\\\"
-			     withString: @"\\"];
-	      plistData = [value dataUsingEncoding: NSUTF8StringEncoding];
-	      v = [NSPropertyListSerialization propertyListFromData: plistData
-					       mutabilityOption: NSPropertyListMutableContainers
-					       format: NULL
-					       errorDescription: &error];
-	      if ([v isKindOfClass: [NSMutableDictionary class]])
-		[values addEntriesFromDictionary: v];
-	    }
-	  
-	  defFlags.modified = NO;
-	  rc = YES;
-	}
+        {
+          /* fetch schema */
+          attrs = [channel describeResults: NO /* don't beautify */];
+          
+          /* fetch values */
+          row = [channel fetchAttributes: attrs withZone: NULL];
+          [channel cancelFetch];
 
-      [cm releaseChannel:channel];
+          value = [row objectForKey: fieldName];
+          if ([value isNotNull])
+            {
+              defFlags.isNew = NO;
+#warning The result is supposed to be unescaped, why re-unescaping it here ?
+              value = [value stringByReplacingString: @"''" withString: @"'"];
+              value = [value stringByReplacingString: @"\\\\" withString: @"\\"];
+              if (![value isJSONString])
+                {
+                  plistData = [value dataUsingEncoding: NSUTF8StringEncoding];
+                  plist = [NSPropertyListSerialization propertyListFromData: plistData
+                                                           mutabilityOption: NSPropertyListMutableContainers
+                                                                     format: NULL
+                                                           errorDescription: &error];
+                  if (plist)
+                    {
+                      [self logWithFormat: @"database value for '%@'"
+                                  @" (uid: '%@') is a plist", fieldName, uid];
+                      value = [plist jsonStringValue];
+                    }
+                  else
+                    {
+                      [self errorWithFormat: @"failed to parse property list value"
+                                  @" (error: %@): %@", error, value];
+                      value = nil;
+                    }
+                }
+            }
+          else
+            {
+              defFlags.isNew = YES;
+              value = nil; /* we discard any NSNull instance */
+            }
+        }
+
+      [cm releaseChannel: channel];
     }
   else
     {
       defFlags.ready = NO;
       [self errorWithFormat:@"failed to acquire channel for URL: %@", 
-	    [self tableURL]];
+            [self tableURL]];
+    }
+
+  return value;
+}
+
+- (NSString *) jsonRepresentation
+{
+  SOGoCache *cache;
+  NSString *jsonValue;
+
+  cache = [SOGoCache sharedCache];
+  if ([fieldName isEqualToString: @"c_defaults"])
+    jsonValue = [cache userDefaultsForLogin: uid];
+  else
+    jsonValue = [cache userSettingsForLogin: uid];
+  if ([jsonValue length])
+    {
+      defFlags.ready = YES;
+      defFlags.isNew = NO;
+    }
+  else
+    {
+      jsonValue = [self _fetchJSONProfileFromDB];
+      if ([jsonValue length])
+        {
+          defFlags.isNew = NO;
+          if ([fieldName isEqualToString: @"c_defaults"])
+            [cache setUserDefaults: jsonValue forLogin: uid];
+          else
+            [cache setUserSettings: jsonValue forLogin: uid];
+        }
+      else
+        {
+          defFlags.isNew = YES;
+          jsonValue = @"{}";
+        }
+    }
+
+  return jsonValue;
+}
+
+- (void) primaryFetchProfile
+{
+  NSString *jsonValue;
+
+  defFlags.modified = NO;
+  [values release];
+  jsonValue = [self jsonRepresentation];
+  values = [NSDictionary dictionaryWithJSONString: jsonValue];
+  if (values)
+    [values retain];
+  else
+    [self errorWithFormat: @"failure parsing json string: '%@'", jsonValue];
+}
+
+- (BOOL) _isReadyOrRetry
+{
+  BOOL rc;
+
+  if (defFlags.ready)
+    rc = YES;
+  else
+    {
+      [self primaryFetchProfile];
+      rc = defFlags.ready;
     }
 
   return rc;
 }
 
-- (NSString *) _serializedDefaults
+- (NSString *) _sqlJsonRepresentation: (NSString *) jsonRepresentation
 {
-  NSMutableString *serializedDefaults;
-  NSData *serializedDefaultsData;
-  NSString *error;
+  NSMutableString *sql;
 
-  error = nil;
-  serializedDefaultsData
-    = [NSPropertyListSerialization dataFromPropertyList: values
-				   format: NSPropertyListOpenStepFormat
-				   errorDescription: &error];
-  if (error)
-    {
-      [self errorWithFormat: @"serializing the defaults: %@", error];
-      serializedDefaults = nil;
-      [error release];
-    }
-  else
-    {
-      serializedDefaults
-	= [[NSMutableString alloc] initWithData: serializedDefaultsData
-				   encoding: NSUTF8StringEncoding];
-      [serializedDefaults autorelease];
-      [serializedDefaults replaceString: @"\\" withString: @"\\\\"];
-      [serializedDefaults replaceString: @"'" withString: @"''"];
-    }
+  sql = [jsonRepresentation mutableCopy];
+  [sql autorelease];
+  [sql replaceString: @"\\\\" withString: @"\\"];
+  [sql replaceString: @"'" withString: @"''"];
 
-  return serializedDefaults;
+  return sql;
 }
 
-- (NSString *) generateSQLForInsert
+- (NSString *) generateSQLForInsert: (NSString *) jsonRepresentation
 {
-  NSString *sql, *serializedDefaults;
+  NSString *sql;
 
-  serializedDefaults = [self _serializedDefaults];
-  if (serializedDefaults)
+  if ([jsonRepresentation length])
     sql = [NSString stringWithFormat: (@"INSERT INTO %@"
-				       @"            (%@, %@)"
-				       @"     VALUES ('%@', '%@')"),
-		    [[self tableURL] gcsTableName], uidColumnName, fieldName,
-		    [self uid], serializedDefaults];
+                                       @"            (%@, %@)"
+                                       @"     VALUES ('%@', '%@')"),
+                    [[self tableURL] gcsTableName], uidColumnName, fieldName,
+                    [self uid],
+                    [self _sqlJsonRepresentation: jsonRepresentation]];
   else
     sql = nil;
 
   return sql;
 }
 
-- (NSString *) generateSQLForUpdate
+- (NSString *) generateSQLForUpdate: (NSString *) jsonRepresentation
 {
-  NSString *sql, *serializedDefaults;
+  NSString *sql;
 
-  serializedDefaults = [self _serializedDefaults];
-  if (serializedDefaults)
+  if ([jsonRepresentation length])
     sql = [NSString stringWithFormat: (@"UPDATE %@"
-				       @"     SET %@ = '%@'"
-				       @"   WHERE %@ = '%@'"),
-		    [[self tableURL] gcsTableName],
-		    fieldName,
-		    serializedDefaults,
-		    uidColumnName, [self uid]];
+                                       @"     SET %@ = '%@'"
+                                       @"   WHERE %@ = '%@'"),
+                    [[self tableURL] gcsTableName],
+                    fieldName,
+                    [self _sqlJsonRepresentation: jsonRepresentation],
+                    uidColumnName, [self uid]];
   else
     sql = nil;
 
@@ -245,136 +297,135 @@ static NSString *uidColumnName = @"c_uid";
   GCSChannelManager *cm;
   EOAdaptorChannel *channel;
   NSException *ex;
-  NSString *sql;
+  NSString *sql, *jsonRepresentation;
+  SOGoCache *cache;
   BOOL rc;
 
   rc = NO;
-  
-  cm = [GCSChannelManager defaultChannelManager];
-  sql = ((defFlags.isNew)
-	 ? [self generateSQLForInsert] 
-	 : [self generateSQLForUpdate]);
-  if (sql)
+
+  jsonRepresentation = [values jsonStringValue];
+  if (jsonRepresentation)
     {
+      sql = ((defFlags.isNew)
+             ? [self generateSQLForInsert: jsonRepresentation]
+             : [self generateSQLForUpdate: jsonRepresentation]);
+      cm = [GCSChannelManager defaultChannelManager];
       channel = [cm acquireOpenChannelForURL: [self tableURL]];
       if (channel)
-	{
-	  defFlags.ready = YES;
-	  [[channel adaptorContext] beginTransaction];
-	  ex = [channel evaluateExpressionX:sql];
-	  if (ex)
-	    {
-	      [self errorWithFormat: @"could not run SQL '%@': %@", sql, ex];
-	      [[channel adaptorContext] rollbackTransaction];
-	    }
-	  else
-	    {
-	      if ([[channel adaptorContext] commitTransaction])
-		{
-		  rc = YES;
-		}
-	      
-	      defFlags.modified = NO;
-	      defFlags.isNew = NO;
-	    }
-	  
-	  [cm releaseChannel: channel];
-	}
+        {
+          if ([[channel adaptorContext] beginTransaction])
+            {
+              defFlags.ready = YES;
+              ex = [channel evaluateExpressionX:sql];
+              if (ex)
+                {
+                  [self errorWithFormat: @"could not run SQL '%@': %@", sql, ex];
+                  [[channel adaptorContext] rollbackTransaction];
+                }
+              else
+                {
+                  if ([[channel adaptorContext] commitTransaction])
+                    {
+                      cache = [SOGoCache sharedCache];
+                      if ([fieldName isEqualToString: @"c_defaults"])
+                        [cache setUserDefaults: jsonRepresentation
+                                      forLogin: uid];
+                      else
+                        [cache setUserSettings: jsonRepresentation
+                                      forLogin: uid];
+                    }
+                  defFlags.modified = NO;
+                  defFlags.isNew = NO;
+                }
+              [cm releaseChannel: channel];
+            }
+          else
+            {
+              defFlags.ready = NO;
+              [cm releaseChannel: channel immediately: YES];
+            }
+        }
       else
-	{
-	  defFlags.ready = NO;
-	  [self errorWithFormat: @"failed to acquire channel for URL: %@", 
-		[self tableURL]];
-	}
+        {
+          defFlags.ready = NO;
+          [self errorWithFormat: @"failed to acquire channel for URL: %@", 
+                [self tableURL]];
+        }
     }
   else
-    [self errorWithFormat: @"failed to generate SQL for storing defaults"];
-
-  if (rc)
-    [[SOGoCache sharedCache] cacheValues: values
-                                  ofType: ([fieldName isEqualToString: @"c_defaults"] ? @"defaults" : @"settings")
-                                forLogin: uid];
+    [self errorWithFormat: @"Unable to convert (%@) to a JSON string for"
+                  @" type: %@ and login: %@", values, fieldName, uid];
 
   return rc;
 }
 
-- (BOOL) fetchProfile
+- (void) fetchProfile
 {
-  return (values || [self primaryFetchProfile]);
-}
-
-- (NSString *) jsonRepresentation
-{
-  NSString *jsonRep;
-
-  [self fetchProfile];
-  if (values)
-    jsonRep = [values jsonStringValue];
-  else
-    jsonRep = @"{}";
-
-  return jsonRep;
+  if (!values)
+    [self primaryFetchProfile];
 }
 
 /* value access */
 - (void) setValues: (NSDictionary *) theValues
 {
-  [values release];
-  
-  values = [[NSMutableDictionary alloc] init];
-  [values addEntriesFromDictionary: theValues];
-  defFlags.modified = NO;
-  defFlags.isNew = NO;
+  if ([self _isReadyOrRetry])
+    {
+      [values release];
+      values = [[NSMutableDictionary alloc] init];
+      [values addEntriesFromDictionary: theValues];
+      defFlags.modified = YES;
+    }
 }
 
 - (NSDictionary *) values
 {
-  return values;
+  NSDictionary *returnValues;
+
+  if ([self _isReadyOrRetry])
+    returnValues = values;
+  else
+    returnValues = nil;
+
+  return returnValues;
 }
 
 - (void) setObject: (id) value
 	    forKey: (NSString *) key
 { 
   id old;
-  
-  if (!defFlags.ready || ![self fetchProfile])
-    return;
 
-  /* check whether the value is actually modified */
-  if (!defFlags.modified)
-    {
-      old = [values objectForKey: key];
-      if (old == value || [old isEqual: value]) /* value didn't change */
-	return;
-  
-      /* we need to this because our typed accessors convert to strings */
-      // TODO: especially problematic with bools
-      if ([value isKindOfClass: [NSString class]]) {
-	if (![old isKindOfClass: [NSString class]])
-	  if ([[old description] isEqualToString: value])
-	    return;
-      }
+  if ([self _isReadyOrRetry])
+    {  
+      /* check whether the value is actually modified */
+      if (!defFlags.modified)
+        {
+          old = [values objectForKey: key];
+          if (old == value || [old isEqual: value]) /* value didn't change */
+            return;
+
+#warning Note that this work-around only works for first-level objects.
+          /* we need to this because our typed accessors convert to strings */
+          // TODO: especially problematic with bools
+          if ([value isKindOfClass: [NSString class]]) {
+            if (![old isKindOfClass: [NSString class]])
+              if ([[old description] isEqualToString: value])
+                return;
+          }
+        }
+
+      /* set in hash and mark as modified */
+      if (value)
+        [values setObject: value forKey: key];
+      else
+        [values removeObjectForKey: key];
+      
+      defFlags.modified = YES;
     }
-
-  /* set in hash and mark as modified */
-  if (value)
-    [values setObject: value forKey: key];
-  else
-    [values removeObjectForKey: key];
-
-  defFlags.modified = YES;
 }
 
 - (id) objectForKey: (NSString *) key
 {
-  id value;
-  
-  if (!defFlags.ready || ![self fetchProfile])
-    value = nil;
-  else
-    value = [values objectForKey: key];
-
-  return value;
+  return [[self values] objectForKey: key];
 }
 
 - (void) removeObjectForKey: (NSString *) key
@@ -388,9 +439,10 @@ static NSString *uidColumnName = @"c_uid";
 {
 //   if (!defFlags.modified) /* was not modified */
 //     return YES;
-  
+
   /* ensure fetched data (more or less guaranteed by modified!=0) */
-  if (![self fetchProfile])
+  [self fetchProfile];
+  if (!values)
     return NO;
 
   /* store */
@@ -401,7 +453,9 @@ static NSString *uidColumnName = @"c_uid";
     }
 
   /* refetch */
-  return [self primaryFetchProfile];
+  [self primaryFetchProfile];
+
+  return YES;
 }
 
 /* typed accessors */

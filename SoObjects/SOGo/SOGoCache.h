@@ -61,13 +61,17 @@
              withName: (NSString *) userName;
 - (id) userNamed: (NSString *) name;
 
-- (NSMutableDictionary *) userAttributesForLogin: (NSString *) theLogin;
-- (NSDictionary *) userDefaultsForLogin: (NSString *) theLogin;
-- (NSDictionary *) userSettingsForLogin: (NSString *) theLogin;
+- (void) setUserAttributes: (NSString *) attributes
+                  forLogin: (NSString *) login;
+- (NSString *) userAttributesForLogin: (NSString *) theLogin;
 
-- (void) cacheValues: (NSDictionary *) theAttributes
-	      ofType: (NSString *) theType
-	    forLogin: (NSString *) theLogin;
+- (void) setUserDefaults: (NSString *) attributes
+                forLogin: (NSString *) login;
+- (NSString *) userDefaultsForLogin: (NSString *) theLogin;
+
+- (void) setUserSettings: (NSString *) attributes
+                forLogin: (NSString *) login;
+- (NSString *) userSettingsForLogin: (NSString *) theLogin;
 
 @end
 

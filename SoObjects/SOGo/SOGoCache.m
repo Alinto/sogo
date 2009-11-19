@@ -31,8 +31,8 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
-#import <Foundation/NSEnumerator.h>
 #import <Foundation/NSLock.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSTimer.h>
@@ -47,14 +47,11 @@
 
 #import "SOGoCache.h"
 
-#import "NSDictionary+BSJSONAdditions.h"
-
 // We define the default value for cleaning up cached
 // users' preferences. This value should be relatively
 // high to avoid useless database calls.
-static NSTimeInterval cleanupInterval = 300;
-
-static NSString *memcachedServerName = @"localhost";
+static NSTimeInterval cleanupInterval = 0;
+static NSString *memcachedServerName;
 
 #if defined(THREADSAFE)
 static NSLock *lock;
@@ -62,12 +59,32 @@ static NSLock *lock;
 
 @implementation SOGoCache
 
-#if defined(THREADSAFE)
 + (void) initialize
 {
+  NSString *cleanupSetting;
+  NSUserDefaults *ud;
+
+  ud = [NSUserDefaults standardUserDefaults];
+  // We fire our timer that will cleanup cache entries
+  cleanupSetting = [ud objectForKey: @"SOGoCacheCleanupInterval"];
+  if (cleanupSetting && [cleanupSetting doubleValue] > 0.0)
+    cleanupInterval = [cleanupSetting doubleValue];
+  if (cleanupInterval == 0.0)
+    cleanupInterval = 300;
+
+  [self logWithFormat: @"Cache cleanup interval set every %f seconds for memcached",
+        cleanupInterval];
+
+  ASSIGN (memcachedServerName, [ud stringForKey: @"SOGoMemCachedHost"]);
+  if (!memcachedServerName)
+    memcachedServerName = @"localhost";
+  [self logWithFormat: @"Using host '%@' as memcached server",
+        memcachedServerName];
+
+#if defined(THREADSAFE)
   lock = [NSLock new];
-}
 #endif
+}
 
 + (NSTimeInterval) cleanupInterval
 {
@@ -82,7 +99,7 @@ static NSLock *lock;
   [lock lock];
 #endif
   if (!sharedCache)
-    sharedCache = [[self alloc] init];
+    sharedCache = [self new];
 #if defined(THREADSAFE)
   [lock unlock];
 #endif
@@ -110,34 +127,28 @@ static NSLock *lock;
 {
   if ((self = [super init]))
     {
-      NSString *cleanupSetting;
       memcached_return error;
       
-      cache = [[NSMutableDictionary alloc] init];
-      users = [[NSMutableDictionary alloc] init];
+      cache = [NSMutableDictionary new];
+      users = [NSMutableDictionary new];
 
-      // localCache is used to avoid going all the time to the memcached server during
-      // each request. We'll cache the value we got from memcached for the duration
-      // of the current request - which is good enough for pretty much all caces. We 
-      // surely don't want to get new defaults/settings during the _same_ requests, it
-      // could produce relatively strange behaviors
-      localCache = [[NSMutableDictionary alloc] init];
-      
-      // We fire our timer that will cleanup cache entries
-      cleanupSetting = [[NSUserDefaults standardUserDefaults] 
-			 objectForKey: @"SOGoCacheCleanupInterval"];
-      
-      if (cleanupSetting && [cleanupSetting doubleValue] > 0.0)
-	cleanupInterval = [cleanupSetting doubleValue];
-      
-      [self logWithFormat: @"Cache cleanup interval set every %f seconds for memcached",
-	    cleanupInterval];
+      // localCache is used to avoid going all the time to the memcached
+      // server during each request. We'll cache the value we got from
+      // memcached for the duration of the current request - which is good
+      // enough for pretty much all cases. We surely don't want to get new
+      // defaults/settings during the _same_ requests, it could produce
+      // relatively strange behaviors
+      localCache = [NSMutableDictionary new];
 
       handle = memcached_create(NULL);
-
       if (handle)
 	{
-	  servers = memcached_server_list_append(NULL, [memcachedServerName UTF8String], 11211, &error);
+#warning We could also make the port number configurable and even make use \
+  of NGNetUtilities for that.
+	  servers
+            = memcached_server_list_append(NULL,
+                                           [memcachedServerName UTF8String],
+                                           11211, &error);
 	  error = memcached_server_push(handle, servers);
 	}
     }
@@ -242,99 +253,110 @@ static NSLock *lock;
 // For non-blocking cache method, see memcached_behavior_set and MEMCACHED_BEHAVIOR_NO_BLOCK
 // memcached is thread-safe so no need to lock here.
 //
-- (void) cacheValues: (NSDictionary *) theAttributes
-	      ofType: (NSString *) theType
-	    forLogin: (NSString *) theLogin
+- (void) _cacheValues: (NSString *) theAttributes
+	       ofType: (NSString *) theType
+	     forLogin: (NSString *) theLogin
 {
   memcached_return error;
-  const char *key, *value;
-  unsigned int len, vlen;
+  NSString *keyName;
+  NSData *key, *value;
 
-  if (!handle)
-    return;
-
-  key = [[NSString stringWithFormat: @"%@+%@", theLogin, theType] UTF8String];
-  len = strlen(key);
-
-  value = [[theAttributes jsonStringValue] UTF8String];
-  vlen = strlen(value);
-
-  error = memcached_set(handle, key, len, value, vlen, cleanupInterval, 0);
-
-  if (error != MEMCACHED_SUCCESS)
-    [self logWithFormat: @"memcached error: unable to cache values with subtype %@ for user %@", theType, theLogin];
-  //else
-  //[self logWithFormat: @"memcached: cached values (%s) with subtype %@ for user %@", value, theType, theLogin];
-}
-
-- (NSDictionary *) _valuesOfType: (NSString *) theType
-                        forLogin: (NSString *) theLogin
-{
-  NSDictionary *d;
-  NSString *k;
-
-  const char *key;
-  unsigned int len;
-
-  if (!handle)
-    return nil;
-
-  k = [NSString stringWithFormat: @"%@+%@", theLogin, theType];
-  key = [k UTF8String];
-  len = strlen(key);
-
-  d = [localCache objectForKey: k];
-
-  if (!d)
+  keyName = [NSString stringWithFormat: @"%@+%@", theLogin, theType];
+  if (handle)
     {
-      memcached_return rc;
-      unsigned int flags;
-      size_t vlen;
-      char *s;
+      key = [keyName dataUsingEncoding: NSUTF8StringEncoding];
+      value = [theAttributes dataUsingEncoding: NSUTF8StringEncoding];
+      error = memcached_set(handle,
+                            [key bytes], [key length],
+                            [value bytes], [value length],
+                            cleanupInterval, 0);
 
-      s = memcached_get(handle, key, len, &vlen, &flags, &rc);
-      
-      if (rc == MEMCACHED_SUCCESS && s)
-	{
-	  NSString *v;
-	  
-	  v = [NSString stringWithUTF8String: s];
-	  d = [NSDictionary dictionaryWithJSONString: v];
-	  
-	  // Cache the value in our localCache
-	  if (d)
-	    [localCache setObject: d  forKey: k];
-	  else
-	    [self errorWithFormat: @"Unable to convert (%@) to a JSON string for type: %@ and login: %@", v, theType, theLogin];
-	    
-	  free(s);
-	}
+      if (error != MEMCACHED_SUCCESS)
+        [self logWithFormat: @"memcached error: unable to cache values with subtype '%@' for user '%@'", theType, theLogin];
+      //else
+      //[self logWithFormat: @"memcached: cached values (%s) with subtype %@
+      //for user %@", value, theType, theLogin];
     }
-
-  return d;
+   else
+    [self errorWithFormat: @"attempting to cache value for key '%@' while"
+          " no handle exists", keyName];
 }
 
-
-- (NSMutableDictionary *) userAttributesForLogin: (NSString *) theLogin
+- (NSString *) _valuesOfType: (NSString *) theType
+                    forLogin: (NSString *) theLogin
 {
-  id o;
+  NSString *valueString, *keyName;
+  NSData *key;
+  char *value;
+  size_t vlen;
+  memcached_return rc;
+  unsigned int flags;
 
-  o = [self _valuesOfType: @"attributes"  forLogin: theLogin];
+  valueString = nil;
 
-  if (o)
-    return [NSMutableDictionary dictionaryWithDictionary: o];
+  if (handle)
+    {
+      keyName = [NSString stringWithFormat: @"%@+%@", theLogin, theType];
+      valueString = [localCache objectForKey: keyName];
+      if (!valueString)
+        {
+          key = [keyName dataUsingEncoding: NSUTF8StringEncoding];
+          value = memcached_get (handle, [key bytes], [key length],
+                                 &vlen, &flags, &rc);
+          if (rc == MEMCACHED_SUCCESS && value)
+            {
+              valueString
+                = [[NSString alloc] initWithBytesNoCopy: value
+                                                 length: vlen
+                                               encoding: NSUTF8StringEncoding
+                                           freeWhenDone: YES];
+              [valueString autorelease];
+              // Cache the value in our localCache
+              [localCache setObject: valueString forKey: keyName];
+            }
+        }
+    }
+   else
+     [self errorWithFormat: @"attempting to retrieved cached value for key"
+           @" '%@' while no handle exists", keyName];
 
-  return nil;
+  return valueString;
 }
 
-- (NSDictionary *) userDefaultsForLogin: (NSString *) theLogin
+- (void) setUserAttributes: (NSString *) theAttributes
+                  forLogin: (NSString *) login
 {
-  return [self _valuesOfType: @"defaults"  forLogin: theLogin];
+  [self _cacheValues: theAttributes ofType: @"attributes"
+            forLogin: login];
 }
 
-- (NSDictionary *) userSettingsForLogin: (NSString *) theLogin
+- (NSString *) userAttributesForLogin: (NSString *) theLogin
 {
-  return [self _valuesOfType: @"settings"  forLogin: theLogin];
+  return [self _valuesOfType: @"attributes" forLogin: theLogin];
+}
+
+- (void) setUserDefaults: (NSString *) theAttributes
+                forLogin: (NSString *) login
+{
+  [self _cacheValues: theAttributes ofType: @"defaults"
+            forLogin: login];
+}
+
+- (NSString *) userDefaultsForLogin: (NSString *) theLogin
+{
+  return [self _valuesOfType: @"defaults" forLogin: theLogin];
+}
+
+- (void) setUserSettings: (NSString *) theAttributes
+                forLogin: (NSString *) login
+{
+  [self _cacheValues: theAttributes ofType: @"settings"
+            forLogin: login];
+}
+
+- (NSString *) userSettingsForLogin: (NSString *) theLogin
+{
+  return [self _valuesOfType: @"settings" forLogin: theLogin];
 }
 
 @end

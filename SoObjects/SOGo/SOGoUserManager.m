@@ -29,14 +29,15 @@
 #import <Foundation/NSValue.h>
 #import <NGExtensions/NSObject+Logs.h>
 
-#include "NSArray+Utilities.h"
-#include "SOGoSource.h"
-#include "SOGoUserManager.h"
-#include "SOGoCache.h"
-#include "SOGoSource.h"
+#import "NSDictionary+BSJSONAdditions.h"
+#import "NSArray+Utilities.h"
+#import "SOGoSource.h"
+#import "SOGoUserManager.h"
+#import "SOGoCache.h"
+#import "SOGoSource.h"
 
-#include "LDAPSource.h"
-#include "SQLSource.h"
+#import "LDAPSource.h"
+#import "SQLSource.h"
 
 static NSString *defaultMailDomain = nil;
 static NSString *LDAPContactInfoAttribute = nil;
@@ -344,14 +345,15 @@ static NSLock *lock = nil;
 	andPassword: (NSString *) password
 {
   NSMutableDictionary *currentUser;
-  NSString *dictPassword;
+  NSString *dictPassword, *jsonUser;
   BOOL checkOK;
 
 #if defined(THREADSAFE)
   [lock lock];
 #endif
 
-  currentUser = [[SOGoCache sharedCache] userAttributesForLogin: login];
+  jsonUser = [[SOGoCache sharedCache] userAttributesForLogin: login];
+  currentUser = [NSMutableDictionary dictionaryWithJSONString: jsonUser];
   dictPassword = [currentUser objectForKey: @"password"];
   if (currentUser && dictPassword)
     checkOK = ([dictPassword isEqualToString: password]);
@@ -363,12 +365,15 @@ static NSLock *lock = nil;
 	  currentUser = [NSMutableDictionary dictionary];
 	}
 
-      // It's important to cache the password here as we might have cached the user's entry
-      // in -contactInfosForUserWithUIDorEmail: and if we don't set the password and recache the
-      // entry, the password would never be cached for the user unless its entry expires from
-      // memcached's internal cache.
+      // It's important to cache the password here as we might have cached the
+      // user's entry in -contactInfosForUserWithUIDorEmail: and if we don't
+      // set the password and recache the entry, the password would never be
+      // cached for the user unless its entry expires from memcached's
+      // internal cache.
       [currentUser setObject: password forKey: @"password"];
-      [[SOGoCache sharedCache] cacheValues: currentUser  ofType: @"attributes"  forLogin: login];
+      [[SOGoCache sharedCache]
+        setUserAttributes: [currentUser jsonStringValue]
+                 forLogin: login];
     }
   else
     checkOK = NO;
@@ -469,29 +474,23 @@ static NSLock *lock = nil;
   NSEnumerator *emails;
   NSString *key;
   
-#if defined(THREADSAFE)
-  [lock lock];
-#endif
   key = [newUser objectForKey: @"c_uid"];
   if (key)
-    {
-      [[SOGoCache sharedCache] cacheValues: newUser  ofType: @"attributes"  forLogin: key];
-    }
+    [[SOGoCache sharedCache]
+        setUserAttributes: [newUser jsonStringValue]
+                 forLogin: key];
 
   emails = [[newUser objectForKey: @"emails"] objectEnumerator];
   while ((key = [emails nextObject]))
-    {
-      [[SOGoCache sharedCache] cacheValues: newUser  ofType: @"attributes"  forLogin: key];
-    }
-#if defined(THREADSAFE)
-  [lock unlock];
-#endif
+    [[SOGoCache sharedCache]
+        setUserAttributes: [newUser jsonStringValue]
+                 forLogin: key];
 }
 
 - (NSDictionary *) contactInfosForUserWithUIDorEmail: (NSString *) uid
 {
   NSMutableDictionary *currentUser, *contactInfos;
-  NSString *aUID;
+  NSString *aUID, *jsonUser;
   BOOL newUser;
 
   if ([uid length] > 0)
@@ -499,7 +498,8 @@ static NSLock *lock = nil;
       // Remove the "@" prefix used to identified groups in the ACL tables.
       aUID = [uid hasPrefix: @"@"] ? [uid substringFromIndex: 1] : uid;
       contactInfos = [NSMutableDictionary dictionary];
-      currentUser = [[SOGoCache sharedCache] userAttributesForLogin: aUID];
+      jsonUser = [[SOGoCache sharedCache] userAttributesForLogin: aUID];
+      currentUser = [NSDictionary dictionaryWithJSONString: jsonUser];
 #if defined(THREADSAFE)
       [lock lock];
 #endif

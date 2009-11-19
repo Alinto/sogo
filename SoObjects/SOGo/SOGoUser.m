@@ -37,7 +37,6 @@
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 
-#import "SOGoUserManager.h"
 #import "NSArray+Utilities.h"
 #import "SOGoCache.h"
 #import "SOGoDateFormatter.h"
@@ -45,6 +44,7 @@
 #import "SOGoPermissions.h"
 #import "SOGoUserDefaults.h"
 #import "SOGoUserFolder.h"
+#import "SOGoUserManager.h"
 
 #import "../../Main/SOGo.h"
 
@@ -487,50 +487,35 @@ _timeValue (NSString *key)
 
 - (NSUserDefaults *) userDefaults
 {
-  NSDictionary *values;
-
-  if (!_defaults)    
+  if (!_defaults)
     {
       _defaults = [self primaryUserDefaults];
       if (_defaults)
 	{
-	  values = [[SOGoCache sharedCache] userDefaultsForLogin: login];
+          [_defaults fetchProfile];
+          if ([_defaults values])
+            {
+              BOOL b;
+              b = NO;
 
-	  if (values)
-	    {
-	      [_defaults setValues: values];
+              if (![[_defaults stringForKey: @"MessageCheck"] length])
+                {
+                  [_defaults setObject: defaultMessageCheck forKey: @"MessageCheck"];
+                  b = YES;
+                }
+              if (![[_defaults stringForKey: @"TimeZone"] length])
+                {
+                  [_defaults setObject: [serverTimeZone name] forKey: @"TimeZone"];
+                  b = YES;
+                }
+
+              if (b)
+                [_defaults synchronize];
+
+
+              // See explanation in -language
+              [self invalidateLanguage];
 	    }
-	  else
-	    {
-	      [_defaults fetchProfile];
-	      values = [_defaults values];
-	      
-	      if (values)
-		{		  
-		  BOOL b;
-		  
-		  b = NO;
-
-		  if (![[_defaults stringForKey: @"MessageCheck"] length])
-		    {
-		      [_defaults setObject: defaultMessageCheck forKey: @"MessageCheck"];
-		      b = YES;
-		    }
-		  if (![[_defaults stringForKey: @"TimeZone"] length])
-		    {
-		      [_defaults setObject: [serverTimeZone name] forKey: @"TimeZone"];
-		      b = YES;
-		    }
-		  
-		  if (b)
-		    [_defaults synchronize];
-
-		  [[SOGoCache sharedCache] cacheValues: [_defaults values]  ofType: @"defaults"  forLogin: login];
-		}
-	    }
-	  
-	  // See explanation in -language
-	  [self invalidateLanguage];
 	}
     }
   //else
@@ -541,29 +526,12 @@ _timeValue (NSString *key)
 
 - (NSUserDefaults *) userSettings
 {
-  NSDictionary *values;
-
   if (!_settings)    
     {
       _settings = [self primaryUserSettings];
       if (_settings)
 	{
-	  values = [[SOGoCache sharedCache] userSettingsForLogin: login];
-	  
-	  if (values)
-	    {
-	      [_settings setValues: values];
-	    }
-	  else
-	    {
-	      [_settings fetchProfile];
-	      values = [_settings values];
-	      
-	      if (values)
-		{
-		  [[SOGoCache sharedCache] cacheValues: values  ofType: @"settings"  forLogin: login];
-		}
-	    }
+          [_settings fetchProfile];
 	  
 	  // See explanation in -language
 	  [self invalidateLanguage];
@@ -585,9 +553,9 @@ _timeValue (NSString *key)
   if (![language length])
     {
       language = [[self userDefaults] stringForKey: @"Language"];
-      // This is a workaround until we handle the connection errors to the db in a
-      // better way. It enables us to avoid retrieving the userDefaults too
-      // many times when the DB is down, causing a huge delay.
+      // This is a workaround until we handle the connection errors to the db
+      // in a better way. It enables us to avoid retrieving the userDefaults
+      // too many times when the DB is down, causing a huge delay.
       if (![language length])
         language = [SOGoUser language];
 
