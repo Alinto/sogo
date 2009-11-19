@@ -1,3 +1,9 @@
+2009-11-19  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailReply.m (-messageBody): don't try to
+	remove the bottom signature when replying to an email, in order to
+	avoid situations where a previous message follows the last signature.
+
 2009-11-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUserDefaults.m (-fetchJSONProfileFromDB):

@@ -93,13 +93,6 @@
         }
       else
         {
-          NSRange r;
-
-          r = [s rangeOfString: @"\n-- \n"  options: NSBackwardsSearch];
-
-          if (r.length)
-            s = [s substringToIndex: r.location];
-          
           s = [s stringByApplyingMailQuoting]; //adds "> " on each line
         }
     }
