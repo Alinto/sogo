@@ -25,7 +25,7 @@
 "Thursday" = "Jeudi";
 "Friday" = "Vendredi";
 "Saturday" = "Samedi";
-"DayOfTheMonth" = "DayOfTheMonth";
+"DayOfTheMonth" = "Jour du mois";
 
 "Sun" = "Dim";
 "Mon" = "Lun";
@@ -394,13 +394,13 @@
 "reminder_CUSTOM" = "Personnaliser...";
 
 "reminder_MINUTES" = "minutes";
-"reminder_HOURS" = "hours";
-"reminder_DAYS" = "days";
-"reminder_BEFORE" = "before";
-"reminder_AFTER" = "after";
-"reminder_START" = "the event starts";
-"reminder_END" = "the event ends";
-"Reminder Details" = "Reminder Details";
+"reminder_HOURS" = "heures";
+"reminder_DAYS" = "jours";
+"reminder_BEFORE" = "avant";
+"reminder_AFTER" = "après";
+"reminder_START" = "l'événement débute";
+"reminder_END" = "l'événement se termine";
+"Reminder Details" = "Détails du rappel";
 
 "zoom_400" = "400%";
 "zoom_200" = "200%";
@@ -525,11 +525,11 @@ vtodo_class2 = "(Tâche confidentielle)";
 "yearFieldInvalid" = "Veuillez spécifier un chiffre superieur ou égal à 1 dans le champ Année(s).";
 "appointmentFieldInvalid" = "Veuillez spécifier un chiffre superieur ou égal à 1 dans le champ rendez-vous.";
 "recurrenceUnsupported" = "Ce type de récurrence n\\'est pas supporté.";
-"tagNotDefined" = "You must specify a tag if you want to synchronize this calendar.";
-"tagAlreadyExists" = "The tag you specified is already associated to another calendar.";
-"tagHasChanged" = "If you change your calendar's tag, you'll need to reload the data on your mobile device.\nContinue?";
-"tagWasAdded" = "If you want to synchronize this calendar, you'll need to reload the data on your mobile device.\nContinue?";
-"tagWasRemoved" = "If you remove this calendar from synchronization, you'll need to reload the data on your mobile device.\nContinue?";
+"tagNotDefined" = "Vous devez spécifier un label si vous désirez synchroniser ce calendrier.";
+"tagAlreadyExists" = "Le label spécifié est déjà associé à un autre calendrier. Choisissez-en un autre.";
+"tagHasChanged" = "En changeant le label de ce calendrier, vous devrez recharger les données sur votre appareil mobile.\nVoulez-vous continuer?";
+"tagWasAdded" = "Afin de synchroniser ce calendrier, vous devrez recharger les données sur votre appareil mobile.\nVoulez-vous continuer?";
+"tagWasRemoved" = "Afin de ne plus synchroniser ce calendrier, vous devrez recharger les données sur votre appareil mobile.\nVoulez-vous continuer?";
 
 "Open Task..." = "Ouvrir la tâche...";
 "Mark Completed" = "Marquer comme accomplie";
