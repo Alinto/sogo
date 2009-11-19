@@ -17,6 +17,9 @@
 	(-jsonRepresentation): we now handle the cache data from here, as
 	it made more sense and reduces the code size in SOGoUser.m.
 	(-fetchProfile): now a void method.
+	(-storeJSONProfileInDB:): new method that handles the DB portion
+	of primaryStoreProfile, providing a corollary to
+	fetchJSONProfileFromDB.
 
 	* SoObjects/SOGo/SOGoCache.m (+initialize): the memcached host can
 	now be configured using the "SOGoMemCachedHost" user default. The

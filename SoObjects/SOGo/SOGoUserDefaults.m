@@ -99,7 +99,7 @@ static NSString *uidColumnName = @"c_uid";
 
 /* operation */
 
-- (NSString *) _fetchJSONProfileFromDB
+- (NSString *) fetchJSONProfileFromDB
 {
   GCSChannelManager *cm;
   EOAdaptorChannel *channel;
@@ -197,7 +197,7 @@ static NSString *uidColumnName = @"c_uid";
     }
   else
     {
-      jsonValue = [self _fetchJSONProfileFromDB];
+      jsonValue = [self fetchJSONProfileFromDB];
       if ([jsonValue length])
         {
           defFlags.isNew = NO;
@@ -292,69 +292,83 @@ static NSString *uidColumnName = @"c_uid";
   return sql;
 }
 
-- (BOOL) primaryStoreProfile
+- (BOOL) storeJSONProfileInDB: (NSString *) jsonRepresentation
 {
   GCSChannelManager *cm;
   EOAdaptorChannel *channel;
   NSException *ex;
-  NSString *sql, *jsonRepresentation;
-  SOGoCache *cache;
+  NSString *sql;
   BOOL rc;
 
   rc = NO;
 
-  jsonRepresentation = [values jsonStringValue];
-  if (jsonRepresentation)
+  sql = ((defFlags.isNew)
+         ? [self generateSQLForInsert: jsonRepresentation]
+         : [self generateSQLForUpdate: jsonRepresentation]);
+  cm = [GCSChannelManager defaultChannelManager];
+  channel = [cm acquireOpenChannelForURL: [self tableURL]];
+  if (channel)
     {
-      sql = ((defFlags.isNew)
-             ? [self generateSQLForInsert: jsonRepresentation]
-             : [self generateSQLForUpdate: jsonRepresentation]);
-      cm = [GCSChannelManager defaultChannelManager];
-      channel = [cm acquireOpenChannelForURL: [self tableURL]];
-      if (channel)
+      if ([[channel adaptorContext] beginTransaction])
         {
-          if ([[channel adaptorContext] beginTransaction])
+          defFlags.ready = YES;
+          ex = [channel evaluateExpressionX:sql];
+          if (ex)
             {
-              defFlags.ready = YES;
-              ex = [channel evaluateExpressionX:sql];
-              if (ex)
-                {
-                  [self errorWithFormat: @"could not run SQL '%@': %@", sql, ex];
-                  [[channel adaptorContext] rollbackTransaction];
-                }
-              else
-                {
-                  if ([[channel adaptorContext] commitTransaction])
-                    {
-                      cache = [SOGoCache sharedCache];
-                      if ([fieldName isEqualToString: @"c_defaults"])
-                        [cache setUserDefaults: jsonRepresentation
-                                      forLogin: uid];
-                      else
-                        [cache setUserSettings: jsonRepresentation
-                                      forLogin: uid];
-                    }
-                  defFlags.modified = NO;
-                  defFlags.isNew = NO;
-                }
-              [cm releaseChannel: channel];
+              [self errorWithFormat: @"could not run SQL '%@': %@", sql, ex];
+              [[channel adaptorContext] rollbackTransaction];
             }
           else
             {
-              defFlags.ready = NO;
-              [cm releaseChannel: channel immediately: YES];
+              rc = YES;
+              defFlags.modified = NO;
+              defFlags.isNew = NO;
             }
+          [cm releaseChannel: channel];
         }
       else
         {
           defFlags.ready = NO;
-          [self errorWithFormat: @"failed to acquire channel for URL: %@", 
-                [self tableURL]];
+          [cm releaseChannel: channel immediately: YES];
         }
     }
   else
-    [self errorWithFormat: @"Unable to convert (%@) to a JSON string for"
-                  @" type: %@ and login: %@", values, fieldName, uid];
+    {
+      defFlags.ready = NO;
+      [self errorWithFormat: @"failed to acquire channel for URL: %@", 
+            [self tableURL]];
+    }
+
+  return rc;
+}
+
+- (BOOL) primaryStoreProfile
+{
+  NSString *jsonRepresentation;
+  SOGoCache *cache;
+  BOOL rc;
+
+  jsonRepresentation = [values jsonStringValue];
+  if (jsonRepresentation)
+    {
+      rc = [self storeJSONProfileInDB: jsonRepresentation];
+      if (rc)
+        {
+          cache = [SOGoCache sharedCache];
+          if ([fieldName isEqualToString: @"c_defaults"])
+            [cache setUserDefaults: jsonRepresentation
+                          forLogin: uid];
+          else
+            [cache setUserSettings: jsonRepresentation
+                          forLogin: uid];
+        }
+    }
+ else
+   {
+     [self errorWithFormat: @"Unable to convert (%@) to a JSON string for"
+                   @" type: %@ and login: %@", values, fieldName, uid];
+     rc = NO;
+   }
 
   return rc;
 }
