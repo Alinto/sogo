@@ -1,5 +1,10 @@
 2009-11-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoParentFolder.m (-subFolders): we raise the
+	exceptions we get only if the current request is a PROPFIND. This
+	avoids a useless restart of SOGo when the database is down during
+	the execution of other requests.
+
 	* Tools/sogo-tool.m (main): we now check that the SOGo
 	configuration is valid and consequently that the tool runs under
 	the same account as SOGo.

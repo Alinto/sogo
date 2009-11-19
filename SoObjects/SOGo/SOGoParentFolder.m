@@ -30,6 +30,7 @@
 #import <NGObjWeb/SoSecurityManager.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WOMessage.h>
+#import <NGObjWeb/WORequest.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <GDLContentStore/GCSChannelManager.h>
 #import <GDLContentStore/GCSFolderManager.h>
@@ -422,9 +423,14 @@ static SoSecurityManager *sm = nil;
 {
   NSMutableArray *ma;
   NSException *error;
+  NSString *requestMethod;
+  BOOL isPropfind;
+
+  requestMethod = [[context request] method];
+  isPropfind = [requestMethod isEqualToString: @"PROPFIND"];
 
   error = [self initSubFolders];
-  if (error)
+  if (error && isPropfind)
     {
       /* We exceptionnally raise the exception here because doPROPFIND:
 	 will not care for errors in its response from
@@ -432,9 +438,9 @@ static SoSecurityManager *sm = nil;
 	 disappearance of user folders in the SOGo extensions. */
       [error raise];
     }
-  
+
   error = [self initSubscribedSubFolders];
-  if (error)
+  if (error && isPropfind)
     [error raise];
 
   ma = [NSMutableArray arrayWithArray: [subFolders allValues]];
