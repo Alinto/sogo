@@ -30,6 +30,7 @@
 #import <NGExtensions/NGQuotedPrintableCoding.h>
 
 #import "NSArray+Utilities.h"
+#import "NSDictionary+BSJSONAdditions.h"
 #import "NSDictionary+URL.h"
 
 #import "NSString+Utilities.h"
@@ -420,6 +421,16 @@ static NSMutableCharacterSet *safeLDIFStartChars = nil;
     }
   
   return rc;
+}
+
+- (BOOL) isJSONString
+{
+  NSDictionary *jsonData;
+
+#warning this method is a quick and dirty way of detecting the file-format
+  jsonData = [NSDictionary dictionaryWithJSONString: self];
+
+  return (jsonData != nil);
 }
 
 @end

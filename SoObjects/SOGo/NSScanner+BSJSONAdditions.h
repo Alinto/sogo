@@ -45,7 +45,7 @@ extern NSString *jsonNullString;
 
 @interface NSScanner (PrivateBSJSONAdditions)
 
-- (BOOL)scanJSONObject:(NSDictionary **)dictionary;
+- (BOOL)scanJSONObject:(NSMutableDictionary **)dictionary;
 - (BOOL)scanJSONArray:(NSArray **)array;
 - (BOOL)scanJSONString:(NSString **)string;
 - (BOOL)scanJSONValue:(id *)value;

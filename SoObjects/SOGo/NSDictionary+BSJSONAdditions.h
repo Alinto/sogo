@@ -28,7 +28,7 @@ extern const int jsonDoNotIndent;
 
 @interface NSDictionary (BSJSONAdditions)
 
-+ (NSDictionary *)dictionaryWithJSONString:(NSString *)jsonString;
++ (NSMutableDictionary *)dictionaryWithJSONString:(NSString *)jsonString;
 - (NSString *)jsonStringValue;
 
 @end

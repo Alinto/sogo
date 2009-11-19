@@ -48,7 +48,7 @@ NSString *jsonNullString = @"null";
 
 @implementation NSScanner (PrivateBSJSONAdditions)
 
-- (BOOL)scanJSONObject:(NSDictionary **)dictionary
+- (BOOL)scanJSONObject:(NSMutableDictionary **)dictionary
 {
   //[self setCharactersToBeSkipped:nil];
 	

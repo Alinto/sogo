@@ -60,51 +60,56 @@
 
 #import "SOGo.h"
 
+@interface SOGoStartupLogger : NSObject
+@end
+
+@implementation SOGoStartupLogger
+@end
+
 @implementation SOGo
 
 static unsigned int vMemSizeLimit = 0;
 static BOOL doCrashOnSessionCreate = NO;
 static BOOL hasCheckedTables = NO;
 static BOOL debugRequests = NO;
-static BOOL debugLeaks = NO;
 static BOOL useRelativeURLs = NO;
 
 static BOOL trustProxyAuthentication;
 
 #ifdef GNUSTEP_BASE_LIBRARY
-static BOOL debugObjectAllocation = NO;
+static BOOL debugLeaks = NO;
 #endif
 
 + (void) initialize
 {
-  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  NSUserDefaults *ud;
   SoClassSecurityInfo *sInfo;
   NSArray *basicRoles;
+  SOGoStartupLogger *logger;
   id tmp;
 
-  NSLog(@"starting SOGo (build %@)", SOGoBuildDate);
+  logger = [SOGoStartupLogger new];
+  [logger logWithFormat: @"starting SOGo (build %@)", SOGoBuildDate];
   
-  if ([[ud persistentDomainForName: @"sogod"] count] == 0) 
-    NSLog(@"WARNING: No configuration found. SOGo will not work properly.");
-    
+  ud = [NSUserDefaults standardUserDefaults];
+  if ([[ud persistentDomainForName: @"sogod"] count] == 0)
+    [logger warnWithFormat: @"No configuration found."
+            @" SOGo will not work properly."];
+
   doCrashOnSessionCreate = [ud boolForKey:@"SOGoCrashOnSessionCreate"];
-#ifdef GNUSTEP_BASE_LIBRARY
-  debugObjectAllocation = [ud boolForKey: @"SOGoDebugObjectAllocation"];
-  if (debugObjectAllocation)
-    {
-      NSLog (@"activating stats on object allocation");
-      GSDebugAllocationActive (YES);
-    }
-#endif
   debugRequests = [ud boolForKey: @"SOGoDebugRequests"];
+#ifdef GNUSTEP_BASE_LIBRARY
   debugLeaks = [ud boolForKey: @"SOGoDebugLeaks"];
+  if (debugLeaks)
+    [logger logWithFormat: @"activating leak debugging"];
+#endif
   /* vMem size check - default is 384MB */
-    
+
   tmp = [ud objectForKey: @"SxVMemLimit"];
   vMemSizeLimit = ((tmp != nil) ? [tmp intValue] : 384);
   if (vMemSizeLimit > 0)
-    NSLog(@"Note: vmem size check enabled: shutting down app when "
-	  @"vmem > %d MB", vMemSizeLimit);
+    [logger logWithFormat: @"vmem size check enabled: shutting down app when "
+	  @"vmem > %d MB", vMemSizeLimit];
 #if LIB_FOUNDATION_LIBRARY
   if ([ud boolForKey:@"SOGoEnableDoubleReleaseCheck"])
     [NSAutoreleasePool enableDoubleReleaseCheck: YES];
@@ -127,6 +132,7 @@ static BOOL debugObjectAllocation = NO;
 
   trustProxyAuthentication = [ud boolForKey: @"SOGoTrustProxyAuthentication"];
   useRelativeURLs = [ud boolForKey: @"WOUseRelativeURLs"];
+  [logger release];
 }
 
 - (id) init
@@ -337,10 +343,6 @@ static BOOL debugObjectAllocation = NO;
 {
   id obj;
 
-#ifdef GNUSTEP_BASE_LIBRARY
-  if (debugObjectAllocation)
-    NSLog(@"objects allocated\n%s", GSDebugAllocationList (YES));
-#endif
   /* put locale info into the context in case it's not there */
   [self _setupLocaleInContext:_ctx];
   
@@ -399,8 +401,6 @@ static BOOL debugObjectAllocation = NO;
                   @"terminating app, vMem size limit (%d MB) has been reached"
                 @" (currently %d MB)",
                 vMemSizeLimit, vmem];
-//           if (debugObjectAllocation)
-//             [self _dumpClassAllocation];
           [self terminate];
         }
     }
@@ -421,6 +421,7 @@ static BOOL debugObjectAllocation = NO;
     }
 
   cache = [SOGoCache sharedCache];
+#ifdef GNUSTEP_BASE_LIBRARY
   if (debugLeaks)
     {
       if (debugOn)
@@ -431,6 +432,7 @@ static BOOL debugObjectAllocation = NO;
           GSDebugAllocationActive (YES);
         }
     }
+#endif
 
   resp = [super dispatchRequest: _request];
   [cache killCache];
