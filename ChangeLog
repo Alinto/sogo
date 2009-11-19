@@ -1,5 +1,10 @@
 2009-11-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUserDefaults.m (-fetchJSONProfileFromDB):
+	extracted the conversion of property list values to JSON values
+	into a new separate method (-_convertPListToJSON:), that will be
+	invoked by -jsonRepresentation.
+
 	* SoObjects/SOGo/SQLSource.m (-checkLogin:andPassword:):
 	(_lookupContactEntry:considerEmail:, -allEntryIDS)
 	(_lookupContactEntry:consideringEmail:, fetchContactsMatching:):

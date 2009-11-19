@@ -103,11 +103,10 @@ static NSString *uidColumnName = @"c_uid";
 {
   GCSChannelManager *cm;
   EOAdaptorChannel *channel;
-  NSDictionary *row, *plist;
+  NSDictionary *row;
   NSException *ex;
-  NSString *sql, *value, *error;
+  NSString *sql, *value;
   NSArray *attrs;
-  NSData *plistData;
 
   value = nil;
 
@@ -140,26 +139,6 @@ static NSString *uidColumnName = @"c_uid";
 #warning The result is supposed to be unescaped, why re-unescaping it here ?
               value = [value stringByReplacingString: @"''" withString: @"'"];
               value = [value stringByReplacingString: @"\\\\" withString: @"\\"];
-              if (![value isJSONString])
-                {
-                  plistData = [value dataUsingEncoding: NSUTF8StringEncoding];
-                  plist = [NSPropertyListSerialization propertyListFromData: plistData
-                                                           mutabilityOption: NSPropertyListMutableContainers
-                                                                     format: NULL
-                                                           errorDescription: &error];
-                  if (plist)
-                    {
-                      [self logWithFormat: @"database value for '%@'"
-                                  @" (uid: '%@') is a plist", fieldName, uid];
-                      value = [plist jsonStringValue];
-                    }
-                  else
-                    {
-                      [self errorWithFormat: @"failed to parse property list value"
-                                  @" (error: %@): %@", error, value];
-                      value = nil;
-                    }
-                }
             }
           else
             {
@@ -178,6 +157,36 @@ static NSString *uidColumnName = @"c_uid";
     }
 
   return value;
+}
+
+- (NSString *) _convertPListToJSON: (NSString *) plistValue
+{
+  NSData *plistData;
+  NSDictionary *plist;
+  NSString *jsonValue, *error;
+
+  plistData = [plistValue dataUsingEncoding: NSUTF8StringEncoding];
+  plist = [NSPropertyListSerialization propertyListFromData: plistData
+                                           mutabilityOption: NSPropertyListMutableContainers
+                                                     format: NULL
+                                           errorDescription: &error];
+  if (plist)
+    {
+      [self logWithFormat: @"database value for '%@'"
+                  @" (uid: '%@') is a plist", fieldName, uid];
+      jsonValue = [plist jsonStringValue];
+    }
+  else
+    {
+      [self errorWithFormat: @"failed to parse property list value"
+                  @" (error: %@): %@", error, plistValue];
+      jsonValue = nil;
+    }
+
+  if (!jsonValue)
+    jsonValue = @"{}";
+
+  return jsonValue;
 }
 
 - (NSString *) jsonRepresentation
@@ -200,6 +209,8 @@ static NSString *uidColumnName = @"c_uid";
       jsonValue = [self fetchJSONProfileFromDB];
       if ([jsonValue length])
         {
+          if (![jsonValue isJSONString])
+            jsonValue = [self _convertPListToJSON: jsonValue];
           defFlags.isNew = NO;
           if ([fieldName isEqualToString: @"c_defaults"])
             [cache setUserDefaults: jsonValue forLogin: uid];
