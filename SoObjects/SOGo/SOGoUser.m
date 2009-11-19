@@ -65,6 +65,7 @@ static NSURL *SOGoProfileURL = nil;
 static int sogoFirstDayOfWeek = -1;
 static int defaultDayStartTime = -1;
 static int defaultDayEndTime = -1;
+static Class SOGoUserDefaultsKlass = Nil;
 
 NSString *SOGoWeekStartJanuary1 = @"January1";
 NSString *SOGoWeekStartFirst4DayWeek = @"First4DayWeek";
@@ -463,33 +464,22 @@ _timeValue (NSString *key)
   return dateFormatter;
 }
 
-- (SOGoUserDefaults *) primaryUserDefaults
+- (NSString *) userDefaultsClassName
 {
-  SOGoUserDefaults *o;
-
-  o = [[SOGoUserDefaults alloc] initWithTableURL: SOGoProfileURL
-                                             uid: login
-                                       fieldName: @"c_defaults"];
-
-  return o;
-}
-
-- (SOGoUserDefaults *) primaryUserSettings
-{
-  SOGoUserDefaults *o;
-
-  o = [[SOGoUserDefaults alloc] initWithTableURL: SOGoProfileURL
-                                             uid: login
-                                       fieldName: @"c_settings"];
-
-  return o;
+  return @"SOGoUserDefaults";
 }
 
 - (NSUserDefaults *) userDefaults
 {
   if (!_defaults)
     {
-      _defaults = [self primaryUserDefaults];
+      if (!SOGoUserDefaultsKlass)
+        SOGoUserDefaultsKlass
+          = NSClassFromString ([self userDefaultsClassName]);
+      _defaults = [[SOGoUserDefaultsKlass alloc]
+                    initWithTableURL: SOGoProfileURL
+                                 uid: login
+                           fieldName: @"c_defaults"];
       if (_defaults)
 	{
           [_defaults fetchProfile];
@@ -528,7 +518,13 @@ _timeValue (NSString *key)
 {
   if (!_settings)    
     {
-      _settings = [self primaryUserSettings];
+      if (!SOGoUserDefaultsKlass)
+        SOGoUserDefaultsKlass
+          = NSClassFromString ([self userDefaultsClassName]);
+      _settings = [[SOGoUserDefaultsKlass alloc]
+                    initWithTableURL: SOGoProfileURL
+                                 uid: login
+                           fieldName: @"c_settings"];
       if (_settings)
 	{
           [_settings fetchProfile];

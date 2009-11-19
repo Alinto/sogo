@@ -2,6 +2,10 @@
 
 	* SoObjects/SOGo/SOGoUser.m (-userDefaults, -userSettings): the
 	cache handling has now been put in the SOGoUserDefaults class.
+	(-primaryUserDefaults, -primaryUserSettings): removed useless
+	methods.
+	(-userDefaultsClassName): added accessor to allow different
+	classes.
 
 	* SoObjects/SOGo/SOGoUserDefaults.m (-primaryFetchProfile): split
 	method to separate the cache data and the db data. We know invoke
