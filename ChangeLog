@@ -1,5 +1,9 @@
 2009-11-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Tools/sogo-tool.m (main): we now check that the SOGo
+	configuration is valid and consequently that the tool runs under
+	the same account as SOGo.
+
 	* UI/Scheduler/UIxComponentEditor.m (-_handleAttendeeData): make
 	direct use of the JSON constructor of NSDictionary rather than
 	instantiating an NSScanner. This simplifies the code.

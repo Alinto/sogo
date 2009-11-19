@@ -229,12 +229,22 @@ main (int argc, char **argv, char **env)
   ud = [NSUserDefaults standardUserDefaults];
   [ud addSuiteNamed: @"sogod"];
 
-  dispatcher = [SOGoToolDispatcher new];
-  if ([dispatcher run])
-    rc = 0;
+  if ([ud objectForKey: @"SOGoLDAPSources"])
+    {
+      dispatcher = [SOGoToolDispatcher new];
+      if ([dispatcher run])
+        rc = 0;
+      else
+        rc = -1;
+      [dispatcher release];
+    }
   else
-    rc = -1;
-  [dispatcher release];
+    {
+      NSLog (@"No LDAP source is configured in the SOGo configuration of this"
+             @" account. Please make sure to use this tool under the same"
+             @" username as SOGo.");
+      rc = -1;
+    }
 
   [pool release];
 
