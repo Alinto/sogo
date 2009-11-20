@@ -20,6 +20,7 @@ $(SOGOD)_OBJC_FILES += \
 	sogod.m			\
 	SOGo.m			\
 	SOGoProductLoader.m	\
+	SOGoStartupLogger.m	\
 	build.m
 
 -include GNUmakefile.preamble

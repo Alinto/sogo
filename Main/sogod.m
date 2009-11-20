@@ -32,6 +32,7 @@
 #if defined(LDAP_CONFIG)
 #import <SOGo/SOGoLDAPUserDefaults.h>
 #endif
+#import "SOGoStartupLogger.h"
 
 typedef void (*NSUserDefaultsInitFunction) ();
 
@@ -60,6 +61,9 @@ prepareUserDefaults (NSUserDefaults *ud)
 {
   NSString *redirectURL;
   NSDictionary *domain;
+  SOGoStartupLogger *logger;
+
+  logger = [SOGoStartupLogger sharedLogger];
 
   domain = [ud persistentDomainForName: @"sogod"];
   if (![domain count])
@@ -67,7 +71,7 @@ prepareUserDefaults (NSUserDefaults *ud)
       domain = [ud persistentDomainForName: @"sogod-0.9"];
       if ([domain count])
 	{
-	  NSLog (@"migrating user defaults from sogod-0.9");
+	  [logger logWithFormat: @"migrating user defaults from sogod-0.9"];
 	  [ud setPersistentDomain: domain forName: @"sogod"];
 	  [ud removePersistentDomainForName: @"sogod-0.9"];
 	  [ud synchronize];
@@ -75,9 +79,17 @@ prepareUserDefaults (NSUserDefaults *ud)
     }
 
   redirectURL = [ud stringForKey: @"WOApplicationRedirectURL"];
-  if ([redirectURL hasSuffix: @"/"])
-    [ud setObject: [redirectURL substringToIndex: [redirectURL length] - 1]
-           forKey: @"WOApplicationRedirectURL"];
+  if (redirectURL)
+    {
+      [logger warnWithFormat:
+                @"Using obsolete 'WOApplicationRedirectURL' user default."];
+      [logger warnWithFormat:
+                @"  Please configure the use of the x-webobjects-XXX headers"
+              @" with your webserver (see sample files)."];
+      if ([redirectURL hasSuffix: @"/"])
+        [ud setObject: [redirectURL substringToIndex: [redirectURL length] - 1]
+               forKey: @"WOApplicationRedirectURL"];
+    }
   [ud setBool: YES forKey: @"WOMessageUseUTF8"];
   [ud setBool: YES forKey: @"WOParsersUseUTF8"];
   [ud setBool: YES forKey: @"NGUseUTF8AsURLEncoding"];

@@ -59,12 +59,7 @@
 #import "NSException+Stacktrace.h"
 
 #import "SOGo.h"
-
-@interface SOGoStartupLogger : NSObject
-@end
-
-@implementation SOGoStartupLogger
-@end
+#import "SOGoStartupLogger.h"
 
 @implementation SOGo
 
@@ -88,7 +83,7 @@ static BOOL debugLeaks = NO;
   SOGoStartupLogger *logger;
   id tmp;
 
-  logger = [SOGoStartupLogger new];
+  logger = [SOGoStartupLogger sharedLogger];
   [logger logWithFormat: @"starting SOGo (build %@)", SOGoBuildDate];
   
   ud = [NSUserDefaults standardUserDefaults];
@@ -132,7 +127,6 @@ static BOOL debugLeaks = NO;
 
   trustProxyAuthentication = [ud boolForKey: @"SOGoTrustProxyAuthentication"];
   useRelativeURLs = [ud boolForKey: @"WOUseRelativeURLs"];
-  [logger release];
 }
 
 - (id) init
