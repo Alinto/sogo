@@ -42,9 +42,6 @@
 
 // @interface SOGoProxyAuthenticator : SoHTTPAuthenticator <SOGoAuthenticator>
 @interface SOGoProxyAuthenticator : NSObject
-{
-  NSString *authMethod;
-}
 
 + (id) sharedSOGoProxyAuthenticator;
 

@@ -1,5 +1,17 @@
 2009-11-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoDAVAuthenticator.m (-init): removed method,
+	removed the "SOGoAuthenticationMethod" user default, which was
+	never used.
+
+	* SoObjects/SOGo/SOGoWebAuthenticator.m (-init): removed method,
+	removed the "SOGoAuthenticationMethod" user default, which was
+	never used.
+
+	* SoObjects/SOGo/SOGoProxyAuthenticator.m (-init): removed method,
+	removed the "SOGoAuthenticationMethod" user default, which was
+	never used.
+
 	* Main/sogod.m (prepareUserDefaults): replaces
 	"convertOldSOGoDomain", automatically set WOMessageUseUTF8,
 	WOParsersUseUTF8 and NGUseUTF8AsURLEncoding to YES in the user

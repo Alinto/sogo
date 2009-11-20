@@ -46,53 +46,11 @@
   return auth;
 }
 
-- (id) init
-{
-  NSUserDefaults *ud;
-
-  if ((self = [super init]))
-    {
-      ud = [NSUserDefaults standardUserDefaults];
-      authMethod = [ud stringForKey: @"SOGoAuthenticationMethod"];
-      if (!authMethod)
-	authMethod = [ud stringForKey: @"SOGoAuthentificationMethod"];
-      if (!authMethod)
-	{
-	  authMethod = @"LDAP";
-	  [self warnWithFormat:
-		  @"authentication method automatically set to '%@'",
-		authMethod];
-	}
-    }
-
-  return self;
-}
-
-- (void) dealloc
-{
-  [authMethod release];
-  [super dealloc];
-}
-
 - (BOOL) checkLogin: (NSString *) _login
 	   password: (NSString *) _pwd
 {
-  BOOL accept;
-  SOGoUserManager *um;
-
-  if ([authMethod isEqualToString: @"LDAP"])
-    {
-      um = [SOGoUserManager sharedUserManager];
-      accept = [um checkLogin: _login andPassword: _pwd];
-    }
-  else
-    accept = NO;
-//     accept = ([authMethod isEqualToString: @"bypass"]
-// 	      && [_login length] > 0);
-
-  return accept;
-// 	  || ([_login isEqualToString: @"freebusy"]
-// 	      && [_pwd isEqualToString: @"freebusy"]));
+  return [[SOGoUserManager sharedUserManager] checkLogin: _login
+                                             andPassword: _pwd];
 }
 
 - (NSString *) passwordInContext: (WOContext *) context

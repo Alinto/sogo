@@ -31,9 +31,6 @@
 @class SOGoUser;
 
 @interface SOGoWebAuthenticator : SoCookieAuthenticator
-{
-  NSString *authMethod;
-}
 
 + (id) sharedSOGoWebAuthenticator;
 

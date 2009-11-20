@@ -48,34 +48,6 @@
   return auth;
 }
 
-- (id) init
-{
-  NSUserDefaults *ud;
-
-  if ((self = [super init]))
-    {
-      ud = [NSUserDefaults standardUserDefaults];
-      authMethod = [ud stringForKey: @"SOGoAuthenticationMethod"];
-      if (!authMethod)
-	authMethod = [ud stringForKey: @"SOGoAuthentificationMethod"];
-      if (!authMethod)
-	{
-	  authMethod = @"LDAP";
-	  [self warnWithFormat:
-		  @"authentication method automatically set to '%@'",
-		authMethod];
-	}
-    }
-
-  return self;
-}
-
-- (void) dealloc
-{
-  [authMethod release];
-  [super dealloc];
-}
-
 - (BOOL) checkLogin: (NSString *) _login
 	   password: (NSString *) _pwd
 {

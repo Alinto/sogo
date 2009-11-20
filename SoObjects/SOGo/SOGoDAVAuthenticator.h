@@ -39,9 +39,6 @@
 @class SOGoUser;
 
 @interface SOGoDAVAuthenticator : SoHTTPAuthenticator <SOGoAuthenticator>
-{
-  NSString *authMethod;
-}
 
 + (id) sharedSOGoDAVAuthenticator;
 
