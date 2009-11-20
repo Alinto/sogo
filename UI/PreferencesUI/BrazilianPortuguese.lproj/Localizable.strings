@@ -6,6 +6,9 @@
 "General" = "Geral";
 "Calendar Options" = "Calendário";
 "Mail Options" = "Correio";
+"Signature" = "Assinatura";
+"Vacation" = "Vacation";
+"Forward" = "Forward";
 "Identities" = "Identidade";
 "Password" = "Senha";
 "Categories" = "Categories";
@@ -14,11 +17,22 @@
 "Add" = "Add";
 "Delete" = "Delete";
 
-/* ooo */
-"I'm currently in the office" = "Eu estou no escritório";
-"I'm currently out of the office" = "Eu estou fora do escritório";
-"AutoReply only once to each sender with the following text :"
-= "AutoResponder somente uma vez a cada remetente com o seguinte texto :";
+/* vacation (auto-reply) */
+"Enable vacation auto reply" = "Enable vacation auto reply";
+"Auto reply message :" = "AutoResponder somente uma vez a cada remetente com o seguinte texto :";
+"Email addresses (separated by commas) :" = "Email addresses (separated by commas) :";
+"Add default email addresses" = "Add default email addresses";
+"Days between responses :" = "Days between responses :";
+"Do not send responses to mailing lists" = "Do not send responses to mailing lists";
+"Please specify your message and your email addresses for which you want to enable auto reply."
+= "Please specify your message and your email addresses for which you want to enable auto reply.";
+
+/* forward messages */
+"Forward incoming messages" = "Forward incoming messages";
+"Forward to address :" = "Forward to address :";
+"Keep a copy" = "Keep a copy";
+"Please specify an address to which you want to forward your messages."
+= "Please specify an address to which you want to forward your messages.";
 
 /* d & t */
 "Current Time Zone :" = "Fuso Horário :";
@@ -108,7 +122,6 @@
 /* Identities */
 "Default identity:" = "Identidade Padrão:";
 "Manage identities..." = "Gerenciar Identidades...";
-"Signature" = "Assinatura";
 "replyplacement_above" = "Começar minha resposta acima das citações";
 "replyplacement_below" = "Começar minha resposta abaixo das citações";
 "And place my signature" = "E colocar minha assinatura";
@@ -151,4 +164,5 @@
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
 "Spanish" = "Español";
+"Swedish" = "Svenska";
 "Welsh" = "Cymraeg";

@@ -1,8 +1,3 @@
-/* this file is in UTF-8 format! */
-/* Author: erny@yaco.es */
-/* Based on: rev 1397 */
-/* Last update: 2008-04-04 */
-
 /* toolbar */
 "Save and Close" = "Guardar y cerrar";
 "Close" = "Cerrar";
@@ -11,6 +6,9 @@
 "General" = "General";
 "Calendar Options" = "Opciones de calendario";
 "Mail Options" = "Opciones de correo";
+"Signature" = "Firma";
+"Vacation" = "Vacation";
+"Forward" = "Forward";
 "Identities" = "Identidades";
 "Password" = "Contraseña";
 "Categories" = "Categories";
@@ -19,17 +17,30 @@
 "Add" = "Add";
 "Delete" = "Delete";
 
-/* ooo */
-"I'm currently in the office" = "Ahora estoy disponible";
-"I'm currently out of the office" = "Ahora estoy fuera";
-"AutoReply only once to each sender with the following text :"
-= "Responder automáticamente una sola vez a cada remitente con el siguiente texto: ";
+/* vacation (auto-reply) */
+"Enable vacation auto reply" = "Enable vacation auto reply";
+"Auto reply message :" = "Responder automáticamente una sola vez a cada remitente con el siguiente texto: ";
+"Email addresses (separated by commas) :" = "Email addresses (separated by commas) :";
+"Add default email addresses" = "Add default email addresses";
+"Days between responses :" = "Days between responses :";
+"Do not send responses to mailing lists" = "Do not send responses to mailing lists";
+"Please specify your message and your email addresses for which you want to enable auto reply."
+= "Please specify your message and your email addresses for which you want to enable auto reply.";
+
+/* forward messages */
+"Forward incoming messages" = "Forward incoming messages";
+"Forward to address :" = "Forward to address :";
+"Keep a copy" = "Keep a copy";
+"Please specify an address to which you want to forward your messages."
+= "Please specify an address to which you want to forward your messages.";
 
 /* d & t */
 "Current Time Zone :" = "Zona horaria actual: ";
 "Short Date Format :" = "Formato de fecha corto: ";
 "Long Date Format :" = "Formato de fecha largo: ";
 "Time Format :" = "Formato de hora: ";
+
+"default" = "Default";
 
 "shortDateFmt_0" = "%d-%b-%y";
 
@@ -53,18 +64,16 @@
 "shortDateFmt_14" = "%Y.%m.%d";
 
 "shortDateFmt_15" = "";
-
+   
 "longDateFmt_0" = "%A, %e %B %Y";
 "longDateFmt_1" = "%A, %e de %B de %Y";
-"longDateFmt_2" = "%e de %b %Y";   /* ??? */
-"longDateFmt_3" = "%e de %b de %Y";   /* ??? */
+"longDateFmt_2" = "%e de %b %Y";
+"longDateFmt_3" = "%e de %b de %Y";
 "longDateFmt_4" = "%e %B %Y";
-"longDateFmt_5" = "";
 
 "timeFmt_0" = "%H:%M";
 "timeFmt_1" = "%H.%M";
 "timeFmt_2" = "%H h. %M";
-"timeFmt_3" = "";
 
 /* calendar */
 "Week begins on :" = "Semana empieza con: ";
@@ -110,9 +119,9 @@
 "messageforward_inline" = "Incorporado";
 "messageforward_attached" = "Como adjunto";
 
+/* Identities */
 "Default identity:" = "Identidad por defecto:";
 "Manage identities..." = "Gestionar identidades...";
-"Signature" = "Firma";
 "replyplacement_above" = "replyplacement_above";
 "replyplacement_below" = "replyplacement_below";
 "And place my signature" = "And place my signature";
@@ -129,9 +138,10 @@
 
 /* password */
 "New password:" = "Contraseña nueva:";
-"Confirmation:" = "Confirmar contraseña nueva:"; /* ??? */
+"Confirmation:" = "Confirmar contraseña nueva:";
 "Change" = "Cambiar";
 
+/* Event+task categories */
 "category_none" = "Ninguna";
 "category_labels" = "Aniversario,Cumpleaños,Negocios,Llamadas,Clientes,Competición,Trabajo,Favoritos,Seguimiento,Regalos,Fiestas,Ideas,Asuntos,Varios,Personal,Proyectos,Vacaciones públicas,Estado,Proveedores,Viajes,Vacaciones";
 
@@ -140,7 +150,7 @@
 "Contacts" = "Address Book";
 "Mail" = "Mail";
 "Last" = "Last used";
-"Default module :" = "Default module :"; 
+"Default module :" = "Default module :";
 
 "Language :" = "Language :";
 "choose" = "Choose ...";
@@ -154,4 +164,5 @@
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
 "Spanish" = "Español";
+"Swedish" = "Svenska";
 "Welsh" = "Cymraeg";

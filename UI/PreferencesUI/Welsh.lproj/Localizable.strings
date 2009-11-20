@@ -6,6 +6,9 @@
 "General" = "Cyffredinol";
 "Calendar Options" = "Opsiynau Calendr";
 "Mail Options" = "Opsiynau Ebost";
+"Signature" = "Llofnod";
+"Vacation" = "Vacation";
+"Forward" = "Forward";
 "Identities" = "hunaniaethau";
 "Password" = "Cyfrinair";
 "Categories" = "Categories";
@@ -14,11 +17,22 @@
 "Add" = "Add";
 "Delete" = "Delete";
 
-/* ooo */
-"I'm currently in the office" = "Yr wyf yn y swyddfa ar hyn o bryd";
-"I'm currently out of the office" = "Yr wyf allan o'r swyddfa ar hyn o bryd";
-"AutoReply only once to each sender with the following text :"
-= "Ymateb Awtomatig unwaith yn unig i pob anfonwr gyda'r testun canlynol :";
+/* vacation (auto-reply) */
+"Enable vacation auto reply" = "Enable vacation auto reply";
+"Auto reply message :" = "Ymateb Awtomatig unwaith yn unig i pob anfonwr gyda'r testun canlynol :";
+"Email addresses (separated by commas) :" = "Email addresses (separated by commas) :";
+"Add default email addresses" = "Add default email addresses";
+"Days between responses :" = "Days between responses :";
+"Do not send responses to mailing lists" = "Do not send responses to mailing lists";
+"Please specify your message and your email addresses for which you want to enable auto reply."
+= "Please specify your message and your email addresses for which you want to enable auto reply.";
+
+/* forward messages */
+"Forward incoming messages" = "Forward incoming messages";
+"Forward to address :" = "Forward to address :";
+"Keep a copy" = "Keep a copy";
+"Please specify an address to which you want to forward your messages."
+= "Please specify an address to which you want to forward your messages.";
 
 /* d & t */
 "Current Time Zone :" = "Amser Cyfredol :";
@@ -108,7 +122,6 @@
 /* Identities */
 "Default identity:" = "Hunaniaeth Gwreiddiol:";
 "Manage identities..." = "Rheoli hunaniaethau...";
-"Signature" = "Llofnod";
 "replyplacement_above" = "Dechrau fy ymateb uwchben y dyfynnod";
 "replyplacement_below" = "Dechrau fy ymateb o dan y dyfynnod";
 "And place my signature" = "A rhowch fy llofnod";
@@ -151,4 +164,5 @@
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
 "Spanish" = "Español";
+"Swedish" = "Svenska";
 "Welsh" = "Cymraeg";

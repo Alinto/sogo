@@ -6,6 +6,7 @@
 "General" = "Général";
 "Calendar Options" = "Calendrier";
 "Mail Options" = "Courrier";
+"Signature" = "Signature";
 "Vacation" = "Absence prolongée";
 "Forward" = "Transfert";
 "Identities" = "Identités";
@@ -63,16 +64,16 @@
 "shortDateFmt_14" = "%Y.%m.%d";
 
 "shortDateFmt_15" = "";
-
+   
 "longDateFmt_0" = "%A %e %B %Y";
 "longDateFmt_1" = "%e %b. %Y";
 "longDateFmt_2" = "%e %B %Y";
-"longDateFmt_3" = "";
+"longDateFmt_3" = "%d %B, %Y";
+"longDateFmt_4" = "";
 
 "timeFmt_0" = "%H:%M";
 "timeFmt_1" = "%H.%M";
 "timeFmt_2" = "%H h. %M";
-"timeFmt_3" = "";
 
 /* calendar */
 "Week begins on :" = "Premier jour de la semaine :";
@@ -81,7 +82,8 @@
 "Day start time must be prior to day end time." = "Le début de la journée doit être avant la fin de la journée.";
 "First week of year :" = "Première semaine de l'année :";
 "Enable reminders for Calendar items" = "Activer les rappels pour les éléments du calendrier";
-"Play a sound when a reminder comes due" = "Émettre un signal sonore à l'échéance du rappel";
+"Play a sound when a reminder comes due"
+= "Émettre un signal sonore à l'échéance du rappel";
 "Default reminder :" = "Rappel par défaut :";
 
 "firstWeekOfYear_January1" = "Commence le 1er janvier";
@@ -120,7 +122,6 @@
 /* Identities */
 "Default identity:" = "Identité par défaut :";
 "Manage identities..." = "Gérer les identitiés...";
-"Signature" = "Signature";
 "replyplacement_above" = "Placer ma réponse avant la citation";
 "replyplacement_below" = "Placer ma réponse après la citation";
 "And place my signature" = "Et placer ma signature";
@@ -140,6 +141,7 @@
 "Confirmation:" = "Confirmation :";
 "Change" = "Changer";
 
+/* Event+task categories */
 "category_none" = "Aucune";
 "category_labels" = "Anniversaire,Affaire,Appels,Clients,Compétitions,Congrès,Consommation,Préférés,Suivis,Cadeaux,Congés,Idées,Problèmes,Divers,Personnel,Projets,Jour férié,Réunion,Fournisseurs,Voyages,Professionnel";
 
@@ -162,4 +164,5 @@
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
 "Spanish" = "Español";
+"Swedish" = "Svenska";
 "Welsh" = "Cymraeg";

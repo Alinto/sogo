@@ -6,6 +6,9 @@
 "General" = "Общее";
 "Calendar Options" = "Календарь";
 "Mail Options" = "Почта";
+"Signature" = "Подпись";
+"Vacation" = "Vacation";
+"Forward" = "Forward";
 "Identities" = "Identities";
 "Password" = "Пароль";
 "Categories" = "Categories";
@@ -14,17 +17,30 @@
 "Add" = "Add";
 "Delete" = "Delete";
 
-/* ooo */
-"I'm currently in the office" = "Я на рабочем месте";
-"I'm currently out of the office" = "Я отошел от рабочего места";
-"AutoReply only once to each sender with the following text :"
-= "Автоматически посылать этот текст каждому отправителю один раз :";
+/* vacation (auto-reply) */
+"Enable vacation auto reply" = "Enable vacation auto reply";
+"Auto reply message :" = "Автоматически посылать этот текст каждому отправителю один раз :";
+"Email addresses (separated by commas) :" = "Email addresses (separated by commas) :";
+"Add default email addresses" = "Add default email addresses";
+"Days between responses :" = "Days between responses :";
+"Do not send responses to mailing lists" = "Do not send responses to mailing lists";
+"Please specify your message and your email addresses for which you want to enable auto reply."
+= "Please specify your message and your email addresses for which you want to enable auto reply.";
+
+/* forward messages */
+"Forward incoming messages" = "Forward incoming messages";
+"Forward to address :" = "Forward to address :";
+"Keep a copy" = "Keep a copy";
+"Please specify an address to which you want to forward your messages."
+= "Please specify an address to which you want to forward your messages.";
 
 /* d & t */
 "Current Time Zone :" = "Текущая временная зона :";
 "Short Date Format :" = "Короткий формат даты :";
 "Long Date Format :" = "Длинный формат даты :";
 "Time Format :" = "Формат времени :";
+
+"default" = "Default";
 
 "shortDateFmt_0" = "%d-%b-%y";
 
@@ -48,21 +64,16 @@
 "shortDateFmt_14" = "%Y.%m.%d";
 
 "shortDateFmt_15" = "";
-
+   
 "longDateFmt_0" = "%A %e %B %Y";
 "longDateFmt_1" = "%e %b. %Y";
 "longDateFmt_2" = "%e %B %Y";
 "longDateFmt_3" = "%A, %B %d, %Y";
 "longDateFmt_4" = "%B %d, %Y";
-"longDateFmt_5" = "%A, %d %B, %Y";
-"longDateFmt_6" = "%d %B, %Y";
-"longDateFmt_7" = "";
 
 "timeFmt_0" = "%H:%M";
 "timeFmt_1" = "%H.%M";
 "timeFmt_2" = "%H h. %M";
-"timeFmt_3" = "%I:%M %p";
-"timeFmt_4" = "";
 
 /* calendar */
 "Week begins on :" = "Неделя начинается с :";
@@ -108,9 +119,9 @@
 "messageforward_inline" = "В теле письма";
 "messageforward_attached" = "Приложенным файлом";
 
+/* Identities */
 "Default identity:" = "Обысно я представляюсь как:";
 "Manage identities..." = "Управлять именами...";
-"Signature" = "Подпись";
 "replyplacement_above" = "Начинать мой ответ над цитируемым текстом";
 "replyplacement_below" = "Начинать мой ответ под цитируемым текстом";
 "And place my signature" = "И поместить мою подпись";
@@ -120,6 +131,8 @@
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Plain text";
 
+"composeMessageChanged" = "Changing your messages composition type requires to save your preferences immediately. Continue?";
+
 /* Additional Parameters */
 "Additional Parameters" = "Дополнительные параметры";
 
@@ -128,6 +141,7 @@
 "Confirmation:" = "Повтор нового пароля:";
 "Change" = "Изменить";
 
+/* Event+task categories */
 "category_none" = "None";
 "category_labels" = "Anniversary,Birthday,Business,Calls,Clients,Competition,Customer,Favorites,Follow up,Gifts,Holidays,Ideas,Issues,Miscellaneous,Personal,Projects,Public Holiday,Status,Suppliers,Travel,Vacation";
 
@@ -136,7 +150,7 @@
 "Contacts" = "Address Book";
 "Mail" = "Mail";
 "Last" = "Last used";
-"Default module :" = "Default module :"; 
+"Default module :" = "Default module :";
 
 "Language :" = "Язык :";
 "choose" = "Выбрать ...";
@@ -150,4 +164,5 @@
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
 "Spanish" = "Español";
+"Swedish" = "Svenska";
 "Welsh" = "Cymraeg";

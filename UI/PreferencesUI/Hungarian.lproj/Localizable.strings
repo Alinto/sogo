@@ -15,10 +15,7 @@
 "Delete" = "Delete";
 
 /* ooo */
-"I'm currently in the office" = "Jelenleg az irodában vagyok";
-"I'm currently out of the office" = "Jelenleg az irodán kívül vagyok";
-"AutoReply only once to each sender with the following text :"
-= "Automatikus válasz minden feladónak csak egy alkalommal :";
+"Auto reply messsage :" = "Automatikus válasz minden feladónak csak egy alkalommal :";
 
 /* d & t */
 "Current Time Zone :" = "Időzóna :";
