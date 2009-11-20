@@ -241,7 +241,7 @@
 "Please select a message." = "Markera ett meddelande.";
 "Please select a message to print." = "Markera meddelandet som ska skrivas ut.";
 "Please select only one message to print." = "Markera bara ett meddelande som ska skrivas ut.";
-"The message you have selected doesn't exist anymore." = "The message you have selected doesn't exist anymore.";
+"The message you have selected doesn't exist anymore." = "Meddelandet du markerat finns inte längre.";
 
 
 "The folder with name \"%{0}\" could not be created."

@@ -52,10 +52,10 @@
 "You don't have the required privileges to perform the operation."
 = "Du har inte rättighet att utföra operationen.";
 
-"noEmailForDelegation" = "You must specify the address to which you want to delegate your invitation.";
-"delegate is organizer" = "The delegate is the organizer. Please specify a different delegate.";
-"delegate is a participant" = "The delegate is already a participant.";
-"delegate is a group" = "The specified address corresponds to a group. You can only delegate to a unique person.";
+"noEmailForDelegation" = "Du måste ange adressen till personen du delegerar din inbjudan.";
+"delegate is organizer" = "Personen du delegerar till är organisatör. Vänligen delegera till en annan person.";
+"delegate is a participant" = "Personen du delegerar till är redan en deltagare.";
+"delegate is a group" = "Adressen du skrivit går till en grupp. Du kan bara delegera till en unik person.";
 
 /* alarms */
 "Reminder:" = "Påminnelse:";
