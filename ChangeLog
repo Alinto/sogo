@@ -1,5 +1,10 @@
 2009-11-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Main/sogod.m (prepareUserDefaults): replaces
+	"convertOldSOGoDomain", automatically set WOMessageUseUTF8,
+	WOParsersUseUTF8 and NGUseUTF8AsURLEncoding to YES in the user
+	defaults.
+
 	* SoObjects/SOGo/SOGoUserDefaults.m (_sqlJsonRepresentation:): the
 	escaping of "\\" was done in the wrong direction.
 	(-storeJSONProfileInDB:): we commit the transaction to avoid a

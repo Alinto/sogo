@@ -89,8 +89,7 @@ static NSString *productDirectoryName = @"SOGo";
 
       [self _addGNUstepSearchPathesToArray: ma];
 #if COCOA_Foundation_LIBRARY
-      else
-	[self _addCocoaSearchPathesToArray: ma];
+      [self _addCocoaSearchPathesToArray: ma];
 #endif
 
       searchPathes = [ma copy];
@@ -108,7 +107,7 @@ static NSString *productDirectoryName = @"SOGo";
   SoProductRegistry *registry = nil;
   NSFileManager *fm;
   NSEnumerator *pathes;
-  NSString *lpath, *bpath, *extension;
+  NSString *lpath, *bpath;
   NSEnumerator *productNames;
   NSString *productName;
 
@@ -123,9 +122,7 @@ static NSString *productDirectoryName = @"SOGo";
       productNames = [[fm directoryContentsAtPath: lpath] objectEnumerator];
       while ((productName = [productNames nextObject]))
 	{
-	  extension = [productName pathExtension];
-	  if ([extension length] > 0
-	      && [extension isEqualToString: @"SOGo"])
+	  if ([[productName pathExtension] isEqualToString: @"SOGo"])
 	    {
 	      bpath = [lpath stringByAppendingPathComponent: productName];
 	      [self logWithFormat: @" register SOGo product: %@",

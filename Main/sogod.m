@@ -56,8 +56,9 @@ BootstrapNSUserDefaults ()
 }
 
 static void
-convertOldSOGoDomain (NSUserDefaults *ud)
+prepareUserDefaults (NSUserDefaults *ud)
 {
+  NSString *redirectURL;
   NSDictionary *domain;
 
   domain = [ud persistentDomainForName: @"sogod"];
@@ -72,12 +73,20 @@ convertOldSOGoDomain (NSUserDefaults *ud)
 	  [ud synchronize];
 	}
     }
+
+  redirectURL = [ud stringForKey: @"WOApplicationRedirectURL"];
+  if ([redirectURL hasSuffix: @"/"])
+    [ud setObject: [redirectURL substringToIndex: [redirectURL length] - 1]
+           forKey: @"WOApplicationRedirectURL"];
+  [ud setBool: YES forKey: @"WOMessageUseUTF8"];
+  [ud setBool: YES forKey: @"WOParsersUseUTF8"];
+  [ud setBool: YES forKey: @"NGUseUTF8AsURLEncoding"];
 }
 
 int
 main (int argc, char **argv, char **env)
 {
-  NSString *tzName, *redirectURL;
+  NSString *tzName;
   NSUserDefaults *ud;
   NSAutoreleasePool *pool;
   int rc;
@@ -90,20 +99,8 @@ main (int argc, char **argv, char **env)
 
   if (getuid() > 0)
     {
-#if LIB_FOUNDATION_LIBRARY
-      [NSProcessInfo initializeWithArguments: argv
-		     count: argc environment: env];
-#endif
       ud = [NSUserDefaults standardUserDefaults];
-      convertOldSOGoDomain (ud);
-
-      redirectURL = [ud stringForKey: @"WOApplicationRedirectURL"];
-      if (redirectURL && [redirectURL hasSuffix: @"/"])
-	{
-	  [ud setObject: [redirectURL substringToIndex: [redirectURL length] - 1]
-	      forKey: @"WOApplicationRedirectURL"];
-	  [ud synchronize];
-	}
+      prepareUserDefaults (ud);
 
       rc = 0;
       tzName = [ud stringForKey: @"SOGoServerTimeZone"];
