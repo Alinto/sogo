@@ -262,7 +262,7 @@ static NSString *uidColumnName = @"c_uid";
 
   sql = [jsonRepresentation mutableCopy];
   [sql autorelease];
-  [sql replaceString: @"\\\\" withString: @"\\"];
+  [sql replaceString: @"\\" withString: @"\\\\"];
   [sql replaceString: @"'" withString: @"''"];
 
   return sql;
@@ -307,6 +307,7 @@ static NSString *uidColumnName = @"c_uid";
 {
   GCSChannelManager *cm;
   EOAdaptorChannel *channel;
+  EOAdaptorContext *context;
   NSException *ex;
   NSString *sql;
   BOOL rc;
@@ -320,20 +321,22 @@ static NSString *uidColumnName = @"c_uid";
   channel = [cm acquireOpenChannelForURL: [self tableURL]];
   if (channel)
     {
-      if ([[channel adaptorContext] beginTransaction])
+      context = [channel adaptorContext];
+      if ([context beginTransaction])
         {
           defFlags.ready = YES;
           ex = [channel evaluateExpressionX:sql];
           if (ex)
             {
               [self errorWithFormat: @"could not run SQL '%@': %@", sql, ex];
-              [[channel adaptorContext] rollbackTransaction];
+              [context rollbackTransaction];
             }
           else
             {
               rc = YES;
               defFlags.modified = NO;
               defFlags.isNew = NO;
+              [context commitTransaction];
             }
           [cm releaseChannel: channel];
         }

@@ -1,3 +1,10 @@
+2009-11-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUserDefaults.m (_sqlJsonRepresentation:): the
+	escaping of "\\" was done in the wrong direction.
+	(-storeJSONProfileInDB:): we commit the transaction to avoid a
+	lock on the profile table.
+
 2009-11-19  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/Mailer/SOGoMailReply.m (-messageBody): don't try to
