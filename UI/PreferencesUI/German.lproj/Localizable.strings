@@ -6,6 +6,9 @@
 "General" = "Allgemein";
 "Calendar Options" = "Kalender";
 "Mail Options" = "E-Mail";
+"Signature" = "Signatur";
+"Vacation" = "Vacation";
+"Forward" = "Forward";
 "Identities" = "Identität";
 "Password" = "Passwort";
 "Categories" = "Categories";
@@ -14,17 +17,30 @@
 "Add" = "Add";
 "Delete" = "Delete";
 
-/* ooo */
-"I'm currently in the office" = "Ich bin zurzeit im Hause";
-"I'm currently out of the office" = "Ich bin zurzeit nicht im Hause";
-"AutoReply only once to each sender with the following text :"
-= "Folgende Antwort wird automatisch einmal an jeden Absender gesendet:";
+/* vacation (auto-reply) */
+"Enable vacation auto reply" = "Enable vacation auto reply";
+"Auto reply message :" = "Folgende Antwort wird automatisch einmal an jeden Absender gesendet:";
+"Email addresses (separated by commas) :" = "Email addresses (separated by commas) :";
+"Add default email addresses" = "Add default email addresses";
+"Days between responses :" = "Days between responses :";
+"Do not send responses to mailing lists" = "Do not send responses to mailing lists";
+"Please specify your message and your email addresses for which you want to enable auto reply."
+= "Please specify your message and your email addresses for which you want to enable auto reply.";
+
+/* forward messages */
+"Forward incoming messages" = "Forward incoming messages";
+"Forward to address :" = "Forward to address :";
+"Keep a copy" = "Keep a copy";
+"Please specify an address to which you want to forward your messages."
+= "Please specify an address to which you want to forward your messages.";
 
 /* d & t */
 "Current Time Zone :" = "Aktuelle Zeitzone:";
 "Short Date Format :" = "Kurzes Datumsformat:";
 "Long Date Format :" = "Langes Datumsformat:";
 "Time Format :" = "Zeitformat:";
+
+"default" = "Default";
 
 "shortDateFmt_0" = "%d-%b-%y";
 
@@ -48,16 +64,16 @@
 "shortDateFmt_14" = "%Y.%m.%d";
 
 "shortDateFmt_15" = "";
-
+   
 "longDateFmt_0" = "%A %e %B %Y";
 "longDateFmt_1" = "%e %b. %Y";
 "longDateFmt_2" = "%e %B %Y";
-"longDateFmt_3" = "";
+"longDateFmt_3" = "%d %B, %Y";
+"longDateFmt_4" = "";
 
 "timeFmt_0" = "%H:%M";
 "timeFmt_1" = "%H.%M";
 "timeFmt_2" = "%H h. %M";
-"timeFmt_3" = "";
 
 /* calendar */
 "Week begins on :" = "Erster Wochentag:";
@@ -66,7 +82,8 @@
 "Day start time must be prior to day end time." = "Day start time must be prior to day end time.";
 "First week of year :" = "Erste Woche des Jahres:";
 "Enable reminders for Calendar items" = "Terminerinnerung aktivieren";
-"Play a sound when a reminder comes due" = "Akustisches Signal zur Terminerinnerung";
+"Play a sound when a reminder comes due"
+= "Akustisches Signal zur Terminerinnerung";
 "Default reminder :" = "Standard Terminerinnerung:";
 
 "firstWeekOfYear_January1" = "Beginnt am 1.Januar";
@@ -105,7 +122,6 @@
 /* Identities */
 "Default identity:" = "Standard Identität:";
 "Manage identities..." = "Identitäten verwalten...";
-"Signature" = "Signatur";
 "replyplacement_above" = "Antwort oberhalb";
 "replyplacement_below" = "Antwort unterhalb";
 "And place my signature" = "Und setze meine Signatur";
@@ -125,6 +141,7 @@
 "Confirmation:" = "Bestätigung:";
 "Change" = "Ändern";
 
+/* Event+task categories */
 "category_none" = "Keine";
 "category_labels" = "Jubiläum,Geburtstag,Geschäft,Anrufe,Klienten,Konkurrenz,Kunde,Favoriten,Nachgehen,Geschenke,Ferien,Ideen,Fragen,Verschiedenes,Persönlich,Projekte,Feiertag,Status,Lieferanten,Reise,Urlaub";
 
@@ -133,7 +150,7 @@
 "Contacts" = "Address Book";
 "Mail" = "Mail";
 "Last" = "Last used";
-"Default module :" = "Default module :"; 
+"Default module :" = "Default module :";
 
 "Language :" = "Sprache :";
 "choose" = "Auswählen";
@@ -147,4 +164,5 @@
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
 "Spanish" = "Español";
+"Swedish" = "Svenska";
 "Welsh" = "Cymraeg";

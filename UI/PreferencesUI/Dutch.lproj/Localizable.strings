@@ -6,6 +6,9 @@
 "General" = "Algemeen";
 "Calendar Options" = "Agenda";
 "Mail Options" = "E-mail";
+"Signature" = "Ondertekening";
+"Vacation" = "Vacation";
+"Forward" = "Forward";
 "Identities" = "Identiteit";
 "Password" = "Wachtwoord";
 "Categories" = "Categories";
@@ -14,17 +17,30 @@
 "Add" = "Add";
 "Delete" = "Delete";
 
-/* ooo */
-"I'm currently in the office" = "Ik ben op kantoor";
-"I'm currently out of the office" = "Ik ben niet op kantoor";
-"AutoReply only once to each sender with the following text :"
-= "Automatisch eenmalig met het volgende bericht beantwoorden:";
+/* vacation (auto-reply) */
+"Enable vacation auto reply" = "Enable vacation auto reply";
+"Auto reply message :" = "Automatisch eenmalig met het volgende bericht beantwoorden:";
+"Email addresses (separated by commas) :" = "Email addresses (separated by commas) :";
+"Add default email addresses" = "Add default email addresses";
+"Days between responses :" = "Days between responses :";
+"Do not send responses to mailing lists" = "Do not send responses to mailing lists";
+"Please specify your message and your email addresses for which you want to enable auto reply."
+= "Please specify your message and your email addresses for which you want to enable auto reply.";
+
+/* forward messages */
+"Forward incoming messages" = "Forward incoming messages";
+"Forward to address :" = "Forward to address :";
+"Keep a copy" = "Keep a copy";
+"Please specify an address to which you want to forward your messages."
+= "Please specify an address to which you want to forward your messages.";
 
 /* d & t */
 "Current Time Zone :" = "Huidige tijdzone:";
 "Short Date Format :" = "Kort datumformaat:";
 "Long Date Format :" = "Lang datumformaat:";
 "Time Format :" = "Tijdformaat:";
+
+"default" = "Default";
 
 "shortDateFmt_0" = "%d-%b-%y";
 
@@ -48,16 +64,16 @@
 "shortDateFmt_14" = "%Y.%m.%d";
 
 "shortDateFmt_15" = "";
-
+   
 "longDateFmt_0" = "%A %e %B %Y";
 "longDateFmt_1" = "%e %b. %Y";
 "longDateFmt_2" = "%e %B %Y";
-"longDateFmt_3" = "";
+"longDateFmt_3" = "%d %B, %Y";
+"longDateFmt_4" = "";
 
 "timeFmt_0" = "%H:%M";
 "timeFmt_1" = "%H.%M";
 "timeFmt_2" = "%H h. %M";
-"timeFmt_3" = "";
 
 /* calendar */
 "Week begins on :" = "Week begint op:";
@@ -66,7 +82,8 @@
 "Day start time must be prior to day end time." = "Day start time must be prior to day end time.";
 "First week of year :" = "Eerste week van het jaar:";
 "Enable reminders for Calendar items" = "Herinneringen inschakelen voor afspraken";
-"Play a sound when a reminder comes due" = "Geluidafspelen bij herinnering";
+"Play a sound when a reminder comes due"
+= "Geluidafspelen bij herinnering";
 "Default reminder :" = "Standaard herinnering:";
 
 "firstWeekOfYear_January1" = "Begint op 1 januari";
@@ -102,9 +119,9 @@
 "messageforward_inline" = "In het bericht";
 "messageforward_attached" = "Als bijlage";
 
+/* Identities */
 "Default identity:" = "Standaardidentiteit:";
 "Manage identities..." = "Identiteiten beheren...";
-"Signature" = "Ondertekening";
 "replyplacement_above" = "reactie boven orgineletekst";
 "replyplacement_below" = "reactie onder orgineletekst";
 "And place my signature" = "Ondertekening plaatsen";
@@ -124,6 +141,7 @@
 "Confirmation:" = "Bevestig wachtwoord:";
 "Change" = "Veranderen";
 
+/* Event+task categories */
 "category_none" = "Geen categorie";
 "category_labels" = "Cliënten,Concurrentie,Diversen,Favorieten,Giften,Ideeën,Klant,Kwesties,Leveranciers,Nationale feestdag,Persoonlijk,Projecten,Reizen,Status,Telefoongesprekken,Trouwdag,Vakantie,Verjaardag,Vervolggesprek,Vrije dagen,Zaken";
 
@@ -146,4 +164,5 @@
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
 "Spanish" = "Español";
+"Swedish" = "Svenska";
 "Welsh" = "Cymraeg";

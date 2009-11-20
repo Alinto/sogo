@@ -6,6 +6,9 @@
 "General" = "Generale";
 "Calendar Options" = "Opzioni calendario";
 "Mail Options" = "Opzioni di posta";
+"Signature" = "Firma";
+"Vacation" = "Vacation";
+"Forward" = "Forward";
 "Identities" = "Identità";
 "Password" = "Password";
 "Categories" = "Categories";
@@ -14,11 +17,22 @@
 "Add" = "Add";
 "Delete" = "Delete";
 
-/* ooo */
-"I'm currently in the office" = "Sono in ufficio";
-"I'm currently out of the office" = "Sono fuori ufficio";
-"AutoReply only once to each sender with the following text :"
-= "Rispondi automaticamente solo una volta ad ogni mittente usando questo testo:";
+/* vacation (auto-reply) */
+"Enable vacation auto reply" = "Enable vacation auto reply";
+"Auto reply message :" = "Rispondi automaticamente solo una volta ad ogni mittente usando questo testo:";
+"Email addresses (separated by commas) :" = "Email addresses (separated by commas) :";
+"Add default email addresses" = "Add default email addresses";
+"Days between responses :" = "Days between responses :";
+"Do not send responses to mailing lists" = "Do not send responses to mailing lists";
+"Please specify your message and your email addresses for which you want to enable auto reply."
+= "Please specify your message and your email addresses for which you want to enable auto reply.";
+
+/* forward messages */
+"Forward incoming messages" = "Forward incoming messages";
+"Forward to address :" = "Forward to address :";
+"Keep a copy" = "Keep a copy";
+"Please specify an address to which you want to forward your messages."
+= "Please specify an address to which you want to forward your messages.";
 
 /* d & t */
 "Current Time Zone :" = "Fuso orario:";
@@ -108,7 +122,6 @@
 /* Identities */
 "Default identity:" = "Identità principale:";
 "Manage identities..." = "Gestisci identità...";
-"Signature" = "Firma";
 "replyplacement_above" = "Inizia la risposta sopra il testo a cui si risponde";
 "replyplacement_below" = "Inizia la risposta sotto il testo a cui si risponde";
 "And place my signature" = "Metti la firma";
@@ -151,4 +164,5 @@
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
 "Spanish" = "Español";
+"Swedish" = "Svenska";
 "Welsh" = "Cymraeg";
