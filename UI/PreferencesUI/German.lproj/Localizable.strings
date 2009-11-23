@@ -68,12 +68,12 @@
 "longDateFmt_0" = "%A %e %B %Y";
 "longDateFmt_1" = "%e %b. %Y";
 "longDateFmt_2" = "%e %B %Y";
-"longDateFmt_3" = "%d %B, %Y";
-"longDateFmt_4" = "";
+"longDateFmt_3" = "";
 
 "timeFmt_0" = "%H:%M";
 "timeFmt_1" = "%H.%M";
 "timeFmt_2" = "%H h. %M";
+"timeFmt_3" = "";
 
 /* calendar */
 "Week begins on :" = "Erster Wochentag:";

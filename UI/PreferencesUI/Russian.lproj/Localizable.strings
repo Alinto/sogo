@@ -70,10 +70,15 @@
 "longDateFmt_2" = "%e %B %Y";
 "longDateFmt_3" = "%A, %B %d, %Y";
 "longDateFmt_4" = "%B %d, %Y";
+"longDateFmt_5" = "%A, %d %B, %Y";
+"longDateFmt_6" = "%d %B, %Y";
+"longDateFmt_7" = "";
 
 "timeFmt_0" = "%H:%M";
 "timeFmt_1" = "%H.%M";
 "timeFmt_2" = "%H h. %M";
+"timeFmt_3" = "%I:%M %p";
+"timeFmt_4" = "";
 
 /* calendar */
 "Week begins on :" = "Неделя начинается с :";
