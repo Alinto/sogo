@@ -229,7 +229,7 @@ main (int argc, char **argv, char **env)
   ud = [NSUserDefaults standardUserDefaults];
   [ud addSuiteNamed: @"sogod"];
 
-  if ([ud objectForKey: @"SOGoLDAPSources"])
+  if ([ud objectForKey: @"SOGoUserSources"])
     {
       dispatcher = [SOGoToolDispatcher new];
       if ([dispatcher run])

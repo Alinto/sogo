@@ -1,3 +1,8 @@
+2009-11-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Tools/sogo-tool.m (main): we check "SOGoUserSources" rather than
+	the obsolete "SOGoLDAPSources".
+
 2009-11-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoDAVAuthenticator.m (-init): removed method,
