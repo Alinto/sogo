@@ -182,6 +182,7 @@
           value = [row objectForKey: @"c_password"];
       
           rc = [self _isPassword: password  equalTo: value];
+	  [channel cancelFetch];
         }
       else
         [self errorWithFormat: @"could not run SQL '%@': %@", sql, ex];
@@ -227,6 +228,7 @@
           response = [[channel fetchAttributes: [channel describeResults: NO]
                                       withZone: NULL] mutableCopy];
           [response autorelease];
+	  [channel cancelFetch];
 
           // We have to do this here since we do not manage modules
           // constraints right now over a SQL backend.

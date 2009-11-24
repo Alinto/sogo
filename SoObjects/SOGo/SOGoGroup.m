@@ -123,6 +123,7 @@
     return nil;
 
   allSources = [[SOGoUserManager sharedUserManager] sourceIDs];
+  entry = nil;
   o = nil;
 
   for (i = 0; i < [allSources count]; i++)

@@ -1,3 +1,13 @@
+2009-11-24  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* SoObjects/SOGo/SOGoGroup.m
+	Initialize the local var entry to nil to avoid
+	a crash if only one SQL source was specified
+
+	* SoObjects/SOGo/SQLSource.m
+	Properly invoke cancelFetch on cusors that can return
+	more than one value (prior to releasing the channel)
+
 2009-11-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* Tools/sogo-tool.m (main): we check "SOGoUserSources" rather than
