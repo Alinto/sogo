@@ -30,7 +30,7 @@
 - (NSString *) htmlToText;
 - (NSString *) stringByConvertingCRLNToHTML;
 - (int) indexOf: (unichar) _c;
-- (NSString *) decodedSubject;
+- (NSString *) decodedHeader;
 
 @end
 

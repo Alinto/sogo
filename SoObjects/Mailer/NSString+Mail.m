@@ -438,21 +438,16 @@ convertChars (const char *oldString, unsigned int oldLength,
   return -1;
 }
 
-- (NSString *) decodedSubject
+- (NSString *) decodedHeader
 {
-  NSString *decodedSubject;
+  NSString *decodedHeader;
 
-  if ([self hasPrefix: @"=?"] && [self hasSuffix: @"?="])
-    {
-      decodedSubject = [[self dataUsingEncoding: NSASCIIStringEncoding]
-			 decodedSubject];
-      if (!decodedSubject)
-	decodedSubject = self;
-    }
-  else
-    decodedSubject = self;
-
-  return decodedSubject;
+  decodedHeader = [[self dataUsingEncoding: NSASCIIStringEncoding]
+		     decodedString];
+  if (!decodedHeader)
+    decodedHeader = self;
+  
+  return decodedHeader;
 }
 
 @end

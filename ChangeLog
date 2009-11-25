@@ -1,3 +1,11 @@
+2009-11-24  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Mailer/NSData+Mail.m (-decodedString): renamed from
+	decodedSubject. The decoding algorithm is now recursive.
+
+	* SoObjects/Mailer/NSString+Mail.m (-decodedHeader): renamed from
+	decodedSubject. The string is now decoded by parts.
+
 2009-11-24  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/SOGo/SOGoGroup.m

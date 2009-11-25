@@ -54,73 +54,115 @@
   return decodedData;
 }
 
-- (NSString *) decodedSubject
+/*
+ * Excpected form is: "=?charset?encoding?encoded text?=".
+ */
+- (NSString *) decodedString
 {
-  const char *cData, *endFlag;
-  unsigned int len;
-  NSString *decodedSubject;
+  const char *cData;
+  unsigned int len, i, j;
+  NSString *decodedString;
 
   cData = [self bytes];
   len = [self length];
+  decodedString = nil;
 
   if (len)
     {
-      decodedSubject = nil;
       if (len > 6)
 	{
-	  endFlag = cData + len - 2;
-	  if (*cData == '=' && *(cData + 1) == '?'
-	      && *endFlag == '?' && *(endFlag + 1) == '=')
+	  // Find beginning of encoded text
+	  i = 1;
+	  while ((*cData != '=' || *(cData+1) != '?') && i < len)
+	    {
+	      cData++;
+	      i++;
+	    }
+
+	  if (*cData == '=' && *(cData+1) == '?')
 	    {
 	      NSString *enc;
-	      int i;
 
-	      cData += 2;
-	      i = 2;
-
-	      while (*cData != '?' && i < len)
+	      if (i > 1)
+		decodedString = [[[NSString alloc] initWithData: [self subdataWithRange: NSMakeRange(0, (i-1))]
+							encoding: NSASCIIStringEncoding] autorelease];
+	      cData += 2; // skip "=?"
+	      i++;
+	      j = i;
+	      // Find next "?"
+	      while (*cData != '?' && j < len)
 		{
 		  cData++;
-		  i++;
+		  j++;
 		}
-
-	      enc = [[[NSString alloc] initWithData:[self subdataWithRange: NSMakeRange(2, i-2)]
+	      enc = [[[NSString alloc] initWithData:[self subdataWithRange: NSMakeRange(i, j-i)]
 				       encoding: NSASCIIStringEncoding] autorelease];
 
-	      if (i+3 < len)
+	      i = j + 3; // skip "?q?"
+	      if (i < (len-2))
 		{
 		  NSData *d;
-		  
-		  d = [self subdataWithRange: NSMakeRange(i+3, len-i-5)];
-		  
+		  BOOL isQuotedPrintable = NO;
+
+		  cData++;
 		  // We check if we have a QP or Base64 encoding
-		  if (*(cData+1) == 'q' || *(cData+1) == 'Q')
+		  if (*cData == 'q' || *cData == 'Q')
+		    isQuotedPrintable = YES;
+
+		  // Find end of encoded text
+		  j = i;
+		  cData += 2; // skip "q?"
+		  while ((*cData != '?' || *(cData+1) != '=') && (j+1) < len)
+		    {
+		      cData++;
+		      j++;
+		    }
+
+		  d = [self subdataWithRange: NSMakeRange(i, j-i)];
+		  if (isQuotedPrintable)
 		    d = [d dataByDecodingQuotedPrintable];
 		  else
 		    d = [d dataByDecodingBase64];
-		  
-		  decodedSubject = [NSString stringWithData: d  usingEncodingNamed: enc];
+
+		  if (decodedString)
+		    {
+		      decodedString = [NSString stringWithFormat: @"%@%@",
+						decodedString, [NSString stringWithData: d
+								     usingEncodingNamed: enc]];
+		    }
+		  else
+		    decodedString = [NSString stringWithData: d
+					  usingEncodingNamed: enc];
+
+		  j += 2; // skip "?="
+		  if (j < len)
+		    {
+		      // Recursively decode the remaining part
+		      decodedString = [NSString stringWithFormat: @"%@%@",
+						decodedString,
+					 [[self subdataWithRange: NSMakeRange(j, len-j)] decodedString]];
+		    }
 		}
 	      else
-		decodedSubject = nil;
+		decodedString = nil;
 	    }
 	}
-      if (!decodedSubject)
+      if (!decodedString)
 	{
-	  decodedSubject
+	  decodedString
 	    = [[NSString alloc] initWithData: self
 				encoding: NSUTF8StringEncoding];
-	  if (!decodedSubject)
-	    decodedSubject
+	  if (!decodedString)
+	    decodedString
 	      = [[NSString alloc] initWithData: self
 				  encoding: NSISOLatin1StringEncoding];
-	  [decodedSubject autorelease];
+	  [decodedString autorelease];
 	}
     }
   else
-    decodedSubject = @"";
+    decodedString = @"";
 
-  return decodedSubject;
+  return decodedString;
 }
 
 @end

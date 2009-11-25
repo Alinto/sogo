@@ -45,6 +45,7 @@
 
 #import <EOControl/EOQualifier.h>
 
+#import <SoObjects/Mailer/NSString+Mail.h>
 #import <SoObjects/Mailer/SOGoDraftsFolder.h>
 #import <SoObjects/Mailer/SOGoMailFolder.h>
 #import <SoObjects/Mailer/SOGoMailObject.h>
@@ -202,7 +203,7 @@ static NSArray *udColumnOrder = nil;
   NSString *subject;
 
   baseSubject = [[message valueForKey: @"envelope"] subject];
-  subject = [baseSubject decodedSubject];
+  subject = [baseSubject decodedHeader];
   if (![subject length])
     subject = [self labelForKey: @"Untitled"];
 

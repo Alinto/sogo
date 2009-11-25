@@ -145,7 +145,7 @@
     {
       component = [[components objectAtIndex: count] email];
       if (component)
-	[formattedComponents addObject: [component decodedSubject]];
+	[formattedComponents addObject: [component decodedHeader]];
     }
 
   return [formattedComponents componentsJoinedByString: @", "];
@@ -162,7 +162,7 @@
   // -stringByDecodingQuotedPrintable for all details
   if ([baseSubject isKindOfClass: [NSString class]])
     baseSubject = [baseSubject dataUsingEncoding: NSASCIIStringEncoding];
-  subject = [baseSubject decodedSubject];
+  subject = [baseSubject decodedString];
 
   if (![subject length])
     subject = [self labelForKey: @"Untitled"];

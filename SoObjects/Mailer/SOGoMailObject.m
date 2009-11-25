@@ -271,7 +271,7 @@ static BOOL debugSoParts       = NO;
 
 - (NSString *) decodedSubject
 {
-  return [[self subject] decodedSubject];
+  return [[self subject] decodedHeader];
 }
 
 - (NSCalendarDate *) date
