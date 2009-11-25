@@ -329,10 +329,10 @@
 	    var:value="reminderReference"/>
 
     <div id="windowButtons">
+      <var:if condition="userIsAttendee"><a id="okButton" href="#" class="button actionButton"
+        ><span><var:string label:value="OK"/></span></a></var:if>
       <a id="cancelButton" href="#" class="button"
-        ><var:string label:value="Cancel"/></a>
-      <var:if condition="userIsAttendee"><a id="okButton" href="#" class="button"
-        ><var:string label:value="OK"/></a></var:if>
+        ><span><var:string label:value="Cancel"/></span></a>
     </div>
   </div>
   </var:if>
