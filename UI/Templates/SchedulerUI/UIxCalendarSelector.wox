@@ -47,6 +47,5 @@ div.colorBox.calendarFolder<var:string value="currentCalendar.folder" />
         </var:foreach>
       </ul>
     </div>
-
   </div>
 </container>
