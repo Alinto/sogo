@@ -1933,7 +1933,14 @@ Index: sope-mime/NGImap4/ChangeLog
 ===================================================================
 --- sope-mime/NGImap4/ChangeLog	(revision 1660)
 +++ sope-mime/NGImap4/ChangeLog	(working copy)
-@@ -1,3 +1,61 @@
+@@ -1,3 +1,68 @@
++2009-11-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
++
++	* NSString+Imap4.m (_encodeToModifiedUTF7): handle the case where
++	the leftOver is 0 by "chance" after the first 2 cycles. This
++	can happen when coding characters having a bitmask with 6 zeroes
++	in a row.
++
 +2009-10-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 +
 +	* NGImap4Client.m (-delete:): if the folder we want to delete is
@@ -2316,7 +2323,7 @@ Index: sope-mime/NGImap4/NSString+Imap4.m
        }
      }
      else {
-@@ -171,20 +118,129 @@
+@@ -171,20 +118,133 @@
        cnt++;
      }
    }
@@ -2364,6 +2371,7 @@ Index: sope-mime/NGImap4/NSString+Imap4.m
 +  unsigned int processedSrc, processedDest, cycle;
 +  unichar c;
 +  char leftover;
++  BOOL hasLeftOver;
 +
 +  processedSrc = 0;
 +  processedDest = 0;
@@ -2376,6 +2384,7 @@ Index: sope-mime/NGImap4/NSString+Imap4.m
 +      *(result_ + processedDest) = basis_64[(c >> 10) & 0x3f];
 +      *(result_ + processedDest + 1) = basis_64[(c >> 4) & 0x3f];
 +      leftover = (c << 2);
++      hasLeftOver = YES;
 +      processedDest += 2;
 +      cycle = 1;
 +    }
@@ -2384,6 +2393,7 @@ Index: sope-mime/NGImap4/NSString+Imap4.m
 +      *(result_ + processedDest + 1) = basis_64[(c >> 8) & 0x3f];
 +      *(result_ + processedDest + 2) = basis_64[(c >> 2) & 0x3f];
 +      leftover = (c << 4);
++      hasLeftOver = YES;
 +      processedDest += 3;
 +      cycle = 2;
 +    }
@@ -2392,13 +2402,14 @@ Index: sope-mime/NGImap4/NSString+Imap4.m
 +      *(result_ + processedDest + 1) = basis_64[(c >> 6) & 0x3f];
 +      *(result_ + processedDest + 2) = basis_64[c & 0x3f];
 +      leftover = 0;
++      hasLeftOver = NO;
 +      processedDest += 3;
 +      cycle = 0;
 +    }
 +    processedSrc++;
 +    c = *(_char + processedSrc);
 +  }
-+  if (leftover) {
++  if (hasLeftOver) {
 +    *(result_ + processedDest) = basis_64[leftover & 0x3f];
 +    processedDest++;
 +  }
@@ -2457,7 +2468,7 @@ Index: sope-mime/NGImap4/NSString+Imap4.m
  - (NSString *)stringByEscapingImap4Password {
    // TODO: perf
    unichar  *buffer;
-@@ -193,12 +249,12 @@
+@@ -193,12 +253,12 @@
    NSString *s;
  
    len   = [self length];
@@ -2474,7 +2485,7 @@ Index: sope-mime/NGImap4/NSString+Imap4.m
    for (i = 0, j = 0; i < len; i++, j++) {
        BOOL conv = NO;
        
-@@ -224,209 +280,11 @@
+@@ -224,209 +284,11 @@
        }
        buffer[j] = chars[i];
    }
