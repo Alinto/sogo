@@ -162,7 +162,7 @@
   // -stringByDecodingQuotedPrintable for all details
   if ([baseSubject isKindOfClass: [NSString class]])
     baseSubject = [baseSubject dataUsingEncoding: NSASCIIStringEncoding];
-  subject = [baseSubject decodedString];
+  subject = [baseSubject decodedHeader];
 
   if (![subject length])
     subject = [self labelForKey: @"Untitled"];

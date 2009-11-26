@@ -57,7 +57,7 @@
 /*
  * Excpected form is: "=?charset?encoding?encoded text?=".
  */
-- (NSString *) decodedString
+- (NSString *) decodedHeader
 {
   const char *cData;
   unsigned int len, i, j;
@@ -140,7 +140,7 @@
 		      // Recursively decode the remaining part
 		      decodedString = [NSString stringWithFormat: @"%@%@",
 						decodedString,
-					 [[self subdataWithRange: NSMakeRange(j, len-j)] decodedString]];
+					 [[self subdataWithRange: NSMakeRange(j, len-j)] decodedHeader]];
 		    }
 		}
 	      else

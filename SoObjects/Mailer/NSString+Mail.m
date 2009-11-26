@@ -443,7 +443,7 @@ convertChars (const char *oldString, unsigned int oldLength,
   NSString *decodedHeader;
 
   decodedHeader = [[self dataUsingEncoding: NSASCIIStringEncoding]
-		     decodedString];
+		     decodedHeader];
   if (!decodedHeader)
     decodedHeader = self;
   
