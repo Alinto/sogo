@@ -96,7 +96,7 @@
 	      const:id="firstWeek"
 	      string="itemFirstWeekText" selection="userFirstWeek"
 	      /></label><br/>
-    <span class="caption"><var:string label:value="Categories"/></span>
+    <label><var:string label:value="Categories"/></label>
     <div id="categoriesListWrapper"
       ><table id="categoriesList" cellspacing="0">
       <thead>

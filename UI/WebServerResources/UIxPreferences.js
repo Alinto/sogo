@@ -143,9 +143,9 @@ function makeEditable (element) {
     element.removeClassName ("categoryListCell");
     var tmp = element.innerHTML;
     element.innerHTML = "";
-    var textField = new Element ("input", {"type": "text", 
-                                           "width": "100%"});
+    var textField = new Element ("input", {"type": "text"});
     textField.value = tmp;
+    textField.setStyle({ width: '98%' });
     textField.observe ("keydown", interceptEnter);
     element.appendChild (textField);
     textField.focus ();

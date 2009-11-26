@@ -58,7 +58,8 @@ DIV.colorBox
   width: 1em; }
 
 TR.categoryListRow
-{ background: #CCDDEC; }
+{ background: #CCDDEC;
+  cursor: pointer; }
 
 TD.categoryListCell
 { -moz-user-select: none; }

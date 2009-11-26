@@ -328,9 +328,6 @@ DIV#headerArea
 TABLE#categoriesList
 { width: auto; }
 
-DIV#categoriesListWrapper
-{ top: 92px; }
-
 DIV#windowButtons
 { bottom: 11px; }
 
@@ -364,9 +361,6 @@ DIV#toolbar
 
 INPUT#statusPercent
 { width: 2em !important; }
-
-DIV.bottomToolbar
-{ position: relative; display: block; }
 
 DIV#referencesListWrapper
 { margin-bottom: 0px; }
