@@ -109,7 +109,9 @@ static BOOL forwardEnabled = NO;
 	      vacationOptions = [NSMutableDictionary dictionary];
 	      [userDefaults setObject: vacationOptions forKey: @"Vacation"];
 	    }
+	  [vacationOptions retain];
 	}
+
       if (forwardEnabled)
 	{
 	  forwardOptions = [userDefaults objectForKey: @"Forward"];
@@ -118,6 +120,7 @@ static BOOL forwardEnabled = NO;
 	      forwardOptions = [NSMutableDictionary dictionary];
 	      [userDefaults setObject: forwardOptions forKey: @"Forward"];
 	    }
+	  [forwardOptions retain];
 	}
     }
 
@@ -130,6 +133,8 @@ static BOOL forwardEnabled = NO;
   [item release];
   [user release];
   [userDefaults release];
+  [vacationOptions release];
+  [forwardOptions release];
   [hours release];
   [daysOfWeek release];
   [locale release];

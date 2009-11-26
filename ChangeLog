@@ -6,6 +6,9 @@
 	when forwarding a mail with attachments and no
 	Content-Disposition header (or filename) was found. This
 	avoid losing attachments when forwarding mails.
+	* UI/PreferencesUI/UIxPreferences.m
+	We retain/release properly the vacationOptions and
+	forwardOptions ivars.
 
 2009-11-24  Francis Lachapelle  <flachapelle@inverse.ca>
 
