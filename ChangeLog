@@ -1,3 +1,9 @@
+2009-11-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/NSDictionary+BSJSONAdditions.m
+	(+dictionaryWithJSONString:): method moved from NSDictionary into
+	NSMutableDictionary for consistency.
+
 2009-11-26  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/Mailer/SOGoMailObject+Draft.m

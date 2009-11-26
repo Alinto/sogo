@@ -35,15 +35,6 @@ const int jsonDoNotIndent = -1;
 
 @implementation NSDictionary (BSJSONAdditions)
 
-+ (NSMutableDictionary *)dictionaryWithJSONString:(NSString *)jsonString
-{
-  NSScanner *scanner = [[NSScanner alloc] initWithString:jsonString];
-  NSMutableDictionary *dictionary = nil;
-  [scanner scanJSONObject:&dictionary];
-  [scanner release];
-  return dictionary;
-}
-
 - (NSString *)jsonStringValue
 {
   return [self jsonStringValueWithIndentLevel:0];
@@ -194,6 +185,19 @@ const int jsonDoNotIndent = -1;
   }
     
   return [indentString autorelease];
+}
+
+@end
+
+@implementation NSMutableDictionary (BSJSONAdditions)
+
++ (NSMutableDictionary *)dictionaryWithJSONString:(NSString *)jsonString
+{
+  NSScanner *scanner = [[NSScanner alloc] initWithString:jsonString];
+  NSMutableDictionary *dictionary = nil;
+  [scanner scanJSONObject:&dictionary];
+  [scanner release];
+  return dictionary;
 }
 
 @end

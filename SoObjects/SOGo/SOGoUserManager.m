@@ -499,7 +499,7 @@ static NSLock *lock = nil;
       aUID = [uid hasPrefix: @"@"] ? [uid substringFromIndex: 1] : uid;
       contactInfos = [NSMutableDictionary dictionary];
       jsonUser = [[SOGoCache sharedCache] userAttributesForLogin: aUID];
-      currentUser = [NSDictionary dictionaryWithJSONString: jsonUser];
+      currentUser = [NSMutableDictionary dictionaryWithJSONString: jsonUser];
 #if defined(THREADSAFE)
       [lock lock];
 #endif

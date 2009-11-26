@@ -428,7 +428,7 @@ static NSMutableCharacterSet *safeLDIFStartChars = nil;
   NSDictionary *jsonData;
 
 #warning this method is a quick and dirty way of detecting the file-format
-  jsonData = [NSDictionary dictionaryWithJSONString: self];
+  jsonData = [NSMutableDictionary dictionaryWithJSONString: self];
 
   return (jsonData != nil);
 }

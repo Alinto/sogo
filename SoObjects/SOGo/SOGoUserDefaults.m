@@ -234,7 +234,7 @@ static NSString *uidColumnName = @"c_uid";
   defFlags.modified = NO;
   [values release];
   jsonValue = [self jsonRepresentation];
-  values = [NSDictionary dictionaryWithJSONString: jsonValue];
+  values = [NSMutableDictionary dictionaryWithJSONString: jsonValue];
   if (values)
     [values retain];
   else

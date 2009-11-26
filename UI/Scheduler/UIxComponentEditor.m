@@ -1496,7 +1496,7 @@ RANGE(2);
   if ([json length])
     {
       attendees = [NSArray array];
-      attendeesData = [NSDictionary dictionaryWithJSONString: json];
+      attendeesData = [NSMutableDictionary dictionaryWithJSONString: json];
       if (attendeesData)
 	{
 	  newAttendees = [NSMutableArray array];
