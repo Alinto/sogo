@@ -536,7 +536,7 @@ _xmlCharsetForCharset (NSString *charset)
     }
   [dump appendFormat: @"--- end ---\n"];
 
-  NSLog (dump);
+  NSLog(dump);
   [dump release];
 }
 

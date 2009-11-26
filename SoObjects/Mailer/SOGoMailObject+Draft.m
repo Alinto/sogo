@@ -253,17 +253,39 @@
   disposition = [part objectForKey: @"disposition"];
   filename = [[disposition objectForKey: @"parameterList"]
 	       objectForKey: @"filename"];
+
+  mimeType = [NSString stringWithFormat: @"%@/%@",
+		       [part objectForKey: @"type"],
+		       [part objectForKey: @"subtype"]];
+  
   if (filename)
     {
-      mimeType = [NSString stringWithFormat: @"%@/%@",
-			   [part objectForKey: @"type"],
-			   [part objectForKey: @"subtype"]];
       currentFile = [NSDictionary dictionaryWithObjectsAndKeys:
 				    filename, @"filename",
 				  [mimeType lowercaseString], @"mimetype",
 				  path, @"path",
 				  [part	objectForKey: @"encoding"], @"encoding", nil];
       [keys addObject: currentFile];
+    }
+  else
+    {
+      // We might end up here because of MUA that actually strips the
+      // Content-Disposition (and thus, the filename) when mails containing
+      // attachments have been forwarded. Thunderbird (2.x) does just that
+      // when forwarding mails with images attached to them (using cid:...).
+      if ([mimeType hasPrefix: @"application/"] ||
+	  [mimeType hasPrefix: @"audio/"] ||
+	  [mimeType hasPrefix: @"image/"] ||
+	  [mimeType hasPrefix: @"video/"])
+	{
+	  currentFile = [NSDictionary dictionaryWithObjectsAndKeys:
+					[NSString stringWithFormat: @"unkown_%@", path], @"filename",
+				      [mimeType lowercaseString], @"mimetype",
+				      path, @"path",
+				      [part objectForKey: @"encoding"], @"encoding",
+				      nil];
+	  [keys addObject: currentFile];
+	}
     }
 }
 

@@ -1,3 +1,12 @@
+2009-11-26  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailObject+Draft.m
+	(_fetchFileAttachmentKey:intoArray:withPath:): we
+	try to also use basic types (application/, audio/, ...)
+	when forwarding a mail with attachments and no
+	Content-Disposition header (or filename) was found. This
+	avoid losing attachments when forwarding mails.
+
 2009-11-24  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/Mailer/NSData+Mail.m (-decodedString): renamed from
