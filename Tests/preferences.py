@@ -2,6 +2,7 @@ from config import hostname, port, username, password
 import webdavlib
 import urllib
 import base64
+import simplejson
 
 
 class HTTPPreferencesPOST (webdavlib.HTTPPOST):
@@ -21,8 +22,6 @@ class HTTPPreferencesGET (webdavlib.HTTPGET):
     if self.cookie:
       headers["Cookie"] = self.cookie
     return headers
-
-
 
 class preferences:
   login = username
@@ -64,14 +63,13 @@ class preferences:
     get = HTTPPreferencesGET (url)
     get.cookie = self.cookie
     self.client.execute (get)
-    content = eval (get.response['body'])
+    content = simplejson.loads(get.response['body'])
     result = None
     try:
       result = content[preference]
     except:
       pass
     return result
-
 
 # Simple main to test this class
 if __name__ == "__main__":
