@@ -1,5 +1,9 @@
 2009-11-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoCache.m (_cacheValues:ofType:forLogin:): we
+	also fill the local cache with the new value to avoid ignoring it
+	next time the cache is invoked.
+
 	* SoObjects/SOGo/NSDictionary+BSJSONAdditions.m
 	(+dictionaryWithJSONString:): method moved from NSDictionary into
 	NSMutableDictionary for consistency.

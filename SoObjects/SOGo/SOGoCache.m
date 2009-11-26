@@ -270,6 +270,7 @@ static NSLock *lock;
                             [key bytes], [key length],
                             [value bytes], [value length],
                             cleanupInterval, 0);
+      [localCache setObject: theAttributes forKey: keyName];
 
       if (error != MEMCACHED_SUCCESS)
         [self logWithFormat: @"memcached error: unable to cache values with subtype '%@' for user '%@'", theType, theLogin];
