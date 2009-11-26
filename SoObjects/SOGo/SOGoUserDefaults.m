@@ -465,25 +465,31 @@ static NSString *uidColumnName = @"c_uid";
 
 - (BOOL) synchronize
 {
+  BOOL rc;
 //   if (!defFlags.modified) /* was not modified */
 //     return YES;
 
+  rc = NO;
+
   /* ensure fetched data (more or less guaranteed by modified!=0) */
   [self fetchProfile];
-  if (!values)
-    return NO;
-
-  /* store */
-  if (![self primaryStoreProfile])
+  if (values)
     {
-      [self primaryFetchProfile];
-      return NO;
+      /* store */
+      if ([self primaryStoreProfile])
+        {
+          rc = YES;
+          // /* refetch */
+          // [self primaryFetchProfile];
+        }
+      else
+        {
+          [self primaryFetchProfile];
+          return NO;
+        }
     }
 
-  /* refetch */
-  [self primaryFetchProfile];
-
-  return YES;
+  return rc;
 }
 
 /* typed accessors */
