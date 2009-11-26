@@ -3,6 +3,8 @@
 	* SoObjects/SOGo/SOGoUserDefaults.m (-synchronize): avoid fetching
 	the values from the database/the cache when they are successfully
 	stored.
+	(-fetchJSONProfileFromDB): sql-quoted quote characters do not
+	apply here. Therefore we no longer need to unescape them.
 
 	* SoObjects/SOGo/SOGoCache.m (_cacheValues:ofType:forLogin:): we
 	also fill the local cache with the new value to avoid ignoring it

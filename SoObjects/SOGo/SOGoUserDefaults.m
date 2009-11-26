@@ -136,8 +136,8 @@ static NSString *uidColumnName = @"c_uid";
           if ([value isNotNull])
             {
               defFlags.isNew = NO;
-#warning The result is supposed to be unescaped, why re-unescaping it here ?
-              value = [value stringByReplacingString: @"''" withString: @"'"];
+              /* The following enables the restitution of coded unicode (\U1234)
+                 characters with the Oracle adaptor. */
               value = [value stringByReplacingString: @"\\\\" withString: @"\\"];
             }
           else
