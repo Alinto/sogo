@@ -122,29 +122,28 @@ static NSString *uidColumnName = @"c_uid";
       /* run SQL */
       ex = [channel evaluateExpressionX: sql];
       if (ex)
-        [self errorWithFormat:@"could not run SQL '%@': %@", sql, ex];
+        [self errorWithFormat: @"could not run SQL '%@': %@", sql, ex];
       else
         {
           /* fetch schema */
           attrs = [channel describeResults: NO /* don't beautify */];
-          
+
           /* fetch values */
           row = [channel fetchAttributes: attrs withZone: NULL];
           [channel cancelFetch];
 
+          /* the isNew flag depends on the presence of the row in the
+             database rather than on the existence of the value. */
+          defFlags.isNew = (row == nil);
+
           value = [row objectForKey: fieldName];
           if ([value isNotNull])
-            {
-              defFlags.isNew = NO;
-              /* The following enables the restitution of coded unicode (\U1234)
-                 characters with the Oracle adaptor. */
-              value = [value stringByReplacingString: @"\\\\" withString: @"\\"];
-            }
+            /* The following enables the restitution of coded unicode
+               (\U1234) characters with the Oracle adaptor. */
+            value = [value stringByReplacingString: @"\\\\"
+                                        withString: @"\\"];
           else
-            {
-              defFlags.isNew = YES;
-              value = nil; /* we discard any NSNull instance */
-            }
+            value = nil; /* we discard any NSNull instance */
         }
 
       [cm releaseChannel: channel];
@@ -211,17 +210,13 @@ static NSString *uidColumnName = @"c_uid";
         {
           if (![jsonValue isJSONString])
             jsonValue = [self _convertPListToJSON: jsonValue];
-          defFlags.isNew = NO;
           if ([fieldName isEqualToString: @"c_defaults"])
             [cache setUserDefaults: jsonValue forLogin: uid];
           else
             [cache setUserSettings: jsonValue forLogin: uid];
         }
       else
-        {
-          defFlags.isNew = YES;
-          jsonValue = @"{}";
-        }
+        jsonValue = @"{}";
     }
 
   return jsonValue;
@@ -325,7 +320,7 @@ static NSString *uidColumnName = @"c_uid";
       if ([context beginTransaction])
         {
           defFlags.ready = YES;
-          ex = [channel evaluateExpressionX:sql];
+          ex = [channel evaluateExpressionX: sql];
           if (ex)
             {
               [self errorWithFormat: @"could not run SQL '%@': %@", sql, ex];

@@ -1,3 +1,9 @@
+2009-11-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUserDefaults.m (-fetchJSONProfileFromDB): the
+	isNew flag depends on the presence of the row in the database
+	rather than on the existence of the value.
+
 2009-11-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUserDefaults.m (-synchronize): avoid fetching
