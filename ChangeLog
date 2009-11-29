@@ -1,9 +1,12 @@
 2009-11-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUserSettings.m: new class module designed to
+	be the counterpart to SOGoUserDefaults.m.
+
 	* UI/PreferencesUI/UIxPreferences.m (-): "hours" is now a static
 	variable, rather than an ivar.
 
-	* UI/MainUI/SOGoRootPage.m (+initialized): the supportedLanguages
+	* UI/MainUI/SOGoRootPage.m (+initialize): the supportedLanguages
 	are not available from the SOGoSystemDefaults
 	(SOGoDefaults.plist).
 
