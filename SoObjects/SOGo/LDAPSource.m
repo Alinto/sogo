@@ -180,13 +180,13 @@ static NSArray *commonSearchFields;
   [modulesConstraints release];
   [_scope release];
   [searchAttributes release];
+  [domain release];
   [super dealloc];
 }
 
 - (id) initFromUDSource: (NSDictionary *) udSource
                inDomain: (NSString *) sourceDomain
 {
-  NSString *udDomainAttribute;
   SOGoDomainDefaults *dd;
   NSNumber *udQueryLimit, *udQueryTimeout;
 
@@ -207,28 +207,13 @@ static NSArray *commonSearchFields;
 	IMAPHostField: [udSource objectForKey: @"IMAPHostFieldName"]
 	andBindFields: [udSource objectForKey: @"bindFields"]];
 
-      udDomainAttribute = [udSource objectForKey: @"domainAttribute"];
       if ([sourceDomain length])
         {
-          if ([udDomainAttribute length])
-            {
-              [self errorWithFormat: @"cannot define 'domainAttribute'"
-                    @" for a domain-based source (%@)", sourceID];
-              [self release];
-              self = nil;
-            }
-          else
-            {
-              dd = [SOGoDomainDefaults defaultsForDomain: sourceDomain];
-              ASSIGN (domain, sourceDomain);
-            }
+          dd = [SOGoDomainDefaults defaultsForDomain: sourceDomain];
+          ASSIGN (domain, sourceDomain);
         }
       else
-        {
-          if ([udDomainAttribute length])
-            ASSIGN (domainAttribute, udDomainAttribute);
-          dd = [SOGoSystemDefaults sharedSystemDefaults];
-        }
+        dd = [SOGoSystemDefaults sharedSystemDefaults];
 
       contactInfoAttribute
         = [udSource objectForKey: @"SOGoLDAPContactInfoAttribute"];
@@ -541,9 +526,6 @@ static NSArray *commonSearchFields;
       if ([contactInfoAttribute length])
         [searchAttributes addObjectUniquely: contactInfoAttribute];
 
-      if ([domainAttribute length])
-        [searchAttributes addObjectUniquely: domainAttribute];
-
       // Add IMAP hostname from user defaults
       if ([IMAPHostField length])
         [searchAttributes addObjectUniquely: IMAPHostField];
@@ -732,14 +714,7 @@ static NSArray *commonSearchFields;
     value = @"";
   [contactEntry setObject: value forKey: @"c_info"];
 
-  if (domainAttribute)
-    {
-      value = [[ldapEntry attributeWithName: domainAttribute]
-                stringValueAtIndex: 0];
-      if (!value)
-        value = @"";
-    }
-  else if (domain)
+  if (domain)
     value = domain;
   else
     value = @"";

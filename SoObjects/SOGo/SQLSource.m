@@ -100,8 +100,6 @@
 - (id) initFromUDSource: (NSDictionary *) udSource
                inDomain: (NSString *) sourceDomain
 {
-  NSString *udDomainAttribute;
-
   self = [self init];
 
   ASSIGN(_sourceID, [udSource objectForKey: @"id"]);
@@ -115,27 +113,8 @@
     _viewURL = [[NSURL alloc] initWithString: [udSource objectForKey: @"viewURL"]];
 
 #warning this domain code has no effect yet
-  /* FIXME: the queries below do not setup c_domain. */
-  udDomainAttribute = [udSource objectForKey: @"domainAttribute"];
   if ([sourceDomain length])
-    {
-      if ([udDomainAttribute length])
-        {
-          [self errorWithFormat: @"cannot define 'domainAttribute'"
-                @" for a domain-based source (%@)", _sourceID];
-          [self autorelease];
-          return nil;
-        }
-      else
-        {
-          ASSIGN (_domain, sourceDomain);
-        }
-    }
-  else
-    {
-      if ([udDomainAttribute length])
-        ASSIGN (_domainAttribute, udDomainAttribute);
-    }
+    ASSIGN (_domain, sourceDomain);
 
   if (!_viewURL)
     {
