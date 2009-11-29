@@ -36,7 +36,9 @@
 #import <SOGo/SOGoUserManager.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserProfile.h>
+#import <SOGo/SOGoUserSettings.h>
 
 #import "SOGoToolRestore.h"
 

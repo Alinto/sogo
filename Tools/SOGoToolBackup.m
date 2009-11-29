@@ -128,7 +128,7 @@
   max = [users count];
   user = [users objectAtIndex: 0];
   if (max == 1 && [user isEqualToString: @"ALL"])
-    allUsers = [lm fetchUsersMatching: @"."];
+    allUsers = [lm fetchUsersMatching: @"." inDomain: nil];
   else
     {
       allUsers = [NSMutableArray array];
@@ -309,7 +309,7 @@
   lm = [SOGoUserManager sharedUserManager];
 
   done = NO;
-  ldapSources = [[lm authenticationSourceIDs] objectEnumerator];
+  ldapSources = [[lm authenticationSourceIDsInDomain: nil] objectEnumerator];
   while (!done && (sourceID = [ldapSources nextObject]))
     {
       currentSource = [lm sourceWithID: sourceID];

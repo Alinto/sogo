@@ -207,21 +207,24 @@
 - (NSDictionary *) foldersOfType: (NSString *) type
 		     matchingUID: (NSString *) uid
 {
-  NSArray *contacts, *folders;
+  NSArray *users, *folders;
+  NSString *domain;
   NSEnumerator *enumerator;
-  NSDictionary *contact;
+  NSDictionary *user;
   NSMutableDictionary *results;
 
   results = [NSMutableDictionary dictionary];
 
-  contacts = [[SOGoUserManager sharedUserManager] fetchUsersMatching: uid];
-  enumerator = [contacts objectEnumerator];
-  while ((contact = [enumerator nextObject]))
+  domain = [[SOGoUser userWithLogin: owner] domain];
+  users = [[SOGoUserManager sharedUserManager] fetchUsersMatching: uid
+                                                         inDomain: domain];
+  enumerator = [users objectEnumerator];
+  while ((user = [enumerator nextObject]))
     {
-      uid = [contact objectForKey: @"c_uid"];
+      uid = [user objectForKey: @"c_uid"];
       folders = [self foldersOfType: type
-		      forUID: [contact objectForKey: @"c_uid"]];
-      [results setObject: folders forKey: contact];
+		      forUID: [user objectForKey: @"c_uid"]];
+      [results setObject: folders forKey: user];
     }
 
   return results;
@@ -312,15 +315,16 @@
 - (NSArray *) _searchDavOwners: (NSString *) davOwnerMatch
 {
   NSArray *users, *owners;
-  NSString *ownerMatch;
+  NSString *ownerMatch, *domain;
   SOGoUserManager *um;
 
   owners = [NSMutableArray array];
   if (davOwnerMatch)
     {
       ownerMatch = [self _userFromDAVuser: davOwnerMatch];
+      domain = [[SOGoUser userWithLogin: owner] domain];
       um = [SOGoUserManager sharedUserManager];
-      users = [[um fetchUsersMatching: ownerMatch]
+      users = [[um fetchUsersMatching: ownerMatch inDomain: domain]
 		 sortedArrayUsingSelector: @selector (caseInsensitiveDisplayNameCompare:)];
       owners = [users objectsForKey: @"c_uid" notFoundMarker: nil];
     }
@@ -379,7 +383,7 @@
   SOGoUserManager *um;
   NSMutableString *fetch;
   NSDictionary *currentUser;
-  NSString *field, *login;
+  NSString *field, *login, *domain;
   NSArray *users;
   int i;
 
@@ -389,9 +393,10 @@
   login = [[context activeUser] login];
   um = [SOGoUserManager sharedUserManager];
 
+  domain = [[context activeUser] domain];
   // We sort our array - this is pretty useful for the
   // SOGo Integrator extension, among other things.
-  users = [[um fetchUsersMatching: user]
+  users = [[um fetchUsersMatching: user inDomain: domain]
 	    sortedArrayUsingSelector: @selector (caseInsensitiveDisplayNameCompare:)];
   for (i = 0; i < [users count]; i++)
     {

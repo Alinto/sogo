@@ -1,5 +1,11 @@
 2009-11-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUserManager.m
+	(-authenticationSourceIDsInDomain:): now takes a domain argument.
+	Contrarily to contact sources, specifying a domain will cause the
+	generic sources to be ignored.
+	(-fetchUsersMatching:inDomain:): now takes a domain argument.
+
 	* SoObjects/SOGo/LDAPSource.m (-initFromUDSource:inDomain):
 	removed handing of "domain attribute", since the underlying
 	mechanism causes complex code for an unrealistic case.

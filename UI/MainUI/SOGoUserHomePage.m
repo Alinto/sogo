@@ -332,7 +332,8 @@
     {
       domain = [[context activeUser] domain];
       result
-        = [self _usersResponseForResults: [um fetchUsersMatching: contact]];
+        = [self _usersResponseForResults: [um fetchUsersMatching: contact
+                                                        inDomain: domain]];
     }
   else
     result = [NSException exceptionWithHTTPStatus: 400

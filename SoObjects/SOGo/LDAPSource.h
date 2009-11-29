@@ -56,7 +56,6 @@
 
   NSString *domain;
   NSString *contactInfoAttribute;
-  NSString *domainAttribute;
 
   NSDictionary *modulesConstraints;
 

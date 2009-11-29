@@ -45,7 +45,7 @@
 + (id) sharedUserManager;
 
 - (NSArray *) sourceIDsInDomain: (NSString *) domain;
-- (NSArray *) authenticationSourceIDs;
+- (NSArray *) authenticationSourceIDsInDomain: (NSString *) domain;
 - (NSArray *) addressBookSourceIDsInDomain: (NSString *) domain;
 
 - (NSObject <SOGoSource> *) sourceWithID: (NSString *) sourceID;
@@ -54,7 +54,8 @@
 - (NSDictionary *) contactInfosForUserWithUIDorEmail: (NSString *) uid;
 - (NSArray *) fetchContactsMatching: (NSString *) match
                            inDomain: (NSString *) domain;
-- (NSArray *) fetchUsersMatching: (NSString *) filter;
+- (NSArray *) fetchUsersMatching: (NSString *) filter
+                        inDomain: (NSString *) domain;
 
 - (NSString *) getCNForUID: (NSString *) uid;
 - (NSString *) getEmailForUID: (NSString *) uid;

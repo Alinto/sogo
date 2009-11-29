@@ -184,34 +184,8 @@
       currentID = [keys objectAtIndex: count];
       currentSource = [_sources objectForKey: currentID];
       sourceDomain = [currentSource domain];
-      if (!domain || [sourceDomain isEqualToString: domain])
+      if (![sourceDomain length] || [sourceDomain isEqualToString: domain])
         [sourceIDs addObject: currentID];
-    }
-
-  return sourceIDs;
-}
-
-- (NSArray *) _sourcesOfType: (NSString *) sourceType
-                    inDomain: (NSString *) domain
-{
-  NSMutableArray *sourceIDs;
-  NSEnumerator *allIDs;
-  NSString *currentID;
-  NSNumber *typeValue;
-  NSDictionary *metadata;
-
-  sourceIDs = [NSMutableArray array];
-  allIDs = [[_sources allKeys] objectEnumerator];
-  while ((currentID = [allIDs nextObject]))
-    {
-      metadata = [_sourcesMetadata objectForKey: currentID];
-      if (!domain
-          || [[metadata objectForKey: @"domain"] isEqualToString: domain])
-        {
-          typeValue = [metadata objectForKey: sourceType];
-          if ([typeValue boolValue])
-            [sourceIDs addObject: currentID];
-        }
     }
 
   return sourceIDs;
@@ -227,14 +201,46 @@
   return [_sourcesMetadata objectForKey: sourceID];
 }
 
-- (NSArray *) authenticationSourceIDs
+- (NSArray *) authenticationSourceIDsInDomain: (NSString *) domain
 {
-  return [self _sourcesOfType: @"canAuthenticate" inDomain: nil];
+  NSMutableArray *sourceIDs;
+  NSEnumerator *allIDs;
+  NSString *currentID, *sourceDomain;
+  NSDictionary *metadata;
+
+  sourceIDs = [NSMutableArray array];
+  allIDs = [[_sources allKeys] objectEnumerator];
+  while ((currentID = [allIDs nextObject]))
+    {
+      sourceDomain = [[_sources objectForKey: currentID] domain];
+      if (![domain length] || [domain isEqualToString: sourceDomain])
+        {
+          metadata = [_sourcesMetadata objectForKey: currentID];
+          if ([[metadata objectForKey: @"canAuthenticate"] boolValue])
+            [sourceIDs addObject: currentID];
+        }
+    }
+
+  return sourceIDs;
 }
 
 - (NSArray *) addressBookSourceIDsInDomain: (NSString *) domain
 {
-  return [self _sourcesOfType: @"isAddressBook" inDomain: domain];
+  NSMutableArray *sourceIDs;
+  NSEnumerator *allIDs;
+  NSString *currentID;
+  NSDictionary *metadata;
+
+  sourceIDs = [NSMutableArray array];
+  allIDs = [[self sourceIDsInDomain: domain] objectEnumerator];
+  while ((currentID = [allIDs nextObject]))
+    {
+      metadata = [_sourcesMetadata objectForKey: currentID];
+      if ([[metadata objectForKey: @"isAddressBook"] boolValue])
+        [sourceIDs addObject: currentID];
+    }
+
+  return sourceIDs;
 }
 
 - (NSString *) displayNameForSourceWithID: (NSString *) sourceID
@@ -310,10 +316,10 @@
   NSEnumerator *authIDs;
   NSString *currentID;
   BOOL checkOK;
-  
+
   checkOK = NO;
 
-  authIDs = [[self authenticationSourceIDs] objectEnumerator];
+  authIDs = [[self authenticationSourceIDsInDomain: nil] objectEnumerator];
   while (!checkOK && (currentID = [authIDs nextObject]))
     {
       ldapSource = [_sources objectForKey: currentID];
@@ -388,13 +394,14 @@
   NSDictionary *userEntry;
   NSEnumerator *ldapSources;
   LDAPSource *currentSource;
-  NSString *sourceID, *cn, *c_uid, *c_imaphostname;
+  NSString *sourceID, *cn, *c_domain, *c_uid, *c_imaphostname;
   NSArray *c_emails;
   BOOL access;
 
   emails = [NSMutableArray array];
   cn = nil;
   c_uid = nil;
+  c_domain = nil;
   c_imaphostname = nil;
 
   [currentUser setObject: [NSNumber numberWithBool: YES]
@@ -402,7 +409,7 @@
   [currentUser setObject: [NSNumber numberWithBool: YES]
 	       forKey: @"MailAccess"];
 
-  ldapSources = [[self authenticationSourceIDs]
+  ldapSources = [[self authenticationSourceIDsInDomain: nil]
                   objectEnumerator];
   while ((sourceID = [ldapSources nextObject]))
     {
@@ -414,6 +421,8 @@
 	    cn = [userEntry objectForKey: @"c_cn"];
 	  if (!c_uid)
 	    c_uid = [userEntry objectForKey: @"c_uid"];
+          if (!c_domain)
+            c_domain = [userEntry objectForKey: @"c_domain"];
 	  c_emails = [userEntry objectForKey: @"c_emails"];
 	  if ([c_emails count])
 	    [emails addObjectsFromArray: c_emails];
@@ -434,12 +443,15 @@
     cn = @"";
   if (!c_uid)
     c_uid = @"";
+  if (!c_domain)
+    c_domain = @"";
   
   if (c_imaphostname)
     [currentUser setObject: c_imaphostname forKey: @"c_imaphostname"];
   [currentUser setObject: emails forKey: @"emails"];
   [currentUser setObject: cn forKey: @"cn"];
   [currentUser setObject: c_uid forKey: @"c_uid"];
+  [currentUser setObject: c_domain forKey: @"c_domain"];
 
   // If our LDAP queries gave us nothing, we add at least one default
   // email address based on the default domain.
@@ -598,8 +610,10 @@
 }
 
 - (NSArray *) fetchUsersMatching: (NSString *) filter
+                        inDomain: (NSString *) domain
 {
-  return [self _fetchEntriesInSources: [self authenticationSourceIDs]
+  return [self _fetchEntriesInSources:
+                 [self authenticationSourceIDsInDomain: domain]
                              matching: filter];
 }
 
