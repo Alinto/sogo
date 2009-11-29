@@ -62,6 +62,8 @@
 - (BOOL) boolValue;
 #endif
 
+- (int) timeValue;
+
 // LDIF
 - (BOOL) _isLDIFSafe;
 

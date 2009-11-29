@@ -385,6 +385,24 @@ static NSMutableCharacterSet *urlStartChars = nil;
 }
 #endif
 
+- (int) timeValue
+{
+  int i, time;
+
+  if ([self length] > 0)
+    {
+      i = [self rangeOfString: @":"].location;
+      if (i == NSNotFound)
+	time = [self intValue];
+      else
+	time = [[self substringToIndex: i] intValue];
+    }
+  else
+    time = -1;
+  
+  return time;
+}
+
 static NSMutableCharacterSet *safeLDIFChars = nil;
 static NSMutableCharacterSet *safeLDIFStartChars = nil;
 

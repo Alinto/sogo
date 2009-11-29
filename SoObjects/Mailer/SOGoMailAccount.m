@@ -21,9 +21,9 @@
 */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSURL.h>
 #import <Foundation/NSString.h>
-#import <Foundation/NSUserDefaults.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoHTTPAuthenticator.h>
@@ -38,8 +38,11 @@
 #import <NGImap4/NGImap4Context.h>
 #import <NGImap4/NGSieveClient.h>
 
-#import <SoObjects/SOGo/NSArray+Utilities.h>
-#import <SoObjects/SOGo/SOGoUser.h>
+#import <SOGo/NSArray+Utilities.h>
+#import <SOGo/SOGoDomainDefaults.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
+#import <SOGo/SOGoUserSettings.h>
 
 #import "SOGoDraftsFolder.h"
 #import "SOGoMailFolder.h"
@@ -51,65 +54,8 @@
 
 @implementation SOGoMailAccount
 
-static NSArray *rootFolderNames = nil;
 static NSString *inboxFolderName = @"INBOX";
-static NSString *draftsFolderName = @"Drafts";
-static NSString *sentFolderName = nil;
-static NSString *trashFolderName = nil;
-static NSString *sharedFolderName = @"";     // TODO: add English default
-static NSString *otherUsersFolderName = @""; // TODO: add English default
 static NSString *sieveScriptName = @"sogo";
-
-static BOOL defaultShowSubscribedFoldersOnly = NO;
-// this is temporary, until we allow users to manage their own accounts
-static NSString *fallbackIMAP4Server = nil;
-
-+ (void) initialize
-{
-  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  NSString *cfgDraftsFolderName;
-
-  sharedFolderName = [ud stringForKey:@"SOGoSharedFolderName"];
-  otherUsersFolderName = [ud stringForKey:@"SOGoOtherUsersFolderName"];
-  cfgDraftsFolderName = [ud stringForKey:@"SOGoDraftsFolderName"];
-  if (!sentFolderName)
-    {
-      sentFolderName = [ud stringForKey: @"SOGoSentFolderName"];
-      if (!sentFolderName)
-	sentFolderName = @"Sent";
-      [sentFolderName retain];
-    }
-  if (!trashFolderName)
-    {
-      trashFolderName = [ud stringForKey: @"SOGoTrashFolderName"];
-      if (!trashFolderName)
-	trashFolderName = @"Trash";
-      [trashFolderName retain];
-    }
-  if ([cfgDraftsFolderName length] > 0)
-    {
-      ASSIGN (draftsFolderName, cfgDraftsFolderName);
-      NSLog(@"Note: using drafts folder named:      '%@'", draftsFolderName);
-    }
-
-  NSLog(@"Note: using shared-folders name:      '%@'", sharedFolderName);
-  NSLog(@"Note: using other-users-folders name: '%@'", otherUsersFolderName);
-
-  rootFolderNames = [[NSArray alloc] initWithObjects:
-				       draftsFolderName, 
-				     nil];
-
-  if (!fallbackIMAP4Server)
-    {
-      fallbackIMAP4Server = [ud stringForKey: @"SOGoFallbackIMAP4Server"];
-      if (fallbackIMAP4Server)
-	[fallbackIMAP4Server retain];
-      else
-	fallbackIMAP4Server = @"localhost";
-    }
-
-  defaultShowSubscribedFoldersOnly = [ud boolForKey: @"SOGoMailShowSubscribedFoldersOnly"];
-}
 
 - (id) init
 {
@@ -120,6 +66,7 @@ static NSString *fallbackIMAP4Server = nil;
       sentFolder = nil;
       trashFolder = nil;
       accountName = nil;
+      imapAclStyle = undefined;
     }
 
   return self;
@@ -163,11 +110,6 @@ static NSString *fallbackIMAP4Server = nil;
 
 /* listing the available folders */
 
-- (NSArray *) additionalRootFolderNames
-{
-  return rootFolderNames;
-}
-
 - (BOOL) isInDraftsFolder
 {
   return NO;
@@ -181,7 +123,8 @@ static NSString *fallbackIMAP4Server = nil;
   folders = [NSMutableArray array];
 
   imapFolders = [[self imap4Connection] subfoldersForURL: [self imap4URL]];
-  additionalFolders = [self additionalRootFolderNames];
+  additionalFolders
+    = [NSArray arrayWithObject: [self draftsFolderNameInContext: nil]];
   if ([imapFolders count] > 0)
     [folders addObjectsFromArray: imapFolders];
   if ([additionalFolders count] > 0)
@@ -191,6 +134,31 @@ static NSString *fallbackIMAP4Server = nil;
     }
   
   return [folders stringsWithFormat: @"folder%@"];
+}
+
+- (SOGoIMAPAclStyle) imapAclStyle
+{
+  SOGoDomainDefaults *dd;
+
+  if (imapAclStyle == undefined)
+    {
+      dd = [[context activeUser] domainDefaults];
+      if ([[dd imapAclStyle] isEqualToString: @"rfc2086"])
+        imapAclStyle = rfc2086;
+      else
+        imapAclStyle = rfc4314;
+    }
+
+  return imapAclStyle;
+}
+
+- (BOOL) imapAclConformsToIMAPExt
+{
+  SOGoDomainDefaults *dd;
+
+  dd = [[context activeUser] domainDefaults];
+
+  return [dd imapAclConformsToIMAPExt];
 }
 
 - (BOOL) supportsQuotas
@@ -209,13 +177,14 @@ static NSString *fallbackIMAP4Server = nil;
   NSMutableString *header, *script;
   NGInternetSocketAddress *address;
   NSDictionary *result, *values;
-  NSUserDefaults *ud;
+  SOGoUserDefaults *ud;
+  SOGoDomainDefaults *dd;
   NGSieveClient *client;
   NSString *v;
   BOOL b;
 
-  if (![[NSUserDefaults standardUserDefaults] boolForKey: @"SOGoVacationEnabled"] &&
-      ![[NSUserDefaults standardUserDefaults] boolForKey: @"SOGoForwardEnabled"])
+  dd = [[context activeUser] domainDefaults];
+  if (!([dd vacationEnabled] || [dd forwardEnabled]))
     return YES;
 
   ud = [[context activeUser] userDefaults];
@@ -227,7 +196,7 @@ static NSString *fallbackIMAP4Server = nil;
   // Right now, we handle Sieve filters here and only for vacation
   // and forwards. Traditional filters support (for fileinto, for
   // example) will be added later.
-  values = [ud objectForKey: @"Vacation"];
+  values = [ud vacationOptions];
 
   // We handle vacation messages.
   // See http://ietfreport.isoc.org/idref/draft-ietf-sieve-vacation/
@@ -273,7 +242,7 @@ static NSString *fallbackIMAP4Server = nil;
 
 
   // We handle mail forward
-  values = [ud objectForKey: @"Forward"];
+  values = [ud forwardOptions];
 
   if (values && [[values objectForKey: @"enabled"] boolValue])
     {
@@ -356,17 +325,11 @@ static NSString *fallbackIMAP4Server = nil;
 {
   NSMutableArray *folderPaths;
   NSArray *rawFolders, *mainFolders;
-  NSUserDefaults *ud;
-  NSString *showSubscribedFoldersOnly;
+  SOGoUserDefaults *ud;
 
   ud = [[context activeUser] userDefaults];
-  showSubscribedFoldersOnly = [ud stringForKey: @"showSubscribedFoldersOnly"];
-  if (showSubscribedFoldersOnly)
-    rawFolders = [[self imap4Connection] allFoldersForURL: [self imap4URL]
-					 onlySubscribedFolders: [showSubscribedFoldersOnly boolValue]];
-  else
-    rawFolders = [[self imap4Connection] allFoldersForURL: [self imap4URL]
-					 onlySubscribedFolders: defaultShowSubscribedFoldersOnly];
+  rawFolders = [[self imap4Connection] allFoldersForURL: [self imap4URL]
+                                  onlySubscribedFolders: [ud mailShowSubscribedFoldersOnly]];
 
   mainFolders = [[NSArray arrayWithObjects:
 			    [self inboxFolderNameInContext: context],
@@ -428,14 +391,8 @@ static NSString *fallbackIMAP4Server = nil;
       escUsername
 	= [[username stringByEscapingURL] stringByReplacingString: @"@"
 					  withString: @"%40"];
-#if 1
-      // see comment about fallbackIMAP4Server above
       hostString = [NSString stringWithFormat: @"%@@%@", escUsername,
-			     [mailAccount objectForKey: @"serverName"]];
-#else
-      hostString = [NSString stringWithFormat: @"%@@%@", escUsername,
-			     fallbackIMAP4Server];
-#endif
+                    [mailAccount objectForKey: @"serverName"]];
     }
   else
     hostString = @"localhost";
@@ -519,54 +476,88 @@ static NSString *fallbackIMAP4Server = nil;
   return inboxFolderName;
 }
 
+- (BOOL) _migrateFolderWithPurpose: (NSString *) purpose
+                          withName: (NSString *) folderName
+{
+  SOGoUserDefaults *ud;
+  NSString *methodName;
+  SEL methodSel;
+  BOOL rc;
+
+  ud = [[context activeUser] userDefaults];
+  methodName = [NSString stringWithFormat: @"set%@FolderName:", purpose];
+  methodSel = NSSelectorFromString (methodName);
+  if ([ud respondsToSelector: methodSel])
+    {
+      [ud performSelector: methodSel withObject: folderName];
+      [ud synchronize];
+      rc = YES;
+    }
+  else
+    {
+      [self errorWithFormat: @"method '%@' not available with user defaults"@
+            @" object, folder migration fails", methodName];
+      rc = NO;
+    }
+
+  return rc;
+}
+
 - (NSString *) _userFolderNameWithPurpose: (NSString *) purpose
 {
-  NSUserDefaults *ud;
+  SOGoUser *user;
+  SOGoUserSettings *us;
+  SOGoUserDefaults *ud;
   NSMutableDictionary *mailSettings;
-  NSString *folderName;
+  NSString *folderName, *key, *methodName;
+  SEL methodSel;
 
   folderName = nil;
-  ud = [[context activeUser] userSettings];
-  mailSettings = [ud objectForKey: @"Mail"];
+
+  user = [context activeUser];
+  /* migration part: */
+  us = [user userSettings];
+  mailSettings = [us objectForKey: @"Mail"];
   if (mailSettings)
-    folderName
-      = [mailSettings objectForKey: [NSString stringWithFormat: @"%@Folder",
-					      purpose]];
+    {
+      key = [NSString stringWithFormat: @"%@Folder", purpose];
+      folderName = [mailSettings objectForKey: key];
+      if ([folderName length]
+          && [self _migrateFolderWithPurpose: purpose withName: folderName])
+        {
+          [mailSettings removeObjectForKey: key];
+          [us synchronize];
+          folderName = nil;
+        }
+    }
+  else
+    folderName = nil;
+
+  if (!folderName)
+    {
+      ud = [[context activeUser] userDefaults];
+      methodName = [NSString stringWithFormat: @"%@FolderName",
+                             [purpose lowercaseString]];
+      methodSel = NSSelectorFromString (methodName);
+      folderName = [ud performSelector: methodSel];
+    }
 
   return folderName;
 }
 
 - (NSString *) draftsFolderNameInContext: (id) _ctx
 {
-  NSString *folderName;
-
-  folderName = [self _userFolderNameWithPurpose: @"Drafts"];
-  if (!folderName)
-    folderName = draftsFolderName;
-
-  return folderName;
+  return [self _userFolderNameWithPurpose: @"Drafts"];
 }
 
 - (NSString *) sentFolderNameInContext: (id)_ctx
 {
-  NSString *folderName;
-
-  folderName = [self _userFolderNameWithPurpose: @"Sent"];
-  if (!folderName)
-    folderName = sentFolderName;
-
-  return folderName;
+  return [self _userFolderNameWithPurpose: @"Sent"];
 }
 
 - (NSString *) trashFolderNameInContext: (id)_ctx
 {
-  NSString *folderName;
-
-  folderName = [self _userFolderNameWithPurpose: @"Trash"];
-  if (!folderName)
-    folderName = trashFolderName;
-
-  return folderName;
+  return [self _userFolderNameWithPurpose: @"Trash"];
 }
 
 - (id) folderWithTraversal: (NSString *) traversal
@@ -713,12 +704,20 @@ static NSString *fallbackIMAP4Server = nil;
 
 - (NSString *) sharedFolderName
 {
-  return sharedFolderName;
+  SOGoDomainDefaults *dd;
+
+  dd = [[context activeUser] domainDefaults];
+
+  return [dd sharedFolderName];
 }
 
 - (NSString *) otherUsersFolderName
 {
-  return otherUsersFolderName;
+  SOGoDomainDefaults *dd;
+
+  dd = [[context activeUser] domainDefaults];
+
+  return [dd otherUsersFolderName];
 }
 
 @end /* SOGoMailAccount */

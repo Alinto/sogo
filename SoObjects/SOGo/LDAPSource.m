@@ -22,9 +22,7 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
-#import <Foundation/NSLock.h>
 #import <Foundation/NSString.h>
-#import <Foundation/NSUserDefaults.h>
 
 #import <NGExtensions/NSObject+Logs.h>
 #import <EOControl/EOControl.h>
@@ -34,35 +32,21 @@
 
 #import "NSArray+Utilities.h"
 #import "NSString+Utilities.h"
+#import "SOGoDomainDefaults.h"
+#import "SOGoSystemDefaults.h"
 
 #import "LDAPSource.h"
 
 #define SafeLDAPCriteria(x) [[x stringByReplacingString: @"\\" withString: @"\\\\"] \
                                 stringByReplacingString: @"'" withString: @"\\'"]
 static NSArray *commonSearchFields;
-static NSString *LDAPContactInfoAttribute = nil;
-static int timeLimit;
-static int sizeLimit;
-
-#if defined(THREADSAFE)
-static NSLock *lock;
-#endif
 
 @implementation LDAPSource
 
 + (void) initialize
 {
-  NSUserDefaults *ud;
-
   if (!commonSearchFields)
     {
-      ud = [NSUserDefaults standardUserDefaults];
-      LDAPContactInfoAttribute
-	= [ud stringForKey: @"SOGoLDAPContactInfoAttribute"];
-      [LDAPContactInfoAttribute retain];
-      sizeLimit = [ud integerForKey: @"SOGoLDAPQueryLimit"];
-      timeLimit = [ud integerForKey: @"SOGoLDAPQueryTimeout"];
-
       commonSearchFields = [NSArray arrayWithObjects:
 				      @"title",
 				    @"company",
@@ -134,18 +118,16 @@ static NSLock *lock;
                                     @"proxyaddresses",
 				    nil];	
       [commonSearchFields retain];
-
-#if defined(THREADSAFE)
-      lock = [NSLock new];
-#endif
     }
 }
 
 + (id) sourceFromUDSource: (NSDictionary *) udSource
+                 inDomain: (NSString *) domain
 {
   id newSource;
 
-  newSource = [[self alloc] initFromUDSource: udSource];
+  newSource = [[self alloc] initFromUDSource: udSource
+                                    inDomain: domain];
   [newSource autorelease];
 
   return newSource;
@@ -161,6 +143,7 @@ static NSLock *lock;
       encryption = nil;
       password = nil;
       sourceID = nil;
+      domain = nil;
 
       baseDN = nil;
       IDField = @"cn"; /* the first part of a user DN */
@@ -201,29 +184,77 @@ static NSLock *lock;
 }
 
 - (id) initFromUDSource: (NSDictionary *) udSource
+               inDomain: (NSString *) sourceDomain
 {
-  self = [self init];
+  NSString *udDomainAttribute;
+  SOGoDomainDefaults *dd;
+  NSNumber *udQueryLimit, *udQueryTimeout;
 
-  ASSIGN (sourceID, [udSource objectForKey: @"id"]);
+  if ((self = [self init]))
+    {
+      ASSIGN (sourceID, [udSource objectForKey: @"id"]);
 
-  [self setBindDN: [udSource objectForKey: @"bindDN"]
-	password: [udSource objectForKey: @"bindPassword"]
-	hostname: [udSource objectForKey: @"hostname"]
-	port: [udSource objectForKey: @"port"]
-	encryption: [udSource objectForKey: @"encryption"]];
-  [self setBaseDN: [udSource objectForKey: @"baseDN"]
-	IDField: [udSource objectForKey: @"IDFieldName"]
-	CNField: [udSource objectForKey: @"CNFieldName"]
-	UIDField: [udSource objectForKey: @"UIDFieldName"]
-	mailFields: [udSource objectForKey: @"MailFieldNames"]
+      [self setBindDN: [udSource objectForKey: @"bindDN"]
+             password: [udSource objectForKey: @"bindPassword"]
+             hostname: [udSource objectForKey: @"hostname"]
+                 port: [udSource objectForKey: @"port"]
+           encryption: [udSource objectForKey: @"encryption"]];
+      [self setBaseDN: [udSource objectForKey: @"baseDN"]
+              IDField: [udSource objectForKey: @"IDFieldName"]
+              CNField: [udSource objectForKey: @"CNFieldName"]
+             UIDField: [udSource objectForKey: @"UIDFieldName"]
+           mailFields: [udSource objectForKey: @"MailFieldNames"]
 	IMAPHostField: [udSource objectForKey: @"IMAPHostFieldName"]
 	andBindFields: [udSource objectForKey: @"bindFields"]];
-  ASSIGN (modulesConstraints,
-          [udSource objectForKey: @"ModulesConstraints"]);
-  ASSIGN (_filter, [udSource objectForKey: @"filter"]);
-  ASSIGN (_scope, ([udSource objectForKey: @"scope"]
-                   ? [udSource objectForKey: @"scope"]
-                   : (id)@"sub"));
+
+      udDomainAttribute = [udSource objectForKey: @"domainAttribute"];
+      if ([sourceDomain length])
+        {
+          if ([udDomainAttribute length])
+            {
+              [self errorWithFormat: @"cannot define 'domainAttribute'"
+                    @" for a domain-based source (%@)", sourceID];
+              [self release];
+              self = nil;
+            }
+          else
+            {
+              dd = [SOGoDomainDefaults defaultsForDomain: sourceDomain];
+              ASSIGN (domain, sourceDomain);
+            }
+        }
+      else
+        {
+          if ([udDomainAttribute length])
+            ASSIGN (domainAttribute, udDomainAttribute);
+          dd = [SOGoSystemDefaults sharedSystemDefaults];
+        }
+
+      contactInfoAttribute
+        = [udSource objectForKey: @"SOGoLDAPContactInfoAttribute"];
+      if (!contactInfoAttribute)
+        contactInfoAttribute = [dd ldapContactInfoAttribute];
+      [contactInfoAttribute retain];
+      
+      udQueryLimit = [udSource objectForKey: @"SOGoLDAPQueryLimit"];
+      if (udQueryLimit)
+        queryLimit = [udQueryLimit intValue];
+      else
+        queryLimit = [dd ldapQueryLimit];
+
+      udQueryTimeout = [udSource objectForKey: @"SOGoLDAPQueryTimeout"];
+      if (udQueryTimeout)
+        queryTimeout = [udQueryTimeout intValue];
+      else
+        queryTimeout = [dd ldapQueryTimeout];
+
+      ASSIGN (modulesConstraints,
+              [udSource objectForKey: @"ModulesConstraints"]);
+      ASSIGN (_filter, [udSource objectForKey: @"filter"]);
+      ASSIGN (_scope, ([udSource objectForKey: @"scope"]
+                       ? [udSource objectForKey: @"scope"]
+                       : (id)@"sub"));
+    }
   
   return self;
 }
@@ -300,10 +331,10 @@ static NSLock *lock;
 	  [ldapConnection bindWithMethod: @"simple"
 			  binddn: bindDN
 			  credentials: password];
-	  if (sizeLimit > 0)
-	    [ldapConnection setQuerySizeLimit: sizeLimit];
-	  if (timeLimit > 0)
-	    [ldapConnection setQueryTimeLimit: timeLimit];
+	  if (queryLimit > 0)
+	    [ldapConnection setQuerySizeLimit: queryLimit];
+	  if (queryTimeout > 0)
+	    [ldapConnection setQueryTimeLimit: queryTimeout];
 	}
       else
 	ldapConnection = nil;
@@ -316,6 +347,11 @@ static NSLock *lock;
   NS_ENDHANDLER;
 
   return ldapConnection;
+}
+
+- (NSString *) domain
+{
+  return domain;
 }
 
 /* user management */
@@ -379,10 +415,6 @@ static NSLock *lock;
   NSString *userDN;
   NGLdapConnection *bindConnection;
 
-#if defined(THREADSAFE)
-  [lock lock];
-#endif
-
   didBind = NO;
 
   if ([loginToCheck length] > 0)
@@ -391,8 +423,8 @@ static NSLock *lock;
 						 port: port];
       if (![encryption length] || [self _setupEncryption: bindConnection])
 	{
-	  if (timeLimit > 0)
-	    [bindConnection setQueryTimeLimit: timeLimit];
+	  if (queryTimeout > 0)
+	    [bindConnection setQueryTimeLimit: queryTimeout];
 	  if (bindFields)
 	    userDN = [self _fetchUserDNForLogin: loginToCheck];
 	  else
@@ -412,10 +444,6 @@ static NSLock *lock;
 	}
       [bindConnection release];
     }
-
-#if defined(THREADSAFE)
-  [lock unlock];
-#endif
 
   return didBind;
 }
@@ -510,8 +538,11 @@ static NSLock *lock;
       [searchAttributes addObjectsFromArray: commonSearchFields];
 
       // Add SOGoLDAPContactInfoAttribute from user defaults
-      if ([LDAPContactInfoAttribute length])
-        [searchAttributes addObjectUniquely: LDAPContactInfoAttribute];
+      if ([contactInfoAttribute length])
+        [searchAttributes addObjectUniquely: contactInfoAttribute];
+
+      if ([domainAttribute length])
+        [searchAttributes addObjectUniquely: domainAttribute];
 
       // Add IMAP hostname from user defaults
       if ([IMAPHostField length])
@@ -529,10 +560,6 @@ static NSLock *lock;
   NSString *value;
   NSArray *attributes;
   NSMutableArray *ids;
-
-#if defined(THREADSAFE)
-  [lock lock];
-#endif
 
   ids = [NSMutableArray array];
 
@@ -558,10 +585,6 @@ static NSLock *lock;
       if ([value length] > 0)
         [ids addObject: value];
     }
-
-#if defined(THREADSAFE)
-  [lock unlock];
-#endif
 
   return ids;
 }
@@ -697,6 +720,31 @@ static NSLock *lock;
   if (!value)
     value = @"";
   [contactEntry setObject: value forKey: @"c_cn"];
+
+  if (contactInfoAttribute)
+    {
+      value = [[ldapEntry attributeWithName: contactInfoAttribute]
+                stringValueAtIndex: 0];
+      if (!value)
+        value = @"";
+    }
+  else
+    value = @"";
+  [contactEntry setObject: value forKey: @"c_info"];
+
+  if (domainAttribute)
+    {
+      value = [[ldapEntry attributeWithName: domainAttribute]
+                stringValueAtIndex: 0];
+      if (!value)
+        value = @"";
+    }
+  else if (domain)
+    value = domain;
+  else
+    value = @"";
+  [contactEntry setObject: value forKey: @"c_domain"];
+
   [self _fillEmailsOfEntry: ldapEntry intoContactEntry: contactEntry];
   [self _fillConstraints: ldapEntry forModule: @"Calendar"
 	intoContactEntry: (NSMutableDictionary *) contactEntry];
@@ -714,10 +762,6 @@ static NSLock *lock;
   NSMutableArray *contacts;
   EOQualifier *qualifier;
   NSArray *attributes;
-
-#if defined(THREADSAFE)
-  [lock lock];
-#endif
 
   contacts = [NSMutableArray array];
 
@@ -744,10 +788,6 @@ static NSLock *lock;
                     [self _convertLDAPEntryToContact: currentEntry]];
     }
 
-#if defined(THREADSAFE)
-  [lock unlock];
-#endif
-
   return contacts;
 }
 
@@ -760,10 +800,6 @@ static NSLock *lock;
   NSArray *attributes;
   NSString *s;
   NSDictionary *contactEntry;
-
-#if defined(THREADSAFE)
-  [lock lock];
-#endif
 
   contactEntry = nil;
 
@@ -793,10 +829,6 @@ static NSLock *lock;
         contactEntry = [self _convertLDAPEntryToContact: ldapEntry];
     }
 
-#if defined(THREADSAFE)
-  [lock unlock];
-#endif
-
   return contactEntry;
 }
 
@@ -808,10 +840,6 @@ static NSLock *lock;
   EOQualifier *qualifier;
   NSArray *attributes;
   NSDictionary *contactEntry;
-
-#if defined(THREADSAFE)
-  [lock lock];
-#endif
 
   contactEntry = nil;
 
@@ -838,10 +866,6 @@ static NSLock *lock;
       if (ldapEntry)
         contactEntry = [self _convertLDAPEntryToContact: ldapEntry];
     }
-
-#if defined(THREADSAFE)
-  [lock unlock];
-#endif
 
   return contactEntry;
 }
@@ -887,10 +911,6 @@ static NSLock *lock;
   NGLdapConnection *ldapConnection;
   NGLdapEntry *ldapEntry;
 
-#if defined(THREADSAFE)
-  [lock lock];
-#endif
-
   if ([theValue length] > 0)
     {
       ldapConnection = [self _ldapConnection];
@@ -898,7 +918,7 @@ static NSLock *lock;
       s = [NSString stringWithFormat: @"(%@='%@')",
                     theAttribute, SafeLDAPCriteria (theValue)];
       qualifier = [EOQualifier qualifierWithQualifierFormat: s];
-	  
+
       // We look for additional attributes - the ones related to group
       // membership
       attributes = [NSMutableArray arrayWithArray: [self _searchAttributes]];
@@ -924,10 +944,6 @@ static NSLock *lock;
     }
   else
     ldapEntry = nil;
-
-#if defined(THREADSAFE)
-  [lock unlock];
-#endif
 
   return ldapEntry;
 }

@@ -22,7 +22,6 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSURL.h>
-#import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSTask.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
@@ -48,8 +47,11 @@
 #import <SOGo/NSString+DAV.h>
 #import <SOGo/NSArray+DAV.h>
 #import <SOGo/NSObject+DAV.h>
+#import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoPermissions.h>
+#import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserSettings.h>
 #import <SOGo/WORequest+SOGo.h>
 
 #import "EOQualifier+MailDAV.h"
@@ -62,14 +64,6 @@
 
 static NSString *defaultUserID =  @"anyone";
 
-#warning this could be detected from the capabilities
-static SOGoIMAPAclStyle aclStyle = undefined;
-static BOOL aclUsernamesAreQuoted = NO;
-/* http://www.tools.ietf.org/wg/imapext/draft-ietf-imapext-acl/ */
-static BOOL aclConformsToIMAPExt = NO;
-
-static NSString *spoolFolder = nil;
-
 @interface NGImap4Connection (PrivateMethods)
 
 - (NSString *) imap4FolderNameForURL: (NSURL *) url;
@@ -77,42 +71,6 @@ static NSString *spoolFolder = nil;
 @end
 
 @implementation SOGoMailFolder
-
-+ (void) initialize
-{
-  NSUserDefaults *ud;
-  NSString *aclStyleStr;
-
-  if (aclStyle == undefined)
-  {
-    ud = [NSUserDefaults standardUserDefaults];
-    aclStyleStr = [ud stringForKey: @"SOGoIMAPAclStyle"];
-    if ([aclStyleStr isEqualToString: @"rfc2086"])
-      aclStyle = rfc2086;
-    else
-      aclStyle = rfc4314;
-
-    aclUsernamesAreQuoted
-      = [ud boolForKey: @"SOGoIMAPAclUsernamesAreQuoted"];
-    aclConformsToIMAPExt
-      = [ud boolForKey: @"SOGoIMAPAclConformsToIMAPExt"];
-  }
-
-  if (!spoolFolder)
-  {
-    spoolFolder = [ud stringForKey:@"SOGoMailSpoolPath"];
-    if (![spoolFolder length])
-      spoolFolder = @"/tmp/";
-    [spoolFolder retain];
-
-    NSLog(@"Note: using SOGo mail spool folder: %@", spoolFolder);
-  }
-}
-
-+ (SOGoIMAPAclStyle) imapAclStyle
-{
-  return aclStyle;
-}
 
 - (void) _adjustOwner
 {
@@ -342,7 +300,7 @@ static NSString *spoolFolder = nil;
 }
 
 - (WOResponse *) archiveUIDs: (NSArray *) uids
-  inContext: (id) localContext
+                   inContext: (id) localContext
 {
   NSException *error;
   NSFileManager *fm;
@@ -357,20 +315,18 @@ static NSString *spoolFolder = nil;
 
 #warning this method should be rewritten according to our coding styles  
   spoolPath = [self userSpoolFolderPath];
-  if ( ![self ensureSpoolFolderPath] ) {
+  if (![self ensureSpoolFolderPath]) {
+    [self errorWithFormat: @"spool directory '%@' doesn't exist", spoolPath];
     error = [NSException exceptionWithHTTPStatus: 500 
-      reason: @"spoolFolderPath doesn't exist"];
+                                          reason: @"spool directory does not exist"];
     return (WOResponse *)error;
   }
-  
-  zipPath = [[NSUserDefaults standardUserDefaults] stringForKey: @"SOGoZipPath"];
-  if (![zipPath length])
-    zipPath = [NSString stringWithString: @"/usr/bin/zip"];
 
+  zipPath = [[SOGoSystemDefaults sharedSystemDefaults] zipPath];
   fm = [NSFileManager defaultManager];
-  if ( ![fm fileExistsAtPath: zipPath] ) {
+  if (![fm fileExistsAtPath: zipPath]) {
     error = [NSException exceptionWithHTTPStatus: 500 
-      reason: @"zip not available"];
+                                          reason: @"zip not available"];
     return (WOResponse *)error;
   }
   
@@ -527,16 +483,16 @@ static NSString *spoolFolder = nil;
 
 - (void) markForExpunge
 {
-  NSUserDefaults *ud;
+  SOGoUserSettings *us;
   NSMutableDictionary *mailSettings;
   NSString *urlString;
 
-  ud = [[context activeUser] userSettings];
-  mailSettings = [ud objectForKey: @"Mail"];
+  us = [[context activeUser] userSettings];
+  mailSettings = [us objectForKey: @"Mail"];
   if (!mailSettings)
     {
       mailSettings = [NSMutableDictionary dictionaryWithCapacity: 1];
-      [ud setObject: mailSettings forKey: @"Mail"];
+      [us setObject: mailSettings forKey: @"Mail"];
     }
 
   urlString = [self imap4URLString];
@@ -544,20 +500,20 @@ static NSString *spoolFolder = nil;
 	 isEqualToString: urlString])
     {
       [mailSettings setObject: [self imap4URLString]
-		    forKey: @"folderForExpunge"];
-      [ud synchronize];
+                       forKey: @"folderForExpunge"];
+      [us synchronize];
     }
 }
 
 - (void) expungeLastMarkedFolder
 {
-  NSUserDefaults *ud;
+  SOGoUserSettings *us;
   NSMutableDictionary *mailSettings;
   NSString *expungeURL;
   NSURL *folderURL;
 
-  ud = [[context activeUser] userSettings];
-  mailSettings = [ud objectForKey: @"Mail"];
+  us = [[context activeUser] userSettings];
+  mailSettings = [us objectForKey: @"Mail"];
   if (mailSettings)
     {
       expungeURL = [mailSettings objectForKey: @"folderForExpunge"];
@@ -568,7 +524,7 @@ static NSString *spoolFolder = nil;
 	  if (![[self imap4Connection] expungeAtURL: folderURL])
 	    {
 	      [mailSettings removeObjectForKey: @"folderForExpunge"];
-	      [ud synchronize];
+	      [us synchronize];
 	    }
 	}
     }
@@ -823,6 +779,7 @@ static NSString *spoolFolder = nil;
   NSEnumerator *acls;
   NSString *currentAcl;
   char character;
+  SOGoIMAPAclStyle aclStyle;
 
   imapAcls = [NSMutableString string];
   acls = [sogoAcls objectEnumerator];
@@ -845,6 +802,7 @@ static NSString *spoolFolder = nil;
 	character = 'a';
       else
 	{
+          aclStyle = [[self mailAccountFolder] imapAclStyle];
 	  if (aclStyle == rfc2086)
 	    character = [self _rfc2086StyleRight: currentAcl];
 	  else if (aclStyle == rfc4314)
@@ -858,26 +816,6 @@ static NSString *spoolFolder = nil;
     }
 
   return imapAcls;
-}
-
-- (void) _unquoteACLUsernames
-{
-  NSMutableDictionary *newIMAPAcls;
-  NSEnumerator *usernames;
-  NSString *username, *unquoted;
-
-  newIMAPAcls = [NSMutableDictionary new];
-
-  usernames = [[mailboxACL allKeys] objectEnumerator];
-  while ((username = [usernames nextObject]))
-    {
-      unquoted = [username substringFromRange:
-			     NSMakeRange(1, [username length] - 2)];
-      [newIMAPAcls setObject: [mailboxACL objectForKey: username]
-		   forKey: unquoted];
-    }
-  [mailboxACL release];
-  mailboxACL = newIMAPAcls;
 }
 
 - (void) _removeIMAPExtUsernames
@@ -907,9 +845,7 @@ static NSString *spoolFolder = nil;
   mailboxACL = [[self imap4Connection] aclForMailboxAtURL: [self imap4URL]];
   [mailboxACL retain];
 
-  if (aclUsernamesAreQuoted)
-    [self _unquoteACLUsernames];
-  if (aclConformsToIMAPExt)
+  if ([[self mailAccountFolder] imapAclConformsToIMAPExt])
     [self _removeIMAPExtUsernames];
 }
 
@@ -1093,12 +1029,15 @@ static NSString *spoolFolder = nil;
 
 - (NSString *) userSpoolFolderPath
 {
-  NSString *login;
+  NSString *login, *mailSpoolPath;
+  SOGoUser *currentUser;
 
-  login = [[context activeUser] login];
+  currentUser = [context activeUser];
+  login = [currentUser login];
+  mailSpoolPath = [[currentUser domainDefaults] mailSpoolPath];
 
   return [NSString stringWithFormat: @"%@/%@",
-		   spoolFolder, login];
+		   mailSpoolPath, login];
 }
 
 - (BOOL) ensureSpoolFolderPath
@@ -1107,7 +1046,8 @@ static NSString *spoolFolder = nil;
 
   fm = [NSFileManager defaultManager];
   
-  return ([fm createDirectoriesAtPath: [self userSpoolFolderPath] attributes:nil]);
+  return ([fm createDirectoriesAtPath: [self userSpoolFolderPath]
+                           attributes: nil]);
 }
 
 - (NSString *) displayName

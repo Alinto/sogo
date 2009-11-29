@@ -38,12 +38,13 @@
 #import <NGCards/iCalTimeZone.h>
 #import <NGCards/iCalDateTime.h>
 
-#import <SoObjects/SOGo/NSDictionary+Utilities.h>
-#import <SoObjects/SOGo/SOGoUser.h>
-#import <SoObjects/SOGo/SOGoContentObject.h>
-#import <SoObjects/SOGo/SOGoDateFormatter.h>
-#import <SoObjects/Appointments/SOGoAppointmentFolder.h>
-#import <SoObjects/Appointments/SOGoTaskObject.h>
+#import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/SOGoContentObject.h>
+#import <SOGo/SOGoDateFormatter.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
+#import <Appointments/SOGoAppointmentFolder.h>
+#import <Appointments/SOGoTaskObject.h>
 
 #import "UIxComponentEditor.h"
 #import "UIxTaskEditor.h"
@@ -255,22 +256,22 @@
 {
   NSCalendarDate *newStartDate, *now;
   NSTimeZone *timeZone;
-  SOGoUser *user;
+  SOGoUserDefaults *ud;
   int hour;
   unsigned int uStart, uEnd;
 
   newStartDate = [self selectedDate];
   if (![[self queryParameterForKey: @"hm"] length])
     {
+      ud = [[context activeUser] userDefaults];
+      timeZone = [ud timeZone];
       now = [NSCalendarDate calendarDate];
-      timeZone = [[context activeUser] timeZone];
       [now setTimeZone: timeZone];
 
-      user = [context activeUser];
-      uStart = [user dayStartHour];
+      uStart = [ud dayStartHour];
       if ([now isDateOnSameDay: newStartDate])
         {
-	  uEnd = [user dayEndHour];
+	  uEnd = [ud dayEndHour];
           hour = [now hourOfDay];
           if (hour < uStart)
             newStartDate = [now hour: uStart minute: 0];
@@ -291,12 +292,14 @@
   NSCalendarDate *startDate, *dueDate;
   NSString *duration;
   NSTimeZone *timeZone;
+  SOGoUserDefaults *ud;
   unsigned int minutes;
 
+  ud = [[context activeUser] userDefaults];
+  timeZone = [ud timeZone];
   [self todo];
   if (todo)
     {
-      timeZone = [[context activeUser] timeZone];
       startDate = [todo startDate];
       dueDate = [todo due];
       hasStartDate = (startDate != nil);
@@ -430,14 +433,14 @@
   NSDictionary *data;
   NSCalendarDate *startDate, *dueDate;
   NSTimeZone *timeZone;
-  SOGoUser *user;
+  SOGoUserDefaults *ud;
   BOOL resetAlarm;
 
   [self todo];
 
   result = [self responseWithStatus: 200];
-  user = [context activeUser];
-  timeZone = [user timeZone];
+  ud = [[context activeUser] userDefaults];
+  timeZone = [ud timeZone];
   startDate = [todo startDate];
   [startDate setTimeZone: timeZone];
   dueDate = [todo due];
@@ -489,6 +492,9 @@
 - (void) takeValuesFromRequest: (WORequest *) _rq
                      inContext: (WOContext *) _ctx
 {
+  SOGoUserDefaults *ud;
+  iCalTimeZone *tz;
+
   [self todo];
 
   [super takeValuesFromRequest: _rq inContext: _ctx];
@@ -523,9 +529,8 @@
 
   if ([[self clientObject] isNew])
     {
-      iCalTimeZone *tz;
-      
-      tz = [iCalTimeZone timeZoneForName: [[[context activeUser] timeZone] name]];
+      ud = [[context activeUser] userDefaults];
+      tz = [iCalTimeZone timeZoneForName: [ud timeZoneName]];
       
       if (hasStartDate || hasDueDate)
 	{

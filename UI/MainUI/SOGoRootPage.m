@@ -20,7 +20,6 @@
 */
 
 #import <Foundation/NSException.h>
-#import <Foundation/NSUserDefaults.h>
 
 #import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOContext.h>
@@ -33,12 +32,12 @@
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 
-#import <SoObjects/SOGo/SOGoWebAuthenticator.h>
-#import <SoObjects/SOGo/SOGoUser.h>
+#import <SOGo/SOGoDomainDefaults.h>
+#import <SOGo/SOGoSystemDefaults.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoWebAuthenticator.h>
 
 #import "SOGoRootPage.h"
-
-static NSArray *supportedLanguages = nil;
 
 @interface SOGoRootPage (crashAdditions)
 
@@ -47,12 +46,6 @@ static NSArray *supportedLanguages = nil;
 @end
 
 @implementation SOGoRootPage
-
-+ (void) initialize
-{
-  if (!supportedLanguages)
-    supportedLanguages = [NSArray arrayWithObjects: @"Czech", @"Welsh", @"English", @"Spanish", @"French", @"German", @"Italian", @"Hungarian", @"Dutch", @"BrazilianPortuguese", @"Russian", @"Swedish", nil];
-}
 
 /* accessors */
 
@@ -68,9 +61,10 @@ static NSArray *supportedLanguages = nil;
   WORequest *request;
   WOCookie *authCookie;
   SOGoWebAuthenticator *auth;
-  SOGoUser *user;
+  SOGoUserDefaults *ud;
   NSString *cookieValue, *cookieString;
   NSString *userName, *password, *language;
+  NSArray *supportedLanguages;
 
   auth = [[WOApplication application]
 	   authenticatorInContext: context];
@@ -93,12 +87,14 @@ static NSArray *supportedLanguages = nil;
          [authCookie setIsSecure: YES]; */
       [response addCookie: authCookie];
 
+      supportedLanguages = [[SOGoSystemDefaults sharedSystemDefaults]
+                             supportedLanguages];
       if (language && [supportedLanguages containsObject: language])
 	{
-	  user = [SOGoUser userWithLogin: userName roles: nil];
-	  [[user userDefaults] setObject: language forKey: @"Language"];
-	  [[user userDefaults] synchronize];
-	  [user invalidateLanguage];
+	  ud = [[SOGoUser userWithLogin: userName roles: nil]
+                           userDefaults];
+	  [ud setLanguage: language];
+	  [ud synchronize];
 	}
     }
   else
@@ -160,11 +156,7 @@ static NSArray *supportedLanguages = nil;
 
 - (NSString *) loginSuffix
 {
-  NSUserDefaults *ud;
-
-  ud = [NSUserDefaults standardUserDefaults];
-
-  return [ud stringForKey: @"SOGoLoginSuffix"];
+  return [[SOGoSystemDefaults sharedSystemDefaults] loginSuffix];
 }
 
 - (BOOL) hasLoginSuffix
@@ -184,13 +176,13 @@ static NSArray *supportedLanguages = nil;
 
 - (NSArray *) languages
 {
-  return supportedLanguages;
+  return [[SOGoSystemDefaults sharedSystemDefaults] supportedLanguages];
 }
 
-- (NSString *) language
-{
-  return [SOGoUser language];
-}
+// - (NSString *) language
+// {
+//   return [SOGoUser language];
+// }
 
 - (NSString *) languageText
 {
@@ -212,6 +204,5 @@ static NSArray *supportedLanguages = nil;
 
   return aString;
 }
-
 
 @end /* SOGoRootPage */

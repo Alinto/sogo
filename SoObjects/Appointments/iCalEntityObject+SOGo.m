@@ -36,6 +36,7 @@
 
 #import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
+#import <SoObjects/SOGo/SOGoUserDefaults.h>
 
 #import "iCalPerson+SOGo.h"
 
@@ -61,7 +62,8 @@ _computeAllDayOffset()
 
   application = [WOApplication application];
   user = [[application context] activeUser];
-  offset = utcOffset - [[user timeZone] secondsFromGMT];
+  tz = [[user userDefaults] timeZone];
+  offset = utcOffset - [tz secondsFromGMT];
 
   return offset;
 }

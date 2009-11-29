@@ -37,7 +37,7 @@
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoUserDefaults.h>
+#import <SOGo/SOGoUserProfile.h>
 
 #import "SOGoToolBackup.h"
 
@@ -301,7 +301,7 @@
 {
   NSEnumerator *ldapSources;
   NSString *sourceID;
-  LDAPSource *currentSource;
+  NSObject <SOGoSource> *currentSource;
   SOGoUserManager *lm;
   NSDictionary *userEntry;
   BOOL done;

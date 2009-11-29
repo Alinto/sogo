@@ -43,7 +43,6 @@
   NSMutableArray *hoursToDisplay;
   NSArray *weekDays;
   SOGoDateFormatter *dateFormatter;
-  NSUserDefaults *ud;
   NSString *timeFormat;
 }
 

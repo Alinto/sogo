@@ -25,7 +25,6 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSTimeZone.h>
-#import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSValue.h>
 
 #import <NGObjWeb/SoSecurityManager.h>
@@ -34,6 +33,7 @@
 
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
 
 #import <SoObjects/SOGo/NSArray+Utilities.h>
 
@@ -45,17 +45,11 @@
 
 - (void) checkDefaultModulePreference
 {
-  NSUserDefaults *userd;
-  NSString *pref;
+  SOGoUserDefaults *ud;
 
-  userd = [[context activeUser] userDefaults];
-  pref = [userd stringForKey: @"SOGoUIxDefaultModule"];
-
-  if (pref && [pref isEqualToString: @"Last"])
-    {
-      [userd setObject: @"Calendar" forKey: @"SOGoUIxLastModule"];
-      [userd synchronize];
-    }
+  ud = [[context activeUser] userDefaults];
+  if ([ud rememberLastModule])
+    [ud setLoginModule: @"Calendar"];
 }
 
 - (void) _setupContext
@@ -71,12 +65,12 @@
 
   module = [clientObject nameInContainer];
 
-  ud = [activeUser userSettings];
-  moduleSettings = [ud objectForKey: module];
+  us = [activeUser userSettings];
+  moduleSettings = [us objectForKey: module];
   if (!moduleSettings)
     {
       moduleSettings = [NSMutableDictionary dictionary];
-      [ud setObject: moduleSettings forKey: module];
+      [us setObject: moduleSettings forKey: module];
     }
 }
 
@@ -84,7 +78,7 @@
 {
   static NSMutableArray *monthMenuItems = nil;
   unsigned int count;
- 
+
   if (!monthMenuItems)
     {
       monthMenuItems = [[NSMutableArray alloc] initWithCapacity: 12];
@@ -184,19 +178,27 @@
   else
     return [self responseWithStatus: 400];
 
-  [ud synchronize];
+  [us synchronize];
 
   return [self responseWithStatus: 204];
 }
 
 - (unsigned int) firstDayOfWeek
 {
-  return [[context activeUser] firstDayOfWeek];
+  SOGoUserDefaults *ud;
+
+  ud = [[context activeUser] userDefaults];
+
+  return [ud firstDayOfWeek];
 }
 
 - (unsigned int) dayStartHour
 {
-  return [[context activeUser] dayStartHour];
+  SOGoUserDefaults *ud;
+
+  ud = [[context activeUser] userDefaults];
+
+  return [ud dayStartHour];
 }
 
 - (NSString *) currentView

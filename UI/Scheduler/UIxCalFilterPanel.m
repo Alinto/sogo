@@ -24,7 +24,6 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSKeyValueCoding.h>
-#import <Foundation/NSUserDefaults.h>
 
 #import <NGObjWeb/WOContext.h>
 
@@ -113,13 +112,13 @@ static NSArray *filters = nil;
 - (NSString *) selectedFilter
 {
   NSString *selectedFilter;
-  NSUserDefaults *ud;
+  SOGoUserSettings *us;
 
   selectedFilter = [self queryParameterForKey: @"filterpopup"];
   if (![selectedFilter length])
     {
-      ud = [[context activeUser] userDefaults];
-      selectedFilter = [ud objectForKey: @"CalendarDefaultFilter"];
+      us = [[context activeUser] userSettings];
+      selectedFilter = [us objectForKey: @"CalendarDefaultFilter"];
     }
   if (![selectedFilter length])
     selectedFilter = @"view_today";

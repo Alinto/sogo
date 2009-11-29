@@ -23,7 +23,6 @@
 #import <Foundation/NSFileManager.h>
 #import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSString.h>
-#import <Foundation/NSUserDefaults.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoSubContext.h>
@@ -78,30 +77,15 @@
 
 @implementation UIxMailEditor
 
-static BOOL showInternetMarker = NO;
-static NSDictionary *internetMailHeaders = nil;
 static NSArray *infoKeys = nil;
 
 + (void) initialize
 {
-  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  
-  infoKeys = [[NSArray alloc] initWithObjects:
-				@"subject", @"to", @"cc", @"bcc", 
-			      @"from", @"replyTo", @"inReplyTo",
-			      @"priority", nil];
-  
-  /* Internet mail settings */
-  
-  showInternetMarker = [ud boolForKey:@"SOGoShowInternetMarker"];
-  if (!showInternetMarker)
-    NSLog(@"Note: visual Internet marker on mail editor disabled "
-	  @"(SOGoShowInternetMarker)");
-  
-  internetMailHeaders = 
-    [[ud dictionaryForKey:@"SOGoInternetMailHeaders"] copy];
-  NSLog (@"Note: specified %d headers for mails send via the Internet.", 
-	[internetMailHeaders count]);
+  if (!infoKeys)
+    infoKeys = [[NSArray alloc] initWithObjects:
+                                  @"subject", @"to", @"cc", @"bcc", 
+                                @"from", @"replyTo", @"inReplyTo",
+                                @"priority", nil];
 }
 
 - (id) init

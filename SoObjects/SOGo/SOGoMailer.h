@@ -23,9 +23,13 @@
 #ifndef SOGOMAILER_H
 #define SOGOMAILER_H
 
+#import <Foundation/NSObject.h>
+
 @class NSArray;
 @class NSException;
 @class NSString;
+
+@class SOGoDomainDefaults;
 
 @protocol NGMimePart;
 
@@ -35,7 +39,9 @@
   NSString *smtpServer;
 }
 
-+ (id) sharedMailer;
++ (SOGoMailer *) mailerWithDomainDefaults: (SOGoDomainDefaults *) dd;
+
+- (id) initWithDomainDefaults: (SOGoDomainDefaults *) dd;
 
 - (NSException *) sendMailData: (NSData *) data
 		  toRecipients: (NSArray *) recipients

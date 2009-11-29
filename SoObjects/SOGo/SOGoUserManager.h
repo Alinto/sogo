@@ -33,6 +33,8 @@
 
 @class LDAPSource;
 
+@protocol SOGoSource;
+
 @interface SOGoUserManager : NSObject
 {
   @private
@@ -42,17 +44,16 @@
 
 + (id) sharedUserManager;
 
-+ (BOOL) defaultMailDomainIsConfigured;
-
-- (NSArray *) sourceIDs;
-- (NSDictionary *) metadataForSourceID: (NSString *) sourceID;
+- (NSArray *) sourceIDsInDomain: (NSString *) domain;
 - (NSArray *) authenticationSourceIDs;
-- (NSArray *) addressBookSourceIDs;
+- (NSArray *) addressBookSourceIDsInDomain: (NSString *) domain;
 
-- (LDAPSource *) sourceWithID: (NSString *) sourceID;
+- (NSObject <SOGoSource> *) sourceWithID: (NSString *) sourceID;
+- (NSDictionary *) metadataForSourceID: (NSString *) sourceID;
 - (NSString *) displayNameForSourceWithID: (NSString *) sourceID;
 - (NSDictionary *) contactInfosForUserWithUIDorEmail: (NSString *) uid;
-- (NSArray *) fetchContactsMatching: (NSString *) match;
+- (NSArray *) fetchContactsMatching: (NSString *) match
+                           inDomain: (NSString *) domain;
 - (NSArray *) fetchUsersMatching: (NSString *) filter;
 
 - (NSString *) getCNForUID: (NSString *) uid;

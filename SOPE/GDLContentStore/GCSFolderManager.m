@@ -75,10 +75,6 @@ static NSString   *GCSGenericFolderTypeName = @"Container";
 static const char *GCSPathColumnPattern     = "c_path%i";
 static NSCharacterSet *asciiAlphaNumericCS  = nil;
 
-#if defined(THREADSAFE)
-static NSLock *lock;
-#endif
-
 + (void) initialize
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
@@ -91,9 +87,6 @@ static NSLock *lock;
   debugOn     = [ud boolForKey: @"GCSFolderManagerDebugEnabled"];
   debugSQLGen = [ud boolForKey: @"GCSFolderManagerSQLDebugEnabled"];
   emptyArray  = [[NSArray alloc] init];
-#if defined(THREADSAFE)
-  lock = [NSLock new];
-#endif
   if (!asciiAlphaNumericCS)
     {
       asciiAlphaNumericCS
@@ -109,9 +102,6 @@ static NSLock *lock;
   NSString *s;
   NSURL    *url;
 
-#if defined(THREADSAFE)
-  [lock lock];
-#endif
   if (!fm)
     {
       s = [[NSUserDefaults standardUserDefaults] stringForKey:@"OCSFolderInfoURL"];
@@ -133,9 +123,6 @@ static NSLock *lock;
       if (debugOn)
         [self debugWithFormat:@"Note: setup default manager at: %@", url];
     }
-#if defined(THREADSAFE)
-  [lock unlock];
-#endif
       
   return fm;
 }

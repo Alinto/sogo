@@ -21,7 +21,6 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
-#import <Foundation/NSUserDefaults.h>
 
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WORequest.h>

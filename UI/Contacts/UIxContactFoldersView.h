@@ -28,7 +28,7 @@
 
 @interface UIxContactFoldersView : UIxComponent
 {
-  NSUserDefaults *ud;
+  SOGoUserSettings *us;
   NSString *selectorComponentClass;
   NSMutableDictionary *moduleSettings;
   id currentFolder;

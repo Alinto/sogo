@@ -30,9 +30,13 @@
 
 @protocol SOGoSource
 
-+ (id) sourceFromUDSource: (NSDictionary *) udSource;
++ (id) sourceFromUDSource: (NSDictionary *) udSource
+                 inDomain: (NSString *) domain;
 
-- (id) initFromUDSource: (NSDictionary *) udSource;
+- (id) initFromUDSource: (NSDictionary *) udSource
+               inDomain: (NSString *) domain;
+
+- (NSString *) domain;
 
 - (BOOL) checkLogin: (NSString *) login
 	andPassword: (NSString *) password;

@@ -21,9 +21,9 @@
  */
 
 #import <Foundation/Foundation.h>
-#import <SoObjects/SOGo/NSArray+Utilities.h>
-#import <SoObjects/SOGo/NSDictionary+Utilities.h>
-#import <SoObjects/SOGo/NSString+Utilities.h>
+#import <SOGo/NSArray+Utilities.h>
+#import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/NSString+Utilities.h>
 
 #import <NGObjWeb/SoSecurityManager.h>
 #import <NGObjWeb/SoUser.h>
@@ -36,11 +36,12 @@
 #import <NGExtensions/NSString+misc.h>
 #import <NGCards/NGCards.h>
 
-#import <SoObjects/Appointments/SOGoAppointmentFolder.h>
-#import <SoObjects/Appointments/SOGoAppointmentObject.h>
-#import <SoObjects/SOGo/NSArray+Utilities.h>
-#import <SoObjects/SOGo/SOGoUser.h>
-#import <SoObjects/SOGo/SOGoObject.h>
+#import <Appointments/SOGoAppointmentFolder.h>
+#import <Appointments/SOGoAppointmentObject.h>
+#import <SOGo/NSArray+Utilities.h>
+#import <SOGo/SOGoObject.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
 
 #import <SOGoUI/SOGoAptFormatter.h>
 
@@ -56,27 +57,15 @@
 
 @implementation UIxCalView
 
-static BOOL shouldDisplayWeekend = NO;
-
-+ (void) initialize
-{
-  static BOOL didInit = NO;
-  NSUserDefaults *ud;
-
-  if (didInit) return;
-
-  ud = [NSUserDefaults standardUserDefaults];
-  shouldDisplayWeekend = [ud boolForKey: @"SOGoShouldDisplayWeekend"];
-  didInit = YES;
-}
-
 - (id) init
 {
+  SOGoUserDefaults *ud;
+
   self = [super init];
   if (self)
     {
-      timeZone = [[context activeUser] timeZone];
-      [timeZone retain];
+      ud = [[context activeUser] userDefaults];
+      ASSIGN (timeZone, [ud timeZone]);
       aptFormatter
         = [[SOGoAptFormatter alloc] initWithDisplayTimeZone: timeZone];
       aptTooltipFormatter
@@ -355,7 +344,7 @@ static BOOL shouldDisplayWeekend = NO;
 {
   SOGoUser *activeUser;
   NSString *module;
-  NSUserDefaults *ud;
+  SOGoUserSettings *us;
   NSMutableDictionary *moduleSettings;
   SOGoAppointmentFolders *clientObject;
 
@@ -364,18 +353,18 @@ static BOOL shouldDisplayWeekend = NO;
 
   module = [clientObject nameInContainer];
 
-  ud = [activeUser userSettings];
-  moduleSettings = [ud objectForKey: module];
+  us = [activeUser userSettings];
+  moduleSettings = [us objectForKey: module];
   if (!moduleSettings)
     {
       moduleSettings = [NSMutableDictionary dictionary];
-      [ud setObject: moduleSettings forKey: module];
+      [us setObject: moduleSettings forKey: module];
     }
   if (![theView isEqualToString: (NSString*)[moduleSettings objectForKey: @"View"]])
     {
       [moduleSettings setObject: theView
 			 forKey: @"View"];
-      [ud synchronize];
+      [us synchronize];
     }
 }
 
@@ -470,17 +459,6 @@ static BOOL shouldDisplayWeekend = NO;
 {
   return 23;
 }
-
-- (BOOL) shouldDisplayWeekend
-{
-  return shouldDisplayWeekend;
-}
-
-- (BOOL) shouldHideWeekend
-{
-  return ![self shouldDisplayWeekend];
-}
-
 
 /* URLs */
 

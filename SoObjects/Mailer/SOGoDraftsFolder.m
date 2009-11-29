@@ -22,7 +22,6 @@
 
 #import <Foundation/NSDate.h>
 #import <Foundation/NSString.h>
-#import <Foundation/NSUserDefaults.h>
 
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <SoObjects/SOGo/SOGoUser.h>
@@ -31,28 +30,10 @@
 
 #import "SOGoDraftsFolder.h"
 
-static NSString *spoolFolder = nil;
-
 static NSTimeInterval lastNew = 0;
 static unsigned int newCount;
 
 @implementation SOGoDraftsFolder
-
-+ (void) initialize
-{
-  NSUserDefaults *ud;
-
-  if (!spoolFolder)
-    {
-      ud = [NSUserDefaults standardUserDefaults];
-      spoolFolder = [ud stringForKey:@"SOGoMailSpoolPath"];
-      if (![spoolFolder length])
-       spoolFolder = @"/tmp/";
-      [spoolFolder retain];
-
-      NSLog(@"Note: using SOGo mail spool folder: %@", spoolFolder);
-    }
-}
 
 - (NSString *) generateNameForNewDraft
 {
@@ -101,6 +82,5 @@ static unsigned int newCount;
 {
   return YES;
 }
-
 
 @end

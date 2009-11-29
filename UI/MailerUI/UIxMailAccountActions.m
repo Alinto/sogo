@@ -23,7 +23,6 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
-#import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSValue.h>
 
 #import <NGObjWeb/WOContext+SoObjects.h>
@@ -34,13 +33,15 @@
 
 #import <EOControl/EOQualifier.h>
 
-#import <SoObjects/Mailer/SOGoMailAccount.h>
-#import <SoObjects/Mailer/SOGoDraftObject.h>
-#import <SoObjects/Mailer/SOGoDraftsFolder.h>
-#import <SoObjects/SOGo/NSArray+Utilities.h>
-#import <SoObjects/SOGo/NSObject+Utilities.h>
-#import <SoObjects/SOGo/NSString+Utilities.h>
-#import <SoObjects/SOGo/SOGoUser.h>
+#import <Mailer/SOGoMailAccount.h>
+#import <Mailer/SOGoDraftObject.h>
+#import <Mailer/SOGoDraftsFolder.h>
+#import <SOGo/NSArray+Utilities.h>
+#import <SOGo/NSObject+Utilities.h>
+#import <SOGo/NSString+Utilities.h>
+#import <SOGo/SOGoDomainDefaults.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
 
 #import "../Common/WODirectAction+SOGo.h"
 
@@ -189,13 +190,12 @@
       SOGoMailFolder *inbox;
       NGImap4Client *client;
       NSString *inboxName;
-      NSUserDefaults *ud;
+      SOGoDomainDefaults *dd;
       id infos;
-      
       float quota;
 
-      ud = [NSUserDefaults standardUserDefaults];
-      quota = [ud floatForKey: @"SOGoSoftQuotaRatio"];
+      dd = [[context activeUser] domainDefaults];
+      quota = [dd softQuotaRatio];
       inbox = [co inboxFolderInContext: context];
       inboxName = [NSString stringWithFormat: @"/%@", [inbox relativeImap4Name]];
       client = [[inbox imap4Connection] client];
@@ -232,6 +232,7 @@
 {
   SOGoDraftsFolder *drafts;
   SOGoDraftObject *newDraftMessage;
+  SOGoUserDefaults *ud;
   NSString *urlBase, *url, *value, *signature;
   NSArray *mailTo;
   NSMutableDictionary *headers;
@@ -261,7 +262,8 @@
   if (save)
     [newDraftMessage setHeaders: headers];
 
-  signature = [[context activeUser] signature];
+  ud = [[context activeUser] userDefaults];
+  signature = [ud mailSignature];
   if ([signature length])
     {
       [newDraftMessage

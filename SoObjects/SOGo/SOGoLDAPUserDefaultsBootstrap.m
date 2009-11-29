@@ -1,4 +1,4 @@
-/* SOGoLDAPUserDefaultsBootstrap.m - this file is part of $PROJECT_NAME_HERE$
+/* SOGoLDAPUserDefaultsBootstrap.m - this file is part of SOGo
  *
  * Copyright (C) 2009 Inverse inc.
  *
@@ -19,8 +19,6 @@
  * the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-
-#import <stdio.h>
 
 #import "SOGoLDAPUserDefaults.h"
 

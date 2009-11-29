@@ -32,7 +32,7 @@
 {
   NSArray *sortedUIDs; /* we always need to retrieve all anyway! */
   NSArray *messages;
-  NSMutableArray *userDefinedOrder;
+  NSArray *columnsOrder;
   unsigned firstMessageNumber;
   id message;
   EOQualifier *qualifier;

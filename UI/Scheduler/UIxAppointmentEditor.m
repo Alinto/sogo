@@ -43,17 +43,18 @@
 #import <NGCards/iCalTimeZone.h>
 #import <NGCards/iCalDateTime.h>
 
-#import <SoObjects/SOGo/NSDictionary+Utilities.h>
-#import <SoObjects/SOGo/SOGoUser.h>
-#import <SoObjects/SOGo/SOGoDateFormatter.h>
-#import <SoObjects/SOGo/SOGoContentObject.h>
-#import <SoObjects/SOGo/SOGoPermissions.h>
-#import <SoObjects/Appointments/iCalPerson+SOGo.h>
-#import <SoObjects/Appointments/SOGoAppointmentFolder.h>
-#import <SoObjects/Appointments/SOGoAppointmentObject.h>
-#import <SoObjects/Appointments/SOGoAppointmentOccurence.h>
+#import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/SOGoContentObject.h>
+#import <SOGo/SOGoDateFormatter.h>
+#import <SOGo/SOGoPermissions.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
+#import <Appointments/iCalPerson+SOGo.h>
+#import <Appointments/SOGoAppointmentFolder.h>
+#import <Appointments/SOGoAppointmentObject.h>
+#import <Appointments/SOGoAppointmentOccurence.h>
 
-#import <SoObjects/Appointments/SOGoComponentOccurence.h>
+#import <Appointments/SOGoComponentOccurence.h>
 
 #import "UIxComponentEditor.h"
 #import "UIxAppointmentEditor.h"
@@ -207,22 +208,22 @@
 {
   NSCalendarDate *newStartDate, *now;
   NSTimeZone *timeZone;
-  SOGoUser *user;
+  SOGoUserDefaults *ud;
   int hour;
   unsigned int uStart, uEnd;
 
   newStartDate = [self selectedDate];
   if (![[self queryParameterForKey: @"hm"] length])
     {
+      ud = [[context activeUser] userDefaults];
+      timeZone = [ud timeZone];
       now = [NSCalendarDate calendarDate];
-      timeZone = [[context activeUser] timeZone];
       [now setTimeZone: timeZone];
 
-      user = [context activeUser];
-      uStart = [user dayStartHour];
+      uStart = [ud dayStartHour];
       if ([now isDateOnSameDay: newStartDate])
         {
-	  uEnd = [user dayEndHour];
+	  uEnd = [ud dayEndHour];
           hour = [now hourOfDay];
           if (hour < uStart)
             newStartDate = [now hour: uStart minute: 0];
@@ -245,10 +246,13 @@
   NSTimeZone *timeZone;
   unsigned int minutes;
   SOGoObject <SOGoComponentOccurence> *co;
+  SOGoUserDefaults *ud;
 
   [self event];
   co = [self clientObject];
-  timeZone = [[context activeUser] timeZone];
+
+  ud = [[context activeUser] userDefaults];
+  timeZone = [ud timeZone];
 
   if ([co isNew]
       && [co isKindOfClass: [SOGoCalendarComponent class]])
@@ -343,8 +347,13 @@
   iCalRecurrenceRule *rule;
   NSEnumerator *rules;
   NSCalendarDate *untilDate;
+  SOGoUserDefaults *ud;
+  NSTimeZone *timeZone;
   
   rules = [[event recurrenceRules] objectEnumerator];
+  ud = [[context activeUser] userDefaults];
+  timeZone = [ud timeZone];
+
   while ((rule = [rules nextObject]))
     {
       untilDate = [rule untilDate];
@@ -354,7 +363,7 @@
 	  NSCalendarDate *date;
 
 	  date = [[event startDate] copy];
-	  [date setTimeZone: [[context activeUser] timeZone]];
+	  [date setTimeZone: timeZone];
 	  untilDate = [untilDate dateByAddingYears:0
 				 months:0
 				 days:0
@@ -431,7 +440,7 @@
   NSDictionary *data;
   NSCalendarDate *firstDate, *eventDate;
   NSTimeZone *timeZone;
-  SOGoUser *user;
+  SOGoUserDefaults *ud;
   SOGoCalendarComponent *co;
   iCalEvent *master;
   BOOL resetAlarm;
@@ -440,8 +449,8 @@
   [self event];
 
   result = [self responseWithStatus: 200];
-  user = [context activeUser];
-  timeZone = [user timeZone];
+  ud = [[context activeUser] userDefaults];
+  timeZone = [ud timeZone];
   eventDate = [event startDate];
   [eventDate setTimeZone: timeZone];
   co = [self clientObject];
@@ -504,6 +513,7 @@
                      inContext: (WOContext *) _ctx
 {
   int nbrDays;
+  SOGoUserDefaults *ud;
   
   [self event];
   
@@ -526,8 +536,10 @@
   if ([[self clientObject] isNew])
     {
       iCalTimeZone *tz;
+
+      ud = [[context activeUser] userDefaults];
       
-      tz = [iCalTimeZone timeZoneForName: [[[context activeUser] timeZone] name]];
+      tz = [iCalTimeZone timeZoneForName: [ud timeZoneName]];
       [[event parent] addTimeZone: tz];
       [(iCalDateTime *)[event uniqueChildWithTag: @"dtstart"] setTimeZone: tz];
       [(iCalDateTime *)[event uniqueChildWithTag: @"dtend"] setTimeZone: tz];

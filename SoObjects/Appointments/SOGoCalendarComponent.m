@@ -23,7 +23,6 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
-#import <Foundation/NSUserDefaults.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoSecurityManager.h>
@@ -45,10 +44,12 @@
 #import <SOGo/SOGoUserManager.h>
 #import <SOGo/NSCalendarDate+SOGo.h>
 #import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoMailer.h>
 #import <SOGo/SOGoGroup.h>
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/WORequest+SOGo.h>
 #import <Appointments/SOGoAppointmentFolder.h>
 
@@ -61,27 +62,7 @@
 #import "SOGoCalendarComponent.h"
 #import "SOGoComponentOccurence.h"
 
-static BOOL sendEMailNotifications = NO;
-static BOOL sendEMailReceipts = NO;
-
 @implementation SOGoCalendarComponent
-
-+ (void) initialize
-{
-  NSUserDefaults      *ud;
-  static BOOL         didInit = NO;
-  
-  if (!didInit)
-    {
-      didInit = YES;
-  
-      ud = [NSUserDefaults standardUserDefaults];
-      sendEMailNotifications
-        = [ud boolForKey: @"SOGoAppointmentSendEMailNotifications"];
-      sendEMailReceipts
-        = [ud boolForKey: @"SOGoAppointmentSendEMailReceipts"];
-    }
-}
 
 - (id) init
 {
@@ -419,19 +400,21 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
 {
   NSMutableArray *allAttendees;
   NSEnumerator *enumerator;
-  NSString *organizerEmail;
+  NSString *organizerEmail, *domain;
   iCalPerson *currentAttendee;
   SOGoGroup *group;
   BOOL doesIncludeGroup;
   unsigned int i;
 
+  domain = [[context activeUser] domain];
   organizerEmail = [[theEvent organizer] rfc822Email];
   doesIncludeGroup = NO;
   allAttendees = [NSMutableArray arrayWithArray: [theEvent attendees]];
   enumerator = [[theEvent attendees] objectEnumerator];
   while ((currentAttendee = [enumerator nextObject]))
     {
-      group = [SOGoGroup groupWithEmail: [currentAttendee rfc822Email]];
+      group = [SOGoGroup groupWithEmail: [currentAttendee rfc822Email]
+                               inDomain: domain];
       if (group)
 	{
 	  iCalPerson *person;
@@ -581,18 +564,15 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
           : nil);
 }
 
-- (BOOL) sendEMailNotifications
-{
-  return sendEMailNotifications;
-}
-
 - (NSTimeZone *) timeZoneForUser: (NSString *) email
 {
   NSString *uid;
+  SOGoUserDefaults *ud;
 
   uid = [[SOGoUserManager sharedUserManager] getUIDForEmail: email];
+  ud = [[SOGoUser userWithLogin: uid] userDefaults];
 
-  return [[SOGoUser userWithLogin: uid] timeZone];
+  return [ud timeZone];
 }
 
 - (void) sendEMailUsingTemplateNamed: (NSString *) newPageName
@@ -613,15 +593,17 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
   NGMimeBodyPart *bodyPart;
   NGMimeMultipartBody *body;
   SOGoUser *ownerUser;
+  SOGoDomainDefaults *dd;
 
-  if (sendEMailNotifications
-      && [object isStillRelevant])
+  ownerUser = [SOGoUser userWithLogin: owner];
+  dd = [ownerUser domainDefaults];
+  if ([dd appointmentSendEMailNotifications] && [object isStillRelevant])
     {
+      language = [[ownerUser userDefaults] language];
       count = [attendees count];
       if (count)
 	{
 	  /* sender */
-	  ownerUser = [SOGoUser userWithLogin: owner];
 	  //currentUser = [context activeUser];
 	  //shortSenderEmail = [[currentUser allEmails] objectAtIndex: 0];
 	  //  senderEmail = [NSString stringWithFormat: @"%@ <%@>",
@@ -651,7 +633,6 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
 		  recipient = [attendee mailAddress];
 		  email = [attendee rfc822Email];
 
-		  language = [ownerUser language];
 #warning this could be optimized in a class hierarchy common with the	\
   SOGoObject acl notification mechanism
 		  /* create page name */
@@ -722,7 +703,7 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
 		  [body release];
 
 		  /* send the damn thing */
-		  [[SOGoMailer sharedMailer]
+		  [[SOGoMailer mailerWithDomainDefaults: dd]
 		    sendMimePart: msg
 		    toRecipients: [NSArray arrayWithObject: email]
 		    sender: shortSenderEmail];
@@ -747,24 +728,23 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
   NGMimeBodyPart *bodyPart;
   NGMimeMultipartBody *body;
   NSData *bodyData;
-  SOGoUser *ownerUser;
+  SOGoDomainDefaults *dd;
 
-  if (sendEMailNotifications)
+  dd = [from domainDefaults];
+  if ([dd appointmentSendEMailNotifications])
     {
       /* get WOApplication instance */
       app = [WOApplication application];
 
-      //ownerUser = [SOGoUser userWithLogin: owner];
-      ownerUser = from;
-      language = [ownerUser language];
+      language = [[from userDefaults] language];
       /* create page name */
-      pageName 
-	= [NSString stringWithFormat: @"SOGoAptMail%@ICalReply", language];
+      pageName = [NSString stringWithFormat: @"SOGoAptMail%@ICalReply",
+                           language];
       /* construct message content */
       p = [app pageWithName: pageName inContext: context];
       [p setApt: event];
 
-      attendee = [event findParticipant: ownerUser];
+      attendee = [event findParticipant: from];
       [p setAttendee: attendee];
 
       /* construct message */
@@ -816,7 +796,7 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
 
       /* send the damn thing */
       email = [recipient rfc822Email];
-      [[SOGoMailer sharedMailer]
+      [[SOGoMailer mailerWithDomainDefaults: dd]
 	sendMimePart: msg
 	toRecipients: [NSArray arrayWithObject: email]
 	sender: [attendee rfc822Email]];
@@ -850,9 +830,12 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
   NGMutableHashMap *headerMap;
   NGMimeMessage *msg;
   SOGoUser *currentUser;
+  SOGoDomainDefaults *dd;
   NSDictionary *identity;
 
-  if (sendEMailReceipts && [attendees count])
+  currentUser = [context activeUser];
+  if ([[currentUser userDefaults] appointmentSendEMailReceipts]
+      && [attendees count])
     {
       pageName = [NSString stringWithFormat: @"SOGoAptMail%@Receipt",
                            template];
@@ -861,7 +844,6 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
       [page setApt: object];
       [page setRecipients: attendees];
 
-      currentUser = [context activeUser];
       identity = [currentUser primaryIdentity];
 
       /* construct message */
@@ -884,7 +866,8 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
 
       /* send the damn thing */
       senderEmail = [identity objectForKey: @"email"];
-      [[SOGoMailer sharedMailer]
+      dd = [currentUser domainDefaults];
+      [[SOGoMailer mailerWithDomainDefaults: dd]
 		    sendMimePart: msg
 		    toRecipients: [NSArray arrayWithObject: senderEmail]
                           sender: senderEmail];

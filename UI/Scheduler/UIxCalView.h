@@ -86,7 +86,6 @@
 - (BOOL) showAMPMDates;
 - (unsigned) dayStartHour;
 - (unsigned) dayEndHour;
-- (BOOL) shouldDisplayWeekend;
 - (BOOL) shouldDisplayRejectedAppointments;
 
 - (NSCalendarDate *) referenceDateForFormatter;

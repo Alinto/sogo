@@ -68,8 +68,10 @@
 @implementation SQLSource
 
 + (id) sourceFromUDSource: (NSDictionary *) udSource
+                 inDomain: (NSString *) domain
 {
-  return [[[self alloc] initFromUDSource: udSource] autorelease];
+  return [[[self alloc] initFromUDSource: udSource
+                                inDomain: domain] autorelease];
 }
 
 - (id) init
@@ -96,7 +98,10 @@
 }
 
 - (id) initFromUDSource: (NSDictionary *) udSource
+               inDomain: (NSString *) sourceDomain
 {
+  NSString *udDomainAttribute;
+
   self = [self init];
 
   ASSIGN(_sourceID, [udSource objectForKey: @"id"]);
@@ -108,7 +113,30 @@
 
   if ([udSource objectForKey: @"viewURL"])
     _viewURL = [[NSURL alloc] initWithString: [udSource objectForKey: @"viewURL"]];
-  
+
+#warning this domain code has no effect yet
+  /* FIXME: the queries below do not setup c_domain. */
+  udDomainAttribute = [udSource objectForKey: @"domainAttribute"];
+  if ([sourceDomain length])
+    {
+      if ([udDomainAttribute length])
+        {
+          [self errorWithFormat: @"cannot define 'domainAttribute'"
+                @" for a domain-based source (%@)", _sourceID];
+          [self autorelease];
+          return nil;
+        }
+      else
+        {
+          ASSIGN (_domain, sourceDomain);
+        }
+    }
+  else
+    {
+      if ([udDomainAttribute length])
+        ASSIGN (_domainAttribute, udDomainAttribute);
+    }
+
   if (!_viewURL)
     {
       [self autorelease];
@@ -116,6 +144,11 @@
     }
 
   return self;
+}
+
+- (NSString *) domain
+{
+  return _domain;
 }
 
 - (BOOL) _isPassword: (NSString *) plainPassword

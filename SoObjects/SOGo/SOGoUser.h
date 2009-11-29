@@ -40,40 +40,41 @@
 @class NSMutableArray;
 @class NSMutableDictionary;
 @class NSString;
-@class NSTimeZone;
 @class NSURL;
-@class NSUserDefaults;
 
 @class WOContext;
 
 @class SOGoAppointmentFolder;
 @class SOGoAppointmentFolders;
 @class SOGoDateFormatter;
+@class SOGoDomainDefaults;
 @class SOGoUserDefaults;
 @class SOGoUserFolder;
+@class SOGoUserProfile;
+@class SOGoUserSettings;
 
-extern NSString *SOGoWeekStartJanuary1;
-extern NSString *SOGoWeekStartFirst4DayWeek;
-extern NSString *SOGoWeekStartFirstFullWeek;
+// @interface SoUser (SOGoExtension)
 
-@interface SoUser (SOGoExtension)
+// - (NSString *) language;
 
-- (NSString *) language;
-
-@end
+// @end
 
 @interface SOGoUser : SoUser
 {
-  SOGoUserDefaults *_defaults, *_settings;
+  SOGoUserDefaults *_defaults;
+  SOGoDomainDefaults *_domainDefaults;
+  SOGoUserSettings *_settings;
   SOGoUserFolder *homeFolder;
   NSString *currentPassword;
+  NSString *domainId;
   NSString *language;
   NSArray *allEmails;
+  NSArray *mailAccounts;
   NSString *cn;
   BOOL propagateCache;
 }
 
-+ (NSString *) language;
+// + (NSString *) language;
 
 + (SOGoUser *) userWithLogin: (NSString *) newLogin;
 
@@ -94,31 +95,22 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 - (NSString *) currentPassword;
 
 /* properties */
+- (NSString *) domain;
+
 - (NSArray *) allEmails;
 - (BOOL) hasEmail: (NSString *) email;
 - (NSString *) systemEmail;
 - (NSString *) cn;
-- (NSURL *) freeBusyURL;
 
 - (SOGoDateFormatter *) dateFormatterInContext: (WOContext *) context;
 
 /* defaults */
-- (NSUserDefaults *) userDefaults;
-- (NSUserDefaults *) userSettings;
+- (SOGoUserDefaults *) userDefaults;
+- (SOGoDomainDefaults *) domainDefaults;
+- (SOGoUserSettings *) userSettings;
 
-- (void) invalidateLanguage;
-- (NSString *) language;
-- (NSTimeZone *) timeZone;
-- (NSTimeZone *) serverTimeZone;
-
-- (unsigned int) firstDayOfWeek;
 - (NSCalendarDate *) firstDayOfWeekForDate: (NSCalendarDate *) date;
 - (unsigned int) dayOfWeekForDate: (NSCalendarDate *) date;
-
-- (unsigned int) dayStartHour;
-- (unsigned int) dayEndHour;
-
-- (NSString *) timeFormat;
 
 - (NSCalendarDate *) firstWeekOfYearForDate: (NSCalendarDate *) date;
 - (unsigned int) weekNumberForDate: (NSCalendarDate *) date;
@@ -128,13 +120,6 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 - (NSArray *) allIdentities;
 - (NSDictionary *) primaryIdentity;
 - (NSMutableDictionary *) defaultIdentity;
-- (NSString *) messageForwarding;
-
-- (NSString *) signature;
-- (NSString *) replyPlacement;
-- (NSString *) signaturePlacement;
-
-- (void) saveMailAccounts;
 
 - (BOOL) isSuperUser;
 
@@ -151,8 +136,6 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 
 - (NSArray *) rolesForObject: (NSObject *) object
                    inContext: (WOContext *) context;
-
-- (void) migrateSignature;
 
 @end
 

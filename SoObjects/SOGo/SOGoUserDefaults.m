@@ -1,554 +1,563 @@
-/*
-  Copyright (C) 2008-2009 Inverse inc.
-  Copyright (C) 2005 SKYRIX Software AG
+/* SOGoUserDefaults.m - this file is part of SOGo
+ *
+ * Copyright (C) 2009 Inverse inc.
+ *
+ * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *
+ * This file is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
 
-  This file is part of SOGo.
+#import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSTimeZone.h>
 
-  SOGo is free software; you can redistribute it and/or modify it under
-  the terms of the GNU Lesser General Public License as published by the
-  Free Software Foundation; either version 2, or (at your option) any
-  later version.
-
-  SOGo is distributed in the hope that it will be useful, but WITHOUT ANY
-  WARRANTY; without even the implied warranty of MERCHANTABILITY or
-  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
-  License for more details.
-
-  You should have received a copy of the GNU Lesser General Public
-  License along with OGo; see the file COPYING.  If not, write to the
-  Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
-  02111-1307, USA.
-*/
-
-#import <Foundation/NSCalendarDate.h>
-#import <Foundation/NSPropertyList.h>
-#import <Foundation/NSUserDefaults.h>
-#import <Foundation/NSValue.h>
-
-#import <NGExtensions/NSNull+misc.h>
-#import <NGExtensions/NSObject+Logs.h>
-
-#import <GDLContentStore/GCSChannelManager.h>
-#import <GDLContentStore/NSURL+GCS.h>
-#import <GDLAccess/EOAdaptorChannel.h>
-#import <GDLAccess/EOAdaptorContext.h>
-#import <GDLAccess/EOAttribute.h>
-
-#import "NSObject+Utilities.h"
 #import "NSString+Utilities.h"
+#define NEEDS_DEFAULTS_SOURCE_INTERNAL 1
+#import "SOGoDomainDefaults.h"
+#import "SOGoSystemDefaults.h"
+#import "SOGoUserProfile.h"
 
-#import "NSDictionary+BSJSONAdditions.h"
 #import "SOGoUserDefaults.h"
-#import "SOGoCache.h"
+
+static Class SOGoUserProfileKlass = Nil;
+
+NSString *SOGoWeekStartJanuary1 = @"January1";
+NSString *SOGoWeekStartFirst4DayWeek = @"First4DayWeek";
+NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 
 @implementation SOGoUserDefaults
 
-static NSString *uidColumnName = @"c_uid";
-
-- (id) initWithTableURL: (NSURL *) theURL
-		    uid: (NSString *) theUID
-	      fieldName: (NSString *) theFieldName
++ (NSString *) userProfileClassName
 {
-  if ((self = [self init]))
-    {
-      if (theURL && [theUID length] > 0
-	  && [theFieldName length] > 0)
-	{
-	  ASSIGN (fieldName, theFieldName);
-	  ASSIGN (url, theURL);
-	  ASSIGN (uid, theUID);
-	  defFlags.ready = NO;
-	  defFlags.isNew = NO;
-	}
-      else
-	{
-	  [self errorWithFormat: @"missing arguments"];
-	  [self release];
-	  self = nil;
-	}
-    }
-
-  return self;
+  return @"SOGoSQLUserProfile";
 }
 
-- (void) dealloc
++ (void) initialize
 {
-  [values release];
-  [url release];
-  [uid release];
-  [fieldName release];
-  [super dealloc];
+  if (!SOGoUserProfileKlass)
+    SOGoUserProfileKlass = NSClassFromString ([self userProfileClassName]);
 }
 
-/* accessors */
-
-- (NSURL *) tableURL
++ (SOGoUserDefaults *) defaultsForUser: (NSString *) userId
+                              inDomain: (NSString *) domainId
 {
-  return url;
-}
+  SOGoUserProfile *up;
+  SOGoUserDefaults *ud;
+  SOGoDefaultsSource *parentSource;
 
-- (NSString *) uid
-{
-  return uid;
-}
+  up = [SOGoUserProfileKlass userProfileWithType: SOGoUserProfileTypeDefaults
+                                          forUID: userId];
+  [up fetchProfile];
+  // if ([_defaults values])
+  //   {
+      // BOOL b;
+      // b = NO;
 
-- (NSString *) fieldName
-{
-  return fieldName;
-}
-
-/* operation */
-
-- (NSString *) fetchJSONProfileFromDB
-{
-  GCSChannelManager *cm;
-  EOAdaptorChannel *channel;
-  NSDictionary *row;
-  NSException *ex;
-  NSString *sql, *value;
-  NSArray *attrs;
-
-  value = nil;
-
-  cm = [GCSChannelManager defaultChannelManager];
-  channel = [cm acquireOpenChannelForURL: [self tableURL]];
-  if (channel)
-    {
-      /* generate SQL */
-      defFlags.ready = YES;
-      sql = [NSString stringWithFormat: @"SELECT %@ FROM %@ WHERE %@ = '%@'",
-                      fieldName, [[self tableURL] gcsTableName],
-                      uidColumnName, [self uid]];
-      /* run SQL */
-      ex = [channel evaluateExpressionX: sql];
-      if (ex)
-        [self errorWithFormat: @"could not run SQL '%@': %@", sql, ex];
-      else
-        {
-          /* fetch schema */
-          attrs = [channel describeResults: NO /* don't beautify */];
-
-          /* fetch values */
-          row = [channel fetchAttributes: attrs withZone: NULL];
-          [channel cancelFetch];
-
-          /* the isNew flag depends on the presence of the row in the
-             database rather than on the existence of the value. */
-          defFlags.isNew = (row == nil);
-
-          value = [row objectForKey: fieldName];
-          if ([value isNotNull])
-            /* The following enables the restitution of coded unicode
-               (\U1234) characters with the Oracle adaptor. */
-            value = [value stringByReplacingString: @"\\\\"
-                                        withString: @"\\"];
-          else
-            value = nil; /* we discard any NSNull instance */
-        }
-
-      [cm releaseChannel: channel];
-    }
-  else
-    {
-      defFlags.ready = NO;
-      [self errorWithFormat:@"failed to acquire channel for URL: %@", 
-            [self tableURL]];
-    }
-
-  return value;
-}
-
-- (NSString *) _convertPListToJSON: (NSString *) plistValue
-{
-  NSData *plistData;
-  NSDictionary *plist;
-  NSString *jsonValue, *error;
-
-  plistData = [plistValue dataUsingEncoding: NSUTF8StringEncoding];
-  plist = [NSPropertyListSerialization propertyListFromData: plistData
-                                           mutabilityOption: NSPropertyListMutableContainers
-                                                     format: NULL
-                                           errorDescription: &error];
-  if (plist)
-    {
-      [self logWithFormat: @"database value for '%@'"
-                  @" (uid: '%@') is a plist", fieldName, uid];
-      jsonValue = [plist jsonStringValue];
-    }
-  else
-    {
-      [self errorWithFormat: @"failed to parse property list value"
-                  @" (error: %@): %@", error, plistValue];
-      jsonValue = nil;
-    }
-
-  if (!jsonValue)
-    jsonValue = @"{}";
-
-  return jsonValue;
-}
-
-- (NSString *) jsonRepresentation
-{
-  SOGoCache *cache;
-  NSString *jsonValue;
-
-  cache = [SOGoCache sharedCache];
-  if ([fieldName isEqualToString: @"c_defaults"])
-    jsonValue = [cache userDefaultsForLogin: uid];
-  else
-    jsonValue = [cache userSettingsForLogin: uid];
-  if ([jsonValue length])
-    {
-      defFlags.ready = YES;
-      defFlags.isNew = NO;
-    }
-  else
-    {
-      jsonValue = [self fetchJSONProfileFromDB];
-      if ([jsonValue length])
-        {
-          if (![jsonValue isJSONString])
-            jsonValue = [self _convertPListToJSON: jsonValue];
-          if ([fieldName isEqualToString: @"c_defaults"])
-            [cache setUserDefaults: jsonValue forLogin: uid];
-          else
-            [cache setUserSettings: jsonValue forLogin: uid];
-        }
-      else
-        jsonValue = @"{}";
-    }
-
-  return jsonValue;
-}
-
-- (void) primaryFetchProfile
-{
-  NSString *jsonValue;
-
-  defFlags.modified = NO;
-  [values release];
-  jsonValue = [self jsonRepresentation];
-  values = [NSMutableDictionary dictionaryWithJSONString: jsonValue];
-  if (values)
-    [values retain];
-  else
-    [self errorWithFormat: @"failure parsing json string: '%@'", jsonValue];
-}
-
-- (BOOL) _isReadyOrRetry
-{
-  BOOL rc;
-
-  if (defFlags.ready)
-    rc = YES;
-  else
-    {
-      [self primaryFetchProfile];
-      rc = defFlags.ready;
-    }
-
-  return rc;
-}
-
-- (NSString *) _sqlJsonRepresentation: (NSString *) jsonRepresentation
-{
-  NSMutableString *sql;
-
-  sql = [jsonRepresentation mutableCopy];
-  [sql autorelease];
-  [sql replaceString: @"\\" withString: @"\\\\"];
-  [sql replaceString: @"'" withString: @"''"];
-
-  return sql;
-}
-
-- (NSString *) generateSQLForInsert: (NSString *) jsonRepresentation
-{
-  NSString *sql;
-
-  if ([jsonRepresentation length])
-    sql = [NSString stringWithFormat: (@"INSERT INTO %@"
-                                       @"            (%@, %@)"
-                                       @"     VALUES ('%@', '%@')"),
-                    [[self tableURL] gcsTableName], uidColumnName, fieldName,
-                    [self uid],
-                    [self _sqlJsonRepresentation: jsonRepresentation]];
-  else
-    sql = nil;
-
-  return sql;
-}
-
-- (NSString *) generateSQLForUpdate: (NSString *) jsonRepresentation
-{
-  NSString *sql;
-
-  if ([jsonRepresentation length])
-    sql = [NSString stringWithFormat: (@"UPDATE %@"
-                                       @"     SET %@ = '%@'"
-                                       @"   WHERE %@ = '%@'"),
-                    [[self tableURL] gcsTableName],
-                    fieldName,
-                    [self _sqlJsonRepresentation: jsonRepresentation],
-                    uidColumnName, [self uid]];
-  else
-    sql = nil;
-
-  return sql;
-}
-
-- (BOOL) storeJSONProfileInDB: (NSString *) jsonRepresentation
-{
-  GCSChannelManager *cm;
-  EOAdaptorChannel *channel;
-  EOAdaptorContext *context;
-  NSException *ex;
-  NSString *sql;
-  BOOL rc;
-
-  rc = NO;
-
-  sql = ((defFlags.isNew)
-         ? [self generateSQLForInsert: jsonRepresentation]
-         : [self generateSQLForUpdate: jsonRepresentation]);
-  cm = [GCSChannelManager defaultChannelManager];
-  channel = [cm acquireOpenChannelForURL: [self tableURL]];
-  if (channel)
-    {
-      context = [channel adaptorContext];
-      if ([context beginTransaction])
-        {
-          defFlags.ready = YES;
-          ex = [channel evaluateExpressionX: sql];
-          if (ex)
-            {
-              [self errorWithFormat: @"could not run SQL '%@': %@", sql, ex];
-              [context rollbackTransaction];
-            }
-          else
-            {
-              rc = YES;
-              defFlags.modified = NO;
-              defFlags.isNew = NO;
-              [context commitTransaction];
-            }
-          [cm releaseChannel: channel];
-        }
-      else
-        {
-          defFlags.ready = NO;
-          [cm releaseChannel: channel immediately: YES];
-        }
-    }
-  else
-    {
-      defFlags.ready = NO;
-      [self errorWithFormat: @"failed to acquire channel for URL: %@", 
-            [self tableURL]];
-    }
-
-  return rc;
-}
-
-- (BOOL) primaryStoreProfile
-{
-  NSString *jsonRepresentation;
-  SOGoCache *cache;
-  BOOL rc;
-
-  jsonRepresentation = [values jsonStringValue];
-  if (jsonRepresentation)
-    {
-      rc = [self storeJSONProfileInDB: jsonRepresentation];
-      if (rc)
-        {
-          cache = [SOGoCache sharedCache];
-          if ([fieldName isEqualToString: @"c_defaults"])
-            [cache setUserDefaults: jsonRepresentation
-                          forLogin: uid];
-          else
-            [cache setUserSettings: jsonRepresentation
-                          forLogin: uid];
-        }
-    }
- else
-   {
-     [self errorWithFormat: @"Unable to convert (%@) to a JSON string for"
-                   @" type: %@ and login: %@", values, fieldName, uid];
-     rc = NO;
-   }
-
-  return rc;
-}
-
-- (void) fetchProfile
-{
-  if (!values)
-    [self primaryFetchProfile];
-}
-
-/* value access */
-- (void) setValues: (NSDictionary *) theValues
-{
-  if ([self _isReadyOrRetry])
-    {
-      [values release];
-      values = [[NSMutableDictionary alloc] init];
-      [values addEntriesFromDictionary: theValues];
-      defFlags.modified = YES;
-    }
-}
-
-- (NSDictionary *) values
-{
-  NSDictionary *returnValues;
-
-  if ([self _isReadyOrRetry])
-    returnValues = values;
-  else
-    returnValues = nil;
-
-  return returnValues;
-}
-
-- (void) setObject: (id) value
-	    forKey: (NSString *) key
-{ 
-  id old;
-
-  if ([self _isReadyOrRetry])
-    {  
-      /* check whether the value is actually modified */
-      if (!defFlags.modified)
-        {
-          old = [values objectForKey: key];
-          if (old == value || [old isEqual: value]) /* value didn't change */
-            return;
-
-#warning Note that this work-around only works for first-level objects.
-          /* we need to this because our typed accessors convert to strings */
-          // TODO: especially problematic with bools
-          if ([value isKindOfClass: [NSString class]]) {
-            if (![old isKindOfClass: [NSString class]])
-              if ([[old description] isEqualToString: value])
-                return;
-          }
-        }
-
-      /* set in hash and mark as modified */
-      if (value)
-        [values setObject: value forKey: key];
-      else
-        [values removeObjectForKey: key];
+      // if (![[_defaults stringForKey: @"MessageCheck"] length])
+      //   {
+      //     [_defaults setObject: defaultMessageCheck forKey: @"MessageCheck"];
+      //     b = YES;
+      //   }
+      // if (![[_defaults stringForKey: @"TimeZone"] length])
+      //   {
+      //     [_defaults setObject: [serverTimeZone name] forKey: @"TimeZone"];
+      //     b = YES;
+      //   }
       
-      defFlags.modified = YES;
-    }
+      // if (b)
+      //   [_defaults synchronize];
+      
+
+      // See explanation in -language
+      // [self invalidateLanguage];
+    // }
+
+  parentSource = [SOGoDomainDefaults defaultsForDomain: domainId];
+  if (!parentSource)
+    parentSource = [SOGoSystemDefaults sharedSystemDefaults];
+
+  ud = [self defaultsSourceWithSource: up
+                      andParentSource: parentSource];
+
+  return ud;
 }
 
-- (id) objectForKey: (NSString *) key
-{
-  return [[self values] objectForKey: key];
-}
-
-- (void) removeObjectForKey: (NSString *) key
-{
-  [self setObject: nil forKey: key];
-}
-
-/* saving changes */
-
-- (BOOL) synchronize
+- (BOOL) _migrateLastModule
 {
   BOOL rc;
-//   if (!defFlags.modified) /* was not modified */
-//     return YES;
+  NSString *loginModule;
 
-  rc = NO;
-
-  /* ensure fetched data (more or less guaranteed by modified!=0) */
-  [self fetchProfile];
-  if (values)
+  loginModule = [source objectForKey: @"SOGoUIxLastModule"];
+  if ([loginModule length])
     {
-      /* store */
-      if ([self primaryStoreProfile])
-        {
-          rc = YES;
-          // /* refetch */
-          // [self primaryFetchProfile];
-        }
-      else
-        {
-          [self primaryFetchProfile];
-          return NO;
-        }
+      rc = YES;
+      /* we need to use the old key, otherwise the migration will be blocked */
+      [self setObject: loginModule forKey: @"SOGoUIxDefaultModule"];
+      [self setRememberLastModule: YES];
+      [self removeObjectForKey: @"SOGoUIxLastModule"];
     }
+  else
+    rc = NO;
 
   return rc;
 }
 
-/* typed accessors */
-
-- (NSArray *) arrayForKey: (NSString *) key
+- (BOOL) _migrateSignature
 {
-  return [self objectForKey: key];
+  BOOL rc;
+  NSString *signature;
+  NSArray *mailAccounts, *identities;
+  NSDictionary *identity;
+
+  mailAccounts = [self arrayForKey: @"MailAccounts"];
+  if (mailAccounts)
+    {
+      rc = YES;
+      if ([mailAccounts count] > 0)
+        {
+          identities = [[mailAccounts objectAtIndex: 0]
+                         objectForKey: @"identifies"];
+          if ([identities count] > 0)
+            {
+              identity = [identities objectAtIndex: 0];
+              signature = [identity objectForKey: @"signature"];
+              if ([signature length])
+                [self setObject: signature forKey: @"MailSignature"];
+            }
+        }
+      [self removeObjectForKey: @"MailAccounts"];
+    }
+  else
+    rc = NO;
+
+  return rc;
 }
 
-- (NSDictionary *) dictionaryForKey: (NSString *) key
+- (BOOL) migrate
 {
-  return [self objectForKey: key];
+  static NSDictionary *migratedKeys = nil;
+
+  if (!migratedKeys)
+    {
+      migratedKeys
+        = [NSDictionary dictionaryWithObjectsAndKeys:
+                          @"SOGoLoginModule", @"SOGoUIxDefaultModule",
+                        @"SOGoTimeFormat", @"TimeFormat",
+                        @"SOGoShortDateFormat", @"ShortDateFormat",
+                        @"SOGoLongDateFormat", @"LongDateFormat",
+                        @"SOGoDayStartTime", @"DayStartTime",
+                        @"SOGoDayEndTime", @"DayEndTime",
+                        @"SOGoFirstDayOfWeek", @"WeekStartDay",
+                        @"SOGoFirstWeekOfYear", @"FirstWeek",
+                        @"SOGoLanguage", @"SOGoDefaultLanguage",
+                        @"SOGoLanguage", @"Language",
+                        @"SOGoMailComposeMessageType", @"ComposeMessagesType",
+                        @"SOGoMailMessageCheck", @"MessageCheck",
+                        @"SOGoMailMessageForwarding", @"MessageForwarding",
+                        @"SOGoMailSignature", @"MailSignature",
+                        @"SOGoMailSignaturePlacement", @"SignaturePlacement",
+                        @"SOGoMailReplyPlacement", @"ReplyPlacement",
+                        @"SOGoTimeZone", @"TimeZone",
+                        @"SOGoCalendarShouldDisplayWeekend", @"SOGoShouldDisplayWeekend",
+                        @"SOGoMailShowSubscribedFoldersOnly", @"showSubscribedFoldersOnly",
+                        @"SOGoReminderEnabled", @"ReminderEnabled",
+                        @"SOGoReminderTime", @"ReminderTime",
+                        @"SOGoRemindWithASound", @"RemindWithASound",
+                        nil];
+      [migratedKeys retain];
+    }
+
+  /* we must not use a boolean operation, otherwise subsequent migrations will
+     not be invoked in the case where rc = YES. */
+  return ([self _migrateLastModule]
+          | [self _migrateSignature]
+          | [self migrateOldDefaultsWithDictionary: migratedKeys]
+          | [super migrate]);
 }
 
-- (NSData *) dataForKey: (NSString *) key
+- (void) setLoginModule: (NSString *) newLoginModule
 {
-  return [self objectForKey: key];
+  [self setObject: newLoginModule forKey: @"SOGoLoginModule"];
 }
 
-- (NSString *) stringForKey: (NSString *) key
+- (NSString *) loginModule
 {
-  return [self objectForKey: key];
+  return [self stringForKey: @"SOGoLoginModule"];
 }
 
-- (BOOL) boolForKey: (NSString *) key
+- (void) setRememberLastModule: (BOOL) rememberLastModule
 {
-  return [[self objectForKey: key] boolValue];
+  [self setBool: rememberLastModule forKey: @"SOGoRememberLastModule"];
 }
 
-- (float) floatForKey: (NSString *) key
+- (BOOL) rememberLastModule
 {
-  return [[self objectForKey: key] floatValue];
+  return [self boolForKey: @"SOGoRememberLastModule"];
 }
 
-- (int) integerForKey: (NSString *) key
+- (void) setAppointmentSendEMailReceipts: (BOOL) newValue
 {
-  return [[self objectForKey: key] intValue];
+  [self setBool: newValue forKey: @"SOGoAppointmentSendEMailReceipts"];
 }
 
-- (void) setBool: (BOOL) value
-	  forKey: (NSString *) key
+- (BOOL) appointmentSendEMailReceipts
 {
-  // TODO: need special support here for int-DB fields
-  [self setObject: [NSNumber numberWithBool: value]
-	forKey: key];
+  return [self boolForKey: @"SOGoAppointmentSendEMailReceipts"];
 }
 
-- (void) setFloat: (float) value
-	   forKey: (NSString *) key
+- (void) setDayStartTime: (NSString *) newValue
 {
-  [self setObject: [NSNumber numberWithFloat: value]
-	forKey: key];
+  [self setObject: newValue forKey: @"SOGoDayStartTime"];
 }
 
-- (void) setInteger: (int) value
-	     forKey: (NSString *) key
+- (NSString *) dayStartTime
 {
-  [self setObject: [NSNumber numberWithInt: value]
-	forKey: key];
+  return [self stringForKey: @"SOGoDayStartTime"];
 }
 
-- (NSString *) description
+- (unsigned int) dayStartHour
 {
-  return [values description];
+  return [[self dayStartTime] timeValue];
 }
 
-@end /* SOGoUserDefaults */
+- (void) setDayEndTime: (NSString *) newValue
+{
+  [self setObject: newValue forKey: @"SOGoDayEndTime"];
+}
+
+- (NSString *) dayEndTime
+{
+  return [self stringForKey: @"SOGoDayEndTime"];
+}
+
+- (unsigned int) dayEndHour
+{
+  return [[self dayEndTime] timeValue];
+}
+
+- (void) setTimeZoneName: (NSString *) newValue
+{
+  [self setObject: newValue forKey: @"SOGoTimeZone"];
+}
+
+- (NSString *) timeZoneName
+{
+  return [self stringForKey: @"SOGoTimeZone"];
+}
+
+- (void) setTimeZone: (NSTimeZone *) newValue
+{
+  [self setTimeZoneName: [newValue name]];
+}
+
+- (NSTimeZone *) timeZone
+{
+  return [NSTimeZone timeZoneWithName: [self timeZoneName]];
+}
+
+- (void) setLongDateFormat: (NSString *) newFormat
+{
+  [self setObject: newFormat forKey: @"SOGoLongDateFormat"];
+}
+
+- (void) unsetLongDateFormat
+{
+  [self removeObjectForKey: @"SOGoLongDateFormat"];
+}
+
+- (NSString *) longDateFormat
+{
+  return [self stringForKey: @"SOGoLongDateFormat"];
+}
+
+- (void) setShortDateFormat: (NSString *) newFormat;
+{
+  [self setObject: newFormat forKey: @"SOGoShortDateFormat"];
+}
+
+- (void) unsetShortDateFormat
+{
+  [self removeObjectForKey: @"SOGoShortDateFormat"];
+}
+
+- (NSString *) shortDateFormat;
+{
+  return [self stringForKey: @"SOGoShortDateFormat"];
+}
+
+- (void) setTimeFormat: (NSString *) newFormat
+{
+  [self setObject: newFormat forKey: @"SOGoTimeFormat"];
+}
+
+- (void) unsetTimeFormat
+{
+  [self removeObjectForKey: @"SOGoTimeFormat"];
+}
+
+- (NSString *) timeFormat
+{
+  return [self stringForKey: @"SOGoTimeFormat"];
+}
+
+- (void) setLanguage: (NSString *) newValue
+{
+  [self setObject: newValue forKey: @"SOGoLanguage"];
+}
+
+- (NSString *) language
+{
+  NSString *language;
+
+  /* see SOGoDomainDefaults for the meaning of this */
+  language = [source objectForKey: @"SOGoLanguage"];
+  if (!(language && [language isKindOfClass: [NSString class]]))
+    language = [(SOGoDomainDefaults *) parentSource language];
+
+  return language;
+}
+
+- (void) setMailShowSubscribedFoldersOnly: (BOOL) newValue
+{
+  [self setBool: newValue forKey: @"SOGoMailShowSubscribedFoldersOnly"];
+}
+
+- (BOOL) mailShowSubscribedFoldersOnly
+{
+  return [self boolForKey: @"SOGoMailShowSubscribedFoldersOnly"];
+}
+
+- (void) setDraftsFolderName: (NSString *) newValue
+{
+  [self setObject: newValue forKey: @"SOGoDraftsFolderName"];
+}
+
+- (NSString *) draftsFolderName
+{
+  return [self stringForKey: @"SOGoDraftsFolderName"];
+}
+
+- (void) setSentFolderName: (NSString *) newValue
+{
+  [self setObject: newValue forKey: @"SOGoSentFolderName"];
+}
+
+- (NSString *) sentFolderName
+{
+  return [self stringForKey: @"SOGoSentFolderName"];
+}
+
+- (void) setTrashFolderName: (NSString *) newValue
+{
+  [self setObject: newValue forKey: @"SOGoTrashFolderName"];
+}
+
+- (NSString *) trashFolderName
+{
+  return [self stringForKey: @"SOGoTrashFolderName"];
+}
+
+- (void) setFirstDayOfWeek: (int) newValue
+{
+  [self setInteger: newValue forKey: @"SOGoFirstDayOfWeek"];
+}
+
+- (int) firstDayOfWeek
+{
+  return [self integerForKey: @"SOGoFirstDayOfWeek"];
+}
+
+- (void) setFirstWeekOfYear: (NSString *) newValue
+{
+  [self setObject: newValue forKey: @"SOGoFirstWeekOfYear"];
+}
+
+- (NSString *) firstWeekOfYear
+{
+  return [self stringForKey: @"SOGoFirstWeekOfYear"];
+}
+
+- (void) setMailListViewColumnsOrder: (NSArray *) newValue
+{
+  [self setObject: newValue forKey: @"SOGoMailListViewColumnsOrder"];
+}
+
+- (NSArray *) mailListViewColumnsOrder
+{
+  return [self stringArrayForKey: @"SOGoMailListViewColumnsOrder"];
+}
+
+- (void) setMailMessageCheck: (NSString *) newValue
+{
+  [self setObject: newValue forKey: @"SOGoMailMessageCheck"];
+}
+
+- (NSString *) mailMessageCheck
+{
+  return [self stringForKey: @"SOGoMailMessageCheck"];
+}
+
+- (void) setMailComposeMessageType: (NSString *) newValue
+{
+  [self setObject: newValue forKey: @"SOGoMailComposeMessageType"];
+}
+
+- (NSString *) mailComposeMessageType
+{
+  return [self stringForKey: @"SOGoMailComposeMessageType"];
+}
+
+- (void) setMailMessageForwarding: (NSString *) newValue
+{
+  [self setObject: newValue forKey: @"SOGoMailMessageForwarding"];
+}
+
+- (NSString *) mailMessageForwarding
+{
+  return [self stringForKey: @"SOGoMailMessageForwarding"];
+}
+
+- (void) setMailReplyPlacement: (NSString *) newValue
+{
+  [self setObject: newValue forKey: @"SOGoMailReplyPlacement"];
+}
+
+- (NSString *) mailReplyPlacement
+{
+  return [self stringForKey: @"SOGoMailReplyPlacement"];
+}
+
+- (void) setMailSignature: (NSString *) newValue
+{
+  [self setObject: newValue forKey: @"SOGoMailSignature"];
+}
+
+- (NSString *) mailSignature
+{
+  return [self stringForKey: @"SOGoMailSignature"];
+}
+
+- (void) setMailSignaturePlacement: (NSString *) newValue
+{
+  [self setObject: newValue forKey: @"SOGoMailSignaturePlacement"];
+}
+
+- (NSString *) mailSignaturePlacement
+{
+  NSString *signaturePlacement;
+
+  if ([[self mailReplyPlacement] isEqualToString: @"below"])
+    // When replying to an email, if the reply is below the quoted text,
+    // the signature must also be below the quoted text.
+    signaturePlacement = @"below";
+  else
+    signaturePlacement = [self stringForKey: @"SOGoMailSignaturePlacement"];
+
+  return signaturePlacement;
+}
+
+- (void) setMailUseOutlookStyleReplies: (BOOL) newValue
+{
+  [self setBool: newValue forKey: @"SOGoMailUseOutlookStyleReplies"];
+}
+
+- (BOOL) mailUseOutlookStyleReplies
+{
+  return [self boolForKey: @"SOGoMailUseOutlookStyleReplies"];
+}
+
+- (void) setCalendarCategories: (NSArray *) newValues
+{
+  [self setObject: newValues forKey: @"SOGoCalendarCategories"];
+}
+
+- (NSArray *) calendarCategories
+{
+  return [self stringArrayForKey: @"SOGoCalendarCategories"];
+}
+
+- (void) setCalendarCategoriesColors: (NSArray *) newValues
+{
+  [self setObject: newValues forKey: @"SOGoCalendarCategoriesColors"];
+}
+
+- (NSArray *) calendarCategoriesColors
+{
+  return [self stringArrayForKey: @"SOGoCalendarCategoriesColors"];
+}
+
+- (void) setCalendarShouldDisplayWeekend: (BOOL) newValue
+{
+  [self setBool: newValue forKey: @"SOGoCalendarShouldDisplayWeekend"];
+}
+
+- (BOOL) calendarShouldDisplayWeekend
+{
+  return [self boolForKey: @"SOGoCalendarShouldDisplayWeekend"];
+}
+
+- (void) setReminderEnabled: (BOOL) newValue
+{
+  [self setBool: newValue forKey: @"SOGoReminderEnabled"];
+}
+
+- (BOOL) reminderEnabled
+{
+  return [self boolForKey: @"SOGoReminderEnabled"];
+}
+
+- (void) setReminderTime: (NSString *) newValue
+{
+  [self setObject: newValue forKey: @"SOGoReminderTime"];
+}
+
+- (NSString *) reminderTime
+{
+  return [self stringForKey: @"SOGoReminderTime"];
+}
+
+- (void) setRemindWithASound: (BOOL) newValue
+{
+  [self setBool: newValue forKey: @"SOGoRemindWithASound"];
+}
+
+- (BOOL) remindWithASound
+{
+  return [self boolForKey: @"SOGoRemindWithASound"];
+}
+
+- (void) setVacationOptions: (NSMutableDictionary *) newValue
+{
+  [self setObject: newValue forKey: @"Vacation"];
+}
+
+- (NSMutableDictionary *) vacationOptions
+{
+  return [self dictionaryForKey: @"Vacation"];
+}
+
+- (void) setForwardOptions: (NSMutableDictionary *) newValue
+{
+  [self setObject: newValue forKey: @"Forward"];
+}
+
+- (NSMutableDictionary *) forwardOptions
+{
+  return [self dictionaryForKey: @"Forward"];
+}
+
+@end

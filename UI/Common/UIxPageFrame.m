@@ -1,3 +1,4 @@
+
 /*
   Copyright (C) 2004-2005 SKYRIX Software AG
 
@@ -21,29 +22,20 @@
 
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
-#import <Foundation/NSUserDefaults.h>
 
 #import <NGObjWeb/WOResourceManager.h>
 
+#import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
-#import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/SOGoUserProfile.h>
+#import <SOGo/SOGoUserSettings.h>
+#import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoWebAuthenticator.h>
 
 #import "UIxPageFrame.h"
 
-static NSString *siteFavicon = nil;
-
 @implementation UIxPageFrame
-
-+ (void) initialize
-{
-  NSUserDefaults *ud;
-
-  ud = [NSUserDefaults standardUserDefaults];
-  siteFavicon = [ud stringForKey: @"SOGoFaviconRelativeURL"];
-  [siteFavicon retain];
-}
 
 - (id) init
 {
@@ -184,7 +176,14 @@ static NSString *siteFavicon = nil;
 
 - (NSString *) siteFavicon
 {
-  return (!siteFavicon ? [self urlForResourceFilename: @"sogo.ico"] : siteFavicon);
+  NSString *siteFavicon;
+  
+  siteFavicon = [[SOGoSystemDefaults sharedSystemDefaults]
+                  faviconRelativeURL];
+
+  return (siteFavicon
+          ? siteFavicon
+          : [self urlForResourceFilename: @"sogo.ico"]);
 }
 
 /* page based JavaScript */
@@ -192,13 +191,13 @@ static NSString *siteFavicon = nil;
 - (NSString *) _stringsForFramework: (NSString *) framework
 {
   NSString *language, *frameworkName;
+  SOGoUserDefaults *ud;
   id table;
 
   frameworkName = [NSString stringWithFormat: @"%@.SOGo",
 			    (framework ? framework : [self frameworkName])];
-  language = [[context activeUser] language];
-  if (!language)
-    language = [SOGoUser language];
+  ud = [[context activeUser] userDefaults];
+  language = [ud language];
 
   table
     = [[self resourceManager] stringTableWithName: @"Localizable"
@@ -438,24 +437,21 @@ static NSString *siteFavicon = nil;
 
 - (NSString *) userLanguage
 {
-  NSString *language;
+  SOGoUserDefaults *ud;
 
-  language = [[context activeUser] language];
-  if (!language)
-    language = [SOGoUser language];
+  ud = [[context activeUser] userDefaults];
 
-  return language;
+  return [ud language];
 }
 
 - (NSString *) userSettings
 {
-  SOGoUserDefaults *userSettings;
+  SOGoUserSettings *us;
   NSString *jsonResult;
 
-  userSettings = (SOGoUserDefaults *)[[context activeUser] userSettings];
-  if (userSettings)
-    jsonResult = [userSettings jsonRepresentation];
-  else
+  us = [[context activeUser] userSettings];
+  jsonResult = [[us source] jsonRepresentation];
+  if (!jsonResult)
     jsonResult = @"{}";
 
   return jsonResult;
@@ -463,13 +459,12 @@ static NSString *siteFavicon = nil;
 
 - (NSString *) userDefaults
 {
-  SOGoUserDefaults *userDefaults;
+  SOGoUserDefaults *ud;
   NSString *jsonResult;
 
-  userDefaults = (SOGoUserDefaults *)[[context activeUser] userDefaults];
-  if (userDefaults)
-    jsonResult = [userDefaults jsonRepresentation];
-  else
+  ud = [[context activeUser] userDefaults];
+  jsonResult = [[ud source] jsonRepresentation];
+  if (!jsonResult)
     jsonResult = @"{}";
 
   return jsonResult;

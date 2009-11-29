@@ -36,95 +36,43 @@
 #import <Foundation/NSLock.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSTimer.h>
-#import <Foundation/NSUserDefaults.h>
 
 #import <NGObjWeb/SoObject.h>
 #import <NGExtensions/NSObject+Logs.h>
 
 #import "SOGoObject.h"
+#import "SOGoSystemDefaults.h"
 #import "SOGoUser.h"
-#import "SOGoUserDefaults.h"
+#import "SOGoUserProfile.h"
 
 #import "SOGoCache.h"
 
-// We define the default value for cleaning up cached
-// users' preferences. This value should be relatively
-// high to avoid useless database calls.
-static NSTimeInterval cleanupInterval = 0;
-static NSString *memcachedServerName;
-
-#if defined(THREADSAFE)
-static NSLock *lock;
-#endif
-
 @implementation SOGoCache
-
-+ (void) initialize
-{
-  NSString *cleanupSetting;
-  NSUserDefaults *ud;
-
-  ud = [NSUserDefaults standardUserDefaults];
-  // We fire our timer that will cleanup cache entries
-  cleanupSetting = [ud objectForKey: @"SOGoCacheCleanupInterval"];
-  if (cleanupSetting && [cleanupSetting doubleValue] > 0.0)
-    cleanupInterval = [cleanupSetting doubleValue];
-  if (cleanupInterval == 0.0)
-    cleanupInterval = 300;
-
-  [self logWithFormat: @"Cache cleanup interval set every %f seconds for memcached",
-        cleanupInterval];
-
-  ASSIGN (memcachedServerName, [ud stringForKey: @"SOGoMemCachedHost"]);
-  if (!memcachedServerName)
-    memcachedServerName = @"localhost";
-  [self logWithFormat: @"Using host '%@' as memcached server",
-        memcachedServerName];
-
-#if defined(THREADSAFE)
-  lock = [NSLock new];
-#endif
-}
-
-+ (NSTimeInterval) cleanupInterval
-{
-  return cleanupInterval;
-}
 
 + (SOGoCache *) sharedCache
 {
   static SOGoCache *sharedCache = nil;
 
-#if defined(THREADSAFE)
-  [lock lock];
-#endif
   if (!sharedCache)
     sharedCache = [self new];
-#if defined(THREADSAFE)
-  [lock unlock];
-#endif
 
   return sharedCache;
 }
 
 - (void) killCache
 {
-#if defined(THREADSAFE)
-  [lock lock];
-#endif
   [cache removeAllObjects];
 
   // This is essential for refetching the cached values in case something has changed
   // accross various sogod processes
   [users removeAllObjects];
   [localCache removeAllObjects];
-#if defined(THREADSAFE)
-  [lock unlock];
-#endif
 }
 
 - (id) init
 {
+  SOGoSystemDefaults *sd;
+
   if ((self = [super init]))
     {
       memcached_return error;
@@ -145,6 +93,19 @@ static NSLock *lock;
 	{
 #warning We could also make the port number configurable and even make use \
   of NGNetUtilities for that.
+
+          sd = [SOGoSystemDefaults sharedSystemDefaults];
+          // We define the default value for cleaning up cached users'
+          // preferences. This value should be relatively high to avoid
+          // useless database calls.
+
+          cleanupInterval = [sd cacheCleanupInterval];
+          ASSIGN (memcachedServerName, [sd memcachedHost]);
+
+          [self logWithFormat: @"Cache cleanup interval set every %f seconds",
+                cleanupInterval];
+          [self logWithFormat: @"Using host '%@' as server",
+                memcachedServerName];
 	  servers
             = memcached_server_list_append(NULL,
                                            [memcachedServerName UTF8String],
@@ -160,6 +121,7 @@ static NSLock *lock;
 {
   memcached_server_free(servers);
   memcached_free(handle);
+  [memcachedServerName release];
   [cache release];
   [users release];
   [localCache release];
@@ -206,16 +168,10 @@ static NSLock *lock;
 	    inContainer: [container container]];
       fullPath = [self _pathFromObject: container
 		       withName: name];
-#if defined(THREADSAFE)
-      [lock lock];
-#endif
       if (![cache objectForKey: fullPath])
 	{
 	  [cache setObject: object forKey: fullPath];
 	}
-#if defined(THREADSAFE)
-      [lock unlock];
-#endif
     }
 }
 
@@ -235,13 +191,7 @@ static NSLock *lock;
 - (void) registerUser: (SOGoUser *) user
              withName: (NSString *) userName
 { 
-#if defined(THREADSAFE)
-  [lock lock];
-#endif
   [users setObject: user forKey: userName];
-#if defined(THREADSAFE)
-  [lock unlock];
-#endif
 }
 
 - (id) userNamed: (NSString *) name

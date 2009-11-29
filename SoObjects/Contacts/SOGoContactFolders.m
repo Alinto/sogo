@@ -32,7 +32,9 @@
 #import <Foundation/NSString.h>
 #import <Foundation/NSEnumerator.h>
 
-#import <SoObjects/SOGo/SOGoUserManager.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserManager.h>
 
 #import "SOGoContactGCSFolder.h"
 #import "SOGoContactSourceFolder.h"
@@ -54,11 +56,12 @@
 {
   SOGoUserManager *um;
   NSEnumerator *sourceIDs;
-  NSString *currentSourceID, *srcDisplayName;
+  NSString *currentSourceID, *srcDisplayName, *domain;
   SOGoContactSourceFolder *currentFolder;
 
+  domain = [[context activeUser] domain];
   um = [SOGoUserManager sharedUserManager];
-  sourceIDs = [[um addressBookSourceIDs] objectEnumerator]; 
+  sourceIDs = [[um addressBookSourceIDsInDomain: domain] objectEnumerator];
   while ((currentSourceID = [sourceIDs nextObject]))
     {
       srcDisplayName = [um displayNameForSourceWithID: currentSourceID];

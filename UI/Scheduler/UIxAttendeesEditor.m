@@ -23,7 +23,8 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
 
-#import <SoObjects/SOGo/SOGoUser.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
 #import <Common/UIxPageFrame.h>
 
 #import "UIxAttendeesEditor.h"
@@ -79,12 +80,20 @@
 
 - (unsigned int) dayStartHour
 {
-  return [[context activeUser] dayStartHour];
+  SOGoUserDefaults *ud;
+
+  ud = [[context activeUser] userDefaults];
+
+  return [ud dayStartHour];
 }
 
 - (unsigned int) dayEndHour
 {
-  return [[context activeUser] dayEndHour];
+  SOGoUserDefaults *ud;
+
+  ud = [[context activeUser] userDefaults];
+
+  return [ud dayEndHour];
 }
 
 @end

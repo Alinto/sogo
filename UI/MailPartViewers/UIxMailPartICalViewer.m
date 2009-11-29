@@ -37,14 +37,15 @@
 #import <NGCards/iCalPerson.h>
 #import <NGCards/iCalDateTime.h>
 
-#import <SoObjects/SOGo/SOGoDateFormatter.h>
-#import <SoObjects/SOGo/SOGoUser.h>
-#import <SoObjects/SOGo/iCalEntityObject+Utilities.h>
-#import <SoObjects/Appointments/iCalEntityObject+SOGo.h>
-#import <SoObjects/Appointments/SOGoAppointmentFolder.h>
-#import <SoObjects/Appointments/SOGoAppointmentObject.h>
-#import <SoObjects/Mailer/SOGoMailObject.h>
-#import <SoObjects/Mailer/SOGoMailBodyPart.h>
+#import <SOGo/SOGoDateFormatter.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
+#import <SOGo/iCalEntityObject+Utilities.h>
+#import <Appointments/iCalEntityObject+SOGo.h>
+#import <Appointments/SOGoAppointmentFolder.h>
+#import <Appointments/SOGoAppointmentObject.h>
+#import <Mailer/SOGoMailObject.h>
+#import <Mailer/SOGoMailBodyPart.h>
 
 #import "UIxMailPartICalViewer.h"
 
@@ -167,11 +168,11 @@
 - (NSCalendarDate *) startCalendarDate
 {
   NSCalendarDate *date;
-  NSTimeZone *timeZone;
+  SOGoUserDefaults *ud;
  
   date = [[self inEvent] startDate];
-  timeZone = [[context activeUser] timeZone];
-  [date setTimeZone: timeZone];
+  ud = [[context activeUser] userDefaults];
+  [date setTimeZone: [ud timeZone]];
   
   return date;
 }
@@ -189,11 +190,11 @@
 - (NSCalendarDate *) endCalendarDate
 {
   NSCalendarDate *date;
-  NSTimeZone *timeZone;
+  SOGoUserDefaults *ud;
  
   date = [[self inEvent] endDate];
-  timeZone = [[context activeUser] timeZone];
-  [date setTimeZone: timeZone];
+  ud = [[context activeUser] userDefaults];
+  [date setTimeZone: [ud timeZone]];
 
   return date;
 }

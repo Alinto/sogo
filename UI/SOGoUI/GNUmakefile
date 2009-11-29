@@ -16,8 +16,7 @@ libSOGoUI_HEADER_FILES +=	\
 	\
 	UIxJSClose.h		\
 	UIxComponent.h		\
-	SOGoAptFormatter.h	\
-	WOContext+UIx.h		\
+	SOGoAptFormatter.h
 
 libSOGoUI_OBJC_FILES +=		\
 	\
@@ -25,7 +24,6 @@ libSOGoUI_OBJC_FILES +=		\
 	UIxComponent.m		\
 	UIxModuleAccessDenied.m	\
 	SOGoAptFormatter.m	\
-	WOContext+UIx.m		\
 	SOGoACLAdvisory.m \
 	SOGoFolderAdvisory.m
 

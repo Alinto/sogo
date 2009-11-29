@@ -56,6 +56,9 @@
   NSMutableDictionary *uidToFilename;
   NSMutableDictionary *aclMatrix;
   NSMutableArray *stripFields;
+  int davCalendarStartTimeLimit;
+  int davTimeLimitSeconds;
+  int davTimeHalfLimitSeconds;
   BOOL userCanAccessObjectsClassifiedAs[iCalAccessClassCount];
 }
 

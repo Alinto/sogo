@@ -1,0 +1,64 @@
+{
+    WOWorkersCount = 1;
+    SxVMemLimit = 384;
+    WOLogFile = "/var/log/sogo/sogo.log";
+    WOPidFile = "/var/log/run/sogo.pid";
+
+    SOGoZipPath = "/usr/bin/zip";
+
+    WOUseRelativeURLs = YES;
+    WOMessageUseUTF8 = YES;
+    WOParsersUseUTF8 = YES;
+    NGUseUTF8AsURLEncoding = YES;
+
+    SOGoCacheCleanupInterval = 300.0;
+    SOGoMemcachedHost = "localhost";
+
+    SOGoUIxDebugEnabled = NO;
+
+    SOGoLDAPContactInfoAttribute = "description";
+
+    SOGoMailingMechanism = "sendmail";
+    SOGoSMTPServer = "localhost";
+    SOGoMailSpoolPath = "/tmp";
+
+    SOGoLoginModule = "Mail";
+    SOGoLanguage = "English";
+    SOGoSupportedLanguages = ( "Czech", "Welsh", "English", "Spanish",
+                               "French", "German", "Italian", "Hungarian",
+                               "Dutch", "BrazilianPortuguese", "Russian",
+                               "Swedish");
+
+    SOGoTimeZone = "UTC";
+
+    SOGoDayStartTime = "8";
+    SOGoDayEndTime = "18";
+    SOGoTimeFormat = "%H:00";
+
+    SOGoIMAPServer = "localhost";
+    SOGoFirstDayOfWeek = 0;
+    SOGoFirstWeekOfYear = "January1";
+
+    SOGoMailDomain = "localhost";
+    SOGoMailMessageCheck = "manually";
+    SOGoMailMessageForwarding = "inline";
+    SOGoMailReplyPlacement = "below";
+    SOGoMailSignaturePlacement = "below";
+    SOGoMailPollingIntervals = ( 1, 2, 5, 10, 20, 30, 30 );
+    SOGoMailComposeMessageType = "text";
+    SOGoMailListViewColumnsOrder = ( "Flagged", "Attachment", "Subject",
+                                     "From", "Unread", "Date", "Priority",
+                                     "Size" );
+
+    SOGoSentFolderName = "Sent";
+    SOGoDraftsFolderName = "Drafts";
+    SOGoTrashFolderName = "Trash";
+    SOGoOtherUsersFolderName = "Other Users";
+    SOGoSharedFolderName = "Shared Folders";
+
+    SOGoCalendarShouldDisplayWeekend = YES;
+    SOGoFreeBusyDefaultInterval = ( 7, 7 );
+
+    SOGoReminderEnabled = YES;
+    SOGoRemindWithASound = YES;
+}

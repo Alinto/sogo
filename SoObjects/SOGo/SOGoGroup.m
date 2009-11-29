@@ -50,7 +50,7 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
 
-#include "LDAPSource.h"
+#include "SOGoSource.h"
 #include "SOGoUserManager.h"
 #include "SOGoUser.h"
 
@@ -61,7 +61,7 @@
 @implementation SOGoGroup
 
 - (id) initWithIdentifier: (NSString *) theID
-		   source: (LDAPSource *) theSource
+		   source: (NSObject <SOGoSource> *) theSource
 		    entry: (NGLdapEntry *) theEntry
 {
   self = [super init];
@@ -88,19 +88,23 @@
 }
 
 + (id) groupWithIdentifier: (NSString *) theID
+                  inDomain: (NSString *) domain
 {
   NSString *uid;
 
   uid = [theID hasPrefix: @"@"] ? [theID substringFromIndex: 1] : theID;
 
   return [SOGoGroup groupWithValue: uid
-                 andSourceSelector: @selector (lookupGroupEntryByUID:)];
+                 andSourceSelector: @selector (lookupGroupEntryByUID:)
+                          inDomain: domain];
 }
 
 + (id) groupWithEmail: (NSString *) theEmail
+             inDomain: (NSString *) domain
 {
   return [SOGoGroup groupWithValue: theEmail
-                 andSourceSelector: @selector (lookupGroupEntryByEmail:)];
+                 andSourceSelector: @selector (lookupGroupEntryByEmail:)
+                          inDomain: domain];
 }
 
 //
@@ -109,10 +113,11 @@
 //
 + (id) groupWithValue: (NSString *) theValue
     andSourceSelector: (SEL) theSelector
+             inDomain: (NSString *) domain
 {
   NSArray *allSources;
   NGLdapEntry *entry;
-  LDAPSource *source;
+  NSObject <SOGoSource> *source;
   id o;
   
   int i;
@@ -122,7 +127,8 @@
   if (!theValue)
     return nil;
 
-  allSources = [[SOGoUserManager sharedUserManager] sourceIDs];
+  allSources = [[SOGoUserManager sharedUserManager]
+                 sourceIDsInDomain: domain];
   entry = nil;
   o = nil;
 
@@ -156,8 +162,8 @@
 	  [classes containsObject: @"posixGroup"])
 	{
 	  o = [[self alloc] initWithIdentifier: theValue
-			    source: source
-			    entry: entry];
+                                        source: source
+                                         entry: entry];
 	  AUTORELEASE(o);
 	}
     }

@@ -23,7 +23,6 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSValue.h>
-#import <Foundation/NSUserDefaults.h>
 
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WOResponse.h>
@@ -32,17 +31,16 @@
 #import <NGCards/iCalFreeBusy.h>
 #import <NGCards/iCalPerson.h>
 
-#import <SOGo/SOGoUserManager.h>
+#import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
+#import <SOGo/SOGoUserManager.h>
 #import <SOGo/SOGoPermissions.h>
 
 #import "SOGoAppointmentFolder.h"
 #import "SOGoAppointmentFolders.h"
 
 #import "SOGoFreeBusyObject.h"
-
-static unsigned int freebusyRangeStart = 0;
-static unsigned int freebusyRangeEnd = 0;
 
 @interface SOGoFreeBusyObject (PrivateAPI)
 - (NSString *) iCalStringForFreeBusyInfos: (NSArray *) _infos
@@ -51,25 +49,6 @@ static unsigned int freebusyRangeEnd = 0;
 @end
 
 @implementation SOGoFreeBusyObject
-
-+ (void) initialize
-{
-  NSArray *freebusyDateRange;
-  NSUserDefaults *ud;
-
-  ud = [NSUserDefaults standardUserDefaults];
-  freebusyDateRange = [ud arrayForKey: @"SOGoFreeBusyDefaultInterval"];
-  if (freebusyDateRange && [freebusyDateRange count] > 1)
-    {
-      freebusyRangeStart = [[freebusyDateRange objectAtIndex: 0] unsignedIntValue];
-      freebusyRangeEnd = [[freebusyDateRange objectAtIndex: 1] unsignedIntValue];
-    }
-  else
-    {
-      freebusyRangeStart = 7;
-      freebusyRangeEnd = 7;
-    }
-}
 
 - (iCalPerson *) iCalPersonWithUID: (NSString *) uid
 {
@@ -202,15 +181,31 @@ static unsigned int freebusyRangeEnd = 0;
 - (NSString *) contentAsString
 {
   NSCalendarDate *today, *startDate, *endDate;
-  NSTimeZone *timeZone;
+  SOGoUserDefaults *ud;
+  SOGoDomainDefaults *dd;
+  NSArray *interval;
+  unsigned int start, end;
   
   today = [[NSCalendarDate calendarDate] beginOfDay];
-  timeZone = [[context activeUser] timeZone];
-  [today setTimeZone: timeZone];
+  ud = [[context activeUser] userDefaults];
+  [today setTimeZone: [ud timeZone]];
 
-  startDate = [today dateByAddingYears: 0 months: 0 days: -freebusyRangeStart
+  dd = [[context activeUser] domainDefaults];
+  interval = [dd freeBusyDefaultInterval];
+  if ([interval count] > 1)
+    {
+      start = [[interval objectAtIndex: 0] unsignedIntValue];
+      end = [[interval objectAtIndex: 1] unsignedIntValue];
+    }
+  else
+    {
+      start = 7;
+      end = 7;
+    }
+
+  startDate = [today dateByAddingYears: 0 months: 0 days: -start
                      hours: 0 minutes: 0 seconds: 0];
-  endDate = [today dateByAddingYears: 0 months: 0 days: freebusyRangeEnd
+  endDate = [today dateByAddingYears: 0 months: 0 days: end
 		   hours: 0 minutes: 0 seconds: 0];
 
   return [self contentAsStringFrom: startDate to: endDate];
@@ -278,7 +273,7 @@ static unsigned int freebusyRangeEnd = 0;
 - (id) GETAction: (id)_ctx
 {
   WOResponse *r;
-  NSData     *contentData;
+  NSData *contentData;
 
   contentData = [[self contentAsString]
 		  dataUsingEncoding: NSUTF8StringEncoding];

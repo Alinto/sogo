@@ -26,7 +26,6 @@
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSURL.h>
 #import <Foundation/NSTimeZone.h>
-#import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSValue.h>
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOCookie.h>
@@ -36,18 +35,16 @@
 #import <NGExtensions/NSObject+Logs.h>
 
 #import <Appointments/SOGoFreeBusyObject.h>
-#import <SoObjects/SOGo/SOGoUserManager.h>
-#import <SoObjects/SOGo/SOGoWebAuthenticator.h>
-#import <SoObjects/SOGo/SOGoUser.h>
-#import <SoObjects/SOGo/SOGoUserFolder.h>
-#import <SoObjects/SOGo/NSCalendarDate+SOGo.h>
-#import <SoObjects/SOGo/NSDictionary+Utilities.h>
+#import <SOGo/SOGoUserManager.h>
+#import <SOGo/SOGoWebAuthenticator.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
+#import <SOGo/SOGoUserFolder.h>
+#import <SOGo/NSCalendarDate+SOGo.h>
+#import <SOGo/NSDictionary+Utilities.h>
 #import <SOGoUI/UIxComponent.h>
 
 #define intervalSeconds 900 /* 15 minutes */
-
-static NSString *defaultModule = nil;
-static NSString *LDAPContactInfoAttribute = nil;
 
 @interface SOGoUserHomePage : UIxComponent
 
@@ -55,55 +52,26 @@ static NSString *LDAPContactInfoAttribute = nil;
 
 @implementation SOGoUserHomePage
 
-+ (void) initialize
-{
-  NSUserDefaults *ud;
-
-  if (!defaultModule)
-    {
-      ud = [NSUserDefaults standardUserDefaults];
-
-      defaultModule = [ud stringForKey: @"SOGoUIxDefaultModule"];
-      if (defaultModule)
-        {
-          if (!([defaultModule isEqualToString: @"Calendar"]
-             || [defaultModule isEqualToString: @"Contacts"]
-             || [defaultModule isEqualToString: @"Mail"]))
-            {
-              [self logWithFormat: @"default module '%@' not accepted (must be"
-                @"'Calendar', 'Contacts' or 'Mail')", defaultModule];
-              defaultModule = @"Calendar";
-            }
-        }
-      else
-        defaultModule = @"Calendar";
-      [self logWithFormat: @"default module set to '%@'", defaultModule];
-      [defaultModule retain];
-
-      LDAPContactInfoAttribute = [ud stringForKey: @"SOGoLDAPContactInfoAttribute"];
-      [LDAPContactInfoAttribute retain];
-    }
-}
-
 - (id <WOActionResults>) defaultAction
 {
   SOGoUserFolder *co;
-  NSUserDefaults *ud;
-  NSString *userDefinedModule;
+  NSString *loginModule;
+  SOGoUserDefaults *ud;
   NSURL *moduleURL;
 
   ud = [[context activeUser] userDefaults];
-  userDefinedModule = [ud stringForKey: @"SOGoUIxDefaultModule"];
-  if (userDefinedModule)
+  loginModule = [ud loginModule];
+  if (!([loginModule isEqualToString: @"Calendar"]
+        || [loginModule isEqualToString: @"Contacts"]
+        || [loginModule isEqualToString: @"Mail"]))
     {
-      if ([userDefinedModule isEqualToString: @"Last"])
-        userDefinedModule = [ud stringForKey: @"SOGoUIxLastModule"];
+      [self errorWithFormat: @"login module '%@' not accepted (must be"
+            @"'Calendar', 'Contacts' or 'Mail')", loginModule];
+      loginModule = @"Calendar";
     }
-  if (!userDefinedModule)
-    userDefinedModule = defaultModule;
 
   co = [self clientObject];
-  moduleURL = [NSURL URLWithString: userDefinedModule
+  moduleURL = [NSURL URLWithString: loginModule
 		     relativeToURL: [co soURL]];
 
   return [self redirectToLocation: [moduleURL absoluteString]];
@@ -219,7 +187,7 @@ static NSString *LDAPContactInfoAttribute = nil;
 
   co = [self clientObject];
   user = [context activeUser];
-  uTZ = [user timeZone];
+  uTZ = [[user userDefaults] timeZone];
 
   queryDay = [self queryParameterForKey: @"sday"];
   if ([queryDay length])
@@ -338,13 +306,8 @@ static NSString *LDAPContactInfoAttribute = nil;
       // We do NOT return the current authenticated user.
       if (![uid isEqualToString: login])
         {
-          if ([LDAPContactInfoAttribute length])
-            {
-              contactInfo = [contact objectForKey: [LDAPContactInfoAttribute lowercaseString]];
-              if (!contactInfo)
-                contactInfo = @"";
-            }
-          else
+          contactInfo = [contact objectForKey: @"c_info"];
+          if (!contactInfo)
             contactInfo = @"";
           [responseString appendFormat: @"%@:%@:%@:%@\n", uid,
                  [contact objectForKey: @"cn"],
@@ -359,7 +322,7 @@ static NSString *LDAPContactInfoAttribute = nil;
 
 - (id <WOActionResults>) usersSearchAction
 {
-  NSString *contact;
+  NSString *contact, *domain;
   id <WOActionResults> result;
   SOGoUserManager *um;
 
@@ -367,6 +330,7 @@ static NSString *LDAPContactInfoAttribute = nil;
   contact = [self queryParameterForKey: @"search"];
   if ([contact length])
     {
+      domain = [[context activeUser] domain];
       result
         = [self _usersResponseForResults: [um fetchUsersMatching: contact]];
     }

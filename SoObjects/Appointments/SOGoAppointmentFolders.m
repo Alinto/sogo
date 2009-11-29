@@ -278,7 +278,7 @@
 
 - (NSArray *) webCalendarIds
 {
-  NSUserDefaults *us;
+  SOGoUserSettings *us;
   NSDictionary *tmp, *calendars;
   NSArray *rc;
   

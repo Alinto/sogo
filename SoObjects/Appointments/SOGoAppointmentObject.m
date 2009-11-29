@@ -1384,7 +1384,8 @@
 	      if ([event isParticipant: [[delegate email] rfc822Email]])
 		ex = [NSException exceptionWithHTTPStatus: 403
 						   reason: @"delegate is a participant"];
-	      else if ([SOGoGroup groupWithEmail: [[delegate email] rfc822Email]])
+	      else if ([SOGoGroup groupWithEmail: [[delegate email] rfc822Email]
+                                        inDomain: [ownerUser domain]])
 		ex = [NSException exceptionWithHTTPStatus: 403
 						   reason: @"delegate is a group"];
 	    }

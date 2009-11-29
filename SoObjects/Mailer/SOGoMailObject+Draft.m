@@ -23,7 +23,6 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
-#import <Foundation/NSUserDefaults.h>
 
 #import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOResponse.h>
@@ -33,6 +32,7 @@
 
 #import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
+#import <SoObjects/SOGo/SOGoUserDefaults.h>
 
 #import "NSString+Mail.h"
 #import "SOGoMailForward.h"
@@ -42,20 +42,6 @@
 #define maxFilenameLength 64
 
 @implementation SOGoMailObject (SOGoDraftObjectExtensions)
-
-- (BOOL) useOutlookStyleReplies
-{
-  NSUserDefaults *ud;
-  static int useOutlookStyleReplies = -1;
-
-  if (useOutlookStyleReplies == -1)
-    {
-      ud = [NSUserDefaults standardUserDefaults];
-      useOutlookStyleReplies = [ud boolForKey: @"SOGoMailUseOutlookStyleReplies"];
-    }
-
-  return (useOutlookStyleReplies);
-}
 
 - (NSString *) subjectForReply
 {
@@ -92,13 +78,11 @@
                                     rawHtml: (BOOL) html
 {
   NSString *rc;
-  NSUserDefaults *ud;
+  SOGoUserDefaults *ud;
   BOOL htmlComposition;
 
   ud = [[context activeUser] userDefaults];
-  htmlComposition = [[ud stringForKey: @"ComposeMessagesType"] 
-                     isEqualToString: @"html"];
-
+  htmlComposition = [[ud mailComposeMessageType] isEqualToString: @"html"];
   if (html && !htmlComposition)
     rc = [raw htmlToText];
   else if (!html && htmlComposition)
@@ -164,19 +148,19 @@
 
 - (NSString *) contentForReply
 {
-  SOGoUser *currentUser;
   NSString *pageName;
   SOGoMailReply *page;
+  SOGoUserDefaults *userDefaults;
 
-  currentUser = [context activeUser];
+  userDefaults = [[context activeUser] userDefaults];
   pageName = [NSString stringWithFormat: @"SOGoMail%@Reply",
-		       [currentUser language]];
+		       [userDefaults language]];
   page = [[WOApplication application] pageWithName: pageName
 				      inContext: context];
   [page setSourceMail: self];
-  [page setOutlookMode: [self useOutlookStyleReplies]];
-  [page setReplyPlacement: [currentUser replyPlacement]];
-  [page setSignaturePlacement: [currentUser signaturePlacement]];
+  [page setOutlookMode: [userDefaults mailUseOutlookStyleReplies]];
+  [page setReplyPlacement: [userDefaults mailReplyPlacement]];
+  [page setSignaturePlacement: [userDefaults mailSignaturePlacement]];
   
   return [[page generateResponse] contentAsString];
 }
@@ -229,13 +213,13 @@
 
 - (NSString *) contentForInlineForward
 {
-  SOGoUser *currentUser;
+  SOGoUserDefaults *ud;
   NSString *pageName;
   SOGoMailForward *page;
 
-  currentUser = [context activeUser];
+  ud = [[context activeUser] userDefaults];
   pageName = [NSString stringWithFormat: @"SOGoMail%@Forward",
-		       [currentUser language]];
+		       [ud language]];
   page = [[WOApplication application] pageWithName: pageName
 				      inContext: context];
   [page setSourceMail: self];

@@ -22,6 +22,8 @@
 
 #import <NGExtensions/NSCalendarDate+misc.h>
 
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/NSCalendarDate+SOGo.h>
 
 #import "UIxCalDateSelector.h"
@@ -95,7 +97,11 @@
 
 - (unsigned int) firstDayOfWeek
 {
-  return [[context activeUser] firstDayOfWeek];
+  SOGoUserDefaults *ud;
+
+  ud = [[context activeUser] userDefaults];
+
+  return [ud firstDayOfWeek];
 }
 
 /* labels */

@@ -28,7 +28,6 @@
 #import <Foundation/NSFileManager.h>
 #import <Foundation/NSPathUtilities.h>
 #import <Foundation/NSString.h>
-#import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSURL.h>
 #import <Foundation/NSValue.h>
 
@@ -58,17 +57,16 @@
 #import "NSObject+Utilities.h"
 #import "NSString+Utilities.h"
 #import "SOGoCache.h"
+#import "SOGoDomainDefaults.h"
 #import "SOGoPermissions.h"
+#import "SOGoSystemDefaults.h"
 #import "SOGoUser.h"
+#import "SOGoUserDefaults.h"
 #import "SOGoUserFolder.h"
 #import "SOGoWebDAVAclManager.h"
 #import "SOGoWebDAVValue.h"
 
 #import "SOGoObject.h"
-
-static BOOL kontactGroupDAV = YES;
-static BOOL sendACLAdvisories = NO;
-static BOOL useRelativeURLs = NO;
 
 static NSDictionary *reportMap = nil;
 static NSMutableDictionary *setterMap = nil;
@@ -172,14 +170,8 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
 
 + (void) initialize
 {
-  NSUserDefaults *ud;
   NSString *filename;
   NSBundle *bundle;
-
-  ud = [NSUserDefaults standardUserDefaults];
-  kontactGroupDAV = ![ud boolForKey:@"SOGoDisableKontact34GroupDAVHack"];
-  sendACLAdvisories = [ud boolForKey: @"SOGoACLsSendEMailNotifications"];
-  useRelativeURLs = [ud boolForKey: @"WOUseRelativeURLs"];
 
   if (!reportMap)
     {
@@ -941,23 +933,6 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
     return nil; /* one etag matches, so continue with request */
   }
 
-  /* hack for Kontact 3.4 */
-  
-  if (kontactGroupDAV) {
-    WEClientCapabilities *cc;
-    
-    cc = [[(WOContext *)_ctx request] clientCapabilities];
-    if ([[cc userAgentType] isEqualToString:@"Konqueror"]) {
-      if ([cc majorVersion] == 3 && [cc minorVersion] == 4) {
-	[self logWithFormat:
-		@"WARNING: applying Kontact 3.4 GroupDAV hack"
-		@" - etag check is disabled!"
-		@" (can be enabled using 'ZSDisableKontact34GroupDAVHack')"];
-	return nil;
-      }
-    }
-  }
-  
   // TODO: we might want to return the davEntityTag in the response
   [self debugWithFormat:@"etag '%@' does not match: %@", etag, 
 	[etags componentsJoinedByString:@","]];
@@ -1041,13 +1016,15 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
 - (BOOL) addUserInAcls: (NSString *) uid
 {
   BOOL result;
+  SOGoDomainDefaults *dd;
 
   if ([uid length]
       && ![uid isEqualToString: [self ownerInContext: nil]])
     {
       [self setRoles: [self aclsForUser: uid]
 	    forUser: uid];
-      if (sendACLAdvisories)
+      dd = [[context activeUser] domainDefaults];
+      if ([dd aclSendEMailNotifications])
 	[self sendACLAdditionAdvisoryToUser: uid];
       result = YES;
     }
@@ -1060,11 +1037,13 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
 - (BOOL) removeUserFromAcls: (NSString *) uid
 {
   BOOL result;
+  SOGoDomainDefaults *dd;
 
   if ([uid length])
     {
       [self removeAclsForUsers: [NSArray arrayWithObject: uid]];
-      if (sendACLAdvisories)
+      dd = [[context activeUser] domainDefaults];
+      if ([dd aclSendEMailNotifications])
 	[self sendACLRemovalAdvisoryToUser: uid];
       result = YES;
     }
@@ -1110,12 +1089,12 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
 			  toUser: (NSString *) uid
 {
   NSString *language, *pageName;
-  SOGoUser *user;
+  SOGoUserDefaults *userDefaults;
   SOGoACLAdvisory *page;
   WOApplication *app;
 
-  user = [SOGoUser userWithLogin: uid roles: nil];
-  language = [user language];
+  userDefaults = [[SOGoUser userWithLogin: uid roles: nil] userDefaults];
+  language = [userDefaults language];
   pageName = [NSString stringWithFormat: @"SOGoACL%@%@Advisory",
 		       language, template];
 
@@ -1190,10 +1169,12 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
 - (NSString *) davURLAsString
 {
   NSURL *davURL;
+  SOGoSystemDefaults *sd;
 
   davURL = [self davURL];
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
 
-  return (useRelativeURLs ? [davURL path] : [davURL absoluteString]);
+  return ([sd useRelativeURLs] ? [davURL path] : [davURL absoluteString]);
 }
 
 - (NSURL *) soURL
@@ -1250,19 +1231,22 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
   NSMutableArray *languages;
   NSArray *browserLanguages;
   NSString *language;
-  NSUserDefaults *ud;
+  SOGoUser *user;
 
+#warning the purpose of this method needs to be reviewed
   languages = [NSMutableArray array];
 
-  language = [[context activeUser] language];
-  [languages addObject: language];
-  browserLanguages = [[context request] browserLanguages];
-  [languages addObjectsFromArray: browserLanguages];
-  ud = [NSUserDefaults standardUserDefaults];
-  language = [ud stringForKey: @"SOGoDefaultLanguage"];
-  if (language)
-    [languages addObject: language];
-  [languages addObject: @"English"];
+  user = [context activeUser];
+  if ([user isKindOfClass: [SOGoUser class]])
+    {
+      language = [[user userDefaults] language];
+      [languages addObject: language];
+    }
+  else
+    {
+      browserLanguages = [[context request] browserLanguages];
+      [languages addObjectsFromArray: browserLanguages];
+    }
 
   return languages;
 }

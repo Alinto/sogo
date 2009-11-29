@@ -23,8 +23,9 @@
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGExtensions/NSString+misc.h>
 
-#import <SoObjects/SOGo/SOGoDateFormatter.h>
-#import <SoObjects/SOGo/SOGoUser.h>
+#import <SOGo/SOGoDateFormatter.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
 
 #import "SOGoMailObject+Draft.h"
 #import "SOGoMailForward.h"
@@ -35,7 +36,7 @@
 {
   if ((self = [super init]))
     {
-      NSUserDefaults *ud;
+      SOGoUserDefaults *ud;
       ud = [[context activeUser] userDefaults];
       htmlComposition = [[ud objectForKey: @"ComposeMessagesType"] isEqualToString: @"html"];
 
@@ -213,8 +214,10 @@
 - (NSString *) signature
 {
   NSString *signature, *mailSignature;
+  SOGoUserDefaults *ud;
 
-  signature = [[context activeUser] signature];
+  ud = [[context activeUser] userDefaults];
+  signature = [ud mailSignature];
   if ([signature length])
     mailSignature = [NSString stringWithFormat: @"-- \n%@", signature];
   else

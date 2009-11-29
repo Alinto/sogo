@@ -26,7 +26,7 @@
 #import <SOGoUI/UIxComponent.h>
 
 @class NSString;
-@class NSUserDefaults;
+@class SOGoUserDefaults;
 
 @class SOGoUser;
 
@@ -35,9 +35,8 @@
   id item;
   SOGoUser *user;
   NSDictionary *locale;
-  NSUserDefaults *userDefaults;
+  SOGoUserDefaults *userDefaults;
   NSCalendarDate *today;
-  NSMutableArray *hours;
   NSArray *daysOfWeek, *daysBetweenResponsesList;
   NSMutableDictionary *vacationOptions, *forwardOptions;
   BOOL hasChanged, composeMessageTypeHasChanged;

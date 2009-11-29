@@ -27,7 +27,6 @@
 #import <Foundation/NSProcessInfo.h>
 #import <Foundation/NSRunLoop.h>
 #import <Foundation/NSURL.h>
-#import <Foundation/NSUserDefaults.h>
 
 #import <GDLAccess/EOAdaptorChannel.h>
 #import <GDLContentStore/GCSChannelManager.h>
@@ -45,71 +44,61 @@
 
 #import <WEExtensions/WEResourceManager.h>
 
-#import <SoObjects/SOGo/SOGoCache.h>
-#import <SoObjects/SOGo/SOGoDAVAuthenticator.h>
-#import <SoObjects/SOGo/SOGoPermissions.h>
-#import <SoObjects/SOGo/SOGoProxyAuthenticator.h>
-#import <SoObjects/SOGo/SOGoUserFolder.h>
-#import <SoObjects/SOGo/SOGoUser.h>
-#import <SoObjects/SOGo/SOGoWebAuthenticator.h>
-#import <SoObjects/SOGo/WORequest+SOGo.h>
+#import <SOGo/SOGoCache.h>
+#import <SOGo/SOGoDAVAuthenticator.h>
+#import <SOGo/SOGoPermissions.h>
+#import <SOGo/SOGoProxyAuthenticator.h>
+#import <SOGo/SOGoUserFolder.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoStartupLogger.h>
+#import <SOGo/SOGoSystemDefaults.h>
+#import <SOGo/SOGoWebAuthenticator.h>
+#import <SOGo/WORequest+SOGo.h>
 
 #import "build.h"
 #import "SOGoProductLoader.h"
 #import "NSException+Stacktrace.h"
 
 #import "SOGo.h"
-#import "SOGoStartupLogger.h"
 
 @implementation SOGo
 
-static unsigned int vMemSizeLimit = 0;
-static BOOL doCrashOnSessionCreate = NO;
-static BOOL hasCheckedTables = NO;
-static BOOL debugRequests = NO;
-static BOOL useRelativeURLs = NO;
-
+static unsigned int vMemSizeLimit;
+static BOOL doCrashOnSessionCreate;
+static BOOL hasCheckedTables;
+static BOOL debugRequests;
+static BOOL useRelativeURLs;
 static BOOL trustProxyAuthentication;
 
 #ifdef GNUSTEP_BASE_LIBRARY
-static BOOL debugLeaks = NO;
+static BOOL debugLeaks;
 #endif
 
 + (void) initialize
 {
-  NSUserDefaults *ud;
+  SOGoSystemDefaults *defaults;
   SoClassSecurityInfo *sInfo;
   NSArray *basicRoles;
   SOGoStartupLogger *logger;
-  id tmp;
 
   logger = [SOGoStartupLogger sharedLogger];
   [logger logWithFormat: @"starting SOGo (build %@)", SOGoBuildDate];
   
-  ud = [NSUserDefaults standardUserDefaults];
-  if ([[ud persistentDomainForName: @"sogod"] count] == 0)
-    [logger warnWithFormat: @"No configuration found."
-            @" SOGo will not work properly."];
-
-  doCrashOnSessionCreate = [ud boolForKey:@"SOGoCrashOnSessionCreate"];
-  debugRequests = [ud boolForKey: @"SOGoDebugRequests"];
+  defaults = [SOGoSystemDefaults sharedSystemDefaults];
+  doCrashOnSessionCreate = [defaults crashOnSessionCreate];
+  debugRequests = [defaults debugRequests];
 #ifdef GNUSTEP_BASE_LIBRARY
-  debugLeaks = [ud boolForKey: @"SOGoDebugLeaks"];
+  debugLeaks = [defaults debugLeaks];
   if (debugLeaks)
     [logger logWithFormat: @"activating leak debugging"];
 #endif
   /* vMem size check - default is 384MB */
 
-  tmp = [ud objectForKey: @"SxVMemLimit"];
-  vMemSizeLimit = ((tmp != nil) ? [tmp intValue] : 384);
+  vMemSizeLimit = [defaults vmemLimit];
   if (vMemSizeLimit > 0)
     [logger logWithFormat: @"vmem size check enabled: shutting down app when "
-	  @"vmem > %d MB", vMemSizeLimit];
-#if LIB_FOUNDATION_LIBRARY
-  if ([ud boolForKey:@"SOGoEnableDoubleReleaseCheck"])
-    [NSAutoreleasePool enableDoubleReleaseCheck: YES];
-#endif
-
+            @"vmem > %d MB", vMemSizeLimit];
+  
   /* SoClass security declarations */
   sInfo = [self soClassSecurityInfo];
   /* require View permission to access the root (bound to authenticated ...) */
@@ -125,8 +114,8 @@ static BOOL debugLeaks = NO;
   [sInfo declareRoles: basicRoles asDefaultForPermission: SoPerm_View];
   [sInfo declareRoles: basicRoles asDefaultForPermission: SoPerm_WebDAVAccess];
 
-  trustProxyAuthentication = [ud boolForKey: @"SOGoTrustProxyAuthentication"];
-  useRelativeURLs = [ud boolForKey: @"WOUseRelativeURLs"];
+  trustProxyAuthentication = [defaults trustProxyAuthentication];
+  useRelativeURLs = [defaults useRelativeURLs];
 }
 
 - (id) init
@@ -222,30 +211,17 @@ static BOOL debugLeaks = NO;
   NSString *urlStrings[] = {@"SOGoProfileURL", @"OCSFolderInfoURL", nil};
   NSString **urlString;
   NSString *value;
-  NSUserDefaults *ud;
+  SOGoSystemDefaults *defaults;
   BOOL ok;
 
-  ud = [NSUserDefaults standardUserDefaults];
+  defaults = [SOGoSystemDefaults sharedSystemDefaults];
   ok = YES;
   cm = [GCSChannelManager defaultChannelManager];
 
   urlString = urlStrings;
   while (ok && *urlString)
     {
-      value = [ud stringForKey: *urlString];
-      if (!value & [*urlString isEqualToString: @"SOGoProfileURL"])
-	{
-	  value = [ud stringForKey: @"AgenorProfileURL"];
-	  if (value)
-	    {
-	      [ud setObject: value forKey: *urlString];
-	      [ud removeObjectForKey: @"AgenorProfileURL"];
-	      [ud synchronize];
-	      [self warnWithFormat: @"the user defaults key 'AgenorProfileURL'"
-		    @" was renamed to 'SOGoProfileURL'"];
-	    }
-	}
-
+      value = [defaults stringForKey: *urlString];
       if (value)
 	{
 	  [self _checkTableWithCM: cm tableURL: value andType: *urlString];
@@ -309,9 +285,8 @@ static BOOL debugLeaks = NO;
 
   user = [SOGoUser userWithLogin: _key roles: nil];
   if (user)
-    userFolder = [$(@"SOGoUserFolder")
-		   objectWithName: _key
-		   inContainer: self];
+    userFolder = [$(@"SOGoUserFolder") objectWithName: _key
+                                          inContainer: self];
   else
     userFolder = nil;
 

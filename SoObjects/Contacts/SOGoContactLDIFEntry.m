@@ -24,7 +24,6 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
-#import <Foundation/NSUserDefaults.h>
 
 #import <NGCards/NGVCard.h>
 #import <NGCards/CardVersitRenderer.h>
@@ -32,21 +31,7 @@
 #import "SOGoContactGCSEntry.h"
 #import "SOGoContactLDIFEntry.h"
 
-static NSString *sogoContactInfoAttribute = nil;
-
 @implementation SOGoContactLDIFEntry
-
-+ (void) initialize
-{
-  NSUserDefaults *ud;
-
-  if (!sogoContactInfoAttribute)
-    {
-      ud = [NSUserDefaults standardUserDefaults];
-      ASSIGN (sogoContactInfoAttribute,
-              [ud stringForKey: @"SOGoLDAPContactInfoAttribute"]);
-    }
-}
 
 + (SOGoContactLDIFEntry *) contactEntryWithName: (NSString *) newName
                                   withLDIFEntry: (NSDictionary *) newEntry
@@ -126,7 +111,7 @@ static NSString *sogoContactInfoAttribute = nil;
 
 - (NGVCard *) vCard
 {
-  NSString *info, *surname, *streetAddress, *location, *key, *region, *postalCode, *country, *org, *orgunit;
+  NSString *info, *surname, *streetAddress, *location, *region, *postalCode, *country, *org, *orgunit;
   CardElement *element;
   unsigned int count;
 
@@ -159,14 +144,12 @@ static NSString *sogoContactInfoAttribute = nil;
       if (info)
         [vcard setNickname: info];
 
-      /* If SOGoLDAPContactInfoAttribute is defined, we set as the NOTE value
-         in order for Thunderbird (or any other CardDAV client) to display it. */
-      if (sogoContactInfoAttribute)
-        key = [sogoContactInfoAttribute lowercaseString];
-      else
-	key = @"description";
-      info = [ldifEntry objectForKey: key];
-      if (info)
+      /* If "c_info" is defined, we set as the NOTE value in order for
+         Thunderbird (or any other CardDAV client) to display it. */
+      info = [ldifEntry objectForKey: @"c_info"];
+      if (![info length])
+        info = [ldifEntry objectForKey: @"description"];
+      if ([info length])
         [vcard setNote: info];
 
       info = [ldifEntry objectForKey: @"mail"];

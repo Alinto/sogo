@@ -38,20 +38,12 @@
 @class NGImap4MailboxInfo;
 @class WOResponse;
 
-typedef enum {
-  undefined = -1,
-  rfc2086 = 0,
-  rfc4314
-} SOGoIMAPAclStyle;
-
 @interface SOGoMailFolder : SOGoMailBaseObject
 {
   NSMutableArray *filenames;
   NSString *folderType;
   NSDictionary *mailboxACL;
 }
-
-+ (SOGoIMAPAclStyle) imapAclStyle;
 
 - (NSString *) absoluteImap4Name;
 

@@ -27,14 +27,33 @@
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 
-#import <SoObjects/SOGo/SOGoUser.h>
-#import <SoObjects/SOGo/NSDictionary+Utilities.h>
-#import <SoObjects/Appointments/SOGoWebAppointmentFolder.h>
-#import <SoObjects/Appointments/SOGoAppointmentFolders.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserSettings.h>
+#import <SOGo/NSDictionary+Utilities.h>
+#import <Appointments/SOGoWebAppointmentFolder.h>
+#import <Appointments/SOGoAppointmentFolders.h>
 
 #import "UIxCalMainActions.h"
 
 @implementation UIxCalMainActions
+
+- (NSString *) displayNameForUrl: (NSString *) calendarURL
+{
+  NSString *rc, *tmp;
+
+  tmp = [calendarURL lastPathComponent];
+  if (tmp)
+    {
+      if ([[tmp pathExtension] caseInsensitiveCompare: @"ics"] == NSOrderedSame)
+	rc = [tmp substringToIndex: [tmp length] - 4];
+      else
+	rc = tmp;
+    }
+  else
+    rc = [self labelForKey: @"Web Calendar"];
+
+  return rc;
+}
 
 - (WOResponse *) addWebCalendarAction
 {
@@ -85,29 +104,10 @@
   return response;
 }
 
-- (NSString *) displayNameForUrl: (NSString *) calendarURL
-{
-  NSString *rc, *tmp;
-
-  tmp = [calendarURL lastPathComponent];
-  if (tmp)
-    {
-      if ([[tmp pathExtension] caseInsensitiveCompare: @"ics"] == NSOrderedSame)
-	rc = [tmp substringToIndex: [tmp length] - 4];
-      else
-	rc = tmp;
-    }
-  else
-    rc = [self labelForKey: @"Web Calendar"];
-
-
-  return rc;
-}
-
 - (void) saveUrl: (NSURL *) calendarURL
      forCalendar: (NSString *) calendarName
 {
-  NSUserDefaults *settings;
+  SOGoUserSettings *settings;
   NSMutableDictionary *calSettings, *webCalendars;
 
   settings = [[context activeUser] userSettings];
@@ -124,7 +124,7 @@
 
 - (WOResponse *) reloadWebCalendarsAction
 {
-  NSUserDefaults *settings;
+  SOGoUserSettings *settings;
   NSMutableDictionary *calSettings, *webCalendars;
   NSArray *calendarIds;
   SOGoWebAppointmentFolder *folder;
@@ -153,7 +153,5 @@
 
   return [self responseWith204];
 }
-
-
 
 @end

@@ -58,7 +58,6 @@
 - (void) saveComponent: (iCalRepeatableEntityObject *) newObject;
 
 /* mail notifications */
-- (BOOL) sendEMailNotifications;
 - (void) sendEMailUsingTemplateNamed: (NSString *) pageName
 			   forObject: (iCalRepeatableEntityObject *) object
 		      previousObject: (iCalRepeatableEntityObject *) previousObject

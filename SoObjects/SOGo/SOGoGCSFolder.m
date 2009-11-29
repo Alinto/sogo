@@ -29,7 +29,6 @@
 #import <Foundation/NSException.h>
 #import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSURL.h>
-#import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSValue.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
@@ -54,8 +53,8 @@
 #import <GDLContentStore/NSURL+GCS.h>
 #import <SaxObjC/XMLNamespaces.h>
 #import <UI/SOGoUI/SOGoFolderAdvisory.h>
-#import "NSDictionary+Utilities.h"
 
+#import "NSDictionary+Utilities.h"
 #import "NSArray+Utilities.h"
 #import "NSArray+DAV.h"
 #import "NSObject+DAV.h"
@@ -65,10 +64,13 @@
 #import "DOMNode+SOGo.h"
 #import "SOGoCache.h"
 #import "SOGoContentObject.h"
+#import "SOGoDomainDefaults.h"
 #import "SOGoGroup.h"
 #import "SOGoParentFolder.h"
 #import "SOGoPermissions.h"
 #import "SOGoUser.h"
+#import "SOGoUserDefaults.h"
+#import "SOGoUserSettings.h"
 #import "SOGoWebDAVAclManager.h"
 #import "WORequest+SOGo.h"
 #import "WOResponse+SOGo.h"
@@ -76,7 +78,6 @@
 #import "SOGoGCSFolder.h"
 
 static NSString *defaultUserID = @"<default>";
-static BOOL sendFolderAdvisories = NO;
 static NSArray *childRecordFields = nil;
 
 @implementation SOGoGCSFolder
@@ -139,11 +140,6 @@ static NSArray *childRecordFields = nil;
 
 + (void) initialize
 {
-  NSUserDefaults *ud;
-
-  ud = [NSUserDefaults standardUserDefaults];
-
-  sendFolderAdvisories = [ud boolForKey: @"SOGoFoldersSendEMailNotifications"];
   if (!childRecordFields)
     {
       childRecordFields = [NSArray arrayWithObjects: @"c_name", @"c_version",
@@ -389,12 +385,14 @@ static NSArray *childRecordFields = nil;
   NSString *pageName;
   SOGoUser *user;
   SOGoFolderAdvisory *page;
+  NSString *language;
 
-  if (sendFolderAdvisories)
+  user = [SOGoUser userWithLogin: [self ownerInContext: context]];
+  if ([[user domainDefaults] foldersSendEMailNotifications])
     {
-      user = [SOGoUser userWithLogin: [self ownerInContext: context]];
+      language = [[user userDefaults] language];
       pageName = [NSString stringWithFormat: @"SOGoFolder%@%@Advisory",
-			   [user language], template];
+			   language, template];
 
       page = [[WOApplication application] pageWithName: pageName
 					  inContext: context];
@@ -676,7 +674,7 @@ static NSArray *childRecordFields = nil;
 {
   NSMutableArray *folderSubscription, *tmpA;
   NSString *subscriptionPointer;
-  NSUserDefaults *ud;
+  SOGoUserSettings *us;
   NSMutableDictionary *moduleSettings, *tmpD;
   SOGoUser *sogoUser;
   BOOL rc;
@@ -684,13 +682,13 @@ static NSArray *childRecordFields = nil;
   sogoUser = [SOGoUser userWithLogin: subscribingUser roles: nil];
   if (sogoUser)
     {
-      ud = [sogoUser userSettings];
-      moduleSettings = [ud objectForKey: [container nameInContainer]];
+      us = [sogoUser userSettings];
+      moduleSettings = [us objectForKey: [container nameInContainer]];
       if (!(moduleSettings
             && [moduleSettings isKindOfClass: [NSMutableDictionary class]]))
         {
           moduleSettings = [NSMutableDictionary dictionary];
-          [ud setObject: moduleSettings forKey: [container nameInContainer]];
+          [us setObject: moduleSettings forKey: [container nameInContainer]];
         }
 
       folderSubscription
@@ -731,7 +729,7 @@ static NSArray *childRecordFields = nil;
           [folderSubscription removeObject: subscriptionPointer];
         }
 
-      [ud synchronize];
+      [us synchronize];
       rc = YES;
     }
   else
@@ -1203,11 +1201,13 @@ static NSArray *childRecordFields = nil;
 {
   int count, max;
   NSDictionary *record;
-  NSString *currentUID;
+  NSString *currentUID, *domain;
   SOGoGroup *group;
   NSMutableArray *acls;
 
   acls = [NSMutableArray array];
+#warning should it be the domain of the ownerUser instead?
+  domain = [[context activeUser] domain];
 
   max = [records count];
   for (count = 0; count < max; count++)
@@ -1216,7 +1216,8 @@ static NSArray *childRecordFields = nil;
       currentUID = [record valueForKey: @"c_uid"];
       if ([currentUID hasPrefix: @"@"])
         {
-          group = [SOGoGroup groupWithIdentifier: currentUID];
+          group = [SOGoGroup groupWithIdentifier: currentUID
+                                        inDomain: domain];
           if (group && [group hasMemberWithUID: uid])
             [acls addObject: [record valueForKey: @"c_role"]];
         }
@@ -1268,8 +1269,9 @@ static NSArray *childRecordFields = nil;
           forObjectAtPath: (NSArray *) objectPathArray
 {
   NSArray *acls;
-  NSString *objectPath;
+  NSString *objectPath, *module;
   NSDictionary *aclsForObject;
+  SOGoDomainDefaults *dd;
 
   objectPath = [objectPathArray componentsJoinedByString: @"/"];
   aclsForObject = [aclCache objectForKey: objectPath];
@@ -1286,18 +1288,18 @@ static NSArray *childRecordFields = nil;
     }
 
   if (!([acls count] || [uid isEqualToString: defaultUserID]))
-                    acls = [self aclsForUser: defaultUserID
-                             forObjectAtPath: objectPathArray];
+    acls = [self aclsForUser: defaultUserID forObjectAtPath: objectPathArray];
 
   // If we still don't have ACLs defined for this particular resource,
-  // let's go get the system-wide defaults, if any.
+  // let's go get the domain defaults, if any.
   if (![acls count])
     {
-      if ([[container nameInContainer] isEqualToString: @"Calendar"]
-       || [[container nameInContainer] isEqualToString: @"Contacts"])
-        acls = [[NSUserDefaults standardUserDefaults] 
-          objectForKey: [NSString stringWithFormat: @"SOGo%@DefaultRoles",
-          [container nameInContainer]]];
+      dd = [[context activeUser] domainDefaults];
+      module = [container nameInContainer];
+      if ([module isEqualToString: @"Calendar"])
+        acls = [dd calendarDefaultRoles];
+      else if ([module isEqualToString: @"Contacts"])
+        acls = [dd contactsDefaultRoles];
     }
 
   return acls;
@@ -1307,7 +1309,7 @@ static NSArray *childRecordFields = nil;
             forObjectAtPath: (NSArray *) objectPathArray
 {
   EOQualifier *qualifier;
-  NSString *uid, *uids, *qs, *objectPath;
+  NSString *uid, *uids, *qs, *objectPath, *domain;
   NSMutableArray *usersAndGroups;
   NSMutableDictionary *aclsForObject;
   SOGoGroup *group;
@@ -1315,6 +1317,7 @@ static NSArray *childRecordFields = nil;
 
   if ([users count] > 0)
     {
+      domain = [[context activeUser] domain];
       usersAndGroups = [NSMutableArray arrayWithArray: users];
       for (i = 0; i < [usersAndGroups count]; i++)
         {
@@ -1322,7 +1325,7 @@ static NSArray *childRecordFields = nil;
           if (![uid hasPrefix: @"@"])
             {
               // Prefix the UID with the character "@" when dealing with a group
-              group = [SOGoGroup groupWithIdentifier: uid];
+              group = [SOGoGroup groupWithIdentifier: uid inDomain: domain];
               if (group)
                 [usersAndGroups replaceObjectAtIndex: i
                                           withObject: [NSString stringWithFormat: @"@%@", uid]];
@@ -1372,7 +1375,7 @@ static NSArray *childRecordFields = nil;
           forUser: (NSString *) uid
   forObjectAtPath: (NSArray *) objectPathArray
 {
-  NSString *objectPath, *aUID;
+  NSString *objectPath, *aUID, *domain;
   NSMutableArray *newRoles;
   SOGoGroup *group;
 
@@ -1380,7 +1383,8 @@ static NSArray *childRecordFields = nil;
   if (![uid hasPrefix: @"@"])
     {
       // Prefix the UID with the character "@" when dealing with a group
-      group = [SOGoGroup groupWithIdentifier: uid];
+      domain = [[context activeUser] domain];
+      group = [SOGoGroup groupWithIdentifier: uid inDomain: domain];
       if (group)
         aUID = [NSString stringWithFormat: @"@%@", uid];
     }

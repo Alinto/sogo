@@ -23,7 +23,7 @@
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSTimeZone.h>
-#import <Foundation/NSUserDefaults.h>
+#import <Foundation/NSUserDefaults.h> /* for locale strings */
 #import <Foundation/NSPropertyList.h>
 #import <Foundation/NSValue.h>
 
@@ -32,12 +32,15 @@
 
 #import <NGExtensions/NSObject+Logs.h>
 
-#import <SoObjects/SOGo/NSArray+Utilities.h>
-#import <SoObjects/SOGo/NSDictionary+Utilities.h>
-#import <SoObjects/SOGo/NSString+Utilities.h>
-#import <SoObjects/SOGo/SOGoUser.h>
-#import <SoObjects/SOGo/SOGoUserFolder.h>
-#import <SoObjects/Mailer/SOGoMailAccount.h>
+#import <SOGo/NSArray+Utilities.h>
+#import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/NSString+Utilities.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
+#import <SOGo/SOGoDomainDefaults.h>
+#import <SOGo/SOGoSystemDefaults.h>
+#import <SOGo/SOGoUserFolder.h>
+#import <Mailer/SOGoMailAccount.h>
 #import "../../Main/SOGo.h"
 
 #import "UIxPreferences.h"
@@ -50,75 +53,48 @@
    workweek = from -> to
    identities */
 
-static BOOL defaultsRead = NO;
-static BOOL shouldDisplayPasswordChange = NO;
-static BOOL shouldDisplayAdditionalPreferences = NO;
-static BOOL defaultShowSubscribedFoldersOnly = NO;
-static BOOL vacationEnabled = NO;
-static BOOL forwardEnabled = NO;
-
 @implementation UIxPreferences
-
-+ (void) initialize
-{
-  NSUserDefaults *ud;
-
-  if (!defaultsRead)
-    {
-      ud = [NSUserDefaults standardUserDefaults];
-      shouldDisplayPasswordChange
-        = [ud boolForKey: @"SOGoUIxUserCanChangePassword"];
-      shouldDisplayAdditionalPreferences
-        = [ud boolForKey: @"SOGoUIxAdditionalPreferences"];
-      defaultShowSubscribedFoldersOnly
-        = [ud boolForKey: @"SOGoMailShowSubscribedFoldersOnly"];
-      vacationEnabled
-	= [ud boolForKey: @"SOGoVacationEnabled"];
-      forwardEnabled
-	= [ud boolForKey: @"SOGoForwardEnabled"];
-      defaultsRead = YES;
-    }
-}
 
 - (id) init
 {
   //NSDictionary *locale;
+  SOGoDomainDefaults *dd;
   NSString *language;
   
   if ((self = [super init]))
     {
-      language = [[context activeUser] language];
-
       item = nil;
-      hours = nil;
       ASSIGN (user, [context activeUser]);
       ASSIGN (userDefaults, [user userDefaults]);
       ASSIGN (today, [NSCalendarDate date]);
       //locale = [context valueForKey: @"locale"];
-      ASSIGN (locale, [[WOApplication application] localeForLanguageNamed: language]);
-      ASSIGN (daysOfWeek,
-              [locale objectForKey: NSWeekDayNameArray]);
+      language = [userDefaults language];
+
+      ASSIGN (locale,
+              [[WOApplication application] localeForLanguageNamed: language]);
+      ASSIGN (daysOfWeek, [locale objectForKey: NSWeekDayNameArray]);
       hasChanged = NO;
       composeMessageTypeHasChanged = NO;
 
-      if (vacationEnabled)
+      dd = [user domainDefaults];
+      if ([dd vacationEnabled])
 	{
-	  vacationOptions = [userDefaults objectForKey: @"Vacation"];
+	  vacationOptions = [userDefaults vacationOptions];
 	  if (!vacationOptions)
 	    {
 	      vacationOptions = [NSMutableDictionary dictionary];
-	      [userDefaults setObject: vacationOptions forKey: @"Vacation"];
+	      [userDefaults setVacationOptions: vacationOptions];
 	    }
 	  [vacationOptions retain];
 	}
 
-      if (forwardEnabled)
+      if ([dd forwardEnabled])
 	{
-	  forwardOptions = [userDefaults objectForKey: @"Forward"];
+	  forwardOptions = [userDefaults forwardOptions];
 	  if (!forwardOptions)
 	    {
 	      forwardOptions = [NSMutableDictionary dictionary];
-	      [userDefaults setObject: forwardOptions forKey: @"Forward"];
+	      [userDefaults setForwardOptions: forwardOptions];
 	    }
 	  [forwardOptions retain];
 	}
@@ -135,7 +111,6 @@ static BOOL forwardEnabled = NO;
   [userDefaults release];
   [vacationOptions release];
   [forwardOptions release];
-  [hours release];
   [daysOfWeek release];
   [locale release];
   [super dealloc];
@@ -169,12 +144,12 @@ static BOOL forwardEnabled = NO;
 
 - (NSString *) userTimeZone
 {
-  return [[user timeZone] timeZoneName];
+  return [userDefaults timeZoneName];
 }
 
 - (void) setUserTimeZone: (NSString *) newUserTimeZone
 {
-  [userDefaults setObject: newUserTimeZone forKey: @"TimeZone"];
+  [userDefaults setTimeZoneName: newUserTimeZone];
 }
 
 - (NSArray *) shortDateFormatsList
@@ -225,22 +200,12 @@ static BOOL forwardEnabled = NO;
 
 - (NSString *) userShortDateFormat
 {
-  NSString *shortDateFormat;
- 
-  shortDateFormat = [userDefaults objectForKey: @"ShortDateFormat"];
-
-  if (!shortDateFormat)
-    shortDateFormat = @"default";
-
-  return shortDateFormat;
+  return [userDefaults shortDateFormat];
 }
 
 - (void) setUserShortDateFormat: (NSString *) newFormat
 {
-  if ([newFormat isEqualToString: @"default"])
-    [userDefaults removeObjectForKey: @"ShortDateFormat"];
-  else
-    [userDefaults setObject: newFormat forKey: @"ShortDateFormat"];
+  [userDefaults setShortDateFormat: newFormat];
 }
 
 - (NSArray *) longDateFormatsList
@@ -296,8 +261,7 @@ static BOOL forwardEnabled = NO;
 {
   NSString *longDateFormat;
  
-  longDateFormat = [userDefaults objectForKey: @"LongDateFormat"];
-
+  longDateFormat = [userDefaults longDateFormat];
   if (!longDateFormat)
     longDateFormat = @"default";
 
@@ -307,9 +271,9 @@ static BOOL forwardEnabled = NO;
 - (void) setUserLongDateFormat: (NSString *) newFormat
 {
   if ([newFormat isEqualToString: @"default"])
-    [userDefaults removeObjectForKey: @"LongDateFormat"];
+    [userDefaults unsetLongDateFormat];
   else
-    [userDefaults setObject: newFormat forKey: @"LongDateFormat"];
+    [userDefaults setLongDateFormat: newFormat];
 }
 
 - (NSArray *) timeFormatsList
@@ -360,15 +324,15 @@ static BOOL forwardEnabled = NO;
 
 - (NSString *) userTimeFormat
 {
-  return [user timeFormat];
+  return [userDefaults timeFormat];
 }
 
 - (void) setUserTimeFormat: (NSString *) newFormat
 {
   if ([newFormat isEqualToString: @"default"])
-    [userDefaults removeObjectForKey: @"TimeFormat"];
+    [userDefaults unsetTimeFormat];
   else
-    [userDefaults setObject: newFormat forKey: @"TimeFormat"];
+    [userDefaults setTimeFormat: newFormat];
 }
 
 - (NSArray *) daysList
@@ -390,16 +354,17 @@ static BOOL forwardEnabled = NO;
 
 - (NSString *) userWeekStartDay
 {
-  return [NSString stringWithFormat: @"%d", [user firstDayOfWeek]];
+  return [NSString stringWithFormat: @"%d", [userDefaults firstDayOfWeek]];
 }
 
 - (void) setUserWeekStartDay: (NSString *) newDay
 {
-  [userDefaults setObject: newDay forKey: @"WeekStartDay"];
+  [userDefaults setFirstDayOfWeek: [newDay intValue]];
 }
 
 - (NSArray *) hoursList
 {
+  static NSMutableArray *hours = nil;
   unsigned int currentHour;
 
   if (!hours)
@@ -415,22 +380,24 @@ static BOOL forwardEnabled = NO;
 
 - (NSString *) userDayStartTime
 {
-  return [NSString stringWithFormat: @"%02d:00", [user dayStartHour]];
+  return [NSString stringWithFormat: @"%02d:00",
+                   [userDefaults dayStartHour]];
 }
 
 - (void) setUserDayStartTime: (NSString *) newTime
 {
-  [userDefaults setObject: newTime forKey: @"DayStartTime"];
+  [userDefaults setDayStartTime: newTime];
 }
 
 - (NSString *) userDayEndTime
 {
-  return [NSString stringWithFormat: @"%02d:00", [user dayEndHour]];  
+  return [NSString stringWithFormat: @"%02d:00",
+                   [userDefaults dayEndHour]];
 }
 
 - (void) setUserDayEndTime: (NSString *) newTime
 {
-  [userDefaults setObject: newTime forKey: @"DayEndTime"];
+  [userDefaults setDayEndTime: newTime];
 }
 
 - (NSArray *) firstWeekList
@@ -450,49 +417,48 @@ static BOOL forwardEnabled = NO;
 
 - (NSString *) userFirstWeek
 {
-  return [userDefaults objectForKey: @"FirstWeek"];
+  return [userDefaults firstWeekOfYear];
 }
 
 - (void) setUserFirstWeek: (NSString *) newFirstWeek
 {
-  [userDefaults setObject: newFirstWeek forKey: @"FirstWeek"];
+  [userDefaults setFirstWeekOfYear: newFirstWeek];
 }
 
-- (NSString *) reminderEnabled
+- (BOOL) reminderEnabled
 {
-  NSString *reminderEnabled;
-
-  reminderEnabled = [userDefaults objectForKey: @"ReminderEnabled"];
-
-  return ((!reminderEnabled || [reminderEnabled boolValue])
-          ? @"YES" : @"NO");
+  return [userDefaults reminderEnabled];
 }
 
-- (void) setReminderEnabled: (NSString *) newValue
+- (void) setReminderEnabled: (BOOL) newValue
 {
-  [userDefaults setObject: newValue forKey: @"ReminderEnabled"];
+  [userDefaults setReminderEnabled: newValue];
 }
 
-- (NSString *) remindWithASound
+- (BOOL) remindWithASound
 {
-  NSString *remindWithASound;
-
-  remindWithASound = [userDefaults objectForKey: @"RemindWithASound"];
-
-  return ((!remindWithASound || [remindWithASound boolValue])
-          ? @"YES" : @"NO");
+  return [userDefaults remindWithASound];
 }
 
-- (void) setRemindWithASound: (NSString *) newValue
+- (void) setRemindWithASound: (BOOL) newValue
 {
-  [userDefaults setObject: newValue forKey: @"RemindWithASound"];
+  [userDefaults setRemindWithASound: newValue];
 }
 
 - (NSArray *) reminderTimesList
 {
-  return [NSArray arrayWithObjects: @"0000", @"0005", @"0010", @"0015",
-                  @"0030", @"0100", @"0200", @"0400", @"0800", @"1200",
-                  @"2400", @"4800", nil];
+  static NSArray *reminderTimesList = nil;
+
+  if (!reminderTimesList)
+    {
+      reminderTimesList = [NSArray arrayWithObjects: @"0000", @"0005",
+                                   @"0010", @"0015", @"0030", @"0100",
+                                   @"0200", @"0400", @"0800", @"1200",
+                                   @"2400", @"4800", nil];
+      [reminderTimesList retain];
+    }
+
+  return reminderTimesList;
 }
 
 - (NSString *) itemReminderTimeText
@@ -503,70 +469,56 @@ static BOOL forwardEnabled = NO;
 
 - (NSString *) userReminderTime
 {
-  return [userDefaults objectForKey: @"ReminderTime"];
+  return [userDefaults reminderTime];
 }
 
 - (void) setReminderTime: (NSString *) newTime
 {
-  [userDefaults setObject: newTime forKey: @"ReminderTime"];
+  [userDefaults setReminderTime: newTime];
 }
 
 /* Mailer */
 - (void) setShowSubscribedFoldersOnly: (BOOL) showSubscribedFoldersOnly
 {
-  [userDefaults setBool: showSubscribedFoldersOnly forKey: @"showSubscribedFoldersOnly"]; // should be capitalized ..
+  [userDefaults setMailShowSubscribedFoldersOnly: showSubscribedFoldersOnly];
 }
 
 - (BOOL) showSubscribedFoldersOnly
 {
-  NSString *showSubscribedFoldersOnly;
-  BOOL r;
-
-  showSubscribedFoldersOnly = [userDefaults stringForKey: @"showSubscribedFoldersOnly"];
-  if (showSubscribedFoldersOnly)
-    r = [showSubscribedFoldersOnly boolValue];
-  else
-    r = defaultShowSubscribedFoldersOnly;
-
-  return r;
+  return [userDefaults mailShowSubscribedFoldersOnly];
 }
 
 - (NSArray *) messageCheckList
 {
-  NSArray *defaultList;
-  NSMutableArray *rc;
-  NSString *tmp;
-  int i, count;
+  NSArray *intervalsList;
+  NSMutableArray *messageCheckList;
+  NSString *value;
+  int count, max, interval;
 
-  defaultList = [NSMutableArray arrayWithArray: 
-                                  [[NSUserDefaults standardUserDefaults]
-                                    arrayForKey: @"SOGoMailPollingIntervals"]];
-  if ([defaultList count] > 0)
+  intervalsList = [[user domainDefaults] mailPollingIntervals];
+  messageCheckList = [NSMutableArray arrayWithObjects: @"manually", nil];
+  max = [intervalsList count];
+  for (count = 0; count < max; count++)
     {
-      rc = [NSMutableArray arrayWithObjects: @"manually", nil];
-      count = [defaultList  count];
-      for (i = 0; i < count; i++)
+      interval = [[intervalsList objectAtIndex: count] intValue];
+      value = nil;
+      if (interval == 1)
+        value = @"every_minute";
+      else if (interval == 60)
+        value = @"once_per_hour";
+      else if (interval == 2 || interval == 5 || interval == 10 
+               || interval == 20 || interval == 30)
+        value = [NSString stringWithFormat: @"every_%d_minutes", interval];
+      else
         {
-          int value = [[defaultList objectAtIndex: i] intValue];
-          tmp = nil;
-          if (value == 1)
-            tmp = @"every_minute";
-          else if (value == 60)
-            tmp = @"once_per_hour";
-          else if (value == 2 || value == 5 || value == 10 
-                   || value == 20 || value == 30)
-            tmp = [NSString stringWithFormat: @"every_%d_minutes", value];
-          if (tmp)
-            [rc addObject: tmp];
+          [self warnWithFormat: @"interval '%d' not handled", interval];
+          value = nil;
         }
+      if (value)
+        [messageCheckList addObject: value];
     }
-  else
-    rc = [NSArray arrayWithObjects: @"manually", @"every_minute",
-                  @"every_2_minutes", @"every_5_minutes", @"every_10_minutes",
-                  @"every_20_minutes", @"every_30_minutes", @"once_per_hour",
-                  nil];
 
-  return rc;
+  return messageCheckList;
 }
 
 - (NSString *) itemMessageCheckText
@@ -577,12 +529,12 @@ static BOOL forwardEnabled = NO;
 
 - (NSString *) userMessageCheck
 {
-  return [userDefaults stringForKey: @"MessageCheck"];
+  return [userDefaults mailMessageCheck];
 }
 
 - (void) setUserMessageCheck: (NSString *) newMessageCheck
 {
-  [userDefaults setObject: newMessageCheck forKey: @"MessageCheck"];
+  [userDefaults setMailMessageCheck: newMessageCheck];
 }
 
 - (NSArray *) messageForwardingList
@@ -598,14 +550,15 @@ static BOOL forwardEnabled = NO;
 
 - (NSString *) userMessageForwarding
 {
-  return [user messageForwarding];
+  return [userDefaults mailMessageForwarding];
 }
 
 - (void) setUserMessageForwarding: (NSString *) newMessageForwarding
 {
-  [userDefaults setObject: newMessageForwarding forKey: @"MessageForwarding"];
+  [userDefaults setMailMessageForwarding: newMessageForwarding];
 }
 
+/*
 // <label><var:string label:value="Default identity:"/>
 //   <var:popup list="identitiesList" item="item"
 //     string="itemIdentityText" selection="defaultIdentity"/></label>
@@ -622,17 +575,16 @@ static BOOL forwardEnabled = NO;
 - (NSString *) itemIdentityText
 {
   return [(NSDictionary *) item keysWithFormat: @"%{fullName} <%{email}>"];
-}
+  } */
 
 - (NSString *) signature
 {
-  [user migrateSignature];
-  return [userDefaults stringForKey: @"MailSignature"];
+  return [userDefaults mailSignature];
 }
 
 - (void) setSignature: (NSString *) newSignature
 {
-  [userDefaults setObject: newSignature forKey: @"MailSignature"];
+  [userDefaults setMailSignature: newSignature];
 }
 
 - (NSArray *) replyPlacementList
@@ -648,17 +600,12 @@ static BOOL forwardEnabled = NO;
 
 - (NSString *) userReplyPlacement
 {
-  return [user replyPlacement];
+  return [userDefaults mailReplyPlacement];
 }
 
 - (void) setUserReplyPlacement: (NSString *) newReplyPlacement
 {
-  [userDefaults setObject: newReplyPlacement forKey: @"ReplyPlacement"];
-}
-
-- (NSArray *) signaturePlacementList
-{
-  return [NSArray arrayWithObjects: @"above", @"below", nil];
+  [userDefaults setMailReplyPlacement: newReplyPlacement];
 }
 
 - (NSString *) itemSignaturePlacementText
@@ -667,9 +614,19 @@ static BOOL forwardEnabled = NO;
                  [NSString stringWithFormat: @"signatureplacement_%@", item]];
 }
 
+- (NSArray *) signaturePlacementList
+{
+  return [NSArray arrayWithObjects: @"above", @"below", nil];
+}
+
+- (void) setUserSignaturePlacement: (NSString *) newSignaturePlacement
+{
+  [userDefaults setMailSignaturePlacement: newSignaturePlacement];
+}
+
 - (NSString *) userSignaturePlacement
 {
-  return [user signaturePlacement];
+  return [userDefaults mailSignaturePlacement];
 }
 
 - (NSArray *) composeMessagesType
@@ -679,46 +636,33 @@ static BOOL forwardEnabled = NO;
 
 - (NSString *) itemComposeMessagesText
 {
-  return [self labelForKey: [NSString stringWithFormat: @"composemessagestype_%@", item]];
+  return [self labelForKey: [NSString stringWithFormat:
+                                        @"composemessagestype_%@", item]];
 }
 
 - (NSString *) userComposeMessagesType
 {
-  NSString *userComposeMessagesType;
-
-  userComposeMessagesType
-    = [userDefaults stringForKey: @"ComposeMessagesType"];
-  if (!userComposeMessagesType)
-    userComposeMessagesType = @"text";
-
-  return userComposeMessagesType;
+  return [userDefaults mailComposeMessageType];
 }
 
 - (void) setUserComposeMessagesType: (NSString *) newType
 {
   if (![[self userComposeMessagesType] isEqualToString: newType])
-    {
-      composeMessageTypeHasChanged = YES;
-      [userDefaults setObject: newType forKey: @"ComposeMessagesType"];
-    }
-}
-
-- (void) setUserSignaturePlacement: (NSString *) newSignaturePlacement
-{
-  [userDefaults setObject: newSignaturePlacement forKey: @"SignaturePlacement"];
+    composeMessageTypeHasChanged = YES;
+  [userDefaults setMailComposeMessageType: newType];
 }
 
 /* mail autoreply (vacation) */
 
 - (BOOL) isVacationEnabled
 {
-  return vacationEnabled;
+  return [[user domainDefaults] vacationEnabled];
 }
 
 - (void) setEnableVacation: (BOOL) enableVacation
 {
   [vacationOptions setObject: [NSNumber numberWithBool: enableVacation]
-		    forKey: @"enabled"];
+                      forKey: @"enabled"];
 }
 
 - (BOOL) enableVacation
@@ -728,8 +672,7 @@ static BOOL forwardEnabled = NO;
 
 - (void) setAutoReplyText: (NSString *) theText
 {
-  [vacationOptions setObject: theText
-		      forKey: @"autoReplyText"];
+  [vacationOptions setObject: theText forKey: @"autoReplyText"];
 }
 
 - (NSString *) autoReplyText
@@ -741,8 +684,8 @@ static BOOL forwardEnabled = NO;
 {
   NSArray *addresses;
 
-  addresses = [[theAddresses componentsSeparatedByString: @","] trimmedComponents];
-  
+  addresses = [[theAddresses componentsSeparatedByString: @","]
+                trimmedComponents];
   [vacationOptions setObject: addresses
 		      forKey: @"autoReplyEmailAddresses"];
 }
@@ -756,7 +699,7 @@ static BOOL forwardEnabled = NO;
 
   uniqueAddressesList = [NSMutableArray array];
   addressesList = [NSMutableArray arrayWithArray: [user allEmails]];
-   for (i = 0; i < [addressesList count]; i++)
+  for (i = 0; i < [addressesList count]; i++)
     {
       address = [addressesList objectAtIndex: i];
       if (![uniqueAddressesList containsObject: address])
@@ -772,17 +715,19 @@ static BOOL forwardEnabled = NO;
  
   addressesList = [vacationOptions objectForKey: @"autoReplyEmailAddresses"];
 
-  return (addressesList?
-	  [addressesList componentsJoinedByString: @", "] : [self defaultEmailAddresses]);
+  return (addressesList
+          ? [addressesList componentsJoinedByString: @", "]
+          : [self defaultEmailAddresses]);
 }
 
 - (NSArray *) daysBetweenResponsesList
 {
-  static NSArray* daysBetweenResponses = nil;
+  static NSArray *daysBetweenResponses = nil;
 
   if (!daysBetweenResponses)
     {
-      daysBetweenResponses = [NSArray arrayWithObjects: @"1", @"2", @"3", @"5", @"7", @"14", @"21", @"30", nil];
+      daysBetweenResponses = [NSArray arrayWithObjects: @"1", @"2", @"3",
+                                      @"5", @"7", @"14", @"21", @"30", nil];
       [daysBetweenResponses retain];
     }
 
@@ -831,7 +776,7 @@ static BOOL forwardEnabled = NO;
 
 - (BOOL) isForwardEnabled
 {
-  return forwardEnabled;
+  return [[user domainDefaults] forwardEnabled];
 }
 
 - (void) setEnableForward: (BOOL) enableForward
@@ -871,18 +816,22 @@ static BOOL forwardEnabled = NO;
 
 - (NSArray *) availableModules
 {
-  NSMutableArray *rc, *modules;
-  int i, count;
+  NSMutableArray *availableModules, *modules;
+  NSString *module;
+  int count, max;
 
   modules = [NSMutableArray arrayWithObjects: @"Calendar", @"Mail", nil];
-  rc = [NSMutableArray arrayWithObjects: @"Last", @"Contacts", nil];
-  count = [modules count];
+  availableModules = [NSMutableArray arrayWithObjects: @"Last", @"Contacts",
+                                     nil];
+  max = [modules count];
+  for (count = 0; count < max; count++)
+    {
+      module = [modules objectAtIndex: count];
+      if ([user canAccessModule: module])
+        [availableModules addObject: module];
+    }
 
-  for (i = 0; i < count; i++)
-    if ([user canAccessModule: [modules objectAtIndex: i]])
-      [rc addObject: [modules objectAtIndex: i]];
-
-  return rc;
+  return availableModules;
 }
 
 - (NSString *) itemModuleText
@@ -892,17 +841,25 @@ static BOOL forwardEnabled = NO;
 
 - (NSString *) userDefaultModule
 {
-  NSUserDefaults *ud;
-  ud = [user userDefaults];
+  NSString *userDefaultModule;
 
-  return [ud stringForKey: @"SOGoUIxDefaultModule"];
+  if ([userDefaults rememberLastModule])
+    userDefaultModule = @"Last";
+  else
+    userDefaultModule = [userDefaults loginModule];
+
+  return userDefaultModule;
 }
 
 - (void) setUserDefaultModule: (NSString *) newValue
 {
-  NSUserDefaults *ud;
-  ud = [user userDefaults];
-  [ud setObject: newValue forKey: @"SOGoUIxDefaultModule"];
+  if ([newValue isEqualToString: @"Last"])
+    [userDefaults setRememberLastModule: YES];
+  else
+    {
+      [userDefaults setRememberLastModule: NO];
+      [userDefaults setLoginModule: newValue];
+    }
 }
 
 - (id <WOActionResults>) defaultAction
@@ -922,10 +879,10 @@ static BOOL forwardEnabled = NO;
       
       mailAccounts = [[[context activeUser] mailAccounts] objectAtIndex: 0];
       folder = [[self clientObject] mailAccountsFolder: @"Mail"
-				inContext: context];
+                                             inContext: context];
       account = [folder lookupName: [[mailAccounts objectForKey: @"name"] asCSSIdentifier]
-		    inContext: context
-		    acquire: NO];
+                         inContext: context
+                           acquire: NO];
       
       [account updateFilters];
 
@@ -966,12 +923,14 @@ static BOOL forwardEnabled = NO;
 
 - (BOOL) shouldDisplayAdditionalPreferences
 {
-  return shouldDisplayAdditionalPreferences;
+  return [[SOGoSystemDefaults sharedSystemDefaults]
+           uixAdditionalPreferences];
 }
 
 - (BOOL) shouldDisplayPasswordChange
 {
-  return shouldDisplayPasswordChange;
+  return [[SOGoSystemDefaults sharedSystemDefaults]
+           userCanChangePassword];
 }
 
 - (NSString *) nameLabel
@@ -987,26 +946,25 @@ static BOOL forwardEnabled = NO;
 - (NSArray *) categories
 {
   NSDictionary *element;
-  NSArray *k, *v, *names;
-  NSMutableArray *rc, *colors;
+  NSArray *k, *v, *names, *colors;
+  NSMutableArray *categories, *newColors;
   int i, count;
 
-  names = [userDefaults arrayForKey: @"CalendarCategories"];
+  names = [userDefaults calendarCategories];
   if (names)
-    colors = [NSMutableArray arrayWithArray: 
-                  [userDefaults arrayForKey: @"CalendarCategoriesColors"]];
+    colors = [userDefaults calendarCategoriesColors];
   else
     {
       names = [[self labelForKey: @"category_labels"]
                 componentsSeparatedByString: @","];
-      
       count = [names count];
-      colors = [NSMutableArray arrayWithCapacity: count];
+      newColors = [NSMutableArray arrayWithCapacity: count];
       for (i = 0; i < count; i++)
-        [colors addObject: @"#F0F0F0"];
+        [newColors addObject: @"#F0F0F0"];
+      colors = newColors;
     }
 
-  rc = [NSMutableArray array];
+  categories = [NSMutableArray array];
   k = [NSArray arrayWithObjects: @"name", @"color", nil];
 
   count = [names count];
@@ -1017,10 +975,10 @@ static BOOL forwardEnabled = NO;
 
       element = [NSDictionary dictionaryWithObjects: v
                                             forKeys: k];
-      [rc addObject: element];
+      [categories addObject: element];
     }
 
-  return rc;
+  return categories;
 }
 
 
@@ -1049,29 +1007,26 @@ static BOOL forwardEnabled = NO;
     }
   else
     {
-      [userDefaults setObject: [plist objectAtIndex: 0] 
-                       forKey: @"CalendarCategories"];
-      [userDefaults setObject: [plist objectAtIndex: 1] 
-                       forKey: @"CalendarCategoriesColors"];
+      [userDefaults setCalendarCategories: [plist objectAtIndex: 0]];
+      [userDefaults setCalendarCategoriesColors: [plist objectAtIndex: 1]];
     }
 }
 
 - (NSArray *) languages
 {
-  return [NSArray arrayWithObjects: @"Czech", @"Dutch", @"English", @"French", 
-                  @"German", @"Hungarian", @"Italian", @"BrazilianPortuguese", 
-                  @"Russian", @"Spanish", @"Welsh", nil];
+  return [[SOGoSystemDefaults sharedSystemDefaults]
+           supportedLanguages];
 }
 
 - (NSString *) language
 {
-  return [userDefaults objectForKey: @"Language"];
+  return [userDefaults language];
 }
 
 - (void) setLanguage: (NSString *) newLanguage
 {
   if ([[self languages] containsObject: newLanguage])
-    [userDefaults setObject: newLanguage forKey: @"Language"];
+    [userDefaults setLanguage: newLanguage];
 }
 
 - (NSString *) languageText

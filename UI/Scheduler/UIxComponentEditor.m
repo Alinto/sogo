@@ -28,7 +28,6 @@
 #import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSValue.h>
-#import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSURL.h>
 
 #import <NGCards/iCalAlarm.h>
@@ -55,12 +54,13 @@
 #import <Appointments/SOGoAppointmentOccurence.h>
 #import <Appointments/SOGoTaskObject.h>
 #import <SOGo/iCalEntityObject+Utilities.h>
-#import <SOGo/SOGoUserManager.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+BSJSONAdditions.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
+#import <SOGo/SOGoUserManager.h>
 #import <SOGo/SOGoPermissions.h>
 
 #import "../../Main/SOGo.h"
@@ -315,6 +315,8 @@ iRANGE(2);
 
 - (void) _loadRRules
 {
+  SOGoUserDefaults *ud;
+
   // We initialize our repeat ivars
   if ([component hasRecurrenceRules])
     {
@@ -421,7 +423,9 @@ iRANGE(2);
 	  
 	  repeat = @"CUSTOM";
 	  date = [[rule untilDate] copy];
-	  [date setTimeZone: [[context activeUser] timeZone]];
+
+          ud = [[context activeUser] userDefaults];
+	  [date setTimeZone: [ud timeZone]];
 	  [self setRange1: @"2"];
 	  [self setRange2: [date descriptionWithCalendarFormat: dateFormat]];
 	  [date release];
@@ -825,10 +829,10 @@ iRANGE(2);
 {
   NSMutableArray *categoryList;
   NSArray *categoryLabels;
-  NSUserDefaults *defaults;
+  SOGoUserDefaults *defaults;
 
   defaults = [[context activeUser] userDefaults];
-  categoryLabels = [defaults arrayForKey: @"CalendarCategories"];
+  categoryLabels = [defaults calendarCategories];
   if (!categoryLabels)
     categoryLabels = [[self labelForKey: @"category_labels"]
                        componentsSeparatedByString: @","];
@@ -1610,12 +1614,15 @@ RANGE(2);
   else if (range == 2)
     {
       NSCalendarDate *date;
-      SOGoUser *user;
-	  
-      user = [context activeUser];
+      SOGoUserDefaults *ud;
+      NSDictionary *locale;
+
+      ud = [[context activeUser] userDefaults];
+      locale = [[WOApplication application]
+                 localeForLanguageNamed: [ud language]];
       date = [NSCalendarDate dateWithString: [self range2]
 			     calendarFormat: dateFormat
-			     locale: [[WOApplication application] localeForLanguageNamed: [user language]]];
+                                     locale: locale];
       [theRule setUntilDate: date];
     }
   // No end date.

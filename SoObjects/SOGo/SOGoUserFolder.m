@@ -24,7 +24,6 @@
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSURL.h>
-#import <Foundation/NSUserDefaults.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoClassSecurityInfo.h>
@@ -59,22 +58,7 @@
 
 #import "SOGoUserFolder.h"
 
-static NSString *LDAPContactInfoAttribute = nil;
-
 @implementation SOGoUserFolder
-
-+ (void) initialize
-{
-  NSUserDefaults *ud;
-
-  if (!LDAPContactInfoAttribute)
-    {
-      ud = [NSUserDefaults standardUserDefaults];
-      LDAPContactInfoAttribute
-	= [[ud stringForKey: @"SOGoLDAPContactInfoAttribute"] lowercaseString];
-      [LDAPContactInfoAttribute retain];
-    }
-}
 
 /* hierarchy */
 
@@ -230,8 +214,7 @@ static NSString *LDAPContactInfoAttribute = nil;
 
   results = [NSMutableDictionary dictionary];
 
-  contacts
-    = [[SOGoUserManager sharedUserManager] fetchUsersMatching: uid];
+  contacts = [[SOGoUserManager sharedUserManager] fetchUsersMatching: uid];
   enumerator = [contacts objectEnumerator];
   while ((contact = [enumerator nextObject]))
     {
@@ -424,13 +407,10 @@ static NSString *LDAPContactInfoAttribute = nil;
           field = [currentUser objectForKey: @"c_email"];
           [fetch appendFormat: @"<email>%@</email>",
                  [field stringByEscapingXMLString]];
-          if (LDAPContactInfoAttribute)
-            {
-              field = [currentUser objectForKey: LDAPContactInfoAttribute];
-              if ([field length])
-                [fetch appendFormat: @"<info>%@</info>",
-                       [field stringByEscapingXMLString]];
-            }
+          field = [currentUser objectForKey: @"info"];
+          if ([field length])
+            [fetch appendFormat: @"<info>%@</info>",
+                   [field stringByEscapingXMLString]];
           [fetch appendString: @"</user>"];
         }
     }

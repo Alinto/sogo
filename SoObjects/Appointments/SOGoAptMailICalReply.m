@@ -32,8 +32,9 @@
 #import <NGCards/iCalEntityObject.h>
 #import <NGCards/iCalPerson.h>
 
-#import <SoObjects/SOGo/NSString+Utilities.h>
-#import <SoObjects/SOGo/SOGoUser.h>
+#import <SOGo/NSString+Utilities.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
 
 #import "iCalPerson+SOGo.h"
 #import "SOGoAptMailICalReply.h"
@@ -146,10 +147,12 @@ static NSCharacterSet *wsSet  = nil;
 {
   NSCalendarDate *date;
   SOGoUser *user;
+  NSTimeZone *tz;
 
   date = [apt startDate];
   user = [[self context] activeUser];
-  [date setTimeZone: [user timeZone]];
+  tz = [[user userDefaults] timeZone];
+  [date setTimeZone: tz];
 
   return date;
 }

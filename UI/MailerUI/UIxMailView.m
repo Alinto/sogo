@@ -20,7 +20,6 @@
 */
 
 #import <Foundation/NSException.h>
-#import <Foundation/NSUserDefaults.h>
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
@@ -51,18 +50,11 @@ static NSString *mailETag = nil;
 
 + (void) initialize
 {
-  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  
-  if ([ud boolForKey:@"SOGoDontUseETagsForMailViewer"])
-    NSLog(@"Note: usage of constant etag for mailer viewer is disabled.");
-  else
-    {
-      mailETag = [[NSString alloc] initWithFormat:@"\"imap4url_%d_%d_%03d\"",
-				   UIX_MAILER_MAJOR_VERSION,
-				   UIX_MAILER_MINOR_VERSION,
-				   UIX_MAILER_SUBMINOR_VERSION];
-      NSLog(@"Note: using constant etag for mail viewer: '%@'", mailETag);
-    }
+  mailETag = [[NSString alloc] initWithFormat:@"\"imap4url_%d_%d_%03d\"",
+                               UIX_MAILER_MAJOR_VERSION,
+                               UIX_MAILER_MINOR_VERSION,
+                               UIX_MAILER_SUBMINOR_VERSION];
+  NSLog(@"Note: using constant etag for mail viewer: '%@'", mailETag);
 }
 
 /* accessors */
@@ -146,33 +138,30 @@ static NSString *mailETag = nil;
   NSString *s;
 
   /* check etag to see whether we really must rerender */
-  if (mailETag)
+  /*
+    Note: There is one thing which *can* change for an existing message,
+    those are the IMAP4 flags (and annotations, which we do not use).
+    Since we don't render the flags, it should be OK, if this changes
+    we must embed the flagging into the etag.
+  */
+  s = [[context request] headerForKey: @"if-none-match"];
+  if (s)
     {
-      /*
-	Note: There is one thing which *can* change for an existing message,
-	those are the IMAP4 flags (and annotations, which we do not use).
-	Since we don't render the flags, it should be OK, if this changes
-	we must embed the flagging into the etag.
-      */
-      s = [[context request] headerForKey: @"if-none-match"];
-      if (s)
-	{
-	  if ([s rangeOfString:mailETag].length > 0) /* not perfectly correct */
-	    { 
-	      /* client already has the proper entity */
-	      // [self logWithFormat:@"MATCH: %@ (tag %@)", s, mailETag];
-	      
-	      if (![[self clientObject] doesMailExist]) {
-		return [NSException exceptionWithHTTPStatus:404 /* Not Found */
-				    reason:@"message got deleted"];
-	      }
+      if ([s rangeOfString:mailETag].length > 0) /* not perfectly correct */
+        { 
+          /* client already has the proper entity */
+          // [self logWithFormat:@"MATCH: %@ (tag %@)", s, mailETag];
+	  
+          if (![[self clientObject] doesMailExist]) {
+            return [NSException exceptionWithHTTPStatus:404 /* Not Found */
+                                                 reason:@"message got deleted"];
+          }
+          
+          response = [context response];
+          [response setStatus: 304 /* Not Modified */];
 
-	      response = [context response];
-	      [response setStatus: 304 /* Not Modified */];
-
-	      return response;
-	    }
-	}
+          return response;
+        }
     }
   
   if (![self message]) // TODO: redirect to proper error
@@ -211,8 +200,7 @@ static NSString *mailETag = nil;
 
   request = [_ctx request];
  
-  if (mailETag != nil)
-    [[_ctx response] setHeader:mailETag forKey:@"etag"];
+  [[_ctx response] setHeader:mailETag forKey:@"etag"];
 
   mctx = [[UIxMailRenderingContext alloc] initWithViewer: self
 					  context: _ctx];

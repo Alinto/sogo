@@ -25,8 +25,9 @@
 
 #import <NGObjWeb/WORequest.h>
 
-#import <SoObjects/SOGo/SOGoUser.h>
-#import <SoObjects/Appointments/SOGoAppointmentFolder.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserSettings.h>
+#import <Appointments/SOGoAppointmentFolder.h>
 
 #import "UIxCalendarProperties.h"
 
@@ -100,7 +101,7 @@
 
 - (NSString *) allCalendarSyncTags
 {
-  NSUserDefaults *settings;
+  SOGoUserSettings *settings;
   NSMutableDictionary *calendarSettings;
   NSMutableDictionary *syncTags;
   NSEnumerator *keysList;
@@ -174,7 +175,7 @@
 
 - (NSString *) webCalendarURL
 {
-  NSUserDefaults *settings;
+  SOGoUserSettings *settings;
   NSMutableDictionary *calendarSettings;
   NSMutableDictionary *webCalendars;
   NSString *rc;

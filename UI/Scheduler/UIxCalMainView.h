@@ -33,7 +33,7 @@
 {
   NSString *monthMenuItem;
   NSNumber *yearMenuItem;
-  NSUserDefaults *ud;
+  SOGoUserSettings *us;
   NSMutableDictionary *moduleSettings;
 }
 

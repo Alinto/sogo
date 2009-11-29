@@ -26,7 +26,6 @@
 
 #import <SoObjects/SOGo/SOGoDateFormatter.h>
 #import <SoObjects/SOGo/SOGoUser.h>
-#import <SoObjects/SOGo/SOGoUserDefaults.h>
 
 #import "SOGoMailObject+Draft.h"
 #import "SOGoMailReply.h"

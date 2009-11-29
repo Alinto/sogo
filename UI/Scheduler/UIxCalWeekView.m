@@ -29,7 +29,8 @@
 
 #import <EOControl/EOQualifier.h>
 
-#import <SoObjects/SOGo/SOGoUser.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
 
 #include "UIxCalWeekView.h"
 
@@ -54,15 +55,17 @@
 - (NSCalendarDate *) endDate
 {
   unsigned offset;
-    
-  if ([self shouldDisplayWeekend])
+  SOGoUserDefaults *ud;
+
+  ud = [[context activeUser] userDefaults];
+  if ([ud calendarShouldDisplayWeekend])
     offset = 7;
   else
     offset = 5;
 
-  return [[[self startDate] dateByAddingYears:0 months:0 days:offset
-                            hours:0 minutes:0 seconds:0]
-                            endOfDay];
+  return [[[self startDate] dateByAddingYears: 0 months: 0 days: offset
+                                        hours: 0 minutes: 0 seconds: 0]
+           endOfDay];
 }
 
 // - (NSArray *) appointments

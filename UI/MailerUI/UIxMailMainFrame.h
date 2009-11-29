@@ -27,7 +27,7 @@
 
 @interface UIxMailMainFrame : UIxComponent
 {
-  NSUserDefaults *ud;
+  SOGoUserSettings *us;
   NSMutableDictionary *moduleSettings;
 }
 

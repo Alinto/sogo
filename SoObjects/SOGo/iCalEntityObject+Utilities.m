@@ -29,6 +29,8 @@
 
 #import "iCalEntityObject+Utilities.h"
 
+#warning we should move this into Appointments.
+
 @implementation iCalEntityObject (SOGoAddition)
 
 - (iCalPerson *) findParticipant: (SOGoUser *) user

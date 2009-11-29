@@ -24,27 +24,18 @@
 #import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/WORequest.h>
-#import <SoObjects/SOGo/SOGoUserManager.h>
-#import <SoObjects/SOGo/SOGoPermissions.h>
-#import <SoObjects/SOGo/SOGoObject.h>
-#import <SoObjects/SOGo/SOGoGroup.h>
-#import <SoObjects/SOGo/SOGoUser.h>
+#import <SOGo/SOGoDomainDefaults.h>
+#import <SOGo/SOGoGroup.h>
+#import <SOGo/SOGoObject.h>
+#import <SOGo/SOGoPermissions.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
+#import <SOGo/SOGoUserManager.h>
 #import <UI/SOGoUI/SOGoACLAdvisory.h>
-#import <Foundation/NSUserDefaults.h>
 
 #import "UIxUserRightsEditor.h"
 
-static BOOL sendACLAdvisories = NO;
-
 @implementation UIxUserRightsEditor
-
-+ (void) initialize
-{
-  NSUserDefaults *ud;
-
-  ud = [NSUserDefaults standardUserDefaults];
-  sendACLAdvisories = [ud boolForKey: @"SOGoACLsSendEMailNotifications"];
-}
 
 - (id) init
 {
@@ -93,7 +84,7 @@ static BOOL sendACLAdvisories = NO;
 - (BOOL) _initRights
 {
   BOOL response;
-  NSString *newUID;
+  NSString *newUID, *domain;
   SOGoUserManager *um;
   SOGoObject *clientObject;
   SOGoGroup *group;
@@ -112,7 +103,8 @@ static BOOL sendACLAdvisories = NO;
 	{
 	  if (![newUID hasPrefix: @"@"])
 	    {
-	      group = [SOGoGroup groupWithIdentifier: newUID];
+              domain = [[context activeUser] domain];
+	      group = [SOGoGroup groupWithIdentifier: newUID inDomain: domain];
 	      if (group)
 		newUID = [NSString stringWithFormat: @"@%@", newUID];
 	    }
@@ -147,12 +139,12 @@ static BOOL sendACLAdvisories = NO;
 - (void) sendACLAdvisoryTemplateForObject: (id) theObject
 {
   NSString *language, *pageName;
-  SOGoUser *user;
+  SOGoUserDefaults *ud;
   SOGoACLAdvisory *page;
   WOApplication *app;
 
-  user = [SOGoUser userWithLogin: uid roles: nil];
-  language = [user language];
+  ud = [[SOGoUser userWithLogin: uid roles: nil] userDefaults];
+  language = [ud language];
   pageName = [NSString stringWithFormat: @"SOGoACL%@ModificationAdvisory",
 		       language];
 
@@ -166,6 +158,7 @@ static BOOL sendACLAdvisories = NO;
 - (id <WOActionResults>) saveUserRightsAction
 {
   id <WOActionResults> response;
+  SOGoDomainDefaults *dd;
 
   if (![self _initRights])
     response = [NSException exceptionWithHTTPStatus: 403
@@ -179,11 +172,10 @@ static BOOL sendACLAdvisories = NO;
       [self updateRights];
       [[self clientObject] setRoles: userRights forUser: uid];
 
-      if (![o isEqualToArray: userRights] && sendACLAdvisories)
-	{
-	  [self sendACLAdvisoryTemplateForObject: [self clientObject]];
-	} 
-      
+      dd = [[context activeUser] domainDefaults];
+      if (![o isEqualToArray: userRights] && [dd aclSendEMailNotifications])
+        [self sendACLAdvisoryTemplateForObject: [self clientObject]];
+
       response = [self jsCloseWithRefreshMethod: nil];
     }
 

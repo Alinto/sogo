@@ -23,7 +23,6 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
-#import <Foundation/NSUserDefaults.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoObject+SoDAV.h>
@@ -50,18 +49,17 @@ static BOOL debugOn = NO;
 
 + (void) initialize
 {
-  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  
-  if (![[ud objectForKey:@"SOGoMailDisableETag"] boolValue]) {
-    mailETag = [[NSString alloc] initWithFormat:@"\"imap4url_%d_%d_%03d\"",
-				 UIX_MAILER_MAJOR_VERSION,
-				 UIX_MAILER_MINOR_VERSION,
-				 UIX_MAILER_SUBMINOR_VERSION];
-    NSLog(@"Note(SOGoMailBodyPart): using constant etag for mail parts: '%@'", 
-	  mailETag);
-  }
-  else
-    NSLog(@"Note(SOGoMailBodyPart): etag caching disabled!");
+  if (!mailETag)
+    {
+      /* The following disabled code should not be needed, except if we use
+         annotations (see davEntityTag below) */
+      // if (![[ud objectForKey: @"SOGoMailDisableETag"] boolValue]) {
+      
+      mailETag = [[NSString alloc] initWithFormat:@"\"imap4url_%d_%d_%03d\"",
+                                   UIX_MAILER_MAJOR_VERSION,
+                                   UIX_MAILER_MINOR_VERSION,
+                                   UIX_MAILER_SUBMINOR_VERSION];
+    }
 }
 
 - (id) init

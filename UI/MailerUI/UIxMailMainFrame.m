@@ -22,7 +22,6 @@
 
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSValue.h>
-#import <Foundation/NSUserDefaults.h>
 
 #import <NGCards/NGVCard.h>
 #import <NGCards/NGVCardReference.h>
@@ -39,15 +38,16 @@
 #import <Contacts/SOGoContactFolders.h>
 #import <Contacts/SOGoContactLDIFEntry.h>
 
-#import <SoObjects/Mailer/SOGoMailObject.h>
-#import <SoObjects/Mailer/SOGoMailAccount.h>
-#import <SoObjects/Mailer/SOGoMailAccounts.h>
-#import <SoObjects/SOGo/NSDictionary+URL.h>
-#import <SoObjects/SOGo/NSArray+Utilities.h>
-#import <SoObjects/SOGo/NSString+Utilities.h>
-#import <SoObjects/SOGo/NSDictionary+Utilities.h>
-#import <SoObjects/SOGo/SOGoUser.h>
-#import <SoObjects/SOGo/SOGoUserFolder.h>
+#import <Mailer/SOGoMailObject.h>
+#import <Mailer/SOGoMailAccount.h>
+#import <Mailer/SOGoMailAccounts.h>
+#import <SOGo/NSDictionary+URL.h>
+#import <SOGo/NSArray+Utilities.h>
+#import <SOGo/NSString+Utilities.h>
+#import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
+#import <SOGo/SOGoUserFolder.h>
 #import <SOGoUI/UIxComponent.h>
 
 #import "UIxMailMainFrame.h"
@@ -59,7 +59,6 @@
 				   inContext: (WOContext *) localContext;
 
 @end
-
 
 @implementation UIxMailMainFrame
 
@@ -75,12 +74,12 @@
 
   module = [clientObject nameInContainer];
 
-  ud = [activeUser userSettings];
-  moduleSettings = [ud objectForKey: module];
+  us = [activeUser userSettings];
+  moduleSettings = [us objectForKey: module];
   if (!moduleSettings)
     {
       moduleSettings = [NSMutableDictionary dictionary];
-      [ud setObject: moduleSettings forKey: module];
+      [us setObject: moduleSettings forKey: module];
     }
 }
 
@@ -113,18 +112,11 @@
 
 - (NSString *) defaultColumnsOrder
 {
-  NSArray *defaultColumnsOrder;
-  NSUserDefaults *sud;
-  
-  sud = [NSUserDefaults standardUserDefaults];
-  defaultColumnsOrder = [NSArray arrayWithArray: [sud arrayForKey: @"SOGoMailListViewColumnsOrder"]];
-  if ( [defaultColumnsOrder count] == 0 )
-  {
-    defaultColumnsOrder = [NSArray arrayWithObjects: @"Flagged", @"Attachment", @"Subject", 
-      @"From", @"Unread", @"Date", @"Priority", nil];
-  }
-    
-  return [defaultColumnsOrder jsonRepresentation];
+  SOGoDomainDefaults *dd;
+
+  dd = [[context activeUser] domainDefaults];
+
+  return [[dd mailListViewColumnsOrder] jsonRepresentation];
 }
 
 - (NSString *) pageFormURL
@@ -372,7 +364,7 @@
   else
     return [self responseWithStatus: 400];
   
-  [ud synchronize];
+  [us synchronize];
   
   return [self responseWithStatus: 204];
 }
@@ -389,9 +381,23 @@
   [moduleSettings setObject: expandedFolders
 		  forKey: @"ExpandedFolders"];
 
-  [ud synchronize];
+  [us synchronize];
 
   return [self responseWithStatus: 204];
+}
+
+- (id) defaultAction
+{
+  SOGoUserDefaults *ud;
+
+  ud = [[context activeUser] userDefaults];
+  if ([ud rememberLastModule])
+    {
+      [ud setLoginModule: @"Mail"];
+      [ud synchronize];
+    }
+
+  return [super defaultAction];
 }
 
 @end /* UIxMailMainFrame */

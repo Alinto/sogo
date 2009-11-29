@@ -23,11 +23,11 @@
 #ifndef WOCONTEXT_SOGo_H
 #define WOCONTEXT_SOGo_H
 
-#import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
 
 @interface WOContext (SOGoSOPEUtilities)
 
-- (NSArray *)resourceLookupLanguages;
+- (NSArray *) resourceLookupLanguages;
 
 @end
 

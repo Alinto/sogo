@@ -20,47 +20,48 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSUserDefaults.h>
-
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WODirectAction.h>
 #import <NGObjWeb/WOResponse.h>
 
-#import <SoObjects/SOGo/NSObject+Utilities.h>
-#import <SoObjects/SOGo/SOGoUser.h>
+#import <SOGo/NSObject+Utilities.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
+#import <SOGo/SOGoUserSettings.h>
+#import <SOGo/SOGoUserProfile.h>
 
 #import "UIxJSONPreferences.h"
 
 @implementation UIxJSONPreferences
 
-- (WOResponse *) _makeResponse: (NSUserDefaults *) defaults
+- (WOResponse *) _makeResponse: (SOGoUserProfile *) profile
 {
   WOResponse *response;
 
   response = [context response];
   [response setHeader: @"text/plain; charset=utf-8"
 	    forKey: @"content-type"];
-  [response appendContentString: [defaults jsonRepresentation]];
+  [response appendContentString: [profile jsonRepresentation]];
 
   return response;
 }
 
 - (WOResponse *) jsonDefaultsAction
 {
-  NSUserDefaults *defaults;
+  SOGoUserDefaults *defaults;
 
   defaults = [[context activeUser] userDefaults];
 
-  return [self _makeResponse: defaults];
+  return [self _makeResponse: [defaults source]];
 }
 
 - (WOResponse *) jsonSettingsAction
 {
-  NSUserDefaults *settings;
+  SOGoUserSettings *settings;
 
   settings = [[context activeUser] userSettings];
 
-  return [self _makeResponse: settings];
+  return [self _makeResponse: [settings source]];
 }
 
 @end

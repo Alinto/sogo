@@ -193,6 +193,7 @@
   NGMutableHashMap *headerMap;
   NGMimeMessage *message;
   NGMimeMultipartBody *body;
+  SOGoMailer *mailer;
   SOGoUser *activeUser;
   NSDictionary *identity;
   NSString *from, *fullMail;
@@ -222,9 +223,10 @@
   [message setBody: body];
   [body release];
 
-  [[SOGoMailer sharedMailer] sendMimePart: message
-			     toRecipients: [NSArray arrayWithObject: recipient]
-			     sender: from];
+  mailer = [SOGoMailer mailerWithDomainDefaults: [activeUser domainDefaults]];
+  [mailer sendMimePart: message
+          toRecipients: [NSArray arrayWithObject: recipient]
+                sender: from];
 }
 
 @end

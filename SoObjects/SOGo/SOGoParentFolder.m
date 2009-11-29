@@ -24,7 +24,6 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
-#import <Foundation/NSUserDefaults.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoSecurityManager.h>
@@ -266,7 +265,7 @@ static SoSecurityManager *sm = nil;
 - (NSException *) appendSubscribedSources
 {
   NSArray *subscribedReferences;
-  NSUserDefaults *settings;
+  SOGoUserSettings *settings;
   NSEnumerator *allKeys;
   NSString *currentKey;
   NSException *error;

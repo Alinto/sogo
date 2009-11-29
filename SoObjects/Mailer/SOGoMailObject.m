@@ -26,7 +26,6 @@
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSURL.h>
-#import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSValue.h>
 
 #import <NGObjWeb/WOContext.h>
@@ -43,11 +42,12 @@
 #import <NGImap4/NGImap4EnvelopeAddress.h>
 #import <NGMail/NGMimeMessageParser.h>
 
-#import <SoObjects/SOGo/NSArray+Utilities.h>
-#import <SoObjects/SOGo/NSDictionary+Utilities.h>
-#import <SoObjects/SOGo/SOGoPermissions.h>
-#import <SoObjects/SOGo/SOGoUser.h>
-#import <SoObjects/SOGo/NSCalendarDate+SOGo.h>
+#import <SOGo/NSArray+Utilities.h>
+#import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/SOGoPermissions.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
+#import <SOGo/NSCalendarDate+SOGo.h>
 
 #import "NSString+Mail.h"
 #import "NSData+Mail.h"
@@ -64,48 +64,30 @@
 static NSArray  *coreInfoKeys = nil;
 static NSString *mailETag = nil;
 static BOOL heavyDebug         = NO;
-static BOOL fetchHeader        = YES;
 static BOOL debugOn            = NO;
 static BOOL debugBodyStructure = NO;
 static BOOL debugSoParts       = NO;
 
 + (void) initialize
 {
-  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  
-  if ((fetchHeader = ([ud boolForKey: @"SOGoDoNotFetchMailHeader"] ? NO : YES)))
-    NSLog(@"Note: fetching full mail header.");
-  else
-    NSLog(@"Note: not fetching full mail header: 'SOGoDoNotFetchMailHeader'");
-  
-  /* Note: see SOGoMailManager.m for allowed IMAP4 keys */
-  /* Note: "BODY" actually returns the structure! */
-  if (fetchHeader) {
-    coreInfoKeys = [[NSArray alloc] initWithObjects:
-				      @"FLAGS", @"ENVELOPE", @"BODYSTRUCTURE",
-				      @"RFC822.SIZE",
-				      @"RFC822.HEADER",
-				      // not yet supported: @"INTERNALDATE",
-				    nil];
-  }
-  else {
-    coreInfoKeys = [[NSArray alloc] initWithObjects:
-				      @"FLAGS", @"ENVELOPE", @"BODYSTRUCTURE",
-				      @"RFC822.SIZE",
-				      // not yet supported: @"INTERNALDATE",
-				    nil];
-  }
+  if (!coreInfoKeys)
+    {
+      /* Note: see SOGoMailManager.m for allowed IMAP4 keys */
+      coreInfoKeys = [[NSArray alloc] initWithObjects:
+                                        @"FLAGS", @"ENVELOPE", @"BODYSTRUCTURE",
+                                      @"RFC822.SIZE",
+                                      @"RFC822.HEADER",
+                                 // not yet supported: @"INTERNALDATE",
+                                      nil];
 
-  if (![[ud objectForKey: @"SOGoMailDisableETag"] boolValue]) {
-    mailETag = [[NSString alloc] initWithFormat: @"\"imap4url_%d_%d_%03d\"",
-				 UIX_MAILER_MAJOR_VERSION,
-				 UIX_MAILER_MINOR_VERSION,
-				 UIX_MAILER_SUBMINOR_VERSION];
-    NSLog(@"Note(SOGoMailObject): using constant etag for mail parts: '%@'", 
-	  mailETag);
-  }
-  else
-    NSLog(@"Note(SOGoMailObject): etag caching disabled!");
+      /* The following disabled code should not be needed, except if we use
+         annotations (see davEntityTag below) */
+      // if (![[ud objectForKey: @"SOGoMailDisableETag"] boolValue]) {
+      mailETag = [[NSString alloc] initWithFormat: @"\"imap4url_%d_%d_%03d\"",
+                                   UIX_MAILER_MAJOR_VERSION,
+                                   UIX_MAILER_MINOR_VERSION,
+                                   UIX_MAILER_SUBMINOR_VERSION];
+    }
 }
 
 - (void) dealloc
@@ -276,12 +258,12 @@ static BOOL debugSoParts       = NO;
 
 - (NSCalendarDate *) date
 {
-  NSTimeZone *userTZ;
+  SOGoUserDefaults *ud;
   NSCalendarDate *date;
 
-  userTZ = [[context activeUser] timeZone];
+  ud = [[context activeUser] userDefaults];
   date = [[self envelope] date];
-  [date setTimeZone: userTZ];
+  [date setTimeZone: [ud timeZone]];
 
   return date;
 }

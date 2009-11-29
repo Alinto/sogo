@@ -40,10 +40,13 @@
     NSMutableArray *_members;
 }
 
-+ (id) groupWithIdentifier: (NSString *) theID;
-+ (id) groupWithEmail: (NSString *) theEmail;
++ (id) groupWithIdentifier: (NSString *) theID
+                  inDomain: (NSString *) domain;
++ (id) groupWithEmail: (NSString *) theEmail
+             inDomain: (NSString *) domain;
 + (id) groupWithValue: (NSString *) theValue
-    andSourceSelector: (SEL) theSelector;
+    andSourceSelector: (SEL) theSelector
+             inDomain: (NSString *) domain;
 
 - (NSArray *) members;
 

@@ -34,6 +34,9 @@
 
 @interface LDAPSource : NSObject <SOGoSource>
 {
+  int queryLimit;
+  int queryTimeout;
+
   NSString *sourceID;
   NSString *bindDN;
   NSString *hostname;
@@ -51,14 +54,14 @@
   NSString *IMAPHostField;
   NSString *bindFields;
 
+  NSString *domain;
+  NSString *contactInfoAttribute;
+  NSString *domainAttribute;
+
   NSDictionary *modulesConstraints;
 
   NSMutableArray *searchAttributes;
 }
-
-+ (id) sourceFromUDSource: (NSDictionary *) udSource;
-
-- (id) initFromUDSource: (NSDictionary *) udSource;
 
 - (void) setBindDN: (NSString *) newBindDN
 	  password: (NSString *) newBindPassword
@@ -74,22 +77,13 @@
      IMAPHostField: (NSString *) newIMAPHostField
      andBindFields: (NSString *) newBindFields;
 
-- (BOOL) checkLogin: (NSString *) login
-	andPassword: (NSString *) password;
-
 - (NSString *) lookupLoginByDN: (NSString *) theDN;
-
-- (NSDictionary *) lookupContactEntry: (NSString *) theID;
-- (NSDictionary *) lookupContactEntryWithUIDorEmail: (NSString *) entryID;
 
 - (NGLdapEntry *) lookupGroupEntryByUID: (NSString *) theUID;
 - (NGLdapEntry *) lookupGroupEntryByEmail: (NSString *) theEmail;
 - (NGLdapEntry *) lookupGroupEntryByAttribute: (NSString *) theAttribute 
 				     andValue: (NSString *) theValue;
 
-- (NSArray *) allEntryIDs;
-- (NSArray *) fetchContactsMatching: (NSString *) filter;
-- (NSString *) sourceID;
 - (NSString *) baseDN;
 
 @end

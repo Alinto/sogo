@@ -25,14 +25,15 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSString.h>
-#import <Foundation/NSUserDefaults.h>
+#import <Foundation/NSUserDefaults.h> /* for locale string constants */
 #import <Foundation/NSValue.h>
 
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <EOControl/EOQualifier.h>
 
-#import <SoObjects/SOGo/SOGoDateFormatter.h>
-#import <SoObjects/SOGo/SOGoUser.h>
+#import <SOGo/SOGoDateFormatter.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
 
 #import "../../Main/SOGo.h"
 
@@ -44,12 +45,17 @@
 
 - (id) init
 {
+  NSDictionary *locale;
+  NSString *language;
+  SOGoUser *user;
+  SOGoUserDefaults *ud;
+
   if ((self = [super init]))
     {
-      NSDictionary *locale;
-      NSString *language;
-
-      language = [[context activeUser] language];
+      user = [context activeUser];
+      ud = [user userDefaults];
+      ASSIGN (timeFormat, [ud timeFormat]);
+      language = [ud language];
       locale = [[WOApplication application] localeForLanguageNamed: language];
 
       daysToDisplay = nil;
@@ -60,10 +66,10 @@
       currentTableHour = nil;
       weekDays = [locale objectForKey: NSShortWeekDayNameArray];
       [weekDays retain];
-      dateFormatter = [[context activeUser] dateFormatterInContext: context];
+      dateFormatter = [user dateFormatterInContext: context];
       [dateFormatter retain];
     }
-  
+
   return self;
 }
 
@@ -75,6 +81,7 @@
   [daysToDisplay release];
   [hoursToDisplay release];
   [dateFormatter release];
+  [timeFormat release];
   [super dealloc];
 }
 
@@ -120,9 +127,6 @@
 {
   unsigned int currentHour, lastHour;
   
-  // For later in method currentTableHour
-  timeFormat = [[context activeUser] timeFormat];
-
   if (!hoursToDisplay)
     {
       hoursToDisplay = [NSMutableArray new];
@@ -333,14 +337,13 @@
 {
   NSMutableString *cellClass;
   int hour;
-  SOGoUser *user;
+  SOGoUserDefaults *ud;
 
   cellClass = [NSMutableString string];
   hour = [currentTableHour intValue];
-  user = [context activeUser];
+  ud = [[context activeUser] userDefaults];
   [cellClass appendFormat: @"clickableHourCell clickableHourCell%d", hour];
-  if (hour < [user dayStartHour]
-      || hour > [user dayEndHour] - 1)
+  if (hour < [ud dayStartHour] || hour > [ud dayEndHour] - 1)
     [cellClass appendString: @" outOfDay"];
 
   return cellClass;

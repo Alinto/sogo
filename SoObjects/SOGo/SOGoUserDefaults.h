@@ -1,93 +1,151 @@
-/*
-  Copyright (C) 2008-2009 Inverse inc.
-  Copyright (C) 2005 SKYRIX Software AG
+/* SOGoUserDefaults.h - this file is part of SOGo
+ *
+ * Copyright (C) 2009 Inverse inc.
+ *
+ * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *
+ * This file is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
 
-  This file is part of SOGo.
+#ifndef SOGOUSERDEFAULTS_H
+#define SOGOUSERDEFAULTS_H
 
-  SOGo is free software; you can redistribute it and/or modify it under
-  the terms of the GNU Lesser General Public License as published by the
-  Free Software Foundation; either version 2, or (at your option) any
-  later version.
+#import <SOGo/SOGoDefaultsSource.h>
 
-  SOGo is distributed in the hope that it will be useful, but WITHOUT ANY
-  WARRANTY; without even the implied warranty of MERCHANTABILITY or
-  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
-  License for more details.
+@class NSArray;
+@class NSMutableDictionary;
+@class NSString;
+@class NSTimeZone;
 
-  You should have received a copy of the GNU Lesser General Public
-  License along with OGo; see the file COPYING.  If not, write to the
-  Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
-  02111-1307, USA.
-*/
+extern NSString *SOGoWeekStartJanuary1;
+extern NSString *SOGoWeekStartFirst4DayWeek;
+extern NSString *SOGoWeekStartFirstFullWeek;
 
-#ifndef	__SOGoUserDefaults_H_
-#define	__SOGoUserDefaults_H_
+@interface SOGoUserDefaults : SOGoDefaultsSource
 
-#import <Foundation/NSObject.h>
++ (SOGoUserDefaults *) defaultsForUser: (NSString *) userId
+                              inDomain: (NSString *) domainId;
 
-/*
-  SOGoUserDefaults
-  
-  An object with the same API like NSUserDefaults which retrieves profile
-  information for users in the database.
+- (void) setLoginModule: (NSString *) newLoginModule;
+- (NSString *) loginModule;
 
-  It does NOT store values internally but rather uses an external
-  mutable dictionary for this (generally coming from SOGoCache)
-*/
+- (void) setRememberLastModule: (BOOL) rememberLastModule;
+- (BOOL) rememberLastModule;
 
-@class NSString, NSURL, NSUserDefaults, NSArray, NSDictionary;
-@class NSData, NSCalendarDate, NSMutableDictionary;
+- (void) setAppointmentSendEMailReceipts: (BOOL) newPoil;
+- (BOOL) appointmentSendEMailReceipts;
 
-@interface SOGoUserDefaults :  NSObject
-{
-  NSURL    *url;
-  NSString *uid;
-  NSString *fieldName;
-  NSMutableDictionary *values;
+- (void) setLongDateFormat: (NSString *) newFormat;
+- (void) unsetLongDateFormat;
+- (NSString *) longDateFormat;
 
-  struct
-  {
-    BOOL modified;
-    BOOL isNew;
-    BOOL ready;
-  } defFlags;
-}
+- (void) setShortDateFormat: (NSString *) newFormat;
+- (void) unsetShortDateFormat;
+- (NSString *) shortDateFormat;
 
-- (id) initWithTableURL: (NSURL *) theURL
-		    uid: (NSString *) theUID
-	      fieldName: (NSString *) theFieldName;
+- (void) setTimeFormat: (NSString *) newFormat;
+- (void) unsetTimeFormat;
+- (NSString *) timeFormat;
 
-/* value access */
-- (void) setValues: (NSDictionary *) theValues;
-- (NSDictionary *) values;
+- (void) setDayStartTime: (NSString *) newValue;
+- (NSString *) dayStartTime;
+- (unsigned int) dayStartHour;
 
-- (void) setObject: (id) value
-	    forKey: (NSString *) key;
-- (id) objectForKey: (NSString *) key;
-- (void) removeObjectForKey: (NSString *) key;
+- (void) setDayEndTime: (NSString *) newValue;
+- (NSString *) dayEndTime;
+- (unsigned int) dayEndHour;
 
-/* typed accessors */
+- (void) setTimeZoneName: (NSString *) newValue;
+- (NSString *) timeZoneName;
 
-- (NSArray *) arrayForKey: (NSString *)key;
-- (NSDictionary *) dictionaryForKey: (NSString *)key;
-- (NSData *) dataForKey: (NSString *)key;
-- (NSString *) stringForKey: (NSString *)key;
-- (BOOL) boolForKey: (NSString *) key;
-- (float) floatForKey: (NSString *) key;
-- (int) integerForKey: (NSString *) key;
+- (void) setTimeZone: (NSTimeZone *) newValue;
+- (NSTimeZone *) timeZone;
 
-- (void) setBool: (BOOL) value   forKey: (NSString *) key;
-- (void) setFloat: (float) value forKey: (NSString *) key;
-- (void) setInteger: (int) value forKey: (NSString *) key;
+- (void) setTimeFormat: (NSString *) newValue;
+- (NSString *) timeFormat;
 
-- (NSString *) jsonRepresentation;
+- (void) setLanguage: (NSString *) newValue;
+- (NSString *) language;
 
-- (void) fetchProfile;
+- (void) setMailShowSubscribedFoldersOnly: (BOOL) newValue;
+- (BOOL) mailShowSubscribedFoldersOnly;
 
-/* saving changes */
+- (void) setDraftsFolderName: (NSString *) newValue;
+- (NSString *) draftsFolderName;
 
-- (BOOL) synchronize;
+- (void) setSentFolderName: (NSString *) newValue;
+- (NSString *) sentFolderName;
+
+- (void) setTrashFolderName: (NSString *) newValue;
+- (NSString *) trashFolderName;
+
+- (void) setFirstDayOfWeek: (int) newValue;
+- (int) firstDayOfWeek;
+
+- (void) setFirstWeekOfYear: (NSString *) newValue;
+- (NSString *) firstWeekOfYear;
+
+- (void) setMailListViewColumnsOrder: (NSArray *) newValue;
+- (NSArray *) mailListViewColumnsOrder;
+
+- (void) setMailMessageCheck: (NSString *) newValue;
+- (NSString *) mailMessageCheck;
+
+- (void) setMailComposeMessageType: (NSString *) newValue;
+- (NSString *) mailComposeMessageType;
+
+- (void) setMailMessageForwarding: (NSString *) newValue;
+- (NSString *) mailMessageForwarding;
+
+- (void) setMailReplyPlacement: (NSString *) newValue;
+- (NSString *) mailReplyPlacement;
+
+- (void) setMailSignature: (NSString *) newValue;
+- (NSString *) mailSignature;
+
+- (void) setMailSignaturePlacement: (NSString *) newValue;
+- (NSString *) mailSignaturePlacement;
+
+- (void) setMailUseOutlookStyleReplies: (BOOL) newValue;
+- (BOOL) mailUseOutlookStyleReplies;
+
+- (void) setCalendarCategories: (NSArray *) newValues;
+- (NSArray *) calendarCategories;
+
+- (void) setCalendarCategoriesColors: (NSArray *) newValues;
+- (NSArray *) calendarCategoriesColors;
+
+- (void) setCalendarShouldDisplayWeekend: (BOOL) newValue;
+- (BOOL) calendarShouldDisplayWeekend;
+
+- (void) setReminderEnabled: (BOOL) newValue;
+- (BOOL) reminderEnabled;
+
+- (void) setReminderTime: (NSString *) newValue;
+- (NSString *) reminderTime;
+
+- (void) setRemindWithASound: (BOOL) newValue;
+- (BOOL) remindWithASound;
+
+- (void) setVacationOptions: (NSMutableDictionary *) newValue;
+- (NSMutableDictionary *) vacationOptions;
+
+- (void) setForwardOptions: (NSMutableDictionary *) newValue;
+- (NSMutableDictionary *) forwardOptions;
 
 @end
 
-#endif /* __SOGoUserDefaults_H__ */
+#endif /* SOGOUSERDEFAULTS_H */

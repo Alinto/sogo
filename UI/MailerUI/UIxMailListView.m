@@ -32,7 +32,6 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSTimeZone.h>
-#import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSValue.h>
 
 #import <NGObjWeb/WOResponse.h>
@@ -45,43 +44,21 @@
 
 #import <EOControl/EOQualifier.h>
 
-#import <SoObjects/Mailer/NSString+Mail.h>
-#import <SoObjects/Mailer/SOGoDraftsFolder.h>
-#import <SoObjects/Mailer/SOGoMailFolder.h>
-#import <SoObjects/Mailer/SOGoMailObject.h>
-#import <SoObjects/Mailer/SOGoSentFolder.h>
-#import <SoObjects/SOGo/NSArray+Utilities.h>
-#import <SoObjects/SOGo/SOGoDateFormatter.h>
-#import <SoObjects/SOGo/SOGoUser.h>
-#import <SoObjects/SOGo/SOGoUserDefaults.h>
+#import <Mailer/NSString+Mail.h>
+#import <Mailer/SOGoDraftsFolder.h>
+#import <Mailer/SOGoMailFolder.h>
+#import <Mailer/SOGoMailObject.h>
+#import <Mailer/SOGoSentFolder.h>
+#import <SOGo/NSArray+Utilities.h>
+#import <SOGo/SOGoDateFormatter.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
 
 #import "UIxMailListView.h"
-
-static NSArray *defaultColumnOrder = nil;
-static NSArray *udColumnOrder = nil;
 
 #define messagesPerPage 50
 
 @implementation UIxMailListView
-
-+ (void) initialize
-{
-  if (!defaultColumnOrder)
-    {
-      defaultColumnOrder = [NSArray arrayWithObjects: @"Flagged",
-                                    @"Attachment", @"Subject", @"From",
-                                    @"Unread", @"Date", @"Priority", @"Size",
-                                    nil];
-      [defaultColumnOrder retain];
-    }
-
-  if (!udColumnOrder)
-    {
-      udColumnOrder = [[NSUserDefaults standardUserDefaults]
-                        arrayForKey: @"SOGoMailListViewColumnsOrder"];
-      [udColumnOrder retain];
-    }
-}
 
 - (id) init
 {
@@ -92,8 +69,8 @@ static NSArray *udColumnOrder = nil;
       qualifier = nil;
       user = [context activeUser];
       ASSIGN (dateFormatter, [user dateFormatterInContext: context]);
-      ASSIGN (userTimeZone, [user timeZone]);
-      userDefinedOrder = nil;
+      ASSIGN (userTimeZone, [[user userDefaults] timeZone]);
+      columnsOrder = nil;
       folderType = 0;
       currentColumn = nil;
     }
@@ -110,7 +87,7 @@ static NSArray *udColumnOrder = nil;
   [dateFormatter release];
   [userTimeZone release];
   [currentColumn release];
-  [userDefinedOrder release];
+  [columnsOrder release];
   [super dealloc];
 }
 
@@ -504,21 +481,6 @@ static NSArray *udColumnOrder = nil;
   return 1;
 }
 
-- (void) checkDefaultModulePreference
-{
-  NSUserDefaults *ud;
-  NSString *pref;
-
-  ud = [[context activeUser] userDefaults];
-  pref = [ud stringForKey: @"SOGoUIxDefaultModule"];
-
-  if (pref && [pref isEqualToString: @"Last"])
-    {
-      [ud setObject: @"Mail" forKey: @"SOGoUIxLastModule"];
-      [ud synchronize];
-    }
-}
-
 - (NSArray *) messages 
 {
   NSMutableArray *unsortedMsgs;
@@ -529,8 +491,6 @@ static NSArray *udColumnOrder = nil;
   unsigned len, i, count;
   NSRange r;
 
-  [self checkDefaultModulePreference];
-  
   if (!messages)
     {
       r = [self fetchBlock];
@@ -836,51 +796,53 @@ static NSArray *udColumnOrder = nil;
 
 - (NSArray *) columnsDisplayOrder
 {
-  NSMutableArray *testColumns;
-  NSArray *defaultsOrder;
-  NSUserDefaults *ud;
+  NSMutableArray *finalOrder, *invalid;
+  NSArray *available;
+  NSDictionary *metaData;
+  SOGoUserDefaults *ud;
   unsigned int i;
 
-  if (!userDefinedOrder)
+  if (!columnsOrder)
     {
-      ud = [[context activeUser] userSettings];
-      defaultsOrder = [ud arrayForKey: @"SOGoMailListViewColumnsOrder"];
-      if (![defaultsOrder count])
-        {
-          defaultsOrder = udColumnOrder;
-          if (![defaultsOrder count])
-            defaultsOrder = defaultColumnOrder;
-        }
-      userDefinedOrder = [defaultsOrder mutableCopy];
+      ud = [[context activeUser] userDefaults];
+      columnsOrder = [ud mailListViewColumnsOrder];
 
-      testColumns = [userDefinedOrder mutableCopy];
-      [testColumns removeObjectsInArray: defaultColumnOrder];
-      if ([testColumns count] > 0)
+      metaData = [self columnsMetaData];
+
+      invalid = [columnsOrder mutableCopy];
+      [invalid autorelease];
+      available = [metaData allKeys];
+      [invalid removeObjectsInArray: available];
+      if ([invalid count] > 0)
         {
-          [self errorWithFormat: @"one or more column names specified in"
+          [self errorWithFormat: @"those column names specified in"
                 @" SOGoMailListViewColumnsOrder are invalid: '%@'",
-                [testColumns componentsJoinedByString: @"', '"]];
+                [invalid componentsJoinedByString: @"', '"]];
           [self errorWithFormat: @"  falling back on hardcoded column order"];
-          userDefinedOrder = [defaultColumnOrder mutableCopy];
+          columnsOrder = available;
         }
-      [testColumns release];
 
+      finalOrder = [columnsOrder mutableCopy];
+      [finalOrder autorelease];
       if ([self showToAddress])
         {
-          i = [userDefinedOrder indexOfObject: @"From"];
+          i = [finalOrder indexOfObject: @"From"];
           if (i != NSNotFound)
-            [userDefinedOrder replaceObjectAtIndex: i withObject: @"To"];
+            [finalOrder replaceObjectAtIndex: i withObject: @"To"];
         }
       else
         {
-          i = [userDefinedOrder indexOfObject: @"To"];
+          i = [finalOrder indexOfObject: @"To"];
           if (i != NSNotFound)
-            [userDefinedOrder replaceObjectAtIndex: i withObject: @"From"];
+            [finalOrder replaceObjectAtIndex: i withObject: @"From"];
         }
+
+      columnsOrder = [[self columnsMetaData] objectsForKeys: finalOrder
+                                             notFoundMarker: @""];
+      [columnsOrder retain];
     }
 
-  return [[self columnsMetaData] objectsForKeys: userDefinedOrder
-				 notFoundMarker: @""];
+  return columnsOrder;
 }
 
 - (NSString *) columnsDisplayCount

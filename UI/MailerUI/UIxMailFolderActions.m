@@ -24,7 +24,6 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSURL.h>
-#import <Foundation/NSUserDefaults.h>
 
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
@@ -319,21 +318,21 @@
 {
   SOGoMailFolder *co;
   WOResponse *response;
-  NSUserDefaults *ud;
+  SOGoUserSettings *us;
   NSMutableDictionary *mailSettings;
 
   co = [self clientObject];
   if ([NSStringFromClass ([co class]) isEqualToString: @"SOGoMailFolder"])
     {
-      ud = [[context activeUser] userSettings];
-      mailSettings = [ud objectForKey: @"Mail"];
+      us = [[context activeUser] userSettings];
+      mailSettings = [us objectForKey: @"Mail"];
       if (!mailSettings)
         mailSettings = [NSMutableDictionary dictionary];
-      [ud setObject: mailSettings forKey: @"Mail"];
+      [us setObject: mailSettings forKey: @"Mail"];
       [mailSettings setObject: [co traversalFromMailAccount]
 		    forKey: [NSString stringWithFormat: @"%@Folder",
 				      purpose]];
-      [ud synchronize];
+      [us synchronize];
       response = [self responseWith204];
     }
   else

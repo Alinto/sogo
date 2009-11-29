@@ -26,7 +26,6 @@
 #import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSProcessInfo.h>
 #import <Foundation/NSURL.h>
-#import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSValue.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
@@ -54,11 +53,13 @@
 #import <NGMime/NGMimeHeaderFieldGenerator.h>
 #import <NGMime/NGMimeHeaderFields.h>
 
-#import <SoObjects/SOGo/NSArray+Utilities.h>
-#import <SoObjects/SOGo/NSCalendarDate+SOGo.h>
-#import <SoObjects/SOGo/NSString+Utilities.h>
-#import <SoObjects/SOGo/SOGoMailer.h>
-#import <SoObjects/SOGo/SOGoUser.h>
+#import <SOGo/NSArray+Utilities.h>
+#import <SOGo/NSCalendarDate+SOGo.h>
+#import <SOGo/NSString+Utilities.h>
+#import <SOGo/SOGoDomainDefaults.h>
+#import <SOGo/SOGoMailer.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
 
 #import "NSData+Mail.h"
 #import "NSString+Mail.h"
@@ -77,25 +78,13 @@ static NSString *headerKeys[] = {@"subject", @"to", @"cc", @"bcc",
 
 @implementation SOGoDraftObject
 
-static NGMimeType  *TextPlainType  = nil;
 static NGMimeType  *MultiMixedType = nil;
 static NSString    *userAgent      = @"SOGoMail 1.0";
-static BOOL        draftDeleteDisabled = NO; // for debugging
-static BOOL        debugOn = NO;
-static BOOL        showTextAttachmentsInline  = NO;
 
 + (void) initialize
 {
-  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  
-  /* Note: be aware of the charset issues before enabling this! */
-  showTextAttachmentsInline = [ud boolForKey: @"SOGoShowTextAttachmentsInline"];
-  
-  if ((draftDeleteDisabled = [ud boolForKey: @"SOGoNoDraftDeleteAfterSend"]))
-    NSLog(@"WARNING: draft delete is disabled! (SOGoNoDraftDeleteAfterSend)");
-  
-  TextPlainType  = [[NGMimeType mimeType: @"text" subType: @"plain"]  copy];
-  MultiMixedType = [[NGMimeType mimeType: @"multipart" subType: @"mixed"]  copy];
+  MultiMixedType = [NGMimeType mimeType: @"multipart" subType: @"mixed"];
+  [MultiMixedType retain];
 }
 
 - (id) init
@@ -651,7 +640,7 @@ static BOOL        showTextAttachmentsInline  = NO;
 - (void) fetchMailForForwarding: (SOGoMailObject *) sourceMail
 {
   NSDictionary *info, *attachment;
-  SOGoUser *currentUser;
+  SOGoUserDefaults *ud;
   NSString *signature;
 
   [sourceMail fetchCoreInfos];
@@ -667,8 +656,8 @@ static BOOL        showTextAttachmentsInline  = NO;
   [self setSourceFlag: @"$Forwarded"];
 
   /* attach message */
-  currentUser = [context activeUser];
-  if ([[currentUser messageForwarding] isEqualToString: @"inline"])
+  ud = [[context activeUser] userDefaults];
+  if ([[ud mailMessageForwarding] isEqualToString: @"inline"])
     {
       [self setText: [sourceMail contentForInlineForward]];
       [self _fetchAttachments: [sourceMail fetchFileAttachmentKeys]
@@ -678,7 +667,7 @@ static BOOL        showTextAttachmentsInline  = NO;
     {
   // TODO: use subject for filename?
 //   error = [newDraft saveAttachment:content withName:@"forward.eml"];
-      signature = [currentUser signature];
+      signature = [ud mailSignature];
       if ([signature length])
 	[self setText: [NSString stringWithFormat: @"\n-- \n%@", signature]];
       attachment = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -833,7 +822,7 @@ static BOOL        showTextAttachmentsInline  = NO;
   */
   NGMutableHashMap *map;
   NGMimeBodyPart   *bodyPart;
-  NSUserDefaults *ud;
+  SOGoUserDefaults *ud;
 
   ud = [[context activeUser] userDefaults];
   
@@ -845,8 +834,8 @@ static BOOL        showTextAttachmentsInline  = NO;
   [map setObject: @"text/plain" forKey: @"content-type"];
   if (text)
     {
-      if ([[ud stringForKey: @"ComposeMessagesType"] isEqualToString: @"html"])
-             [map setObject: htmlContentTypeValue
+      if ([[ud mailComposeMessageType] isEqualToString: @"html"])
+        [map setObject: htmlContentTypeValue
                      forKey: @"content-type"];
       else
         [map setObject: contentTypeValue forKey: @"content-type"];
@@ -871,7 +860,7 @@ static BOOL        showTextAttachmentsInline  = NO;
 - (NGMimeMessage *) mimeMessageForContentWithHeaderMap: (NGMutableHashMap *) map
 {
   NGMimeMessage *message;  
-  NSUserDefaults *ud;
+  SOGoUserDefaults *ud;
 //   BOOL     addSuffix;
   id       body;
 
@@ -883,7 +872,7 @@ static BOOL        showTextAttachmentsInline  = NO;
     {
 //       if ([body isKindOfClass:[NSString class]])
 	/* Note: just 'utf8' is displayed wrong in Mail.app */
-      if ([[ud stringForKey: @"ComposeMessagesType"] isEqualToString: @"html"])
+      if ([[ud mailComposeMessageType] isEqualToString: @"html"])
         [map setObject: htmlContentTypeValue
                 forKey: @"content-type"];
       else
@@ -951,11 +940,15 @@ static BOOL        showTextAttachmentsInline  = NO;
   NSString *type;
   NSString *cdtype;
   NSString *cd;
+  SOGoDomainDefaults *dd;
   
   type = [self contentTypeForAttachmentWithName:_name];
-  
+
   if ([type hasPrefix: @"text/"])
-    cdtype = showTextAttachmentsInline ? @"inline" : @"attachment";
+    {
+      dd = [[context activeUser] domainDefaults];
+      cdtype = [dd mailAttachTextDocumentsInline] ? @"inline" : @"attachment";
+    }
   else if ([type hasPrefix: @"image/"] || [type hasPrefix: @"message"])
     cdtype = @"inline";
   else
@@ -1366,7 +1359,8 @@ static BOOL        showTextAttachmentsInline  = NO;
   SOGoMailFolder *sentFolder;
   NSData *message;
   NSURL *sourceIMAP4URL;
-  
+  SOGoDomainDefaults *dd;
+
   /* send mail */
   sentFolder = [[self mailAccountFolder] sentFolderInContext: context];
   if ([sentFolder isKindOfClass: [NSException class]])
@@ -1374,9 +1368,11 @@ static BOOL        showTextAttachmentsInline  = NO;
   else
     {
       message = [self mimeMessageAsData];
-      error = [[SOGoMailer sharedMailer] sendMailData: message
-					 toRecipients: [self allBareRecipients]
-					 sender: [self sender]];
+      dd = [[context activeUser] domainDefaults];
+      error = [[SOGoMailer mailerWithDomainDefaults: dd]
+                sendMailData: message
+                toRecipients: [self allBareRecipients]
+                      sender: [self sender]];
       if (!error)
 	{
 	  error = [sentFolder postData: message flags: @"seen"];
@@ -1390,7 +1386,7 @@ static BOOL        showTextAttachmentsInline  = NO;
 		  sourceIMAP4URL = [NSURL URLWithString: sourceURL];
 		  [imap4 addFlags: sourceFlag toURL: sourceIMAP4URL];
 		}
-	      if (!draftDeleteDisabled)
+	      if (![dd mailKeepDraftsAfterSend])
 		error = [self delete];
 	    }
 	}
@@ -1439,13 +1435,6 @@ static BOOL        showTextAttachmentsInline  = NO;
     }
 
   return str;
-}
-
-/* debugging */
-
-- (BOOL) isDebuggingEnabled
-{
-  return debugOn;
 }
 
 @end /* SOGoDraftObject */

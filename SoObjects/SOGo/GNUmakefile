@@ -26,9 +26,10 @@ SOGo_HEADER_FILES = \
 	SOGoUserManager.h		\
 	LDAPSource.h			\
 	SQLSource.h			\
-	SOGoUserDefaults.h		\
+	SOGoUserProfile.h		\
 	SOGoDateFormatter.h		\
 	SOGoPermissions.h		\
+	SOGoStartupLogger.h		\
 	iCalEntityObject+Utilities.h	\
 	NSArray+DAV.h			\
 	NSArray+Utilities.h		\
@@ -75,12 +76,20 @@ SOGo_OBJC_FILES = \
 	SOGoParentFolder.m		\
 	SOGoUserFolder.m		\
 	\
+	SOGoDefaultsSource.m		\
+	SOGoSystemDefaults.m		\
+	SOGoDomainDefaults.m		\
+	SOGoUserDefaults.m		\
+	SOGoUserSettings.m		\
+	\
 	SOGoDateFormatter.m		\
 	SOGoPermissions.m		\
+	SOGoStartupLogger.m		\
 	SOGoUserManager.m		\
 	LDAPSource.m			\
 	SQLSource.m			\
-	SOGoUserDefaults.m		\
+	SOGoUserProfile.m		\
+	SOGoSQLUserProfile.m		\
 	iCalEntityObject+Utilities.m	\
 	NSArray+DAV.m			\
 	NSArray+Utilities.m		\
@@ -115,6 +124,7 @@ SOGo_OBJC_FILES = \
 	WOContext+SOGo.m
 
 SOGo_RESOURCE_FILES = \
+	SOGoDefaults.plist \
 	DAVReportMap.plist
 
 ifeq ($(ldap_config),yes)

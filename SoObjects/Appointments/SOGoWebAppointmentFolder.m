@@ -78,7 +78,7 @@
 - (NSException *) delete
 {
   NSException *error;
-  NSUserDefaults *settings;
+  SOGoUserSettings *settings;
   NSMutableDictionary *calSettings, *webCalendars;
   NSString *name;
 

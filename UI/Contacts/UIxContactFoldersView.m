@@ -24,7 +24,6 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
-#import <Foundation/NSUserDefaults.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoObject.h>
@@ -38,16 +37,17 @@
 #import <GDLContentStore/GCSFolder.h>
 #import <GDLContentStore/GCSFolderManager.h>
 
-#import <SoObjects/SOGo/SOGoUserManager.h>
-#import <SoObjects/SOGo/SOGoPermissions.h>
-#import <SoObjects/SOGo/SOGoUser.h>
-#import <SoObjects/SOGo/NSArray+Utilities.h>
-#import <SoObjects/SOGo/NSDictionary+Utilities.h>
-#import <SoObjects/SOGo/NSString+Utilities.h>
-#import <SoObjects/Contacts/SOGoContactFolders.h>
-#import <SoObjects/Contacts/SOGoContactFolder.h>
-#import <SoObjects/Contacts/SOGoContactGCSFolder.h>
-#import <SoObjects/Contacts/SOGoContactSourceFolder.h>
+#import <SOGo/SOGoPermissions.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
+#import <SOGo/SOGoUserManager.h>
+#import <SOGo/NSArray+Utilities.h>
+#import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/NSString+Utilities.h>
+#import <Contacts/SOGoContactFolders.h>
+#import <Contacts/SOGoContactFolder.h>
+#import <Contacts/SOGoContactGCSFolder.h>
+#import <Contacts/SOGoContactSourceFolder.h>
 
 #import "UIxContactFoldersView.h"
 
@@ -64,11 +64,11 @@
 
   module = [clientObject nameInContainer];
 
-  ud = [activeUser userSettings];
-  moduleSettings = [ud objectForKey: module];
+  us = [activeUser userSettings];
+  moduleSettings = [us objectForKey: module];
   if (!moduleSettings)
     moduleSettings = [NSMutableDictionary dictionary];
-  [ud setObject: moduleSettings forKey: module];
+  [us setObject: moduleSettings forKey: module];
 }
 
 - (id <WOActionResults>) mailerContactsAction
@@ -139,18 +139,14 @@
 - (NSArray *) _responseForResults: (NSArray *) results
 {
   NSEnumerator *contacts;
-  NSString *email, *infoKey, *info;
+  NSString *email, *info;
   NSDictionary *contact;
   NSMutableArray *formattedContacts;
   NSMutableDictionary *formattedContact; 
-  NSUserDefaults *sud;
 
   formattedContacts = [NSMutableArray arrayWithCapacity: [results count]];
-
   if ([results count] > 0)
     {
-      sud = [NSUserDefaults standardUserDefaults];
-      infoKey = [[sud stringForKey: @"SOGoLDAPContactInfoAttribute"] lowercaseString];
       contacts = [results objectEnumerator];
       contact = [contacts nextObject];
       while (contact)
@@ -165,13 +161,10 @@
 				forKey: @"name"];
 	      [formattedContact setObject: email
 				forKey: @"email"];
-	      if ([infoKey length] > 0)
-		{
-		  info = [contact objectForKey: infoKey];
-		  if (info != nil)
-		    [formattedContact setObject: info
-				      forKey: @"contactInfo"];
-		}
+              info = [contact objectForKey: @"c_info"];
+              if (info != nil)
+                [formattedContact setObject: info
+                                     forKey: @"contactInfo"];
 	      [formattedContacts addObject: formattedContact];
 	    }
 	  contact = [contacts nextObject];
@@ -276,7 +269,7 @@
 {
   NSDictionary *data;
   NSArray *contacts;
-  NSString *searchText;
+  NSString *searchText, *domain;
   id <WOActionResults> result;
   SOGoUserManager *um;
 
@@ -284,11 +277,14 @@
   if ([searchText length] > 0)
     {
       um = [SOGoUserManager sharedUserManager];
+      domain = [[context activeUser] domain];
       contacts 
-        = [self _responseForResults: [um fetchContactsMatching: searchText]];
-      data = [NSDictionary dictionaryWithObjectsAndKeys: searchText, @"searchText",
-           contacts, @"contacts",
-           nil];
+        = [self _responseForResults: [um fetchContactsMatching: searchText
+                                                      inDomain: domain]];
+      data = [NSDictionary dictionaryWithObjectsAndKeys:
+                             searchText, @"searchText",
+                           contacts, @"contacts",
+                           nil];
       result = [self responseWithStatus: 200];
       [(WOResponse*)result appendContentString: [data jsonRepresentation]];
     }
@@ -367,18 +363,15 @@
 
 - (void) checkDefaultModulePreference
 {
-  NSUserDefaults *clientUD;
-  NSString *pref;
+  SOGoUserDefaults *ud;
 
   if (![self isPopup])
     {
-      clientUD = [[context activeUser] userDefaults];
-      pref = [clientUD stringForKey: @"SOGoUIxDefaultModule"];
-
-      if (pref && [pref isEqualToString: @"Last"])
+      ud = [[context activeUser] userDefaults];
+      if ([ud rememberLastModule])
         {
-          [clientUD setObject: @"Contacts" forKey: @"SOGoUIxLastModule"];
-          [clientUD synchronize];
+          [ud setLoginModule: @"Contacts"];
+          [ud synchronize];
         }
     }
 }
@@ -392,7 +385,6 @@
 {
   SOGoContactFolders *folderContainer;
 
-  [self checkDefaultModulePreference];
   folderContainer = [self clientObject];
 
   return [folderContainer subFolders];
@@ -436,9 +428,16 @@
   else
     return [self responseWithStatus: 400];
 
-  [ud synchronize];
+  [us synchronize];
 
   return [self responseWithStatus: 204];
+}
+
+- (id) defaultAction
+{
+  [self checkDefaultModulePreference];
+
+  return [super defaultAction];
 }
 
 @end

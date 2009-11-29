@@ -28,6 +28,7 @@
 #import <SoObjects/SOGo/NSObject+Utilities.h>
 #import <SoObjects/SOGo/NSDictionary+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
+#import <SoObjects/SOGo/SOGoUserDefaults.h>
 
 #import "WODirectAction+SOGo.h"
 
@@ -88,12 +89,14 @@
   NSArray *paths;
   NSBundle *bundle;
   NSDictionary *strings;
+  SOGoUserDefaults *ud;
 
   bundle = [NSBundle bundleForClass: [self class]];
   if (!bundle)
     bundle = [NSBundle mainBundle];
 
-  userLanguage = [[context activeUser] language];
+  ud = [[context activeUser] userDefaults];
+  userLanguage = [ud language];
   paths = [bundle pathsForResourcesOfType: @"strings"
 		  inDirectory: [NSString stringWithFormat: @"%@.lproj",
 					 userLanguage]

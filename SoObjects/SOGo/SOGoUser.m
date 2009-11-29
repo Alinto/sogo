@@ -26,7 +26,6 @@
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSNull.h>
 #import <Foundation/NSTimeZone.h>
-#import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSValue.h>
 #import <Foundation/NSURL.h>
 #import <NGObjWeb/WOApplication.h>
@@ -40,200 +39,52 @@
 #import "NSArray+Utilities.h"
 #import "SOGoCache.h"
 #import "SOGoDateFormatter.h"
+#import "SOGoDomainDefaults.h"
 #import "SOGoObject.h"
 #import "SOGoPermissions.h"
+#import "SOGoSystemDefaults.h"
 #import "SOGoUserDefaults.h"
 #import "SOGoUserFolder.h"
 #import "SOGoUserManager.h"
+#import "SOGoUserProfile.h"
+#import "SOGoUserSettings.h"
 
 #import "../../Main/SOGo.h"
 
 #import "SOGoUser.h"
 
-static NSTimeZone *serverTimeZone = nil;
-static NSString *fallbackIMAP4Server = nil;
-static BOOL fallbackIsConfigured = NO;
-static NSString *defaultLanguage = nil;
-static NSString *defaultReplyPlacement = nil;
-static NSString *defaultSignaturePlacement = nil;
-static NSString *defaultMessageForwarding = nil;
-static NSString *defaultMessageCheck = nil;
-static NSString *defaultTimeFormat = nil;
-static NSArray *superUsernames = nil;
-static NSURL *SOGoProfileURL = nil;
-// static BOOL acceptAnyUser = NO;
-static int sogoFirstDayOfWeek = -1;
-static int defaultDayStartTime = -1;
-static int defaultDayEndTime = -1;
-static Class SOGoUserDefaultsKlass = Nil;
-
-NSString *SOGoWeekStartJanuary1 = @"January1";
-NSString *SOGoWeekStartFirst4DayWeek = @"First4DayWeek";
-NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
-
-@interface NSObject (SOGoRoles)
-
-- (NSArray *) rolesOfUser: (NSString *) uid;
-
-@end
-
 @implementation SoUser (SOGoExtension)
 
-- (NSString *) language
+- (SOGoDomainDefaults *) userDefaults
 {
-  return [SOGoUser language];
+  return [SOGoSystemDefaults sharedSystemDefaults];
+}
+
+- (SOGoDomainDefaults *) domainDefaults
+{
+  return [SOGoSystemDefaults sharedSystemDefaults];
 }
 
 @end
 
 @implementation SOGoUser
 
-static int
-_timeValue (NSString *key)
-{
-  int i, time;
+// + (NSString *) language
+// {
+//   NSArray *bLanguages;
+//   WOContext *context;
+//   NSString *lng;
 
-  if (key && [key length] > 0)
-    {
-      i = [key rangeOfString: @":"].location;
-      if (i != NSNotFound)
-	time = [[key substringToIndex: i] intValue];
-      else
-	time = [key intValue];
-    }
-  else
-    time = -1;
-  
-  return time;
-}
+//   context = [[WOApplication application] context];
+//   bLanguages = [[context request] browserLanguages];
+//   if ([bLanguages count] > 0)
+//     lng = [bLanguages objectAtIndex: 0];
 
-+ (void) initialize
-{
-  NSString *tzName;
-  NSUserDefaults *ud;
-  NSString *profileURL;
+//   if (![lng length])
+//     lng = defaultLanguage;
 
-  ud = [NSUserDefaults standardUserDefaults];
-  if (!serverTimeZone)
-    {
-      tzName = [ud stringForKey: @"SOGoServerTimeZone"];
-      if (!tzName)
-        tzName = @"UTC";
-      serverTimeZone = [NSTimeZone timeZoneWithName: tzName];
-      [serverTimeZone retain];
-    }
-  if (sogoFirstDayOfWeek == -1)
-    sogoFirstDayOfWeek = [ud integerForKey: @"SOGoFirstDayOfWeek"];
-  if (defaultDayStartTime == -1)
-    {
-      defaultDayStartTime
-	= _timeValue ([ud stringForKey: @"SOGoDayStartTime"]);
-      if (defaultDayStartTime == -1)
-	defaultDayStartTime = 8;
-    }
-  if (defaultDayEndTime == -1)
-    {
-      defaultDayEndTime
-	= _timeValue ([ud stringForKey: @"SOGoDayEndTime"]);
-      if (defaultDayEndTime == -1)
-	defaultDayEndTime = 18;
-    }
-
-  if (!SOGoProfileURL)
-    {
-      profileURL = [ud stringForKey: @"SOGoProfileURL"];
-      if (!profileURL)
-	{
-	  profileURL = [ud stringForKey: @"AgenorProfileURL"];
-	  if (profileURL)
-	    {
-	      [ud setObject: profileURL forKey: @"SOGoProfileURL"];
-	      [ud removeObjectForKey: @"AgenorProfileURL"];
-	      [ud synchronize];
-	      [self warnWithFormat: @"the user defaults key 'AgenorProfileURL'"
-		    @" was renamed to 'SOGoProfileURL'"];
-	    }
-	}
-      if (profileURL)
-        SOGoProfileURL = [[NSURL alloc] initWithString: profileURL];
-    }
-  if (!fallbackIMAP4Server)
-    ASSIGN (fallbackIMAP4Server,
-	    [ud stringForKey: @"SOGoFallbackIMAP4Server"]);
-  if (fallbackIMAP4Server)
-    fallbackIsConfigured = YES;
-  else
-    {
-      [self warnWithFormat:
-	      @"no server specified for SOGoFallbackIMAP4Server,"
-	    @" value set to 'localhost'"];
-      fallbackIMAP4Server = @"localhost";
-    }
-  if (!defaultLanguage)
-    {
-      ASSIGN (defaultLanguage, [ud stringForKey: @"SOGoDefaultLanguage"]);
-      if (!defaultLanguage)
-	ASSIGN (defaultLanguage, @"English");
-    }
-  if (!defaultReplyPlacement)
-    {
-      ASSIGN (defaultReplyPlacement, [ud stringForKey: @"SOGoMailReplyPlacement"]);
-      if (!defaultReplyPlacement)
-	ASSIGN (defaultReplyPlacement, @"below");
-    }
-  if (!defaultSignaturePlacement)
-    {
-      ASSIGN (defaultSignaturePlacement, [ud stringForKey: @"SOGoMailSignaturePlacement"]);
-      if (!defaultSignaturePlacement)
-	ASSIGN (defaultSignaturePlacement, @"below");
-    }
-  if (!defaultMessageForwarding)
-    {
-      ASSIGN (defaultMessageForwarding, [ud stringForKey: @"SOGoMailMessageForwarding"]);
-      if (!defaultMessageForwarding)
-	ASSIGN (defaultMessageForwarding, @"inline");
-    }
-  if (!defaultMessageCheck)
-    {
-      ASSIGN (defaultMessageCheck, [ud stringForKey: @"SOGoMailMessageCheck"]);
-      if (!defaultMessageCheck)
-	ASSIGN (defaultMessageCheck, @"manually");
-    }
-  if (!defaultTimeFormat)
-    {
-      ASSIGN (defaultTimeFormat, [ud stringForKey: @"SOGoTimeFormat"]);
-      if (!defaultTimeFormat)
-	ASSIGN (defaultTimeFormat, @"%H:00");
-    }
-
-  if (!superUsernames)
-    ASSIGN (superUsernames, [ud arrayForKey: @"SOGoSuperUsernames"]);
-
-//   acceptAnyUser = ([[ud stringForKey: @"SOGoAuthentificationMethod"]
-// 		     isEqualToString: @"bypass"]);
-}
-
-+ (NSString *) language
-{
-  NSArray *bLanguages;
-  WOContext *context;
-  NSString *lng;
-
-  context = [[WOApplication application] context];
-  bLanguages = [[context request] browserLanguages];
-  if ([bLanguages count] > 0)
-    lng = [bLanguages objectAtIndex: 0];
-
-  if (![lng length])
-    lng = defaultLanguage;
-
-  return lng;
-}
-
-+ (NSString *) fallbackIMAP4Server
-{
-  return fallbackIMAP4Server;
-}
+//   return lng;
+// }
 
 + (SOGoUser *) userWithLogin: (NSString *) newLogin
 {
@@ -257,7 +108,7 @@ _timeValue (NSString *key)
   user = [cache userNamed: newLogin];
   if (!user)
     {
-      user = [[self alloc] initWithLogin: newLogin  roles: newRoles  trust: b];
+      user = [[self alloc] initWithLogin: newLogin roles: newRoles trust: b];
       if (user)
 	{
 	  [user autorelease];
@@ -302,6 +153,11 @@ _timeValue (NSString *key)
 	  allEmails = nil;
 	  currentPassword = nil;
 	  cn = nil;
+          _defaults = nil;
+          _domainDefaults = nil;
+          _settings = nil;
+          allEmails = nil;
+          mailAccounts = nil;
 	}
     }
   else
@@ -316,8 +172,10 @@ _timeValue (NSString *key)
 - (void) dealloc
 {
   [_defaults release];
+  [_domainDefaults release];
   [_settings release];
   [allEmails release];
+  [mailAccounts release];
   [currentPassword release];
   [cn release];
   [language release];
@@ -326,12 +184,12 @@ _timeValue (NSString *key)
 
 - (void) setPrimaryRoles: (NSArray *) newRoles
 {
-  ASSIGN(roles, newRoles);
+  ASSIGN (roles, newRoles);
 }
 
 - (void) setCurrentPassword: (NSString *) newPassword
 {
-  ASSIGN(currentPassword, newPassword);
+  ASSIGN (currentPassword, newPassword);
 }
 
 - (NSString *) currentPassword
@@ -363,6 +221,11 @@ _timeValue (NSString *key)
 }
 
 /* properties */
+- (NSString *) domain
+{
+  return [self _fetchFieldForUser: @"c_domain"];
+}
+
 - (NSArray *) allEmails
 {
   if (!allEmails)
@@ -411,197 +274,158 @@ _timeValue (NSString *key)
   return defaultIdentity;
 }
 
-- (void) saveMailAccounts
-{
-  BOOL doSave;
-
-  doSave = YES;
-  if (!fallbackIsConfigured)
-    {
-      [self logWithFormat: @"'SOGoFallbackIMAP4Server' is not set"];
-      doSave = NO;
-    }
-  if (![SOGoUserManager defaultMailDomainIsConfigured])
-    {
-      [self logWithFormat: @"'SOGoDefaultMailDomain' is not set"];
-      doSave = NO;
-    }
-  doSave = NO;
-  if (doSave)
-    [[self userDefaults] setObject: [self mailAccounts]
-			 forKey: @"MailAccounts"];
-  else
-    [self logWithFormat: @"saving mail accounts is disabled until the"
-	  @" variable(s) mentionned above are configured"];
-}
-
-- (NSURL *) freeBusyURL
-{
-  return nil;
-}
-
 - (SOGoDateFormatter *) dateFormatterInContext: (WOContext *) context
 {
   SOGoDateFormatter *dateFormatter;
   NSString *format;
-  NSUserDefaults *ud;
+  SOGoUserDefaults *ud;
+  NSDictionary *locale;
 
   dateFormatter = [SOGoDateFormatter new];
   [dateFormatter autorelease];
 
-  [dateFormatter setLocale: [[WOApplication application] localeForLanguageNamed: [self language]]];
   ud = [self userDefaults];
-  format = [ud stringForKey: @"ShortDateFormat"];
+  locale = [[WOApplication application] localeForLanguageNamed: [ud language]];
+  [dateFormatter setLocale: locale];
+  format = [ud shortDateFormat];
   if (format)
     [dateFormatter setShortDateFormat: format];
-  format = [ud stringForKey: @"LongDateFormat"];
+  format = [ud longDateFormat];
   if (format)
     [dateFormatter setLongDateFormat: format];
-  format = [ud stringForKey: @"TimeFormat"];
+  format = [ud timeFormat];
   if (format)
     [dateFormatter setTimeFormat: format];
   
   return dateFormatter;
 }
 
-- (NSString *) userDefaultsClassName
-{
-  return @"SOGoUserDefaults";
-}
-
-- (NSUserDefaults *) userDefaults
+- (SOGoUserDefaults *) userDefaults
 {
   if (!_defaults)
     {
-      if (!SOGoUserDefaultsKlass)
-        SOGoUserDefaultsKlass
-          = NSClassFromString ([self userDefaultsClassName]);
-      _defaults = [[SOGoUserDefaultsKlass alloc]
-                    initWithTableURL: SOGoProfileURL
-                                 uid: login
-                           fieldName: @"c_defaults"];
-      if (_defaults)
-	{
-          [_defaults fetchProfile];
-          if ([_defaults values])
-            {
-              BOOL b;
-              b = NO;
-
-              if (![[_defaults stringForKey: @"MessageCheck"] length])
-                {
-                  [_defaults setObject: defaultMessageCheck forKey: @"MessageCheck"];
-                  b = YES;
-                }
-              if (![[_defaults stringForKey: @"TimeZone"] length])
-                {
-                  [_defaults setObject: [serverTimeZone name] forKey: @"TimeZone"];
-                  b = YES;
-                }
-
-              if (b)
-                [_defaults synchronize];
-
-
-              // See explanation in -language
-              [self invalidateLanguage];
-	    }
-	}
+      _defaults = [SOGoUserDefaults defaultsForUser: login
+                                           inDomain: [self domain]];
+      [_defaults retain];
     }
   //else
   //  NSLog(@"User defaults cache hit for %@", login);
 
-  return (NSUserDefaults *) _defaults;
+  return _defaults;
 }
 
-- (NSUserDefaults *) userSettings
+- (SOGoDomainDefaults *) domainDefaults
 {
-  if (!_settings)    
+  NSString *domain;
+
+  if (!_domainDefaults)
     {
-      if (!SOGoUserDefaultsKlass)
-        SOGoUserDefaultsKlass
-          = NSClassFromString ([self userDefaultsClassName]);
-      _settings = [[SOGoUserDefaultsKlass alloc]
-                    initWithTableURL: SOGoProfileURL
-                                 uid: login
-                           fieldName: @"c_settings"];
-      if (_settings)
-	{
-          [_settings fetchProfile];
-	  
-	  // See explanation in -language
-	  [self invalidateLanguage];
-	}
+      domain = [self domain];
+      if ([domain length])
+        {
+          _domainDefaults = [SOGoDomainDefaults defaultsForDomain: domain];
+          if (!_domainDefaults)
+            {
+              [self errorWithFormat: @"domain '%@' does not exist!", domain];
+              _domainDefaults = [SOGoSystemDefaults sharedSystemDefaults];
+            }
+        }
+      else
+        _domainDefaults = [SOGoSystemDefaults sharedSystemDefaults];
+      [_domainDefaults retain];
     }
   //else
-  //  NSLog(@"User settings cache hit for %@", login);
+  //  NSLog(@"User defaults cache hit for %@", login);
 
-  return (NSUserDefaults *) _settings;
+  return _domainDefaults;
 }
 
-- (void) invalidateLanguage
-{
-  DESTROY(language);
-}
+// - (SOGoUserDefaults *) userDefaults
+// {
+//   if (!_defaults)
+//     {
+//       [SOGoUserDefaults defaultsForUser: login
+//                                inDomain: [self domainName]]
+//       if (!SOGoUserProfileKlass)
+//         SOGoUserProfileKlass
+//           = NSClassFromString ([self userProfileClassName]);
+//       _defaults = [SOGoUserProfileKlass
+//                     userProfileWithType: SOGoUserProfileTypeDefaults
+//                                  forUID: login];
+//       if (_defaults)
+// 	{
+//           [_defaults retain];
+//           [_defaults fetchProfile];
+//           if ([_defaults values])
+//             {
+//               BOOL b;
+//               b = NO;
 
-- (NSString *) language
+//               if (![[_defaults stringForKey: @"MessageCheck"] length])
+//                 {
+//                   [_defaults setObject: defaultMessageCheck forKey: @"MessageCheck"];
+//                   b = YES;
+//                 }
+//               if (![[_defaults stringForKey: @"TimeZone"] length])
+//                 {
+//                   [_defaults setObject: [serverTimeZone name] forKey: @"TimeZone"];
+//                   b = YES;
+//                 }
+
+//               if (b)
+//                 [_defaults synchronize];
+
+
+//               // See explanation in -language
+//               [self invalidateLanguage];
+// 	    }
+// 	}
+//     }
+//   //else
+//   //  NSLog(@"User defaults cache hit for %@", login);
+
+//   return _defaults;
+// }
+
+- (SOGoUserSettings *) userSettings
 {
-  if (![language length])
+  if (!_settings)  
     {
-      language = [[self userDefaults] stringForKey: @"Language"];
-      // This is a workaround until we handle the connection errors to the db
-      // in a better way. It enables us to avoid retrieving the userDefaults
-      // too many times when the DB is down, causing a huge delay.
-      if (![language length])
-        language = [SOGoUser language];
-
-      [language retain];
+      _settings = [SOGoUserSettings settingsForUser: login];
+      [_settings retain];
     }
 
-  return language;
+  return _settings;
 }
 
-- (NSTimeZone *) timeZone
-{
-  NSTimeZone *userTimeZone;
-  NSString *timeZoneName;
- 
-  timeZoneName = [[self userDefaults] stringForKey: @"TimeZone"];
-  userTimeZone = nil;
+// - (void) invalidateLanguage
+// {
+//   DESTROY(language);
+// }
 
-  if ([timeZoneName length] > 0)
-    userTimeZone = [NSTimeZone timeZoneWithName: timeZoneName];
-  if (!userTimeZone)
-    userTimeZone = serverTimeZone;
-  
-  return userTimeZone;
-}
+// - (NSString *) language
+// {
+//   if (![language length])
+//     {
+//       language = [[self userDefaults] stringForKey: @"Language"];
+//       // This is a workaround until we handle the connection errors to the db
+//       // in a better way. It enables us to avoid retrieving the userDefaults
+//       // too many times when the DB is down, causing a huge delay.
+//       if (![language length])
+//         language = [SOGoUser language];
 
-- (NSTimeZone *) serverTimeZone
-{
-  return serverTimeZone;
-}
+//       [language retain];
+//     }
 
-- (unsigned int) firstDayOfWeek
-{
-  unsigned int firstDayOfWeek;
-  NSNumber *value;
-
-  value = [[self userDefaults] objectForKey: @"WeekStartDay"];
-  if (value)
-    firstDayOfWeek = [value unsignedIntValue];
-  else
-    firstDayOfWeek = sogoFirstDayOfWeek;
-
-  return firstDayOfWeek;
-}
+//   return language;
+// }
 
 - (NSCalendarDate *) firstDayOfWeekForDate: (NSCalendarDate *) date
 {
   int offset;
   NSCalendarDate *firstDay;
 
-  offset = ([self firstDayOfWeek] - [date dayOfWeek]);
+  offset = [[self userDefaults] firstDayOfWeek] - [date dayOfWeek];
   if (offset > 0)
     offset -= 7;
 
@@ -614,7 +438,7 @@ _timeValue (NSString *key)
 {
   unsigned int offset, baseDayOfWeek, dayOfWeek;
 
-  offset = [self firstDayOfWeek];
+  offset = [[self userDefaults] firstDayOfWeek];
   baseDayOfWeek = [date dayOfWeek];
   if (offset > baseDayOfWeek)
     baseDayOfWeek += 7;
@@ -624,46 +448,13 @@ _timeValue (NSString *key)
   return dayOfWeek;
 }
 
-- (unsigned int) dayStartHour
-{
-  int limit;
-
-  limit = _timeValue ([[self userDefaults] stringForKey: @"DayStartTime"]);
-  if (limit == -1)
-    limit = defaultDayStartTime;
-
-  return limit;
-}
-
-- (unsigned int) dayEndHour
-{
-  int limit;
-
-  limit = _timeValue ([[self userDefaults] stringForKey: @"DayEndTime"]);
-  if (limit == -1)
-    limit = defaultDayEndTime;
-
-  return limit;
-}
-
-- (NSString *) timeFormat
-{
-  NSString *timeFormat;
-
-  timeFormat = [[self userDefaults] stringForKey: @"TimeFormat"];
-  if (!timeFormat)
-    timeFormat = defaultTimeFormat;
-
-  return timeFormat;
-}
-
 - (NSCalendarDate *) firstWeekOfYearForDate: (NSCalendarDate *) date
 {
   NSString *firstWeekRule;
   NSCalendarDate *januaryFirst, *firstWeek;
   unsigned int dayOfWeek;
 
-  firstWeekRule = [[self userDefaults] objectForKey: @"FirstWeek"];
+  firstWeekRule = [[self userDefaults] firstWeekOfYear];
 
   januaryFirst = [NSCalendarDate dateWithYear: [date yearOfCommonEra]
 				 month: 1 day: 1 hour: 0 minute: 0 second: 0
@@ -712,61 +503,52 @@ _timeValue (NSString *key)
 }
 
 /* mail */
-- (NSArray *) _prepareDefaultMailAccounts
+- (NSArray *) mailAccounts
 {
   NSMutableDictionary *mailAccount, *identity;
-  NSMutableArray *identities, *mailAccounts;
+  NSMutableArray *identities;
   NSString *name, *fullName, *imapLogin, *imapServer;
   NSArray *mails;
   unsigned int count, max;
 
-  imapLogin = [[SOGoUserManager sharedUserManager] getImapLoginForUID: login];
-  imapServer = [self _fetchFieldForUser: @"c_imaphostname"];
-  if (!imapServer)
-    imapServer = fallbackIMAP4Server;
-  mailAccount = [NSMutableDictionary dictionary];
-  name = [NSString stringWithFormat: @"%@@%@",
-		   imapLogin, imapServer];
-  [mailAccount setObject: imapLogin forKey: @"userName"];
-  [mailAccount setObject: imapServer forKey: @"serverName"];
-  [mailAccount setObject: name forKey: @"name"];
-
-  identities = [NSMutableArray array];
-  mails = [self allEmails];
-
-  max = [mails count];
-  if (max > 1)
-    max--;
-  for (count = 0; count < max; count++)
-    {
-      identity = [NSMutableDictionary dictionary];
-      fullName = [self cn];
-      if (![fullName length])
-	fullName = login;
-      [identity setObject: fullName forKey: @"fullName"];
-      [identity setObject: [mails objectAtIndex: count] forKey: @"email"];
-      [identities addObject: identity];
-    }
-  [[identities objectAtIndex: 0] setObject: [NSNumber numberWithBool: YES]
-				 forKey: @"isDefault"];
-
-  [mailAccount setObject: identities forKey: @"identities"];
-
-  mailAccounts = [NSMutableArray array];
-  [mailAccounts addObject: mailAccount];
-
-  return mailAccounts;
-}
-
-- (NSArray *) mailAccounts
-{
-  NSUserDefaults *ud;
-  NSArray *mailAccounts;
-
-  ud = [self userDefaults];
-  mailAccounts = [ud objectForKey: @"MailAccounts"];
   if (!mailAccounts)
-    mailAccounts = [self _prepareDefaultMailAccounts];
+    {
+      imapLogin = [[SOGoUserManager sharedUserManager]
+                    getImapLoginForUID: login];
+      imapServer = [self _fetchFieldForUser: @"c_imaphostname"];
+      if (!imapServer)
+        imapServer = [[self domainDefaults] imapServer];
+      mailAccount = [NSMutableDictionary dictionary];
+      name = [NSString stringWithFormat: @"%@@%@",
+                       imapLogin, imapServer];
+      [mailAccount setObject: imapLogin forKey: @"userName"];
+      [mailAccount setObject: imapServer forKey: @"serverName"];
+      [mailAccount setObject: name forKey: @"name"];
+
+      identities = [NSMutableArray array];
+      mails = [self allEmails];
+
+      max = [mails count];
+      if (max > 1)
+        max--;
+      for (count = 0; count < max; count++)
+        {
+          identity = [NSMutableDictionary dictionary];
+          fullName = [self cn];
+          if (![fullName length])
+            fullName = login;
+          [identity setObject: fullName forKey: @"fullName"];
+          [identity setObject: [mails objectAtIndex: count] forKey: @"email"];
+          [identities addObject: identity];
+        }
+      [[identities objectAtIndex: 0] setObject: [NSNumber numberWithBool: YES]
+                                        forKey: @"isDefault"];
+      
+      [mailAccount setObject: identities forKey: @"identities"];
+      
+      mailAccounts = [NSArray arrayWithObject: mailAccount];
+      [mailAccounts retain];
+    }
 
   return mailAccounts;
 }
@@ -861,66 +643,6 @@ _timeValue (NSString *key)
   return [[defaultAccount objectForKey: @"identities"] objectAtIndex: 0];
 }
 
-- (void) migrateSignature
-{
-  NSString *signature;
-  NSUserDefaults *ud;
-
-  signature = [[self primaryIdentity] objectForKey: @"signature"];
-
-  if ([signature length])
-    {
-      ud = [self userDefaults];
-      [ud setObject: signature forKey: @"MailSignature"];
-      [ud removeObjectForKey: @"MailAccounts"];
-      [ud synchronize];
-    }
-}
-
-- (NSString *) signature
-{
-  [self migrateSignature];
-
-  return [[self userDefaults] stringForKey: @"MailSignature"];
-}
-
-- (NSString *) replyPlacement
-{
-  NSString *replyPlacement = [[self userDefaults] stringForKey: @"ReplyPlacement"];
-
-  if (!replyPlacement)
-    replyPlacement = defaultReplyPlacement;
-
-  return replyPlacement;
-}
-
-- (NSString *) signaturePlacement
-{
-  NSString *signaturePlacement;
-
-  if ([[self replyPlacement] isEqualToString: @"below"])
-    // When replying to an email, if the reply is below the quoted text,
-    // the signature must also be below the quoted text.
-    signaturePlacement = @"below";
-  else
-    {
-      signaturePlacement = [[self userDefaults] stringForKey: @"SignaturePlacement"];
-      if (!signaturePlacement)
-	signaturePlacement = defaultSignaturePlacement;
-    }
-  
-  return signaturePlacement;
-}
-
-- (NSString *) messageForwarding
-{
-  NSString *messageForwarding = [[self userDefaults] stringForKey: @"MessageForwarding"];
-  if (!messageForwarding)
-    messageForwarding = defaultMessageForwarding;
-
-  return messageForwarding;
-}
-
 /* folders */
 
 // TODO: those methods should check whether the traversal stack in the context
@@ -1012,7 +734,9 @@ _timeValue (NSString *key)
 
 - (BOOL) isSuperUser
 {
-  return [superUsernames containsObject: login];
+  [self domainDefaults];
+
+  return [[_domainDefaults superUsernames] containsObject: login];
 }
 
 /* module access */

@@ -19,9 +19,9 @@
   02111-1307, USA.
 */
 
-#import <Foundation/NSDictionary.h>
 #import <Foundation/NSCalendarDate.h>
-#import <Foundation/NSUserDefaults.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSUserDefaults.h> /* for NSXXXFormatString, ... */
 
 #import "SOGoDateFormatter.h"
 

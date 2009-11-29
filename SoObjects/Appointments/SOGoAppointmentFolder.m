@@ -25,7 +25,6 @@
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSTimeZone.h>
 #import <Foundation/NSURL.h>
-#import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSValue.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
@@ -34,7 +33,6 @@
 #import <NGObjWeb/WOMessage.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
-#import <NGExtensions/NGLoggerManager.h>
 #import <NGExtensions/NSString+misc.h>
 #import <GDLContentStore/GCSFolder.h>
 #import <DOM/DOMElement.h>
@@ -55,14 +53,17 @@
 
 #import <SOGo/DOMNode+SOGo.h>
 #import <SOGo/NSArray+Utilities.h>
+#import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSObject+DAV.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoCache.h>
-#import <SOGo/SOGoUserManager.h>
-#import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
+#import <SOGo/SOGoUserSettings.h>
 #import <SOGo/SOGoUserFolder.h>
+#import <SOGo/SOGoUserManager.h>
 #import <SOGo/SOGoWebDAVAclManager.h>
 #import <SOGo/SOGoWebDAVValue.h>
 #import <SOGo/WORequest+SOGo.h>
@@ -80,39 +81,17 @@
 
 @implementation SOGoAppointmentFolder
 
-static NGLogger *logger = nil;
 static NSNumber *sharedYes = nil;
-static int davCalendarStartTimeLimit, davTimeLimitSeconds,
-  davTimeHalfLimitSeconds;
 
 + (void) initialize
 {
-  NGLoggerManager *lm;
   static BOOL didInit = NO;
-  NSUserDefaults *ud;
-  
+
   if (!didInit)
     {
       didInit = YES;
-  
-      [iCalEntityObject initializeSOGoExtensions];
-
-      NSAssert2([super version] == 0,
-                @"invalid superclass (%@) version %i !",
-                NSStringFromClass([self superclass]), [super version]);
-
-      lm = [NGLoggerManager defaultLoggerManager];
-      logger = [lm loggerForDefaultKey: @"SOGoAppointmentFolderDebugEnabled"];
-
       sharedYes = [[NSNumber numberWithBool: YES] retain];
-
-      ud = [NSUserDefaults standardUserDefaults];
-      davCalendarStartTimeLimit
-        = [ud integerForKey: @"SOGoDAVCalendarStartTimeLimit"];
-      davTimeLimitSeconds = davCalendarStartTimeLimit * 86400;
-      /* 86400 / 2 = 43200. We hardcode that value in order to avoid
-         integer and float confusion. */
-      davTimeHalfLimitSeconds = davCalendarStartTimeLimit * 43200;
+      [iCalEntityObject initializeSOGoExtensions];
     }
 }
 
@@ -250,14 +229,26 @@ static int davCalendarStartTimeLimit, davTimeLimitSeconds,
 - (id) initWithName: (NSString *) name
 	inContainer: (id) newContainer
 {
+  SOGoUser *user;
   if ((self = [super initWithName: name inContainer: newContainer]))
     {
-      timeZone = [[context activeUser] timeZone];
+      user = [context activeUser];
+      timeZone = [[user userDefaults] timeZone];
       aclMatrix = [NSMutableDictionary new];
       stripFields = nil;
       uidToFilename = nil;
       memset (userCanAccessObjectsClassifiedAs, NO,
               iCalAccessClassCount * sizeof (BOOL));
+
+      davCalendarStartTimeLimit
+        = [[user domainDefaults] davCalendarStartTimeLimit];
+      davTimeLimitSeconds = davCalendarStartTimeLimit * 86400;
+      /* 86400 / 2 = 43200. We hardcode that value in order to avoid
+         integer and float confusion. */
+      davTimeHalfLimitSeconds = davCalendarStartTimeLimit * 43200;
+
+      davTimeLimitSeconds = 0;
+      davTimeHalfLimitSeconds = 0;
     }
 
   return self;
@@ -288,9 +279,8 @@ static int davCalendarStartTimeLimit, davTimeLimitSeconds,
 - (void) _setCalendarProperty: (id) theValue
                        forKey: (NSString *) theKey
 {
-  NSUserDefaults *settings;
-  NSMutableDictionary *calendarSettings;
-  NSMutableDictionary *values;
+  SOGoUserSettings *settings;
+  NSMutableDictionary *calendarSettings, *values;
   
   settings = [[context activeUser] userSettings];
   calendarSettings = [settings objectForKey: @"Calendar"];
@@ -325,7 +315,7 @@ static int davCalendarStartTimeLimit, davTimeLimitSeconds,
 
 - (NSString *) calendarColor
 {
-  NSUserDefaults *settings;
+  SOGoUserSettings *settings;
   NSDictionary *colors;
   NSString *color;
 
@@ -351,7 +341,7 @@ static int davCalendarStartTimeLimit, davTimeLimitSeconds,
 
 - (BOOL) showCalendarAlarms
 {
-  NSUserDefaults *settings;
+  SOGoUserSettings *settings;
   NSDictionary *values;
   id test;
   BOOL show = YES;
@@ -378,7 +368,7 @@ static int davCalendarStartTimeLimit, davTimeLimitSeconds,
 
 - (BOOL) showCalendarTasks
 {
-  NSUserDefaults *settings;
+  SOGoUserSettings *settings;
   NSDictionary *values;
   id test;
   BOOL show = YES;
@@ -405,7 +395,7 @@ static int davCalendarStartTimeLimit, davTimeLimitSeconds,
 
 - (NSString *) syncTag
 {
-  NSUserDefaults *settings;
+  SOGoUserSettings *settings;
   NSDictionary *syncTags;
   NSString *syncTag;
 
@@ -424,7 +414,7 @@ static int davCalendarStartTimeLimit, davTimeLimitSeconds,
   if ([newSyncTag length])
     {
       // Check for duplicated tags
-      NSUserDefaults *settings;
+      SOGoUserSettings *settings;
       NSMutableDictionary *calendarSettings;
       NSMutableDictionary *syncTags;
       NSEnumerator *keysList;
@@ -463,7 +453,7 @@ static int davCalendarStartTimeLimit, davTimeLimitSeconds,
 
 - (BOOL) synchronizeCalendar
 {
-  NSUserDefaults *settings;
+  SOGoUserSettings *settings;
   NSDictionary *values;
   id test;
   BOOL synchronize = NO;
@@ -486,13 +476,6 @@ static int davCalendarStartTimeLimit, davTimeLimitSeconds,
   else
     [self _setCalendarProperty: nil
 			forKey: @"FolderSynchronize"];
-}
-
-/* logging */
-
-- (id) debugLogger
-{
-  return logger;
 }
 
 /* selection */
@@ -1104,9 +1087,6 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   [fields addObjectUniquely: @"c_enddate"];
   [fields addObjectUniquely: @"c_isallday"];
 
-  if (logger)
-    [self debugWithFormat:@"should fetch (%@=>%@) ...", _startDate, endDate];
-
   if (canCycle)
     where = [NSString stringWithFormat: @"%@ %@ AND c_iscycle = 0",
                       baseWhere, dateSqlString];
@@ -1121,9 +1101,6 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     {
       if (r)
         records = [self fixupRecords: records];
-      if (logger)
-        [self debugWithFormat: @"fetched %i records: %@",
-              [records count], records];
       ma = [NSMutableArray arrayWithArray: records];
     }
   else
@@ -1151,9 +1128,6 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       [self errorWithFormat: @"(%s): fetch failed!", __PRETTY_FUNCTION__];
       return nil;
     }
-
-  if (logger)
-    [self debugWithFormat:@"returning %i records", [ma count]];
 
   currentLogin = [[context activeUser] login];
   if (![currentLogin isEqualToString: owner] && !_includeProtectedInformation)
@@ -1685,8 +1659,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   NSString *ownerTimeZone;
 
   ownerUser = [SOGoUser userWithLogin: [self ownerInContext: context]];
-  ownerTimeZone = [[ownerUser timeZone] name];
-
+  ownerTimeZone = [[ownerUser userDefaults] timeZoneName];
+  
   return [[iCalTimeZone timeZoneForName: ownerTimeZone] versitString];
 }
 
@@ -2702,7 +2676,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 - (BOOL) create
 {
   BOOL rc;
-  NSUserDefaults *userSettings;
+  SOGoUserSettings *userSettings;
   NSMutableDictionary *calendarSettings;
   SOGoUser *ownerUser;
 
@@ -3077,7 +3051,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
 - (BOOL) isActive
 {
-  NSUserDefaults *settings;
+  SOGoUserSettings *settings;
   NSArray *inactiveFolders;
 
   settings = [[context activeUser] userSettings];

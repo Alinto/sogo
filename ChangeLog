@@ -1,3 +1,49 @@
+2009-11-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/PreferencesUI/UIxPreferences.m (-): "hours" is now a static
+	variable, rather than an ivar.
+
+	* UI/MainUI/SOGoRootPage.m (+initialized): the supportedLanguages
+	are not available from the SOGoSystemDefaults
+	(SOGoDefaults.plist).
+
+	* UI/MailerUI/UIxMailView.m (+initialize): we never used
+	"SOGoDontUseETagsForMailViewer".
+
+	* UI/MailerUI/UIxMailEditor.m (+initialize): we never used
+	"SOGoShowInternetMarker" and "SOGoInternetMailHeaders".
+
+	* SoObjects/Mailer/SOGoDraftObject.m (+initialize):
+	"TextPlainType" was never used.
+
+	* SoObjects/SOGo/SOGoSystemDefaults.m: new class module handling
+	the getting of system (or "application") defaults, as well as
+	default values for users and domains.
+
+	* SoObjects/SOGo/SOGoDomainDefaults.m: new class module handling
+	the getting of domain defaults, as well as default values for for
+	users belonging to the corresponding domain.
+
+	* SoObjects/SOGo/SOGoUserDefaults.m: new class module handling
+	the setting and getting of user defaults.
+
+	* SoObjects/SOGo/SOGoLDAPDefaults.h: new protocol module for the
+	handling of "recursive" ldap defaults.
+
+	* SoObjects/SOGo/SOGoDefaultsSource.m: new module class acting as
+	a proxy between NSDictionary, NSUserDefaults and SOGoUserProfile,
+	enabling the possibility of hierarchy and fallbacks.
+
+	* SoObjects/SOGo/SOGoUserProfile.m: new name for SOGoUserDefaults.
+	(-arrayForKey:, -stringForKey:, -dataForKey:, -boolForKey:)
+	(-floatForKey:): removed obsolete methods (as well as their setter
+	counterparts).
+
+	* SoObjects/SOGo/SOGoSQLUserProfile.m: new class module for
+	handling the SQL backend of the SOGoUserProfile.
+
+	* UI/SOGoUI/WOContext+UIx.m: removed obsolete class.
+
 2009-11-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUserDefaults.m (-fetchJSONProfileFromDB): the

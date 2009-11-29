@@ -27,7 +27,6 @@
 #import <Foundation/NSString.h>
 #import <Foundation/NSTimeZone.h>
 #import <Foundation/NSValue.h>
-#import <Foundation/NSUserDefaults.h>
 
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
@@ -40,15 +39,17 @@
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 
-#import <SoObjects/SOGo/SOGoDateFormatter.h>
-#import <SoObjects/SOGo/SOGoUser.h>
-#import <SoObjects/SOGo/SOGoUserFolder.h>
-#import <SoObjects/SOGo/NSCalendarDate+SOGo.h>
-#import <SoObjects/SOGo/NSArray+Utilities.h>
-#import <SoObjects/SOGo/NSObject+Utilities.h>
-#import <SoObjects/Appointments/SOGoAppointmentFolder.h>
-#import <SoObjects/Appointments/SOGoAppointmentFolders.h>
-#import <SoObjects/Appointments/SOGoAppointmentObject.h>
+#import <SOGo/SOGoDateFormatter.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
+#import <SOGo/SOGoUserFolder.h>
+#import <SOGo/SOGoUserSettings.h>
+#import <SOGo/NSCalendarDate+SOGo.h>
+#import <SOGo/NSArray+Utilities.h>
+#import <SOGo/NSObject+Utilities.h>
+#import <Appointments/SOGoAppointmentFolder.h>
+#import <Appointments/SOGoAppointmentFolders.h>
+#import <Appointments/SOGoAppointmentObject.h>
 #import <Appointments/SOGoFreeBusyObject.h>
 
 #import <UI/Common/WODirectAction+SOGo.h>
@@ -104,7 +105,7 @@ static NSArray *tasksFields = nil;
       ASSIGN (request, newRequest);
       user = [[self context] activeUser];
       ASSIGN (dateFormatter, [user dateFormatterInContext: context]);
-      ASSIGN (userTimeZone, [user timeZone]);
+      ASSIGN (userTimeZone, [[user userDefaults] timeZone]);
       dayBasedView = NO;
     }
 
@@ -193,17 +194,15 @@ static NSArray *tasksFields = nil;
 - (void) _setupContext
 {
   SOGoUser *user;
-  NSTimeZone *userTZ;
   NSString *param;
 
   user = [context activeUser];
   userLogin = [user login];
-  userTZ = [user timeZone];
 
   param = [request formValueForKey: @"filterpopup"];
   if ([param length])
     {
-      [self _setupDatesWithPopup: param andUserTZ: userTZ];
+      [self _setupDatesWithPopup: param andUserTZ: userTimeZone];
       title = [request formValueForKey: @"search"];
     }
   else
@@ -212,7 +211,7 @@ static NSArray *tasksFields = nil;
       if ([param length] > 0)
 	startDate = [[NSCalendarDate dateFromShortDateString: param
 				     andShortTimeString: nil
-				     inTimeZone: userTZ] beginOfDay];
+				     inTimeZone: userTimeZone] beginOfDay];
       else
 	startDate = nil;
 
@@ -220,7 +219,7 @@ static NSArray *tasksFields = nil;
       if ([param length] > 0)
 	endDate = [[NSCalendarDate dateFromShortDateString: param
 				   andShortTimeString: nil
-				   inTimeZone: userTZ] endOfDay];
+				   inTimeZone: userTimeZone] endOfDay];
       else
 	endDate = nil;
 
@@ -462,16 +461,16 @@ static NSArray *tasksFields = nil;
 - (void) checkFilterValue
 {
   NSString *filter;
-  NSUserDefaults *ud;
+  SOGoUserSettings *us;
 
   filter = [[context request] formValueForKey: @"filterpopup"];
-  if ([filter length] 
+  if ([filter length]
       && ![filter isEqualToString: @"view_all"]
       && ![filter isEqualToString: @"view_future"])
     {
-      ud = [[context activeUser] userDefaults];
-      [ud setObject: filter forKey: @"CalendarDefaultFilter"];
-      [ud synchronize];
+      us = [[context activeUser] userSettings];
+      [us setObject: filter forKey: @"CalendarDefaultFilter"];
+      [us synchronize];
     }
 }
 
@@ -986,10 +985,10 @@ _computeBlocksPosition (NSArray *blocks)
 
 - (WOResponse *) tasksListAction
 {
-  NSUserDefaults *ud;
+  SOGoUserSettings *us;
   NSEnumerator *tasks;
   NSMutableArray *filteredTasks, *filteredTask;
-  BOOL showCompleted, setUserDefault;
+  BOOL showCompleted;
   NSArray *task;
   int statusCode;
   unsigned int endDateStamp;
@@ -999,19 +998,17 @@ _computeBlocksPosition (NSArray *blocks)
 
   [self _setupContext];
 
+#warning see TODO in SchedulerUI.js about "setud"
+  showCompleted = [[request formValueForKey: @"show-completed"] intValue];
+  if ([request formValueForKey: @"setud"])
+    {
+      us = [[context activeUser] userSettings];
+      [us setBool: showCompleted forKey: @"ShowCompletedTasks"];
+      [us synchronize];
+    }
+
   tasks = [[self _fetchFields: tasksFields
 		 forComponentOfType: @"vtodo"] objectEnumerator];
-  showCompleted = [[request formValueForKey: @"show-completed"] intValue];
-  setUserDefault = [[request formValueForKey: @"setud"] intValue];
-  if (setUserDefault)
-    {
-      ud = [[context activeUser] userDefaults];
-      [ud setBool: showCompleted
-           forKey: @"ShowCompletedTasks"];
-      [ud synchronize];
-    }
-  
-
   while ((task = [tasks nextObject]))
     {
       statusCode = [[task objectAtIndex: 2] intValue];
@@ -1256,7 +1253,7 @@ _computeBlocksPosition (NSArray *blocks)
 
 - (NSArray *) _loadScheduleLimitsForUsers: (NSArray *) users
 {
-  NSUserDefaults *ud;
+  SOGoUserDefaults *ud;
   NSCalendarDate *from, *to, *maxFrom, *maxTo;
   int count;
 
@@ -1271,9 +1268,9 @@ _computeBlocksPosition (NSArray *blocks)
                               roles: nil] userDefaults];
       if (ud)
 	{
-	  from = [NSCalendarDate dateWithString: [ud objectForKey: @"DayStartTime"]
+	  from = [NSCalendarDate dateWithString: [ud dayStartTime]
 				 calendarFormat: @"%H:%M"];
-	  to = [NSCalendarDate dateWithString: [ud objectForKey: @"DayEndTime"]
+	  to = [NSCalendarDate dateWithString: [ud dayEndTime]
 			       calendarFormat: @"%H:%M"];
 	  maxFrom = (NSCalendarDate *)[from laterDate: maxFrom];
 	  maxTo = (NSCalendarDate *)[to earlierDate: maxTo];

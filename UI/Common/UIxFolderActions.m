@@ -23,7 +23,6 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
-#import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSURL.h>
 #import <Foundation/NSValue.h>
 
@@ -42,6 +41,7 @@
 #import <SoObjects/SOGo/SOGoParentFolder.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
 #import <SoObjects/SOGo/SOGoUser.h>
+#import <SoObjects/SOGo/SOGoUserSettings.h>
 
 #import "WODirectAction+SOGo.h"
 
@@ -62,11 +62,11 @@
   baseFolder = [[clientObject container] nameInContainer];
 
   um = [SOGoUserManager sharedUserManager];
-  ud = [activeUser userSettings];
-  moduleSettings = [ud objectForKey: baseFolder];
+  us = [activeUser userSettings];
+  moduleSettings = [us objectForKey: baseFolder];
   if (!moduleSettings)
     moduleSettings = [NSMutableDictionary dictionary];
-  [ud setObject: moduleSettings forKey: baseFolder];
+  [us setObject: moduleSettings forKey: baseFolder];
 
   mailInvitationParam
     = [[context request] formValueForKey: @"mail-invitation"];
@@ -174,7 +174,7 @@
   else
     [folderSubscription addObjectUniquely: folderName];
 
-  [ud synchronize];
+  [us synchronize];
 
   return [self responseWith204];
 }

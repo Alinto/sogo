@@ -41,12 +41,13 @@
   NSMutableDictionary *localCache;
   NSMutableDictionary *cache;
   NSMutableDictionary *users;
+  float cleanupInterval;
+  NSString *memcachedServerName;
   @private
     memcached_server_st *servers;
     memcached_st *handle;
 }
 
-+ (NSTimeInterval) cleanupInterval;
 + (SOGoCache *) sharedCache;
 
 - (void) killCache;

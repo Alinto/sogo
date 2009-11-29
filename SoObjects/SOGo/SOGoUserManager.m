@@ -25,13 +25,14 @@
 #import <Foundation/NSLock.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSTimer.h>
-#import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSValue.h>
 #import <NGExtensions/NSObject+Logs.h>
 
 #import "NSDictionary+BSJSONAdditions.h"
 #import "NSArray+Utilities.h"
+#import "SOGoDomainDefaults.h"
 #import "SOGoSource.h"
+#import "SOGoSystemDefaults.h"
 #import "SOGoUserManager.h"
 #import "SOGoCache.h"
 #import "SOGoSource.h"
@@ -39,75 +40,27 @@
 #import "LDAPSource.h"
 #import "SQLSource.h"
 
-static NSString *defaultMailDomain = nil;
-static NSString *LDAPContactInfoAttribute = nil;
-static BOOL defaultMailDomainIsConfigured = NO;
-static BOOL forceImapLoginWithEmail = NO;
-
-#if defined(THREADSAFE)
-static NSLock *lock = nil;
-#endif
-
 @implementation SOGoUserManager
-
-+ (void) initialize
-{
-  NSUserDefaults *ud;
-
-  ud = [NSUserDefaults standardUserDefaults];
-  if (!defaultMailDomain)
-    {
-      defaultMailDomain = [ud stringForKey: @"SOGoDefaultMailDomain"];
-      [defaultMailDomain retain];
-      defaultMailDomainIsConfigured = YES;
-
-      if (!defaultMailDomain)
-	{
-	  [self warnWithFormat:
-		  @"no domain specified for SOGoDefaultMailDomain,"
-		@" value set to 'localhost'"];
-	  defaultMailDomain = @"localhost";
-	}
-
-      LDAPContactInfoAttribute = [[ud stringForKey: @"SOGoLDAPContactInfoAttribute"] lowercaseString];
-      [LDAPContactInfoAttribute retain];
-    }
-  if (!forceImapLoginWithEmail)
-    forceImapLoginWithEmail = [ud boolForKey: @"SOGoForceIMAPLoginWithEmail"];
-#if defined(THREADSAFE)
-  lock = [NSLock new];
-#endif
-}
-
-+ (BOOL) defaultMailDomainIsConfigured
-{
-  return defaultMailDomainIsConfigured;
-}
 
 + (id) sharedUserManager
 {
   static id sharedUserManager = nil;
 
-#if defined(THREADSAFE)
-  [lock lock];
-#endif
   if (!sharedUserManager)
     sharedUserManager = [self new];
-#if defined(THREADSAFE)
-  [lock unlock];
-#endif
 
   return sharedUserManager;
 }
 
 - (void) _registerSource: (NSDictionary *) udSource
+                inDomain: (NSString *) domain
 {
   NSString *sourceID, *value, *type;
   NSMutableDictionary *metadata;
-  id<SOGoSource> ldapSource;
+  NSObject <SOGoSource> *ldapSource;
   BOOL isAddressBook;
   Class c;
-  
+
   sourceID = [udSource objectForKey: @"id"];
   if ([sourceID length] > 0)
     {
@@ -118,13 +71,16 @@ static NSLock *lock = nil;
       else
         c = [SQLSource class];
 
-      ldapSource = [c sourceFromUDSource: udSource];
+      ldapSource = [c sourceFromUDSource: udSource
+                                inDomain: domain];
       if (sourceID)
         [_sources setObject: ldapSource forKey: sourceID];
       else
         [self errorWithFormat: @"id field missing in an user source,"
               @" check the SOGoUserSources defaults"];
       metadata = [NSMutableDictionary dictionary];
+      if (domain)
+        [metadata setObject: domain forKey: @"domain"];
       value = [udSource objectForKey: @"canAuthenticate"];
       if (value)
         [metadata setObject: value forKey: @"canAuthenticate"];
@@ -155,60 +111,51 @@ static NSLock *lock = nil;
           @" without id (skipped)"];
 }
 
-- (void) _prepareSourcesWithDefaults: (NSUserDefaults *) ud
+- (int) _registerSourcesInDomain: (NSString *) domain
 {
-  id o, sources;
+  NSArray *userSources;
   unsigned int count, max;
+  SOGoDomainDefaults *dd;
+
+  if (domain)
+    dd = [SOGoDomainDefaults defaultsForDomain: domain];
+  else
+    dd = [SOGoSystemDefaults sharedSystemDefaults];
+
+  userSources = [dd userSources];
+  max = [userSources count];
+  for (count = 0; count < max; count++)
+    [self _registerSource: [userSources objectAtIndex: count]
+                 inDomain: domain];
+
+  return max;
+}
+
+- (void) _prepareSources
+{
+  NSArray *domains;
+  unsigned int count, max, total;
 
   _sources = [[NSMutableDictionary alloc] init];
   _sourcesMetadata = [[NSMutableDictionary alloc] init];
 
-  sources = [NSMutableArray array];
-  o = [ud arrayForKey: @"SOGoLDAPSources"];
+  total = [self _registerSourcesInDomain: nil];
+  domains = [[SOGoSystemDefaults sharedSystemDefaults] domainIds];
+  max = [domains count];
+  for (count = 0; count < max; count++)
+    total += [self _registerSourcesInDomain: [domains objectAtIndex: count]];
 
-  if (o)
-    {
-      [self errorWithFormat: @"Using depecrated SOGoLDAPSources default. You should now use SOGoUserSources."];
-
-      if ([o isKindOfClass: [NSArray class]])
-	  [sources addObjectsFromArray: o];
-      else
-	[self errorWithFormat: @"SOGoLDAPSources is NOT an array. Check your defaults. You should now use SOGoUserSources nonetheless."];
-    }
-  
-  o = [ud arrayForKey: @"SOGoUserSources"];
-
-  if (o)
-    {
-      if ([o isKindOfClass: [NSArray class]])
-	  [sources addObjectsFromArray: o];
-      else
-	[self errorWithFormat: @"SOGoUserSources is NOT an array. Check your defaults."];
-    }
-
-  if ([sources count])
-    {
-      max = [sources count];
-      for (count = 0; count < max; count++)
-	[self _registerSource: [sources objectAtIndex: count]];
-    }
-  else
-    {
-      [self errorWithFormat: @"No authentication sources defined - nobody will be able to login. Check your defaults."];
-    }
+  if (!total)
+    [self errorWithFormat: @"No authentication sources defined - nobody will be able to login. Check your defaults."];
 }
 
 - (id) init
 {
-  NSUserDefaults *ud;
-
   if ((self = [super init]))
     {
-      ud = [NSUserDefaults standardUserDefaults];
-
       _sources = nil;
       _sourcesMetadata = nil;
-      [self _prepareSourcesWithDefaults: ud];
+      [self _prepareSources];
     }
 
   return self;
@@ -221,29 +168,58 @@ static NSLock *lock = nil;
   [super dealloc];
 }
 
-- (NSArray *) sourceIDs
+- (NSArray *) sourceIDsInDomain: (NSString *) domain
 {
-  return [_sources allKeys];
+  NSMutableArray *sourceIDs;
+  NSArray *keys;
+  int count, max;
+  NSString *currentID, *sourceDomain;
+  NSObject <SOGoSource> *currentSource;
+
+  keys = [_sources allKeys];
+  max = [keys count];
+  sourceIDs = [NSMutableArray arrayWithCapacity: max];
+  for (count = 0; count < max; count++)
+    {
+      currentID = [keys objectAtIndex: count];
+      currentSource = [_sources objectForKey: currentID];
+      sourceDomain = [currentSource domain];
+      if (!domain || [sourceDomain isEqualToString: domain])
+        [sourceIDs addObject: currentID];
+    }
+
+  return sourceIDs;
 }
 
 - (NSArray *) _sourcesOfType: (NSString *) sourceType
+                    inDomain: (NSString *) domain
 {
   NSMutableArray *sourceIDs;
   NSEnumerator *allIDs;
   NSString *currentID;
-  NSNumber *canAuthenticate;
+  NSNumber *typeValue;
+  NSDictionary *metadata;
 
   sourceIDs = [NSMutableArray array];
   allIDs = [[_sources allKeys] objectEnumerator];
-  while ((currentID = [allIDs nextObject])) 
+  while ((currentID = [allIDs nextObject]))
     {
-      canAuthenticate = [[_sourcesMetadata objectForKey: currentID]
-			  objectForKey: sourceType];
-      if ([canAuthenticate boolValue])
-	[sourceIDs addObject: currentID];
+      metadata = [_sourcesMetadata objectForKey: currentID];
+      if (!domain
+          || [[metadata objectForKey: @"domain"] isEqualToString: domain])
+        {
+          typeValue = [metadata objectForKey: sourceType];
+          if ([typeValue boolValue])
+            [sourceIDs addObject: currentID];
+        }
     }
 
   return sourceIDs;
+}
+
+- (NSObject <SOGoSource> *) sourceWithID: (NSString *) sourceID
+{
+  return [_sources objectForKey: sourceID];
 }
 
 - (NSDictionary *) metadataForSourceID: (NSString *) sourceID
@@ -253,17 +229,12 @@ static NSLock *lock = nil;
 
 - (NSArray *) authenticationSourceIDs
 {
-  return [self _sourcesOfType: @"canAuthenticate"];
+  return [self _sourcesOfType: @"canAuthenticate" inDomain: nil];
 }
 
-- (NSArray *) addressBookSourceIDs
+- (NSArray *) addressBookSourceIDsInDomain: (NSString *) domain
 {
-  return [self _sourcesOfType: @"isAddressBook"];
-}
-
-- (LDAPSource *) sourceWithID: (NSString *) sourceID
-{
-  return [_sources objectForKey: sourceID];
+  return [self _sourcesOfType: @"isAddressBook" inDomain: domain];
 }
 
 - (NSString *) displayNameForSourceWithID: (NSString *) sourceID
@@ -308,7 +279,18 @@ static NSLock *lock = nil;
 
 - (NSString *) getImapLoginForUID: (NSString *) uid
 {
-  return ((forceImapLoginWithEmail) ? [self getEmailForUID: uid] : uid);
+  NSDictionary *contactInfos;
+  NSString *domain;
+  SOGoDomainDefaults *dd;
+
+  contactInfos = [self contactInfosForUserWithUIDorEmail: uid];
+  domain = [contactInfos objectForKey: @"c_domain"];
+  if ([domain length])
+    dd = [SOGoDomainDefaults defaultsForDomain: domain];
+  else
+    dd = [SOGoSystemDefaults sharedSystemDefaults];
+
+  return ([dd forceIMAPLoginWithEmail] ? [self getEmailForUID: uid] : uid);
 }
 
 - (NSString *) getUIDForEmail: (NSString *) email
@@ -324,7 +306,7 @@ static NSLock *lock = nil;
 - (BOOL) _sourceCheckLogin: (NSString *) login
                andPassword: (NSString *) password
 { 
-  id<SOGoSource> ldapSource;
+  NSObject <SOGoSource> *ldapSource;
   NSEnumerator *authIDs;
   NSString *currentID;
   BOOL checkOK;
@@ -347,10 +329,6 @@ static NSLock *lock = nil;
   NSMutableDictionary *currentUser;
   NSString *dictPassword, *jsonUser;
   BOOL checkOK;
-
-#if defined(THREADSAFE)
-  [lock lock];
-#endif
 
   jsonUser = [[SOGoCache sharedCache] userAttributesForLogin: login];
   currentUser = [NSMutableDictionary dictionaryWithJSONString: jsonUser];
@@ -378,23 +356,25 @@ static NSLock *lock = nil;
   else
     checkOK = NO;
 
-#if defined(THREADSAFE)
-  [lock unlock];
-#endif
-
   return checkOK;
 }
 
 - (void) _fillContactMailRecords: (NSMutableDictionary *) contact
 {
-  NSString *uid, *systemEmail;
+  NSString *uid, *domain, *systemEmail;
   NSMutableArray *emails;
+  SOGoDomainDefaults *dd;
 
+  domain = [contact objectForKey: @"c_domain"];
+  if ([domain length])
+    dd = [SOGoDomainDefaults defaultsForDomain: domain];
+  else
+    dd = [SOGoSystemDefaults sharedSystemDefaults];
   emails = [contact objectForKey: @"emails"];
   uid = [contact objectForKey: @"c_uid"];
   if ([uid rangeOfString: @"@"].location == NSNotFound)
     systemEmail
-      = [NSString stringWithFormat: @"%@@%@", uid, defaultMailDomain];
+      = [NSString stringWithFormat: @"%@@%@", uid, [dd mailDomain]];
   else
     systemEmail = uid;
   [emails addObject: systemEmail];
@@ -422,7 +402,8 @@ static NSLock *lock = nil;
   [currentUser setObject: [NSNumber numberWithBool: YES]
 	       forKey: @"MailAccess"];
 
-  ldapSources = [[self authenticationSourceIDs] objectEnumerator];
+  ldapSources = [[self authenticationSourceIDs]
+                  objectEnumerator];
   while ((sourceID = [ldapSources nextObject]))
     {
       currentSource = [_sources objectForKey: sourceID];
@@ -500,15 +481,13 @@ static NSLock *lock = nil;
       contactInfos = [NSMutableDictionary dictionary];
       jsonUser = [[SOGoCache sharedCache] userAttributesForLogin: aUID];
       currentUser = [NSMutableDictionary dictionaryWithJSONString: jsonUser];
-#if defined(THREADSAFE)
-      [lock lock];
-#endif
       if (!([currentUser objectForKey: @"emails"]
 	    && [currentUser objectForKey: @"cn"]))
 	{
-	  // We make sure that we either have no occurence of a cache entry or that
-	  // we have an occurence with only a cached password. In the latter case, we
-	  // update the entry with the remaining information and recache the value.
+	  // We make sure that we either have no occurence of a cache entry or
+	  // that we have an occurence with only a cached password. In the
+	  // latter case, we update the entry with the remaining information
+	  // and recache the value.
 	  if (!currentUser || ([currentUser count] == 1 && [currentUser objectForKey: @"password"]))
 	    {
 	      newUser = YES;
@@ -528,10 +507,6 @@ static NSLock *lock = nil;
 		currentUser = nil;
 	    }
 	}
-
-#if defined(THREADSAFE)
-      [lock unlock];
-#endif
     }
   else
     currentUser = nil;
@@ -545,7 +520,7 @@ static NSLock *lock = nil;
   NSDictionary *userEntry;
   NSArray *newContacts;
   NSMutableArray *emails;
-  NSString *uid, *email, *infoAttribute;
+  NSString *uid, *email, *info;
 
   compactContacts = [NSMutableDictionary dictionary];
   while ((userEntry = [contacts nextObject]))
@@ -581,16 +556,10 @@ static NSLock *lock = nil;
 	  email = [userEntry objectForKey: @"xmozillasecondemail"];
 	  if (email && ![emails containsObject: email])
 	    [emails addObject: email];
-	  if ([LDAPContactInfoAttribute length]
-	      && ![[returnContact
-		     objectForKey: LDAPContactInfoAttribute] length])
-	    {
-	      infoAttribute
-		= [userEntry objectForKey: LDAPContactInfoAttribute];
-	      if ([infoAttribute length])
-		[returnContact setObject: infoAttribute
-			   forKey: LDAPContactInfoAttribute];
-	    }
+          info = [userEntry objectForKey: @"c_info"];
+          if ([info length] > 0
+              && ![[returnContact objectForKey: @"c_info"] length])
+            [returnContact setObject: info forKey: @"c_info"];
 	  [self _fillContactMailRecords: returnContact];
 	}
     }
@@ -621,15 +590,17 @@ static NSLock *lock = nil;
 }
 
 - (NSArray *) fetchContactsMatching: (NSString *) filter
+                           inDomain: (NSString *) domain
 {
-  return [self _fetchEntriesInSources: [self addressBookSourceIDs]
-	       matching: filter];
+  return [self
+           _fetchEntriesInSources: [self addressBookSourceIDsInDomain: domain]
+                         matching: filter];
 }
 
 - (NSArray *) fetchUsersMatching: (NSString *) filter
 {
   return [self _fetchEntriesInSources: [self authenticationSourceIDs]
-	       matching: filter];
+                             matching: filter];
 }
 
 - (NSString *) getLoginForDN: (NSString *) theDN

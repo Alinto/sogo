@@ -235,7 +235,7 @@ function onTextFocus(event) {
     if (MailEditor.textFirstFocus) {
         // On first focus, position the caret at the proper position
         var content = this.getValue();
-        var replyPlacement = UserDefaults["ReplyPlacement"];
+        var replyPlacement = UserDefaults["SOGoMailReplyPlacement"];
         if (replyPlacement == "above" || !mailIsReply) { // for forwards, place caret at top unconditionally
             this.setCaretTo(0);
         }
@@ -337,7 +337,7 @@ function initMailEditor() {
         if (sigLimit > -1)
             MailEditor.signatureLength = (textContent.length - sigLimit);
     }
-    if (UserDefaults["ReplyPlacement"] != "above") {
+    if (UserDefaults["SOGoMailReplyPlacement"] != "above") {
         textarea.scrollTop = textarea.scrollHeight;
     }
     textarea.observe("focus", onTextFocus);
@@ -359,7 +359,7 @@ function initMailEditor() {
 
     initializePriorityMenu();
 
-    var composeMode = UserDefaults["ComposeMessagesType"];
+    var composeMode = UserDefaults["SOGoMailComposeMessageType"];
     if (composeMode == "html") {
         CKEDITOR.replace('text',
                          {
@@ -470,7 +470,7 @@ function lineBreakCount(str){
 
 function hasSignature() {
     try {
-        return(UserDefaults["MailSignature"].length > 0);
+        return(UserDefaults["SOGoMailSignature"].length > 0);
     } catch(e) {
         return false;
     }
@@ -548,7 +548,7 @@ function onWindowResize(event) {
     textarea.setStyle({ 'top': hr.offsetTop + 'px' });
 
     // Resize the textarea (message content)
-    var composeMode = UserDefaults["ComposeMessagesType"];
+    var composeMode = UserDefaults["SOGoMailComposeMessageType"];
     if (composeMode == "html") {
         var editor = $('cke_text');
         if (editor == null) {

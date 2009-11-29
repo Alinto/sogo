@@ -35,6 +35,8 @@
 @interface SQLSource : NSObject <SOGoSource>
 {
   NSString *_sourceID;
+  NSString *_domain;
+  NSString *_domainAttribute;
   NSArray *_mailFields;
   NSString *_userPasswordAlgorithm;
   NSURL *_viewURL;

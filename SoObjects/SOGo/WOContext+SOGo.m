@@ -27,7 +27,8 @@
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOSession.h>
 
-#import <SoObjects/SOGo/SOGoUser.h>
+#import <SOGoUser.h>
+#import <SOGoUserDefaults.h>
 
 #import "WOContext+SOGo.h"
 
@@ -36,16 +37,32 @@
 - (NSArray *) resourceLookupLanguages
 {
   NSMutableArray *languages;
+  NSArray *browserLanguages;
+  SOGoUser *user;
+  NSString *language;
   
   languages = [NSMutableArray array];
-
-  if (activeUser && [activeUser language])
-    [languages addObject: [activeUser language]];
-  
-  if ([self hasSession])
-    [languages addObjectsFromArray: [[self session] languages]];
+  user = [self activeUser];
+  if ([user isKindOfClass: [SOGoUser class]])
+    {
+      language = [[user userDefaults] language];
+      [languages addObject: language];
+      language = [[user domainDefaults] language];
+      [languages addObject: language];
+    }
   else
-    [languages addObjectsFromArray: [[self request] browserLanguages]];
+    {
+      browserLanguages = [[self request] browserLanguages];
+      [languages addObjectsFromArray: browserLanguages];
+    }
+
+  // if (activeUser && [activeUser language])
+  //   [languages addObject: [activeUser language]];
+  
+  // if ([self hasSession])
+  //   [languages addObjectsFromArray: [[self session] languages]];
+  // else
+  //   [languages addObjectsFromArray: [[self request] browserLanguages]];
 
   return languages;
 }

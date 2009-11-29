@@ -23,7 +23,6 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSString.h>
-#import <Foundation/NSUserDefaults.h>
 
 #import <NGObjWeb/SoDefaultRenderer.h>
 #import <NGObjWeb/WOApplication.h>

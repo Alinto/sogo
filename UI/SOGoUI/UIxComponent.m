@@ -22,7 +22,6 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
 #import <Foundation/NSEnumerator.h>
-#import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSPathUtilities.h>
 #import <Foundation/NSString.h>
@@ -39,14 +38,15 @@
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSURL+misc.h>
 
-#import <SoObjects/SOGo/NSCalendarDate+SOGo.h>
-#import <SoObjects/SOGo/NSObject+Utilities.h>
-#import <SoObjects/SOGo/NSString+Utilities.h>
-#import <SoObjects/SOGo/SOGoUser.h>
-#import <SoObjects/SOGo/SOGoObject.h>
-#import <SoObjects/SOGo/SOGoContentObject.h>
-// #import <SoObjects/SOGo/SOGoCustomGroupFolder.h>
-#import <SoObjects/SOGo/SOGoPermissions.h>
+#import <SOGo/NSCalendarDate+SOGo.h>
+#import <SOGo/NSObject+Utilities.h>
+#import <SOGo/NSString+Utilities.h>
+#import <SOGo/SOGoContentObject.h>
+#import <SOGo/SOGoObject.h>
+#import <SOGo/SOGoPermissions.h>
+#import <SOGo/SOGoSystemDefaults.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
 
 #import "UIxJSClose.h"
 
@@ -64,21 +64,15 @@ static NSMutableArray *abbrDayLabelKeys   = nil;
 static NSMutableArray *monthLabelKeys     = nil;
 static NSMutableArray *abbrMonthLabelKeys = nil;
 
-static BOOL uixDebugEnabled = NO;
-
 + (int)version {
   return [super version] + 0 /* v2 */;
 }
 
 + (void)initialize {
-  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-
   NSAssert2([super version] == 2,
             @"invalid superclass (%@) version %i !",
             NSStringFromClass([self superclass]), [super version]);
   
-  uixDebugEnabled = [ud boolForKey:@"SOGoUIxDebugEnabled"];
-
   if (dayLabelKeys == nil) {
     dayLabelKeys = [[NSMutableArray alloc] initWithCapacity:7];
     [dayLabelKeys addObject:@"Sunday"];
@@ -409,16 +403,16 @@ static BOOL uixDebugEnabled = NO;
 
 - (NSCalendarDate *) selectedDate
 {
-  NSTimeZone *userTimeZone;
+  SOGoUserDefaults *ud;
 
   if (!_selectedDate)
     {
-      userTimeZone = [[context activeUser] timeZone];
+      ud = [[context activeUser] userDefaults];
       _selectedDate
         = [NSCalendarDate
             dateFromShortDateString: [self queryParameterForKey: @"day"]
             andShortTimeString: [self queryParameterForKey: @"hm"]
-            inTimeZone: userTimeZone];
+            inTimeZone: [ud timeZone]];
       [_selectedDate retain];
     }
 
@@ -427,10 +421,10 @@ static BOOL uixDebugEnabled = NO;
 
 - (NSString *) dateStringForDate: (NSCalendarDate *) _date
 {
-  NSTimeZone *userTimeZone;
+  SOGoUserDefaults *ud;
 
-  userTimeZone = [[context activeUser] timeZone];
-  [_date setTimeZone: userTimeZone];
+  ud = [[context activeUser] userDefaults];
+  [_date setTimeZone: [ud timeZone]];
 
   return [_date descriptionWithCalendarFormat: @"%Y%m%d"];
 }
@@ -659,9 +653,13 @@ static BOOL uixDebugEnabled = NO;
   return SOGoBuildDate;
 }
 
-- (BOOL)isUIxDebugEnabled
+- (BOOL) isUIxDebugEnabled
 {
-  return uixDebugEnabled;
+  SOGoSystemDefaults *sd;
+
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+
+  return [sd uixDebugEnabled];
 }
 
 @end /* UIxComponent */

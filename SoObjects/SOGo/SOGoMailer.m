@@ -24,7 +24,6 @@
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSException.h>
 #import <Foundation/NSString.h>
-#import <Foundation/NSUserDefaults.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -33,65 +32,35 @@
 #import <NGMime/NGMimePartGenerator.h>
 
 #import "NSString+Utilities.h"
-#import "SOGoMailer.h"
+#import "SOGoDomainDefaults.h"
+#import "SOGoSystemDefaults.h"
 
-#define defaultMailingMechanism @"sendmail"
-#define defaultSMTPServer @"localhost"
+#import "SOGoMailer.h"
 
 @implementation SOGoMailer
 
-+ (id) sharedMailer
++ (SOGoMailer *) mailerWithDomainDefaults: (SOGoDomainDefaults *) dd
 {
-  static id sharedMailer = nil;
+  return [[self alloc] initWithDomainDefaults: dd];
+}
 
-  if (!sharedMailer)
-    sharedMailer = [self new];
+- (id) initWithDomainDefaults: (SOGoDomainDefaults *) dd
+{
+  if ((self = [self init]))
+    {
+      ASSIGN (mailingMechanism, [dd mailingMechanism]);
+      ASSIGN (smtpServer, [dd smtpServer]);
+    }
 
-  return sharedMailer;
+  return self;
 }
 
 - (id) init
 {
-  NSUserDefaults *ud;
-
   if ((self = [super init]))
     {
-      ud = [NSUserDefaults standardUserDefaults];
-      mailingMechanism = [ud stringForKey: @"SOGoMailingMechanism"];
-      if (mailingMechanism)
-	{
-	  if (!([mailingMechanism isEqualToString: @"sendmail"]
-		|| [mailingMechanism isEqualToString: @"smtp"]))
-	    {
-	      [self logWithFormat: @"mechanism '%@' is invalid and"
-		    @" should be set to 'sendmail' or 'smtp' instead",
-		    mailingMechanism];
-	      [self logWithFormat: @"falling back to default '%@' mechanism",
-		    defaultMailingMechanism];
-	      mailingMechanism = defaultMailingMechanism;
-	    }
-	}
-      else
-	{
-	  [self logWithFormat: @"default mailing mechanism set to '%@'",
-		defaultMailingMechanism];
-	  mailingMechanism = defaultMailingMechanism;
-	}
-      [mailingMechanism retain];
-
-      if ([mailingMechanism isEqualToString: @"smtp"])
-	{
-	  smtpServer = [ud stringForKey: @"SOGoSMTPServer"];
-	  if (!smtpServer)
-	    {
-	      [self logWithFormat: @"default smtp server set to '%@'",
-		    defaultSMTPServer];
-	      smtpServer = defaultSMTPServer;
-	    }
-	  [smtpServer retain];
-	}
-      else
-	smtpServer = nil;
+      mailingMechanism = nil;
+      smtpServer = nil;
     }
 
   return self;

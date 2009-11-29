@@ -92,11 +92,13 @@ static SOGoUserManager *um = nil;
   SOGoDateFormatter *formatter;
   NSCalendarDate *tzDate;
   SOGoUser *currentUser;
+  SOGoUserDefaults *ud;
 
   currentUser = [context activeUser];
+  ud = [currentUser userDefaults];
 
   tzDate = [date copy];
-  [tzDate setTimeZone: [currentUser timeZone]];
+  [tzDate setTimeZone: [ud timeZone]];
   [tzDate autorelease];
 
   formatter = [currentUser dateFormatterInContext: context];

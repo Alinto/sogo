@@ -7,7 +7,7 @@ var listFilter = 'view_today';
 var listOfSelection = null;
 var selectedCalendarCell;
 
-var showCompletedTasks;;
+var showCompletedTasks;
 
 var currentDay = '';
 
@@ -1402,6 +1402,10 @@ function refreshEvents() {
 
 function refreshTasks(setUserDefault) {
     var url = "taskslist?show-completed=" + showCompletedTasks;
+    /* TODO: the logic behind this should be reimplemented properly:
+       the "taskslist" method should save the status when the 'show-completed'
+       is set to true and revert to the current status when that parameter is
+       NOT passed via the url. */
     if (setUserDefault == 1)
       url += "&setud=1";
     refreshAlarms();
@@ -2100,7 +2104,7 @@ function onFolderSubscribeCB(folderData) {
         appendCalendar(folderData["folderName"], folderData["folder"]);
         refreshEvents();
         refreshTasks();
-        changeCalendarDisplay();		
+        changeCalendarDisplay();
     }
 }
 
@@ -2276,6 +2280,8 @@ function drawNowLine () {
 function initCalendars() {
     sorting["attribute"] = "start";
     sorting["ascending"] = true;
+    /* FIXME: does this work at all? ShowCompletedTasks is in
+       UserSettings["Calendar"]... */
     showCompletedTasks = UserDefaults['ShowCompletedTasks'];
   
     if (!$(document.body).hasClassName("popup")) {

@@ -25,6 +25,8 @@
 
 #import <NGObjWeb/SoObjects.h>
 #import <SOGo/NSCalendarDate+SOGo.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
 
 #import "UIxTimeDateControl.h"
 
@@ -69,14 +71,14 @@
 
 - (void) setDate: (NSCalendarDate *) _date
 {
-  NSTimeZone *timeZone;
+  SOGoUserDefaults *ud;
   int minuteValue;
 
-  timeZone = [[context activeUser] timeZone];
+  ud = [[context activeUser] userDefaults];
   if (!_date)
     _date = [NSCalendarDate date];
 
-  [_date setTimeZone: timeZone];
+  [_date setTimeZone: [ud timeZone]];
 
   [self _setDate: _date];
 
@@ -248,9 +250,9 @@
 {
   NSCalendarDate *d;
   unsigned _year, _month, _day, _hour, _minute, _second;
-  NSTimeZone *timeZone;
+  SOGoUserDefaults *ud;
 
-  timeZone = [[context activeUser] timeZone];
+  ud = [[context activeUser] userDefaults];
 
   /* call super, so that the form values are applied on the popups */
   [super takeValuesFromRequest:_rq inContext:_ctx];
@@ -269,7 +271,7 @@
       
       d = [NSCalendarDate dateWithYear: _year month:_month day:_day
                           hour:_hour minute:_minute second:_second
-                          timeZone: timeZone];
+                          timeZone: [ud timeZone]];
       [self _setDate: d];
     }
 }

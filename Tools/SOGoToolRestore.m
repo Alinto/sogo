@@ -36,7 +36,7 @@
 #import <SOGo/SOGoUserManager.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoUserDefaults.h>
+#import <SOGo/SOGoUserProfile.h>
 
 #import "SOGoToolRestore.h"
 
@@ -527,7 +527,7 @@
 - (BOOL) restoreUserPreferencesFromUserRecord: (NSDictionary *) userRecord
 {
   SOGoUser *sogoUser;
-  NSUserDefaults *storedPreferences;
+  SOGoUserProfile *up;
   NSArray *preferences;
   BOOL rc;
 
@@ -537,13 +537,13 @@
       rc = YES;
       sogoUser = [SOGoUser userWithLogin: userID roles: nil];
 
-      storedPreferences = [sogoUser userDefaults];
-      [storedPreferences setValues: [preferences objectAtIndex: 0]];
-      [storedPreferences synchronize];
+      up = [[sogoUser userDefaults] source];
+      [up setValues: [preferences objectAtIndex: 0]];
+      [up synchronize];
 
-      storedPreferences = [sogoUser userSettings];
-      [storedPreferences setValues: [preferences objectAtIndex: 1]];
-      [storedPreferences synchronize];
+      up = [[sogoUser userSettings] source];
+      [up setValues: [preferences objectAtIndex: 1]];
+      [up synchronize];
     }
   else
     {

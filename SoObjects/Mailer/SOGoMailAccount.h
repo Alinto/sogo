@@ -41,6 +41,12 @@
 #import "SOGoSentFolder.h"
 #import "SOGoTrashFolder.h"
 
+typedef enum {
+  undefined = -1,
+  rfc2086 = 0,
+  rfc4314
+} SOGoIMAPAclStyle;
+
 @interface SOGoMailAccount : SOGoMailBaseObject
 {
   NSString *accountName;
@@ -48,9 +54,13 @@
   SOGoDraftsFolder *draftsFolder;
   SOGoSentFolder *sentFolder;
   SOGoTrashFolder *trashFolder;
+  SOGoIMAPAclStyle imapAclStyle;
 }
 
 - (void) setAccountName: (NSString *) newAccountName;
+
+- (SOGoIMAPAclStyle) imapAclStyle;
+- (BOOL) imapAclConformsToIMAPExt;
 
 - (BOOL) supportsQuotas;
 - (BOOL) updateFilters;
@@ -58,7 +68,6 @@
 /* folder pathes */
 
 - (NSArray *) allFolderPaths;
-- (NSArray *) additionalRootFolderNames; /* stuff like filters and drafts */
 - (BOOL) isInDraftsFolder;
 
 /* shared accounts */
