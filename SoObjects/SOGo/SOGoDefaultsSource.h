@@ -26,6 +26,8 @@
 #ifndef SOGODEFAULTSSOURCE_H
 #define SOGODEFAULTSSOURCE_H
 
+#import <Foundation/NSObject.h>
+
 @class NSArray;
 @class NSData;
 @class NSDictionary;

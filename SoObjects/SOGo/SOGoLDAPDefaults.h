@@ -23,6 +23,8 @@
 #ifndef SOGOLDAPDEFAULTS_H
 #define SOGOLDAPDEFAULTS_H
 
+@class NSString;
+
 @protocol SOGoLDAPDefaults
 
 - (int) ldapQueryLimit;
