@@ -217,18 +217,6 @@
   return rc;
 }
 
-- (NSString *) _sqlJsonRepresentation: (NSString *) jsonRepresentation
-{
-  NSMutableString *sql;
-
-  sql = [jsonRepresentation mutableCopy];
-  [sql autorelease];
-  [sql replaceString: @"\\" withString: @"\\\\"];
-  [sql replaceString: @"'" withString: @"''"];
-
-  return sql;
-}
-
 - (BOOL) primaryStoreProfile
 {
   NSString *jsonRepresentation;
