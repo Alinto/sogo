@@ -43,7 +43,7 @@
       <body var:class="bodyClasses"
 	><var:if condition="isCompatibleBrowser"
 	  ><var:if condition="isPopup" const:negate="YES"
-	    ><var:if condition="context.isUIxDebugEnabled"
+	    ><var:if condition="isUIxDebugEnabled"
 	      ><div id="logConsole"><!-- space --></div></var:if>
 	    <div id="linkBanner" class="linkbanner">
               <var:if condition="canLogoff"
@@ -98,7 +98,7 @@
 		    ><var:string label:value="Administration" /></a>
 		</var:if>
 	      </var:if>
-	      <var:if condition="context.isUIxDebugEnabled"
+	      <var:if condition="isUIxDebugEnabled"
 		>| <a id="consoleBannerLink"
 		  href="#"><var:string
 		    label:value="Log Console (dev.)" /></a
