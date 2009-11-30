@@ -33,8 +33,10 @@
 
 @interface NSURL(GCS)
 
-- (NSString *)gcsDatabaseName;
-- (NSString *)gcsTableName;
+- (NSString *) gcsDatabaseName;
+- (NSString *) gcsTableName;
+
+- (NSString *) gcsURLId;
 
 @end
 

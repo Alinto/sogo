@@ -26,7 +26,8 @@
 
 @implementation NSURL(GCS)
 
-- (NSString *)gcsPathComponent:(unsigned)_idx {
+- (NSString *) gcsPathComponent: (unsigned) _idx
+{
   NSString *p;
   NSArray  *pcs;
   unsigned len;
@@ -43,11 +44,22 @@
   return [pcs objectAtIndex:_idx];
 }
 
-- (NSString *)gcsDatabaseName {
-  return [self gcsPathComponent:1];
+- (NSString *) gcsDatabaseName
+{
+  return [self gcsPathComponent: 1];
 }
-- (NSString *)gcsTableName {
+
+- (NSString *) gcsTableName
+{
   return [[self path] lastPathComponent];
+}
+
+- (NSString *) gcsURLId
+{
+  return [NSString stringWithFormat: @"%@:%@:%@:%@:%@",
+                   [self host], [self port],
+                   [self user], [self password], 
+                   [self gcsDatabaseName]];
 }
 
 @end /* NSURL(GCS) */
