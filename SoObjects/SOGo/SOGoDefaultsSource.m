@@ -213,9 +213,10 @@ NSString *SOGoDefaultsSourceUnmutableSource = @"SOGoDefaultsSourceUnmutableSourc
         {
           newName = [migratedKeys objectForKey: oldName];
           existingValue = [source objectForKey: newName];
-          if (existingValue)
+          if (existingValue && ![existingValue isEqual: currentValue])
             [self errorWithFormat: @"both old and new defaults key"
-                  @" '%@' '%@' exist. Migration skipped.", oldName, newName];
+                  @" ('%@' and '%@') exist with a different value."
+                  @" Migration skipped.", oldName, newName];
           else
             {
               requireSync = YES;

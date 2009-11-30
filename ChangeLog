@@ -1,3 +1,10 @@
+2009-11-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoDefaultsSource.m
+	(-migrateOldDefaultsWithDictionary:): when migrating between two
+	existing keys, the migration is not interrupted if both values are
+	the same.
+
 2009-11-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUserManager.m
