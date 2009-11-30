@@ -2,8 +2,9 @@
 
 	* SoObjects/SOGo/SOGoDefaultsSource.m
 	(-migrateOldDefaultsWithDictionary:): when migrating between two
-	existing keys, the migration is not interrupted if both values are
-	the same.
+	existing keys, the new value is automatically overwritten with the
+	old one, since it causes a problem with the values inherited from
+	SOGoDefaults.plist.
 
 2009-11-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
