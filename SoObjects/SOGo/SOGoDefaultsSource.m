@@ -123,8 +123,7 @@ NSString *SOGoDefaultsSourceUnmutableSource = @"SOGoDefaultsSourceUnmutableSourc
 - (void) setBool: (BOOL) value
 	  forKey: (NSString *) key
 {
-  [self setObject: [NSNumber numberWithBool: value]
-	forKey: key];
+  [self setInteger: (value) ? 1: 0 forKey: key];
 }
 
 - (BOOL) boolForKey: (NSString *) key

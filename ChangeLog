@@ -1,5 +1,10 @@
 2009-11-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoDefaultsSource.m (-setBool:forKey:): we
+	encode boolean values as integers to avoid confusing the boolean
+	objective-c parsers when reading values coming back from the JS
+	code.
+
 	* UI/WebServerResources/SchedulerUI.js (initCalendars): the
 	"ShowCompletedTasks" parameter is in the UserSettings dictionary. 
 
