@@ -1,5 +1,8 @@
 2009-11-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/SchedulerUI.js (initCalendars): the
+	"ShowCompletedTasks" parameter is in the UserSettings dictionary. 
+
 	* SoObjects/SOGo/SOGoDefaultsSource.m
 	(-migrateOldDefaultsWithDictionary:): when migrating between two
 	existing keys, the new value is automatically overwritten with the

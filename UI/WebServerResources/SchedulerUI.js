@@ -2280,9 +2280,7 @@ function drawNowLine () {
 function initCalendars() {
     sorting["attribute"] = "start";
     sorting["ascending"] = true;
-    /* FIXME: does this work at all? ShowCompletedTasks is in
-       UserSettings["Calendar"]... */
-    showCompletedTasks = UserDefaults['ShowCompletedTasks'];
+    showCompletedTasks = UserSettings['ShowCompletedTasks'];
   
     if (!$(document.body).hasClassName("popup")) {
         var node = $("filterpopup");
