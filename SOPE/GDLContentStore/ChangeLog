@@ -1,5 +1,10 @@
 2009-11-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* GCSChannelManager.m (-databaseKeyForURL): removed obsolete
+	method, replaced with the new one below.
+	(-acquireOpenChannelForURL:): we keep the last failure timestamp
+	into account and prevent further attempts before 5 seconds.
+
 	* NSURL+GCS.m (-gcsURLId): new method that returns a unique
 	identifier for database connections.
 

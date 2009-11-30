@@ -37,6 +37,8 @@
 {
   NSMutableDictionary *urlToAdaptor;
 
+  NSMutableDictionary *lastFailures;
+
   NSMutableArray *availableChannels;
   NSMutableArray *busyChannels;
   NSTimer        *gcTimer;

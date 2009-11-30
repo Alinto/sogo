@@ -107,6 +107,7 @@ static NSTimeInterval ChannelCollectionTimer = 5 * 60;
   if ((self = [super init]))
     {
       urlToAdaptor = [[NSMutableDictionary alloc] initWithCapacity: 4];
+      lastFailures = [[NSMutableDictionary alloc] initWithCapacity: 4];
       availableChannels = [[NSMutableArray alloc] initWithCapacity: 16];
       busyChannels = [[NSMutableArray alloc] initWithCapacity: 16];
 
@@ -126,24 +127,9 @@ static NSTimeInterval ChannelCollectionTimer = 5 * 60;
 
   [busyChannels release];
   [availableChannels release];
+  [lastFailures release];
   [urlToAdaptor release];
   [super dealloc];
-}
-
-/* DB key */
-
-- (NSString *) databaseKeyForURL: (NSURL *) _url
-{
-  /*
-    We need to build a proper key that omits passwords and URL path components
-    which are not required.
-  */
-  NSString *key;
-
-  key = [NSString stringWithFormat: @"%@\n%@\n%@\n%@",
-		  [_url host], [_url port],
-		  [_url user], [_url gcsDatabaseName]];
-  return key;
 }
 
 /* adaptors */
@@ -184,7 +170,7 @@ static NSTimeInterval ChannelCollectionTimer = 5 * 60;
 
   if (_url)
     {
-      if ((key = [self databaseKeyForURL: _url]))
+      if ((key = [_url gcsURLId]))
 	{
 	  adaptor = [urlToAdaptor objectForKey: key];
 	  if (adaptor)
@@ -289,60 +275,77 @@ static NSTimeInterval ChannelCollectionTimer = 5 * 60;
   // TODO: naive implementation, add pooling!
   EOAdaptorChannel *channel;
   GCSChannelHandle *handle;
-  NSCalendarDate *now;
+  NSCalendarDate *now, *lastFailure;
+  NSString *urlId;
 
   channel = nil;
+  urlId = [_url gcsURLId];
 
   now = [NSCalendarDate date];
-
-  /* look for cached handles */
-
-  handle = [self findAvailChannelHandleForURL: _url];
-  if (handle)
+  lastFailure = [lastFailures objectForKey: urlId];
+  if ([[lastFailure dateByAddingYears: 0 months: 0 days: 0
+                                hours: 0 minutes: 0 seconds: 5]
+        earlierDate: now] != now)
     {
-      // TODO: check age?
-      [busyChannels addObject: handle];
-      [availableChannels removeObject: handle];
-      ASSIGN (handle->lastAcquireTime, now);
+      /* look for cached handles */
 
-      channel = [handle channel];
-      if (debugPools)
-	[self logWithFormat: @"DBPOOL: reused cached DB channel! (%p)",
-	      channel];
-    }
-  else
-    {
-      if (debugPools)
-	{
-	  [self logWithFormat: @"DBPOOL: create new DB channel for URL: %@",
-		[_url absoluteString]];
-	}
+      handle = [self findAvailChannelHandleForURL: _url];
+      if (handle)
+        {
+          // TODO: check age?
+          [busyChannels addObject: handle];
+          [availableChannels removeObject: handle];
+          ASSIGN (handle->lastAcquireTime, now);
 
-      /* create channel */
-      channel = [self _createChannelForURL: _url];
-      if (channel)
-	{
-	  if ([channel isOpen]
-	      || [channel openChannel])
-	    {
-	      /* create handle for channel */
+          channel = [handle channel];
+          if (debugPools)
+            [self logWithFormat: @"DBPOOL: reused cached DB channel! (%p)",
+                  channel];
+        }
+      else
+        {
+          if (debugPools)
+            {
+              [self logWithFormat: @"DBPOOL: create new DB channel for URL: %@",
+                    [_url absoluteString]];
+            }
 
-	      handle = [[GCSChannelHandle alloc] init];
-	      handle->url = [_url retain];
-	      handle->channel = [channel retain];
-	      handle->creationTime = [now retain];
-	      handle->lastAcquireTime = [now retain];
+          /* create channel */
+          channel = [self _createChannelForURL: _url];
+          if (channel)
+            {
+              if ([channel isOpen]
+                  || [channel openChannel])
+                {
+                  /* create handle for channel */
 
-	      [busyChannels addObject: handle];
-	      [handle release];
-	    }
-	  else
-	    {
-	      [self errorWithFormat: @"could not open channel %@ for URL: %@",
-		    channel, [_url absoluteString]];
-	      channel = nil;
-	    }
-	}
+                  handle = [[GCSChannelHandle alloc] init];
+                  handle->url = [_url retain];
+                  handle->channel = [channel retain];
+                  handle->creationTime = [now retain];
+                  handle->lastAcquireTime = [now retain];
+
+                  [busyChannels addObject: handle];
+                  [handle release];
+
+                  if (lastFailure)
+                    {
+                      [self logWithFormat: @"db for %@ is now back up",
+                            [_url absoluteString]];
+                      [lastFailures removeObjectForKey: urlId];
+                    }
+                }
+              else
+                {
+                  [self errorWithFormat: @"could not open channel %@ for URL: %@",
+                        channel, [_url absoluteString]];
+                  channel = nil;
+                  [lastFailures setObject: now forKey: urlId];
+                  [self warnWithFormat: @"  will prevent opening of this"
+                        @" channel 5 seconds after %@", now];
+                }
+            }
+        }
     }
 
   return channel;

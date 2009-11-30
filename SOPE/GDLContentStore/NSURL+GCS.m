@@ -56,10 +56,13 @@
 
 - (NSString *) gcsURLId
 {
-  return [NSString stringWithFormat: @"%@:%@:%@:%@:%@",
+  /*
+    We need to build a proper key that omits passwords and URL path components
+    which are not required.
+  */
+  return [NSString stringWithFormat: @"%@:%@:%@:%@",
                    [self host], [self port],
-                   [self user], [self password], 
-                   [self gcsDatabaseName]];
+                   [self user], [self gcsDatabaseName]];
 }
 
 @end /* NSURL(GCS) */
