@@ -2280,8 +2280,8 @@ function drawNowLine () {
 function initCalendars() {
     sorting["attribute"] = "start";
     sorting["ascending"] = true;
-    showCompletedTasks = UserSettings['ShowCompletedTasks'];
-  
+    showCompletedTasks = parseInt(UserSettings['ShowCompletedTasks']);
+
     if (!$(document.body).hasClassName("popup")) {
         var node = $("filterpopup");
         listFilter = node.value;
