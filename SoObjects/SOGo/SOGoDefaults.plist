@@ -2,7 +2,7 @@
     WOWorkersCount = 1;
     SxVMemLimit = 384;
     WOLogFile = "/var/log/sogo/sogo.log";
-    WOPidFile = "/var/log/run/sogo.pid";
+    WOPidFile = "/var/run/sogo.pid";
 
     SOGoZipPath = "/usr/bin/zip";
 
