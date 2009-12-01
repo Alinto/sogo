@@ -367,7 +367,7 @@
 /* Appointment categories */
 
 "category_none" = "Aucune";
-"category_labels" = "Anniversaire,Affaire,Appels,Clients,Compétitions,Congrès,Consommation,Préférés,Suivis,Cadeaux,Congés,Idées,Problèmes,Divers,Personnel,Projets,Jour férié,Réunion,Fournisseurs,Voyages,Professionnel";
+"category_labels" = "Anniversaire,Affaire,Appels,Clients,Compétitions,Congrès,Consommation,Préférés,Suivis,Cadeaux,Congés,Idées,Réunion,Problèmes,Divers,Personnel,Projets,Jour férié,Statut,Fournisseurs,Voyages,Professionnel";
 
 "repeat_NEVER" = "Jamais";
 "repeat_DAILY" = "Quotidienne";

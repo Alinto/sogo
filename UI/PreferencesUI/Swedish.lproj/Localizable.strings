@@ -143,7 +143,7 @@
 
 /* Event+task categories */
 "category_none" = "Ingen";
-"category_labels" = "Arbete,Diverse,Favoriter,Födelsedagar,Helgdagar,Idéer,Kunder,Ledighet,Leverantörer,Personligt,Presenter,Projekt,Resor,Status,Telefonsamtal,Tävlingar,Uppföljning,Ärenden";
+"category_labels" = "Arbete,Diverse,Favoriter,Födelsedagar,Helgdagar,Idéer,Kunder,Ledighet,Leverantörer,Personligt,Presenter,Projekt,Meeting,Resor,Status,Telefonsamtal,Tävlingar,Uppföljning,Ärenden";
 
 /* Default module */
 "Calendar" = "Kalender";
