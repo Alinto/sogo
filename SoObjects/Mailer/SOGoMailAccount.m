@@ -495,7 +495,7 @@ static NSString *sieveScriptName = @"sogo";
     }
   else
     {
-      [self errorWithFormat: @"method '%@' not available with user defaults"@
+      [self errorWithFormat: @"method '%@' not available with user defaults"
             @" object, folder migration fails", methodName];
       rc = NO;
     }
