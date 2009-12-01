@@ -840,7 +840,9 @@ iRANGE(2);
     = [NSMutableArray arrayWithCapacity: [categoryLabels count] + 1];
   if ([category length] && ![categoryLabels containsObject: category])
     [categoryList addObject: category];
-  [categoryList addObjectsFromArray: categoryLabels];
+  [categoryList addObjectsFromArray:
+                  [categoryLabels sortedArrayUsingSelector:
+                                    @selector (localizedCaseInsensitiveCompare:)]];
 
   return categoryList;
 }

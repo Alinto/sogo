@@ -5,6 +5,10 @@
 
 2009-12-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxComponentEditor.m (-categoryList): the returned
+	list is now sorted, except if the category of the event was not
+	always present in the list (kept on top).
+
 	* UI/PreferencesUI/UIxPreferences.m (-categoryList): simplified
 	method by returning only the array of defined categories from the
 	user defaults or those defined in the Localizable.strings and sort
