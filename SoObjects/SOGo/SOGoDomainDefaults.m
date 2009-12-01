@@ -27,7 +27,6 @@
 #import <NGObjWeb/WORequest.h>
 #import <NGExtensions/NSObject+Logs.h>
 
-#define NEEDS_DEFAULTS_SOURCE_INTERNAL 1
 #import "SOGoSystemDefaults.h"
 
 #import "SOGoDomainDefaults.h"
@@ -246,6 +245,11 @@
 - (NSString *) ldapContactInfoAttribute
 {
   return [self stringForKey: @"SOGoLDAPContactInfoAttribute"];
+}
+
+- (NSString *) calendarDefaultCategoryColor
+{
+  return [self stringForKey: @"SOGoCalendarDefaultCategoryColor"];
 }
 
 - (NSArray *) freeBusyDefaultInterval

@@ -56,6 +56,7 @@
     SOGoOtherUsersFolderName = "Other Users";
     SOGoSharedFolderName = "Shared Folders";
 
+    SOGoCalendarDefaultCategoryColor = "#F0F0F0";
     SOGoCalendarShouldDisplayWeekend = YES;
     SOGoFreeBusyDefaultInterval = ( 7, 7 );
 

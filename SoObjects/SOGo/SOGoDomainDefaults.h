@@ -61,6 +61,8 @@
 - (NSArray *) contactsDefaultRoles;
 - (NSArray *) mailPollingIntervals;
 
+- (NSString *) calendarDefaultCategoryColor;
+
 - (NSArray *) freeBusyDefaultInterval;
 - (int) davCalendarStartTimeLimit;
 
