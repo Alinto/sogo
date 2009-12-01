@@ -79,24 +79,22 @@
       dd = [user domainDefaults];
       if ([dd vacationEnabled])
 	{
-	  vacationOptions = [userDefaults vacationOptions];
+	  vacationOptions = [[userDefaults vacationOptions] mutableCopy];
 	  if (!vacationOptions)
 	    {
-	      vacationOptions = [NSMutableDictionary dictionary];
+	      vacationOptions = [NSMutableDictionary new];
 	      [userDefaults setVacationOptions: vacationOptions];
 	    }
-	  [vacationOptions retain];
 	}
 
       if ([dd forwardEnabled])
 	{
-	  forwardOptions = [userDefaults forwardOptions];
+	  forwardOptions = [[userDefaults forwardOptions] mutableCopy];
 	  if (!forwardOptions)
 	    {
-	      forwardOptions = [NSMutableDictionary dictionary];
+	      forwardOptions = [NSMutableDictionary new];
 	      [userDefaults setForwardOptions: forwardOptions];
 	    }
-	  [forwardOptions retain];
 	}
     }
 

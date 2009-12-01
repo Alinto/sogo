@@ -74,7 +74,7 @@ extern NSString *SOGoDefaultsSourceUnmutableSource;
 - (void) setInteger: (int) value forKey: (NSString *) key;
 - (int) integerForKey: (NSString *) key;
 
-- (id) dictionaryForKey: (NSString *) key;
+- (NSDictionary *) dictionaryForKey: (NSString *) key;
 - (NSData *) dataForKey: (NSString *) key;
 - (NSString *) stringForKey: (NSString *) key;
 

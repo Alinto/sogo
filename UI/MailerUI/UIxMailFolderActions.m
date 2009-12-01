@@ -32,12 +32,13 @@
 #import <NGImap4/NGImap4Connection.h>
 #import <NGImap4/NGImap4Client.h>
 
-#import <SoObjects/Mailer/SOGoMailFolder.h>
-#import <SoObjects/Mailer/SOGoTrashFolder.h>
-#import <SoObjects/Mailer/SOGoMailAccount.h>
-#import <SoObjects/Mailer/SOGoMailObject.h>
-#import <SoObjects/SOGo/NSObject+Utilities.h>
-#import <SoObjects/SOGo/SOGoUser.h>
+#import <Mailer/SOGoMailFolder.h>
+#import <Mailer/SOGoTrashFolder.h>
+#import <Mailer/SOGoMailAccount.h>
+#import <Mailer/SOGoMailObject.h>
+#import <SOGo/NSObject+Utilities.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserSettings.h>
 
 #import <UI/Common/WODirectAction+SOGo.h>
 

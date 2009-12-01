@@ -26,7 +26,7 @@
 #import <SOGo/SOGoDefaultsSource.h>
 
 @class NSArray;
-@class NSMutableDictionary;
+@class NSDictionary;
 @class NSString;
 @class NSTimeZone;
 
@@ -140,11 +140,11 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 - (void) setRemindWithASound: (BOOL) newValue;
 - (BOOL) remindWithASound;
 
-- (void) setVacationOptions: (NSMutableDictionary *) newValue;
-- (NSMutableDictionary *) vacationOptions;
+- (void) setVacationOptions: (NSDictionary *) newValue;
+- (NSDictionary *) vacationOptions;
 
-- (void) setForwardOptions: (NSMutableDictionary *) newValue;
-- (NSMutableDictionary *) forwardOptions;
+- (void) setForwardOptions: (NSDictionary *) newValue;
+- (NSDictionary *) forwardOptions;
 
 @end
 

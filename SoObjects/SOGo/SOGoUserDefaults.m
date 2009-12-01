@@ -540,22 +540,22 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   return [self boolForKey: @"SOGoRemindWithASound"];
 }
 
-- (void) setVacationOptions: (NSMutableDictionary *) newValue
+- (void) setVacationOptions: (NSDictionary *) newValue
 {
   [self setObject: newValue forKey: @"Vacation"];
 }
 
-- (NSMutableDictionary *) vacationOptions
+- (NSDictionary *) vacationOptions
 {
   return [self dictionaryForKey: @"Vacation"];
 }
 
-- (void) setForwardOptions: (NSMutableDictionary *) newValue
+- (void) setForwardOptions: (NSDictionary *) newValue
 {
   [self setObject: newValue forKey: @"Forward"];
 }
 
-- (NSMutableDictionary *) forwardOptions
+- (NSDictionary *) forwardOptions
 {
   return [self dictionaryForKey: @"Forward"];
 }

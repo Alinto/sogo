@@ -1,3 +1,10 @@
+2009-12-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoDefaultsSource.m (-boolForKey:)
+	(-floatForKey:, -integerForKey:, -dataForKey:, -stringForKey:)
+	(-dictionaryForKey:, -arrayForKey:, -stringArrayForKey:): added
+	type checking and warnings.
+
 2009-11-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoDefaultsSource.m (-setBool:forKey:): we
@@ -6,7 +13,7 @@
 	code.
 
 	* UI/WebServerResources/SchedulerUI.js (initCalendars): the
-	"ShowCompletedTasks" parameter is in the UserSettings dictionary. 
+	"ShowCompletedTasks" parameter is in the UserSettings dictionary.
 
 	* SoObjects/SOGo/SOGoDefaultsSource.m
 	(-migrateOldDefaultsWithDictionary:): when migrating between two

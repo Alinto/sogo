@@ -34,7 +34,24 @@
 NSString *SOGoDefaultsSourceInvalidSource = @"SOGoDefaultsSourceInvalidSource";
 NSString *SOGoDefaultsSourceUnmutableSource = @"SOGoDefaultsSourceUnmutableSource";
 
+static Class NSArrayKlass = Nil;
+static Class NSDataKlass = Nil;
+static Class NSDictionaryKlass = Nil;
+static Class NSStringKlass = Nil;
+
 @implementation SOGoDefaultsSource
+
++ (void) initialize
+{
+  if (!NSArrayKlass)
+    NSArrayKlass = [NSArray class];
+  if (!NSDataKlass)
+    NSDataKlass = [NSData class];
+  if (!NSDictionaryKlass)
+    NSDictionaryKlass = [NSDictionary class];
+  if (!NSStringKlass)
+    NSStringKlass = [NSString class];
+}
 
 + (id) defaultsSourceWithSource: (id) newSource
                 andParentSource: (SOGoDefaultsSource *) newParentSource
@@ -128,7 +145,25 @@ NSString *SOGoDefaultsSourceUnmutableSource = @"SOGoDefaultsSourceUnmutableSourc
 
 - (BOOL) boolForKey: (NSString *) key
 {
-  return [[self objectForKey: key] boolValue];
+  id boolForKey;
+  BOOL value;
+
+  boolForKey = [self objectForKey: key];
+  if (boolForKey)
+    {
+      if ([boolForKey respondsToSelector: @selector (boolValue)])
+        value = [boolForKey boolValue];
+      else
+        {
+          [self warnWithFormat: @"expected a boolean for '%@' (ignored)",
+                key];
+          value = NO;
+        }
+    }
+  else
+    value = NO;
+
+  return value;
 }
 
 - (void) setFloat: (float) value
@@ -140,7 +175,25 @@ NSString *SOGoDefaultsSourceUnmutableSource = @"SOGoDefaultsSourceUnmutableSourc
 
 - (float) floatForKey: (NSString *) key
 {
-  return [[self objectForKey: key] floatValue];
+  id floatForKey;
+  float value;
+
+  floatForKey = [self objectForKey: key];
+  if (floatForKey)
+    {
+      if ([floatForKey respondsToSelector: @selector (floatValue)])
+        value = [floatForKey floatValue];
+      else
+        {
+          [self warnWithFormat: @"expected a float for '%@' (ignored)",
+                key];
+          value = 0.0;
+        }
+    }
+  else
+    value = 0.0;
+
+  return value;
 }
 
 - (void) setInteger: (int) value
@@ -152,39 +205,107 @@ NSString *SOGoDefaultsSourceUnmutableSource = @"SOGoDefaultsSourceUnmutableSourc
 
 - (int) integerForKey: (NSString *) key
 {
-  return [[self objectForKey: key] intValue];
-}
+  id intForKey;
+  int value;
 
-#warning TODO: type checking
-- (NSArray *) arrayForKey: (NSString *) key
-{
-  return [self objectForKey: key];
-}
+  intForKey = [self objectForKey: key];
+  if (intForKey)
+    {
+      if ([intForKey respondsToSelector: @selector (intValue)])
+        value = [intForKey intValue];
+      else
+        {
+          [self warnWithFormat: @"expected an integer for '%@' (ignored)",
+                key];
+          value = 0;
+        }
+    }
+  else
+    value = 0;
 
-- (NSArray *) stringArrayForKey: (NSString *) key
-{
-  return [self objectForKey: key];
+  return value;
 }
 
 - (NSData *) dataForKey: (NSString *) key
 {
-  return [self objectForKey: key];
+  NSData *dataForKey;
+
+  dataForKey = [self objectForKey: key];
+  if (dataForKey && ![dataForKey isKindOfClass: NSDataKlass])
+    {
+      [self warnWithFormat: @"expected an NSData for '%@' (ignored)",
+            key];
+      dataForKey = nil;
+    }
+
+  return dataForKey;
 }
 
 - (NSString *) stringForKey: (NSString *) key
 {
-  return [self objectForKey: key];
+  NSString *stringForKey;
+
+  stringForKey = [self objectForKey: key];
+  if (stringForKey && ![stringForKey isKindOfClass: NSStringKlass])
+    {
+      [self warnWithFormat: @"expected an NSString for '%@' (ignored)",
+            key];
+      stringForKey = nil;
+    }
+
+  return stringForKey;
 }
 
-/* Dictionaries are a special case for which we don't allow searches in the
-   parent source. Each level can thus have its own set of dictionary values. */
-- (id) dictionaryForKey: (NSString *) objectKey
+- (NSDictionary *) dictionaryForKey: (NSString *) key
 {
-  id objectForKey;
+  NSDictionary *dictionaryForKey;
 
-  objectForKey = [source objectForKey: objectKey];
+  /* Dictionaries are a special case for which we don't allow searches in the
+     parent source. Each level can thus have its own set of dictionary
+     values. */
+  dictionaryForKey = [source objectForKey: key];
+  if (dictionaryForKey
+      && ![dictionaryForKey isKindOfClass: NSDictionaryKlass])
+    {
+      [self warnWithFormat: @"expected an NSDictionary for '%@' (ignored)",
+            key];
+      dictionaryForKey = nil;
+    }
 
-  return objectForKey;
+  return dictionaryForKey;
+}
+
+- (NSArray *) arrayForKey: (NSString *) key
+{
+  NSArray *arrayForKey;
+
+  arrayForKey = [self objectForKey: key];
+  if (arrayForKey && ![arrayForKey isKindOfClass: NSArrayKlass])
+    {
+      [self warnWithFormat: @"expected an NSArray for '%@' (ignored)",
+            key];
+      arrayForKey = nil;
+    }
+
+  return arrayForKey;
+}
+
+- (NSArray *) stringArrayForKey: (NSString *) key
+{
+  NSArray *stringArray;
+  int count, max;
+
+  stringArray = [self arrayForKey: key];
+  for (count = 0; stringArray && count < max; count++)
+    if (![[stringArray objectAtIndex: count] isKindOfClass: NSStringKlass])
+      {
+        [self warnWithFormat: @"expected string value in array for '%@'"
+              @", value %d is not a string (ignored)",
+              key, count];
+        stringArray = nil;
+      }
+
+  return stringArray;
 }
 
 - (BOOL) migrate
