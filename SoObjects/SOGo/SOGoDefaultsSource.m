@@ -299,7 +299,7 @@ static Class NSStringKlass = Nil;
   for (count = 0; stringArray && count < max; count++)
     if (![[stringArray objectAtIndex: count] isKindOfClass: NSStringKlass])
       {
-        [self warnWithFormat: @"expected string value in array for '%@'"
+        [self warnWithFormat: @"expected string values in array for '%@'"
               @", value %d is not a string (ignored)",
               key, count];
         stringArray = nil;
