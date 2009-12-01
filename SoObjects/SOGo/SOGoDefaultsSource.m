@@ -296,6 +296,7 @@ static Class NSStringKlass = Nil;
   int count, max;
 
   stringArray = [self arrayForKey: key];
+  max = [stringArray count];
   for (count = 0; stringArray && count < max; count++)
     if (![[stringArray objectAtIndex: count] isKindOfClass: NSStringKlass])
       {
