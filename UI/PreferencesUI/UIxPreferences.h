@@ -35,6 +35,10 @@
   id item;
   SOGoUser *user;
   NSDictionary *locale;
+  NSArray *calendarCategories;
+  NSDictionary *calendarCategoriesColors;
+  NSString *category;
+  NSString *defaultCategoryColor;
   SOGoUserDefaults *userDefaults;
   NSCalendarDate *today;
   NSArray *daysOfWeek, *daysBetweenResponsesList;

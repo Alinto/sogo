@@ -33,6 +33,7 @@
 #import <NGExtensions/NSObject+Logs.h>
 
 #import <SOGo/NSArray+Utilities.h>
+#import <SOGo/NSDictionary+BSJSONAdditions.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoUser.h>
@@ -69,6 +70,11 @@
       ASSIGN (today, [NSCalendarDate date]);
       //locale = [context valueForKey: @"locale"];
       language = [userDefaults language];
+
+      calendarCategories = nil;
+      calendarCategoriesColors = nil;
+      defaultCategoryColor = nil;
+      category = nil;
 
       ASSIGN (locale,
               [[WOApplication application] localeForLanguageNamed: language]);
@@ -108,6 +114,10 @@
   [user release];
   [userDefaults release];
   [vacationOptions release];
+  [calendarCategories release];
+  [calendarCategoriesColors release];
+  [defaultCategoryColor release];
+  [category release];
   [forwardOptions release];
   [daysOfWeek release];
   [locale release];
@@ -941,44 +951,60 @@
   return [self labelForKey: @"Color"];
 }
 
-- (NSArray *) categories
+- (NSArray *) languageCategories
 {
-  NSDictionary *element;
-  NSArray *k, *v, *names, *colors;
-  NSMutableArray *categories, *newColors;
-  int i, count;
+  NSArray *categoryLabels;
 
-  names = [userDefaults calendarCategories];
-  if (names)
-    colors = [userDefaults calendarCategoriesColors];
-  else
-    {
-      names = [[self labelForKey: @"category_labels"]
-                componentsSeparatedByString: @","];
-      count = [names count];
-      newColors = [NSMutableArray arrayWithCapacity: count];
-      for (i = 0; i < count; i++)
-        [newColors addObject: @"#F0F0F0"];
-      colors = newColors;
-    }
+  categoryLabels = [[self labelForKey: @"category_labels"]
+                       componentsSeparatedByString: @","];
 
-  categories = [NSMutableArray array];
-  k = [NSArray arrayWithObjects: @"name", @"color", nil];
-
-  count = [names count];
-  for (i = 0; i < count; i++)
-    {
-      v = [NSArray arrayWithObjects: [names objectAtIndex: i],
-              [colors objectAtIndex: i], nil];
-
-      element = [NSDictionary dictionaryWithObjects: v
-                                            forKeys: k];
-      [categories addObject: element];
-    }
-
-  return categories;
+  return [categoryLabels trimmedComponents];
 }
 
+- (NSArray *) categoryList
+{
+  if (!calendarCategories)
+    {
+      ASSIGN (calendarCategories, [userDefaults calendarCategories]);
+      if (!calendarCategories)
+        ASSIGN (calendarCategories, [self languageCategories]);
+    }
+
+  return [calendarCategories
+           sortedArrayUsingSelector: @selector (localizedCaseInsensitiveCompare:)];
+}
+
+- (void) setCategory: (NSString *) newCategory
+{
+  ASSIGN (category, newCategory);
+}
+
+- (NSString *) category
+{
+  return category;
+}
+
+- (NSString *) categoryColor
+{
+  SOGoDomainDefaults *dd;
+  NSString *categoryColor;
+
+  if (!calendarCategoriesColors)
+    ASSIGN (calendarCategoriesColors, [userDefaults calendarCategoriesColors]);
+
+  categoryColor = [calendarCategoriesColors objectForKey: category];
+  if (!categoryColor)
+    {
+      if (!defaultCategoryColor)
+        {
+          dd = [[context activeUser] domainDefaults];
+          ASSIGN (defaultCategoryColor, [dd calendarDefaultCategoryColor]);
+        }
+      categoryColor = defaultCategoryColor;
+    }
+
+  return categoryColor;
+}
 
 - (NSString *) categoriesValue
 {
@@ -987,26 +1013,13 @@
 
 - (void) setCategoriesValue: (NSString *) value
 {
-  NSData *data;
-  NSString *error;
-  NSPropertyListFormat format;
-  NSArray *plist;
+  NSDictionary *newColors;
 
-  data = [value dataUsingEncoding: NSUTF8StringEncoding];
-  plist = [NSPropertyListSerialization propertyListFromData: data
-                                           mutabilityOption: NSPropertyListImmutable
-                                                     format: &format
-                                           errorDescription: &error];
-  if (!plist)
+  newColors = [NSMutableDictionary dictionaryWithJSONString: value];
+  if (newColors)
     {
-      [self errorWithFormat: @"an error occured during deserialization"
-                             @" of categories: %@", error];
-      [error release];
-    }
-  else
-    {
-      [userDefaults setCalendarCategories: [plist objectAtIndex: 0]];
-      [userDefaults setCalendarCategoriesColors: [plist objectAtIndex: 1]];
+      [userDefaults setCalendarCategories: [newColors allKeys]];
+      [userDefaults setCalendarCategoriesColors: newColors];
     }
 }
 

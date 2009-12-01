@@ -26,7 +26,6 @@
 #import <Foundation/NSTimeZone.h>
 
 #import "NSString+Utilities.h"
-#define NEEDS_DEFAULTS_SOURCE_INTERNAL 1
 #import "SOGoDomainDefaults.h"
 #import "SOGoSystemDefaults.h"
 #import "SOGoUserProfile.h"
@@ -147,6 +146,33 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   return rc;
 }
 
+- (BOOL) _migrateCalendarCategories
+{
+  NSArray *categories, *colors;
+  NSDictionary *newColors;
+  BOOL rc;
+
+  colors = [source objectForKey: @"SOGoCalendarCategoriesColors"];
+  if ([colors isKindOfClass: [NSArray class]])
+    {
+      categories = [source objectForKey: @"SOGoCalendarCategories"];
+      if ([categories count] == [colors count])
+        {
+          newColors = [NSDictionary dictionaryWithObjects: colors
+                                                  forKeys: categories];
+          [source setObject: newColors
+                     forKey: @"SOGoCalendarCategoriesColors"];
+        }
+      else
+        [source removeObjectForKey: @"SOGoCalendarCategoriesColors"];
+      rc = YES;
+    }
+  else
+    rc = NO;
+
+  return rc;
+}
+
 - (BOOL) migrate
 {
   static NSDictionary *migratedKeys = nil;
@@ -185,6 +211,7 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
      not be invoked in the case where rc = YES. */
   return ([self _migrateLastModule]
           | [self _migrateSignature]
+          | [self _migrateCalendarCategories]
           | [self migrateOldDefaultsWithDictionary: migratedKeys]
           | [super migrate]);
 }
@@ -490,14 +517,14 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   return [self stringArrayForKey: @"SOGoCalendarCategories"];
 }
 
-- (void) setCalendarCategoriesColors: (NSArray *) newValues
+- (void) setCalendarCategoriesColors: (NSDictionary *) newValues
 {
   [self setObject: newValues forKey: @"SOGoCalendarCategoriesColors"];
 }
 
-- (NSArray *) calendarCategoriesColors
+- (NSDictionary *) calendarCategoriesColors
 {
-  return [self stringArrayForKey: @"SOGoCalendarCategoriesColors"];
+  return [self dictionaryForKey: @"SOGoCalendarCategoriesColors"];
 }
 
 - (void) setCalendarShouldDisplayWeekend: (BOOL) newValue

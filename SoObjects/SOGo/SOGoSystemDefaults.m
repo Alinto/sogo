@@ -33,7 +33,6 @@
 #import "NSDictionary+Utilities.h"
 #import "SOGoStartupLogger.h"
 
-#define NEEDS_DEFAULTS_SOURCE_INTERNAL 1
 #import "SOGoSystemDefaults.h"
 
 @implementation SOGoSystemDefaults

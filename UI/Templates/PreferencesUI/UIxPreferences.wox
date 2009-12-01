@@ -108,12 +108,12 @@
           ></tr
         ></thead>
       <tbody>
-        <var:foreach list="categories" item="category">
+        <var:foreach list="categoryList" item="category">
           <tr const:class="categoryListRow"
             ><td const:class="categoryListCell"
-              ><var:string var:value="category.name"/></td
+              ><var:string var:value="category"/></td
             ><td const:class="categoryListCell"
-              ><div const:class="colorBox"><var:string var:value="category.color"
+              ><div const:class="colorBox"><var:string var:value="categoryColor"
                   /></div></td
             ></tr>
         </var:foreach>

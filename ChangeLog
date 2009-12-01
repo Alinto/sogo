@@ -5,6 +5,26 @@
 
 2009-12-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/PreferencesUI/UIxPreferences.m (-categoryList): simplified
+	method by returning only the array of defined categories from the
+	user defaults or those defined in the Localizable.strings and sort
+	the resulting array.
+	(-categoryColor): new accessor that return the color associated
+	with the value in the "category" ivar, if not exists, we return
+	the default from SOGoCalendarDefaultCategoryColor.
+	(-setCategoriesValue): simplified method since we now receive a
+	dictionary. The dictionary is now transferred as a JSON object
+	rather than a property list.
+
+	* SoObjects/SOGo/SOGoUserDefaults.m
+	(-setCalendarCategoriesColors:, -calendarCategoriesColors):
+	SOGoCalendarCategoriesColors is now a dictionary. The values are
+	migrated in _migrateCalendarCategories.
+
+	* SoObjects/SOGo/SOGoDomainDefaults.m
+	(-calendarDefaultCategoryColor): new accessor for the domain
+	default SOGoCalendarDefaultCategoryColor.
+
 	* SoObjects/SOGo/SOGoDefaultsSource.m (-boolForKey:)
 	(-floatForKey:, -integerForKey:, -dataForKey:, -stringForKey:)
 	(-dictionaryForKey:, -arrayForKey:, -stringArrayForKey:): added

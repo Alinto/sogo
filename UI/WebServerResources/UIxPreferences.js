@@ -245,21 +245,16 @@ function onCategoryDelete (e) {
 
 function serializeCategories (e) {
     var r = $$("TABLE#categoriesList tbody tr");
-    var names = "(";
-    var colors = "(";
 
+    var values = [];
     for (var i = 0; i < r.length; i++) {
         var tds = r[i].childElements ();
         var name  = $(tds.first ()).innerHTML;
         var color = $(tds.last ().childElements ().first ()).showColor;
-
-        names += "\"" + name + "\", ";
-        colors += "\"" + color + "\", ";
+        values.push("\"" + name + "\": \"" + color + "\"");
     }
-    names = names.substr (0, names.length - 1) + ")";
-    colors = colors.substr (0, colors.length - 1) + ")";
 
-    $("categoriesValue").value = "(" + names + ", " + colors + ")";
+    $("categoriesValue").value = "{ " + values.join(",\n") + "}";
 }
 
 function resetCategoriesColors (e) {

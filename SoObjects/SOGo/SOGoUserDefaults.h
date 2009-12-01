@@ -125,8 +125,8 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 - (void) setCalendarCategories: (NSArray *) newValues;
 - (NSArray *) calendarCategories;
 
-- (void) setCalendarCategoriesColors: (NSArray *) newValues;
-- (NSArray *) calendarCategoriesColors;
+- (void) setCalendarCategoriesColors: (NSDictionary *) newValues;
+- (NSDictionary *) calendarCategoriesColors;
 
 - (void) setCalendarShouldDisplayWeekend: (BOOL) newValue;
 - (BOOL) calendarShouldDisplayWeekend;
