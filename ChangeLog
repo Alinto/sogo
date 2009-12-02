@@ -1,3 +1,12 @@
+2009-12-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUserManager.m: added new
+	"SOGoUserManagerRegistry" class that handles the mapping between
+	source types and their corresponding classes.
+	(-[SOGoUserManager registryClass]): new method that returns the
+	class name of the registry class, which can be overriden to handle
+	other types.
+
 2009-12-01  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* Reworked the calendar's categories (introduced

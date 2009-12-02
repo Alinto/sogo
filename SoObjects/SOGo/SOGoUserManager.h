@@ -35,14 +35,25 @@
 
 @protocol SOGoSource;
 
+@interface SOGoUserManagerRegistry : NSObject
+
++ (id) sharedRegistry;
+
+- (NSString *) sourceClassForType: (NSString *) type;
+
+@end
+
 @interface SOGoUserManager : NSObject
 {
   @private
+    SOGoUserManagerRegistry *_registry;
     NSMutableDictionary *_sources;
     NSMutableDictionary *_sourcesMetadata;
 }
 
 + (id) sharedUserManager;
+
+- (NSString *) registryClass;
 
 - (NSArray *) sourceIDsInDomain: (NSString *) domain;
 - (NSArray *) authenticationSourceIDsInDomain: (NSString *) domain;

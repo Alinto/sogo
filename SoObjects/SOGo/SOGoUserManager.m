@@ -22,6 +22,7 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
+#import <Foundation/NSException.h>
 #import <Foundation/NSLock.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSTimer.h>
@@ -37,8 +38,39 @@
 #import "SOGoCache.h"
 #import "SOGoSource.h"
 
-#import "LDAPSource.h"
-#import "SQLSource.h"
+@implementation SOGoUserManagerRegistry
+
++ (id) sharedRegistry
+{
+  static id sharedRegistry = nil;
+
+  if (!sharedRegistry)
+    sharedRegistry = [self new];
+
+  return sharedRegistry;
+}
+
+- (NSString *) sourceClassForType: (NSString *) type
+{
+  NSString *sourceClass;
+
+  if (type)
+    {
+      if ([type isEqualToString: @"ldap"])
+        sourceClass = @"LDAPSource";
+      else if ([type isEqualToString: @"sql"])
+        sourceClass = @"SQLSource";
+      else
+        [NSException raise: @"SOGoUserManagerRegistryException"
+                    format: @"No class known for type '%@'", type];
+    }
+  else
+    sourceClass = @"LDAPSource";
+
+  return sourceClass;
+}
+
+@end
 
 @implementation SOGoUserManager
 
@@ -64,15 +96,9 @@
   sourceID = [udSource objectForKey: @"id"];
   if ([sourceID length] > 0)
     {
-      type = [udSource objectForKey: @"type"];
-
-      if (!type || [type caseInsensitiveCompare: @"ldap"] == NSOrderedSame)
-        c = [LDAPSource class];
-      else
-        c = [SQLSource class];
-
-      ldapSource = [c sourceFromUDSource: udSource
-                                inDomain: domain];
+      type = [[udSource objectForKey: @"type"] lowercaseString];
+      c = NSClassFromString ([_registry sourceClassForType: type]);
+      ldapSource = [c sourceFromUDSource: udSource inDomain: domain];
       if (sourceID)
         [_sources setObject: ldapSource forKey: sourceID];
       else
@@ -155,6 +181,7 @@
     {
       _sources = nil;
       _sourcesMetadata = nil;
+      _registry = [NSClassFromString ([self registryClass]) sharedRegistry];
       [self _prepareSources];
     }
 
@@ -166,6 +193,11 @@
   [_sources release];
   [_sourcesMetadata release];
   [super dealloc];
+}
+
+- (NSString *) registryClass
+{
+  return @"SOGoUserManagerRegistry";
 }
 
 - (NSArray *) sourceIDsInDomain: (NSString *) domain
@@ -619,21 +651,18 @@
 
 - (NSString *) getLoginForDN: (NSString *) theDN
 {
-  NSEnumerator *ldapSources;
+  NSEnumerator *sources;
   NSString *login;
-  LDAPSource *currentSource;
+  NSObject <SOGoDNSource> *currentSource;
 
   login = nil;
-  ldapSources = [[_sources allValues] objectEnumerator];
-  while ((currentSource = [ldapSources nextObject]))
-    {
-      if ([theDN hasSuffix: [currentSource baseDN]])
-	{
-	  login = [currentSource lookupLoginByDN: theDN];
-	  if (login)
-	    break;
-	}
-    }
+
+  sources = [[_sources allValues] objectEnumerator];
+  while (!login && (currentSource = [sources nextObject]))
+    if ([currentSource conformsToProtocol: @protocol (SOGoDNSource)]
+        && [theDN hasSuffix: [currentSource baseDN]])
+      login = [currentSource lookupLoginByDN: theDN];
+
   return login;
 }
 
