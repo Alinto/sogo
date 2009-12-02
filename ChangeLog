@@ -1,5 +1,9 @@
 2009-12-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUserDefaults.m (+initialize): we need to
+	initialize the profile class from the constructor as this method
+	may be invoked before all modules are loaded.
+
 	* SoObjects/SOGo/SOGoSource.h: added new "SOGoDNSource" protocol
 	as a child protocol of "SOGoSource".
 

@@ -32,7 +32,6 @@
 
 #import "SOGoUserDefaults.h"
 
-static Class SOGoUserProfileKlass = Nil;
 
 NSString *SOGoWeekStartJanuary1 = @"January1";
 NSString *SOGoWeekStartFirst4DayWeek = @"First4DayWeek";
@@ -45,18 +44,16 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   return @"SOGoSQLUserProfile";
 }
 
-+ (void) initialize
-{
-  if (!SOGoUserProfileKlass)
-    SOGoUserProfileKlass = NSClassFromString ([self userProfileClassName]);
-}
-
 + (SOGoUserDefaults *) defaultsForUser: (NSString *) userId
                               inDomain: (NSString *) domainId
 {
   SOGoUserProfile *up;
   SOGoUserDefaults *ud;
   SOGoDefaultsSource *parentSource;
+  static Class SOGoUserProfileKlass = Nil;
+
+  if (!SOGoUserProfileKlass)
+    SOGoUserProfileKlass = NSClassFromString ([self userProfileClassName]);
 
   up = [SOGoUserProfileKlass userProfileWithType: SOGoUserProfileTypeDefaults
                                           forUID: userId];
