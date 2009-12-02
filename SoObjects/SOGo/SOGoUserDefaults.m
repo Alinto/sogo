@@ -182,6 +182,7 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
       migratedKeys
         = [NSDictionary dictionaryWithObjectsAndKeys:
                           @"SOGoLoginModule", @"SOGoUIxDefaultModule",
+                          @"SOGoLoginModule", @"SOGoDefaultModule",
                         @"SOGoTimeFormat", @"TimeFormat",
                         @"SOGoShortDateFormat", @"ShortDateFormat",
                         @"SOGoLongDateFormat", @"LongDateFormat",
