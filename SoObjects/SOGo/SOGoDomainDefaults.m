@@ -47,11 +47,8 @@
       domainValues = [[systemDefaults dictionaryForKey: @"domains"]
                        objectForKey: domainId];
       if ([domainValues isKindOfClass: [NSDictionary class]])
-        {
-          domainDefaults
-            = [SOGoDomainDefaults defaultsSourceWithSource: domainValues
-                                           andParentSource: systemDefaults];
-        }
+        domainDefaults = [self defaultsSourceWithSource: domainValues
+                                        andParentSource: systemDefaults];
     }
 
   return domainDefaults;
