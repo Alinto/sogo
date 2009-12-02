@@ -190,7 +190,7 @@
   searchText = [self queryParameterForKey: @"search"];
   if ([searchText length] > 0)
     {
-      NSLog(@"Search all contacts: %@", searchText);
+      // NSLog(@"Search all contacts: %@", searchText);
       excludeGroups = [[self queryParameterForKey: @"excludeGroups"] boolValue];
       excludeLists = [[self queryParameterForKey: @"excludeLists"] boolValue];
       NS_DURING
