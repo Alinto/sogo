@@ -50,4 +50,11 @@
 
 @end
 
+@protocol SOGoDNSource <SOGoSource>
+
+- (NSString *) lookupLoginByDN: (NSString *) theDN;
+- (NSString *) baseDN;
+
+@end
+
 #endif /* SOGOSOURCE_H */

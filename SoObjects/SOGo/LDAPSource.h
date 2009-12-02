@@ -32,7 +32,7 @@
 @class NGLdapConnection;
 @class NGLdapEntry;
 
-@interface LDAPSource : NSObject <SOGoSource>
+@interface LDAPSource : NSObject <SOGoDNSource>
 {
   int queryLimit;
   int queryTimeout;
@@ -76,14 +76,10 @@
      IMAPHostField: (NSString *) newIMAPHostField
      andBindFields: (NSString *) newBindFields;
 
-- (NSString *) lookupLoginByDN: (NSString *) theDN;
-
 - (NGLdapEntry *) lookupGroupEntryByUID: (NSString *) theUID;
 - (NGLdapEntry *) lookupGroupEntryByEmail: (NSString *) theEmail;
 - (NGLdapEntry *) lookupGroupEntryByAttribute: (NSString *) theAttribute 
 				     andValue: (NSString *) theValue;
-
-- (NSString *) baseDN;
 
 @end
 

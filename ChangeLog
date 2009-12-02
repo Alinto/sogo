@@ -1,5 +1,8 @@
 2009-12-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoSource.h: added new "SOGoDNSource" protocol
+	as a child protocol of "SOGoSource".
+
 	* SoObjects/SOGo/SOGoUserManager.m: added new
 	"SOGoUserManagerRegistry" class that handles the mapping between
 	source types and their corresponding classes.
