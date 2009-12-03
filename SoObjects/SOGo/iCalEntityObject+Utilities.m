@@ -39,7 +39,7 @@
   NSEnumerator *participants;
 
   participant = nil;
-  participants = [[self participants] objectEnumerator];
+  participants = [[self attendees] objectEnumerator];
   currentParticipant = [participants nextObject];
   while (currentParticipant && !participant)
     if ([user hasEmail: [currentParticipant rfc822Email]])
