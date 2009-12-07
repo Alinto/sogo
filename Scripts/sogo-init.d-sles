@@ -1,17 +1,20 @@
-#!/bin/bash
-# chkconfig:	2345 85 15
-# description:	SOGo is a groupware server
-# processname:  sogod
-# config:	/etc/sysconfig/sogo
-# config:	/etc/httpd/conf.d/SOGo.conf
-# pidfile:	/var/run/sogo/sogod.pid
+#! /bin/bash
 
-# SOGo init script for SUSE Linux Enterprise Server
+### BEGIN INIT INFO
+# Provides:          sogod
+# Required-Start:    $network
+# Required-Stop:     $network
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: SOGo server
+### END INIT INFO
+
+# SOGo init script for SLES
 #
-# Copyright (C) 2007-2009 Inverse inc.
+# Copyright (C) 2009 Inverse inc.
 #
-# Authors: Wolfgang Sourdeau <wsourdeau@inverse.ca>
-#          Francis Lachapelle <flachapelle@inverse.ca>
+# Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+#         Ludovic Marcotte <ludovic@inverse.ca>
 #
 # This file is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -30,8 +33,8 @@
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
 NAME=sogo
-DAEMON=/usr/GNUstep/System/Tools/Admin/sogod
-DESC="Scalable OpenGroupware.Org (Inverse edition)"
+DAEMON=/usr/sbin/sogod
+DESC="Scalable OpenGroupware.Org"
 
 USER=$NAME
 PREFORK=1
@@ -60,6 +63,7 @@ checkDir() {
     then
 	echo "$directory is not owned by the '$USER' user."
 	exit 1
+
     fi
 }
 
@@ -67,104 +71,51 @@ checkDir /var/run/$NAME
 checkDir /var/spool/$NAME
 checkDir /var/log/$NAME
 
+set -e
+
 . /lib/lsb/init-functions
-if [ -z "$GNUSTEP_SYSTEM_ROOT" ]
-then
-  . /usr/GNUstep/System/Library/Makefiles/GNUstep.sh
-fi
+. /usr/share/GNUstep/Makefiles/GNUstep.sh
 
 DAEMON_OPTS="-WOWorkersCount $PREFORK -WOPidFile $PIDFILE -WOLogFile $LOGFILE"
 
-start() {
-    echo $"Starting $DESC: "
-    pid="`cat $PIDFILE 2> /dev/null`"
-    if [ -n "$pid" ]
-    then
-        pid="`ps --pid ${pid} -o pid=`"
-	if [ -n "$pid" ]
-	then
-	    echo "  $NAME already running. Skipped."
-	else
-	    rm -f $PIDFILE
-	    startproc -u "$USER" -p $PIDFILE "$DAEMON" $DAEMON_OPTS
-	    echo "  $NAME (stale pid file removed)"
-	fi
-    else
-	startproc -u "$USER" -p $PIDFILE "$DAEMON" $DAEMON_OPTS
-        echo "  $NAME"
-    fi
-}
-
-stop() {
-    echo $"Stopping $DESC: "
-    # We kill the parent processes with SIGTERM so that they
-    # can exit gracefully.
-    pid="`cat $PIDFILE 2> /dev/null`"
-    if [ -n "$pid" ]
-    then
-        pid="`ps --pid ${pid} -o pid=`"
-	if [ -n "$pid" ]
-	then
-	    if kill $pid >& /dev/null
-	    then
-                sleep 1
-                pid="`ps --pid ${pid} -o pid=`"
-	        if [ -n "$pid" ]
-	        then
-		    echo "  $NAME stopped"
-                else
-		    kill -9 $pid >& /dev/null
-		    echo "  $NAME killed"
-                fi
-	        rm -f $PIDFILE
-	    fi
-	else
-	    echo "  $NAME not running"
-	fi
-    else
-	echo "  $NAME not running"
-    fi
-}
-
-restart() {
-    echo $"Restarting $DESC: "
-    pid="`cat $PIDFILE 2> /dev/null`"
-    if [ -n "$pid" ]
-    then
-        pid="`ps --pid ${pid} -o pid=`"
-	if [ -n "$pid" ]
-	then
-	    if kill $pid >& /dev/null
-	    then
-                sleep 1
-                pid="`ps --pid ${pid} -o pid=`"
-	        if [ -n "$pid" ]
-	        then
-		    kill -9 $pid >& /dev/null
-                fi
-	    fi
-	fi
-    fi
-    startproc -u "$USER" -p $PIDFILE "$DAEMON" $DAEMON_OPTS
-    echo "  $NAME"
-}
-
 case "$1" in
   start)
-	start
+	echo -n "Starting $DESC: "
+	startproc -u $USER $DAEMON $DAEMON_OPTS || true
+	echo "$NAME."
 	;;
   stop)
-	stop
+	echo -n "Stopping $DESC: "
+	killproc -p $PIDFILE $DAEMON || true
+	echo "$NAME."
 	;;
   restart)
-	restart
+	echo -n "Restarting $DESC: "
+	killproc -p $PIDFILE $DAEMON || true
+	sleep 1
+	startproc -u $USER $DAEMON $DAEMON_OPTS || true
+	echo "$NAME."
 	;;
   status)
-  	checkproc -p $PIDFILE $DAEMON
+	checkproc -p $PIDFILE $DAEMON
+        result="$?"
+        if [ $result -eq 0 ]
+        then
+          echo "$DAEMON is running"
+        else
+        if [ $result -eq 1 ]
+        then
+          echo "$DAEMON is not running (stale pid file)"
+        else
+        if [ $result -eq 3 ]
+        then
+          echo "$DAEMON is not running"
+        fi
+	fi
+	fi
 	;;
   *)
-	N=/etc/init.d/$NAME
-	echo "Usage: $N {start|stop|restart|status}" >&2
+	echo "Usage: $NAME {start|stop|restart|status}" >&2
 	exit 1
 	;;
 esac
