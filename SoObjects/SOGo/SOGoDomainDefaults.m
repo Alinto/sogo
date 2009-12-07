@@ -152,12 +152,12 @@
 
 - (BOOL) forwardEnabled
 {
-  return [self boolForKey: @"SOGoForceIMAPLoginWithEmail"];
+  return [self boolForKey: @"SOGoForwardEnabled"];
 }
 
 - (BOOL) vacationEnabled
 {
-  return [self boolForKey: @"SOGoForceIMAPLoginWithEmail"];
+  return [self boolForKey: @"SOGoVacationEnabled"];
 }
 
 - (NSString *) mailingMechanism
