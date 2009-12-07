@@ -1,3 +1,12 @@
+2009-12-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/PreferencesUI/UIxPreferences.m (-defaultAction):
+	setVacationOptions: and setForwardOptions: are now set from here.
+
+	* SoObjects/SOGo/SOGoDomainDefaults.m (-forwardEnabled)
+	(-vacationEnabled): we must query "SOGoForwardEnabled" and
+	"SOGoVacationEnabled", respectively.
+
 2009-12-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUserDefaults.m (+initialize): we need to

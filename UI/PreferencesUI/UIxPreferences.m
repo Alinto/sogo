@@ -87,20 +87,14 @@
 	{
 	  vacationOptions = [[userDefaults vacationOptions] mutableCopy];
 	  if (!vacationOptions)
-	    {
-	      vacationOptions = [NSMutableDictionary new];
-	      [userDefaults setVacationOptions: vacationOptions];
-	    }
+            vacationOptions = [NSMutableDictionary new];
 	}
 
       if ([dd forwardEnabled])
 	{
 	  forwardOptions = [[userDefaults forwardOptions] mutableCopy];
 	  if (!forwardOptions)
-	    {
-	      forwardOptions = [NSMutableDictionary new];
-	      [userDefaults setForwardOptions: forwardOptions];
-	    }
+            forwardOptions = [NSMutableDictionary new];
 	}
     }
 
@@ -875,6 +869,7 @@
   id <WOActionResults> results;
   WORequest *request;
   NSString *method;
+  SOGoDomainDefaults *dd;
 
   request = [context request];
   if ([[request method] isEqualToString: @"POST"])
@@ -882,7 +877,13 @@
       SOGoMailAccount *account;
       id mailAccounts;
       id folder;
-     
+
+      dd = [[context activeUser] domainDefaults];
+      if ([dd vacationEnabled])
+        [userDefaults setVacationOptions: vacationOptions];
+      if ([dd forwardEnabled])
+        [userDefaults setForwardOptions: forwardOptions];
+
       [userDefaults synchronize];
       
       mailAccounts = [[[context activeUser] mailAccounts] objectAtIndex: 0];
