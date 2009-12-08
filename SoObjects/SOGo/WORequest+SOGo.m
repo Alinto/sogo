@@ -26,6 +26,7 @@
 #import <NGObjWeb/SoObjectRequestHandler.h>
 #import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WEClientCapabilities.h>
+#import <NGObjWeb/WORequest+So.h>
 
 #import <DOM/DOMProtocols.h>
 
@@ -36,7 +37,7 @@
 - (BOOL) handledByDefaultHandler
 {
 #warning this should be changed someday
-  return (![requestHandlerKey isEqualToString: @"dav"]);
+  return ![self isSoWebDAVRequest];
 }
 
 - (NSArray *) _propertiesOfElement: (id <DOMElement>) startElement

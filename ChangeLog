@@ -1,5 +1,8 @@
 2009-12-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/WORequest+SOGo.m (-handledByDefaultHandler):
+	return "not isSoWebDAVRequest".
+
 	* Main/SOGo.m (-lookupName:inContext:acquire:): ensure the web
 	access is enabled or the request is a DAV request before
 	proceeding.
