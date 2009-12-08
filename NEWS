@@ -2,8 +2,13 @@
 --------------------
 - improved handling of popup windows when closing the parent window
 - major refresh of CSS
-- added handling of preforked processes by SOPE/SOGo (load balancer is no longer needed)
+- added handling of preforked processes by SOPE/SOGo (a load balancer is
+  therefore no longer needed)
 - added Swedish translation, thanks to Altrusoft
+- added multi-domain support
+- refactored the handling of user defaults to enable fallback on default
+  values more easily
+- added sensible default configuration values
 
 1.1-20091028 (1.1.0)
 --------------------
