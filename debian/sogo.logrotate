@@ -8,6 +8,6 @@
 	create 640 sogo sogo
 	sharedscripts
 	postrotate
-		/etc/init.d/sogod restart > /dev/null
+		/etc/init.d/sogo restart > /dev/null 2>&1
 	endscript
 }
