@@ -38,6 +38,10 @@
 - (BOOL) trustProxyAuthentication;
 - (BOOL) useRelativeURLs;
 
+- (BOOL) isWebAccessEnabled;
+- (BOOL) isCalendarDAVAccessEnabled;
+- (BOOL) isAddressBookDAVAccessEnabled;
+
 - (NSString *) faviconRelativeURL;
 - (NSString *) zipPath;
 - (int) port;

@@ -22,6 +22,10 @@
     SOGoSMTPServer = "localhost";
     SOGoMailSpoolPath = "/tmp";
 
+    SOGoWebAccessEnabled = YES;
+    SOGoCalendarDAVAccessEnabled = YES;
+    SOGoAddressBookDAVAccessEnabled = YES;
+
     SOGoLoginModule = "Mail";
     SOGoLanguage = "English";
     SOGoSupportedLanguages = ( "Czech", "Welsh", "English", "Spanish",

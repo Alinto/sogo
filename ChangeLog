@@ -1,5 +1,17 @@
 2009-12-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Main/SOGo.m (-lookupName:inContext:acquire:): ensure the web
+	access is enabled or the request is a DAV request before
+	proceeding.
+
+	* SoObjects/SOGo/SOGoUserFolder.m (-toManyRelationShipKeys)
+	(-fetchContentObjectNames): ensure the proper dav access is
+	enabled in order before listing the related objects.
+
+	* SoObjects/SOGo/SOGoSystemDefaults.m (-isWebAccessEnabled)
+	(-isCalendarDAVAccessEnabled, isAddressBookDAVAccessEnabled): new
+	self-explanatory accessors.
+
 	* Main/SOGo.m (-davURLAsString): we ensure that the url ends with
 	"/" since the /SOGo object is a collection and the caller may rely
 	on this.

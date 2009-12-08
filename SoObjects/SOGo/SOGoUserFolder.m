@@ -31,6 +31,7 @@
 #import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest.h>
+#import <NGObjWeb/WORequest+So.h>
 #import <NGObjWeb/WOResponse.h>
 
 #import <NGExtensions/NSObject+Logs.h>
@@ -53,6 +54,7 @@
 #import "NSDictionary+Utilities.h"
 #import "SOGoUserManager.h"
 #import "SOGoPermissions.h"
+#import "SOGoSystemDefaults.h"
 #import "SOGoUser.h"
 #import "WORequest+SOGo.h"
 
@@ -66,11 +68,16 @@
 {
   NSMutableArray *children;
   SOGoUser *currentUser;
+  BOOL isDAVRequest;
+  SOGoSystemDefaults *sd;
 
   children = [NSMutableArray arrayWithCapacity: 4];
 
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  isDAVRequest = [[context request] isSoWebDAVRequest];
   currentUser = [context activeUser];
-  if ([currentUser canAccessModule: @"Calendar"])
+  if ((!isDAVRequest || [sd isCalendarDAVAccessEnabled])
+      && [currentUser canAccessModule: @"Calendar"])
     {
       [children addObject: @"Calendar"];
       /* support for caldav-proxy, which is currently limited to iCal but may
@@ -82,7 +89,8 @@
           [children addObject: @"calendar-proxy-read"];
         }
     }
-  [children addObject: @"Contacts"];
+  if (isDAVRequest && [sd isAddressBookDAVAccessEnabled])
+    [children addObject: @"Contacts"];
   if ([currentUser canAccessModule: @"Mail"])
     [children addObject: @"Mail"];
   // [children addObject: @"Preferences"];
@@ -543,15 +551,20 @@
         inContext: (WOContext *) _ctx
           acquire: (BOOL) _flag
 {
-  id obj;
   SOGoUser *currentUser;
+  BOOL isDAVRequest;
+  SOGoSystemDefaults *sd;
+  id obj;
 
   /* first check attributes directly bound to the application */
   obj = [super lookupName: _key inContext: _ctx acquire: NO];
   if (!obj)
     {
+      sd = [SOGoSystemDefaults sharedSystemDefaults];
+      isDAVRequest = [[context request] isSoWebDAVRequest];
       currentUser = [_ctx activeUser];
-      if ([currentUser canAccessModule: @"Calendar"])
+      if ((!isDAVRequest || [sd isCalendarDAVAccessEnabled])
+          && [currentUser canAccessModule: @"Calendar"])
         {
           if ([_key isEqualToString: @"Calendar"])
 	    obj = [self privateCalendars: @"Calendar" inContext: _ctx];
@@ -568,7 +581,9 @@
           && [currentUser canAccessModule: @"Mail"])
         obj = [self mailAccountsFolder: _key inContext: _ctx];
 
-      if (!obj && [_key isEqualToString: @"Contacts"])
+      if (!obj
+          && [_key isEqualToString: @"Contacts"]
+          && (isDAVRequest && [sd isAddressBookDAVAccessEnabled]))
         obj = [self privateContacts: _key inContext: _ctx];
 
       // else if ([_key isEqualToString: @"Preferences"])
@@ -586,10 +601,20 @@
 
 - (NSArray *) fetchContentObjectNames
 {
+  SOGoSystemDefaults *sd;
+  SOGoUser *currentUser;
   static NSArray *cos = nil;
-  
-  if (!cos)
-    cos = [[NSArray alloc] initWithObjects: @"freebusy.ifb", nil];
+
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  currentUser = [context activeUser];
+  if ((![[context request] isSoWebDAVRequest] || [sd isCalendarDAVAccessEnabled])
+      && [currentUser canAccessModule: @"Calendar"])
+    {
+      if (!cos)
+        cos = [[NSArray alloc] initWithObjects: @"freebusy.ifb", nil];
+    }
+  else
+    cos = [NSArray array];
 
   return cos;
 }

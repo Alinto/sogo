@@ -33,7 +33,7 @@
 
 #import <NGObjWeb/SoClassSecurityInfo.h>
 #import <NGObjWeb/WOContext.h>
-#import <NGObjWeb/WORequest.h>
+#import <NGObjWeb/WORequest+So.h>
 
 #import <NGExtensions/NGBundleManager.h>
 #import <NGExtensions/NSNull+misc.h>
@@ -311,28 +311,35 @@ static BOOL debugLeaks;
           acquire: (BOOL) _flag
 {
   id obj;
+  SOGoSystemDefaults *sd;
 
   /* put locale info into the context in case it's not there */
   [self _setupLocaleInContext:_ctx];
-  
-  /* first check attributes directly bound to the application */
-  obj = [super lookupName:_key inContext:_ctx acquire:_flag];
-  if (!obj)
+
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  if ([sd isWebAccessEnabled] || [[_ctx request] isSoWebDAVRequest])
     {
-      /* 
-	 The problem is, that at this point we still get request for resources,
-	 eg 'favicon.ico'.
-     
-	 Addition: we also get queries for various other methods, like "GET" if
-	 no method was provided in the query path.
-      */
+      /* first check attributes directly bound to the application */
+      obj = [super lookupName:_key inContext:_ctx acquire:_flag];
+      if (!obj)
+        {
+          /* 
+             The problem is, that at this point we still get request for
+             resources, eg 'favicon.ico'.
+             
+             Addition: we also get queries for various other methods, like
+             "GET" if no method was provided in the query path.
+          */
   
-      if (![_key isEqualToString:@"favicon.ico"])
-	{
-	  if ([self isUserName: _key inContext: _ctx])
-	    obj = [self lookupUser: _key inContext: _ctx];
-	}
+          if (![_key isEqualToString:@"favicon.ico"])
+            {
+              if ([self isUserName: _key inContext: _ctx])
+                obj = [self lookupUser: _key inContext: _ctx];
+            }
+        }
     }
+  else
+    obj = nil;
 
   return obj;
 }

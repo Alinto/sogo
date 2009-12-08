@@ -205,6 +205,21 @@ BootstrapNSUserDefaults ()
   return [self boolForKey: @"WOUseRelativeURLs"];
 }
 
+- (BOOL) isWebAccessEnabled
+{
+  return [self boolForKey: @"SOGoWebAccessEnabled"];
+}
+
+- (BOOL) isCalendarDAVAccessEnabled
+{
+  return [self boolForKey: @"SOGoCalendarDAVAccessEnabled"];
+}
+
+- (BOOL) isAddressBookDAVAccessEnabled
+{
+  return [self boolForKey: @"SOGoAddressBookDAVAccessEnabled"];
+}
+
 - (NSString *) faviconRelativeURL
 {
   return [self stringForKey: @"SOGoFaviconRelativeURL"];
