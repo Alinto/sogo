@@ -581,10 +581,18 @@ static BOOL debugLeaks;
 - (NSString *) davURLAsString
 {
   NSURL *davURL;
+  NSString *davURLAsString;
 
   davURL = [self davURL];
 
-  return (useRelativeURLs ? [davURL path] : [davURL absoluteString]);
+  /* we know that GNUstep returns a "/" suffix for the absoluteString but not
+     for the path method. Therefore we add one. */
+  if (useRelativeURLs)
+    davURLAsString = [NSString stringWithFormat: @"%@/", [davURL path]];
+  else
+    davURLAsString = [davURL absoluteString];
+
+  return davURLAsString;
 }
 
 - (NSURL *) soURL

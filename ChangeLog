@@ -1,3 +1,9 @@
+2009-12-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Main/SOGo.m (-davURLAsString): we ensure that the url ends with
+	"/" since the /SOGo object is a collection and the caller may rely
+	on this.
+
 2009-12-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/PreferencesUI/UIxPreferences.m (-defaultAction):
