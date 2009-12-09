@@ -89,7 +89,7 @@
           [children addObject: @"calendar-proxy-read"];
         }
     }
-  if (isDAVRequest && [sd isAddressBookDAVAccessEnabled])
+  if (!isDAVRequest || [sd isAddressBookDAVAccessEnabled])
     [children addObject: @"Contacts"];
   if ([currentUser canAccessModule: @"Mail"])
     [children addObject: @"Mail"];
@@ -583,7 +583,7 @@
 
       if (!obj
           && [_key isEqualToString: @"Contacts"]
-          && (isDAVRequest && [sd isAddressBookDAVAccessEnabled]))
+          && (!isDAVRequest || [sd isAddressBookDAVAccessEnabled]))
         obj = [self privateContacts: _key inContext: _ctx];
 
       // else if ([_key isEqualToString: @"Preferences"])
