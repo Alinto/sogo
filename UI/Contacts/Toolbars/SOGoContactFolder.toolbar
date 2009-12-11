@@ -30,5 +30,10 @@
      onclick = "return onToolbarDeleteSelectedContacts(this);";
      image="tb-mail-delete-flat-24x24.png";
      tooltip = "Delete selected card or address book"; }
-  )
+  ),
+  ( { link = "#";
+      label = "Reload";
+      onclick = "return onContactsReload();";
+      image = "calendar-reload.png";
+      tooltip = "Reload all contacts"; } )
 )
