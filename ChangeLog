@@ -1,3 +1,9 @@
+2009-12-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/PreferencesUI/UIxPreferences.m (-setUserShortDateFormat:):
+	fixed handling of the value "default", which actually should
+	unset the value in the user defaults.
+
 2009-12-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUserFolder.m (-toManyRelationShipKeys)

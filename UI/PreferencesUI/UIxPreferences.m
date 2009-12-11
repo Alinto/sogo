@@ -207,7 +207,10 @@
 
 - (void) setUserShortDateFormat: (NSString *) newFormat
 {
-  [userDefaults setShortDateFormat: newFormat];
+  if ([newFormat isEqualToString: @"default"])
+    [userDefaults unsetShortDateFormat];
+  else
+    [userDefaults setShortDateFormat: newFormat];
 }
 
 - (NSArray *) longDateFormatsList
