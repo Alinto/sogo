@@ -3,6 +3,12 @@
 	* UI/Common/UIxPageFrame.m (_stringsForFramework:): use the system
 	default when the active user does not resolve.
 
+2009-12-11  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* Added a patch from Albrecht Gebhardt <albrecht.gebhardt@algepop.net>
+	that offers a "Reload" button in the Web contacts 
+	management module.
+
 2009-12-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/PreferencesUI/UIxPreferences.m (-setUserShortDateFormat:):

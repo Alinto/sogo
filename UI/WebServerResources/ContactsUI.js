@@ -1298,4 +1298,8 @@ function dropSelectedContacts (action, toId) {
 }
 
 
+function onContactsReload () {
+    openContactsFolder(Contact.currentAddressBook, true);
+}
+
 document.observe("dom:loaded", initContacts);
