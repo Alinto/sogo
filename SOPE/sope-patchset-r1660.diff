@@ -4579,7 +4579,7 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
  #if defined(__CYGWIN32__) || defined(__MINGW32__)
  
  int WOWatchDogApplicationMain
-@@ -39,201 +60,894 @@
+@@ -39,201 +60,900 @@
  #include <time.h>
  #include <string.h>
  
@@ -4589,6 +4589,7 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
 -static unsigned failExitCount = 0;
 -static BOOL     killedChild = NO;
 +static NSTimeInterval respawnDelay; /* seconds */
++static const char *pidFile = NULL;
  
 -static void killChild(void) {
 -  if (child > 0) {
@@ -5271,12 +5272,6 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
 +        else {
 +          delayed = YES;
 +          [child logNotRespawn];
-+          [NSTimer
-+            scheduledTimerWithTimeInterval: respawnDelay
-+                                    target: self
-+                                  selector: @selector (_noop)
-+                                  userInfo: nil
-+                                   repeats: NO];
          }
        }
 -      while (result > 0);
@@ -5416,8 +5411,11 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
 +}
 +
 +- (void) _handleTermination:(NSNumber *)_signal {
-+  if (!terminationSignal)
++  if (!terminationSignal) {
 +    ASSIGN (terminationSignal, _signal);
++    if (pidFile)
++      unlink (pidFile);
++  }
 +}
 +
 +- (void) _handleSIGHUP:(NSNumber *)_signal {
@@ -5565,6 +5563,14 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
 +
 +    // NSLog (@"ready to process requests");
 +    runLoop = [NSRunLoop currentRunLoop];
++
++    /* This timer ensures the looping of the runloop at reasonable intervals
++       for correct processing of signal handlers. */
++    [NSTimer scheduledTimerWithTimeInterval: 0.5
++                                     target: self
++                                   selector: @selector (_noop)
++                                   userInfo: nil
++                                    repeats: YES];
 +    terminate = NO;
 +    while (!terminate) {
 +      pool = [NSAutoreleasePool new];
@@ -5610,12 +5616,12 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
 +
 +@end
 +
-+static BOOL _writePid(NSString *pidFile) {
++static BOOL _writePid(NSString *nsPidFile) {
 +  NSString *pid;
 +  BOOL rc;
 +
 +  pid = [NSString stringWithFormat: @"%d", getpid()];
-+  rc = [pid writeToFile: pidFile atomically: NO];
++  rc = [pid writeToFile: nsPidFile atomically: NO];
 +
 +  return rc;
 +}
@@ -5625,7 +5631,7 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
  {
    NSAutoreleasePool *pool;
    NSUserDefaults *ud;
-+  NSString *logFile, *pidFile;
++  NSString *logFile, *nsPidFile;
 +  int rc, stdErrNo;
 +  pid_t childPid;
 +  NSProcessInfo *processInfo;
@@ -5635,7 +5641,7 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
  #if LIB_FOUNDATION_LIBRARY || defined(GS_PASS_ARGUMENTS)
    {
      extern char **environ;
-@@ -241,179 +955,67 @@
+@@ -241,179 +961,68 @@
                     environment:(void*)environ];
    }
  #endif
@@ -5833,12 +5839,13 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
 +      rc = 0;
 +    }
 +    else {
-+      pidFile = [ud objectForKey: @"WOPidFile"];
-+      if (!pidFile)
-+        pidFile = [NSString stringWithFormat: @"/var/run/%@/%@.pid",
-+                            [processInfo processName],
-+                            [processInfo processName]];
-+      if (_writePid(pidFile)) {
++      nsPidFile = [ud objectForKey: @"WOPidFile"];
++      if (!nsPidFile)
++        nsPidFile = [NSString stringWithFormat: @"/var/run/%@/%@.pid",
++                              [processInfo processName],
++                              [processInfo processName]];
++      pidFile = [nsPidFile UTF8String];
++      if (_writePid(nsPidFile)) {
 +        respawnDelay = [ud integerForKey: @"WORespawnDelay"];
 +        if (!respawnDelay)
 +          respawnDelay = 5;
@@ -5869,7 +5876,7 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
  }
  #endif
  
-@@ -421,8 +1023,8 @@
+@@ -421,8 +1030,8 @@
  
  @interface NSUserDefaults(ServerDefaults)
  + (id)hackInServerDefaults:(NSUserDefaults *)_ud
@@ -5880,7 +5887,7 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
  @end
  
  int WOWatchDogApplicationMainWithServerDefaults
-@@ -437,7 +1039,7 @@
+@@ -437,7 +1046,7 @@
    {
      extern char **environ;
      [NSProcessInfo initializeWithArguments:(void*)argv count:argc
@@ -5889,7 +5896,7 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
    }
  #endif
    
-@@ -446,8 +1048,8 @@
+@@ -446,8 +1055,8 @@
      
      ud = [NSUserDefaults standardUserDefaults];
      sd = [defClass hackInServerDefaults:ud
@@ -5949,7 +5956,13 @@ Index: sope-appserver/NGObjWeb/ChangeLog
 ===================================================================
 --- sope-appserver/NGObjWeb/ChangeLog	(revision 1660)
 +++ sope-appserver/NGObjWeb/ChangeLog	(working copy)
-@@ -1,3 +1,85 @@
+@@ -1,3 +1,91 @@
++2009-12-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
++
++	* WOWatchDogApplicationMain.m (-run:argc:argv:): added a
++	repeatable timer, triggered every 0.5 seconds, that ensures the
++	proper looping of the runloop when a signal was received.
++
 +2009-12-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 +
 +	* WOWatchDogApplicationMain.m (_handleSIGCHLD:)
