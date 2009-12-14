@@ -379,7 +379,8 @@ convertChars (const char *oldString, unsigned int oldLength,
                    if (length + paddingBuffer > maxLength - 6)
                      {
                        maxLength += paddingBuffer;
-                       reallocated = NSZoneRealloc (NULL, newString, maxLength + 1);
+                       reallocated = NSZoneRealloc (NULL, newString,
+                                                    maxLength + 1);
                        if (reallocated)
                          {
                            newString = reallocated;
@@ -408,13 +409,13 @@ convertChars (const char *oldString, unsigned int oldLength,
 - (NSString *) stringByConvertingCRLNToHTML
 {
   NSString *convertedString;
+  const char *utf8String;
   char *newString;
   unsigned int newLength;
 
-  newString
-    = convertChars ([self cStringUsingEncoding: NSUTF8StringEncoding],
-                    [self lengthOfBytesUsingEncoding: NSUTF8StringEncoding],
-                    &newLength);
+  utf8String = [self UTF8String];
+  newString = convertChars (utf8String, strlen (utf8String),
+                            &newLength);
   convertedString = [[NSString alloc] initWithBytes: newString
                                              length: newLength
                                            encoding: NSUTF8StringEncoding];

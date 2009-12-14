@@ -498,8 +498,7 @@
   else
     {
       fprintf (stderr, "Folder '%s' of user '%s' not found.\n",
-	       [folderId cStringUsingEncoding: NSUTF8StringEncoding],
-               [username cStringUsingEncoding: NSUTF8StringEncoding]);
+	       [folderId UTF8String], [username UTF8String]);
       rc = NO;
     }
 

@@ -92,20 +92,15 @@
 	{
 	  recordsCount = [currentFolder recordsCountByExcludingDeleted: YES];
 	  if (recordsCount > warningLimit)
-	    {
-	      fprintf (stderr, "'%s' (id: '%s'), of '%s': %u entries\n",
-		       [[folderRow objectForKey: @"c_foldername"]
-			 cStringUsingEncoding: NSUTF8StringEncoding],
-		       [[currentFolder folderName]
-			 cStringUsingEncoding: NSUTF8StringEncoding],
-		       [[folderRow objectForKey: @"c_path2"]
-			 cStringUsingEncoding: NSUTF8StringEncoding],
-		       recordsCount);
-	    }
+            fprintf (stderr, "'%s' (id: '%s'), of '%s': %u entries\n",
+                     [[folderRow objectForKey: @"c_foldername"] UTF8String],
+                     [[currentFolder folderName] UTF8String],
+                     [[folderRow objectForKey: @"c_path2"] UTF8String],
+                     recordsCount);
 	}
       else
 	fprintf (stderr, "folder at path '%s' could not be opened\n",
-		 [folderPath cStringUsingEncoding: NSUTF8StringEncoding]);
+		 [folderPath UTF8String]);
     }
 }
 

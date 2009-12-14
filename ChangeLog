@@ -1,13 +1,24 @@
 2009-12-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Tools/SOGoToolRemoveDoubles.m (-processFolder:ofUser:withFoM:):
+	same as below.
+
+	* Tools/SOGoToolCheckDoubles.m (-processIndexResults:withFoM:):
+	same as below.
+
+	* SoObjects/Mailer/NSString+Mail.m
+	(-stringByConvertingCRLNToHTML): invokde [NSString UTF8String]
+	rather than cStringUsingEncoding: NSUTF8StringEncoding, since the
+	latter provokes a crash that the former doesn't.
+
 	* UI/Common/UIxPageFrame.m (_stringsForFramework:): use the system
 	default when the active user does not resolve.
 
 2009-12-11  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* Added a patch from Albrecht Gebhardt <albrecht.gebhardt@algepop.net>
-	that offers a "Reload" button in the Web contacts 
-	management module.
+	that offers a "Reload" button in the Web contacts management
+	module.
 
 2009-12-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
