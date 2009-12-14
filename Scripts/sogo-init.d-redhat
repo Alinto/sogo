@@ -97,27 +97,14 @@ start() {
 
 stop() {
     echo $"Stopping $DESC: "
-    # We kill the parent processes with SIGTERM so that they
-    # can exit gracefully.
     pid="`cat $PIDFILE 2> /dev/null`"
     if [ -n "$pid" ]
     then
         pid="`ps --pid ${pid} -o pid=`"
 	if [ -n "$pid" ]
 	then
-	    if kill $pid >& /dev/null
-	    then
-                sleep 1
-                pid="`ps --pid ${pid} -o pid=`"
-	        if [ -n "$pid" ]
-	        then
-		    echo "  $NAME stopped"
-                else
-		    kill -9 $pid >& /dev/null
-		    echo "  $NAME killed"
-                fi
-	        rm -f $PIDFILE
-	    fi
+	    kill $pid >& /dev/null
+	    echo "  $NAME stopped"
 	else
 	    echo "  $NAME not running"
 	fi
@@ -131,20 +118,9 @@ restart() {
     pid="`cat $PIDFILE 2> /dev/null`"
     if [ -n "$pid" ]
     then
-        pid="`ps --pid ${pid} -o pid=`"
-	if [ -n "$pid" ]
-	then
-	    if kill $pid >& /dev/null
-	    then
-                sleep 1
-                pid="`ps --pid ${pid} -o pid=`"
-	        if [ -n "$pid" ]
-	        then
-		    kill -9 $pid >& /dev/null
-                fi
-	    fi
-	fi
+	kill $pid >& /dev/null
     fi
+    sleep 1
     daemon --user="$USER" --pidfile="$PIDFILE" "$DAEMON" $DAEMON_OPTS
     echo "  $NAME"
 }

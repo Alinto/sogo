@@ -92,7 +92,7 @@ case "$1" in
   restart)
 	echo -n "Restarting $DESC: "
 	killproc -p $PIDFILE $DAEMON || true
-	sleep 1
+        sleep 1
 	startproc -u $USER $DAEMON $DAEMON_OPTS || true
 	echo "$NAME."
 	;;
