@@ -197,6 +197,8 @@
   frameworkName = [NSString stringWithFormat: @"%@.SOGo",
 			    (framework ? framework : [self frameworkName])];
   ud = [[context activeUser] userDefaults];
+  if (!ud)
+    ud = [SOGoSystemDefaults sharedSystemDefaults];
   language = [ud language];
 
   table

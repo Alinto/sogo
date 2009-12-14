@@ -1,3 +1,8 @@
+2009-12-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Common/UIxPageFrame.m (_stringsForFramework:): use the system
+	default when the active user does not resolve.
+
 2009-12-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/PreferencesUI/UIxPreferences.m (-setUserShortDateFormat:):
