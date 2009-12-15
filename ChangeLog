@@ -1,3 +1,10 @@
+2009-12-14  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* UI/MailPartViewers/UIxMailPartHTMLViewer.m
+	Dropped the use of NGMimeType and we now use
+	the same string decoding method as used
+	for text/plain parts.
+
 2009-12-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* Tools/SOGoToolRemoveDoubles.m (-processFolder:ofUser:withFoM:):

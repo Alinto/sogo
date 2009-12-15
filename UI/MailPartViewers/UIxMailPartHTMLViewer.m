@@ -32,14 +32,13 @@
 #import <SaxObjC/SaxXMLReader.h>
 #import <SaxObjC/SaxXMLReaderFactory.h>
 #import <NGExtensions/NSString+misc.h>
+#import <NGExtensions/NSString+Encoding.h>
 #import <NGObjWeb/SoObjects.h>
 
 #include <libxml/encoding.h>
 
 #import <SoObjects/Mailer/SOGoMailObject.h>
 #import <SoObjects/Mailer/SOGoMailBodyPart.h>
-
-#import <NGMime/NGMimeType.h>
 
 #import "UIxMailPartHTMLViewer.h"
 
@@ -76,11 +75,13 @@ _xmlCharsetForCharset (NSString *charset)
     { @"iso-8859-7", XML_CHAR_ENCODING_8859_7},
     { @"iso-8859-8", XML_CHAR_ENCODING_8859_8},
     { @"iso-8859-9", XML_CHAR_ENCODING_8859_9},
+    { @"iso-8859-13", XML_CHAR_ENCODING_ERROR},
     { @"iso-2022-jp", XML_CHAR_ENCODING_2022_JP},
 //     { @"iso-2022-jp", XML_CHAR_ENCODING_SHIFT_JIS},
     { @"koi8-r", XML_CHAR_ENCODING_ERROR},       // unsupported, will trigger koi8-r -> utf8 conversion
     { @"windows-1250", XML_CHAR_ENCODING_ERROR}, // unsupported, will trigger windows-1250 -> utf8 conversion
     { @"windows-1251", XML_CHAR_ENCODING_ERROR}, // unsupported, will trigger windows-1251 -> utf8 conversion
+    { @"windows-1257", XML_CHAR_ENCODING_ERROR}, // unsupported, will trigger windows-1257 -> utf8 conversion
     { @"euc-jp", XML_CHAR_ENCODING_EUC_JP}};
   unsigned count;
   xmlCharEncoding encoding;
@@ -597,12 +598,10 @@ _xmlCharsetForCharset (NSString *charset)
     {
       NSString *s;
 
-      s = [[NSString alloc] initWithData: preparsedContent
-			    encoding: [NGMimeType stringEncodingForCharset:
-						    [[bodyInfo objectForKey:@"parameterList"]
-						      objectForKey: @"charset"]]];
-      [s autorelease];
-      
+      s = [NSString stringWithData: preparsedContent
+		    usingEncodingNamed: [[bodyInfo objectForKey:@"parameterList"]
+					  objectForKey: @"charset"]];
+
 #if BYTE_ORDER == BIG_ENDIAN
       preparsedContent = [s dataUsingEncoding: NSUTF16BigEndianStringEncoding];
       enc = XML_CHAR_ENCODING_UTF16BE;
@@ -707,11 +706,9 @@ _xmlCharsetForCharset (NSString *charset)
     {
       NSString *s;
 
-      s = [[NSString alloc] initWithData: preparsedContent
-			    encoding: [NGMimeType stringEncodingForCharset:
-						    [[bodyInfo objectForKey:@"parameterList"]
-						      objectForKey: @"charset"]]];
-      [s autorelease];
+      s = [NSString stringWithData: preparsedContent
+		    usingEncodingNamed: [[bodyInfo objectForKey:@"parameterList"]
+					  objectForKey: @"charset"]];
       
 #if BYTE_ORDER == BIG_ENDIAN
       preparsedContent = [s dataUsingEncoding: NSUTF16BigEndianStringEncoding];
