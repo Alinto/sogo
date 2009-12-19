@@ -1,6 +1,6 @@
 /* SOGoUserFolder+Appointments.m - this file is part of SOGo
  *
- * Copyright (C) 2008 Inverse inc.
+ * Copyright (C) 2008-2009 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -97,13 +97,17 @@
 
 - (NSArray *) _davPersonalCalendarURL
 {
-  NSArray *tag;
   SOGoAppointmentFolders *parent;
+  NSArray *tag, *parentURL;
 
   parent = [self privateCalendars: @"Calendar" inContext: context];
+  parentURL = [parent davURLAsString];
+
+  if ([parentURL hasSuffix: @"/"])
+    parentURL = [parentURL substringToIndex: [parentURL length]-1];
+  
   tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
-                 [NSString stringWithFormat: @"%@personal/",
-			   [parent davURLAsString]],
+                 [NSString stringWithFormat: @"%@/personal/", parentURL],
 		 nil];
 
   return [NSArray arrayWithObject: tag];

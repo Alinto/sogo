@@ -1,3 +1,12 @@
+2009-12-19  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* SoObjects/Appointments/SOGoUserFolder+Appointments.m
+	(_davPersonalCalendarURL): We make sure we handle the
+	presence or not of the trailing slash when we call
+	-davURLAsString on the parent object. See
+	http://www.scalableogo.org/bugs/view.php?id=74 for
+	all details.
+
 2009-12-14  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* UI/MailPartViewers/UIxMailPartHTMLViewer.m

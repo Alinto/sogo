@@ -162,7 +162,7 @@
 - (NSString *) flatContentAsString
 {
   /* Note: we even have the line count in the body-info! */
-  NSString *s, *charset;
+  NSString *charset, *s;
   NSData *content;
 
   content = [self decodedFlatContent];
