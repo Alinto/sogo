@@ -333,8 +333,8 @@
   NSDictionary *defaultsValues, *settingsValues;
 
   sogoUser = [SOGoUser userWithLogin: uid roles: nil];
-  defaultsValues = [[sogoUser userDefaults] values];
-  settingsValues = [[sogoUser userSettings] values];
+  defaultsValues = [[[sogoUser userDefaults] source] values];
+  settingsValues = [[[sogoUser userSettings] source] values];
   preferences = [NSArray arrayWithObjects: defaultsValues, settingsValues,
                          nil];
   [userRecord setObject: preferences forKey: @"preferences"];
