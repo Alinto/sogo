@@ -1,3 +1,9 @@
+2009-12-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUserFolder.m (-fetchContentObjectNames):
+	fixed a potential crash by removing the "static" attribute of the
+	"cos" local variable.
+
 2009-12-19  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/Appointments/SOGoUserFolder+Appointments.m

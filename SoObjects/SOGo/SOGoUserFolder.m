@@ -603,16 +603,14 @@
 {
   SOGoSystemDefaults *sd;
   SOGoUser *currentUser;
-  static NSArray *cos = nil;
+  NSArray *cos;
 
   sd = [SOGoSystemDefaults sharedSystemDefaults];
   currentUser = [context activeUser];
-  if ((![[context request] isSoWebDAVRequest] || [sd isCalendarDAVAccessEnabled])
+  if ((![[context request] isSoWebDAVRequest]
+       || [sd isCalendarDAVAccessEnabled])
       && [currentUser canAccessModule: @"Calendar"])
-    {
-      if (!cos)
-        cos = [[NSArray alloc] initWithObjects: @"freebusy.ifb", nil];
-    }
+    cos = [NSArray arrayWithObject: @"freebusy.ifb"];
   else
     cos = [NSArray array];
 
