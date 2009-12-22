@@ -98,7 +98,8 @@
 - (NSArray *) _davPersonalCalendarURL
 {
   SOGoAppointmentFolders *parent;
-  NSArray *tag, *parentURL;
+  NSArray *tag;
+  NSString *parentURL;
 
   parent = [self privateCalendars: @"Calendar" inContext: context];
   parentURL = [parent davURLAsString];
