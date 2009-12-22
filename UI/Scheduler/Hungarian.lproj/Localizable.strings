@@ -274,7 +274,6 @@
 "Search attendees" = "Résztvevők keresése";
 "Search resources" = "Erőforrások keresése";
 "Search appointments" = "Találkozók keresése";
-"Search in Anais" = "Anais keresése";
 
 "All day Event" = "Egésznapos esemény";
 "check for conflicts" = "Ütközés ellenőrzése";
@@ -534,6 +533,7 @@ vtodo_class2 = "(Bizalmas feladat)";
 "Open Task..." = "Open Task...";
 "Mark Completed" = "Mark Completed";
 "Delete Task" = "Delete Task";
+"Delete Event" = "Delete Event";
 
 "Subscribe to a web calendar..." = "Subscribe to a web calendar...";
 "URL of the Calendar" = "URL of the Calendar";

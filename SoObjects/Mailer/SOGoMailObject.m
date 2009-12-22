@@ -1068,18 +1068,6 @@ static BOOL debugSoParts       = NO;
 
 /* some mail classification */
 
-- (BOOL) isKolabObject
-{
-  NSDictionary *h;
-  
-  if ((h = [self mailHeaders]) != nil)
-    return [[h objectForKey: @"x-kolab-type"] isNotEmpty];
-  
-  // TODO: we could check the body structure?
-  
-  return NO;
-}
-
 - (BOOL) isMailingListMail
 {
   NSDictionary *h;
@@ -1192,21 +1180,6 @@ static BOOL debugSoParts       = NO;
 
 - (NSString *) outlookMessageClass
 {
-  NSString *type;
-  
-  if ((type = [[self mailHeaders] objectForKey: @"x-kolab-type"]) != nil) {
-    if ([type isEqualToString: @"application/x-vnd.kolab.contact"])
-      return @"IPM.Contact";
-    if ([type isEqualToString: @"application/x-vnd.kolab.task"])
-      return @"IPM.Task";
-    if ([type isEqualToString: @"application/x-vnd.kolab.event"])
-      return @"IPM.Appointment";
-    if ([type isEqualToString: @"application/x-vnd.kolab.note"])
-      return @"IPM.Note";
-    if ([type isEqualToString: @"application/x-vnd.kolab.journal"])
-      return @"IPM.Journal";
-  }
-  
   return @"IPM.Message"; /* email, default class */
 }
 

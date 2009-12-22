@@ -1213,7 +1213,9 @@ function calendarDisplayCallback(http) {
                              onMenuNewTaskClick,
                              "-",
                              loadPreviousView,
-                             loadNextView);
+                             loadNextView,
+                             "-",
+                             deleteEvent);
             observer = $("daysView");
         }
         else if (currentView == 'weekview') {
@@ -1221,7 +1223,9 @@ function calendarDisplayCallback(http) {
                              onMenuNewTaskClick,
                              "-",
                              loadPreviousView,
-                             loadNextView);
+                             loadNextView,
+                             "-",
+                             deleteEvent);
             observer = $("daysView");
         }
         else {
@@ -1229,7 +1233,9 @@ function calendarDisplayCallback(http) {
                              onMenuNewTaskClick,
                              "-",
                              loadPreviousView,
-                             loadNextView);
+                             loadNextView,
+                             "-",
+                             deleteEvent);
             observer = $("monthDaysView");
         }
         initMenu($("currentViewMenu"), menu);

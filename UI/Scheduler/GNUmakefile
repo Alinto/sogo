@@ -63,7 +63,7 @@ SchedulerUI_RESOURCE_FILES += \
 	Toolbars/SOGoEmpty.toolbar
 
 SchedulerUI_LOCALIZED_RESOURCE_FILES += \
-	Localizable.strings		\
+	Localizable.strings
 
 # if SoProduct is fixed to enable localized resources, add this to
 # SchedulerUI_LOCALIZED_RESOURCE_FILES instead

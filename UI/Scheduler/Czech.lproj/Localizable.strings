@@ -274,7 +274,6 @@
 "Search attendees" = "Vyhledat účastníky";
 "Search resources" = "Vyhledat zdroje";
 "Search appointments" = "Vyhledat schůzky";
-"Search in Anais" = "Vyhledat v Anais";
 
 "All day Event" = "Celodenní událost";
 "check for conflicts" = "Zkontrolovat překrývání";
@@ -534,6 +533,7 @@ vtodo_class2 = "(Důvěrný úkol)";
 "Open Task..." = "Open Task...";
 "Mark Completed" = "Mark Completed";
 "Delete Task" = "Delete Task";
+"Delete Event" = "Delete Event";
 
 "Subscribe to a web calendar..." = "Subscribe to a web calendar...";
 "URL of the Calendar" = "Adresa vzdáleného kalendáře na webu";

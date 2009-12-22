@@ -26,11 +26,6 @@ MailPartViewers_OBJC_FILES += \
 	UIxMailPartICalViewer.m		\
 	\
 	UIxMailPartICalActions.m	\
-	\
-	UIxKolabPartViewer.m		\
-	UIxKolabPartContactViewer.m	\
-	UIxKolabPartEventViewer.m	\
-	UIxKolabPartTaskViewer.m	\
 
 MailPartViewers_RESOURCE_FILES += \
 	Version			\

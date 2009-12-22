@@ -170,38 +170,6 @@ static BOOL showNamedTextAttachmentsInline = NO;
   return [viewer pageWithName: @"UIxMailPartICalViewer"];
 }
 
-/* Kolab viewers */
-
-- (WOComponent *) kolabContactViewer
-{
-  return [viewer pageWithName: @"UIxKolabPartContactViewer"];
-}
-
-- (WOComponent *) kolabEventViewer
-{
-  return [viewer pageWithName: @"UIxKolabPartEventViewer"];
-}
-
-- (WOComponent *) kolabTodoViewer
-{
-  return [viewer pageWithName: @"UIxKolabPartTodoViewer"];
-}
-
-- (WOComponent *) kolabNoteViewer
-{
-  return [self textViewer]; // TODO
-}
-
-- (WOComponent *) kolabJournalViewer
-{
-  return [self textViewer]; // TODO
-}
-
-- (WOComponent *) kolabDistributionListViewer
-{
-  return [self textViewer]; // TODO
-}
-
 /* main viewer selection */
 
 - (WOComponent *) viewerForBodyInfo: (id) _info
@@ -275,26 +243,7 @@ static BOOL showNamedTextAttachmentsInline = NO;
   if ([mt isEqualToString:@"application"])
     {
       // octet-stream (generate download link?, autodetect type?)
-    
-      if ([st hasPrefix:@"x-vnd.kolab."])
-	{
-	  if ([st isEqualToString:@"x-vnd.kolab.contact"])
-	    return [self kolabContactViewer];
-	  if ([st isEqualToString:@"x-vnd.kolab.event"])
-	    return [self kolabEventViewer];
-	  if ([st isEqualToString:@"x-vnd.kolab.task"])
-	    return [self kolabTodoViewer];
-	  if ([st isEqualToString:@"x-vnd.kolab.note"])
-	    return [self kolabNoteViewer];
-	  if ([st isEqualToString:@"x-vnd.kolab.journal"])
-	    return [self kolabJournalViewer];
-	  if ([st isEqualToString:@"x-vnd.kolab.contact.distlist"])
-	    return [self kolabDistributionListViewer];
-      
-	  [self errorWithFormat:@"found no viewer for Kolab type: %@/%@", mt, st];
-	  return [self linkViewer];
-	}
-      else if ([st isEqualToString:@"ics"]) /* Cooqle K4lendahr - Google Calendar */
+      if ([st isEqualToString:@"ics"]) /* Cooqle K4lendahr - Google Calendar */
 	return [self iCalViewer];
 
 #if 0 /* the link viewer looks better than plain text ;-) */

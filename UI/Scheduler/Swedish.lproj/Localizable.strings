@@ -274,7 +274,6 @@
 "Search attendees" = "Sök deltagare";
 "Search resources" = "Sök resurser";
 "Search appointments" = "Sök möten";
-"Search in Anais" = "Sök i Anais";
 
 "All day Event" = "Heldagshändelse";
 "check for conflicts" = "Kontrollera konflikter";
@@ -534,6 +533,7 @@ vtodo_class2 = "(Konfidentiell uppgift)";
 "Open Task..." = "Öppna uppgift...";
 "Mark Completed" = "Märk utförd";
 "Delete Task" = "Ta bort uppgift";
+"Delete Event" = "Delete Event";
 
 "Subscribe to a web calendar..." = "Prenumrera på en webbkalender...";
 "URL of the Calendar" = "URL till kalendern";

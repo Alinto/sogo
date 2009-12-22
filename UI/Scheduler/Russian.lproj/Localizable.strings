@@ -274,7 +274,6 @@
 "Search attendees" = "Search attendees";
 "Search resources" = "Search resources";
 "Search appointments" = "Search appointments";
-"Search in Anais" = "Search in Anais";
 
 "All day Event" = "All day Event";
 "check for conflicts" = "Check for conflicts";
@@ -534,6 +533,7 @@ vtodo_class2 = "(Confidential task)";
 "Open Task..." = "Open Task...";
 "Mark Completed" = "Mark Completed";
 "Delete Task" = "Delete Task";
+"Delete Event" = "Delete Event";
 
 "Subscribe to a web calendar..." = "Subscribe to a web calendar...";
 "URL of the Calendar" = "URL of the Calendar";

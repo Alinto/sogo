@@ -1,4 +1,4 @@
-/* UIxCalMainView.m - this file is part of SOGo
+/* UIxCalView.m - this file is part of SOGo
  *
  * Copyright (C) 2006-2009 Inverse inc.
  *

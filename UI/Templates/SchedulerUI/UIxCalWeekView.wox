@@ -13,6 +13,8 @@
       <li><!-- separator --></li>
       <li><var:string label:value="Previous Week"/></li>
       <li><var:string label:value="Next Week"/></li>
+      <li><!-- separator --></li>
+      <li><var:string label:value="Delete Event"/></li>
     </ul>
   </div>
     <a href="#"

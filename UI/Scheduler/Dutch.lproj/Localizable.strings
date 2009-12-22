@@ -274,7 +274,6 @@
 "Search attendees" = "Deelnemers zoeken";
 "Search resources" = "Resources zoeken";
 "Search appointments" = "Afspraken zoeken";
-"Search in Anais" = "Zoeken in Anais???";
 
 "All day Event" = "Afspraak duurt de hele dag";
 "check for conflicts" = "Op conflicten controleren";
@@ -534,6 +533,7 @@ vtodo_class2 = "(Vertrouwelijke taak)";
 "Open Task..." = "Open Task...";
 "Mark Completed" = "Mark Completed";
 "Delete Task" = "Delete Task";
+"Delete Event" = "Delete Event";
 
 "Subscribe to a web calendar..." = "Subscribe to a web calendar...";
 "URL of the Calendar" = "URL of the Calendar";

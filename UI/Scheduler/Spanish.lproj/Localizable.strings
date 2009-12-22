@@ -274,7 +274,6 @@
 "Search attendees" = "Buscar asistentes";
 "Search resources" = "Search recursos";
 "Search appointments" = "Buscar eventos";
-"Search in Anais" = "Buscar en Anais";
 
 "All day Event" = "Todo el día";
 "check for conflicts" = "Buscar conflictos";
@@ -534,6 +533,7 @@ vtodo_class2 = "(Tarea confidencial)";
 "Open Task..." = "Open Task...";
 "Mark Completed" = "Mark Completed";
 "Delete Task" = "Delete Task";
+"Delete Event" = "Delete Event";
 
 "Subscribe to a web calendar..." = "Subscribe to a web calendar...";
 "URL of the Calendar" = "URL of the Calendar";

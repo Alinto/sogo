@@ -1,4 +1,4 @@
-/* SOGoGCSFolder.m - this file is part of SOGo
+/* SOGoObject.m - this file is part of SOGo
  *
  *  Copyright (C) 2004-2005 SKYRIX Software AG
  *  Copyright (C) 2006-2009 Inverse inc.

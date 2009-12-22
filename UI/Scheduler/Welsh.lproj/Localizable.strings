@@ -274,7 +274,6 @@
 "Search attendees" = "Chwilio mynychwyr";
 "Search resources" = "Chwilio adnoddau";
 "Search appointments" = "Chwilio apwyntiadau";
-"Search in Anais" = "Search in Anais";
 
 "All day Event" = "Digwyddiad trwy'r dydd";
 "check for conflicts" = "Gwirio gwrthdaro";
@@ -534,6 +533,7 @@ vtodo_class2 = "(Tasg gyhoeddus)";
 "Open Task..." = "Open Task...";
 "Mark Completed" = "Mark Completed";
 "Delete Task" = "Delete Task";
+"Delete Event" = "Delete Event";
 
 "Subscribe to a web calendar..." = "Subscribe to a web calendar...";
 "URL of the Calendar" = "URL of the Calendar";

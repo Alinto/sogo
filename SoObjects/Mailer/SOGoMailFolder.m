@@ -245,10 +245,12 @@ static NSString *defaultUserID =  @"anyone";
 		   inContext: (id) localContext
 {
   SOGoMailFolder *trashFolder;
-  id result;
-  NSException *error;
-  NSString *folderName;
   NGImap4Client *client;
+  NSString *folderName;
+  NSException *error;
+  id result;
+  BOOL b;
+
 
   trashFolder = [[self mailAccountFolder] trashFolderInContext: localContext];
   if ([trashFolder isNotNull])
@@ -260,19 +262,27 @@ static NSString *defaultUserID =  @"anyone";
 	  client = [[self imap4Connection] client];
 	  [imap4 selectFolder: [self imap4URL]];
 	  folderName = [imap4 imap4FolderNameForURL: [trashFolder imap4URL]];
+	  b = YES;
 
-	  // If our Trash folder doesn't exist when we try to copy messages
-	  // to it, we create it.
-	  result = [[client status: folderName  flags: [NSArray arrayWithObject: @"UIDVALIDITY"]]
-		     objectForKey: @"result"];
+	  // If we are deleting messages within the Trash folder itself, we
+	  // do not, of course, try to move messages to the Trash folder.
+	  if (![folderName isEqualToString: [self relativeImap4Name]])
+	    {
+	      // If our Trash folder doesn't exist when we try to copy messages
+	      // to it, we create it.
+	      result = [[client status: folderName  flags: [NSArray arrayWithObject: @"UIDVALIDITY"]]
+			 objectForKey: @"result"];
+	      
+	      if (![result boolValue])
+		result = [[self imap4Connection] createMailbox: folderName  atURL: [[self mailAccountFolder] imap4URL]];
+	      
+	      if (!result || [result boolValue])
+		result = [client copyUids: uids toFolder: folderName];
+	      
+	      b = [[result valueForKey: @"result"] boolValue];
+	    }
 	  
-	  if (![result boolValue])
-	    result = [[self imap4Connection] createMailbox: folderName  atURL: [[self mailAccountFolder] imap4URL]];
-
-	  if (!result || [result boolValue])
-	    result = [client copyUids: uids toFolder: folderName];
-
-	  if ([[result valueForKey: @"result"] boolValue])
+	  if (b)
 	    {
 	      result = [client storeFlags: [NSArray arrayWithObject: @"Deleted"]
 			       forUIDs: uids addOrRemove: YES];
@@ -433,15 +443,16 @@ static NSString *defaultUserID =  @"anyone";
   
   result = [self copyUIDs: uids toFolder: destinationFolder inContext: localContext];
   
-  if ( ![result isNotNull] ) {
-    result = [client storeFlags: [NSArray arrayWithObject: @"Deleted"]
-	       forUIDs: uids addOrRemove: YES];
-	  if ([[result valueForKey: @"result"] boolValue])
-		{
-		  [self markForExpunge];
-      result = nil;
+  if ( ![result isNotNull] )
+    {
+      result = [client storeFlags: [NSArray arrayWithObject: @"Deleted"]
+		       forUIDs: uids addOrRemove: YES];
+      if ([[result valueForKey: @"result"] boolValue])
+	{
+	  [self markForExpunge];
+	  result = nil;
+	}
     }
-  }
 
   return result;
 }

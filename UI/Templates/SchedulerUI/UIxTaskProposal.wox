@@ -114,20 +114,6 @@
                   <var:component className="UIxContactSelector"
                     const:selectorId="resources" />
               </td>
-<!--
-              <td align="left" bgcolor="#FFFFF0">
-                <span class="aptview_text">
-                  <var:component className="AnaisAttendeeSelector"
-                                 const:selectorID="resource"
-                                 const:role="NON-PARTICIPANT"
-                                 attendees="resources"
-                                 const:division="CC"
-                                 const:withAddressBook="1"
-                  />
-                    TODO: need attendee selector (AB)
-                </span>
-              </td>
--->
             </tr>
             <tr><td colspan="2"> </td></tr>
             <tr bgcolor="#e8e8e0">
@@ -139,11 +125,6 @@
             </tr>
             <tr><td colspan="2"> </td></tr>
             <tr valign="top">
-<!--              <td align="right" width="15%" bgcolor="#E8E8E0">
-                <span class="aptview_text">
-                  <var:string label:value="Search in Anais" />:
-                </span>
-              </td> -->
               <td colspan="2">
                   <var:component className="UIxContactSelector"
                     const:selectorId="participants" />
@@ -151,20 +132,6 @@
 <!--              <td align="left" bgcolor="#FFFFF0"
                 <span class="aptview_text">
                    use '1' instead of 'YES', otherwise breaks on OSX -->
-<!--                  <var:component className="AnaisAttendeeSelector"
-                                 const:selectorID="participant"
-                                 const:division="CC"
-                                 const:withCN="1"
-                                 const:role="REQ-PARTICIPANT"
-                                 attendees="participants"
-                                 var:emailForUser="emailForUser"
-                                 var:cnForUser="cnForUser"
-                                 const:withAddressBook="1"
-                  />
-                    TODO: need attendee selector (AB)
-                </span>
-              </td>
--->
             </tr>
             <tr><td colspan="2"> </td></tr>
             <tr>

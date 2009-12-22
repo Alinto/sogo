@@ -14,6 +14,8 @@
       <li><!-- separator --></li>
       <li><var:string label:value="Previous Month"/></li>
       <li><var:string label:value="Next Month"/></li>
+      <li><!-- separator --></li>
+      <li><var:string label:value="Delete Event"/></li>
     </ul>
   </div>
   <a href="#"
