@@ -1,5 +1,9 @@
 2009-12-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Tests/test-webdav.py (WebDAVTest.testPrincipalCollectionSet2):
+	fixed test to use the proper collection URL as expected value,
+	rather that the freebusy.ifb resource URL.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	(_appendComponentProperties:matchingFilters:toResponse:)
 	(_appendComponentProperties:matchingURLs:toResponse:): ensure that
