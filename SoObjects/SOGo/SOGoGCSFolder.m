@@ -1064,6 +1064,9 @@ static NSArray *childRecordFields = nil;
   newToken = 0;
 
   baseURL = [self davURLAsString];
+#warning review this when fixing http://www.scalableogo.org/bugs/view.php?id=276
+  if (![baseURL hasSuffix: @"/"])
+    baseURL = [NSString stringWithFormat: @"%@/", baseURL];
 
   max = [records count];
   syncResponses = [NSMutableArray arrayWithCapacity: max + 1];

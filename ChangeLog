@@ -1,3 +1,10 @@
+2009-12-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(_appendComponentProperties:matchingFilters:toResponse:)
+	(_appendComponentProperties:matchingURLs:toResponse:): ensure that
+	baseURL ends with "/".
+
 2009-12-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUserFolder.m (-fetchContentObjectNames):

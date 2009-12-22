@@ -1308,8 +1308,6 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
   [r appendFormat: @"<D:response><D:href>"];
   [r appendString: baseURL];
-//   if (![baseURL hasSuffix: @"/"])
-//     [r appendContentString: @"/"];
   [r appendString: [object objectForKey: @"c_name"]];
   [r appendString: @"</D:href>"];
 
@@ -1715,6 +1713,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     if ([currentField length])
       [fields addObjectUniquely: currentField];
   baseURL = [self davURLAsString];
+#warning review this when fixing http://www.scalableogo.org/bugs/view.php?id=276
+  if (![baseURL hasSuffix: @"/"])
+    baseURL = [NSString stringWithFormat: @"%@/", baseURL];
 
   propertiesArray = [[properties allKeys] asPointersOfObjects];
   propertiesCount = [properties count];
@@ -1934,6 +1935,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   NSEnumerator *addFields;
 
   baseURL = [self davURLAsString];
+#warning review this when fixing http://www.scalableogo.org/bugs/view.php?id=276
+  if (![baseURL hasSuffix: @"/"])
+    baseURL = [NSString stringWithFormat: @"%@/", baseURL];
 
   urls = [NSMutableArray array];
   max = [refs length];
