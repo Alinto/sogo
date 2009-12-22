@@ -7,7 +7,7 @@ import webdavlib
 
 class WebDAVTest(unittest.TestCase):
     def testPrincipalCollectionSet(self):
-        """property: principal-collection-set"""
+        """property: 'principal-collection-set' on collection object"""
         client = webdavlib.WebDAVClient(hostname, port, username, password)
         resource = '/SOGo/dav/%s/' % username
         propfind = webdavlib.WebDAVPROPFIND(resource,
@@ -29,7 +29,7 @@ class WebDAVTest(unittest.TestCase):
                               % ( responseHref, resource ))
 
     def testPrincipalCollectionSet2(self):
-        """property: principal-collection-set"""
+        """property: 'principal-collection-set' on non-collection object"""
         client = webdavlib.WebDAVClient(hostname, port, username, password)
         resource = '/SOGo/dav/%s/freebusy.ifb' % username
         propfind = webdavlib.WebDAVPROPFIND(resource,
@@ -41,14 +41,15 @@ class WebDAVTest(unittest.TestCase):
         nodes = propfind.xpath_evaluate('/D:multistatus/D:response/D:propstat/D:prop/D:principal-collection-set/D:href',
                                         None)
         responseHref = nodes[0].childNodes[0].nodeValue
+        expectedHref = '/SOGo/dav/%s/' % username
         if responseHref[0:4] == "http":
-            self.assertEquals("http://%s%s" % (hostname, resource), responseHref,
+            self.assertEquals("http://%s%s" % (hostname, expectedHref), responseHref,
                               "{DAV:}principal-collection-set returned %s instead of '%s'"
-                              % ( responseHref, resource ))
+                              % ( responseHref, expectedHref ))
         else:
-            self.assertEquals(resource, responseHref,
+            self.assertEquals(expectedHref, responseHref,
                               "{DAV:}principal-collection-set returned %s instead of '%s'"
-                              % ( responseHref, resource ))
+                              % ( responseHref, expectedHref ))
 
 if __name__ == "__main__":
     unittest.main()
