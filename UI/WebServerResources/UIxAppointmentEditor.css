@@ -133,17 +133,30 @@ DIV#attendeesMenu DIV
 DIV#attendeesMenu .accepted
 { background-image: url("accepted.png"); }
 
+DIV#attendeesMenu .accepted:hover
+{ background-image: url("accepted.selected.png"); }
+
 DIV#attendeesMenu .needs-action
 { background-image: url("needs-action.png"); }
+
+DIV#attendeesMenu .needs-action:hover
+{ background-image: url("needs-action.selected.png"); }
 
 DIV#attendeesMenu .declined
 { background-image: url("declined.png"); }
 
+DIV#attendeesMenu .declined:hover
+{ background-image: url("declined.selected.png"); }
+
 DIV#attendeesMenu .delegated
 { background-image: url("delegated.png"); }
 
+DIV#attendeesMenu .delegated:hover
+{ background-image: url("delegated.selected.png"); }
+
 DIV#attendeesMenu .delegate
-{ margin-left: 10px; }
+{ background-position: 15px center;
+  padding-left: 32px; }
 
 /* read-only view */
 DIV#attendeesMenu DIV
