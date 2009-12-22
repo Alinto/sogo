@@ -1,3 +1,8 @@
+2009-12-22  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Scheduler/UIxAppointmentEditor.m (-viewAction): added
+	calendar name in returned dictionary.
+
 2009-12-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUserFolder.m (-fetchContentObjectNames):

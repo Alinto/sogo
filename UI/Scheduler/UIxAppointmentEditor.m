@@ -455,6 +455,14 @@
   [eventDate setTimeZone: timeZone];
   co = [self clientObject];
   
+  if (!componentCalendar)
+    {
+      componentCalendar = [co container];
+      if ([componentCalendar isKindOfClass: [SOGoCalendarComponent class]])
+	componentCalendar = [componentCalendar container];
+      [componentCalendar retain];
+    }
+  
   resetAlarm = [[[context request] formValueForKey: @"resetAlarm"] boolValue];
   if (resetAlarm && [event hasAlarms] && ![event hasRecurrenceRules])
     {
@@ -483,6 +491,7 @@
 	}
     }
   data = [NSDictionary dictionaryWithObjectsAndKeys:
+		       [componentCalendar displayName], @"calendar",
 		       [event tag], @"component",
 		       [dateFormatter formattedDate: eventDate], @"startDate",
 		       [dateFormatter formattedTime: eventDate], @"startTime",

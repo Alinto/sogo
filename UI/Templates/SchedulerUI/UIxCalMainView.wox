@@ -92,8 +92,9 @@
   <div id="eventDialog" style="display: none;" class="dialog">
     <div>
       <h1><!-- space --></h1>
-      <p id="startTime"><span class="label"><var:string label:value="Start:" /></span> <span><!-- space --></span></p>
-      <p id="location"><span class="label"><var:string label:value="Location:" /></span> <span><!-- space --></span></p>
+      <p><span class="label"><var:string label:value="Calendar:" /></span> <span><!-- space --></span></p>
+      <p><span class="label"><var:string label:value="Start:" /></span> <span><!-- space --></span></p>
+      <p><span class="label"><var:string label:value="Location:" /></span> <span><!-- space --></span></p>
       <p id="description"><!-- space --></p>
     </div>
   </div>
