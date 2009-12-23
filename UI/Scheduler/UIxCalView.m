@@ -74,7 +74,6 @@
         = [[SOGoAptFormatter alloc] initWithDisplayTimeZone: timeZone];
       privateAptTooltipFormatter
         = [[SOGoAptFormatter alloc] initWithDisplayTimeZone: timeZone];
-      [self configureFormatters];
       componentsData = [NSMutableDictionary new];
     }
 
@@ -182,37 +181,6 @@
   ASSIGN (appointment, _apt);
 }
 
-// - (void) setAppointment:(id) _apt
-// {
-//   NSString *mailtoChunk;
-//   NSString *myEmail;
-//   NSString *partmails;
-
-//   ASSIGN(appointment, _apt);
-
-//   /* cache some info about apt for faster access */
-  
-//   mailtoChunk = [_apt valueForKey: @"orgmail"];
-//   myEmail = [self emailForUser];
-//   if ([mailtoChunk rangeOfString: myEmail].length > 0)
-//     {
-//       aptFlags.isMyApt = YES;
-//       aptFlags.canAccessApt = YES;
-//     }
-//   else
-//     {
-//       aptFlags.isMyApt = NO;
-
-//       partmails = [_apt valueForKey: @"partmails"];
-//       if ([partmails rangeOfString: myEmail].length)
-//         aptFlags.canAccessApt = YES;
-//       else
-//         aptFlags.canAccessApt
-//           = ([[_apt valueForKey: @"classification"] intValue]
-//              == iCalAccessPublic);
-//     }
-// }
-
 - (id) appointment
 {
   return appointment;
@@ -248,6 +216,9 @@
 
 - (SOGoAptFormatter *) aptFormatter
 {
+  if (![aptFormatter titlePlaceholder])
+    [self configureFormatters];
+
   if (aptFlags.canAccessApt)
     return aptFormatter;
   return privateAptFormatter;
@@ -255,6 +226,9 @@
 
 - (SOGoAptFormatter *) aptTooltipFormatter
 {
+  if (![aptTooltipFormatter titlePlaceholder])
+    [self configureFormatters];
+
   if (aptFlags.canAccessApt)
     return aptTooltipFormatter;
   return privateAptTooltipFormatter;
