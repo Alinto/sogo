@@ -171,7 +171,8 @@
             || [currentKey isEqualToString: @"ContactAccess"]
             || [currentKey hasPrefix: @"objectClass"]
             || [currentKey hasPrefix: @"c_"]
-            || [currentKey isEqualToString: @"dn"]))
+            || [currentKey isEqualToString: @"dn"]
+	    || [currentKey isEqualToString: @"isGroup"]))
         [self _appendLDIFKey: currentKey toString: ldifString];
     }
 
