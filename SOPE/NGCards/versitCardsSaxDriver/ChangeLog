@@ -1,3 +1,9 @@
+2009-12-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* VSSaxDriver.m (_endComponent:value:): worked-around the lameness
+	in -[GSCInlineString isEqualToString:] by having "mtName"
+	compare against "expectedName" instead.
+
 2009-03-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* VSStringFormatter.[hm]: removed useless module.

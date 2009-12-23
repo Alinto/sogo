@@ -660,7 +660,7 @@ static NSCharacterSet *whitespaceCharSet = nil;
       NSString *expectedName;
       
       expectedName = [(VSSaxTag *)[cardStack lastObject] tagName];
-      if (![expectedName isEqualToString: mtName])
+      if (![mtName isEqualToString: expectedName])
         {
           NSString *s;
 	
@@ -706,8 +706,8 @@ static NSCharacterSet *whitespaceCharSet = nil;
   NSMutableArray *tagAttributes;
   NSRange        r, todoRange;
   unsigned       length;
-  
-#if 0
+
+#if 0  
   if (debugOn)
     NSLog(@"%s: parse line: '%@'", __PRETTY_FUNCTION__, _line);
 #endif
