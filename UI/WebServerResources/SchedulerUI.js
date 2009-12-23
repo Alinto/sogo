@@ -890,6 +890,7 @@ function onMonthOverview() {
 }
 
 function onCalendarReload() {
+    refreshTasks();
     reloadWebCalendars ();
     return false;
 }

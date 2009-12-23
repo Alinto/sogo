@@ -15,8 +15,13 @@
 
 	* SoObjects/SOGo/NSDictionary+Utilities.m (-userRecordAsLDIFEntry)
 	We skip the "isGroup" attribute from the list of attributes
-	to include during LDIF generation
+	to include during LDIF generation. This fixes:
+	http://www.scalableogo.org/bugs/view.php?id=221
 
+	* UI/WebServerResources/SchedulerUI.js - we also invoke
+	refreshTasks() in onCalendarReload(). This fixes:
+	http://www.scalableogo.org/bugs/view.php?id=250
+	
 2009-12-22  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* Removed all the Kolab-related stuff (more specifically,
