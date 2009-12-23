@@ -13,6 +13,10 @@
 	created upon access to the calendar or address book module.
 	This fixes: http://www.scalableogo.org/bugs/view.php?id=208
 
+	* SoObjects/SOGo/NSDictionary+Utilities.m (-userRecordAsLDIFEntry)
+	We skip the "isGroup" attribute from the list of attributes
+	to include during LDIF generation
+
 2009-12-22  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* Removed all the Kolab-related stuff (more specifically,
