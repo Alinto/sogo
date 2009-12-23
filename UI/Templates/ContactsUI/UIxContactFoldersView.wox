@@ -30,7 +30,7 @@
     <div>
       <h3><var:string label:value="Import Cards"/></h3>
       <p><var:string label:value="Select a vCard or LDIF file."/></p>
-      <form name="uploadForm" id="uploadForm" method="post"
+      <form const:href="" name="uploadForm" id="uploadForm" method="post"
         enctype="multipart/form-data"
         onsubmit="return AIM.submit(this, {'onStart' : validateUploadForm, 
         'onComplete' : uploadCompleted})">

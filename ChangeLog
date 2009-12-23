@@ -4,6 +4,21 @@
 	useless method.
 	(-sharedAccountName): removed useless method.
 
+2009-12-23  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* UI/Scheduler/UIxCalView.m
+	Don't call -configureFormatters in -init as it'll
+	invoke labelForKey prior to setPage: - resulting
+	in the wrong resources manager being selected.
+	This fixes: http://www.scalableogo.org/bugs/view.php?id=286
+
+	* UI/Templates/ContactsUI/UIxContactFoldersView.wox
+	UI/Templates/SchedulerUI/UIxCalMainView.wox
+	Modified the uploadForm in those two templates (to add
+	const:href="") in order to avoid SOPE sessions being
+	created upon access to the calendar or address book module.
+	This fixes: http://www.scalableogo.org/bugs/view.php?id=208
+
 2009-12-22  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* Removed all the Kolab-related stuff (more specifically,
