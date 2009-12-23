@@ -70,11 +70,6 @@ typedef enum {
 - (NSArray *) allFolderPaths;
 - (BOOL) isInDraftsFolder;
 
-/* shared accounts */
-
-- (BOOL) isSharedAccount;
-- (NSString *) sharedAccountName;
-
 /* special folders */
 
 - (NSString *) inboxFolderNameInContext: (id)_ctx;
