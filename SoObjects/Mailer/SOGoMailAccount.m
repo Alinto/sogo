@@ -87,27 +87,6 @@ static NSString *sieveScriptName = @"sogo";
   ASSIGN (accountName, newAccountName);
 }
 
-/* shared accounts */
-
-- (BOOL) isSharedAccount
-{
-  NSString *s;
-  NSRange  r;
-  
-  s = accountName;
-  r = [s rangeOfString:@"@"];
-  if (r.length == 0) /* regular HTTP logins are never a shared mailbox */
-    return NO;
-  
-  s = [s substringToIndex:r.location];
-  return [s rangeOfString:@".-."].length > 0 ? YES : NO;
-}
-
-- (NSString *) sharedAccountName
-{
-  return nil;
-}
-
 /* listing the available folders */
 
 - (BOOL) isInDraftsFolder

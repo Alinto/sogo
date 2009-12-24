@@ -1,3 +1,9 @@
+2009-12-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailAccount.m (-isSharedAccount): removed
+	useless method.
+	(-sharedAccountName): removed useless method.
+
 2009-12-23  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* UI/Scheduler/UIxCalView.m
@@ -29,13 +35,13 @@
 
 	* Removed all references to "anais" stuff.
 
-	* SoObjects/Mailer/SOGoMailFoder.m (-deleteUIDs:inContext:): 
+	* SoObjects/Mailer/SOGoMailFolder.m (-deleteUIDs:inContext:):
 	we check if we  aren't in the Trash folder already before try to
 	copy over deleted messages.
 
 	* We now offer a way to delete events from the context menu
 	in all calendar views.
-	
+
 2009-12-22  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Scheduler/UIxAppointmentEditor.m (-viewAction): added
