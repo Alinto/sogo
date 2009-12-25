@@ -1,3 +1,10 @@
+2009-12-25  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* Tools/SOGoToolBackup.m (-fetchUserIDs:):
+	We now use a local autorelease pool and flush
+	it after every 100 requests to the LDAP (or
+	other source type) server.
+
 2009-12-23  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* UI/Scheduler/UIxCalView.m

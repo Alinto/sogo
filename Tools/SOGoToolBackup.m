@@ -21,6 +21,7 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSError.h>
 #import <Foundation/NSFileManager.h>
 #import <Foundation/NSString.h>
@@ -118,6 +119,7 @@
 
 - (BOOL) fetchUserIDs: (NSArray *) users
 {
+  NSAutoreleasePool *pool;
   SOGoUserManager *lm;
   NSDictionary *infos;
   NSString *user;
@@ -125,6 +127,8 @@
   int count, max;
 
   lm = [SOGoUserManager sharedUserManager];
+  pool = [[NSAutoreleasePool alloc] init];
+
   max = [users count];
   user = [users objectAtIndex: 0];
   if (max == 1 && [user isEqualToString: @"ALL"])
@@ -134,6 +138,12 @@
       allUsers = [NSMutableArray array];
       for (count = 0; count < max; count++)
         {
+	  if (count > 0 && count%100 == 0)
+	    {
+	      DESTROY(pool);
+	      pool = [[NSAutoreleasePool alloc] init];
+	    }
+
           user = [users objectAtIndex: count];
           infos = [lm contactInfosForUserWithUIDorEmail: user];
           if (infos)
@@ -144,6 +154,7 @@
     }
 
   ASSIGN (userIDs, [allUsers objectsForKey: @"c_uid" notFoundMarker: nil]);
+  DESTROY(pool);
 
   return ([userIDs count] > 0);
 }
