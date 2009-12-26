@@ -1,3 +1,12 @@
+2009-12-26  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* SoObjects/SOGo/SOGoMailer.m (_smtpSendData:
+	toRecipients:sender:): We now honor the 'port'
+	part in the SMTP server address. So one can now
+	specify hostname:port (like localhost:587) as
+	a value of SOGoSMTPServer. This fixes
+	http://www.scalableogo.org/bugs/view.php?id=201
+
 2009-12-25  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* Tools/SOGoToolBackup.m (-fetchUserIDs:):
