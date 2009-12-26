@@ -41,7 +41,7 @@
       
       // Backward comptability with <= 1.1.0 (ComposeMessagesType)
       if ([ud objectForKey: @"ComposeMessagesType"])
-	 htmlComposition = [[ud objectForKey: @"ComposeMessagesType"] isEqualToString: @"html"];
+	htmlComposition = [[ud objectForKey: @"ComposeMessagesType"] isEqualToString: @"html"];
       else
 	htmlComposition = [[ud objectForKey: @"SOGoMailComposeMessageType"] isEqualToString: @"html"];
 
