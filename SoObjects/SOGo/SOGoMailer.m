@@ -30,6 +30,7 @@
 #import <NGMail/NGSendMail.h>
 #import <NGMail/NGSmtpClient.h>
 #import <NGMime/NGMimePartGenerator.h>
+#import <NGStreams/NGInternetSocketAddress.h>
 
 #import "NSString+Utilities.h"
 #import "SOGoDomainDefaults.h"
@@ -115,14 +116,32 @@
 		   toRecipients: (NSArray *) recipients
 			 sender: (NSString *) sender
 {
+  NGInternetSocketAddress *addr;
+  NSString *currentTo, *host;
+  NSEnumerator *addresses; 
   NGSmtpClient *client;
-  NSEnumerator *addresses;
-  NSString *currentTo;
-  unsigned int toErrors;
   NSException *result;
+  NSRange r;
+
+  unsigned int toErrors, port;
 
   client = [NGSmtpClient smtpClient];
-  if ([client connectToHost: smtpServer])
+  host = smtpServer;
+  port = 25;
+
+  // We check if there is a port specified in the smtpServer ivar value
+  r = [smtpServer rangeOfString: @":"];
+  
+  if (r.length)
+    {
+      port = [[smtpServer substringFromIndex: r.location+1] intValue];
+      host = [smtpServer substringToIndex: r.location];
+    }
+
+  addr = [NGInternetSocketAddress addressWithPort: port
+				  onHost: host];
+
+  if ([client connectToAddress: addr])
     {
       if ([client mailFrom: sender])
 	{
