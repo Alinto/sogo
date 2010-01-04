@@ -43,7 +43,10 @@
   NSMutableArray *filenames;
   NSString *folderType;
   NSDictionary *mailboxACL;
+  BOOL isNamespace;
 }
+
+- (void) setIsNamespace: (BOOL) newIsNamespace;
 
 - (NSString *) absoluteImap4Name;
 

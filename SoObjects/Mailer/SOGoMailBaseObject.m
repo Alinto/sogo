@@ -120,7 +120,7 @@ static BOOL debugOn = YES;
 {
   if (!imap4)
     {
-      imap4 = [[self mailManager] connectionForURL: [self imap4URL] 
+      imap4 = [[self mailManager] connectionForURL: [self imap4URL]
 				  password: [self imap4Password]];
       if (imap4)
  	[imap4 retain];

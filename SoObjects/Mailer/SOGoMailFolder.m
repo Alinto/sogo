@@ -44,6 +44,7 @@
 
 #import <SOGo/DOMNode+SOGo.h>
 #import <SOGo/NSArray+Utilities.h>
+#import <SOGo/NSString+Utilities.h>
 #import <SOGo/NSString+DAV.h>
 #import <SOGo/NSArray+DAV.h>
 #import <SOGo/NSObject+DAV.h>
@@ -106,6 +107,7 @@ static NSString *defaultUserID =  @"anyone";
     {
       [self _adjustOwner];
       mailboxACL = nil;
+      isNamespace = NO;
     }
 
   return self;
@@ -113,7 +115,7 @@ static NSString *defaultUserID =  @"anyone";
 
 - (void) dealloc
 {
-  [filenames  release];
+  [filenames release];
   [folderType release];
   [mailboxACL release];
   [super dealloc];
@@ -121,9 +123,14 @@ static NSString *defaultUserID =  @"anyone";
 
 /* IMAP4 */
 
+- (void) setIsNamespace: (BOOL) newIsNamespace
+{
+  isNamespace = newIsNamespace;
+}
+
 - (NSString *) relativeImap4Name
 {
-  return [nameInContainer substringFromIndex: 6];
+  return [[nameInContainer substringFromIndex: 6] fromCSSIdentifier];
 }
 
 - (NSString *) absoluteImap4Name

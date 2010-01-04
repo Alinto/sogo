@@ -55,6 +55,7 @@ typedef enum {
   SOGoSentFolder *sentFolder;
   SOGoTrashFolder *trashFolder;
   SOGoIMAPAclStyle imapAclStyle;
+  NSMutableArray *namespaces;
 }
 
 - (void) setAccountName: (NSString *) newAccountName;

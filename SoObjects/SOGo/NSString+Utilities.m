@@ -322,6 +322,23 @@ static NSMutableCharacterSet *urlStartChars = nil;
   return cssIdentifier;
 }
 
+- (NSString *) fromCSSIdentifier
+{
+  NSMutableString *newString;
+
+  newString = [NSMutableString stringWithString: self];
+  [newString replaceString: @"_U_" withString: @"_"];
+  [newString replaceString: @"_D_" withString: @"."];
+  [newString replaceString: @"_H_" withString: @"#"];
+  [newString replaceString: @"_A_" withString: @"@"];
+  [newString replaceString: @"_S_" withString: @"*"];
+  [newString replaceString: @"_C_" withString: @":"];
+  [newString replaceString: @"_CO_" withString: @","];
+  [newString replaceString: @"_SP_" withString: @" "];
+
+  return newString;
+}
+
 - (NSString *) pureEMailAddress
 {
   NSString *pureAddress;
