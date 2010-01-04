@@ -39,7 +39,6 @@
 #import <NGImap4/NGSieveClient.h>
 
 #import <SOGo/NSArray+Utilities.h>
-#import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
@@ -68,7 +67,6 @@ static NSString *sieveScriptName = @"sogo";
       trashFolder = nil;
       accountName = nil;
       imapAclStyle = undefined;
-      namespaces = nil;
     }
 
   return self;
@@ -76,7 +74,6 @@ static NSString *sieveScriptName = @"sogo";
 
 - (void) dealloc
 {
-  [namespaces release];
   [inboxFolder release];
   [draftsFolder release];
   [sentFolder release];
@@ -97,55 +94,24 @@ static NSString *sieveScriptName = @"sogo";
   return NO;
 }
 
-- (void) _appendNamespace: (NSArray *) namespace
-                toFolders: (NSMutableArray *) folders
-{
-  NSString *newFolder;
-  NSDictionary *currentPart;
-  int count, max;
-
-  max = [namespace count];
-  for (count = 0; count < max; count++)
-    {
-      currentPart = [namespace objectAtIndex: count];
-      newFolder
-        = [[currentPart objectForKey: @"prefix"] substringFromIndex: 1];
-      if ([newFolder length])
-        [folders addObject: [newFolder asCSSIdentifier]];
-    }
-}
-
-- (void) _appendNamespaces: (NSMutableArray *) folders
-{
-  NSDictionary *namespaceDict;
-  NSArray *namespace;
-  NGImap4Client *client;
-
-  client = [[self imap4Connection] client];
-  namespaceDict = [client namespace];
-  namespace = [namespaceDict objectForKey: @"personal"];
-  if (namespace)
-    [self _appendNamespace: namespace toFolders: folders];
-  namespace = [namespaceDict objectForKey: @"other users"];
-  if (namespace)
-    [self _appendNamespace: namespace toFolders: folders];
-  namespace = [namespaceDict objectForKey: @"shared"];
-  if (namespace)
-    [self _appendNamespace: namespace toFolders: folders];
-}
-
 - (NSArray *) toManyRelationshipKeys
 {
   NSMutableArray *folders;
-  NSArray *imapFolders;
+  NSArray *imapFolders, *additionalFolders;
+
+  folders = [NSMutableArray array];
 
   imapFolders = [[self imap4Connection] subfoldersForURL: [self imap4URL]];
-  folders = [imapFolders mutableCopy];
-  [folders autorelease];
-  [folders addObjectUniquely: [self draftsFolderNameInContext: nil]];
-
-  [self _appendNamespaces: folders];
-
+  additionalFolders
+    = [NSArray arrayWithObject: [self draftsFolderNameInContext: nil]];
+  if ([imapFolders count] > 0)
+    [folders addObjectsFromArray: imapFolders];
+  if ([additionalFolders count] > 0)
+    {
+      [folders removeObjectsInArray: additionalFolders];
+      [folders addObjectsFromArray: additionalFolders];
+    }
+  
   return [folders stringsWithFormat: @"folder%@"];
 }
 
@@ -453,8 +419,6 @@ static NSString *sieveScriptName = @"sogo";
   NSString *folderName;
   Class klazz;
   id obj;
-
-  [[[self imap4Connection] client] namespace];
 
   if ([_key hasPrefix: @"folder"])
     {

@@ -34,13 +34,17 @@
 
 - (id) init
 {
-  SOGoUserDefaults *ud;
-
   if ((self = [super init]))
     {
+      SOGoUserDefaults *ud;
       ud = [[context activeUser] userDefaults];
-      htmlComposition
-        = [[ud mailComposeMessageType] isEqualToString: @"html"];
+      
+      // Backward comptability with <= 1.1.0 (ComposeMessagesType)
+      if ([ud objectForKey: @"ComposeMessagesType"])
+	htmlComposition = [[ud objectForKey: @"ComposeMessagesType"] isEqualToString: @"html"];
+      else
+	htmlComposition = [[ud objectForKey: @"SOGoMailComposeMessageType"] isEqualToString: @"html"];
+
       sourceMail = nil;
       currentValue = nil;
     }
