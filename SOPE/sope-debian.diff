@@ -42,8 +42,8 @@
 -include /usr/share/dpatch/dpatch.make
 +# include /usr/share/dpatch/dpatch.make
 +
-+PATCHES = sope-gsmake2.diff sope-patchset-r1660.diff debian-build-mysql.diff
-+RPATCHES = debian-build-mysql.diff sope-patchset-r1660.diff sope-gsmake2.diff
++PATCHES = sope-gsmake2.diff sope-patchset-r1664.diff debian-build-mysql.diff
++RPATCHES = debian-build-mysql.diff sope-patchset-r1664.diff sope-gsmake2.diff
  
  CFLAGS = -Wall -g
  #WARN: doesn't compile/package if HAS_LIBRARY_* options not present (since we use configure now)
