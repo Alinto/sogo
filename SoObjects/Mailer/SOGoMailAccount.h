@@ -23,7 +23,7 @@
 #ifndef __Mailer_SOGoMailAccount_H__
 #define __Mailer_SOGoMailAccount_H__
 
-#import <SoObjects/Mailer/SOGoMailBaseObject.h>
+#import <Mailer/SOGoMailBaseObject.h>
 
 /*
   SOGoMailAccount
@@ -37,9 +37,10 @@
 @class NSArray;
 @class NSString;
 
-#import "SOGoDraftsFolder.h"
-#import "SOGoSentFolder.h"
-#import "SOGoTrashFolder.h"
+@class SOGoMailFolder;
+@class SOGoDraftsFolder;
+@class SOGoSentFolder;
+@class SOGoTrashFolder;
 
 typedef enum {
   undefined = -1,

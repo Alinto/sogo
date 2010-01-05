@@ -36,7 +36,7 @@
   unsigned int max;
 
   max = [self count];
-  pointers = NSZoneMalloc (NULL, sizeof(id) * (max + 1));
+  pointers = NSZoneMalloc (NULL, sizeof (id) * (max + 1));
   [self getObjects: pointers];
   *(pointers + max) = nil;
 
@@ -154,6 +154,12 @@
   return newArray;
 }
 
+- (NSArray *) trimmedComponents
+{
+  return [self resultsOfSelector: @selector (stringByTrimmingSpaces)];
+}
+
+#ifdef GNUSTEP_BASE_LIBRARY
 - (void) makeObjectsPerform: (SEL) selector
                  withObject: (id) object1
                  withObject: (id) object2
@@ -165,6 +171,24 @@
     [[self objectAtIndex: count] performSelector: selector
                                  withObject: object1
                                  withObject: object2];
+}
+#endif
+
+- (NSArray *) resultsOfSelector: (SEL) operation
+{
+  NSMutableArray *results;
+  int count, max;
+  id result;
+
+  max = [self count];
+  results = [NSMutableArray arrayWithCapacity: max];
+  for (count = 0; count < max; count++)
+    {
+      result = [[self objectAtIndex: count] performSelector: operation];
+      [results addObject: result];
+    }
+
+  return results;
 }
 
 - (NSString *) jsonRepresentation
@@ -202,23 +226,6 @@
       currentString = [objects nextObject];
 
   return response;
-}
-
-- (NSArray *) trimmedComponents
-{
-  NSMutableArray *newComponents;
-  NSString *currentString;
-  unsigned int count, max; 
-
-  max = [self count];
-  newComponents = [NSMutableArray arrayWithCapacity: max];
-  for (count = 0; count < max; count++)
-    {
-      currentString = [[self objectAtIndex: count] stringByTrimmingSpaces];
-      [newComponents addObject: currentString];
-    }
-
-  return newComponents;
 }
 
 @end

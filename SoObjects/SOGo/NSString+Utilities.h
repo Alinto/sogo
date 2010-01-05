@@ -47,7 +47,7 @@
 - (NSString *) jsonRepresentation;
 
 - (NSString *) asCSSIdentifier;
-
+- (NSString *) fromCSSIdentifier;
 
 /* bare email addresses */
 - (NSString *) pureEMailAddress;

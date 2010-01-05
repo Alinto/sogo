@@ -11,12 +11,13 @@ Mailer_OBJC_FILES += \
 	\
 	SOGoMailManager.m		\
 	\
+	SOGoDraftObject.m		\
 	SOGoMailBaseObject.m		\
 	SOGoMailAccounts.m		\
 	SOGoMailAccount.m		\
 	SOGoMailFolder.m		\
+	SOGoMailNamespace.m		\
 	SOGoMailObject.m		\
-	SOGoDraftObject.m		\
 	SOGoMailObject+Draft.m		\
 	SOGoSentFolder.m		\
 	SOGoDraftsFolder.m		\

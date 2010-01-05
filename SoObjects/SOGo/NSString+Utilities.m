@@ -27,6 +27,7 @@
 
 #import <EOControl/EOQualifier.h>
 
+#import <NGExtensions/NSDictionary+misc.h>
 #import <NGExtensions/NGQuotedPrintableCoding.h>
 
 #import "NSArray+Utilities.h"
@@ -38,6 +39,10 @@
 static NSMutableCharacterSet *urlNonEndingChars = nil;
 static NSMutableCharacterSet *urlAfterEndingChars = nil;
 static NSMutableCharacterSet *urlStartChars = nil;
+
+static NSString **cssEscapingStrings = NULL;
+static unichar *cssEscapingCharacters = NULL;
+static int cssEscapingCount = 0;
 
 @implementation NSString (SOGoURLExtension)
 
@@ -305,21 +310,107 @@ static NSMutableCharacterSet *urlStartChars = nil;
   return [self doubleQuotedString];
 }
 
+- (void) _setupCSSEscaping
+{
+  NSArray *strings, *characters;
+  int count;
+
+  strings = [NSArray arrayWithObjects: @"_U_", @"_D_", @"_H_", @"_A_", @"_S_",
+                     @"_C_", @"_CO_", @"_SP_", nil];
+  cssEscapingStrings = [strings asPointersOfObjects];
+
+  characters = [NSArray arrayWithObjects: @"_", @".", @"#", @"@", @"*", @":",
+                        @",", @" ", nil];
+  cssEscapingCharacters
+    = NSZoneMalloc (NULL, sizeof ((cssEscapingCount + 1) * sizeof (unichar)));
+  cssEscapingCount = [strings count];
+  for (count = 0; count < cssEscapingCount; count++)
+    *(cssEscapingCharacters + count)
+      = [[characters objectAtIndex: count] characterAtIndex: 0];
+  *(cssEscapingCharacters + cssEscapingCount) = 0;
+}
+
+- (int) _cssCharacterIndex: (unichar) character
+{
+  int idx, count;
+
+  idx = -1;
+  for (count = 0; idx == -1 && count < cssEscapingCount; count++)
+    if (*(cssEscapingCharacters + count) == character)
+      idx = count;
+
+  return idx;
+}
+
 - (NSString *) asCSSIdentifier
 {
   NSMutableString *cssIdentifier;
+  unichar currentChar;
+  int count, max, idx;
 
-  cssIdentifier = [NSMutableString stringWithString: self];
-  [cssIdentifier replaceString: @"_" withString: @"_U_"];
-  [cssIdentifier replaceString: @"." withString: @"_D_"];
-  [cssIdentifier replaceString: @"#" withString: @"_H_"];
-  [cssIdentifier replaceString: @"@" withString: @"_A_"];
-  [cssIdentifier replaceString: @"*" withString: @"_S_"];
-  [cssIdentifier replaceString: @":" withString: @"_C_"];
-  [cssIdentifier replaceString: @"," withString: @"_CO_"];
-  [cssIdentifier replaceString: @" " withString: @"_SP_"];
+  if (!cssEscapingStrings)
+    [self _setupCSSEscaping];
+
+  cssIdentifier = [NSMutableString string];
+  max = [self length];
+  for (count = 0; count < max; count++)
+    {
+      currentChar = [self characterAtIndex: count];
+      idx = [self _cssCharacterIndex: currentChar];
+      if (idx > -1)
+        [cssIdentifier appendString: cssEscapingStrings[idx]];
+      else
+        [cssIdentifier appendFormat: @"%lc", currentChar];
+    }
 
   return cssIdentifier;
+}
+
+- (int) _cssStringIndex: (NSString *) string
+{
+  int idx, count;
+
+  idx = -1;
+  for (count = 0; idx == -1 && count < cssEscapingCount; count++)
+    if ([string hasPrefix: *(cssEscapingStrings + count)])
+      idx = count;
+
+  return idx;
+}
+
+- (NSString *) fromCSSIdentifier
+{
+  NSMutableString *newString;
+  NSString *currentString;
+  int count, length, max, idx;
+
+  if (!cssEscapingStrings)
+    [self _setupCSSEscaping];
+
+  newString = [NSMutableString string];
+  max = [self length];
+  for (count = 0; count < max - 2; count++)
+    {
+      /* The difficulty here is that most escaping strings are 3 chars long
+         except one. Therefore we must juggle a little bit with the lengths in
+         order to avoid an overflow exception. */
+      length = 4;
+      if (count + length > max)
+        length = max - count;
+      currentString = [self substringFromRange: NSMakeRange (count, length)];
+      idx = [self _cssStringIndex: currentString];
+      if (idx > -1)
+        {
+          [newString appendFormat: @"%lc", cssEscapingCharacters[idx]];
+          count += [cssEscapingStrings[idx] length] - 1;
+        }
+      else
+        [newString appendFormat: @"%lc", [self characterAtIndex: count]];
+    }
+  currentString = [self substringFromRange: NSMakeRange (count, max - count)];
+  [newString appendString: currentString];
+
+  return newString;
 }
 
 - (NSString *) pureEMailAddress

@@ -59,21 +59,14 @@ String.prototype.asDate = function () {
     return newDate;  
 };
 
-String.prototype.asCSSIdentifier = function () {
-    var substitutions = { '_': '_U_',
-                          '\\.': '_D_',
-                          '#': '_H_',
-                          '@': '_A_',
-                          '\\*': '_S_',
-                          ':': '_C_',
-                          ',': '_CO_',
-                          ' ': '_SP_' };
-    var newString = this;
-    var re;
+String.prototype.asCSSIdentifier = function() {
+    var characters = [ '_'  , '\\.', '#'  , '@'  , '\\*', ':'  , ','   , ' ' ];
+    var escapeds =   [ '_U_', '_D_', '_H_', '_A_', '_S_', '_C_', '_CO_', '_SP_' ];
 
-    for (var key in substitutions) {
-        re = new RegExp(key, 'g');
-        newString = newString.replace(re, substitutions[key]);
+    var newString = this;
+    for (var i = 0; i < characters.length; i++) {
+        var re = new RegExp(characters[i], 'g');
+        newString = newString.replace(re, escapeds[i]);
     }
 
     return newString;

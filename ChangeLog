@@ -1,7 +1,34 @@
 2010-01-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/MailerUI.js (Mailbox): "this.name" is now
+	an escaped form of the mailbox name, that can thus be used to
+	generate folder URLs.
+	(Mailbox.findMailboxByName): escape the name passed as parameter
+	prior to doing a search.
+
+	* UI/WebServerResources/JavascriptAPIExtensions.js
+	(asCSSIdentifier): use two arrays rather than an "Object" in order
+	to improve performance.
+
+	* SoObjects/SOGo/NSString+Utilities.m (-fromCSSIdentifier): new
+	method that converts an escaped string back to a normal one.
+	(-asCSSIdentifier): no longer use "replaceString:withString:" in
+	order to avoid parsing the string multiple times. This probably
+	enhance performances a bit and also avoid double-encoding
+	problems.
+
+	* SoObjects/SOGo/NSArray+Utilities.m (-resultsOfSelector): new
+	method that applies a selector on the contained objects and
+	collect the result objects in a new array.
+
+	* SoObjects/Mailer/SOGoMailFolder.m
+	(-lookupName:inContext:acquire:): we must check and create the
+	current folder even if the looked up key is a subfolder or a web
+	method.
+
 	* SOPE/sope-patchset-r1664.diff: new patchset replacing
 	-r1660.diff.
+	Added code to handle IMAP namespaces.
 
 2010-01-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

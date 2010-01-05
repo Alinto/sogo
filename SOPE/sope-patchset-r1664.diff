@@ -469,7 +469,11 @@ Index: sope-mime/NGImap4/NGImap4Client.h
    BOOL     isLogin;
    unsigned tagId;
  
-@@ -120,6 +122,7 @@
+@@ -117,9 +119,11 @@
+ - (NSDictionary *)noop;
+   
+ - (NSDictionary *)capability;
++- (NSDictionary *)namespace;
  - (NSDictionary *)list:(NSString *)_folder pattern:(NSString *)_pattern;
  - (NSDictionary *)lsub:(NSString *)_folder pattern:(NSString *)_pattern;
  - (NSDictionary *)select:(NSString *)_folder;
@@ -477,7 +481,7 @@ Index: sope-mime/NGImap4/NGImap4Client.h
  - (NSDictionary *)status:(NSString *)_folder flags:(NSArray *)_flags;
  - (NSDictionary *)rename:(NSString *)_folder to:(NSString *)_newName;
  - (NSDictionary *)delete:(NSString *)_folder;
-@@ -138,7 +141,7 @@
+@@ -138,7 +142,7 @@
    flags:(NSArray *)_flags;
  - (NSDictionary *)storeFrom:(unsigned)_from to:(unsigned)_to
    add:(NSNumber *)_add flags:(NSArray *)_flags;
@@ -535,25 +539,27 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  @end
  
  /*
-@@ -110,6 +114,8 @@
+@@ -110,6 +114,9 @@
  static BOOL         ImapDebugEnabled   = NO;
  static NSArray      *Imap4SystemFlags  = nil;
  
 +static NSMutableDictionary *capabilities;
++static NSMutableDictionary *namespaces;
 +
  - (BOOL)useSSL {
    return self->useSSL;
  }
-@@ -140,6 +146,8 @@
+@@ -140,6 +147,9 @@
  
    Imap4SystemFlags = [[NSArray alloc] initWithObjects: @"seen", @"answered",
  				      @"deleted", @"draft", nil];
 +
 +  capabilities = [[NSMutableDictionary alloc] init];
++  namespaces = [[NSMutableDictionary alloc] init];
  }
  
  /* constructors */
-@@ -195,11 +203,14 @@
+@@ -195,11 +205,14 @@
      self->debug            = ImapDebugEnabled;
      self->responseReceiver = [[NSMutableArray alloc] initWithCapacity:128];
      self->normer = [[NGImap4ResponseNormalizer alloc] initWithClient:self];
@@ -568,7 +574,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    [self removeFromConnectionRegister];
    [self->normer           release];
    [self->text             release];
-@@ -457,8 +468,8 @@
+@@ -457,8 +470,8 @@
  - (void)reconnect {
    if ([self->context lastException] != nil)
      return;
@@ -579,7 +585,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    self->tagId = 0;
    [self openConnection];
  
-@@ -481,6 +492,7 @@
+@@ -481,6 +494,7 @@
    */
    NGHashMap *map;
    NSString  *s, *log;
@@ -587,7 +593,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  
    if (self->isLogin )
      return nil;
-@@ -499,7 +511,11 @@
+@@ -499,7 +513,11 @@
    
    self->isLogin = NO;
    
@@ -600,7 +606,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  }
  
  - (NSDictionary *)logout {
-@@ -508,6 +524,8 @@
+@@ -508,6 +526,8 @@
  
    map = [self processCommand:@"logout"];
    [self closeConnection];
@@ -609,16 +615,29 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    
    return [self->normer normalizeResponse:map];
  }
-@@ -547,7 +565,7 @@
+@@ -530,7 +550,7 @@
+   NSAutoreleasePool *pool;
+   NGHashMap         *map;
+   NSDictionary      *result;
+-  NSString *s;
++  NSString *s, *prefix;
+   
+   pool = [[NSAutoreleasePool alloc] init];
+   
+@@ -547,7 +567,11 @@
      if (!(_pattern = [self _folder2ImapFolder:_pattern]))
        return nil;
    
 -  s = [NSString stringWithFormat:@"list \"%@\" \"%@\"", _folder, _pattern];
-+  s = [NSString stringWithFormat:@"list \"%@\" \"%@\"", SaneFolderName(_folder), _pattern];
++  if ([_folder length] > 0)
++    prefix = [NSString stringWithFormat: @"%@%@", SaneFolderName(_folder), self->delimiter];
++  else
++    prefix = @"";
++  s = [NSString stringWithFormat:@"list \"%@\" \"%@\"", prefix, _pattern];
    map = [self processCommand:s];
    
    if (self->delimiter == nil) {
-@@ -563,9 +581,20 @@
+@@ -563,18 +587,49 @@
  }
  
  - (NSDictionary *)capability {
@@ -632,7 +651,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
 +  if (!result)
 +    {
 +      capres = [self processCommand:@"capability"];
-+      result = [self->normer normalizeCapabilityRespone:capres];
++      result = [self->normer normalizeCapabilityResponse:capres];
 +  
 +      if (result)
 +	[capabilities setObject:  result  forKey: [self->address description]];
@@ -640,17 +659,51 @@ Index: sope-mime/NGImap4/NGImap4Client.m
 +  return result;
  }
  
++- (NSDictionary *)namespace {
++  NSArray *capabilities;
++  NGHashMap *namesres;
++  id namespace;
++
++  namespace = [namespaces objectForKey: [self->address description]];
++  if (!namespace) {
++    capabilities = [[self capability] objectForKey: @"capability"];
++    if ([capabilities containsObject: @"namespace"]) {
++      namesres = [self processCommand: @"namespace"];
++      namespace = [self->normer normalizeNamespaceResponse:namesres];
++    }
++    else
++      namespace = [NSNull null];
++    [namespaces setObject: namespace forKey: [self->address description]];
++  }
++
++  return ([namespace isKindOfClass: [NSNull class]] ? nil : namespace);
++}
++
  - (NSDictionary *)lsub:(NSString *)_folder pattern:(NSString *)_pattern {
-@@ -591,7 +620,7 @@
+   /*
+     The method build statements like 'LSUB "_folder" "_pattern"'.
+     The returnvalue is the same like the list:pattern: method
+   */
+   NGHashMap *map;
+-  NSString  *s;
++  NSString  *s, *prefix;
+ 
+   if (_folder == nil)
+     _folder = @"";
+@@ -591,7 +646,11 @@
        return nil;
    }
    
 -  s = [NSString stringWithFormat:@"lsub \"%@\" \"%@\"", _folder, _pattern];
-+  s = [NSString stringWithFormat:@"lsub \"%@\" \"%@\"", SaneFolderName(_folder), _pattern];
++  if ([_folder length] > 0)
++    prefix = [NSString stringWithFormat: @"%@%@", SaneFolderName(_folder), self->delimiter];
++  else
++    prefix = @"";
++  s = [NSString stringWithFormat:@"lsub \"%@\" \"%@\"", prefix, _pattern];
    map = [self processCommand:s];
  
    if (self->delimiter == nil) {
-@@ -617,24 +646,25 @@
+@@ -617,24 +676,25 @@
        'flags'       - array of strings (eg (answered,flagged,draft,seen);
        'RawResponse' - the raw IMAP4 response
     */
@@ -685,7 +738,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  - (NSDictionary *)status:(NSString *)_folder flags:(NSArray *)_flags {
    NSString *cmd;
    
-@@ -646,7 +676,7 @@
+@@ -646,7 +706,7 @@
      return nil;
    
    cmd     = [NSString stringWithFormat:@"status \"%@\" (%@)",
@@ -694,7 +747,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    return [self->normer normalizeStatusResponse:[self processCommand:cmd]];
  }
  
-@@ -663,24 +693,28 @@
+@@ -663,24 +723,28 @@
    if ((_newName = [self _folder2ImapFolder:_newName]) == nil)
      return nil;
    
@@ -728,7 +781,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    return [self _performCommand:@"delete" onFolder:_name];
  }
  - (NSDictionary *)create:(NSString *)_name {
-@@ -820,23 +854,23 @@
+@@ -820,23 +884,23 @@
    return [self->normer normalizeResponse:[self processCommand:cmd]];
  }
  
@@ -758,7 +811,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  		    seqstr, _flag ? '+' : '-', flagstr];
    
    return [self->normer normalizeResponse:[self processCommand:cmd]];
-@@ -967,11 +1001,12 @@
+@@ -967,11 +1031,12 @@
    descr = @"Could not process qualifier for imap search "; 
    descr = [descr stringByAppendingString:reason];           
    
@@ -774,7 +827,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  }
  
  - (NSString *)_searchExprForQual:(EOQualifier *)_qualifier {
-@@ -1093,7 +1128,18 @@
+@@ -1093,7 +1158,18 @@
       Eg: UID SORT ( DATE REVERSE SUBJECT ) UTF-8 TODO
    */
    NSString *tmp;
@@ -793,7 +846,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    if ([_sortSpec isKindOfClass:[NSArray class]])
      tmp = [self _generateIMAP4SortOrderings:_sortSpec];
    else if ([_sortSpec isKindOfClass:[EOSortOrdering class]])
-@@ -1107,9 +1153,10 @@
+@@ -1107,9 +1183,10 @@
      tmp = @"DATE";
    }
    
@@ -806,7 +859,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  }
  - (NSDictionary *)sort:(NSArray *)_sortOrderings
    qualifier:(EOQualifier *)_qual
-@@ -1130,7 +1177,7 @@
+@@ -1130,7 +1207,7 @@
      return nil;
    }
    
@@ -815,7 +868,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    return [self->normer normalizeSearchResponse:[self processCommand:s]];
  }
  
-@@ -1142,7 +1189,7 @@
+@@ -1142,7 +1219,7 @@
    if ((_folder = [self _folder2ImapFolder:_folder]) == nil)
      return nil;
    
@@ -824,7 +877,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    return [self->normer normalizeGetACLResponse:[self processCommand:cmd]];
  }
  
-@@ -1155,7 +1202,7 @@
+@@ -1155,7 +1232,7 @@
      return nil;
    
    cmd = [NSString stringWithFormat:@"setacl \"%@\" \"%@\" \"%@\"",
@@ -833,7 +886,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    return [self->normer normalizeResponse:[self processCommand:cmd]];
  }
  
-@@ -1166,7 +1213,7 @@
+@@ -1166,7 +1243,7 @@
      return nil;
    
    cmd = [NSString stringWithFormat:@"deleteacl \"%@\" \"%@\"",
@@ -842,7 +895,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    return [self->normer normalizeResponse:[self processCommand:cmd]];
  }
  
-@@ -1177,7 +1224,7 @@
+@@ -1177,7 +1254,7 @@
      return nil;
    
    cmd = [NSString stringWithFormat:@"listrights \"%@\" \"%@\"",
@@ -851,7 +904,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    return [self->normer normalizeListRightsResponse:[self processCommand:cmd]];
  }
  
-@@ -1187,12 +1234,94 @@
+@@ -1187,12 +1264,94 @@
    if ((_folder = [self _folder2ImapFolder:_folder]) == nil)
      return nil;
    
@@ -947,7 +1000,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  - (NSException *)_processCommandParserException:(NSException *)_exception {
    [self logWithFormat:@"ERROR(%s): catched IMAP4 parser exception %@: %@",
  	__PRETTY_FUNCTION__, [_exception name], [_exception reason]];
-@@ -1412,21 +1541,24 @@
+@@ -1412,21 +1571,24 @@
        return nil;
    }
  
@@ -980,14 +1033,14 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  }
  
  - (NSString *)_imapFolder2Folder:(NSString *)_folder {
-@@ -1442,10 +1574,16 @@
+@@ -1442,10 +1604,16 @@
        return nil;
    }
    
 +  if ([_folder hasPrefix: self->delimiter])
 +    _folder = [_folder substringFromIndex: 1];
 +  if ([_folder hasSuffix: self->delimiter])
-+    _folder = [_folder substringToIndex: [_folder length] - 2];
++    _folder = [_folder substringToIndex: [_folder length] - 1];
 +
    array = [array arrayByAddingObjectsFromArray:
                     [_folder componentsSeparatedByString:[self delimiter]]];
@@ -1039,9 +1092,33 @@ Index: sope-mime/NGImap4/NGImap4Connection.h
 ===================================================================
 --- sope-mime/NGImap4/NGImap4Connection.h	(revision 1664)
 +++ sope-mime/NGImap4/NGImap4Connection.h	(working copy)
-@@ -89,6 +89,9 @@
+@@ -52,7 +52,7 @@
+   NSString      *separator;
+ 
+   /* hierarchy cache */
+-  NSDictionary  *subfolders;
++  NSMutableDictionary  *subfolders;
+ 
+   /* permission cache */
+   NSMutableDictionary *urlToRights;
+@@ -72,8 +72,9 @@
+ 
+ - (NSDate *)creationTime;
+ 
+-- (void)cacheHierarchyResults:(NSDictionary *)_hierarchy;
+-- (NSDictionary *)cachedHierarchyResults;
++- (void)cacheHierarchyResults:(NSDictionary *)_hierarchy
++                       forURL:(NSURL *)_url;
++- (NSDictionary *)cachedHierarchyResultsForURL:(NSURL *)_url;
+ - (void)flushFolderHierarchyCache;
+ 
+ - (id)cachedUIDsForURL:(NSURL *)_url qualifier:(id)_q sortOrdering:(id)_so;
+@@ -88,7 +89,12 @@
+ /* folder operations */
  
  - (NSArray *)subfoldersForURL:(NSURL *)_url;
++- (NSArray *)subfoldersForURL:(NSURL *)_url
++  onlySubscribedFolders: (BOOL) subscribedFoldersOnly;
  - (NSArray *)allFoldersForURL:(NSURL *)_url;
 +- (NSArray *)allFoldersForURL:(NSURL *)_url
 +  onlySubscribedFolders: (BOOL) subscribedFoldersOnly;
@@ -1049,6 +1126,20 @@ Index: sope-mime/NGImap4/NGImap4Connection.h
  
  /* message operations */
  
+Index: sope-mime/NGImap4/NGImap4ResponseNormalizer.h
+===================================================================
+--- sope-mime/NGImap4/NGImap4ResponseNormalizer.h	(revision 1664)
++++ sope-mime/NGImap4/NGImap4ResponseNormalizer.h	(working copy)
+@@ -49,7 +49,8 @@
+ - (NSDictionary *)normalizeSearchResponse:(NGHashMap *)_map;
+ - (NSDictionary *)normalizeSortResponse:(NGHashMap *)_map;
+ - (NSDictionary *)normalizeThreadResponse:(NGHashMap *)_map;
+-- (NSDictionary *)normalizeCapabilityRespone:(NGHashMap *)_map;
++- (NSDictionary *)normalizeCapabilityResponse:(NGHashMap *)_map;
++- (NSDictionary *)normalizeNamespaceResponse:(NGHashMap *)_map;
+ - (NSDictionary *)normalizeQuotaResponse:(NGHashMap *)_map;
+ 
+ /* ACL */
 Index: sope-mime/NGImap4/NGImap4Connection.m
 ===================================================================
 --- sope-mime/NGImap4/NGImap4Connection.m	(revision 1664)
@@ -1061,16 +1152,63 @@ Index: sope-mime/NGImap4/NGImap4Connection.m
  #include "imCommon.h"
  
  @implementation NGImap4Connection
-@@ -66,7 +67,7 @@
+@@ -66,7 +67,8 @@
      self->creationTime = [[NSDate alloc] init];
      
      // TODO: retrieve from IMAP4 instead of using a default
 -    self->separator = imap4Separator;
 +    self->separator = [imap4Separator copy];
++    self->subfolders = [NSMutableDictionary new];
    }
    return self;
  }
-@@ -321,13 +322,15 @@
+@@ -100,11 +102,13 @@
+   return self->creationTime;
+ }
+ 
+-- (void)cacheHierarchyResults:(NSDictionary *)_hierarchy {
+-  ASSIGNCOPY(self->subfolders, _hierarchy);
++- (void)cacheHierarchyResults:(NSDictionary *)_hierarchy
++  forURL:(NSURL *)_url
++{
++  [self->subfolders setObject:_hierarchy forKey:[_url absoluteString]];
+ }
+-- (NSDictionary *)cachedHierarchyResults {
+-  return self->subfolders;
++- (NSDictionary *)cachedHierarchyResultsForURL:(NSURL *)_url {
++  return [self->subfolders objectForKey:[_url absoluteString]];
+ }
+ - (void)flushFolderHierarchyCache {
+   [self->subfolders  release]; self->subfolders  = nil;
+@@ -152,7 +156,6 @@
+   ASSIGN(self->cachedUIDs,      nil);
+ }
+ 
+-
+ /* errors */
+ 
+ - (NSException *)errorCouldNotSelectURL:(NSURL *)_url {
+@@ -215,18 +218,13 @@
+   NSMutableArray *ma;
+   unsigned i, count, prefixlen;
+   
+-  if ((count = [_array count]) < 2) {
+-    /* one entry is the folder itself, so we need at least two */
+-    return [NSArray array];
+-  }
++  count = [_array count];
+   
+   // TODO: somehow results are different on OSX
+   // we should investigate and test all Foundation libraries and document the
+   // differences
+ #if __APPLE__ 
+   prefixlen = [_fn isEqualToString:@""] ? 0 : [_fn length] + 1;
+-#elif GNUSTEP_BASE_LIBRARY
+-  prefixlen = [_fn isEqualToString:@"/"] ? 1 : [_fn length];
+ #else
+   prefixlen = [_fn isEqualToString:@"/"] ? 1 : [_fn length] + 1;
+ #endif
+@@ -321,13 +319,15 @@
      return nil;
    if ([folderName characterAtIndex:0] == '/')
      folderName = [folderName substringFromIndex:1];
@@ -1087,73 +1225,114 @@ Index: sope-mime/NGImap4/NGImap4Connection.m
    return [names componentsJoinedByString:[self imap4Separator]];
  }
  - (NSString *)imap4FolderNameForURL:(NSURL *)_url {
-@@ -373,7 +376,9 @@
+@@ -373,16 +373,26 @@
  
  /* folder operations */
  
 -- (NSDictionary *)primaryFetchMailboxHierarchyForURL:(NSURL *)_url {
 +- (NSDictionary *)primaryFetchMailboxHierarchyForURL:(NSURL *)_url
-+			       onlySubscribedFolders: (BOOL) subscribedFoldersOnly
++  onlySubscribedFolders:(BOOL) subscribedFoldersOnly
 +{
    NSDictionary *result;
++  NSString *prefix;
    
-   if ((result = [self cachedHierarchyResults]) != nil)
-@@ -381,8 +386,12 @@
+-  if ((result = [self cachedHierarchyResults]) != nil)
++  if ((result = [self cachedHierarchyResultsForURL:_url]) != nil)
+     return [result isNotNull] ? result : (NSDictionary *)nil;
    
    if (debugCache) [self logWithFormat:@"  no folders cached yet .."];
-   
+-  
 -  result = [[self client] list:(onlyFetchInbox ? @"INBOX" : @"*")
 -			  pattern:@"*"];
++
++  prefix = [_url path];
++  if ([prefix hasPrefix: @"/"])
++    prefix = [prefix substringFromIndex:1];
 +  if (subscribedFoldersOnly)
-+    result = [[self client] lsub:(onlyFetchInbox ? @"INBOX" : @"")
++    result = [[self client] lsub:(onlyFetchInbox ? @"INBOX" : prefix)
 +			    pattern:@"*"];
 +  else
-+    result = [[self client] list:(onlyFetchInbox ? @"INBOX" : @"")
++    result = [[self client] list:(onlyFetchInbox ? @"INBOX" : prefix)
 +			    pattern:@"*"];
    if (![[result valueForKey:@"result"] boolValue]) {
      [self errorWithFormat:@"Could not list mailbox hierarchy!"];
      return nil;
-@@ -400,6 +409,11 @@
+@@ -391,7 +401,7 @@
+   /* cache results */
+   
+   if ([result isNotNull]) {
+-    [self cacheHierarchyResults:result];
++    [self cacheHierarchyResults:result forURL:_url];
+     if (debugCache) {
+       [self logWithFormat:@"cached results: 0x%p(%d)", 
+ 	      result, [result count]];
+@@ -400,32 +410,55 @@
    return result;
  }
  
+-- (NSArray *)subfoldersForURL:(NSURL *)_url {
 +- (NSDictionary *)primaryFetchMailboxHierarchyForURL:(NSURL *)_url
 +{
 +  return [self primaryFetchMailboxHierarchyForURL: _url onlySubscribedFolders: NO];
 +}
 +
- - (NSArray *)subfoldersForURL:(NSURL *)_url {
-   NSDictionary *result;
- 
-@@ -413,10 +427,13 @@
-   return [self extractSubfoldersForURL:_url fromResultSet:result];
- }
- 
--- (NSArray *)allFoldersForURL:(NSURL *)_url {
 +- (NSArray *)allFoldersForURL:(NSURL *)_url
-+	onlySubscribedFolders: (BOOL) subscribedFoldersOnly
++	onlySubscribedFolders:(BOOL)_subscribedFoldersOnly
 +{
    NSDictionary *result;
  
 -  if ((result = [self primaryFetchMailboxHierarchyForURL:_url]) == nil)
 +  if ((result = [self primaryFetchMailboxHierarchyForURL:_url
-+		      onlySubscribedFolders: subscribedFoldersOnly]) == nil)
++		      onlySubscribedFolders:_subscribedFoldersOnly]) == nil)
      return nil;
    if ([result isKindOfClass:[NSException class]]) {
      [self errorWithFormat:@"failed to retrieve hierarchy: %@", result];
-@@ -426,6 +443,11 @@
-   return [self extractFoldersFromResultSet:result];
+     return nil;
+   }
+   
+-  return [self extractSubfoldersForURL:_url fromResultSet:result];
++  return [self extractFoldersFromResultSet:result];
  }
  
+-- (NSArray *)allFoldersForURL:(NSURL *)_url {
 +- (NSArray *)allFoldersForURL:(NSURL *)_url
 +{
 +  return [self allFoldersForURL: _url onlySubscribedFolders: NO];
 +}
 +
++- (NSArray *)subfoldersForURL:(NSURL *)_url
++  onlySubscribedFolders:(BOOL)_subscribedFoldersOnly
++{
+   NSDictionary *result;
++  NSString *baseFolder;
+ 
+-  if ((result = [self primaryFetchMailboxHierarchyForURL:_url]) == nil)
++  baseFolder = [self imap4FolderNameForURL:_url removeFileName:NO];
++  if (_subscribedFoldersOnly)
++    result = [[self client] lsub:baseFolder pattern:@"%"];
++  else
++    result = [[self client] list:baseFolder pattern:@"%"];
++  if (![[result valueForKey:@"result"] boolValue]) {
++    [self errorWithFormat:@"Could not list mailbox hierarchy!"];
+     return nil;
+-  if ([result isKindOfClass:[NSException class]]) {
+-    [self errorWithFormat:@"failed to retrieve hierarchy: %@", result];
+-    return nil;
+   }
+-  
+-  return [self extractFoldersFromResultSet:result];
++
++  return [self extractSubfoldersForURL:_url fromResultSet: result];
+ }
+ 
++- (NSArray *)subfoldersForURL:(NSURL *)_url {
++  return [self subfoldersForURL:_url onlySubscribedFolders: NO];
++}
++
  /* message operations */
  
  - (NSArray *)fetchUIDsInURL:(NSURL *)_url qualifier:(id)_qualifier
-@@ -646,7 +668,7 @@
+@@ -646,7 +679,7 @@
    
    /* store flags */
    
@@ -1162,7 +1341,29 @@ Index: sope-mime/NGImap4/NGImap4Connection.m
    if (![[result valueForKey:@"result"] boolValue]) {
      return [self errorForResult:result 
  		 text:@"Failed to change flags of IMAP4 message"];
-@@ -760,11 +782,11 @@
+@@ -737,14 +770,17 @@
+ 
+ - (BOOL)doesMailboxExistAtURL:(NSURL *)_url {
+   NSString *folderName;
++  NSArray *caches;
+   id result;
++  int count, max;
+ 
+   /* check in hierarchy cache */
+-  
+-  if ((result = [self cachedHierarchyResults]) != nil) {
++  caches = [self->subfolders allValues];
++  max = [caches count];
++  for (count = 0; count < max; count++) {
+     NSString *p;
+-    
+-    result = [(NSDictionary *)result objectForKey:@"list"];
++
++    result = [[caches objectAtIndex: count] objectForKey:@"list"];
+     p      = [_url path];
+ #if __APPLE__ 
+     /* normalized results already have the / in front on libFoundation?! */
+@@ -760,11 +796,11 @@
    // TODO: we should probably just fetch the whole hierarchy?
    
    folderName = [self imap4FolderNameForURL:_url];
@@ -1173,13 +1374,13 @@ Index: sope-mime/NGImap4/NGImap4Connection.m
 -  return YES;
 +
 +  result = [self->client status: folderName
-+		flags: [NSArray arrayWithObject: @"UIDVALIDITY"]];
++                          flags: [NSArray arrayWithObject: @"UIDVALIDITY"]];
 +
 +  return ([[result valueForKey: @"result"] boolValue]);
  }
  
  - (id)infoForMailboxAtURL:(NSURL *)_url {
-@@ -789,7 +811,8 @@
+@@ -789,7 +825,8 @@
    /* construct path */
    
    newPath = [self imap4FolderNameForURL:_url];
@@ -1225,7 +1426,68 @@ Index: sope-mime/NGImap4/NGImap4ResponseNormalizer.m
      return result;
    }
  
-@@ -292,7 +276,7 @@
+@@ -157,7 +141,7 @@
+   return result;
+ }
+ 
+-- (NSDictionary *)normalizeCapabilityRespone:(NGHashMap *)_map {
++- (NSDictionary *)normalizeCapabilityResponse:(NGHashMap *)_map {
+   /* filter for capability response: capability  : NSArray */
+   id                  obj;
+   NSMutableDictionary *result;
+@@ -170,6 +154,51 @@
+   return result;
+ }
+ 
++- (NSArray *)_normalizeNamespace:(NSArray *)_namespace {
++  NSMutableArray *result;
++  NSDictionary *currentNS, *newNS;
++  NSString *newPrefix;
++  int count, max;
++
++  max = [_namespace count];
++  result = [NSMutableArray arrayWithCapacity: max];
++  for (count = 0; count < max; count++) {
++    currentNS = [_namespace objectAtIndex: count];
++    newNS = [currentNS mutableCopy];
++    newPrefix = [self->client
++                  _imapFolder2Folder: [currentNS objectForKey: @"prefix"]];
++    [newNS setObject: newPrefix forKey: @"prefix"];
++    [result addObject: newNS];
++    [newNS release];
++  }
++
++  return result;
++}
++
++- (NSDictionary *)normalizeNamespaceResponse:(NGHashMap *)_map {
++  id                  obj;
++  NSMutableDictionary *result;
++  NSDictionary *rawResponse;
++  NSArray *namespace;
++
++  result = [self normalizeResponse:_map];
++  rawResponse = [result objectForKey: @"RawResponse"];
++  namespace = [rawResponse objectForKey: @"personal"];
++  if (namespace)
++    [result setObject: [self _normalizeNamespace: namespace]
++               forKey: @"personal"];
++  namespace = [rawResponse objectForKey: @"other users"];
++  if (namespace)
++    [result setObject: [self _normalizeNamespace: namespace]
++               forKey: @"other users"];
++  namespace = [rawResponse objectForKey: @"shared"];
++  if (namespace)
++    [result setObject: [self _normalizeNamespace: namespace]
++               forKey: @"shared"];
++
++  return result;
++}
++
+ - (NSDictionary *)normalizeThreadResponse:(NGHashMap *)_map {
+   /* filter for thread response: thread  : NSArray (msn) */
+   id                  obj;
+@@ -292,7 +321,7 @@
  /*
    filter for fetch response
      fetch : NSArray (fetch responses)
@@ -1234,7 +1496,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseNormalizer.m
        'text'    - RFC822.TEXT
        'size'    - SIZE
        'flags'   - FLAGS
-@@ -336,7 +320,12 @@
+@@ -336,7 +365,12 @@
        switch (c) {
        case 'b':
          /* Note: we check for _prefix_! eg body[1] is valid too */
@@ -1248,7 +1510,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseNormalizer.m
  	  keys[count]   = @"body";
  	  values[count] = objForKey(obj, @selector(objectForKey:), key);
  	  count++;
-@@ -516,7 +505,7 @@
+@@ -516,7 +550,7 @@
        }
        continue;
      }
@@ -1257,7 +1519,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseNormalizer.m
    }
    [result setObject:tmp forKey:@"quotas"];
    return [[result copy] autorelease];
-@@ -615,7 +604,7 @@
+@@ -615,7 +649,7 @@
      
      while ((o = [enumerator nextObject])) {
        [folder setObject:_imapFlags2Flags(self, [o objectForKey:@"flags"])
@@ -1266,7 +1528,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseNormalizer.m
      }
      
      {
-@@ -648,14 +637,13 @@
+@@ -648,14 +682,13 @@
    enumerator = [_flags objectEnumerator];
    cnt = 0;
    while ((obj = [enumerator nextObject])) {
@@ -1461,7 +1723,15 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  
  - (NSData *)_parseData;
  
-@@ -84,6 +85,8 @@
+@@ -38,6 +39,7 @@
+ - (void)_parseContinuationResponseIntoHashMap:(NGMutableHashMap *)result_;
+ - (BOOL)_parseListOrLSubResponseIntoHashMap:(NGMutableHashMap *)result_;
+ - (BOOL)_parseCapabilityResponseIntoHashMap:(NGMutableHashMap *)result_;
++- (BOOL)_parseNamespaceResponseIntoHashMap:(NGMutableHashMap *)result_;
+ - (BOOL)_parseSearchResponseIntoHashMap:(NGMutableHashMap *)result_;
+ - (BOOL)_parseSortResponseIntoHashMap:(NGMutableHashMap *)result_;
+ - (BOOL)_parseQuotaRootResponseIntoHashMap:(NGMutableHashMap *)result_;
+@@ -84,6 +86,8 @@
  static NSDictionary *_parseMultipartBody(NGImap4ResponseParser *self,
  					 BOOL isBodyStructure);
  
@@ -1470,7 +1740,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  static NSString *_parseBodyString(NGImap4ResponseParser *self,
                                    BOOL _convertString);
  static NSString *_parseBodyDecodeString(NGImap4ResponseParser *self,
-@@ -111,6 +114,7 @@
+@@ -111,6 +115,7 @@
  static NSNumber *_parseUnsigned(NGImap4ResponseParser *self);
  static NSString *_parseUntil(NGImap4ResponseParser *self, char _c);
  static NSString *_parseUntil2(NGImap4ResponseParser *self, char _c1, char _c2);
@@ -1478,7 +1748,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  
  static __inline__ NSException *_consumeIfMatch
    (NGImap4ResponseParser *self, unsigned char _m);
-@@ -488,6 +492,50 @@
+@@ -488,6 +493,50 @@
    return [self _parseDataIntoRAM:size];
  }
  
@@ -1529,7 +1799,18 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  static int _parseTaggedResponse(NGImap4ResponseParser *self,
                                  NGMutableHashMap *result_) 
  {
-@@ -648,13 +696,124 @@
+@@ -584,6 +633,10 @@
+     break;
+ 
+   case 'N':
++    if (_matchesString(self, "NAMESPACE")) {
++      if ([self _parseNamespaceResponseIntoHashMap:result_])
++	return;
++    }
+     if (_parseNoUntaggedResponse(self, result_))     // la: 2
+       return;
+     break;
+@@ -648,14 +701,171 @@
    [result_ addObject:_parseUntil(self, '\n') forKey:@"description"];
  }
  
@@ -1645,7 +1926,6 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
 +      }
 +    }
    }
--  return nil;
 +  else {
 +    quotedString = nil;
 +  }
@@ -1653,10 +1933,57 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
 +  _purifyQuotedString(quotedString);
 +
 +  return quotedString;
++}
++- (NSString *)_parseQuotedStringOrNIL {
++  unsigned char c0;
++  
++  if ((c0 = _la(self, 0)) == '"')
++    return [self _parseQuotedString];
++  
++  if (c0 == '{') {
++    /* a size indicator, eg '{112}\nkasdjfkja sdj fhj hasdfj hjasdf' */
++    NSData   *data;
++    NSString *s;
++    
++    if ((data = [self _parseData]) == nil)
++      return nil;
++    if (![data isNotEmpty])
++      return @"";
++    
++    s = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
++    if (s == nil)
++      s = [[NSString alloc] initWithData:data encoding:NSISOLatin1StringEncoding];
++    if (s == nil) {
++      [self logWithFormat:
++	      @"ERROR(%s): could not convert data (%d bytes) into string.",
++	      __PRETTY_FUNCTION__, [data length]];
++      return @"[ERROR: NGImap4 could not parse IMAP4 data string]";
++    }
++    return [s autorelease];
++  }
++  
++  if (c0 == 'N' && _matchesString(self, "NIL")) {
++    _consume(self, 3);
++    return (id)null;
++  }
+   return nil;
  }
++- (id)_parseQuotedStringOrDataOrNIL {
++  if (_la(self, 0) == '"')
++    return [self _parseQuotedString];
++  if (_la(self, 0) == '{')
++    return [self _parseData];
++  
++  if (_matchesString(self, "NIL")) {
++    _consume(self, 3);
++    return null;
++  }
++  return nil;
++}
  - (void)_consumeOptionalSpace {
    if (_la(self, 0) == ' ') _consume(self, 1);
-@@ -685,6 +844,10 @@
+ }
+@@ -685,6 +895,10 @@
      name = [self _parseQuotedString];
      _parseUntil(self, '\n');
    }
@@ -1667,7 +1994,93 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
    else
      name = _parseUntil(self, '\n');
    
-@@ -1030,10 +1193,15 @@
+@@ -723,6 +937,85 @@
+   return YES;
+ }
+ 
++/* support for NAMESPACE extension - RFC2342 */
++
++- (NSDictionary *)_parseNamespacePart {
++  NSDictionary *namespacePart;
++  NSString *prefix, *key, *delimiter;
++  NSMutableDictionary *parameters;
++  NSMutableArray *values;
++
++  _consume(self, 1);                             /* ( */
++  prefix = [self _parseQuotedStringOrNIL];       /* "prefix" */ 
++  _consume(self, 1);                             /* <sp> */
++  delimiter = [self _parseQuotedStringOrNIL];    /* "delimiter" */
++  parameters = [NSMutableDictionary dictionary];
++  while (_la(self, 0) == ' ') {
++    _consume(self, 1);                           /* <sp> */
++    key = [self _parseQuotedString];
++    _consume(self, 1);                           /* <sp> */
++    values = [NSMutableArray new];
++    while (_la(self, 0) != ')') {
++      _consume(self, 1);                         /* ( or <sp> */
++      [values addObject: [self _parseQuotedString]];
++    }
++    _consume(self, 1);                           /* ) */
++    [parameters setObject: values forKey: key];
++    [values release];
++  }
++  _consume(self, 1);                             /* ) */
++
++  namespacePart = [NSDictionary dictionaryWithObjectsAndKeys:
++                                  prefix, @"prefix",
++                                delimiter, @"delimiter",
++                                parameters, @"parameters",
++                                nil];
++
++  return namespacePart;
++}
++
++- (NSArray *)_parseNamespace {
++  NSMutableArray *namespace;
++
++  namespace = [[NSMutableArray alloc] initWithCapacity: 3];
++  if (_la(self, 0) == 'N') {
++    namespace = nil;
++    _consume(self, 3);
++  } else {
++    _consume(self, 1); /* ( */
++    while (_la(self, 0) == '(') {
++      [namespace addObject: [self _parseNamespacePart]];
++    }
++    _consume(self, 1); /* ) */
++  }
++
++  return namespace;
++}
++
++- (BOOL)_parseNamespaceResponseIntoHashMap:(NGMutableHashMap *)result_ {
++  NSArray *namespace;
++
++  if (!_matchesString(self, "NAMESPACE "))
++    return NO;
++
++  _parseUntil(self, ' ');
++
++  namespace = [self _parseNamespace];
++  if (namespace)
++    [result_ addObject:namespace forKey:@"personal"];
++  _consume(self, 1);
++  namespace = [self _parseNamespace];
++  if (namespace)
++    [result_ addObject:namespace forKey:@"other users"];
++  _consume(self, 1);
++  namespace = [self _parseNamespace];
++  if (namespace)
++    [result_ addObject:namespace forKey:@"shared"];
++  _consume(self, 1); /* \n */
++
++  return YES;
++}
++
+ - (BOOL)_parseACLResponseIntoHashMap:(NGMutableHashMap *)result_ {
+   /*
+     21 GETACL INBOX
+@@ -1030,10 +1323,15 @@
    _consume(self, 7);
  
    if (_la(self, 0) == '"') {
@@ -1685,16 +2098,59 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
    else {
      name = _parseUntil(self, ' ');
    }
-@@ -1090,6 +1258,8 @@
-       return @"";
-     
-     s = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-+    if (s == nil)
-+      s = [[NSString alloc] initWithData:data encoding:NSISOLatin1StringEncoding];
-     if (s == nil) {
-       [self logWithFormat:
- 	      @"ERROR(%s): could not convert data (%d bytes) into string.",
-@@ -1185,7 +1355,7 @@
+@@ -1073,51 +1371,6 @@
+   return YES;
+ }
+ 
+-- (NSString *)_parseQuotedStringOrNIL {
+-  unsigned char c0;
+-  
+-  if ((c0 = _la(self, 0)) == '"')
+-    return [self _parseQuotedString];
+-  
+-  if (c0 == '{') {
+-    /* a size indicator, eg '{112}\nkasdjfkja sdj fhj hasdfj hjasdf' */
+-    NSData   *data;
+-    NSString *s;
+-    
+-    if ((data = [self _parseData]) == nil)
+-      return nil;
+-    if (![data isNotEmpty])
+-      return @"";
+-    
+-    s = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+-    if (s == nil) {
+-      [self logWithFormat:
+-	      @"ERROR(%s): could not convert data (%d bytes) into string.",
+-	      __PRETTY_FUNCTION__, [data length]];
+-      return @"[ERROR: NGImap4 could not parse IMAP4 data string]";
+-    }
+-    return [s autorelease];
+-  }
+-  
+-  if (c0 == 'N' && _matchesString(self, "NIL")) {
+-    _consume(self, 3);
+-    return (id)null;
+-  }
+-  return nil;
+-}
+-- (id)_parseQuotedStringOrDataOrNIL {
+-  if (_la(self, 0) == '"')
+-    return [self _parseQuotedString];
+-  if (_la(self, 0) == '{')
+-    return [self _parseData];
+-  
+-  if (_matchesString(self, "NIL")) {
+-    _consume(self, 3);
+-    return null;
+-  }
+-  return nil;
+-}
+-
+ - (id)_decodeQP:(id)_string headerField:(NSString *)_field {
+   if (![_string isNotNull])
+     return _string;
+@@ -1185,7 +1438,7 @@
    route   = [self _parseQuotedStringOrNIL]; [self _consumeOptionalSpace];
    mailbox = [self _parseQuotedStringOrNIL]; [self _consumeOptionalSpace];
    host    = [self _parseQuotedStringOrNIL]; [self _consumeOptionalSpace];
@@ -1703,7 +2159,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
    if (_la(self, 0) != ')') {
      [self logWithFormat:@"WARNING: IMAP4 envelope "
  	    @"address not properly closed (c0=%c,c1=%c): %@",
-@@ -1197,6 +1367,7 @@
+@@ -1197,6 +1450,7 @@
    address = [[NGImap4EnvelopeAddress alloc] initWithPersonalName:pname
  					    sourceRoute:route mailbox:mailbox
  					    host:host];
@@ -1711,7 +2167,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
    return address;
  }
  
-@@ -1382,7 +1553,15 @@
+@@ -1382,7 +1636,15 @@
  #if 0
      [self logWithFormat:@"PARSE KEY: %@", key];
  #endif
@@ -1728,7 +2184,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
        NSDictionary *content;
          
        if ((content = [self _parseBodyContent]) != nil)
-@@ -1594,8 +1773,11 @@
+@@ -1594,8 +1856,11 @@
      if (_decode)
        data = [data decodeQuotedPrintableValueOfMIMEHeaderField:nil];
      
@@ -1742,7 +2198,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
    }
    else {
      str = _parseUntil2(self, ' ', ')');
-@@ -1620,13 +1802,35 @@
+@@ -1620,13 +1885,35 @@
    return str;
  }
  
@@ -1779,7 +2235,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  static NSDictionary *_parseBodyParameterList(NGImap4ResponseParser *self)
  {
    NSMutableDictionary *list;
-@@ -1646,7 +1850,7 @@
+@@ -1646,7 +1933,7 @@
        _consumeIfMatch(self, ' ');
        value = _parseBodyDecodeString(self, YES, YES);
  
@@ -1788,7 +2244,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
      }
      _consumeIfMatch(self, ')');
    }
-@@ -1731,13 +1935,14 @@
+@@ -1731,13 +2018,14 @@
  static NSDictionary *_parseSingleBody(NGImap4ResponseParser *self,
  				      BOOL isBodyStructure) {
    NSString            *type, *subtype, *bodyId, *description,
@@ -1805,7 +2261,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
    _consumeIfMatch(self, ' ');
    parameterList = _parseBodyParameterList(self);
    _consumeIfMatch(self, ' ');
-@@ -1762,13 +1967,18 @@
+@@ -1762,13 +2050,18 @@
      _consumeIfMatch(self, ' ');
      [dict setObject:_parseBodyString(self, YES) forKey:@"lines"];
    }
@@ -1827,7 +2283,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
        _consumeIfMatch(self, ' ');
        [dict setObject:_parseParenthesizedAddressList(self) forKey:@"from"];
        _consumeIfMatch(self, ' ');
-@@ -1783,14 +1993,20 @@
+@@ -1783,14 +2076,20 @@
        _consumeIfMatch(self, ' ');
        [dict setObject:_parseParenthesizedAddressList(self) forKey:@"bcc"];
        _consumeIfMatch(self, ' ');
@@ -1851,7 +2307,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
      }
    }
  
-@@ -1805,14 +2021,9 @@
+@@ -1805,14 +2104,9 @@
  	      forKey: @"disposition"];
  	if (_la(self, 0) != ')') {
  	  _consume(self,1);
@@ -1869,7 +2325,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  	  if (_la(self, 0) != ')') {
  	    _consume(self,1);
  	    [dict setObject: _parseBodyString(self, YES)
-@@ -1829,6 +2040,7 @@
+@@ -1829,6 +2123,7 @@
  static NSDictionary *_parseMultipartBody(NGImap4ResponseParser *self,
  					 BOOL isBodyStructure) {
    NSMutableArray *parts;
@@ -1877,7 +2333,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
    NSString       *kind;
    NSMutableDictionary *dict;
  
-@@ -1854,14 +2066,9 @@
+@@ -1854,14 +2149,9 @@
  	      forKey: @"disposition"];
  	if (_la(self, 0) != ')') {
  	  _consume(self,1);
@@ -1895,7 +2351,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  	  if (_la(self, 0) != ')') {
  	    _consume(self,1);
  	    [dict setObject: _parseBodyString(self, YES)
-@@ -2170,6 +2377,21 @@
+@@ -2170,6 +2460,21 @@
    }
  }
  
@@ -1917,7 +2373,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  - (NSException *)exceptionForFailedMatch:(unsigned char)_match
    got:(unsigned char)_avail
  {
-@@ -2225,9 +2447,9 @@
+@@ -2225,9 +2530,9 @@
        [s release];
        
        if (c == '\n') {
@@ -1933,7 +2389,31 @@ Index: sope-mime/NGImap4/ChangeLog
 ===================================================================
 --- sope-mime/NGImap4/ChangeLog	(revision 1664)
 +++ sope-mime/NGImap4/ChangeLog	(working copy)
-@@ -1,3 +1,68 @@
+@@ -1,3 +1,92 @@
++2010-01-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
++
++	* NGImap4ResponseParser.m (_parseUntaggedResponse): now accepts
++	the "NAMESPACE" response and parse accordingly by making use of
++	the appropriate new method.
++
++	* NGImap4ResponseNormalizer.m (-normalizeNamespaceResponse):
++	self-explicit new method.
++
++	* NGImap4Connection.m (-subfolderForURL:, -allFoldersForURL:):
++	differenciate both methods by having "subfolder..." use the "%"
++	wild card and "allFolders" the "*" wildcard.
++	(-cachedHierarchyResultsForURL): now accepts a url parameter so
++	in order to maintain multiple caches depending on the queried
++	namespace.
++	(SOGoMailGetDirectChildren): if the array count is < 2, we must
++	not return since certain implementations may not return the
++	current folder.
++
++	* NGImap4Client.m (-namespace): new method implementing the
++	"NAMESPACE" command.
++	(-lsub:pattern:): we now sanitize the "prefix" particle of the
++	LSUB command.
++
 +2009-11-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 +
 +	* NSString+Imap4.m (_encodeToModifiedUTF7): handle the case where

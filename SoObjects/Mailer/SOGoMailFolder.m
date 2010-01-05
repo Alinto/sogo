@@ -44,6 +44,7 @@
 
 #import <SOGo/DOMNode+SOGo.h>
 #import <SOGo/NSArray+Utilities.h>
+#import <SOGo/NSString+Utilities.h>
 #import <SOGo/NSString+DAV.h>
 #import <SOGo/NSArray+DAV.h>
 #import <SOGo/NSObject+DAV.h>
@@ -59,6 +60,7 @@
 #import "SOGoMailAccount.h"
 #import "SOGoMailManager.h"
 #import "SOGoMailFolder.h"
+#import "SOGoTrashFolder.h"
 
 #define XMLNS_INVERSEDAV @"urn:inverse:params:xml:ns:inverse-dav"
 
@@ -113,7 +115,7 @@ static NSString *defaultUserID =  @"anyone";
 
 - (void) dealloc
 {
-  [filenames  release];
+  [filenames release];
   [folderType release];
   [mailboxACL release];
   [super dealloc];
@@ -123,7 +125,7 @@ static NSString *defaultUserID =  @"anyone";
 
 - (NSString *) relativeImap4Name
 {
-  return [nameInContainer substringFromIndex: 6];
+  return [[nameInContainer substringFromIndex: 6] fromCSSIdentifier];
 }
 
 - (NSString *) absoluteImap4Name
@@ -151,7 +153,11 @@ static NSString *defaultUserID =  @"anyone";
 
 - (NSArray *) toManyRelationshipKeys
 {
-  return [self subfolders];
+  NSArray *subfolders;
+
+  subfolders = [[self subfolders] stringsWithFormat: @"folder%@"];
+
+  return [subfolders resultsOfSelector: @selector (asCSSIdentifier)];
 }
 
 - (NSArray *) subfolders
@@ -250,7 +256,6 @@ static NSString *defaultUserID =  @"anyone";
   NSException *error;
   id result;
   BOOL b;
-
 
   trashFolder = [[self mailAccountFolder] trashFolderInContext: localContext];
   if ([trashFolder isNotNull])
@@ -392,35 +397,35 @@ static NSString *defaultUserID =  @"anyone";
 		 toFolder: (NSString *) destinationFolder
 		inContext: (id) localContext
 {
-  NSEnumerator *folders;
+  NSArray *folders;
   NSString *currentFolderName;
   NSMutableString *imapDestinationFolder;
   NGImap4Client *client;
   id result;
-  
+  int count, max;
+
+#warning this code will fail on implementation using something else than '/' as delimiter
   imapDestinationFolder = [NSMutableString string];
-  folders = [[destinationFolder componentsSeparatedByString: @"/"] objectEnumerator];
-  currentFolderName = [folders nextObject];
-  while (currentFolderName)
-  {
-    if ([currentFolderName hasPrefix: @"folder"])
+  folders = [[destinationFolder componentsSeparatedByString: @"/"]
+              resultsOfSelector: @selector (fromCSSIdentifier)];
+  max = [folders count];
+  for (count = 2; count < max; count++)
     {
-      [imapDestinationFolder appendString: @"/"];
-      [imapDestinationFolder appendString: [currentFolderName substringFromIndex: 6]];
+      currentFolderName
+        = [[folders objectAtIndex: count] substringFromIndex: 6];
+      [imapDestinationFolder appendFormat: @"/%@", currentFolderName];
     }
-    currentFolderName = [folders nextObject];
-  }
 
   client = [[self imap4Connection] client];
   [imap4 selectFolder: [self imap4URL]];
   
   // We make sure the destination IMAP folder exist, if not, we create it.
-  result = [[client status: imapDestinationFolder  flags: [NSArray arrayWithObject: @"UIDVALIDITY"]]
+  result = [[client status: imapDestinationFolder
+                     flags: [NSArray arrayWithObject: @"UIDVALIDITY"]]
 	     objectForKey: @"result"];
-  
   if (![result boolValue])
-    result = [[self imap4Connection] createMailbox: imapDestinationFolder  atURL: [[self mailAccountFolder] imap4URL]];
-
+    result = [[self imap4Connection] createMailbox: imapDestinationFolder
+                                             atURL: [[self mailAccountFolder] imap4URL]];
   if (!result || [result boolValue])
     result = [client copyUids: uids toFolder: imapDestinationFolder];
 
@@ -442,11 +447,10 @@ static NSString *defaultUserID =  @"anyone";
   client = [[self imap4Connection] client];
   
   result = [self copyUIDs: uids toFolder: destinationFolder inContext: localContext];
-  
-  if ( ![result isNotNull] )
+  if (![result isNotNull])
     {
       result = [client storeFlags: [NSArray arrayWithObject: @"Deleted"]
-		       forUIDs: uids addOrRemove: YES];
+                          forUIDs: uids addOrRemove: YES];
       if ([[result valueForKey: @"result"] boolValue])
 	{
 	  [self markForExpunge];
@@ -555,51 +559,51 @@ static NSString *defaultUserID =  @"anyone";
 	inContext: (id)_ctx
 	  acquire: (BOOL) _acquire
 {
-  NSString *folderName, *className;
+  NSString *folderName, *fullFolderName, *className;
   SOGoMailAccount *mailAccount;
   id obj;
 
-  if ([_key hasPrefix: @"folder"])
+  // We automatically create mailboxes that don't exist but that we're
+  // trying to open. This shouldn't happen unless a mailbox has been
+  // deleted "behind our back" or if we're trying to open a special
+  // mailbox that doesn't yet exist.
+  if ([[self imap4Connection] doesMailboxExistAtURL: [self imap4URL]]
+      || ![[self imap4Connection] createMailbox: [self relativeImap4Name]
+                                          atURL: [[self mailAccountFolder] imap4URL]])
     {
-      mailAccount = [self mailAccountFolder];
-      folderName = [NSString stringWithFormat: @"%@/%@",
-			     [self traversalFromMailAccount],
-			     [_key substringFromIndex: 6]];
-      if ([folderName
-	    isEqualToString: [mailAccount sentFolderNameInContext: _ctx]])
-	className = @"SOGoSentFolder";
-      else if ([folderName isEqualToString:
-			     [mailAccount draftsFolderNameInContext: _ctx]])
-	className = @"SOGoDraftsFolder";
-      else if ([folderName isEqualToString:
-			     [mailAccount trashFolderNameInContext: _ctx]])
-	className = @"SOGoTrashFolder";
-/*       else if ([folderName isEqualToString:
-	 [mailAccount sieveFolderNameInContext: _ctx]])
-	 obj = [self lookupFiltersFolder: _key inContext: _ctx]; */
-      else
-	className = @"SOGoMailFolder";
+      obj = [super lookupName: _key inContext: _ctx acquire: NO];
+      if (!obj)
+        {
+          if ([_key hasPrefix: @"folder"])
+            {
+              mailAccount = [self mailAccountFolder];
+              folderName = [[_key substringFromIndex: 6] fromCSSIdentifier];
+              fullFolderName = [NSString stringWithFormat: @"%@/%@",
+                                         [self traversalFromMailAccount], folderName];
+              if ([fullFolderName
+                    isEqualToString: [mailAccount sentFolderNameInContext: _ctx]])
+                className = @"SOGoSentFolder";
+              else if ([fullFolderName isEqualToString:
+                                         [mailAccount draftsFolderNameInContext: _ctx]])
+                className = @"SOGoDraftsFolder";
+              else if ([fullFolderName isEqualToString:
+                                         [mailAccount trashFolderNameInContext: _ctx]])
+                className = @"SOGoTrashFolder";
+              /*       else if ([folderName isEqualToString:
+                       [mailAccount sieveFolderNameInContext: _ctx]])
+                       obj = [self lookupFiltersFolder: _key inContext: _ctx]; */
+              else
+                className = @"SOGoMailFolder";
 
-      obj = [NSClassFromString (className)
-			       objectWithName: _key inContainer: self];
+              obj = [NSClassFromString (className) objectWithName: _key
+                                                      inContainer: self];
+            }
+          else if (isdigit ([_key characterAtIndex: 0]))
+            obj = [SOGoMailObject objectWithName: _key inContainer: self];
+        }
     }
   else
-    {
-      // We automatically create mailboxes that don't exist but that we're
-      // trying to open. This shouldn't happen unless a mailbox has been
-      // deleted "behind our back" or if we're trying to open a special
-      // mailbox that doesn't yet exist.
-      if ([[self imap4Connection] doesMailboxExistAtURL: [self imap4URL]] ||
-	  ![[self imap4Connection] createMailbox: [self relativeImap4Name]  atURL: [[self mailAccountFolder] imap4URL]])
-	{
-	  if (isdigit ([_key characterAtIndex: 0]))
-	    obj = [SOGoMailObject objectWithName: _key inContainer: self];
-	  else
-	    obj = [super lookupName: _key inContext: _ctx acquire: NO];
-	}
-      else
-	obj = nil;
-    }
+    obj = nil;
 
   if (!obj && _acquire)
     obj = [NSException exceptionWithHTTPStatus: 404 /* Not Found */];

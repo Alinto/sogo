@@ -42,7 +42,7 @@ var messageCheckTimer;
 /* We need to override this method since it is adapted to GCS-based folder
    references, which we do not use here */
 function URLForFolderID(folderID) {
-    var url = ApplicationBaseURL + encodeURI(folderID);
+    var url = ApplicationBaseURL + encodeURI(folderID.substr(1));
 
     if (url[url.length-1] == '/')
         url = url.substr(0, url.length-1);
@@ -296,7 +296,6 @@ function ml_lowlight(sender) {
         sender.className = "tableview";
 }
 
-
 function onUnload(event) {
     var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/expunge";
 	
@@ -533,17 +532,17 @@ function onMailboxMenuMove(event) {
 }
 
 function onMailboxMenuCopy(event) {
-    var targetMailbox;
     var messageList = $("messageList").down("TBODY");
     var rows = messageList.getSelectedNodes();
     var uids = new Array(); // message IDs
     var paths = new Array(); // row IDs
 
+    var targetMailbox;
     if (this.tagName == 'LI') // from contextual menu
         targetMailbox = this.mailbox.fullName();
     else // from DnD
         targetMailbox = this.readAttribute("dataname");
-	
+
     for (var i = 0; i < rows.length; i++) {
         var uid = rows[i].readAttribute("id").substr(4);
         var path = Mailer.currentMailbox + "/" + uid;
@@ -1748,7 +1747,7 @@ function updateMailboxTreeInPage() {
     }
 }
 
-function mailboxMenuNode(type, name) {
+function mailboxMenuNode(type, displayName) {
     var newNode = document.createElement("li");
     var icon = MailerUIdTreeExtension.folderIcons[type];
     if (!icon)
@@ -1756,9 +1755,9 @@ function mailboxMenuNode(type, name) {
     var image = document.createElement("img");
     image.src = ResourcesURL + "/" + icon;
     newNode.appendChild(image);
-    var displayName = MailerUIdTreeExtension.folderNames[type];
-    if (!displayName)
-        displayName = name;
+    var dnOverride = MailerUIdTreeExtension.folderNames[type];
+    if (dnOverride)
+        displayName = dnOverride;
     newNode.appendChild(document.createTextNode(" " + displayName));
 
     return newNode;
@@ -1804,7 +1803,7 @@ function generateMenuForMailbox(mailbox, prefix, callback) {
     var submenuCount = 0;
     var newNode;
     for (var i = 0; i < mailbox.children.length; i++) {
-        if ( menu.offsetHeight > windowHeight-offset ) {
+        if (menu.offsetHeight > windowHeight-offset) {
             var menuWidth = parseInt(menu.offsetWidth) + 15
                 menuWidth = menuWidth + "px";
             menu.style.width = menuWidth;
@@ -1814,7 +1813,7 @@ function generateMenuForMailbox(mailbox, prefix, callback) {
             menuDIV.appendChild(menu);
         }
         var child = mailbox.children[i];
-        newNode = mailboxMenuNode(child.type, child.name);
+        newNode = mailboxMenuNode(child.type, child.displayName);
         newNode.style.width = "auto";
         menu.appendChild(newNode);
         if (child.children.length > 0) {
@@ -1831,8 +1830,7 @@ function generateMenuForMailbox(mailbox, prefix, callback) {
     var menuWidth = parseInt(menu.offsetWidth) + 15
         menuWidth = menuWidth + "px";
     menu.style.width = menuWidth;
-  
-  
+
     initMenu(menuDIV, callbacks);
 
     return menuDIV.getAttribute("id");
@@ -1912,7 +1910,7 @@ function onLoadMailboxesCallback(http) {
 }
 
 function buildMailboxes(accountKeys, encoded) {
-    var account = new Mailbox("account", accountKeys[0], 
+    var account = new Mailbox("account", accountKeys[1],
                               undefined, //necessary, null will cause issues
                               accountKeys[1]);
     var data = encoded.evalJSON(true);
@@ -1926,9 +1924,10 @@ function buildMailboxes(accountKeys, encoded) {
         var currentNode = account;
         var names = mailboxes[i].path.split("/");
         for (var j = 1; j < (names.length - 1); j++) {
-            var node = currentNode.findMailboxByName(names[j]);
+            var name = names[j];
+            var node = currentNode.findMailboxByName(name);
             if (!node) {
-                node = new Mailbox("additional", names[j]);
+                node = new Mailbox("additional", name);
                 currentNode.addMailbox(node);
             }
             currentNode = node;
@@ -2327,11 +2326,12 @@ document.observe("dom:loaded", initMailer);
 
 function Mailbox(type, name, unseen, displayName) {
     this.type = type;
-    this.name = name;
     if (displayName)
       this.displayName = displayName;
     else
       this.displayName = name;
+    // log("name: " + name + "; dn: " + displayName);
+    this.name = name.asCSSIdentifier();
     this.unseen = unseen;
     this.parentFolder = null;
     this.children = new Array();
@@ -2361,9 +2361,11 @@ Mailbox.prototype = {
     findMailboxByName: function(name) {
         var mailbox = null;
 
+        var searchName = name.asCSSIdentifier();
+
         var i = 0;
         while (!mailbox && i < this.children.length)
-            if (this.children[i].name == name 
+            if (this.children[i].name == searchName
                 || this.children[i].displayName == name)
                 mailbox = this.children[i];
             else

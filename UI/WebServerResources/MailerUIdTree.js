@@ -26,7 +26,7 @@ var MailerUIdTreeExtension = {
 			displayName += "<span id=\"unseenCount\"> (<span>" + parseInt(unseen) + "</span>)</span>";
 		}
 		this.add(this.elementCounter, parent, displayName, 1, '#', fullName,
-						 type, '', '', icon, icon, hasUnseen);
+                         type, '', '', icon, icon, hasUnseen);
 		this.elementCounter++;
 	},
  _addFolder: function (parent, folder) {

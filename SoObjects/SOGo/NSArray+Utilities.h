@@ -51,6 +51,8 @@
                  withObject: (id) object1
                  withObject: (id) object2;
 #endif
+/* foreach ... */
+- (NSArray *) resultsOfSelector: (SEL) operation;
 
 @end
 
