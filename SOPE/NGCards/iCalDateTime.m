@@ -73,9 +73,7 @@
 
   [self setValue: 0 ofAttribute: @"tzid" to: newTZId];
 
-  if ([self isAllDay])
-    [self setDate: dateTime];
-  else
+  if (![self isAllDay])
     [self setDateTime: dateTime];
 }
 

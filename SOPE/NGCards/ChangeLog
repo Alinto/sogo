@@ -1,3 +1,8 @@
+2010-01-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* iCalDateTime.m (-setTimeZone:): don't modify the date in case of
+	an all-day value, otherwise the resulting date will be recomputed.
+
 2009-10-19  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* iCalDateTime.m (-setTimeZone:): don't add the time in case of an
