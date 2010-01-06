@@ -34,39 +34,15 @@
 #import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 
-#import <SoObjects/SOGo/NSArray+Utilities.h>
-#import <SoObjects/SOGo/SOGoUser.h>
-#import <SoObjects/SOGo/SOGoUserDefaults.h>
+#import <SOGo/NSArray+Utilities.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
 
 #import "iCalPerson+SOGo.h"
 
 #import "iCalEntityObject+SOGo.h"
 
-static int utcOffset = -1;
-
 @implementation iCalEntityObject (SOGoExtensions)
-
-static inline int
-_computeAllDayOffset()
-{
-  NSTimeZone *tz;
-  SOGoUser *user;
-  WOApplication *application;
-  int offset;
-
-  if (utcOffset == -1)
-    {
-      tz = [[NSCalendarDate date] timeZone];
-      utcOffset = [tz secondsFromGMT];
-    }
-
-  application = [WOApplication application];
-  user = [[application context] activeUser];
-  tz = [[user userDefaults] timeZone];
-  offset = utcOffset - [tz secondsFromGMT];
-
-  return offset;
-}
 
 + (void) initializeSOGoExtensions;
 {
@@ -228,7 +204,7 @@ _computeAllDayOffset()
     {
       seconds = [_date timeIntervalSince1970] + offset;
       if (allDay)
-	seconds += _computeAllDayOffset ();
+        seconds += [[_date timeZone] secondsFromGMT];
 
       dateNumber = [NSNumber numberWithInt: seconds];
     }

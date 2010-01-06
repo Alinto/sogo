@@ -1,5 +1,15 @@
 2010-01-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxDatePicker.m
+	(-takeValuesFromRequest:inContext:): we set the new date to the
+	user's timezone and recompute the proper offset compare to the
+	system timezone, which may differ from it.
+
+	* SoObjects/Appointments/iCalEntityObject+SOGo.m
+	(-quickRecordDateAsNumber:withOffset:forAllDay:): we only need to
+	compute the delta between the user's timezone and UTC rather than
+	the system timezone.
+
 	* SoObjects/Mailer/SOGoMailNamespace.m
 	(-lookupName:inContext:acquire:): overriden method because the
 	namespace "folders" cannot be created and cannot contain messages.

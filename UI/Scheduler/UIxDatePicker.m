@@ -21,10 +21,14 @@
 
 #import <Foundation/NSValue.h>
 #import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSTimeZone.h>
 
-#import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGExtensions/NSObject+Logs.h>
+
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
 
 #import "UIxDatePicker.h"
 
@@ -144,6 +148,9 @@
 {
   NSString       *dateString;
   NSCalendarDate *d;
+  NSInteger dateTZOffset, userTZOffset;
+  NSTimeZone *userTZ;
+  SOGoUserDefaults *ud;
 
   dateString = [_rq formValueForKey:[self dateID]];
   if (dateString == nil) {
@@ -157,6 +164,18 @@
     [self warnWithFormat:@"Could not parse dateString: '%@'", 
             dateString];
   }
+
+  /* we must adjust the date timezone because "dateWithString:..." uses the
+     system timezone, which can be different from the user's. */
+  ud = [[_ctx activeUser] userDefaults];
+  dateTZOffset = [[d timeZone] secondsFromGMT];
+  userTZ = [ud timeZone];
+  userTZOffset = [userTZ secondsFromGMT];
+  if (dateTZOffset != userTZOffset)
+    d = [d dateByAddingYears: 0 months: 0 days: 0
+                       hours: 0 minutes: 0
+                     seconds: (dateTZOffset - userTZOffset)];
+  [d setTimeZone: userTZ];
 
   [self setDay:  [NSNumber numberWithInt:[d dayOfMonth]]];
   [self setMonth:[NSNumber numberWithInt:[d monthOfYear]]];
