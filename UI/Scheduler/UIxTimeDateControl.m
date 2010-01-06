@@ -74,10 +74,10 @@
   SOGoUserDefaults *ud;
   int minuteValue;
 
-  ud = [[context activeUser] userDefaults];
   if (!_date)
     _date = [NSCalendarDate date];
 
+  ud = [[context activeUser] userDefaults];
   [_date setTimeZone: [ud timeZone]];
 
   [self _setDate: _date];
@@ -252,8 +252,6 @@
   unsigned _year, _month, _day, _hour, _minute, _second;
   SOGoUserDefaults *ud;
 
-  ud = [[context activeUser] userDefaults];
-
   /* call super, so that the form values are applied on the popups */
   [super takeValuesFromRequest:_rq inContext:_ctx];
 
@@ -269,9 +267,10 @@
       _minute = [[self minute] intValue];
       _second = [[self second] intValue];
       
-      d = [NSCalendarDate dateWithYear: _year month:_month day:_day
-                          hour:_hour minute:_minute second:_second
-                          timeZone: [ud timeZone]];
+      ud = [[context activeUser] userDefaults];
+      d = [NSCalendarDate dateWithYear: _year month: _month day: _day
+                                  hour: _hour minute: _minute second: _second
+                              timeZone: [ud timeZone]];
       [self _setDate: d];
     }
 }
