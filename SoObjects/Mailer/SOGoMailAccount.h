@@ -83,9 +83,10 @@ typedef enum {
 - (SOGoSentFolder *) sentFolderInContext: (id)_ctx;
 - (SOGoTrashFolder *) trashFolderInContext: (id)_ctx;
 
-/* user defaults */
-- (NSString *) sharedFolderName;
-- (NSString *) otherUsersFolderName;
+/* namespaces */
+
+- (NSArray *) otherUsersFolderNamespaces;
+- (NSArray *) sharedFolderNamespaces;
 
 @end
 

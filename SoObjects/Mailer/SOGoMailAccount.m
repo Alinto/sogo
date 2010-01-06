@@ -114,6 +114,8 @@ static NSString *sieveScriptName = @"sogo";
     }
 }
 
+/* namespaces */
+
 - (void) _appendNamespaces: (NSMutableArray *) folders
 {
   NSDictionary *namespaceDict;
@@ -131,6 +133,37 @@ static NSString *sieveScriptName = @"sogo";
   namespace = [namespaceDict objectForKey: @"shared"];
   if (namespace)
     [self _appendNamespace: namespace toFolders: folders];
+}
+
+- (NSArray *) _namespacesWithKey: (NSString *) nsKey
+{
+  NSDictionary *namespaceDict;
+  NSArray *namespace;
+  NGImap4Client *client;
+  NSMutableArray *folders;
+
+  client = [[self imap4Connection] client];
+  namespaceDict = [client namespace];
+  namespace = [namespaceDict objectForKey: nsKey];
+  if (namespace)
+    {
+      folders = [NSMutableArray array];
+      [self _appendNamespace: namespace toFolders: folders];
+    }
+  else
+    folders = nil;
+
+  return folders;
+}
+
+- (NSArray *) otherUsersFolderNamespaces
+{
+  return [self _namespacesWithKey: @"other users"];
+}
+
+- (NSArray *) sharedFolderNamespaces
+{
+  return [self _namespacesWithKey: @"shared"];
 }
 
 - (NSArray *) toManyRelationshipKeys
@@ -753,24 +786,6 @@ static NSString *sieveScriptName = @"sogo";
 - (NSString *) davDisplayName
 {
   return [self shortTitle];
-}
-
-- (NSString *) sharedFolderName
-{
-  SOGoDomainDefaults *dd;
-
-  dd = [[context activeUser] domainDefaults];
-
-  return [dd sharedFolderName];
-}
-
-- (NSString *) otherUsersFolderName
-{
-  SOGoDomainDefaults *dd;
-
-  dd = [[context activeUser] domainDefaults];
-
-  return [dd otherUsersFolderName];
 }
 
 @end /* SOGoMailAccount */

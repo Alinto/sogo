@@ -74,29 +74,41 @@ static NSString *defaultUserID =  @"anyone";
 
 @implementation SOGoMailFolder
 
+- (BOOL)   _path: (NSString *) path
+  isInNamespaces: (NSArray *) namespaces
+{
+  int count, max;
+  BOOL rc;
+
+  rc = NO;
+
+  max = [namespaces count];
+  for (count = 0; !rc && count < max; count++)
+    rc = [path hasPrefix: [namespaces objectAtIndex: count]];
+
+  return rc;
+}
+
 - (void) _adjustOwner
 {
   SOGoMailAccount *mailAccount;
-  NSString *path, *folder;
+  NSString *path;
   NSArray *names;
 
   mailAccount = [self mailAccountFolder];
   path = [[self imap4Connection] imap4FolderNameForURL: [self imap4URL]];
 
-  folder = [mailAccount sharedFolderName];
-  if (folder && [path hasPrefix: folder])
+  if ([self _path: path
+            isInNamespaces: [mailAccount sharedFolderNamespaces]])
     [self setOwner: @"nobody"];
-  else
+  else if ([self _path: path
+                 isInNamespaces: [mailAccount otherUsersFolderNamespaces]])
     {
-      folder = [mailAccount otherUsersFolderName];
-      if (folder && [path hasPrefix: folder])
-	{
-	  names = [path componentsSeparatedByString: @"/"];
-	  if ([names count] > 1)
-	    [self setOwner: [names objectAtIndex: 1]];
-	  else
-	    [self setOwner: @"nobody"];
-	}
+      names = [path componentsSeparatedByString: @"/"];
+      if ([names count] > 1)
+        [self setOwner: [names objectAtIndex: 1]];
+      else
+        [self setOwner: @"nobody"];
     }
 }
 
@@ -893,7 +905,7 @@ static NSString *defaultUserID =  @"anyone";
 {
   NSMutableArray *acls;
   SOGoMailAccount *mailAccount;
-  NSString *path, *folder;
+  NSString *path;
 //   NSArray *names;
 //   unsigned int count;
 
@@ -904,17 +916,13 @@ static NSString *defaultUserID =  @"anyone";
 //   names = [path componentsSeparatedByString: @"/"];
 //   count = [names count];
 
-  folder = [mailAccount sharedFolderName];
-  if (folder && [path hasPrefix: folder])
+  if ([self         _path: path
+           isInNamespaces: [mailAccount sharedFolderNamespaces]]
+      || [self         _path: path
+              isInNamespaces: [mailAccount sharedFolderNamespaces]])
     [acls addObject: SOGoRole_ObjectViewer];
   else
-    {
-      folder = [mailAccount otherUsersFolderName];
-      if (folder && [path hasPrefix: folder])
-	[acls addObject: SOGoRole_ObjectViewer];
-      else
-	[acls addObject: SoRole_Owner];
-    }
+    [acls addObject: SoRole_Owner];
 
   return acls;
 }
@@ -977,27 +985,29 @@ static NSString *defaultUserID =  @"anyone";
 
 - (NSString *) otherUsersPathToFolder
 {
-  NSString *userPath, *selfPath, *otherUsers, *sharedFolders;
+  NSString *userPath, *selfPath, *otherUsers;
   SOGoMailAccount *account;
+  NSArray *otherUsersFolderNamespaces;
 
+#warning this method should be checked
   account = [self mailAccountFolder];
-  otherUsers = [account otherUsersFolderName];
-  sharedFolders = [account sharedFolderName];
+  otherUsersFolderNamespaces = [account otherUsersFolderNamespaces];
 
   selfPath = [[self imap4URL] path];
-  if ((otherUsers
-       && [selfPath hasPrefix:
-		      [NSString stringWithFormat: @"/%@", otherUsers]])
-      || (sharedFolders
-	  && [selfPath hasPrefix:
-			 [NSString stringWithFormat: @"/%@", sharedFolders]]))
+  if ([self _path: selfPath isInNamespaces: otherUsersFolderNamespaces]
+      || [self _path: selfPath
+               isInNamespaces: [account sharedFolderNamespaces]])
     userPath = selfPath;
   else
     {
-      if (otherUsers)
-	userPath = [NSString stringWithFormat: @"/%@/%@%@",
-			     [otherUsers stringByEscapingURL],
-			     owner, selfPath];
+      if ([otherUsersFolderNamespaces count])
+        {
+          /* can we really have more than one "other users" namespace? */
+          otherUsers = [[otherUsersFolderNamespaces objectAtIndex: 0]
+                         stringByEscapingURL];
+          userPath = [NSString stringWithFormat: @"/%@/%@%@",
+                               otherUsers, owner, selfPath];
+        }
       else
 	userPath = nil;
     }

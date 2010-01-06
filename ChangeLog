@@ -1,3 +1,15 @@
+2010-01-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailAccount.m
+	(-otherUsersFolderNamespaces): new method that returns all the
+	namespace "folders" in the "other user" namespace. Replaces the
+	old "otherUsersFolderName" method.
+	(-sharedFolderNamespaces): same as above for the "shared"
+	namespace.
+
+	* SoObjects/SOGo/SOGoDomainDefaults.m (-otherUsersFolderName)
+	(-sharedFolderName): removed obsolete methods.
+
 2010-01-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/MailerUI.js (Mailbox): "this.name" is now

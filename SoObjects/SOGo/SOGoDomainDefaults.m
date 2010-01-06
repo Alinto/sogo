@@ -182,16 +182,6 @@
   return [self arrayForKey: @"SOGoMailPollingIntervals"];
 }
 
-- (NSString *) otherUsersFolderName
-{
-  return [self stringForKey: @"SOGoOtherUsersFolderName"];
-}
-
-- (NSString *) sharedFolderName
-{
-  return [self stringForKey: @"SOGoSharedFolderName"];
-}
-
 - (NSString *) smtpServer
 {
   return [self stringForKey: @"SOGoSMTPServer"];

@@ -44,8 +44,6 @@
 - (BOOL) forceIMAPLoginWithEmail;
 - (BOOL) forwardEnabled;
 - (BOOL) vacationEnabled;
-- (NSString *) otherUsersFolderName;
-- (NSString *) sharedFolderName;
 - (NSString *) mailingMechanism;
 - (NSString *) smtpServer;
 - (NSString *) mailSpoolPath;
