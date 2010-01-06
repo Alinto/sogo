@@ -28,7 +28,6 @@
 
 #import "SOGoWebAppointmentFolder.h"
 
-
 @implementation SOGoWebAppointmentFolder
 
 - (void) deleteAllContent
@@ -73,7 +72,6 @@
   
   return imported;
 }
-
 
 - (NSException *) delete
 {
