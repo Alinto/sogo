@@ -1,8 +1,8 @@
-{ /* -*-java-*- */
+{ /* -*- Mode: java; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
   requires = ( MAIN );
 
   publicResources = (
-  );
+);
 
   factories = {
   };
@@ -10,10 +10,10 @@
   categories = {
     SOGoHTMLMailBodyPart = {
       methods = {
-	view = {
+        view = {
           protectedBy = "View";
-	  pageName = "UIxMailPartExternalHTMLViewer";
-	};
+          pageName = "UIxMailPartExternalHTMLViewer";
+        };
       };
     };
     SOGoCalendarMailBodyPart = {
@@ -33,16 +33,16 @@
           actionClass = "UIxMailPartICalActions";
           actionName  = "delegate";
         };
-	updateUserStatus = {
+        updateUserStatus = {
           protectedBy = "View";
           actionClass = "UIxMailPartICalActions";
           actionName  = "updateUserStatus";
-	};
-	/*        tentative = {
-          protectedBy = "View";
-          actionClass = "UIxMailPartICalAction";
-          actionName  = "markTentative";
-	  }; */
+        };
+        /*        tentative = {
+                  protectedBy = "View";
+                  actionClass = "UIxMailPartICalAction";
+                  actionName  = "markTentative";
+                  }; */
         addToCalendar = {
           protectedBy = "View";
           actionClass = "UIxMailPartICalActions";
@@ -52,7 +52,7 @@
           protectedBy = "View";
           actionClass = "UIxMailPartICalActions";
           actionName  = "deleteFromCalendar";
-	};
+        };
       };
     };
   };

@@ -1,40 +1,39 @@
-{ /* -*-javascript-*- */
+{ /* -*- Mode: java; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
   requires = ( MAIN, MainUI, CommonUI );
 
-  publicResources = (
-  );
+  publicResources = ();
 
   factories = {
   };
 
   categories = {
-     SOGoUserFolder = {
-	slots = {
-	   toolbar = {
-	      protectedBy = "View";
-	      value = "UIxPreferences.toolbar";
-	   };
-	};
-	methods = {
-	   preferences = {
-	      protectedBy = "View";
-	      pageName = "UIxPreferences";
-	   };
-	   identities = {
-	      protectedBy = "View";
-	      pageName = "UIxIdentities";
-	   };
-	   jsonDefaults = {
-	      protectedBy = "View";
-	      actionClass = "UIxJSONPreferences";
-	      actionName = "jsonDefaults";
-	   };
-	   jsonSettings = {
-	      protectedBy = "View";
-	      actionClass = "UIxJSONPreferences";
-	      actionName = "jsonSettings";
-	   };
-	};
-     };
+    SOGoUserFolder = {
+      slots = {
+        toolbar = {
+          protectedBy = "View";
+          value = "UIxPreferences.toolbar";
+        };
+      };
+      methods = {
+        preferences = {
+          protectedBy = "View";
+          pageName = "UIxPreferences";
+        };
+        identities = {
+          protectedBy = "View";
+          pageName = "UIxIdentities";
+        };
+        jsonDefaults = {
+          protectedBy = "View";
+          actionClass = "UIxJSONPreferences";
+          actionName = "jsonDefaults";
+        };
+        jsonSettings = {
+          protectedBy = "View";
+          actionClass = "UIxJSONPreferences";
+          actionName = "jsonSettings";
+        };
+      };
+    };
   };
 }

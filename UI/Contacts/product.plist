@@ -1,4 +1,4 @@
-{ /* -*-java-*- */
+{ /* -*- Mode: java; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
   requires = ( MAIN, MainUI, CommonUI, Contacts );
 
   publicResources = ();
@@ -6,235 +6,235 @@
   factories = {};
 
   categories = {
-     SOGoContactFolders = {
-        slots = {
-           toolbar = {
-              protectedBy = "View";
-              value = "SOGoContactFolder.toolbar";
-           };
+    SOGoContactFolders = {
+      slots = {
+        toolbar = {
+          protectedBy = "View";
+          value = "SOGoContactFolder.toolbar";
         };
-        methods = {
-           view = {
-              protectedBy = "View";
-              pageName    = "UIxContactFoldersView";
-           };
-           mailer-contacts = {
-              protectedBy = "View";
-              pageName    = "UIxContactFoldersView";
-              actionName  = "mailerContacts";
-           };
-           contactSearch = {
-              protectedBy = "<public>";
-              pageName    = "UIxContactFoldersView";
-              actionName  = "contactSearch";
-           };
-           allContactSearch = {
-              protectedBy = "<public>";
-              pageName    = "UIxContactFoldersView";
-              actionName  = "allContactSearch";
-           };
-           updateAdditionalAddressBooks = {
-              protectedBy = "View";
-              pageName    = "UIxContactFoldersView";
-              actionName = "updateAdditionalAddressBooks";
-           };
-           acls = {
-              protectedBy = "ReadAcls";
-              pageName    = "UIxAclEditor";
-           };
-           saveAcls = {
-              protectedBy = "Change Permissions";
-              pageName    = "UIxAclEditor";
-              actionName  = "saveAcls";
-           };
-           checkRights = {
-              protectedBy = "View";
-              pageName    = "UIxContactFoldersView"; 
-              actionName  = "checkRights";
-           };
-	   userFolders = {
-              protectedBy = "View";
-              pageName    = "UIxContactsUserFolders"; 
-	   };
-	   saveDragHandleState = {
-      	      protectedBy = "View";
-      	      pageName    = "UIxContactFoldersView";
-      	      actionName  = "saveDragHandleState";
-      	   };
+      };
+      methods = {
+        view = {
+          protectedBy = "View";
+          pageName    = "UIxContactFoldersView";
         };
-     };
+        mailer-contacts = {
+          protectedBy = "View";
+          pageName    = "UIxContactFoldersView";
+          actionName  = "mailerContacts";
+        };
+        contactSearch = {
+          protectedBy = "<public>";
+          pageName    = "UIxContactFoldersView";
+          actionName  = "contactSearch";
+        };
+        allContactSearch = {
+          protectedBy = "<public>";
+          pageName    = "UIxContactFoldersView";
+          actionName  = "allContactSearch";
+        };
+        updateAdditionalAddressBooks = {
+          protectedBy = "View";
+          pageName    = "UIxContactFoldersView";
+          actionName = "updateAdditionalAddressBooks";
+        };
+        acls = {
+          protectedBy = "ReadAcls";
+          pageName    = "UIxAclEditor";
+        };
+        saveAcls = {
+          protectedBy = "Change Permissions";
+          pageName    = "UIxAclEditor";
+          actionName  = "saveAcls";
+        };
+        checkRights = {
+          protectedBy = "View";
+          pageName    = "UIxContactFoldersView"; 
+          actionName  = "checkRights";
+        };
+        userFolders = {
+          protectedBy = "View";
+          pageName    = "UIxContactsUserFolders"; 
+        };
+        saveDragHandleState = {
+          protectedBy = "View";
+          pageName    = "UIxContactFoldersView";
+          actionName  = "saveDragHandleState";
+        };
+      };
+    };
 
-/* both following class should be "reparented" so as to only have
-   SOGoContactFolder here... */
-     SOGoContactGCSFolder = {
-        slots = {
-           toolbar = {
-              protectedBy = "View";
-              value = "SOGoContactFolder.toolbar";
-           };
+    /* both following class should be "reparented" so as to only have
+       SOGoContactFolder here... */
+    SOGoContactGCSFolder = {
+      slots = {
+        toolbar = {
+          protectedBy = "View";
+          value = "SOGoContactFolder.toolbar";
         };
-        methods = {
-           view = {
-              protectedBy = "View";
-              pageName    = "UIxContactsListView";
-           };
-           contactSearch = {
-              protectedBy = "<public>";
-              pageName    = "UIxContactsListView";
-              actionName  = "contactSearch";
-           };
-           newcontact = {
-              protectedBy = "<public>";
-              pageName    = "UIxContactEditor";
-              actionName  = "new";
-           };
-           newlist = {
-              protectedBy = "Add Documents, Images, and Files";
-              pageName    = "UIxListEditor";
-              actionName  = "new";
-           };
-           mailer-contacts = {
-              protectedBy = "View";
-              pageName    = "UIxContactsListView";
-              actionName  = "mailerContacts";
-           };
-           export = {
-              protectedBy = "View";
-              actionClass = "UIxContactFolderActions";
-              actionName  = "export";
-           };
-           import = {
-              protectedBy = "View";
-              actionClass = "UIxContactFolderActions";
-              actionName  = "import";
-           };
-	   userRights = {
-	      protectedBy = "ReadAcls";
-	      pageName    = "UIxContactsUserRightsEditor";
-	   };
-	   saveUserRights = {
-	      protectedBy = "Change Permissions";
-	      pageName    = "UIxContactsUserRightsEditor";
-	      actionName  = "saveUserRights";
-	   };
+      };
+      methods = {
+        view = {
+          protectedBy = "View";
+          pageName    = "UIxContactsListView";
         };
-     };
-     
-     SOGoContactSourceFolder = {
-        slots = {
-           toolbar = {
-              protectedBy = "View";
-              value = "SOGoContactFolder.toolbar";
-           };
+        contactSearch = {
+          protectedBy = "<public>";
+          pageName    = "UIxContactsListView";
+          actionName  = "contactSearch";
         };
-        methods = {
-           view = {
-              protectedBy = "<public>";
-              pageName    = "UIxContactsListView";
-           };
-           newcontact = {
-              protectedBy = "<public>";
-              pageName    = "UIxContactEditor";
-              actionName  = "new";
-           };
-           mailer-contacts = {
-              protectedBy = "<public>";
-              pageName    = "UIxContactsListView";
-              actionName = "mailerContacts";
-           };
-           canAccessContent = {
-              protectedBy = "<public>";
-              actionClass = "UIxFolderActions";
-              actionName = "canAccessContent";
-           };
-	   copy = {
-	     protectedBy = "Access Contents Information";
-	     actionClass = "UIxFolderActions";
-	     actionName = "copy";
-	   };
+        newcontact = {
+          protectedBy = "<public>";
+          pageName    = "UIxContactEditor";
+          actionName  = "new";
         };
-     };
+        newlist = {
+          protectedBy = "Add Documents, Images, and Files";
+          pageName    = "UIxListEditor";
+          actionName  = "new";
+        };
+        mailer-contacts = {
+          protectedBy = "View";
+          pageName    = "UIxContactsListView";
+          actionName  = "mailerContacts";
+        };
+        export = {
+          protectedBy = "View";
+          actionClass = "UIxContactFolderActions";
+          actionName  = "export";
+        };
+        import = {
+          protectedBy = "View";
+          actionClass = "UIxContactFolderActions";
+          actionName  = "import";
+        };
+        userRights = {
+          protectedBy = "ReadAcls";
+          pageName    = "UIxContactsUserRightsEditor";
+        };
+        saveUserRights = {
+          protectedBy = "Change Permissions";
+          pageName    = "UIxContactsUserRightsEditor";
+          actionName  = "saveUserRights";
+        };
+      };
+    };
 
-     SOGoContactGCSEntry = {
-        methods = {
-           view = {
-              protectedBy = "Access Contents Information";
-              pageName    = "UIxContactView";
-           };
-           edit = {
-              protectedBy = "Access Contents Information";
-              pageName    = "UIxContactEditor";
-           };
-           editAsContact = {
-              protectedBy = "Access Contents Information";
-              pageName    = "UIxContactEditor";
-           };
-           save = {
-              protectedBy = "Change Images And Files";
-              pageName    = "UIxContactEditor";
-              actionName  = "save";
-           };
-           saveAsContact = {
-              protectedBy = "Change Images And Files";
-              pageName    = "UIxContactEditor";
-              actionName  = "save";
-           };
-           write = {
-              protectedBy = "View";
-              pageName    = "UIxContactEditor";
-              actionName  = "write";
-           };
+    SOGoContactSourceFolder = {
+      slots = {
+        toolbar = {
+          protectedBy = "View";
+          value = "SOGoContactFolder.toolbar";
         };
-     };
+      };
+      methods = {
+        view = {
+          protectedBy = "<public>";
+          pageName    = "UIxContactsListView";
+        };
+        newcontact = {
+          protectedBy = "<public>";
+          pageName    = "UIxContactEditor";
+          actionName  = "new";
+        };
+        mailer-contacts = {
+          protectedBy = "<public>";
+          pageName    = "UIxContactsListView";
+          actionName = "mailerContacts";
+        };
+        canAccessContent = {
+          protectedBy = "<public>";
+          actionClass = "UIxFolderActions";
+          actionName = "canAccessContent";
+        };
+        copy = {
+          protectedBy = "Access Contents Information";
+          actionClass = "UIxFolderActions";
+          actionName = "copy";
+        };
+      };
+    };
 
-     SOGoContactGCSList = {
-        methods = {
-           view = {
-              protectedBy = "Access Contents Information";
-              pageName    = "UIxListView";
-           };
-           properties = {
-               protectedBy = "Access Contents Information";
-               pageName    = "UIxListView";
-               actionName  = "properties";
-           };
-           edit = {
-              protectedBy = "Access Contents Information";
-              pageName    = "UIxListEditor";
-           };
-           editAsList = {
-              protectedBy = "Access Contents Information";
-              pageName    = "UIxListEditor";
-           };
-           save = {
-              protectedBy = "Change Images And Files";
-              pageName    = "UIxListEditor";
-              actionName  = "save";
-           };
-           saveAsList = {
-              protectedBy = "Change Images And Files";
-              pageName    = "UIxListEditor";
-              actionName  = "save";
-           };
+    SOGoContactGCSEntry = {
+      methods = {
+        view = {
+          protectedBy = "Access Contents Information";
+          pageName    = "UIxContactView";
         };
-     };
+        edit = {
+          protectedBy = "Access Contents Information";
+          pageName    = "UIxContactEditor";
+        };
+        editAsContact = {
+          protectedBy = "Access Contents Information";
+          pageName    = "UIxContactEditor";
+        };
+        save = {
+          protectedBy = "Change Images And Files";
+          pageName    = "UIxContactEditor";
+          actionName  = "save";
+        };
+        saveAsContact = {
+          protectedBy = "Change Images And Files";
+          pageName    = "UIxContactEditor";
+          actionName  = "save";
+        };
+        write = {
+          protectedBy = "View";
+          pageName    = "UIxContactEditor";
+          actionName  = "write";
+        };
+      };
+    };
 
-     SOGoContactLDIFEntry = {
-        methods = {
-           view = {
-	      protectedBy = "<public>";
-              pageName    = "UIxContactView";
-           };
-           edit = {
-              protectedBy = "<public>";
-              pageName    = "UIxContactEditor";
-           };
-           write = {
-              protectedBy = "<public>";
-              pageName    = "UIxContactEditor";
-              actionName  = "write";
-           };
+    SOGoContactGCSList = {
+      methods = {
+        view = {
+          protectedBy = "Access Contents Information";
+          pageName    = "UIxListView";
         };
-     };
+        properties = {
+          protectedBy = "Access Contents Information";
+          pageName    = "UIxListView";
+          actionName  = "properties";
+        };
+        edit = {
+          protectedBy = "Access Contents Information";
+          pageName    = "UIxListEditor";
+        };
+        editAsList = {
+          protectedBy = "Access Contents Information";
+          pageName    = "UIxListEditor";
+        };
+        save = {
+          protectedBy = "Change Images And Files";
+          pageName    = "UIxListEditor";
+          actionName  = "save";
+        };
+        saveAsList = {
+          protectedBy = "Change Images And Files";
+          pageName    = "UIxListEditor";
+          actionName  = "save";
+        };
+      };
+    };
+
+    SOGoContactLDIFEntry = {
+      methods = {
+        view = {
+          protectedBy = "<public>";
+          pageName    = "UIxContactView";
+        };
+        edit = {
+          protectedBy = "<public>";
+          pageName    = "UIxContactEditor";
+        };
+        write = {
+          protectedBy = "<public>";
+          pageName    = "UIxContactEditor";
+          actionName  = "write";
+        };
+      };
+    };
   };
 }

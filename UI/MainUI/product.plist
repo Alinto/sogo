@@ -1,12 +1,11 @@
-{
+{ /* -*- Mode: java; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
   requires = ( MAIN, Appointments, CommonUI );
 
-  publicResources = (
-  );
+  publicResources = ();
 
   factories = {
   };
-  
+
   classes = {
     SOGoRootPage = {
       superclass  = "SoComponent";
@@ -19,12 +18,12 @@
       protectedBy = "<public>";
       defaultAccess = "allow";
       defaultRoles = {
-	"View" = ( "Owner", "ObjectViewer" );
-	"Change Images And Files"  = ( "Owner", "ObjectEditor", "PROPPATCHer" );
-	"Access Object" = ( "Owner", "ObjectViewer", "ObjectEditor", "ObjectCreator", "ObjectEraser" );
-	"Access Contents Information" = ( "Owner", "ObjectViewer" );
+        "View" = ( "Owner", "ObjectViewer" );
+        "Change Images And Files"  = ( "Owner", "ObjectEditor", "PROPPATCHer" );
+        "Access Object" = ( "Owner", "ObjectViewer", "ObjectEditor", "ObjectCreator", "ObjectEraser" );
+        "Access Contents Information" = ( "Owner", "ObjectViewer" );
         "Add Documents, Images, and Files" = ( "Owner", "ObjectCreator" );
-	"Add Folders" = ( "Owner", "FolderCreator" );
+        "Add Folders" = ( "Owner", "FolderCreator" );
         "ReadAcls" = ( "Owner" );
         "Change Permissions" = ( "Owner" );
         "Delete Object" = ( "Owner", "ObjectEraser" );
@@ -34,22 +33,22 @@
         DELETE = { 
           protectedBy = "Delete Object";
         };
-	GET = {
+        GET = {
           protectedBy = "Access Contents Information";
-	};
-	PUT = {
-	  protectedBy = "Change Images And Files";
-	};
+        };
+        PUT = {
+          protectedBy = "Change Images And Files";
+        };
       };
     };
     SOGoContentObject = {
       superclass = "SOGoObject";
       defaultAccess = "allow";
-     /* defaultAccess = "Access Contents Information"; */
+      /* defaultAccess = "Access Contents Information"; */
       protectedBy = "Access Object";
       defaultRoles = {
-      	"Access Contents Information" = ( "Owner", "ObjectViewer", "ObjectEditor" );
-	"Change Images And Files" = ( "Owner", "ObjectEditor" );
+        "Access Contents Information" = ( "Owner", "ObjectViewer", "ObjectEditor" );
+        "Change Images And Files" = ( "Owner", "ObjectEditor" );
         "Delete Objects" = ( "Owner", "ObjectEraser" );
       };
     };
@@ -57,11 +56,11 @@
       superclass = "SOGoObject";
       protectedBy = "Access Object";
       defaultRoles = {
-	"Change Images And Files"  = ( "Owner", "ObjectEditor", "PROPPATCHer" );
-	"View" = ( "Owner", "ObjectViewer", "ObjectEditor" );
-	"Access Object" = ( "Owner", "AuthorizedSubscriber" );
-	"Access Contents Information" = ( "Owner", "ObjectViewer", "ObjectEditor" );
-	"WebDAV Access" = ( "Owner", "AuthorizedSubscriber" );
+        "Change Images And Files"  = ( "Owner", "ObjectEditor", "PROPPATCHer" );
+        "View" = ( "Owner", "ObjectViewer", "ObjectEditor" );
+        "Access Object" = ( "Owner", "AuthorizedSubscriber" );
+        "Access Contents Information" = ( "Owner", "ObjectViewer", "ObjectEditor" );
+        "WebDAV Access" = ( "Owner", "AuthorizedSubscriber" );
         "Delete Object" = ( "Owner" );
         "Delete Objects" = ( "Owner", "ObjectEraser" );
       };
@@ -70,18 +69,18 @@
       superclass = "SOGoFolder";
       protectedBy = "Access Contents Information";
       defaultRoles = {
-	"Access Contents Information" = ( "Authenticated" );
+        "Access Contents Information" = ( "Authenticated" );
         "WebDAV Access" = ( "Authenticated" );
-	"Add Folders" = ( "Owner" );
+        "Add Folders" = ( "Owner" );
       };
     };
     SOGoUserFolder = {
       superclass = "SOGoFolder";
       protectedBy = "Access Contents Information";
       defaultRoles = {
-	"Access Contents Information" = ( "Authenticated" );
+        "Access Contents Information" = ( "Authenticated" );
         "WebDAV Access" = ( "Authenticated" );
-	"View" = ( "Authenticated" );
+        "View" = ( "Authenticated" );
       };
     };
     SOGoGCSFolder = {
@@ -92,39 +91,39 @@
   categories = {
     SOGo = { // TODO: move decls to class
       slots = {
-	toolbar = {
-	  value = "none"; // keep this in order to avoid lookups on username
-			  // "toolbar"
-	};
+        toolbar = {
+          value = "none"; // keep this in order to avoid lookups on username
+          // "toolbar"
+        };
       };
       methods = {
         view = { 
           protectedBy = "<public>";
           pageName = "SOGoRootPage"; 
         };
-	index = { 
+        index = { 
           protectedBy = "<public>";
           pageName = "SOGoRootPage"; 
         };
-/*	crash = {
+        /*	crash = {
+                protectedBy = "<public>";
+                pageName = "SOGoRootPage";
+                actionName = "crash";
+                };
+                exception = {
+                protectedBy = "<public>";
+                pageName = "SOGoRootPage";
+                actionName = "exception";
+                };
+                raisedException = {
+                protectedBy = "<public>";
+                pageName = "SOGoRootPage";
+                actionName = "raisedException";
+                }; */
+        connect = {
           protectedBy = "<public>";
           pageName = "SOGoRootPage";
-	  actionName = "crash";
-        };
-	exception = {
-          protectedBy = "<public>";
-          pageName = "SOGoRootPage";
-	  actionName = "exception";
-        };
-	raisedException = {
-          protectedBy = "<public>";
-          pageName = "SOGoRootPage";
-	  actionName = "raisedException";
-        }; */
-	connect = {
-          protectedBy = "<public>";
-          pageName = "SOGoRootPage";
-	  actionName = "connect";
+          actionName = "connect";
         };
         GET = { // more or less a hack, see README of dbd
           protectedBy = "<public>";
@@ -140,39 +139,39 @@
           protectedBy = "<public>";
           pageName = "SOGoUserHomePage"; 
         };
-	logoff = {
+        logoff = {
           protectedBy = "<public>";
           pageName = "SOGoUserHomePage";
-	  actionName = "logoff";
-	};
-	usersSearch = {
-	  protectedBy = "View";
-	  pageName = "SOGoUserHomePage";
-	  actionName = "usersSearch";
-	};
-	foldersSearch = {
-	  protectedBy = "View";
-	  pageName = "SOGoUserHomePage";
-	  actionName = "foldersSearch";
-	};
+          actionName = "logoff";
+        };
+        usersSearch = {
+          protectedBy = "View";
+          pageName = "SOGoUserHomePage";
+          actionName = "usersSearch";
+        };
+        foldersSearch = {
+          protectedBy = "View";
+          pageName = "SOGoUserHomePage";
+          actionName = "foldersSearch";
+        };
       };
     };
-//     SOGoGroupsFolder = {
-//       methods = {
-//         index = { 
-//           protectedBy = "View";
-//           pageName = "SOGoGroupsPage"; 
-//         };
-//       };
-//     };
-//     SOGoGroupFolder = {
-//       methods = {
-//         index = { 
-//           protectedBy = "View";
-//           pageName = "SOGoGroupPage"; 
-//         };
-//       };
-//     };
+    //     SOGoGroupsFolder = {
+    //       methods = {
+    //         index = { 
+    //           protectedBy = "View";
+    //           pageName = "SOGoGroupsPage"; 
+    //         };
+    //       };
+    //     };
+    //     SOGoGroupFolder = {
+    //       methods = {
+    //         index = { 
+    //           protectedBy = "View";
+    //           pageName = "SOGoGroupPage"; 
+    //         };
+    //       };
+    //     };
     SOGoFreeBusyObject = {
       methods = {
         ajaxRead = { 
@@ -182,9 +181,9 @@
         };
       };
     };
-//     SOGoCustomGroupFolder = {
-//       methods = {
-//       };
-//     };
+    //     SOGoCustomGroupFolder = {
+    //       methods = {
+    //       };
+    //     };
   };
 }
