@@ -339,8 +339,7 @@ function onViewEvent(event) {
 }
 
 function onViewEventCallback(http) {
-    if (http.readyState == 4
-        && http.status == 200) {
+    if (http.readyState == 4 && http.status == 200) {
         if (http.responseText.length > 0) {
             var data = http.responseText.evalJSON(true);
             //      $H(data).keys().each(function(key) {
@@ -386,25 +385,33 @@ function onViewEventCallback(http) {
 
             // Put the event's data in the DIV
             div.down("h1").update(data["summary"].replace(/\r?\n/g, "<BR/>"));
+
+            var paras = div.getElementsByTagName("p");
+            if (data["calendar"].length) {
+                paras[0].down("SPAN", 1).update(data["calendar"]);
+                paras[0].show();
+            } else
+                paras[0].hide();
+
             if (parseInt(data["isAllDay"]) == 0) {
-                div.down("P", 0).down("SPAN", 1).update(data["startTime"]);
-                div.down("P", 0).show();
+                paras[1].down("SPAN", 1).update(data["startTime"]);
+                paras[1].show();
             } else
-                div.down("P", 0).hide();
+                paras[1].hide();
+
             if (data["location"].length) {
-                div.down("P", 1).down("SPAN", 1).update(data["location"]);
-                div.down("P", 1).show();
+                paras[2].down("SPAN", 1).update(data["location"]);
+                paras[2].show();
             } else
-                div.down("P", 1).hide();
+                paras[2].hide();
 
             if (data["description"].length) {
-                div.down("P", 2).update(data["description"].replace(/\r?\n/g, "<BR/>"));
-                div.down("P", 2).show();
+                paras[3].update(data["description"].replace(/\r?\n/g, "<BR/>"));
+                paras[3].show();
             } else
-                div.down("P", 2).hide();
+                paras[3].hide();
       
-            div.setStyle({ left: left + "px",
-                        top: top + "px" });
+            div.setStyle({ left: left + "px", top: top + "px" });
             div.show();
         }
     }

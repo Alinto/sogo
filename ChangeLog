@@ -1,5 +1,11 @@
 2010-01-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/SchedulerUI.js (onViewEventCallback):
+	simplified lookup of "P" elements by groupings them in an array.
+	This also fixes a bug where all the returned information would not
+	be displayed. Also, we make use of the "calendar" field, which was
+	not used before.
+
 	* UI/Scheduler/UIxAppointmentEditor.m (-newAction): new events
 	have an ".ics" extension instead of ".vcf".
 
