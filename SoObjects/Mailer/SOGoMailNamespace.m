@@ -20,6 +20,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <SOGo/NSString+Utilities.h>
+
+#import "SOGoMailAccount.h"
+
 #import "SOGoMailNamespace.h"
 
 @implementation SOGoMailNamespace
@@ -27,6 +31,44 @@
 - (NSArray *) toOneRelationshipKeys
 {
   return nil;
+}
+
+- (id) lookupName: (NSString *) _key
+	inContext: (id)_ctx
+	  acquire: (BOOL) _acquire
+{
+  NSString *folderName, *fullFolderName, *className;
+  SOGoMailAccount *mailAccount;
+  id obj;
+
+  if ([_key hasPrefix: @"folder"])
+    {
+      mailAccount = [self mailAccountFolder];
+      folderName = [[_key substringFromIndex: 6] fromCSSIdentifier];
+      fullFolderName = [NSString stringWithFormat: @"%@/%@",
+                                 [self traversalFromMailAccount], folderName];
+      if ([fullFolderName
+                    isEqualToString: [mailAccount sentFolderNameInContext: _ctx]])
+        className = @"SOGoSentFolder";
+      else if ([fullFolderName isEqualToString:
+                                 [mailAccount draftsFolderNameInContext: _ctx]])
+        className = @"SOGoDraftsFolder";
+      else if ([fullFolderName isEqualToString:
+                                 [mailAccount trashFolderNameInContext: _ctx]])
+        className = @"SOGoTrashFolder";
+      /*       else if ([folderName isEqualToString:
+               [mailAccount sieveFolderNameInContext: _ctx]])
+               obj = [self lookupFiltersFolder: _key inContext: _ctx]; */
+      else
+        className = @"SOGoMailFolder";
+
+      obj = [NSClassFromString (className) objectWithName: _key
+                                              inContainer: self];
+    }
+  else
+    obj = [super lookupName: _key inContext: _ctx acquire: NO];
+
+  return obj;
 }
 
 @end

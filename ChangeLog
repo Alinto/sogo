@@ -1,5 +1,9 @@
 2010-01-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailNamespace.m
+	(-lookupName:inContext:acquire:): overriden method because the
+	namespace "folders" cannot be created and cannot contain messages.
+
 	* SoObjects/Mailer/SOGoMailAccount.m
 	(-otherUsersFolderNamespaces): new method that returns all the
 	namespace "folders" in the "other user" namespace. Replaces the
