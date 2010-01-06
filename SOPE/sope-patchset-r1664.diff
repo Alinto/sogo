@@ -1441,7 +1441,8 @@ Index: sope-mime/NGImap4/NGImap4ResponseNormalizer.m
  
 +- (NSArray *)_normalizeNamespace:(NSArray *)_namespace {
 +  NSMutableArray *result;
-+  NSDictionary *currentNS, *newNS;
++  NSDictionary *currentNS;
++  NSMutableDictionary *newNS;
 +  NSString *newPrefix;
 +  int count, max;
 +
@@ -1461,7 +1462,6 @@ Index: sope-mime/NGImap4/NGImap4ResponseNormalizer.m
 +}
 +
 +- (NSDictionary *)normalizeNamespaceResponse:(NGHashMap *)_map {
-+  id                  obj;
 +  NSMutableDictionary *result;
 +  NSDictionary *rawResponse;
 +  NSArray *namespace;
