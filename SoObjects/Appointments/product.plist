@@ -14,6 +14,7 @@
     SOGoWebAppointmentFolder = {
         superclass = "SOGoGCSFolder";
         defaultRoles = {
+            "Add Documents, Images, and Files" = ( );
             "Access Contents Information" = ( "Owner", "PublicResponder", "PublicModifier", "PublicViewer", "PublicDAndTViewer", "PrivateResponder", "PrivateModifier", "PrivateViewer", "PrivateDAndTViewer", "ConfidentialResponder", "ConfidentialModifier", "ConfidentialViewer", "ConfidentialDAndTViewer" );
             "ViewWholePublicRecords" = ( "Owner", "PublicResponder", "PublicModifier", "PublicViewer" );
             "ViewWholePrivateRecords" = ( "Owner", "PrivateResponder", "PrivateModifier", "PrivateViewer" );
