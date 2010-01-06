@@ -49,7 +49,10 @@
 
   ud = [[context activeUser] userDefaults];
   if ([ud rememberLastModule])
-    [ud setLoginModule: @"Calendar"];
+    {
+      [ud setLoginModule: @"Calendar"];
+      [ud synchronize];
+    }
 }
 
 - (void) _setupContext
@@ -58,6 +61,7 @@
   NSString *module;
   SOGoAppointmentFolders *clientObject;
 
+  contextIsSetup = YES;
   [self checkDefaultModulePreference];
 
   activeUser = [context activeUser];
@@ -135,7 +139,8 @@
 {
   NSString *vertical;
   
-  [self _setupContext];
+  if (!contextIsSetup)
+    [self _setupContext];
   vertical = [moduleSettings objectForKey: @"DragHandleVertical"];
 
   return ((vertical && [vertical intValue] > 0) ? (id)[vertical stringByAppendingFormat: @"px"] : nil);
@@ -145,7 +150,8 @@
 {
   NSString *horizontal;
 
-  [self _setupContext];
+  if (!contextIsSetup)
+    [self _setupContext];
   horizontal = [moduleSettings objectForKey: @"DragHandleHorizontal"];
 
   return ((horizontal && [horizontal intValue] > 0) ? (id)[horizontal stringByAppendingFormat: @"px"] : nil);
@@ -155,7 +161,8 @@
 {
   NSString *height;
 
-  [self _setupContext];
+  if (!contextIsSetup)
+    [self _setupContext];
   height = [moduleSettings objectForKey: @"DragHandleVertical"];
 
   return ((height && [height intValue] > 0) ? [NSString stringWithFormat: @"%ipx", ([height intValue] - 27)] : nil);
@@ -166,7 +173,8 @@
   WORequest *request;
   NSString *dragHandle;
   
-  [self _setupContext];
+  if (!contextIsSetup)
+    [self _setupContext];
   request = [context request];
 
   if ((dragHandle = [request formValueForKey: @"vertical"]) != nil)
@@ -205,7 +213,8 @@
 {
   NSString *view;
   
-  [self _setupContext];
+  if (!contextIsSetup)
+    [self _setupContext];
   view = [moduleSettings objectForKey: @"View"];
 
   return (view ? view : @"weekview");

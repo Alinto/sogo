@@ -35,6 +35,7 @@
   NSNumber *yearMenuItem;
   SOGoUserSettings *us;
   NSMutableDictionary *moduleSettings;
+  BOOL contextIsSetup;
 }
 
 - (NSArray *) monthMenuItems;
