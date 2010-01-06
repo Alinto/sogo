@@ -67,6 +67,7 @@
 #import "SOGoMailFolder.h"
 #import "SOGoMailObject.h"
 #import "SOGoMailObject+Draft.h"
+#import "SOGoSentFolder.h"
 
 #import "SOGoDraftObject.h"
 
