@@ -326,7 +326,7 @@
         method = [NSString stringWithFormat:@"%@/%@.ics/editAsAppointment",
                            [co soURL], objectId];
       else
-        method = [NSString stringWithFormat: @"%@/Calendar/personal/%@.vcf/editAsAppointment",
+        method = [NSString stringWithFormat: @"%@/Calendar/personal/%@.ics/editAsAppointment",
                            [self userFolderPath], objectId];
       uri = [self completeHrefForMethod: method];
       result = [self redirectToLocation: uri];

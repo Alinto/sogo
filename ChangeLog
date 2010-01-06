@@ -1,5 +1,8 @@
 2010-01-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxAppointmentEditor.m (-newAction): new events
+	have an ".ics" extension instead of ".vcf".
+
 	* UI/Scheduler/UIxCalMainView.m (-_setupContext): only invoked once
 	per instance.
 	(-checkDefaultModulePreference): synchronize the user defaults
