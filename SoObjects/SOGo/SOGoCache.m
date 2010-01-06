@@ -245,9 +245,9 @@
 
   valueString = nil;
 
+  keyName = [NSString stringWithFormat: @"%@+%@", theLogin, theType];
   if (handle)
     {
-      keyName = [NSString stringWithFormat: @"%@+%@", theLogin, theType];
       valueString = [localCache objectForKey: keyName];
       if (!valueString)
         {
