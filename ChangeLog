@@ -6,6 +6,11 @@
 
 2010-01-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/NSString+Utilities.m (-fromCSSIdentifier): speed
+	things up a little bit by checking whether the current character
+	is '_', possibly announcing an escaped sequence, anything else
+	being treated regularly.
+
 	* SoObjects/SOGo/NSDictionary+BSJSONAdditions.m
 	(-jsonStringFromString:): convert "\" to "\\" rather than "\n".
 
