@@ -360,7 +360,7 @@ static int cssEscapingCount = 0;
       if (idx > -1)
         [cssIdentifier appendString: cssEscapingStrings[idx]];
       else
-        [cssIdentifier appendFormat: @"%lc", currentChar];
+        [cssIdentifier appendFormat: @"%C", currentChar];
     }
 
   return cssIdentifier;
@@ -401,11 +401,11 @@ static int cssEscapingCount = 0;
       idx = [self _cssStringIndex: currentString];
       if (idx > -1)
         {
-          [newString appendFormat: @"%lc", cssEscapingCharacters[idx]];
+          [newString appendFormat: @"%C", cssEscapingCharacters[idx]];
           count += [cssEscapingStrings[idx] length] - 1;
         }
       else
-        [newString appendFormat: @"%lc", [self characterAtIndex: count]];
+        [newString appendFormat: @"%C", [self characterAtIndex: count]];
     }
   currentString = [self substringFromRange: NSMakeRange (count, max - count)];
   [newString appendString: currentString];

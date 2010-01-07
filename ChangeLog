@@ -1,3 +1,9 @@
+2010-01-07  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/SOGo/NSString+Utilities.m (-asCSSIdentifier): replaced
+	%lc by %C.
+	(-fromCSSIdentifier): idem.
+
 2010-01-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/NSDictionary+BSJSONAdditions.m
