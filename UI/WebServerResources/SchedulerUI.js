@@ -388,7 +388,8 @@ function onViewEventCallback(http) {
 
             var paras = div.getElementsByTagName("p");
             if (data["calendar"].length) {
-                paras[0].down("SPAN", 1).update(data["calendar"]);
+		// Remove owner email from calendar's name
+                paras[0].down("SPAN", 1).update(data["calendar"].replace(/ \<.*\>/, ""));
                 paras[0].show();
             } else
                 paras[0].hide();
