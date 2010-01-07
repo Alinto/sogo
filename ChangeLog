@@ -1,5 +1,11 @@
 2010-01-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/NSScanner+BSJSONAdditions.m (-scanJSONString): we
+	now accept lowercase characters in characters coded in UCN.
+
+	* UnitTests/TestBSJSONAdditions.m: new unit test for
+	BSJSONAdditions.
+
 	* UnitTests/SOGoTest.m: base class for our unit test testcases.
 	Similar to JUnit and family.
 

@@ -24,6 +24,7 @@
 #define SOGOTEST_H
 
 #import <Foundation/NSObject.h>
+#import <Foundation/NSString.h>
 
 @class NSArray;
 @class NSMutableArray;
@@ -71,7 +72,7 @@ typedef enum {
 
 #define testEquals(a,b) \
   testWithMessage(([a isEqual: b]), \
-                  ([NSString stringWithFormat: @"objects %@ and %@ differs", a, b]))
+                  ([NSString stringWithFormat: @"objects '%@' and '%@' differs", (a), (b)]))
 
 #define testEqualsWithMessage(a,b,m) \
   testWithMessage(([a isEqual: b]), (m))

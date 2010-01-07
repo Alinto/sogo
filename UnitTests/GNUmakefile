@@ -1,5 +1,7 @@
 # GNUstep makefile
 
+debug=yes
+
 include ../config.make
 include $(GNUSTEP_MAKEFILES)/common.make
 include ../Version
@@ -9,9 +11,17 @@ $(TEST_TOOL)_INSTALL_DIR = $(SOGO_ADMIN_TOOLS)
 $(TEST_TOOL)_OBJC_FILES += \
 	sogo-tests.m \
 	\
-	SOGoTest.m
+	SOGoTest.m \
+	\
+	TestBSJSONAdditions.m
 
 TOOL_NAME = $(TEST_TOOL)
+
+ADDITIONAL_INCLUDE_DIRS += \
+	-D_GNU_SOURCE -I../SOPE/ -I../SoObjects/ -I../UI/
+
+ADDITIONAL_LIB_DIRS += \
+	-L../SoObjects/SOGo -lSOGo
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/tool.make

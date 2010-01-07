@@ -162,7 +162,7 @@ NSString *jsonNullString = @"null";
 	  /* START Updated code modified from code fix submitted by Bill Garrison - March 28, 2006 - http://www.standardorbit.net */
 	  NSScanner *hexScanner = [NSScanner scannerWithString:digits];
 	  NSString *verifiedHexDigits;
-	  NSCharacterSet *hexDigitSet = [NSCharacterSet characterSetWithCharactersInString:@"0123456789ABCDEF"];
+	  NSCharacterSet *hexDigitSet = [NSCharacterSet characterSetWithCharactersInString:@"0123456789ABCDEFabcdef"];
 	  if (NO == [hexScanner scanCharactersFromSet:hexDigitSet intoString:&verifiedHexDigits])
 	    return NO;
 	  if (4 != [verifiedHexDigits length])
