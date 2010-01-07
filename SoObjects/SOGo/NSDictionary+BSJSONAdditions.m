@@ -137,7 +137,7 @@ const int jsonDoNotIndent = -1;
       [jsonString appendString:@"\\\""];
       break;
     case '\\':
-      [jsonString appendString:@"\\n"];
+      [jsonString appendString:@"\\\\"];
       break;
       /* TODO: email out to json group on this - spec says to handlt his, examples and example code don't handle this.
 	 case '\/':

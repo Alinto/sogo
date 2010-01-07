@@ -23,26 +23,27 @@
 #import <Foundation/NSException.h>
 #import <Foundation/NSString.h>
 
-#import <SOGo/NSScanner+BSJSONAdditions.h>
+#import "SOGo/NSScanner+BSJSONAdditions.h"
+#import "SOGo/NSDictionary+BSJSONAdditions.h"
 
 #import "SOGoTest.h"
 
-@interface TestBSJSONAdditions : SOGoTest
+@interface TestNSSCannerBSJSONAdditions : SOGoTest
 @end
 
-@implementation TestBSJSONAdditions
+@implementation TestNSSCannerBSJSONAdditions
 
 - (void) test_scanJSONString
 {
   NSScanner *testScanner;
+  NSString *currentString, *expected, *error;
+  NSMutableString *resultString;
+  int count;
   NSString *testStrings[] = { @"\"\\\\\"", @"\\",
                               @"\"\\u0041\"", @"A",
                               @"\"\\u000A\"", @"\n",
                               @"\"\\u000a\"", @"\n",
                               nil };
-  NSString *currentString, *expected, *error;
-  NSMutableString *resultString;
-  int count;
 
   count = 0;
   while ((currentString = testStrings[count * 2]))
@@ -50,6 +51,36 @@
       resultString = [NSMutableString string];
       testScanner = [NSScanner scannerWithString: currentString];
       [testScanner scanJSONString: &resultString];
+      expected = testStrings[count * 2 + 1];
+      error = [NSString stringWithFormat:
+                          @"objects '%@' and '%@' differs (count: %d)",
+                        expected, resultString, count];
+      testEqualsWithMessage(expected, resultString, error);
+      count++;
+    }
+}
+
+@end
+
+@interface TestNSDictionaryBSJSONAdditions : SOGoTest
+@end
+
+@implementation TestNSDictionaryBSJSONAdditions
+
+- (void) test_jsonStringForString
+{
+  NSDictionary *testDictionary;
+  NSString *currentString, *resultString, *expected, *error;
+  int count;
+  NSString *testStrings[] = { @"\n", @"\"\\n\"",
+                              @"\\", @"\"\\\\\"",
+                              nil };
+
+  testDictionary = [NSDictionary dictionary];
+  count = 0;
+  while ((currentString = testStrings[count * 2]))
+    {
+      resultString = [testDictionary jsonStringForString: currentString];
       expected = testStrings[count * 2 + 1];
       error = [NSString stringWithFormat:
                           @"objects '%@' and '%@' differs (count: %d)",

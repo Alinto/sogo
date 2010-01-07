@@ -1,5 +1,8 @@
 2010-01-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/NSDictionary+BSJSONAdditions.m
+	(-jsonStringFromString:): convert "\" to "\\" rather than "\n".
+
 	* SoObjects/SOGo/NSScanner+BSJSONAdditions.m (-scanJSONString): we
 	now accept lowercase characters in characters coded in UCN.
 
