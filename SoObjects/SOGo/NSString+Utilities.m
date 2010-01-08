@@ -42,7 +42,7 @@ static NSMutableCharacterSet *urlStartChars = nil;
 
 static NSString **cssEscapingStrings = NULL;
 static unichar *cssEscapingCharacters = NULL;
-static int cssEscapingCount = 0;
+static int cssEscapingCount;
 
 @implementation NSString (SOGoURLExtension)
 
@@ -321,9 +321,10 @@ static int cssEscapingCount = 0;
 
   characters = [NSArray arrayWithObjects: @"_", @".", @"#", @"@", @"*", @":",
                         @",", @" ", nil];
-  cssEscapingCharacters
-    = NSZoneMalloc (NULL, sizeof ((cssEscapingCount + 1) * sizeof (unichar)));
   cssEscapingCount = [strings count];
+  cssEscapingCharacters = NSZoneMalloc (NULL,
+                                        (cssEscapingCount + 1)
+                                        * sizeof (unichar));
   for (count = 0; count < cssEscapingCount; count++)
     *(cssEscapingCharacters + count)
       = [[characters objectAtIndex: count] characterAtIndex: 0];
