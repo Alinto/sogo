@@ -29,22 +29,17 @@
 @class NSArray;
 @class NSMutableArray;
 
-typedef enum {
-  SOGoTestFailureSuccess = 0,
-  SOGoTestFailureFailure = 1,
-  SOGoTestFailureError = 2,
-} SOGoTestFailureCode;
+@class SOGoTestRunner;
 
 @interface SOGoTest : NSObject
 {
-  NSMutableArray *messages;
-  int testCount;
-  int failuresCount;
-  int errorsCount;
+  SOGoTestRunner *testRunner;
   BOOL hasFailed;
 }
 
 + (NSArray *) allTestClasses;
+
+- (void) setTestRunner: (SOGoTestRunner *) newTestRunner;
 
 - (void) setUp;
 - (void) tearDown;

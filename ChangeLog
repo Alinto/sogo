@@ -1,5 +1,9 @@
 2010-01-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UnitTests/SOGoTestRunner.m: separated class "SOGoTestRunner"
+	from sogo-tests.m. Moved reporting and logging methods from
+	SOGoTest into SOGoTestRunner.m
+
 	* SoObjects/SOGo/NSString+Utilities.m (-_setupCSSEscaping): we
 	must initialize cssEscapingCount before using it. Also, fixed a
 	typo preventing the character buffer from being initialized

@@ -12,6 +12,7 @@ $(TEST_TOOL)_OBJC_FILES += \
 	sogo-tests.m \
 	\
 	SOGoTest.m \
+	SOGoTestRunner.m \
 	\
 	TestBSJSONAdditions.m
 
