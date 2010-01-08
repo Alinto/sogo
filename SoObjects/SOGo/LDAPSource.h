@@ -52,7 +52,7 @@
   NSString *UIDField;
   NSArray *mailFields;
   NSString *IMAPHostField;
-  NSString *bindFields;
+  NSArray *bindFields;
 
   NSString *domain;
   NSString *contactInfoAttribute;
@@ -74,7 +74,7 @@
 	  UIDField: (NSString *) newUIDField
 	mailFields: (NSArray *) newMailFields
      IMAPHostField: (NSString *) newIMAPHostField
-     andBindFields: (NSString *) newBindFields;
+     andBindFields: (id) newBindFields;
 
 - (NGLdapEntry *) lookupGroupEntryByUID: (NSString *) theUID;
 - (NGLdapEntry *) lookupGroupEntryByEmail: (NSString *) theEmail;

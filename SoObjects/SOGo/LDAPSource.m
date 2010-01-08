@@ -266,7 +266,7 @@ static NSArray *commonSearchFields;
 	  UIDField: (NSString *) newUIDField
 	mailFields: (NSArray *) newMailFields
      IMAPHostField: (NSString *) newIMAPHostField
-     andBindFields: (NSString *) newBindFields
+     andBindFields: (id) newBindFields
 {
   ASSIGN (baseDN, [newBaseDN lowercaseString]);
   if (newIDField)
@@ -280,7 +280,28 @@ static NSArray *commonSearchFields;
   if (newMailFields)
     ASSIGN (mailFields, newMailFields);
   if (newBindFields)
-    ASSIGN (bindFields, newBindFields);
+    {
+      // Before SOGo v1.2.0, bindFields was a comma-separated list
+      // of values. So it could be configured as:
+      //
+      // bindFields = foo;
+      // bindFields = "foo, bar, baz";
+      //
+      // SOGo v1.2.0 and upwards redefined that parameter as an array
+      // so we would have instead:
+      //
+      // bindFields = (foo);
+      // bindFields = (foo, bar, baz);
+      //
+      // We check for the old format and we support it.
+      if ([newBindFields isKindOfClass: [NSArray class]])
+	ASSIGN(bindFields, newBindFields);
+      else
+	{
+	  [self logWithFormat: @"WARNING: using old bindFields format - please update it"];
+	  ASSIGN(bindFields, [newBindFields componentsSeparatedByString: @","]);
+	}
+    }
 }
 
 - (BOOL) _setupEncryption: (NGLdapConnection *) encryptedConn
@@ -351,7 +372,7 @@ static NSArray *commonSearchFields;
 
   escapedUid = SafeLDAPCriteria (uid);
 
-  fields = [[bindFields componentsSeparatedByString: @","] objectEnumerator];
+  fields = [bindFields objectEnumerator];
   while ((currentField = [fields nextObject]))
     [qs appendFormat: @" OR (%@='%@')", currentField, escapedUid];
 
@@ -482,8 +503,7 @@ static NSArray *commonSearchFields;
                         UIDField, escapedUid, mailFormat];
   if (bindFields)
     {
-      bindFieldsEnum = [[bindFields componentsSeparatedByString: @","]
-                         objectEnumerator];
+      bindFieldsEnum = [bindFields objectEnumerator];
       while ((currentField = [bindFieldsEnum nextObject]))
         [qs appendFormat: @" OR (%@='%@')", [currentField stringByTrimmingSpaces], escapedUid];
     }

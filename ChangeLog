@@ -1,3 +1,10 @@
+2010-01-08  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* SoObjects/SOGo/LDAPSource.{h,m} - bindFields is now
+	an array instead of a list of strings separated by commas.
+	Updated the Installation & Configuration Guide to reflect
+	this change.
+
 2010-01-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UnitTests/SOGoTestRunner.m: separated class "SOGoTestRunner"
