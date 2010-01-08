@@ -28,10 +28,10 @@
 
 #import "SOGoTest.h"
 
-@interface TestNSSCannerBSJSONAdditions : SOGoTest
+@interface TestNSScannerBSJSONAdditions : SOGoTest
 @end
 
-@implementation TestNSSCannerBSJSONAdditions
+@implementation TestNSScannerBSJSONAdditions
 
 - (void) test_scanJSONString
 {
