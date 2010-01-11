@@ -194,13 +194,27 @@
 
 - (int) importVcardData: (NSString *) vcardData
 {
-  NGVCard *card;
+  NSArray *allCards;
   int rc;
 
   rc = 0;
-  card = [NGVCard parseSingleFromSource: vcardData];
-  if ([self importVcard: card])
-    rc = 1;
+  allCards = [NGVCard parseFromSource: vcardData];
+
+  if (allCards && [allCards count])
+    {
+      int i;
+
+      for (i = 0; i < [allCards count]; i++)
+	{
+	  if (![self importVcard: [allCards objectAtIndex: i]])
+	    {
+	      rc = 0;
+	      break;
+	    }
+	  else
+	    rc++;
+	}
+    }
 
   return rc;
 }
