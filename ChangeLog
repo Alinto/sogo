@@ -1,3 +1,21 @@
+2010-01-08  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* SoObjects/SOGo/LDAPSource.{h,m} - bindFields is now
+	an array instead of a list of strings separated by commas.
+	Updated the Installation & Configuration Guide to reflect
+	this change.
+
+2010-01-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UnitTests/SOGoTestRunner.m: separated class "SOGoTestRunner"
+	from sogo-tests.m. Moved reporting and logging methods from
+	SOGoTest into SOGoTestRunner.m
+
+	* SoObjects/SOGo/NSString+Utilities.m (-_setupCSSEscaping): we
+	must initialize cssEscapingCount before using it. Also, fixed a
+	typo preventing the character buffer from being initialized
+	completely.
+
 2010-01-07  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/SOGo/NSString+Utilities.m (-asCSSIdentifier): replaced
@@ -5,6 +23,11 @@
 	(-fromCSSIdentifier): idem.
 
 2010-01-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/NSString+Utilities.m (-fromCSSIdentifier): speed
+	things up a little bit by checking whether the current character
+	is '_', possibly announcing an escaped sequence, anything else
+	being treated regularly.
 
 	* SoObjects/SOGo/NSDictionary+BSJSONAdditions.m
 	(-jsonStringFromString:): convert "\" to "\\" rather than "\n".

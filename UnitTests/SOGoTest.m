@@ -20,7 +20,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/Foundation.h>
+#import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSException.h>
+#import <Foundation/NSString.h>
+
+#import "SOGoTestRunner.h"
 
 #import "SOGoTest.h"
 
@@ -52,11 +57,7 @@ static NSString *SOGoTestAssertException = @"SOGoTestAssertException";
 {
   if ((self = [super init]))
     {
-      messages = [NSMutableArray new];
-      testCount = 0;
-      failuresCount = 0;
-      errorsCount = 0;
-      hasFailed = NO;
+      testRunner = nil;
     }
 
   return self;
@@ -64,8 +65,13 @@ static NSString *SOGoTestAssertException = @"SOGoTestAssertException";
 
 - (void) dealloc
 {
-  [messages release];
+  [testRunner release];
   [super dealloc];
+}
+
+- (void) setTestRunner: (SOGoTestRunner *) newTestRunner
+{
+  ASSIGN (testRunner, newTestRunner);
 }
 
 - (void) setUp
@@ -97,44 +103,8 @@ static NSString *SOGoTestAssertException = @"SOGoTestAssertException";
     }
 }
 
-- (void) reportException: (NSException *) exception
-                  method: (NSString *) methodName
-                withCode: (SOGoTestFailureCode) failureCode
-{
-  static NSString *failurePrefixs[] = { @"", @"FAIL", @"ERROR" };
-  NSMutableString *message;
-  NSString *fileInfo;
-
-  hasFailed = YES;
-
-  message = [NSMutableString stringWithFormat: @"%@: %@",
-                             failurePrefixs[failureCode], methodName];
-  fileInfo = [[exception userInfo] objectForKey: @"fileInfo"];
-  if (fileInfo)
-    [message appendFormat: @" (%@)\n", fileInfo];
-  else
-    [message appendString: @"\n"];
-  [message appendString: @"----------------------------------------------------------------------\n"];
-    
-  if (failureCode == SOGoTestFailureFailure)
-    {
-      [message appendString: [exception reason]];
-      failuresCount++;
-    }
-  else if (failureCode == SOGoTestFailureError)
-    {
-      [message appendFormat: @"an exception occured: %@\n"
-                 @"  reason: %@",
-               [exception name], [exception reason]];
-      errorsCount++;
-    }
-  [message appendString: @"\n"];
-  [messages addObject: message];
-}
-
 - (void) performTest: (SEL) testMethod
 {
-  static char failureChars[] = { '.', 'F', 'E' };
   SOGoTestFailureCode failureCode;
 
   failureCode = SOGoTestFailureSuccess;
@@ -145,9 +115,9 @@ static NSString *SOGoTestAssertException = @"SOGoTestAssertException";
   NS_HANDLER
     {
       failureCode = SOGoTestFailureError;
-      [self reportException: localException
-                     method: @"setUp"
-                   withCode: failureCode];
+      [testRunner reportException: localException
+                           method: @"setUp"
+                         withCode: failureCode];
     }
   NS_ENDHANDLER;
 
@@ -164,9 +134,9 @@ static NSString *SOGoTestAssertException = @"SOGoTestAssertException";
             failureCode = SOGoTestFailureFailure;
           else
             failureCode = SOGoTestFailureError;
-          [self reportException: localException
-                         method: NSStringFromSelector (testMethod)
-                       withCode: failureCode];
+          [testRunner reportException: localException
+                               method: NSStringFromSelector (testMethod)
+                             withCode: failureCode];
         }
       NS_ENDHANDLER;
     }
@@ -178,35 +148,13 @@ static NSString *SOGoTestAssertException = @"SOGoTestAssertException";
   NS_HANDLER
     {
       failureCode = SOGoTestFailureError;
-      [self reportException: localException
-                     method: @"tearDown"
-                   withCode: failureCode];
+      [testRunner reportException: localException
+                           method: @"tearDown"
+                         withCode: failureCode];
     }
   NS_ENDHANDLER;
 
-  testCount++;
-  fprintf (stderr, "%c", failureChars[failureCode]);
-}
-
-- (void) displayReport
-{
-  static NSString *separator = @"\n======================================================================\n";
-  NSString *reportMessage;
-
-  if ([messages count])
-    {
-      fprintf (stderr, "%s", [separator UTF8String]);
-      reportMessage = [messages componentsJoinedByString: separator];
-      fprintf (stderr, "%s", [reportMessage UTF8String]);
-    }
-  fprintf (stderr,
-           "\n----------------------------------------------------------------------\n"
-           "Ran %d tests\n\n", testCount);
-  if (hasFailed)
-    fprintf (stderr, "FAILED (%d failures, %d errors)\n",
-             failuresCount, errorsCount);
-  else
-    fprintf (stderr, "OK\n");
+  [testRunner incrementTestCounter: failureCode];
 }
 
 - (BOOL) run
@@ -228,8 +176,6 @@ static NSString *SOGoTestAssertException = @"SOGoTestAssertException";
           [self performTest: testMethod];
         }
     }
-
-  [self displayReport];
 
   return YES;
 }

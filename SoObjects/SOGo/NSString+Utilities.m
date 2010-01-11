@@ -42,7 +42,7 @@ static NSMutableCharacterSet *urlStartChars = nil;
 
 static NSString **cssEscapingStrings = NULL;
 static unichar *cssEscapingCharacters = NULL;
-static int cssEscapingCount = 0;
+static int cssEscapingCount;
 
 @implementation NSString (SOGoURLExtension)
 
@@ -321,9 +321,10 @@ static int cssEscapingCount = 0;
 
   characters = [NSArray arrayWithObjects: @"_", @".", @"#", @"@", @"*", @":",
                         @",", @" ", nil];
-  cssEscapingCharacters
-    = NSZoneMalloc (NULL, sizeof ((cssEscapingCount + 1) * sizeof (unichar)));
   cssEscapingCount = [strings count];
+  cssEscapingCharacters = NSZoneMalloc (NULL,
+                                        (cssEscapingCount + 1)
+                                        * sizeof (unichar));
   for (count = 0; count < cssEscapingCount; count++)
     *(cssEscapingCharacters + count)
       = [[characters objectAtIndex: count] characterAtIndex: 0];
@@ -383,6 +384,7 @@ static int cssEscapingCount = 0;
   NSMutableString *newString;
   NSString *currentString;
   int count, length, max, idx;
+  unichar currentChar;
 
   if (!cssEscapingStrings)
     [self _setupCSSEscaping];
@@ -391,21 +393,27 @@ static int cssEscapingCount = 0;
   max = [self length];
   for (count = 0; count < max - 2; count++)
     {
-      /* The difficulty here is that most escaping strings are 3 chars long
-         except one. Therefore we must juggle a little bit with the lengths in
-         order to avoid an overflow exception. */
-      length = 4;
-      if (count + length > max)
-        length = max - count;
-      currentString = [self substringFromRange: NSMakeRange (count, length)];
-      idx = [self _cssStringIndex: currentString];
-      if (idx > -1)
+      currentChar = [self characterAtIndex: count];
+      if (currentChar == '_')
         {
-          [newString appendFormat: @"%C", cssEscapingCharacters[idx]];
-          count += [cssEscapingStrings[idx] length] - 1;
+          /* The difficulty here is that most escaping strings are 3 chars
+             long except one. Therefore we must juggle a little bit with the
+             lengths in order to avoid an overflow exception. */
+          length = 4;
+          if (count + length > max)
+            length = max - count;
+          currentString = [self substringFromRange: NSMakeRange (count, length)];
+          idx = [self _cssStringIndex: currentString];
+          if (idx > -1)
+            {
+              [newString appendFormat: @"%C", cssEscapingCharacters[idx]];
+              count += [cssEscapingStrings[idx] length] - 1;
+            }
+          else
+            [newString appendFormat: @"%C", currentChar];
         }
       else
-        [newString appendFormat: @"%C", [self characterAtIndex: count]];
+        [newString appendFormat: @"%C", currentChar];
     }
   currentString = [self substringFromRange: NSMakeRange (count, max - count)];
   [newString appendString: currentString];

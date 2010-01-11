@@ -1,4 +1,4 @@
-/* sogo-tests.m - this file is part of SOGo
+/* SOGoTestRunner.h - this file is part of SOGo
  *
  * Copyright (C) 2010 Inverse inc.
  *
@@ -20,18 +20,41 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/Foundation.h>
+#ifndef SOGOTESTRUNNER_H
+#define SOGOTESTRUNNER_H
 
-#import "SOGoTestRunner.h"
+#import <Foundation/NSObject.h>
 
-int main()
+@class NSException;
+@class NSMutableArray;
+@class NSString;
+
+typedef enum {
+  SOGoTestFailureSuccess = 0,
+  SOGoTestFailureFailure = 1,
+  SOGoTestFailureError = 2,
+} SOGoTestFailureCode;
+
+@interface SOGoTestRunner : NSObject
 {
-  NSAutoreleasePool *pool;
-  int rc;
-
-  pool = [NSAutoreleasePool new];
-  rc = [[SOGoTestRunner testRunner] run];
-  [pool release];
-
-  return rc;
+  NSMutableArray *messages;
+  int testCount;
+  int failuresCount;
+  int errorsCount;
+  BOOL hasFailed;
 }
+
++ (SOGoTestRunner *) testRunner;
+
+- (int) run;
+
+- (void) incrementTestCounter: (SOGoTestFailureCode) failureCode;
+- (void) reportException: (NSException *) exception
+                  method: (NSString *) methodName
+                withCode: (SOGoTestFailureCode) failureCode;
+
+- (void) displayReport;
+
+@end
+
+#endif /* SOGOTESTRUNNER_H */
