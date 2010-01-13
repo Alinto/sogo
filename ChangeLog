@@ -1,3 +1,24 @@
+2010-01-13  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/ContactsUI.js (-fixSearchFieldPosition):
+	replaced this function by the equivalent CSS definition.
+	(-initContacts): initialized import buttons even for "popup" mode.
+
+2010-01-12  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* SoObjects/SOGo/NSString+Utilities.m
+	We retain the autoreleased strings static variable
+	to avoir random issues with the -fromCSSIdentifier method
+
+	* Updated the Moz guide for the updateLink part of
+	the updates.php script.
+
+2010-01-11  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* UI/Contacts/UIxContactFolderActions.m (-importVcardData:):
+	We now support multiple vCards in the same file during
+	the import process
+
 2010-01-08  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/SOGo/LDAPSource.{h,m} - bindFields is now

@@ -319,6 +319,11 @@ BODY.popup DIV#rightDragHandle
 BODY.popup DIV#contactView
 { top: 10em; }
 
+BODY.popup DIV#filterPanel
+{ position: relative;
+  top: 7px;
+}
+
 DIV.contactSelection
 {
   z-index: 10;

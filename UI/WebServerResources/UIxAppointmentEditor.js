@@ -303,7 +303,8 @@ function refreshAttendeesRO () {
     var attendeesLabel = $("attendeesLabel");
     var attendeesDiv = $("attendeesDiv");
     
-    attendeesLabel.setStyle({ display: "block" });
+    if (attendeesLabel)
+        attendeesLabel.setStyle({display: "block"});
     attendeesDiv.setStyle({display: "block"});
     
     // Register "click" event on each attendee's email

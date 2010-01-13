@@ -300,7 +300,7 @@ DIV#eventDialog P
 DIV#eventDialog SPAN.label
 { color: #444; }
 
-DIV#eventDialog p#description
+DIV#eventDialog P#description
 { margin-top: 1em; }
 
 ._unfocused#dateSelector TD._selected,
