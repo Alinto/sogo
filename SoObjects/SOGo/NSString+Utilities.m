@@ -317,6 +317,7 @@ static int cssEscapingCount;
 
   strings = [NSArray arrayWithObjects: @"_U_", @"_D_", @"_H_", @"_A_", @"_S_",
                      @"_C_", @"_CO_", @"_SP_", nil];
+  [strings retain];
   cssEscapingStrings = [strings asPointersOfObjects];
 
   characters = [NSArray arrayWithObjects: @"_", @".", @"#", @"@", @"*", @":",
