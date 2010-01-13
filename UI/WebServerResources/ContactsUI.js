@@ -1150,29 +1150,28 @@ function onDocumentKeydown(event) {
         }
 }
 
-function fixSearchFieldPosition () {
+/*function fixSearchFieldPosition () {
     var panel = $("filterPanel");
     if (panel) {
         panel.style.position = "relative";
         panel.style.top = "7px";
     }
-}
+    }*/
 
 function initContacts(event) {
     if ($(document.body).hasClassName("popup")) {
         configureSelectionButtons();
-        fixSearchFieldPosition ();
     }
-    else {
-        // Addressbook import form
-        $("uploadCancel").observe("click", hideContactsImport);
-        $("uploadOK").observe("click", hideImportResults);
-
-        if (Prototype.Browser.Gecko)
-            Event.observe(document, "keypress", onDocumentKeydown); // for FF2
-        else
-            Event.observe(document, "keydown", onDocumentKeydown);        
-    }
+    
+    // Addressbook import form
+    $("uploadCancel").observe("click", hideContactsImport);
+    $("uploadOK").observe("click", hideImportResults);
+    
+    if (Prototype.Browser.Gecko)
+        Event.observe(document, "keypress", onDocumentKeydown); // for FF2
+    else
+        Event.observe(document, "keydown", onDocumentKeydown);        
+    
     configureAbToolbar();
     configureAddressBooks();
     updateAddressBooksMenus();

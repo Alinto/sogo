@@ -1,3 +1,9 @@
+2010-01-13  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/ContactsUI.js (-fixSearchFieldPosition):
+	replaced this function by the equivalent CSS definition.
+	(-initContacts): initialized import buttons even for "popup" mode.
+
 2010-01-12  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/SOGo/NSString+Utilities.m
