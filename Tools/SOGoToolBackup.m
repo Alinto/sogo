@@ -38,7 +38,9 @@
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserProfile.h>
+#import <SOGo/SOGoUserSettings.h>
 
 #import "SOGoToolBackup.h"
 
@@ -341,12 +343,13 @@
 {
   SOGoUser *sogoUser;
   NSArray *preferences;
-  NSDictionary *defaultsValues, *settingsValues;
+  SOGoUserProfile *defaultsSource, *profileSource;
 
   sogoUser = [SOGoUser userWithLogin: uid roles: nil];
-  defaultsValues = [[[sogoUser userDefaults] source] values];
-  settingsValues = [[[sogoUser userSettings] source] values];
-  preferences = [NSArray arrayWithObjects: defaultsValues, settingsValues,
+  defaultsSource = [[sogoUser userDefaults] source];
+  profileSource = [[sogoUser userSettings] source];
+  preferences = [NSArray arrayWithObjects:
+                           [defaultsSource values], [profileSource values],
                          nil];
   [userRecord setObject: preferences forKey: @"preferences"];
 
