@@ -193,9 +193,6 @@ function onComponentEditorLoad(event) {
     tmp = $("cancelButton");
     if (tmp)
         tmp.observe ("click", onCancelButtonClick);
-    
-    if (tmp)
-        window.resizeTo(430,540);
 }
 
 function onSummaryChange (e) {
