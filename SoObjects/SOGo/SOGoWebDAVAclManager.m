@@ -116,18 +116,20 @@ static NSNumber *yesObject = nil;
 
   identifier = [parentPermission keysWithFormat: @"{%{ns}}%{method}"];
   parentEntry = [aclTree objectForKey: identifier];
-  if (!parentEntry)
-    [self warnWithFormat: @"parent entry '%@' does not exist in DAV"
-	  @" permissions table", identifier];
-  children = [parentEntry objectForKey: @"children"];
-  if (!children)
+  if (parentEntry)
     {
-      children = [NSMutableArray new];
-      [parentEntry setObject: children forKey: @"children"];
-      [children release];
+      children = [parentEntry objectForKey: @"children"];
+      if (!children)
+        {
+          children = [NSMutableArray array];
+          [parentEntry setObject: children forKey: @"children"];
+        }
+      [children addObject: newEntry];
+      [newEntry setObject: parentEntry forKey: @"parent"];
     }
-  [children addObject: newEntry];
-  [newEntry setObject: parentEntry forKey: @"parent"];
+  else
+    [self errorWithFormat: @"parent entry '%@' does not exist in DAV"
+	  @" permissions table", identifier];
 }
 
 - (void) registerDAVPermission: (NSDictionary *) davPermission

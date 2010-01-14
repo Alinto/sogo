@@ -38,8 +38,6 @@ extern NSString *SOGoRole_FolderViewer;
 
 extern NSString *SOGoRole_AuthorizedSubscriber;
 extern NSString *SOGoRole_None;
-extern NSString *SOGoRole_FreeBusy;
-extern NSString *SOGoRole_FreeBusyLookup;
 
 extern NSString *SOGoMailRole_SeenKeeper;
 extern NSString *SOGoMailRole_Writer;
@@ -50,6 +48,8 @@ extern NSString *SOGoMailRole_Administrator;
 
 extern NSString *SOGoCalendarRole_Organizer;
 extern NSString *SOGoCalendarRole_Participant;
+
+extern NSString *SOGoCalendarRole_FreeBusyReader;
 
 extern NSString *SOGoCalendarRole_PublicViewer;
 extern NSString *SOGoCalendarRole_PublicDAndTViewer;
@@ -73,6 +73,8 @@ extern NSString *SOGoPerm_AccessObject;
 extern NSString *SOGoPerm_DeleteObject;
 extern NSString *SOGoPerm_ReadAcls;
 extern NSString *SOGoPerm_FreeBusyLookup;
+
+extern NSString *SOGoCalendarPerm_ReadFreeBusy;
 
 extern NSString *SOGoCalendarPerm_ViewWholePublicRecords;
 extern NSString *SOGoCalendarPerm_ViewDAndTOfPublicRecords;

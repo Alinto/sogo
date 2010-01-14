@@ -38,7 +38,6 @@ SchedulerUI_OBJC_FILES =		\
 	UIxCalendarSelector.m		\
 	UIxAppointmentEditor.m		\
 	UIxTaskEditor.m			\
-	UIxCalDateLabel.m		\
 	UIxDatePicker.m			\
 	UIxTimeDateControl.m		\
 	UIxCalParticipationStatusView.m \

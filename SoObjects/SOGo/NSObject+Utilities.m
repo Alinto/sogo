@@ -20,6 +20,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
 
 #import "NSObject+Utilities.h"
@@ -31,6 +32,25 @@
   [self subclassResponsibility: _cmd];
 
   return nil;
+}
+
+- (NSArray *) domNode: (id <DOMNode>) node
+  getChildNodesByType: (DOMNodeType ) type
+{
+  NSMutableArray *nodes;
+  id <DOMNode> currentChild;
+
+  nodes = [NSMutableArray array];
+
+  currentChild = [node firstChild];
+  while (currentChild)
+    {
+      if ([currentChild nodeType] == type)
+	[nodes addObject: currentChild];
+      currentChild = [currentChild nextSibling];
+    }
+
+  return nodes;
 }
 
 @end

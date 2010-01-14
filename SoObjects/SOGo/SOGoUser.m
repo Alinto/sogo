@@ -340,53 +340,6 @@
   return _domainDefaults;
 }
 
-// - (SOGoUserDefaults *) userDefaults
-// {
-//   if (!_defaults)
-//     {
-//       [SOGoUserDefaults defaultsForUser: login
-//                                inDomain: [self domainName]]
-//       if (!SOGoUserProfileKlass)
-//         SOGoUserProfileKlass
-//           = NSClassFromString ([self userProfileClassName]);
-//       _defaults = [SOGoUserProfileKlass
-//                     userProfileWithType: SOGoUserProfileTypeDefaults
-//                                  forUID: login];
-//       if (_defaults)
-// 	{
-//           [_defaults retain];
-//           [_defaults fetchProfile];
-//           if ([_defaults values])
-//             {
-//               BOOL b;
-//               b = NO;
-
-//               if (![[_defaults stringForKey: @"MessageCheck"] length])
-//                 {
-//                   [_defaults setObject: defaultMessageCheck forKey: @"MessageCheck"];
-//                   b = YES;
-//                 }
-//               if (![[_defaults stringForKey: @"TimeZone"] length])
-//                 {
-//                   [_defaults setObject: [serverTimeZone name] forKey: @"TimeZone"];
-//                   b = YES;
-//                 }
-
-//               if (b)
-//                 [_defaults synchronize];
-
-
-//               // See explanation in -language
-//               [self invalidateLanguage];
-// 	    }
-// 	}
-//     }
-//   //else
-//   //  NSLog(@"User defaults cache hit for %@", login);
-
-//   return _defaults;
-// }
-
 - (SOGoUserSettings *) userSettings
 {
   if (!_settings)  
@@ -397,28 +350,6 @@
 
   return _settings;
 }
-
-// - (void) invalidateLanguage
-// {
-//   DESTROY(language);
-// }
-
-// - (NSString *) language
-// {
-//   if (![language length])
-//     {
-//       language = [[self userDefaults] stringForKey: @"Language"];
-//       // This is a workaround until we handle the connection errors to the db
-//       // in a better way. It enables us to avoid retrieving the userDefaults
-//       // too many times when the DB is down, causing a huge delay.
-//       if (![language length])
-//         language = [SOGoUser language];
-
-//       [language retain];
-//     }
-
-//   return language;
-// }
 
 - (NSCalendarDate *) firstDayOfWeekForDate: (NSCalendarDate *) date
 {
@@ -650,9 +581,8 @@
 
 - (SOGoUserFolder *) homeFolderInContext: (id) context
 {
-  return [[WOApplication application] lookupName: [self login]
-                                       inContext: context
-                                         acquire: NO];
+  return [SOGoUserFolder objectWithName: login
+                            inContainer: [WOApplication application]];
 }
 
 - (SOGoAppointmentFolders *) calendarsFolderInContext: (WOContext *) context

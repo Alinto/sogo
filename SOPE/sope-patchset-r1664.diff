@@ -1162,7 +1162,7 @@ Index: sope-mime/NGImap4/NGImap4Connection.m
    }
    return self;
  }
-@@ -100,11 +102,13 @@
+@@ -100,14 +102,16 @@
    return self->creationTime;
  }
  
@@ -1179,7 +1179,11 @@ Index: sope-mime/NGImap4/NGImap4Connection.m
 +  return [self->subfolders objectForKey:[_url absoluteString]];
  }
  - (void)flushFolderHierarchyCache {
-   [self->subfolders  release]; self->subfolders  = nil;
+-  [self->subfolders  release]; self->subfolders  = nil;
++  [self->subfolders  release]; self->subfolders  = [NSMutableDictionary new];
+   [self->urlToRights release]; self->urlToRights = nil;
+ }
+ 
 @@ -152,7 +156,6 @@
    ASSIGN(self->cachedUIDs,      nil);
  }
@@ -1341,7 +1345,7 @@ Index: sope-mime/NGImap4/NGImap4Connection.m
    if (![[result valueForKey:@"result"] boolValue]) {
      return [self errorForResult:result 
  		 text:@"Failed to change flags of IMAP4 message"];
-@@ -737,14 +770,17 @@
+@@ -737,20 +770,21 @@
  
  - (BOOL)doesMailboxExistAtURL:(NSURL *)_url {
    NSString *folderName;
@@ -1361,9 +1365,15 @@ Index: sope-mime/NGImap4/NGImap4Connection.m
 +
 +    result = [[caches objectAtIndex: count] objectForKey:@"list"];
      p      = [_url path];
- #if __APPLE__ 
+-#if __APPLE__ 
      /* normalized results already have the / in front on libFoundation?! */
-@@ -760,11 +796,11 @@
+     if ([p hasPrefix:@"/"]) 
+       p = [p substringFromIndex:1];
+-#endif
+     if ([p hasSuffix:@"/"])
+       p = [p substringToIndex:[p length]-1];
+     return ([(NSDictionary *)result objectForKey:p] != nil) ? YES : NO;
+@@ -760,11 +794,11 @@
    // TODO: we should probably just fetch the whole hierarchy?
    
    folderName = [self imap4FolderNameForURL:_url];
@@ -1380,7 +1390,7 @@ Index: sope-mime/NGImap4/NGImap4Connection.m
  }
  
  - (id)infoForMailboxAtURL:(NSURL *)_url {
-@@ -789,7 +825,8 @@
+@@ -789,7 +823,8 @@
    /* construct path */
    
    newPath = [self imap4FolderNameForURL:_url];
@@ -2389,7 +2399,14 @@ Index: sope-mime/NGImap4/ChangeLog
 ===================================================================
 --- sope-mime/NGImap4/ChangeLog	(revision 1664)
 +++ sope-mime/NGImap4/ChangeLog	(working copy)
-@@ -1,3 +1,92 @@
+@@ -1,3 +1,99 @@
++2010-01-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
++
++	* NGImap4Connection.m (-doesMailboxExistAtURL:): mailbox paths can
++	start with '/' on non-Apple platforms.
++	(-flushFolderHierarchyCache): reassign a new dictionary to
++	self->subfolders to avoid disappearing folders.
++
 +2010-01-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 +
 +	* NGImap4ResponseParser.m (_parseUntaggedResponse): now accepts
@@ -4993,6 +5010,20 @@ Index: sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.m
    return self->contentHandler;
  }
  
+Index: sope-xml/SaxObjC/XMLNamespaces.h
+===================================================================
+--- sope-xml/SaxObjC/XMLNamespaces.h	(revision 1664)
++++ sope-xml/SaxObjC/XMLNamespaces.h	(working copy)
+@@ -292,6 +292,9 @@
+ #ifndef XMLNS_AppleCalServer
+ #  define XMLNS_AppleCalServer @"http://apple.com/ns/calendarserver/"
+ #endif
++#ifndef XMLNS_CalendarServerOrg
++#  define XMLNS_CalendarServerOrg @"http://calendarserver.org/ns/"
++#endif
+ #ifndef XMLNS_AppleCalApp
+ #  define XMLNS_AppleCalApp @"com.apple.ical:"
+ #endif
 Index: sope-appserver/mod_ngobjweb/GNUmakefile
 ===================================================================
 --- sope-appserver/mod_ngobjweb/GNUmakefile	(revision 1664)
@@ -6447,7 +6478,18 @@ Index: sope-appserver/NGObjWeb/ChangeLog
 ===================================================================
 --- sope-appserver/NGObjWeb/ChangeLog	(revision 1664)
 +++ sope-appserver/NGObjWeb/ChangeLog	(working copy)
-@@ -1,3 +1,97 @@
+@@ -1,3 +1,108 @@
++2010-01-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
++
++	* SoObjects/SoObject.m (-isFolderish): now a real category method,
++	defaulting to NO.
++
++	* WebDAV/SoWebDAVRenderer.m (-renderSearchResultEntry:...): take
++	the potential ending slash of the request to keep or remove the
++	ending slash of the hrefs to the returned objects, in order to
++	avoid confusing iCal with otherwise standard urls to DAV
++	collections.
++
 +2009-12-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 +
 +	* WOWatchDogApplicationMain.m (_listeningAddress): read "WOPort"
@@ -6557,6 +6599,15 @@ Index: sope-appserver/NGObjWeb/DAVPropMap.plist
  
    /* CardDAV */
    "{urn:ietf:params:xml:ns:carddav}addressbook-home-set" = davAddressbookHomeSet;
+@@ -168,6 +169,8 @@
+   "{http://calendarserver.org/ns/}dropbox-home-URL" = davDropboxHomeURL;
+   "{http://calendarserver.org/ns/}notifications-URL" = davNotificationsURL;
+   "{http://calendarserver.org/ns/}getctag" = davCollectionTag;
++  "{http://calendarserver.org/ns/}calendar-proxy-read-for" = davCalendarProxyReadFor;
++  "{http://calendarserver.org/ns/}calendar-proxy-write-for" = davCalendarProxyWriteFor;
+ 
+   /* Apple extensions */
+   "{http://apple.com/ns/ical/}calendar-color" = davCalendarColor;
 Index: sope-appserver/NGObjWeb/WebDAV/SoObjectResultEntry.m
 ===================================================================
 --- sope-appserver/NGObjWeb/WebDAV/SoObjectResultEntry.m	(revision 1664)
@@ -6616,11 +6667,32 @@ Index: sope-appserver/NGObjWeb/WebDAV/SoObjectResultEntry.m
    if ([_key isEqualToString:@"{DAV:}status"])
      return nil;
    
+@@ -102,6 +135,12 @@
+   }
+ }
+ 
++/* SoObject */
++- (BOOL)isFolderish
++{
++  return [self->object isFolderish];
++}
++
+ /* description */
+ 
+ - (NSString *)description {
 Index: sope-appserver/NGObjWeb/WebDAV/SoWebDAVRenderer.m
 ===================================================================
 --- sope-appserver/NGObjWeb/WebDAV/SoWebDAVRenderer.m	(revision 1664)
 +++ sope-appserver/NGObjWeb/WebDAV/SoWebDAVRenderer.m	(working copy)
-@@ -49,6 +49,8 @@
+@@ -25,6 +25,7 @@
+ #include "SoObject+SoDAV.h"
+ #include "EOFetchSpecification+SoDAV.h"
+ #include "NSException+HTTP.h"
++#include <NGObjWeb/SoObject.h>
+ #include <NGObjWeb/WOContext.h>
+ #include <NGObjWeb/WOResponse.h>
+ #include <NGObjWeb/WORequest.h>
+@@ -49,6 +50,8 @@
  #define XMLNS_INTTASK \
  @"{http://schemas.microsoft.com/mapi/id/{00062003-0000-0000-C000-000000000046}/}"
  
@@ -6629,7 +6701,7 @@ Index: sope-appserver/NGObjWeb/WebDAV/SoWebDAVRenderer.m
  @interface SoWebDAVRenderer(Privates)
  - (BOOL)renderStatusResult:(id)_object withDefaultStatus:(int)_defStatus
    inContext:(WOContext *)_ctx; 
-@@ -79,6 +81,8 @@
+@@ -79,6 +82,8 @@
    
    if ((debugOn = [ud boolForKey:@"SoRendererDebugEnabled"]))
      NSLog(@"enabled debugging in SoWebDAVRenderer (SoRendererDebugEnabled)");
@@ -6638,7 +6710,7 @@ Index: sope-appserver/NGObjWeb/WebDAV/SoWebDAVRenderer.m
  }
  
  + (id)sharedRenderer {
-@@ -616,16 +620,19 @@
+@@ -616,16 +621,19 @@
      [r appendContentString:s];
    }
    else {
@@ -6666,7 +6738,19 @@ Index: sope-appserver/NGObjWeb/WebDAV/SoWebDAVRenderer.m
      if (formatOutput) [r appendContentCharacter:'\n'];
    }
  }
-@@ -694,8 +701,13 @@
+@@ -646,8 +654,9 @@
+   NSString     *key;
+   id   href = nil;
+   id   stat = nil;
+-  BOOL isBrief;
+-  
++  BOOL isBrief, hasSlash;
++
++  hasSlash = [[[_ctx request] uri] hasSuffix: @"/"];
+   r = [_ctx response];
+   isBrief = [[[_ctx request] headerForKey:@"brief"] hasPrefix:@"t"] ? YES : NO;
+ 
+@@ -694,8 +703,13 @@
      }
  
      /* tidy href */
@@ -6682,6 +6766,30 @@ Index: sope-appserver/NGObjWeb/WebDAV/SoWebDAVRenderer.m
      /* tidy status */
      stat = [self tidyStatus:stat];
    }
+@@ -703,7 +717,22 @@
+     href = [baseURL stringValue];
+     stat = @"HTTP/1.1 200 OK";
+   }
+-  
++
++  /* make the presence of the href slash correspond to the request slash */
++  if (hasSlash) {
++    /* megahack: we consider entry to be the base entry if it's an
++       NSDictionary */
++    if (![href hasSuffix: @"/"]
++        && ([entry isFolderish]
++            || [entry isKindOfClass: [NSDictionary class]])) {
++      href = [href stringByAppendingString: @"/"];
++    }
++  }
++  else {
++    if ([href hasSuffix: @"/"])
++      href = [href substringToIndex: [href length] - 2];
++  }
++
+   if (debugOn) {
+     [self debugWithFormat:@"    status: %@", stat];
+     [self debugWithFormat:@"    href:   %@", href];
 Index: sope-appserver/NGObjWeb/WODirectAction.m
 ===================================================================
 --- sope-appserver/NGObjWeb/WODirectAction.m	(revision 1664)
@@ -6863,11 +6971,33 @@ Index: sope-appserver/NGObjWeb/WOMessage.m
    }
    return nil;
  }
+Index: sope-appserver/NGObjWeb/SoObjects/SoObject.h
+===================================================================
+--- sope-appserver/NGObjWeb/SoObjects/SoObject.h	(revision 1664)
++++ sope-appserver/NGObjWeb/SoObjects/SoObject.h	(working copy)
+@@ -59,6 +59,8 @@
+ - (NSString *)defaultMethodNameInContext:(id)_ctx;
+ - (id)lookupDefaultMethod;
+ 
++- (BOOL)isFolderish;
++
+ /* binding (returns self by default [unbound objects]) */
+ 
+ - (id)bindToObject:(id)_object inContext:(id)_ctx;
 Index: sope-appserver/NGObjWeb/SoObjects/SoObject.m
 ===================================================================
 --- sope-appserver/NGObjWeb/SoObjects/SoObject.m	(revision 1664)
 +++ sope-appserver/NGObjWeb/SoObjects/SoObject.m	(working copy)
-@@ -39,22 +39,34 @@
+@@ -30,31 +30,39 @@
+ #include <NGObjWeb/WORequest.h>
+ #include "common.h"
+ 
+-@interface NSObject(Folders)
+-- (BOOL)isFolderish;
+-@end
+-
+ @implementation NSObject(SoObject)
+ 
  static int debugLookup  = -1;
  static int debugBaseURL = -1;
  static int useRelativeURLs = -1;
@@ -6908,7 +7038,32 @@ Index: sope-appserver/NGObjWeb/SoObjects/SoObject.m
  }
  
  /* classes */
-@@ -318,56 +330,61 @@
+@@ -241,6 +249,11 @@
+   return pathArray;
+ }
+ 
++- (BOOL) isFolderish
++{
++  return NO;
++}
++
+ - (NSString *)baseURLInContext:(id)_ctx {
+   NSString *baseURL;
+   id parent;
+@@ -284,10 +297,8 @@
+   /* add a trailing slash for folders */
+   
+   if (![baseURL hasSuffix:@"/"]) {
+-    if ([self respondsToSelector:@selector(isFolderish)]) {
+-      if ([self isFolderish])
+-	baseURL = [baseURL stringByAppendingString:@"/"];
+-    }
++    if ([self isFolderish])
++      baseURL = [baseURL stringByAppendingString:@"/"];
+   }
+   
+   return baseURL;
+@@ -318,56 +329,61 @@
    
    rq = [_ctx request];
    ms = [[NSMutableString alloc] initWithCapacity:128];
@@ -7724,3 +7879,16 @@ Index: sope-appserver/NGObjWeb/WOCoreApplication.m
    if ([woport isKindOfClass:[NSNumber class]])
      return woport;
    woport = [woport stringValue];
+Index: sope-appserver/NGObjWeb/NGHttp/NGHttpRequest.m
+===================================================================
+--- sope-appserver/NGObjWeb/NGHttp/NGHttpRequest.m	(revision 1664)
++++ sope-appserver/NGObjWeb/NGHttp/NGHttpRequest.m	(working copy)
+@@ -59,6 +59,8 @@
+   /* RFC 3253 (DeltaV) */
+   @"REPORT",
+   @"VERSION-CONTROL",
++  /* RFC 3744 (WebDAV ACL) */
++  @"ACL",
+   /* RFC 4791 (CalDAV) */
+   @"MKCALENDAR",
+   /* http://ietfreport.isoc.org/idref/draft-daboo-carddav/ (CardDAV) */

@@ -512,6 +512,9 @@ vtodo_class2 = "(Tarea confidencial)";
 "Synchronize" = "Synchronize";
 "Tag:" = "Redacción:";
 
+"iCal Delegation" = "iCal Delegation";
+"Shared when account is delegated" = "Shared when account is delegated";
+
 "Display" = "Display";
 "Show alarms" = "Show alarms";
 "Show tasks" = "Show tasks";

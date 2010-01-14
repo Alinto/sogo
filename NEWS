@@ -10,6 +10,10 @@
   values more easily
 - added sensible default configuration values
 - updated ckeditor to version 3.1
+- added support for iCal 4 delegation
+- added support for letting the user choose which calendars should be shared
+  with iCal delegation
+- added fixes for bugs in GNUstep 1.19.3 (NSURL)
 
 1.1-20091028 (1.1.0)
 --------------------

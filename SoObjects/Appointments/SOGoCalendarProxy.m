@@ -23,16 +23,18 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
-
+#import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGObjWeb/WORequest.h>
+#import <SaxObjC/XMLNamespaces.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserSettings.h>
 
-#import "SOGoAppointmentFolder.h"
+#import "SOGoAppointmentFolders.h"
+
 #import "SOGoCalendarProxy.h"
 
 @implementation SOGoCalendarProxy
-
-#define XMLNS_CALENDARSERVER @"http://calendarserver.org/ns/"
 
 - (id) init
 {
@@ -61,7 +63,7 @@
   else
     proxyType = @"calendar-proxy-read";
   [rType addObject: [NSArray arrayWithObjects: proxyType,
-                             XMLNS_CALENDARSERVER, nil]];
+                             XMLNS_CalendarServerOrg, nil]];
 
   return rType;
 }
@@ -69,34 +71,29 @@
 - (NSArray *) davGroupMemberSet
 {
   NSMutableArray *members;
-  NSEnumerator *subscribers;
-  NSArray *member;
+  NSArray *proxyUsers, *member;
   SOGoUser *ownerUser;
-  SOGoAppointmentFolder *folder;
-  NSString *subscriber;
+  NSString *appName, *proxyUser;
+  int count, max;
 
-  members = [NSMutableArray array];
+  appName = [[context request] applicationName];
 
-  ownerUser = [SOGoUser userWithLogin: [self ownerInContext: context]
-                                roles: nil];
-  folder = [ownerUser personalCalendarFolderInContext: context];
-  subscribers = [[folder proxySubscribersWithWriteAccess: hasWriteAccess]
-                  objectEnumerator];
-  while ((subscriber = [subscribers nextObject]))
+  ownerUser = [SOGoUser userWithLogin: [self ownerInContext: context]];
+  proxyUsers = [[ownerUser userSettings]
+                 calendarProxyUsersWithWriteAccess: hasWriteAccess];
+  max = [proxyUsers count];
+  members = [NSMutableArray arrayWithCapacity: max];
+  for (count = 0; count < max; count++)
     {
-      member = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
-                        [NSString stringWithFormat: @"/SOGo/dav/%@/",
-                                  subscriber],
+      proxyUser = [proxyUsers objectAtIndex: count];
+      member = [NSArray arrayWithObjects: @"href", XMLNS_WEBDAV, @"D",
+                        [NSString stringWithFormat: @"/%@/dav/%@/",
+                                  appName, proxyUser],
                         nil];
       [members addObject: member];
     }
 
   return members;
-}
-
-- (NSString *) davGroupMembership
-{
-  return nil;
 }
 
 - (NSString *) _parseSubscriber: (NSString *) memberSet
@@ -143,14 +140,49 @@
 - (NSException *) setDavGroupMemberSet: (NSString *) memberSet
 {
   SOGoUser *ownerUser;
-  SOGoAppointmentFolder *folder;
+  SOGoUserSettings *us;
+  NSMutableArray *addedUsers, *removedUsers;
+  NSArray *oldProxyUsers, *newProxyUsers;
+  NSString *login;
+  SOGoAppointmentFolders *folders;
 
-  ownerUser = [SOGoUser userWithLogin: [self ownerInContext: context]
-                                roles: nil];
-  folder = [ownerUser personalCalendarFolderInContext: context];
+  login = [self ownerInContext: context];
+  ownerUser = [SOGoUser userWithLogin: login roles: nil];
+  us = [ownerUser userSettings];
+  oldProxyUsers = [us calendarProxyUsersWithWriteAccess: hasWriteAccess];
+  if (!oldProxyUsers)
+    oldProxyUsers = [NSMutableArray array];
+  newProxyUsers = [self _parseSubscribers: memberSet];
+  if (!newProxyUsers)
+    newProxyUsers = [NSMutableArray array];
+  [us setCalendarProxyUsers: newProxyUsers
+            withWriteAccess: hasWriteAccess];
 
-  return [folder setProxySubscribers: [self _parseSubscribers: memberSet]
-                     withWriteAccess: hasWriteAccess];
+  folders = [container lookupName: @"Calendar" inContext: context
+                          acquire: NO];
+  addedUsers = [newProxyUsers mutableCopy];
+  [addedUsers removeObjectsInArray: oldProxyUsers];
+  [folders adjustProxyRolesForUsers: addedUsers
+                             remove: NO
+                     forWriteAccess: hasWriteAccess];
+  [folders adjustProxySubscriptionsForUsers: addedUsers
+                                     remove: NO
+                             forWriteAccess: hasWriteAccess];
+  [addedUsers autorelease];
+
+  removedUsers = [oldProxyUsers mutableCopy];
+  [removedUsers removeObjectsInArray: newProxyUsers];
+  [folders adjustProxyRolesForUsers: removedUsers
+                             remove: YES
+                     forWriteAccess: hasWriteAccess];
+  [folders adjustProxySubscriptionsForUsers: removedUsers
+                                     remove: YES
+                             forWriteAccess: hasWriteAccess];
+  [removedUsers autorelease];
+
+  [us synchronize];
+
+  return nil;
 }
 
 @end

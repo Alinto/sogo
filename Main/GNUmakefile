@@ -19,6 +19,7 @@ all::
 $(SOGOD)_OBJC_FILES += \
 	sogod.m			\
 	SOGo.m			\
+	SOGo+DAV.m		\
 	SOGoProductLoader.m	\
 	build.m
 

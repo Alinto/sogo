@@ -19,6 +19,7 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSArray.h>
 #import <Foundation/NSCharacterSet.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSDictionary.h>

@@ -54,6 +54,7 @@
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserSettings.h>
 #import <SOGo/WORequest+SOGo.h>
+#import <SOGo/WOResponse+SOGo.h>
 
 #import "EOQualifier+MailDAV.h"
 #import "SOGoMailObject.h"
@@ -1372,10 +1373,7 @@ static NSString *defaultUserID =  @"anyone";
   EOQualifier *searchQualifier;
 
   r = [context response];
-  [r setContentEncoding: NSUTF8StringEncoding];
-  [r setHeader: @"text/xml; charset=\"utf-8\"" forKey: @"content-type"];
-  [r setHeader: @"no-cache" forKey: @"pragma"];
-  [r setHeader: @"no-cache" forKey: @"cache-control"];
+  [r prepareDAVResponse];
 
   document = [[context request] contentAsDOMDocument];
   documentElement = (DOMElement *) [document documentElement];
@@ -1394,8 +1392,6 @@ static NSString *defaultUserID =  @"anyone";
   messages = [self _fetchMessageProperties: properties
                          matchingQualifier: searchQualifier
                           andSortOrderings: sortOrderings];
-  [r setStatus: 207];
-  [r appendContentString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"];
   [self _appendProperties: [properties allKeys]
              fromMessages: messages
                toResponse: r];

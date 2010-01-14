@@ -27,6 +27,13 @@
 
 @class DOMElement;
 
+@interface NGDOMElement (SOGo)
+
+- (NSString *) asPropertyName;
+- (NSString *) asPropertyPropertyName;
+
+@end
+
 @interface NGDOMNodeWithChildren (SOGoDOMExtensions)
 
 - (id <DOMNodeList>) childElementsWithTag: (NSString *) tagName;

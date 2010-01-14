@@ -31,6 +31,16 @@
 
 @implementation WOResponse (SOGoSOPEUtilities)
 
+- (void) prepareDAVResponse
+{
+  [self setStatus: 207];
+  [self setContentEncoding: NSUTF8StringEncoding];
+  [self setHeader: @"text/xml; charset=\"utf-8\"" forKey: @"content-type"];
+  [self setHeader: @"no-cache" forKey: @"pragma"];
+  [self setHeader: @"no-cache" forKey: @"cache-control"];
+  [self appendContentString:@"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"];
+}
+
 - (void) appendDAVError: (NSDictionary *) errorCondition
 {
   NSDictionary *error;  
@@ -38,8 +48,6 @@
   error = davElementWithContent (@"error", XMLNS_WEBDAV, errorCondition);
 
   [self setStatus: 403];
-  [self appendContentString: @"<?xml version=\"1.0\""
-            @" encoding=\"utf-8\"?>\r\n"];
   [self appendContentString: [error asWebDavStringWithNamespaces: nil]];
 }
 

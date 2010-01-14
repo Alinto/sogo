@@ -29,6 +29,9 @@
 
 @interface NSArray (SOGoArrayUtilities)
 
++ (id) arrayWithObject: (id) member
+           repeatCount: (int) repeatCount;
+
 - (id *) asPointersOfObjects;
  
 - (NSString *) jsonRepresentation;

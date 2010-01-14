@@ -210,6 +210,21 @@ class WebDAVPROPFIND(WebDAVQuery):
         if properties is not None and len(properties) > 0:
             self._initProperties(properties)
 
+class WebDAVPROPPATCH(WebDAVQuery):
+    method = "PROPPATCH"
+
+# <x0:propertyupdate xmlns:x1="urn:ietf:params:xml:ns:caldav" xmlns:x0="DAV:"><x0:set><x0:prop>
+
+    def __init__(self, url, properties):
+        WebDAVQuery.__init__(self, url, None)
+        self.top_node = _WD_XMLTreeElement("propertyupdate")
+        set_node = _WD_XMLTreeElement("set")
+        self.top_node.append(set_node)
+        prop_node = _WD_XMLTreeElement("prop")
+        set_node.append(prop_node)
+
+        prop_node.appendSubtree(self, properties)
+
 class WebDAVMOVE(WebDAVQuery):
     method = "MOVE"
     destination = None
@@ -314,6 +329,39 @@ class WebDAVSyncQuery(WebDAVREPORT):
         if properties is not None and len(properties) > 0:
             self._initProperties(properties)
 
+class WebDAVExpandProperty(WebDAVREPORT):
+    def _parseTag(self, tag):
+        result = []
+
+        cb = tag.find("}")
+        if cb > -1:
+            result.append(tag[cb+1:])
+            result.append(tag[1:cb])
+        else:
+            result.append(tag)
+            result.append("DAV:")
+
+        return result;
+
+    def _propElement(self, tag):
+        parsedTag = self._parseTag(tag)
+        parameters = { "name": parsedTag[0] }
+        if len(parsedTag) > 1:
+            parameters["namespace"] = parsedTag[1]
+
+        return _WD_XMLTreeElement("property", parameters)
+
+    def __init__(self, url, query_properties, properties):
+        WebDAVQuery.__init__(self, url)
+        self.top_node = _WD_XMLTreeElement("expand-property")
+
+        for query_tag in query_properties:
+            property_query = self._propElement(query_tag)
+            self.top_node.append(property_query)
+            for tag in properties:
+                property = self._propElement(tag)
+                property_query.append(property)
+
 class MailDAVMailQuery(WebDAVREPORT):
     def __init__(self, url, properties, filters = None,
                  sort = None, ascending = True):
@@ -392,6 +440,11 @@ class _WD_XMLNS_MGR:
         return newTag
 
 class _WD_XMLTreeElement:
+    typeNum = type(0)
+    typeStr = type("")
+    typeList = type([])
+    typeDict = type({})
+
     def __init__(self, tag, attributes = {}):
         self.tag = tag
         self.children = []
@@ -399,6 +452,26 @@ class _WD_XMLTreeElement:
 
     def append(self, child):
         self.children.append(child)
+
+    def appendSubtree(self, query, subtree):
+        if type(subtree) == self.typeNum:
+            strValue = "%d" % subtree
+            textNode = _WD_XMLTreeTextNode(strValue)
+            self.append(textNode)
+        elif type(subtree) == self.typeStr:
+            textNode = _WD_XMLTreeTextNode(subtree)
+            self.append(textNode)
+        elif type(subtree) == self.typeList:
+            for x in subtree:
+                self.appendSubtree(query, x)
+        elif type(subtree) == self.typeDict:
+            for x in subtree.keys():
+                tag = query.render_tag(x)
+                node = _WD_XMLTreeElement(tag)
+                node.appendSubtree(query, subtree[x])
+                self.append(node)
+        else:
+            None
 
     def render(self, ns_text = None):
         text = "<" + self.tag

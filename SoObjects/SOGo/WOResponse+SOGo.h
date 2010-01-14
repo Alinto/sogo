@@ -29,6 +29,8 @@
 
 @interface WOResponse (SOGoSOPEUtilities)
 
+- (void) prepareDAVResponse;
+
 - (void) appendDAVError: (NSDictionary *) errorCondition;
 
 @end

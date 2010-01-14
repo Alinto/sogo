@@ -33,7 +33,7 @@
     SOGoAppointmentFolder = {
       superclass = "SOGoGCSFolder";
       defaultRoles = {
-/*        "FreeBusyLookup" = ( "Owner", "FreeBusy", "AuthorizedSubscriber" );  */
+        "Read FreeBusy" = ( "Authenticated" );
 	"Access Contents Information" = ( "Owner", "PublicResponder", "PublicModifier", "PublicViewer", "PublicDAndTViewer", "PrivateResponder", "PrivateModifier", "PrivateViewer", "PrivateDAndTViewer", "ConfidentialResponder", "ConfidentialModifier", "ConfidentialViewer", "ConfidentialDAndTViewer" );
 	"ViewWholePublicRecords" = ( "Owner", "PublicResponder", "PublicModifier", "PublicViewer" );
 	"ViewDAndTOfPublicRecords" = ( "Owner", "PublicDAndTViewer" );
@@ -48,6 +48,9 @@
 	"ModifyConfidentialRecords" = ( "Owner", "ConfidentialModifier" );
 	"RespondToConfidentialRecords" = ( "Owner", "ConfidentialModifier", "ConfidentialResponder" );
       };
+    };
+    SOGoAppointmentInboxFolder = {
+      superclass = "SOGoAppointmentFolder";
     };
 //     SOGoGroupAppointmentFolder = {
 //       superclass = "SOGoAppointmentFolder";

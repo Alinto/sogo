@@ -24,8 +24,6 @@
 
 #import <Foundation/NSObject.h>
 
-#import <DOM/DOMProtocols.h>
-
 #if LIB_FOUNDATION_LIBRARY
 #error SOGo will not work properly with libFoundation.
 #error Please use gnustep-base instead.
@@ -61,9 +59,6 @@
 @class SOGoWebDAVAclManager;
 
 #define $(class) NSClassFromString(class)
-
-SEL SOGoSelectorForPropertyGetter (NSString *property);
-SEL SOGoSelectorForPropertySetter (NSString *property);
 
 @interface SOGoObject : NSObject
 {
@@ -132,6 +127,8 @@ SEL SOGoSelectorForPropertySetter (NSString *property);
 - (NSArray *) aclsForUser: (NSString *) uid;
 - (void) setRoles: (NSArray *) roles
           forUser: (NSString *) uid;
+- (void) setRoles: (NSArray *) roles
+         forUsers: (NSArray *) users;
 - (void) removeAclsForUsers: (NSArray *) users;
 - (NSString *) defaultUserID;
 
@@ -140,6 +137,8 @@ SEL SOGoSelectorForPropertySetter (NSString *property);
 
 - (NSString *) httpURLForAdvisoryToUser: (NSString *) uid;
 - (NSString *) resourceURLForAdvisoryToUser: (NSString *) uid;
+
+- (SOGoObject *) lookupObjectAtDAVUrl: (NSString *) davURL;
 
 - (NSArray *) davComplianceClassesInContext: (WOContext *) localContext;
 
@@ -163,13 +162,6 @@ SEL SOGoSelectorForPropertySetter (NSString *property);
 @interface SOGoObject (SOGo)
 
 - (NSString *) contentAsString;
-
-@end
-
-@interface SOGoObject (SOGoDomHelpers)
-
-- (NSArray *) domNode: (id <DOMNode>) node
-  getChildNodesByType: (DOMNodeType) type;
 
 @end
 

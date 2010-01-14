@@ -24,8 +24,36 @@
 #import <Foundation/NSString.h>
 
 #import <DOM/DOMProtocols.h>
+#import <DOM/DOMElement.h>
+
+#import <SaxObjC/XMLNamespaces.h>
 
 #import "DOMNode+SOGo.h"
+
+@implementation NGDOMElement (SOGo)
+
+/* returns as "{ns}prop" identifier from an element tag */
+- (NSString *) asPropertyName
+{
+  return [NSString stringWithFormat: @"{%@}%@",
+                   [self namespaceURI],
+                   [self tagName]];
+}
+
+/* returns as "{ns}prop" identifier from a <property/> tag */
+- (NSString *) asPropertyPropertyName
+{
+  NSString *ns, *tag;
+
+  ns = [self attribute: @"namespace"];
+  if (!ns)
+    ns = XMLNS_WEBDAV;
+  tag = [self attribute: @"name"];
+
+  return [NSString stringWithFormat: @"{%@}%@", ns, tag];
+}
+
+@end
 
 @implementation NGDOMNodeWithChildren (SOGo)
 
@@ -93,7 +121,6 @@
   NSMutableArray *propertyNames;
   id <DOMNodeList> children;
   DOMElement *currentElement;
-  NSString *property;
   unsigned int count, max;
 
   propertyNames = [NSMutableArray array];
@@ -104,12 +131,7 @@
     {
       currentElement = [children objectAtIndex: count];
       if ([currentElement nodeType] == DOM_ELEMENT_NODE)
-        {
-          property = [NSString stringWithFormat: @"{%@}%@",
-                               [currentElement namespaceURI],
-                               [currentElement tagName]];
-          [propertyNames addObject: property];
-        }
+        [propertyNames addObject: [currentElement asPropertyName]];
     }
 
   return propertyNames;

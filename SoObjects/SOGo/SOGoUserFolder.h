@@ -58,6 +58,8 @@
 - (id) mailAccountsFolder: (NSString *) _key
                 inContext: (WOContext *) _ctx;
 
+- (NSArray *) davPrincipalURL;
+
 @end
 
 #endif /* __SOGo_SOGoUserFolder_H__ */

@@ -149,6 +149,17 @@
   [calendar setSyncTag: newTag];
 }
 
+/* DAV: calendar-proxy protocol */
+- (BOOL) isProxied
+{
+  return [calendar isProxied];
+}
+
+- (void) setIsProxied: (BOOL) isProxied
+{
+  [calendar setIsProxied: isProxied];
+}
+
 - (BOOL) showCalendarAlarms
 {
   return [calendar showCalendarAlarms];

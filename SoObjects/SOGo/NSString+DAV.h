@@ -34,6 +34,13 @@
 - (NSMutableDictionary *) asWebDAVTuple;
 - (NSMutableDictionary *) asWebDAVTupleWithContent: (id) content;
 
+
+- (NSString *) davMethodToObjC;
+- (NSString *) davSetterName;
+- (NSDictionary *) asDavInvocation;
+
+- (NSString *) removeOutsideTags;
+
 @end
 
 #endif /* NSSTRING_DAV_H */

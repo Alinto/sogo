@@ -512,6 +512,9 @@ vtodo_class2 = "(Tâche confidentielle)";
 "Synchronize" = "Synchroniser";
 "Tag:" = "Label :";
 
+"iCal Delegation" = "Délégation iCal";
+"Shared when account is delegated" = "Inclure cet agenda lors de la délégation";
+
 "Display" = "Affichage";
 "Show alarms" = "Afficher les alarmes";
 "Show tasks" = "Afficher les tâches";

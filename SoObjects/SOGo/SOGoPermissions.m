@@ -34,17 +34,12 @@ NSString *SOGoRole_FolderEraser = @"FolderEraser";
 NSString *SOGoRole_AuthorizedSubscriber = @"AuthorizedSubscriber";
 NSString *SOGoRole_None = @"None";
 
-NSString *SOGoRole_FreeBusy = @"FreeBusy"; /* for the "freebusy" special user
-                                            */
-NSString *SOGoRole_FreeBusyLookup = @"FreeBusyLookup"; /* for users that have
-                                                          access to the
-                                                          freebusy information
-                                                          from a specific
-                                                          calendar */
-
 /* Calendar */
 NSString *SOGoCalendarRole_Organizer = @"Organizer";
 NSString *SOGoCalendarRole_Participant = @"Participant";
+
+/* a special role that is given to all subscribed users */
+NSString *SOGoCalendarRole_FreeBusyReader = @"FreeBusyReader";
 
 NSString *SOGoCalendarRole_PublicViewer = @"PublicViewer";
 NSString *SOGoCalendarRole_PublicDAndTViewer = @"PublicDAndTViewer";
@@ -73,10 +68,13 @@ NSString *SOGoMailRole_Administrator = @"MailAdministrator";
 /* permissions */
 NSString *SOGoPerm_AccessObject= @"Access Object";
 NSString *SOGoPerm_DeleteObject= @"Delete Object";
-NSString *SOGoPerm_ReadAcls = @"ReadAcls"; /* the equivalent of "read-acl" in
-                                              the WebDAV acls spec, which is
-                                              currently missing from SOPE */
-NSString *SOGoPerm_FreeBusyLookup = @"FreeBusyLookup";
+
+/* the equivalent of "read-acl" in the WebDAV acls spec, which is currently
+   missing from SOPE */
+
+NSString *SOGoPerm_ReadAcls = @"ReadAcls";
+
+NSString *SOGoCalendarPerm_ReadFreeBusy = @"Read FreeBusy";
 
 NSString *SOGoCalendarPerm_ViewWholePublicRecords = @"ViewWholePublicRecords";
 NSString *SOGoCalendarPerm_ViewDAndTOfPublicRecords = @"ViewDAndTOfPublicRecords";

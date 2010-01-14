@@ -28,13 +28,17 @@
 #import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
+#import <DOM/DOMProtocols.h>
 #import <SaxObjC/XMLNamespaces.h>
 
-#import <SOGo/SOGoGCSFolder.h>
-#import <SOGo/SOGoUser.h>
+#import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSObject+DAV.h>
 #import <SOGo/NSString+DAV.h>
-
+#import <SOGo/NSObject+Utilities.h>
+#import <SOGo/SOGoGCSFolder.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserSettings.h>
+#import <SOGo/WOResponse+SOGo.h>
 #import <SOGo/WORequest+SOGo.h>
 
 #import "SOGoAppointmentFolders.h"
@@ -95,417 +99,141 @@
   return [NSArray arrayWithObject: tag];
 }
 
-- (NSArray *) _davPersonalCalendarURL
+- (NSArray *) _davSpecialCalendarURLWithName: (NSString *) name
 {
   SOGoAppointmentFolders *parent;
-  NSArray *tag;
-  NSString *parentURL;
+  NSArray *tag, *response;
+  NSString *parentURL, *login;
 
-  parent = [self privateCalendars: @"Calendar" inContext: context];
-  parentURL = [parent davURLAsString];
+  login = [[context activeUser] login];
+  if ([login isEqualToString: owner])
+    {
+      parent = [self privateCalendars: @"Calendar" inContext: context];
+      parentURL = [parent davURLAsString];
 
-  if ([parentURL hasSuffix: @"/"])
-    parentURL = [parentURL substringToIndex: [parentURL length]-1];
+      if ([parentURL hasSuffix: @"/"])
+        parentURL = [parentURL substringToIndex: [parentURL length]-1];
   
-  tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
-                 [NSString stringWithFormat: @"%@/personal/", parentURL],
-		 nil];
+      tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
+                     [NSString stringWithFormat: @"%@/%@/", parentURL, name],
+                     nil];
+      response = [NSArray arrayWithObject: tag];
+    }
+  else
+    response = nil;
 
-  return [NSArray arrayWithObject: tag];
+  return response;
 }
 
 - (NSArray *) davCalendarScheduleInboxURL
 {
-  NSArray *url;
-
-  if ([[context request] isICal4])
-    url = nil;
-  else
-    url = [self _davPersonalCalendarURL];
-
-  return url;
+  return [self _davSpecialCalendarURLWithName: @"inbox"];
 }
 
 - (NSArray *) davCalendarScheduleOutboxURL
 {
-  NSArray *url;
-
-  if ([[context request] isICal4])
-    url = nil;
-  else
-    url = [self _davPersonalCalendarURL];
-
-  return url;
+  return [self _davSpecialCalendarURLWithName: @"personal"];
 }
 
-- (NSArray *) davDropboxHomeURL
+- (NSArray *) _calendarProxiedUsersWithWriteAccess: (BOOL) write
 {
-  NSArray *url;
+  NSMutableArray *proxiedUsers;
+  SOGoUser *ownerUser;
+  NSArray *subscriptions;
+  NSString *ownerLogin, *currentLogin;
+  int count, max;
 
-  if ([[context request] isICal4])
-    url = nil;
-  else
-    url = [self _davPersonalCalendarURL];
-
-  return url;
-}
-
-- (NSArray *) davNotificationsURL
-{
-  NSArray *url;
-
-  if ([[context request] isICal4])
-    url = nil;
-  else
-    url = [self _davPersonalCalendarURL];
-
-  return url;
-}
-
-- (WOResponse *) _prepareResponseFromContext: (WOContext *) queryContext
-{
-  WOResponse *r;
-
-  r = [queryContext response];
-  [r setStatus: 207];
-  [r setContentEncoding: NSUTF8StringEncoding];
-  [r setHeader: @"text/xml; charset=\"utf-8\"" forKey: @"content-type"];
-  [r setHeader: @"no-cache" forKey: @"pragma"];
-  [r setHeader: @"no-cache" forKey: @"cache-control"];
-  [r appendContentString:@"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"];
-
-  return r;
-}
-
-- (void) _fillMatches: (NSMutableDictionary *) matches
-	  fromElement: (NSObject <DOMElement> *) searchElement
-{
-  NSObject <DOMNodeList> *list;
-  NSObject <DOMNode> *valueNode;
-  NSArray *elements;
-  NSString *property, *match;
-
-  list = [searchElement getElementsByTagName: @"prop"];
-  if ([list length])
-    {
-      elements = [self domNode: [list objectAtIndex: 0]
-		       getChildNodesByType: DOM_ELEMENT_NODE];
-      if ([elements count])
-	{
-	  valueNode = [elements objectAtIndex: 0];
-	  property = [NSString stringWithFormat: @"{%@}%@",
-			       [valueNode namespaceURI],
-			       [valueNode nodeName]];
-	}
-    }
-  list = [searchElement getElementsByTagName: @"match"];
-  if ([list length])
-    {
-      valueNode = [[list objectAtIndex: 0] firstChild];
-      match = [valueNode nodeValue];
-    }
-
-  [matches setObject: match forKey: property];
-}
-
-- (void) _fillProperties: (NSMutableArray *) properties
-	     fromElement: (NSObject <DOMElement> *) propElement
-{
-  NSEnumerator *elements;
-  NSObject <DOMElement> *propNode;
-  NSString *property;
-
-  elements = [[self domNode: propElement
-		    getChildNodesByType: DOM_ELEMENT_NODE]
-	       objectEnumerator];
-  while ((propNode = [elements nextObject]))
-    {
-      property = [NSString stringWithFormat: @"{%@}%@",
-			   [propNode namespaceURI],
-			   [propNode nodeName]];
-      [properties addObject: property];
-    }
-}
-
-- (void) _fillPrincipalMatches: (NSMutableDictionary *) matches
-		 andProperties: (NSMutableArray *) properties
-		   fromElement: (NSObject <DOMElement> *) documentElement
-{
-  NSEnumerator *children;
-  NSObject <DOMElement> *currentElement;
-  NSString *tag;
-
-  children = [[self domNode: documentElement
-		    getChildNodesByType: DOM_ELEMENT_NODE]
-	       objectEnumerator];
-  while ((currentElement = [children nextObject]))
-    {
-      tag = [currentElement tagName];
-      if ([tag isEqualToString: @"property-search"])
-	[self _fillMatches: matches fromElement: currentElement];
-      else if  ([tag isEqualToString: @"prop"])
-	[self _fillProperties: properties fromElement: currentElement];
-      else
-	[self errorWithFormat: @"principal-property-search: unknown tag '%@'",
-	      tag];
-    }
-}
-
-#warning this is a bit ugly, as usual
-- (void)       _fillCollections: (NSMutableArray *) collections
-    withCalendarHomeSetMatching: (NSString *) value
-{
-  SOGoUserFolder *collection;
-  NSRange substringRange;
-
-  substringRange = [value rangeOfString: @"/SOGo/dav/"];
-  value = [value substringFromIndex: NSMaxRange (substringRange)];
-  substringRange = [value rangeOfString: @"/Calendar"];
-  value = [value substringToIndex: substringRange.location];
-  collection = [[SOGoUser userWithLogin: value]
-		 homeFolderInContext: context];
-  if (collection)
-    [collections addObject: collection];
-}
-
-- (NSMutableArray *) _firstPrincipalCollectionsWhere: (NSString *) key
-					     matches: (NSString *) value
-{
-  NSMutableArray *collections;
-
-  collections = [NSMutableArray array];
-  if ([key
-	isEqualToString: @"{urn:ietf:params:xml:ns:caldav}calendar-home-set"])
-    [self _fillCollections: collections withCalendarHomeSetMatching: value];
-  else
-    [self errorWithFormat: @"principal-property-search: unhandled key '%@'",
-	  key];
-
-  return collections;
-}
-
-#warning unused stub
-- (BOOL) collectionDavKey: (NSString *) key
-		  matches: (NSString *) value
-{
-  return YES;
-}
-
-- (void) _principalCollections: (NSMutableArray **) baseCollections
-			 where: (NSString *) key
-		       matches: (NSString *) value
-{
-  SOGoUserFolder *currentCollection;
-  unsigned int count, max;
-
-  if (!*baseCollections)
-    *baseCollections = [self _firstPrincipalCollectionsWhere: key
-			     matches: value];
-  else
-    {
-      max = [*baseCollections count];
-      for (count = max; count > 0; count--)
-	{
-	  currentCollection = [*baseCollections objectAtIndex: count - 1];
-	  if (![currentCollection collectionDavKey: key matches: value])
-	    [*baseCollections removeObjectAtIndex: count - 1];
-	}
-    }
-}
-
-- (NSArray *) _principalCollectionsMatching: (NSDictionary *) matches
-{
-  NSMutableArray *collections;
-  NSEnumerator *allKeys;
-  NSString *currentKey;
-
-  collections = nil;
-
-  allKeys = [[matches allKeys] objectEnumerator];
-  while ((currentKey = [allKeys nextObject]))
-    [self _principalCollections: &collections
-	  where: currentKey
-	  matches: [matches objectForKey: currentKey]];
-
-  return collections;
-}
-
-/*   <D:principal-property-search xmlns:D="DAV:">
-     <D:property-search>
-       <D:prop>
-         <D:displayname/>
-       </D:prop>
-       <D:match>doE</D:match>
-     </D:property-search>
-     <D:property-search>
-       <D:prop xmlns:B="http://www.example.com/ns/">
-         <B:title/>
-       </D:prop>
-       <D:match>Sales</D:match>
-     </D:property-search>
-     <D:prop xmlns:B="http://www.example.com/ns/">
-       <D:displayname/>
-       <B:department/>
-       <B:phone/>
-       <B:office/>
-       <B:salary/>
-     </D:prop>
-     </D:principal-property-search> */
-
-- (void) _appendProperties: (NSArray *) properties
-	      ofCollection: (SOGoUserFolder *) collection
-	       toResponses: (NSMutableArray *) responses
-{
-  unsigned int count, max;
-  SEL methodSel;
-  NSString *currentProperty;
-  id currentValue;
-  NSMutableArray *response, *props;
-  NSDictionary *keyTuple;
-
-  response = [NSMutableArray array];
-  [response addObject: davElementWithContent (@"href", XMLNS_WEBDAV,
-					      [collection davURLAsString])];
-  props = [NSMutableArray array];
-  max = [properties count];
+  ownerLogin = [self ownerInContext: nil];
+  ownerUser = [SOGoUser userWithLogin: ownerLogin];
+  subscriptions = [[ownerUser userSettings]
+                    calendarProxySubscriptionUsersWithWriteAccess: write];
+  max = [subscriptions count];
+  proxiedUsers = [NSMutableArray arrayWithCapacity: max];
   for (count = 0; count < max; count++)
     {
-      currentProperty = [properties objectAtIndex: count];
-      methodSel = SOGoSelectorForPropertyGetter (currentProperty);
-      if (methodSel && [collection respondsToSelector: methodSel])
-	{
-	  currentValue = [collection performSelector: methodSel];
-	  #warning evil eVIL EVIl!
-	  if ([currentValue isKindOfClass: [NSArray class]])
-	    {
-	      currentValue = [currentValue objectAtIndex: 0];
-	      currentValue
-		= davElementWithContent ([currentValue objectAtIndex: 0],
-					 [currentValue objectAtIndex: 1],
-					 [currentValue objectAtIndex: 3]);
-	    }
-	  keyTuple = [currentProperty asWebDAVTuple];
-	  [props addObject: davElementWithContent ([keyTuple objectForKey: @"method"],
-						   [keyTuple objectForKey: @"ns"],
-						   currentValue)];
-	}
+      currentLogin = [subscriptions objectAtIndex: count];
+      [proxiedUsers addObject: currentLogin];
     }
-  [response addObject: davElementWithContent (@"propstat", XMLNS_WEBDAV,
-					      davElementWithContent
-					      (@"prop", XMLNS_WEBDAV,
-					       props))];
-  [responses addObject: davElementWithContent (@"response", XMLNS_WEBDAV,
-					       response)];
+
+  return proxiedUsers;
 }
 
-- (void) _appendProperties: (NSArray *) properties
-	     ofCollections: (NSArray *) collections
-		toResponse: (WOResponse *) response
+- (void) _addGroupMembershipToArray: (NSMutableArray *) groups
+                     forWriteAccess: (BOOL) write
 {
-  NSDictionary *mStatus;
-  NSMutableArray *responses;
-  unsigned int count, max;
+  NSArray *proxiedUsers, *tag;
+  NSString *appName, *groupId, *proxiedUser;
+  int count, max;
 
-  responses = [NSMutableArray new];
-
-  max = [collections count];
-  for (count = 0; count < max; count++)
-    [self _appendProperties: properties
-	  ofCollection: [collections objectAtIndex: count]
-	  toResponses: responses];
-  mStatus = davElementWithContent (@"multistatus", XMLNS_WEBDAV, responses);
-  [response appendContentString: [mStatus asWebDavStringWithNamespaces: nil]];
-  [responses release];
-}
-
-- (WOResponse *) davPrincipalPropertySearch: (WOContext *) queryContext
-{
-  NSObject <DOMDocument> *document;
-  NSObject <DOMElement> *documentElement;
-  NSArray *collections;
-  NSMutableDictionary *matches;
-  NSMutableArray *properties;
-  WOResponse *r;
-
-  document = [[context request] contentAsDOMDocument];
-  documentElement = [document documentElement];
-
-  matches = [NSMutableDictionary dictionary];
-  properties = [NSMutableArray array];
-  [self _fillPrincipalMatches: matches andProperties: properties
-	fromElement: documentElement];
-  collections = [self _principalCollectionsMatching: matches];
-  r = [self _prepareResponseFromContext: queryContext];
-  [self _appendProperties: properties ofCollections: collections
-	toResponse: r];
-
-  return r;
-//        @"<D:response><D:href>/SOGo/dav/wsourdeau/</D:href>"
-//      @"<D:propstat>"
-//      @"<D:status>HTTP/1.1 200 OK</D:status>"
-//      @"<D:prop>"
-//      @"<C:calendar-home-set><D:href>/SOGo/dav/wsourdeau/Calendar/</D:href></C:calendar-home-set>"
-//      @"<C:calendar-user-address-set><D:href>MAILTO:wsourdeau@inverse.ca</D:href></C:calendar-user-address-set>"
-//      @"<C:schedule-inbox-URL><D:href>/SOGo/dav/wsourdeau/Calendar/personal/</D:href></C:schedule-inbox-URL>"
-//      @"<C:schedule-outbox-URL><D:href>/SOGo/dav/wsourdeau/Calendar/personal/</D:href></C:schedule-outbox-URL>"
-//      @"</D:prop>"
-//      @"</D:propstat></D:response>"];
-
-//   <D:property-search>
-//     <D:prop>
-//       <C:calendar-home-set/>
-//     </D:prop>
-//     <D:match>/SOGo/dav/wsourdeau/Calendar</D:match>
-//   </D:property-search>
-//   <D:prop>
-//     <C:calendar-home-set/>
-//     <C:calendar-user-address-set/>
-//     <C:schedule-inbox-URL/>
-//     <C:schedule-outbox-URL/>
-//   </D:prop>
-}
-
-- (void) _addFolders: (NSEnumerator *) folders
-        withGroupTag: (NSString *) groupTag
-             toArray: (NSMutableArray *) groups
-{
-  SOGoAppointmentFolder *currentFolder;
-  NSString *folderOwner;
-  NSArray *tag;
-
-  while ((currentFolder = [folders nextObject]))
+  proxiedUsers = [self _calendarProxiedUsersWithWriteAccess: write];
+  max = [proxiedUsers count];
+  if (max)
     {
-      folderOwner = [currentFolder ownerInContext: context];
-      tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
-                     [NSString stringWithFormat: @"/SOGo/dav/%@/%@/",
-                               folderOwner, groupTag],
+      appName = [[context request] applicationName];
+      groupId = [NSString stringWithFormat: @"calendar-proxy-%@",
+                        (write ? @"write" : @"read")];
+      for (count = 0; count < max; count++)
+        {
+          proxiedUser = [proxiedUsers objectAtIndex: count];
+          tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
+                         [NSString stringWithFormat: @"/%@/dav/%@/%@/",
+                                   appName, proxiedUser, groupId],
                      nil];
-      [groups addObject: tag];
+          [groups addObject: tag];
+        }
     }
 }
 
 - (NSArray *) davGroupMembership
 {
-  SOGoAppointmentFolders *calendars;
-  NSArray *writeFolders, *readFolders;
   NSMutableArray *groups;
 
   groups = [NSMutableArray array];
 
-  [self ownerInContext: context];
-
-  calendars = [self privateCalendars: @"Calendar" inContext: context];
-  writeFolders = [calendars proxyFoldersWithWriteAccess: YES];
-  [self _addFolders: [writeFolders objectEnumerator]
-       withGroupTag: @"calendar-proxy-write"
-            toArray: groups];
-
-  readFolders = [calendars proxyFoldersWithWriteAccess: NO];
-  [self _addFolders: [readFolders objectEnumerator]
-       withGroupTag: @"calendar-proxy-read"
-            toArray: groups];
+  [self _addGroupMembershipToArray: groups
+                    forWriteAccess: YES];
+  [self _addGroupMembershipToArray: groups
+                    forWriteAccess: NO];
 
   return groups;
+}
+
+- (NSMutableArray *) _davCalendarProxyForWrite: (BOOL) write
+{
+  NSMutableArray *proxyFor;
+  NSArray *proxiedUsers, *tag;
+  NSString *appName, *proxiedUser;
+  int count, max;
+
+  appName = [[context request] applicationName];
+
+  proxiedUsers = [self _calendarProxiedUsersWithWriteAccess: write];
+  max = [proxiedUsers count];
+  proxyFor = [NSMutableArray arrayWithCapacity: max];
+  if (max)
+    {
+      for (count = 0; count < max; count++)
+        {
+          proxiedUser = [proxiedUsers objectAtIndex: count];
+          tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
+                         [NSString stringWithFormat: @"/%@/dav/%@/",
+                                   appName, proxiedUser],
+                     nil];
+          [proxyFor addObject: tag];
+        }
+    }
+
+  return proxyFor;
+}
+
+- (NSArray *) davCalendarProxyWriteFor
+{
+  return [self _davCalendarProxyForWrite: YES];
+}
+
+- (NSArray *) davCalendarProxyReadFor
+{
+  return [self _davCalendarProxyForWrite: NO];
 }
 
 @end

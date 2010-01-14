@@ -24,10 +24,20 @@
 #define NSOBJECT_DAV_H
 
 #import <Foundation/NSObject.h>
+#import <Foundation/NSDictionary.h>
 
 @class NSMutableDictionary;
 @class NSString;
+
+@class SoSelectorInvocation;
+
 @class SOGoWebDAVValue;
+
+typedef enum _HTTPStatusCode {
+  HTTPStatus200 = 0,
+  HTTPStatus201,
+  HTTPStatus404,
+} HTTPStatusCode;
 
 #define davElement(t,n) \
   [NSDictionary dictionaryWithObjectsAndKeys: t, @"method", n, @"ns", nil]
@@ -37,11 +47,25 @@
 		n, @"ns",				    \
 		c, @"content", nil]
 
+SEL SOGoSelectorForPropertyGetter (NSString *property);
+SEL SOGoSelectorForPropertySetter (NSString *property);
+
 @interface NSObject (SOGoWebDAVExtensions)
 
 - (NSString *)
  asWebDavStringWithNamespaces: (NSMutableDictionary *) namespaces;
 - (SOGoWebDAVValue *) asWebDAVValue;
+
+- (SOGoWebDAVValue *) davSupportedReportSet;
+
+- (SEL) davPropertySelectorForKey: (NSString *) key;
+- (NSString *) davReportSelectorForKey: (NSString *) key;
+- (SoSelectorInvocation *) davReportInvocationForKey: (NSString *) key;
+
+/* response helpers */
+- (NSDictionary *) responseForURL: (NSString *) url
+                withProperties200: (NSArray *) properties200
+                 andProperties404: (NSArray *) properties404;
 
 @end
 

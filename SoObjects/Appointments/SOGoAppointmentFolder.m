@@ -67,6 +67,7 @@
 #import <SOGo/SOGoWebDAVAclManager.h>
 #import <SOGo/SOGoWebDAVValue.h>
 #import <SOGo/WORequest+SOGo.h>
+#import <SOGo/WOResponse+SOGo.h>
 
 #import "iCalEntityObject+SOGo.h"
 #import "iCalPerson+SOGo.h"
@@ -106,16 +107,16 @@ static NSNumber *sharedYes = nil;
 
       aclManager = [SOGoWebDAVAclManager new];
       [aclManager registerDAVPermission: davElement (@"read", XMLNS_WEBDAV)
-		  abstract: YES
-		  withEquivalent: SoPerm_WebDAVAccess
-		  asChildOf: davElement (@"all", XMLNS_WEBDAV)];
+        	  abstract: YES
+        	  withEquivalent: SoPerm_WebDAVAccess
+        	  asChildOf: davElement (@"all", XMLNS_WEBDAV)];
       [aclManager registerDAVPermission: davElement (@"read-current-user-privilege-set", XMLNS_WEBDAV)
-		  abstract: YES
-		  withEquivalent: SoPerm_WebDAVAccess
-		  asChildOf: davElement (@"read", XMLNS_WEBDAV)];
-      [aclManager registerDAVPermission: davElement (@"read-free-busy", XMLNS_WEBDAV)
+        	  abstract: YES
+        	  withEquivalent: SoPerm_WebDAVAccess
+        	  asChildOf: davElement (@"read", XMLNS_WEBDAV)];
+      [aclManager registerDAVPermission: davElement (@"read-free-busy", XMLNS_CALDAV)
 		  abstract: NO
-		  withEquivalent: SoPerm_AccessContentsInformation
+		  withEquivalent: SOGoCalendarPerm_ReadFreeBusy
 		  asChildOf: davElement (@"read", XMLNS_WEBDAV)];
       [aclManager registerDAVPermission: davElement (@"write", XMLNS_WEBDAV)
 		  abstract: YES
@@ -1668,31 +1669,6 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return nil;
 }
 
-- (SOGoWebDAVValue *) davCalendarFreeBusySet
-{
-  NSEnumerator *subFolders;
-  SOGoAppointmentFolder *currentFolder;
-  NSMutableArray *response;
-  SOGoWebDAVValue *responseValue;
-
-  response = [NSMutableArray array];
-  subFolders = [[container subFolders] objectEnumerator];
-  while ((currentFolder = [subFolders nextObject]))
-    [response
-      addObject: davElementWithContent (@"href", XMLNS_WEBDAV,
-					[currentFolder davURLAsString])];
-  responseValue = [davElementWithContent (@"calendar-free-busy-set", XMLNS_CALDAV, response)
-					 asWebDAVValue];
-
-  return responseValue;
-}
-
-/* This method is ignored but we must return a success value. */
-- (NSException *) setDavCalendarFreeBusySet: (NSString *) newFreeBusySet
-{
-  return nil;
-}
-
 - (void) _appendComponentProperties: (NSDictionary *) properties
                     matchingFilters: (NSArray *) filters
                          toResponse: (WOResponse *) response
@@ -1713,9 +1689,6 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     if ([currentField length])
       [fields addObjectUniquely: currentField];
   baseURL = [self davURLAsString];
-#warning review this when fixing http://www.scalableogo.org/bugs/view.php?id=276
-  if (![baseURL hasSuffix: @"/"])
-    baseURL = [NSString stringWithFormat: @"%@/", baseURL];
 
   propertiesArray = [[properties allKeys] asPointersOfObjects];
   propertiesCount = [properties count];
@@ -1775,12 +1748,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   DOMElement *documentElement, *propElement;
 
   r = [context response];
-  [r setStatus: 207];
-  [r setContentEncoding: NSUTF8StringEncoding];
-  [r setHeader: @"text/xml; charset=\"utf-8\"" forKey: @"content-type"];
-  [r setHeader: @"no-cache" forKey: @"pragma"];
-  [r setHeader: @"no-cache" forKey: @"cache-control"];
-  [r appendContentString:@"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
+  [r prepareDAVResponse];
   [r appendContentString: @"<D:multistatus xmlns:D=\"DAV:\""
                 @" xmlns:C=\"urn:ietf:params:xml:ns:caldav\">"];
 
@@ -1987,12 +1955,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   DOMElement *documentElement, *propElement;
 
   r = [context response];
-  [r setStatus: 207];
-  [r setContentEncoding: NSUTF8StringEncoding];
-  [r setHeader: @"text/xml; charset=\"utf-8\"" forKey: @"content-type"];
-  [r setHeader: @"no-cache" forKey: @"pragma"];
-  [r setHeader: @"no-cache" forKey: @"cache-control"];
-  [r appendContentString:@"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
+  [r prepareDAVResponse];
   [r appendContentString: @"<D:multistatus xmlns:D=\"DAV:\""
      @" xmlns:C=\"urn:ietf:params:xml:ns:caldav\">"];
 
@@ -2370,8 +2333,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
           login = [[context activeUser] login];
           if ([login isEqualToString: [self ownerInContext: self]])
             {
-              [colType addObject: [NSArray arrayWithObjects: @"schedule-inbox",
-                XMLNS_CALDAV, nil]];
+              // [colType addObject: [NSArray arrayWithObjects: @"schedule-inbox",
+              //   XMLNS_CALDAV, nil]];
               [colType addObject: [NSArray arrayWithObjects: @"schedule-outbox",
                 XMLNS_CALDAV, nil]];
             }
@@ -2919,128 +2882,6 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return folders;
 }
 
-// - (id) lookupGroupFolderForUIDs: (NSArray *) _uids
-//                       inContext: (id)_ctx
-// {
-//   SOGoCustomGroupFolder *folder;
-  
-//   if (_uids == nil)
-//     return nil;
-
-//   folder = [[SOGoCustomGroupFolder alloc] initWithUIDs:_uids inContainer:self];
-//   return [folder autorelease];
-// }
-
-// - (id) lookupGroupCalendarFolderForUIDs: (NSArray *) _uids
-//                               inContext: (id) _ctx
-// {
-//   SOGoCustomGroupFolder *folder;
-  
-//   if ((folder = [self lookupGroupFolderForUIDs:_uids inContext:_ctx]) == nil)
-//     return nil;
-  
-//   folder = [folder lookupName:@"Calendar" inContext:_ctx acquire:NO];
-//   if (![folder isNotNull])
-//     return nil;
-//   if ([folder isKindOfClass:[NSException class]]) {
-//     [self debugWithFormat:@"Note: could not lookup 'Calendar' in folder: %@",
-// 	    folder];
-//     return nil;
-//   }
-  
-//   return folder;
-// }
-
-/* bulk fetches */
-
-// #warning We only support ONE calendar per user at this time
-// - (BOOL) _appendSubscribedFolders: (NSDictionary *) subscribedFolders
-// 		     toFolderList: (NSMutableArray *) calendarFolders
-// {
-//   NSEnumerator *keys;
-//   NSString *currentKey;
-//   NSMutableDictionary *currentCalendar;
-//   BOOL firstShouldBeActive;
-//   unsigned int count;
-
-//   firstShouldBeActive = YES;
-
-//   keys = [[subscribedFolders allKeys] objectEnumerator];
-//   currentKey = [keys nextObject];
-//   count = 1;
-//   while (currentKey)
-//     {
-//       currentCalendar = [NSMutableDictionary new];
-//       [currentCalendar autorelease];
-//       [currentCalendar
-// 	setDictionary: [subscribedFolders objectForKey: currentKey]];
-//       [currentCalendar setObject: currentKey forKey: @"folder"];
-//       [calendarFolders addObject: currentCalendar];
-//       if ([[currentCalendar objectForKey: @"active"] boolValue])
-// 	firstShouldBeActive = NO;
-//       count++;
-//       currentKey = [keys nextObject];
-//     }
-
-//   return firstShouldBeActive;
-// }
-
-// - (NSArray *) calendarFolders
-// {
-//   NSMutableDictionary *userCalendar, *calendarDict;
-//   NSMutableArray *calendarFolders;
-//   SOGoUser *calendarUser;
-//   BOOL firstActive;
-
-//   calendarFolders = [NSMutableArray new];
-//   [calendarFolders autorelease];
-
-//   calendarUser = [SOGoUser userWithLogin: [self ownerInContext: context]];
-//   userCalendar = [NSMutableDictionary new];
-//   [userCalendar autorelease];
-//   [userCalendar setObject: @"/" forKey: @"folder"];
-//   [userCalendar setObject: @"Calendar" forKey: @"displayName"];
-//   [calendarFolders addObject: userCalendar];
-
-//   calendarDict = [[calendarUser userSettings] objectForKey: @"Calendar"];
-//   firstActive = [[calendarDict objectForKey: @"activateUserFolder"] boolValue];
-//   firstActive = ([self _appendSubscribedFolders:
-// 			 [calendarDict objectForKey: @"SubscribedFolders"]
-// 		       toFolderList: calendarFolders]
-// 		 || firstActive);
-//   [userCalendar setObject: [NSNumber numberWithBool: firstActive]
-// 		forKey: @"active"];
-
-//   return calendarFolders;
-// }
-
-// - (NSArray *) fetchContentObjectNames
-// {
-//   NSMutableArray *objectNames;
-//   NSArray *records;
-//   NSCalendarDate *today, *startDate, *endDate;
-
-// #warning this should be user-configurable
-//   objectNames = [NSMutableArray array];
-//   today = [[NSCalendarDate calendarDate] beginOfDay];
-//   [today setTimeZone: timeZone];
-
-//   startDate = [today dateByAddingYears: 0 months: 0 days: -1
-//                      hours: 0 minutes: 0 seconds: 0];
-//   endDate = [startDate dateByAddingYears: 0 months: 0 days: 2
-//                        hours: 0 minutes: 0 seconds: 0];
-//   records = [self fetchFields: [NSArray arrayWithObject: @"c_name"]
-// 		  from: startDate to: endDate
-// 		  component: @"vevent"];
-//   [objectNames addObjectsFromArray: [records valueForKey: @"c_name"]];
-//   records = [self fetchFields: [NSArray arrayWithObject: @"c_name"]
-// 		  from: startDate to: endDate
-// 		  component: @"vtodo"];
-//   [objectNames addObjectsFromArray: [records valueForKey: @"c_name"]];
-
-//   return objectNames;
-// }
-
 /* folder type */
 
 - (NSString *) folderType
@@ -3065,122 +2906,45 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return (![inactiveFolders containsObject: nameInContainer]);
 }
 
-- (NSArray *) requiredProxyRolesWithWriteAccess: (BOOL) hasWriteAccess
+- (BOOL) isProxied
 {
-  static NSArray *writeAccessRoles = nil;
-  static NSArray *readAccessRoles = nil;
+  NSArray *proxiedCalendars;
+  SOGoUser *ownerUser;
 
-  if (!writeAccessRoles)
-    {
-      writeAccessRoles = [NSArray arrayWithObjects:
-                                    SOGoCalendarRole_ConfidentialModifier,
-                                  SOGoRole_ObjectCreator,
-                                  SOGoRole_ObjectEraser,
-                                  SOGoCalendarRole_PrivateModifier,
-                                  SOGoCalendarRole_PublicModifier,
-                                  nil];
-      [writeAccessRoles retain];
-    }
+  ownerUser = [SOGoUser userWithLogin: [self ownerInContext: nil]];
+  proxiedCalendars = [[ownerUser userSettings] proxiedCalendars];
 
-  if (!readAccessRoles)
-    {
-      readAccessRoles = [NSArray arrayWithObjects:
-                                   SOGoCalendarRole_ConfidentialViewer,
-                                 SOGoCalendarRole_PrivateViewer,
-                                 SOGoCalendarRole_PublicViewer,
-                                 nil];
-      [readAccessRoles retain];
-    }
-
-  return (hasWriteAccess) ? writeAccessRoles : readAccessRoles;
+  return [proxiedCalendars containsObject: [self realNameInContainer]];
 }
 
-- (BOOL)          _user: (NSString *) user
- isProxyWithWriteAccess: (BOOL) hasWriteAccess
+- (void) setIsProxied: (BOOL) isProxied
 {
-  NSArray *userRoles, *reqRoles;
-  BOOL isProxy;
+  NSMutableArray *proxiedCalendars;
+  NSArray *subscriptionUsers;
+  SOGoUser *ownerUser;
+  SOGoUserSettings *us;
 
-  if ([self userIsSubscriber: user])
-    {
-      userRoles = [[self aclsForUser: user]
-                    sortedArrayUsingSelector: @selector (compare:)];
-      reqRoles = [self requiredProxyRolesWithWriteAccess: hasWriteAccess];
-      isProxy = [reqRoles isEqualToArray: userRoles];
-    }
+  ownerUser = [SOGoUser userWithLogin: [self ownerInContext: nil]];
+  us = [ownerUser userSettings];
+  proxiedCalendars = [[us proxiedCalendars] mutableCopy];
+  if (isProxied)
+    [proxiedCalendars addObjectUniquely: [self realNameInContainer]];
   else
-    isProxy = NO;
+    [proxiedCalendars removeObject: [self realNameInContainer]];
 
-  return isProxy;
-}
+  [us setProxiedCalendars: proxiedCalendars];
 
-- (NSArray *) proxySubscribersWithWriteAccess: (BOOL) hasWriteAccess
-{
-  NSMutableArray *subscribers;
-  NSEnumerator *aclUsers;
-  NSString *currentUser, *defaultUser;
+  subscriptionUsers = [us calendarProxyUsersWithWriteAccess: YES];
+  [self adjustProxyRolesForUsers: subscriptionUsers
+                          remove: !isProxied
+                  forWriteAccess: YES];
+  subscriptionUsers = [us calendarProxyUsersWithWriteAccess: NO];
+  [self adjustProxyRolesForUsers: subscriptionUsers
+                          remove: !isProxied
+                  forWriteAccess: NO];
 
-  subscribers = [NSMutableArray array];
-
-  defaultUser = [self defaultUserID];
-  aclUsers = [[self aclUsers] objectEnumerator];
-  while ((currentUser = [aclUsers nextObject]))
-    {
-      if (![currentUser isEqualToString: defaultUser]
-          && [self             _user: currentUser
-              isProxyWithWriteAccess: hasWriteAccess])
-        [subscribers addObject: currentUser];
-    }
-
-  return subscribers;
-}
-
-- (NSException *) setProxySubscribers: (NSArray *) newSubscribers
-                      withWriteAccess: (BOOL) hasWriteAccess
-{
-  int count, max;
-  NSArray *oldSubscribers;
-  NSString *login, *reason;
-  NSException *error;
-
-  error = nil;
-
-  max = [newSubscribers count];
-  for (count = 0; !error && count < max; count++)
-    {
-      login = [newSubscribers objectAtIndex: count];
-      if (![SOGoUser userWithLogin: login roles: nil])
-        {
-          reason = [NSString stringWithFormat: @"User '%@' does not exist.", login];
-          error = [NSException exceptionWithHTTPStatus: 403 reason: reason];
-        }
-    }
-
-  if (!error)
-    {
-      oldSubscribers = [self proxySubscribersWithWriteAccess: hasWriteAccess];
-      for (count = 0; !error && count < max; count++)
-        {
-          login = [newSubscribers objectAtIndex: count];
-          [self
-            setRoles: [self requiredProxyRolesWithWriteAccess: hasWriteAccess]
-             forUser: login];
-          [self subscribeUser: login reallyDo: YES];
-        }
-
-      max = [oldSubscribers count];
-      for (count = 0; count < max; count++)
-        {
-          login = [oldSubscribers objectAtIndex: count];
-          if (![newSubscribers containsObject: login])
-            {
-              [self subscribeUser: login reallyDo: NO];
-              [self removeAclsForUsers: [NSArray arrayWithObject: login]];
-            }
-        }
-    }
-
-  return error;
+  [us synchronize];
+  [proxiedCalendars autorelease];
 }
 
 - (BOOL) importComponent: (iCalEntityObject *) event
@@ -3222,6 +2986,76 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     }
 
   return imported;
+}
+
+/* acls */
+- (NSArray *) aclsForUser: (NSString *) uid
+          forObjectAtPath: (NSArray *) objectPathArray
+{
+  NSMutableArray *aclsForUser;
+  NSArray *superAcls;
+
+  superAcls = [super aclsForUser: uid forObjectAtPath: objectPathArray];
+  if ([uid isEqualToString: [self defaultUserID]])
+    {
+      if (superAcls)
+        {
+          aclsForUser = [superAcls mutableCopy];
+          [aclsForUser autorelease];
+        }
+      else
+        aclsForUser = [NSMutableArray array];
+      [aclsForUser addObject: SoRole_Authenticated];
+    }
+  else
+    aclsForUser = (NSMutableArray *) superAcls;
+
+  return aclsForUser;
+}
+
+- (NSArray *) requiredProxyRolesWithWriteAccess: (BOOL) hasWriteAccess
+{
+  static NSArray *writeAccessRoles = nil;
+  static NSArray *readAccessRoles = nil;
+ 
+  if (!writeAccessRoles)
+    {
+      writeAccessRoles = [NSArray arrayWithObjects:
+                                    SOGoCalendarRole_ConfidentialModifier,
+                                  SOGoRole_ObjectCreator,
+                                  SOGoRole_ObjectEraser,
+                                  SOGoCalendarRole_PrivateModifier,
+                                  SOGoCalendarRole_PublicModifier,
+                                  nil];
+      [writeAccessRoles retain];
+    }
+ 
+  if (!readAccessRoles)
+    {
+      readAccessRoles = [NSArray arrayWithObjects:
+                                   SOGoCalendarRole_ConfidentialViewer,
+                                 SOGoCalendarRole_PrivateViewer,
+                                 SOGoCalendarRole_PublicViewer,
+                                 nil];
+      [readAccessRoles retain];
+    }
+
+  return (hasWriteAccess) ? writeAccessRoles : readAccessRoles;
+}
+
+- (void) adjustProxyRolesForUsers: (NSArray *) proxyUsers
+                           remove: (BOOL) remove
+                   forWriteAccess: (BOOL) write
+{
+  NSArray *roles;
+
+  if (remove)
+    [self removeAclsForUsers: proxyUsers];
+  else
+    {
+      roles = [self requiredProxyRolesWithWriteAccess: write];
+      [self setRoles: roles forUsers: proxyUsers];
+    }
 }
 
 @end /* SOGoAppointmentFolder */

@@ -1,6 +1,6 @@
-/* SOGoUserFolder+Appointments.h - this file is part of SOGo
+/* SOGoUser+Appointments.h - this file is part of SOGo
  *
- * Copyright (C) 2008 Inverse inc.
+ * Copyright (C) 2010 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -20,20 +20,17 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef SOGOUSERFOLDER_APPOINTMENTS_H
-#define SOGOUSERFOLDER_APPOINTMENTS_H
+#ifndef SOGOUSER_APPOINTMENTS_H
+#define SOGOUSER_APPOINTMENTS_H
 
-@class NSArray;
-@class NSString;
+#import <SOGo/SOGoUser.h>
 
-#import <SOGo/SOGoUserFolder.h>
+@interface SOGoUser (SOGoCalDAVSupport)
 
-@interface SOGoUserFolder (SOGoCalDAVSupport)
-
-- (NSArray *) davCalendarUserAddressSet;
-- (NSArray *) davCalendarHomeSet;
-- (NSArray *) davCalendarScheduleOutboxURL;
+- (void) adjustProxySubscriptionToUser: (NSString *) ownerUser
+                                remove: (BOOL) remove
+                        forWriteAccess: (BOOL) write;
 
 @end
 
-#endif /* SOGOUSERFOLDER_APPOINTMENTS_H */
+#endif /* SOGOUSER_APPOINTMENTS_H */

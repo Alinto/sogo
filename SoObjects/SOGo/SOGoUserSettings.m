@@ -20,6 +20,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
 
 #import "SOGoUserProfile.h"
@@ -52,6 +53,67 @@ static Class SOGoUserProfileKlass = Nil;
   ud = [self defaultsSourceWithSource: up andParentSource: nil];
 
   return ud;
+}
+
+/* the calendars that we publish to our proxy subscribers */
+- (void) setProxiedCalendars: (NSArray *) proxiedCalendars
+{
+  [self setObject: proxiedCalendars forKey: @"ProxiedCalendars"];
+}
+
+- (NSArray *) proxiedCalendars
+{
+  NSArray *proxiedCalendars;
+
+  proxiedCalendars = [self arrayForKey: @"ProxiedCalendars"];
+  if (!proxiedCalendars)
+    proxiedCalendars = [NSArray arrayWithObject: @"personal"];
+
+  return proxiedCalendars;
+}
+
+/* the users that we have subscribed us as a proxy to our calendars */
+- (void) setCalendarProxyUsers: (NSArray *) proxyUsers
+               withWriteAccess: (BOOL) writeAccess
+{
+  NSString *key;
+
+  key = [NSString stringWithFormat: @"CalendarProxy%@Users",
+           (writeAccess ? @"Read" : @"Write")];
+
+  [self setObject: proxyUsers forKey: key];
+}
+
+- (NSArray *) calendarProxyUsersWithWriteAccess: (BOOL) writeAccess
+{
+  NSString *key;
+
+  key = [NSString stringWithFormat: @"CalendarProxy%@Users",
+           (writeAccess ? @"Read" : @"Write")];
+
+  return [self arrayForKey: key];
+}
+
+/* the users that have subscribed us as a proxy to their calendars */
+- (void) setCalendarProxySubscriptionUsers: (NSArray *) subscriptionUsers
+                           withWriteAccess: (BOOL) writeAccess
+{
+  NSString *key;
+
+  key = [NSString stringWithFormat: @"CalendarProxy%@SubscriptionUsers",
+           (writeAccess ? @"Read" : @"Write")];
+
+  [self setObject: subscriptionUsers forKey: key];
+}
+
+- (NSArray *) calendarProxySubscriptionUsersWithWriteAccess: (BOOL) writeAccess
+{
+  NSString *key;
+
+  key = [NSString stringWithFormat: @"CalendarProxy%@SubscriptionUsers",
+           (writeAccess ? @"Read" : @"Write")];
+
+  return [self arrayForKey: key];
 }
 
 @end

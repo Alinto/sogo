@@ -25,20 +25,39 @@
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSURL.h>
+#import <Foundation/NSValue.h>
+
+#import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/SoWebDAVValue.h>
+
+#import <NGExtensions/NSObject+Logs.h>
+
+#import <DOM/DOMElement.h>
 
 #import <SaxObjC/XMLNamespaces.h>
 
+#import "DOMNode+SOGo.h"
+#import "NSArray+Utilities.h"
 #import "NSObject+DAV.h"
+#import "NSString+DAV.h"
 #import "NSString+Utilities.h"
-
 #import "SOGoPermissions.h"
 #import "SOGoWebDAVAclManager.h"
+#import "WOResponse+SOGo.h"
 
 #import "SOGoFolder.h"
 
 @interface SOGoObject (SOGoDAVHelpers)
 
 - (void) _fillArrayWithPrincipalsOwnedBySelf: (NSMutableArray *) hrefs;
+
+@end
+
+@interface SOGoFolder (private)
+
+- (NSArray *) _interpretWebDAVArrayValue: (id) value;
+- (NSDictionary *) _expandPropertyResponse: (NGDOMElement *) property
+                                   forHREF: (NSString *) href;
 
 @end
 
@@ -51,14 +70,14 @@
   if (!webdavAclManager)
     {
       webdavAclManager = [SOGoWebDAVAclManager new];
-      [webdavAclManager registerDAVPermission: davElement (@"read", @"DAV:")
+      [webdavAclManager registerDAVPermission: davElement (@"read", XMLNS_WEBDAV)
 			abstract: YES
 			withEquivalent: SoPerm_WebDAVAccess
-			asChildOf: davElement (@"all", @"DAV:")];
-      [webdavAclManager registerDAVPermission: davElement (@"read-current-user-privilege-set", @"DAV:")
+			asChildOf: davElement (@"all", XMLNS_WEBDAV)];
+      [webdavAclManager registerDAVPermission: davElement (@"read-current-user-privilege-set", XMLNS_WEBDAV)
 			abstract: YES
 			withEquivalent: nil
-			asChildOf: davElement (@"read", @"DAV:")];
+			asChildOf: davElement (@"read", XMLNS_WEBDAV)];
     }
 
   return webdavAclManager;
@@ -148,6 +167,12 @@
 - (BOOL) isFolderish
 {
   return YES;
+}
+
+- (NSString *) davURLAsString
+{
+  return [[container davURLAsString]
+           stringByAppendingFormat: @"%@/", nameInContainer];
 }
 
 - (NSString *) httpURLForAdvisoryToUser: (NSString *) uid
@@ -248,6 +273,218 @@
 - (BOOL) davIsCollection
 {
   return YES;
+}
+
+- (NSArray *) _extractHREFSFromPropertyValues: (NSArray *) values
+{
+  NSMutableArray *hrefs;
+  NSDictionary *value;
+  int count, max;
+
+  max = [values count];
+  hrefs = [NSMutableArray arrayWithCapacity: max];
+  for (count = 0; count < max; count++)
+    {
+      value = [values objectAtIndex: count];
+      if ([value isKindOfClass: [NSDictionary class]])
+        {
+          if ([[value objectForKey: @"method"] isEqualToString: @"href"])
+            [hrefs addObject: [value objectForKey: @"content"]];
+          else
+            [self errorWithFormat: @"value is not an href"];
+        }
+      else if ([value isKindOfClass: [NSString class]])
+        {
+          /* we extract the text between <href>XXX</href>, but in a bad way */
+          [hrefs addObject: [(NSString *) value removeOutsideTags]];
+        }
+      else
+        [self errorWithFormat: @"value class is '%@' instead of NSDictionary",
+              NSStringFromClass ([value class])];
+    }
+
+  return hrefs;
+}
+
+- (NSArray *) _interpretSoWebDAVValue: (SoWebDAVValue *) value
+{
+  NSString *valueString;
+
+  valueString = [value stringForTag: @"" rawName: @""
+                          inContext: context prefixes: nil];
+
+  return [NSArray arrayWithObject: [valueString removeOutsideTags]];
+}
+
+- (NSArray *) _interpretWebDAVValue: (id) value
+{
+  NSArray *result;
+
+  if ([value isKindOfClass: [NSString class]])
+    result = [NSArray arrayWithObject: value];
+  else if ([value isKindOfClass: [SoWebDAVValue class]])
+    result = [self _interpretSoWebDAVValue: value];
+  else if ([value isKindOfClass: [NSArray class]])
+    result = [self _interpretWebDAVArrayValue: value];
+  else
+    result = nil;
+
+  return result;
+}
+
+- (NSArray *) _interpretWebDAVArrayValue: (id) value
+{
+  int count, max;
+  NSMutableArray *results;
+  id subValue, subResults;
+
+  max = [value count];
+  results = [NSMutableArray arrayWithCapacity: max];
+  if (max > 0)
+    {
+      subValue = [value objectAtIndex: 0];
+      if ([subValue isKindOfClass: [NSString class]])
+        [results addObject:
+                   davElementWithContent (subValue,  
+                                          [value objectAtIndex: 1],
+                                          [value objectAtIndex: 3])];
+      else
+        {
+          for (count = 0; count < max; count++)
+            {
+              subResults
+                = [self _interpretWebDAVValue: [value objectAtIndex: count]];
+              [results addObjectsFromArray: subResults];
+            }
+        }
+    }
+
+  return results;
+}
+
+- (NSArray *) _expandedPropertyValue: (NGDOMElement *) property
+                           forObject: (SOGoObject *) currentObject
+{
+  NSString *propertyTag;
+  SEL propertySel;
+  id value;
+
+  propertyTag = [property asPropertyPropertyName];
+  propertySel = [self davPropertySelectorForKey: propertyTag];
+  if (propertySel)
+    value = [currentObject performSelector: propertySel];
+  else
+    value = nil;
+
+  return [self _interpretWebDAVValue: value];
+}
+
+- (NSArray *) _expandPropertyValue: (NGDOMElement *) property
+                         forObject: (SOGoObject *) currentObject
+{
+  NSArray *values, *hrefs;
+  NSString *href;
+  NSMutableArray *expandedValues;
+  int count, max;
+  BOOL needsExpansion;
+
+  needsExpansion = ([[property childElementsWithTag: @"property"] length] > 0);
+  values = [self _expandedPropertyValue: property
+                              forObject: currentObject];
+  max = [values count];
+  expandedValues = [NSMutableArray arrayWithCapacity: max];
+  if (max)
+    {
+      if (needsExpansion)
+        {
+          hrefs = [self _extractHREFSFromPropertyValues: values];
+          max = [hrefs count];
+          for (count = 0; count < max; count++)
+            {
+              href = [hrefs objectAtIndex: count];
+              [expandedValues addObject: [self _expandPropertyResponse: property
+                                                               forHREF: href]];
+            }
+        }
+      else
+        [expandedValues setArray: values];
+    }
+
+  return expandedValues;
+}
+
+- (NSDictionary *) _expandPropertyResponse: (NGDOMElement *) property
+                                 forObject: (SOGoObject *) currentObject
+{
+  id <DOMNodeList> properties;
+  NSArray *childValue;
+  NGDOMElement *childProperty;
+  NSDictionary *response;
+  NSMutableArray *properties200, *properties404;
+  int count, max;
+  NSString *tagName, *tagNS;
+
+  properties = [property childElementsWithTag: @"property"];
+  max = [properties length];
+  properties200 = [NSMutableArray arrayWithCapacity: max];
+  properties404 = [NSMutableArray arrayWithCapacity: max];
+  for (count = 0; count < max; count++)
+    {
+      childProperty = [properties objectAtIndex: count];
+      childValue = [self _expandPropertyValue: childProperty
+                                    forObject: currentObject];
+      tagNS = [childProperty attribute: @"namespace"];
+      if (!tagNS)
+        tagNS = XMLNS_WEBDAV;
+      tagName = [childProperty attribute: @"name"];
+      if ([childValue count])
+        [properties200 addObject: davElementWithContent (tagName,
+                                                         tagNS,
+                                                         childValue)];
+      else
+        [properties404 addObject: davElement (tagName, tagNS)];
+    }
+  response = [self responseForURL: [currentObject davURLAsString]
+                withProperties200: properties200
+                 andProperties404: properties404];
+
+  return response;
+}
+
+- (NSDictionary *) _expandPropertyResponse: (NGDOMElement *) property
+                                   forHREF: (NSString *) href
+{
+  SOGoObject *lookupObject;
+  NSDictionary *response;
+
+  lookupObject = [self lookupObjectAtDAVUrl: href];
+  if (lookupObject)
+    response = [self _expandPropertyResponse: property
+                                   forObject: lookupObject];
+  else
+    response = nil;
+
+  return response;
+}
+
+- (WOResponse *) davExpandProperty: (WOContext *) localContext
+{
+  WOResponse *r;
+  id <DOMDocument> document;
+  NSDictionary *response, *multistatus;
+  NGDOMElement *documentElement;
+
+  r = [localContext response];
+  [r prepareDAVResponse];
+
+  document = [[context request] contentAsDOMDocument];
+  documentElement = (NGDOMElement *) [document documentElement];
+  response = [self _expandPropertyResponse: documentElement forObject: self];
+  multistatus = davElementWithContent (@"multistatus", XMLNS_WEBDAV,
+                                       response);
+  [r appendContentString: [multistatus asWebDavStringWithNamespaces: nil]];
+
+  return r;
 }
 
 /* web dav acl helper */

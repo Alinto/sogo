@@ -89,14 +89,14 @@ static NSArray *childRecordFields = nil;
   if (!aclManager)
     {
       aclManager = [SOGoWebDAVAclManager new];
-      [aclManager registerDAVPermission: davElement (@"read", @"DAV:")
+      /*      [aclManager registerDAVPermission: davElement (@"read", @"DAV:")
 		  abstract: YES
 		  withEquivalent: SoPerm_WebDAVAccess
 		  asChildOf: davElement (@"all", @"DAV:")];
       [aclManager registerDAVPermission: davElement (@"read-current-user-privilege-set", @"DAV:")
 		  abstract: YES
 		  withEquivalent: SoPerm_WebDAVAccess
-		  asChildOf: davElement (@"read", @"DAV:")];
+		  asChildOf: davElement (@"read", @"DAV:")]; */
       [aclManager registerDAVPermission: davElement (@"write", @"DAV:")
 		  abstract: YES
 		  withEquivalent: nil
@@ -156,6 +156,7 @@ static NSArray *childRecordFields = nil;
   NSArray *elements, *pathElements;
   NSString *path, *objectPath, *login, *currentUser, *ocsName, *folderName;
   WOContext *context;
+  BOOL isSubscription;
 
   elements = [reference componentsSeparatedByString: @":"];
   login = [elements objectAtIndex: 0];
@@ -175,7 +176,8 @@ static NSArray *childRecordFields = nil;
   newFolder = [self objectWithName: folderName inContainer: aContainer];
   [newFolder setOCSPath: path];
   [newFolder setOwner: login];
-  [newFolder setIsSubscription: ![login isEqualToString: currentUser]];
+  isSubscription = ![login isEqualToString: [aContainer ownerInContext: context]];
+  [newFolder setIsSubscription: isSubscription];
   if (![newFolder displayName])
     newFolder = nil;
 
@@ -1111,10 +1113,7 @@ static NSArray *childRecordFields = nil;
   NSArray *records;
 
   r = [context response];
-  [r setContentEncoding: NSUTF8StringEncoding];
-  [r setHeader: @"text/xml; charset=\"utf-8\"" forKey: @"content-type"];
-  [r setHeader: @"no-cache" forKey: @"pragma"];
-  [r setHeader: @"no-cache" forKey: @"cache-control"];
+  [r prepareDAVResponse];
 
   document = [[context request] contentAsDOMDocument];
   documentElement = (DOMElement *) [document documentElement];
@@ -1127,15 +1126,10 @@ static NSArray *childRecordFields = nil;
   records = [self _fetchSyncTokenFields: properties
                       matchingSyncToken: syncToken];
   if (![syncToken length] || [records count])
-    {
-      [r setStatus: 207];
-      [r appendContentString: @"<?xml version=\"1.0\""
-         @" encoding=\"utf-8\"?>\r\n"];
-      [self _appendComponentProperties: [properties allKeys]
-                           fromRecords: records
-                     matchingSyncToken: [syncToken intValue]
-                            toResponse: r];
-    }
+    [self _appendComponentProperties: [properties allKeys]
+                         fromRecords: records
+                   matchingSyncToken: [syncToken intValue]
+                          toResponse: r];
   else
     [r appendDAVError: davElement (@"valid-sync-token", XMLNS_WEBDAV)];
 
@@ -1340,8 +1334,8 @@ static NSArray *childRecordFields = nil;
         [aclsForObject removeObjectsForKeys: usersAndGroups];
       uids = [usersAndGroups componentsJoinedByString: @"') OR (c_uid = '"];
       qs = [NSString
-        stringWithFormat: @"(c_object = '/%@') AND ((c_uid = '%@'))",
-        objectPath, uids];
+             stringWithFormat: @"(c_object = '/%@') AND ((c_uid = '%@'))",
+             objectPath, uids];
       qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
       [[self ocsFolder] deleteAclMatchingQualifier: qualifier];
     }
@@ -1363,10 +1357,10 @@ static NSArray *childRecordFields = nil;
   while ((currentRole = [userRoles nextObject]))
     {
       SQL = [NSString stringWithFormat: @"INSERT INTO %@"
-        @" (c_object, c_uid, c_role)"
-        @" VALUES ('/%@', '%@', '%@')",
-        [folder aclTableName],
-        objectPath, uid, currentRole];
+                      @" (c_object, c_uid, c_role)"
+                      @" VALUES ('/%@', '%@', '%@')",
+                      [folder aclTableName],
+                      objectPath, uid, currentRole];
       [channel evaluateExpressionX: SQL];
     }
 
@@ -1437,9 +1431,9 @@ static NSArray *childRecordFields = nil;
 - (void) setRoles: (NSArray *) roles
           forUser: (NSString *) uid
 {
-  return [self setRoles: roles
-                forUser: uid
-        forObjectAtPath: [self pathArrayToFolder]];
+  return [self    setRoles: roles
+                   forUser: uid
+           forObjectAtPath: [self pathArrayToFolder]];
 }
 
 - (void) removeAclsForUsers: (NSArray *) users

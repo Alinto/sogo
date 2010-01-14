@@ -24,9 +24,11 @@ Appointments_OBJC_FILES = \
 	SOGoAppointmentOccurence.m	\
 	SOGoTaskOccurence.m	\
 	SOGoAppointmentFolder.m		\
+	SOGoAppointmentInboxFolder.m		\
 	SOGoWebAppointmentFolder.m		\
 	SOGoAppointmentFolders.m	\
 	SOGoFreeBusyObject.m		\
+	SOGoUser+Appointments.m	\
 	SOGoUserFolder+Appointments.m	\
 	\
 	SOGoCalendarProxy.m \

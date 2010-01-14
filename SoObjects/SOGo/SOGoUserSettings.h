@@ -23,13 +23,28 @@
 #ifndef SOGOUSERSETTINGS_H
 #define SOGOUSERSETTINGS_H
 
-@class NSString;
-
 #import "SOGoDefaultsSource.h"
+
+@class NSArray;
+@class NSString;
 
 @interface SOGoUserSettings : SOGoDefaultsSource
 
 + (SOGoUserSettings *) settingsForUser: (NSString *) userId;
+
+/* the calendars that we publish to our proxy subscribers */
+- (void) setProxiedCalendars: (NSArray *) proxiedCalendars;
+- (NSArray *) proxiedCalendars;
+
+/* the users that we have subscribed us as a proxy to our calendars */
+- (void) setCalendarProxyUsers: (NSArray *) proxyUsers
+               withWriteAccess: (BOOL) writeAccess;
+- (NSArray *) calendarProxyUsersWithWriteAccess: (BOOL) writeAccess;
+
+/* the users that have subscribed us as a proxy to their calendars */
+- (void) setCalendarProxySubscriptionUsers: (NSArray *) subscriptionUsers
+                           withWriteAccess: (BOOL) writeAccess;
+- (NSArray *) calendarProxySubscriptionUsersWithWriteAccess: (BOOL) writeAccess;
 
 @end
 

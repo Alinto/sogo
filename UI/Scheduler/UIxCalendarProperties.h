@@ -51,4 +51,7 @@
 - (NSString *) calendarSyncTag;
 - (void) setCalendarSyncTag: (NSString *) newTag;
 
+- (BOOL) isProxied;
+- (void) setIsProxied: (BOOL) isProxied;
+
 @end

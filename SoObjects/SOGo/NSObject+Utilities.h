@@ -25,11 +25,16 @@
 
 #import <Foundation/NSObject.h>
 
+#import <DOM/DOMProtocols.h>
+
 @class NSString;
 
 @interface NSObject (SOGoObjectUtilities)
 
 - (NSString *) jsonRepresentation;
+
+- (NSArray *) domNode: (id <DOMNode>) node
+  getChildNodesByType: (DOMNodeType) type;
 
 @end
 

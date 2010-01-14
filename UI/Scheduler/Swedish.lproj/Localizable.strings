@@ -512,6 +512,9 @@ vtodo_class2 = "(Konfidentiell uppgift)";
 "Synchronize" = "Synkronisera";
 "Tag:" = "Etikett:";
 
+"iCal Delegation" = "iCal Delegation";
+"Shared when account is delegated" = "Shared when account is delegated";
+
 "Display" = "Visa";
 "Show alarms" = "Visa alarm";
 "Show tasks" = "Visa uppgifter";

@@ -32,6 +32,8 @@
 #import <SaxObjC/SaxObjC.h>
 #import <SaxObjC/XMLNamespaces.h>
 
+#import <SOGo/WOResponse+SOGo.h>
+
 #import "SOGoContactFolder.h"
 #import "SOGoContactGCSEntry.h"
 
@@ -131,12 +133,7 @@
   id <DOMDocument> document;
 
   r = [queryContext response];
-  [r setStatus: 207];
-  [r setContentEncoding: NSUTF8StringEncoding];
-  [r setHeader: @"text/xml; charset=\"utf-8\"" forKey: @"content-type"];
-  [r setHeader: @"no-cache" forKey: @"pragma"];
-  [r setHeader: @"no-cache" forKey: @"cache-control"];
-  [r appendContentString:@"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
+  [r prepareDAVResponse];
   [r appendContentString: @"<D:multistatus xmlns:D=\"DAV:\""
      @" xmlns:C=\"urn:ietf:params:xml:ns:carddav\">"];
 

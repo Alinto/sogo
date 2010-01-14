@@ -67,12 +67,6 @@
 - (NSString *) calendarColor;
 - (void) setCalendarColor: (NSString *) newColor;
 
-- (NSString *) syncTag;
-- (void) setSyncTag: (NSString *) newSyncTag;
-
-- (BOOL) synchronizeCalendar;
-- (void) setSynchronizeCalendar: (BOOL) new;
-
 /* selection */
 
 - (NSArray *) calendarUIDs;
@@ -144,12 +138,23 @@
 - (BOOL) showCalendarTasks;
 - (void) setShowCalendarTasks: (BOOL) new;
 
-- (NSArray *) proxySubscribersWithWriteAccess: (BOOL) hasWriteAccess;
-- (NSException *) setProxySubscribers: (NSArray *) newSubscribers
-                      withWriteAccess: (BOOL) hasWriteAccess;
+- (BOOL) isProxied;
+- (void) setIsProxied: (BOOL) isProxied;
+
+- (NSString *) syncTag;
+- (void) setSyncTag: (NSString *) newSyncTag;
+
+- (BOOL) synchronizeCalendar;
+- (void) setSynchronizeCalendar: (BOOL) new;
 
 - (BOOL) importComponent: (iCalEntityObject *) event;
 - (int) importCalendar: (iCalCalendar *) calendar;
+
+/* caldav proxy */
+
+- (void) adjustProxyRolesForUsers: (NSArray *) proxyUsers
+                           remove: (BOOL) remove
+                   forWriteAccess: (BOOL) write;
 
 @end
 

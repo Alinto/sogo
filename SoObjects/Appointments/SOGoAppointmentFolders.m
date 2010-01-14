@@ -33,18 +33,22 @@
 
 #import <GDLAccess/EOAdaptorChannel.h>
 
+#import <DOM/DOMProtocols.h>
 #import <SaxObjC/XMLNamespaces.h>
 
 #import <SOGo/WORequest+SOGo.h>
 #import <SOGo/NSObject+DAV.h>
-#import <SOGo/SOGoWebDAVValue.h>
-#import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoParentFolder.h>
 #import <SOGo/SOGoPermissions.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserSettings.h>
+#import <SOGo/SOGoWebDAVValue.h>
 #import <SOGo/SOGoWebDAVAclManager.h>
 
 #import "SOGoAppointmentFolder.h"
+#import "SOGoAppointmentInboxFolder.h"
 #import "SOGoWebAppointmentFolder.h"
+#import "SOGoUser+Appointments.h"
 
 #import "SOGoAppointmentFolders.h"
 
@@ -73,17 +77,19 @@
 
 - (NSArray *) toManyRelationshipKeys
 {
+  NSMutableArray *keys;
   NSEnumerator *sortedSubFolders;
   SOGoGCSFolder *currentFolder;
   NSString *login;
-  NSMutableArray *keys;
+  SOGoUser *ownerUser;
 
-  login = [[context activeUser] login];
   if ([[context request] isICal])
     {
+      login = [[context activeUser] login];
       keys = [NSMutableArray array];
       if ([owner isEqualToString: login])
         {
+          [keys addObject: @"inbox"];
           sortedSubFolders = [[self subFolders] objectEnumerator];
           while ((currentFolder = [sortedSubFolders nextObject]))
             {
@@ -93,12 +99,38 @@
             }
         }
       else
-        [keys addObject: @"personal"];
+        {
+          ownerUser = [SOGoUser userWithLogin: owner];
+          keys = (NSMutableArray *) [[ownerUser userSettings]
+                                      proxiedCalendars];
+        }
     }
   else
     keys = (NSMutableArray *) [super toManyRelationshipKeys];
 
   return keys;
+}
+
+- (id) lookupName: (NSString *) name
+        inContext: (WOContext *) lookupContext
+          acquire: (BOOL) acquire
+{
+  id obj;
+  NSString *login;
+
+  if ([name isEqualToString: @"inbox"])
+    {
+      login = [[context activeUser] login];
+      if ([owner isEqualToString: login])
+        obj = [SOGoAppointmentInboxFolder objectWithName: name
+                                             inContainer: self];
+      else
+        obj = nil;
+    }
+  else
+    obj = [super lookupName: name inContext: lookupContext acquire: NO];
+
+  return obj;
 }
 
 - (NSString *) _fetchPropertyWithName: (NSString *) propertyName
@@ -245,37 +277,6 @@
   return componentSet;
 }
 
-- (NSArray *) proxyFoldersWithWriteAccess: (BOOL) hasWriteAccess
-{
-  NSMutableArray *proxyFolders;
-  NSArray *proxySubscribers;
-  NSEnumerator *folders;
-  SOGoAppointmentFolder *currentFolder;
-  NSString *folderOwner, *currentUser;
-
-  proxyFolders = [NSMutableArray array];
-
-  currentUser = [[context activeUser] login];
-
-  [self initSubscribedSubFolders];
-  folders = [subscribedSubFolders objectEnumerator];
-  while ((currentFolder = [folders nextObject]))
-    {
-      folderOwner = [currentFolder ownerInContext: context];
-      /* we currently only list the users of which we have subscribed to the
-         personal folder */
-      if ([[currentFolder realNameInContainer] isEqualToString: @"personal"])
-        {
-          proxySubscribers
-            = [currentFolder proxySubscribersWithWriteAccess: hasWriteAccess];
-          if ([proxySubscribers containsObject: currentUser])
-            [proxyFolders addObject: currentFolder];
-        }
-    }
-
-  return proxyFolders;
-}
-
 - (NSArray *) webCalendarIds
 {
   SOGoUserSettings *us;
@@ -369,6 +370,50 @@
                     asChildOf: davElement (@"write", XMLNS_WEBDAV)];
     }
   return aclManager;
+}
+
+- (void) adjustProxyRolesForUsers: (NSArray *) proxyUsers
+                           remove: (BOOL) remove
+                   forWriteAccess: (BOOL) write
+{
+  NSArray *calendars;
+  SOGoUser *ownerUser;
+  SOGoAppointmentFolder *folder;
+  int count, max;
+
+  ownerUser = [SOGoUser userWithLogin: owner];
+  calendars = [[ownerUser userSettings] proxiedCalendars];
+  max = [calendars count];
+  for (count = 0; count < max; count++)
+    {
+      folder = [self lookupName: [calendars objectAtIndex: count]
+                      inContext: context
+                        acquire: NO];
+      [folder adjustProxyRolesForUsers: proxyUsers
+                                remove: remove
+                        forWriteAccess: write];
+    }
+}
+
+- (void) adjustProxySubscriptionsForUsers: (NSArray *) proxyUsers
+                                   remove: (BOOL) remove
+                           forWriteAccess: (BOOL) write
+{
+  int count, max;
+  SOGoUser *proxyUser;
+
+  max = [proxyUsers count];
+  for (count = 0; count < max; count++)
+    {
+      proxyUser = [SOGoUser userWithLogin: [proxyUsers objectAtIndex: count]];
+      if (proxyUser)
+        [proxyUser adjustProxySubscriptionToUser: owner
+                                          remove: remove
+                                  forWriteAccess: write];
+      else
+        [self warnWithFormat: @"(%@) user '%@' is invalid (ignored)",
+              NSStringFromSelector (_cmd), [proxyUser login]];
+    }
 }
 
 @end

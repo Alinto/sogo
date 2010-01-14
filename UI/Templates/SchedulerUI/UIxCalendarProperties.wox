@@ -15,7 +15,7 @@
       var:value="calendarID"/>
     <div id="propertiesView">
       <fieldset>
-	<legend><var:string label:value="Properties" /></legend>
+	<legend><var:string label:value="Properties"/></legend>
         <div><span class="label"><var:string label:value="Name:"/></span
             ><span class="content"><input type="text"
               name="calendarName" id="calendarName"
@@ -40,47 +40,65 @@
               /></span></div>
       </fieldset>
       <fieldset>
-	<legend><var:string label:value="Synchronization" /></legend>
-        <div><span class="label"><var:string label:value="Synchronize" /></span
-            ><span class="content"><input type="checkbox" const:class="checkBox" 
+	<legend><var:string label:value="Synchronization"/></legend>
+
+        <div><label
+            ><input type="checkbox" const:class="checkBox" 
               name="synchronizeCalendar"
               id="synchronizeCalendar" 
               var:checked="synchronizeCalendar"
-              var:disabled="mustSynchronize" /></span
-            ></div>
-        <var:if condition="mustSynchronize" const:negate="YES"><div><span class="label"><var:string
-                label:value="Tag:"/></span><span class="content"><input type="text"
+              var:disabled="mustSynchronize"
+              /><var:string label:value="Synchronize"
+              /></label></div>
+
+        <var:if condition="mustSynchronize" const:negate="YES"
+          ><div><label><var:string
+                label:value="Tag:"/><input type="text"
                 name="calendarSyncTag"
                 id="calendarSyncTag"
                 class="textField"
                 var:value="calendarSyncTag"
-                /><var:if condition="synchronizeCalendar"><input type="hidden"
-                  name="originalCalendarSyncTag"
-                  id="originalCalendarSyncTag"
-                  var:value="originalCalendarSyncTag"
-                  /></var:if><input type="hidden"
-                name="allCalendarSyncTags"
-                id="allCalendarSyncTags"
-                var:value="allCalendarSyncTags"
-                /></span></div></var:if>
+                /></label
+              ><var:if condition="synchronizeCalendar"><input type="hidden"
+                name="originalCalendarSyncTag"
+                id="originalCalendarSyncTag"
+                var:value="originalCalendarSyncTag"
+                /></var:if><input type="hidden"
+              name="allCalendarSyncTags"
+              id="allCalendarSyncTags"
+              var:value="allCalendarSyncTags"
+              /></div></var:if>
       </fieldset>
+
+      <var:if condition="isWebCalendar" const:negate="YES"
+        ><fieldset>
+          <legend><var:string label:value="iCal Delegation"/></legend>
+          <div><label
+              ><input type="checkbox" const:class="checkBox" id="isProxied"
+                var:checked="isProxied"
+                /><var:string label:value="Shared when account is delegated"
+                /></label></div>
+        </fieldset></var:if>
+
       <fieldset>
-	<legend><var:string label:value="Display" /></legend>
-        <div><span class="label"><var:string label:value="Show alarms" /></span
-            ><span class="content"><input type="checkbox" const:class="checkBox" 
-              id="showCalendarAlarms" var:checked="showCalendarAlarms" /></span
-            ></div>
-        <div><span class="label"><var:string label:value="Show tasks" /></span
-            ><span class="content"><input type="checkbox" const:class="checkBox" 
-              id="showCalendarTasks" var:checked="showCalendarTasks" /></span
-            ></div>
+	<legend><var:string label:value="Display"/></legend>
+        <div><label
+            ><input type="checkbox" const:class="checkBox"
+              id="showCalendarAlarms" var:checked="showCalendarAlarms"
+              /><var:string label:value="Show alarms"/></label></div>
+        <div><label
+            ><input type="checkbox" const:class="checkBox" 
+              id="showCalendarTasks" var:checked="showCalendarTasks"
+              /><var:string label:value="Show tasks"
+              /></label></div>
       </fieldset>
+
       <div id="buttons">
         <a href="#" class="button actionButton" id="okButton" 
           name="okButton">
-          <span><var:string label:value="OK" /></span></a>
+          <span><var:string label:value="OK"/></span></a>
         <a href="#" class="button" id="cancelButton" name="cancelButton">
-          <span><var:string label:value="Cancel" /></span></a>
+          <span><var:string label:value="Cancel"/></span></a>
       </div>
     </div>
   </form>

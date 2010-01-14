@@ -29,8 +29,15 @@
 
 @interface SOGoAppointmentFolders : SOGoParentFolder
 
-- (NSArray *) proxyFoldersWithWriteAccess: (BOOL) hasWriteAccess;
 - (NSArray *) webCalendarIds;
+
+- (void) adjustProxyRolesForUsers: (NSArray *) proxyUsers
+                           remove: (BOOL) remove
+                   forWriteAccess: (BOOL) write;
+
+- (void) adjustProxySubscriptionsForUsers: (NSArray *) proxyUsers
+                                   remove: (BOOL) remove
+                           forWriteAccess: (BOOL) write;
 
 @end
 

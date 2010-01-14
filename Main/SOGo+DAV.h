@@ -1,6 +1,6 @@
-/* SOGoUserFolder+Appointments.h - this file is part of SOGo
+/* SOGo+DAV.h - this file is part of SOGo
  *
- * Copyright (C) 2008 Inverse inc.
+ * Copyright (C) 2010 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -20,20 +20,20 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef SOGOUSERFOLDER_APPOINTMENTS_H
-#define SOGOUSERFOLDER_APPOINTMENTS_H
+#ifndef SOGO_DAV_H
+#define SOGO_DAV_H
 
-@class NSArray;
-@class NSString;
+@class WOContext;
+@class WOResponse;
 
-#import <SOGo/SOGoUserFolder.h>
+#import "SOGo.h"
 
-@interface SOGoUserFolder (SOGoCalDAVSupport)
+@interface SOGo (SOGoWebDAVExtensions)
 
-- (NSArray *) davCalendarUserAddressSet;
-- (NSArray *) davCalendarHomeSet;
-- (NSArray *) davCalendarScheduleOutboxURL;
+- (WOResponse *) davPrincipalMatch: (WOContext *) localContext;
+- (WOResponse *) davPrincipalPropertySearch: (WOContext *) localContext;
+- (WOResponse *) davPrincipalSearchPropertySet: (WOContext *) localContext;
 
 @end
 
-#endif /* SOGOUSERFOLDER_APPOINTMENTS_H */
+#endif /* SOGO_DAV_H */

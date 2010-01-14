@@ -24,6 +24,8 @@
 
 #import <NGExtensions/NSString+misc.h>
 
+#import "NSArray+Utilities.h"
+
 #import "NSString+DAV.h"
 
 @implementation NSString (SOGoWebDAVExtensions)
@@ -32,6 +34,16 @@
  asWebDavStringWithNamespaces: (NSMutableDictionary *) namespaces
 {
   return [self stringByEscapingXMLString];
+}
+
+- (NSString *) asDAVPropertyDescription
+{
+  NSArray *components;
+
+  components = [[self componentsSeparatedByString: @"-"]
+                 resultsOfSelector: @selector (capitalizedString)];
+
+  return [components componentsJoinedByString: @" "];
 }
 
 #warning we should use the same nomenclature as the webdav values...
@@ -49,6 +61,60 @@
            nodeName, @"method", nil];
 }
 
+
+- (NSString *) davMethodToObjC
+{
+  NSMutableString *newName;
+  NSArray *components;
+
+  newName = [NSMutableString stringWithString: @"dav"];
+  components = [[self componentsSeparatedByString: @"-"]
+                 resultsOfSelector: @selector (capitalizedString)];
+  [newName appendString: [components componentsJoinedByString: @""]];
+
+  return newName;
+}
+
+- (NSString *) davSetterName
+{
+  unichar firstLetter;
+  NSString *firstString;
+
+  firstLetter = [self characterAtIndex: 0];
+  firstString = [[NSString stringWithCharacters: &firstLetter length: 1]
+		  uppercaseString];
+  return [NSString stringWithFormat: @"set%@%@:",
+		   firstString, [self substringFromIndex: 1]];
+}
+
+- (NSDictionary *) asDavInvocation
+{
+  NSMutableDictionary *davInvocation;
+  NSRange nsEnclosing, methodEnclosing;
+  unsigned int length;
+
+  davInvocation = nil;
+  if ([self hasPrefix: @"{"])
+    {
+      nsEnclosing = [self rangeOfString: @"}"];
+      length = [self length];
+      if (nsEnclosing.length > 0 && nsEnclosing.location < (length - 1))
+	{
+	  methodEnclosing = NSMakeRange (nsEnclosing.location + 1,
+                                         length - nsEnclosing.location - 1);
+	  nsEnclosing.length = nsEnclosing.location - 1;
+	  nsEnclosing.location = 1;
+	  davInvocation = [NSMutableDictionary dictionaryWithCapacity: 2];
+	  [davInvocation setObject: [self substringWithRange: nsEnclosing]
+			 forKey: @"ns"];
+	  [davInvocation setObject: [self substringWithRange: methodEnclosing]
+			 forKey: @"method"];
+	}
+    }
+
+  return davInvocation;
+}
+
 - (NSMutableDictionary *) asWebDAVTupleWithContent: (id) content
 {
   NSMutableDictionary *tuple;
@@ -57,6 +123,30 @@
   [tuple setObject: content forKey: @"content"];
 
   return tuple;
+}
+
+- (NSString *) removeOutsideTags
+{
+  NSString *newString;
+  NSRange range;
+
+  newString = nil;
+
+  /* we extract the text between >XXX</, but in a bad way */
+  range = [self rangeOfString: @">"];
+  if (range.location != NSNotFound)
+    {
+      newString = [self substringFromIndex: range.location + 1];
+      range = [newString rangeOfString: @"<" options: NSBackwardsSearch];
+      if (range.location != NSNotFound)
+        newString = [newString substringToIndex: range.location];
+      else
+        newString = nil;
+    }
+  else
+    newString = nil;
+
+  return newString;
 }
 
 @end

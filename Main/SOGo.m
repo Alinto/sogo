@@ -54,6 +54,7 @@
 #import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoWebAuthenticator.h>
 #import <SOGo/WORequest+SOGo.h>
+#import <SOGo/NSObject+DAV.h>
 
 #import "build.h"
 #import "SOGoProductLoader.h"
@@ -61,6 +62,8 @@
 
 #import "SOGo.h"
 
+#warning might be useful to have a SOGoObject-derived proxy class for \
+  handling requests and avoid duplicating methods
 @implementation SOGo
 
 static unsigned int vMemSizeLimit;
@@ -107,10 +110,8 @@ static BOOL debugLeaks;
   /* to allow public access to all contained objects (subkeys) */
   [sInfo setDefaultAccess: @"allow"];
 
-  basicRoles = [NSArray arrayWithObjects: SoRole_Authenticated,
-                        SOGoRole_FreeBusy, nil];
-
   /* require Authenticated role for View and WebDAV */
+  basicRoles = [NSArray arrayWithObject: SoRole_Authenticated];
   [sInfo declareRoles: basicRoles asDefaultForPermission: SoPerm_View];
   [sInfo declareRoles: basicRoles asDefaultForPermission: SoPerm_WebDAVAccess];
 
@@ -268,15 +269,6 @@ static BOOL debugLeaks;
 
 /* name lookup */
 
-- (BOOL) isUserName: (NSString *) _key
-          inContext: (id) _ctx
-{
-  if ([_key length] < 1)
-    return NO;
-  
-  return YES;
-}
-
 - (id) lookupUser: (NSString *) _key
 	inContext: (id)_ctx
 {
@@ -311,16 +303,29 @@ static BOOL debugLeaks;
           acquire: (BOOL) _flag
 {
   id obj;
-  SOGoSystemDefaults *sd;
+  WORequest *request;
+  BOOL isDAVRequest;
 
   /* put locale info into the context in case it's not there */
   [self _setupLocaleInContext:_ctx];
 
-  sd = [SOGoSystemDefaults sharedSystemDefaults];
-  if ([sd isWebAccessEnabled] || [[_ctx request] isSoWebDAVRequest])
+  request = [_ctx request];
+  isDAVRequest = [request isSoWebDAVRequest];
+  if (isDAVRequest
+      || [[SOGoSystemDefaults sharedSystemDefaults] isWebAccessEnabled])
     {
-      /* first check attributes directly bound to the application */
-      obj = [super lookupName:_key inContext:_ctx acquire:_flag];
+      if (isDAVRequest)
+        {
+          if ([[request method] isEqualToString: @"REPORT"])
+            obj = [self davReportInvocationForKey: _key];
+          else
+            obj = nil;
+        }
+      else
+        {
+          /* first check attributes directly bound to the application */
+          obj = [super lookupName:_key inContext:_ctx acquire:_flag];
+        }
       if (!obj)
         {
           /* 
@@ -331,11 +336,8 @@ static BOOL debugLeaks;
              "GET" if no method was provided in the query path.
           */
   
-          if (![_key isEqualToString:@"favicon.ico"])
-            {
-              if ([self isUserName: _key inContext: _ctx])
-                obj = [self lookupUser: _key inContext: _ctx];
-            }
+          if ([_key length] > 0 && ![_key isEqualToString:@"favicon.ico"])
+            obj = [self lookupUser: _key inContext: _ctx];
         }
     }
   else
@@ -589,15 +591,21 @@ static BOOL debugLeaks;
 {
   NSURL *davURL;
   NSString *davURLAsString;
-
-  davURL = [self davURL];
+  WORequest *request;
 
   /* we know that GNUstep returns a "/" suffix for the absoluteString but not
      for the path method. Therefore we add one. */
   if (useRelativeURLs)
-    davURLAsString = [NSString stringWithFormat: @"%@/", [davURL path]];
+    {
+      request = [[self context] request];
+      davURLAsString = [NSString stringWithFormat: @"/%@/dav/",
+                                 [request applicationName]];
+    }
   else
-    davURLAsString = [davURL absoluteString];
+    {
+      davURL = [self davURL];
+      davURLAsString = [davURL absoluteString];
+    }
 
   return davURLAsString;
 }

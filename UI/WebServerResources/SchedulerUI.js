@@ -1891,16 +1891,17 @@ function onCalendarModify(event) {
     var url = ApplicationBaseURL + calendarID + "/properties";
     var windowID = sanitizeWindowName(calendarID + " properties");
     var width = 310;
-    var height = 270;
+    var height = 310;
+    var isWebCalendar = false;
     if (UserSettings['Calendar'] 
         && UserSettings['Calendar']['WebCalendars']) {
         var webCalendars = UserSettings['Calendar']['WebCalendars'];
         var realID = calendarID.substr (1, calendarID.length - 1);
         if (webCalendars[realID])
-            height = 290;
+            isWebCalendar = true;
     }
-    if (calendarID == "/personal")
-      height = 250;
+    if (isWebCalendar || calendarID == "/personal")
+      height -= 25;
 
     var properties = window.open(url, windowID,
                                  "width="+width+",height="+height+",resizable=0");

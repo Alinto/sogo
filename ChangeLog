@@ -1,5 +1,76 @@
 2010-01-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(+webdavAclManager): fixed "read-free-busy" namespace declaration.
+
+	* SoObjects/SOGo/SOGoObject.m (-davPrincipalCollectionSet): when
+	used with iCal 4, we provide a "DAV" header with the proper
+	compliance classes, since iCal 4 doesn't want to use OPTIONS.
+
+	* Tests/test-webdav.py (WebDAVTest.testExpandProperty): new method
+	to test the new "expand-propery" code in SOGo.
+
+	* SoObjects/SOGo/SOGoFolder.m (-davExpandProperty): new method to
+	handle the "expand-property" REPORT.
+
+	* SoObjects/Appointments/SOGoCalendarProxy.m:
+	adapted module to new code for handling chosen calendars
+	delegation.
+
+	* Main/SOGo+DAV.[hm): new category module for handling dav methods
+	pertaining to /SOGo/dav/ as the principal-collection-set. Now
+	implements 3 methods that were previously found in SOGoUserFolder
+	categories.
+
+	* SoObjects/Appointments/SOGoUser+Appointments.[hm]: new category
+	module.
+
+	* SoObjects/Appointments/SOGoAppointmentInboxFolder.[hm]: new
+	class module that implements the basic "schedule-inbox"
+	collection mechanisms, enough to let iCal work properly. To be
+	completed for full invitation handling.
+
+	* SoObjects/SOGo/SOGoObject.m (-lookupObjectAtDAVUrl:): new method
+	that enables DAV reports to lookup objects based on the urls
+	passed in their parameters.
+	(-davURLAsString): simplified method by making it recurse from its
+	top parent.
+	(-setRoles:forUsers:): treat a list of users at once.
+	(-davPrincipalMatch): removed method since it really pertains to
+	/SOGo/dav, which the correct principal-collection-set.
+
+	* SoObjects/SOGo/SOGoParentFolder.m (-initSubcribedSubFolders):
+	enable the super user to see any user's subscriptions. This
+	enables a new set of tests to work properly in super user mode.
+	(-appendSubscribedSources): consequently to the above, the
+	references must be based on the owner user rather than the current
+	user.
+
+	* SoObjects/SOGo/SOGoUser.m: removed commented out methods.
+
+	* SoObjects/SOGo/SOGoUserSettings.m (-setProxiedCalendars)
+	(-setCalendarProxyUsers:withWriteAccess:):
+	(-setCalendarProxySubscriptionUsers:withWriteAccess:): new method
+	for handling caldav-proxy related settings.
+
+	* SoObjects/SOGo/SOGoWebDAVAclManager.m (_registerChild:of:): only
+	emits a warning of the specified parent cannot be found, instead
+	of crashing.
+
+	* SoObjects/SOGo/WOResponse+SOGo.m (-prepareDAVResponse): new
+	method with common code for DAV responses generated from SOGo.
+
+	* Tests/webdavlib.py (WebDAVPROPPATCH): new class implementing the
+	"PROPPATCH" method.
+	(WebDAVExpandProperty): new class implementing the
+	"expand-property" REPORT.
+	(_WD_XMLTreeElement.appendSubtree): new method that enables the
+	addition of a tree of objects from a dictionary passed as
+	parameter.
+
+	* Tests/test-ical.py: new test script for tesing iCal-related
+	behaviours.
+
 	* Tools/SOGoToolBackup.m (-extractUserPreferences:intoRecord:):
 	fixed compilation warning.
 

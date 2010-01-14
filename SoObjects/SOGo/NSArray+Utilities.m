@@ -30,6 +30,19 @@
 
 @implementation NSArray (SOGoArrayUtilities)
 
++ (id) arrayWithObject: (id) member
+           repeatCount: (int) repeatCount
+{
+  NSMutableArray *newArray;
+  int count;
+
+  newArray = [NSMutableArray arrayWithCapacity: repeatCount];
+  for (count = 0; count < repeatCount; count++)
+    [newArray addObject: member];
+
+  return newArray;
+}
+
 - (id *) asPointersOfObjects
 {
   id *pointers;

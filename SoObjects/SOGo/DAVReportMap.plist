@@ -1,4 +1,7 @@
 { /* -*-java-*- */
+  /* WebDAV */
+  "{DAV:}expand-property" = davExpandProperty;
+
   /* CalDAV */
   "{urn:ietf:params:xml:ns:caldav}calendar-query" = davCalendarQuery;
   "{urn:ietf:params:xml:ns:caldav}calendar-multiget" = davCalendarMultiget;
@@ -10,11 +13,13 @@
   "{urn:ietf:params:xml:ns:carddav}supported-collation-set"
     = davSupportedCollectionSet;
 
-  /* DeltaV */
+  /* ACL */
+  "{DAV:}acl-principal-prop-set" = davAclPrincipalPropSet;
   "{DAV:}principal-match" = davPrincipalMatch;
   "{DAV:}principal-property-search" = davPrincipalPropertySearch;
   "{DAV:}principal-search-property-set" = davPrincipalSearchPropertySet;
-  "{DAV:}principal-search-property-set" = davPrincipalSearchPropertySet;
+
+  /* WebDAV sync */
   "{DAV:}sync-collection" = davSyncCollection;
 
   /* Inverse DAV */

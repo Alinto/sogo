@@ -35,6 +35,7 @@
 #import <GDLContentStore/GCSFolderManager.h>
 #import <GDLContentStore/NSURL+GCS.h>
 #import <GDLAccess/EOAdaptorChannel.h>
+#import <DOM/DOMProtocols.h>
 #import <SaxObjC/XMLNamespaces.h>
 
 #import "NSObject+DAV.h"
@@ -265,6 +266,7 @@ static SoSecurityManager *sm = nil;
 - (NSException *) appendSubscribedSources
 {
   NSArray *subscribedReferences;
+  SOGoUser *ownerUser;
   SOGoUserSettings *settings;
   NSEnumerator *allKeys;
   NSString *currentKey;
@@ -272,7 +274,8 @@ static SoSecurityManager *sm = nil;
 
   error = nil; /* we ignore non-DB errors at this time... */
 
-  settings = [[context activeUser] userSettings];
+  ownerUser = [SOGoUser userWithLogin: [self ownerInContext: context]];
+  settings = [ownerUser userSettings];
   subscribedReferences = [[settings objectForKey: nameInContainer]
 			   objectForKey: @"SubscribedFolders"];
   if ([subscribedReferences isKindOfClass: [NSArray class]])
@@ -357,16 +360,17 @@ static SoSecurityManager *sm = nil;
 
 - (NSException *) initSubscribedSubFolders
 {
-  NSString *login;
   NSException *error;
+  SOGoUser *currentUser;
 
   if (!subFolderClass)
     subFolderClass = [[self class] subFolderClass];
 
   error = nil; /* we ignore non-DB errors at this time... */
-  login = [[context activeUser] login];
-
-  if (!subscribedSubFolders && [login isEqualToString: owner])
+  currentUser = [context activeUser];
+  if (!subscribedSubFolders
+      && ([[currentUser login] isEqualToString: owner]
+          || [currentUser isSuperUser]))
     {
       subscribedSubFolders = [NSMutableDictionary new];
       error = [self appendSubscribedSources];
