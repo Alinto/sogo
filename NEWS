@@ -9,6 +9,7 @@
 - refactored the handling of user defaults to enable fallback on default
   values more easily
 - added sensible default configuration values
+- updated ckeditor to version 3.1
 
 1.1-20091028 (1.1.0)
 --------------------
