@@ -79,7 +79,7 @@ static Class SOGoUserProfileKlass = Nil;
   NSString *key;
 
   key = [NSString stringWithFormat: @"CalendarProxy%@Users",
-           (writeAccess ? @"Read" : @"Write")];
+           (writeAccess ? @"Write" : @"Read")];
 
   [self setObject: proxyUsers forKey: key];
 }
@@ -89,7 +89,7 @@ static Class SOGoUserProfileKlass = Nil;
   NSString *key;
 
   key = [NSString stringWithFormat: @"CalendarProxy%@Users",
-           (writeAccess ? @"Read" : @"Write")];
+           (writeAccess ? @"Write" : @"Read")];
 
   return [self arrayForKey: key];
 }
@@ -101,7 +101,7 @@ static Class SOGoUserProfileKlass = Nil;
   NSString *key;
 
   key = [NSString stringWithFormat: @"CalendarProxy%@SubscriptionUsers",
-           (writeAccess ? @"Read" : @"Write")];
+           (writeAccess ? @"Write" : @"Read")];
 
   [self setObject: subscriptionUsers forKey: key];
 }
@@ -111,7 +111,7 @@ static Class SOGoUserProfileKlass = Nil;
   NSString *key;
 
   key = [NSString stringWithFormat: @"CalendarProxy%@SubscriptionUsers",
-           (writeAccess ? @"Read" : @"Write")];
+           (writeAccess ? @"Write" : @"Read")];
 
   return [self arrayForKey: key];
 }
