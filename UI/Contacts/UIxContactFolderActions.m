@@ -53,7 +53,7 @@
 - (id <WOActionResults>) exportAction
 {
   WORequest *request;
-  id <WOActionResults> response;
+  WOResponse *response;
   NSArray *contactsId;
   NSEnumerator *uids;
   NSString *uid, *filename;
