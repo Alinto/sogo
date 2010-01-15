@@ -203,8 +203,8 @@
           folders = nil;
         else
           [localException raise];
-      NS_ENDHANDLER
-        sortedFolders = [NSMutableArray arrayWithCapacity: [folders count]];
+      NS_ENDHANDLER;
+      sortedFolders = [NSMutableArray arrayWithCapacity: [folders count]];
       uniqueContacts = [NSMutableDictionary dictionary];
       for (i = 0; i < [folders count]; i++)
         {
