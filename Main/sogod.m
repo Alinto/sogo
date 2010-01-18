@@ -38,6 +38,11 @@ main (int argc, char **argv, char **env)
   SOGoSystemDefaults *sd;
   int rc;
 
+  /* Here we work around a bug in GNUstep which decode XML user defaults using
+     the system encoding, rather than honouring the encoding specified in the
+     file. */
+  putenv ("GNUSTEP_STRING_ENCODING=NSUTF8StringEncoding");
+
   pool = [NSAutoreleasePool new];
 
   if (getuid() > 0)

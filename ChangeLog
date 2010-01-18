@@ -1,3 +1,9 @@
+2010-01-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Main/sogod.m (main): set the "GNUSTEP_STRING_ENCODING"
+	environment variable to NSUTF8StringEncoding to properly decode
+	the user defaults strings in UTF8.
+
 2010-01-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUserSettings.m
