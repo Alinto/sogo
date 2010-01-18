@@ -86,6 +86,7 @@ class iCalTest(unittest.TestCase):
         return members
 
     def testCalendarProxy(self):
+        """calendar-proxy as used from iCal"""
         self._setMemberSet(username, [], "read")
         self._setMemberSet(username, [], "write")
         self._setMemberSet(subscriber_username, [], "read")
