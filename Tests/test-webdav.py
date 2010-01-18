@@ -3,36 +3,24 @@
 from config import hostname, port, username, password
 
 import unittest
+import utilities
 import webdavlib
 
-def fetchUserInfo(login):
-    client = webdavlib.WebDAVClient(hostname, port, username, password)
-    resource = "/SOGo/dav/%s/" % login
-    propfind = webdavlib.WebDAVPROPFIND(resource,
-                                        ["displayname",
-                                         "{urn:ietf:params:xml:ns:caldav}calendar-user-address-set"],
-                                        0)
-    propfind.xpath_namespace = { "D": "DAV:",
-                                 "C": "urn:ietf:params:xml:ns:caldav" }
-    client.execute(propfind)
-    assert(propfind.response["status"] == 207)
-    name_nodes = propfind.xpath_evaluate('/D:multistatus/D:response/D:propstat/D:prop/D:displayname',
-                                          None)
-    email_nodes = propfind.xpath_evaluate('/D:multistatus/D:response/D:propstat/D:prop/C:calendar-user-address-set/D:href',
-                                          None)
-
-    return (name_nodes[0].childNodes[0].nodeValue, email_nodes[0].childNodes[0].nodeValue)
-
 class WebDAVTest(unittest.TestCase):
+    def __init__(self, arg):
+        unittest.TestCase.__init__(self, arg)
+        self.client = webdavlib.WebDAVClient(hostname, port,
+                                             username, password)
+        self.dav_utility = utilities.TestUtility(self.client)
+
     def testPrincipalCollectionSet(self):
         """property: 'principal-collection-set' on collection object"""
-        client = webdavlib.WebDAVClient(hostname, port, username, password)
         resource = '/SOGo/dav/%s/' % username
         propfind = webdavlib.WebDAVPROPFIND(resource,
                                             ["{DAV:}principal-collection-set"],
                                             0)
         propfind.xpath_namespace = { "D": "DAV:" }
-        client.execute(propfind)
+        self.client.execute(propfind)
         self.assertEquals(propfind.response["status"], 207)
         nodes = propfind.xpath_evaluate('/D:multistatus/D:response/D:propstat/D:prop/D:principal-collection-set/D:href',
                                         None)
@@ -48,13 +36,12 @@ class WebDAVTest(unittest.TestCase):
 
     def testPrincipalCollectionSet2(self):
         """property: 'principal-collection-set' on non-collection object"""
-        client = webdavlib.WebDAVClient(hostname, port, username, password)
         resource = '/SOGo/dav/%s/freebusy.ifb' % username
         propfind = webdavlib.WebDAVPROPFIND(resource,
                                             ["{DAV:}principal-collection-set"],
                                             0)
         propfind.xpath_namespace = { "D": "DAV:" }
-        client.execute(propfind)
+        self.client.execute(propfind)
         self.assertEquals(propfind.response["status"], 207)
         nodes = propfind.xpath_evaluate('/D:multistatus/D:response/D:propstat/D:prop/D:principal-collection-set/D:href',
                                         None)
@@ -71,12 +58,11 @@ class WebDAVTest(unittest.TestCase):
 
     def _testPropfindURL(self, resource):
         resourceWithSlash = resource[-1] == '/'
-        client = webdavlib.WebDAVClient(hostname, port, username, password)
         propfind = webdavlib.WebDAVPROPFIND(resource,
                                             ["{DAV:}displayname", "{DAV:}resourcetype"],
                                             1)
         propfind.xpath_namespace = { "D": "DAV:" }
-        client.execute(propfind)
+        self.client.execute(propfind)
         self.assertEquals(propfind.response["status"], 207)
 
         nodes = propfind.xpath_evaluate('/D:multistatus/D:response',
@@ -110,9 +96,8 @@ class WebDAVTest(unittest.TestCase):
     # http://tools.ietf.org/html/rfc3253.html#section-3.8
     def testExpandProperty(self):
         """expand-property"""
-        client = webdavlib.WebDAVClient(hostname, port, username, password)
         resource = '/SOGo/dav/%s/' % username
-        userInfo = fetchUserInfo(username)
+        userInfo = self.dav_utility.fetchUserInfo(username)
 
         query_props = {"owner": { "href": resource,
                                   "displayname": userInfo[0]},
@@ -120,7 +105,7 @@ class WebDAVTest(unittest.TestCase):
                                                      "displayname": "SOGo"}}
         query = webdavlib.WebDAVExpandProperty(resource, query_props.keys(),
                                                ["displayname"])
-        client.execute(query)
+        self.client.execute(query)
         self.assertEquals(query.response["status"], 207)
 
         topResponse = query.xpath_evaluate('/D:multistatus/D:response')[0]

@@ -1,5 +1,8 @@
 2010-01-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Tests/utilities.py: new module implementing utility classes and
+	methods that are used in different test cases.
+
 	* Main/sogod.m (main): set the "GNUSTEP_STRING_ENCODING"
 	environment variable to NSUTF8StringEncoding to properly decode
 	the user defaults strings in UTF8.

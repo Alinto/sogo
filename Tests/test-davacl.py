@@ -7,6 +7,8 @@ import unittest
 import webdavlib
 import time
 
+import utilities
+
 # TODO:
 # - cal: complete test for "modify": "respond to" causes a 204 but no actual
 #        modification should occur
@@ -19,27 +21,15 @@ import time
 #     originally
 #   - test "current-user-acl-set"
 
-def fetchUserEmail(login):
-    client = webdavlib.WebDAVClient(hostname, port,
-                                    username, password)
-    resource = '/SOGo/dav/%s/' % login
-    propfind = webdavlib.WebDAVPROPFIND(resource,
-                                        ["{urn:ietf:params:xml:ns:caldav}calendar-user-address-set"],
-                                        0)
-    propfind.xpath_namespace = { "D": "DAV:",
-                                 "C": "urn:ietf:params:xml:ns:caldav" }
-    client.execute(propfind)
-    nodes = propfind.xpath_evaluate('/D:multistatus/D:response/D:propstat/D:prop/C:calendar-user-address-set/D:href',
-                                    None)
-
-    return nodes[0].childNodes[0].nodeValue
-
 class DAVAclTest(unittest.TestCase):
     resource = None
 
-    def setUp(self):
+    def __init__(self, arg):
         self.client = webdavlib.WebDAVClient(hostname, port,
                                              username, password)
+        unittest.TestCase.__init__(self, arg)
+
+    def setUp(self):
         delete = webdavlib.WebDAVDELETE(self.resource)
         self.client.execute(delete)
         mkcol = webdavlib.WebDAVMKCOL(self.resource)
@@ -54,22 +44,6 @@ class DAVAclTest(unittest.TestCase):
     def tearDown(self):
         delete = webdavlib.WebDAVDELETE(self.resource)
         self.client.execute(delete)
-
-    def rightsToSOGoRights(self, rights):
-        self.fail("subclass must implement this method")
-
-    def setupRights(self, rights):
-        rights_str = "".join(["<%s/>" % x for x in self.rightsToSOGoRights(rights) ])
-        aclQuery = """<acl-query xmlns="urn:inverse:params:xml:ns:inverse-dav">
-<set-roles user="%s">%s</set-roles>
-</acl-query>""" % (subscriber_username, rights_str)
-
-        post = webdavlib.HTTPPOST(self.resource, aclQuery)
-        post.content_type = "application/xml"
-        self.client.execute(post)
-        self.assertEquals(post.response["status"], 204,
-                          "rights modification: failure to set '%s' (status: %d)"
-                          % (rights_str, post.response["status"]))
 
     def _versitLine(self, line):
         key, value = line.split(":")
@@ -122,10 +96,14 @@ class DAVCalendarAclTest(DAVAclTest):
     resource = '/SOGo/dav/%s/Calendar/test-dav-acl/' % username
     user_email = None
 
+    def __init__(self, arg):
+        DAVAclTest.__init__(self, arg)
+        self.acl_utility = utilities.TestCalendarACLUtility(self.client,
+                                                            self.resource)
+
     def setUp(self):
-        if self.user_email is None:
-            self.user_email = fetchUserEmail(username)
         DAVAclTest.setUp(self)
+        self.user_email = self.acl_utility.fetchUserInfo(username)[0]
         self.classToICSClass = { "pu": "PUBLIC",
                                  "pr": "PRIVATE",
                                  "co": "CONFIDENTIAL" }
@@ -197,34 +175,12 @@ class DAVCalendarAclTest(DAVAclTest):
                           % (filename, exp_status, delete.response["status"]))
 
     def _testRights(self, rights):
-        self.setupRights(rights)
+        self.acl_utility.setupRights(subscriber_username, rights)
         self._testCreate(rights)
         self._testEventRight("pu", rights)
         self._testEventRight("pr", rights)
         self._testEventRight("co", rights)
         self._testDelete(rights)
-
-    def rightsToSOGoRights(self, rights):
-        sogoRights = []
-        if rights.has_key("c") and rights["c"]:
-            sogoRights.append("ObjectCreator")
-        if rights.has_key("d") and rights["d"]:
-            sogoRights.append("ObjectEraser")
-
-        classes = { "pu": "Public",
-                    "pr": "Private",
-                    "co": "Confidential" }
-        rights_table = { "v": "Viewer",
-                         "d": "DAndTViewer",
-                         "m": "Modifier",
-                         "r": "Responder" }
-        for k in classes.keys():
-            if rights.has_key(k):
-                right = rights[k]
-                sogo_right = "%s%s" % (classes[k], rights_table[right])
-                sogoRights.append(sogo_right)
-
-        return sogoRights
 
     def _testCreate(self, rights):
         if rights.has_key("c") and rights["c"]:
@@ -448,7 +404,7 @@ class DAVCalendarAclTest(DAVAclTest):
             event = self._getEvent(event_class, True).replace("\r", "")
             self.assertEquals(exp_event.strip(), event.strip(),
                               "'respond to' event does not match:\nreceived:\n"
-                              "%s\nexpected:\n%s" % (event, exp_event))
+                              "/%s/\nexpected:\n/%s/" % (event, exp_event))
 
 # Addressbook:
 #   short rights notation: { "c": create,
@@ -571,6 +527,11 @@ NOTE:Remarque
 X-AIM:pseudo aim
 END:VCARD""" }
 
+    def __init__(self, arg):
+        DAVAclTest.__init__(self, arg)
+        self.acl_utility = utilities.TestAddressBookACLUtility(self.client,
+                                                               self.resource)
+
     def setUp(self):
         DAVAclTest.setUp(self)
         self._putCard(self.client, "old.vcf", 201)
@@ -616,20 +577,8 @@ END:VCARD""" }
         self._testRights({ "d": True,
                            "e": True })
 
-    def rightsToSOGoRights(self, rights):
-        sogoRightsTable = { "c": "ObjectCreator",
-                            "d": "ObjectEraser",
-                            "v": "ObjectViewer",
-                            "e": "ObjectEditor" }
-
-        sogoRights = []
-        for k in rights.keys():
-            sogoRights.append(sogoRightsTable[k])
-
-        return sogoRights
-
     def _testRights(self, rights):
-        self.setupRights(rights)
+        self.acl_utility.setupRights(subscriber_username, rights)
         self._testCreate(rights)
         self._testView(rights)
         self._testEdit(rights)
