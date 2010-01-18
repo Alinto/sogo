@@ -49,6 +49,18 @@ class TestACLUtility(TestUtility):
                           "rights modification: failure to set '%s' (status: %d)"
                           % (rights_str, post.response["status"]))
 
+# Calendar:
+#   rights:
+#     v: view all
+#     d: view date and time
+#     m: modify
+#     r: respond
+#   short rights notation: { "c": create,
+#                            "d": delete,
+#                            "pu": public,
+#                            "pr": private,
+#                            "co": confidential }
+
 class TestCalendarACLUtility(TestACLUtility):
     def rightsToSOGoRights(self, rights):
         sogoRights = []
@@ -71,6 +83,12 @@ class TestCalendarACLUtility(TestACLUtility):
                 sogoRights.append(sogo_right)
 
         return sogoRights
+
+# Addressbook:
+#   short rights notation: { "c": create,
+#                            "d": delete,
+#                            "e": edit,
+#                            "v": view }
 
 class TestAddressBookACLUtility(TestACLUtility):
     def rightsToSOGoRights(self, rights):

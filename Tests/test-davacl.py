@@ -62,18 +62,6 @@ class DAVAclTest(unittest.TestCase):
 
         return versitStruct
 
-# Calendar:
-#   rights:
-#     v: view all
-#     d: view date and time
-#     m: modify
-#     r: respond
-#   short rights notation: { "c": create,
-#                            "d": delete,
-#                            "pu": public,
-#                            "pr": private,
-#                            "co": confidential }
-
 event_template = """BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Inverse//Event Generator//EN
@@ -103,7 +91,7 @@ class DAVCalendarAclTest(DAVAclTest):
 
     def setUp(self):
         DAVAclTest.setUp(self)
-        self.user_email = self.acl_utility.fetchUserInfo(username)[0]
+        self.user_email = self.acl_utility.fetchUserInfo(username)[1]
         self.classToICSClass = { "pu": "PUBLIC",
                                  "pr": "PRIVATE",
                                  "co": "CONFIDENTIAL" }
@@ -405,12 +393,6 @@ class DAVCalendarAclTest(DAVAclTest):
             self.assertEquals(exp_event.strip(), event.strip(),
                               "'respond to' event does not match:\nreceived:\n"
                               "/%s/\nexpected:\n/%s/" % (event, exp_event))
-
-# Addressbook:
-#   short rights notation: { "c": create,
-#                            "d": delete,
-#                            "e": edit,
-#                            "v": view }
 
 class DAVAddressBookAclTest(DAVAclTest):
     resource = '/SOGo/dav/%s/Contacts/test-dav-acl/' % username
