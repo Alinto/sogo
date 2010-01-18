@@ -27,7 +27,7 @@ class preferences:
   login = username
   passw = password
 
-  def __init__ (self, otherLogin = None, otherPassword = None):
+  def __init__(self, otherLogin = None, otherPassword = None):
     if otherLogin and otherPassword:
       self.login = otherLogin
       self.passw = otherPassword
@@ -42,7 +42,7 @@ class preferences:
 
     self.preferencesMap = {"language": "2.1.0.3.0.1.3.1.1.3.1.2"}
 
-  def set (self, preference, value):
+  def set(self, preference, value):
     formKey = self.preferencesMap[preference]
     content = "%s=%s" % (formKey, value)
     url = "/SOGo/so/%s/preferences" % self.login
@@ -58,7 +58,7 @@ class preferences:
       raise Exception ("failure setting language, (code = %d)" \
                        % post.response["status"])
 
-  def get (self, preference):
+  def get(self, preference):
     url = "/SOGo/so/%s/preferences/jsonDefaults" % self.login
     get = HTTPPreferencesGET (url)
     get.cookie = self.cookie
