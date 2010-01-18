@@ -33,17 +33,37 @@ class TestACLUtility(TestUtility):
         TestUtility.__init__(self, client)
         self.resource = resource
 
+    def subscribe(self, subscribers=None):
+        rights_str = "".join(["<%s/>" % x
+                              for x in self.rightsToSOGoRights(rights) ])
+        subscribeQuery = ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                          + "<subscribe"
+                          + " xmlns=\"urn:inverse:params:xml:ns:inverse-dav\"")
+        if (subscribers is not None):
+            subscribeQuery = (subscribeQuery
+                              + " users=\"%s\"" % subscribers.join(","))
+        subscribeQuery = subscribeQuery + "/>"
+        post = webdavlib.HTTPPOST(self.resource, subscribeQuery)
+        post.content_type = "application/xml; charset=\"utf-8\""
+        self.client.execute(post)
+        self.assertEquals(post.response["status"], 204,
+                          "subscribtion failure to set '%s' (status: %d)"
+                          % (rights_str, post.response["status"]))
+
     def rightsToSOGoRights(self, rights):
         self.fail("subclass must implement this method")
 
     def setupRights(self, username, rights):
         rights_str = "".join(["<%s/>" % x for x in self.rightsToSOGoRights(rights) ])
-        aclQuery = """<acl-query xmlns="urn:inverse:params:xml:ns:inverse-dav">
-<set-roles user="%s">%s</set-roles>
-</acl-query>""" % (username, rights_str)
+        aclQuery = ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                    + "<acl-query"
+                    + " xmlns=\"urn:inverse:params:xml:ns:inverse-dav\">"
+                    + "<set-roles user=\"%s\">%s</set-roles>" % (username,
+                                                                 rights_str)
+                    + "</acl-query>")
 
         post = webdavlib.HTTPPOST(self.resource, aclQuery)
-        post.content_type = "application/xml"
+        post.content_type = "application/xml; charset=\"utf-8\""
         self.client.execute(post)
         self.assertEquals(post.response["status"], 204,
                           "rights modification: failure to set '%s' (status: %d)"
@@ -60,7 +80,6 @@ class TestACLUtility(TestUtility):
 #                            "pu": public,
 #                            "pr": private,
 #                            "co": confidential }
-
 class TestCalendarACLUtility(TestACLUtility):
     def rightsToSOGoRights(self, rights):
         sogoRights = []
@@ -89,7 +108,6 @@ class TestCalendarACLUtility(TestACLUtility):
 #                            "d": delete,
 #                            "e": edit,
 #                            "v": view }
-
 class TestAddressBookACLUtility(TestACLUtility):
     def rightsToSOGoRights(self, rights):
         sogoRightsTable = { "c": "ObjectCreator",
