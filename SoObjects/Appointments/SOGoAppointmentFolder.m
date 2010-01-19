@@ -2906,47 +2906,6 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return (![inactiveFolders containsObject: nameInContainer]);
 }
 
-- (BOOL) isProxied
-{
-  NSArray *proxiedCalendars;
-  SOGoUser *ownerUser;
-
-  ownerUser = [SOGoUser userWithLogin: [self ownerInContext: nil]];
-  proxiedCalendars = [[ownerUser userSettings] proxiedCalendars];
-
-  return [proxiedCalendars containsObject: [self realNameInContainer]];
-}
-
-- (void) setIsProxied: (BOOL) isProxied
-{
-  NSMutableArray *proxiedCalendars;
-  NSArray *subscriptionUsers;
-  SOGoUser *ownerUser;
-  SOGoUserSettings *us;
-
-  ownerUser = [SOGoUser userWithLogin: [self ownerInContext: nil]];
-  us = [ownerUser userSettings];
-  proxiedCalendars = [[us proxiedCalendars] mutableCopy];
-  if (isProxied)
-    [proxiedCalendars addObjectUniquely: [self realNameInContainer]];
-  else
-    [proxiedCalendars removeObject: [self realNameInContainer]];
-
-  [us setProxiedCalendars: proxiedCalendars];
-
-  subscriptionUsers = [us calendarProxyUsersWithWriteAccess: YES];
-  [self adjustProxyRolesForUsers: subscriptionUsers
-                          remove: !isProxied
-                  forWriteAccess: YES];
-  subscriptionUsers = [us calendarProxyUsersWithWriteAccess: NO];
-  [self adjustProxyRolesForUsers: subscriptionUsers
-                          remove: !isProxied
-                  forWriteAccess: NO];
-
-  [us synchronize];
-  [proxiedCalendars autorelease];
-}
-
 - (BOOL) importComponent: (iCalEntityObject *) event
 {
   SOGoAppointmentObject *object;
@@ -3013,49 +2972,78 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return aclsForUser;
 }
 
-- (NSArray *) requiredProxyRolesWithWriteAccess: (BOOL) hasWriteAccess
+/* caldav-proxy */
+- (SOGoAppointmentProxyPermission)
+     proxyPermissionForUserWithLogin: (NSString *) login
 {
-  static NSArray *writeAccessRoles = nil;
-  static NSArray *readAccessRoles = nil;
- 
-  if (!writeAccessRoles)
+  SOGoAppointmentProxyPermission permission;
+  NSArray *roles;
+  static NSArray *readRoles = nil;
+  static NSArray *writeRoles = nil;
+
+  if (!readRoles)
     {
-      writeAccessRoles = [NSArray arrayWithObjects:
-                                    SOGoCalendarRole_ConfidentialModifier,
-                                  SOGoRole_ObjectCreator,
-                                  SOGoRole_ObjectEraser,
-                                  SOGoCalendarRole_PrivateModifier,
-                                  SOGoCalendarRole_PublicModifier,
-                                  nil];
-      [writeAccessRoles retain];
+      readRoles = [NSArray arrayWithObjects:
+                             SOGoCalendarRole_ConfidentialViewer,
+                           SOGoCalendarRole_ConfidentialDAndTViewer,
+                           SOGoCalendarRole_PrivateViewer,
+                           SOGoCalendarRole_PrivateDAndTViewer,
+                           SOGoCalendarRole_PublicViewer,
+                           SOGoCalendarRole_PublicDAndTViewer,
+                           nil];
+      [readRoles retain];
     }
- 
-  if (!readAccessRoles)
+  if (!writeRoles)
     {
-      readAccessRoles = [NSArray arrayWithObjects:
-                                   SOGoCalendarRole_ConfidentialViewer,
-                                 SOGoCalendarRole_PrivateViewer,
-                                 SOGoCalendarRole_PublicViewer,
-                                 nil];
-      [readAccessRoles retain];
+      writeRoles = [NSArray arrayWithObjects:
+                              SOGoRole_ObjectCreator,
+                            SOGoRole_ObjectEraser,
+                            SOGoCalendarRole_ConfidentialModifier,
+                            SOGoCalendarRole_ConfidentialResponder,
+                            SOGoCalendarRole_PrivateModifier,
+                            SOGoCalendarRole_PrivateResponder,
+                            SOGoCalendarRole_PublicModifier,
+                            SOGoCalendarRole_PublicResponder,
+                            nil];
+      [writeRoles retain];
     }
 
-  return (hasWriteAccess) ? writeAccessRoles : readAccessRoles;
+  permission = SOGoAppointmentProxyPermissionNone;
+  roles = [self aclsForUser: login];
+  if ([roles count])
+    {
+      if ([roles firstObjectCommonWithArray: readRoles])
+        permission = SOGoAppointmentProxyPermissionRead;
+      if ([roles firstObjectCommonWithArray: writeRoles])
+        permission = SOGoAppointmentProxyPermissionWrite;
+    }
+
+  return permission;
 }
 
-- (void) adjustProxyRolesForUsers: (NSArray *) proxyUsers
-                           remove: (BOOL) remove
-                   forWriteAccess: (BOOL) write
+- (NSArray *) aclUsersWithProxyWriteAccess: (BOOL) write
 {
-  NSArray *roles;
+  NSMutableArray *users;
+  NSArray *aclUsers;
+  NSString *aclUser;
+  SOGoAppointmentProxyPermission permission;
+  int count, max;
 
-  if (remove)
-    [self removeAclsForUsers: proxyUsers];
-  else
+  permission = (write
+                ? SOGoAppointmentProxyPermissionWrite
+                : SOGoAppointmentProxyPermissionRead);
+  aclUsers = [self aclUsers];
+  max = [aclUsers count];
+  users = [NSMutableArray arrayWithCapacity: max];
+  for (count = 0; count < max; count++)
     {
-      roles = [self requiredProxyRolesWithWriteAccess: write];
-      [self setRoles: roles forUsers: proxyUsers];
+      aclUser = [aclUsers objectAtIndex: count];
+      if ([self proxyPermissionForUserWithLogin: aclUser]
+          == permission)
+        [users addObject: aclUser];
     }
+
+  return users;
 }
 
 @end /* SOGoAppointmentFolder */

@@ -26,6 +26,7 @@
 "Publish the Free/Busy information" = "Pubblica le informazioni sullo stato (libero/impegnato)";
 
 "Default Roles" = "Permessi predefiniti";
+"Subscribe User" = "Subscribe User";
 
 "Sorry, the user rights can not be configured for that object." = "Non è possibile configurare i  permessi per questo oggetto.";
 

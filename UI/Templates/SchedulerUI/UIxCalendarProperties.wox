@@ -70,16 +70,6 @@
               /></div></var:if>
       </fieldset>
 
-      <var:if condition="isWebCalendar" const:negate="YES"
-        ><fieldset>
-          <legend><var:string label:value="iCal Delegation"/></legend>
-          <div><label
-              ><input type="checkbox" const:class="checkBox" id="isProxied"
-                var:checked="isProxied"
-                /><var:string label:value="Shared when account is delegated"
-                /></label></div>
-        </fieldset></var:if>
-
       <fieldset>
 	<legend><var:string label:value="Display"/></legend>
         <div><label

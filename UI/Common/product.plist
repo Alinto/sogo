@@ -101,6 +101,11 @@
           actionClass = "UIxFolderActions";
           actionName  = "deactivateFolder";
         };
+        subscribeUsers = {
+          protectedBy = "Change Permissions";
+          actionClass = "UIxFolderActions";
+          actionName  = "subscribeUsers";
+        };
         renameFolder = {
           protectedBy = "Change Permissions";
           actionClass = "UIxFolderActions";

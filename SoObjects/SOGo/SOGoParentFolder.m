@@ -336,7 +336,7 @@ static SoSecurityManager *sm = nil;
   return error;
 }
 
-- (NSException *) initSubFolders;
+- (NSException *) initSubFolders
 {
   NSException *error;
 
@@ -435,10 +435,10 @@ static SoSecurityManager *sm = nil;
   error = [self initSubFolders];
   if (error && isPropfind)
     {
-      /* We exceptionnally raise the exception here because doPROPFIND:
-	 will not care for errors in its response from
-	 toManyRelationShipKeys, which may in turn trigger the
-	 disappearance of user folders in the SOGo extensions. */
+      /* We exceptionnally raise the exception here because doPROPFIND: will
+	 not care for errors in its response from toManyRelationShipKeys,
+	 which may in turn trigger the disappearance of user folders in the
+	 SOGo extensions. */
       [error raise];
     }
 

@@ -50,6 +50,12 @@
 @class GCSFolder;
 @class iCalCalendar;
 
+typedef enum {
+  SOGoAppointmentProxyPermissionNone = 0,
+  SOGoAppointmentProxyPermissionRead = 1,
+  SOGoAppointmentProxyPermissionWrite = 2,
+} SOGoAppointmentProxyPermission;
+
 @interface SOGoAppointmentFolder : SOGoGCSFolder
 {
   NSTimeZone *timeZone;
@@ -138,9 +144,6 @@
 - (BOOL) showCalendarTasks;
 - (void) setShowCalendarTasks: (BOOL) new;
 
-- (BOOL) isProxied;
-- (void) setIsProxied: (BOOL) isProxied;
-
 - (NSString *) syncTag;
 - (void) setSyncTag: (NSString *) newSyncTag;
 
@@ -152,9 +155,10 @@
 
 /* caldav proxy */
 
-- (void) adjustProxyRolesForUsers: (NSArray *) proxyUsers
-                           remove: (BOOL) remove
-                   forWriteAccess: (BOOL) write;
+- (SOGoAppointmentProxyPermission)
+     proxyPermissionForUserWithLogin: (NSString *) login;
+
+- (NSArray *) aclUsersWithProxyWriteAccess: (BOOL) write;
 
 @end
 

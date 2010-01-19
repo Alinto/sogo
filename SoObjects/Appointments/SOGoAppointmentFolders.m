@@ -79,13 +79,14 @@
 {
   NSMutableArray *keys;
   NSEnumerator *sortedSubFolders;
-  SOGoGCSFolder *currentFolder;
+  SOGoAppointmentFolder *currentFolder;
+  SOGoUser *currentUser;
   NSString *login;
-  SOGoUser *ownerUser;
 
   if ([[context request] isICal])
     {
-      login = [[context activeUser] login];
+      currentUser = [context activeUser];
+      login = [currentUser login];
       keys = [NSMutableArray array];
       if ([owner isEqualToString: login])
         {
@@ -100,9 +101,12 @@
         }
       else
         {
-          ownerUser = [SOGoUser userWithLogin: owner];
-          keys = (NSMutableArray *) [[ownerUser userSettings]
-                                      proxiedCalendars];
+          sortedSubFolders = [[self subFolders] objectEnumerator];
+          while ((currentFolder = [sortedSubFolders nextObject]))
+            if ([currentUser hasSubscribedToCalendar: currentFolder]
+                && ([currentFolder proxyPermissionForUserWithLogin: login]
+                    != SOGoAppointmentProxyPermissionNone))
+              [keys addObject: [currentFolder nameInContainer]];
         }
     }
   else
@@ -369,50 +373,157 @@
                withEquivalent: SoPerm_AddDocumentsImagesAndFiles
                     asChildOf: davElement (@"write", XMLNS_WEBDAV)];
     }
+
   return aclManager;
 }
 
-- (void) adjustProxyRolesForUsers: (NSArray *) proxyUsers
-                           remove: (BOOL) remove
-                   forWriteAccess: (BOOL) write
+- (BOOL) hasProxyCalendarsWithWriteAccess: (BOOL) write
+                         forUserWithLogin: (NSString *) userLogin
 {
-  NSArray *calendars;
-  SOGoUser *ownerUser;
-  SOGoAppointmentFolder *folder;
-  int count, max;
+  NSEnumerator *sortedSubFolders;
+  SOGoAppointmentFolder *currentFolder;
+  SOGoUser *currentUser;
+  SOGoAppointmentProxyPermission permission, curPermission, foundPermission;
+  BOOL rc;
 
-  ownerUser = [SOGoUser userWithLogin: owner];
-  calendars = [[ownerUser userSettings] proxiedCalendars];
-  max = [calendars count];
-  for (count = 0; count < max; count++)
+  if ([owner isEqualToString: userLogin])
+    rc = NO;
+  else
     {
-      folder = [self lookupName: [calendars objectAtIndex: count]
-                      inContext: context
-                        acquire: NO];
-      [folder adjustProxyRolesForUsers: proxyUsers
-                                remove: remove
-                        forWriteAccess: write];
+      foundPermission = SOGoAppointmentProxyPermissionNone;
+      permission = (write
+                    ? SOGoAppointmentProxyPermissionWrite
+                    : SOGoAppointmentProxyPermissionRead);
+      currentUser = [SOGoUser userWithLogin: userLogin];
+      sortedSubFolders = [[self subFolders] objectEnumerator];
+      while ((currentFolder = [sortedSubFolders nextObject]))
+        if ([currentUser hasSubscribedToCalendar: currentFolder])
+          {
+            curPermission = [currentFolder
+                              proxyPermissionForUserWithLogin: userLogin];
+            if ((foundPermission == SOGoAppointmentProxyPermissionNone)
+                || (foundPermission == SOGoAppointmentProxyPermissionRead
+                    && curPermission == SOGoAppointmentProxyPermissionWrite))
+              foundPermission = curPermission;
+          }
+      rc = (foundPermission == permission);
+    }
+
+  return rc;
+}
+
+- (NSArray *) proxySubscribersWithWriteAccess: (BOOL) write
+{
+  SOGoAppointmentFolder *currentFolder;
+  SOGoUser *currentUser;
+  NSArray *subFolderNames, *aclUsers;
+  NSString *aclUser;
+  NSMutableArray *subscribers;
+  int folderCount, folderMax, userCount, userMax;
+
+  subscribers = [NSMutableArray array];
+
+  subFolderNames = [self subFolders];
+  folderMax = [subFolderNames count];
+  for (folderCount = 0; folderCount < folderMax; folderCount++)
+    {
+      currentFolder = [subFolderNames objectAtIndex: folderCount];
+      aclUsers = [currentFolder aclUsersWithProxyWriteAccess: write];
+      userMax = [aclUsers count];
+      for (userCount = 0; userCount < userMax; userCount++)
+        {
+          aclUser = [aclUsers objectAtIndex: userCount];
+          if (![subscribers containsObject: aclUser])
+            {
+              currentUser = [SOGoUser userWithLogin: aclUser];
+              if ([currentUser hasSubscribedToCalendar: currentFolder])
+                [subscribers addObject: aclUser];
+            }
+        }
+    }
+
+  return subscribers;
+}
+
+- (NSArray *) _requiredProxyRolesWithWriteAccess: (BOOL) hasWriteAccess
+{
+  static NSArray *writeAccessRoles = nil;
+  static NSArray *readAccessRoles = nil;
+ 
+  if (!writeAccessRoles)
+    {
+      writeAccessRoles = [NSArray arrayWithObjects:
+                                    SOGoCalendarRole_ConfidentialModifier,
+                                  SOGoRole_ObjectCreator,
+                                  SOGoRole_ObjectEraser,
+                                  SOGoCalendarRole_PrivateModifier,
+                                  SOGoCalendarRole_PublicModifier,
+                                  nil];
+      [writeAccessRoles retain];
+    }
+ 
+  if (!readAccessRoles)
+    {
+      readAccessRoles = [NSArray arrayWithObjects:
+                                   SOGoCalendarRole_ConfidentialViewer,
+                                 SOGoCalendarRole_PrivateViewer,
+                                 SOGoCalendarRole_PublicViewer,
+                                 nil];
+      [readAccessRoles retain];
+    }
+
+  return (hasWriteAccess) ? writeAccessRoles : readAccessRoles;
+}
+
+- (void) addProxySubscribers: (NSArray *) proxySubscribers
+             withWriteAccess: (BOOL) write
+{
+  SOGoAppointmentFolder *currentFolder;
+  NSArray *subFolderNames, *proxyRoles;
+  NSMutableArray *subscribers;
+  int folderCount, folderMax, userCount, userMax;
+
+  subscribers = [NSMutableArray array];
+
+  proxyRoles = [self _requiredProxyRolesWithWriteAccess: write];
+  subFolderNames = [self subFolders];
+  folderMax = [subFolderNames count];
+  for (folderCount = 0; folderCount < folderMax; folderCount++)
+    {
+      currentFolder = [subFolderNames objectAtIndex: folderCount];
+      [currentFolder setRoles: proxyRoles
+                     forUsers: proxySubscribers];
+
+      userMax = [proxySubscribers count];
+      for (userCount = 0; userCount < userMax; userCount++)
+        [currentFolder
+          subscribeUser: [proxySubscribers objectAtIndex: userCount]
+               reallyDo: YES];
     }
 }
 
-- (void) adjustProxySubscriptionsForUsers: (NSArray *) proxyUsers
-                                   remove: (BOOL) remove
-                           forWriteAccess: (BOOL) write
+- (void) removeProxySubscribers: (NSArray *) proxySubscribers
+                withWriteAccess: (BOOL) write
 {
-  int count, max;
-  SOGoUser *proxyUser;
+  SOGoAppointmentFolder *currentFolder;
+  NSArray *subFolderNames;
+  NSMutableArray *subscribers;
+  int folderCount, folderMax, userCount, userMax;
 
-  max = [proxyUsers count];
-  for (count = 0; count < max; count++)
+  subscribers = [NSMutableArray array];
+
+  subFolderNames = [self subFolders];
+  folderMax = [subFolderNames count];
+  for (folderCount = 0; folderCount < folderMax; folderCount++)
     {
-      proxyUser = [SOGoUser userWithLogin: [proxyUsers objectAtIndex: count]];
-      if (proxyUser)
-        [proxyUser adjustProxySubscriptionToUser: owner
-                                          remove: remove
-                                  forWriteAccess: write];
-      else
-        [self warnWithFormat: @"(%@) user '%@' is invalid (ignored)",
-              NSStringFromSelector (_cmd), [proxyUser login]];
+      currentFolder = [subFolderNames objectAtIndex: folderCount];
+      [currentFolder removeAclsForUsers: proxySubscribers];
+
+      userMax = [proxySubscribers count];
+      for (userCount = 0; userCount < userMax; userCount++)
+        [currentFolder
+          subscribeUser: [proxySubscribers objectAtIndex: userCount]
+               reallyDo: NO];
     }
 }
 

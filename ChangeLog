@@ -1,5 +1,44 @@
 2010-01-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Common/UIxFolderActions.m (-subscribeUsersAction): new web
+	method that enables resource owners to subscribe other users to
+	their resources from the acl editor.
+
+	* UI/Common/UIxAclEditor.m (-currentUserIsSubscribed)
+	(-folderID): new accessors.
+
+	* Tests/utilities.py (TestACLUtility.(un)subscribe): added utility
+	methods.
+
+	* Tests/test-ical.py (iCalTest.testCalendarProxy2): test the
+	behaviour of the ical proxy mechanisms when subscriptions and
+	access rights are modified.
+
+	* SoObjects/SOGo/SOGoUserSettings.m (-subscribedCalendars)
+	(-subscribedAddressBooks): new accessors.
+	(-setCalendarProxyUsers:withWriteAccess:)
+	(-setCalendarProxySubscriptionUsers:withWriteAccess:) removed accessors.
+
+	* SoObjects/Appointments/SOGoUser+Appointments.m
+	(-adjustProxySubscriptionToUser:remove:forWriteAccess:) removed
+	methods.
+	(-hasSubscribedToCalendar:): new method that returns whether a
+	user has subscribed to a calendar resource. Might be a duplicate
+	of [SOGoGCSFolder userIsSubscriber:].
+
+	* SoObjects/Appointments/SOGoAppointmentFolders.m
+	(-adjustProxyRolesForUsers:remove:forWriteAccess:)
+	(-adjustProxySubscriptionsForUsers:remove:forWriteAccess:):
+	removed methods.
+	(-hasProxyCalendarsWithWriteAccess:forUserWithLogin:): new method
+	that returns whether the user passed as parameter should be
+	returned in the list of subscribers corresponding to the proper
+	write access.
+	(-proxySubscribersWithWriteAccess:) new method that returns the
+	list of users that have a proxy access to the current account.
+	(-addProxySubscribers:withWriteAccess:,-removeProxySubscribers:withWriteAccess:)
+	setters for the above method.
+
 	* UI/WebServerResources/ContactsUI.js (initContacts): fixed a bug
 	causing a null exception error on IE7 when the window is not the
 	main window, and is therefore missing the "uploadCancel" and

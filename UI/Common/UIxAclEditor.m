@@ -29,11 +29,12 @@
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/SoSecurityManager.h>
 #import <NGCards/iCalPerson.h>
-#import <SoObjects/SOGo/SOGoUserManager.h>
-#import <SoObjects/SOGo/SOGoContentObject.h>
-#import <SoObjects/SOGo/SOGoPermissions.h>
-#import <SoObjects/SOGo/NSArray+Utilities.h>
-#import <SoObjects/SOGo/SOGoUser.h>
+#import <SOGo/NSArray+Utilities.h>
+#import <SOGo/SOGoContentObject.h>
+#import <SOGo/SOGoGCSFolder.h>
+#import <SOGo/SOGoPermissions.h>
+#import <SOGo/SOGoUserManager.h>
+#import <SOGo/SOGoUser.h>
 
 #import "UIxAclEditor.h"
 
@@ -158,6 +159,16 @@
   return [self _displayNameForUID: currentUser];
 }
 
+- (BOOL) currentUserIsSubscribed
+{
+  SOGoGCSFolder *folder;
+
+  folder = [self clientObject];
+
+  return ([folder respondsToSelector: @selector (userIsSubscriber:)]
+          && [folder userIsSubscriber: currentUser]);
+}
+
 - (void) setUserUIDS: (NSString *) retainedUsers
 {
   if ([retainedUsers length] > 0)
@@ -167,6 +178,11 @@
     }
   else
     savedUIDs = [NSArray new];
+}
+
+- (NSString *) folderID
+{
+  return [[self clientObject] nameInContainer];
 }
 
 - (BOOL) shouldTakeValuesFromRequest: (WORequest *) request

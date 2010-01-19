@@ -31,13 +31,15 @@
 
 - (NSArray *) webCalendarIds;
 
-- (void) adjustProxyRolesForUsers: (NSArray *) proxyUsers
-                           remove: (BOOL) remove
-                   forWriteAccess: (BOOL) write;
+- (BOOL) hasProxyCalendarsWithWriteAccess: (BOOL) write
+                         forUserWithLogin: (NSString *) userLogin;
 
-- (void) adjustProxySubscriptionsForUsers: (NSArray *) proxyUsers
-                                   remove: (BOOL) remove
-                           forWriteAccess: (BOOL) write;
+- (NSArray *) proxySubscribersWithWriteAccess: (BOOL) write;
+
+- (void) addProxySubscribers: (NSArray *) proxySubscribers
+             withWriteAccess: (BOOL) write;
+- (void) removeProxySubscribers: (NSArray *) proxySubscribers
+                withWriteAccess: (BOOL) write;
 
 @end
 

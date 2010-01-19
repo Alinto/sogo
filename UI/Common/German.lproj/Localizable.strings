@@ -26,6 +26,7 @@
 "Publish the Free/Busy information" = "Verfügbarkeitsinformationen veröffentlichen";
 
 "Default Roles" = "Standardrechte";
+"Subscribe User" = "Subscribe User";
 
 "Sorry, the user rights can not be configured for that object." = "Leider können die Benutzerrechte für dieses Objekt nicht konfiguriert werden.";
 

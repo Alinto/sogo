@@ -25,11 +25,11 @@
 
 #import <SOGo/SOGoUser.h>
 
+@class SOGoAppointmentFolder;
+
 @interface SOGoUser (SOGoCalDAVSupport)
 
-- (void) adjustProxySubscriptionToUser: (NSString *) ownerUser
-                                remove: (BOOL) remove
-                        forWriteAccess: (BOOL) write;
+- (BOOL) hasSubscribedToCalendar: (SOGoAppointmentFolder *) calendar;
 
 @end
 

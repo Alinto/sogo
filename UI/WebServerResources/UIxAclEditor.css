@@ -57,8 +57,16 @@ UL#userList
   list-style-image: none; }
 
 UL#userList LI
-{ cursor: pointer;
+{ clear: both;
+  cursor: pointer;
+  text-align: right;
   padding-left: 3px; }
+
+SPAN.userFullName
+{ float: left; }
 
 DIV#userSelectorButtons A.smallToolbarButton
 { float: left; }
+
+LABEL.subscriptionArea
+{ padding-right: 5px; }

@@ -26,6 +26,7 @@
 "Publish the Free/Busy information" = "Публиковать информацию о занятом/свободном времени";
 
 "Default Roles" = "Контроль доступа для всех";
+"Subscribe User" = "Subscribe User";
 
 "Sorry, the user rights can not be configured for that object." = "Извините, для данного объекта невозможно настроить права доступа.";
 

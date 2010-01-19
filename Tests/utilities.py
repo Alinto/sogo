@@ -33,28 +33,34 @@ class TestACLUtility(TestUtility):
         TestUtility.__init__(self, client)
         self.resource = resource
 
-    def subscribe(self, subscribers=None):
-        rights_str = "".join(["<%s/>" % x
-                              for x in self.rightsToSOGoRights(rights) ])
+    def _subscriptionOperation(self, subscribers, operation):
         subscribeQuery = ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-                          + "<subscribe"
+                          + "<%s" % operation
                           + " xmlns=\"urn:inverse:params:xml:ns:inverse-dav\"")
         if (subscribers is not None):
             subscribeQuery = (subscribeQuery
-                              + " users=\"%s\"" % subscribers.join(","))
+                              + " users=\"%s\"" % ",".join(subscribers))
         subscribeQuery = subscribeQuery + "/>"
         post = webdavlib.HTTPPOST(self.resource, subscribeQuery)
         post.content_type = "application/xml; charset=\"utf-8\""
         self.client.execute(post)
         self.assertEquals(post.response["status"], 204,
-                          "subscribtion failure to set '%s' (status: %d)"
-                          % (rights_str, post.response["status"]))
+                          "subscribtion failure to '%s' for '%s' (status: %d)"
+                          % (self.resource, "', '".join(subscribers),
+                             post.response["status"]))
+
+    def subscribe(self, subscribers=None):
+        self._subscriptionOperation(subscribers, "subscribe")
+
+    def unsubscribe(self, subscribers=None):
+        self._subscriptionOperation(subscribers, "unsubscribe")
 
     def rightsToSOGoRights(self, rights):
         self.fail("subclass must implement this method")
 
     def setupRights(self, username, rights):
-        rights_str = "".join(["<%s/>" % x for x in self.rightsToSOGoRights(rights) ])
+        rights_str = "".join(["<%s/>"
+                              % x for x in self.rightsToSOGoRights(rights) ])
         aclQuery = ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
                     + "<acl-query"
                     + " xmlns=\"urn:inverse:params:xml:ns:inverse-dav\">"

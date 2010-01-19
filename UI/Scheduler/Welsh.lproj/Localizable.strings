@@ -512,9 +512,6 @@ vtodo_class2 = "(Tasg gyhoeddus)";
 "Synchronize" = "Synchronize";
 "Tag:" = "Tag:";
 
-"iCal Delegation" = "iCal Delegation";
-"Shared when account is delegated" = "Shared when account is delegated";
-
 "Display" = "Display";
 "Show alarms" = "Show alarms";
 "Show tasks" = "Show tasks";

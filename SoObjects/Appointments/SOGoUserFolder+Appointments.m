@@ -23,6 +23,7 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
+#import <Foundation/NSValue.h>
 
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WOResponse.h>
@@ -137,25 +138,42 @@
 
 - (NSArray *) _calendarProxiedUsersWithWriteAccess: (BOOL) write
 {
-  NSMutableArray *proxiedUsers;
-  SOGoUser *ownerUser;
-  NSArray *subscriptions;
-  NSString *ownerLogin, *currentLogin;
+  NSMutableDictionary *proxiedUsers;
+  NSArray *references, *elements;
+  NSString *currentLogin;
+  NSNumber *yesNumber;
+  SOGoAppointmentFolders *parentFolder;
+  SOGoUserSettings *us;
   int count, max;
 
-  ownerLogin = [self ownerInContext: nil];
-  ownerUser = [SOGoUser userWithLogin: ownerLogin];
-  subscriptions = [[ownerUser userSettings]
-                    calendarProxySubscriptionUsersWithWriteAccess: write];
-  max = [subscriptions count];
-  proxiedUsers = [NSMutableArray arrayWithCapacity: max];
+  yesNumber = [NSNumber numberWithBool: YES];
+
+  us = [[SOGoUser userWithLogin: owner] userSettings];
+  references = [us subscribedCalendars];
+  max = [references count];
+  proxiedUsers = [NSMutableDictionary dictionaryWithCapacity: max];
   for (count = 0; count < max; count++)
     {
-      currentLogin = [subscriptions objectAtIndex: count];
-      [proxiedUsers addObject: currentLogin];
+      elements = [[references objectAtIndex: count]
+                    componentsSeparatedByString: @":"];
+      if ([elements count])
+        {
+          currentLogin = [elements objectAtIndex: 0];
+          if (![proxiedUsers objectForKey: currentLogin])
+            {
+              parentFolder = [[container lookupName: currentLogin
+                                          inContext: context
+                                            acquire: NO]
+                               lookupName: @"Calendar"
+                                inContext: context acquire: NO];
+              if ([parentFolder hasProxyCalendarsWithWriteAccess: write
+                                                forUserWithLogin: owner])
+                [proxiedUsers setObject: yesNumber forKey: currentLogin];
+            }
+        }
     }
 
-  return proxiedUsers;
+  return [proxiedUsers allKeys];
 }
 
 - (void) _addGroupMembershipToArray: (NSMutableArray *) groups

@@ -23,52 +23,22 @@
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/SOGoUserSettings.h>
 
+#import "SOGoAppointmentFolder.h"
+
 #import "SOGoUser+Appointments.h"
 
 @implementation SOGoUser (SOGoCalDAVSupport)
 
-- (void) adjustProxySubscriptionToUser: (NSString *) ownerUser
-                                remove: (BOOL) remove
-                        forWriteAccess: (BOOL) write
+#warning duplicate of [SOGoGCSFolder userIsSubscriber:]
+- (BOOL) hasSubscribedToCalendar: (SOGoAppointmentFolder *) calendar
 {
-  SOGoUserSettings *us;
-  NSMutableArray *subscriptions;
+  NSArray *subscriptions;
+  NSString *reference;
 
-  us = [self userSettings];
+  subscriptions = [[self userSettings] subscribedCalendars];
+  reference = [calendar folderReference];
 
-  /* first, we want to ensure the subscription does not appear in the
-     opposite list... */
-  if (!remove)
-    {
-      subscriptions
-        = [[us calendarProxySubscriptionUsersWithWriteAccess: !write]
-            mutableCopy];
-      [subscriptions autorelease];
-      if ([subscriptions containsObject: ownerUser])
-        {
-          [subscriptions removeObject: ownerUser];
-          [us setCalendarProxySubscriptionUsers: subscriptions
-                                withWriteAccess: !write];
-          
-        }
-    }
-
-  subscriptions
-    = [[us calendarProxySubscriptionUsersWithWriteAccess: write]
-        mutableCopy];
-  [subscriptions autorelease];
-  if (remove)
-    [subscriptions removeObject: ownerUser];
-  else
-    {
-      if (!subscriptions)
-        subscriptions = [NSMutableArray array];
-      [subscriptions addObjectUniquely: ownerUser];
-    }
-  
-  [us setCalendarProxySubscriptionUsers: subscriptions
-                        withWriteAccess: write];
-  [us synchronize];
+  return [subscriptions containsObject: reference];
 }
 
 @end

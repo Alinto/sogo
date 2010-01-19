@@ -49,7 +49,7 @@ class WebdavSyncTest(unittest.TestCase):
         token = int(token_node.childNodes[0].nodeValue)
 
         self.assertTrue(token > 0)
-        self.assertTrue(token < int(query1.start))
+        self.assertTrue(token <= int(query1.start))
 
         # we make sure that any token is invalid when the collection is empty
         query2 = webdavlib.WebDAVSyncQuery(resource, "1234", [ "getetag" ])

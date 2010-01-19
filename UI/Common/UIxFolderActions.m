@@ -313,23 +313,21 @@
   NSException *ex;
   
   request = [context request];
-  ex = nil;
 
   if ((destinationFolderId = [request formValueForKey: @"folder"]) &&
       (contactsId = [request formValuesForKey: @"uid"]))
-    {
-      ex = [self _moveContacts: contactsId
-		 toFolder: destinationFolderId
+    ex = [self _moveContacts: contactsId
+                    toFolder: destinationFolderId
 		 andKeepCopy: YES];
-      if (ex != nil)
-	response = (id)ex;
-    }
   else
-    response = [NSException exceptionWithHTTPStatus: 400
-			    reason: @"missing 'folder' and/or 'uid' parameter"];
+    ex = [NSException exceptionWithHTTPStatus: 400
+                                       reason: (@"missing 'folder' and/or"
+                                                @" 'uid' parameter")];
   
-    if (ex == nil)
-      response = [self responseWith204];
+  if (ex)
+    response = (id) ex;
+  else
+    response = [self responseWith204];
 
   return response;
 }
@@ -343,25 +341,55 @@
   NSException *ex;
   
   request = [context request];
-  ex = nil;
 
-  if ((destinationFolderId = [request formValueForKey: @"folder"]) &&
-      (contactsId = [request formValuesForKey: @"uid"]))
-    {
-      ex = [self _moveContacts: contactsId
-		 toFolder: destinationFolderId
+  if ((destinationFolderId = [request formValueForKey: @"folder"])
+      && (contactsId = [request formValuesForKey: @"uid"]))
+    ex = [self _moveContacts: contactsId
+                    toFolder: destinationFolderId
 		 andKeepCopy: NO];
-      if (ex != nil)
-	response = (id)ex;
+  else
+    ex = [NSException exceptionWithHTTPStatus: 400
+                                       reason: (@"missing 'folder' and/or"
+                                                @"'uid' parameter")];
+  
+  if (ex)
+    response = (id <WOActionResults>) ex;
+  else
+    response = [self responseWith204];
+  
+  return response;
+}
+
+- (id <WOActionResults>) subscribeUsersAction
+{
+  id <WOActionResults> response;
+  NSString *uids;
+  NSArray *userIDs;
+  SOGoGCSFolder *folder;
+  NSException *ex;
+  int count, max;
+  
+  uids = [[context request] formValueForKey: @"uids"];
+  if ([uids length])
+    {
+      userIDs = [uids componentsSeparatedByString: @","];
+      folder = [self clientObject];
+      max = [userIDs count];
+      for (count = 0; count < max; count++)
+        [folder subscribeUser: [userIDs objectAtIndex: count]
+                     reallyDo: YES];
+      ex = nil;
     }
   else
-    response = [NSException exceptionWithHTTPStatus: 400
-			    reason: @"missing 'folder' and/or 'uid' parameter"];
+    ex = [NSException exceptionWithHTTPStatus: 400
+                                       reason: @"missing 'uids' parameter"];
   
-    if (ex == nil)
-      response = [self responseWith204];
-
-    return response;
+  if (ex)
+    response = (id <WOActionResults>) ex;
+  else
+    response = [self responseWith204];
+  
+  return response;
 }
 
 @end

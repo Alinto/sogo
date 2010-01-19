@@ -55,65 +55,19 @@ static Class SOGoUserProfileKlass = Nil;
   return ud;
 }
 
-/* the calendars that we publish to our proxy subscribers */
-- (void) setProxiedCalendars: (NSArray *) proxiedCalendars
+- (NSArray *) _subscribedFoldersForModule: (NSString *) module
 {
-  [self setObject: proxiedCalendars forKey: @"ProxiedCalendars"];
+  return [[self dictionaryForKey: module] objectForKey: @"SubscribedFolders"];
 }
 
-- (NSArray *) proxiedCalendars
+- (NSArray *) subscribedCalendars
 {
-  NSArray *proxiedCalendars;
-
-  proxiedCalendars = [self arrayForKey: @"ProxiedCalendars"];
-  if (!proxiedCalendars)
-    proxiedCalendars = [NSArray arrayWithObject: @"personal"];
-
-  return proxiedCalendars;
+  return [self _subscribedFoldersForModule: @"Calendar"];
 }
 
-/* the users that we have subscribed us as a proxy to our calendars */
-- (void) setCalendarProxyUsers: (NSArray *) proxyUsers
-               withWriteAccess: (BOOL) writeAccess
+- (NSArray *) subscribedAddressBooks
 {
-  NSString *key;
-
-  key = [NSString stringWithFormat: @"CalendarProxy%@Users",
-           (writeAccess ? @"Write" : @"Read")];
-
-  [self setObject: proxyUsers forKey: key];
-}
-
-- (NSArray *) calendarProxyUsersWithWriteAccess: (BOOL) writeAccess
-{
-  NSString *key;
-
-  key = [NSString stringWithFormat: @"CalendarProxy%@Users",
-           (writeAccess ? @"Write" : @"Read")];
-
-  return [self arrayForKey: key];
-}
-
-/* the users that have subscribed us as a proxy to their calendars */
-- (void) setCalendarProxySubscriptionUsers: (NSArray *) subscriptionUsers
-                           withWriteAccess: (BOOL) writeAccess
-{
-  NSString *key;
-
-  key = [NSString stringWithFormat: @"CalendarProxy%@SubscriptionUsers",
-           (writeAccess ? @"Write" : @"Read")];
-
-  [self setObject: subscriptionUsers forKey: key];
-}
-
-- (NSArray *) calendarProxySubscriptionUsersWithWriteAccess: (BOOL) writeAccess
-{
-  NSString *key;
-
-  key = [NSString stringWithFormat: @"CalendarProxy%@SubscriptionUsers",
-           (writeAccess ? @"Write" : @"Read")];
-
-  return [self arrayForKey: key];
+  return [self _subscribedFoldersForModule: @"Contacts"];
 }
 
 @end

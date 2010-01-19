@@ -7,6 +7,8 @@ var AclEditor = {
     userRightsWidth: null
 };
 
+var usersToSubscribe = [];
+
 function addUser(userName, userID) {
     var result = false;
     if (!$(userID)) {
@@ -32,19 +34,49 @@ function setEventsOnUserNode(node) {
     n.observe("selectstart", listRowMouseDownHandler);
     n.observe("dblclick", onOpenUserRights);
     n.observe("click", onRowClick);
+
+    var cbParents = n.childNodesWithTag("label");
+    if (cbParents && cbParents.length) {
+        var cbParent = $(cbParents[0]);
+        var checkbox = cbParent.childNodesWithTag("input")[0];
+        $(checkbox).observe("change", onSubscriptionChange);
+    }
+}
+
+function onSubscriptionChange(event) {
+    var li = this.parentNode.parentNode;
+    var username = li.getAttribute("id");
+    var idx = usersToSubscribe.indexOf(username);
+    if (this.checked) {
+        if (idx < 0)
+            usersToSubscribe.push(username);
+    } else {
+        if (idx > -1)
+            usersToSubscribe.splice(idx, 1);
+    }
 }
 
 function nodeForUser(userName, userId) {
-    var node = document.createElement("li");
+    var node = $(document.createElement("li"));
     node.setAttribute("id", userId);
-    node.setAttribute("class", "");
-    setEventsOnUserNode(node);
 
+    var span = $(document.createElement("span"));
+    span.addClassName("userFullName");
     var image = document.createElement("img");
     image.setAttribute("src", ResourcesURL + "/abcard.gif");
+    span.appendChild(image);
+    span.appendChild(document.createTextNode(" " + userName));
+    node.appendChild(span);
 
-    node.appendChild(image);
-    node.appendChild(document.createTextNode(" " + userName));
+    var label = $(document.createElement("label"));
+    label.addClassName("class", "subscriptionArea");
+    var cb = document.createElement("input");
+    cb.type = "checkbox";
+    label.appendChild(cb);
+    label.appendChild(document.createTextNode(getLabel("Subscribe User")));
+    node.appendChild(label);
+
+    setEventsOnUserNode(node);
 
     return node;
 }
@@ -156,6 +188,24 @@ function onAclLoadHandler() {
 
     AclEditor['userRightsHeight'] = window.opener.getUsersRightsWindowHeight();
     AclEditor['userRightsWidth'] = window.opener.getUsersRightsWindowWidth();
+
+    Event.observe(window, "beforeunload", onAclCloseHandler);
+}
+
+function onAclCloseHandler(event) {
+    if (usersToSubscribe.length) {
+        var url = (URLForFolderID($("folderID").value)
+                   + "/subscribeUsers?uids=" + usersToSubscribe.join(","));
+        new Ajax.Request(url, {
+            asynchronous: false,
+                    method: 'get',
+                    onFailure: function(transport) {
+                    log("Can't expunge current folder: " + transport.status);
+                }
+        });
+    }
+
+    return true;
 }
 
 document.observe("dom:loaded", onAclLoadHandler);

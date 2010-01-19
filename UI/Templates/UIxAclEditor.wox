@@ -17,8 +17,7 @@
 	<input type="hidden" name="defaultUserID" id="defaultUserID"
 	  var:value="defaultUserID"/>
 	<input type="hidden" name="action" value="saveAcls"/>
-	<input type="hidden" id="userUIDS" name="userUIDS"
-	  var:value="userUIDS"/>
+	<input type="hidden" name="folderID" id="folderID" var:value="folderID"/>
 	<var:if condition="hasOwner">
 	  <label><var:string label:value="Owner:"/>
 	    <span class="value"><strong><var:string value="ownerName"/></strong></span></label>
@@ -38,9 +37,14 @@
 	<ul id="userList" multiselect="yes">
 	  <var:foreach list="usersForObject" item="currentUser"
 	    ><li var:id="currentUser">
-	      <img rsrc:src="abcard.gif"/>
-	      <var:string value="currentUserDisplayName"/></li>
-	  </var:foreach>
+              <span class="userFullName"><img rsrc:src="abcard.gif"/>
+                <var:string value="currentUserDisplayName"
+                  /></span
+                ><label class="subscriptionArea"><input type="checkbox"
+                  var:checked="currentUserIsSubscribed"
+                  var:disabled="currentUserIsSubscribed"
+                  /><var:string label:value="Subscribe User"/></label
+                ></li></var:foreach>
 	</ul>
       </div>
     </div>

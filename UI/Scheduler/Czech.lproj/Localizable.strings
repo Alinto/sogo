@@ -512,9 +512,6 @@ vtodo_class2 = "(Důvěrný úkol)";
 "Synchronize" = "Synchronize";
 "Tag:" = "Štítek:";
 
-"iCal Delegation" = "iCal Delegation";
-"Shared when account is delegated" = "Shared when account is delegated";
-
 "Display" = "Display";
 "Show alarms" = "Show alarms";
 "Show tasks" = "Show tasks";
