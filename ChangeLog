@@ -1,3 +1,10 @@
+2010-01-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/ContactsUI.js (initContacts): fixed a bug
+	causing a null exception error on IE7 when the window is not the
+	main window, and is therefore missing the "uploadCancel" and
+	"uploadOK" elements.
+
 2010-01-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* Tests/utilities.py: new module implementing utility classes and

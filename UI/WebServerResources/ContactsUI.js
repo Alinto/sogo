@@ -1161,11 +1161,11 @@ function onDocumentKeydown(event) {
 function initContacts(event) {
     if ($(document.body).hasClassName("popup")) {
         configureSelectionButtons();
+    } else {
+        // Addressbook import form
+        $("uploadCancel").observe("click", hideContactsImport);
+        $("uploadOK").observe("click", hideImportResults);
     }
-    
-    // Addressbook import form
-    $("uploadCancel").observe("click", hideContactsImport);
-    $("uploadOK").observe("click", hideImportResults);
     
     if (Prototype.Browser.Gecko)
         Event.observe(document, "keypress", onDocumentKeydown); // for FF2
