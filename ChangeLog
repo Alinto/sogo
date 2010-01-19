@@ -1,5 +1,12 @@
 2010-01-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolders.m
+	(-hasProxyCalendarsWithWriteAccess:forUserWithLogin:)
+	(-proxySubscribersWithWriteAccess)
+	(-addProxySubscribers:withWriteAccess:)
+	(removeProxySubscribers:withWriteAccess:): prevent caldav-proxy
+	operations on the owner's subscribed resources.
+
 	* UI/Common/UIxFolderActions.m (-subscribeUsersAction): new web
 	method that enables resource owners to subscribe other users to
 	their resources from the acl editor.

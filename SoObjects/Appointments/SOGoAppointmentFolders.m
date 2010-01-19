@@ -397,7 +397,9 @@
       currentUser = [SOGoUser userWithLogin: userLogin];
       sortedSubFolders = [[self subFolders] objectEnumerator];
       while ((currentFolder = [sortedSubFolders nextObject]))
-        if ([currentUser hasSubscribedToCalendar: currentFolder])
+        if ([currentUser hasSubscribedToCalendar: currentFolder]
+            && [owner
+                  isEqualToString: [currentFolder ownerInContext: nil]])
           {
             curPermission = [currentFolder
                               proxyPermissionForUserWithLogin: userLogin];
@@ -428,16 +430,19 @@
   for (folderCount = 0; folderCount < folderMax; folderCount++)
     {
       currentFolder = [subFolderNames objectAtIndex: folderCount];
-      aclUsers = [currentFolder aclUsersWithProxyWriteAccess: write];
-      userMax = [aclUsers count];
-      for (userCount = 0; userCount < userMax; userCount++)
+      if ([owner isEqualToString: [currentFolder ownerInContext: nil]])
         {
-          aclUser = [aclUsers objectAtIndex: userCount];
-          if (![subscribers containsObject: aclUser])
+          aclUsers = [currentFolder aclUsersWithProxyWriteAccess: write];
+          userMax = [aclUsers count];
+          for (userCount = 0; userCount < userMax; userCount++)
             {
-              currentUser = [SOGoUser userWithLogin: aclUser];
-              if ([currentUser hasSubscribedToCalendar: currentFolder])
-                [subscribers addObject: aclUser];
+              aclUser = [aclUsers objectAtIndex: userCount];
+              if (![subscribers containsObject: aclUser])
+                {
+                  currentUser = [SOGoUser userWithLogin: aclUser];
+                  if ([currentUser hasSubscribedToCalendar: currentFolder])
+                    [subscribers addObject: aclUser];
+                }
             }
         }
     }
@@ -491,14 +496,17 @@
   for (folderCount = 0; folderCount < folderMax; folderCount++)
     {
       currentFolder = [subFolderNames objectAtIndex: folderCount];
-      [currentFolder setRoles: proxyRoles
-                     forUsers: proxySubscribers];
+      if ([owner isEqualToString: [currentFolder ownerInContext: nil]])
+        {
+          [currentFolder setRoles: proxyRoles
+                         forUsers: proxySubscribers];
 
-      userMax = [proxySubscribers count];
-      for (userCount = 0; userCount < userMax; userCount++)
-        [currentFolder
-          subscribeUser: [proxySubscribers objectAtIndex: userCount]
-               reallyDo: YES];
+          userMax = [proxySubscribers count];
+          for (userCount = 0; userCount < userMax; userCount++)
+            [currentFolder
+              subscribeUser: [proxySubscribers objectAtIndex: userCount]
+                   reallyDo: YES];
+        }
     }
 }
 
@@ -517,13 +525,16 @@
   for (folderCount = 0; folderCount < folderMax; folderCount++)
     {
       currentFolder = [subFolderNames objectAtIndex: folderCount];
-      [currentFolder removeAclsForUsers: proxySubscribers];
+      if ([owner isEqualToString: [currentFolder ownerInContext: nil]])
+        {
+          [currentFolder removeAclsForUsers: proxySubscribers];
 
-      userMax = [proxySubscribers count];
-      for (userCount = 0; userCount < userMax; userCount++)
-        [currentFolder
-          subscribeUser: [proxySubscribers objectAtIndex: userCount]
-               reallyDo: NO];
+          userMax = [proxySubscribers count];
+          for (userCount = 0; userCount < userMax; userCount++)
+            [currentFolder
+              subscribeUser: [proxySubscribers objectAtIndex: userCount]
+                   reallyDo: NO];
+        }
     }
 }
 
