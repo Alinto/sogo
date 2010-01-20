@@ -37,7 +37,7 @@
 
     SOGoDayStartTime = "8";
     SOGoDayEndTime = "18";
-    SOGoTimeFormat = "%H:00";
+    SOGoTimeFormat = "%H:%M";
 
     SOGoIMAPServer = "localhost";
     SOGoFirstDayOfWeek = 0;
