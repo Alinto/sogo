@@ -45,7 +45,7 @@ var Scriptaculous = {
        throw("script.aculo.us requires the Prototype JavaScript framework >= " +
         Scriptaculous.REQUIRED_PROTOTYPE);
 
-    var path = "/SOGo.woa/WebServerResources/scriptaculous/";
+    var path = ResourcesURL + "/scriptaculous/";
     var includes = ["effects", "dragdrop"];
     includes.each (function (include) { Scriptaculous.require (path+include+'.js') });
 
