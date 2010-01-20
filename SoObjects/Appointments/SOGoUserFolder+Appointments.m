@@ -68,7 +68,7 @@
   emails = [[ownerUser allEmails] objectEnumerator];
   while ((currentEmail = [emails nextObject]))
     {
-      tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
+      tag = [NSArray arrayWithObjects: @"href", XMLNS_WEBDAV, @"D",
 		     [NSString stringWithFormat: @"mailto:%@", currentEmail],
 		     nil];
       [addresses addObject: tag];
@@ -94,7 +94,7 @@
   SOGoAppointmentFolders *parent;
 
   parent = [self privateCalendars: @"Calendar" inContext: context];
-  tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
+  tag = [NSArray arrayWithObjects: @"href", XMLNS_WEBDAV, @"D",
                  [parent davURLAsString], nil];
 
   return [NSArray arrayWithObject: tag];
@@ -104,24 +104,14 @@
 {
   SOGoAppointmentFolders *parent;
   NSArray *tag, *response;
-  NSString *parentURL, *login;
+  NSString *parentURL;
 
-  login = [[context activeUser] login];
-  if ([login isEqualToString: owner])
-    {
-      parent = [self privateCalendars: @"Calendar" inContext: context];
-      parentURL = [parent davURLAsString];
-
-      if ([parentURL hasSuffix: @"/"])
-        parentURL = [parentURL substringToIndex: [parentURL length]-1];
-  
-      tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
-                     [NSString stringWithFormat: @"%@/%@/", parentURL, name],
-                     nil];
-      response = [NSArray arrayWithObject: tag];
-    }
-  else
-    response = nil;
+  parent = [self privateCalendars: @"Calendar" inContext: context];
+  parentURL = [parent davURLAsString];
+  tag = [NSArray arrayWithObjects: @"href", XMLNS_WEBDAV, @"D",
+                 [NSString stringWithFormat: @"%@%@/", parentURL, name],
+                 nil];
+  response = [NSArray arrayWithObject: tag];
 
   return response;
 }
@@ -193,7 +183,7 @@
       for (count = 0; count < max; count++)
         {
           proxiedUser = [proxiedUsers objectAtIndex: count];
-          tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
+          tag = [NSArray arrayWithObjects: @"href", XMLNS_WEBDAV, @"D",
                          [NSString stringWithFormat: @"/%@/dav/%@/%@/",
                                    appName, proxiedUser, groupId],
                      nil];
@@ -233,7 +223,7 @@
       for (count = 0; count < max; count++)
         {
           proxiedUser = [proxiedUsers objectAtIndex: count];
-          tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
+          tag = [NSArray arrayWithObjects: @"href", XMLNS_WEBDAV, @"D",
                          [NSString stringWithFormat: @"/%@/dav/%@/",
                                    appName, proxiedUser],
                      nil];

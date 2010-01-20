@@ -88,9 +88,9 @@
       currentUser = [context activeUser];
       login = [currentUser login];
       keys = [NSMutableArray array];
+      [keys addObject: @"inbox"];
       if ([owner isEqualToString: login])
         {
-          [keys addObject: @"inbox"];
           sortedSubFolders = [[self subFolders] objectEnumerator];
           while ((currentFolder = [sortedSubFolders nextObject]))
             {
@@ -120,17 +120,10 @@
           acquire: (BOOL) acquire
 {
   id obj;
-  NSString *login;
 
   if ([name isEqualToString: @"inbox"])
-    {
-      login = [[context activeUser] login];
-      if ([owner isEqualToString: login])
-        obj = [SOGoAppointmentInboxFolder objectWithName: name
-                                             inContainer: self];
-      else
-        obj = nil;
-    }
+    obj = [SOGoAppointmentInboxFolder objectWithName: name
+                                         inContainer: self];
   else
     obj = [super lookupName: name inContext: lookupContext acquire: NO];
 

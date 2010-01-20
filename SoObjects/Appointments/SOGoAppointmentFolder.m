@@ -2308,7 +2308,6 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 {
   NSMutableArray *colType;
   NSArray *gdRT, *gdVEventCol, *gdVTodoCol;
-  NSString *login;
   WORequest *request;
 
   colType = [NSMutableArray arrayWithCapacity: 10];
@@ -2329,16 +2328,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                  XMLNS_GROUPDAV, nil];
       [colType addObject: gdVTodoCol];
       if ([nameInContainer isEqualToString: @"personal"])
-        {
-          login = [[context activeUser] login];
-          if ([login isEqualToString: [self ownerInContext: self]])
-            {
-              // [colType addObject: [NSArray arrayWithObjects: @"schedule-inbox",
-              //   XMLNS_CALDAV, nil]];
-              [colType addObject: [NSArray arrayWithObjects: @"schedule-outbox",
-                XMLNS_CALDAV, nil]];
-            }
-        }
+        [colType addObject: [NSArray arrayWithObjects: @"schedule-outbox",
+                                     XMLNS_CALDAV, nil]];
     }
 
   return colType;

@@ -1,5 +1,20 @@
 2010-01-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentInboxFolder.m
+	(-davCalendarFreeBusySet): only advertise the collections owner by
+	the inbox's owner.
+	(-davScheduleDefaultCalendarURL): new caldav accessor.
+
+	* SoObjects/Appointments/SOGoAppointmentFolders.m
+	(-toManyRelationShipKeys): unconditionnally display the inbox
+	collection.
+	(-lookupName:inContext:acquire:): accepts "inbox" even when the
+	active user is not the owner.
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-davResourceType): unconditionnally advertise "personal" as
+	schedule-outbox.
+
 	* UI/WebServerResources/scriptaculous.js: modified to use
 	ResourcesURL as base loading URL.
 

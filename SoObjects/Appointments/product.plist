@@ -51,10 +51,10 @@
     };
     SOGoAppointmentInboxFolder = {
       superclass = "SOGoAppointmentFolder";
+      defaultRoles = {
+        "Access Contents Information" = ( "Owner", "AuthorizedSubscriber" );
+      };
     };
-//     SOGoGroupAppointmentFolder = {
-//       superclass = "SOGoAppointmentFolder";
-//     };
     SOGoCalendarComponent = {
       superclass = "SOGoContentObject";
       defaultRoles = {

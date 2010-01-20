@@ -27,6 +27,7 @@
 #import <NGObjWeb/WOContext+SoObjects.h>
 
 #import <SOGo/NSObject+DAV.h>
+#import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoWebDAVValue.h>
 
@@ -43,17 +44,9 @@
 
 - (NSArray *) davResourceType
 {
-  NSMutableArray *colType;
-  NSString *login;
-
-  colType = [NSMutableArray arrayWithCapacity: 10];
-  [colType addObject: @"collection"];
-  login = [[context activeUser] login];
-  if ([login isEqualToString: [self ownerInContext: self]])
-    [colType addObject: [NSArray arrayWithObjects: @"schedule-inbox",
-                                 XMLNS_CALDAV, nil]];
-
-  return colType;
+  return [NSArray arrayWithObjects: @"collection",
+                  [NSArray arrayWithObjects: @"schedule-inbox", XMLNS_CALDAV, nil],
+                  nil];
 }
 
 - (SOGoWebDAVValue *) davCalendarFreeBusySet
@@ -66,9 +59,10 @@
   response = [NSMutableArray array];
   subFolders = [[container subFolders] objectEnumerator];
   while ((currentFolder = [subFolders nextObject]))
-    [response
-      addObject: davElementWithContent (@"href", XMLNS_WEBDAV,
-					[currentFolder davURLAsString])];
+    if ([owner isEqualToString: [currentFolder ownerInContext: context]])
+      [response
+        addObject: davElementWithContent (@"href", XMLNS_WEBDAV,
+                                          [currentFolder davURLAsString])];
   responseValue = [davElementWithContent (@"calendar-free-busy-set", XMLNS_CALDAV, response)
 					 asWebDAVValue];
 
@@ -79,6 +73,39 @@
 - (NSException *) setDavCalendarFreeBusySet: (NSString *) newFreeBusySet
 {
   return nil;
+}
+
+- (NSArray *) davScheduleDefaultCalendarURL
+{
+  NSArray *response;
+  NSString *personalURL;
+
+  personalURL = [NSString stringWithFormat: @"%@personal/",
+                          [container davURLAsString]];
+  response = [NSArray arrayWithObjects: @"href", XMLNS_WEBDAV, @"D",
+                      personalURL, nil];
+
+  return response;
+}
+
+- (NSArray *) aclsForUser: (NSString *) userID
+{
+  NSString *login;
+  NSArray *acls;
+
+  acls = nil;
+
+  login = [[context activeUser] login];
+  if (![login isEqualToString: owner])
+    {
+      if ([container hasProxyCalendarsWithWriteAccess: YES
+                                     forUserWithLogin: login]
+          || [container hasProxyCalendarsWithWriteAccess: NO
+                                        forUserWithLogin: login])
+        acls = [NSArray arrayWithObject: SOGoRole_AuthorizedSubscriber];
+    }
+
+  return acls;
 }
 
 @end

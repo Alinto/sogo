@@ -6613,15 +6613,16 @@ Index: sope-appserver/NGObjWeb/DAVPropMap.plist
 ===================================================================
 --- sope-appserver/NGObjWeb/DAVPropMap.plist	(revision 1664)
 +++ sope-appserver/NGObjWeb/DAVPropMap.plist	(working copy)
-@@ -157,6 +157,7 @@
+@@ -157,6 +157,8 @@
    "{urn:ietf:params:xml:ns:caldav}supported-calendar-data" =
       davSupportedCalendarDataTypes;
    "{urn:ietf:params:xml:ns:caldav}calendar-description" = davDescription;
 +  "{urn:ietf:params:xml:ns:caldav}calendar-timezone" = davCalendarTimeZone;
++  "{urn:ietf:params:xml:ns:caldav}schedule-default-calendar-URL" = davScheduleDefaultCalendarURL;
  
    /* CardDAV */
    "{urn:ietf:params:xml:ns:carddav}addressbook-home-set" = davAddressbookHomeSet;
-@@ -168,6 +169,8 @@
+@@ -168,6 +170,8 @@
    "{http://calendarserver.org/ns/}dropbox-home-URL" = davDropboxHomeURL;
    "{http://calendarserver.org/ns/}notifications-URL" = davNotificationsURL;
    "{http://calendarserver.org/ns/}getctag" = davCollectionTag;
@@ -7338,6 +7339,15 @@ Index: sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpTransaction.m
  	    hasConnectionHeader = YES;
  	}
  	
+@@ -789,7 +798,7 @@
+ 	NSLog(@"  END:   %@", fieldName);
+ #endif
+       }
+-      
++
+ #if HEAVY_DEBUG
+       NSLog(@"  HEADER:\n%@", header);
+       NSLog(@"  OUT: %@", out);
 Index: sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpAdaptor.m
 ===================================================================
 --- sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpAdaptor.m	(revision 1664)
