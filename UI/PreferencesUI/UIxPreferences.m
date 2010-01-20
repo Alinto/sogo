@@ -311,10 +311,12 @@
 - (NSString *) itemTimeFormatText
 {
   NSString *todayText, *timeFormatText;
+  SOGoDomainDefaults *dd;
 
   if ([item isEqualToString: @"default"])
     {
-      todayText = [today descriptionWithCalendarFormat: [locale objectForKey: NSTimeFormatString]
+      dd = [user domainDefaults];
+      todayText = [today descriptionWithCalendarFormat: [dd timeFormat]
                                                 locale: locale];
       timeFormatText = [NSString stringWithFormat: @"%@ (%@)",
                                 [self labelForKey: item],

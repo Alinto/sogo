@@ -1,3 +1,9 @@
+2010-01-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/PreferencesUI/UIxPreferences.m (-itemTimeFormatTexts): the
+	default time format is not taken from the domain defaults rather
+	than the user locale.
+
 2010-01-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolders.m
