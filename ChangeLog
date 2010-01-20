@@ -1,5 +1,14 @@
 2010-01-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/UIxAclEditor.js (saveAcls): removed
+	method.
+	(nodeForUser): don't add a checkbox if "canSubscribeUsers" is
+	false.
+
+	* UI/Common/UIxAclEditor.m (-canSubscribeUsers): new accessor that
+	returns whether the clientObject has the required method to
+	subscribe users.
+
 	* UI/PreferencesUI/UIxPreferences.m (-itemTimeFormatTexts): the
 	default time format is not taken from the domain defaults rather
 	than the user locale.

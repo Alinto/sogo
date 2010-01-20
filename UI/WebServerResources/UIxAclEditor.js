@@ -68,28 +68,19 @@ function nodeForUser(userName, userId) {
     span.appendChild(document.createTextNode(" " + userName));
     node.appendChild(span);
 
-    var label = $(document.createElement("label"));
-    label.addClassName("class", "subscriptionArea");
-    var cb = document.createElement("input");
-    cb.type = "checkbox";
-    label.appendChild(cb);
-    label.appendChild(document.createTextNode(getLabel("Subscribe User")));
-    node.appendChild(label);
+    if (canSubscribeUsers) {
+        var label = $(document.createElement("label"));
+        label.addClassName("subscriptionArea");
+        var cb = document.createElement("input");
+        cb.type = "checkbox";
+        label.appendChild(cb);
+        label.appendChild(document.createTextNode(getLabel("Subscribe User")));
+        node.appendChild(label);
+    }
 
     setEventsOnUserNode(node);
 
     return node;
-}
-
-function saveAcls() {
-    var uidList = new Array();
-    var users = $("userList").childNodesWithTag("li");
-    for (var i = 0; i < users.length; i++)
-        uidList.push(users[i].getAttribute("id"));
-    $("userUIDS").value = uidList.join(",");
-    $("aclForm").submit();
-
-    return false;
 }
 
 function onUserAdd(event) {

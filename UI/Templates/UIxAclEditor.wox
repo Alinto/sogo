@@ -11,6 +11,15 @@
   const:toolbar="SOGoAclOwner.toolbar"
   const:popup="YES">
 
+  <script type="text/javascript"
+    ><var:if condition="canSubscribeUsers">
+      var canSubscribeUsers = true;
+    </var:if
+    ><var:if condition="canSubscribeUsers" const:negate="YES">
+      var canSubscribeUsers = false;
+    </var:if
+  ></script>
+
   <form id="aclForm" const:href="saveAcls">
     <div class="acls">
       <div id="userSelectorHeader">
@@ -39,12 +48,15 @@
 	    ><li var:id="currentUser">
               <span class="userFullName"><img rsrc:src="abcard.gif"/>
                 <var:string value="currentUserDisplayName"
-                  /></span
+                  /></span>
+              <var:if condition="canSubscribeUsers"
                 ><label class="subscriptionArea"><input type="checkbox"
-                  var:checked="currentUserIsSubscribed"
-                  var:disabled="currentUserIsSubscribed"
-                  /><var:string label:value="Subscribe User"/></label
-                ></li></var:foreach>
+                    var:checked="currentUserIsSubscribed"
+                    var:disabled="currentUserIsSubscribed"
+                    /><var:string label:value="Subscribe User"/></label
+                  ></var:if
+                ></li>
+          </var:foreach>
 	</ul>
       </div>
     </div>

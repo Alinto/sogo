@@ -159,6 +159,12 @@
   return [self _displayNameForUID: currentUser];
 }
 
+- (BOOL) canSubscribeUsers
+{
+  return [[self clientObject]
+           respondsToSelector: @selector (subscribeUser:reallyDo:)];
+}
+
 - (BOOL) currentUserIsSubscribed
 {
   SOGoGCSFolder *folder;

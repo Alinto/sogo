@@ -59,13 +59,14 @@ UL#userList
 UL#userList LI
 { clear: both;
   cursor: pointer;
+  height: 2em;
   text-align: right;
   padding-left: 3px; }
 
-SPAN.userFullName
+DIV#userSelectorButtons A.smallToolbarButton
 { float: left; }
 
-DIV#userSelectorButtons A.smallToolbarButton
+SPAN.userFullName
 { float: left; }
 
 LABEL.subscriptionArea
