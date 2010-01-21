@@ -108,6 +108,7 @@ function editEvent() {
 }
 
 function _batchDeleteEvents() {
+    // Delete the next event from the batch
     var events = eventsToDelete.shift();
     var calendar = calendarsOfEventsToDelete.shift();
     var urlstr = (ApplicationBaseURL + calendar
@@ -123,6 +124,10 @@ function deleteEvent() {
         var nodes = listOfSelection.getSelectedRows();
         if (nodes.length > 0) {
             var label = "";
+            if (!nodes[0].erasable) {
+                window.alert(getLabel("You don't have the required privileges to perform the operation."));
+                return false;
+            }
             if (listOfSelection == $("tasksList"))
                 label = getLabel("taskDeleteConfirmation");
             else
@@ -140,7 +145,6 @@ function deleteEvent() {
                     }
                     var sortedNodes = [];
                     var calendars = [];
-
                     for (var i = 0; i < nodes.length; i++) {
                         var calendar = nodes[i].calendar;
                         if (!sortedNodes[calendar]) {
@@ -161,6 +165,10 @@ function deleteEvent() {
         }
     }
     else if (selectedCalendarCell) {
+        if (!selectedCalendarCell[0].erasable) {
+            window.alert(getLabel("You don't have the required privileges to perform the operation."));
+            return false;
+        }
         if (selectedCalendarCell[0].recurrenceTime) {
             _editRecurrenceDialog(selectedCalendarCell[0], "confirmDeletion");
         }
@@ -239,59 +247,146 @@ function modifyEventCallback(http) {
     }
 }
 
-function _deleteCalendarEventBlocks(calendar, cname) {
+function _deleteCalendarEventBlocks(calendar, cname, occurenceTime) {
+    // Delete event (or occurence) from the specified calendar
+    var ownerIsOrganizer = false;
     var events = calendarEvents[calendar];
     if (events) {
         var occurences = events[cname];
-        if (occurences)
+        if (occurences) {
             for (var i = 0; i < occurences.length; i++) {
                 var nodes = occurences[i].blocks;
                 for (var j = 0; j < nodes.length; j++) {
                     var node = nodes[j];
-                    node.parentNode.removeChild(node);
+                    if (occurenceTime == null
+                        || occurenceTime == node.recurrenceTime) {
+                        ownerIsOrganizer = node.ownerIsOrganizer;
+                        node.parentNode.removeChild(node);
+                    }
                 }
             }
-    }
-}
-
-function _deleteEventFromTables(basename) {
-    var tables = [ $("eventsList"), $("tasksList") ];
-    for (var i = 0; i < 2; i++) {
-        var table = tables[i];
-        if (table.tBodies)
-            rows = table.tBodies[0].rows;
-        else
-            rows = $(table).childNodesWithTag("li");
-        for (var j = rows.length; j > 0; j--) {
-            var row = $(rows[j - 1]);
-            var id = row.getAttribute("id");
-            if (id.indexOf(basename) == 0)
-                row.parentNode.removeChild(row);
+            if (ownerIsOrganizer)
+                // Search for the same event in other calendars (using the cache)
+                // only if the delete operation is triggered from the organizer's
+                // calendar.
+                for (var otherCalendar in calendarEvents) {
+                    if (calendar != otherCalendar) {
+                        occurences = calendarEvents[otherCalendar][cname];
+                        if (occurences) {
+                            for (var i = 0; i < occurences.length; i++) {
+                                var occurence = occurences[i];
+                                if (occurenceTime == null || occurenceTime == occurence[14]) {
+                                    var nodes = occurence.blocks;
+                                    for (var j = 0; j < nodes.length; j++) {
+                                        var node = nodes[j];
+                                        if (node.parentNode)
+                                            node.parentNode.removeChild(node);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
         }
     }
 }
 
+function _deleteEventFromTables(calendar, cname, occurenceTime) {
+    var basename = "-" + cname;
+    if (occurenceTime) {
+        basename = basename + "-" + occurenceTime;
+    }
+    var occurences = calendarEvents[calendar][cname];
+    if (occurences) {
+        var occurence = occurences.first();
+        var ownerIsOrganizer = occurence[18];
+        
+        // Delete event from events list
+        var table = $("eventsList");
+        var rows = table.tBodies[0].rows;
+        for (var j = rows.length; j > 0; j--) {
+            var row = $(rows[j - 1]);
+            var id = row.getAttribute("id");
+            var pos = id.indexOf(basename);
+            if (pos > 0) {
+                var otherCalendar = id.substr(0, pos);
+                occurences = calendarEvents[otherCalendar][cname];
+                if (occurences) {
+                    for (var k = 0; k < occurences.length; k++) {
+                        var occurence = occurences[k];
+                        if (calendar == otherCalendar || ownerIsOrganizer) {
+                            // This is the specified event or the same event in another
+                            // calendar. In this case, remove it only if the delete
+                            // operation is triggered from the organizer's calendar.
+                            if (occurenceTime == null || occurenceTime == occurence[14]) {
+                                row.parentNode.removeChild(row);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    // Delete task from tasks list
+    var row = $(calendar + basename);
+    if (row) {
+        row.parentNode.removeChild(row);
+    }
+}
+
+function _deleteCalendarEventCache(calendar, cname, occurenceTime) {
+    var ownerIsOrganizer = false;
+    var occurences = calendarEvents[calendar][cname];
+    if (occurences)
+        ownerIsOrganizer = occurences[0][18];
+    
+    for (var otherCalendar in calendarEvents) {
+        var occurences = calendarEvents[otherCalendar][cname];
+        if (occurences) {
+            var newOccurences = [];
+            for (var i = 0; i < occurences.length; i++) {
+                var occurence = occurences[i];
+                if (calendar == otherCalendar || ownerIsOrganizer) {
+                    // This is the specified event or the same event in another
+                    // calendar. In this case, remove it only if the delete
+                    // operation is triggered from the organizer's calendar.
+                    if (occurenceTime == null) {
+                        delete calendarEvents[otherCalendar][cname];
+                    }
+                    else if (occurenceTime != occurence[14]) {
+                        // || occurenceTime == occurence[14]) {
+                        newOccurences.push(occurence);
+                    }
+                }
+            }
+            if (occurenceTime)
+                calendarEvents[otherCalendar][cname] = newOccurences;
+        }
+    }
+}
+
+/**
+ * This is the Ajax callback function for _batchDeleteEvents.
+ */
 function deleteEventCallback(http) {
     if (http.readyState == 4) {
         if (isHttpStatus204(http.status)) {
             var isTask = false;
             var calendar = http.callbackData.calendar;
             var events = http.callbackData.events;
-
-            //       log("calendar: " + calendar + "\n");
-            //       log("events: " + events.join(", " ) + "\n");
             for (var i = 0; i < events.length; i++) {
                 var cname = events[i];
                 _deleteCalendarEventBlocks(calendar, cname);
-                _deleteEventFromTables(calendar + "-" + cname);
-                delete calendarEvents[calendar][cname];
+                _deleteEventFromTables(calendar, cname);
+                _deleteCalendarEventCache(calendar, cname);
             }
 
             if (eventsToDelete.length)
                 _batchDeleteEvents();
-            else {
+            else
                 document.deleteEventAjaxRequest = null;
-            }
         }
         else if (parseInt(http.status) == 403)
             window.alert(getLabel("You don't have the required privileges to perform the operation."));
@@ -470,32 +565,10 @@ function performDeleteEventCallback(http) {
             var nodes = http.callbackData.nodes;
             var cname = nodes[0].cname;
             var calendar = nodes[0].calendar;
-            for (var i = 0; i < nodes.length; i++) {
-                var node = nodes[i];
-                node.parentNode.removeChild(node);
-            }
-            var basename = calendar + "-" + cname;
-            if (occurenceTime) {
-                var row = $(basename + "-" + occurenceTime);
-                // 	log("rowID: " + basename + "-" + occurenceTime);
-                if (row)
-                    row.parentNode.removeChild(row);
-
-                // Update calendar events cache
-                var occurences = calendarEvents[calendar][cname];
-                var newOccurences = [];
-                for (var i = 0; i < occurences.length; i++) {
-                    var occurence = occurences[i];
-                    if (occurence[14] != occurenceTime)
-                        newOccurences.push(occurence);
-                }
-                calendarEvents[calendar][cname] = newOccurences;
-            }
-            else {
-                // 	log("basename: " + basename);
-                _deleteEventFromTables(basename);
-                delete calendarEvents[calendar][cname];
-            }
+            
+            _deleteCalendarEventBlocks(calendar, cname, occurenceTime);
+            _deleteEventFromTables(calendar, cname, occurenceTime);
+            _deleteCalendarEventCache(calendar, cname, occurenceTime);
         }
     }
 }
@@ -610,6 +683,8 @@ function eventsListCallback(http) {
                 if (rTime)
                     row.recurrenceTime = escape(rTime);
                 row.isException = data[i][15];
+                row.editable = data[i][16];
+                row.erasable = data[i][17];
                 var startDate = new Date();
                 startDate.setTime(data[i][4] * 1000);
                 row.day = startDate.getDayString();
@@ -630,12 +705,12 @@ function eventsListCallback(http) {
                 td = $(document.createElement("td"));
                 row.appendChild(td);
                 td.observe("mousedown", listRowMouseDownHandler, true);
-                td.appendChild(document.createTextNode(data[i][16])); // start date
+                td.appendChild(document.createTextNode(data[i][19])); // start date
 
                 td = $(document.createElement("td"));
                 row.appendChild(td);
                 td.observe("mousedown", listRowMouseDownHandler, true);
-                td.appendChild(document.createTextNode(data[i][17])); // end date
+                td.appendChild(document.createTextNode(data[i][20])); // end date
       
                 td = $(document.createElement("td"));
                 row.appendChild(td);
@@ -1063,6 +1138,9 @@ function newBaseEventDIV(eventRep, event, eventText) {
     //	log ("13 nextalarm = " + event[13]);
     //	log ("14 recurrenceid = " + event[14]);
     //	log ("15 isexception = " + event[15]);
+    //  log ("16 editable = " + event[16]);
+    //  log ("17 erasable = " + event[17]);
+    //  log ("18 ownerisorganizer = " + event[18]);
 
     var eventDiv = $(document.createElement("div"));
     eventDiv.cname = event[0];
@@ -1070,6 +1148,9 @@ function newBaseEventDIV(eventRep, event, eventText) {
     if (eventRep.recurrenceTime)
         eventDiv.recurrenceTime = eventRep.recurrenceTime;
     eventDiv.isException = event[15];
+    eventDiv.editable = event[16];
+    eventDiv.erasable = event[17];
+    eventDiv.ownerIsOrganizer = event[18];
     eventDiv.addClassName("event");
     if (event[13] > 0)
         eventDiv.addClassName("alarm");
@@ -1500,7 +1581,6 @@ function onYearMenuItemClick(event) {
 
 function _eventBlocksMatching(calendar, cname, recurrenceTime) {
     var blocks = null;
-
     var events = calendarEvents[calendar];
     if (events) {
         var occurences = events[cname];

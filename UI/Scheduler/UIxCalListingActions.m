@@ -1,6 +1,6 @@
 /* UIxCalListingActions.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2009 Inverse inc.
+ * Copyright (C) 2006-2010 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -40,6 +40,7 @@
 #import <NGExtensions/NSObject+Logs.h>
 
 #import <SOGo/SOGoDateFormatter.h>
+#import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserFolder.h>
@@ -81,14 +82,15 @@ static NSArray *tasksFields = nil;
 			      @"c_enddate", @"c_location", @"c_isallday",
 			      @"c_classification", @"c_partmails",
 			      @"c_partstates", @"c_owner", @"c_iscycle", @"c_nextalarm",
-			      @"c_recurrence_id", @"isException", nil];
+			      @"c_recurrence_id", @"isException", @"editable", @"erasable",
+			      @"ownerIsOrganizer", nil];
       [eventsFields retain];
     }
   if (!tasksFields)
     {
       tasksFields = [NSArray arrayWithObjects: @"c_name", @"c_folder",
 			     @"c_status", @"c_title", @"c_enddate",
-			     @"c_classification", @"editable", @"c_priority", nil];
+			     @"c_classification", @"editable", @"erasable", @"c_priority", nil];
       [tasksFields retain];
     }
 }
@@ -312,7 +314,9 @@ static NSArray *tasksFields = nil;
   NSMutableArray *infos;
   NSNull *marker;
   SOGoAppointmentFolders *clientObject;
-  NSString *role;
+  SOGoUser *ownerUser;
+  NSString *owner, *role;
+  BOOL isErasable;
 
   infos = [NSMutableArray array];
   marker = [NSNull null];
@@ -329,7 +333,10 @@ static NSArray *tasksFields = nil;
                                               to: endDate
                                            title: title
                                        component: component] objectEnumerator];
-
+	  owner = [currentFolder ownerInContext: context];
+	  ownerUser = [SOGoUser userWithLogin: owner];
+	  isErasable = ([owner isEqualToString: userLogin]
+			|| [[currentFolder aclsForUser: userLogin] containsObject: SOGoRole_ObjectEraser]);
           while ((newInfo = [currentInfos nextObject]))
             {
               if ([fields containsObject: @"editable"])
@@ -346,7 +353,24 @@ static NSArray *tasksFields = nil;
                     [newInfo setObject: [NSNumber numberWithInt: 0]
                                 forKey: @"editable"];
                 }
-              [newInfo setObject: [currentFolder nameInContainer]
+	      if ([fields containsObject: @"ownerIsOrganizer"])
+		{
+		  // Identifies whether the active user is the organizer
+		  // of this event.
+		  if ([ownerUser hasEmail: [newInfo objectForKey: @"c_orgmail"]])
+                    [newInfo setObject: [NSNumber numberWithInt: 1]
+                                forKey: @"ownerIsOrganizer"];
+                  else
+                    [newInfo setObject: [NSNumber numberWithInt: 0]
+                                forKey: @"ownerIsOrganizer"];
+		}
+	      if (isErasable)
+		[newInfo setObject: [NSNumber numberWithInt: 1]
+			    forKey: @"erasable"];
+	      else
+		[newInfo setObject: [NSNumber numberWithInt: 0]
+			    forKey: @"erasable"];
+	      [newInfo setObject: [currentFolder nameInContainer]
                           forKey: @"c_folder"];
               [newInfo setObject: [currentFolder ownerInContext: context]
                           forKey: @"c_owner"];

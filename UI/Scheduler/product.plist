@@ -24,8 +24,8 @@
                      cycles.plist,
                      );
 
-  factories = {
-  };
+    factories = {
+    };
 
   categories = {
     SOGoAppointmentFolders = {
@@ -284,7 +284,7 @@
           pageName    = "UIxOccurenceDialog";
         };
         confirmDeletion = { 
-          protectedBy = "ModifyComponent";
+          protectedBy = "Delete Object";
           pageName    = "UIxOccurenceDialog";
           actionName  = "confirmDeletion";
         };
@@ -309,7 +309,7 @@
           actionName  = "save";
         };
         delete = {
-          protectedBy = "Delete Objects";
+          protectedBy = "Delete Object";
           pageName    = "UIxOccurenceDialog";
           actionName  = "delete";
         };

@@ -1,3 +1,17 @@
+2010-01-21  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Scheduler/UIxCalListingActions.m
+	(_fetchFields:ofComponentType:): added field ownerIsOrganizer which
+	identifies whether or not the calendar owner is the organizer of
+	the event. Also added the field erasable which identifies if the
+	active user can delete objects in the current calendar.
+	* UI/WebServerResources/SchedulerUI.js
+	(-_deleteCalendarEventBlocks): when the organizer deletes an
+	event, also delete the event in the calendars of the attendees, if
+	visible. Also, don't allow to delete an event if the user can't
+	erase objects in the calendar.
+	(-_deleteCalendarEventCache:): new function to update the events cache.
+
 2010-01-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentInboxFolder.m
