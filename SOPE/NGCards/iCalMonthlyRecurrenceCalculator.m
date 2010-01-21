@@ -156,7 +156,7 @@ static void NGMonthDaySet_fillWithByDayX (NGMonthDaySet *daySet,
   
   if (occurrence1 >= 0) 
     {
-      for (dayInMonth = 1, dow = firstDoWInMonth; dayInMonth<=31; dayInMonth++) 
+      for (dayInMonth = 1, dow = firstDoWInMonth; dayInMonth <= 31; dayInMonth++) 
 	{
 	  // TODO: complete me
       
@@ -433,7 +433,7 @@ static void NGMonthDaySet_fillWithByDayX (NGMonthDaySet *daySet,
 	    the event is not necessarily a date of the sequence!
 
 	    The 'numDaysInMonth' localvar contains the number of days in the
-	    current month (eg 31 for Januar, 28 for most February's, etc)
+	    current month (eg 31 for January, 28 for most February's, etc)
 	
 	    Eg: MONTHLY;BYDAY=-1WE (last wednesday, every month)
 	
