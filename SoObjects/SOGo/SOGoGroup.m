@@ -153,7 +153,7 @@
       
       // We check to see if it's a group
       classes = [[entry attributeWithName: @"objectClass"] allStringValues];
-      NSLog(@"classes for %@ = %@", theValue, classes);
+      // NSLog(@"classes for %@ = %@", theValue, classes);
 
       // Found a group, let's return it.
       if ([classes containsObject: @"group"] ||
