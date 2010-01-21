@@ -138,7 +138,7 @@
   return component;
 }
 
-- (NSException *) prepareDelete;
+- (NSException *) prepareDelete
 {
   NSArray *occurences;
   NSCalendarDate *recurrenceId, *currentId;
