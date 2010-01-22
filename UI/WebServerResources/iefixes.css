@@ -331,9 +331,11 @@ TABLE#categoriesList
 DIV#windowButtons
 { bottom: 11px; }
 
-TABLE.frame,
-TABLE.framenocaption
+TABLE.frame
 { margin-top: -4px; }
+
+TABLE.framenocaption
+{ margin-top: 17px; }
 
 TABLE.frame TBODY
 { padding: 20px; }
