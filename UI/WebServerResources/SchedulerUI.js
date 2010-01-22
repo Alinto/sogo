@@ -764,7 +764,7 @@ function tasksListCallback(http) {
                 var cname = escape(data[i][0]);
                 listItem.setAttribute("id", calendar + "-" + cname);
                 //listItem.addClassName(data[i][5]); // Classification
-                listItem.addClassName(data[i][8]);
+                listItem.addClassName(data[i][9]);
                 listItem.calendar = calendar;
                 listItem.addClassName("calendarFolder" + calendar);
                 listItem.cname = cname;
