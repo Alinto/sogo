@@ -22,7 +22,7 @@
 2010-01-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentInboxFolder.m
-	(-davCalendarFreeBusySet): only advertise the collections owner by
+	(-davCalendarFreeBusySet): only advertise the collections owned by
 	the inbox's owner.
 	(-davScheduleDefaultCalendarURL): new caldav accessor.
 
