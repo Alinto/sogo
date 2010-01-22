@@ -79,8 +79,12 @@
     {
       ref = [[list cardReferences] objectAtIndex: i];
       row = [NSMutableDictionary dictionary];
-      [row setObject: [NSString stringWithFormat: @"%@ <%@>", [ref fn], [ref email]]
-              forKey: @"name"];
+      if ([[ref email] length] > 0)
+	[row setObject: [NSString stringWithFormat: @"%@ <%@>", [ref fn], [ref email]]
+		forKey: @"name"];
+      else
+	[row setObject: [ref fn]
+		forKey: @"name"];
       [row setObject: [ref reference] forKey: @"id"];
       [rc addObject: row];
     }

@@ -61,6 +61,11 @@
   return [list cardReferences];
 }
 
+- (BOOL) itemHasEmail
+{
+  return [[item email] length] > 0;
+}
+
 - (NSString *) itemHref
 {
   return [NSString stringWithFormat: @"mailto:%@",
