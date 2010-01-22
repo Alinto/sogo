@@ -1,5 +1,8 @@
 2010-01-22  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/Contacts/UIxListEditor.m (-references): avoid printing the
+	email address between brackets if not defined.
+
 	* UI/Contacts/UIxListView.m (-itemHasEmail): new method that
 	returns YES if the current list item has an email address.
 
