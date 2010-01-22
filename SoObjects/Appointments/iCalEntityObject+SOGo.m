@@ -42,9 +42,12 @@
 
 #import "iCalEntityObject+SOGo.h"
 
+NSCalendarDate *iCalDistantFuture = nil;
+NSNumber *iCalDistantFutureNumber = nil;
+
 @implementation iCalEntityObject (SOGoExtensions)
 
-+ (void) initializeSOGoExtensions;
++ (void) initializeSOGoExtensions
 {
   if (!iCalDistantFuture)
     {

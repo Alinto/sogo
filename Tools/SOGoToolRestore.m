@@ -33,6 +33,7 @@
 #import <GDLContentStore/GCSFolder.h>
 #import <GDLContentStore/NSURL+GCS.h>
 
+#import <Appointments/iCalEntityObject+SOGo.h>
 #import <SOGo/SOGoUserManager.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/SOGoUser.h>
@@ -63,6 +64,8 @@
   [bm setBundleSearchPaths: [NSArray arrayWithObject: SOGO_LIBDIR]];
   [[bm bundleWithName: @"Appointments" type: @"SOGo"] load];
   [[bm bundleWithName: @"Contacts" type: @"SOGo"] load];
+
+  [iCalEntityObject initializeSOGoExtensions];
 }
 
 + (NSString *) command

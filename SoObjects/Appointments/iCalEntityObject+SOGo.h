@@ -27,8 +27,8 @@
 
 @class SOGoUser;
 
-NSCalendarDate *iCalDistantFuture;
-NSNumber *iCalDistantFutureNumber;
+extern NSCalendarDate *iCalDistantFuture;
+extern NSNumber *iCalDistantFutureNumber;
 
 @interface iCalEntityObject (SOGoExtensions)
 
