@@ -77,6 +77,14 @@ static NSString *headerKeys[] = {@"subject", @"to", @"cc", @"bcc",
 				 @"from", @"replyTo", @"message-id",
 				 nil};
 
+#warning -[NGImap4Connection postData:flags:toFolderURL:] should be enhanced \
+  to return at least the new uid
+@interface NGImap4Connection (SOGoHiddenMethods)
+
+- (NSString *) imap4FolderNameForURL: (NSURL *) url;
+
+@end
+
 @implementation SOGoDraftObject
 
 static NGMimeType  *MultiMixedType = nil;

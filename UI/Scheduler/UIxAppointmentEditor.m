@@ -324,7 +324,7 @@
                          onObject: co
                         inContext: context])
         method = [NSString stringWithFormat:@"%@/%@.ics/editAsAppointment",
-                           [co soURL], objectId];
+                           [co soURL], objectId] ;
       else
         method = [NSString stringWithFormat: @"%@/Calendar/personal/%@.ics/editAsAppointment",
                            [self userFolderPath], objectId];

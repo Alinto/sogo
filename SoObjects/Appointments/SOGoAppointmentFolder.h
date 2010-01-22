@@ -82,6 +82,12 @@ typedef enum {
 - (NSString *) resourceNameForEventUID: (NSString *) _uid;
 
 /* fetching */
+- (NSArray *) bareFetchFields: (NSArray *) fields
+                         from: (NSCalendarDate *) startDate
+                           to: (NSCalendarDate *) endDate 
+                        title: (NSString *) title
+                    component: (NSString *) component
+            additionalFilters: (NSString *) filters;
 
 - (NSArray *)    fetchFields: (NSArray *) _fields
 			from: (NSCalendarDate *) _startDate

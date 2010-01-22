@@ -31,7 +31,10 @@
        associations: (NSDictionary *) associations
 	   template: (WOElement *) newTemplate
 {
-  ASSIGN (template, newTemplate);
+  if ((self = [super initWithName: name
+                     associations: associations
+                         template: newTemplate]))
+    ASSIGN (template, newTemplate);
 
   return self;
 }

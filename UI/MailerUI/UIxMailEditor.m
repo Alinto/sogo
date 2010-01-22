@@ -26,7 +26,10 @@
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoSubContext.h>
+#define COMPILING_NGOBJWEB 1 /* we want httpRequest for parsing multi-part
+                                form data */
 #import <NGObjWeb/WORequest.h>
+#undef COMPILING_NGOBJWEB
 #import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -498,12 +501,12 @@ static NSArray *infoKeys = nil;
   // TODO: need to validate whether we have a To etc
   
   /* first, save form data */
-  result = [self validateForSend];
+  result = (id <WOActionResults>) [self validateForSend];
   if (!result)
     {
       if ([self _saveFormInfo])
 	{
-	  result = [[self clientObject] sendMail];
+	  result = (id <WOActionResults>) [[self clientObject] sendMail];
 	  if (!result)
 	    result = [self jsCloseWithRefreshMethod: @"refreshCurrentFolder()"];
 	}

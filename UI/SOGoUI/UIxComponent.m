@@ -365,16 +365,6 @@ static NSMutableArray *abbrMonthLabelKeys = nil;
   return [[currentClient baseURLInContext: context] hostlessURL];
 }
 
-- (NSString *) resourcesPath
-{
-  WOResourceManager *rm;
-
-  if ((rm = [self resourceManager]) == nil)
-    rm = [[WOApplication application] resourceManager];
-
-  return [rm webServerResourcesPath];
-}
-
 - (NSString *) ownPath
 {
   NSString *uri;

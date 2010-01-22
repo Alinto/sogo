@@ -39,12 +39,8 @@
 
 @protocol SOGoContactObject
 
-- (NSString *) contentAsString;
 - (NGVCard *) vCard;
 - (void) save;
-
-- (NSString *) davEntityTag;
-- (NSString *) nameInContainer;
 
 @end
 

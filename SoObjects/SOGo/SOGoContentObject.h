@@ -29,6 +29,7 @@
 @class NSException;
 @class NSString;
 @class SOGoGCSFolder;
+@class WOContext;
 
 @interface SOGoContentObject : SOGoObject
 {
@@ -60,6 +61,8 @@
                         baseVersion: (unsigned int) _baseVersion;
 - (NSException *) saveContentString: (NSString *)_str;
 
+- (id) PUTAction: (WOContext *) _ctx;
+
 /* actions */
 - (NSException *) copyToFolder: (SOGoGCSFolder *) newFolder;
 - (NSException *) moveToFolder: (SOGoGCSFolder *) newFolder;
@@ -80,7 +83,7 @@
 
 @interface SOGoContentObject (OptionalMethods)
 
-- (void) prepareDelete;
+- (NSException *) prepareDelete;
 
 @end
 

@@ -35,8 +35,11 @@
 @protocol SOGoComponentOccurence
 
 - (iCalRepeatableEntityObject *) occurence;
+- (void) setIsNew: (BOOL) newIsNew;
 - (BOOL) isNew;
-- (NSException *) prepareDelete;
+
+- (NSException *) changeParticipationStatus: (NSString *) newPartStat
+                               withDelegate: (iCalPerson *) delegate;
 
 @end
 
@@ -54,10 +57,6 @@
 
 - (void) setComponent: (iCalRepeatableEntityObject *) newComponent;
 - (void) setMasterComponent: (iCalRepeatableEntityObject *) newMaster;
-- (void) setIsNew: (BOOL) newIsNew;
-
-- (NSException *) changeParticipationStatus: (NSString *) newPartStat
-                               withDelegate: (iCalPerson *) delegate;
 
 @end
 

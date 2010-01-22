@@ -55,6 +55,8 @@
 @interface SOGoParentFolder (Private)
 
 - (NSException *) initSubscribedSubFolders;
+- (NSException *) _fetchPersonalFolders: (NSString *) sql
+                            withChannel: (EOAdaptorChannel *) fc;
 
 @end
 
@@ -265,8 +267,7 @@
                                    attributes: nil]];
       componentSet
         = [davElementWithContent (@"supported-calendar-component-set",
-                                  XMLNS_CALDAV,
-                                  components)
+                                  XMLNS_CALDAV, components)
                                  asWebDAVValue];
       [componentSet retain];
     }
@@ -284,7 +285,6 @@
 
   us = [[SOGoUser userWithLogin: [self ownerInContext: nil]]
 	 userSettings];
- 
   tmp = [us objectForKey: @"Calendar"];
   if (tmp)
     {
@@ -312,7 +312,6 @@
 
   isWebRequest = [[context request] handledByDefaultHandler];
   error = [super _fetchPersonalFolders: sql withChannel: fc];
-
   if (!error)
     {
       webCalendarIds = [self webCalendarIds];
@@ -449,26 +448,20 @@
   static NSArray *readAccessRoles = nil;
  
   if (!writeAccessRoles)
-    {
-      writeAccessRoles = [NSArray arrayWithObjects:
-                                    SOGoCalendarRole_ConfidentialModifier,
-                                  SOGoRole_ObjectCreator,
-                                  SOGoRole_ObjectEraser,
-                                  SOGoCalendarRole_PrivateModifier,
-                                  SOGoCalendarRole_PublicModifier,
-                                  nil];
-      [writeAccessRoles retain];
-    }
+    writeAccessRoles = [[NSArray alloc] initWithObjects:
+                                          SOGoCalendarRole_ConfidentialModifier,
+                                        SOGoRole_ObjectCreator,
+                                        SOGoRole_ObjectEraser,
+                                        SOGoCalendarRole_PrivateModifier,
+                                        SOGoCalendarRole_PublicModifier,
+                                        nil];
  
   if (!readAccessRoles)
-    {
-      readAccessRoles = [NSArray arrayWithObjects:
-                                   SOGoCalendarRole_ConfidentialViewer,
-                                 SOGoCalendarRole_PrivateViewer,
-                                 SOGoCalendarRole_PublicViewer,
-                                 nil];
-      [readAccessRoles retain];
-    }
+    readAccessRoles = [[NSArray alloc] initWithObjects:
+                                         SOGoCalendarRole_ConfidentialViewer,
+                                       SOGoCalendarRole_PrivateViewer,
+                                       SOGoCalendarRole_PublicViewer,
+                                       nil];
 
   return (hasWriteAccess) ? writeAccessRoles : readAccessRoles;
 }

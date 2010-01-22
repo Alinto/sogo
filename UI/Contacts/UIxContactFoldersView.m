@@ -177,7 +177,7 @@
 - (id <WOActionResults>) allContactSearchAction
 {
   id <WOActionResults> result;
-  id <SOGoContactFolder> folder;
+  SOGoFolder <SOGoContactFolder> *folder;
   NSString *searchText, *mail;
   NSDictionary *data;
   NSArray *folders, *contacts, *descriptors, *sortedContacts;

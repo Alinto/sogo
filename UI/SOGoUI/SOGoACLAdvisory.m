@@ -37,6 +37,15 @@
 
 #import "SOGoACLAdvisory.h"
 
+/* those methods appear here because SOGoMailFolder is not a descendant of
+   SOGoFolder... */
+@interface SOGoObject (SOGoFolderACLMethods)
+
+- (NSString *) displayName;
+- (NSString *) folderType;
+
+@end
+
 @implementation SOGoACLAdvisory
 
 - (id) init

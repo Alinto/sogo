@@ -1462,9 +1462,11 @@
     }
 }
 
-- (void) prepareDelete
+- (NSException *) prepareDelete
 {
   [self prepareDeleteOccurence: nil];
+
+  return nil;
 }
 
 /* message type */

@@ -43,6 +43,8 @@
       withLDIFEntry: (NSDictionary *) newEntry
         inContainer: (id) newContainer;
 
+- (NSString *) davEntityTag;
+
 @end
 
 #endif /* SOGOCONTACTLDIFENTRY_H */
