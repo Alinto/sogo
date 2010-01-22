@@ -341,7 +341,8 @@ TABLE.frame TBODY
 { padding: 20px; }
 
 UL#calendarList
-{ height: 100px; }
+{ margin-top: 2px;
+  height: 100px; }
 
 A.toolbarButton SPAN, 
 A.toolbarButton:hover SPAN {
