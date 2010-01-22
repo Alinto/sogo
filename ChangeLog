@@ -8,6 +8,9 @@
 
 2010-01-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/MailerUI.js (composeNewMessage): fixed
+	potential js error in IE when no mailbox is selected.
+
 	* Tools/SOGoToolRestore.m (+initialize): we need to invoke
 	[iCalEntityObject+SOGo initializeSOGoExtensions], otherwise the
 	extraction of quick records will cause a crash because some global
