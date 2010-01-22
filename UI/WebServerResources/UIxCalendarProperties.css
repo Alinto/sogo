@@ -11,15 +11,20 @@ FIELDSET
   border-top: 1px solid #909090;
   border-left: 1px solid #909090; }
 
+FIELDSET DIV
+{ margin-left: 20px;
+  margin-right: 10px; }
 
 SPAN.label
 { cursor: default;
-  width: 10em;
+  width: 60px;
   text-align: right;
-  padding-right: 1em;
   line-height: 2em;
   float: left;
   display: block; }
+
+INPUT.checkBox
+{ margin-left: 35px; }
 
 SPAN.content
 { display: block;
@@ -27,7 +32,7 @@ SPAN.content
   vertical-align: middle; }
 
 SPAN.content INPUT.textField
-{ width: 50%; }
+{ width: 160px; }
 
 BUTTON#colorButton
 { display: none;
@@ -44,6 +49,9 @@ DIV#buttons
 
 INPUT#calendarSyncTag
 { width: 7em; }
+
+LABEL
+{ white-space: nowrap; }
 
 #webCalendarUrl SPAN.content
 { white-space: nowrap;

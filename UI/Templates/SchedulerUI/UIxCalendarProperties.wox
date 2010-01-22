@@ -52,13 +52,14 @@
               /></label></div>
 
         <var:if condition="mustSynchronize" const:negate="YES"
-          ><div><label><var:string
-                label:value="Tag:"/><input type="text"
+          ><div><span class="label"><var:string
+                label:value="Tag:"/></span
+              ><span class="content"><input type="text"
                 name="calendarSyncTag"
                 id="calendarSyncTag"
                 class="textField"
                 var:value="calendarSyncTag"
-                /></label
+                /></span
               ><var:if condition="synchronizeCalendar"><input type="hidden"
                 name="originalCalendarSyncTag"
                 id="originalCalendarSyncTag"
