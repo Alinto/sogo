@@ -973,12 +973,13 @@ function onMonthOverview() {
 }
 
 function onCalendarReload() {
+    refreshEvents();
     refreshTasks();
-    reloadWebCalendars ();
+    reloadWebCalendars();
     return false;
 }
 
-function reloadWebCalendars () {
+function reloadWebCalendars() {
     var url = ApplicationBaseURL + "reloadWebCalendars";
     if (document.reloadWebCalAjaxRequest) {
         document.reloadWebCalAjaxRequest.aborted = true;
