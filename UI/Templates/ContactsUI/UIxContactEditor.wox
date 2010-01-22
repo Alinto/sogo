@@ -109,7 +109,7 @@
               </td>
             </tr>
 	  </table>
-    <span class="caption"><var:string label:value="Phones" /></span>
+          <span class="caption"><var:string label:value="Phones" /></span>
           <table class="frame">
             <tr>
               <td>
