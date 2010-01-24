@@ -1,3 +1,7 @@
+2010-01-24  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* Reorganized the layout of automated tests.
+
 2010-01-22  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Contacts/UIxListEditor.m (-references): avoid printing the
