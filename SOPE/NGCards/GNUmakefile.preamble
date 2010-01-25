@@ -21,12 +21,12 @@ libNGCards_LIBRARIES_DEPEND_UPON += \
 	-lNGExtensions	\
 	-lEOControl	\
 	-lDOM		\
-	-lSaxObjC
+	-lSaxObjC \
+        -lgnustep-base
 
 NGCards_LIBRARIES_DEPEND_UPON += \
 	-framework NGExtensions	-framework EOControl \
-	-framework DOM -framework SaxObjC
-
+	-framework DOM -framework SaxObjC -framework Foundation
 
 # library/framework search pathes
 
