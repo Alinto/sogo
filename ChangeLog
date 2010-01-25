@@ -3,6 +3,7 @@
 	* UI/WebServerResources/SchedulerUI.js
 	(restoreCurrentDaySelection): fixed selection of current day in
 	mini-calendar.
+	* Updated version number to 1.2.0.
 
 2010-01-24  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
