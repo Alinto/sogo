@@ -3,6 +3,7 @@
 include ../../config.make
 include $(GNUSTEP_MAKEFILES)/common.make
 
+NEEDS_GUI=no
 BUNDLE_NAME      = SOGoElements
 BUNDLE_EXTENSION = .wox
 BUNDLE_INSTALL_DIR = $(SOPE_WOXBUILDERS)
