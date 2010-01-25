@@ -1,3 +1,9 @@
+2010-01-25  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/SchedulerUI.js
+	(restoreCurrentDaySelection): fixed selection of current day in
+	mini-calendar.
+
 2010-01-24  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* Reorganized the layout of automated tests.

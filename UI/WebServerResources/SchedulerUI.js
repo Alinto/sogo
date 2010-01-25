@@ -635,7 +635,7 @@ function gotoToday() {
 function setDateSelectorContent(content) {
     var div = $("dateSelectorView");
 
-    div.innerHTML = content;
+    div.update(content);
     if (currentDay.length > 0)
         restoreCurrentDaySelection(div);
 
@@ -810,25 +810,19 @@ function tasksListCallback(http) {
 }
 
 function restoreCurrentDaySelection(div) {
-    var elements = $(div).getElementsByTagName("a");
-    var day = null;
-    var i = 9;
-    while (!day && i < elements.length)
-        {
-            day = elements[i].day;
-            i++;
-        }
-
-    if (day
-        && day.substr(0, 6) == currentDay.substr(0, 6)) {
-        for (i = 0; i < elements.length; i++) {
-            day = elements[i].day;
-            if (day && day == currentDay) {
-                var td = $(elements[i]).getParentWithTagName("td");
-                if (document.selectedDate)
-                    document.selectedDate.deselect();
-                $(td).selectElement();
-                document.selectedDate = td;
+    var elements = $(div).select("TD.activeDay SPAN");
+    if (elements.size()) {
+        var day = elements[0].readAttribute('day');
+        if (day.substr(0, 6) == currentDay.substr(0, 6)) {
+            for (var i = 0; i < elements.length; i++) {
+                day = elements[i].readAttribute('day');
+                if (day && day == currentDay) {
+                    var td = $(elements[i]).getParentWithTagName("td");
+                    if (document.selectedDate)
+                        document.selectedDate.deselect();
+                    $(td).selectElement();
+                    document.selectedDate = td;
+                }
             }
         }
     }
@@ -910,7 +904,7 @@ function changeCalendarDisplay(data, newView) {
                 // Deselect day in date selector
                 if (document.selectedDate)
                     document.selectedDate.deselect();
-	
+		
                 // Select day in date selector
                 var selectedLink = $$('table#dateSelectorTable span[day='+day+']');
                 if (selectedLink.length > 0) {
@@ -918,7 +912,7 @@ function changeCalendarDisplay(data, newView) {
                     $(selectedCell).selectElement();
                     document.selectedDate = selectedCell;
                 }
-	
+
                 // Scroll to event
                 if (scrollEvent) {
                     preventAutoScroll = false;
