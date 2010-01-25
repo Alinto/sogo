@@ -12,23 +12,27 @@ ADDITIONAL_INCLUDE_DIRS += -I. -I..
 libGDLContentStore_LIBRARIES_DEPEND_UPON += \
 	-lGDLAccess			\
 	-lNGExtensions -lEOControl	\
-	-lDOM -lSaxObjC
+	-lDOM -lSaxObjC \
+        -lgnustep-base
 
 GDLContentStore_LIBRARIES_DEPEND_UPON += \
 	-framework GDLAccess	\
 	-framework NGExtensions	-framework EOControl \
-	-framework DOM -framework SaxObjC
+	-framework DOM -framework SaxObjC \
+        -framework Foundation
 
 ifneq ($(frameworks),yes)
 GCS_TOOL_LIBS += \
 	-lGDLContentStore -lGDLAccess	\
 	-lNGExtensions -lEOControl	\
-	-lDOM -lSaxObjC
+	-lDOM -lSaxObjC \
+        -lgnustep-base
 else
 GCS_TOOL_LIBS += \
 	-framework GDLContentStore -framework GDLAccess	\
 	-framework NGExtensions -framework EOControl	\
-	-framework DOM -framework SaxObjC
+	-framework DOM -framework SaxObjC \
+        -framework Foundation
 endif
 
 gcs_ls_TOOL_LIBS            += $(GCS_TOOL_LIBS)

@@ -1,5 +1,7 @@
 # compilation settings
 
+NEEDS_GUI=no
+
 SOPE_ROOT=../..
 SOPE_OBJ_ROOT=$(GNUSTEP_BUILD_DIR)/$(SOPE_ROOT)
 
