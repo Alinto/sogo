@@ -15,7 +15,7 @@
     var mailIsReply = <var:string value="isMailReply"/>;
   </script>
   <div class="popupMenu" id="contactsMenu">
-    <ul></ul>
+    <ul><!-- space --></ul>
   </div>
   <div class="menu" id="attachmentsMenu">
     <ul>
