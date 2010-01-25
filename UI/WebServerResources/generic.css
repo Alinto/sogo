@@ -812,7 +812,7 @@ SPAN.toolbarSeparator
   padding: 0px; }
 
 A.toolbarButton, 
-A.toolbarButton:hover, 
+A.toolbarButton:hover,
 A.smallToolbarButton, 
 A.smallToolbarButton:hover {
   display: inline;
@@ -834,7 +834,7 @@ A.smallToolbarButton:hover {
   background: transparent url('smalltoolbarbtn_a_bg.png') no-repeat scroll top right;
 }
 
-A.toolbarButton SPAN, 
+A.toolbarButton SPAN,
 A.toolbarButton:hover SPAN {
   text-align: center;
   display: block;
@@ -859,14 +859,15 @@ A.smallToolbarButton:hover SPAN {
   background: transparent url('smalltoolbarbtn_span_bg.png') no-repeat;
 }
 A.toolbarButton:active SPAN {
-    background-position: bottom left;
+  background-position: bottom left;
+  font-weight: bold;
 }
 A.smallToolbarButton:active SPAN {
     background-position: bottom left;
 }
 
-A[class~="_disabled"].toolbarButton,
-A[class~="_disabled"].toolbarButton:active
+A._disabled.toolbarButton,
+A._disabled.toolbarButton:active
 { color: #999; }
 
 P#mailerSelectionContainer
