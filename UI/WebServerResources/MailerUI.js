@@ -575,9 +575,17 @@ function onComposeMessage() {
 }
 
 function composeNewMessage() {
-    var account = Mailer.currentMailbox.split("/")[1];
-    var url = ApplicationBaseURL + "/" + encodeURI(account) + "/compose";
-    openMailComposeWindow(url);
+    var account;
+    if (Mailer.currentMailbox)
+        account = Mailer.currentMailbox.split("/")[1];
+    else if (mailAccounts.length)
+        account = mailAccounts[0][0];
+    else
+        account = null;
+    if (account) {
+        var url = ApplicationBaseURL + "/" + encodeURI(account) + "/compose";
+        openMailComposeWindow(url);
+    }
 }
 
 function openMailbox(mailbox, reload, idx, updateStatus) {

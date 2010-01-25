@@ -1,3 +1,7 @@
+2010-01-24  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* Reorganized the layout of automated tests.
+
 2010-01-22  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Contacts/UIxListEditor.m (-references): avoid printing the
@@ -7,6 +11,9 @@
 	returns YES if the current list item has an email address.
 
 2010-01-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/MailerUI.js (composeNewMessage): fixed
+	potential js error in IE when no mailbox is selected.
 
 	* Tools/SOGoToolRestore.m (+initialize): we need to invoke
 	[iCalEntityObject+SOGo initializeSOGoExtensions], otherwise the

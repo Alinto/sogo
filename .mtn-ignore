@@ -21,4 +21,4 @@ SOPE/NGCards/samples/CardElement.m
 SOPE/NGCards/samples/CardGroup.m
 SOPE/NGCards/samples/CardVersitRenderer.m
 SOPE/NGCards/samples/NGCardsSaxHandler.m
-Tests/config.py
+Tests/Integration/config.py

@@ -1772,7 +1772,24 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  
  static __inline__ NSException *_consumeIfMatch
    (NGImap4ResponseParser *self, unsigned char _m);
-@@ -488,6 +493,50 @@
+@@ -300,6 +305,16 @@
+       /* those starting with a number '24 ', eg '24 OK Completed' */
+       endOfCommand = (_parseTaggedResponse(self, result) == _tag);
+     }
++    else if (l0 == -1) {
++      *ex_ = [self->buffer lastException];
++      if (!*ex_)
++        *ex_
++          = [NSException exceptionWithName:@"UnexpectedEndOfStream"
++                                    reason:(@"the parsed stream ended"
++                                            @" unexpectedly")
++                                  userInfo:nil];
++      endOfCommand = YES;
++    }
+   }
+   return result;
+ }
+@@ -488,6 +503,50 @@
    return [self _parseDataIntoRAM:size];
  }
  
@@ -1823,7 +1840,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  static int _parseTaggedResponse(NGImap4ResponseParser *self,
                                  NGMutableHashMap *result_) 
  {
-@@ -584,6 +633,10 @@
+@@ -584,6 +643,10 @@
      break;
  
    case 'N':
@@ -1834,7 +1851,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
      if (_parseNoUntaggedResponse(self, result_))     // la: 2
        return;
      break;
-@@ -648,14 +701,171 @@
+@@ -648,14 +711,171 @@
    [result_ addObject:_parseUntil(self, '\n') forKey:@"description"];
  }
  
@@ -2007,7 +2024,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  - (void)_consumeOptionalSpace {
    if (_la(self, 0) == ' ') _consume(self, 1);
  }
-@@ -685,6 +895,10 @@
+@@ -685,6 +905,10 @@
      name = [self _parseQuotedString];
      _parseUntil(self, '\n');
    }
@@ -2018,7 +2035,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
    else
      name = _parseUntil(self, '\n');
    
-@@ -723,6 +937,85 @@
+@@ -723,6 +947,85 @@
    return YES;
  }
  
@@ -2104,7 +2121,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  - (BOOL)_parseACLResponseIntoHashMap:(NGMutableHashMap *)result_ {
    /*
      21 GETACL INBOX
-@@ -1030,10 +1323,15 @@
+@@ -1030,10 +1333,15 @@
    _consume(self, 7);
  
    if (_la(self, 0) == '"') {
@@ -2122,7 +2139,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
    else {
      name = _parseUntil(self, ' ');
    }
-@@ -1073,51 +1371,6 @@
+@@ -1073,51 +1381,6 @@
    return YES;
  }
  
@@ -2174,7 +2191,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  - (id)_decodeQP:(id)_string headerField:(NSString *)_field {
    if (![_string isNotNull])
      return _string;
-@@ -1185,7 +1438,7 @@
+@@ -1185,7 +1448,7 @@
    route   = [self _parseQuotedStringOrNIL]; [self _consumeOptionalSpace];
    mailbox = [self _parseQuotedStringOrNIL]; [self _consumeOptionalSpace];
    host    = [self _parseQuotedStringOrNIL]; [self _consumeOptionalSpace];
@@ -2183,7 +2200,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
    if (_la(self, 0) != ')') {
      [self logWithFormat:@"WARNING: IMAP4 envelope "
  	    @"address not properly closed (c0=%c,c1=%c): %@",
-@@ -1197,6 +1450,7 @@
+@@ -1197,6 +1460,7 @@
    address = [[NGImap4EnvelopeAddress alloc] initWithPersonalName:pname
  					    sourceRoute:route mailbox:mailbox
  					    host:host];
@@ -2191,7 +2208,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
    return address;
  }
  
-@@ -1382,7 +1636,15 @@
+@@ -1382,7 +1646,15 @@
  #if 0
      [self logWithFormat:@"PARSE KEY: %@", key];
  #endif
@@ -2208,7 +2225,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
        NSDictionary *content;
          
        if ((content = [self _parseBodyContent]) != nil)
-@@ -1594,8 +1856,11 @@
+@@ -1594,8 +1866,11 @@
      if (_decode)
        data = [data decodeQuotedPrintableValueOfMIMEHeaderField:nil];
      
@@ -2222,7 +2239,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
    }
    else {
      str = _parseUntil2(self, ' ', ')');
-@@ -1620,13 +1885,35 @@
+@@ -1620,13 +1895,35 @@
    return str;
  }
  
@@ -2259,7 +2276,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  static NSDictionary *_parseBodyParameterList(NGImap4ResponseParser *self)
  {
    NSMutableDictionary *list;
-@@ -1646,7 +1933,7 @@
+@@ -1646,7 +1943,7 @@
        _consumeIfMatch(self, ' ');
        value = _parseBodyDecodeString(self, YES, YES);
  
@@ -2268,7 +2285,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
      }
      _consumeIfMatch(self, ')');
    }
-@@ -1731,13 +2018,14 @@
+@@ -1731,13 +2028,14 @@
  static NSDictionary *_parseSingleBody(NGImap4ResponseParser *self,
  				      BOOL isBodyStructure) {
    NSString            *type, *subtype, *bodyId, *description,
@@ -2285,7 +2302,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
    _consumeIfMatch(self, ' ');
    parameterList = _parseBodyParameterList(self);
    _consumeIfMatch(self, ' ');
-@@ -1762,13 +2050,18 @@
+@@ -1762,13 +2060,18 @@
      _consumeIfMatch(self, ' ');
      [dict setObject:_parseBodyString(self, YES) forKey:@"lines"];
    }
@@ -2307,7 +2324,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
        _consumeIfMatch(self, ' ');
        [dict setObject:_parseParenthesizedAddressList(self) forKey:@"from"];
        _consumeIfMatch(self, ' ');
-@@ -1783,14 +2076,20 @@
+@@ -1783,14 +2086,20 @@
        _consumeIfMatch(self, ' ');
        [dict setObject:_parseParenthesizedAddressList(self) forKey:@"bcc"];
        _consumeIfMatch(self, ' ');
@@ -2331,7 +2348,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
      }
    }
  
-@@ -1805,14 +2104,9 @@
+@@ -1805,14 +2114,9 @@
  	      forKey: @"disposition"];
  	if (_la(self, 0) != ')') {
  	  _consume(self,1);
@@ -2349,7 +2366,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  	  if (_la(self, 0) != ')') {
  	    _consume(self,1);
  	    [dict setObject: _parseBodyString(self, YES)
-@@ -1829,6 +2123,7 @@
+@@ -1829,6 +2133,7 @@
  static NSDictionary *_parseMultipartBody(NGImap4ResponseParser *self,
  					 BOOL isBodyStructure) {
    NSMutableArray *parts;
@@ -2357,7 +2374,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
    NSString       *kind;
    NSMutableDictionary *dict;
  
-@@ -1854,14 +2149,9 @@
+@@ -1854,14 +2159,9 @@
  	      forKey: @"disposition"];
  	if (_la(self, 0) != ')') {
  	  _consume(self,1);
@@ -2375,7 +2392,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  	  if (_la(self, 0) != ')') {
  	    _consume(self,1);
  	    [dict setObject: _parseBodyString(self, YES)
-@@ -2170,6 +2460,21 @@
+@@ -2170,6 +2470,21 @@
    }
  }
  
@@ -2397,7 +2414,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  - (NSException *)exceptionForFailedMatch:(unsigned char)_match
    got:(unsigned char)_avail
  {
-@@ -2225,9 +2530,9 @@
+@@ -2225,9 +2540,9 @@
        [s release];
        
        if (c == '\n') {
@@ -2413,7 +2430,13 @@ Index: sope-mime/NGImap4/ChangeLog
 ===================================================================
 --- sope-mime/NGImap4/ChangeLog	(revision 1664)
 +++ sope-mime/NGImap4/ChangeLog	(working copy)
-@@ -1,3 +1,107 @@
+@@ -1,3 +1,113 @@
++2010-01-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
++
++	* NGImap4ResponseParser.m (-parseResponseForTagId:exception:):
++	detect "-1" return code from _la and leave the loop with a proper
++	execption when it occurs.
++
 +2010-01-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 +
 +	* NGImap4Connection.m (-doesMailboxExistAtURL:): sometimes an
@@ -3347,7 +3370,29 @@ Index: sope-mime/NGMail/NGMailAddressParser.m
  }
  
  static inline id parseWhiteSpaces(NGMailAddressParser *self, BOOL _guessMode) {
-@@ -84,7 +84,7 @@
+@@ -79,12 +79,29 @@
+   return returnValue;
+ }
+ 
++static void dumpBadString(unichar *text, int length) {
++  char *bytes;
++  NSMutableString *logString;
++  int count, max;
+ 
++  max = length * sizeof (unichar);
++  logString = [NSMutableString stringWithCapacity: max];
++  [logString appendString: @"dumping buggy atom string: "];
++  bytes = (char *) text;
++  for (count = 0; count < max; count++) {
++    [logString appendFormat: @"0x%X", bytes[count]];
++    if (count < (max - 1))
++      [logString appendString: @", "];
++  }
++
++  NSLog (@"%@", logString);
++}
++
+ static inline id parseAtom(NGMailAddressParser *self, BOOL _guessMode) {
    int  keepPos     = self->dataPos; // keep reference for backtracking
    id   returnValue = nil;
    BOOL isAtom      = YES;
@@ -3356,7 +3401,7 @@ Index: sope-mime/NGMail/NGMailAddressParser.m
    int  length      = 0;  // token text length
    BOOL done        = NO;
  
-@@ -94,7 +94,7 @@
+@@ -94,7 +111,7 @@
        done   = YES;
      }
      else {
@@ -3365,7 +3410,17 @@ Index: sope-mime/NGMail/NGMailAddressParser.m
        
        switch (c) {
          case '(' :  case ')': case '<': case '>':
-@@ -162,7 +162,7 @@
+@@ -128,6 +145,9 @@
+     else {
+       NSCAssert(length > 0, @"no atom with length=0");
+       returnValue = [mkStrObj(text, length) autorelease];
++      if (!returnValue) {
++        dumpBadString(text, length);
++      }
+       NSCAssert([returnValue isKindOfClass:StrClass], @"got no string ..");
+     }
+   }
+@@ -162,7 +182,7 @@
    int  keepPos     = self->dataPos; // keep reference for backtracking
    id   returnValue = nil;
    BOOL isQText    = YES;
@@ -3374,7 +3429,7 @@ Index: sope-mime/NGMail/NGMailAddressParser.m
    int  length      = 0;  // token text length
    BOOL done        = YES;
  
-@@ -172,9 +172,9 @@
+@@ -172,9 +192,9 @@
        done    = YES;
      }
      else {
@@ -3386,7 +3441,7 @@ Index: sope-mime/NGMail/NGMailAddressParser.m
          case '"' :  
          case '\\':
          case 13  :
-@@ -215,7 +215,7 @@
+@@ -215,7 +235,7 @@
    int  keepPos     = self->dataPos; // keep reference for backtracking
    id   returnValue = nil;
    BOOL isDText    = YES;
@@ -3395,7 +3450,7 @@ Index: sope-mime/NGMail/NGMailAddressParser.m
    int  length      = 0;  // token text length
    BOOL done        = YES;
  
-@@ -225,9 +225,9 @@
+@@ -225,9 +245,9 @@
        done    = YES;
      }
      else {
@@ -3407,7 +3462,7 @@ Index: sope-mime/NGMail/NGMailAddressParser.m
          case '[':  case ']':
          case '\\': case 13:
            isDText = (length > 0);
-@@ -320,42 +320,47 @@
+@@ -320,42 +340,47 @@
  /* constructors */
  
  + (id)mailAddressParserWithData:(NSData *)_data {
