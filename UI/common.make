@@ -5,6 +5,7 @@ include $(GNUSTEP_MAKEFILES)/common.make
 include ../../Version
 -include ./Version
 
+NEEDS_GUI=no
 BUNDLE_EXTENSION   = .SOGo
 BUNDLE_INSTALL_DIR = $(SOGO_LIBDIR)
 
