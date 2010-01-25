@@ -772,8 +772,8 @@ function tasksListCallback(http) {
                 input.setAttribute("type", "checkbox");
                 if (parseInt(data[i][6]) == 0)
                   input.setAttribute ("disabled", true);
-                if (parseInt(data[i][7]) == 1) {
-                  listItem.addClassName ("important");
+                if (parseInt(data[i][8]) == 1) {
+                  listItem.addClassName("important");
                 }
                 listItem.appendChild(input);
                 input.observe("click", updateTaskStatus, true);
