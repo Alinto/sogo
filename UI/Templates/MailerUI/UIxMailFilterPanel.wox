@@ -26,12 +26,6 @@
             autocomplete="off" name="search" type="text" var:value="searchText"
 	    menuid="searchMenu" />
         </span>
-
-<!--        <var:string label:value="View:" />
-        <var:popup list="filters" 
-          item="filter" string="filterLabel" value="filter"
-          selection="selectedFilter"
-          const:name="filterpopup" /> -->
       </var:if>
     </div>
   </container>
