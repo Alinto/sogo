@@ -1,7 +1,5 @@
 /* -*- Mode: java; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
-/* JavaScript for SOGoCalendar */
-
 var listFilter = 'view_today';
 
 var listOfSelection = null;
@@ -764,14 +762,15 @@ function tasksListCallback(http) {
                 var cname = escape(data[i][0]);
                 listItem.setAttribute("id", calendar + "-" + cname);
                 //listItem.addClassName(data[i][5]); // Classification
-                listItem.addClassName(data[i][9]);
+                listItem.addClassName(data[i][9]); // status (duelater, completed, etc)
                 listItem.calendar = calendar;
                 listItem.addClassName("calendarFolder" + calendar);
                 listItem.cname = cname;
+                listItem.erasable = data[i][7];
                 var input = $(document.createElement("input"));
                 input.setAttribute("type", "checkbox");
-                if (parseInt(data[i][6]) == 0)
-                  input.setAttribute ("disabled", true);
+                if (parseInt(data[i][6]) == 0) // editable?
+                  input.setAttribute("disabled", true);
                 if (parseInt(data[i][8]) == 1) {
                   listItem.addClassName("important");
                 }
@@ -783,10 +782,10 @@ function tasksListCallback(http) {
                 $(input).addClassName("checkBox");
 
                 var t = new Element ("span");
-                t.update (data[i][3]);
+                t.update(data[i][3]);
                 listItem.appendChild (t);
 
-                listItem.attachMenu ("tasksListMenu");
+                listItem.attachMenu("tasksListMenu");
             }
 
             list.scrollTop = list.previousScroll;
