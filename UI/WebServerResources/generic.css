@@ -860,10 +860,9 @@ A.smallToolbarButton:hover SPAN {
 }
 A.toolbarButton:active SPAN {
   background-position: bottom left;
-  font-weight: bold;
 }
 A.smallToolbarButton:active SPAN {
-    background-position: bottom left;
+  background-position: bottom left;
 }
 
 A._disabled.toolbarButton,
