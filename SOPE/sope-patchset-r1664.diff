@@ -811,7 +811,85 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  		    seqstr, _flag ? '+' : '-', flagstr];
    
    return [self->normer normalizeResponse:[self processCommand:cmd]];
-@@ -967,11 +1031,12 @@
+@@ -896,35 +960,23 @@
+   NSArray   *flags;
+   NGHashMap *result;
+   NSString  *message, *icmd;
++  char       *new;
++  const char *old;
++  int         cntOld   = 0;
++  int         cntNew   = 0;
++  int         len      = 0;
+ 
+   flags   = _flags2ImapFlags(self, _flags);
+   if ((_folder = [self _folder2ImapFolder:_folder]) == nil)
+     return nil;
+   
++  /* Remove bare newlines */
++  old = [_message bytes];
++  len = [_message length];
+ 
+-  /* Remove bare newlines */
+-  {
+-    char       *new;
+-    const char *old;
+-    int         cntOld   = 0;
+-    int         cntNew   = 0;
+-    int         len      = 0;
+-    
+-    old = [_message bytes];
+-    len = [_message length];
+-    
+-    new = calloc(len * 2 + 4, sizeof(char));
+-    
+-    while (cntOld < (len - 1)) {
+-      if (old[cntOld] == '\n') {
+-        new[cntNew] = '\r'; cntNew++;
+-        new[cntNew] = '\n'; cntNew++;
+-      }
+-      else if (old[cntOld] != '\r') {
+-        new[cntNew] = old[cntOld]; cntNew++;
+-      }
+-      cntOld++;
+-    }
++  new = calloc(len * 2 + 4, sizeof(char));
++
++  while (cntOld < (len - 1)) {
+     if (old[cntOld] == '\n') {
+       new[cntNew] = '\r'; cntNew++;
+       new[cntNew] = '\n'; cntNew++;
+@@ -932,16 +984,24 @@
+     else if (old[cntOld] != '\r') {
+       new[cntNew] = old[cntOld]; cntNew++;
+     }
+-    
+-    // TODO: fix this junk, do not treat the message as a string, its NSData
+-    message = [(NSString *)[NSString alloc] initWithCString:new length:cntNew];
+-    if (new != NULL) free(new); new = NULL;
++    cntOld++;
+   }
+-  
++  if (old[cntOld] == '\n') {
++    new[cntNew] = '\r'; cntNew++;
++    new[cntNew] = '\n'; cntNew++;
++  }
++  else if (old[cntOld] != '\r') {
++    new[cntNew] = old[cntOld]; cntNew++;
++  }
++
++  // TODO: fix this junk, do not treat the message as a string, its NSData
++  message = [(NSString *)[NSString alloc] initWithUTF8String:new];
++  if (new != NULL) free(new); new = NULL;
++
+   icmd = [NSString stringWithFormat:@"append \"%@\" (%@) {%d}",
+                      _folder,
+                      [flags componentsJoinedByString:@" "],
+-                     [message cStringLength]];
++                     cntNew];
+   result = [self processCommand:icmd
+                  withTag:YES withNotification:NO];
+   
+@@ -967,11 +1027,12 @@
    descr = @"Could not process qualifier for imap search "; 
    descr = [descr stringByAppendingString:reason];           
    
@@ -827,7 +905,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  }
  
  - (NSString *)_searchExprForQual:(EOQualifier *)_qualifier {
-@@ -1093,7 +1158,18 @@
+@@ -1093,7 +1154,18 @@
       Eg: UID SORT ( DATE REVERSE SUBJECT ) UTF-8 TODO
    */
    NSString *tmp;
@@ -846,7 +924,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    if ([_sortSpec isKindOfClass:[NSArray class]])
      tmp = [self _generateIMAP4SortOrderings:_sortSpec];
    else if ([_sortSpec isKindOfClass:[EOSortOrdering class]])
-@@ -1107,9 +1183,10 @@
+@@ -1107,9 +1179,10 @@
      tmp = @"DATE";
    }
    
@@ -859,7 +937,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  }
  - (NSDictionary *)sort:(NSArray *)_sortOrderings
    qualifier:(EOQualifier *)_qual
-@@ -1130,7 +1207,7 @@
+@@ -1130,7 +1203,7 @@
      return nil;
    }
    
@@ -868,7 +946,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    return [self->normer normalizeSearchResponse:[self processCommand:s]];
  }
  
-@@ -1142,7 +1219,7 @@
+@@ -1142,7 +1215,7 @@
    if ((_folder = [self _folder2ImapFolder:_folder]) == nil)
      return nil;
    
@@ -877,7 +955,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    return [self->normer normalizeGetACLResponse:[self processCommand:cmd]];
  }
  
-@@ -1155,7 +1232,7 @@
+@@ -1155,7 +1228,7 @@
      return nil;
    
    cmd = [NSString stringWithFormat:@"setacl \"%@\" \"%@\" \"%@\"",
@@ -886,7 +964,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    return [self->normer normalizeResponse:[self processCommand:cmd]];
  }
  
-@@ -1166,7 +1243,7 @@
+@@ -1166,7 +1239,7 @@
      return nil;
    
    cmd = [NSString stringWithFormat:@"deleteacl \"%@\" \"%@\"",
@@ -895,7 +973,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    return [self->normer normalizeResponse:[self processCommand:cmd]];
  }
  
-@@ -1177,7 +1254,7 @@
+@@ -1177,7 +1250,7 @@
      return nil;
    
    cmd = [NSString stringWithFormat:@"listrights \"%@\" \"%@\"",
@@ -904,7 +982,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
    return [self->normer normalizeListRightsResponse:[self processCommand:cmd]];
  }
  
-@@ -1187,12 +1264,94 @@
+@@ -1187,12 +1260,94 @@
    if ((_folder = [self _folder2ImapFolder:_folder]) == nil)
      return nil;
    
@@ -1000,7 +1078,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  - (NSException *)_processCommandParserException:(NSException *)_exception {
    [self logWithFormat:@"ERROR(%s): catched IMAP4 parser exception %@: %@",
  	__PRETTY_FUNCTION__, [_exception name], [_exception reason]];
-@@ -1412,21 +1571,24 @@
+@@ -1412,21 +1567,24 @@
        return nil;
    }
  
@@ -1033,7 +1111,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  }
  
  - (NSString *)_imapFolder2Folder:(NSString *)_folder {
-@@ -1442,10 +1604,16 @@
+@@ -1442,10 +1600,16 @@
        return nil;
    }
    
@@ -2430,8 +2508,11 @@ Index: sope-mime/NGImap4/ChangeLog
 ===================================================================
 --- sope-mime/NGImap4/ChangeLog	(revision 1664)
 +++ sope-mime/NGImap4/ChangeLog	(working copy)
-@@ -1,3 +1,113 @@
+@@ -1,3 +1,116 @@
 +2010-01-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
++
++	* NGImap4Client.m (-append:toFolder:withFlags:): we use the count
++	found in cntNew to avoid a crash with GNUstep's cStringLength.
 +
 +	* NGImap4ResponseParser.m (-parseResponseForTagId:exception:):
 +	detect "-1" return code from _la and leave the loop with a proper
@@ -4920,11 +5001,30 @@ Index: sope-core/NGStreams/GNUmakefile.preamble
  
  libNGStreams_INCLUDE_DIRS += \
  	-I$(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS) \
+Index: sope-core/NGStreams/NGCTextStream.m
+===================================================================
+--- sope-core/NGStreams/NGCTextStream.m	(revision 1664)
++++ sope-core/NGStreams/NGCTextStream.m	(working copy)
+@@ -296,7 +296,7 @@
+   unsigned char *str, *buf;
+   unsigned toGo;
+ 
+-#if MAC_OS_X_VERSION_MAX_ALLOWED >= 1040
++#if MAC_OS_X_VERSION_MAX_ALLOWED >= 1040 || (GNUSTEP && OS_API_VERSION(100400,GS_API_LATEST))
+   if ((toGo = [_string maximumLengthOfBytesUsingEncoding:self->encoding]) == 0)
+     return YES;
+   
 Index: sope-core/NGStreams/ChangeLog
 ===================================================================
 --- sope-core/NGStreams/ChangeLog	(revision 1664)
 +++ sope-core/NGStreams/ChangeLog	(working copy)
-@@ -1,3 +1,14 @@
+@@ -1,3 +1,20 @@
++2010-01-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
++
++	* NGCTextStream.m (-writeString:): use
++	getCString:maxLength:encoding: on GNUstep too to avoid a possible
++	segfault in GNUstep's handling of cStringLength.
++
 +2009-11-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 +
 +	* NGActiveSocket.m (+socketPair): removed the domain: parameter as
