@@ -13,6 +13,8 @@
 - added support for iCal 4 delegation
 - added support for letting the user choose which calendars should be shared
   with iCal delegation
+- added the ability for users to subscribe other users to their resources from
+  the ACL dialog
 - added fixes for bugs in GNUstep 1.19.3 (NSURL)
 
 1.1-20091028 (1.1.0)
