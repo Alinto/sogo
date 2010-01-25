@@ -106,6 +106,7 @@ DIV#descriptionDiv DIV.fakeTextArea
 { background-image: url("abcard.gif");
   background-repeat: no-repeat;
   background-position: 4px center;
+  background-color: #CCDDEC;
   padding: 2px 2px 2px 24px;
   width: 260px; }
 

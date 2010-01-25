@@ -344,7 +344,7 @@ UL#calendarList
 { margin-top: 2px;
   height: 100px; }
 
-A.toolbarButton SPAN, 
+A.toolbarButton SPAN,
 A.toolbarButton:hover SPAN {
   height: 50px;
   padding: 5px 2px 6px 5px;
@@ -354,7 +354,7 @@ A.smallToolbarButton SPAN, A.smallToolbarButton:hover SPAN
 { height: 33px; }
 
 A.toolbarButton:active SPAN {
-    background-position: auto; /*broken*/
+  background-position: auto; /*broken*/
 }
 A.toolbarButton, A.toolbarButton SPAN, A.button, A.button SPAN
 { color: #535D6D; }
