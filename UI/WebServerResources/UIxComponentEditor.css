@@ -1,5 +1,9 @@
-SELECT#calendarList
-{ width: 15em; }
+SELECT#calendarList,
+SELECT#categoryList,
+SELECT#priorityList,
+SELECT#repeatList,
+SELECT#reminderList
+{ width: 13em; }
 
 #attendeesLabel
 { display: none; }

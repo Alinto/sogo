@@ -45,7 +45,8 @@
             var:value="location"
             /></span></label>
       <span class="checkBoxList"><var:string label:value="Category:" />
-        <span class="content"><var:popup list="categoryList" item="item"
+        <span class="content"><var:popup const:id="categoryList"
+	    list="categoryList" item="item"
             label:noSelectionString="category_none"
             string="item" selection="category"
             /> <var:string label:value="Calendar:" />
@@ -56,7 +57,7 @@
 	    var:selection="componentCalendar"
 	    /></span></span>
       <span class="checkBoxList"><var:string label:value="Priority:" />
-         <span class="content"><var:popup list="priorities" item="item"
+         <span class="content"><var:popup const:id="priorityList" list="priorities" item="item"
             label:noSelectionString="prio_0"
             string="itemPriorityText" selection="priority"/>
       </span></span>
