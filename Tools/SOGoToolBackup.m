@@ -137,7 +137,7 @@
     allUsers = [lm fetchUsersMatching: @"." inDomain: nil];
   else
     {
-      allUsers = [NSMutableArray array];
+      allUsers = [NSMutableArray new];
       for (count = 0; count < max; count++)
         {
 	  if (count > 0 && count%100 == 0)
@@ -153,6 +153,7 @@
           else
             NSLog (@"user '%@' unknown", user);
         }
+      [allUsers autorelease];
     }
 
   ASSIGN (userIDs, [allUsers objectsForKey: @"c_uid" notFoundMarker: nil]);
