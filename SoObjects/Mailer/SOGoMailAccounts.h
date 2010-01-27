@@ -22,7 +22,7 @@
 #ifndef __Mailer_SOGoMailAccounts_H__
 #define __Mailer_SOGoMailAccounts_H__
 
-#import <SoObjects/SOGo/SOGoFolder.h>
+#import <SOGo/SOGoFolder.h>
 
 /*
   SOGoMailAccounts

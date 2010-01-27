@@ -49,7 +49,7 @@
 #import <NGCards/NSDictionary+NGCards.h>
 #import <SaxObjC/XMLNamespaces.h>
 
-#import <UI/SOGoUI/SOGoACLAdvisory.h>
+#import <SOGoUI/SOGoACLAdvisory.h>
 
 #import "NSArray+Utilities.h"
 #import "NSCalendarDate+SOGo.h"
