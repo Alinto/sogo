@@ -34,7 +34,7 @@
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGLdap/NGLdapConnection.h>
 
-#import <UI/MainUI/SOGoRootPage.h>
+#import <MainUI/SOGoRootPage.h>
 
 #import "SOGoUserManager.h"
 #import "SOGoPermissions.h"
@@ -66,14 +66,15 @@
   static SOGoUser *anonymous = nil;
   SOGoUser *user;
 
-  if (!anonymous)
-    anonymous
-      = [[SOGoUser alloc] initWithLogin: @"anonymous"
-			  roles: [NSArray arrayWithObject: SoRole_Anonymous]];
-
   user = (SOGoUser *) [super userInContext: _ctx];
   if (!user)
-    user = anonymous;
+    {
+      if (!anonymous)
+        anonymous = [[SOGoUser alloc]
+                      initWithLogin: @"anonymous"
+                              roles: [NSArray arrayWithObject: SoRole_Anonymous]];
+      user = anonymous;
+    }
 
   return user;
 }
@@ -83,8 +84,8 @@
   NSArray *creds;
   NSString *auth, *password;
   
-  auth = [[context request] cookieValueForKey:
-			      [self cookieNameInContext: context]];
+  auth = [[context request]
+           cookieValueForKey: [self cookieNameInContext: context]];
   creds = [self parseCredentials: auth];
   if ([creds count] > 1)
     password = [creds objectAtIndex: 1];
@@ -118,7 +119,7 @@
   if ([auth isEqualToString: @"discard"])
     {
       [context setObject: [NSArray arrayWithObject: SoRole_Anonymous]
-	       forKey: @"SoAuthenticatedRoles"];
+                  forKey: @"SoAuthenticatedRoles"];
       response = nil;
     }
   else
@@ -136,11 +137,11 @@
   NSCalendarDate *date;
 
   page = [[WOApplication application] pageWithName: @"SOGoRootPage"
-				      forRequest: [context request]];
+                                        forRequest: [context request]];
   [[SoDefaultRenderer sharedRenderer] renderObject: page
-				      inContext: context];
+                                         inContext: context];
   authCookie = [WOCookie cookieWithName: [self cookieNameInContext: context]
-                         value: @"discard"];
+                                  value: @"discard"];
   [authCookie setPath: @"/"];
   date = [NSCalendarDate calendarDate];
   [authCookie setExpires: [date yesterday]];
