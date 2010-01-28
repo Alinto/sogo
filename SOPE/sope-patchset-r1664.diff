@@ -1078,7 +1078,18 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  - (NSException *)_processCommandParserException:(NSException *)_exception {
    [self logWithFormat:@"ERROR(%s): catched IMAP4 parser exception %@: %@",
  	__PRETTY_FUNCTION__, [_exception name], [_exception reason]];
-@@ -1412,21 +1567,24 @@
+@@ -1280,7 +1435,9 @@
+     if (tryReconnect) {
+       [self reconnect];
+     }
+-    else if ([map objectForKey:@"bye"] && ![_command hasPrefix:@"logout"]) {
++    else if ([map objectForKey:@"bye"]
++             && ![_command hasPrefix:@"logout"]
++             && ![self _isLoginCommand:_command]) {
+       if (reconnectCnt == 0) {
+         reconnectCnt++;
+         tryReconnect = YES;
+@@ -1412,21 +1569,24 @@
        return nil;
    }
  
@@ -1111,7 +1122,7 @@ Index: sope-mime/NGImap4/NGImap4Client.m
  }
  
  - (NSString *)_imapFolder2Folder:(NSString *)_folder {
-@@ -1442,10 +1600,16 @@
+@@ -1442,10 +1602,16 @@
        return nil;
    }
    
@@ -2508,7 +2519,12 @@ Index: sope-mime/NGImap4/ChangeLog
 ===================================================================
 --- sope-mime/NGImap4/ChangeLog	(revision 1664)
 +++ sope-mime/NGImap4/ChangeLog	(working copy)
-@@ -1,3 +1,116 @@
+@@ -1,3 +1,121 @@
++2010-01-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
++
++	* NGImap4Client.m (-processCommand:withTag:withNotification:):
++	don't retry the command if it was a login command.
++
 +2010-01-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 +
 +	* NGImap4Client.m (-append:toFolder:withFlags:): we use the count
@@ -5018,7 +5034,14 @@ Index: sope-core/NGStreams/ChangeLog
 ===================================================================
 --- sope-core/NGStreams/ChangeLog	(revision 1664)
 +++ sope-core/NGStreams/ChangeLog	(working copy)
-@@ -1,3 +1,20 @@
+@@ -1,3 +1,27 @@
++2010-01-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
++
++	* NGActiveSocket.m (-safeReadBytes:count:): explicitly make use of
++	[NGEndOfStreamException alloc] when allocating localException,
++	since the init method is only present in that class and this may
++	cause a crash on rare occasions.
++
 +2010-01-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 +
 +	* NGCTextStream.m (-writeString:): use
@@ -5148,6 +5171,21 @@ Index: sope-core/NGStreams/NGActiveSocket.m
    self->receiveTimeout = _timeout;
  }
  - (NSTimeInterval)receiveTimeout {
+@@ -965,12 +987,12 @@
+       readBytes(self, @selector(readBytes:count:), pos, toBeRead);
+     
+     if (readResult == NGStreamError) {
+-      NSException *localException = [self lastException];
++      NSException *localException;
+       NSData *data;
+       
+       data = [NSData dataWithBytes:_buf length:(_len - toBeRead)];
+       
+-      localException = [[[localException class] alloc]
++      localException = [[NGEndOfStreamException alloc]
+                           initWithStream:self
+                           readCount:(_len - toBeRead)
+                           safeCount:_len
 Index: sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.h
 ===================================================================
 --- sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.h	(revision 1664)
@@ -6606,6 +6644,113 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
  
  #if 0    
      if (((sd == nil) || (sd == ud)) && (appDomainPath != nil)) {
+Index: sope-appserver/NGObjWeb/WODynamicElement.m
+===================================================================
+--- sope-appserver/NGObjWeb/WODynamicElement.m	(revision 1664)
++++ sope-appserver/NGObjWeb/WODynamicElement.m	(working copy)
+@@ -98,6 +98,7 @@
+     template = [[WOCompoundElement allocForCount:[_contents count]
+                                    zone:[self zone]]
+                                    initWithContentElements:_contents];
++    [template autorelease];
+   }
+   
+   return [self initWithName:_name
+Index: sope-appserver/NGObjWeb/WOHTTPConnection.m
+===================================================================
+--- sope-appserver/NGObjWeb/WOHTTPConnection.m	(revision 1664)
++++ sope-appserver/NGObjWeb/WOHTTPConnection.m	(working copy)
+@@ -38,7 +38,6 @@
+ @interface WOHTTPConnection(Privates)
+ - (BOOL)_connect;
+ - (void)_disconnect;
+-- (void)_unregisterNotification;
+ @end
+ 
+ @interface WOCookie(Privates)
+@@ -153,7 +152,6 @@
+ }
+ 
+ - (void)dealloc {
+-  [self _unregisterNotification];
+   [self->lastException release];
+   [self->log      release];
+   [self->io       release];
+@@ -288,57 +286,6 @@
+   [self->socket release]; self->socket = nil;
+ }
+ 
+-/* runloop based IO */
+-
+-- (NSNotificationCenter *)notificationCenter {
+-  return [NSNotificationCenter defaultCenter];
+-}
+-- (NSRunLoop *)runLoop {
+-  return [NSRunLoop currentRunLoop];
+-}
+-- (NSString *)runLoopMode {
+-  return NSDefaultRunLoopMode;
+-}
+-
+-- (void)_socketActivated:(NSNotification *)_n {
+-  if ([_n object] != self->socket)
+-    return;
+-
+-#if DEBUG && 0  
+-  [self debugWithFormat:@"socket activated ..."];
+-#endif
+-  
+-  [[self notificationCenter]
+-         postNotificationName:WOHTTPConnectionCanReadResponse
+-         object:self];
+-}
+-
+-- (void)_registerForNotification {
+-  NSRunLoop *rl;
+-  
+-  if (self->didRegisterForNotification)
+-    return;
+-
+-  [[self notificationCenter]
+-         addObserver:self selector:@selector(_socketActivated:)
+-         name:NSFileObjectBecameActiveNotificationName
+-         object:self->socket];
+-  
+-  rl = [self runLoop];
+-  [rl addFileObject:self->socket
+-      activities:(NSPosixReadableActivity|NSPosixExceptionalActivity)
+-      forMode:[self runLoopMode]];
+-}
+-- (void)_unregisterNotification {
+-  if (!self->didRegisterForNotification)
+-    return;
+-  
+-  [[self notificationCenter] removeObserver:self];
+-  
+-  [[self runLoop] removeFileObject:self->socket
+-                  forMode:[self runLoopMode]];
+-}
+-
+ /* logging IO */
+ 
+ - (void)logRequest:(WORequest *)_response data:(NSData *)_data {
+@@ -543,8 +490,6 @@
+   if (![self->socket isConnected])
+     return NO;
+   
+-  [self _registerForNotification];
+-  
+   return YES;
+ }
+ 
+@@ -560,7 +505,6 @@
+   WOResponse *response;
+   
+   *(&response) = nil;
+-  [self _unregisterNotification];
+   
+   if (self->socket == nil) {
+     [self debugWithFormat:@"no socket available for reading response ..."];
 Index: sope-appserver/NGObjWeb/GNUmakefile.postamble
 ===================================================================
 --- sope-appserver/NGObjWeb/GNUmakefile.postamble	(revision 1664)
@@ -6655,7 +6800,16 @@ Index: sope-appserver/NGObjWeb/ChangeLog
 ===================================================================
 --- sope-appserver/NGObjWeb/ChangeLog	(revision 1664)
 +++ sope-appserver/NGObjWeb/ChangeLog	(working copy)
-@@ -1,3 +1,108 @@
+@@ -1,3 +1,117 @@
++2010-01-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
++
++	* WOHttpAdaptor/WOHttpAdaptor.m (-registerForEvents): the
++	controlSocket is now a retained ivar, that we further use for
++	validation in -acceptControlMessage:.
++
++	* WOHTTPConnection.m: got rid of "runloop based IO" code, which
++	was useless and error prone.
++
 +2010-01-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 +
 +	* SoObjects/SoObject.m (-isFolderish): now a real category method,
@@ -7407,7 +7561,21 @@ Index: sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpAdaptor.h
 ===================================================================
 --- sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpAdaptor.h	(revision 1664)
 +++ sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpAdaptor.h	(working copy)
-@@ -46,7 +46,6 @@
+@@ -28,11 +28,13 @@
+ #include <NGStreams/NGPassiveSocket.h>
+ 
+ @class NSMutableArray;
++@class NGActiveSocket;
+ 
+ @interface WOHttpAdaptor : WOAdaptor
+ {
+ @protected
+   id<NGPassiveSocket>    socket;
++  NGActiveSocket *controlSocket;
+   NSTimeInterval         sendTimeout;
+   NSTimeInterval         receiveTimeout;
+ 
+@@ -46,7 +48,6 @@
    NSMutableArray         *delayedResponses;
  }
  
@@ -7595,7 +7763,15 @@ Index: sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpAdaptor.m
      self->maxThreadCount = [[WOCoreApplication workerThreadCount] intValue];
      
      [self setSendTimeout:WOHttpAdaptorSendTimeout];
-@@ -270,145 +258,76 @@
+@@ -259,6 +247,7 @@
+   [[NSNotificationCenter defaultCenter] removeObserver:self];
+   [self->lock    release];
+   [self->socket  release];
++  [self->controlSocket release];
+   [self->address release];
+   [super dealloc];
+ }
+@@ -270,145 +259,76 @@
    return self->address;
  }
  
@@ -7695,11 +7871,11 @@ Index: sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpAdaptor.m
  
  - (void)registerForEvents {
    int backlog;
-+  NGActiveSocket *controlSocket;
 +  WOChildMessage message;
 +
 +  controlSocket = [[WOCoreApplication application] controlSocket];
 +  if (controlSocket) {
++    [controlSocket retain];
 +    ASSIGN(self->socket, [[WOCoreApplication application] listeningSocket]);
 +    [[NSNotificationCenter defaultCenter]
 +                         addObserver:self
@@ -7785,7 +7961,7 @@ Index: sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpAdaptor.m
    [(WORunLoop *)[WORunLoop currentRunLoop]
                removeFileObject:self->socket forMode:NSDefaultRunLoopMode];
    [[NSNotificationCenter defaultCenter] removeObserver:self];
-@@ -603,52 +522,91 @@
+@@ -603,52 +523,93 @@
    return _connection;
  }
  
@@ -7831,31 +8007,33 @@ Index: sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpAdaptor.m
 +
 +- (void) acceptControlMessage: (NSNotification *) aNotification
 +{
-+  NGActiveSocket *controlSocket, *connection;
++  NGActiveSocket *notificationSocket, *connection;
 +  WOChildMessage message;
 +  NSAutoreleasePool *pool;
 +
 +  // NSLog (@"received control message");
-+  controlSocket = [aNotification object];
-+  // [self logWithFormat:@"child accepting message from socket: %@", controlSocket];
-+  while (![controlSocket safeReadBytes: &message
-+                                 count: sizeof (WOChildMessage)])
-+    NSLog (@"renotifying watchdog");
-+  if (message == WOChildMessageAccept) {
-+    pool = [NSAutoreleasePool new];
-+    connection = [self _accept];
-+    if ([controlSocket safeWriteBytes: &message
-+                                count: sizeof (WOChildMessage)])
-+      ;
-+    [self _handleConnection: connection];
-+    message = WOChildMessageReady;
-+    [controlSocket safeWriteBytes: &message count: sizeof (WOChildMessage)];
-+    [pool release];
-+  }
-+  else if (message == WOChildMessageShutdown) {
-+    [controlSocket safeWriteBytes: &message
-+                            count: sizeof (WOChildMessage)];
-+    [[WOCoreApplication application] terminate];
++  notificationSocket = [aNotification object];
++  if (notificationSocket == controlSocket) {
++    // [self logWithFormat:@"child accepting message from socket: %@", controlSocket];
++    while (![controlSocket safeReadBytes: &message
++                                   count: sizeof (WOChildMessage)])
++      NSLog (@"renotifying watchdog");
++    if (message == WOChildMessageAccept) {
++      pool = [NSAutoreleasePool new];
++      connection = [self _accept];
++      if ([controlSocket safeWriteBytes: &message
++                                  count: sizeof (WOChildMessage)])
++        ;
++      [self _handleConnection: connection];
++      message = WOChildMessageReady;
++      [controlSocket safeWriteBytes: &message count: sizeof (WOChildMessage)];
++      [pool release];
++    }
++    else if (message == WOChildMessageShutdown) {
++      [controlSocket safeWriteBytes: &message
++                              count: sizeof (WOChildMessage)];
++      [[WOCoreApplication application] terminate];
++    }
 +  }
 +}
 +
