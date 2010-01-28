@@ -19,8 +19,11 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
+#import <Foundation/NSURL.h>
 
+#import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOCookie.h>
@@ -32,6 +35,9 @@
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 
+#import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/SOGoCache.h>
+#import <SOGo/SOGoCASSession.h>
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUser.h>
@@ -54,6 +60,27 @@
   return [NSString stringWithFormat: @"%@/connect", [self applicationPath]];
 }
 
+- (WOCookie *) _cookieWithUsername: (NSString *) username
+                       andPassword: (NSString *) password
+                  forAuthenticator: (SOGoWebAuthenticator *) auth
+{
+  WOCookie *authCookie;
+  NSString *cookieValue, *cookieString, *appName;
+
+  cookieString = [NSString stringWithFormat: @"%@:%@",
+                           username, password];
+  cookieValue = [NSString stringWithFormat: @"basic %@",
+                          [cookieString stringByEncodingBase64]];
+  authCookie = [WOCookie cookieWithName: [auth cookieNameInContext: context]
+                                  value: cookieValue];
+  appName = [[context request] applicationName];
+  [authCookie setPath: [NSString stringWithFormat: @"/%@/", appName]];
+  /* enable this when we have code to determine whether request is HTTPS:
+     [authCookie setIsSecure: YES]; */
+  
+  return authCookie;
+}
+
 /* actions */
 - (id <WOActionResults>) connectAction
 {
@@ -62,68 +89,152 @@
   WOCookie *authCookie;
   SOGoWebAuthenticator *auth;
   SOGoUserDefaults *ud;
-  NSString *cookieValue, *cookieString;
-  NSString *userName, *password, *language;
+  NSString *username, *password, *language;
   NSArray *supportedLanguages;
 
   auth = [[WOApplication application]
 	   authenticatorInContext: context];
   request = [context request];
-  userName = [request formValueForKey: @"userName"];
+  username = [request formValueForKey: @"userName"];
   password = [request formValueForKey: @"password"];
   language = [request formValueForKey: @"language"];
-  if ([auth checkLogin: userName password: password])
+  if ([auth checkLogin: username password: password])
     {
-      [self logWithFormat: @"successful login for user '%@'", userName];
+      [self logWithFormat: @"successful login for user '%@'", username];
       response = [self responseWith204];
-      cookieString = [NSString stringWithFormat: @"%@:%@",
-			       userName, password];
-      cookieValue = [NSString stringWithFormat: @"basic %@",
-			      [cookieString stringByEncodingBase64]];
-      authCookie = [WOCookie cookieWithName: [auth cookieNameInContext: context]
-			     value: cookieValue];
-      [authCookie setPath: @"/"];
-      /* enable this when we have code to determine whether request is HTTPS:
-         [authCookie setIsSecure: YES]; */
+      authCookie = [self _cookieWithUsername: username andPassword: password
+                            forAuthenticator: auth];
       [response addCookie: authCookie];
 
       supportedLanguages = [[SOGoSystemDefaults sharedSystemDefaults]
                              supportedLanguages];
       if (language && [supportedLanguages containsObject: language])
 	{
-	  ud = [[SOGoUser userWithLogin: userName roles: nil]
-                           userDefaults];
+	  ud = [[SOGoUser userWithLogin: username] userDefaults];
 	  [ud setLanguage: language];
 	  [ud synchronize];
 	}
     }
   else
     {
-      [self logWithFormat: @"failed login for user '%@'", userName];
+      [self logWithFormat: @"failed login for user '%@'", username];
       response = [self responseWithStatus: 403];
     }
 
   return response;
 }
 
-- (id <WOActionResults>) defaultAction
+- (NSDictionary *) _casRedirectKeys
 {
-  id <WOActionResults> response;
+  NSDictionary *redirectKeys;
+  NSURL *soURL;
+
+  soURL = [[WOApplication application] soURL];
+
+  redirectKeys = [NSDictionary dictionaryWithObject: [soURL absoluteString]
+                                             forKey: @"service"];
+
+  return redirectKeys;
+}
+
+- (id <WOActionResults>) casProxyAction
+{
+  SOGoCache *cache;
+  WORequest *request;
+  NSString *pgtId, *pgtIou;
+
+  request = [context request];
+  pgtId = [request formValueForKey: @"pgtId"];
+  pgtIou = [request formValueForKey: @"pgtIou"];
+  if ([pgtId length] && [pgtIou length])
+    {
+      cache = [SOGoCache sharedCache];
+      [cache setCASPGTId: pgtId forPGTIOU: pgtIou];
+    }
+
+  return [self responseWithStatus: 200];
+}
+
+- (id <WOActionResults>) _casDefaultAction
+{
+  WOResponse *response;
+  NSString *login, *newLocation, *oldLocation, *ticket;
+  SOGoCASSession *casSession;
+  SOGoWebAuthenticator *auth;
+  WOCookie *casCookie;
+
+  casCookie = nil;
+
+  login = [[context activeUser] login];
+  if ([login isEqualToString: @"anonymous"])
+    login = nil;
+  if (!login)
+    {
+      ticket = [[context request] formValueForKey: @"ticket"];
+      if ([ticket length])
+        {
+          casSession = [SOGoCASSession CASSessionWithTicket: ticket];
+          login = [casSession login];
+          if ([login length])
+            {
+              auth = [[WOApplication application]
+                       authenticatorInContext: context];
+              casCookie = [self _cookieWithUsername: login
+                                        andPassword: [casSession identifier]
+                                   forAuthenticator: auth];
+              [casSession updateCache];
+            }
+        }
+    }
+
+  if (login)
+    {
+      oldLocation = [[self clientObject] baseURLInContext: context];
+      newLocation = [NSString stringWithFormat: @"%@%@",
+                              oldLocation, [login stringByEscapingURL]];
+    }
+  else
+    newLocation = [SOGoCASSession CASURLWithAction: @"login"
+                                     andParameters: [self _casRedirectKeys]];
+  response = [self redirectToLocation: newLocation];
+  if (casCookie)
+    [response addCookie: casCookie];
+
+  return response;
+}
+
+- (id <WOActionResults>) _standardDefaultAction
+{
+  NSObject <WOActionResults> *response;
   NSString *login, *oldLocation;
 
   login = [[context activeUser] login];
-  if (!login || [login isEqualToString: @"anonymous"])
-    response = self;
-  else
+  if ([login isEqualToString: @"anonymous"])
+    login = nil;
+
+  if (login)
     {
       oldLocation = [[self clientObject] baseURLInContext: context];
       response
-	= [self redirectToLocation: [NSString stringWithFormat: @"%@/%@",
+	= [self redirectToLocation: [NSString stringWithFormat: @"%@%@",
 					      oldLocation,
                                               [login stringByEscapingURL]]];
     }
+  else
+    response = self;
 
   return response;
+}
+
+- (id <WOActionResults>) defaultAction
+{
+  SOGoSystemDefaults *sd;
+
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+
+  return ([[sd authenticationType] isEqualToString: @"cas"]
+          ? [self _casDefaultAction]
+          : [self _standardDefaultAction]);
 }
 
 - (BOOL) isPublicInContext: (WOContext *) localContext

@@ -23,7 +23,7 @@
 #ifndef SOGOROOTPAGE_H
 #define SOGOROOTPAGE_H
 
-#import <UI/SOGoUI/UIxComponent.h>
+#import <SOGoUI/UIxComponent.h>
 
 @interface SOGoRootPage : UIxComponent
 {

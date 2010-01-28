@@ -225,7 +225,7 @@ static NSString *sieveScriptName = @"sogo";
   SOGoUserDefaults *ud;
   SOGoDomainDefaults *dd;
   NGSieveClient *client;
-  NSString *v;
+  NSString *v, *password;
   BOOL b;
 
   dd = [[context activeUser] domainDefaults];
@@ -319,11 +319,21 @@ static NSString *sieveScriptName = @"sogo";
     return NO;
   }
   
-  result = [client login: [[self imap4URL] user]  password:[self imap4Password]];
+  password = [self imap4PasswordRenewed: NO];
+  if (!password) {
+    [client closeConnection];
+    return NO;
+  }
+  result = [client login: [[self imap4URL] user]  password: password];
+  if (![[result valueForKey:@"result"] boolValue]) {
+    [self errorWithFormat: @"failure. Attempting with a renewed password."];
+    password = [self imap4PasswordRenewed: NO];
+    result = [client login: [[self imap4URL] user]  password: password];
+  }
   
   if (![[result valueForKey:@"result"] boolValue]) {
     [self errorWithFormat: @"Could not login '%@' (%@) on Sieve server: %@: %@",
-	  [[self imap4URL] user], [self imap4Password], client, result];
+	  [[self imap4URL] user], password, client, result];
     [client closeConnection];
     return NO;
   }

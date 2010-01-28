@@ -62,6 +62,11 @@
              withName: (NSString *) userName;
 - (id) userNamed: (NSString *) name;
 
+/* NSDictionary-like methods */
+- (void) setValue: (NSString *) value forKey: (NSString *) key;
+- (NSString *) valueForKey: (NSString *) key;
+- (void) removeValueForKey: (NSString *) key;
+
 - (void) setUserAttributes: (NSString *) attributes
                   forLogin: (NSString *) login;
 - (NSString *) userAttributesForLogin: (NSString *) theLogin;
@@ -73,6 +78,17 @@
 - (void) setUserSettings: (NSString *) attributes
                 forLogin: (NSString *) login;
 - (NSString *) userSettingsForLogin: (NSString *) theLogin;
+
+/* CAS support */
+- (NSString *) CASTicketFromIdentifier: (NSString *) identifier;
+- (NSString *) CASSessionWithTicket: (NSString *) ticket;
+- (void) setCASSession: (NSString *) casSession
+            withTicket: (NSString *) ticket
+         forIdentifier: (NSString *) identifier;
+
+- (NSString *) CASPGTIdFromPGTIOU: (NSString *) pgtIou;
+- (void) setCASPGTId: (NSString *) pgtId
+           forPGTIOU: (NSString *) pgtIou;
 
 @end
 

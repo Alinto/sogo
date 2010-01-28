@@ -224,8 +224,6 @@
   WOResponse *response;
 
   response = [self responseWithStatus: 200];
-//   [response setHeader: @"text/plain; charset=iso-8859-1"
-//             forKey: @"Content-Type"];
   [response appendContentString: [self _freeBusyAsText]];
 
   return response;
@@ -238,7 +236,7 @@
   SOGoWebAuthenticator *auth;
   id container;
   NSCalendarDate *date;
-  NSString *userName, *cookieName;
+  NSString *userName, *cookieName, *appName;
 
   container = [[self clientObject] container];
 
@@ -261,7 +259,8 @@
   if ([cookieName length])
     {
       cookie = [WOCookie cookieWithName: cookieName value: @"discard"];
-      [cookie setPath: @"/"];
+      appName = [[context request] applicationName];
+      [cookie setPath: [NSString stringWithFormat: @"/%@/", appName]];
       [cookie setExpires: [date yesterday]];
       [response addCookie: cookie];
     }

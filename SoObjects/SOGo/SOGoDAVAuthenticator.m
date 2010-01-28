@@ -69,6 +69,13 @@
   return password;
 }
 
+- (NSString *) imapPasswordInContext: (WOContext *) context
+                           forServer: (NSString *) imapServer
+                          forceRenew: (BOOL) renew
+{
+  return [self passwordInContext: context];
+}
+
 /* create SOGoUser */
 
 - (SOGoUser *) userInContext: (WOContext *)_ctx

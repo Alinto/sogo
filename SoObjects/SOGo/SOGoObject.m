@@ -49,7 +49,7 @@
 #import <NGCards/NSDictionary+NGCards.h>
 #import <SaxObjC/XMLNamespaces.h>
 
-#import <UI/SOGoUI/SOGoACLAdvisory.h>
+#import <SOGoUI/SOGoACLAdvisory.h>
 
 #import "NSArray+Utilities.h"
 #import "NSCalendarDate+SOGo.h"
@@ -129,7 +129,7 @@
   f = [[NSDate date] timeIntervalSince1970];
 
   return [NSString stringWithFormat:@"%0X-%0X-%0X-%0X",
-		   pid, (int) f, sequence++, random];
+		   pid, (int) f, sequence++, (int) rndm];
 }
 
 - (NSString *) globallyUniqueObjectId

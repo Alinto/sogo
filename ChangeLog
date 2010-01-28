@@ -1,3 +1,54 @@
+2010-01-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoSystemDefaults.m (-CASServiceURL)
+	(-authenticationType): new accessors.
+
+	* SoObjects/SOGo/SOGoObject.m (+globallyUniqueObjectId): fixed to
+	use the result of "random" rather than the function pointer.
+
+	* SoObjects/SOGo/SOGoCache.m (-setValue:forKey:expire)
+	(-setValue:forKey:, -valueForKey:, -removeValueForKey:): new
+	accessors.
+	(-CASTicketFromIdentifier:, -CASSessionWithTicket:)
+	(-setCASSession:withTicket:forIdentifier:): new accessors enabling
+	the CAS session management.
+	(-CASPGTIdFromPGTIOU:, -setCASPGTId:forPGTIOU:): new accessors
+	enabling proxy ticket management (see casProxyAction below).
+
+	* UI/MainUI/SOGoUserHomePage.m (-logoffAction): we now pass the
+	request application name as cookie path.
+
+	* UI/MainUI/SOGoRootPage.m (-casProxyAction): new method invoked
+	by the CAS server when authenticating the SOGo server during a
+	proxy request.
+	(-_casDefaultAction): new "defaultAction" method executed in CAS mode.
+
+	* UI/Common/UIxPageFrame.m (-canLogoff): return NO in CAS mode.
+
+	* SoObjects/SOGo/SOGoWebAuthenticator.m (-checkLogin:password:)
+	when authentication type is set to "cas", the password is the
+	ticket identifying the CAS session. We therefore check if the
+	login and the session login match.
+	(-imapPasswordInContext:forServer:forceRenew:): new method that
+	returns the "password" to use for IMAP connections. In CAS mode,
+	a proxy ticket is fetched with the current CAS session. In
+	standard mode, we still use the current user's password. The
+	"forceRenew:" parameter enables the fetching of a new proxy ticket
+	if the current one has expired.
+	(-setupAuthFailResponse:withReason:inContext:): we know invoke
+	"defaultAction" on the SOGoRootPage instance to make sure all the
+	cookies and CAS tickets are taken into account.
+	We now pass the request application name as cookie path.
+
+	* SoObjects/SOGo/SOGoCASSession.[hm]: new class module
+	implementing the class in charge of CAS authentication and proxy
+	transactions.
+
+2010-01-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Tools/SOGoToolBackup.m (-fetchUserIDs): retain allUsers to avoid
+	a release between the pool rotation.
+
 2010-01-25  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/SchedulerUI.js

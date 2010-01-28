@@ -931,14 +931,35 @@ static BOOL debugSoParts       = NO;
 	   doesn't tell us the new ID.
   */
   NSURL *destImap4URL;
-  
+  NGImap4ConnectionManager *manager;
+  NSException *exc;
+  NSString *password;
+
   destImap4URL = ([_name length] == 0)
     ? [[_target container] imap4URL]
     : [_target imap4URL];
-  
-  return [[self mailManager] copyMailURL:[self imap4URL] 
-			     toFolderURL:destImap4URL
-			     password:[self imap4Password]];
+
+  manager = [self mailManager];
+  [self imap4URL];
+  password = [self imap4PasswordRenewed: NO];
+  if (password)
+    {
+      exc = [manager copyMailURL: imap4URL
+                     toFolderURL: destImap4URL
+                        password: password];
+      if (exc)
+        {
+          [self
+            logWithFormat: @"failure. Attempting with renewed imap4 password"];
+          password = [self imap4PasswordRenewed: YES];
+          if (password)
+            exc = [manager copyMailURL: imap4URL
+                           toFolderURL: destImap4URL
+                              password: password];
+        }
+    }
+
+  return exc;
 }
 
 /* actions */

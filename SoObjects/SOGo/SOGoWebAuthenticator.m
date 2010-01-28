@@ -34,11 +34,13 @@
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGLdap/NGLdapConnection.h>
 
-#import <UI/MainUI/SOGoRootPage.h>
+#import <MainUI/SOGoRootPage.h>
 
-#import "SOGoUserManager.h"
+#import "SOGoCASSession.h"
 #import "SOGoPermissions.h"
+#import "SOGoSystemDefaults.h"
 #import "SOGoUser.h"
+#import "SOGoUserManager.h"
 
 #import "SOGoWebAuthenticator.h"
 
@@ -57,8 +59,24 @@
 - (BOOL) checkLogin: (NSString *) _login
 	   password: (NSString *) _pwd
 {
-  return [[SOGoUserManager sharedUserManager] checkLogin: _login
+  SOGoSystemDefaults *sd;
+  BOOL rc;
+  SOGoCASSession *session;
+
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  if ([[sd authenticationType] isEqualToString: @"cas"])
+    {
+      session = [SOGoCASSession CASSessionWithIdentifier: _pwd];
+      if (session)
+        rc = [[session login] isEqualToString: _login];
+      else
+        rc = NO;
+    }
+  else
+    rc = [[SOGoUserManager sharedUserManager] checkLogin: _login
                                              andPassword: _pwd];
+
+  return rc;
 }
 
 - (SOGoUser *) userInContext: (WOContext *)_ctx
@@ -66,14 +84,15 @@
   static SOGoUser *anonymous = nil;
   SOGoUser *user;
 
-  if (!anonymous)
-    anonymous
-      = [[SOGoUser alloc] initWithLogin: @"anonymous"
-			  roles: [NSArray arrayWithObject: SoRole_Anonymous]];
-
   user = (SOGoUser *) [super userInContext: _ctx];
   if (!user)
-    user = anonymous;
+    {
+      if (!anonymous)
+        anonymous = [[SOGoUser alloc]
+                      initWithLogin: @"anonymous"
+                              roles: [NSArray arrayWithObject: SoRole_Anonymous]];
+      user = anonymous;
+    }
 
   return user;
 }
@@ -82,14 +101,41 @@
 {
   NSArray *creds;
   NSString *auth, *password;
-  
-  auth = [[context request] cookieValueForKey:
-			      [self cookieNameInContext: context]];
+
+  auth = [[context request]
+           cookieValueForKey: [self cookieNameInContext: context]];
   creds = [self parseCredentials: auth];
   if ([creds count] > 1)
     password = [creds objectAtIndex: 1];
   else
     password = nil;
+
+  return password;
+}
+
+- (NSString *) imapPasswordInContext: (WOContext *) context
+                           forServer: (NSString *) imapServer
+                          forceRenew: (BOOL) renew
+{
+  SOGoSystemDefaults *sd;
+  SOGoCASSession *session;
+  NSString *password, *service;
+
+  password = [self passwordInContext: context];
+  if ([password length])
+    {
+      sd = [SOGoSystemDefaults sharedSystemDefaults];
+      if ([[sd authenticationType] isEqualToString: @"cas"])
+        {
+          session = [SOGoCASSession CASSessionWithIdentifier: password];
+          service = [NSString stringWithFormat: @"imap://%@", imapServer];
+          if (renew)
+            [session invalidateTicketForService: service];
+          password = [session ticketForService: service];
+          if ([password length] || renew)
+            [session updateCache];
+        }
+    }
 
   return password;
 }
@@ -112,13 +158,13 @@
   */
   WOResponse *response;
   NSString *auth;
-  
+
   auth = [[context request]
 	   cookieValueForKey: [self cookieNameInContext:context]];
   if ([auth isEqualToString: @"discard"])
     {
       [context setObject: [NSArray arrayWithObject: SoRole_Anonymous]
-	       forKey: @"SoAuthenticatedRoles"];
+                  forKey: @"SoAuthenticatedRoles"];
       response = nil;
     }
   else
@@ -132,16 +178,20 @@
 		     inContext: (WOContext *) context
 {
   WOComponent *page;
+  WORequest *request;
   WOCookie *authCookie;
   NSCalendarDate *date;
+  NSString *appName;
 
+  request = [context request];
   page = [[WOApplication application] pageWithName: @"SOGoRootPage"
-				      forRequest: [context request]];
-  [[SoDefaultRenderer sharedRenderer] renderObject: page
-				      inContext: context];
+                                        forRequest: request];
+  [[SoDefaultRenderer sharedRenderer] renderObject: [page defaultAction]
+                                         inContext: context];
   authCookie = [WOCookie cookieWithName: [self cookieNameInContext: context]
-                         value: @"discard"];
-  [authCookie setPath: @"/"];
+                                  value: @"discard"];
+  appName = [request applicationName];
+  [authCookie setPath: [NSString stringWithFormat: @"/%@/", appName]];
   date = [NSCalendarDate calendarDate];
   [authCookie setExpires: [date yesterday]];
   [response addCookie: authCookie];

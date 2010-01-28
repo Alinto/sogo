@@ -60,6 +60,10 @@
 - (NSArray *) supportedLanguages;
 - (NSString *) loginSuffix;
 
+- (NSString *) authenticationType;
+
+- (NSString *) CASServiceURL;
+
 @end
 
 #endif /* SOGOSYSTEMDEFAULTS_H */

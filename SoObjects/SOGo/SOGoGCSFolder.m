@@ -52,7 +52,7 @@
 #import <GDLContentStore/GCSFolder.h>
 #import <GDLContentStore/NSURL+GCS.h>
 #import <SaxObjC/XMLNamespaces.h>
-#import <UI/SOGoUI/SOGoFolderAdvisory.h>
+#import <SOGoUI/SOGoFolderAdvisory.h>
 
 #import "NSDictionary+Utilities.h"
 #import "NSArray+Utilities.h"

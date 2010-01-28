@@ -30,7 +30,7 @@
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSURL+misc.h>
 
-#import <SoObjects/SOGo/SOGoAuthenticator.h>
+#import <SOGo/SOGoAuthenticator.h>
 
 #import "SOGoMailManager.h"
 
@@ -119,17 +119,36 @@ static BOOL debugOn = YES;
 
 - (NGImap4Connection *) imap4Connection
 {
+  NGImap4ConnectionManager *manager;
+  NSString *password;
+
   if (!imap4)
     {
-      imap4 = [[self mailManager] connectionForURL: [self imap4URL] 
-				  password: [self imap4Password]];
-      if (imap4)
- 	[imap4 retain];
-      else
-	[self errorWithFormat:@"Could not connect IMAP4."];
+      [self imap4URL];
+      manager = [self mailManager];
+      password = [self imap4PasswordRenewed: NO];
+      if (password)
+        {
+          imap4 = [manager connectionForURL: imap4URL
+                                   password: password];
+          if (!imap4)
+            {
+              [self logWithFormat: @"renewing imap4 password"];
+              password = [self imap4PasswordRenewed: YES];
+              if (password)
+                imap4 = [manager connectionForURL: imap4URL
+                                         password: password];
+            }
+        }
+      if (!imap4)
+        {
+          imap4 = (NGImap4Connection *) [NSNull null];
+          [self errorWithFormat:@"Could not connect IMAP4"];
+        }
+      [imap4 retain];
     }
 
-  return imap4;
+  return [imap4 isKindOfClass: [NSNull class]] ? nil : imap4;
 }
 
 - (NSString *) relativeImap4Name
@@ -184,7 +203,7 @@ static BOOL debugOn = YES;
   return [container imap4Login];
 }
 
-- (NSString *) imap4Password
+- (NSString *) imap4PasswordRenewed: (BOOL) renewed
 {
   /*
     Extract password from basic authentication.
@@ -193,8 +212,19 @@ static BOOL debugOn = YES;
     a) move the primary code to SOGoMailAccount
     b) cache the password
   */
+  NSURL *imapURL;
+  NSString *password;
 
-  return [[self authenticatorInContext: context] passwordInContext: context];
+  imapURL = [[self mailAccountFolder] imap4URL];
+
+  password = [[self authenticatorInContext: context]
+               imapPasswordInContext: context
+                           forServer: [imapURL host]
+                          forceRenew: renewed];
+  if (!password)
+    [self errorWithFormat: @"no IMAP4 password available"];
+
+  return password;
 }
 
 - (NSMutableString *) traversalFromMailAccount
