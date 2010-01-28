@@ -119,8 +119,8 @@
 
 - (void) dealloc
 {
-  memcached_server_free(servers);
-  memcached_free(handle);
+  memcached_server_free (servers);
+  memcached_free (handle);
   [memcachedServerName release];
   [cache release];
   [users release];
@@ -203,73 +203,124 @@
 // For non-blocking cache method, see memcached_behavior_set and MEMCACHED_BEHAVIOR_NO_BLOCK
 // memcached is thread-safe so no need to lock here.
 //
-- (void) _cacheValues: (NSString *) theAttributes
-	       ofType: (NSString *) theType
-	     forLogin: (NSString *) theLogin
+- (void) setValue: (NSString *) value
+           forKey: (NSString *) key
+           expire: (float) expiration
 {
+  NSData *keyData, *valueData;
   memcached_return error;
-  NSString *keyName;
-  NSData *key, *value;
 
-  keyName = [NSString stringWithFormat: @"%@+%@", theLogin, theType];
   if (handle)
     {
-      key = [keyName dataUsingEncoding: NSUTF8StringEncoding];
-      value = [theAttributes dataUsingEncoding: NSUTF8StringEncoding];
-      error = memcached_set(handle,
-                            [key bytes], [key length],
-                            [value bytes], [value length],
-                            cleanupInterval, 0);
-      [localCache setObject: theAttributes forKey: keyName];
-
+      keyData = [key dataUsingEncoding: NSUTF8StringEncoding];
+      valueData = [value dataUsingEncoding: NSUTF8StringEncoding];
+      error = memcached_set (handle,
+                             [keyData bytes], [keyData length],
+                             [valueData bytes], [valueData length],
+                             expiration, 0);
       if (error != MEMCACHED_SUCCESS)
-        [self logWithFormat: @"memcached error: unable to cache values with subtype '%@' for user '%@'", theType, theLogin];
+        [self logWithFormat:
+                @"memcached error: unable to cache values for key '%@'",
+              key];
       //else
       //[self logWithFormat: @"memcached: cached values (%s) with subtype %@
       //for user %@", value, theType, theLogin];
     }
    else
-    [self errorWithFormat: @"attempting to cache value for key '%@' while"
-          " no handle exists", keyName];
+     [self errorWithFormat: (@"attempting to cache value for key '%@' while"
+                             " no handle exists"), key];
+}
+
+- (void) setValue: (NSString *) value
+           forKey: (NSString *) key
+{
+  [self setValue: value forKey: key
+          expire: cleanupInterval];
+}
+
+- (NSString *) valueForKey: (NSString *) key
+{
+  NSString *valueString;
+  NSData *keyData;
+  char *value;
+  size_t vlen;
+  memcached_return rc;
+  unsigned int flags;
+  
+  if (handle)
+    {
+      keyData = [key dataUsingEncoding: NSUTF8StringEncoding];
+      value = memcached_get (handle, [keyData bytes], [keyData length],
+                             &vlen, &flags, &rc);
+      if (rc == MEMCACHED_SUCCESS && value)
+        {
+          valueString
+            = [[NSString alloc] initWithBytesNoCopy: value
+                                             length: vlen
+                                           encoding: NSUTF8StringEncoding
+                                       freeWhenDone: YES];
+          [valueString autorelease];
+        }
+      else
+        valueString = nil;
+    }
+  else
+    {
+      valueString = nil;
+      [self errorWithFormat: @"attempting to retrieved cached value for key"
+            @" '%@' while no handle exists", key];
+    }
+
+  return valueString;
+}
+
+- (void) removeValueForKey: (NSString *) key
+{
+  NSData *keyData;
+  memcached_return rc;
+
+  if (handle)
+    {
+      keyData = [key dataUsingEncoding: NSUTF8StringEncoding];
+      rc = memcached_delete (handle, [keyData bytes], [keyData length],
+                             0);
+      if (rc != MEMCACHED_SUCCESS)
+        [self errorWithFormat: (@"failure deleting cached value for key"
+                                @" '%@'"),
+              key];
+    }
+  else
+    [self errorWithFormat: (@"attempting to delete cached value for key"
+                            @" '%@' while no handle exists"),
+          key];
+}
+
+- (void) _cacheValues: (NSString *) theAttributes
+	       ofType: (NSString *) theType
+	     forLogin: (NSString *) theLogin
+{
+  NSString *keyName;
+
+  keyName = [NSString stringWithFormat: @"%@+%@", theLogin, theType];
+  [self setValue: theAttributes forKey: keyName];
+  [localCache setObject: theAttributes forKey: keyName];
 }
 
 - (NSString *) _valuesOfType: (NSString *) theType
                     forLogin: (NSString *) theLogin
 {
   NSString *valueString, *keyName;
-  NSData *key;
-  char *value;
-  size_t vlen;
-  memcached_return rc;
-  unsigned int flags;
 
   valueString = nil;
 
   keyName = [NSString stringWithFormat: @"%@+%@", theLogin, theType];
-  if (handle)
+  valueString = [localCache objectForKey: keyName];
+  if (!valueString)
     {
-      valueString = [localCache objectForKey: keyName];
-      if (!valueString)
-        {
-          key = [keyName dataUsingEncoding: NSUTF8StringEncoding];
-          value = memcached_get (handle, [key bytes], [key length],
-                                 &vlen, &flags, &rc);
-          if (rc == MEMCACHED_SUCCESS && value)
-            {
-              valueString
-                = [[NSString alloc] initWithBytesNoCopy: value
-                                                 length: vlen
-                                               encoding: NSUTF8StringEncoding
-                                           freeWhenDone: YES];
-              [valueString autorelease];
-              // Cache the value in our localCache
-              [localCache setObject: valueString forKey: keyName];
-            }
-        }
+      valueString = [self valueForKey: keyName];
+      if (valueString)
+        [localCache setObject: valueString forKey: keyName];
     }
-   else
-     [self errorWithFormat: @"attempting to retrieved cached value for key"
-           @" '%@' while no handle exists", keyName];
 
   return valueString;
 }
@@ -308,6 +359,49 @@
 - (NSString *) userSettingsForLogin: (NSString *) theLogin
 {
   return [self _valuesOfType: @"settings" forLogin: theLogin];
+}
+
+/* CAS session support */
+- (NSString *) CASTicketFromIdentifier: (NSString *) identifier
+{
+  return [self valueForKey: [NSString stringWithFormat: @"cas-id:%@",
+                                      identifier]];
+}
+
+- (NSString *) CASSessionWithTicket: (NSString *) ticket
+{
+  return [self valueForKey: [NSString stringWithFormat: @"cas-ticket:%@",
+                                        ticket]];
+}
+
+- (void) setCASSession: (NSString *) casSession
+            withTicket: (NSString *) ticket
+         forIdentifier: (NSString *) identifier
+{
+  [self setValue: ticket
+          forKey: [NSString stringWithFormat: @"cas-id:%@", identifier]];
+  [self setValue: casSession
+          forKey: [NSString stringWithFormat: @"cas-ticket:%@", ticket]];
+}
+
+- (NSString *) CASPGTIdFromPGTIOU: (NSString *) pgtIou
+{
+  NSString *casPgtId, *key;
+
+  key = [NSString stringWithFormat: @"cas-pgtiou:%@", pgtIou];
+  casPgtId = [self valueForKey: key];
+  /* we directly remove the value as it can only be used once anyway */
+  if (casPgtId)
+    [self removeValueForKey: key];
+
+  return casPgtId;
+}
+
+- (void) setCASPGTId: (NSString *) pgtId
+           forPGTIOU: (NSString *) pgtIou
+{
+  [self setValue: pgtId
+          forKey: [NSString stringWithFormat: @"cas-pgtiou:%@", pgtIou]];
 }
 
 @end

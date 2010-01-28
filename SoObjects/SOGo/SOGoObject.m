@@ -129,7 +129,7 @@
   f = [[NSDate date] timeIntervalSince1970];
 
   return [NSString stringWithFormat:@"%0X-%0X-%0X-%0X",
-		   pid, (int) f, sequence++, random];
+		   pid, (int) f, sequence++, (int) rndm];
 }
 
 - (NSString *) globallyUniqueObjectId

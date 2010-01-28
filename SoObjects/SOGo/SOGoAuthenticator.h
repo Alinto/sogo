@@ -33,6 +33,9 @@
 
 - (NSString *) passwordInContext: (WOContext *) context;
 - (SOGoUser *) userInContext: (WOContext *) context;
+- (NSString *) imapPasswordInContext: (WOContext *) context
+                           forServer: (NSString *) imapServer
+                          forceRenew: (BOOL) renew;
 
 @end
 

@@ -105,6 +105,11 @@
           protectedBy = "<public>";
           pageName = "SOGoRootPage"; 
         };
+        casProxy = { 
+          protectedBy = "<public>";
+          pageName = "SOGoRootPage"; 
+          actionName = "casProxy";
+        };
         /*	crash = {
                 protectedBy = "<public>";
                 pageName = "SOGoRootPage";

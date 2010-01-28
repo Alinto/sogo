@@ -409,10 +409,15 @@
 {
   BOOL canLogoff;
   id auth;
+  SOGoSystemDefaults *sd;
 
   auth = [[self clientObject] authenticatorInContext: context];
   if ([auth respondsToSelector: @selector (cookieNameInContext:)])
-    canLogoff = ([[auth cookieNameInContext: context] length] > 0);
+    {
+      sd = [SOGoSystemDefaults sharedSystemDefaults];
+      canLogoff = ([[auth cookieNameInContext: context] length] > 0
+                   && ![[sd authenticationType] isEqualToString: @"cas"]);
+    }
   else
     canLogoff = NO;
 

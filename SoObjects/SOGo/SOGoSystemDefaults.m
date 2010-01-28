@@ -285,4 +285,14 @@ BootstrapNSUserDefaults ()
   return [self stringForKey: @"SOGoLoginSuffix"];
 }
 
+- (NSString *) authenticationType
+{
+  return [[self stringForKey: @"SOGoAuthenticationType"] lowercaseString];
+}
+
+- (NSString *) CASServiceURL
+{
+  return [self stringForKey: @"SOGoCASServiceURL"];
+}
+
 @end
