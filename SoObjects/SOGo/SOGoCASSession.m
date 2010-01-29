@@ -381,6 +381,8 @@
                        andParameters: params];
   identifier = [SOGoObject globallyUniqueObjectId];
   [identifier retain];
+  if (![pgt length])
+    [self warnWithFormat: @"failure to obtain a PGT from the C.A.S. service"];
 
   cacheUpdateNeeded = YES;
 }
