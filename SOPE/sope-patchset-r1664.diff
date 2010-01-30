@@ -5239,6 +5239,53 @@ Index: sope-xml/SaxObjC/XMLNamespaces.h
  #ifndef XMLNS_AppleCalApp
  #  define XMLNS_AppleCalApp @"com.apple.ical:"
  #endif
+Index: sope-appserver/WEExtensions/ChangeLog
+===================================================================
+--- sope-appserver/WEExtensions/ChangeLog	(revision 1664)
++++ sope-appserver/WEExtensions/ChangeLog	(working copy)
+@@ -1,3 +1,11 @@
++2010-01-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
++
++	* WEResourceManager.m
++	(_urlForResourceNamed:inFramework:language:applicationName:):
++	append the language with stringByAppendingPathComponent: rather
++	than ...ByAppendingString. Also, we want to return an autoreleased
++	value to avoid leaks.
++
+ 2008-02-21  Helge Hess  <helge.hess@opengroupware.org>
+ 
+ 	* WEMonthOverview.m: fixed bug, last day of appointments got lost ...
+Index: sope-appserver/WEExtensions/WEResourceManager.m
+===================================================================
+--- sope-appserver/WEExtensions/WEResourceManager.m	(revision 1664)
++++ sope-appserver/WEExtensions/WEResourceManager.m	(working copy)
+@@ -525,7 +525,7 @@
+ 
+       /* check language */
+       if (_lang) {
+-        path = [path stringByAppendingString:_lang];
++        path = [path stringByAppendingPathComponent:_lang];
+         path = [path stringByAppendingPathExtension:@"lproj"];
+       }
+       
+@@ -568,7 +568,7 @@
+     
+     /* check language */
+     if (_lang) {
+-      basepath = [path stringByAppendingString:_lang];
++      basepath = [path stringByAppendingPathComponent:_lang];
+       basepath = [basepath stringByAppendingPathExtension:@"lproj"];
+     }
+     else
+@@ -613,6 +613,8 @@
+   
+  done:
+   [self cacheValue:url inCache:self->keyToURL];
++  [url autorelease];
++  
+   return url;
+ }
+ 
 Index: sope-appserver/mod_ngobjweb/GNUmakefile
 ===================================================================
 --- sope-appserver/mod_ngobjweb/GNUmakefile	(revision 1664)
@@ -6656,6 +6703,14 @@ Index: sope-appserver/NGObjWeb/WODynamicElement.m
    }
    
    return [self initWithName:_name
+@@ -362,6 +363,7 @@
+     
+     children = [_builder buildNodes:[_element childNodes]
+                          templateBuilder:_builder];
++    [children autorelease];
+   }
+   else
+     children = nil;
 Index: sope-appserver/NGObjWeb/WOHTTPConnection.m
 ===================================================================
 --- sope-appserver/NGObjWeb/WOHTTPConnection.m	(revision 1664)
@@ -6783,6 +6838,19 @@ Index: sope-appserver/NGObjWeb/GNUmakefile.postamble
 -		$(INSTALL_ROOT_DIR)/$(GNUSTEP_MAKEFILES)/wobundle.make
 -endif
 +		$(DESTDIR)/$(GNUSTEP_MAKEFILES)/wobundle.make
+Index: sope-appserver/NGObjWeb/WOComponentDefinition.m
+===================================================================
+--- sope-appserver/NGObjWeb/WOComponentDefinition.m	(revision 1664)
++++ sope-appserver/NGObjWeb/WOComponentDefinition.m	(working copy)
+@@ -540,7 +540,7 @@
+   builder = [self templateBuilderForURL:url];
+   if (debugOn) [self debugWithFormat:@"builder: %@", builder];
+   
+-  self->template = [[builder buildTemplateAtURL:url] retain];
++  self->template = [builder buildTemplateAtURL:url];
+   if (debugOn) [self debugWithFormat:@"template: %@", self->template];
+   
+   return self->template ? YES : NO;
 Index: sope-appserver/NGObjWeb/WOMessage+XML.m
 ===================================================================
 --- sope-appserver/NGObjWeb/WOMessage+XML.m	(revision 1664)
@@ -6800,7 +6868,47 @@ Index: sope-appserver/NGObjWeb/ChangeLog
 ===================================================================
 --- sope-appserver/NGObjWeb/ChangeLog	(revision 1664)
 +++ sope-appserver/NGObjWeb/ChangeLog	(working copy)
-@@ -1,3 +1,117 @@
+@@ -1,3 +1,157 @@
++2010-01-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
++
++	* Templates/WOxComponentElemBuilder.m
++	(-buildElement:tempateBuilder:): "children" (local) is the result
++	of a "buildXXX" method that we won't return, so we autorelease it
++	to avoid leaks.
++
++	* Templates/WOxTemplateBuilder.m (-buildTemplateAtURL): same as
++	below for "root".
++
++	* Templates/WOWrapperTemplateBuilder.m (-buildTemplateAtURL):
++	avoid a leak by releasing "rootElement" (local) when used.
++
++	* Templates/WOxElemBuilder.m (-buildNodes:templateBuilder:): the
++	"buildXXX" methods return retained objects all through NGObjWeb,
++	here too now.
++
++	* DynamicElements/_WOTemporaryHyperlink.m
++	(-initWithName:associations:contentElements:): same as below for
++	"template".
++
++	* DynamicElements/WOString.m
++	(-initWithName:associations:template:): "avalue" and "aescape" are
++	local variables and OWGetProperty always returns a retained
++	object. Therefore we want to release them after their use.
++
++	* DynamicElements/WOxHTMLElemBuilder.m
++	(-buildContainer:templateBuilder:): same as below.
++
++	* DynamicElements/WOConditional.m
++	(-initWithNegateElement:templateBuilder:): same as below.
++
++	* DynamicElements/WOGenericElement.m
++	(-initWithElement:templateBuilder:): "children" is retained when
++	returned from "buildNodesXX" but is not an ivar so we want to
++	autorelease that result to avoid leaks.
++
++	* WOComponentDefinition.m (-load): the "buildXX" methods already
++	return retained objects. We don't want to retain them once more.
++
 +2010-01-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 +
 +	* WOHttpAdaptor/WOHttpAdaptor.m (-registerForEvents): the
@@ -7174,6 +7282,18 @@ Index: sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.m
    
    self->rest = _config;
    
+Index: sope-appserver/NGObjWeb/DynamicElements/WOGenericElement.m
+===================================================================
+--- sope-appserver/NGObjWeb/DynamicElements/WOGenericElement.m	(revision 1664)
++++ sope-appserver/NGObjWeb/DynamicElements/WOGenericElement.m	(working copy)
+@@ -74,6 +74,7 @@
+   children = [_element hasChildNodes]
+     ? [_builder buildNodes:[_element childNodes] templateBuilder:_builder]
+     : (NSArray *)nil;
++  [children autorelease];
+   
+   /* construct self ... */
+   self = [(WODynamicElement *)self initWithName:name 
 Index: sope-appserver/NGObjWeb/DynamicElements/_WOComplexHyperlink.m
 ===================================================================
 --- sope-appserver/NGObjWeb/DynamicElements/_WOComplexHyperlink.m	(revision 1664)
@@ -7207,6 +7327,73 @@ Index: sope-appserver/NGObjWeb/DynamicElements/_WOComplexHyperlink.m
    /* do not rewrite pure fragment URLs */
    if (r.length > 0 && [_s characterAtIndex:0] == '#')
      return NO;
+Index: sope-appserver/NGObjWeb/DynamicElements/WOConditional.m
+===================================================================
+--- sope-appserver/NGObjWeb/DynamicElements/WOConditional.m	(revision 1664)
++++ sope-appserver/NGObjWeb/DynamicElements/WOConditional.m	(working copy)
+@@ -121,6 +121,7 @@
+     
+     children = [_builder buildNodes:[_element childNodes]
+                          templateBuilder:_builder];
++    [children autorelease];
+   }
+   else
+     children = nil;
+Index: sope-appserver/NGObjWeb/DynamicElements/WOString.m
+===================================================================
+--- sope-appserver/NGObjWeb/DynamicElements/WOString.m	(revision 1664)
++++ sope-appserver/NGObjWeb/DynamicElements/WOString.m	(working copy)
+@@ -235,6 +235,8 @@
+     
+     doEscape = (aescape != nil) ? [aescape boolValueInComponent:nil] : YES;
+     self = [self initWithValue:avalue escapeHTML:doEscape];
++    [avalue release];
++    [aescape release];
+   }
+   return self;
+ }
+@@ -357,6 +359,8 @@
+     
+     doEscape = (aescape != nil) ? [aescape boolValueInComponent:nil] : YES;
+     self = [self initWithValue:avalue escapeHTML:doEscape];
++    [avalue release];
++    [aescape release];
+   }
+   return self;
+ }
+Index: sope-appserver/NGObjWeb/DynamicElements/WOxHTMLElemBuilder.m
+===================================================================
+--- sope-appserver/NGObjWeb/DynamicElements/WOxHTMLElemBuilder.m	(revision 1664)
++++ sope-appserver/NGObjWeb/DynamicElements/WOxHTMLElemBuilder.m	(working copy)
+@@ -223,6 +223,7 @@
+   children = [_element hasChildNodes]
+     ? [_b buildNodes:[_element childNodes] templateBuilder:_b]
+     : (NSArray *)nil;
++  [children autorelease];
+ 
+   if ((count = [children count]) == 0)
+     return nil;
+@@ -231,7 +232,7 @@
+     return [[children objectAtIndex:0] retain];
+   
+   return [[WOCompoundElement allocForCount:count 
+-			     zone:NULL] initWithContentElements:children];
++                                       zone:NULL] initWithContentElements:children];
+ }
+ 
+ - (WOElement *)buildElement:(id<DOMElement>)_element templateBuilder:(id)_b {
+Index: sope-appserver/NGObjWeb/DynamicElements/_WOTemporaryHyperlink.m
+===================================================================
+--- sope-appserver/NGObjWeb/DynamicElements/_WOTemporaryHyperlink.m	(revision 1664)
++++ sope-appserver/NGObjWeb/DynamicElements/_WOTemporaryHyperlink.m	(working copy)
+@@ -135,6 +135,7 @@
+     template = [[WOCompoundElement allocForCount:[_contents count]
+                                    zone:[self zone]]
+                                    initWithContentElements:_contents];
++    [template autorelease];
+   }
+   
+   return [self initWithName:_name
 Index: sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.h
 ===================================================================
 --- sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.h	(revision 1664)
@@ -7557,6 +7744,110 @@ Index: sope-appserver/NGObjWeb/NGObjWeb/WOCoreApplication.h
  /* adaptors */
  
  - (NSArray *)adaptors;
+Index: sope-appserver/NGObjWeb/Templates/WOxElemBuilder.m
+===================================================================
+--- sope-appserver/NGObjWeb/Templates/WOxElemBuilder.m	(revision 1664)
++++ sope-appserver/NGObjWeb/Templates/WOxElemBuilder.m	(working copy)
+@@ -280,7 +280,7 @@
+   if ((count = [_nodes length]) == 0)
+     return nil;
+   
+-  children = [NSMutableArray arrayWithCapacity:(count + 1)];
++  children = [[NSMutableArray alloc] initWithCapacity:(count + 1)];
+   
+   for (i = 0; i < count; i++) {
+     WOElement *e;
+@@ -376,9 +376,9 @@
+   WOElement *result;
+   
+   pool   = [[NSAutoreleasePool alloc] init];
+-  result = [[self buildNode:_document templateBuilder:self] retain];
++  result = [self buildNode:_document templateBuilder:self];
+   [pool release];
+-  return [result autorelease];
++  return result;
+ }
+ 
+ /* association callbacks */
+@@ -773,6 +773,7 @@
+   children = [_tag hasChildNodes]
+     ? [_b buildNodes:[_tag childNodes] templateBuilder:_b]
+     : (NSArray *)nil;
++  [children autorelease];
+   
+   return [self wrapElements:children inElementOfClass:_class];
+ }
+Index: sope-appserver/NGObjWeb/Templates/WOWrapperTemplateBuilder.m
+===================================================================
+--- sope-appserver/NGObjWeb/Templates/WOWrapperTemplateBuilder.m	(revision 1664)
++++ sope-appserver/NGObjWeb/Templates/WOWrapperTemplateBuilder.m	(working copy)
+@@ -406,6 +406,7 @@
+   NS_ENDHANDLER;
+   
+   [self->iTemplate setRootElement:rootElement];
++  [rootElement release];
+   template = self->iTemplate;
+   self->iTemplate = nil;
+   
+@@ -423,7 +424,7 @@
+     [script release];
+   }
+   
+-  return [template autorelease];
++  return template;
+ }
+ 
+ /* creating associations from WO/hash tag attributes */
+Index: sope-appserver/NGObjWeb/Templates/WOxComponentElemBuilder.m
+===================================================================
+--- sope-appserver/NGObjWeb/Templates/WOxComponentElemBuilder.m	(revision 1664)
++++ sope-appserver/NGObjWeb/Templates/WOxComponentElemBuilder.m	(working copy)
+@@ -116,6 +116,7 @@
+   children = [_element hasChildNodes]
+     ? [_b buildNodes:[_element childNodes] templateBuilder:_b]
+     : (NSArray *)nil;
++  [children autorelease];
+   
+   /* build associations */
+   
+@@ -258,6 +259,7 @@
+   children = [_element hasChildNodes]
+     ? [_b buildNodes:[_element childNodes] templateBuilder:_b]
+     : (NSArray *)nil;
++  [children autorelease];
+   
+   if (compName == nil)
+     compName = [_element tagName];
+Index: sope-appserver/NGObjWeb/Templates/WOxTemplateBuilder.m
+===================================================================
+--- sope-appserver/NGObjWeb/Templates/WOxTemplateBuilder.m	(revision 1664)
++++ sope-appserver/NGObjWeb/Templates/WOxTemplateBuilder.m	(working copy)
+@@ -69,11 +69,11 @@
+   
+   builder = [self builderForDocument:_doc];
+   
+-  root = [[builder buildTemplateFromDocument:_doc] retain];
++  root = [builder buildTemplateFromDocument:_doc];
+   
+   template = [[self templateClass] alloc];
+   template = [template initWithURL:_url rootElement:root];
+-  template = [template autorelease];
++  [root release];
+   
+   /* transform builder info's into element defs ... */
+   
+@@ -150,10 +150,9 @@
+   else
+     template = nil;
+ 
+-  template = [template retain];
+   [pool release];
+   
+-  return [template autorelease];
++  return template;  
+ }
+ 
+ @end /* WOxTemplateBuilder */
 Index: sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpAdaptor.h
 ===================================================================
 --- sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpAdaptor.h	(revision 1664)
