@@ -60,18 +60,8 @@
   [toolbarGroup  release];
   [toolbarConfig release];
   [buttonInfo    release];
-  if (toolbar)
-    [toolbar release];
+  [toolbar release];
   [super dealloc];
-}
-
-/* notifications */
-
-- (void)sleep {
-  [toolbarGroup  release]; toolbarGroup  = nil;
-  [toolbarConfig release]; toolbarConfig = nil;
-  [buttonInfo    release]; buttonInfo    = nil;
-  [super sleep];
 }
 
 /* accessors */
@@ -187,7 +177,7 @@
       else
         tb = [self loadToolbarConfigFromResourceNamed:tb];
     }
-  
+
   toolbarConfig = [tb retain];
 
   return toolbarConfig;
