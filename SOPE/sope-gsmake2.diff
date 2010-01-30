@@ -2109,7 +2109,7 @@ Index: sope-appserver/WEExtensions/WEResourceManager.m
 +  NSEnumerator *libraryPaths;
 +  NSString *directory;
 +
-+  tmp = [[NSMutableArray alloc] init];
++  tmp = [NSMutableArray array];
 +  libraryPaths = [NSStandardLibraryPaths() objectEnumerator];
 +  while ((directory = [libraryPaths nextObject]))
 +    [tmp addObject: directory];
