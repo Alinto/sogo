@@ -4899,6 +4899,31 @@ Index: sope-core/NGExtensions/EOExt.subproj/EOGlobalID+Ext.m
  #import <EOControl/EOGlobalID.h>
  #import <Foundation/NSString.h>
  
+Index: sope-core/NGExtensions/ChangeLog
+===================================================================
+--- sope-core/NGExtensions/ChangeLog	(revision 1664)
++++ sope-core/NGExtensions/ChangeLog	(working copy)
+@@ -1,3 +1,8 @@
++2010-01-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
++
++	* NGRuleEngine.subproj/NGRuleModel.m (-candidateRulesForKey:):
++	return an autoreleased array to avoid leaks.
++
+ 2009-03-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+ 
+ 	* NGQuotedPrintableCoding.m: encode '_' as '=5F', so that it is not
+Index: sope-core/NGExtensions/NGRuleEngine.subproj/NGRuleModel.m
+===================================================================
+--- sope-core/NGExtensions/NGRuleEngine.subproj/NGRuleModel.m	(revision 1664)
++++ sope-core/NGExtensions/NGRuleEngine.subproj/NGRuleModel.m	(working copy)
+@@ -180,6 +180,7 @@
+ 
+   /* sort candidates */
+   [candidates sortUsingFunction:(void *)candidateSort context:self];
++  [candidates autorelease];
+   
+   return candidates;
+ }
 Index: sope-core/NGStreams/NGStream+serialization.m
 ===================================================================
 --- sope-core/NGStreams/NGStream+serialization.m	(revision 1664)
