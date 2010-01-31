@@ -1,5 +1,17 @@
 2010-01-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoWebAuthenticator.h: conforms to
+	SOGoAuthenticator protocol.
+
+	* SoObjects/SOGo/SOGoDAVAuthenticator.h: conforms to
+	SOGoAuthenticator protocol.
+
+	* SoObjects/SOGo/SOGoProxyAuthenticator.m
+	(-imapPasswordInContext:forServer:forceRenew:): added method.
+	Returns nil when renew is set to YES so that no real retry occurs
+	(convention: null password is NO password) but returns an empty
+	string by default.
+
 	* SoObjects/SOGo/SOGoUserFolder.m (-ownerInContext:): invoke
 	setOwner: to retain user.
 

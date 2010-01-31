@@ -42,9 +42,6 @@
 
 + (id) sharedSOGoDAVAuthenticator;
 
-- (SOGoUser *) userInContext: (WOContext *) _ctx;
-- (NSString *) passwordInContext: (WOContext *) context;
-
 @end
 
 #endif /* _SOGoDAVAuthenticator_H__ */

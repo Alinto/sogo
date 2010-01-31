@@ -41,12 +41,9 @@
 @class SOGoUser;
 
 // @interface SOGoProxyAuthenticator : SoHTTPAuthenticator <SOGoAuthenticator>
-@interface SOGoProxyAuthenticator : NSObject
+@interface SOGoProxyAuthenticator : NSObject <SOGoAuthenticator>
 
 + (id) sharedSOGoProxyAuthenticator;
-
-- (SOGoUser *) userInContext: (WOContext *) _ctx;
-- (NSString *) passwordInContext: (WOContext *) context;
 
 @end
 

@@ -103,6 +103,13 @@
   return @"";
 }
 
+- (NSString *) imapPasswordInContext: (WOContext *) context
+                           forServer: (NSString *) imapServer
+                          forceRenew: (BOOL) renew
+{
+  return (renew ? nil : @"");
+}
+
 - (WOResponse *) preprocessCredentialsInContext: (WOContext *) context
 {
   WOResponse *r;

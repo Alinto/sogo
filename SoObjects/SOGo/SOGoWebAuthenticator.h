@@ -30,7 +30,7 @@
 
 @class SOGoUser;
 
-@interface SOGoWebAuthenticator : SoCookieAuthenticator
+@interface SOGoWebAuthenticator : SoCookieAuthenticator <SOGoAuthenticator>
 
 + (id) sharedSOGoWebAuthenticator;
 
