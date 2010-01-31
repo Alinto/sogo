@@ -1,3 +1,9 @@
+2010-01-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Main/SOGoProductLoader.m (-loadProducts): attempt to free some
+	memory after "loadAllProducts" is invoked, which consumes a lot of
+	RAM.
+
 2010-01-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoSystemDefaults.m (-CASServiceURL)

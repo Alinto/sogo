@@ -20,6 +20,7 @@
 */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSFileManager.h>
 #import <Foundation/NSPathUtilities.h>
@@ -110,6 +111,9 @@ static NSString *productDirectoryName = @"SOGo";
   NSString *lpath, *bpath;
   NSEnumerator *productNames;
   NSString *productName;
+  NSAutoreleasePool *pool;
+
+  pool = [NSAutoreleasePool new];
 
   registry = [SoProductRegistry sharedProductRegistry];
   fm = [NSFileManager defaultManager];
@@ -134,6 +138,7 @@ static NSString *productDirectoryName = @"SOGo";
 
   if (![registry loadAllProducts])
     [self warnWithFormat: @"could not load all products !"];
+  [pool release];
 }
 
 @end /* SOGoProductLoader */
