@@ -182,8 +182,6 @@
       if ([self doesRetainContainer])
 	[_container retain];
       owner = [self ownerInContext: context];
-      if (owner)
-	[owner retain];
     }
 
   return self;

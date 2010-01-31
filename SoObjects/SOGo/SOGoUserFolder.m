@@ -108,7 +108,7 @@
   if (!owner)
     {
       ownerUser = [SOGoUser userWithLogin: nameInContainer roles: nil];
-      owner = [ownerUser login];
+      [self setOwner: [ownerUser login]];
     }
 
   return owner;

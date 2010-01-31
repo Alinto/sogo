@@ -1,5 +1,11 @@
 2010-01-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUserFolder.m (-ownerInContext:): invoke
+	setOwner: to retain user.
+
+	* SoObjects/SOGo/SOGoObject.m (-initWithName:inContainer:):
+	ownerInContext: already retains "owner".
+
 	* Main/SOGoProductLoader.m (-loadProducts): attempt to free some
 	memory after "loadAllProducts" is invoked, which consumes a lot of
 	RAM.
