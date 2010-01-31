@@ -2,9 +2,9 @@
 
 debug=yes
 
-include ../config.make
+include ../../config.make
 include $(GNUSTEP_MAKEFILES)/common.make
-include ../Version
+include ../../Version
 
 TEST_TOOL = sogo-tests
 $(TEST_TOOL)_INSTALL_DIR = $(SOGO_ADMIN_TOOLS)
