@@ -33,8 +33,8 @@
     SOGoAppointmentFolder = {
       superclass = "SOGoGCSFolder";
       defaultRoles = {
-        "Read FreeBusy" = ( "Authenticated" );
-	"Access Contents Information" = ( "Owner", "PublicResponder", "PublicModifier", "PublicViewer", "PublicDAndTViewer", "PrivateResponder", "PrivateModifier", "PrivateViewer", "PrivateDAndTViewer", "ConfidentialResponder", "ConfidentialModifier", "ConfidentialViewer", "ConfidentialDAndTViewer" );
+        "Read FreeBusy" = ( "Owner", "AuthorizedSubscriber", "ObjectEraser" );
+	"Access Contents Information" = ( "Owner", "PublicResponder", "PublicModifier", "PublicViewer", "PublicDAndTViewer", "PrivateResponder", "PrivateModifier", "PrivateViewer", "PrivateDAndTViewer", "ConfidentialResponder", "ConfidentialModifier", "ConfidentialViewer", "ConfidentialDAndTViewer", "AuthorizedSubscriber" );
 	"ViewWholePublicRecords" = ( "Owner", "PublicResponder", "PublicModifier", "PublicViewer" );
 	"ViewDAndTOfPublicRecords" = ( "Owner", "PublicDAndTViewer" );
 	"ModifyPublicRecords" = ( "Owner", "PublicModifier" );
@@ -58,14 +58,15 @@
     SOGoCalendarComponent = {
       superclass = "SOGoContentObject";
       defaultRoles = {
-	"ViewAllComponent" = ( "Owner", "Organizer", "Participant", "ComponentModifier", "ComponentResponder", "ComponentViewer" );
-	"ViewDAndT" = ( "Organizer", "Participant", "ComponentDAndTViewer" );
+        "SOGoDAVReadPermission" = ( "Owner", "ComponentDAndTViewer", "ComponentViewer", "ComponentResponder", "ComponentModifier" );
+	"ViewDAndT" = ( "Owner", "ComponentDAndTViewer", "ComponentViewer", "ComponentResponder", "ComponentModifier", "ObjectEditor" );
+	"ViewAllComponent" = ( "Owner", "ComponentViewer", "ComponentResponder", "ComponentModifier", "ObjectEditor" );
+	"RespondToComponent" = ( "Owner", "ComponentResponder", "ComponentModifier", "ObjectEditor" );
 	"ModifyComponent" = ( "Owner", "ComponentModifier", "ObjectEditor" );
-	"RespondToComponent" = ( "Owner", "ComponentModifier", "ComponentResponder" );
-	"Access Object" = ( "Owner", "Organizer", "ObjectCreator", "ObjectEraser", "Participant", "ComponentModifier", "ComponentResponder", "ComponentViewer", "ComponentDAndTViewer" );
-	"Change Images and Files" = ( "Owner", "Organizer", "ComponentModifier", "ComponentResponder", "ObjectEditor" );
-      	"Access Contents Information" = ( "Owner", "Organizer", "Participant", "ComponentModifier", "ComponentResponder", "ComponentViewer", "ComponentDAndTViewer" );
-        "WebDAV Access" = ( "Owner", "Organizer", "ObjectCreator", "ObjectEraser", "Participant", "ComponentModifier", "ComponentResponder", "ComponentViewer", "ComponentDAndTViewer" );
+	"Access Object" = ( "Owner", "ObjectCreator", "ObjectEraser", "ComponentModifier", "ComponentResponder", "ComponentViewer", "ComponentDAndTViewer" );
+	"Change Images and Files" = ( "Owner", "ComponentModifier", "ComponentResponder", "ObjectEditor" );
+      	"Access Contents Information" = ( "Owner", "ComponentModifier", "ComponentResponder", "ComponentViewer", "ComponentDAndTViewer" );
+        "WebDAV Access" = ( "Owner", "ObjectCreator", "ObjectEraser", "ComponentModifier", "ComponentResponder", "ComponentViewer", "ComponentDAndTViewer" );
       };
     };
     SOGoAppointmentObject = {
@@ -78,14 +79,15 @@
       superclass = "SOGoObject";
       protectedBy = "Access Object";
       defaultRoles = {
-	"ViewAllComponent" = ( "Owner", "Organizer", "Participant", "ComponentModifier", "ComponentResponder", "ComponentViewer" );
-	"ViewDAndT" = ( "Organizer", "Participant", "ComponentDAndTViewer" );
+        "SOGoDAVReadPermission" = ( "Owner", "ComponentDAndTViewer", "ComponentViewer", "ComponentResponder", "ComponentModifier" );
+	"ViewDAndT" = ( "Owner", "ComponentDAndTViewer", "ComponentViewer", "ComponentResponder", "ComponentModifier" );
+	"ViewAllComponent" = ( "Owner", "ComponentViewer", "ComponentResponder", "ComponentModifier" );
+	"RespondToComponent" = ( "Owner", "ComponentResponder", "ComponentModifier" );
 	"ModifyComponent" = ( "Owner", "ComponentModifier" );
-	"RespondToComponent" = ( "Participant", "ComponentModifier", "ComponentResponder" );
-	"Access Object" = ( "Owner", "Organizer", "Participant", "ComponentModifier", "ComponentResponder", "ComponentViewer", "ComponentDAndTViewer" );
-	"Change Images and Files" = ( "Owner", "Organizer", "ComponentModifier", "ComponentResponder" );
-      	"Access Contents Information" = ( "Owner", "Organizer", "Participant", "ComponentModifier", "ComponentResponder", "ComponentViewer", "ComponentDAndTViewer" );
-        "WebDAV Access" = ( "Owner", "Organizer", "Participant", "ComponentModifier", "ComponentResponder", "ComponentViewer", "ComponentDAndTViewer" );
+	"Access Object" = ( "Owner", "ComponentModifier", "ComponentResponder", "ComponentViewer", "ComponentDAndTViewer" );
+	"Change Images and Files" = ( "Owner", "ComponentModifier", "ComponentResponder" );
+      	"Access Contents Information" = ( "Owner", "ComponentModifier", "ComponentResponder", "ComponentViewer", "ComponentDAndTViewer" );
+        "WebDAV Access" = ( "Owner", "ComponentModifier", "ComponentResponder", "ComponentViewer", "ComponentDAndTViewer" );
       };
     };
     SOGoAppointmentOccurence = {

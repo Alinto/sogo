@@ -1,3 +1,25 @@
+2010-02-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	(+webdavAclManager): view-whole-component and view-date-and-time
+	are now independent and children of "all". "read" is declared as
+	equivalent to the new "SOGoDAVReadPermission". This hack avoids
+	problems with ACL hierarchy.
+
+	* Tests/Integration/test-davacl.py (DAVCalendarAclTest._putTask):
+	new method that create tasks in the test collection based on a
+	template.
+	(DAVCalendarAclTest._currentUserPrivilegeSet): new method that
+	request the {DAV:}current-user-privilege-set property on the
+	specified DAV resource. Also checks whether the request expectedly
+	fails or succeeds.
+	(DAVCalendarAclTest._comparePrivilegeSets): new helper method to
+	compare to arrays.
+	(DAVCalendarAclTest._testCollectionDAVAcl): new test helper method
+	for ensure that DAV permissions are conform to the SOGo
+	permissions on collections.
+	(DAVCalendarAclTest._testEventDAVAcl): same as above for events.
+
 2010-01-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoWebAuthenticator.h: conforms to

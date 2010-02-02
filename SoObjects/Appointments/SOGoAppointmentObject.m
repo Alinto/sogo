@@ -72,24 +72,25 @@
       nsI = @"urn:inverse:params:xml:ns:inverse-dav";
 
       aclManager = [SOGoWebDAVAclManager new];
+
       [aclManager registerDAVPermission: davElement (@"read", nsD)
-		  abstract: YES
-		  withEquivalent: nil
+		  abstract: NO
+                  withEquivalent: @"SOGoDAVReadPermission" /* hackish */
 		  asChildOf: davElement (@"all", nsD)];
-      [aclManager registerDAVPermission: davElement (@"read-current-user-privilege-set", nsD)
-		  abstract: YES
-		  withEquivalent: SoPerm_WebDAVAccess
-		  asChildOf: davElement (@"read", nsD)];
       [aclManager registerDAVPermission: davElement (@"view-whole-component", nsI)
 		  abstract: NO
 		  withEquivalent: SOGoCalendarPerm_ViewAllComponent
-		  asChildOf: davElement (@"read", nsD)];
+                  asChildOf: davElement (@"all", nsD)];
       [aclManager registerDAVPermission: davElement (@"view-date-and-time", nsI)
 		  abstract: NO
 		  withEquivalent: SOGoCalendarPerm_ViewDAndT
-		  asChildOf: davElement (@"view-whole-component", nsI)];
+		  asChildOf: davElement (@"all", nsD)];
+      [aclManager registerDAVPermission: davElement (@"read-current-user-privilege-set", nsD)
+		  abstract: NO
+		  withEquivalent: SoPerm_WebDAVAccess
+		  asChildOf: davElement (@"all", nsD)];
       [aclManager registerDAVPermission: davElement (@"write", nsD)
-		  abstract: YES
+		  abstract: NO
 		  withEquivalent: SOGoCalendarPerm_ModifyComponent
 		  asChildOf: davElement (@"all", nsD)];
       [aclManager
