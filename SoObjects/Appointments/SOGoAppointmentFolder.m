@@ -107,121 +107,122 @@ static NSNumber *sharedYes = nil;
 
       aclManager = [SOGoWebDAVAclManager new];
       [aclManager registerDAVPermission: davElement (@"read", XMLNS_WEBDAV)
-        	  abstract: YES
-        	  withEquivalent: SoPerm_WebDAVAccess
-        	  asChildOf: davElement (@"all", XMLNS_WEBDAV)];
-      [aclManager registerDAVPermission: davElement (@"read-current-user-privilege-set", XMLNS_WEBDAV)
-        	  abstract: YES
-        	  withEquivalent: SoPerm_WebDAVAccess
-        	  asChildOf: davElement (@"read", XMLNS_WEBDAV)];
+                               abstract: YES
+                         withEquivalent: SoPerm_WebDAVAccess
+                              asChildOf: davElement (@"all", XMLNS_WEBDAV)];
+      [aclManager
+        registerDAVPermission: davElement (@"read-current-user-privilege-set", XMLNS_WEBDAV)
+                     abstract: YES
+               withEquivalent: SoPerm_WebDAVAccess
+                    asChildOf: davElement (@"read", XMLNS_WEBDAV)];
       [aclManager registerDAVPermission: davElement (@"read-free-busy", XMLNS_CALDAV)
-		  abstract: NO
-		  withEquivalent: SOGoCalendarPerm_ReadFreeBusy
-		  asChildOf: davElement (@"read", XMLNS_WEBDAV)];
+                               abstract: NO
+                         withEquivalent: SOGoCalendarPerm_ReadFreeBusy
+                              asChildOf: davElement (@"all", XMLNS_WEBDAV)];
       [aclManager registerDAVPermission: davElement (@"write", XMLNS_WEBDAV)
-		  abstract: YES
-		  withEquivalent: nil
-		  asChildOf: davElement (@"all", XMLNS_WEBDAV)];
+                               abstract: YES
+                         withEquivalent: nil
+                              asChildOf: davElement (@"all", XMLNS_WEBDAV)];
       [aclManager registerDAVPermission: davElement (@"bind", XMLNS_WEBDAV)
-		  abstract: NO
-		  withEquivalent: SoPerm_AddDocumentsImagesAndFiles
-		  asChildOf: davElement (@"write", XMLNS_WEBDAV)];
+                               abstract: NO
+                         withEquivalent: SoPerm_AddDocumentsImagesAndFiles
+                              asChildOf: davElement (@"write", XMLNS_WEBDAV)];
       [aclManager registerDAVPermission: davElement (@"schedule",
 						     XMLNS_CALDAV)
-		  abstract: NO
-		  withEquivalent: nil
-		  asChildOf: davElement (@"bind", XMLNS_WEBDAV)];
+                               abstract: NO
+                         withEquivalent: nil
+                              asChildOf: davElement (@"bind", XMLNS_WEBDAV)];
       [aclManager registerDAVPermission: davElement (@"schedule-post",
 						     XMLNS_CALDAV)
-		  abstract: NO
-		  withEquivalent: nil
-		  asChildOf: davElement (@"schedule", XMLNS_CALDAV)];
+                               abstract: NO
+                         withEquivalent: nil
+                              asChildOf: davElement (@"schedule", XMLNS_CALDAV)];
       [aclManager registerDAVPermission:
 		    davElement (@"schedule-post-vevent", XMLNS_CALDAV)
-		  abstract: NO
-		  withEquivalent: nil
-		  asChildOf: davElement (@"schedule-post", XMLNS_CALDAV)];
+                               abstract: NO
+                         withEquivalent: nil
+                              asChildOf: davElement (@"schedule-post", XMLNS_CALDAV)];
       [aclManager registerDAVPermission:
 		    davElement (@"schedule-post-vtodo", XMLNS_CALDAV)
-		  abstract: NO
-		  withEquivalent: nil
-		  asChildOf: davElement (@"schedule-post", XMLNS_CALDAV)];
+                               abstract: NO
+                         withEquivalent: nil
+                              asChildOf: davElement (@"schedule-post", XMLNS_CALDAV)];
       [aclManager registerDAVPermission:
 		    davElement (@"schedule-post-vjournal", XMLNS_CALDAV)
-		  abstract: NO
-		  withEquivalent: nil
-		  asChildOf: davElement (@"schedule-post", XMLNS_CALDAV)];
+                               abstract: NO
+                         withEquivalent: nil
+                              asChildOf: davElement (@"schedule-post", XMLNS_CALDAV)];
       [aclManager registerDAVPermission:
 		    davElement (@"schedule-post-vfreebusy", XMLNS_CALDAV)
-		  abstract: NO
-		  withEquivalent: nil
-		  asChildOf: davElement (@"schedule-post", XMLNS_CALDAV)];
+                               abstract: NO
+                         withEquivalent: nil
+                              asChildOf: davElement (@"schedule-post", XMLNS_CALDAV)];
       [aclManager registerDAVPermission: davElement (@"schedule-deliver",
 						     XMLNS_CALDAV)
-		  abstract: NO
-		  withEquivalent: nil
-		  asChildOf: davElement (@"schedule", XMLNS_CALDAV)];
+                               abstract: NO
+                         withEquivalent: nil
+                              asChildOf: davElement (@"schedule", XMLNS_CALDAV)];
       [aclManager registerDAVPermission:
 		    davElement (@"schedule-deliver-vevent", XMLNS_CALDAV)
-		  abstract: NO
-		  withEquivalent: nil
-		  asChildOf: davElement (@"schedule-deliver", XMLNS_CALDAV)];
+                               abstract: NO
+                         withEquivalent: nil
+                              asChildOf: davElement (@"schedule-deliver", XMLNS_CALDAV)];
       [aclManager registerDAVPermission:
 		    davElement (@"schedule-deliver-vtodo", XMLNS_CALDAV)
-		  abstract: NO
-		  withEquivalent: nil
-		  asChildOf: davElement (@"schedule-deliver", XMLNS_CALDAV)];
+                               abstract: NO
+                         withEquivalent: nil
+                              asChildOf: davElement (@"schedule-deliver", XMLNS_CALDAV)];
       [aclManager registerDAVPermission:
 		    davElement (@"schedule-deliver-vjournal", XMLNS_CALDAV)
-		  abstract: NO
-		  withEquivalent: nil
-		  asChildOf: davElement (@"schedule-deliver", XMLNS_CALDAV)];
+                               abstract: NO
+                         withEquivalent: nil
+                              asChildOf: davElement (@"schedule-deliver", XMLNS_CALDAV)];
       [aclManager registerDAVPermission:
 		    davElement (@"schedule-deliver-vfreebusy", XMLNS_CALDAV)
-		  abstract: NO
-		  withEquivalent: nil
-		  asChildOf: davElement (@"schedule-deliver", XMLNS_CALDAV)];
+                               abstract: NO
+                         withEquivalent: nil
+                              asChildOf: davElement (@"schedule-deliver", XMLNS_CALDAV)];
       [aclManager registerDAVPermission: davElement (@"schedule-respond",
 						     XMLNS_CALDAV)
-		  abstract: NO
-		  withEquivalent: nil
-		  asChildOf: davElement (@"schedule", XMLNS_CALDAV)];
+                               abstract: NO
+                         withEquivalent: nil
+                              asChildOf: davElement (@"schedule", XMLNS_CALDAV)];
       [aclManager registerDAVPermission:
 		    davElement (@"schedule-respond-vevent", XMLNS_CALDAV)
-		  abstract: NO
-		  withEquivalent: nil
-		  asChildOf: davElement (@"schedule-respond", XMLNS_CALDAV)];
+                               abstract: NO
+                         withEquivalent: nil
+                              asChildOf: davElement (@"schedule-respond", XMLNS_CALDAV)];
       [aclManager registerDAVPermission:
 		    davElement (@"schedule-respond-vtodo", XMLNS_CALDAV)
-		  abstract: NO
-		  withEquivalent: nil
-		  asChildOf: davElement (@"schedule-respond", XMLNS_CALDAV)];
+                               abstract: NO
+                         withEquivalent: nil
+                              asChildOf: davElement (@"schedule-respond", XMLNS_CALDAV)];
       [aclManager registerDAVPermission: davElement (@"unbind", XMLNS_WEBDAV)
-		  abstract: NO
-		  withEquivalent: SoPerm_DeleteObjects
-		  asChildOf: davElement (@"write", XMLNS_WEBDAV)];
+                               abstract: NO
+                         withEquivalent: SoPerm_DeleteObjects
+                              asChildOf: davElement (@"write", XMLNS_WEBDAV)];
       [aclManager
 	registerDAVPermission: davElement (@"write-properties", XMLNS_WEBDAV)
-	abstract: NO
-	withEquivalent: SoPerm_ChangePermissions /* hackish */
-	asChildOf: davElement (@"write", XMLNS_WEBDAV)];
+                     abstract: NO
+               withEquivalent: SoPerm_ChangePermissions /* hackish */
+                    asChildOf: davElement (@"write", XMLNS_WEBDAV)];
       [aclManager
 	registerDAVPermission: davElement (@"write-content", XMLNS_WEBDAV)
-	abstract: NO
-	withEquivalent: SoPerm_AddDocumentsImagesAndFiles
-	asChildOf: davElement (@"write", XMLNS_WEBDAV)];
+                     abstract: NO
+               withEquivalent: SoPerm_AddDocumentsImagesAndFiles
+                    asChildOf: davElement (@"write", XMLNS_WEBDAV)];
       [aclManager registerDAVPermission: davElement (@"admin", nsI)
-		  abstract: YES
-		  withEquivalent: nil
-		  asChildOf: davElement (@"all", XMLNS_WEBDAV)];
+                               abstract: YES
+                         withEquivalent: nil
+                              asChildOf: davElement (@"all", XMLNS_WEBDAV)];
       [aclManager registerDAVPermission: davElement (@"read-acl", XMLNS_WEBDAV)
-		  abstract: YES
-		  withEquivalent: SOGoPerm_ReadAcls
-		  asChildOf: davElement (@"admin", nsI)];
+                               abstract: YES
+                         withEquivalent: SOGoPerm_ReadAcls
+                              asChildOf: davElement (@"admin", nsI)];
       [aclManager registerDAVPermission: davElement (@"write-acl", XMLNS_WEBDAV)
-		  abstract: YES
-		  withEquivalent: SoPerm_ChangePermissions
-		  asChildOf: davElement (@"admin", nsI)];
+                               abstract: YES
+                         withEquivalent: SoPerm_ChangePermissions
+                              asChildOf: davElement (@"admin", nsI)];
     }
 
   return aclManager;

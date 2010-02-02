@@ -59,8 +59,8 @@
         "Change Images And Files"  = ( "Owner", "ObjectEditor", "PROPPATCHer" );
         "View" = ( "Owner", "ObjectViewer", "ObjectEditor" );
         "Access Object" = ( "Owner", "AuthorizedSubscriber" );
-        "Access Contents Information" = ( "Owner", "ObjectViewer", "ObjectEditor" );
-        "WebDAV Access" = ( "Owner", "AuthorizedSubscriber" );
+        "Access Contents Information" = ( "Owner", "ObjectViewer", "ObjectEditor", "ObjectCreator", "ObjectEraser" );
+        "WebDAV Access" = ( "Owner", "AuthorizedSubscriber", "ObjectCreator", "ObjectEraser" );
         "Delete Object" = ( "Owner" );
         "Delete Objects" = ( "Owner", "ObjectEraser" );
       };

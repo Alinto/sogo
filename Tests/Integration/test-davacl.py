@@ -80,6 +80,22 @@ DTSTAMP:20090805T100000Z
 END:VEVENT
 END:VCALENDAR"""
 
+task_template = """BEGIN:VCALENDAR
+PRODID:-//Inverse//Event Generator//EN
+VERSION:2.0
+BEGIN:VTODO
+CREATED:20100122T201440Z
+LAST-MODIFIED:20100201T175246Z
+DTSTAMP:20100201T175246Z
+UID:12345-%(class)s-%(filename)s
+SUMMARY:%(class)s event (orig. title)
+CLASS:%(class)s
+DESCRIPTION:%(class)s description
+STATUS:IN-PROCESS
+PERCENT-COMPLETE:0
+END:VTODO
+END:VCALENDAR"""
+
 class DAVCalendarAclTest(DAVAclTest):
     resource = '/SOGo/dav/%s/Calendar/test-dav-acl/' % username
     user_email = None
@@ -95,9 +111,12 @@ class DAVCalendarAclTest(DAVAclTest):
         self.classToICSClass = { "pu": "PUBLIC",
                                  "pr": "PRIVATE",
                                  "co": "CONFIDENTIAL" }
-        self._putEvent(self.client, "public.ics", "PUBLIC")
-        self._putEvent(self.client, "private.ics", "PRIVATE")
-        self._putEvent(self.client, "confidential.ics", "CONFIDENTIAL")
+        self._putEvent(self.client, "public-event.ics", "PUBLIC")
+        self._putEvent(self.client, "private-event.ics", "PRIVATE")
+        self._putEvent(self.client, "confidential-event.ics", "CONFIDENTIAL")
+        self._putTask(self.client, "public-task.ics", "PUBLIC")
+        self._putTask(self.client, "private-task.ics", "PRIVATE")
+        self._putTask(self.client, "confidential-task.ics", "CONFIDENTIAL")
 
     def testViewAllPublic(self):
         """'view all' on a specific class (PUBLIC)"""
@@ -153,6 +172,20 @@ class DAVCalendarAclTest(DAVAclTest):
                           " expected status code '%d' (received '%d')"
                           % (filename, exp_status, put.response["status"]))
 
+    def _putTask(self, client, filename,
+                 task_class = "PUBLIC",
+                 exp_status = 201):
+        url = "%s%s" % (self.resource, filename)
+        task = task_template % { "class": task_class,
+                                 "filename": filename }
+        put = webdavlib.HTTPPUT(url, task)
+        put.content_type = "text/calendar; charset=utf-8"
+        client.execute(put)
+        self.assertEquals(put.response["status"], exp_status,
+                          "%s: task creation/modification:"
+                          " expected status code '%d' (received '%d')"
+                          % (filename, exp_status, put.response["status"]))
+
     def _deleteEvent(self, client, filename, exp_status = 204):
         url = "%s%s" % (self.resource, filename)
         delete = webdavlib.WebDAVDELETE(url)
@@ -162,9 +195,109 @@ class DAVCalendarAclTest(DAVAclTest):
                           " (received '%d')"
                           % (filename, exp_status, delete.response["status"]))
 
+    def _currentUserPrivilegeSet(self, resource, expectFailure = False):
+        propfind = webdavlib.WebDAVPROPFIND(resource,
+                                            ["{DAV:}current-user-privilege-set"],
+                                            0)
+        self.subscriber_client.execute(propfind)
+        if expectFailure:
+            expStatus = 403
+        else:
+            expStatus = 207
+        self.assertEquals(propfind.response["status"], expStatus,
+                          "unexected status code when reading privileges:"
+                          + " %s instead of %d"
+                          % (propfind.response["status"], expStatus))
+
+        privileges = []
+        if not expectFailure:
+            propfind.xpath_namespace = { "D": "DAV:" }
+            response_nodes = propfind.xpath_evaluate("/D:multistatus/D:response/D:propstat/D:prop/D:current-user-privilege-set/D:privilege")
+            for node in response_nodes:
+                privilegeNode = node.childNodes[0]
+                tagName = privilegeNode.tagName
+                indexColon = tagName.find(":")
+                if indexColon > -1:
+                    tagName = tagName[indexColon+1:]
+                    privileges.append("{%s}%s" % (privilegeNode.namespaceURI, tagName))
+
+        return privileges
+
+    def _comparePrivilegeSets(self, expectedPrivileges, privileges):
+        testHash = dict(map(lambda x: (x, True), privileges))
+        for privilege in expectedPrivileges:
+            self.assertTrue(testHash.has_key(privilege),
+                            "expected privilege '%s' not found" % privilege)
+        testHash = dict(map(lambda x: (x, True), expectedPrivileges))
+        for privilege in privileges:
+            self.assertTrue(testHash.has_key(privilege),
+                            "excessive privilege '%s' found" % privilege)
+
+    def _testCollectionDAVAcl(self, rights):
+        if len(rights) > 0:
+            expectedPrivileges = ['{DAV:}read',
+                                  '{DAV:}read-current-user-privilege-set',
+                                  '{urn:ietf:params:xml:ns:caldav}read-free-busy']
+        else:
+            expectedPrivileges = []
+        if rights.has_key("c"):
+            extraPrivileges = ["{DAV:}bind",
+                               "{DAV:}write-content",
+                               '{urn:ietf:params:xml:ns:caldav}schedule',
+                               '{urn:ietf:params:xml:ns:caldav}schedule-post',
+                               '{urn:ietf:params:xml:ns:caldav}schedule-post-vevent',
+                               '{urn:ietf:params:xml:ns:caldav}schedule-post-vtodo',
+                               '{urn:ietf:params:xml:ns:caldav}schedule-post-vjournal',
+                               '{urn:ietf:params:xml:ns:caldav}schedule-post-vfreebusy',
+                               '{urn:ietf:params:xml:ns:caldav}schedule-deliver',
+                               '{urn:ietf:params:xml:ns:caldav}schedule-deliver-vevent',
+                               '{urn:ietf:params:xml:ns:caldav}schedule-deliver-vtodo',
+                               '{urn:ietf:params:xml:ns:caldav}schedule-deliver-vjournal',
+                               '{urn:ietf:params:xml:ns:caldav}schedule-deliver-vfreebusy',
+                               '{urn:ietf:params:xml:ns:caldav}schedule-respond',
+                               '{urn:ietf:params:xml:ns:caldav}schedule-respond-vevent',
+                               '{urn:ietf:params:xml:ns:caldav}schedule-respond-vtodo']
+            expectedPrivileges.extend(extraPrivileges)
+        if rights.has_key("d"):
+            extraPrivileges = ["{DAV:}unbind"]
+            expectedPrivileges.extend(extraPrivileges)
+        privileges = self._currentUserPrivilegeSet(self.resource,
+                                                   len(expectedPrivileges) == 0)
+        self._comparePrivilegeSets(expectedPrivileges, privileges)
+
+    def _testEventDAVAcl(self, event_class, right):
+        icsClass = self.classToICSClass[event_class].lower()
+        for suffix in [ "event", "task" ]:
+            url = "%s%s-%s.ics" % (self.resource, icsClass, suffix)
+
+            if right is None:
+                expectFailure = True
+                expectedPrivileges = None
+            else:
+                expectFailure = False
+                expectedPrivileges = ['{DAV:}read-current-user-privilege-set',
+                                      '{urn:inverse:params:xml:ns:inverse-dav}view-date-and-time',
+                                      '{DAV:}read']
+                if right != "d":
+                    extraPrivilege = '{urn:inverse:params:xml:ns:inverse-dav}view-whole-component'
+                    expectedPrivileges.append(extraPrivilege)
+                    if right != "v":
+                        extraPrivileges = ['{urn:inverse:params:xml:ns:inverse-dav}respond-to-component',
+                                           '{DAV:}write-content']
+                        expectedPrivileges.extend(extraPrivileges)
+                        if right != "r":
+                            extraPrivileges = ['{DAV:}write-properties',
+                                               '{DAV:}write']
+                            expectedPrivileges.extend(extraPrivileges)
+
+            privileges = self._currentUserPrivilegeSet(url, expectFailure)
+            if not expectFailure:
+                self._comparePrivilegeSets(expectedPrivileges, privileges)
+
     def _testRights(self, rights):
         self.acl_utility.setupRights(subscriber_username, rights)
         self._testCreate(rights)
+        self._testCollectionDAVAcl(rights)
         self._testEventRight("pu", rights)
         self._testEventRight("pr", rights)
         self._testEventRight("co", rights)
@@ -183,9 +316,11 @@ class DAVCalendarAclTest(DAVAclTest):
             exp_code = 204
         else:
             exp_code = 403
-        self._deleteEvent(self.subscriber_client, "public.ics", exp_code)
-        self._deleteEvent(self.subscriber_client, "private.ics", exp_code)
-        self._deleteEvent(self.subscriber_client, "confidential.ics",
+        self._deleteEvent(self.subscriber_client, "public-event.ics",
+                          exp_code)
+        self._deleteEvent(self.subscriber_client, "private-event.ics",
+                          exp_code)
+        self._deleteEvent(self.subscriber_client, "confidential-event.ics",
                           exp_code)
 
     def _testEventRight(self, event_class, rights):
@@ -205,6 +340,7 @@ class DAVCalendarAclTest(DAVAclTest):
 
         self._testModify(event_class, right)
         self._testRespondTo(event_class, right)
+        self._testEventDAVAcl(event_class, right)
 
     def _getEvent(self, event_class, is_invitation = False):
         icsClass = self.classToICSClass[event_class]
@@ -212,7 +348,7 @@ class DAVCalendarAclTest(DAVAclTest):
             filename = "invitation-%s" % icsClass.lower()
         else:
             filename = "%s" % icsClass.lower()
-        url = "%s%s.ics" % (self.resource, filename)
+        url = "%s%s-event.ics" % (self.resource, filename)
         get = webdavlib.HTTPGET(url)
         self.subscriber_client.execute(get)
 
@@ -222,6 +358,19 @@ class DAVCalendarAclTest(DAVAclTest):
             event = None
 
         return event
+
+    def _getTask(self, task_class):
+        filename = "%s" % self.classToICSClass[task_class].lower()
+        url = "%s%s-task.ics" % (self.resource, filename)
+        get = webdavlib.HTTPGET(url)
+        self.subscriber_client.execute(get)
+
+        if get.response["status"] == 200:
+            task = get.response["body"]
+        else:
+            task = None
+
+        return task
 
     def _calendarDataInMultistatus(self, query, filename,
                                    response_tag = "D:response"):
@@ -257,7 +406,7 @@ class DAVCalendarAclTest(DAVAclTest):
         event = None
 
         icsClass = self.classToICSClass[event_class]
-        filename = "%s.ics" % icsClass.lower()
+        filename = "%s-event.ics" % icsClass.lower()
         propfind = webdavlib.WebDAVPROPFIND(self.resource,
                                             ["{urn:ietf:params:xml:ns:caldav}calendar-data"],
                                             1)
@@ -271,7 +420,7 @@ class DAVCalendarAclTest(DAVAclTest):
         event = None
 
         icsClass = self.classToICSClass[event_class]
-        url = "%s%s.ics" % (self.resource, icsClass.lower())
+        url = "%s%s-event.ics" % (self.resource, icsClass.lower())
         multiget = webdavlib.CalDAVCalendarMultiget(self.resource,
                                                     ["{urn:ietf:params:xml:ns:caldav}calendar-data"],
                                                     [ url ])
@@ -285,7 +434,7 @@ class DAVCalendarAclTest(DAVAclTest):
         event = None
 
         icsClass = self.classToICSClass[event_class]
-        url = "%s%s.ics" % (self.resource, icsClass.lower())
+        url = "%s%s-event.ics" % (self.resource, icsClass.lower())
         sync_query = webdavlib.WebDAVSyncQuery(self.resource, None,
                                                ["{urn:ietf:params:xml:ns:caldav}calendar-data"])
         self.subscriber_client.execute(sync_query)
@@ -307,7 +456,7 @@ class DAVCalendarAclTest(DAVAclTest):
             if right == "v" or right == "r" or right == "m":
                 icsClass = self.classToICSClass[event_class]
                 complete_event = (event_template % { "class": icsClass,
-                                                     "filename": "%s.ics" % icsClass.lower(),
+                                                     "filename": "%s-event.ics" % icsClass.lower(),
                                                      "organizer_line": "",
                                                      "attendee_line": ""})
                 self.assertTrue(event.strip() == complete_event.strip(),
@@ -325,7 +474,7 @@ class DAVCalendarAclTest(DAVAclTest):
                           "PRODID": "-//Inverse//Event Generator//EN",
                           "SEQUENCE": "0",
                           "TRANSP": "OPAQUE",
-                          "UID": "12345-%s-%s.ics" % (icsClass,
+                          "UID": "12345-%s-%s-event.ics" % (icsClass,
                                                       icsClass.lower()),
                           "SUMMARY": "(%s event)" % icsClass.capitalize(),
                           "DTSTART": "20090805T100000Z",
@@ -354,13 +503,13 @@ class DAVCalendarAclTest(DAVAclTest):
         else:
             exp_code = 403
         icsClass = self.classToICSClass[event_class]
-        filename = "%s.ics" % icsClass.lower()
+        filename = "%s-event.ics" % icsClass.lower()
         self._putEvent(self.subscriber_client, filename, icsClass,
                        exp_code)
 
     def _testRespondTo(self, event_class, right):
         icsClass = self.classToICSClass[event_class]
-        filename = "invitation-%s.ics" % icsClass.lower()
+        filename = "invitation-%s-event.ics" % icsClass.lower()
         self._putEvent(self.client, filename, icsClass,
                        201,
                        "mailto:nobody@somewhere.com", self.user_email,
@@ -535,7 +684,7 @@ END:VCARD""" }
         self._testRights({ "d": True })
 
     def testCreateDelete(self):
-        """'create' only"""
+        """'create', 'delete'"""
         self._testRights({ "c": True,
                            "d": True })
 
