@@ -1,5 +1,13 @@
 2010-02-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Tests/Integration/test-davacl.py
+	(DAVCalendarAclTest._testEventDAVAcl): test
+	current-user-privilege-set on tasks too.
+
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	(+webdavAclManager): moved method from SOGoAppointmentObject, so
+	that tasks can benefit from it too.
+
 	* SoObjects/Appointments/SOGoAppointmentObject.m
 	(+webdavAclManager): view-whole-component and view-date-and-time
 	are now independent and children of "all". "read" is declared as
