@@ -267,32 +267,32 @@ class DAVCalendarAclTest(DAVAclTest):
 
     def _testEventDAVAcl(self, event_class, right):
         icsClass = self.classToICSClass[event_class].lower()
-        filename = "%s-event.ics" % icsClass
-        url = "%s%s" % (self.resource, filename)
+        for suffix in [ "event", "task" ]:
+            url = "%s%s-%s.ics" % (self.resource, icsClass, suffix)
 
-        if right is None:
-            expectFailure = True
-            expectedPrivileges = None
-        else:
-            expectFailure = False
-            expectedPrivileges = ['{DAV:}read-current-user-privilege-set',
-                                  '{urn:inverse:params:xml:ns:inverse-dav}view-date-and-time',
-                                  '{DAV:}read']
-            if right != "d":
-                extraPrivilege = '{urn:inverse:params:xml:ns:inverse-dav}view-whole-component'
-                expectedPrivileges.append(extraPrivilege)
-                if right != "v":
-                    extraPrivileges = ['{urn:inverse:params:xml:ns:inverse-dav}respond-to-component',
-                                       '{DAV:}write-content']
-                    expectedPrivileges.extend(extraPrivileges)
-                    if right != "r":
-                        extraPrivileges = ['{DAV:}write-properties',
-                                           '{DAV:}write']
+            if right is None:
+                expectFailure = True
+                expectedPrivileges = None
+            else:
+                expectFailure = False
+                expectedPrivileges = ['{DAV:}read-current-user-privilege-set',
+                                      '{urn:inverse:params:xml:ns:inverse-dav}view-date-and-time',
+                                      '{DAV:}read']
+                if right != "d":
+                    extraPrivilege = '{urn:inverse:params:xml:ns:inverse-dav}view-whole-component'
+                    expectedPrivileges.append(extraPrivilege)
+                    if right != "v":
+                        extraPrivileges = ['{urn:inverse:params:xml:ns:inverse-dav}respond-to-component',
+                                           '{DAV:}write-content']
                         expectedPrivileges.extend(extraPrivileges)
+                        if right != "r":
+                            extraPrivileges = ['{DAV:}write-properties',
+                                               '{DAV:}write']
+                            expectedPrivileges.extend(extraPrivileges)
 
-        privileges = self._currentUserPrivilegeSet(url, expectFailure)
-        if not expectFailure:
-            self._comparePrivilegeSets(expectedPrivileges, privileges)
+            privileges = self._currentUserPrivilegeSet(url, expectFailure)
+            if not expectFailure:
+                self._comparePrivilegeSets(expectedPrivileges, privileges)
 
     def _testRights(self, rights):
         self.acl_utility.setupRights(subscriber_username, rights)
