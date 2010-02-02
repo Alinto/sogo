@@ -1,5 +1,9 @@
 2010-02-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailBodyPart.m (-imap4URL): we assign our
+	"imap4URL" ivar so that it can be access directly in order
+	methods.
+
 	* Tests/Integration/test-davacl.py
 	(DAVCalendarAclTest._testEventDAVAcl): test
 	current-user-privilege-set on tasks too.

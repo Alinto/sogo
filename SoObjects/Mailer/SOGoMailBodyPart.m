@@ -138,7 +138,13 @@ static BOOL debugOn = NO;
 - (NSURL *) imap4URL
 {
   /* reuse URL of message */
-  return [[self mailObject] imap4URL];
+  if (!imap4URL)
+    {
+      imap4URL = [[self mailObject] imap4URL];
+      [imap4URL retain];
+    }
+
+  return imap4URL;
 }
 
 /* part info */
