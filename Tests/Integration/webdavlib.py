@@ -138,7 +138,6 @@ class WebDAVQuery(HTTPQuery):
         self.depth = depth
         self.ns_mgr = _WD_XMLNS_MGR()
         self.top_node = None
-        self.xml_response = None
         self.xpath_namespace = { "D": xmlns_dav }
 
     # helper for PROPFIND and REPORT (only)
