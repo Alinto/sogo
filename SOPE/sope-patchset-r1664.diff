@@ -6831,6 +6831,51 @@ Index: sope-appserver/NGObjWeb/WOHTTPConnection.m
    
    if (self->socket == nil) {
      [self debugWithFormat:@"no socket available for reading response ..."];
+Index: sope-appserver/NGObjWeb/WOCookie.m
+===================================================================
+--- sope-appserver/NGObjWeb/WOCookie.m	(revision 1664)
++++ sope-appserver/NGObjWeb/WOCookie.m	(working copy)
+@@ -160,7 +160,7 @@
+ 
+ - (NSString *)stringValue {
+   NSMutableString *str;
+-  
++
+   str = [NSMutableString stringWithCapacity:512];
+   [str appendString:[self->name stringByEscapingURL]];
+   [str appendString:@"="];
+@@ -168,14 +168,29 @@
+   
+   if (self->expireDate) {
+     static NSTimeZone *gmt = nil;
++    static NSMutableDictionary *localeDict = nil;
+     NSString *s;
+     if (gmt == nil) 
+       gmt = [[NSTimeZone timeZoneWithAbbreviation:@"GMT"] retain];
+-    
++    if (localeDict == nil)
++      {
++        localeDict = [NSMutableDictionary new];
++
++        [localeDict setObject: [NSArray arrayWithObjects: @"Jan", @"Feb",
++                                        @"Mar", @"Apr", @"May", @"Jun",
++                                        @"Jul", @"Aug", @"Sep", @"Oct",
++                                        @"Nov", @"Dec", nil]
++                       forKey: @"NSShortMonthNameArray"];
++        [localeDict setObject: [NSArray arrayWithObjects: @"Sun", @"Mon",
++                                        @"Tue", @"Wed", @"Thu", @"Fri",
++                                        @"Sat", nil]
++                       forKey: @"NSShortWeekDayNameArray"];
++      }
++   
+     // TODO: replace, -descriptionWithCalendarFormat is *slow*
+     s = [self->expireDate descriptionWithCalendarFormat:cookieDateFormat
+                           timeZone:gmt
+-	                  locale:nil];
++	                  locale:localeDict];
+     
+     [str appendString:@"; expires="];
+     [str appendString:s];
 Index: sope-appserver/NGObjWeb/GNUmakefile.postamble
 ===================================================================
 --- sope-appserver/NGObjWeb/GNUmakefile.postamble	(revision 1664)
@@ -6893,7 +6938,13 @@ Index: sope-appserver/NGObjWeb/ChangeLog
 ===================================================================
 --- sope-appserver/NGObjWeb/ChangeLog	(revision 1664)
 +++ sope-appserver/NGObjWeb/ChangeLog	(working copy)
-@@ -1,3 +1,157 @@
+@@ -1,3 +1,163 @@
++2010-02-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
++
++	* WOCookie.m (-stringValue): pass an minimal english locale
++	dictionary when producing expiration date representation to avoid
++	using the system locale.
++
 +2010-01-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 +
 +	* Templates/WOxComponentElemBuilder.m
@@ -7386,6 +7437,18 @@ Index: sope-appserver/NGObjWeb/DynamicElements/WOString.m
    }
    return self;
  }
+Index: sope-appserver/NGObjWeb/DynamicElements/WORepetition.m
+===================================================================
+--- sope-appserver/NGObjWeb/DynamicElements/WORepetition.m	(revision 1664)
++++ sope-appserver/NGObjWeb/DynamicElements/WORepetition.m	(working copy)
+@@ -823,6 +823,7 @@
+       [self->template appendToResponse:_response inContext:_ctx];
+ 
+       /* cleanup */
++      [self->item setValue:nil inComponent:sComponent];
+       
+       [_ctx incrementLastElementIDComponent];
+       
 Index: sope-appserver/NGObjWeb/DynamicElements/WOxHTMLElemBuilder.m
 ===================================================================
 --- sope-appserver/NGObjWeb/DynamicElements/WOxHTMLElemBuilder.m	(revision 1664)
