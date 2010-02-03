@@ -223,7 +223,8 @@
   else
     {
       oldLocation = [[context request] uri];
-      if (![oldLocation hasSuffix: @"/"]
+      if ([context clientObject]
+          && ![oldLocation hasSuffix: @"/"]
           && ![oldLocation hasSuffix: @"/view"])
         response = [self redirectToLocation:
                            [NSString stringWithFormat: @"%@/", oldLocation]];
