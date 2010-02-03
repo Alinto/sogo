@@ -221,7 +221,15 @@
                                               [login stringByEscapingURL]]];
     }
   else
-    response = self;
+    {
+      oldLocation = [[context request] uri];
+      if (![oldLocation hasSuffix: @"/"]
+          && ![oldLocation hasSuffix: @"/view"])
+        response = [self redirectToLocation:
+                           [NSString stringWithFormat: @"%@/", oldLocation]];
+      else
+        response = self;
+    }
 
   return response;
 }
