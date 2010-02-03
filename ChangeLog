@@ -1,5 +1,11 @@
 2010-02-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactLDIFEntry.m
+	(-initWithName:withLDIFEntry:inContainer:): removed "name" ivar
+	which had the same purpose as "nameInContainer". We also invoke
+	[self initWithName:inContainer:] rather than [self init].
+	Incidentally this fixes a leak.
+
 	* SoObjects/Mailer/SOGoMailBodyPart.m (-imap4URL): we assign our
 	"imap4URL" ivar so that it can be access directly in order
 	methods.

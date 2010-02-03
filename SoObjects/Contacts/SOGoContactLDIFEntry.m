@@ -51,17 +51,13 @@
       withLDIFEntry: (NSDictionary *) newEntry
         inContainer: (id) newContainer
 {
-  self = [self init];
-  ASSIGN (name, newName);
-  ASSIGN (ldifEntry, newEntry);
-  vcard = nil;
+  if ((self = [self initWithName: newName inContainer: newContainer]))
+    {
+      ASSIGN (ldifEntry, newEntry);
+      vcard = nil;
+    }
 
   return self;
-}
-
-- (NSString *) nameInContainer
-{
-  return name;
 }
 
 - (void) dealloc

@@ -31,7 +31,6 @@
 
 @interface SOGoContactLDIFEntry : SOGoObject <SOGoContactObject>
 {
-  NSString *name;
   NSDictionary *ldifEntry;
   NGVCard *vcard;
 }
