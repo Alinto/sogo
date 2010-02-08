@@ -1,5 +1,9 @@
 2010-02-08  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/WebServerResources/ContactsUI.js (-onAddressBookRemove):
+	avoid selecting the personal addressbook prior to obtaining the
+	user's answer.
+
 	* UI/MailerUI/UIxMailListView.m (-messageSize): improved
 	formatting of message size.
 
