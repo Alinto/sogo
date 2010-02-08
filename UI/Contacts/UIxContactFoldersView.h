@@ -32,6 +32,7 @@
   NSString *selectorComponentClass;
   NSMutableDictionary *moduleSettings;
   id currentFolder;
+  BOOL contextIsSetup;
 }
 
 - (NSArray *) contactFolders;
