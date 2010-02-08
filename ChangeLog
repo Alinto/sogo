@@ -1,3 +1,8 @@
+2010-02-08  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/MailerUI/UIxMailListView.m (-messageSize): improved
+	formatting of message size.
+
 2010-02-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MainUI/SOGoRootPage.m (-_standardDefaultAction): add an

@@ -119,9 +119,13 @@
   int size;
 
   size = [[message valueForKey: @"size"] intValue];
-
-  rc = [NSString stringWithFormat: @"%dK", size/1024];
-
+  if (size > 1024*1024)
+    rc = [NSString stringWithFormat: @"%.1f MB", (float) size/1024/1024];
+  else if (size > 1024*100)
+    rc = [NSString stringWithFormat: @"%d KB", size/1024];    
+  else
+    rc = [NSString stringWithFormat: @"%.1f KB", (float) size/1024];
+  
   return rc;
 }
 
