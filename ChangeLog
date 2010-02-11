@@ -1,3 +1,15 @@
+2010-02-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/SchedulerUIDnD.js: adapted code for
+	all-day events and monthly view. Added code to avoid modifying
+	events when the pointer is out of the draggable zone.
+
+	* UI/WebServerResources/SchedulerUI.js: adapted code for
+	all-day events and monthly view.
+
+	* UI/Scheduler/UIxAppointmentActions.m (-adjustAction): we now
+	handle all-day events.
+
 2010-02-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/SOGoRootPage.js (initLogin): discard the

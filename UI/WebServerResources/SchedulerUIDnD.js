@@ -18,31 +18,49 @@ function _SOGoEventDragUtilities() {
 }
 
 _SOGoEventDragUtilities.prototype = {
-    dayEventNodes: null,
+    eventType: null,
+    eventContainerNodes: null,
+    _prepareEventContainerNodes: null,
     quarterHeight: -1,
     dayWidth: -1,
+    dayHeight: -1,
     daysOffset: -1,
     eventsViewNode: null,
     eventsViewNodeCumulativeCoordinates: null,
 
     reset: function() {
-        this.dayEventNodes = null;
+        this.eventContainerNodes = null;
+        this._prepareEventContainerNodes = null;
         this.quarterHeight = -1;
         this.dayWidth = -1;
+        this.dayHeight = -1;
         this.daysOffset = -1;
         this.eventsViewNode = null;
         this.eventsViewNodeCumulativeCoordinates = null;
     },
 
-    getDayEventNodes: function() {
-        if (!this.dayEventNodes)
-            this._initDayEventNodes();
-
-        return this.dayEventNodes;
+    setEventType: function(eventType) {
+        var prepareMethods
+            = { "multiday": this._prepareEventMultiDayContainerNodes,
+                "multiday-allday": this._prepareEventMultiDayAllDayContainerNodes,
+                "monthly": this._prepareEventMonthlyContainerNodes,
+                "unknown": null };
+        this._prepareEventContainerNodes = prepareMethods[eventType];
+        this.eventType = eventType;
     },
-    _initDayEventNodes: function() {
-        this.dayEventNodes = [];
+    getEventType: function(eventType) {
+        return this.eventType;
+    },
 
+    getEventContainerNodes: function() {
+        if (!this.eventContainerNodes) {
+            this._prepareEventContainerNodes();
+        }
+
+        return this.eventContainerNodes;
+    },
+    _prepareEventMultiDayContainerNodes: function() {
+        this.eventContainerNodes = [];
         var daysView = $("daysView");
         var daysViewSubnodes = daysView.childNodesWithTag("div");
         for (var i = 0; i < daysViewSubnodes.length; i++) {
@@ -59,12 +77,35 @@ _SOGoEventDragUtilities.prototype = {
             }
         }
     },
+    _prepareEventMultiDayAllDayContainerNodes: function() {
+        this.eventContainerNodes = [];
+        var headerNode = $("calendarHeader");
+        var headerSubnodes = headerNode.childNodesWithTag("div");
+        for (var i = 0; i < headerSubnodes.length; i++) {
+            var headerSubnode = headerSubnodes[i];
+            if (headerSubnode.hasClassName("days")) {
+                this.daysOffset = headerSubnode.offsetLeft + 2;
+                var daysSubnodes = headerSubnode.childNodesWithTag("div");
+                for (var j = 0; j < daysSubnodes.length; j++) {
+                    var daysSubnode = daysSubnodes[j];
+                    if (daysSubnode.hasClassName("day"))
+                        this.eventContainerNodes.push(daysSubnode);
+                }
+            }
+        }
+    },
+    _prepareEventMonthlyContainerNodes: function() {
+        var monthView = $("monthDaysView");
+        this.eventContainerNodes = monthView.childNodesWithTag("div");
+        this.daysOffset = this.eventContainerNodes[0].offsetLeft + 2;
+    },
+
     _appendDayEventsNode: function(dayNode) {
         var daySubnodes = dayNode.childNodesWithTag("div");
         for (var i = 0; i < daySubnodes.length; i++) {
             var daySubnode = daySubnodes[i];
             if (daySubnode.hasClassName("events")) {
-                this.dayEventNodes.push(daySubnode);
+                this.eventContainerNodes.push(daySubnode);
             }
         }
     },
@@ -82,18 +123,24 @@ _SOGoEventDragUtilities.prototype = {
 
     getDaysOffset: function() {
         if (this.daysOffset == -1)
-            this._initDayEventNodes();
+            this._prepareEventContainerNodes();
 
         return this.daysOffset;
     },
 
     getDayWidth: function() {
         if (this.dayWidth == -1) {
-            var nodes = this.getDayEventNodes();
+            var nodes = this.getEventContainerNodes();
             if (nodes.length > 1) {
-                var total = (nodes[nodes.length-1].cumulativeOffset()[0]
-                             - nodes[0].cumulativeOffset()[0]);
-                this.dayWidth = total / (nodes.length - 1);
+                if (this.eventType == "monthly") {
+                    var total = (nodes[6].cumulativeOffset()[0]
+                                 - nodes[0].cumulativeOffset()[0]);
+                    this.dayWidth = total / 6;
+                } else {
+                    var total = (nodes[nodes.length-1].cumulativeOffset()[0]
+                                 - nodes[0].cumulativeOffset()[0]);
+                    this.dayWidth = total / (nodes.length - 1);
+                }
             }
             else
                 this.dayWidth = nodes[0].offsetWidth;
@@ -102,9 +149,30 @@ _SOGoEventDragUtilities.prototype = {
         return this.dayWidth;
     },
 
+    getDayHeight: function() {
+        /* currently only used for monthly view */
+        if (this.dayHeight == -1) {
+            var nodes = this.getEventContainerNodes();
+            if (nodes.length > 1) {
+                var total = (nodes[3*7].cumulativeOffset()[1]
+                             - nodes[0].cumulativeOffset()[1]);
+                this.dayHeight = total / 3;
+            }
+        }
+
+        return this.dayHeight;
+    },
+
     getEventsViewNode: function() {
-        if (!this.eventsViewNode)
-            this.eventsViewNode = $("daysView");
+        if (!this.eventsViewNode) {
+            if (this.eventType.startsWith("multiday"))
+                this.eventsViewNode = $("daysView");
+            else if (this.eventType.startsWith("multiday-allday")) {
+                this.eventsViewNode = $("calendarHeader");
+            }
+            else
+                this.eventsViewNode = $("monthDaysView");
+        }
         return this.eventsViewNode;
     },
 
@@ -129,7 +197,22 @@ SOGoEventDragEventCoordinates.prototype = {
     start: -1,
     duration: -1,
 
-    initFromEventCell: function(eventCell) {
+    eventType: null,
+
+    setEventType: function(eventType) {
+        this.eventType = eventType;
+        this._prepareEventType();
+    },
+    _prepareEventType: function() {
+        var methods
+            = { "multiday": this.initFromEventCellMultiDay,
+                "multiday-allday": this.initFromEventCellMultiDayAllDay,
+                "monthly": this.initFromEventCellMonthly,
+                "unknown": null };
+        this.initFromEventCell = methods[this.eventType];
+    },
+
+    initFromEventCellMultiDay: function(eventCell) {
         var classNames = eventCell.className.split(" ");
         for (var i = 0;
              (this.start == -1 || this.duration == -1)
@@ -154,11 +237,57 @@ SOGoEventDragEventCoordinates.prototype = {
         }
         this.dayNumber = dayNumber;
     },
+    initFromEventCellMultiDayAllDay: function(eventCell) {
+        this.start = 0;
+        this.duration = SOGoEventDragDayLength;
+
+        var dayNode = eventCell.parentNode;
+        var classNames = dayNode.className.split(" ");
+        var dayNumber = -1;
+        for (var i = 0; dayNumber == -1 && i < classNames.length; i++) {
+            var className = classNames[i];
+            if (className.startsWith("day") && className.length > 3) {
+                dayNumber = parseInt(className.substr(3));
+            }
+        }
+        this.dayNumber = dayNumber;
+    },
+    initFromEventCellMonthly: function(eventCell) {
+        this.start = 0;
+        this.duration = SOGoEventDragDayLength;
+
+        var dayNumber = -1;
+
+        var week = -1;
+        var day = -1;
+
+        var dayNode = eventCell.parentNode;
+        var classNames = dayNode.className.split(" ");
+        for (var i = 0;
+             (day == -1 || week == -1)
+                 && i < classNames.length;
+             i++) {
+            var className = classNames[i];
+            if (className.startsWith("day") && className.length > 3) {
+                day = parseInt(className.substr(3));
+            } else if (className.startsWith("week")
+                       && !className.startsWith("weekOf")
+                       && className != "weekEndDay") {
+                var ofIndex = className.indexOf("of");
+                if (ofIndex > -1) {
+                    var len = ofIndex - 4;
+                    week = parseInt(className.substr(4, len));
+                }
+            }
+        }
+        this.dayNumber = week * 7 + day;
+    },
 
     initFromEventCells: function(eventCells) {
         this.duration = 0;
         for (var i = 0; i < eventCells.length; i++) {
             var current = new SOGoEventDragEventCoordinates();
+            current.setEventType(this.eventType);
             current.initFromEventCell(eventCells[i]);
             if (this.dayNumber == -1 || current.dayNumber < this.dayNumber) {
                 this.dayNumber = current.dayNumber;
@@ -253,16 +382,20 @@ var SOGoDragGhostInterface = {
 
     setStart: function SDGI_setStart(start) {
         if (this.currentStart != start) {
-            this.removeClassName("starts" + this.currentStart);
+            if (this.cssHandlesPosition)
+                this.removeClassName("starts" + this.currentStart);
             this.currentStart = start;
-            this.addClassName("starts" + this.currentStart);
+            if (this.cssHandlesPosition)
+                this.addClassName("starts" + this.currentStart);
         }
     },
     setDuration: function SDGI_setDuration(duration) {
         if (this.currentDuration != duration) {
-            this.removeClassName("lasts" + this.currentDuration);
+            if (this.cssHandlesPosition)
+                this.removeClassName("lasts" + this.currentDuration);
             this.currentDuration = duration;
-            this.addClassName("lasts" + this.currentDuration);
+            if (this.cssHandlesPosition)
+                this.addClassName("lasts" + this.currentDuration);
         }
     },
 
@@ -336,14 +469,19 @@ SOGoEventDragGhostController.prototype = {
     updateFromPointerHandler: function SEDGC_updateFromPointerHandler() {
         var newCoordinates = this.pointerHandler.getEventViewCoordinates();
         if (!this.currentPointerCoordinates
+            || !newCoordinates
             || newCoordinates.x != this.currentPointerCoordinates.x
             || newCoordinates.y != this.currentPointerCoordinates.y) {
             this.currentPointerCoordinates = newCoordinates;
             if (this.originalPointerCoordinates) {
+                if (!newCoordinates)
+                    this.currentPointerCoordinates
+                        = this.originalPointerCoordinates.clone();
                 this._updateCoordinates();
                 if (this.ghosts) {
                     this._updateGhosts();
-                    this._updateGhostsParas();
+                    if (this.startHourPara)
+                        this._updateGhostsParas();
                 }
             }
         }
@@ -355,11 +493,14 @@ SOGoEventDragGhostController.prototype = {
         var deltaQuarters = delta.x * SOGoEventDragDayLength + delta.y;
         this.currentCoordinates.dayNumber = this.originalCoordinates.dayNumber;
 
+        // log("dragMode: " + this.dragMode);
         if (this.dragMode == "move-event") {
             this.currentCoordinates.start
                 = this.originalCoordinates.start + deltaQuarters;
             this.currentCoordinates.duration
                 = this.originalCoordinates.duration;
+            // log("start: " + this.currentCoordinates.start);
+            // log("   duration: " + this.currentCoordinates.duration);
         } else {
             if (this.dragMode == "change-start") {
                 var newDuration = this.originalCoordinates.duration - deltaQuarters;
@@ -403,31 +544,36 @@ SOGoEventDragGhostController.prototype = {
         if (!this.ghosts) {
             this.ghosts = [];
             var utilities = SOGoEventDragUtilities();
-            var nodes = utilities.getDayEventNodes();
+            var nodes = utilities.getEventContainerNodes();
+            var isMultiday = (utilities.getEventType() == "multiday");
             for (var i = 0; i < nodes.length; i++) {
                 var newGhost = $(document.createElement("div"));
                 Object.extend(newGhost, SOGoDragGhostInterface);
                 newGhost.className = "event eventDragGhost";
+                newGhost.cssHandlesPosition = isMultiday;
                 newGhost.hide();
                 nodes[i].appendChild(newGhost);
                 this.ghosts.push(newGhost);
             }
-            var ghostHourPara = $(document.createElement("div"));
-            ghostHourPara.setAttribute("id", "ghostStartHour");
-            this.startHourPara = ghostHourPara;
-            ghostHourPara = $(document.createElement("div"));
-            ghostHourPara.setAttribute("id", "ghostEndHour");
-            this.endHourPara = ghostHourPara;
+            if (isMultiday) {
+                var ghostHourPara = $(document.createElement("div"));
+                ghostHourPara.setAttribute("id", "ghostStartHour");
+                this.startHourPara = ghostHourPara;
+                ghostHourPara = $(document.createElement("div"));
+                ghostHourPara.setAttribute("id", "ghostEndHour");
+                this.endHourPara = ghostHourPara;
+            }
             this._updateGhosts();
-            this._updateGhostsParas();
+            if (this.startHourPara)
+                this._updateGhostsParas();
         }
     },
     hideGhosts: function SEDGC_hideGhosts() {
         if (this.ghosts) {
-            if (this.startHourPara.parentNode)
+            if (this.startHourPara && this.startHourPara.parentNode)
                 this.startHourPara.parentNode.removeChild(this.startHourPara);
             this.startHourPara = null;
-            if (this.endHourPara.parentNode)
+            if (this.endHourPara && this.endHourPara.parentNode)
                 this.endHourPara.parentNode.removeChild(this.endHourPara);
             this.endHourPara = null;
             for (var i = 0; i < this.ghosts.length; i++) {
@@ -449,7 +595,6 @@ SOGoEventDragGhostController.prototype = {
             ghost.unsetStartGhost();
             ghost.unsetEndGhost();
         }
-        // logOnly("update");
         if (this.currentCoordinates.dayNumber < maxGhosts) {
             var currentDay = this.currentCoordinates.dayNumber;
             var durationLeft = this.currentCoordinates.duration;
@@ -459,7 +604,7 @@ SOGoEventDragGhostController.prototype = {
             if (duration > maxDuration)
                 duration = maxDuration;
 
-            var ghost;
+            var ghost = null;
             if (currentDay > -1) {
                 ghost = this.ghosts[currentDay];
                 ghost.setStartGhost();
@@ -470,10 +615,10 @@ SOGoEventDragGhostController.prototype = {
                 ghost.setDuration(duration);
                 ghost.show();
 
-                if (this.startHourPara.parentNode != ghost) {
-                    if (this.startHourPara.parentNode)
-                        this.startHourPara.parentNode
-                            .removeChild(this.startHourPara);
+                if (this.startHourPara) {
+                    var parentNode = this.startHourPara.parentNode;
+                    if (parentNode && parentNode != ghost)
+                        parentNode.removeChild(this.startHourPara);
                     ghost.appendChild(this.startHourPara);
                 }
             }
@@ -496,12 +641,14 @@ SOGoEventDragGhostController.prototype = {
                 durationLeft -= duration;
                 currentDay++;
             }
-            if (!durationLeft)
+            if (!durationLeft) {
                 ghost.setEndGhost();
-            if (this.endHourPara.parentNode != ghost) {
-                if (this.endHourPara.parentNode)
-                    this.endHourPara.parentNode
-                        .removeChild(this.endHourPara);
+            }
+
+            if (this.endHourPara) {
+                var parentNode = this.endHourPara.parentNode;
+                if (parentNode && parentNode != ghost)
+                    parentNode.removeChild(this.endHourPara);
                 ghost.appendChild(this.endHourPara);
             }
 
@@ -517,16 +664,14 @@ SOGoEventDragGhostController.prototype = {
 
     _updateGhostsParas: function SEDGC__updateGhostsParas() {
         var para = this.startHourPara;
-        while (para.childNodes.length) {
+        while (para.childNodes.length)
             para.removeChild(para.childNodes[0]);
-        }
         var time = this.currentCoordinates.getStartTime();
         para.appendChild(document.createTextNode(time));
 
         para = this.endHourPara;
-        while (para.childNodes.length) {
+        while (para.childNodes.length)
             para.removeChild(para.childNodes[0]);
-        }
         time = this.currentCoordinates.getEndTime();
         para.appendChild(document.createTextNode(time));
     }
@@ -570,6 +715,10 @@ SOGoEventDragPointerHandler.prototype = {
     currentCoordinates: null,
     containerCoordinates: null,
 
+    /* return the day and quarter coordinates of the pointer cursor within the
+       day view */
+    getEventViewCoordinates: null,
+
     initFromEvent: function SEDPH_initFromEvent(event) {
         this.currentCoordinates = new SOGoCoordinates();
         this.updateFromEvent(event);
@@ -577,6 +726,11 @@ SOGoEventDragPointerHandler.prototype = {
 
         var utilities = SOGoEventDragUtilities();
         this.containerCoordinates = utilities.getEventsViewNodeCumulativeCoordinates();
+        if (utilities.getEventType() == "multiday-allday") {
+            /* a hack */
+            this.containerCoordinates.x -= SOGoEventDragVerticalOffset;
+            this.containerCoordinates.y -= 40;
+        }
     },
 
     updateFromEvent: function SEDPH_updateFromEvent(event) {
@@ -585,39 +739,98 @@ SOGoEventDragPointerHandler.prototype = {
     },
 
     getContainerBasedCoordinates: function SEDPH_getCBC() {
-        return this.currentCoordinates.getDelta(this.containerCoordinates);
+        var coordinates = this.currentCoordinates.getDelta(this.containerCoordinates);
+        var container = SOGoEventDragUtilities().getEventsViewNode();
+
+        if (coordinates.x < 0 || coordinates.x > container.clientWidth
+            || coordinates.y < 0 || coordinates.y > container.clientHeight)
+            coordinates = null;
+
+        return coordinates;
     },
 
-    /* return the day and quarter coordinates of the pointer cursor within the
-       day view */
-    getEventViewCoordinates: function SEDPH_getEventViewCoordinates() {
+    prepareWithEventType: function SEDPH_prepareWithEventType(eventType) {
+        var methods = { "multiday": this.getEventMultiDayViewCoordinates,
+                        "multiday-allday": this.getEventMultiDayAllDayViewCoordinates,
+                        "monthly": this.getEventMonthlyViewCoordinates,
+                        "unknown": null };
+        var method = methods[eventType];
+        this.getEventViewCoordinates = method;
+    },
+
+    getEventMultiDayViewCoordinates: function SEDPH_gEMultiDayViewC() {
+        var coordinates = this.getEventMultiDayAllDayViewCoordinates();
+        if (coordinates) {
+            var utilities = SOGoEventDragUtilities();
+            var quarterHeight = utilities.getQuarterHeight();
+            var container = utilities.getEventsViewNode();
+            var pxCoordinates = this.getContainerBasedCoordinates();
+            pxCoordinates.y += container.scrollTop;
+            coordinates.y = Math.floor((pxCoordinates.y
+                                        - SOGoEventDragHorizontalOffset)
+                                       / quarterHeight);
+            var maxY = SOGoEventDragDayLength - 1;
+            if (coordinates.y < 0)
+                coordinates.y = 0;
+            else if (coordinates.y > maxY)
+                coordinates.y = maxY;
+        }
+
+        return coordinates;
+    },
+    getEventMultiDayAllDayViewCoordinates: function SEDPH_gEMultiDayADVC() {
         /* x = day; y = quarter */
-        var coordinates = new SOGoCoordinates();
+        var coordinates;
 
-        var utilities = SOGoEventDragUtilities();
         var pxCoordinates = this.getContainerBasedCoordinates();
+        if (pxCoordinates) {
+            coordinates = new SOGoCoordinates();
 
-        var dayWidth = utilities.getDayWidth();
-        var daysOffset = utilities.getDaysOffset();
+            var utilities = SOGoEventDragUtilities();
+            var dayWidth = utilities.getDayWidth();
+            var daysOffset = utilities.getDaysOffset();
 
-        coordinates.x = Math.floor((pxCoordinates.x - daysOffset) / dayWidth);
-        var maxX = utilities.getDayEventNodes().length - 1;
-        if (coordinates.x < 0)
-            coordinates.x = 0;
-        else if (coordinates.x > maxX)
-            coordinates.x = maxX;
-
-        var quarterHeight = utilities.getQuarterHeight();
-        var container = utilities.getEventsViewNode();
-        pxCoordinates.y += container.scrollTop;
-        coordinates.y = Math.floor((pxCoordinates.y
-                                    - SOGoEventDragHorizontalOffset)
-                                   / quarterHeight);
-        var maxY = SOGoEventDragDayLength - 1;
-        if (coordinates.y < 0)
+            coordinates.x = Math.floor((pxCoordinates.x - daysOffset) / dayWidth);
+            var maxX = utilities.getEventContainerNodes().length - 1;
+            if (coordinates.x < 0)
+                coordinates.x = 0;
+            else if (coordinates.x > maxX)
+                coordinates.x = maxX;
             coordinates.y = 0;
-        else if (coordinates.y > maxY)
-            coordinates.y = maxY;
+        } else {
+            coordinates = null;
+        }
+
+        // logOnly("coordinates.x: " + coordinates.x);
+
+        return coordinates;
+    },
+    getEventMonthlyViewCoordinates: function SEDPH_gEMonthlyViewC() {
+        /* x = day; y = quarter */
+        var coordinates;
+
+        var pxCoordinates = this.getContainerBasedCoordinates();
+        if (pxCoordinates) {
+            coordinates = new SOGoCoordinates();
+            var utilities = SOGoEventDragUtilities();
+            var daysOffset = utilities.getDaysOffset();
+            var daysTopOffset = daysOffset; /* change later */
+            var dayHeight = utilities.getDayHeight();
+            var daysY = Math.floor((pxCoordinates.y - daysTopOffset) / dayHeight);
+            if (daysY < 0)
+                daysY = 0;
+            var dayWidth = utilities.getDayWidth();
+
+            coordinates.x = Math.floor((pxCoordinates.x - daysOffset) / dayWidth);
+            if (coordinates.x < 0)
+                coordinates.x = 0;
+            else if (coordinates.x > 6)
+                coordinates.x = 6;
+            coordinates.x += 7 * daysY;
+            coordinates.y = 0;
+        } else {
+            coordinates = null;
+        }
 
         return coordinates;
     },
@@ -651,20 +864,22 @@ SOGoScrollController.prototype = {
     updateFromPointerHandler: function SSC_updateFromPointerHandler() {
         var pointerCoordinates
             = this.pointerHandler.getContainerBasedCoordinates();
-        var now = new Date().getTime();
-        if (!this.lastScroll || now > this.lastScroll + 100) {
-            this.lastScroll = now;
-            var scrollY = pointerCoordinates.y - this.scrollStep;
-            if (scrollY < 0) {
-                var minY = -this.scrollView.scrollTop;
-                if (scrollY < minY)
-                    scrollY = minY;
-                this.scrollView.scrollTop += scrollY;
-            } else {
-                scrollY = pointerCoordinates.y + this.scrollStep;
-                var delta = scrollY - this.scrollView.clientHeight;
-                if (delta > 0) {
-                    this.scrollView.scrollTop += delta;
+        if (pointerCoordinates) {
+            var now = new Date().getTime();
+            if (!this.lastScroll || now > this.lastScroll + 100) {
+                this.lastScroll = now;
+                var scrollY = pointerCoordinates.y - this.scrollStep;
+                if (scrollY < 0) {
+                    var minY = -this.scrollView.scrollTop;
+                    if (scrollY < minY)
+                        scrollY = minY;
+                    this.scrollView.scrollTop += scrollY;
+                } else {
+                    scrollY = pointerCoordinates.y + this.scrollStep;
+                    var delta = scrollY - this.scrollView.clientHeight;
+                    if (delta > 0) {
+                        this.scrollView.scrollTop += delta;
+                    }
                 }
             }
         }
@@ -677,6 +892,7 @@ function SOGoEventDragController() {
 SOGoEventDragController.prototype = {
     eventCells: null,
 
+    eventType: null,
     title: null,
     folderClass: null,
 
@@ -693,45 +909,77 @@ SOGoEventDragController.prototype = {
 
     dropCallback: null,
 
-    stopEventDraggingBound: null,
+    onDragStopBound: null,
     moveBound: null,
+
+    _determineDragMode: null,
 
     attachToEventCells: function SEDC_attachToEventCells(eventCells) {
         this.eventCells = eventCells;
 
         this.ghostController = new SOGoEventDragGhostController();
+        this._determineEventType(eventCells[0]);
+        this._prepareEventType();
         this._determineTitleAndFolderClass();
         this.ghostController.setTitle(this.title);
         this.ghostController.setFolderClass(this.folderClass);
 
-        var startEventDraggingBound = this.startEventDragging.bindAsEventListener(this);
+        var onDragStartBound = this.onDragStart.bindAsEventListener(this);
         for (var i = 0; i < eventCells.length; i++) {
-            eventCells[i].observe("mousedown", startEventDraggingBound,
+            eventCells[i].observe("mousedown", onDragStartBound,
                                   false);
+            if (eventCells[i].editable) {
+                eventCells[i].addClassName("draggable");
+            }
+        }
+
+        if (this.eventType == "multiday") {
+            var topDragGrip = $(document.createElement("div"));
+            topDragGrip.addClassName("topDragGrip");
+            eventCells[0].appendChild(topDragGrip);
+
+            var bottomDragGrip = $(document.createElement("div"));
+            bottomDragGrip.addClassName("bottomDragGrip");
+            eventCells[eventCells.length-1].appendChild(bottomDragGrip);
+        } else {
+            var leftDragGrip = $(document.createElement("div"));
+            leftDragGrip.addClassName("leftDragGrip");
+            eventCells[0].appendChild(leftDragGrip);
+
+            var rightDragGrip = $(document.createElement("div"));
+            rightDragGrip.addClassName("rightDragGrip");
+            eventCells[eventCells.length-1].appendChild(rightDragGrip);
         }
     },
 
     attachToDayNode: function SEDC_attachToDayNode(dayNode) {
+        this._determineEventType(dayNode);
+        this._prepareEventType();
         this.ghostController = new SOGoEventDragGhostController();
         this.ghostController.setTitle(getLabel("New Event"));
 
-        var startEventDraggingBound
-            = this.startEventDragging.bindAsEventListener(this);
-        dayNode.observe("mousedown", startEventDraggingBound, false);
+        var onDragStartBound
+            = this.onDragStart.bindAsEventListener(this);
+        dayNode.observe("mousedown", onDragStartBound, false);
     },
 
-    startEventDragging: function SEDC_startEventDragging(event) {
+    onDragStart: function SEDC_onDragStart(event) {
         var target = getTarget(event);
         if (target.nodeType == 1) {
-            if ((!this.eventCells && target.hasClassName("clickableHourCell"))
-                || (this.eventCells && this.eventCells[0].editable)) {
+            if ((!this.eventCells
+                 && (target.hasClassName("clickableHourCell")
+                     || target.hasClassName("day"))
+                 || (this.eventCells && this.eventCells[0].editable))) {
                 var utilities = SOGoEventDragUtilities();
                 utilities.reset();
+                utilities.setEventType(this.eventType);
 
                 this.pointerHandler = new SOGoEventDragPointerHandler();
+                this.pointerHandler.prepareWithEventType(this.eventType);
                 this.pointerHandler.initFromEvent(event);
 
                 var coordinates = new SOGoEventDragEventCoordinates();
+                coordinates.setEventType(this.eventType);
                 if (this.eventCells) {
                     coordinates.initFromEventCells(this.eventCells);
                 } else {
@@ -751,28 +999,64 @@ SOGoEventDragController.prototype = {
                 this.ghostController.setDragMode(this._determineDragMode());
                 this.ghostController.setPointerHandler(this.pointerHandler);
 
-                this.scrollController = new SOGoScrollController();
-                this.scrollController.setPointerHandler(this.pointerHandler);
+                if (this.eventType == "multiday") {
+                    this.scrollController = new SOGoScrollController();
+                    this.scrollController.setPointerHandler(this.pointerHandler);
+                }
 
-                // if (!this.eventCell)
-                //     this.originalStart = Math.floor(this.origY / this.quarterHeight);
-                
-                this.stopEventDraggingBound
-                    = this.stopEventDragging.bindAsEventListener(this);
+                this.onDragStopBound
+                    = this.onDragStop.bindAsEventListener(this);
                 if (Prototype.Browser.IE)
                     Event.observe(document.body,
-                                  "mouseup", this.stopEventDraggingBound);
+                                  "mouseup", this.onDragStopBound);
                 else
-                    Event.observe(window, "mouseup", this.stopEventDraggingBound);
-                this.moveBound = this.move.bindAsEventListener(this);
-                Event.observe(document.body, "mousemove", this.moveBound);
+                    Event.observe(window, "mouseup", this.onDragStopBound);
+                this.onDragModeBound = this.onDragMode.bindAsEventListener(this);
+                Event.observe(document.body, "mousemove", this.onDragModeBound);
             }
             Event.stop(event);
         }
 
         return false;
     },
-    _determineDragMode: function SEDC__determineDragMode() {
+
+    _determineEventType: function SEDC__determineEventType(node) {
+        var type = "unknown";
+
+        var dayNode;
+        var currentNode = node;
+        while (!currentNode.hasClassName("day"))
+            currentNode = currentNode.parentNode;
+        dayNode = currentNode;
+
+        // log("dayNode: " + dayNode.className);
+        var secondParent = dayNode.parentNode;
+        // log("secondParent: " + secondParent.className);
+        if (secondParent.id == "monthDaysView") {
+            type = "monthly";
+        } else {
+            var thirdParent = secondParent.parentNode;
+            // log("thirdParent: " + thirdParent.id);
+            if (thirdParent.id == "calendarHeader")
+                type = "multiday-allday";
+            else if (thirdParent.id == "daysView")
+                type = "multiday";
+        }
+
+        // log("type: " + type);
+
+        this.eventType = type;
+    },
+    _prepareEventType: function SEDC__prepareEventType() {
+        var methods
+            = { "multiday": this._determineDragModeMultiDay,
+                "multiday-allday": this._determineDragModeMultiDayAllDay,
+                "monthly": this._determineDragModeMonthly,
+                "unknown": null };
+        this._determineDragMode = methods[this.eventType];
+    },
+
+    _determineDragModeMultiDay: function SEDC__determineDragModeMultiDay() {
         var dragMode;
 
         if (this.eventCells) {
@@ -785,7 +1069,7 @@ SOGoEventDragController.prototype = {
             var firstCell = this.eventCells[0];
             var handleCoords = firstCell.cumulativeOffset();
 
-            var dragMode = "move-event";
+            dragMode = "move-event";
             if ((handleCoords[0] <= coordinates.x
                  && coordinates.x <= handleCoords[0] + firstCell.clientWidth)
                 && (handleCoords[1] <= coordinates.y
@@ -800,6 +1084,70 @@ SOGoEventDragController.prototype = {
                      && coordinates.x <= handleCoords[0] + lastCell.clientWidth)
                     && (handleCoords[1] <= coordinates.y
                         && coordinates.y <= handleCoords[1] + SOGoEventDragHandleSize))
+                    dragMode = "change-end";
+            }
+        } else {
+            dragMode = "change-end";
+        }
+
+        return dragMode;
+    },
+    _determineDragModeMultiDayAllDay: function SEDC__detDMMultiDayAllDay() {
+        var dragMode;
+
+        if (this.eventCells) {
+            var coordinates = this.pointerHandler.currentCoordinates.clone();
+            coordinates.x -= SOGoEventDragHorizontalOffset;
+            coordinates.y -= SOGoEventDragVerticalOffset;
+
+            var firstCell = this.eventCells[0];
+            var handleCoords = firstCell.cumulativeOffset();
+
+            dragMode = "move-event";
+            if (handleCoords[0] <= coordinates.x
+                && coordinates.x <= handleCoords[0] + SOGoEventDragHandleSize)
+                dragMode = "change-start";
+            else {
+                var lastCell = this.eventCells[this.eventCells.length-1];
+                handleCoords = lastCell.cumulativeOffset();
+                handleCoords[0] += lastCell.clientWidth;
+                if (handleCoords[0] - SOGoEventDragHandleSize <= coordinates.x
+                    && coordinates.x <= handleCoords[0])
+                    dragMode = "change-end";
+            }
+        } else {
+            dragMode = "change-end";
+        }
+
+        return dragMode;
+    },
+    _determineDragModeMonthly: function SEDC__determineDragModeMultiDay() {
+        var dragMode;
+
+        if (this.eventCells) {
+            var coordinates = this.pointerHandler.currentCoordinates.clone();
+            coordinates.x -= SOGoEventDragHorizontalOffset;
+            coordinates.y -= SOGoEventDragVerticalOffset;
+
+            var firstCell = this.eventCells[0];
+            var handleCoords = firstCell.cumulativeOffset();
+
+            dragMode = "move-event";
+            var eventHeight = 16; /* arbitrary value */
+
+            if (handleCoords[1] <= coordinates.y
+                && coordinates.y <= handleCoords[1] + eventHeight
+                && handleCoords[0] <= coordinates.x
+                && coordinates.x <= handleCoords[0] + SOGoEventDragHandleSize)
+                dragMode = "change-start";
+            else {
+                var lastCell = this.eventCells[this.eventCells.length-1];
+                handleCoords = lastCell.cumulativeOffset();
+                handleCoords[0] += lastCell.clientWidth;
+                if (handleCoords[1] <= coordinates.y
+                    && coordinates.y <= handleCoords[1] + eventHeight
+                    && handleCoords[0] - SOGoEventDragHandleSize <= coordinates.x
+                    && coordinates.x <= handleCoords[0])
                     dragMode = "change-end";
             }
         } else {
@@ -857,14 +1205,14 @@ SOGoEventDragController.prototype = {
         return folderClass;
     },
 
-    stopEventDragging: function SEDC_stopEventDragging(event) {
+    onDragStop: function SEDC_onDragStop(event) {
         if (Prototype.Browser.IE)
-            Event.stopObserving(document.body, "mouseup", this.stopEventDraggingBound);
+            Event.stopObserving(document.body, "mouseup", this.onDragStopBound);
         else
-            Event.stopObserving(window, "mouseup", this.stopEventDraggingBound);
-        Event.stopObserving(document.body, "mousemove", this.moveBound);
-        this.stopEventDraggingBound = null;
-        this.moveBound = null;
+            Event.stopObserving(window, "mouseup", this.onDragStopBound);
+        Event.stopObserving(document.body, "mousemove", this.onDragModeBound);
+        this.onDragStopBound = null;
+        this.onDragModeBound = null;
 
         if (this.dragHasStarted) {
             this.ghostController.hideGhosts();
@@ -882,11 +1230,12 @@ SOGoEventDragController.prototype = {
                 this.updateDropCallback(this, this.eventCells, delta);
             } else {
                 var utilities = SOGoEventDragUtilities();
-                var dayEventNodes = utilities.getDayEventNodes();
-                var dayNode = dayEventNodes[this.ghostController
-                                                .currentCoordinates
-                                                .dayNumber]
-                              .parentNode;
+                var eventContainerNodes = utilities.getEventContainerNodes();
+                var dayNode = eventContainerNodes[this.ghostController
+                                                      .currentCoordinates
+                                                      .dayNumber];
+                if (dayNode.hasClassName("events"))
+                    dayNode = dayNode.parentNode;
                 this.createDropCallback(this,
                                         dayNode.readAttribute("day"),
                                         this.ghostController.currentCoordinates);
@@ -906,9 +1255,10 @@ SOGoEventDragController.prototype = {
         return time;
     },
 
-    move: function SEDC_move(event) {
+    onDragMode: function SEDC_onDragMode(event) {
         this.pointerHandler.updateFromEvent(event);
-        this.scrollController.updateFromPointerHandler();
+        if (this.scrollController)
+            this.scrollController.updateFromPointerHandler();
 
         if (this.dragHasStarted) {
             this.ghostController.updateFromPointerHandler();

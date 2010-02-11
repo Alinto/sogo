@@ -64,7 +64,11 @@ function minutesToHM(minutes) {
 }
 
 function newEventFromDragging(controller, day, coordinates) {
-    var startHm = minutesToHM(coordinates.start * 15);
+    var startHm;
+    if (controller.eventType == "multiday")
+        startHm = minutesToHM(coordinates.start * 15);
+    else
+        startHm = "allday";
     var lengthHm = minutesToHM(coordinates.duration * 15);
     newEvent("event", day, startHm, lengthHm);
 }
@@ -1180,14 +1184,6 @@ function _setupEventsDragAndDrop(events) {
                 var occurrences = calendarEvents[calendar][cname];
                 for (var j = 0; j < occurrences.length; j++) {
                     var blocks = occurrences[j].blocks;
-                    var topDragGrip = $(document.createElement("div"));
-                    topDragGrip.addClassName("topDragGrip");
-                    blocks[0].appendChild(topDragGrip);
-
-                    var bottomDragGrip = $(document.createElement("div"));
-                    bottomDragGrip.addClassName("bottomDragGrip");
-                    blocks[blocks.length-1].appendChild(bottomDragGrip);
-
                     var dragController = new SOGoEventDragController();
                     dragController.updateDropCallback = updateEventFromDragging;
                     dragController.attachToEventCells(blocks);
@@ -1209,8 +1205,8 @@ function refreshCalendarEventsCallback(http) {
             else {
                 _drawCalendarAllDayEvents(eventsBlocks[1], eventsBlocks[0]);
                 _drawCalendarEvents(eventsBlocks[2], eventsBlocks[0]);
-                _setupEventsDragAndDrop(eventsBlocks[0]);
             }
+            _setupEventsDragAndDrop(eventsBlocks[0]);
             onWindowResize(null);
         }
         if (http.callbackData["scrollEvent"])
@@ -1327,10 +1323,6 @@ function _drawCalendarEvents(events, eventsData) {
             var nbr = eventRep.nbr;
             var eventCell = newEventDIV(eventRep, eventsData[nbr]);
             parentDiv.appendChild(eventCell);
-
-            if (eventCell.editable) {
-                eventCell.addClassName("draggable");
-            }
         }
     }
 }
@@ -1376,19 +1368,13 @@ function newMonthEventDIV(eventRep, event) {
 }
 
 function attachDragControllers(contentView) {
-    var contentNodes = contentView.childNodesWithTag("div");
-    for (var i = 0; i < contentNodes.length; i++) {
-        var contentNode = contentNodes[i];
-        if (contentNode.hasClassName("days")) {
-            var dayNodes = contentNode.childNodesWithTag("div");
-            for (var j = 0; j < dayNodes.length; j++) {
-                var dayNode = dayNodes[j];
-                if (dayNode.hasClassName("day")) {
-                    var dragController = new SOGoEventDragController();
-                    dragController.createDropCallback = newEventFromDragging;
-                    dragController.attachToDayNode(dayNode);
-                }
-            }
+    var dayNodes = contentView.select("DIV.day");
+    for (var j = 0; j < dayNodes.length; j++) {
+        var dayNode = dayNodes[j];
+        if (dayNode.hasClassName("day")) {
+            var dragController = new SOGoEventDragController();
+            dragController.createDropCallback = newEventFromDragging;
+            dragController.attachToDayNode(dayNode);
         }
     }
 }
@@ -1460,9 +1446,10 @@ function calendarDisplayCallback(http) {
             contentView = $("calendarContent");
         else {
             contentView = $("daysView");
-            attachDragControllers(contentView);
             contentView.observe("scroll", onBodyClickHandler);
+            attachDragControllers($("calendarHeader"));
         }
+        attachDragControllers(contentView);
 
         refreshCalendarEvents(http.callbackData.scrollEvent);
 

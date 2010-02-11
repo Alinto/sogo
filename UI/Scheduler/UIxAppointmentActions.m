@@ -67,20 +67,34 @@
       tz = [ud timeZone];
       start = [event startDate];
       [start setTimeZone: tz];
-
-      newStart = [start dateByAddingYears: 0 months: 0
-                                     days: [daysDelta intValue]
-                                    hours: 0 minutes: [startDelta intValue]
-                                  seconds: 0];
       end = [event endDate];
       [end setTimeZone: tz];
 
-      newDuration = ([end timeIntervalSinceDate: start]
-                     + [durationDelta intValue] * 60);
-      newEnd = [newStart addTimeInterval: newDuration];
+      if ([event isAllDay])
+        {
+          newStart = [start dateByAddingYears: 0 months: 0
+                                         days: [daysDelta intValue]
+                                        hours: 0 minutes: 0
+                                      seconds: 0];
+          newDuration = (((float) abs ([end timeIntervalSinceDate: start])
+                          + [durationDelta intValue] * 60)
+                         / 86400);
+          [event setAllDayWithStartDate: newStart duration: newDuration];
+        }
+      else
+        {
+          newStart = [start dateByAddingYears: 0 months: 0
+                                         days: [daysDelta intValue]
+                                        hours: 0 minutes: [startDelta intValue]
+                                      seconds: 0];
 
-      [event setStartDate: newStart];
-      [event setEndDate: newEnd];
+          newDuration = ([end timeIntervalSinceDate: start]
+                         + [durationDelta intValue] * 60);
+          newEnd = [newStart addTimeInterval: newDuration];
+
+          [event setStartDate: newStart];
+          [event setEndDate: newEnd];
+        }
       [co saveComponent: event];
 
       response = [self responseWith204];

@@ -555,6 +555,7 @@ DIV.dayOfAnotherMonth
 
 DIV.monthView DIV.dayHeader
 { margin-right: 0px;
+  height: 16px;
   padding-right: 2px;
   text-align: right;
   cursor: pointer;
@@ -854,34 +855,6 @@ DIV.events > DIV.event
   margin-top: 0px;
   padding: 1px; }
 
-DIV.event DIV.topDragGrip,
-DIV.event DIV.bottomDragGrip
-{ position: absolute;
-  border: 0px;
-  left: 1px;
-  right: 1px;
-  height: 4px;
-  background-repeat: no-repeat;
-  background-position: center; }
-
-DIV.event.dragging DIV.topDragGrip,
-DIV.event.dragging DIV.bottomDragGrip
-{ display: none; }
-
-DIV.event DIV.topDragGrip
-{ top: 1px; }
-
-DIV.event.draggable:hover DIV.topDragGrip
-{ cursor: n-resize;
-  background-image: url(event-grippy-top.png); }
-
-DIV.event DIV.bottomDragGrip
-{ bottom: 1px; }
-
-DIV.event.draggable:hover DIV.bottomDragGrip
-{ cursor: s-resize;
-  background-image: url(event-grippy-bottom.png); }
-
 DIV.event > DIV.eventInside
 { position: absolute;
   overflow: hidden;
@@ -946,6 +919,61 @@ DIV.event.alarm DIV.text
   background-repeat: no-repeat;
   background-position: top right; }
 
+/* event DnD */
+DIV.event DIV.topDragGrip,
+DIV.event DIV.bottomDragGrip
+{ position: absolute;
+  border: 0px;
+  left: 1px;
+  right: 1px;
+  height: 4px;
+  background-repeat: no-repeat;
+  background-position: center; }
+
+DIV.event DIV.topDragGrip
+{ top: 1px; }
+
+DIV.event DIV.bottomDragGrip
+{ bottom: 1px; }
+
+DIV.event DIV.leftDragGrip,
+DIV.event DIV.rightDragGrip
+{ position: absolute;
+  border: 0px;
+  top: 3px;
+  height: 11px;
+  width: 3px;
+  background-repeat: no-repeat;
+  background-position: center; }
+
+DIV.event DIV.leftDragGrip
+{ left: 1px; }
+
+DIV.event DIV.rightDragGrip
+{ right: 1px; }
+
+DIV.event.dragging DIV.topDragGrip,
+DIV.event.dragging DIV.bottomDragGrip,
+DIV.event.dragging DIV.leftDragGrip,
+DIV.event.dragging DIV.rightDragGrip
+{ display: none; }
+
+DIV.event.draggable:hover DIV.topDragGrip
+{ cursor: n-resize;
+  background-image: url(event-grippy-top.png); }
+
+DIV.event.draggable:hover DIV.bottomDragGrip
+{ cursor: s-resize;
+  background-image: url(event-grippy-bottom.png); }
+
+DIV.event.draggable:hover DIV.leftDragGrip
+{ cursor: w-resize;
+  background-image: url(event-grippy-vertical.png); }
+
+DIV.event.draggable:hover DIV.rightDragGrip
+{ cursor: e-resize;
+  background-image: url(event-grippy-vertical.png); }
+
 DIV.event.dragging
 { left: 0px !important;
   width: 100% !important; }
@@ -962,18 +990,42 @@ DIV.event.dragging DIV.text
 DIV.event.dragging IMG
 { display: none; }
 
-DIV.eventDragGhost
-{ border-top: 0px;
-  color: #fff;
+#daysView DIV.eventDragGhost
+{ color: #fff;
+  border-top: 0px;
   border-bottom: 0px;
   border-left: 1px solid #555;
   border-right: 1px solid #555; }
 
-DIV.eventDragGhost.startGhost
+#daysView DIV.eventDragGhost.startGhost
 { border-top: 1px solid #555; }
 
-DIV.eventDragGhost.endGhost
+#daysView DIV.eventDragGhost.endGhost
 { border-bottom: 1px solid #555; }
+
+#monthDaysView DIV.eventDragGhost,
+#calendarHeader DIV.eventDragGhost
+{ position: absolute !important;
+  color: #fff;
+  width: 100%;
+  border-top: 1px solid #555;
+  border-bottom: 1px solid #555;
+  border-left: 0px;
+  border-right: 0px; }
+
+#monthDaysView DIV.eventDragGhost
+{ top: 16px; }
+
+#calendarHeader DIV.eventDragGhost
+{ top: 0px; }
+
+#monthDaysView DIV.eventDragGhost.startGhost,
+#calendarHeader DIV.eventDragGhost.startGhost
+{ border-left: 1px solid #555; }
+
+#monthDaysView DIV.eventDragGhost.endGhost,
+#calendarHeader DIV.eventDragGhost.endGhost
+{ border-right: 1px solid #555; }
 
 DIV.eventDragGhost > DIV
 { position: absolute;
