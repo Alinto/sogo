@@ -2,6 +2,8 @@
 --------------------
 - added CAS authentication support
 - improved display of message size in webmail
+- improved security of login cookie by specifying a path
+- added drag and drop to the web calendar interface
 
 1.2-20100125 (1.2.0)
 --------------------
