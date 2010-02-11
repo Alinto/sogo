@@ -85,7 +85,7 @@ Element.addMethods({
     
             if (additionalKeys)
                 for (var i = 0; i < additionalKeys.length; i++) {
-                    var value = element.getAttribute(additionalKeys[i]);
+                    var value = element.readAttribute(additionalKeys[i]);
                     if (value)
                         str += "; " + additionalKeys[i] + " = " + value;
                 }

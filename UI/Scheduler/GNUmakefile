@@ -36,6 +36,7 @@ SchedulerUI_OBJC_FILES =		\
 	UIxAttendeesEditor.m		\
 	UIxComponentEditor.m		\
 	UIxCalendarSelector.m		\
+	UIxAppointmentActions.m		\
 	UIxAppointmentEditor.m		\
 	UIxTaskEditor.m			\
 	UIxDatePicker.m			\

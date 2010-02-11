@@ -1,3 +1,48 @@
+2010-02-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/SchedulerUI.js (newEvent): removed the
+	useless "sender" parameter and added "day", "hour" and "duration"
+	parameters to obtain a more generic method.
+	(newEventFromWidget): new method the previous "newEvent" incarnation.
+	(minutesToHM): new method that converts an amount of minutes into
+	a string value suitable for an "hm" query parameter.
+	(newEventFromDragging): new method suitable as a drag and drop
+	callback for creating events.
+	(updateEventFromDragging): new method suitable as a drag and drop
+	callback for adjusting events.
+	(_setupEventsDragAndDrop): new method that setups drag and drop
+	controllers for instances of events per calendar.
+	(attachDragControllers): new method that instantiate a drag and
+	drop controller for each day column.
+
+	* UI/Scheduler/UIxCalListingActions.m
+	(_fillBlocks:withEvent:withNumber:): work around the situation
+	where the event start would occur after its end, causing a crash.
+	Still emits a warning.
+
+	* UI/Scheduler/UIxCalDayTable.m (-currentHourLineId): new method
+	replacing "currentHourLineClass". The hour identifier now being
+	the value of the element id, the hourline classes are populated
+	from the template itself.
+
+	* UI/WebServerResources/generic.js (generateQueryString): adjusted
+	method to take only "string" and "number" typed values into
+	account when constructing URL parameters.
+
+	* UI/WebServerResources/SchedulerUIDnD.js: new js module with
+	classes implementing drag and drop of events.
+
+	* UI/Scheduler/UIxOccurenceDialog.m (-confirmAdjustmentMethod):
+	new method for displaying a dialog suitable for start and duration
+	adjustments.
+
+	* UI/Scheduler/UIxAppointmentActions.m (-adjustAction): new method
+	that takes a "days", a "start" and a "duration" relative
+	parameters to adjust the current event or occurrence.
+
+	* UI/Scheduler/UIxAppointmentActions.[hm]: new module implementing
+	a WODirectAction class for ajax calls for appointments.
+
 2010-02-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MainUI/SOGoRootPage.m (-_standardDefaultAction): add an

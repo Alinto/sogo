@@ -143,9 +143,9 @@
   return hoursToDisplay;
 }
 
-- (NSString *) currentHourLineClass
+- (NSString *) currentHourLineId
 {
-  return [NSString stringWithFormat: @"hourLine hourLine%d", [currentTableHour intValue]];
+  return [NSString stringWithFormat: @"hourLine%d", [currentTableHour intValue]];
 }
 
 - (NSArray *) daysToDisplay

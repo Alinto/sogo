@@ -2,13 +2,13 @@
   ( { link = "#";
       isSafe = NO;
       label = "New Event";
-      onclick = "return newEvent(this, 'event');";
+      onclick = "return newEvent('event');";
       image = "new-event.png";
       tooltip = "Create a new event"; },
     { link  = "new_task";
       label="New Task";
       image = "new-task.png";
-      onclick = "return newEvent(this, 'task');";
+      onclick = "return newEvent('task');";
       image = "new-task.png";
       tooltip = "Create a new task"; } ),
   ( { link  = "today";

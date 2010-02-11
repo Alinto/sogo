@@ -493,6 +493,9 @@ LI[class~="_selected"].denied
   background-color: #f33;
 }
 
+DIV.hidden
+{ visibility: hidden; };
+
 /* folder tree (js) )*/
 DIV.dTreeNode A SPAN.nodeName
 {
@@ -784,7 +787,6 @@ DIV.tab
   display: none;
   margin-top: 24px;
   overflow: hidden; }
-
 
 /* Toolbar */
 DIV#toolbar

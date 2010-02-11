@@ -232,8 +232,13 @@
         };
         delegate = {
           protectedBy = "RespondToComponent";
-          actionClass = "UIxAppointmentEditor";
+          pageName = "UIxAppointmentEditor";
           actionName  = "delegate";
+        };
+        adjust = {
+          protectedBy = "ModifyComponent";
+          actionClass = "UIxAppointmentActions"; 
+          actionName  = "adjust";
         };
       };
     };
@@ -283,6 +288,11 @@
           protectedBy = "ViewAllComponent";
           pageName    = "UIxOccurenceDialog";
         };
+        confirmAdjustment = { 
+          protectedBy = "ViewAllComponent";
+          pageName    = "UIxOccurenceDialog";
+          actionName  = "confirmAdjustment";
+        };
         confirmDeletion = { 
           protectedBy = "Delete Object";
           pageName    = "UIxOccurenceDialog";
@@ -312,6 +322,11 @@
           protectedBy = "Delete Object";
           pageName    = "UIxOccurenceDialog";
           actionName  = "delete";
+        };
+        adjust = {
+          protectedBy = "ModifyComponent";
+          actionClass = "UIxAppointmentActions"; 
+          actionName  = "adjust";
         };
       };
     };

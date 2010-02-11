@@ -7,6 +7,7 @@
   xmlns:rsrc="OGo:url"
   xmlns:label="OGo:label"
   className="UIxPageFrame"
+  const:jsFiles="SchedulerUIDnD.js"
   title="title">
   <script type="text/javascript">
     var firstDayOfWeek = <var:string value="firstDayOfWeek"/>;

@@ -87,6 +87,13 @@
   return self;
 }
 
+- (id <WOActionResults>) confirmAdjustmentAction
+{
+  ASSIGN (action, @"adjust");
+
+  return self;
+}
+
 - (WOResponse *) deleteAction
 {
   SOGoCalendarComponent *component;

@@ -244,7 +244,7 @@
   NSCalendarDate *startDate, *endDate;
   NSString *duration;
   NSTimeZone *timeZone;
-  unsigned int minutes;
+  unsigned int total, hours, minutes;
   SOGoObject <SOGoComponentOccurence> *co;
   SOGoUserDefaults *ud;
 
@@ -258,14 +258,21 @@
       && [co isKindOfClass: [SOGoCalendarComponent class]])
     {
       startDate = [self newStartDate];
-      duration = [self queryParameterForKey:@"dur"];
+      duration = [self queryParameterForKey:@"duration"];
       if ([duration length] > 0)
-        minutes = [duration intValue];
+        {
+          total = [duration intValue];
+          hours = total / 100;
+          minutes = total % 100;
+        }
       else
-        minutes = 60;
+        {
+          hours = 1;
+          minutes = 0;
+        }
       endDate
         = [startDate dateByAddingYears: 0 months: 0 days: 0
-                                 hours: 0 minutes: minutes seconds: 0];
+                                 hours: hours minutes: minutes seconds: 0];
     }
   else
     {

@@ -406,48 +406,6 @@ function refreshOpener() {
     }
 }
 
-/* query string */
-
-function parseQueryString() {
-    var queryArray, queryDict
-        var key, value, s, idx;
-    queryDict.length = 0;
-
-    queryDict  = new Array();
-    queryArray = location.search.substr(1).split('&');
-    for (var i in queryArray) {
-        if (!queryArray[i]) continue ;
-        s   = queryArray[i];
-        idx = s.indexOf("=");
-        if (idx == -1) {
-            key   = s;
-            value = "";
-        }
-        else {
-            key   = s.substr(0, idx);
-            value = unescape(s.substr(idx + 1));
-        }
-
-        if (typeof queryDict[key] == 'undefined')
-            queryDict.length++;
-
-        queryDict[key] = value;
-    }
-    return queryDict;
-}
-
-function generateQueryString(queryDict) {
-    var s = "";
-    for (var key in queryDict) {
-        if (s.length == 0)
-            s = "?";
-        else
-            s = s + "&";
-        s = s + key + "=" + escape(queryDict[key]);
-    }
-    return s;
-}
-
 /* selection mechanism */
 
 function deselectAll(parent) {
@@ -676,6 +634,24 @@ function onMenuEntryClick(event) {
     return false;
 }
 
+/* query string */
+
+function generateQueryString(queryDict) {
+    var s = "";
+    for (var key in queryDict) {
+        var value = queryDict[key];
+        if (typeof(value) == "string"
+            || typeof(value) == "number") {
+            if (s.length == 0)
+                s = "?";
+            else
+                s = s + "&";
+            s = s + key + "=" + escape(value);
+        }
+    }
+    return s;
+}
+
 function parseQueryParameters(url) {
     var parameters = new Array();
 
@@ -706,11 +682,6 @@ function onBodyKeyDown(event) {
         toggleLogConsole();
         preventDefault(event);
     }
-}
-
-function onLogDblClick(event) {
-    var logConsole = $("logConsole");
-    logConsole.innerHTML = "";
 }
 
 function toggleLogConsole(event) {
@@ -747,6 +718,15 @@ function log(message) {
             logMessage = '<div class="highlighted">' + logMessage + '</div>';
         logConsole.innerHTML += logMessage;
     }
+}
+
+function logOnly(message) {
+    log("\c");
+    log(message);
+}
+
+function onLogDblClick(event) {
+    log("\c");
 }
 
 function backtrace() {

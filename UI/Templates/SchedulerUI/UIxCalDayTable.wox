@@ -50,7 +50,7 @@
 
     <div class="hourLines">
       <var:foreach list="hoursToDisplay" item="currentTableHour"
-	><div var:class="currentHourLineClass"><!-- space --></div
+	><div var:id="currentHourLineId" const:class="hourLine"><!-- space --></div
 	  ></var:foreach>
     </div>
   </div>

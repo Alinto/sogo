@@ -25,25 +25,92 @@ var preventAutoScroll = false;
 
 var userStates = [ "needs-action", "accepted", "declined", "tentative" ];
 
-function newEvent(sender, type) {
-    var day = $(sender).readAttribute("day");
-    if (!day)
-        day = currentDay;
-    var hour = sender.readAttribute("hour");
+function newEvent(type, day, hour, duration) {
     var folder = getSelectedFolder();
     var folderID = folder.readAttribute("id");
     var urlstr = ApplicationBaseURL + folderID + "/new" + type;
     var params = [];
-    if (day)
-        params.push("day=" + day);
+    if (!day)
+        day = currentDay;
+    params.push("day=" + day);
     if (hour)
         params.push("hm=" + hour);
+    if (duration)
+        params.push("duration=" + duration);
     if (params.length > 0)
         urlstr += "?" + params.join("&");
 
     window.open(urlstr, "", "width=490,height=470,resizable=0");
-   
+}
+
+function newEventFromWidget(sender, type) {
+    var day = $(sender).readAttribute("day");
+    var hour = sender.readAttribute("hour");
+
+    newEvent(type, day, hour);
+
     return false; /* stop following the link */
+}
+
+function minutesToHM(minutes) {
+    var hours = Math.floor(minutes / 60);
+    if (hours < 10)
+        hours = "0" + hours;
+    var mins = minutes % 60;
+    if (mins < 10)
+        mins = "0" + mins;
+
+    return "" + hours + mins;
+}
+
+function newEventFromDragging(controller, day, coordinates) {
+    var startHm = minutesToHM(coordinates.start * 15);
+    var lengthHm = minutesToHM(coordinates.duration * 15);
+    newEvent("event", day, startHm, lengthHm);
+}
+
+function updateEventFromDragging(controller, eventCells, eventDelta) {
+    if (eventDelta.dayNumber || eventDelta.start || eventDelta.duration) {
+        var params = ("days=" + eventDelta.dayNumber
+                      + "&start=" + eventDelta.start * 15
+                      + "&duration=" + eventDelta.duration * 15);
+        // log("eventCells: " + eventCells.length);
+        var eventCell = eventCells[0];
+        // log("  time: " + eventCell.recurrenceTime);
+        // log("  exception: " + eventCell.isException);
+        
+        if (eventCell.recurrenceTime && !eventCell.isException)
+            _editRecurrenceDialog(eventCell, "confirmAdjustment", params);
+        else {
+            var urlstr = (ApplicationBaseURL
+                          + eventCell.calendar + "/" + eventCell.cname);
+            if (eventCell.recurrenceTime)
+                urlstr += "/occurence" + eventCell.recurrenceTime;
+            urlstr += ("/adjust?" + params);
+            // log("  urlstr: " + urlstr);
+            triggerAjaxRequest(urlstr, updateEventFromDraggingCallback,
+                               { controller: controller,
+                                       eventCell: eventCell });
+        }
+    }
+}
+
+function performEventAdjustment(folder, event, recurrence, params) {
+    var urlstr = ApplicationBaseURL + folder + "/" + event;
+    if (recurrence)
+        urlstr += "/" + recurrence;
+    urlstr += "/adjust" + generateQueryString(params);
+    triggerAjaxRequest(urlstr, updateEventFromDraggingCallback);
+}
+
+function updateEventFromDraggingCallback(http) {
+    if (http.readyState == 4) {
+        if (isHttpStatus204(http.status)) {
+            // var cell = this.callbackData.eventCell;
+            // cell.parentNode.removeChild(cell);
+            changeCalendarDisplay();
+        }
+    }
 }
 
 function getSelectedFolder() {
@@ -59,11 +126,11 @@ function getSelectedFolder() {
 }
 
 function onMenuNewEventClick(event) {
-    newEvent(this, "event");
+    newEventFromWidget(this, "event");
 }
 
 function onMenuNewTaskClick(event) {
-    newEvent(this, "task");
+    newEventFromWidget(this, "task");
 }
 
 function _editEventId(id, calendar, recurrence) {
@@ -199,7 +266,7 @@ function modifyEvent(sender, modification, parameters) {
                                                          modification,
                                                          parameters,
                                                          { "Content-type": "application/x-www-form-urlencoded" });
-    
+
     return false;
 }
 
@@ -298,7 +365,7 @@ function _deleteEventFromTables(calendar, cname, occurenceTime) {
     if (occurences) {
         var occurence = occurences.first();
         var ownerIsOrganizer = occurence[18];
-        
+
         // Delete event from events list
         var table = $("eventsList");
         var rows = table.tBodies[0].rows;
@@ -326,7 +393,7 @@ function _deleteEventFromTables(calendar, cname, occurenceTime) {
             }
         }
     }
-    
+
     // Delete task from tasks list
     var row = $(calendar + basename);
     if (row) {
@@ -339,7 +406,7 @@ function _deleteCalendarEventCache(calendar, cname, occurenceTime) {
     var occurences = calendarEvents[calendar][cname];
     if (occurences)
         ownerIsOrganizer = occurences[0][18];
-    
+
     for (var otherCalendar in calendarEvents) {
         var occurences = calendarEvents[otherCalendar][cname];
         if (occurences) {
@@ -407,10 +474,13 @@ function getEventById(cname, owner) {
     return event;
 }
 
-function _editRecurrenceDialog(eventDiv, method) {
-    var targetname = "SOGo_edit_" + eventDiv.cname + eventDiv.recurrenceTime;
-    var urlstr = (ApplicationBaseURL + eventDiv.calendar + "/" + eventDiv.cname
-                  + "/occurence" + eventDiv.recurrenceTime + "/" + method);
+function _editRecurrenceDialog(eventCell, method, params) {
+    var targetname = "SOGo_edit_" + eventCell.cname + eventCell.recurrenceTime;
+    var urlstr = (ApplicationBaseURL + eventCell.calendar + "/" + eventCell.cname
+                  + "/occurence" + eventCell.recurrenceTime + "/" + method);
+    if (params && params.length) {
+        urlstr += "?" + params;
+    }
     var win = window.open(urlstr, "_blank",
                           "width=490,height=70,resizable=0");
     if (win)
@@ -440,13 +510,13 @@ function onViewEventCallback(http) {
             //	});
             var cell = http.callbackData;
             var cellPosition = cell.cumulativeOffset();
-            var cellDimensions = cell.getDimensions();      
+            var cellDimensions = cell.getDimensions();
             var div = $("eventDialog");
             var divDimensions = div.getDimensions();
             var view;
             var left = cellPosition[0];
             var top = cellPosition[1];
-      
+
             if (currentView != "monthview") {
                 view = $("daysView");
                 var viewPosition = view.cumulativeOffset();
@@ -464,7 +534,7 @@ function onViewEventCallback(http) {
                 view = $("calendarView");
                 top -= cell.up("DIV.day").scrollTop;
             }
-      
+
             if (left > parseInt(window.width()*0.75)) {
                 left = left - divDimensions["width"] + 10;
                 div.removeClassName("left");
@@ -504,13 +574,13 @@ function onViewEventCallback(http) {
                 paras[3].show();
             } else
                 paras[3].hide();
-      
+
             div.setStyle({ left: left + "px", top: top + "px" });
             div.show();
         }
     }
     else {
-        log("onViewEventCallback ajax error (" + http.status + "): " + http.url);		
+        log("onViewEventCallback ajax error (" + http.status + "): " + http.url);
     }
 }
 
@@ -530,13 +600,13 @@ function performEventEdition(folder, event, recurrence) {
 }
 
 function performEventDeletion(folder, event, recurrence) {
-    if (calendarEvents) {  
+    if (calendarEvents) {
         if (recurrence) {
             // Only one recurrence
             var occurenceTime = recurrence.substring(9);
             var nodes = _eventBlocksMatching(folder, event, occurenceTime);
             var urlstr = ApplicationBaseURL + folder + "/" + event  + "/" + recurrence + "/delete";
-			
+
             if (nodes)
                 document.deleteEventAjaxRequest = triggerAjaxRequest(urlstr,
                                                                      performDeleteEventCallback,
@@ -563,7 +633,7 @@ function performDeleteEventCallback(http) {
             var nodes = http.callbackData.nodes;
             var cname = nodes[0].cname;
             var calendar = nodes[0].calendar;
-            
+
             _deleteCalendarEventBlocks(calendar, cname, occurenceTime);
             _deleteEventFromTables(calendar, cname, occurenceTime);
             _deleteCalendarEventCache(calendar, cname, occurenceTime);
@@ -664,7 +734,7 @@ function eventsListCallback(http) {
         rows.each(function(e) {
                 e.remove();
             });
-        
+
         if (http.responseText.length > 0) {
             var data = http.responseText.evalJSON(true);
             for (var i = 0; i < data.length; i++) {
@@ -709,7 +779,7 @@ function eventsListCallback(http) {
                 row.appendChild(td);
                 td.observe("mousedown", listRowMouseDownHandler, true);
                 td.appendChild(document.createTextNode(data[i][20])); // end date
-      
+
                 td = $(document.createElement("td"));
                 row.appendChild(td);
                 td.observe("mousedown", listRowMouseDownHandler, true);
@@ -719,7 +789,7 @@ function eventsListCallback(http) {
 
             if (sorting["attribute"] && sorting["attribute"].length > 0) {
                 var sortHeader = $(sorting["attribute"] + "Header");
-      
+
                 if (sortHeader) {
                     var sortImages = $(table.tHead).select(".sortImage");
                     $(sortImages).each(function(item) {
@@ -747,7 +817,7 @@ function tasksListCallback(http) {
         && http.status == 200) {
         document.tasksListAjaxRequest = null;
         var list = $("tasksList");
- 
+
         if (http.responseText.length > 0) {
             var data = http.responseText.evalJSON(true);
 
@@ -899,11 +969,11 @@ function changeCalendarDisplay(data, newView) {
                     divs.each(function(div) {
                             div.addClassName('selectedDay');
                         });
-	
+
                 // Deselect day in date selector
                 if (document.selectedDate)
                     document.selectedDate.deselect();
-		
+
                 // Select day in date selector
                 var selectedLink = $$('table#dateSelectorTable span[day='+day+']');
                 if (selectedLink.length > 0) {
@@ -981,6 +1051,7 @@ function reloadWebCalendars() {
     document.reloadWebCalAjaxRequest
         = triggerAjaxRequest(url, reloadWebCalendarsCallback);
 }
+
 function reloadWebCalendarsCallback (http) {
     changeCalendarDisplay(null, currentView);
 }
@@ -1017,7 +1088,7 @@ function scrollDayView(scrollEvent) {
 }
 
 function onClickableCellsDblClick(event) {
-    newEvent(this, 'event');
+    newEventFromWidget(this, 'event');
 
     Event.stop(event);
 }
@@ -1075,7 +1146,7 @@ function _parseEvents(list) {
         var event = list[i];
         var cname = event[0];
         var calendar = event[1];
-        //		log("parsed cname: " + cname + "; calendar: " + calendar);
+        // log("parsed cname: " + cname + "; calendar: " + calendar);
         var calendarDict = newCalendarEvents[calendar];
         if (!calendarDict) {
             calendarDict = {};
@@ -1093,6 +1164,40 @@ function _parseEvents(list) {
     return newCalendarEvents;
 }
 
+function _setupEventsDragAndDrop(events) {
+    /* We setup the drag controllers for all the events.
+       Since the same events may be listed more than once per calendar
+       (repeating events), we must keep account of those that have already
+       been setup. */
+    var setupFlags = {};
+
+    for (var i = 0; i < events.length; i++) {
+        if (events[i][11] == UserLogin) {
+            var cname = events[i][0];
+            var calendar = events[i][1];
+            var setupId = calendar + "_" + cname;
+            if (!setupFlags[setupId]) {
+                var occurrences = calendarEvents[calendar][cname];
+                for (var j = 0; j < occurrences.length; j++) {
+                    var blocks = occurrences[j].blocks;
+                    var topDragGrip = $(document.createElement("div"));
+                    topDragGrip.addClassName("topDragGrip");
+                    blocks[0].appendChild(topDragGrip);
+
+                    var bottomDragGrip = $(document.createElement("div"));
+                    bottomDragGrip.addClassName("bottomDragGrip");
+                    blocks[blocks.length-1].appendChild(bottomDragGrip);
+
+                    var dragController = new SOGoEventDragController();
+                    dragController.updateDropCallback = updateEventFromDragging;
+                    dragController.attachToEventCells(blocks);
+                }
+                setupFlags[setupId] = true;
+            }
+        }
+    }
+}
+
 function refreshCalendarEventsCallback(http) {
     if (http.readyState == 4
         && http.status == 200) {
@@ -1104,6 +1209,7 @@ function refreshCalendarEventsCallback(http) {
             else {
                 _drawCalendarAllDayEvents(eventsBlocks[1], eventsBlocks[0]);
                 _drawCalendarEvents(eventsBlocks[2], eventsBlocks[0]);
+                _setupEventsDragAndDrop(eventsBlocks[0]);
             }
             onWindowResize(null);
         }
@@ -1136,21 +1242,21 @@ function newBaseEventDIV(eventRep, event, eventText) {
     //  log ("17 erasable = " + event[17]);
     //  log ("18 ownerisorganizer = " + event[18]);
 
-    var eventDiv = $(document.createElement("div"));
-    eventDiv.cname = event[0];
-    eventDiv.calendar = event[1];
+    var eventCell = $(document.createElement("div"));
+    eventCell.cname = event[0];
+    eventCell.calendar = event[1];
     if (eventRep.recurrenceTime)
-        eventDiv.recurrenceTime = eventRep.recurrenceTime;
-    eventDiv.isException = event[15];
-    eventDiv.editable = event[16];
-    eventDiv.erasable = event[17];
-    eventDiv.ownerIsOrganizer = event[18];
-    eventDiv.addClassName("event");
+        eventCell.recurrenceTime = eventRep.recurrenceTime;
+    eventCell.isException = event[15];
+    eventCell.editable = event[16];
+    eventCell.erasable = event[17];
+    eventCell.ownerIsOrganizer = event[18];
+    eventCell.addClassName("event");
     if (event[13] > 0)
-        eventDiv.addClassName("alarm");
+        eventCell.addClassName("alarm");
 
     var innerDiv = $(document.createElement("div"));
-    eventDiv.appendChild(innerDiv);
+    eventCell.appendChild(innerDiv);
     innerDiv.addClassName("eventInside");
     innerDiv.addClassName("calendarFolder" + event[1]);
     if (eventRep.userState >= 0 && userStates[eventRep.userState])
@@ -1170,20 +1276,21 @@ function newBaseEventDIV(eventRep, event, eventText) {
     textDiv.update(eventText.replace(/(\\r)?\\n/g, "<BR/>"));
 
     if (event[2] == null) {
-        eventDiv.observe("selectstart", listRowMouseDownHandler);
-        eventDiv.observe("click", onCalendarSelectEvent);
-        eventDiv.observe("dblclick", Event.stop);
+        eventCell.observe("selectstart", listRowMouseDownHandler);
+        eventCell.observe("click", onCalendarSelectEvent);
+        eventCell.observe("dblclick", Event.stop);
     }
     else {
         // Status field is defined -- user can read event
-        eventDiv.observe("mousedown", listRowMouseDownHandler);
-        eventDiv.observe("click", onCalendarSelectEvent);
-        eventDiv.observe("dblclick", editDoubleClickedEvent);
-        eventDiv.observe("click", onViewEvent);
+        eventCell.observe("mousedown", listRowMouseDownHandler);
+        eventCell.observe("click", onCalendarSelectEvent);
+        eventCell.observe("dblclick", editDoubleClickedEvent);
+        eventCell.observe("click", onViewEvent);
     }
-    event.blocks.push(eventDiv);
 
-    return eventDiv;
+    event.blocks.push(eventCell);
+
+    return eventCell;
 }
 
 function _drawCalendarAllDayEvents(events, eventsData) {
@@ -1195,8 +1302,8 @@ function _drawCalendarAllDayEvents(events, eventsData) {
         for (var j = 0; j < events[i].length; j++) {
             var eventRep = events[i][j];
             var nbr = eventRep.nbr;
-            var eventDiv = newAllDayEventDIV(eventRep, eventsData[nbr]);
-            parentDiv.appendChild(eventDiv);
+            var eventCell = newAllDayEventDIV(eventRep, eventsData[nbr]);
+            parentDiv.appendChild(eventCell);
         }
     }
 }
@@ -1204,11 +1311,11 @@ function _drawCalendarAllDayEvents(events, eventsData) {
 function newAllDayEventDIV(eventRep, event) {
     // cname, calendar, starts, lasts,
     // 		     startHour, endHour, title) {
-    var eventDiv = newBaseEventDIV(eventRep, event, event[3]);
+    var eventCell = newBaseEventDIV(eventRep, event, event[3]);
 
-    return eventDiv;
+    return eventCell;
 }
-			     
+
 function _drawCalendarEvents(events, eventsData) {
     var daysView = $("daysView");
     var subdivs = daysView.childNodesWithTag("div");
@@ -1218,23 +1325,27 @@ function _drawCalendarEvents(events, eventsData) {
         for (var j = 0; j < events[i].length; j++) {
             var eventRep = events[i][j];
             var nbr = eventRep.nbr;
-            var eventDiv = newEventDIV(eventRep, eventsData[nbr]);
-            parentDiv.appendChild(eventDiv);
+            var eventCell = newEventDIV(eventRep, eventsData[nbr]);
+            parentDiv.appendChild(eventCell);
+
+            if (eventCell.editable) {
+                eventCell.addClassName("draggable");
+            }
         }
     }
 }
 
 function newEventDIV(eventRep, event) {
-    var eventDiv = newBaseEventDIV(eventRep, event, event[3]);
+    var eventCell = newBaseEventDIV(eventRep, event, event[3]);
 
     var pc = 100 / eventRep.siblings;
-    eventDiv.style.width = pc + "%";
+    eventCell.style.width = pc + "%";
     var left = eventRep.position * pc;
-    eventDiv.style.left = left + "%";
-    eventDiv.addClassName("starts" + eventRep.start);
-    eventDiv.addClassName("lasts" + eventRep.length);
+    eventCell.style.left = left + "%";
+    eventCell.addClassName("starts" + eventRep.start);
+    eventCell.addClassName("lasts" + eventRep.length);
 
-    return eventDiv;
+    return eventCell;
 }
 
 function _drawMonthCalendarEvents(events, eventsData) {
@@ -1245,8 +1356,8 @@ function _drawMonthCalendarEvents(events, eventsData) {
         for (var j = 0; j < events[i].length; j++) {
             var eventRep = events[i][j];
             var nbr = eventRep.nbr;
-            var eventDiv = newMonthEventDIV(eventRep, eventsData[nbr]);
-            parentDiv.appendChild(eventDiv);
+            var eventCell = newMonthEventDIV(eventRep, eventsData[nbr]);
+            parentDiv.appendChild(eventCell);
         }
     }
 }
@@ -1258,10 +1369,28 @@ function newMonthEventDIV(eventRep, event) {
     else
         eventText = eventRep.starthour + " - " + event[3];
 
-    var eventDiv = newBaseEventDIV(eventRep, event,
-                                   eventText);
+    var eventCell = newBaseEventDIV(eventRep, event,
+                                    eventText);
 
-    return eventDiv;
+    return eventCell;
+}
+
+function attachDragControllers(contentView) {
+    var contentNodes = contentView.childNodesWithTag("div");
+    for (var i = 0; i < contentNodes.length; i++) {
+        var contentNode = contentNodes[i];
+        if (contentNode.hasClassName("days")) {
+            var dayNodes = contentNode.childNodesWithTag("div");
+            for (var j = 0; j < dayNodes.length; j++) {
+                var dayNode = dayNodes[j];
+                if (dayNode.hasClassName("day")) {
+                    var dragController = new SOGoEventDragController();
+                    dragController.createDropCallback = newEventFromDragging;
+                    dragController.attachToDayNode(dayNode);
+                }
+            }
+        }
+    }
 }
 
 function calendarDisplayCallback(http) {
@@ -1273,7 +1402,7 @@ function calendarDisplayCallback(http) {
     if (daysView)
       position = daysView.scrollTop;
     preventAutoScroll = (position != -1);
-    
+
     if (http.readyState == 4
         && http.status == 200) {
         document.dayDisplayAjaxRequest = null;
@@ -1322,19 +1451,21 @@ function calendarDisplayCallback(http) {
                              deleteEvent);
             observer = $("monthDaysView");
         }
+
         initMenu($("currentViewMenu"), menu);
         observer.observe("contextmenu", onMenuCurrentView);
-		
+
         var contentView;
         if (currentView == "monthview")
             contentView = $("calendarContent");
         else {
             contentView = $("daysView");
+            attachDragControllers(contentView);
             contentView.observe("scroll", onBodyClickHandler);
         }
-    
+
         refreshCalendarEvents(http.callbackData.scrollEvent);
-    
+
         var days = contentView.select("DIV.day");
 
         if (currentView == "monthview")
@@ -1359,7 +1490,7 @@ function calendarDisplayCallback(http) {
 
                 var clickableCells = days[i].select("DIV.clickableHourCell");
                 for (var j = 0; j < clickableCells.length; j++)
-                    clickableCells[j].observe("dblclick", onClickableCellsDblClick);					
+                    clickableCells[j].observe("dblclick", onClickableCellsDblClick);
             }
         }
     }
@@ -1457,7 +1588,7 @@ function onHeaderClick(event) {
         newSortAttribute = "location";
     else
         newSortAttribute = "start";
-  
+
     if (sorting["attribute"] == newSortAttribute)
         sorting["ascending"] = !sorting["ascending"];
     else {
@@ -1473,6 +1604,7 @@ function refreshCurrentFolder() {
     refreshEvents();
 }
 
+/* refreshes the "unifinder" list */
 function refreshEvents() {
     var titleSearch;
     var value = search["value"];
@@ -1480,7 +1612,7 @@ function refreshEvents() {
         titleSearch = "&search=" + escape(value.utf8encode());
     else
         titleSearch = "";
-	
+
     refreshAlarms();
 
     return _loadEventHref("eventslist?asc=" + sorting["ascending"]
@@ -1611,7 +1743,7 @@ function selectCalendarEvent(calendar, cname, recurrenceTime) {
             selection[i].selectElement();
         selectedCalendarCell = selection;
     }
-  
+
     return selection;
 }
 
@@ -1694,7 +1826,7 @@ function changeMonthCalendarDisplayOfSelectedDay(node) {
     var daysContainer = node.parentNode;
     if (!daysContainer.selectedCell)
         findMonthCalendarSelectedCell(daysContainer);
-   
+
     if (daysContainer.selectedCell)
         daysContainer.selectedCell.removeClassName("selectedDay");
     daysContainer.selectedCell = node;
@@ -1720,7 +1852,7 @@ function updateTaskStatus(event) {
 function updateCalendarStatus(event) {
     var list = [];
     var newStatus = (this.checked ? 1 : 0);
-  
+
     if (isSafari() && !isSafari3()) {
         newStatus = (newStatus ? 0 : 1);
         this.checked = newStatus;
@@ -1827,7 +1959,7 @@ function updateCalendarsList(method) {
 
 function onCalendarsMenuPrepareVisibility() {
     var folders = $("calendarList");
-    var selected = folders.getSelectedNodes();  
+    var selected = folders.getSelectedNodes();
     if (selected.length > 0) {
         var folderOwner = selected[0].getAttribute("owner");
         var sharingOption = $(this).down("ul").childElements().last();
@@ -1866,7 +1998,7 @@ function getMenus() {
                                        null, "-", null, "-", onMenuSharing);
     menus["searchMenu"] = new Array(setSearchCriteria);
 
-    menus["tasksListMenu"] = new Array (editEvent, newTask, "-", 
+    menus["tasksListMenu"] = new Array (editEvent, newTask, "-",
                                         marksTasksAsCompleted, deleteEvent);
 
     var calendarsMenu = $("calendarsMenu");
@@ -1877,7 +2009,7 @@ function getMenus() {
 }
 
 function newTask () {
-    return newEvent(this, 'task');
+    return newEventFromWidget(this, 'task');
 }
 
 function marksTasksAsCompleted () {
@@ -1967,7 +2099,7 @@ function onCalendarModify(event) {
     var width = 310;
     var height = 266;
     var isWebCalendar = false;
-    if (UserSettings['Calendar'] 
+    if (UserSettings['Calendar']
         && UserSettings['Calendar']['WebCalendars']) {
         var webCalendars = UserSettings['Calendar']['WebCalendars'];
         var realID = calendarID.substr (1, calendarID.length - 1);
@@ -2022,7 +2154,7 @@ function onCalendarWebAdd(event) {
             document.addWebCalendarRequest.abort ();
         }
         var url = ApplicationBaseURL + "/addWebCalendar?url=" + escape (calendarUrl);
-        document.addWebCalendarRequest = 
+        document.addWebCalendarRequest =
           triggerAjaxRequest (url, addWebCalendarCallback);
     }
 }
@@ -2094,7 +2226,7 @@ function uploadCompleted(response) {
         $("uploadResultsContent").update(getLabel("A total of %{0} events were imported in the calendar.").formatted(data.imported));
         refreshEventsAndDisplay();
     }
-    
+
     hideCalendarImport();
     $("uploadResults").show();
 }
@@ -2128,12 +2260,12 @@ function appendCalendar(folderName, folderPath) {
         var calendarList = $("calendarList");
         var items = calendarList.select("li");
         var li = document.createElement("li");
-    
+
         // Add the calendar to the proper place
         var i = getListIndexForFolder(items, owner, folderName);
         if (i != items.length) // User is subscribed to other calendars of the same owner
             calendarList.insertBefore(li, items[i]);
-        else 
+        else
             calendarList.appendChild(li);
         $(li).writeAttribute("id", folderPath);
         $(li).writeAttribute("owner", owner);
@@ -2142,7 +2274,7 @@ function appendCalendar(folderName, folderPath) {
                                      { type: "checkbox" }, li);
 
         li.appendChild(document.createTextNode(" "));
-    
+
         var colorBox = document.createElement("div");
         li.appendChild(colorBox);
         li.appendChild(document.createTextNode(folderName
@@ -2152,7 +2284,7 @@ function appendCalendar(folderName, folderPath) {
 
         $(colorBox).addClassName("colorBox");
         $(colorBox).addClassName('calendarFolder' + folderPath.substr(1));
-		
+
         // Check the checkbox (required for IE)
         li.getElementsByTagName("input")[0].checked = true;
 
@@ -2161,7 +2293,7 @@ function appendCalendar(folderName, folderPath) {
 
         var url = URLForFolderID(folderPath) + "/canAccessContent";
         triggerAjaxRequest(url, calendarEntryCallback, folderPath);
-    
+
         // Update CSS for events color
         appendStyleElement(folderPath, "#AAAAAA");
     }
@@ -2236,7 +2368,7 @@ function onCalendarRemove(event) {
             }
         }
     }
-  
+
     preventDefault(event);
 }
 
@@ -2348,12 +2480,12 @@ function drawNowLine () {
     if (d < 10)
       d = "0" + d;
     var day = today.getFullYear () + "" + m + "" + d;
-    var targets = $$("DIV#daysView DIV.days DIV.day[day=" + day 
+    var targets = $$("DIV#daysView DIV.days DIV.day[day=" + day
                      + "] DIV.events DIV.clickableHourCell");
   }
   else if (currentView == "weekview")
     var targets = $$("DIV#daysView DIV.days DIV.dayOfToday DIV.events DIV.clickableHourCell");
-  
+
   if (targets) {
     var target = targets[hours];
 
@@ -2361,10 +2493,10 @@ function drawNowLine () {
       var div = $("nowLineDisplay");
       if (!div)
         div = new Element ("div", {'id': 'nowLineDisplay'});
-    
+
       div.style.top = parseInt (((minutes * target.offsetHeight) / 60) - 1) + "px";
       target.appendChild (div);
-    
+
       setTimeout ("drawNowLine ();", 60000); // 1 min.
     }
   }

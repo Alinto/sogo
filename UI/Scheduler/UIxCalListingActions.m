@@ -649,7 +649,7 @@ _userStateInEvent (NSArray *event)
 	  withNumber: (NSNumber *) number
 {
   int currentDayStart, startSecs, endsSecs, currentStart, eventStart,
-    eventEnd, offset, recurrenceTime;
+    eventEnd, offset, recurrenceTime, swap;
   NSMutableArray *currentDay;
   NSMutableDictionary *eventBlock;
   iCalPersonPartStat userState;
@@ -667,8 +667,13 @@ _userStateInEvent (NSArray *event)
       else
         {
           if (eventEnd < eventStart)
-            [self warnWithFormat: @"event '%@' has end < start: %d < %d",
-                  [event objectAtIndex: 0], eventEnd, eventStart];
+            {
+              swap = eventStart;
+              eventStart = eventEnd;
+              eventEnd = swap;
+              [self warnWithFormat: @"event '%@' has end < start: %d < %d",
+                    [event objectAtIndex: 0], eventEnd, eventStart];
+            }
 
           startSecs = (unsigned int) [startDate timeIntervalSince1970];
           endsSecs = (unsigned int) [endDate timeIntervalSince1970];
