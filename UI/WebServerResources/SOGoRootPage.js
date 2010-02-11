@@ -3,9 +3,13 @@
 function initLogin() {
     var date = new Date();
     date.setTime(date.getTime() - 86400000);
+
+    var href = $("connectForm").action.split("/");
+    var appName = href[href.length-2];
+
     document.cookie = ("0xHIGHFLYxSOGo=discarded"
                        + "; expires=" + date.toGMTString()
-                       + "; path=/");
+                       + "; path=/" + appName + "/");
 
     var about = $("about");
     if (about) {

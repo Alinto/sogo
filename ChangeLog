@@ -1,5 +1,8 @@
 2010-02-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/SOGoRootPage.js (initLogin): discard the
+	login cookie with the appName set as cookie path.
+
 	* UI/WebServerResources/SchedulerUI.js (newEvent): removed the
 	useless "sender" parameter and added "day", "hour" and "duration"
 	parameters to obtain a more generic method.
