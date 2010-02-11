@@ -680,7 +680,9 @@ function onAddressBookAdd(event) {
 
 function onFolderUnsubscribeCB(folderId) {
     var node = $(folderId);
+    node.deselect();
     node.parentNode.removeChild(node);
+    
     var personal = $("/personal");
     personal.selectElement();
     onFolderSelectionChange();
@@ -740,7 +742,6 @@ function onAddressBookRemove(event) {
     var nodes = selector.getSelectedNodes();
     if (nodes.length > 0) {
         var node = $(nodes[0]);
-        node.deselect();
         var owner = node.getAttribute("owner");
         if (owner == "nobody") {
             var label = getLabel("You cannot remove nor unsubscribe from a public addressbook.");
@@ -750,9 +751,6 @@ function onAddressBookRemove(event) {
             var folderIdElements = node.getAttribute("id").split(":");
             var abId = folderIdElements[0].substr(1);
             deletePersonalAddressBook(abId);
-            var personal = $("/personal");
-            personal.selectElement();
-            onFolderSelectionChange();
         }
         else {
             var folderId = node.getAttribute("id");
@@ -796,12 +794,16 @@ function deletePersonalAddressBookCallback(http) {
             while (!done && i < children.length) {
                 var currentFolderId = children[i].getAttribute("id").substr(1);
                 if (currentFolderId == http.callbackData) {
+                    children[i].deselect();
                     ul.removeChild(children[i]);
                     done = true;
                 }
                 else
                     i++;
             }
+            var personal = $("/personal");
+            personal.selectElement();
+            onFolderSelectionChange();
         }
         document.deletePersonalABAjaxRequest = null;
     }

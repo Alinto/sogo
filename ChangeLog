@@ -46,6 +46,20 @@
 	* UI/Scheduler/UIxAppointmentActions.[hm]: new module implementing
 	a WODirectAction class for ajax calls for appointments.
 
+2010-02-08  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Contacts/UIxContactFoldersView.m (-verticalDragHandleStyle):
+	new method (was missing), borrowed from UIxCalMainView.m.
+	(-horizontalDragHandleStyle): idem.
+	(contactsListContentStyle): idem.
+
+	* UI/WebServerResources/ContactsUI.js (-onAddressBookRemove):
+	avoid selecting the personal addressbook prior to obtaining the
+	user's answer.
+
+	* UI/MailerUI/UIxMailListView.m (-messageSize): improved
+	formatting of message size.
+
 2010-02-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MainUI/SOGoRootPage.m (-_standardDefaultAction): add an

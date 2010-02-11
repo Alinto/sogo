@@ -53,22 +53,34 @@
 
 @implementation UIxContactFoldersView
 
+- (id) init
+{
+  if ((self = [super init]))
+    contextIsSetup = NO;
+  
+  return self;
+}
+
 - (void) _setupContext
 {
   SOGoUser *activeUser;
   NSString *module;
   SOGoContactFolders *clientObject;
 
-  activeUser = [context activeUser];
-  clientObject = [self clientObject];
-
-  module = [clientObject nameInContainer];
-
-  us = [activeUser userSettings];
-  moduleSettings = [us objectForKey: module];
-  if (!moduleSettings)
-    moduleSettings = [NSMutableDictionary dictionary];
-  [us setObject: moduleSettings forKey: module];
+  if (!contextIsSetup)
+    {
+      activeUser = [context activeUser];
+      clientObject = [self clientObject];
+      
+      module = [clientObject nameInContainer];
+      
+      us = [activeUser userSettings];
+      moduleSettings = [us objectForKey: module];
+      if (!moduleSettings)
+	moduleSettings = [NSMutableDictionary dictionary];
+      [us setObject: moduleSettings forKey: module];
+      contextIsSetup = YES;
+    }
 }
 
 - (id <WOActionResults>) mailerContactsAction
@@ -409,6 +421,36 @@
 - (NSString *) currentContactFolderClass
 {
   return ([currentFolder isKindOfClass: [SOGoContactSourceFolder class]]? @"remote" : @"local");
+}
+
+- (NSString *) verticalDragHandleStyle
+{
+  NSString *vertical;
+  
+  [self _setupContext];
+  vertical = [moduleSettings objectForKey: @"DragHandleVertical"];
+
+  return ((vertical && [vertical intValue] > 0) ? (id)[vertical stringByAppendingFormat: @"px"] : nil);
+}
+
+- (NSString *) horizontalDragHandleStyle
+{
+  NSString *horizontal;
+
+  [self _setupContext];
+  horizontal = [moduleSettings objectForKey: @"DragHandleHorizontal"];
+
+  return ((horizontal && [horizontal intValue] > 0) ? (id)[horizontal stringByAppendingFormat: @"px"] : nil);
+}
+
+- (NSString *) contactsListContentStyle
+{
+  NSString *height;
+
+  [self _setupContext];
+  height = [moduleSettings objectForKey: @"DragHandleVertical"];
+
+  return ((height && [height intValue] > 0) ? [NSString stringWithFormat: @"%ipx", ([height intValue] - 27)] : nil);
 }
 
 - (WOResponse *) saveDragHandleStateAction
