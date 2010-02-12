@@ -526,6 +526,7 @@ function onViewEventCallback(http) {
             if (currentView != "monthview") {
                 view = $("daysView");
                 var viewPosition = view.cumulativeOffset();
+
                 if (parseInt(data["isAllDay"]) == 0) {
                     top -= view.scrollTop;
                     if (viewPosition[1] > top + 2) {
@@ -556,30 +557,34 @@ function onViewEventCallback(http) {
             div.down("h1").update(data["summary"].replace(/\r?\n/g, "<BR/>"));
 
             var paras = div.getElementsByTagName("p");
+            var para = $(paras[0]);
             if (data["calendar"].length) {
-		// Remove owner email from calendar's name
-                paras[0].down("SPAN", 1).update(data["calendar"].replace(/ \<.*\>/, ""));
-                paras[0].show();
+ 		// Remove owner email from calendar's name
+                para.down("SPAN", 1).update(data["calendar"].replace(/ \<.*\>/, ""));
+                para.show();
             } else
-                paras[0].hide();
+                para.hide();
 
+            para = $(paras[1]);
             if (parseInt(data["isAllDay"]) == 0) {
-                paras[1].down("SPAN", 1).update(data["startTime"]);
-                paras[1].show();
+                para.down("SPAN", 1).update(data["startTime"]);
+                para.show();
             } else
-                paras[1].hide();
+                para.hide();
 
+            para = $(paras[2]);
             if (data["location"].length) {
-                paras[2].down("SPAN", 1).update(data["location"]);
-                paras[2].show();
+                para.down("SPAN", 1).update(data["location"]);
+                para.show();
             } else
-                paras[2].hide();
+                para.hide();
 
+            para = $(paras[3]);
             if (data["description"].length) {
-                paras[3].update(data["description"].replace(/\r?\n/g, "<BR/>"));
-                paras[3].show();
+                para.update(data["description"].replace(/\r?\n/g, "<BR/>"));
+                para.show();
             } else
-                paras[3].hide();
+                para.hide();
 
             div.setStyle({ left: left + "px", top: top + "px" });
             div.show();
@@ -1808,19 +1813,23 @@ function onCalendarSelectDay(event) {
 function changeWeekCalendarDisplayOfSelectedDay(node) {
     var daysView = $("daysView");
     var daysDiv = daysView.childNodesWithTag("div");
-    var days = daysDiv[1].childNodesWithTag("div");
-    var headerDiv = $($("calendarHeader").childNodesWithTag("div")[1]);
-    var headerDays = headerDiv.childNodesWithTag("div");
+    for (var i = 0; i < daysDiv.length; i++) {
+        if (daysDiv[i].hasClassName("days")) {
+            var days = daysDiv[i].childNodesWithTag("div");
+            var headerDiv = $($("calendarHeader").childNodesWithTag("div")[1]);
+            var headerDays = headerDiv.childNodesWithTag("div");
 
-    for (var i = 0; i < days.length; i++) {
-        if (days[i] == node
-            || headerDays[i] == node) {
-            headerDays[i].addClassName("selectedDay");
-            days[i].addClassName("selectedDay");
-        }
-        else {
-            headerDays[i].removeClassName("selectedDay");
-            days[i].removeClassName("selectedDay");
+            for (var j = 0; j < days.length; j++) {
+                if (days[j] == node
+                    || headerDays[j] == node) {
+                    headerDays[j].addClassName("selectedDay");
+                    days[j].addClassName("selectedDay");
+                }
+                else {
+                    headerDays[j].removeClassName("selectedDay");
+                    days[j].removeClassName("selectedDay");
+                }
+            }
         }
     }
 }

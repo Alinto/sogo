@@ -10,6 +10,11 @@
 	¨right" attribute for the "calendarHeader" element on non-IE
 	browsers. This reduces the amount of hacks and failed attempts to
 	take the day view scrollbar into account.
+	(changeWeekCalendarDisplayOfSelectedDay): check the class of DIV
+	elements to avoid using fixed references that might change over
+	time and cause exceptions.
+	(onViewEventCallback): use prototype-expanded objects to avoid
+	exceptions on IE.
 
 2010-02-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
