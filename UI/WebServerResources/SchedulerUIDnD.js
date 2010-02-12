@@ -854,7 +854,7 @@ SOGoScrollController.prototype = {
     init: function SSC_init() {
         var utilities = SOGoEventDragUtilities();
         this.scrollView = utilities.getEventsViewNode();
-        this.scrollStep = 2 * utilities.getQuarterHeight();
+        this.scrollStep = 6 * utilities.getQuarterHeight();
     },
 
     setPointerHandler: function SSC_setPointerHandler(pointerHandler) {

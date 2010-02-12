@@ -25,6 +25,8 @@ var preventAutoScroll = false;
 
 var userStates = [ "needs-action", "accepted", "declined", "tentative" ];
 
+var calendarHeaderAdjusted = false;
+
 function newEvent(type, day, hour, duration) {
     var folder = getSelectedFolder();
     var folderID = folder.readAttribute("id");
@@ -1315,14 +1317,19 @@ function newAllDayEventDIV(eventRep, event) {
 function _drawCalendarEvents(events, eventsData) {
     var daysView = $("daysView");
     var subdivs = daysView.childNodesWithTag("div");
-    var days = subdivs[1].childNodesWithTag("div");
-    for (var i = 0; i < days.length; i++) {
-        var parentDiv = days[i].childNodesWithTag("div")[0];
-        for (var j = 0; j < events[i].length; j++) {
-            var eventRep = events[i][j];
-            var nbr = eventRep.nbr;
-            var eventCell = newEventDIV(eventRep, eventsData[nbr]);
-            parentDiv.appendChild(eventCell);
+    for (var i = 0; i < subdivs.length; i++) {
+        var subdiv = subdivs[i];
+        if (subdiv.hasClassName("days")) {
+            var days = subdiv.childNodesWithTag("div");
+            for (var j = 0; j < days.length; j++) {
+                var parentDiv = days[j].childNodesWithTag("div")[0];
+                for (var k = 0; k < events[j].length; k++) {
+                    var eventRep = events[j][k];
+                    var nbr = eventRep.nbr;
+                    var eventCell = newEventDIV(eventRep, eventsData[nbr]);
+                    parentDiv.appendChild(eventCell);
+                }
+            }
         }
     }
 }
@@ -1331,9 +1338,10 @@ function newEventDIV(eventRep, event) {
     var eventCell = newBaseEventDIV(eventRep, event, event[3]);
 
     var pc = 100 / eventRep.siblings;
-    eventCell.style.width = pc + "%";
-    var left = eventRep.position * pc;
+    var left = Math.floor(eventRep.position * pc);
     eventCell.style.left = left + "%";
+    var right = Math.floor(100 - (eventRep.position + 1) * pc);
+    eventCell.style.right = right + "%";
     eventCell.addClassName("starts" + eventRep.start);
     eventCell.addClassName("lasts" + eventRep.length);
 
@@ -1379,6 +1387,26 @@ function attachDragControllers(contentView) {
     }
 }
 
+/* On IE, the scroll bar is part of the last element. For other browsers, we
+   execute this method so that the "right" style attribute of the
+   "calendarHeader" element can be computed. This is execute only once. */
+function adjustCalendarHeaderDIV() {
+    var dv = $("daysView");
+    if (dv) {
+        var ch = $("calendarHeader");
+        var delta = ch.clientWidth - dv.clientWidth - 1;
+        var styleElement = document.createElement("style");
+        styleElement.type = "text/css";
+        var styleText = ("DIV#calendarHeader DIV.dayLabels,"
+                         + " DIV#calendarHeader DIV.days"
+                         + " { "
+                         + "right: " + delta + "px; }");
+        styleElement.appendChild(document.createTextNode(styleText));
+        document.getElementsByTagName("head")[0].appendChild(styleElement);
+        calendarHeaderAdjusted = true;
+    }
+}
+
 function calendarDisplayCallback(http) {
     var div = $("calendarView");
     var daysView = $("daysView");
@@ -1396,8 +1424,12 @@ function calendarDisplayCallback(http) {
 
         // DOM has changed
         daysView = $("daysView");
-        if (preventAutoScroll && daysView)
-          daysView.scrollTop = position;
+        if (daysView) {
+            if (preventAutoScroll)
+                daysView.scrollTop = position;
+            if (!calendarHeaderAdjusted)
+                adjustCalendarHeaderDIV();
+        }
 
         if (http.callbackData["view"])
             currentView = http.callbackData["view"];
@@ -2440,15 +2472,6 @@ function onWindowResize(event) {
     if (handle)
         handle.adjust();
 
-    if (Prototype.Browser.IE) {
-        var days = $$("DIV#daysView DIV.days");
-        var labels = $$("DIV#calendarHeader DIV.days");
-        if (days.length && labels.length) {
-            var day = days[0];
-            var label = labels[0];
-            day.setStyle({ width: (label.getWidth()-1) + "px" });
-        }
-    }
     if (!$(document.body).hasClassName("popup"))
         drawNowLine ();
 }
@@ -2507,6 +2530,9 @@ function initCalendars() {
         $("uploadCancel").observe("click", hideCalendarImport);
         $("uploadOK").observe("click", hideImportResults);
     }
+
+    if (Prototype.Browser.IE)
+        calendarHeaderAdjusted = true;
 
     onWindowResize.defer();
     Event.observe(window, "resize", onWindowResize);

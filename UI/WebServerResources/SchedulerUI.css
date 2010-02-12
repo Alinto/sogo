@@ -17,9 +17,8 @@ DIV#tasksListView
 { position: absolute;
   top: 17em;
   bottom: 0px;
-  left: .2em;
+  left: 2px;
   right: 0px;
-  padding: 0px;
   overflow: hidden; }
 
 DIV#tasksListView H2
@@ -38,15 +37,12 @@ DIV#calendarSelectorView
 { overflow: hidden; }
 
 DIV#calendarsList
-{ height: 100%;
-  padding: 0px;
-  margin: 0px; }
+{ height: 100%; }
 
 DIV.colorBox
 { display: inline;
   border: 1px solid #333;
   font-weight: normal;
-  margin: 0px;
   margin-right: 3px;
   font-size: 80%;
   width: 1em;
@@ -128,9 +124,7 @@ DIV#rightPanel
   left: 19.25em;
   right: 0px;
   bottom: 0px;
-  margin: 0px;
   margin-left: 5px;
-  padding: 0px;
   overflow: hidden; }
 
 /* top list */
@@ -325,7 +319,6 @@ SPAN.monthsHeader
   margin: 0px;
   height: 3em;
   padding: 2px 1.5em;
-/* HERE  border: 0px; */
   border-bottom: 1px solid #ccc; }
 
 SPAN.daysHeader SPAN,
@@ -409,44 +402,36 @@ A.rightNavigationArrow
 DIV#calendarHeader,
 DIV#daysView
 { position: absolute;
-  left: 0px;
-  right: 0px;
-  padding: 0px;
-  margin: 0px; }
+  top: 0px;
+  bottom: 0px;
+  left: 0px; }
 
 DIV#daysView
-{ top: 11em;
+{ top: 120px;
   bottom: 0px;
-  margin-left: 1px;
-  border-left: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
   border-top: 1px solid #ccc;
   overflow: auto;
   overflow-x: hidden;
   right: 0px;}
 
 DIV#calendarHeader
-{ top: 3.5em;
+{ top: 50px;
   border: 0px;
-  height: 7.5em; }
+  right: 0px;
+  height: 70px; }
 
 DIV#calendarHeader DIV.dayLabels,
 DIV#calendarHeader DIV.days
 { position: absolute;
-  margin: 0px;
-  padding: 0px;
-/* HERE  border: 0px; */
+/*  border-left: 1px solid #ccc; */ 
   border-right: 1px solid #ccc;
   border-top: 1px solid #ccc;
-  left: 5em;
-  margin-left: 2px;
-  margin-right: 16px; /* scrollbar width */
-  right: 1px;
+  left: 50px;
   overflow: hidden; }
 
 DIV#calendarHeader DIV.dayLabels
-{ bottom: 4em;
-  height: 3em; }
+{ bottom: 40px;
+  height: 35px; }
 
 DIV#calendarHeader DIV.dayLabels DIV.day
 { text-align: center;
@@ -462,23 +447,19 @@ DIV#calendarHeader DIV.dayLabels
 DIV#calendarHeader DIV.days
 { cursor: pointer;
   bottom: 0px;
-  height: 4em; }
+  height: 40px; }
+
+DIV#calendarHeader DIV.day,
+DIV#daysView DIV.day
+{ position: absolute;
+  border-left: 1px solid #ccc; }
 
 DIV#calendarHeader DIV.day
-{ height: 100%;
-  margin: 0px;
-  padding: 0px;
-  margin-right: 1px; }
+{ height: 100%; }
 
 DIV#calendarHeader DIV.days DIV.day
 { overflow: hidden;
   overflow-y: auto; }
-
-/* DIV#daysView
-/*   background-position: top center;
-  background-repeat: no-repeat;
-  background-image: url("/SOGo.woa/WebServerResources/background.jpg");
- } */
 
 .menu LI.currentMonth,
 .menu LI.currentYear
@@ -499,13 +480,9 @@ DIV.eventView
 
 DIV#daysView DIV.days
 { position: absolute;
-  margin: 0px;
-  height: 96em;
   top: 0px;
-  left: 5em;
-  right: 2px;
-  /* width is specified dynamically through JavaScript */
-}
+  left: 50px;
+  right: 0px; }
 
 DIV.multicolumnDayView DIV.lastDayUser
 { border-right: 1px solid #ccc; }
@@ -513,20 +490,15 @@ DIV.multicolumnDayView DIV.lastDayUser
 DIV.monthView
 { position: absolute;
   left: .5em;
-  top: 4em;
+  top: 40px;
   right: 1em;
   bottom: 1em;
-/*  border: 0px; HERE */
-  margin: 0px;
-  padding: 0px;
   min-width: 20em;
   min-height: 25em; }
 
 DIV.monthView > DIV,
 DIV.monthView > DIV.days > DIV
-{ position: absolute;
-  padding: 0px;
-  margin: 0px; }
+{ position: absolute; }
 
 DIV.monthView > DIV.headerDay
 { text-align: center;
@@ -573,7 +545,7 @@ DIV.monthView DIV.day
 { position: absolute;
   border-left: 1px solid #909090;
   border-top: 1px solid #909090;
-  min-height: 4em;
+  min-height: 40px;
   overflow: auto;
   overflow-x: hidden; }
 
@@ -650,41 +622,13 @@ DIV.monthView DIV.week5
 DIV.monthView DIV.week6
 { top: 90%; }
 
-DIV#calendarHeader DIV.day,
-DIV#daysView DIV.day
-{ position: absolute;
-  border-left: 1px solid #ccc;
-  margin: 0px;
-  padding: 0px;
-  top: 0px; }
-
-/* DIV#calendarHeader DIV.day1
-{ border-left: 0px; }
- */
-
-/* DIV#daysView > DIV.days > DIV.day > DIV.header
-{ position: fixed;
-  top: ;
-  height: 3.5em;
-  padding-top: .5em;
-  border: 0px;
-  border-top: 1px solid #397d94;
-  font-weight: bold;
-  text-align: center;
-  background-color: #e7efef;
-  color: #397d94; } */
-
 DIV.daysViewFor1Days DIV.day
-{ border-right: 1px solid #ccc;
-  width: 100%; }
-
-/* DIV#daysView DIV.day
-{ margin-right: 3px; } */
+{ width: 100%; }
 
 DIV.monthView DIV.headerDay,
 DIV.monthView DIV.day,
 DIV.daysViewFor7Days DIV.day
-{ width: 14.2%; }
+{ width: 14.2857%; }
 
 DIV.monthView DIV.day0,
 DIV.daysViewFor7Days DIV.day0
@@ -710,174 +654,635 @@ DIV.monthView DIV.day5,
 DIV.daysViewFor7Days DIV.day5
 { left: 71.4285%; }
 
-DIV.monthView DIV.day6
-{ left: 85.7142%;
-  border-right: 2px solid #ccc; }
-
+DIV.monthView DIV.day6,
 DIV.daysViewFor7Days DIV.day6
-{ left: 85.7142%;
-  border-right: 1px solid #ccc; }
+{ left: 85.7142%; }
 
 DIV#daysView > DIV.hours
 { position: absolute;
   left: 0px;
   top: 0px;
-  width: 4.5em;
-  height: 95.5em;
+  width: 45px;
   font-weight: bold;
-  margin: 0px;
-  padding-top: .5em;
-  padding-right: .5em;
+  padding-top: 5px;
+  padding-right: 5px;
   color: #666;
   text-align: right; }
 
 DIV#daysView > DIV.hours > DIV.hour
-{ height: 4em; }
+{ height: 40px; }
 
 DIV#daysView > DIV.hourLines > DIV.hourLine
-{ position: absolute;
-  height: 1px;
+{ position: relative;
+  height: 0px;
   left: 0px;
   right: 0px;
-  padding-left: 1em;
-  margin-right: 2px;
+  margin-top: 39px;
+  background-color: transparent;
   border-bottom: 1px solid #ccc; }
 
 DIV.clickableHourCell
 { cursor: pointer;
-  width: 100%;
-  height: 4em; }
+  height: 39px;
+  border-bottom: 1px solid #ccc; }
 
-DIV.clickableHourCell0
+/* "left" and "width" for #daysView DIV.event are computed in JS code */
+#daysView DIV.event
+{ cursor: default;
+  margin-right: 1px;
+  position: absolute; }
+
+DIV#daysView DIV.event.starts0
 { top: 0px; }
 
-DIV.clickableHourCell1,
-DIV#daysView > DIV.hourLines > #hourLine0
-{ top: 4em; }
+DIV#daysView DIV.event.starts1
+{ top: 10px; }
 
-DIV.clickableHourCell2,
-DIV#daysView > DIV.hourLines > #hourLine1
-{ top: 8em; }
+DIV#daysView DIV.event.starts2
+{ top: 20px; }
 
-DIV.clickableHourCell3,
-DIV#daysView > DIV.hourLines > #hourLine2
-{ top: 12em; }
+DIV#daysView DIV.event.starts3
+{ top: 30px; }
 
-DIV.clickableHourCell4,
-DIV#daysView > DIV.hourLines > #hourLine3
-{ top: 16em; }
+DIV#daysView DIV.event.starts4
+{ top: 40px; }
 
-DIV.clickableHourCell5,
-DIV#daysView > DIV.hourLines > #hourLine4
-{ top: 20em; }
+DIV#daysView DIV.event.starts5
+{ top: 50px; }
 
-DIV.clickableHourCell6,
-DIV#daysView > DIV.hourLines > #hourLine5
-{ top: 24em; }
+DIV#daysView DIV.event.starts6
+{ top: 60px; }
 
-DIV.clickableHourCell7,
-DIV#daysView > DIV.hourLines > #hourLine6
-{ top: 28em; }
+DIV#daysView DIV.event.starts7
+{ top: 70px; }
 
-DIV.clickableHourCell8,
-DIV#daysView > DIV.hourLines > #hourLine7
-{ top: 32em; }
+DIV#daysView DIV.event.starts8
+{ top: 80px; }
 
-DIV.clickableHourCell9,
-DIV#daysView > DIV.hourLines > #hourLine8
-{ top: 36em; }
+DIV#daysView DIV.event.starts9
+{ top: 90px; }
 
-DIV.clickableHourCell10,
-DIV#daysView > DIV.hourLines > #hourLine9
-{ top: 40em; }
+DIV#daysView DIV.event.starts10
+{ top: 100px; }
 
-DIV.clickableHourCell11,
-DIV#daysView > DIV.hourLines > #hourLine10
-{ top: 44em; }
+DIV#daysView DIV.event.starts11
+{ top: 110px; }
 
-DIV.clickableHourCell12,
-DIV#daysView > DIV.hourLines > #hourLine11
-{ top: 48em; }
+DIV#daysView DIV.event.starts12
+{ top: 120px; }
 
-DIV.clickableHourCell13,
-DIV#daysView > DIV.hourLines > #hourLine12
-{ top: 52em; }
+DIV#daysView DIV.event.starts13
+{ top: 130px; }
 
-DIV.clickableHourCell14,
-DIV#daysView > DIV.hourLines > #hourLine13
-{ top: 56em; }
+DIV#daysView DIV.event.starts14
+{ top: 140px; }
 
-DIV.clickableHourCell15,
-DIV#daysView > DIV.hourLines > #hourLine14
-{ top: 60em; }
+DIV#daysView DIV.event.starts15
+{ top: 150px; }
 
-DIV.clickableHourCell16,
-DIV#daysView > DIV.hourLines > #hourLine15
-{ top: 64em; }
+DIV#daysView DIV.event.starts16
+{ top: 160px; }
 
-DIV.clickableHourCell17,
-DIV#daysView > DIV.hourLines > #hourLine16
-{ top: 68em; }
+DIV#daysView DIV.event.starts17
+{ top: 170px; }
 
-DIV.clickableHourCell18,
-DIV#daysView > DIV.hourLines > #hourLine17
-{ top: 72em; }
+DIV#daysView DIV.event.starts18
+{ top: 180px; }
 
-DIV.clickableHourCell19,
-DIV#daysView > DIV.hourLines > #hourLine18
-{ top: 76em; }
+DIV#daysView DIV.event.starts19
+{ top: 190px; }
 
-DIV.clickableHourCell20,
-DIV#daysView > DIV.hourLines > #hourLine19
-{ top: 80em; }
+DIV#daysView DIV.event.starts20
+{ top: 200px; }
 
-DIV.clickableHourCell21,
-DIV#daysView > DIV.hourLines > #hourLine20
-{ top: 84em; }
+DIV#daysView DIV.event.starts21
+{ top: 210px; }
 
-DIV.clickableHourCell22,
-DIV#daysView > DIV.hourLines > #hourLine21
-{ top: 88em; }
+DIV#daysView DIV.event.starts22
+{ top: 220px; }
 
-DIV.clickableHourCell23,
-DIV#daysView > DIV.hourLines > #hourLine22
-{ top: 92em; }
+DIV#daysView DIV.event.starts23
+{ top: 230px; }
 
-DIV#daysView > DIV.hourLines > #hourLine23
-{ top: 96em; }
+DIV#daysView DIV.event.starts24
+{ top: 240px; }
 
-DIV.events > DIV.event
-{ cursor: default;
-  z-index: 1;
-  position: absolute;
-  left: 0px;
-  right: 2px;
-  margin-top: 0px;
-  padding: 1px; }
+DIV#daysView DIV.event.starts25
+{ top: 250px; }
+
+DIV#daysView DIV.event.starts26
+{ top: 260px; }
+
+DIV#daysView DIV.event.starts27
+{ top: 270px; }
+
+DIV#daysView DIV.event.starts28
+{ top: 280px; }
+
+DIV#daysView DIV.event.starts29
+{ top: 290px; }
+
+DIV#daysView DIV.event.starts30
+{ top: 300px; }
+
+DIV#daysView DIV.event.starts31
+{ top: 310px; }
+
+DIV#daysView DIV.event.starts32
+{ top: 320px; }
+
+DIV#daysView DIV.event.starts33
+{ top: 330px; }
+
+DIV#daysView DIV.event.starts34
+{ top: 340px; }
+
+DIV#daysView DIV.event.starts35
+{ top: 350px; }
+
+DIV#daysView DIV.event.starts36
+{ top: 360px; }
+
+DIV#daysView DIV.event.starts37
+{ top: 370px; }
+
+DIV#daysView DIV.event.starts38
+{ top: 380px; }
+
+DIV#daysView DIV.event.starts39
+{ top: 390px; }
+
+DIV#daysView DIV.event.starts40
+{ top: 400px; }
+
+DIV#daysView DIV.event.starts41
+{ top: 410px; }
+
+DIV#daysView DIV.event.starts42
+{ top: 420px; }
+
+DIV#daysView DIV.event.starts43
+{ top: 430px; }
+
+DIV#daysView DIV.event.starts44
+{ top: 440px; }
+
+DIV#daysView DIV.event.starts45
+{ top: 450px; }
+
+DIV#daysView DIV.event.starts46
+{ top: 460px; }
+
+DIV#daysView DIV.event.starts47
+{ top: 470px; }
+
+DIV#daysView DIV.event.starts48
+{ top: 480px; }
+
+DIV#daysView DIV.event.starts49
+{ top: 490px; }
+
+DIV#daysView DIV.event.starts50
+{ top: 500px; }
+
+DIV#daysView DIV.event.starts51
+{ top: 510px; }
+
+DIV#daysView DIV.event.starts52
+{ top: 520px; }
+
+DIV#daysView DIV.event.starts53
+{ top: 530px; }
+
+DIV#daysView DIV.event.starts54
+{ top: 540px; }
+
+DIV#daysView DIV.event.starts55
+{ top: 550px; }
+
+DIV#daysView DIV.event.starts56
+{ top: 560px; }
+
+DIV#daysView DIV.event.starts57
+{ top: 570px; }
+
+DIV#daysView DIV.event.starts58
+{ top: 580px; }
+
+DIV#daysView DIV.event.starts59
+{ top: 590px; }
+
+DIV#daysView DIV.event.starts60
+{ top: 600px; }
+
+DIV#daysView DIV.event.starts61
+{ top: 610px; }
+
+DIV#daysView DIV.event.starts62
+{ top: 620px; }
+
+DIV#daysView DIV.event.starts63
+{ top: 630px; }
+
+DIV#daysView DIV.event.starts64
+{ top: 640px; }
+
+DIV#daysView DIV.event.starts65
+{ top: 650px; }
+
+DIV#daysView DIV.event.starts66
+{ top: 660px; }
+
+DIV#daysView DIV.event.starts67
+{ top: 670px; }
+
+DIV#daysView DIV.event.starts68
+{ top: 680px; }
+
+DIV#daysView DIV.event.starts69
+{ top: 690px; }
+
+DIV#daysView DIV.event.starts70
+{ top: 700px; }
+
+DIV#daysView DIV.event.starts71
+{ top: 710px; }
+
+DIV#daysView DIV.event.starts72
+{ top: 720px; }
+
+DIV#daysView DIV.event.starts73
+{ top: 730px; }
+
+DIV#daysView DIV.event.starts74
+{ top: 740px; }
+
+DIV#daysView DIV.event.starts75
+{ top: 750px; }
+
+DIV#daysView DIV.event.starts76
+{ top: 760px; }
+
+DIV#daysView DIV.event.starts77
+{ top: 770px; }
+
+DIV#daysView DIV.event.starts78
+{ top: 780px; }
+
+DIV#daysView DIV.event.starts79
+{ top: 790px; }
+
+DIV#daysView DIV.event.starts80
+{ top: 800px; }
+
+DIV#daysView DIV.event.starts81
+{ top: 810px; }
+
+DIV#daysView DIV.event.starts82
+{ top: 820px; }
+
+DIV#daysView DIV.event.starts83
+{ top: 830px; }
+
+DIV#daysView DIV.event.starts84
+{ top: 840px; }
+
+DIV#daysView DIV.event.starts85
+{ top: 850px; }
+
+DIV#daysView DIV.event.starts86
+{ top: 860px; }
+
+DIV#daysView DIV.event.starts87
+{ top: 870px; }
+
+DIV#daysView DIV.event.starts88
+{ top: 880px; }
+
+DIV#daysView DIV.event.starts89
+{ top: 890px; }
+
+DIV#daysView DIV.event.starts90
+{ top: 900px; }
+
+DIV#daysView DIV.event.starts91
+{ top: 910px; }
+
+DIV#daysView DIV.event.starts92
+{ top: 920px; }
+
+DIV#daysView DIV.event.starts93
+{ top: 930px; }
+
+DIV#daysView DIV.event.starts94
+{ top: 940px; }
+
+DIV#daysView DIV.event.starts95
+{ top: 950px; }
+
+DIV#daysView DIV.event.lasts0
+{ height: 0px; }
+
+DIV#daysView DIV.event.lasts1
+{ height: 10px; }
+
+DIV#daysView DIV.event.lasts2
+{ height: 20px; }
+
+DIV#daysView DIV.event.lasts3
+{ height: 30px; }
+
+DIV#daysView DIV.event.lasts4
+{ height: 40px; }
+
+DIV#daysView DIV.event.lasts5
+{ height: 50px; }
+
+DIV#daysView DIV.event.lasts6
+{ height: 60px; }
+
+DIV#daysView DIV.event.lasts7
+{ height: 70px; }
+
+DIV#daysView DIV.event.lasts8
+{ height: 80px; }
+
+DIV#daysView DIV.event.lasts9
+{ height: 90px; }
+
+DIV#daysView DIV.event.lasts10
+{ height: 100px; }
+
+DIV#daysView DIV.event.lasts11
+{ height: 110px; }
+
+DIV#daysView DIV.event.lasts12
+{ height: 120px; }
+
+DIV#daysView DIV.event.lasts13
+{ height: 130px; }
+
+DIV#daysView DIV.event.lasts14
+{ height: 140px; }
+
+DIV#daysView DIV.event.lasts15
+{ height: 150px; }
+
+DIV#daysView DIV.event.lasts16
+{ height: 160px; }
+
+DIV#daysView DIV.event.lasts17
+{ height: 170px; }
+
+DIV#daysView DIV.event.lasts18
+{ height: 180px; }
+
+DIV#daysView DIV.event.lasts19
+{ height: 190px; }
+
+DIV#daysView DIV.event.lasts20
+{ height: 200px; }
+
+DIV#daysView DIV.event.lasts21
+{ height: 210px; }
+
+DIV#daysView DIV.event.lasts22
+{ height: 220px; }
+
+DIV#daysView DIV.event.lasts23
+{ height: 230px; }
+
+DIV#daysView DIV.event.lasts24
+{ height: 240px; }
+
+DIV#daysView DIV.event.lasts25
+{ height: 250px; }
+
+DIV#daysView DIV.event.lasts26
+{ height: 260px; }
+
+DIV#daysView DIV.event.lasts27
+{ height: 270px; }
+
+DIV#daysView DIV.event.lasts28
+{ height: 280px; }
+
+DIV#daysView DIV.event.lasts29
+{ height: 290px; }
+
+DIV#daysView DIV.event.lasts30
+{ height: 300px; }
+
+DIV#daysView DIV.event.lasts31
+{ height: 310px; }
+
+DIV#daysView DIV.event.lasts32
+{ height: 320px; }
+
+DIV#daysView DIV.event.lasts33
+{ height: 330px; }
+
+DIV#daysView DIV.event.lasts34
+{ height: 340px; }
+
+DIV#daysView DIV.event.lasts35
+{ height: 350px; }
+
+DIV#daysView DIV.event.lasts36
+{ height: 360px; }
+
+DIV#daysView DIV.event.lasts37
+{ height: 370px; }
+
+DIV#daysView DIV.event.lasts38
+{ height: 380px; }
+
+DIV#daysView DIV.event.lasts39
+{ height: 390px; }
+
+DIV#daysView DIV.event.lasts40
+{ height: 400px; }
+
+DIV#daysView DIV.event.lasts41
+{ height: 410px; }
+
+DIV#daysView DIV.event.lasts42
+{ height: 420px; }
+
+DIV#daysView DIV.event.lasts43
+{ height: 430px; }
+
+DIV#daysView DIV.event.lasts44
+{ height: 440px; }
+
+DIV#daysView DIV.event.lasts45
+{ height: 450px; }
+
+DIV#daysView DIV.event.lasts46
+{ height: 460px; }
+
+DIV#daysView DIV.event.lasts47
+{ height: 470px; }
+
+DIV#daysView DIV.event.lasts48
+{ height: 480px; }
+
+DIV#daysView DIV.event.lasts49
+{ height: 490px; }
+
+DIV#daysView DIV.event.lasts50
+{ height: 500px; }
+
+DIV#daysView DIV.event.lasts51
+{ height: 510px; }
+
+DIV#daysView DIV.event.lasts52
+{ height: 520px; }
+
+DIV#daysView DIV.event.lasts53
+{ height: 530px; }
+
+DIV#daysView DIV.event.lasts54
+{ height: 540px; }
+
+DIV#daysView DIV.event.lasts55
+{ height: 550px; }
+
+DIV#daysView DIV.event.lasts56
+{ height: 560px; }
+
+DIV#daysView DIV.event.lasts57
+{ height: 570px; }
+
+DIV#daysView DIV.event.lasts58
+{ height: 580px; }
+
+DIV#daysView DIV.event.lasts59
+{ height: 590px; }
+
+DIV#daysView DIV.event.lasts60
+{ height: 600px; }
+
+DIV#daysView DIV.event.lasts61
+{ height: 610px; }
+
+DIV#daysView DIV.event.lasts62
+{ height: 620px; }
+
+DIV#daysView DIV.event.lasts63
+{ height: 630px; }
+
+DIV#daysView DIV.event.lasts64
+{ height: 640px; }
+
+DIV#daysView DIV.event.lasts65
+{ height: 650px; }
+
+DIV#daysView DIV.event.lasts66
+{ height: 660px; }
+
+DIV#daysView DIV.event.lasts67
+{ height: 670px; }
+
+DIV#daysView DIV.event.lasts68
+{ height: 680px; }
+
+DIV#daysView DIV.event.lasts69
+{ height: 690px; }
+
+DIV#daysView DIV.event.lasts70
+{ height: 700px; }
+
+DIV#daysView DIV.event.lasts71
+{ height: 710px; }
+
+DIV#daysView DIV.event.lasts72
+{ height: 720px; }
+
+DIV#daysView DIV.event.lasts73
+{ height: 730px; }
+
+DIV#daysView DIV.event.lasts74
+{ height: 740px; }
+
+DIV#daysView DIV.event.lasts75
+{ height: 750px; }
+
+DIV#daysView DIV.event.lasts76
+{ height: 760px; }
+
+DIV#daysView DIV.event.lasts77
+{ height: 770px; }
+
+DIV#daysView DIV.event.lasts78
+{ height: 780px; }
+
+DIV#daysView DIV.event.lasts79
+{ height: 790px; }
+
+DIV#daysView DIV.event.lasts80
+{ height: 800px; }
+
+DIV#daysView DIV.event.lasts81
+{ height: 810px; }
+
+DIV#daysView DIV.event.lasts82
+{ height: 820px; }
+
+DIV#daysView DIV.event.lasts83
+{ height: 830px; }
+
+DIV#daysView DIV.event.lasts84
+{ height: 840px; }
+
+DIV#daysView DIV.event.lasts85
+{ height: 850px; }
+
+DIV#daysView DIV.event.lasts86
+{ height: 860px; }
+
+DIV#daysView DIV.event.lasts87
+{ height: 870px; }
+
+DIV#daysView DIV.event.lasts88
+{ height: 880px; }
+
+DIV#daysView DIV.event.lasts89
+{ height: 890px; }
+
+DIV#daysView DIV.event.lasts90
+{ height: 900px; }
+
+DIV#daysView DIV.event.lasts91
+{ height: 910px; }
+
+DIV#daysView DIV.event.lasts92
+{ height: 920px; }
+
+DIV#daysView DIV.event.lasts93
+{ height: 930px; }
+
+DIV#daysView DIV.event.lasts94
+{ height: 940px; }
+
+DIV#daysView DIV.event.lasts95
+{ height: 950px; }
+
+DIV#daysView DIV.event.lasts96
+{ height: 960px; }
 
 DIV.event > DIV.eventInside
 { position: absolute;
   overflow: hidden;
-  top: 3px;
-  bottom: 3px;
-  left: 1px;
-  right: 1px; }
+  padding: 1px;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px; }
 
 DIV.event._selected > DIV.eventInside
 { -moz-opacity: 0.7;
   opacity: 0.7; }
-
-DIV.monthView DIV.event,
-DIV.monthView DIV.event > DIV.eventInside
-{ bottom: 0px;
-  top: 0px; }
-
-DIV.monthView DIV.event > DIV.eventInside
-{ bottom: 0px; }
-
-DIV.shadow
-{ position: absolute;
-  background-color: #000; }
 
 DIV.gradient, DIV.text
 { position: absolute;
@@ -901,23 +1306,26 @@ DIV#calendarHeader DIV.event,
 DIV.monthView DIV.event
 { position: relative;
   cursor: default;
-  white-space: nowrap;
-  margin-top: 1px;
-  margin-left: 1px;
+  margin-right: 0px;
+  left: 0px;
+  right: 0px;
   margin-right: 1px;
-  padding: 1px;
-  height: 1.2em; }
-
-DIV#calendarHeader DIV.event
-{ height: 1.5em; }
-
-DIV.event DIV.text
-{ font-size: 92%; }
+  white-space: nowrap;
+  height: 20px; }
 
 DIV.event.alarm DIV.text
 { background-image: url("alarm.png");
   background-repeat: no-repeat;
   background-position: top right; }
+
+DIV.eventInside.needs-action
+{ border: 1px dotted #666;
+  -moz-opacity: 0.6;
+  opacity: 0.7; }
+
+DIV.eventInside.declined
+{ -moz-opacity: 0.3;
+  opacity: 0.3; }
 
 /* event DnD */
 DIV.event DIV.topDragGrip,
@@ -940,7 +1348,7 @@ DIV.event DIV.leftDragGrip,
 DIV.event DIV.rightDragGrip
 { position: absolute;
   border: 0px;
-  top: 3px;
+  top: 4px;
   height: 11px;
   width: 3px;
   background-repeat: no-repeat;
@@ -952,6 +1360,22 @@ DIV.event DIV.leftDragGrip
 DIV.event DIV.rightDragGrip
 { right: 1px; }
 
+DIV.event.dragging
+{ border: 1px dashed #555; }
+
+#daysView DIV.event.dragging
+{ left: 0px !important;
+  right: 0px !important; }
+
+DIV.event.dragging > DIV.eventInside
+{ -moz-opacity: 1 !important;
+  opacity: 1 !important;
+  background-color: transparent !important; }
+
+DIV.event.dragging DIV.text
+{ color: #555; }
+
+DIV.event.dragging IMG,
 DIV.event.dragging DIV.topDragGrip,
 DIV.event.dragging DIV.bottomDragGrip,
 DIV.event.dragging DIV.leftDragGrip,
@@ -974,28 +1398,12 @@ DIV.event.draggable:hover DIV.rightDragGrip
 { cursor: e-resize;
   background-image: url(event-grippy-vertical.png); }
 
-DIV.event.dragging
-{ left: 0px !important;
-  width: 100% !important; }
-
-DIV.event.dragging > DIV.eventInside
-{ border: 1px dashed #555;
-  -moz-opacity: 1 !important;
-  opacity: 1 !important;
-  background-color: transparent !important; }
-
-DIV.event.dragging DIV.text
-{ color: #555; }
-
-DIV.event.dragging IMG
-{ display: none; }
-
 #daysView DIV.eventDragGhost
-{ color: #fff;
-  border-top: 0px;
-  border-bottom: 0px;
-  border-left: 1px solid #555;
-  border-right: 1px solid #555; }
+{ border-left: 1px solid #555;
+  border-right: 1px solid #555;
+  left: 0px;
+  right: 0px;
+  padding: 1px; }
 
 #daysView DIV.eventDragGhost.startGhost
 { border-top: 1px solid #555; }
@@ -1007,11 +1415,11 @@ DIV.event.dragging IMG
 #calendarHeader DIV.eventDragGhost
 { position: absolute !important;
   color: #fff;
-  width: 100%;
+  left: 0px;
+  right: 0px;
+  margin-right: 1px;
   border-top: 1px solid #555;
-  border-bottom: 1px solid #555;
-  border-left: 0px;
-  border-right: 0px; }
+  border-bottom: 1px solid #555; }
 
 #monthDaysView DIV.eventDragGhost
 { top: 16px; }
@@ -1033,9 +1441,6 @@ DIV.eventDragGhost > DIV
   vertical-align: baseline;
   height: 14px;
   left: 0px;
-  padding: 0px;
-  margin: 0px;
-  border: 0px;
   color: #222;
   text-align: center; }
 
@@ -1045,610 +1450,17 @@ DIV.eventDragGhost > DIV
 #ghostEndHour
 { bottom: -14px; }
 
-DIV.eventInside.needs-action
-{ border: 1px dotted #666;
-  -moz-opacity: 0.6;
-  opacity: 0.7; }
-
-DIV.eventInside.declined
-{ -moz-opacity: 0.3;
-  opacity: 0.3; }
-
-DIV#daysView DIV[class~="event"].starts0
-{ top: 0.000000%; }
-
-DIV#daysView DIV[class~="event"].starts1
-{ top: 1.041667%; }
-
-DIV#daysView DIV[class~="event"].starts2
-{ top: 2.083333%; }
-
-DIV#daysView DIV[class~="event"].starts3
-{ top: 3.125000%; }
-
-DIV#daysView DIV[class~="event"].starts4
-{ top: 4.166667%; }
-
-DIV#daysView DIV[class~="event"].starts5
-{ top: 5.208333%; }
-
-DIV#daysView DIV[class~="event"].starts6
-{ top: 6.250000%; }
-
-DIV#daysView DIV[class~="event"].starts7
-{ top: 7.291667%; }
-
-DIV#daysView DIV[class~="event"].starts8
-{ top: 8.333333%; }
-
-DIV#daysView DIV[class~="event"].starts9
-{ top: 9.375000%; }
-
-DIV#daysView DIV[class~="event"].starts10
-{ top: 10.416667%; }
-
-DIV#daysView DIV[class~="event"].starts11
-{ top: 11.458333%; }
-
-DIV#daysView DIV[class~="event"].starts12
-{ top: 12.500000%; }
-
-DIV#daysView DIV[class~="event"].starts13
-{ top: 13.541667%; }
-
-DIV#daysView DIV[class~="event"].starts14
-{ top: 14.583333%; }
-
-DIV#daysView DIV[class~="event"].starts15
-{ top: 15.625000%; }
-
-DIV#daysView DIV[class~="event"].starts16
-{ top: 16.666667%; }
-
-DIV#daysView DIV[class~="event"].starts17
-{ top: 17.708333%; }
-
-DIV#daysView DIV[class~="event"].starts18
-{ top: 18.750000%; }
-
-DIV#daysView DIV[class~="event"].starts19
-{ top: 19.791667%; }
-
-DIV#daysView DIV[class~="event"].starts20
-{ top: 20.833333%; }
-
-DIV#daysView DIV[class~="event"].starts21
-{ top: 21.875000%; }
-
-DIV#daysView DIV[class~="event"].starts22
-{ top: 22.916667%; }
-
-DIV#daysView DIV[class~="event"].starts23
-{ top: 23.958333%; }
-
-DIV#daysView DIV[class~="event"].starts24
-{ top: 25.000000%; }
-
-DIV#daysView DIV[class~="event"].starts25
-{ top: 26.041667%; }
-
-DIV#daysView DIV[class~="event"].starts26
-{ top: 27.083333%; }
-
-DIV#daysView DIV[class~="event"].starts27
-{ top: 28.125000%; }
-
-DIV#daysView DIV[class~="event"].starts28
-{ top: 29.166667%; }
-
-DIV#daysView DIV[class~="event"].starts29
-{ top: 30.208333%; }
-
-DIV#daysView DIV[class~="event"].starts30
-{ top: 31.250000%; }
-
-DIV#daysView DIV[class~="event"].starts31
-{ top: 32.291667%; }
-
-DIV#daysView DIV[class~="event"].starts32
-{ top: 33.333333%; }
-
-DIV#daysView DIV[class~="event"].starts33
-{ top: 34.375000%; }
-
-DIV#daysView DIV[class~="event"].starts34
-{ top: 35.416667%; }
-
-DIV#daysView DIV[class~="event"].starts35
-{ top: 36.458333%; }
-
-DIV#daysView DIV[class~="event"].starts36
-{ top: 37.500000%; }
-
-DIV#daysView DIV[class~="event"].starts37
-{ top: 38.541667%; }
-
-DIV#daysView DIV[class~="event"].starts38
-{ top: 39.583333%; }
-
-DIV#daysView DIV[class~="event"].starts39
-{ top: 40.625000%; }
-
-DIV#daysView DIV[class~="event"].starts40
-{ top: 41.666667%; }
-
-DIV#daysView DIV[class~="event"].starts41
-{ top: 42.708333%; }
-
-DIV#daysView DIV[class~="event"].starts42
-{ top: 43.750000%; }
-
-DIV#daysView DIV[class~="event"].starts43
-{ top: 44.791667%; }
-
-DIV#daysView DIV[class~="event"].starts44
-{ top: 45.833333%; }
-
-DIV#daysView DIV[class~="event"].starts45
-{ top: 46.875000%; }
-
-DIV#daysView DIV[class~="event"].starts46
-{ top: 47.916667%; }
-
-DIV#daysView DIV[class~="event"].starts47
-{ top: 48.958333%; }
-
-DIV#daysView DIV[class~="event"].starts48
-{ top: 50.000000%; }
-
-DIV#daysView DIV[class~="event"].starts49
-{ top: 51.041667%; }
-
-DIV#daysView DIV[class~="event"].starts50
-{ top: 52.083333%; }
-
-DIV#daysView DIV[class~="event"].starts51
-{ top: 53.125000%; }
-
-DIV#daysView DIV[class~="event"].starts52
-{ top: 54.166667%; }
-
-DIV#daysView DIV[class~="event"].starts53
-{ top: 55.208333%; }
-
-DIV#daysView DIV[class~="event"].starts54
-{ top: 56.250000%; }
-
-DIV#daysView DIV[class~="event"].starts55
-{ top: 57.291667%; }
-
-DIV#daysView DIV[class~="event"].starts56
-{ top: 58.333333%; }
-
-DIV#daysView DIV[class~="event"].starts57
-{ top: 59.375000%; }
-
-DIV#daysView DIV[class~="event"].starts58
-{ top: 60.416667%; }
-
-DIV#daysView DIV[class~="event"].starts59
-{ top: 61.458333%; }
-
-DIV#daysView DIV[class~="event"].starts60
-{ top: 62.500000%; }
-
-DIV#daysView DIV[class~="event"].starts61
-{ top: 63.541667%; }
-
-DIV#daysView DIV[class~="event"].starts62
-{ top: 64.583333%; }
-
-DIV#daysView DIV[class~="event"].starts63
-{ top: 65.625000%; }
-
-DIV#daysView DIV[class~="event"].starts64
-{ top: 66.666667%; }
-
-DIV#daysView DIV[class~="event"].starts65
-{ top: 67.708333%; }
-
-DIV#daysView DIV[class~="event"].starts66
-{ top: 68.750000%; }
-
-DIV#daysView DIV[class~="event"].starts67
-{ top: 69.791667%; }
-
-DIV#daysView DIV[class~="event"].starts68
-{ top: 70.833333%; }
-
-DIV#daysView DIV[class~="event"].starts69
-{ top: 71.875000%; }
-
-DIV#daysView DIV[class~="event"].starts70
-{ top: 72.916667%; }
-
-DIV#daysView DIV[class~="event"].starts71
-{ top: 73.958333%; }
-
-DIV#daysView DIV[class~="event"].starts72
-{ top: 75.000000%; }
-
-DIV#daysView DIV[class~="event"].starts73
-{ top: 76.041667%; }
-
-DIV#daysView DIV[class~="event"].starts74
-{ top: 77.083333%; }
-
-DIV#daysView DIV[class~="event"].starts75
-{ top: 78.125000%; }
-
-DIV#daysView DIV[class~="event"].starts76
-{ top: 79.166667%; }
-
-DIV#daysView DIV[class~="event"].starts77
-{ top: 80.208333%; }
-
-DIV#daysView DIV[class~="event"].starts78
-{ top: 81.250000%; }
-
-DIV#daysView DIV[class~="event"].starts79
-{ top: 82.291667%; }
-
-DIV#daysView DIV[class~="event"].starts80
-{ top: 83.333333%; }
-
-DIV#daysView DIV[class~="event"].starts81
-{ top: 84.375000%; }
-
-DIV#daysView DIV[class~="event"].starts82
-{ top: 85.416667%; }
-
-DIV#daysView DIV[class~="event"].starts83
-{ top: 86.458333%; }
-
-DIV#daysView DIV[class~="event"].starts84
-{ top: 87.500000%; }
-
-DIV#daysView DIV[class~="event"].starts85
-{ top: 88.541667%; }
-
-DIV#daysView DIV[class~="event"].starts86
-{ top: 89.583333%; }
-
-DIV#daysView DIV[class~="event"].starts87
-{ top: 90.625000%; }
-
-DIV#daysView DIV[class~="event"].starts88
-{ top: 91.666667%; }
-
-DIV#daysView DIV[class~="event"].starts89
-{ top: 92.708333%; }
-
-DIV#daysView DIV[class~="event"].starts90
-{ top: 93.750000%; }
-
-DIV#daysView DIV[class~="event"].starts91
-{ top: 94.791667%; }
-
-DIV#daysView DIV[class~="event"].starts92
-{ top: 95.833333%; }
-
-DIV#daysView DIV[class~="event"].starts93
-{ top: 96.875000%; }
-
-DIV#daysView DIV[class~="event"].starts94
-{ top: 97.916667%; }
-
-DIV#daysView DIV[class~="event"].starts95
-{ top: 98.958333%; }
-
-DIV#daysView DIV[class~="event"].starts96
-{ top: 100.000000%; }
-
-DIV#daysView DIV[class~="event"].lasts0
-{ height: 0px; }
-
-DIV#daysView DIV[class~="event"].lasts1
-{ height: 1.041667%; }
-
-DIV#daysView DIV[class~="event"].lasts2
-{ height: 2.083333%; }
-
-DIV#daysView DIV[class~="event"].lasts3
-{ height: 3.125000%; }
-
-DIV#daysView DIV[class~="event"].lasts4
-{ height: 4.166667%; }
-
-DIV#daysView DIV[class~="event"].lasts5
-{ height: 5.208333%; }
-
-DIV#daysView DIV[class~="event"].lasts6
-{ height: 6.250000%; }
-
-DIV#daysView DIV[class~="event"].lasts7
-{ height: 7.291667%; }
-
-DIV#daysView DIV[class~="event"].lasts8
-{ height: 8.333333%; }
-
-DIV#daysView DIV[class~="event"].lasts9
-{ height: 9.375000%; }
-
-DIV#daysView DIV[class~="event"].lasts10
-{ height: 10.416667%; }
-
-DIV#daysView DIV[class~="event"].lasts11
-{ height: 11.458333%; }
-
-DIV#daysView DIV[class~="event"].lasts12
-{ height: 12.500000%; }
-
-DIV#daysView DIV[class~="event"].lasts13
-{ height: 13.541667%; }
-
-DIV#daysView DIV[class~="event"].lasts14
-{ height: 14.583333%; }
-
-DIV#daysView DIV[class~="event"].lasts15
-{ height: 15.625000%; }
-
-DIV#daysView DIV[class~="event"].lasts16
-{ height: 16.666667%; }
-
-DIV#daysView DIV[class~="event"].lasts17
-{ height: 17.708333%; }
-
-DIV#daysView DIV[class~="event"].lasts18
-{ height: 18.750000%; }
-
-DIV#daysView DIV[class~="event"].lasts19
-{ height: 19.791667%; }
-
-DIV#daysView DIV[class~="event"].lasts20
-{ height: 20.833333%; }
-
-DIV#daysView DIV[class~="event"].lasts21
-{ height: 21.875000%; }
-
-DIV#daysView DIV[class~="event"].lasts22
-{ height: 22.916667%; }
-
-DIV#daysView DIV[class~="event"].lasts23
-{ height: 23.958333%; }
-
-DIV#daysView DIV[class~="event"].lasts24
-{ height: 25.000000%; }
-
-DIV#daysView DIV[class~="event"].lasts25
-{ height: 26.041667%; }
-
-DIV#daysView DIV[class~="event"].lasts26
-{ height: 27.083333%; }
-
-DIV#daysView DIV[class~="event"].lasts27
-{ height: 28.125000%; }
-
-DIV#daysView DIV[class~="event"].lasts28
-{ height: 29.166667%; }
-
-DIV#daysView DIV[class~="event"].lasts29
-{ height: 30.208333%; }
-
-DIV#daysView DIV[class~="event"].lasts30
-{ height: 31.250000%; }
-
-DIV#daysView DIV[class~="event"].lasts31
-{ height: 32.291667%; }
-
-DIV#daysView DIV[class~="event"].lasts32
-{ height: 33.333333%; }
-
-DIV#daysView DIV[class~="event"].lasts33
-{ height: 34.375000%; }
-
-DIV#daysView DIV[class~="event"].lasts34
-{ height: 35.416667%; }
-
-DIV#daysView DIV[class~="event"].lasts35
-{ height: 36.458333%; }
-
-DIV#daysView DIV[class~="event"].lasts36
-{ height: 37.500000%; }
-
-DIV#daysView DIV[class~="event"].lasts37
-{ height: 38.541667%; }
-
-DIV#daysView DIV[class~="event"].lasts38
-{ height: 39.583333%; }
-
-DIV#daysView DIV[class~="event"].lasts39
-{ height: 40.625000%; }
-
-DIV#daysView DIV[class~="event"].lasts40
-{ height: 41.666667%; }
-
-DIV#daysView DIV[class~="event"].lasts41
-{ height: 42.708333%; }
-
-DIV#daysView DIV[class~="event"].lasts42
-{ height: 43.750000%; }
-
-DIV#daysView DIV[class~="event"].lasts43
-{ height: 44.791667%; }
-
-DIV#daysView DIV[class~="event"].lasts44
-{ height: 45.833333%; }
-
-DIV#daysView DIV[class~="event"].lasts45
-{ height: 46.875000%; }
-
-DIV#daysView DIV[class~="event"].lasts46
-{ height: 47.916667%; }
-
-DIV#daysView DIV[class~="event"].lasts47
-{ height: 48.958333%; }
-
-DIV#daysView DIV[class~="event"].lasts48
-{ height: 50.000000%; }
-
-DIV#daysView DIV[class~="event"].lasts49
-{ height: 51.041667%; }
-
-DIV#daysView DIV[class~="event"].lasts50
-{ height: 52.083333%; }
-
-DIV#daysView DIV[class~="event"].lasts51
-{ height: 53.125000%; }
-
-DIV#daysView DIV[class~="event"].lasts52
-{ height: 54.166667%; }
-
-DIV#daysView DIV[class~="event"].lasts53
-{ height: 55.208333%; }
-
-DIV#daysView DIV[class~="event"].lasts54
-{ height: 56.250000%; }
-
-DIV#daysView DIV[class~="event"].lasts55
-{ height: 57.291667%; }
-
-DIV#daysView DIV[class~="event"].lasts56
-{ height: 58.333333%; }
-
-DIV#daysView DIV[class~="event"].lasts57
-{ height: 59.375000%; }
-
-DIV#daysView DIV[class~="event"].lasts58
-{ height: 60.416667%; }
-
-DIV#daysView DIV[class~="event"].lasts59
-{ height: 61.458333%; }
-
-DIV#daysView DIV[class~="event"].lasts60
-{ height: 62.500000%; }
-
-DIV#daysView DIV[class~="event"].lasts61
-{ height: 63.541667%; }
-
-DIV#daysView DIV[class~="event"].lasts62
-{ height: 64.583333%; }
-
-DIV#daysView DIV[class~="event"].lasts63
-{ height: 65.625000%; }
-
-DIV#daysView DIV[class~="event"].lasts64
-{ height: 66.666667%; }
-
-DIV#daysView DIV[class~="event"].lasts65
-{ height: 67.708333%; }
-
-DIV#daysView DIV[class~="event"].lasts66
-{ height: 68.750000%; }
-
-DIV#daysView DIV[class~="event"].lasts67
-{ height: 69.791667%; }
-
-DIV#daysView DIV[class~="event"].lasts68
-{ height: 70.833333%; }
-
-DIV#daysView DIV[class~="event"].lasts69
-{ height: 71.875000%; }
-
-DIV#daysView DIV[class~="event"].lasts70
-{ height: 72.916667%; }
-
-DIV#daysView DIV[class~="event"].lasts71
-{ height: 73.958333%; }
-
-DIV#daysView DIV[class~="event"].lasts72
-{ height: 75.000000%; }
-
-DIV#daysView DIV[class~="event"].lasts73
-{ height: 76.041667%; }
-
-DIV#daysView DIV[class~="event"].lasts74
-{ height: 77.083333%; }
-
-DIV#daysView DIV[class~="event"].lasts75
-{ height: 78.125000%; }
-
-DIV#daysView DIV[class~="event"].lasts76
-{ height: 79.166667%; }
-
-DIV#daysView DIV[class~="event"].lasts77
-{ height: 80.208333%; }
-
-DIV#daysView DIV[class~="event"].lasts78
-{ height: 81.250000%; }
-
-DIV#daysView DIV[class~="event"].lasts79
-{ height: 82.291667%; }
-
-DIV#daysView DIV[class~="event"].lasts80
-{ height: 83.333333%; }
-
-DIV#daysView DIV[class~="event"].lasts81
-{ height: 84.375000%; }
-
-DIV#daysView DIV[class~="event"].lasts82
-{ height: 85.416667%; }
-
-DIV#daysView DIV[class~="event"].lasts83
-{ height: 86.458333%; }
-
-DIV#daysView DIV[class~="event"].lasts84
-{ height: 87.500000%; }
-
-DIV#daysView DIV[class~="event"].lasts85
-{ height: 88.541667%; }
-
-DIV#daysView DIV[class~="event"].lasts86
-{ height: 89.583333%; }
-
-DIV#daysView DIV[class~="event"].lasts87
-{ height: 90.625000%; }
-
-DIV#daysView DIV[class~="event"].lasts88
-{ height: 91.666667%; }
-
-DIV#daysView DIV[class~="event"].lasts89
-{ height: 92.708333%; }
-
-DIV#daysView DIV[class~="event"].lasts90
-{ height: 93.750000%; }
-
-DIV#daysView DIV[class~="event"].lasts91
-{ height: 94.791667%; }
-
-DIV#daysView DIV[class~="event"].lasts92
-{ height: 95.833333%; }
-
-DIV#daysView DIV[class~="event"].lasts93
-{ height: 96.875000%; }
-
-DIV#daysView DIV[class~="event"].lasts94
-{ height: 97.916667%; }
-
-DIV#daysView DIV[class~="event"].lasts95
-{ height: 98.958333%; }
-
-DIV#daysView DIV[class~="event"].lasts96
-{ height: 100.000000%; }
-
 DIV#nowLineDisplay
-{
-  position: relative;
+{ position: relative;
   width: 100%;
   height: 2px;
   background: red;
-  z-index: 49;
-}
+  z-index: 49; }
 
 DIV#freeBusyReplicas INPUT.textField
 { width: 7em; }
-DIV#freeBusyReplicas a.calendarButton {
- right: 0px; }
+DIV#freeBusyReplicas a.calendarButton
+{ right: 0px; }
 DIV#freeBusyReplicas DIV
 { display: inline-block; height: 2em; }
 TD.attendees A.button

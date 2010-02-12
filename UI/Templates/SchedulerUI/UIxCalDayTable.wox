@@ -32,6 +32,12 @@
 	  ></var:foreach>
     </div>
 
+    <div class="hourLines">
+      <var:foreach list="hoursToDisplay" item="currentTableHour"
+	><div var:id="currentHourLineId" const:class="hourLine"><!-- space --></div
+	  ></var:foreach>
+    </div>
+
     <div class="days">
       <var:foreach list="daysToDisplay" item="currentTableDay"
 	><div var:class="dayClasses"
@@ -46,12 +52,6 @@
 	  </div>
 	</div>
       </var:foreach>
-    </div>
-
-    <div class="hourLines">
-      <var:foreach list="hoursToDisplay" item="currentTableHour"
-	><div var:id="currentHourLineId" const:class="hourLine"><!-- space --></div
-	  ></var:foreach>
     </div>
   </div>
 </container>

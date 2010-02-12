@@ -4,6 +4,8 @@
 - improved display of message size in webmail
 - improved security of login cookie by specifying a path
 - added drag and drop to the web calendar interface
+- calendar: fixed CSS oddities and harmonized appearance of event cells in all
+  supported browsers
 
 1.2-20100125 (1.2.0)
 --------------------

@@ -1,3 +1,16 @@
+2010-02-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/SchedulerUIDnD.js (ScrollController.init):
+	enhanced scrolling by setting a limit of 6 steps rather than 2.
+
+	* UI/WebServerResources/SchedulerUI.js (newEventDIV): the right
+	limit of event cells is setup using the "right" attribute rather
+	than "width", to avoid issues with cell borders.
+	(adjustCalendarHeaderDIV): new method that setups the proper
+	¨right" attribute for the "calendarHeader" element on non-IE
+	browsers. This reduces the amount of hacks and failed attempts to
+	take the day view scrollbar into account.
+
 2010-02-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/SchedulerUIDnD.js: adapted code for
