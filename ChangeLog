@@ -1,5 +1,17 @@
 2010-02-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalMonthView.m (-currentDayId): new method.
+	(-currentDayNumber): new method.
+
+	* UI/Scheduler/UIxCalDayTable.m (-currentHourId): new method.
+	(-currentAllDayId): new method.
+	(-currentDayId): new method.
+	(-currentHourLineId): removed method because hourlines are no
+	longer present in the template.
+	(-currentDayNumber): new accessor, used in javascript to recover
+	selection faster when the currently selected date is no longer
+	available.
+
 	* UI/WebServerResources/SchedulerUIDnD.js (ScrollController.init):
 	enhanced scrolling by setting a limit of 6 steps rather than 2.
 

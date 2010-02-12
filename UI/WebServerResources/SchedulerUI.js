@@ -8,6 +8,8 @@ var selectedCalendarCell;
 var showCompletedTasks;
 
 var currentDay = '';
+var selectedDayNumber = -1;
+var selectedDayDate = '';
 
 var cachedDateSelectors = [];
 
@@ -659,6 +661,7 @@ function onSelectAll() {
     return false;
 }
 
+/* in dateselector */
 function onDaySelect(node) {
     var day = node.getAttribute('day');
     var needRefresh = (listFilter == 'view_selectedday'
@@ -677,6 +680,7 @@ function onDaySelect(node) {
 
     changeCalendarDisplay( { "day": day } );
     currentDay = day;
+    selectedDayDate = day;
     if (needRefresh)
         refreshEvents();
 
@@ -889,6 +893,7 @@ function tasksListCallback(http) {
         log ("tasksListCallback Ajax error");
 }
 
+/* in dateselector */
 function restoreCurrentDaySelection(div) {
     var elements = $(div).select("TD.activeDay SPAN");
     if (elements.size()) {
@@ -954,7 +959,6 @@ function changeCalendarDisplay(data, newView) {
     var url = ApplicationBaseURL + newView;
     var day = null;
     var scrollEvent = null;
-
     if (data) {
         day = data['day'];
         scrollEvent = data['scrollEvent'];
@@ -965,21 +969,9 @@ function changeCalendarDisplay(data, newView) {
 
     if (day) {
         if (data) {
-            var divs = $$('div.day[day='+day+']');
-            if (divs.length) {
+            var dayDiv = $("day"+day);
+            if (dayDiv) {
                 // Don't reload the view if the event is present in current view
-
-                // Deselect previous day
-                var selectedDivs = $$('div.day.selectedDay');
-                selectedDivs.each(function(div) {
-                        div.removeClassName('selectedDay');
-                    });
-
-                // Select new day
-                if (currentView != 'dayview')
-                    divs.each(function(div) {
-                            div.addClassName('selectedDay');
-                        });
 
                 // Deselect day in date selector
                 if (document.selectedDate)
@@ -991,13 +983,16 @@ function changeCalendarDisplay(data, newView) {
                     selectedCell = selectedLink[0].getParentWithTagName("td");
                     $(selectedCell).selectElement();
                     document.selectedDate = selectedCell;
-                }
+                } else
+                    document.selectedDate = null;
 
                 // Scroll to event
                 if (scrollEvent) {
                     preventAutoScroll = false;
                     scrollDayView(scrollEvent);
                 }
+
+                setSelectedDayDate(day);
 
                 return false;
             }
@@ -1488,6 +1483,8 @@ function calendarDisplayCallback(http) {
         }
         attachDragControllers(contentView);
 
+        restoreSelectedDay();
+
         refreshCalendarEvents(http.callbackData.scrollEvent);
 
         var days = contentView.select("DIV.day");
@@ -1790,13 +1787,9 @@ function onCalendarSelectEvent(event) {
 
 function onCalendarSelectDay(event) {
     var day = this.getAttribute("day");
-    var needRefresh = (listFilter == 'view_selectedday'
-                       && day != currentDay);
+    setSelectedDayDate(day);
+    var needRefresh = (listFilter == 'view_selectedday' && day != currentDay);
 
-    if (currentView == 'weekview')
-        changeWeekCalendarDisplayOfSelectedDay(this);
-    else if (currentView == 'monthview')
-        changeMonthCalendarDisplayOfSelectedDay(this);
     changeDateSelectorDisplay(day);
 
     if (listOfSelection) {
@@ -1810,55 +1803,53 @@ function onCalendarSelectDay(event) {
     changeCalendarDisplay( { "day": currentDay } );
 }
 
-function changeWeekCalendarDisplayOfSelectedDay(node) {
-    var daysView = $("daysView");
-    var daysDiv = daysView.childNodesWithTag("div");
-    for (var i = 0; i < daysDiv.length; i++) {
-        if (daysDiv[i].hasClassName("days")) {
-            var days = daysDiv[i].childNodesWithTag("div");
-            var headerDiv = $($("calendarHeader").childNodesWithTag("div")[1]);
-            var headerDays = headerDiv.childNodesWithTag("div");
+function setSelectedDayDate(dayDate) {
+    if (selectedDayDate != dayDate) {
+        var day = $("day" + selectedDayDate);
+        if (day)
+            day.removeClassName("selectedDay");
+        var allDay = $("allDay" + selectedDayDate);
+        if (allDay)
+            allDay.removeClassName("selectedDay");
 
-            for (var j = 0; j < days.length; j++) {
-                if (days[j] == node
-                    || headerDays[j] == node) {
-                    headerDays[j].addClassName("selectedDay");
-                    days[j].addClassName("selectedDay");
-                }
-                else {
-                    headerDays[j].removeClassName("selectedDay");
-                    days[j].removeClassName("selectedDay");
-                }
-            }
-        }
+        selectedDayDate = dayDate;
+
+        day = $("day" + selectedDayDate);
+        day.addClassName("selectedDay");
+        selectedDayNumber = day.readAttribute("day-number");
+        allDay = $("allDay" + selectedDayDate);
+        if (allDay)
+            allDay.addClassName("selectedDay");
     }
 }
 
-function findMonthCalendarSelectedCell(daysContainer) {
-    var found = false;
-    var i = 0;
-
-    while (!found && i < daysContainer.childNodes.length) {
-        var currentNode = daysContainer.childNodes[i];
-        if (currentNode.tagName == 'DIV'
-            && currentNode.hasClassName("selectedDay")) {
-            daysContainer.selectedCell = currentNode;
-            found = true;
-        }
+/* after loading a new view, to reselect the currently selected day */
+function restoreSelectedDay() {
+    var day = null;
+    if (selectedDayDate.length > 0)
+        day = $("day" + selectedDayDate);
+    if (!day) {
+        if (selectedDayNumber > -1)
+            selectedDayDate = findDateFromDayNumber(selectedDayNumber);
         else
-            i++;
+            selectedDayDate = currentDay;
+        if (selectedDayDate.length > 0)
+            day = $("day" + selectedDayDate);
+    }
+    if (day) {
+        selectedDayDate = null;
+        setSelectedDayDate(day.id.substr(3));
     }
 }
 
-function changeMonthCalendarDisplayOfSelectedDay(node) {
-    var daysContainer = node.parentNode;
-    if (!daysContainer.selectedCell)
-        findMonthCalendarSelectedCell(daysContainer);
-
-    if (daysContainer.selectedCell)
-        daysContainer.selectedCell.removeClassName("selectedDay");
-    daysContainer.selectedCell = node;
-    node.addClassName("selectedDay");
+function findDateFromDayNumber(dayNumber) {
+    var view;
+    if (currentView == "monthview")
+        view = $("monthDaysView");
+    else
+        view = $("daysView");
+    var days = view.select(".day");
+    return days[dayNumber].readAttribute("day");
 }
 
 function onShowCompletedTasks(event) {

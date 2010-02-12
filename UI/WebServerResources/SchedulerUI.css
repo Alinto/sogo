@@ -512,16 +512,6 @@ DIV.monthView > DIV.headerDay
   font-weight: bold;
   background-color: #E7E7E7; }
 
-DIV.dayOfToday
-{ background-color: #CCDDEC; }
-
-DIV.dayOfToday DIV.outOfDay
-{ background-color: #d6dfe9; }
-
-DIV.outOfDay, DIV.weekEndDay,
-DIV.weekEndDay DIV.outOfDay
-{ background-color: #E6E7E6; }
-
 DIV.dayOfAnotherMonth
 { background-color: #e7efef; }
 
@@ -549,12 +539,33 @@ DIV.monthView DIV.day
   overflow: auto;
   overflow-x: hidden; }
 
-DIV.selectedDay,
+DIV.day DIV.clickableHourCell
+{ cursor: pointer;
+  height: 39px;
+  background-color: #fff;
+  border-bottom: 1px solid #ccc; }
+
+DIV.day DIV.clickableHourCell.outOfDay,
+DIV#calendarHeader DIV.days DIV.weekEndDay,
+DIV.weekEndDay DIV.clickableHourCell,
+DIV.weekEndDay DIV.clickableHourCell.outOfDay
+{ background-color: #E6E7E6; }
+
+DIV#calendarHeader DIV.days DIV.dayOfToday,
+DIV.dayOfToday DIV.clickableHourCell
+{ background-color: #ccddec; }
+
+DIV.dayOfToday DIV.clickableHourCell.outOfDay
+{ background-color: #d6dfe9; }
+
+DIV#calendarHeader DIV.days DIV.selectedDay,
+DIV#monthDaysView DIV.selectedDay,
+DIV.selectedDay DIV.clickableHourCell,
 DIV.selectedDay DIV.dayHeader
 { background-color: #ffe79c; }
 
-DIV.selectedDay.weekEndDay,
-DIV.selectedDay DIV.outOfDay
+DIV.selectedDay.weekEndDay DIV.clickableHourCell,
+DIV.selectedDay DIV.clickableHourCell.outOfDay
 { background-color: #f5dd92; }
 
 DIV.weekOf4
@@ -658,32 +669,16 @@ DIV.monthView DIV.day6,
 DIV.daysViewFor7Days DIV.day6
 { left: 85.7142%; }
 
-DIV#daysView > DIV.hours
-{ position: absolute;
+DIV#daysView DIV.hour
+{ position: relative;
   left: 0px;
   top: 0px;
-  width: 45px;
+  padding-top: 2px;
+  padding-right: 2px;
+  text-align: right;
+  width: 48px;
+  height: 37px;
   font-weight: bold;
-  padding-top: 5px;
-  padding-right: 5px;
-  color: #666;
-  text-align: right; }
-
-DIV#daysView > DIV.hours > DIV.hour
-{ height: 40px; }
-
-DIV#daysView > DIV.hourLines > DIV.hourLine
-{ position: relative;
-  height: 0px;
-  left: 0px;
-  right: 0px;
-  margin-top: 39px;
-  background-color: transparent;
-  border-bottom: 1px solid #ccc; }
-
-DIV.clickableHourCell
-{ cursor: pointer;
-  height: 39px;
   border-bottom: 1px solid #ccc; }
 
 /* "left" and "width" for #daysView DIV.event are computed in JS code */

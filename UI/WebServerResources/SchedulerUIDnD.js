@@ -112,10 +112,10 @@ _SOGoEventDragUtilities.prototype = {
 
     getQuarterHeight: function() {
         if (this.quarterHeight == -1) {
-            var hourLine0 = $("hourLine0");
-            var hourLine23 = $("hourLine23");
-            this.quarterHeight = ((hourLine23.offsetTop - hourLine0.offsetTop)
-                             / (23 * 4));
+            var hour0 = $("hour0");
+            var hour23 = $("hour23");
+            this.quarterHeight = ((hour23.offsetTop - hour0.offsetTop)
+                                  / (23 * 4));
         }
 
         return this.quarterHeight;
@@ -909,8 +909,9 @@ SOGoEventDragController.prototype = {
 
     dropCallback: null,
 
+    onDragStartBound: null,
     onDragStopBound: null,
-    moveBound: null,
+    onDragModeBound: null,
 
     _determineDragMode: null,
 
@@ -924,10 +925,9 @@ SOGoEventDragController.prototype = {
         this.ghostController.setTitle(this.title);
         this.ghostController.setFolderClass(this.folderClass);
 
-        var onDragStartBound = this.onDragStart.bindAsEventListener(this);
+        this.onDragStartBound = this.onDragStart.bindAsEventListener(this);
         for (var i = 0; i < eventCells.length; i++) {
-            eventCells[i].observe("mousedown", onDragStartBound,
-                                  false);
+            eventCells[i].observe("mousedown", this.onDragStartBound, false);
             if (eventCells[i].editable) {
                 eventCells[i].addClassName("draggable");
             }
@@ -958,9 +958,8 @@ SOGoEventDragController.prototype = {
         this.ghostController = new SOGoEventDragGhostController();
         this.ghostController.setTitle(getLabel("New Event"));
 
-        var onDragStartBound
-            = this.onDragStart.bindAsEventListener(this);
-        dayNode.observe("mousedown", onDragStartBound, false);
+        this.onDragStartBound = this.onDragStart.bindAsEventListener(this);
+        dayNode.observe("mousedown", this.onDragStartBound, false);
     },
 
     onDragStart: function SEDC_onDragStart(event) {
@@ -971,7 +970,6 @@ SOGoEventDragController.prototype = {
                      || target.hasClassName("day"))
                  || (this.eventCells && this.eventCells[0].editable))) {
                 var utilities = SOGoEventDragUtilities();
-                utilities.reset();
                 utilities.setEventType(this.eventType);
 
                 this.pointerHandler = new SOGoEventDragPointerHandler();
@@ -1013,8 +1011,8 @@ SOGoEventDragController.prototype = {
                     Event.observe(window, "mouseup", this.onDragStopBound);
                 this.onDragModeBound = this.onDragMode.bindAsEventListener(this);
                 Event.observe(document.body, "mousemove", this.onDragModeBound);
+                Event.stop(event);
             }
-            Event.stop(event);
         }
 
         return false;
@@ -1214,6 +1212,7 @@ SOGoEventDragController.prototype = {
         this.onDragStopBound = null;
         this.onDragModeBound = null;
 
+        var utilities = SOGoEventDragUtilities();
         if (this.dragHasStarted) {
             this.ghostController.hideGhosts();
             this.dragHasStarted = false;
@@ -1229,7 +1228,6 @@ SOGoEventDragController.prototype = {
                                               .originalCoordinates);
                 this.updateDropCallback(this, this.eventCells, delta);
             } else {
-                var utilities = SOGoEventDragUtilities();
                 var eventContainerNodes = utilities.getEventContainerNodes();
                 var dayNode = eventContainerNodes[this.ghostController
                                                       .currentCoordinates
@@ -1241,6 +1239,7 @@ SOGoEventDragController.prototype = {
                                         this.ghostController.currentCoordinates);
             }
         }
+        utilities.reset();
 
         Event.stop(event);
     },

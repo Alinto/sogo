@@ -19,6 +19,7 @@
       ><var:foreach list="daysToDisplay" item="currentTableDay"
 	><div var:class="dayClasses"
 	  var:day="currentTableDay.shortDateString"
+          var:id="currentAllDayId"
 	  hour="allday"
 	  ><!-- space --></div
 	  ></var:foreach
@@ -26,30 +27,26 @@
   </div>
 
   <div id="daysView" var:class="daysViewClasses">
-    <div class="hours">
-      <var:foreach list="hoursToDisplay" item="currentTableHour"
-	><div class="hour"><var:string value="currentTableHour" /></div
-	  ></var:foreach>
-    </div>
-
-    <div class="hourLines">
-      <var:foreach list="hoursToDisplay" item="currentTableHour"
-	><div var:id="currentHourLineId" const:class="hourLine"><!-- space --></div
-	  ></var:foreach>
+    <div class="hours"
+      ><var:foreach list="hoursToDisplay" item="currentTableHour"
+	><div class="hour" var:id="currentHourId"
+          ><var:string value="currentTableHour"/></div
+          ></var:foreach>
     </div>
 
     <div class="days">
       <var:foreach list="daysToDisplay" item="currentTableDay"
 	><div var:class="dayClasses"
-	  var:day="currentTableDay.shortDateString"
-	  >
-	  <div class="events">
+          var:id="currentDayId"
+	  var:day-number="currentDayNumber"
+	  var:day="currentTableDay.shortDateString">
+	  <div class="hourCells">
 	    <var:foreach list="hoursToDisplay" item="currentTableHour"
 	      ><div var:class="clickableHourCellClass"
 		var:day="currentTableDay.shortDateString"
 		var:hour="currentAppointmentHour">
-	      </div></var:foreach>
-	  </div>
+	      </div></var:foreach></div>
+          <div class="events"><!-- space --></div>
 	</div>
       </var:foreach>
     </div>

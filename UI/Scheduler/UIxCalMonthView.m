@@ -214,6 +214,17 @@
   return currentTableDay;
 }
 
+- (NSString *) currentDayId
+{
+  return [NSString stringWithFormat: @"day%@", [currentTableDay shortDateString]];
+}
+
+- (int) currentDayNumber
+{
+  return ([currentWeek indexOfObject: currentTableDay]
+          + [weeksToDisplay indexOfObject: currentWeek] * 7);
+}
+
 - (void) setCurrentWeek: (NSArray *) newCurrentWeek
 {
   ASSIGN (currentWeek, newCurrentWeek);
@@ -298,8 +309,6 @@
     [classes appendString: @" dayOfAnotherMonth"];
   if ([currentTableDay isToday])
     [classes appendString: @" dayOfToday"];
-  if ([selectedDate isDateOnSameDay: currentTableDay])
-    [classes appendString: @" selectedDay"];
 
   return classes;
 }

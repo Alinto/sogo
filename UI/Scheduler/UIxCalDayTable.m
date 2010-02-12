@@ -31,6 +31,7 @@
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <EOControl/EOQualifier.h>
 
+#import <SOGo/NSCalendarDate+SOGo.h>
 #import <SOGo/SOGoDateFormatter.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
@@ -143,9 +144,9 @@
   return hoursToDisplay;
 }
 
-- (NSString *) currentHourLineId
+- (NSString *) currentHourId
 {
-  return [NSString stringWithFormat: @"hourLine%d", [currentTableHour intValue]];
+  return [NSString stringWithFormat: @"hour%d", [currentTableHour intValue]];
 }
 
 - (NSArray *) daysToDisplay
@@ -198,6 +199,21 @@
     formatted = [tmp descriptionWithCalendarFormat: timeFormat];
 
   return formatted;
+}
+
+- (NSString *) currentAllDayId
+{
+  return [NSString stringWithFormat: @"allDay%@", [currentTableDay shortDateString]];
+}
+
+- (NSString *) currentDayId
+{
+  return [NSString stringWithFormat: @"day%@", [currentTableDay shortDateString]];
+}
+
+- (int) currentDayNumber
+{
+  return [daysToDisplay indexOfObject: currentTableDay];
 }
 
 - (NSString *) currentAppointmentHour
@@ -326,8 +342,6 @@
         [classes appendString: @" weekEndDay"];
       if ([currentTableDay isToday])
         [classes appendString: @" dayOfToday"];
-      if ([[self selectedDate] isDateOnSameDay: currentTableDay])
-        [classes appendString: @" selectedDay"];
     }
 
   return classes;
