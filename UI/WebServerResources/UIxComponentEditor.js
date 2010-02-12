@@ -34,7 +34,7 @@ function onPopupAttachWindow(event) {
     if (event)
         preventDefault(event);
 
-    var attachInput = document.getElementById("attach");
+    var attachInput = $("attach");
     var newAttach = window.prompt(getLabel("Target:"), attachInput.value || "http://");
     if (newAttach != null) {
         var documentHref = $("documentHref");

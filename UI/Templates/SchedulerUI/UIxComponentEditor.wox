@@ -101,7 +101,7 @@
 	  /><span class="content"
 	  ><a href="#" id="documentHref"><!-- space --></a
 	    ><a id="changeAttachButton" class="button" var:href="#"
-	    ><var:string label:value="Change..."/></a
+	    ><span><var:string label:value="Change..."/></span></a
 	    ></span></label>
 
       <!-- hidden -->

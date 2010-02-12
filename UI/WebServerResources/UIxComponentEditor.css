@@ -9,7 +9,10 @@ SELECT#reminderList
 { display: none; }
 
 A#changeAttachButton
-{ margin-left: 1em; }
+{ margin-left: 1em;
+  position: absolute;
+  right: 0;
+  display: inline; }
 
 SPAN.datePicker INPUT.textField
 { width: 7em; }
