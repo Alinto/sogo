@@ -1,3 +1,10 @@
+2010-02-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/SchedulerUI.js (attachDragControllers): we
+	only attach handlers to subnodes of #calendarHeader DIV.days, not
+	..DIV.dayLabels.
+	(adjustCalendarHeaderDIV): adapted for IE.
+
 2010-02-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxCalMonthView.m (-currentDayId): new method.

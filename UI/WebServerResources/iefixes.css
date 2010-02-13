@@ -58,13 +58,6 @@ TD.mailer_fieldname
 
 /* SchedulerUI */
 
-DIV#calendarHeader DIV.dayLabels,
-DIV#calendarHeader DIV.days
-{ right: 16px; /* the width of the scrollbar on Windows */ }
-
-DIV#daysView DIV.days
-{ margin-right: 17px; }
-
 DIV.event > DIV.eventInside
 { filter: alpha(opacity=100); }
 

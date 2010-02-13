@@ -59,8 +59,8 @@ UL#tasksList, UL#calendarList
   background-color: #CCDDEC;
   list-style-type: none;
   list-style-image: none;
-  overflow: auto;
-  overflow-x: hidden; }
+  overflow: hidden;
+  overflow-y: auto; }
 
 UL#calendarList
 { clear: left;
@@ -478,11 +478,28 @@ DIV.eventView
 
 /* new draggable presentation */
 
-DIV#daysView DIV.days
+DIV#daysView DIV.hours
 { position: absolute;
   top: 0px;
-  left: 50px;
-  right: 0px; }
+  left: 0px;
+  height: 960px;
+  width: 50px; }
+
+DIV#daysView DIV.hour
+{ position: relative;
+  left: 0px;
+  top: 0px;
+  padding-top: 2px;
+  padding-right: 2px;
+  text-align: right;
+  right: 0px;
+  height: 37px;
+  font-weight: bold;
+  border-bottom: 1px solid #ccc; }
+
+DIV#daysView DIV.days
+{ position: relative;
+  margin-left: 50px; }
 
 DIV.multicolumnDayView DIV.lastDayUser
 { border-right: 1px solid #ccc; }
@@ -668,18 +685,6 @@ DIV.daysViewFor7Days DIV.day5
 DIV.monthView DIV.day6,
 DIV.daysViewFor7Days DIV.day6
 { left: 85.7142%; }
-
-DIV#daysView DIV.hour
-{ position: relative;
-  left: 0px;
-  top: 0px;
-  padding-top: 2px;
-  padding-right: 2px;
-  text-align: right;
-  width: 48px;
-  height: 37px;
-  font-weight: bold;
-  border-bottom: 1px solid #ccc; }
 
 /* "left" and "width" for #daysView DIV.event are computed in JS code */
 #daysView DIV.event

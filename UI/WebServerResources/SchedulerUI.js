@@ -1376,7 +1376,7 @@ function newMonthEventDIV(eventRep, event) {
 }
 
 function attachDragControllers(contentView) {
-    var dayNodes = contentView.select("DIV.day");
+    var dayNodes = contentView.select("DIV.days DIV.day");
     for (var j = 0; j < dayNodes.length; j++) {
         var dayNode = dayNodes[j];
         if (dayNode.hasClassName("day")) {
@@ -1397,11 +1397,16 @@ function adjustCalendarHeaderDIV() {
         var delta = ch.clientWidth - dv.clientWidth - 1;
         var styleElement = document.createElement("style");
         styleElement.type = "text/css";
-        var styleText = ("DIV#calendarHeader DIV.dayLabels,"
-                         + " DIV#calendarHeader DIV.days"
-                         + " { "
-                         + "right: " + delta + "px; }");
-        styleElement.appendChild(document.createTextNode(styleText));
+        var selectors = ["DIV#calendarHeader DIV.dayLabels",
+                         "DIV#calendarHeader DIV.days"];
+        var rule = ("{ right: " + delta + "px; }");
+        if (styleElement.styleSheet && styleElement.styleSheet.addRule) {
+            styleElement.styleSheet.addRule(selectors[0], rule);
+            styleElement.styleSheet.addRule(selectors[1], rule);
+        } else {
+            var styleText = selectors.join(",") + " " + rule;
+            styleElement.appendChild(document.createTextNode(styleText));
+        }
         document.getElementsByTagName("head")[0].appendChild(styleElement);
         calendarHeaderAdjusted = true;
     }
@@ -2530,9 +2535,6 @@ function initCalendars() {
         $("uploadCancel").observe("click", hideCalendarImport);
         $("uploadOK").observe("click", hideImportResults);
     }
-
-    if (Prototype.Browser.IE)
-        calendarHeaderAdjusted = true;
 
     onWindowResize.defer();
     Event.observe(window, "resize", onWindowResize);
