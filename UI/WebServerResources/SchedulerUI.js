@@ -46,16 +46,14 @@ function newEvent(type, day, hour, duration) {
 
     window.open(urlstr, "", "width=490,height=470,resizable=0");
 
-    return false;
+    return false; /* stop following the link */
 }
 
 function newEventFromWidget(sender, type) {
     var day = $(sender).readAttribute("day");
     var hour = sender.readAttribute("hour");
 
-    newEvent(type, day, hour);
-
-    return false; /* stop following the link */
+    return newEvent(type, day, hour);
 }
 
 function minutesToHM(minutes) {
