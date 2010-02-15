@@ -25,7 +25,7 @@
 "Thursday" = "Jueves";
 "Friday" = "Viernes";
 "Saturday" = "Sábado";
-"DayOfTheMonth" = "DayOfTheMonth";
+"DayOfTheMonth" = "Día del mes";
 
 "Sun" = "Dom";
 "Mon" = "Lun";
@@ -244,9 +244,9 @@
 /* Appointments (participation state) */
 
 "partStat_NEEDS-ACTION" = "Requiere acción";
-"partStat_ACCEPTED" = "Confirmado";
-"partStat_DECLINED" = "Rechazado";
-"partStat_TENTATIVE" = "Tentativo";
+"partStat_ACCEPTED" = "Asistiré";
+"partStat_DECLINED" = "No asistiré";
+"partStat_TENTATIVE" = "Lo confirmaré más tarde";
 "partStat_DELEGATED" = "Delegado";
 "partStat_OTHER" = "Otro";
 

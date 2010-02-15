@@ -244,9 +244,9 @@
 /* Appointments (participation state) */
 
 "partStat_NEEDS-ACTION" = "Vyžaduje akci";
-"partStat_ACCEPTED" = "Přijatý/á";
-"partStat_DECLINED" = "Odmítnutý/á";
-"partStat_TENTATIVE" = "Nerozhodnutý/á";
+"partStat_ACCEPTED" = "Zúčastním se";
+"partStat_DECLINED" = "Nezúčastním se";
+"partStat_TENTATIVE" = "Potvrdím později";
 "partStat_DELEGATED" = "Delegovaný/á";
 "partStat_OTHER" = "Ostatní";
 

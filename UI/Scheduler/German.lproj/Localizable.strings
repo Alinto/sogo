@@ -244,9 +244,9 @@
 /* Appointments (participation state) */
 
 "partStat_NEEDS-ACTION" = "Benötigt Eingriff";
-"partStat_ACCEPTED" = "Akzeptiert";
-"partStat_DECLINED" = "Abgelehnt";
-"partStat_TENTATIVE" = "Vorläufig";
+"partStat_ACCEPTED" = "Ich nehme teil";
+"partStat_DECLINED" = "Ich nehme nicht teil";
+"partStat_TENTATIVE" = "Ich bestätige später";
 "partStat_DELEGATED" = "Vertreter";
 "partStat_OTHER" = "Anderer";
 

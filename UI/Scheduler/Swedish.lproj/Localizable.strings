@@ -244,10 +244,10 @@
 /* Appointments (participation state) */
 
 "partStat_NEEDS-ACTION" = "Behöver åtgärd";
-"partStat_ACCEPTED" = "Accepterad";
-"partStat_DECLINED" = "Avböjd";
-"partStat_TENTATIVE" = "Preliminär";
-"partStat_DELEGATED" = "Delegerad till";
+"partStat_ACCEPTED" = "Jag kan deltaga";
+"partStat_DECLINED" = "Jag kan inte deltaga";
+"partStat_TENTATIVE" = "Jag återkommer";
+"partStat_DELEGATED" = "I delegate";
 "partStat_OTHER" = "Annat";
 
 /* Appointments (error messages) */

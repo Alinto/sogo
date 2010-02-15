@@ -244,9 +244,9 @@
 /* Appointments (participation state) */
 
 "partStat_NEEDS-ACTION" = "Foglalkozni kell vele";
-"partStat_ACCEPTED" = "Elfogadott";
-"partStat_DECLINED" = "Visszautasított";
-"partStat_TENTATIVE" = "Bizonytalan";
+"partStat_ACCEPTED" = "Részt veszek";
+"partStat_DECLINED" = "Nem veszek rész";
+"partStat_TENTATIVE" = "Később döntök";
 "partStat_DELEGATED" = "Átadott";
 "partStat_OTHER" = "Egyéb";
 

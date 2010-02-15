@@ -244,10 +244,10 @@
 /* Appointments (participation state) */
 
 "partStat_NEEDS-ACTION" = "Décision attendue";
-"partStat_ACCEPTED" = "Accepté";
-"partStat_DECLINED" = "Refusé";
-"partStat_TENTATIVE" = "Tentative";
-"partStat_DELEGATED" = "Delegué";
+"partStat_ACCEPTED" = "Je participerai";
+"partStat_DECLINED" = "Je ne participerai pas";
+"partStat_TENTATIVE" = "Je confirmerai plus tard";
+"partStat_DELEGATED" = "Je délègue";
 "partStat_OTHER" = "???";
 
 /* Appointments (error messages) */
