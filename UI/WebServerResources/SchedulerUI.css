@@ -1334,7 +1334,7 @@ DIV.event DIV.bottomDragGrip
   border: 0px;
   left: 1px;
   right: 1px;
-  height: 4px;
+  height: 5px;
   background-repeat: no-repeat;
   background-position: center; }
 
@@ -1371,7 +1371,9 @@ DIV.event.dragging > DIV.eventInside
   background-color: transparent !important; }
 
 DIV.event.dragging DIV.text
-{ color: #555; }
+{ color: #555;
+  top: 0px;
+  left: 0px; }
 
 DIV.event.dragging IMG,
 DIV.event.dragging DIV.topDragGrip,
