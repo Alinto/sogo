@@ -904,6 +904,7 @@ SOGoEventDragController.prototype = {
     eventCells: null,
 
     eventType: null,
+    eventIsInvitation: false,
     title: null,
     folderClass: null,
 
@@ -930,6 +931,7 @@ SOGoEventDragController.prototype = {
         this.eventCells = eventCells;
 
         this.ghostController = new SOGoEventDragGhostController();
+        this._determineEventInvitation(eventCells[0]);
         this._determineEventType(eventCells[0]);
         this._prepareEventType();
         this._determineTitleAndFolderClass();
@@ -939,7 +941,7 @@ SOGoEventDragController.prototype = {
         this.onDragStartBound = this.onDragStart.bindAsEventListener(this);
         for (var i = 0; i < eventCells.length; i++) {
             eventCells[i].observe("mousedown", this.onDragStartBound, false);
-            if (eventCells[i].editable) {
+            if (eventCells[i].editable && !this.eventIsInvitation) {
                 eventCells[i].addClassName("draggable");
             }
         }
@@ -979,7 +981,8 @@ SOGoEventDragController.prototype = {
             if ((!this.eventCells
                  && (target.hasClassName("clickableHourCell")
                      || target.hasClassName("day"))
-                 || (this.eventCells && this.eventCells[0].editable))) {
+                 || (this.eventCells && this.eventCells[0].editable
+                     && !this.eventIsInvitation))) {
                 var utilities = SOGoEventDragUtilities();
                 utilities.setEventType(this.eventType);
 
@@ -1027,6 +1030,17 @@ SOGoEventDragController.prototype = {
         }
 
         return false;
+    },
+
+    _determineEventInvitation: function SEDC__determineEventType(node) {
+        var isInvitation = false;
+        for (var i = 0; !isInvitation && i < userStates.length; i++) {
+            var inside = node.select("DIV.eventInside")[0];
+            if (inside.hasClassName(userStates[i]))
+                isInvitation = true;
+        }
+
+        this.eventIsInvitation = isInvitation;
     },
 
     _determineEventType: function SEDC__determineEventType(node) {

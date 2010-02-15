@@ -11,6 +11,10 @@
 	"eventInside" DIV to contain the title and draw the border. This
 	avoids the overflow of extra pixels added to the DIV heights for
 	start and end ghosts.
+	(SOGoEventDragController.attachToDayNode): we determine whether
+	the event cell are for an invitation, in which case the dragging
+	event will be aborted even though the user is technically the
+	"owner" of the represented event.
 
 2010-02-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
