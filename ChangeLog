@@ -1,5 +1,8 @@
 2010-02-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/generic.js (getTarget): ensure the
+	returned target has been initialized with prototype extensions.
+
 	* UI/WebServerResources/SchedulerUI.js (gotoToday): set the
 	selected day to the today date.
 

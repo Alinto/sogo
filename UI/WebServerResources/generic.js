@@ -378,9 +378,9 @@ function isHttpStatus204(status) {
 function getTarget(event) {
     event = event || window.event;
     if (event.target)
-        return event.target; // W3C DOM
+        return $(event.target); // W3C DOM
     else
-        return event.srcElement; // IE
+        return $(event.srcElement); // IE
 }
 
 function preventDefault(event) {
