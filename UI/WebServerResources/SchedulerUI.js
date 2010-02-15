@@ -45,6 +45,8 @@ function newEvent(type, day, hour, duration) {
         urlstr += "?" + params.join("&");
 
     window.open(urlstr, "", "width=490,height=470,resizable=0");
+
+    return false;
 }
 
 function newEventFromWidget(sender, type) {

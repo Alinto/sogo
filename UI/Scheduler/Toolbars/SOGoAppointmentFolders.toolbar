@@ -1,5 +1,5 @@
 ( /* the toolbar groups -*-cperl-*- */
-  ( { link = "#";
+  ( { link = "new_event";
       isSafe = NO;
       label = "New Event";
       onclick = "return newEvent('event');";
