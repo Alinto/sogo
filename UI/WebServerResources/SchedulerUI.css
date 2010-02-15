@@ -423,10 +423,10 @@ DIV#calendarHeader
 DIV#calendarHeader DIV.dayLabels,
 DIV#calendarHeader DIV.days
 { position: absolute;
-/*  border-left: 1px solid #ccc; */ 
   border-right: 1px solid #ccc;
   border-top: 1px solid #ccc;
   left: 50px;
+  /* 'right' is computed from JS code when daysView is first drawn */
   overflow: hidden; }
 
 DIV#calendarHeader DIV.dayLabels
@@ -556,33 +556,33 @@ DIV.monthView DIV.day
   overflow: auto;
   overflow-x: hidden; }
 
-DIV.day DIV.clickableHourCell
+DIV#daysView DIV.day DIV.clickableHourCell
 { cursor: pointer;
   height: 39px;
   background-color: #fff;
   border-bottom: 1px solid #ccc; }
 
-DIV.day DIV.clickableHourCell.outOfDay,
 DIV#calendarHeader DIV.days DIV.weekEndDay,
-DIV.weekEndDay DIV.clickableHourCell,
-DIV.weekEndDay DIV.clickableHourCell.outOfDay
-{ background-color: #E6E7E6; }
+DIV#daysView DIV.day DIV.clickableHourCell.outOfDay,
+DIV#daysView DIV.weekEndDay DIV.clickableHourCell,
+DIV#daysView DIV.weekEndDay DIV.clickableHourCell.outOfDay
+{ background-color: #e6e7e6; }
 
-DIV#calendarHeader DIV.days DIV.dayOfToday,
-DIV.dayOfToday DIV.clickableHourCell
-{ background-color: #ccddec; }
-
-DIV.dayOfToday DIV.clickableHourCell.outOfDay
+DIV.daysViewFor7Days#calendarHeader DIV.days DIV.dayOfToday,
+DIV.daysViewFor7Days#daysView DIV.dayOfToday DIV.clickableHourCell
 { background-color: #d6dfe9; }
 
-DIV#calendarHeader DIV.days DIV.selectedDay,
-DIV#monthDaysView DIV.selectedDay,
-DIV.selectedDay DIV.clickableHourCell,
-DIV.selectedDay DIV.dayHeader
+DIV.daysViewFor7Days#daysView DIV.dayOfToday DIV.clickableHourCell.outOfDay
+{ background-color: #ccddec; }
+
+DIV.daysViewFor7Days#calendarHeader DIV.days DIV.selectedDay,
+DIV.daysViewFor7Days#daysView DIV.selectedDay DIV.clickableHourCell,
+DIV#monthDaysView DIV.selectedDay
 { background-color: #ffe79c; }
 
-DIV.selectedDay.weekEndDay DIV.clickableHourCell,
-DIV.selectedDay DIV.clickableHourCell.outOfDay
+DIV.daysViewFor7Days#calendarHeader DIV.days DIV.selectedDay.weekEndDay,
+DIV.daysViewFor7Days#daysView DIV.selectedDay.weekEndDay DIV.clickableHourCell,
+DIV.daysViewFor7Days#daysView DIV.selectedDay DIV.clickableHourCell.outOfDay
 { background-color: #f5dd92; }
 
 DIV.weekOf4
