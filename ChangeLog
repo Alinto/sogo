@@ -1,5 +1,8 @@
 2010-02-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/SchedulerUI.js (gotoToday): set the
+	selected day to the today date.
+
 	* UI/WebServerResources/SchedulerUIDnD.js
 	(SOGoEventDragGhostController.showGhosts): ghosts now also have an
 	"eventInside" DIV to contain the title and draw the border. This
