@@ -1,3 +1,11 @@
+2010-02-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/SchedulerUIDnD.js
+	(SOGoEventDragGhostController.showGhosts): ghosts now also have an
+	"eventInside" DIV to contain the title and draw the border. This
+	avoids the overflow of extra pixels added to the DIV heights for
+	start and end ghosts.
+
 2010-02-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/SchedulerUI.js (attachDragControllers): we

@@ -1360,15 +1360,13 @@ DIV.event DIV.leftDragGrip
 DIV.event DIV.rightDragGrip
 { right: 1px; }
 
-DIV.event.dragging
-{ border: 1px dashed #555; }
-
 #daysView DIV.event.dragging
 { left: 0px !important;
   right: 0px !important; }
 
 DIV.event.dragging > DIV.eventInside
 { -moz-opacity: 1 !important;
+  border: 1px dashed #555;
   opacity: 1 !important;
   background-color: transparent !important; }
 
@@ -1399,16 +1397,17 @@ DIV.event.draggable:hover DIV.rightDragGrip
   background-image: url(event-grippy-vertical.png); }
 
 #daysView DIV.eventDragGhost
-{ border-left: 1px solid #555;
-  border-right: 1px solid #555;
-  left: 0px;
-  right: 0px;
-  padding: 1px; }
+{ left: 0px; right: 0px; }
 
-#daysView DIV.eventDragGhost.startGhost
+#daysView DIV.eventDragGhost > DIV.eventInside
+{ padding: 0px;
+  border-left: 1px solid #555;
+  border-right: 1px solid #555; }
+
+#daysView DIV.eventDragGhost.startGhost > DIV.eventInside
 { border-top: 1px solid #555; }
 
-#daysView DIV.eventDragGhost.endGhost
+#daysView DIV.eventDragGhost.endGhost > DIV.eventInside
 { border-bottom: 1px solid #555; }
 
 #monthDaysView DIV.eventDragGhost,
@@ -1435,7 +1434,8 @@ DIV.event.draggable:hover DIV.rightDragGrip
 #calendarHeader DIV.eventDragGhost.endGhost
 { border-right: 1px solid #555; }
 
-DIV.eventDragGhost > DIV
+#ghostStartHour,
+#ghostEndHour
 { position: absolute;
   width: 100%;
   vertical-align: baseline;

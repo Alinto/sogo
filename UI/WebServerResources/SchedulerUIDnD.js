@@ -342,6 +342,7 @@ var SOGoDragGhostInterface = {
 
     title: null,
     folderClass: null,
+    inside: null,
 
     currentStart: -1,
     currentDuration: -1,
@@ -351,23 +352,27 @@ var SOGoDragGhostInterface = {
     show: function SDGI_show() {
         if (!this.visible) {
             this.removeClassName("hidden");
+            if (this.inside)
+                this.inside.removeClassName("hidden");
             this.visible = true;
         }
     },
     hide: function SDGI_hide() {
         if (this.visible) {
             this.addClassName("hidden");
+            if (this.inside)
+                this.inside.addClassName("hidden");
             this.visible = false;
         }
     },
 
     setTitle: function SDGI_setTitle(title) {
         if (this.title != title) {
-            while (this.childNodes.length) {
-                this.removeChild(this.firstChild);
+            while (this.inside.childNodes.length) {
+                this.inside.removeChild(this.inside.firstChild);
             }
             if (title) {
-                this.appendChild(document.createTextNode(title));
+                this.inside.appendChild(document.createTextNode(title));
             }
             this.title = title;
         }
@@ -552,6 +557,12 @@ SOGoEventDragGhostController.prototype = {
                 newGhost.className = "event eventDragGhost";
                 newGhost.cssHandlesPosition = isMultiday;
                 newGhost.hide();
+
+                var ghostInside = $(document.createElement("div"));
+                ghostInside.className = "eventInside";
+                newGhost.inside = ghostInside;
+                newGhost.appendChild(ghostInside);
+
                 nodes[i].appendChild(newGhost);
                 this.ghosts.push(newGhost);
             }
