@@ -1323,6 +1323,10 @@ DIV.eventInside.needs-action
   -moz-opacity: 0.6;
   opacity: 0.7; }
 
+DIV.eventInside.needs-action DIV.text
+{ top: 0px;
+  left: 0px; }
+
 DIV.eventInside.declined
 { -moz-opacity: 0.3;
   opacity: 0.3; }
