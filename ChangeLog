@@ -1,3 +1,8 @@
+2010-02-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/UIxColorPicker.js (onChooseColor): the
+	colour window is now closed once the user has made his choice.
+
 2010-02-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/generic.js (getTarget): ensure the

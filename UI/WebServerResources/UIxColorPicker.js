@@ -6,6 +6,7 @@ function onLoadColorPicker(event) {
 
 function onChooseColor(newColor) {
   window.opener.onColorPickerChoice(newColor);
+  window.close();
 }
 
 document.observe("dom:loaded", onLoadColorPicker);
