@@ -1,5 +1,8 @@
 2010-02-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/SchedulerUI.js (onMenuCurrentView): we
+	hide the "eventDialog" when the menu pops up.
+
 	* UI/WebServerResources/UIxColorPicker.js (onChooseColor): the
 	colour window is now closed once the user has made his choice.
 

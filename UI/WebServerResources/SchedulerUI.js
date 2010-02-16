@@ -2072,6 +2072,7 @@ function onMenuSharing(event) {
 }
 
 function onMenuCurrentView(event) {
+    $("eventDialog").hide();
     popupMenu(event, 'currentViewMenu', this);
 }
 
