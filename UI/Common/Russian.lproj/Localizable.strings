@@ -25,6 +25,9 @@
 "Owner:" = "Owner:";
 "Publish the Free/Busy information" = "Публиковать информацию о занятом/свободном времени";
 
+"Add..." = "Add...";
+"Remove" = "Remove";
+
 "Default Roles" = "Контроль доступа для всех";
 "Subscribe User" = "Subscribe User";
 

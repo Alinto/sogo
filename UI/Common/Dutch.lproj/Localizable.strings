@@ -25,8 +25,11 @@
 "Owner:" = "Eigenaar:";
 "Publish the Free/Busy information" = "Beschikbaarheidsinformatie publiceren";
 
+"Add..." = "Toevoegen...";
+"Remove" = "Verwijderen";
+
 "Default Roles" = "Standaardmachtigingen";
-"Subscribe User" = "Subscribe User";
+"Subscribe User" = "Gebruiker abonneren";
 
 "Sorry, the user rights can not be configured for that object." = "De machtigingen kunnen niet worden ingesteld voor dit object.";
 

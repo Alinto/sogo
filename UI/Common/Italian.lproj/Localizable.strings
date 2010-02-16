@@ -25,6 +25,9 @@
 "Owner:" = "Proprietario:";
 "Publish the Free/Busy information" = "Pubblica le informazioni sullo stato (libero/impegnato)";
 
+"Add..." = "Aggiungi...";
+"Remove" = "Rimuovi";
+
 "Default Roles" = "Permessi predefiniti";
 "Subscribe User" = "Subscribe User";
 

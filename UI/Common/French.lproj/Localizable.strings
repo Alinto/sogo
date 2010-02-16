@@ -25,6 +25,9 @@
 "Owner:" = "Propriétaire :";
 "Publish the Free/Busy information" = "Publier l'occupation du temps";
 
+"Add..." = "Ajouter...";
+"Remove" = "Enlever";
+
 "Default Roles" = "Rôles par défaut";
 "Subscribe User" = "Abonner l'utilisateur";
 
