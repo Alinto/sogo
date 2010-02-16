@@ -746,7 +746,7 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
 
 		  /* text part */
 		  headerMap = [NGMutableHashMap hashMapWithCapacity: 1];
-		  [headerMap setObject: @"text/plain; charset=utf-8"
+		  [headerMap setObject: @"text/plain; charset=\"utf-8\""
 			     forKey: @"content-type"];
 		  bodyPart = [NGMimeBodyPart bodyPartWithHeader: headerMap];
 		  [bodyPart setBody: [text dataUsingEncoding: NSUTF8StringEncoding]];
@@ -756,7 +756,7 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
     
 		  /* calendar part */
 		  header = [NSString stringWithFormat: @"text/calendar; method=%@;"
-				     @" charset=utf-8",
+				     @" charset=\"utf-8\"",
 				     [(iCalCalendar *) [object parent] method]];
 		  headerMap = [NGMutableHashMap hashMapWithCapacity: 1];
 		  [headerMap setObject:header forKey: @"content-type"];
