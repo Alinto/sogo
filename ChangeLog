@@ -1,3 +1,9 @@
+2010-02-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/SchedulerUI.js
+	(updateEventFromDraggingCallback): invoke refreshEventsAndDisplay
+	instead of changeCalendarDisplay alone.
+
 2010-02-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/SchedulerUI.js (onMenuCurrentView): we

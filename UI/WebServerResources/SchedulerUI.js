@@ -114,9 +114,7 @@ function performEventAdjustment(folder, event, recurrence, params) {
 function updateEventFromDraggingCallback(http) {
     if (http.readyState == 4) {
         if (isHttpStatus204(http.status)) {
-            // var cell = this.callbackData.eventCell;
-            // cell.parentNode.removeChild(cell);
-            changeCalendarDisplay();
+            refreshEventsAndDisplay();
         }
     }
 }
