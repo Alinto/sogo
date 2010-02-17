@@ -1,4 +1,5 @@
 etc/default/sogo
+etc/apache2/conf.d/SOGo.conf
 usr/sbin/*
 usr/lib/GNUstep/*
 usr/lib/lib*

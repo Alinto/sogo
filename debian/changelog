@@ -1,3 +1,11 @@
+sogo (1.2.1) unstable; urgency=low
+
+  * New upstream release.
+  * SOGo-debian.conf installed as /etc/apache2/conf.d/
+  * SOGo.conf removed from documentation examples.
+
+ -- Inverse Support <support@inverse.ca>  Wed, 17 Feb 2010 11:06:41 -0500
+
 sogo (1.2.0) unstable; urgency=low
 
   * New upstream release.

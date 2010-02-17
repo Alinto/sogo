@@ -63,7 +63,7 @@ binary-arch: build-arch install-arch
 	dh_installcron
 	dh_installchangelogs ChangeLog
 	dh_installdocs
-	dh_installexamples
+#	dh_installexamples
 	dh_installman
 	dh_install
 	dh_link
