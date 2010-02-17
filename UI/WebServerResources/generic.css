@@ -494,7 +494,7 @@ LI[class~="_selected"].denied
 }
 
 DIV.hidden
-{ visibility: hidden; };
+{ visibility: hidden; }
 
 /* folder tree (js) )*/
 DIV.dTreeNode A SPAN.nodeName
