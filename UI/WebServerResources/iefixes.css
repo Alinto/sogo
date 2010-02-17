@@ -80,20 +80,6 @@ DIV#attendeesMenu LI.separator
 DIV#attendeesView
 { left: 0.5em; }
 
-DIV#freeBusyView
-{ cursor: default;
-  border-bottom: 1px solid #fff;
-  border-right: 1px solid #fff;
-  border-top: 2px solid #222;
-  border-left: 2px solid #222;
-  left: 0.5em; }
-
-TABLE#freeBusyData TD.noFreeBusy
-{ height: 2.2em; }
-
-TABLE#freeBusyData TD SPAN.freeBusyZoneElement
-{ height: 103%; }
-
 TABLE
 { empty-cells: show; }
 

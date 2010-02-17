@@ -7,10 +7,7 @@ DIV#attendeesView
   left: 1em;
   right: 1em;
   top: 1em;
-  bottom: 1em;
-  margin: 0px;
-  padding: 0px;
-  border: 0px; }
+  bottom: 1em; }
 
 DIV#freeBusyView
 { background-color: #fff;
@@ -94,7 +91,7 @@ TABLE#freeBusyData TD
   border-left: 1px solid #cecbff;
   border-top: 0px;
   border-right: 0px;
-  height: 2em;
+  height: 24px;
   background-color: #fff; }
 
 TABLE#freeBusyAttendees TD
@@ -137,13 +134,13 @@ SPAN.freeBusyZoneElement
   border: 0px; }
 
 TABLE#freeBusyHeader TR.freeBusyHeader3 SPAN.freeBusyZoneElement
-{ height: .25em; }
+{ height: 2px; }
 
 TABLE#freeBusyHeader TR.freeBusyHeader3 SPAN.freeBusyZoneElement.busy
 { background-color: #f03 !important; }
 
 TABLE#freeBusyData TD SPAN.freeBusyZoneElement
-{ height: 98%; /* not nice under Safari */ }
+{ height: 23px; }
 
 SPAN.colorBox.free,
 TABLE#freeBusyData TD SPAN.freeBusyZoneElement
@@ -206,8 +203,6 @@ TABLE#freeBusyData TD.noFreeBusy
 
 DIV#freeBusyViewButtons
 { position: absolute;
-  margin: 0px;
-  border: 0px;
   padding: 0px 3px 3px 3px;
   line-height: 2em;
   top: 0px;
@@ -227,9 +222,6 @@ DIV#freeBusyViewButtons INPUT
 
 DIV#freeBusyZoomButtons
 { position: absolute;
-  margin: 0px;
-  border: 0px;
-  padding: 0px;
   height: 2em;
   top: 0px;
   right: 0px; }
