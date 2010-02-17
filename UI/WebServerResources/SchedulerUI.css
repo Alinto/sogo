@@ -534,12 +534,16 @@ DIV.dayOfAnotherMonth
 
 DIV.monthView DIV.dayHeader
 { margin-right: 0px;
-  height: 16px;
+  height: 20px;
+  padding-top: 2px;
   padding-right: 2px;
   text-align: right;
   cursor: pointer;
   color: #666;
   -moz-user-select: none; }
+
+DIV#monthDaysView DIV.selectedDay DIV.dayHeader
+{ font-weight: bold; }
 
 DIV.monthView DIV.days
 { top: 2em;
@@ -581,9 +585,6 @@ DIV.daysViewFor7Days#daysView DIV.selectedDay DIV.clickableHourCell,
 DIV#monthDaysView DIV.selectedDay
 { background-color: #ffe79c; }
 
-DIV#monthDaysView DIV.selectedDay DIV.dayHeader
-{ font-weight: bold; }
-
 DIV.daysViewFor7Days#calendarHeader DIV.days DIV.selectedDay.weekEndDay,
 DIV.daysViewFor7Days#daysView DIV.selectedDay.weekEndDay DIV.clickableHourCell,
 DIV.daysViewFor7Days#daysView DIV.selectedDay DIV.clickableHourCell.outOfDay
@@ -610,8 +611,7 @@ DIV.monthView DIV.week2of4
 { top: 50%; }
 
 DIV.monthView DIV.week3of4
-{ top: 75%;
-  border-bottom: 2px solid #ccc !important; }
+{ top: 75%; }
 
 DIV.monthView DIV.week1of5
 { top: 20%; }
@@ -623,8 +623,7 @@ DIV.monthView DIV.week3of5
 { top: 60%; }
 
 DIV.monthView DIV.week4of5
-{ top: 80%;
-  border-bottom: 2px solid #ccc !important; }
+{ top: 80%; }
 
 DIV.monthView DIV.week1of6
 { top: 16.666667%; }
@@ -639,8 +638,7 @@ DIV.monthView DIV.week4of6
 { top: 66.666667%; }
 
 DIV.monthView DIV.week5of6
-{ top: 83.333333%;
-  border-bottom: 2px solid #ccc !important; }
+{ top: 83.333333%; }
 
 DIV.monthView DIV.week3
 { top: 45%; }
@@ -653,6 +651,11 @@ DIV.monthView DIV.week5
 
 DIV.monthView DIV.week6
 { top: 90%; }
+
+DIV.monthView DIV.week3of4,
+DIV.monthView DIV.week4of5,
+DIV.monthView DIV.week5of6
+{ border-bottom: 2px solid #909090 !important; }
 
 DIV.daysViewFor1Days DIV.day
 { width: 100%; }
@@ -688,7 +691,8 @@ DIV.daysViewFor7Days DIV.day5
 
 DIV.monthView DIV.day6,
 DIV.daysViewFor7Days DIV.day6
-{ left: 85.7142%; }
+{ left: 85.7142%;
+  border-right: 1px solid #909090; }
 
 /* "left" and "width" for #daysView DIV.event are computed in JS code */
 #daysView DIV.event
