@@ -106,8 +106,8 @@ DIV#descriptionDiv DIV.fakeTextArea
   padding: 2px 4px;
   white-space: pre-wrap; }
 
-#delegateEditor
-{ padding-bottom: 1em; }
+/* #delegateEditor
+{ padding-bottom: 1em; } */
 
 #delegatedTo
 { background-image: url("abcard.gif");

@@ -217,8 +217,9 @@
     <label id="delegateEditor" style="display: none;">
       <span class="content">
         <input name="delegatedTo" id="delegatedTo" type="text" var:value="ownerAsAttendee.delegatedTo" var:uid="delegatedTo" />
-	<br />
-	<input type="checkbox" name="delegateReceiveUpdates" /> <var:string label:value="Keep sending me updates" />
+                <!--
+                <br />
+                <input type="checkbox" name="delegateReceiveUpdates" /> <var:string label:value="Keep sending me updates" /> -->
       </span>
     </label>
     </var:if><var:if condition="ownerAsAttendee.delegatedTo">
