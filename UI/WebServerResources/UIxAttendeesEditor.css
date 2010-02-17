@@ -27,7 +27,7 @@ DIV#freeBusyView
   border-bottom: 1px solid #fff; }
 
 TABLE
-{ border-collapse: separated;
+{ border-collapse: separate;
   table-layout: auto;
   border-spacing: 0px 0px; }
 
