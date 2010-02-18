@@ -1861,24 +1861,50 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  
  static __inline__ NSException *_consumeIfMatch
    (NGImap4ResponseParser *self, unsigned char _m);
-@@ -300,6 +305,16 @@
+@@ -261,20 +266,6 @@
+   }
+   
+   result = [NGMutableHashMap hashMapWithCapacity:64];
+-  
+-  if (_la(self, 0) == -1) {
+-    [self logWithFormat:@"%s: catched: %@", __PRETTY_FUNCTION__,
+-            [self->buffer lastException]];
+-    
+-    if (ex_) {
+-      *ex_ = [self->buffer lastException];
+-      return nil;
+-    }
+-    else {
+-      [self setLastException:[self->buffer lastException]];
+-      return nil;
+-    }
+-  }
+   for (endOfCommand = NO; !endOfCommand; ) {
+     unsigned char l0;
+     
+@@ -300,6 +291,21 @@
        /* those starting with a number '24 ', eg '24 OK Completed' */
        endOfCommand = (_parseTaggedResponse(self, result) == _tag);
      }
-+    else if (l0 == -1) {
-+      *ex_ = [self->buffer lastException];
-+      if (!*ex_)
-+        *ex_
-+          = [NSException exceptionWithName:@"UnexpectedEndOfStream"
-+                                    reason:(@"the parsed stream ended"
-+                                            @" unexpectedly")
-+                                  userInfo:nil];
++    else if (l0 == (unsigned char) -1) {
++      if (ex_) {
++        *ex_ = [self->buffer lastException];
++        if (!*ex_)
++          *ex_
++            = [NSException exceptionWithName:@"UnexpectedEndOfStream"
++                                      reason:(@"the parsed stream ended"
++                                              @" unexpectedly")
++                                    userInfo:nil];
++      } else {
++        [self setLastException: [self->buffer lastException]];
++      }
 +      endOfCommand = YES;
++      result = nil;
 +    }
    }
    return result;
  }
-@@ -488,6 +503,50 @@
+@@ -488,6 +494,50 @@
    return [self _parseDataIntoRAM:size];
  }
  
@@ -1929,7 +1955,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  static int _parseTaggedResponse(NGImap4ResponseParser *self,
                                  NGMutableHashMap *result_) 
  {
-@@ -584,6 +643,10 @@
+@@ -584,6 +634,10 @@
      break;
  
    case 'N':
@@ -1940,7 +1966,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
      if (_parseNoUntaggedResponse(self, result_))     // la: 2
        return;
      break;
-@@ -648,14 +711,171 @@
+@@ -648,14 +702,171 @@
    [result_ addObject:_parseUntil(self, '\n') forKey:@"description"];
  }
  
@@ -2113,7 +2139,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  - (void)_consumeOptionalSpace {
    if (_la(self, 0) == ' ') _consume(self, 1);
  }
-@@ -685,6 +905,10 @@
+@@ -685,6 +896,10 @@
      name = [self _parseQuotedString];
      _parseUntil(self, '\n');
    }
@@ -2124,7 +2150,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
    else
      name = _parseUntil(self, '\n');
    
-@@ -723,6 +947,85 @@
+@@ -723,6 +938,85 @@
    return YES;
  }
  
@@ -2210,7 +2236,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  - (BOOL)_parseACLResponseIntoHashMap:(NGMutableHashMap *)result_ {
    /*
      21 GETACL INBOX
-@@ -1030,10 +1333,15 @@
+@@ -1030,10 +1324,15 @@
    _consume(self, 7);
  
    if (_la(self, 0) == '"') {
@@ -2228,7 +2254,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
    else {
      name = _parseUntil(self, ' ');
    }
-@@ -1073,51 +1381,6 @@
+@@ -1073,51 +1372,6 @@
    return YES;
  }
  
@@ -2280,7 +2306,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  - (id)_decodeQP:(id)_string headerField:(NSString *)_field {
    if (![_string isNotNull])
      return _string;
-@@ -1185,7 +1448,7 @@
+@@ -1185,7 +1439,7 @@
    route   = [self _parseQuotedStringOrNIL]; [self _consumeOptionalSpace];
    mailbox = [self _parseQuotedStringOrNIL]; [self _consumeOptionalSpace];
    host    = [self _parseQuotedStringOrNIL]; [self _consumeOptionalSpace];
@@ -2289,7 +2315,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
    if (_la(self, 0) != ')') {
      [self logWithFormat:@"WARNING: IMAP4 envelope "
  	    @"address not properly closed (c0=%c,c1=%c): %@",
-@@ -1197,6 +1460,7 @@
+@@ -1197,6 +1451,7 @@
    address = [[NGImap4EnvelopeAddress alloc] initWithPersonalName:pname
  					    sourceRoute:route mailbox:mailbox
  					    host:host];
@@ -2297,7 +2323,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
    return address;
  }
  
-@@ -1382,7 +1646,15 @@
+@@ -1382,7 +1637,15 @@
  #if 0
      [self logWithFormat:@"PARSE KEY: %@", key];
  #endif
@@ -2314,7 +2340,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
        NSDictionary *content;
          
        if ((content = [self _parseBodyContent]) != nil)
-@@ -1594,8 +1866,11 @@
+@@ -1594,8 +1857,11 @@
      if (_decode)
        data = [data decodeQuotedPrintableValueOfMIMEHeaderField:nil];
      
@@ -2328,7 +2354,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
    }
    else {
      str = _parseUntil2(self, ' ', ')');
-@@ -1620,13 +1895,35 @@
+@@ -1620,13 +1886,35 @@
    return str;
  }
  
@@ -2365,7 +2391,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  static NSDictionary *_parseBodyParameterList(NGImap4ResponseParser *self)
  {
    NSMutableDictionary *list;
-@@ -1646,7 +1943,7 @@
+@@ -1646,7 +1934,7 @@
        _consumeIfMatch(self, ' ');
        value = _parseBodyDecodeString(self, YES, YES);
  
@@ -2374,7 +2400,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
      }
      _consumeIfMatch(self, ')');
    }
-@@ -1731,13 +2028,14 @@
+@@ -1731,13 +2019,14 @@
  static NSDictionary *_parseSingleBody(NGImap4ResponseParser *self,
  				      BOOL isBodyStructure) {
    NSString            *type, *subtype, *bodyId, *description,
@@ -2391,7 +2417,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
    _consumeIfMatch(self, ' ');
    parameterList = _parseBodyParameterList(self);
    _consumeIfMatch(self, ' ');
-@@ -1762,13 +2060,18 @@
+@@ -1762,13 +2051,18 @@
      _consumeIfMatch(self, ' ');
      [dict setObject:_parseBodyString(self, YES) forKey:@"lines"];
    }
@@ -2413,7 +2439,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
        _consumeIfMatch(self, ' ');
        [dict setObject:_parseParenthesizedAddressList(self) forKey:@"from"];
        _consumeIfMatch(self, ' ');
-@@ -1783,14 +2086,20 @@
+@@ -1783,14 +2077,20 @@
        _consumeIfMatch(self, ' ');
        [dict setObject:_parseParenthesizedAddressList(self) forKey:@"bcc"];
        _consumeIfMatch(self, ' ');
@@ -2437,7 +2463,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
      }
    }
  
-@@ -1805,14 +2114,9 @@
+@@ -1805,14 +2105,9 @@
  	      forKey: @"disposition"];
  	if (_la(self, 0) != ')') {
  	  _consume(self,1);
@@ -2455,7 +2481,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  	  if (_la(self, 0) != ')') {
  	    _consume(self,1);
  	    [dict setObject: _parseBodyString(self, YES)
-@@ -1829,6 +2133,7 @@
+@@ -1829,6 +2124,7 @@
  static NSDictionary *_parseMultipartBody(NGImap4ResponseParser *self,
  					 BOOL isBodyStructure) {
    NSMutableArray *parts;
@@ -2463,7 +2489,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
    NSString       *kind;
    NSMutableDictionary *dict;
  
-@@ -1854,14 +2159,9 @@
+@@ -1854,14 +2150,9 @@
  	      forKey: @"disposition"];
  	if (_la(self, 0) != ')') {
  	  _consume(self,1);
@@ -2481,7 +2507,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  	  if (_la(self, 0) != ')') {
  	    _consume(self,1);
  	    [dict setObject: _parseBodyString(self, YES)
-@@ -2170,6 +2470,21 @@
+@@ -2170,6 +2461,21 @@
    }
  }
  
@@ -2503,7 +2529,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  - (NSException *)exceptionForFailedMatch:(unsigned char)_match
    got:(unsigned char)_avail
  {
-@@ -2225,9 +2540,9 @@
+@@ -2225,9 +2531,9 @@
        [s release];
        
        if (c == '\n') {
@@ -2519,7 +2545,13 @@ Index: sope-mime/NGImap4/ChangeLog
 ===================================================================
 --- sope-mime/NGImap4/ChangeLog	(revision 1664)
 +++ sope-mime/NGImap4/ChangeLog	(working copy)
-@@ -1,3 +1,121 @@
+@@ -1,3 +1,127 @@
++2010-02-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
++
++	* NGImap4ResponseParser.m (-parseResponseForTagId:exception:): the
++	unsigned "l0" was never compared with "-1". Therefore we cast "-1"
++	as an unsigned char to let the error check happen.
++
 +2010-01-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 +
 +	* NGImap4Client.m (-processCommand:withTag:withNotification:):
