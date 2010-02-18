@@ -26,8 +26,6 @@
 #import <Foundation/NSPathUtilities.h>
 #import <Foundation/NSString.h>
 
-#import <Main/build.h>
-
 #import <NGObjWeb/SoHTTPAuthenticator.h>
 #import <NGObjWeb/SoObjects.h>
 #import <NGObjWeb/WOResourceManager.h>
@@ -41,6 +39,7 @@
 #import <SOGo/NSCalendarDate+SOGo.h>
 #import <SOGo/NSObject+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
+#import <SOGo/SOGoBuild.h>
 #import <SOGo/SOGoContentObject.h>
 #import <SOGo/SOGoObject.h>
 #import <SOGo/SOGoPermissions.h>

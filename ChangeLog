@@ -1,5 +1,7 @@
 2010-02-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoBuild.m: moved from Main/build.h to here.
+
 	* SoObjects/SOGo/SOGoProductLoader.m: moved from Main/ to here.
 
 2010-02-18  Ludovic Marcotte  <lmarcotte@inverse.ca>

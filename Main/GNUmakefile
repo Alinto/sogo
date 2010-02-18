@@ -5,7 +5,7 @@ include $(GNUSTEP_MAKEFILES)/common.make
 include ../Version
 include ./Version
 
-ADDITIONAL_INCLUDE_DIRS += -I../SOPE/ -D_GNU_SOURCE
+ADDITIONAL_INCLUDE_DIRS += 
 ADDITIONAL_LIB_DIRS += -L../SOPE/GDLContentStore/obj/
 
 SOGOD     = sogod
@@ -19,8 +19,7 @@ all::
 $(SOGOD)_OBJC_FILES += \
 	sogod.m			\
 	SOGo.m			\
-	SOGo+DAV.m		\
-	build.m
+	SOGo+DAV.m
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/tool.make

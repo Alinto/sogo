@@ -1,6 +1,5 @@
 # compile settings
 
-BUILD_DATE = $(shell echo $$USER@$$HOSTNAME; date +"%Y%m%d%H%M")
 ADDITIONAL_CPPFLAGS += \
         -D_GNU_SOURCE \
         -DSOGO_MAJOR_VERSION=$(MAJOR_VERSION) \
@@ -10,7 +9,7 @@ ADDITIONAL_CPPFLAGS += \
 ADDITIONAL_INCLUDE_DIRS += \
         -I../SOPE/ \
 	-I../SoObjects/	\
-	-I.. -DSOGO_BUILD_DATE="@\"$(BUILD_DATE)\""
+	-I..
 
 ADDITIONAL_LIB_DIRS += \
 	-L../SoObjects/SOGo/SOGo.framework  \

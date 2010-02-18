@@ -44,6 +44,7 @@
 
 #import <WEExtensions/WEResourceManager.h>
 
+#import <SOGo/SOGoBuild.h>
 #import <SOGo/SOGoCache.h>
 #import <SOGo/SOGoDAVAuthenticator.h>
 #import <SOGo/SOGoPermissions.h>
@@ -57,7 +58,6 @@
 #import <SOGo/WORequest+SOGo.h>
 #import <SOGo/NSObject+DAV.h>
 
-#import "build.h"
 #import "NSException+Stacktrace.h"
 
 #import "SOGo.h"
