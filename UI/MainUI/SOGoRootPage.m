@@ -19,8 +19,10 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
+#import <Foundation/NSTimeZone.h>
 #import <Foundation/NSURL.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
@@ -31,6 +33,7 @@
 #import <NGObjWeb/WOResponse.h>
 
 #import <NGExtensions/NGBase64Coding.h>
+#import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -79,6 +82,27 @@
      [authCookie setIsSecure: YES]; */
   
   return authCookie;
+}
+
+- (WOCookie *) _casLocationCookie: (BOOL) cookieReset
+{
+  WOCookie *locationCookie;
+  NSString *appName;
+  WORequest *rq;
+  NSCalendarDate *date;
+
+  rq = [context request];
+  locationCookie = [WOCookie cookieWithName: @"cas-location" value: [rq uri]];
+  appName = [rq applicationName];
+  [locationCookie setPath: [NSString stringWithFormat: @"/%@/", appName]];
+  if (cookieReset)
+    {
+      date = [NSCalendarDate calendarDate];
+      [date setTimeZone: [NSTimeZone timeZoneWithAbbreviation: @"GMT"]];
+      [locationCookie setExpires: [date yesterday]];
+    }
+
+  return locationCookie;
 }
 
 /* actions */
@@ -161,16 +185,21 @@
   NSString *login, *newLocation, *oldLocation, *ticket;
   SOGoCASSession *casSession;
   SOGoWebAuthenticator *auth;
-  WOCookie *casCookie;
+  WOCookie *casCookie, *casLocationCookie;
+  WORequest *rq;
 
   casCookie = nil;
+  casLocationCookie = nil;
+
+  newLocation = nil;
 
   login = [[context activeUser] login];
   if ([login isEqualToString: @"anonymous"])
     login = nil;
   if (!login)
     {
-      ticket = [[context request] formValueForKey: @"ticket"];
+      rq = [context request];
+      ticket = [rq formValueForKey: @"ticket"];
       if ([ticket length])
         {
           casSession = [SOGoCASSession CASSessionWithTicket: ticket];
@@ -183,22 +212,40 @@
                                         andPassword: [casSession identifier]
                                    forAuthenticator: auth];
               [casSession updateCache];
+              newLocation = [rq cookieValueForKey: @"cas-location"];
+              /* login callback, we expire the "cas-location" cookie, created
+                 below */
+              casLocationCookie = [self _casLocationCookie: YES];
             }
         }
     }
+  else
+    ticket = nil;
 
   if (login)
     {
-      oldLocation = [[self clientObject] baseURLInContext: context];
-      newLocation = [NSString stringWithFormat: @"%@%@",
-                              oldLocation, [login stringByEscapingURL]];
+      /* We redirect the user to his "homepage" when newLocation could not be
+         deduced from the "cas-location" cookie and the current action is not a
+         login callback (ticket != nil).  */
+      if (!newLocation || !ticket)
+        {
+          oldLocation = [[self clientObject] baseURLInContext: context];
+          newLocation = [NSString stringWithFormat: @"%@%@",
+                                  oldLocation, [login stringByEscapingURL]];
+        }
     }
   else
-    newLocation = [SOGoCASSession CASURLWithAction: @"login"
-                                     andParameters: [self _casRedirectKeys]];
+    {
+      newLocation
+        = [SOGoCASSession CASURLWithAction: @"login"
+                             andParameters: [self _casRedirectKeys]];
+      casLocationCookie = [self _casLocationCookie: NO];
+    }
   response = [self redirectToLocation: newLocation];
   if (casCookie)
     [response addCookie: casCookie];
+  if (casLocationCookie)
+    [response addCookie: casLocationCookie];
 
   return response;
 }

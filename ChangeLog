@@ -1,5 +1,12 @@
 2010-02-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MainUI/SOGoRootPage.m (-_casDefaultAction): when the local
+	cache has expired, we create a "cas-location" cookie before
+	redirecting to the CAS login page and we redirect the user back to
+	that page when the login has been completed. This way, the
+	event creation window or any AJAX request would seamlessly restart
+	where "interrupted" by the login process.
+
 	* SoObjects/Appointments/SOGoCalendarComponent.m
 	(-sendEMailUsingTemplateNamed:forObject:previousObject:toAttendees:):
 	added a few headers to the ical attachment that could help
