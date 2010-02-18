@@ -15,6 +15,8 @@ SOGo_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
 # 	SOGoGroupsFolder.h		\
 # 	SOGoGroupFolder.h		
 SOGo_HEADER_FILES = \
+	SOGoProductLoader.h		\
+	\
 	SOGoCache.h			\
 	SOGoObject.h			\
 	SOGoContentObject.h		\
@@ -69,6 +71,8 @@ SOGo_HEADER_FILES = \
 # 	SOGoGroupsFolder.m		\
 # 	SOGoGroupFolder.m		
 SOGo_OBJC_FILES = \
+	SOGoProductLoader.m		\
+	\
 	SOGoCache.m			\
 	SOGoObject.m			\
 	SOGoContentObject.m		\

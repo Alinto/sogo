@@ -47,6 +47,7 @@
 #import <SOGo/SOGoCache.h>
 #import <SOGo/SOGoDAVAuthenticator.h>
 #import <SOGo/SOGoPermissions.h>
+#import <SOGo/SOGoProductLoader.h>
 #import <SOGo/SOGoProxyAuthenticator.h>
 #import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoUser.h>
@@ -57,7 +58,6 @@
 #import <SOGo/NSObject+DAV.h>
 
 #import "build.h"
-#import "SOGoProductLoader.h"
 #import "NSException+Stacktrace.h"
 
 #import "SOGo.h"

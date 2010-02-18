@@ -1,3 +1,7 @@
+2010-02-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoProductLoader.m: moved from Main/ to here.
+
 2010-02-18  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* UI/MailerUI/UIxMailFolderActions.m: Modified the
