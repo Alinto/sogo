@@ -1,3 +1,9 @@
+2010-02-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoCache.m: worked around in bug in GCC
+	occurring with libmemcached >= 0.37 by making the servers and
+	handle ivars static globals.
+
 2010-02-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/SchedulerUI.js

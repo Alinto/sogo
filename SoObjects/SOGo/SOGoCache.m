@@ -47,6 +47,18 @@
 
 #import "SOGoCache.h"
 
+/* Those used to be ivars but were converted to static globals to work around
+   a bug in GCC that prevent SOGo from using libmemcached > 0.37:
+
+   "SOGoCache.m:409: internal compiler error: in encode_gnu_bitfield, at
+   objc/objc-act.c:8218
+   Please submit a full bug report,
+   with preprocessed source if appropriate.
+   See <file:///usr/share/doc/gcc-4.4/README.Bugs> for instructions." */
+
+static memcached_server_st *servers = NULL;
+static memcached_st *handle = NULL;
+
 @implementation SOGoCache
 
 + (SOGoCache *) sharedCache
@@ -88,30 +100,34 @@
       // relatively strange behaviors
       localCache = [NSMutableDictionary new];
 
-      handle = memcached_create(NULL);
-      if (handle)
-	{
+      if (!handle)
+        {
+          handle = memcached_create(NULL);
+          if (handle)
+            {
 #warning We could also make the port number configurable and even make use \
   of NGNetUtilities for that.
 
-          sd = [SOGoSystemDefaults sharedSystemDefaults];
-          // We define the default value for cleaning up cached users'
-          // preferences. This value should be relatively high to avoid
-          // useless database calls.
+              sd = [SOGoSystemDefaults sharedSystemDefaults];
+              // We define the default value for cleaning up cached users'
+              // preferences. This value should be relatively high to avoid
+              // useless database calls.
 
-          cleanupInterval = [sd cacheCleanupInterval];
-          ASSIGN (memcachedServerName, [sd memcachedHost]);
+              cleanupInterval = [sd cacheCleanupInterval];
+              ASSIGN (memcachedServerName, [sd memcachedHost]);
 
-          [self logWithFormat: @"Cache cleanup interval set every %f seconds",
-                cleanupInterval];
-          [self logWithFormat: @"Using host '%@' as server",
-                memcachedServerName];
-	  servers
-            = memcached_server_list_append(NULL,
-                                           [memcachedServerName UTF8String],
-                                           11211, &error);
-	  error = memcached_server_push(handle, servers);
-	}
+              [self logWithFormat: @"Cache cleanup interval set every %f seconds",
+                    cleanupInterval];
+              [self logWithFormat: @"Using host '%@' as server",
+                    memcachedServerName];
+              if (!servers)
+                servers
+                  = memcached_server_list_append(NULL,
+                                                 [memcachedServerName UTF8String],
+                                                 11211, &error);
+              error = memcached_server_push(handle, servers);
+            }
+        }
     }
 
   return self;
@@ -119,8 +135,9 @@
 
 - (void) dealloc
 {
-  memcached_server_free (servers);
-  memcached_free (handle);
+  /* Commented out because of a bug in GCC:
+     memcached_server_free (servers);
+     memcached_free (handle); */
   [memcachedServerName release];
   [cache release];
   [users release];

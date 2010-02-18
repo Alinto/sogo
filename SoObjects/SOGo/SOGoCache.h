@@ -43,9 +43,9 @@
   NSMutableDictionary *users;
   float cleanupInterval;
   NSString *memcachedServerName;
-  @private
-    memcached_server_st *servers;
-    memcached_st *handle;
+  // @private
+  //   memcached_server_st *servers;
+  //   memcached_st *handle;
 }
 
 + (SOGoCache *) sharedCache;
