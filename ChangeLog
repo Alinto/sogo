@@ -1,5 +1,9 @@
 2010-02-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Tools/SOGoToolRestore.m (+initialize): removed method.
+	(-run): make use of the newly publicized SOGoProductLoader for
+	loading needed products.
+
 	* SoObjects/SOGo/SOGoProductLoader.m (-loadAllProducts): new name
 	for "loadProducts". Do not list product directories where no
 	products were loaded.

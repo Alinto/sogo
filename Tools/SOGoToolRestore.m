@@ -34,10 +34,11 @@
 #import <GDLContentStore/NSURL+GCS.h>
 
 #import <Appointments/iCalEntityObject+SOGo.h>
-#import <SOGo/SOGoUserManager.h>
 #import <SOGo/NSArray+Utilities.h>
+#import <SOGo/SOGoProductLoader.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
+#import <SOGo/SOGoUserManager.h>
 #import <SOGo/SOGoUserProfile.h>
 #import <SOGo/SOGoUserSettings.h>
 
@@ -53,20 +54,6 @@
 #import <NGExtensions/NGBundleManager.h>
 
 @implementation SOGoToolRestore
-
-+ (void) initialize
-{
-  NGBundleManager *bm;
-
-  /* we need to load the SOGo bundles here because OGoContentStore make use of
-     certain categories found therein */
-  bm = [NGBundleManager defaultBundleManager];
-  [bm setBundleSearchPaths: [NSArray arrayWithObject: SOGO_LIBDIR]];
-  [[bm bundleWithName: @"Appointments" type: @"SOGo"] load];
-  [[bm bundleWithName: @"Contacts" type: @"SOGo"] load];
-
-  [iCalEntityObject initializeSOGoExtensions];
-}
 
 + (NSString *) command
 {
@@ -591,6 +578,12 @@
 
 - (BOOL) run
 {
+  [[SOGoProductLoader productLoader]
+    loadProducts: [NSArray arrayWithObjects: @"Contacts.SOGo",
+                           @"Appointments.SOGo",
+                           nil]];
+  [iCalEntityObject initializeSOGoExtensions];
+
   return ([self parseArguments] && [self proceed]);
 }
 
