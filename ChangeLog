@@ -3,9 +3,8 @@
 	* SoObjects/Appointments/SOGoCalendarComponent.m
 	(-sendEMailUsingTemplateNamed:forObject:previousObject:toAttendees:):
 	added a few headers to the ical attachment that could help
-	work-around bugs occurring with Outlook: content-disposition =
-	inline, content-transfer-encoding = qp. Moreover a \r\n is added
-	to the iCalString.
+	work-around bugs occurring with Outlook: content-transfer-encoding
+	= qp. Moreover a \r\n is added to the iCalString.
 
 	* SoObjects/SOGo/SOGoCache.m: worked around in bug in GCC
 	occurring with libmemcached >= 0.37 by making the servers and

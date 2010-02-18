@@ -761,8 +761,6 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
 				     [(iCalCalendar *) [object parent] method]];
 		  headerMap = [NGMutableHashMap hashMapWithCapacity: 1];
 		  [headerMap setObject:header forKey: @"content-type"];
-		  [headerMap setObject: @"inline"
-                                forKey: @"content-disposition"];
 		  [headerMap setObject: @"quoted-printable"
                                 forKey: @"content-transfer-encoding"];
 		  bodyPart = [NGMimeBodyPart bodyPartWithHeader: headerMap];
