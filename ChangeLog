@@ -1,5 +1,11 @@
 2010-02-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoProductLoader.m (-loadAllProducts): new name
+	for "loadProducts". Do not list product directories where no
+	products were loaded.
+	(-loadProducts:): new method accepting an array of products to
+	load from SOGo library directories.
+
 	* SoObjects/SOGo/SOGoBuild.m: moved from Main/build.h to here.
 
 	* SoObjects/SOGo/SOGoProductLoader.m: moved from Main/ to here.

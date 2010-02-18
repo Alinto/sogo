@@ -134,7 +134,7 @@ static BOOL debugLeaks;
       localeLUT = [[NSMutableDictionary alloc] initWithCapacity:2];
     
       /* load products */
-      [[SOGoProductLoader productLoader] loadProducts];
+      [[SOGoProductLoader productLoader] loadAllProducts];
     
       /* setup resource manager */
       rm = [[WEResourceManager alloc] init];

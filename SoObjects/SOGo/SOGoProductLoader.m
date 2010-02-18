@@ -103,7 +103,52 @@ static NSString *productDirectoryName = @"SOGo";
   return searchPathes;
 }
 
-- (void) loadProducts
+- (void) loadAllProducts
+{
+  SoProductRegistry *registry = nil;
+  NSFileManager *fm;
+  NSMutableArray *loadedProducts;
+  NSEnumerator *pathes;
+  NSString *lpath, *bpath;
+  NSEnumerator *productNames;
+  NSString *productName;
+  NSAutoreleasePool *pool;
+
+  pool = [NSAutoreleasePool new];
+
+  registry = [SoProductRegistry sharedProductRegistry];
+  fm = [NSFileManager defaultManager];
+
+  loadedProducts = [NSMutableArray array];
+
+  pathes = [[self productSearchPathes] objectEnumerator];
+  while ((lpath = [pathes nextObject]))
+    {
+      productNames = [[fm directoryContentsAtPath: lpath] objectEnumerator];
+      while ((productName = [productNames nextObject]))
+	{
+          if ([[productName pathExtension] isEqualToString: @"SOGo"])
+            {
+	      bpath = [lpath stringByAppendingPathComponent: productName];
+	      [registry registerProductAtPath: bpath];
+              [loadedProducts addObject: productName];
+	    }
+	}
+      if ([loadedProducts count])
+        {
+          [self logWithFormat: @"SOGo products loaded from '%@':", lpath];
+          [self logWithFormat: @"  %@",
+                [loadedProducts componentsJoinedByString: @", "]];
+          [loadedProducts removeAllObjects];
+        }
+    }
+
+  if (![registry loadAllProducts])
+    [self warnWithFormat: @"could not load all products !"];
+  [pool release];
+}
+
+- (void) loadProducts: (NSArray *) products
 {
   SoProductRegistry *registry = nil;
   NSFileManager *fm;
@@ -121,16 +166,12 @@ static NSString *productDirectoryName = @"SOGo";
   pathes = [[self productSearchPathes] objectEnumerator];
   while ((lpath = [pathes nextObject]))
     {
-      [self logWithFormat: @"scanning SOGo products in: %@", lpath];
-
       productNames = [[fm directoryContentsAtPath: lpath] objectEnumerator];
       while ((productName = [productNames nextObject]))
 	{
-	  if ([[productName pathExtension] isEqualToString: @"SOGo"])
-	    {
+          if ([products containsObject: productName])
+            {
 	      bpath = [lpath stringByAppendingPathComponent: productName];
-	      [self logWithFormat: @" register SOGo product: %@",
-		    productName];
 	      [registry registerProductAtPath: bpath];
 	    }
 	}

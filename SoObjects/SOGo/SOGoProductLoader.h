@@ -32,11 +32,12 @@
   NSArray  *searchPathes;
 }
 
-+ (id)productLoader;
++ (id) productLoader;
 
 /* operations */
 
-- (void)loadProducts;
+- (void) loadAllProducts;
+- (void) loadProducts: (NSArray *) products;
 
 @end
 
