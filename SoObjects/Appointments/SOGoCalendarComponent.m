@@ -649,7 +649,7 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
                          toAttendees: (NSArray *) attendees
 {
   NSString *pageName;
-  NSString *senderEmail, *shortSenderEmail, *email, *iCalString;
+  NSString *senderEmail, *shortSenderEmail, *email, *versitString, *iCalString;
   WOApplication *app;
   unsigned i, count;
   iCalPerson *attendee;
@@ -681,7 +681,8 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
 // 	  NSLog (@"sending '%@' from %@",
 // 		 [(iCalCalendar *) [object parent] method], senderEmail);
 	  /* generate iCalString once */
-	  iCalString = [[object parent] versitString];
+	  versitString = [[object parent] versitString];
+          iCalString = [NSString stringWithFormat: @"%@\r\n", versitString];
 
 	  /* get WOApplication instance */
 	  app = [WOApplication application];
@@ -760,8 +761,13 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
 				     [(iCalCalendar *) [object parent] method]];
 		  headerMap = [NGMutableHashMap hashMapWithCapacity: 1];
 		  [headerMap setObject:header forKey: @"content-type"];
+		  [headerMap setObject: @"inline"
+                                forKey: @"content-disposition"];
+		  [headerMap setObject: @"quoted-printable"
+                                forKey: @"content-transfer-encoding"];
 		  bodyPart = [NGMimeBodyPart bodyPartWithHeader: headerMap];
-		  [bodyPart setBody: [iCalString dataUsingEncoding: NSUTF8StringEncoding]];
+		  [bodyPart setBody: [[iCalString dataUsingEncoding: NSUTF8StringEncoding]
+                                       dataByEncodingQuotedPrintable]];
 
 		  /* attach calendar part to multipart body */
 		  [body addBodyPart: bodyPart];
