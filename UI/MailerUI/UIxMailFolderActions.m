@@ -69,8 +69,9 @@
       else
         {
           path = [NSString stringWithFormat: @"%@%@", 
-                  [[co imap4URL] path], folderName];
-          [[connection client] subscribe: path];
+			   [co absoluteImap4Name], folderName];
+	  [[connection client] subscribe: path];
+	  
           response = [self responseWith204];
         }
     }
@@ -123,13 +124,23 @@
       [[connection client] select: [inbox absoluteImap4Name]];
       error = [connection moveMailboxAtURL: srcURL
 			  toURL: destURL];
+
       if (error)
 	{
 	  response = [self responseWithStatus: 500];
 	  [response appendContentString: @"Unable to rename folder."];
 	}
       else
-	response = [self responseWith204];
+	{
+	  // We unsubscribe to the old one, and subscribe back to the new one
+	  if ([[[context activeUser] userDefaults] mailShowSubscribedFoldersOnly])
+	    {	    
+	      [[connection client] subscribe: [destURL path]];
+	      [[connection client] unsubscribe: [srcURL path]];
+	    }
+
+	  response = [self responseWith204];
+	}
     }
   else
     {
@@ -200,7 +211,16 @@
       [response appendContentString: @"Unable to move folder."];
     }
   else
-    response = [self responseWith204];
+    {
+      // We unsubscribe to the old one, and subscribe back to the new one
+      if ([[[context activeUser] userDefaults] mailShowSubscribedFoldersOnly])
+	{
+	  [[connection client] subscribe: [destURL path]];
+	  [[connection client] unsubscribe: [srcURL path]];
+	}
+
+      response = [self responseWith204];
+    }
 
   return response;
 }

@@ -1,3 +1,11 @@
+2010-02-18  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* UI/MailerUI/UIxMailFolderActions.m: Modified the
+	code so that we correctly subscribe/unsubscribe to
+	the folders (old/new) when renaming or deleting
+	a folder. Also corrected the creation of subfolders
+	by using -absoluteImap4Name.
+
 2010-02-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoCalendarComponent.m
