@@ -197,13 +197,26 @@ static NSString *sieveScriptName = @"sogo";
   return imapAclStyle;
 }
 
+/* see http://tools.ietf.org/id/draft-ietf-imapext-acl */
 - (BOOL) imapAclConformsToIMAPExt
 {
-  SOGoDomainDefaults *dd;
+  NGImap4Client *imapClient;
+  NSArray *capability;
+  int count, max;
+  BOOL conforms;
 
-  dd = [[context activeUser] domainDefaults];
+  conforms = NO;
 
-  return [dd imapAclConformsToIMAPExt];
+  imapClient = [[self imap4Connection] client];
+  capability = [[imapClient capability] objectForKey: @"capability"];
+  max = [capability count];
+  for (count = 0; !conforms && count < max; count++)
+    {
+      if ([[capability objectAtIndex: count] hasPrefix: @"acl2"])
+	conforms = YES;
+    }
+
+  return conforms;
 }
 
 - (BOOL) supportsQuotas

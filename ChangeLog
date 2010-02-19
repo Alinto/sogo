@@ -1,5 +1,8 @@
 2010-02-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailAccount.m (-imapAclConformsToIMAPExt:)
+	now based on the server's capability string.
+
 	* UI/MailerUI/UIxMailFolderActions.m (-createFolderAction): we
 	check if the clientObject responds to "aboluteImap4Name",
 	otherwise the subscription is made to the folderName alone.
