@@ -1435,7 +1435,7 @@ DIV.event.draggable:hover DIV.rightDragGrip
   border-bottom: 1px solid #555; }
 
 #monthDaysView DIV.eventDragGhost
-{ top: 16px; }
+{ top: 21px; }
 
 #calendarHeader DIV.eventDragGhost
 { top: 0px; }
