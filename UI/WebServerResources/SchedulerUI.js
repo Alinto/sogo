@@ -308,7 +308,13 @@ function modifyEventCallback(http) {
         }
         else if (http.status == 403) {
             var data = http.responseText;
-            var msg = data.replace(/^(.*\n)*.*<p>((.*\n)*.*)<\/p>(.*\n)*.*$/, "$2");
+            var msg;
+            if (data.indexOf("An error occurred during object publishing") >
+                -1) {
+                msg = data.replace(/^(.*\n)*.*<p>((.*\n)*.*)<\/p>(.*\n)*.*$/, "$2");
+            } else {
+                msg = "delegate is a participant";
+            }
             window.alert(getLabel(msg));
         }
         else {
