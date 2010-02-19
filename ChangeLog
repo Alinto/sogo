@@ -1,5 +1,9 @@
 2010-02-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailFolderActions.m (-createFolderAction): we
+	check if the clientObject responds to "aboluteImap4Name",
+	otherwise the subscription is made to the folderName alone.
+
 	* Main/SOGo.m (-run): moved initialization logs from +initialize
 	here, so that they are output to the redirected output stream.
 	Added version number to "starting" line.
