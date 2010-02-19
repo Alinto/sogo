@@ -1,8 +1,8 @@
 2010-02-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
-	* UI/Scheduler/UIxCalListingActions.m (:):
-	_fetchFields:forComponentOfType: mark events of remote calendars
-	as non-editable.
+	* UI/Scheduler/UIxCalListingActions.m
+	(_fetchFields:forComponentOfType:): mark events of remote
+	calendars as non-editable.
 
 	* UI/Common/UIxPageFrame.m (-userIdentification): ancient
 	"userEmail" method, with a more generic name. Also we now return
