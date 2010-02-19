@@ -38,7 +38,7 @@
 #import <Mailer/SOGoMailObject.h>
 #import <SOGo/NSObject+Utilities.h>
 #import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoUserSettings.h>
+#import <SOGo/SOGoUserDefaults.h>
 
 #import <UI/Common/WODirectAction+SOGo.h>
 
@@ -136,7 +136,8 @@
       else
 	{
 	  // We unsubscribe to the old one, and subscribe back to the new one
-	  if ([[[context activeUser] userDefaults] mailShowSubscribedFoldersOnly])
+	  if ([[[context activeUser] userDefaults]
+                mailShowSubscribedFoldersOnly])
 	    {	    
 	      [[connection client] subscribe: [destURL path]];
 	      [[connection client] unsubscribe: [srcURL path]];
