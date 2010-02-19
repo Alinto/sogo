@@ -12,10 +12,6 @@ SOGOD     = sogod
 TOOL_NAME = $(SOGOD)
 $(SOGOD)_INSTALL_DIR = $(SOGO_ADMIN_TOOLS)
 
-# daemon tool
-all::
-	@touch build.m
-
 $(SOGOD)_OBJC_FILES += \
 	sogod.m			\
 	SOGo.m			\

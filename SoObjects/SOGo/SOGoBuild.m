@@ -23,4 +23,3 @@
 #import <Foundation/NSString.h>
 
 NSString *SOGoBuildDate = SOGO_BUILD_DATE;
-

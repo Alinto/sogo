@@ -2,7 +2,8 @@
 
 SOGo_INCLUDE_DIRS += -I.. -I../../UI -DSOGO_MAJOR_VERSION="\"$(MAJOR_VERSION)\"" -DSOGO_MINOR_VERSION="\"$(MINOR_VERSION)\""
 
-BUILD_DATE = $(shell echo $$USER@$$HOSTNAME; date +"%Y%m%d%H%M")
+HOSTNAME = $(shell hostname -f)
+BUILD_DATE = $(shell echo $$USER@$(HOSTNAME); date +"%Y%m%d%H%M")
 
 ADDITIONAL_CPPFLAGS += \
         -DSOGO_BUILD_DATE="@\"$(BUILD_DATE)\"" \

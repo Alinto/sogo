@@ -68,6 +68,10 @@ SOGo_HEADER_FILES = \
 	WOResponse+SOGo.h		\
 	WOContext+SOGo.h
 
+# daemon tool
+all::
+	@touch SOGoBuild.m
+
 #	SOGoCustomGroupFolder.m		\
 # 	SOGoGroupsFolder.m		\
 # 	SOGoGroupFolder.m		
