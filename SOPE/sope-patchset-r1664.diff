@@ -5409,7 +5409,7 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
  #if defined(__CYGWIN32__) || defined(__MINGW32__)
  
  int WOWatchDogApplicationMain
-@@ -39,201 +60,911 @@
+@@ -39,201 +60,875 @@
  #include <time.h>
  #include <string.h>
  
@@ -5458,10 +5458,10 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
 +@interface WOWatchDogChild : NSObject <RunLoopEvents>
 +{
 +  int pid;
-+  int SIGCHLDStatus;
 +  int counter;
 +  NGActiveSocket *controlSocket;
 +  WOChildStatus status;
++  NSTimer *killTimer;
 +  WOWatchDog *watchDog;
 +  NSCalendarDate *lastSpawn;
 +  BOOL loggedNotRespawn;
@@ -5472,9 +5472,7 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
 +- (void) setPid: (int) newPid;
 +- (int) pid;
 +
-+- (void) setSIGCHLDStatus: (int) newSIGCHLDStatus;
-+- (int) SIGCHLDStatus;
-+- (void) handleSIGCHLDStatus;
++- (void) handleProcessStatus: (int) status;
 +
 +- (void) setControlSocket: (NGActiveSocket *) newSocket;
 +- (NGActiveSocket *) controlSocket;
@@ -5500,10 +5498,10 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
 +  int argc;
 +  const char **argv;
 +
++  NSTimer *loopTimer;
 +  BOOL terminate;
 +  BOOL willTerminate;
 +  NSNumber *terminationSignal;
-+  int pendingSIGCHLD;
 +  int pendingSIGHUP;
 +
 +  NGPassiveSocket *listeningSocket;
@@ -5543,8 +5541,8 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
 +    {
 +      pid = -1;
 +      controlSocket = nil;
-+      SIGCHLDStatus = -1;
 +      status = WOChildStatusDown;
++      killTimer = nil;
 +      counter = 0;
 +      lastSpawn = nil;
 +      loggedNotRespawn = NO;
@@ -5571,6 +5569,7 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
 +
 +- (void) dealloc
 +{
++  [killTimer invalidate];
 +  [self setControlSocket: nil];
 +  [lastSpawn release];
 +  [super dealloc];
@@ -5591,31 +5590,22 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
 +  return pid;
 +}
 +
-+- (void) setSIGCHLDStatus: (int) newSIGCHLDStatus
-+{
-+  SIGCHLDStatus = newSIGCHLDStatus;
-+}
-+
-+- (int) SIGCHLDStatus
-+{
-+  return SIGCHLDStatus;
-+}
-+
-+- (void) handleSIGCHLDStatus
++- (void) handleProcessStatus: (int) processStatus
 +{
 +  int code;
 +
-+  [self logWithFormat: @"received SIGCHLD from pid %d", pid];
-+  code = WEXITSTATUS (SIGCHLDStatus);
-+  if (code != 0)
++  code = WEXITSTATUS (processStatus);
++  if (code == 0)
++    [self logWithFormat: @"child %d exited", pid];
++  else
 +    [self logWithFormat: @"child %d exited with code %i", pid, code];
-+  if (WIFSIGNALED (SIGCHLDStatus))
++  if (WIFSIGNALED (processStatus))
 +    [self logWithFormat: @" (terminated due to signal %i%@)",
-+          WTERMSIG (SIGCHLDStatus),
-+          WCOREDUMP (SIGCHLDStatus) ? @", coredump" : @""];
-+  if (WIFSTOPPED (SIGCHLDStatus))
-+    [self logWithFormat: @" (stopped due to signal %i)", WSTOPSIG (SIGCHLDStatus)];
-+  SIGCHLDStatus = -1;
++          WTERMSIG (processStatus),
++          WCOREDUMP (processStatus) ? @", coredump" : @""];
++  if (WIFSTOPPED (processStatus))
++    [self logWithFormat: @" (stopped due to signal %i)",
++          WSTOPSIG (processStatus)];
 +  [self setStatus: WOChildStatusDown];
 +  [self setControlSocket: nil];
 +}
@@ -5682,34 +5672,14 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
      }
 +}
 +
-+- (BOOL) readMessage
++- (void) _killKill
 +{
-+  WOChildMessage message;
-+  BOOL rc;
-+
-+  if ([controlSocket readBytes: &message
-+                         count: sizeof (WOChildMessage)] == NGStreamError) {
-+    rc = NO;
-+    [self errorWithFormat: @"FAILURE receiving status for child %d", pid];
-+    [self errorWithFormat: @"  socket: %@", controlSocket];
++  if (status != WOChildStatusDown) {
++    [self warnWithFormat: @"safety belt -- sending KILL signal to pid %d",
++          pid];
++    kill (pid, SIGKILL);
++    killTimer = nil;
    }
-+  else {
-+    rc = YES;
-+    if (message == WOChildMessageAccept) {
-+      status = WOChildStatusBusy;
-+    }
-+    else if (message == WOChildMessageReady) {
-+      status = WOChildStatusReady;
-+      [watchDog declareChildReady: self];
-+    }
-+    // else if (message == WOChildMessageShutdown) {
-+    //   status = WOChildStatusDown;
-+    //   [watchDog declareChildDown: self];
-+    // }
-+    // [self logStatus];
-+  }
-+
-+  return rc;
  }
  
 -static void _writePid(NSString *pidFile) {
@@ -5720,36 +5690,61 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
 -      fprintf(pf, "%i\n", getpid());
 -      fflush(pf);
 -      fclose(pf);
-+- (BOOL) _sendMessage: (WOChildMessage) message
-+{
-+  return ([controlSocket writeBytes: &message
-+                              count: sizeof (WOChildMessage)] != NGStreamError
-+          && [self readMessage]);
-+}
-+
-+- (void) _killKill
-+{
-+  if (status != WOChildStatusDown) {
-+    [self warnWithFormat: @"sending KILL signal to pid %d", pid];
-+    kill (pid, SIGKILL);
-+  }
-+}
-+
 +- (void) _kill
 +{
 +  if (status != WOChildStatusDown) {
 +    [self logWithFormat: @"sending terminate signal to pid %d", pid];
 +    status = WOChildStatusTerminating;
 +    kill (pid, SIGTERM);
-+    /* We hardcode a 5 minutes delay before ensuring that all children are
-+       terminated. This enables long requests to finish properly while
-+       avoiding 100% CPU usage for deadlocked children. */
-+    [NSTimer scheduledTimerWithTimeInterval: 5.0 * 60
-+                                     target: self
-+                                   selector: @selector (_killKill)
-+                                   userInfo: nil
-+                                    repeats: NO];
 +  }
++}
++
++- (BOOL) readMessage
++{
++  WOChildMessage message;
++  BOOL rc;
++
++  if ([controlSocket readBytes: &message
++                         count: sizeof (WOChildMessage)] == NGStreamError) {
++    rc = NO;
++    [self errorWithFormat: @"FAILURE receiving status for child %d", pid];
++    [self errorWithFormat: @"  socket: %@", controlSocket];
++    [self _kill];
++  }
++  else {
++    rc = YES;
++    if (message == WOChildMessageAccept) {
++      status = WOChildStatusBusy;
++      /* We schedule a 10 minutes grace period while the child is processing
++         the request. This enables long requests to complete while providing a
++         safety belt for children gone rogue. */
++      killTimer
++        = [NSTimer scheduledTimerWithTimeInterval: 10.0 * 60
++                                           target: self
++                                         selector: @selector (_killKill)
++                                         userInfo: nil
++                                          repeats: NO];
+     }
++    else if (message == WOChildMessageReady) {
++      status = WOChildStatusReady;
++      [killTimer invalidate];
++      killTimer = nil;
++      [watchDog declareChildReady: self];
++    }
+   }
++
++  return rc;
+ }
+-static void _delPid(void) {
+-  if ([pidFile length] > 0) {
+-    if (unlink([pidFile cString]) == 0)
+-      pidFile = nil;
++
++- (BOOL) _sendMessage: (WOChildMessage) message
++{
++  return ([controlSocket writeBytes: &message
++                              count: sizeof (WOChildMessage)] != NGStreamError
++          && [self readMessage]);
 +}
 +
 +- (void) notify
@@ -5761,9 +5756,12 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
 +  if (![self _sendMessage: message]) {
 +    [self errorWithFormat: @"FAILURE notifying child %d", pid];
 +    [self _kill];
-+  }
-+}
-+
+   }
+ }
+ 
+-static void exitWatchdog(void) {
+-  killChild();
+-  _delPid();
 +- (void) terminate
 +{
 +  if (status == WOChildStatusDown) {
@@ -5772,8 +5770,17 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
 +    [self setControlSocket: nil];
 +    [self _kill];
 +  }
-+}
-+
+ }
+ 
+-static void wsignalHandler(int _signal) {
+-  switch (_signal) {
+-  case SIGINT:
+-    /* Control-C */
+-    fprintf(stderr, "[%i]: watchdog handling signal ctrl-c ..\n", getpid());
+-    killChild();
+-    exit(0);
+-    /* shouldn't get here */
+-    abort();
 +- (void) receivedEvent: (void*)data
 +		  type: (RunLoopEventType)type
 +		 extra: (void*)extra
@@ -5791,174 +5798,6 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
 +    [self setControlSocket: nil];
 +  }
 +}
-+
-+@end
-+
-+@implementation WOWatchDog
-+
-++ (id) sharedWatchDog
-+{
-+  static WOWatchDog *sharedWatchDog = nil;
-+
-+  if (!sharedWatchDog)
-+    sharedWatchDog = [self new];
-+
-+  return sharedWatchDog;
-+}
-+
-+- (id) init
-+{
-+  if ((self = [super init]))
-+    {
-+      listeningSocket = nil;
-+      terminate = NO;
-+      willTerminate = NO;
-+      terminationSignal = nil;
-+      pendingSIGCHLD = 0;
-+      pendingSIGHUP = 0;
-+
-+      numberOfChildren = 0;
-+      children = [[NSMutableArray alloc] initWithCapacity: 10];
-+      readyChildren = [[NSMutableArray alloc] initWithCapacity: 10];
-+      downChildren = [[NSMutableArray alloc] initWithCapacity: 10];
-     }
-+
-+  return self;
-+}
-+
-+- (void) _releaseListeningSocket
-+{
-+  if (listeningSocket) {
-+    [[NSRunLoop currentRunLoop] removeEvent: (void *) [listeningSocket fileDescriptor]
-+                                       type: ET_RDESC
-+                                    forMode: NSDefaultRunLoopMode
-+                                        all: YES];
-+    [listeningSocket close];
-+    [listeningSocket release];
-+    listeningSocket = nil;
-   }
- }
--static void _delPid(void) {
--  if ([pidFile length] > 0) {
--    if (unlink([pidFile cString]) == 0)
--      pidFile = nil;
-+
-+- (void) dealloc
-+{
-+  [self _releaseListeningSocket];
-+  [terminationSignal release];
-+  [appName release];
-+  [children release];
-+  [super dealloc];
-+}
-+
-+- (void) _runChildWithControlSocket: (NGActiveSocket *) controlSocket
-+{
-+  WOApplication *app;
-+  extern char **environ;
-+
-+  [NSProcessInfo initializeWithArguments: (char **) argv
-+                                   count: argc
-+                             environment: environ];
-+  NGInitTextStdio();
-+  app = [NSClassFromString(appName) new];
-+  [app autorelease];
-+  [app setListeningSocket: listeningSocket];
-+  [app setControlSocket: controlSocket];
-+  [app run];
-+}
-+
-+- (void) receivedEvent: (void*)data
-+		  type: (RunLoopEventType)type
-+		 extra: (void*)extra
-+	       forMode: (NSString*)mode
-+{
-+  int nextId;
-+  WOWatchDogChild *child;
-+
-+  // NSLog (@"have a child accept the connection");
-+  nextId = [readyChildren count] - 1;
-+  if (nextId > -1)
-+    {
-+      child = [readyChildren objectAtIndex: nextId];
-+      [readyChildren removeObjectAtIndex: nextId];
-+      [child notify];
-+    }
-+  // else
-+  //   NSLog (@"all children busy");
-+}
-+
-+- (void) _cleanupSignalAndEventHandlers
-+{
-+  int count;
-+  NSRunLoop *runLoop;
-+
-+  [[UnixSignalHandler sharedHandler] removeObserver: self];
-+
-+  runLoop = [NSRunLoop currentRunLoop];
-+  [runLoop removeEvent: (void *) [listeningSocket fileDescriptor]
-+                  type: ET_RDESC
-+               forMode: NSDefaultRunLoopMode
-+                   all: YES];
-+
-+  for (count = 0; count < numberOfChildren; count++) {
-+    [[children objectAtIndex: count] setControlSocket: nil];
-+    // controlSocket = [[children objectAtIndex: count] controlSocket];
-+    // if (controlSocket)
-+    //   [runLoop removeEvent: (void *) [controlSocket fileDescriptor]
-+    //                   type: ET_RDESC
-+    //                forMode: NSDefaultRunLoopMode
-+    //                    all: YES];
-   }
- }
- 
--static void exitWatchdog(void) {
--  killChild();
--  _delPid();
-+- (BOOL) _spawnChild: (WOWatchDogChild *) child
-+{
-+  NGActiveSocket *pair[2];
-+  BOOL isChild;
-+  int childPid;
-+  extern char **environ;
-+
-+  isChild = NO;
-+
-+  if ([NGActiveSocket socketPair: pair]) {
-+    childPid = fork ();
-+    if (childPid == 0) {
-+      setsid ();
-+      isChild = YES;
-+      [self _cleanupSignalAndEventHandlers];
-+      [self _runChildWithControlSocket: pair[0]];
-+    } else if (childPid > 0) {
-+      [self logWithFormat: @"child spawned with pid %d", childPid];
-+      [child setPid: childPid];
-+      [child setStatus: WOChildStatusSpawning];
-+      [child setControlSocket: pair[1]];
-+      [child setLastSpawn: [NSCalendarDate date]];
-+      // [self logWithFormat: @"parent ready for child: %d", childPid];
-+    } else {
-+      perror ("fork");
-+    }
-+  }
-+
-+  return isChild;
- }
- 
--static void wsignalHandler(int _signal) {
--  switch (_signal) {
--  case SIGINT:
--    /* Control-C */
--    fprintf(stderr, "[%i]: watchdog handling signal ctrl-c ..\n", getpid());
--    killChild();
--    exit(0);
--    /* shouldn't get here */
--    abort();
-+- (void) _ensureNumberOfChildren
-+{
-+  int currentNumber, delta, count, min, max;
-+  WOWatchDogChild *child;
  
 -  case SIGSEGV:
 -    /* Coredump ! */
@@ -5970,31 +5809,7 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
 -    exit(123);
 -    /* shouldn't get here */
 -    abort();
-+  currentNumber = [children count];
-+  if (currentNumber < numberOfChildren) {
-+      delta = numberOfChildren - currentNumber;
-+      for (count = 0; count < delta; count++) {
-+        child = [WOWatchDogChild watchDogChild];
-+        [child setWatchDog: self];
-+        [children addObject: child];
-+        [downChildren addObject: child];
-+      }
-+      [self logWithFormat: @"preparing %d children", delta];
-+  }
-+  else if (currentNumber > numberOfChildren) {
-+    delta = currentNumber - numberOfChildren;
-+    max = [downChildren count];
-+    if (max > delta)
-+      min = max - delta;
-+    else
-+      min = 0;
-+    for (count = max - 1; count >= min; count--) {
-+      child = [downChildren objectAtIndex: count];
-+      [downChildren removeObjectAtIndex: count];
-+      [children removeObject: child];
-+      delta--;
-+      [self logWithFormat: @"%d processes purged from pool", delta];
-+    }
++@end
  
 -  case SIGTERM:
 -    /* TERM signal (kill 'pid') */
@@ -6019,17 +5834,47 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
 -    fprintf(stderr, "[%i]: watchdog handling signal %i ..\n",
 -            getpid(), _signal);
 -    break;
-+    max = [readyChildren count];
-+    if (max > delta)
-+      max -= delta;
-+    for (count = max - 1; count > -1; count--) {
-+      child = [readyChildren objectAtIndex: count];
-+      [readyChildren removeObjectAtIndex: count];
-+      [child terminate];
-+      [child setStatus: WOChildStatusExcessive];
-+      delta--;
++@implementation WOWatchDog
++
+++ (id) sharedWatchDog
++{
++  static WOWatchDog *sharedWatchDog = nil;
++
++  if (!sharedWatchDog)
++    sharedWatchDog = [self new];
++
++  return sharedWatchDog;
++}
++
++- (id) init
++{
++  if ((self = [super init]))
++    {
++      listeningSocket = nil;
++      terminate = NO;
++      willTerminate = NO;
++      terminationSignal = nil;
++      pendingSIGHUP = 0;
++
++      numberOfChildren = 0;
++      children = [[NSMutableArray alloc] initWithCapacity: 10];
++      readyChildren = [[NSMutableArray alloc] initWithCapacity: 10];
++      downChildren = [[NSMutableArray alloc] initWithCapacity: 10];
 +    }
-+    [self logWithFormat: @"%d processes left to terminate", delta];
++
++  return self;
++}
++
++- (void) _releaseListeningSocket
++{
++  if (listeningSocket) {
++    [[NSRunLoop currentRunLoop] removeEvent: (void *) [listeningSocket fileDescriptor]
++                                       type: ET_RDESC
++                                    forMode: NSDefaultRunLoopMode
++                                        all: YES];
++    [listeningSocket close];
++    [listeningSocket release];
++    listeningSocket = nil;
    }
 -  fflush(stderr);
 -  
@@ -6072,6 +5917,140 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
 -          
 -          fprintf(stderr, "\n");
 -          fflush(stderr);
++- (void) dealloc
++{
++  [self _releaseListeningSocket];
++  [terminationSignal release];
++  [appName release];
++  [children release];
++  [super dealloc];
++}
++
++- (void) _runChildWithControlSocket: (NGActiveSocket *) controlSocket
++{
++  WOApplication *app;
++  extern char **environ;
++
++  [NSProcessInfo initializeWithArguments: (char **) argv
++                                   count: argc
++                             environment: environ];
++  NGInitTextStdio();
++  app = [NSClassFromString(appName) new];
++  [app autorelease];
++  [app setListeningSocket: listeningSocket];
++  [app setControlSocket: controlSocket];
++  [app run];
++}
++
++- (void) receivedEvent: (void*)data
++		  type: (RunLoopEventType)type
++		 extra: (void*)extra
++	       forMode: (NSString*)mode
++{
++  int nextId;
++  WOWatchDogChild *child;
++
++  nextId = [readyChildren count] - 1;
++  if (nextId > -1) {
++    child = [readyChildren objectAtIndex: nextId];
++    [readyChildren removeObjectAtIndex: nextId];
++    [child notify];
++  }
++}
++
++- (void) _cleanupSignalAndEventHandlers
++{
++  int count;
++  NSRunLoop *runLoop;
++
++  [[UnixSignalHandler sharedHandler] removeObserver: self];
++  [loopTimer invalidate];
++  loopTimer = nil;
++  runLoop = [NSRunLoop currentRunLoop];
++  [runLoop removeEvent: (void *) [listeningSocket fileDescriptor]
++                  type: ET_RDESC
++               forMode: NSDefaultRunLoopMode
++                   all: YES];
++
++  for (count = 0; count < numberOfChildren; count++)
++    [[children objectAtIndex: count] setControlSocket: nil];
++}
++
++- (BOOL) _spawnChild: (WOWatchDogChild *) child
++{
++  NGActiveSocket *pair[2];
++  BOOL isChild;
++  int childPid;
++  extern char **environ;
++
++  isChild = NO;
++
++  if ([NGActiveSocket socketPair: pair]) {
++    childPid = fork ();
++    if (childPid == 0) {
++      setsid ();
++      isChild = YES;
++      [self _cleanupSignalAndEventHandlers];
++      [self _runChildWithControlSocket: pair[0]];
++    } else if (childPid > 0) {
++      [self logWithFormat: @"child spawned with pid %d", childPid];
++      [child setPid: childPid];
++      [child setStatus: WOChildStatusSpawning];
++      [child setControlSocket: pair[1]];
++      [child setLastSpawn: [NSCalendarDate date]];
++    } else {
++      perror ("fork");
++    }
++  }
++
++  return isChild;
++}
++
++- (void) _ensureNumberOfChildren
++{
++  int currentNumber, delta, count, min, max;
++  WOWatchDogChild *child;
++
++  currentNumber = [children count];
++  if (currentNumber < numberOfChildren) {
++      delta = numberOfChildren - currentNumber;
++      for (count = 0; count < delta; count++) {
++        child = [WOWatchDogChild watchDogChild];
++        [child setWatchDog: self];
++        [children addObject: child];
++        [downChildren addObject: child];
++      }
++      [self logWithFormat: @"preparing %d children", delta];
++  }
++  else if (currentNumber > numberOfChildren) {
++    delta = currentNumber - numberOfChildren;
++    max = [downChildren count];
++    if (max > delta)
++      min = max - delta;
++    else
++      min = 0;
++    for (count = max - 1; count >= min; count--) {
++      child = [downChildren objectAtIndex: count];
++      [downChildren removeObjectAtIndex: count];
++      [children removeObject: child];
++      delta--;
++      [self logWithFormat: @"%d processes purged from pool", delta];
++    }
++
++    max = [readyChildren count];
++    if (max > delta)
++      max -= delta;
++    for (count = max - 1; count > -1; count--) {
++      child = [readyChildren objectAtIndex: count];
++      [readyChildren removeObjectAtIndex: count];
++      [child terminate];
++      [child setStatus: WOChildStatusExcessive];
++      delta--;
++    }
++    [self logWithFormat: @"%d processes left to terminate", delta];
++  }
++}
++
 +- (void) _noop
 +{
 +}
@@ -6141,6 +6120,7 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
 +  NGInternetSocketAddress *listeningAddress;
 +  NSUserDefaults *ud;
 +  id port, allow;
++  static BOOL warnedAboutAllow = NO;
 +
 +  listeningAddress = nil;
 +
@@ -6153,8 +6133,12 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
    }
 -  signal(_signal, signalHandler);
 +  allow = [ud objectForKey:@"WOHttpAllowHost"];
-+  if (allow)
-+    [self warnWithFormat: @"'WOHttpAllowHost' is ignored in watchdog mode, use a real firewall instead"];
++  if (allow && !warnedAboutAllow) {
++    [self warnWithFormat: @"'WOHttpAllowHost' is ignored in watchdog mode,"
++          @" use a real firewall instead"];
++    warnedAboutAllow = YES;
++  }
++
 +  if ([port isKindOfClass: [NSString class]]) {
 +    if ([port isEqualToString: @"auto"]) {
 +      listeningAddress
@@ -6211,7 +6195,6 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
 +    rc = YES;
 +  }
 +  NS_HANDLER {
-+    // [self logWithFormat:@"failure listening on address 127.0.0.1:%d", port];
 +    rc = NO;
 +  }
 +  NS_ENDHANDLER;
@@ -6235,20 +6218,7 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
 +}
 +
 +- (void) _handleSIGPIPE:(NSNumber *)_signal {
-+  [self logWithFormat: @"received SIGPIPE (unhandled)"];
-+}
-+
-+- (void) _handleSIGCHLD:(NSNumber *)_signal {
-+  WOWatchDogChild *child;
-+  pid_t childPid;
-+  int status;
-+
-+  childPid = wait (&status);
-+  if (childPid > -1) {
-+    pendingSIGCHLD++;
-+    child = [self _childWithPID: childPid];
-+    [child setSIGCHLDStatus: status];
-+  }
++  [self logWithFormat: @"received SIGPIPE (ignored)"];
 +}
 +
 +- (void) _handleTermination:(NSNumber *)_signal {
@@ -6271,14 +6241,10 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
 +  us = [UnixSignalHandler sharedHandler];
 +  [us addObserver:self selector:@selector(_handleSIGPIPE:)
 +        forSignal:SIGPIPE immediatelyNotifyOnSignal:YES];
-+  [us addObserver:self selector:@selector(_handleSIGCHLD:)
-+        forSignal:SIGCHLD immediatelyNotifyOnSignal:YES];
 +  [us addObserver:self selector:@selector(_handleTermination:)
 +        forSignal:SIGINT immediatelyNotifyOnSignal:YES];
 +  [us addObserver:self selector:@selector(_handleTermination:)
 +        forSignal:SIGTERM immediatelyNotifyOnSignal:YES];
-+  // [us addObserver:self selector:@selector(_handleSIGKILL:)
-+  //       forSignal:SIGKILL immediatelyNotifyOnSignal:YES];
 +  [us addObserver:self selector:@selector(_handleSIGHUP:)
 +        forSignal:SIGHUP immediatelyNotifyOnSignal:YES];
 +#endif
@@ -6336,22 +6302,19 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
 +    willTerminate = YES;
 +}
 +
-+- (void) _handlePostSIGCHLDStatus
++- (void) _checkProcessesStatus
 +{
-+  int status, count;
++  int status;
++  pid_t childPid;
 +  WOWatchDogChild *child;
 +
-+  for (count = 0; pendingSIGCHLD && count < numberOfChildren; count++) {
-+    child = [children objectAtIndex: count];
-+    status = [child SIGCHLDStatus];
-+    if (status != -1) {
-+      [child handleSIGCHLDStatus];
-+      pendingSIGCHLD--;
-+      [self declareChildDown: child];
-+      if (willTerminate && [downChildren count] == numberOfChildren) {
-+        [self logWithFormat: @"all children exited. We now terminate."];
-+        terminate = YES;
-+      }
++  while ((childPid = waitpid (-1, &status, WNOHANG)) > 0) {
++    child = [self _childWithPID: childPid];
++    [child handleProcessStatus: status];
++    [self declareChildDown: child];
++    if (willTerminate && [downChildren count] == numberOfChildren) {
++      [self logWithFormat: @"all children exited. We now terminate."];
++      terminate = YES;
 +    }
 +  }
 +}
@@ -6407,11 +6370,11 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
 +
 +    /* This timer ensures the looping of the runloop at reasonable intervals
 +       for correct processing of signal handlers. */
-+    [NSTimer scheduledTimerWithTimeInterval: 0.5
-+                                     target: self
-+                                   selector: @selector (_noop)
-+                                   userInfo: nil
-+                                    repeats: YES];
++    loopTimer = [NSTimer scheduledTimerWithTimeInterval: 0.5
++                                                 target: self
++                                               selector: @selector (_noop)
++                                               userInfo: nil
++                                                repeats: YES];
 +    terminate = NO;
 +    while (!terminate) {
 +      pool = [NSAutoreleasePool new];
@@ -6440,12 +6403,13 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
 +      if (!terminate) {
 +        if (terminationSignal)
 +          [self _handlePostTerminationSignal];
-+        while (pendingSIGCHLD)
-+          [self _handlePostSIGCHLDStatus];
++        [self _checkProcessesStatus];
 +      }
++
 +      [pool release];
 +    }
 +
++    [loopTimer invalidate];
 +    [[UnixSignalHandler sharedHandler] removeObserver: self];
 +  }
 +  else
@@ -6473,7 +6437,7 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
    NSAutoreleasePool *pool;
    NSUserDefaults *ud;
 +  NSString *logFile, *nsPidFile;
-+  int rc, stdErrNo;
++  int rc;
 +  pid_t childPid;
 +  NSProcessInfo *processInfo;
  
@@ -6482,7 +6446,7 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
  #if LIB_FOUNDATION_LIBRARY || defined(GS_PASS_ARGUMENTS)
    {
      extern char **environ;
-@@ -241,179 +972,68 @@
+@@ -241,179 +936,59 @@
                     environment:(void*)environ];
    }
  #endif
@@ -6508,9 +6472,8 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
 +                        [processInfo processName],
 +                        [processInfo processName]];
 +  if (![logFile isEqualToString: @"-"]) {
-+    stdErrNo = dup(fileno(stderr));
-+    stdout = freopen([logFile cString], "a", stdout);
-+    stderr = freopen([logFile cString], "a", stderr);
++    freopen([logFile cString], "a", stdout);
++    freopen([logFile cString], "a", stderr);
    }
 -  
 -  /* watch dog */
@@ -6557,34 +6520,8 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
 -        else {
 -          sleep(1);
 -        }
-+  if (stdout && stderr) {
-+    if ([ud boolForKey: @"WONoDetach"])
-+      childPid = 0;
-+    else
-+      childPid = fork();
-+
-+    if (childPid) {
-+      rc = 0;
-+    }
-+    else {
-+      nsPidFile = [ud objectForKey: @"WOPidFile"];
-+      if (!nsPidFile)
-+        nsPidFile = [NSString stringWithFormat: @"/var/run/%@/%@.pid",
-+                              [processInfo processName],
-+                              [processInfo processName]];
-+      pidFile = [nsPidFile UTF8String];
-+      if (_writePid(nsPidFile)) {
-+        respawnDelay = [ud integerForKey: @"WORespawnDelay"];
-+        if (!respawnDelay)
-+          respawnDelay = 5;
-+        /* default is to use the watch dog! */
-+        if ([ud objectForKey:@"WOUseWatchDog"] != nil
-+            && ![ud boolForKey:@"WOUseWatchDog"])
-+          rc = WOApplicationMain(appName, argc, argv);
-+        else
-+          rc = [[WOWatchDog sharedWatchDog] run: appName argc: argc argv: argv];
-       }
-       else {
+-      }
+-      else {
 -        if (child == 0) {
 -          /* child process */
 -          signal(SIGPIPE, SIG_DFL);
@@ -6595,7 +6532,11 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
 -          
 -          if (isVerbose)
 -            fprintf(stderr, "starting child %i ..\n", getpid());
--
++  if ([ud boolForKey: @"WONoDetach"])
++    childPid = 0;
++  else
++    childPid = fork();
+ 
 -          pidFile = [pidFile stringByAppendingPathExtension:@"child"];
 -          _writePid(pidFile);
 -          
@@ -6635,7 +6576,33 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
 -                    child, forkCount, strerror(errno));
 -            continue;
 -          }
--
++  if (childPid) {
++    rc = 0;
++  }
++  else {
++    nsPidFile = [ud objectForKey: @"WOPidFile"];
++    if (!nsPidFile)
++      nsPidFile = [NSString stringWithFormat: @"/var/run/%@/%@.pid",
++                            [processInfo processName],
++                            [processInfo processName]];
++    pidFile = [nsPidFile UTF8String];
++    if (_writePid(nsPidFile)) {
++      respawnDelay = [ud integerForKey: @"WORespawnDelay"];
++      if (!respawnDelay)
++        respawnDelay = 5;
++      /* default is to use the watch dog! */
++      if ([ud objectForKey:@"WOUseWatchDog"] != nil
++          && ![ud boolForKey:@"WOUseWatchDog"])
++        rc = WOApplicationMain(appName, argc, argv);
++      else
++        rc = [[WOWatchDog sharedWatchDog] run: appName argc: argc argv: argv];
++    }
++    else {
++      [ud errorWithFormat: @"unable to open pid file: %@", pidFile];
++      rc = -1;
++    }
++  }
+ 
 -          clientStopTime = time(NULL);
 -          uptime = clientStopTime - clientStartTime;
 -          
@@ -6655,7 +6622,8 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
 -              time_t now;
 -              
 -              now = time(NULL);
--
++  [pool release];
+ 
 -              if (uptime < 3) {
 -                if (failExitCount > 0) {
 -                  unsigned secsSinceLastFail;
@@ -6698,26 +6666,15 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
 -                    child, forkCount, status);
 -          }
 -        }
-+        [ud errorWithFormat: @"unable to open pid file: %@", pidFile];
-+        rc = -1;
-       }
-     }
+-      }
+-    }
 -    return 0;
-   }
-+  else {
-+    stdout = fdopen(stdErrNo, "a");
-+    stderr = fdopen(stdErrNo, "a");
-+    fprintf(stderr, "failed to redirect output channels to log file '%s'\n",
-+            [logFile cString]);
-+  }
-+
-+  [pool release];
-+
+-  }
 +  return rc;
  }
  #endif
  
-@@ -421,8 +1041,8 @@
+@@ -421,8 +996,8 @@
  
  @interface NSUserDefaults(ServerDefaults)
  + (id)hackInServerDefaults:(NSUserDefaults *)_ud
@@ -6728,7 +6685,7 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
  @end
  
  int WOWatchDogApplicationMainWithServerDefaults
-@@ -437,7 +1057,7 @@
+@@ -437,7 +1012,7 @@
    {
      extern char **environ;
      [NSProcessInfo initializeWithArguments:(void*)argv count:argc
@@ -6737,7 +6694,7 @@ Index: sope-appserver/NGObjWeb/WOWatchDogApplicationMain.m
    }
  #endif
    
-@@ -446,8 +1066,8 @@
+@@ -446,8 +1021,8 @@
      
      ud = [NSUserDefaults standardUserDefaults];
      sd = [defClass hackInServerDefaults:ud
@@ -6970,7 +6927,21 @@ Index: sope-appserver/NGObjWeb/ChangeLog
 ===================================================================
 --- sope-appserver/NGObjWeb/ChangeLog	(revision 1664)
 +++ sope-appserver/NGObjWeb/ChangeLog	(working copy)
-@@ -1,3 +1,163 @@
+@@ -1,3 +1,177 @@
++2010-02-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
++
++	* WOWatchDogApplicationMain.m (-run:argc:argv:): we assign the
++	loop timer to an ivar so that it can be invalidated when a child
++	process is spawned. Child processes are check at each loop, since
++	receiving SIGCHILD is not guaranteed and we deadlock
++	when all remaining processes are zombies.
++	(-_setupSignals): SIGCHILD is no longer trapped.
++	(-readMessage): we now setup a 10 minutes timer when the child
++	accepts the request up to the moment its done with it. This
++	provides a supplemental safety for deadlocked children.
++	(WOWatchDogApplicationMain): we no longer care about the return
++	values for fdreopen since this is useless and is not portable.
++
 +2010-02-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 +
 +	* WOCookie.m (-stringValue): pass an minimal english locale
