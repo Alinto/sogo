@@ -1,3 +1,9 @@
+2010-02-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Main/SOGo.m (-run): moved initialization logs from +initialize
+	here, so that they are output to the redirected output stream.
+	Added version number to "starting" line.
+
 2010-02-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* Tools/SOGoToolRestore.m (+initialize): removed method.

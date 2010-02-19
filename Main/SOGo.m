@@ -52,7 +52,6 @@
 #import <SOGo/SOGoProxyAuthenticator.h>
 #import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoStartupLogger.h>
 #import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoWebAuthenticator.h>
 #import <SOGo/WORequest+SOGo.h>
@@ -82,25 +81,16 @@ static BOOL debugLeaks;
   SOGoSystemDefaults *defaults;
   SoClassSecurityInfo *sInfo;
   NSArray *basicRoles;
-  SOGoStartupLogger *logger;
 
-  logger = [SOGoStartupLogger sharedLogger];
-  [logger logWithFormat: @"starting SOGo (build %@)", SOGoBuildDate];
-  
   defaults = [SOGoSystemDefaults sharedSystemDefaults];
   doCrashOnSessionCreate = [defaults crashOnSessionCreate];
   debugRequests = [defaults debugRequests];
 #ifdef GNUSTEP_BASE_LIBRARY
   debugLeaks = [defaults debugLeaks];
-  if (debugLeaks)
-    [logger logWithFormat: @"activating leak debugging"];
 #endif
-  /* vMem size check - default is 384MB */
 
+  /* vMem size check - default is 384MB */
   vMemSizeLimit = [defaults vmemLimit];
-  if (vMemSizeLimit > 0)
-    [logger logWithFormat: @"vmem size check enabled: shutting down app when "
-            @"vmem > %d MB", vMemSizeLimit];
   
   /* SoClass security declarations */
   sInfo = [self soClassSecurityInfo];
@@ -240,6 +230,15 @@ static BOOL debugLeaks;
 
 - (void) run
 {
+  [self logWithFormat: @"version %d.%d.%d (build %@) -- starting",
+        SOGO_MAJOR_VERSION, SOGO_MINOR_VERSION, SOGO_SUBMINOR_VERSION,
+        SOGoBuildDate];
+  if (debugLeaks)
+    [self logWithFormat: @"activating leak debugging"];
+  if (vMemSizeLimit > 0)
+    [self logWithFormat: @"vmem size check enabled: shutting down app when "
+          @"vmem > %d MB", vMemSizeLimit];
+
   if (!hasCheckedTables)
     {
       hasCheckedTables = YES;
