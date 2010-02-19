@@ -68,8 +68,11 @@
         }
       else
         {
-          path = [NSString stringWithFormat: @"%@%@", 
-			   [co absoluteImap4Name], folderName];
+          if ([co respondsToSelector: @selector (absoluteImap4Name)])
+            path = [NSString stringWithFormat: @"%@%@", 
+                             [co absoluteImap4Name], folderName];
+          else
+            path = folderName;
 	  [[connection client] subscribe: path];
 	  
           response = [self responseWith204];
