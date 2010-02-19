@@ -51,6 +51,7 @@
 #import <Appointments/SOGoAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentFolders.h>
 #import <Appointments/SOGoAppointmentObject.h>
+#import <Appointments/SOGoWebAppointmentFolder.h>
 #import <Appointments/SOGoFreeBusyObject.h>
 
 #import <UI/Common/WODirectAction+SOGo.h>
@@ -316,7 +317,7 @@ static NSArray *tasksFields = nil;
   SOGoAppointmentFolders *clientObject;
   SOGoUser *ownerUser;
   NSString *owner, *role;
-  BOOL isErasable;
+  BOOL isErasable, *folderIsRemote;
 
   infos = [NSMutableArray array];
   marker = [NSNull null];
@@ -328,6 +329,8 @@ static NSArray *tasksFields = nil;
       if ([currentFolder isActive]
           && (![component isEqualToString: @"vtodo"] || [currentFolder showCalendarTasks]))
         {
+          folderIsRemote
+            = [currentFolder isKindOfClass: [SOGoWebAppointmentFolder class]];
           currentInfos
             = [[currentFolder fetchCoreInfosFrom: startDate
                                               to: endDate
@@ -341,17 +344,23 @@ static NSArray *tasksFields = nil;
             {
               if ([fields containsObject: @"editable"])
                 {
-                  role =
-                    [currentFolder roleForComponentsWithAccessClass:
-                                             [[newInfo objectForKey: @"c_classification"] intValue]
-                                                            forUser: userLogin];
-                  if ([role isEqualToString: @"ComponentModifier"] 
-                      || [role length] == 0)
-                    [newInfo setObject: [NSNumber numberWithInt: 1]
-                                forKey: @"editable"];
-                  else
+                  if (folderIsRemote)
                     [newInfo setObject: [NSNumber numberWithInt: 0]
                                 forKey: @"editable"];
+                  else
+                    {
+                      role =
+                        [currentFolder roleForComponentsWithAccessClass:
+                                                 [[newInfo objectForKey: @"c_classification"] intValue]
+                                                                forUser: userLogin];
+                      if ([role isEqualToString: @"ComponentModifier"] 
+                          || [role length] == 0)
+                        [newInfo setObject: [NSNumber numberWithInt: 1]
+                                    forKey: @"editable"];
+                      else
+                        [newInfo setObject: [NSNumber numberWithInt: 0]
+                                    forKey: @"editable"];
+                    }
                 }
 	      if ([fields containsObject: @"ownerIsOrganizer"])
 		{
