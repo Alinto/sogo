@@ -44,11 +44,4 @@ SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib
 
 BUNDLE_LIBS += \
 	-lSOGoUI				\
-	-lSOGo					\
-	-lOGoContentStore			\
-	-lGDLContentStore			\
-	-lGDLAccess				\
-	-lNGObjWeb				\
-	-lNGMime -lNGCards -lNGLdap		\
-	-lNGStreams -lNGExtensions -lEOControl	\
-	-lXmlRpc -lDOM -lSaxObjC
+	-lSOGo

@@ -400,9 +400,10 @@
 	  && [user isSuperUser]);
 }
 
-- (NSString *) userEmail
+- (NSString *) userIdentification
 {
-  return [[context activeUser] systemEmail];
+  /* The "identification" term is used in the human sense here. */
+  return [[context activeUser] cn];
 }
 
 - (BOOL) canLogoff

@@ -15,7 +15,4 @@ ADDITIONAL_LIB_DIRS += -L/usr/local/lib -L/usr/lib
 
 CommonUI_BUNDLE_LIBS += \
 	-lSOGoUI	\
-	-lNGObjWeb	\
-	-lNGMime	\
-	-lNGStreams -lNGExtensions -lEOControl	\
-	-lXmlRpc -lDOM -lSaxObjC -lWOExtensions
+	-lNGObjWeb

@@ -157,13 +157,13 @@ DIV.linkbanner SPAN
 DIV.linkbanner A:hover
 { color: #dd5; }
 
-DIV.linkbanner A#logoff, DIV.linkbanner SPAN#userEmailDisplay
+DIV.linkbanner A#logoff, DIV.linkbanner SPAN#userIdentificationDisplay
 { float: right;
   margin: 0px;
   padding: 0px;
   padding-right: .5em; }
 
-DIV.linkbanner SPAN#userEmailDisplay
+DIV.linkbanner SPAN#userIdentificationDisplay
 { color: #DDDDDD; }
 
 .linkbannerlinks
