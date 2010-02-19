@@ -1,4 +1,4 @@
-1.2-2010XXXX (1.2.X)
+1.2-20100219 (1.2.1)
 --------------------
 - added CAS authentication support
 - improved display of message size in webmail
@@ -6,6 +6,8 @@
 - added drag and drop to the web calendar interface
 - calendar: fixed CSS oddities and harmonized appearance of event cells in all
   supported browsers
+- added many IMAP fixes for Courier and Dovecot
+- many small bug fixes and other small enhancements
 
 1.2-20100125 (1.2.0)
 --------------------
