@@ -1,38 +1,18 @@
 DIV#preferencesTabs
 { position: absolute;
-  top: 6.5em;
-  left: .5em;
-  right: .5em;
-  bottom: .5em; }
-
-DIV#general
-{ padding-top: 2em;
-  padding-left: 2em;
-  padding-right: 5em; }
-
-DIV#general LABEL
-{ text-align: left;
-  margin-left: 0px;
-  white-space: normal; }
+  top: 70px;
+  left: 5px;
+  right: 5px;
+  bottom: 5px; }
 
 DIV#passwordView
 { padding-top: 3em;
   padding-right: 10em; }
 
-DIV#identitiesView,
-DIV#vacationView
-{ padding: 5px 5px 5px 0px;
-  overflow: hidden; }
-
 TEXTAREA#signature
 { position: absolute;
-  top: 5px;
-  bottom: 5px;
-  right: 5px;
-  left: 5px;
-  display: block;
-  height: 345px;
-  width: 415px;}
+  width: 100%;
+  height: 100%; }
 
 DIV#categoriesListWrapper
 { overflow: auto;
@@ -50,7 +30,7 @@ TABLE#categoriesList
 { width: 100%; }
 
 #colorTableHeader
-{ width: 40px; }
+{ width: 50px; }
 
 TR.categoryListRow
 { background: #ccddec;
