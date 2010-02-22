@@ -34,9 +34,6 @@ TEXTAREA#signature
   height: 345px;
   width: 415px;}
 
-TABLE#categoriesList
-{ width: 100%; }
-
 DIV#categoriesListWrapper
 { overflow: auto;
   position: absolute;
@@ -46,8 +43,21 @@ DIV#categoriesListWrapper
   left: 2em;
   padding: 0px;
   margin-top: 2px;
-  border-left: 1px solid #9B9B9B;
-  background: #CCDDEC; }
+  border-left: 1px solid #9b9b9b;
+  background: #ccddec; }
+
+TABLE#categoriesList
+{ width: 100%; }
+
+#colorTableHeader
+{ width: 40px; }
+
+TR.categoryListRow
+{ background: #ccddec;
+  cursor: pointer; }
+
+TD.categoryListCell
+{ -moz-user-select: none; }
 
 DIV.colorBox
 { border: 1px solid #333333;
@@ -56,13 +66,6 @@ DIV.colorBox
   height: 0.75em;
   margin: 0 3px 0 0;
   width: 1em; }
-
-TR.categoryListRow
-{ background: #CCDDEC;
-  cursor: pointer; }
-
-TD.categoryListCell
-{ -moz-user-select: none; }
 
 DIV#windowButtons
 { position: fixed;
