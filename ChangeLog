@@ -1,3 +1,8 @@
+2010-02-23  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* Added a patch from Adam Yearout <ayearout@royal.wednet.edu>
+	to fix OpenSUSE compilation issues.
+
 2010-02-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxCalListingActions.m
