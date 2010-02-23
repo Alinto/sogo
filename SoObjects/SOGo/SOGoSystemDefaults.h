@@ -51,6 +51,7 @@
 
 - (NSTimeInterval) cacheCleanupInterval;
 - (NSString *) memcachedHost;
+- (int) memcachedPort;
 
 - (BOOL) userCanChangePassword;
 - (BOOL) uixAdditionalPreferences;

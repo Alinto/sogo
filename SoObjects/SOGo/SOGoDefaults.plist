@@ -13,6 +13,7 @@
 
     SOGoCacheCleanupInterval = 300.0;
     SOGoMemcachedHost = "localhost";
+    SOGoMemcachedPort = 11211;
 
     SOGoUIxDebugEnabled = NO;
 

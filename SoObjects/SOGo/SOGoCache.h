@@ -42,6 +42,7 @@
   NSMutableDictionary *cache;
   NSMutableDictionary *users;
   float cleanupInterval;
+  int memcachedServerPort;
   NSString *memcachedServerName;
   // @private
   //   memcached_server_st *servers;

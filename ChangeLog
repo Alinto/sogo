@@ -3,6 +3,10 @@
 	* Added a patch from Adam Yearout <ayearout@royal.wednet.edu>
 	to fix OpenSUSE compilation issues.
 
+	* Added a patch from dev@ib.pl to make the memcached port
+	being used by SOGo configurable using the SOGoMemcachedPort
+	default option.
+
 2010-02-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxCalListingActions.m

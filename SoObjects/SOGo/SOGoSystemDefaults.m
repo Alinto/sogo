@@ -260,6 +260,11 @@ BootstrapNSUserDefaults ()
   return [self stringForKey: @"SOGoMemcachedHost"];
 }
 
+- (int) memcachedPort
+{
+  return [self integerForKey: @"SOGoMemcachedPort"];
+}
+
 - (BOOL) uixDebugEnabled
 {
   return [self boolForKey: @"SOGoUIxDebugEnabled"];
