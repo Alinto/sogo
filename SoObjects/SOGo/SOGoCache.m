@@ -105,26 +105,24 @@ static memcached_st *handle = NULL;
           handle = memcached_create(NULL);
           if (handle)
             {
-#warning We could also make the port number configurable and even make use \
-  of NGNetUtilities for that.
-
               sd = [SOGoSystemDefaults sharedSystemDefaults];
               // We define the default value for cleaning up cached users'
               // preferences. This value should be relatively high to avoid
               // useless database calls.
 
               cleanupInterval = [sd cacheCleanupInterval];
+              memcachedServerPort = [sd memcachedPort];
               ASSIGN (memcachedServerName, [sd memcachedHost]);
 
               [self logWithFormat: @"Cache cleanup interval set every %f seconds",
                     cleanupInterval];
-              [self logWithFormat: @"Using host '%@' as server",
-                    memcachedServerName];
+              [self logWithFormat: @"Using host '%@':%i as server",
+                    memcachedServerName, memcachedServerPort];
               if (!servers)
                 servers
                   = memcached_server_list_append(NULL,
                                                  [memcachedServerName UTF8String],
-                                                 11211, &error);
+                                                 memcachedServerPort, &error);
               error = memcached_server_push(handle, servers);
             }
         }

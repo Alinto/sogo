@@ -317,7 +317,7 @@ static NSArray *tasksFields = nil;
   SOGoAppointmentFolders *clientObject;
   SOGoUser *ownerUser;
   NSString *owner, *role;
-  BOOL isErasable, *folderIsRemote;
+  BOOL isErasable, folderIsRemote;
 
   infos = [NSMutableArray array];
   marker = [NSNull null];
