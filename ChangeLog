@@ -1,7 +1,7 @@
 2010-03-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
-	* SoObjects/SOGo/SOGoDomainDefaults.m (-imapAclStyle): removed
-	obsolete method.
+	* SoObjects/SOGo/SOGoDomainDefaults.m (-imapFolderSeparator): new
+	method.
 
 2010-02-23  Ludovic Marcotte  <lmarcotte@inverse.ca>
 

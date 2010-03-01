@@ -107,6 +107,17 @@
   return [self stringForKey: @"SOGoIMAPServer"];
 }
 
+#warning should be removed when we make use of imap namespace
+- (NSString *) imapAclStyle
+{
+  return [self stringForKey: @"SOGoIMAPAclStyle"];
+}
+
+- (NSString *) imapFolderSeparator
+{
+  return [self stringForKey: @"NGImap4ConnectionStringSeparator"];
+}
+
 #warning this should be determined from the capabilities
 /* http://www.tools.ietf.org/wg/imapext/draft-ietf-imapext-acl/ */
 - (BOOL) imapAclConformsToIMAPExt
