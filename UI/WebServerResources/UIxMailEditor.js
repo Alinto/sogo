@@ -125,8 +125,8 @@ function validateEditorInput(sender) {
     return true;
 }
 
-function clickedEditorSend(sender) { log (document.pageform.action);
-    if (document.pageform.action || !validateEditorInput(sender))
+function clickedEditorSend(sender) {
+    if (document.pageform.action == "send" || !validateEditorInput(sender))
         return false;
 
     var input = currentAttachmentInput();

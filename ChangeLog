@@ -3,6 +3,12 @@
 	* SoObjects/SOGo/SOGoDomainDefaults.m (-imapFolderSeparator): new
 	method.
 
+2010-03-01  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/UIxMailEditor.js (-clickedEditorSend):
+	fixed wrong condition that would result in refusing to send a
+	message after having clicked on the Save button.
+
 2010-02-23  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* Added a patch from Adam Yearout <ayearout@royal.wednet.edu>
