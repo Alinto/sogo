@@ -371,10 +371,9 @@ DIV.copy
 }
 
 DIV#smallToolbarContainer
-{ bottom: auto !important;
-  top: 2em !important;
+{ top: 2em !important;
+  height: 40px;
   right: 0px; }
-
 
 @media print
 {
