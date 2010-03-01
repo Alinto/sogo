@@ -39,7 +39,6 @@
 
 - (NSString *) mailDomain;
 - (NSString *) imapServer;
-- (NSString *) imapAclStyle;
 - (BOOL) imapAclConformsToIMAPExt;
 - (BOOL) forceIMAPLoginWithEmail;
 - (BOOL) forwardEnabled;
