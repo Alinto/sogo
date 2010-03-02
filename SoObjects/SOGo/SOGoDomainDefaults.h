@@ -43,6 +43,7 @@
 - (NSString *) imapFolderSeparator;
 - (BOOL) imapAclConformsToIMAPExt;
 - (BOOL) forceIMAPLoginWithEmail;
+- (BOOL) sieveScriptsEnabled;
 - (BOOL) forwardEnabled;
 - (BOOL) vacationEnabled;
 - (NSString *) mailingMechanism;

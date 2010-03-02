@@ -565,6 +565,16 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   return [self boolForKey: @"SOGoRemindWithASound"];
 }
 
+- (void) setSieveFilters: (NSArray *) newValue
+{
+  [self setObject: newValue forKey: @"SOGoSieveFilters"];
+}
+
+- (NSArray *) sieveFilters
+{
+  return [self arrayForKey: @"SOGoSieveFilters"];
+}
+
 - (void) setVacationOptions: (NSDictionary *) newValue
 {
   [self setObject: newValue forKey: @"Vacation"];

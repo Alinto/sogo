@@ -155,6 +155,11 @@
   return [self boolForKey: @"SOGoForceIMAPLoginWithEmail"];
 }
 
+- (BOOL) sieveScriptsEnabled
+{
+  return [self boolForKey: @"SOGoSieveScriptsEnabled"];
+}
+
 - (BOOL) forwardEnabled
 {
   return [self boolForKey: @"SOGoForwardEnabled"];

@@ -50,7 +50,9 @@
 #import "SOGoMailManager.h"
 #import "SOGoMailNamespace.h"
 #import "SOGoSentFolder.h"
+#import "SOGoSieveConverter.h"
 #import "SOGoTrashFolder.h"
+
 
 #import "SOGoMailAccount.h"
 
@@ -232,23 +234,25 @@ static NSString *sieveScriptName = @"sogo";
 
 - (BOOL) updateFilters
 {
-  NSMutableString *header, *script;
+  NSMutableArray *requirements;
+  NSMutableString *script, *header;
   NGInternetSocketAddress *address;
   NSDictionary *result, *values;
   SOGoUserDefaults *ud;
   SOGoDomainDefaults *dd;
   NGSieveClient *client;
-  NSString *v, *password;
+  NSString *filterScript, *v, *password;
+  SOGoSieveConverter *converter;
   BOOL b;
 
   dd = [[context activeUser] domainDefaults];
-  if (!([dd vacationEnabled] || [dd forwardEnabled]))
+  if (!([dd sieveScriptsEnabled] || [dd vacationEnabled] || [dd forwardEnabled]))
     return YES;
 
+  requirements = [NSMutableArray arrayWithCapacity: 15];
   ud = [[context activeUser] userDefaults];
   b = NO;
 
-  header = [NSMutableString stringWithString: @"require ["];
   script = [NSMutableString string];
 
   // Right now, we handle Sieve filters here and only for vacation
@@ -274,8 +278,8 @@ static NSString *sieveScriptName = @"sogo";
       if (days == 0)
 	days = 7;
 
-      [header appendString: @"\"vacation\""];
-      
+      [requirements addObjectUniquely: @"vacation"];
+
       // Skip mailing lists
       if (ignore)
 	[script appendString: @"if allof ( not exists [\"list-help\", \"list-unsubscribe\", \"list-subscribe\", \"list-owner\", \"list-post\", \"list-archive\", \"list-id\", \"Mailing-List\"], not header :comparator \"i;ascii-casemap\" :is \"Precedence\" [\"list\", \"bulk\", \"junk\"], not header :comparator \"i;ascii-casemap\" :matches \"To\" \"Multiple recipients of*\" ) {"];
@@ -315,9 +319,27 @@ static NSString *sieveScriptName = @"sogo";
 	[script appendString: @"keep;\r\n"];
     }
   
-  if ([header compare: @"require ["] != NSOrderedSame)
+  converter = [SOGoSieveConverter sieveConverterForUser: [context activeUser]];
+  filterScript = [converter sieveScriptWithRequirements: requirements];
+  if (filterScript)
     {
-      [header appendString: @"];\r\n"];
+      if ([filterScript length])
+        {
+          b = YES;
+          [script appendString: filterScript];
+        }
+    }
+  else
+    {
+      [self errorWithFormat: @"Sieve generation failure: %@",
+            [converter lastScriptError]];
+      return NO;
+    }
+
+  if ([requirements count])
+    {
+      header = [NSString stringWithFormat: @"require [\"%@\"];\r\n",
+                         [requirements componentsJoinedByString: @"\",\""]];
       [script insertString: header  atIndex: 0];
     }
 

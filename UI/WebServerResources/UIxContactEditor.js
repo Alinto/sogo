@@ -101,14 +101,6 @@ function validateContactEditor() {
   return rc;
 }
 
-function showCoords(node) {
-  node = $("givenName");
-  window.alert("x: " + node.cascadeLeftOffset()
-               + ";y: " + node.cascadeTopOffset()
-               + ";width: " + window.width()
-               + ";height: " + window.height());
-}
-
 function onFnKeyDown() {
   var fn = $("fn");
   fn.onkeydown = null;

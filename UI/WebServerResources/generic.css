@@ -90,7 +90,7 @@ a:hover
 div#header
 { margin-left: 5px;
   margin-right: 5px;
-  padding: 0;
+  padding: 0px;
   border-bottom: 1px solid #000; }
 
 div#header img.headerlogo
@@ -540,8 +540,8 @@ DIV.resize-handle
   width: 2px;
   border-right: 1px solid #fff;
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 0px;
+  left: 0px;
   max-height: 2em; } /* will be set in JavaScript when setting drag handles */
 
 @media print
@@ -584,7 +584,7 @@ DIV.dialog.left
   background-position: top left; }
 
 DIV.dialog.left DIV
-{ border-left: 0;
+{ border-left: 0px;
   margin-left: 19px;
   text-align: left; }
 
@@ -594,7 +594,7 @@ DIV.dialog.right
   background-position: top right; }
   
 DIV.dialog.right DIV
-{ border-right: 0;
+{ border-right: 0px;
   margin-right: 19px;
   text-align: right; }
 
@@ -609,7 +609,7 @@ DIV#uploadResults DIV
 
 DIV#uploadDialog H3,
 DIV#uploadResults H3
-{ margin-top: 0;
+{ margin-top: 0px;
   font-size: 1.2em; }
 
 /* INPUT styles */
@@ -649,6 +649,9 @@ INPUT.textField
 { margin: 2px; padding: 2px;
   vertical-align: middle;
   width: 250px; }
+
+INPUT.textField._invalid
+{ background-color: #f00 !important; }
 
 INPUT#searchValue
 { margin-right: 1em;
@@ -722,7 +725,7 @@ TABLE.framenocaption
 { margin-top: 14px; }
 
 TABLE.frame TD
-{ padding: 0; }
+{ padding: 0px; }
 
 SPAN.caption
 { display: inline-block;
@@ -890,8 +893,8 @@ P#mailerSelectionContainer
 { line-height: 25px;
   margin-top: 2px; }
 
-DIV.bottomToolbar {
-  vertical-align: middle;
+DIV.bottomToolbar
+{ vertical-align: middle;
   background-image: url("thead_bg.png");
   border: 1px solid #9B9B9B;
   background-color: #E6E7E6;
@@ -901,9 +904,10 @@ DIV.bottomToolbar {
   margin-left: 2px;
   margin-right: 2px; }
 
-DIV.bottomToolbar A.bottomButton SPAN, DIV.bottomToolbar A.bottomButton {
-  margin: 0;
-  padding: 0;
+DIV.bottomToolbar A.bottomButton SPAN,
+DIV.bottomToolbar A.bottomButton
+{ margin: 0px;
+  padding: 0px;
   width: 23px;
   text-align: center;
   text-decoration: none;  
@@ -912,8 +916,7 @@ DIV.bottomToolbar A.bottomButton SPAN, DIV.bottomToolbar A.bottomButton {
   border-bottom: 1px solid #9B9B9B;
   border-right: 1px solid #9B9B9B;
   float: left;
-  height: 20px;
-}
+  height: 20px; }
 
 DIV.bottomToolbar A.bottomButton SPAN
 { background: transparent url('thead_bg.png') repeat-x top right; }

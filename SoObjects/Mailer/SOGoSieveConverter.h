@@ -1,6 +1,6 @@
-/* NSDictionary+Utilities.h - this file is part of SOGo
+/* SOGoSieveConverter.h - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse inc.
+ * Copyright (C) 2010 Wolfgang Sourdeau
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -20,33 +20,30 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef NSDICTIONARY_UTILITIES_H
-#define NSDICTIONARY_UTILITIES_H
+#ifndef SOGOSIEVECONVERTER_H
+#define SOGOSIEVECONVERTER_H
 
-#import <Foundation/NSDictionary.h>
+#import <Foundation/NSObject.h>
 
-@class NSArray;
+@class NSDictionary;
+@class NSMutableArray;
 @class NSString;
 
-@interface NSDictionary (SOGoDictionaryUtilities)
+@class SOGoUser;
 
-+ (NSDictionary *) dictionaryFromStringsFile: (NSString *) file;
+@interface SOGoSieveConverter : NSObject
+{
+  SOGoUser *user;
+  NSMutableArray *requirements;
+  NSString *scriptError;
+}
 
-- (NSString *) jsonRepresentation;
-- (NSString *) keysWithFormat: (NSString *) keyFormat;
++ (id) sieveConverterForUser: (SOGoUser *) user;
+- (id) initForUser: (SOGoUser *) newUser;
 
-// LDIF methods
-- (NSString *) userRecordAsLDIFEntry;
-
-@end
-
-@interface NSMutableDictionary (SOGoDictionaryUtilities)
-
-- (void) setObject: (id) object
-           forKeys: (NSArray *) keys;
-- (void) setObjects: (NSArray *) objects
-	    forKeys: (NSArray *) keys;
+- (NSString *) sieveScriptWithRequirements: (NSMutableArray *) newRequirements;
+- (NSString *) lastScriptError;
 
 @end
 
-#endif /* NSDICTIONARY_UTILITIES_H */
+#endif /* SOGOSIEVECONVERTER_H */

@@ -13,6 +13,8 @@ PreferencesUI_OBJC_FILES =		\
 	\
 	UIxJSONPreferences.m		\
 	UIxPreferences.m		\
+	UIxFilterEditor.m		\
+	\
 	UIxAdditionalPreferences.m
 
 PreferencesUI_RESOURCE_FILES += \

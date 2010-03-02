@@ -42,6 +42,7 @@
   SOGoUserDefaults *userDefaults;
   NSCalendarDate *today;
   NSArray *daysOfWeek, *daysBetweenResponsesList;
+  NSArray *sieveFilters;
   NSMutableDictionary *vacationOptions, *forwardOptions;
   BOOL hasChanged, composeMessageTypeHasChanged;
 }

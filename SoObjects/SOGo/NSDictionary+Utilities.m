@@ -184,6 +184,17 @@
 
 @implementation NSMutableDictionary (SOGoDictionaryUtilities)
 
+- (void) setObject: (id) object
+           forKeys: (NSArray *) keys
+{
+  unsigned int count, max;
+
+  max = [keys count];
+  for (count = 0; count < max; count++)
+    [self setObject: object
+             forKey: [keys objectAtIndex: count]];
+}
+
 - (void) setObjects: (NSArray *) objects
 	    forKeys: (NSArray *) keys
 {

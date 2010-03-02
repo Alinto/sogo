@@ -19,6 +19,10 @@
           protectedBy = "View";
           pageName = "UIxPreferences";
         };
+        editFilter = {
+          protectedBy = "View";
+          pageName = "UIxFilterEditor";
+        };
         identities = {
           protectedBy = "View";
           pageName = "UIxIdentities";

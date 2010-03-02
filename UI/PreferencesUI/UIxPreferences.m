@@ -21,10 +21,11 @@
  */
 
 #import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSPropertyList.h>
+#import <Foundation/NSScanner.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSTimeZone.h>
 #import <Foundation/NSUserDefaults.h> /* for locale strings */
-#import <Foundation/NSPropertyList.h>
 #import <Foundation/NSValue.h>
 
 #import <NGObjWeb/WOContext.h>
@@ -35,6 +36,7 @@
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+BSJSONAdditions.h>
 #import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/NSScanner+BSJSONAdditions.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
@@ -83,6 +85,13 @@
       composeMessageTypeHasChanged = NO;
 
       dd = [user domainDefaults];
+      if ([dd sieveScriptsEnabled])
+	{
+	  sieveFilters = [[userDefaults sieveFilters] copy];
+	  if (!sieveFilters)
+            sieveFilters = [NSArray new];
+	}
+
       if ([dd vacationEnabled])
 	{
 	  vacationOptions = [[userDefaults vacationOptions] mutableCopy];
@@ -107,6 +116,7 @@
   [item release];
   [user release];
   [userDefaults release];
+  [sieveFilters release];
   [vacationOptions release];
   [calendarCategories release];
   [calendarCategoriesColors release];
@@ -661,9 +671,52 @@
 
 /* mail autoreply (vacation) */
 
+- (BOOL) isSieveScriptsEnabled
+{
+  return [[user domainDefaults] sieveScriptsEnabled];
+}
+
+- (NSString *) sieveCapabilities
+{
+#warning this should be deduced from the server
+  static NSArray *capabilities = nil;
+
+  if (!capabilities)
+    {
+      capabilities = [NSArray arrayWithObjects: @"fileinto", @"reject",
+                              @"envelope", @"vacation", @"imapflags",
+                              @"notify", @"subaddress", @"relational",
+                              @"comparator-i;ascii-numeric", @"regex", nil];
+      [capabilities retain];
+    }
+
+  return [[NSDictionary dictionary]
+           jsonStringForArray: capabilities
+              withIndentLevel: 0];
+}
+
 - (BOOL) isVacationEnabled
 {
   return [[user domainDefaults] vacationEnabled];
+}
+
+- (void) setSieveFiltersValue: (NSString *) newValue
+{
+  NSScanner *jsonScanner;
+
+  if ([newValue hasPrefix: @"["])
+    {
+      jsonScanner = [NSScanner scannerWithString: newValue];
+      [jsonScanner scanJSONArray: &sieveFilters];
+      [sieveFilters retain];
+    }
+}
+
+- (NSString *) sieveFiltersValue
+{
+  return [[NSDictionary dictionary]
+           jsonStringForArray: sieveFilters
+              withIndentLevel: 0];
 }
 
 - (void) setEnableVacation: (BOOL) enableVacation
@@ -884,6 +937,8 @@
       id folder;
 
       dd = [[context activeUser] domainDefaults];
+      if ([dd sieveScriptsEnabled])
+        [userDefaults setSieveFilters: sieveFilters];
       if ([dd vacationEnabled])
         [userDefaults setVacationOptions: vacationOptions];
       if ([dd forwardEnabled])
@@ -897,7 +952,6 @@
       account = [folder lookupName: [[mailAccounts objectForKey: @"name"] asCSSIdentifier]
                          inContext: context
                            acquire: NO];
-      
       [account updateFilters];
 
       if (composeMessageTypeHasChanged)
@@ -945,16 +999,6 @@
 {
   return [[SOGoSystemDefaults sharedSystemDefaults]
            userCanChangePassword];
-}
-
-- (NSString *) nameLabel
-{
-  return [self labelForKey: @"Name"];
-}
-
-- (NSString *) colorLabel
-{
-  return [self labelForKey: @"Color"];
 }
 
 - (NSArray *) languageCategories

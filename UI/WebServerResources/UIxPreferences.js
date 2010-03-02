@@ -1,4 +1,7 @@
-/* -*- Mode: java; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
+/* -*- Mode: java; tab-width: 2; c-label-minimum-indentation: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
+
+var isSieveScriptsEnabled = false;
+var filters = [];
 
 function savePreferences(sender) {
     var sendForm = true;
@@ -37,10 +40,39 @@ function savePreferences(sender) {
         }
     }
 
+    if (isSieveScriptsEnabled) {
+        var jsonFilters = prototypeIfyFilters();
+        $("sieveFilters").setValue(jsonFilters.toJSON());
+    }
+
     if (sendForm)
-      $("mainForm").submit();
+        $("mainForm").submit();
 
     return false;
+}
+
+function prototypeIfyFilters() {
+    var newFilters = $([]);
+    for (var i = 0; i < filters.length; i++) {
+        var filter = filters[i];
+        var newFilter = $({});
+        newFilter.name = filter.name;
+        newFilter.match = filter.match;
+        newFilter.active = filter.active;
+
+        newFilter.rules = $([]);
+        for (var j = 0; j < filter.rules.length; j++) {
+            newFilter.rules.push($(filter.rules[j]));
+        }
+
+        newFilter.actions = $([]);
+        for (var j = 0; j < filter.actions.length; j++) {
+            newFilter.actions.push($(filter.actions[j]));
+        }
+        newFilters.push(newFilter);
+    }
+
+    return newFilters;
 }
 
 function _setupEvents(enable) {
@@ -92,6 +124,10 @@ function addDefaultEmailAddresses() {
 }
 
 function initPreferences() {
+    var filtersListWrapper = $("filtersListWrapper");
+    if (filtersListWrapper) {
+        isSieveScriptsEnabled = true;
+    }
     _setupEvents(true);
     if (typeof (initAdditionalPreferences) != "undefined")
         initAdditionalPreferences();
@@ -122,7 +158,205 @@ function initPreferences() {
     }
 
     if ($("addDefaultEmailAddresses"))
-        $("addDefaultEmailAddresses").observe("click", addDefaultEmailAddresses);
+        $("addDefaultEmailAddresses").observe("click",
+                                              addDefaultEmailAddresses);
+
+    initSieveFilters();
+}
+
+function initSieveFilters() {
+    var table = $("filtersList");
+    if (table) {
+        var filtersValue = $("sieveFilters").getValue();
+        if (filtersValue && filtersValue.length) {
+            filters = $(filtersValue.evalJSON(false));
+            for (var i = 0; i < filters.length; i++) {
+                appendSieveFilterRow(table, i, filters[i]);
+            }
+        }
+        $("filterAdd").observe("click", onFilterAdd);
+        $("filterDelete").observe("click", onFilterDelete);
+        $("filterMoveUp").observe("click", onFilterMoveUp);
+        $("filterMoveDown").observe("click", onFilterMoveDown);
+    }
+}
+
+function appendSieveFilterRow(filterTable, number, filter) {
+    var row = createElement("tr");
+    row.observe("mousedown", onRowClick);
+    row.observe("dblclick", onFilterEdit.bindAsEventListener(row));
+
+    var nameColumn = createElement("td");
+    nameColumn.appendChild(document.createTextNode(filter["name"]));
+    row.appendChild(nameColumn);
+
+    var activeColumn = createElement("td", null, "activeColumn");
+    var cb = createElement("input", null, "checkBox",
+                           { checked: filter.active,
+                             type: "checkbox" },
+                           null, activeColumn);
+    var bound = onScriptActiveCheck.bindAsEventListener(cb);
+    cb.observe("change", bound);
+    row.appendChild(activeColumn);
+
+    filterTable.tBodies[0].appendChild(row);
+}
+
+function onScriptActiveCheck(event) {
+    var index = this.parentNode.parentNode.rowIndex - 1;
+    filters[index].active = this.checked;
+}
+
+function updateSieveFilterRow(filterTable, number, filter) {
+    var row = $(filterTable.tBodies[0].rows[number]);
+    var columns = row.childNodesWithTag("td");
+    var nameColumn = columns[0];
+    while (nameColumn.firstChild) {
+        nameColumn.removeChild(nameColumn.firstChild);
+    }
+    nameColumn.appendChild(document.createTextNode(filter.name));
+
+    var activeColumn = columns[1];
+    while (activeColumn.firstChild) {
+        activeColumn.removeChild(activeColumn.firstChild);
+    }
+    createElement("input", null, "checkBox",
+                  { checked: filter.active,
+                       type: "checkbox" },
+                  null, activeColumn);
+}
+
+function _editFilter(filterId) {
+    var urlstr = ApplicationBaseURL + "editFilter?filter=" + filterId;
+    var win = window.open(urlstr, "sieve_filter_" + filterId,
+                          "width=450,height=380,resizable=0");
+    if (win)
+        win.focus();
+}
+
+function onFilterAdd(event) {
+    log("onFilterAdd");
+    _editFilter("new");
+    event.stop();
+}
+
+function onFilterDelete(event) {
+    var filtersList = $("filtersList").tBodies[0];
+    var nodes = filtersList.getSelectedNodes();
+    if (nodes.length > 0) {
+        var deletedFilters = [];
+        for (var i = 0; i < nodes.length; i++) {
+            var node = nodes[i];
+            deletedFilters.push(node.rowIndex - 1);
+        }
+        deletedFilters = deletedFilters.sort(function (x,y) { return x-y; });
+        var rows = filtersList.rows;
+        for (var i = 0; i < deletedFilters.length; i++) {
+            var filterNbr = deletedFilters[i];
+            filters.splice(filterNbr, 1);
+            var row = rows[filterNbr];
+            row.parentNode.removeChild(row);
+        }
+    }
+    event.stop();
+}
+
+function onFilterMoveUp(event) {
+    var filtersList = $("filtersList").tBodies[0];
+    var nodes = filtersList.getSelectedNodes();
+    if (nodes.length > 0) {
+        var node = nodes[0];
+        var previous = node.previous();
+        if (previous) {
+            var count = node.rowIndex - 1;
+            node.parentNode.removeChild(node);
+            filtersList.insertBefore(node, previous);
+            var swapFilter = filters[count];
+            filters[count] = filters[count - 1];
+            filters[count - 1] = swapFilter;
+        }
+    }
+    event.stop();
+}
+
+function onFilterMoveDown(event) {
+    var filtersList = $("filtersList").tBodies[0];
+    var nodes = filtersList.getSelectedNodes();
+    if (nodes.length > 0) {
+        var node = nodes[0];
+        var next = node.next();
+        if (next) {
+            var count = node.rowIndex - 1;
+            filtersList.removeChild(next);
+            filtersList.insertBefore(next, node);
+            var swapFilter = filters[count];
+            filters[count] = filters[count + 1];
+            filters[count + 1] = swapFilter;
+        }
+    }
+    event.stop();
+}
+
+function onFilterEdit(event) {
+    _editFilter(this.rowIndex - 1);
+    event.stop();
+}
+
+function copyFilter(originalFilter) {
+    var newFilter = {};
+
+    newFilter.name = originalFilter.name;
+    newFilter.match = originalFilter.match;
+    newFilter.active = originalFilter.active;
+    newFilter.rules = [];
+    for (var i = 0; i < originalFilter.rules.length; i++) {
+        newFilter.rules.push(_copyFilterElement(originalFilter.rules[i]));
+    }
+    newFilter.actions = [];
+    for (var i = 0; i < originalFilter.actions.length; i++) {
+        newFilter.actions.push(_copyFilterElement(originalFilter.actions[i]));
+    }
+
+    return newFilter;
+}
+
+function _copyFilterElement(filterElement) { /* element = rule or action */
+    var newElement = {};
+    for (var k in filterElement) {
+        var value = filterElement[k];
+        if (typeof(value) == "string" || typeof(value) == "number") {
+            newElement[k] = value; 
+        }
+    }
+
+    return newElement;
+}
+
+function getSieveCapabilitiesFromEditor() {
+    return sieveCapabilities;
+}
+
+function getFilterFromEditor(filterId) {
+    return copyFilter(filters[filterId]);
+}
+
+function updateFilterFromEditor(filterId, filter) {
+    var sanitized = {};
+    for (var k in filter) {
+        if (!(k == "rules" && filter.match == "allmessages")) {
+            sanitized[k] = filter[k];
+        }
+    }
+
+    var table = $("filtersList");
+    if (filterId == "new") {
+        var newNumber = filters.length;
+        filters.push(sanitized);
+        appendSieveFilterRow(table, newNumber, sanitized);
+    } else {
+        filters[filterId] = sanitized;
+        updateSieveFilterRow(table, filterId, sanitized);
+    }
 }
 
 function resetTableActions() {
@@ -292,7 +526,7 @@ function onComposeMessagesTypeChange(event) {
             return savePreferences();
         else {
             // Restore previous value of composeMessagesType
-             $("composeMessagesType").stopObserving("change", onComposeMessagesTypeChange);
+            $("composeMessagesType").stopObserving("change", onComposeMessagesTypeChange);
             $("composeMessagesType").value = ((Event.element(event).value == 1)?"0":"1");
             Event.element(event).blur();
             $("composeMessagesType").observe("change", onComposeMessagesTypeChange);
@@ -304,13 +538,13 @@ function onComposeMessagesTypeChange(event) {
         // HTML mode
         CKEDITOR.replace('signature',
                          {
-                           height: "290px",
-                           toolbar :
+                         height: "290px",
+                                 toolbar :
                              [['Bold', 'Italic', '-', 'Link', 
                                'Font','FontSize','-','TextColor',
                                'BGColor']
                               ] 
-                          }
+                                 }
                          );
     }
 }

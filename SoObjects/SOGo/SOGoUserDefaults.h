@@ -140,6 +140,9 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 - (void) setRemindWithASound: (BOOL) newValue;
 - (BOOL) remindWithASound;
 
+- (void) setSieveFilters: (NSArray *) newValue;
+- (NSArray *) sieveFilters;
+
 - (void) setVacationOptions: (NSDictionary *) newValue;
 - (NSDictionary *) vacationOptions;
 

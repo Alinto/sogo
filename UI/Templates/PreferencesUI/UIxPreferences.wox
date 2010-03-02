@@ -101,11 +101,11 @@
             ><table id="categoriesList" cellspacing="0">
               <thead>
                 <tr class="tableview"
-                  ><td const:class="tbtv_headercell" const:id="nameTableHeader"
-                    ><var:string var:value="nameLabel" /></td
-                    ><td const:class="tbtv_headercell" const:id="colorTableHeader"
-                    ><var:string var:value="colorLabel" /></td
-                    ></tr
+                  ><th const:class="tbtv_headercell" const:id="nameTableHeader"
+                    ><var:string label:value="Name"/></th
+                    ><th const:class="tbtv_headercell" const:id="colorTableHeader"
+                      ><var:string label:value="Color"/></th
+                      ></tr
                   ></thead>
               <tbody>
                 <var:foreach list="categoryList" item="category">
@@ -173,15 +173,45 @@
             const:id="composeMessagesType"
             string="itemComposeMessagesText"
             selection="userComposeMessagesType"/>
+          <var:if condition="isSieveScriptsEnabled"
+            ><br/><label><var:string label:value="Filters"/></label>
+            <script type="text/javascript">
+              var sieveCapabilities = <var:string value="sieveCapabilities" const:escapeHTML="NO"/>;
+            </script>
+            <div id="filtersListWrapper"
+              ><table id="filtersList" cellspacing="0">
+                <thead>
+                  <tr class="tableview"
+                    ><th const:class="tbtv_headercell" const:id="nameTableHeader"
+                      ><var:string label:value="Name" /></th
+                      ><th const:class="tbtv_headercell" const:id="activeTableHeader"
+                      ><var:string label:value="Active" /></th
+                      ></tr
+                    ></thead>
+                <tbody><!--space --></tbody>
+              </table>
+              <input type="hidden" const:name="sieveFilters" const:id="sieveFilters"
+                var:value="sieveFiltersValue"/></div>
+            <div class="bottomToolbar">
+              <a const:id="filterAdd" class="bottomButton" href="#">
+                <span><img rsrc:src="add-icon.png" label:title="Add" />
+                </span></a>
+              <a const:id="filterDelete" class="bottomButton" href="#">
+                <span><img rsrc:src="remove-icon.png" label:title="Delete" />
+                </span></a>
+              <a const:id="filterMoveUp" class="bottomButton" href="#">
+                <span><img rsrc:src="up-icon.png" label:title="Move Up" />
+                </span></a>
+              <a const:id="filterMoveDown" class="bottomButton" href="#">
+                <span><img rsrc:src="down-icon.png" label:title="Move Down" />
+                </span></a>
+            </div>
+          </var:if>
 	</div>
-	<div id="identitiesView" class="tab">
-	  <!--<var:multiselection const:id="identitiesList" item="item"
-	  list="identitiesList" displayString="itemIdentityText">
-	</var:multiselection>
-	  <br/>-->
-	  <textarea const:id="signature" const:name="signature"
-	    var:value="signature" />
-	</div>
+	<div id="identitiesView" class="tab"
+	  ><textarea const:id="signature" const:name="signature"
+	    var:value="signature"
+            /></div>
 	<var:if condition="isVacationEnabled">
           <div id="vacationView" class="tab">
 	    <label><input type="checkbox" 

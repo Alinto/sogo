@@ -76,3 +76,33 @@ DIV.bottomToolbar
   left: 2em;
   right: 2em; 
   margin: 0px; }
+
+/* mail filters */
+DIV#filtersListWrapper
+{ overflow: auto;
+  position: absolute;
+  bottom: 30px;
+  right: 2em;
+  top: 154px;
+  left: 2em;
+  padding: 0px;
+  margin-top: 2px;
+  border-left: 1px solid #9b9b9b;
+  background: #ccddec; }
+
+TABLE#filtersList
+{ width: 100%; }
+
+TR.filterListRow
+{ background: #ccddec;
+  cursor: pointer; }
+
+TD.filterListCell
+{ -moz-user-select: none; }
+
+TH#activeTableHeader
+{ width: 50px;
+  text-align: center; }
+
+TD.activeColumn
+{ text-align: center; }

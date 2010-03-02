@@ -1,0 +1,64 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE var:component>
+<var:component
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:uix="OGo:uix"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label"
+  className="UIxPageFrame"
+  title="title"
+  const:popup="YES"
+  >
+  <script type="text/javascript">
+    var filterId = '<var:string value="filterId"/>';
+    var firstMailAccount = '<var:string value="firstMailAccount"/>';
+  </script>
+  <form id="mainForm" var:href="ownPath">
+    <div id="filterNameContainer" class="container">
+      <label><var:string label:value="Filter name:"
+          /><input const:name="filterName" class="textField" type="text"
+          var:value="filterName"/></label><br/>
+    </div>
+    <div id="filterMatchContainer" class="container">
+      <var:string label:value="For incoming messages that"/>
+      <select const:name="matchType" const:id="matchType"
+        ><option const:value="all"
+          ><var:string label:value="match all of the following rules:"
+            /></option
+          ><option const:value="any"
+          ><var:string label:value="match any of the following rules:"
+            /></option
+        ><option const:value="allmessages"
+          ><var:string label:value="match all messages"
+            /></option
+          ></select>
+    </div>
+
+    <div id="filterRulesContainer" class="container">
+      <div id="filterRules"><!-- empty --></div>
+      <div class="bottomToolbar"
+        ><a const:id="ruleAdd" class="bottomButton" href="#">
+          <span><img rsrc:src="add-icon.png" label:title="Add" />
+          </span></a
+          ><a const:id="ruleDelete" class="bottomButton" href="#">
+          <span><img rsrc:src="remove-icon.png" label:title="Delete" />
+          </span></a
+          ></div>
+    </div>
+    <!-- <div id="splitter" class="dragHandle"></div> -->
+    <div id="filterActionsContainer" class="container">
+      <var:string label:value="Perform these actions:"/><br/>
+      <div id="filterActions"><!-- empty --></div>
+      <div class="bottomToolbar"
+        ><a const:id="actionAdd" class="bottomButton" href="#">
+          <span><img rsrc:src="add-icon.png" label:title="Add" />
+          </span></a
+          ><a const:id="actionDelete" class="bottomButton" href="#">
+          <span><img rsrc:src="remove-icon.png" label:title="Delete" />
+          </span></a
+          ></div>
+    </div>
+  </form>
+</var:component>

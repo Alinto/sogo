@@ -1,5 +1,20 @@
 2010-03-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/PreferencesUI/UIxPreferences.m (-nameLabel, -colorLabel):
+	removed useless methods.
+
+	* SoObjects/SOGo/SOGoUserDefaults.m (-sieveFilters)
+	(-setSieveFilters:): new accessors.
+
+	* SoObjects/SOGo/SOGoDomainDefaults.m (-sieveScriptEnabled): new
+	accessor.
+
+	* SoObjects/Mailer/SOGoSieveConverter.m: new class for producing
+	sieve scripts from user defaults.
+
+	* UI/PreferencesUI/UIxFilterEditor.m: new template class for
+	editing sieve scripts.
+
 	* UI/WebServerResources/generic.js (_): new gettextable equivalent
 	of "getLabel".
 
