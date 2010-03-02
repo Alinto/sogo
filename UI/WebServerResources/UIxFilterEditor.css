@@ -93,6 +93,9 @@ SPAN.operatorContainer
 SPAN.valueContainer INPUT
 { width: 160px; }
 
+SPAN.redirectArgument INPUT
+{ width: 160px; }
+
 SPAN.fileintoArgument SELECT
 { max-width: 250px; }
 
