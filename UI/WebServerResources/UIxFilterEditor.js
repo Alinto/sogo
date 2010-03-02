@@ -45,7 +45,8 @@ function loadMailboxes() {
 
 function onLoadMailboxesCallback(http) {
     if (http.readyState == 4) {
-        window.opener.userMailboxes = [];
+        window.opener.userMailboxes = $([]);
+        log("http.status: " + http.status);
         if (http.status == 200) {
             checkAjaxRequestsState();
             if (http.responseText.length > 0) {
@@ -102,7 +103,7 @@ function setupConstants() {
 }
 
 function setupEventHandlers() {
-    var filterName = $("mainForm").filterName;
+    var filterName = $($("mainForm").filterName);
     if (filterName) {
         var boundCB = onFilterNameChange
                       .bindAsEventListener(filterName);
