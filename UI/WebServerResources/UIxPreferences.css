@@ -91,7 +91,8 @@ DIV#filtersListWrapper
   background: #ccddec; }
 
 TABLE#filtersList
-{ width: 100%; }
+{ width: 100%;
+  cursor: default; }
 
 TR.filterListRow
 { background: #ccddec;
