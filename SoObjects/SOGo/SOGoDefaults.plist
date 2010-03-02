@@ -4,7 +4,7 @@
     WOLogFile = "/var/log/sogo/sogo.log";
     WOPidFile = "/var/run/sogo/sogo.pid";
 
-    NGImap4ConnectionStringSeparator = ".";
+    NGImap4ConnectionStringSeparator = "/";
 
     SOGoZipPath = "/usr/bin/zip";
 
