@@ -294,7 +294,7 @@ function triggerAjaxRequest(url, callback, userdata, content, headers) {
         http.url = url;
         http.callback = callback;
         http.callbackData = userdata;
-        http.onreadystatechange = function() { onAjaxRequestStateChange(http) };
+        http.onreadystatechange = function() { onAjaxRequestStateChange(http);};
         //       = function() {
         // //       log ("state changed (" + http.readyState + "): " + url);
         //     };
@@ -510,6 +510,8 @@ function onRowClick(event) {
     }
     if (rowIndex != null)
         lastClickedRow = rowIndex;
+
+    event.stop();
 
     return true;
 }
@@ -1625,22 +1627,27 @@ function getMenus() {
 function onHeaderClick(event) {
 }
 
-function getLabel(title) {
-    var rc = title;
-    if (!logWindow) {
-        logWindow = window;
-        while (logWindow.opener)
-            logWindow = logWindow.opener;
+function _(key) {
+    var value = key;
+    if (labels[key]) {
+        value = labels[key];
+    }
+    else {
+        var topWindow = null;
+        if (!topWindow) {
+            topWindow = window;
+            while (topWindow.opener)
+                topWindow = topWindow.opener;
+        }
+        if (topWindow && topWindow.clabels[key])
+            value = topWindow.clabels[key];
     }
 
-    if (labels[title]) {
-        rc = labels[title];
-    }
-    else if (logWindow.clabels[title]) {
-        rc = logWindow.clabels[title];
-    }
-    
-    return rc;
+    return value;
+}
+
+function getLabel(key) {
+    return _(key);
 }
 
 /**

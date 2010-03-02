@@ -1,3 +1,8 @@
+2010-03-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/generic.js (_): new gettextable equivalent
+	of "getLabel".
+
 2010-03-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoDomainDefaults.m (-imapFolderSeparator): new
