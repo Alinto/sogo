@@ -511,8 +511,6 @@ function onRowClick(event) {
     if (rowIndex != null)
         lastClickedRow = rowIndex;
 
-    event.stop();
-
     return true;
 }
 
