@@ -20,24 +20,24 @@
 	<var:if condition="userHasCalendarAccess">
           <li target="calendarOptionsView"><span><var:string
                 label:value="Calendar Options"/></span></li>
-	</var:if>
-	<var:if condition="userHasMailAccess">
+	</var:if
+	><var:if condition="userHasMailAccess">
           <li target="mailOptionsView"><span><var:string
                 label:value="Mail Options"/></span></li>
           <li target="identitiesView"><span><var:string
                 label:value="Signature"/></span></li>
           <var:if condition="isVacationEnabled"><li target="vacationView"><span><var:string
-                  label:value="Vacation"/></span></li></var:if>
-          <var:if condition="isForwardEnabled"><li target="forwardView"><span><var:string
+                  label:value="Vacation"/></span></li></var:if
+            ><var:if condition="isForwardEnabled"><li target="forwardView"><span><var:string
                   label:value="Forward"/></span></li></var:if>
-	</var:if>
-	<var:if condition="shouldDisplayAdditionalPreferences">
+	</var:if
+          ><var:if condition="shouldDisplayAdditionalPreferences">
           <li target="additionalView"><span>
               <var:string label:value="Additional Parameters"/></span></li>
- 	</var:if>
-        <!--	<var:if condition="shouldDisplayPasswordChange"> -->
-        <!-- 	  <li target="passwordView"><var:string label:value="Password"/></li> -->
-        <!-- 	</var:if> -->
+ 	<!-- </var:if -->
+        <!--   ><var:if condition="shouldDisplayPasswordChange"> -->
+        <!--   <li target="passwordView"><span><var:string label:value="Password"/></span></li> -->
+        </var:if>
       </ul>
       <div id="generalView" class="tab">
 	<label><var:string label:value="Language :"/>
@@ -142,8 +142,8 @@
           <!-- 	    <var:popup list="reminderTimesList" item="item" -->
           <!-- 	      string="itemReminderTimeText" selection="userReminderTime"/></label> -->
 	</div>
-      </var:if>
-      <var:if condition="userHasMailAccess">
+      </var:if
+        ><var:if condition="userHasMailAccess">
 	<div id="mailOptionsView" class="tab">
 	  <label><input type="checkbox" 
               const:name="subscribedFoldersOnly"
@@ -252,8 +252,8 @@
 
             </div>
           </div>
-	</var:if>
-	<var:if condition="isForwardEnabled">
+	</var:if
+	><var:if condition="isForwardEnabled">
           <div id="forwardView" class="tab">
 	    <label><input type="checkbox" 
                 const:name="enableForward"
@@ -277,13 +277,9 @@
 
             </div>
           </div>
-	</var:if>
-      </var:if>
-      <var:if condition="shouldDisplayAdditionalPreferences"
-	><div id="additionalView" class="tab">
-	  <var:component className="UIxAdditionalPreferences"/>
-	</div></var:if>
-      <!--       <var:if condition="shouldDisplayPasswordChange"> -->
+	</var:if
+          ></var:if>
+      <!-- <var:if condition="shouldDisplayPasswordChange"> -->
       <!-- 	<div id="passwordView" class="tab"> -->
       <!-- 	  <label><var:string label:value="New password:" -->
       <!-- 	      /><input type="text" class="textField" -->
@@ -296,7 +292,11 @@
       <!-- 	  <input type="button" class="button" -->
       <!-- 	    id="changePasswordBtn" label:value="Change"/> -->
       <!-- 	</div> -->
-      <!--       </var:if> -->
+      <!-- </var:if> -->
+      <var:if condition="shouldDisplayAdditionalPreferences"
+	><div id="additionalView" class="tab">
+	  <var:component className="UIxAdditionalPreferences"/>
+	</div></var:if>
       <input type="hidden" id="hasChanged" name="hasChanged"
 	var:value="hasChanged"/>
     </div>
