@@ -741,12 +741,11 @@ SPAN.caption
 
 /* Tabs */
 DIV.tabsContainer
-{ position: relative;
+{ position: absolute;
   color: #535D6D;
   background-color: #E6E7E6;
   margin-top: 0.5em; 
   border: 1px solid #9B9B9B;
-  position: absolute;
   top: 2.5em;
   left: .5em;
   right: .5em;
@@ -756,13 +755,15 @@ DIV.tabsContainer
 
 DIV.tabsContainer > UL
 { cursor: default;
+  width: 1000px;
   list-style-type: none;
   list-style-image: none;
   margin: 0px;
   margin-top: -24px;
   padding: 0px; }
 
-DIV.tabsContainer > UL LI {
+DIV.tabsContainer > UL LI
+{ overflow: hidden;
   padding: 0px;
   margin-right: -1px;
   background: transparent url('tab_a_inactive_bg.png') no-repeat scroll top right;
@@ -771,20 +772,18 @@ DIV.tabsContainer > UL LI {
   height: 24px;
   padding-right: 2px; /* sliding doors padding */
   text-decoration: none;  
-  color: inherit;
-}
-DIV.tabsContainer > UL LI SPAN {
-    background: transparent url('tab_span_inactive_bg.png') no-repeat;
-    display: block;
-    line-height: 14px;
-    padding: 5px 6px 5px 5px;
-}
-DIV.tabsContainer > UL LI.active {
-  background: transparent url('tab_a_active_bg.png') no-repeat scroll top right !important;
-}
-DIV.tabsContainer > UL LI.active SPAN {
-    background: transparent url('tab_span_active_bg.png') no-repeat !important;
-}
+  color: inherit; }
+
+DIV.tabsContainer > UL LI SPAN
+{ background: transparent url('tab_span_inactive_bg.png') no-repeat;
+  display: block;
+  line-height: 14px;
+  padding: 5px 6px 5px 5px; }
+
+DIV.tabsContainer > UL LI.active
+{ background: transparent url('tab_a_active_bg.png') no-repeat scroll top right !important; }
+DIV.tabsContainer > UL LI.active SPAN
+{   background: transparent url('tab_span_active_bg.png') no-repeat !important; }
 DIV.tabsContainer > UL LI.first
 { margin-left: -1px;
   padding-left: -1px; }
