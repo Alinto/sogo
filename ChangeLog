@@ -1,3 +1,14 @@
+2010-03-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/NSString+DAV.m (-davSetterName): enhanced so that
+	DAV properties directely passed as parameters (and not as dav
+	method names deduced from DAVPropMap.plist) are handled properly
+	too.
+
+	* SoObjects/SOGo/SOGoUserFolder.m (-setDavSignature:): new
+	accessor for setting the
+	{urn:inverse:params:xml:ns:inverse-dav}signature property via DAV.
+
 2010-03-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/PreferencesUI/UIxPreferences.m (-nameLabel, -colorLabel):

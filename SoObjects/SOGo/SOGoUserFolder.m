@@ -623,4 +623,17 @@
   return [NSArray arrayWithObject: principalURL];
 }
 
+- (NSException *) setDavSignature: (NSString *) newSignature
+{
+  SOGoUserDefaults *ud;
+  SOGoUser *user;
+
+  user = [SOGoUser userWithLogin: [self ownerInContext: nil]];
+  ud = [user userDefaults];
+  [ud setMailSignature: newSignature];
+  [ud synchronize];
+
+  return nil;
+}
+
 @end /* SOGoUserFolder */

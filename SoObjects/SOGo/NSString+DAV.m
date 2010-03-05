@@ -78,13 +78,23 @@
 - (NSString *) davSetterName
 {
   unichar firstLetter;
-  NSString *firstString;
+  NSString *firstString, *property, *davPrefix;
 
-  firstLetter = [self characterAtIndex: 0];
+  property = [[self asDavInvocation] objectForKey: @"method"];
+  if (!property)
+    property = self;
+  firstLetter = [property characterAtIndex: 0];
   firstString = [[NSString stringWithCharacters: &firstLetter length: 1]
 		  uppercaseString];
-  return [NSString stringWithFormat: @"set%@%@:",
-		   firstString, [self substringFromIndex: 1]];
+  if ([property length] > 3
+      && [[property substringWithRange: NSMakeRange (0, 3)]
+           caseInsensitiveCompare: @"dav"] == NSOrderedSame)
+    davPrefix = @"";
+  else
+    davPrefix = @"Dav";
+
+  return [NSString stringWithFormat: @"set%@%@%@:", davPrefix,
+		   firstString, [property substringFromIndex: 1]];
 }
 
 - (NSDictionary *) asDavInvocation
