@@ -166,3 +166,56 @@
 "Spanish" = "Español";
 "Swedish" = "Svenska";
 "Welsh" = "Cymraeg";
+
+/* Filters - UIxPreferences */
+"Filters" = "Filtres";
+"Active" = "Actif";
+"Move Up" = "Remonter";
+"Move Down" = "Abaisser";
+
+/* Filters - UIxFilterEditor */
+"Filter name:" = "Nom du filtre :";
+"For incoming messages that" = "Pour tout message entrant";
+"match all of the following rules:" = "correspondant à toutes ces règles :";
+"match any of the following rules:" = "correspondant à une de ces règles :";
+"match all messages" = "sans distinction";
+"Perform these actions:" = "Effectuez ces opérations :";
+
+"Subject" = "Sujet";
+"From" = "Expéditeur";
+"To" = "Destinataire";
+"Cc" = "Copie à";
+"To or Cc" = "\"Dest.\" ou \"Copie à\"";
+"Size (Kb)" = "Taille (Ko)";
+"Header" = "En-tête";
+"Flag the message with:" = "Marquer le message comme :";
+"Discard the message" = "Annuler le message";
+"File the message in:" = "Placer le message dans :";
+"Keep the message" = "Conserver le message";
+"Forward the message to:" = "Faire suivre le message à :";
+"Send a reject message:" = "Refuser le message avec ce texte :";
+"Send a vacation message" = "Envoyer un message d'absence";
+"Stop processing filter rules" = "Cessez le filtrage";
+
+"is under" = "est sous";
+"is over" = "dépasse";
+"is" = "est";
+"is not" = "n'est pas";
+"contains" = "contient";
+"does not contain" = "ne contient pas";
+"matches" = "correspond à";
+"does not match" = "ne correspond pas à";
+"matches regex" = "correspond à l'exp. régulière";
+"does not match regex" = "ne correspond pas à l'exp. régulière";
+
+"Seen" = "lu";
+"Deleted" = "effacé";
+"Answered" = "répondu";
+"Flagged" = "marqué";
+"Junk" = "spam";
+"Not Junk" = "non spam";
+"Label 1" = "étiquette 1";
+"Label 2" = "étiquette 2";
+"Label 3" = "étiquette 3";
+"Label 4" = "étiquette 4";
+"Label 5" = "étiquette 5";

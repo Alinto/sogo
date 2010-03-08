@@ -149,3 +149,56 @@
 "Russian" = "Русский";
 "Spanish" = "Español";
 "Welsh" = "Cymraeg";
+
+/* Filters - UIxPreferences */
+"Filters" = "Filters";
+"Active" = "Active";
+"Move Up" = "Move Up";
+"Move Down" = "Move Down";
+
+/* Filters - UIxFilterEditor */
+"Filter name:" = "Filter name:";
+"For incoming messages that" = "For incoming messages that";
+"match all of the following rules:" = "match all of the following rules:";
+"match any of the following rules:" = "match any of the following rules:";
+"match all messages" = "match all messages";
+"Perform these actions:" = "Perform these actions:";
+
+"Subject" = "Subject";
+"From" = "From";
+"To" = "To";
+"Cc" = "Cc";
+"To or Cc" = "To or Cc";
+"Size (Kb)" = "Size (Kb)";
+"Header" = "Header";
+"Flag the message with:" = "Flag the message with:";
+"Discard the message" = "Discard the message";
+"File the message in:" = "File the message in:";
+"Keep the message" = "Keep the message";
+"Forward the message to:" = "Forward the message to:";
+"Send a reject message:" = "Send a reject message:";
+"Send a vacation message" = "Send a vacation message";
+"Stop processing filter rules" = "Stop processing filter rules";
+
+"is under" = "is under";
+"is over" = "is over";
+"is" = "is";
+"is not" = "is not";
+"contains" = "contains";
+"does not contain" = "does not contain";
+"matches" = "matches";
+"does not match" = "does not match";
+"matches regex" = "matches regex";
+"does not match regex" = "does not match regex";
+
+"Seen" = "Seen";
+"Deleted" = "Deleted";
+"Answered" = "Answered";
+"Flagged" = "Flagged";
+"Junk" = "Junk";
+"Not Junk" = "Not Junk";
+"Label 1" = "Label 1";
+"Label 2" = "Label 2";
+"Label 3" = "Label 3";
+"Label 4" = "Label 4";
+"Label 5" = "Label 5";
