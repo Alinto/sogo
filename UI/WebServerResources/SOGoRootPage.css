@@ -111,9 +111,10 @@ IMG#progressIndicator
   margin-top: 20px;
   margin-left: 5px; }
 
-#noCookiesErrorMessage,
-#loginErrorMessage
+#errorMessage
 { color: #f00;
+  width: 400px;
+  margin: 0px auto;
   text-align: center; }
 
 P.browser

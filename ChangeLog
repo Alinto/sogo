@@ -1,5 +1,22 @@
 2010-03-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/generic.js (createDialog): new method
+	designed to provide a normalized interface for creating popup
+	dialogs with DOM methods.
+	(createButton): same as above for buttons.
+	(SetLogMessage): new normalizing method for putting typed log
+	message in specified containers via DOM methods.
+
+	* UI/WebServerResources/SOGoRootPage.js: added code for popping up
+	a password change dialog whenever one is required by the server.
+
+	* UI/MainUI/SOGoRootPage.m (_responseWithLDAPPolicyError:): new
+	method for returning password change and login-based LDAP policy
+	errors.
+
+	* UI/WebServerResources/PasswordPolicy.js: new module that handle
+	the password change protocol and error codes.
+
 	* UI/WebServerResources/UIxPreferences.js
 	(onComposeMessagesTypeChange): we now do the proper widget
 	wizardry via DOM methods to alternate between the text-based or

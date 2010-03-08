@@ -111,6 +111,22 @@
 }
 
 /* actions */
+- (WOResponse *) _responseWithLDAPPolicyError: (int) error
+{
+  WOResponse *response;
+  NSDictionary *jsonError;
+
+  jsonError
+    = [NSDictionary dictionaryWithObject: [NSNumber numberWithInt: error]
+                                  forKey: @"LDAPPasswordPolicyError"];
+  response = [self responseWithStatus: 403
+                andJSONRepresentation: jsonError];
+  [response setHeader: @"application/json"
+               forKey: @"content-type"];
+
+  return response;
+}
+
 - (id <WOActionResults>) connectAction
 {
   WOResponse *response;
@@ -135,11 +151,8 @@
   password = [request formValueForKey: @"password"];
   language = [request formValueForKey: @"language"];
   
-  if ((b = [auth checkLogin: username 
-		 password: password
-		 perr: &err
-		 expire: &expire
-		 grace: &grace])
+  if ((b = [auth checkLogin: username password: password
+		 perr: &err expire: &expire grace: &grace])
       && (err == PolicyNoError || err == PolicyChangeAfterReset))
     {
       [self logWithFormat: @"successful login for user '%@'", username];
@@ -167,7 +180,7 @@
   else
     {
       [self logWithFormat: @"Login for user '%@' might not have worked - password policy: %d  bound: ", username, err, b];
-      
+
       if (err == PolicyNoError)
 	{
 	  [self logWithFormat: @"failed login for user '%@' due to wrong password", username];
@@ -180,8 +193,8 @@
 	{
 	  // The password MUST be changed - we need to ask for the old password and the new one here
 	}
-      
-      response = [self responseWithStatus: 403];
+
+      response = [self _responseWithLDAPPolicyError: err];
     }
 
   return response;
@@ -418,7 +431,9 @@
   SOGoPasswordPolicyError error;
   WOResponse *response;
   WORequest *request;
-  NSDictionary *message, *jsonError;
+  NSDictionary *message;
+  SOGoWebAuthenticator *auth;
+  WOCookie *authCookie;
 
   request = [context request];
   message = [NSMutableDictionary dictionaryWithJSONString: [request contentAsString]];
@@ -433,17 +448,17 @@
 	  oldPassword: password
 	  newPassword: newPassword
 	  perr: &error])
-    response = [self responseWith204];
-  else
     {
-      jsonError
-	= [NSDictionary dictionaryWithObject: [NSNumber numberWithInt: error]
-			forKey: @"LDAPPasswordPolicyError"];
-      response = [self responseWithStatus: 403
-		       andJSONRepresentation: jsonError];
-      [response setHeader: @"application/json"
-		forKey: @"content-type"];
+      response = [self responseWith204];
+      auth = [[WOApplication application]
+               authenticatorInContext: context];
+      authCookie = [self _cookieWithUsername: username
+                                 andPassword: newPassword
+                            forAuthenticator: auth];
+      [response addCookie: authCookie];
     }
+  else
+    response = [self _responseWithLDAPPolicyError: error];
 
   return response;
 }

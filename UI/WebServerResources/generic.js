@@ -1637,7 +1637,7 @@ function _(key) {
             while (topWindow.opener)
                 topWindow = topWindow.opener;
         }
-        if (topWindow && topWindow.clabels[key])
+        if (topWindow && topWindow.clabels && topWindow.clabels[key])
             value = topWindow.clabels[key];
     }
 
@@ -1694,18 +1694,58 @@ AIM = {
         if (typeof(i.onComplete) == 'function')
             i.onComplete(d.body.innerHTML);
     }
- 
 };
 
+function createDialog(id, title, legend, content, positionClass) {
+    if (!positionClass)
+        positionClass = "left";
+    var newDialog = createElement("div", id, ["dialog", positionClass]);
+    newDialog.setStyle({"display": "none"});
+
+    var subdiv = createElement("div", null, null, null, null, newDialog);
+    if (title && title.length > 0) {
+        var titleh3 = createElement("h3", null, null, null, null, subdiv);
+        titleh3.appendChild(document.createTextNode(title));
+    }
+    if (legend && legend.length > 0) {
+        var legendP = createElement("p", null, null, null, null, subdiv);
+        legendP.appendChild(document.createTextNode(legend));
+    }
+    if (content)
+        subdiv.appendChild(content);
+
+    return newDialog;
+}
+
+function createButton(id, caption, action) {
+    var newButton = createElement("a", id, "button", { "href": "#" });
+    if (caption && caption.length > 0) {
+        var span = createElement("span", null, null, null, null, newButton);
+        span.appendChild(document.createTextNode(caption));
+    }
+    if (action)
+        newButton.observe("click", action);
+
+    return newButton;
+}
+
 function readCookie(name) {
-	var nameEQ = name + "=";
-	var ca = document.cookie.split(';');
-	for(var i=0;i < ca.length;i++) {
-		var c = ca[i];
-		while (c.charAt(0)==' ') c = c.substring(1,c.length);
-		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-	}
-	return null;
+    var foundCookie = null;
+
+    var prefix = name + "=";
+    var pairs = document.cookie.split(';');
+    for (var i = 0; !foundCookie && i < pairs.length; i++) {
+        var currentPair = pairs[i];
+        var start = 0;
+        while (currentPair.charAt(start) == " ")
+            start++;
+        if (start > 0)
+            currentPair = currentPair.substr(start);
+        if (currentPair.indexOf(prefix) == 0)
+            foundCookie = currentPair.substr(prefix.length);
+    }
+
+    return foundCookie;
 }
 
 function readLoginCookie() {
@@ -1719,10 +1759,35 @@ function readLoginCookie() {
     return loginValues;
 }
 
-function setLoginCookie(username, password) {
-    var value = (username + ":" + password).base64encode();
-    var cookieValue = encodeURIComponent("basic " + value);
-    window.alert("0xHIGHFLYxSOGo=" + cookieValue);
+/* logging widgets */
+function SetLogMessage(containerId, message, msgType) {
+    var container = $(containerId);
+    if (container) {
+        if (!msgType)
+            msgType = "error";
+        var typeClass = msgType + "Message";
+        if (!container.typeClass || container.typeClass != typeClass) {
+            if (container.typeClass) {
+                container.removeClassName(container.typeClass);
+            }
+            container.typeClass = typeClass;
+            container.addClassName(typeClass);
+        }
+        if (!container.message || container.message != message) {
+            while (container.lastChild) {
+                container.removeChild(container.lastChild);
+            }
+            if (message) {
+                var sentences = message.split("\n");
+                container.appendChild(document.createTextNode(sentences[0]));
+                for (var i = 1; i < sentences.length; i++) {
+                    container.appendChild(document.createElement("br"));
+                    container.appendChild(document.createTextNode(sentences[i]));
+                }
+                container.message = message;
+            }
+        }
+    }
 }
 
 document.observe("dom:loaded", onLoadHandler);

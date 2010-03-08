@@ -7,6 +7,7 @@
   xmlns:const="http://www.skyrix.com/od/constant"
   xmlns:rsrc="OGo:url"
   xmlns:label="OGo:label"
+  const:jsFiles="PasswordPolicy.js"
   const:popup="YES"
   ><var:string var:value="doctype" const:escapeHTML="NO"/>
   <div id="aboutBox" style="display:none;">
@@ -58,9 +59,7 @@
 	</tr>
         <tr><td colspan="2"><label id="animation"><!-- busy.gif! --></label></td></tr>
       </table>
-      <p id="noCookiesErrorMessage" style="display: none;"><var:string label:value="cookiesNotEnabled"/></p>
-      <p id="loginErrorMessage" style="display: none;"><var:string label:value="Wrong username or password."/></p>
-      
+      <p id="errorMessage"><!-- space --></p>
     </div>
   </form
   ><img const:alt="*" id="preparedAnimation" rsrc:src="busy.gif"/>
