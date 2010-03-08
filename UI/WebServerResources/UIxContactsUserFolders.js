@@ -3,6 +3,8 @@
 var d;
 
 function onSearchFormSubmit() {
+    startAnimation($("pageContent"), $("filterPanel"));
+
   var searchValue = $("searchValue");
   var encodedValue = encodeURI(searchValue.value);
   
@@ -244,10 +246,7 @@ function onFolderSearchKeyDown(event) {
       }
       div.clean = true;
       $("addButton").addClassName("disabled");
-  }
-  
-  if (this.timer)
-      startAnimation($("pageContent"), $("filterPanel"));
+  }  
 }
 
 function initUserFoldersWindow() {

@@ -932,7 +932,7 @@ function onSearchKeyDown(event) {
     else if (event.keyCode == 0
              || event.keyCode == Event.KEY_BACKSPACE
              || event.keyCode > 31)
-        this.timer = setTimeout("onSearchFormSubmit()", 1000);
+        this.timer = setTimeout("onSearchFormSubmit()", 500);
 }
 
 function onSearchFormSubmit(event) {
