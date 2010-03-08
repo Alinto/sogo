@@ -130,6 +130,11 @@
           pageName = "SOGoRootPage";
           actionName = "connect";
         };
+        changePassword = {
+          protectedBy = "<public>";
+          pageName = "SOGoRootPage";
+          actionName = "changePassword";
+        };
         GET = { // more or less a hack, see README of dbd
           protectedBy = "<public>";
           pageName = "SOGoRootPage"; 

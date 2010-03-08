@@ -29,6 +29,7 @@
 #import <NGLdap/NGLdapConnection.h>
 #import <NGLdap/NGLdapAttribute.h>
 #import <NGLdap/NGLdapEntry.h>
+#import <NGLdap/NGLdapModification.h>
 
 #import "NSArray+Utilities.h"
 #import "NSString+Utilities.h"
@@ -157,6 +158,7 @@ static NSArray *commonSearchFields;
       _filter = nil;
 
       searchAttributes = nil;
+      passwordPolicy = NO;
     }
 
   return self;
@@ -239,6 +241,9 @@ static NSArray *commonSearchFields;
       ASSIGN (_scope, ([udSource objectForKey: @"scope"]
                        ? [udSource objectForKey: @"scope"]
                        : (id)@"sub"));
+
+      if ([udSource objectForKey: @"passwordPolicy"])
+	passwordPolicy = [[udSource objectForKey: @"passwordPolicy"] boolValue];
     }
   
   return self;
@@ -414,16 +419,19 @@ static NSArray *commonSearchFields;
   return userDN;
 }
 
-- (BOOL) checkLogin: (NSString *) loginToCheck
-	andPassword: (NSString *) passwordToCheck
+- (BOOL) checkLogin: (NSString *) _login
+	   password: (NSString *) _pwd
+	       perr: (SOGoPasswordPolicyError *) _perr
+	     expire: (int *) _expire
+	      grace: (int *) _grace
 {
-  BOOL didBind;
-  NSString *userDN;
   NGLdapConnection *bindConnection;
+  NSString *userDN;
+  BOOL didBind;
 
   didBind = NO;
 
-  if ([loginToCheck length] > 0)
+  if ([_login length] > 0)
     {
       bindConnection = [[NGLdapConnection alloc] initWithHostName: hostname
 						 port: port];
@@ -432,16 +440,24 @@ static NSArray *commonSearchFields;
 	  if (queryTimeout > 0)
 	    [bindConnection setQueryTimeLimit: queryTimeout];
 	  if (bindFields)
-	    userDN = [self _fetchUserDNForLogin: loginToCheck];
+	    userDN = [self _fetchUserDNForLogin: _login];
 	  else
 	    userDN = [NSString stringWithFormat: @"%@=%@,%@",
-			       IDField, loginToCheck, baseDN];
+			       IDField, _login, baseDN];
 	  if (userDN)
 	    {
 	      NS_DURING
-		didBind = [bindConnection bindWithMethod: @"simple"
-					  binddn: userDN
-					  credentials: passwordToCheck];
+		if (!passwordPolicy)
+		  didBind = [bindConnection bindWithMethod: @"simple"
+					    binddn: userDN
+					    credentials: _pwd];
+	        else  
+		  didBind = [bindConnection bindWithMethod: @"simple"
+					    binddn: userDN
+					    credentials: _pwd
+					    perr: (void *)_perr
+					    expire: _expire
+					    grace: _grace];
 	      NS_HANDLER
                 ;
               NS_ENDHANDLER
@@ -450,9 +466,78 @@ static NSArray *commonSearchFields;
 	}
       [bindConnection release];
     }
-
+  
   return didBind;
 }
+
+- (BOOL) changePasswordForLogin: (NSString *) login
+		    oldPassword: (NSString *) oldPassword
+		    newPassword: (NSString *) newPassword
+			   perr: (SOGoPasswordPolicyError *) perr
+  
+{
+  NGLdapConnection *bindConnection;
+  NSString *userDN;
+  BOOL didChange;
+
+  didChange = NO;
+
+  if ([login length] > 0)
+    {
+      bindConnection = [[NGLdapConnection alloc] initWithHostName: hostname
+						 port: port];
+     if (![encryption length] || [self _setupEncryption: bindConnection])
+	{
+	  if (queryTimeout > 0)
+	    [bindConnection setQueryTimeLimit: queryTimeout];
+	  if (bindFields)
+	    userDN = [self _fetchUserDNForLogin: login];
+	  else
+	    userDN = [NSString stringWithFormat: @"%@=%@,%@",
+			       IDField, login, baseDN];
+	  if (userDN)
+	    {
+	      NS_DURING
+		if (!passwordPolicy)
+		  {
+		    // We don't use a password policy - we simply use
+		    // a modify-op to change the password
+		    NGLdapModification *mod;
+		    NGLdapAttribute *attr;
+		    NSArray *changes;
+		    
+		    attr = [[NGLdapAttribute alloc] initWithAttributeName: @"userPassword"];
+		    [attr addStringValue: newPassword];
+		    
+		    mod = [NGLdapModification replaceModification: attr];
+		    changes = [NSArray arrayWithObject: mod];
+		    perr = PolicyNoError;
+
+		    if ([bindConnection bindWithMethod: @"simple"
+					binddn: userDN
+					credentials: oldPassword])
+		      didChange = [bindConnection modifyEntryWithDN: userDN
+						  changes: changes]; 
+		    else
+		      didChange = NO;
+		  }
+	      else
+		didChange = [bindConnection changePasswordAtDn: userDN
+					    oldPassword: oldPassword
+					    newPassword: newPassword
+					    perr: (void *)perr];
+	      NS_HANDLER
+                ;
+              NS_ENDHANDLER
+                ;
+            }
+	}
+      [bindConnection release];
+    }
+  
+  return didChange;
+}
+
 
 /* contact management */
 - (EOQualifier *) _qualifierForFilter: (NSString *) filter

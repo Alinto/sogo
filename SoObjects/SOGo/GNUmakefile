@@ -19,6 +19,7 @@ SOGo_HEADER_FILES = \
 	SOGoProductLoader.h		\
 	\
 	SOGoCache.h			\
+	SOGoConstants.h			\
 	SOGoObject.h			\
 	SOGoContentObject.h		\
 	SOGoFolder.h			\
@@ -80,6 +81,7 @@ SOGo_OBJC_FILES = \
 	SOGoProductLoader.m		\
 	\
 	SOGoCache.m			\
+	SOGoConstants.m			\
 	SOGoObject.m			\
 	SOGoContentObject.m		\
 	SOGoFolder.m			\

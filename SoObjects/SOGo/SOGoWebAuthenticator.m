@@ -1,6 +1,6 @@
 /* SOGoWebAuthenticator.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2009 Inverse inc.
+ * Copyright (C) 2007-2010 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -37,6 +37,7 @@
 #import <MainUI/SOGoRootPage.h>
 
 #import "SOGoCASSession.h"
+#import "SOGoConstants.h"
 #import "SOGoPermissions.h"
 #import "SOGoSystemDefaults.h"
 #import "SOGoUser.h"
@@ -59,11 +60,28 @@
 - (BOOL) checkLogin: (NSString *) _login
 	   password: (NSString *) _pwd
 {
+  SOGoPasswordPolicyError perr;
+  int expire, grace;
+
+  return [self checkLogin: _login
+	       password: _pwd
+	       perr: &perr
+	       expire: &expire
+	       grace: &grace];
+}
+
+- (BOOL) checkLogin: (NSString *) _login
+	   password: (NSString *) _pwd
+	       perr: (SOGoPasswordPolicyError *) _perr
+	     expire: (int *) _expire
+	      grace: (int *) _grace
+{
+  SOGoCASSession *session;
   SOGoSystemDefaults *sd;
   BOOL rc;
-  SOGoCASSession *session;
 
   sd = [SOGoSystemDefaults sharedSystemDefaults];
+
   if ([[sd authenticationType] isEqualToString: @"cas"])
     {
       session = [SOGoCASSession CASSessionWithIdentifier: _pwd];
@@ -74,8 +92,15 @@
     }
   else
     rc = [[SOGoUserManager sharedUserManager] checkLogin: _login
-                                             andPassword: _pwd];
-
+					      password: _pwd
+					      perr: _perr
+					      expire: _expire
+					      grace: _grace];
+  
+  [self logWithFormat: @"Checked login with ppolicy enabled: %d %d %d", *_perr, *_expire, *_grace];
+  
+  // It's important to return the real value here. The callee will handle
+  // the return code and check for the _perr value.
   return rc;
 }
 

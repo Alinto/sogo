@@ -105,7 +105,7 @@ function onChoiceChanged(event) {
     _setupEvents(false);
 }
 
-function addDefaultEmailAddresses() {
+function addDefaultEmailAddresses(event) {
     var defaultAddresses = $("defaultEmailAddresses").value.split(/, */);
     var addresses = $("autoReplyEmailAddresses").value.trim();
     
@@ -121,6 +121,8 @@ function addDefaultEmailAddresses() {
         });
     
     $("autoReplyEmailAddresses").value = addresses.join(", ");
+
+    event.stop();
 }
 
 function initPreferences() {
@@ -157,9 +159,13 @@ function initPreferences() {
         onReplyPlacementListChange ();
     }
 
-    if ($("addDefaultEmailAddresses"))
-        $("addDefaultEmailAddresses").observe("click",
-                                              addDefaultEmailAddresses);
+    var button = $("addDefaultEmailAddresses");
+    if (button)
+        button.observe("click", addDefaultEmailAddresses);
+
+    var button = $("changePasswordBtn");
+    if (button)
+        button.observe("click", onChangePasswordClick);
 
     initSieveFilters();
 }
@@ -546,6 +552,128 @@ function onComposeMessagesTypeChange(event) {
                               ] 
                                  }
                          );
+    }
+}
+
+function onChangePasswordClick(event) {
+    var field = $("newPasswordField");
+    var confirmationField = $("newPasswordConfirmationField");
+    if (field && confirmationField) {
+        var password = field.value;
+        if (password == confirmationField.value) {
+            if (password.length > 0)
+                changePassword(password);
+            else
+                showPasswordMessage(_("Password must not be empty."),
+                                    "error");
+        }
+        else {
+            showPasswordMessage(_("The passwords do not match."
+                                  + " Please try again."),
+                                "error");
+            field.focus();
+            field.select();
+        }
+    }
+    event.stop();
+}
+
+/* TODO: this method could serve as a basis for a basic text container (for
+   example the log console. */
+function showPasswordMessage(message, msgType) {
+    var para = $("passwordError");
+    if (para) {
+        if (!msgType)
+            msgType = "error";
+        var typeClass = msgType + "Message";
+        if (!para.typeClass || para.typeClass != typeClass) {
+            if (para.typeClass) {
+                para.removeClassName(para.typeClass);
+            }
+            para.typeClass = typeClass;
+            para.addClassName(typeClass);
+        }
+        if (!para.message || para.message != message) {
+            while (para.lastChild) {
+                para.removeChild(para.lastChild);
+            }
+            if (message) {
+                var sentences = message.split("\n");
+                para.appendChild(document.createTextNode(sentences[0]));
+                for (var i = 1; i < sentences.length; i++) {
+                    para.appendChild(document.createElement("br"));
+                    para.appendChild(document.createTextNode(sentences[i]));
+                }
+                para.message = message;
+            }
+        }
+    }
+}
+
+function readCookie(name) {
+	var nameEQ = name + "=";
+	var ca = document.cookie.split(';');
+	for(var i=0;i < ca.length;i++) {
+		var c = ca[i];
+		while (c.charAt(0)==' ') c = c.substring(1,c.length);
+		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+	}
+	return null;
+}
+
+function changePassword(newPassword) {
+    var loginValues = readLoginCookie();
+    if (loginValues) {
+	var content = Object.toJSON({ userName: loginValues[0],
+				      password: loginValues[1],
+				      newPassword: newPassword });
+	var url = ApplicationBaseURL + "../changePassword";
+	triggerAjaxRequest(url, changePasswordCallback, loginValues[1], content,
+			   {"content-type": "application/json"} );
+    }
+}
+
+function changePasswordCallback(http) {
+    if (http.readyState == 4) {
+        if (isHttpStatus204(http.status)) {
+	    log("it worked");
+            showPasswordMessage(_("The password was changed successfully."), "info");
+	    setLoginCookie(UserLogin, http.callbackData);
+        } else {
+	    var error;
+            log("header: " + http.header);
+            switch(http.status) {
+            case 403:
+                if (http.getResponseHeader("content-type") == "application/json") {
+                    var jsonResponse = http.responseText.evalJSON(false);
+                    var perr = jsonResponse["LDAPPasswordPolicyError"];
+                    
+                    // Normal password change failed
+                    if (perr == 65535) {
+                        error = _("Password change failed");
+                    } else if (perr == 3) {
+                        error = _("Password change failed - Permission denied");
+                    } else if (perr == 5) {
+                        error = _("Password change failed - Insufficient password quality");
+                    }  else if (perr == 6) {
+                        error = _("Password change failed - Password is too short");
+                    } else if (perr == 7) {
+                        error = _("Password change failed - Password is too young");
+                    } else if (perr == 8) {
+                        error = _("Password change failed - Password is in history");
+                    }
+                } else {
+                    error = _("Unhandled error code: ") + http.status;
+                }
+                break;
+            case 404:
+                error = _("Password changing is not supported.");
+                break;
+            default: 
+                error = _("Unhandled error code: ") + http.status;
+            }
+            showPasswordMessage(error);
+        }
     }
 }
 

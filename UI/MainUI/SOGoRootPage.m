@@ -24,6 +24,7 @@
 #import <Foundation/NSException.h>
 #import <Foundation/NSTimeZone.h>
 #import <Foundation/NSURL.h>
+#import <Foundation/NSValue.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOApplication.h>
@@ -39,12 +40,16 @@
 #import <NGExtensions/NSObject+Logs.h>
 
 #import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/NSDictionary+BSJSONAdditions.h>
 #import <SOGo/SOGoCache.h>
 #import <SOGo/SOGoCASSession.h>
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserManager.h>
 #import <SOGo/SOGoWebAuthenticator.h>
+
+#import <SOGo/SOGoConstants.h>
 
 #import "SOGoRootPage.h"
 
@@ -115,17 +120,37 @@
   SOGoUserDefaults *ud;
   NSString *username, *password, *language;
   NSArray *supportedLanguages;
-
+  
+  SOGoPasswordPolicyError err;
+  int expire, grace;
+  BOOL b;
+  
+  err = PolicyNoError;
+  expire = grace = 0;
+  
   auth = [[WOApplication application]
-	   authenticatorInContext: context];
+	    authenticatorInContext: context];
   request = [context request];
   username = [request formValueForKey: @"userName"];
   password = [request formValueForKey: @"password"];
   language = [request formValueForKey: @"language"];
-  if ([auth checkLogin: username password: password])
+  
+  if ((b = [auth checkLogin: username 
+		 password: password
+		 perr: &err
+		 expire: &expire
+		 grace: &grace])
+      && (err == PolicyNoError || err == PolicyChangeAfterReset))
     {
       [self logWithFormat: @"successful login for user '%@'", username];
       response = [self responseWith204];
+
+      // We must warn the user that he has to change his password
+      if (err == PolicyChangeAfterReset)
+	{
+	  
+	}
+
       authCookie = [self _cookieWithUsername: username andPassword: password
                             forAuthenticator: auth];
       [response addCookie: authCookie];
@@ -141,7 +166,21 @@
     }
   else
     {
-      [self logWithFormat: @"failed login for user '%@'", username];
+      [self logWithFormat: @"Login for user '%@' might not have worked - password policy: %d  bound: ", username, err, b];
+      
+      if (err == PolicyNoError)
+	{
+	  [self logWithFormat: @"failed login for user '%@' due to wrong password", username];
+	}
+      else if (err == PolicyAccountLocked)
+	{
+	  // Account has been locked due to too many failures
+	}
+      else if (err == PolicyPasswordExpired)
+	{
+	  // The password MUST be changed - we need to ask for the old password and the new one here
+	}
+      
       response = [self responseWithStatus: 403];
     }
 
@@ -370,6 +409,43 @@
 		      SOGO_SUBMINOR_VERSION];
 
   return aString;
+}
+
+- (WOResponse *) changePasswordAction
+{
+  NSString *username, *password, *newPassword;
+  SOGoUserManager *um;
+  SOGoPasswordPolicyError error;
+  WOResponse *response;
+  WORequest *request;
+  NSDictionary *message, *jsonError;
+
+  request = [context request];
+  message = [NSMutableDictionary dictionaryWithJSONString: [request contentAsString]];
+  username = [message objectForKey: @"userName"];
+  password = [message objectForKey: @"password"];
+  newPassword = [message objectForKey: @"newPassword"];
+
+  um = [SOGoUserManager sharedUserManager];
+
+  // This will also update the cached password in memcached.
+  if ([um changePasswordForLogin: username
+	  oldPassword: password
+	  newPassword: newPassword
+	  perr: &error])
+    response = [self responseWith204];
+  else
+    {
+      jsonError
+	= [NSDictionary dictionaryWithObject: [NSNumber numberWithInt: error]
+			forKey: @"LDAPPasswordPolicyError"];
+      response = [self responseWithStatus: 403
+		       andJSONRepresentation: jsonError];
+      [response setHeader: @"application/json"
+		forKey: @"content-type"];
+    }
+
+  return response;
 }
 
 @end /* SOGoRootPage */

@@ -1,3 +1,16 @@
+2010-03-08  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* Added SoObjects/SOGo/SOGoConstants.{h,m} - a new file
+	that will hold eventually all SOGo constants.
+
+	* Reworked the authentication code to use a generic
+	method for password authentication (LDAP + SQL).
+
+	* Added password change support
+
+	* Updated the SOPE patchset which now includes
+	password-policy support.
+
 2010-03-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/NSString+DAV.m (-davSetterName): enhanced so that

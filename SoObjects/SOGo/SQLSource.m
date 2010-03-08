@@ -1,6 +1,6 @@
 /* SQLSource.h - this file is part of SOGo
  *
- * Copyright (C) 2009 Inverse inc.
+ * Copyright (C) 2009-2010 Inverse inc.
  *
  * Author: Ludovic Marcotte <lmarcotte@inverse.ca>
  *
@@ -39,6 +39,8 @@
 #include <openssl/md5.h>
 
 #include "SQLSource.h"
+
+#include "SOGoConstants.h"
 
 /**
  * The view MUST contain the following columns:
@@ -162,8 +164,17 @@
   return NO;
 }
 
-- (BOOL) checkLogin: (NSString *) login
-	andPassword: (NSString *) password
+//
+// SQL sources don't support right now all the password policy
+// stuff supported by OpenLDAP (and others). If we want to support
+// this for SQL sources, we'll have to implement the same
+// kind of logic in this module.
+//
+- (BOOL) checkLogin: (NSString *) _login
+	   password: (NSString *) _pwd
+	       perr: (SOGoPasswordPolicyError *) _perr
+	     expire: (int *) _expire
+	      grace: (int *) _grace
 {
   EOAdaptorChannel *channel;
   GCSChannelManager *cm;
@@ -180,7 +191,7 @@
       sql = [NSString stringWithFormat: (@"SELECT c_password"
                                          @" FROM %@"
                                          @" WHERE c_uid = '%@'"),
-                      [_viewURL gcsTableName], login];
+                      [_viewURL gcsTableName], _login];
 
       ex = [channel evaluateExpressionX: sql];
       if (!ex)
@@ -193,7 +204,7 @@
           row = [channel fetchAttributes: attrs  withZone: NULL];
           value = [row objectForKey: @"c_password"];
       
-          rc = [self _isPassword: password  equalTo: value];
+          rc = [self _isPassword: _pwd  equalTo: value];
 	  [channel cancelFetch];
         }
       else
@@ -205,6 +216,14 @@
           [_viewURL absoluteString]];
 
   return rc;
+}
+
+- (BOOL) changePasswordForLogin: (NSString *) login
+		    oldPassword: (NSString *) oldPassword
+		    newPassword: (NSString *) newPassword
+			   perr: (SOGoPasswordPolicyError *) perr
+{
+  return NO;
 }
 
 - (NSDictionary *) _lookupContactEntry: (NSString *) theID

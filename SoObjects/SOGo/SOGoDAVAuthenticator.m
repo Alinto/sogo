@@ -27,6 +27,7 @@
 #import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSObject+Logs.h>
 
+#import "SOGoConstants.h"
 #import "SOGoUserManager.h"
 #import "SOGoPermissions.h"
 #import "SOGoUser.h"
@@ -48,8 +49,22 @@
 - (BOOL) checkLogin: (NSString *) _login
 	   password: (NSString *) _pwd
 {
-  return [[SOGoUserManager sharedUserManager] checkLogin: _login
-                                             andPassword: _pwd];
+  SOGoPasswordPolicyError perr;
+  int expire, grace;
+  BOOL b;
+
+  perr = PolicyNoError;
+
+  b = [[SOGoUserManager sharedUserManager] checkLogin: _login
+					   password: _pwd
+					   perr: &perr
+					   expire: &expire
+					   grace: &grace];
+
+  if (b && perr == PolicyNoError)
+    return YES;
+
+  return NO;
 }
 
 - (NSString *) passwordInContext: (WOContext *) context

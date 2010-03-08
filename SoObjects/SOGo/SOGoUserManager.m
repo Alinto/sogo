@@ -1,6 +1,6 @@
 /* SOGoUserManager.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2009 Inverse inc.
+ * Copyright (C) 2007-2010 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -36,6 +36,7 @@
 #import "SOGoSystemDefaults.h"
 #import "SOGoUserManager.h"
 #import "SOGoCache.h"
+#import "SOGoConstants.h"
 #import "SOGoSource.h"
 
 @implementation SOGoUserManagerRegistry
@@ -89,7 +90,7 @@
 {
   NSString *sourceID, *value, *type;
   NSMutableDictionary *metadata;
-  NSObject <SOGoSource> *ldapSource;
+  NSObject <SOGoSource> *sogoSource;
   BOOL isAddressBook;
   Class c;
 
@@ -97,10 +98,10 @@
   if ([sourceID length] > 0)
     {
       type = [[udSource objectForKey: @"type"] lowercaseString];
-      c = NSClassFromString ([_registry sourceClassForType: type]);
-      ldapSource = [c sourceFromUDSource: udSource inDomain: domain];
+      c = NSClassFromString([_registry sourceClassForType: type]);
+      sogoSource = [c sourceFromUDSource: udSource inDomain: domain];
       if (sourceID)
-        [_sources setObject: ldapSource forKey: sourceID];
+        [_sources setObject: sogoSource forKey: sourceID];
       else
         [self errorWithFormat: @"id field missing in an user source,"
               @" check the SOGoUserSources defaults"];
@@ -335,45 +336,84 @@
 {
   NSDictionary *contactInfos;
 
-//   NSLog (@"getUIDForEmail: %@", email);
   contactInfos = [self contactInfosForUserWithUIDorEmail: email];
 
   return [contactInfos objectForKey: @"c_uid"];
 }
 
+- (BOOL) _sourceChangePasswordForLogin: (NSString *) login
+                           oldPassword: (NSString *) oldPassword
+			   newPassword: (NSString *) newPassword
+			   perr: (SOGoPasswordPolicyError *) perr
+{
+  NSObject <SOGoSource> *sogoSource;
+  NSEnumerator *authIDs;
+  NSString *currentID;
+  BOOL didChange;
+  
+  didChange = NO;
+  
+  authIDs = [[self authenticationSourceIDsInDomain: nil] objectEnumerator];
+  while (!didChange && (currentID = [authIDs nextObject]))
+    {
+      sogoSource = [_sources objectForKey: currentID];
+      didChange = [sogoSource changePasswordForLogin: login
+			      oldPassword: oldPassword
+			      newPassword: newPassword
+			      perr: perr];
+    }
+
+  return didChange;
+}
+
 - (BOOL) _sourceCheckLogin: (NSString *) login
                andPassword: (NSString *) password
-{ 
-  NSObject <SOGoSource> *ldapSource;
+	       perr: (SOGoPasswordPolicyError *) perr
+	       expire: (int *) expire
+	       grace: (int *) grace
+{
+  NSObject <SOGoSource> *sogoSource;
   NSEnumerator *authIDs;
   NSString *currentID;
   BOOL checkOK;
-
+  
   checkOK = NO;
-
+  
   authIDs = [[self authenticationSourceIDsInDomain: nil] objectEnumerator];
   while (!checkOK && (currentID = [authIDs nextObject]))
     {
-      ldapSource = [_sources objectForKey: currentID];
-      checkOK = [ldapSource checkLogin: login andPassword: password];
+      sogoSource = [_sources objectForKey: currentID];
+      checkOK = [sogoSource checkLogin: login
+			    password: password
+			    perr: perr
+			    expire: expire
+			    grace: grace];
     }
+
 
   return checkOK;
 }
 
-- (BOOL) checkLogin: (NSString *) login
-	andPassword: (NSString *) password
+- (BOOL) checkLogin: (NSString *) _login
+	   password: (NSString *) _pwd
+	       perr: (SOGoPasswordPolicyError *) _perr
+	     expire: (int *) _expire
+	      grace: (int *) _grace
 {
-  NSMutableDictionary *currentUser;
   NSString *dictPassword, *jsonUser;
+  NSMutableDictionary *currentUser;
   BOOL checkOK;
-
-  jsonUser = [[SOGoCache sharedCache] userAttributesForLogin: login];
+ 
+  jsonUser = [[SOGoCache sharedCache] userAttributesForLogin: _login];
   currentUser = [NSMutableDictionary dictionaryWithJSONString: jsonUser];
   dictPassword = [currentUser objectForKey: @"password"];
   if (currentUser && dictPassword)
-    checkOK = ([dictPassword isEqualToString: password]);
-  else if ([self _sourceCheckLogin: login andPassword: password])
+    checkOK = ([dictPassword isEqualToString: _pwd]);
+  else if ([self _sourceCheckLogin: _login
+		 andPassword: _pwd
+		 perr: _perr
+		 expire: _expire
+		 grace: _grace])
     {
       checkOK = YES;
       if (!currentUser)
@@ -386,15 +426,56 @@
       // set the password and recache the entry, the password would never be
       // cached for the user unless its entry expires from memcached's
       // internal cache.
-      [currentUser setObject: password forKey: @"password"];
+      [currentUser setObject: _pwd forKey: @"password"];
       [[SOGoCache sharedCache]
         setUserAttributes: [currentUser jsonStringValue]
-                 forLogin: login];
+                 forLogin: _login];
     }
-  else
-    checkOK = NO;
+    else
+      checkOK = NO;
 
   return checkOK;
+}
+
+- (BOOL) changePasswordForLogin: (NSString *) login
+		    oldPassword: (NSString *) oldPassword
+		    newPassword: (NSString *) newPassword
+			   perr: (SOGoPasswordPolicyError *) perr
+{
+  NSString *dictPassword, *jsonUser;
+  NSMutableDictionary *currentUser;
+  BOOL didChange;
+ 
+  jsonUser = [[SOGoCache sharedCache] userAttributesForLogin: login];
+  currentUser = [NSMutableDictionary dictionaryWithJSONString: jsonUser];
+  dictPassword = [currentUser objectForKey: @"password"];
+
+  if ([self _sourceChangePasswordForLogin: login
+	    oldPassword: oldPassword
+	    newPassword: newPassword
+	    perr: perr])
+    {
+      didChange = YES;
+
+      if (!currentUser)
+	{
+	  currentUser = [NSMutableDictionary dictionary];
+	}
+
+      // It's important to cache the password here as we might have cached the
+      // user's entry in -contactInfosForUserWithUIDorEmail: and if we don't
+      // set the password and recache the entry, the password would never be
+      // cached for the user unless its entry expires from memcached's
+      // internal cache.
+      [currentUser setObject: newPassword forKey: @"password"];
+      [[SOGoCache sharedCache]
+        setUserAttributes: [currentUser jsonStringValue]
+	forLogin: login];
+    }
+    else
+      didChange = NO;
+
+  return didChange;
 }
 
 - (void) _fillContactMailRecords: (NSMutableDictionary *) contact
@@ -424,8 +505,8 @@
 {
   NSMutableArray *emails;
   NSDictionary *userEntry;
-  NSEnumerator *ldapSources;
-  LDAPSource *currentSource;
+  NSEnumerator *sogoSources;
+  NSObject <SOGoDNSource> *currentSource;
   NSString *sourceID, *cn, *c_domain, *c_uid, *c_imaphostname;
   NSArray *c_emails;
   BOOL access;
@@ -441,9 +522,9 @@
   [currentUser setObject: [NSNumber numberWithBool: YES]
 	       forKey: @"MailAccess"];
 
-  ldapSources = [[self authenticationSourceIDsInDomain: nil]
+  sogoSources = [[self authenticationSourceIDsInDomain: nil]
                   objectEnumerator];
-  while ((sourceID = [ldapSources nextObject]))
+  while ((sourceID = [sogoSources nextObject]))
     {
       currentSource = [_sources objectForKey: sourceID];
       userEntry = [currentSource lookupContactEntryWithUIDorEmail: uid];

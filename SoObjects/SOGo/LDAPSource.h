@@ -1,6 +1,6 @@
 /* LDAPSource.h - this file is part of SOGo
  *
- * Copyright (C) 2007-2009 Inverse inc.
+ * Copyright (C) 2007-2010 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -26,6 +26,7 @@
 #import <Foundation/NSObject.h>
 
 #include "SOGoSource.h"
+#include "SOGoConstants.h"
 
 @class NSDictionary;
 @class NSString;
@@ -60,6 +61,8 @@
   NSDictionary *modulesConstraints;
 
   NSMutableArray *searchAttributes;
+
+  BOOL passwordPolicy;
 }
 
 - (void) setBindDN: (NSString *) newBindDN

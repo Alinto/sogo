@@ -272,8 +272,7 @@ String.prototype.base64decode = function() {
     var enc1, enc2, enc3, enc4;
     var i = 0;
  
-    var input = this.replace(/[^A-Za-z0-9\+\/\=]/g, "");
-
+    var input = "" + this; // .replace(/[^A-Za-z0-9\+\/\=]/g, "")
     while (i < input.length) {
         enc1 = this._base64_keyStr.indexOf(input.charAt(i++));
         enc2 = this._base64_keyStr.indexOf(input.charAt(i++));
@@ -294,7 +293,7 @@ String.prototype.base64decode = function() {
         }
     }
 
-    return output.utf8decode();
+    return output;
 };
 
 String.prototype.utf8encode = function() {

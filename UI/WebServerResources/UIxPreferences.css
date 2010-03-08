@@ -5,10 +5,6 @@ DIV#preferencesTabs
   right: 5px;
   bottom: 5px; }
 
-DIV#passwordView
-{ padding-top: 3em;
-  padding-right: 10em; }
-
 TEXTAREA#signature
 { position: absolute;
   width: 100%;
@@ -107,3 +103,25 @@ TH#activeTableHeader
 
 TD.activeColumn
 { text-align: center; }
+
+P#passwordFields,
+P#passwordError
+{ position: absolute;
+  left: 0px; }
+
+#passwordFields
+{ top: 40px;
+  width: 410px;
+  text-align: right; }
+
+P#passwordError
+{ top: 92px;
+  width: 307px;
+  text-align: right;
+  margin-left: 40px; }
+
+P.errorMessage#passwordError
+{ color: #f00; }
+
+P.infoMessage#passwordError
+{ color: #00f; }

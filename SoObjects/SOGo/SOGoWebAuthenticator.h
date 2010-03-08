@@ -1,8 +1,9 @@
 /* SOGoWebAuthenticator.h - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse inc.
+ * Copyright (C) 2007-2010 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *         Ludovic Marcotte <lmarcotte@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +25,9 @@
 #define _SOGOWEBAUTHENTICATOR_H_
 
 #import <NGObjWeb/SoCookieAuthenticator.h>
+
 #import "SOGoAuthenticator.h"
+#import "SOGoConstants.h"
 
 @class NSString;
 
@@ -34,6 +37,12 @@
 
 + (id) sharedSOGoWebAuthenticator;
 
+- (BOOL) checkLogin: (NSString *) _login
+	   password: (NSString *) _pwd
+	       perr: (SOGoPasswordPolicyError *) _perr
+	     expire: (int *) _expire
+	      grace: (int *) _grace;
+
 @end
 
-#endif /* _SOGOWEBAUTHENTICATOR_H__ */
+#endif /* _SOGOWEBAUTHENTICATOR_H_ */

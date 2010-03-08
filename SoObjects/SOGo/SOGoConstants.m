@@ -1,8 +1,8 @@
-/* SOGoAuthenticator.h - this file is part of SOGo
+/* SOGoConstants.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2010 Inverse inc.
+ * Copyright (C) 2010 Inverse inc.
  *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Author: Ludovic Marcotte <lmarcotte@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,23 +20,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef SOGOAUTHENTICATOR_H
-#define SOGOAUTHENTICATOR_H
+#import <Foundation/NSString.h>
 
-#import <Foundation/NSObject.h>
-
-@class NSString;
-@class SOGoUser;
-@class WOContext;
-
-@protocol SOGoAuthenticator <NSObject>
-
-- (NSString *) passwordInContext: (WOContext *) context;
-- (SOGoUser *) userInContext: (WOContext *) context;
-- (NSString *) imapPasswordInContext: (WOContext *) context
-                           forServer: (NSString *) imapServer
-                          forceRenew: (BOOL) renew;
-
-@end
-
-#endif /* SOGOAUTHENTICATOR_H */
+// LDAP Password Policy Constants
+NSString* SOGoPasswordChangeEnabled = @"SOGoPasswordChangeEnabled";
+NSString* SOGoPasswordPolicyEnabled = @"SOGoPasswordPolicyEnabled";

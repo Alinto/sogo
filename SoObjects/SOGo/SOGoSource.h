@@ -1,6 +1,6 @@
 /* SOGoSource.h - this file is part of SOGo
  *
- * Copyright (C) 2009 Inverse inc.
+ * Copyright (C) 2009-2010 Inverse inc.
  *
  * Author: Ludovic Marcotte <lmarcotte@inverse.ca>
  *
@@ -25,6 +25,8 @@
 
 #import <Foundation/NSObject.h>
 
+#import "SOGoConstants.h"
+
 @class NSDictionary;
 @class NSString;
 
@@ -38,8 +40,16 @@
 
 - (NSString *) domain;
 
-- (BOOL) checkLogin: (NSString *) login
-	andPassword: (NSString *) password;
+- (BOOL) checkLogin: (NSString *) _login
+	   password: (NSString *) _pwd
+	       perr: (SOGoPasswordPolicyError *) _perr
+	     expire: (int *) _expire
+	      grace: (int *) _grace;
+
+- (BOOL) changePasswordForLogin: (NSString *) login
+		    oldPassword: (NSString *) oldPassword
+		    newPassword: (NSString *) newPassword
+			   perr: (SOGoPasswordPolicyError *) perr;
 
 - (NSDictionary *) lookupContactEntry: (NSString *) theID;
 - (NSDictionary *) lookupContactEntryWithUIDorEmail: (NSString *) entryID;

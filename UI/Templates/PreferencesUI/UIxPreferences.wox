@@ -34,9 +34,9 @@
           ><var:if condition="shouldDisplayAdditionalPreferences">
           <li target="additionalView"><span>
               <var:string label:value="Additional Parameters"/></span></li>
- 	<!-- </var:if -->
-        <!--   ><var:if condition="shouldDisplayPasswordChange"> -->
-        <!--   <li target="passwordView"><span><var:string label:value="Password"/></span></li> -->
+ 	</var:if
+          ><var:if condition="shouldDisplayPasswordChange">
+          <li target="passwordView"><span><var:string label:value="Password"/></span></li>
         </var:if>
       </ul>
       <div id="generalView" class="tab">
@@ -278,22 +278,22 @@
             </div>
           </div>
 	</var:if
-          ></var:if>
-      <!-- <var:if condition="shouldDisplayPasswordChange"> -->
-      <!-- 	<div id="passwordView" class="tab"> -->
-      <!-- 	  <label><var:string label:value="New password:" -->
-      <!-- 	      /><input type="text" class="textField" -->
-      <!-- 	      const:enabled="disabled" -->
-      <!-- 	      var:value="newPassword"/></label><br/> -->
-      <!-- 	  <label><var:string label:value="Confirmation:" -->
-      <!-- 	      /><input type="text" class="textField" -->
-      <!-- 	      const:enabled="disabled" -->
-      <!-- 	      var:value="newPasswordConfirmation"/></label><br/> -->
-      <!-- 	  <input type="button" class="button" -->
-      <!-- 	    id="changePasswordBtn" label:value="Change"/> -->
-      <!-- 	</div> -->
-      <!-- </var:if> -->
-      <var:if condition="shouldDisplayAdditionalPreferences"
+          ></var:if
+        ><var:if condition="shouldDisplayPasswordChange">
+      	<div id="passwordView" class="tab">
+          <p id="passwordFields"><label><var:string label:value="New password:"
+                /><input const:id="newPasswordField" class="textField"
+                type="text" const:value=""/></label><br/>
+            <label><var:string label:value="Confirmation:"
+                /><input const:id="newPasswordConfirmationField" class="textField"
+                type="text" const:value=""/></label><br/>
+            <a href="#" class="button" id="changePasswordBtn"
+              ><span><var:string label:value="Change"/></span></a>
+          </p>
+          <p id="passwordError"><!-- space --></p>
+      	</div>
+      </var:if
+      ><var:if condition="shouldDisplayAdditionalPreferences"
 	><div id="additionalView" class="tab">
 	  <var:component className="UIxAdditionalPreferences"/>
 	</div></var:if>

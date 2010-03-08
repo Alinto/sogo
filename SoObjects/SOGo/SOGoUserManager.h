@@ -1,6 +1,6 @@
 /* SOGoUserManager.h - this file is part of SOGo
  *
- * Copyright (C) 2007-2009 Inverse inc.
+ * Copyright (C) 2007-2010 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -24,6 +24,8 @@
 #define SOGOUSERMANAGER_H
 
 #import <Foundation/NSObject.h>
+
+#import "SOGoConstants.h"
 
 @class NSDictionary;
 @class NSMutableDictionary;
@@ -75,9 +77,16 @@
 - (NSString *) getUIDForEmail: (NSString *) email;
 - (NSString *) getLoginForDN: (NSString *) theDN;
 
-- (BOOL) checkLogin: (NSString *) login
-	andPassword: (NSString *) password;
+- (BOOL) checkLogin: (NSString *) _login
+	   password: (NSString *) _pwd
+	       perr: (SOGoPasswordPolicyError *) _perr
+	     expire: (int *) _expire
+	      grace: (int *) _grace;
 
+- (BOOL) changePasswordForLogin: (NSString *) login
+		    oldPassword: (NSString *) oldPassword
+		    newPassword: (NSString *) newPassword
+			   perr: (SOGoPasswordPolicyError *) perr;
 @end
 
 #endif /* SOGOUSERMANAGER_H */

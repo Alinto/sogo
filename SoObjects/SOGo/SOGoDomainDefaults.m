@@ -1,6 +1,6 @@
 /* SOGoDomainDefaults.m - this file is part of SOGo
  *
- * Copyright (C) 2009 Inverse inc.
+ * Copyright (C) 2009-2010 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -30,6 +30,7 @@
 #import "SOGoSystemDefaults.h"
 
 #import "SOGoDomainDefaults.h"
+#import "SOGoConstants.h"
 
 @implementation SOGoDomainDefaults
 
@@ -168,6 +169,16 @@
 - (BOOL) vacationEnabled
 {
   return [self boolForKey: @"SOGoVacationEnabled"];
+}
+
+- (BOOL) passwordChangeEnabled
+{
+  return [self boolForKey: SOGoPasswordChangeEnabled];
+}
+
+- (BOOL) passwordPolicyEnabled
+{
+  return [self boolForKey: SOGoPasswordPolicyEnabled];
 }
 
 - (NSString *) mailingMechanism
