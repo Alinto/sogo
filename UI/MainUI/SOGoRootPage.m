@@ -153,7 +153,7 @@
   
   if ((b = [auth checkLogin: username password: password
 		 perr: &err expire: &expire grace: &grace])
-      && (err == PolicyNoError || err == PolicyChangeAfterReset))
+      && (err == PolicyNoError))
     {
       [self logWithFormat: @"successful login for user '%@'", username];
       response = [self responseWith204];

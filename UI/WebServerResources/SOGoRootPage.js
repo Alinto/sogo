@@ -217,16 +217,16 @@ function passwordDialogOK(event) {
     var field = $("newPassword");
     var confirmationField = $("newPassword2");
     if (field && confirmationField) {
-        var password = field.value;
-        if (password == confirmationField.value) {
-            if (password.length > 0) {
+        var newPassword = field.value;
+        if (newPassword == confirmationField.value) {
+            if (newPassword.length > 0) {
                 var userName = $("userName");
                 var password = $("password");
                 var policy = new PasswordPolicy(userName.value,
                                                 password.value);
                 policy.setCallbacks(onPasswordChangeSuccess,
                                     onPasswordChangeFailure);
-                policy.changePassword(password);
+                policy.changePassword(newPassword);
             }
             else
                 SetLogMessage("passwordError",
@@ -247,7 +247,7 @@ function onPasswordChangeSuccess() {
     redirectToUserPage();
 }
 
-function onPasswordChangeFailre(code, message) {
+function onPasswordChangeFailure(code, message) {
     SetLogMessage("passwordError", message);
 }
 
