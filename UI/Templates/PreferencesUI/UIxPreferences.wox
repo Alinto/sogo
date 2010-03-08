@@ -297,8 +297,6 @@
 	><div id="additionalView" class="tab">
 	  <var:component className="UIxAdditionalPreferences"/>
 	</div></var:if>
-      <input type="hidden" id="hasChanged" name="hasChanged"
-	var:value="hasChanged"/>
     </div>
   </form>
 </var:component>

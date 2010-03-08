@@ -76,33 +76,12 @@ function prototypeIfyFilters() {
 }
 
 function _setupEvents(enable) {
-    var widgets = [ "timezone", "shortDateFormat", "longDateFormat",
-                    "timeFormat", "weekStartDay", "dayStartTime", "dayEndTime",
-                    "firstWeek", "messageCheck", "subscribedFoldersOnly",
-                    "language"];
-    for (var i = 0; i < widgets.length; i++) {
-        var widget = $(widgets[i]);
-        if (widget) {
-            if (enable)
-                widget.observe("change", onChoiceChanged);
-            else
-                widget.stopObserving("change", onChoiceChanged);
-        }
-    }
-
     $("replyPlacementList").observe ("change", onReplyPlacementListChange);
     $("composeMessagesType").observe ("change", onComposeMessagesTypeChange);
 
     var categoriesValue = $("categoriesValue");
     if (categoriesValue)
         categoriesValue.value = "";
-}
-
-function onChoiceChanged(event) {
-    var hasChanged = $("hasChanged");
-    hasChanged.value = "1";
-
-    _setupEvents(false);
 }
 
 function addDefaultEmailAddresses(event) {
@@ -522,36 +501,32 @@ function onReplyPlacementListChange() {
 }
 
 function onComposeMessagesTypeChange(event) {
-    var textArea = $('signature');
-    
-    if (event) {
-        // Due to a limitation of CKEDITOR, we reload the page when the user
-        // changes the composition mode to avoid Javascript errors.
-        var saveAndReload = confirm(getLabel("composeMessageChanged"));
-        if (saveAndReload)
-            return savePreferences();
-        else {
-            // Restore previous value of composeMessagesType
-            $("composeMessagesType").stopObserving("change", onComposeMessagesTypeChange);
-            $("composeMessagesType").value = ((Event.element(event).value == 1)?"0":"1");
-            Event.element(event).blur();
-            $("composeMessagesType").observe("change", onComposeMessagesTypeChange);
-            return false;
-        }
-    }
+    // var textArea = $('signature');
 
-    if ($("composeMessagesType").value == 1) {
-        // HTML mode
-        CKEDITOR.replace('signature',
-                         {
-                         height: "290px",
-                                 toolbar :
-                             [['Bold', 'Italic', '-', 'Link', 
-                               'Font','FontSize','-','TextColor',
-                               'BGColor']
-                              ] 
-                                 }
-                         );
+    if ($("composeMessagesType").value == 0) /* text */ {
+        if (CKEDITOR.instances["signature"]) {
+            var content = CKEDITOR.instances["signature"].getData();
+            var htmlEditorWidget = $('cke_signature');
+            htmlEditorWidget.parentNode.removeChild(htmlEditorWidget);
+            delete CKEDITOR.instances["signature"];
+            var textArea = $("signature");
+            textArea.value = content;
+            textArea.style.display = "";
+            textArea.style.visibility = "";
+        }
+    } else {
+        if (!CKEDITOR.instances["signature"]) {
+            CKEDITOR.replace('signature',
+                             {
+                             height: "290px",
+                                     toolbar :
+                                 [['Bold', 'Italic', '-', 'Link', 
+                                   'Font','FontSize','-','TextColor',
+                                   'BGColor']
+                                  ] 
+                                     }
+                             );
+        }
     }
 }
 

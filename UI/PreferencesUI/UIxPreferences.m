@@ -81,8 +81,6 @@
       ASSIGN (locale,
               [[WOApplication application] localeForLanguageNamed: language]);
       ASSIGN (daysOfWeek, [locale objectForKey: NSWeekDayNameArray]);
-      hasChanged = NO;
-      composeMessageTypeHasChanged = NO;
 
       dd = [user domainDefaults];
       if ([dd sieveScriptsEnabled])
@@ -126,16 +124,6 @@
   [daysOfWeek release];
   [locale release];
   [super dealloc];
-}
-
-- (void) setHasChanged: (BOOL) newHasChanged
-{
-  hasChanged = newHasChanged;
-}
-
-- (BOOL) hasChanged
-{
-  return hasChanged;
 }
 
 - (void) setItem: (NSString *) newItem
@@ -664,8 +652,6 @@
 
 - (void) setUserComposeMessagesType: (NSString *) newType
 {
-  if (![[self userComposeMessagesType] isEqualToString: newType])
-    composeMessageTypeHasChanged = YES;
   [userDefaults setMailComposeMessageType: newType];
 }
 
@@ -926,7 +912,6 @@
 {
   id <WOActionResults> results;
   WORequest *request;
-  NSString *method;
   SOGoDomainDefaults *dd;
 
   request = [context request];
@@ -954,18 +939,7 @@
                            acquire: NO];
       [account updateFilters];
 
-      if (composeMessageTypeHasChanged)
-        // Due to a limitation of CKEDITOR, we reload the page when the user
-        // changes the composition mode to avoid Javascript errors.
-        results = self;
-      else
-        {
-          if (hasChanged)
-            method = @"window.location.reload()";
-          else
-            method = nil;
-          results = [self jsCloseWithRefreshMethod: method];
-        }
+      results = [self jsCloseWithRefreshMethod: nil];
     }
   else
     results = self;
