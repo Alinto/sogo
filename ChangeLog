@@ -1,3 +1,19 @@
+2010-03-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/UIxPreferences.js
+	(onComposeMessagesTypeChange): we now do the proper widget
+	wizardry via DOM methods to alternate between the text-based or
+	html-based editor for changing the user's signature when the
+	message format is switched between "text" and "html".
+	(onChoiceChanged): removed obsolete callback.
+
+	* UI/PreferencesUI/UIxPreferences.m (-init): removed the
+	"hasChanged" and "composeMessageTypeHasChanged" ivars, as they are
+	no longer needed.
+	(-setHasChanged, -hasChanged): removed obsolete accessors.
+	(-defaultAction): simplified method as we no longer have to manage
+	the handling of the change of message format from here.
+
 2010-03-08  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* Added SoObjects/SOGo/SOGoConstants.{h,m} - a new file
