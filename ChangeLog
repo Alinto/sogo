@@ -1,5 +1,12 @@
 2010-03-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/generic.js (onSearchKeyDown): set the
+	search timeout to 500 ms instead of 1 sec.
+
+	* UI/WebServerResources/UIxContactsUserFolders.js
+	(onFolderSearchKeyDown): move the start of the animation to
+	onSearchFormSubmit.
+
 	* UI/WebServerResources/generic.js (createDialog): new method
 	designed to provide a normalized interface for creating popup
 	dialogs with DOM methods.
