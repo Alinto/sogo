@@ -1,29 +1,27 @@
-/* -*- Mode: java; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
+/* -*- Mode: java; tab-width: 2; c-label-minimum-indentation: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
 
+   Copyright (C) 2005 SKYRIX Software AG
+   Copyright (C) 2006-2010 Inverse
 
-/*
-  Copyright (C) 2005 SKYRIX Software AG
+   This file is part of SOGo
 
-  This file is part of OpenGroupware.org.
+   SOGo is free software; you can redistribute it and/or modify it under
+   the terms of the GNU Lesser General Public License as published by the
+   Free Software Foundation; either version 2, or (at your option) any
+   later version.
 
-  OGo is free software; you can redistribute it and/or modify it under
-  the terms of the GNU Lesser General Public License as published by the
-  Free Software Foundation; either version 2, or (at your option) any
-  later version.
+   SOGo is distributed in the hope that it will be useful, but WITHOUT ANY
+   WARRANTY; without even the implied warranty of MERCHANTABILITY or
+   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+   License for more details.
 
-  OGo is distributed in the hope that it will be useful, but WITHOUT ANY
-  WARRANTY; without even the implied warranty of MERCHANTABILITY or
-  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
-  License for more details.
-
-  You should have received a copy of the GNU Lesser General Public
-  License along with OGo; see the file COPYING.  If not, write to the
-  Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
-  02111-1307, USA.
+   You should have received a copy of the GNU Lesser General Public
+   License along with SOGo; see the file COPYING.  If not, write to the
+   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
+   02111-1307, USA.
 */
-/* some generic JavaScript code for SOGo */
 
-/* generic stuff */
+/* some generic JavaScript code for SOGo */
 
 var logConsole;
 var logWindow = null;
@@ -219,7 +217,7 @@ function openMailTo(senderMailTo) {
 function deleteDraft(url) {
     /* this is called by UIxMailEditor with window.opener */
     new Ajax.Request(url, {
-            asynchronous: false,
+        asynchronous: false,
                 method: 'post',
                 onFailure: function(transport) {
                 log("draftDeleteCallback: problem during ajax request: " + transport.status);
@@ -289,7 +287,7 @@ function triggerAjaxRequest(url, callback, userdata, content, headers) {
     if (http) {
         activeAjaxRequests++;
         document.animTimer = setTimeout("checkAjaxRequestsState();", 250);
-        
+
         http.open("POST", url, true);
         http.url = url;
         http.callback = callback;
@@ -384,11 +382,12 @@ function getTarget(event) {
 }
 
 function preventDefault(event) {
-    if (event)
+    if (event) {
         if (event.preventDefault)
             event.preventDefault(); // W3C DOM
         else
             event.returnValue = false; // IE
+    }
 }
 
 function resetSelection(win) {
@@ -610,11 +609,16 @@ function hideMenu(menuNode) {
 
     menuNode.setStyle({ visibility: "hidden" });
     if (menuNode.parentMenuItem) {
-        menuNode.parentMenuItem.stopObserving("mouseover",onMouseEnteredSubmenu);
-        menuNode.stopObserving("mouseover", onMouseEnteredSubmenu);
-        menuNode.parentMenuItem.stopObserving("mouseout", onMouseLeftSubmenu);
-        menuNode.stopObserving("mouseout", onMouseLeftSubmenu);
-        menuNode.parentMenu.stopObserving("mouseover", onMouseEnteredParentMenu);
+        menuNode.parentMenuItem.stopObserving("mouseover",
+                                              onMouseEnteredSubmenu);
+        menuNode.stopObserving("mouseover",
+                               onMouseEnteredSubmenu);
+        menuNode.parentMenuItem.stopObserving("mouseout",
+                                              onMouseLeftSubmenu);
+        menuNode.stopObserving("mouseout",
+                               onMouseLeftSubmenu);
+        menuNode.parentMenu.stopObserving("mouseover",
+                                          onMouseEnteredParentMenu);
         $(menuNode.parentMenuItem).removeClassName("submenu-selected");
         menuNode.parentMenuItem.mouseInside = false;
         menuNode.parentMenuItem = null;
@@ -733,20 +737,18 @@ function backtrace() {
     var func = backtrace.caller;
     var str = "backtrace:\n";
 
-    while (func)
-        {
-            if (func.name)
-                {
-                    str += "  " + func.name;
-                    if (this)
-                        str += " (" + this + ")";
-                }
-            else
-                str += "[anonymous]\n";
-
-            str += "\n";
-            func = func.caller;
+    while (func) {
+        if (func.name) {
+            str += "  " + func.name;
+            if (this)
+                str += " (" + this + ")";
         }
+        else
+            str += "[anonymous]\n";
+
+        str += "\n";
+        func = func.caller;
+    }
     str += "--\n";
 
     return str;
@@ -923,7 +925,7 @@ function IsCharacterKey(keyCode) {
             || (keyCode > 95 && keyCode < 112) /* numpad digits */
             || (keyCode > 186 && keyCode < 193)
             || (keyCode > 218 && keyCode < 223))
-}
+        }
 
 function onSearchKeyDown(event) {
     if (event.keyCode == Event.KEY_RETURN) {
@@ -1174,7 +1176,7 @@ function refreshAlarmsCallback(http) {
     if (http.readyState == 4
         && http.status == 200) {
         document.alarmsListAjaxRequest = null;
- 
+
         if (http.responseText.length > 0) {
             Alarms = http.responseText.evalJSON(true);
             Alarms.sort(reverseSortByAlarmTime);
@@ -1597,7 +1599,7 @@ function delegateInvitation(componentUrl, callbackFunction, callbackData) {
         alert(getLabel("noEmailForDelegation"));
     else
         delegatedTo = input.value;
-    
+
     if (delegatedTo) {
         var receiveUpdates = false; //confirm("Do you want to keep receiving updates on the event?");
         var urlstr = componentUrl + "/delegate";
@@ -1659,7 +1661,7 @@ function getLabel(key) {
  *  http://www.webtoolkit.info/
  *
  **/
- 
+
 AIM = {
     frame : function(c) {
         var d = new Element ('div');
@@ -1672,11 +1674,11 @@ AIM = {
             i.onComplete = c.onComplete;
         return n;
     },
- 
+
     form : function(f, name) {
         f.writeAttribute('target', name);
     },
- 
+
     submit : function(f, c) {
         AIM.form(f, AIM.frame(c));
         if (c && typeof(c.onStart) == 'function')
@@ -1684,7 +1686,7 @@ AIM = {
         else
             return true;
     },
- 
+
     loaded : function(id) {
         var i = $(id);
         if (i.contentDocument)
@@ -1695,7 +1697,7 @@ AIM = {
             var d = window.frames[id].document;
         if (d.location.href == "about:blank")
             return;
- 
+
         if (typeof(i.onComplete) == 'function')
             i.onComplete(d.body.innerHTML);
     }
@@ -1757,8 +1759,8 @@ function readLoginCookie() {
     var loginValues = null;
     var cookie = readCookie("0xHIGHFLYxSOGo");
     if (cookie && cookie.length > 8) {
-	var value = decodeURIComponent(cookie.substr(8));
-	loginValues = value.base64decode().split(":");
+        var value = decodeURIComponent(cookie.substr(8));
+        loginValues = value.base64decode().split(":");
     }
 
     return loginValues;
