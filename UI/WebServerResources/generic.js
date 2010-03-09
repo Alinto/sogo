@@ -721,6 +721,7 @@ function log(message) {
         if (logConsole.highlighted)
             logMessage = '<div class="highlighted">' + logMessage + '</div>';
         logConsole.innerHTML += logMessage;
+        logConsole.scrollTop += 300; /* abritrary number */
     }
 }
 
