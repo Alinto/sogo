@@ -166,13 +166,26 @@ static NSMutableDictionary *cache;
     period = (iCalTimeZonePeriod *) [self uniqueChildWithTag: @"daylight"];
   else if (!daylightOccurence)
     period = (iCalTimeZonePeriod *) [self uniqueChildWithTag: @"standard"];
-  else if ([date earlierDate: daylightOccurence] == date
-	   || [date earlierDate: standardOccurence] == standardOccurence)
-    period = (iCalTimeZonePeriod *) [self uniqueChildWithTag: @"standard"];
+  else if ([date earlierDate: daylightOccurence] == date)
+    {
+      if ([date earlierDate: standardOccurence] == date
+          && ([standardOccurence earlierDate: daylightOccurence]
+              == standardOccurence))
+        period = (iCalTimeZonePeriod *) [self uniqueChildWithTag: @"daylight"];
+      else
+        period = (iCalTimeZonePeriod *) [self uniqueChildWithTag: @"standard"];
+    }
   else
-    period = (iCalTimeZonePeriod *) [self uniqueChildWithTag: @"daylight"];
+    {
+      if ([standardOccurence earlierDate: date] == standardOccurence
+          && ([daylightOccurence earlierDate: standardOccurence]
+              == daylightOccurence))
+        period = (iCalTimeZonePeriod *) [self uniqueChildWithTag: @"standard"];
+      else
+        period = (iCalTimeZonePeriod *) [self uniqueChildWithTag: @"daylight"];
+    }
 
-//   NSLog (@"chosen period: '%@'", [period tag]);
+  // NSLog (@"chosen period: '%@'", [period tag]);
 
   return period;
 }

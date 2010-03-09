@@ -1,5 +1,10 @@
 2010-03-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* iCalTimeZone.m (-periodForDate:): the order in which daylight
+	and standard occur is not the same in the northern and southern
+	hemisphere. We were thus choosing the wrong period for southern
+	areas.
+
 	* iCalTimeZonePeriod.m (_occurenceForDate:byRRule:): fixed
 	computing of timezone switch dates, which were offset by one week
 	too early.
