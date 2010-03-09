@@ -994,8 +994,8 @@ function popupToolbarMenu(node, menuId) {
     var offset = $(node).cumulativeOffset();
     var top = offset.top + node.offsetHeight;
     popup.setStyle({ top: top + "px",
-                left: offset.left + "px",
-                visibility: "visible" });
+                     left: offset.left + "px",
+                     visibility: "visible" });
 
     document.currentPopupMenu = popup;
     $(document.body).observe("mouseup", onBodyClickMenuHandler);
