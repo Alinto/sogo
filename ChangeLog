@@ -1,7 +1,13 @@
 2010-03-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MainUI/SOGoUserHomePage.m (_usersResponseForResults:): we now
+	return a JSON response with an encoded array of arrays.
+
 	* UI/WebServerResources/UIxContactsUserFolders.js
 	(onFolderSearchKeyDown): same as below.
+	(addUsersLineToTree): the responses for user search queries are
+	now JSON-encoded arrays, which avoids a lot of parsing issues and
+	reduces the size of the code.
 
 	* UI/WebServerResources/generic.js (IsCharacterKey): new helper
 	function that returns whether the pressed keycode is one that
