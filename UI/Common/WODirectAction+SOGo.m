@@ -60,8 +60,13 @@
 - (WOResponse *) responseWithStatus: (unsigned int) status
 	      andJSONRepresentation: (NSObject *) contentObject;
 {
-  return [self responseWithStatus: status
-	       andString: [contentObject jsonRepresentation]];
+  WOResponse *response;
+
+  response = [self responseWithStatus: status
+                            andString: [contentObject jsonRepresentation]];
+  [response setHeader: @"application/json" forKey: @"content-type"];
+
+  return response;
 }
 
 - (WOResponse *) responseWith204

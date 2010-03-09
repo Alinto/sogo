@@ -1,5 +1,9 @@
 2010-03-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Common/WODirectAction+SOGo.m
+	(-responseWithStatus:andJSONRepresentation:): we now add the
+	"application/json" content type to the response object.
+
 	* UI/SOGoUI/UIxComponent.m
 	(-responseWithStatus:andJSONRepresentation:): we now add the
 	"application/json" content type to the response object.

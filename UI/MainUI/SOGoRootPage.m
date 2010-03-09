@@ -113,18 +113,13 @@
 /* actions */
 - (WOResponse *) _responseWithLDAPPolicyError: (int) error
 {
-  WOResponse *response;
   NSDictionary *jsonError;
 
   jsonError
     = [NSDictionary dictionaryWithObject: [NSNumber numberWithInt: error]
                                   forKey: @"LDAPPasswordPolicyError"];
-  response = [self responseWithStatus: 403
-                andJSONRepresentation: jsonError];
-  [response setHeader: @"application/json"
-               forKey: @"content-type"];
-
-  return response;
+  return [self responseWithStatus: 403
+            andJSONRepresentation: jsonError];
 }
 
 - (id <WOActionResults>) connectAction
