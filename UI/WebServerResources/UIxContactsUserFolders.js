@@ -231,22 +231,20 @@ function onConfirmFolderSelection(event) {
 }
 
 function onFolderSearchKeyDown(event) {
-    if (event.ctrlKey
-        || event.metaKey
-        || event.keyCode == Event.KEY_TAB)
-        return;
-    
-  var div = $("folders");
+    if (event.keyCode == Event.KEY_BACKSPACE
+        || IsCharacterKey(event.keyCode)) {
+        var div = $("folders");
 
-  if (!div.clean) {
-      var oldD = $("d"); // the folders tree
-      if (oldD) {
-          oldD.remove();
-          delete d;
-      }
-      div.clean = true;
-      $("addButton").addClassName("disabled");
-  }  
+        if (!div.clean) {
+            var oldD = $("d"); // the folders tree
+            if (oldD) {
+                oldD.remove();
+                delete d;
+            }
+            div.clean = true;
+            $("addButton").addClassName("disabled");
+        }
+    }
 }
 
 function initUserFoldersWindow() {

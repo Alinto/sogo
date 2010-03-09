@@ -916,23 +916,28 @@ function onSearchBlur(event) {
     }
 }
 
-function onSearchKeyDown(event) {
-    if (event.keyCode == Event.KEY_TAB
-        || event.ctrlKey
-        || event.metaKey)
-        return false;
-    
-    if (this.timer)
-        clearTimeout(this.timer);
+function IsCharacterKey(keyCode) {
+    return (keyCode == 32 /* space */
+            || (keyCode > 47 && keyCode < 58) /* digits */
+            || (keyCode > 64 && keyCode < 91) /* letters */
+            || (keyCode > 95 && keyCode < 112) /* numpad digits */
+            || (keyCode > 186 && keyCode < 193)
+            || (keyCode > 218 && keyCode < 223))
+}
 
+function onSearchKeyDown(event) {
     if (event.keyCode == Event.KEY_RETURN) {
+        if (this.timer)
+            clearTimeout(this.timer);
         onSearchFormSubmit();
         preventDefault(event);
     }
-    else if (event.keyCode == 0
-             || event.keyCode == Event.KEY_BACKSPACE
-             || event.keyCode > 31)
+    else if (event.keyCode == Event.KEY_BACKSPACE
+             || IsCharacterKey(event.keyCode)) {
+        if (this.timer)
+            clearTimeout(this.timer);
         this.timer = setTimeout("onSearchFormSubmit()", 500);
+    }
 }
 
 function onSearchFormSubmit(event) {
