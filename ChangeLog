@@ -8,6 +8,8 @@
 	changes the content of input fields.
 	(onSearchKeyDown): simplified method by making use of the new
 	function above.
+	(onSearchBlur): clear the timer if the field is empty, to avoid a
+	useless search on the ghost phrase.
 
 2010-03-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

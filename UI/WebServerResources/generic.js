@@ -904,6 +904,8 @@ function onSearchBlur(event) {
         this.setAttribute("modified", "");
         this.setStyle({ color: "#909090" });
         this.value = this.ghostPhrase;
+        if (this.timer)
+            clearTimeout(this.timer);
         search["value"] = "";
         if (this.lastSearch != "") {
             this.lastSearch = "";
