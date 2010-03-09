@@ -276,47 +276,43 @@
 
 - (WOResponse *) _usersResponseForResults: (NSArray *) users
 {
-  WOResponse *response;
   NSString *uid;
-  NSMutableString *responseString;
   NSDictionary *contact;
   NSString *contactInfo, *login;
+  NSMutableArray *jsonResponse, *jsonLine;
   NSArray *allUsers;
-  int i;
+  int count, max;
 
   login = [[context activeUser] login];
-  response = [context response];
-  [response setStatus: 200];
-  [response setHeader: @"text/plain; charset=utf-8"
-	    forKey: @"Content-Type"];
-
-  responseString = [NSMutableString string];
 
   // We sort our array - this is pretty useful for the Web
   // interface of SOGo.
   allUsers = [users
 	       sortedArrayUsingSelector: @selector (caseInsensitiveDisplayNameCompare:)];
 
-  for (i = 0; i < [allUsers count]; i++)
+  max = [allUsers count];
+  jsonResponse = [NSMutableArray arrayWithCapacity: max];
+  for (count = 0; count < max; count++)
     {
-      contact = [allUsers objectAtIndex: i];
+      contact = [allUsers objectAtIndex: count];
       uid = [contact objectForKey: @"c_uid"];
 
       // We do NOT return the current authenticated user.
       if (![uid isEqualToString: login])
         {
+          jsonLine = [NSMutableArray arrayWithCapacity: 4];
+          [jsonLine addObject: uid];
+          [jsonLine addObject: [contact objectForKey: @"cn"]];
+          [jsonLine addObject: [contact objectForKey: @"c_email"]];
           contactInfo = [contact objectForKey: @"c_info"];
-          if (!contactInfo)
-            contactInfo = @"";
-          [responseString appendFormat: @"%@:%@:%@:%@\n", uid,
-                 [contact objectForKey: @"cn"],
-                 [contact objectForKey: @"c_email"],
-                          contactInfo];
+          if (contactInfo)
+            [jsonLine addObject: contactInfo];
+          [jsonResponse addObject: jsonLine];
         }
     }
-  [response appendContentString: responseString];
 
-  return response;
+  return [self responseWithStatus: 200
+            andJSONRepresentation: jsonResponse];
 }
 
 - (id <WOActionResults>) usersSearchAction

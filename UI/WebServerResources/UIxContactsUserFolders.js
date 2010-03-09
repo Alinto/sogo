@@ -29,8 +29,8 @@ function usersSearchCallback(http) {
     document.userFoldersRequest = null;
     var div = $("folders");
     if (http.status == 200) {
-        var response = http.responseText;
-        buildUsersTree(div, http.responseText);
+        var response = http.responseText.evalJSON();
+        buildUsersTree(div, response);
     }
     else if (http.status == 404)
         div.update();
@@ -39,11 +39,10 @@ function usersSearchCallback(http) {
 function addUserLineToTree(tree, parent, line) {
     var icon = ResourcesURL + '/busy.gif';
 
-    var userInfos = line.split(":");
-    var email = userInfos[1] + " &lt;" + userInfos[2] + "&gt;";
-    if (userInfos[3] && !userInfos[3].empty())
-        email += ", " + userInfos[3]; // extra contact info
-    tree.add(parent, 0, email, 0, '#', userInfos[0], 'person',
+    var email = line[1] + " &lt;" + line[2] + "&gt;";
+    if (line[3] && !line[3].empty())
+        email += ", " + line[3].split("\n").join("; "); // extra contact info
+    tree.add(parent, 0, email, 0, '#', line[0], 'person',
              '', '',
              ResourcesURL + '/abcard.gif',
              ResourcesURL + '/abcard.gif');
@@ -76,23 +75,18 @@ function buildUsersTree(treeDiv, response) {
     var isUserDialog = (window.opener.userFolderType == "user");
     var multiplier = ((isUserDialog) ? 1 : 2);
 
-    if (response.length) {
-        var lines = response.split("\n");
-        for (var i = 0; i < lines.length; i++) {
-            if (lines[i].length > 0)
-                addUserLineToTree(d, 1 + i * multiplier, lines[i]);
-        }
+    if (response.length > 0) {
+        for (var i = 0; i < response.length; i++)
+            addUserLineToTree(d, 1 + i * multiplier, response[i]);
         treeDiv.appendChild(d.domObject ());
         treeDiv.clean = false;
-        for (var i = 0; i < lines.length - 1; i++) {
-            if (lines[i].length > 0) {
-                if (!isUserDialog) {
-                    var toggle = $("tgd" + (1 + i * 2));
-                    toggle.observe ("click", onUserNodeToggle);
-                }
-                var sd = $("sd" + (1 + i * multiplier));
-                sd.observe("click", onTreeItemClick);
+        for (var i = 0; i < response.length; i++) {
+            if (!isUserDialog) {
+                var toggle = $("tgd" + (1 + i * 2));
+                toggle.observe ("click", onUserNodeToggle);
             }
+            var sd = $("sd" + (1 + i * multiplier));
+            sd.observe("click", onTreeItemClick);
         }
     }
 }
