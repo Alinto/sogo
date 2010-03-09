@@ -924,8 +924,8 @@ function IsCharacterKey(keyCode) {
             || (keyCode > 64 && keyCode < 91) /* letters */
             || (keyCode > 95 && keyCode < 112) /* numpad digits */
             || (keyCode > 186 && keyCode < 193)
-            || (keyCode > 218 && keyCode < 223))
-        }
+            || (keyCode > 218 && keyCode < 223));
+}
 
 function onSearchKeyDown(event) {
     if (event.keyCode == Event.KEY_RETURN) {
