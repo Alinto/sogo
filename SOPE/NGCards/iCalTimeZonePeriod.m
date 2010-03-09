@@ -105,6 +105,8 @@
 			   dateTime];
 }
 
+/* This method returns the date corresponding for to the start of the period
+   in the year of the reference date. */
 - (NSCalendarDate *) _occurenceForDate: (NSCalendarDate *) refDate
 			       byRRule: (iCalRecurrenceRule *) rrule
 {
@@ -132,12 +134,7 @@
 		     second: -[self _secondsOfOffset: @"tzoffsetfrom"]];
 
   dateDayOfWeek = [tmpDate dayOfWeek];
-
-  if (pos > 0)
-    offset = (dayOfWeek - dateDayOfWeek) + ((pos - 1) * 7);
-  else
-    offset = (dayOfWeek - dateDayOfWeek) + (pos * 7);
-
+  offset = (dayOfWeek - dateDayOfWeek) + (pos * 7);
   tmpDate = [tmpDate addYear: 0 month: 0 day: offset
 		     hour: 0 minute: 0 second: 0];
 

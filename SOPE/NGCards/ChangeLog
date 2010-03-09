@@ -1,3 +1,9 @@
+2010-03-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* iCalTimeZonePeriod.m (_occurenceForDate:byRRule:): fixed
+	computing of timezone switch dates, which were offset by one week
+	too early.
+
 2010-01-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* iCalDateTime.m (-setTimeZone:): don't modify the date in case of
