@@ -19,7 +19,6 @@
         <div><span class="label"><var:string label:value="Name:"/></span
             ><span class="content"><input type="text"
               name="calendarName" id="calendarName"
-              var:disabled="calendarNameIsDisabled"
               class="textField"
               var:value="calendarName"
               /></span></div>

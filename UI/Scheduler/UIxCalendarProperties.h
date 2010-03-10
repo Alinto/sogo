@@ -34,7 +34,6 @@
 
 - (NSString *) calendarName;
 - (void) setCalendarName: (NSString *) newName;
-- (NSString *) calendarNameIsDisabled;
 
 - (NSString *) calendarColor;
 - (void) setCalendarColor: (NSString *) newColor;

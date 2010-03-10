@@ -1,3 +1,29 @@
+2010-03-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/SchedulerUI.js (updateCalendarProperties):
+	the displayname can now also be set by subscribers, in their own
+	environment.
+
+	* UI/Scheduler/UIxCalendarProperties.m (-setCalendarName:): this
+	action is now unconditional.
+	(-calendarNameIsDisabled): removed obsolete accessor.
+
+	* SoObjects/SOGo/SOGoGCSFolder.m
+	(-setFolderPropertyValue:inCategory:): new setter for properties
+	pertaining to the ACTIVE user (who may or may not be the owner).
+	(-folderPropertyValueInCategory:): getter corollary to the new
+	method above.
+	(-_fetchDisplayNameFromSubscriber): new method for getting the
+	display name of the folder for the active user.
+	(renameTo:): split the method in an instance for the owner and
+	another one for subscribers. Respectively: _ownerRenameTo: and
+	_subscriberRenameTo:. The latter invoke the new methods above.
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(_setCalendarProperty:forKey:): replaced method with a new
+	and more generic accessor from SOGoGCSFolder
+	"setFolderPropertyValue:inCategory:".
+
 2010-03-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Common/WODirectAction+SOGo.m

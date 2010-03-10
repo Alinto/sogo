@@ -56,22 +56,7 @@
 
 - (void) setCalendarName: (NSString *) newName
 {
-  NSString *login;
-
-  login = [[context activeUser] login];
-
-  if ([login isEqualToString: [calendar ownerInContext: context]])
-    [calendar renameTo: newName];
-}
-
-- (NSString *) calendarNameIsDisabled
-{
-  NSString *login;
-
-  login = [[context activeUser] login];
-
-  return ([login isEqualToString: [calendar ownerInContext: context]]
-	  ? @"false" : @"true");
+  [calendar renameTo: newName];
 }
 
 - (NSString *) calendarColor

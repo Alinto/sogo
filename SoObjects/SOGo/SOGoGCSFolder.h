@@ -69,6 +69,10 @@
 - (NSString *) folderReference;
 - (NSArray *) pathArrayToFolder;
 
+- (void) setFolderPropertyValue: (id) theValue
+                     inCategory: (NSString *) theKey;
+- (id) folderPropertyValueInCategory: (NSString *) theKey;
+
 /* lower level fetches */
 - (BOOL) nameExistsInFolder: (NSString *) objectName;
 

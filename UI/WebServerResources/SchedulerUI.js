@@ -2154,13 +2154,12 @@ function updateCalendarProperties(calendarID, calendarName, calendarColor) {
 
     if (idParts[0] != UserLogin)
         nodeID = "/" + idParts[0].asCSSIdentifier() + "_" + folderName;
-    else {
+    else
         nodeID = "/" + folderName;
 	//   log("nodeID: " + nodeID);
-        var calendarNode = $(nodeID);
-        var childNodes = calendarNode.childNodes;
-        childNodes[childNodes.length-1].nodeValue = calendarName;
-    }
+    var calendarNode = $(nodeID);
+    var childNodes = calendarNode.childNodes;
+    childNodes[childNodes.length-1].nodeValue = calendarName;
 
     appendStyleElement(nodeID, calendarColor);
 }

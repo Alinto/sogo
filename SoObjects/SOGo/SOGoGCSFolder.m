@@ -209,9 +209,61 @@ static NSArray *childRecordFields = nil;
 
 /* accessors */
 
+- (void) setFolderPropertyValue: (id) theValue
+                     inCategory: (NSString *) theKey
+{
+  SOGoUserSettings *settings;
+  NSMutableDictionary *folderSettings, *values;
+  NSString *module;
+
+  settings = [[context activeUser] userSettings];
+  module = [container nameInContainer];
+  folderSettings = [settings objectForKey: module];
+  if (!folderSettings)
+    {
+      folderSettings = [NSMutableDictionary dictionary];
+      [settings setObject: folderSettings forKey: module];
+    }
+  values = [folderSettings objectForKey: theKey];
+  if (theValue)
+    {
+      if (!values)
+	{
+	  // Create the property dictionary
+	  values = [NSMutableDictionary dictionary];
+	  [folderSettings setObject: values forKey: theKey];
+	}
+      [values setObject: theValue forKey: [self folderReference]];
+    }
+  else if (values)
+    {
+      // Remove the property for the folder
+      [values removeObjectForKey: [self folderReference]];
+      if ([values count] == 0)
+	// Also remove the property dictionary when empty
+	[folderSettings removeObjectForKey: theKey];
+    }
+
+  [settings synchronize];
+}
+
+- (id) folderPropertyValueInCategory: (NSString *) theKey
+{
+  SOGoUserSettings *settings;
+  NSDictionary *folderSettings;
+  id value;
+
+  settings = [[context activeUser] userSettings];
+  folderSettings = [settings objectForKey: [container nameInContainer]];
+  value = [[folderSettings objectForKey: theKey]
+            objectForKey: [self folderReference]];
+
+  return value;
+}
+
 - (void) _setDisplayNameFromRow: (NSDictionary *) row
 {
-  NSString *currentLogin, *ownerLogin, *primaryDN;
+  NSString *primaryDN;
   NSDictionary *ownerIdentity;
 
   primaryDN = [row objectForKey: @"c_foldername"];
@@ -223,11 +275,9 @@ static NSArray *childRecordFields = nil;
       else
 	[displayName appendString: primaryDN];
 
-      currentLogin = [[context activeUser] login];
-      ownerLogin = [self ownerInContext: context];
-      if (![currentLogin isEqualToString: ownerLogin])
+      if (!activeUserIsOwner)
 	{
-	  ownerIdentity = [[SOGoUser userWithLogin: ownerLogin roles: nil]
+	  ownerIdentity = [[SOGoUser userWithLogin: owner]
 			    primaryIdentity];
 	  [displayName
 	    appendString: [ownerIdentity keysWithFormat:
@@ -236,7 +286,10 @@ static NSArray *childRecordFields = nil;
     }
 }
 
-- (void) _fetchDisplayName
+/* This method fetches the display name defined by the owner, but is also the
+   fallback when a subscriber has not redefined the display name yet in his
+   environment. */
+- (void) _fetchDisplayNameFromOwner
 {
   GCSChannelManager *cm;
   EOAdaptorChannel *fc;
@@ -265,10 +318,25 @@ static NSArray *childRecordFields = nil;
     }
 }
 
+- (void) _fetchDisplayNameFromSubscriber
+{
+  displayName = [self folderPropertyValueInCategory: @"FolderDisplayNames"];
+  [displayName retain];
+}
+
 - (NSString *) displayName
 {
   if (!displayName)
-    [self _fetchDisplayName];
+    {
+      if (activeUserIsOwner)
+        [self _fetchDisplayNameFromOwner];
+      else
+        {
+          [self _fetchDisplayNameFromSubscriber];
+          if (!displayName)
+            [self _fetchDisplayNameFromOwner];
+        }
+    }
 
   return displayName;
 }
@@ -335,24 +403,15 @@ static NSArray *childRecordFields = nil;
 - (NSException *) setDavDisplayName: (NSString *) newName
 {
   NSException *error;
-  NSArray *currentRoles;
 
-  currentRoles = [[context activeUser] rolesForObject: self
-				       inContext: context];
-  if ([currentRoles containsObject: SoRole_Owner])
+  if ([newName length])
     {
-      if ([newName length])
-	{
-	  [self renameTo: newName];
-	  error = nil;
-	}
-      else
-	error = [NSException exceptionWithHTTPStatus: 400
-			     reason: @"Empty string"];
+      [self renameTo: newName];
+      error = nil;
     }
   else
-    error = [NSException exceptionWithHTTPStatus: 403
-			 reason: @"Modification denied."];
+    error = [NSException exceptionWithHTTPStatus: 400
+                                          reason: @"Empty string"];
 
   return error;
 }
@@ -437,16 +496,12 @@ static NSArray *childRecordFields = nil;
   return error;
 }
 
-- (void) renameTo: (NSString *) newName
+- (void) _ownerRenameTo: (NSString *) newName
 {
   GCSChannelManager *cm;
   EOAdaptorChannel *fc;
   NSURL *folderLocation;
   NSString *sql;
-
-#warning SOGoFolder should have the corresponding method
-  [displayName release];
-  displayName = nil;
 
   cm = [GCSChannelManager defaultChannelManager];
   folderLocation
@@ -454,6 +509,7 @@ static NSArray *childRecordFields = nil;
   fc = [cm acquireOpenChannelForURL: folderLocation];
   if (fc)
     {
+#warning GDLContentStore should provide methods for renaming folders
       sql
 	= [NSString stringWithFormat: (@"UPDATE %@ SET c_foldername = '%@'"
 				       @" WHERE c_path = '%@'"),
@@ -465,6 +521,25 @@ static NSArray *childRecordFields = nil;
 //       sql = [sql stringByAppendingFormat:@" WHERE %@ = '%@'", 
 //                  uidColumnName, [self uid]];
     }
+}
+
+- (void) _subscriberRenameTo: (NSString *) newName
+{
+  if ([newName length])
+    [self setFolderPropertyValue: newName
+                      inCategory: @"FolderDisplayNames"];
+}
+
+- (void) renameTo: (NSString *) newName
+{
+#warning SOGoFolder should have the corresponding method
+  [displayName release];
+  displayName = nil;
+
+  if (activeUserIsOwner)
+    [self _ownerRenameTo: newName];
+  else
+    [self _subscriberRenameTo: newName];
 }
 
 - (NSArray *) fetchContentObjectNames

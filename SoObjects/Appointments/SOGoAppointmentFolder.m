@@ -278,53 +278,11 @@ static NSNumber *sharedYes = nil;
   return objectClass;
 }
 
-- (void) _setCalendarProperty: (id) theValue
-                       forKey: (NSString *) theKey
-{
-  SOGoUserSettings *settings;
-  NSMutableDictionary *calendarSettings, *values;
-  
-  settings = [[context activeUser] userSettings];
-  calendarSettings = [settings objectForKey: @"Calendar"];
-  if (!calendarSettings)
-    {
-      calendarSettings = [NSMutableDictionary dictionary];
-      [settings setObject: calendarSettings
-		forKey: @"Calendar"];
-    }
-  values = [calendarSettings objectForKey: theKey];
-  if (theValue)
-    {
-      if (!values)
-	{
-	  // Create the property dictionary
-	  values = [NSMutableDictionary dictionary];
-	  [calendarSettings setObject: values forKey: theKey];
-	}
-      [values setObject: theValue forKey: [self folderReference]];
-    }
-  else if (values)
-    {
-      // Remove the property for the calendar
-      [values removeObjectForKey: [self folderReference]];
-      if ([values count] == 0)
-	// Also remove the property dictionary when empty
-	[calendarSettings removeObjectForKey: theKey];
-    }
-
-  [settings synchronize];
-}
-
 - (NSString *) calendarColor
 {
-  SOGoUserSettings *settings;
-  NSDictionary *colors;
   NSString *color;
 
-  settings = [[context activeUser] userSettings];
-  colors = [[settings objectForKey: @"Calendar"]
-	     objectForKey: @"FolderColors"];
-  color = [colors objectForKey: [self folderReference]];
+  color = [self folderPropertyValueInCategory: @"FolderColors"];
   if (!color)
     color = defaultColor;
 
@@ -333,78 +291,63 @@ static NSNumber *sharedYes = nil;
 
 - (void) setCalendarColor: (NSString *) newColor
 {
-  if ([newColor length])
-    [self _setCalendarProperty: newColor
-			forKey: @"FolderColors"];
-  else
-    [self _setCalendarProperty: nil
-			forKey: @"FolderColors"];
+  if (![newColor length])
+    newColor = nil;
+
+  [self setFolderPropertyValue: newColor
+                    inCategory: @"FolderColors"];
 }
 
 - (BOOL) showCalendarAlarms
 {
-  SOGoUserSettings *settings;
-  NSDictionary *values;
-  id test;
-  BOOL show = YES;
+  NSNumber *showAlarms;
 
-  settings = [[context activeUser] userSettings];
-  values = [[settings objectForKey: @"Calendar"]
-             objectForKey: @"FolderShowAlarms"];
-  test = [values objectForKey: [self folderReference]];
-  if (test)
-    show = [test boolValue];
+  showAlarms = [self folderPropertyValueInCategory: @"FolderShowAlarms"];
 
-  return show;
+  return (showAlarms ? [showAlarms boolValue] : YES);
 }
 
 - (void) setShowCalendarAlarms: (BOOL) new
 {
+  NSNumber *showAlarms;
+
   if (new)
-    [self _setCalendarProperty: nil
-			forKey: @"FolderShowAlarms"];    
+    showAlarms = nil;
   else
-    [self _setCalendarProperty: [NSNumber numberWithBool: new]
-			forKey: @"FolderShowAlarms"];
+    showAlarms = [NSNumber numberWithBool: NO];
+
+  [self setFolderPropertyValue: showAlarms
+                    inCategory: @"FolderShowAlarms"];    
 }
 
 - (BOOL) showCalendarTasks
 {
-  SOGoUserSettings *settings;
-  NSDictionary *values;
-  id test;
-  BOOL show = YES;
+  NSNumber *showTasks;
 
-  settings = [[context activeUser] userSettings];
-  values = [[settings objectForKey: @"Calendar"]
-             objectForKey: @"FolderShowTasks"];
-  test = [values objectForKey: [self folderReference]];
-  if (test)
-    show = [test boolValue];
+  showTasks = [self folderPropertyValueInCategory: @"FolderShowTasks"];
 
-  return show;
+  return (showTasks ? [showTasks boolValue] : YES);
 }
 
 - (void) setShowCalendarTasks: (BOOL) new
 {
+  NSNumber *showTasks;
+
+  /* the default value is "YES", so we keep only those with a value of "NO"... */
   if (new)
-    [self _setCalendarProperty: nil
-			forKey: @"FolderShowTasks"];
+    showTasks = nil;
   else
-    [self _setCalendarProperty: [NSNumber numberWithBool: new]
-			forKey: @"FolderShowTasks"];
+    showTasks = [NSNumber numberWithBool: NO];
+
+  [self setFolderPropertyValue: showTasks
+                    inCategory: @"FolderShowTasks"];    
 }
 
 - (NSString *) syncTag
 {
-  SOGoUserSettings *settings;
-  NSDictionary *syncTags;
   NSString *syncTag;
 
-  settings = [[context activeUser] userSettings];
-  syncTags = [[settings objectForKey: @"Calendar"]
-	       objectForKey: @"FolderSyncTags"];
-  syncTag = [syncTags objectForKey: [self folderReference]];
+  syncTag = [self folderPropertyValueInCategory: @"FolderSyncTags"];
   if (!syncTag)
     syncTag = @"";
 
@@ -413,71 +356,46 @@ static NSNumber *sharedYes = nil;
 
 - (void) setSyncTag: (NSString *) newSyncTag
 {
+  // Check for duplicated tags
+  SOGoUserSettings *settings;
+  NSDictionary *syncTags;
+  NSArray *values;
+
   if ([newSyncTag length])
     {
-      // Check for duplicated tags
-      SOGoUserSettings *settings;
-      NSMutableDictionary *calendarSettings;
-      NSMutableDictionary *syncTags;
-      NSEnumerator *keysList;
-      NSString *key;
-      BOOL hasDuplicate;
-
-      hasDuplicate = NO;
       settings = [[context activeUser] userSettings];
-      calendarSettings = [settings objectForKey: @"Calendar"];
-      if (calendarSettings)
-	{
-	  syncTags = [calendarSettings objectForKey: @"FolderSyncTags"];
-	  if (syncTags)
-	    {
-	      keysList = [syncTags keyEnumerator];
-	      while ((key = (NSString*)[keysList nextObject])) {
-		if (![key isEqualToString: [self folderReference]]
-		    && [(NSString*)[syncTags objectForKey: key] isEqualToString: newSyncTag])
-		  {
-		    hasDuplicate = YES;
-		    break;
-		  }
-	      }
-	    }
-	}
-      if (!hasDuplicate)
-	[self _setCalendarProperty: newSyncTag
-			    forKey: @"FolderSyncTags"];
+      syncTags = [[settings objectForKey: @"Calendar"]
+                           objectForKey: @"FolderSyncTags"];
+      values = [syncTags allValues];
+      if (![values containsObject: newSyncTag])
+        [self setFolderPropertyValue: newSyncTag
+                          inCategory: @"FolderSyncTags"];
     }
   else
-    {
-      [self _setCalendarProperty: nil
-			  forKey: @"FolderSyncTags"];
-    }
+    [self setFolderPropertyValue: nil
+                      inCategory: @"FolderSyncTags"];
 }
 
 - (BOOL) synchronizeCalendar
 {
-  SOGoUserSettings *settings;
-  NSDictionary *values;
-  id test;
-  BOOL synchronize = NO;
+  NSNumber *synchronize;
 
-  settings = [[context activeUser] userSettings];
-  values = [[settings objectForKey: @"Calendar"]
-             objectForKey: @"FolderSynchronize"];
-  test = [values objectForKey: [self folderReference]];
-  if (test)
-    synchronize = [test boolValue];
+  synchronize = [self folderPropertyValueInCategory: @"FolderSynchronize"];
 
-  return synchronize;
+  return [synchronize boolValue];
 }
 
 - (void) setSynchronizeCalendar: (BOOL) new
 {
+  NSNumber *synchronize;
+
   if (new)
-    [self _setCalendarProperty: [NSNumber numberWithBool: new]
-			forKey: @"FolderSynchronize"];
+    synchronize = [NSNumber numberWithBool: YES];
   else
-    [self _setCalendarProperty: nil
-			forKey: @"FolderSynchronize"];
+    synchronize = nil;
+
+  [self setFolderPropertyValue: synchronize
+                    inCategory: @"FolderSynchronize"];
 }
 
 /* selection */
