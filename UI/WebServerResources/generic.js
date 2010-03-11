@@ -1783,7 +1783,7 @@ function SetLogMessage(containerId, message, msgType) {
             container.typeClass = typeClass;
             container.addClassName(typeClass);
         }
-        if (!container.message || container.message != message) {
+        if (container.message != message) {
             while (container.lastChild) {
                 container.removeChild(container.lastChild);
             }
@@ -1794,8 +1794,8 @@ function SetLogMessage(containerId, message, msgType) {
                     container.appendChild(document.createElement("br"));
                     container.appendChild(document.createTextNode(sentences[i]));
                 }
-                container.message = message;
             }
+            container.message = message;
         }
     }
 }
