@@ -2720,7 +2720,57 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
        NSDictionary *content;
          
        if ((content = [self _parseBodyContent]) != nil)
-@@ -1594,8 +1864,11 @@
+@@ -1497,6 +1767,7 @@
+     _parseUntil(self, '\n');
+     [result_ addObject:value forKey:[key lowercaseString]];
+   }
++
+   return isOK;
+ }
+ 
+@@ -1509,9 +1780,12 @@
+   if ((data = [self _parseData]) == nil)
+     return NO;
+   
+-  str = [[StrClass alloc] initWithData:data encoding:defCStringEncoding];
++  str = [[StrClass alloc] initWithData:data encoding:NSUTF8StringEncoding];
+   [result_ setObject:str forKey:@"data"];
+   [str release]; str = nil;
++
++  _parseUntil(self, '\n');
++
+   return YES;
+ }
+ 
+@@ -1542,13 +1816,16 @@
+   
+   if (!((_la(self, 0)=='N') && (_la(self, 1)=='O') && (_la(self, 2)==' ')))
+     return NO;
+-    
++
+   _consume(self, 3);
+ 
+   data = _parseContentSieveResponse(self);
+-    
++
+   [result_ addObject:NoNum forKey:@"ok"];
+   if (data) [result_ addObject:data forKey:@"reason"];
++
++  _parseUntil(self, '\n');
++
+   return YES;
+ }
+ 
+@@ -1562,7 +1839,7 @@
+   if ((data = [self _parseData]) == nil)
+     return nil;
+   
+-  return [[[StrClass alloc] initWithData:data encoding:defCStringEncoding]
++  return [[[StrClass alloc] initWithData:data encoding:NSUTF8StringEncoding]
+                           autorelease];
+ }
+ 
+@@ -1594,8 +1871,11 @@
      if (_decode)
        data = [data decodeQuotedPrintableValueOfMIMEHeaderField:nil];
      
@@ -2734,7 +2784,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
    }
    else {
      str = _parseUntil2(self, ' ', ')');
-@@ -1620,13 +1893,35 @@
+@@ -1620,13 +1900,35 @@
    return str;
  }
  
@@ -2771,7 +2821,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  static NSDictionary *_parseBodyParameterList(NGImap4ResponseParser *self)
  {
    NSMutableDictionary *list;
-@@ -1646,7 +1941,7 @@
+@@ -1646,7 +1948,7 @@
        _consumeIfMatch(self, ' ');
        value = _parseBodyDecodeString(self, YES, YES);
  
@@ -2780,7 +2830,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
      }
      _consumeIfMatch(self, ')');
    }
-@@ -1731,13 +2026,14 @@
+@@ -1731,13 +2033,14 @@
  static NSDictionary *_parseSingleBody(NGImap4ResponseParser *self,
  				      BOOL isBodyStructure) {
    NSString            *type, *subtype, *bodyId, *description,
@@ -2797,7 +2847,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
    _consumeIfMatch(self, ' ');
    parameterList = _parseBodyParameterList(self);
    _consumeIfMatch(self, ' ');
-@@ -1762,13 +2058,18 @@
+@@ -1762,13 +2065,18 @@
      _consumeIfMatch(self, ' ');
      [dict setObject:_parseBodyString(self, YES) forKey:@"lines"];
    }
@@ -2819,7 +2869,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
        _consumeIfMatch(self, ' ');
        [dict setObject:_parseParenthesizedAddressList(self) forKey:@"from"];
        _consumeIfMatch(self, ' ');
-@@ -1783,14 +2084,20 @@
+@@ -1783,14 +2091,20 @@
        _consumeIfMatch(self, ' ');
        [dict setObject:_parseParenthesizedAddressList(self) forKey:@"bcc"];
        _consumeIfMatch(self, ' ');
@@ -2843,7 +2893,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
      }
    }
  
-@@ -1805,14 +2112,9 @@
+@@ -1805,14 +2119,9 @@
  	      forKey: @"disposition"];
  	if (_la(self, 0) != ')') {
  	  _consume(self,1);
@@ -2861,7 +2911,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  	  if (_la(self, 0) != ')') {
  	    _consume(self,1);
  	    [dict setObject: _parseBodyString(self, YES)
-@@ -1829,6 +2131,7 @@
+@@ -1829,6 +2138,7 @@
  static NSDictionary *_parseMultipartBody(NGImap4ResponseParser *self,
  					 BOOL isBodyStructure) {
    NSMutableArray *parts;
@@ -2869,7 +2919,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
    NSString       *kind;
    NSMutableDictionary *dict;
  
-@@ -1854,14 +2157,9 @@
+@@ -1854,14 +2164,9 @@
  	      forKey: @"disposition"];
  	if (_la(self, 0) != ')') {
  	  _consume(self,1);
@@ -2887,7 +2937,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  	  if (_la(self, 0) != ')') {
  	    _consume(self,1);
  	    [dict setObject: _parseBodyString(self, YES)
-@@ -2170,6 +2468,21 @@
+@@ -2170,6 +2475,21 @@
    }
  }
  
@@ -2909,7 +2959,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  - (NSException *)exceptionForFailedMatch:(unsigned char)_match
    got:(unsigned char)_avail
  {
-@@ -2225,9 +2538,9 @@
+@@ -2225,9 +2545,9 @@
        [s release];
        
        if (c == '\n') {
@@ -2925,7 +2975,18 @@ Index: sope-mime/NGImap4/ChangeLog
 ===================================================================
 --- sope-mime/NGImap4/ChangeLog	(revision 1664)
 +++ sope-mime/NGImap4/ChangeLog	(working copy)
-@@ -1,3 +1,139 @@
+@@ -1,3 +1,150 @@
++2010-03-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
++
++	* NGImap4ResponseParser.m (_parseContentSieveResponse): we now use
++	NSUTF8StringEncoding as explicit NSString encoding for sieve
++	responses.
++	(_parseDataSieveResponse): same as above.
++	(_parseOkSieveResponse): added a _parseUntil(.."\n") clause to
++	ensure that the current line has been completely parsed before
++	going on with the rest.
++	(_parseNoSieveResponse): same as above.
++
 +2010-03-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 +
 +	* NGSieveClient.m (-putScript:script:): the byte count passed as
