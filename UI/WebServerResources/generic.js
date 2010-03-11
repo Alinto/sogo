@@ -1787,7 +1787,7 @@ function SetLogMessage(containerId, message, msgType) {
             while (container.lastChild) {
                 container.removeChild(container.lastChild);
             }
-            if (message) {
+            if (message && message.length > 0) {
                 var sentences = message.split("\n");
                 container.appendChild(document.createTextNode(sentences[0]));
                 for (var i = 1; i < sentences.length; i++) {
