@@ -43,12 +43,16 @@ function initLogin() {
 }
 
 function onFieldKeyDown(event) {
-    if (event.keyCode == Event.KEY_RETURN)
+    if (event.keyCode == Event.KEY_RETURN) {
         if ($("password").value.length > 0
             && $("userName").value.length > 0)
             return onLoginClick (event);
         else
             Event.stop(event);
+    } else if (IsCharacterKey(event.keyCode)
+               || event.keyCode == Event.KEY_BACKSPACE) {
+        SetLogMessage("errorMessage", null);
+    }
 }
 
 function onLoginClick(event) {
@@ -58,7 +62,6 @@ function onLoginClick(event) {
     var language = $("language");
 
     if (userName.length > 0) {
-        SetLogMessage("errorMessage", null);
         this.disabled = true;
         startAnimation($("animation"));
 
