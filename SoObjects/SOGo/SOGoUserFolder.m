@@ -416,7 +416,7 @@
           field = [currentUser objectForKey: @"c_email"];
           [fetch appendFormat: @"<email>%@</email>",
                  [field stringByEscapingXMLString]];
-          field = [currentUser objectForKey: @"info"];
+          field = [currentUser objectForKey: @"c_info"];
           if ([field length])
             [fetch appendFormat: @"<info>%@</info>",
                    [field stringByEscapingXMLString]];

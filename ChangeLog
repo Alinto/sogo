@@ -1,5 +1,10 @@
 2010-03-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUserFolder.m (_davFetchUsersMatching:): we
+	were still using the "info" field from the result set for extra
+	user info, however that field as been renamed "c_info" a couple of
+	months ago.
+
 	* UI/WebServerResources/generic.js (SetLogMessage): we must attach
 	the message to the container even when the message is null.
 
