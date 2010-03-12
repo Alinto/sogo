@@ -40,7 +40,7 @@ PasswordPolicy.prototype = {
                                       password: this.password,
                                       newPassword: newPassword });
         var urlParts = ApplicationBaseURL.split("/");
-        var url = urlParts[1] + "/so/changePassword";
+        var url = "/" + urlParts[1] + "/so/changePassword";
         triggerAjaxRequest(url, _passwordPolicyAjaxCallback, this,
                            content, {"content-type": "application/json"} );
     },
