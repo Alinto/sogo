@@ -193,7 +193,7 @@ function createPasswordChangeDialog() {
         var label = createElement("label", null, null, null, null, fields);
         label.appendChild(document.createTextNode(fieldLabels[i]));
         createElement("input", fieldNames[i], "textField",
-                      { "name": fieldNames[i], "type": "text" },
+                      { "name": fieldNames[i], "type": "password" },
                       null, label);
         createElement("br", null, null, null, null, fields);
     }
