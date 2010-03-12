@@ -23,6 +23,7 @@
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
+#import <Foundation/NSTimeZone.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
@@ -79,14 +80,33 @@
 
 - (iCalRepeatableEntityObject *) newOccurenceWithID: (NSString *) recID
 {
-  iCalEvent *newOccurence;
-  NSCalendarDate *date;
+  iCalEvent *newOccurence, *master;
+  NSCalendarDate *date, *firstDate;
   unsigned int interval, nbrDays;
+  SOGoUserDefaults *ud;
+  NSTimeZone *timeZone;
+  int daylightOffset;
+
+  ud = [[SOGoUser userWithLogin: owner] userDefaults];
+  timeZone = [ud timeZone];
 
   newOccurence = (iCalEvent *) [super newOccurenceWithID: recID];
   date = [newOccurence recurrenceId];
-  interval = [[newOccurence endDate]
-	       timeIntervalSinceDate: [newOccurence startDate]];
+
+  master = [self component: NO secure: NO];
+  firstDate = [master startDate];
+
+  // We are creating a new exception in a recurrent event -- compute the daylight
+  // saving time with respect to the first occurrence of the recurrent event.
+  daylightOffset = (int) ([timeZone secondsFromGMTForDate: firstDate]
+                          - [timeZone secondsFromGMTForDate: date]);
+  if (daylightOffset)
+    date = [date dateByAddingYears: 0 months: 0 days: 0
+                             hours:0 minutes: 0 seconds: daylightOffset];
+  [date setTimeZone: timeZone];
+
+  interval = [[master endDate]
+               timeIntervalSinceDate: firstDate];
   if ([newOccurence isAllDay])
     {
       nbrDays = ((float) abs (interval) / 86400) + 1;
@@ -94,14 +114,15 @@
 		    duration: nbrDays];
     }
   else
-    [newOccurence setStartDate: date];
-
-  [newOccurence setEndDate: [date addYear: 0
-				  month: 0
-				  day: 0
-				  hour: 0
-				  minute: 0
-				  second: interval]];
+    {
+      [newOccurence setStartDate: date];
+      [newOccurence setEndDate: [date addYear: 0
+                                        month: 0
+                                          day: 0
+                                         hour: 0
+                                       minute: 0
+                                       second: interval]];
+    }
 
   return newOccurence;
 }

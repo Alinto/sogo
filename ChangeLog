@@ -1,3 +1,9 @@
+2010-03-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	(-newOccurenceWithID): moved timezone handling code from
+	UIxAppointmentEditor to here. Simplified that code.
+
 2010-03-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUserFolder.m (_davFetchUsersMatching:): we
