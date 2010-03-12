@@ -306,6 +306,15 @@ Index: sope-ldap/NGLdap/NGLdapConnection.m
  /* running queries */
  
  - (void)setQueryTimeLimit:(NSTimeInterval)_timeLimit {
+@@ -731,7 +1019,7 @@
+     attrName = [attr     attributeName];
+     /* TODO: use UTF-8, UNICODE */
+     
+-    modBuf[i].mod_type = strdup(modBuf[i].mod_type);
++    modBuf[i].mod_type = strdup([attrName UTF8String]);
+     
+     valCount = [attr count];
+     values = calloc(valCount + 1, sizeof(struct berval *));
 Index: sope-ldap/NGLdap/NGLdapEntry.m
 ===================================================================
 --- sope-ldap/NGLdap/NGLdapEntry.m	(revision 1664)
