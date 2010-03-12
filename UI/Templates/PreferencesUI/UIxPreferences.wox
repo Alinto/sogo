@@ -283,10 +283,10 @@
       	<div id="passwordView" class="tab">
           <p id="passwordFields"><label><var:string label:value="New password:"
                 /><input const:id="newPasswordField" class="textField"
-                type="text" const:value=""/></label><br/>
+                type="password" const:value=""/></label><br/>
             <label><var:string label:value="Confirmation:"
                 /><input const:id="newPasswordConfirmationField" class="textField"
-                type="text" const:value=""/></label><br/>
+                type="password" const:value=""/></label><br/>
             <a href="#" class="button" id="changePasswordBtn"
               ><span><var:string label:value="Change"/></span></a>
           </p>
