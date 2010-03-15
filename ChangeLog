@@ -1,5 +1,8 @@
 2010-03-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUserFolder.m (-davUsersQuery): we invoke
+	"prepareDAVResponse" only when there is content to return.
+
 	* UI/Scheduler/UIxCalListingActions.m (_fixDates:): the events
 	appearing in the month view needs to have their dates fixed too.
 	Also, the algorithm was lightly simplified.

@@ -469,15 +469,13 @@
   NSString *content;
 
   r = [queryContext response];
-  [r prepareDAVResponse];
 
   document = [[context request] contentAsDOMDocument];
   content = [self _davUsersFromQuery: document];
-  if (content)
+  if ([content length])
     {
-      [r setStatus: 207];
-      if ([content length])
-        [r appendContentString: content];
+      [r prepareDAVResponse];
+      [r appendContentString: content];
     }
   else
     [r setStatus: 400];
