@@ -248,9 +248,6 @@ static NSNumber *sharedYes = nil;
       /* 86400 / 2 = 43200. We hardcode that value in order to avoid
          integer and float confusion. */
       davTimeHalfLimitSeconds = davCalendarStartTimeLimit * 43200;
-
-      davTimeLimitSeconds = 0;
-      davTimeHalfLimitSeconds = 0;
     }
 
   return self;

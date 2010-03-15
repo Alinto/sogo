@@ -1,5 +1,10 @@
 2010-03-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-initWithName:inContainer:): "davTimeLimitSeconds" and
+	"davTimeHalfLimitSeconds" were erroneously reverted to 0 after
+	initialization.
+
 	* UI/WebServerResources/SchedulerUIDnD.js (onDragStart): typo.
 
 	* UI/WebServerResources/SchedulerUI.js (_setupEventsDragAndDrop):
