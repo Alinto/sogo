@@ -130,3 +130,6 @@ P.browser IMG
 { padding: 0 2px;
   margin: 0;
   vertical-align: middle; }
+
+#passwordChangeDialog INPUT
+{ width: 150px; }
