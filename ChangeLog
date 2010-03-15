@@ -7,6 +7,11 @@
 	the current user. Now that we handle the "editable" flag, this
 	had become a limitation.
 
+2010-03-14  Ludovic Marcotte <lmarcotte@inverse.ca>
+
+	* Improved the password policy code. All corner
+	cases should now be handled correctly.
+
 2010-03-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentObject.m

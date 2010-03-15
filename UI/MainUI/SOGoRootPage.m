@@ -1,20 +1,22 @@
 /*
+
+  Copyright (C) 2006-2010 Inverse inc. 
   Copyright (C) 2004-2005 SKYRIX Software AG
 
-  This file is part of OpenGroupware.org.
+  This file is part of SOGo.
 
-  OGo is free software; you can redistribute it and/or modify it under
+  SOGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
   Free Software Foundation; either version 2, or (at your option) any
   later version.
 
-  OGo is distributed in the hope that it will be useful, but WITHOUT ANY
+  SOGo is distributed in the hope that it will be useful, but WITHOUT ANY
   WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
   License for more details.
 
   You should have received a copy of the GNU Lesser General Public
-  License along with OGo; see the file COPYING.  If not, write to the
+  License along with SOGo; see the file COPYING.  If not, write to the
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
@@ -137,7 +139,7 @@
   BOOL b;
   
   err = PolicyNoError;
-  expire = grace = 0;
+  expire = grace = -1;
   
   auth = [[WOApplication application]
 	    authenticatorInContext: context];
@@ -148,17 +150,23 @@
   
   if ((b = [auth checkLogin: username password: password
 		 perr: &err expire: &expire grace: &grace])
-      && (err == PolicyNoError))
+      && (err == PolicyNoError)  
+      // no password policy
+      && ((expire < 0 && grace < 0)     // no password policy or everything is alright
+      || (expire < 0 && grace > 0)      // password expired, grace still permits login
+      || (expire > 0 && grace == -1)))  // password about to expire
     {
-      [self logWithFormat: @"successful login for user '%@'", username];
-      response = [self responseWith204];
+      NSDictionary *json;
 
-      // We must warn the user that he has to change his password
-      if (err == PolicyChangeAfterReset)
-	{
-	  
-	}
-
+      [self logWithFormat: @"successful login for user '%@' - expire = %d  grace = %d", username, expire, grace];
+      
+      
+      json = [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithInt: expire], @"expire",
+			   [NSNumber numberWithInt: grace], @"grace", nil];
+      
+      response = [self responseWithStatus: 200
+		       andJSONRepresentation: json];
+      
       authCookie = [self _cookieWithUsername: username andPassword: password
                             forAuthenticator: auth];
       [response addCookie: authCookie];
@@ -174,20 +182,7 @@
     }
   else
     {
-      [self logWithFormat: @"Login for user '%@' might not have worked - password policy: %d  bound: ", username, err, b];
-
-      if (err == PolicyNoError)
-	{
-	  [self logWithFormat: @"failed login for user '%@' due to wrong password", username];
-	}
-      else if (err == PolicyAccountLocked)
-	{
-	  // Account has been locked due to too many failures
-	}
-      else if (err == PolicyPasswordExpired)
-	{
-	  // The password MUST be changed - we need to ask for the old password and the new one here
-	}
+      [self logWithFormat: @"Login for user '%@' might not have worked - password policy: %d  grace: %d  expire: %d  bound: %d", username, err, grace, expire, b];
 
       response = [self _responseWithLDAPPolicyError: err];
     }

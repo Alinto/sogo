@@ -79,7 +79,7 @@ function onLoginClick(event) {
                            : ("&language=" + language.value));
         /// Discarded as it seems to create a cookie for nothing. To discard
         //  a cookie in JS, have a look here: http://www.quirksmode.org/js/cookies.html
-        //document.cookie = "";
+        //document.cookie = "";\
         triggerAjaxRequest(url, onLoginCallback, null, (parameters),
                            { "Content-type": "application/x-www-form-urlencoded",
                                    "Content-length": parameters.length,
@@ -95,7 +95,7 @@ function onLoginCallback(http) {
     if (http.readyState == 4) {
         var submitBtn = $("submit");
 
-        if (isHttpStatus204(http.status)) {
+        if (http.status == 200) {
             // Make sure browser's cookies are enabled
             var loginCookie = readLoginCookie();
             if (!loginCookie) {
@@ -104,7 +104,21 @@ function onLoginCallback(http) {
                 return;
             }
 
-            redirectToUserPage();
+            var jsonResponse = http.responseText.evalJSON(false);
+            if (jsonResponse
+                && typeof(jsonResponse["expire"]) != "undefined"
+                && typeof(jsonResponse["grace"]) != "undefined") {
+
+                if (jsonResponse["expire"] < 0 && jsonResponse["grace"] > 0)
+                    showPasswordDialog("grace", createPasswordGraceDialog, jsonResponse["grace"]);
+                else if (jsonResponse["expire"] > 0 && jsonResponse["grace"] == -1)
+                    showPasswordDialog("expiration", createPasswordExpirationDialog, jsonResponse["expire"]);
+                else {
+                    redirectToUserPage();
+                }
+            }
+            else
+                redirectToUserPage();
         }
         else {
             if (http.status == 403
@@ -159,10 +173,14 @@ function handlePasswordError(jsonResponse) {
         SetLogMessage("errorMessage",
                       _("Your account was locked due to too many"
                         + " failed attempts."));
-    } else if (perr == PolicyChangeAfterReset
-               || perr == PolicyPasswordExpired) {
+    } else if (perr == PolicyChangeAfterReset) {
         showPasswordDialog("change", createPasswordChangeDialog, 5);
-    } else
+    } else if (perr == PolicyPasswordExpired) {
+         SetLogMessage("errorMessage",
+                      _("Your account was locked due to an"
+                        + " expired password."));
+    }
+    else
         SetLogMessage("errorMessage",
                       _("Login failed due to unhandled error case: " + perr));
 }
@@ -268,9 +286,8 @@ function createPasswordGraceDialog(tries) {
     return createDialog("passwordGraceDialog",
                         _("Password Grace Period"),
                         _("You have %{0} logins remaining before your"
-                          + " password expires. Please change your"
-                          + " password in the preference dialog.")
-                        .formatted(tries),
+                          + " account is locked. Please change your"
+                          + " password in the preference dialog.").formatted(tries),
                         button,
                         "right");
 }
@@ -279,6 +296,26 @@ function passwordGraceDialogOK(event) {
     var dialog = $("passwordGraceDialog");
     dialog.hide();
     event.stop();
+    redirectToUserPage();
+}
+
+function createPasswordExpirationDialog(expire) {
+    var button = createButton("expirationOKButton", _("OK"));
+    button.observe("click", passwordExpirationDialogOK);
+    button.addClassName("actionButton");
+
+    return createDialog("passwordExpirationDialog",
+                        _("Password about to expire"),
+                        _("Your password is going to expire in %{0} seconds.").formatted(expire),
+                        button,
+                        "right");
+}
+
+function passwordExpirationDialogOK(event) {
+    var dialog = $("passwordExpirationDialog");
+    dialog.hide();
+    event.stop();
+    redirectToUserPage();
 }
 
 document.observe("dom:loaded", initLogin);
