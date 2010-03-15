@@ -266,27 +266,26 @@ static NSArray *tasksFields = nil;
   NSCalendarDate *aDate, *aStartDate;
   NSNumber *aDateValue;
   NSString *aDateField;
-  signed int daylightOffset;
+  int daylightOffset;
   unsigned int count;
   static NSString *fields[] = { @"startDate", @"c_startdate",
 				@"endDate", @"c_enddate" };
   
-  if (dayBasedView)
-    for (count = 0; count < 2; count++)
-      {
-	aDateField = fields[count * 2];
-	aDate = [aRecord objectForKey: aDateField];
-	if ([userTimeZone isDaylightSavingTimeForDate: aDate] != 
-	    [userTimeZone isDaylightSavingTimeForDate: startDate])
-	  {
-	    daylightOffset = (signed int)[userTimeZone secondsFromGMTForDate: aDate]
-	      - (signed int)[userTimeZone secondsFromGMTForDate: startDate];
-	    aDate = [aDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds:daylightOffset];
-	    [aRecord setObject: aDate forKey: aDateField];	  
-	    aDateValue = [NSNumber numberWithInt: [aDate timeIntervalSince1970]];
-	    [aRecord setObject: aDateValue forKey: fields[count * 2 + 1]];
-	  }
-      }
+  for (count = 0; count < 2; count++)
+    {
+      aDateField = fields[count * 2];
+      aDate = [aRecord objectForKey: aDateField];
+      daylightOffset = (int) ([userTimeZone secondsFromGMTForDate: aDate]
+                              - [userTimeZone secondsFromGMTForDate: startDate]);
+      if (daylightOffset)
+        {
+          aDate = [aDate dateByAddingYears: 0 months: 0 days: 0 hours: 0
+                                   minutes: 0 seconds: daylightOffset];
+          [aRecord setObject: aDate forKey: aDateField];
+          aDateValue = [NSNumber numberWithInt: [aDate timeIntervalSince1970]];
+          [aRecord setObject: aDateValue forKey: fields[count * 2 + 1]];
+        }
+    }
   
   aDateValue = [aRecord objectForKey: @"c_recurrence_id"];
   aDate = [aRecord objectForKey: @"cycleStartDate"];

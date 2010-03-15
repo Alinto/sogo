@@ -1,5 +1,9 @@
 2010-03-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalListingActions.m (_fixDates:): the events
+	appearing in the month view needs to have their dates fixed too.
+	Also, the algorithm was lightly simplified.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	(-initWithName:inContainer:): "davTimeLimitSeconds" and
 	"davTimeHalfLimitSeconds" were erroneously reverted to 0 after
