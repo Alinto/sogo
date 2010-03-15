@@ -1,3 +1,12 @@
+2010-03-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/SchedulerUIDnD.js (onDragStart): typo.
+
+	* UI/WebServerResources/SchedulerUI.js (_setupEventsDragAndDrop):
+	we were setting up drag controllers only for events belonging to
+	the current user. Now that we handle the "editable" flag, this
+	had become a limitation.
+
 2010-03-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentObject.m

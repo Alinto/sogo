@@ -1183,20 +1183,18 @@ function _setupEventsDragAndDrop(events) {
     var setupFlags = {};
 
     for (var i = 0; i < events.length; i++) {
-        if (events[i][11] == UserLogin) {
-            var cname = events[i][0];
-            var calendar = events[i][1];
-            var setupId = calendar + "_" + cname;
-            if (!setupFlags[setupId]) {
-                var occurrences = calendarEvents[calendar][cname];
-                for (var j = 0; j < occurrences.length; j++) {
-                    var blocks = occurrences[j].blocks;
-                    var dragController = new SOGoEventDragController();
-                    dragController.updateDropCallback = updateEventFromDragging;
-                    dragController.attachToEventCells(blocks);
-                }
-                setupFlags[setupId] = true;
+        var cname = events[i][0];
+        var calendar = events[i][1];
+        var setupId = calendar + "_" + cname;
+        if (!setupFlags[setupId]) {
+            var occurrences = calendarEvents[calendar][cname];
+            for (var j = 0; j < occurrences.length; j++) {
+                var blocks = occurrences[j].blocks;
+                var dragController = new SOGoEventDragController();
+                dragController.updateDropCallback = updateEventFromDragging;
+                dragController.attachToEventCells(blocks);
             }
+            setupFlags[setupId] = true;
         }
     }
 }
