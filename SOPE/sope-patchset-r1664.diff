@@ -97,7 +97,7 @@ Index: sope-ldap/NGLdap/NGLdapConnection.m
 +  // policy control
 +  if (ctrls)
 +    {
-+      ctrl = ldap_control_find(LDAP_CONTROL_PASSWORDPOLICYRESPONSE, ctrls, NULL);
++      ctrl = ldap_find_control(LDAP_CONTROL_PASSWORDPOLICYRESPONSE, ctrls);
 +      if (ctrl)
 +	{
 +	  rc = ldap_parse_passwordpolicy_control(self->handle, ctrl, _expire, _grace, _perr);
