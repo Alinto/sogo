@@ -186,3 +186,5 @@
 "An error occured while importing contacts." = "Ett fel inträffade under importen av kontaker.";
 "No card was imported." = "Inga adresskort importerades.";
 "A total of %{0} cards were imported in the addressbook." = "Totalt %{0} av adresskorten importerades till adressboken.";
+
+"Reload" = "Reload";

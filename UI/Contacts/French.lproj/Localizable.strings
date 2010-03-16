@@ -186,3 +186,5 @@
 "An error occured while importing contacts." = "Une erreur s'est produite lors de l'importation.";
 "No card was imported." = "Aucun contact n'a été importé.";
 "A total of %{0} cards were imported in the addressbook." = "Un total de %{0} contacts ont été importés dans le carnet.";
+
+"Reload" = "Actualiser";
