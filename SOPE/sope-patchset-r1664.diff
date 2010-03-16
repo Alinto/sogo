@@ -110,7 +110,7 @@ Index: sope-ldap/NGLdap/NGLdapConnection.m
 +	    [self logWithFormat: @"bind - ldap_parse_passwordpolicy call failed"];
 +	}
 +      else
-+	[self logWithFormat: @"bind - ldap_control_find call failed"];
++	[self logWithFormat: @"bind - ldap_find_control call failed"];
 +
 +      ldap_controls_free(ctrls);
 +    }
@@ -257,7 +257,7 @@ Index: sope-ldap/NGLdap/NGLdapConnection.m
 +	      return NO;
 +	    }
 +
-+	  ctrl = ldap_control_find(LDAP_CONTROL_PASSWORDPOLICYRESPONSE, ctrls, NULL);
++	  ctrl = ldap_find_control(LDAP_CONTROL_PASSWORDPOLICYRESPONSE, ctrls);
 +	  
 +	  if (ctrl)
 +	    {
@@ -284,7 +284,7 @@ Index: sope-ldap/NGLdap/NGLdapConnection.m
 +	      // Ending up here doesn't mean that things failed. It could simply be caused by the
 +	      // fact that the password change was a success but no policy control object
 +	      // could be found.
-+	      [self logWithFormat: @"change password - ldap_control_find call failed"];
++	      [self logWithFormat: @"change password - ldap_find_control call failed"];
 +	    }
 +	  
 +	  ber_memfree(text);
