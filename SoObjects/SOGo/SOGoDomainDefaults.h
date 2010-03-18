@@ -46,8 +46,6 @@
 - (BOOL) sieveScriptsEnabled;
 - (BOOL) forwardEnabled;
 - (BOOL) vacationEnabled;
-- (BOOL) passwordChangeEnabled;
-- (BOOL) passwordPolicyEnabled;
 - (NSString *) mailingMechanism;
 - (NSString *) smtpServer;
 - (NSString *) mailSpoolPath;

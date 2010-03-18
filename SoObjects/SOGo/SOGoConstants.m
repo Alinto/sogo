@@ -24,4 +24,3 @@
 
 // LDAP Password Policy Constants
 NSString* SOGoPasswordChangeEnabled = @"SOGoPasswordChangeEnabled";
-NSString* SOGoPasswordPolicyEnabled = @"SOGoPasswordPolicyEnabled";

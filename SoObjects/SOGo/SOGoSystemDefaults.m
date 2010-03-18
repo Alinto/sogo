@@ -34,6 +34,7 @@
 #import "SOGoStartupLogger.h"
 
 #import "SOGoSystemDefaults.h"
+#import "SOGoConstants.h"
 
 @implementation SOGoSystemDefaults
 
@@ -277,7 +278,7 @@ BootstrapNSUserDefaults ()
 
 - (BOOL) userCanChangePassword
 {
-  return [self boolForKey: @"SOGoUIxUserCanChangePassword"];
+  return [self boolForKey: SOGoPasswordChangeEnabled];
 }
 
 - (BOOL) uixAdditionalPreferences

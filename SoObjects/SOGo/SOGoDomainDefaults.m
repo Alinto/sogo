@@ -171,16 +171,6 @@
   return [self boolForKey: @"SOGoVacationEnabled"];
 }
 
-- (BOOL) passwordChangeEnabled
-{
-  return [self boolForKey: SOGoPasswordChangeEnabled];
-}
-
-- (BOOL) passwordPolicyEnabled
-{
-  return [self boolForKey: SOGoPasswordPolicyEnabled];
-}
-
 - (NSString *) mailingMechanism
 {
   NSString *mailingMechanism;
