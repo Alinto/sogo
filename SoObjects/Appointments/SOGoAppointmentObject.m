@@ -1497,6 +1497,33 @@
   [rq setContent: newContent];
 }
 
+- (void) _adjustTransparencyInRequest: (WORequest *) rq
+{
+  iCalCalendar *calendar;
+  NSArray *allEvents;
+  iCalEvent *event;
+  int i;
+  BOOL modified;
+
+  calendar = [iCalCalendar parseSingleFromSource: [rq contentAsString]];
+  allEvents = [calendar events];
+  modified = NO;
+  
+  for (i = 0; i < [allEvents count]; i++)
+    {
+      event = [allEvents objectAtIndex: i];
+      
+      if ([event isAllDay] && [event isOpaque])
+	{
+	  [event setTransparency: @"TRANSPARENT"];
+	  modified = YES;
+	}
+    }
+  
+  if (modified)
+    [rq setContent: [[calendar versitString] dataUsingEncoding: [rq contentEncoding]]];
+}
+
 - (void) _decomposeGroupsInRequest: (WORequest *) rq
 {
   iCalCalendar *calendar;
@@ -1537,10 +1564,13 @@
 // If we see "X-SOGo: NoGroupsDecomposition" in the HTTP headers, we
 // simply invoke super's PUTAction.
 //
+// We also check if we must force transparency on all day events
+// from iPhone clients.
+//
 - (id) PUTAction: (WOContext *) _ctx
 {
-  WORequest *rq;
   NSArray *roles;
+  WORequest *rq;
 
   rq = [_ctx request];
 
@@ -1550,9 +1580,19 @@
     [self _setupResponseCalendarInRequest: rq];
   else
     {
+      SOGoUser *user;
+      
+      user = [SOGoUser userWithLogin: owner];
+      
       if (![[rq headersForKey: @"X-SOGo"]
                          containsObject: @"NoGroupsDecomposition"])
         [self _decomposeGroupsInRequest: rq];
+
+      if ([[user domainDefaults] iPhoneForceAllDayTransparency] 
+	  && [rq isIPhone])
+	{
+	  [self _adjustTransparencyInRequest: rq];
+	}
     }
 
   return [super PUTAction: _ctx];
