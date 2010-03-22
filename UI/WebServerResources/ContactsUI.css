@@ -304,20 +304,20 @@ BODY.popup DIV#rightPanel
 { top: 4em; }
 
 BODY.popup DIV#dragHandle
-{ top: 6em; }
+{ top: 7em; }
 
 BODY.popup DIV#contactsListContent
-{ height: 8em;
+{ height: 7em;
   top: 34px; }
 
 BODY.popup DIV#contactFoldersList
 { top: 50px; }
 
 BODY.popup DIV#rightDragHandle
-{ top: 10em; }
+{ top: 10.2em; }
 
 BODY.popup DIV#contactView
-{ top: 10em; }
+{ top: 10.2em; }
 
 BODY.popup DIV#filterPanel
 { position: relative;
