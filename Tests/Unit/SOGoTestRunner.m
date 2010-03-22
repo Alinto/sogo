@@ -51,7 +51,7 @@
       failuresCount = 0;
       errorsCount = 0;
       hasFailed = NO;
-      messages = nil;
+      messages = [NSMutableArray new];
     }
 
   return self;
