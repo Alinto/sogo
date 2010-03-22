@@ -1211,11 +1211,12 @@ static NSString    *userAgent      = @"SOGoMail 1.0";
 }
 
 - (NGMutableHashMap *) mimeHeaderMapWithHeaders: (NSDictionary *) _headers
+				      excluding: (NSArray *) _exclude
 {
+  NSString *s, *dateString;
   NGMutableHashMap *map;
-  NSArray      *emails;
-  NSString     *s, *dateString;
-  id           from, replyTo;
+  id from, replyTo;
+  NSArray *emails;
   
   map = [[[NGMutableHashMap alloc] initWithCapacity:16] autorelease];
   
@@ -1273,10 +1274,20 @@ static NSString    *userAgent      = @"SOGoMail 1.0";
 
   [self _addHeaders: _headers toHeaderMap: map];
   
+  // We remove what we have to...
+  if (_exclude)
+    {
+      int i;
+  
+      for (i = 0; i < [_exclude count]; i++)
+	[map removeAllObjectsForKey: [_exclude objectAtIndex: i]];
+    }
+  
   return map;
 }
 
 - (NGMimeMessage *) mimeMessageWithHeaders: (NSDictionary *) _headers
+				 excluding: (NSArray *) _exclude
 {
   NGMutableHashMap  *map;
   NSArray           *bodyParts;
@@ -1284,7 +1295,8 @@ static NSString    *userAgent      = @"SOGoMail 1.0";
 
   message = nil;
 
-  map = [self mimeHeaderMapWithHeaders: _headers];
+  map = [self mimeHeaderMapWithHeaders: _headers
+	      excluding: _exclude];
   if (map)
     {
       [self debugWithFormat: @"MIME Envelope: %@", map];
@@ -1313,7 +1325,7 @@ static NSString    *userAgent      = @"SOGoMail 1.0";
 
 - (NGMimeMessage *) mimeMessage
 {
-  return [self mimeMessageWithHeaders: nil];
+  return [self mimeMessageWithHeaders: nil  excluding: nil];
 }
 
 - (NSData *) mimeMessageAsData
@@ -1376,7 +1388,13 @@ static NSString    *userAgent      = @"SOGoMail 1.0";
     error = (NSException *) sentFolder;
   else
     {
-      message = [self mimeMessageAsData];
+      // We strip the BCC fields prior sending any mails
+      NGMimeMessageGenerator *generator;
+
+      generator = [[[NGMimeMessageGenerator alloc] init] autorelease];
+      message = [generator generateMimeFromPart: [self mimeMessageWithHeaders: nil 
+						       excluding: [NSArray arrayWithObject: @"bcc"]]];
+      
       dd = [[context activeUser] domainDefaults];
       error = [[SOGoMailer mailerWithDomainDefaults: dd]
                 sendMailData: message
