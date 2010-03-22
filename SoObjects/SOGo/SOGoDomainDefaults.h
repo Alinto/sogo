@@ -66,6 +66,8 @@
 - (NSArray *) freeBusyDefaultInterval;
 - (int) davCalendarStartTimeLimit;
 
+- (BOOL) iPhoneForceAllDayTransparency;
+
 @end
 
 #endif /* SOGODOMAINDEFAULTS_H */

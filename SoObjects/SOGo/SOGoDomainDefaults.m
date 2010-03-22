@@ -260,6 +260,11 @@
   return [self integerForKey: @"SOGoDAVCalendarStartTimeLimit"];
 }
 
+- (BOOL) iPhoneForceAllDayTransparency
+{
+  return [self boolForKey: @"SOGoiPhoneForceAllDayTransparency"];
+}
+
 /* overriden methods */
 - (NSString *) language
 {

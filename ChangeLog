@@ -3,6 +3,14 @@
 	* Tests/Unit/SOGoTestRunner.m (-init): messages must be
 	initialized to a mutable array.
 
+2010-03-19  Ludovic Marcotte <lmarcotte@inverse.ca>
+
+	* Added the SOGoiPhoneForceAllDayTransparency
+	preference (and its associated code to handle
+	it in SOGoAppointmentObject.m) to force
+	transparency on all-day events coming from
+	the iPhone-OS based devices.
+
 2010-03-18  Ludovic Marcotte <lmarcotte@inverse.ca>
 
 	* Replaced SOGoUIxUserCanChangePassword with
