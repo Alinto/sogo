@@ -1,5 +1,9 @@
 2010-03-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Tests/Unit/TestiCalTimeZonePeriod.m: new test module for
+	iCalTimeZonePeriod. Added full test method for
+	_occurenceForDate:byRRule:.
+
 	* Tests/Unit/SOGoTestRunner.m (-init): messages must be
 	initialized to a mutable array.
 

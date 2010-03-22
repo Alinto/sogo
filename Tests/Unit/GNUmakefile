@@ -14,6 +14,8 @@ $(TEST_TOOL)_OBJC_FILES += \
 	SOGoTest.m \
 	SOGoTestRunner.m \
 	\
+	TestiCalTimeZonePeriod.m \
+	\
 	TestBSJSONAdditions.m
 
 TOOL_NAME = $(TEST_TOOL)

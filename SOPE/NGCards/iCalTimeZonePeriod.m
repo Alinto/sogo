@@ -134,6 +134,14 @@
 		     second: -[self _secondsOfOffset: @"tzoffsetfrom"]];
 
   dateDayOfWeek = [tmpDate dayOfWeek];
+
+  /* If the day of the time change is "-XSU", we need to determine whether the
+     first day of next month is in the same week. In practice, as most time
+     changes occurs on sundays, it will be false only when that first day is a
+     sunday, but we want to remain algorithmically exact. */
+  if (dateDayOfWeek > dayOfWeek && pos < 0)
+    pos++;
+
   offset = (dayOfWeek - dateDayOfWeek) + (pos * 7);
   tmpDate = [tmpDate addYear: 0 month: 0 day: offset
 		     hour: 0 minute: 0 second: 0];
