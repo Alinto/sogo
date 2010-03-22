@@ -261,6 +261,7 @@ static NSArray *tasksFields = nil;
 	     forKey: @"c_title"];
 }
 
+/* TODO: shouldn't this be handled when creating the quick records ? */
 - (void) _fixDates: (NSMutableDictionary *) aRecord
 {
   NSCalendarDate *aDate, *aStartDate;
@@ -337,6 +338,7 @@ static NSArray *tasksFields = nil;
                                        component: component] objectEnumerator];
 	  owner = [currentFolder ownerInContext: context];
 	  ownerUser = [SOGoUser userWithLogin: owner];
+          /* TODO: this should be handled per-folder rather than per-event. */
 	  isErasable = ([owner isEqualToString: userLogin]
 			|| [[currentFolder aclsForUser: userLogin] containsObject: SOGoRole_ObjectEraser]);
           while ((newInfo = [currentInfos nextObject]))
@@ -384,9 +386,11 @@ static NSArray *tasksFields = nil;
                           forKey: @"c_owner"];
               if (![[newInfo objectForKey: @"c_title"] length])
                 [self _fixComponentTitle: newInfo withType: component];
-              // Possible improvement: only call _fixDates if event is recurrent
-              // or the view range span a daylight saving time change
-	      [self _fixDates: newInfo];
+              if (dayBasedView
+                  || [[newInfo objectForKey: @"c_isallday"] boolValue])
+                // Possible improvement: only call _fixDates if event is recurrent
+                // or the view range span a daylight saving time change
+                [self _fixDates: newInfo];
               [infos addObject: [newInfo objectsForKeys: fields
                                          notFoundMarker: marker]];
             }

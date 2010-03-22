@@ -1,5 +1,9 @@
 2010-03-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalListingActions.m
+	(_fetchFields:forComponentOfType:): fix dates only in day-based
+	views or for all-day events.
+
 	* Tests/Unit/TestiCalTimeZonePeriod.m: new test module for
 	iCalTimeZonePeriod. Added full test method for
 	_occurenceForDate:byRRule:.
