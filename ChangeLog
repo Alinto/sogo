@@ -1,3 +1,8 @@
+2010-03-22  Ludovic Marcotte <lmarcotte@inverse.ca>
+
+	* SoObjects/Mailer/SOGoDraftObject.m - we strip
+	the bcc header prior to sending mails.
+
 2010-03-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxCalListingActions.m
