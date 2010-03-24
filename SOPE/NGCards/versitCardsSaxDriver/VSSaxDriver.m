@@ -861,7 +861,7 @@ static NSCharacterSet *whitespaceCharSet = nil;
       // TODO: make the encoding check more generic
       if ([tagAttributes containsObject: @"ENCODING=QUOTED-PRINTABLE"])
         {
-	  NSString *charset;
+	  NSString *charset, *v;
 	  NSData *d;
 	  int i;
 
@@ -873,10 +873,13 @@ static NSCharacterSet *whitespaceCharSet = nil;
 
 	  for (i = 0; i < [tagAttributes count]; i++)
 	    {
-	      charset = [[tagAttributes objectAtIndex: i] lowercaseString];
+	      v = [[tagAttributes objectAtIndex: i] lowercaseString];
 
-	      if ([charset hasPrefix: @"charset"])
-		charset = [charset substringFromIndex: 8];
+	      if ([v hasPrefix: @"charset"])
+		{
+		  charset = [v substringFromIndex: 8];
+		  break;
+		}
 	    }
 
           tagValue = [NSString stringWithData: d  usingEncodingNamed: charset];

@@ -1,6 +1,6 @@
 /* SOGoCache.h - this file is part of SOGo
  *
- * Copyright (C) 2008-2009 Inverse inc.
+ * Copyright (C) 2008-2010 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *         Ludovic Marcotte <lmarcotte@inverse.ca>
@@ -42,11 +42,7 @@
   NSMutableDictionary *cache;
   NSMutableDictionary *users;
   float cleanupInterval;
-  int memcachedServerPort;
   NSString *memcachedServerName;
-  // @private
-  //   memcached_server_st *servers;
-  //   memcached_st *handle;
 }
 
 + (SOGoCache *) sharedCache;

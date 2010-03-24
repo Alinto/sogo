@@ -106,23 +106,21 @@ static memcached_st *handle = NULL;
           if (handle)
             {
               sd = [SOGoSystemDefaults sharedSystemDefaults];
-              // We define the default value for cleaning up cached users'
+	      
+	      // We define the default value for cleaning up cached users'
               // preferences. This value should be relatively high to avoid
               // useless database calls.
-
               cleanupInterval = [sd cacheCleanupInterval];
-              memcachedServerPort = [sd memcachedPort];
-              ASSIGN (memcachedServerName, [sd memcachedHost]);
+              ASSIGN(memcachedServerName, [sd memcachedHost]);
 
               [self logWithFormat: @"Cache cleanup interval set every %f seconds",
                     cleanupInterval];
-              [self logWithFormat: @"Using host '%@':%i as server",
-                    memcachedServerName, memcachedServerPort];
+              [self logWithFormat: @"Using host(s) '%@' as server(s)",
+                    memcachedServerName];
               if (!servers)
                 servers
-                  = memcached_server_list_append(NULL,
-                                                 [memcachedServerName UTF8String],
-                                                 memcachedServerPort, &error);
+		  = memcached_servers_parse([memcachedServerName UTF8String]);
+
               error = memcached_server_push(handle, servers);
             }
         }

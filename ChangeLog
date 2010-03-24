@@ -1,3 +1,14 @@
+2010-03-24  Ludovic Marcotte <lmarcotte@inverse.ca>
+
+        * Added a patch from Christophe Palanche and
+	Guillaume Schreiner which makes the SOGo
+	cache code usable with repcached
+	(http://repcached.lab.klab.org/)
+
+	* SOPE/NGCards/versitCardsSaxDriver/VSSaxDriver.m
+	(- _parseLine:) fixed incorrrect handling
+	of QP-encoded attributes.
+
 2010-03-22  Ludovic Marcotte <lmarcotte@inverse.ca>
 
 	* SoObjects/Mailer/SOGoDraftObject.m - we strip
