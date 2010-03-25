@@ -44,6 +44,7 @@
   NSArray *daysOfWeek, *daysBetweenResponsesList;
   NSArray *sieveFilters;
   NSMutableDictionary *vacationOptions, *forwardOptions;
+  BOOL hasChanged;
 }
 
 - (NSString *) userLongDateFormat;

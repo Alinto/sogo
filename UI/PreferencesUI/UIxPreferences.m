@@ -103,6 +103,8 @@
 	  if (!forwardOptions)
             forwardOptions = [NSMutableDictionary new];
 	}
+
+      hasChanged = NO;
     }
 
   return self;
@@ -124,6 +126,16 @@
   [daysOfWeek release];
   [locale release];
   [super dealloc];
+}
+
+- (void) setHasChanged: (BOOL) newHasChanged
+{
+  hasChanged = newHasChanged;
+}
+
+- (BOOL) hasChanged
+{
+  return hasChanged;
 }
 
 - (void) setItem: (NSString *) newItem
@@ -913,6 +925,7 @@
   id <WOActionResults> results;
   WORequest *request;
   SOGoDomainDefaults *dd;
+  NSString *method;
 
   request = [context request];
   if ([[request method] isEqualToString: @"POST"])
@@ -939,7 +952,12 @@
                            acquire: NO];
       [account updateFilters];
 
-      results = [self jsCloseWithRefreshMethod: nil];
+      if (hasChanged)
+        method = @"window.location.reload()";
+      else
+        method = nil;
+
+      results = [self jsCloseWithRefreshMethod: method];
     }
   else
     results = self;

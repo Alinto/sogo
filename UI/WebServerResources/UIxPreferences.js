@@ -76,12 +76,33 @@ function prototypeIfyFilters() {
 }
 
 function _setupEvents(enable) {
+    var widgets = [ "timezone", "shortDateFormat", "longDateFormat",
+                    "timeFormat", "weekStartDay", "dayStartTime", "dayEndTime",
+                    "firstWeek", "messageCheck", "subscribedFoldersOnly",
+                    "language"];
+    for (var i = 0; i < widgets.length; i++) {
+        var widget = $(widgets[i]);
+        if (widget) {
+            if (enable)
+                widget.observe("change", onChoiceChanged);
+            else
+                widget.stopObserving("change", onChoiceChanged);
+        }
+    }
+
     $("replyPlacementList").observe ("change", onReplyPlacementListChange);
     $("composeMessagesType").observe ("change", onComposeMessagesTypeChange);
 
     var categoriesValue = $("categoriesValue");
     if (categoriesValue)
         categoriesValue.value = "";
+}
+
+function onChoiceChanged(event) {
+    var hasChanged = $("hasChanged");
+    hasChanged.value = "1";
+
+    _setupEvents(false);
 }
 
 function addDefaultEmailAddresses(event) {

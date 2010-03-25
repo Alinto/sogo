@@ -1,3 +1,10 @@
+2010-03-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/PreferencesUI/UIxPreferences.m (-setHasChanged:)
+	(-hasChanged): restored accessors.
+	(-defaultAction): when "hasChanged" is YES, we request a reload of
+	the parent window. This feature was carelessly removed recently.
+
 2010-03-25  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/UIxContactsUserFolders.js
