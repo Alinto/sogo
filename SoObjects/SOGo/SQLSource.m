@@ -184,6 +184,7 @@
 
   rc = NO;
 
+  _login = [_login stringByReplacingString: @"'"  withString: @"''"];
   cm = [GCSChannelManager defaultChannelManager];
   channel = [cm acquireOpenChannelForURL: _viewURL];
   if (channel)
@@ -237,6 +238,7 @@
 
   response = nil;
 
+  theID = [theID stringByReplacingString: @"'"  withString: @"''"];
   cm = [GCSChannelManager defaultChannelManager];
   channel = [cm acquireOpenChannelForURL: _viewURL];
   if (channel)
@@ -348,6 +350,8 @@
   if (channel)
     {
       lowerFilter = [filter lowercaseString];
+      lowerFilter = [lowerFilter stringByReplacingString: @"'"  withString: @"''"];
+
       sql = [NSString stringWithFormat: (@"SELECT *"
                                          @" FROM %@"
                                          @" WHERE LOWER(c_cn) LIKE '%%%@%%'"
