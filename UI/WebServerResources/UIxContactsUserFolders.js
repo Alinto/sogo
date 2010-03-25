@@ -89,6 +89,9 @@ function buildUsersTree(treeDiv, response) {
             sd.observe("click", onTreeItemClick);
         }
     }
+    else {
+        $("searchValue").addClassName("notfound");
+    }
 }
 
 function onUserNodeToggle(event) {
@@ -227,8 +230,8 @@ function onConfirmFolderSelection(event) {
 function onFolderSearchKeyDown(event) {
     if (event.keyCode == Event.KEY_BACKSPACE
         || IsCharacterKey(event.keyCode)) {
+        $("searchValue").removeClassName("notfound");
         var div = $("folders");
-
         if (!div.clean) {
             var oldD = $("d"); // the folders tree
             if (oldD) {

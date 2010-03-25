@@ -18,6 +18,10 @@ IMG#progressIndicator
 INPUT#searchValue
 { margin: 0px; }
 
+INPUT#searchValue.notfound
+{ color: #f00 !important; }
+
+
 DIV#folders
 { position: absolute;
   left: 1em;

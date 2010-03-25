@@ -1,3 +1,9 @@
+2010-03-25  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/UIxContactsUserFolders.js
+	(onFolderSearchKeyDown, buildUsersTree): change color of search
+	text to red when no result returned from server.
+
 2010-03-24  Ludovic Marcotte <lmarcotte@inverse.ca>
 
         * Added a patch from Christophe Palanche and
