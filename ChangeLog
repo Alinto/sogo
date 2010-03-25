@@ -9,6 +9,10 @@
 	(- _parseLine:) fixed incorrrect handling
 	of QP-encoded attributes.
 
+	* SoObjects/SOGo/SQLSource.m - we now properly
+	escape quotes for SQL parameters coming from
+	user's input.
+
 2010-03-22  Ludovic Marcotte <lmarcotte@inverse.ca>
 
 	* SoObjects/Mailer/SOGoDraftObject.m - we strip
