@@ -23,6 +23,9 @@ DIV#freeBusyView
   border-right: 1px solid #fff;
   border-bottom: 1px solid #fff; }
 
+SPAN.timeDateControl A:hover
+{ text-decoration: none; }
+
 TABLE
 { border-collapse: separate;
   table-layout: auto;

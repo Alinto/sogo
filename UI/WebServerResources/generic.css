@@ -843,7 +843,7 @@ A.smallToolbarButton:hover {
 }
 A.smallToolbarButton,
 A.smallToolbarButton:hover {
-  height: 35px;
+  height: 37px;
 }
 A.toolbarButton:hover {
   background: transparent url('toolbarbtn_a_bg.png') no-repeat scroll top right;

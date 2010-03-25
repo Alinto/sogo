@@ -31,7 +31,7 @@ DIV#tasksListView LABEL
 { margin: .25em; }
 
 DIV#calendarSelectorView
-{ top: 0px; }
+{ top: 3px; }
 
 DIV#calendarSelectorView
 { overflow: hidden; }
@@ -64,7 +64,7 @@ UL#tasksList, UL#calendarList
 
 UL#calendarList
 { clear: left;
-  height: 10em; }
+  height: 102px; }
 
 UL#calendarList LI
 { cursor: pointer;

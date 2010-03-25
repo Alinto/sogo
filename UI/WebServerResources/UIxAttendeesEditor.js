@@ -79,7 +79,7 @@ function onContactKeydown(event) {
         attendeesEditor.selectedIndex = -1;
         if (this.uid) {
             this.hasfreebusy = false;
-            this.setAttribute ("modified", "1");
+            this.writeAttribute("modified", "1");
             this.blur(); // triggers checkAttendee function call
         }
     }
@@ -315,7 +315,7 @@ function newAttendee(event) {
     dataDiv.scrollTop = attendeesDiv.scrollTop;
 }
 
-function checkAttendee() {
+function checkAttendee() { log ("checkAttendee");
     if (document.currentPopupMenu)
         hideMenu(document.currentPopupMenu);
 
@@ -340,11 +340,12 @@ function checkAttendee() {
         if (!$(row).hasClassName("needs-action")) {
             $(row).addClassName("needs-action");
             $(row).removeClassName("declined");
-            $(row).removeClassName("accepted");    
+            $(row).removeClassName("accepted");
         }
         if (!this.hasfreebusy) {
             if (this.uid && this.confirmedValue)
                 this.value = this.confirmedValue;
+            log ("4");
             displayFreeBusyForNode(this);
             this.hasfreebusy = true;
         }
@@ -356,10 +357,10 @@ function checkAttendee() {
 
 function displayFreeBusyForNode(input) {
     var rowIndex = input.parentNode.parentNode.sectionRowIndex;
-    var nodes = $("freeBusyData").tBodies[0].rows[rowIndex].cells;
+    var nodes = $("freeBusyData").tBodies[0].rows[rowIndex].cells; log ("displayFreeBusyForNode index " + rowIndex + " (" + nodes.length + " cells)");
     if (input.uid) {
-        if (document.contactFreeBusyAjaxRequest)
-            awaitingFreeBusyRequests.push(input);
+        if (document.contactFreeBusyAjaxRequest) { log ("busy -- delay " + rowIndex);
+            awaitingFreeBusyRequests.push(input); }
         else {
             for (var i = 0; i < nodes.length; i++) {
                 $(nodes[i]).removeClassName("noFreeBusy");
@@ -368,17 +369,17 @@ function displayFreeBusyForNode(input) {
                                          + '<span class="freeBusyZoneElement"></span>'
                                          + '<span class="freeBusyZoneElement"></span>');
             }
-            if (document.contactFreeBusyAjaxRequest) {
-                // Abort any pending request
-                document.contactFreeBusyAjaxRequest.aborted = true;
-                document.contactFreeBusyAjaxRequest.abort();
-            }
+//             if (document.contactFreeBusyAjaxRequest) {
+//                 // Abort any pending request
+//                 document.contactFreeBusyAjaxRequest.aborted = true;
+//                 document.contactFreeBusyAjaxRequest.abort();
+//             }
             var sd = $('startTime_date').valueAsShortDateString();
             var ed = $('endTime_date').valueAsShortDateString();
             var urlstr = ( UserFolderURL + "../" + input.uid
                            + "/freebusy.ifb/ajaxRead?"
                            + "sday=" + sd + "&eday=" + ed + "&additional=" +
-                           additionalDays );
+                           additionalDays ); log (urlstr);
             document.contactFreeBusyAjaxRequest
                 = triggerAjaxRequest(urlstr,
                                      updateFreeBusyDataCallback,
@@ -418,14 +419,15 @@ function updateFreeBusyDataCallback(http) {
             var slots = http.responseText.split(",");
             var rowIndex = input.parentNode.parentNode.sectionRowIndex;
             var nodes = $("freeBusyData").tBodies[0].rows[rowIndex].cells;
+             log ("received " + slots.length + " slots for " + rowIndex + " with " + nodes.length + " cells");
             for (var i = 0; i < slots.length; i++) {
                 if (slots[i] != '0')
                     setSlot(nodes, i, slots[i]);
             }
         }
-        document.contactFreeBusyAjaxRequest = null;
-        if (awaitingFreeBusyRequests.length > 0)
-            displayFreeBusyForNode(awaitingFreeBusyRequests.shift());
+        document.contactFreeBusyAjaxRequest = null; 
+        if (awaitingFreeBusyRequests.length > 0) { log ("1");
+            displayFreeBusyForNode(awaitingFreeBusyRequests.shift()); }
     }
 }
 
@@ -434,9 +436,9 @@ function resetAllFreeBusys() {
     var inputs = table.getElementsByTagName("input");
 
     for (var i = 0; i < inputs.length - 1; i++) {
-        var currentInput = inputs[i];
-        currentInput.hasfreebusy = false;
-        displayFreeBusyForNode(inputs[i]);
+        var currentInput = inputs[i]; log ("reset fb " + currentInput.uid);
+        currentInput.hasfreebusy = false; log ("2");
+        displayFreeBusyForNode(currentInput);
     }
 }
 
@@ -755,7 +757,7 @@ function prepareAttendees() {
                 row = modelData.cloneNode(true);
                 tbodyData.insertBefore(row, newDataRow);
                 $(row).removeClassName("dataModel");
-	 
+                log ("3");
                 displayFreeBusyForNode(input);
             });
     }

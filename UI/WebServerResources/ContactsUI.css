@@ -135,7 +135,7 @@ UL#contactFolders
   color: #000;
   background: #CCDDEC;
   position: absolute; /* required for Safari & IE */
-  top: 73px; /* leave space for the mini addressbook */
+  top: 76px; /* leave space for the mini addressbook */
   bottom: 0px;
   left: 0;
   right: 0;
@@ -372,7 +372,7 @@ DIV.copy
 
 DIV#smallToolbarContainer
 { top: 2em !important;
-  height: 40px;
+  height: 44px;
   right: 0px; }
 
 @media print
