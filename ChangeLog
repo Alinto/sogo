@@ -1,3 +1,9 @@
+2010-03-26  Ludovic Marcotte <lmarcotte@inverse.ca>
+
+        * Updated the documentation with regard to
+	the passwordPolicy setting and deprecated
+	the WOApplicationRedirectURL setting.
+
 2010-03-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/PreferencesUI/UIxPreferences.m (-setHasChanged:)
