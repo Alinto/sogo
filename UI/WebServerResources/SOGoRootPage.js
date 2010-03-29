@@ -171,14 +171,12 @@ function handlePasswordError(jsonResponse) {
         SetLogMessage("errorMessage", _("Wrong username or password."));
     } else if (perr == PolicyAccountLocked) {
         SetLogMessage("errorMessage",
-                      _("Your account was locked due to too many"
-                        + " failed attempts."));
+                      _("Your account was locked due to too many failed attempts."));
     } else if (perr == PolicyChangeAfterReset) {
         showPasswordDialog("change", createPasswordChangeDialog, 5);
     } else if (perr == PolicyPasswordExpired) {
          SetLogMessage("errorMessage",
-                      _("Your account was locked due to an"
-                        + " expired password."));
+                      _("Your account was locked due to an expired password."));
     }
     else
         SetLogMessage("errorMessage",
@@ -226,8 +224,7 @@ function createPasswordChangeDialog() {
 
     var dialog = createDialog("passwordChangeDialog",
                               _("Change your Password"),
-                              _("Your password has expired, please"
-                                +" enter a new one below:"),
+                              _("Your password has expired, please enter a new one below:"),
                               fields,
                               "right");
 
@@ -285,9 +282,7 @@ function createPasswordGraceDialog(tries) {
 
     return createDialog("passwordGraceDialog",
                         _("Password Grace Period"),
-                        _("You have %{0} logins remaining before your"
-                          + " account is locked. Please change your"
-                          + " password in the preference dialog.").formatted(tries),
+                        _("You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog.").formatted(tries),
                         button,
                         "right");
 }
@@ -304,9 +299,27 @@ function createPasswordExpirationDialog(expire) {
     button.observe("click", passwordExpirationDialogOK);
     button.addClassName("actionButton");
 
+    var value, string;
+
+    if (expire > 86400) {
+        value = expire/86400;
+        string = _("days");
+    }
+    else if (expire > 3600) {
+        value = expire/3600;
+        string = _("hours");
+    }
+    else if (expire > 60) {
+        value = expire/60;
+        string = _("minutes");
+    }
+    else {
+        value = expire;
+        string = _("seconds");
+    }
     return createDialog("passwordExpirationDialog",
                         _("Password about to expire"),
-                        _("Your password is going to expire in %{0} seconds.").formatted(expire),
+                        _("Your password is going to expire in %{0} %{1}.").formatted(expire, string),
                         button,
                         "right");
 }

@@ -88,7 +88,7 @@ PasswordPolicy.prototype = {
                     break;
                 default:
                     perr = PolicyPasswordSystemUnknown;
-                    error = _("Unhandled HTTP error code: %{0]").formatted(http.status);
+                    error = _("Unhandled HTTP error code: %{0}").formatted(http.status);
                 }
                 this.failureCallback(perr, error);
                 // showPasswordMessage(error);

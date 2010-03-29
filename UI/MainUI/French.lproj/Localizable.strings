@@ -38,3 +38,33 @@ Copyright © 2002-2005 SKYRIX Software AG<br/><br/>
 This software are distributed under the <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2.<br/>
 Parts of this software are distributed under the GNU LGPL version 2.<br/><br/>
 This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.";
+
+"Your account was locked due to too many failed attempts." = "Votre compte a été bloqué dû à un nombre élevé de tentative d'authentification infructueuse.";
+"Your account was locked due to an expired password." = "Votre compte a été bloqué car votre mot de passe est expiré.";
+"Login failed due to unhandled error case: " = "Authentification a échouée pour une raison inconnue: ";
+"Change your Password" = "Changez votre mot de passe";
+"Your password has expired, please enter a new one below:" = "Votre mot de passe est expiré, veuillez entrer un nouveau mot de passe:";
+"Password must not be empty." = "Le mot de passe ne doit pas être vide.";
+"The passwords do not match. Please try again." = "Les mots de passe ne sont pas identiques. Essayez de nouveau.";
+"Password Grace Period" = "Période de grâce pour le mot de passe";
+"You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog." = "Vous avez %{0} connexions restantes avant que votre compte ne soit bloqué. Veuillez changer votre mot de passe à partir du panneau de préférences.";
+"Password about to expire" = "Expiration du mot de passe";
+"Your password is going to expire in %{0} %{1}." = "Votre mot de passe va expirer dans %{0} %{1}.";
+"days" = "jours";
+"hours" = "heures";
+"minutes" = "minutes";
+"seconds" = "secondes";
+"Password change failed" = "Échec au changement";
+"Password change failed - Permission denied" = "Échec au changement - mauvaises permissions";
+"Password change failed - Insufficient password quality" = "Échec au changement - qualité insuffisante";
+"Password change failed - Password is too short" = "Échec au changement - mot de passe trop court";
+"Password change failed - Password is too young" = "Échec au changement - mot de passe trop récent";
+"Password change failed - Password is in history" = "Échec au changement - mot de passe dans l'historique";
+"Unhandled policy error: %{0}" = "Erreur inconnue pour le ppolicy: %{0}";
+"Unhandled error response" = "Erreur inconnue";
+"Password change is not supported." = "Changement de mot de passe non-supporté.";
+"Unhandled HTTP error code: %{0}" = "Code HTTP non-géré: %{0}";
+"New password:" = "Nouveau mot de passe:";
+"Confirmation:" = "Confirmation:";
+"Cancel" = "Annuler";
+"Please wait..." = "Veuillez patienter...";

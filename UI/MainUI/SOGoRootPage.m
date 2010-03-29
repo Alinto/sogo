@@ -154,7 +154,7 @@
       // no password policy
       && ((expire < 0 && grace < 0)     // no password policy or everything is alright
       || (expire < 0 && grace > 0)      // password expired, grace still permits login
-      || (expire > 0 && grace == -1)))  // password about to expire
+      || (expire >= 0 && grace == -1))) // password about to expire OR ppolicy activated and passwd never changed
     {
       NSDictionary *json;
 
