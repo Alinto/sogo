@@ -47,7 +47,7 @@
 
   if (url)
     {
-      data = [NSData dataWithContentsOfURL: url];
+      data = [url resourceDataUsingCache: NO];
 
       if (!data && [[location lowercaseString] hasPrefix: @"https"]) 
 	{
