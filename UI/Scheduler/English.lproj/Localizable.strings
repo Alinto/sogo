@@ -102,7 +102,8 @@
 "Contacts" = "Contacts";
 
 "New Calendar..." = "New Calendar...";
-"Delete Calendar" = "Delete Calendar";
+"Delete Calendar" = "Delete Calendar...";
+"Unsubscribe Calendar" = "Unsubscribe Calendar";
 "Sharing..." = "Sharing...";
 "Export Calendar..." = "Export Calendar...";
 "Import Events..." = "Import Events...";

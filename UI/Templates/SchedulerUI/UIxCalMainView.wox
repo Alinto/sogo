@@ -78,7 +78,7 @@
       <li><var:string label:value="Properties"/></li>
       <li><!-- separator --></li>
       <li><var:string label:value="New Calendar..."/></li>
-      <li><var:string label:value="Delete Calendar"/></li>
+      <li id="deleteCalendarMenuItem"><var:string label:value="Delete Calendar"/></li>
       <li><!-- separator --></li>
       <li><var:string label:value="Export Calendar..."/></li>
       <li><var:string label:value="Import Events..."/></li>

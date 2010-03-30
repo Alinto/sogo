@@ -1995,6 +1995,13 @@ function onCalendarsMenuPrepareVisibility() {
             sharingOption.removeClassName("disabled");
         else
             sharingOption.addClassName("disabled");
+        var deleteCalendarOption = $("deleteCalendarMenuItem");
+        // Swith between Delete and Unsubscribe
+        if (folderOwner == UserLogin)
+            deleteCalendarOption.update(getLabel("Delete Calendar"));
+        else
+            deleteCalendarOption.update(getLabel("Unsubscribe Calendar"));
+            
         return true;
     }
     return false;
