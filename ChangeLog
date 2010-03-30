@@ -1,5 +1,13 @@
 2010-03-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactSourceFolder.m
+	(-lookupName:inContext:acquire:): lookup the object in the
+	"childRecords" cache prior to fetching it from the source. If the
+	latter happens, the resulting record is cached.
+	(-lookupContactsWithFilter:sortBy:ordering:): populate the
+	"childRecords" cache with resulting records to avoid further
+	lookups of the same data.
+
 	* SoObjects/SOGo/LDAPSource.m
 	(-changePasswordForLogin:oldPassword:newPassword:perr:): fixed a
 	typo that could potentially cause crashes.

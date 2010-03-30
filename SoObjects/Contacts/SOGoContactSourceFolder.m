@@ -39,6 +39,8 @@
 #import <SaxObjC/XMLNamespaces.h>
 
 #import <SOGo/SOGoPermissions.h>
+#import <SOGo/NSArray+Utilities.h>
+#import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 
 #import "SOGoContactLDIFEntry.h"
@@ -62,10 +64,10 @@
       component = [self lookupName: name inContext: context acquire: NO];
 
       if ([component isKindOfClass: [NSException class]])
-	{
-	  [self logWithFormat: @"Object with name '%@' not found. You likely have a LDAP configuration issue.", name];
-	  return;
-	}
+        {
+          [self logWithFormat: @"Object with name '%@' not found. You likely have a LDAP configuration issue.", name];
+          return;
+        }
 
       [r appendContentString: @"  <D:response>\r\n"];
       [r appendContentString: @"    <D:href>"];
@@ -78,7 +80,7 @@
       [r appendContentString: @"    <D:propstat>\r\n"];
       [r appendContentString: @"      <D:prop>\r\n"];
       etagLine = [NSString stringWithFormat: @"        <D:getetag>%@</D:getetag>\r\n",
-			   [component davEntityTag]];
+                           [component davEntityTag]];
       [r appendContentString: etagLine];
       [r appendContentString: @"      </D:prop>\r\n"];
       [r appendContentString: @"      <D:status>HTTP/1.1 200 OK</D:status>\r\n"];
@@ -109,7 +111,7 @@
 {
   if ((self = [super init]))
     {
-      entries = nil;
+      childRecords = [NSMutableDictionary new];
       source = nil;
     }
 
@@ -133,7 +135,7 @@
 
 - (void) dealloc
 {
-  [entries release];
+  [childRecords release];
   [source release];
   [super dealloc];
 }
@@ -175,13 +177,18 @@
 
   if (!obj)
     {
-      ldifEntry = [source lookupContactEntry: objectName];
+      ldifEntry = [childRecords objectForKey: objectName];
+      if (!ldifEntry)
+        {
+          ldifEntry = [source lookupContactEntry: objectName];
+          [childRecords setObject: ldifEntry forKey: objectName];
+        }
       if (ldifEntry)
-	obj = [SOGoContactLDIFEntry contactEntryWithName: objectName
-				    withLDIFEntry: ldifEntry
-				    inContainer: self];
+        obj = [SOGoContactLDIFEntry contactEntryWithName: objectName
+                                           withLDIFEntry: ldifEntry
+                                             inContainer: self];
       else
-	obj = [NSException exceptionWithHTTPStatus: 404];
+        obj = [NSException exceptionWithHTTPStatus: 404];
     }
 
   return obj;
@@ -200,16 +207,12 @@
   NSMutableDictionary *newRecord;
   NSString *data;
 
-  newRecords = [[NSMutableArray alloc] initWithCapacity: [records count]];
-  [newRecords autorelease];
+  newRecords = [NSMutableArray arrayWithCapacity: [records count]];
 
   oldRecords = [records objectEnumerator];
-  oldRecord = [oldRecords nextObject];
-  while (oldRecord)
+  while ((oldRecord = [oldRecords nextObject]))
     {
       newRecord = [NSMutableDictionary new];
-      [newRecord autorelease];
-
       [newRecord setObject: [oldRecord objectForKey: @"c_uid"]
 		 forKey: @"c_uid"];
       [newRecord setObject: [oldRecord objectForKey: @"c_name"]
@@ -259,7 +262,7 @@
         [newRecord setObject: data forKey: @"contactInfo"];
 
       [newRecords addObject: newRecord];
-      oldRecord = [oldRecords nextObject];
+      [newRecord release];
     }
 
   return newRecords;
@@ -276,8 +279,11 @@
 
   if (filter && [filter length] > 0)
     {
-      records = [self _flattenedRecords:
-			[source fetchContactsMatching: filter]];
+      records = [source fetchContactsMatching: filter];
+      [childRecords setObjects: records
+                       forKeys: [records objectsForKey: @"c_name"
+                                        notFoundMarker: nil]];
+      records = [self _flattenedRecords: records];
       ordering
         = [EOSortOrdering sortOrderingWithKey: sortKey
                           selector: ((sortOrdering == NSOrderedDescending)

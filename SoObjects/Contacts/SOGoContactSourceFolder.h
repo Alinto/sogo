@@ -33,7 +33,7 @@
 @interface SOGoContactSourceFolder : SOGoFolder <SOGoContactFolder>
 {
   id source;
-  NSMutableDictionary *entries;
+  NSMutableDictionary *childRecords;
 }
 
 + (id) folderWithName: (NSString *) aName
