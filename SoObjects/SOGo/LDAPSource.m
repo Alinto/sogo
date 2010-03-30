@@ -511,7 +511,7 @@ static NSArray *commonSearchFields;
 		    
 		    mod = [NGLdapModification replaceModification: attr];
 		    changes = [NSArray arrayWithObject: mod];
-		    perr = PolicyNoError;
+		    *perr = PolicyNoError;
 
 		    if ([bindConnection bindWithMethod: @"simple"
 					binddn: userDN
@@ -850,7 +850,7 @@ static NSArray *commonSearchFields;
       ldapConnection = [self _ldapConnection];
       qualifier = [self _qualifierForFilter: match];
       attributes = [self _searchAttributes];
-	  
+
       if ([_scope caseInsensitiveCompare: @"BASE"] == NSOrderedSame)
         entries = [ldapConnection baseSearchAtBaseDN: baseDN
                                            qualifier: qualifier
