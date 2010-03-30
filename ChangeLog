@@ -14,7 +14,7 @@
 
 2010-03-29  Ludovic Marcotte <lmarcotte@inverse.ca>
 
-	SoObjects/Appointments/SOGoWebAppointmentFolder.m 
+	SoObjects/Appointments/SOGoWebAppointmentFolder.m
 	We no longer use the NSData's method to load
 	the data as GNUstep will be caching it.
 
