@@ -38,6 +38,7 @@ Copyright © 2002-2005 SKYRIX Software AG<br/><br/>
 A szoftver a <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2. licensz alapján kerül terjesztésre<br/>
 A szoftver egyes részei a GNU LGPL version 2. licensz alapján kerülnek terjesztésre.<br/><br/>
 Ez egy ingyenes szoftver: ön jogosult változtatni és továbbterjeszteni. Nincs garancia, a törvány által megengedett mértékben.";
+
 "Your account was locked due to too many failed attempts." = "Your account was locked due to too many failed attempts.";
 "Your account was locked due to an expired password." = "Your account was locked due to an expired password.";
 "Login failed due to unhandled error case: " = "Login failed due to unhandled error case: ";

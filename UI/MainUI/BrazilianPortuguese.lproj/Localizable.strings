@@ -38,6 +38,7 @@ Copyright © 2002-2005 SKYRIX Software AG<br/><br/>
 This software are distributed under the <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2.<br/>
 Parts of this software are distributed under the GNU LGPL version 2.<br/><br/>
 This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.";
+
 "Your account was locked due to too many failed attempts." = "Your account was locked due to too many failed attempts.";
 "Your account was locked due to an expired password." = "Your account was locked due to an expired password.";
 "Login failed due to unhandled error case: " = "Login failed due to unhandled error case: ";
