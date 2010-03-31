@@ -1,3 +1,8 @@
+2010-03-31  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/SchedulerUIDnD.js (onDragStart): don't
+	start the dragging when the target element has a scrollbar.
+
 2010-03-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Contacts/SOGoContactSourceFolder.m

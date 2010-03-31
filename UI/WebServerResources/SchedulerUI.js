@@ -1099,9 +1099,11 @@ function scrollDayView(scrollEvent) {
 }
 
 function onClickableCellsDblClick(event) {
-    newEventFromWidget(this, 'event');
-
-    Event.stop(event);
+    var target = getTarget(event);
+    if (target.hasClassName("dayHeader") || this.clientHeight >= this.scrollHeight) {
+        newEventFromWidget(this, 'event');
+        Event.stop(event);
+    }
 }
 
 function refreshCalendarEvents(scrollEvent) {
