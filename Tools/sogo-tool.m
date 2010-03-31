@@ -209,7 +209,7 @@
         rc = NO;
     }
 
-  return NO;
+  return rc;
 }
 
 @end
