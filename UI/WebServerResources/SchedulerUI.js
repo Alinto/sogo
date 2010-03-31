@@ -1279,6 +1279,7 @@ function newBaseEventDIV(eventRep, event, eventText) {
     textDiv.update(eventText.replace(/(\\r)?\\n/g, "<BR/>"));
 
     if (event[2] == null) {
+        // Status field is not defined -- user can't read event
         eventCell.observe("selectstart", listRowMouseDownHandler);
         eventCell.observe("click", onCalendarSelectEvent);
         eventCell.observe("dblclick", Event.stop);
@@ -1480,9 +1481,6 @@ function calendarDisplayCallback(http) {
             observer = $("monthDaysView");
         }
 
-        initMenu($("currentViewMenu"), menu);
-        observer.observe("contextmenu", onMenuCurrentView);
-
         var contentView;
         if (currentView == "monthview")
             contentView = $("calendarContent");
@@ -1490,8 +1488,23 @@ function calendarDisplayCallback(http) {
             contentView = $("daysView");
             contentView.observe("scroll", onBodyClickHandler);
             attachDragControllers($("calendarHeader"));
+ 
+            // Create a clone of the contextual menu for the all-day
+            // events area
+            var allDayViewMenu = Element.clone($("currentViewMenu"), true);
+            allDayViewMenu.id = "allDayViewMenu";
+            var newEventMenuItem = allDayViewMenu.select("LI").first();
+            newEventMenuItem.writeAttribute("hour", "allday");
+            $("currentViewMenu").parentNode.appendChild(allDayViewMenu);
+            initMenu($("allDayViewMenu"), menu);
+            var allDayArea = $$("DIV#calendarHeader DIV.days").first();
+            allDayArea.observe("contextmenu", onMenuAllDayView);
         }
         attachDragControllers(contentView);
+
+        // Attach contextual menu
+        initMenu($("currentViewMenu"), menu);
+        observer.observe("contextmenu", onMenuCurrentView);
 
         restoreSelectedDay();
 
@@ -2085,6 +2098,11 @@ function onMenuSharing(event) {
 function onMenuCurrentView(event) {
     $("eventDialog").hide();
     popupMenu(event, 'currentViewMenu', this);
+}
+
+function onMenuAllDayView(event) {
+    $("eventDialog").hide();
+    popupMenu(event, 'allDayViewMenu', this);
 }
 
 function configureDragHandles() {
