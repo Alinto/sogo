@@ -479,6 +479,24 @@ Index: sope-gdl1/MySQL/MySQL4Channel.m
  @end /* MySQL4Channel */
  
  void __link_MySQL4Channel() {
+Index: sope-gdl1/Oracle8/ChangeLog
+===================================================================
+--- sope-gdl1/Oracle8/ChangeLog	(revision 1664)
++++ sope-gdl1/Oracle8/ChangeLog	(working copy)
+@@ -1,3 +1,13 @@
++2010-03-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
++
++	* OracleAdaptorChannel.m (+initialize): set the prefetch memory
++	size from a new "OracleAdaptorPrefetchMemorySize" userdefault. Use
++	"16 * 1024" by default.
++	(-evaluateExpression:): make use of the new prefetchMemorySize
++	variable to configure the OCI_ATTR_PREFETCH_MEMORY on the
++	statement. We also set OCI_ATTR_PREFETCH_ROWS to an unreasonably
++	high number to ensure the memory size always has precedence.
++
+ 2007-11-15  Ludovic Marcotte <ludovic@inverse.ca>
+ 
+  	* fixes
 Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
 ===================================================================
 --- sope-gdl1/Oracle8/OracleAdaptorChannel.m	(revision 1664)
@@ -492,19 +510,20 @@ Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
  **
  **  Author: Ludovic Marcotte <ludovic@inverse.ca>
  **
-@@ -30,6 +30,11 @@
+@@ -30,6 +30,12 @@
  
  #import <NGExtensions/NSObject+Logs.h>
  
 +#include <unistd.h>
 +
 +static BOOL debugOn = NO;
++static int prefetchMemorySize;
 +static int maxTry = 3;
 +static int maxSleep = 500;
  //
  //
  //
-@@ -41,10 +46,11 @@
+@@ -41,10 +47,11 @@
  
  @implementation OracleAdaptorChannel (Private)
  
@@ -517,7 +536,7 @@ Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
  
    [_resultSetProperties removeAllObjects];
  
-@@ -58,11 +64,29 @@
+@@ -58,11 +65,29 @@
        // so we just free the value instead.
        if (info->value)
  	{
@@ -549,7 +568,7 @@ Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
        [_row_buffer removeObjectAtIndex: c];
      }
  
-@@ -78,8 +102,7 @@
+@@ -78,8 +103,7 @@
  //
  @implementation OracleAdaptorChannel
  
@@ -559,7 +578,7 @@ Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
  {
    if (OCITerminate(OCI_DEFAULT))
      NSLog(@"FAILED: OCITerminate()");
-@@ -89,6 +112,11 @@
+@@ -89,6 +113,15 @@
  
  + (void) initialize
  {
@@ -568,10 +587,14 @@ Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
 +  ud = [NSUserDefaults standardUserDefaults];
 +  debugOn = [ud boolForKey: @"OracleAdaptorDebug"];
 +
++  prefetchMemorySize = [ud integerForKey: @"OracleAdaptorPrefetchMemorySize"];
++  if (!prefetchMemorySize)
++    prefetchMemorySize = 16 * 1024; /* 16Kb */
++
    // We Initialize the OCI process environment.
    if (OCIInitialize((ub4)OCI_DEFAULT, (dvoid *)0,
                      (dvoid * (*)(dvoid *, size_t)) 0,
-@@ -156,14 +184,17 @@
+@@ -156,14 +189,17 @@
        [super closeChannel];
      
        // We logoff from the database.
@@ -592,7 +615,7 @@ Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
        // OCIHandleFree(_oci_env, OCI_HTYPE_ENV);
  
        _oci_ctx = (OCISvcCtx *)0;
-@@ -177,7 +208,8 @@
+@@ -177,7 +213,8 @@
  //
  - (void) dealloc
  {
@@ -602,7 +625,7 @@ Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
  
    [self _cleanup];
  
-@@ -222,7 +254,7 @@
+@@ -222,21 +259,25 @@
  {
    EOAttribute *attribute;
    OCIParam *param;
@@ -611,7 +634,9 @@ Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
    column_info *info;
    ub4 i, clen, count;
    text *sql, *cname;
-@@ -231,6 +263,9 @@
+   sword status;
+   ub2 type;
++  ub4 memory, prefetchrows;
  
    [self _cleanup];
  
@@ -621,7 +646,14 @@ Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
    if (!theExpression || ![theExpression length])
      {
        [NSException raise: @"OracleInvalidExpressionException"
-@@ -244,7 +279,9 @@
+ 		   format: @"Passed an invalid (nil or length == 0) SQL expression"];
+     }
+-  
++
+   if (![self isOpen])
+     {
+       [NSException raise: @"OracleChannelNotOpenException"
+@@ -244,7 +285,9 @@
      }
    
    sql = (text *)[theExpression UTF8String];
@@ -632,7 +664,30 @@ Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
    // We alloc our statement handle
    if ((status = OCIHandleAlloc((dvoid *)_oci_env, (dvoid **)&_current_stm, (ub4)OCI_HTYPE_STMT, (CONST size_t) 0, (dvoid **) 0)))
      {
-@@ -264,13 +301,39 @@
+@@ -253,6 +296,22 @@
+       return NO;
+     }
+ 
++  prefetchrows = 100000; /* huge numbers here force a fallback on the memory limit below, which is what we really are interested in */
++  if ((status = OCIAttrSet(_current_stm, (ub4)OCI_HTYPE_STMT, (dvoid *)&prefetchrows, (ub4) sizeof(ub4), (ub4)OCI_ATTR_PREFETCH_ROWS, _oci_err)))
++    {
++      checkerr(_oci_err, status);
++      NSLog(@"Can't set prefetch rows (%d).", prefetchrows);
++      return NO;
++    }
++  
++  memory = prefetchMemorySize;
++  if ((status = OCIAttrSet(_current_stm, (ub4)OCI_HTYPE_STMT, (dvoid *)&memory, (ub4) sizeof(ub4), (ub4)OCI_ATTR_PREFETCH_MEMORY, _oci_err)))
++    {
++      checkerr(_oci_err, status);
++      NSLog(@"Can't set prefetch memory (%d).", memory);
++      return NO;
++    }
++
+   // We prepare our statement
+   if ((status = OCIStmtPrepare(_current_stm, _oci_err, sql, strlen((const char *)sql), OCI_NTV_SYNTAX, OCI_DEFAULT)))
+     {
+@@ -264,13 +323,39 @@
    // We check if we're doing a SELECT and if so, we're fetching data!
    OCIAttrGet(_current_stm, OCI_HTYPE_STMT, &type, 0, OCI_ATTR_STMT_TYPE, _oci_err);
    self->isFetchInProgress = (type == OCI_STMT_SELECT ? YES : NO);
@@ -673,7 +728,7 @@ Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
        return NO;
      }
  
-@@ -302,7 +365,9 @@
+@@ -302,7 +387,9 @@
        // We read the maximum width of a column
        info->max_width = 0;
        status = OCIAttrGet((dvoid*)param, (ub4)OCI_DTYPE_PARAM, (dvoid*)&(info->max_width), (ub4 *)0, (ub4)OCI_ATTR_DATA_SIZE, (OCIError *)_oci_err);
@@ -684,7 +739,7 @@ Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
        attribute = [EOAttribute attributeWithOracleType: info->type  name: cname  length: clen  width: info->max_width];
        [_resultSetProperties addObject: attribute];
  
-@@ -394,16 +459,17 @@
+@@ -394,16 +481,17 @@
        return NO;
      }
  
@@ -703,7 +758,7 @@ Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
        return NO;
      }
    
-@@ -414,7 +480,10 @@
+@@ -414,7 +502,10 @@
    // Under Oracle 10g, the third parameter of OCILogon() has the form: [//]host[:port][/service_name]
    // See http://download-west.oracle.com/docs/cd/B12037_01/network.101/b10775/naming.htm#i498306 for
    // all juicy details.
@@ -715,7 +770,7 @@ Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
  
    // We logon to the database.
    if (OCILogon(_oci_env, _oci_err, &_oci_ctx, (const OraText*)username, strlen(username),
-@@ -422,6 +491,7 @@
+@@ -422,6 +513,7 @@
      {
        NSLog(@"FAILED: OCILogon(). username = %s  password = %s"
  	    @"  database = %s", username, password, database);
@@ -723,7 +778,7 @@ Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
        return NO;
      }
    
-@@ -438,6 +508,11 @@
+@@ -438,6 +530,11 @@
  {
    sword status;
    
@@ -735,7 +790,7 @@ Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
    status = OCIStmtFetch2(_current_stm, _oci_err, (ub4)1, (ub4)OCI_FETCH_NEXT, (sb4)0, (ub4)OCI_DEFAULT);
  
    if (status == OCI_NO_DATA)
-@@ -609,7 +684,7 @@
+@@ -609,7 +706,7 @@
  
  /* GCSEOAdaptorChannel protocol */
  static NSString *sqlFolderFormat = (@"CREATE TABLE %@ (\n"	\
