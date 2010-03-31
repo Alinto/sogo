@@ -88,12 +88,17 @@ static NSString *headerKeys[] = {@"subject", @"to", @"cc", @"bcc",
 @implementation SOGoDraftObject
 
 static NGMimeType  *MultiMixedType = nil;
-static NSString    *userAgent      = @"SOGoMail 1.0";
+static NSString    *userAgent      = nil;
 
 + (void) initialize
 {
   MultiMixedType = [NGMimeType mimeType: @"multipart" subType: @"mixed"];
   [MultiMixedType retain];
+  userAgent      = [NSString stringWithFormat: @"SOGoMail %d.%d.%d",
+			     UIX_MAILER_MAJOR_VERSION,
+			     UIX_MAILER_MINOR_VERSION,
+			     UIX_MAILER_SUBMINOR_VERSION];
+  [userAgent retain];
 }
 
 - (id) init

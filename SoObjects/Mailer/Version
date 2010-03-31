@@ -1,6 +1,6 @@
 # Version file
 
-SUBMINOR_VERSION:=126
+SUBMINOR_VERSION:=2
 
 # v0.9.114 requires libNGMime       v4.5.229
 # v0.9.114 requires libNGExtensions v4.5.165

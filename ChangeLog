@@ -1,5 +1,8 @@
 2010-03-31  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* SoObjects/Mailer/SOGoDraftObject.m (+initialize): updated the
+	User-Agent header with the proper version.
+
 	* UI/WebServerResources/SchedulerUIDnD.js (onDragStart): don't
 	start the dragging when the target element has a scrollbar.
 
