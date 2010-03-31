@@ -20,11 +20,11 @@
         /></var:foreach>
 
 <var:string label:value="... from the following event:" const:escapeHTML="NO"/>
-    <var:string label:value="Title:" const:escapeHTML="NO"/><var:string
+    <var:string label:value="Title:" const:escapeHTML="NO"/> <var:string
       value="apt.summary" const:escapeHTML="NO"/>
-    <var:string label:value="Start:" const:escapeHTML="NO"/><var:string
+    <var:string label:value="Start:" const:escapeHTML="NO"/> <var:string
       value="aptStartDate" const:escapeHTML="NO"/>
-    <var:string label:value="End:" const:escapeHTML="NO"/><var:string
+    <var:string label:value="End:" const:escapeHTML="NO"/> <var:string
       value="aptEndDate" const:escapeHTML="NO"/>
   </var:if>
 </container>
