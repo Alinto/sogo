@@ -407,6 +407,21 @@ function refreshOpener() {
 
 /* selection mechanism */
 
+function eventIsLeftClick(event) {
+   var isLeftClick = true;
+    if (isMac() && isSafari())
+        if (event.ctrlKey == 1)
+            isLeftClick = false; // Control-click is equivalent to right-click under Mac OS X
+        else if (event.metaKey == 1) // Command-click
+            isLeftClick = true;
+        else
+            isLeftClick = Event.isLeftClick(event);
+    else
+        isLeftClick = Event.isLeftClick(event);
+
+    return isLeftClick;
+}
+
 function deselectAll(parent) {
     for (var i = 0; i < parent.childNodes.length; i++) {
         var node = parent.childNodes.item(i);
@@ -464,20 +479,10 @@ function onRowClick(event) {
     }
 
     var initialSelection = $(node.parentNode).getSelectedNodes();
-    var isLeftClick = true;
-    if (isMac() && isSafari())
-        if (event.ctrlKey == 1)
-            isLeftClick = false; // Control-click is equivalent to right-click under Mac OS X
-        else if (event.metaKey == 1) // Command-click
-            isLeftClick = true;
-        else
-            isLeftClick = Event.isLeftClick(event);
-    else
-        isLeftClick = Event.isLeftClick(event);
 
     if (initialSelection.length > 0 
         && initialSelection.indexOf(node) >= 0
-        && !isLeftClick)
+        && !eventIsLeftClick(event))
         // Ignore non primary-click (ie right-click) inside current selection
         return true;
 
