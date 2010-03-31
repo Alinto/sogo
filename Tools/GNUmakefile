@@ -15,7 +15,16 @@ $(SOGO_TOOL)_OBJC_FILES += \
 	SOGoToolCheckDoubles.m \
 	SOGoToolRemoveDoubles.m \
 
-TOOL_NAME = $(SOGO_TOOL)
+SOGO_SLAPD_SOCKD = sogo-slapd-sockd
+$(SOGO_SLAPD_SOCKD)_INSTALL_DIR = $(SOGO_ADMIN_TOOLS)
+$(SOGO_SLAPD_SOCKD)_OBJC_FILES += \
+	sogo-slapd-sockd.m \
+	\
+	SOGoSockD.m \
+	SOGoSockDScanner.m \
+	SOGoSockDOperation.m \
+
+TOOL_NAME = $(SOGO_TOOL) $(SOGO_SLAPD_SOCKD)
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/tool.make
