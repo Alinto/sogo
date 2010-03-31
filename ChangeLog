@@ -1,8 +1,8 @@
 2010-03-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
-	* Tools/SOGoSockDOperation.m, Tools/SOGoSockDScanner.m,
-	Tools/SOGoSockD.m: new modules implementing the sockd backend
-	tool for slapd.
+	* Tools/sogo-slapd-sockd.m, Tools/SOGoSockDOperation.m,
+	Tools/SOGoSockDScanner.m, Tools/SOGoSockD.m: new modules
+	implementing the sockd backend tool for slapd.
 
 	* Tools/sogo-tool.m (-run): return a proper return code rather
 	than "NO".
