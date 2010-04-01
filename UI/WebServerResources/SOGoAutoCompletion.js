@@ -193,8 +193,8 @@ var SOGoAutoCompletionInterface = {
                     // Show popup menu
                     var offsetScroll = Element.cumulativeScrollOffset(input);
                     var offset = Element.positionedOffset(input);
-                    if (Element.up(input).tagName == 'TD')
-                        // Special case for UIxListEditor
+                    if (offset.top < 50)
+                        // Hack for some situations where the offset must be computed differently
                         offset = Element.cumulativeOffset(input);
                     var top = offset.top - offsetScroll.top + node.offsetHeight + 3;
                     var height = 'auto';
