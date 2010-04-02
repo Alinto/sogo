@@ -1,3 +1,9 @@
+2010-04-02  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/SchedulerUI.js (onClickableCellsDblClick):
+	hack to ignore double-click in the scrollbar in the month view &
+	fix for Firefox.
+
 2010-03-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* Tools/sogo-slapd-sockd.m, Tools/SOGoSockDOperation.m,

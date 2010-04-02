@@ -1100,7 +1100,8 @@ function scrollDayView(scrollEvent) {
 
 function onClickableCellsDblClick(event) {
     var target = getTarget(event);
-    if (target.hasClassName("dayHeader") || this.clientHeight >= this.scrollHeight) {
+    // Hack to ignore double-click in the scrollbar
+    if (target.hasClassName("dayHeader") || (this.scrollHeight - this.clientHeight <= 1)) {
         newEventFromWidget(this, 'event');
         Event.stop(event);
     }
