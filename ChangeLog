@@ -1,3 +1,10 @@
+2010-04-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxCalListingActions.m
+	(_fillFreeBusy:forUid:fromDate:): fixed a crash occuring when the
+	length of an event would happen after the period covered by the
+	freebusy.
+
 2010-04-02  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/SchedulerUI.js (onClickableCellsDblClick):

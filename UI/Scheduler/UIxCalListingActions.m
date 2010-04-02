@@ -64,13 +64,14 @@ static NSArray *eventsFields = nil;
 static NSArray *tasksFields = nil;
 
 #define dayLength       86400
-#define quarterLength   900
-
-#define intervalSeconds 900                      // number of seconds in 15 minutes
-#define offsetHours     24 * 5                   // number of hours in invitation window
-#define offsetSeconds   offsetHours * 60 * 60    // number of seconds in invitation window
-#define offsetBlocks    offsetHours * 4          // number of 15-minute blocks in invitation window
-#define maxBlocks       offsetBlocks * 2         // maximum number of blocks to search for a free slot (10 days)
+#define quarterLength   900             // number of seconds in 15 minutes
+#define offsetHours (24 * 5)            // number of hours in invitation window
+#define offsetSeconds (offsetHours * 60 * 60)  // number of seconds in
+                                               // invitation window
+/* 1 block = 15 minutes */
+#define offsetBlocks (offsetHours * 4)  // number of 15-minute blocks in invitation window
+#define maxBlocks (offsetBlocks * 2)    // maximum number of blocks to search
+                                        // for a free slot (10 days)
 
 @implementation UIxCalListingActions
 
@@ -1076,24 +1077,20 @@ _computeBlocksPosition (NSArray *blocks)
   SOGoUser *user;
   SOGoFreeBusyObject *fbObject;
   NSCalendarDate *end;
-  NSTimeInterval interval;
   NSArray *records;
   NSDictionary *record;
   NSArray *emails, *partstates;
   NSCalendarDate *currentDate;
-  unsigned int intervals, recordCount, recordMax;
+  unsigned int recordCount, recordMax;
   int count, startInterval, endInterval, i, type;
-  int itemCount = (offsetBlocks + maxBlocks) * 15 * 60;
+  int itemCount = (offsetBlocks + maxBlocks);
 
-  user = [SOGoUser userWithLogin: uid roles: nil];
-  fbObject = [[user homeFolderInContext: context]
-              freeBusyObject: @"freebusy.ifb"
-		   inContext: context];
+  user = [SOGoUser userWithLogin: uid];
+  fbObject
+    = [[user homeFolderInContext: context] freeBusyObject: @"freebusy.ifb"
+                                                inContext: context];
 
-  end = [start addTimeInterval: itemCount];
-
-  interval = [end timeIntervalSinceDate: start];// + 60;
-  intervals = interval / intervalSeconds; /* slices of 15 minutes */
+  end = [start addTimeInterval: (itemCount * quarterLength)];
 
   records = [fbObject fetchFreeBusyInfosFrom: start to: end];
   recordMax = [records count];
@@ -1140,14 +1137,14 @@ _computeBlocksPosition (NSArray *blocks)
             startInterval = 0;
           else
             startInterval = ([currentDate timeIntervalSinceDate: start]
-                             / intervalSeconds);
+                             / quarterLength);
 
           currentDate = [record objectForKey: @"endDate"];
           if ([currentDate earlierDate: end] == end)
             endInterval = itemCount - 1;
           else
             endInterval = ([currentDate timeIntervalSinceDate: start]
-                           / intervalSeconds);
+                           / quarterLength);
 
           if (type == 1)
             for (count = startInterval; count < endInterval; count++)
@@ -1160,15 +1157,16 @@ _computeBlocksPosition (NSArray *blocks)
 - (unsigned int **) _loadFreeBusyForUsers: (NSArray *) uids 
                       fromDate: (NSCalendarDate *) start
 {
-  unsigned int **fbData, **node, count;
+  unsigned int **fbData, **node;
+  int count, max;
 
-  fbData = calloc ([uids count], sizeof (unsigned int *));
-  for (count = 0; count < [uids count]; count++)
+  max = [uids count];
+  fbData = calloc (max, sizeof (unsigned int *));
+  for (count = 0; count < max; count++)
     {
-      fbData[count] = calloc (offsetBlocks + maxBlocks, sizeof (unsigned int *));
       node = fbData + count;
-      [self _fillFreeBusy: *node
-                   forUid: [uids objectAtIndex: count]
+      *node = calloc (offsetBlocks + maxBlocks, sizeof (unsigned int *));
+      [self _fillFreeBusy: *node forUid: [uids objectAtIndex: count]
                  fromDate: start];
     }
 
@@ -1349,11 +1347,11 @@ _computeBlocksPosition (NSArray *blocks)
 
       nStart = [[self _parseDateField: @"startDate" 
                             timeField: @"startTime"] 
-                addTimeInterval: intervalSeconds * step];
+                addTimeInterval: quarterLength * step];
       nEnd = [[self _parseDateField: @"endDate" 
                           timeField: @"endTime"] 
-              addTimeInterval: intervalSeconds * step];
-      blockDuration = [nEnd timeIntervalSinceDate: nStart] / intervalSeconds;
+              addTimeInterval: quarterLength * step];
+      blockDuration = [nEnd timeIntervalSinceDate: nStart] / quarterLength;
 
       fbData = [self _loadFreeBusyForUsers: uids 
                                   fromDate: [nStart addTimeInterval: -offsetSeconds]];
@@ -1380,8 +1378,8 @@ _computeBlocksPosition (NSArray *blocks)
                   break;
                 }
             }
-          nStart = [nStart addTimeInterval: intervalSeconds * step];
-          nEnd = [nEnd addTimeInterval: intervalSeconds * step];
+          nStart = [nStart addTimeInterval: quarterLength * step];
+          nEnd = [nEnd addTimeInterval: quarterLength * step];
         }
 
       for (count = 0; count < [uids count]; count++)
