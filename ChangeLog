@@ -12,6 +12,11 @@
 
 2010-04-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailAccount.m (-updateFilters): we ensure
+	the active script is deactivated so that we can delete it on
+	Dovecot. This enables scripts to be deleted when all the filters
+	are disabled.
+
 	* UI/Scheduler/UIxCalListingActions.m
 	(_fillFreeBusy:forUid:fromDate:): fixed a crash occuring when the
 	length of an event would happen after the period covered by the

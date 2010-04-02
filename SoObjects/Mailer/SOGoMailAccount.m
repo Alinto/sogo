@@ -373,6 +373,9 @@ static NSString *sieveScriptName = @"sogo";
     return NO;
   }
 
+  /* We ensure to deactive the current active script since it could prevent
+     its deletion from the server. */
+  result = [client setActiveScript: @""];
   // We delete the existing Sieve script
   result = [client deleteScript: sieveScriptName];
   
