@@ -1,15 +1,21 @@
+2010-04-02  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	(-sendEMailUsingTemplateNamed:forObject:previousObject:toAttendees:):
+	when looking for the organizer email, we now rely on the previous
+	event when the organizer is not defined in the new event. This is
+	important when the organizer is deleting the only attendee of an event.
+
+	* UI/WebServerResources/SchedulerUI.js (onClickableCellsDblClick):
+	hack to ignore double-click in the scrollbar in the month view &
+	fix for Firefox.
+
 2010-04-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxCalListingActions.m
 	(_fillFreeBusy:forUid:fromDate:): fixed a crash occuring when the
 	length of an event would happen after the period covered by the
 	freebusy.
-
-2010-04-02  Francis Lachapelle  <flachapelle@inverse.ca>
-
-	* UI/WebServerResources/SchedulerUI.js (onClickableCellsDblClick):
-	hack to ignore double-click in the scrollbar in the month view &
-	fix for Firefox.
 
 2010-03-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

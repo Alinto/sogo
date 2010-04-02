@@ -677,6 +677,8 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
 	  //  senderEmail = [NSString stringWithFormat: @"%@ <%@>",
 	  //			  [ownerUser cn], shortSenderEmail];
 	  shortSenderEmail = [[object organizer] rfc822Email];
+	  if (![shortSenderEmail length])
+	    shortSenderEmail = [[previousObject organizer] rfc822Email];
 	  senderEmail = [[object organizer] mailAddress];
 // 	  NSLog (@"sending '%@' from %@",
 // 		 [(iCalCalendar *) [object parent] method], senderEmail);
