@@ -981,7 +981,7 @@ SOGoEventDragController.prototype = {
             if ((!this.eventCells
                  && (target.hasClassName("clickableHourCell")
                      || target.hasClassName("day"))
-                 && (target.clientHeight >= target.scrollHeight))
+                 && (target.scrollHeight - target.clientHeight <= 1))
                 || (this.eventCells && this.eventCells[0].editable
                     && !this.eventIsInvitation)) {
                 var utilities = SOGoEventDragUtilities();
