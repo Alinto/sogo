@@ -439,6 +439,18 @@
         to: [self _simpleValueForType: @"work" inArray: elements]];
   [self _setSnapshotValue: @"homeURL"
         to: [self _simpleValueForType: @"home" inArray: elements]];
+  
+  // If we don't have a "work" or "home" URL but we still have 
+  // an URL field present, let's add it to the "home" value
+  if ([[snapshot objectForKey: @"workURL"] length] == 0 &&
+      [[snapshot objectForKey: @"homeURL"] length] == 0 &&
+      [elements count] > 0)
+    {
+      [self _setSnapshotValue: @"homeURL"
+	    to: [[elements objectAtIndex: 0] value: 0]];
+    }
+      
+
   [self _setSnapshotValue: @"calFBURL"
         to: [[card uniqueChildWithTag: @"FBURL"] value: 0]];
 

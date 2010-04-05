@@ -1,3 +1,13 @@
+2010-04-05  Ludovic Marcotte <lmarcotte@inverse.ca>
+
+	* UI/WebServerResources/SOGoRootPage.js
+	We now correctly use our rounded value for the
+	expire value when using ppolicy.
+
+	* UI/Contacts/UIxContactEditor.m
+	We now use URL: in cards w/o a home/work preferred
+	value as a home URL.
+
 2010-04-02  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/Appointments/SOGoCalendarComponent.m

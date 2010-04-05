@@ -302,15 +302,15 @@ function createPasswordExpirationDialog(expire) {
     var value, string;
 
     if (expire > 86400) {
-        value = expire/86400;
+        value = Math.round(expire/86400);
         string = _("days");
     }
     else if (expire > 3600) {
-        value = expire/3600;
+        value = Math.round(expire/3600);
         string = _("hours");
     }
     else if (expire > 60) {
-        value = expire/60;
+        value = Math.round(expire/60);
         string = _("minutes");
     }
     else {
@@ -319,7 +319,7 @@ function createPasswordExpirationDialog(expire) {
     }
     return createDialog("passwordExpirationDialog",
                         _("Password about to expire"),
-                        _("Your password is going to expire in %{0} %{1}.").formatted(expire, string),
+                        _("Your password is going to expire in %{0} %{1}.").formatted(value, string),
                         button,
                         "right");
 }
