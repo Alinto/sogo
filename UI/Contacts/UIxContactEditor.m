@@ -395,6 +395,28 @@
   [self _setSnapshotValue: @"pager"
         to: [self _simpleValueForType: @"pager" inArray: elements]];
 
+  // If we don't have a "home" and "work" phone number but
+  // we have a "voice" one defined, we set it to the "work" value
+  // This can happen when we have :
+  // VERSION:2.1
+  // N:name;surname;;;;
+  // TEL;VOICE;HOME:
+  // TEL;VOICE;WORK:
+  // TEL;PAGER:
+  // TEL;FAX;WORK:
+  // TEL;CELL:514 123 1234
+  // TEL;VOICE:450 456 6789
+  // ADR;HOME:;;;;;;
+  // ADR;WORK:;;;;;;
+  // ADR:;;;;;;
+  if ([[snapshot objectForKey: @"telephoneNumber"] length] == 0 &&
+      [[snapshot objectForKey: @"homeTelephoneNumber"] length] == 0 &&
+      [elements count] > 0)
+    {
+      [self _setSnapshotValue: @"telephoneNumber"
+	    to: [self _simpleValueForType: @"voice" inArray: elements]];
+    }
+
   [self _setupEmailFields];
 
   [self _setSnapshotValue: @"screenName"

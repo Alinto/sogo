@@ -8,6 +8,11 @@
 	We now use URL: in cards w/o a home/work preferred
 	value as a home URL.
 
+	* UI/Contacts/UIxContactEditor.m
+	We now fallback to TEL;VOICE: when neither HOME
+	or WORK are defined. We set that value as the
+	WORK telephone number in this particular case.
+
 2010-04-02  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/Appointments/SOGoCalendarComponent.m
