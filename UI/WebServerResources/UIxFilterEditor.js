@@ -46,7 +46,7 @@ function loadMailboxes() {
 function onLoadMailboxesCallback(http) {
     if (http.readyState == 4) {
         window.opener.userMailboxes = $([]);
-        log("http.status: " + http.status);
+        // log("http.status: " + http.status);
         if (http.status == 200) {
             checkAjaxRequestsState();
             if (http.responseText.length > 0) {
@@ -217,6 +217,8 @@ function setupFilterViews() {
             }
         }
     }
+    onMatchTypeChange.apply(matchTypeSelect);
+
     var filterActions = $("filterActions");
     if (filterActions && filter.actions) {
         for (var i = 0; i < filter.actions.length; i++) {
@@ -726,6 +728,8 @@ function onRuleAddClick(event) {
     var filterRules = $("filterRules");
     if (filterRules) {
         var newRule = createFilterRule();
+        if (!filter.rules)
+            filter.rules = [];
         filter.rules.push(newRule);
         var newRuleDiv = appendRule(filterRules, newRule);
         setSelectedRuleDiv(newRuleDiv);

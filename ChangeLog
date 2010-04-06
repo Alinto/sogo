@@ -1,3 +1,15 @@
+2010-04-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/UIxPreferences.js (prototypeIfyFilters):
+	we don't attempt to duplicate the rules if they don't exist.
+	(copyFilter): same as above.
+
+	* UI/WebServerResources/UIxFilterEditor.js (setupFilterViews): we
+	execute the callback for the match type SELECT in order to show or
+	hide the rules area depending on its initial value.
+	(onRuleAddClick): when the rules array does not exist, we must
+	create it.
+
 2010-04-05  Ludovic Marcotte <lmarcotte@inverse.ca>
 
 	* UI/WebServerResources/SOGoRootPage.js

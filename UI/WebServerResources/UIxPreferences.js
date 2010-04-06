@@ -60,9 +60,11 @@ function prototypeIfyFilters() {
         newFilter.match = filter.match;
         newFilter.active = filter.active;
 
-        newFilter.rules = $([]);
-        for (var j = 0; j < filter.rules.length; j++) {
-            newFilter.rules.push($(filter.rules[j]));
+        if (filter.rules) {
+            newFilter.rules = $([]);
+            for (var j = 0; j < filter.rules.length; j++) {
+                newFilter.rules.push($(filter.rules[j]));
+            }
         }
 
         newFilter.actions = $([]);
@@ -314,9 +316,11 @@ function copyFilter(originalFilter) {
     newFilter.name = originalFilter.name;
     newFilter.match = originalFilter.match;
     newFilter.active = originalFilter.active;
-    newFilter.rules = [];
-    for (var i = 0; i < originalFilter.rules.length; i++) {
-        newFilter.rules.push(_copyFilterElement(originalFilter.rules[i]));
+    if (originalFilter.rules) {
+        newFilter.rules = [];
+        for (var i = 0; i < originalFilter.rules.length; i++) {
+            newFilter.rules.push(_copyFilterElement(originalFilter.rules[i]));
+        }
     }
     newFilter.actions = [];
     for (var i = 0; i < originalFilter.actions.length; i++) {
