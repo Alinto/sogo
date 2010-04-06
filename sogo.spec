@@ -39,6 +39,15 @@ Administrative tool for SOGo that provides the following internal commands:
   remove-doubles  -- remove duplicate contacts from the user addressbooks
   check-doubles   -- list user addressbooks with duplicate contacts
 
+%package -n sogo-slapd-sockd
+Summary:      SOGo backend for slapd and back-sock
+Group:        Productivity/Groupware
+AutoReqProv:  off
+
+%description -n sogo-slapd-sockd
+SOGo backend for slapd and back-sock, enabling access to private addressbooks
+via LDAP.
+
 %package -n sogo-devel
 Summary:      Development headers and libraries for SOGo
 Group:        Development/Libraries/Objective C
@@ -181,6 +190,9 @@ rm -fr ${RPM_BUILD_ROOT}
 %files -n sogo-tool
 %{prefix}/Tools/Admin/sogo-tool
 
+%files -n sogo-slapd-sockd
+%{prefix}/Tools/Admin/sogo-slapd-sockd
+
 %files -n sogo-devel
 %{prefix}/Library/Headers/SOGo
 %{prefix}/Library/Headers/SOGoUI
@@ -238,6 +250,9 @@ fi
 
 # ********************************* changelog *************************
 %changelog
+* Tue, 06 Apr 2010 11:59:24 -0400
+- added sogo-slapd-sockd package
+
 * Thu Jul 31 2008 Wolfgang Sourdeau <wsourdeau@inverse.ca>
 - added dependencies on sopeXY-appserver, -core, -gdl1-contentstore and -ldap
 
