@@ -250,7 +250,7 @@ fi
 
 # ********************************* changelog *************************
 %changelog
-* Tue, 06 Apr 2010 11:59:24 -0400
+* Tue Apr 06 Apr 2010 Wolfgang Sourdeau <wsourdeau@inverse.ca>
 - added sogo-slapd-sockd package
 
 * Thu Jul 31 2008 Wolfgang Sourdeau <wsourdeau@inverse.ca>
