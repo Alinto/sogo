@@ -231,6 +231,8 @@
 
 "attributes" = "atributy";
 "attendees" = "účastníci";
+"delegated from" = "delegated from";
+
 /* checkbox title */
 "is private" = "je soukromý/á";
 /* classification */

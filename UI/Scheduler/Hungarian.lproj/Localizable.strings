@@ -231,6 +231,8 @@
 
 "attributes" = "tulajdonságok";
 "attendees" = "résztvevők";
+"delegated from" = "delegated from";
+
 /* checkbox title */
 "is private" = "magán";
 /* classification */

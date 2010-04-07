@@ -231,6 +231,8 @@
 
 "attributes" = "atributos";
 "attendees" = "participantes";
+"delegated from" = "delegated from";
+
 /* checkbox title */
 "is private" = "é privado";
 /* classification */

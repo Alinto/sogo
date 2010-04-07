@@ -231,6 +231,8 @@
 
 "attributes" = "attribut";
 "attendees" = "deltagare";
+"delegated from" = "delegated from";
+
 /* checkbox title */
 "is private" = "är privat";
 /* classification */
