@@ -268,6 +268,12 @@ TABLE#dateSelectorTable TD TABLE TD.dayOfToday
 #dateSelectorTable TABLE TD._selected SPAN
 { color: #fff; }
 
+#dateSelectorTable TD.activeDay + TD,
+#dateSelectorTable TD.inactiveDay + TD,
+#dateSelectorTable TD.dayOfToday + TD
+{ visibility: hidden;
+  display: none; }
+
 TABLE#eventsList
 { width: 100%; }
 
@@ -458,8 +464,8 @@ DIV#calendarHeader DIV.day
 { height: 100%; }
 
 DIV#calendarHeader DIV.days DIV.day
-{ overflow: hidden;
-  overflow-y: auto; }
+{ overflow: auto;
+  overflow-x: hidden; }
 
 .menu LI.currentMonth,
 .menu LI.currentYear
