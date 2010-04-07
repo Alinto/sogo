@@ -31,7 +31,7 @@ function onICalendarButtonClick(event) {
 
 function onMenuDeleteMessage(event) {
     if (window.opener && window.opener.open && !window.opener.closed) {
-        var url = ApplicationBaseURL + encodeURI(mailboxName) + "/deleteMessages";
+        var url = ApplicationBaseURL + encodeURI(mailboxName) + "/batchDelete";
         var path = mailboxName + "/" + messageName;
         
         window.opener.deleteMessageWithDelay(url, messageName, mailboxName, path);
