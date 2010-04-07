@@ -1,5 +1,10 @@
 2010-04-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailPartViewers/UIxMailPartICalActions.m
+	(_eventObjectWithUID:forUser:): we check that the target event
+	exists only in the specified user's calendar, as it may already
+	exists in subcribed calendars belonging to other attendees.
+
 	* SoObjects/Mailer/SOGoMailFolder.m (-toManyRelationshipKeys): we
 	now check if the mailbox exists before returning the message
 	identifiers.

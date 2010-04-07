@@ -79,24 +79,29 @@
   SOGoAppointmentObject *eventObject;
   NSArray *folders;
   NSEnumerator *e;
-  NSString *cname;
+  NSString *cname, *userLogin;
 
   eventObject = nil;
 
+  userLogin = [user login];
+
   folders = [[user calendarsFolderInContext: context] subFolders];
   e = [folders objectEnumerator];
-  while ( eventObject == nil && (folder = [e nextObject]) )
+  while (eventObject == nil && (folder = [e nextObject]))
     {
-      cname = [folder resourceNameForEventUID: uid];
-      if (cname)
-	{
-	  eventObject = [folder lookupName: cname
-				inContext: context acquire: NO];
-	  if (![eventObject isKindOfClass: [SOGoAppointmentObject class]])
-	    eventObject = nil;
-	}
+      if ([[folder ownerInContext: nil] isEqualToString: userLogin])
+        {
+          cname = [folder resourceNameForEventUID: uid];
+          if (cname)
+            {
+              eventObject = [folder lookupName: cname inContext: context
+                                       acquire: NO];
+              if (![eventObject isKindOfClass: [NSException class]])
+                eventObject = nil;
+            }
+        }
     }
-  
+
   if (!eventObject)
     {
       folder = [user personalCalendarFolderInContext: context];
