@@ -112,7 +112,7 @@ static NSString *sieveScriptName = @"sogo";
       newFolder
         = [[currentPart objectForKey: @"prefix"] substringFromIndex: 1];
       if ([newFolder length])
-        [folders addObject: newFolder];
+        [folders addObjectUniquely: newFolder];
     }
 }
 

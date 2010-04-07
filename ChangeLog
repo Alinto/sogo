@@ -1,3 +1,19 @@
+2010-04-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailFolder.m (-toManyRelationshipKeys): we
+	now check if the mailbox exists before returning the message
+	identifiers.
+	(-lookupName:inContext:acquire:): we no longer check whether the
+	folder exists as it causes problems when it is a "noselect" parent
+	folder. Existence of folders is thus checked only when messages
+	are accessed.
+
+	* SoObjects/Mailer/SOGoMailAccount.m
+	(_appendNamespace:toFolders:): it may happen that the namespace
+	"folders" have already been added via the list command, therefore
+	we now ensure that the folder names do not already exist before
+	adding them to the array.
+
 2010-04-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/UIxPreferences.js (prototypeIfyFilters):

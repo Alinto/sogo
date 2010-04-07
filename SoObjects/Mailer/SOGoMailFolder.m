@@ -243,17 +243,20 @@ static NSString *defaultUserID =  @"anyone";
   if (!filenames)
     {
       filenames = [NSMutableArray new];
-      uids = [self fetchUIDsMatchingQualifier: nil sortOrdering: @"DATE"];
-      if (![uids isKindOfClass: [NSException class]])
-	{
-	  max = [uids count];
-	  for (count = 0; count < max; count++)
-	    {
-	      filename = [NSString stringWithFormat: @"%@.eml",
-				   [uids objectAtIndex: count]];
-	      [filenames addObject: filename];
-	    }
-	}
+      if ([[self imap4Connection] doesMailboxExistAtURL: [self imap4URL]])
+        {
+          uids = [self fetchUIDsMatchingQualifier: nil sortOrdering: @"DATE"];
+          if (![uids isKindOfClass: [NSException class]])
+            {
+              max = [uids count];
+              for (count = 0; count < max; count++)
+                {
+                  filename = [NSString stringWithFormat: @"%@.eml",
+                                    [uids objectAtIndex: count]];
+                  [filenames addObject: filename];
+                }
+            }
+        }
     }
 
   return filenames;
@@ -494,11 +497,11 @@ static NSString *defaultUserID =  @"anyone";
 {
   // We check for the existence of the IMAP folder (likely to be the
   // Sent mailbox) prior to appending messages to it.
-  if ([[self imap4Connection] doesMailboxExistAtURL: [self imap4URL]] ||
-      ![[self imap4Connection] createMailbox: [[self imap4Connection] imap4FolderNameForURL: [self imap4URL]]
-			       atURL: [[self mailAccountFolder] imap4URL]])
+  if ([[self imap4Connection] doesMailboxExistAtURL: [self imap4URL]]
+      || ![[self imap4Connection] createMailbox: [[self imap4Connection] imap4FolderNameForURL: [self imap4URL]]
+                                          atURL: [[self mailAccountFolder] imap4URL]])
     return [[self imap4Connection] postData: _data flags: _flags
-				   toFolderURL: [self imap4URL]];
+                                toFolderURL: [self imap4URL]];
   
   return [NSException exceptionWithHTTPStatus: 502 /* Bad Gateway */
 		      reason: [NSString stringWithFormat: @"%@ is not an IMAP4 folder", [self relativeImap4Name]]];
@@ -576,47 +579,40 @@ static NSString *defaultUserID =  @"anyone";
   SOGoMailAccount *mailAccount;
   id obj;
 
-  // We automatically create mailboxes that don't exist but that we're
-  // trying to open. This shouldn't happen unless a mailbox has been
-  // deleted "behind our back" or if we're trying to open a special
-  // mailbox that doesn't yet exist.
-  if ([[self imap4Connection] doesMailboxExistAtURL: [self imap4URL]]
-      || ![[self imap4Connection] createMailbox: [self relativeImap4Name]
-                                          atURL: [[self mailAccountFolder] imap4URL]])
+  obj = [super lookupName: _key inContext: _ctx acquire: NO];
+  if (!obj)
     {
-      obj = [super lookupName: _key inContext: _ctx acquire: NO];
-      if (!obj)
+      if ([_key hasPrefix: @"folder"])
         {
-          if ([_key hasPrefix: @"folder"])
-            {
-              mailAccount = [self mailAccountFolder];
-              folderName = [[_key substringFromIndex: 6] fromCSSIdentifier];
-              fullFolderName = [NSString stringWithFormat: @"%@/%@",
-                                         [self traversalFromMailAccount], folderName];
-              if ([fullFolderName
-                    isEqualToString: [mailAccount sentFolderNameInContext: _ctx]])
-                className = @"SOGoSentFolder";
-              else if ([fullFolderName isEqualToString:
-                                         [mailAccount draftsFolderNameInContext: _ctx]])
-                className = @"SOGoDraftsFolder";
-              else if ([fullFolderName isEqualToString:
-                                         [mailAccount trashFolderNameInContext: _ctx]])
-                className = @"SOGoTrashFolder";
-              /*       else if ([folderName isEqualToString:
-                       [mailAccount sieveFolderNameInContext: _ctx]])
-                       obj = [self lookupFiltersFolder: _key inContext: _ctx]; */
-              else
-                className = @"SOGoMailFolder";
+          mailAccount = [self mailAccountFolder];
+          folderName = [[_key substringFromIndex: 6] fromCSSIdentifier];
+          fullFolderName = [NSString stringWithFormat: @"%@/%@",
+                                     [self traversalFromMailAccount], folderName];
+          if ([fullFolderName
+                    isEqualToString:
+                  [mailAccount sentFolderNameInContext: _ctx]])
+            className = @"SOGoSentFolder";
+          else if ([fullFolderName
+                     isEqualToString:
+                       [mailAccount draftsFolderNameInContext: _ctx]])
+            className = @"SOGoDraftsFolder";
+          else if ([fullFolderName
+                     isEqualToString:
+                       [mailAccount trashFolderNameInContext: _ctx]])
+            className = @"SOGoTrashFolder";
+          /*       else if ([folderName isEqualToString:
+                   [mailAccount sieveFolderNameInContext: _ctx]])
+                   obj = [self lookupFiltersFolder: _key inContext: _ctx]; */
+          else
+            className = @"SOGoMailFolder";
 
-              obj = [NSClassFromString (className) objectWithName: _key
-                                                      inContainer: self];
-            }
-          else if (isdigit ([_key characterAtIndex: 0]))
-            obj = [SOGoMailObject objectWithName: _key inContainer: self];
+          obj = [NSClassFromString (className) objectWithName: _key
+                                                  inContainer: self];
         }
+      else if (isdigit ([_key characterAtIndex: 0])
+               && [[self imap4Connection] doesMailboxExistAtURL: [self imap4URL]])
+        obj = [SOGoMailObject objectWithName: _key inContainer: self];
     }
-  else
-    obj = nil;
 
   if (!obj && _acquire)
     obj = [NSException exceptionWithHTTPStatus: 404 /* Not Found */];
