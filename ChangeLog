@@ -1,3 +1,10 @@
+2010-04-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MailerUI/UIxMailEditor.m (-fromEMails, -from): make use of
+	the new _emailFromIdentity: method.
+	(_emailFromIdentity:): new method that returns a from header
+	compliant with rfc822.
+
 2010-04-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailPartViewers/UIxMailPartICalActions.m

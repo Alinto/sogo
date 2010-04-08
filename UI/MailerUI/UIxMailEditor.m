@@ -20,6 +20,7 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSCharacterSet.h>
 #import <Foundation/NSFileManager.h>
 #import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSString.h>
@@ -63,7 +64,7 @@
   NSArray  *bcc;
   NSString *subject;
   NSString *text;
-  NSArray *fromEMails;
+  NSMutableArray *fromEMails;
   NSString *from;
   SOGoMailFolder *sentFolder;
 
@@ -169,6 +170,35 @@ static NSArray *infoKeys = nil;
   ASSIGN (from, newFrom);
 }
 
+- (NSString *) _emailFromIdentity: (NSDictionary *) identity
+{
+  static NSCharacterSet *specialCharacters = nil;
+  NSString *fullName, *format;
+
+  if (!specialCharacters)
+    {
+      /* This list is taken from rfc 822 sect. 3.3. LEXICAL TOKENS: */
+      specialCharacters = [NSCharacterSet
+                            characterSetWithCharactersInString:
+                                                     @"()<>@,;:\\\".[]"];
+      [specialCharacters retain];
+    }
+
+  fullName = [identity objectForKey: @"fullName"];
+  if ([fullName length])
+    {
+      if ([fullName rangeOfCharacterFromSet: specialCharacters].location
+          == NSNotFound)
+        format = @"%{fullName} <%{email}>";
+      else
+        format = @"\"%{fullName}\" <%{email}>";
+    }
+  else
+    format = @"%{email}";
+
+  return [identity keysWithFormat: format];
+}
+
 - (NSString *) from
 {
   NSDictionary *identity;
@@ -176,7 +206,7 @@ static NSArray *infoKeys = nil;
   if (!from)
     {
       identity = [[context activeUser] primaryIdentity];
-      from = [identity keysWithFormat: @"%{fullName} <%{email}>"];
+      from = [self _emailFromIdentity: identity];
       [from retain];
     }
 
@@ -272,12 +302,20 @@ static NSArray *infoKeys = nil;
 - (NSArray *) fromEMails
 {
   NSArray *allIdentities;
+  int count, max;
+  NSString *email;
 
   if (!fromEMails)
     { 
       allIdentities = [[context activeUser] allIdentities];
-      fromEMails = [allIdentities keysWithFormat: @"%{fullName} <%{email}>"];
-      [fromEMails retain];
+      fromEMails = [NSMutableArray new];
+      max = [allIdentities count];
+      for (count = 0; count < max; count++)
+        {
+          email
+            = [self _emailFromIdentity: [allIdentities objectAtIndex: count]];
+          [fromEMails addObjectUniquely: email];
+        }
     }
 
   return fromEMails;
