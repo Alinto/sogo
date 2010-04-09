@@ -143,8 +143,12 @@ class WebDAVTest(unittest.TestCase):
                                  propHref.childNodes[0].nodeValue))
             propDisplayname = query.xpath_evaluate('D:response/D:propstat/D:prop/D:displayname',
                                                    propResponse)[0]
+            if len(propDisplayname.childNodes) > 0:
+                displayName = propDisplayname.childNodes[0].nodeValue
+            else:
+                displayName = ""
             self.assertEquals(query_props[query_prop]["displayname"],
-                              propDisplayname.childNodes[0].nodeValue,
+                              displayName,
                               "'%s', displayname mismatch: exp. '%s', got '%s'"
                               % (query_prop,
                                  query_props[query_prop]["displayname"],

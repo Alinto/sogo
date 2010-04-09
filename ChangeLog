@@ -1,3 +1,16 @@
+2010-04-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Tests/Integration/utilities.py (TestUtility.fetchUserInfo): same
+	as below.
+
+	* Tests/Integration/test-webdav.py
+	(WebDAVTest.testExpandProperty): same as below
+
+	* Tests/Integration/test-caldav-scheduling.py (fetchUserInfo):
+	accept empty displayname property.
+
+	* Tests/Integration/test-maildav.py: temporarily disabled test
+
 2010-04-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailerUI/UIxMailEditor.m (-fromEMails, -from): make use of

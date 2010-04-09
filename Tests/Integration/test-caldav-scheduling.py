@@ -30,8 +30,12 @@ def fetchUserInfo(login):
                                           None)
     email_nodes = propfind.xpath_evaluate('/D:multistatus/D:response/D:propstat/D:prop/C:calendar-user-address-set/D:href',
                                           None)
+    if len(name_nodes[0].childNodes) > 0:
+        displayName = name_nodes[0].childNodes[0].nodeValue
+    else:
+        displayName = ""
 
-    return (name_nodes[0].childNodes[0].nodeValue, email_nodes[0].childNodes[0].nodeValue)
+    return (displayName, email_nodes[0].childNodes[0].nodeValue)
 
 class CalDAVITIPDelegationTest(unittest.TestCase):
     def setUp(self):

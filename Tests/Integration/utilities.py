@@ -23,8 +23,12 @@ class TestUtility(unittest.TestCase):
                                                  None)
             email_nodes = propfind.xpath_evaluate('/D:multistatus/D:response/D:propstat/D:prop/C:calendar-user-address-set/D:href',
                                                   None)
-            self.userInfo[login] = (name_nodes[0].childNodes[0].nodeValue,
-                                    email_nodes[0].childNodes[0].nodeValue)
+
+            if len(name_nodes[0].childNodes) > 0:
+                displayName = name_nodes[0].childNodes[0].nodeValue
+            else:
+                displayName = ""
+            self.userInfo[login] = (displayName, email_nodes[0].childNodes[0].nodeValue)
 
         return self.userInfo[login]
 
