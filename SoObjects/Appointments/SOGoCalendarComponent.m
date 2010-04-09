@@ -31,6 +31,7 @@
 #import <NGObjWeb/WORequest+So.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NGHashMap.h>
+#import <NGExtensions/NGQuotedPrintableCoding.h>
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalDateTime.h>
 #import <NGCards/iCalEvent.h>
@@ -44,6 +45,8 @@
 #import <SOGo/NSCalendarDate+SOGo.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSObject+DAV.h>
+#import <SOGo/NSObject+Utilities.h>
+#import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoMailer.h>
 #import <SOGo/SOGoGroup.h>
@@ -174,7 +177,7 @@
 
 - (void) _filterComponent: (iCalEntityObject *) component
 {
-  NSString *type;
+  NSString *type, *summary;
   int classification;
 
   type = @"vtodo";
@@ -187,8 +190,11 @@
     classification = 1;
   else if ([component symbolicAccessClass] == iCalAccessConfidential)
     classification = 2;
-  
-  [component setSummary: [self labelForKey: [NSString stringWithFormat: @"%@_class%d", type, classification]]];
+
+  summary = [self labelForKey: [NSString stringWithFormat: @"%@_class%d",
+                                         type, classification]
+                    inContext: context];
+  [component setSummary: summary];
   [component setComment: @""];
   [component setUserComment: @""];
   [component setLocation: @""];
@@ -653,7 +659,7 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
   WOApplication *app;
   unsigned i, count;
   iCalPerson *attendee;
-  NSString *recipient, *language;
+  NSString *recipient;
   SOGoAptMailNotification *p;
   NSString *mailDate, *subject, *text, *header;
   NGMutableHashMap *headerMap;
@@ -667,7 +673,6 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
   dd = [ownerUser domainDefaults];
   if ([dd appointmentSendEMailNotifications] && [object isStillRelevant])
     {
-      language = [[ownerUser userDefaults] language];
       count = [attendees count];
       if (count)
 	{
@@ -707,12 +712,12 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
 #warning this could be optimized in a class hierarchy common with the	\
   SOGoObject acl notification mechanism
 		  /* create page name */
-		  pageName = [NSString stringWithFormat: @"SOGoAptMail%@%@",
-				       language, newPageName];
+		  pageName = [NSString stringWithFormat: @"SOGoAptMail%@",
+                                       newPageName];
 		  /* construct message content */
 		  p = [app pageWithName: pageName inContext: context];
-		  [p setApt: object];
-		  [p setPreviousApt: previousObject];
+		  [p setApt: (iCalEvent *) object];
+		  [p setPreviousApt: (iCalEvent *) previousObject];
 		  
 		  if ([[object organizer] cn] && [[[object organizer] cn] length])
 		    {
@@ -723,7 +728,7 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
 		      [p setOrganizerName: [ownerUser cn]];
 		    }
 
-		  subject = [p getSubject];
+		  subject = [[p getSubject] asQPSubjectString: @"utf-8"];
 		  text = [p getBody];
 
 		  /* construct message */
@@ -792,7 +797,7 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
 			  from: (SOGoUser *) from
 			    to: (iCalPerson *) recipient
 {
-  NSString *pageName, *language, *mailDate, *email;
+  NSString *pageName, *mailDate, *email;
   WOApplication *app;
   iCalPerson *attendee;
   NSString *iCalString;
@@ -810,13 +815,11 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
       /* get WOApplication instance */
       app = [WOApplication application];
 
-      language = [[from userDefaults] language];
       /* create page name */
-      pageName = [NSString stringWithFormat: @"SOGoAptMail%@ICalReply",
-                           language];
+      pageName = @"SOGoAptMailICalReply";
       /* construct message content */
       p = [app pageWithName: pageName inContext: context];
-      [p setApt: event];
+      [p setApt: (iCalEvent *) event];
 
       attendee = [event findParticipant: from];
       [p setAttendee: attendee];
@@ -834,7 +837,8 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
       [headerMap setObject: [recipient mailAddress] forKey: @"to"];
       mailDate = [[NSCalendarDate date] rfc822DateString];
       [headerMap setObject: mailDate forKey: @"date"];
-      [headerMap setObject: [p getSubject] forKey: @"subject"];
+      [headerMap setObject: [[p getSubject] asQPSubjectString: @"utf-8"]
+                    forKey: @"subject"];
       [headerMap setObject: @"1.0" forKey: @"MIME-Version"];
       [headerMap setObject: @"multipart/mixed" forKey: @"content-type"];
       msg = [NGMimeMessage messageWithHeader: headerMap];
@@ -915,7 +919,7 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
                            template];
       page = [[WOApplication application] pageWithName: pageName
                                              inContext: context];
-      [page setApt: object];
+      [page setApt: (iCalEvent *) object];
       [page setRecipients: attendees];
 
       identity = [currentUser primaryIdentity];

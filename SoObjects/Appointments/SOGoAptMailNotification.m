@@ -27,33 +27,24 @@
 #import <NGObjWeb/WOActionResults.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSObject+Logs.h>
-#import <NGCards/iCalEntityObject.h>
+#import <NGCards/iCalEvent.h>
 #import <NGCards/iCalPerson.h>
 
-#import <SoObjects/SOGo/NSString+Utilities.h>
+#import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/NSObject+Utilities.h>
+#import <SOGo/NSString+Utilities.h>
 
 #import "iCalPerson+SOGo.h"
 #import "SOGoAptMailNotification.h"
 
-@interface SOGoAptMailNotification (PrivateAPI)
-
-- (BOOL) isSubject;
-- (void) setIsSubject: (BOOL) newIsSubject;
-
-@end
-
 @implementation SOGoAptMailNotification
 
-static NSCharacterSet *wsSet = nil;
 static NSTimeZone *UTC = nil;
 
 + (void) initialize
 {
-  if (!wsSet)
-    {
-      wsSet = [[NSCharacterSet whitespaceAndNewlineCharacterSet] retain];
-      UTC = [[NSTimeZone timeZoneWithAbbreviation: @"UTC"] retain];
-    }
+  if (!UTC)
+    UTC = [[NSTimeZone timeZoneWithAbbreviation: @"UTC"] retain];
 }
 
 - (id) init
@@ -61,6 +52,7 @@ static NSTimeZone *UTC = nil;
   if ((self = [super init]))
     {
       apt = nil;
+      values = nil;
     }
 
   return self;
@@ -68,6 +60,7 @@ static NSTimeZone *UTC = nil;
 
 - (void) dealloc
 {
+  [values release];
   [apt release];
   [previousApt release];
   [organizerName release];
@@ -77,24 +70,24 @@ static NSTimeZone *UTC = nil;
   [super dealloc];
 }
 
-- (iCalEntityObject *) apt
+- (iCalEvent *) apt
 {
   return apt;
 }
 
-- (void) setApt: (iCalEntityObject *) theApt
+- (void) setApt: (iCalEvent *) theApt
 {
-  ASSIGN(apt, theApt);
+  ASSIGN (apt, theApt);
 }
 
-- (iCalEntityObject *) previousApt
+- (iCalEvent *) previousApt
 {
   return previousApt;
 }
 
-- (void) setPreviousApt: (iCalEntityObject *) theApt
+- (void) setPreviousApt: (iCalEvent *) theApt
 {
-  ASSIGN(previousApt, theApt);
+  ASSIGN (previousApt, theApt);
 }
 
 - (BOOL) hasNewLocation
@@ -109,42 +102,32 @@ static NSTimeZone *UTC = nil;
 
 - (NSTimeZone *) viewTZ 
 {
-  if (self->viewTZ) return self->viewTZ;
+  if (viewTZ) return viewTZ;
   return UTC;
 }
 - (void) setViewTZ: (NSTimeZone *) _viewTZ
 {
-  ASSIGN(self->viewTZ, _viewTZ);
+  ASSIGN (viewTZ, _viewTZ);
 }
 
 - (NSCalendarDate *) oldStartDate
 {
-  if (!self->oldStartDate)
+  if (!oldStartDate)
     {
-      ASSIGN(self->oldStartDate, [[self previousApt] startDate]);
-      [self->oldStartDate setTimeZone: [self viewTZ]];
+      ASSIGN (oldStartDate, [[self previousApt] startDate]);
+      [oldStartDate setTimeZone: [self viewTZ]];
     }
-  return self->oldStartDate;
+  return oldStartDate;
 }
 
 - (NSCalendarDate *) newStartDate
 {
-  if (!self->newStartDate)
+  if (!newStartDate)
     {
-      ASSIGN(self->newStartDate, [[self apt] startDate]);
-      [self->newStartDate setTimeZone:[self viewTZ]];
+      ASSIGN (newStartDate, [[self apt] startDate]);
+      [newStartDate setTimeZone:[self viewTZ]];
     }
-  return self->newStartDate;
-}
-
-- (BOOL) isSubject
-{
-  return isSubject;
-}
-
-- (void) setIsSubject: (BOOL) newIsSubject
-{
-  isSubject = newIsSubject;
+  return newStartDate;
 }
 
 - (NSString *) summary
@@ -154,22 +137,12 @@ static NSTimeZone *UTC = nil;
 
 - (void) setOrganizerName: (NSString *) theString
 {
-  ASSIGN(organizerName, theString);
+  ASSIGN (organizerName, theString);
 }
 
 - (NSString *) organizerName
 {
   return organizerName;
-}
-
-- (BOOL) hasSentBy
-{
-  return [[apt organizer] hasSentBy];
-}
-
-- (NSString *) sentBy
-{
-  return [[apt organizer] sentBy];
 }
 
 /* Helpers */
@@ -178,31 +151,43 @@ static NSTimeZone *UTC = nil;
 
 - (NSString *) getSubject
 {
-  NSString *subject;
+  [self subclassResponsibility: _cmd];
 
-  [self setIsSubject: YES];
-  subject = [[[self generateResponse] contentAsString]
-	      stringByTrimmingCharactersInSet: wsSet];
-  if (!subject)
-    {
-      [self errorWithFormat:@"Failed to properly generate subject! Please check "
-	    @"template for component '%@'!",
-	    [self name]];
-      subject = @"ERROR: missing subject!";
-    }
-
-  return [subject asQPSubjectString: @"utf-8"];
+  return nil;
 }
 
 - (NSString *) getBody
 {
-  NSString *body;
+  [self subclassResponsibility: _cmd];
 
-  [self setIsSubject:NO];
+  return nil;
+}
 
-  body = [[self generateResponse] contentAsString];
+- (void) setupValues
+{
+  NSDictionary *sentByValues;
+  NSString *sentBy, *sentByText;
 
-  return [body stringByTrimmingCharactersInSet: wsSet];
+  values = [NSMutableDictionary new];
+  [values setObject: [self summary] forKey: @"Summary"];
+  if (organizerName)
+    {
+      [values setObject: organizerName forKey: @"Organizer"];
+
+      sentBy = [[apt organizer] sentBy];
+      if ([sentBy length])
+        {
+          sentByValues = [NSDictionary dictionaryWithObject: sentBy
+                                                     forKey: @"SentBy"];
+          sentByText
+            = [sentByValues keysWithFormat: [self
+                                              labelForKey: @"(sent by %{SentBy})"
+                                                inContext: context]];
+        }
+      else
+        sentByText = @"";
+      [values setObject: sentByText forKey: @"SentByText"];
+    }
 }
 
 @end

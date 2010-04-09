@@ -1,97 +1,172 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2010 Inverse
 
-  This file is part of OpenGroupware.org.
+  This file is part of SOGo
 
-  OGo is free software; you can redistribute it and/or modify it under
+  SOGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
   Free Software Foundation; either version 2, or (at your option) any
   later version.
 
-  OGo is distributed in the hope that it will be useful, but WITHOUT ANY
+  SOGo is distributed in the hope that it will be useful, but WITHOUT ANY
   WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
   License for more details.
 
   You should have received a copy of the GNU Lesser General Public
-  License along with OGo; see the file COPYING.  If not, write to the
+  License along with SOGo; see the file COPYING.  If not, write to the
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
 
-#include "SOGoAptMailNotification.h"
+#import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGCards/iCalEvent.h>
+#import <NGCards/iCalEventChanges.h>
 
-@interface SOGoAptMailEnglishUpdate : SOGoAptMailNotification
+#import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/NSObject+Utilities.h>
+#import <SOGo/SOGoDateFormatter.h>
+#import <SOGo/SOGoUser.h>
+
+#import "SOGoAptMailNotification.h"
+
+@interface SOGoAptMailUpdate : SOGoAptMailNotification
+{
+  NSMutableDictionary *values;
+}
+
 @end
 
-@implementation SOGoAptMailEnglishUpdate
-@end
+@implementation SOGoAptMailUpdate
 
-@interface SOGoAptMailRussianUpdate : SOGoAptMailNotification
-@end
+- (NSString *) valueForProperty: (NSString *) property
+{
+  static NSDictionary *valueTypes = nil;
+  SOGoDateFormatter *dateFormatter;
+  NSString *valueType;
+  id value;
 
-@implementation SOGoAptMailRussianUpdate
-@end
+  if (!valueTypes)
+    {
+      valueTypes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                   @"date", @"startDate",
+                                 @"date", @"endDate",
+                                 @"date", @"due",
+                                 @"text", @"location",
+                                 @"text", @"summary",
+                                 @"text", @"comment",
+                                 nil];
+      [valueTypes retain];
+    }
 
-@interface SOGoAptMailBrazilianPortugueseUpdate : SOGoAptMailNotification
-@end
+  valueType = [valueTypes objectForKey: property];
+  if (valueType)
+    {
+      value = [(iCalEvent *) apt propertyValue: property];
+      if ([valueType isEqualToString: @"date"])
+        {
+          dateFormatter = [[context activeUser]
+                            dateFormatterInContext: context];
+          value = [dateFormatter formattedDateAndTime: value];
+        }
+    }
+  else
+    value = nil;
 
-@implementation SOGoAptMailBrazilianPortugueseUpdate
-@end
+  return value;
+}
 
-@interface SOGoAptMailCzechUpdate : SOGoAptMailNotification
-@end
+- (void) _setupBodyContent
+{
+  NSArray *updatedProperties;
+  NSMutableString *bodyContent;
+  NSString *property, *label, *value;
+  int count, max;
 
-@implementation SOGoAptMailCzechUpdate
-@end
+  updatedProperties = [[iCalEventChanges changesFromEvent: previousApt
+                                                  toEvent: apt]
+                        updatedProperties];
+  bodyContent = [NSMutableString new];
+  max = [updatedProperties count];
+  for (count = 0; count < max; count++)
+    {
+      property = [updatedProperties objectAtIndex: count];
+      value = [self valueForProperty: property];
+      /* Unhandled properties will return nil */
+      if (value)
+        {
+          label = [self labelForKey: [NSString stringWithFormat: @"%@_label",
+                                               property]
+                          inContext: context];
+          [bodyContent appendFormat: @"  %@ %@\n", label, value];
+        }
+    }
+  [values setObject: bodyContent forKey: @"_bodyContent"];
+  [bodyContent release];
+}
 
-@interface SOGoAptMailDutchUpdate : SOGoAptMailNotification
-@end
+- (void) _setupBodyValues
+{
+  NSString *bodyText;
 
-@implementation SOGoAptMailDutchUpdate
-@end
+  bodyText = [self labelForKey: @"The following parameters have changed"
+                   @" in the \"%{Summary}\" meeting:"
+                     inContext: context];
+  [values setObject: [values keysWithFormat: bodyText]
+             forKey: @"_bodyStart"];
+  [self _setupBodyContent];
+  [values setObject: [self labelForKey: @"Please accept"
+                           @" or decline those changes."
+                             inContext: context]
+             forKey: @"_bodyEnd"];
+}
 
-@interface SOGoAptMailFrenchUpdate : SOGoAptMailNotification
-@end
+- (void) setupValues
+{
+  NSCalendarDate *date;
+  SOGoDateFormatter *dateFormatter;
 
-@implementation SOGoAptMailFrenchUpdate
-@end
+  [super setupValues];
 
+  dateFormatter = [[context activeUser] dateFormatterInContext: context];
 
-@interface SOGoAptMailGermanUpdate : SOGoAptMailNotification
-@end
+  date = [self oldStartDate];
+  [values setObject: [dateFormatter shortFormattedDate: date]
+             forKey: @"OldStartDate"];
+  [values setObject: [dateFormatter formattedTime: date]
+             forKey: @"OldStartTime"];
 
-@implementation SOGoAptMailGermanUpdate
-@end
+  date = [self newStartDate];
+  [values setObject: [dateFormatter shortFormattedDate: date]
+             forKey: @"StartDate"];
+  [values setObject: [dateFormatter formattedTime: date]
+             forKey: @"StartTime"];
 
+  [self _setupBodyValues];
+}
 
-@interface SOGoAptMailHungarianUpdate : SOGoAptMailNotification
-@end
+- (NSString *) getSubject
+{
+  NSString *subjectFormat;
 
-@implementation SOGoAptMailHungarianUpdate
-@end
+  if (!values)
+    [self setupValues];
 
+  subjectFormat = [self labelForKey: @"The appointment \"%{Summary}\" for the"
+                        @" %{OldStartDate} at"
+                        @" %{OldStartTime} has changed"
+                          inContext: context];
 
-@interface SOGoAptMailItalianUpdate : SOGoAptMailNotification
-@end
+  return [values keysWithFormat: subjectFormat];
+}
 
-@implementation SOGoAptMailItalianUpdate
-@end
+- (NSString *) getBody
+{
+  if (!values)
+    [self setupValues];
 
-@interface SOGoAptMailSpanishUpdate : SOGoAptMailNotification
-@end
+  return [values keysWithFormat:
+                   @"%{_bodyStart}\n%{_bodyContent}\n%{_bodyEnd}\n"];
+}
 
-@implementation SOGoAptMailSpanishUpdate
-@end
-
-@interface SOGoAptMailSwedishUpdate : SOGoAptMailNotification
-@end
-
-@implementation SOGoAptMailSwedishUpdate
-@end
-
-@interface SOGoAptMailWelshUpdate : SOGoAptMailNotification
-@end
-
-@implementation SOGoAptMailWelshUpdate
 @end

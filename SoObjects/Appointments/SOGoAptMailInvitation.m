@@ -1,94 +1,62 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
- 
-  This file is part of OpenGroupware.org.
- 
-  OGo is free software; you can redistribute it and/or modify it under
+  Copyright (C) 2010 Inverse
+
+  This file is part of SOGo
+
+  SOGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
   Free Software Foundation; either version 2, or (at your option) any
   later version.
 
-  OGo is distributed in the hope that it will be useful, but WITHOUT ANY
+  SOGo is distributed in the hope that it will be useful, but WITHOUT ANY
   WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
   License for more details.
 
   You should have received a copy of the GNU Lesser General Public
-  License along with OGo; see the file COPYING.  If not, write to the
+  License along with SOGo; see the file COPYING.  If not, write to the
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
 
+#import <NGCards/iCalEvent.h>
+
+#import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/NSObject+Utilities.h>
+
+#import "iCalPerson+SOGo.h"
+
 #import "SOGoAptMailNotification.h"
 
-@interface SOGoAptMailEnglishInvitation : SOGoAptMailNotification
+@interface SOGoAptMailInvitation : SOGoAptMailNotification
 @end
 
-@implementation SOGoAptMailEnglishInvitation
-@end
+@implementation SOGoAptMailInvitation
 
-@interface SOGoAptMailBrazilianPortugueseInvitation : SOGoAptMailNotification
-@end
+- (NSString *) getSubject
+{
+  NSString *subjectFormat;
 
-@implementation SOGoAptMailBrazilianPortugueseInvitation
-@end
+  if (!values)
+    [self setupValues];
 
-@interface SOGoAptMailCzechInvitation : SOGoAptMailNotification
-@end
+  subjectFormat = [self labelForKey: @"Event Invitation: \"%{Summary}\""
+                          inContext: context];
 
-@implementation SOGoAptMailCzechInvitation
-@end
+  return [values keysWithFormat: subjectFormat];
+}
 
-@interface SOGoAptMailDutchInvitation : SOGoAptMailNotification
-@end
+- (NSString *) getBody
+{
+  NSString *bodyFormat;
 
-@implementation SOGoAptMailDutchInvitation
-@end
+  if (!values)
+    [self setupValues];
 
-@interface SOGoAptMailFrenchInvitation : SOGoAptMailNotification
-@end
+  bodyFormat = [self labelForKey: @"%{Organizer} %{SentByText}has invited you to %{Summary}."
+                       inContext: context];
 
-@implementation SOGoAptMailFrenchInvitation
-@end
+  return [values keysWithFormat: bodyFormat];
+}
 
-@interface SOGoAptMailGermanInvitation : SOGoAptMailNotification
-@end
-
-@implementation SOGoAptMailGermanInvitation
-@end
-
-@interface SOGoAptMailHungarianInvitation : SOGoAptMailNotification
-@end
-
-@implementation SOGoAptMailHungarianInvitation
-@end
-
-@interface SOGoAptMailItalianInvitation : SOGoAptMailNotification
-@end
-
-@implementation SOGoAptMailItalianInvitation
-@end
-
-@interface SOGoAptMailRussianInvitation : SOGoAptMailNotification
-@end
-
-@implementation SOGoAptMailRussianInvitation
-@end
-
-@interface SOGoAptMailSpanishInvitation : SOGoAptMailNotification
-@end
-
-@implementation SOGoAptMailSpanishInvitation
-@end
-
-@interface SOGoAptMailSwedishInvitation : SOGoAptMailNotification
-@end
-
-@implementation SOGoAptMailSwedishInvitation
-@end
-
-@interface SOGoAptMailWelshInvitation : SOGoAptMailNotification
-@end
-
-@implementation SOGoAptMailWelshInvitation
 @end

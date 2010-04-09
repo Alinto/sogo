@@ -28,6 +28,7 @@
 #import <DOM/DOMProtocols.h>
 
 @class NSString;
+@class WOContext;
 
 @interface NSObject (SOGoObjectUtilities)
 
@@ -35,6 +36,9 @@
 
 - (NSArray *) domNode: (id <DOMNode>) node
   getChildNodesByType: (DOMNodeType) type;
+
+- (NSString *) labelForKey: (NSString *) key
+                 inContext: (WOContext *) context;
 
 @end
 

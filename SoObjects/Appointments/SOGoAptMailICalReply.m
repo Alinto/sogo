@@ -1,6 +1,6 @@
 /* SOGoAptMailICalReply - this file is part of SOGo
  *
- * Copyright (C) 2007-2009 Inverse inc.
+ * Copyright (C) 2010 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -20,51 +20,18 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSCharacterSet.h>
-#import <Foundation/NSCalendarDate.h>
-#import <Foundation/NSTimeZone.h>
-
-#import <NGObjWeb/WOActionResults.h>
-#import <NGObjWeb/WOResponse.h>
-#import <NGObjWeb/WOContext+SoObjects.h>
-#import <NGExtensions/NSObject+Logs.h>
-
-#import <NGCards/iCalEntityObject.h>
-#import <NGCards/iCalPerson.h>
-
-#import <SOGo/NSString+Utilities.h>
-#import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoUserDefaults.h>
+#import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/NSObject+Utilities.h>
 
 #import "iCalPerson+SOGo.h"
 #import "SOGoAptMailICalReply.h"
 
-@interface SOGoAptMailICalReply (PrivateAPI)
-
-- (BOOL) isSubject;
-
-@end
-
 @implementation SOGoAptMailICalReply
-
-static NSCharacterSet *wsSet  = nil;
-
-+ (void) initialize
-{
-  static BOOL didInit = NO;
-
-  if (!didInit)
-    {
-      didInit = YES;
-      wsSet = [[NSCharacterSet whitespaceAndNewlineCharacterSet] retain];
-    }
-}
 
 - (id) init
 {
   if ((self = [super init]))
     {
-      apt = nil;
       attendee = nil;
     }
 
@@ -73,19 +40,8 @@ static NSCharacterSet *wsSet  = nil;
 
 - (void) dealloc
 {
-  [apt release];
   [attendee release];
   [super dealloc];
-}
-
-- (void) setApt: (iCalEntityObject *) newApt
-{
-  ASSIGN (apt, newApt);
-}
-
-- (iCalEntityObject *) apt
-{
-  return apt;
 }
 
 - (void) setAttendee: (iCalPerson *) newAttendee
@@ -110,158 +66,76 @@ static NSCharacterSet *wsSet  = nil;
   return [attendee rfc822Email];
 }
 
-- (BOOL) hasSentBy
+- (void) setupValues
 {
-  return [attendee hasSentBy];
-}
+  NSDictionary *sentByValues;
+  NSString *sentBy, *sentByText;
 
-- (NSString *) sentBy
-{
-  return [attendee sentBy];
-}
+  [super setupValues];
 
-- (BOOL) hasAccepted
-{
-  NSString *partStat;
+  [values setObject: [self attendeeName] forKey: @"Attendee"];
 
-  partStat = [[attendee partStat] lowercaseString];
-
-  return [partStat isEqualToString: @"accepted"];
-}
-
-- (BOOL) hasDeclined
-{
-  NSString *partStat;
-
-  partStat = [[attendee partStat] lowercaseString];
-
-  return [partStat isEqualToString: @"declined"];
-}
-
-- (BOOL) hasNotAcceptedNotDeclined
-{
-  return !([self hasAccepted] || [self hasDeclined]);
-}
-
-- (NSCalendarDate *) startDate
-{
-  NSCalendarDate *date;
-  SOGoUser *user;
-  NSTimeZone *tz;
-
-  date = [apt startDate];
-  user = [[self context] activeUser];
-  tz = [[user userDefaults] timeZone];
-  [date setTimeZone: tz];
-
-  return date;
-}
-
-- (NSString *) summary
-{
-  return [apt summary];
-}
-
-- (BOOL) isSubject
-{
-  return isSubject;
+  sentBy = [attendee sentBy];
+  if ([sentBy length])
+    {
+      sentByValues = [NSDictionary dictionaryWithObject: sentBy
+                                                 forKey: @"SentBy"];
+      sentByText
+        = [sentByValues keysWithFormat: [self
+                                          labelForKey: @"(sent by %{SentBy})"
+                                            inContext: context]];
+    }
+  else
+    sentByText = @"";
+  [values setObject: sentByText forKey: @"SentByText"];
 }
 
 /* Generate Response */
 
 - (NSString *) getSubject
 {
-  NSString *subject;
+  NSString *subjectFormat;
 
-  isSubject = YES;
-  subject = [[[self generateResponse] contentAsString]
-	      stringByTrimmingCharactersInSet: wsSet];
-  if (!subject)
-    {
-      [self errorWithFormat:@"Failed to properly generate subject! Please check "
-	    @"template for component '%@'!",
-	    [self name]];
-      subject = @"ERROR: missing subject!";
-    }
+  if (!values)
+    [self setupValues];
 
-  return [subject asQPSubjectString: @"utf-8"];
+  subjectFormat = [self labelForKey: @"Reply to invitation: \"%{Summary}\""
+                          inContext: context];
+
+  return [values keysWithFormat: subjectFormat];
 }
 
 - (NSString *) getBody
 {
-  NSString *body;
+  NSString *bodyFormat;
+  NSString *partStat, *delegate;
 
-  isSubject = NO;
+  if (!values)
+    [self setupValues];
 
-  body = [[self generateResponse] contentAsString];
+  partStat = [[attendee partStat] lowercaseString];
+  if ([partStat isEqualToString: @"accepted"])
+    bodyFormat = @"%{Attendee} %{SentByText}has accepted your event invitation.";
+  else if ([partStat isEqualToString: @"declined"])
+    bodyFormat = @"%{Attendee} %{SentByText}has declined your event invitation.";
+  else if ([partStat isEqualToString: @"delegated"])
+    {
+      bodyFormat = @"%{Attendee} %{SentByText}has delegated the invitation"
+        @" to %{Delegate}.";
+      delegate = [attendee delegatedTo];
+      if ([delegate length] > 7)
+        {
+          delegate = [delegate substringFromIndex: 7];
+          if ([delegate characterAtIndex: 0] == '"' && [delegate hasSuffix: @"\""])
+            delegate = [delegate substringWithRange: NSMakeRange(1, [delegate length]-2)];
+          
+          [values setObject: delegate forKey: @"Delegate"];
+        }
+    }
+  else
+    bodyFormat = @"%{Attendee} %{SentByText}has not yet decided upon your event invitation.";
 
-  return [body stringByTrimmingCharactersInSet: wsSet];
+  return [values keysWithFormat: [self labelForKey: bodyFormat inContext: context]];
 }
 
-@end
-
-@interface SOGoAptMailEnglishICalReply : SOGoAptMailICalReply
-@end
-
-@implementation SOGoAptMailEnglishICalReply
-@end
-
-@interface SOGoAptMailBrazilianPortugueseICalReply : SOGoAptMailICalReply
-@end
-
-@implementation SOGoAptMailBrazilianPortugueseICalReply
-@end
-
-@interface SOGoAptMailCzechICalReply : SOGoAptMailICalReply
-@end
-
-@implementation SOGoAptMailCzechICalReply
-@end
-
-@interface SOGoAptMailFrenchICalReply : SOGoAptMailICalReply
-@end
-
-@implementation SOGoAptMailFrenchICalReply
-@end
-
-@interface SOGoAptMailGermanICalReply : SOGoAptMailICalReply
-@end
-
-@implementation SOGoAptMailGermanICalReply
-@end
-
-@interface SOGoAptMailHungarianICalReply : SOGoAptMailICalReply
-@end
-
-@implementation SOGoAptMailHungarianICalReply
-@end
-
-@interface SOGoAptMailItalianICalReply : SOGoAptMailICalReply
-@end
-
-@implementation SOGoAptMailItalianICalReply
-@end
-
-@interface SOGoAptMailRussianICalReply : SOGoAptMailICalReply
-@end
-
-@implementation SOGoAptMailRussianICalReply
-@end
-
-@interface SOGoAptMailSpanishICalReply : SOGoAptMailICalReply
-@end
-
-@implementation SOGoAptMailSpanishICalReply
-@end
-
-@interface SOGoAptMailSwedishICalReply : SOGoAptMailICalReply
-@end
-
-@implementation SOGoAptMailSwedishICalReply
-@end
-
-@interface SOGoAptMailWelshICalReply : SOGoAptMailICalReply
-@end
-
-@implementation SOGoAptMailWelshICalReply
 @end

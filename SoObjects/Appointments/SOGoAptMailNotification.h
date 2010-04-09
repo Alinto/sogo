@@ -25,8 +25,11 @@
 
 #include <NGObjWeb/SoComponent.h>
 
-@class NSString, NSTimeZone, NSCalendarDate;
-@class iCalEntityObject;
+@class NSCalendarDate;
+@class NSMutableDictionary;
+@class NSString;
+@class NSTimeZone;
+@class iCalEvent;
 
 /*
  * NOTE: We inherit from SoComponent in order to get the correct
@@ -34,27 +37,30 @@
  */
 @interface SOGoAptMailNotification : SoComponent
 {
-  iCalEntityObject *apt;
-  iCalEntityObject *previousApt;
+  iCalEvent *apt;
+  iCalEvent *previousApt;
   NSString *homePageURL;
   NSTimeZone *viewTZ;
   NSCalendarDate *oldStartDate;
   NSCalendarDate *newStartDate;
   BOOL isSubject;
   NSString *organizerName;
+  NSMutableDictionary *values;
 }
 
-- (iCalEntityObject *) apt;
-- (void) setApt: (iCalEntityObject *) theApt;
+- (void) setupValues;
 
-- (iCalEntityObject *) previousApt;
-- (void) setPreviousApt: (iCalEntityObject *) theApt;
+- (iCalEvent *) apt;
+- (void) setApt: (iCalEvent *) theApt;
+
+- (iCalEvent *) previousApt;
+- (void) setPreviousApt: (iCalEvent *) theApt;
 
 - (void) setOrganizerName: (NSString *) theString;
 - (NSString *) organizerName;
 
-- (BOOL) hasSentBy;
-- (NSString *) sentBy;
+- (NSCalendarDate *) oldStartDate;
+- (NSCalendarDate *) newStartDate;
 
 - (NSString *) getSubject;
 - (NSString *) getBody;

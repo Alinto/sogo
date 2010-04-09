@@ -38,6 +38,7 @@
 
 #import <SOGo/WORequest+SOGo.h>
 #import <SOGo/NSObject+DAV.h>
+#import <SOGo/NSObject+Utilities.h>
 #import <SOGo/SOGoParentFolder.h>
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
@@ -74,7 +75,7 @@
 
 - (NSString *) defaultFolderName
 {
-  return [self labelForKey: @"Personal Calendar"];
+  return [self labelForKey: @"Personal Calendar" inContext: context];
 }
 
 - (NSArray *) toManyRelationshipKeys

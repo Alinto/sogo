@@ -23,3 +23,40 @@ vtodo_class2 = "(Konfidentiell uppgift)";
 "Receipt: attendees removed from an event" = "Kvitto: deltagare bottagna från en händelse";
 "You have removed the following attendees(s):" = "Du har tagit bort följande deltagare:";
 "... from the following event:" = "... från följande händelse:";
+
+/* IMIP messages */
+"startDate_label" = "Start:";
+"endDate_label" = "End:";
+"due_label" = "Due Date:";
+"location_label" = "Location:";
+"summary_label" = "Summary:";
+"comment_label" = "Comment:";
+
+/* Invitation */
+"Event Invitation: \"%{Summary}\"" = "Event Invitation: \"%{Summary}\"";
+"(sent by %{SentBy}) " = "(sent by %{SentBy}) ";
+"%{Organizer} %{SentByText}has invited you to %{Summary}." = "%{Organizer} %{SentByText}has invited you to %{Summary}.";
+
+/* Deletion */
+"Event Cancelled: \"%{Summary}\"" = "Event Cancelled: \"%{Summary}\"";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}."
+= "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.";
+
+/* Update */
+"The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
+= "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed";
+"The following parameters have changed in the \"%{Summary}\" meeting:"
+= "The following parameters have changed in the \"%{Summary}\" meeting:";
+"Please accept or decline those changes."
+= "Please accept or decline those changes.";
+
+/* Reply */
+"Reply to invitation: \"%{Summary}\"" = "Reply to invitation: \"%{Summary}\"";
+"%{Attendee} %{SentByText}has accepted your event invitation."
+= "%{Attendee} %{SentByText}has accepted your event invitation.";
+"%{Attendee} %{SentByText}has declined your event invitation."
+= "%{Attendee} %{SentByText}has declined your event invitation.";
+"%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
+= "%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}.";
+"%{Attendee} %{SentByText}has not yet decided upon your event invitation."
+= "%{Attendee} %{SentByText}has not yet decided upon your event invitation.";

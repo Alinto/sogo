@@ -21,7 +21,15 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSBundle.h>
 #import <Foundation/NSString.h>
+
+#import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGObjWeb/WORequest.h>
+
+#import "NSDictionary+Utilities.h"
+#import "SOGoUser.h"
+#import "SOGoUserDefaults.h"
 
 #import "NSObject+Utilities.h"
 
@@ -51,6 +59,66 @@
     }
 
   return nodes;
+}
+
+- (NSArray *) _languagesForLabelsInContext: (WOContext *) context
+{
+  NSMutableArray *languages;
+  NSArray *browserLanguages;
+  NSString *language;
+  SOGoUser *user;
+
+#warning the purpose of this method needs to be reviewed
+  languages = [NSMutableArray array];
+
+  user = [context activeUser];
+  if ([user isKindOfClass: [SOGoUser class]])
+    {
+      language = [[user userDefaults] language];
+      [languages addObject: language];
+    }
+  else
+    {
+      browserLanguages = [[context request] browserLanguages];
+      [languages addObjectsFromArray: browserLanguages];
+    }
+
+  return languages;
+}
+
+- (NSString *) labelForKey: (NSString *) key
+                 inContext: (WOContext *) context
+{
+  NSString *language, *label;
+  NSArray *paths;
+  NSEnumerator *languages;
+  NSBundle *bundle;
+  NSDictionary *strings;
+
+  label = nil;
+
+  bundle = [NSBundle bundleForClass: [self class]];
+  if (!bundle)
+    bundle = [NSBundle mainBundle];
+  languages = [[self _languagesForLabelsInContext: context] objectEnumerator];
+
+  while (!label && (language = [languages nextObject]))
+    {
+      paths = [bundle pathsForResourcesOfType: @"strings"
+		      inDirectory: [NSString stringWithFormat: @"%@.lproj",
+					     language]
+		      forLocalization: language];
+      if ([paths count] > 0)
+	{
+	  strings = [NSDictionary
+		      dictionaryFromStringsFile: [paths objectAtIndex: 0]];
+	  label = [strings objectForKey: key];
+	}
+    }
+  if (!label)
+    label = key;
+  
+  return label;
 }
 
 @end

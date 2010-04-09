@@ -23,3 +23,41 @@ vtodo_class2 = "(Tâche confidentielle)";
 "Receipt: attendees removed from an event" = "Acc. de réception: invitations annulées";
 "You have removed the following attendees(s):" = "Les utilisateurs suivants :";
 "... from the following event:" = "... ne sont plus invités à cette réunion :";
+
+/* IMIP messages */
+"startDate_label" = "Du :";
+"endDate_label" = "au :";
+"due_label" = "Fin prévue :";
+"location_label" = "Lieu :";
+"summary_label" = "Titre :";
+"comment_label" = "Description :";
+
+/* Invitation */
+"Event Invitation: \"%{Summary}\"" = "Invitation à la réunion : \"%{Summary}\"";
+"(sent by %{SentBy}) " = "(envoyé par %{SentBy}) ";
+"%{Organizer} %{SentByText}has invited you to %{Summary}."
+ = "%{Organizer} %{SentByText}vous a invité à la réunion « %{Summary} ».";
+
+/* Deletion */
+"Event Cancelled: \"%{Summary}\"" = "Réunion annulée : « %{Summary} »";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}."
+= "%{Organizer} %{SentByText}a annulé cette réunion : « %{Summary} »";
+
+/* Update */
+"The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
+= "La réunion « %{Summary} » de %{OldStartDate} à %{OldStartTime} a été modifiée";
+"The following parameters have changed in the \"%{Summary}\" meeting:"
+= "Les paramètres suivants ont été modifiés pour la réunion « %{Summary} » :";
+"Please accept or decline those changes."
+= "Veuillez reconfirmer ou annuler votre présence.";
+
+/* Reply */
+"Reply to invitation: \"%{Summary}\"" = "Réponse à l'invitation : « %{Summary} »";
+"%{Attendee} %{SentByText}has accepted your event invitation."
+= "%{Attendee} %{SentByText}a accepté votre invitation.";
+"%{Attendee} %{SentByText}has declined your event invitation."
+= "%{Attendee} %{SentByText}a décliné votre invitation.";
+"%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
+= "%{Attendee} %{SentByText}a délégué votre invitation à %{Delegate}.";
+"%{Attendee} %{SentByText}has not yet decided upon your event invitation."
+= "%{Attendee} %{SentByText}choisir de reporter sa décision par rapport à votre invitation.";

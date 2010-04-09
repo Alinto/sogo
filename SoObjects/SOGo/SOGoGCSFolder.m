@@ -58,6 +58,7 @@
 #import "NSArray+Utilities.h"
 #import "NSArray+DAV.h"
 #import "NSObject+DAV.h"
+#import "NSObject+Utilities.h"
 #import "NSString+Utilities.h"
 #import "NSString+DAV.h"
 
@@ -271,7 +272,8 @@ static NSArray *childRecordFields = nil;
     {
       displayName = [NSMutableString new];
       if ([primaryDN isEqualToString: [container defaultFolderName]])
-	[displayName appendString: [self labelForKey: primaryDN]];
+	[displayName appendString: [self labelForKey: primaryDN
+                                           inContext: context]];
       else
 	[displayName appendString: primaryDN];
 

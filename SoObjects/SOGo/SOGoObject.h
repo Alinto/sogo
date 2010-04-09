@@ -90,8 +90,6 @@
 - (NSURL *) soURLToBaseContainerForCurrentUser;
 - (NSString *) davURLAsString;
 
-- (NSString *) labelForKey: (NSString *) key;
-
 /* ownership */
 
 - (void) setOwner: (NSString *) newOwner;

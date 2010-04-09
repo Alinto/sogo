@@ -1,94 +1,59 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2010 Inverse
 
-  This file is part of OpenGroupware.org.
+  This file is part of SOGo
 
-  OGo is free software; you can redistribute it and/or modify it under
+  SOGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
   Free Software Foundation; either version 2, or (at your option) any
   later version.
 
-  OGo is distributed in the hope that it will be useful, but WITHOUT ANY
+  SOGo is distributed in the hope that it will be useful, but WITHOUT ANY
   WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
   License for more details.
 
   You should have received a copy of the GNU Lesser General Public
-  License along with OGo; see the file COPYING.  If not, write to the
+  License along with SOGo; see the file COPYING.  If not, write to the
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
 
-#include "SOGoAptMailNotification.h"
+#import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/NSObject+Utilities.h>
 
-@interface SOGoAptMailEnglishDeletion : SOGoAptMailNotification
+#import "SOGoAptMailNotification.h"
+
+@interface SOGoAptMailDeletion : SOGoAptMailNotification
 @end
 
-@implementation SOGoAptMailEnglishDeletion
-@end
+@implementation SOGoAptMailDeletion
 
-@interface SOGoAptMailBrazilianPortugueseDeletion : SOGoAptMailNotification
-@end
+- (NSString *) getSubject
+{
+  NSString *subjectFormat;
 
-@implementation SOGoAptMailBrazilianPortugueseDeletion
-@end
+  if (!values)
+    [self setupValues];
 
-@interface SOGoAptMailCzechDeletion : SOGoAptMailNotification
-@end
+  subjectFormat = [self labelForKey: @"Event Cancelled: \"%{Summary}\""
+                          inContext: context];
 
-@implementation SOGoAptMailCzechDeletion
-@end
+  return [values keysWithFormat: subjectFormat];
+}
 
-@interface SOGoAptMailDutchDeletion : SOGoAptMailNotification
-@end
+- (NSString *) getBody
+{
+  NSString *bodyFormat;
 
-@implementation SOGoAptMailDutchDeletion
-@end
+  if (!values)
+    [self setupValues];
 
-@interface SOGoAptMailFrenchDeletion : SOGoAptMailNotification
-@end
+  bodyFormat = [self labelForKey: @"%{Organizer} %{SentByText}has"
+                     @" cancelled this event: %{Summary}."
+                       inContext: context];
 
-@implementation SOGoAptMailFrenchDeletion
-@end
+  return [values keysWithFormat: bodyFormat];
+}
 
-@interface SOGoAptMailGermanDeletion : SOGoAptMailNotification
-@end
-
-@implementation SOGoAptMailGermanDeletion
-@end
-
-@interface SOGoAptMailHungarianDeletion : SOGoAptMailNotification
-@end
-
-@implementation SOGoAptMailHungarianDeletion
-@end
-
-@interface SOGoAptMailItalianDeletion : SOGoAptMailNotification
-@end
-
-@implementation SOGoAptMailItalianDeletion
-@end
-
-@interface SOGoAptMailRussianDeletion : SOGoAptMailNotification
-@end
-
-@implementation SOGoAptMailRussianDeletion
-@end
-
-@interface SOGoAptMailSpanishDeletion : SOGoAptMailNotification
-@end
-
-@implementation SOGoAptMailSpanishDeletion
-@end
-
-@interface SOGoAptMailSwedishDeletion : SOGoAptMailNotification
-@end
-
-@implementation SOGoAptMailSwedishDeletion
-@end
-
-@interface SOGoAptMailWelshDeletion : SOGoAptMailNotification
-@end
-
-@implementation SOGoAptMailWelshDeletion
 @end

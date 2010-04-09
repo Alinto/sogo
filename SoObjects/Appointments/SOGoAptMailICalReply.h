@@ -23,28 +23,20 @@
 #ifndef SOGOAPTMAILICALREPLY_H
 #define SOGOAPTMAILICALREPLY_H
 
-#import <NGObjWeb/SoComponent.h>
+#import "SOGoAptMailNotification.h"
 
 @class NSString;
-@class NSCalendarDate;
 
 @class iCalPerson;
-@class iCalEntityObject;
 
 /*
  * NOTE: We inherit from SoComponent in order to get the correct
  *       resourceManager required for this product
  */
-@interface SOGoAptMailICalReply : SoComponent
+@interface SOGoAptMailICalReply : SOGoAptMailNotification
 {
-  iCalEntityObject *apt;
   iCalPerson *attendee;
-  NSString *homePageURL;
-  BOOL isSubject;
 }
-
-- (void) setApt: (iCalEntityObject *) newApt;
-- (iCalEntityObject *) apt;
 
 - (void) setAttendee: (iCalPerson *) newAttendee;
 - (iCalPerson *) attendee;
