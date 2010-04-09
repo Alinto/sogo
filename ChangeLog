@@ -1,5 +1,11 @@
 2010-04-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailPartViewers/UIxMailPartICalActions.m
+	(_eventObjectWithUID:forUser:): fixed a typo that would cause the
+	found event to never be returned.
+	(-updateUserStatusAction): return a 404 status code when the
+	corresponding event is not found.
+
 	* SoObjects/Mailer/SOGoMailFolder.m (-aclsForUser:): don't fetch
 	ACL when the current user is not the mailbox owner. Also, we don't
 	set default viewing roles when the uid is not the active user.

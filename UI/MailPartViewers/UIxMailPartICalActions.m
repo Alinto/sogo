@@ -96,7 +96,7 @@
             {
               eventObject = [folder lookupName: cname inContext: context
                                        acquire: NO];
-              if (![eventObject isKindOfClass: [NSException class]])
+              if ([eventObject isKindOfClass: [NSException class]])
                 eventObject = nil;
             }
         }
@@ -410,12 +410,18 @@
     {
       eventObject = [self _eventObjectWithUID: [emailEvent uid]];
       calendarEvent = [eventObject component: NO secure: NO];
-      if (([[emailEvent sequence] compare: [calendarEvent sequence]]
-	  != NSOrderedAscending)
-	  && ([self _updateParticipantStatusInEvent: calendarEvent
-		    fromEvent: emailEvent
-		    inObject: eventObject]))
-	response = [self responseWith204];
+      if (calendarEvent)
+        {
+          if (([[emailEvent sequence] compare: [calendarEvent sequence]]
+               != NSOrderedAscending)
+              && ([self _updateParticipantStatusInEvent: calendarEvent
+                                              fromEvent: emailEvent
+                                               inObject: eventObject]))
+            response = [self responseWith204];
+        }
+      else
+        response = [self responseWithStatus: 404
+                                  andString: @"Local event not found."];
     }
 
   if (!response)
