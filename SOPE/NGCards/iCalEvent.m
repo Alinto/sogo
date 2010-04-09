@@ -19,6 +19,8 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSDictionary.h>
+
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NGCalendarDateRange.h>
 
@@ -260,6 +262,28 @@
 {
   return [iCalEventChanges changesFromEvent: _event
                            toEvent: self];
+}
+
+- (id) propertyValue: (NSString *) property
+{
+  static NSDictionary *propertyMethods = nil;
+  NSString *method;
+
+  if (!propertyMethods)
+    {
+      propertyMethods = [NSDictionary dictionaryWithObjectsAndKeys:
+                                        @"durationAsTimeInterval", @"duration",
+                                      @"recurrenceRules", @"rrule",
+                                      @"exceptionRules", @"exrule",
+                                      @"exceptionDates", @"exdate",
+                                      nil];
+      [propertyMethods retain];
+    }
+  method = [propertyMethods objectForKey: property];
+  if (!method)
+    method = property;
+
+  return [self performSelector: NSSelectorFromString (method)];
 }
 
 @end /* iCalEvent */

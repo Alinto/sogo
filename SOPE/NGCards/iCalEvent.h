@@ -72,6 +72,8 @@
 
 - (iCalEventChanges *) getChangesRelativeToEvent: (iCalEvent *) _event;
 
+- (id) propertyValue: (NSString *) property;
+
 @end 
 
 #endif /* __NGCards_iCalEvent_H__ */

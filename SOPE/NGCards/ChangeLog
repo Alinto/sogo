@@ -1,3 +1,8 @@
+2010-04-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* iCalEvent.m (-propertyValue:): new method that accept a
+	key-based method invocation.
+
 2010-03-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* iCalTimeZonePeriod.m (_occurenceForDate:byRRule:): fixed
