@@ -1,5 +1,7 @@
 2010-04-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoObject.m (-labelForKey:): restored method.
+
 	* SoObjects/Appointments/SOGoAptMailUpdate.m,
 	SoObjects/Appointments/SOGoAptMailInvitation.m,
 	SoObjects/Appointments/SOGoAptMailICalReply.m,

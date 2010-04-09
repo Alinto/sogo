@@ -1423,4 +1423,9 @@
   return exception;
 }
 
+- (NSString *) labelForKey: (NSString *) key
+{
+  return [self labelForKey: key inContext: context];
+}
+
 @end /* SOGoObject */
