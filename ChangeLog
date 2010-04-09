@@ -1,5 +1,9 @@
 2010-04-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailFolder.m (-aclsForUser:): don't fetch
+	ACL when the current user is not the mailbox owner. Also, we don't
+	set default viewing roles when the uid is not the active user.
+
 	* SoObjects/SOGo/SOGoObject.m (-labelForKey:): restored method.
 
 	* SoObjects/Appointments/SOGoAptMailUpdate.m,

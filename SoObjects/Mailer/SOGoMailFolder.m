@@ -903,18 +903,14 @@ static NSString *defaultUserID =  @"anyone";
   NSMutableArray *acls;
   SOGoMailAccount *mailAccount;
   NSString *path;
-//   NSArray *names;
-//   unsigned int count;
 
   acls = [NSMutableArray array];
 
   mailAccount = [self mailAccountFolder];
   path = [[self imap4Connection] imap4FolderNameForURL: [self imap4URL]];
-//   names = [path componentsSeparatedByString: @"/"];
-//   count = [names count];
 
   if ([self         _path: path
-           isInNamespaces: [mailAccount sharedFolderNamespaces]]
+           isInNamespaces: [mailAccount otherUsersFolderNamespaces]]
       || [self         _path: path
               isInNamespaces: [mailAccount sharedFolderNamespaces]])
     [acls addObject: SOGoRole_ObjectViewer];
@@ -927,20 +923,27 @@ static NSString *defaultUserID =  @"anyone";
 - (NSArray *) aclsForUser: (NSString *) uid
 {
   NSMutableArray *acls;
-  NSString *userAcls;
+  NSString *userAcls, *userLogin;
 
-  acls = [self _sharesACLs];
+  userLogin = [[context activeUser] login];
+  if ([uid isEqualToString: userLogin])
+    acls = [self _sharesACLs];
+  else
+    acls = [NSMutableArray array];
 
-  if (!mailboxACL)
-    [self _readMailboxACL];
-
-  if ([mailboxACL isKindOfClass: [NSDictionary class]])
+  if ([owner isEqualToString: userLogin])
     {
-      userAcls = [mailboxACL objectForKey: uid];
-      if (!([userAcls length] || [uid isEqualToString: defaultUserID]))
-	userAcls = [mailboxACL objectForKey: defaultUserID];
-      if ([userAcls length])
-	[acls addObjectsFromArray: [self _imapAclsToSOGoAcls: userAcls]];
+      if (!mailboxACL)
+        [self _readMailboxACL];
+
+      if ([mailboxACL isKindOfClass: [NSDictionary class]])
+        {
+          userAcls = [mailboxACL objectForKey: uid];
+          if (!([userAcls length] || [uid isEqualToString: defaultUserID]))
+            userAcls = [mailboxACL objectForKey: defaultUserID];
+          if ([userAcls length])
+            [acls addObjectsFromArray: [self _imapAclsToSOGoAcls: userAcls]];
+        }
     }
 
   return acls;
