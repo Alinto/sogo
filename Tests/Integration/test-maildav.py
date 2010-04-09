@@ -173,7 +173,7 @@ message1_received = """Received: from cyril.dev (localhost [127.0.0.1])
          by cyril.dev (Cyrus v2.3.8-Debian-2.3.8-1) with LMTPA;
          Tue, 17 Dec 2009 07:42:16 -0400"""
 
-class DAVMailCollectionTest(unittest.TestCase):
+class DAVMailCollectionTest():
   resource = '/SOGo/dav/%s/Mail/' % username
   user_email = None
 
