@@ -2239,7 +2239,8 @@ function onCalendarExport(event) {
 }
 
 function onCalendarImport(event) {
-    var node = $("calendarList").getSelectedNodes().first();
+    var list = $("calendarList");
+    var node = list.getSelectedNodes().first();
     var folderId = node.getAttribute("id");
 
     var url = ApplicationBaseURL + folderId + "/import";
@@ -2250,6 +2251,7 @@ function onCalendarImport(event) {
     var cellDimensions = node.getDimensions();
     var left = cellDimensions['width'] - 20;
     var top = cellPosition[1];
+    top -= list.scrollTop;
 
     var div = $("uploadDialog");
     var res = $("uploadResults");
@@ -2556,6 +2558,11 @@ function initCalendars() {
     if (!$(document.body).hasClassName("popup")) {
         var node = $("filterpopup");
         listFilter = node.value;
+
+        var tabsContainer = $("schedulerTabs");
+        var controller = new SOGoTabsController();
+        controller.attachToTabsContainer(tabsContainer);
+
         initDateSelectorEvents();
         initCalendarSelector();
         configureSearchField();

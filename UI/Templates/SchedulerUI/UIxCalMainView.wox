@@ -135,14 +135,15 @@
         <li target="calendarSelectorView"
           ><span><var:string label:value="Calendars" /></span></li>
       </ul>
-
-      <div id="dateSelectorView" class="tab"
-        ><var:component className="UIxCalDateSelector"
-          selectedDate="thisMonth"
+      <div class="tabs">
+        <div id="dateSelectorView" class="tab"
+          ><var:component className="UIxCalDateSelector"
+            selectedDate="thisMonth"
           /></div>
-      <div id="calendarSelectorView" class="tab"
-        ><var:component className="UIxCalendarSelector"
-          var:calendarFolders="calendarFolders" /></div>
+        <div id="calendarSelectorView" class="tab"
+          ><var:component className="UIxCalendarSelector"
+            var:calendarFolders="calendarFolders" /></div>
+      </div>
     </div>
 
     <div id="tasksListView">

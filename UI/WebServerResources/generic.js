@@ -409,15 +409,17 @@ function refreshOpener() {
 
 function eventIsLeftClick(event) {
    var isLeftClick = true;
-    if (isMac() && isSafari())
+    if (isMac() && isSafari()) {
         if (event.ctrlKey == 1)
             isLeftClick = false; // Control-click is equivalent to right-click under Mac OS X
         else if (event.metaKey == 1) // Command-click
             isLeftClick = true;
         else
             isLeftClick = Event.isLeftClick(event);
-    else
-        isLeftClick = Event.isLeftClick(event);
+    }
+    else {
+        isLeftClick = event.isLeftClick();
+    }
 
     return isLeftClick;
 }
@@ -1130,36 +1132,6 @@ function listRowMouseDownHandler(event) {
     return false;
 }
 
-/* tabs */
-function initTabs() {
-    var containers = document.getElementsByClassName("tabsContainer");
-    for (var x = 0; x < containers.length; x++) {
-        var container = containers[x];
-        var list = container.childNodesWithTag("ul");
-
-        if (list.length > 0) {
-            var firstTab = null;
-            var nodes = $(list[0]).childNodesWithTag("li");
-            for (var i = 0; i < nodes.length; i++) {
-                var currentNode = $(nodes[i]);
-                if (!firstTab)
-                    firstTab = currentNode;
-                currentNode.observe("mousedown", onTabMouseDown);
-                currentNode.observe("click", onTabClick);
-                //$(currentNode.getAttribute("target")).hide();
-            }
-
-            firstTab.addClassName("first");
-            firstTab.addClassName("active");
-            container.activeTab = firstTab;
-
-            var target = $(firstTab.getAttribute("target"));
-            target.addClassName("active");
-        }
-        //target.show();
-    }
-}
-
 function reverseSortByAlarmTime(a, b) {
     var x = parseInt(a[2]);
     var y = parseInt(b[2]);
@@ -1300,11 +1272,6 @@ function initMenu(menuDIV, callbacks) {
     }
 }
 
-function onTabMouseDown(event) {
-    event.stopPropagation();
-    event.preventDefault();
-}
-
 function openExternalLink(anchor) {
     return false;
 }
@@ -1340,32 +1307,6 @@ function getTopWindow() {
     }
 
     return topWindow;
-}
-
-function onTabClick(event) {
-    var container = this.parentNode.parentNode;
-    var content = $(this.getAttribute("target"));
-    var oldContent = $(container.activeTab.getAttribute("target"));
-
-    oldContent.removeClassName("active");
-    container.activeTab.removeClassName("active"); // previous LI
-    container.activeTab = this;
-    container.activeTab.addClassName("active"); // current LI
-    content.addClassName("active");
-
-    // Prototype alternative
-
-    //oldContent.removeClassName("active");
-    //container.activeTab.removeClassName("active"); // previous LI
-    //container.activeTab = node;
-    //container.activeTab.addClassName("active"); // current LI
-
-    //container.activeTab.hide();
-    //oldContent.hide();
-    //content.show();
-
-    //container.activeTab = node;
-    //container.activeTab.show();
 }
 
 //function enableAnchor(anchor) {
@@ -1482,7 +1423,6 @@ function onLoadHandler(event) {
     initCriteria();
     configureSearchField();
     initMenus();
-    initTabs();
     configureDragHandles();
     configureLinkBanner();
     var progressImage = $("progressIndicator");
@@ -1518,7 +1458,7 @@ function onLinkBannerClick() {
 function onPreferencesClick(event) {
     var urlstr = UserFolderURL + "preferences";
     var w = window.open(urlstr, "_blank",
-                        "width=440,height=450,resizable=0,scrollbars=0,location=0");
+                        "width=440,height=450,resizable=1,scrollbars=0,location=0");
     w.opener = window;
     w.focus();
 

@@ -1,40 +1,41 @@
 <?xml version='1.0' standalone='yes'?>
-  <container
-    xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:var="http://www.skyrix.com/od/binding"
-    xmlns:const="http://www.skyrix.com/od/constant"
-    xmlns:uix="OGo:uix"
-    xmlns:label="OGo:label"
-    xmlns:rsrc="OGo:url">
-    <table id="contactsList" cellspacing="0">
-      <thead>
-        <tr class="tableview">
-          <!-- localize -->
-          <td class="tbtv_headercell sortableTableHeader" id="nameHeader"
-	    ><var:string label:value="Name"
-	      /></td
-	    ><td class="tbtv_headercell sortableTableHeader" id="mailHeader"
-	    ><var:string label:value="Email"/></td
-	    ><td class="tbtv_headercell sortableTableHeader" id="screenNameHeader"
-	    ><var:string label:value="Screen Name" /></td
-	    ><td class="tbtv_headercell sortableTableHeader" id="orgHeader"
-	    ><var:string label:value="Organization" /></td
-	    ><td class="tbtv_headercell sortableTableHeader" id="phoneHeader"
-	    ><var:string label:value="Preferred Phone" /></td
-	    ></tr>
-      </thead>
-      <tbody id="contactsListTbody">
-        <var:foreach list="contactInfos" item="currentContact">
-          <tr class="tableview"
-            var:id="currentContact.c_name"
-            var:contactname="currentContact.c_cn">
-            <td class="displayName"><var:string value="currentContact.c_cn" const:escapeHTML="YES" /></td>
-            <td><var:string value="currentContact.c_mail"/></td>
-            <td><var:string value="currentContact.c_screenname"/></td>
-            <td><var:string value="currentContact.c_o"/></td>
-            <td><var:string value="currentContact.c_telephonenumber"/></td>
-          </tr>
-        </var:foreach>
-      </tbody>
-    </table>
-  </container>
+<!DOCTYPE container>
+<container
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:uix="OGo:uix"
+  xmlns:label="OGo:label"
+  xmlns:rsrc="OGo:url">
+  <table id="contactsList" cellspacing="0">
+    <thead>
+      <tr class="tableview">
+        <!-- localize -->
+        <td class="tbtv_headercell sortableTableHeader" id="nameHeader"
+          ><var:string label:value="Name"
+            /></td
+          ><td class="tbtv_headercell sortableTableHeader" id="mailHeader"
+          ><var:string label:value="Email"/></td
+          ><td class="tbtv_headercell sortableTableHeader" id="screenNameHeader"
+          ><var:string label:value="Screen Name" /></td
+          ><td class="tbtv_headercell sortableTableHeader" id="orgHeader"
+          ><var:string label:value="Organization" /></td
+          ><td class="tbtv_headercell sortableTableHeader" id="phoneHeader"
+          ><var:string label:value="Preferred Phone" /></td
+          ></tr>
+    </thead>
+    <tbody id="contactsListTbody">
+      <var:foreach list="contactInfos" item="currentContact">
+        <tr class="tableview"
+          var:id="currentContact.c_name"
+          var:contactname="currentContact.c_cn">
+          <td class="displayName"><var:string value="currentContact.c_cn" const:escapeHTML="YES" /></td>
+          <td><var:string value="currentContact.c_mail"/></td>
+          <td><var:string value="currentContact.c_screenname"/></td>
+          <td><var:string value="currentContact.c_o"/></td>
+          <td><var:string value="currentContact.c_telephonenumber"/></td>
+        </tr>
+      </var:foreach>
+    </tbody>
+  </table>
+</container>

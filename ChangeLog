@@ -1,3 +1,10 @@
+2010-04-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/SOGoTabsController.js: new js module for
+	handling tabs, replacing non-object code from generic.js. Added
+	handling of tab overflows, with the appearance of two left/right
+	buttons to make them scroll.
+
 2010-04-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailPartViewers/UIxMailPartICalActions.m

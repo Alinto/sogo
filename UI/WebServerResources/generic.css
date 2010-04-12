@@ -739,18 +739,38 @@ SPAN.caption
   border: 0px; }
 
 /* Tabs */
+
 DIV.tabsContainer
+{ overflow: hidden;
+  top: 0px;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
+  padding: 0px 5px; }
+
+DIV.tabsContainer > DIV.scrollToolbar
 { position: absolute;
-  color: #535D6D;
-  background-color: #E6E7E6;
-  margin-top: 0.5em; 
+  background-color: #c6c7c6;
   border: 1px solid #9B9B9B;
-  top: 2.5em;
-  left: .5em;
-  right: .5em;
-  bottom: 2.5em;
-  margin-bottom: 1em;
-  padding: 0 5px; }
+  padding: 1px;
+  top: 8px;
+  right: 0px;
+  height: 12px;
+  vertical-align: bottom;
+  text-align: center;
+  width: 30px; }
+
+DIV.tabsContainer > DIV.scrollToolbar > A > SPAN
+{ border: 0px;
+  text-align: center;
+  width: 12px;
+  padding: 0px !important;
+  margin: 0px !important;
+  margin-top: 5px;  }
+
+DIV.tabsContainer > DIV.scrollToolbar > A,
+DIV.tabsContainer > DIV.scrollToolbar > A > SPAN
+{ height: 12px; }
 
 DIV.tabsContainer > UL
 { cursor: default;
@@ -758,7 +778,6 @@ DIV.tabsContainer > UL
   list-style-type: none;
   list-style-image: none;
   margin: 0px;
-  margin-top: -24px;
   padding: 0px; }
 
 DIV.tabsContainer > UL LI
@@ -787,7 +806,18 @@ DIV.tabsContainer > UL LI.first
 { margin-left: -1px;
   padding-left: -1px; }
 
-DIV.tabsContainer > DIV.tab
+DIV.tabsContainer > DIV.tabs
+{ position: absolute;
+  color: #535D6D;
+  background-color: #E6E7E6;
+  border: 1px solid #9B9B9B;
+  top: 23px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  overflow: hidden; }
+
+DIV.tabsContainer > DIV.tabs > DIV.tab
 { position: absolute;
   top: 5px;
   bottom: 5px;
@@ -856,8 +886,8 @@ A.toolbarButton SPAN,
 A.toolbarButton:hover SPAN {
   text-align: center;
   display: block;
-  line-height: 13px;
-  padding: 5px 2px 5px 5px;
+  line-height: 12px;
+  padding: 5px 2px 2px 5px;
   cursor: pointer;
 }
 

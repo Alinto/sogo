@@ -1165,6 +1165,11 @@ function initContacts(event) {
     if ($(document.body).hasClassName("popup")) {
         configureSelectionButtons();
     } else {
+        configureAbToolbar();
+        var tabsContainer = $("smallToolbarContainer");
+        var controller = new SOGoTabsController();
+        controller.attachToTabsContainer(tabsContainer);
+
         // Addressbook import form
         $("uploadCancel").observe("click", hideContactsImport);
         $("uploadOK").observe("click", hideImportResults);
@@ -1175,7 +1180,6 @@ function initContacts(event) {
     else
         Event.observe(document, "keydown", onDocumentKeydown);        
     
-    configureAbToolbar();
     configureAddressBooks();
     updateAddressBooksMenus();
 

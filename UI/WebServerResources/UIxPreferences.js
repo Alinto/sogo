@@ -128,6 +128,10 @@ function addDefaultEmailAddresses(event) {
 }
 
 function initPreferences() {
+    var tabsContainer = $("preferencesTabs");
+    var controller = new SOGoTabsController();
+    controller.attachToTabsContainer(tabsContainer);
+
     var filtersListWrapper = $("filtersListWrapper");
     if (filtersListWrapper) {
         isSieveScriptsEnabled = true;

@@ -8,14 +8,14 @@ DIV#leftPanel
 
 DIV#schedulerTabs
 { position: absolute;
-  top: 22px;
-  left: .2em;
-  right: .2em;
-  height: 14em; }
+  top: 4px;
+  left: 2px;
+  right: 2px;
+  height: 186px; }
 
 DIV#tasksListView
 { position: absolute;
-  top: 17em;
+  top: 200px;
   bottom: 0px;
   left: 2px;
   right: 0px;
@@ -31,10 +31,8 @@ DIV#tasksListView LABEL
 { margin: .25em; }
 
 DIV#calendarSelectorView
-{ top: 3px; }
-
-DIV#calendarSelectorView
-{ overflow: hidden; }
+{ top: 3px;
+  overflow: hidden; }
 
 DIV#calendarsList
 { height: 100%; }
@@ -64,7 +62,7 @@ UL#tasksList, UL#calendarList
 
 UL#calendarList
 { clear: left;
-  height: 102px; }
+  height: 115px; }
 
 UL#calendarList LI
 { cursor: pointer;

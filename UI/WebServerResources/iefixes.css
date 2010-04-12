@@ -38,6 +38,9 @@ DIV#userRoles
 UL#userList
 { top: 3em; }
 
+DIV.tabsContainer > DIV.scrollToolbar > A > SPAN
+{ line-height: 12px; }
+
 /* UIxCalUserRightsEditor */
 
 DIV.calendarUserRights HR
@@ -127,8 +130,7 @@ TABLE.frame TBODY
 { padding: 20px; }
 
 UL#calendarList
-{ margin-top: 2px;
-  height: 100px; }
+{ margin-top: 2px; }
 
 A.toolbarButton SPAN,
 A.toolbarButton:hover SPAN {

@@ -104,7 +104,7 @@ TABLE.titletable TD.titlecell SELECT
 
 DIV#contactFoldersList
 { position: absolute;
-  top: 65px;
+  top: 69px;
   left: 0px;
   width: 15em;
   bottom: 0px;
@@ -112,12 +112,16 @@ DIV#contactFoldersList
   padding: 0px;
   overflow: hidden; }
 
-DIV#contactFoldersList DIV.toolbar
-{ padding: 4px 0;
-  margin: 1px 0 0 0;
-  border-top: 1px solid #888;
-  border-left: 1px solid #aaa;
-  border-right: 1px solid #aaa; }
+DIV#smallToolbarContainer
+{ height: 50px;
+  margin: 0px 2px; }
+
+DIV#smallToolbarContainer > .tabs
+{ margin: 0px 2px;
+  height: 40px; }
+
+DIV#abToolbar
+{ height: 38px; }
 
 SPAN.toolbarButton
 { float: none;
@@ -135,7 +139,7 @@ UL#contactFolders
   color: #000;
   background: #CCDDEC;
   position: absolute; /* required for Safari & IE */
-  top: 76px; /* leave space for the mini addressbook */
+  top: 68px; /* leave space for the mini addressbook */
   bottom: 0px;
   left: 0;
   right: 0;
@@ -370,15 +374,9 @@ DIV.copy
   background-position: 1px -2px !important;
 }
 
-DIV#smallToolbarContainer
-{ top: 2em !important;
-  height: 44px;
-  right: 0px; }
-
 @media print
 {
   div#linkBanner, 
-  div#toolbar,
   div#contactFoldersList,
   div#dragHandle,
   div#rightDragHandle,
