@@ -4,6 +4,8 @@
 - added support for LDAP password policies
 - added support for custom Sieve filters
 - fixed timezone issues occurring specifically in the southern hemisphere
+- tabs: enabled the scrolling when overflowing
+- updated Czech translation, thanks to Milos Wimmer
 
 1.2-20100219 (1.2.1)
 --------------------
