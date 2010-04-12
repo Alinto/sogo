@@ -3,19 +3,19 @@
 "Close" = "Zavřít";
 
 /* tabs */
-"General" = "Hlavní";
+"General" = "Obecný";
 "Calendar Options" = "Možnosti kalendáře";
-"Mail Options" = "Možnosti e-mailu";
+"Mail Options" = "Možnosti pošty";
 "Signature" = "Podpis";
 "Vacation" = "Nepřítomnost";
 "Forward" = "Přeposílání";
 "Identities" = "Identity";
 "Password" = "Heslo";
-"Categories" = "Categories";
-"Name" = "Name";
-"Color" = "Color";
-"Add" = "Add";
-"Delete" = "Delete";
+"Categories" = "Kategorie";
+"Name" = "Jméno";
+"Color" = "Barva";
+"Add" = "Přidat";
+"Delete" = "Smazat";
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Zapnout odpovědi v nepřítomnosti";
@@ -40,7 +40,7 @@
 "Long Date Format :" = "Dlouhý formát data :";
 "Time Format :" = "Formát času :";
 
-"default" = "Default";
+"default" = "výchozí";
 
 "shortDateFmt_0" = "%d-%b-%y";
 
@@ -127,11 +127,11 @@
 "And place my signature" = "A umístit můj podpis";
 "signatureplacement_above" = "pod odpověď";
 "signatureplacement_below" = "pod citaci";
-"Compose messages in" = "Compose messages in";
+"Compose messages in" = "Vytvářet zprávy ve formátu";
 "composemessagestype_html" = "HTML";
-"composemessagestype_text" = "Plain text";
+"composemessagestype_text" = "Prostý text";
 
-"composeMessageChanged" = "Changing your messages composition type requires to save your preferences immediately. Continue?";
+"composeMessageChanged" = "Změna formátu vytváření zprávy vyžaduje okamžité uložení předvoleb. Pokračovat?";
 
 /* Additional Parameters */
 "Additional Parameters" = "Dodatečné parametry";
@@ -146,11 +146,11 @@
 "category_labels" = "Výročí,Narozeniny,Obchod,Hovory,Klienti,Soutěže,Zákazník,Oblíbené,Sledování,Dárky,Volno,Nápady,Meeting,Problémy,Různé,Osobní,Projekty,Veřejné prázdniny,Stav,Dodavatelé,Cesta,Dovolená";
 
 /* Default module */
-"Calendar" = "Calendar";
-"Contacts" = "Address Book";
-"Mail" = "Mail";
-"Last" = "Last used";
-"Default module :" = "Default module :";
+"Calendar" = "Kalendář";
+"Contacts" = "Adresář";
+"Mail" = "Pošta";
+"Last" = "Naposledy použité";
+"Default module :" = "Výchozí modul :";
 
 "Language :" = "Jazyk :";
 "choose" = "Vybrat ...";

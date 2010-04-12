@@ -78,8 +78,8 @@
 "Email:" = "E-mail:";
 "Additional Email:" = "Další e-mail:";
 
-"Phone Number:" = "Phone Number:";
-"Prefers to receive messages formatted as:" = "Upředňostnovaný formát zpráv:";
+"Phone Number:" = "Telefonní číslo:";
+"Prefers to receive messages formatted as:" = "Upřednostňovaný formát zpráv:";
 "Screen Name:" = "Screen Name:";
 
 "First:" = "Křestní jméno:";
@@ -122,7 +122,7 @@
 "Subscribe to an Addressbook..." = "Přihlásit se k odběru složky kontaktů...";
 "Remove the selected Addressbook" = "Smazat složku kontaktů";
 
-"Name of the Address Book" = "Názevv složky kontaktů";
+"Name of the Address Book" = "Název složky kontaktů";
 "Are you sure you want to delete the selected address book?"
 = "Opravdu chcete odstranit označenou složku kontaktů?";
 "You cannot remove nor unsubscribe from a public addressbook."
@@ -170,21 +170,21 @@
 "Unknown Destination Folder" = "Zvolený cílový adresář již neexistuje.";
 
 /* Lists */
-"List details" = "List details";
-"List name:" = "List name:";
-"List nickname:" = "List nickname:";
-"List description:" = "List description:";
-"Members" = "Members";
-"Contacts" = "Contacts";
-"Add" = "Add";
-"Lists can't be moved or copied." = "Lists can't be moved or copied.";
+"List details" = "Skupina";
+"List name:" = "Název:";
+"List nickname:" = "Zkratka:";
+"List description:" = "Popis:";
+"Members" = "Členové skupiny";
+"Contacts" = "Kontakty";
+"Add" = "Přidat";
+"Lists can't be moved or copied." = "Skupinu nelze přesunout nebo kopírovat.";
 "Export" = "Exportovat";
 "Import Cards" = "Importovat kontakty";
 "Select a vCard or LDIF file." = "Zvolte LDIF nebo vCard soubor.";
 "Upload" = "Upload";
 "Done" = "Done";
 "An error occured while importing contacts." = "Při importu došlo k chybě.";
-"No card was imported." = "No card was imported.";
-"A total of %{0} cards were imported in the addressbook." = "A total of %{0} cards were imported in the addressbook.";
+"No card was imported." = "Nebyl importován žádný kontakt.";
+"A total of %{0} cards were imported in the addressbook." = "Do adresáře bylo importováno %{0} kontaktů.";
 
-"Reload" = "Reload";
+"Reload" = "Aktualizovat";

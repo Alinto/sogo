@@ -2,7 +2,7 @@
 
 /* Tooltips */
 
-"Create a new event" = "vytvořit novou událost";
+"Create a new event" = "Vytvořit novou událost";
 "Create a new task" = "Vytvořit nový úkol";
 "Edit this event or task" = "Upravit tuto událost nebo úkol";
 "Delete this event or task" = "Smazat tuto událost nebo úkol";
@@ -10,7 +10,7 @@
 "Switch to day view" = "Přepnout na denní zobrazení";
 "Switch to week view" = "Přepnout na týdenní zobrazení";
 "Switch to month view" = "Přepnout na měsíční zobrazení";
-"Reload all calendars" = "Reload all calendars";
+"Reload all calendars" = "Aktualizovat všechny kalendáře";
 
 /* Tabs */
 "Date" = "Datum";
@@ -46,18 +46,18 @@
 "dayLabelFormat" = "%d/%m/%Y";
 "today" = "Dnes";
 
-"Previous Day" = "Previous Day";
-"Next Day" = "Next Day";
+"Previous Day" = "Předchozí den";
+"Next Day" = "Následující den";
 
 /* Week */
 
-"Week" = "Týdent";
+"Week" = "Týden";
 "this week" = "tento týden";
 
 "Week %d" = "Týden %d";
 
-"Previous Week" = "Previous Week";
-"Next Week" = "Next Week";
+"Previous Week" = "Předchozí týden";
+"Next Week" = "Následující týden";
 
 /* Month */
 
@@ -89,8 +89,8 @@
 "a3_November" = "Listopad";
 "a3_December" = "Prosinec";
 
-"Previous Month" = "Previous Month";
-"Next Month" = "Next Month";
+"Previous Month" = "Předchozí měsíc";
+"Next Month" = "Následující měsíc";
 
 /* Year */
 
@@ -109,14 +109,14 @@
 "Import Events..." = "Importovat události...";
 "Import Events" = "Importovat události";
 "Select an iCalendar file (.ics)." = "Zvolte iCalendar soubor (*.ics).";
-"Upload" = "Upload";
+"Upload" = "Nahrát";
 "Publish Calendar..." = "Publikovat kalendář...";
 "Reload Remote Calendars" = "Nahrát vzdálené kalendáře";
 "Properties" = "Vlastnosti";
-"Done" = "Done";
+"Done" = "Hotovo";
 "An error occured while importing calendar." = "Při importu událostí došlo k chybě.";
-"No event was imported." = "No event was imported.";
-"A total of %{0} events were imported in the calendar." = "A total of %{0} events were imported in the calendar.";
+"No event was imported." = "Nebyla importována žádná událost.";
+"A total of %{0} events were imported in the calendar." = "Do kalendáře bylo importováno %{0} událostí.";
 
 "Compose E-Mail to All Attendees" = "Vytvořit e-mail pro všechny účastníky";
 "Compose E-Mail to Undecided Attendees" = "Vytvořit e-mail pro nerozhodnuté účastníky";
@@ -159,7 +159,7 @@
 
 "New Calendar..." = "Nový kalendář...";
 "Subscribe to a Calendar..." = "Přihlásit se k odběru kalendáře...";
-"Remove the selected Calendar" = "Odebrat zvolený kalendář";
+"Remove the selected Calendar" = "Smazat zvolený kalendář";
 
 "Name of the Calendar" = "Název kalendáře";
 
@@ -175,7 +175,7 @@
 "Update" = "Aktualizace";
 "Cancel" = "Storno";
 "show_rejected_apts" = "Ukázat odmítnuté schůzky";
-"hide_rejected_apts" = "Skrýt odmítnuté schhůzky";
+"hide_rejected_apts" = "Skrýt odmítnuté schůzky";
 
 
 /* Schedule */
@@ -187,7 +187,7 @@
 "sched_startDateFormat" = "%d/%m %H:%M";
 "action" = "Akce";
 "accept" = "Přijmout";
-"decline" = "Odmítnou";
+"decline" = "Odmítnout";
 "more attendees" = "Více účastníků";
 "Hide already accepted and rejected appointments" = "Skrýt již přijaté a odmítnuté schůzky";
 "Show already accepted and rejected appointments" = "Zobrazit již přijaté a odmítnuté  schůzky";
@@ -201,7 +201,7 @@
 "Appointment on" = "Schůzka na";
 "Start:" = "Začátek:";
 "End:" = "Konec:";
-"Due Date:" = "Datum:";
+"Due Date:" = "Datum splnění:";
 "Title:" = "Název:";
 "Calendar:" = "Kalendář:";
 "Name" = "Jméno";
@@ -218,20 +218,20 @@
 "Duration" = "Trvání";
 "Attendees:" = "Účastníci:";
 "Resources" = "Zdroje";
-"Organizer:" = "Organizér:";
+"Organizer:" = "Organizátor:";
 "Description:" = "Popis:";
 "Document:" = "Dokument:";
 "Category:" = "Kategorie:";
 "Repeat:" = "Opakování:";
 "Reminder:" = "Upomínka:";
-"General:" = "General:";
-"Reply:" = "Reply:";
+"General:" = "Obecný:";
+"Reply:" = "Odpověď:";
 
 "Target:" = "Vložte adresu webové stránky nebo dokumentu.";
 
 "attributes" = "atributy";
 "attendees" = "účastníci";
-"delegated from" = "delegated from";
+"delegated from" = "delegováno od";
 
 /* checkbox title */
 "is private" = "je soukromý/á";
@@ -331,11 +331,11 @@
 "cycle_2weeks" = "cyklus_2týdenní";
 "cycle_4weeks" = "cyklus_4týdenní";
 "cycle_monthly" = "cyklus_měsíční";
-"cycle_weekday" = "cycle_pracovnídny";
-"cycle_yearly" = "cycle_roční";
+"cycle_weekday" = "cyklus_pracovnídny";
+"cycle_yearly" = "cyklus_roční";
 
 "cycle_end_never" = "cyklus_konec_nikdy";
-"cycle_end_until" = "cycle_konec_do";
+"cycle_end_until" = "cyklus_konec_do";
 
 "Recurrence pattern" = "Vzor opakování";
 "Range of recurrence" = "Rozsah opakování";
@@ -438,7 +438,7 @@ validate_endbeforestart    = "Zadané datum konce je před začátkem události.
 "Day View" = "Den";
 "Week View" = "Týden";
 "Month View" = "Měsíc";
-"Reload" = "Aktualizace";
+"Reload" = "Aktualizovat";
 
 "eventPartStatModificationError" = "Status Vaší účasti nemohl být změněn.";
 
@@ -469,19 +469,19 @@ validate_endbeforestart    = "Zadané datum konce je před začátkem události.
 "Declined" = "Odmítnutý/á";
 "Tentative" = "Nerozhodnutý/á";
 
-"Free" = "Volný";
-"Busy" = "Zaneprázdněný";
-"Maybe busy" = "Možná zaneprázdněný";
-"No free-busy information" = "Žádná informace o zaneprázdněnosti";
+"Free" = "Volno";
+"Busy" = "Není volno";
+"Maybe busy" = "Možná není volno";
+"No free-busy information" = "Bez informací";
 
 /* FreeBusy panel buttons and labels */
-"Suggest time slot:" = "Navrhnout časovou přihrádku";
+"Suggest time slot:" = "Navrhnout čas";
 "Zoom:" = "Přiblížit:";
-"Previous slot" = "Předchozí časová přihrádka";
-"Next slot" = "Další časová přihrádka";
-"Previous hour" = "Predchozí hodina";
-"Next hour" = "Další hodina";
-"Only office hours" = "Pouze úřední hodiny";
+"Previous slot" = "Předchozí místo";
+"Next slot" = "Následující místo";
+"Previous hour" = "Předchozí hodina";
+"Next hour" = "Následující hodina";
+"Only office hours" = "Pouze pracovní hodiny";
 
 /* apt list */
 "Title" = "Název";
@@ -511,13 +511,13 @@ vtodo_class2 = "(Důvěrný úkol)";
 "Name:" = "Název:";
 "Color:" = "Barva:";
 
-"Synchronization" = "Synchronization";
-"Synchronize" = "Synchronize";
+"Synchronization" = "Synchronizace";
+"Synchronize" = "Synchronizovat";
 "Tag:" = "Štítek:";
 
-"Display" = "Display";
-"Show alarms" = "Show alarms";
-"Show tasks" = "Show tasks";
+"Display" = "Zobrazení";
+"Show alarms" = "Zobrazit upomínky";
+"Show tasks" = "Zobrazit úkoly";
 
 /* Error messages */
 "dayFieldInvalid" = "Please specify a numerical value in the Days field greater or equal to 1.";
@@ -533,11 +533,11 @@ vtodo_class2 = "(Důvěrný úkol)";
 "tagWasAdded" = "If you want to synchronize this calendar, you'll need to reload the data on your mobile device.\nContinue?";
 "tagWasRemoved" = "If you remove this calendar from synchronization, you'll need to reload the data on your mobile device.\nContinue?";
 
-"Open Task..." = "Open Task...";
-"Mark Completed" = "Mark Completed";
-"Delete Task" = "Delete Task";
-"Delete Event" = "Delete Event";
+"Open Task..." = "Otevřít úkol...";
+"Mark Completed" = "Označit jako dokončené";
+"Delete Task" = "Smazat úkol";
+"Delete Event" = "Smazat událost";
 
-"Subscribe to a web calendar..." = "Subscribe to a web calendar...";
+"Subscribe to a web calendar..." = "Přihlásit odběr vzdáleného kalendáře na webu";
 "URL of the Calendar" = "Adresa vzdáleného kalendáře na webu";
 "Web Calendar" = "Vzdálený kalendář na webu";

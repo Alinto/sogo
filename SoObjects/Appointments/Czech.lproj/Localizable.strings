@@ -8,9 +8,9 @@ vtodo_class1 = "(Soukromý úkol)";
 vtodo_class2 = "(Skrytý úkol)";
 
 /* Receipts */
-"Title:" = "Title:";
-"Start:" = "Start:";
-"End:" = "End:";
+"Title:" = "Název:";
+"Start:" = "Začátek:";
+"End:" = "Konec:";
 
 "Receipt: users invited to a meeting" = "Receipt: users invited to a meeting";
 "You have invited the following attendees(s):" = "You have invited the following attendees(s):";
@@ -25,38 +25,38 @@ vtodo_class2 = "(Skrytý úkol)";
 "... from the following event:" = "... from the following event:";
 
 /* IMIP messages */
-"startDate_label" = "Start:";
-"endDate_label" = "End:";
+"startDate_label" = "Začátek:";
+"endDate_label" = "Konec:";
 "due_label" = "Due Date:";
-"location_label" = "Location:";
+"location_label" = "Místo:";
 "summary_label" = "Summary:";
 "comment_label" = "Comment:";
 
 /* Invitation */
-"Event Invitation: \"%{Summary}\"" = "Event Invitation: \"%{Summary}\"";
-"(sent by %{SentBy}) " = "(sent by %{SentBy}) ";
-"%{Organizer} %{SentByText}has invited you to %{Summary}." = "%{Organizer} %{SentByText}has invited you to %{Summary}.";
+"Event Invitation: \"%{Summary}\"" = "Pozvání na událost: \"%{Summary}\"";
+"(sent by %{SentBy}) " = "(poslal/a %{SentBy}) ";
+"%{Organizer} %{SentByText}has invited you to %{Summary}." = "%{Organizer} %{SentByText}Vás pozval/a na %{Summary}.";
 
 /* Deletion */
-"Event Cancelled: \"%{Summary}\"" = "Event Cancelled: \"%{Summary}\"";
+"Event Cancelled: \"%{Summary}\"" = "Zrušení události: \"%{Summary}\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}."
-= "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.";
+= "%{Organizer} %{SentByText}zrušil/a událost: %{Summary}.";
 
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
-= "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed";
+= "Schůzka \"%{Summary}\" na %{OldStartDate} v %{OldStartTime} byla změněna";
 "The following parameters have changed in the \"%{Summary}\" meeting:"
-= "The following parameters have changed in the \"%{Summary}\" meeting:";
+= "Následující parametry byly ve schůzce \"%{Summary}\" změněny:";
 "Please accept or decline those changes."
-= "Please accept or decline those changes.";
+= "Prosím přijměte nebo odmítněte tyto změny.";
 
 /* Reply */
-"Reply to invitation: \"%{Summary}\"" = "Reply to invitation: \"%{Summary}\"";
+"Reply to invitation: \"%{Summary}\"" = "Odpověď na pozvánku k události: \"%{Summary}\"";
 "%{Attendee} %{SentByText}has accepted your event invitation."
-= "%{Attendee} %{SentByText}has accepted your event invitation.";
+= "%{Attendee} %{SentByText}přijal/a Vaši pozvánku.";
 "%{Attendee} %{SentByText}has declined your event invitation."
-= "%{Attendee} %{SentByText}has declined your event invitation.";
+= "%{Attendee} %{SentByText}odmítl/a Vaši pozvánku.";
 "%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
-= "%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}.";
+= "%{Attendee} %{SentByText}delegoval/a Vaši pozvánku na %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
-= "%{Attendee} %{SentByText}has not yet decided upon your event invitation.";
+= "%{Attendee} %{SentByText}dosud o Vaší pozvánce k události nerozhodl/a.";

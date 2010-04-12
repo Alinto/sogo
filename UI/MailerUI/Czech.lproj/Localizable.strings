@@ -25,7 +25,7 @@
 
 "Send this message now" = "Odeslat tuto zprávu nyní";
 "Select a recipient from an Address Book" = "Zvolit příjemce z adresáře";
-"Include an attachment" = "Zahrnout přílohu";
+"Include an attachment" = "Připojit přílohu";
 "Save this message" = "Uložit tuto zprávu";
 "Get new messages" = "Stáhnout nové zprávy";
 "Create a new message" = "Vytvořit novou zprávu";
@@ -92,10 +92,10 @@
 "Add address"   = "Přidat adresu";
 
 "Attachments:" = "Přílohy:";
-"Open" = "Open";
-"Select All" = "Select All";
-"Attach Web Page..." = "Attach Web Page...";
-"Attach File(s)..." = "Attach File(s)...";
+"Open" = "Otevřít";
+"Select All" = "Vybrat vše";
+"Attach Web Page..." = "Připojit WWW stránku...";
+"Attach File(s)..." = "Připojit soubor(y)...";
 
 "to"            = "Komu";
 "cc"            = "Kopie";

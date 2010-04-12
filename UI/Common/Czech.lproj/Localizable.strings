@@ -22,8 +22,8 @@
 "noJavascriptError" = "SOGo vyžaduje JavaScript. Ujistěte se prosím, že je povolen a aktivován v rámci nastavení Vašeho prohlížeče.";
 "noJavascriptRetry" = "Znovu";
 
-"Owner:" = "Owner:";
-"Publish the Free/Busy information" = "Zveřejni informace o Volný/Zaneprázdněný";
+"Owner:" = "Vlastník:";
+"Publish the Free/Busy information" = "Zveřejni informace o Volno/Není volno";
 
 "Add..." = "Přidat...";
 "Remove" = "Odebrat";
@@ -31,7 +31,7 @@
 "Default Roles" = "Výchozí role";
 "Subscribe User" = "Subscribe User";
 
-"Sorry, the user rights can not be configured for that object." = "Omlouváme se, ale uživatelská práva pro tento objekt nemohou být nastaveny.";
+"Sorry, the user rights can not be configured for that object." = "Omlouváme se, ale uživatelská práva pro tento objekt nemohou být nastavena.";
 
 /* generic.js */
 "Unable to subscribe to that folder!"

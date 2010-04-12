@@ -10,7 +10,7 @@
 "Wrong username or password." = "Špatné uživatelské jméno nebo heslo.";
 "cookiesNotEnabled" = "Nemůžete se přihlásit, protože nemáte povoleny cookies ve Vašem prohlížeči. Povolte prosím cookies v nastavení Vašeho prohlížeče a akci opakujte.";
 
-"browserNotCompatible" = "Zjistili jsme, že současnou verzi Vašeho prohlížeče tato stránka nepodporuje. Doporučujeme použít Firefox. Klikněte na odkaz níže uvedený pro stažení nejaktuaálnější verze tohoto prohlížeče.";
+"browserNotCompatible" = "Tento systém nepodporuje současnou verzi Vašeho prohlížeče. Doporučujeme použít Firefox. Klikněte na níže uvedený odkaz pro stažení aktuální verze tohoto prohlížeče.";
 "alternativeBrowsers" = "Můžete však použít i následující kompatibilní prohlížeče";
 "alternativeBrowserSafari" = "Můžete však použít i Safari.";
 "Download" = "Stáhnout";
@@ -33,38 +33,38 @@
 "About" = "O";
 "AboutBox" = "SOGo  is a groupware server built around OpenGroupware.org (OGo) and the SOPE application server.  It focuses on scalability.<br/><br/>
 SOGo provides a rich AJAX-based Web interface and supports multiple native clients through the use of standard protocols such as CalDAV, CardDAV and GroupDAV.<br/><br/>
-Copyright © 2006-2009 Inverse inc.<br/>
-Copyright © 2002-2005 SKYRIX Software AG<br/><br/>
+Copyright (c) 2006-2009 Inverse inc.<br/>
+Copyright (c) 2002-2005 SKYRIX Software AG<br/><br/>
 This software are distributed under the <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2.<br/>
 Parts of this software are distributed under the GNU LGPL version 2.<br/><br/>
 This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.";
 
-"Your account was locked due to too many failed attempts." = "Your account was locked due to too many failed attempts.";
-"Your account was locked due to an expired password." = "Your account was locked due to an expired password.";
-"Login failed due to unhandled error case: " = "Login failed due to unhandled error case: ";
-"Change your Password" = "Change your Password";
-"Your password has expired, please enter a new one below:" = "Your password has expired, please enter a new one below:";
-"Password must not be empty." = "Password must not be empty.";
-"The passwords do not match. Please try again." = "The passwords do not match. Please try again.";
-"Password Grace Period" = "Password Grace Period";
-"You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog." = "You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog.";
-"Password about to expire" = "Password about to expire";
-"Your password is going to expire in %{0} %{1}." = "Your password is going to expire in %{0} %{1}.";
-"days" = "days";
-"hours" = "hours";
-"minutes" = "minutes";
-"seconds" = "seconds";
-"Password change failed" = "Password change failed";
-"Password change failed - Permission denied" = "Password change failed - Permission denied";
-"Password change failed - Insufficient password quality" = "Password change failed - Insufficient password quality";
-"Password change failed - Password is too short" = "Password change failed - Password is too short";
-"Password change failed - Password is too young" = "Password change failed - Password is too young";
-"Password change failed - Password is in history" = "Password change failed - Password is in history";
+"Your account was locked due to too many failed attempts." = "Váš účet byl zablokován z důvodu mnoha neúspěšných pokusů o přihlášení.";
+"Your account was locked due to an expired password." = "Váš účet byl zablokován z důvodu expirovaného hesla.";
+"Login failed due to unhandled error case: " = "Přihlášení selhalo z důvodu chyby: ";
+"Change your Password" = "Změňte své heslo";
+"Your password has expired, please enter a new one below:" = "Vaše heslo expirovalo, prosím zadejte nové:";
+"Password must not be empty." = "Heslo nesmí být prázdné.";
+"The passwords do not match. Please try again." = "Hesla se neshodují. Prosím zadejte znovu.";
+"Password Grace Period" = "Doba platnosti hesla";
+"You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog." = "Zbývá Vám %{0} přihlášení před zablokováním účtu. Prosím změňte si heslo v dialogovém okně předvoleb.";
+"Password about to expire" = "Expirace hesla";
+"Your password is going to expire in %{0} %{1}." = "Vaše heslo expiruje ve %{0} %{1}.";
+"days" = "dnech";
+"hours" = "hodinách";
+"minutes" = "minutách";
+"seconds" = "sekundách";
+"Password change failed" = "Změna hesla selhala";
+"Password change failed - Permission denied" = "Změna hesla selhala - Přístup odepřen";
+"Password change failed - Insufficient password quality" = "Změna hesla selhala - Nepostačující kvalita hesla";
+"Password change failed - Password is too short" = "Změna hesla selhala - Příliš krátké heslo";
+"Password change failed - Password is too young" = "Změna hesla selhala - Příliš nové heslo";
+"Password change failed - Password is in history" = "Změna hesla selhala - Heslo je v historii";
 "Unhandled policy error: %{0}" = "Unhandled policy error: %{0}";
 "Unhandled error response" = "Unhandled error response";
-"Password change is not supported." = "Password change is not supported.";
+"Password change is not supported." = "Změna hesla není podporována.";
 "Unhandled HTTP error code: %{0}" = "Unhandled HTTP error code: %{0}";
-"New password:" = "New password:";
-"Confirmation:" = "Confirmation:";
-"Cancel" = "Cancel";
-"Please wait..." = "Please wait...";
+"New password:" = "Nové heslo:";
+"Confirmation:" = "Potvrzení:";
+"Cancel" = "Odvolat";
+"Please wait..." = "Prosím čekejte...";
