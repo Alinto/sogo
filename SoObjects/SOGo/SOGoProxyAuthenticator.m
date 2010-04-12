@@ -99,6 +99,8 @@
   return user;
 }
 
+#warning the DAV authenticator is pretty similar to this one. We should enable \
+  the use of the former for Basic auth type through some defaults.
 - (NSString *) passwordInContext: (WOContext *) context
 {
   NSString *password, *authType, *authorization, *pair, *pairStart;
