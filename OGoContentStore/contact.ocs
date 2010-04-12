@@ -6,53 +6,53 @@
   fields = (
     {
       columnName = c_name;
-      sqlType    = "VARCHAR(256)";
+      sqlType    = "VARCHAR(255)";
       allowsNull = NO;
       isPrimaryKey = YES;
     },
     {
       columnName = c_givenname;
-      sqlType    = "VARCHAR(256)";
+      sqlType    = "VARCHAR(255)";
       allowsNull = YES;
     },
     {
       columnName = c_cn;
-      sqlType    = "VARCHAR(256)";
+      sqlType    = "VARCHAR(255)";
       allowsNull = YES;
     },
     {
       columnName = c_sn;
-      sqlType    = "VARCHAR(256)";
+      sqlType    = "VARCHAR(255)";
       allowsNull = YES;
     },
     {
       columnName = c_screenname;
-      sqlType    = "VARCHAR(256)";
+      sqlType    = "VARCHAR(255)";
       allowsNull = YES;
     },
     {
       columnName = c_l;
-      sqlType    = "VARCHAR(256)";
+      sqlType    = "VARCHAR(255)";
       allowsNull = YES;
     },
     {
       columnName = c_mail;
-      sqlType    = "VARCHAR(256)";
+      sqlType    = "VARCHAR(255)";
       allowsNull = YES;
     },
     {
       columnName = c_o;
-      sqlType    = "VARCHAR(256)";
+      sqlType    = "VARCHAR(255)";
       allowsNull = YES;
     },
     {
       columnName = c_ou;
-      sqlType    = "VARCHAR(256)";
+      sqlType    = "VARCHAR(255)";
       allowsNull = YES;
     },
     {
       columnName = c_telephoneNumber;
-      sqlType    = "VARCHAR(256)";
+      sqlType    = "VARCHAR(255)";
       allowsNull = YES;
     },
     {

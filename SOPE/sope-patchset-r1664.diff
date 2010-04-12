@@ -401,7 +401,7 @@ Index: sope-gdl1/PostgreSQL/PostgreSQL72Channel.m
  
 +/* GCSEOAdaptorChannel protocol */
 +static NSString *sqlFolderFormat = (@"CREATE TABLE %@ (\n"	\
-+				    @"  c_name VARCHAR (256) NOT NULL PRIMARY KEY,\n"
++				    @"  c_name VARCHAR (255) NOT NULL PRIMARY KEY,\n"
 +				    @"  c_content VARCHAR (100000) NOT NULL,\n"
 +				    @"  c_creationdate INT4 NOT NULL,\n"
 +				    @"  c_lastmodified INT4 NOT NULL,\n"
@@ -409,8 +409,8 @@ Index: sope-gdl1/PostgreSQL/PostgreSQL72Channel.m
 +				    @"  c_deleted INT4 NULL\n"
 +				    @")");
 +static NSString *sqlFolderACLFormat = (@"CREATE TABLE %@ (\n"	\
-+				       @"  c_uid VARCHAR (256) NOT NULL,\n"
-+				       @"  c_object VARCHAR (256) NOT NULL,\n"
++				       @"  c_uid VARCHAR (255) NOT NULL,\n"
++				       @"  c_object VARCHAR (255) NOT NULL,\n"
 +				       @"  c_role VARCHAR (80) NOT NULL\n"
 +				       @")");
 +
@@ -445,7 +445,7 @@ Index: sope-gdl1/MySQL/MySQL4Channel.m
  
 +/* GCSEOAdaptorChannel protocol */
 +static NSString *sqlFolderFormat = (@"CREATE TABLE %@ (\n"	\
-+				    @"  c_name VARCHAR (256) NOT NULL PRIMARY KEY,\n"
++				    @"  c_name VARCHAR (255) NOT NULL PRIMARY KEY,\n"
 +				    @"  c_content VARCHAR (100000) NOT NULL,\n"
 +				    @"  c_creationdate INT NOT NULL,\n"
 +				    @"  c_lastmodified INT NOT NULL,\n"
@@ -453,8 +453,8 @@ Index: sope-gdl1/MySQL/MySQL4Channel.m
 +				    @"  c_deleted INT NULL\n"
 +				    @")");
 +static NSString *sqlFolderACLFormat = (@"CREATE TABLE %@ (\n"	\
-+				       @"  c_uid VARCHAR (256) NOT NULL,\n"
-+				       @"  c_object VARCHAR (256) NOT NULL,\n"
++				       @"  c_uid VARCHAR (255) NOT NULL,\n"
++				       @"  c_object VARCHAR (255) NOT NULL,\n"
 +				       @"  c_role VARCHAR (80) NOT NULL\n"
 +				       @")");
 +
@@ -795,10 +795,21 @@ Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
  /* GCSEOAdaptorChannel protocol */
  static NSString *sqlFolderFormat = (@"CREATE TABLE %@ (\n"	\
 -				    @"  c_name VARCHAR2 (256) NOT NULL,\n"
-+				    @"  c_name VARCHAR2 (256) NOT NULL PRIMARY KEY,\n"
++				    @"  c_name VARCHAR2 (255) NOT NULL PRIMARY KEY,\n"
  				    @"  c_content CLOB NOT NULL,\n"
  				    @"  c_creationdate INTEGER NOT NULL,\n"
  				    @"  c_lastmodified INTEGER NOT NULL,\n"
+@@ -617,8 +714,8 @@
+ 				    @"  c_deleted INTEGER DEFAULT 0 NOT NULL\n"
+ 				    @")");
+ static NSString *sqlFolderACLFormat = (@"CREATE TABLE %@ (\n"	\
+-				       @"  c_uid VARCHAR (256) NOT NULL,\n"
+-				       @"  c_object VARCHAR (256) NOT NULL,\n"
++				       @"  c_uid VARCHAR (255) NOT NULL,\n"
++				       @"  c_object VARCHAR (255) NOT NULL,\n"
+ 				       @"  c_role VARCHAR (80) NOT NULL\n"
+ 				       @")");
+ 
 Index: sope-gdl1/Oracle8/OracleAdaptorChannelController.m
 ===================================================================
 --- sope-gdl1/Oracle8/OracleAdaptorChannelController.m	(revision 1664)

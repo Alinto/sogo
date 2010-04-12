@@ -6,13 +6,13 @@
   fields = (
     {
       columnName = c_name;
-      sqlType    = "VARCHAR2(256)";
+      sqlType    = "VARCHAR2(255)";
       allowsNull = NO;
       isPrimaryKey = YES;
     },
     {
       columnName = c_uid;
-      sqlType    = "VARCHAR2(256)";
+      sqlType    = "VARCHAR2(255)";
       allowsNull = NO;
     },
     {
@@ -77,12 +77,12 @@
     },
     {
       columnName = c_location;
-      sqlType    = "VARCHAR2(256)";
+      sqlType    = "VARCHAR2(255)";
       allowsNull = YES;
     },
     {
       columnName = c_orgmail;
-      sqlType    = "VARCHAR2(256)";
+      sqlType    = "VARCHAR2(255)";
       allowsNull = YES;
     },
     {
@@ -92,7 +92,7 @@
     },
     {
       columnName = c_partstates;
-      sqlType    = "VARCHAR2(256)";
+      sqlType    = "VARCHAR2(255)";
       allowsNull = YES;
     },
     {
