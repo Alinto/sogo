@@ -1,5 +1,9 @@
 2010-04-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoProxyAuthenticator.m (-passwordInContext:):
+	use the "authorization" header to determine the password of the
+	user, if any.
+
 	* SoObjects/Appointments/SOGoAptMailReceipt.m (-getSubject)
 	(-getBody): taken methods from old version of
 	SOGoAptMailNotification, to avoid a crash regarding a lock of

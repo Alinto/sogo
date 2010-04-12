@@ -28,6 +28,7 @@
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 
+#import <NGExtensions/NGBase64Coding.h>
 #import <NGExtensions/NSObject+Logs.h>
 
 #import "SOGoPermissions.h"
@@ -100,14 +101,46 @@
 
 - (NSString *) passwordInContext: (WOContext *) context
 {
-  return @"";
+  NSString *password, *authType, *authorization, *pair, *pairStart;
+  WORequest *rq;
+
+  password = @"";
+
+  rq = [context request];
+  authType = [rq headerForKey: @"x-webobjects-auth-type"];
+  if ([authType isEqualToString: @"Basic"])
+    {
+      authorization = [rq headerForKey: @"authorization"];
+      if ([authorization hasPrefix: @"Basic "])
+        {
+          pair = [[authorization substringFromIndex: 6]
+                   stringByDecodingBase64];
+          pairStart = [NSString stringWithFormat: @"%@:",
+                                [self checkCredentialsInContext: context]];
+          if ([pair hasPrefix: pairStart])
+            password = [pair substringFromIndex: [pairStart length]];
+          else
+            [self errorWithFormat: @"the username in the 'authorization'"
+                  @" header does not have the expected value"];
+        }
+      else
+        [self errorWithFormat:
+                @"'authorization' header does not have the expected value"];
+    }
+  else if (authType)
+    [self errorWithFormat: @"unrecognized authentication type: '%@'",
+          authType];
+  else
+    [self warnWithFormat: @"no authentication type found, skipped"];
+
+  return password;
 }
 
 - (NSString *) imapPasswordInContext: (WOContext *) context
                            forServer: (NSString *) imapServer
                           forceRenew: (BOOL) renew
 {
-  return (renew ? nil : @"");
+  return (renew ? nil : [self passwordInContext: context]);
 }
 
 - (WOResponse *) preprocessCredentialsInContext: (WOContext *) context
