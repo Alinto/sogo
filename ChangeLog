@@ -1,5 +1,10 @@
 2010-04-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAptMailReceipt.m (-getSubject)
+	(-getBody): taken methods from old version of
+	SOGoAptMailNotification, to avoid a crash regarding a lock of
+	method override.
+
 	* UI/WebServerResources/SOGoTabsController.js: new js module for
 	handling tabs, replacing non-object code from generic.js. Added
 	handling of tab overflows, with the appearance of two left/right

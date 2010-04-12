@@ -35,6 +35,7 @@
   NSString *originator;
   NSArray *recipients;
   iCalPerson *currentRecipient;
+  BOOL isSubject;
 }
 
 - (void) setOriginator: (NSString *) newOriginator;

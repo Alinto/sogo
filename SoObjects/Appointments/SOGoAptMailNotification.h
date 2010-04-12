@@ -43,7 +43,6 @@
   NSTimeZone *viewTZ;
   NSCalendarDate *oldStartDate;
   NSCalendarDate *newStartDate;
-  BOOL isSubject;
   NSString *organizerName;
   NSMutableDictionary *values;
 }

@@ -21,12 +21,16 @@
  */
 
 #import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSCharacterSet.h>
 
 #import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGObjWeb/WOResponse.h>
+#import <NGExtensions/NSObject+Logs.h>
 
 #import <NGCards/iCalEvent.h>
 #import <NGCards/iCalPerson.h>
 
+#import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoUserManager.h>
 #import <SOGo/SOGoDateFormatter.h>
 #import <SOGo/SOGoUser.h>
@@ -34,7 +38,7 @@
 #import "SOGoAptMailReceipt.h"
 
 static SOGoUserManager *um = nil;
-
+static NSCharacterSet *wsSet = nil;
 
 @implementation SOGoAptMailReceipt
 
@@ -42,6 +46,9 @@ static SOGoUserManager *um = nil;
 {
   if (!um)
     um = [SOGoUserManager sharedUserManager];
+
+  if (!wsSet)
+    wsSet = [[NSCharacterSet whitespaceAndNewlineCharacterSet] retain];
 }
 
 - (id) init
@@ -50,6 +57,7 @@ static SOGoUserManager *um = nil;
     {
       originator = nil;
       recipients = nil;
+      isSubject = NO;
     }
 
   return self;
@@ -60,6 +68,36 @@ static SOGoUserManager *um = nil;
   [originator release];
   [recipients release];
   [super dealloc];
+}
+
+
+- (NSString *) getSubject
+{
+  NSString *subject;
+
+  isSubject = YES;
+  subject = [[[self generateResponse] contentAsString]
+	      stringByTrimmingCharactersInSet: wsSet];
+  if (!subject)
+    {
+      [self errorWithFormat:@"Failed to properly generate subject! Please check "
+	    @"template for component '%@'!",
+	    [self name]];
+      subject = @"ERROR: missing subject!";
+    }
+
+  return [subject asQPSubjectString: @"utf-8"];
+}
+
+- (NSString *) getBody
+{
+  NSString *body;
+
+  isSubject = NO;
+
+  body = [[self generateResponse] contentAsString];
+
+  return [body stringByTrimmingCharactersInSet: wsSet];
 }
 
 - (void) setOriginator: (NSString *) newOriginator
