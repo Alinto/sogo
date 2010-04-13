@@ -18,6 +18,12 @@ TR
 { width: 100% !important;
   border: 2px solid #0ff; }
 
+DIV#editorTabs
+{ position: absolute;
+  left: 5px;
+  right: 5px;
+  bottom: 40px; }
+
 DIV#editorTabs DIV.tab TD.titleCell
 { text-align: left;
   font-weight: bold; }

@@ -1,37 +1,38 @@
 <?xml version='1.0' standalone='yes'?>
-  <var:component
-    xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:var="http://www.skyrix.com/od/binding"
-    xmlns:const="http://www.skyrix.com/od/constant"
-    xmlns:uix="OGo:uix"
-    xmlns:label="OGo:label"
-    className="UIxPageFrame"
-    title="name"
-    const:popup="YES"
-    >
-    <form var:href="saveURL" name="editform" id="mainForm">
+<!DOCTYPE var:component>
+<var:component
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:uix="OGo:uix"
+  xmlns:label="OGo:label"
+  className="UIxPageFrame"
+  title="name"
+  const:popup="YES"
+  >
+  <form var:href="saveURL" name="editform" id="mainForm">
 
-  <var:if condition="isNew"><div id="addressBookSelector">
-	<style type="text/css">DIV#editorTabs { top: 4.5em; };</style>
-	<var:string label:value="Add to:" />
-	<var:popup const:id="addressBooksList"
-		   list="addressBooksList" item="addressBookItem"
-		   string="addressBookDisplayName"
-		   var:selection="componentAddressBook"
-		   />
+    <var:if condition="isNew"><div id="addressBookSelector">
+        <style type="text/css">DIV#editorTabs { top: 30px; };</style>
+        <var:string label:value="Add to:" />
+        <var:popup const:id="addressBooksList"
+          list="addressBooksList" item="addressBookItem"
+          string="addressBookDisplayName"
+          var:selection="componentAddressBook"
+          />
       </div></var:if>
 
-      <div class="tabsContainer" id="editorTabs">
-        <ul>
-          <li target="baseInfos">
-            <span><var:string label:value="Contact" /></span>
-          </li>
-          <li target="addressesInfos">
-            <span><var:string label:value="Address" /></span></li>
-          <li target="otherInfos">
-            <span><var:string label:value="Other" /></span></li>
-        </ul>
-
+    <div class="tabsContainer" id="editorTabs">
+      <ul>
+        <li target="baseInfos">
+          <span><var:string label:value="Contact" /></span>
+        </li>
+        <li target="addressesInfos">
+          <span><var:string label:value="Address" /></span></li>
+        <li target="otherInfos">
+          <span><var:string label:value="Other" /></span></li>
+      </ul>
+      <div class="tabs">
         <div id="baseInfos" class="tab">
           <span class="caption"><var:string label:value="Name" /></span>
           <table class="frame">
@@ -90,7 +91,7 @@
             <tr>
               <td>
                 <label><var:string label:value="Screen Name:"
-		    />
+                    />
                   <input type="text" class="textField" name="screenName"
                     id="screenName" var:value="snapshot.screenName" />
                 </label>
@@ -99,16 +100,16 @@
             <tr>
               <td id="htmlMailFormat">
                 <label><var:string
-		    label:value="Prefers to receive messages formatted as:" />
-		  <var:popup list="htmlMailFormatList" item="item"
-		    label:noSelectionString="htmlMailFormat_UNKNOWN"
-		    string="itemHtmlMailFormatText"
-		    selection="snapshot.mozillaUseHtmlMail"
-		    />
+                    label:value="Prefers to receive messages formatted as:" />
+                  <var:popup list="htmlMailFormatList" item="item"
+                    label:noSelectionString="htmlMailFormat_UNKNOWN"
+                    string="itemHtmlMailFormatText"
+                    selection="snapshot.mozillaUseHtmlMail"
+                    />
                 </label>
               </td>
             </tr>
-	  </table>
+          </table>
           <span class="caption"><var:string label:value="Phones" /></span>
           <table class="frame">
             <tr>
@@ -169,7 +170,7 @@
         </div>
 
         <div id="addressesInfos" class="tab">
-	  <span class="caption"><var:string label:value="Home" /></span>
+          <span class="caption"><var:string label:value="Home" /></span>
           <table class="frame">
             <tr>
               <td colspan="2">
@@ -347,14 +348,15 @@
           </table>
         </div>
       </div>
-      <div id="buttons">
-        <var:if condition="canCreateOrModify"
-          ><a class="button actionButton" name="submit" id="submitButton"> 
-            <span><var:string label:value="Save" /></span>
-          </a></var:if>
-        <a id="cancelButton" class="button" name="cancel">
-          <span><var:string label:value="Cancel"/></span>
-        </a>
-      </div>
-    </form>
-  </var:component>
+    </div>
+    <div id="buttons">
+      <var:if condition="canCreateOrModify"
+        ><a class="button actionButton" name="submit" id="submitButton"> 
+          <span><var:string label:value="Save" /></span>
+        </a></var:if>
+      <a id="cancelButton" class="button" name="cancel">
+        <span><var:string label:value="Cancel"/></span>
+      </a>
+    </div>
+  </form>
+</var:component>

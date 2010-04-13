@@ -1,3 +1,8 @@
+2010-04-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/UIxContactEditor.js (initEditorForm): we
+	need to instantiate a tabs controller here too.
+
 2010-04-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoProxyAuthenticator.m (-passwordInContext:):

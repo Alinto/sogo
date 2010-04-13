@@ -1,7 +1,8 @@
-/* -*- Mode: java; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
+/* -*- Mode: java; tab-width: 2; c-label-minimum-indentation: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /*
 	Copyright (C) 2005 SKYRIX Software AG
+	Copyright (C) 2006-2010 Inverse
  
 	This file is part of OpenGroupware.org.
  
@@ -138,6 +139,10 @@ function onEditorSubmitClick(event) {
 }
 
 function initEditorForm() {
+    var tabsContainer = $("editorTabs");
+    var controller = new SOGoTabsController();
+    controller.attachToTabsContainer(tabsContainer);
+
   displayNameChanged = ($("fn").value.length > 0);
   $("fn").onkeydown = onFnKeyDown;
   $("sn").onkeyup = onFnNewValue;
