@@ -20,6 +20,7 @@ TR
 
 DIV#editorTabs
 { position: absolute;
+  top: 5px;
   left: 5px;
   right: 5px;
   bottom: 40px; }
