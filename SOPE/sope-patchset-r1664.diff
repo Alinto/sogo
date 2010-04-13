@@ -3948,6 +3948,56 @@ Index: sope-mime/NGImap4/NGImap4Functions.h
 +NSString *SaneFolderName(NSString *folderName);
 +
  #endif /* __NGMime_NGImap4_NGImap4Functions_H__ */
+Index: sope-mime/NGMail/NGSmtpClient.m
+===================================================================
+--- sope-mime/NGMail/NGSmtpClient.m	(revision 1664)
++++ sope-mime/NGMail/NGSmtpClient.m	(working copy)
+@@ -467,13 +467,27 @@
+ 
+ // transaction commands
+ 
++- (NSString *) _sanitizeAddress: (NSString *) address
++{
++  NSString *saneAddress;
++
++  if ([address hasPrefix: @"<"])
++    saneAddress = address;
++  else
++    saneAddress = [NSString stringWithFormat: @"<%@>", address];
++
++  return saneAddress;
++}
++
+ - (BOOL)mailFrom:(id)_sender {
+-  NGSmtpResponse *reply  = nil;
+-  NSString       *sender = nil;
++  NGSmtpResponse *reply;
++  NSString       *sender;
++
+   [self requireState:NGSmtpState_connected];
+ 
+-  sender = [@"FROM:" stringByAppendingString:[_sender stringValue]];
+-  reply  = [self sendCommand:@"MAIL" argument:sender];
++  sender = [self _sanitizeAddress: [_sender stringValue]];
++  reply  = [self sendCommand: @"MAIL"
++                    argument: [@"FROM:" stringByAppendingString: sender]];
+   if ([reply isPositive]) {
+     if ([reply code] != NGSmtpActionCompleted) {
+       NSLog(@"SMTP(MAIL FROM): expected reply code %i, got code %i ..",
+@@ -490,9 +504,10 @@
+   NSString       *rcpt  = nil;
+   
+   [self requireState:NGSmtpState_TRANSACTION];
+-  
+-  rcpt  = [@"TO:" stringByAppendingString:[_receiver stringValue]];
+-  reply = [self sendCommand:@"RCPT" argument:rcpt];
++
++  rcpt  = [self _sanitizeAddress: [_receiver stringValue]];
++  reply = [self sendCommand: @"RCPT"
++                   argument: [@"TO:" stringByAppendingString: rcpt]];
+   if ([reply isPositive]) {
+     if ([reply code] != NGSmtpActionCompleted) {
+       NSLog(@"SMTP(RCPT TO): expected reply code %i, got code %i ..",
 Index: sope-mime/NGMail/NGMailAddressParser.h
 ===================================================================
 --- sope-mime/NGMail/NGMailAddressParser.h	(revision 1664)
@@ -4229,6 +4279,31 @@ Index: sope-mime/NGMail/NGMailAddressParser.m
    self->data      = NULL;
    self->maxLength = 0;
    self->dataPos   = 0;
+Index: sope-mime/NGMail/ChangeLog
+===================================================================
+--- sope-mime/NGMail/ChangeLog	(revision 1664)
++++ sope-mime/NGMail/ChangeLog	(working copy)
+@@ -1,3 +1,8 @@
++2010-04-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
++
++	* NGSmtpClient.m (-mailFrom, -recipientTo): we ensure that the
++	provided email address is enclosed within brackets.
++
+ 2008-09-01  Ludovic Marcotte  <lmarcotte@inverse.ca>
+ 
+ 	* NGSmtpClient.m: improved implementation
+@@ -31,9 +36,9 @@
+ 	  fields to fix #1324
+ 
+ 2005-03-24  Helge Hess  <helge.hess@skyrix.com>
+-	
++
+ 	* NGMimeMessageGenerator.m: minor code cleanups
+-	
++
+ 2005-01-30  Helge Hess  <helge.hess@opengroupware.org>
+ 
+ 	* NGMimeMessageGenerator.m: fixed a format bug in an error log which
 Index: sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m
 ===================================================================
 --- sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m	(revision 1664)
