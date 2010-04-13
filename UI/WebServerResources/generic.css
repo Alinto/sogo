@@ -742,10 +742,6 @@ SPAN.caption
 
 DIV.tabsContainer
 { overflow: hidden;
-  top: 0px;
-  left: 5px;
-  right: 5px;
-  bottom: 5px;
   padding: 0px 5px; }
 
 DIV.tabsContainer > DIV.scrollToolbar
@@ -886,8 +882,8 @@ A.toolbarButton SPAN,
 A.toolbarButton:hover SPAN {
   text-align: center;
   display: block;
-  line-height: 12px;
-  padding: 5px 2px 2px 5px;
+  line-height: 13px;
+  padding: 5px 2px 5px 5px;
   cursor: pointer;
 }
 
