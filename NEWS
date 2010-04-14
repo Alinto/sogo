@@ -8,6 +8,7 @@
 - updated Czech translation, thanks to Milos Wimmer
 - removed remaining .wo templates, thereby easing the effort for future translations
 - fixed regressions with Courier IMAP and Dovecot
+- added ability to delete events from a keypress
 
 1.2-20100219 (1.2.1)
 --------------------
