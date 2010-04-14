@@ -1,5 +1,9 @@
 2010-04-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/SchedulerUI.js (onDocumentKeydown): new
+	callback method for handling keypresses. Initial code handles
+	event/task deletion.
+
 	* UI/WebServerResources/generic.js (onRowClick): fixed a typo.
 
 2010-04-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>

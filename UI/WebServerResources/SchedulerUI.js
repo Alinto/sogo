@@ -2550,6 +2550,17 @@ function drawNowLine () {
   }
 }
 
+function onDocumentKeydown(event) {
+    var target = Event.element(event);
+    if (target.tagName != "INPUT") {
+        if (event.keyCode == Event.KEY_DELETE
+            || (event.keyCode == Event.KEY_BACKSPACE && isMac())) {
+            deleteEvent();
+            Event.stop(event);
+        }
+    }
+}
+
 function initCalendars() {
     sorting["attribute"] = "start";
     sorting["ascending"] = true;
@@ -2572,6 +2583,11 @@ function initCalendars() {
         // Calendar import form
         $("uploadCancel").observe("click", hideCalendarImport);
         $("uploadOK").observe("click", hideImportResults);
+
+        if (Prototype.Browser.Gecko)
+            Event.observe(document, "keypress", onDocumentKeydown); // for FF2
+        else
+            Event.observe(document, "keydown", onDocumentKeydown);
     }
 
     onWindowResize.defer();
