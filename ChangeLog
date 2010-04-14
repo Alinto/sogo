@@ -1,3 +1,7 @@
+2010-04-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/generic.js (onRowClick): fixed a typo.
+
 2010-04-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/UIxContactEditor.js (initEditorForm): we

@@ -488,7 +488,7 @@ function onRowClick(event) {
         // Ignore non primary-click (ie right-click) inside current selection
         return true;
 
-    if ((event.shiftKey == 1 || (isMac() && event.metaKey == 1) || (!isMac() && event.ctrlKey == 1)))
+    if ((event.shiftKey == 1 || (isMac() && event.metaKey == 1) || (!isMac() && event.ctrlKey == 1))
         && (lastClickedRow >= 0)
         && (acceptMultiSelect(node.parentNode)
             || acceptMultiSelect(node.parentNode.parentNode))) {
