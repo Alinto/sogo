@@ -1,5 +1,8 @@
 2010-04-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Tools/SOGoToolRemove.m: new sogo-tool utility to remove user
+	data from the database.
+
 	* Tools/SOGoSockDOperation.m (_appendEntry:toResult:): include
 	"telephonenumber" in the entry information.
 
