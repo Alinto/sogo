@@ -122,8 +122,8 @@
 /* Identities */
 "Default identity:" = "Výchozí identita:";
 "Manage identities..." = "Spravovat identity...";
-"replyplacement_above" = "Začít mou odpověď nad citací";
-"replyplacement_below" = "Začít mou odpověď pod citací";
+"replyplacement_above" = "Začít mojí odpověď nad citací";
+"replyplacement_below" = "Začít mojí odpověď pod citací";
 "And place my signature" = "A umístit můj podpis";
 "signatureplacement_above" = "pod odpověď";
 "signatureplacement_below" = "pod citaci";
