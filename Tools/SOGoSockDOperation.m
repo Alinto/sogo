@@ -95,7 +95,8 @@
   if (!ldifFields)
     {
       ldifFields = [NSArray arrayWithObjects: @"c_cn", @"c_givenname",
-                            @"c_mail", @"c_o", @"c_screenname", @"c_sn", nil];
+                            @"c_mail", @"c_o", @"c_screenname", @"c_sn",
+                            @"c_telephonenumber", nil];
       [ldifFields retain];
     }
 

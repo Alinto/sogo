@@ -1,4 +1,30 @@
+2010-04-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Tools/SOGoSockDOperation.m (_appendEntry:toResult:): include
+	"telephonenumber" in the entry information.
+
 2010-04-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/MailerUI.js (onMenuArchiveFolder): new
+	menu callback method that invokes "exportFolder" on the target
+	mailbox.
+	(saveAs): we use "window.location.href" instead of "window.open"
+	when exporting messages, as it avoids the flickering of opening an
+	ephemeral window.
+
+	* UI/MailerUI/UIxMailFolderActions.m (-exportFolderAction): new
+	action that triggers the archiving of the selected folder.
+
+	* SoObjects/Mailer/SOGoMailFolder.m
+	(-archiveUIDs:inArchiveNamed:inContext:): new version of
+	"-archiveUIDs:inContext:" taking an optional archive name as
+	argument, to be used as the filename of the attachment in the mime
+	headers of the response. Fixed a bug naming the messages following
+	their identifier's address rather than their identifier. We now
+	encode the provided filename as a qp utf-8 string when needed.
+	(-archiveAllMessagesInContext:): new method that uses the above
+	method for archiving all the messages in an archive named after
+	the folder's IMAP name.
 
 	* UI/WebServerResources/SchedulerUI.js (onDocumentKeydown): new
 	callback method for handling keypresses. Initial code handles
