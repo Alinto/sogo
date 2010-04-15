@@ -14,6 +14,7 @@ $(SOGO_TOOL)_OBJC_FILES += \
 	SOGoToolRestore.m \
 	SOGoToolCheckDoubles.m \
 	SOGoToolRemoveDoubles.m \
+	SOGoToolRemove.m \
 
 SOGO_SLAPD_SOCKD = sogo-slapd-sockd
 $(SOGO_SLAPD_SOCKD)_INSTALL_DIR = $(SOGO_ADMIN_TOOLS)
