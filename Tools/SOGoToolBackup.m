@@ -42,13 +42,21 @@
 #import <SOGo/SOGoUserProfile.h>
 #import <SOGo/SOGoUserSettings.h>
 
-#import "SOGoToolBackup.h"
+#import "SOGoTool.h"
 
 /* TODO:
    - handle database connectivity errors
    - respond to "--help backup"
    - allow more than one user specifier on the command-line
 */
+
+@interface SOGoToolBackup : SOGoTool
+{
+  NSString *directory;
+  NSArray *userIDs;
+}
+
+@end
 
 @implementation SOGoToolBackup
 

@@ -37,7 +37,14 @@
 #import <GDLContentStore/GCSFolderManager.h>
 #import <GDLContentStore/GCSFolder.h>
 
-#import "SOGoToolCheckDoubles.h"
+#import "SOGoTool.h"
+
+@interface SOGoToolCheckDoubles : SOGoTool
+{
+  unsigned int warningLimit;
+}
+
+@end
 
 @implementation SOGoToolCheckDoubles
 

@@ -46,7 +46,7 @@
 #import <GDLContentStore/GCSFolderManager.h>
 #import <GDLContentStore/GCSFolder.h>
 
-#import "SOGoToolRemoveDoubles.h"
+#import "SOGoTool.h"
 
 @interface NGVList (RemoveDoubles)
 
@@ -72,6 +72,9 @@
   return cardNames;
 }
 
+@end
+
+@interface SOGoToolRemoveDoubles : SOGoTool
 @end
 
 @implementation SOGoToolRemoveDoubles

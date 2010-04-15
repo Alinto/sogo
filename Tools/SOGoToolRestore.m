@@ -42,7 +42,7 @@
 #import <SOGo/SOGoUserProfile.h>
 #import <SOGo/SOGoUserSettings.h>
 
-#import "SOGoToolRestore.h"
+#import "SOGoTool.h"
 
 /* TODO:
    - respond to "--help restore"
@@ -51,7 +51,23 @@
    - write methods in GDLContentStore to get/update displayname
      and storing roles */ 
 
-#import <NGExtensions/NGBundleManager.h>
+typedef enum SOGoToolRestoreMode {
+  SOGoToolRestoreFolderMode,
+  SOGoToolRestoreFolderDestructiveMode,
+  SOGoToolRestoreListFoldersMode,
+  SOGoToolRestorePreferencesMode
+} SOGoToolRestoreMode;
+
+@interface SOGoToolRestore : SOGoTool
+{
+  NSString *directory;
+  NSString *userID;
+  NSString *restoreFolder;
+  BOOL destructive; /* destructive mode not handled */
+  SOGoToolRestoreMode restoreMode;
+}
+
+@end
 
 @implementation SOGoToolRestore
 
