@@ -401,7 +401,7 @@ static int cssEscapingCount;
   if ([qpString length] > [self length])
     {
       qpString = [qpString stringByReplacingString: @" " withString: @"_"];
-      subjectString = [NSString stringWithFormat: @"=?%@?Q?%@?=",
+      subjectString = [NSString stringWithFormat: @"=?%@?q?%@?=",
 				encoding, qpString];
     }
   else

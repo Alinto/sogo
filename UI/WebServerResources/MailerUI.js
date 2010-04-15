@@ -2255,12 +2255,20 @@ function saveAs(event) {
             paths.push(path);
         }
         var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/saveMessages";
-        window.open(url+"?id="+uids+"&uid="+uids+"&mailbox="+Mailer.currentMailbox+"&path="+paths);
+        window.location.href = (url+"?id="+uids+"&uid="+uids+"&mailbox="+Mailer.currentMailbox+"&path="+paths);
     }
     else
         window.alert(getLabel("Please select a message."));
 
     return false;
+}
+
+function onMenuArchiveFolder(event) {
+    var folderID = document.menuTarget.getAttribute("dataname");
+    var url = URLForFolderID(folderID) + "/exportFolder";
+    window.location.href = url;
+
+    event.stop();
 }
 
 function getMenus() {
@@ -2269,16 +2277,18 @@ function getMenus() {
                                          null, null);
     menus["inboxIconMenu"] = new Array(null, null, null, "-", null,
                                        onMenuCreateFolder, onMenuExpungeFolder,
-                                       "-", null,
+                                       onMenuArchiveFolder, "-", null,
                                        onMenuSharing);
     menus["trashIconMenu"] = new Array(null, null, null, "-", null,
                                        onMenuCreateFolder, onMenuExpungeFolder,
-                                       onMenuEmptyTrash, "-", null,
+                                       onMenuArchiveFolder, onMenuEmptyTrash,
+                                       "-", null,
                                        onMenuSharing);
     menus["mailboxIconMenu"] = new Array(null, null, null, "-", null,
                                          onMenuCreateFolder,
                                          onMenuRenameFolder,
                                          onMenuExpungeFolder,
+                                         onMenuArchiveFolder,
                                          onMenuDeleteFolder,
                                          "folderTypeMenu",
                                          "-", null,

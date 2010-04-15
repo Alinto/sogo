@@ -143,6 +143,11 @@
           actionClass = "UIxMailFolderActions";
           actionName = "saveMessages";
         };
+        exportFolder = {
+          protectedBy = "View";
+          actionClass = "UIxMailFolderActions";
+          actionName = "exportFolder";
+        };
         copyMessages = {
           protectedBy = "View";
           actionClass = "UIxMailFolderActions";

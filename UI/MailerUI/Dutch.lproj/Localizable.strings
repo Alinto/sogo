@@ -76,7 +76,10 @@
 "Remove this folder" = "Deze map verwijderen";
 "Erase mails from this folder" = "E-mails in in deze map verwijderen";
 "Expunge this folder" = "Deze map leegmaken";
+"Archive This Folder" = "Archive This Folder";
 "Modify the acl of this folder" = "Machtigingen van deze map aanpassen";
+
+"Saved Messages.zip" = "Saved Messages.zip";
 
 "Update" = "Opslaan";
 "Cancel" = "Sluiten";

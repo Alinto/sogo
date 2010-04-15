@@ -49,7 +49,10 @@
 
 /* messages */
 - (NSException *) deleteUIDs: (NSArray *) uids  inContext: (id) context;
-- (WOResponse *) archiveUIDs: (NSArray *) uids  inContext: (id) context;
+- (WOResponse *) archiveUIDs: (NSArray *) uids
+              inArchiveNamed: (NSString *) archiveName
+                   inContext: (id) context;
+- (WOResponse *) archiveAllMessagesInContext: (id) localContext;
 
 - (NSArray *) fetchUIDsMatchingQualifier: (id)_q sortOrdering: (id) _so;
 - (NSArray *) fetchUIDs: (NSArray *) _uids parts: (NSArray *) _parts;

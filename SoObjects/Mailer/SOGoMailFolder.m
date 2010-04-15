@@ -331,11 +331,12 @@ static NSString *defaultUserID =  @"anyone";
 }
 
 - (WOResponse *) archiveUIDs: (NSArray *) uids
+              inArchiveNamed: (NSString *) archiveName
                    inContext: (id) localContext
 {
   NSException *error;
   NSFileManager *fm;
-  NSString *spoolPath, *fileName, *zipPath;
+  NSString *spoolPath, *fileName, *zipPath, *qpFileName;
   NSDictionary *msgs;
   NSArray *messages;
   NSData *content, *zipContent;
@@ -343,6 +344,9 @@ static NSString *defaultUserID =  @"anyone";
   NSMutableArray *zipTaskArguments;
   WOResponse *response;
   int i;
+
+  if (!archiveName)
+    archiveName = @"SavedMessages.zip";
 
 #warning this method should be rewritten according to our coding styles  
   spoolPath = [self userSpoolFolderPath];
@@ -369,18 +373,16 @@ static NSString *defaultUserID =  @"anyone";
   [zipTaskArguments addObject: @"SavedMessages.zip"];
 
   msgs = (NSDictionary *)[self fetchUIDs: uids  
-    parts: [NSArray arrayWithObject: @"RFC822"]];
+                                   parts: [NSArray arrayWithObject: @"RFC822"]];
   messages = [msgs objectForKey: @"fetch"];
 
   for (i = 0; i < [messages count]; i++) {
     content = [[messages objectAtIndex: i] objectForKey: @"message"];
-
-    [content writeToFile: 
-      [NSString stringWithFormat:@"%@/%d.eml", spoolPath, [uids objectAtIndex: i]] 
-      atomically: YES];
+    fileName = [NSString stringWithFormat:@"%@/%@.eml", spoolPath, [uids objectAtIndex: i]];;
+    [content writeToFile: fileName atomically: YES];
     
     [zipTaskArguments addObject: 
-      [NSString stringWithFormat:@"%d.eml", [uids objectAtIndex: i]]];
+      [NSString stringWithFormat:@"%@.eml", [uids objectAtIndex: i]]];
   }
   
   [zipTask setArguments: zipTaskArguments];
@@ -400,12 +402,43 @@ static NSString *defaultUserID =  @"anyone";
   
   response = [[WOResponse alloc] init];
   [response autorelease];
-  [response setHeader: @"application/zip" forKey:@"content-type"];
-  [response setHeader: @"attachment;filename=SavedMessages.zip" forKey: @"Content-Disposition"];
+  qpFileName = [archiveName asQPSubjectString: @"utf-8"];
+  [response setHeader: [NSString stringWithFormat: @"application/zip;"
+                                 @" name=\"%@\"",
+                                 qpFileName]
+               forKey:@"content-type"];
+  [response setHeader: [NSString stringWithFormat: @"attachment; filename=\"%@\"",
+                                 qpFileName]
+               forKey: @"Content-Disposition"];
   [response setContent: zipContent];
-  
+
   [zipContent release];
   
+  return response;
+}
+
+- (WOResponse *) archiveAllMessagesInContext: (id) localContext
+{
+  WOResponse *response;
+  NSArray *uids;
+  NSString *archiveName;
+  EOQualifier *notDeleted;
+
+  if ([[self imap4Connection] doesMailboxExistAtURL: [self imap4URL]])
+    {
+      notDeleted = [EOQualifier qualifierWithQualifierFormat:
+                                  @"(not (flags = %@))", @"deleted"];
+      uids = [self fetchUIDsMatchingQualifier: notDeleted
+                                 sortOrdering: @"ARRIVAL"];
+      archiveName = [NSString stringWithFormat: @"%@.zip", [self relativeImap4Name]];
+      response = [self archiveUIDs: uids inArchiveNamed: archiveName
+                         inContext: localContext];
+    }
+  else
+    response = (WOResponse *)
+      [NSException exceptionWithHTTPStatus: 404
+                                    reason: @"Folder does not exist."];
+
   return response;
 }
 

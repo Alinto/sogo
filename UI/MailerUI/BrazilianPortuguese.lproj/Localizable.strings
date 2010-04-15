@@ -76,7 +76,10 @@
 "Remove this folder" = "Apagar esta pasta";
 "Erase mails from this folder" = "Apagar emails desta pasta";
 "Expunge this folder" = "Expurgar esta pasta";
+"Archive This Folder" = "Archive This Folder";
 "Modify the acl of this folder" = "Modificar os direitos desta pasta";
+
+"Saved Messages.zip" = "Saved Messages.zip";
 
 "Update" = "Atualizar";
 "Cancel" = "Cancelar";

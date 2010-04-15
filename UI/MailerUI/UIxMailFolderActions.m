@@ -270,7 +270,9 @@
   if ([value length] > 0)
   {
     uids = [value componentsSeparatedByString: @","];
-    response = [co archiveUIDs: uids  inContext: context];
+    response = [co archiveUIDs: uids
+                inArchiveNamed: [self labelForKey: @"Saved Messages.zip"]
+                     inContext: context];
     if (!response)
       response = [self responseWith204];
   }
@@ -279,6 +281,15 @@
     response = [self responseWithStatus: 500];
     [response appendContentString: @"Missing 'uid' parameter."];
   }
+
+  return response;
+}
+
+- (WOResponse *) exportFolderAction
+{
+  WOResponse *response;
+
+  response = [[self clientObject] archiveAllMessagesInContext: context];
 
   return response;
 }
