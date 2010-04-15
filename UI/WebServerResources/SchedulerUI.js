@@ -2555,8 +2555,9 @@ function onDocumentKeydown(event) {
     if (target.tagName != "INPUT") {
         if (event.keyCode == Event.KEY_DELETE
             || (event.keyCode == Event.KEY_BACKSPACE && isMac())) {
+            $("eventDialog").hide();
             deleteEvent();
-            Event.stop(event);
+            event.stop();
         }
     }
 }

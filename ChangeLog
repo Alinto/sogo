@@ -1,5 +1,10 @@
 2010-04-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/SchedulerUI.js (onDocumentKeydown): when
+	deleting an event, we must make sure that the even dialog
+	disappears, as it the case with the click on the corresponding
+	toolbar button.
+
 	* Tools/SOGoToolRemove.m: new sogo-tool utility to remove user
 	data from the database.
 
