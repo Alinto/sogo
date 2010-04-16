@@ -1,3 +1,10 @@
+2010-04-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/UIxMailPopupView.js (initPopupMailer): we
+	assign window.messageUID from here now (by concatenating
+	"mailboxName" and "messageName", as it will disappear if the
+	window is reloaded.
+
 2010-04-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/SchedulerUI.js (onDocumentKeydown): when

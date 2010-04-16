@@ -59,7 +59,6 @@ function openMessageWindow(msguid, url) {
         markMailReadInWindow(window, msguid);
     }
     var msgWin = openMailComposeWindow(url, wId);
-    msgWin.messageUID = msguid;
     msgWin.focus();
     Mailer.popups.push(msgWin);
 

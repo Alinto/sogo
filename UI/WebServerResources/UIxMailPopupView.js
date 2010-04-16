@@ -12,6 +12,8 @@ function initPopupMailer(event) {
 
     configureLoadImagesButton();
     configureSignatureFlagImage();
+
+    window.messageUID = mailboxName + "/" + messageName;
 }
 
 function onICalendarButtonClick(event) {
