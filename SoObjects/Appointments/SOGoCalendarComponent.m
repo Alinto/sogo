@@ -257,7 +257,8 @@
   return iCalString;
 }
 
-static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
+static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
+                                    NSString *recID)
 {
   unsigned int seconds, recSeconds;
   
@@ -290,6 +291,9 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence, NSStr
 	    count++;
 	}
     }
+  else if (_occurenceHasID (component, recID))
+    /* The "master" event could be that occurrence. */
+    occurence = component;
 
   return occurence;
 }
