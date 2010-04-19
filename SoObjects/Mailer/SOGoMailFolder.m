@@ -400,8 +400,7 @@ static NSString *defaultUserID =  @"anyone";
       [NSString stringWithFormat: @"%@/%@", spoolPath, fileName] handler: nil];
   }
   
-  response = [[WOResponse alloc] init];
-  [response autorelease];
+  response = [context response];
   qpFileName = [archiveName asQPSubjectString: @"utf-8"];
   [response setHeader: [NSString stringWithFormat: @"application/zip;"
                                  @" name=\"%@\"",
