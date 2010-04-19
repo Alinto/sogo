@@ -241,32 +241,26 @@ function handleMonthlyRecurrence() {
 
     var radioValue = $('recurrence_form').getRadioValue('monthlyRadioButtonName');
 
-    // FIXME - right now we do not support rules
-    //         such as The Second Tuesday...
-    if (radioValue == 0)
-        window.alert(recurrenceUnsupported);
-    else {
-        // We check if the monthlyMonthsField really contains an integer
-        var showError = true;
+    // We check if the monthlyMonthsField really contains an integer
+    var showError = true;
 
-        var fieldValue = "" + $('monthlyMonthsField').value;
-        if (fieldValue.length > 0) {
-            var v = parseInt(fieldValue);
-            if (!isNaN(v) && v > 0) {
-                validate = true;
-                showError = false;
-                parent$("repeat1").value = fieldValue;
-                parent$("repeat2").value = radioValue;
-                parent$("repeat3").value = $('monthlyRepeat').value;
-                parent$("repeat4").value = $('monthlyDay').value;
-                parent$("repeat5").value = getSelectedDays("month");
-            }
+    var fieldValue = "" + $('monthlyMonthsField').value;
+    if (fieldValue.length > 0) {
+        var v = parseInt(fieldValue);
+        if (!isNaN(v) && v > 0) {
+            validate = true;
+            showError = false;
+            parent$("repeat1").value = fieldValue;
+            parent$("repeat2").value = radioValue;
+            parent$("repeat3").value = $('monthlyRepeat').value;
+            parent$("repeat4").value = $('monthlyDay').value;
+            parent$("repeat5").value = getSelectedDays("month");
         }
-
-        if (showError)
-            window.alert(monthFieldInvalid);
     }
-
+    
+    if (showError)
+        window.alert(monthFieldInvalid);
+    
     return validate;
 }
 
@@ -279,15 +273,20 @@ function validateYearlyRecurrence() {
         // We check if the yearlyYearsField really contains an integer
         var v = parseInt(fieldValue);
         if (!isNaN(v) && v > 0) {
-            errorToShow = 1;
-            fieldValue = "" + $('yearlyDayField').value;
-            if (fieldValue.length > 0) {
-                // We check if the yearlyYearsField really contains an integer
-                var v = parseInt(fieldValue);
-                if (!isNaN(v) && v > 0) {
-                    errorToShow = -1;
+            var radioValue = $('recurrence_form').getRadioValue('yearlyRadioButtonName');
+            if (radioValue == 0) {
+                errorToShow = 1;
+                fieldValue = "" + $('yearlyDayField').value;
+                if (fieldValue.length > 0) {
+                    // We check if the yearlyDayField really contains an integer
+                    var v = parseInt(fieldValue);
+                    if (!isNaN(v) && v > 0) {
+                        errorToShow = -1;
+                    }
                 }
             }
+            else
+                errorToShow = -1;
         }
     }
 
@@ -300,34 +299,28 @@ function validateYearlyRecurrence() {
 function handleYearlyRecurrence() {
     var validate = false;
 
-    var radioValue = $('recurrence_form').getRadioValue('yearlyRadioButtonName');
-    // FIXME - right now we do not support rules
-    //         such as Every Second Tuesday of February
-    if (radioValue == 1)
-        window.alert(recurrenceUnsupported);
-    else {
-        if (validateYearlyRecurrence()) {
-            var fieldValue = "" + $('yearlyYearsField').value;
-            if (fieldValue.length > 0) {
-                // We check if the yearlyYearsField really contains an integer
-                var v = parseInt(fieldValue);
-                if (!isNaN(v) && v > 0) {
-                    validate = true;
-                    showError = false;
-                    parent$("repeat1").value = fieldValue;
-                    parent$("repeat2").value = radioValue;
-                    parent$("repeat3").value = $('yearlyDayField').value;
-                    parent$("repeat4").value = $('yearlyMonth1').value;
-                    parent$("repeat5").value = $('yearlyRepeat').value;
-                    parent$("repeat6").value = $('yearlyDay').value;
-                    parent$("repeat7").value = $('yearlyMonth2').value;
-                }
+    if (validateYearlyRecurrence()) {
+        var radioValue = $('recurrence_form').getRadioValue('yearlyRadioButtonName');
+        var fieldValue = "" + $('yearlyYearsField').value;
+        if (fieldValue.length > 0) {
+            // We check if the yearlyYearsField (interval) really contains an integer
+            var v = parseInt(fieldValue);
+            if (!isNaN(v) && v > 0) {
+                validate = true;
+                showError = false;
+                parent$("repeat1").value = fieldValue;
+                parent$("repeat2").value = radioValue;
+                parent$("repeat3").value = $('yearlyDayField').value;
+                parent$("repeat4").value = $('yearlyMonth1').value;
+                parent$("repeat5").value = $('yearlyRepeat').value;
+                parent$("repeat6").value = $('yearlyDay').value;
+                parent$("repeat7").value = $('yearlyMonth2').value;
             }
         }
-        else
-            validate = false;
     }
-
+    else
+        validate = false;
+    
     return validate;
 }
 

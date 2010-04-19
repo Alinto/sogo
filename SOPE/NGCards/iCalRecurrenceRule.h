@@ -1,5 +1,6 @@
 /*
   Copyright (C) 2004-2005 SKYRIX Software AG
+  Copyright (C) 2006-2010 Inverse inc.
 
   This file is part of SOPE.
 
@@ -46,34 +47,25 @@ typedef enum {
 } iCalRecurrenceFrequency;
 
 typedef enum {
-  iCalWeekDaySunday    = 1,
-  iCalWeekDayMonday    = 2,
-  iCalWeekDayTuesday   = 4,
-  iCalWeekDayWednesday = 8,
-  iCalWeekDayThursday  = 16,
-  iCalWeekDayFriday    = 32,
-  iCalWeekDaySaturday  = 64,
+  iCalWeekDayUnknown   = -1,
+  iCalWeekDaySunday    = 0,
+  iCalWeekDayMonday    = 1,
+  iCalWeekDayTuesday   = 2,
+  iCalWeekDayWednesday = 3,
+  iCalWeekDayThursday  = 4,
+  iCalWeekDayFriday    = 5,
+  iCalWeekDaySaturday  = 6
 } iCalWeekDay;
 
+extern NSString *iCalWeekDayString[];
+
 @class NSString, NSCalendarDate, NGCalendarDateRange, NSArray;
+@class iCalByDayMask;
 
 @interface iCalRecurrenceRule : CardElement
-// {
-//   iCalRecurrenceFrequency frequency;
-//   int            interval;
-//   unsigned       repeatCount;
-//   NSCalendarDate *untilDate;
-//   struct {
-//     unsigned weekStart: 7;
-//     unsigned mask:      7;
-//     unsigned useOccurence:1;
-//     unsigned reserved:1;
-//   } byDay;
-//   int byDayOccurence1;
-//   NSArray        *byMonthDay;
-  
-//   NSString       *rrule;
-// }
+{
+  iCalByDayMask *dayMask;
+}
 
 + (id) recurrenceRuleWithICalRepresentation: (NSString *) _iCalRep;
 - (id) initWithString: (NSString *) _str;
@@ -92,12 +84,14 @@ typedef enum {
 - (void) setWeekStart: (iCalWeekDay) _weekStart;
 - (iCalWeekDay) weekStart;
 
-- (void) setByDayMask: (unsigned int) _mask;
-- (unsigned int) byDayMask;
-- (int) byDayOccurence1;
-
+- (void) setByDay: (NSString *) newByDay;
+- (NSString *) byDay;
+- (void) setByDayMask: (iCalByDayMask *) newMask;
+- (iCalByDayMask *) byDayMask;
 - (NSArray *) byMonthDay;
-  
+- (NSArray *) byMonth;
+- (BOOL) hasByMask;
+
 /* count and untilDate are mutually exclusive */
 
 - (void) setRepeatCount: (int) _repeatCount;
@@ -111,8 +105,6 @@ typedef enum {
 /* parse complete iCal RRULE */
 
 - (void) setRrule: (NSString *) _rrule; // TODO: weird name? (better: RRule?)
-
-// - (NSString *)iCalRepresentation;
 
 @end
 

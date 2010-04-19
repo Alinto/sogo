@@ -1,3 +1,41 @@
+2010-04-19  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* iCalByDayMask.[h|m]: new class that computes complex BYDAY constraints.
+
+	* iCalRecurrenceRule.m (-byDayMask): new method that returns an
+	instance of iCalByDayMask.
+	(-byMonth): new method that returns an array with the values of
+	the BYMONTH constraint.
+	(-hasByMask): new method that returns true if the rule has at
+	least one BYxxx mask defined.
+
+	* iCalDailyRecurrenceCalculator.m
+	(-recurrenceRangesWithinCalendarDateRange:): make use of the new
+	iCalByDayMask class.
+	(-lastInstanceStartDate): make use of the previous method when a
+	BYxxx mask is defined in the rule.
+
+	* iCalWeeklyRecurrenceCalculator.m
+	(-recurrenceRangesWithinCalendarDateRange:): make use of the new
+	iCalByDayMask class.	
+	(-lastInstanceStartDate): make use of the previous method when a
+	BYxxx mask is defined in the rule.
+
+	* iCalMonthlyRecurrenceCalculator.m
+	(-recurrenceRangesWithinCalendarDateRange:): added support for
+	BYMONTH, negative BYMONTHDAY, and BYDAY.
+	(-lastInstanceStartDate): make use of the previous method when a
+	BYxxx mask is defined in the rule.
+
+	* iCalYearlyRecurrenceCalculator.m
+	(-recurrenceRangesWithinCalendarDateRange:): added support for
+	BYxxx constraints using the iCalMonthlyRecurrenceCalculator class.
+	(-lastInstanceStartDate): make use of the previous method when a
+	BYxxx mask is defined in the rule.
+
+	* iCalTimeZonePeriod.m (-_occurenceForDate:byRRule:): make use of
+	the new iCalByDayMask class.
+
 2010-04-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* iCalEvent.m (-propertyValue:): new method that accept a

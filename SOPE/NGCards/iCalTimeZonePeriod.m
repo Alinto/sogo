@@ -26,6 +26,7 @@
 
 #import "iCalDateTime.h"
 #import "iCalRecurrenceRule.h"
+#import "iCalByDayMask.h"
 
 #import "iCalTimeZonePeriod.h"
 
@@ -88,16 +89,16 @@
   return ((negative) ? -seconds : seconds);
 }
 
-- (unsigned int) dayOfWeekFromRruleDay: (iCalWeekDay) day
-{
-  unsigned int dayOfWeek;
+// - (unsigned int) dayOfWeekFromRruleDay: (iCalWeekDay) day
+// {
+//   unsigned int dayOfWeek;
 
-  dayOfWeek = 0;
-  while (day >> (dayOfWeek + 1))
-    dayOfWeek++;
+//   dayOfWeek = 0;
+//   while (day >> (dayOfWeek + 1))
+//     dayOfWeek++;
 
-  return dayOfWeek;
-}
+//   return dayOfWeek;
+// }
 
 - (NSCalendarDate *) startDate
 {
@@ -105,23 +106,34 @@
 			   dateTime];
 }
 
-/* This method returns the date corresponding for to the start of the period
-   in the year of the reference date. */
+/**
+ * This method returns the date corresponding for to the start of the period
+ * in the year of the reference date.
+ * We assume that a RRULE for a timezone will always be YEARLY with a BYMONTH
+ * and a BYDAY rule.
+ */
 - (NSCalendarDate *) _occurenceForDate: (NSCalendarDate *) refDate
 			       byRRule: (iCalRecurrenceRule *) rrule
 {
   NSCalendarDate *tmpDate;
-  NSString *byDay;
+  iCalByDayMask *byDayMask;
   int dayOfWeek, dateDayOfWeek, offset, pos;
   NSCalendarDate *tzStart;
 
-  byDay = [rrule namedValue: @"byday"];
-  dayOfWeek = [self dayOfWeekFromRruleDay: [rrule byDayMask]];
-  pos = [[byDay substringToIndex: 2] intValue];
-  if (!pos)
-    /* if byday = "SU", instead of "1SU"... */
-    pos = 1;
+  byDayMask = [rrule byDayMask];
+  dayOfWeek = 0;
 
+  if (byDayMask == nil)
+    {
+      dayOfWeek = 0;
+      pos = 1;
+    }
+  else
+    {
+      dayOfWeek = (int)[byDayMask firstDay];
+      pos = [byDayMask firstOccurrence];
+    }
+  
   tzStart = [self startDate];
   [tzStart setTimeZone: [NSTimeZone timeZoneWithName: @"GMT"]];
   tmpDate = [NSCalendarDate dateWithYear: [refDate yearOfCommonEra]

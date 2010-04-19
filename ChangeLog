@@ -1,3 +1,19 @@
+2010-04-19  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Scheduler/UIxComponentEditor.m (-_loadRRules): added support
+	for all the rules that can be defined from the Web interface:
+	custom yearly/monthly/daily rules.
+	(-_handleCustomRRule:): idem.
+
+	* UI/WebServerResources/UIxRecurrenceEditor.js: added support for
+	custom monthly and yearly occurrences.
+
+	* UI/Scheduler/UIxCalListingActions.m (:_fixDates): the recurrence
+	ID must be adjusted even when in the month view.
+
+	* UI/Scheduler/UIxAppointmentEditor.m (-viewAction): no longer
+	necessary to adjust event date with the daylight saving time.
+
 2010-04-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Contacts/UIxContactFolderActions.m (-exportAction): improved

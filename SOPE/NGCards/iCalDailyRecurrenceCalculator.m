@@ -1,6 +1,7 @@
 /*
   Copyright (C) 2004-2005 SKYRIX Software AG
- 
+  Copyright (C) 2006-2010 Inverse inc.
+
   This file is part of SOPE.
  
   SOPE is free software; you can redistribute it and/or modify it under
@@ -29,6 +30,7 @@
 
 #import "iCalRecurrenceCalculator.h"
 #import "iCalRecurrenceRule.h"
+#import "iCalByDayMask.h"
 
 @interface iCalDailyRecurrenceCalculator : iCalRecurrenceCalculator
 @end
@@ -39,71 +41,122 @@
 
 @implementation iCalDailyRecurrenceCalculator
 
+  /**
+   * TODO : Unsupported conditions for DAILY recurrences :
+   *
+   *   BYYEAR
+   *   BYYEARDAY
+   *   BYWEEKNO
+   *   BYMONTH
+   *   BYMONTHDAY
+   *   BYHOUR
+   *   BYMINUTE
+   *
+   * There's no GUI to defined such conditions, so there's no
+   * problem for now.
+   */
 - (NSArray *)
  recurrenceRangesWithinCalendarDateRange: (NGCalendarDateRange *) _r
 {
   NSMutableArray *ranges;
   NSCalendarDate *firStart, *startDate, *endDate, *currentStartDate, *currentEndDate;
-  long i;
+  iCalByDayMask *dayMask;
+  long i, count, repeatCount;
   unsigned interval;
 
   firStart = [firstRange startDate];
   startDate = [_r startDate];
   endDate = [_r endDate];
-
+  dayMask = nil;
+  repeatCount = 0;
+  
   if ([endDate compare: firStart] == NSOrderedAscending)
     // Range ends before first occurrence
     return nil;
  
   interval = [rrule repeatInterval];
+
+  if ([[rrule byDay] length])
+    dayMask = [rrule byDayMask];
  
   // If rule is bound, check the bounds
-  if (![rrule isInfinite]) 
+  if (![rrule isInfinite])
     {
       NSCalendarDate *until, *lastDate;
  
+      lastDate = nil;
       until = [rrule untilDate];
-      if (until) 
-	lastDate = until;
+      if (until)
+	{
+	  lastDate = until;
+	}
       else
-	lastDate = [firStart dateByAddingYears: 0 months: 0
-			     days: (interval
-				    * ([rrule repeatCount] - 1))];
-    
-      if ([lastDate compare: startDate] == NSOrderedAscending)
-	// Range starts after last occurrence
-	return nil;
+	{
+	  repeatCount = [rrule repeatCount];
+ 	  if (dayMask == nil)
+ 	    // If there's no day mask, we can compute the date of the last
+ 	    // occurrence of the recurrent rule.
+ 	    lastDate = [firStart dateByAddingYears: 0 months: 0
+ 					      days: (interval
+ 						     * (repeatCount - 1))];
+	}
       
-      if ([lastDate compare: endDate] == NSOrderedAscending)
-	// Range ends after last occurence; adjust end date
-	endDate = lastDate;
+      if (lastDate != nil)
+	{
+	  if ([lastDate compare: startDate] == NSOrderedAscending)
+	    // Range starts after last occurrence
+	    return nil;
+	  
+	  if ([lastDate compare: endDate] == NSOrderedAscending)
+	    // Range ends after last occurence; adjust end date
+	    endDate = lastDate;
+	}
     }
 
   currentStartDate = [firStart copy];
   [currentStartDate autorelease];
   ranges = [NSMutableArray array];
   i = 1;
-
+  count = 0;
+ 
   while ([currentStartDate compare: endDate] == NSOrderedAscending ||
 	 [currentStartDate compare: endDate] == NSOrderedSame)
     {
-      if ([startDate compare: currentStartDate] == NSOrderedAscending ||
-	  [startDate compare: currentStartDate] == NSOrderedSame)
+      BOOL wrongDay, isFirStart;
+
+      wrongDay = NO;
+      isFirStart = NO;
+
+      if (i == 1)
 	{
-	  BOOL wrongDay = NO;
-	  unsigned int mask;
+	  isFirStart = YES;
+	  count++;
+	}
+      else if (repeatCount > 0 && dayMask)
+	{
+	  // If the rule count is defined, stop once the count is reached.
+	  if ([dayMask occursOnDay: [currentStartDate dayOfWeek]])
+	    count++;
+	  else
+	    wrongDay = YES;
+	  
+	  if (count > repeatCount)
+	    break;
+	}
+      
+      if (wrongDay == NO &&
+	  ([startDate compare: currentStartDate] == NSOrderedAscending ||
+	   [startDate compare: currentStartDate] == NSOrderedSame))
+	{
 	  NGCalendarDateRange *r;
 
-	  if ([rrule byDayMask])
+	  if (isFirStart == NO && dayMask && repeatCount == 0)
 	    {
-	      mask = ([currentStartDate dayOfWeek]
-		      ? (unsigned int) 1 << ([currentStartDate dayOfWeek])
-		      : iCalWeekDaySunday);
-	      if (([rrule byDayMask] & mask) != mask)
+	      if (![dayMask occursOnDay: [currentStartDate dayOfWeek]])
 		wrongDay = YES;
 	    }
 
-	  if (wrongDay == NO)
+	  if (isFirStart == YES || wrongDay == NO)
 	    {
 	      currentEndDate = [currentStartDate addTimeInterval: [firstRange duration]];
 	      r = [NGCalendarDateRange calendarDateRangeWithStartDate: currentStartDate
@@ -115,6 +168,13 @@
       
       currentStartDate = [firStart dateByAddingYears: 0 months: 0
 				   days: (interval * i)];
+      
+      if (repeatCount > 0 && count == repeatCount)
+	// The count variable is only usefull when a BYDAY constraint is
+	// defined; when there's no BYDAY constraint, the endDate has been
+	// adjusted to match the repeat count, if defined.
+	break;
+      
       i++;
     }
   return ranges;
@@ -123,14 +183,29 @@
 - (NSCalendarDate *) lastInstanceStartDate
 {
   NSCalendarDate *firStart, *lastInstanceStartDate;
-
+  NGCalendarDateRange *r;
+  NSArray *instances;
+  
+  lastInstanceStartDate = nil;
   if ([rrule repeatCount] > 0) 
     {
-      firStart = [firstRange startDate];
-
-      lastInstanceStartDate = [firStart dateByAddingYears: 0 months: 0
-					days: ([rrule repeatInterval]
-					       * ([rrule repeatCount] - 1))];
+      if ([rrule hasByMask])
+	{
+	  // Must perform the complete calculation
+	  firStart = [firstRange startDate];
+	  r = [NGCalendarDateRange calendarDateRangeWithStartDate: firStart
+							  endDate: [NSCalendarDate distantFuture]];
+	  instances = [self recurrenceRangesWithinCalendarDateRange: r];
+	  if ([instances count])
+	    lastInstanceStartDate = [(NGCalendarDateRange *)[instances lastObject] startDate];
+	}
+      else
+	{
+	  // No BYxxx mask
+	  lastInstanceStartDate = [firStart dateByAddingYears: 0 months: 0
+							 days: ([rrule repeatInterval]
+								* ([rrule repeatCount] - 1))];
+	}
     }
   else
     lastInstanceStartDate = [super lastInstanceStartDate];
