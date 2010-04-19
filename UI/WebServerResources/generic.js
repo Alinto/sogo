@@ -80,8 +80,13 @@ function URLForFolderID(folderID) {
             url += '/';
         url += folderInfos[1];
     }
-    else
-        url = ApplicationBaseURL + encodeURI(folderInfos[0]);
+    else {
+        var folderInfo = folderInfos[0];
+        if (ApplicationBaseURL.endsWith('/')
+            && folderInfo.startsWith('/'))
+            folderInfo = folderInfo.substr(1);
+        url = ApplicationBaseURL + encodeURI(folderInfo);
+    }
 
     if (url[url.length-1] == '/')
         url = url.substr(0, url.length-1);

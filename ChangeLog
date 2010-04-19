@@ -1,3 +1,8 @@
+2010-04-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/generic.js (URLForFolderID): avoid double
+	slashes in the URL returned for personal folders.
+
 2010-04-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoCalendarComponent.m
