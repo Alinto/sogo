@@ -1,5 +1,6 @@
 /*
   Copyright (C) 2004-2005 SKYRIX Software AG
+  Copyright (C) 2006-2010 Inverse inc.
 
   This file is part of SOPE.
 
@@ -19,6 +20,168 @@
   02111-1307, USA.
 */
 
+/*
+  See http://tools.ietf.org/html/rfc2445#section-4.3.10
+
+4.3.10 Recurrence Rule
+
+   Value Name: RECUR
+
+   Purpose: This value type is used to identify properties that contain
+   a recurrence rule specification.
+
+   Formal Definition: The value type is defined by the following
+   notation:
+
+     recur      = "FREQ"=freq *(
+
+                ; either UNTIL or COUNT may appear in a 'recur',
+                ; but UNTIL and COUNT MUST NOT occur in the same 'recur'
+
+                ( ";" "UNTIL" "=" enddate ) /
+                ( ";" "COUNT" "=" 1*DIGIT ) /
+
+                ; the rest of these keywords are optional,
+                ; but MUST NOT occur more than once
+
+                ( ";" "INTERVAL" "=" 1*DIGIT )          /
+                ( ";" "BYSECOND" "=" byseclist )        /
+                ( ";" "BYMINUTE" "=" byminlist )        /
+                ( ";" "BYHOUR" "=" byhrlist )           /
+                ( ";" "BYDAY" "=" bywdaylist )          /
+                ( ";" "BYMONTHDAY" "=" bymodaylist )    /
+                ( ";" "BYYEARDAY" "=" byyrdaylist )     /
+                ( ";" "BYWEEKNO" "=" bywknolist )       /
+                ( ";" "BYMONTH" "=" bymolist )          /
+                ( ";" "BYSETPOS" "=" bysplist )         /
+                ( ";" "WKST" "=" weekday )              /
+                ( ";" x-name "=" text )
+                )
+
+     freq       = "SECONDLY" / "MINUTELY" / "HOURLY" / "DAILY"
+                / "WEEKLY" / "MONTHLY" / "YEARLY"
+
+     enddate    = date
+     enddate    =/ date-time            ;An UTC value
+
+     byseclist  = seconds / ( seconds *("," seconds) )
+
+     seconds    = 1DIGIT / 2DIGIT       ;0 to 59
+
+     byminlist  = minutes / ( minutes *("," minutes) )
+
+     minutes    = 1DIGIT / 2DIGIT       ;0 to 59
+
+     byhrlist   = hour / ( hour *("," hour) )
+
+     hour       = 1DIGIT / 2DIGIT       ;0 to 23
+
+     bywdaylist = weekdaynum / ( weekdaynum *("," weekdaynum) )
+
+     weekdaynum = [([plus] ordwk / minus ordwk)] weekday
+
+     plus       = "+"
+
+     minus      = "-"
+
+     ordwk      = 1DIGIT / 2DIGIT       ;1 to 53
+
+     weekday    = "SU" / "MO" / "TU" / "WE" / "TH" / "FR" / "SA"
+     ;Corresponding to SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY,
+     ;FRIDAY, SATURDAY and SUNDAY days of the week.
+
+     bymodaylist = monthdaynum / ( monthdaynum *("," monthdaynum) )
+
+     monthdaynum = ([plus] ordmoday) / (minus ordmoday)
+
+     ordmoday   = 1DIGIT / 2DIGIT       ;1 to 31
+
+     byyrdaylist = yeardaynum / ( yeardaynum *("," yeardaynum) )
+
+     yeardaynum = ([plus] ordyrday) / (minus ordyrday)
+
+     ordyrday   = 1DIGIT / 2DIGIT / 3DIGIT      ;1 to 366
+
+     bywknolist = weeknum / ( weeknum *("," weeknum) )
+
+     weeknum    = ([plus] ordwk) / (minus ordwk)
+
+     bymolist   = monthnum / ( monthnum *("," monthnum) )
+
+     monthnum   = 1DIGIT / 2DIGIT       ;1 to 12
+
+     bysplist   = setposday / ( setposday *("," setposday) )
+
+     setposday  = yeardaynum
+*/
+
+/*
+  Examples :
+
+   Every other week on Monday, Wednesday and Friday until December 24,
+   1997, but starting on Tuesday, September 2, 1997:
+
+     DTSTART;TZID=US-Eastern:19970902T090000
+     RRULE:FREQ=WEEKLY;INTERVAL=2;UNTIL=19971224T000000Z;WKST=SU;
+      BYDAY=MO,WE,FR
+     ==> (1997 9:00 AM EDT)September 2,3,5,15,17,19,29;October
+     1,3,13,15,17
+         (1997 9:00 AM EST)October 27,29,31;November 10,12,14,24,26,28;
+                           December 8,10,12,22
+
+   Monthly on the 1st Friday for ten occurrences:
+
+     DTSTART;TZID=US-Eastern:19970905T090000
+     RRULE:FREQ=MONTHLY;COUNT=10;BYDAY=1FR
+
+     ==> (1997 9:00 AM EDT)September 5;October 3
+         (1997 9:00 AM EST)November 7;Dec 5
+         (1998 9:00 AM EST)January 2;February 6;March 6;April 3
+         (1998 9:00 AM EDT)May 1;June 5
+
+   Every other month on the 1st and last Sunday of the month for 10
+   occurrences:
+
+     DTSTART;TZID=US-Eastern:19970907T090000
+     RRULE:FREQ=MONTHLY;INTERVAL=2;COUNT=10;BYDAY=1SU,-1SU
+
+     ==> (1997 9:00 AM EDT)September 7,28
+         (1997 9:00 AM EST)November 2,30
+
+   Monthly on the third to the last day of the month, forever:
+
+     DTSTART;TZID=US-Eastern:19970928T090000
+     RRULE:FREQ=MONTHLY;BYMONTHDAY=-3
+
+     ==> (1997 9:00 AM EDT)September 28
+         (1997 9:00 AM EST)October 29;November 28;December 29
+         (1998 9:00 AM EST)January 29;February 26
+     ...
+
+   Every other year on January, February, and March for 10 occurrences:
+
+     DTSTART;TZID=US-Eastern:19970310T090000
+     RRULE:FREQ=YEARLY;INTERVAL=2;COUNT=10;BYMONTH=1,2,3
+
+     ==> (1997 9:00 AM EST)March 10
+         (1999 9:00 AM EST)January 10;February 10;March 10
+         (2001 9:00 AM EST)January 10;February 10;March 10
+         (2003 9:00 AM EST)January 10;February 10;March 10
+
+   Everyday in January, for 3 years:
+
+     DTSTART;TZID=US-Eastern:19980101T090000
+     RRULE:FREQ=YEARLY;UNTIL=20000131T090000Z;
+      BYMONTH=1;BYDAY=SU,MO,TU,WE,TH,FR,SA
+     or
+     RRULE:FREQ=DAILY;UNTIL=20000131T090000Z;BYMONTH=1
+
+     ==> (1998 9:00 AM EDT)January 1-31
+         (1999 9:00 AM EDT)January 1-31
+         (2000 9:00 AM EDT)January 1-31
+
+*/
+
 #import <Foundation/NSArray.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSException.h>
@@ -27,12 +190,15 @@
 
 #import <ctype.h>
 
+#import "NSCalendarDate+ICal.h"
 #import "NSCalendarDate+NGCards.h"
 #import "NSString+NGCards.h"
 
-#import "NSCalendarDate+ICal.h"
-
+#import "iCalByDayMask.h"
 #import "iCalRecurrenceRule.h"
+
+NSString *iCalWeekDayString[] = { @"SU", @"MO", @"TU", @"WE", @"TH", @"FR",
+				  @"SA" };
 
 /*
   freq       = rrFreq;
@@ -60,11 +226,6 @@
 - (NSString *) wkst;
 - (NSString *) byDayList;
 
-// - (void)_parseRuleString:(NSString *)_rrule;
-
-/* currently used by parser, should be removed (replace with an -init..) */
-- (void)setByday:(NSString *)_byDayList;
-
 @end
 
 @implementation iCalRecurrenceRule
@@ -85,6 +246,7 @@
   if ((self = [super init]) != nil)
     {
       [self setTag: @"rrule"];
+      dayMask = nil;
     }
 
   return self;
@@ -98,6 +260,12 @@
     }
 
   return self;
+}
+
+- (void) dealloc
+{
+  [dayMask release];
+  [super dealloc];
 }
 
 - (void) setRrule: (NSString *) _rrule
@@ -273,54 +441,30 @@
   return [self weekDayFromICalRepresentation: [self wkst]];
 }
 
-- (void) setByDayMask: (unsigned) _mask
+- (void) setByDay: (NSString *) newByDay
 {
-  NSMutableArray *days;
-  unsigned int count;
-  unsigned char maskDays[] = { iCalWeekDaySunday, iCalWeekDayMonday,
-			       iCalWeekDayTuesday, iCalWeekDayWednesday,
-			       iCalWeekDayThursday, iCalWeekDayFriday,
-			       iCalWeekDaySaturday };
-  days = [NSMutableArray arrayWithCapacity: 7];
-  if (_mask)
-    {
-      for (count = 0; count < 7; count++)
-        if (_mask & maskDays[count])
-          [days addObject:
-                  [self iCalRepresentationForWeekDay: maskDays[count]]];
-    }
-
-  [self setNamedValue: @"byday" to: [days componentsJoinedByString: @","]];
+  [self setNamedValue: @"byday" to: newByDay];
 }
 
-- (unsigned int) byDayMask
+- (NSString *) byDay
 {
-  NSArray *days;
-  unsigned int mask, count, max;
-  NSString *day, *value;
-
-  mask = 0;
-
-  value = [self namedValue: @"byday"];
-  if ([value length] > 0)
-    {
-      days = [value componentsSeparatedByString: @","];
-      max = [days count];
-      for (count = 0; count < max; count++)
-	{
-	  day = [days objectAtIndex: count];
-	  mask |= [self weekDayFromICalRepresentation: day];
-	}
-    }
-
-  return mask;
+  return [self namedValue: @"byday"];
 }
 
-#warning this is bad
-- (int) byDayOccurence1
+- (void) setByDayMask: (iCalByDayMask *) newByDayMask
 {
-  return 0;
-//   return byDayOccurence1;
+  [self setByDay: [newByDayMask asRuleString]];
+}
+
+- (iCalByDayMask *) byDayMask
+{
+  if (dayMask == nil && [[self byDay] length])
+    {
+      dayMask = [iCalByDayMask byDayMaskWithRuleString: [self byDay]];
+      [dayMask retain];
+    }
+  
+  return dayMask;
 }
 
 - (NSArray *) byMonthDay
@@ -335,6 +479,35 @@
     byMonthDay = nil;
 
   return byMonthDay;
+}
+
+- (NSArray *) byMonth
+{
+  NSArray *byMonth;
+  NSString *byMonthStr;
+
+  byMonthStr = [self namedValue: @"bymonth"];
+  if ([byMonthStr length])
+    byMonth = [byMonthStr componentsSeparatedByString: @","];
+  else
+    byMonth = nil;
+
+  return byMonth;
+}
+
+- (BOOL) hasByMask
+{
+  /* There are more BYxxx rule parts but we don't support them yet :
+   * - BYYEARDAY
+   * - BYWEEKNO
+   * - BYHOUR
+   * - BYMINUTE
+   * - BYSECOND
+   * - BYSETPOS
+   */
+  return ([[self namedValue: @"bymonthday"] length] || 
+	  [[self namedValue: @"byday"] length] ||
+	  [[self namedValue: @"bymonth"] length]);
 }
 
 - (BOOL) isInfinite
@@ -356,6 +529,7 @@
   dayLength = [_day length];
   if (dayLength > 1)
     {
+      // Ignore any prefix, only consider last two characters
       [[_day uppercaseString] getCharacters: chars
 			      range: NSMakeRange (dayLength - 2, 2)];
 

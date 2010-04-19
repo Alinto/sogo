@@ -31,6 +31,7 @@ libNGCards_HEADER_FILES =  		\
 	NGCards.h			\
 	iCalAlarm.h			\
 	iCalAttachment.h		\
+	iCalByDayMask.h			\
 	iCalCalendar.h			\
 	iCalDataSource.h		\
 	iCalDateTime.h			\
@@ -78,6 +79,7 @@ libNGCards_OBJC_FILES =    		\
 	\
 	iCalAlarm.m			\
 	iCalAttachment.m		\
+	iCalByDayMask.m			\
 	iCalCalendar.m			\
 	iCalDailyRecurrenceCalculator.m	\
 	iCalDateTime.m			\

@@ -4,10 +4,14 @@
 - added support for LDAP password policies
 - added support for custom Sieve filters
 - fixed timezone issues occurring specifically in the southern hemisphere
+- updated ckeditor to version 3.2
 - tabs: enabled the scrolling when overflowing
 - updated Czech translation, thanks to Milos Wimmer
 - removed remaining .wo templates, thereby easing the effort for future translations
 - fixed regressions with Courier IMAP and Dovecot
+- added support for BYDAY with multiple values and negative positions
+- added support for BYMONTHDAY with multiple values and negative positions
+- added support for BYMONTH with multiple values
 - added ability to delete events from a keypress
 - added the "remove" command to "sogo-tool", in order to remove user data and settings
 - added the ability to export address books in LDIF format from the web interface

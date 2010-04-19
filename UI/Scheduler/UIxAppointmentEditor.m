@@ -1,6 +1,6 @@
 /* UIxAppointmentEditor.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2009 Inverse inc.
+ * Copyright (C) 2007-2010 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -419,13 +419,11 @@
 {
   WOResponse *result;
   NSDictionary *data;
-  NSCalendarDate *firstDate, *eventDate;
+  NSCalendarDate *eventDate;
   NSTimeZone *timeZone;
   SOGoUserDefaults *ud;
   SOGoCalendarComponent *co;
-  iCalEvent *master;
-  BOOL resetAlarm;
-  signed int daylightOffset;
+   BOOL resetAlarm;
 
   [self event];
 
@@ -457,20 +455,6 @@
       [co saveComponent: event];
     }
 
-  if ([co isNew] && [co isKindOfClass: [SOGoAppointmentOccurence class]])
-    {
-      // This is a new exception in a recurrent event -- compute the daylight
-      // saving time with respect to the first occurrence of the recurrent event.
-      master = (iCalEvent*)[[event parent] firstChildWithTag: @"vevent"];
-      firstDate = [master startDate];
-
-      if ([timeZone isDaylightSavingTimeForDate: eventDate] != [timeZone isDaylightSavingTimeForDate: firstDate])
-	{
-	  daylightOffset = (signed int)[timeZone secondsFromGMTForDate: firstDate] 
-	    - (signed int)[timeZone secondsFromGMTForDate: eventDate];
-	  eventDate = [eventDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds:daylightOffset];
-	}
-    }
   data = [NSDictionary dictionaryWithObjectsAndKeys:
 		       [componentCalendar displayName], @"calendar",
 		       [event tag], @"component",

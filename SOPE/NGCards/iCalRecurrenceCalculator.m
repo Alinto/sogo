@@ -340,7 +340,6 @@ static Class yearlyCalcClass  = Nil;
   /* 
      NOTE: this is horribly inaccurate and doesn't even consider the use
            of repeatCount. It MUST be implemented by subclasses properly!
-	   However, it does the trick for SOGo 1.0 - that's why it's left here.
   */
   return [rrule untilDate];
 }
