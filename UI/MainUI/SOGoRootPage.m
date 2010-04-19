@@ -55,12 +55,6 @@
 
 #import "SOGoRootPage.h"
 
-@interface SOGoRootPage (crashAdditions)
-
-- (void) segfault;
-
-@end
-
 @implementation SOGoRootPage
 
 /* accessors */
@@ -338,29 +332,6 @@
 - (BOOL) isPublicInContext: (WOContext *) localContext
 {
   return YES;
-}
-
-- (id <WOActionResults>) crashAction
-{
-  [self segfault];
-
-  return nil;
-}
-
-- (id <WOActionResults>) exceptionAction
-{
-  return (id <WOActionResults>)
-    [NSException exceptionWithName: @"ExceptionAction"
-		 reason: @"This exception is brought to you by SOGo"
-		 userInfo: nil];
-}
-
-- (id <WOActionResults>) raisedExceptionAction
-{
-  [NSException raise: @"ExceptionAction"
-	       format: @"This exception is brought to you by SOGo"];
-
-  return nil;
 }
 
 - (NSString *) loginSuffix
