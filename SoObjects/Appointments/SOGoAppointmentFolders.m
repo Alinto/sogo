@@ -284,8 +284,7 @@
   
   rc = nil;
 
-  us = [[SOGoUser userWithLogin: [self ownerInContext: nil]]
-	 userSettings];
+  us = [[SOGoUser userWithLogin: owner] userSettings];
   tmp = [us objectForKey: @"Calendar"];
   if (tmp)
     {
@@ -298,6 +297,31 @@
     rc = [NSArray array];
 
   return rc;
+}
+
+- (void) reloadWebCalendars: (BOOL) forceReload
+{
+  SOGoUserSettings *settings;
+  NSMutableDictionary *calendarSettings, *webCalendars;
+  NSArray *calendarIds;
+  SOGoWebAppointmentFolder *folder;
+  NSString *name;
+  int count, max;
+
+  settings = [[SOGoUser userWithLogin: owner] userSettings];
+  calendarSettings = [settings objectForKey: @"Calendar"];
+  webCalendars = [calendarSettings objectForKey: @"WebCalendars"];
+  calendarIds = [webCalendars allKeys];
+  max = [calendarIds count];
+  for (count = 0; count < max; count++)
+    {
+      name = [calendarIds objectAtIndex: count];
+      folder = [self lookupName: name inContext: context acquire: NO];
+      if (folder
+          && [folder isKindOfClass: [SOGoWebAppointmentFolder class]]
+          && (forceReload || [folder reloadOnLogin]))
+        [folder loadWebCalendar: [webCalendars objectForKey: name]];
+    }
 }
 
 - (NSException *) _fetchPersonalFolders: (NSString *) sql

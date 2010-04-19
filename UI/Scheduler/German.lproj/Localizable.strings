@@ -542,3 +542,4 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 "URL of the Calendar" = "URL des Kalenders";
 "Web Calendar" = "Web-Kalender";
 
+"Reload on login" = "Reload on login";

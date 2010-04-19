@@ -541,3 +541,4 @@ vtodo_class2 = "(Konfidentiell uppgift)";
 "Subscribe to a web calendar..." = "Prenumrera på en webbkalender...";
 "URL of the Calendar" = "URL till kalendern";
 "Web Calendar" = "Webbkalender";
+"Reload on login" = "Reload on login";

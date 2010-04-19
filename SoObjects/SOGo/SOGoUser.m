@@ -111,8 +111,8 @@
       user = [[self alloc] initWithLogin: newLogin roles: newRoles trust: b];
       if (user)
 	{
-	  [user autorelease];
  	  [cache registerUser: user withName: newLogin];
+	  [user release];
 	}
     }
   if (newRoles)

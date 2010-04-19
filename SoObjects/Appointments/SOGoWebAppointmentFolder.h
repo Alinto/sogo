@@ -30,6 +30,8 @@
 - (int) loadWebCalendar: (NSString *) location;
 - (void) deleteAllContent;
 
+- (void) setReloadOnLogin: (BOOL) newReloadOnLogin;
+- (BOOL) reloadOnLogin;
 
 @end
 

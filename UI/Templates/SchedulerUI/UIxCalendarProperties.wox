@@ -81,6 +81,12 @@
               id="showCalendarTasks" var:checked="showCalendarTasks"
               /><var:string label:value="Show tasks"
               /></label></div>
+        <var:if condition="isWebCalendar"
+          ><div><label
+            ><input type="checkbox" const:class="checkBox" 
+                id="reloadOnLogin" var:checked="reloadOnLogin"
+                /><var:string label:value="Reload on login"
+                /></label></div></var:if>
       </fieldset>
 
       <div id="buttons">

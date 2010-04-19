@@ -28,6 +28,7 @@
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserSettings.h>
 #import <Appointments/SOGoAppointmentFolder.h>
+#import <Appointments/SOGoWebAppointmentFolder.h>
 
 #import "UIxCalendarProperties.h"
 
@@ -167,21 +168,37 @@
 
   settings = [[context activeUser] userSettings];
   calendarSettings = [settings objectForKey: @"Calendar"];
-  rc = nil;
-
-  if (calendarSettings)
-    {
-      webCalendars = [calendarSettings objectForKey: @"WebCalendars"];
-      if (webCalendars)
-        rc = [webCalendars objectForKey: [calendar nameInContainer]];
-    }
+  webCalendars = [calendarSettings objectForKey: @"WebCalendars"];
+  if (webCalendars)
+    rc = [webCalendars objectForKey: [calendar nameInContainer]];
+  else
+    rc = nil;
 
   return rc;
 }
 
 - (BOOL) isWebCalendar
 {
-  return ([self webCalendarURL] != nil);
+  return ([calendar isKindOfClass: [SOGoWebAppointmentFolder class]]);
+}
+
+- (void) setReloadOnLogin: (BOOL) newReloadOnLogin
+{
+  if ([calendar respondsToSelector: @selector (setReloadOnLogin:)])
+    [(SOGoWebAppointmentFolder *) calendar
+      setReloadOnLogin: newReloadOnLogin];
+}
+
+- (BOOL) reloadOnLogin
+{
+  BOOL rc;
+
+  if ([calendar respondsToSelector: @selector (reloadOnLogin)])
+    rc = [(SOGoWebAppointmentFolder *) calendar reloadOnLogin];
+  else
+    rc = NO;
+
+  return rc;
 }
 
 - (BOOL) shouldTakeValuesFromRequest: (WORequest *) request
@@ -196,10 +213,12 @@
 
 - (id <WOActionResults>) savePropertiesAction
 {
-  NSString *action = nil;
+  NSString *action;
 
   if (reloadTasks)
     action = @"refreshTasks()";
+  else
+    action = nil;
   return [self jsCloseWithRefreshMethod: action];
 }
 

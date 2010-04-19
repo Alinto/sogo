@@ -124,32 +124,7 @@
 
 - (WOResponse *) reloadWebCalendarsAction
 {
-  SOGoUserSettings *settings;
-  NSMutableDictionary *calSettings, *webCalendars;
-  NSArray *calendarIds;
-  SOGoWebAppointmentFolder *folder;
-  NSString *name, *url;
-  int i, count, imported;
-
-  settings = [[context activeUser] userSettings];
-  calSettings = [settings objectForKey: @"Calendar"];
-  webCalendars = [calSettings objectForKey: @"WebCalendars"];
-
-  if (webCalendars)
-    {
-      calendarIds = [webCalendars allKeys];
-      count = [calendarIds count];
-      for (i = 0; i < count; i++)
-        {
-          name = [calendarIds objectAtIndex: i];
-          url = [webCalendars objectForKey: name];
-          folder = [[self clientObject] lookupName: name
-                                         inContext: context
-                                           acquire: NO];
-          if (folder)
-            imported = [folder loadWebCalendar: url];
-        }
-    }
+  [[self clientObject] reloadWebCalendars: YES];
 
   return [self responseWith204];
 }

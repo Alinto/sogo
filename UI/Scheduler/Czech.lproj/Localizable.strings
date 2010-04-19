@@ -541,3 +541,4 @@ vtodo_class2 = "(Důvěrný úkol)";
 "Subscribe to a web calendar..." = "Přihlásit odběr vzdáleného kalendáře na webu";
 "URL of the Calendar" = "Adresa vzdáleného kalendáře na webu";
 "Web Calendar" = "Vzdálený kalendář na webu";
+"Reload on login" = "Reload on login";

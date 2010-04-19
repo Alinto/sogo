@@ -41,6 +41,8 @@
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 
+#import <Appointments/SOGoAppointmentFolders.h>
+
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSDictionary+BSJSONAdditions.h>
 #import <SOGo/SOGoCache.h>
@@ -124,7 +126,9 @@
   WORequest *request;
   WOCookie *authCookie;
   SOGoWebAuthenticator *auth;
+  SOGoAppointmentFolders *calendars;
   SOGoUserDefaults *ud;
+  SOGoUser *loggedInUser;
   NSString *username, *password, *language;
   NSArray *supportedLanguages;
   
@@ -167,12 +171,18 @@
 
       supportedLanguages = [[SOGoSystemDefaults sharedSystemDefaults]
                              supportedLanguages];
+      loggedInUser = [SOGoUser userWithLogin: username];
+      [context setActiveUser: loggedInUser];
       if (language && [supportedLanguages containsObject: language])
 	{
-	  ud = [[SOGoUser userWithLogin: username] userDefaults];
+	  ud = [loggedInUser userDefaults];
 	  [ud setLanguage: language];
 	  [ud synchronize];
 	}
+
+      calendars = [loggedInUser calendarsFolderInContext: context];
+      if ([calendars respondsToSelector: @selector (reloadWebCalendars:)])
+        [calendars reloadWebCalendars: NO];
     }
   else
     {

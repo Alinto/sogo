@@ -30,6 +30,7 @@
 @interface SOGoAppointmentFolders : SOGoParentFolder
 
 - (NSArray *) webCalendarIds;
+- (void) reloadWebCalendars: (BOOL) forceReload;
 
 - (BOOL) hasProxyCalendarsWithWriteAccess: (BOOL) write
                          forUserWithLogin: (NSString *) userLogin;

@@ -73,21 +73,32 @@
   return imported;
 }
 
+- (void) setReloadOnLogin: (BOOL) newReloadOnLogin
+{
+  [self setFolderPropertyValue: [NSNumber numberWithBool: newReloadOnLogin]
+                    inCategory: @"AutoReloadedWebCalendars"];
+}
+
+- (BOOL) reloadOnLogin
+{
+  return [[self folderPropertyValueInCategory: @"AutoReloadedWebCalendars"]
+           boolValue];
+}
+
 - (NSException *) delete
 {
   NSException *error;
   SOGoUserSettings *settings;
-  NSMutableDictionary *calSettings, *webCalendars;
+  NSMutableDictionary *webCalendars;
   NSString *name;
-
-  settings = [[context activeUser] userSettings];
-  calSettings = [settings objectForKey: @"Calendar"];
-  webCalendars = [calSettings objectForKey: @"WebCalendars"];
-  name = [self nameInContainer];
 
   error = [super delete];
   if (!error)
     {
+      settings = [[context activeUser] userSettings];
+      webCalendars = [[settings objectForKey: @"Calendar"]
+                      objectForKey: @"WebCalendars"];
+      name = [self nameInContainer];
       [webCalendars removeObjectForKey: name];
       [settings synchronize];
     }

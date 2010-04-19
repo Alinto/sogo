@@ -1,3 +1,18 @@
+2010-04-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoWebAppointmentFolder.m (-setReloadOnLogin:)
+	(-reloadOnLogin): new accessors to the "AutoReloadedWebCalendars"
+	settings for the "Calendar" module.
+
+	* UI/Scheduler/UIxCalendarProperties.m (-setReloadOnLogin:)
+	(-reloadOnLogin): new accessors.
+
+	* SoObjects/Appointments/SOGoAppointmentFolders.m
+	(-reloadWebCalendars:): moved method from
+	UI/Scheduler/UIxCalMainActions.m and added a boolean parameter to
+	it indicating whether the "reload on login" setting should be
+	honoured or ignored.
+
 2010-04-19  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Scheduler/UIxComponentEditor.m (-_loadRRules): added support
