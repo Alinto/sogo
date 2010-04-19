@@ -179,6 +179,7 @@
 "Add" = "Lägg till";
 "Lists can't be moved or copied." = "Utskickslistor kan inte flyttas eller kopieras.";
 "Export" = "Exportera";
+"Export Address Book..." = "Export Address Book...";
 "Import Cards" = "Importera adresskort";
 "Select a vCard or LDIF file." = "Välj ett vCard eller LDIF fil.";
 "Upload" = "Ladda upp";

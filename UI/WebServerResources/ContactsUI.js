@@ -689,6 +689,15 @@ function onFolderUnsubscribeCB(folderId) {
     onFolderSelectionChange();
 }
 
+function onAddressBookExport(event) {
+    var node = $("contactFolders").getSelectedNodes().first();
+    var folderID = node.getAttribute("id");
+    var url = URLForFolderID(folderID) + "/exportFolder";
+    window.location.href = url;
+
+    event.stop();
+}
+
 function onAddressBookImport(event) {
     var node = $("contactFolders").getSelectedNodes().first();
     var folderId = node.getAttribute("id");
@@ -1000,9 +1009,10 @@ function onAddressBooksMenuPrepareVisibility() {
 
         var menu = $("contactFoldersMenu").down("ul");;
         var listElements = menu.childNodesWithTag("li");
-        var modifyOption = $(listElements[0]);
-        var removeOption = $(listElements[5]);
-        var sharingOption = $(listElements[listElements.length - 1]);
+        var modifyOption = listElements[0];
+        var removeOption = listElements[5];
+        var exportOption = listElements[7];
+        var sharingOption = listElements[listElements.length - 1];
 
         // Disable the "Sharing" and "Modify" options when address book
         // is not owned by user
@@ -1015,11 +1025,16 @@ function onAddressBooksMenuPrepareVisibility() {
             sharingOption.addClassName("disabled");
         }
 
-        // Disable the "remove" option when address book is public
-        if (folderOwner == "nobody")
+        /* Disable the "remove" and "export ab" options when address book is
+           public */
+        if (folderOwner == "nobody") {
+            exportOption.addClassName("disabled");
             removeOption.addClassName("disabled");
-        else
+        }
+        else {
+            exportOption.removeClassName("disabled");
             removeOption.removeClassName("disabled");
+        }
 
         return true;
     }
@@ -1072,8 +1087,9 @@ function onContactMenuPrepareVisibility() {
 function getMenus() {
     var menus = {};
     menus["contactFoldersMenu"] = new Array(onAddressBookModify, "-", newContact,
-                                            newList, "-", onAddressBookImport, 
+                                            newList, "-",
                                             onAddressBookRemove, "-",
+                                            onAddressBookExport, onAddressBookImport, "-",
                                             onMenuSharing);
     menus["contactMenu"] = new Array(onMenuEditContact, "-",
                                      onMenuWriteToContact, onMenuAIMContact,

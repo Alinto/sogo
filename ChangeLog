@@ -1,5 +1,17 @@
 2010-04-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactFolderActions.m (-exportAction): improved
+	method by providing the encoded filename of the address book
+	following rfc2047. Make the "uids" parameter optional: when
+	omitted, the address book is exported completely.
+
+	* UI/WebServerResources/ContactsUI.js (getMenus): added entry for
+	exporting the address books, slightly reorganized the entries.
+	(onAddressBooksMenuPrepareVisibility): grey out the "export" entry
+	for LDAP address books.
+	(onAddressBookExport): new callback for exporting addressbooks
+	from the contextual menu.
+
 	* UI/WebServerResources/generic.js (URLForFolderID): avoid double
 	slashes in the URL returned for personal folders.
 

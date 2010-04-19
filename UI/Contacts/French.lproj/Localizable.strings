@@ -179,6 +179,7 @@
 "Add" = "Ajouter";
 "Lists can't be moved or copied." = "Les listes ne peuvent pas être déplacées ou copiées.";
 "Export" = "Exporter";
+"Export Address Book..." = "Exporter le carnet d'adresses...";
 "Import Cards" = "Importer des contacts";
 "Select a vCard or LDIF file." = "Sélectionner un fichier. LDIF ou vCard.";
 "Upload" = "Ajouter";

@@ -60,8 +60,10 @@
       <li><var:string label:value="New Card" /></li>
       <li><var:string label:value="New List" /></li>
       <li><!-- separator --></li>
-      <li><var:string label:value="Import Cards" /></li>
       <li><var:string label:value="Delete" /></li>
+      <li><!-- separator --></li>
+      <li><var:string label:value="Export Address Book..."/></li>
+      <li><var:string label:value="Import Cards" /></li>
       <li><!-- separator --></li>
       <li><var:string label:value="Sharing..." /></li>
     </ul>

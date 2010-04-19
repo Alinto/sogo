@@ -56,39 +56,40 @@
   WOResponse *response;
   NSArray *contactsId;
   NSEnumerator *uids;
-  NSString *uid, *filename;
+  NSString *uid, *filename, *disposition;
   id currentChild;
   SOGoContactGCSFolder *sourceFolder;
   NSMutableString *content;
 
   content = [NSMutableString string];
   request = [context request];
+  sourceFolder = [self clientObject];
   contactsId = [request formValuesForKey: @"uid"];
-  if (contactsId)
+  if (!contactsId)
+    contactsId = [sourceFolder toOneRelationshipKeys];
+
+  uids = [contactsId objectEnumerator];
+  while ((uid = [uids nextObject]))
     {
-      sourceFolder = [self clientObject];
-      uids = [contactsId objectEnumerator];
-      while ((uid = [uids nextObject]))
-        {
-          currentChild = [sourceFolder lookupName: uid
-                                        inContext: [self context]
-                                          acquire: NO];
-          if ([currentChild respondsToSelector: @selector (vCard)])
-            [content appendFormat: [[currentChild vCard] ldifString]];
-          else if ([currentChild respondsToSelector: @selector (vList)])
-            [content appendFormat: [[currentChild vList] ldifString]];
-        }
+      currentChild = [sourceFolder lookupName: uid
+                                    inContext: [self context]
+                                      acquire: NO];
+      if ([currentChild respondsToSelector: @selector (vCard)])
+        [content appendFormat: [[currentChild vCard] ldifString]];
+      else if ([currentChild respondsToSelector: @selector (vList)])
+        [content appendFormat: [[currentChild vList] ldifString]];
     }
 
-  filename = [NSString stringWithFormat: @"attachment;filename=\"%@.ldif\"", 
-              [sourceFolder displayName]];
   response = [context response];
   [response setHeader: @"application/octet-stream; charset=utf-8" 
                forKey: @"content-type"];
-  [response setHeader: filename 
-               forKey: @"Content-Disposition"];
+  filename = [NSString stringWithFormat: @"%@.ldif",
+                       [sourceFolder displayName]];
+  disposition = [NSString stringWithFormat: @"attachment; filename=\"%@\"", 
+                          [filename asQPSubjectString: @"utf-8"]];
+  [response setHeader: disposition forKey: @"Content-Disposition"];
   [response setContent: [content dataUsingEncoding: NSUTF8StringEncoding]];
-  
+
   return response;
 }
 

@@ -103,6 +103,11 @@
           actionClass = "UIxContactFolderActions";
           actionName  = "export";
         };
+        exportFolder = {
+          protectedBy = "View";
+          actionClass = "UIxContactFolderActions";
+          actionName = "export";
+        };
         import = {
           protectedBy = "View";
           actionClass = "UIxContactFolderActions";

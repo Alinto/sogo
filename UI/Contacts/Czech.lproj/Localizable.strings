@@ -179,6 +179,7 @@
 "Add" = "Přidat";
 "Lists can't be moved or copied." = "Skupinu nelze přesunout nebo kopírovat.";
 "Export" = "Exportovat";
+"Export Address Book..." = "Export Address Book...";
 "Import Cards" = "Importovat kontakty";
 "Select a vCard or LDIF file." = "Zvolte LDIF nebo vCard soubor.";
 "Upload" = "Upload";
