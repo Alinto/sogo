@@ -95,7 +95,7 @@
 
 "Title:" = "Titel:";
 "Service:" = "Service:";
-"Company:" = "Company:";
+"Company:" = "Firma:";
 "Department:" = "Abteilung:";
 "Organization:" = "Organisation:";
 "Address:" = "Adresse:";
@@ -170,22 +170,22 @@
 "Unknown Destination Folder" = "Das gewählte Ziel-Adressbuch existiert nicht mehr.";
 
 /* Lists */
-"List details" = "List details";
-"List name:" = "List name:";
-"List nickname:" = "List nickname:";
-"List description:" = "List description:";
-"Members" = "Members";
-"Contacts" = "Contacts";
-"Add" = "Add";
-"Lists can't be moved or copied." = "Lists can't be moved or copied.";
+"List details" = "Details";
+"List name:" = "Listenname:";
+"List nickname:" = "Listen-Spitzname:";
+"List description:" = "Beschreibung:";
+"Members" = "Mitglieder";
+"Contacts" = "Kontakte";
+"Add" = "Hinzufügen";
+"Lists can't be moved or copied." = "Listen können nicht verschoben oder kopiert werden.";
 "Export" = "Export";
 "Export Address Book..." = "Export Address Book...";
-"Import Cards" = "Import Cards";
-"Select a vCard or LDIF file." = "Select a vCard or LDIF file.";
-"Upload" = "Upload";
-"Done" = "Done";
-"An error occured while importing contacts." = "An error occured while importing contacts.";
-"No card was imported." = "No card was imported.";
-"A total of %{0} cards were imported in the addressbook." = "A total of %{0} cards were imported in the addressbook.";
+"Import Cards" = "Karten importieren";
+"Select LDIF or vCard file..." = "LDIF oder vCard Datei wählen...";
+"Upload" = "Hochladen";
+"Done" = "Abgeschlossen"
+"An error occured while importing contacts." = "Fehler während des Importierens von Kontakten.";
+"No card was imported." = "Es wurden keine Kontakte importiert.";
+"A total of %{0} cards were imported in the addressbook." = "%{0} Kontakte wurden in das Adressbuch importiert.";
 
-"Reload" = "Reload";
+"Reload" = "Neu laden";

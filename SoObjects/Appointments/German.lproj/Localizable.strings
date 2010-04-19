@@ -8,47 +8,47 @@ vtodo_class1 = "(Private Aufgabe)";
 vtodo_class2 = "(Vertrauliche Aufgabe)";
 
 /* Receipts */
-"Title:" = "Title:";
+"Title:" = "Titel:";
 "Start:" = "Start:";
-"End:" = "End:";
+"End:" = "Ende:";
 
-"Receipt: users invited to a meeting" = "Receipt: users invited to a meeting";
-"You have invited the following attendees(s):" = "You have invited the following attendees(s):";
-"... to attend the following event:" = "... to attend the following event:";
+"Receipt: users invited to a meeting" = "Empfangsbestätigung: Benutzer zu einem Termin eingeladen";
+"You have invited the following attendees(s):" = "Sie haben folgende Teilnehmer eingeladen:";
+"... to attend the following event:" = "... um an folgendem Termin teilzunehmen:";
 
-"Receipt: invitation updated" = "Receipt: invitation updated";
-"The following attendees(s):" = "The following attendees(s):";
-"... have been notified of the changes to the following event:" = "... have been notified of the changes to the following event:";
+"Receipt: invitation updated" = "Empfangsbestätigung: Einladung aktualisiert";
+"The following attendees(s):" = "Die folgenden Teilnehmer:";
+"... have been notified of the changes to the following event:" = "... wurden über die Änderung des folgenden Termins informiert:";
 
-"Receipt: attendees removed from an event" = "Receipt: attendees removed from an event";
-"You have removed the following attendees(s):" = "You have removed the following attendees(s):";
-"... from the following event:" = "... from the following event:";
+"Receipt: attendees removed from an event" = "Empfangsbestätigung: Teilnehmer eines Termins entfernt";
+"You have removed the following attendees(s):" = "Sie haben folgende Teilnehmer entfernt:";
+"... from the following event:" = "... von folgendem Termin:";
 
 /* IMIP messages */
 "startDate_label" = "Start:";
-"endDate_label" = "End:";
-"due_label" = "Due Date:";
-"location_label" = "Location:";
-"summary_label" = "Summary:";
-"comment_label" = "Comment:";
+"endDate_label" = "Ende:";
+"due_label" = "Fällig:";
+"location_label" = "Ort:";
+"summary_label" = "Zusammenfassung:";
+"comment_label" = "Kommentar:";
 
 /* Invitation */
-"Event Invitation: \"%{Summary}\"" = "Event Invitation: \"%{Summary}\"";
-"(sent by %{SentBy}) " = "(sent by %{SentBy}) ";
-"%{Organizer} %{SentByText}has invited you to %{Summary}." = "%{Organizer} %{SentByText}has invited you to %{Summary}.";
+"Event Invitation: \"%{Summary}\"" = "Termin Einladung: \"%{Summary}\"";
+"(sent by %{SentBy}) " = "(gesendet von %{SentBy}) ";
+"%{Organizer} %{SentByText}has invited you to %{Summary}." = "%{Organizer} %{SentByText}hat Sie eingeladen zu %{Summary}.";
 
 /* Deletion */
-"Event Cancelled: \"%{Summary}\"" = "Event Cancelled: \"%{Summary}\"";
+"Event Cancelled: \"%{Summary}\"" = "Termin abgesagt: \"%{Summary}\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}."
-= "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.";
+= "%{Organizer} %{SentByText}hat diesen Termin abgesagt: %{Summary}.";
 
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
-= "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed";
+= "Der Termin \"%{Summary}\" für den %{OldStartDate} um %{OldStartTime} hat sich geändert";
 "The following parameters have changed in the \"%{Summary}\" meeting:"
-= "The following parameters have changed in the \"%{Summary}\" meeting:";
+= "Folgende Parameter haben sich im Termin \"%{Summary}\" geändert:";
 "Please accept or decline those changes."
-= "Please accept or decline those changes.";
+= "Bitte akzeptieren oder lehnen Sie diese Änderungen ab.";
 
 /* Reply */
 "Reply to invitation: \"%{Summary}\"" = "Antwort Termineinladung: %{Summary}";
@@ -57,6 +57,6 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 "%{Attendee} %{SentByText}has declined your event invitation."
 = "%{Attendee} %{SentByText}hat Ihre Termineinladung abgelehnt.";
 "%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
-= "%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}.";
+= "%{Attendee} %{SentByText}hat die Einladung delegiert an %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText}hat noch nicht über Ihre Termineinladung entschieden.";

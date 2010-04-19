@@ -47,19 +47,19 @@
      	= "Sie haben diesen Ordner bereits abonniert!";
 "The user rights cannot be edited for this object!"
         = "Die Benutzerrechte können für dieses Objekt nicht verändert werden!";
-"A folder by that name already exists." = "A folder by that name already exists.";
+"A folder by that name already exists." = "Ein Ordner mit diesem Namen existiert bereits.";
 "You cannot create a list in a shared address book." 
-        = "You cannot create a list in a shared address book.";
+        = "Es ist nicht möglich, eine Liste in einem gemeinsamen Adressbuch zu erstellen.";
 
 "You are not allowed to access this module or this system. Please contact your system administrator."
-= "You are not allowed to access this module or this system. Please contact your system administrator.";
+= "Sie sind nicht berechtigt auf dieses Modul oder System zuzugreifen. Bitte kontaktieren Sie ihren Systemadministrator.";
 "You don't have the required privileges to perform the operation."
 = "Sie haben nicht die benötigte Berechtigung für diesen Befehl.";
 
-"noEmailForDelegation" = "You must specify the address to which you want to delegate your invitation.";
-"delegate is organizer" = "The delegate is the organizer. Please specify a different delegate.";
-"delegate is a participant" = "The delegate is already a participant.";
-"delegate is a group" = "The specified address corresponds to a group. You can only delegate to a unique person.";
+"noEmailForDelegation" = "Zum Delegieren der Einladung muss eine Adresse angegeben werden.";
+"delegate is organizer" = "Der Vertreter ist der Organisator. Bitte einen anderen Vertreter angeben.";
+"delegate is a participant" = "Der Vertreter ist bereits ein Teilnehmer.";
+"delegate is a group" = "Die angegebene Adresse gehört einer Gruppe. Es kann nur zu einer einzelnen Person delegiert werden.";
 
 /* alarms */
 "Reminder:" = "Alarm:";

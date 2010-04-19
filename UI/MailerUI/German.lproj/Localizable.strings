@@ -19,7 +19,7 @@
 "Attach" = "Anhang";
 "Save" = "Speichern";
 "Priority" = "Priorität";
-"Size" = "Size";
+"Size" = "Größe";
 
 /* Tooltips */
 
@@ -76,7 +76,7 @@
 "Remove this folder" = "Diesen Ordner löschen";
 "Erase mails from this folder" = "E-Mails in diesem Ordner löschen";
 "Expunge this folder" = "Diesen Ordner komprimieren";
-"Archive This Folder" = "Archive This Folder";
+"Archive This Folder" = "Diesen Ordner archivieren";
 "Modify the acl of this folder" = "Benutzerrechte dieses Ordners verändern";
 
 "Saved Messages.zip" = "Saved Messages.zip";
@@ -95,10 +95,10 @@
 "Add address"   = "Adresse hinzufügen";
 
 "Attachments:" = "Anhänge:";
-"Open" = "Open";
-"Select All" = "Select All";
-"Attach Web Page..." = "Attach Web Page...";
-"Attach File(s)..." = "Attach File(s)...";
+"Open" = "Öffnen";
+"Select All" = "Alles auswählen";
+"Attach Web Page..." = "Webseite anhängen...";
+"Attach File(s)..." = "Datei(en) als Anhang anfügen";
 
 "to"            = "An";
 "cc"            = "CC";
@@ -107,7 +107,7 @@
 "Addressbook"   = "Adressbuch";
 
 "Edit Draft..." = "Entwurf bearbeiten...";
-"Load Images" = "Load Images";
+"Load Images" = "Bilder laden";
 
 "highest" = "Sehr hoch";
 "high" = "Hoch";
@@ -133,7 +133,7 @@
 "Entire Message" = "Nachrichtentext";
 
 "Date"          = "Datum";
-"View"          = "View";
+"View"          = "Ansicht";
 "All"           = "Alle";
 "Unread"        = "Ungelesene";
 "messages"      = "Nachricht(en)";
@@ -171,7 +171,7 @@
 
 /* Image Popup menu */
 "Save Image" = "Bild speichern";
-"Save Attachment" = "Save Attachment";
+"Save Attachment" = "Anhang speichern";
 
 /* Mailbox popup menus */
 "Open in New Mail Window" = "In neuem Fenster öffnen";
@@ -244,7 +244,7 @@
 "Please select a message." = "Sie müssen eine Nachricht auswählen.";
 "Please select a message to print." = "Sie müssen eine Nachricht zum Drucken auswählen.";
 "Please select only one message to print." = "Bitte wählen Sie nur eine Nachricht zum Drucken aus.";
-"The message you have selected doesn't exist anymore." = "The message you have selected doesn't exist anymore.";
+"The message you have selected doesn't exist anymore." = "Die gewählte Nachricht existiert nicht mehr.";
 
 
 "The folder with name \"%{0}\" could not be created."
