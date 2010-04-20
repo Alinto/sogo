@@ -189,10 +189,10 @@
   lastInstanceStartDate = nil;
   if ([rrule repeatCount] > 0) 
     {
+      firStart = [firstRange startDate];
       if ([rrule hasByMask])
 	{
 	  // Must perform the complete calculation
-	  firStart = [firstRange startDate];
 	  r = [NGCalendarDateRange calendarDateRangeWithStartDate: firStart
 							  endDate: [NSCalendarDate distantFuture]];
 	  instances = [self recurrenceRangesWithinCalendarDateRange: r];

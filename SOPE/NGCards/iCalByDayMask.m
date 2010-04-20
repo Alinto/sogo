@@ -61,16 +61,16 @@
 + (id) byDayMaskWithWeekDays
 {
   id o;
+  iCalWeekOccurrences d;
   
-  iCalWeekOccurrences days;
-  days[iCalWeekDaySunday] = 0;
-  days[iCalWeekDayMonday] = iCalWeekOccurrenceAll;
-  days[iCalWeekDayTuesday] = iCalWeekOccurrenceAll;
-  days[iCalWeekDayWednesday] = iCalWeekOccurrenceAll;
-  days[iCalWeekDayThursday] = iCalWeekOccurrenceAll;
-  days[iCalWeekDayFriday] = iCalWeekOccurrenceAll;
-  days[iCalWeekDaySaturday] = 0;
-  o = [[self alloc] initWithDays: days];
+  d[iCalWeekDaySunday] = 0;
+  d[iCalWeekDayMonday] = iCalWeekOccurrenceAll;
+  d[iCalWeekDayTuesday] = iCalWeekOccurrenceAll;
+  d[iCalWeekDayWednesday] = iCalWeekOccurrenceAll;
+  d[iCalWeekDayThursday] = iCalWeekOccurrenceAll;
+  d[iCalWeekDayFriday] = iCalWeekOccurrenceAll;
+  d[iCalWeekDaySaturday] = 0;
+  o = [[self alloc] initWithDays: d];
   AUTORELEASE(o);
   
   return o;
@@ -295,6 +295,8 @@
     case iCalWeekOccurrenceFourthLast:   i = -4;
       break;
     case iCalWeekOccurrenceFifthLast:    i = -5;
+      break;
+    case iCalWeekOccurrenceAll:          i = 0;
       break;
     }
 
