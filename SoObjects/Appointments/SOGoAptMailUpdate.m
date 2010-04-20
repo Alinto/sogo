@@ -31,10 +31,6 @@
 #import "SOGoAptMailNotification.h"
 
 @interface SOGoAptMailUpdate : SOGoAptMailNotification
-{
-  NSMutableDictionary *values;
-}
-
 @end
 
 @implementation SOGoAptMailUpdate
