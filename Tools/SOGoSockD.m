@@ -93,7 +93,7 @@
 }
 
 - (BOOL) _handleData: (NSData *) socketData
-            onSocket: (NGActiveSocket *) responseSocket
+            onSocket: (id <NGActiveSocket>) responseSocket
 {
   NSString *stringData;
   SOGoSockDScanner *scanner;
@@ -109,7 +109,7 @@
       if (operation)
         {
           rc = YES;
-          [operation respondOnSocket: responseSocket];
+          [operation respondOnSocket: (NGActiveSocket *) responseSocket];
         }
       else
         rc = NO;
@@ -122,7 +122,7 @@
 
 - (void) _acceptAndHandle
 {
-  NGActiveSocket *socket;
+  id <NGActiveSocket> socket;
   char buffer[1024];
   unsigned int count;
   NSMutableData *socketData;

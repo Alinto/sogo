@@ -20,6 +20,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include <ldap.h>
+
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
@@ -123,12 +125,12 @@ static NSArray *commonSearchFields;
 }
 
 + (id) sourceFromUDSource: (NSDictionary *) udSource
-                 inDomain: (NSString *) domain
+                 inDomain: (NSString *) sourceDomain
 {
   id newSource;
 
   newSource = [[self alloc] initFromUDSource: udSource
-                                    inDomain: domain];
+                                    inDomain: sourceDomain];
   [newSource autorelease];
 
   return newSource;

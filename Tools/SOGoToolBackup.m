@@ -99,7 +99,6 @@
 {
   NSFileManager *fm;
   BOOL exists, isDir, rc;
-  NSError *createError;
 
   fm = [NSFileManager defaultManager];
   exists = [fm fileExistsAtPath: directory isDirectory: &isDir];
@@ -116,12 +115,9 @@
   else
     {
       rc = [fm createDirectoryAtPath: directory
-               withIntermediateDirectories: YES
-                          attributes: nil
-                               error: &createError];
+                          attributes: nil];
       if (!rc)
-        NSLog (@"an error occured during directory creation: %@",
-               createError);
+        NSLog (@"an error occured during directory creation");
     }
 
   return rc;

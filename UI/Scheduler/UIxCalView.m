@@ -21,9 +21,6 @@
  */
 
 #import <Foundation/Foundation.h>
-#import <SOGo/NSArray+Utilities.h>
-#import <SOGo/NSDictionary+Utilities.h>
-#import <SOGo/NSString+Utilities.h>
 
 #import <NGObjWeb/SoSecurityManager.h>
 #import <NGObjWeb/SoUser.h>
@@ -37,11 +34,15 @@
 #import <NGCards/NGCards.h>
 
 #import <Appointments/SOGoAppointmentFolder.h>
+#import <Appointments/SOGoAppointmentFolders.h>
 #import <Appointments/SOGoAppointmentObject.h>
 #import <SOGo/NSArray+Utilities.h>
+#import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoObject.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
+#import <SOGo/SOGoUserSettings.h>
 
 #import <SOGoUI/SOGoAptFormatter.h>
 

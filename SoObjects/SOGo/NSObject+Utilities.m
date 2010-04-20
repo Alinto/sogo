@@ -22,6 +22,7 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSBundle.h>
+#import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
 
 #import <NGObjWeb/WOContext+SoObjects.h>

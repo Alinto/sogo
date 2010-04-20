@@ -49,7 +49,7 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 {
   SOGoUserProfile *up;
   SOGoUserDefaults *ud;
-  SOGoDefaultsSource *parentSource;
+  SOGoDefaultsSource *parent;
   static Class SOGoUserProfileKlass = Nil;
 
   if (!SOGoUserProfileKlass)
@@ -82,12 +82,11 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
       // [self invalidateLanguage];
     // }
 
-  parentSource = [SOGoDomainDefaults defaultsForDomain: domainId];
-  if (!parentSource)
-    parentSource = [SOGoSystemDefaults sharedSystemDefaults];
+  parent = [SOGoDomainDefaults defaultsForDomain: domainId];
+  if (!parent)
+    parent = [SOGoSystemDefaults sharedSystemDefaults];
 
-  ud = [self defaultsSourceWithSource: up
-                      andParentSource: parentSource];
+  ud = [self defaultsSourceWithSource: up andParentSource: parent];
 
   return ud;
 }

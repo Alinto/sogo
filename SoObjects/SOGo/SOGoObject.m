@@ -1391,7 +1391,7 @@
 }
 
 - (NSException *) davSetProperties: (NSDictionary *) setProps
-	     removePropertiesNamed: (NSDictionary *) removedProps
+	     removePropertiesNamed: (NSArray *) removedProps
 			 inContext: (WOContext *) localContext
 {
   NSString *currentProp;

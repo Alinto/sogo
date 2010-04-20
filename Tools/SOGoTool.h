@@ -36,8 +36,8 @@
 + (NSString *) command;
 + (NSString *) description;
 
-+ (BOOL) runToolWithArguments: (NSArray *) arguments
-                      verbose: (BOOL) verbose;
++ (BOOL) runToolWithArguments: (NSArray *) toolArguments
+                      verbose: (BOOL) isVerbose;
 
 - (void) setArguments: (NSArray *) newArguments;
 - (void) setVerbose: (BOOL) newVerbose;

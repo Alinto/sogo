@@ -31,15 +31,16 @@
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 
+#import <SOGo/NSArray+Utilities.h>
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
-
-#import <SoObjects/SOGo/NSArray+Utilities.h>
-
-#import "UIxCalMainView.h"
+#import <SOGo/SOGoUserSettings.h>
 
 #import <Appointments/SOGoAppointmentFolder.h>
+#import <Appointments/SOGoAppointmentFolders.h>
+
+#import "UIxCalMainView.h"
 
 @implementation UIxCalMainView
 
