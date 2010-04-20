@@ -1,3 +1,8 @@
+2010-04-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* EOAdaptorChannel+GCS.m (-tableExistsWithName:): cleaned method
+	up.
+
 2009-11-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* GCSChannelManager.m (-databaseKeyForURL): removed obsolete
