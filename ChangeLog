@@ -1,3 +1,16 @@
+2010-04-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MailPartViewers/UIxMailPartHTMLViewer.m
+	(-startElement:namespace:rawName:attributes:): "ignoreContent" is
+	no longer a BOOL but an int, and was renamed to "ignoredContent".
+	This enables to fix a bug where an ignored content tag could be
+	"unignored" by being closed more than once, triggering the passing
+	of further content though the sanitizer.
+	Also, we now rename the "classid" and "data" attributes of "object"
+	elements to prevent cross-site scripting.
+	(+initialize): "applet", "frame", "frameset" and "iframe" a now
+	banned tags too.
+
 2010-04-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoWebAppointmentFolder.m (-setReloadOnLogin:)

@@ -964,17 +964,27 @@ function configureLoadImagesButton() {
     var imgs = content.select("IMG");
     $(imgs).each(function(img) {
             var unsafeSrc = img.getAttribute("unsafe-src");
-            if (unsafeSrc && unsafeSrc.length > 0) {
+            if (unsafeSrc) {
                 hiddenImgs.push(img);
             }
         });
     content.hiddenImgs = hiddenImgs;
 
+    var hiddenObjects = [];
+    var objects = content.select("OBJECT");
+    $(objects).each(function(obj) {
+            if (obj.getAttribute("unsafe-data")
+                || obj.getAttribute("unsafe-classid")) {
+                hiddenObjects.push(obj);
+            }
+        });
+    content.hiddenObjects = hiddenObjects;
+
     if (typeof(loadImagesButton) == "undefined" ||
         loadImagesButton == null ) {
         return;
     }
-    if (hiddenImgs.length == 0) {
+    if ((hiddenImgs.length + hiddenObjects.length) == 0) {
         loadImagesButton.setStyle({ display: 'none' });
     }
 }
@@ -1255,8 +1265,20 @@ function onMessageLoadImages(event) {
             log ("unsafesrc: " + unSafeSrc);
             img.src = img.getAttribute("unsafe-src");
         });
-
     content.hiddenImgs = null;
+    $(content.hiddenObjects).each(function(obj) {
+            var unSafeData = obj.getAttribute("unsafe-data");
+            if (unSafeData) {
+                obj.setAttribute("data", unSafeData);
+            }
+            var unSafeClassId = obj.getAttribute("unsafe-classid");
+            if (unSafeClassId) {
+                obj.setAttribute("classid", unSafeClassId);
+            }
+        });
+    content.hiddenObjects = null;
+
+
     var loadImagesButton = $("loadImagesButton");
     loadImagesButton.setStyle({ display: 'none' });
 

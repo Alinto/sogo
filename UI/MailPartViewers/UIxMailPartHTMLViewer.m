@@ -107,7 +107,7 @@ _xmlCharsetForCharset (NSString *charset)
   NSMutableString *result;
   NSMutableString *css;
   NSDictionary *attachmentIds;
-  BOOL ignoreContent;
+  int ignoredContent;
   NSString *ignoreTag;
   BOOL inBody;
   BOOL inStyle;
@@ -125,11 +125,9 @@ _xmlCharsetForCharset (NSString *charset)
 + (void) initialize
 {
   if (!BannedTags)
-    {
-      BannedTags = [NSArray arrayWithObjects: @"script", @"link", @"base",
-                            @"meta", @"title", nil];
-      [BannedTags retain];
-    }
+    BannedTags = [[NSArray alloc] initWithObjects: @"script", @"frameset",
+                                  @"frame", @"iframe", @"applet", @"link",
+                                  @"base", @"meta", @"title", nil];
 }
 
 - (id) init
@@ -190,7 +188,7 @@ _xmlCharsetForCharset (NSString *charset)
   result = [NSMutableString new];
   css = [NSMutableString new];
 
-  ignoreContent = NO;
+  ignoredContent = 0;
   [ignoreTag release];
   ignoreTag = nil;
 
@@ -288,7 +286,7 @@ _xmlCharsetForCharset (NSString *charset)
   showWhoWeAre();
 
   lowerName = [_localName lowercaseString];
-  if (inStyle || ignoreContent)
+  if (inStyle || ignoredContent)
     ;
   else if ([lowerName isEqualToString: @"base"])
     ;
@@ -302,8 +300,9 @@ _xmlCharsetForCharset (NSString *charset)
     {
       if ([BannedTags containsObject: lowerName])
         {
-          ignoreTag = [lowerName copy];
-          ignoreContent = YES;
+          if (!ignoredContent)
+            ignoreTag = [lowerName copy];
+          ignoredContent++;
         }
       else
         {
@@ -335,6 +334,13 @@ _xmlCharsetForCharset (NSString *charset)
                     }
                   else
                     skipAttribute = YES;
+                }
+              else if (([name isEqualToString: @"data"]
+                        || [name isEqualToString: @"classid"])
+                       && [lowerName isEqualToString: @"object"])
+                {
+                  value = [_attributes valueAtIndex: count];
+                  name = [NSString stringWithFormat: @"unsafe-%@", name];
                 }
               else if ([name isEqualToString: @"href"]
                        || [name isEqualToString: @"action"])
@@ -387,13 +393,16 @@ _xmlCharsetForCharset (NSString *charset)
 
   lowerName = [_localName lowercaseString];
 
-  if (ignoreContent)
+  if (ignoredContent)
     {
       if ([lowerName isEqualToString: ignoreTag])
         {
-          ignoreContent = NO;
-          [ignoreTag release];
-          ignoreTag = nil;
+          ignoredContent--;
+          if (!ignoredContent)
+            {
+              [ignoreTag release];
+              ignoreTag = nil;
+            }
         }
     }
   else
@@ -427,7 +436,7 @@ _xmlCharsetForCharset (NSString *charset)
              length: (int) _len
 {
   showWhoWeAre();
-  if (!ignoreContent)
+  if (!ignoredContent)
     {
       if (inStyle)
         [self _appendStyle: _chars length: _len];
