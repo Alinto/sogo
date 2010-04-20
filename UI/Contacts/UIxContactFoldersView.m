@@ -111,15 +111,15 @@
 
 - (void) _fillResults: (NSMutableDictionary *) results
              inFolder: (id <SOGoContactFolder>) folder
-	 withSearchOn: (NSString *) contact
+         withSearchOn: (NSString *) contact
 {
   NSEnumerator *folderResults;
   NSDictionary *currentContact;
   NSString *uid;
 
   folderResults = [[folder lookupContactsWithFilter: contact
-			   sortBy: @"cn"
-			   ordering: NSOrderedAscending] objectEnumerator];
+                                             sortBy: @"cn"
+                                           ordering: NSOrderedAscending] objectEnumerator];
   currentContact = [folderResults nextObject];
   while (currentContact)
     {
@@ -168,11 +168,11 @@
 	    {
 	      formattedContact = [NSMutableDictionary dictionary];
 	      [formattedContact setObject: [contact objectForKey: @"c_uid"]
-				forKey: @"uid"];
+                                   forKey: @"uid"];
 	      [formattedContact setObject: [contact objectForKey: @"cn"]
-				forKey: @"name"];
+                                   forKey: @"name"];
 	      [formattedContact setObject: email
-				forKey: @"email"];
+                                   forKey: @"email"];
               info = [contact objectForKey: @"c_info"];
               if (info != nil)
                 [formattedContact setObject: info
@@ -265,8 +265,8 @@
       else
         sortedContacts = [NSArray array];
       data = [NSDictionary dictionaryWithObjectsAndKeys: searchText, @"searchText",
-           sortedContacts, @"contacts",
-           nil];
+                           sortedContacts, @"contacts",
+                           nil];
       result = [self responseWithStatus: 200];
       [(WOResponse*)result appendContentString: [data jsonRepresentation]];
     }
@@ -318,10 +318,6 @@
 
   securityManager = [SoSecurityManager sharedSecurityManager];
 
-  //   return (([securityManager validatePermission: SoPerm_AccessContentsInformation
-            //                             onObject: contactFolder
-           //                             inContext: context] == nil)
-
   folders = [NSMutableArray array];
 
   subfolders = [[parentFolder subFolders] objectEnumerator];
@@ -331,8 +327,8 @@
                                       onObject: subfolder inContext: context])
         {
           folderName = [NSString stringWithFormat: @"/%@/%@",
-                     [parentFolder nameInContainer],
-                     [subfolder nameInContainer]];
+                                 [parentFolder nameInContainer],
+                                 [subfolder nameInContainer]];
           currentDictionary
             = [NSMutableDictionary dictionaryWithCapacity: 3];
           [currentDictionary setObject: [subfolder displayName]
@@ -346,32 +342,6 @@
 
   return folders;
 }
-
-// - (SOGoContactGCSFolder *) contactFolderForUID: (NSString *) uid
-// {
-//   SOGoFolder *upperContainer;
-//   SOGoUserFolder *userFolder;
-//   SOGoContactFolders *contactFolders;
-//   SOGoContactGCSFolder *contactFolder;
-//   SoSecurityManager *securityManager;
-
-//   upperContainer = [[[self clientObject] container] container];
-//   userFolder = [SOGoUserFolder objectWithName: uid
-   //                                inContainer: upperContainer];
-   //   contactFolders = [SOGoUserFolder lookupName: @"Contacts"
-                             // 				   inContext: context
-                                // 				   acquire: NO];
-                                //   contactFolder = [contactFolders lookupName: @"personal"
-                                                          // 				  inContext: context
-                                                            // 				  acquire: NO];
-
-                                                            //   securityManager = [SoSecurityManager sharedSecurityManager];
-
-                                                            //   return (([securityManager validatePermission: SoPerm_AccessContentsInformation
-                                                                      //                             onObject: contactFolder
-                                                                     //                             inContext: context] == nil)
-                                                                                //           ? contactFolder : nil);
-                                                                                // }
 
 - (void) checkDefaultModulePreference
 {
@@ -405,7 +375,7 @@
 - (NSString *) currentContactFolderId
 {
   return [NSString stringWithFormat: @"/%@",
-         [currentFolder nameInContainer]];
+                   [currentFolder nameInContainer]];
 }
 
 - (NSString *) currentContactFolderName
@@ -462,11 +432,11 @@
   request = [context request];
 
   if ((dragHandle = [request formValueForKey: @"vertical"]) != nil)
-                   [moduleSettings setObject: dragHandle
-                                      forKey: @"DragHandleVertical"];
+    [moduleSettings setObject: dragHandle
+                       forKey: @"DragHandleVertical"];
   else if ((dragHandle = [request formValueForKey: @"horizontal"]) != nil)
-                        [moduleSettings setObject: dragHandle
-                                           forKey: @"DragHandleHorizontal"];
+    [moduleSettings setObject: dragHandle
+                       forKey: @"DragHandleHorizontal"];
   else
     return [self responseWithStatus: 400];
 
