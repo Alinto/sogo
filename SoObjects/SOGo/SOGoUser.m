@@ -438,47 +438,49 @@
 {
   NSMutableDictionary *mailAccount, *identity;
   NSMutableArray *identities;
-  NSString *name, *fullName, *imapLogin, *imapServer;
+  NSString *fullName, *imapLogin, *imapServer;
   NSArray *mails;
   unsigned int count, max;
 
   if (!mailAccounts)
     {
       imapLogin = [[SOGoUserManager sharedUserManager]
-                    getImapLoginForUID: login];
+                     getImapLoginForUID: login];
       imapServer = [self _fetchFieldForUser: @"c_imaphostname"];
       if (!imapServer)
         imapServer = [[self domainDefaults] imapServer];
-      mailAccount = [NSMutableDictionary dictionary];
-      name = [NSString stringWithFormat: @"%@@%@",
-                       imapLogin, imapServer];
+      mailAccount = [NSMutableDictionary new];
       [mailAccount setObject: imapLogin forKey: @"userName"];
       [mailAccount setObject: imapServer forKey: @"serverName"];
-      [mailAccount setObject: name forKey: @"name"];
 
-      identities = [NSMutableArray array];
+      identities = [NSMutableArray new];
       mails = [self allEmails];
+      [mailAccount setObject: [mails objectAtIndex: 0]
+                      forKey: @"name"];
 
       max = [mails count];
       if (max > 1)
         max--;
       for (count = 0; count < max; count++)
         {
-          identity = [NSMutableDictionary dictionary];
+          identity = [NSMutableDictionary new];
           fullName = [self cn];
           if (![fullName length])
             fullName = login;
           [identity setObject: fullName forKey: @"fullName"];
           [identity setObject: [mails objectAtIndex: count] forKey: @"email"];
           [identities addObject: identity];
+          [identity release];
         }
       [[identities objectAtIndex: 0] setObject: [NSNumber numberWithBool: YES]
                                         forKey: @"isDefault"];
       
       [mailAccount setObject: identities forKey: @"identities"];
+      [identities release];
       
       mailAccounts = [NSArray arrayWithObject: mailAccount];
       [mailAccounts retain];
+      [mailAccount release];
     }
 
   return mailAccounts;

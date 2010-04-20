@@ -1,5 +1,9 @@
 2010-04-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUser.m (-mailAccounts): use the user's first
+	email address as displayname for the mail account. Also, we avoid
+	autoreleasing objects that do not required to.
+
 	* UI/MailPartViewers/UIxMailPartHTMLViewer.m
 	(-startElement:namespace:rawName:attributes:): "ignoreContent" is
 	no longer a BOOL but an int, and was renamed to "ignoredContent".
