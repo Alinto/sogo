@@ -429,6 +429,8 @@ static NSDictionary *methodRequirements = nil;
     *flag, *mailbox;
   SOGoDomainDefaults *dd;
 
+  sieveAction = nil;
+
   method = [action objectForKey: @"method"];
   if (method)
     {
@@ -484,10 +486,7 @@ static NSDictionary *methodRequirements = nil;
         }
     }
   else
-    {
-      scriptError = @"Action missing 'method' parameter";
-      sieveAction = nil;
-    }
+    scriptError = @"Action missing 'method' parameter";
 
   return sieveAction;
 }

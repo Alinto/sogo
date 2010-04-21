@@ -39,6 +39,7 @@
 #import <SOGo/NSObject+Utilities.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
+#import <SOGo/SOGoUserSettings.h>
 
 #import <UI/Common/WODirectAction+SOGo.h>
 

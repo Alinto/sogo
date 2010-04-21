@@ -28,8 +28,9 @@
 
 #import <NGExtensions/NSCalendarDate+misc.h>
 
-#import <SoObjects/SOGo/SOGoUser.h>
-#import <SoObjects/SOGo/SOGoDateFormatter.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
+#import <SOGo/SOGoDateFormatter.h>
 
 #import "UIxCalMulticolumnDayView.h"
 

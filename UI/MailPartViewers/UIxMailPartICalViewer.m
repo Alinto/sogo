@@ -25,6 +25,8 @@
   Show plain/calendar mail parts.
 */
 
+#import <Foundation/NSValue.h>
+
 #import <NGObjWeb/WOResponse.h>
 
 #import <NGExtensions/NSCalendarDate+misc.h>
@@ -39,6 +41,7 @@
 
 #import <SOGo/SOGoDateFormatter.h>
 #import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/iCalEntityObject+Utilities.h>
 #import <Appointments/iCalEntityObject+SOGo.h>

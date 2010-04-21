@@ -83,14 +83,14 @@
   return newSession;
 }
 
-+ (SOGoCASSession *) CASSessionWithIdentifier: (NSString *) identifier
++ (SOGoCASSession *) CASSessionWithIdentifier: (NSString *) newIdentifier
 {
   SOGoCASSession *session;
   SOGoCache *cache;
   NSString *casTicket;
 
   cache = [SOGoCache sharedCache];
-  casTicket = [cache CASTicketFromIdentifier: identifier];
+  casTicket = [cache CASTicketFromIdentifier: newIdentifier];
   session = [self CASSessionWithTicket: casTicket];
 
   return session;

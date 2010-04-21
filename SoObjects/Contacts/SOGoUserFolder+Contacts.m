@@ -32,12 +32,14 @@
 #import <SOGo/NSObject+DAV.h>
 #import <SOGo/NSString+DAV.h>
 
+#import "SOGoContactFolders.h"
+
 #import "SOGoUserFolder+Contacts.h"
 
 @interface SOGoUserFolder (private)
 
-- (SOGoAppointmentFolders *) privateContacts: (NSString *) key
-				   inContext: (WOContext *) localContext;
+- (SOGoContactFolders *) privateContacts: (NSString *) key
+                               inContext: (WOContext *) localContext;
 
 @end
 
@@ -47,7 +49,7 @@
 - (NSArray *) davAddressbookHomeSet
 {
   NSArray *tag;
-  SOGoAppointmentFolders *parent;
+  SOGoContactFolders *parent;
 
   parent = [self privateContacts: @"Contacts" inContext: context];
   tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",

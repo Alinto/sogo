@@ -27,8 +27,9 @@
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOSession.h>
 
-#import <SOGoUser.h>
-#import <SOGoUserDefaults.h>
+#import "SOGoDomainDefaults.h"
+#import "SOGoUser.h"
+#import "SOGoUserDefaults.h"
 
 #import "WOContext+SOGo.h"
 

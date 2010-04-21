@@ -20,6 +20,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSDictionary.h>
+
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGExtensions/NSString+misc.h>
 
@@ -89,7 +91,8 @@
   NSString *rc;
 
   if (htmlComposition)
-    rc = [[[sourceMail mailHeaders] objectForKey: @"from"] stringByEscapingHTMLString];
+    rc = [[[sourceMail mailHeaders] objectForKey: @"from"]
+           stringByEscapingHTMLString];
   else
     rc = [[sourceMail mailHeaders] objectForKey: @"from"];
 

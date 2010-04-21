@@ -25,6 +25,7 @@
 #import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSString.h>
 
+#import <NGHttp/NGHttpRequest.h>
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoSubContext.h>
 #define COMPILING_NGOBJWEB 1 /* we want httpRequest for parsing multi-part
@@ -41,6 +42,7 @@
 #import <NGMime/NGMimeBodyPart.h>
 #import <NGMime/NGMimeHeaderFields.h>
 #import <NGMime/NGMimeMultipartBody.h>
+#import <NGMime/NGMimeType.h>
 
 #import <SoObjects/Mailer/SOGoDraftObject.h>
 #import <SoObjects/Mailer/SOGoMailFolder.h>

@@ -25,6 +25,7 @@
 #import <GDLContentStore/GCSFolder.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <SoObjects/SOGo/SOGoUser.h>
+#import <SoObjects/SOGo/SOGoUserSettings.h>
 
 #import "SOGoWebAppointmentFolder.h"
 

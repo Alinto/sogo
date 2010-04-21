@@ -46,7 +46,7 @@
                   andParameters: (NSDictionary *) parameters;
 
 + (SOGoCASSession *) CASSessionWithTicket: (NSString *) newTicket;
-+ (SOGoCASSession *) CASSessionWithIdentifier: (NSString *) identifier;
++ (SOGoCASSession *) CASSessionWithIdentifier: (NSString *) newIdentifier;
 
 - (NSString *) identifier;
 

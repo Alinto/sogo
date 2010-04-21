@@ -31,7 +31,7 @@
 @interface SOGo (SOGoWebDAVExtensions)
 
 - (WOResponse *) davPrincipalMatch: (WOContext *) localContext;
-- (WOResponse *) davPrincipalPropertySearch: (WOContext *) localContext;
+// - (WOResponse *) davPrincipalPropertySearch: (WOContext *) localContext;
 - (WOResponse *) davPrincipalSearchPropertySet: (WOContext *) localContext;
 
 @end

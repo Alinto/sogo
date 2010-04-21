@@ -69,7 +69,7 @@
 #import <SOGo/WORequest+SOGo.h>
 #import <SOGo/WOResponse+SOGo.h>
 
-#import "iCalEntityObject+SOGo.h"
+#import "iCalRepeatableEntityObject+SOGo.h"
 #import "iCalPerson+SOGo.h"
 #import "SOGoAppointmentObject.h"
 #import "SOGoAppointmentFolders.h"

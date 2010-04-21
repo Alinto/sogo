@@ -22,6 +22,7 @@
 
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSEnumerator.h>
+#import <Foundation/NSValue.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
@@ -39,15 +40,16 @@
 
 #import <NGImap4/NGImap4EnvelopeAddress.h>
 
-#import <SoObjects/Appointments/iCalEvent+SOGo.h>
-#import <SoObjects/Appointments/iCalPerson+SOGo.h>
-#import <SoObjects/Appointments/SOGoAppointmentObject.h>
-#import <SoObjects/Appointments/SOGoAppointmentFolder.h>
-#import <SoObjects/Mailer/SOGoMailObject.h>
-#import <SoObjects/SOGo/SOGoParentFolder.h>
-#import <SoObjects/SOGo/SOGoUser.h>
-#import <SoObjects/SOGo/iCalEntityObject+Utilities.h>
-#import <SoObjects/Mailer/SOGoMailBodyPart.h>
+#import <Appointments/iCalEvent+SOGo.h>
+#import <Appointments/iCalPerson+SOGo.h>
+#import <Appointments/SOGoAppointmentObject.h>
+#import <Appointments/SOGoAppointmentFolder.h>
+#import <Appointments/SOGoAppointmentFolders.h>
+#import <Mailer/SOGoMailObject.h>
+#import <SOGo/SOGoParentFolder.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/iCalEntityObject+Utilities.h>
+#import <Mailer/SOGoMailBodyPart.h>
 
 #import "UIxMailPartICalActions.h"
 

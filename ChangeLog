@@ -1,3 +1,8 @@
+2010-04-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Main/SOGo+DAV.m: commented out incomplete code for handling
+	DAV:principal-property-search
+
 2010-04-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUser.m (-mailAccounts): use the user's first
