@@ -134,9 +134,6 @@
 - (SOGoAppointmentFolder *)
  personalCalendarFolderInContext: (WOContext *) context;
 
-- (NSArray *) rolesForObject: (NSObject *) object
-                   inContext: (WOContext *) context;
-
 @end
 
 #endif /* __SOGoUser_H__ */

@@ -31,12 +31,14 @@
 @class NSString;
 @class NGLdapEntry;
 
+@protocol SOGoSource;
+
 @interface SOGoGroup : NSObject
 {
   @private 
     NSString *_identifier;
     NGLdapEntry *_entry;
-    LDAPSource *_source;
+    NSObject <SOGoSource> *_source;
     NSMutableArray *_members;
 }
 

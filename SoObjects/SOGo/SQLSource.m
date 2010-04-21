@@ -150,7 +150,7 @@
       memset(md, 0, MD5_DIGEST_LENGTH);
       memset(buf, 0, 80);
 
-      EVP_Digest([plainPassword UTF8String], strlen([plainPassword UTF8String]), md, NULL, EVP_md5(), NULL);
+      EVP_Digest((const void *) [plainPassword UTF8String], strlen([plainPassword UTF8String]), md, NULL, EVP_md5(), NULL);
       for (i = 0; i < MD5_DIGEST_LENGTH; i++)
 	sprintf(&(buf[i*2]), "%02x", md[i]);
 

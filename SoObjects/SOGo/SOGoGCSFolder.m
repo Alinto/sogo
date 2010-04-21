@@ -156,13 +156,13 @@ static NSArray *childRecordFields = nil;
   id newFolder;
   NSArray *elements, *pathElements;
   NSString *path, *objectPath, *login, *currentUser, *ocsName, *folderName;
-  WOContext *context;
-  BOOL isSubscription;
+  WOContext *localContext;
+  BOOL localIsSubscription;
 
   elements = [reference componentsSeparatedByString: @":"];
   login = [elements objectAtIndex: 0];
-  context = [[WOApplication application] context];
-  currentUser = [[context activeUser] login];
+  localContext = [[WOApplication application] context];
+  currentUser = [[localContext activeUser] login];
   objectPath = [elements objectAtIndex: 1];
   pathElements = [objectPath componentsSeparatedByString: @"/"];
   if ([pathElements count] > 1)
@@ -177,8 +177,9 @@ static NSArray *childRecordFields = nil;
   newFolder = [self objectWithName: folderName inContainer: aContainer];
   [newFolder setOCSPath: path];
   [newFolder setOwner: login];
-  isSubscription = ![login isEqualToString: [aContainer ownerInContext: context]];
-  [newFolder setIsSubscription: isSubscription];
+  localIsSubscription = ![login isEqualToString:
+                             [aContainer ownerInContext: localContext]];
+  [newFolder setIsSubscription: localIsSubscription];
   if (![newFolder displayName])
     newFolder = nil;
 

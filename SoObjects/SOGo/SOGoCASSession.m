@@ -87,11 +87,11 @@
 {
   SOGoCASSession *session;
   SOGoCache *cache;
-  NSString *ticket;
+  NSString *casTicket;
 
   cache = [SOGoCache sharedCache];
-  ticket = [cache CASTicketFromIdentifier: identifier];
-  session = [self CASSessionWithTicket: ticket];
+  casTicket = [cache CASTicketFromIdentifier: identifier];
+  session = [self CASSessionWithTicket: casTicket];
 
   return session;
 }
@@ -303,13 +303,11 @@
 
 - (void) _parseDOMResponse: (NGDOMDocument *) response
 {
-  NGDOMElement *top;
   id <DOMNodeList> nodes;
   NGDOMElement *currentNode;
   int count, max;
 
-  top = [response documentElement];
-  nodes = [top childNodes];
+  nodes = [[response documentElement] childNodes];
   max = [nodes length];
   for (count = 0; count < max; count++)
     {

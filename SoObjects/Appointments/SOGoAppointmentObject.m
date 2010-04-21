@@ -46,6 +46,7 @@
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoGroup.h>
 #import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoWebDAVValue.h>
 #import <SOGo/WORequest+SOGo.h>
 

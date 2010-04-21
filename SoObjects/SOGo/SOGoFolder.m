@@ -28,6 +28,7 @@
 #import <Foundation/NSValue.h>
 
 #import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/SoWebDAVValue.h>
 
 #import <NGExtensions/NSObject+Logs.h>
@@ -65,22 +66,22 @@
 
 + (SOGoWebDAVAclManager *) webdavAclManager
 {
-  static SOGoWebDAVAclManager *webdavAclManager = nil;
+  static SOGoWebDAVAclManager *aclManager = nil;
 
-  if (!webdavAclManager)
+  if (!aclManager)
     {
-      webdavAclManager = [SOGoWebDAVAclManager new];
-      [webdavAclManager registerDAVPermission: davElement (@"read", XMLNS_WEBDAV)
+      aclManager = [SOGoWebDAVAclManager new];
+      [aclManager registerDAVPermission: davElement (@"read", XMLNS_WEBDAV)
 			abstract: YES
 			withEquivalent: SoPerm_WebDAVAccess
 			asChildOf: davElement (@"all", XMLNS_WEBDAV)];
-      [webdavAclManager registerDAVPermission: davElement (@"read-current-user-privilege-set", XMLNS_WEBDAV)
+      [aclManager registerDAVPermission: davElement (@"read-current-user-privilege-set", XMLNS_WEBDAV)
 			abstract: YES
 			withEquivalent: nil
 			asChildOf: davElement (@"read", XMLNS_WEBDAV)];
     }
 
-  return webdavAclManager;
+  return aclManager;
 }
 
 - (id) init

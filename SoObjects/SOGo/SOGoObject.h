@@ -151,6 +151,9 @@
 - (NSString *) davRecordForUser: (NSString *) user
 		     parameters: (NSArray *) params;
 
+/* utilities */
+- (NSString *) labelForKey: (NSString *) key;
+
 /* description */
 
 - (void) appendAttributesToDescription:(NSMutableString *)_ms;

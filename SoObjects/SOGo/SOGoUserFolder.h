@@ -45,8 +45,6 @@
 
 /* ownership */
 
-- (NSString *) ownerInContext: (WOContext *) _ctx;
-
 - (NSArray *) foldersOfType: (NSString *) folderType
 		     forUID: (NSString *) uid;
 - (NSDictionary *) foldersOfType: (NSString *) type

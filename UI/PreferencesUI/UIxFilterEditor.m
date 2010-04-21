@@ -21,6 +21,7 @@
  */
 
 #import <Foundation/NSCharacterSet.h>
+#import <Foundation/NSDictionary.h>
 
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>

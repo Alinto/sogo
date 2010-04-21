@@ -73,13 +73,12 @@
   BOOL isCI;
 
   qKey = [_q key];
+  isCI = NO;
 
   if ((val = [_q value])) {
     SEL op = [_q selector];
 
     if ([val isNotNull]) {
-      isCI = NO;
-
       if (sel_eq(op, EOQualifierOperatorEqual))
 	qOperator = @"=";
       else if (sel_eq(op, EOQualifierOperatorNotEqual))
@@ -110,12 +109,12 @@
 	qValue = [NSString stringWithFormat: @"'%@'", val];
       }
       else {
+        qValue = @"NULL";
 	[self errorWithFormat:@"%s: unsupported value class: %@",
 	      __PRETTY_FUNCTION__, NSStringFromClass([val class])];
       }
     }
     else {
-      isCI = NO;
       if (sel_eq(op, EOQualifierOperatorEqual)) {
 	qOperator = @"IS";
 	qValue = @"NULL";

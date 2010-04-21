@@ -30,6 +30,7 @@
 #import <Contacts/SOGoContactFolders.h>
 #import <Contacts/SOGoContactGCSFolder.h>
 #import <SOGo/SOGoProductLoader.h>
+#import <SOGo/SOGoUserFolder.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 
@@ -50,7 +51,7 @@
 }
 
 + (SOGoSockDOperation *) operationWithMethod: (NSString *) method
-                               andParameters: (NSDictionary *) parameters
+                               andParameters: (NSDictionary *) opParameters
 {
   static NSArray *operations = nil;
   NSString *className;
@@ -66,7 +67,7 @@
                             [method capitalizedString]];
       newOperation = [NSClassFromString (className) new];
       [newOperation autorelease];
-      [newOperation setParameters: parameters];
+      [newOperation setParameters: opParameters];
     }
   else
     newOperation = nil;

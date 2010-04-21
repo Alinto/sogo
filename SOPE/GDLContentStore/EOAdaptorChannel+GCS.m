@@ -26,28 +26,27 @@
 
 @implementation EOAdaptorChannel(GCS)
 
-- (BOOL) tableExistsWithName: (NSString *) _tableName
+- (BOOL) tableExistsWithName: (NSString *) tableName
 {
   NSException *ex;
-  NSString    *sql;
-  BOOL        didOpen;
-  
+  NSString *sql;
+  BOOL didOpen;
+
   didOpen = NO;
   if (![self isOpen]) {
     if (![self openChannel])
       return NO;
     didOpen = YES;
   }
-  
-  sql = @"SELECT COUNT(*) FROM ";
-  sql = [sql stringByAppendingString:_tableName];
-  sql = [sql stringByAppendingString:@" WHERE 1 = 2"];
-  
-  ex = [[[self evaluateExpressionX:sql] retain] autorelease];
+
+  sql = [NSString stringWithFormat: @"SELECT COUNT(*) FROM %@ WHERE 1 = 2",
+                  tableName];
+  ex = [self evaluateExpressionX: sql];
   [self cancelFetch];
   
   if (didOpen) [self closeChannel];
-  return ex != nil ? NO : YES;
+
+  return (ex == nil);
 }
 
 - (void) dropTables: (NSArray *) tableNames

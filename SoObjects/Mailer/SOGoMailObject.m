@@ -958,6 +958,8 @@ static BOOL debugSoParts       = NO;
                               password: password];
         }
     }
+  else
+    exc = nil;
 
   return exc;
 }

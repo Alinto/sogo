@@ -20,6 +20,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
 
 #import "SOGoTool.h"
@@ -39,16 +40,16 @@
   return nil;
 }
 
-+ (BOOL) runToolWithArguments: (NSArray *) arguments
-                      verbose: (BOOL) verbose
++ (BOOL) runToolWithArguments: (NSArray *) toolArguments
+                      verbose: (BOOL) isVerbose
 {
   SOGoTool *instance;
 
   instance = [self new];
   [instance autorelease];
 
-  [instance setArguments: arguments];
-  [instance setVerbose: verbose];
+  [instance setArguments: toolArguments];
+  [instance setVerbose: isVerbose];
 
   return [instance run];
 }

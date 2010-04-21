@@ -27,7 +27,8 @@
 
 #import <NGObjWeb/WOContext.h>
 
-#import <SoObjects/SOGo/SOGoUser.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserSettings.h>
 
 #import "UIxCalFilterPanel.h"
 

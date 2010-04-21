@@ -899,6 +899,8 @@ static NSArray *contentFieldNames = nil;
 			      return nil;
 			    }
 			}
+                      else
+                        quickChannel = nil;
 
 		      /* we check if we can call directly methods on our adaptor
 			 channel delegate. If not, we generate SQL ourself since it'll

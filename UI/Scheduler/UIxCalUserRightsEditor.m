@@ -21,6 +21,7 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <NGObjWeb/WORequest.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
