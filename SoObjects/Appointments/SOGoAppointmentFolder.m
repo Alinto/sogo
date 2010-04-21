@@ -40,6 +40,7 @@
 #import <EOControl/EOQualifier.h>
 #import <EOControl/EOSortOrdering.h>
 #import <NGCards/iCalCalendar.h>
+#import <NGCards/iCalEvent.h>
 #import <NGCards/iCalFreeBusy.h>
 #import <NGCards/iCalDateTime.h>
 #import <NGCards/iCalPerson.h>

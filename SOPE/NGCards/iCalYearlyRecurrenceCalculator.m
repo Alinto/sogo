@@ -24,18 +24,19 @@
 
 #import "iCalRecurrenceCalculator.h"
 
-@interface iCalYearlyRecurrenceCalculator : iCalRecurrenceCalculator
-@end
-
 #import <NGExtensions/NGCalendarDateRange.h>
 #import "iCalRecurrenceRule.h"
 #import "NSCalendarDate+ICal.h"
 
+@interface iCalYearlyRecurrenceCalculator : iCalRecurrenceCalculator
+@end
+
+@interface iCalMonthlyRecurrenceCalculator : iCalRecurrenceCalculator
+@end
+
 @interface iCalRecurrenceCalculator (PrivateAPI)
 - (NSCalendarDate *) lastInstanceStartDate;
 @end
-
-@class iCalMonthlyRecurrenceCalculator;
 
 @implementation iCalYearlyRecurrenceCalculator
 
@@ -127,7 +128,7 @@
 
       monthlyCalc = [[iCalMonthlyRecurrenceCalculator alloc]
 				      initWithRecurrenceRule: rrule
-				      firstInstanceCalendarDateRange: firstRange];
+                              firstInstanceCalendarDateRange: firstRange];
       [monthlyCalc autorelease];
       
       // There's a bug in GNUstep in [NSCalendarDate dateByAddingYears:months:days:]

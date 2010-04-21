@@ -25,6 +25,7 @@
   Show plain/calendar mail parts.
 */
 
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSValue.h>
 
 #import <NGObjWeb/WOResponse.h>
