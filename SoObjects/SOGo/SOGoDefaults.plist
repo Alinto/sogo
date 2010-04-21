@@ -60,8 +60,6 @@
     SOGoSentFolderName = "Sent";
     SOGoDraftsFolderName = "Drafts";
     SOGoTrashFolderName = "Trash";
-    SOGoOtherUsersFolderName = "Other Users";
-    SOGoSharedFolderName = "Shared Folders";
 
     SOGoCalendarDefaultCategoryColor = "#F0F0F0";
     SOGoCalendarShouldDisplayWeekend = YES;
