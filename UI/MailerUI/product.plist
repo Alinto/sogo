@@ -96,10 +96,6 @@
           actionClass = "UIxMailFolderActions";
           actionName = "quotas";
         };
-        ajax = {
-          protectedBy = "View";
-          pageName    = "UIxMailAjaxRequest";
-        };
         index = {
           protectedBy = "View";
           pageName    = "UIxMailListView";
