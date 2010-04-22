@@ -1,3 +1,15 @@
+2010-04-22  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* iCalYearlyRecurrenceCalculator.m
+	(-recurrenceRangesWithinCalendarDateRange:): the rule interval
+	must be reset to 1 when using the monthly calculator since the
+	interval is related to the yearly frequency. Also fixed the month
+	counter with respect to the recurrence interval.
+
+	* iCalWeeklyRecurrenceCalculator.m
+	(-recurrenceRangesWithinCalendarDateRange:): fixed the computation
+	of the week number which results in a bad verification of the interval.
+
 2010-04-19  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* iCalByDayMask.[h|m]: new class that computes complex BYDAY constraints.

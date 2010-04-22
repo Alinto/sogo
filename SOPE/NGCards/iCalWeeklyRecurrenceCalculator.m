@@ -168,8 +168,11 @@
 		{
 		  [currentStartDate years:NULL months:NULL days:(int *)&days hours:NULL
 				  minutes:NULL seconds:NULL sinceDate: firStart];
-		  week = days / 7;
 
+		  // The following adjustment always set the first day of the
+		  // week to Sunday, ie WKST is ignored.
+		  week = (days + [firStart dayOfWeek]) / 7;
+		  
 		  if ((week % interval) == 0 &&
 		      [dayMask occursOnDay: [currentStartDate dayOfWeek]])
 		    isRecurrence = YES;

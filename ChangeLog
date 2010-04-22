@@ -1,3 +1,9 @@
+2010-04-22  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* Tests/Unit/TestiCalRecurrenceCalculator.m: new test module for
+	iCalRecurrenceRule. Added full test method for
+	recurrenceRangesWithinCalendarDateRange:.
+
 2010-04-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* Main/SOGo+DAV.m: commented out incomplete code for handling

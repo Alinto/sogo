@@ -120,12 +120,12 @@
        */
 
       // Instantiate a MONTHLY calculator
-      if (repeatCount > 0)
-	// Fool the monthly calculator, otherwise it will verify the COUNT
-	// constraint and perform the calculation from the first occurence of
-	// the recurrence. This calculation is performed by the current method.
-	[rrule setRepeatCount: 0];
-
+      // Fool the monthly calculator, otherwise it will verify the COUNT
+      // constraint and perform the calculation from the first occurence of
+      // the recurrence. This calculation is performed by the current method.
+      // The interval must be ignored as well since it refers to the years.
+      [rrule setRepeatCount: 0];
+      [rrule setInterval: @"1"];
       monthlyCalc = [[iCalMonthlyRecurrenceCalculator alloc]
 				      initWithRecurrenceRule: rrule
                               firstInstanceCalendarDateRange: firstRange];
@@ -161,7 +161,7 @@
   currentMonth = [referenceDate monthOfYear];
   for (yearIdxInRange = 0 ; yearIdxInRange < numberOfYearsInRange; yearIdxInRange++)
     {
-      int test, year;
+      int k, test, year;
 
       test = diff + yearIdxInRange;
       if ((test >= 0) && (test % interval) == 0)
@@ -184,12 +184,11 @@
 							   days: 0];
 		      rEnd = [rStart dateByAddingYears: 0
 						months: 0
-						  days: [rStart numberOfDaysInMonth] - 1];
+						  days: [rStart numberOfDaysInMonth]];
 		      rangeForMonth = [NGCalendarDateRange calendarDateRangeWithStartDate: rStart
 										   endDate: rEnd];
 		      rangesInMonth = [monthlyCalc recurrenceRangesWithinCalendarDateRange: rangeForMonth];
 		      
-		      int k;
 		      for (k = 0; k < [rangesInMonth count] && (repeatCount == 0 || count < repeatCount); k++) {
 			//NSLog(@"*** YEARLY found %@ (count = %i)", [[rangesInMonth objectAtIndex: k] startDate], count);
 			count++;
@@ -224,12 +223,19 @@
 		}
 	    }
 	}
+      else
+	{
+	  // Year was skipped, added 12 months to the counter
+	  monthDiff += 12;
+	}
     }
 
-  if (byMonth && repeatCount > 0)
-    // Restore the repeat count
-    [rrule setRepeatCount: repeatCount];
-
+  if (byMonth)
+    {
+      // Restore the repeat count and interval
+      [rrule setRepeatCount: repeatCount];
+      [rrule setRepeatInterval: interval];
+    }
   return ranges;
 }
 

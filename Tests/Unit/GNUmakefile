@@ -15,6 +15,7 @@ $(TEST_TOOL)_OBJC_FILES += \
 	SOGoTestRunner.m \
 	\
 	TestiCalTimeZonePeriod.m \
+	TestiCalRecurrenceCalculator.m \
 	\
 	TestBSJSONAdditions.m
 
