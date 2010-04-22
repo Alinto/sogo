@@ -441,6 +441,7 @@ class _WD_XMLNS_MGR:
 class _WD_XMLTreeElement:
     typeNum = type(0)
     typeStr = type("")
+    typeUnicode = type(u"")
     typeList = type([])
     typeDict = type({})
 
@@ -456,6 +457,9 @@ class _WD_XMLTreeElement:
         if type(subtree) == self.typeNum:
             strValue = "%d" % subtree
             textNode = _WD_XMLTreeTextNode(strValue)
+            self.append(textNode)
+        elif type(subtree) == self.typeUnicode:
+            textNode = _WD_XMLTreeTextNode(subtree.encode("utf-8"))
             self.append(textNode)
         elif type(subtree) == self.typeStr:
             textNode = _WD_XMLTreeTextNode(subtree)

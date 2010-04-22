@@ -1,3 +1,9 @@
+2010-04-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Tests/Integration/webdavlib.py
+	(_WD_XMLTreeElement.appendSubtree): added handling of unicode
+	subtrees
+
 2010-04-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* Main/SOGo+DAV.m: commented out incomplete code for handling
