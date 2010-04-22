@@ -1,5 +1,9 @@
 2010-04-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoGCSFolder.m (-renameTo:): when the active
+	user is a super user, we modify the real owner's version of the
+	displayname.
+
 	* Tests/Integration/webdavlib.py
 	(_WD_XMLTreeElement.appendSubtree): added handling of unicode
 	subtrees

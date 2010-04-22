@@ -535,11 +535,16 @@ static NSArray *childRecordFields = nil;
 
 - (void) renameTo: (NSString *) newName
 {
+  SOGoUser *activeUser;
+
 #warning SOGoFolder should have the corresponding method
   [displayName release];
   displayName = nil;
 
-  if (activeUserIsOwner)
+  activeUser = [context activeUser];
+  if (activeUserIsOwner
+      || ([activeUser respondsToSelector: @selector (isSuperUser)]
+          && [activeUser isSuperUser]))
     [self _ownerRenameTo: newName];
   else
     [self _subscriberRenameTo: newName];
