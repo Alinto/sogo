@@ -1,3 +1,9 @@
+2010-04-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Tests/Integration/webdavlib.py
+	(_WD_XMLTreeElement.appendSubtree): added handling of unicode
+	subtrees
+
 2010-04-22  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* Tests/Unit/TestiCalRecurrenceCalculator.m: new test module for
