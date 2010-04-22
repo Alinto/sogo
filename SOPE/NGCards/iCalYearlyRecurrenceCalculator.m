@@ -233,7 +233,8 @@
   if (byMonth)
     {
       // Restore the repeat count and interval
-      [rrule setRepeatCount: repeatCount];
+      if (repeatCount > 0)
+	[rrule setRepeatCount: repeatCount];
       [rrule setRepeatInterval: interval];
     }
   return ranges;
