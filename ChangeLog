@@ -1,5 +1,9 @@
 2010-04-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Tests/Integration/test-webdav.py
+	(WebDAVTest.testPrincipalPropertySearch): new test method for
+	testing the "principal-property-search" REPORT on SOGo.
+
 	* Tests/Integration/webdavlib.py: added copyright notice
 	(WebDAVPrincipalPropertySearch): new class that handles the
 	"principal-property-search" REPORT.

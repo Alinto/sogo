@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from config import hostname, port, username, password
+from config import hostname, port, username, password, subscriber_username
 
 import unittest
 import utilities
@@ -93,6 +93,33 @@ class WebDAVTest(unittest.TestCase):
         self._testPropfindURL('/SOGo/dav/%s/freebusy.ifb' % username)
 
     ## REPORT
+    def testPrincipalPropertySearch(self):
+        """principal-property-search"""
+        resource = '/SOGo/dav'
+        userInfo = self.dav_utility.fetchUserInfo(username)
+        # subscriber_userInfo = self.dav_utility.fetchUserInfo(subscriber_username)
+        matches = [["{urn:ietf:params:xml:ns:caldav}calendar-home-set",
+                    "/SOGo/dav/%s/Calendar" % username]]
+        ## the SOGo implementation does not support more than one
+        ## property-search at a time:
+        # ["{urn:ietf:params:xml:ns:caldav}calendar-home-set",
+        #            "/SOGo/dav/%s/Calendar" % subscriber_username]]
+        query = webdavlib.WebDAVPrincipalPropertySearch(resource, matches,
+                                                        ["displayname"])
+        self.client.execute(query)
+        self.assertEquals(query.response["status"], 207)
+        response = query.xpath_evaluate('/D:multistatus/D:response')[0]
+        href = query.xpath_evaluate('D:href', response)[0]
+        self.assertEquals("/SOGo/dav/%s/" % username,
+                          href.childNodes[0].nodeValue)
+        displayname = query.xpath_evaluate('/D:multistatus/D:response' \
+                                               + '/D:propstat/D:prop' \
+                                               + '/D:displayname')[0]
+        value = displayname.nodeValue
+        if value is None:
+            value = ""
+        self.assertEquals(userInfo[0], value)
+        
     # http://tools.ietf.org/html/rfc3253.html#section-3.8
     def testExpandProperty(self):
         """expand-property"""
