@@ -1,3 +1,24 @@
+# webdavlib.py - A versatile WebDAV Python Library
+#
+# Copyright (C) 2009, 2010 Inverse inc.
+#
+# Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+#
+# webdavlib is free software; you can redistribute it and/or modify it under
+# the terms of the GNU Lesser General Public License as published by the Free
+# Software Foundation; either version 2, or (at your option) any later
+# version.
+#
+# webdavlib is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+# details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with webdavlib; see the file COPYING. If not, write to the Free
+# Software Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307,
+# USA.
+
 import cStringIO
 import httplib
 import M2Crypto.httpslib
@@ -252,68 +273,27 @@ class WebDAVPUT(WebDAVQuery):
     def render(self):
         return self.content
 
-
-class CalDAVPOST(WebDAVQuery):
-    method = "POST"
-
-    def __init__(self, url, content,
-                 originator = None, recipients = None):
+class WebDAVPrincipalPropertySearch(WebDAVREPORT):
+    def __init__(self, url, matches, properties):
         WebDAVQuery.__init__(self, url)
-        self.content_type = "text/calendar; charset=utf-8"
-        self.originator = originator
-        self.recipients = recipients
-        self.content = content
-
-    def prepare_headers(self):
-        headers = WebDAVQuery.prepare_headers(self)
-
-        if self.originator is not None:
-            headers["originator"] = self.originator
-
-        if self.recipients is not None:
-            headers["recipient"] = ",".join(self.recipients)
-
-        return headers
-
-    def render(self):
-        return self.content
-
-class CalDAVCalendarMultiget(WebDAVREPORT):
-    def __init__(self, url, properties, hrefs):
-        WebDAVQuery.__init__(self, url)
-        multiget_tag = self.ns_mgr.register("calendar-multiget", xmlns_caldav)
-        self.top_node = _WD_XMLTreeElement(multiget_tag)
+        ppsearch_tag = self.ns_mgr.register("principal-property-search",
+                                            xmlns_dav)
+        self.top_node = _WD_XMLTreeElement(ppsearch_tag)
+        self._initMatches(matches)
         if properties is not None and len(properties) > 0:
             self._initProperties(properties)
 
-        for href in hrefs:
-            href_node = _WD_XMLTreeElement("href")
-            self.top_node.append(href_node)
-            href_node.append(_WD_XMLTreeTextNode(href))
-
-class CalDAVCalendarQuery(WebDAVREPORT):
-    def __init__(self, url, properties, component = None, timerange = None):
-        WebDAVQuery.__init__(self, url)
-        multiget_tag = self.ns_mgr.register("calendar-query", xmlns_caldav)
-        self.top_node = _WD_XMLTreeElement(multiget_tag)
-        if properties is not None and len(properties) > 0:
-            self._initProperties(properties)
-
-        if component is not None:
-            filter_tag = self.ns_mgr.register("filter",
-                                              xmlns_caldav)
-            compfilter_tag = self.ns_mgr.register("comp-filter",
-                                                  xmlns_caldav)
-            filter_node = _WD_XMLTreeElement(filter_tag)
-            cal_filter_node = _WD_XMLTreeElement(compfilter_tag,
-                                                 { "name": "VCALENDAR" })
-            comp_node = _WD_XMLTreeElement(compfilter_tag,
-                                           { "name": component })
-            ## TODO
-            # if timerange is not None:
-            cal_filter_node.append(comp_node)
-            filter_node.append(cal_filter_node)
-            self.top_node.append(filter_node)
+    def _initMatches(self, matches):
+        psearch = _WD_XMLTreeElement("property-search")
+        self.top_node.append(psearch)
+        for matchKey in matches.keys():
+            prop = _WD_XMLTreeElement("prop")
+            psearch.append(prop)
+            match_tag = self.render_tag(matchKey)
+            prop.append(_WD_XMLTreeElement(match_tag))
+            match = _WD_XMLTreeElement("match")
+            psearch.append(match)
+            match.appendSubtree(self, matches[matchKey])
 
 class WebDAVSyncQuery(WebDAVREPORT):
     def __init__(self, url, token, properties):
@@ -360,6 +340,68 @@ class WebDAVExpandProperty(WebDAVREPORT):
             for tag in properties:
                 property = self._propElement(tag)
                 property_query.append(property)
+
+class CalDAVPOST(WebDAVQuery):
+    method = "POST"
+
+    def __init__(self, url, content,
+                 originator = None, recipients = None):
+        WebDAVQuery.__init__(self, url)
+        self.content_type = "text/calendar; charset=utf-8"
+        self.originator = originator
+        self.recipients = recipients
+        self.content = content
+
+    def prepare_headers(self):
+        headers = WebDAVQuery.prepare_headers(self)
+
+        if self.originator is not None:
+            headers["originator"] = self.originator
+
+        if self.recipients is not None:
+            headers["recipient"] = ",".join(self.recipients)
+
+        return headers
+
+    def render(self):
+        return self.content
+
+class CalDAVCalendarMultiget(WebDAVREPORT):
+    def __init__(self, url, hrefs, properties):
+        WebDAVQuery.__init__(self, url)
+        multiget_tag = self.ns_mgr.register("calendar-multiget", xmlns_caldav)
+        self.top_node = _WD_XMLTreeElement(multiget_tag)
+        if properties is not None and len(properties) > 0:
+            self._initProperties(properties)
+
+        for href in hrefs:
+            href_node = _WD_XMLTreeElement("href")
+            self.top_node.append(href_node)
+            href_node.append(_WD_XMLTreeTextNode(href))
+
+class CalDAVCalendarQuery(WebDAVREPORT):
+    def __init__(self, url, properties, component = None, timerange = None):
+        WebDAVQuery.__init__(self, url)
+        multiget_tag = self.ns_mgr.register("calendar-query", xmlns_caldav)
+        self.top_node = _WD_XMLTreeElement(multiget_tag)
+        if properties is not None and len(properties) > 0:
+            self._initProperties(properties)
+
+        if component is not None:
+            filter_tag = self.ns_mgr.register("filter",
+                                              xmlns_caldav)
+            compfilter_tag = self.ns_mgr.register("comp-filter",
+                                                  xmlns_caldav)
+            filter_node = _WD_XMLTreeElement(filter_tag)
+            cal_filter_node = _WD_XMLTreeElement(compfilter_tag,
+                                                 { "name": "VCALENDAR" })
+            comp_node = _WD_XMLTreeElement(compfilter_tag,
+                                           { "name": component })
+            ## TODO
+            # if timerange is not None:
+            cal_filter_node.append(comp_node)
+            filter_node.append(cal_filter_node)
+            self.top_node.append(filter_node)
 
 class MailDAVMailQuery(WebDAVREPORT):
     def __init__(self, url, properties, filters = None,
