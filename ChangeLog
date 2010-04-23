@@ -3,6 +3,9 @@
 	* Tools/SOGoSockDOperation.m (-_performSearch): we now support an
 	additional identifier in the object DN, for specifying specific
 	objects.
+	(_appendEntry:toResult:): we take the additional particle into
+	account when building the dn. Also, we add the "uid" field for
+	LDAP compliance.
 
 	* SoObjects/Contacts/SOGoContactSourceFolder.m
 	(_flattenedRecord:): new method with the repetitive code from

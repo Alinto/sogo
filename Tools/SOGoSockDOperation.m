@@ -36,6 +36,8 @@
 
 #import "SOGoSockDOperation.h"
 
+Class SOGoContactSourceFolderKlass = Nil;
+
 @interface _SOGoSockDOperationSearch : SOGoSockDOperation
 @end
 
@@ -48,6 +50,8 @@
 {
   [[SOGoProductLoader productLoader]
     loadProducts: [NSArray arrayWithObjects: @"Contacts.SOGo", nil]];
+  SOGoContactSourceFolderKlass
+    = NSClassFromString (@"SOGoContactSourceFolder");
 }
 
 + (SOGoSockDOperation *) operationWithMethod: (NSString *) method
@@ -101,9 +105,13 @@
       [ldifFields retain];
     }
 
-  [result appendFormat: @"dn: cn=%@,%@\n",
-   [entry objectForKey: @"c_name"], [parameters objectForKey: @"suffix"]];
+  if (singleEntryOperation)
+    [result appendFormat: @"dn: %@\n", [parameters objectForKey: @"base"]];
+  else
+    [result appendFormat: @"dn: uid=%@,%@\n", [entry objectForKey: @"c_name"],
+            [parameters objectForKey: @"base"]];
   [result appendString: @"objectClass: person\nobjectClass: inetOrgPerson\n"];
+  [result appendFormat: @"uid: %@\n", [entry objectForKey: @"c_name"]];
 
   max = [ldifFields count];
   for (count = 0; count < max; count++)
@@ -254,8 +262,12 @@
             {
               if (idCount == 1)
                 {
+                  singleEntryOperation = NO;
                   filter = [self _convertLDAPFilter:
                                    [parameters objectForKey: @"filter"]];
+                  if ([filter length] == 0
+                      && [folder isKindOfClass: SOGoContactSourceFolderKlass])
+                    filter = @".";
                   resultEntries
                     = [folder lookupContactsWithFilter: filter
                                                 sortBy: @"c_cn"
@@ -263,6 +275,7 @@
                 }
               else
                 {
+                  singleEntryOperation = YES;
                   singleEntry = [folder lookupContactWithName:
                                          [dnIDs objectAtIndex: 0]];
                   resultEntries = [NSArray arrayWithObject: singleEntry];

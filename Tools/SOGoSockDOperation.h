@@ -31,6 +31,7 @@
 {
   NSDictionary *parameters;
   NSArray *resultEntries;
+  BOOL singleEntryOperation;
   int resultCode;
 }
 
