@@ -49,6 +49,7 @@
 - (NSArray *) lookupContactsWithFilter: (NSString *) filter
                                 sortBy: (NSString *) sortKey
                               ordering: (NSComparisonResult) sortOrdering;
+- (NSDictionary *) lookupContactWithName: (NSString *) aName;
 
 @end
 

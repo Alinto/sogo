@@ -1,3 +1,23 @@
+2010-04-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Tools/SOGoSockDOperation.m (-_performSearch): we now support an
+	additional identifier in the object DN, for specifying specific
+	objects.
+
+	* SoObjects/Contacts/SOGoContactSourceFolder.m
+	(_flattenedRecord:): new method with the repetitive code from
+	_flattenedRecords. Snipped to offer the same functionality with
+	single records.
+	(-lookupContactWithName:): implemented this method to ensure
+	compatibility with SOGoGCSFolder (and <SOGoContactFolder>).
+
+	* SoObjects/Contacts/SOGoContactGCSFolder.m
+	(_qualifierForFilter:): adjusted qualifiers to perform the same
+	search that Thundebird perform in its local abooks.
+	(-lookupContactWithName:): fixed method to use an equality
+	qualifier. Simplified code by reducing the amount of required
+	variables.
+
 2010-04-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoGCSFolder.m (-renameTo:): when the active

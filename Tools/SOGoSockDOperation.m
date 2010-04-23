@@ -27,8 +27,8 @@
 
 #import <NGExtensions/NGBase64Coding.h>
 #import <NGStreams/NGActiveSocket.h>
+#import <Contacts/SOGoContactFolder.h>
 #import <Contacts/SOGoContactFolders.h>
-#import <Contacts/SOGoContactGCSFolder.h>
 #import <SOGo/SOGoProductLoader.h>
 #import <SOGo/SOGoUserFolder.h>
 #import <SOGo/NSDictionary+Utilities.h>
@@ -102,7 +102,7 @@
     }
 
   [result appendFormat: @"dn: cn=%@,%@\n",
-   [entry objectForKey: @"c_name"], [parameters objectForKey: @"base"]];
+   [entry objectForKey: @"c_name"], [parameters objectForKey: @"suffix"]];
   [result appendString: @"objectClass: person\nobjectClass: inetOrgPerson\n"];
 
   max = [ldifFields count];
@@ -153,10 +153,44 @@
   charRange = [dn rangeOfString: @"="];
   valueRange.location = charRange.location + 1;
   charRange = [dn rangeOfString: @","];
-  valueRange.length = charRange.location - valueRange.location;
+  if (charRange.location == NSNotFound)
+    valueRange.length = [dn length] - valueRange.location;
+  else
+    valueRange.length = charRange.location - valueRange.location;
   firstValue = [dn substringFromRange: valueRange];
 
   return firstValue;
+}
+
+- (NSArray *) _extractIdsFromDN: (NSString *) dn
+{
+  NSRange suffixRange;
+  NSString *prefix, *identifier;
+  NSMutableArray *ids;
+  NSArray *components;
+  int count, max;
+
+  ids = nil;
+
+  suffixRange = [dn rangeOfString: [parameters objectForKey: @"suffix"]];
+  if (suffixRange.length > 0)
+    {
+      if (suffixRange.location > 0)
+        prefix = [dn substringToIndex: suffixRange.location - 1];
+      else
+        prefix = @"";
+      components = [prefix componentsSeparatedByString: @","];
+      max = [components count];
+      ids = [NSMutableArray arrayWithCapacity: max];
+      for (count = 0; count < max; count++)
+        {
+          identifier = [self _extractFirstValueFromDN:
+                            [components objectAtIndex: count]];
+          [ids addObject: identifier];
+        }
+    }
+
+  return ids;
 }
 
 - (NSString *) _convertLDAPFilter: (NSString *) ldapFilter
@@ -183,12 +217,12 @@
   return filter;
 }
 
-- (SOGoContactGCSFolder *) _getFolderWithId: (NSString *) folderId
+- (id <SOGoContactFolder>) _getFolderWithId: (NSString *) folderId
                                     forUser: (NSString *) uid
 {
   SOGoUserFolder *userFolder;
   SOGoContactFolders *parentFolder;
-  SOGoContactGCSFolder *folder;
+  id <SOGoContactFolder> folder;
 
   userFolder = [SOGoUserFolder objectWithName: uid inContainer: nil];
   parentFolder = [userFolder lookupName: @"Contacts"
@@ -200,27 +234,42 @@
 
 - (void) _performSearch
 {
-  NSString *bindDN, *baseDN, *uid, *folderId, *filter;
-  SOGoContactGCSFolder *folder;
+  NSString *bindDN, *baseDN, *uid, *filter;
+  id <SOGoContactFolder> folder;
+  id singleEntry;
+  NSArray *dnIDs;
+  int idCount;
 
   bindDN = [parameters objectForKey: @"binddn"];
   baseDN = [parameters objectForKey: @"base"];
   if ([bindDN length] && [baseDN length])
     {
       uid = [self _extractFirstValueFromDN: bindDN];
-      folderId = [self _extractFirstValueFromDN: baseDN];
-      folder = [self _getFolderWithId: folderId forUser: uid];
-      if (folder)
+      dnIDs = [self _extractIdsFromDN: baseDN];
+      idCount = [dnIDs count];
+      if (idCount && idCount < 3)
         {
-          filter
-            = [self _convertLDAPFilter: [parameters objectForKey: @"filter"]];
-          // if (![filter length]
-          //     && [folder isKindOfClass: [SOGoContactSourceFolder class]])
-          //   filter = @"*";
-          resultEntries
-            = [folder lookupContactsWithFilter: filter
-                                        sortBy: @"c_cn"
-                                      ordering: NSOrderedAscending];
+          folder = [self _getFolderWithId: [dnIDs lastObject] forUser: uid];
+          if (folder)
+            {
+              if (idCount == 1)
+                {
+                  filter = [self _convertLDAPFilter:
+                                   [parameters objectForKey: @"filter"]];
+                  resultEntries
+                    = [folder lookupContactsWithFilter: filter
+                                                sortBy: @"c_cn"
+                                              ordering: NSOrderedAscending];
+                }
+              else
+                {
+                  singleEntry = [folder lookupContactWithName:
+                                         [dnIDs objectAtIndex: 0]];
+                  resultEntries = [NSArray arrayWithObject: singleEntry];
+                }
+            }
+          else
+            resultCode = LDAP_NO_SUCH_OBJECT;
         }
       else
         resultCode = LDAP_NO_SUCH_OBJECT;

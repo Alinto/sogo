@@ -199,73 +199,90 @@
   return [source allEntryIDs];
 }
 
+- (NSDictionary *) _flattenedRecord: (NSDictionary *) oldRecord
+{
+  NSMutableDictionary *newRecord;
+  NSString *data;
+
+  newRecord = [NSMutableDictionary dictionaryWithCapacity: 8];
+  [newRecord setObject: [oldRecord objectForKey: @"c_uid"]
+                forKey: @"c_uid"];
+  [newRecord setObject: [oldRecord objectForKey: @"c_name"]
+                forKey: @"c_name"];
+
+  data = [oldRecord objectForKey: @"displayname"];
+  if (!data)
+    data = [oldRecord objectForKey: @"c_cn"];
+  if (!data)
+    data = @"";
+  [newRecord setObject: data forKey: @"c_cn"];
+
+  data = [oldRecord objectForKey: @"mail"];
+  if (!data)
+    data = @"";
+  [newRecord setObject: data forKey: @"c_mail"];
+
+  data = [oldRecord objectForKey: @"nsaimid"];
+  if (![data length])
+    data = [oldRecord objectForKey: @"nscpaimscreenname"];
+  if (![data length])
+    data = @"";
+  [newRecord setObject: data forKey: @"c_screenname"];
+
+  data = [oldRecord objectForKey: @"o"];
+  if (!data)
+    data = @"";
+  [newRecord setObject: data forKey: @"c_o"];
+
+  data = [oldRecord objectForKey: @"telephonenumber"];
+  if (![data length])
+    data = [oldRecord objectForKey: @"cellphone"];
+  if (![data length])
+    data = [oldRecord objectForKey: @"homephone"];
+  if (![data length])
+    data = @"";
+  [newRecord setObject: data forKey: @"c_telephonenumber"];
+
+  // Custom attribute for group-lookups. See LDAPSource.m where
+  // it's set.
+  data = [oldRecord objectForKey: @"isGroup"];
+  if (data)
+    [newRecord setObject: data forKey: @"isGroup"];
+
+  data = [oldRecord objectForKey: @"c_info"];
+  if ([data length] > 0)
+    [newRecord setObject: data forKey: @"contactInfo"];
+
+  return newRecord;
+}
+
 - (NSArray *) _flattenedRecords: (NSArray *) records
 {
   NSMutableArray *newRecords;
   NSEnumerator *oldRecords;
   NSDictionary *oldRecord;
-  NSMutableDictionary *newRecord;
-  NSString *data;
 
   newRecords = [NSMutableArray arrayWithCapacity: [records count]];
 
   oldRecords = [records objectEnumerator];
   while ((oldRecord = [oldRecords nextObject]))
-    {
-      newRecord = [NSMutableDictionary new];
-      [newRecord setObject: [oldRecord objectForKey: @"c_uid"]
-		 forKey: @"c_uid"];
-      [newRecord setObject: [oldRecord objectForKey: @"c_name"]
-		 forKey: @"c_name"];
-
-      data = [oldRecord objectForKey: @"displayname"];
-      if (!data)
-	data = [oldRecord objectForKey: @"c_cn"];
-      if (!data)
-	data = @"";
-      [newRecord setObject: data forKey: @"c_cn"];
-
-      data = [oldRecord objectForKey: @"mail"];
-      if (!data)
-	data = @"";
-      [newRecord setObject: data forKey: @"c_mail"];
-
-      data = [oldRecord objectForKey: @"nsaimid"];
-      if (![data length])
-	data = [oldRecord objectForKey: @"nscpaimscreenname"];
-      if (![data length])
-	data = @"";
-      [newRecord setObject: data forKey: @"c_screenname"];
-
-      data = [oldRecord objectForKey: @"o"];
-      if (!data)
-	data = @"";
-      [newRecord setObject: data forKey: @"c_o"];
-
-      data = [oldRecord objectForKey: @"telephonenumber"];
-      if (![data length])
-	data = [oldRecord objectForKey: @"cellphone"];
-      if (![data length])
-	data = [oldRecord objectForKey: @"homephone"];
-      if (![data length])
-	data = @"";
-      [newRecord setObject: data forKey: @"c_telephonenumber"];
-
-      // Custom attribute for group-lookups. See LDAPSource.m where
-      // it's set.
-      data = [oldRecord objectForKey: @"isGroup"];
-      if (data)
-	[newRecord setObject: data forKey: @"isGroup"];
-
-      data = [oldRecord objectForKey: @"c_info"];
-      if ([data length] > 0)
-        [newRecord setObject: data forKey: @"contactInfo"];
-
-      [newRecords addObject: newRecord];
-      [newRecord release];
-    }
+    [newRecords addObject: [self _flattenedRecord: oldRecord]];
 
   return newRecords;
+}
+
+/* This method returns the entry corresponding to the name passed as
+   parameter. */
+- (NSDictionary *) lookupContactWithName: (NSString *) aName
+{
+  NSDictionary *record;
+
+  if (aName && [aName length] > 0)
+    record = [self _flattenedRecord: [source lookupContactEntry: aName]];
+  else
+    record = nil;
+  
+  return record;
 }
 
 - (NSArray *) lookupContactsWithFilter: (NSString *) filter

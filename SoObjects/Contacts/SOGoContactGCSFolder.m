@@ -166,13 +166,11 @@
       filter = [[filter stringByReplacingString: @"\\"  withString: @"\\\\"]
                  stringByReplacingString: @"'"  withString: @"\\'\\'"];
       qs = [NSString stringWithFormat:
-                       @"(c_sn isCaseInsensitiveLike: '%@%%') OR "
-                     @"(c_givenname isCaseInsensitiveLike: '%@%%') OR "
-		     @"(c_cn isCaseInsensitiveLike: '%@%%') OR "
-                     @"(c_mail isCaseInsensitiveLike: '%@%%') OR "
-                     @"(c_telephonenumber isCaseInsensitiveLike: '%%%@%%') OR "
-                     @"(c_o isCaseInsensitiveLike: '%%%@%%')",
-                     filter, filter, filter, filter, filter, filter];
+                       @"(c_sn isCaseInsensitiveLike: '%%%@%%') OR "
+                     @"(c_givenname isCaseInsensitiveLike: '%%%@%%') OR "
+		     @"(c_cn isCaseInsensitiveLike: '%%%@%%') OR "
+                     @"(c_mail isCaseInsensitiveLike: '%%%@%%')",
+                     filter, filter, filter, filter];
       qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
     }
   else
@@ -224,31 +222,30 @@
   return newRecords;
 }
 
+/* This method returns the quick entry corresponding to the name passed as
+   parameter. */
 - (NSDictionary *) lookupContactWithName: (NSString *) aName
 {
-  NSArray *fields, *dbRecords, *records;
-  NSDictionary *record;
+  NSArray *dbRecords;
+  NSMutableDictionary *record;
   EOQualifier *qualifier;
   NSString *qs;
 
-  fields = folderListingFields;
   record = nil;
  
   if (aName && [aName length] > 0)
     {
       aName = [[aName stringByReplacingString: @"\\"  withString: @"\\\\"]
                  stringByReplacingString: @"'"  withString: @"\\'\\'"];
-      qs = [NSString stringWithFormat: @"(c_name isCaseInsensitiveLike: '%@')", aName];
+      qs = [NSString stringWithFormat: @"(c_name='%@')", aName];
       qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
-
-      dbRecords = [[self ocsFolder] fetchFields: fields
+      dbRecords = [[self ocsFolder] fetchFields: folderListingFields
 			      matchingQualifier: qualifier];
-
       if ([dbRecords count] > 0)
-	{
-	  records = [self _flattenedRecords: dbRecords];
-	  record = [records lastObject];
-	}
+        {
+          record = [dbRecords objectAtIndex: 0];
+          [self fixupContactRecord: record];
+        }
     }
   
   return record;
@@ -258,13 +255,12 @@
                                 sortBy: (NSString *) sortKey
                               ordering: (NSComparisonResult) sortOrdering
 {
-  NSArray *fields, *dbRecords, *records;
+  NSArray *dbRecords, *records;
   EOQualifier *qualifier;
   EOSortOrdering *ordering;
 
-  fields = folderListingFields;
   qualifier = [self _qualifierForFilter: filter];
-  dbRecords = [[self ocsFolder] fetchFields: fields
+  dbRecords = [[self ocsFolder] fetchFields: folderListingFields
 				matchingQualifier: qualifier];
 
   if ([dbRecords count] > 0)
