@@ -284,16 +284,16 @@ class WebDAVPrincipalPropertySearch(WebDAVREPORT):
             self._initProperties(properties)
 
     def _initMatches(self, matches):
-        psearch = _WD_XMLTreeElement("property-search")
-        self.top_node.append(psearch)
-        for matchKey in matches.keys():
+        for match in matches:
+            psearch = _WD_XMLTreeElement("property-search")
+            self.top_node.append(psearch)
             prop = _WD_XMLTreeElement("prop")
             psearch.append(prop)
-            match_tag = self.render_tag(matchKey)
+            match_tag = self.render_tag(match[0])
             prop.append(_WD_XMLTreeElement(match_tag))
-            match = _WD_XMLTreeElement("match")
-            psearch.append(match)
-            match.appendSubtree(self, matches[matchKey])
+            match_tag = _WD_XMLTreeElement("match")
+            psearch.append(match_tag)
+            match_tag.appendSubtree(self, match[1])
 
 class WebDAVSyncQuery(WebDAVREPORT):
     def __init__(self, url, token, properties):
