@@ -58,6 +58,9 @@
 
 - (NSArray *) davPrincipalURL;
 
+- (BOOL) collectionDavKey: (NSString *) key
+		  matches: (NSString *) value;
+
 @end
 
 #endif /* __SOGo_SOGoUserFolder_H__ */

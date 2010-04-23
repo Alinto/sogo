@@ -1,5 +1,10 @@
 2010-04-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Main/SOGo+DAV.m (-davPrincipalPropertySearch:): restored method.
+
+	* SoObjects/SOGo/SOGoUserFolder.m (-collectionDavKey:matches:):
+	moved this tester method for REPORT queries from SOGo+DAV.m.
+
 	* Tools/SOGoSockDOperation.m (-_performSearch): we now support an
 	additional identifier in the object DN, for specifying specific
 	objects.

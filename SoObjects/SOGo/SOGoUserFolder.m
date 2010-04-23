@@ -634,4 +634,12 @@
   return nil;
 }
 
+#warning unused stub
+- (BOOL) collectionDavKey: (NSString *) key
+		  matches: (NSString *) value
+{
+  return YES;
+}
+
+
 @end /* SOGoUserFolder */
