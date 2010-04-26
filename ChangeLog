@@ -1,3 +1,8 @@
+2010-04-26  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* Modified all folder/ACL templates in order
+	to remove (ie., comment out) broken links.
+
 2010-04-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* Tests/Integration/test-webdav.py

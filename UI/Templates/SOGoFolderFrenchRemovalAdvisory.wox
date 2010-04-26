@@ -13,10 +13,11 @@
 
 <var:if condition="isBody">
 Le dossier <var:string const:value='"' const:escapeHTML="NO"/><var:string value="displayName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> a été supprimé.
-
+<!--
 Le lien suivant n'est plus actif:
 
 <var:string value="httpFolderURL" const:escapeHTML="NO"/>
+-->
 </var:if>
 
 </container>

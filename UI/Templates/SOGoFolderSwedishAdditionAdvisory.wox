@@ -13,10 +13,11 @@
 
 <var:if condition="isBody">
 Mappen <var:string const:value='"' const:escapeHTML="NO"/><var:string value="displayName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> har skapats. 
-
+<!--
 Du kan nå denna resurs genom att använda följande URL:  
 
 <var:string value="httpFolderURL" const:escapeHTML="NO"/>
+-->
 </var:if>
 
 </container>

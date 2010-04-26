@@ -13,7 +13,7 @@
 
 <var:if condition="isBody">
 <var:string value="currentUserName" const:escapeHTML="NO"/> har ändrat dina åtkomsträttigheter för hans/hennes <var:string const:value='"' const:escapeHTML="NO"/><var:string value="resourceName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> mapp.
-
+<!--
 Du kan prenumrera direkt på mappen genom följande länk:
     <var:string value="httpAdvisoryURL" const:escapeHTML="NO"/>subscribe?mail-invitation=YES
 
@@ -22,6 +22,7 @@ Du kan prenumrera senare från SOGo webbgränssnitt.
 Du kan också nå denna resurs genom att använda följande URL:
 
 <var:string value="httpFolderURL" const:escapeHTML="NO"/>
+-->
 </var:if>
 
 </container>

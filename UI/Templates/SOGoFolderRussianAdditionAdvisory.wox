@@ -13,10 +13,11 @@
 
 <var:if condition="isBody">
 The <var:string const:value='"' const:escapeHTML="NO"/><var:string value="displayName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> folder has been created. 
-
+<!--
 You can access this resource remotely by using the following URL:  
 
 <var:string value="httpFolderURL" const:escapeHTML="NO"/>
+-->
 </var:if>
 
 </container>

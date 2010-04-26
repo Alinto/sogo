@@ -13,7 +13,7 @@
 
 <var:if condition="isBody">
 El usuario <var:string value="currentUserName" const:escapeHTML="NO"/> ha modifcado los permisos de acceso a su carpeta <var:string const:value='"' const:escapeHTML="NO"/><var:string value="resourceName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/>.
-
+<!--
 Puede suscribirse directamente a esta carpeta activando el siguiente enlace:
     <var:string value="httpAdvisoryURL" const:escapeHTML="NO"/>subscribe?mail-invitation=YES
 
@@ -22,6 +22,7 @@ O, si desea, puede suscribirse más tarde usando la interfaz Web de SOGo.
 También puede acceder a este recurso usando la siguiente URL:
 
 <var:string value="httpFolderURL" const:escapeHTML="NO"/>
+-->
 </var:if>
 
 </container>

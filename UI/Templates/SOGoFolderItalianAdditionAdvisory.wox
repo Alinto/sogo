@@ -13,10 +13,11 @@
 
 <var:if condition="isBody">
 La cartella <var:string const:value='"' const:escapeHTML="NO"/><var:string value="displayName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> è stata creata. 
-
+<!--
 Puoi accedere a questa risorsa da remoto utilizzando il seguente URL:
 
 <var:string value="httpFolderURL" const:escapeHTML="NO"/>
+-->
 </var:if>
 
 </container>

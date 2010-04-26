@@ -13,7 +13,7 @@
 
 <var:if condition="isBody">
 <var:string value="currentUserName"/> vous a enlevé de sa liste de permission pour son dossier <var:string const:value='"' const:escapeHTML="NO"/><var:string value="resourceName"/><var:string const:value='"' const:escapeHTML="NO"/>.
-
+<!--
 Vous pouvez vous désinscrire directement en cliquant sur le lien suivant:
     <var:string value="httpAdvisoryURL"/>unsubscribe?mail-invitation=YES
 
@@ -22,6 +22,7 @@ Autrement, il vous sera toujours possible de vous désinscrire plus tard via l'i
 De plus, vous ne pouvez plus accéder au dossier en utilisant le lien suivant:
 
 <var:string value="httpFolderURL"/>
+-->
 </var:if>
 
 </container>

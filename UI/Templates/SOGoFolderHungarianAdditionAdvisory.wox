@@ -13,10 +13,11 @@
 
 <var:if condition="isBody">
 A <var:string const:value='"' const:escapeHTML="NO"/><var:string value="displayName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> mappa létrehozásra került. 
-
+<!--
 A mappa távolról is elérhető a következő URL megadásával:
 
 <var:string value="httpFolderURL" const:escapeHTML="NO"/>
+-->
 </var:if>
 
 </container>

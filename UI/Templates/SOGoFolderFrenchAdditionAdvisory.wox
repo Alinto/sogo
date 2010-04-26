@@ -13,9 +13,10 @@
 
   <var:if condition="isBody">
 Le dossier <var:string const:value='"' const:escapeHTML="NO"/><var:string value="displayName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> a été créé.
-
+<!--
 Vous pouvez accéder à distance à ce dossier avec le lien suivant:
 
     <var:string value="httpFolderURL" const:escapeHTML="NO"/>
-  </var:if>
+-->
+</var:if>
 </container>

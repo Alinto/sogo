@@ -13,7 +13,7 @@
 
 <var:if condition="isBody">
 <var:string value="currentUserName"/> a modifié vos droits d'accès pour son dossier <var:string const:value='"' const:escapeHTML="NO"/><var:string value="resourceName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/>.
-
+<!--
 Vous pouvez vous inscrire directement à ce dossier en cliquant sur le lien suivant:
     <var:string value="httpAdvisoryURL" const:escapeHTML="NO"/>unsubscribe?mail-invitation=YES
 
@@ -22,6 +22,7 @@ Autrement, il vous sera toujours possible de vous inscrire plus tard via l'inter
 De plus, vous pouvez accéder au dossier en utilisant le lien suivant:
 
 <var:string value="httpFolderURL" const:escapeHTML="NO"/>
+-->
 </var:if>
 
 </container>

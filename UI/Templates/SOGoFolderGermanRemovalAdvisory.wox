@@ -13,10 +13,11 @@
 
 <var:if condition="isBody">
 Der Ordner <var:string const:value='"' const:escapeHTML="NO"/><var:string value="displayName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> wurde entfernt. 
-
+<!--
 Folgende URL ist nicht mehr aktiv:
 
 <var:string value="httpFolderURL" const:escapeHTML="NO"/>
+-->
 </var:if>
 
 </container>
