@@ -289,7 +289,7 @@
                   /><input const:id="newPasswordConfirmationField" class="textField"
                   type="password" const:value=""/></label><br/>
               <a href="#" class="button" id="changePasswordBtn"
-                ><span><var:string label:value="Change"/></span></a>
+                ><span><var:string label:value="Change"/></span></a><br/>
             </p>
             <p id="passwordError"><!-- space --></p>
           </div>
