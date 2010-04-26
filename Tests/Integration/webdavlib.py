@@ -274,7 +274,7 @@ class WebDAVPUT(WebDAVQuery):
         return self.content
 
 class WebDAVPrincipalPropertySearch(WebDAVREPORT):
-    def __init__(self, url, matches, properties):
+    def __init__(self, url, properties, matches):
         WebDAVQuery.__init__(self, url)
         ppsearch_tag = self.ns_mgr.register("principal-property-search",
                                             xmlns_dav)
@@ -367,7 +367,7 @@ class CalDAVPOST(WebDAVQuery):
         return self.content
 
 class CalDAVCalendarMultiget(WebDAVREPORT):
-    def __init__(self, url, hrefs, properties):
+    def __init__(self, url, properties, hrefs):
         WebDAVQuery.__init__(self, url)
         multiget_tag = self.ns_mgr.register("calendar-multiget", xmlns_caldav)
         self.top_node = _WD_XMLTreeElement(multiget_tag)

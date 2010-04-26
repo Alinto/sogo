@@ -104,8 +104,8 @@ class WebDAVTest(unittest.TestCase):
         ## property-search at a time:
         # ["{urn:ietf:params:xml:ns:caldav}calendar-home-set",
         #            "/SOGo/dav/%s/Calendar" % subscriber_username]]
-        query = webdavlib.WebDAVPrincipalPropertySearch(resource, matches,
-                                                        ["displayname"])
+        query = webdavlib.WebDAVPrincipalPropertySearch(resource,
+                                                        ["displayname"], matches)
         self.client.execute(query)
         self.assertEquals(query.response["status"], 207)
         response = query.xpath_evaluate('/D:multistatus/D:response')[0]
