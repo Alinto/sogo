@@ -192,10 +192,10 @@ function showPasswordDialog(dialogType, constructor, parameters) {
         dialogs[dialogType] = dialog;
     }
     var password = $("password");
-    var offsets = password.cumulativeOffset();
+    var offsets = password.positionedOffset();
     dialog.show();
-    var top = offsets[1] + 5;
-    var left = offsets[0] + password.clientWidth - dialog.clientWidth;
+    var top = offsets[1] - 2;
+    var left = offsets[0] + 10 - dialog.clientWidth;
     dialog.setStyle({ "top": top + "px", "left": left + "px"});
 }
 

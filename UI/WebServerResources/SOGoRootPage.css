@@ -36,7 +36,7 @@ A:link,
 A:visited
 { color: #54b948; }
 
-DIV#aboutBox DIV A.button
+DIV A.button
 { color: #000; }
 
 DIV#aboutBox P.logo
