@@ -106,6 +106,8 @@ extern NSString *iCalWeekDayString[];
 
 - (void) setRrule: (NSString *) _rrule; // TODO: weird name? (better: RRule?)
 
+- (NSString *) iCalRepresentationForWeekDay: (iCalWeekDay) _weekDay;;
+
 @end
 
 #endif	/* __NGiCal_iCalRecurrenceRule_H_ */

@@ -221,7 +221,6 @@ NSString *iCalWeekDayString[] = { @"SU", @"MO", @"TU", @"WE", @"TH", @"FR",
 @interface iCalRecurrenceRule (PrivateAPI)
 
 - (iCalWeekDay) weekDayFromICalRepresentation: (NSString *) _day;
-- (NSString *) iCalRepresentationForWeekDay: (iCalWeekDay) _weekDay;
 - (NSString *) freq;
 - (NSString *) wkst;
 - (NSString *) byDayList;
