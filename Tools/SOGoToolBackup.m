@@ -381,14 +381,23 @@
 
 - (BOOL) proceed
 {
+  NSAutoreleasePool *pool;
   int count, max;
   BOOL rc;
 
   rc = YES;
 
+  pool = [NSAutoreleasePool new];
+
   max = [userIDs count];
   for (count = 0; rc && count < max; count++)
-    rc = [self exportUser: [userIDs objectAtIndex: count]];
+    {
+      rc = [self exportUser: [userIDs objectAtIndex: count]];
+      if ((count % 10) == 0)
+        [pool emptyPool];
+    }
+
+  [pool release];
 
   return rc;
 }
