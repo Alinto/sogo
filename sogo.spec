@@ -137,6 +137,7 @@ make DESTDIR=${RPM_BUILD_ROOT} \
      install
 mkdir -p ${RPM_BUILD_ROOT}/etc/init.d
 mkdir -p ${RPM_BUILD_ROOT}/etc/cron.daily
+mkdir -p ${RPM_BUILD_ROOT}/etc/logrotate.d
 mkdir -p ${RPM_BUILD_ROOT}/etc/sysconfig
 mkdir -p ${RPM_BUILD_ROOT}/etc/httpd/conf.d
 mkdir -p ${RPM_BUILD_ROOT}/usr/sbin
@@ -145,6 +146,7 @@ mkdir -p ${RPM_BUILD_ROOT}/var/log/sogo
 mkdir -p ${RPM_BUILD_ROOT}/var/spool/sogo
 cp Apache/SOGo.conf ${RPM_BUILD_ROOT}/etc/httpd/conf.d/
 cp Scripts/tmpwatch ${RPM_BUILD_ROOT}/etc/cron.daily/sogo-tmpwatch
+cp Scripts/logrotate ${RPM_BUILD_ROOT}/etc/logrotate.d/sogo
 cp Scripts/sogo-init.d-redhat ${RPM_BUILD_ROOT}/etc/init.d/sogod
 cp Scripts/sogod-wrapper ${RPM_BUILD_ROOT}/usr/sbin/sogod-wrapper
 chmod 755 ${RPM_BUILD_ROOT}/usr/sbin/sogod-wrapper
