@@ -63,7 +63,8 @@ DIV#windowButtons
 { height: 50px; }
 #vacation SPAN
 { float: right; }
-#vacation BR
+#vacation BR,
+#passwordView BR
 { clear: both; }
 
 DIV.bottomToolbar
@@ -106,19 +107,8 @@ TD.activeColumn
 
 P#passwordFields,
 P#passwordError
-{ position: absolute;
-  left: 0px; }
-
-#passwordFields
-{ top: 40px;
-  width: 410px;
+{ width: 410px; 
   text-align: right; }
-
-P#passwordError
-{ top: 92px;
-  width: 307px;
-  text-align: right;
-  margin-left: 40px; }
 
 P.errorMessage#passwordError
 { color: #f00; }

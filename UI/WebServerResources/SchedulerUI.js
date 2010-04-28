@@ -936,26 +936,24 @@ function changeDateSelectorDisplay(day, keepCurrentDay) {
         url += "?day=" + day;
     }
 
-    if (day != currentDay) {
-        if (!keepCurrentDay)
-            currentDay = day;
-
-        var month = day.substr(0, 6);
-        if (cachedDateSelectors[month]) {
-            //       log ("restoring cached selector for month: " + month);
-            setDateSelectorContent(cachedDateSelectors[month]);
+    if (!keepCurrentDay)
+        currentDay = day;
+    
+    var month = day.substr(0, 6);
+    if (cachedDateSelectors[month]) {
+        //       log ("restoring cached selector for month: " + month);
+        setDateSelectorContent(cachedDateSelectors[month]);
+    }
+    else {
+        //       log ("loading selector for month: " + month);
+        if (document.dateSelectorAjaxRequest) {
+            document.dateSelectorAjaxRequest.aborted = true;
+            document.dateSelectorAjaxRequest.abort();
         }
-        else {
-            //       log ("loading selector for month: " + month);
-            if (document.dateSelectorAjaxRequest) {
-                document.dateSelectorAjaxRequest.aborted = true;
-                document.dateSelectorAjaxRequest.abort();
-            }
-            document.dateSelectorAjaxRequest
-                = triggerAjaxRequest(url,
-                                     dateSelectorCallback,
-                                     month);
-        }
+        document.dateSelectorAjaxRequest
+            = triggerAjaxRequest(url,
+                                 dateSelectorCallback,
+                                 month);
     }
 }
 
