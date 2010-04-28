@@ -1,5 +1,10 @@
 2010-04-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Tools/sogo-tool.m (setupUserDefaults): new function that sets up
+	a few parameters on the user defaults. Notably, we override the
+	values for "SOGoLDAPQueryLimit" and "SOGoLDAPQueryTimeout" so that
+	they do not limit the amount of records that can be exported.
+
 	* Tools/SOGoToolBackup.m (-proceed): we empty the autorelease pool
 	every 10 iterations to avoid an excess of unreleased LDAP
 	connections.

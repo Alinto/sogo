@@ -28,6 +28,7 @@
 #import <Foundation/NSProcessInfo.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSUserDefaults.h>
+#import <Foundation/NSValue.h>
 
 #import "SOGoTool.h"
 
@@ -214,6 +215,21 @@
 
 @end
 
+static void
+setupUserDefaults (NSUserDefaults *ud)
+{
+  NSMutableDictionary *defaultsOverrides;
+
+  [ud registerDefaults: [ud persistentDomainForName: @"sogod"]];
+  defaultsOverrides = [NSMutableDictionary new];
+  [defaultsOverrides setObject: [NSNumber numberWithInt: 0]
+                        forKey: @"SOGoLDAPQueryLimit"];
+  [defaultsOverrides setObject: [NSNumber numberWithInt: 0]
+                        forKey: @"SOGoLDAPQueryTimeout"];
+  [ud registerDefaults: defaultsOverrides];
+  [defaultsOverrides release];
+}
+
 int
 main (int argc, char **argv, char **env)
 {
@@ -227,7 +243,7 @@ main (int argc, char **argv, char **env)
   pool = [NSAutoreleasePool new];
 
   ud = [NSUserDefaults standardUserDefaults];
-  [ud addSuiteNamed: @"sogod"];
+  setupUserDefaults (ud);
 
   if ([ud objectForKey: @"SOGoUserSources"])
     {
