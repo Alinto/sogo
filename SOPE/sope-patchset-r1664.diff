@@ -3948,6 +3948,52 @@ Index: sope-mime/NGImap4/NGImap4Functions.h
 +NSString *SaneFolderName(NSString *folderName);
 +
  #endif /* __NGMime_NGImap4_NGImap4Functions_H__ */
+Index: sope-mime/NGMail/NSData+MimeQP.m
+===================================================================
+--- sope-mime/NGMail/NSData+MimeQP.m	(revision 1664)
++++ sope-mime/NGMail/NSData+MimeQP.m	(working copy)
+@@ -81,7 +81,7 @@
+     BOOL          appendLC;
+     int           cnt, tmp;
+     unsigned char encoding;
+-    
++
+     buffer = calloc(length + 13, sizeof(unichar));
+     
+     maxBufLen             = length + 3;
+@@ -175,7 +175,7 @@
+                                       autorelease];
+           }
+ 	  tmpLen = [tmpStr length];
+-	  
++
+ 	  if ((tmpLen + bufLen) < maxBufLen) {
+ 	    [tmpStr getCharacters:(buffer + bufLen)];
+ 	    bufLen += tmpLen;
+@@ -198,14 +198,23 @@
+       }
+     }
+     buffer[bufLen] = '\0';
++    while(bufLen > 1 && buffer[bufLen-1] == '\0')
++      bufLen--;
+     {
+       id data;
+ 
+       data = nil;
+       
+       if (buffer && foundQP) {
++        static NSCharacterSet *illegalCS = nil;
++
++        if (illegalCS == nil) {
++          illegalCS = [NSCharacterSet illegalCharacterSet];
++          [illegalCS retain];
++        }
+         data = [[[NSStringClass alloc] initWithCharacters:buffer length:bufLen]
+                                 autorelease];
++        data = [data stringByTrimmingCharactersInSet: illegalCS];
+         if (data == nil) {
+           [self warnWithFormat:
+ 		  @"%s: got no string for buffer '%s', length '%i' !", 
 Index: sope-mime/NGMail/NGSmtpClient.m
 ===================================================================
 --- sope-mime/NGMail/NGSmtpClient.m	(revision 1664)
@@ -4283,7 +4329,12 @@ Index: sope-mime/NGMail/ChangeLog
 ===================================================================
 --- sope-mime/NGMail/ChangeLog	(revision 1664)
 +++ sope-mime/NGMail/ChangeLog	(working copy)
-@@ -1,3 +1,8 @@
+@@ -1,3 +1,13 @@
++2010-04-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
++
++	* NSData+MimeQP.m (-decodeQuotedPrintableValueOfMIMEHeaderField:):
++	we now strip invalid characters from the resulting string.
++
 +2010-04-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 +
 +	* NGSmtpClient.m (-mailFrom, -recipientTo): we ensure that the
@@ -4292,7 +4343,7 @@ Index: sope-mime/NGMail/ChangeLog
  2008-09-01  Ludovic Marcotte  <lmarcotte@inverse.ca>
  
  	* NGSmtpClient.m: improved implementation
-@@ -31,9 +36,9 @@
+@@ -31,9 +41,9 @@
  	  fields to fix #1324
  
  2005-03-24  Helge Hess  <helge.hess@skyrix.com>
