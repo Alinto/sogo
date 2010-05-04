@@ -1,7 +1,9 @@
 2010-05-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/ContactsUI.js (initContacts): we must
-	configure the ab toolbar even when in popup mode.
+	configure the ab toolbar even when in popup mode, provided
+	"tabsContainer" does resolve to an existing element since the
+	script will be included for utility windows too.
 
 2010-05-04  Francis Lachapelle  <flachapelle@inverse.ca>
 

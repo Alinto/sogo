@@ -1182,10 +1182,12 @@ function initContacts(event) {
         configureSelectionButtons();
     }
 
-    var controller = new SOGoTabsController();
     var tabsContainer = $("smallToolbarContainer");
-    controller.attachToTabsContainer(tabsContainer);
-    configureAbToolbar();
+    if (tabsContainer) {
+        var controller = new SOGoTabsController();
+        controller.attachToTabsContainer(tabsContainer);
+        configureAbToolbar();
+    }
 
     // Addressbook import form
     $("uploadCancel").observe("click", hideContactsImport);
