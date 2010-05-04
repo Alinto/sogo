@@ -164,6 +164,7 @@ rm -fr ${RPM_BUILD_ROOT}
 
 /etc/init.d/sogod
 /etc/cron.daily/sogo-tmpwatch
+/etc/logrotate.d/sogo
 /usr/sbin/sogod-wrapper
 /var/run/sogo
 /var/log/sogo
