@@ -232,7 +232,7 @@ function deleteDraft(url) {
 
 function refreshFolderByType(type) {
     /* this is called by UIxMailEditor with window.opener */
-    if (Mailer && Mailer.currentMailboxType == type)
+    if (typeof Mailer != 'undefined' && Mailer.currentMailboxType == type)
         refreshCurrentFolder();
 }
 
