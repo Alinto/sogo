@@ -305,13 +305,16 @@ function refreshAttendeesRO () {
     
     if (attendeesLabel)
         attendeesLabel.setStyle({display: "block"});
-    attendeesDiv.setStyle({display: "block"});
+    if (attendeesDiv)
+        attendeesDiv.setStyle({display: "block"});
     
-    // Register "click" event on each attendee's email
-    var attendees = attendeesMenu.getElementsByTagName('a');
-    $A(attendees).each(function(attendee) {
-            $(attendee).observe("click", onMailTo);
-        });
+    if (attendeesMenu) {
+        // Register "click" event on each attendee's email
+        var attendees = attendeesMenu.getElementsByTagName('a');
+        $A(attendees).each(function(attendee) {
+                $(attendee).observe("click", onMailTo);
+            });
+    }
 }
 
 function refreshAttendees(newAttendees) {
