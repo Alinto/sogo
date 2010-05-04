@@ -1180,17 +1180,17 @@ function onDocumentKeydown(event) {
 function initContacts(event) {
     if ($(document.body).hasClassName("popup")) {
         configureSelectionButtons();
-    } else {
-        configureAbToolbar();
-        var tabsContainer = $("smallToolbarContainer");
-        var controller = new SOGoTabsController();
-        controller.attachToTabsContainer(tabsContainer);
-
-        // Addressbook import form
-        $("uploadCancel").observe("click", hideContactsImport);
-        $("uploadOK").observe("click", hideImportResults);
     }
-    
+
+    var controller = new SOGoTabsController();
+    var tabsContainer = $("smallToolbarContainer");
+    controller.attachToTabsContainer(tabsContainer);
+    configureAbToolbar();
+
+    // Addressbook import form
+    $("uploadCancel").observe("click", hideContactsImport);
+    $("uploadOK").observe("click", hideImportResults);
+
     if (Prototype.Browser.Gecko)
         Event.observe(document, "keypress", onDocumentKeydown); // for FF2
     else
