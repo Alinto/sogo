@@ -10,10 +10,12 @@ function initializeWindowButtons() {
 
 
 function initializeFormValues() {
-  $("quantityField").value = parent$("reminderQuantity").value;
+    if (parent$("reminderUnit").value.length > 0) {
+        $("quantityField").value = parent$("reminderQuantity").value;
 	$("unitsList").value = parent$("reminderUnit").value;
 	$("relationsList").value = parent$("reminderRelation").value;
 	$("referencesList").value = parent$("reminderReference").value;
+    }
 }
 
 function onEditorOkClick(event) {
