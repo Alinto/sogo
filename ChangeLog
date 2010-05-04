@@ -1,3 +1,9 @@
+2010-05-04  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Contacts/SOGoContactSourceFolder.m
+	(-lookupName:inContext:acquire:): verify the result of
+	lookupContactEntry as it will not necessarily return a contact.
+
 2010-04-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* Tools/sogo-tool.m (setupUserDefaults): new function that sets up
