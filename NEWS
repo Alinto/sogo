@@ -1,4 +1,4 @@
-1.2-2010XXXX (1.2.2)
+1.2-20100504 (1.2.2)
 --------------------
 - subscribers can now rename folders that do not belong to them in their own environment
 - added support for LDAP password policies
