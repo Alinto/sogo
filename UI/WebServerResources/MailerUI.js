@@ -413,8 +413,11 @@ function deleteSelectedMessagesCallback(http) {
             }
         }
     }
-    else
+    else {
         log ("deleteSelectedMessagesCallback: problem during ajax request " + http.status);
+        window.alert(getLabel("Operation failed"));
+        refreshCurrentFolder();
+    }
 }
 
 function onMenuDeleteMessage(event) {
