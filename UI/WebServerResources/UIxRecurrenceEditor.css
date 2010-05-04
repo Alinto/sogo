@@ -38,6 +38,9 @@ INPUT.textField
 SPAN.datePicker INPUT.textField
 { width: 6em; }
 
+SPAN.datePicker SPAN IMG
+{ vertical-align: top; }
+
 /* Days selectors */
 
 DIV#week,
@@ -84,6 +87,6 @@ DIV#month SPAN.week DIV P
 SPAN.week DIV:hover
 { border: 1px solid #4b6983; }
 
-a.calendarButton
-{ right:240px; }
+A.calendarButton
+{ right: 240px; }
 
