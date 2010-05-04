@@ -1187,11 +1187,11 @@ function initContacts(event) {
         var controller = new SOGoTabsController();
         controller.attachToTabsContainer(tabsContainer);
         configureAbToolbar();
-    }
 
-    // Addressbook import form
-    $("uploadCancel").observe("click", hideContactsImport);
-    $("uploadOK").observe("click", hideImportResults);
+        // Addressbook import form
+        $("uploadCancel").observe("click", hideContactsImport);
+        $("uploadOK").observe("click", hideImportResults);
+    }
 
     if (Prototype.Browser.Gecko)
         Event.observe(document, "keypress", onDocumentKeydown); // for FF2
