@@ -8,6 +8,7 @@
 	* SoObjects/Contacts/SOGoContactSourceFolder.m
 	(-lookupName:inContext:acquire:): verify the result of
 	lookupContactEntry as it will not necessarily return a contact.
+	* Updated version number to 1.2.2.
 
 2010-04-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
