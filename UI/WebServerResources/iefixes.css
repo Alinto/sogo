@@ -83,6 +83,10 @@ DIV#attendeesMenu LI.separator
 DIV#attendeesView
 { left: 0.5em; }
 
+TABLE#freeBusyAttendees TD.attendeeStatus,
+TABLE#freeBusyAttendees TD.attendeeStatus DIV
+{ width: 24px; }
+
 TABLE
 { empty-cells: show; }
 
@@ -99,6 +103,18 @@ DIV#propertiesView LEGEND
 { margin-bottom: 5px; }
 
 /* UIxMailPartICalViewer */
+
+#iCalAttendees SPAN
+{ display: block;
+  height: 18px;
+  border: 0px;
+  margin: 0px;
+  padding: 0px; }
+
+#iCalAttendees DIV.status-icon
+{ margin-top: 2px;
+  border: 0px;
+  padding: 0px; }
 
 .clear
 { padding-top: 0; }

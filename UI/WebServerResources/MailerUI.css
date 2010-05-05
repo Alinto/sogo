@@ -796,22 +796,34 @@ TR#messageCountHeader TD
 { padding: 0; }
 
 #iCalAttendees SPAN
+{ line-height: 19px; }
+
+#iCalAttendees DIV.status-icon
 { background-repeat: no-repeat;
-  background-position: 5px 1px;
-  padding-left: 22px;
-  padding-right: 4px; }
+  float: left;
+  padding: 0px;
+  clear: both;
+  width: 12px;
+  height: 18px;
+  margin-top: 1px;
+  margin-left: 4px;
+  margin-right: 4px;
+  background-image: url("attendee-partstats.png"); }
 
-#iCalAttendees .accepted
-{ background-image: url("accepted.png"); }
+#iCalAttendees .accepted DIV.status-icon
+{ background-position: 0px 0px; }
 
-#iCalAttendees .needs-action
-{ background-image: url("needs-action.png"); }
+#iCalAttendees .declined DIV.status-icon
+{ background-position: -12px 0px; }
 
-#iCalAttendees .declined
-{ background-image: url("declined.png"); }
+#iCalAttendees .needs-action DIV.status-icon
+{ background-position: -24px 0px; }
 
-#iCalAttendees .delegated
-{ background-image: url("delegated.png"); }
+#iCalAttendees .tentative DIV.status-icon
+{ background-position: -36px 0px; }
+
+#iCalAttendees .delegated DIV.status-icon
+{ background-position: -48px 0px; }
 
 #iCalAttendees .attendeeUser,
 #iCalAttendees .attendeeUser A

@@ -462,6 +462,7 @@ validate_endbeforestart    = "Mae'r dyddiad gorffen sydd wedi'i roi yn digwydd c
 /* Legend */
 "Required participant" = "Cyfranogwr gofynnol";
 "Optional participant" = "Cyfranogwr opsiynol";
+"Non Participant" = "Non Participant";
 "Chair" = "Cadair";
 
 "Needs action" = "Angen gweithred";

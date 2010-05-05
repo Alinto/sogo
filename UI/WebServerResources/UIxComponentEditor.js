@@ -6,6 +6,10 @@ var ComponentEditor = {
     reminderWindow: null
 };
 
+function getOwnerLogin() {
+    return ownerLogin;
+}
+
 function onPopupAttendeesWindow(event) {
     if (event)
         preventDefault(event);
@@ -202,7 +206,7 @@ function onSummaryChange (e) {
 
 function onReplyChange(event) {
     var delegateEditor = $("delegateEditor");
-    if (this.value == 2) {
+    if (this.value == 4) {
         // Delegated
         delegateEditor.show();
         $("delegatedTo").focus();
@@ -328,7 +332,11 @@ function onOkButtonClick (e) {
         action = 'accept';
     else if (value == 1)
         action = 'decline';
-    else if (value == 2) {
+    else if (value == 2)
+        action = 'needsaction';
+    else if (value == 3)
+        action = 'tentative';
+    else if (value == 4) {
         var url = ApplicationBaseURL + activeCalendar + '/' + activeComponent;
         document.modifyEventAjaxRequest = delegateInvitation(url, modifyEventCallback);
     }

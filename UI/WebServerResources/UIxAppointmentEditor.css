@@ -122,42 +122,53 @@ A#attendeesHref
   text-decoration: underline; }
 
 DIV#attendeesMenu LI
-{ padding-left: 10px; }
+{ padding-left: 10px;
+  width: auto; }
 
-DIV#attendeesMenu .attendee,
-DIV#attendeesMenu DIV
+DIV#attendeesMenu .attendeeUser
+{ font-weight: bold; }
+
+DIV#attendeesMenu .opt-participant
+{ font-style: italic; }
+
+DIV#attendeesMenu .non-participant A
+{ color: #888; }
+
+#attendeesLabel DIV#attendeesMenu > DIV
+{ margin-left: 4px; }
+
+#attendeesLabel DIV#attendeesMenu > DIV,
+DIV#attendeesMenu .attendee
+{ height: 18px; }
+
+#attendeesLabel DIV#attendeesMenu .statusIcon
+{ margin-top: 4px; }
+
+DIV#attendeesMenu .statusIcon
 { background-repeat: no-repeat;
-  background-position: 5px center;
-  padding-left: 22px; }
+  float: left;
+  width: 12px;
+  height: 14px;
+  margin-right: 4px;
+  background-image: url("attendee-partstats.png"); }
 
-DIV#attendeesMenu .accepted
-{ background-image: url("accepted.png"); }
+DIV#attendeesMenu .accepted .statusIcon
+{ background-position: 0px 0px; }
 
-DIV#attendeesMenu .accepted:hover
-{ background-image: url("accepted.selected.png"); }
+DIV#attendeesMenu .declined .statusIcon
+{ background-position: -12px 0px; }
 
-DIV#attendeesMenu .needs-action
-{ background-image: url("needs-action.png"); }
+DIV#attendeesMenu .needs-action .statusIcon
+{ background-position: -24px 0px; }
 
-DIV#attendeesMenu .needs-action:hover
-{ background-image: url("needs-action.selected.png"); }
+DIV#attendeesMenu .tentative .statusIcon
+{ background-position: -36px 0px; }
 
-DIV#attendeesMenu .declined
-{ background-image: url("declined.png"); }
+DIV#attendeesMenu .delegated .statusIcon
+{ background-position: -48px 0px; }
 
-DIV#attendeesMenu .declined:hover
-{ background-image: url("declined.selected.png"); }
-
-DIV#attendeesMenu .delegated
-{ background-image: url("delegated.png"); }
-
-DIV#attendeesMenu .delegated:hover
-{ background-image: url("delegated.selected.png"); }
+DIV#attendeesMenu .no-partstat .statusIcon
+{ background-position: -60px 0px; }
 
 DIV#attendeesMenu .delegate
-{ background-position: 15px center;
-  padding-left: 32px; }
-
-/* read-only view */
-DIV#attendeesMenu DIV
-{ padding-left: 20px; }
+{ padding-left: 16px !important; }

@@ -460,8 +460,9 @@ validate_endbeforestart    = "La data finale specificata è precedente alla data
 = "Sei sicuro di voler cancellare il calendario \"%{0}\"?";
 
 /* Legend */
-"Required participant" = "Richiede partecipanti";
-"Optional participant" = "Partecipanti opzionali";
+"Participant" = "Partecipanti";
+"Optional Participant" = "Partecipanti opzionali";
+"Non Participant" = "Non Partecipanti";
 "Chair" = "Sedia";
 
 "Needs action" = "Richiede un'azione";

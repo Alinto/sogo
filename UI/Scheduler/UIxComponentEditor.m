@@ -54,7 +54,6 @@
 #import <Appointments/SOGoAppointmentObject.h>
 #import <Appointments/SOGoAppointmentOccurence.h>
 #import <Appointments/SOGoTaskObject.h>
-#import <SOGo/iCalEntityObject+Utilities.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+BSJSONAdditions.h>
 #import <SOGo/NSDictionary+Utilities.h>
@@ -268,6 +267,8 @@ iRANGE(2);
 
       [currentAttendeeData setObject: [[currentAttendee partStat] lowercaseString]
 			      forKey: @"partstat"];
+      [currentAttendeeData setObject: [[currentAttendee role] lowercaseString]
+			      forKey: @"role"];
 
       if ([[currentAttendee delegatedTo] length])
 	[currentAttendeeData setObject: [[currentAttendee delegatedTo] rfc822Email]
@@ -587,7 +588,7 @@ iRANGE(2);
 	  um = [SOGoUserManager sharedUserManager];
 	  owner = [componentCalendar ownerInContext: context];
 	  ownerEmail = [um getEmailForUID: owner];
-	  ASSIGN (ownerAsAttendee, [component findParticipantWithEmail: (id)ownerEmail]);
+	  ASSIGN (ownerAsAttendee, [component findAttendeeWithEmail: (id)ownerEmail]);
 	}
     }
 //   /* cycles */
@@ -990,14 +991,26 @@ iRANGE(2);
 {
   NSString *word;
 
-  if ([item intValue] == iCalPersonPartStatAccepted)
-    word = @"ACCEPTED";
-  else if ([item intValue] == iCalPersonPartStatDeclined)
-    word = @"DECLINED";
-  else if ([item intValue] == iCalPersonPartStatDelegated)
-    word = @"DELEGATED";
-  else
-    word = @"UNKNOWN";
+  switch ([item intValue])
+    {
+    case iCalPersonPartStatAccepted: 
+      word = @"ACCEPTED";
+      break;
+    case iCalPersonPartStatDeclined:
+      word = @"DECLINED";
+      break;
+    case iCalPersonPartStatNeedsAction:
+      word = @"NEEDS-ACTION";
+      break;
+    case iCalPersonPartStatTentative:
+      word = @"TENTATIVE";
+      break;
+    case iCalPersonPartStatDelegated:
+      word = @"DELEGATED";
+      break;
+    default:
+      word = @"UNKNOWN";
+    }
 
   return [self labelForKey: [NSString stringWithFormat: @"partStat_%@", word]];
 }
@@ -1005,8 +1018,10 @@ iRANGE(2);
 - (NSArray *) replyList
 {
   return [NSArray arrayWithObjects: 
-	   [NSNumber numberWithInt: iCalPersonPartStatAccepted], 
+                    [NSNumber numberWithInt: iCalPersonPartStatAccepted], 
 	   [NSNumber numberWithInt: iCalPersonPartStatDeclined],
+	   [NSNumber numberWithInt: iCalPersonPartStatNeedsAction],
+	   [NSNumber numberWithInt: iCalPersonPartStatTentative],
 	   [NSNumber numberWithInt: iCalPersonPartStatDelegated],
 		  nil];
 }
@@ -1508,7 +1523,7 @@ RANGE(2);
   unsigned int count, max;
   NSString *currentEmail;
   iCalPerson *currentAttendee;
-  NSString *json;
+  NSString *json, *role, *partstat;
   NSDictionary *attendeesData;
   NSArray *attendees;
   NSDictionary *currentData;
@@ -1529,17 +1544,33 @@ RANGE(2);
 	    {
 	      currentData = [attendees objectAtIndex: count];
 	      currentEmail = [currentData objectForKey: @"email"];
-	      currentAttendee = [component findParticipantWithEmail: currentEmail];
+              role = [[currentData objectForKey: @"role"] uppercaseString];
+              if (!role)
+                role = @"REQ-PARTICIPANT";
+              if ([role isEqualToString: @"NON-PARTICIPANT"])
+                partstat = @"";
+              else
+                {
+                  partstat = [[currentData objectForKey: @"partstat"]
+                               uppercaseString];
+                  if (!partstat)
+                    partstat = @"NEEDS-ACTION";
+                }
+	      currentAttendee = [component findAttendeeWithEmail: currentEmail];
 	      if (!currentAttendee)
 		{
 		  currentAttendee = [iCalPerson elementWithTag: @"attendee"];
 		  [currentAttendee setCn: [currentData objectForKey: @"name"]];
 		  [currentAttendee setEmail: currentEmail];
-		  [currentAttendee setRole: @"REQ-PARTICIPANT"];
-		  [currentAttendee setRsvp: @"TRUE"];
-		  [currentAttendee
-		    setParticipationStatus: iCalPersonPartStatNeedsAction];
+		  // [currentAttendee
+		  //   setParticipationStatus: iCalPersonPartStatNeedsAction];
 		}
+              [currentAttendee
+                    setRsvp: ([role isEqualToString: @"NON-PARTICIPANT"]
+                              ? @"FALSE"
+                              : @"TRUE")];
+              [currentAttendee setRole: role];
+              [currentAttendee setPartStat: partstat];
 	      [newAttendees addObject: currentAttendee];
 	    }
 	  [component setAttendees: newAttendees];
@@ -1965,8 +1996,7 @@ RANGE(2);
     isOrganizer = ![ownerUser hasEmail: [[component organizer] sentBy]];
 
   if ([componentCalendar isKindOfClass: [SOGoWebAppointmentFolder class]]
-      || ([[component attendees] count]
-	  && [component userIsParticipant: ownerUser]
+      || ([component userIsAttendee: ownerUser]
 	  && !isOrganizer
 	  // Lightning does not manage participation status within tasks,
 	  // so we also ignore the participation status of tasks in the
@@ -1991,14 +2021,12 @@ RANGE(2);
 {
   SoSecurityManager *sm;
   NSString *toolbarFilename, *adminToolbar;
-  SOGoUser *currentUser;
 
   if ([clientObject isKindOfClass: [SOGoAppointmentObject class]])
     adminToolbar = @"SOGoAppointmentObject.toolbar";
   else
     adminToolbar = @"SOGoTaskObject.toolbar";
 
-  currentUser = [context activeUser];
   sm = [SoSecurityManager sharedSecurityManager];
 
   if (![sm validatePermission: SOGoCalendarPerm_ModifyComponent
@@ -2035,36 +2063,45 @@ RANGE(2);
 
 
 - (int) ownerIsAttendee: (SOGoUser *) ownerUser
-         andClientObject: (SOGoContentObject
-                           <SOGoComponentOccurence> *) clientObject
+        andClientObject: (SOGoContentObject
+                          <SOGoComponentOccurence> *) clientObject
 {
   BOOL isOrganizer;
-  int rc = 0;
+  iCalPerson *ownerAttendee;
+  int rc;
+
+  rc = 0;
 
   isOrganizer = [component userIsOrganizer: ownerUser];
   if (isOrganizer)
     isOrganizer = ![ownerUser hasEmail: [[component organizer] sentBy]];
 
-  if ([[component attendees] count]
-      && [component userIsParticipant: ownerUser]
-      && !isOrganizer
-      && ![[component tag] isEqualToString: @"VTODO"])
-    rc = 1;
+  if (!isOrganizer && ![[component tag] isEqualToString: @"VTODO"])
+    {
+      ownerAttendee = [component userAsAttendee: ownerUser];
+      if (ownerAttendee)
+        {
+          if ([[ownerAttendee rsvp] isEqualToString: @"true"])
+            rc = 1;
+          else
+            rc = 2;
+        }
+    }
 
   return rc;
 }
 
 - (int) delegateIsAttendee: (SOGoUser *) ownerUser
-            andClientObject: (SOGoContentObject
-                              <SOGoComponentOccurence> *) clientObject
+           andClientObject: (SOGoContentObject
+                             <SOGoComponentOccurence> *) clientObject
 {
   SoSecurityManager *sm;
-  SOGoUser *currentUser;
-  int rc = 0;
+  iCalPerson *ownerAttendee;
+  int rc;
 
-  currentUser = [context activeUser];
+  rc = 0;
+
   sm = [SoSecurityManager sharedSecurityManager];
-
   if (![sm validatePermission: SOGoCalendarPerm_ModifyComponent
                      onObject: clientObject
                     inContext: context])
@@ -2072,11 +2109,15 @@ RANGE(2);
                andClientObject: clientObject];
   else if (![sm validatePermission: SOGoCalendarPerm_RespondToComponent
                           onObject: clientObject
-                         inContext: context]
-           && [[component attendees] count]
-           && [component userIsParticipant: ownerUser]
-           && ![component userIsOrganizer: ownerUser])
-    rc = 1;
+                         inContext: context])
+    {
+      ownerAttendee = [component userAsAttendee: ownerUser];
+      if ([[ownerAttendee rsvp] isEqualToString: @"true"]
+          && ![component userIsOrganizer: ownerUser])
+        rc = 1;
+      else
+        rc = 2;
+    }
   else
     rc = 2; // not invited, just RO
 
@@ -2090,9 +2131,8 @@ RANGE(2);
   int rc;
 
   clientObject = [self clientObject];
-  ownerUser = [SOGoUser userWithLogin: [clientObject ownerInContext: context]
-                                roles: nil];
-
+  ownerUser
+    = [SOGoUser userWithLogin: [clientObject ownerInContext: context]];
   if ([componentCalendar isKindOfClass: [SOGoWebAppointmentFolder class]])
     rc = 2;
   else
@@ -2113,9 +2153,54 @@ RANGE(2);
   return [self getEventRWType] != 0;
 }
 
-- (BOOL) userIsAttendee
+- (BOOL) userHasRSVP
 {
-  return [self getEventRWType] == 1;
+  return ([self getEventRWType] == 1);
+}
+
+- (NSString *) currentAttendeeClasses
+{
+  NSMutableArray *classes;
+  iCalPerson *ownerAttendee;
+  SOGoUser *ownerUser;
+  NSString *role, *partStat;
+  SOGoCalendarComponent *co;
+
+  classes = [NSMutableArray arrayWithCapacity: 5];
+
+  /* rsvp class */
+  if (![[attendee rsvp] isEqualToString: @"true"])
+    [classes addObject: @"not-rsvp"];
+
+  /* partstat class */
+  partStat = [[attendee partStat] lowercaseString];
+  if (![partStat length])
+    partStat = @"no-partstat";
+  [classes addObject: partStat];
+
+  /* role class */
+  role = [[attendee role] lowercaseString];
+  if (![partStat length])
+    role = @"no-role";
+  [classes addObject: role];
+
+  /* attendee class */
+  if ([[attendee delegatedFrom] length] > 0)
+    [classes addObject: @"delegate"];
+
+  /* current attendee class */
+  co = [self clientObject];
+  ownerUser = [SOGoUser userWithLogin: [co ownerInContext: context]];
+  ownerAttendee = [component userAsAttendee: ownerUser];
+  if (attendee == ownerAttendee)
+    [classes addObject: @"attendeeUser"];
+
+  return [classes componentsJoinedByString: @" "];
+}
+
+- (NSString *) ownerLogin
+{
+  return [[self clientObject] ownerInContext: context];
 }
 
 @end

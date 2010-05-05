@@ -1,5 +1,28 @@
 2010-05-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxComponentEditor.m (-ownerLogin): new accessor
+	the differenciate between the type of users in the list of
+	attendees.
+
+	* UI/WebServerResources/UIxAttendeesEditor.js
+	(performSearchCallback): differenciate between the organizer user
+	and other attendees, as in Lightning.
+
+	* UI/WebServerResources/UIxAppointmentEditor.js
+	(setupAttendeeNode): removed useless calls to $().
+
+	* UI/Scheduler/UIxComponentEditor.m
+	(-ownerIsAttendee:andClientObject:)
+	(delegateIsAttendee:andClientObject:): handle the case where the
+	user is found but has no RSVP or one with "FALSE" as value.
+	(-userHasRSVP): renamed from "userIsAttendee", since we don't
+	enable users without a RSVP set as "TRUE" to repond to
+	invitations.
+	(-currentAttendeeClasses): new method.
+
+	* UI/MailPartViewers/UIxMailPartICalActions.m (-tentativeAction):
+	new action method for the "TENTATIVE" partstat.
+
 	* SoObjects/Appointments/iCalEntityObject+SOGo.m
 	(-userIsParticipant:): renamed to "userIsAttendee:". We now
 	request the list of attendees rather than the list of

@@ -1,5 +1,7 @@
 /* -*- Mode: java; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
+var OwnerLogin = "";
+
 var resultsDiv;
 var address;
 var awaitingFreeBusyRequests = new Array();
@@ -15,7 +17,6 @@ var attendeesEditor = {
     currentField: null,
     selectedIndex: -1
 };
-
 
 function handleAllDay () {
     window.timeWidgets['end']['hour'].value = 17;
@@ -189,8 +190,23 @@ function performSearchCallback(http) {
                 if (data.contacts.length == 1) {
                     // Single result
                     var contact = data.contacts[0];
-                    if (contact["uid"].length > 0)
+                    if (contact["uid"].length > 0) {
+                        var row = $(input.parentNode.parentNode);
                         input.uid = contact["uid"];
+                        if (input.uid == OwnerLogin) {
+                            row.removeAttribute("role");
+                            row.setAttribute("partstat", "accepted");
+                            row.addClassName("organizer-row");
+                            row.removeClassName("attendee-row");
+                            row.isOrganizer = true;
+                        } else {
+                            row.removeAttribute("partstat");
+                            row.setAttribute("role", "req-participant");
+                            row.addClassName("attendee-row");
+                            row.removeClassName("organizer-row");
+                            row.isOrganizer = false;
+                        }
+                    }
                     var completeEmail = contact["name"] + " <" + contact["email"] + ">";
                     if (contact["name"].substring(0, input.value.length).toUpperCase()
                         == input.value.toUpperCase())
@@ -284,17 +300,54 @@ function redisplayFreeBusyZone() {
     scrollToEvent();
 }
 
+function onAttendeeStatusClick(event) {
+    rotateAttendeeStatus(this);
+}
+
+function rotateAttendeeStatus(row) {
+    var values;
+    var attributeName;
+    if (row.isOrganizer) {
+        values = [ "accepted", "declined", "tentative", "needs-action" ];
+        attributeName = "partstat";
+    } else {
+        values = [ "req-participant", "opt-participant",
+                   "chair", "non-participant" ];
+        attributeName = "role";
+    }
+    var value = row.getAttribute(attributeName);
+    var idx = (value ? values.indexOf(value) : -1);
+    if (idx == -1 || idx > (values.length - 2)) {
+        idx = 0;
+    } else {
+        idx++;
+    }
+    row.setAttribute(attributeName, values[idx]);
+    if (Prototype.Browser.IE) {
+        /* This hack enables a refresh of the row element right after the
+           click. Otherwise, this occurs only when leaving the element with
+           them mouse cursor. */
+        row.className = row.className;
+    }
+}
+
 function newAttendee(event) {
     var table = $("freeBusyAttendees");
     var tbody = table.tBodies[0];
     var model = tbody.rows[tbody.rows.length - 1];
     var futureRow = tbody.rows[tbody.rows.length - 2];
-    var newRow = model.cloneNode(true);
+    var newRow = $(model.cloneNode(true));
     tbody.insertBefore(newRow, futureRow);
-  
+
+    var statusTD = newRow.down(".attendeeStatus");
+    if (statusTD) {
+        var boundOnStatusClick = onAttendeeStatusClick.bindAsEventListener(newRow);
+        statusTD.observe("click", boundOnStatusClick, false);
+    }
+
     $(newRow).removeClassName("attendeeModel");
  
-    var input = $(newRow).down("input");
+    var input = newRow.down("input");
     input.observe("keydown", onContactKeydown);
     input.observe("blur", checkAttendee);
 
@@ -305,9 +358,9 @@ function newAttendee(event) {
     tbody = table.tBodies[0];
     model = tbody.rows[tbody.rows.length - 1];
     futureRow = tbody.rows[tbody.rows.length - 2];
-    newRow = model.cloneNode(true);
+    newRow = $(model.cloneNode(true));
     tbody.insertBefore(newRow, futureRow);
-    $(newRow).removeClassName("dataModel");
+    newRow.removeClassName("dataModel");
 
     var attendeesDiv = $$('TABLE#freeBusy TD.freeBusyAttendees DIV').first();
     var dataDiv = $$('TABLE#freeBusy TD.freeBusyData DIV').first();
@@ -315,7 +368,7 @@ function newAttendee(event) {
     dataDiv.scrollTop = attendeesDiv.scrollTop;
 }
 
-function checkAttendee() { log ("checkAttendee");
+function checkAttendee() { // log ("checkAttendee");
     if (document.currentPopupMenu)
         hideMenu(document.currentPopupMenu);
 
@@ -335,17 +388,11 @@ function checkAttendee() { log ("checkAttendee");
         var dataRow = dataTable.rows[row.sectionRowIndex];
         tbody.removeChild(row);
         dataTable.removeChild(dataRow);
-    }
+   } 
     else if (this.readAttribute("modified") == "1") {
-        if (!$(row).hasClassName("needs-action")) {
-            $(row).addClassName("needs-action");
-            $(row).removeClassName("declined");
-            $(row).removeClassName("accepted");
-        }
         if (!this.hasfreebusy) {
             if (this.uid && this.confirmedValue)
                 this.value = this.confirmedValue;
-            log ("4");
             displayFreeBusyForNode(this);
             this.hasfreebusy = true;
         }
@@ -357,7 +404,8 @@ function checkAttendee() { log ("checkAttendee");
 
 function displayFreeBusyForNode(input) {
     var rowIndex = input.parentNode.parentNode.sectionRowIndex;
-    var nodes = $("freeBusyData").tBodies[0].rows[rowIndex].cells; log ("displayFreeBusyForNode index " + rowIndex + " (" + nodes.length + " cells)");
+    var nodes = $("freeBusyData").tBodies[0].rows[rowIndex].cells;
+    log ("displayFreeBusyForNode index " + rowIndex + " (" + nodes.length + " cells)");
     if (input.uid) {
         if (document.contactFreeBusyAjaxRequest) { log ("busy -- delay " + rowIndex);
             awaitingFreeBusyRequests.push(input); }
@@ -453,7 +501,7 @@ function initializeWindowButtons() {
     $("nextSlot").observe ("click", onNextSlotClick, false);
 }
 
-function findSlot (direction) {
+function findSlot(direction) {
     var userList = UserLogin;
     var table = $("freeBusy");
     var inputs = table.getElementsByTagName("input");
@@ -565,7 +613,7 @@ function onNextSlotClick(event) {
 
 function onEditorOkClick(event) {
     preventDefault(event);
-    
+
     var attendees = window.opener.attendees;
     var newAttendees = new Hash();
     var table = $("freeBusy");
@@ -582,12 +630,20 @@ function onEditorOkClick(event) {
                 name = inputs[i].uid;
             else
                 name = email;
-        var attendee = attendees.get(email);
-        if (!attendee)
-            attendee = new Hash({'email': email,
-                                 'name': name,
-                                 'uid': uid,
-                                 'partstat': 'needs-action'});
+        var attendee = attendees["email"];
+        if (!attendee) {
+            attendee = {"email": email,
+                        "name": name,
+                        "role": "req-participant",
+                        "partstat": "needs-action",
+                        "uid": uid};
+        }
+        var partstat = row.getAttribute("partstat");
+        if (partstat)
+            attendee["partstat"] = partstat;
+        var role = row.getAttribute("role");
+        if (role)
+            attendee["role"] = role;
         newAttendees.set(email, attendee);
     }
     window.opener.refreshAttendees(newAttendees.toJSON());
@@ -733,33 +789,51 @@ function prepareAttendees() {
         var modelData = tbodyData.rows[tbodyData.rows.length - 1];
         var newDataRow = tbodyData.rows[tbodyData.rows.length - 2];
 
-        attendees.values().each(function(attendee) {
-                attendee = $H(attendee);
-                var row = modelAttendee.cloneNode(true);
-                tbodyAttendees.insertBefore(row, newAttendeeRow);
-                $(row).removeClassName("attendeeModel");
-                $(row).addClassName(attendee.get('partstat'));
-                var input = $(row).down("input");
-                var value = attendee.get('name');
-                if (value)
-                    value += " ";
-                else
-                    value = "";
-                value += "<" + attendee.get('email') + ">";
-                input.value = value;
-                if (attendee.get('uid'))
-                    input.uid = attendee.get('uid');
-                input.setAttribute("name", "");
-                input.setAttribute("modified", "0");
-                input.observe("blur", checkAttendee);
-                input.observe("keydown", onContactKeydown);
+        attendees.keys().each(function(atKey) {
+            var attendee = attendees.get(atKey);
+            // attendee = $H(attendee);
+            var row = $(modelAttendee.cloneNode(true));
+            tbodyAttendees.insertBefore(row, newAttendeeRow);
+            row.removeClassName("attendeeModel");
+            row.setAttribute("partstat", attendee["partstat"]);
+            row.setAttribute("role", attendee["role"]);
+            var uid = attendee["uid"];
+            if (uid && uid == OwnerLogin) {
+                row.addClassName("organizer-row");
+                row.removeClassName("attendee-row");
+                row.isOrganizer = true;
+            } else {
+                row.addClassName("attendee-row");
+                row.removeClassName("organizer-row");
+                row.isOrganizer = false;
+            }
+            var statusTD = row.down(".attendeeStatus");
+            if (statusTD) {
+                var boundOnStatusClick
+                    = onAttendeeStatusClick.bindAsEventListener(row);
+                statusTD.observe("click", boundOnStatusClick, false);
+            }
+
+            var input = row.down("input");
+            var value = attendee["name"];
+            if (value)
+                value += " ";
+            else
+                value = "";
+            value += "<" + attendee["email"] + ">";
+            input.value = value;
+            if (uid)
+                input.uid = uid;
+            input.setAttribute("name", "");
+            input.setAttribute("modified", "0");
+            input.observe("blur", checkAttendee);
+            input.observe("keydown", onContactKeydown);
 	 
-                row = modelData.cloneNode(true);
-                tbodyData.insertBefore(row, newDataRow);
-                $(row).removeClassName("dataModel");
-                log ("3");
-                displayFreeBusyForNode(input);
-            });
+            row = $(modelData.cloneNode(true));
+            tbodyData.insertBefore(row, newDataRow);
+            row.removeClassName("dataModel");
+            displayFreeBusyForNode(input);
+        });
     }
 
     // Activate "Add attendee" button
@@ -798,6 +872,8 @@ function onFreeBusyLoadHandler() {
                    'end': {'date': $("endTime_date"),
                            'hour': $("endTime_time_hour"),
                            'minute': $("endTime_time_minute")}};
+
+    OwnerLogin = window.opener.getOwnerLogin();
 
     synchronizeWithParent("startTime", "startTime");
     synchronizeWithParent("endTime", "endTime");

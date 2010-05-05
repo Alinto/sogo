@@ -246,10 +246,10 @@
 
 /* Appointments (participation state) */
 
-"partStat_NEEDS-ACTION" = "Décision attendue";
+"partStat_NEEDS-ACTION" = "Je confirmerai plus tard";
 "partStat_ACCEPTED" = "Je participerai";
 "partStat_DECLINED" = "Je ne participerai pas";
-"partStat_TENTATIVE" = "Je confirmerai plus tard";
+"partStat_TENTATIVE" = "Je participerai peut-être";
 "partStat_DELEGATED" = "Je délègue";
 "partStat_OTHER" = "???";
 
@@ -460,9 +460,10 @@ validate_endbeforestart    = "La date de fin est avant la date de début.";
 = "Voulez-vous vraiment supprimer l'agenda «%{0}»?";
 
 /* Legend */
-"Required participant" = "Participant obligatoire";
-"Optional participant" = "Participant facultatif";
-"Chair" = "Chaise";
+"Participant" = "Invité";
+"Optional Participant" = "Invité optionnel";
+"Non Participant" = "Non-invité";
+"Chair" = "Président";
 
 "Needs action" = "En attente";
 "Accepted" = "Accepté";
