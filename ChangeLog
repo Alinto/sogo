@@ -1,3 +1,9 @@
+2010-05-05  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/SchedulerUI.js (tasksListCallback):
+	refresh the tasks list when receiving the AJAX response instead of
+	emptying the list before sending the AJAX request.
+
 2010-05-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/ContactsUI.js (initContacts): we must

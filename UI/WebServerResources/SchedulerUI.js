@@ -373,31 +373,33 @@ function _deleteEventFromTables(calendar, cname, occurenceTime) {
     if (occurenceTime) {
         basename = basename + "-" + occurenceTime;
     }
-    var occurences = calendarEvents[calendar][cname];
-    if (occurences) {
-        var occurence = occurences.first();
-        var ownerIsOrganizer = occurence[18];
-
-        // Delete event from events list
-        var table = $("eventsList");
-        var rows = table.tBodies[0].rows;
-        for (var j = rows.length; j > 0; j--) {
-            var row = $(rows[j - 1]);
-            var id = row.getAttribute("id");
-            var pos = id.indexOf(basename);
-            if (pos > 0) {
-                var otherCalendar = id.substr(0, pos);
-                occurences = calendarEvents[otherCalendar][cname];
-                if (occurences) {
-                    for (var k = 0; k < occurences.length; k++) {
-                        var occurence = occurences[k];
-                        if (calendar == otherCalendar || ownerIsOrganizer) {
-                            // This is the specified event or the same event in another
-                            // calendar. In this case, remove it only if the delete
-                            // operation is triggered from the organizer's calendar.
-                            if (occurenceTime == null || occurenceTime == occurence[14]) {
-                                row.parentNode.removeChild(row);
-                                break;
+    if (calendarEvents[calendar]) {
+        var occurences = calendarEvents[calendar][cname];
+        if (occurences) {
+            var occurence = occurences.first();
+            var ownerIsOrganizer = occurence[18];
+            
+            // Delete event from events list
+            var table = $("eventsList");
+            var rows = table.tBodies[0].rows;
+            for (var j = rows.length; j > 0; j--) {
+                var row = $(rows[j - 1]);
+                var id = row.getAttribute("id");
+                var pos = id.indexOf(basename);
+                if (pos > 0) {
+                    var otherCalendar = id.substr(0, pos);
+                    occurences = calendarEvents[otherCalendar][cname];
+                    if (occurences) {
+                        for (var k = 0; k < occurences.length; k++) {
+                            var occurence = occurences[k];
+                            if (calendar == otherCalendar || ownerIsOrganizer) {
+                                // This is the specified event or the same event in another
+                                // calendar. In this case, remove it only if the delete
+                                // operation is triggered from the organizer's calendar.
+                                if (occurenceTime == null || occurenceTime == occurence[14]) {
+                                    row.parentNode.removeChild(row);
+                                    break;
+                                }
                             }
                         }
                     }
@@ -415,31 +417,35 @@ function _deleteEventFromTables(calendar, cname, occurenceTime) {
 
 function _deleteCalendarEventCache(calendar, cname, occurenceTime) {
     var ownerIsOrganizer = false;
-    var occurences = calendarEvents[calendar][cname];
-    if (occurences)
-        ownerIsOrganizer = occurences[0][18];
-
+    if (calendarEvents[calendar]) {
+        var occurences = calendarEvents[calendar][cname];
+        if (occurences)
+            ownerIsOrganizer = occurences[0][18];
+    }
+    
     for (var otherCalendar in calendarEvents) {
-        var occurences = calendarEvents[otherCalendar][cname];
-        if (occurences) {
-            var newOccurences = [];
-            for (var i = 0; i < occurences.length; i++) {
-                var occurence = occurences[i];
-                if (calendar == otherCalendar || ownerIsOrganizer) {
-                    // This is the specified event or the same event in another
-                    // calendar. In this case, remove it only if the delete
-                    // operation is triggered from the organizer's calendar.
-                    if (occurenceTime == null) {
-                        delete calendarEvents[otherCalendar][cname];
-                    }
-                    else if (occurenceTime != occurence[14]) {
-                        // || occurenceTime == occurence[14]) {
-                        newOccurences.push(occurence);
+        if (calendarEvents[otherCalendar]) {
+            var occurences = calendarEvents[otherCalendar][cname];
+            if (occurences) {
+                var newOccurences = [];
+                for (var i = 0; i < occurences.length; i++) {
+                    var occurence = occurences[i];
+                    if (calendar == otherCalendar || ownerIsOrganizer) {
+                        // This is the specified event or the same event in another
+                        // calendar. In this case, remove it only if the delete
+                        // operation is triggered from the organizer's calendar.
+                        if (occurenceTime == null) {
+                            delete calendarEvents[otherCalendar][cname];
+                        }
+                        else if (occurenceTime != occurence[14]) {
+                            // || occurenceTime == occurence[14]) {
+                            newOccurences.push(occurence);
+                        }
                     }
                 }
+                if (occurenceTime)
+                    calendarEvents[otherCalendar][cname] = newOccurences;
             }
-            if (occurenceTime)
-                calendarEvents[otherCalendar][cname] = newOccurences;
         }
     }
 }
@@ -840,6 +846,10 @@ function tasksListCallback(http) {
 
         if (http.responseText.length > 0) {
             var data = http.responseText.evalJSON(true);
+            
+            list.previousScroll = list.scrollTop;
+            while (list.childNodes.length)
+                list.removeChild(list.childNodes[0]);
 
             for (var i = 0; i < data.length; i++) {
                 var listItem = $(document.createElement("li"));
@@ -1610,10 +1620,6 @@ function _loadTasksHref(href) {
         selectedIds = null;
     document.tasksListAjaxRequest
         = triggerAjaxRequest(url, tasksListCallback, selectedIds);
-
-    tasksList.previousScroll = tasksList.scrollTop;
-    while (tasksList.childNodes.length)
-        tasksList.removeChild(tasksList.childNodes[0]);
 
     return true;
 }
