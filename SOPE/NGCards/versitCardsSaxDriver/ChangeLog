@@ -1,3 +1,8 @@
+2010-05-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* VSSaxDriver.m (_endComponent:value:): avoid a crash occurring
+	when an inconsistency is found in the stack of containers.
+
 2009-12-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* VSSaxDriver.m (_endComponent:value:): worked-around the lameness
