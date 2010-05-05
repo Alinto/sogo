@@ -19,8 +19,7 @@ class WebDAVTest(unittest.TestCase):
         propfind = webdavlib.WebDAVPROPFIND(resource,
                                             ["{DAV:}principal-collection-set"],
                                             0)
-        propfind.xpath_namespace = { "D": "DAV:" }
-        self.client.execute(propfind)
+        propfind.xpath_namespace = { "D": "DAV:" }        self.client.execute(propfind)
         self.assertEquals(propfind.response["status"], 207)
         nodes = propfind.xpath_evaluate('/D:multistatus/D:response/D:propstat/D:prop/D:principal-collection-set/D:href',
                                         None)

@@ -78,8 +78,11 @@
       us = [activeUser userSettings];
       moduleSettings = [us objectForKey: module];
       if (!moduleSettings)
-	moduleSettings = [NSMutableDictionary dictionary];
-      [us setObject: moduleSettings forKey: module];
+        {
+          moduleSettings = [NSMutableDictionary new];
+          [us setObject: moduleSettings forKey: module];
+          [moduleSettings release];
+        }
       contextIsSetup = YES;
     }
 }
@@ -149,44 +152,6 @@
   return email;
 }
 
-- (NSArray *) _responseForResults: (NSArray *) results
-{
-  NSEnumerator *contacts;
-  NSString *email, *info;
-  NSDictionary *contact;
-  NSMutableArray *formattedContacts;
-  NSMutableDictionary *formattedContact; 
-
-  formattedContacts = [NSMutableArray arrayWithCapacity: [results count]];
-  if ([results count] > 0)
-    {
-      contacts = [results objectEnumerator];
-      contact = [contacts nextObject];
-      while (contact)
-	{
-	  email = [contact objectForKey: @"c_email"];
-	  if ([email length])
-	    {
-	      formattedContact = [NSMutableDictionary dictionary];
-	      [formattedContact setObject: [contact objectForKey: @"c_uid"]
-                                   forKey: @"uid"];
-	      [formattedContact setObject: [contact objectForKey: @"cn"]
-                                   forKey: @"name"];
-	      [formattedContact setObject: email
-                                   forKey: @"email"];
-              info = [contact objectForKey: @"c_info"];
-              if (info != nil)
-                [formattedContact setObject: info
-                                     forKey: @"contactInfo"];
-	      [formattedContacts addObject: formattedContact];
-	    }
-	  contact = [contacts nextObject];
-	}
-    }
-
-  return formattedContacts;
-}
-
 - (id <WOActionResults>) allContactSearchAction
 {
   id <WOActionResults> result;
@@ -196,7 +161,7 @@
   NSArray *folders, *contacts, *descriptors, *sortedContacts;
   NSMutableArray *sortedFolders;
   NSMutableDictionary *contact, *uniqueContacts;
-  unsigned int i, j;
+  unsigned int i, j, max;
   NSSortDescriptor *commonNameDescriptor;
   BOOL excludeGroups, excludeLists;
 
@@ -217,9 +182,10 @@
         else
           [localException raise];
       NS_ENDHANDLER;
-      sortedFolders = [NSMutableArray arrayWithCapacity: [folders count]];
+      max = [folders count];
+      sortedFolders = [NSMutableArray arrayWithCapacity: max];
       uniqueContacts = [NSMutableDictionary dictionary];
-      for (i = 0; i < [folders count]; i++)
+      for (i = 0; i < max; i++)
         {
           folder = [folders objectAtIndex: i];
 	  /* We first search in LDAP folders (in case of duplicated entries in GCS folders) */
@@ -228,7 +194,7 @@
           else
             [sortedFolders addObject: folder];
         }
-      for (i = 0; i < [sortedFolders count]; i++)
+      for (i = 0; i < max; i++)
         {
           folder = [sortedFolders objectAtIndex: i];
           //NSLog(@"  Address book: %@ (%@)", [folder displayName], [folder class]);
@@ -245,8 +211,8 @@
                   && [uniqueContacts objectForKey: mail] == nil
                   && !(excludeGroups && [contact objectForKey: @"isGroup"]))
                 [uniqueContacts setObject: contact forKey: mail];
-              else if (!excludeLists 
-                       && [[contact objectForKey: @"c_name"] hasSuffix: @".vlf"])
+              else if (!excludeLists && [[contact objectForKey: @"c_component"]
+                                          isEqualToString: @"vlist"])
                 {
                   [contact setObject: [folder nameInContainer] 
                               forKey: @"container"];
@@ -254,14 +220,16 @@
                                      forKey: [contact objectForKey: @"c_name"]]; 
                 }
             }
-        }      
+        }
       if ([uniqueContacts count] > 0)
         {
           // Sort the contacts by display name
-          commonNameDescriptor = [[[NSSortDescriptor alloc] initWithKey: @"c_cn"
-                                                              ascending:YES] autorelease];
+          commonNameDescriptor = [[NSSortDescriptor alloc] initWithKey: @"c_cn"
+                                                             ascending:YES];
           descriptors = [NSArray arrayWithObjects: commonNameDescriptor, nil];
-          sortedContacts = [[uniqueContacts allValues] sortedArrayUsingDescriptors: descriptors];
+          [commonNameDescriptor release];
+          sortedContacts = [[uniqueContacts allValues]
+                             sortedArrayUsingDescriptors: descriptors];
         }
       else
         sortedContacts = [NSArray array];
@@ -269,41 +237,11 @@
                            sortedContacts, @"contacts",
                            nil];
       result = [self responseWithStatus: 200];
-      [(WOResponse*)result appendContentString: [data jsonRepresentation]];
+      [(WOResponse*) result appendContentString: [data jsonRepresentation]];
     }
   else
     result = [NSException exceptionWithHTTPStatus: 400
                                            reason: @"missing 'search' parameter"];  
-
-  return result;
-}
-
-- (id <WOActionResults>) contactSearchAction
-{
-  NSDictionary *data;
-  NSArray *contacts;
-  NSString *searchText, *domain;
-  id <WOActionResults> result;
-  SOGoUserManager *um;
-
-  searchText = [self queryParameterForKey: @"search"];
-  if ([searchText length] > 0)
-    {
-      um = [SOGoUserManager sharedUserManager];
-      domain = [[context activeUser] domain];
-      contacts 
-        = [self _responseForResults: [um fetchContactsMatching: searchText
-                                                      inDomain: domain]];
-      data = [NSDictionary dictionaryWithObjectsAndKeys:
-                             searchText, @"searchText",
-                           contacts, @"contacts",
-                           nil];
-      result = [self responseWithStatus: 200];
-      [(WOResponse*)result appendContentString: [data jsonRepresentation]];
-    }
-  else
-    result = [NSException exceptionWithHTTPStatus: 400
-                                           reason: @"missing 'search' parameter"];
 
   return result;
 }
@@ -375,8 +313,7 @@
 
 - (NSString *) currentContactFolderId
 {
-  return [NSString stringWithFormat: @"/%@",
-                   [currentFolder nameInContainer]];
+  return [NSString stringWithFormat: @"/%@", [currentFolder nameInContainer]];
 }
 
 - (NSString *) currentContactFolderName
@@ -391,7 +328,8 @@
 
 - (NSString *) currentContactFolderClass
 {
-  return ([currentFolder isKindOfClass: [SOGoContactSourceFolder class]]? @"remote" : @"local");
+  return ([currentFolder isKindOfClass: [SOGoContactSourceFolder class]]
+          ? @"remote" : @"local");
 }
 
 - (NSString *) verticalDragHandleStyle
@@ -401,7 +339,8 @@
   [self _setupContext];
   vertical = [moduleSettings objectForKey: @"DragHandleVertical"];
 
-  return ((vertical && [vertical intValue] > 0) ? (id)[vertical stringByAppendingFormat: @"px"] : nil);
+  return ((vertical && [vertical intValue] > 0)
+          ? (id)[vertical stringByAppendingFormat: @"px"] : nil);
 }
 
 - (NSString *) horizontalDragHandleStyle
@@ -411,7 +350,8 @@
   [self _setupContext];
   horizontal = [moduleSettings objectForKey: @"DragHandleHorizontal"];
 
-  return ((horizontal && [horizontal intValue] > 0) ? (id)[horizontal stringByAppendingFormat: @"px"] : nil);
+  return ((horizontal && [horizontal intValue] > 0)
+          ? (id)[horizontal stringByAppendingFormat: @"px"] : nil);
 }
 
 - (NSString *) contactsListContentStyle
@@ -421,7 +361,8 @@
   [self _setupContext];
   height = [moduleSettings objectForKey: @"DragHandleVertical"];
 
-  return ((height && [height intValue] > 0) ? [NSString stringWithFormat: @"%ipx", ([height intValue] - 27)] : nil);
+  return ((height && [height intValue] > 0)
+          ? [NSString stringWithFormat: @"%ipx", ([height intValue] - 27)] : nil);
 }
 
 - (WOResponse *) saveDragHandleStateAction

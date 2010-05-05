@@ -4,7 +4,6 @@ var OwnerLogin = "";
 
 var resultsDiv;
 var address;
-var awaitingFreeBusyRequests = new Array();
 var additionalDays = 2;
 
 var isAllDay = parent$("isAllDay").checked + 0;
@@ -13,8 +12,6 @@ var displayEndHour = 23;
 
 var attendeesEditor = {
     delay: 500,
-    delayedSearch: false,
-    currentField: null,
     selectedIndex: -1
 };
 
@@ -32,67 +29,135 @@ function handleAllDay () {
 
 /* address completion */
 
+function resolveListAttendees(input, append) {
+    var urlstr = (UserFolderURL
+                  + "Contacts/"
+                  + escape(input.container) + "/"
+                  + escape(input.cname) + "/properties");
+    triggerAjaxRequest(urlstr, resolveListAttendeesCallback,
+                       { "input": input, "append": append });
+}
+
+function resolveListAttendeesCallback(http) {
+    if (http.readyState == 4 && http.status == 200) {
+        var input = http.callbackData["input"];
+        var append = http.callbackData["append"];
+        var contacts = http.responseText.evalJSON(true);
+        for (var i = 0; i < contacts.length; i++) {
+            var contact = contacts[i];
+            var fullName = contact[1];
+            if (fullName && fullName.length > 0) {
+                fullName += " <" + contact[2] + ">";
+            }
+            else {
+                fullName = contact[2];
+            }
+            input.uid = null;
+            input.cname = null;
+            input.container = null;
+            input.isList = false;
+            input.value = contact[2];
+            input.confirmedValue = null;
+            input.hasfreebusy = false;
+            input.modified = true;
+            // input.focussed = true;
+            // input.activate();
+            input.checkAfterLookup = true;
+            performSearch(input);
+            if (i < (contacts.length - 1)) {
+                var nextRow = newAttendee(input.parentNode.parentNode);
+                input = nextRow.down("input");
+            } else if (append) {
+                var row = input.parentNode.parentNode;
+                var tBody = row.parentNode;
+                if (row.rowIndex == (tBody.rows.length - 3)) {
+                    if (input.selectText) {
+                        input.selectText(0, 0);
+                    } else if (input.createTextRange) {
+                        input.createTextRange().moveStart();
+                    }
+                    newAttendee();
+                } else {
+                    var nextRow = tBody.rows[row.rowIndex + 1];
+                    var input = nextRow.down("input");
+                    input.selectText(0, input.value.length);
+                    input.focussed = true;
+                }
+            } else {
+                if (input.selectText) {
+                    input.selectText(0, 0);
+                } else if (input.createTextRange) {
+                    input.createTextRange().moveStart();
+                }
+                input.blur();
+            }
+        }
+    }
+}
+
 function onContactKeydown(event) {
     if (event.ctrlKey || event.metaKey) {
         this.focussed = true;
         return;
     }
-    if (event.keyCode == 9) { // Tab
+    if (event.keyCode == 9 || event.keyCode == 13) { // Tab
         preventDefault(event);
         if (this.confirmedValue)
             this.value = this.confirmedValue;
         this.hasfreebusy = false;
         var row = $(this).up("tr").next();
-        this.blur(); // triggers checkAttendee function call
-        var input = row.down("input");
-        if (input) {
-            input.focussed = true;
-            input.activate();
+        if (this.isList) {
+            resolveListAttendees(this, true);
+            event.stop();
+        } else {
+            checkAttendee(this);
+            // this.blur(); // triggers checkAttendee function call
+            var input = row.down("input");
+            if (input) {
+                input.focussed = true;
+                input.activate();
+            }
+            else
+                newAttendee();
         }
-        else
-            newAttendee(null);
     }
     else if (event.keyCode == 0
              || event.keyCode == 8 // Backspace
              || event.keyCode == 32  // Space
              || event.keyCode > 47) {
-        this.setAttribute("modified", "1");
+        this.modified = true;
         this.confirmedValue = null;
+        this.cname = null;
         this.uid = null;
+        this.container = null;
         this.hasfreebusy = false;
-        attendeesEditor.currentField = this;
-        if (this.value.length > 0 && !attendeesEditor.delayedSearch) {
-            attendeesEditor.delayedSearch = true;
-            setTimeout("performSearch()", attendeesEditor.delay);
+        if (this.searchTimeout) {
+            window.clearTimeout(this.searchTimeout);
+        }
+        if (this.value.length > 0) {
+            var thisInput = this;
+            this.searchTimeout = setTimeout(function()
+                                            {performSearch(thisInput);
+                                             thisInput = null;},
+                                            attendeesEditor.delay);
         }
         else if (this.value.length == 0) {
             if (document.currentPopupMenu)
                 hideMenu(document.currentPopupMenu);
         }
     }
-    else if (event.keyCode == 13) {
-        preventDefault(event);
-        if (this.confirmedValue)
-            this.value = this.confirmedValue;
-        $(this).selectText(0, this.value.length);
-        if (document.currentPopupMenu)
-            hideMenu(document.currentPopupMenu);
-        attendeesEditor.selectedIndex = -1;
-        if (this.uid) {
-            this.hasfreebusy = false;
-            this.writeAttribute("modified", "1");
-            this.blur(); // triggers checkAttendee function call
-        }
-    }
     else if ($('attendeesMenu').getStyle('visibility') == 'visible') {
-        attendeesEditor.currentField = this;
         if (event.keyCode == Event.KEY_UP) { // Up arrow
             if (attendeesEditor.selectedIndex > 0) {
                 var attendees = $('attendeesMenu').select("li");
                 attendees[attendeesEditor.selectedIndex--].removeClassName("selected");
-                attendees[attendeesEditor.selectedIndex].addClassName("selected");
-                this.value = this.confirmedValue = attendees[attendeesEditor.selectedIndex].readAttribute("address");
-                this.uid = attendees[attendeesEditor.selectedIndex].uid;
+                var attendee = attendees[attendeesEditor.selectedIndex];
+                attendee.addClassName("selected");
+                this.value = this.confirmedValue = attendee.address;
+                this.uid = attendee.uid;
+                this.isList = attendee.isList;
+                this.cname = attendee.cname;
+                this.container = attendee.container;
             }
         }
         else if (event.keyCode == Event.KEY_DOWN) { // Down arrow
@@ -101,30 +166,27 @@ function onContactKeydown(event) {
                 if (attendeesEditor.selectedIndex >= 0)
                     attendees[attendeesEditor.selectedIndex].removeClassName("selected");
                 attendeesEditor.selectedIndex++;
-                attendees[attendeesEditor.selectedIndex].addClassName("selected");
-                this.value = this.confirmedValue = attendees[attendeesEditor.selectedIndex].readAttribute("address");
-                this.uid = attendees[attendeesEditor.selectedIndex].uid;
+                var attendee = attendees[attendeesEditor.selectedIndex];
+                attendee.addClassName("selected");
+                this.value = this.confirmedValue = attendee.address;
+                this.isList = attendee.isList;
+                this.uid = attendee.uid;
+                this.cname = attendee.cname;
+                this.container = attendee.container;
             }
         }
     }
 }
 
-function performSearch() {
+function performSearch(input) {
     // Perform address completion
-    if (attendeesEditor.currentField) {
-        if (document.contactLookupAjaxRequest) {
-            // Abort any pending request
-            document.contactLookupAjaxRequest.aborted = true;
-            document.contactLookupAjaxRequest.abort();
-        }
-        if (attendeesEditor.currentField.value.trim().length > 0) {
-            var urlstr = ( UserFolderURL + "Contacts/contactSearch?search="
-                           + escape(attendeesEditor.currentField.value) );
-            document.contactLookupAjaxRequest =
-                triggerAjaxRequest(urlstr, performSearchCallback, attendeesEditor.currentField);
-        }
+    if (input.value.trim().length > 0) {
+        var urlstr = (UserFolderURL
+                      + "Contacts/allContactSearch?excludeGroups=1&search="
+                      + escape(input.value));
+        triggerAjaxRequest(urlstr, performSearchCallback, input);
     }
-    attendeesEditor.delayedSearch = false;
+    input.searchTimeout = null;
 }
 
 function performSearchCallback(http) {
@@ -139,6 +201,7 @@ function performSearchCallback(http) {
             var data = http.responseText.evalJSON(true);
 
             if (data.contacts.length > 1) {
+                list.input = input;
                 $(list.childNodesWithTag("li")).each(function(item) {
                         item.remove();
                     });
@@ -146,25 +209,42 @@ function performSearchCallback(http) {
                 // Populate popup menu
                 for (var i = 0; i < data.contacts.length; i++) {
                     var contact = data.contacts[i];
-                    var completeEmail = contact["name"] + " <" + contact["email"] + ">";
-                    var node = new Element('li', { 'address': completeEmail });
+                    var isList = (contact["c_component"] &&
+                                  contact["c_component"] == "vlist");
+                    var completeEmail = contact["c_cn"].trim();
+                    if (!isList) {
+                        if (completeEmail)
+                            completeEmail += " <" + contact["c_mail"] + ">";
+                        else
+                            completeEmail = contact["c_mail"];
+                    }
+                    var node = createElement('li');
+                    list.appendChild(node);
+                    node.address = completeEmail;
+                    log("node.address: " + node.address);
+                    node.uid = contact["c_uid"];
+                    node.isList = isList;
+                    if (isList) {
+                        node.cname = contact["c_name"];
+                        node.container = contact["container"];
+                    }
                     var matchPosition = completeEmail.toLowerCase().indexOf(data.searchText.toLowerCase());
                     var matchBefore = completeEmail.substring(0, matchPosition);
                     var matchText = completeEmail.substring(matchPosition, matchPosition + data.searchText.length);
                     var matchAfter = completeEmail.substring(matchPosition + data.searchText.length);
-                    list.appendChild(node);
-                    node.uid = contact["uid"];
                     node.appendChild(document.createTextNode(matchBefore));
                     node.appendChild(new Element('strong').update(matchText));
                     node.appendChild(document.createTextNode(matchAfter));
                     if (contact["contactInfo"])
-                        node.appendChild(document.createTextNode(" (" + contact["contactInfo"] + ")"));
-                    $(node).observe("mousedown", onAttendeeResultClick);
+                        node.appendChild(document.createTextNode(" (" +
+                                                                 contact["contactInfo"] + ")"));
+                    node.observe("mousedown",
+                                 onAttendeeResultClick.bindAsEventListener(node));
                 }
 
                 // Show popup menu
-                var offsetScroll = Element.cumulativeScrollOffset(attendeesEditor.currentField);
-                var offset = Element.cumulativeOffset(attendeesEditor.currentField);
+                var offsetScroll = Element.cumulativeScrollOffset(input);
+                var offset = Element.cumulativeOffset(input);
                 var top = offset[1] - offsetScroll[1] + node.offsetHeight + 3;
                 var height = 'auto';
                 var heightDiff = window.height() - offset[1];
@@ -190,52 +270,73 @@ function performSearchCallback(http) {
                 if (data.contacts.length == 1) {
                     // Single result
                     var contact = data.contacts[0];
-                    if (contact["uid"].length > 0) {
-                        var row = $(input.parentNode.parentNode);
-                        input.uid = contact["uid"];
-                        if (input.uid == OwnerLogin) {
-                            row.removeAttribute("role");
-                            row.setAttribute("partstat", "accepted");
-                            row.addClassName("organizer-row");
-                            row.removeClassName("attendee-row");
-                            row.isOrganizer = true;
-                        } else {
-                            row.removeAttribute("partstat");
-                            row.setAttribute("role", "req-participant");
-                            row.addClassName("attendee-row");
-                            row.removeClassName("organizer-row");
-                            row.isOrganizer = false;
-                        }
+                    input.uid = contact["c_uid"];
+                    var row = $(input.parentNode.parentNode);
+                    if (input.uid == OwnerLogin) {
+                        row.removeAttribute("role");
+                        row.setAttribute("partstat", "accepted");
+                        row.addClassName("organizer-row");
+                        row.removeClassName("attendee-row");
+                        row.isOrganizer = true;
+                    } else {
+                        row.removeAttribute("partstat");
+                        row.setAttribute("role", "req-participant");
+                        row.addClassName("attendee-row");
+                        row.removeClassName("organizer-row");
+                        row.isOrganizer = false;
                     }
-                    var completeEmail = contact["name"] + " <" + contact["email"] + ">";
-                    if (contact["name"].substring(0, input.value.length).toUpperCase()
-                        == input.value.toUpperCase())
+                    var isList = (contact["c_component"] &&
+                                  contact["c_component"] == "vlist");
+                    if (isList) {
+                        input.cname = contact["c_name"];
+                        input.container = contact["container"];
+                    }
+                    var completeEmail = contact["c_cn"].trim();
+                    if (!isList) {
+                        if (completeEmail)
+                            completeEmail += " <" + contact["c_mail"] + ">";
+                        else
+                            completeEmail = contact["c_mail"];
+                    }
+                    if ((input.value == contact["c_mail"])
+                        || (contact["c_cn"].substring(0, input.value.length).toUpperCase()
+                            == input.value.toUpperCase())) {
                         input.value = completeEmail;
+                    }
                     else
                         // The result matches email address, not user name
                         input.value += ' >> ' + completeEmail;
+                    input.isList = isList;
                     input.confirmedValue = completeEmail;
                     var end = input.value.length;
                     $(input).selectText(start, end);
 
                     attendeesEditor.selectedIndex = -1;
+
+                    if (input.checkAfterLookup) {
+                        input.checkAfterLookup = false;
+                        input.modified = true;
+                        input.hasfreebusy = false;
+                        checkAttendee(input);
+                    }
                 }
             }
         }
         else
             if (document.currentPopupMenu)
                 hideMenu(document.currentPopupMenu);
-        document.contactLookupAjaxRequest = null;
     }
 }
 
 function onAttendeeResultClick(event) {
-    if (attendeesEditor.currentField) {
-        attendeesEditor.currentField.uid = this.uid;
-        attendeesEditor.currentField.value = $(this).readAttribute("address");
-        attendeesEditor.currentField.confirmedValue = attendeesEditor.currentField.value;
-        attendeesEditor.currentField.blur(); // triggers checkAttendee function call
-    }
+    var input = this.parentNode.input;
+    input.uid = this.uid;
+    input.cname = this.cname;
+    input.container = this.container;
+    input.isList = this.isList;
+    input.confirmedValue = input.value = this.address;
+    checkAttendee(input);
+    this.parentNode.input = null;
 }
 
 function resetFreeBusyZone() {
@@ -331,13 +432,23 @@ function rotateAttendeeStatus(row) {
     }
 }
 
-function newAttendee(event) {
+function onNewAttendeeClick(event) {
+    newAttendee();
+    event.stop();
+}
+
+function newAttendee(previousAttendee) {
     var table = $("freeBusyAttendees");
     var tbody = table.tBodies[0];
     var model = tbody.rows[tbody.rows.length - 1];
-    var futureRow = tbody.rows[tbody.rows.length - 2];
+    var nextRowIndex = tbody.rows.length - 2;
+    if (previousAttendee) {
+        nextRowIndex = previousAttendee.rowIndex + 1;
+    }
+    var nextRow = tbody.rows[nextRowIndex];
     var newRow = $(model.cloneNode(true));
-    tbody.insertBefore(newRow, futureRow);
+    tbody.insertBefore(newRow, nextRow);
+    var result = newRow;
 
     var statusTD = newRow.down(".attendeeStatus");
     if (statusTD) {
@@ -348,8 +459,8 @@ function newAttendee(event) {
     $(newRow).removeClassName("attendeeModel");
  
     var input = newRow.down("input");
-    input.observe("keydown", onContactKeydown);
-    input.observe("blur", checkAttendee);
+    input.observe("keydown", onContactKeydown.bindAsEventListener(input));
+    input.observe("blur", onInputBlur);
 
     input.focussed = true;
     input.activate();
@@ -357,49 +468,64 @@ function newAttendee(event) {
     table = $("freeBusyData");
     tbody = table.tBodies[0];
     model = tbody.rows[tbody.rows.length - 1];
-    futureRow = tbody.rows[tbody.rows.length - 2];
+    nextRow = tbody.rows[nextRowIndex];
     newRow = $(model.cloneNode(true));
-    tbody.insertBefore(newRow, futureRow);
+    tbody.insertBefore(newRow, nextRow);
     newRow.removeClassName("dataModel");
 
     var attendeesDiv = $$('TABLE#freeBusy TD.freeBusyAttendees DIV').first();
     var dataDiv = $$('TABLE#freeBusy TD.freeBusyData DIV').first();
    
     dataDiv.scrollTop = attendeesDiv.scrollTop;
+
+    return result;
 }
 
-function checkAttendee() { // log ("checkAttendee");
-    if (document.currentPopupMenu)
-        hideMenu(document.currentPopupMenu);
-
-    if (document.currentPopupMenu && !this.confirmedValue) {
-        // Hack for IE7; blur event is triggered on input field when
-        // selecting a menu item
-        var visible = $(document.currentPopupMenu).getStyle('visibility') != 'hidden';
-        if (visible)
-            return;
-    }
-  
-    this.focussed = false;
-    var row = this.parentNode.parentNode;
+function checkAttendee(input) {
+    var row = $(input.parentNode.parentNode);
     var tbody = row.parentNode;
-    if (tbody && this.value.trim().length == 0) {
+    if (tbody && input.value.trim().length == 0) {
         var dataTable = $("freeBusyData").tBodies[0];
         var dataRow = dataTable.rows[row.sectionRowIndex];
         tbody.removeChild(row);
         dataTable.removeChild(dataRow);
    } 
-    else if (this.readAttribute("modified") == "1") {
-        if (!this.hasfreebusy) {
-            if (this.uid && this.confirmedValue)
-                this.value = this.confirmedValue;
-            displayFreeBusyForNode(this);
-            this.hasfreebusy = true;
+    else if (input.modified) {
+        if (!row.hasClassName("needs-action")) {
+            row.addClassName("needs-action");
+            row.removeClassName("declined");
+            row.removeClassName("accepted");
         }
-        this.setAttribute("modified", "0");
+        if (!input.hasfreebusy) {
+            if (input.uid && input.confirmedValue) {
+                input.value = input.confirmedValue;
+            }
+            displayFreeBusyForNode(input);
+            input.hasfreebusy = true;
+        }
+        input.modified = false;
     }
-  
-    attendeesEditor.currentField = null;
+}
+
+function onInputBlur(event) {
+    if (document.currentPopupMenu && !this.confirmedValue) {
+        // Hack for IE7; blur event is triggered on input field when
+        // selecting a menu item
+        var visible = $(document.currentPopupMenu).getStyle('visibility') != 'hidden';
+        if (visible) {
+            log("XXX we return");
+            return;
+        }
+    }
+
+    if (document.currentPopupMenu)
+        hideMenu(document.currentPopupMenu);
+
+    if (this.isList) {
+        resolveListAttendees(this, false);
+    } else {
+        checkAttendee(this);
+    }
 }
 
 function displayFreeBusyForNode(input) {
@@ -407,36 +533,33 @@ function displayFreeBusyForNode(input) {
     var nodes = $("freeBusyData").tBodies[0].rows[rowIndex].cells;
     log ("displayFreeBusyForNode index " + rowIndex + " (" + nodes.length + " cells)");
     if (input.uid) {
-        if (document.contactFreeBusyAjaxRequest) { log ("busy -- delay " + rowIndex);
-            awaitingFreeBusyRequests.push(input); }
-        else {
-            for (var i = 0; i < nodes.length; i++) {
-                $(nodes[i]).removeClassName("noFreeBusy");
-                $(nodes[i]).innerHTML = ('<span class="freeBusyZoneElement"></span>'
-                                         + '<span class="freeBusyZoneElement"></span>'
-                                         + '<span class="freeBusyZoneElement"></span>'
-                                         + '<span class="freeBusyZoneElement"></span>');
+        for (var i = 0; i < nodes.length; i++) {
+            var node = $(nodes[i]);
+            node.removeClassName("noFreeBusy");
+            while (node.firstChild) {
+                node.removeChild(node.firstChild);
             }
-//             if (document.contactFreeBusyAjaxRequest) {
-//                 // Abort any pending request
-//                 document.contactFreeBusyAjaxRequest.aborted = true;
-//                 document.contactFreeBusyAjaxRequest.abort();
-//             }
-            var sd = $('startTime_date').valueAsShortDateString();
-            var ed = $('endTime_date').valueAsShortDateString();
-            var urlstr = ( UserFolderURL + "../" + input.uid
-                           + "/freebusy.ifb/ajaxRead?"
-                           + "sday=" + sd + "&eday=" + ed + "&additional=" +
-                           additionalDays ); log (urlstr);
-            document.contactFreeBusyAjaxRequest
-                = triggerAjaxRequest(urlstr,
-                                     updateFreeBusyDataCallback,
-                                     input);
+            for (var j = 0; j < 4; j++) {
+                createElement("span", null, "freeBusyZoneElement",
+                              null, null, node);
+            }
         }
+        var sd = $('startTime_date').valueAsShortDateString();
+        var ed = $('endTime_date').valueAsShortDateString();
+        var urlstr = (UserFolderURL + "../" + input.uid
+                      + "/freebusy.ifb/ajaxRead?"
+                      + "sday=" + sd + "&eday=" + ed + "&additional=" +
+                      additionalDays);
+        triggerAjaxRequest(urlstr,
+                           updateFreeBusyDataCallback,
+                           input);
     } else {
         for (var i = 0; i < nodes.length; i++) {
-            $(nodes[i]).addClassName("noFreeBusy");
-            $(nodes[i]).update();
+            var node = $(nodes[i]);
+            node.addClassName("noFreeBusy");
+            while (node.firstChild) {
+                node.removeChild(node.firstChild);
+            }
         }
     }
 }
@@ -467,15 +590,12 @@ function updateFreeBusyDataCallback(http) {
             var slots = http.responseText.split(",");
             var rowIndex = input.parentNode.parentNode.sectionRowIndex;
             var nodes = $("freeBusyData").tBodies[0].rows[rowIndex].cells;
-             log ("received " + slots.length + " slots for " + rowIndex + " with " + nodes.length + " cells");
+            // log ("received " + slots.length + " slots for " + rowIndex + " with " + nodes.length + " cells");
             for (var i = 0; i < slots.length; i++) {
                 if (slots[i] != '0')
                     setSlot(nodes, i, slots[i]);
             }
         }
-        document.contactFreeBusyAjaxRequest = null; 
-        if (awaitingFreeBusyRequests.length > 0) { log ("1");
-            displayFreeBusyForNode(awaitingFreeBusyRequests.shift()); }
     }
 }
 
@@ -484,8 +604,8 @@ function resetAllFreeBusys() {
     var inputs = table.getElementsByTagName("input");
 
     for (var i = 0; i < inputs.length - 1; i++) {
-        var currentInput = inputs[i]; log ("reset fb " + currentInput.uid);
-        currentInput.hasfreebusy = false; log ("2");
+        var currentInput = inputs[i];
+        currentInput.hasfreebusy = false;
         displayFreeBusyForNode(currentInput);
     }
 }
@@ -626,8 +746,8 @@ function onEditorOkClick(event) {
         if (inputs[i].uid)
             uid = inputs[i].uid;
         if (!(name && name.length > 0))
-            if (inputs[i].uid)
-                name = inputs[i].uid;
+            if (uid.length > 0)
+                name = uid;
             else
                 name = email;
         var attendee = attendees["email"];
@@ -791,7 +911,6 @@ function prepareAttendees() {
 
         attendees.keys().each(function(atKey) {
             var attendee = attendees.get(atKey);
-            // attendee = $H(attendee);
             var row = $(modelAttendee.cloneNode(true));
             tbodyAttendees.insertBefore(row, newAttendeeRow);
             row.removeClassName("attendeeModel");
@@ -822,13 +941,14 @@ function prepareAttendees() {
                 value = "";
             value += "<" + attendee["email"] + ">";
             input.value = value;
-            if (uid)
-                input.uid = uid;
+            input.uid = attendee["uid"];
+            input.cname = attendee["cname"];
             input.setAttribute("name", "");
-            input.setAttribute("modified", "0");
-            input.observe("blur", checkAttendee);
-            input.observe("keydown", onContactKeydown);
-	 
+            input.modified = false;
+            input.observe("blur", onInputBlur);
+            input.observe("keydown", onContactKeydown.bindAsEventListener(input)
+);
+
             row = $(modelData.cloneNode(true));
             tbodyData.insertBefore(row, newDataRow);
             row.removeClassName("dataModel");
@@ -838,7 +958,7 @@ function prepareAttendees() {
 
     // Activate "Add attendee" button
     var links = tableAttendees.select("TR.futureAttendee TD A");
-    links.first().observe("click", newAttendee);
+    links.first().observe("click", onNewAttendeeClick);
 }
 
 function onWindowResize(event) {
@@ -934,7 +1054,7 @@ function initTimeWidgets(widgets) {
 function onAdjustTime(event) {
     var endDate = window.getEndDate();
     var startDate = window.getStartDate();
-    if ($(this).readAttribute("id").startsWith("start")) {
+    if (this.id.startsWith("start")) {
         // Start date was changed
         var delta = window.getShadowStartDate().valueOf() -
             startDate.valueOf();

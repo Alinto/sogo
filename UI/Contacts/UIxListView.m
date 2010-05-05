@@ -143,29 +143,23 @@
 
 - (WOResponse *) propertiesAction
 {
+  NSArray *references;
   NSMutableArray *data;
   NGVCardReference *card;
-  WOResponse *rc;
-  int i, count;
+  int count, max;
 
-  data = [NSMutableArray array];
-  co = [self clientObject];
-  list = [co vList];
-
-  count = [[list cardReferences] count];
-  for (i = 0; i < count; i++)
+  list = [[self clientObject] vList];
+  references = [list cardReferences];
+  max = [references count];
+  data = [NSMutableArray arrayWithCapacity: max];
+  for (count = 0; count < max; count++)
     {
-      card = [[list cardReferences] objectAtIndex: i];
-      [data addObject: [NSArray arrayWithObjects: [card reference], [card fn], 
-                                [card email], nil]];
+      card = [references objectAtIndex: count];
+      [data addObject: [NSArray arrayWithObjects: [card reference],
+                                [card fn], [card email], nil]];
     }
 
-  rc = [context response];
-  [rc setHeader: @"text/plain; charset=utf-8"
-         forKey: @"content-type"];
-  [rc appendContentString: [data jsonRepresentation]];
-
-  return rc;
+  return [self responseWithStatus: 200 andJSONRepresentation: data];
 }
 
 @end
