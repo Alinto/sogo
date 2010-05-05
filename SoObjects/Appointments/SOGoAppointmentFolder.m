@@ -2285,11 +2285,6 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return @"";
 }
 
-- (NSString *) davScheduleCalendarTransparency
-{
-  return @"coucou";
-}
-
 /* vevent UID handling */
 
 - (NSString *) resourceNameForEventUID: (NSString *) uid
