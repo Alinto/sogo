@@ -330,6 +330,40 @@
   return [self childrenWithTag: @"attendee"];
 }
 
+- (BOOL) isAttendee: (id) _email
+{
+  NSArray *attEmails;
+  
+  _email     = [_email lowercaseString];
+  attEmails = [[self attendees] valueForKey:@"rfc822Email"];
+  attEmails = [attEmails valueForKey: @"lowercaseString"];
+  return [attEmails containsObject:_email];
+}
+
+- (iCalPerson *) findAttendeeWithEmail: (id) email
+{
+  NSArray *attendees;
+  unsigned int count, max;
+  NSString *lowerEmail, *currentEmail;
+  iCalPerson *attendee, *currentAttendee;
+
+  attendee = nil;
+
+  lowerEmail = [email lowercaseString];
+  attendees = [self attendees];
+  max = [attendees count];
+
+  for (count = 0; attendee == nil && count < max; count++)
+    {
+      currentAttendee = [attendees objectAtIndex: count];
+      currentEmail = [[currentAttendee rfc822Email] lowercaseString];
+      if ([currentEmail isEqualToString: lowerEmail])
+        attendee = currentAttendee;
+    }
+
+  return attendee;
+}
+
 - (void) removeAllAlarms
 {
   [children removeObjectsInArray: [self alarms]];
@@ -406,48 +440,6 @@
 }
 
 /* stuff */
-
-- (NSArray *) participants
-{
-  return [self _filteredAttendeesThinkingOfPersons: YES];
-}
-
-- (NSArray *) resources
-{
-  return [self _filteredAttendeesThinkingOfPersons: NO];
-}
-
-- (NSArray *) _filteredAttendeesThinkingOfPersons: (BOOL) _persons
-{
-  NSArray *list;
-  NSMutableArray *filtered;
-  unsigned count, max;
-  iCalPerson *person;
-  NSString *role;
-
-  if (_persons)
-    {
-      list = [self attendees];
-      max = [list count];
-      filtered = [NSMutableArray arrayWithCapacity: max];
-      for (count = 0; count < max; count++)
-        {
-          person = (iCalPerson *) [list objectAtIndex: count];
-          role = [[person role] uppercaseString];
-          if (![role hasPrefix: @"NON-PART"])
-            [filtered addObject: person];
-        }
-
-      list = filtered;
-    }
-  else
-    list = [self childrenWithTag: @"attendee"
-                 andAttribute: @"role"
-                 havingValue: @"non-part"];
-
-  return list;
-}
-
 - (BOOL) isOrganizer: (id) _email
 {
   NSString *organizerMail;
@@ -458,6 +450,35 @@
            isEqualToString: [_email lowercaseString]];
 }
 
+- (NSArray *) participants
+{
+  NSArray *list;
+  NSMutableArray *filtered;
+  unsigned count, max;
+  iCalPerson *person;
+  NSString *role;
+
+  list = [self attendees];
+  max = [list count];
+  filtered = [NSMutableArray arrayWithCapacity: max];
+  for (count = 0; count < max; count++)
+    {
+      person = [list objectAtIndex: count];
+      role = [[person role] uppercaseString];
+      if (![role hasPrefix: @"NON-PARTICIPANT"])
+        [filtered addObject: person];
+    }
+
+  return filtered; 
+}
+
+- (NSArray *) nonParticipants
+{
+  return [self childrenWithTag: @"attendee"
+                  andAttribute: @"role"
+                   havingValue: @"non-participant"];
+}
+
 - (BOOL) isParticipant: (id) _email
 {
   NSArray *partEmails;
@@ -466,26 +487,6 @@
   partEmails = [[self participants] valueForKey:@"rfc822Email"];
   partEmails = [partEmails valueForKey: @"lowercaseString"];
   return [partEmails containsObject:_email];
-}
-
-- (iCalPerson *) findParticipantWithEmail: (id) _email
-{
-  NSArray  *ps;
-  unsigned i, count;
-  
-  _email = [_email lowercaseString];
-  ps     = [self participants];
-  count  = [ps count];
-
-  for (i = 0; i < count; i++) {
-    iCalPerson *p;
-    
-    p = [ps objectAtIndex:i];
-    if ([[[p rfc822Email] lowercaseString] isEqualToString:_email])
-      return p;
-  }
-
-  return nil; /* not found */
 }
 
 - (NSComparisonResult) _compareValue: (id) selfValue
