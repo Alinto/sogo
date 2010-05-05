@@ -1,3 +1,16 @@
+2010-05-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/iCalEntityObject+SOGo.m
+	(-userIsParticipant:): renamed to "userIsAttendee:". We now
+	request the list of attendees rather than the list of
+	participants.
+	(-userAsParticipant:): renamed to "userAsAttendee:". Again, we
+	return the attendee matching the user, whether he/she is a
+	participant or not.
+
+	* SoObjects/SOGo/iCalEntityObject+Utilities.[hm]: removed useless
+	module, since it implemented methods already found elsewhere.
+
 2010-05-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/ContactsUI.js (initContacts): we must

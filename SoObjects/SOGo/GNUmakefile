@@ -34,7 +34,6 @@ SOGo_HEADER_FILES = \
 	SOGoDateFormatter.h		\
 	SOGoPermissions.h		\
 	SOGoStartupLogger.h		\
-	iCalEntityObject+Utilities.h	\
 	NSArray+DAV.h			\
 	NSArray+Utilities.h		\
 	NSCalendarDate+SOGo.h		\
@@ -103,7 +102,6 @@ SOGo_OBJC_FILES = \
 	SQLSource.m			\
 	SOGoUserProfile.m		\
 	SOGoSQLUserProfile.m		\
-	iCalEntityObject+Utilities.m	\
 	NSArray+DAV.m			\
 	NSArray+Utilities.m		\
 	NSCalendarDate+SOGo.m		\

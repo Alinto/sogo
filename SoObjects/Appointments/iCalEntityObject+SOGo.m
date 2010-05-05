@@ -57,40 +57,40 @@ NSNumber *iCalDistantFutureNumber = nil;
     }
 }
 
-- (BOOL) userIsParticipant: (SOGoUser *) user
+- (BOOL) userIsAttendee: (SOGoUser *) user
 {
-  NSEnumerator *participants;
-  iCalPerson *currentParticipant;
-  BOOL isParticipant;
+  NSEnumerator *attendees;
+  iCalPerson *currentAttendee;
+  BOOL isAttendee;
 
-  isParticipant = NO;
+  isAttendee = NO;
 
-  participants = [[self participants] objectEnumerator];
-  currentParticipant = [participants nextObject];
-  while (!isParticipant
-	 && currentParticipant)
-    if ([user hasEmail: [currentParticipant rfc822Email]])
-      isParticipant = YES;
+  attendees = [[self attendees] objectEnumerator];
+  currentAttendee = [attendees nextObject];
+  while (!isAttendee
+	 && currentAttendee)
+    if ([user hasEmail: [currentAttendee rfc822Email]])
+      isAttendee = YES;
     else
-      currentParticipant = [participants nextObject];
+      currentAttendee = [attendees nextObject];
 
-  return isParticipant;
+  return isAttendee;
 }
 
-- (iCalPerson *) userAsParticipant: (SOGoUser *) user
+- (iCalPerson *) userAsAttendee: (SOGoUser *) user
 {
-  NSEnumerator *participants;
-  iCalPerson *currentParticipant, *userParticipant;
+  NSEnumerator *attendees;
+  iCalPerson *currentAttendee, *userAttendee;
 
-  userParticipant = nil;
+  userAttendee = nil;
 
-  participants = [[self participants] objectEnumerator];
-  while (!userParticipant
-	 && (currentParticipant = [participants nextObject]))
-    if ([user hasEmail: [currentParticipant rfc822Email]])
-      userParticipant = currentParticipant;
+  attendees = [[self attendees] objectEnumerator];
+  while (!userAttendee
+	 && (currentAttendee = [attendees nextObject]))
+    if ([user hasEmail: [currentAttendee rfc822Email]])
+      userAttendee = currentAttendee;
 
-  return userParticipant;
+  return userAttendee;
 }
 
 - (BOOL) userIsOrganizer: (SOGoUser *) user

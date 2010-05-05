@@ -39,7 +39,6 @@
 
 #import <SOPE/NGCards/NSString+NGCards.h>
 
-#import <SOGo/iCalEntityObject+Utilities.h>
 #import <SOGo/SOGoUserManager.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSObject+DAV.h>
@@ -591,13 +590,13 @@
 	  SOGoUser *currentUser;
 
 	  currentUser = [context activeUser];
-	  otherAttendee = [event findParticipant: theOwnerUser];
+	  otherAttendee = [event userAsAttendee: theOwnerUser];
 
           delegateEmail = [otherAttendee delegatedTo];
           if ([delegateEmail length])
             delegateEmail = [delegateEmail rfc822Email];
           if ([delegateEmail length])
-            otherDelegate = [event findParticipantWithEmail: delegateEmail];
+            otherDelegate = [event findAttendeeWithEmail: delegateEmail];
           else
             otherDelegate = NO;
 
@@ -635,7 +634,7 @@
 		    delegateEmail = [delegateEmail rfc822Email];
 		  
 		  if ([delegateEmail length])
-		    otherDelegate = [event findParticipantWithEmail: delegateEmail];
+		    otherDelegate = [event findAttendeeWithEmail: delegateEmail];
 		  else
 		    otherDelegate = NO;
 		}
@@ -708,7 +707,7 @@
     delegateEmail = [delegateEmail rfc822Email];
   
   if ([delegateEmail length])
-    otherDelegate = [event findParticipantWithEmail: delegateEmail];
+    otherDelegate = [event findAttendeeWithEmail: delegateEmail];
   else
     otherDelegate = NO;
   
@@ -792,7 +791,7 @@
 		delegateEmail = [delegateEmail rfc822Email];
 	      
 	      if ([delegateEmail length])
-		otherDelegate = [event findParticipantWithEmail: delegateEmail];
+		otherDelegate = [event findAttendeeWithEmail: delegateEmail];
 	      else
 		otherDelegate = NO;
 	    }
@@ -860,7 +859,7 @@
 		       shouldAddSentBy: YES];
 	}
 
-      // We update the calendar of all participants that are
+      // We update the calendar of all attendees that are
       // local to the system. This is useful in case user A accepts
       // invitation from organizer B and users C, D, E who are also
       // attendees need to verify if A has accepted.
@@ -1075,7 +1074,7 @@
   [self sendReceiptEmailUsingTemplateNamed: (isUpdate
                                              ? @"Update" : @"Invitation")
                                  forObject: emailEvent
-                                        to: [newEvent participants]];
+                                        to: [newEvent attendees]];
 
   return elements;
 }
@@ -1120,7 +1119,7 @@
 
   [self sendReceiptEmailUsingTemplateNamed: @"Deletion"
                                  forObject: event
-                                        to: [event participants]];
+                                        to: [event attendees]];
 
   return elements;
 }
@@ -1161,7 +1160,7 @@
     }
 
   // Find attendee within event
-  localAttendee = [event findParticipantWithEmail: [attendee rfc822Email]];
+  localAttendee = [event findAttendeeWithEmail: [attendee rfc822Email]];
   if (localAttendee)
     {
       // Update the attendee's status
@@ -1230,7 +1229,7 @@
   [[event parent] setMethod: @""];
   ownerUser = [SOGoUser userWithLogin: [[SOGoUserManager sharedUserManager]
 					 getUIDForEmail: originator]];
-  attendee = [event findParticipant: ownerUser];
+  attendee = [event userAsAttendee: ownerUser];
   eventUID = [event uid];
 
   delegate = nil;
@@ -1240,7 +1239,7 @@
       delegateEmail = [delegateEmail substringFromIndex: 7];
       if ([delegateEmail length])
         delegate
-          = [event findParticipantWithEmail: delegateEmail];
+          = [event findAttendeeWithEmail: delegateEmail];
     }
 
   recipientsEnum = [recipients objectEnumerator];
@@ -1326,7 +1325,7 @@
       // change will be on the attendee corresponding to the ownerUser.
       ownerUser = [SOGoUser userWithLogin: owner];
 
-      attendee = [event findParticipant: ownerUser];
+      attendee = [event userAsAttendee: ownerUser];
       if (attendee)
 	{
 	  if (delegate
@@ -1338,9 +1337,9 @@
 	      if (delegatedUser != nil && [event userIsOrganizer: delegatedUser])
 		ex = [NSException exceptionWithHTTPStatus: 403
 						   reason: @"delegate is organizer"];		
-	      if ([event isParticipant: [[delegate email] rfc822Email]])
+	      if ([event isAttendee: [[delegate email] rfc822Email]])
 		ex = [NSException exceptionWithHTTPStatus: 403
-						   reason: @"delegate is a participant"];
+						   reason: @"delegate is a attendee"];
 	      else if ([SOGoGroup groupWithEmail: [[delegate email] rfc822Email]
                                         inDomain: [ownerUser domain]])
 		ex = [NSException exceptionWithHTTPStatus: 403
@@ -1411,7 +1410,7 @@
                                                     to: attendees];
 	    }
 	}
-      else if ([occurence userIsParticipant: ownerUser])
+      else if ([occurence userIsAttendee: ownerUser])
 	// The current user deletes the occurence; let the organizer know that
 	// the user has declined this occurence.
 	[self changeParticipationStatus: @"DECLINED" withDelegate: nil
@@ -1439,7 +1438,7 @@
   NSArray *allEvents;
   int count, max;
   iCalEvent *currentEvent;
-  iCalPerson *ownerParticipant;
+  iCalPerson *ownerAttendee;
   NSString *key;
   SOGoUser *ownerUser;
 
@@ -1452,14 +1451,14 @@
   for (count = 0; count < max; count++)
     {
       currentEvent = [allEvents objectAtIndex: count];
-      ownerParticipant = [currentEvent userAsParticipant: ownerUser];
-      if (ownerParticipant)
+      ownerAttendee = [currentEvent userAsAttendee: ownerUser];
+      if (ownerAttendee)
         {
           if (count == 0)
             key = @"master";
           else
             key = [[currentEvent recurrenceId] iCalFormattedDateTimeString];
-          [partStats setObject: ownerParticipant forKey: key];
+          [partStats setObject: ownerAttendee forKey: key];
         }
     }
 
