@@ -133,6 +133,9 @@
   NSString *stat;
 
   switch (_status) {
+    case iCalPersonPartStatUndefined:
+      stat = @"";
+      break;
     case iCalPersonPartStatAccepted:
       stat = @"ACCEPTED";
       break;
@@ -170,7 +173,9 @@
   NSString *stat;
   
   stat = [[self partStat] uppercaseString];
-  if (![stat length] || [stat isEqualToString:@"NEEDS-ACTION"])
+  if (![stat length])
+    return iCalPersonPartStatUndefined;
+  else if ([stat isEqualToString:@"NEEDS-ACTION"])
     return iCalPersonPartStatNeedsAction;
   else if ([stat isEqualToString:@"ACCEPTED"])
     return iCalPersonPartStatAccepted;

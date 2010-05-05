@@ -1,5 +1,9 @@
 2010-05-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* iCalPerson.m (-setParticipationStatus:, -participationStatus):
+	added handling of the new partstat value
+	"iCalPersonPartStatUndefined".
+
 	* iCalEntityObject.m (-resources): removed useless method.
 	(-nonParticipants): new method returning ATTENDEE objects having
 	their ROLE attribute set to "NON-PARTICIPANT".

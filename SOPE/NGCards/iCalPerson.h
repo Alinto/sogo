@@ -25,6 +25,7 @@
 #import "CardElement.h"
 
 typedef enum {
+  iCalPersonPartStatUndefined    = -1, /* empty/undefined */
   iCalPersonPartStatNeedsAction  = 0, /* NEEDS-ACTION (DEFAULT) */
   iCalPersonPartStatAccepted     = 1, /* ACCEPTED               */
   iCalPersonPartStatDeclined     = 2, /* DECLINED               */
