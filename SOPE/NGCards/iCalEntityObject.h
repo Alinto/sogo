@@ -109,15 +109,16 @@ typedef enum
 - (void) addToAttendees: (iCalPerson *) _person;
 - (NSArray *) attendees;
 - (void) setAttendees: (NSArray *) attendees;
+- (BOOL) isAttendee: (id) _email;
 
 - (void) removeFromAttendees: (iCalPerson *) oldAttendee;
 - (void) removeAllAttendees;
 
-/* categorize attendees into participants and resources */
+/* categorize attendees into participants and non-participants */
 - (NSArray *) participants;
-- (NSArray *) resources;
+- (NSArray *) nonParticipants;
 - (BOOL) isParticipant: (id) _email;
-- (iCalPerson *) findParticipantWithEmail: (id) _email;
+- (iCalPerson *) findAttendeeWithEmail: (id) email;
 
 - (void) removeAllAlarms;
 - (void) addToAlarms: (id) _alarm;
