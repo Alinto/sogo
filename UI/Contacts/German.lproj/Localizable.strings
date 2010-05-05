@@ -183,7 +183,7 @@
 "Import Cards" = "Karten importieren";
 "Select LDIF or vCard file..." = "LDIF oder vCard Datei wählen...";
 "Upload" = "Hochladen";
-"Done" = "Abgeschlossen"
+"Done" = "Abgeschlossen";
 "An error occured while importing contacts." = "Fehler während des Importierens von Kontakten.";
 "No card was imported." = "Es wurden keine Kontakte importiert.";
 "A total of %{0} cards were imported in the addressbook." = "%{0} Kontakte wurden in das Adressbuch importiert.";
