@@ -34,10 +34,10 @@ extern NSNumber *iCalDistantFutureNumber;
 
 + (void) initializeSOGoExtensions;
 
-- (BOOL) userIsParticipant: (SOGoUser *) user;
+- (BOOL) userIsAttendee: (SOGoUser *) user;
 - (BOOL) userIsOrganizer: (SOGoUser *) user;
 
-- (iCalPerson *) userAsParticipant: (SOGoUser *) user;
+- (iCalPerson *) userAsAttendee: (SOGoUser *) user;
 
 - (NSArray *) attendeeUIDs;
 - (BOOL) isStillRelevant;

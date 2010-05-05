@@ -4,6 +4,86 @@
 	refresh the tasks list when receiving the AJAX response instead of
 	emptying the list before sending the AJAX request.
 
+2010-05-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/UIxAttendeesEditor.js (onContactKeydown):
+	the code for the "enter" and "tab" has been merged, since it was
+	similar. We also resolve individual contacts from list entries.
+	(resolveListAttendees): new function that fetches the indivual
+	entries from contacts lists.
+	(resolveListAttendeesCallback): callback for the above, that
+	create rows and input fields corresponding to the returned
+	entries, and trigger a contact search on each of them.
+	(performSearch): take an "input" field as argument since
+	"attendeesEditor.currentField" is no longer used.
+	(performSearchCallbacks): roles and partstats are now stored in
+	individual attributes rather than in the element class. We also
+	now behave differently depending on whether the event owner is
+	returned or another type of user, in order to match Lightning's
+	behaviour.
+	(newAttendee): no longer a callback, and now takes an optional
+	argument that indicates with attendee row precedes the one being
+	created. Also the new row is returned.
+	(checkAttendee): no longer a callback. Now takes an "input"
+	argument.
+	(onInputBlur): new callback that invokes "checkAttendee" and
+	handle the cleanup of the entries menu.
+	(displayFreeBusyForNode): use DOM methods rather than "innerHTML"
+	to modify the cell contents.
+	(updateFreeBusyDataCallback): freebusy requests are no longer
+	sequential.
+	(prepareAttendees): we now modify the DOM attributes rather than
+	the HTML attributes.
+
+	* UI/Contacts/UIxListView.m (-propertiesAction): we now invoke
+	-[self responseWithStatus:andJSONRepresentation:] to build the
+	resulting WOResponse.
+
+	* UI/Contacts/UIxContactFoldersView.m (-allContactSearchAction):
+	the type of returned component can now be deduced from the value
+	of "c_component" rather than from the c_name extension... Also, we
+	avoid autoreleasing variables where it's not needed.
+	(-contactSearchAction): removed obsolete method.
+
+	* SoObjects/Contacts/SOGoContactGCSFolder.m (+initialize): new
+	method initializing "folderListingFields" as a static NSArray
+	rather than as macro. Added "c_component" to the list of fields to
+	retrieve.
+
+	* UI/Scheduler/UIxComponentEditor.m (-ownerLogin): new accessor
+	the differenciate between the type of users in the list of
+	attendees.
+
+	* UI/WebServerResources/UIxAttendeesEditor.js
+	(performSearchCallback): differenciate between the organizer user
+	and other attendees, as in Lightning.
+
+	* UI/WebServerResources/UIxAppointmentEditor.js
+	(setupAttendeeNode): removed useless calls to $().
+
+	* UI/Scheduler/UIxComponentEditor.m
+	(-ownerIsAttendee:andClientObject:)
+	(delegateIsAttendee:andClientObject:): handle the case where the
+	user is found but has no RSVP or one with "FALSE" as value.
+	(-userHasRSVP): renamed from "userIsAttendee", since we don't
+	enable users without a RSVP set as "TRUE" to repond to
+	invitations.
+	(-currentAttendeeClasses): new method.
+
+	* UI/MailPartViewers/UIxMailPartICalActions.m (-tentativeAction):
+	new action method for the "TENTATIVE" partstat.
+
+	* SoObjects/Appointments/iCalEntityObject+SOGo.m
+	(-userIsParticipant:): renamed to "userIsAttendee:". We now
+	request the list of attendees rather than the list of
+	participants.
+	(-userAsParticipant:): renamed to "userAsAttendee:". Again, we
+	return the attendee matching the user, whether he/she is a
+	participant or not.
+
+	* SoObjects/SOGo/iCalEntityObject+Utilities.[hm]: removed useless
+	module, since it implemented methods already found elsewhere.
+
 2010-05-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/ContactsUI.js (initContacts): we must

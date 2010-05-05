@@ -164,7 +164,7 @@ function addContact(tag, fullContactName, contactId, contactName, contactEmail) 
 
 function saveEvent(sender) {
     if (validateAptEditor()) {
-        document.forms['editform'].attendees.value = attendees.toJSON();
+        document.forms['editform'].attendees.value = $(attendees).toJSON();
         document.forms['editform'].submit();
     }
 
@@ -298,7 +298,7 @@ function initTimeWidgets(widgets) {
     }
 }
 
-function refreshAttendeesRO () {
+function refreshAttendeesRO() {
     var attendeesMenu = $("attendeesMenu");
     var attendeesLabel = $("attendeesLabel");
     var attendeesDiv = $("attendeesDiv");
@@ -323,7 +323,7 @@ function refreshAttendees(newAttendees) {
     var attendeesMenu = $("attendeesMenu");
 
     if (!attendeesHref)
-        return refreshAttendeesRO ();
+        return refreshAttendeesRO();
 
     if (attendeesMenu)
         attendeesMenu = $("attendeesMenu").down("ul");
@@ -337,9 +337,10 @@ function refreshAttendees(newAttendees) {
     if (menuItems && attendeesMenu)
         for (var i = 0; i < menuItems.length; i++)
             attendeesMenu.removeChild(menuItems[i]);
-    
-    if (newAttendees)
-        attendees = $H(newAttendees.evalJSON(true));
+
+    if (newAttendees) {
+        attendees = $H(newAttendees.evalJSON());
+    }
 
     if (attendees.keys().length > 0) {
         // Update attendees link and show label
@@ -353,13 +354,13 @@ function refreshAttendees(newAttendees) {
                 if (attendeesMenu) {
                     var delegatedTo = attendee.get('delegated-to');
                     if (!attendee.get('delegated-from') || delegatedTo) {
-                        var node = document.createElement("li");
+                        var node = createElement("li");
                         attendeesMenu.appendChild(node);
                         setupAttendeeNode(node, attendee);
                     }
                     if (delegatedTo) {
                         var delegate = attendees.get(delegatedTo);
-                        var node = document.createElement("li");
+                        var node = createElement("li");
                         attendeesMenu.appendChild(node);
                         setupAttendeeNode(node, $H(delegate), true);
                     }
@@ -384,13 +385,18 @@ function setupAttendeeNode(aNode, aAttendee, isDelegate) {
 //        name = email;
     name = name || email;
     
-    $(aNode).writeAttribute("email", email);
-    $(aNode).addClassName("attendee");
-    $(aNode).addClassName(aAttendee.get('partstat'));
+    aNode.writeAttribute("email", email);
+    aNode.addClassName("attendee");
+    var partstat = aAttendee.get('partstat');
+    if (!partstat)
+        partstat = "no-partstat";
+    aNode.addClassName(partstat);
     if (isDelegate)
-        $(aNode).addClassName("delegate");
+        aNode.addClassName("delegate");
+    var statusIconNode = createElement("div", null, "statusIcon");
+    aNode.appendChild(statusIconNode);
     aNode.appendChild(document.createTextNode(name));
-    $(aNode).observe("click", onMailTo);
+    aNode.observe("click", onMailTo);
 }
 
 function initializeAttendeesHref() {
@@ -410,8 +416,8 @@ function onAttendeesHrefClick(event) {
 }
 
 function onMailTo(event) {
-    var target = getTarget(event);
-    var address = target.firstChild.nodeValue.trim() + " <" + target.readAttribute("email") + ">";
+    var target = $(getTarget(event));
+    var address = target.lastChild.nodeValue.trim() + " <" + target.readAttribute("email") + ">";
     openMailTo(address);
     Event.stop(event);
     return false;

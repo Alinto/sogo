@@ -1330,18 +1330,23 @@ DIV.event.alarm DIV.text
   background-repeat: no-repeat;
   background-position: top right; }
 
+DIV.eventInside.tentative,
 DIV.eventInside.needs-action
-{ border: 1px dotted #666;
-  -moz-opacity: 0.6;
+{ -moz-opacity: 0.7;
   opacity: 0.7; }
 
+DIV.eventInside.needs-action
+{ border: 2px dotted #000; }
+
+DIV.eventInside.tentative DIV.text,
 DIV.eventInside.needs-action DIV.text
 { top: 0px;
-  left: 0px; }
+  left: 2px; }
 
+DIV.eventInside.delegated,
 DIV.eventInside.declined
-{ -moz-opacity: 0.3;
-  opacity: 0.3; }
+{ -moz-opacity: 0.4;
+  opacity: 0.4; }
 
 /* event DnD */
 DIV.event DIV.topDragGrip,

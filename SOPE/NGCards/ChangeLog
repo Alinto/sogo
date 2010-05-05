@@ -1,3 +1,16 @@
+2010-05-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* iCalPerson.m (-setParticipationStatus:, -participationStatus):
+	added handling of the new partstat value
+	"iCalPersonPartStatUndefined".
+
+	* iCalEntityObject.m (-resources): removed useless method.
+	(-nonParticipants): new method returning ATTENDEE objects having
+	their ROLE attribute set to "NON-PARTICIPANT".
+	(-isAttendee:): new method.
+	(-findAttendeeWithEmail): new method replacing
+	"findParticipantWithEmail:".
+
 2010-04-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* iCalRecurrenceRule.m (-iCalRepresentationForWeekDay:): made
@@ -34,7 +47,7 @@
 
 	* iCalWeeklyRecurrenceCalculator.m
 	(-recurrenceRangesWithinCalendarDateRange:): make use of the new
-	iCalByDayMask class.	
+	iCalByDayMask class.
 	(-lastInstanceStartDate): make use of the previous method when a
 	BYxxx mask is defined in the rule.
 

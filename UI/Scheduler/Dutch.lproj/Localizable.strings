@@ -460,8 +460,9 @@ validate_endbeforestart    = "Het begin vindt plaats vóór het einde.";
 = "Weet u zeker dat u de agenda \"%{0}\" wilt verwijderen?";
 
 /* Legend */
-"Required participant" = "Vereiste deelnemer";
-"Optional participant" = "Gewenste deelnemer";
+"Participant" = "Deelnemer";
+"Optional Participant" = "Gewenste deelnemer";
+"Non Participant" = "Non Participant";
 "Chair" = "Voorzitter";
 
 "Needs action" = "Actie vereist";

@@ -246,10 +246,10 @@
 
 /* Appointments (participation state) */
 
-"partStat_NEEDS-ACTION" = "Needs action";
+"partStat_NEEDS-ACTION" = "I will confirm later";
 "partStat_ACCEPTED" = "I will attend";
 "partStat_DECLINED" = "I will not attend";
-"partStat_TENTATIVE" = "I will confirm later";
+"partStat_TENTATIVE" = "I might attend";
 "partStat_DELEGATED" = "I delegate";
 "partStat_OTHER" = "Other";
 
@@ -460,8 +460,9 @@ validate_endbeforestart    = "The end date that you entered occurs before the st
 = "Are you sure you want to delete the calendar \"%{0}\"?";
 
 /* Legend */
-"Required participant" = "Required participant";
-"Optional participant" = "Optional participant";
+"Participant" = "Participant";
+"Optional Participant" = "Optional Participant";
+"Non Participant" = "Non Participant";
 "Chair" = "Chair";
 
 "Needs action" = "Needs action";

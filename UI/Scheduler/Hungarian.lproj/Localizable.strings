@@ -460,8 +460,9 @@ validate_endbeforestart    = "A megadott befejező dátum korábbi, mint a kezd�
 = "Biztosan törli ezt a naptárat: \"%{0}\"?";
 
 /* Legend */
-"Required participant" = "Kötelező résztvevő";
-"Optional participant" = "Nem kötelező résztvevő";
+"Participant" = "Kötelező résztvevő";
+"Optional Participant" = "Nem kötelező résztvevő";
+"Non Participant" = "Non Participant";
 "Chair" = "Szék";
 
 "Needs action" = "Foglalkozni kell vele";

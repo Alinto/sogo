@@ -19,7 +19,8 @@
     var activeComponent = '<var:if condition="isChildOccurence"><var:string value="clientObject.container.nameInContainer"/>/</var:if><var:string value="clientObject.nameInContainer"/>';
     var readOnly = <var:if condition="eventIsReadOnly">true</var:if><var:if condition="eventIsReadOnly"
     const:negate="YES">false</var:if>;
-    var attendees = <var:string value="jsonAttendees" const:escapeHTML="NO" />;
+    var attendees = <var:string value="jsonAttendees" const:escapeHTML="NO"/>;
+    var ownerLogin = '<var:string value="ownerLogin"/>';
   </script>
 
   <var:if condition="eventIsReadOnly" const:negate="YES">
@@ -203,11 +204,9 @@
     <span class="content"><var:string value="organizerName"/></span>
     </label>
   </var:if>
-  <var:if condition="userIsAttendee">
+  <var:if condition="userHasRSVP">
     <label><var:string label:value="Reply:" />
       <span class="content"><var:popup list="replyList" item="item"
-          const:disabledValue="-"
-          label:noSelectionString="partStat_NEEDS-ACTION"
           const:name="replyList"
           const:id="replyList"
           string="itemReplyText"
@@ -251,8 +250,17 @@
       </label>
       <label id="attendeesLabel">
         <span class="content"><div id="attendeesMenu" class="fakeTextArea">
-	  <var:foreach list="component.participants" item="attendee">
-	    <var:if condition="attendee.delegatedTo" const:negate="YES"><div var:class="attendee.partStatWithDefault.lowercaseString"><a var:href="attendee.email" var:email="attendee.email.rfc822Email"><var:string value="attendeeForDisplay" /></a><var:if condition="attendee.delegatedFrom"> (<var:string label:value="delegated from" /> <var:string value="attendee.delegatedFrom.rfc822Email" />)</var:if></div></var:if>
+	  <var:foreach list="component.attendees" item="attendee"
+                  ><var:if condition="attendee.delegatedTo" const:negate="YES"
+                    ><div var:class="currentAttendeeClasses"
+                      ><div const:class="statusIcon"><!-- space --></div
+                        ><a var:href="attendee.email" var:email="attendee.email.rfc822Email"
+                        ><var:string value="attendeeForDisplay" /></a
+                        ><var:if condition="attendee.delegatedFrom"
+                        > (<var:string label:value="delegated from" />
+                        <var:string value="attendee.delegatedFrom.rfc822Email" />)</var:if
+                        ></div
+                      ></var:if>
 	  </var:foreach>
         </div></span>
       </label>
@@ -331,7 +339,7 @@
 	    var:value="reminderReference"/>
 
     <div id="windowButtons">
-      <var:if condition="userIsAttendee"><a id="okButton" href="#" class="button actionButton"
+      <var:if condition="userHasRSVP"><a id="okButton" href="#" class="button actionButton"
         ><span><var:string label:value="OK"/></span></a></var:if>
       <a id="cancelButton" href="#" class="button"
         ><span><var:string label:value="Cancel"/></span></a>

@@ -67,7 +67,7 @@ function createElement(tagName, id, classes,
     if (parentNode)
         parentNode.appendChild(newElement);
 
-    return $(newElement);
+    return newElement;
 }
 
 function URLForFolderID(folderID) {

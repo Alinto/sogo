@@ -31,6 +31,7 @@
 #import "VSSaxDriver.h"
 #import <SaxObjC/SaxException.h>
 #import <NGExtensions/NGQuotedPrintableCoding.h>
+#import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+Encoding.h>
 #import <NGCards/NSString+NGCards.h>
 #import "common.h"
@@ -653,6 +654,7 @@ static NSCharacterSet *whitespaceCharSet = nil;
                  value: (NSString *) tagValue
 {
   NSString *mtName;
+  int max;
   
   mtName = [[self _mapTagName: tagValue] uppercaseString];
   if ([cardStack count] > 0)
@@ -692,11 +694,19 @@ static NSCharacterSet *whitespaceCharSet = nil;
                            stringByAppendingString: mtName]];
     }
   [self _endGroupElementTag: mtName];
-  [cardStack removeLastObject];
-    
+
+  max = [cardStack count];
+  if (max > 0)
+    {
+      [cardStack removeLastObject];
+      max--;
+    }
+  else
+    [self errorWithFormat: @"serious inconsistency among begin/end tags"];
+
   /* report parsed elements */
-    
-  if ([cardStack count] == 0)
+
+  if (max == 0)
     [self reportQueuedTags];
 }
 

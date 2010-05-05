@@ -235,6 +235,16 @@
           pageName = "UIxAppointmentEditor";
           actionName  = "delegate";
         };
+        tentative = { 
+          protectedBy = "RespondToComponent";
+          pageName    = "UIxAppointmentEditor"; 
+          actionName  = "tentative";
+        };
+        needsaction = { 
+          protectedBy = "RespondToComponent";
+          pageName    = "UIxAppointmentEditor"; 
+          actionName  = "needsAction";
+        };
         adjust = {
           protectedBy = "ModifyComponent";
           actionClass = "UIxAppointmentActions"; 

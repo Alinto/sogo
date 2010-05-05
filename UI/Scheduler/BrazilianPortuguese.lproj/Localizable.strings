@@ -460,8 +460,9 @@ validate_endbeforestart    = "A data que você informou ocorre antes da data ini
 = "Você tem certeza que quer apagar o calendário \"%{0}\"?";
 
 /* Legend */
-"Required participant" = "Participante Requerido";
-"Optional participant" = "Participante Opcional";
+"Participant" = "Participante";
+"Optional Participant" = "Participante Opcional";
+"Non Participant" = "Não Participante";
 "Chair" = "Cadeira";
 
 "Needs action" = "Ações necessárias";

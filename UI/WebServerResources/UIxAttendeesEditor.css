@@ -48,20 +48,62 @@ TABLE#freeBusy TD.freeBusyAttendees DIV
 TABLE#freeBusy TD.freeBusyData DIV
 { overflow: scroll; }
 
-TABLE#freeBusyAttendees TR.needs-action TD.attendees
-{ background-image: url("needs-action.png");
-  background-repeat: no-repeat;
-  background-position: 5px center; }
+TABLE#freeBusyAttendees TD.attendeeStatus
+{ width: 24px;
+  min-width: 24px;
+  max-width: 24px; }
 
-TABLE#freeBusyAttendees TR.declined TD.attendees
-{ background-image: url("declined.png");
-  background-repeat: no-repeat;
-  background-position: 5px center; }
+TABLE#freeBusyAttendees TD.attendeeStatus DIV
+{ width: 12px;
+  min-width: 12px;
+  max-width: 24px;
+  background-image: none; }
 
-TABLE#freeBusyAttendees TR.accepted TD.attendees
-{ background-image: url("accepted.png");
-  background-repeat: no-repeat;
-  background-position: 5px center; }
+UL.roles-legend SPAN.role-icon
+{ display: block;
+  float: left; }
+
+UL.roles-legend SPAN.role-icon,
+TABLE#freeBusyAttendees TR.attendee-row TD.attendeeStatus DIV
+{ background-repeat: no-repeat;
+  width: 24px;
+  height: 20px;
+  background-image: url("attendee-roles.png"); }
+
+LI[role="req-participant"] > SPAN.role-icon,
+TABLE#freeBusyAttendees TR[role="req-participant"].attendee-row TD.attendeeStatus DIV
+{ background-position: 0px 4px; }
+
+LI[role="opt-participant"] > SPAN.role-icon,
+TABLE#freeBusyAttendees TR[role="opt-participant"].attendee-row TD.attendeeStatus DIV
+{ background-position: -24px 4px; }
+
+LI[role="non-participant"] > SPAN.role-icon,
+TABLE#freeBusyAttendees TR[role="non-participant"].attendee-row TD.attendeeStatus DIV
+{ background-position: -72px 4px; }
+
+LI[role="chair"] > SPAN.role-icon,
+TABLE#freeBusyAttendees TR[role="chair"].attendee-row TD.attendeeStatus DIV
+{ background-position: -48px 4px; }
+
+TABLE#freeBusyAttendees TR.organizer-row TD.attendeeStatus DIV
+{ background-repeat: no-repeat;
+  width: 12px;
+  height: 18px;
+  margin-left: 6px;
+  background-image: url("attendee-partstats.png"); }
+
+TABLE#freeBusyAttendees TR[partstat="accepted"].organizer-row TD.attendeeStatus DIV
+{ background-position: 0px 4px; }
+
+TABLE#freeBusyAttendees TR[partstat="declined"].organizer-row TD.attendeeStatus DIV
+{ background-position: -12px 4px; }
+
+TABLE#freeBusyAttendees TR[partstat="needs-action"].organizer-row TD.attendeeStatus DIV
+{ background-position: -24px 4px; }
+
+TABLE#freeBusyAttendees TR[partstat="tentative"].organizer-row TD.attendeeStatus DIV
+{ background-position: -36px 4px; }
 
 TABLE#freeBusyHeader TR.freeBusyHeader2 TH
 { font-weight: normal; }
@@ -112,8 +154,7 @@ TABLE#freeBusyAttendees TD.attendees INPUT
   background-position: 4px center;
   border: 0px;
   width: 12em;
-  padding-left: 24px;
-  margin-left: 2em; }
+  padding-left: 24px; }
 
 TABLE#freeBusyAttendees TR.futureAttendee INPUT
 { background-image: none;
@@ -123,9 +164,6 @@ TABLE#freeBusyAttendees TR.futureAttendee TD,
 TABLE#freeBusyData TR.futureData TD
 { border: 0;
   line-height: 3em; }
-
-TABLE#freeBusyAttendees TR.futureAttendee TD A
-{ margin-left: 20px; }
 
 SPAN.freeBusyZoneElement
 { display: block;
@@ -165,32 +203,29 @@ DIV#legend
 DIV#legend UL
 { cursor: default;
   float: left;
-  width: 30%;
   margin: 0px;
+  margin-right: 10px;
   padding: 0px;
-  line-height: 1.5em;
   list-style-type: none;
   list-style-image: none; }
 
-DIV#legend UL LI
-{ white-space: nowrap;
+DIV#legend LI
+{ height: 20px;
+  white-space: nowrap;
   margin: 0px;
   padding: 0px; }
 
-DIV#legend UL IMG
-{ margin-right: .5em; }
-
-DIV#legend UL LI SPAN.colorBox
+UL.freebusy-legend SPAN.colorBox
 { float: left;
-  margin-right: .5em; }
-
-SPAN.colorBox
-{ display: block;
-  float: right;
-  border: 1px solid #333;
-  margin: .12em;
-  width: 1em;
-  height: .75em; }
+  margin-top: 5px;
+  margin-right: 2px;
+  display: block;
+  border: 1px solid #999;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #eee;
+  width: 32px;
+  height: 10px; }
 
 SPAN.colorBox.busy,
 SPAN.freeBusyZoneElement.busy

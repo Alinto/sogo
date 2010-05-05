@@ -48,7 +48,6 @@
 #import <Mailer/SOGoMailObject.h>
 #import <SOGo/SOGoParentFolder.h>
 #import <SOGo/SOGoUser.h>
-#import <SOGo/iCalEntityObject+Utilities.h>
 #import <Mailer/SOGoMailBodyPart.h>
 
 #import "UIxMailPartICalActions.h"
@@ -261,6 +260,12 @@
 			  withDelegate: nil];
 }
 
+- (WOResponse *) tentativeAction
+{
+  return [self _changePartStatusAction: @"TENTATIVE"
+			  withDelegate: nil];
+}
+
 - (WOResponse *) delegateAction
 {
 //  BOOL receiveUpdates;
@@ -369,7 +374,7 @@
   address = [[mailObject fromEnvelopeAddresses] objectAtIndex: 0];
   emailFrom = [address baseEMail];
 
-  return [event findParticipantWithEmail: emailFrom];
+  return [event findAttendeeWithEmail: emailFrom];
 }
 
 - (BOOL) _updateParticipantStatusInEvent: (iCalEvent *) calendarEvent

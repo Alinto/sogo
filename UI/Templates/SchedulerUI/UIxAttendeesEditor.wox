@@ -22,29 +22,23 @@
     <div id="freeBusyViewButtons">
       <var:string label:value="Suggest time slot:"/>
       <span class="buttons"><a id="nextSlot" href="#" class="button"
-        ><span><var:string label:value="Next slot" /></span></a>
-      <a id="previousSlot" href="#" class="button"
-        ><span><var:string label:value="Previous slot" /></span></a></span>
+          ><span><var:string label:value="Next slot" /></span></a>
+        <a id="previousSlot" href="#" class="button"
+          ><span><var:string label:value="Previous slot" /></span></a></span>
       <input class="checkbox" type="checkbox" 
-          checked="1" id="onlyOfficeHours" /><var:string label:value="Only office hours" />
+        checked="1" id="onlyOfficeHours" /><var:string label:value="Only office hours" />
     </div>
     <div id="freeBusyView">
-      <table id="freeBusy" cellspacing="0" cellpadding="0"
-	xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:var="http://www.skyrix.com/od/binding"
-	xmlns:const="http://www.skyrix.com/od/constant"
-	xmlns:uix="OGo:uix"
-	xmlns:rsrc="OGo:url"
-	xmlns:label="OGo:label">
+      <table id="freeBusy" cellspacing="0" cellpadding="0">
 	<thead>
           <tr>
             <td><!--space --></td>
             <td class="freeBusyHeader">
               <div><table id="freeBusyHeader" cellspacing="0" cellpadding="0">
-	        <tr class="freeBusyHeader1"><!--space --></tr>
-	        <tr class="freeBusyHeader2"><!--space --></tr>
-	        <tr id="currentEventPosition" class="freeBusyHeader3"><!--space --></tr>
-              </table></div>
+                  <tr class="freeBusyHeader1"><!--space --></tr>
+                  <tr class="freeBusyHeader2"><!--space --></tr>
+                  <tr id="currentEventPosition" class="freeBusyHeader3"><!--space --></tr>
+                </table></div>
             </td>
           </tr>
 	</thead>
@@ -52,25 +46,28 @@
           <tr>
             <td class="freeBusyAttendees">
               <div><table id="freeBusyAttendees" cellspacing="0" cellpadding="0">
-                <tbody>
-	          <tr class="futureAttendee"
-	            ><td class="attendees"><a href="#" class="button"
-                  readonly="readonly"><span
-                    ><var:string label:value="newAttendee" /></span></a></td
-	          ></tr>
-	          <tr class="attendeeModel"
-	            ><td class="attendees"><input type="text" class="textField" /></td
-	          ></tr>
-                </tbody>
-              </table></div>
+                  <tbody>
+                    <tr class="futureAttendee"
+                      ><td class="attendeeStatus"><div><!-- space --></div></td
+                        ><td class="attendees"><a href="#" class="button"
+                          readonly="readonly"><span
+                            ><var:string label:value="newAttendee" /></span></a></td
+                        ></tr>
+                    <tr class="attendeeModel"
+                      ><td class="attendeeStatus"><div><!-- space --></div></td
+                        ><td class="attendees"
+                        ><input type="text" class="textField" /></td
+                        ></tr>
+                  </tbody>
+                </table></div>
             </td>
             <td class="freeBusyData">
               <div><table id="freeBusyData" cellspacing="0" cellpadding="0">
-                <tbody>
-                  <tr class="futureData"></tr>
-                  <tr class="dataModel"></tr>
-                </tbody>
-              </table></div>
+                  <tbody>
+                    <tr class="futureData"></tr>
+                    <tr class="dataModel"></tr>
+                  </tbody>
+                </table></div>
             </td>
           </tr>
 	</tbody>
@@ -78,27 +75,38 @@
     </div>
     <div id="freeBusyFooter">
       <div id="legend" onmousedown="return false;">
-	<ul>
+	<ul class="roles-legend">
+	  <li role="req-participant"><span class="role-icon"><!-- space --></span
+              ><var:string label:value="Participant"/></li>
+	  <li role="opt-participant"><span class="role-icon"><!-- space --></span
+              ><var:string label:value="Optional Participant"/></li>
+	  <li role="non-participant"><span class="role-icon"><!-- space --></span
+              ><var:string label:value="Non Participant"/></li>
+	  <li role="chair"><span class="role-icon"><!-- space --></span
+              ><var:string label:value="Chair"/></li>
+	</ul>
+
+	<ul class="freebusy-legend">
 	  <li><span class="colorBox free"><!-- spacer --></span
 	      ><var:string label:value="Free" /></li>
 	  <li><span class="colorBox busy"><!-- spacer --></span
 	      ><var:string label:value="Busy" /></li>
-<!-- 	  li><span class="colorBox maybe-busy">\- spacer -\->/span -->
-<!-- 	      >var:string label:value="Maybe busy" />/li> -->
+          <!-- 	  li><span class="colorBox maybe-busy">\- spacer -\->/span -->
+          <!-- 	      >var:string label:value="Maybe busy" />/li> -->
 	  <li><span class="colorBox noFreeBusy"><!-- spacer --></span
 	      ><var:string label:value="No free-busy information" /></li>
 	</ul>
       </div>
       <div id="freeBusyReplicas">
         <div><span><var:string label:value="Start:"
-            /></span><var:component className="UIxTimeDateControl"
+              /></span><var:component className="UIxTimeDateControl"
             const:controlID="startTime"
             date="aptStartDate"
             const:dayStartHour="0"
             const:dayEndHour="23"
             /></div>
-      <div><span><var:string label:value="End:"
-            /></span><var:component className="UIxTimeDateControl"
+        <div><span><var:string label:value="End:"
+              /></span><var:component className="UIxTimeDateControl"
             const:controlID="endTime"
             date="aptEndDate"
             const:dayStartHour="0"
@@ -108,9 +116,9 @@
       <div id="windowButtons">
 	<hr />
 	<a id="okButton" href="#" class="button actionButton"
-    ><span><var:string label:value="OK"/></span></a>
+          ><span><var:string label:value="OK"/></span></a>
 	<a id="cancelButton" href="#" class="button"
-    ><span><var:string label:value="Cancel"/></span></a>
+          ><span><var:string label:value="Cancel"/></span></a>
       </div>
     </div>
   </div>

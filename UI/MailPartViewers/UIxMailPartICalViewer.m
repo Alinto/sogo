@@ -44,7 +44,6 @@
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoUserDefaults.h>
-#import <SOGo/iCalEntityObject+Utilities.h>
 #import <Appointments/iCalEntityObject+SOGo.h>
 #import <Appointments/SOGoAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentObject.h>
@@ -378,7 +377,7 @@
 
 - (BOOL) isLoggedInUserAnAttendee
 {
-  return [[self authorativeEvent] userIsParticipant: [context activeUser]];
+  return [[self authorativeEvent] userIsAttendee: [context activeUser]];
 }
 
 - (NSString *) currentAttendeeClass
@@ -451,7 +450,7 @@
 {
   iCalPerson *currentUser;
 
-  currentUser = [[self authorativeEvent] findParticipant: [context activeUser]];
+  currentUser = [[self authorativeEvent] userAsAttendee: [context activeUser]];
 
   return currentUser;
 }
@@ -463,7 +462,7 @@
     should translate the email to an internal uid and then retrieve
     all emails addresses for matching the participant.
  
-    Note: -findParticipantWithEmail: does not parse the email!
+    Note: -findAttendeeWithEmail: does not parse the email!
   */
   iCalEvent *e;
   iCalPerson *p;
@@ -473,9 +472,9 @@
   e = [self storedEvent];
   if (e)
     {
-      p = [e findParticipantWithEmail: [self replySenderBaseEMail]];
+      p = [e findAttendeeWithEmail: [self replySenderBaseEMail]];
       if (!p)
-	p = [e findParticipantWithEmail:[self replySenderEMail]];
+	p = [e findAttendeeWithEmail:[self replySenderEMail]];
     }
 
   return p;
@@ -496,7 +495,7 @@
   address = [[mailObject fromEnvelopeAddresses] objectAtIndex: 0];
   emailFrom = [address baseEMail];
 
-  return [event findParticipantWithEmail: emailFrom];
+  return [event findAttendeeWithEmail: emailFrom];
 }
 
 - (BOOL) hasSenderStatusChanged

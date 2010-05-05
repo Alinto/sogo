@@ -25,7 +25,7 @@ var calendarEvents = null;
 
 var preventAutoScroll = false;
 
-var userStates = [ "needs-action", "accepted", "declined", "tentative" ];
+var userStates = [ "needs-action", "accepted", "declined", "tentative", "delegated" ];
 
 var calendarHeaderAdjusted = false;
 
@@ -297,7 +297,7 @@ function closeInvitationWindow() {
 
 function modifyEventCallback(http) {
     if (http.readyState == 4) {
-        if (http.status == 200) {
+        if (isHttpStatus204(http.status) || http.status == 200) {
             var mailInvitation = queryParameters["mail-invitation"];
             if (mailInvitation && mailInvitation.toLowerCase() == "yes")
                 closeInvitationWindow();

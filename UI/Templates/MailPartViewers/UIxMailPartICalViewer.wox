@@ -45,6 +45,7 @@
 	  <var:if condition="hasCalendarAccess">
 	    <div class="uix_ical_toolbar" id="iCalendarToolbar">
         <p>
+                <var:if condition="currentUserAttendee.rsvp" const:value="true">
 	      <var:if condition="currentUserAttendee.partStatWithDefault"
           const:value="ACCEPTED" const:negate="YES">
           <a href="#" class="button actionButton" id="iCalendarAccept">
@@ -54,6 +55,11 @@
           const:value="DECLINED" const:negate="YES">
           <a href="#" class="button actionButton" id="iCalendarDecline">
             <span><var:string label:value="Decline" /></span></a>
+	      </var:if>
+	      <var:if condition="currentUserAttendee.partStatWithDefault"
+          const:value="TENTATIVE" const:negate="YES">
+          <a href="#" class="button actionButton" id="iCalendarTentative">
+            <span><var:string label:value="Tentative" /></span></a>
 	      </var:if>
 	      <var:if condition="currentUserAttendee.partStatWithDefault"
           const:value="DELEGATED" const:negate="YES">
@@ -76,6 +82,7 @@
           <span><var:string label:value="OK" /></span></a>
 		</span>
 	      </var:if>
+                </var:if>
 	      <var:if condition="isEventStoredInCalendar" const:negate="YES">
           <a href="#" class="button actionButton" id="iCalendarAddToCalendar">
             <span><var:string label:value="Add to calendar" /></span></a>
@@ -223,7 +230,9 @@
 	    <td valign="top"><var:string label:value="Attendees"/>:</td>
 	    <td id="iCalAttendees">
 	      <var:foreach list="authorativeEvent.participants" item="attendee">
-		<var:if condition="attendee.delegatedTo" const:negate="YES"><!-- don't show attendees that delegated the invitation --><span var:class="currentAttendeeClass"><a var:href="attendee.email">
+		<var:if condition="attendee.delegatedTo" const:negate="YES"><!-- don't show attendees that delegated the invitation --><span var:class="currentAttendeeClass"
+                    ><div class="status-icon"><!-- space --></div
+                      ><a var:href="attendee.email">
 		  <var:string value="attendeeForDisplay"/></a>
 		(<var:string label:value="$attendee.partStatWithDefault" /><var:if condition="attendee.delegatedTo"> <var:string label:value="to" /> <var:string value="attendee.delegatedTo.rfc822Email" /></var:if><var:if condition="attendee.delegatedFrom">, <var:string label:value="delegated from" /> <var:string value="attendee.delegatedFrom.rfc822Email" /></var:if>)</span>
 		<br /></var:if>

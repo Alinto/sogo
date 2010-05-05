@@ -23,11 +23,6 @@
           pageName    = "UIxContactFoldersView";
           actionName  = "mailerContacts";
         };
-        contactSearch = {
-          protectedBy = "<public>";
-          pageName    = "UIxContactFoldersView";
-          actionName  = "contactSearch";
-        };
         allContactSearch = {
           protectedBy = "<public>";
           pageName    = "UIxContactFoldersView";

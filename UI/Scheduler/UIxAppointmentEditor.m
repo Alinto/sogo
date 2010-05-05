@@ -522,22 +522,32 @@
   [event setTransparency: (isTransparent? @"TRANSPARENT" : @"OPAQUE")];
 }
 
-// TODO: add tentatively
+- (id) _statusChangeAction: (NSString *) newStatus
+{
+  [[self clientObject] changeParticipationStatus: newStatus
+                                    withDelegate: nil];
+
+  return [self responseWith204];
+}
 
 - (id) acceptAction
 {
-  [[self clientObject] changeParticipationStatus: @"ACCEPTED"
-                                    withDelegate: nil];
-
-  return self;
+  return [self _statusChangeAction: @"ACCEPTED"];
 }
 
 - (id) declineAction
 {
-  [[self clientObject] changeParticipationStatus: @"DECLINED"
-                                    withDelegate: nil];
+  return [self _statusChangeAction: @"DECLINED"];
+}
 
-  return self;
+- (id) needsActionAction
+{
+  return [self _statusChangeAction: @"NEEDS-ACTION"];
+}
+
+- (id) tentativeAction
+{
+  return [self _statusChangeAction: @"TENTATIVE"];
 }
 
 - (id) delegateAction
@@ -584,7 +594,7 @@
 					     reason: @"missing 'to' parameter"];
 
   if (!response)
-    response = [self responseWithStatus: 200];
+    response = [self responseWith204];
 
   return response;
 }

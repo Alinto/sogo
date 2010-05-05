@@ -41,7 +41,6 @@
 #import <NGMime/NGMimeMultipartBody.h>
 #import <NGMail/NGMimeMessage.h>
 
-#import <SOGo/iCalEntityObject+Utilities.h>
 #import <SOGo/NSCalendarDate+SOGo.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSObject+DAV.h>
@@ -825,7 +824,7 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
       p = [app pageWithName: pageName inContext: context];
       [p setApt: (iCalEvent *) event];
 
-      attendee = [event findParticipant: from];
+      attendee = [event userAsAttendee: from];
       [p setAttendee: attendee];
 
       /* construct message */
@@ -897,7 +896,7 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
   if (![event userIsOrganizer: ownerUser])
     {
       organizer = [event organizer];
-      attendee = [event findParticipant: ownerUser];
+      attendee = [event userAsAttendee: ownerUser];
       [event setAttendees: [NSArray arrayWithObject: attendee]];
       [self sendIMIPReplyForEvent: event from: from to: organizer];
     }
@@ -981,7 +980,7 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
   user = [SOGoUser userWithLogin: uid];
   component = [self component: NO secure: NO];
 
-  return [component findParticipant: user];
+  return [component userAsAttendee: user];
 }
 
 - (iCalPerson *) iCalPersonWithUID: (NSString *) uid
@@ -1061,7 +1060,7 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
 	  ownerUser = [SOGoUser userWithLogin: owner];
 	  if ([component userIsOrganizer: ownerUser])
 	    role = SOGoCalendarRole_Organizer;
-	  else if ([component userIsParticipant: ownerUser])
+	  else if ([component userIsAttendee: ownerUser])
 	    role = SOGoCalendarRole_Participant;
 	  else
 	    role = SOGoRole_None;
@@ -1119,7 +1118,7 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
               aclUser = [SOGoUser userWithLogin: uid];
               if ([component userIsOrganizer: aclUser])
                 [roles addObject: SOGoCalendarRole_Organizer];
-              else if ([component userIsParticipant: aclUser])
+              else if ([component userIsAttendee: aclUser])
                 [roles addObject: SOGoCalendarRole_Participant];
               accessRole
                 = [container roleForComponentsWithAccessClass: [component symbolicAccessClass]

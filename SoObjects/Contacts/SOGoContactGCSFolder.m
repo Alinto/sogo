@@ -46,12 +46,19 @@
 
 #import "SOGoContactGCSFolder.h"
 
-#define folderListingFields [NSArray arrayWithObjects: @"c_name", @"c_cn", \
-                                     @"c_givenname", @"c_sn", @"c_screenname", \
-				     @"c_o", @"c_mail", @"c_telephonenumber", \
-                                     nil]
+static NSArray *folderListingFields = nil;
 
 @implementation SOGoContactGCSFolder
+
++ (void) initialize
+{
+  if (!folderListingFields)
+    folderListingFields = [[NSArray alloc] initWithObjects: @"c_name",
+                                           @"c_cn", @"c_givenname", @"c_sn",
+                                           @"c_screenname", @"c_o",
+                                           @"c_mail", @"c_telephonenumber",
+                                           @"c_component", nil];
+}
 
 - (Class) objectClassForContent: (NSString *) content
 {
