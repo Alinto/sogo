@@ -512,6 +512,8 @@ vtodo_class2 = "(Tasg gyhoeddus)";
 "Name:" = "Enw:";
 "Color:" = "Lliw:";
 
+"Include in free-busy" = "Include in free-busy";
+
 "Synchronization" = "Synchronization";
 "Synchronize" = "Synchronize";
 "Tag:" = "Tag:";

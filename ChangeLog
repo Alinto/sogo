@@ -1,3 +1,29 @@
+2010-05-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Tests/Integration/test-caldav-scheduling.py
+	(CalDAVPropertiesTest): new class for testing caldav-specific
+	properties
+	(CalDAVPropertiesTest.testDavScheduleCalendarTransparency): new
+	test method for testing "schedule-calendar-transp".
+
+	* UI/Scheduler/UIxCalendarProperties.m (-includeFreeBusy)
+	(-setIncludeFreeBusy): new template accessors for the equivalent
+	methods below.
+	(-userIsOwner): new accessor that returns whether the current user
+	is the calendar's owner.
+
+	* SoObjects/Appointments/SOGoFreeBusyObject.m
+	(-fetchFreeBusyInfosFrom:to:): test whether the listed calendars
+	must be included in the freebusy.
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-setIncludeInFreeBusy, -includeInFreeBusy): new accessors that
+	determines whether the current calendar is included in the
+	computing of its owner's freebusy.
+	(-davScheduleCalendarTransparency)
+	(-setDavScheduleCalendarTransparency:): equivalent DAV accessors
+	for the above.
+
 2010-05-05  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/SchedulerUI.js (tasksListCallback):

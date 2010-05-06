@@ -396,6 +396,26 @@ static NSNumber *sharedYes = nil;
                     inCategory: @"FolderSynchronize"];
 }
 
+- (BOOL) includeInFreeBusy
+{
+  NSNumber *excludeFromFreeBusy;
+
+  excludeFromFreeBusy
+    = [self folderPropertyValueInCategory: @"FreeBusyExclusions"];
+
+  return ![excludeFromFreeBusy boolValue];
+}
+
+- (void) setIncludeInFreeBusy: (BOOL) newInclude
+{
+  NSNumber *excludeFromFreeBusy;
+
+  excludeFromFreeBusy = [NSNumber numberWithBool: !newInclude];
+
+  [self setFolderPropertyValue: excludeFromFreeBusy
+                    inCategory: @"FreeBusyExclusions"];
+}
+
 /* selection */
 
 - (NSArray *) calendarUIDs 
@@ -2283,6 +2303,34 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 - (NSString *) davDescription
 {
   return @"";
+}
+
+- (NSArray *) davScheduleCalendarTransparency
+{
+  const NSString *opacity;
+
+  opacity = ([self includeInFreeBusy] ? @"opaque" : @"transparent");
+
+  return [NSArray arrayWithObject: [NSArray arrayWithObjects: opacity,
+                                            XMLNS_CALDAV,
+                                            nil]];
+}
+
+- (NSException *) setDavScheduleCalendarTransparency: (id) newName
+{
+  NSException *error;
+
+  error = nil;
+
+  if ([newName rangeOfString: @"opaque"].location != NSNotFound)
+    [self setIncludeInFreeBusy: YES];
+  else if ([newName rangeOfString: @"transparent"].location != NSNotFound)
+    [self setIncludeInFreeBusy: NO];
+  else
+    error = [NSException exceptionWithHTTPStatus: 400
+                                          reason: @"Bad transparency value."];
+
+  return error;
 }
 
 /* vevent UID handling */

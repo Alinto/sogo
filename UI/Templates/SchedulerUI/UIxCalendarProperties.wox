@@ -37,6 +37,16 @@
               id="calendarColor"
               var:value="calendarColor"
               /></span></div>
+        <var:if condition="userIsOwner"
+          ><div
+            ><label><input type="checkbox" const:class="checkBox" 
+              name="includeInFreeBusy"
+              id="includeInFreeBusy"
+              var:checked="includeInFreeBusy"
+              /><var:string label:value="Include in free-busy"
+              /></label
+              ></div
+            ></var:if>
       </fieldset>
       <fieldset>
 	<legend><var:string label:value="Synchronization"/></legend>

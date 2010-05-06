@@ -254,9 +254,9 @@
   for (count = 0; count < max; count++)
     {
       calFolder = [folders objectAtIndex: count];
-      if (![calFolder isSubscription])
+      if (![calFolder isSubscription] && [calFolder includeInFreeBusy])
 	[infos addObjectsFromArray: [calFolder fetchFreeBusyInfosFrom: startDate
-					       to: endDate]];
+                                                                   to: endDate]];
     }
 
   return infos;

@@ -70,6 +70,16 @@
   [calendar setCalendarColor: newColor];
 }
 
+- (BOOL) includeInFreeBusy
+{
+  return [calendar includeInFreeBusy];
+}
+
+- (void) setIncludeInFreeBusy: (BOOL) newInclude
+{
+  [calendar setIncludeInFreeBusy: newInclude];
+}
+
 - (BOOL) synchronizeCalendar
 {
   return [self mustSynchronize] || [calendar synchronizeCalendar];
@@ -175,6 +185,15 @@
     rc = nil;
 
   return rc;
+}
+
+- (BOOL) userIsOwner
+{
+  NSString *userLogin;
+
+  userLogin = [[context activeUser] login];
+
+  return ([userLogin isEqualToString: [calendar ownerInContext: context]]);
 }
 
 - (BOOL) isWebCalendar

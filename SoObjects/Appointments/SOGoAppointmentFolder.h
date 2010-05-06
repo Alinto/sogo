@@ -156,6 +156,9 @@ typedef enum {
 - (BOOL) synchronizeCalendar;
 - (void) setSynchronizeCalendar: (BOOL) new;
 
+- (BOOL) includeInFreeBusy;
+- (void) setIncludeInFreeBusy: (BOOL) newInclude;
+
 - (BOOL) importComponent: (iCalEntityObject *) event;
 - (int) importCalendar: (iCalCalendar *) calendar;
 

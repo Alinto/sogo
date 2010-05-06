@@ -512,6 +512,8 @@ vtodo_class2 = "(Vertrouwelijke taak)";
 "Name:" = "Naam:";
 "Color:" = "Kleur:";
 
+"Include in free-busy" = "In de beschikbaarheid insluiten";
+
 "Synchronization" = "Synchronization";
 "Synchronize" = "Synchronize";
 "Tag:" = "Markering:";

@@ -512,6 +512,8 @@ vtodo_class2 = "(Attività confidenziale)";
 "Name:" = "Nome:";
 "Color:" = "Colore:";
 
+"Include in free-busy" = "Include in free-busy";
+
 "Synchronization" = "Synchronization";
 "Synchronize" = "Synchronize";
 "Tag:" = "Etichetta:";

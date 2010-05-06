@@ -2167,6 +2167,10 @@ function onCalendarModify(event) {
             isWebCalendar = true;
         }
     }
+    var owner = selected.getAttribute("owner");
+    if (owner == UserLogin) {
+        height += 24;
+    }
     if (isWebCalendar)
         height += 41;
     else if (calendarID == "/personal")

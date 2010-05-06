@@ -512,6 +512,8 @@ vtodo_class2 = "(Bizalmas feladat)";
 "Name:" = "Név:";
 "Color:" = "Szín:";
 
+"Include in free-busy" = "Include in free-busy";
+
 "Synchronization" = "Synchronization";
 "Synchronize" = "Synchronize";
 "Tag:" = "Cimke:";

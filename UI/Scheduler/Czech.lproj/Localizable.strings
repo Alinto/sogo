@@ -512,6 +512,8 @@ vtodo_class2 = "(Důvěrný úkol)";
 "Name:" = "Název:";
 "Color:" = "Barva:";
 
+"Include in free-busy" = "Include in free-busy";
+
 "Synchronization" = "Synchronizace";
 "Synchronize" = "Synchronizovat";
 "Tag:" = "Štítek:";

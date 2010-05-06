@@ -37,6 +37,88 @@ def fetchUserInfo(login):
 
     return (displayName, email_nodes[0].childNodes[0].nodeValue)
 
+class CalDAVPropertiesTest(unittest.TestCase):
+    def setUp(self):
+        self.client = webdavlib.WebDAVClient(hostname, port,
+                                             username, password)
+        self.test_calendar \
+            = "/SOGo/dav/%s/Calendar/test-dav-properties/" % username
+        mkcol = webdavlib.WebDAVMKCOL(self.test_calendar)
+        self.client.execute(mkcol)
+
+    def tearDown(self):
+        delete = webdavlib.WebDAVDELETE(self.test_calendar)
+        self.client.execute(delete)
+
+    def testDavScheduleCalendarTransparency(self):
+        """{urn:ietf:params:xml:ns:caldav}schedule-calendar-transp"""
+
+        ## PROPFIND
+        propfind = webdavlib.WebDAVPROPFIND(self.test_calendar,
+                                            ["{urn:ietf:params:xml:ns:caldav}schedule-calendar-transp"],
+                                            0)
+        self.client.execute(propfind)
+        propfind.xpath_namespace = { "D": "DAV:",
+                                     "C": "urn:ietf:params:xml:ns:caldav" }
+        propstats = propfind.xpath_evaluate('/D:multistatus/D:response/D:propstat/D:prop/C:schedule-calendar-transp')
+        self.assertTrue(len(propstats) > 0,
+                        "schedule-calendar-transp not present in response")
+        node = propstats[0]
+        status = propfind.xpath_evaluate('D:status',
+                                         node.parentNode.parentNode)[0] \
+                                         .childNodes[0].nodeValue[9:12]
+        self.assertEquals(status, "200",
+                          "schedule-calendar-transp marked as 'Not Found' in response")
+        values = node.childNodes
+        nvalues = len(values)
+        self.assertEquals(nvalues, 1,
+                          "expected 1 value (%d received)" % nvalues)
+        value = values[0]
+        self.assertEquals(value.__class__.__name__, "Element",
+                          "schedule-calendar-transp must be an instance of" \
+                              " %s, not %s"
+                          % ("Element", value.__class__.__name__))
+        self.assertEquals(value.namespaceURI, "urn:ietf:params:xml:ns:caldav",
+                          "schedule-calendar-transp must have a value in"\
+                              " namespace '%s', not '%s'"
+                          % ("urn:ietf:params:xml:ns:caldav",
+                             value.namespaceURI))
+        self.assertTrue(value.tagName == "opaque",
+                        "schedule-calendar-transp must be 'opaque' on new" \
+                            " collections, not '%s'" % value.tagName)
+
+        ## PROPPATCH
+        newValueNode = "{urn:ietf:params:xml:ns:caldav}thisvaluedoesnotexist"
+        proppatch = webdavlib.WebDAVPROPPATCH(self.test_calendar,
+                                              {"{urn:ietf:params:xml:ns:caldav}schedule-calendar-transp": \
+                                                   { newValueNode: True }})
+        self.client.execute(proppatch)
+        self.assertEquals(proppatch.response["status"], 400,
+                          "expecting failure when setting transparency to" \
+                              " an invalid value")
+
+        newValueNode = "{urn:ietf:params:xml:ns:caldav}transparent"
+        proppatch = webdavlib.WebDAVPROPPATCH(self.test_calendar,
+                                              {"{urn:ietf:params:xml:ns:caldav}schedule-calendar-transp": \
+                                                   { newValueNode: True }})
+        self.client.execute(proppatch)
+        self.assertEquals(proppatch.response["status"], 207,
+                          "failure (%s) setting transparency to" \
+                              " 'transparent': '%s'"
+                          % (proppatch.response["status"],
+                             proppatch.response["body"]))
+
+        newValueNode = "{urn:ietf:params:xml:ns:caldav}opaque"
+        proppatch = webdavlib.WebDAVPROPPATCH(self.test_calendar,
+                                              {"{urn:ietf:params:xml:ns:caldav}schedule-calendar-transp": \
+                                                   { newValueNode: True }})
+        self.client.execute(proppatch)
+        self.assertEquals(proppatch.response["status"], 207,
+                          "failure (%s) setting transparency to" \
+                              " 'transparent': '%s'"
+                          % (proppatch.response["status"],
+                             proppatch.response["body"]))
+
 class CalDAVITIPDelegationTest(unittest.TestCase):
     def setUp(self):
         self.client = webdavlib.WebDAVClient(hostname, port,

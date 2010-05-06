@@ -512,6 +512,8 @@ vtodo_class2 = "(Tarefa Confidencial)";
 "Name:" = "Nome:";
 "Color:" = "Cor:";
 
+"Include in free-busy" = "Incluir na disponibilidade";
+
 "Synchronization" = "Synchronization";
 "Synchronize" = "Synchronize";
 "Tag:" = "Marca:";

@@ -512,6 +512,8 @@ vtodo_class2 = "(Konfidentiell uppgift)";
 "Name:" = "Namn:";
 "Color:" = "Färg:";
 
+"Include in free-busy" = "Include in free-busy";
+
 "Synchronization" = "Synkronisering";
 "Synchronize" = "Synkronisera";
 "Tag:" = "Etikett:";

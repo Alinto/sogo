@@ -512,6 +512,8 @@ vtodo_class2 = "(Tâche confidentielle)";
 "Name:" = "Nom :";
 "Color:" = "Couleur :";
 
+"Include in free-busy" = "Inclure dans la disponibilité";
+
 "Synchronization" = "Synchronisation";
 "Synchronize" = "Synchroniser";
 "Tag:" = "Label :";
@@ -521,12 +523,12 @@ vtodo_class2 = "(Tâche confidentielle)";
 "Show tasks" = "Afficher les tâches";
 
 /* Error messages */
-"dayFieldInvalid" = "Veuillez spécifier un chiffre superieur ou égal à 1 dans le champ Jours.";
-"weekFieldInvalid" = "Veuillez spécifier un chiffre superieur ou égal à 1 dans le champ Semaine(s).";
-"monthFieldInvalid" = "Veuillez spécifier un chiffre superieur ou égal à 1 dans le champ Mois.";
-"monthDayFieldInvalid" = "Veuillez spécifier un chiffre superieur ou égal à 1 dans la journée du mois.";
-"yearFieldInvalid" = "Veuillez spécifier un chiffre superieur ou égal à 1 dans le champ Année(s).";
-"appointmentFieldInvalid" = "Veuillez spécifier un chiffre superieur ou égal à 1 dans le champ rendez-vous.";
+"dayFieldInvalid" = "Veuillez spécifier un chiffre supérieur ou égal à 1 dans le champ Jours.";
+"weekFieldInvalid" = "Veuillez spécifier un chiffre supérieur ou égal à 1 dans le champ Semaine(s).";
+"monthFieldInvalid" = "Veuillez spécifier un chiffre supérieur ou égal à 1 dans le champ Mois.";
+"monthDayFieldInvalid" = "Veuillez spécifier un chiffre supérieur ou égal à 1 dans la journée du mois.";
+"yearFieldInvalid" = "Veuillez spécifier un chiffre supérieur ou égal à 1 dans le champ Année(s).";
+"appointmentFieldInvalid" = "Veuillez spécifier un chiffre supérieur ou égal à 1 dans le champ rendez-vous.";
 "recurrenceUnsupported" = "Ce type de récurrence n\\'est pas supporté.";
 "tagNotDefined" = "Vous devez spécifier un label si vous désirez synchroniser ce calendrier.";
 "tagAlreadyExists" = "Le label spécifié est déjà associé à un autre calendrier. Choisissez-en un autre.";

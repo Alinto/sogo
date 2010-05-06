@@ -512,6 +512,8 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 "Name:" = "Name:";
 "Color:" = "Farbe:";
 
+"Include in free-busy" = "In der Verfügbarkeit einschließen";
+
 "Synchronization" = "Synchronisation";
 "Synchronize" = "Synchronisieren";
 "Tag:" = "Tag:";
