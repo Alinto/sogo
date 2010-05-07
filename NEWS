@@ -2,7 +2,7 @@
 --------------------
 - added support for the "tentative" status in the invitation responses
 - inviting a group of contacts is now possible, where each contact will be
-  deduced after the group is expanded
+  deduced when the group is expanded
 - added support for modifying the role of the meeting participants
 - attendees having an "RSVP" set to "FALSE" or empty will no longer be able to
   respond
