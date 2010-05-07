@@ -6,6 +6,8 @@
 - added support for modifying the role of the meeting participants
 - attendees having an "RSVP" set to "FALSE" or empty will no longer be able to
   respond
+- added the ability to specify which calendar is taken into account when
+  retrieving a user's freebusy
 
 1.2-20100504 (1.2.2)
 --------------------
