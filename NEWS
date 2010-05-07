@@ -4,8 +4,8 @@
 - inviting a group of contacts is now possible, where each contact will be
   extracted when the group is resolved
 - added support for modifying the role of the meeting participants
-- attendees having an "RSVP" set to "FALSE" or empty will no longer be able to
-  respond
+- attendees having an "RSVP" set to "FALSE" or empty will no longer need/be
+  able to respond to invitations
 - added the ability to specify which calendar is taken into account when
   retrieving a user's freebusy
 
