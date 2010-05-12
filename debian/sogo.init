@@ -11,7 +11,7 @@
 
 # SOGo init script for Debian GNU/Linux
 #
-# Copyright (C) 2007-2009 Inverse inc.
+# Copyright (C) 2007-2010 Inverse inc.
 #
 # Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
 #         Ludovic Marcotte <ludovic@inverse.ca>
@@ -47,29 +47,14 @@ if [ -f /etc/default/$NAME ]; then
 fi
 
 if [ ! -x $DAEMON ]; then
- echo "$DAEMON is not executable."
- exit 1
+    echo "$DAEMON is not executable."
+    exit 1
 fi
 
-checkDir() {
-    directory="$1"
-    if [ ! -d "$directory" ]
-    then
-	echo "$directory does not exist."
-	exit 1
-    fi
-
-    if [ `/usr/bin/stat "$directory" -c %U` != "$USER" ]
-    then
-	echo "$directory is not owned by the '$USER' user."
-	exit 1
-
-    fi
-}
-
-checkDir /var/run/$NAME
-checkDir /var/spool/$NAME
-checkDir /var/log/$NAME
+# Ensure directory's existence and permissions
+install -o sogo -g adm -m 755 -d /var/run/$NAME
+install -o sogo -g adm -m 750 -d /var/spool/$NAME
+install -o sogo -g adm -m 750 -d /var/log/$NAME
 
 set -e
 
