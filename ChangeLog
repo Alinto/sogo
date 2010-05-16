@@ -1,5 +1,14 @@
 2010-05-21  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/WebServerResources/UIxPreferences.js (endEditable,
+	onColorPickerChoice): those functions will automatically trigger
+	the reload of the current module (hasChanged is set to 1).
+
+	* UI/WebServerResources/SchedulerUI.js (resetCategoriesStyles):
+	new method to manage the CSS associated to the event categories.
+	(newBaseEventDIV): a CSS class is added to the event div if a
+	category is associated to the event.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	(-fetchCoreInfosFrom:to:title:component:additionalFilters:): added
 	c_category field so UIxCalListingActions can fetch it.
@@ -21,7 +30,7 @@
 	new "c_category" field to the list of fields that require
 	fetching.
 
-	* UI/WebServerResources/SchedulerUI.js: (newBaseEventDIV) shifted
+	* UI/WebServerResources/SchedulerUI.js (newBaseEventDIV): shifted
 	field indexes by 1 from the 9th field, which is now the "category"
 	field.
 

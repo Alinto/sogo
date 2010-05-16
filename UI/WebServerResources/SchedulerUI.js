@@ -29,6 +29,9 @@ var userStates = [ "needs-action", "accepted", "declined", "tentative", "delegat
 
 var calendarHeaderAdjusted = false;
 
+var categoriesStyles = new Hash();
+var categoriesStyleSheet = null;
+
 function newEvent(type, day, hour, duration) {
     var folder = getSelectedFolder();
     var folderID = folder.readAttribute("id");
@@ -1223,6 +1226,7 @@ function refreshCalendarEventsCallback(http) {
                 _drawCalendarEvents(eventsBlocks[2], eventsBlocks[0]);
             }
             _setupEventsDragAndDrop(eventsBlocks[0]);
+            resetCategoriesStyles();
             onWindowResize(null);
         }
         if (http.callbackData["scrollEvent"])
@@ -1231,6 +1235,48 @@ function refreshCalendarEventsCallback(http) {
     }
     else
         log("AJAX error when refreshing calendar events");
+}
+
+function resetCategoriesStyles() {
+    if (categoriesStyleSheet == null) {
+        categoriesStyleSheet = document.createElement("style");
+        categoriesStyleSheet.type = "text/css";
+        document.getElementsByTagName("head")[0].appendChild(categoriesStyleSheet);
+    }
+    else {
+        if (Prototype.Browser.IE)
+            while (categoriesStyleSheet.styleSheet.rules.length)
+                categoriesStyleSheet.styleSheet.removeRule();
+        else
+            while (categoriesStyleSheet.firstChild)
+                categoriesStyleSheet.removeChild(categoriesStyleSheet.firstChild);
+    }
+
+    // Update stylesheet with new categories colors
+    var selectors = [];
+    var rules = [];
+    categoriesStyles.keys().each(function(category) {
+            var color = UserDefaults['SOGoCalendarCategoriesColors'][category];
+            if (color) {
+                rules[rules.length] = '{ border-right: 8px solid ' + color + '; }';
+                selectors[selectors.length] = 'DIV.' + categoriesStyles.get(category);
+            }
+        });
+    
+    if (selectors.length > 0) {
+        if (categoriesStyleSheet.styleSheet && categoriesStyleSheet.styleSheet.addRule) {
+            // IE
+            for (var i = 0; i < selectors.length; i++)
+                categoriesStyleSheet.styleSheet.addRule(selectors[i],
+                                                        rules[i]);
+        }
+        else {
+            // Mozilla + Safari
+            for (var i = 0; i < selectors.length; i++)
+                categoriesStyleSheet.appendChild(document.createTextNode(selectors[i] +
+                                                                         ' ' + rules[i]));
+        }
+    }
 }
 
 function newBaseEventDIV(eventRep, event, eventText) {
@@ -1288,6 +1334,14 @@ function newBaseEventDIV(eventRep, event, eventText) {
     textDiv.addClassName("text");
     textDiv.update(eventText.replace(/(\\r)?\\n/g, "<BR/>"));
 
+    if (event[9] != null) {
+        var categoryStyle = categoriesStyles.get(event[9]);
+        if (!categoryStyle) {
+            categoryStyle = 'category_' + categoriesStyles.keys().length;
+            categoriesStyles.set([event[9]], categoryStyle);
+        }
+        innerDiv.addClassName(categoryStyle);
+    }
     if (event[2] == null) {
         // Status field is not defined -- user can't read event
         eventCell.observe("selectstart", listRowMouseDownHandler);
@@ -1427,9 +1481,11 @@ function adjustCalendarHeaderDIV() {
                          "DIV#calendarHeader DIV.days"];
         var rule = ("{ right: " + delta + "px; }");
         if (styleElement.styleSheet && styleElement.styleSheet.addRule) {
+            // IE
             styleElement.styleSheet.addRule(selectors[0], rule);
             styleElement.styleSheet.addRule(selectors[1], rule);
         } else {
+            // Mozilla + Firefox
             var styleText = selectors.join(",") + " " + rule;
             styleElement.appendChild(document.createTextNode(styleText));
         }

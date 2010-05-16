@@ -11,7 +11,7 @@ function savePreferences(sender) {
         sigList.disabled = false;
 
     if ($("categoriesList")) {
-        serializeCategories(null);
+        serializeCategories();
     }
 
     if ($("dayStartTime")) {
@@ -81,7 +81,7 @@ function _setupEvents(enable) {
     var widgets = [ "timezone", "shortDateFormat", "longDateFormat",
                     "timeFormat", "weekStartDay", "dayStartTime", "dayEndTime",
                     "firstWeek", "messageCheck", "subscribedFoldersOnly",
-                    "language"];
+                    "language" ];
     for (var i = 0; i < widgets.length; i++) {
         var widget = $(widgets[i]);
         if (widget) {
@@ -91,6 +91,9 @@ function _setupEvents(enable) {
                 widget.stopObserving("change", onChoiceChanged);
         }
     }
+
+    // Note: we also monitor changes to the calendar categories.
+    // See functions endEditable and onColorPickerChoice.
 
     $("replyPlacementList").observe ("change", onReplyPlacementListChange);
     $("composeMessagesType").observe ("change", onComposeMessagesTypeChange);
@@ -413,6 +416,8 @@ function endEditable (element) {
     element.innerHTML = tmp;
     element.removeClassName ("editing");
     element.addClassName ("categoryListCell");
+    if (parseInt($("hasChanged").value) == 0)
+        onChoiceChanged(null);
 }
 
 function endAllEditables (e) {
@@ -452,6 +457,8 @@ function onColorPickerChoice (newColor) {
     //  div.removeClassName ("colorEditing");
     div.showColor = newColor;
     div.style.background = newColor;
+    if (parseInt($("hasChanged").value) == 0)
+        onChoiceChanged(null);
 }
 
 
@@ -491,7 +498,7 @@ function onCategoryDelete (e) {
 
 }
 
-function serializeCategories (e) {
+function serializeCategories() {
     var r = $$("TABLE#categoriesList tbody tr");
 
     var values = [];
