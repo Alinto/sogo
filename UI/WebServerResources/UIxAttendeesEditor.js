@@ -482,7 +482,7 @@ function newAttendee(previousAttendee) {
     var attendeesDiv = $$('TABLE#freeBusy TD.freeBusyAttendees DIV').first();
     var dataDiv = $$('TABLE#freeBusy TD.freeBusyData DIV').first();
    
-    dataDiv.scrollTop = attendeesDiv.scrollTop;
+    dataDiv.scrollTop = attendeesDiv.scrollTop = table.clientHeight;
 
     return result;
 }
