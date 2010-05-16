@@ -2537,7 +2537,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 			     @"c_creationdate", @"c_lastmodified",
 			     @"c_version", @"c_component", @"c_title",
 			     @"c_location", @"c_orgmail", @"c_status",
-			     @"c_classification", @"c_isallday",
+			     @"c_category", @"c_classification", @"c_isallday",
 			     @"c_isopaque", @"c_participants", @"c_partmails",
 			     @"c_partstates", @"c_sequence", @"c_priority",
 			     @"c_cycleinfo", @"c_iscycle",  @"c_nextalarm", nil];

@@ -1,3 +1,9 @@
+2010-05-21  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-fetchCoreInfosFrom:to:title:component:additionalFilters:): added
+	c_category field so UIxCalListingActions can fetch it.
+
 2010-05-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/SchedulerUI.js: (newEventDIV): we now add
