@@ -18,7 +18,7 @@ function onPopupAttendeesWindow(event) {
     else
         ComponentEditor.attendeesWindow = window.open(ApplicationBaseURL + "/editAttendees",
                                                       sanitizeWindowName(activeCalendar + activeComponent + "Attendees"),
-                                                      "width=803,height=573");
+                                                      "width=900,height=573");
     
     return false;
 }
