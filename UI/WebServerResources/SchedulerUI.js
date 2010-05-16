@@ -1342,6 +1342,8 @@ function newBaseEventDIV(eventRep, event, eventText) {
         }
         innerDiv.addClassName(categoryStyle);
     }
+    eventCell.observe("contextmenu", onMenuCurrentView);
+    
     if (event[2] == null) {
         // Status field is not defined -- user can't read event
         eventCell.observe("selectstart", listRowMouseDownHandler);
@@ -2169,7 +2171,10 @@ function onMenuSharing(event) {
 
 function onMenuCurrentView(event) {
     $("eventDialog").hide();
+    var onClick = onCalendarSelectEvent.bind(this);
+    onClick(event);
     popupMenu(event, 'currentViewMenu', this);
+    
 }
 
 function onMenuAllDayView(event) {

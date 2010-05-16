@@ -146,7 +146,8 @@ DIV#calendarView
   bottom: 0px;
   width: 100%;
   border-top: 1px solid #aaa;
-  border-left: 1px solid #aaa; }
+  border-left: 1px solid #aaa;
+  -khtml-user-select: none; }
 
 DIV#calendarView A
 { text-decoration: none;

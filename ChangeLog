@@ -1,5 +1,8 @@
 2010-05-21  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/WebServerResources/SchedulerUI.js (onMenuCurrentView):
+	propagate the click event when right-clicking on an event.
+
 	* UI/WebServerResources/UIxPreferences.js (endEditable,
 	onColorPickerChoice): those functions will automatically trigger
 	the reload of the current module (hasChanged is set to 1).
