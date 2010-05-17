@@ -19,15 +19,6 @@
     var dayEndHour = <var:string value="dayEndHour"/>;
   </script>
   <div id="attendeesView">
-    <div id="freeBusyViewButtons">
-      <var:string label:value="Suggest time slot:"/>
-      <span class="buttons"><a id="nextSlot" href="#" class="button"
-          ><span><var:string label:value="Next slot" /></span></a>
-        <a id="previousSlot" href="#" class="button"
-          ><span><var:string label:value="Previous slot" /></span></a></span>
-      <input class="checkbox" type="checkbox" 
-        checked="1" id="onlyOfficeHours" /><var:string label:value="Only office hours" />
-    </div>
     <div id="freeBusyView">
       <table id="freeBusy" cellspacing="0" cellpadding="0">
 	<thead>
@@ -97,6 +88,35 @@
 	      ><var:string label:value="No free-busy information" /></li>
 	</ul>
       </div>
+      <form const:href=""
+        ><div id="freeBusyViewButtons">
+          <var:string label:value="Suggest time slot:"/><br/>
+          <label><input type="checkbox" const:id="workDaysOnly"
+              const:checked="YES"
+              /><var:string label:value="Work days only"/></label>
+          <select name="timeSlotLimits" const:id="timeSlotLimits">
+            <option value="whole-day"
+              ><var:string label:value="The whole day"
+                /></option>
+            <option value="office-hours"
+              const:selected="yes"
+              ><var:string label:value="During office hours"
+                /></option>
+            <option value="range"
+              ><var:string label:value="During specified hours"/></option>
+          </select><br/>
+          <select const:id="timeSlotStartLimitHour"><!-- space --></select> 
+          <select const:id="timeSlotStartLimitMinute"><!-- space --></select>
+          <var:string label:value="and"/>
+          <select const:id="timeSlotEndLimitHour"><!-- space --></select> 
+          <select const:id="timeSlotEndLimitMinute"><!-- space --></select>
+          <br/>
+          <a id="nextSlot" href="#" class="button"
+            ><span><var:string label:value="Next slot" /></span></a>
+          <a id="previousSlot" href="#" class="button"
+            ><span><var:string label:value="Previous slot" /></span></a>
+        </div
+          ></form>
       <div id="freeBusyReplicas">
         <div><span><var:string label:value="Start:"
               /></span><var:component className="UIxTimeDateControl"
@@ -114,7 +134,6 @@
             /></div>
       </div>
       <div id="windowButtons">
-	<hr />
 	<a id="okButton" href="#" class="button actionButton"
           ><span><var:string label:value="OK"/></span></a>
 	<a id="cancelButton" href="#" class="button"

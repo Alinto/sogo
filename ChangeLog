@@ -1,5 +1,29 @@
 2010-05-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/UIxAttendeesEditor.js
+	(redisplayEventSpans): "event spans" are now stored in a cache to
+	improve performance.
+	(availabilityController): new class designed to handle the
+	interaction with the availability widgets.
+	(availabilitySession): new class, used by the above, for
+	triggering availability searchs in the available freebusys.
+	Listeners should implement the "onRequestComplete" method.
+	(freeBusyRequest): new class design to asynchronosly fetch a user
+	freebusy between specific dates. Makes use of an internal cache
+	and may trigger ajax requests covering more that the specified
+	range in order to take advantage of that cache. Listeners should
+	implement the "onRequestComplete" method.
+	(_freeBusyCacheEntry): new class, used internally by
+	"freeBusyRequests" for handling cache entries.
+	(initializeTimeSlotWidgets): new method that initializes the new
+	widgets that controls the time range behaviour in the freebusy
+	searches.
+
+	* UI/Scheduler/UIxCalListingActions.m (-findPossibleSlotAction):
+	removed action method and submethods since the slot resolution is
+	now performed directly in javascript to benefit from the freebusy
+	cache and to improve performance.
+
 	* UI/MainUI/SOGoUserHomePage.m (-readFreeBusyAction): simplified
 	method by using -[self responseWithStatus:andString:].
 

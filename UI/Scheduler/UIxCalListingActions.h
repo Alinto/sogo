@@ -51,7 +51,6 @@
 - (WOResponse *) alarmsListAction;
 - (WOResponse *) eventsListAction;
 - (WOResponse *) tasksListAction;
-- (WOResponse *) findPossibleSlotAction;
 
 @end
 

@@ -482,7 +482,11 @@ validate_endbeforestart    = "La data finale specificata è precedente alla data
 "Next slot" = "Successivo";
 "Previous hour" = "Ora precedente";
 "Next hour" = "Ora successiva";
-"Only office hours" = "Only office hours";
+"Work days only" = "Work days only";
+"The whole day" = "The whole day";
+"During office hours" = "During office hours";
+"During specified hours" = "During specified hours";
+"and" = "and";
 
 /* apt list */
 "Title" = "Titolo";

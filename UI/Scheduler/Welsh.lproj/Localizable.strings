@@ -482,7 +482,11 @@ validate_endbeforestart    = "Mae'r dyddiad gorffen sydd wedi'i roi yn digwydd c
 "Next slot" = "Slot nesaf";
 "Previous hour" = "Awr flaenorol";
 "Next hour" = "Awr nesaf";
-"Only office hours" = "Only office hours";
+"Work days only" = "Work days only";
+"The whole day" = "The whole day";
+"During office hours" = "During office hours";
+"During specified hours" = "During specified hours";
+"and" = "and";
 
 /* apt list */
 "Title" = "Teitl";

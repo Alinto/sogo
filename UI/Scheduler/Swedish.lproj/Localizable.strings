@@ -482,7 +482,11 @@ validate_endbeforestart    = "Angivet slutdatumet inträffar före angivet start
 "Next slot" = "Nästa tid";
 "Previous hour" = "Föregående timme";
 "Next hour" = "Nästa timme";
-"Only office hours" = "Bara kontorstid";
+"Work days only" = "Work days only";
+"The whole day" = "The whole day";
+"During office hours" = "During office hours";
+"During specified hours" = "During specified hours";
+"and" = "and";
 
 /* apt list */
 "Title" = "Titel";

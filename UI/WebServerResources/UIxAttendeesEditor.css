@@ -12,9 +12,8 @@ DIV#attendeesView
 DIV#freeBusyView
 { background-color: #fff;
   position: absolute;
-  margin-top: 0.5em;
-  top: 2em;
-  bottom: 14.5em;
+  top: 5px;
+  bottom: 135px;
   left: 0px;
   right: 0px;
   overflow: hidden;
@@ -189,7 +188,7 @@ TABLE#freeBusyData TD SPAN.freeBusyZoneElement
 
 DIV#freeBusyFooter
 { position: absolute;
-  height: 14em;
+  height: 130px;
   left: 0px;
   right: 0px;
   bottom: 0px;
@@ -239,24 +238,18 @@ SPAN.colorBox.noFreeBusy,
 TABLE#freeBusyData TD.noFreeBusy
 { background-color: #e09ebd; }
 
-DIV#freeBusyViewButtons
-{ position: absolute;
-  padding: 0px 3px 3px 3px;
-  line-height: 2em;
-  top: 0px;
-  right: 0;
-  padding-right: 16em; /* leave space for the next/previous buttons */
-  text-align: right;
-  left: auto; }
+#freeBusyViewButtons
+{ border: 1px solid #aaa;
+  float: left;
+  width: 320px;
+  margin: 0px;
+  padding: 5px;
+  text-align: left; }
 
-DIV#freeBusyViewButtons SPAN.buttons
-{ position: absolute;
-  top: 0px;
-  left: auto;
-  right: 0px; }
-
-DIV#freeBusyViewButtons INPUT
-{ clear: none; }
+#freeBusyViewButtons > DIV.buttons
+{ margin: 0px;
+  margin-top: 4px;
+  background-color: #000; }
 
 DIV#freeBusyZoomButtons
 { position: absolute;
@@ -266,7 +259,7 @@ DIV#freeBusyZoomButtons
 
 DIV#freeBusyReplicas
 { position: absolute;
-  top: 5em;
+  top: 2px;
   right: 0px;
   width: 30em;
   height: 4em; }
@@ -279,7 +272,7 @@ DIV#windowButtons
   bottom: 0px;
   left: 0px;
   right: 0px;
-  height: 4em;
+  height: 24px;
   text-align: right; }
 
 .officeHour

@@ -482,7 +482,10 @@ validate_endbeforestart    = "Het begin vindt plaats vóór het einde.";
 "Next slot" = "Volgende";
 "Previous hour" = "Vorig uur";
 "Next hour" = "Volgend uur";
-"Only office hours" = "Only office hours";
+"Work days only" = "Slechts werkdagen";
+"The whole day" = "De hele dag";
+"During specified hours" = "Tijdens gespecificeerde uren";
+"and" = "en";
 
 /* apt list */
 "Title" = "Titel";

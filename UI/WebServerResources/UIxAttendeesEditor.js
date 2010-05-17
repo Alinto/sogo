@@ -1,10 +1,14 @@
 /* -*- Mode: java; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
+/* TODO:
+   - set work days from preferences */
+
 var OwnerLogin = "";
 
 var resultsDiv;
 var address;
-var additionalDays = 2;
+
+var availability;
 
 var isAllDay = parent$("isAllDay").checked + 0;
 var displayStartHour = 0;
@@ -15,7 +19,7 @@ var attendeesEditor = {
     selectedIndex: -1
 };
 
-function handleAllDay () {
+function handleAllDay() {
     window.timeWidgets['end']['hour'].value = 17;
     window.timeWidgets['end']['minute'].value = 0;
     window.timeWidgets['start']['hour'].value = 9;
@@ -221,7 +225,7 @@ function performSearchCallback(http) {
                     var node = createElement('li');
                     list.appendChild(node);
                     node.address = completeEmail;
-                    log("node.address: " + node.address);
+                    // log("node.address: " + node.address);
                     node.uid = contact["c_uid"];
                     node.isList = isList;
                     if (isList) {
@@ -339,17 +343,9 @@ function onAttendeeResultClick(event) {
     this.parentNode.input = null;
 }
 
-function resetFreeBusyZone() {
-    var table = $("freeBusyHeader");
-    var row = table.rows[2];
-    for (var i = 0; i < row.cells.length; i++) {
-        var nodes = $(row.cells[i]).childNodesWithTag("span");
-        for (var j = 0; j < nodes.length; j++)
-            nodes[j].removeClassName("busy");
-    }
-}
+function redisplayEventSpans() {
+    // log("redisplayEventSpans");
 
-function redisplayFreeBusyZone() {
     var table = $("freeBusyHeader");
     var row = table.rows[2];
     var stDay = $("startTime_date").valueAsDate();
@@ -385,9 +381,19 @@ function redisplayFreeBusyZone() {
     var currentCell = row.cells[currentCellNbr];
     var currentSpanNbr = stMinute;
     var spans = $(currentCell).childNodesWithTag("span");
-    resetFreeBusyZone();
+
+    /* we first reset the cache of busy spans */
+    if (row.busySpans) {
+        for (var i = 0; i < row.busySpans.length; i++) {
+            row.busySpans[i].removeClassName("busy");
+        }
+    }
+    row.busySpans = [];
+
+    /* now we mark the spans corresponding to our event */
     while (deltaSpans > 0) {
         var currentSpan = spans[currentSpanNbr];
+        row.busySpans.push(currentSpan);
         currentSpan.addClassName("busy");
         currentSpanNbr++;
         if (currentSpanNbr > 3) {
@@ -528,31 +534,501 @@ function onInputBlur(event) {
     }
 }
 
+/* FIXME: any other way to repeat an object? */
+var _fullFreeDay = [];
+for (var i = 0; i < 96; i++) {
+    _fullFreeDay.push('0');
+}
+
+function availabilitySession(uids, direction, start, end, listener) {
+    this.mDirection = direction;
+    if (direction > 0) {
+        this._findDate = this._forwardFindDate;
+        this._adjustCurrentStart = this._forwardAdjustCurrentStart;
+    }
+    else {
+        this._findDate = this._backwardFindDate;
+        this._adjustCurrentStart = this._backwardAdjustCurrentStart;
+    }
+    this.mStart = start;
+
+    this.mStartLimit = 0;
+    this.mEndLimit = 24 * 4;
+    this.mWorkDaysOnly = false;
+
+    /* The duration of the range covering the start and end of the event, in
+       quarters.
+
+       15 minutes * 60 secs * 1000 ms = 900000 ms */
+    this.mDuration = Math.ceil((end.getTime() - start.getTime()) / 900000);
+    this.mUids = uids;
+    this.mListener = listener;
+}
+
+availabilitySession.prototype = {
+  mStart: null,
+  mDirection: null,
+  mStartLimit: 0,
+  mEndLimit: 0,
+  mWorkDaysOnly: 0,
+
+  mListener: null,
+  mUids: null,
+
+  mCurrentStart: null,
+  mFirstStep: false,
+
+  mCurrentEntries: null,
+  mActiveRequests: 0,
+
+  setLimits: function aS_setLimits(start, end) {
+      this.mStartLimit = start;
+      this.mEndLimit = end;
+  },
+
+  setWorkDaysOnly: function aS_setWorkDaysOnly(workDaysOnly) {
+      this.mWorkDaysOnly = workDaysOnly;
+  },
+
+  _step: function aS__step() {
+      // log("currentStart: " + this.mCurrentStart);
+      this.mCurrentEntries = null;
+      var max = this.mUids.length;
+      if (max > 0) {
+          this.mActiveRequests = max;
+          for (var i = 0; i < max; i++) {
+              // log("request start");
+              var fbRequest = new freeBusyRequest(this.mCurrentStart,
+                                                  this.mCurrentStart,
+                                                  this.mUids[i],
+                                                  this);
+              fbRequest.start();
+          }
+      }
+      else {
+          this.mActiveRequests = 1;
+          this.onRequestComplete(null, true, _fullFreeDay);
+      }
+  },
+
+  start: function aS_start() {
+      this.mCurrentStart = this.mStart.clone();
+      this.mCurrentStart.setHours(0);
+      this.mCurrentStart.setMinutes(0);
+      if (this.mWorkDaysOnly) {
+          this._adjustCurrentStart();
+      }
+      this.mFirstStep = true;
+      this._step();
+  },
+
+  onRequestComplete: function aS_onRequestComplete(request, success, entries) {
+      this.mActiveRequests--;
+      this._mergeEntries(entries);
+      if (this.mActiveRequests == 0) {
+          // log("requests done");
+          var foundDate = this._findDate();
+          if (foundDate) {
+              var foundEndDate = foundDate.clone();
+              foundEndDate.setTime(foundDate.getTime()
+                                   + this.mDuration * 900000);
+              this.mListener.onRequestComplete(this, foundDate, foundEndDate);
+          }
+          else {
+              if (this.mDirection > 0) {
+                  this.mCurrentStart.addDays(1);
+              }
+              else {
+                  this.mCurrentStart.addDays(-1);
+              }
+              if (this.mWorkDaysOnly) {
+                  this._adjustCurrentStart();
+              }
+              // log("found no date, new start: " + this.mCurrentStart);
+              this._step();
+          }
+      }
+  },
+
+  _forwardAdjustCurrentStart: function aS__forwardAdjustCurrentStart() {
+      var day = this.mCurrentStart.getDay();
+      if (day == 0) {
+          this.mCurrentStart.addDays(1);
+      }
+      else if (day == 6) {
+          this.mCurrentStart.addDays(2);
+      }
+  },
+  _backwardAdjustCurrentStart: function aS__backwardAdjustCurrentStart() {
+      var day = this.mCurrentStart.getDay();
+      if (day == 0) {
+          this.mCurrentStart.addDays(-2);
+      }
+      else if (day == 6) {
+          this.mCurrentStart.addDays(-1);
+      }
+  },
+
+  _mergeEntries: function aS__mergeEntries(entries) {
+      if (this.mCurrentEntries) {
+          var currentIndex = 0;
+          while (currentIndex > -1) {
+              this.mCurrentEntries[currentIndex] = entries[currentIndex];
+              currentIndex = entries.indexOf('1', currentIndex  + 1);
+          }
+      }
+      else {
+          this.mCurrentEntries = entries;
+      }
+  },
+
+  _forwardFindDate: function aS__forwardFindDate() {
+      var foundDate = null;
+
+      var maxOffset = this.mEndLimit - this.mDuration;
+      var offset = 0;
+      if (this.mFirstStep) {
+          offset = Math.floor(this.mStart.getHours() * 4
+                              + this.mStart.getMinutes() / 15) + 1;
+          this.mFirstStep = false;
+      }
+      else {
+          offset = this.mCurrentEntries.indexOf('0');
+      }
+      if (offset > -1 && offset < this.mStartLimit) {
+          offset = this.mStartLimit;
+      }
+      while (!foundDate && offset > -1 && offset <= maxOffset) {
+          var testDuration = 0;
+          while (this.mCurrentEntries[offset] == '0'
+                 && testDuration < this.mDuration) {
+              testDuration++;
+              offset++;
+          }
+          if (testDuration == this.mDuration) {
+              foundDate = new Date();
+              var foundTime = (this.mCurrentStart.getTime()
+                               + (offset - testDuration) * 900000);
+              foundDate.setTime(foundTime);
+          }
+          else {
+              offset = this.mCurrentEntries.indexOf('0', offset + 1);
+          }
+      }
+
+      return foundDate;
+  },
+  _backwardFindDate: function aS__backwardFindDate() {
+      var foundDate = null;
+
+      var maxOffset = this.mEndLimit - this.mDuration;
+      var offset;
+      if (this.mFirstStep) {
+          offset = Math.floor(this.mStart.getHours() * 4
+                              + this.mStart.getMinutes() / 15) - 1;
+          this.mFirstStep = false;
+      }
+      else {
+          offset = this.mCurrentEntries.lastIndexOf('0');
+      }
+      if (offset > maxOffset) {
+          offset = maxOffset;
+      }
+      while (!foundDate
+             && offset >= this.mStartLimit) {
+          var testDuration = 0;
+          var testOffset = offset;
+          while (this.mCurrentEntries[testOffset] == '0'
+                 && testDuration < this.mDuration) {
+              testDuration++;
+              testOffset++;
+          }
+          if (testDuration == this.mDuration) {
+              foundDate = new Date();
+              var foundTime = (this.mCurrentStart.getTime()
+                               + offset * 900000);
+              foundDate.setTime(foundTime);
+          }
+          else {
+              offset = this.mCurrentEntries.lastIndexOf('0', offset - 1);
+          }
+      }
+
+      return foundDate;
+  }
+};
+
+function availabilityController(previousSlotButton, nextSlotButton) {
+    this.previousSlotButton = previousSlotButton;
+    this.nextSlotButton = nextSlotButton;
+
+    var boundCallback = this.onPreviousSlotClick.bindAsEventListener(this);
+    previousSlotButton.observe("click", boundCallback, false);
+    boundCallback = this.onNextSlotClick.bindAsEventListener(this);
+    $("nextSlot").observe("click", boundCallback, false);
+}
+
+availabilityController.prototype = {
+  previousSlotButton: null,
+  nextSlotButton: null,
+
+  onPreviousSlotClick: function ac_onPreviousSlotClick(event) {
+      this._findSlot(-1);
+      this.previousSlotButton.blur();
+  },
+  onNextSlotClick: function aC_onNextSlotClick(event) {
+      this._findSlot(1);
+      this.nextSlotButton.blur();
+  },
+  _findSlot: function aC__findSlot(direction) {
+      var uids = [];
+
+      var inputs = $("freeBusy").getElementsByTagName("input");
+      for (var i = 0; i < inputs.length - 1; i++) {
+          if (inputs[i].uid) {
+              uids.push(inputs[i].uid);
+          }
+      }
+
+      var start = window.timeWidgets['start']['date'].valueAsDate();
+      start.setHours(window.timeWidgets['start']['hour'].value);
+      start.setMinutes(window.timeWidgets['start']['minute'].value);
+
+      var end = window.timeWidgets['end']['date'].valueAsDate();
+      end.setHours(window.timeWidgets['end']['hour'].value);
+      end.setMinutes(window.timeWidgets['end']['minute'].value);
+      var session = new availabilitySession(uids, direction,
+                                            start, end,
+                                            this);
+      var limits = $("timeSlotLimits");
+      if (limits.value == "office-hours") {
+          var start = dayStartHour * 4;
+          var end = dayEndHour * 4;
+          session.setLimits(start, end);
+      }
+      else if (limits.value == "range") {
+          var start = (parseInt($("timeSlotStartLimitHour").value)
+                       + parseInt($("timeSlotStartLimitMinute").value));
+          var end = (parseInt($("timeSlotEndLimitHour").value)
+                     + parseInt($("timeSlotEndLimitMinute").value));
+          session.setLimits(start, end);
+      }
+      session.setWorkDaysOnly($("workDaysOnly").checked);
+      session.start();
+  },
+  onRequestComplete: function aC_onRequestComplete(session, start, end) {
+      window.timeWidgets['start']['date'].setValueAsDate(start);
+      window.timeWidgets['start']['hour'].value = start.getHours();
+      window.timeWidgets['start']['minute'].value = start.getMinutes();
+
+      window.timeWidgets['end']['date'].setValueAsDate(end);
+      window.timeWidgets['end']['hour'].value = end.getHours();
+      window.timeWidgets['end']['minute'].value = end.getMinutes();
+
+      if (start.getDay() != session.mStart.getDay()) {
+          onTimeDateWidgetChange();
+      }
+      else {
+          redisplayEventSpans();
+      }
+  }
+};
+
+/* freebusy cache, used internally by freeBusyRequest below */
+var _fbCache = {};
+
+function _freeBusyCacheEntry() {
+}
+
+_freeBusyCacheEntry.prototype = {
+  startDate: null,
+  entries: null,
+
+  getEntries: function fBCE_getEntries(sd, ed) {
+      var entries = null;
+
+      var adjustedSd = sd.beginOfDay();
+
+      if (this.startDate && this.startDate.getTime() <= adjustedSd.getTime()) {
+          var offset = this.startDate.deltaDays(adjustedSd) * 96;
+          if (this.entries.length > offset) {
+              var adjustedEd = ed.beginOfDay();
+              var nbrDays = adjustedSd.deltaDays(adjustedEd) + 1;
+              var nbrQu = nbrDays * 96;
+              var offsetEnd = offset + nbrQu;
+              if (this.entries.length >= offsetEnd) {
+                  entries = this.entries.slice(offset, offsetEnd);
+              }
+          }
+      }
+
+      return entries;
+  },
+
+  getFetchRanges: function fBCE_getFetchRanges(sd, ed) {
+      var fetchDates;
+
+      var adjustedSd = sd.beginOfDay();
+      var adjustedEd = ed.beginOfDay();
+      var nbrDays = adjustedSd.deltaDays(adjustedEd) + 1;
+      if (this.startDate) {
+          fetchDates = [];
+
+          if (adjustedSd.getTime() < this.startDate.getTime()) {
+              var start = adjustedSd.clone();
+              start.addDays(-7);
+              var end = start.clone();
+              end.addDays(-1);
+              fetchDates.push({ start: start, end: end });
+          }
+
+          var currentNbrDays = this.entries.length / 96;
+          var nextDate = this.startDate.clone();
+          nextDate.addDays(currentNbrDays);
+          if (adjustedEd.getTime() >= nextDate.getTime()) {
+              var end = nextDate.clone();
+              end.addDays(7);
+              fetchDates.push({ start: nextDate, end: end });
+          }
+      }
+      else {
+          var start = adjustedSd.clone();
+          start.addDays(-7);
+          var end = adjustedEd.clone();
+          end.addDays(7);
+          fetchDates = [ { start: start, end: end } ];
+      }
+
+      return fetchDates;
+  },
+
+  integrateEntries: function fBCE_integrateEntries(entries, start, end) {
+      if (this.startDate) {
+          if (start.getTime() < this.startDate) {
+              var days = start.deltaDays(this.startDate);
+              if (entries.length == (days * 96)) {
+                  this.startDate = start;
+                  this.entries = entries.concat(this.entries);
+              }
+          }
+          else {
+              this.entries = this.entries.concat(entries);
+          }
+      } else {
+          this.startDate = start;
+          this.entries = entries;
+      }
+  }
+};
+
+function freeBusyRequest(start, end, uid, listener) {
+    this.mStart = start.beginOfDay();
+    this.mEnd = end.beginOfDay();
+    this.mUid = uid;
+    this.mListener = listener;
+    this.mPendingRequests = 0;
+}
+
+freeBusyRequest.prototype = {
+  mStart: null,
+  mEnd: null,
+  mUid: null,
+  mListener: null,
+
+  mCacheEntry: null,
+
+  mPendingRequests: 0,
+
+  start: function fBR_start() {
+      this.mCacheEntry = _fbCache[this.mUid];
+      if (!this.mCacheEntry) {
+          this.mCacheEntry = new _freeBusyCacheEntry();
+          _fbCache[this.mUid] = this.mCacheEntry;
+      }
+      var entries = this.mCacheEntry.getEntries(this.mStart, this.mEnd);
+      if (entries) {
+          this.mListener.onRequestComplete(this, true, entries);
+      }
+      else {
+          if (this.mPendingRequests == 0) {
+              var fetchRanges = this.mCacheEntry.getFetchRanges(this.mStart, this.mEnd);
+              this.mPendingRequests = fetchRanges.length;
+              for (var i = 0; i < fetchRanges.length; i++) {
+                  var fetchRange = fetchRanges[i];
+                  this._performAjaxRequest(fetchRange.start, fetchRange.end);
+              }
+          }
+          else {
+              /* a nearly impossible condition that we want to handle */
+              log("freebusy request is already active");
+          }
+      }
+  },
+
+  _performAjaxRequest: function fBR__performAjaxRequest(rqStart, rqEnd) {
+      var urlstr = (UserFolderURL + "../" + this.mUid
+                    + "/freebusy.ifb/ajaxRead?"
+                    + "sday=" + rqStart.getDayString()
+                    + "&eday=" + rqEnd.getDayString());
+
+      var thisRequest = this;
+      var callback = function fBR__performAjaxRequest_cb(http) {
+          if (http.readyState == 4) {
+              thisRequest.onRequestComplete(http, rqStart, rqEnd);
+              thisRequest = null;
+          }
+      };
+
+      triggerAjaxRequest(urlstr, callback);
+  },
+
+  onRequestComplete: function fBR_onRequestComplete(http, rqStart, rqEnd) {
+      this.mPendingRequests--;
+      if (http.status == 200 && http.responseText) {
+          var newEntries = http.responseText.split(",");
+          var cacheEntry = this.mCacheEntry;
+          cacheEntry.integrateEntries(newEntries, rqStart, rqEnd);
+          if (this.mPendingRequests == 0) {
+              var entries = this.mCacheEntry.getEntries(this.mStart,
+                                                        this.mEnd);
+              this.mListener.onRequestComplete(this, true, entries);
+          }
+      }
+  }
+};
+
 function displayFreeBusyForNode(input) {
     var rowIndex = input.parentNode.parentNode.sectionRowIndex;
-    var nodes = $("freeBusyData").tBodies[0].rows[rowIndex].cells;
-    log ("displayFreeBusyForNode index " + rowIndex + " (" + nodes.length + " cells)");
+    var row = $("freeBusyData").tBodies[0].rows[rowIndex];
+    var nodes = row.cells;
+    // log ("displayFreeBusyForNode index " + rowIndex + " (" + nodes.length + " cells)");
     if (input.uid) {
-        for (var i = 0; i < nodes.length; i++) {
-            var node = $(nodes[i]);
-            node.removeClassName("noFreeBusy");
-            while (node.firstChild) {
-                node.removeChild(node.firstChild);
-            }
-            for (var j = 0; j < 4; j++) {
-                createElement("span", null, "freeBusyZoneElement",
-                              null, null, node);
+        if (!input.hasfreebusy) {
+            // log("forcing draw of nodes");
+            for (var i = 0; i < nodes.length; i++) {
+                var node = $(nodes[i]);
+                node.removeClassName("noFreeBusy");
+                while (node.firstChild) {
+                    node.removeChild(node.firstChild);
+                }
+                for (var j = 0; j < 4; j++) {
+                    createElement("span", null, "freeBusyZoneElement",
+                                  null, null, node);
+                }
             }
         }
-        var sd = $('startTime_date').valueAsShortDateString();
-        var ed = $('endTime_date').valueAsShortDateString();
-        var urlstr = (UserFolderURL + "../" + input.uid
-                      + "/freebusy.ifb/ajaxRead?"
-                      + "sday=" + sd + "&eday=" + ed + "&additional=" +
-                      additionalDays);
-        triggerAjaxRequest(urlstr,
-                           updateFreeBusyDataCallback,
-                           input);
+
+        var sd = $('startTime_date').valueAsDate();
+        var ed = $('endTime_date').valueAsDate();
+        var listener = {
+          onRequestComplete: function(request, success, entries) {
+              if (success) {
+                  drawFbData(input, entries);
+              }
+          }
+        };
+        var rq = new freeBusyRequest(sd, ed, input.uid, listener);
+        rq.start();
     } else {
         for (var i = 0; i < nodes.length; i++) {
             var node = $(nodes[i]);
@@ -564,50 +1040,101 @@ function displayFreeBusyForNode(input) {
     }
 }
 
-function setSlot(tds, nbr, status) {
-    var tdnbr = Math.floor(nbr / 4);
-    var spannbr = nbr - (tdnbr * 4);
-    var days = 0;
-    if (tdnbr > 24) {
-        days = Math.floor(tdnbr / 24);
-        tdnbr -= (days * 24);
+function setSpanStatus(span, status) {
+    var currentClass = span.freeBusyClass;
+    if (!currentClass)
+        currentClass = "";
+    var newClass;
+    if (status == '1') {
+        newClass = "busy";
     }
-    if (tdnbr > (displayStartHour - 1) && tdnbr < (displayEndHour + 1)) {
-        var i = (days * (displayEndHour - displayStartHour + 1) + tdnbr - (displayStartHour - 1));
-        var td = tds[i - 1];
-        var spans = $(td).childNodesWithTag("span");
-        if (status == '2')
-            $(spans[spannbr]).addClassName("maybe-busy");
-        else
-            $(spans[spannbr]).addClassName("busy");
+    else if (status == '2') {
+        newClass = "maybe-busy";
+    }
+    else {
+        newClass = "";
+    }
+    if (newClass != currentClass) {
+        if (currentClass.length > 0) {
+            span.removeClassName(currentClass);
+        }
+        if (newClass.length > 0) {
+            span.addClassName(newClass);
+        }
+        span.freeBusyClass = newClass;
     }
 }
 
-function updateFreeBusyDataCallback(http) {
-    if (http.readyState == 4) {
-        if (http.status == 200) {
-            var input = http.callbackData;
-            var slots = http.responseText.split(",");
-            var rowIndex = input.parentNode.parentNode.sectionRowIndex;
-            var nodes = $("freeBusyData").tBodies[0].rows[rowIndex].cells;
-            // log ("received " + slots.length + " slots for " + rowIndex + " with " + nodes.length + " cells");
-            for (var i = 0; i < slots.length; i++) {
-                if (slots[i] != '0')
-                    setSlot(nodes, i, slots[i]);
+function drawFbData(input, slots) {
+    var rowIndex = input.parentNode.parentNode.sectionRowIndex;
+
+    var slotNbr = 0;
+    var tds = $("freeBusyData").tBodies[0].rows[rowIndex].cells;
+    if (tds.length * 4 == slots.length) {
+        for (var i = 0; i < tds.length; i++) {
+            var spans = tds[i].childNodesWithTag("span");
+            for (var j = 0; j < spans.length; j++) {
+                setSpanStatus(spans[j], slots[slotNbr]);
+                slotNbr++;
             }
         }
+    }
+    else {
+        log("inconsistency between freebusy results and"
+            + " the number of cells");
+        log("  expecting: " + tds.length + " received: " + slots.length);
     }
 }
 
 function resetAllFreeBusys() {
-    var table = $("freeBusy");
-    var inputs = table.getElementsByTagName("input");
-
+    var inputs = $("freeBusy").getElementsByTagName("input");
     for (var i = 0; i < inputs.length - 1; i++) {
         var currentInput = inputs[i];
         currentInput.hasfreebusy = false;
         displayFreeBusyForNode(currentInput);
     }
+}
+
+function initializeTimeSlotWidgets() {
+    availability = new availabilityController($("previousSlot"),
+                                              $("nextSlot"));
+
+    var hourWidgets = [ "timeSlotStartLimitHour",
+                        "timeSlotEndLimitHour" ];
+    for (var i = 0; i < hourWidgets.length; i++) {
+        var hourWidget = $(hourWidgets[i]);
+        for (var h = 0; h < 24; h++) {
+            var option = createElement("option", null, null,
+                                       { value: h * 4 });
+            var text = (h < 10) ? ("0" + h) : ("" + h);
+            option.appendChild(document.createTextNode(text));
+            hourWidget.appendChild(option);
+        }
+    }
+    var limitWidget = $("timeSlotStartLimitHour");
+    limitWidget.value = parseInt($("startTime_time_hour").value) * 4;
+    limitWidget = $("timeSlotEndLimitHour");
+    limitWidget.value = parseInt($("endTime_time_hour").value) * 4;
+
+    var minuteWidgets = [ "timeSlotStartLimitMinute",
+                          "timeSlotEndLimitMinute" ];
+    for (var i = 0; i < minuteWidgets.length; i++) {
+        var minuteWidget = $(minuteWidgets[i]);
+        for (var h = 0; h < 4; h++) {
+            var option = createElement("option", null, null,
+                                       { value: h });
+            var quValue = h * 15;
+            var text = (h == 0) ? "00" : ("" + quValue);
+            option.appendChild(document.createTextNode(text));
+            minuteWidget.appendChild(option);
+        }
+    }
+    var limitWidget = $("timeSlotStartLimitMinute");
+    limitWidget.value = Math.floor(parseInt($("startTime_time_minute").value)
+                                   / 15);
+    limitWidget = $("timeSlotEndLimitMinute");
+    limitWidget.value = Math.floor(parseInt($("endTime_time_minute").value)
+                                   / 15);
 }
 
 function initializeWindowButtons() {
@@ -616,44 +1143,6 @@ function initializeWindowButtons() {
     
     okButton.observe("click", onEditorOkClick, false);
     cancelButton.observe("click", onEditorCancelClick, false);
-    
-    $("previousSlot").observe ("click", onPreviousSlotClick, false);
-    $("nextSlot").observe ("click", onNextSlotClick, false);
-}
-
-function findSlot(direction) {
-    var userList = UserLogin;
-    var table = $("freeBusy");
-    var inputs = table.getElementsByTagName("input");
-    var sd = window.timeWidgets['start']['date'].valueAsShortDateString();
-    var st = window.timeWidgets['start']['hour'].value
-        + ":" + window.timeWidgets['start']['minute'].value;
-    var ed = window.timeWidgets['end']['date'].valueAsShortDateString();
-    var et = window.timeWidgets['end']['hour'].value
-        + ":" + window.timeWidgets['end']['minute'].value;
-
-    for (var i = 0; i < inputs.length - 1; i++) {
-        if (inputs[i].uid)
-            userList += "," + inputs[i].uid;
-    }
-
-    // Abort any pending request
-    if (document.findSlotAjaxRequest) {
-        document.findSlotAjaxRequest.aborted = true;
-        document.findSlotAjaxRequest.abort();
-    }
-    var urlstr = (ApplicationBaseURL
-                  + "findPossibleSlot?direction=" + direction
-                  + "&uids=" + escape(userList)
-                  + "&startDate=" + escape(sd)
-                  + "&startTime=" + escape(st)
-                  + "&endDate=" + escape(ed)
-                  + "&endTime=" + escape(et)
-                  + "&isAllDay=" + isAllDay
-                  + "&onlyOfficeHours=" + ($("onlyOfficeHours").checked + 0));
-    document.findSlotAjaxRequest = triggerAjaxRequest(urlstr,
-                                                      updateSlotDisplayCallback,
-                                                      userList);
 }
 
 function cleanInt(data) {
@@ -696,7 +1185,7 @@ function updateSlotDisplayCallback(http) {
     var data = http.responseText.evalJSON(true);
     var start = new Date();
     var end = new Date();
-    var cb = redisplayFreeBusyZone;
+    var cb = redisplayEventSpans;
 
     start.setFullYear(parseInt (data[0]['startDate'].substr(0, 4)),
                       parseInt (data[0]['startDate'].substr(4, 2)) - 1,
@@ -719,16 +1208,6 @@ function updateSlotDisplayCallback(http) {
     window.timeWidgets['start']['minute'].value = cleanInt(data[0]['startMinute']);
     
     cb();
-}
-
-function onPreviousSlotClick(event) {
-    findSlot(-1);
-    this.blur(); // required by IE
-}
-
-function onNextSlotClick(event) {
-    findSlot(1);
-    this.blur(); // required by IE
 }
 
 function onEditorOkClick(event) {
@@ -811,7 +1290,7 @@ function updateParentDateFields(srcWidgetName, dstWidgetName) {
 }
 
 function onTimeWidgetChange() {
-    redisplayFreeBusyZone();
+    redisplayEventSpans();
 }
 
 function onTimeDateWidgetChange() {
@@ -833,7 +1312,7 @@ function onTimeDateWidgetChange() {
 
     prepareTableHeaders();
     prepareTableRows();
-    redisplayFreeBusyZone();
+    redisplayEventSpans();
     resetAllFreeBusys();
 }
 
@@ -843,7 +1322,7 @@ function prepareTableHeaders() {
 
     var endTimeDate = $("endTime_date");
     var endDate = endTimeDate.valueAsDate();
-    endDate.setTime(endDate.getTime() + (additionalDays * 86400000));
+    endDate.setTime(endDate.getTime());
 
     var rows = $("freeBusyHeader").rows;
     var days = startDate.daysUpTo(endDate);
@@ -861,7 +1340,7 @@ function prepareTableHeaders() {
             var text = hour + ":00";
             if (hour < 10)
                 text = "0" + text;
-            if (hour >= dayStartHour && hour <= dayEndHour)
+            if (hour >= dayStartHour && hour < dayEndHour)
                 $(header2).addClassName ("officeHour");
             header2.appendChild(document.createTextNode(text));
             rows[1].appendChild(header2);
@@ -883,16 +1362,17 @@ function prepareTableRows() {
 
     var endTimeDate = $("endTime_date");
     var endDate = endTimeDate.valueAsDate();
-    endDate.setTime(endDate.getTime() + (additionalDays * 86400000));
+    endDate.setTime(endDate.getTime());
 
     var rows = $("freeBusyData").tBodies[0].rows;
     var days = startDate.daysUpTo(endDate);
     var width = $('freeBusyHeader').getWidth();
     $("freeBusyData").setStyle({ width: width + 'px' });
+
     for (var i = 0; i < days.length; i++)
         for (var rowNbr = 0; rowNbr < rows.length; rowNbr++)
             for (var hour = displayStartHour; hour < (displayEndHour + 1); hour++)
-                rows[rowNbr].appendChild(document.createElement("td"));
+                rows[rowNbr].appendChild(createElement("td"));
 }
 
 function prepareAttendees() {
@@ -946,8 +1426,8 @@ function prepareAttendees() {
             input.setAttribute("name", "");
             input.modified = false;
             input.observe("blur", onInputBlur);
-            input.observe("keydown", onContactKeydown.bindAsEventListener(input)
-);
+            input.observe("keydown",
+                          onContactKeydown.bindAsEventListener(input));
 
             row = $(modelData.cloneNode(true));
             tbodyData.insertBefore(row, newDataRow);
@@ -986,29 +1466,29 @@ function onScroll(event) {
 }
 
 function onFreeBusyLoadHandler() {
+    OwnerLogin = window.opener.getOwnerLogin();
+
     var widgets = {'start': {'date': $("startTime_date"),
                              'hour': $("startTime_time_hour"),
                              'minute': $("startTime_time_minute")},
                    'end': {'date': $("endTime_date"),
                            'hour': $("endTime_time_hour"),
                            'minute': $("endTime_time_minute")}};
-
-    OwnerLogin = window.opener.getOwnerLogin();
-
     synchronizeWithParent("startTime", "startTime");
     synchronizeWithParent("endTime", "endTime");
-
     initTimeWidgets(widgets);
+
+    initializeTimeSlotWidgets();
     initializeWindowButtons();
     prepareTableHeaders();
     prepareTableRows();
-    redisplayFreeBusyZone();
+    redisplayEventSpans();
     prepareAttendees();
     onWindowResize(null);
     Event.observe(window, "resize", onWindowResize);
     $$('TABLE#freeBusy TD.freeBusyData DIV').first().observe("scroll", onScroll);
-    scrollToEvent ();
-    toggleOfficeHours ();
+    scrollToEvent();
+    toggleOfficeHours();
 }
 
 document.observe("dom:loaded", onFreeBusyLoadHandler);

@@ -482,7 +482,11 @@ validate_endbeforestart    = "Ihr Beginn ist nach dem Ende";
 "Next slot" = "Nächster";
 "Previous hour" = "Vorherige Stunde";
 "Next hour" = "Nächste Stunde";
-"Only office hours" = "Nur Arbeitszeit";
+"Work days only" = "Work days only";
+"The whole day" = "The whole day";
+"During office hours" = "During office hours";
+"During specified hours" = "During specified hours";
+"and" = "and";
 
 /* apt list */
 "Title" = "Titel";
