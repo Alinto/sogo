@@ -1,5 +1,9 @@
 2010-05-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/generic.js (log): improved the method's
+	performance by making use of DOM methods on the "logConsole"
+	object.
+
 	* UI/WebServerResources/JavascriptAPIExtensions.js
 	(Date.prototype.clone): new method for copying the Date object
 	into another instance.

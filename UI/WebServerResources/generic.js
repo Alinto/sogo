@@ -720,19 +720,20 @@ function log(message) {
     }
     var logConsole = logWindow.document.getElementById("logConsole");
     if (logConsole) {
-        logConsole.highlighted = !logConsole.highlighted;
-        if (message == '\c') {
-            logConsole.innerHTML = "";
+        if (message == "\c") {
+            while (logConsole.firstChild) {
+                logConsole.removeChild(logConsole.firstChild);
+            }
             return;
         }
-        var logMessage = message.replace("<", "&lt;", "g");
-        logMessage = logMessage.replace(" ", "&nbsp;", "g");
-        logMessage = logMessage.replace("\r\n", "<br />\n", "g");
-        logMessage = logMessage.replace("\n", "<br />\n", "g");
-        logMessage += '<br />' + "\n";
-        if (logConsole.highlighted)
-            logMessage = '<div class="highlighted">' + logMessage + '</div>';
-        logConsole.innerHTML += logMessage;
+        if (message[message.length-1] == "\n") {
+            message = message.substr(0, message.length-2);
+        }
+        var lines = message.split("\n");
+        for (var i = 0; i < lines.length; i++) {
+            logConsole.appendChild(document.createTextNode(lines[i]));
+            logConsole.appendChild(createElement("br"));
+        }
         logConsole.scrollTop += 300; /* abritrary number */
     }
 }
