@@ -72,6 +72,14 @@ String.prototype.asCSSIdentifier = function() {
     return newString;
 };
 
+Date.prototype.clone = function() {
+    var newDate = new Date();
+
+    newDate.setTime(this.getTime());
+
+    return newDate;
+}
+
 Date.prototype.sogoDayName = function() {
     var dayName = "";
 
@@ -94,6 +102,18 @@ Date.prototype.sogoDayName = function() {
 
     return dayName;
 };
+
+Date.prototype.deltaDays = function(otherDate) {
+    var day1 = this.getTime();
+    var day2 = otherDate.getTime();
+    if (day1 > day2) {
+        var tmp = day2;
+        day2 = day1;
+        day1 = tmp;
+    }
+
+    return Math.floor((day2 - day1) / 86400000);
+}
 
 Date.prototype.daysUpTo = function(otherDate) {
     var days = new Array();
@@ -206,18 +226,25 @@ Date.prototype.laterDate = function(otherDate) {
     return ((this.getTime() < workDate.getTime())
             ? otherDate : this);
 };
+
+Date.prototype.beginOfDay = function() {
+    var beginOfDay = new Date(this.getTime());
+    beginOfDay.setHours(0);
+    beginOfDay.setMinutes(0);
+    beginOfDay.setSeconds(0);
+    beginOfDay.setMilliseconds(0);
+
+    return beginOfDay;
+}
   
 Date.prototype.beginOfWeek = function() {
     var offset = firstDayOfWeek - this.getDay();
     if (offset > 0)
         offset -= 7;
 
-    var beginOfWeek = new Date(this.getTime());
+    var beginOfWeek = this.beginOfDay();
     beginOfWeek.setHours(12);
     beginOfWeek.addDays(offset);
-    beginOfWeek.setMinutes(0);
-    beginOfWeek.setSeconds(0);
-    beginOfWeek.setMilliseconds(0);
   
     return beginOfWeek;
 };

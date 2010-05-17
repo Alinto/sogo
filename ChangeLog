@@ -1,3 +1,14 @@
+2010-05-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/JavascriptAPIExtensions.js
+	(Date.prototype.clone): new method for copying the Date object
+	into another instance.
+	(Date.prototype.deltaDays): new method that returns the number of
+	days separating the current date with another one passed as
+	parameter.
+	(Date.prototype.beginOfDay): new method that returns a new date
+	instance corresponding to time 00:00 of the current instance.
+
 2010-05-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* Tests/Integration/test-caldav-scheduling.py
