@@ -488,6 +488,9 @@ validate_endbeforestart    = "La date de fin est avant la date de début.";
 "During specified hours" = "Pendant les heures spécifiées";
 "and" = "et";
 
+"A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
+= "Il y a un conflit avec l'horaire d'un ou plusieurs participants.\nVoulez-vous conserver les paramètres actuel malgré tout?";
+
 /* apt list */
 "Title" = "Titre";
 "Start" = "Début";

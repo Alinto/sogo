@@ -8,7 +8,7 @@
 	(availabilitySession): new class, used by the above, for
 	triggering availability searchs in the available freebusys.
 	Listeners should implement the "onRequestComplete" method.
-	(freeBusyRequest): new class design to asynchronosly fetch a user
+	(freeBusyRequest): new class designed to asynchronosly fetch a user
 	freebusy between specific dates. Makes use of an internal cache
 	and may trigger ajax requests covering more that the specified
 	range in order to take advantage of that cache. Listeners should
@@ -18,6 +18,7 @@
 	(initializeTimeSlotWidgets): new method that initializes the new
 	widgets that controls the time range behaviour in the freebusy
 	searches.
+	(editorConflictHander): new class that handles time conflicts.
 
 	* UI/Scheduler/UIxCalListingActions.m (-findPossibleSlotAction):
 	removed action method and submethods since the slot resolution is

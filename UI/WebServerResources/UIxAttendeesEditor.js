@@ -591,7 +591,6 @@ availabilitySession.prototype = {
   },
 
   _step: function aS__step() {
-      // log("currentStart: " + this.mCurrentStart);
       this.mCurrentEntries = null;
       var max = this.mUids.length;
       if (max > 0) {
@@ -626,7 +625,6 @@ availabilitySession.prototype = {
       this.mActiveRequests--;
       this._mergeEntries(entries);
       if (this.mActiveRequests == 0) {
-          // log("requests done");
           var foundDate = this._findDate();
           if (foundDate) {
               var foundEndDate = foundDate.clone();
@@ -644,7 +642,6 @@ availabilitySession.prototype = {
               if (this.mWorkDaysOnly) {
                   this._adjustCurrentStart();
               }
-              // log("found no date, new start: " + this.mCurrentStart);
               this._step();
           }
       }
@@ -877,7 +874,7 @@ _freeBusyCacheEntry.prototype = {
           if (adjustedSd.getTime() < this.startDate.getTime()) {
               var start = adjustedSd.clone();
               start.addDays(-7);
-              var end = start.clone();
+              var end = this.startDate.beginOfDay();
               end.addDays(-1);
               fetchDates.push({ start: start, end: end });
           }
@@ -993,6 +990,66 @@ freeBusyRequest.prototype = {
                                                         this.mEnd);
               this.mListener.onRequestComplete(this, true, entries);
           }
+      }
+  }
+};
+
+function editorConflictHandler(uids, startDate, endDate, listener) {
+    this.mUids = uids;
+    this.mRemaining = uids.length;
+    this.mCurrentUid = 0;
+
+    this.mStartDate = startDate;
+    this.mEndDate = endDate;
+
+    this.mListener = listener;
+}
+
+editorConflictHandler.prototype = {
+  mUids: null,
+  mCurrentUid: 0,
+
+  mStartDate: null,
+  mEndDate: null,
+
+  mQuOffset: 0,
+  mQuOffsetMax: 0,
+
+  mCurrentEntries: null,
+
+  mListener: null,
+
+  start: function eCH_start() {
+      this.mQuOffset = (this.mStartDate.getHours() * 4
+                        + Math.floor(this.mStartDate.getMinutes() / 15));
+      this.mQuOffsetMax = (this.mEndDate.deltaDays(this.mStartDate) * 96
+                           + this.mEndDate.getHours() * 4
+                           + Math.ceil(this.mEndDate.getMinutes() / 15));
+      this._step();
+  },
+
+  _step: function eCH__step() {
+      if (this.mCurrentUid < this.mUids.length) {
+          var fbRequest = new freeBusyRequest(this.mStartDate,
+                                              this.mEndDate,
+                                              this.mUids[this.mCurrentUid],
+                                              this);
+          fbRequest.start();
+      }
+      else {
+          this.mListener.onRequestComplete(this, true);
+      }
+  },
+
+  onRequestComplete: function eCH_onRequestComplete(fbRequest, success,
+                                                    entries) {
+      var periodEntries = entries.slice(this.mQuOffset, this.mQuOffsetMax);
+      if (periodEntries.indexOf("1") > -1) {
+          this.mListener.onRequestComplete(this, false);
+      }
+      else {
+          this.mCurrentUid++;
+          this._step();
       }
   }
 };
@@ -1206,17 +1263,48 @@ function updateSlotDisplayCallback(http) {
     window.timeWidgets['start']['date'].setValueAsDate(start);
     window.timeWidgets['start']['hour'].value = cleanInt(data[0]['startHour']);
     window.timeWidgets['start']['minute'].value = cleanInt(data[0]['startMinute']);
-    
+
     cb();
 }
 
 function onEditorOkClick(event) {
     preventDefault(event);
 
+    var uids = [];
+    var inputs = $("freeBusy").getElementsByTagName("input");
+    for (var i = 0; i < inputs.length - 1; i++) {
+        var input = inputs[i];
+        if (input.uid) {
+            uids.push(input.uid);
+        }
+    }
+
+    var startDate = $("startTime_date").valueAsDate();
+    startDate.setHours(parseInt($("startTime_time_hour").value));
+    startDate.setMinutes(parseInt($("startTime_time_minute").value));
+    var endDate = $("endTime_date").valueAsDate();
+    endDate.setHours(parseInt($("endTime_time_hour").value));
+    endDate.setMinutes(parseInt($("endTime_time_minute").value));
+
+    var listener = {
+      onRequestComplete: function eCH_l_onRequestComplete(handlers, code) {
+          var label = ("A time conflict exists with one or more attendees.\n"
+                       + "Would you like to keep the current settings anyway?");
+          if (code || window.confirm(getLabel(label))) {
+              _confirmEditorOkClick();
+          }
+      }
+    };
+    
+    var conflictHandler = new editorConflictHandler(uids, startDate,
+                                                    endDate, listener);
+    conflictHandler.start();
+}
+
+function _confirmEditorOkClick() {
     var attendees = window.opener.attendees;
     var newAttendees = new Hash();
-    var table = $("freeBusy");
-    var inputs = table.getElementsByTagName("input");
+    var inputs = $("freeBusy").getElementsByTagName("input");
     for (var i = 0; i < inputs.length - 1; i++) {
         var row = $(inputs[i]).up("tr");
         var name = extractEmailName(inputs[i].value);
@@ -1294,16 +1382,14 @@ function onTimeWidgetChange() {
 }
 
 function onTimeDateWidgetChange() {
-    var table = $("freeBusyHeader");
-    var rows = table.select("tr");
+    var rows = $("freeBusyHeader").select("tr");
     for (var i = 0; i < rows.length; i++) {
         for (var j = rows[i].cells.length - 1; j > -1; j--) {
             rows[i].deleteCell(j);
         }
     }
   
-    table = $("freeBusyData");
-    rows = table.select("tr");
+    rows = $("freeBusyData").select("tr");
     for (var i = 0; i < rows.length; i++) {
         for (var j = rows[i].cells.length - 1; j > -1; j--) {
             rows[i].deleteCell(j);

@@ -488,6 +488,9 @@ validate_endbeforestart    = "Mae'r dyddiad gorffen sydd wedi'i roi yn digwydd c
 "During specified hours" = "During specified hours";
 "and" = "and";
 
+"A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
+= "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?";
+
 /* apt list */
 "Title" = "Teitl";
 "Start" = "Dechrau";

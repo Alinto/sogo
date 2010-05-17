@@ -487,6 +487,9 @@ validate_endbeforestart    = "Het begin vindt plaats vóór het einde.";
 "During specified hours" = "Tijdens gespecificeerde uren";
 "and" = "en";
 
+"A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
+= "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?";
+
 /* apt list */
 "Title" = "Titel";
 "Start" = "Begin";
