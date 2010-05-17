@@ -152,79 +152,78 @@
     }
 }
 
-- (NSString *) _freeBusyAsTextFromStartDate: (NSCalendarDate *) startDate
-                                  toEndDate: (NSCalendarDate *) endDate
-                                forFreeBusy: (SOGoFreeBusyObject *) fb
+- (NSString *) _freeBusyFromStartDate: (NSCalendarDate *) startDate
+                            toEndDate: (NSCalendarDate *) endDate
+                          forFreeBusy: (SOGoFreeBusyObject *) fb
 {
-  NSMutableString *response;
+  NSMutableArray *freeBusy;
   unsigned int *freeBusyItems;
   NSTimeInterval interval;
   unsigned int count, intervals;
 
   interval = [endDate timeIntervalSinceDate: startDate] + 60;
   intervals = interval / intervalSeconds; /* slices of 15 minutes */
+
   freeBusyItems = NSZoneCalloc (NULL, intervals, sizeof (int));
   [self _fillFreeBusyItems: freeBusyItems count: intervals
 	       withRecords: [fb fetchFreeBusyInfosFrom: startDate to: endDate]
         fromStartDate: startDate toEndDate: endDate];
 
-  response = [NSMutableString string];
+  freeBusy = [NSMutableArray arrayWithCapacity: intervals];
   for (count = 0; count < intervals; count++)
-    [response appendFormat: @"%d,", *(freeBusyItems + count)];
-  [response deleteCharactersInRange: NSMakeRange (intervals * 2 - 1, 1)];
+    [freeBusy
+      addObject: [NSString stringWithFormat: @"%d", *(freeBusyItems + count)]];
   NSZoneFree (NULL, freeBusyItems);
 
-  return response;
-}
-
-- (NSString *) _freeBusyAsText
-{
-  SOGoFreeBusyObject *co;
-  NSCalendarDate *startDate, *endDate;
-  NSString *queryDay, *additionalDays;
-  NSTimeZone *uTZ;
-  SOGoUser *user;
-
-  co = [self clientObject];
-  user = [context activeUser];
-  uTZ = [[user userDefaults] timeZone];
-
-  queryDay = [self queryParameterForKey: @"sday"];
-  if ([queryDay length])
-    startDate = [NSCalendarDate dateFromShortDateString: queryDay
-                                andShortTimeString: @"0000"
-                                inTimeZone: uTZ];
-  else
-    {
-      startDate = [NSCalendarDate calendarDate];
-      [startDate setTimeZone: uTZ];
-      startDate = [startDate hour: 0 minute: 0];
-    }
-
-  queryDay = [self queryParameterForKey: @"eday"];
-  if ([queryDay length])
-    endDate = [NSCalendarDate dateFromShortDateString: queryDay
-                              andShortTimeString: @"2359"
-                              inTimeZone: uTZ];
-  else
-    endDate = [startDate hour: 23 minute: 59];
-
-  additionalDays = [self queryParameterForKey: @"additional"];
-  if ([additionalDays length] > 0)
-    endDate = [endDate dateByAddingYears: 0 months: 0
-                       days: [additionalDays intValue]
-                       hours: 0 minutes: 0 seconds: 0];
-
-  return [self _freeBusyAsTextFromStartDate: startDate toEndDate: endDate
-               forFreeBusy: co];
+  return [freeBusy componentsJoinedByString: @","];
 }
 
 - (id <WOActionResults>) readFreeBusyAction
 {
   WOResponse *response;
+  SOGoFreeBusyObject *co;
+  NSCalendarDate *startDate, *endDate;
+  NSString *queryDay;
+  NSTimeZone *uTZ;
+  SOGoUser *user;
 
-  response = [self responseWithStatus: 200];
-  [response appendContentString: [self _freeBusyAsText]];
+  user = [context activeUser];
+  uTZ = [[user userDefaults] timeZone];
+
+  queryDay = [self queryParameterForKey: @"sday"];
+  if ([queryDay length] == 8)
+    {
+      startDate = [NSCalendarDate dateFromShortDateString: queryDay
+                                       andShortTimeString: @"0000"
+                                               inTimeZone: uTZ];
+      queryDay = [self queryParameterForKey: @"eday"];
+      if ([queryDay length] == 8)
+        {
+          endDate = [NSCalendarDate dateFromShortDateString: queryDay
+                                         andShortTimeString: @"2359"
+                                                 inTimeZone: uTZ];
+
+          if ([startDate earlierDate: endDate] == endDate)
+            response = [self responseWithStatus: 403
+                                      andString: @"Start date is later than end date."];
+          else
+            {
+              co = [self clientObject];
+              response
+                = [self responseWithStatus: 200
+                                 andString: [self
+                                              _freeBusyFromStartDate: startDate
+                                                           toEndDate: endDate
+                                                         forFreeBusy: co]];
+            }
+        }
+      else
+        response = [self responseWithStatus: 403
+                                  andString: @"Invalid end date."];
+    }
+  else
+    response = [self responseWithStatus: 403
+                              andString: @"Invalid start date."];
 
   return response;
 }

@@ -1,5 +1,8 @@
 2010-05-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MainUI/SOGoUserHomePage.m (-readFreeBusyAction): simplified
+	method by using -[self responseWithStatus:andString:].
+
 	* UI/WebServerResources/generic.js (log): improved the method's
 	performance by making use of DOM methods on the "logConsole"
 	object.
