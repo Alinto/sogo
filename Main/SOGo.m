@@ -388,7 +388,8 @@ static BOOL debugLeaks;
   static NSArray *runLoopModes = nil;
   static BOOL debugOn = NO;
   WOResponse *resp;
-  NSDate *startDate, *endDate;
+  NSDate *startDate;
+  NSTimeInterval timeDelta;
 
   if (debugRequests)
     {
@@ -416,9 +417,12 @@ static BOOL debugLeaks;
 
   if (debugRequests)
     {
-      endDate = [NSDate date];
-      [self logWithFormat: @"request took %f seconds to execute",
-	    [endDate timeIntervalSinceDate: startDate]];
+      timeDelta = [[NSDate date] timeIntervalSinceDate: startDate];
+      [self logWithFormat: [NSString stringWithFormat:
+                            @"request took %f seconds to execute",
+                                     timeDelta]];
+      [resp setHeader: [NSString stringWithFormat: @"%f", timeDelta]
+               forKey: @"SOGoRequestDuration"];
     }
 
   if (![self isTerminating])

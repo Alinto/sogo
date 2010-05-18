@@ -1,3 +1,9 @@
+2010-05-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Main/SOGo.m (-dispatchRequest:): send a "SOGoRequestDuration"
+	header back to the client with the time delta as value when
+	SOGoDebugRequests is set to YES.
+
 2010-05-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/UIxAttendeesEditor.js
