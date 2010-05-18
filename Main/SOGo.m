@@ -418,9 +418,8 @@ static BOOL debugLeaks;
   if (debugRequests)
     {
       timeDelta = [[NSDate date] timeIntervalSinceDate: startDate];
-      [self logWithFormat: [NSString stringWithFormat:
-                            @"request took %f seconds to execute",
-                                     timeDelta]];
+      [self logWithFormat: @"request took %f seconds to execute",
+            timeDelta];
       [resp setHeader: [NSString stringWithFormat: @"%f", timeDelta]
                forKey: @"SOGoRequestDuration"];
     }
