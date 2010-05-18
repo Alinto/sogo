@@ -96,6 +96,11 @@
       allowsNull = YES;
     },
     {
+      columnName = c_category;
+      sqlType    = "VARCHAR2(255)";
+      allowsNull = YES;
+    },
+    {
       columnName = c_sequence;
       sqlType    = "INTEGER";
       allowsNull = YES;

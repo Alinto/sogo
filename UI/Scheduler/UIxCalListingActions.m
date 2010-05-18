@@ -82,17 +82,19 @@ static NSArray *tasksFields = nil;
       eventsFields = [NSArray arrayWithObjects: @"c_name", @"c_folder",
 			      @"c_status", @"c_title", @"c_startdate",
 			      @"c_enddate", @"c_location", @"c_isallday",
-			      @"c_classification", @"c_partmails",
-			      @"c_partstates", @"c_owner", @"c_iscycle", @"c_nextalarm",
-			      @"c_recurrence_id", @"isException", @"editable", @"erasable",
-			      @"ownerIsOrganizer", nil];
+			      @"c_classification", @"c_category",
+                              @"c_partmails", @"c_partstates", @"c_owner",
+                              @"c_iscycle", @"c_nextalarm",
+                              @"c_recurrence_id", @"isException", @"editable",
+                              @"erasable", @"ownerIsOrganizer", nil];
       [eventsFields retain];
     }
   if (!tasksFields)
     {
       tasksFields = [NSArray arrayWithObjects: @"c_name", @"c_folder",
 			     @"c_status", @"c_title", @"c_enddate",
-			     @"c_classification", @"editable", @"erasable", @"c_priority", nil];
+			     @"c_classification", @"editable", @"erasable",
+                             @"c_priority", nil];
       [tasksFields retain];
     }
 }

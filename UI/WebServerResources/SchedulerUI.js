@@ -352,7 +352,7 @@ function _deleteCalendarEventBlocks(calendar, cname, occurenceTime) {
                         if (occurences) {
                             for (var i = 0; i < occurences.length; i++) {
                                 var occurence = occurences[i];
-                                if (occurenceTime == null || occurenceTime == occurence[14]) {
+                                if (occurenceTime == null || occurenceTime == occurence[15]) {
                                     var nodes = occurence.blocks;
                                     for (var j = 0; j < nodes.length; j++) {
                                         var node = nodes[j];
@@ -377,7 +377,7 @@ function _deleteEventFromTables(calendar, cname, occurenceTime) {
         var occurences = calendarEvents[calendar][cname];
         if (occurences) {
             var occurence = occurences.first();
-            var ownerIsOrganizer = occurence[18];
+            var ownerIsOrganizer = occurence[19];
             
             // Delete event from events list
             var table = $("eventsList");
@@ -396,7 +396,7 @@ function _deleteEventFromTables(calendar, cname, occurenceTime) {
                                 // This is the specified event or the same event in another
                                 // calendar. In this case, remove it only if the delete
                                 // operation is triggered from the organizer's calendar.
-                                if (occurenceTime == null || occurenceTime == occurence[14]) {
+                                if (occurenceTime == null || occurenceTime == occurence[15]) {
                                     row.parentNode.removeChild(row);
                                     break;
                                 }
@@ -420,7 +420,7 @@ function _deleteCalendarEventCache(calendar, cname, occurenceTime) {
     if (calendarEvents[calendar]) {
         var occurences = calendarEvents[calendar][cname];
         if (occurences)
-            ownerIsOrganizer = occurences[0][18];
+            ownerIsOrganizer = occurences[0][19];
     }
     
     for (var otherCalendar in calendarEvents) {
@@ -437,8 +437,8 @@ function _deleteCalendarEventCache(calendar, cname, occurenceTime) {
                         if (occurenceTime == null) {
                             delete calendarEvents[otherCalendar][cname];
                         }
-                        else if (occurenceTime != occurence[14]) {
-                            // || occurenceTime == occurence[14]) {
+                        else if (occurenceTime != occurence[15]) {
+                            // || occurenceTime == occurence[15]) {
                             newOccurences.push(occurence);
                         }
                     }
@@ -767,7 +767,7 @@ function eventsListCallback(http) {
                 var row = $(document.createElement("tr"));
                 table.tBodies[0].appendChild(row);
                 row.addClassName("eventRow");
-                var rTime = data[i][14];
+                var rTime = data[i][15];
                 var id = escape(data[i][1] + "-" + data[i][0]);
                 if (rTime)
                     id += "-" + escape(rTime);
@@ -776,9 +776,9 @@ function eventsListCallback(http) {
                 row.calendar = escape(data[i][1]);
                 if (rTime)
                     row.recurrenceTime = escape(rTime);
-                row.isException = data[i][15];
-                row.editable = data[i][16];
-                row.erasable = data[i][17];
+                row.isException = data[i][16];
+                row.editable = data[i][17];
+                row.erasable = data[i][18];
                 var startDate = new Date();
                 startDate.setTime(data[i][4] * 1000);
                 row.day = startDate.getDayString();
@@ -1243,28 +1243,29 @@ function newBaseEventDIV(eventRep, event, eventText) {
     //	log ("6 location = " + event[6]);
     //	log ("7 isallday = " + event[7]);
     //	log ("8 classification = " + event[8]);
-    //	log ("9 participants emails = " + event[9]);
-    //	log ("10 participants states = " + event[10]);
-    //	log ("11 owner = " + event[11]);
-    //	log ("12 iscycle = " + event[12]);
-    //	log ("13 nextalarm = " + event[13]);
-    //	log ("14 recurrenceid = " + event[14]);
-    //	log ("15 isexception = " + event[15]);
-    //  log ("16 editable = " + event[16]);
-    //  log ("17 erasable = " + event[17]);
-    //  log ("18 ownerisorganizer = " + event[18]);
+    //	log ("9 category = " + event[9]);
+    //	log ("10 participants emails = " + event[10]);
+    //	log ("11 participants states = " + event[11]);
+    //	log ("12 owner = " + event[12]);
+    //	log ("13 iscycle = " + event[13]);
+    //	log ("14 nextalarm = " + event[14]);
+    //	log ("15 recurrenceid = " + event[15]);
+    //	log ("16 isexception = " + event[16]);
+    //  log ("17 editable = " + event[17]);
+    //  log ("18 erasable = " + event[18]);
+    //  log ("19 ownerisorganizer = " + event[19]);
 
     var eventCell = $(document.createElement("div"));
     eventCell.cname = event[0];
     eventCell.calendar = event[1];
     if (eventRep.recurrenceTime)
         eventCell.recurrenceTime = eventRep.recurrenceTime;
-    eventCell.isException = event[15];
-    eventCell.editable = event[16];
-    eventCell.erasable = event[17];
-    eventCell.ownerIsOrganizer = event[18];
+    eventCell.isException = event[16];
+    eventCell.editable = event[17];
+    eventCell.erasable = event[18];
+    eventCell.ownerIsOrganizer = event[19];
     eventCell.addClassName("event");
-    if (event[13] > 0)
+    if (event[14] > 0)
         eventCell.addClassName("alarm");
 
     var innerDiv = $(document.createElement("div"));
@@ -1763,7 +1764,7 @@ function _eventBlocksMatching(calendar, cname, recurrenceTime) {
             if (recurrenceTime) {
                 for (var i = 0; i < occurences.length; i++) {
                     var occurence = occurences[i];
-                    if (occurence[14] == recurrenceTime)
+                    if (occurence[15] == recurrenceTime)
                         blocks = occurence.blocks;
                 }
             }

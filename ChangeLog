@@ -1,5 +1,19 @@
 2010-05-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/iCalEvent+SOGo.m (-quickRecord): extract
+	the event category into the c_category column.
+
+	* SoObjects/Appointments/iCalToDo+SOGo.m (-quickRecord): extract
+	the task category into the c_category column.
+
+	* UI/Scheduler/UIxCalListingActions.m (+initialize): added the
+	new "c_category" field to the list of fields that require
+	fetching.
+
+	* UI/WebServerResources/SchedulerUI.js: (newBaseEventDIV) shifted
+	field indexes by 1 from the 9th field, which is now the "category"
+	field.
+
 	* Main/SOGo.m (-dispatchRequest:): send a "SOGoRequestDuration"
 	header back to the client with the time delta as value when
 	SOGoDebugRequests is set to YES.
