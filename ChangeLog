@@ -1,3 +1,8 @@
+2010-05-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/SchedulerUI.js: (newEventDIV): we now add
+	a span with class "location" when the location field is available.
+
 2010-05-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/iCalEvent+SOGo.m (-quickRecord): extract
