@@ -34,6 +34,7 @@
 #import <NGObjWeb/SoClassSecurityInfo.h>
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WORequest+So.h>
+#import <NGObjWeb/WOResponse.h>
 
 #import <NGExtensions/NGBundleManager.h>
 #import <NGExtensions/NSNull+misc.h>
