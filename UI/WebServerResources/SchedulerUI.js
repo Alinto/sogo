@@ -1252,10 +1252,11 @@ function resetCategoriesStyles() {
                 categoriesStyleSheet.removeChild(categoriesStyleSheet.firstChild);
     }
 
-    // Update stylesheet with new categories colors
-    var selectors = [];
-    var rules = [];
-    categoriesStyles.keys().each(function(category) {
+    if (UserDefaults['SOGoCalendarCategoriesColors']) {
+        // Update stylesheet with new categories colors
+        var selectors = [];
+        var rules = [];
+        categoriesStyles.keys().each(function(category) {
             var color = UserDefaults['SOGoCalendarCategoriesColors'][category];
             if (color) {
                 rules[rules.length] = '{ border-right: 8px solid ' + color + '; }';
@@ -1263,18 +1264,19 @@ function resetCategoriesStyles() {
             }
         });
     
-    if (selectors.length > 0) {
-        if (categoriesStyleSheet.styleSheet && categoriesStyleSheet.styleSheet.addRule) {
-            // IE
-            for (var i = 0; i < selectors.length; i++)
-                categoriesStyleSheet.styleSheet.addRule(selectors[i],
-                                                        rules[i]);
-        }
-        else {
-            // Mozilla + Safari
-            for (var i = 0; i < selectors.length; i++)
-                categoriesStyleSheet.appendChild(document.createTextNode(selectors[i] +
-                                                                         ' ' + rules[i]));
+        if (selectors.length > 0) {
+            if (categoriesStyleSheet.styleSheet && categoriesStyleSheet.styleSheet.addRule) {
+                // IE
+                for (var i = 0; i < selectors.length; i++)
+                    categoriesStyleSheet.styleSheet.addRule(selectors[i],
+                                                            rules[i]);
+            }
+            else {
+                // Mozilla + Safari
+                for (var i = 0; i < selectors.length; i++)
+                    categoriesStyleSheet.appendChild(document.createTextNode(selectors[i] +
+                                                                             ' ' + rules[i]));
+            }
         }
     }
 }
