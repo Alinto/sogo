@@ -764,7 +764,7 @@ function eventsListCallback(http) {
         if (http.responseText.length > 0) {
             var data = http.responseText.evalJSON(true);
             for (var i = 0; i < data.length; i++) {
-                var row = $(document.createElement("tr"));
+                var row = createElement("tr");
                 table.tBodies[0].appendChild(row);
                 row.addClassName("eventRow");
                 var rTime = data[i][15];
@@ -791,22 +791,22 @@ function eventsListCallback(http) {
                     row.observe("dblclick", editDoubleClickedEvent);
                 row.attachMenu("eventsListMenu");
 
-                var td = $(document.createElement("td"));
+                var td = createElement("td");
                 row.appendChild(td);
                 td.observe("mousedown", listRowMouseDownHandler, true);
                 td.appendChild(document.createTextNode(data[i][3])); // title
 
-                td = $(document.createElement("td"));
+                td = createElement("td");
                 row.appendChild(td);
                 td.observe("mousedown", listRowMouseDownHandler, true);
-                td.appendChild(document.createTextNode(data[i][19])); // start date
+                td.appendChild(document.createTextNode(data[i][20])); // start date
 
-                td = $(document.createElement("td"));
+                td = createElement("td");
                 row.appendChild(td);
                 td.observe("mousedown", listRowMouseDownHandler, true);
-                td.appendChild(document.createTextNode(data[i][20])); // end date
+                td.appendChild(document.createTextNode(data[i][21])); // end date
 
-                td = $(document.createElement("td"));
+                td = createElement("td");
                 row.appendChild(td);
                 td.observe("mousedown", listRowMouseDownHandler, true);
                 if (data[i][6])
@@ -852,7 +852,7 @@ function tasksListCallback(http) {
                 list.removeChild(list.childNodes[0]);
 
             for (var i = 0; i < data.length; i++) {
-                var listItem = $(document.createElement("li"));
+                var listItem = createElement("li");
                 list.appendChild(listItem);
                 listItem.observe("mousedown", listRowMouseDownHandler);
                 listItem.observe("click", onRowClick);
@@ -867,7 +867,7 @@ function tasksListCallback(http) {
                 listItem.addClassName("calendarFolder" + calendar);
                 listItem.cname = cname;
                 listItem.erasable = data[i][7];
-                var input = $(document.createElement("input"));
+                var input = createElement("input");
                 input.setAttribute("type", "checkbox");
                 if (parseInt(data[i][6]) == 0) // editable?
                   input.setAttribute("disabled", true);
@@ -1255,7 +1255,7 @@ function newBaseEventDIV(eventRep, event, eventText) {
     //  log ("18 erasable = " + event[18]);
     //  log ("19 ownerisorganizer = " + event[19]);
 
-    var eventCell = $(document.createElement("div"));
+    var eventCell = createElement("div");
     eventCell.cname = event[0];
     eventCell.calendar = event[1];
     if (eventRep.recurrenceTime)
@@ -1268,22 +1268,22 @@ function newBaseEventDIV(eventRep, event, eventText) {
     if (event[14] > 0)
         eventCell.addClassName("alarm");
 
-    var innerDiv = $(document.createElement("div"));
+    var innerDiv = createElement("div");
     eventCell.appendChild(innerDiv);
     innerDiv.addClassName("eventInside");
     innerDiv.addClassName("calendarFolder" + event[1]);
     if (eventRep.userState >= 0 && userStates[eventRep.userState])
         innerDiv.addClassName(userStates[eventRep.userState]);
 
-    var gradientDiv = $(document.createElement("div"));
+    var gradientDiv = createElement("div");
     innerDiv.appendChild(gradientDiv);
     gradientDiv.addClassName("gradient");
 
-    var gradientImg = $(document.createElement("img"));
+    var gradientImg = createElement("img");
     gradientDiv.appendChild(gradientImg);
     gradientImg.src = ResourcesURL + "/event-gradient.png";
 
-    var textDiv = $(document.createElement("div"));
+    var textDiv = createElement("div");
     innerDiv.appendChild(textDiv);
     textDiv.addClassName("text");
     textDiv.update(eventText.replace(/(\\r)?\\n/g, "<BR/>"));
