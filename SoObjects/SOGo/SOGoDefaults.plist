@@ -61,7 +61,7 @@
     SOGoDraftsFolderName = "Drafts";
     SOGoTrashFolderName = "Trash";
 
-    SOGoCalendarDefaultCategoryColor = "#F0F0F0";
+    SOGoCalendarDefaultCategoryColor = "#aaa";
     SOGoCalendarShouldDisplayWeekend = YES;
     SOGoFreeBusyDefaultInterval = ( 7, 7 );
 
