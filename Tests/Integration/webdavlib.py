@@ -67,7 +67,7 @@ class WebDAVClient:
     user_agent = "Mozilla/5.0"
 
     def __init__(self, hostname, port, username, password, forcessl = False):
-        if port == "443" or forcessl:
+        if int(port) == 443 or forcessl:
             self.conn = M2Crypto.httpslib.HTTPSConnection(hostname, int(port),
                                                           True)
         else:
@@ -131,6 +131,9 @@ class HTTPSimpleQuery:
 
 class HTTPGET(HTTPSimpleQuery):
     method = "GET"
+
+class HTTPOPTIONS(HTTPSimpleQuery):
+    method = "OPTIONS"
 
 class HTTPQuery(HTTPSimpleQuery):
     def __init__(self, url):
