@@ -1,5 +1,8 @@
 2010-05-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAptMailUpdate.m (-valueForProperty:):
+	set the timezone of date objects to the active user's timezone.
+
 	* UI/WebServerResources/SchedulerUI.js: (resetCategoriesStyles):
 	fixed an exception occurring when
 	UserDefaults['SOGoCalendarCategoriesColors'] is undefined.

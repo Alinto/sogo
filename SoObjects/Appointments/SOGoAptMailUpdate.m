@@ -19,6 +19,8 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSCalendarDate.h>
+
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGCards/iCalEvent.h>
 #import <NGCards/iCalEventChanges.h>
@@ -27,6 +29,7 @@
 #import <SOGo/NSObject+Utilities.h>
 #import <SOGo/SOGoDateFormatter.h>
 #import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
 
 #import "SOGoAptMailNotification.h"
 
@@ -38,9 +41,10 @@
 - (NSString *) valueForProperty: (NSString *) property
 {
   static NSDictionary *valueTypes = nil;
-  SOGoDateFormatter *dateFormatter;
   NSString *valueType;
   id value;
+  SOGoUser *user;
+  NSTimeZone *userTZ;
 
   if (!valueTypes)
     {
@@ -61,9 +65,11 @@
       value = [(iCalEvent *) apt propertyValue: property];
       if ([valueType isEqualToString: @"date"])
         {
-          dateFormatter = [[context activeUser]
-                            dateFormatterInContext: context];
-          value = [dateFormatter formattedDateAndTime: value];
+          user = [context activeUser];
+          userTZ = [[user userDefaults] timeZone];
+          [value setTimeZone: userTZ];
+          value = [[user dateFormatterInContext: context]
+                    formattedDateAndTime: value];
         }
     }
   else
