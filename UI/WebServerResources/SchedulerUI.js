@@ -1366,7 +1366,7 @@ function newEventDIV(eventRep, event) {
         var textDiv = inside.childNodesWithTag("div")[1];
         textDiv.appendChild(createElement("br"));
         var span = createElement("span", null, "location");
-        var text = getLabel("Location:") + event[6];
+        var text = getLabel("Location:") + " " + event[6];
         span.appendChild(document.createTextNode(text));
         textDiv.appendChild(span);
     }
