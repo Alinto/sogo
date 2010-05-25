@@ -1297,7 +1297,7 @@ DIV.event._selected > DIV.eventInside
 { -moz-opacity: 0.7;
   opacity: 0.7; }
 
-DIV.text > SPAN.location
+DIV.eventInside SPAN.location
 { font-size: smaller; }
 
 DIV.gradient, DIV.text

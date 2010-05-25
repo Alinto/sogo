@@ -1,3 +1,12 @@
+2010-05-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/SchedulerUIDnD.js:
+	(SOGoEventDragEventCoordinates.setLocation)
+	(SOGoEventDragGhostController.setLocation): new self-explanatory
+	methods.
+	(SOGoEventDragController.attachToEventCells): now take the event
+	location SPAN into acccount when drawing the ghost.
+
 2010-05-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAptMailUpdate.m (-valueForProperty:):

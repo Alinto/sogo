@@ -377,6 +377,22 @@ var SOGoDragGhostInterface = {
             this.title = title;
         }
     },
+    setLocation: function SDGI_setLocation(location) {
+        if (this.location != location) {
+            var spans = this.inside.select("SPAN.location");
+            if (spans && spans.length > 0) {
+                this.inside.removeChild(spans[0]);
+            }
+            if (location) {
+                this.inside.appendChild(createElement("br"));
+                var span = createElement("span", null, "location");
+                span.appendChild(document.createTextNode(location));
+                this.inside.appendChild(span);
+            }
+            this.location = location;
+        }
+    },
+
     setFolderClass: function SDGI_setFolderClass(folderClass) {
         if (this.folderClass != folderClass) {
             this.removeClassName(this.folderClass);
@@ -453,6 +469,10 @@ SOGoEventDragGhostController.prototype = {
 
     setTitle: function SEDGC_setTitle(title) {
         this.eventTitle = title;
+    },
+
+    setLocation: function SEDGC_setLocation(location) {
+        this.eventLocation = location;
     },
 
     setFolderClass: function SEDGC_setFolderClass(folderClass) {
@@ -621,6 +641,7 @@ SOGoEventDragGhostController.prototype = {
                 ghost.setStartGhost();
                 ghost.unsetEndGhost();
                 ghost.setTitle(this.eventTitle);
+                ghost.setLocation(this.eventLocation);
                 ghost.setFolderClass(this.folderClass);
                 ghost.setStart(this.currentCoordinates.start);
                 ghost.setDuration(duration);
@@ -936,6 +957,7 @@ SOGoEventDragController.prototype = {
         this._prepareEventType();
         this._determineTitleAndFolderClass();
         this.ghostController.setTitle(this.title);
+        this.ghostController.setLocation(this.location);
         this.ghostController.setFolderClass(this.folderClass);
 
         this.onDragStartBound = this.onDragStart.bindAsEventListener(this);
@@ -1184,36 +1206,67 @@ SOGoEventDragController.prototype = {
     _determineTitleAndFolderClass: function SEDC__dTAFC() {
         var title = "";
         var folderClass = "";
+        var location = null;
         if (this.eventCells) {
             var firstCell = this.eventCells[0];
             var divs = firstCell.childNodesWithTag("div");
             for (var i = 0; i < divs.length; i++) {
                 var div = divs[i];
                 if (div.hasClassName("eventInside")) {
-                    title = this._determineTitleFromDIV(div);
+                    var titleDIV = this._determineTitleDIV(div);
+                    if (titleDIV) {
+                        title = this._determineTitleFromDIV(titleDIV);
+                        location = this._determineLocationFromDIV(titleDIV);
+                    }
                     folderClass = this._determineFolderClassFromDIV(div);
                 }
             }
         }
         this.title = title;
+        this.location = location;
         this.folderClass = folderClass;
     },
-    _determineTitleFromDIV: function SEDC__determineTitleFromDIV(div) {
-        var title = "";
+    _determineTitleDIV: function SEDC__determineTitleDIV(div) {
+        var titleDIV = null;
         var insideDivs = div.childNodesWithTag("div");
-        for (var i = 0; i < insideDivs.length; i++) {
+        for (var i = 0; titleDIV == null && i < insideDivs.length; i++) {
             var insideDiv = insideDivs[i];
             if (insideDiv.hasClassName("text")) {
-                var currentNode = insideDiv.firstChild;
-                while (currentNode) {
-                    title += currentNode.nodeValue;
-                    currentNode = currentNode.nextSibling;
-                }
-                title = title.trim();
+                titleDIV = insideDiv;
             }
         }
 
-        return title;
+        return titleDIV;
+    },
+    _determineTitleFromDIV: function SEDC__determineTitleFromDIV(titleDIV) {
+        var title = "";
+
+        var currentNode = titleDIV.firstChild;
+        while (currentNode) {
+            if (currentNode.nodeType == Node.TEXT_NODE) {
+                title += currentNode.nodeValue;
+            }
+            currentNode = currentNode.nextSibling;
+        }
+
+        return title.trim();
+    },
+    _determineLocationFromDIV: function SEDC__determineLocationFromDIV(titleDIV) {
+        var location = "";
+
+        var spans = titleDIV.select("span.location");
+        if (spans && spans.length > 0) {
+            var locationSPAN = spans[0];
+            var currentNode = locationSPAN.firstChild;
+            while (currentNode) {
+                if (currentNode.nodeType == Node.TEXT_NODE) {
+                    location += currentNode.nodeValue;
+                }
+                currentNode = currentNode.nextSibling;
+            }
+        }
+
+        return location.trim();
     },
     _determineFolderClassFromDIV: function SEDC__detFolderClassFromDIV(div) {
         var folderClass = null;
