@@ -652,22 +652,56 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
   return [ud timeZone];
 }
 
+- (NGMimeBodyPart *) _bodyPartForICalObject: (iCalRepeatableEntityObject *) object
+{
+  NGMimeBodyPart *bodyPart;
+  NGMutableHashMap *headerMap;
+  NSString *iCalString, *header, *charset;
+  NSData *objectData;
+  iCalCalendar *parent;
+
+  parent = [object parent];
+  iCalString = [NSString stringWithFormat: @"%@\r\n", [parent versitString]];
+  if ([iCalString canBeConvertedToEncoding: NSISOLatin1StringEncoding])
+    {
+      objectData = [iCalString dataUsingEncoding: NSISOLatin1StringEncoding];
+      charset = @"ISO-8859-1";
+    }
+  else
+    {
+      objectData = [iCalString dataUsingEncoding: NSUTF8StringEncoding];
+      charset = @"UTF-8";
+    }
+
+  header = [NSString stringWithFormat: @"text/calendar; method=%@;"
+                     @" charset=\"%@\"",
+                     [(iCalCalendar *) [object parent] method], charset];
+  headerMap = [NGMutableHashMap hashMapWithCapacity: 1];
+  [headerMap setObject: header forKey: @"content-type"];
+  [headerMap setObject: @"quoted-printable"
+                forKey: @"content-transfer-encoding"];
+  bodyPart = [NGMimeBodyPart bodyPartWithHeader: headerMap];
+  [bodyPart setBody: [objectData dataByEncodingQuotedPrintable]];
+
+  return bodyPart;
+}
+
 - (void) sendEMailUsingTemplateNamed: (NSString *) newPageName
 			   forObject: (iCalRepeatableEntityObject *) object
 		      previousObject: (iCalRepeatableEntityObject *) previousObject
                          toAttendees: (NSArray *) attendees
 {
   NSString *pageName;
-  NSString *senderEmail, *shortSenderEmail, *email, *versitString, *iCalString;
+  NSString *senderEmail, *shortSenderEmail, *email;
   WOApplication *app;
   unsigned i, count;
   iCalPerson *attendee;
   NSString *recipient;
   SOGoAptMailNotification *p;
-  NSString *mailDate, *subject, *text, *header;
+  NSString *mailDate, *subject, *text;
   NGMutableHashMap *headerMap;
   NGMimeMessage *msg;
-  NGMimeBodyPart *bodyPart;
+  NGMimeBodyPart *bodyPart, *eventBodyPart;
   NGMimeMultipartBody *body;
   SOGoUser *ownerUser;
   SOGoDomainDefaults *dd;
@@ -691,8 +725,9 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
 // 	  NSLog (@"sending '%@' from %@",
 // 		 [(iCalCalendar *) [object parent] method], senderEmail);
 	  /* generate iCalString once */
-	  versitString = [[object parent] versitString];
-          iCalString = [NSString stringWithFormat: @"%@\r\n", versitString];
+
+          /* calendar part */
+          eventBodyPart = [self _bodyPartForICalObject: object];
 
 	  /* get WOApplication instance */
 	  app = [WOApplication application];
@@ -731,7 +766,7 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
 		      [p setOrganizerName: [ownerUser cn]];
 		    }
 
-		  subject = [[p getSubject] asQPSubjectString: @"utf-8"];
+		  subject = [[p getSubject] asQPSubjectString: @"UTF-8"];
 		  text = [p getBody];
 
 		  /* construct message */
@@ -757,7 +792,7 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
 
 		  /* text part */
 		  headerMap = [NGMutableHashMap hashMapWithCapacity: 1];
-		  [headerMap setObject: @"text/plain; charset=\"utf-8\""
+		  [headerMap setObject: @"text/plain; charset=\"UTF-8\""
 			     forKey: @"content-type"];
 		  bodyPart = [NGMimeBodyPart bodyPartWithHeader: headerMap];
 		  [bodyPart setBody: [text dataUsingEncoding: NSUTF8StringEncoding]];
@@ -765,20 +800,8 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
 		  /* attach text part to multipart body */
 		  [body addBodyPart: bodyPart];
     
-		  /* calendar part */
-		  header = [NSString stringWithFormat: @"text/calendar; method=%@;"
-				     @" charset=\"utf-8\"",
-				     [(iCalCalendar *) [object parent] method]];
-		  headerMap = [NGMutableHashMap hashMapWithCapacity: 1];
-		  [headerMap setObject:header forKey: @"content-type"];
-		  [headerMap setObject: @"quoted-printable"
-                                forKey: @"content-transfer-encoding"];
-		  bodyPart = [NGMimeBodyPart bodyPartWithHeader: headerMap];
-		  [bodyPart setBody: [[iCalString dataUsingEncoding: NSUTF8StringEncoding]
-                                       dataByEncodingQuotedPrintable]];
-
 		  /* attach calendar part to multipart body */
-		  [body addBodyPart: bodyPart];
+		  [body addBodyPart: eventBodyPart];
     
 		  /* attach multipart body to message */
 		  [msg setBody: body];
@@ -803,7 +826,6 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
   NSString *pageName, *mailDate, *email;
   WOApplication *app;
   iCalPerson *attendee;
-  NSString *iCalString;
   SOGoAptMailICalReply *p;
   NGMutableHashMap *headerMap;
   NGMimeMessage *msg;
@@ -840,7 +862,7 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
       [headerMap setObject: [recipient mailAddress] forKey: @"to"];
       mailDate = [[NSCalendarDate date] rfc822DateString];
       [headerMap setObject: mailDate forKey: @"date"];
-      [headerMap setObject: [[p getSubject] asQPSubjectString: @"utf-8"]
+      [headerMap setObject: [[p getSubject] asQPSubjectString: @"UTF-8"]
                     forKey: @"subject"];
       [headerMap setObject: @"1.0" forKey: @"MIME-Version"];
       [headerMap setObject: @"multipart/mixed" forKey: @"content-type"];
@@ -860,16 +882,8 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
       /* attach text part to multipart body */
       [body addBodyPart: bodyPart];
 
-      /* calendar part */
-      headerMap = [NGMutableHashMap hashMapWithCapacity: 1];
-      [headerMap setObject: @"text/calendar; method=REPLY; charset=utf-8"
-		 forKey: @"content-type"];
-      bodyPart = [NGMimeBodyPart bodyPartWithHeader: headerMap];
-      iCalString = [[event parent] versitString];
-      [bodyPart setBody: [iCalString dataUsingEncoding: NSUTF8StringEncoding]];
-
       /* attach calendar part to multipart body */
-      [body addBodyPart: bodyPart];
+      [body addBodyPart: [self _bodyPartForICalObject: event]];
 
       /* attach multipart body to message */
       [msg setBody: body];

@@ -1,5 +1,10 @@
 2010-05-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	(_bodyPartForICalObject:): new help method designed to return a
+	body part representing the event in iso-8859-1 and falling back on
+	UTF-8 if not possible.
+
 	* SoObjects/Appointments/SOGoAptMailNotification.m (+initialize):
 	removed obsolete method.
 	(-viewTZ, setViewTZ): idem.
