@@ -1234,8 +1234,11 @@ function toggleOfficeHours () {
     if (startDate.getHours () < dayStartHour
         || startDate.getHours () > dayEndHour
         || endDate.getHours () > dayEndHour
-        || endDate.getHours () < dayStartHour)
-        $("onlyOfficeHours").checked = false;
+        || endDate.getHours () < dayStartHour) {
+	if ($("onlyOfficeHours")) {
+           $("onlyOfficeHours").checked = false;
+        }
+    }
 }
 
 function updateSlotDisplayCallback(http) {
