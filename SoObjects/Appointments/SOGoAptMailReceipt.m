@@ -131,13 +131,11 @@ static NSCharacterSet *wsSet = nil;
   SOGoDateFormatter *formatter;
   NSCalendarDate *tzDate;
   SOGoUser *currentUser;
-  SOGoUserDefaults *ud;
 
   currentUser = [context activeUser];
-  ud = [currentUser userDefaults];
 
   tzDate = [date copy];
-  [tzDate setTimeZone: [ud timeZone]];
+  [tzDate setTimeZone: viewTZ];
   [tzDate autorelease];
 
   formatter = [currentUser dateFormatterInContext: context];

@@ -1,5 +1,11 @@
 2010-05-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAptMailNotification.m (+initialize):
+	removed obsolete method.
+	(-viewTZ, setViewTZ): idem.
+	(-setupValues): the "viewTZ" is now initialized from here, using
+	the active user's defaults.
+
 	* UI/WebServerResources/SchedulerUIDnD.js:
 	(SOGoEventDragEventCoordinates.setLocation)
 	(SOGoEventDragGhostController.setLocation): new self-explanatory

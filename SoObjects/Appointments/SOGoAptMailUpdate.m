@@ -29,7 +29,6 @@
 #import <SOGo/NSObject+Utilities.h>
 #import <SOGo/SOGoDateFormatter.h>
 #import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoUserDefaults.h>
 
 #import "SOGoAptMailNotification.h"
 
@@ -39,12 +38,11 @@
 @implementation SOGoAptMailUpdate
 
 - (NSString *) valueForProperty: (NSString *) property
+              withDateFormatter: (SOGoDateFormatter *) dateFormatter
 {
   static NSDictionary *valueTypes = nil;
   NSString *valueType;
   id value;
-  SOGoUser *user;
-  NSTimeZone *userTZ;
 
   if (!valueTypes)
     {
@@ -65,11 +63,8 @@
       value = [(iCalEvent *) apt propertyValue: property];
       if ([valueType isEqualToString: @"date"])
         {
-          user = [context activeUser];
-          userTZ = [[user userDefaults] timeZone];
-          [value setTimeZone: userTZ];
-          value = [[user dateFormatterInContext: context]
-                    formattedDateAndTime: value];
+          [value setTimeZone: viewTZ];
+          value = [dateFormatter formattedDateAndTime: value];
         }
     }
   else
@@ -78,7 +73,7 @@
   return value;
 }
 
-- (void) _setupBodyContent
+- (void) _setupBodyContentWithFormatter: (SOGoDateFormatter *) dateFormatter
 {
   NSArray *updatedProperties;
   NSMutableString *bodyContent;
@@ -93,7 +88,8 @@
   for (count = 0; count < max; count++)
     {
       property = [updatedProperties objectAtIndex: count];
-      value = [self valueForProperty: property];
+      value = [self valueForProperty: property
+                   withDateFormatter: dateFormatter];
       /* Unhandled properties will return nil */
       if (value)
         {
@@ -107,7 +103,7 @@
   [bodyContent release];
 }
 
-- (void) _setupBodyValues
+- (void) _setupBodyValuesWithFormatter: (SOGoDateFormatter *) dateFormatter
 {
   NSString *bodyText;
 
@@ -116,7 +112,7 @@
                      inContext: context];
   [values setObject: [values keysWithFormat: bodyText]
              forKey: @"_bodyStart"];
-  [self _setupBodyContent];
+  [self _setupBodyContentWithFormatter: dateFormatter];
   [values setObject: [self labelForKey: @"Please accept"
                            @" or decline those changes."
                              inContext: context]
@@ -144,7 +140,7 @@
   [values setObject: [dateFormatter formattedTime: date]
              forKey: @"StartTime"];
 
-  [self _setupBodyValues];
+  [self _setupBodyValuesWithFormatter: dateFormatter];
 }
 
 - (NSString *) getSubject

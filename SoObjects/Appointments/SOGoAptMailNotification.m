@@ -25,6 +25,7 @@
 #import <Foundation/NSTimeZone.h>
 
 #import <NGObjWeb/WOActionResults.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGCards/iCalEvent.h>
@@ -33,19 +34,13 @@
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSObject+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
 
 #import "iCalPerson+SOGo.h"
 #import "SOGoAptMailNotification.h"
 
 @implementation SOGoAptMailNotification
-
-static NSTimeZone *UTC = nil;
-
-+ (void) initialize
-{
-  if (!UTC)
-    UTC = [[NSTimeZone timeZoneWithAbbreviation: @"UTC"] retain];
-}
 
 - (id) init
 {
@@ -100,22 +95,12 @@ static NSTimeZone *UTC = nil;
   return ([[previousApt location] length] > 0);
 }
 
-- (NSTimeZone *) viewTZ 
-{
-  if (viewTZ) return viewTZ;
-  return UTC;
-}
-- (void) setViewTZ: (NSTimeZone *) _viewTZ
-{
-  ASSIGN (viewTZ, _viewTZ);
-}
-
 - (NSCalendarDate *) oldStartDate
 {
   if (!oldStartDate)
     {
       ASSIGN (oldStartDate, [[self previousApt] startDate]);
-      [oldStartDate setTimeZone: [self viewTZ]];
+      [oldStartDate setTimeZone: viewTZ];
     }
   return oldStartDate;
 }
@@ -125,7 +110,7 @@ static NSTimeZone *UTC = nil;
   if (!newStartDate)
     {
       ASSIGN (newStartDate, [[self apt] startDate]);
-      [newStartDate setTimeZone:[self viewTZ]];
+      [newStartDate setTimeZone: viewTZ];
     }
   return newStartDate;
 }
@@ -167,6 +152,11 @@ static NSTimeZone *UTC = nil;
 {
   NSDictionary *sentByValues;
   NSString *sentBy, *sentByText;
+  SOGoUser *user;
+
+  user = [context activeUser];
+  viewTZ = [[user userDefaults] timeZone];
+  [viewTZ retain];
 
   values = [NSMutableDictionary new];
   [values setObject: [self summary] forKey: @"Summary"];
