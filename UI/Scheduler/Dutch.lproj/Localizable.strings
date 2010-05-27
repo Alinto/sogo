@@ -484,7 +484,6 @@ validate_endbeforestart    = "Het begin vindt plaats vóór het einde.";
 "Next hour" = "Volgend uur";
 "Work days only" = "Slechts werkdagen";
 "The whole day" = "De hele dag";
-"During specified hours" = "Tijdens gespecificeerde uren";
 "and" = "en";
 
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
