@@ -79,17 +79,17 @@
       methods = {
         getMail = {
           protectedBy = "View";
-          pageName    = "UIxMailListActions";
+          actionClass    = "UIxMailListActions";
           actionName  = "getMail";
         };
         uids = {
           protectedBy = "<public>";
-          pageName    = "UIxMailListActions";
+          actionClass    = "UIxMailListActions";
           actionName  = "getSortedUIDs";
         };
         headers = {
           protectedBy = "<public>";
-          pageName    = "UIxMailListActions";
+          actionClass    = "UIxMailListActions";
           actionName  = "getHeaders";
         };
         subscribe = {

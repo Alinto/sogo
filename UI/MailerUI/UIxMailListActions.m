@@ -34,6 +34,7 @@
 #import <Foundation/NSTimeZone.h>
 #import <Foundation/NSValue.h>
 
+#import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/SoObject+SoDAV.h>
@@ -56,19 +57,20 @@
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
 
-#import "WOContext+UIxMailer.h"
+#import <UI/Common/WODirectAction+SOGo.h>
 
+#import "WOContext+UIxMailer.h"
 #import "UIxMailListActions.h"
 
 @implementation UIxMailListActions
 
-- (id) init
+- (id) initWithRequest: (WORequest *) newRequest
 {
   SOGoUser *user;
 
-  if ((self = [super init]))
+  if ((self = [super initWithRequest: newRequest]))
     {
-      user = [context activeUser];
+      user = [[self context] activeUser];
       ASSIGN (dateFormatter, [user dateFormatterInContext: context]);
       ASSIGN (userTimeZone, [[user userDefaults] timeZone]);
       folderType = 0;

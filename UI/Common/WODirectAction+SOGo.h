@@ -26,7 +26,7 @@
 #import <NGObjWeb/WODirectAction.h>
 
 @class NSString;
-@class WOResponse;
+@class WOResponse, WOResourceManager;
 
 @interface WODirectAction (SOGoExtension)
 
@@ -39,6 +39,9 @@
 - (WOResponse *) redirectToLocation: (NSString *) newLocation;
 
 - (NSString *) labelForKey: (NSString *) _str;
+
+- (WOResourceManager *) pageResourceManager;
+- (NSString *) urlForResourceFilename: (NSString *) filename;
 
 @end
 

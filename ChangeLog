@@ -7,11 +7,15 @@
 2010-05-27  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/MailerUI/UIxMailListActions.m: renamed from
-	UIxMailListview.m. Associated .wox was removed.
+	UIxMailListview.m. Associated .wox was removed and converted to a
+	WODirectAction.
 	(-getSortedUIDsAction): new method that returns a JSON
 	array with all the messages UIDs of the mailbox, sorted as requested.
 	(-getHeadersAction): new method that returns a JSON dictionary of
 	the headers of requested messages UIDs.
+
+	* UI/Common/WODirectAction+SOGo.m (-pageResourceManager,
+	-urlForResourceFilename): methods copied from UIxComponent.
 
 	* UI/WebServerResources/SOGoDataTable.js: new interface to add
 	"live loading" to a table.

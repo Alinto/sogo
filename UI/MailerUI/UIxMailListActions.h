@@ -22,13 +22,13 @@
 #ifndef UIXMAILLISTACTIONS_H
 #define UIXMAILLISTACTIONS_H
 
-#import <SOGoUI/UIxComponent.h>
+#import <NGObjWeb/WODirectAction.h>
 
 @class NSDictionary;
 @class EOQualifier;
 @class SOGoDateFormatter;
 
-@interface UIxMailListActions : UIxComponent
+@interface UIxMailListActions : WODirectAction
 {
   NSArray *sortedUIDs; /* we always need to retrieve all anyway! */
   NSArray *messages;
@@ -44,6 +44,10 @@
 - (NSString *) imap4SortOrdering;
 - (EOQualifier *) searchQualifier;
 - (NSString *) msgLabels;
+
+- (id) getMailAction;
+- (id <WOActionResults>) getSortedUIDsAction;
+- (id <WOActionResults>) getHeadersAction;
 
 @end
 

@@ -22,11 +22,13 @@
 
 #import <Foundation/NSBundle.h>
 
+#import <NGObjWeb/SoObjects.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WOResponse.h>
 
 #import <SoObjects/SOGo/NSObject+Utilities.h>
 #import <SoObjects/SOGo/NSDictionary+Utilities.h>
+#import <SoObjects/SOGo/NSString+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/SOGoUserDefaults.h>
 
@@ -119,4 +121,54 @@
   
   return label;
 }
+
+- (WOResourceManager *) pageResourceManager
+{
+  WOResourceManager *rm;
+  
+  if ((rm = [[context page] resourceManager]) == nil)
+    rm = [[WOApplication application] resourceManager];
+
+  return rm;
+}
+
+- (NSString *) urlForResourceFilename: (NSString *) filename
+{
+  static NSMutableDictionary *pageToURL = nil;
+  NSString *url;
+  WOComponent *page;
+  WOResourceManager *rm;
+  NSBundle *pageBundle;
+
+  if (filename)
+    {
+      if (!pageToURL)
+        pageToURL = [[NSMutableDictionary alloc] initWithCapacity: 32];
+
+      url = [pageToURL objectForKey: filename];
+      if (!url)
+        {
+          rm = [self pageResourceManager];
+          page = [context page];
+          pageBundle = [NSBundle bundleForClass: [page class]];
+          url = [rm urlForResourceNamed: filename
+                    inFramework: [pageBundle bundlePath]
+                    languages: nil
+                    request: [context request]];
+          if (!url)
+            url = @"";
+          else
+            if ([url hasPrefix: @"http"])
+              url = [url hostlessURL];
+          [pageToURL setObject: url forKey: filename];
+        }
+
+//   NSLog (@"url for '%@': '%@'", filename, url);
+    }
+  else
+    url = @"";
+
+  return url;
+}
+
 @end
