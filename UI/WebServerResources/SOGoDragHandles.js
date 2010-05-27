@@ -2,7 +2,7 @@
 
 var SOGoDragHandlesInterface = {
     leftMargin: 180,
-    topMargin: 140,
+    topMargin: 160,
     dhType: null,
     dhLimit: -1,
     origX: -1,
@@ -198,10 +198,10 @@ var SOGoDragHandlesInterface = {
     },
     saveDragHandleStateCallback: function (http) {
         if (isHttpStatus204(http.status)) {
-            log ("drag handle state saved");
+            log ("Drag handle state saved");
         }
         else if (http.readyState == 4) {
-            log ("can't save handle state");
+            log ("Can't save handle state");
         }
     }
 };
