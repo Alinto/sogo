@@ -1,5 +1,12 @@
 2010-05-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/WOContext+UIxMailer.m
+	(-mailEnvelopeAddressFormatter): declare result as
+	UIxEnvelopeAddressFormatter.
+
+	* UI/MailerUI/UIxMailListActions.m (-getHeadersAction):
+	"addressFormatter" really is a UIxEnvelopeAddressFormatter.
+
 	* UI/WebServerResources/UIxAttendeesEditor.js: (prepareAttendees):
 	automatically append a new attendee line when the window is loaded
 	and no attendee is present in the list yet.

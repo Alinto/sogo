@@ -32,10 +32,12 @@
 
 @class NSFormatter;
 
+@class UIxEnvelopeAddressFormatter;
+
 @interface WOContext (UIxMailer)
 
 - (NSFormatter *) mailDateFormatter;
-- (NSFormatter *) mailEnvelopeAddressFormatter;
+- (UIxEnvelopeAddressFormatter *) mailEnvelopeAddressFormatter;
 - (NSFormatter *) mailEnvelopeFullAddressFormatter;
 
 @end

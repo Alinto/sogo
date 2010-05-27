@@ -38,7 +38,7 @@
   return [[self activeUser] dateFormatterInContext: self];
 }
 
-- (NSFormatter *) mailEnvelopeAddressFormatter
+- (UIxEnvelopeAddressFormatter *) mailEnvelopeAddressFormatter
 {
   return [[[UIxEnvelopeAddressFormatter alloc] init] autorelease];
 }

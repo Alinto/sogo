@@ -75,6 +75,8 @@
 
 - (id)initWithMaxLength:(unsigned int)_max generateFullEMail:(BOOL)_genFull;
 
+- (NSString *)stringForArray:(NSArray *)_addresses;
+
 @end
 
 #endif /* __Mailer_UIxMailFormatter_H__ */

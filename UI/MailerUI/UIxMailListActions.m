@@ -60,6 +60,8 @@
 #import <UI/Common/WODirectAction+SOGo.h>
 
 #import "WOContext+UIxMailer.h"
+#import "UIxMailFormatter.h"
+
 #import "UIxMailListActions.h"
 
 @implementation UIxMailListActions
@@ -543,7 +545,6 @@
 
 - (id <WOActionResults>) getHeadersAction
 {
-  NSFormatter *addressFormatter;
   NSArray *uids, *to;
   NSDictionary *msgs;
   NSMutableArray *headers;
@@ -553,6 +554,7 @@
   SOGoMailFolder *mailFolder;
   WORequest *request;
   WOResponse *response;
+  UIxEnvelopeAddressFormatter *addressFormatter;
   
   request = [context request];
   
