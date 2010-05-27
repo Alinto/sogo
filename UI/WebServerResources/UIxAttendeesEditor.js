@@ -20,15 +20,17 @@ var attendeesEditor = {
 };
 
 function handleAllDay() {
-    window.timeWidgets['end']['hour'].value = 17;
-    window.timeWidgets['end']['minute'].value = 0;
-    window.timeWidgets['start']['hour'].value = 9;
+    window.timeWidgets['start']['hour'].value = dayStartHour;
     window.timeWidgets['start']['minute'].value = 0;
+    window.timeWidgets['end']['hour'].value = dayEndHour;
+    window.timeWidgets['end']['minute'].value = 0;
 
     $("startTime_time_hour").disabled = true;
     $("startTime_time_minute").disabled = true;
     $("endTime_time_hour").disabled = true;
     $("endTime_time_minute").disabled = true;
+
+    $("freeBusyTimeRange").addClassName("hidden");
 }
 
 /* address completion */
@@ -550,6 +552,7 @@ function availabilitySession(uids, direction, start, end, listener) {
         this._findDate = this._backwardFindDate;
         this._adjustCurrentStart = this._backwardAdjustCurrentStart;
     }
+
     this.mStart = start;
 
     this.mStartLimit = 0;
@@ -756,6 +759,7 @@ availabilitySession.prototype = {
 };
 
 function availabilityController(previousSlotButton, nextSlotButton) {
+    this.mActive = false;
     this.previousSlotButton = previousSlotButton;
     this.nextSlotButton = nextSlotButton;
 
@@ -766,15 +770,22 @@ function availabilityController(previousSlotButton, nextSlotButton) {
 }
 
 availabilityController.prototype = {
+  mActive: false,
   previousSlotButton: null,
   nextSlotButton: null,
 
   onPreviousSlotClick: function ac_onPreviousSlotClick(event) {
-      this._findSlot(-1);
+      if (!this.mActive) {
+          this.mActive = true;
+          this._findSlot(-1);
+      }
       this.previousSlotButton.blur();
   },
   onNextSlotClick: function aC_onNextSlotClick(event) {
-      this._findSlot(1);
+      if (!this.mActive) {
+          this.mActive = true;
+          this._findSlot(1);
+      }
       this.nextSlotButton.blur();
   },
   _findSlot: function aC__findSlot(direction) {
@@ -788,22 +799,27 @@ availabilityController.prototype = {
       }
 
       var start = window.timeWidgets['start']['date'].valueAsDate();
-      start.setHours(window.timeWidgets['start']['hour'].value);
-      start.setMinutes(window.timeWidgets['start']['minute'].value);
-
       var end = window.timeWidgets['end']['date'].valueAsDate();
-      end.setHours(window.timeWidgets['end']['hour'].value);
-      end.setMinutes(window.timeWidgets['end']['minute'].value);
+      if (isAllDay) {
+          start.setHours(dayStartHour);
+          start.setMinutes(0);
+          start.setSeconds(0);
+          end.setHours(dayEndHour);
+          end.setMinutes(0);
+          end.setSeconds(0);
+      }
+      else {
+          start.setHours(window.timeWidgets['start']['hour'].value);
+          start.setMinutes(window.timeWidgets['start']['minute'].value);
+          end.setHours(window.timeWidgets['end']['hour'].value);
+          end.setMinutes(window.timeWidgets['end']['minute'].value);
+      }
       var session = new availabilitySession(uids, direction,
                                             start, end,
                                             this);
-      var limits = $("timeSlotLimits");
-      if (limits.value == "office-hours") {
-          var start = dayStartHour * 4;
-          var end = dayEndHour * 4;
-          session.setLimits(start, end);
-      }
-      else if (limits.value == "range") {
+      if (isAllDay) {
+          session.setLimits(dayStartHour * 4, dayEndHour * 4);
+      } else {
           var start = (parseInt($("timeSlotStartLimitHour").value)
                        + parseInt($("timeSlotStartLimitMinute").value));
           var end = (parseInt($("timeSlotEndLimitHour").value)
@@ -828,6 +844,7 @@ availabilityController.prototype = {
       else {
           redisplayEventSpans();
       }
+      this.mActive = false;
   }
 };
 
@@ -1169,9 +1186,9 @@ function initializeTimeSlotWidgets() {
         }
     }
     var limitWidget = $("timeSlotStartLimitHour");
-    limitWidget.value = parseInt($("startTime_time_hour").value) * 4;
+    limitWidget.value = dayStartHour * 4;
     limitWidget = $("timeSlotEndLimitHour");
-    limitWidget.value = parseInt($("endTime_time_hour").value) * 4;
+    limitWidget.value = dayEndHour * 4;
 
     var minuteWidgets = [ "timeSlotStartLimitMinute",
                           "timeSlotEndLimitMinute" ];
@@ -1225,20 +1242,6 @@ function scrollToEvent () {
 
     headerDiv.scrollLeft = scroll;
     dataDiv.scrollLeft = headerDiv.scrollLeft;
-}
-
-function toggleOfficeHours () {
-    var endDate = window.getEndDate();
-    var startDate = window.getStartDate();
-
-    if (startDate.getHours () < dayStartHour
-        || startDate.getHours () > dayEndHour
-        || endDate.getHours () > dayEndHour
-        || endDate.getHours () < dayStartHour) {
-	if ($("onlyOfficeHours")) {
-           $("onlyOfficeHours").checked = false;
-        }
-    }
 }
 
 function updateSlotDisplayCallback(http) {
@@ -1468,8 +1471,8 @@ function prepareAttendees() {
     var tableAttendees = $("freeBusyAttendees");
     var tableData = $("freeBusyData");
     var attendees = window.opener.attendees;
-
-    if (attendees && attendees.keys()) {
+    var attendeesKeys = (attendees ? attendees.keys() : null);
+    if (attendeesKeys && attendeesKeys.length > 0) {
         var tbodyAttendees = tableAttendees.tBodies[0];
         var modelAttendee = tbodyAttendees.rows[tbodyAttendees.rows.length - 1];
         var newAttendeeRow = tbodyAttendees.rows[tbodyAttendees.rows.length - 2];
@@ -1478,7 +1481,7 @@ function prepareAttendees() {
         var modelData = tbodyData.rows[tbodyData.rows.length - 1];
         var newDataRow = tbodyData.rows[tbodyData.rows.length - 2];
 
-        attendees.keys().each(function(atKey) {
+        attendeesKeys.each(function(atKey) {
             var attendee = attendees.get(atKey);
             var row = $(modelAttendee.cloneNode(true));
             tbodyAttendees.insertBefore(row, newAttendeeRow);
@@ -1501,7 +1504,7 @@ function prepareAttendees() {
                     = onAttendeeStatusClick.bindAsEventListener(row);
                 statusTD.observe("click", boundOnStatusClick, false);
             }
-
+                
             var input = row.down("input");
             var value = attendee["name"];
             if (value)
@@ -1521,8 +1524,11 @@ function prepareAttendees() {
             row = $(modelData.cloneNode(true));
             tbodyData.insertBefore(row, newDataRow);
             row.removeClassName("dataModel");
-            displayFreeBusyForNode(input);
+            displayFreeBusyForNode(input);            
         });
+    }
+    else {
+        newAttendee();
     }
 
     // Activate "Add attendee" button
@@ -1565,9 +1571,10 @@ function onFreeBusyLoadHandler() {
                            'minute': $("endTime_time_minute")}};
     synchronizeWithParent("startTime", "startTime");
     synchronizeWithParent("endTime", "endTime");
-    initTimeWidgets(widgets);
 
+    initTimeWidgets(widgets);
     initializeTimeSlotWidgets();
+
     initializeWindowButtons();
     prepareTableHeaders();
     prepareTableRows();
@@ -1577,7 +1584,6 @@ function onFreeBusyLoadHandler() {
     Event.observe(window, "resize", onWindowResize);
     $$('TABLE#freeBusy TD.freeBusyData DIV').first().observe("scroll", onScroll);
     scrollToEvent();
-    toggleOfficeHours();
 }
 
 document.observe("dom:loaded", onFreeBusyLoadHandler);
@@ -1652,7 +1658,6 @@ function onAdjustTime(event) {
 
     // Specific function for the attendees editor
     onTimeDateWidgetChange();
-    toggleOfficeHours ();
 }
 
 function _getDate(which) {

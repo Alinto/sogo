@@ -1,3 +1,9 @@
+2010-05-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/UIxAttendeesEditor.js: (prepareAttendees):
+	automatically append a new attendee line when the window is loaded
+	and no attendee is present in the list yet.
+
 2010-05-27  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/MailerUI/UIxMailListActions.m: renamed from
@@ -40,6 +46,20 @@
 	-columnsOrder, setCurrentColumn, -currentColumn, -columnTitle):
 	moved those methods from UIxMailListView, since the messages table
 	is now populated with a JSON representation of the data.
+
+2010-05-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/UIxAttendeesEditor.js:
+	(toggleOfficeHours): removed obsolete method.
+	(initialiseTimeSlotWidgets): we now initialize the time range
+	hours to the day start hour and day end hour, respectively,
+	instead of the event start and end time.
+	(handleAllDay): we make use of the "dayStartHour" and "dayEndHour"
+	variables instead of hardcoded values. Also, we hide the time
+	range widgets when this code is executed.
+	(availabilityController.onNextSlotClick,
+	availabilityController.onPreviousSlotClick): ignore clicks when a
+	request is already active.
 
 2010-05-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

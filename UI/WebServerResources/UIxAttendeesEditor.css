@@ -12,7 +12,7 @@ DIV#attendeesView
 DIV#freeBusyView
 { background-color: #fff;
   position: absolute;
-  top: 5px;
+  top: 30px;
   bottom: 135px;
   left: 0px;
   right: 0px;
@@ -240,23 +240,15 @@ TABLE#freeBusyData TD.noFreeBusy
 { background-color: #e09ebd; }
 
 #freeBusyViewButtons
-{ border: 1px solid #aaa;
-  float: left;
-  width: 320px;
-  margin: 0px;
-  padding: 5px;
+{ margin: 0px;
   text-align: left; }
+
+SPAN.hidden
+{ display: none; }
 
 #freeBusyViewButtons > DIV.buttons
 { margin: 0px;
-  margin-top: 4px;
-  background-color: #000; }
-
-DIV#freeBusyZoomButtons
-{ position: absolute;
-  height: 2em;
-  top: 0px;
-  right: 0px; }
+  margin-top: 4px; }
 
 DIV#freeBusyReplicas
 { position: absolute;
