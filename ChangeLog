@@ -1,3 +1,9 @@
+2010-05-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/UIxAttendeesEditor.js: (prepareAttendees):
+	automatically append a new attendee line when the window is loaded
+	and no attendee is present in the list yet.
+
 2010-05-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/UIxAttendeesEditor.js:

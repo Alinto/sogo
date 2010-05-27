@@ -1471,8 +1471,8 @@ function prepareAttendees() {
     var tableAttendees = $("freeBusyAttendees");
     var tableData = $("freeBusyData");
     var attendees = window.opener.attendees;
-
-    if (attendees && attendees.keys()) {
+    var attendeesKeys = (attendees ? attendees.keys() : null);
+    if (attendeesKeys && attendeesKeys.length > 0) {
         var tbodyAttendees = tableAttendees.tBodies[0];
         var modelAttendee = tbodyAttendees.rows[tbodyAttendees.rows.length - 1];
         var newAttendeeRow = tbodyAttendees.rows[tbodyAttendees.rows.length - 2];
@@ -1481,7 +1481,7 @@ function prepareAttendees() {
         var modelData = tbodyData.rows[tbodyData.rows.length - 1];
         var newDataRow = tbodyData.rows[tbodyData.rows.length - 2];
 
-        attendees.keys().each(function(atKey) {
+        attendeesKeys.each(function(atKey) {
             var attendee = attendees.get(atKey);
             var row = $(modelAttendee.cloneNode(true));
             tbodyAttendees.insertBefore(row, newAttendeeRow);
@@ -1504,7 +1504,7 @@ function prepareAttendees() {
                     = onAttendeeStatusClick.bindAsEventListener(row);
                 statusTD.observe("click", boundOnStatusClick, false);
             }
-
+                
             var input = row.down("input");
             var value = attendee["name"];
             if (value)
@@ -1524,8 +1524,11 @@ function prepareAttendees() {
             row = $(modelData.cloneNode(true));
             tbodyData.insertBefore(row, newDataRow);
             row.removeClassName("dataModel");
-            displayFreeBusyForNode(input);
+            displayFreeBusyForNode(input);            
         });
+    }
+    else {
+        newAttendee();
     }
 
     // Activate "Add attendee" button
