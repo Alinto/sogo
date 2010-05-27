@@ -120,10 +120,11 @@ var SOGoDragHandlesInterface = {
                 deltaY = Math.floor(pointerY - this.origY - (this.offsetHeight / 2));
             this.lowerBlock.setStyle({ top: (this.origLower + deltaY - this.delta) + 'px' });
             this.upperBlock.setStyle({ height: (this.origUpper + deltaY - this.delta) + 'px' });
-			
+            //this.lowerBlock.fire("handle:resize");
+            this.upperBlock.fire("handle:resize");
             this.saveDragHandleState(this.dhType, parseInt(this.lowerBlock.getStyle("top")));
         }
-        if (Prototype.Browser.IE)		
+        if (Prototype.Browser.IE)
             Event.stopObserving(document.body, "mouseup", this.stopHandleDraggingBound);
         else
             Event.stopObserving(window, "mouseup", this.stopHandleDraggingBound);

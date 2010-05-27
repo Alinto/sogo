@@ -466,7 +466,10 @@ function onRowClick(event) {
         node = node.parentNode; // select TR
     }
     if (node.tagName == 'TR') {
-        rowIndex = node.rowIndex - $(node).up('table').down('thead').getElementsByTagName('tr').length;
+        var head = $(node).up('table').down('thead');
+        rowIndex = node.rowIndex;
+        if (head)
+            rowIndex -= head.getElementsByTagName('tr').length;
     }
     else if (node.tagName == 'LI') {
         // Find index of clicked row
@@ -573,7 +576,6 @@ function popupMenu(event, menuId, target) {
 
         $(document.body).observe("click", onBodyClickMenuHandler);
     }
-
 }
 
 function getParentMenu(node) {

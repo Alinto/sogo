@@ -54,6 +54,9 @@ IMG.dragMessage
 TD.mailer_fieldname
 { width: 8em; }
 
+TABLE.messageList TD
+{ white-space: pre; }
+
 /* ContactsUI */
 
 /*DIV#contactFoldersList SPAN.toolbarButton

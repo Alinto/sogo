@@ -77,9 +77,20 @@
         };
       };
       methods = {
-        view = {
+        getMail = {
           protectedBy = "View";
-          pageName    = "UIxMailListView";
+          pageName    = "UIxMailListActions";
+          actionName  = "getMail";
+        };
+        uids = {
+          protectedBy = "<public>";
+          pageName    = "UIxMailListActions";
+          actionName  = "getSortedUIDs";
+        };
+        headers = {
+          protectedBy = "<public>";
+          pageName    = "UIxMailListActions";
+          actionName  = "getHeaders";
         };
         subscribe = {
           protectedBy = "<public>";
@@ -95,19 +106,6 @@
           protectedBy = "View";
           actionClass = "UIxMailFolderActions";
           actionName = "quotas";
-        };
-        index = {
-          protectedBy = "View";
-          pageName    = "UIxMailListView";
-        };
-        GET = { /* hack to make it work as the default method */
-          protectedBy = "View";
-          pageName    = "UIxMailListView";
-        };
-        getMail = {
-          protectedBy = "View";
-          pageName    = "UIxMailListView";
-          actionName  = "getMail";
         };
         expunge = {
           protectedBy = "View";

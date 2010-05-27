@@ -29,6 +29,10 @@
 {
   SOGoUserSettings *us;
   NSMutableDictionary *moduleSettings;
+
+  NSArray *columnsOrder;
+  int folderType;
+  NSDictionary *currentColumn;
 }
 
 - (WOResponse *) getFoldersStateAction;
@@ -41,6 +45,8 @@
 - (WOResponse *) saveFoldersStateAction;
 
 - (NSString *) formattedMailtoString: (NGVCard *) card;
+
+- (NSArray *) columnsDisplayOrder;
 
 @end
 

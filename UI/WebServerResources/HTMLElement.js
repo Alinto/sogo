@@ -8,7 +8,7 @@ Element.addMethods({
             if (element.bind)
                 element.bind();
         },
-
+            
         childNodesWithTag: function(element, tagName) {
             element = $(element);
 
@@ -165,15 +165,18 @@ Element.addMethods({
             element.addClassName('_selected');
 			
             var parent = element.up();
-            if (!parent.selectedElements)
+            if (!parent.selectedElements) {
                 // Selected nodes are kept in a array at the
                 // container level.
                 parent.selectedElements = new Array();
+                parent.selectedIds = new Array();
+            }
             for (var i = 0; i < parent.selectedElements.length; i++)
                 if (parent.selectedElements[i] == element) return;
             parent.selectedElements.push(element); // use index instead ?
+            parent.selectedIds.push(element.id);
         },
-
+            
         selectRange: function(element, startIndex, endIndex) {
             element = $(element);
             var s;
@@ -202,10 +205,11 @@ Element.addMethods({
         deselect: function(element) {
             element = $(element);
             element.removeClassName('_selected');
-
             var parent = element.up();
-            if (parent && parent.selectedElements)
+            if (parent && parent.selectedElements) {
                 parent.selectedElements = parent.selectedElements.without(element);
+                parent.selectedIds = parent.selectedIds.without(element.id);
+            }
         },
 
         deselectAll: function(element) {
@@ -214,6 +218,25 @@ Element.addMethods({
                 for (var i = 0; i < element.selectedElements.length; i++)
                     element.selectedElements[i].removeClassName('_selected');
                 element.selectedElements = null;
+            }
+            if (element.selectedIds) {
+                for (var i = 0; i < element.selectedIds.length; i++) {
+                    var e =  element.down('#' + element.selectedIds[i]);
+                    if (e && e.hasClassName('_selected'))
+                        e.removeClassName('_selected');
+                }
+                element.selectedIds = null;
+            }
+        },
+
+        refreshSelectionByIds: function(element) {
+            element = $(element);
+            if (element.selectedIds) {
+                for (var i = 0; i < element.selectedIds.length; i++) {
+                    var e = element.down('#'+element.selectedIds[i]);
+                    if (e && !e.hasClassName('_selected'))
+                        e.addClassName('_selected');
+                }
             }
         },
 

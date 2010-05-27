@@ -19,8 +19,8 @@
   02111-1307, USA.
 */
   
-#ifndef UIXMAILLISTVIEW_H
-#define UIXMAILLISTVIEW_H
+#ifndef UIXMAILLISTACTIONS_H
+#define UIXMAILLISTACTIONS_H
 
 #import <SOGoUI/UIxComponent.h>
 
@@ -28,24 +28,23 @@
 @class EOQualifier;
 @class SOGoDateFormatter;
 
-@interface UIxMailListView : UIxComponent
+@interface UIxMailListActions : UIxComponent
 {
   NSArray *sortedUIDs; /* we always need to retrieve all anyway! */
   NSArray *messages;
-  NSArray *columnsOrder;
-  unsigned firstMessageNumber;
   id message;
-  EOQualifier *qualifier;
   SOGoDateFormatter *dateFormatter;
   NSTimeZone *userTimeZone;
   int folderType;
-  NSDictionary *currentColumn;
+  int specificMessageNumber;
 }
 
 - (NSString *) defaultSortKey;
 - (NSString *) imap4SortKey;
 - (NSString *) imap4SortOrdering;
+- (EOQualifier *) searchQualifier;
+- (NSString *) msgLabels;
 
 @end
 
-#endif /* UIXMAILLISTVIEW_H */
+#endif /* UIXMAILLISTACTIONS_H */

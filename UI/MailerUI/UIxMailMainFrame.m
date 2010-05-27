@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2009 Inverse inc.
+  Copyright (C) 2007-2010 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -30,6 +30,7 @@
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/SoComponent.h>
+#import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
 
 #import <Contacts/SOGoContactObject.h>
@@ -114,11 +115,8 @@
 
 - (NSString *) defaultColumnsOrder
 {
-  SOGoDomainDefaults *dd;
-
-  dd = [[context activeUser] domainDefaults];
-
-  return [[dd mailListViewColumnsOrder] jsonRepresentation];
+  return [[[self columnsDisplayOrder] objectsForKey: @"value"
+				     notFoundMarker: @""] jsonRepresentation];
 }
 
 - (NSString *) pageFormURL
@@ -402,4 +400,186 @@
   return [super defaultAction];
 }
 
+/**
+ *
+ * methods from UIxMailListView
+ */
+
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      folderType = 0;
+    }
+
+  return self;
+}
+- (BOOL) showToAddress 
+{
+  SOGoMailFolder *co;
+
+  if (!folderType)
+    {
+      co = [self clientObject];
+      if ([co isKindOfClass: [SOGoSentFolder class]]
+	  || [co isKindOfClass: [SOGoDraftsFolder class]])
+	folderType = 1;
+      else
+	folderType = -1;
+    }
+
+  return (folderType == 1);
+}
+
+- (NSDictionary *) columnsMetaData
+{
+  NSMutableDictionary *columnsMetaData;
+  NSArray *tmpColumns, *tmpKeys;
+
+  columnsMetaData = [NSMutableDictionary dictionaryWithCapacity: 8];
+  
+  tmpKeys = [NSArray arrayWithObjects: @"headerClass", @"headerId", @"value",
+             nil];
+  tmpColumns
+    = [NSArray arrayWithObjects: @"messageSubjectColumn tbtv_headercell sortableTableHeader resizable",
+       @"subjectHeader", @"Subject", nil];
+  [columnsMetaData setObject: [NSDictionary dictionaryWithObjects: tmpColumns
+                                                          forKeys: tmpKeys]
+                      forKey: @"Subject"];
+
+  tmpColumns
+    = [NSArray arrayWithObjects: @"messageFlagColumn tbtv_headercell",
+	       @"invisibleHeader", @"Flagged", nil];
+  [columnsMetaData setObject: [NSDictionary dictionaryWithObjects: tmpColumns
+					    forKeys: tmpKeys]
+		      forKey: @"Flagged"];
+
+  tmpColumns
+    = [NSArray arrayWithObjects: @"messageFlagColumn tbtv_headercell",
+	       @"attachmentHeader", @"Attachment", nil];
+  [columnsMetaData setObject: [NSDictionary dictionaryWithObjects: tmpColumns
+							  forKeys: tmpKeys]
+		      forKey: @"Attachment"];
+
+  tmpColumns
+    = [NSArray arrayWithObjects: @"messageFlagColumn tbtv_headercell", @"messageFlagHeader",
+	       @"Unread", nil];
+  [columnsMetaData setObject: [NSDictionary dictionaryWithObjects: tmpColumns forKeys: tmpKeys]
+		      forKey: @"Unread"];
+
+  tmpColumns
+    = [NSArray arrayWithObjects: @"messageAddressHeader tbtv_headercell sortableTableHeader resizable",
+	       @"toHeader", @"To", nil];
+  [columnsMetaData setObject: [NSDictionary dictionaryWithObjects: tmpColumns forKeys: tmpKeys]
+		      forKey: @"To"];
+  
+  tmpColumns
+    = [NSArray arrayWithObjects: @"messageAddressColumn tbtv_headercell sortableTableHeader resizable",
+	       @"fromHeader", @"From", nil];
+  [columnsMetaData setObject: [NSDictionary dictionaryWithObjects: tmpColumns
+							  forKeys: tmpKeys]
+		      forKey: @"From"];
+  
+  tmpColumns
+    = [NSArray arrayWithObjects: @"messageDateColumn tbtv_headercell sortableTableHeader resizable",
+	       @"dateHeader", @"Date", nil];
+  [columnsMetaData setObject: [NSDictionary dictionaryWithObjects: tmpColumns
+							  forKeys: tmpKeys]
+		      forKey: @"Date"];
+  
+  tmpColumns
+    = [NSArray arrayWithObjects: @"messagePriorityColumn tbtv_headercell resizable", @"priorityHeader",
+	       @"Priority", nil];
+  [columnsMetaData setObject: [NSDictionary dictionaryWithObjects: tmpColumns
+							  forKeys: tmpKeys]
+		      forKey: @"Priority"];
+
+  tmpColumns
+    = [NSArray arrayWithObjects: @"messageSizeColumn tbtv_headercell sortableTableHeader", @"sizeHeader",
+	       @"Size", nil];
+  [columnsMetaData setObject: [NSDictionary dictionaryWithObjects: tmpColumns
+							  forKeys: tmpKeys]
+		      forKey: @"Size"];
+  
+  return columnsMetaData;
+}
+
+- (NSArray *) columnsDisplayOrder
+{
+  NSMutableArray *finalOrder, *invalid;
+  NSArray *available;
+  NSDictionary *metaData;
+  SOGoUserDefaults *ud;
+  unsigned int i;
+
+  if (!columnsOrder)
+    {
+      ud = [[context activeUser] userDefaults];
+      columnsOrder = [ud mailListViewColumnsOrder];
+
+      metaData = [self columnsMetaData];
+
+      invalid = [columnsOrder mutableCopy];
+      [invalid autorelease];
+      available = [metaData allKeys];
+      [invalid removeObjectsInArray: available];
+      if ([invalid count] > 0)
+        {
+          [self errorWithFormat: @"those column names specified in"
+                @" SOGoMailListViewColumnsOrder are invalid: '%@'",
+                [invalid componentsJoinedByString: @"', '"]];
+          [self errorWithFormat: @"  falling back on hardcoded column order"];
+          columnsOrder = available;
+        }
+
+      finalOrder = [columnsOrder mutableCopy];
+      [finalOrder autorelease];
+      if ([self showToAddress])
+        {
+          i = [finalOrder indexOfObject: @"From"];
+          if (i != NSNotFound)
+	    {
+	      [finalOrder removeObject: @"To"];
+	      [finalOrder replaceObjectAtIndex: i withObject: @"To"];
+	    }
+        }
+      else
+        {
+          i = [finalOrder indexOfObject: @"To"];
+          if (i != NSNotFound)
+	    {
+	      [finalOrder removeObject: @"From"];
+	      [finalOrder replaceObjectAtIndex: i withObject: @"From"];
+	    }
+	}
+
+      columnsOrder = [[self columnsMetaData] objectsForKeys: finalOrder
+                                             notFoundMarker: @""];
+      [columnsOrder retain];
+    }
+
+  return columnsOrder;
+}
+
+- (NSString *) columnsDisplayCount
+{
+  return [NSString stringWithFormat: @"%d", [[self columnsDisplayOrder] count]];
+}
+
+- (void) setCurrentColumn: (NSDictionary *) newCurrentColumn
+{
+  ASSIGN (currentColumn, newCurrentColumn);
+}
+
+- (NSDictionary *) currentColumn
+{
+  return currentColumn;
+}
+
+- (NSString *) columnTitle
+{
+  return [self labelForKey: [currentColumn objectForKey: @"value"]];
+}
+
 @end /* UIxMailMainFrame */
+

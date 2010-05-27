@@ -1,3 +1,46 @@
+2010-05-27  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/MailerUI/UIxMailListActions.m: renamed from
+	UIxMailListview.m. Associated .wox was removed.
+	(-getSortedUIDsAction): new method that returns a JSON
+	array with all the messages UIDs of the mailbox, sorted as requested.
+	(-getHeadersAction): new method that returns a JSON dictionary of
+	the headers of requested messages UIDs.
+
+	* UI/WebServerResources/SOGoDataTable.js: new interface to add
+	"live loading" to a table.
+
+	* UI/WebServerResources/SOGoMailDataSource.js: new class that
+	dynamically fetches the message headers depending on the requests
+	from a SOGoDataTable.
+
+	* UI/WebServerResources/SOGoResizableTable.js: new interface to
+	add resizable headers to a table.
+
+	* UI/WebServerResources/MailerUI.js (initMailer): associates a DIV
+	with the new SOGoDataTable interface.
+	(openMailbox): uses the new SOGoMailDataSource class to fetch the
+	messages list.
+	(messageListCallback): new function called to populate a row from
+	the data received from the SOGoDataTable interface and
+	SOGoMailDataSource class.
+	(updateMessageListCounter): new function to update the message
+	counter that appears in the headers table.
+	(toggleAddressColumn): new
+	function to toggle the address column header content
+	(From/To). This column changes depending on the mailbox type
+	selected (draft, sent or other).
+	
+	* UI/WebServerResources/HTMLElement.js (refreshSelectionByIds):
+	new method to restore the selection based on the elements IDs instead
+	of the elements themselves.
+
+	* UI/MailerUI/UIxMailMainFrame.m (-showToAddress,
+	-columnsMetaData, -columnsMetaData, -columnsDisplayOrder,
+	-columnsOrder, setCurrentColumn, -currentColumn, -columnTitle):
+	moved those methods from UIxMailListView, since the messages table
+	is now populated with a JSON representation of the data.
+
 2010-05-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoCalendarComponent.m

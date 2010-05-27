@@ -409,7 +409,7 @@ td img.tbtv_sortcell
   height: 12px; }
 
 TD.subjectCell,
-td.tbtv_subject_headercell
+TD.tbtv_subject_headercell
 { overflow: hidden; }
 
 /* drag handles */
@@ -530,9 +530,10 @@ DIV.dTreeNode SPAN._dragOver
 INPUT.checkBox
 { vertical-align: middle; }
 
-/* tablekit resizable columns */
+/* resizable columns */
 
-TABLE TD.resize-handle-active
+TABLE TD.resize-handle-active,
+TABLE TH.resize-handle-active
 { cursor: e-resize; }
 
 DIV.resize-handle
@@ -541,8 +542,7 @@ DIV.resize-handle
   border-right: 1px solid #fff;
   position: absolute;
   top: 0px;
-  left: 0px;
-  max-height: 2em; } /* will be set in JavaScript when setting drag handles */
+  left: 0px; }
 
 @media print
 {
