@@ -346,26 +346,26 @@ function refreshAttendees(newAttendees) {
         // Update attendees link and show label
         var names = new Array();
         attendees.values().each(function(attendee) {
-                attendee = $H(attendee);
-                var name = attendee.get('name') || attendee.get('email');
-                if (!attendee.get('delegated-to'))
-                    names.push(name);
+            attendee = $H(attendee);
+            var name = attendee.get('name') || attendee.get('email');
+            if (!attendee.get('delegated-to'))
+                names.push(name);
 
-                if (attendeesMenu) {
-                    var delegatedTo = attendee.get('delegated-to');
-                    if (!attendee.get('delegated-from') || delegatedTo) {
-                        var node = createElement("li");
-                        attendeesMenu.appendChild(node);
-                        setupAttendeeNode(node, attendee);
-                    }
-                    if (delegatedTo) {
-                        var delegate = attendees.get(delegatedTo);
-                        var node = createElement("li");
-                        attendeesMenu.appendChild(node);
-                        setupAttendeeNode(node, $H(delegate), true);
-                    }
+            if (attendeesMenu) {
+                var delegatedTo = attendee.get('delegated-to');
+                if (!attendee.get('delegated-from') || delegatedTo) {
+                    var node = createElement("li");
+                    attendeesMenu.appendChild(node);
+                    setupAttendeeNode(node, attendee);
                 }
-            });
+                if (delegatedTo) {
+                    var delegate = attendees.get(delegatedTo);
+                    var node = createElement("li");
+                    attendeesMenu.appendChild(node);
+                    setupAttendeeNode(node, $H(delegate), true);
+                }
+            }
+        });
         attendeesHref.appendChild(document.createTextNode(names.join(", ")));
         attendeesLabel.setStyle({ display: "block" });
     }
