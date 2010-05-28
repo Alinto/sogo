@@ -115,9 +115,9 @@ function onComposeToAllAttendees()
     var attendees = $$("DIV#attendeesMenu LI.attendee");
     var addresses = new Array();
     attendees.each(function(item) {
-            var address = item.firstChild.nodeValue.trim() + " <" + item.readAttribute("email") + ">";
-            addresses.push(address);
-        });
+        var address = item.firstChild.nodeValue.trim() + " <" + item.readAttribute("email") + ">";
+        addresses.push(address);
+    });
     if (window.opener)
         window.opener.openMailTo(addresses.join(","));
 }
@@ -130,9 +130,9 @@ function onComposeToUndecidedAttendees()
     var attendees = $$("DIV#attendeesMenu LI.attendee.needs-action");
     var addresses = new Array();
     attendees.each(function(item) {
-            var address = item.firstChild.nodeValue.trim() + " <" + item.readAttribute("email") + ">";
-            addresses.push(address);
-        });
+        var address = item.firstChild.nodeValue.trim() + " <" + item.readAttribute("email") + ">";
+        addresses.push(address);
+    });
     if (window.opener)
         window.opener.openMailTo(addresses.join(","));
 }
@@ -312,8 +312,8 @@ function refreshAttendeesRO() {
         // Register "click" event on each attendee's email
         var attendees = attendeesMenu.getElementsByTagName('a');
         $A(attendees).each(function(attendee) {
-                $(attendee).observe("click", onMailTo);
-            });
+            $(attendee).observe("click", onMailTo);
+        });
     }
 }
 
