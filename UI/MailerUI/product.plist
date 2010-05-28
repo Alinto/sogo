@@ -352,6 +352,11 @@
           pageName    = "UIxMailMainFrame";
           actionName  = "saveFoldersState";
         };
+        saveColumnsState = {
+          protectedBy = "View";
+          pageName    = "UIxMailMainFrame";
+          actionName  = "saveColumnsState";
+        };
       };
     };
 

@@ -62,6 +62,7 @@ var SOGoDataTableInterface = {
         if (this.dataSource) this.dataSource.destroy();
         this._emptyTable();
         this.dataSource = new window[dataSourceClass](this, url);
+        this.scrollTop = 0;
         this.load(params);
     },
 

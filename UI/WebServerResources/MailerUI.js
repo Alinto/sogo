@@ -479,7 +479,6 @@ function onMailboxTreeItemClick(event) {
     topNode.selectedEntry = this;
 
     search = {};
-    sorting = {};
     $("searchValue").value = "";
     initCriteria();
 
@@ -518,6 +517,8 @@ function toggleAddressColumn(search, replace) {
         if (i >= 0)
             UserDefaults["SOGoMailListViewColumnsOrder"][i] = replace.capitalize();
     }
+    if (sorting["attribute"] == search)
+        sorting["attribute"] = replace;
 }
 
 function onMailboxMenuMove(event) {
@@ -627,7 +628,7 @@ function openMailbox(mailbox, reload, updateStatus) {
         if (!reload) {
             var messageContent = $("messageContent");
             messageContent.update();
-            $("messageCountHeader").down().update();
+            $("messageCountHeader").down().update('&nbsp;');
             lastClickedRow = -1; // from generic.js
         }
 
@@ -695,10 +696,6 @@ function messageListCallback(row, data, isNew) {
     row.writeAttribute('labels', (data['labels']?data['labels']:""));
 
     var columnsOrder = UserDefaults["SOGoMailListViewColumnsOrder"];
-//     if (typeof columnsOrder == "undefined") {
-//         columnsOrder = defaultColumnsOrder;
-//     }
-
     var cells;
     if (Prototype.Browser.IE)
         cells = row.childNodes;
@@ -1510,6 +1507,7 @@ function onHeaderClick(event) {
         sorting["attribute"] = newSortAttribute;
         sorting["ascending"] = true;
     }
+    
     refreshCurrentFolder();
   
     Event.stop(event);
@@ -1605,9 +1603,16 @@ function openInbox(node) {
 }
 
 function initMailer(event) {
-    // Default sort options
-    sorting["attribute"] = "date";
-    sorting["ascending"] = false;
+    // Restore sorting from user settings
+    if (UserSettings["Mail"] && UserSettings["Mail"]["SortingState"]) {
+        sorting["attribute"] = UserSettings["Mail"]["SortingState"][0];
+        sorting["ascending"] = parseInt(UserSettings["Mail"]["SortingState"][1]) > 0;
+        if (sorting["attribute"] == 'to') sorting["attribute"] = 'from'; // initial mailbox is always the inbox
+    }
+    else {
+        sorting["attribute"] = "date";
+        sorting["ascending"] = false;
+    }
 
     // Define columns order
     if (typeof UserDefaults["SOGoMailListViewColumnsOrder"] == "undefined") {
@@ -1631,7 +1636,10 @@ function initMailer(event) {
 
         var messageListHeader = $("messageListHeader");
         messageListHeader.addInterface(SOGoResizableTableInterface);
-        
+        if (UserSettings["Mail"] && UserSettings["Mail"]["ColumnsState"]) {
+            messageListHeader.restore($H(UserSettings["Mail"]["ColumnsState"]));
+        }
+
         configureMessageListEvents($("messageListHeader"), $("messageListBody"));
 
         initMailboxTree();

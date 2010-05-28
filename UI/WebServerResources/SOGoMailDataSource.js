@@ -45,7 +45,7 @@ SOGoMailDataSource = Class.create({
             else
                 params = "";
 
-//             log ("MailDataSource.load() " + params);
+            log ("MailDataSource.load() " + params);
             triggerAjaxRequest(this.url + "/uids",
                                this._loadCallback.bind(this),
                                null,

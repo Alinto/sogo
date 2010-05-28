@@ -1,3 +1,11 @@
+2010-05-28  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/MailerUI/UIxMailMainFrame.m (-saveColumnsStateAction): new
+	method to save the relative sizes of the columns widths. It will
+	also save the columns order when the web interface supports it.
+
+	* UI/WebServerResources/SOGoResizableTable.js (saveColumnsState): idem.
+
 2010-05-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/UIxComponentEditor.js:

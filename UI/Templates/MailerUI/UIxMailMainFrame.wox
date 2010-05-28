@@ -245,7 +245,7 @@
       </tr>
     <tr id="messageCountHeader" class="tableview"
       ><th var:colspan="columnsDisplayCount" class="tbtv_navcell"
-	><!-- empty --></th
+	><entity name="nbsp"/></th
 	></tr
       >
   </thead>
