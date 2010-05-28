@@ -49,6 +49,7 @@ var SOGoDataTableInterface = {
  
         this.columnsCount = this.rowModel.select("td").length;
         this.rowHeight = this.rowModel.getHeight();
+//         log ("DataTable.bind() row height = " + this.rowHeight + "px");
     },
     
     setRowRenderCallback: function(callbackFunction) {
@@ -216,7 +217,7 @@ var SOGoDataTableInterface = {
         }
 
         this.body.refreshSelectionByIds();
-//         log ("DataTable._render() top gap/bottom gap/total rows = " + this.rowTop.getStyle('height') + "/" + this.rowBottom.getStyle('height') + "/" + this.body.select("tr").length + " (height = " + this.down("table").getHeight() + "px)");
+        log ("DataTable._render() top gap/bottom gap/total rows = " + this.rowTop.getStyle('height') + "/" + this.rowBottom.getStyle('height') + "/" + this.body.select("tr").length + " (height = " + this.down("table").getHeight() + "px)");
         
         // Save current rendered view index and count
         this.renderedIndex = start;
