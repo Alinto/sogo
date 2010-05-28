@@ -135,6 +135,42 @@ function initializePrivacyMenu() {
     }
 }
 
+function findAttendeeWithFieldValue(field, fieldValue) {
+    var foundAttendee = null;
+
+    var attendeesKeys = attendees.keys();
+    for (var i = 0; !foundAttendee && i < attendeesKeys.length; i++) {
+        var attendee = attendees.get(attendeesKeys[i]);
+        if (attendee[field] == fieldValue) {
+            foundAttendee = attendee;
+        }
+    }
+
+    return foundAttendee;
+}
+
+function findDelegateAddress() {
+    var delegateAddress = null;
+
+    var ownerAttendee = findAttendeeWithFieldValue("uid", ownerLogin);
+    if (ownerAttendee && ownerAttendee["delegated-to"]) {
+        var delegateAttendee
+            = findAttendeeWithFieldValue("email",
+                                         ownerAttendee["delegated-to"]);
+        if (delegateAttendee) {
+            if (delegateAttendee["name"]) {
+                delegateAddress = (delegateAttendee["name"]
+                                   + " <" + delegateAttendee["email"] + ">");
+            }
+            else {
+                delegateAddress = delegateAttendee["email"];
+            }
+        }
+    }
+
+    return delegateAddress;
+}
+
 function onComponentEditorLoad(event) {
     initializeDocumentHref();
     initializePrivacyMenu();
@@ -152,16 +188,26 @@ function onComponentEditorLoad(event) {
                                  onMenuSetClassification.bindAsEventListener(menuItems[i]),
                                  false);
     }
-    
+
     tmp = $("replyList");
     if (tmp) {
         tmp.observe("change", onReplyChange);
+        var isDelegated = (tmp.value == 4);
         tmp = $("delegatedTo");
         tmp.addInterface(SOGoAutoCompletionInterface);
         tmp.uidField = "c_mail";
         tmp.excludeGroups = true;
-        tmp.animationParent=$("delegateEditor");
-    }
+        var delegateEditor = $("delegateEditor");
+        tmp.animationParent = delegateEditor;
+        if (isDelegated) {
+            var delegateAddress = findDelegateAddress();
+            if (delegateAddress) {
+                tmp.value = delegateAddress;
+            }
+            delegateEditor.show();
+        }
+     }
+
     tmp = $("repeatHref");
     if (tmp)
         tmp.observe("click", onPopupRecurrenceWindow);

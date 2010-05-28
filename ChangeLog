@@ -1,3 +1,12 @@
+2010-05-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/UIxComponentEditor.js:
+	(findDeleteAddress): new function that returns the properly
+	formatter full email of the delegate attendee.
+	(findAttendeeWithFieldValue): new function that wanders through
+	the list of attendees and returns the one that has the field
+	passed as parameter equal to the value passed as parameter.
+
 2010-05-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailerUI/WOContext+UIxMailer.m

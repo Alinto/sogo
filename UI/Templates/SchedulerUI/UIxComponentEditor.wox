@@ -212,24 +212,14 @@
           string="itemReplyText"
           var:selection="reply" /></span>
     </label>
-    <var:if condition="ownerAsAttendee.delegatedTo" const:negate="YES">
     <label id="delegateEditor" style="display: none;">
       <span class="content">
-        <input name="delegatedTo" id="delegatedTo" type="text" var:value="ownerAsAttendee.delegatedTo" var:uid="delegatedTo" />
+        <input name="delegatedTo" id="delegatedTo" type="text" const:value=""/>
                 <!--
                 <br />
                 <input type="checkbox" name="delegateReceiveUpdates" /> <var:string label:value="Keep sending me updates" /> -->
       </span>
     </label>
-    </var:if><var:if condition="ownerAsAttendee.delegatedTo">
-    <label id="delegateEditor">
-      <span class="content">
-        <input name="delegatedTo" id="delegatedTo" type="text" var:value="ownerAsAttendee.delegatedTo.rfc822Email" var:uid="ownerAsAttendee.delegatedTo.rfc822Email" />
-	<br />
-	<input type="checkbox" name="delegateReceiveUpdates" /> <var:string label:value="Keep sending me updates" />
-      </span>
-    </label>
-    </var:if>
     <!--TODO: I'm not sure how to send this
     <label><var:string label:value="Reminder:" />
       <span class="content"><var:popup list="reminderList" item="item"
@@ -256,9 +246,6 @@
                       ><div const:class="statusIcon"><!-- space --></div
                         ><a var:href="attendee.email" var:email="attendee.email.rfc822Email"
                         ><var:string value="attendeeForDisplay" /></a
-                        ><var:if condition="attendee.delegatedFrom"
-                        > (<var:string label:value="delegated from" />
-                        <var:string value="attendee.delegatedFrom.rfc822Email" />)</var:if
                         ></div
                       ></var:if>
 	  </var:foreach>
