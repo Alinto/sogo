@@ -144,15 +144,9 @@
   return nil;
 }
 
-#warning we should remove this method
 - (NSArray *) toOneRelationshipKeys
 {
-  return [self fetchContentObjectNames];
-}
-
-- (NSArray *) fetchContentObjectNames
-{
-  return [NSArray array];
+  return nil;
 }
 
 - (NSArray *) toManyRelationshipKeys

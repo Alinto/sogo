@@ -40,7 +40,6 @@
 - (NSString *) realNameInContainer;
 
 - (NSString *) folderType;
-- (NSArray *) fetchContentObjectNames;
 
 - (BOOL) isValidContentName: (NSString *) name;
 

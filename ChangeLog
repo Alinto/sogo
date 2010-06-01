@@ -1,5 +1,8 @@
 2010-06-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoFolder.m (-fetchContentObjectNames): removed
+	this useless alias to "toOneRelationshipKeys".
+
 	* Tests/Integration/all.py: disable multilanguage tests by
 	default, reverting the "disbale-languages" cmd-line parameter to
 	"enable-languages".
