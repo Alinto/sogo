@@ -1,5 +1,16 @@
 2010-06-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Tests/Integration/webdavlib.py (WebDAVClient.__init__): made
+	"username" and "password" parameters optional to enable anonymous
+	connections. Also, M2Crypto.httpslib is imported explicitly only
+	when an SSL connection is requested. This renders this library
+	optional.
+	(WebDAVQuery.set_response): we now make use of the xml.etree API
+	instead of the one from xml.dom.
+	(xpath_evaluate): the above change makes this method obsolete
+	since XPath queries can now be performed directly on returned
+	elements.
+
 	* SoObjects/SOGo/SOGoCache.m (-setValue:forKey:expire:): display
 	the memcached error string when an error occurs.
 

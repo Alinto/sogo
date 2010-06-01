@@ -21,12 +21,11 @@
 
 import cStringIO
 import httplib
-import M2Crypto.httpslib
 import re
 import time
+import xml.dom.expatbuilder
+import xml.etree.ElementTree
 import xml.sax.saxutils
-import xml.dom.ext.reader.Sax2
-import xml.xpath
 import sys
 
 xmlns_dav = "DAV:"
@@ -66,19 +65,27 @@ class HTTPUnparsedURL:
 class WebDAVClient:
     user_agent = "Mozilla/5.0"
 
-    def __init__(self, hostname, port, username, password, forcessl = False):
+    def __init__(self, hostname, port, username = None, password = None,
+                 forcessl = False):
         if int(port) == 443 or forcessl:
+            import M2Crypto.httpslib
             self.conn = M2Crypto.httpslib.HTTPSConnection(hostname, int(port),
                                                           True)
         else:
             self.conn = httplib.HTTPConnection(hostname, port, True)
 
-        self.simpleauth_hash = (("%s:%s" % (username, password))
-                                .encode('base64')[:-1])
+        if username is not None:
+            if password is None:
+                password = ""
+            self.simpleauth_hash = (("%s:%s" % (username, password))
+                                    .encode('base64')[:-1])
+        else:
+            self.simpleauth_hash = None
 
     def prepare_headers(self, query, body):
-        headers = { "User-Agent": self.user_agent,
-                    "authorization": "Basic %s" % self.simpleauth_hash }
+        headers = { "User-Agent": self.user_agent }
+        if self.simpleauth_hash is not None:
+            headers["authorization"] = "Basic %s" % self.simpleauth_hash
         if body is not None:
             headers["content-length"] = len(body)
         if query.__dict__.has_key("depth") and query.depth is not None:
@@ -162,7 +169,6 @@ class WebDAVQuery(HTTPQuery):
         self.depth = depth
         self.ns_mgr = _WD_XMLNS_MGR()
         self.top_node = None
-        self.xpath_namespace = { "D": xmlns_dav }
 
     # helper for PROPFIND and REPORT (only)
     def _initProperties(self, properties):
@@ -200,17 +206,9 @@ class WebDAVQuery(HTTPQuery):
             and (headers["content-type"].startswith("application/xml")
                  or headers["content-type"].startswith("text/xml"))
             and int(headers["content-length"]) > 0):
-            reader = xml.dom.ext.reader.Sax2.Reader()
+            tree = xml.etree.ElementTree.ElementTree()
             stream = cStringIO.StringIO(self.response["body"])
-            dom_response = reader.fromStream(stream)
-            self.response["document"] = dom_response.documentElement
-
-    def xpath_evaluate(self, query, top_node = None):
-        if top_node is None:
-            top_node = self.response["document"]
-        xpath_context = xml.xpath.CreateContext(top_node)
-        xpath_context.setNamespaces(self.xpath_namespace)
-        return xml.xpath.Evaluate(query, None, xpath_context)
+            self.response["document"] = tree.parse(stream)
 
 class WebDAVMKCOL(WebDAVQuery):
     method = "MKCOL"
