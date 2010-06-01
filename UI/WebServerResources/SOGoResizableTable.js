@@ -9,6 +9,7 @@
 var SOGoResizableTableInterface = {
 
     delayedResize: null,
+    ratios: null,
 
     bind: function() {
         var i;
@@ -23,17 +24,17 @@ var SOGoResizableTableInterface = {
             }
             SOGoResizableTable._resize(this, $(cell), i, null, cell.getWidth());
         }
-        Event.observe(window, "resize", this.restore.bind(this));
+        Event.observe(window, "resize", this.resize.bind(this));
     },
 
-    restore: function(e) {
+    resize: function(e) {
         // Only resize the columns after a certain delay, otherwise it slow
         // down the interface.
         if (this.delayedResize) window.clearTimeout(this.delayedResize);
-        this.delayedResize = this._restore.bind(this).delay(0.2);
+        this.delayedResize = this._resize.bind(this).delay(0.2);
     },
 
-    _restore: function() {
+    _resize: function() {
         if (Prototype.Browser.IE)
             while (SOGoResizableTable._stylesheet.styleSheet.rules.length)
                 SOGoResizableTable._stylesheet.styleSheet.removeRule();
@@ -41,13 +42,58 @@ var SOGoResizableTableInterface = {
             while (SOGoResizableTable._stylesheet.firstChild)
                 SOGoResizableTable._stylesheet.removeChild(SOGoResizableTable._stylesheet.firstChild);
         
-        // TODO : widths ratios should be computed and columns restored accordingly.
+        var tableWidth = this.getWidth()/100;
         var cells = $(this).down('tr').childElements();
 	for (i = 0; i < cells.length; i++) {
             var cell = cells[i];
-            SOGoResizableTable._resize(this, $(cell), i, null, cell.getWidth());
+            var ratio = this.ratios.get(cell.id);
+            SOGoResizableTable._resize(this, $(cell), i, null, ratio*tableWidth);
+        }
+    },
+
+    restore: function(relativeWidths) {
+        var tableWidth = this.getWidth()/100;
+        var cells = $(this).down('tr').childElements();
+	for (i = 0; i < cells.length; i++) {
+            var cell = cells[i];
+            var ratio = relativeWidths.get(cell.id);
+            SOGoResizableTable._resize(this, $(cell), i, null, ratio*tableWidth);
+        }
+        this.ratios = relativeWidths;
+    },
+
+    saveColumnsState: function() {
+        this.ratios = new Hash();
+        var tableWidth = 100/this.getWidth();
+        var cells = $(this).down('tr').childElements();
+	for (i = 0; i < cells.length; i++) {
+            var cell = cells[i];
+            if (cell.hasClassName('resizable'))
+                this.ratios.set(cell.id, Math.round(cell.getWidth()*tableWidth));
+        }
+        if (!$(document.body).hasClassName("popup")) {
+            var url =  ApplicationBaseURL + "saveColumnsState";
+            var data = this.ratios;
+            var columns = data.keys();
+            var params = "columns=" + columns.join(",")
+            + "&widths=" + columns.collect(function(c) { return data.get(c); }).join(",");
+            triggerAjaxRequest(url,
+                               this.saveColumnsStateCallback,
+                               null,
+                               params,
+                               { "Content-type": "application/x-www-form-urlencoded" });
+        }
+    },
+
+    saveColumnsStateCallback: function(http) {
+        if (isHttpStatus204(http.status)) {
+            log ("ResizableTable.saveColumnsStateCallback() Columns state saved");
+        }
+        else if (http.readyState == 4) {
+            log ("ResizableTable.saveColumnsStateCallback() Can't save columns state");
         }
     }
+
 };
 
 SOGoResizableTable = {
@@ -89,6 +135,8 @@ SOGoResizableTable = {
             var w = nextResizableCell.getWidth() - delta;
             SOGoResizableTable._resize(table, nextResizableCell, i, null, w, true);
         }
+        
+        table.saveColumnsState();
     },
 
     _resize: function(table, cell, index, nextResizableCell, w, isAdjustment) {

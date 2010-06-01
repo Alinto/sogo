@@ -65,14 +65,23 @@
 
 @implementation UIxMailMainFrame
 
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      folderType = 0;
+    }
+
+  return self;
+}
+
 - (void) _setupContext
 {
   SOGoUser *activeUser;
-  NSString *login, *module;
+  NSString *module;
   SOGoMailAccounts *clientObject;
 
   activeUser = [context activeUser];
-  login = [activeUser login];
   clientObject = [self clientObject];
 
   module = [clientObject nameInContainer];
@@ -386,6 +395,42 @@
   return [self responseWithStatus: 204];
 }
 
+- (NSString *) columnsState
+{
+   NSDictionary *columns;
+
+   [self _setupContext];
+   columns = [moduleSettings objectForKey: @"ColumnsState"];
+   
+   return [columns jsonRepresentation];
+}
+
+- (WOResponse *) saveColumnsStateAction
+{
+  WORequest *request;
+  NSDictionary *columns;
+  NSArray *columnsIds, *widths;
+  
+  [self _setupContext];
+  request = [context request];
+
+  columnsIds = [[request formValueForKey: @"columns"] componentsSeparatedByString: @","];
+  widths = [[request formValueForKey: @"widths"] componentsSeparatedByString: @","];
+  if (columnsIds != nil && widths != nil && [columnsIds count] == [widths count])
+    {
+      columns = [NSDictionary dictionaryWithObjects: widths
+					    forKeys: columnsIds];
+      [moduleSettings setObject: columns
+			 forKey: @"ColumnsState"];
+    }
+  else
+    return [self responseWithStatus: 400];
+  
+  [us synchronize];
+  
+  return [self responseWithStatus: 204];
+}
+
 - (id) defaultAction
 {
   SOGoUserDefaults *ud;
@@ -400,20 +445,6 @@
   return [super defaultAction];
 }
 
-/**
- *
- * methods from UIxMailListView
- */
-
-- (id) init
-{
-  if ((self = [super init]))
-    {
-      folderType = 0;
-    }
-
-  return self;
-}
 - (BOOL) showToAddress 
 {
   SOGoMailFolder *co;

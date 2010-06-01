@@ -236,11 +236,11 @@ TABLE.messageList
 
 TABLE.messageList TH,
 TABLE.messageList TD
-{ height: 20px;
+{ height: 24px;
   min-height: 20px;
   text-overflow: ellipsis;
   overflow: hidden;
-  padding: 2px 3px;
+  padding: 0px 3px;
   min-width: 22px;
   margin: 0;
   white-space: nowrap; }

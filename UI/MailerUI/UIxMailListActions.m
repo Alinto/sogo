@@ -321,12 +321,12 @@
   return keys;
 }
 
-- (NSString *) defaultSortKey 
+- (NSString *) defaultSortKey
 {
   return @"ARRIVAL";
 }
 
-- (NSString *) imap4SortKey 
+- (NSString *) imap4SortKey
 {
   NSString *sort;
   
@@ -341,11 +341,37 @@
 - (NSString *) imap4SortOrdering 
 {
   NSString *sort, *ascending;
+  NSString *module; //*login
+  NSMutableDictionary *moduleSettings;
+  BOOL asc;
+  SOGoUser *activeUser;
+  SOGoUserSettings *us;
+  SOGoMailAccounts *clientObject;
 
   sort = [self imap4SortKey];
-
   ascending = [[context request] formValueForKey: @"asc"];
-  if (![ascending boolValue])
+  asc = [ascending boolValue];
+
+  if (![sort isEqualToString: [self defaultSortKey]])
+      {
+	// Save the sorting state in the user settings
+	activeUser = [context activeUser];
+	clientObject = [self clientObject];
+	module = [[[clientObject container] container] nameInContainer];
+	us = [activeUser userSettings];
+	moduleSettings = [us objectForKey: module];
+	if (!moduleSettings)
+	  {
+	    moduleSettings = [NSMutableDictionary dictionary];
+	    [us setObject: moduleSettings forKey: module];
+	  }
+	[moduleSettings setObject: [NSArray arrayWithObjects: [sort lowercaseString], [NSString stringWithFormat: @"%d", (asc?1:0)], nil]
+			   forKey: @"SortingState"];
+	[us synchronize];
+      }
+
+  // Construct and return the final IMAP ordering constraint
+  if (!asc)
     sort = [@"REVERSE " stringByAppendingString: sort];
 
   return sort;
