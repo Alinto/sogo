@@ -1,5 +1,9 @@
 2010-06-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUserManager.m
+	(-contactInfosForUserWithUIDorEmail:): return a fixed dictionary
+	of information for uid = "anonymous".
+
 	* Tests/Integration/test-*.py: take the API changes in
 	webdavlib.py into accounts with regards to XPath queries.
 

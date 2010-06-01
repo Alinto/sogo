@@ -593,17 +593,39 @@
                  forLogin: key];
 }
 
+- (NSMutableDictionary *) _contactInfosForAnonymous
+{
+  static NSMutableDictionary *user = nil;
+
+  if (!user)
+    {
+      user = [[NSMutableDictionary alloc] initWithCapacity: 7];
+      [user setObject: [NSArray arrayWithObject: @"anonymous"]
+               forKey: @"emails"];
+      [user setObject: @"Public User" forKey: @"cn"];
+      [user setObject: @"anonymous" forKey: @"c_uid"];
+      [user setObject: @"" forKey: @"c_domain"];
+      [user setObject: [NSNumber numberWithBool: YES]
+               forKey: @"CalendarAccess"];
+      [user setObject: [NSNumber numberWithBool: NO]
+	       forKey: @"MailAccess"];
+    }
+
+  return user;
+}
+
 - (NSDictionary *) contactInfosForUserWithUIDorEmail: (NSString *) uid
 {
-  NSMutableDictionary *currentUser, *contactInfos;
+  NSMutableDictionary *currentUser;
   NSString *aUID, *jsonUser;
   BOOL newUser;
 
-  if ([uid length] > 0)
+  if ([uid isEqualToString: @"anonymous"])
+    currentUser = [self _contactInfosForAnonymous];
+  else if ([uid length] > 0)
     {
       // Remove the "@" prefix used to identified groups in the ACL tables.
       aUID = [uid hasPrefix: @"@"] ? [uid substringFromIndex: 1] : uid;
-      contactInfos = [NSMutableDictionary dictionary];
       jsonUser = [[SOGoCache sharedCache] userAttributesForLogin: aUID];
       currentUser = [NSMutableDictionary dictionaryWithJSONString: jsonUser];
       if (!([currentUser objectForKey: @"emails"]
