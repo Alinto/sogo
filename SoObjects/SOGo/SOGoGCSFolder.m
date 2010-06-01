@@ -550,24 +550,63 @@ static NSArray *childRecordFields = nil;
     [self _subscriberRenameTo: newName];
 }
 
-- (NSArray *) fetchContentObjectNames
+- (NSString *) aclSQLListingFilter
+{
+  NSString *filter, *login;
+  NSArray *roles;
+
+  login = [[context activeUser] login];
+  if (activeUserIsOwner
+      || [[self ownerInContext: nil] isEqualToString: login])
+    filter = @"";
+  else
+    {
+      roles = [self aclsForUser: login];
+      if ([roles containsObject: SOGoRole_ObjectViewer]
+          || [roles containsObject: SOGoRole_ObjectEditor])
+        filter = @"";
+      else
+        filter = nil;
+    }
+
+  /* An empty string indicates that the filter is empty while a return value
+     of nil indicates that the query should not even be performed. */
+
+  return filter;
+}
+
+- (NSArray *) toOneRelationshipKeys
 {
   NSArray *records, *names;
-  
-  records = [[self ocsFolder] fetchFields: childRecordFields
-			      matchingQualifier:nil];
-  if (![records isNotNull])
-    {
-      [self errorWithFormat: @"(%s): fetch failed!", __PRETTY_FUNCTION__];
-      return nil;
-    }
-  if ([records isKindOfClass: [NSException class]])
-    return records;
+  NSString *sqlFilter;
+  EOQualifier *qualifier;
 
-  [childRecords release];
-  names = [records objectsForKey: @"c_name" notFoundMarker: nil];
-  childRecords = [[NSMutableDictionary alloc] initWithObjects: records
-					      forKeys: names];
+  sqlFilter = [self aclSQLListingFilter];
+  if (sqlFilter)
+    {
+      if ([sqlFilter length] > 0)
+        qualifier = [EOQualifier qualifierWithQualifierFormat: sqlFilter];
+      else
+        qualifier = nil;
+
+      records = [[self ocsFolder] fetchFields: childRecordFields
+                            matchingQualifier: qualifier];
+      if (![records isNotNull])
+        {
+          [self errorWithFormat: @"(%s): fetch failed!", __PRETTY_FUNCTION__];
+          return nil;
+        }
+      if ([records isKindOfClass: [NSException class]])
+        return records;
+
+      names = [records objectsForKey: @"c_name" notFoundMarker: nil];
+
+      [childRecords release];
+      childRecords = [[NSMutableDictionary alloc] initWithObjects: records
+                                                          forKeys: names];
+    }
+  else
+    names = [NSArray array];
 
   return names;
 }
@@ -1472,6 +1511,9 @@ static NSArray *childRecordFields = nil;
            forObjectAtPath: objectPathArray];
 
   newRoles = [NSMutableArray arrayWithArray: roles];
+  [newRoles removeObject: SoRole_Authenticated];
+  [newRoles removeObject: SoRole_Anonymous];
+  [newRoles removeObject: SOGoRole_PublicUser];
   [newRoles removeObject: SOGoRole_AuthorizedSubscriber];
   [newRoles removeObject: SOGoRole_None];
   objectPath = [objectPathArray componentsJoinedByString: @"/"];

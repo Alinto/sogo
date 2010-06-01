@@ -1,5 +1,23 @@
 2010-06-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-_privacySqlString): renamed to the new standardized
+	"aclSQLListingFilter". Again, a difference is now made between
+	empty and nil return strings, which we now apply here too.
+	(-bareFetchFields:from:to:title:component:additionalFilters:, 
+	(-fetchFields:from:to:title:component:additionalFilters:includeProtectedInformation:):
+	make use of the new semantics to the above method.
+
+	* SoObjects/SOGo/SOGoGCSFolder.m (-aclSQLListingFilter): new
+	overridable method designed to return a filter to SQL queries that
+	avoids requesting records that are not meant to be visible to the
+	active user. Replaces and extends -[SOGoAppointmentFolder
+	_privacySqlString] with the additional convention that returning a
+	nil string will prevent any query at all.
+	(-toOneRelationshipKeys): new overriden method (see below). Make
+	use of the new aclSQLListingFilter method to retrieve records so
+	that unaccessible records are not even listed.
+
 	* SoObjects/SOGo/SOGoFolder.m (-fetchContentObjectNames): removed
 	this useless alias to "toOneRelationshipKeys".
 
