@@ -37,7 +37,7 @@
 - (BOOL) handledByDefaultHandler
 {
 #warning this should be changed someday
-  return ![self isSoWebDAVRequest];
+  return ![[request requestHandlerKey] isEqualToString:@"dav"];
 }
 
 - (NSArray *) _propertiesOfElement: (id <DOMElement>) startElement

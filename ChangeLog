@@ -1,5 +1,9 @@
 2010-06-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/WORequest+SOGo.m (-handledByDefaultHandler): test
+	the request handler key instead of invoking isSoWebDAVRequest,
+	which performs additional and permission tests.
+
 	* Tests/Integration/test-davacl.py
 	(DAVCalendarAclTest._testRights): reenabled test code even when no
 	classification rights are available.
