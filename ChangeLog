@@ -1,5 +1,9 @@
 2010-06-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Tests/Integration/all.py: disable multilanguage tests by
+	default, reverting the "disbale-languages" cmd-line parameter to
+	"enable-languages".
+
 	* Tests/Integration/webdavlib.py (WebDAVClient.__init__): made
 	"username" and "password" parameters optional to enable anonymous
 	connections. Also, M2Crypto.httpslib is imported explicitly only

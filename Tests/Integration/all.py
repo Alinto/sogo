@@ -12,11 +12,11 @@ if __name__ == "__main__":
                  "Russian", "Spanish", "Swedish", "Welsh"]
 
     # We can disable testing all languages
-    testLanguages = True
-    opts, args = getopt.getopt (sys.argv[1:], [], ["disable-languages"])
+    testLanguages = False
+    opts, args = getopt.getopt (sys.argv[1:], [], ["enable-languages"])
     for o, a in opts:
-        if o == "--disable-languages":
-            testLanguages = False
+        if o == "--enable-languages":
+            testLanguages = True
 
 
     for mod in os.listdir("."):
