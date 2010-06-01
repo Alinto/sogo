@@ -1,5 +1,8 @@
 2010-06-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoSystemDefaults.m (-enablePublicAccess): new
+	accessor for the SOGoEnablePublicAccess boolean user default.
+
 	* SoObjects/SOGo/SOGoUserManager.m
 	(-contactInfosForUserWithUIDorEmail:): return a fixed dictionary
 	of information for uid = "anonymous".
