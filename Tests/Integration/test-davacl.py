@@ -258,13 +258,13 @@ class DAVCalendarAclTest(DAVAclTest):
         privileges = self._currentUserPrivilegeSet(self.resource, expStatus)
         self._comparePrivilegeSets(expectedPrivileges, privileges)
 
-    def _testEventDAVAcl(self, event_class, right):
+    def _testEventDAVAcl(self, event_class, right, error_code):
         icsClass = self.classToICSClass[event_class].lower()
         for suffix in [ "event", "task" ]:
             url = "%s%s-%s.ics" % (self.resource, icsClass, suffix)
 
             if right is None:
-                expStatus = 403
+                expStatus = error_code
                 expectedPrivileges = None
             else:
                 expStatus = 207
@@ -284,19 +284,16 @@ class DAVCalendarAclTest(DAVAclTest):
                             expectedPrivileges.extend(extraPrivileges)
 
             privileges = self._currentUserPrivilegeSet(url, expStatus)
-            if expStatus < 300:
+            if expStatus != error_code:
                 self._comparePrivilegeSets(expectedPrivileges, privileges)
 
     def _testRights(self, rights):
         self.acl_utility.setupRights(subscriber_username, rights)
         self._testCreate(rights)
         self._testCollectionDAVAcl(rights)
-        if rights.has_key("pu") \
-           or rights.has_key("pr") \
-           or rights.has_key("co"):
-            self._testEventRight("pu", rights)
-            self._testEventRight("pr", rights)
-            self._testEventRight("co", rights)
+        self._testEventRight("pu", rights)
+        self._testEventRight("pr", rights)
+        self._testEventRight("co", rights)
         self._testDelete(rights)
 
     def _testCreate(self, rights):
@@ -338,9 +335,13 @@ class DAVCalendarAclTest(DAVAclTest):
         event = self._webdavSyncEvent(event_class)
         self._checkViewEventRight("webdav-sync", event, event_class, right)
 
-        self._testModify(event_class, right)
-        self._testRespondTo(event_class, right)
-        self._testEventDAVAcl(event_class, right)
+        if len(rights) > 0:
+            error_code = 403
+        else:
+            error_code = 404
+        self._testModify(event_class, right, error_code)
+        self._testRespondTo(event_class, right, error_code)
+        self._testEventDAVAcl(event_class, right, error_code)
 
     def _getEvent(self, event_class, is_invitation = False):
         icsClass = self.classToICSClass[event_class]
@@ -376,6 +377,8 @@ class DAVCalendarAclTest(DAVAclTest):
                                    response_tag = "{DAV:}response"):
         event = None
 
+        # print "\n\n\n%s\n\n" % query.response["body"]
+        # print "\n\n"
         response_nodes = query.response["document"].findall("%s" % response_tag)
         for response_node in response_nodes:
             href_node = response_node.find("{DAV:}href")
@@ -490,17 +493,17 @@ class DAVCalendarAclTest(DAVAclTest):
                             "expected key '%s' not found in secure event"
                             % key)
 
-    def _testModify(self, event_class, right):
+    def _testModify(self, event_class, right, error_code):
         if right == "m" or right == "r":
             exp_code = 204
         else:
-            exp_code = 403
+            exp_code = error_code
         icsClass = self.classToICSClass[event_class]
         filename = "%s-event.ics" % icsClass.lower()
         self._putEvent(self.subscriber_client, filename, icsClass,
                        exp_code)
 
-    def _testRespondTo(self, event_class, right):
+    def _testRespondTo(self, event_class, right, error_code):
         icsClass = self.classToICSClass[event_class]
         filename = "invitation-%s-event.ics" % icsClass.lower()
         self._putEvent(self.client, filename, icsClass,
@@ -511,7 +514,7 @@ class DAVCalendarAclTest(DAVAclTest):
         if right == "m" or right == "r":
             exp_code = 204
         else:
-            exp_code = 403
+            exp_code = error_code
 
         # here we only do 'passive' validation: if a user has a "respond to"
         # right, only the attendee entry will me modified. The change of
@@ -679,28 +682,23 @@ END:VCARD""" }
 
     def testCreateDelete(self):
         """'create', 'delete'"""
-        self._testRights({ "c": True,
-                           "d": True })
+        self._testRights({ "c": True, "d": True })
 
     def testViewCreate(self):
         """'view' and 'create'"""
-        self._testRights({ "c": True,
-                           "v": True })
+        self._testRights({ "c": True, "v": True })
 
     def testViewDelete(self):
         """'view' and 'delete'"""
-        self._testRights({ "d": True,
-                           "v": True })
+        self._testRights({ "d": True, "v": True })
 
     def testEditCreate(self):
         """'edit' and 'create'"""
-        self._testRights({ "c": True,
-                           "e": True })
+        self._testRights({ "c": True, "e": True })
 
     def testEditDelete(self):
         """'edit' and 'delete'"""
-        self._testRights({ "d": True,
-                           "e": True })
+        self._testRights({ "d": True, "e": True })
 
     def _testRights(self, rights):
         self.acl_utility.setupRights(subscriber_username, rights)

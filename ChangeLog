@@ -1,5 +1,9 @@
 2010-06-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Tests/Integration/test-davacl.py
+	(DAVCalendarAclTest._testRights): reenabled test code even when no
+	classification rights are available.
+
 	* SoObjects/SOGo/SOGoSystemDefaults.m (-enablePublicAccess): new
 	accessor for the SOGoEnablePublicAccess boolean user default.
 
