@@ -233,8 +233,8 @@ static memcached_st *handle = NULL;
                              expiration, 0);
       if (error != MEMCACHED_SUCCESS)
         [self logWithFormat:
-                @"memcached error: unable to cache values for key '%@'",
-              key];
+                @"an error occurred when caching value for key '%@':"
+              @" \"%s\"", key, memcached_strerror(handle, error)];
       //else
       //[self logWithFormat: @"memcached: cached values (%s) with subtype %@
       //for user %@", value, theType, theLogin];
