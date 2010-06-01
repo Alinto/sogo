@@ -13,29 +13,9 @@ import vobject
 import vobject.base
 import vobject.icalendar
 import webdavlib
+import utilities
 import StringIO
-
-def fetchUserInfo(login):
-    client = webdavlib.WebDAVClient(hostname, port, username, password)
-    resource = "/SOGo/dav/%s/" % login
-    propfind = webdavlib.WebDAVPROPFIND(resource,
-                                        ["displayname",
-                                         "{urn:ietf:params:xml:ns:caldav}calendar-user-address-set"],
-                                        0)
-    propfind.xpath_namespace = { "D": "DAV:",
-                                 "C": "urn:ietf:params:xml:ns:caldav" }
-    client.execute(propfind)
-    assert(propfind.response["status"] == 207)
-    name_nodes = propfind.xpath_evaluate('/D:multistatus/D:response/D:propstat/D:prop/D:displayname',
-                                          None)
-    email_nodes = propfind.xpath_evaluate('/D:multistatus/D:response/D:propstat/D:prop/C:calendar-user-address-set/D:href',
-                                          None)
-    if len(name_nodes[0].childNodes) > 0:
-        displayName = name_nodes[0].childNodes[0].nodeValue
-    else:
-        displayName = ""
-
-    return (displayName, email_nodes[0].childNodes[0].nodeValue)
+import xml.etree.ElementTree
 
 class CalDAVPropertiesTest(unittest.TestCase):
     def setUp(self):
@@ -58,34 +38,29 @@ class CalDAVPropertiesTest(unittest.TestCase):
                                             ["{urn:ietf:params:xml:ns:caldav}schedule-calendar-transp"],
                                             0)
         self.client.execute(propfind)
-        propfind.xpath_namespace = { "D": "DAV:",
-                                     "C": "urn:ietf:params:xml:ns:caldav" }
-        propstats = propfind.xpath_evaluate('/D:multistatus/D:response/D:propstat/D:prop/C:schedule-calendar-transp')
-        self.assertTrue(len(propstats) > 0,
-                        "schedule-calendar-transp not present in response")
-        node = propstats[0]
-        status = propfind.xpath_evaluate('D:status',
-                                         node.parentNode.parentNode)[0] \
-                                         .childNodes[0].nodeValue[9:12]
+        response = propfind.response["document"].find('{DAV:}response')
+        propstat = response.find('{DAV:}propstat')
+        status = propstat.find('{DAV:}status').text[9:12]
+
         self.assertEquals(status, "200",
                           "schedule-calendar-transp marked as 'Not Found' in response")
-        values = node.childNodes
-        nvalues = len(values)
-        self.assertEquals(nvalues, 1,
-                          "expected 1 value (%d received)" % nvalues)
+        transp = propstat.find('{DAV:}prop/{urn:ietf:params:xml:ns:caldav}schedule-calendar-transp')
+        values = transp.getchildren()
+        self.assertEquals(len(values), 1, "one and only one element expected")
         value = values[0]
-        self.assertEquals(value.__class__.__name__, "Element",
+        self.assertTrue(isinstance(value, xml.etree.ElementTree._ElementInterface),
                           "schedule-calendar-transp must be an instance of" \
                               " %s, not %s"
-                          % ("Element", value.__class__.__name__))
-        self.assertEquals(value.namespaceURI, "urn:ietf:params:xml:ns:caldav",
-                          "schedule-calendar-transp must have a value in"\
-                              " namespace '%s', not '%s'"
-                          % ("urn:ietf:params:xml:ns:caldav",
-                             value.namespaceURI))
-        self.assertTrue(value.tagName == "opaque",
+                          % ("_ElementInterface", transp.__class__.__name__))
+        ns = value.tag[0:31]
+        tag = value.tag[31:]
+        self.assertTrue(ns == "{urn:ietf:params:xml:ns:caldav}",
+                        "schedule-calendar-transp must have a value in"\
+                        " namespace '%s', not '%s'"
+                        % ("urn:ietf:params:xml:ns:caldav", ns))
+        self.assertTrue(tag == "opaque",
                         "schedule-calendar-transp must be 'opaque' on new" \
-                            " collections, not '%s'" % value.tagName)
+                        " collections, not '%s'" % tag)
 
         ## PROPPATCH
         newValueNode = "{urn:ietf:params:xml:ns:caldav}thisvaluedoesnotexist"
@@ -123,9 +98,10 @@ class CalDAVITIPDelegationTest(unittest.TestCase):
     def setUp(self):
         self.client = webdavlib.WebDAVClient(hostname, port,
                                              username, password)
-        (self.user_name, self.user_email) = fetchUserInfo(username)
-        (self.attendee1_name, self.attendee1_email) = fetchUserInfo(attendee1)
-        (self.attendee1_delegate_name, self.attendee1_delegate_email) = fetchUserInfo(attendee1_delegate)
+        utility = utilities.TestUtility(self, self.client)
+        (self.user_name, self.user_email) = utility.fetchUserInfo(username)
+        (self.attendee1_name, self.attendee1_email) = utility.fetchUserInfo(attendee1)
+        (self.attendee1_delegate_name, self.attendee1_delegate_email) = utility.fetchUserInfo(attendee1_delegate)
 
         self.user_calendar = "/SOGo/dav/%s/Calendar/personal/" % username
         self.attendee1_calendar = "/SOGo/dav/%s/Calendar/personal/" % attendee1

@@ -1,5 +1,8 @@
 2010-06-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Tests/Integration/test-*.py: take the API changes in
+	webdavlib.py into accounts with regards to XPath queries.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	(-_privacySqlString): renamed to the new standardized
 	"aclSQLListingFilter". Again, a difference is now made between

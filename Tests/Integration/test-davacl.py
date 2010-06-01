@@ -102,7 +102,8 @@ class DAVCalendarAclTest(DAVAclTest):
 
     def __init__(self, arg):
         DAVAclTest.__init__(self, arg)
-        self.acl_utility = utilities.TestCalendarACLUtility(self.client,
+        self.acl_utility = utilities.TestCalendarACLUtility(self,
+                                                            self.client,
                                                             self.resource)
 
     def setUp(self):
@@ -195,31 +196,21 @@ class DAVCalendarAclTest(DAVAclTest):
                           " (received '%d')"
                           % (filename, exp_status, delete.response["status"]))
 
-    def _currentUserPrivilegeSet(self, resource, expectFailure = False):
+    def _currentUserPrivilegeSet(self, resource, expStatus = 207):
         propfind = webdavlib.WebDAVPROPFIND(resource,
                                             ["{DAV:}current-user-privilege-set"],
                                             0)
         self.subscriber_client.execute(propfind)
-        if expectFailure:
-            expStatus = 403
-        else:
-            expStatus = 207
         self.assertEquals(propfind.response["status"], expStatus,
                           "unexected status code when reading privileges:"
                           + " %s instead of %d"
                           % (propfind.response["status"], expStatus))
 
         privileges = []
-        if not expectFailure:
-            propfind.xpath_namespace = { "D": "DAV:" }
-            response_nodes = propfind.xpath_evaluate("/D:multistatus/D:response/D:propstat/D:prop/D:current-user-privilege-set/D:privilege")
+        if expStatus < 300:
+            response_nodes = propfind.response["document"].findall("{DAV:}response/{DAV:}propstat/{DAV:}prop/{DAV:}current-user-privilege-set/{DAV:}privilege")
             for node in response_nodes:
-                privilegeNode = node.childNodes[0]
-                tagName = privilegeNode.tagName
-                indexColon = tagName.find(":")
-                if indexColon > -1:
-                    tagName = tagName[indexColon+1:]
-                    privileges.append("{%s}%s" % (privilegeNode.namespaceURI, tagName))
+                privileges.extend([x.tag for x in node.getchildren()])
 
         return privileges
 
@@ -259,10 +250,12 @@ class DAVCalendarAclTest(DAVAclTest):
                                '{urn:ietf:params:xml:ns:caldav}schedule-respond-vtodo']
             expectedPrivileges.extend(extraPrivileges)
         if rights.has_key("d"):
-            extraPrivileges = ["{DAV:}unbind"]
-            expectedPrivileges.extend(extraPrivileges)
-        privileges = self._currentUserPrivilegeSet(self.resource,
-                                                   len(expectedPrivileges) == 0)
+            expectedPrivileges.append("{DAV:}unbind")
+        if len(expectedPrivileges) == 0:
+            expStatus = 404
+        else:
+            expStatus = 207
+        privileges = self._currentUserPrivilegeSet(self.resource, expStatus)
         self._comparePrivilegeSets(expectedPrivileges, privileges)
 
     def _testEventDAVAcl(self, event_class, right):
@@ -271,10 +264,10 @@ class DAVCalendarAclTest(DAVAclTest):
             url = "%s%s-%s.ics" % (self.resource, icsClass, suffix)
 
             if right is None:
-                expectFailure = True
+                expStatus = 403
                 expectedPrivileges = None
             else:
-                expectFailure = False
+                expStatus = 207
                 expectedPrivileges = ['{DAV:}read-current-user-privilege-set',
                                       '{urn:inverse:params:xml:ns:inverse-dav}view-date-and-time',
                                       '{DAV:}read']
@@ -290,22 +283,27 @@ class DAVCalendarAclTest(DAVAclTest):
                                                '{DAV:}write']
                             expectedPrivileges.extend(extraPrivileges)
 
-            privileges = self._currentUserPrivilegeSet(url, expectFailure)
-            if not expectFailure:
+            privileges = self._currentUserPrivilegeSet(url, expStatus)
+            if expStatus < 300:
                 self._comparePrivilegeSets(expectedPrivileges, privileges)
 
     def _testRights(self, rights):
         self.acl_utility.setupRights(subscriber_username, rights)
         self._testCreate(rights)
         self._testCollectionDAVAcl(rights)
-        self._testEventRight("pu", rights)
-        self._testEventRight("pr", rights)
-        self._testEventRight("co", rights)
+        if rights.has_key("pu") \
+           or rights.has_key("pr") \
+           or rights.has_key("co"):
+            self._testEventRight("pu", rights)
+            self._testEventRight("pr", rights)
+            self._testEventRight("co", rights)
         self._testDelete(rights)
 
     def _testCreate(self, rights):
         if rights.has_key("c") and rights["c"]:
             exp_code = 201
+        elif len(rights) == 0:
+            exp_code = 404
         else:
             exp_code = 403
         self._putEvent(self.subscriber_client, "creation-test.ics", "PUBLIC",
@@ -314,6 +312,8 @@ class DAVCalendarAclTest(DAVAclTest):
     def _testDelete(self, rights):
         if rights.has_key("d") and rights["d"]:
             exp_code = 204
+        elif len(rights) == 0:
+            exp_code = 404
         else:
             exp_code = 403
         self._deleteEvent(self.subscriber_client, "public-event.ics",
@@ -373,32 +373,25 @@ class DAVCalendarAclTest(DAVAclTest):
         return task
 
     def _calendarDataInMultistatus(self, query, filename,
-                                   response_tag = "D:response"):
+                                   response_tag = "{DAV:}response"):
         event = None
 
-        query.xpath_namespace = { "D": "DAV:",
-                                  "C": "urn:ietf:params:xml:ns:caldav" }
-        response_nodes = query.xpath_evaluate("/D:multistatus/%s" % response_tag)
+        response_nodes = query.response["document"].findall("%s" % response_tag)
         for response_node in response_nodes:
-            href_node = query.xpath_evaluate("D:href", response_node)[0]
-            href = href_node.childNodes[0].nodeValue
+            href_node = response_node.find("{DAV:}href")
+            href = href_node.text
             if href.endswith(filename):
-                propstat_nodes = query.xpath_evaluate("D:propstat", response_node)
-                for propstat_node in propstat_nodes:
-                    status_node = query.xpath_evaluate("D:status",
-                                                       propstat_node)[0]
-                    status = status_node.childNodes[0].nodeValue
-                    data_nodes = query.xpath_evaluate("D:prop/C:calendar-data",
-                                                      propstat_node)
+                propstat_node = response_node.find("{DAV:}propstat")
+                if propstat_node is not None:
+                    status_node = propstat_node.find("{DAV:}status")
+                    status = status_node.text
                     if status.endswith("200 OK"):
-                        if (len(data_nodes) > 0
-                            and len(data_nodes[0].childNodes) > 0):
-                            event = data_nodes[0].childNodes[0].nodeValue
-                    else:
-                        if not (status.endswith("404 Resource Not Found")
-                                or status.endswith("404 Not Found")):
-                            self.fail("%s: unexpected status code: '%s'"
-                                      % (filename, status))
+                        data_node = propstat_node.find("{DAV:}prop/{urn:ietf:params:xml:ns:caldav}calendar-data")
+                        event = data_node.text
+                    elif not (status.endswith("404 Resource Not Found")
+                              or status.endswith("404 Not Found")):
+                        self.fail("%s: unexpected status code: '%s'"
+                                  % (filename, status))
 
         return event
 
@@ -411,11 +404,11 @@ class DAVCalendarAclTest(DAVAclTest):
                                             ["{urn:ietf:params:xml:ns:caldav}calendar-data"],
                                             1)
         self.subscriber_client.execute(propfind)
-        if propfind.response["status"] != 403:
+        if propfind.response["status"] != 404:
             event = self._calendarDataInMultistatus(propfind, filename)
 
         return event
-
+    
     def _multigetEvent(self, event_class):
         event = None
 
@@ -425,7 +418,7 @@ class DAVCalendarAclTest(DAVAclTest):
                                                     ["{urn:ietf:params:xml:ns:caldav}calendar-data"],
                                                     [ url ])
         self.subscriber_client.execute(multiget)
-        if multiget.response["status"] != 403:
+        if multiget.response["status"] != 404:
             event = self._calendarDataInMultistatus(multiget, url)
 
         return event
@@ -438,9 +431,9 @@ class DAVCalendarAclTest(DAVAclTest):
         sync_query = webdavlib.WebDAVSyncQuery(self.resource, None,
                                                ["{urn:ietf:params:xml:ns:caldav}calendar-data"])
         self.subscriber_client.execute(sync_query)
-        if sync_query.response["status"] != 403:
+        if sync_query.response["status"] != 404:
             event = self._calendarDataInMultistatus(sync_query, url,
-                                                    "D:sync-response")
+                                                    "{DAV:}sync-response")
 
         return event
 
@@ -660,7 +653,8 @@ END:VCARD""" }
 
     def __init__(self, arg):
         DAVAclTest.__init__(self, arg)
-        self.acl_utility = utilities.TestAddressBookACLUtility(self.client,
+        self.acl_utility = utilities.TestAddressBookACLUtility(self,
+                                                               self.client,
                                                                self.resource)
 
     def setUp(self):
@@ -777,4 +771,3 @@ END:VCARD""" }
 
 if __name__ == "__main__":
     unittest.main()
-

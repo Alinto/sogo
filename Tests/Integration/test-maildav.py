@@ -17,10 +17,8 @@ def fetchUserEmail(login):
   propfind = webdavlib.WebDAVPROPFIND(resource,
                                       ["{urn:ietf:params:xml:ns:caldav}calendar-user-address-set"],
                                       0)
-  propfind.xpath_namespace = { "D": "DAV:",
-                               "C": "urn:ietf:params:xml:ns:caldav" }
   client.execute(propfind)
-  nodes = propfind.xpath_evaluate('/D:multistatus/D:response/D:propstat/D:prop/C:calendar-user-address-set/D:href',
+  nodes = propfind.xpath_evaluate('{DAV:}response/{DAV:}propstat/{DAV:}prop/C:calendar-user-address-set/{DAV:}href',
                                   None)
 
   return nodes[0].childNodes[0].nodeValue
@@ -225,7 +223,7 @@ class DAVMailCollectionTest():
       self.client.execute(propfind)
       key = property.replace("{urn:schemas:httpmail:}", "a:")
       key = key.replace("{urn:schemas:mailheader:}", "a:")
-      tmp = propfind.xpath_evaluate("/D:multistatus/D:response/D:propstat/D:prop")
+      tmp = propfind.xpath_evaluate("{DAV:}response/{DAV:}propstat/{DAV:}prop")
       prop = tmp[0].firstChild;
       result = None
 
@@ -319,11 +317,9 @@ class DAVMailCollectionTest():
     self.assertEquals(query.response["status"], 207,
                       "filter %s:\n\tunexpected status: %d"
                       % (filter[0], query.response["status"]))
-    query.xpath_namespace = { "D": "DAV:",
-                              "I": "urn:inverse:params:xml:ns:inverse-dav" }
-    response_nodes = query.xpath_evaluate("/D:multistatus/D:response")
+    response_nodes = query.xpath_evaluate("{DAV:}response")
     for response_node in response_nodes:
-      href_node = query.xpath_evaluate("D:href", response_node)[0]
+      href_node = query.xpath_evaluate("{DAV:}href", response_node)[0]
       href = href_node.childNodes[0].nodeValue
       received_count = received_count + 1
       self.assertTrue(expected_hrefs.has_key(href),
@@ -345,12 +341,10 @@ class DAVMailCollectionTest():
     self.assertEquals(query.response["status"], 207,
                       "sortOrder %s:\n\tunexpected status: %d"
                       % (sortOrder[0], query.response["status"]))
-    query.xpath_namespace = { "D": "DAV:",
-                              "I": "urn:inverse:params:xml:ns:inverse-dav" }
-    response_nodes = query.xpath_evaluate("/D:multistatus/D:response")
+    response_nodes = query.response["document"].findall("{DAV:}response")
     for response_node in response_nodes:
-      href_node = query.xpath_evaluate("D:href", response_node)[0]
-      href = href_node.childNodes[0].nodeValue
+      href_node = response_node.find("{DAV:}href")
+      href = href_node.text
       self.assertEquals(expected_hrefs[received_count], href,
                         "sortOrder %s:\n\tunexpected href: %s (expecting: %s)"
                         % (sortOrder[0], href,
