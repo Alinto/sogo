@@ -1,5 +1,9 @@
 2010-06-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactFolders.m (-appendSystemSources):
+	we now add public sources to the list of folders if and only if
+	the active user is the owner of the current parent folder.
+
 	* SoObjects/SOGo/SOGoWebAuthenticator.m (-userInContext): if the
 	returned user has the login "anonymous", we return a corresponding
 	instance of SOGoUser to make sure methods are never invoked on

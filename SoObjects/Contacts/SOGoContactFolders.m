@@ -58,18 +58,25 @@
   NSEnumerator *sourceIDs;
   NSString *currentSourceID, *srcDisplayName, *domain;
   SOGoContactSourceFolder *currentFolder;
+  SOGoUser *currentUser;
 
-  domain = [[context activeUser] domain];
-  um = [SOGoUserManager sharedUserManager];
-  sourceIDs = [[um addressBookSourceIDsInDomain: domain] objectEnumerator];
-  while ((currentSourceID = [sourceIDs nextObject]))
+  currentUser = [context activeUser];
+  if (activeUserIsOwner
+      || [[currentUser login]
+           isEqualToString: [self ownerInContext: context]])
     {
-      srcDisplayName = [um displayNameForSourceWithID: currentSourceID];
-      currentFolder = [SOGoContactSourceFolder folderWithName: currentSourceID
-					       andDisplayName: srcDisplayName
-					       inContainer: self];
-      [currentFolder setSource: [um sourceWithID: currentSourceID]];
-      [subFolders setObject: currentFolder forKey: currentSourceID];
+      domain = [currentUser domain];
+      um = [SOGoUserManager sharedUserManager];
+      sourceIDs = [[um addressBookSourceIDsInDomain: domain] objectEnumerator];
+      while ((currentSourceID = [sourceIDs nextObject]))
+        {
+          srcDisplayName = [um displayNameForSourceWithID: currentSourceID];
+          currentFolder = [SOGoContactSourceFolder folderWithName: currentSourceID
+                                                   andDisplayName: srcDisplayName
+                                                      inContainer: self];
+          [currentFolder setSource: [um sourceWithID: currentSourceID]];
+          [subFolders setObject: currentFolder forKey: currentSourceID];
+        }
     }
 
   return nil;
