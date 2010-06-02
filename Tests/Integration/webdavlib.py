@@ -150,12 +150,23 @@ class HTTPQuery(HTTPSimpleQuery):
 class HTTPPUT(HTTPQuery):
     method = "PUT"
 
-    def __init__(self, url, content):
+    def __init__(self, url, content,
+                 content_type="application/octet-stream",
+                 exclusive=False):
         HTTPQuery.__init__(self, url)
         self.content = content
+        self.content_type = content_type
+        self.exclusive = exclusive
 
     def render(self):
         return self.content
+
+    def prepare_headers(self):
+        headers = HTTPQuery.prepare_headers(self)
+        if self.exclusive:
+            headers["if-none-match"] = "*"
+
+        return headers
 
 class HTTPPOST(HTTPPUT):
     method = "POST"
@@ -259,20 +270,6 @@ class WebDAVMOVE(WebDAVQuery):
         if self.host is not None:
             headers["Host"] = self.host
         return headers
-
-class WebDAVPUT(WebDAVQuery):
-    method = "PUT"
-
-    def __init__(self, url, content):
-        WebDAVQuery.__init__(self, url)
-        self.content_type = "text/plain; charset=utf-8"
-        self.content = content
-    
-    def prepare_headers(self):
-        return WebDAVQuery.prepare_headers(self)
-
-    def render(self):
-        return self.content
 
 class WebDAVPrincipalPropertySearch(WebDAVREPORT):
     def __init__(self, url, properties, matches):

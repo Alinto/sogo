@@ -1,5 +1,9 @@
 2010-06-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Tests/Integration/webdavlib.py (HTTPPUT.__init__): added the
+	"content_type" and "exclusive" optional parameters. The latter
+	implies the use of the "if-none-match" header.
+
 	* SoObjects/SOGo/WORequest+SOGo.m (-handledByDefaultHandler):
 	fixed a bug where the -requestHandlerKey method would be invoked
 	on the "request" (NGHttpRequest) ivar rather than on self.
