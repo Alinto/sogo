@@ -3,6 +3,7 @@
 	* Tests/Integration/webdavlib.py (HTTPPUT.__init__): added the
 	"content_type" and "exclusive" optional parameters. The latter
 	implies the use of the "if-none-match" header.
+	(WebDAVPUT): removed useless operation class
 
 	* SoObjects/SOGo/WORequest+SOGo.m (-handledByDefaultHandler):
 	fixed a bug where the -requestHandlerKey method would be invoked
