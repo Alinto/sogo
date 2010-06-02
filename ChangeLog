@@ -1,5 +1,9 @@
 2010-06-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Tests/Integration/utilities.py (TestACLUtility.setupRights): we
+	excape the value for the "user" attribute with
+	xml.sax.saxutils.escape.
+
 	* Tests/Integration/webdavlib.py (HTTPPUT.__init__): added the
 	"content_type" and "exclusive" optional parameters. The latter
 	implies the use of the "if-none-match" header.

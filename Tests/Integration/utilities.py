@@ -2,6 +2,7 @@
 
 import unittest
 import webdavlib
+import xml.sax.saxutils
 
 class TestUtility():
     def __init__(self, test, client, resource = None):
@@ -69,7 +70,7 @@ class TestACLUtility(TestUtility):
         aclQuery = ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
                     + "<acl-query"
                     + " xmlns=\"urn:inverse:params:xml:ns:inverse-dav\">"
-                    + "<set-roles user=\"%s\">%s</set-roles>" % (username,
+                    + "<set-roles user=\"%s\">%s</set-roles>" % (xml.sax.saxutils.escape(username),
                                                                  rights_str)
                     + "</acl-query>")
 
