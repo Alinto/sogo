@@ -1,5 +1,5 @@
 sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/Search-bar.png
-sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/abcard.gif
+sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/abcard.png
 sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/accepted.png
 sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/account-settings.png
 sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/add-addressbook.png
