@@ -1384,13 +1384,12 @@ static NSArray *childRecordFields = nil;
     [aclsForObject removeObjectForKey: uid];
 }
 
-- (NSArray *) aclsForUser: (NSString *) uid
-          forObjectAtPath: (NSArray *) objectPathArray
+- (NSArray *) _realAclsForUser: (NSString *) uid
+               forObjectAtPath: (NSArray *) objectPathArray
 {
   NSArray *acls;
-  NSString *objectPath, *module;
+  NSString *objectPath;
   NSDictionary *aclsForObject;
-  SOGoDomainDefaults *dd;
 
   objectPath = [objectPathArray componentsJoinedByString: @"/"];
   aclsForObject = [aclCache objectForKey: objectPath];
@@ -1401,13 +1400,26 @@ static NSArray *childRecordFields = nil;
   if (!acls)
     {
       acls = [self _fetchAclsForUser: uid forObjectAtPath: objectPath];
-      if (!acls)
+      if (!acls
+          || ([acls count] == 1 && [acls containsObject: SOGoRole_None]))
         acls = [NSArray array];
       [self _cacheRoles: acls forUser: uid forObjectAtPath: objectPath];
     }
 
-  if (!([acls count] || [uid isEqualToString: defaultUserID]))
-    acls = [self aclsForUser: defaultUserID forObjectAtPath: objectPathArray];
+  return acls;
+}
+
+- (NSArray *) aclsForUser: (NSString *) uid
+          forObjectAtPath: (NSArray *) objectPathArray
+{
+  NSArray *acls;
+  NSString *module;
+  SOGoDomainDefaults *dd;
+
+  acls = [self _realAclsForUser: uid forObjectAtPath: objectPathArray];
+  if (!([acls count] || [uid isEqualToString: @"anonymous"]))
+    acls = [self _realAclsForUser: defaultUserID
+                  forObjectAtPath: objectPathArray];
 
   // If we still don't have ACLs defined for this particular resource,
   // let's go get the domain defaults, if any.

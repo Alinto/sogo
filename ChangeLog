@@ -1,5 +1,11 @@
 2010-06-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoGCSFolder.m (-aclsForUser:forObjectAtPath:):
+	extracted db code into a new "_realAclsForUser:forObjectAtPath:"
+	private method. When the "None" special role is returned, we
+	remove it from the list. Finally, we don't allow fetching default
+	roles when the specified uid is "anonymous".
+
 	* SoObjects/Contacts/SOGoContactFolders.m (-appendSystemSources):
 	we now add public sources to the list of folders if and only if
 	the active user is the owner of the current parent folder.
