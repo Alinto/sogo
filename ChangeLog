@@ -1,5 +1,9 @@
 2010-06-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/WORequest+SOGo.m (-handledByDefaultHandler):
+	fixed a bug where the -requestHandlerKey method would be invoked
+	on the "request" (NGHttpRequest) ivar rather than on self.
+
 	* SoObjects/SOGo/SOGoUserFolder.m (_subFoldersFromFolder:):
 	thanks to the change below, the ACL checking code is no longer
 	needed here, where we can now concentrate on returning subfolders

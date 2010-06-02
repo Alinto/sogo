@@ -37,7 +37,7 @@
 - (BOOL) handledByDefaultHandler
 {
 #warning this should be changed someday
-  return ![[request requestHandlerKey] isEqualToString:@"dav"];
+  return ![[self requestHandlerKey] isEqualToString:@"dav"];
 }
 
 - (NSArray *) _propertiesOfElement: (id <DOMElement>) startElement
