@@ -68,6 +68,7 @@
   SOGoWebDAVAclManager *webdavAclManager;
   id container;
   BOOL activeUserIsOwner;
+  BOOL isInPublicZone;
 }
 
 + (NSString *) globallyUniqueObjectId;
@@ -78,6 +79,8 @@
 - (id) initWithName: (NSString *) _name inContainer:(id)_container;
 
 + (SOGoWebDAVAclManager *) webdavAclManager;
+
+- (BOOL) isInPublicZone;
 
 /* accessors */
 

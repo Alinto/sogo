@@ -100,8 +100,8 @@
       superclass = "SOGoContentObject";
       protectedBy = "Access Contents Information";
       defaultRoles = {
-	"Access Contents Information" = ( "Owner", "Authenticated" );
-        "WebDAV Access" = ( "Owner", "Authenticated" );
+	"Access Contents Information" = ( "Owner", "Authenticated", "PublicUser" );
+        "WebDAV Access" = ( "Owner", "Authenticated", "PublicUser" );
       };
     };
   };

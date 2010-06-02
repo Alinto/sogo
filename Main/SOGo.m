@@ -49,6 +49,7 @@
 #import <SOGo/SOGoCache.h>
 #import <SOGo/SOGoDAVAuthenticator.h>
 #import <SOGo/SOGoPermissions.h>
+#import <SOGo/SOGoPublicBaseFolder.h>
 #import <SOGo/SOGoProductLoader.h>
 #import <SOGo/SOGoProxyAuthenticator.h>
 #import <SOGo/SOGoUserFolder.h>
@@ -305,18 +306,21 @@ static BOOL debugLeaks;
   id obj;
   WORequest *request;
   BOOL isDAVRequest;
+  SOGoSystemDefaults *sd;
 
   /* put locale info into the context in case it's not there */
   [self _setupLocaleInContext:_ctx];
 
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
   request = [_ctx request];
-  isDAVRequest = [request isSoWebDAVRequest];
-  if (isDAVRequest
-      || [[SOGoSystemDefaults sharedSystemDefaults] isWebAccessEnabled])
+  isDAVRequest = [[request requestHandlerKey] isEqualToString:@"dav"];
+  if (isDAVRequest || [sd isWebAccessEnabled])
     {
       if (isDAVRequest)
         {
-          if ([[request method] isEqualToString: @"REPORT"])
+          if ([_key isEqualToString: @"public"] && [sd enablePublicAccess])
+            obj = [SOGoPublicBaseFolder objectWithName: @"public" inContainer: self];
+          else if ([[request method] isEqualToString: @"REPORT"])
             obj = [self davReportInvocationForKey: _key];
           else
             obj = nil;
@@ -326,6 +330,7 @@ static BOOL debugLeaks;
           /* first check attributes directly bound to the application */
           obj = [super lookupName:_key inContext:_ctx acquire:_flag];
         }
+
       if (!obj)
         {
           /* 
@@ -335,7 +340,6 @@ static BOOL debugLeaks;
              Addition: we also get queries for various other methods, like
              "GET" if no method was provided in the query path.
           */
-  
           if ([_key length] > 0 && ![_key isEqualToString:@"favicon.ico"])
             obj = [self lookupUser: _key inContext: _ctx];
         }
@@ -344,6 +348,11 @@ static BOOL debugLeaks;
     obj = nil;
 
   return obj;
+}
+
+- (BOOL) isInPublicZone
+{
+  return NO;
 }
 
 /* WebDAV */
@@ -422,7 +431,7 @@ static BOOL debugLeaks;
       [self logWithFormat: @"request took %f seconds to execute",
             timeDelta];
       [resp setHeader: [NSString stringWithFormat: @"%f", timeDelta]
-               forKey: @"SOGoRequestDuration"];
+               forKey: @"SOGo-Request-Duration"];
     }
 
   if (![self isTerminating])
