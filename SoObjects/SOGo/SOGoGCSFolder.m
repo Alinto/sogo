@@ -550,24 +550,63 @@ static NSArray *childRecordFields = nil;
     [self _subscriberRenameTo: newName];
 }
 
-- (NSArray *) fetchContentObjectNames
+- (NSString *) aclSQLListingFilter
+{
+  NSString *filter, *login;
+  NSArray *roles;
+
+  login = [[context activeUser] login];
+  if (activeUserIsOwner
+      || [[self ownerInContext: nil] isEqualToString: login])
+    filter = @"";
+  else
+    {
+      roles = [self aclsForUser: login];
+      if ([roles containsObject: SOGoRole_ObjectViewer]
+          || [roles containsObject: SOGoRole_ObjectEditor])
+        filter = @"";
+      else
+        filter = nil;
+    }
+
+  /* An empty string indicates that the filter is empty while a return value
+     of nil indicates that the query should not even be performed. */
+
+  return filter;
+}
+
+- (NSArray *) toOneRelationshipKeys
 {
   NSArray *records, *names;
-  
-  records = [[self ocsFolder] fetchFields: childRecordFields
-			      matchingQualifier:nil];
-  if (![records isNotNull])
-    {
-      [self errorWithFormat: @"(%s): fetch failed!", __PRETTY_FUNCTION__];
-      return nil;
-    }
-  if ([records isKindOfClass: [NSException class]])
-    return records;
+  NSString *sqlFilter;
+  EOQualifier *qualifier;
 
-  [childRecords release];
-  names = [records objectsForKey: @"c_name" notFoundMarker: nil];
-  childRecords = [[NSMutableDictionary alloc] initWithObjects: records
-					      forKeys: names];
+  sqlFilter = [self aclSQLListingFilter];
+  if (sqlFilter)
+    {
+      if ([sqlFilter length] > 0)
+        qualifier = [EOQualifier qualifierWithQualifierFormat: sqlFilter];
+      else
+        qualifier = nil;
+
+      records = [[self ocsFolder] fetchFields: childRecordFields
+                            matchingQualifier: qualifier];
+      if (![records isNotNull])
+        {
+          [self errorWithFormat: @"(%s): fetch failed!", __PRETTY_FUNCTION__];
+          return nil;
+        }
+      if ([records isKindOfClass: [NSException class]])
+        return records;
+
+      names = [records objectsForKey: @"c_name" notFoundMarker: nil];
+
+      [childRecords release];
+      childRecords = [[NSMutableDictionary alloc] initWithObjects: records
+                                                          forKeys: names];
+    }
+  else
+    names = [NSArray array];
 
   return names;
 }
@@ -1345,13 +1384,12 @@ static NSArray *childRecordFields = nil;
     [aclsForObject removeObjectForKey: uid];
 }
 
-- (NSArray *) aclsForUser: (NSString *) uid
-          forObjectAtPath: (NSArray *) objectPathArray
+- (NSArray *) _realAclsForUser: (NSString *) uid
+               forObjectAtPath: (NSArray *) objectPathArray
 {
   NSArray *acls;
-  NSString *objectPath, *module;
+  NSString *objectPath;
   NSDictionary *aclsForObject;
-  SOGoDomainDefaults *dd;
 
   objectPath = [objectPathArray componentsJoinedByString: @"/"];
   aclsForObject = [aclCache objectForKey: objectPath];
@@ -1362,13 +1400,26 @@ static NSArray *childRecordFields = nil;
   if (!acls)
     {
       acls = [self _fetchAclsForUser: uid forObjectAtPath: objectPath];
-      if (!acls)
+      if (!acls
+          || ([acls count] == 1 && [acls containsObject: SOGoRole_None]))
         acls = [NSArray array];
       [self _cacheRoles: acls forUser: uid forObjectAtPath: objectPath];
     }
 
-  if (!([acls count] || [uid isEqualToString: defaultUserID]))
-    acls = [self aclsForUser: defaultUserID forObjectAtPath: objectPathArray];
+  return acls;
+}
+
+- (NSArray *) aclsForUser: (NSString *) uid
+          forObjectAtPath: (NSArray *) objectPathArray
+{
+  NSArray *acls;
+  NSString *module;
+  SOGoDomainDefaults *dd;
+
+  acls = [self _realAclsForUser: uid forObjectAtPath: objectPathArray];
+  if (!([acls count] || [uid isEqualToString: @"anonymous"]))
+    acls = [self _realAclsForUser: defaultUserID
+                  forObjectAtPath: objectPathArray];
 
   // If we still don't have ACLs defined for this particular resource,
   // let's go get the domain defaults, if any.
@@ -1472,6 +1523,9 @@ static NSArray *childRecordFields = nil;
            forObjectAtPath: objectPathArray];
 
   newRoles = [NSMutableArray arrayWithArray: roles];
+  [newRoles removeObject: SoRole_Authenticated];
+  [newRoles removeObject: SoRole_Anonymous];
+  [newRoles removeObject: SOGoRole_PublicUser];
   [newRoles removeObject: SOGoRole_AuthorizedSubscriber];
   [newRoles removeObject: SOGoRole_None];
   objectPath = [objectPathArray componentsJoinedByString: @"/"];

@@ -1,8 +1,135 @@
+2010-06-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Tests/Integration/test-davacl.py (DAVPublicAccessTest): new test
+	class that implements tests strictly related to accessing the
+	"/public" prefix.
+	(DAVCalendarPublicAclTest.setUp): new test class that tests the
+	behaviour of calendar resources with regards to the super user,
+	a non-owner user, the "anonymous" user and the default user
+	(for default roles).
+
+	* Tests/Integration/utilities.py (TestACLUtility.setupRights): we
+	excape the value for the "user" attribute with
+	xml.sax.saxutils.escape.
+
+	* Tests/Integration/webdavlib.py (HTTPPUT.__init__): added the
+	"content_type" and "exclusive" optional parameters. The latter
+	implies the use of the "if-none-match" header.
+	(WebDAVPUT): removed useless operation class
+
+	* SoObjects/SOGo/WORequest+SOGo.m (-handledByDefaultHandler):
+	fixed a bug where the -requestHandlerKey method would be invoked
+	on the "request" (NGHttpRequest) ivar rather than on self.
+
+	* SoObjects/SOGo/SOGoUserFolder.m (_subFoldersFromFolder:):
+	thanks to the change below, the ACL checking code is no longer
+	needed here, where we can now concentrate on returning subfolders
+	metadata.
+
+	* SoObjects/SOGo/SOGoParentFolder.m
+	(_fetchPersonalFolders:withChannel:): if the active user is not
+	the owner of the current parent folder, subfolders are returned
+	only when he/she has permissions set on them even for the
+	"personal" subfolder.
+
+	* SoObjects/SOGo/SOGoGCSFolder.m (-aclsForUser:forObjectAtPath:):
+	extracted db code into a new "_realAclsForUser:forObjectAtPath:"
+	private method. When the "None" special role is returned, we
+	remove it from the list. Finally, we don't allow fetching default
+	roles when the specified uid is "anonymous".
+
+	* SoObjects/Contacts/SOGoContactFolders.m (-appendSystemSources):
+	we now add public sources to the list of folders if and only if
+	the active user is the owner of the current parent folder.
+
+	* SoObjects/SOGo/SOGoWebAuthenticator.m (-userInContext): if the
+	returned user has the login "anonymous", we return a corresponding
+	instance of SOGoUser to make sure methods are never invoked on
+	SoUser instances.
+
+	* SoObjects/SOGo/SOGoUser.m (-rolesForObject:inContext:): now make
+	use of the new "isInPublicZone" method of SOGoObject to give the
+	"PublicUser" role to the unauthenticated user.
+
+	* SoObjects/SOGo/SOGoObject.m (-isInPublicZone): same as below,
+	but we cache the result in a new "isInPublicZone" ivar.
+
+	* Main/SOGo.m (-lookupName:inContext:acquire): when the "public"
+	key is requested in DAV mode, we now instantiate a
+	"SOGoPublicBaseFolder", if the "SOGoEnablePublicAccess" user
+	default is set.
+	(-isInPublicZone): new method that always returns "NO" and is
+	meant to be called from child objects.
+
+	* SoObjects/SOGo/SOGoPublicBaseFolder.m: new class module that
+	enables anonymous access to resources. Instantiated from the
+	"SOGo" object. Implements a method "-isInPublicZone" that always
+	returns "YES".
+
 2010-06-02  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Scheduler/UIxCalListingActions.m (_userStateInEvent): fixed
 	array indexes that would cause the user participation state to no
 	longer be returned.
+
+2010-06-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/WORequest+SOGo.m (-handledByDefaultHandler): test
+	the request handler key instead of invoking isSoWebDAVRequest,
+	which performs additional and permission tests.
+
+	* Tests/Integration/test-davacl.py
+	(DAVCalendarAclTest._testRights): reenabled test code even when no
+	classification rights are available.
+
+	* SoObjects/SOGo/SOGoSystemDefaults.m (-enablePublicAccess): new
+	accessor for the SOGoEnablePublicAccess boolean user default.
+
+	* SoObjects/SOGo/SOGoUserManager.m
+	(-contactInfosForUserWithUIDorEmail:): return a fixed dictionary
+	of information for uid = "anonymous".
+
+	* Tests/Integration/test-*.py: take the API changes in
+	webdavlib.py into accounts with regards to XPath queries.
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-_privacySqlString): renamed to the new standardized
+	"aclSQLListingFilter". Again, a difference is now made between
+	empty and nil return strings, which we now apply here too.
+	(-bareFetchFields:from:to:title:component:additionalFilters:, 
+	(-fetchFields:from:to:title:component:additionalFilters:includeProtectedInformation:):
+	make use of the new semantics to the above method.
+
+	* SoObjects/SOGo/SOGoGCSFolder.m (-aclSQLListingFilter): new
+	overridable method designed to return a filter to SQL queries that
+	avoids requesting records that are not meant to be visible to the
+	active user. Replaces and extends -[SOGoAppointmentFolder
+	_privacySqlString] with the additional convention that returning a
+	nil string will prevent any query at all.
+	(-toOneRelationshipKeys): new overriden method (see below). Make
+	use of the new aclSQLListingFilter method to retrieve records so
+	that unaccessible records are not even listed.
+
+	* SoObjects/SOGo/SOGoFolder.m (-fetchContentObjectNames): removed
+	this useless alias to "toOneRelationshipKeys".
+
+	* Tests/Integration/all.py: disable multilanguage tests by
+	default, reverting the "disbale-languages" cmd-line parameter to
+	"enable-languages".
+
+	* Tests/Integration/webdavlib.py (WebDAVClient.__init__): made
+	"username" and "password" parameters optional to enable anonymous
+	connections. Also, M2Crypto.httpslib is imported explicitly only
+	when an SSL connection is requested. This renders this library
+	optional.
+	(WebDAVQuery.set_response): we now make use of the xml.etree API
+	instead of the one from xml.dom.
+	(xpath_evaluate): the above change makes this method obsolete
+	since XPath queries can now be performed directly on returned
+	elements.
+
+	* SoObjects/SOGo/SOGoCache.m (-setValue:forKey:expire:): display
+	the memcached error string when an error occurs.
 
 2010-05-28  Francis Lachapelle  <flachapelle@inverse.ca>
 

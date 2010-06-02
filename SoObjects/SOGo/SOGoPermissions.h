@@ -37,6 +37,7 @@ extern NSString *SOGoRole_FolderEraser;
 extern NSString *SOGoRole_FolderViewer;
 
 extern NSString *SOGoRole_AuthorizedSubscriber;
+extern NSString *SOGoRole_PublicUser;
 extern NSString *SOGoRole_None;
 
 extern NSString *SOGoMailRole_SeenKeeper;

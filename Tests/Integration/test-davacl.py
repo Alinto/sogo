@@ -102,7 +102,8 @@ class DAVCalendarAclTest(DAVAclTest):
 
     def __init__(self, arg):
         DAVAclTest.__init__(self, arg)
-        self.acl_utility = utilities.TestCalendarACLUtility(self.client,
+        self.acl_utility = utilities.TestCalendarACLUtility(self,
+                                                            self.client,
                                                             self.resource)
 
     def setUp(self):
@@ -195,31 +196,21 @@ class DAVCalendarAclTest(DAVAclTest):
                           " (received '%d')"
                           % (filename, exp_status, delete.response["status"]))
 
-    def _currentUserPrivilegeSet(self, resource, expectFailure = False):
+    def _currentUserPrivilegeSet(self, resource, expStatus = 207):
         propfind = webdavlib.WebDAVPROPFIND(resource,
                                             ["{DAV:}current-user-privilege-set"],
                                             0)
         self.subscriber_client.execute(propfind)
-        if expectFailure:
-            expStatus = 403
-        else:
-            expStatus = 207
         self.assertEquals(propfind.response["status"], expStatus,
                           "unexected status code when reading privileges:"
                           + " %s instead of %d"
                           % (propfind.response["status"], expStatus))
 
         privileges = []
-        if not expectFailure:
-            propfind.xpath_namespace = { "D": "DAV:" }
-            response_nodes = propfind.xpath_evaluate("/D:multistatus/D:response/D:propstat/D:prop/D:current-user-privilege-set/D:privilege")
+        if expStatus < 300:
+            response_nodes = propfind.response["document"].findall("{DAV:}response/{DAV:}propstat/{DAV:}prop/{DAV:}current-user-privilege-set/{DAV:}privilege")
             for node in response_nodes:
-                privilegeNode = node.childNodes[0]
-                tagName = privilegeNode.tagName
-                indexColon = tagName.find(":")
-                if indexColon > -1:
-                    tagName = tagName[indexColon+1:]
-                    privileges.append("{%s}%s" % (privilegeNode.namespaceURI, tagName))
+                privileges.extend([x.tag for x in node.getchildren()])
 
         return privileges
 
@@ -259,22 +250,24 @@ class DAVCalendarAclTest(DAVAclTest):
                                '{urn:ietf:params:xml:ns:caldav}schedule-respond-vtodo']
             expectedPrivileges.extend(extraPrivileges)
         if rights.has_key("d"):
-            extraPrivileges = ["{DAV:}unbind"]
-            expectedPrivileges.extend(extraPrivileges)
-        privileges = self._currentUserPrivilegeSet(self.resource,
-                                                   len(expectedPrivileges) == 0)
+            expectedPrivileges.append("{DAV:}unbind")
+        if len(expectedPrivileges) == 0:
+            expStatus = 404
+        else:
+            expStatus = 207
+        privileges = self._currentUserPrivilegeSet(self.resource, expStatus)
         self._comparePrivilegeSets(expectedPrivileges, privileges)
 
-    def _testEventDAVAcl(self, event_class, right):
+    def _testEventDAVAcl(self, event_class, right, error_code):
         icsClass = self.classToICSClass[event_class].lower()
         for suffix in [ "event", "task" ]:
             url = "%s%s-%s.ics" % (self.resource, icsClass, suffix)
 
             if right is None:
-                expectFailure = True
+                expStatus = error_code
                 expectedPrivileges = None
             else:
-                expectFailure = False
+                expStatus = 207
                 expectedPrivileges = ['{DAV:}read-current-user-privilege-set',
                                       '{urn:inverse:params:xml:ns:inverse-dav}view-date-and-time',
                                       '{DAV:}read']
@@ -290,8 +283,8 @@ class DAVCalendarAclTest(DAVAclTest):
                                                '{DAV:}write']
                             expectedPrivileges.extend(extraPrivileges)
 
-            privileges = self._currentUserPrivilegeSet(url, expectFailure)
-            if not expectFailure:
+            privileges = self._currentUserPrivilegeSet(url, expStatus)
+            if expStatus != error_code:
                 self._comparePrivilegeSets(expectedPrivileges, privileges)
 
     def _testRights(self, rights):
@@ -306,6 +299,8 @@ class DAVCalendarAclTest(DAVAclTest):
     def _testCreate(self, rights):
         if rights.has_key("c") and rights["c"]:
             exp_code = 201
+        elif len(rights) == 0:
+            exp_code = 404
         else:
             exp_code = 403
         self._putEvent(self.subscriber_client, "creation-test.ics", "PUBLIC",
@@ -314,6 +309,8 @@ class DAVCalendarAclTest(DAVAclTest):
     def _testDelete(self, rights):
         if rights.has_key("d") and rights["d"]:
             exp_code = 204
+        elif len(rights) == 0:
+            exp_code = 404
         else:
             exp_code = 403
         self._deleteEvent(self.subscriber_client, "public-event.ics",
@@ -338,9 +335,13 @@ class DAVCalendarAclTest(DAVAclTest):
         event = self._webdavSyncEvent(event_class)
         self._checkViewEventRight("webdav-sync", event, event_class, right)
 
-        self._testModify(event_class, right)
-        self._testRespondTo(event_class, right)
-        self._testEventDAVAcl(event_class, right)
+        if len(rights) > 0:
+            error_code = 403
+        else:
+            error_code = 404
+        self._testModify(event_class, right, error_code)
+        self._testRespondTo(event_class, right, error_code)
+        self._testEventDAVAcl(event_class, right, error_code)
 
     def _getEvent(self, event_class, is_invitation = False):
         icsClass = self.classToICSClass[event_class]
@@ -373,32 +374,27 @@ class DAVCalendarAclTest(DAVAclTest):
         return task
 
     def _calendarDataInMultistatus(self, query, filename,
-                                   response_tag = "D:response"):
+                                   response_tag = "{DAV:}response"):
         event = None
 
-        query.xpath_namespace = { "D": "DAV:",
-                                  "C": "urn:ietf:params:xml:ns:caldav" }
-        response_nodes = query.xpath_evaluate("/D:multistatus/%s" % response_tag)
+        # print "\n\n\n%s\n\n" % query.response["body"]
+        # print "\n\n"
+        response_nodes = query.response["document"].findall("%s" % response_tag)
         for response_node in response_nodes:
-            href_node = query.xpath_evaluate("D:href", response_node)[0]
-            href = href_node.childNodes[0].nodeValue
+            href_node = response_node.find("{DAV:}href")
+            href = href_node.text
             if href.endswith(filename):
-                propstat_nodes = query.xpath_evaluate("D:propstat", response_node)
-                for propstat_node in propstat_nodes:
-                    status_node = query.xpath_evaluate("D:status",
-                                                       propstat_node)[0]
-                    status = status_node.childNodes[0].nodeValue
-                    data_nodes = query.xpath_evaluate("D:prop/C:calendar-data",
-                                                      propstat_node)
+                propstat_node = response_node.find("{DAV:}propstat")
+                if propstat_node is not None:
+                    status_node = propstat_node.find("{DAV:}status")
+                    status = status_node.text
                     if status.endswith("200 OK"):
-                        if (len(data_nodes) > 0
-                            and len(data_nodes[0].childNodes) > 0):
-                            event = data_nodes[0].childNodes[0].nodeValue
-                    else:
-                        if not (status.endswith("404 Resource Not Found")
-                                or status.endswith("404 Not Found")):
-                            self.fail("%s: unexpected status code: '%s'"
-                                      % (filename, status))
+                        data_node = propstat_node.find("{DAV:}prop/{urn:ietf:params:xml:ns:caldav}calendar-data")
+                        event = data_node.text
+                    elif not (status.endswith("404 Resource Not Found")
+                              or status.endswith("404 Not Found")):
+                        self.fail("%s: unexpected status code: '%s'"
+                                  % (filename, status))
 
         return event
 
@@ -411,11 +407,11 @@ class DAVCalendarAclTest(DAVAclTest):
                                             ["{urn:ietf:params:xml:ns:caldav}calendar-data"],
                                             1)
         self.subscriber_client.execute(propfind)
-        if propfind.response["status"] != 403:
+        if propfind.response["status"] != 404:
             event = self._calendarDataInMultistatus(propfind, filename)
 
         return event
-
+    
     def _multigetEvent(self, event_class):
         event = None
 
@@ -425,7 +421,7 @@ class DAVCalendarAclTest(DAVAclTest):
                                                     ["{urn:ietf:params:xml:ns:caldav}calendar-data"],
                                                     [ url ])
         self.subscriber_client.execute(multiget)
-        if multiget.response["status"] != 403:
+        if multiget.response["status"] != 404:
             event = self._calendarDataInMultistatus(multiget, url)
 
         return event
@@ -438,9 +434,9 @@ class DAVCalendarAclTest(DAVAclTest):
         sync_query = webdavlib.WebDAVSyncQuery(self.resource, None,
                                                ["{urn:ietf:params:xml:ns:caldav}calendar-data"])
         self.subscriber_client.execute(sync_query)
-        if sync_query.response["status"] != 403:
+        if sync_query.response["status"] != 404:
             event = self._calendarDataInMultistatus(sync_query, url,
-                                                    "D:sync-response")
+                                                    "{DAV:}sync-response")
 
         return event
 
@@ -497,17 +493,17 @@ class DAVCalendarAclTest(DAVAclTest):
                             "expected key '%s' not found in secure event"
                             % key)
 
-    def _testModify(self, event_class, right):
+    def _testModify(self, event_class, right, error_code):
         if right == "m" or right == "r":
             exp_code = 204
         else:
-            exp_code = 403
+            exp_code = error_code
         icsClass = self.classToICSClass[event_class]
         filename = "%s-event.ics" % icsClass.lower()
         self._putEvent(self.subscriber_client, filename, icsClass,
                        exp_code)
 
-    def _testRespondTo(self, event_class, right):
+    def _testRespondTo(self, event_class, right, error_code):
         icsClass = self.classToICSClass[event_class]
         filename = "invitation-%s-event.ics" % icsClass.lower()
         self._putEvent(self.client, filename, icsClass,
@@ -518,7 +514,7 @@ class DAVCalendarAclTest(DAVAclTest):
         if right == "m" or right == "r":
             exp_code = 204
         else:
-            exp_code = 403
+            exp_code = error_code
 
         # here we only do 'passive' validation: if a user has a "respond to"
         # right, only the attendee entry will me modified. The change of
@@ -660,7 +656,8 @@ END:VCARD""" }
 
     def __init__(self, arg):
         DAVAclTest.__init__(self, arg)
-        self.acl_utility = utilities.TestAddressBookACLUtility(self.client,
+        self.acl_utility = utilities.TestAddressBookACLUtility(self,
+                                                               self.client,
                                                                self.resource)
 
     def setUp(self):
@@ -685,28 +682,23 @@ END:VCARD""" }
 
     def testCreateDelete(self):
         """'create', 'delete'"""
-        self._testRights({ "c": True,
-                           "d": True })
+        self._testRights({ "c": True, "d": True })
 
     def testViewCreate(self):
         """'view' and 'create'"""
-        self._testRights({ "c": True,
-                           "v": True })
+        self._testRights({ "c": True, "v": True })
 
     def testViewDelete(self):
         """'view' and 'delete'"""
-        self._testRights({ "d": True,
-                           "v": True })
+        self._testRights({ "d": True, "v": True })
 
     def testEditCreate(self):
         """'edit' and 'create'"""
-        self._testRights({ "c": True,
-                           "e": True })
+        self._testRights({ "c": True, "e": True })
 
     def testEditDelete(self):
         """'edit' and 'delete'"""
-        self._testRights({ "d": True,
-                           "e": True })
+        self._testRights({ "d": True, "e": True })
 
     def _testRights(self, rights):
         self.acl_utility.setupRights(subscriber_username, rights)
@@ -775,6 +767,178 @@ END:VCARD""" }
             exp_code = 403
         self._deleteCard(self.subscriber_client, "old.vcf", exp_code)
 
+class DAVPublicAccessTest(unittest.TestCase):
+    def __init__(self, arg):
+        unittest.TestCase.__init__(self, arg)
+        self.client = webdavlib.WebDAVClient(hostname, port)
+        self.anon_client = webdavlib.WebDAVClient(hostname, port)
+        self.dav_utility = utilities.TestUtility(self, self.client)
+
+    def testPublicAccess(self):
+        resource = '/SOGo/so/public'
+        options = webdavlib.HTTPOPTIONS(resource)
+        self.anon_client.execute(options)
+        self.assertEquals(options.response["status"], 404,
+                          "/SOGo/so/public is unexpectedly available")
+
+        resource = '/SOGo/public'
+        options = webdavlib.HTTPOPTIONS(resource)
+        self.anon_client.execute(options)
+        self.assertEquals(options.response["status"], 404,
+                          "/SOGo/so/public is unexpectedly available")
+
+        resource = '/SOGo/dav/%s' % username
+        options = webdavlib.HTTPOPTIONS(resource)
+        self.anon_client.execute(options)
+        self.assertEquals(options.response["status"], 401,
+                          "Non-public resources should request authentication")
+
+        resource = '/SOGo/dav/public'
+        options = webdavlib.HTTPOPTIONS(resource)
+        self.anon_client.execute(options)
+        self.assertNotEquals(options.response["status"], 401,
+                             "Non-public resources must NOT request authentication")
+        self.assertEquals(options.response["status"], 200,
+                          "/SOGo/dav/public is not available, check user defaults")
+
+
+class DAVCalendarPublicAclTest(unittest.TestCase):
+    def setUp(self):
+        self.createdRsrc = None
+        self.client = webdavlib.WebDAVClient(hostname, port,
+                                             username, password)
+        self.subscriber_client = webdavlib.WebDAVClient(hostname, port,
+                                                        subscriber_username,
+                                                        subscriber_password)
+        self.anon_client = webdavlib.WebDAVClient(hostname, port)
+
+    def tearDown(self):
+        if self.createdRsrc is not None:
+            delete = webdavlib.WebDAVDELETE(self.createdRsrc)
+            self.client.execute(delete)
+
+    def testCollectionAccessNormalUser(self):
+        """normal user access to (non-)shared resource from su"""
+
+        # 1. all rights removed
+        parentColl = '/SOGo/dav/%s/Calendar/' % username
+        self.createdRsrc = '%stest-dav-acl/' % parentColl
+        for rsrc in [ 'personal', 'test-dav-acl' ]:
+            resource = '%s%s/' % (parentColl, rsrc)
+            mkcol = webdavlib.WebDAVMKCOL(resource)
+            self.client.execute(mkcol)
+            acl_utility = utilities.TestCalendarACLUtility(self,
+                                                           self.client,
+                                                           resource)
+            acl_utility.setupRights("anonymous", {})
+            acl_utility.setupRights(subscriber_username, {})
+            acl_utility.setupRights("<default>", {})
+
+        propfind = webdavlib.WebDAVPROPFIND(parentColl, [ "displayname" ], 1)
+        self.subscriber_client.execute(propfind)
+        hrefs = propfind.response["document"] \
+                .findall("{DAV:}response/{DAV:}href")
+        self.assertEquals(len(hrefs), 1,
+                          "expected only one href in response")
+        self.assertEquals(hrefs[0].text, parentColl,
+                          "the href must be the 'Calendar' parent coll.")
+
+
+        acl_utility = utilities.TestCalendarACLUtility(self,
+                                                       self.client,
+                                                       self.createdRsrc)
+
+        # 2. creation right added
+        acl_utility.setupRights(subscriber_username, { "c": True })
+
+        self.subscriber_client.execute(propfind)
+        hrefs = propfind.response["document"] \
+                .findall("{DAV:}response/{DAV:}href")
+        self.assertEquals(len(hrefs), 2, "expected two hrefs in response")
+        self.assertEquals(hrefs[0].text, parentColl,
+                          "the first href is not a 'Calendar' parent coll.")
+        self.assertEquals(hrefs[1].text, resource,
+                          "the 2nd href is not the accessible coll.")
+
+        acl_utility.setupRights(subscriber_username, {})
+
+        # 3. creation right added for "default user"
+        #    subscriber_username expected to have access, but not "anonymous"
+        acl_utility.setupRights("<default>", { "c": True })
+        
+        self.subscriber_client.execute(propfind)
+        hrefs = propfind.response["document"] \
+                .findall("{DAV:}response/{DAV:}href")
+        self.assertEquals(len(hrefs), 2,
+                          "expected two hrefs in response: %d received" \
+                          % len(hrefs))
+        self.assertEquals(hrefs[0].text, parentColl,
+                          "the first href is not a 'Calendar' parent coll.")
+        self.assertEquals(hrefs[1].text, resource,
+                          "the 2nd href is not the accessible coll.")
+
+        anonParentColl = '/SOGo/dav/public/%s/Calendar/' % username
+        anon_propfind = webdavlib.WebDAVPROPFIND(anonParentColl,
+                                                 [ "displayname" ], 1)
+
+        self.anon_client.execute(anon_propfind)
+        hrefs = anon_propfind.response["document"] \
+                .findall("{DAV:}response/{DAV:}href")
+        self.assertEquals(len(hrefs), 1, "expected only 1 href in response")
+        self.assertEquals(hrefs[0].text, anonParentColl,
+                          "the first href is not a 'Calendar' parent coll.")
+
+        acl_utility.setupRights("<default>", {})
+
+        # 4. creation right added for "anonymous"
+        #    "anonymous" expected to have access, but not subscriber_username
+        acl_utility.setupRights("anonymous", { "c": True })
+
+        self.anon_client.execute(anon_propfind)
+        hrefs = anon_propfind.response["document"] \
+                .findall("{DAV:}response/{DAV:}href")
+        self.assertEquals(len(hrefs), 2, "expected 2 hrefs in response")
+        self.assertEquals(hrefs[0].text, anonParentColl,
+                          "the first href is not a 'Calendar' parent coll.")
+        anonResource = '%stest-dav-acl/' % anonParentColl
+        self.assertEquals(hrefs[1].text, anonResource,
+                          "expected href '%s' instead of '%s'."\
+                          % (anonResource, hrefs[1].text))
+
+        self.subscriber_client.execute(propfind)
+        hrefs = propfind.response["document"] \
+                .findall("{DAV:}response/{DAV:}href")
+        self.assertEquals(len(hrefs), 1, "expected only 1 href in response")
+        self.assertEquals(hrefs[0].text, parentColl,
+                          "the first href is not a 'Calendar' parent coll.")
+
+    def testCollectionAccessSuperUser(self):
+        # super user accessing (non-)shared res from nu
+
+        parentColl = '/SOGo/dav/%s/Calendar/' % subscriber_username
+        self.createdRsrc = '%stest-dav-acl/' % parentColl
+        for rsrc in [ 'personal', 'test-dav-acl' ]:
+            resource = '%s%s/' % (parentColl, rsrc)
+            mkcol = webdavlib.WebDAVMKCOL(resource)
+            self.client.execute(mkcol)
+            acl_utility = utilities.TestCalendarACLUtility(self,
+                                                           self.subscriber_client,
+                                                           resource)
+            acl_utility.setupRights(username, {})
+
+        propfind = webdavlib.WebDAVPROPFIND(parentColl, [ "displayname" ], 1)
+        self.subscriber_client.execute(propfind)
+        hrefs = [x.text \
+                 for x in propfind.response["document"] \
+                 .findall("{DAV:}response/{DAV:}href")]
+        self.assertTrue(len(hrefs) > 2,
+                        "expected at least 3 hrefs in response")
+        self.assertEquals(hrefs[0], parentColl,
+                          "the href must be the 'Calendar' parent coll.")
+        for rsrc in [ 'personal', 'test-dav-acl' ]:
+            resource = '%s%s/' % (parentColl, rsrc)
+            self.assertTrue(hrefs.index(resource) > -1,
+                            "resource '%s' not returned" % resource)
+
 if __name__ == "__main__":
     unittest.main()
-

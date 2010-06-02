@@ -650,6 +650,9 @@
       sogoRoles = [(SOGoObject *) object subscriptionRoles];
       if ([sogoRoles firstObjectCommonWithArray: rolesForObject])
 	[rolesForObject addObject: SOGoRole_AuthorizedSubscriber];
+      if ([login isEqualToString: @"anonymous"]
+          && [(SOGoObject *) object isInPublicZone])
+        [rolesForObject addObject: SOGoRole_PublicUser];
     }
 
 #warning this is a hack to work-around the poor implementation of PROPPATCH in SOPE

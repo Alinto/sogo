@@ -1,6 +1,6 @@
-/* SOGoFolder.h - this file is part of SOGo
+/* SOGoPublicBaseFolder.h - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse inc.
+ * Copyright (C) 2010 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -20,44 +20,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef SOGOFOLDER_H
-#define SOGOFOLDER_H
+#ifndef SOGOPUBLICBASEFOLDER_H
+#define SOGOPUBLICBASEFOLDER_H
 
-#import "SOGoObject.h"
+#import "SOGoFolder.h"
 
-@interface SOGoFolder : SOGoObject
-{
-  NSMutableString *displayName;
-  BOOL isSubscription;
-}
-
-- (void) setDisplayName: (NSString *) newDisplayName;
-- (NSString *) displayName;
-
-- (void) setIsSubscription: (BOOL) newIsSubscription;
-- (BOOL) isSubscription;
-
-- (NSString *) realNameInContainer;
-
-- (NSString *) folderType;
-
-- (BOOL) isValidContentName: (NSString *) name;
-
-/* sorting */
-- (NSComparisonResult) compare: (id) otherFolder;
-
-/* dav */
-- (NSArray *) davResourceType;
-
-/* outlook */
-- (NSString *) outlookFolderClass;
-
+@interface SOGoPublicBaseFolder : SOGoFolder
 @end
 
-@interface SOGoFolder (GroupDAVExtensions)
-
-- (NSString *) groupDavResourceType;
-
-@end
-
-#endif /* SOGOFOLDER_H */
+#endif /* SOGOPUBLICBASEFOLDER_H */

@@ -64,6 +64,8 @@
 
 - (NSString *) CASServiceURL;
 
+- (BOOL) enablePublicAccess;
+
 @end
 
 #endif /* SOGOSYSTEMDEFAULTS_H */

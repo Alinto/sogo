@@ -110,7 +110,7 @@
   SOGoUser *user;
 
   user = (SOGoUser *) [super userInContext: _ctx];
-  if (!user)
+  if (!user || [[user login] isEqualToString: @"anonymous"])
     {
       if (!anonymous)
         anonymous = [[SOGoUser alloc]

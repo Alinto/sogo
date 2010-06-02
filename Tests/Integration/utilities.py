@@ -2,9 +2,11 @@
 
 import unittest
 import webdavlib
+import xml.sax.saxutils
 
-class TestUtility(unittest.TestCase):
-    def __init__(self, client):
+class TestUtility():
+    def __init__(self, test, client, resource = None):
+        self.test = test
         self.client = client
         self.userInfo = {}
 
@@ -15,26 +17,26 @@ class TestUtility(unittest.TestCase):
                                                 ["displayname",
                                                  "{urn:ietf:params:xml:ns:caldav}calendar-user-address-set"],
                                                 0)
-            propfind.xpath_namespace = { "D": "DAV:",
-                                         "C": "urn:ietf:params:xml:ns:caldav" }
             self.client.execute(propfind)
-            assert(propfind.response["status"] == 207)
-            name_nodes = propfind.xpath_evaluate('/D:multistatus/D:response/D:propstat/D:prop/D:displayname',
-                                                 None)
-            email_nodes = propfind.xpath_evaluate('/D:multistatus/D:response/D:propstat/D:prop/C:calendar-user-address-set/D:href',
-                                                  None)
+            self.test.assertEquals(propfind.response["status"], 207)
+            common_tree = "{DAV:}response/{DAV:}propstat/{DAV:}prop"
+            name_nodes = propfind.response["document"] \
+                         .findall('%s/{DAV:}displayname' % common_tree)
+            email_nodes = propfind.response["document"] \
+                          .findall('%s/{urn:ietf:params:xml:ns:caldav}calendar-user-address-set/{DAV:}href'
+                                   % common_tree)
 
-            if len(name_nodes[0].childNodes) > 0:
-                displayName = name_nodes[0].childNodes[0].nodeValue
+            if len(name_nodes[0].text) > 0:
+                displayName = name_nodes[0].text
             else:
                 displayName = ""
-            self.userInfo[login] = (displayName, email_nodes[0].childNodes[0].nodeValue)
+            self.userInfo[login] = (displayName, email_nodes[0].text)
 
         return self.userInfo[login]
 
 class TestACLUtility(TestUtility):
-    def __init__(self, client, resource):
-        TestUtility.__init__(self, client)
+    def __init__(self, test, client, resource):
+        TestUtility.__init__(self, test, client, resource)
         self.resource = resource
 
     def _subscriptionOperation(self, subscribers, operation):
@@ -48,10 +50,10 @@ class TestACLUtility(TestUtility):
         post = webdavlib.HTTPPOST(self.resource, subscribeQuery)
         post.content_type = "application/xml; charset=\"utf-8\""
         self.client.execute(post)
-        self.assertEquals(post.response["status"], 204,
-                          "subscribtion failure to '%s' for '%s' (status: %d)"
-                          % (self.resource, "', '".join(subscribers),
-                             post.response["status"]))
+        self.test.assertEquals(post.response["status"], 204,
+                               "subscribtion failure to '%s' for '%s' (status: %d)"
+                               % (self.resource, "', '".join(subscribers),
+                                  post.response["status"]))
 
     def subscribe(self, subscribers=None):
         self._subscriptionOperation(subscribers, "subscribe")
@@ -68,16 +70,16 @@ class TestACLUtility(TestUtility):
         aclQuery = ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
                     + "<acl-query"
                     + " xmlns=\"urn:inverse:params:xml:ns:inverse-dav\">"
-                    + "<set-roles user=\"%s\">%s</set-roles>" % (username,
+                    + "<set-roles user=\"%s\">%s</set-roles>" % (xml.sax.saxutils.escape(username),
                                                                  rights_str)
                     + "</acl-query>")
 
         post = webdavlib.HTTPPOST(self.resource, aclQuery)
         post.content_type = "application/xml; charset=\"utf-8\""
         self.client.execute(post)
-        self.assertEquals(post.response["status"], 204,
-                          "rights modification: failure to set '%s' (status: %d)"
-                          % (rights_str, post.response["status"]))
+        self.test.assertEquals(post.response["status"], 204,
+                               "rights modification: failure to set '%s' (status: %d)"
+                               % (rights_str, post.response["status"]))
 
 # Calendar:
 #   rights:

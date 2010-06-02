@@ -166,6 +166,7 @@
       owner = nil;
       webdavAclManager = [[self class] webdavAclManager];
       activeUserIsOwner = NO;
+      isInPublicZone = NO;
     }
 
   return self;
@@ -226,6 +227,14 @@
     [self setOwner: [container ownerInContext: localContext]];
 
   return owner;
+}
+
+- (BOOL) isInPublicZone
+{
+  if (!isInPublicZone)
+    isInPublicZone = [container isInPublicZone];
+
+  return isInPublicZone;
 }
 
 /* hierarchy */

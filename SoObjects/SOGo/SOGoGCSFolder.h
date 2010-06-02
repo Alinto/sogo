@@ -85,8 +85,6 @@
 - (id) createChildComponentWithName: (NSString *) newName
                          andContent: (NSString *) newContent;
 
-- (NSArray *) fetchContentObjectNames;
-
 /* folder type */
 
 - (BOOL) folderIsMandatory;

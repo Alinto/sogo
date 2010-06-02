@@ -175,10 +175,12 @@ static SoSecurityManager *sm = nil;
 {
   NSArray *attrs;
   NSDictionary *row;
-  BOOL hasPersonal;
+  BOOL hasPersonal, ignoreRights;
   SOGoGCSFolder *folder;
-  NSString *key;
+  NSString *key, *login;
   NSException *error;
+  SOGoUser *currentUser;
+  SoSecurityManager *securityManager;
 
   if (!subFolderClass)
     subFolderClass = [[self class] subFolderClass];
@@ -187,23 +189,33 @@ static SoSecurityManager *sm = nil;
   error = [fc evaluateExpressionX: sql];
   if (!error)
     {
+      currentUser = [context activeUser];
+      login = [currentUser login];
+      ignoreRights = (activeUserIsOwner || [login isEqualToString: owner]
+                      || [currentUser isSuperUser]);
+      if (!ignoreRights)
+        securityManager = [SoSecurityManager sharedSecurityManager];
+
       attrs = [fc describeResults: NO];
-      row = [fc fetchAttributes: attrs withZone: NULL];
-      while (row)
+      while ((row = [fc fetchAttributes: attrs withZone: NULL]))
 	{
 	  key = [row objectForKey: @"c_path4"];
 	  if ([key isKindOfClass: [NSString class]])
 	    {
 	      folder = [subFolderClass objectWithName: key inContainer: self];
-	      hasPersonal = (hasPersonal || [key isEqualToString: @"personal"]);
+	      hasPersonal = (hasPersonal
+                             || [key isEqualToString: @"personal"]);
 	      [folder setOCSPath: [NSString stringWithFormat: @"%@/%@",
 					    OCSPath, key]];
+              if (ignoreRights
+                  || ![securityManager validatePermission: SOGoPerm_AccessObject
+                                                 onObject: folder
+                                                inContext: context])
 	      [subFolders setObject: folder forKey: key];
 	    }
-	  row = [fc fetchAttributes: attrs withZone: NULL];
 	}
 
-      if (!hasPersonal)
+      if (ignoreRights && !hasPersonal)
 	[self _createPersonalFolder];
     }
 
@@ -380,11 +392,6 @@ static SoSecurityManager *sm = nil;
     }
 
   return error;
-}
-
-- (NSArray *) fetchContentObjectNames
-{
-  return nil;
 }
 
 - (id) lookupName: (NSString *) name

@@ -1,6 +1,6 @@
-/* SOGoFolder.h - this file is part of SOGo
+/* SOGoPublicBaseFolder.m - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse inc.
+ * Copyright (C) 2010 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -20,44 +20,31 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef SOGOFOLDER_H
-#define SOGOFOLDER_H
+#import <Foundation/NSString.h>
 
-#import "SOGoObject.h"
+#import "SOGoUser.h"
 
-@interface SOGoFolder : SOGoObject
+#import "SOGoPublicBaseFolder.h"
+
+@implementation SOGoPublicBaseFolder
+
+- (id) lookupName: (NSString *) key
+        inContext: (id) localContext
+          acquire: (BOOL) acquire
 {
-  NSMutableString *displayName;
-  BOOL isSubscription;
+  id userFolder;
+
+  if ([key length] > 0 && [SOGoUser userWithLogin: key roles: nil])
+    userFolder = [SOGoUserFolder objectWithName: key inContainer: self];
+  else
+    userFolder = nil;
+
+  return userFolder;
 }
 
-- (void) setDisplayName: (NSString *) newDisplayName;
-- (NSString *) displayName;
-
-- (void) setIsSubscription: (BOOL) newIsSubscription;
-- (BOOL) isSubscription;
-
-- (NSString *) realNameInContainer;
-
-- (NSString *) folderType;
-
-- (BOOL) isValidContentName: (NSString *) name;
-
-/* sorting */
-- (NSComparisonResult) compare: (id) otherFolder;
-
-/* dav */
-- (NSArray *) davResourceType;
-
-/* outlook */
-- (NSString *) outlookFolderClass;
+- (BOOL) isInPublicZone
+{
+  return YES;
+}
 
 @end
-
-@interface SOGoFolder (GroupDAVExtensions)
-
-- (NSString *) groupDavResourceType;
-
-@end
-
-#endif /* SOGOFOLDER_H */

@@ -16,7 +16,6 @@ class iCalTest(unittest.TestCase):
         propfind = webdavlib.WebDAVPROPFIND(resource,
                                             ["{DAV:}principal-collection-set"],
                                             0)
-        propfind.xpath_namespace = { "D": "DAV:" }
         client.execute(propfind)
         self.assertEquals(propfind.response["status"], 207)
         headers = propfind.response["headers"]
@@ -28,7 +27,6 @@ class iCalTest(unittest.TestCase):
                                             ["{DAV:}principal-collection-set"],
                                             0)
         client.user_agent = "DAVKit/4.0.1 (730); CalendarStore/4.0.1 (973); iCal/4.0.1 (1374); Mac OS X/10.6.2 (10C540)"
-        propfind.xpath_namespace = { "D": "DAV:" }
         client.execute(propfind)
         self.assertEquals(propfind.response["status"], 207)
         headers = propfind.response["headers"]
@@ -50,7 +48,6 @@ class iCalTest(unittest.TestCase):
         proppatch = webdavlib.WebDAVPROPPATCH(resource, props)
         client = webdavlib.WebDAVClient(hostname, port, username, password)
         client.user_agent = "DAVKit/4.0.1 (730); CalendarStore/4.0.1 (973); iCal/4.0.1 (1374); Mac OS X/10.6.2 (10C540)"
-        proppatch.xpath_namespace = { "D": "DAV:" }
         client.execute(proppatch)
         self.assertEquals(proppatch.response["status"], 207,
                           "failure (%s) setting '%s' permission for '%s' on %s's calendars"
@@ -63,11 +60,10 @@ class iCalTest(unittest.TestCase):
                                              ["{DAV:}group-membership"], 0)
         client = webdavlib.WebDAVClient(hostname, port, username, password)
         client.user_agent = "DAVKit/4.0.1 (730); CalendarStore/4.0.1 (973); iCal/4.0.1 (1374); Mac OS X/10.6.2 (10C540)"
-        propfind.xpath_namespace = { "D": "DAV:" }
         client.execute(propfind)
 
-        hrefs = propfind.xpath_evaluate("/D:multistatus/D:response/D:propstat/D:prop/D:group-membership/D:href")
-        members = [x.childNodes[0].nodeValue for x in hrefs]
+        hrefs = propfind.response["document"].findall("{DAV:}response/{DAV:}propstat/{DAV:}prop/{DAV:}group-membership/{DAV:}href")
+        members = [x.text for x in hrefs]
 
         return members
 
@@ -77,12 +73,11 @@ class iCalTest(unittest.TestCase):
         propfind = webdavlib.WebDAVPROPFIND(resource, [prop], 0)
         client = webdavlib.WebDAVClient(hostname, port, username, password)
         client.user_agent = "DAVKit/4.0.1 (730); CalendarStore/4.0.1 (973); iCal/4.0.1 (1374); Mac OS X/10.6.2 (10C540)"
-        propfind.xpath_namespace = { "D": "DAV:", "n1": "http://calendarserver.org/ns/" }
         client.execute(propfind)
 
-        hrefs = propfind.xpath_evaluate("/D:multistatus/D:response/D:propstat/D:prop/n1:calendar-proxy-%s-for/D:href"
+        hrefs = propfind.response["document"].findall("{DAV:}response/{DAV:}propstat/{DAV:}prop/{http://calendarserver.org/ns/}calendar-proxy-%s-for/{DAV:}href"
                                         % perm)
-        members = [x.childNodes[0].nodeValue[len("/SOGo/dav/"):-1] for x in hrefs]
+        members = [x.text[len("/SOGo/dav/"):-1] for x in hrefs]
         
         return members
 
@@ -123,7 +118,7 @@ class iCalTest(unittest.TestCase):
                                   % (users[1], perm, users[0], proxyFor))
 
     def _testMapping(self, client, perm, resource, rights):
-        dav_utility = utilities.TestCalendarACLUtility(client, resource)
+        dav_utility = utilities.TestCalendarACLUtility(self, client, resource)
         dav_utility.setupRights(subscriber_username, rights)
 
         membership = self._getMembership(subscriber_username)
@@ -142,7 +137,8 @@ class iCalTest(unittest.TestCase):
         client = webdavlib.WebDAVClient(hostname, port, username, password)
         client.user_agent = "DAVKit/4.0.1 (730); CalendarStore/4.0.1 (973); iCal/4.0.1 (1374); Mac OS X/10.6.2 (10C540)"
         personal_resource = "/SOGo/dav/%s/Calendar/personal/" % username
-        dav_utility = utilities.TestCalendarACLUtility(client,
+        dav_utility = utilities.TestCalendarACLUtility(self,
+                                                       client,
                                                        personal_resource)
         dav_utility.setupRights(subscriber_username, {})
         dav_utility.subscribe([subscriber_username])
@@ -153,7 +149,8 @@ class iCalTest(unittest.TestCase):
         client.execute(delete)
         mkcol = webdavlib.WebDAVMKCOL(other_resource)
         client.execute(mkcol)
-        dav_utility = utilities.TestCalendarACLUtility(client,
+        dav_utility = utilities.TestCalendarACLUtility(self,
+                                                       client,
                                                        other_resource)
         dav_utility.setupRights(subscriber_username, {})
         dav_utility.subscribe([subscriber_username])
@@ -181,7 +178,7 @@ class iCalTest(unittest.TestCase):
 
         ## we test the unsubscription
         # unsubscribed from personal, subscribed to 'test-calendar-proxy2'
-        dav_utility = utilities.TestCalendarACLUtility(client,
+        dav_utility = utilities.TestCalendarACLUtility(self, client,
                                                        personal_resource)
         dav_utility.unsubscribe([subscriber_username])
         membership = self._getMembership(subscriber_username)
@@ -190,7 +187,7 @@ class iCalTest(unittest.TestCase):
                           "'%s' must have write access to %s's calendars"
                           % (subscriber_username, username))
         # unsubscribed from personal, unsubscribed from 'test-calendar-proxy2'
-        dav_utility = utilities.TestCalendarACLUtility(client,
+        dav_utility = utilities.TestCalendarACLUtility(self, client,
                                                        other_resource)
         dav_utility.unsubscribe([subscriber_username])
         membership = self._getMembership(subscriber_username)

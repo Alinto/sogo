@@ -43,10 +43,10 @@ class WebdavSyncTest(unittest.TestCase):
         self.assertEquals(query1.response["status"], 207,
                           ("query1: invalid status code: %d (!= 207)"
                            % query1.response["status"]))
-        token_node = query1.xpath_evaluate("/D:multistatus/D:sync-token")[0]
+        token_node = query1.response["document"].find("{DAV:}sync-token")
         # Implicit "assertion": we expect SOGo to return a token node, with a
         # non-empty numerical value. Anything else will trigger an exception
-        token = int(token_node.childNodes[0].nodeValue)
+        token = int(token_node.text)
 
         self.assertTrue(token > 0)
         self.assertTrue(token <= int(query1.start))
@@ -55,8 +55,8 @@ class WebdavSyncTest(unittest.TestCase):
         query2 = webdavlib.WebDAVSyncQuery(resource, "1234", [ "getetag" ])
         self.client.execute(query2)
         self.assertEquals(query2.response["status"], 403)
-        cond_nodes = query2.xpath_evaluate("/D:error/D:valid-sync-token")
-        self.assertTrue(len(cond_nodes) > 0,
+        cond_nodes = query2.response["document"].find("{DAV:}valid-sync-token")
+        self.assertTrue(cond_nodes is not None,
                         "expected 'valid-sync-token' condition error")
 
 if __name__ == "__main__":

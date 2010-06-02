@@ -11,7 +11,7 @@
       superclass  = "SoComponent";
       protectedBy = "<public>";
       defaultRoles = {
-        "View" = ( "Authenticated" );
+        "View" = ( "Authenticated", "PublicUser" );
       };
     };
     SOGoObject = {
@@ -67,10 +67,10 @@
     };
     SOGoParentFolder = {
       superclass = "SOGoFolder";
-      protectedBy = "Access Contents Information";
+      protectedBy = "<public>";
       defaultRoles = {
-        "Access Contents Information" = ( "Authenticated" );
-        "WebDAV Access" = ( "Authenticated" );
+        "Access Contents Information" = ( "Authenticated", "PublicUser" );
+        "WebDAV Access" = ( "Authenticated", "PublicUser" );
         "Add Folders" = ( "Owner" );
       };
     };
@@ -78,13 +78,22 @@
       superclass = "SOGoFolder";
       protectedBy = "Access Contents Information";
       defaultRoles = {
-        "Access Contents Information" = ( "Authenticated" );
-        "WebDAV Access" = ( "Authenticated" );
+        "Access Contents Information" = ( "Authenticated", "PublicUser" );
+        "WebDAV Access" = ( "Authenticated", "PublicUser" );
         "View" = ( "Authenticated" );
       };
     };
     SOGoGCSFolder = {
       superclass = "SOGoFolder";
+    };
+    SOGoPublicBaseFolder = {
+      superclass = "SOGoFolder";
+      protectedBy = "Access Contents Information";
+      defaultRoles = {
+        "Access Contents Information" = ( "Authenticated", "PublicUser" );
+        "WebDAV Access" = ( "Authenticated", "PublicUser" );
+        "View" = ( "Authenticated" );
+      };
     };
   };
 

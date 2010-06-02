@@ -296,4 +296,9 @@ BootstrapNSUserDefaults ()
   return [self stringForKey: @"SOGoCASServiceURL"];
 }
 
+- (BOOL) enablePublicAccess
+{
+  return [self boolForKey: @"SOGoEnablePublicAccess"];
+}
+
 @end

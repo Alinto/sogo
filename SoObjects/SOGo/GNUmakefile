@@ -86,6 +86,7 @@ SOGo_OBJC_FILES = \
 	SOGoFolder.m			\
 	SOGoGCSFolder.m			\
 	SOGoParentFolder.m		\
+	SOGoPublicBaseFolder.m		\
 	SOGoUserFolder.m		\
 	\
 	SOGoDefaultsSource.m		\

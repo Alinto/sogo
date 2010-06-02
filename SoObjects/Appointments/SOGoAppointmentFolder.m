@@ -444,70 +444,41 @@ static NSNumber *sharedYes = nil;
                    end, start];
 }
 
-- (NSString *) _privacyClassificationStringsForUID: (NSString *) uid
+- (NSString *) aclSQLListingFilter
 {
-  NSMutableString *classificationString;
-  NSString *currentRole;
-  unsigned int counter;
-  iCalAccessClass classes[] = {iCalAccessPublic, iCalAccessPrivate,
-			       iCalAccessConfidential};
-
-  classificationString = [NSMutableString string];
-  for (counter = 0; counter < 3; counter++)
-    {
-      currentRole = [self roleForComponentsWithAccessClass: classes[counter]
-			  forUser: uid];
-      if ([currentRole length] > 0)
-	[classificationString appendFormat: @"c_classification = %d or ",
-			      classes[counter]];
-    }
-
-  return classificationString;
-}
-
-- (NSString *) _privacySqlString
-{
-  NSString *privacySqlString, *login;
+  NSString *filter;
   NSMutableArray *grantedClasses, *deniedClasses;
   NSNumber *classNumber;
   unsigned int grantedCount;
   iCalAccessClass currentClass;
 
-  login = [[context activeUser] login];
-  if ([login isEqualToString: @"freebusy"])
-    privacySqlString = @"c_isopaque = 1";
-  else
+  [self initializeQuickTablesAclsInContext: context];
+  grantedClasses = [NSMutableArray arrayWithCapacity: 3];
+  deniedClasses = [NSMutableArray arrayWithCapacity: 3];
+  for (currentClass = 0;
+       currentClass < iCalAccessClassCount; currentClass++)
     {
-      [self initializeQuickTablesAclsInContext: context];
-      grantedClasses = [NSMutableArray arrayWithCapacity: 3];
-      deniedClasses = [NSMutableArray arrayWithCapacity: 3];
-      for (currentClass = 0;
-           currentClass < iCalAccessClassCount; currentClass++)
-        {
-          classNumber = [NSNumber numberWithInt: currentClass];
-          if (userCanAccessObjectsClassifiedAs[currentClass])
-            [grantedClasses addObject: classNumber];
-          else
-            [deniedClasses addObject: classNumber];
-        }
-      grantedCount = [grantedClasses count];
-      if (grantedCount == 3)
-        privacySqlString = @"";
-      else if (grantedCount == 2)
-        privacySqlString
-          = [NSString stringWithFormat: @"c_classification != %@",
-                      [deniedClasses objectAtIndex: 0]];
-      else if (grantedCount == 1)
-        privacySqlString
-          = [NSString stringWithFormat: @"c_classification = %@",
-                      [grantedClasses objectAtIndex: 0]];
+      classNumber = [NSNumber numberWithInt: currentClass];
+      if (userCanAccessObjectsClassifiedAs[currentClass])
+        [grantedClasses addObject: classNumber];
       else
-        /* We prevent any event/task from being listed. There must be a better
-           way... */
-        privacySqlString = @"c_classification = 255";
+        [deniedClasses addObject: classNumber];
     }
+  grantedCount = [grantedClasses count];
+  if (grantedCount == 3)
+    filter = @"";
+  else if (grantedCount == 2)
+    filter
+      = [NSString stringWithFormat: @"c_classification != %@",
+                  [deniedClasses objectAtIndex: 0]];
+  else if (grantedCount == 1)
+    filter
+      = [NSString stringWithFormat: @"c_classification = %@",
+                  [grantedClasses objectAtIndex: 0]];
+  else
+    filter = nil;
 
-  return privacySqlString;
+  return filter;
 }
 
 - (NSArray *) bareFetchFields: (NSArray *) fields
@@ -520,8 +491,9 @@ static NSNumber *sharedYes = nil;
   EOQualifier *qualifier;
   GCSFolder *folder;
   NSString *sql, *dateSqlString, *titleSqlString, *componentSqlString,
-    *privacySqlString;
+    *privacySQLString;
   NSMutableString *filterSqlString;
+  NSArray *records;
 
   folder = [self ocsFolder];
   if (startDate && endDate)
@@ -544,25 +516,32 @@ static NSNumber *sharedYes = nil;
   if ([filters length])
     [filterSqlString appendFormat: @"AND (%@)", filters];
 
-  privacySqlString = [self _privacySqlString];
-  if ([privacySqlString length])
-    [filterSqlString appendFormat: @"AND (%@)", privacySqlString];
+  privacySQLString = [self aclSQLListingFilter];
+  if (privacySQLString)
+    {
+      if ([privacySQLString length])
+        [filterSqlString appendFormat: @"AND (%@)", privacySQLString];
 
-  /* prepare mandatory fields */
+      /* prepare mandatory fields */
 
-  sql = [NSString stringWithFormat: @"%@%@%@%@",
-         dateSqlString, titleSqlString, componentSqlString,
-         filterSqlString];
-  /* sql is empty when we fetch everything (all parameters are nil) */
-  if ([sql length] > 0)
-    sql = [sql substringFromIndex: 4];
+      sql = [NSString stringWithFormat: @"%@%@%@%@",
+                      dateSqlString, titleSqlString, componentSqlString,
+                      filterSqlString];
+      /* sql is empty when we fetch everything (all parameters are nil) */
+      if ([sql length] > 0)
+        sql = [sql substringFromIndex: 4];
+      else
+        sql = nil;
+
+      /* fetch non-recurrent apts first */
+      qualifier = [EOQualifier qualifierWithQualifierFormat: sql];
+
+      records = [folder fetchFields: fields matchingQualifier: qualifier];
+    }
   else
-    sql = nil;
-  
-  /* fetch non-recurrent apts first */
-  qualifier = [EOQualifier qualifierWithQualifierFormat: sql];
+    records = [NSArray array];
 
-  return [folder fetchFields: fields matchingQualifier: qualifier];
+  return records;
 }
 
 - (BOOL) _checkIfWeCanRememberRecords: (NSArray *) fields
@@ -965,7 +944,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   NSMutableArray *fields, *ma;
   NSArray *records;
   NSMutableString *baseWhere;
-  NSString *where, *dateSqlString, *privacySqlString, *currentLogin;
+  NSString *where, *dateSqlString, *privacySQLString, *currentLogin;
   NSCalendarDate *endDate;
   NGCalendarDateRange *r;
   BOOL rememberRecords, canCycle;
@@ -1005,76 +984,83 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       dateSqlString = @"";
     }
 
-  privacySqlString = [self _privacySqlString];
-  if ([privacySqlString length])
-    [baseWhere appendFormat: @"AND %@", privacySqlString];
-
-  if ([title length])
-    [baseWhere appendFormat: @"AND c_title isCaseInsensitiveLike: '%%%@%%'",
-             [title stringByReplacingString: @"'"  withString: @"\\'\\'"]];
-
-  if ([filters length])
-    [baseWhere appendFormat: @"AND (%@)", filters];
-
-  /* prepare mandatory fields */
-
-  fields = [NSMutableArray arrayWithArray: _fields];
-  [fields addObjectUniquely: @"c_name"];
-  [fields addObjectUniquely: @"c_uid"];
-  [fields addObjectUniquely: @"c_startdate"];
-  [fields addObjectUniquely: @"c_enddate"];
-  [fields addObjectUniquely: @"c_isallday"];
-
-  if (canCycle)
-    where = [NSString stringWithFormat: @"%@ %@ AND c_iscycle = 0",
-                      baseWhere, dateSqlString];
-  else
-    where = baseWhere;
-
-  /* fetch non-recurrent apts first */
-  qualifier = [EOQualifier qualifierWithQualifierFormat:
-                              [where substringFromIndex: 4]];
-  records = [folder fetchFields: fields matchingQualifier: qualifier];
-  if (records)
+  privacySQLString = [self aclSQLListingFilter];
+  if (privacySQLString)
     {
-      if (r)
-        records = [self fixupRecords: records];
-      ma = [NSMutableArray arrayWithArray: records];
-    }
-  else
-    ma = nil;
+      if ([privacySQLString length])
+        [baseWhere appendFormat: @"AND %@", privacySQLString];
 
-  /* fetch recurrent apts now. we do NOT consider events with no cycle end. */
-//  || _endDate || filters)
-  if (canCycle && _endDate)
-    {
-      where = [NSString stringWithFormat: @"%@ AND c_iscycle = 1", baseWhere];
-      qualifier = [EOQualifier qualifierWithQualifierFormat: [where substringFromIndex: 4]];
+      if ([title length])
+        [baseWhere
+          appendFormat: @"AND c_title isCaseInsensitiveLike: '%%%@%%'",
+          [title stringByReplacingString: @"'"  withString: @"\\'\\'"]];
+
+      if ([filters length])
+        [baseWhere appendFormat: @"AND (%@)", filters];
+
+      /* prepare mandatory fields */
+
+      fields = [NSMutableArray arrayWithArray: _fields];
+      [fields addObjectUniquely: @"c_name"];
+      [fields addObjectUniquely: @"c_uid"];
+      [fields addObjectUniquely: @"c_startdate"];
+      [fields addObjectUniquely: @"c_enddate"];
+      [fields addObjectUniquely: @"c_isallday"];
+
+      if (canCycle)
+        where = [NSString stringWithFormat: @"%@ %@ AND c_iscycle = 0",
+                          baseWhere, dateSqlString];
+      else
+        where = baseWhere;
+
+      /* fetch non-recurrent apts first */
+      qualifier = [EOQualifier qualifierWithQualifierFormat:
+                                  [where substringFromIndex: 4]];
       records = [folder fetchFields: fields matchingQualifier: qualifier];
       if (records)
         {
           if (r)
-            records = [self _flattenCycleRecords: records fetchRange: r];
-          if (ma)
-            [ma addObjectsFromArray: records];
-          else
-            ma = [NSMutableArray arrayWithArray: records];
+            records = [self fixupRecords: records];
+          ma = [NSMutableArray arrayWithArray: records];
         }
-    }
-  if (!ma)
-    {
-      [self errorWithFormat: @"(%s): fetch failed!", __PRETTY_FUNCTION__];
-      return nil;
-    }
+      else
+        ma = nil;
 
-  currentLogin = [[context activeUser] login];
-  if (![currentLogin isEqualToString: owner] && !_includeProtectedInformation)
-    [self _fixupProtectedInformation: [ma objectEnumerator]
-	  inFields: _fields
-	  forUser: currentLogin];
+      /* fetch recurrent apts now. we do NOT consider events with no cycle
+         end. */
+      if (canCycle && _endDate)
+        {
+          where = [NSString stringWithFormat: @"%@ AND c_iscycle = 1", baseWhere];
+          qualifier = [EOQualifier qualifierWithQualifierFormat: [where substringFromIndex: 4]];
+          records = [folder fetchFields: fields matchingQualifier: qualifier];
+          if (records)
+            {
+              if (r)
+                records = [self _flattenCycleRecords: records fetchRange: r];
+              if (ma)
+                [ma addObjectsFromArray: records];
+              else
+                ma = [NSMutableArray arrayWithArray: records];
+            }
+        }
+      if (!ma)
+        {
+          [self errorWithFormat: @"(%s): fetch failed!", __PRETTY_FUNCTION__];
+          return nil;
+        }
 
-  if (rememberRecords)
-    [self _rememberRecords: ma];
+      currentLogin = [[context activeUser] login];
+      if (![currentLogin isEqualToString: owner]
+          && !_includeProtectedInformation)
+        [self _fixupProtectedInformation: [ma objectEnumerator]
+                                inFields: _fields
+                                 forUser: currentLogin];
+
+      if (rememberRecords)
+        [self _rememberRecords: ma];
+    }
+  else
+    ma = [NSMutableArray array];
 
   return ma;
 }
