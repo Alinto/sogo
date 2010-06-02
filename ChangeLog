@@ -1,3 +1,29 @@
+2010-06-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoWebAuthenticator.m (-userInContext): if the
+	returned user has the login "anonymous", we return a corresponding
+	instance of SOGoUser to make sure methods are never invoked on
+	SoUser instances.
+
+	* SoObjects/SOGo/SOGoUser.m (-rolesForObject:inContext:): now make
+	use of the new "isInPublicZone" method of SOGoObject to give the
+	"PublicUser" role to the unauthenticated user.
+
+	* SoObjects/SOGo/SOGoObject.m (-isInPublicZone): same as below,
+	but we cache the result in a new "isInPublicZone" ivar.
+
+	* Main/SOGo.m (-lookupName:inContext:acquire): when the "public"
+	key is requested in DAV mode, we now instantiate a
+	"SOGoPublicBaseFolder", if the "SOGoEnablePublicAccess" user
+	default is set.
+	(-isInPublicZone): new method that always returns "NO" and is
+	meant to be called from child objects.
+
+	* SoObjects/SOGo/SOGoPublicBaseFolder.m: new class module that
+	enables anonymous access to resources. Instantiated from the
+	"SOGo" object. Implements a method "-isInPublicZone" that always
+	returns "YES".
+
 2010-06-02  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Scheduler/UIxCalListingActions.m (_userStateInEvent): fixed
