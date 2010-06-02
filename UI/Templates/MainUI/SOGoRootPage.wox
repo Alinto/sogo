@@ -16,7 +16,7 @@
       <p>Version <var:string value="version"/> <span class="buildDate">(<var:string value="buildDate" />)</span></p>
       <p class="scroll"><var:string label:value="AboutBox" const:escapeHTML="NO"/></p>
       <img const:alt="Inverse" rsrc:src="inverse.png"/>
-      <p class="links"><a href="http://www.scalableogo.org/" target="_new">www.scalableogo.org</a> / 
+      <p class="links"><a href="http://www.sogo.nu/" target="_new">www.sogo.nu</a> / 
       <a href="http://www.inverse.ca/" target="_new">www.inverse.ca</a></p>
     <p><a id="aboutClose" href="#" class="button">
         <span><var:string label:value="OK" /></span></a></p>
