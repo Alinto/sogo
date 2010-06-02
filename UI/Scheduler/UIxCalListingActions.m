@@ -636,8 +636,8 @@ _userStateInEvent (NSArray *event)
   participants = nil;
   state = iCalPersonPartStatOther;
 
-  partList = [event objectAtIndex: 9];
-  stateList = [event objectAtIndex: 10];
+  partList = [event objectAtIndex: 10];
+  stateList = [event objectAtIndex: 11];
   if ([partList length] && [stateList length])
     {
       participants = [partList componentsSeparatedByString: @"\n"];
@@ -646,7 +646,7 @@ _userStateInEvent (NSArray *event)
       max = [participants count];
       while (state == iCalPersonPartStatOther && count < max)
 	{
-	  user = [SOGoUser userWithLogin: [event objectAtIndex: 11]
+	  user = [SOGoUser userWithLogin: [event objectAtIndex: 12]
 			   roles: nil];
 	  if ([user hasEmail: [participants objectAtIndex: count]])
 	    state = [[states objectAtIndex: count] intValue];

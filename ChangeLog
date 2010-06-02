@@ -1,3 +1,9 @@
+2010-06-02  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Scheduler/UIxCalListingActions.m (_userStateInEvent): fixed
+	array indexes that would cause the user participation state to no
+	longer be returned.
+
 2010-05-28  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/MailerUI/UIxMailMainFrame.m (-saveColumnsStateAction): new
