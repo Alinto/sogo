@@ -1,5 +1,13 @@
 2010-06-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Tests/Integration/test-davacl.py (DAVPublicAccessTest): new test
+	class that implements tests strictly related to accessing the
+	"/public" prefix.
+	(DAVCalendarPublicAclTest.setUp): new test class that tests the
+	behaviour of calendar resources with regards to the super user,
+	a non-owner user, the "anonymous" user and the default user
+	(for default roles).
+
 	* Tests/Integration/utilities.py (TestACLUtility.setupRights): we
 	excape the value for the "user" attribute with
 	xml.sax.saxutils.escape.

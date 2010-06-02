@@ -767,5 +767,178 @@ END:VCARD""" }
             exp_code = 403
         self._deleteCard(self.subscriber_client, "old.vcf", exp_code)
 
+class DAVPublicAccessTest(unittest.TestCase):
+    def __init__(self, arg):
+        unittest.TestCase.__init__(self, arg)
+        self.client = webdavlib.WebDAVClient(hostname, port)
+        self.anon_client = webdavlib.WebDAVClient(hostname, port)
+        self.dav_utility = utilities.TestUtility(self, self.client)
+
+    def testPublicAccess(self):
+        resource = '/SOGo/so/public'
+        options = webdavlib.HTTPOPTIONS(resource)
+        self.anon_client.execute(options)
+        self.assertEquals(options.response["status"], 404,
+                          "/SOGo/so/public is unexpectedly available")
+
+        resource = '/SOGo/public'
+        options = webdavlib.HTTPOPTIONS(resource)
+        self.anon_client.execute(options)
+        self.assertEquals(options.response["status"], 404,
+                          "/SOGo/so/public is unexpectedly available")
+
+        resource = '/SOGo/dav/%s' % username
+        options = webdavlib.HTTPOPTIONS(resource)
+        self.anon_client.execute(options)
+        self.assertEquals(options.response["status"], 401,
+                          "Non-public resources should request authentication")
+
+        resource = '/SOGo/dav/public'
+        options = webdavlib.HTTPOPTIONS(resource)
+        self.anon_client.execute(options)
+        self.assertNotEquals(options.response["status"], 401,
+                             "Non-public resources must NOT request authentication")
+        self.assertEquals(options.response["status"], 200,
+                          "/SOGo/dav/public is not available, check user defaults")
+
+
+class DAVCalendarPublicAclTest(unittest.TestCase):
+    def setUp(self):
+        self.createdRsrc = None
+        self.client = webdavlib.WebDAVClient(hostname, port,
+                                             username, password)
+        self.subscriber_client = webdavlib.WebDAVClient(hostname, port,
+                                                        subscriber_username,
+                                                        subscriber_password)
+        self.anon_client = webdavlib.WebDAVClient(hostname, port)
+
+    def tearDown(self):
+        if self.createdRsrc is not None:
+            delete = webdavlib.WebDAVDELETE(self.createdRsrc)
+            self.client.execute(delete)
+
+    def testCollectionAccessNormalUser(self):
+        """normal user access to (non-)shared resource from su"""
+
+        # 1. all rights removed
+        parentColl = '/SOGo/dav/%s/Calendar/' % username
+        self.createdRsrc = '%stest-dav-acl/' % parentColl
+        for rsrc in [ 'personal', 'test-dav-acl' ]:
+            resource = '%s%s/' % (parentColl, rsrc)
+            mkcol = webdavlib.WebDAVMKCOL(resource)
+            self.client.execute(mkcol)
+            acl_utility = utilities.TestCalendarACLUtility(self,
+                                                           self.client,
+                                                           resource)
+            acl_utility.setupRights("anonymous", {})
+            acl_utility.setupRights(subscriber_username, {})
+            acl_utility.setupRights("<default>", {})
+
+        propfind = webdavlib.WebDAVPROPFIND(parentColl, [ "displayname" ], 1)
+        self.subscriber_client.execute(propfind)
+        hrefs = propfind.response["document"] \
+                .findall("{DAV:}response/{DAV:}href")
+        self.assertEquals(len(hrefs), 1,
+                          "expected only one href in response")
+        self.assertEquals(hrefs[0].text, parentColl,
+                          "the href must be the 'Calendar' parent coll.")
+
+
+        acl_utility = utilities.TestCalendarACLUtility(self,
+                                                       self.client,
+                                                       self.createdRsrc)
+
+        # 2. creation right added
+        acl_utility.setupRights(subscriber_username, { "c": True })
+
+        self.subscriber_client.execute(propfind)
+        hrefs = propfind.response["document"] \
+                .findall("{DAV:}response/{DAV:}href")
+        self.assertEquals(len(hrefs), 2, "expected two hrefs in response")
+        self.assertEquals(hrefs[0].text, parentColl,
+                          "the first href is not a 'Calendar' parent coll.")
+        self.assertEquals(hrefs[1].text, resource,
+                          "the 2nd href is not the accessible coll.")
+
+        acl_utility.setupRights(subscriber_username, {})
+
+        # 3. creation right added for "default user"
+        #    subscriber_username expected to have access, but not "anonymous"
+        acl_utility.setupRights("<default>", { "c": True })
+        
+        self.subscriber_client.execute(propfind)
+        hrefs = propfind.response["document"] \
+                .findall("{DAV:}response/{DAV:}href")
+        self.assertEquals(len(hrefs), 2,
+                          "expected two hrefs in response: %d received" \
+                          % len(hrefs))
+        self.assertEquals(hrefs[0].text, parentColl,
+                          "the first href is not a 'Calendar' parent coll.")
+        self.assertEquals(hrefs[1].text, resource,
+                          "the 2nd href is not the accessible coll.")
+
+        anonParentColl = '/SOGo/dav/public/%s/Calendar/' % username
+        anon_propfind = webdavlib.WebDAVPROPFIND(anonParentColl,
+                                                 [ "displayname" ], 1)
+
+        self.anon_client.execute(anon_propfind)
+        hrefs = anon_propfind.response["document"] \
+                .findall("{DAV:}response/{DAV:}href")
+        self.assertEquals(len(hrefs), 1, "expected only 1 href in response")
+        self.assertEquals(hrefs[0].text, anonParentColl,
+                          "the first href is not a 'Calendar' parent coll.")
+
+        acl_utility.setupRights("<default>", {})
+
+        # 4. creation right added for "anonymous"
+        #    "anonymous" expected to have access, but not subscriber_username
+        acl_utility.setupRights("anonymous", { "c": True })
+
+        self.anon_client.execute(anon_propfind)
+        hrefs = anon_propfind.response["document"] \
+                .findall("{DAV:}response/{DAV:}href")
+        self.assertEquals(len(hrefs), 2, "expected 2 hrefs in response")
+        self.assertEquals(hrefs[0].text, anonParentColl,
+                          "the first href is not a 'Calendar' parent coll.")
+        anonResource = '%stest-dav-acl/' % anonParentColl
+        self.assertEquals(hrefs[1].text, anonResource,
+                          "expected href '%s' instead of '%s'."\
+                          % (anonResource, hrefs[1].text))
+
+        self.subscriber_client.execute(propfind)
+        hrefs = propfind.response["document"] \
+                .findall("{DAV:}response/{DAV:}href")
+        self.assertEquals(len(hrefs), 1, "expected only 1 href in response")
+        self.assertEquals(hrefs[0].text, parentColl,
+                          "the first href is not a 'Calendar' parent coll.")
+
+    def testCollectionAccessSuperUser(self):
+        # super user accessing (non-)shared res from nu
+
+        parentColl = '/SOGo/dav/%s/Calendar/' % subscriber_username
+        self.createdRsrc = '%stest-dav-acl/' % parentColl
+        for rsrc in [ 'personal', 'test-dav-acl' ]:
+            resource = '%s%s/' % (parentColl, rsrc)
+            mkcol = webdavlib.WebDAVMKCOL(resource)
+            self.client.execute(mkcol)
+            acl_utility = utilities.TestCalendarACLUtility(self,
+                                                           self.subscriber_client,
+                                                           resource)
+            acl_utility.setupRights(username, {})
+
+        propfind = webdavlib.WebDAVPROPFIND(parentColl, [ "displayname" ], 1)
+        self.subscriber_client.execute(propfind)
+        hrefs = [x.text \
+                 for x in propfind.response["document"] \
+                 .findall("{DAV:}response/{DAV:}href")]
+        self.assertTrue(len(hrefs) > 2,
+                        "expected at least 3 hrefs in response")
+        self.assertEquals(hrefs[0], parentColl,
+                          "the href must be the 'Calendar' parent coll.")
+        for rsrc in [ 'personal', 'test-dav-acl' ]:
+            resource = '%s%s/' % (parentColl, rsrc)
+            self.assertTrue(hrefs.index(resource) > -1,
+                            "resource '%s' not returned" % resource)
+
 if __name__ == "__main__":
     unittest.main()
