@@ -32,6 +32,7 @@ NSString *SOGoRole_FolderCreator = @"FolderCreator";
 NSString *SOGoRole_FolderEraser = @"FolderEraser";
 
 NSString *SOGoRole_AuthorizedSubscriber = @"AuthorizedSubscriber";
+NSString *SOGoRole_PublicUser = @"PublicUser";
 NSString *SOGoRole_None = @"None";
 
 /* Calendar */
