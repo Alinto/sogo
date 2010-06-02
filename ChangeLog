@@ -1,5 +1,16 @@
 2010-06-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUserFolder.m (_subFoldersFromFolder:):
+	thanks to the change below, the ACL checking code is no longer
+	needed here, where we can now concentrate on returning subfolders
+	metadata.
+
+	* SoObjects/SOGo/SOGoParentFolder.m
+	(_fetchPersonalFolders:withChannel:): if the active user is not
+	the owner of the current parent folder, subfolders are returned
+	only when he/she has permissions set on them even for the
+	"personal" subfolder.
+
 	* SoObjects/SOGo/SOGoGCSFolder.m (-aclsForUser:forObjectAtPath:):
 	extracted db code into a new "_realAclsForUser:forObjectAtPath:"
 	private method. When the "None" special role is returned, we

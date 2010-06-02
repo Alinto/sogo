@@ -27,7 +27,6 @@
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoClassSecurityInfo.h>
-#import <NGObjWeb/SoSecurityManager.h>
 #import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest.h>
@@ -148,35 +147,28 @@
   NSMutableArray *folders;
   NSEnumerator *subfolders;
   SOGoFolder *currentFolder;
-  NSString *folderName, *folderOwner;
+  NSString *folderName;
+  Class subfolderClass;
   NSMutableDictionary *currentDictionary;
-  SoSecurityManager *securityManager;
-
-  folderOwner = [parentFolder ownerInContext: context];
-  securityManager = [SoSecurityManager sharedSecurityManager];
 
   folders = [NSMutableArray array];
+
+  subfolderClass = [[parentFolder class] subFolderClass];
 
   subfolders = [[parentFolder subFolders] objectEnumerator];
   while ((currentFolder = [subfolders nextObject]))
     {
-      if (![securityManager validatePermission: SOGoPerm_AccessObject
-			    onObject: currentFolder inContext: context]
-	  && [[currentFolder ownerInContext: context]
-	       isEqualToString: folderOwner]
-	  && [NSStringFromClass([currentFolder class]) compare: @"SOGoWebAppointmentFolder"] != NSOrderedSame)
+      if ([currentFolder isMemberOfClass: subfolderClass])
 	{
 	  folderName = [NSString stringWithFormat: @"/%@/%@",
 				 [parentFolder nameInContainer],
 				 [currentFolder nameInContainer]];
-	  currentDictionary
-	    = [NSMutableDictionary dictionaryWithCapacity: 3];
+	  currentDictionary = [NSMutableDictionary dictionaryWithCapacity: 4];
 	  [currentDictionary setObject: [currentFolder displayName]
-			     forKey: @"displayName"];
+                                forKey: @"displayName"];
 	  [currentDictionary setObject: folderName forKey: @"name"];
-	  [currentDictionary setObject: folderOwner forKey: @"owner"];
 	  [currentDictionary setObject: [currentFolder folderType]
-			     forKey: @"type"];
+                                forKey: @"type"];
 	  [folders addObject: currentDictionary];
 	}
     }
@@ -587,7 +579,7 @@
 
 /* WebDAV */
 
-- (NSArray *) fetchContentObjectNames
+- (NSArray *) toOneRelationshipKeys
 {
   SOGoSystemDefaults *sd;
   SOGoUser *currentUser;
