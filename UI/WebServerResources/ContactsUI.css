@@ -171,12 +171,12 @@ UL#contactFolders LI
 
 DIV#contactFoldersList LI.local
 {
-    background-image: url('/SOGo.woa/WebServerResources/addrbook.png');
+    background-image: url('addrbook.png');
 }
 
 DIV#contactFoldersList LI.remote
 {
-    background-image: url('/SOGo.woa/WebServerResources/remote-addrbook.png');
+    background-image: url('remote-addrbook.png');
 }
     
 .treecell
@@ -201,7 +201,7 @@ TABLE#contactsList
 
 TABLE#contactsList TBODY TD.displayName
 { background-repeat: no-repeat;
-  background-image: url('/SOGo.woa/WebServerResources/abcard.gif');
+  background-image: url('abcard.png');
   background-position: 4px 1px;
   padding-left: 24px; }
 
@@ -359,7 +359,7 @@ DIV.contactSelection SPAN#selectionLabel
 
 DIV#dragDropVisual
 {
-  background-image: url(abcard.gif);
+  background-image: url(abcard.png);
   background-repeat: no-repeat;
   background-position: 4px 2px;
   width: 5px;

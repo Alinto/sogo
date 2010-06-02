@@ -44,8 +44,8 @@ function addUserLineToTree(tree, parent, line) {
         email += ", " + line[3].split("\n").join("; "); // extra contact info
     tree.add(parent, 0, email, 0, '#', line[0], 'person',
              '', '',
-             ResourcesURL + '/abcard.gif',
-             ResourcesURL + '/abcard.gif');
+             ResourcesURL + '/abcard.png',
+             ResourcesURL + '/abcard.png');
     if (window.opener.userFolderType != "user") {
         tree.add(parent + 1, parent, getLabel("Please wait..."), 0, '#', null,
                  null, '', '', icon, icon);

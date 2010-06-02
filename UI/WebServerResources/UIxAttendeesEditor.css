@@ -148,7 +148,7 @@ TABLE#freeBusy TD.freeBusyAttendees DIV
 { width: 16em; }
 
 TABLE#freeBusyAttendees TD.attendees INPUT
-{ background-image: url("abcard.gif");
+{ background-image: url("abcard.png");
   background-repeat: no-repeat;
   background-position: 4px center;
   border: 0px;

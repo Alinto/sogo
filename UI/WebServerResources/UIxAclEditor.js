@@ -63,7 +63,7 @@ function nodeForUser(userName, userId) {
     var span = $(document.createElement("span"));
     span.addClassName("userFullName");
     var image = document.createElement("img");
-    image.setAttribute("src", ResourcesURL + "/abcard.gif");
+    image.setAttribute("src", ResourcesURL + "/abcard.png");
     span.appendChild(image);
     span.appendChild(document.createTextNode(" " + userName));
     node.appendChild(span);

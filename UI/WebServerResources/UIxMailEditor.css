@@ -45,7 +45,7 @@ TABLE#addressList TD.headerField SELECT
 { border: 1px solid #eee; }
 
 TABLE#addressList TD.headerInput
-{ background-image: url('/SOGo.woa/WebServerResources/abcard.gif');
+{ background-image: url('abcard.png');
   background-repeat: no-repeat;
   background-position: 2px center;
   padding-left: 24px;

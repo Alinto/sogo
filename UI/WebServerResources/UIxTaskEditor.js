@@ -145,7 +145,7 @@ function addContact(tag, fullContactName, contactId, contactName, contactEmail) 
           var names = $('uixselector-participants-display');
           names.innerHTML += ('<li onmousedown="return false;"'
                               + ' onclick="onRowClick(event);"><img src="'
-                              + ResourcesURL + '/abcard.gif" />'
+                              + ResourcesURL + '/abcard.png" />'
                               + contactName + '</li>');
         }
       else
