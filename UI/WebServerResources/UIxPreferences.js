@@ -20,7 +20,7 @@ function savePreferences(sender) {
         var end = $("dayEndTime");
         var selectedEnd = parseInt(end.options[end.selectedIndex].value);
         if (selectedStart >= selectedEnd) {
-            alert (getLabel ("Day start time must be prior to day end time."));
+            alert (_("Day start time must be prior to day end time."));
             sendForm = false;
         }
     }
@@ -28,14 +28,14 @@ function savePreferences(sender) {
     if ($("enableVacation") && $("enableVacation").checked) {
         if ($("autoReplyText").value.strip().length == 0
             || $("autoReplyEmailAddresses").value.strip().length == 0) {
-            alert(getLabel("Please specify your message and your email addresses for which you want to enable auto reply."));
+            alert(_("Please specify your message and your email addresses for which you want to enable auto reply."));
             sendForm = false;
         }
     }
 
     if ($("enableForward") && $("enableForward").checked) {
         if ($("forwardAddress").value.strip().length == 0) {
-            alert(getLabel("Please specify an address to which you want to forward your messages."));
+            alert(_("Please specify an address to which you want to forward your messages."));
             sendForm = false;
         }
     }

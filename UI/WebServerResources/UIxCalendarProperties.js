@@ -32,25 +32,25 @@ function onOKClick(event) {
   if (tag
       && $("synchronizeCalendar").checked) {
       if (tag.value.blank()) {
-          alert(getLabel("tagNotDefined"));
+          alert(_("tagNotDefined"));
           save = false;
       }
       else if (allTags
                && allTags.indexOf(tag.value) > -1) {
-          alert(getLabel("tagAlreadyExists"));
+          alert(_("tagAlreadyExists"));
           save = false;
       }
       else if (originalTag
                && !originalTag.value.blank()) {
           if (tag.value != originalTag.value)
-              save = confirm(getLabel("tagHasChanged"));
+              save = confirm(_("tagHasChanged"));
       }
       else
-          save = confirm(getLabel("tagWasAdded"));
+          save = confirm(_("tagWasAdded"));
   }
   else if (originalTag
            && !originalTag.value.blank())
-      save = confirm(getLabel("tagWasRemoved"));
+      save = confirm(_("tagWasRemoved"));
   
   if (save) {
       window.opener.updateCalendarProperties(calendarID.value,

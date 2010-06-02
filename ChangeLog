@@ -1,5 +1,8 @@
 2010-06-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/*.js: replaced all remaining calls to
+	"getLabel" with calls to "_".
+
 	* Tests/Integration/test-davacl.py (DAVPublicAccessTest): new test
 	class that implements tests strictly related to accessing the
 	"/public" prefix.

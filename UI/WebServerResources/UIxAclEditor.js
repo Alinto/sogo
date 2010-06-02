@@ -74,7 +74,7 @@ function nodeForUser(userName, userId) {
         var cb = document.createElement("input");
         cb.type = "checkbox";
         label.appendChild(cb);
-        label.appendChild(document.createTextNode(getLabel("Subscribe User")));
+        label.appendChild(document.createTextNode(_("Subscribe User")));
         node.appendChild(label);
     }
 
@@ -122,7 +122,7 @@ function subscribeToFolder(refreshCallback, refreshCallbackData) {
                          refreshCallbackData["folder"]);
     }
     else
-        refreshCallbackData["window"].alert(getLabel("You cannot subscribe to a folder that you own!"));
+        refreshCallbackData["window"].alert(_("You cannot subscribe to a folder that you own!"));
     return result;
 }
 

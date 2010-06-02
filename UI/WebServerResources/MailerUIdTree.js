@@ -7,10 +7,10 @@ var MailerUIdTreeExtension = {
 								sent: "tbtv_sent_17x17.png",
 								draft: "tbtv_drafts_17x17.png",
 								trash: "tbtv_trash_17x17.png" },
- folderNames: { inbox: getLabel("InboxFolderName"),
-								sent: getLabel("SentFolderName"),
-								draft: getLabel("DraftsFolderName"),
-								trash: getLabel("TrashFolderName") },
+ folderNames: { inbox: _("InboxFolderName"),
+								sent: _("SentFolderName"),
+								draft: _("DraftsFolderName"),
+								trash: _("TrashFolderName") },
  _addFolderNode: function (parent, name, fullName, type, unseen) {
 		var icon = this.folderIcons[type];
 		if (icon)

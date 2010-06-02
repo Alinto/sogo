@@ -86,14 +86,14 @@ function validateContactEditor() {
     var e = $('workMail');
     if (e.value.length > 0
         && !uixEmailRegex.test(e.value)) {
-        alert(getLabel ("invalidemailwarn"));
+        alert(_("invalidemailwarn"));
         rc = false;
     }
 
     e = $('homeMail');
     if (e.value.length > 0
         && !uixEmailRegex.test(e.value)) {
-        alert(getLabel ("invalidemailwarn"));
+        alert(_("invalidemailwarn"));
         rc = false;
     }
 

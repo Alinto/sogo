@@ -198,7 +198,7 @@ function openMessageWindowsForSelection(action, firstOnly) {
                     break;
             }
         } else {
-            window.alert(getLabel("Please select a message."));
+            window.alert(_("Please select a message."));
         }
     }
 
@@ -383,7 +383,7 @@ function deleteSelectedMessages(sender) {
                            { "Content-type": "application/x-www-form-urlencoded" });
     }
     else
-        window.alert(getLabel("Please select a message."));
+        window.alert(_("Please select a message."));
    
     return false;
 }
@@ -459,10 +459,10 @@ function deleteMessageWithDelay(url, id, mailbox, messageId) {
 function onPrintCurrentMessage(event) {
     var rowIds = $("messageList").getSelectedRowsId();
     if (rowIds.length == 0) {
-        window.alert(getLabel("Please select a message to print."));
+        window.alert(_("Please select a message to print."));
     }
     else if (rowIds.length > 1) {
-        window.alert(getLabel("Please select only one message to print."));
+        window.alert(_("Please select only one message to print."));
     }
     else
         window.print();
@@ -512,7 +512,7 @@ function toggleAddressColumn(search, replace) {
     var header = $(search + "Header");
     if (header) {
         header.id = replace + "Header";
-        header.update(getLabel(replace.capitalize()));
+        header.update(_(replace.capitalize()));
         var i = UserDefaults["SOGoMailListViewColumnsOrder"].indexOf(search.capitalize());
         if (i >= 0)
             UserDefaults["SOGoMailListViewColumnsOrder"][i] = replace.capitalize();
@@ -775,9 +775,9 @@ function updateMessageListCounter(count, isDelta) {
     }
     
     if (count > 0)
-        cell.update(count + " " + getLabel("messages"));
+        cell.update(count + " " + _("messages"));
     else
-        cell.update(getLabel("No message"));
+        cell.update(_("No message"));
 }
 
 function onMessageListRender(event) {
@@ -1196,12 +1196,12 @@ function ICalendarButtonCallback(http) {
             for (var i = 0; i < Mailer.popups.length; i++) {
                 if (Mailer.popups[i].messageUID == oldMsg) {
                     // Show the alert in the proper popup window
-                    Mailer.popups[i].alert(getLabel(msg));
+                    Mailer.popups[i].alert(_(msg));
                     break;
                 }
             }
             if (i == Mailer.popups.length)
-                window.alert(getLabel(msg));
+                window.alert(_(msg));
         }
         else
             window.alert("received code: " + http.status + "\nerror: " + http.responseText);
@@ -1333,7 +1333,7 @@ function messageCallback(http) {
         }
     }
     else if (http.status == 404) {
-        alert (getLabel("The message you have selected doesn't exist anymore."));
+        alert (_("The message you have selected doesn't exist anymore."));
         window.location.reload();
     }
     else
@@ -1747,7 +1747,7 @@ function updateMailboxTreeInPage() {
                                    / Mailer.quotas.maxQuota)
                         / 100);
         var level = (percents > 85)? "alert" : (percents > 70)? "warn" : "ok";
-        var format = getLabel("quotasFormat");
+        var format = _("quotasFormat");
         var text = format.formatted(percents,
                                     Math.round(Mailer.quotas.maxQuota/10.24)/100);
         quotaDiv = new Element('div', { 'id': 'quotaIndicator',
@@ -1814,7 +1814,7 @@ function generateMenuForMailbox(mailbox, prefix, callback) {
     if (mailbox.type != "account") {
         var newNode = document.createElement("li");
         newNode.mailbox = mailbox;
-        newNode.appendChild(document.createTextNode(getLabel("This Folder")));
+        newNode.appendChild(document.createTextNode(_("This Folder")));
         menu.appendChild(newNode);
         menu.appendChild(document.createElement("li"));
         callbacks.push(callback);
@@ -2009,7 +2009,7 @@ function saveFoldersStateCallback(http) {
 }
 
 function onMenuCreateFolder(event) {
-    var name = window.prompt(getLabel("Name :"), "");
+    var name = window.prompt(_("Name :"), "");
     if (name && name.length > 0) {
         var folderID = document.menuTarget.getAttribute("dataname");
         var urlstr = URLForFolderID(folderID) + "/createFolder?name=" + encodeURIComponent(name);
@@ -2020,7 +2020,7 @@ function onMenuCreateFolder(event) {
 }
 
 function onMenuRenameFolder(event) {
-    var name = window.prompt(getLabel("Enter the new name of your folder :"),
+    var name = window.prompt(_("Enter the new name of your folder :"),
                              "");
     if (name && name.length > 0) {
         var folderID = document.menuTarget.getAttribute("dataname");
@@ -2032,11 +2032,11 @@ function onMenuRenameFolder(event) {
 }
 
 function onMenuDeleteFolder(event) {
-    var answer = window.confirm(getLabel("Do you really want to move this folder into the trash ?"));
+    var answer = window.confirm(_("Do you really want to move this folder into the trash ?"));
     if (answer) {
         var folderID = document.menuTarget.getAttribute("dataname");
         var urlstr = URLForFolderID(folderID) + "/delete";
-        var errorLabel = getLabel("The folder could not be deleted.");
+        var errorLabel = _("The folder could not be deleted.");
         triggerAjaxRequest(urlstr, folderOperationCallback, errorLabel);
     }
 }
@@ -2050,7 +2050,7 @@ function onMenuExpungeFolder(event) {
 function onMenuEmptyTrash(event) {
     var folderID = document.menuTarget.getAttribute("dataname");
     var urlstr = URLForFolderID(folderID) + "/emptyTrash";
-    var errorLabel = getLabel("The trash could not be emptied.");
+    var errorLabel = _("The trash could not be emptied.");
     triggerAjaxRequest(urlstr, folderOperationCallback, errorLabel);
 
     if (folderID == Mailer.currentMailbox) {
@@ -2067,11 +2067,11 @@ function onMenuEmptyTrash(event) {
 function _onMenuChangeToXXXFolder(event, folder) {
     var type = document.menuTarget.getAttribute("datatype");
     if (type == "additional")
-        window.alert(getLabel("You need to choose a non-virtual folder!"));
+        window.alert(_("You need to choose a non-virtual folder!"));
     else {
         var folderID = document.menuTarget.getAttribute("dataname");
         var urlstr = URLForFolderID(folderID) + "/setAs" + folder + "Folder";
-        var errorLabel = getLabel("The folder functionality could not be changed.");
+        var errorLabel = _("The folder functionality could not be changed.");
         triggerAjaxRequest(urlstr, folderOperationCallback, errorLabel);
     }
 }
@@ -2199,7 +2199,7 @@ function folderRefreshCallback(http) {
                 row.show();
             }
         }
-        window.alert(getLabel("Operation failed"));
+        window.alert(_("Operation failed"));
     }
 }
 
@@ -2280,7 +2280,7 @@ function saveAs(event) {
         window.location.href = (url+"?id="+uids+"&uid="+uids+"&mailbox="+Mailer.currentMailbox+"&path="+paths);
     }
     else
-        window.alert(getLabel("Please select a message."));
+        window.alert(_("Please select a message."));
 
     return false;
 }

@@ -991,7 +991,7 @@ SOGoEventDragController.prototype = {
         this._determineEventType(dayNode);
         this._prepareEventType();
         this.ghostController = new SOGoEventDragGhostController();
-        this.ghostController.setTitle(getLabel("New Event"));
+        this.ghostController.setTitle(_("New Event"));
 
         this.onDragStartBound = this.onDragStart.bindAsEventListener(this);
         dayNode.observe("mousedown", this.onDragStartBound, false);

@@ -1296,7 +1296,7 @@ function onEditorOkClick(event) {
       onRequestComplete: function eCH_l_onRequestComplete(handlers, code) {
           var label = ("A time conflict exists with one or more attendees.\n"
                        + "Would you like to keep the current settings anyway?");
-          if (code || window.confirm(getLabel(label))) {
+          if (code || window.confirm(_(label))) {
               _confirmEditorOkClick();
           }
       }
