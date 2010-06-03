@@ -24,9 +24,7 @@ CommonUI_OBJC_FILES +=		\
 
 CommonUI_RESOURCE_FILES += \
 	Version			\
-	product.plist		\
-	Toolbars/SOGoAclOwner.toolbar \
-	Toolbars/SOGoAclAssistant.toolbar \
+	product.plist
 
 
 CommonUI_LOCALIZED_RESOURCE_FILES +=	\

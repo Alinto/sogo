@@ -8,9 +8,7 @@
   xmlns:rsrc="OGo:url"
   className="UIxPageFrame"
   title="title"
-  const:toolbar="SOGoAclOwner.toolbar"
   const:popup="YES">
-
   <script type="text/javascript"
     ><var:if condition="canSubscribeUsers">
       var canSubscribeUsers = true;
