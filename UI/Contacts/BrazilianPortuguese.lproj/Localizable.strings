@@ -143,8 +143,10 @@
 "Unable to subscribe to that folder!"
 = "Não foi possível inscrever-se a esta pasta.";
 
-"Default Roles" = "Papéis Padrão";
 "User rights for:" = "Direitos de:";
+
+"Any Authenticated User" = "Any Authenticated User";
+"Public Access" = "Public Access";
 
 "This person can add cards to this addressbook."
 = "Essa pessoa pode adicionar contatos ao meu catálogo.";

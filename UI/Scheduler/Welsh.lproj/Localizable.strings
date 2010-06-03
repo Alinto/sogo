@@ -131,8 +131,10 @@
 
 /* acls */
 
-"Default Roles" = "Rolau gwreiddiol";
 "User rights for:" = "hawliau defnyddiwr i:";
+
+"Any Authenticated User" = "Any Authenticated User";
+"Public Access" = "Public Access";
 
 "label_Public" = "Cyhoeddus";
 "label_Private" = "Preifat";

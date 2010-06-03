@@ -128,8 +128,10 @@
 "Unable to subscribe to that folder!"
 = "Unable to subscribe to that folder.";
 
-"Default Roles" = "Default Roles";
 "User rights for:" = "User rights for:";
+
+"Any Authenticated User" = "Any Authenticated User";
+"Public Access" = "Public Access";
 
 "This person can add cards to this addressbook."
 = "This person can add cards to this addressbook.";

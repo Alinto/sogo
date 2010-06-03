@@ -28,8 +28,10 @@
 "Add..." = "Toevoegen...";
 "Remove" = "Verwijderen";
 
-"Default Roles" = "Standaardmachtigingen";
 "Subscribe User" = "Gebruiker abonneren";
+
+"Any Authenticated User" = "Any Authenticated User";
+"Public Access" = "Public Access";
 
 "Sorry, the user rights can not be configured for that object." = "De machtigingen kunnen niet worden ingesteld voor dit object.";
 

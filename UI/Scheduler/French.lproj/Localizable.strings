@@ -131,8 +131,10 @@
 
 /* acls */
 
-"Default Roles" = "Rôles par défaut";
 "User rights for:" = "Autorisations pour :";
+
+"Any Authenticated User" = "Tout utilisateur identifié";
+"Public Access" = "Accès public";
 
 "label_Public" = "Public";
 "label_Private" = "Privé";

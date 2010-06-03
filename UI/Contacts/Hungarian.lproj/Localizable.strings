@@ -143,8 +143,10 @@
 "Unable to subscribe to that folder!"
 = "Erre a mappára nem lehet feliratkozni.";
 
-"Default Roles" = "Alapértelmezett jogok";
 "User rights for:" = "Felhasználói jogosultságok:";
+
+"Any Authenticated User" = "Any Authenticated User";
+"Public Access" = "Public Access";
 
 "This person can add cards to this addressbook."
 = "Az alábbi személy hozzáadhat névjegyeket ehhez a címjegyzékhez.";

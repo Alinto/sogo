@@ -131,8 +131,10 @@
 
 /* acls */
 
-"Default Roles" = "Standaardmachtigingen";
 "User rights for:" = "Machtigingen voor:";
+
+"Any Authenticated User" = "Any Authenticated User";
+"Public Access" = "Public Access";
 
 "label_Public" = "Publiek";
 "label_Private" = "Privaat";

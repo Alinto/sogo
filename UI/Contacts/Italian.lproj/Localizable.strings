@@ -143,8 +143,10 @@
 "Unable to subscribe to that folder!"
 = "Non puoi sottoscrivere la cartella!";
 
-"Default Roles" = "Permessi predefiniti";
 "User rights for:" = "Permessi per:";
+
+"Any Authenticated User" = "Any Authenticated User";
+"Public Access" = "Public Access";
 
 "This person can add cards to this addressbook."
 = "Questa persona può aggiungere contatti a questa rubrica.";

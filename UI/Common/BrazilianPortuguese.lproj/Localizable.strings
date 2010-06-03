@@ -28,8 +28,10 @@
 "Add..." = "Adicionar...";
 "Remove" = "Remover";
 
-"Default Roles" = "Papéis Padrão";
 "Subscribe User" = "Subscribe User";
+
+"Any Authenticated User" = "Any Authenticated User";
+"Public Access" = "Public Access";
 
 "Sorry, the user rights can not be configured for that object." = "Desculpe, os direitos de usuário não podem ser modificados para este objeto.";
 

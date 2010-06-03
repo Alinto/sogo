@@ -28,8 +28,10 @@
 "Add..." = "Add...";
 "Remove" = "Remove";
 
-"Default Roles" = "Default Roles";
 "Subscribe User" = "Subscribe User";
+
+"Any Authenticated User" = "Any Authenticated User";
+"Public Access" = "Public Access";
 
 "Sorry, the user rights can not be configured for that object." = "Sorry, the user rights can not be configured for that object.";
 

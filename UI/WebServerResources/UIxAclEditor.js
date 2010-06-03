@@ -13,7 +13,16 @@ function addUser(userName, userID) {
     var result = false;
     if (!$(userID)) {
         var ul = $("userList");
-        ul.appendChild(nodeForUser(userName, userID));
+        var lis = ul.childNodesWithTag("li");
+        var newNode = nodeForUser(userName, userID, canSubscribeUsers);
+        newNode.addClassName("normal-user");
+        if (lis.length > 1) {
+            var publicNode = lis[lis.length-2];
+            ul.insertBefore(newNode, publicNode);
+        }
+        else  {
+            ul.appendChild(newNode);
+        }
         var url = window.location.href;
         var elements = url.split("/");
         elements[elements.length-1] = ("addUserInAcls?uid="
@@ -56,22 +65,19 @@ function onSubscriptionChange(event) {
     }
 }
 
-function nodeForUser(userName, userId) {
-    var node = $(document.createElement("li"));
-    node.setAttribute("id", userId);
+function nodeForUser(userName, userId, canSubscribe) {
+    var node = createElement("li");
+    node.id = userId;
 
-    var span = $(document.createElement("span"));
+    var span = createElement("span");
     span.addClassName("userFullName");
-    var image = document.createElement("img");
-    image.setAttribute("src", ResourcesURL + "/abcard.png");
-    span.appendChild(image);
     span.appendChild(document.createTextNode(" " + userName));
     node.appendChild(span);
 
-    if (canSubscribeUsers) {
-        var label = $(document.createElement("label"));
+    if (canSubscribe) {
+        var label = createElement("label");
         label.addClassName("subscriptionArea");
-        var cb = document.createElement("input");
+        var cb = createElement("input");
         cb.type = "checkbox";
         label.appendChild(cb);
         label.appendChild(document.createTextNode(_("Subscribe User")));
@@ -131,9 +137,16 @@ function openRightsForUserID(userID) {
     var elements = url.split("/");
     elements[elements.length-1] = "userRights?uid=" + userID;
 
+    var height = AclEditor.userRightsHeight;
+    if (userID == "anonymous") {
+        height -= 42;
+        if (CurrentModule() == "Contacts") {
+            height -= 21;
+        }
+    }
     window.open(elements.join("/"), "",
                 "width=" + AclEditor.userRightsWidth
-                + ",height=" + AclEditor.userRightsHeight
+                + ",height=" + height
                 + ",resizable=0,scrollbars=0,toolbar=0,"
                 + "location=0,directories=0,status=0,menubar=0,copyhistory=0");
 }
@@ -146,28 +159,28 @@ function openRightsForUser(button) {
     return false;
 }
 
-function openRightsForDefaultUser(event) {
-    this.blur(); // required by IE
-    openRightsForUserID(defaultUserID);
-    Event.stop(event);
-}
-
 function onOpenUserRights(event) {
     openRightsForUser();
     preventDefault(event);
 }
 
 function onAclLoadHandler() {
-    defaultUserID = $("defaultUserID").value;
-    var defaultRolesBtn = $("defaultRolesBtn");
-    if (defaultRolesBtn) {
-        defaultRolesBtn.observe("click", openRightsForDefaultUser);
-    }
     var ul = $("userList");
     var lis = ul.childNodesWithTag("li");
     for (var i = 0; i < lis.length; i++)
         setEventsOnUserNode(lis[i]);
 
+    defaultUserID = $("defaultUserID").value;
+    var userNode = nodeForUser(_("Any Authenticated User"),
+                               defaultUserID);
+    userNode.addClassName("any-user");
+    ul.appendChild(userNode);
+    if (CurrentModule() != "Mail") {
+        userNode = nodeForUser(_("Public Access"), "anonymous");
+        userNode.addClassName("anonymous-user");
+        ul.appendChild(userNode);
+    }
+    
     var buttonArea = $("userSelectorButtons");
     if (buttonArea) {
         var buttons = buttonArea.childNodesWithTag("a");

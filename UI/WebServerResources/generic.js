@@ -1497,6 +1497,22 @@ function configureLinkBanner() {
     }
 }
 
+function CurrentModule() {
+    var module = null;
+    if (ApplicationBaseURL) {
+        var parts = ApplicationBaseURL.split("/");
+        var last = parts.length - 1;
+        while (last > -1 && parts[last] == "") {
+            last--;
+        }
+        if (last > -1) {
+            module = parts[last];
+        }
+    }
+
+    return module;
+}
+
 /* accessing another user's data */
 function UserFolderURLForUser(user) {
     var folderArray = UserFolderURL.split("/");

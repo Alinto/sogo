@@ -14,12 +14,18 @@
     <input type="hidden" name="uid" var:value="uid"/>
     <div class="title">
       <var:if condition="userIsDefaultUser">
-	<label><span class="value"><var:string label:value="Default Roles"
+	<label><span class="value"><var:string label:value="Any Authenticated User"
 	      /></span></label>
-      </var:if><var:if condition="userIsDefaultUser" const:negate="YES">
-	<label><var:string label:value="User rights for:"/><br/>
-	  <span class="value"><var:string value="userDisplayName"
-	      /></span></label></var:if>
+      </var:if><var:if condition="userIsDefaultUser" const:negate="YES"
+        ><var:if condition="userIsAnonymousUser"
+          ><label><span class="value"><var:string label:value="Public Access"
+                /></span></label
+            ></var:if
+          ><var:if condition="userIsAnonymousUser" const:negate="YES"
+          ><label><var:string label:value="User rights for:"/><br/>
+            <span class="value"><var:string value="userDisplayName"
+                /></span></label></var:if>
+      </var:if>
     </div>
     <div class="calendarUserRights">
       <var:foreach list="rightTypes" item="currentRightType">
@@ -32,17 +38,20 @@
 		   /><hr/>
       </var:foreach>
     </div>
-    <div class="basicUserRights">
-      <label><input type="checkbox" class="checkBox"
-	  const:name="ObjectCreator"
-	  var:checked="userCanCreateObjects"/><var:string
-	  label:value="This person can create objects in my calendar."/></label>
-      <br/>
-      <label><input type="checkbox" class="checkBox"
-	  const:name="ObjectEraser"
-	  var:checked="userCanEraseObjects"/><var:string
-	  label:value="This person can erase objects from my calendar."/></label>
-    </div>
+    <var:if condition="userIsAnonymousUser" const:negate="YES"
+      ><div class="basicUserRights">
+        <label><input type="checkbox" class="checkBox"
+            const:name="ObjectCreator"
+            var:checked="userCanCreateObjects"/><var:string
+            label:value="This person can create objects in my calendar."
+            /></label>
+        <br/>
+        <label><input type="checkbox" class="checkBox"
+            const:name="ObjectEraser"
+            var:checked="userCanEraseObjects"/><var:string
+            label:value="This person can erase objects from my calendar."
+            /></label>
+      </div></var:if>
     <div class="buttons">
       <a href="#" const:name="updateButton" id="updateButton" 
         class="button actionButton">

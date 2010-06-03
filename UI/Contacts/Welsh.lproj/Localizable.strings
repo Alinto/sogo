@@ -127,8 +127,10 @@
 "Unable to subscribe to that folder!"
 = "Methu tanysgrifio i'r ffolder yna.";
 
-"Default Roles" = "Rolau Gwreiddiol";
 "User rights for:" = "Hawliau defnyddiwr i:";
+
+"Any Authenticated User" = "Any Authenticated User";
+"Public Access" = "Public Access";
 
 "This person can add cards to this addressbook."
 = "Gall y person hwn ychwanegu cardiau i'r llyfr cyfeiriadau yma.";

@@ -1,3 +1,30 @@
+2010-06-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/generic.js (CurrentModule): new function
+	that returns the name of the currently active module.
+
+	* UI/WebServerResources/UIxAclEditor.js (addUser): take into
+	account the fact that the "default roles" button has been replaced
+	with a new "authenticated users" entry and that we want to keep
+	that entry at the end of the list.
+	(nodeForUser): added a "canSubscribe" parameter that determines
+	whether the "subcribe user" button should be displayed.
+	(openRightsForUserId): when the user id is "anonymous", the acl
+	window is reduced by 42 pixels. If the window to display is the
+	one pertaining to contacts rights, 21 pixels are substracted again.
+	(openRightsForDefaultUser): removed function.
+
+	* UI/Scheduler/UIxCalUserRightsEditor.m (-objectRights): the list
+	of rights must be limited to the immutative ones whe the active
+	user is "anonymous".
+
+	* UI/Common/UIxUserRightsEditor.m (-userIsAnonymousUser): new
+	accessor that returns whether the selected user is "anonymous", in
+	which case certain UI elements need to be adapted.
+
+	* UI/Common/UIxAclEditor.m (-_prepareUsers): added support for
+	"anonymous" user id.
+
 2010-06-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/*.js: replaced all remaining calls to

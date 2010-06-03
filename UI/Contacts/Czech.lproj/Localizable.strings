@@ -143,8 +143,10 @@
 "Unable to subscribe to that folder!"
 = "Nemůžete se přihlásit k odběru této složky!";
 
-"Default Roles" = "Výchozí role";
 "User rights for:" = "Uživatelská práva pro:";
+
+"Any Authenticated User" = "Any Authenticated User";
+"Public Access" = "Public Access";
 
 "This person can add cards to this addressbook."
 = "Tato osoba může přidávat kontakty do této složky.";

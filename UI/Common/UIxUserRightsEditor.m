@@ -70,6 +70,11 @@
   return [uid isEqualToString: defaultUserID];
 }
 
+- (BOOL) userIsAnonymousUser
+{
+  return [uid isEqualToString: @"anonymous"];
+}
+
 - (NSString *) userDisplayName
 {
   SOGoUserManager *um;
@@ -99,6 +104,7 @@
 
       um = [SOGoUserManager sharedUserManager];
       if ([newUID isEqualToString: defaultUserID]
+	  || [newUID isEqualToString: @"anonymous"]
 	  || [[um getEmailForUID: newUID] length] > 0)
 	{
 	  if (![newUID hasPrefix: @"@"])

@@ -35,8 +35,6 @@
       <div class="userSelector" id="userRoles">
 	<var:if condition="canModifyAcls">
 	  <div id="userSelectorButtons">
-      <a href="#" id="defaultRolesBtn" class="button"><span>
-          <var:string label:value="Default Roles" /></span></a>
       <a href="#" id="aclAddUser" class="smallToolbarButton"><span>
           <img rsrc:src="add-contact.gif" label:title="Add..." /></span></a>
       <a href="#" id="aclDeleteUser" class="smallToolbarButton"><span>
@@ -45,12 +43,12 @@
 	</var:if>
 	<ul id="userList" multiselect="yes">
 	  <var:foreach list="usersForObject" item="currentUser"
-	    ><li var:id="currentUser">
-              <span class="userFullName"><img rsrc:src="abcard.gif"/>
-                <var:string value="currentUserDisplayName"
-                  /></span>
+            ><li var:id="currentUser" class="normal-user">
+              <span class="userFullName"
+                 ><var:string value="currentUserDisplayName"
+                 /></span>
               <var:if condition="canSubscribeUsers"
-                ><label class="subscriptionArea"><input type="checkbox"
+                 ><label class="subscriptionArea"><input type="checkbox"
                     var:checked="currentUserIsSubscribed"
                     var:disabled="currentUserIsSubscribed"
                     /><var:string label:value="Subscribe User"/></label

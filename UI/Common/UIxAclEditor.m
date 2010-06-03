@@ -128,7 +128,8 @@
 	// NOTE: don't remove the prefix if we want to identify the lists visually
 	currentUID = [currentUID substringFromIndex: 1];
       if (!([currentUID isEqualToString: ownerLogin]
-	    || [currentUID isEqualToString: defaultUserID]))
+	    || [currentUID isEqualToString: defaultUserID]
+            || [currentUID isEqualToString: @"anonymous"]))
 	[users addObjectUniquely: currentUID];
       currentUID = [aclsEnum nextObject];
     }

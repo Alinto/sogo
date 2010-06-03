@@ -143,8 +143,10 @@
 "Unable to subscribe to that folder!"
 = "Du kan inte prenumrera på mappen.";
 
-"Default Roles" = "Standardroller";
 "User rights for:" = "Användarrättigheter för:";
+
+"Any Authenticated User" = "Any Authenticated User";
+"Public Access" = "Public Access";
 
 "This person can add cards to this addressbook."
 = "Personen kan lägga till addresskort i adressboken.";

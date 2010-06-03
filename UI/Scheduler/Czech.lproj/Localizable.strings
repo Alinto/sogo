@@ -131,8 +131,10 @@
 
 /* acls */
 
-"Default Roles" = "Výchozí role";
 "User rights for:" = "Uživatelská práva pro:";
+
+"Any Authenticated User" = "Any Authenticated User";
+"Public Access" = "Public Access";
 
 "label_Public" = "Veřejné";
 "label_Private" = "Soukromé";

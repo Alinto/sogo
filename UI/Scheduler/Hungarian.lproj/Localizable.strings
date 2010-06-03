@@ -131,8 +131,10 @@
 
 /* acls */
 
-"Default Roles" = "Alapértelmezett jogok";
 "User rights for:" = "Felhasználói jogosultságok:";
+
+"Any Authenticated User" = "Any Authenticated User";
+"Public Access" = "Public Access";
 
 "label_Public" = "Nyilvános";
 "label_Private" = "Magán";

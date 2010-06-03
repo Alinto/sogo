@@ -131,8 +131,10 @@
 
 /* acls */
 
-"Default Roles" = "Роли по умолчанию";
 "User rights for:" = "Права пользователя для:";
+
+"Any Authenticated User" = "Any Authenticated User";
+"Public Access" = "Public Access";
 
 "label_Public" = "Публичное событие";
 "label_Private" = "Личное событие";

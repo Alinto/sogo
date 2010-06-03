@@ -59,15 +59,28 @@ UL#userList
 UL#userList LI
 { clear: both;
   cursor: pointer;
-  height: 2em;
+  height: 20px;
   text-align: right;
-  padding-left: 3px; }
+  margin-left: 0px;
+  padding-left: 24px;
+  background-repeat: no-repeat;
+  background-position: 4px center; }
+
+UL#userList LI.normal-user
+{ background-image: url("abcard.png"); }
+
+UL#userList LI.any-user
+{ background-image: url("abcard-anyone.png"); }
+
+UL#userList LI.anonymous-user
+{ background-image: url("abcard-anonymous.png"); }
 
 DIV#userSelectorButtons A.smallToolbarButton
 { float: left; }
 
 SPAN.userFullName
-{ float: left; }
+{ float: left;
+  margin-top: 2px; }
 
 LABEL.subscriptionArea
 { padding-right: 5px; }

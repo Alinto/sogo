@@ -85,16 +85,11 @@
   NSEnumerator *commonRights;
   NSString *currentCommonRight;
 
-  rightsForType = [NSMutableArray new];
-  [rightsForType autorelease];
+  rightsForType = [NSMutableArray arrayWithCapacity: 5];
   commonRights = [[self objectRights] objectEnumerator];
-  currentCommonRight = [commonRights nextObject];
-  while (currentCommonRight)
-    {
-      [rightsForType addObject: [NSString stringWithFormat: @"%@%@",
-					  type, currentCommonRight]];
-      currentCommonRight = [commonRights nextObject];
-    }
+  while ((currentCommonRight = [commonRights nextObject]))
+    [rightsForType addObject: [NSString stringWithFormat: @"%@%@",
+                                        type, currentCommonRight]];
 
   return rightsForType;
 }
@@ -137,9 +132,11 @@
 
 - (NSArray *) objectRights
 {
-  return
-    [NSArray arrayWithObjects:
-	       @"Viewer", @"DAndTViewer", @"Modifier", @"Responder", @"None", nil];
+  return ([uid isEqualToString: @"anonymous"]
+          ? [NSArray arrayWithObjects: @"Viewer", @"DAndTViewer", @"None",
+                     nil]
+          : [NSArray arrayWithObjects: @"Viewer", @"DAndTViewer", @"Modifier",
+                     @"Responder", @"None", nil]);
 }
 
 - (void) setCurrentRight: (NSString *) newCurrentRight
