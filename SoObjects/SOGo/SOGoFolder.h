@@ -41,6 +41,9 @@
 
 - (NSString *) folderType;
 
+- (NSArray *) toOneRelationshipKeys;
+- (NSArray *) toManyRelationshipKeys;
+
 - (BOOL) isValidContentName: (NSString *) name;
 
 /* sorting */
