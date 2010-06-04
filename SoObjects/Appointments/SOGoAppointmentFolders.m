@@ -47,6 +47,8 @@
 #import <SOGo/SOGoWebDAVAclManager.h>
 
 #import "SOGoAppointmentFolder.h"
+#import "SOGoAppointmentFolderICS.h"
+#import "SOGoAppointmentFolderXML.h"
 #import "SOGoAppointmentInboxFolder.h"
 #import "SOGoWebAppointmentFolder.h"
 #import "SOGoUser+Appointments.h"
@@ -62,6 +64,22 @@
 @end
 
 @implementation SOGoAppointmentFolders
+
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      folderObjectKeys = nil;
+    }
+
+  return self;
+}
+
+- (void) dealloc
+{
+  [folderObjectKeys release];
+  [super dealloc];
+}
 
 + (NSString *) gcsFolderType
 {
@@ -118,6 +136,42 @@
   return keys;
 }
 
+- (NSArray *) folderObjectKeys
+{
+  NSArray *folders;
+  SOGoAppointmentFolder *folder;
+  NSString *folderObjectKey;
+  int count, max;
+
+  if (!folderObjectKeys)
+    {
+      folders = [self subFolders];
+      max = [folders count];
+      folderObjectKeys = [[NSMutableArray alloc] initWithCapacity: max];
+      for (count = 0; count < max; count++)
+        {
+          folder = [folders objectAtIndex: count];
+          if ([folder isMemberOfClass: [SOGoAppointmentFolder class]]
+              && ![folder isSubscription])
+            {
+              folderObjectKey = [NSString stringWithFormat: @"%@.ics",
+                                 [folder nameInContainer]];
+              [folderObjectKeys addObject: folderObjectKey];
+              folderObjectKey = [NSString stringWithFormat: @"%@.xml",
+                                 [folder nameInContainer]];
+              [folderObjectKeys addObject: folderObjectKey];
+            }
+        }
+    }
+
+  return folderObjectKeys;
+}
+
+- (NSArray *) toOneRelationshipKeys
+{
+  return [self folderObjectKeys];
+}
+
 - (id) lookupName: (NSString *) name
         inContext: (WOContext *) lookupContext
           acquire: (BOOL) acquire
@@ -127,6 +181,17 @@
   if ([name isEqualToString: @"inbox"])
     obj = [SOGoAppointmentInboxFolder objectWithName: name
                                          inContainer: self];
+  else if ([[self folderObjectKeys] containsObject: name])
+    {
+      if ([name hasSuffix: @".ics"])
+        obj = [SOGoAppointmentFolderICS objectWithName: name
+                                           inContainer: self];
+      else if ([name hasSuffix: @".xml"])
+        obj = [SOGoAppointmentFolderXML objectWithName: name
+                                           inContainer: self];
+      else
+        obj = nil;
+    }
   else
     obj = [super lookupName: name inContext: lookupContext acquire: NO];
 

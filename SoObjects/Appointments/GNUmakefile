@@ -14,7 +14,7 @@ Appointments_OBJC_FILES = \
 	iCalRepeatableEntityObject+SOGo.m	\
 	iCalEvent+SOGo.m	 	\
 	iCalEventChanges+SOGo.m 	\
-	iCalPerson+SOGo.m 	\
+	iCalPerson+SOGo.m	 	\
 	iCalToDo+SOGo.m		 	\
 	\
 	SOGoCalendarComponent.m		\
@@ -22,10 +22,13 @@ Appointments_OBJC_FILES = \
 	SOGoTaskObject.m		\
 	SOGoComponentOccurence.m	\
 	SOGoAppointmentOccurence.m	\
-	SOGoTaskOccurence.m	\
+	SOGoTaskOccurence.m		\
 	SOGoAppointmentFolder.m		\
-	SOGoAppointmentInboxFolder.m		\
-	SOGoWebAppointmentFolder.m		\
+	SOGoAppointmentFolderICS.m	\
+	SOGoAppointmentFolderObject.m	\
+	SOGoAppointmentFolderXML.m	\
+	SOGoAppointmentInboxFolder.m	\
+	SOGoWebAppointmentFolder.m	\
 	SOGoAppointmentFolders.m	\
 	SOGoFreeBusyObject.m		\
 	SOGoUser+Appointments.m	\

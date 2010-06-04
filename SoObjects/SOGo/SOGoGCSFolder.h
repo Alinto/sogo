@@ -116,6 +116,8 @@
 - (NSDictionary *) davSQLFieldsTable;
 - (NSDictionary *) parseDAVRequestedProperties: (DOMElement *) propElement;
 
+- (NSString *) davCollectionTag;
+
 @end
 
 #endif /* __SOGo_SOGoGCSFolder_H__ */
