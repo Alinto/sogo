@@ -27,6 +27,7 @@
 #import "iCalDateTime.h"
 #import "iCalRecurrenceRule.h"
 #import "iCalByDayMask.h"
+#import "iCalUTCOffset.h"
 
 #import "iCalTimeZonePeriod.h"
 
@@ -40,9 +41,10 @@
     tagClass = [iCalRecurrenceRule class];
   else if ([classTag isEqualToString: @"DTSTART"])
     tagClass = [iCalDateTime class];
-  else if ([classTag isEqualToString: @"TZNAME"]
-           || [classTag isEqualToString: @"TZOFFSETFROM"]
+  else if ([classTag isEqualToString: @"TZOFFSETFROM"]
            || [classTag isEqualToString: @"TZOFFSETTO"])
+    tagClass = [iCalUTCOffset class];
+  else if ([classTag isEqualToString: @"TZNAME"])
     tagClass = [CardElement class];
   else
     tagClass = [super classForTag: classTag];

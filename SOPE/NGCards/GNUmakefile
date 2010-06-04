@@ -26,7 +26,9 @@ libNGCards_HEADER_FILES =  		\
 	\
 	CardElement.h			\
 	CardGroup.h			\
+	\
 	CardVersitRenderer.h		\
+	iCalXMLRenderer.h		\
 	\
 	NGCards.h			\
 	iCalAlarm.h			\
@@ -49,6 +51,7 @@ libNGCards_HEADER_FILES =  		\
 	iCalTimeZonePeriod.h		\
 	iCalToDo.h			\
 	iCalTrigger.h			\
+	iCalUTCOffset.h			\
 					\
 	NSCalendarDate+ICal.h		\
 	\
@@ -75,7 +78,9 @@ libNGCards_OBJC_FILES =    		\
 	\
 	CardElement.m			\
 	CardGroup.m			\
+	\
 	CardVersitRenderer.m		\
+	iCalXMLRenderer.m		\
 	\
 	iCalAlarm.m			\
 	iCalAttachment.m		\
@@ -99,6 +104,7 @@ libNGCards_OBJC_FILES =    		\
 	iCalTimeZonePeriod.m		\
 	iCalToDo.m			\
 	iCalTrigger.m			\
+	iCalUTCOffset.m			\
 	iCalWeeklyRecurrenceCalculator.m\
 	iCalYearlyRecurrenceCalculator.m\
 	\

@@ -1,3 +1,11 @@
+2010-06-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* iCalXMLRenderer.m: new class module for exporting iCalCalendar
+	objects as XML files.
+
+	* iCalUTCOffset.m: new class module for handling of the
+	"tzoffsetfrom" and "tzoffsetto" elements.
+
 2010-05-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* iCalPerson.m (-setParticipationStatus:, -participationStatus):
