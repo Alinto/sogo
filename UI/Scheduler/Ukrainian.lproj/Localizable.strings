@@ -1,0 +1,546 @@
+/* this file is in UTF-8 format! */
+
+/* Tooltips */
+
+"Create a new event" = "Створити нову подію";
+"Create a new task" = "Створити нове завдання";
+"Edit this event or task" = "Редагувати цю подію або завдання";
+"Delete this event or task" = "Вилучити цю подію або завдання";
+"Go to today" = "Перейти на сьогодні";
+"Switch to day view" = "Перейти до огляду днів";
+"Switch to week view" = "Перейти до огляду тижнів";
+"Switch to month view" = "Перейти до огляду місяців";
+"Reload all calendars" = "Перевантажити всі календарі";
+
+/* Tabs */
+"Date" = "Дата";
+"Calendars" = "Календарі";
+
+/* Day */
+
+"Sunday" = "Неділя";
+"Monday" = "Понеділок";
+"Tuesday" = "Вівторок";
+"Wednesday" = "Середа";
+"Thursday" = "Четвер";
+"Friday" = "П’ятниця";
+"Saturday" = "Субота";
+"DayOfTheMonth" = "День місяця";
+
+"Sun" = "Нед";
+"Mon" = "Пон";
+"Tue" = "Вт";
+"Wed" = "Сер";
+"Thu" = "Чтв";
+"Fri" = "Птн";
+"Sat" = "Суб";
+
+"a2_Sunday" = "Нд";
+"a2_Monday" = "Пн";
+"a2_Tuesday" = "Вт";
+"a2_Wednesday" = "Ср";
+"a2_Thursday" = "Чт";
+"a2_Friday" = "Пт";
+"a2_Saturday" = "Сб";
+
+"dayLabelFormat" = "%d.%m.%Y";
+"today" = "Сьогодні";
+
+"Previous Day" = "Одинь день назад";
+"Next Day" = "Один день вперед";
+
+/* Week */
+
+"Week" = "Тиждень";
+"this week" = "цей тиждень";
+
+"Week %d" = "Тиждень %d";
+
+"Previous Week" = "Один тиждень назад";
+"Next Week" = "Один тиждень вперед";
+/* Month */
+
+"this month" = "this month";
+
+"this month" = "цей місяць";
+
+"January" = "Січень";
+"February" = "Лютий";
+"March" = "Березень";
+"April" = "Квітень";
+"May" = "Травень";
+"June" = "Червень";
+"July" = "Липень";
+"August" = "Серпень";
+"September" = "Вересень";
+"October" = "Жовтень";
+"November" = "Листопад";
+"December" = "Грудень";
+
+"a3_January" = "Січня";
+"a3_February" = "Лютого";
+"a3_March" = "Березня";
+"a3_April" = "Квітня";
+"a3_May" = "Травня";
+"a3_June" = "Червня";
+"a3_July" = "Липня";
+"a3_August" = "Серпня";
+"a3_September" = "Вересня";
+"a3_October" = "Жовтня";
+"a3_November" = "Листопада";
+"a3_December" = "Грудня";
+
+"Previous Month" = "Один місяць назад";
+"Next Month" = "Один місяць вперед";
+
+/* Year */
+
+"this year" = "цей рік";
+
+/* Menu */
+
+"Calendar" = "Календар";
+"Contacts" = "Адресна книга";
+
+"New Calendar..." = "Новий календар...";
+"Delete Calendar" = "Вилучити календар";
+"Unsubscribe Calendar" = "Відписатись від календаря";
+"Sharing..." = "Спільний доступ...";
+"Export Calendar..." = "Експортувати календар...";
+"Import Events..." = "Імпортувати події...";
+"Import Events" = "Імпортувати події";
+"Select an iCalendar file (.ics)." = "Вибрати файл iCalendar (.ics)";
+"Upload" = "Завантажити";
+"Publish Calendar..." = "Опублікувати календар...";
+"Reload Remote Calendars" = "Перевантажити віддалені календарі";
+"Properties" = "Властивості";
+
+"Done" = "Зроблено";
+"An error occured while importing calendar." = "Виникла помилка під час імпорту календаря.";
+"No event was imported." = "Жодну подію не було імпортовано.";
+"A total of %{0} events were imported in the calendar." = "Разом %{0} подій було імпортовано в цьому календарі.";
+
+"Compose E-Mail to All Attendees" = "Створити повідомлення для всіх учасників";
+"Compose E-Mail to Undecided Attendees" = "Створити повідомлення до всіх учасників, що ще не визначились з участю";
+
+/* Folders */
+"Personal calendar" = "Персональний календар";
+
+/* Misc */
+
+"OpenGroupware.org" = "OpenGroupware.org";
+"Forbidden" = "Заборонено";
+
+/* acls */
+
+"Default Roles" = "Ролі за замовчанням";
+"User rights for:" = "Права користувача для:";
+
+"label_Public" = "Публічна подія";
+"label_Private" = "Особиста подія";
+"label_Confidential" = "Показувати лише час та дату";
+
+"label_Viewer" = "View All";
+"label_DAndTViewer" = "View the Date & Time";
+"label_Modifier" = "Modify";
+"label_Responder" = "Respond To";
+"label_None" = "None";
+
+"label_Viewer" = "Показувати все";
+"label_DAndTViewer" = "Показувати дату та час";
+"label_Modifier" = "Змінити";
+"label_Responder" = "Відповісти на";
+"label_None" = "Нічого";
+
+"This person can create objects in my calendar."
+= "Цей учасник може додавати записи до мого календаря.";
+"This person can erase objects from my calendar."
+= "Цей учасник може вилучати записи з мого календаря.";
+
+/* Button Titles */
+
+"New Calendar..." = "Новий календар...";
+"Subscribe to a Calendar..." = "Підписатись на календар...";
+"Remove the selected Calendar" = "Вилучити вибраний календар";
+
+"Name of the Calendar" = "Назва календаря";
+
+"new" = "Новий";
+"printview" = "Друкувати";
+"edit" = "Змінити";
+"delete" = "Вилучити";
+"proposal" = "Пропозиція";
+"Save and Close" = "Зберегти і закрити";
+"Close" = "Закрити";
+"Invite Attendees" = "Запросити до зустрічі";
+"Attach" = "Вкласти";
+"Update" = "Перевантажити";
+"Cancel" = "Скасувати";
+"show_rejected_apts" = "Показати відхилені зустрічі";
+"hide_rejected_apts" = "Сховати відхилені зустрічі";
+
+/* Schedule */
+
+"Schedule" = "Розклад";
+"No appointments found" = "Не знайдено призначених зустрічей";
+"Meetings proposed by you" = "Ваші пропозиції про зустрічі";
+"Meetings proposed to you" = "Пропозиції зустрічі Вам";
+"sched_startDateFormat" = "%d/%m %H:%M";
+"action" = "Дія";
+"accept" = "Погодитись";
+"decline" = "Відмовитись";
+"more attendees" = "Запросити ще";
+"Hide already accepted and rejected appointments" = "Приховати учасників, які погодились або відмовились.";
+"Show already accepted and rejected appointments" = "Показати учасників, які погодились або відмовились.";
+
+/* Appointments */
+
+"Appointment viewer" = "Appointment Viewer";
+"Appointment editor" = "Appointment Editor";
+"Appointment proposal" = "Appointment Proposal";
+"Appointment on" = "Appointment on";
+"Start:" = "Початок:";
+"End:" = "Кінець:";
+"Due Date:" = "Дійсно до:";
+"Title:" = "Назва:";
+"Calendar:" = "Календар:";
+"Name" = "Ім’я";
+"Email" = "E-Mail";
+"Status:" = "Стан:";
+"% complete" = "% виконано";
+"Location:" = "Місце:";
+"Priority:" = "Пріоритет:";
+"Privacy" = "Конфіденційність";
+"Cycle" = "Цикл";
+"Cycle End" = "Закінчення циклу";
+"Categories" = "Категорії";
+"Classification" = "Визначення";
+"Duration" = "Термін";
+"Attendees:" = "Учасники:";
+"Resources" = "Ресурси";
+"Organizer:" = "Організатор:";
+"Description:" = "Опис:";
+"Document:" = "Документ:";
+"Category:" = "Категорія:";
+"Repeat:" = "Повтор:";
+"Reminder:" = "Нагадування:";
+"General:" = "Загальне:";
+"Reply:" = "Відповідь:";
+
+"Target:" = "Введіть веб-сторінку або місце документа:";
+
+"attributes" = "атрибути";
+"attendees" = "учасники";
+"delegated from" = "переслано від";
+
+/* checkbox title */
+"is private" = "особисте";
+
+/* classification */
+"Public" = "Загальна";
+"Private" = "Особиста";
+
+/* text used in overviews and tooltips */
+"empty title" = "Порожній заголовок";
+"private appointment" = "Особисте запрошення";
+
+"Change..." = "Змінити...";
+
+/* Appointments (participation state) */
+
+"partStat_NEEDS-ACTION" = "Вимагає дії";
+"partStat_ACCEPTED" = "Прийнято";
+"partStat_DECLINED" = "Відхилено";
+"partStat_TENTATIVE" = "Під питанням";
+"partStat_DELEGATED" = "Переслано";
+"partStat_OTHER" = "Інше";
+
+/* Appointments (error messages) */
+
+"Conflicts found!" = "Виникли конфлікти!";
+"Invalid iCal data!" = "Неправильні дані iCal!";
+"Could not create iCal data!" = "Не можу додати дані iCal!";
+
+/* Searching */
+
+"view_all" = "Всі";
+"view_today" = "Сьогодні";
+"view_next7" = "Наступні 7 днів";
+"view_next14" = "Наступні 14 днів";
+"view_next31" = "Наступні 31 день";
+"view_thismonth" = "Цей місяць";
+"view_future" = "Всі майбутні події";
+"view_selectedday" = "Вибраний день";
+
+"View:" = "Перегляд:";
+"Title or Description" = "Назва або опис";
+
+"Search" = "Пошук";
+"Search attendees" = "Пошук учасників";
+"Search resources" = "Пошук ресурсів";
+"Search appointments" = "Пошук зустрічей";
+
+"All day Event" = "Подія всього дня";
+"check for conflicts" = "Перевірити на конфлікти";
+
+"Browse URL" = "Перейти до адреси";
+
+"newAttendee" = "Додати учасника";
+
+/* calendar modes */
+
+"Overview" = "Огляд";
+"Chart" = "Діаграма";
+"List" = "Перелік";
+"Columns" = "Стовпці";
+
+/* Priorities */
+
+"prio_0" = "Не зазначено";
+"prio_1" = "Високий";
+"prio_2" = "Високий";
+"prio_3" = "Високий";
+"prio_4" = "Високий";
+"prio_5" = "Нормальний";
+"prio_6" = "Низький";
+"prio_7" = "Низький";
+"prio_8" = "Низький";
+"prio_9" = "Низький";
+
+/* access classes (privacy) */
+"PUBLIC_vevent" = "Публічна подія";
+"CONFIDENTIAL_vevent" = "Конфіденційна подія";
+"PRIVATE_vevent" = "Особиста подія";
+"PUBLIC_vtodo" = "Загальнодоступне завдання";
+"CONFIDENTIAL_vtodo" = "Конфіденційне завдання";
+"PRIVATE_vtodo" = "Особисте завдання";
+
+/* status type */
+"status_" = "Не вибрано";
+"status_NOT-SPECIFIED" = "Не зазначено";
+"status_TENTATIVE" = "Під питанням";
+"status_CONFIRMED" = "Підтверджено";
+"status_CANCELLED" = "Скасовано";
+"status_NEEDS-ACTION" = "Вимагає дії";
+"status_IN-PROCESS" = "В процесі";
+"status_COMPLETED" = "Виконано";
+
+/* Cycles */
+
+"cycle_once" = "cycle_once";
+"cycle_daily" = "cycle_daily";
+"cycle_weekly" = "cycle_weekly";
+"cycle_2weeks" = "cycle_2weeks";
+"cycle_4weeks" = "cycle_4weeks";
+"cycle_monthly" = "cycle_monthly";
+"cycle_weekday" = "cycle_weekday";
+"cycle_yearly" = "cycle_yearly";
+
+"cycle_end_never" = "cycle_end_never";
+"cycle_end_until" = "cycle_end_until";
+
+"Recurrence pattern" = "Шаблон повторення";
+"Range of recurrence" = "Діапазон повтору";
+
+"Repeat" = "Повтор";
+"Daily" = "щодня";
+"Weekly" = "щотижня";
+"Monthly" = "щомісяця";
+"Yearly" = "щороку";
+"Every" = "Кожні";
+"Days" = "День(дні)";
+"Week(s)" = "Тиждень(ні)";
+"On" = "";
+"Month(s)" = "Місяць(і)";
+"The" = "The";
+"Recur on day(s)" = "Повторювати по днях";
+"Year(s)" = "Рік(роки)";
+"cycle_of" = "з";
+"No end date" = "Без кінця";
+"Create" = "Створити";
+"appointment(s)" = "зустріч(і)";
+"Repeat until" = "Повтор до";
+
+"First" = "перший";
+"Second" = "другий";
+"Third" = "третій";
+"Fourth" = "четвертий";
+"Fift" = "п’ятий";
+"Last" = "останній";
+
+/* Appointment categories */
+
+"category_none" = "Без категорії";
+"category_labels" = "Важливий день,День народження,Справи,Дзвінки,Клієнти,Поточне,Користувачі,Обране,Продовження,Подарунки,Свято,Думки,Зустріч,Питання,Різне,Особисте,Проекти,Публічне свято,Поточне,Постачальники,Поїздка,Відпустка";
+
+"repeat_NEVER" = "без повтору";
+"repeat_DAILY" = "щодня";
+"repeat_WEEKLY" = "щотижня";
+"repeat_BI-WEEKLY" = "щодругий тиждень";
+"repeat_EVERY WEEKDAY" = "усі робочі дні";
+"repeat_MONTHLY" = "щомісяця";
+"repeat_YEARLY" = "щороку";
+"repeat_CUSTOM" = "власне...";
+
+"reminder_NONE" = "без нагадування";
+"reminder_5_MINUTES_BEFORE" = "за 5 хвилин";
+"reminder_10_MINUTES_BEFORE" = "за 10 хвилин";
+"reminder_15_MINUTES_BEFORE" = "за 15 хвилин";
+"reminder_30_MINUTES_BEFORE" = "за 30 хвилин";
+"reminder_45_MINUTES_BEFORE" = "за 45 хвилин";
+"reminder_1_HOUR_BEFORE" = "за 1 годину";
+"reminder_2_HOURS_BEFORE" = "за 2 години";
+"reminder_5_HOURS_BEFORE" = "за 5 годин";
+"reminder_15_HOURS_BEFORE" = "за 15 годин";
+"reminder_1_DAY_BEFORE" = "за 1 день";
+"reminder_2_DAYS_BEFORE" = "за 2 дні";
+"reminder_1_WEEK_BEFORE" = "за 1 тиждень";
+"reminder_CUSTOM" = "власне...";
+
+"reminder_MINUTES" = "хвилин";
+"reminder_HOURS" = "годин";
+"reminder_DAYS" = "днів";
+"reminder_BEFORE" = "до";
+"reminder_AFTER" = "після";
+"reminder_START" = "початку події";
+"reminder_END" = "кінця події";
+"Reminder Details" = "Деталі нагадування";
+
+"zoom_400" = "400%";
+"zoom_200" = "200%";
+"zoom_100" = "100%";
+"zoom_50" = "50%";
+"zoom_25" = "25%";
+
+/* transparency */
+
+"Show Time as Free" = "В цей час я вільний";
+
+/* validation errors */
+
+validate_notitle           = "Не зазначено назву, продовжити?";
+validate_invalid_startdate = "Неправильна дата початку!";
+validate_invalid_enddate   = "Неправильна дата кінця!";
+validate_endbeforestart    = "Дата закінчення передує даті початку.";
+
+"Tasks" = "Завдання";
+"Show completed tasks" = "Показати виконані завдання";
+
+/* tabs */
+"Task" = "Завдання";
+"Event" = "Подія";
+"Recurrence" = "Повторення";
+
+/* toolbar */
+"New Event" = "Нова подія";
+"New Task" = "Нове завдання";
+"Edit" = "Змінити";
+"Delete" = "Вилучити";
+"Go to Today" = "Сьогодні";
+"Day View" = "День";
+"Week View" = "Тиждень";
+"Month View" = "Місяць";
+"Reload" = "Перевантажити";
+
+"eventPartStatModificationError" = "Неможливо змінити стан Вашої участі.";
+
+/* menu */
+"New Event..." = "Нова подія...";
+"New Task..." = "Нове завдання...";
+"Edit Selected Event..." = "Редагувати виділену подію...";
+"Delete Selected Event" = "Вилучити виділену подію";
+"Select All" = "Виділити все";
+"Workweek days only" = "Лише робочі дні";
+"Tasks in View" = "Перегляд завдань";
+
+"eventDeleteConfirmation" = "Подію буде вилучено без можливості відновлення.\nПродовжити?";
+"taskDeleteConfirmation" = "Завдання буде вилучено назавжди.\nПродовжити?";
+
+"You cannot remove nor unsubscribe from your personal calendar."
+= "Ви не можете вилучити персональнтй календар,а також відписатись від нього.";
+"Are you sure you want to delete the calendar \"%{0}\"?"
+= "Ви точно бажаєте вилучити календар \"%{0}\"?";
+
+/* Legend */
+"Required participant" = "Обов’язкові учасники";
+"Optional participant" = "Необов’язкові учасники";
+"Chair" = "Ведучий";
+
+"Needs action" = "Вимагає дії";
+"Accepted" = "Прийнято";
+"Declined" = "Скасовано";
+"Tentative" = "Під питанням";
+
+"Free" = "Вільно";
+"Busy" = "Зайнято";
+"Maybe busy" = "Можливо зайнято";
+"No free-busy information" = "Без інформації про зайнятість";
+
+/* FreeBusy panel buttons and labels */
+"Suggest time slot:" = "Запропонувати діапазон часу:";
+"Zoom:" = "Масштаб:";
+"Previous slot" = "Попередній діапазон";
+"Next slot" = "Наступний діапазон";
+"Previous hour" = "Попередня година";
+"Next hour" = "Наступна година";
+"Only office hours" = "Лише робочий час";
+
+/* apt list */
+"Title" = "Назва";
+"Start" = "Початок";
+"End" = "Кінець";
+"Location" = "Місце";
+"(Private Event)" = "(Особиста подія)";
+
+vevent_class0 = "(Публічна подія)";
+vevent_class1 = "(Особиста подія)";
+vevent_class2 = "(Конфіденційна подія)";
+
+vtodo_class0 = "(Спільне завдання)";
+vtodo_class1 = "(Особисте завдання)";
+vtodo_class2 = "(Конфіденційне завдання)";
+
+"closeThisWindowMessage" = "Thank you! You may now close this window or view your ";
+"Multicolumn Day View" = "Multicolumn Day View";
+
+"Please select an event or a task." = "Будь ласка, виберіть подію або завдання.";
+
+"editRepeatingItem" = "Ви збираєтесь змінити подію, що повторюється. Ви можете змінити властивості або виключно цієї події, але й всіх її повторень в майбутньому. Що Ви бажаєте змінити?";
+"button_thisOccurrenceOnly" = "Тільки цю подію";
+"button_allOccurrences" = "Всі повторення";
+
+/* Properties dialog */
+"Name:" = "Назва:";
+"Color:" = "Колір:";
+
+"Synchronization" = "Синхронізація";
+"Synchronize" = "Синхронізувати";
+"Tag:" = "Теґ:";
+
+"Display" = "Показати";
+"Show alarms" = "Сповіщення";
+"Show tasks" = "Завдання";
+
+/* Error messages */
+"dayFieldInvalid" = "Будь ласка, зазначте числове значення в полі дні, що більше або рівно 1.";
+"weekFieldInvalid" = "Будь ласка, зазначте числове значення в полі тиждень(і), що більше або рівно 1.";
+"monthFieldInvalid" = "Будь ласка, зазначте числове значення в полі місяць(і), що більше або рівно 1.";
+"monthDayFieldInvalid" = "Будь ласка, зазначте числове значення в полі день місяця, що більше або рівно 1.";
+"yearFieldInvalid" = "Будь ласка, зазначте числове значення в полі рік, що більше або рівно 1.";
+"appointmentFieldInvalid" = "Будь ласка, зазначте числове значення в полі запрошення, що більше або рівно 1.";
+"recurrenceUnsupported" = "Цей тип повторення наразі не підтримується.";
+"tagNotDefined" = "Вам потрібно зазначити теґ, щоб синхронізувати цей календар.";
+"tagAlreadyExists" = "Зазначений теґ вже співставлено з іншим календарем.";
+"tagHasChanged" = "Якщо Ви змінете теґ вашого календаря, то потрібно буде перевантажити дані на Вашому мобільному пристрої.\nПродовжити?";
+"tagWasAdded" = "Якшр Ви хочете синхронізувати цей календар, то потрібно буде перевантажити дані на Вашому мобільному пристрої.\nПродовжити?";
+"tagWasRemoved" = "Якщо Ви скасуєте режим синхронізації для цього календаря, то потрібно буде перевантажити дані на Вашому мобільному пристрої.\nПродовжити?";
+
+"Open Task..." = "Відкрити завдання...";
+"Mark Completed" = "Позначити виконаним";
+"Delete Task" = "Вилучити завдання";
+"Delete Event" = "Вилучити подію";
+
+"Subscribe to a web calendar..." = "Підписатись на веб-календар...";
+"URL of the Calendar" = "URL календаря";
+"Web Calendar" = "Веб-календар";
+"Reload on login" = "Перевантажувати під час запуску";

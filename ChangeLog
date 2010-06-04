@@ -1,3 +1,8 @@
+2010-06-03  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* Added Ukrainian translation (first pass) from
+	Oleksa Stasevych <oleksiy.stasevych@gmail.com>
+
 2010-06-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/generic.js (CurrentModule): new function

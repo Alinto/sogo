@@ -1,0 +1,224 @@
+/* toolbar */
+"Save and Close" = "Зберегти та закрити";
+"Close" = "Закрити без збереження";
+
+/* tabs */
+"General" = "Загальне";
+"Calendar Options" = "Календар";
+"Mail Options" = "Пошта";
+"Signature" = "Підпис";
+"Vacation" = "Відпустка";
+"Forward" = "Перенаправлення";
+"Identities" = "Облікові записи";
+"Password" = "Пароль";
+"Categories" = "Категорії";
+"Name" = "Назва";
+"Color" = "Колір";
+"Add" = "Додати";
+"Delete" = "Вилучити";
+
+
+/* vacation (auto-reply) */
+"Enable vacation auto reply" = "Увімкнути повідомлення про мою відсутність";
+"Auto reply message :" = "Текст автоматичної відповіді:";
+"Email addresses (separated by commas) :" = "Електронні адреси (розділені комами):";
+"Add default email addresses" = "Додати адреси за замовчанням";
+"Days between responses :" = "Днів між відповідями :";
+"Do not send responses to mailing lists" = "Не надсилати автоматичні відповіді на адреси розсилок";
+"Please specify your message and your email addresses for which you want to enable auto reply."
+= "Будь ласка, зазначте Ваше повідомлення та Ваші елекронні адреси, для яких потрібно увімкнути автоматичну відповідь.";
+
+/* forward messages */
+"Forward incoming messages" = "Перенаправляти вхідні повідомлення";
+"Forward to address :" = "Перенаправляти на адреси :";
+"Keep a copy" = "Зберігати копію";
+"Please specify an address to which you want to forward your messages."
+= "Будь ласка, зазначте адресу, на яку потрібно перенаправляти повідомлення, адресовані Вам.";
+
+
+/* d & t */
+"Current Time Zone :" = "Поточна часова зона :";
+"Short Date Format :" = "Стислий формат дати :";
+"Long Date Format :" = "Повний формат дати :";
+"Time Format :" = "Формат часу :";
+
+"default" = "Типово";
+
+"shortDateFmt_0" = "%d-%b-%y";
+
+"shortDateFmt_1" = "%d-%m-%y";
+"shortDateFmt_2" = "%d.%m.%y";
+"shortDateFmt_3" = "%e/%m/%y";
+
+"shortDateFmt_4" = "%d-%m-%Y";
+"shortDateFmt_5" = "%d/%m/%Y";
+
+"shortDateFmt_6" = "%m-%d-%y";
+"shortDateFmt_7" = "%m/%d/%y";
+"shortDateFmt_8" = "%m/%e/%y";
+
+"shortDateFmt_9" = "%y-%m-%d";
+"shortDateFmt_10" = "%y/%m/%d";
+"shortDateFmt_11" = "%y.%m.%d";
+
+"shortDateFmt_12" = "%Y-%m-%d";
+"shortDateFmt_13" = "%d.%m.%Y";
+"shortDateFmt_14" = "%Y.%m.%d";
+
+"shortDateFmt_15" = "";
+   
+"longDateFmt_0" = "%A, %B %d %Y р.";
+"longDateFmt_1" = "%B %d %Y р.";
+"longDateFmt_2" = "%A, %d %B %Y р.";
+"longDateFmt_3" = "%d %B %Y р.";
+"longDateFmt_4" = "";
+
+"timeFmt_0" = "%I:%M %p";
+"timeFmt_1" = "%H:%M";
+"timeFmt_2" = "";
+
+/* calendar */
+"Week begins on :" = "Тиждень починаєтья з :";
+"Day start time :" = "Робочий день починається о :";
+"Day end time :" = "Робочий день закінчується о :";
+"Day start time must be prior to day end time." = "Початок дня має бути ранішим за кінець дня.";
+"First week of year :" = "Перший тиждень року :";
+"Enable reminders for Calendar items" = "Увімкнути нагадування подій календаря";
+"Play a sound when a reminder comes due"
+= "Програти звук у разі сповіщення";
+"Default reminder :" = "Звичайне сповіщення :";
+
+"firstWeekOfYear_January1" = "Починається 1 січня";
+"firstWeekOfYear_First4DayWeek" = "Перший чотириденний тиждень";
+"firstWeekOfYear_FirstFullWeek" = "Перший повний тиждень";
+
+"reminderTime_0000" = "0 хвилин";
+"reminderTime_0005" = "5 хвилин";
+"reminderTime_0010" = "10 хвилин";
+"reminderTime_0015" = "15 хвилин";
+"reminderTime_0030" = "30 хвилин";
+"reminderTime_0100" = "1 година";
+"reminderTime_0200" = "2 години";
+"reminderTime_0400" = "4 години";
+"reminderTime_0800" = "8 годин";
+"reminderTime_1200" = "пів дня";
+"reminderTime_2400" = "1 день";
+"reminderTime_4800" = "2 дні";
+
+/* Mailer */
+"Show subscribed mailboxes only" = "Показувати лише поштові скриньки, на які я підписаний";
+"Check for new mail:" = "Перевіряти нову пошту:";
+"messagecheck_manually" = "Вручну";
+"messagecheck_every_minute" = "Щохвилини";
+"messagecheck_every_2_minutes" = "Кожні 2 хвилини";
+"messagecheck_every_5_minutes" = "Кожні 5 хвилин";
+"messagecheck_every_10_minutes" = "Кожні 10 хвилин";
+"messagecheck_every_20_minutes" = "Кожні 20 хвилин";
+"messagecheck_every_30_minutes" = "Кожні 30 хвилин";
+"messagecheck_once_per_hour" = "Раз на годину";
+
+"Forward messages:" = "Перенаправляти повідомлення:";
+"messageforward_inline" = "В тілі листа";
+"messageforward_attached" = "Вкладеним файлом";
+
+/* Identities */
+"Default identity:" = "Зазвичай я представляюсь як:";
+"Manage identities..." = "Керувати іменами...";
+"replyplacement_above" = "Починати мою відповідь над текстом, що цитується";
+"replyplacement_below" = "Починати мою відповідь під текстом, що цитується";
+"And place my signature" = "Та додати мій підпис";
+"signatureplacement_above" = "під відповіддю";
+"signatureplacement_below" = "під текстом листа, що цитується";
+"Compose messages in" = "Створювати повідомлення в форматі";
+"composemessagestype_html" = "HTML";
+"composemessagestype_text" = "Звичайний текст";
+
+"composeMessageChanged" = "Щоб змінити спосіб створення повідомлення потрібно зараз зберегти Ваші налаштування. Продовжити?";
+
+/* Additional Parameters */
+"Additional Parameters" = "Додаткові параметри";
+
+/* password */
+"New password:" = "Новий пароль:";
+"Confirmation:" = "Повтор нового пароля:";
+"Change" = "Змінити";
+
+/* Event+task categories */
+"category_none" = "Без категорії";
+"category_labels" = "Важливий день,День народження,Справи,Дзвінки,Клієнти,Поточне,Користувачі,Обране,Продовження,Подарунки,Свято,Думки,Зустріч,Питання,Різне,Особисте,Проекти,Публічне свято,Поточне,Постачальники,Поїздка,Відпустка";
+
+/* Default module */
+"Calendar" = "Календар";
+"Contacts" = "Адресна книга";
+"Mail" = "Електронна пошта";
+"Last" = "Останнє";
+"Default module :" = "Модуль за замовчанням :"; 
+
+"Language :" = "Language :";
+"choose" = "Choose ...";
+"Czech" = "Česky";
+"Dutch" = "Nederlands";
+"English" = "English";
+"French" = "Français";
+"German" = "Deutsch";
+"Hungarian" = "Magyar";
+"Italian" = "Italiano";
+"BrazilianPortuguese" = "Português brasileiro";
+"Russian" = "Русский";
+"Spanish" = "Español";
+"Swedish" = "Svenska";
+"Ukrainian" = "Українська";
+"Welsh" = "Cymraeg";
+
+/* Filters - UIxPreferences */
+"Filters" = "Фільтри";
+"Active" = "Увімкнено";
+"Move Up" = "Наверх";
+"Move Down" = "Вниз";
+
+/* Filters - UIxFilterEditor */
+"Filter name:" = "Назва фільтру:";
+"For incoming messages that" = "Для вхідних повідомлень, що";
+"match all of the following rules:" = "відповідають таким правилам:";
+"match any of the following rules:" = "відповідають будь-якому з таких правил:";
+"match all messages" = "відповідають всім повідомленням";
+"Perform these actions:" = "Виконати такі дії:";
+
+"Subject" = "Тема";
+"From" = "Від";
+"To" = "Кому";
+"Cc" = "Копія";
+"To or Cc" = "Кому або Копія";
+"Size (Kb)" = "Розмір (Кб)";
+"Header" = "Заголовок";
+"Flag the message with:" = "Позначити зірочкою повідомлення з:";
+"Discard the message" = "Скасувати повідомлення";
+"File the message in:" = "Зберегти повідомлення як:";
+"Keep the message" = "Зберегти повідомлення";
+"Forward the message to:" = "Пененаправити повідомлення на:";
+"Send a reject message:" = "Надіслати повідомлення про відмову в отриманні:";
+"Send a vacation message" = "Надіслати повідомлення про відсутність";
+"Stop processing filter rules" = "Припинити обробку правил фільтру";
+
+"is under" = "починається";
+"is over" = "закінчується";
+"is" = "є";
+"is not" = "не є";
+"contains" = "містить";
+"does not contain" = "не містить";
+"matches" = "збігається";
+"does not match" = "не збігається";
+"matches regex" = "збігається з регулярним виразом";
+"does not match regex" = "не з регулярним виразом";
+
+"Seen" = "Переглянуто";
+"Deleted" = "Вилучено";
+"Answered" = "Відповіли";
+"Flagged" = "Позначено зірочкою";
+"Junk" = "Спам";
+"Not Junk" = "Не спам";
+"Label 1" = "Позначка 1";
+"Label 2" = "Позначка 2";
+"Label 3" = "Позначка 3";
+"Label 4" = "Позначка 4";
+"Label 5" = "Позначка 5";

@@ -24,7 +24,7 @@ Contacts_RESOURCE_FILES +=		\
 	Version				\
 	product.plist			\
 
-Contacts_LANGUAGES = BrazilianPortuguese Czech Dutch English French German Hungarian Italian Russian Spanish Swedish Welsh
+Contacts_LANGUAGES = BrazilianPortuguese Czech Dutch English French German Hungarian Italian Russian Spanish Swedish Ukrainian Welsh
 
 Contacts_LOCALIZED_RESOURCE_FILES = Localizable.strings
 

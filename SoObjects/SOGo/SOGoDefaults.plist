@@ -34,7 +34,7 @@
     SOGoSupportedLanguages = ( "Czech", "Welsh", "English", "Spanish",
                                "French", "German", "Italian", "Hungarian",
                                "Dutch", "BrazilianPortuguese", "Russian",
-                               "Swedish");
+                               "Ukrainian", "Swedish");
 
     SOGoTimeZone = "UTC";
 
