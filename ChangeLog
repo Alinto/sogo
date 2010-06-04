@@ -1,3 +1,15 @@
+2010-06-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolderXML.[hm]: same as
+	below for XML.
+
+	* SoObjects/Appointments/SOGoAppointmentFolderICS.[hm]: new class
+	module that exports personal calendars as one ICS file.
+
+	* SoObjects/Appointments/SOGoAppointmentFolders.m
+	(-folderObjectKeys): new method that return the "toOne..." keys
+	mapping XML or ICS representation of calendars.
+
 2010-06-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/generic.js (CurrentModule): new function

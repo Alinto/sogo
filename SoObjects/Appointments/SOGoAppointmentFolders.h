@@ -28,6 +28,9 @@
 @class NSArray;
 
 @interface SOGoAppointmentFolders : SOGoParentFolder
+{
+  NSMutableArray *folderObjectKeys;
+}
 
 - (NSArray *) webCalendarIds;
 - (void) reloadWebCalendars: (BOOL) forceReload;

@@ -22,12 +22,12 @@
             "ViewDAndTOfPublicRecords" = ( "Owner", "PublicDAndTViewer" );
             "ViewDAndTOfPrivateRecords" = ( "Owner", "PrivateDAndTViewer" );
             "ViewDAndTOfConfidentialRecords" = ( "Owner", "ConfidentialDAndTViewer" );
-            "ModifyPublicRecords" = ( );
-            "ModifyPrivateRecords" = ( );
-            "ModifyConfidentialRecords" = ( );
-            "RespondToPublicRecords" = ( );
-            "RespondToPrivateRecords" = ( );
-            "RespondToConfidentialRecords" = ( );
+            "ModifyPublicRecords" = ( "NoOne" );
+            "ModifyPrivateRecords" = ( "NoOne" );
+            "ModifyConfidentialRecords" = ( "NoOne" );
+            "RespondToPublicRecords" = ( "NoOne" );
+            "RespondToPrivateRecords" = ( "NoOne" );
+            "RespondToConfidentialRecords" = ( "NoOne" );
         };
     };
     SOGoAppointmentFolder = {
@@ -49,10 +49,25 @@
 	"RespondToConfidentialRecords" = ( "Owner", "ConfidentialModifier", "ConfidentialResponder" );
       };
     };
+    SOGoAppointmentFolderObject = {
+      superclass = "SOGoAppointmentFolder";
+      protectedBy = "Access Contents Information";
+      defaultRoles = {
+        "Access Contents Information" = ( "Owner", "PublicResponder", "PublicModifier", "PublicViewer", "PublicDAndTViewer", "PrivateResponder", "PrivateModifier", "PrivateViewer", "PrivateDAndTViewer", "ConfidentialResponder", "ConfidentialModifier", "ConfidentialViewer", "ConfidentialDAndTViewer", "AuthorizedSubscriber" );
+        "WebDAV Access" = ( "Owner", "Authenticated", "PublicUser" );
+        "Change Images And Files"  = ( "NoOne" );
+      };
+    };
+    SOGoAppointmentFolderICS = {
+      superclass = "SOGoAppointmentFolderObject";
+    };
+    SOGoAppointmentFolderXML = {
+      superclass = "SOGoAppointmentFolderObject";
+    };
     SOGoAppointmentInboxFolder = {
       superclass = "SOGoAppointmentFolder";
       defaultRoles = {
-        "Access Contents Information" = ( "Owner", "AuthorizedSubscriber" );
+        "Access Contents Information" = ( "Owner" );
       };
     };
     SOGoCalendarComponent = {
