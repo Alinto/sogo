@@ -60,4 +60,4 @@ vtodo_class2 = "(Tâche confidentielle)";
 "%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
 = "%{Attendee} %{SentByText}a délégué votre invitation à %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
-= "%{Attendee} %{SentByText}choisir de reporter sa décision par rapport à votre invitation.";
+= "%{Attendee} %{SentByText}choisit de reporter sa décision par rapport à votre invitation.";
