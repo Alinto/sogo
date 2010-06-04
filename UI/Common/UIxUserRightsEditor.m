@@ -149,16 +149,19 @@
   SOGoACLAdvisory *page;
   WOApplication *app;
 
-  ud = [[SOGoUser userWithLogin: uid roles: nil] userDefaults];
-  language = [ud language];
-  pageName = [NSString stringWithFormat: @"SOGoACL%@ModificationAdvisory",
-		       language];
+  if (!([self userIsDefaultUser] || [self userIsAnonymousUser]))
+    {
+      ud = [[SOGoUser userWithLogin: uid roles: nil] userDefaults];
+      language = [ud language];
+      pageName = [NSString stringWithFormat: @"SOGoACL%@ModificationAdvisory",
+                           language];
 
-  app = [WOApplication application];
-  page = [app pageWithName: pageName inContext: context];
-  [page setACLObject: theObject];
-  [page setRecipientUID: uid];
-  [page send];
+      app = [WOApplication application];
+      page = [app pageWithName: pageName inContext: context];
+      [page setACLObject: theObject];
+      [page setRecipientUID: uid];
+      [page send];
+    }
 }
 
 - (id <WOActionResults>) saveUserRightsAction
