@@ -1,5 +1,9 @@
 2010-06-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/generic.js (onBodyClickContextMenu):
+	leave the context menu to appear on "A" elements with a
+	"clickableLink" class.
+
 	* SoObjects/SOGo/SOGoGCSFolder.m (-realDavURL): new method that
 	returns the the owner version of the URL to the current folder.
 
