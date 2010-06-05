@@ -521,6 +521,11 @@ vtodo_class2 = "(Конфіденційне завдання)";
 "Show alarms" = "Сповіщення";
 "Show tasks" = "Завдання";
 
+"Links to this Calendar" = "Links to this Calendar";
+"CalDAV url" = "CalDAV url";
+"WebDAV ICS URL" = "WebDAV ICS URL";
+"WebDAV XML URL" = "WebDAV XML URL";
+
 /* Error messages */
 "dayFieldInvalid" = "Будь ласка, зазначте числове значення в полі дні, що більше або рівно 1.";
 "weekFieldInvalid" = "Будь ласка, зазначте числове значення в полі тиждень(і), що більше або рівно 1.";

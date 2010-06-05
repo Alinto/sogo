@@ -1,5 +1,9 @@
 2010-06-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalendarProperties.m (-calDavURL, -webDavICSURL)
+	(-webDavXMLURL): new accessors for the URL now appearing at the
+	bottom of the properties page.
+
 	* UI/WebServerResources/generic.js (onBodyClickContextMenu):
 	leave the context menu to appear on "A" elements with a
 	"clickableLink" class.

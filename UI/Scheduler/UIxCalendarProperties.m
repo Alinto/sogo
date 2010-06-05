@@ -22,6 +22,7 @@
 
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
+#import <Foundation/NSURL.h>
 
 #import <NGObjWeb/WORequest.h>
 
@@ -39,10 +40,17 @@
   if ((self = [super init]))
     {
       calendar = [self clientObject];
+      baseCalDAVURL = nil;
       reloadTasks = NO;
     }
 
   return self;
+}
+
+- (void) dealloc
+{
+  [baseCalDAVURL release];
+  [super dealloc];
 }
 
 - (NSString *) calendarID
@@ -239,6 +247,38 @@
   else
     action = nil;
   return [self jsCloseWithRefreshMethod: action];
+}
+
+- (NSString *) _baseCalDAVURL
+{
+  NSString *davURL;
+
+  if (!baseCalDAVURL)
+    {
+      davURL = [[calendar realDavURL] absoluteString];
+      if ([davURL hasSuffix: @"/"])
+        baseCalDAVURL = [davURL substringToIndex: [davURL length] - 1];
+      else
+        baseCalDAVURL = davURL;
+      [baseCalDAVURL retain];
+    }
+
+  return baseCalDAVURL;
+}
+
+- (NSString *) calDavURL
+{
+  return [NSString stringWithFormat: @"%@/", [self _baseCalDAVURL]];
+}
+
+- (NSString *) webDavICSURL
+{
+  return [NSString stringWithFormat: @"%@.ics", [self _baseCalDAVURL]];
+}
+
+- (NSString *) webDavXMLURL
+{
+  return [NSString stringWithFormat: @"%@.xml", [self _baseCalDAVURL]];
 }
 
 @end

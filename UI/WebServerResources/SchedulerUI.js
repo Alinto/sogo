@@ -2231,7 +2231,7 @@ function onCalendarModify(event) {
     var url = ApplicationBaseURL + calendarID + "/properties";
     var windowID = sanitizeWindowName(calendarID + " properties");
     var width = 310;
-    var height = 275;
+    var height = 330;
     var isWebCalendar = false;
     if (UserSettings['Calendar']
         && UserSettings['Calendar']['WebCalendars']) {
@@ -2245,10 +2245,12 @@ function onCalendarModify(event) {
     if (owner == UserLogin) {
         height += 24;
     }
-    if (isWebCalendar)
-        height += 41;
-    else if (calendarID == "/personal")
+    if (isWebCalendar) {
+        height -= 38;
+    }
+    else if (calendarID == "/personal") {
         height -= 26;
+    }
 
     var properties = window.open(url, windowID,
                                  "width="+width+",height="+height+",resizable=0");

@@ -529,6 +529,11 @@ vtodo_class2 = "(Tâche confidentielle)";
 "Show alarms" = "Afficher les alarmes";
 "Show tasks" = "Afficher les tâches";
 
+"Links to this Calendar" = "Liens vers cet agenda";
+"CalDAV url" = "Accès en CalDAV";
+"WebDAV ICS URL" = "Représentation ICS en WebDAV";
+"WebDAV XML URL" = "Représentation XML en WebDAV";
+
 /* Error messages */
 "dayFieldInvalid" = "Veuillez spécifier un chiffre supérieur ou égal à 1 dans le champ Jours.";
 "weekFieldInvalid" = "Veuillez spécifier un chiffre supérieur ou égal à 1 dans le champ Semaine(s).";

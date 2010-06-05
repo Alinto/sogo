@@ -53,6 +53,9 @@ INPUT#calendarSyncTag
 LABEL
 { white-space: nowrap; }
 
+#davLinks A
+{ margin-left: 60px; }
+
 #webCalendarUrl SPAN.content
 { white-space: nowrap;
   overflow: hidden; }
