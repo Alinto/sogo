@@ -8,6 +8,20 @@
   able to respond to invitations
 - added the ability to specify which calendar is taken into account when
   retrieving a user's freebusy
+- added the ability to publish resources to unauthenticated (anonymous) users,
+  via the "/SOGo/dav/public" url
+- we now provide ICS and XML version of a user's personal calendars when
+  accessed from his own "Calendar" base collection
+- events are now displayed with the coloured stripe representing their
+  category, if one is defined in the preferences
+- the event location is now displayed in the calendar view when defined
+  properly
+- added a caching mechanism for freebusy requests, in order to accelerate the
+  display
+- added the ability to specify a time range when requesting a time slot
+  suggestion
+- added a Ukrainian translation
+- updated the Czeck translation
 
 1.2-20100504 (1.2.2)
 --------------------
