@@ -1,3 +1,8 @@
+2010-06-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoGCSFolder.m (-realDavURL): new method that
+	returns the the owner version of the URL to the current folder.
+
 2010-06-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxCalParticipationStatusView.m: removed obsolete module.
