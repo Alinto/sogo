@@ -576,7 +576,7 @@
   NSMutableArray *headers;
   NSMutableDictionary *msg;
   NSEnumerator *msgsList;
-  NSString *msgIconStatus;
+  NSString *msgIconStatus, *msgDate;
   SOGoMailFolder *mailFolder;
   WORequest *request;
   WOResponse *response;
@@ -651,7 +651,10 @@
       
       [msg setObject: [self messagePriority] forKey: @"Priority"];
 
-      [msg setObject: [self messageDate] forKey: @"Date"];
+      msgDate = [self messageDate];
+      if (msgDate == nil)
+	msgDate = @"";
+      [msg setObject: msgDate forKey: @"Date"];
 
       [msg setObject: [self messageSize] forKey: @"Size"];
       
