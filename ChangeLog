@@ -1,5 +1,9 @@
 2010-06-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolders.m
+	(-toOneRelationShipKeys): with a request from iCal, we return
+	nothing to avoid confusing iCal 3 with non-collection resources.
+
 	* UI/Common/UIxAclEditor.m (-isPublicAccessEnabled): we now expose
 	the state of public access in order to not show the "anonymous"
 	user when not needed.
