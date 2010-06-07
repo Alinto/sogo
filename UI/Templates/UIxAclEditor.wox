@@ -28,21 +28,15 @@
 	  var:value="defaultUserID"/>
 	<input type="hidden" name="action" value="saveAcls"/>
 	<input type="hidden" name="folderID" id="folderID" var:value="folderID"/>
-	<var:if condition="hasOwner">
-	  <label><var:string label:value="Owner:"/>
-	    <span class="value"><strong><var:string value="ownerName"/></strong></span></label>
-	</var:if>
       </div>
       <div class="userSelector" id="userRoles">
-	<var:if condition="canModifyAcls">
-	  <div id="userSelectorButtons">
-      <a href="#" id="aclAddUser" class="smallToolbarButton"><span>
+        <div id="userSelectorButtons">
+          <a href="#" id="aclAddUser" class="smallToolbarButton"><span>
           <img rsrc:src="add-contact.gif" label:title="Add..." /></span></a>
-      <a href="#" id="aclDeleteUser" class="smallToolbarButton"><span>
+          <a href="#" id="aclDeleteUser" class="smallToolbarButton"><span>
           <img rsrc:src="remove-contact.gif" label:title="Remove" /></span></a>
-	  </div>
-	</var:if>
-	<ul id="userList" multiselect="yes">
+        </div>
+	<ul id="userList">
 	  <var:foreach list="usersForObject" item="currentUser"
             ><li var:id="currentUser" class="normal-user">
               <span class="userFullName"

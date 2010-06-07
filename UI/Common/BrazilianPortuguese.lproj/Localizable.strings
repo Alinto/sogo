@@ -32,6 +32,8 @@
 
 "Any Authenticated User" = "Any Authenticated User";
 "Public Access" = "Public Access";
+"Any user not listed above" = "Any user not listed above";
+"Anybody accessing this resource from the public area" = "Anybody accessing this resource from the public area";
 
 "Sorry, the user rights can not be configured for that object." = "Desculpe, os direitos de usuário não podem ser modificados para este objeto.";
 

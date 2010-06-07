@@ -308,12 +308,23 @@
 - (NSString *) getFullEmailForUID: (NSString *) uid
 {
   NSDictionary *contactInfos;
+  NSString *cn, *email, *fullEmail;
 
   contactInfos = [self contactInfosForUserWithUIDorEmail: uid];
+  email = [contactInfos objectForKey: @"c_email"];
+  cn = [contactInfos objectForKey: @"cn"];
+  if ([cn length] > 0)
+    {
+      if ([email length] > 0)
+        fullEmail = [NSString stringWithFormat: @"%@ <%@>",
+                              cn, email];
+      else
+        fullEmail = cn;
+    }
+  else
+    fullEmail = email;
 
-  return [NSString stringWithFormat: @"%@ <%@>",
-		   [contactInfos objectForKey: @"cn"],
-		   [contactInfos objectForKey: @"c_email"]];
+  return fullEmail;
 }
 
 - (NSString *) getImapLoginForUID: (NSString *) uid

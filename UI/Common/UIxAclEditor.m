@@ -74,36 +74,6 @@
   return aclUsers;
 }
 
-- (NSString *) _displayNameForUID: (NSString *) uid
-{
-  SOGoUserManager *um;
-  NSString *s;
-  
-  um = [SOGoUserManager sharedUserManager];
-  s = [uid hasPrefix: @"@"] ? [uid substringFromIndex: 1] : uid;
-
-  return [NSString stringWithFormat: @"%@ <%@>",
-		   [um getCNForUID: s], [um getEmailForUID: s]];
-}
-
-- (NSString *) ownerName
-{
-  NSString *ownerLogin;
-
-  ownerLogin = [[self clientObject] ownerInContext: context];
-
-  return [self _displayNameForUID: ownerLogin];
-}
-
-- (BOOL) hasOwner
-{
-  NSString *ownerLogin;
-
-  ownerLogin = [[self clientObject] ownerInContext: context];
-
-  return (![ownerLogin isEqualToString: @"nobody"]);
-}
-
 - (NSString *) defaultUserID
 {
   if (!defaultUserID)
@@ -112,34 +82,30 @@
   return defaultUserID;
 }
 
-- (void) _prepareUsers
+- (NSArray *) usersForObject
 {
   NSEnumerator *aclsEnum;
   NSString *currentUID, *ownerLogin;
 
-  ownerLogin = [[self clientObject] ownerInContext: context];
-  if (!defaultUserID)
-    ASSIGN (defaultUserID, [[self clientObject] defaultUserID]);
-
-  aclsEnum = [[self aclsForObject] objectEnumerator];
-  while ((currentUID = [aclsEnum nextObject]))
-    {
-      if ([currentUID hasPrefix: @"@"])
-	// NOTE: don't remove the prefix if we want to identify the lists visually
-	currentUID = [currentUID substringFromIndex: 1];
-      if (!([currentUID isEqualToString: ownerLogin]
-	    || [currentUID isEqualToString: defaultUserID]
-            || [currentUID isEqualToString: @"anonymous"]))
-	[users addObjectUniquely: currentUID];
-    }
-
-  prepared = YES;
-}
-
-- (NSArray *) usersForObject
-{
   if (!prepared)
-    [self _prepareUsers];
+    {
+      ownerLogin = [[self clientObject] ownerInContext: context];
+      if (!defaultUserID)
+        ASSIGN (defaultUserID, [[self clientObject] defaultUserID]);
+
+      aclsEnum = [[self aclsForObject] objectEnumerator];
+      while ((currentUID = [aclsEnum nextObject]))
+        {
+          if ([currentUID hasPrefix: @"@"])
+            // NOTE: don't remove the prefix if we want to identify the lists visually
+            currentUID = [currentUID substringFromIndex: 1];
+          if (!([currentUID isEqualToString: ownerLogin]
+                || [currentUID isEqualToString: defaultUserID]
+                || [currentUID isEqualToString: @"anonymous"]))
+            [users addObjectUniquely: currentUID];
+        }
+      prepared = YES;
+    }
 
   return users;
 }
@@ -156,7 +122,15 @@
 
 - (NSString *) currentUserDisplayName
 {
-  return [self _displayNameForUID: currentUser];
+  SOGoUserManager *um;
+  NSString *s;
+
+  um = [SOGoUserManager sharedUserManager];
+  s = ([currentUser hasPrefix: @"@"]
+       ? [currentUser substringFromIndex: 1]
+       : currentUser);
+
+  return [um getFullEmailForUID: s];
 }
 
 - (BOOL) canSubscribeUsers
@@ -206,28 +180,13 @@
   clientObject = [self clientObject];
   ownerLogin = [clientObject ownerInContext: context];
   aclsEnum = [[self aclsForObject] objectEnumerator];
-  currentUID = [[aclsEnum nextObject] objectForKey: @"c_uid"];
-  while (currentUID)
-    {
-      if ([currentUID isEqualToString: ownerLogin]
-	  || [savedUIDs containsObject: currentUID])
-        [users removeObject: currentUID];
-      currentUID = [[aclsEnum nextObject] objectForKey: @"c_uid"];
-    }
+  while ((currentUID = [[aclsEnum nextObject] objectForKey: @"c_uid"]))
+    if ([currentUID isEqualToString: ownerLogin]
+        || [savedUIDs containsObject: currentUID])
+      [users removeObject: currentUID];
   [clientObject removeAclsForUsers: users];
 
   return [self jsCloseWithRefreshMethod: nil];
-}
-
-- (BOOL) canModifyAcls
-{
-  SoSecurityManager *mgr;
-
-  mgr = [SoSecurityManager sharedSecurityManager];
-
-  return (![mgr validatePermission: SoPerm_ChangePermissions
-		onObject: [self clientObject]
-		inContext: context]);
 }
 
 - (BOOL) isPublicAccessEnabled

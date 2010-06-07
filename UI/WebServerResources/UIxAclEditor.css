@@ -12,30 +12,15 @@ DIV.acls LABEL
 { white-space: nowrap;
   width: 100%; }
 
-DIV.userSelector
+#userRoles
 { position: absolute;
-  top: 3em;
+  top: 5px;
   left: 0px;
   right: 0px;
-  bottom: 0px;
-  height: 100px; }
-
-DIV#userSelectorHeader
-{ margin: 1em 0 0.5em 1em; }
-
-DIV#userSelector SPAN
-{ display: block; }
-
-A#defaultRolesBtn
-{ float: right;
-  margin-right: 1em;
-  margin-top: 5px;}
-
-DIV#userRoles
-{ height: 100%; }
+  bottom: 0px; }
 
 #userSelectorButtons
-{ margin-left: 1em;
+{ margin-left: 5px;
   padding-bottom: 2px; }
 
 UL#userList
@@ -43,7 +28,7 @@ UL#userList
   left: 0px;
   right: 0px;
   top: 40px;
-  bottom: 33px;
+  bottom: 0px;
   padding: 0px;
   margin: 0px;
   white-space: nowrap;
@@ -70,10 +55,12 @@ UL#userList LI.normal-user
 { background-image: url("abcard.png"); }
 
 UL#userList LI.any-user
-{ background-image: url("abcard-anyone.png"); }
+{ background-image: url("abcard-anyone.png");
+  font-style: italic; }
 
 UL#userList LI.anonymous-user
-{ background-image: url("abcard-anonymous.png"); }
+{ background-image: url("abcard-anonymous.png");
+  font-style: italic; }
 
 DIV#userSelectorButtons A.smallToolbarButton
 { float: left; }

@@ -1,5 +1,16 @@
 2010-06-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/UIxAclEditor.js (onAclLoadHandler): add
+	tooltips to the special user entries.
+
+	* UI/Common/UIxAclEditor.m (_displayNameForUID:):
+	(-ownerName, hasOwner): removed useless methods.
+	(-currentUserDisplayName): make use of the method below from the um.
+
+	* SoObjects/SOGo/SOGoUserManager.m (-getFullEmailForUID:):
+	enhanced to return a proper string for users with an empty "cn" or
+	an empty "c_email".
+
 	* SoObjects/Appointments/SOGoAppointmentFolders.m
 	(-toOneRelationShipKeys): with a request from iCal, we return
 	nothing to avoid confusing iCal 3 with non-collection resources.

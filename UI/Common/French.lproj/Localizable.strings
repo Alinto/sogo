@@ -32,6 +32,8 @@
 
 "Any Authenticated User" = "Tout utilisateur identifié";
 "Public Access" = "Accès public";
+"Any user not listed above" = "Tout utilisateur du système non-listé ci-haut";
+"Anybody accessing this resource from the public area" = "Quiconque accède à cette ressource via l'espace public";
 
 "Sorry, the user rights can not be configured for that object." = "Sorry, the user rights can not be configured for that object.";
 

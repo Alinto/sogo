@@ -20,7 +20,6 @@ function addUser(userName, userID) {
         var count = lis.length - 1;
         var nextLi = null;
         while (count > -1 && !nextLi) {
-            log("current li: "  + lis[count].id);
             if (lis[count].hasClassName("normal-user")) {
                 nextLi = lis[count+1];
             }
@@ -187,10 +186,14 @@ function onAclLoadHandler() {
     var userNode = nodeForUser(_("Any Authenticated User"),
                                defaultUserID);
     userNode.addClassName("any-user");
+    userNode.setAttribute("title",
+                          _("Any user not listed above"));
     ul.appendChild(userNode);
     if (isPublicAccessEnabled && CurrentModule() != "Mail") {
         userNode = nodeForUser(_("Public Access"), "anonymous");
         userNode.addClassName("anonymous-user");
+        userNode.setAttribute("title",
+                              _("Anybody accessing this resource from the public area"));
         ul.appendChild(userNode);
     }
     
