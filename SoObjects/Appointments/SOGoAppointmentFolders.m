@@ -155,10 +155,10 @@
               && ![folder isSubscription])
             {
               folderObjectKey = [NSString stringWithFormat: @"%@.ics",
-                                 [folder nameInContainer]];
+                                          [folder nameInContainer]];
               [folderObjectKeys addObject: folderObjectKey];
               folderObjectKey = [NSString stringWithFormat: @"%@.xml",
-                                 [folder nameInContainer]];
+                                          [folder nameInContainer]];
               [folderObjectKeys addObject: folderObjectKey];
             }
         }
@@ -169,7 +169,14 @@
 
 - (NSArray *) toOneRelationshipKeys
 {
-  return [self folderObjectKeys];
+  NSArray *keys;
+
+  if ([[contextd request] isICal])
+    keys = [NSArray array];
+  else
+    keys = [self folderObjectKeys];
+
+  return keys;
 }
 
 - (id) lookupName: (NSString *) name
