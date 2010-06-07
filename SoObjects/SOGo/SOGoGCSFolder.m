@@ -419,6 +419,35 @@ static NSArray *childRecordFields = nil;
   return error;
 }
 
+- (NSURL *) realDavURL
+{
+  NSURL *realDavURL, *currentDavURL;
+  NSString *appName, *publicParticle, *path;
+
+  if (isSubscription)
+    {
+      appName = [[context request] applicationName];
+      if ([self isInPublicZone])
+        publicParticle = @"/public";
+      else
+        publicParticle = @"";
+      path = [NSString stringWithFormat: @"/%@/dav%@/%@/%@/%@/",
+                       appName, publicParticle,
+                       [self ownerInContext: nil],
+                       [container nameInContainer],
+                       [self realNameInContainer]];
+      currentDavURL = [self davURL];
+      realDavURL = [[NSURL alloc] initWithScheme: [currentDavURL scheme]
+                                            host: [currentDavURL host]
+                                            path: path];
+      [realDavURL autorelease];
+    }
+  else
+    realDavURL = [self davURL];
+
+  return realDavURL;
+}
+
 - (GCSFolder *) ocsFolder
 {
   GCSFolder *folder;

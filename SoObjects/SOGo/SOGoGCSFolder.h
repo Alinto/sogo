@@ -113,6 +113,8 @@
 - (void) sendFolderAdvisoryTemplate: (NSString *) template;
 
 /* DAV */
+- (NSURL *) realDavURL;
+
 - (NSDictionary *) davSQLFieldsTable;
 - (NSDictionary *) parseDAVRequestedProperties: (DOMElement *) propElement;
 

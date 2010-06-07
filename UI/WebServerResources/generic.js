@@ -1442,9 +1442,12 @@ function onLoadHandler(event) {
 }
 
 function onBodyClickContextMenu(event) {
-    if (!(event.target
-          && (event.target.tagName == "INPUT"
-              || event.target.tagName == "TEXTAREA")))
+    var target = $(event.target);
+    if (!(target
+          && (target.tagName == "INPUT"
+              || target.tagName == "TEXTAREA"
+              || (target.tagName == "A"
+                  && target.hasClassName("clickableLink")))))
         preventDefault(event);
 }
 

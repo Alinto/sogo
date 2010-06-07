@@ -529,6 +529,11 @@ vtodo_class2 = "(Tarefa Confidencial)";
 "Show alarms" = "Show alarms";
 "Show tasks" = "Show tasks";
 
+"Links to this Calendar" = "Links to this Calendar";
+"CalDAV url" = "CalDAV url";
+"WebDAV ICS URL" = "WebDAV ICS URL";
+"WebDAV XML URL" = "WebDAV XML URL";
+
 /* Error messages */
 "dayFieldInvalid" = "Please specify a numerical value in the Days field greater or equal to 1.";
 "weekFieldInvalid" = "Please specify a numerical value in the Week(s) field greater or equal to 1.";

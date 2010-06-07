@@ -99,6 +99,17 @@
                 /></label></div></var:if>
       </fieldset>
 
+      <var:if condition="isWebCalendar" const:negate="YES"
+        ><fieldset id="davLinks">
+          <legend><var:string label:value="Links to this Calendar"/></legend>
+          <a const:class="clickableLink" var:href="calDavURL"
+            ><var:string label:value="CalDAV url"/></a><br/>
+            <a const:class="clickableLink" var:href="webDavICSURL"
+              ><var:string label:value="WebDAV ICS URL"/></a><br/>
+            <a const:class="clickableLink" var:href="webDavXMLURL"
+              ><var:string label:value="WebDAV XML URL"/></a>
+        </fieldset></var:if>
+
       <div id="buttons">
         <a href="#" class="button actionButton" id="okButton" 
           name="okButton">

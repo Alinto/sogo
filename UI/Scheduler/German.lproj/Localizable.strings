@@ -529,6 +529,11 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 "Show alarms" = "Zeige Erinnerungen";
 "Show tasks" = "Zeige Aufgaben";
 
+"Links to this Calendar" = "Links to this Calendar";
+"CalDAV url" = "CalDAV url";
+"WebDAV ICS URL" = "WebDAV ICS URL";
+"WebDAV XML URL" = "WebDAV XML URL";
+
 /* Error messages */
 "dayFieldInvalid" = "Im Feld Tage ist ein numerischer Wert größer oder gleich 1 erforderlich.";
 "weekFieldInvalid" = "Im Feld Woche(n) ist ein numerischer Wert größer oder gleich 1 erforderlich.";

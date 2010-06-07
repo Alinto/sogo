@@ -529,6 +529,11 @@ vtodo_class2 = "(Konfidentiell uppgift)";
 "Show alarms" = "Visa alarm";
 "Show tasks" = "Visa uppgifter";
 
+"Links to this Calendar" = "Links to this Calendar";
+"CalDAV url" = "CalDAV url";
+"WebDAV ICS URL" = "WebDAV ICS URL";
+"WebDAV XML URL" = "WebDAV XML URL";
+
 /* Error messages */
 "dayFieldInvalid" = "Ange ett numeriskt värde in dagsfältet större än eller lika med 1.";
 "weekFieldInvalid" = "Ange ett numeriskt värde in veckofältet större än eller lika med 1.";

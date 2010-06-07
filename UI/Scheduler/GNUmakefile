@@ -41,7 +41,6 @@ SchedulerUI_OBJC_FILES =		\
 	UIxTaskEditor.m			\
 	UIxDatePicker.m			\
 	UIxTimeDateControl.m		\
-	UIxCalParticipationStatusView.m \
 	UIxCalMonthOverview.m		\
 	UIxCalMonthViewOld.m		\
 	UIxRecurrenceEditor.m		\

@@ -1,8 +1,29 @@
+2010-06-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Common/UIxAclEditor.m (-isPublicAccessEnabled): we now expose
+	the state of public access in order to not show the "anonymous"
+	user when not needed.
+
+2010-06-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxCalendarProperties.m (-calDavURL, -webDavICSURL)
+	(-webDavXMLURL): new accessors for the URL now appearing at the
+	bottom of the properties page.
+
+	* UI/WebServerResources/generic.js (onBodyClickContextMenu):
+	leave the context menu to appear on "A" elements with a
+	"clickableLink" class.
+
+	* SoObjects/SOGo/SOGoGCSFolder.m (-realDavURL): new method that
+	returns the the owner version of the URL to the current folder.
+
 2010-06-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalParticipationStatusView.m: removed obsolete module.
+
 	* UI/Common/UIxUserRightsEditor.m
-	(-sendACLAdvisoryTemplateForObject:): don't attempt to send a notification
-	email to the "anonymous" or the default user.
+	(-sendACLAdvisoryTemplateForObject:): don't attempt to send a
+	notification email to the "anonymous" or the default user.
 
 	* SoObjects/Appointments/SOGoAppointmentFolderXML.[hm]: same as
 	below for XML.

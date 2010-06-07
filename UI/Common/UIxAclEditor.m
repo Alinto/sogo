@@ -33,6 +33,7 @@
 #import <SOGo/SOGoContentObject.h>
 #import <SOGo/SOGoGCSFolder.h>
 #import <SOGo/SOGoPermissions.h>
+#import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUserManager.h>
 #import <SOGo/SOGoUser.h>
 
@@ -121,8 +122,7 @@
     ASSIGN (defaultUserID, [[self clientObject] defaultUserID]);
 
   aclsEnum = [[self aclsForObject] objectEnumerator];
-  currentUID = [aclsEnum nextObject];
-  while (currentUID)
+  while ((currentUID = [aclsEnum nextObject]))
     {
       if ([currentUID hasPrefix: @"@"])
 	// NOTE: don't remove the prefix if we want to identify the lists visually
@@ -131,7 +131,6 @@
 	    || [currentUID isEqualToString: defaultUserID]
             || [currentUID isEqualToString: @"anonymous"]))
 	[users addObjectUniquely: currentUID];
-      currentUID = [aclsEnum nextObject];
     }
 
   prepared = YES;
@@ -231,14 +230,10 @@
 		inContext: context]);
 }
 
-// - (id <WOActionResults>) addUserInAcls
-// {
-//   SOGoObject *clientObject;
-//   NSString *uid;
-
-//   uid = [self queryParameterForKey: @"uid"];
-
-//   clientObject = [self clientObject];
-// }
+- (BOOL) isPublicAccessEnabled
+{
+  return [[SOGoSystemDefaults sharedSystemDefaults]
+           enablePublicAccess];
+}
 
 @end
