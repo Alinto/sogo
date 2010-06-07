@@ -171,7 +171,7 @@
 {
   NSArray *keys;
 
-  if ([[contextd request] isICal])
+  if ([[context request] isICal])
     keys = [NSArray array];
   else
     keys = [self folderObjectKeys];
