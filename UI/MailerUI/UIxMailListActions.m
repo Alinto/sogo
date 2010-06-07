@@ -571,7 +571,7 @@
 
 - (id <WOActionResults>) getHeadersAction
 {
-  NSArray *uids, *to;
+  NSArray *uids, *to, *from;
   NSDictionary *msgs;
   NSMutableArray *headers;
   NSMutableDictionary *msg;
@@ -633,8 +633,12 @@
 				[self messageSubject]]
 	      forKey: @"Subject"];
       
-      [msg setObject: [addressFormatter stringForArray: [[message objectForKey: @"envelope"] from]] forKey: @"From"];
-
+      from = [[message objectForKey: @"envelope"] from];
+      if ([from count] > 0)
+	[msg setObject: [addressFormatter stringForArray: from] forKey: @"From"];
+      else
+	[msg setObject: @"" forKey: @"From"];
+      
       if ([self isMessageRead])
 	msgIconStatus = @"dot.png";
       else
