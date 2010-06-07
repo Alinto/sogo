@@ -95,7 +95,7 @@ var SOGoDataTableInterface = {
         var start = index - (this.overflow/2);
         if (start < 0) start = 0;
         var end = index + count + this.overflow - (index - start);
-//             log ("DataTable.getData() from " + index + " to " + (index + count) + " boosted from " + start + " to " + end);
+//         log ("DataTable.getData() from " + index + " to " + (index + count) + " boosted from " + start + " to " + end);
 
         // Don't overflow above the maximum number of entries from the data source
         if (this.dataSource.uids && this.dataSource.uids.length < end) end = this.dataSource.uids.length;

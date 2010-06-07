@@ -707,6 +707,7 @@ function messageListCallback(row, data, isNew) {
         var cellType = columnsOrder[j];
 
         if (data[cellType]) cell.update(data[cellType]);
+        else if (Prototype.Browser.IE) cell.update('&nbsp;');
 
         cell.observe("mousedown", listRowMouseDownHandler);
         if (cellType == "Subject" || cellType == "From" || cellType == "To" || cellType == "Date")
@@ -1628,7 +1629,6 @@ function initMailer(event) {
 
     if (!$(document.body).hasClassName("popup")) {
         //initDnd();
-
         Mailer.dataTable = $("mailboxList");
         Mailer.dataTable.addInterface(SOGoDataTableInterface);
         Mailer.dataTable.setRowRenderCallback(messageListCallback);

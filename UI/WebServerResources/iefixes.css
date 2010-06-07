@@ -54,8 +54,16 @@ IMG.dragMessage
 TD.mailer_fieldname
 { width: 8em; }
 
+TABLE.messageList TH,
+TABLE.messageList TD
+{ height: 20px;
+  min-height: 20px; }
+
 TABLE.messageList TD
 { white-space: pre; }
+
+TABLE.messageList TR._selected TD
+{ border-right: 1px solid #9ABCD8; }
 
 /* ContactsUI */
 
@@ -94,7 +102,7 @@ TABLE#freeBusyData TD
 { height: 25px; }
 
 TABLE
-{ empty-cells: show; }
+{ empty-cells: show; /* no impact? */ }
 
 /* UIxCalendarProperties */
 
