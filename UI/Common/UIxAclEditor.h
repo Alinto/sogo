@@ -42,9 +42,6 @@
 - (void) setCurrentUser: (NSString *) newCurrentUser;
 - (NSString *) currentUser;
 
-- (NSString *) ownerName;
-- (BOOL) hasOwner;
-
 @end
 
 #endif /* UIXACLEDITOR_H */
