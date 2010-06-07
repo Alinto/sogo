@@ -16,13 +16,23 @@ function addUser(userName, userID) {
         var lis = ul.childNodesWithTag("li");
         var newNode = nodeForUser(userName, userID, canSubscribeUsers);
         newNode.addClassName("normal-user");
-        if (lis.length > 1) {
-            var publicNode = lis[lis.length-2];
-            ul.insertBefore(newNode, publicNode);
+
+        var count = lis.length - 1;
+        var nextLi = null;
+        while (count > -1 && !nextLi) {
+            log("current li: "  + lis[count].id);
+            if (lis[count].hasClassName("normal-user")) {
+                nextLi = lis[count+1];
+            }
+            else {
+                count--;
+            }
         }
-        else  {
-            ul.appendChild(newNode);
+        if (!nextLi) {
+            nextLi = lis[0];
         }
+        ul.insertBefore(newNode, nextLi);
+
         var url = window.location.href;
         var elements = url.split("/");
         elements[elements.length-1] = ("addUserInAcls?uid="
@@ -115,8 +125,11 @@ function onUserRemove(event) {
     var baseURL = elements.join("/");
 
     for (var i = 0; i < nodes.length; i++) {
-        var userId = nodes[i].getAttribute("id");
-        triggerAjaxRequest(baseURL + userId, removeUserCallback, nodes[i]);
+        var userId = nodes[i].id;
+        if (userId != defaultUserID && userId != "anonymous") {
+            triggerAjaxRequest(baseURL + userId, removeUserCallback,
+                               nodes[i]);
+        }
     }
     preventDefault(event);
 }
@@ -175,7 +188,7 @@ function onAclLoadHandler() {
                                defaultUserID);
     userNode.addClassName("any-user");
     ul.appendChild(userNode);
-    if (CurrentModule() != "Mail") {
+    if (isPublicAccessEnabled && CurrentModule() != "Mail") {
         userNode = nodeForUser(_("Public Access"), "anonymous");
         userNode.addClassName("anonymous-user");
         ul.appendChild(userNode);

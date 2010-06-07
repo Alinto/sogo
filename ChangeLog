@@ -1,3 +1,9 @@
+2010-06-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Common/UIxAclEditor.m (-isPublicAccessEnabled): we now expose
+	the state of public access in order to not show the "anonymous"
+	user when not needed.
+
 2010-06-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxCalendarProperties.m (-calDavURL, -webDavICSURL)

@@ -8,15 +8,18 @@
   xmlns:rsrc="OGo:url"
   className="UIxPageFrame"
   title="title"
+  const:toolbar="none"
   const:popup="YES">
-  <script type="text/javascript"
-    ><var:if condition="canSubscribeUsers">
-      var canSubscribeUsers = true;
-    </var:if
-    ><var:if condition="canSubscribeUsers" const:negate="YES">
-      var canSubscribeUsers = false;
-    </var:if
-  ></script>
+  <script type="text/javascript">
+    var canSubscribeUsers = <var:if condition="canSubscribeUsers"
+      >true</var:if><var:if condition="canSubscribeUsers"
+      const:negate="YES"
+      >false</var:if>;
+    var isPublicAccessEnabled = <var:if condition="isPublicAccessEnabled"
+      >true</var:if><var:if condition="isPublicAccessEnabled"
+      const:negate="YES"
+      >false</var:if>;
+  </script>
 
   <form id="aclForm" const:href="saveAcls">
     <div class="acls">
