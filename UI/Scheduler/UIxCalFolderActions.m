@@ -19,22 +19,14 @@
   02111-1307, USA.
 */
 
-#import <Foundation/Foundation.h>
-#import <SoObjects/SOGo/NSDictionary+Utilities.h>
-#import <SoObjects/SOGo/NSString+Utilities.h>
+#import <Foundation/NSValue.h>
 
-#import <NGObjWeb/NSException+HTTP.h>
-#import <NGObjWeb/WOContext.h>
-#import <NGObjWeb/WOResponse.h>
+#import <SoObjects/SOGo/NSDictionary+Utilities.h>
+
 #import <NGObjWeb/WORequest.h>
-#import <NGExtensions/NSString+misc.h>
-#import <NGExtensions/NSNull+misc.h>
 
 #import <Appointments/SOGoAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentFolderICS.h>
-#import <Appointments/SOGoAppointmentObject.h>
-#import <GDLContentStore/GCSFolder.h>
-#import <NGCards/iCalCalendar.h>
 
 #import "UIxCalFolderActions.h"
 
@@ -44,17 +36,16 @@
 {
   WOResponse *response;
   SOGoAppointmentFolderICS *folderICS;
-  NSString *filename;
+  NSString *disposition;
 
   folderICS = [self clientObject];
   response = [self responseWithStatus: 200
                             andString: [folderICS contentAsString]];
   [response setHeader: @"text/calendar; charset=utf-8" 
                forKey: @"content-type"];
-  filename = [NSString stringWithFormat: @"attachment; filename=\"%@.ics\"",
-                       [folderICS displayName]];
-  [response setHeader: filename
-               forKey: @"Content-Disposition"];
+  disposition = [NSString stringWithFormat: @"attachment; filename=\"%@.ics\"",
+                          [folderICS displayName]];
+  [response setHeader: disposition forKey: @"Content-Disposition"];
 
   return response;
 }
@@ -100,6 +91,5 @@
   [(WOResponse*)response appendContentString: [rc jsonRepresentation]];
   return response;
 }
-
 
 @end /* UIxCalFolderActions */
