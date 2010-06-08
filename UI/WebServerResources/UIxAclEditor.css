@@ -56,11 +56,10 @@ UL#userList LI.normal-user
 
 UL#userList LI.any-user
 { background-image: url("abcard-anyone.png");
-  font-style: italic; }
+  border-top: 1px solid #555; }
 
 UL#userList LI.anonymous-user
-{ background-image: url("abcard-anonymous.png");
-  font-style: italic; }
+{ background-image: url("abcard-anonymous.png"); }
 
 DIV#userSelectorButtons A.smallToolbarButton
 { float: left; }
