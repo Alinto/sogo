@@ -149,11 +149,6 @@
           pageName    = "UIxCalView"; 
           actionName  = "redirectForUIDs";
         };
-        export = {
-          protectedBy = "View";
-          actionClass = "UIxCalFolderActions";
-          actionName  = "export";
-        };
         import = {
           protectedBy = "View";
           actionClass = "UIxCalFolderActions";
@@ -177,6 +172,16 @@
           protectedBy = "<public>";
           pageName    = "UIxTaskEditor"; 
           actionName  = "new";
+        };
+      };
+    };
+
+    SOGoAppointmentFolderICS = {
+      methods = {
+        export = {
+          protectedBy = "View";
+          actionClass = "UIxCalFolderActions";
+          actionName  = "export";
         };
       };
     };

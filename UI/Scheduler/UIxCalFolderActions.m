@@ -31,6 +31,7 @@
 #import <NGExtensions/NSNull+misc.h>
 
 #import <Appointments/SOGoAppointmentFolder.h>
+#import <Appointments/SOGoAppointmentFolderICS.h>
 #import <Appointments/SOGoAppointmentObject.h>
 #import <GDLContentStore/GCSFolder.h>
 #import <NGCards/iCalCalendar.h>
@@ -42,63 +43,19 @@
 - (WOResponse *) exportAction
 {
   WOResponse *response;
-  SOGoAppointmentFolder *folder;
-  SOGoAppointmentObject *appt;
-  NSArray *array, *values, *fields;
-  NSMutableString *rc;
+  SOGoAppointmentFolderICS *folderICS;
   NSString *filename;
-  iCalCalendar *calendar, *component;
-  int i, count;
 
-  fields = [NSArray arrayWithObjects: @"c_name", @"c_content", nil];
-  rc = [NSMutableString string];
-
-  response = [context response];
-
-  folder = [self clientObject];
-  calendar = [iCalCalendar groupWithTag: @"vcalendar"];
-
-  /* We have to use bareFetchFields because we don't want to process anything
-   * (RRULES for example) */
-  array = [folder bareFetchFields: fields
-                             from: nil
-                               to: nil
-                            title: nil
-                        component: nil
-                additionalFilters: nil];
-  count = [array count];
-  for (i = 0; i < count; i++)
-    {
-      appt = [folder lookupName: [[array objectAtIndex: i] objectForKey: @"c_name"]
-                      inContext: [self context]
-                        acquire: NO];
-
-      component = [appt calendar: NO secure: NO];
-      values = [component events];
-      if (values && [values count])
-        [calendar addChildren: values];
-      values = [component todos];
-      if (values && [values count])
-        [calendar addChildren: values];
-      values = [component journals];
-      if (values && [values count])
-        [calendar addChildren: values];
-      values = [component freeBusys];
-      if (values && [values count])
-        [calendar addChildren: values];
-      values = [component childrenWithTag: @"vtimezone"];
-      if (values && [values count])
-        [calendar addChildren: values];
-    }
-  
-  filename = [NSString stringWithFormat: @"attachment;filename=\"%@.ics\"",
-              [folder displayName]];
-  [response setHeader: @"application/octet-stream; charset=utf-8" 
-               forKey:@"content-type"];
-  [response setHeader: filename 
+  folderICS = [self clientObject];
+  response = [self responseWithStatus: 200
+                            andString: [folderICS contentAsString]];
+  [response setHeader: @"text/calendar; charset=utf-8" 
+               forKey: @"content-type"];
+  filename = [NSString stringWithFormat: @"attachment; filename=\"%@.ics\"",
+                       [folderICS displayName]];
+  [response setHeader: filename
                forKey: @"Content-Disposition"];
-  [response setContent: [[calendar versitString] dataUsingEncoding: NSUTF8StringEncoding]];
-  
+
   return response;
 }
 

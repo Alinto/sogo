@@ -2080,12 +2080,20 @@ function onCalendarsMenuPrepareVisibility() {
     var selected = folders.getSelectedNodes();
     if (selected.length > 0) {
         var folderOwner = selected[0].getAttribute("owner");
-        var sharingOption = $(this).down("ul").childElements().last();
-        // Disable the "Sharing" option when calendar is not owned by user
-        if (folderOwner == UserLogin || IsSuperUser)
-            sharingOption.removeClassName("disabled");
-        else
-            sharingOption.addClassName("disabled");
+
+        var lis = $(this).down("ul").childElements();
+
+        /* distance: sharing = length - 1, export = length - 7 */
+        var endDists = [ 1, 7 ];
+        for (var i = 0; i < endDists.length; i++) {
+            var dist = lis.length - endDists[i];
+            var option = $(lis[dist]);
+            if (folderOwner == UserLogin || IsSuperUser)
+                option.removeClassName("disabled");
+            else
+                option.addClassName("disabled");
+        }
+
         var deleteCalendarOption = $("deleteCalendarMenuItem");
         // Swith between Delete and Unsubscribe
         if (folderOwner == UserLogin)
@@ -2312,14 +2320,9 @@ function addWebCalendarCallback (http) {
 
 function onCalendarExport(event) {
     var node = $("calendarList").getSelectedNodes().first();
-    var owner = node.getAttribute("owner");
     var folderId = node.getAttribute("id");
-    if (owner == UserLogin) {
-        var folderIdElements = folderId.split(":");
-        var id = folderIdElements[0].replace (/^\/+/g, '');
-        var url = ApplicationBaseURL + "/" + id + "/export";
-        window.location.href = url;
-    }
+    var url = URLForFolderID(folderId) + ".ics/export";
+    window.location.href = url;
 }
 
 function onCalendarImport(event) {

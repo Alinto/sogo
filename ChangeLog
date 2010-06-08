@@ -1,5 +1,16 @@
 2010-06-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/SchedulerUI.js:
+	(onCalendarsMenuPrepareVisibility): the "export" menu option is
+	now disabled for non-owner users, since the function itself will
+	not do anything otherwise.
+	(onCalendarExport): we make use of the URLForFolderId method,
+	which reduces code size.
+
+	* UI/Scheduler/UIxCalFolderActions.m (-exportAction): this web
+	method is now bound to the ICS folder object, thereby removing
+	duplicate code.
+
 	* SoObjects/Appointments/SOGoAppointmentFolderObject.m
 	(-displayName, -davDisplayName): new accessors that are forwarded
 	to the real folder object.
