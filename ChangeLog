@@ -1,5 +1,9 @@
 2010-06-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolderObject.m
+	(-displayName, -davDisplayName): new accessors that are forwarded
+	to the real folder object.
+
 	* UI/WebServerResources/UIxAclEditor.js: (onAclLoadHandler) we
 	bind the "unload" event rather than "beforeunload", which does not
 	seem to work on IE.

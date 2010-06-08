@@ -182,4 +182,14 @@
   return nil;
 }
 
+- (NSString *) displayName
+{
+  return [[self _folder] displayName];
+}
+
+- (NSString *) davDisplayName
+{
+  return [self displayName];
+}
+
 @end

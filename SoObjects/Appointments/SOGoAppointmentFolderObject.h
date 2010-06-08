@@ -34,6 +34,8 @@
 
 - (iCalCalendar *) contentCalendar;
 
+- (NSString *) displayName;
+
 @end
 
 #endif /* SOGOAPPOINTMENTFOLDEROBJECT_H */
