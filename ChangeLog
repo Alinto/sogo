@@ -1,3 +1,9 @@
+2010-06-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/UIxAclEditor.js: (onAclLoadHandler) we
+	bind the "unload" event rather than "beforeunload", which does not
+	seem to work on IE.
+
 2010-06-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/UIxAclEditor.js (onAclLoadHandler): add

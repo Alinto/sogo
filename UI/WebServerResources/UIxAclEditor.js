@@ -209,7 +209,7 @@ function onAclLoadHandler() {
     AclEditor['userRightsHeight'] = window.opener.getUsersRightsWindowHeight();
     AclEditor['userRightsWidth'] = window.opener.getUsersRightsWindowWidth();
 
-    Event.observe(window, "beforeunload", onAclCloseHandler);
+    Event.observe(window, "unload", onAclCloseHandler);
 }
 
 function onAclCloseHandler(event) {
