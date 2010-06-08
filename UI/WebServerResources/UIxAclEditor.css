@@ -56,7 +56,7 @@ UL#userList LI.normal-user
 
 UL#userList LI.any-user
 { background-image: url("abcard-anyone.png");
-  border-top: 1px solid #555; }
+  border-top: 1px dotted #555; }
 
 UL#userList LI.anonymous-user
 { background-image: url("abcard-anonymous.png"); }
