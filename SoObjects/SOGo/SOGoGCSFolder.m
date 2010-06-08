@@ -83,6 +83,17 @@ static NSArray *childRecordFields = nil;
 
 @implementation SOGoGCSFolder
 
++ (void) initialize
+{
+  if (!childRecordFields)
+    {
+      childRecordFields = [NSArray arrayWithObjects: @"c_name", @"c_version",
+				   @"c_creationdate", @"c_lastmodified",
+				   @"c_component", @"c_content", nil];
+      [childRecordFields retain];
+    }
+}
+
 + (SOGoWebDAVAclManager *) webdavAclManager
 {
   static SOGoWebDAVAclManager *aclManager = nil;
@@ -137,17 +148,6 @@ static NSArray *childRecordFields = nil;
     }
 
   return aclManager;
-}
-
-+ (void) initialize
-{
-  if (!childRecordFields)
-    {
-      childRecordFields = [NSArray arrayWithObjects: @"c_name", @"c_version",
-				   @"c_creationdate", @"c_lastmodified",
-				   @"c_component", @"c_content", nil];
-      [childRecordFields retain];
-    }
 }
 
 + (id) folderWithSubscriptionReference: (NSString *) reference
