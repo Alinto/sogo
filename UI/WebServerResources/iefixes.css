@@ -32,11 +32,8 @@ INPUT.button
   border-right: 1px solid #666;
   border-bottom: 1px solid #666; }
 
-DIV#userRoles
-{  }
-
 UL#userList
-{ top: 3em; }
+{ top: 35px; }
 
 DIV.tabsContainer > DIV.scrollToolbar > A > SPAN
 { line-height: 12px; }
