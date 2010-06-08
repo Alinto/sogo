@@ -272,25 +272,11 @@ function performSearchCallback(http) {
             else {
                 if (document.currentPopupMenu)
                     hideMenu(document.currentPopupMenu);
-
+                
                 if (data.contacts.length == 1) {
                     // Single result
                     var contact = data.contacts[0];
                     input.uid = contact["c_uid"];
-                    var row = $(input.parentNode.parentNode);
-                    if (input.uid == OwnerLogin) {
-                        row.removeAttribute("role");
-                        row.setAttribute("partstat", "accepted");
-                        row.addClassName("organizer-row");
-                        row.removeClassName("attendee-row");
-                        row.isOrganizer = true;
-                    } else {
-                        row.removeAttribute("partstat");
-                        row.setAttribute("role", "req-participant");
-                        row.addClassName("attendee-row");
-                        row.removeClassName("organizer-row");
-                        row.isOrganizer = false;
-                    }
                     var isList = (contact["c_component"] &&
                                   contact["c_component"] == "vlist");
                     if (isList) {
@@ -326,11 +312,31 @@ function performSearchCallback(http) {
                         checkAttendee(input);
                     }
                 }
+                initializeAttendeeRole(input);
             }
         }
         else
             if (document.currentPopupMenu)
                 hideMenu(document.currentPopupMenu);
+    }
+}
+
+function initializeAttendeeRole(input) {
+    var row = $(input.parentNode.parentNode);
+    if (input.uid && input.uid == OwnerLogin) {
+        row.removeAttribute("role");
+        row.removeClassName("attendee-row");
+        row.setAttribute("partstat", "accepted");
+        row.addClassName("organizer-row");
+        row.isOrganizer = true;
+    } else {
+        row.removeAttribute("partstat");
+        row.removeClassName("organizer-row");
+        if (input.value.length > 0) {
+            row.setAttribute("role", "req-participant");
+            row.addClassName("attendee-row");
+        }
+        row.isOrganizer = false;
     }
 }
 
@@ -341,7 +347,9 @@ function onAttendeeResultClick(event) {
     input.container = this.container;
     input.isList = this.isList;
     input.confirmedValue = input.value = this.address;
+    initializeAttendeeRole(input);
     checkAttendee(input);
+
     this.parentNode.input = null;
 }
 
@@ -497,7 +505,7 @@ function checkAttendee(input) {
         var dataRow = dataTable.rows[row.sectionRowIndex];
         tbody.removeChild(row);
         dataTable.removeChild(dataRow);
-   } 
+    }
     else if (input.modified) {
         if (!row.hasClassName("needs-action")) {
             row.addClassName("needs-action");
@@ -532,6 +540,7 @@ function onInputBlur(event) {
     if (this.isList) {
         resolveListAttendees(this, false);
     } else {
+        initializeAttendeeRole(this);
         checkAttendee(this);
     }
 }

@@ -1,5 +1,9 @@
 2010-06-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/UIxAttendeesEditor.js
+	(initializeAttendeeRole): new function that initialize an input's
+	row appearance based in the associated uid.
+
 	* UI/WebServerResources/SchedulerUI.js:
 	(onCalendarsMenuPrepareVisibility): the "export" menu option is
 	now disabled for non-owner users, since the function itself will
