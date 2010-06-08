@@ -1,3 +1,8 @@
+2010-06-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* iCalXMLRenderer.m (-[CardGroup xmlRender]): don't append empty
+	rendering from child elements to avoid an exception.
+
 2010-06-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* iCalXMLRenderer.m: new class module for exporting iCalCalendar

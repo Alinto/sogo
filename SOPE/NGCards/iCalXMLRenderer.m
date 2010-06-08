@@ -298,7 +298,7 @@
 
 - (NSString *) xmlRender
 {
-  NSString *lowerTag;
+  NSString *lowerTag, *childRendering;
   int count, max;
   NSMutableString *rendering;
   NSMutableArray *properties, *components;
@@ -313,10 +313,14 @@
       for (count = 0; count < max; count++)
         {
           currentChild = [children objectAtIndex: count];
-          if ([currentChild isKindOfClass: [CardGroup class]])
-            [components addObject: [currentChild xmlRender]];
-          else
-            [properties addObject: [currentChild xmlRender]];
+          childRendering = [currentChild xmlRender];
+          if (childRendering)
+            {
+              if ([currentChild isKindOfClass: [CardGroup class]])
+                [components addObject: childRendering];
+              else
+                [properties addObject: childRendering];
+            }
         }
 
       lowerTag = [tag lowercaseString];
