@@ -167,6 +167,9 @@
 	  [currentDictionary setObject: [currentFolder displayName]
                                 forKey: @"displayName"];
 	  [currentDictionary setObject: folderName forKey: @"name"];
+	  [currentDictionary setObject: [currentFolder
+                                          ownerInContext: context]
+                                forKey: @"owner"];
 	  [currentDictionary setObject: [currentFolder folderType]
                                 forKey: @"type"];
 	  [folders addObject: currentDictionary];

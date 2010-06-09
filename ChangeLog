@@ -1,5 +1,9 @@
 2010-06-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUserFolder.m (_subFoldersFromFolder:):
+	restore the "owner" record that went bugously missing a few days
+	ago.
+
 	* SoObjects/Appointments/SOGoAppointmentFolderObject.m
 	(-_folderCalendars): we now fetch the records only covering the
 	value of SOGoDAVCalendarStartTimeLimit in days with the current
