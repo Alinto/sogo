@@ -30,6 +30,7 @@
 @interface SOGoAppointmentFolderObject : SOGoObject
 {
   SOGoAppointmentFolder *folder;
+  int davTimeHalfLimitSeconds;
 }
 
 - (iCalCalendar *) contentCalendar;

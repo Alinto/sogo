@@ -1,3 +1,10 @@
+2010-06-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolderObject.m
+	(-_folderCalendars): we now fetch the records only covering the
+	value of SOGoDAVCalendarStartTimeLimit in days with the current
+	date as the middle of the time range.
+
 2010-06-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/UIxAttendeesEditor.js

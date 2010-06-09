@@ -21,27 +21,51 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 
-#import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WOResponse.h>
+#import <NGExtensions/NSObject+Logs.h>
 
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalTimeZone.h>
+
+#import <SOGo/SOGoDomainDefaults.h>
+#import <SOGo/SOGoUser.h>
 
 #import "SOGoAppointmentFolder.h"
 #import "SOGoCalendarComponent.h"
 
 #import "SOGoAppointmentFolderObject.h"
 
+static NSArray *contentFields = nil;
+
 @implementation SOGoAppointmentFolderObject
+
++ (void) initialize
+{
+  if (!contentFields)
+    contentFields = [[NSArray alloc] initWithObjects: @"c_name", @"c_version",
+                                     @"c_lastmodified", @"c_creationdate",
+                                     @"c_component", nil];
+}
 
 - (id) init
 {
+  int davCalendarStartTimeLimit;
+  SOGoUser *user;
+
   if ((self = [super init]))
     {
       folder = nil;
+
+      user = [context activeUser];
+      davCalendarStartTimeLimit
+        = [[user domainDefaults] davCalendarStartTimeLimit];
+      /* 43200 = 60 * 60 * 24 / 2 */
+      davTimeHalfLimitSeconds = davCalendarStartTimeLimit * 43200;
     }
 
   return self;
@@ -118,23 +142,63 @@
     }
 }
 
+- (NSArray *) _fetchFolderRecords
+{
+  NSCalendarDate *start, *end;
+
+  if (davTimeHalfLimitSeconds)
+    {
+      start = [[NSCalendarDate date] addYear: 0
+                                       month: 0
+                                         day: 0
+                                        hour: 0
+                                      minute: 0
+                                      second: -davTimeHalfLimitSeconds];
+      end = [start addYear: 0
+                     month: 0
+                       day: 0
+                      hour: 0
+                    minute: 0
+                    second: (2 * davTimeHalfLimitSeconds)];
+    }
+  else
+    {
+      start = nil;
+      end = nil;
+    }
+
+  return [[self _folder] bareFetchFields: contentFields
+                                    from: start
+                                      to: end
+                                   title: nil
+                               component: nil
+                       additionalFilters: nil];
+}
+
 - (NSArray *) _folderCalendars
 {
-  NSArray *names;
-  int count, max;
-  SOGoCalendarComponent *component;
+  NSArray *records;
   NSMutableArray *calendars;
+  SOGoCalendarComponent *component;
+  int count, max;
+  iCalCalendar *calendar;
+  NSString *name;
 
-  names = [[self _folder] toOneRelationshipKeys];
-  max = [names count];
+  records = [self _fetchFolderRecords];
+  max = [records count];
   calendars = [NSMutableArray arrayWithCapacity: max];
-
   for (count = 0; count < max; count++)
     {
-      component = [folder lookupName: [names objectAtIndex: count]
+      name = [[records objectAtIndex: count] objectForKey: @"c_name"];
+      component = [folder lookupName: name
                            inContext: context
                              acquire: NO];
-      [calendars addObject: [component calendar: NO secure: YES]];
+      calendar = [component calendar: NO secure: !activeUserIsOwner];
+      if (calendar)
+        [calendars addObject: calendar];
+      else
+        [self errorWithFormat: @"record with c_name '%@' should obviously not"
+              @" be listed here", name];
     }
 
   return calendars;
