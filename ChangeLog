@@ -1,3 +1,8 @@
+2010-06-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoSystemDefaults.m (-CASLogoutEnabled): new
+	method that returns whether the "SOGoCASLogoutEnabled" ud is set.
+
 2010-06-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUserFolder.m (_subFoldersFromFolder:):

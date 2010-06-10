@@ -296,6 +296,11 @@ BootstrapNSUserDefaults ()
   return [self stringForKey: @"SOGoCASServiceURL"];
 }
 
+- (BOOL) CASLogoutEnabled
+{
+  return [self boolForKey: @"SOGoCASLogoutEnabled"];
+}
+
 - (BOOL) enablePublicAccess
 {
   return [self boolForKey: @"SOGoEnablePublicAccess"];

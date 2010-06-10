@@ -63,6 +63,7 @@
 - (NSString *) authenticationType;
 
 - (NSString *) CASServiceURL;
+- (BOOL) CASLogoutEnabled;
 
 - (BOOL) enablePublicAccess;
 
