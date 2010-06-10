@@ -35,11 +35,13 @@
 #import <NGExtensions/NSObject+Logs.h>
 
 #import <Appointments/SOGoFreeBusyObject.h>
+#import <SOGo/SOGoCASSession.h>
 #import <SOGo/SOGoUserManager.h>
 #import <SOGo/SOGoWebAuthenticator.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserFolder.h>
+#import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/NSCalendarDate+SOGo.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGoUI/UIxComponent.h>
@@ -228,41 +230,67 @@
   return response;
 }
 
+- (NSString *) _logoutRedirectURL
+{
+  NSString *redirectURL;
+  SOGoSystemDefaults *sd;
+  id container;
+
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  if ([[sd authenticationType] isEqualToString: @"cas"])
+    redirectURL = [SOGoCASSession CASURLWithAction: @"logout"
+                                     andParameters: nil];
+  else
+    {
+      container = [[self clientObject] container];
+      redirectURL = [container baseURLInContext: context];
+    }
+
+  return redirectURL;
+}
+
+- (WOCookie *) _logoutCookieWithDate: (NSCalendarDate *) date
+{
+  SOGoWebAuthenticator *auth;
+  NSString *cookieName, *appName;
+  WOCookie *cookie;
+
+  cookie = nil;
+
+  auth = [[self clientObject] authenticatorInContext: context];
+  if ([auth respondsToSelector: @selector (cookieNameInContext:)])
+    {
+      cookieName = [auth cookieNameInContext: context];
+      if ([cookieName length])
+        {
+          cookie = [WOCookie cookieWithName: cookieName value: @"discard"];
+          appName = [[context request] applicationName];
+          [cookie setPath: [NSString stringWithFormat: @"/%@/", appName]];
+          [cookie setExpires: [date yesterday]];
+        }
+    }
+
+  return cookie;
+}
+
 - (id <WOActionResults>) logoffAction
 {
   WOResponse *response;
   WOCookie *cookie;
-  SOGoWebAuthenticator *auth;
-  id container;
   NSCalendarDate *date;
-  NSString *userName, *cookieName, *appName;
-
-  container = [[self clientObject] container];
+  NSString *userName;
 
   userName = [[context activeUser] login];
   [self logWithFormat: @"user '%@' logged off", userName];
 
-  response = [context response];
-  [response setStatus: 302];
-  [response setHeader: [container baseURLInContext: context]
-	    forKey: @"location"];
+  response = [self redirectToLocation: [self _logoutRedirectURL]];
 
   date = [NSCalendarDate calendarDate];
   [date setTimeZone: [NSTimeZone timeZoneWithAbbreviation: @"GMT"]];
 
-  auth = [[self clientObject] authenticatorInContext: context];
-  if ([auth respondsToSelector: @selector (cookieNameInContext:)])
-    cookieName = [auth cookieNameInContext: context];
-  else
-    cookieName = nil;
-  if ([cookieName length])
-    {
-      cookie = [WOCookie cookieWithName: cookieName value: @"discard"];
-      appName = [[context request] applicationName];
-      [cookie setPath: [NSString stringWithFormat: @"/%@/", appName]];
-      [cookie setExpires: [date yesterday]];
-      [response addCookie: cookie];
-    }
+  cookie = [self _logoutCookieWithDate: date];
+  if (cookie)
+    [response addCookie: cookie];
 
   [response setHeader: [date rfc822DateString] forKey: @"Last-Modified"];
   [response setHeader: @"no-store, no-cache, must-revalidate,"

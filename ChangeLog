@@ -1,5 +1,9 @@
 2010-06-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MainUI/SOGoUserHomePage.m (-logoffAction): split method in
+	smaller submethods for the sake of clarity. Also, we provide as
+	"CAS" mode where the redirection is made to the CAS logout page.
+
 	* SoObjects/SOGo/SOGoCASSession.m
 	(+CASSessionWithTicket:fromProxy:): added a new "fromProxy" parameter.
 	(+CASSessionWithIdentifier:fromProxy:): idem.
