@@ -97,28 +97,23 @@
 {
   static SOGoUser *anonymous = nil;
   SOGoUser *user;
-  NSArray *traversalPath;
   NSString *login;
 
-  if (!anonymous)
-    anonymous
-      = [[SOGoUser alloc] initWithLogin: @"anonymous"
-			  roles: [NSArray arrayWithObject: SoRole_Anonymous]];
-
   login = [self checkCredentialsInContext:_ctx];
-  if (login)
+  if ([login isEqualToString: @"anonymous"])
     {
-      if ([login isEqualToString: @"anonymous"])
-        {
-          traversalPath = [_ctx objectForKey: @"SoRequestTraversalPath"];
-	  user = anonymous;
-        }
-      else
-	{
-	  user = [SOGoUser userWithLogin: login
-			   roles: [self rolesForLogin: login]];
-	  [user setCurrentPassword: [self passwordInContext: _ctx]];
-	}
+      if (!anonymous)
+        anonymous
+          = [[SOGoUser alloc]
+                  initWithLogin: @"anonymous"
+                          roles: [NSArray arrayWithObject: SoRole_Anonymous]];
+      user = anonymous;
+    }
+  else if ([login length])
+    {
+      user = [SOGoUser userWithLogin: login
+                               roles: [self rolesForLogin: login]];
+      [user setCurrentPassword: [self passwordInContext: _ctx]];
     }
   else
     user = nil;

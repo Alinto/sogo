@@ -1,5 +1,8 @@
 2010-06-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoDAVAuthenticator.m (-userInContext:):
+	reorganized method.
+
 	* SoObjects/SOGo/NSString+Utilities.m
 	(-composeURLWithAction:parameters:andHash:): don't attempt to add
 	parameters if the parameters argument is empty.
