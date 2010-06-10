@@ -1,5 +1,9 @@
 2010-06-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Common/UIxPageFrame.m (-logoffPath): reverted previous change
+	as we now make use of the logoffAction to redirect to the CAS
+	logout url.
+
 	* SoObjects/SOGo/SOGoSystemDefaults.m (-davAuthenticationType):
 	new method similar to -authenticationType. Currently used for CAS
 	or non-CAS authentication.

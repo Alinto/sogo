@@ -26,7 +26,6 @@
 #import <NGObjWeb/WOResourceManager.h>
 
 #import <SOGo/NSDictionary+Utilities.h>
-#import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserProfile.h>
@@ -156,18 +155,7 @@
 
 - (NSString *) logoffPath
 {
-  NSString *logoffPath;
-  SOGoSystemDefaults *sd;
-
-  sd = [SOGoSystemDefaults sharedSystemDefaults];
-  if ([[sd authenticationType] isEqualToString: @"cas"])
-    logoffPath = [[sd CASServiceURL] composeURLWithAction: @"logout"
-                                               parameters: nil
-                                                  andHash: NO];
-  else
-    logoffPath = [self relativePathToUserFolderSubPath: @"logoff"];
-
-  return logoffPath;
+  return [self relativePathToUserFolderSubPath: @"logoff"];
 }
 
 /* popup handling */
