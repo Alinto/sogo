@@ -1,5 +1,9 @@
 2010-06-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/NSString+Utilities.m
+	(-composeURLWithAction:parameters:andHash:): don't attempt to add
+	parameters if the parameters argument is empty.
+
 	* UI/Common/UIxPageFrame.m (-canLogoff)): return YES when the
 	authentication type is set to "cas" and SOGoCASLogoutEnabled is
 	set.

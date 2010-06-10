@@ -59,7 +59,8 @@ static int cssEscapingCount;
   if (![completeURL hasSuffix: @"/"])
     [completeURL appendString: @"/"];
   [completeURL appendString: action];
-  [completeURL appendString: [urlParameters asURLParameters]];
+  if (urlParameters)
+    [completeURL appendString: [urlParameters asURLParameters]];
   if (useHash)
     [completeURL appendString: @"#"];
 
