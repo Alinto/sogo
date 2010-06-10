@@ -1928,13 +1928,13 @@
 	part in the SMTP server address. So one can now
 	specify hostname:port (like localhost:587) as
 	a value of SOGoSMTPServer. This fixes
-	http://www.scalableogo.org/bugs/view.php?id=201
+	http://www.sogo.nu/bugs/view.php?id=201
 
 	* SoObjects/Mailer/SOGoMailForward.m (init):
 	Now consider SOGoMailComposeMessageType instead
 	of ComposeMessagesType when checking if we are
 	using HTML mails composition mode. This fixes
-	http://www.scalableogo.org/bugs/view.php?id=280
+	http://www.sogo.nu/bugs/view.php?id=280
 
 2009-12-25  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
@@ -1949,23 +1949,23 @@
 	Don't call -configureFormatters in -init as it'll
 	invoke labelForKey prior to setPage: - resulting
 	in the wrong resources manager being selected.
-	This fixes: http://www.scalableogo.org/bugs/view.php?id=286
+	This fixes: http://www.sogo.nu/bugs/view.php?id=286
 
 	* UI/Templates/ContactsUI/UIxContactFoldersView.wox
 	UI/Templates/SchedulerUI/UIxCalMainView.wox
 	Modified the uploadForm in those two templates (to add
 	const:href="") in order to avoid SOPE sessions being
 	created upon access to the calendar or address book module.
-	This fixes: http://www.scalableogo.org/bugs/view.php?id=208
+	This fixes: http://www.sogo.nu/bugs/view.php?id=208
 
 	* SoObjects/SOGo/NSDictionary+Utilities.m (-userRecordAsLDIFEntry)
 	We skip the "isGroup" attribute from the list of attributes
 	to include during LDIF generation. This fixes:
-	http://www.scalableogo.org/bugs/view.php?id=221
+	http://www.sogo.nu/bugs/view.php?id=221
 
 	* UI/WebServerResources/SchedulerUI.js - we also invoke
 	refreshTasks() in onCalendarReload(). This fixes:
-	http://www.scalableogo.org/bugs/view.php?id=250
+	http://www.sogo.nu/bugs/view.php?id=250
 	
 2009-12-22  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
@@ -2009,7 +2009,7 @@
 	(_davPersonalCalendarURL): We make sure we handle the
 	presence or not of the trailing slash when we call
 	-davURLAsString on the parent object. See
-	http://www.scalableogo.org/bugs/view.php?id=74 for
+	http://www.sogo.nu/bugs/view.php?id=74 for
 	all details.
 
 2009-12-14  Ludovic Marcotte  <lmarcotte@inverse.ca>

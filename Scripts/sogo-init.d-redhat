@@ -31,7 +31,7 @@ PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
 NAME=sogo
 DAEMON=/usr/GNUstep/System/Tools/Admin/sogod
-DESC="Scalable OpenGroupware.Org (Inverse edition)"
+DESC="SOGo"
 
 USER=$NAME
 PREFORK=1

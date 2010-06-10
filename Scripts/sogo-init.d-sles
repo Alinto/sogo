@@ -34,7 +34,7 @@ PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
 NAME=sogo
 DAEMON=/usr/sbin/sogod
-DESC="Scalable OpenGroupware.Org"
+DESC="SOGo"
 
 USER=$NAME
 PREFORK=1

@@ -1,4 +1,4 @@
-Summary:      Scalable OpenGroupware.org (Inverse edition)
+Summary:      SOGo
 Name:         sogo
 Version:      %{sogo_version}
 Release:      %{dist_suffix}%{?dist}

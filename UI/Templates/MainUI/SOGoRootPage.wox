@@ -12,7 +12,7 @@
   ><var:string var:value="doctype" const:escapeHTML="NO"/>
   <div id="aboutBox" style="display:none;">
     <div>
-      <p class="logo"><img const:alt="Scalable OGo" rsrc:src="sogo-logo.png"/></p>
+      <p class="logo"><img const:alt="SOGo" rsrc:src="sogo-logo.png"/></p>
       <p>Version <var:string value="version"/> <span class="buildDate">(<var:string value="buildDate" />)</span></p>
       <p class="scroll"><var:string label:value="AboutBox" const:escapeHTML="NO"/></p>
       <img const:alt="Inverse" rsrc:src="inverse.png"/>
