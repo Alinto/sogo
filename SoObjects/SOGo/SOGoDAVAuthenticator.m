@@ -27,10 +27,12 @@
 #import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSObject+Logs.h>
 
+#import "SOGoCASSession.h"
 #import "SOGoConstants.h"
-#import "SOGoUserManager.h"
 #import "SOGoPermissions.h"
+#import "SOGoSystemDefaults.h"
 #import "SOGoUser.h"
+#import "SOGoUserManager.h"
 
 #import "SOGoDAVAuthenticator.h"
 
@@ -49,28 +51,42 @@
 - (BOOL) checkLogin: (NSString *) _login
 	   password: (NSString *) _pwd
 {
+  SOGoSystemDefaults *sd;
+  SOGoCASSession *session;
   SOGoPasswordPolicyError perr;
   int expire, grace;
-  BOOL b;
+  BOOL rc;
 
-  perr = PolicyNoError;
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  if ([[sd davAuthenticationType] isEqualToString: @"cas"])
+    {
+      /* CAS authentication for DAV requires using a proxy */
+      session = [SOGoCASSession CASSessionWithIdentifier: _pwd
+                                               fromProxy: YES];
+      if (session)
+        rc = [[session login] isEqualToString: _login];
+      else
+        rc = NO;
+    }
+  else
+    {
+      perr = PolicyNoError;
 
-  b = [[SOGoUserManager sharedUserManager] checkLogin: _login
-					   password: _pwd
-					   perr: &perr
-					   expire: &expire
-					   grace: &grace];
+      rc = ([[SOGoUserManager sharedUserManager] checkLogin: _login
+                                                 password: _pwd
+                                                     perr: &perr
+                                                   expire: &expire
+                                                    grace: &grace]
+            && perr == PolicyNoError);
+    }
 
-  if (b && perr == PolicyNoError)
-    return YES;
-
-  return NO;
+  return rc;
 }
 
 - (NSString *) passwordInContext: (WOContext *) context
 {
-  NSString  *auth, *password;
-  NSArray   *creds;
+  NSString *auth, *password;
+  NSArray *creds;
 
   password = nil;
   auth = [[context request] headerForKey: @"authorization"];
@@ -88,7 +104,28 @@
                            forServer: (NSString *) imapServer
                           forceRenew: (BOOL) renew
 {
-  return [self passwordInContext: context];
+  SOGoSystemDefaults *sd;
+  SOGoCASSession *session;
+  NSString *password, *service;
+
+  password = [self passwordInContext: context];
+  if ([password length])
+    {
+      sd = [SOGoSystemDefaults sharedSystemDefaults];
+      if ([[sd davAuthenticationType] isEqualToString: @"cas"])
+        {
+          session = [SOGoCASSession CASSessionWithIdentifier: password
+                                                   fromProxy: YES];
+          service = [NSString stringWithFormat: @"imap://%@", imapServer];
+          if (renew)
+            [session invalidateTicketForService: service];
+          password = [session ticketForService: service];
+          if ([password length] || renew)
+            [session updateCache];
+        }
+    }
+
+  return password;
 }
 
 /* create SOGoUser */

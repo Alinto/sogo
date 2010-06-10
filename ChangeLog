@@ -1,5 +1,12 @@
 2010-06-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoDAVAuthenticator.m (-checkLogin:password:):
+	use CAS in proxy mode when SOGoDAVAuthenticationType is set to
+	"cas".
+	(-imapPasswordInContext:forServer:forceRenew:): now a copy of the
+	equivalent method in SOGoWebAuthenticator, when the above
+	condition is true.
+
 	* UI/Common/UIxPageFrame.m (-logoffPath): reverted previous change
 	as we now make use of the logoffAction to redirect to the CAS
 	logout url.
