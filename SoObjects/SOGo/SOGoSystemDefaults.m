@@ -291,6 +291,11 @@ BootstrapNSUserDefaults ()
   return [[self stringForKey: @"SOGoAuthenticationType"] lowercaseString];
 }
 
+- (NSString *) davAuthenticationType
+{
+  return [[self stringForKey: @"SOGoDAVAuthenticationType"] lowercaseString];
+}
+
 - (NSString *) CASServiceURL
 {
   return [self stringForKey: @"SOGoCASServiceURL"];

@@ -1,5 +1,9 @@
 2010-06-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoSystemDefaults.m (-davAuthenticationType):
+	new method similar to -authenticationType. Currently used for CAS
+	or non-CAS authentication.
+
 	* UI/MainUI/SOGoUserHomePage.m (-logoffAction): split method in
 	smaller submethods for the sake of clarity. Also, we provide as
 	"CAS" mode where the redirection is made to the CAS logout page.

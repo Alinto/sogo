@@ -61,6 +61,7 @@
 - (NSString *) loginSuffix;
 
 - (NSString *) authenticationType;
+- (NSString *) davAuthenticationType;
 
 - (NSString *) CASServiceURL;
 - (BOOL) CASLogoutEnabled;
