@@ -84,7 +84,7 @@
 
   if ([[sd authenticationType] isEqualToString: @"cas"])
     {
-      session = [SOGoCASSession CASSessionWithIdentifier: _pwd];
+      session = [SOGoCASSession CASSessionWithIdentifier: _pwd fromProxy: NO];
       if (session)
         rc = [[session login] isEqualToString: _login];
       else
@@ -152,7 +152,8 @@
       sd = [SOGoSystemDefaults sharedSystemDefaults];
       if ([[sd authenticationType] isEqualToString: @"cas"])
         {
-          session = [SOGoCASSession CASSessionWithIdentifier: password];
+          session = [SOGoCASSession CASSessionWithIdentifier: password
+                                                   fromProxy: NO];
           service = [NSString stringWithFormat: @"imap://%@", imapServer];
           if (renew)
             [session invalidateTicketForService: service];

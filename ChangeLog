@@ -1,5 +1,11 @@
 2010-06-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoCASSession.m
+	(+CASSessionWithTicket:fromProxy:): added a new "fromProxy" parameter.
+	(+CASSessionWithIdentifier:fromProxy:): idem.
+	(-fetchData): if the session is used by a proxy client, we invoke
+	"proxyValidate" rather than "serviceValidate".
+
 	* SoObjects/SOGo/SOGoDAVAuthenticator.m (-userInContext:):
 	reorganized method.
 

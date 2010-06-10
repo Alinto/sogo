@@ -43,6 +43,13 @@
 
 #import "SOGoCASSession.h"
 
+@interface SOGoCASSession (SOGoPrivate)
+
+- (void) setTicket: (NSString *) newTicket
+         fromProxy: (BOOL) fromProxy;
+
+@end
+
 @implementation SOGoCASSession
 
 + (NSString *) CASURLWithAction: (NSString *) casAction
@@ -68,6 +75,7 @@
 }
 
 + (SOGoCASSession *) CASSessionWithTicket: (NSString *) newTicket
+                                fromProxy: (BOOL) fromProxy
 {
   SOGoCASSession *newSession;
 
@@ -75,7 +83,8 @@
     {
       newSession = [self new];
       [newSession autorelease];
-      [newSession setTicket: newTicket];
+      [newSession setTicket: newTicket
+                  fromProxy: fromProxy];
     }
   else
     newSession = nil;
@@ -84,6 +93,7 @@
 }
 
 + (SOGoCASSession *) CASSessionWithIdentifier: (NSString *) newIdentifier
+                                    fromProxy: (BOOL) fromProxy
 {
   SOGoCASSession *session;
   SOGoCache *cache;
@@ -91,7 +101,7 @@
 
   cache = [SOGoCache sharedCache];
   casTicket = [cache CASTicketFromIdentifier: newIdentifier];
-  session = [self CASSessionWithTicket: casTicket];
+  session = [self CASSessionWithTicket: casTicket fromProxy: fromProxy];
 
   return session;
 }
@@ -101,6 +111,7 @@
   if ((self = [super init]))
     {
       ticket = nil;
+      ticketFromProxy = NO;
       login = nil;
       pgt = nil;
       identifier = nil;
@@ -163,8 +174,10 @@
 }
 
 - (void) setTicket: (NSString *) newTicket
+         fromProxy: (BOOL) fromProxy
 {
   ASSIGN (ticket, newTicket);
+  ticketFromProxy = fromProxy;
   [self _loadSessionFromCache];
 }
 
@@ -355,8 +368,7 @@
 
   application = [WOApplication application];
   request = [[application context] request];
-  pgtURL = [NSString stringWithFormat:
-                              @"https://%@/%@/casProxy",
+  pgtURL = [NSString stringWithFormat: @"https://%@/%@/casProxy",
                      [soURL host], [request applicationName]];
 
   return pgtURL;
@@ -375,7 +387,9 @@
                            ticket, @"ticket", serviceURL, @"service",
                                  [self _pgtUrlFromURL: soURL], @"pgtUrl",
                          nil];
-  [self _performCASRequestWithAction: @"serviceValidate"
+  [self _performCASRequestWithAction: (ticketFromProxy
+                                       ? @"proxyValidate"
+                                       : @"serviceValidate")
                        andParameters: params];
   identifier = [SOGoObject globallyUniqueObjectId];
   [identifier retain];

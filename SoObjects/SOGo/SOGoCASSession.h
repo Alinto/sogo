@@ -34,6 +34,7 @@
 @interface SOGoCASSession : NSObject
 {
   NSString *ticket;
+  BOOL ticketFromProxy;
   NSString *login;
   NSString *pgt;
   NSString *identifier;
@@ -45,12 +46,13 @@
 + (NSString *) CASURLWithAction: (NSString *) casAction
                   andParameters: (NSDictionary *) parameters;
 
-+ (SOGoCASSession *) CASSessionWithTicket: (NSString *) newTicket;
-+ (SOGoCASSession *) CASSessionWithIdentifier: (NSString *) newIdentifier;
++ (SOGoCASSession *) CASSessionWithTicket: (NSString *) newTicket
+                                fromProxy: (BOOL) fromProxy;
++ (SOGoCASSession *) CASSessionWithIdentifier: (NSString *) newIdentifier
+                                fromProxy: (BOOL) fromProxy;
 
 - (NSString *) identifier;
 
-- (void) setTicket: (NSString *) newTicket;
 - (NSString *) ticket;
 
 - (NSString *) login;

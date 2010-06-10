@@ -248,7 +248,8 @@
       ticket = [rq formValueForKey: @"ticket"];
       if ([ticket length])
         {
-          casSession = [SOGoCASSession CASSessionWithTicket: ticket];
+          casSession = [SOGoCASSession CASSessionWithTicket: ticket
+                                                  fromProxy: NO];
           login = [casSession login];
           if ([login length])
             {
