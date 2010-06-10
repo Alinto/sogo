@@ -1,5 +1,11 @@
 2010-06-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Common/UIxPageFrame.m (-canLogoff)): return YES when the
+	authentication type is set to "cas" and SOGoCASLogoutEnabled is
+	set.
+	(-logoffPath): return an href to the CAS service logout URL when
+	using "cas" as authentication type.
+
 	* SoObjects/SOGo/SOGoSystemDefaults.m (-CASLogoutEnabled): new
 	method that returns whether the "SOGoCASLogoutEnabled" ud is set.
 
