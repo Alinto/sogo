@@ -39,13 +39,14 @@ static NSArray *filters = nil;
 + (void) initialize
 {
   static NSString *quals[]
-    = {@"view_all", @"view_today", @"view_next7", @"view_next14",
+    = { // @"view_all",
+       @"view_today", @"view_next7", @"view_next14",
        @"view_next31", @"view_thismonth", @"view_future",
        @"view_selectedday" };
 
   if (!filters)
     {
-      filters = [NSArray arrayWithObjects: quals count: 8];
+      filters = [NSArray arrayWithObjects: quals count: 7];
       [filters retain];
     }
 }
@@ -63,8 +64,8 @@ static NSArray *filters = nil;
 
 - (void) dealloc
 {
-  [self->searchCriteria release];
-  [self->searchText release];
+  [searchCriteria release];
+  [searchText release];
   [super dealloc];
 }
 
@@ -72,12 +73,12 @@ static NSArray *filters = nil;
 
 - (void) setSearchText: (NSString *)_txt
 {
-  ASSIGNCOPY(self->searchText, _txt);
+  ASSIGN (searchText, _txt);
 }
 
 - (void) setSearchCriteria: (NSString *)_txt
 {
-  ASSIGNCOPY(self->searchText, _txt);
+  ASSIGN (searchText, _txt);
 }
 
 - (NSString *) searchText

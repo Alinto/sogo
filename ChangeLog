@@ -1,3 +1,9 @@
+2010-06-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxCalFilterPanel.m (+initialize): commented out
+	the "All Events" option as this could cause a delay too long in IE
+	when drawing the list.
+
 2010-06-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoDAVAuthenticator.m (-checkLogin:password:):
