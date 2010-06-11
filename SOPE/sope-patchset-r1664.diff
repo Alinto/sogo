@@ -391,6 +391,22 @@ Index: sope-ldap/NGLdap/NGLdapConnection.h
  /* query parameters */
  
  - (void)setQueryTimeLimit:(NSTimeInterval)_timeLimit;
+Index: sope-gdl1/MySQL/MySQL4Channel.m
+===================================================================
+--- sope-gdl1/MySQL/MySQL4Channel.m	(revision 1664)
++++ sope-gdl1/MySQL/MySQL4Channel.m	(working copy)
+@@ -635,10 +635,10 @@
+     if ((merrno = mysql_errno(self->_connection)) != 0) {
+       const char *error;
+       
++      error = mysql_error(self->_connection);
+       if (isDebuggingEnabled)
+         NSLog(@"%@   cannot use result: '%s'", self, error);
+       
+-      error = mysql_error(self->_connection);
+       return [MySQL4Exception exceptionWithName:@"FetchFailed" 
+                               reason:[NSString stringWithUTF8String:error]
+                               userInfo:nil];
 Index: sope-gdl1/Oracle8/ChangeLog
 ===================================================================
 --- sope-gdl1/Oracle8/ChangeLog	(revision 1664)
