@@ -27,9 +27,6 @@
 
 @interface UIxCalMainActions : WODirectAction
 
-- (void) saveUrl: (NSURL *) calendarURL
-     forCalendar: (NSString *) calendarName;
-
 @end
 
 #endif /* UIXCALMAINACTIONS_H */

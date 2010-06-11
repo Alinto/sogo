@@ -27,7 +27,7 @@
 
 @interface SOGoWebAppointmentFolder : SOGoAppointmentFolder
 
-- (int) loadWebCalendar: (NSString *) location;
+- (int) loadWebCalendar;
 - (void) deleteAllContent;
 
 - (void) setReloadOnLogin: (BOOL) newReloadOnLogin;

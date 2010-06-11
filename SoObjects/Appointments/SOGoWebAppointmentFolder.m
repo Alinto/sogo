@@ -36,16 +36,16 @@
   [[self ocsFolder] deleteAllContent];
 }
 
-- (int) loadWebCalendar: (NSString *) location
+- (int) loadWebCalendar
 {
   NSURL *url;
   NSData *data;
-  NSString *contents;
+  NSString *location, *contents;
   iCalCalendar *calendar;
   int imported = 0;
 
+  location = [self folderPropertyValueInCategory: @"WebCalendars"];
   url = [NSURL URLWithString: location];
-
   if (url)
     {
       data = [url resourceDataUsingCache: NO];
@@ -89,20 +89,10 @@
 - (NSException *) delete
 {
   NSException *error;
-  SOGoUserSettings *settings;
-  NSMutableDictionary *webCalendars;
-  NSString *name;
 
   error = [super delete];
   if (!error)
-    {
-      settings = [[context activeUser] userSettings];
-      webCalendars = [[settings objectForKey: @"Calendar"]
-                      objectForKey: @"WebCalendars"];
-      name = [self nameInContainer];
-      [webCalendars removeObjectForKey: name];
-      [settings synchronize];
-    }
+    [self setFolderPropertyValue: nil inCategory: @"WebCalendars"];
 
   return error;
 }

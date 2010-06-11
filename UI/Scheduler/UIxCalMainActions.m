@@ -61,7 +61,7 @@
   WOResponse *response;
   SOGoWebAppointmentFolder *folder;
   NSURL *url;
-  NSString *name, *displayName;
+  NSString *urlString, *displayName;
   NSMutableDictionary *rc;
   SOGoAppointmentFolders *folders;
   int imported = 0;
@@ -70,25 +70,21 @@
   rc = [NSMutableDictionary dictionary];
 
   // Just a check
-  url = [NSURL URLWithString: [r formValueForKey: @"url"]];
+  urlString = [r formValueForKey: @"url"];
+  url = [NSURL URLWithString: urlString];
   if (url)
     {
       folders = [self clientObject];
       displayName = [self displayNameForUrl: [r formValueForKey: @"url"]];
-      [folders newFolderWithName: displayName
-                 nameInContainer: &name];
-      [self saveUrl: url forCalendar: name];
-      folder = [folders lookupName: name
-                         inContext: context
-                           acquire: NO];
+      folder = [folders newWebCalendarWithName: displayName
+                                         atURL: urlString];
       if (folder)
         {
-          imported = [folder loadWebCalendar: [r formValueForKey: @"url"]];
-          
+          imported = [folder loadWebCalendar];
           if (imported >= 0)
             {
               [rc setObject: displayName forKey: @"displayname"];
-              [rc setObject: name forKey: @"name"];
+              [rc setObject: [folder nameInContainer] forKey: @"name"];
             }
           else
             {
@@ -102,24 +98,6 @@
   response = [self responseWithStatus: 200];
   [response appendContentString: [rc jsonRepresentation]];
   return response;
-}
-
-- (void) saveUrl: (NSURL *) calendarURL
-     forCalendar: (NSString *) calendarName
-{
-  SOGoUserSettings *settings;
-  NSMutableDictionary *calSettings, *webCalendars;
-
-  settings = [[context activeUser] userSettings];
-  calSettings = [settings objectForKey: @"Calendar"];
-  webCalendars = [calSettings objectForKey: @"WebCalendars"];
-  if (!webCalendars)
-    {
-      webCalendars = [NSMutableDictionary dictionary];
-      [calSettings setObject: webCalendars forKey: @"WebCalendars"];
-    }
-  [webCalendars setObject: [calendarURL absoluteString]  forKey: calendarName];
-  [settings synchronize];
 }
 
 - (WOResponse *) reloadWebCalendarsAction

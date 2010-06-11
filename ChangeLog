@@ -1,5 +1,21 @@
 2010-06-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalMainActions.m (-saveUrl:forCalendar:):
+	removed method since obsoleted by the code below.
+
+	* SoObjects/Appointments/SOGoWebAppointmentFolder.m
+	(-loadWebCalendar): removed the URL parameter since it's
+	read-only.
+	(-delete): simplified method.
+
+	* SoObjects/Appointments/SOGoAppointmentFolders.m
+	(-newWebCalendarWithName:atURL:): new self-explicit method.
+	(-reloadWebCalendars): we now make use of the @"WebCalendar" name
+	as a property key.
+	(_migrateWebCalendarsSettings): new method that converts
+	WebCalendar entry keys in a format suitable for use as a property
+	key.
+
 	* UI/Scheduler/UIxCalFilterPanel.m (+initialize): commented out
 	the "All Events" option as this could cause a delay too long in IE
 	when drawing the list.

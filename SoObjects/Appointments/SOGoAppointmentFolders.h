@@ -27,12 +27,16 @@
 
 @class NSArray;
 
+@class SOGoWebAppointmentFolder;
+
 @interface SOGoAppointmentFolders : SOGoParentFolder
 {
   NSMutableArray *folderObjectKeys;
 }
 
-- (NSArray *) webCalendarIds;
+- (SOGoWebAppointmentFolder *) newWebCalendarWithName: (NSString *) folderDisplayName
+                                                atURL: (NSString *) url;
+
 - (void) reloadWebCalendars: (BOOL) forceReload;
 
 - (BOOL) hasProxyCalendarsWithWriteAccess: (BOOL) write

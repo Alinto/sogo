@@ -96,6 +96,30 @@
   return [self labelForKey: @"Personal Calendar" inContext: context];
 }
 
+- (SOGoWebAppointmentFolder *)
+ newWebCalendarWithName: (NSString *) folderDisplayName
+                  atURL: (NSString *) url
+{
+  SOGoAppointmentFolder *aptFolder;
+  SOGoWebAppointmentFolder *webCalendar;
+  NSString *name;
+
+  if (![self newFolderWithName: folderDisplayName
+               nameInContainer: &name])
+    {
+      aptFolder = [subFolders objectForKey: name];
+      [aptFolder setFolderPropertyValue: url
+                             inCategory: @"WebCalendars"];
+
+      webCalendar = [SOGoWebAppointmentFolder objectWithName: name
+                                                 inContainer: self];
+      [webCalendar setOCSPath: [aptFolder ocsPath]];
+      [subFolders setObject: webCalendar forKey: name];
+    }
+
+  return webCalendar;
+}
+
 - (NSArray *) toManyRelationshipKeys
 {
   NSMutableArray *keys;
@@ -348,91 +372,102 @@
   return componentSet;
 }
 
-- (NSArray *) webCalendarIds
-{
-  SOGoUserSettings *us;
-  NSDictionary *tmp, *calendars;
-  NSArray *rc;
-  
-  rc = nil;
-
-  us = [[SOGoUser userWithLogin: owner] userSettings];
-  tmp = [us objectForKey: @"Calendar"];
-  if (tmp)
-    {
-      calendars = [tmp objectForKey: @"WebCalendars"];
-      if (calendars)
-        rc = [calendars allKeys];
-    }
-
-  if (!rc)
-    rc = [NSArray array];
-
-  return rc;
-}
-
 - (void) reloadWebCalendars: (BOOL) forceReload
 {
-  SOGoUserSettings *settings;
-  NSMutableDictionary *calendarSettings, *webCalendars;
-  NSArray *calendarIds;
+  NSArray *refs;
   SOGoWebAppointmentFolder *folder;
-  NSString *name;
+  SOGoUserSettings *us;
+  NSDictionary *calSettings;
+  NSString *ref;
   int count, max;
 
-  settings = [[SOGoUser userWithLogin: owner] userSettings];
-  calendarSettings = [settings objectForKey: @"Calendar"];
-  webCalendars = [calendarSettings objectForKey: @"WebCalendars"];
-  calendarIds = [webCalendars allKeys];
-  max = [calendarIds count];
+  us = [[SOGoUser userWithLogin: owner] userSettings];
+  calSettings = [us objectForKey: @"Calendar"];
+  refs = [[calSettings objectForKey: @"WebCalendars"] allKeys];
+  max = [refs count];
   for (count = 0; count < max; count++)
     {
-      name = [calendarIds objectAtIndex: count];
-      folder = [self lookupName: name inContext: context acquire: NO];
+      ref = [refs objectAtIndex: count];
+      folder = [SOGoWebAppointmentFolder
+                 folderWithSubscriptionReference: ref
+                                     inContainer: self];
       if (folder
-          && [folder isKindOfClass: [SOGoWebAppointmentFolder class]]
           && (forceReload || [folder reloadOnLogin]))
-        [folder loadWebCalendar: [webCalendars objectForKey: name]];
+        [folder loadWebCalendar];
     }
+}
+
+- (void) _migrateWebCalendarsSettings
+{
+  SOGoUserSettings *us;
+  NSDictionary *module;
+  NSMutableDictionary *webCalendars;
+  NSArray *keys;
+  NSString *oldKey, *prefix, *newKey;
+  int count, max;
+  BOOL hasChanged;
+
+  hasChanged = NO;
+
+  us = [[context activeUser] userSettings];
+  module = [us objectForKey: @"Calendar"];
+  webCalendars = [module objectForKey: @"WebCalendars"];
+  keys = [webCalendars allKeys];
+  max = [keys count];
+
+  prefix = [NSString stringWithFormat: @"%@:Calendar/",
+                 [self ownerInContext: context]];
+  for (count = 0; count < max; count++)
+    {
+      oldKey = [keys objectAtIndex: count];
+      if (![oldKey hasPrefix: prefix])
+        {
+          newKey = [prefix stringByAppendingString: oldKey];
+          [webCalendars setObject: [webCalendars objectForKey: oldKey]
+                           forKey: newKey];
+          [webCalendars removeObjectForKey: oldKey];
+          hasChanged = YES;
+        }
+    }
+  if (hasChanged)
+    [us synchronize];
 }
 
 - (NSException *) _fetchPersonalFolders: (NSString *) sql
                             withChannel: (EOAdaptorChannel *) fc
 {
-  int count, max;
-  NSArray *webCalendarIds;
-  NSString *name;
-  SOGoAppointmentFolder *old;
-  SOGoWebAppointmentFolder *folder;
-  NSException *error;
   BOOL isWebRequest;
+  NSException *error;
+  NSArray *folders;
+  int count, max;
+  SOGoAppointmentFolder *folder;
+  SOGoWebAppointmentFolder *webFolder;
+  NSString *name;
 
-  isWebRequest = [[context request] handledByDefaultHandler];
   error = [super _fetchPersonalFolders: sql withChannel: fc];
   if (!error)
     {
-      webCalendarIds = [self webCalendarIds];
-      max = [webCalendarIds count];
+      isWebRequest = [[context request] handledByDefaultHandler];
+      folders = [subFolders allValues];
+      max = [folders count];
+
+      [self _migrateWebCalendarsSettings];
       for (count = 0; count < max; count++)
         {
-          name = [webCalendarIds objectAtIndex: count];
-          if (isWebRequest)
+          folder = [folders objectAtIndex: count];
+          if ([folder folderPropertyValueInCategory: @"WebCalendars"])
             {
-              old = [subFolders objectForKey: name];
-              if (old)
+              name = [folder nameInContainer];
+              if (isWebRequest)
                 {
-                  folder = [SOGoWebAppointmentFolder objectWithName: name
+                  webFolder = [SOGoWebAppointmentFolder objectWithName: name
                                                         inContainer: self];
-                  [folder setOCSPath: [old ocsPath]];
-                  [subFolders setObject: folder forKey: name];
+                  [webFolder setOCSPath: [folder ocsPath]];
+                  [subFolders setObject: webFolder forKey: name];
                 }
               else
-                [self errorWithFormat: @"webcalendar inconsistency: folder with"
-                      @" name '%@' was not found in the database,"
-                      @" conversion skipped", name];
+                [subFolders removeObjectForKey: name];
             }
-          else
-            [subFolders removeObjectForKey: name];
         }
     }
 

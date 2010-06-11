@@ -177,24 +177,6 @@
   [calendar setShowCalendarTasks: new];
 }
 
-- (NSString *) webCalendarURL
-{
-  SOGoUserSettings *settings;
-  NSMutableDictionary *calendarSettings;
-  NSMutableDictionary *webCalendars;
-  NSString *rc;
-
-  settings = [[context activeUser] userSettings];
-  calendarSettings = [settings objectForKey: @"Calendar"];
-  webCalendars = [calendarSettings objectForKey: @"WebCalendars"];
-  if (webCalendars)
-    rc = [webCalendars objectForKey: [calendar nameInContainer]];
-  else
-    rc = nil;
-
-  return rc;
-}
-
 - (BOOL) userIsOwner
 {
   NSString *userLogin;
@@ -207,6 +189,11 @@
 - (BOOL) isWebCalendar
 {
   return ([calendar isKindOfClass: [SOGoWebAppointmentFolder class]]);
+}
+
+- (NSString *) webCalendarURL
+{
+  return [calendar folderPropertyValueInCategory: @"WebCalendars"];
 }
 
 - (void) setReloadOnLogin: (BOOL) newReloadOnLogin
