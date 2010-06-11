@@ -1,3 +1,17 @@
+2010-06-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* GCSFolderManager.m
+	(_reallyCreateFolderWithName:andFolderType:andType:andChannel:atPath:):
+	we now make use of the new classes described below.
+
+	* GCSSpecialQueries.m (-[EOAdaptorChannel specialQueries]): new
+	category method that returns the proper GCSSpecialQueries instance
+	based on the channel class.
+
+	* GCSSpecialQueries.[hm]: new module providing the
+	"GCSSpecialQueries" cluster class that implements
+	SQL queries that are specific to each SQL implementation.
+
 2010-04-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* EOAdaptorChannel+GCS.m (-tableExistsWithName:): cleaned method

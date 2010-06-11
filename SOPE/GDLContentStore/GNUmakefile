@@ -31,6 +31,7 @@ libGDLContentStore_HEADER_FILES +=		\
 	GCSFolderType.h				\
 	GCSChannelManager.h			\
 	GCSFieldExtractor.h			\
+	GCSSpecialQueries.h			\
 	GCSStringFormatter.h			\
 
 libGDLContentStore_OBJC_FILES +=		\
@@ -45,6 +46,7 @@ libGDLContentStore_OBJC_FILES +=		\
 	GCSFolderType.m				\
 	GCSChannelManager.m			\
 	GCSFieldExtractor.m			\
+	GCSSpecialQueries.m			\
 	GCSStringFormatter.m			\
 
 # framework support

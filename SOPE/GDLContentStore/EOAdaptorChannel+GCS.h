@@ -24,13 +24,6 @@
 
 #include <GDLAccess/EOAdaptorChannel.h>
 
-@protocol GCSEOAdaptorChannel
-
-- (NSException *) createGCSFolderTableWithName: (NSString *) tableName;
-- (NSException *) createGCSFolderACLTableWithName: (NSString *) tableName;
-
-@end
-
 @interface EOAdaptorChannel(GCS)
 
 - (BOOL) tableExistsWithName: (NSString *) _tableName;

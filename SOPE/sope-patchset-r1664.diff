@@ -391,94 +391,6 @@ Index: sope-ldap/NGLdap/NGLdapConnection.h
  /* query parameters */
  
  - (void)setQueryTimeLimit:(NSTimeInterval)_timeLimit;
-Index: sope-gdl1/PostgreSQL/PostgreSQL72Channel.m
-===================================================================
---- sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(revision 1664)
-+++ sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(working copy)
-@@ -713,6 +713,39 @@
-   return ms;
- }
- 
-+/* GCSEOAdaptorChannel protocol */
-+static NSString *sqlFolderFormat = (@"CREATE TABLE %@ (\n"	\
-+				    @"  c_name VARCHAR (255) NOT NULL PRIMARY KEY,\n"
-+				    @"  c_content VARCHAR (100000) NOT NULL,\n"
-+				    @"  c_creationdate INT4 NOT NULL,\n"
-+				    @"  c_lastmodified INT4 NOT NULL,\n"
-+				    @"  c_version INT4 NOT NULL,\n"
-+				    @"  c_deleted INT4 NULL\n"
-+				    @")");
-+static NSString *sqlFolderACLFormat = (@"CREATE TABLE %@ (\n"	\
-+				       @"  c_uid VARCHAR (255) NOT NULL,\n"
-+				       @"  c_object VARCHAR (255) NOT NULL,\n"
-+				       @"  c_role VARCHAR (80) NOT NULL\n"
-+				       @")");
-+
-+- (NSException *) createGCSFolderTableWithName: (NSString *) tableName
-+{
-+  NSString *sql;
-+
-+  sql = [NSString stringWithFormat: sqlFolderFormat, tableName];
-+
-+  return [self evaluateExpressionX: sql];
-+}
-+
-+- (NSException *) createGCSFolderACLTableWithName: (NSString *) tableName
-+{
-+  NSString *sql;
-+
-+  sql = [NSString stringWithFormat: sqlFolderACLFormat, tableName];
-+
-+  return [self evaluateExpressionX: sql];
-+}
-+
- @end /* PostgreSQL72Channel */
- 
- @implementation PostgreSQL72Channel(PrimaryKeyGeneration)
-Index: sope-gdl1/MySQL/MySQL4Channel.m
-===================================================================
---- sope-gdl1/MySQL/MySQL4Channel.m	(revision 1664)
-+++ sope-gdl1/MySQL/MySQL4Channel.m	(working copy)
-@@ -755,6 +755,39 @@
-   return pkey;
- }
- 
-+/* GCSEOAdaptorChannel protocol */
-+static NSString *sqlFolderFormat = (@"CREATE TABLE %@ (\n"	\
-+				    @"  c_name VARCHAR (255) NOT NULL PRIMARY KEY,\n"
-+				    @"  c_content VARCHAR (100000) NOT NULL,\n"
-+				    @"  c_creationdate INT NOT NULL,\n"
-+				    @"  c_lastmodified INT NOT NULL,\n"
-+				    @"  c_version INT NOT NULL,\n"
-+				    @"  c_deleted INT NULL\n"
-+				    @")");
-+static NSString *sqlFolderACLFormat = (@"CREATE TABLE %@ (\n"	\
-+				       @"  c_uid VARCHAR (255) NOT NULL,\n"
-+				       @"  c_object VARCHAR (255) NOT NULL,\n"
-+				       @"  c_role VARCHAR (80) NOT NULL\n"
-+				       @")");
-+
-+- (NSException *) createGCSFolderTableWithName: (NSString *) tableName
-+{
-+  NSString *sql;
-+
-+  sql = [NSString stringWithFormat: sqlFolderFormat, tableName];
-+
-+  return [self evaluateExpressionX: sql];
-+}
-+
-+- (NSException *) createGCSFolderACLTableWithName: (NSString *) tableName
-+{
-+  NSString *sql;
-+
-+  sql = [NSString stringWithFormat: sqlFolderACLFormat, tableName];
-+
-+  return [self evaluateExpressionX: sql];
-+}
-+
- @end /* MySQL4Channel */
- 
- void __link_MySQL4Channel() {
 Index: sope-gdl1/Oracle8/ChangeLog
 ===================================================================
 --- sope-gdl1/Oracle8/ChangeLog	(revision 1664)
@@ -790,26 +702,44 @@ Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
    status = OCIStmtFetch2(_current_stm, _oci_err, (ub4)1, (ub4)OCI_FETCH_NEXT, (sb4)0, (ub4)OCI_DEFAULT);
  
    if (status == OCI_NO_DATA)
-@@ -609,7 +706,7 @@
+@@ -607,37 +704,4 @@
+   return _oci_ctx;
+ }
  
- /* GCSEOAdaptorChannel protocol */
- static NSString *sqlFolderFormat = (@"CREATE TABLE %@ (\n"	\
+-/* GCSEOAdaptorChannel protocol */
+-static NSString *sqlFolderFormat = (@"CREATE TABLE %@ (\n"	\
 -				    @"  c_name VARCHAR2 (256) NOT NULL,\n"
-+				    @"  c_name VARCHAR2 (255) NOT NULL PRIMARY KEY,\n"
- 				    @"  c_content CLOB NOT NULL,\n"
- 				    @"  c_creationdate INTEGER NOT NULL,\n"
- 				    @"  c_lastmodified INTEGER NOT NULL,\n"
-@@ -617,8 +714,8 @@
- 				    @"  c_deleted INTEGER DEFAULT 0 NOT NULL\n"
- 				    @")");
- static NSString *sqlFolderACLFormat = (@"CREATE TABLE %@ (\n"	\
+-				    @"  c_content CLOB NOT NULL,\n"
+-				    @"  c_creationdate INTEGER NOT NULL,\n"
+-				    @"  c_lastmodified INTEGER NOT NULL,\n"
+-				    @"  c_version INTEGER NOT NULL,\n"
+-				    @"  c_deleted INTEGER DEFAULT 0 NOT NULL\n"
+-				    @")");
+-static NSString *sqlFolderACLFormat = (@"CREATE TABLE %@ (\n"	\
 -				       @"  c_uid VARCHAR (256) NOT NULL,\n"
 -				       @"  c_object VARCHAR (256) NOT NULL,\n"
-+				       @"  c_uid VARCHAR (255) NOT NULL,\n"
-+				       @"  c_object VARCHAR (255) NOT NULL,\n"
- 				       @"  c_role VARCHAR (80) NOT NULL\n"
- 				       @")");
- 
+-				       @"  c_role VARCHAR (80) NOT NULL\n"
+-				       @")");
+-
+-- (NSException *) createGCSFolderTableWithName: (NSString *) tableName
+-{
+-  NSString *sql;
+-
+-  sql = [NSString stringWithFormat: sqlFolderFormat, tableName];
+-
+-  return [self evaluateExpressionX: sql];
+-}
+-
+-- (NSException *) createGCSFolderACLTableWithName: (NSString *) tableName
+-{
+-  NSString *sql;
+-
+-  sql = [NSString stringWithFormat: sqlFolderACLFormat, tableName];
+-
+-  return [self evaluateExpressionX: sql];
+-}
+-
+ @end
 Index: sope-gdl1/Oracle8/OracleAdaptorChannelController.m
 ===================================================================
 --- sope-gdl1/Oracle8/OracleAdaptorChannelController.m	(revision 1664)

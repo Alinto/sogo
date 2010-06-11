@@ -41,6 +41,7 @@
 #import "GCSChannelManager.h"
 #import "GCSFolderType.h"
 #import "GCSFolder.h"
+#import "GCSSpecialQueries.h"
 #import "NSURL+GCS.h"
 #import "EOAdaptorChannel+GCS.h"
 
@@ -710,14 +711,15 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
 - (NSException *) _reallyCreateFolderWithName: (NSString *) folderName
 				andFolderType: (NSString *) folderType
 				      andType: (GCSFolderType *) ftype
-				   andChannel: (EOAdaptorChannel
-						<GCSEOAdaptorChannel> *) channel
+				   andChannel: (EOAdaptorChannel *) channel
 				       atPath: (NSString *) path
 {
   NSException *error;
-  NSString *baseURL, *tableName, *quickTableName, *aclTableName, *sql;
+  NSString *baseURL, *tableName, *quickTableName, *aclTableName, *createQuery,
+    *sql;
   EOAdaptorContext *aContext;
   NSMutableArray *paths;
+  GCSSpecialQueries *specialQuery;
 
   paths
     = [NSMutableArray arrayWithArray: [path componentsSeparatedByString: @"/"]];
@@ -752,13 +754,19 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
   error = [channel evaluateExpressionX: sql];
   if (!error)
     {
-      error = [channel createGCSFolderTableWithName: tableName];
+      specialQuery = [channel specialQueries];
+      createQuery = [specialQuery createFolderTableWithName: tableName];
+      error = [channel evaluateExpressionX: createQuery];
       if (!error)
 	{
 	  sql = [ftype sqlQuickCreateWithTableName: quickTableName];
 	  error = [channel evaluateExpressionX: sql];
 	  if (!error)
-	    error = [channel createGCSFolderACLTableWithName: aclTableName];
+            {
+              createQuery = [specialQuery
+                              createFolderACLTableWithName: aclTableName];
+              error = [channel evaluateExpressionX: createQuery];
+            }
 	}
     }
 
@@ -776,7 +784,7 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
 {
   // TBD: would be best to perform all operations as a single SQL statement.
   GCSFolderType    *ftype;
-  EOAdaptorChannel <GCSEOAdaptorChannel> *channel;
+  EOAdaptorChannel *channel;
   NSException      *error;
 
   // TBD: fix SQL injection issue!
