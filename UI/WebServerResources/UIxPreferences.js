@@ -11,6 +11,7 @@ function savePreferences(sender) {
         sigList.disabled = false;
 
     if ($("categoriesList")) {
+        endAllEditables();
         serializeCategories();
     }
 
@@ -467,6 +468,8 @@ function onCategoryAdd (e) {
     var nametd = new Element ("td").update ("");
     var colortd = new Element ("td");
     var colordiv = new Element ("div", {"class": "colorBox"});
+
+    endAllEditables();
 
     row.identify ();
     row.addClassName ("categoryListRow");

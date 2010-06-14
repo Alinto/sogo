@@ -1,3 +1,8 @@
+2010-06-14  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/UIxPreferences.js: Fixed a bug when saving
+	the preferences while some of the calendar categories are still editable.
+
 2010-06-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxCalMainActions.m (-saveUrl:forCalendar:):
