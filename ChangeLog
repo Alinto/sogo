@@ -1,3 +1,9 @@
+2010-06-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoDAVAuthenticator.m (-checkLogin:password:):
+	perform authentication in LDAP inconditionnally and fallback on
+	CAS if enabled for DAV.
+
 2010-06-14  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/UIxPreferences.js: Fixed a bug when saving

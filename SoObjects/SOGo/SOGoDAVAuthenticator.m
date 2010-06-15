@@ -57,27 +57,24 @@
   int expire, grace;
   BOOL rc;
 
-  sd = [SOGoSystemDefaults sharedSystemDefaults];
-  if ([[sd davAuthenticationType] isEqualToString: @"cas"])
+  perr = PolicyNoError;
+  rc = ([[SOGoUserManager sharedUserManager] checkLogin: _login
+                                               password: _pwd
+                                                   perr: &perr
+                                                 expire: &expire
+                                                  grace: &grace]
+        && perr == PolicyNoError);
+  if (!rc)
     {
-      /* CAS authentication for DAV requires using a proxy */
-      session = [SOGoCASSession CASSessionWithIdentifier: _pwd
-                                               fromProxy: YES];
-      if (session)
-        rc = [[session login] isEqualToString: _login];
-      else
-        rc = NO;
-    }
-  else
-    {
-      perr = PolicyNoError;
-
-      rc = ([[SOGoUserManager sharedUserManager] checkLogin: _login
-                                                 password: _pwd
-                                                     perr: &perr
-                                                   expire: &expire
-                                                    grace: &grace]
-            && perr == PolicyNoError);
+      sd = [SOGoSystemDefaults sharedSystemDefaults];
+      if ([[sd davAuthenticationType] isEqualToString: @"cas"])
+        {
+          /* CAS authentication for DAV requires using a proxy */
+          session = [SOGoCASSession CASSessionWithIdentifier: _pwd
+                                                   fromProxy: YES];
+          if (session)
+            rc = [[session login] isEqualToString: _login];
+        }
     }
 
   return rc;
