@@ -444,7 +444,9 @@ static NSString    *userAgent      = nil;
     for (count = max - 1; count >= 0; count--)
       {
 	currentAddress = [addresses objectAtIndex: count];
-	if ([currentRecipient isEqualToString: [currentAddress baseEMail]])
+	if ([currentRecipient
+              caseInsensitiveCompare: [currentAddress baseEMail]]
+            == NSOrderedSame)
 	  {
 	    [addresses removeObjectAtIndex: count];
 	    max--;
