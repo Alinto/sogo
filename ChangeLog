@@ -1,3 +1,16 @@
+2010-06-16  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/UIxListEditor.js (onDocumentKeydown):
+	submit form when pressing the return key.
+
+	* UI/WebServerResources/UIxContactEditor.js (onDocumentKeydown):
+	idem.
+
+	* UI/WebServerResources/SOGoAutoCompletion.js
+	(performSearchCallback): fixed the position of the popup menu when
+	the input is within a relatively positioned div (mainly the
+	contacts list editor).
+
 2010-06-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Mailer/SOGoDraftObject.m

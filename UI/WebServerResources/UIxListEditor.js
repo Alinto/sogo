@@ -140,6 +140,16 @@ function onEditorSubmitClick(event) {
     $("mainForm").submit();
 }
 
+function onDocumentKeydown(event) {
+    var target = Event.element(event);
+    if (target.tagName == "INPUT") {
+        if (event.keyCode == Event.KEY_RETURN && target.menu == null) {
+            onEditorSubmitClick(event);
+            Event.stop(event);
+        }
+    }
+}
+
 function initListEditor() {
     var table = $("referenceList");
     table.multiselect = true;
@@ -148,6 +158,8 @@ function initListEditor() {
     $("referenceDelete").observe("click", onReferenceDelete);
     $("cancelButton").observe("click", onEditorCancelClick);
     $("submitButton").observe("click", onEditorSubmitClick);
+
+    Event.observe(document, "keydown", onDocumentKeydown);
 }
 
 document.observe("dom:loaded", initListEditor);

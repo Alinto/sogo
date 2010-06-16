@@ -191,9 +191,10 @@ var SOGoAutoCompletionInterface = {
                     }
 
                     // Show popup menu
+                    var div = Element.up(input, 'DIV');
                     var offsetScroll = Element.cumulativeScrollOffset(input);
                     var offset = Element.positionedOffset(input);
-                    if (offset.top < 50)
+                    if (div.getStyle('position') == 'relative')
                         // Hack for some situations where the offset must be computed differently
                         offset = Element.cumulativeOffset(input);
                     var top = offset.top - offsetScroll.top + node.offsetHeight + 3;
