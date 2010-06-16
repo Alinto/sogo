@@ -62,7 +62,7 @@ SOGoMailDataSource = Class.create({
                 }
             }
             else {
-                alert("SOGoMailDataSource._loadCallback Error " + http.status + ": " + http.responseText);
+                log("SOGoMailDataSource._loadCallback Error " + http.status + ": " + http.responseText);
             }
         },
         
