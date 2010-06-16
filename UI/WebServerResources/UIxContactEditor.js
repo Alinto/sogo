@@ -136,6 +136,17 @@ function onEditorSubmitClick(event) {
     this.blur();
 }
 
+function onDocumentKeydown(event) {
+    var target = Event.element(event);
+    if (target.tagName == "INPUT" || target.tagName == "SELECT") {
+        if (event.keyCode == Event.KEY_RETURN) {
+            var fcn = onEditorSubmitClick.bind($("submitButton"));
+            fcn();
+            Event.stop(event);
+        }
+    }
+}
+
 function initEditorForm() {
     var tabsContainer = $("editorTabs");
     var controller = new SOGoTabsController();
@@ -148,6 +159,8 @@ function initEditorForm() {
 
     $("cancelButton").observe("click", onEditorCancelClick);
     $("submitButton").observe("click", onEditorSubmitClick);
+
+    Event.observe(document, "keydown", onDocumentKeydown);
 }
 
 document.observe("dom:loaded", initEditorForm);
