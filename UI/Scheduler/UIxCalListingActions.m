@@ -692,8 +692,8 @@ _userStateInEvent (NSArray *event)
           startSecs = (unsigned int) [startDate timeIntervalSince1970];
           endsSecs = (unsigned int) [endDate timeIntervalSince1970];
 
-          if ([[event objectAtIndex: 12] boolValue]) // c_iscycle
-            recurrenceTime = [[event objectAtIndex: 14] unsignedIntValue]; // c_recurrence_id
+          if ([[event objectAtIndex: 13] boolValue]) // c_iscycle
+            recurrenceTime = [[event objectAtIndex: 15] unsignedIntValue]; // c_recurrence_id
           else
             recurrenceTime = 0;
 

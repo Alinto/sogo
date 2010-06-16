@@ -1,5 +1,9 @@
 2010-06-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalListingActions.m
+	(_fillBlocks:withEvent:withNumber:): "c_iscycle" and "c_recurrence_id"
+	have position 13 and 15 instead of 12 and 13, respectively.
+
 	* SoObjects/Mailer/SOGoDraftObject.m
 	(_purgeRecipients:fromAddresses:): we need to compare the email
 	addresses case-insensitively.
