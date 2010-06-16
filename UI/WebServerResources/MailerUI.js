@@ -1658,9 +1658,10 @@ function initMailer(event) {
         }
         else
             Event.observe(window, "beforeunload", onUnload);
+
+        onMessageListResize();
     }
   
-    onMessageListResize();
     onWindowResize.defer();
     Event.observe(window, "resize", onWindowResize);
 }
