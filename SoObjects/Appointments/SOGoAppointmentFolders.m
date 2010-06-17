@@ -381,6 +381,7 @@
   NSString *ref;
   int count, max;
 
+  [self _migrateWebCalendarsSettings];
   us = [[SOGoUser userWithLogin: owner] userSettings];
   calSettings = [us objectForKey: @"Calendar"];
   refs = [[calSettings objectForKey: @"WebCalendars"] allKeys];

@@ -1,3 +1,10 @@
+2010-06-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolders.m
+	(-reloadWebCalendars:): invoke -[self
+	_migrateWebCalendarsSettings] for when we are executing from a
+	non-Calendar module.
+
 2010-06-16  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/UIxListEditor.js (onDocumentKeydown):
