@@ -1,3 +1,14 @@
+2010-06-17  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/UIxMailToSelection.js
+	(addressFieldLostFocus): improved intelligence when parsing
+	recipient.
+	(expandContactListCallback): we remove the container attribute to
+	avoid triggering the event autocompletion:changedlist once again.
+
+	* UI/WebServerResources/SOGoAutoCompletion.js (bind): remove the
+	container attribute for the same reason.
+
 2010-06-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolders.m

@@ -104,6 +104,7 @@ function expandContactListCallback (http) {
                 if (data[0][1].length)
                   text = data[0][1] + " <" + data[0][2] + ">";
                 input.value = text;
+                input.writeAttribute("container", null);
             }
             if (data.length > 1) {
                 for (var i = 1; i < data.length; i++) {
@@ -133,11 +134,40 @@ function addressFieldLostFocus(sender) {
     
     var addresses = sender.value.split(',');
     if (addresses.length > 0) {
-        sender.value = addresses[0].strip();
-        for (var i = 1; i < addresses.length; i++) {
-            var addr = addresses[i].strip();
-            if (addr.length > 0)
-                fancyAddRow(addr, $(sender).up("tr").down("select").value);
+        var emailRE = /^([\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+\.)*[\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+@((((([a-z0-9]{1}[a-z0-9\-]{0,62}[a-z0-9]{1})|[a-z])\.)+[a-z]{2,6})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?)$/i;
+
+        var first = true;
+        for (var i = 0; i < addresses.length; i++) {
+            var words = addresses[i].split(' ');
+            var phrase = new Array();
+            for (var j = 0; j < words.length; j++) {
+                var word = words[j].strip().replace(/<(.+)>/, "$1");
+                if (word.length > 0) {
+                    if (emailRE.test(word)) {
+                        phrase.push('<' + word + '>');
+                        if (first) {
+                            sender.value = phrase.join(' ');
+                            first = false;
+                        }
+                        else
+                            fancyAddRow(phrase.join(' '), $(sender).up("tr").down("select").value);
+                    
+                        phrase = new Array();
+                    }
+                    else
+                        phrase.push(word);
+                }
+            }
+            if (phrase.length > 0) {
+                if (first) {
+                    sender.value = phrase.join(' ');
+                    first = false;
+                }
+                else
+                    fancyAddRow(phrase.join(' '), $(sender).up("tr").down("select").value);
+                
+                phrase = new Array();
+            }
         }
     }
     onWindowResize(null);

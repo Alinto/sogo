@@ -26,6 +26,7 @@ var SOGoAutoCompletionInterface = {
     bind: function () {
         this.menu = $('contactsMenu');
         this.writeAttribute("autocomplete", "off");
+        this.writeAttribute("container", null);
         this.observe("keydown", this.onKeydown.bindAsEventListener(this));
         this.observe("blur", this.onBlur.bindAsEventListener(this));
     },
