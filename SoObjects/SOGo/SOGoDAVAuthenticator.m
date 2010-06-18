@@ -70,8 +70,8 @@
       if ([[sd davAuthenticationType] isEqualToString: @"cas"])
         {
           /* CAS authentication for DAV requires using a proxy */
-          session = [SOGoCASSession CASSessionWithIdentifier: _pwd
-                                                   fromProxy: YES];
+          session = [SOGoCASSession CASSessionWithTicket: _pwd
+                                               fromProxy: YES];
           if (session)
             rc = [[session login] isEqualToString: _login];
         }
@@ -111,8 +111,8 @@
       sd = [SOGoSystemDefaults sharedSystemDefaults];
       if ([[sd davAuthenticationType] isEqualToString: @"cas"])
         {
-          session = [SOGoCASSession CASSessionWithIdentifier: password
-                                                   fromProxy: YES];
+          session = [SOGoCASSession CASSessionWithTicket: password
+                                               fromProxy: YES];
           service = [NSString stringWithFormat: @"imap://%@", imapServer];
           if (renew)
             [session invalidateTicketForService: service];

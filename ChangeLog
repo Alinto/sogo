@@ -1,3 +1,10 @@
+2010-06-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoDAVAuthenticator.m (-checkLogin:andPassword:)
+	(imapPasswordInContext:forServer:forceRenew:): when using CAS
+	authentication, make use of the password as a CAS ticket instead
+	of as identifier, since we don't make use of those in DAV.
+
 2010-06-17  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/UIxMailToSelection.js
