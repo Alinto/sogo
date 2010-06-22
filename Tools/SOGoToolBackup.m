@@ -1,6 +1,6 @@
 /* SOGoToolBackup.m - this file is part of SOGo
  *
- * Copyright (C) 2009 Inverse inc.
+ * Copyright (C) 2009-2010 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -91,8 +91,9 @@
 - (void) usage
 {
   fprintf (stderr, "backup directory ALL|user1 [user2] ...\n\n"
-	   "         folder     the folder where backup files will be stored\n"
-	   "         user       the user of whom to save the data\n");
+	   "           directory  the target directory where backup files will be stored\n"
+	   "           user       the user of whom to save the data or ALL for everybody\n\n"
+	   "Example:   /usr/sbin/sogo-tool backup /tmp/foo ALL\n");
 }
 
 - (BOOL) checkDirectory
