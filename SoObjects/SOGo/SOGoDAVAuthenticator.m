@@ -72,8 +72,9 @@
           /* CAS authentication for DAV requires using a proxy */
           session = [SOGoCASSession CASSessionWithTicket: _pwd
                                                fromProxy: YES];
-          if (session)
-            rc = [[session login] isEqualToString: _login];
+          rc = [[session login] isEqualToString: _login];
+          if (rc)
+            [session updateCache];
         }
     }
 

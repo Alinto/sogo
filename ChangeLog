@@ -1,3 +1,9 @@
+2010-06-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoDAVAuthenticator.m (-checkLogin:andPassword:)
+	we save the CAS session information to the cache after a
+	successful authentication/validation.
+
 2010-06-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoDAVAuthenticator.m (-checkLogin:andPassword:)
