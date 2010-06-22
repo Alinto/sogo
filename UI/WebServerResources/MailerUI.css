@@ -345,18 +345,18 @@ TR.mailer_repliedmailsubject TD.messageSubjectColumn
   background-repeat: no-repeat !important;
   background-position: 0px 0px !important; }
 
-TD.mailer_forwardedmailsubject
+TR.mailer_forwardedmailsubject TD.messageSubjectColumn
 { background-image: url(icon-forwarded.png) !important;
   background-repeat: no-repeat !important;
   background-position: 0px 0px !important; }
 
-TD.mailer_forwardedrepliedmailsubject
+TR.mailer_forwardedrepliedmailsubject TD.messageSubjectColumn
 {
   background-image: url(icon-forwarded-replied.png) !important;
   background-repeat: no-repeat !important;
   background-position: 0px 0px !important; }
 
-TD.mailer_deletedmailsubject
+TR.mailer_deletedmailsubject TD.messageSubjectColumn
 {
   background-image: url(icon-deleted.png) !important;
   background-repeat: no-repeat !important;
