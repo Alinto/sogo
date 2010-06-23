@@ -2984,7 +2984,18 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  	  if (_la(self, 0) != ')') {
  	    _consume(self,1);
  	    [dict setObject: _parseBodyString(self, YES)
-@@ -2170,6 +2475,21 @@
+@@ -2090,6 +2395,10 @@
+   cnt = 0;
+   str = nil;  
+   while ((c = _la(self, 0)) != _c) {
++    if (c == '\\') {
++      _consume(self, 1);
++      c = _la(self, 0);
++    }
+     buf[cnt] = c;
+     _consume(self, 1);
+     cnt++;
+@@ -2170,6 +2479,21 @@
    }
  }
  
@@ -3006,7 +3017,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  - (NSException *)exceptionForFailedMatch:(unsigned char)_match
    got:(unsigned char)_avail
  {
-@@ -2225,9 +2545,9 @@
+@@ -2225,9 +2549,9 @@
        [s release];
        
        if (c == '\n') {
