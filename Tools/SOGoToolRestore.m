@@ -110,9 +110,9 @@ typedef enum SOGoToolRestoreMode {
 	   "           -l         flag used to list folders to restore\n"
 	   "           -p         flag used to restore only the user's preferences\n"
 	   "           -f/-F      flag used to specify which folder to restore, ALL for everything\n\n"
-	   "Examples:   /usr/local/sbin/sogo-tool restore -l /tmp/foo bob\n"
-	   "            /usr/local/sbin/sogo-tool restore -f Contacts/personal /tmp/foo bob\n"
-	   "            /usr/local/sbin/sogo-tool restore -p /tmp/foo bob\n");
+	   "Examples:   sogo-tool restore -l /tmp/foo bob\n"
+	   "            sogo-tool restore -f Contacts/personal /tmp/foo bob\n"
+	   "            sogo-tool restore -p /tmp/foo bob\n");
 }
 
 - (BOOL) checkDirectory

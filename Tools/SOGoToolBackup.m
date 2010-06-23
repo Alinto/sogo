@@ -93,7 +93,7 @@
   fprintf (stderr, "backup directory ALL|user1 [user2] ...\n\n"
 	   "           directory  the target directory where backup files will be stored\n"
 	   "           user       the user of whom to save the data or ALL for everybody\n\n"
-	   "Example:   /usr/sbin/sogo-tool backup /tmp/foo ALL\n");
+	   "Example:   sogo-tool backup /tmp/foo ALL\n");
 }
 
 - (BOOL) checkDirectory
