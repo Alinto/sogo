@@ -776,14 +776,14 @@ static NSArray *childRecordFields = nil;
     }
 }
 
-- (NSString *) davCollectionTag
+- (int) _lastModified
 {
   NSArray *records;
   GCSFolder *folder;
   EOFetchSpecification *cTagSpec;
   EOSortOrdering *ordering;
   NSNumber *lastModified;
-  NSString *cTag;
+  int value;
 
   folder = [self ocsFolder];
   ordering = [EOSortOrdering sortOrderingWithKey: @"c_lastmodified"
@@ -800,12 +800,17 @@ static NSArray *childRecordFields = nil;
     {
       lastModified = [[records objectAtIndex: 0]
                        objectForKey: @"c_lastmodified"];
-      cTag = [lastModified stringValue];
+      value = [lastModified intValue];
     }
   else
-    cTag = @"-1";
+    value = -1;
 
-  return cTag;
+  return value;
+}
+
+- (NSString *) davCollectionTag
+{
+  return [NSString stringWithFormat: @"%d", [self _lastModified]];
 }
 
 - (BOOL) userIsSubscriber: (NSString *) subscribingUser
@@ -1207,7 +1212,7 @@ static NSArray *childRecordFields = nil;
   SEL *selectors;
 
   max = [properties count];
-  selectors = NSZoneMalloc (NULL, sizeof (max * sizeof (SEL)));
+  selectors = NSZoneMalloc (NULL, max * sizeof (SEL));
   for (count = 0; count < max; count++)
     selectors[count]
       = SOGoSelectorForPropertyGetter ([properties objectAtIndex: count]);
@@ -1254,6 +1259,43 @@ static NSArray *childRecordFields = nil;
     appendContentString: [multistatus asWebDavStringWithNamespaces: nil]];
 }
 
+- (BOOL) _isValidSyncToken: (NSString *) syncToken
+{
+  unichar *characters;
+  int count, max, value;
+  BOOL valid;
+
+  max = [syncToken length];
+  if (max > 0)
+    {
+      characters = NSZoneMalloc (NULL, max * sizeof (unichar));
+      [syncToken getCharacters: characters];
+      if (max == 2
+          && characters[0] == '-'
+          && characters[1] == '1')
+        valid = YES;
+      else
+        {
+          valid = YES;
+          value = 0;
+          for (count = 0; valid && count < max; count++)
+            {
+              if (characters[count] < '0'
+                  || characters[count] > '9')
+                valid = NO;
+              else
+                value = value * 10 + characters[count] - '0'; 
+            }
+          valid |= (value <= [self _lastModified]);
+        }
+      NSZoneFree (NULL, characters);
+    }
+  else
+    valid = YES;
+
+  return valid;
+}
+
 - (WOResponse *) davSyncCollection: (WOContext *) localContext
 {
   WOResponse *r;
@@ -1270,17 +1312,18 @@ static NSArray *childRecordFields = nil;
   documentElement = (DOMElement *) [document documentElement];
   syncToken = [[documentElement firstElementWithTag: @"sync-token"
                                         inNamespace: XMLNS_WEBDAV] textValue];
-
-  propElement = [documentElement firstElementWithTag: @"prop"
-                                         inNamespace: XMLNS_WEBDAV];
-  properties = [self parseDAVRequestedProperties: propElement];
-  records = [self _fetchSyncTokenFields: properties
-                      matchingSyncToken: syncToken];
-  if (![syncToken length] || [records count])
-    [self _appendComponentProperties: [properties allKeys]
-                         fromRecords: records
-                   matchingSyncToken: [syncToken intValue]
-                          toResponse: r];
+  if ([self _isValidSyncToken: syncToken])
+    {
+      propElement = [documentElement firstElementWithTag: @"prop"
+                                             inNamespace: XMLNS_WEBDAV];
+      properties = [self parseDAVRequestedProperties: propElement];
+      records = [self _fetchSyncTokenFields: properties
+                          matchingSyncToken: syncToken];
+      [self _appendComponentProperties: [properties allKeys]
+                           fromRecords: records
+                     matchingSyncToken: [syncToken intValue]
+                            toResponse: r];
+    }
   else
     [r appendDAVError: davElement (@"valid-sync-token", XMLNS_WEBDAV)];
 

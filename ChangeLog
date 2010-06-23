@@ -1,3 +1,19 @@
+2010-06-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoGCSFolder.m (-_lastModified): new method that
+	returns the last modified timestamp of the folder. Taken from
+	previous implementation of davCollectionTag.
+	(-davCollectionTag): make use of the new method above.
+	(_isValidSyncToken:): new method that perform a real validation of
+	the sync token passed as parameter.
+	(-davSyncCollection): make use of the new method above.
+
+2010-06-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoDAVAuthenticator.m (-checkLogin:andPassword:)
+	we save the CAS session information to the cache after a
+	successful authentication/validation.
+
 2010-06-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoDAVAuthenticator.m (-checkLogin:andPassword:)

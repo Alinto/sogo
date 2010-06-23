@@ -1,6 +1,6 @@
 /* SOGoToolRestore.m - this file is part of SOGo
  *
- * Copyright (C) 2009 Inverse inc.
+ * Copyright (C) 2009-2010 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -104,9 +104,15 @@ typedef enum SOGoToolRestoreMode {
 
 - (void) usage
 {
-  fprintf (stderr, "restore [-l|-f/-F folder/ALL|-p] directory user\n\n"
-	   "         folder     the folder where backup files will be stored\n"
-	   "         user       the user of whom to save the data\n");
+  fprintf (stderr, "restore [-l|-p|-f/-F folder/ALL|-p] directory user\n\n"
+	   "           directory  the directory where backup files were initially stored\n"
+	   "           user       the user of whom to restore the data\n"
+	   "           -l         flag used to list folders to restore\n"
+	   "           -p         flag used to restore only the user's preferences\n"
+	   "           -f/-F      flag used to specify which folder to restore, ALL for everything\n\n"
+	   "Examples:   sogo-tool restore -l /tmp/foo bob\n"
+	   "            sogo-tool restore -f Contacts/personal /tmp/foo bob\n"
+	   "            sogo-tool restore -p /tmp/foo bob\n");
 }
 
 - (BOOL) checkDirectory
