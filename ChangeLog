@@ -1,3 +1,11 @@
+2010-06-23  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUserDefaults.m (-language): verify that the
+	language is part of the supported languages of the system configuration.
+
+	* UI/Scheduler/UIxCalMonthView.m (-init): retrieve the locale
+	associated to the user's language.
+
 2010-06-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoGCSFolder.m (-_lastModified): new method that

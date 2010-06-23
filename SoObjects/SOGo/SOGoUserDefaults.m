@@ -346,11 +346,18 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 - (NSString *) language
 {
   NSString *language;
-
+  NSArray *supportedLanguages;
+  
   /* see SOGoDomainDefaults for the meaning of this */
   language = [source objectForKey: @"SOGoLanguage"];
   if (!(language && [language isKindOfClass: [NSString class]]))
     language = [(SOGoDomainDefaults *) parentSource language];
+  
+  /* make sure the language is part of the supported languages */
+  supportedLanguages = [[SOGoSystemDefaults sharedSystemDefaults]
+                         supportedLanguages];
+  if (![supportedLanguages containsObject: language])
+    language = [parentSource stringForKey: @"SOGoLanguage"];
 
   return language;
 }

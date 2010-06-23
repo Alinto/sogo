@@ -24,12 +24,16 @@
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSString.h>
 
+#import <NGObjWeb/WOApplication.h>
+
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <SoObjects/SOGo/NSCalendarDate+SOGo.h>
 
 #import <SOGoUI/SOGoAptFormatter.h>
-#import <SoObjects/SOGo/SOGoDateFormatter.h>
 #import <SoObjects/SOGo/SOGoUser.h>
+#import <SoObjects/SOGo/SOGoUserDefaults.h>
+
+#import "../../Main/SOGo.h"
 
 #import "UIxCalMonthView.h"
 
@@ -38,6 +42,7 @@
 - (id) init
 {
   NSDictionary *locale;
+  SOGoUserDefaults *ud;
 
   if ((self = [super init]))
     {
@@ -46,7 +51,8 @@
 //       [monthAptFormatter setShortMonthTitleOnly];
 //       dateFormatter = [[SOGoDateFormatter alloc]
 //                         initWithLocale: [self locale]];
-      locale = [context valueForKey: @"locale"];
+      ud = [[context activeUser] userDefaults];
+      locale = [[WOApplication application] localeForLanguageNamed: [ud language]];
       dayNames = [locale objectForKey: NSWeekDayNameArray];
       [dayNames retain];
       monthNames = [locale objectForKey: NSMonthNameArray];
