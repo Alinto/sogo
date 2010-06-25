@@ -1,4 +1,4 @@
-/* -*- Mode: java; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
+/* -*- Mode: js2; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 SOGoMailDataSource = Class.create({
         
@@ -15,7 +15,7 @@ SOGoMailDataSource = Class.create({
             this.ajaxGetData = false;
 
             // Constants
-            this.overflow = 60;
+            this.overflow = 50;   // must be higher or equal to the overflow of the data table class
         },
         
         destroy: function() {
@@ -28,12 +28,33 @@ SOGoMailDataSource = Class.create({
         invalidate: function(uid) {
             this.cache.unset(uid);
             var index = this.uids.indexOf(parseInt(uid));
-            log ("MailDataSource.invalidate(" + uid + ") at index " + index);
+//            log ("MailDataSource.invalidate(" + uid + ") at index " + index);
+
+            return index;
+        },
+
+        remove: function(uid) {
+            var index = this.invalidate(uid);
             if (index >= 0) {
                 this.uids.splice(index, 1);
             }
 
             return index;
+        },
+        
+        init: function(uids, headers) {
+            this.uids = uids;
+            
+            var keys = headers[0];
+            for (var i = 1; i < headers.length; i++) {
+                var header = [];
+                for (var j = 0; j < keys.length; j++)
+                    header[keys[j]] = headers[i][j];
+                this.cache.set(header["uid"], header);
+            }
+
+            this.loaded = true;
+//            log ("MailDataSource.init() " + this.uids.length + " UIDs, " + this.cache.keys().length + " headers");
         },
         
         load: function(urlParams) {
@@ -45,7 +66,7 @@ SOGoMailDataSource = Class.create({
             else
                 params = "";
 
-            log ("MailDataSource.load() " + params);
+//            log ("MailDataSource.load() " + params);
             triggerAjaxRequest(this.url + "/uids",
                                this._loadCallback.bind(this),
                                null,
@@ -56,9 +77,13 @@ SOGoMailDataSource = Class.create({
         _loadCallback: function(http) {
             if (http.status == 200) {
                 if (http.responseText.length > 0) {
-                    this.uids = $A(http.responseText.evalJSON(true));
-                    log ("MailDataSource._loadCallback() " + this.uids.length + " uids");
+                    var data = http.responseText.evalJSON(true);
+                    this.init(data.uids, data.headers);
                     this.loaded = true;
+                    if (this.delayedGetData) {
+                        this.delayedGetData();
+                        this.delayedGetData = false;
+                    }
                 }
             }
             else {
@@ -68,10 +93,9 @@ SOGoMailDataSource = Class.create({
         
         getData: function(id, index, count, callbackFunction, delay) {
             if (this.loaded == false) {
-                // UIDs are not yet loaded -- delay the call to the current function
+                // UIDs are not yet loaded -- delay the call until loading the data is completed.
 //                 log ("MailDataSource.getData() delaying data fetching while waiting for UIDs");
-                if (this.delayedGetData) window.clearTimeout(this.delayedGetData);
-                this.delayedGetData = this.getData.bind(this, id, index, count, callbackFunction, delay).delay(0.3);
+                this.delayedGetData = this.getData.bind(this, id, index, count, callbackFunction, delay);
                 return;
             }
             if (this.delayed_getData) window.clearTimeout(this.delayed_getData);
@@ -88,16 +112,24 @@ SOGoMailDataSource = Class.create({
             var i, j;
             var missingUids = new Array();
             
-            // Compute last index depending on number of UIDs
-            start = index - (this.overflow/2);
-            if (start < 0) start = 0;
-            end = index + count + this.overflow - (index - start);
-            if (end > this.uids.length) {
-                start -= end - this.uids.length;
-                end = this.uids.length;
+            if (count > 1) {
+                // Compute last index depending on number of UIDs
+                start = index - (this.overflow/2);
                 if (start < 0) start = 0;
+                end = index + count + this.overflow - (index - start);
+                if (end > this.uids.length) {
+                    start -= end - this.uids.length;
+                    end = this.uids.length;
+                    if (start < 0) start = 0;
+                }
             }
-            log ("MailDataSource._getData() from " + index + " to " + (index + count) + " boosted from " + start + " to " + end);
+            else {
+                // Count is 1; don't fetch more data since the caller is
+                // SOGoDataTable.invalide() and asks for only one data row.
+                start = index;
+                end = index + count;
+            }
+//             log ("MailDataSource._getData() from " + index + " to " + (index + count) + " boosted from " + start + " to " + end);
 
             for (i = 0, j = start; j < end; j++) {
                 if (!this.cache.get(this.uids[j])) {
@@ -115,7 +147,7 @@ SOGoMailDataSource = Class.create({
                                                                         id: id },
                                                                       params).delay(0.5);
             }
-            else
+            else if (callbackFunction)
                 this._returnData(callbackFunction, id, start, end);
         },
         
@@ -125,7 +157,7 @@ SOGoMailDataSource = Class.create({
                 this.ajaxGetData.abort();
 //                 log ("MailDataSource._getData() aborted previous AJAX request");
             }
-//             log ("MailDataSource._getData() fetching headers of " + urlParams);
+//            log ("MailDataSource._getData() fetching headers of " + urlParams);
             this.ajaxGetData = triggerAjaxRequest(this.url + "/headers",
                                                   this._getRemoteDataCallback.bind(this),
                                                   callbackData,
@@ -139,16 +171,20 @@ SOGoMailDataSource = Class.create({
                     // We receives an array of hashes
                     var headers = $A(http.responseText.evalJSON(true));
                     var data = http.callbackData;
-                    
-                    for (var i = 0; i < headers.length; i++) {
-                        this.cache.set(headers[i]["uid"], headers[i]);
+                    var keys = headers[0];
+                    for (var i = 1; i < headers.length; i++) {
+                        var header = [];
+                        for (var j = 0; j < keys.length; j++)
+                            header[keys[j]] = headers[i][j];
+                        this.cache.set(header["uid"], header);
                     }
                     
-                    this._returnData(data["callbackFunction"], data["id"], data["start"], data["end"]);
+                    if (data["callbackFunction"])
+                        this._returnData(data["callbackFunction"], data["id"], data["start"], data["end"]);
                 }
             }
             else {
-                alert("SOGoMailDataSource._getRemoteDataCallback Error " + http.status + ": " + http.responseText);
+                log("SOGoMailDataSource._getRemoteDataCallback Error " + http.status + ": " + http.responseText);
             }
         },
         

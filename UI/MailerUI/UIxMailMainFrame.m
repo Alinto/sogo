@@ -23,6 +23,8 @@
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSValue.h>
 
+#import <EOControl/EOQualifier.h>
+
 #import <NGCards/NGVCard.h>
 #import <NGCards/NGVCardReference.h>
 #import <NGCards/NGVList.h>
@@ -42,6 +44,7 @@
 #import <Mailer/SOGoMailObject.h>
 #import <Mailer/SOGoMailAccount.h>
 #import <Mailer/SOGoMailAccounts.h>
+#import <Mailer/SOGoMailFolder.h>
 #import <SOGo/NSDictionary+URL.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
@@ -54,6 +57,7 @@
 #import <SOGoUI/UIxComponent.h>
 
 #import "UIxMailMainFrame.h"
+#import "UIxMailListActions.h"
 
 // Avoid compilation warnings
 @interface SOGoUserFolder (private)
@@ -171,6 +175,33 @@
     return u;
   }
   return [u hasSuffix:@"/"] ? @"view" : @"#";
+}
+
+- (NSString *) inboxData
+{
+  SOGoMailAccounts *accounts;
+  SOGoMailAccount *account;
+  SOGoMailFolder *inbox;
+
+  NSString *firstAccount;
+  NSDictionary *data;
+  SOGoUser *activeUser;
+  UIxMailListActions *actions;
+
+  [self _setupContext];
+  
+  actions = [[[UIxMailListActions new] initWithRequest: [context request]] autorelease];
+  activeUser = [context activeUser];
+  accounts = [self clientObject];
+  
+  firstAccount = [[[accounts accountKeys] allKeys]
+		   objectAtIndex: 0];
+  account = [accounts lookupName: firstAccount inContext: context acquire: NO];
+  inbox = [account inboxFolderInContext: context];
+
+  data = [actions getUIDsAndHeadersInFolder: inbox];
+
+  return [data jsonRepresentation];
 }
 
 - (id <WOActionResults>) composeAction
@@ -333,7 +364,7 @@
    [self _setupContext];
    vertical = [moduleSettings objectForKey: @"DragHandleVertical"];
    
-   return ((vertical && [vertical intValue] > 0) ? (id)[vertical stringByAppendingFormat: @"px"] : nil);
+   return ((vertical && [vertical intValue] > 0) ? (id)[vertical stringByAppendingString: @"px"] : nil);
 }
 
 - (NSString *) horizontalDragHandleStyle
@@ -343,7 +374,7 @@
    [self _setupContext];
    horizontal = [moduleSettings objectForKey: @"DragHandleHorizontal"];
 
-   return ((horizontal && [horizontal intValue] > 0) ? (id)[horizontal stringByAppendingFormat: @"px"] : nil);
+   return ((horizontal && [horizontal intValue] > 0) ? (id)[horizontal stringByAppendingString: @"px"] : nil);
 }
 
 - (NSString *) mailboxContentStyle

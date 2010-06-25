@@ -1,3 +1,60 @@
+2010-06-25  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/MailerUI/UIxMailMainFrame.m (-inboxData): new method used to
+	avoid an AJAX call when first loading the webmail module. It
+	returns a dictionary with the UIDs of the inbox folder as well as
+	the headers of the first few messages.
+
+	* UI/MailerUI/UIxMailListActions.m (-imap4SortOrdering): fixed an
+	issue that would not save the sorting state when matching the
+	default sort key but not the sort direction.
+	(-getUIDsAndHeadersInFolder:): new method that returns all UIDs of
+	a mail folder and the headers of the first corresponding messages.
+	(-getHeadersForUIDs:inFolder:): was getHeadersAction. It now
+	returns an array of arrays instead of an array of
+	dictionaries. The first array contains the previous dictionary
+	keys so we can easily reconstruct a dictionary in JavaScript.
+
+	* UI/MailerUI/UIxMailEditor.m (-setSourceUID:, -sourceUID,
+	-setSourceFolder:, -sourceFolder): new methods to keep track of
+	the source folder replying or forwarding a message.
+	(-sendAction): now calls the JavaScript function refreshMessage
+	instead of refreshCurrentMailbox.
+
+	* SoObjects/Mailer/SOGoDraftObject.m (-setSourceFolder:,
+	-setSourceFolderWithMailObject:, -sourceFolder): new methods to
+	keep track of the source folder replying or forwarding a message.
+	(-fetchMailForEditing:): fixed the message UID value.
+
+	* UI/WebServerResources/SOGoMailDataSource.js (remove): new
+	function that was integrated to invalidate. There are now
+	splitted.
+	(init): new function to initialize the data source with
+	pre-fetched uids and headers.
+	(getData): if the source is not yet loaded, the function will now
+	be called by the method _loadCallback.
+	(_getRemoteDataCallback): headers received from the server are no
+	formatted as a hash but as an array with the first entry
+	corresponding the previous hash keys.
+
+	* UI/WebServerResources/SOGoDataTable.js (initSource): was
+	setSource which was redefined to received a data source as
+	argument.
+	(invalidate): new function to refresh a single row.
+
+	* UI/WebServerResources/MailerUI.js (openMailbox): added caching
+	of data sources (IMAP folders). The previous selection is now
+	restored when chaning folders.
+	(loadMessageCallback): the window is no longer reloaded if the
+	message doesn't exist; only the proper row is removed.
+	(refreshMessage): new function called after sending a message.
+
+2010-06-24  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/MailerUI/UIxMailEditor.m (-sendAction): trigger the new
+	JavaScript function refreshMessage() instead of
+	refreshCurrentFolder() so we only refresh one row.
+
 2010-06-23  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUserDefaults.m (-language): verify that the

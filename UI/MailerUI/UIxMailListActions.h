@@ -45,6 +45,11 @@
 - (EOQualifier *) searchQualifier;
 - (NSString *) msgLabels;
 
+- (NSArray *) getSortedUIDsInFolder: (SOGoMailFolder *) mailFolder;
+- (NSArray *) getHeadersForUIDs: (NSArray *) uids
+		       inFolder: (SOGoMailFolder *) mailFolder;
+- (NSDictionary *) getUIDsAndHeadersInFolder: (SOGoMailFolder *) mailFolder;
+
 - (id) getMailAction;
 - (id <WOActionResults>) getSortedUIDsAction;
 - (id <WOActionResults>) getHeadersAction;

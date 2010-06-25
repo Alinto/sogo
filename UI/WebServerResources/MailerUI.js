@@ -1,4 +1,4 @@
-/* -*- Mode: java; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
+/* -*- Mode: js2; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /* JavaScript for SOGoMail */
 var accounts = {};
@@ -21,7 +21,8 @@ var Mailer = {
     popups: new Array(),
     quotas: null,
 
-    dataTable: null
+    dataTable: null,
+    dataSources: new Hash()
 };
 
 var usersRightsWindowHeight = 320;
@@ -103,6 +104,8 @@ function onMenuSharing(event) {
 
 /* mail list DOM changes */
 
+/* Update the messages list when flagging/unflagging a message.
+ * No AJAX is triggered here. */
 function flagMailInWindow (win, msguid, flagged) {
     var row = win.$("row_" + msguid);
 
@@ -120,6 +123,8 @@ function flagMailInWindow (win, msguid, flagged) {
     }
 }
 
+/* Update the messages list when setting the unread/read flag of a message.
+ * No AJAX is triggered here. */
 function markMailInWindow(win, msguid, markread) {
     var row = win.$("row_" + msguid);
     var unseenCount = 0;
@@ -130,8 +135,6 @@ function markMailInWindow(win, msguid, markread) {
                 row.removeClassName("mailer_unreadmail");
                 var img = win.$("readdiv_" + msguid);
                 if (img) {
-                    img.removeClassName("mailerUnreadIcon");
-                    img.addClassName("mailerReadIcon");
                     img.setAttribute("src", ResourcesURL + "/dot.png");
                     var title = img.getAttribute("title-markunread");
                     if (title)
@@ -148,24 +151,25 @@ function markMailInWindow(win, msguid, markread) {
                 row.addClassName("mailer_unreadmail");
                 var img = win.$("readdiv_" + msguid);
                 if (img) {
-                    img.removeClassName("mailerReadIcon");
-                    img.addClassName("mailerUnreadIcon");
                     img.setAttribute("src", ResourcesURL + "/icon_unread.gif");
                     var title = img.getAttribute("title-markread");
                     if (title)
                         img.setAttribute("title", title);
                 }
+                else {
+                    log ("No IMG found for " + msguid);
+                }
                 unseenCount = 1;
             }
         }
-    }
 
-    if (unseenCount != 0) {
-        // Update unseen count only if it's the inbox
-        for (var i = 0; i < mailboxTree.aNodes.length; i++)
-            if (mailboxTree.aNodes[i].datatype == "inbox") break;
-        if (i != mailboxTree.aNodes.length && Mailer.currentMailbox == mailboxTree.aNodes[i].dataname)
-            updateStatusFolders(unseenCount, true);
+        if (unseenCount != 0) {
+            // Update unseen count only if it's the inbox
+            for (var i = 0; i < mailboxTree.aNodes.length; i++)
+                if (mailboxTree.aNodes[i].datatype == "inbox") break;
+            if (i != mailboxTree.aNodes.length && Mailer.currentMailbox == mailboxTree.aNodes[i].dataname)
+                updateStatusFolders(unseenCount, true);
+        }
     }
 
     return (unseenCount != 0);
@@ -205,11 +209,13 @@ function openMessageWindowsForSelection(action, firstOnly) {
     return false;
 }
 
+/* Triggered when clicking on the read/unread dot of a message row */
 function mailListMarkMessage(event) {
     var msguid = this.id.split('_')[1];
+    var row = $(this).up('TR');
     var action;
     var markread;
-    if ($(this).hasClassName('mailerUnreadIcon')) {
+    if (row.hasClassName("mailer_unreadmail")) {
         action = 'markMessageRead';
         markread = true;
     }
@@ -217,10 +223,13 @@ function mailListMarkMessage(event) {
         action = 'markMessageUnread';
         markread = false;
     }
+    
+    markMailInWindow(window, msguid, markread);
+
     var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/" 
       + msguid + "/" + action;
 
-    var data = { "window": window, "msguid": msguid, "markread": markread };
+    var data = { "msguid": msguid };
     triggerAjaxRequest(url, mailListMarkMessageCallback, data);
 
     preventDefault(event);
@@ -228,15 +237,15 @@ function mailListMarkMessage(event) {
 }
 
 function mailListMarkMessageCallback(http) {
+    var data = http.callbackData;
     if (isHttpStatus204(http.status)
         || http.status == 304) {  // In some cases, Safari returns a 304 even
                                   // though SOGo returns a 204!
-        var data = http.callbackData;
-        markMailInWindow(data["window"], data["msguid"], data["markread"]);
+	Mailer.dataTable.invalidate(data["msguid"], true);
     }
     else {
-        alert("Message Mark Failed (" + http.status + "): " + http.statusText);
-        window.location.reload();
+        log("Message Mark Failed (" + http.status + "): " + http.statusText);
+	Mailer.dataTable.invalidate(data["msguid"], false);
     }
 }
 
@@ -251,10 +260,12 @@ function mailListFlagMessageToggle (e) {
         action = "markMessageUnflagged";
         flagged = false;
     }
-        
+    
+    flagMailInWindow(window, msguid, flagged);
+    
     var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/" 
       + msguid + "/" + action;
-    var data = { "window": window, "msguid": msguid, "flagged": flagged };
+    var data = { "msguid": msguid };
 
     triggerAjaxRequest(url, mailListFlagMessageToggleCallback, data);
 }
@@ -262,32 +273,12 @@ function mailListFlagMessageToggle (e) {
 function mailListFlagMessageToggleCallback (http) {
     if (isHttpStatus204(http.status)) {
         var data = http.callbackData;
-        flagMailInWindow(data["window"], data["msguid"], data["flagged"]);
+	Mailer.dataTable.invalidate(data["msguid"], true);
     }
     else {
-        alert("Message Mark Failed (" + http.status + "): " + http.statusText);
-        window.location.reload();
+        log("Message Mark Failed (" + http.status + "): " + http.statusText);
+	Mailer.dataTable.invalidate(data["msguid"], true);
     }
-}
-
-/* maillist row highlight */
-
-var oldMaillistHighlight = null; // to remember deleted/selected style
-
-function ml_highlight(sender) {
-    oldMaillistHighlight = sender.className;
-    if (oldMaillistHighlight == "tableview_highlight")
-        oldMaillistHighlight = null;
-    sender.className = "tableview_highlight";
-}
-
-function ml_lowlight(sender) {
-    if (oldMaillistHighlight) {
-        sender.className = oldMaillistHighlight;
-        oldMaillistHighlight = null;
-    }
-    else
-        sender.className = "tableview";
 }
 
 function onUnload(event) {
@@ -659,22 +650,36 @@ function openMailbox(mailbox, reload, updateStatus) {
 
         // TODO : refresh mailbox without removing all rows.
         var messageList = $("messageListBody").down('TBODY');
-        var dataSource = new SOGoMailDataSource(Mailer.dataTable, url);
-        Mailer.dataTable.setSource('SOGoMailDataSource', url, urlParams);
+        var key = mailbox;
+        if (urlParams.keys().length > 0) {
+            var p = urlParams.keys().collect(function(key) { return key + "=" + urlParams.get(key); }).join("&");
+            key += "?" + p;
+        }
+        
+        var dataSource = Mailer.dataSources.get(key);
+        if (!dataSource || reload) {
+            dataSource = new SOGoMailDataSource(Mailer.dataTable, url);
+            if (inboxData[key]) {
+                dataSource.init(inboxData[key][0], inboxData[key][1]);
+                inboxData = []; // invalidate this initial lookup
+            }
+            else
+                dataSource.load(urlParams);
+            Mailer.dataSources.set(key, dataSource);
+        }
+        Mailer.dataTable.setSource(dataSource);
         messageList.deselectAll();
         Mailer.dataTable.render();
         configureDraggables();
         Mailer.currentMailbox = mailbox;
 
-        /*
-        // TODO : restore previously selected message.
+	// Restore previous selection
         var currentMessage = Mailer.currentMessages[mailbox];
         if (currentMessage) {
-            Mailer.dataTable.render(currentMessage);
-            if (!reload)
+            if (!reload) {
                 loadMessage(currentMessage);
-        }
-        */
+            }
+	}
 
         if (updateStatus != false)
             getStatusFolders();
@@ -685,15 +690,21 @@ function openMailbox(mailbox, reload, updateStatus) {
  * Called from SOGoDataTable.render()
  */
 function messageListCallback(row, data, isNew) {
+    var currentMessage = Mailer.currentMessages[Mailer.currentMailbox];
+
+    row.id = data['rowID'];
+    row.writeAttribute('labels', (data['labels']?data['labels']:""));
+    row.className = data['rowClasses'];
+ 
+    // Restore previous selection
+    if (data['uid'] == currentMessage)
+	row.addClassName('_selected');
+
     if (isNew) {
         row.observe("mousedown", onRowClick);
         row.observe("selectstart", listRowMouseDownHandler);
         row.observe("contextmenu", onMessageContextMenu);
     }
-
-    row.className = data['rowClasses'];
-    row.id = data['rowID'];
-    row.writeAttribute('labels', (data['labels']?data['labels']:""));
 
     var columnsOrder = UserDefaults["SOGoMailListViewColumnsOrder"];
     var cells;
@@ -781,8 +792,16 @@ function updateMessageListCounter(count, isDelta) {
         cell.update(_("No message"));
 }
 
+/* Function is called when the event datatable:rendered is fired from SOGoDataTable. */
 function onMessageListRender(event) {
-    // Event is fired from SOGoDataTable.
+    // Restore previous selection
+    var currentMessage = Mailer.currentMessages[Mailer.currentMailbox];
+    if (currentMessage) {
+	var rows = this.select("TR#row_" + currentMessage);
+	if (rows.length == 1)
+	    rows[0].selectElement();
+    }
+    // Update message counter in folder name
     updateMessageListCounter(event.memo, false);
 }
 
@@ -926,22 +945,25 @@ function onMessageSelectionChange() {
         $('messageContent').update();
 }
 
-function loadMessage(idx) {
+function loadMessage(msguid) {
     if (document.messageAjaxRequest) {
         document.messageAjaxRequest.aborted = true;
         document.messageAjaxRequest.abort();
     }
 
     var div = $('messageContent');
-    var cachedMessage = getCachedMessage(idx);
-    var row = $("row_" + idx);
-    var seenStateChanged = row && row.hasClassName('mailer_unreadmail');
+    var cachedMessage = getCachedMessage(msguid);
+    var row = $("row_" + msguid);
+    var seenStateHasChanged = row && row.hasClassName('mailer_unreadmail');
     if (cachedMessage == null) {
         var url = (ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/"
-                   + idx + "/view?noframe=1");
+                   + msguid + "/view?noframe=1");
         div.update();
-        document.messageAjaxRequest = triggerAjaxRequest(url, messageCallback, idx);
-        markMailInWindow(window, idx, true);
+        document.messageAjaxRequest = triggerAjaxRequest(url,
+							 loadMessageCallback,
+							 { 'msguid': msguid, 'seenStateHasChanged': seenStateHasChanged });
+	// Warning: We assume the user can set the read/unread flag of the message.
+        markMailInWindow(window, msguid, true);
     }
     else {
         div.update(cachedMessage['text']);
@@ -949,9 +971,9 @@ function loadMessage(idx) {
         document.messageAjaxRequest = null;
         configureLinksInMessage();
         resizeMailContent();
-        if (seenStateChanged) {
+        if (seenStateHasChanged) {
             // Mark message as read on server
-            var img = row.select("IMG.mailerUnreadIcon").first();
+            var img = row.select("IMG.mailerReadIcon").first();
             var fcnMarkRead = mailListMarkMessage.bind(img);
             fcnMarkRead();
         }
@@ -1313,7 +1335,7 @@ function onAttachmentClick (event) {
     return false;
 }
 
-function messageCallback(http) {
+function loadMessageCallback(http) {
     var div = $('messageContent');
 
     if (http.status == 200) {
@@ -1326,7 +1348,11 @@ function messageCallback(http) {
 		
         if (http.callbackData) {
             var cachedMessage = new Array();
-            cachedMessage['idx'] = Mailer.currentMailbox + '/' + http.callbackData;
+	    var msguid = http.callbackData.msguid;
+	    // Warning: If the user can't set the read/unread flag, it won't
+	    // be reflected in the view unless we force the refresh.
+	    Mailer.dataTable.invalidate(msguid, true);
+            cachedMessage['idx'] = Mailer.currentMailbox + '/' + msguid;
             cachedMessage['time'] = (new Date()).getTime();
             cachedMessage['text'] = http.responseText;
             if (cachedMessage['text'].length < 30000)
@@ -1335,7 +1361,7 @@ function messageCallback(http) {
     }
     else if (http.status == 404) {
         alert (_("The message you have selected doesn't exist anymore."));
-        window.location.reload();
+	Mailer.dataTable.remove(http.callbackData.msguid);
     }
     else
         log("messageCallback: problem during ajax request: " + http.status);
@@ -1518,6 +1544,13 @@ function refreshCurrentFolder() {
     openMailbox(Mailer.currentMailbox, true);
 }
 
+/* Called after sending an email */
+function refreshMessage(mailbox, messageUID) {
+    if (mailbox == Mailer.currentMailbox) {
+	Mailer.dataTable.invalidate(messageUID);
+    }
+}
+
 function configureMessageListEvents(headerTable, dataTable) {
     if (headerTable)
         // Sortable columns
@@ -1629,6 +1662,7 @@ function initMailer(event) {
 
     if (!$(document.body).hasClassName("popup")) {
         //initDnd();
+
         Mailer.dataTable = $("mailboxList");
         Mailer.dataTable.addInterface(SOGoDataTableInterface);
         Mailer.dataTable.setRowRenderCallback(messageListCallback);

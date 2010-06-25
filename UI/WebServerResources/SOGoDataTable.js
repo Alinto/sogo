@@ -1,4 +1,4 @@
-/* -*- Mode: java; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
+/* -*- Mode: js2; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /*
  * Data table interface to be added to a DIV (this!)
@@ -58,7 +58,13 @@ var SOGoDataTableInterface = {
         this.rowRenderCallback = callbackFunction;
     },
 
-    setSource: function(dataSourceClass, url, params) {
+    setSource: function(ds) {
+        this.dataSource = ds;
+        this._emptyTable();
+        this.scrollTop = 0;
+    },
+
+    initSource: function(dataSourceClass, url, params) {
 //         log ("DataTable.setSource() " + url);
         if (this.dataSource) this.dataSource.destroy();
         this._emptyTable();
@@ -87,7 +93,7 @@ var SOGoDataTableInterface = {
         return firstRowIndex;
     },
     
-    render: function(uid) {
+    render: function() {
         var index = this.firstVisibleRowIndex();
         var count = this.visibleRowCount();
 
@@ -95,10 +101,10 @@ var SOGoDataTableInterface = {
         var start = index - (this.overflow/2);
         if (start < 0) start = 0;
         var end = index + count + this.overflow - (index - start);
-//         log ("DataTable.getData() from " + index + " to " + (index + count) + " boosted from " + start + " to " + end);
+//          log ("DataTable.getData() from " + index + " to " + (index + count) + " boosted from " + start + " to " + end);
 
         // Don't overflow above the maximum number of entries from the data source
-        if (this.dataSource.uids && this.dataSource.uids.length < end) end = this.dataSource.uids.length;
+        //if (this.dataSource.uids && this.dataSource.uids.length < end) end = this.dataSource.uids.length;
 
         index = start;
         count = end - start;
@@ -216,6 +222,7 @@ var SOGoDataTableInterface = {
             }
         }
 
+        // Update references to selected rows
         this.body.refreshSelectionByIds();
         log ("DataTable._render() top gap/bottom gap/total rows = " + this.rowTop.getStyle('height') + "/" + this.rowBottom.getStyle('height') + "/" + this.body.select("tr").length + " (height = " + this.down("table").getHeight() + "px)");
         
@@ -229,12 +236,32 @@ var SOGoDataTableInterface = {
         Event.fire(this, "datatable:rendered", max);
     },
 
+    invalidate: function(uid, withoutRefresh) {
+        // Refetch the data for uid. Only refresh the data table if
+        // necessary.
+        var index = this.dataSource.invalidate(uid);
+        this.currentRenderID = index + "-" + 1;
+        this.dataSource.getData(this.currentRenderID,
+                                index,
+                                1,
+                                (withoutRefresh?false:this._invalidate.bind(this)),
+                                0);
+    },
+
+    _invalidate: function(renderID, start, max, data) {
+        if (renderID == this.currentRenderID) {
+            var rows = this.body.select("TR#" + data[0]['rowID']);
+            if (rows.length > 0)
+                this.rowRenderCallback(rows[0], data[0], false);
+        }
+    },
+
     remove: function(uid) {
         var rows = this.body.select("TR#row_" + uid);
         if (rows.length == 1) {
             var row = rows.first();
             row.parentNode.removeChild(row);
-            var index = this.dataSource.invalidate(uid);
+            var index = this.dataSource.remove(uid);
 //             log ("DataTable.remove(" + uid + ")");
             if (this.renderedIndex < index &&
                 (this.renderedIndex + this.renderedCount) > index) {

@@ -65,6 +65,8 @@
   NSArray  *cc;
   NSArray  *bcc;
   NSString *subject;
+  NSString *sourceUID;
+  NSString *sourceFolder;
   NSString *text;
   NSMutableArray *fromEMails;
   NSString *from;
@@ -116,6 +118,8 @@ static NSArray *infoKeys = nil;
   [to release];
   [cc release];
   [bcc release];
+  [sourceUID release];
+  [sourceFolder release];
   [attachmentName release];
   [attachmentNames release];
   [attachedFiles release];
@@ -243,6 +247,29 @@ static NSArray *infoKeys = nil;
 - (NSString *) text
 {
   return text;
+}
+
+- (void) setSourceUID: (int) newSourceUID
+{
+  NSString *s;
+
+  s = [NSString stringWithFormat: @"%i", newSourceUID];
+  ASSIGN (sourceUID, s);
+}
+
+- (NSString *) sourceUID
+{
+  return sourceUID;
+}
+
+- (void) setSourceFolder: (NSString *) newSourceFolder
+{
+  ASSIGN (sourceFolder, newSourceFolder);
+}
+
+- (NSString *) sourceFolder
+{
+  return sourceFolder;
 }
 
 - (void) setTo: (NSArray *) newTo
@@ -490,6 +517,11 @@ static NSArray *infoKeys = nil;
   return [[self attachmentNames] count] > 0 ? YES : NO;
 }
 
+- (NSString *) uid
+{
+  return [[self clientObject] nameInContainer];
+}
+
 - (id) defaultAction
 {
   SOGoDraftObject *co;
@@ -498,6 +530,8 @@ static NSArray *infoKeys = nil;
   [co fetchInfo];
   [self loadInfo: [co headers]];
   [self setText: [co text]];
+  [self setSourceUID: [co IMAP4ID]];
+  [self setSourceFolder: [co sourceFolder]];
 
   return self;
 }
@@ -537,6 +571,7 @@ static NSArray *infoKeys = nil;
 - (id <WOActionResults>) sendAction
 {
   id <WOActionResults> result;
+  SOGoDraftObject *co;
 
   // TODO: need to validate whether we have a To etc
   
@@ -548,7 +583,12 @@ static NSArray *infoKeys = nil;
 	{
 	  result = (id <WOActionResults>) [[self clientObject] sendMail];
 	  if (!result)
-	    result = [self jsCloseWithRefreshMethod: @"refreshCurrentFolder()"];
+	    {
+	      co = [self clientObject];
+	      result = [self jsCloseWithRefreshMethod: [NSString stringWithFormat: @"refreshMessage(\"%@\", %i)",
+								 [co sourceFolder],
+								 [co IMAP4ID]]];
+	    }
 	}
       else
 	result = [self failedToSaveFormResponse];

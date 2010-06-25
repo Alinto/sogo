@@ -56,6 +56,7 @@
   NSString *text;
   NSString *sourceURL;
   NSString *sourceFlag;
+  NSString *sourceFolder;
 }
 
 /* contents */
@@ -75,6 +76,8 @@
 /* for replies and forwards */
 - (void) setSourceURL: (NSString *) newSurceURL;
 - (void) setSourceFlag: (NSString *) newSourceFlag;
+- (void) setSourceFolder: (NSString *) newSourceFolder;
+- (NSString *) sourceFolder;
 
 - (void) setIMAP4ID: (int) newIMAPID;
 - (int) IMAP4ID;

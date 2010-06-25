@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2009 Inverse inc.
+  Copyright (C) 2007-2010 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -259,6 +259,35 @@ static NSString    *userAgent      = nil;
   ASSIGN (sourceFlag, newSourceFlag);
 }
 
+- (void) setSourceFolder: (NSString *) newSourceFolder
+{
+  ASSIGN (sourceFolder, newSourceFolder);
+}
+
+- (void) setSourceFolderWithMailObject: (SOGoMailObject *) sourceMail
+{
+  NSMutableArray *paths;
+  id parent;
+
+  parent = [sourceMail container];
+  paths = [NSMutableArray arrayWithCapacity: 1];
+  while (parent && ![parent isKindOfClass: [SOGoMailAccount class]])
+    {
+      [paths insertObject: [parent nameInContainer] atIndex: 0];
+      parent = [parent container];
+    }
+  if (parent)
+    [paths insertObject: [NSString stringWithFormat: @"/%@", [parent nameInContainer]]
+		atIndex: 0];
+
+  [self setSourceFolder: [paths componentsJoinedByString: @"/"]];
+}
+
+- (NSString *) sourceFolder
+{
+  return sourceFolder;
+}
+
 - (NSException *) storeInfo
 {
   NSMutableDictionary *infos;
@@ -273,12 +302,13 @@ static NSString    *userAgent      = nil;
       if (inReplyTo)
 	[infos setObject: inReplyTo forKey: @"inReplyTo"];
       if (IMAP4ID > -1)
-	[infos setObject: [NSNumber numberWithInt: IMAP4ID]
-	       forKey: @"IMAP4ID"];
-      if (sourceURL && sourceFlag)
+	[infos setObject: [NSString stringWithFormat: @"%i", IMAP4ID]
+		  forKey: @"IMAP4ID"];
+      if (sourceURL && sourceFlag && sourceFolder)
 	{
 	  [infos setObject: sourceURL forKey: @"sourceURL"];
 	  [infos setObject: sourceFlag forKey: @"sourceFlag"];
+	  [infos setObject: sourceFolder forKey: @"sourceFolder"];
 	}
 
       if ([infos writeToFile: [self infoPath] atomically:YES])
@@ -324,6 +354,9 @@ static NSString    *userAgent      = nil;
   value = [infoDict objectForKey: @"sourceFlag"];
   if (value)
     [self setSourceFlag: value];
+  value = [infoDict objectForKey: @"sourceFolder"];
+  if (value)
+    [self setSourceFolder: value];
 
   value = [infoDict objectForKey: @"inReplyTo"];
   if (value)
@@ -622,7 +655,8 @@ static NSString    *userAgent      = nil;
 
   [self setText: [sourceMail contentForEditing]];
   [self setSourceURL: [sourceMail imap4URLString]];
-  IMAP4ID = [[sourceMail nameInContainer] intValue];
+  [self setIMAP4ID: [[sourceMail nameInContainer] intValue]];
+  [self setSourceFolderWithMailObject: sourceMail];
 
   [self storeInfo];
 }
@@ -650,6 +684,9 @@ static NSString    *userAgent      = nil;
   [self setHeaders: info];
   [self setSourceURL: [sourceMail imap4URLString]];
   [self setSourceFlag: @"Answered"];
+  [self setIMAP4ID: [[sourceMail nameInContainer] intValue]];
+  [self setSourceFolderWithMailObject: sourceMail];
+
   [self storeInfo];
 }
 
@@ -670,6 +707,8 @@ static NSString    *userAgent      = nil;
   
   [self setSourceURL: [sourceMail imap4URLString]];
   [self setSourceFlag: @"$Forwarded"];
+  [self setIMAP4ID: [[sourceMail nameInContainer] intValue]];
+  [self setSourceFolderWithMailObject: sourceMail];
 
   /* attach message */
   ud = [[context activeUser] userDefaults];

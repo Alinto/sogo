@@ -64,6 +64,9 @@
 
 #import "UIxMailListActions.h"
 
+// The maximum number of headers to prefetch when querying the UIDs list
+#define headersPrefetchMaxSize 100
+
 @implementation UIxMailListActions
 
 - (id) initWithRequest: (WORequest *) newRequest
@@ -341,7 +344,7 @@
 - (NSString *) imap4SortOrdering 
 {
   NSString *sort, *ascending;
-  NSString *module; //*login
+  NSString *module;
   NSMutableDictionary *moduleSettings;
   BOOL asc;
   SOGoUser *activeUser;
@@ -352,14 +355,23 @@
   ascending = [[context request] formValueForKey: @"asc"];
   asc = [ascending boolValue];
 
-  if (![sort isEqualToString: [self defaultSortKey]])
+  activeUser = [context activeUser];
+  clientObject = [self clientObject];
+  module = [[[clientObject container] container] nameInContainer];
+  us = [activeUser userSettings];
+  moduleSettings = [us objectForKey: module];
+
+  if ([sort isEqualToString: [self defaultSortKey]] && !asc)
       {
+	if (moduleSettings)
+	  {
+	    [moduleSettings removeObjectForKey: @"SortingState"];
+	    [us synchronize];
+	  }
+      }
+  else
+    {
 	// Save the sorting state in the user settings
-	activeUser = [context activeUser];
-	clientObject = [self clientObject];
-	module = [[[clientObject container] container] nameInContainer];
-	us = [activeUser userSettings];
-	moduleSettings = [us objectForKey: module];
 	if (!moduleSettings)
 	  {
 	    moduleSettings = [NSMutableDictionary dictionary];
@@ -413,10 +425,9 @@
   return qualifier;
 }
 
-- (NSArray *) sortedUIDs 
+- (NSArray *) getSortedUIDsInFolder: (SOGoMailFolder *) mailFolder
 {
   EOQualifier *qualifier, *fetchQualifier, *notDeleted;
-  SOGoMailFolder *folder;
 
   if (!sortedUIDs)
     {
@@ -434,10 +445,9 @@
       else
 	fetchQualifier = notDeleted;
 
-      folder = [self clientObject];
       sortedUIDs
-        = [folder fetchUIDsMatchingQualifier: fetchQualifier
-				sortOrdering: [self imap4SortOrdering]];
+        = [mailFolder fetchUIDsMatchingQualifier: fetchQualifier
+				    sortOrdering: [self imap4SortOrdering]];
       [sortedUIDs retain];
     }
 
@@ -449,7 +459,7 @@
   NSArray *messageNbrs;
   int index;
 
-  messageNbrs = [self sortedUIDs];
+  messageNbrs = [self getSortedUIDsInFolder: [self clientObject]];
   index
     = [messageNbrs indexOfObject: [NSNumber numberWithInt: messageNbr]];
 //   if (index < 0)
@@ -524,75 +534,55 @@
   return [self redirectToLocation:@"view"];
 }
 
+- (NSDictionary *) getUIDsAndHeadersInFolder: (SOGoMailFolder *) mailFolder
+{
+  NSArray *uids, *headers;
+  NSDictionary *data;
+  NSRange r;
+  int count;
+  
+  uids = [self getSortedUIDsInFolder: mailFolder]; // retrieves the form parameters "sort" and "asc"
+
+  // Also retrieve the first headers, up to 'headersPrefetchMaxSize'
+  count = [uids count];
+  if (count > headersPrefetchMaxSize) count = headersPrefetchMaxSize;
+  r = NSMakeRange(0, count);
+  headers = [self getHeadersForUIDs: [uids subarrayWithRange: r]
+			   inFolder: mailFolder];
+  
+  data = [NSDictionary dictionaryWithObjectsAndKeys: uids, @"uids",
+		       headers, @"headers", nil];
+
+  return data;
+}
+
 - (id <WOActionResults>) getSortedUIDsAction
 {
-  NSArray *uids;
-  NSRange r;
-  WORequest *request;
+  NSDictionary *data;
+  SOGoMailFolder *folder;
   WOResponse *response;
-  int firstUID, firstIndex, count;
-  
-  request = [context request];
-  uids = [self sortedUIDs]; // retrieves the form parameters "sort" and "asc"
 
-  if ([request formValueForKey: @"start"] != nil)
-    {
-      firstUID = [[request formValueForKey: @"start"] intValue];
-      firstIndex = [self indexOfMessageUID: firstUID];
-      if (firstIndex == NSNotFound)
-	return [NSException exceptionWithHTTPStatus: 404
-					     reason: @"Message not found"];
-    }
-  else
-    firstIndex = -1;
-
-  if ([request formValueForKey: @"count"] != nil)
-    {
-      count = [[request formValueForKey: @"count"] intValue];
-    }
-  else
-    count = 0;
-
-  if (firstIndex > -1)
-    {
-      if (count <= 0 || (count + firstIndex) > [uids count])
-	count = [uids count] - firstIndex;
-      r = NSMakeRange(firstIndex, count);
-      uids = [uids subarrayWithRange: r];
-    }
-  
   response = [context response];
+  folder = [self clientObject];
+  data = [self getUIDsAndHeadersInFolder: folder];
   [response setHeader: @"text/plain; charset=utf-8"
 	       forKey: @"content-type"];
-  [response appendContentString: [uids jsonRepresentation]];
+  [response appendContentString: [data jsonRepresentation]];
 
   return response;
 }
 
-- (id <WOActionResults>) getHeadersAction
+- (NSArray *) getHeadersForUIDs: (NSArray *) uids
+		       inFolder: (SOGoMailFolder *) mailFolder
 {
-  NSArray *uids, *to, *from;
+  NSArray *to, *from;
   NSDictionary *msgs;
-  NSMutableArray *headers;
-  NSMutableDictionary *msg;
+  NSMutableArray *headers, *msg;
   NSEnumerator *msgsList;
   NSString *msgIconStatus, *msgDate;
-  SOGoMailFolder *mailFolder;
-  WORequest *request;
-  WOResponse *response;
   UIxEnvelopeAddressFormatter *addressFormatter;
   
-  request = [context request];
-  
-  if ([request formValueForKey: @"uids"] == nil)
-    {
-      return [NSException exceptionWithHTTPStatus: 404
-					   reason: @"No UID specified"];
-    }
-
-  uids = [[request formValueForKey: @"uids"] componentsSeparatedByString: @","]; // Should we support ranges? ie "x-y"
   headers = [NSMutableArray arrayWithCapacity: [uids count]];
-  mailFolder = [self clientObject];
   addressFormatter = [context mailEnvelopeAddressFormatter];
   
   // Fetch headers
@@ -601,78 +591,109 @@
 
   msgsList = [[msgs objectForKey: @"fetch"] objectEnumerator];
   [self setMessage: [msgsList nextObject]];
+
+  msg = [NSMutableArray arrayWithObjects: @"To", @"Attachment", @"Flagged", @"Subject", @"From", @"Unread", @"Priority", @"Date", @"Size", @"rowClasses", @"labels", @"rowID", @"uid", nil];
+  [headers addObject: msg];
   while (message)
     {
-      msg = [NSMutableDictionary dictionaryWithCapacity: 11];
+      msg = [NSMutableArray arrayWithCapacity: 12];
 
       // Columns data
 
+      // To
       to = [[message objectForKey: @"envelope"] to];
       if ([to count] > 0)
-	[msg setObject: [addressFormatter stringForArray: to]
-		forKey: @"To"];
-
-      if ([self hasMessageAttachment])
-	[msg setObject: [NSString stringWithFormat: @"<img src=\"%@\"/>", [self urlForResourceFilename: @"title_attachment_14x14.png"]]
-		forKey: @"Attachment"];
-
-      if ([self isMessageFlagged])
-	{
-	  [msg setObject: [NSString stringWithFormat: @"<img src=\"%@\" class=\"messageIsFlagged\">",
-				    [self urlForResourceFilename: @"flag.png"]]
-		  forKey: @"Flagged"];
-	}
+	[msg addObject: [addressFormatter stringForArray: to]];
       else
-	{
-	  [msg setObject: [NSString stringWithFormat: @"<img src=\"%@\">",
-				    [self urlForResourceFilename: @"dot.png"]]
-		  forKey: @"Flagged"];
-	}
+	[msg addObject: @""];
 
-      [msg setObject: [NSString stringWithFormat: @"<span>%@</span>",
-				[self messageSubject]]
-	      forKey: @"Subject"];
+      // Attachment
+      if ([self hasMessageAttachment])
+	[msg addObject: [NSString stringWithFormat: @"<img src=\"%@\"/>", [self urlForResourceFilename: @"title_attachment_14x14.png"]]];
+      else
+	[msg addObject: @""];
+
+      // Flagged
+      if ([self isMessageFlagged])
+	[msg addObject: [NSString stringWithFormat: @"<img src=\"%@\" class=\"messageIsFlagged\">",
+				  [self urlForResourceFilename: @"flag.png"]]];
+      else
+	[msg addObject: [NSString stringWithFormat: @"<img src=\"%@\">",
+				  [self urlForResourceFilename: @"dot.png"]]];
+
+      // Subject
+      [msg addObject: [NSString stringWithFormat: @"<span>%@</span>",
+				[self messageSubject]]];
       
+      // From
       from = [[message objectForKey: @"envelope"] from];
       if ([from count] > 0)
-	[msg setObject: [addressFormatter stringForArray: from] forKey: @"From"];
+	[msg addObject: [addressFormatter stringForArray: from]];
       else
-	[msg setObject: @"" forKey: @"From"];
+	[msg addObject: @""];
       
+
+      // Unread
       if ([self isMessageRead])
 	msgIconStatus = @"dot.png";
       else
 	msgIconStatus = @"icon_unread.gif";
       
-      [msg setObject: [self messageRowStyleClass] forKey: @"rowClasses"];
-      [msg setObject: [NSString stringWithFormat: @"<img src=\"%@\" class=\"mailerReadIcon\" title=\"%@\" title-markread=\"%@\" title-markunread=\"%@\" id=\"%@\"/>",
+      [msg addObject: [NSString stringWithFormat: @"<img src=\"%@\" class=\"mailerReadIcon\" title=\"%@\" title-markread=\"%@\" title-markunread=\"%@\" id=\"%@\"/>",
 				[self urlForResourceFilename: msgIconStatus],
  			       [self labelForKey: @"Mark Unread"],
  			       [self labelForKey: @"Mark Read"],
  			       [self labelForKey: @"Mark Unread"],
- 				[self msgIconReadImgID]]
-	      forKey: @"Unread"];
+ 				[self msgIconReadImgID]]];
       
-      [msg setObject: [self messagePriority] forKey: @"Priority"];
+      // Priority
+      [msg addObject: [self messagePriority]];
 
+      // Date
       msgDate = [self messageDate];
       if (msgDate == nil)
 	msgDate = @"";
-      [msg setObject: msgDate forKey: @"Date"];
+      [msg addObject: msgDate];
 
-      [msg setObject: [self messageSize] forKey: @"Size"];
+      // Size
+      [msg addObject: [self messageSize]];
       
-      [msg setObject: [self msgLabels] forKey: @"labels"];
+      // rowClasses
+      [msg addObject: [self messageRowStyleClass]];
 
-      [msg setObject: [self msgRowID] forKey: @"rowID"];
+      // labels
+      [msg addObject: [self msgLabels]];
 
-      [msg setObject: [message objectForKey: @"uid"] forKey: @"uid"];
+      // rowID
+      [msg addObject: [self msgRowID]];
 
+      // uid
+      [msg addObject: [message objectForKey: @"uid"]];
+      
       [headers addObject: msg];
       
       [self setMessage: [msgsList nextObject]];
     }
 
+  return headers;
+}
+
+- (id <WOActionResults>) getHeadersAction
+{
+  NSArray *uids, *headers;
+  WORequest *request;
+  WOResponse *response;
+
+  request = [context request];
+  if ([request formValueForKey: @"uids"] == nil)
+    {
+      return [NSException exceptionWithHTTPStatus: 404
+					   reason: @"No UID specified"];
+    }
+
+  uids = [[request formValueForKey: @"uids"] componentsSeparatedByString: @","]; // Should we support ranges? ie "x-y"
+  headers = [self getHeadersForUIDs: uids
+			   inFolder: [self clientObject]];
   response = [context response];
   [response setHeader: @"text/plain; charset=utf-8"
 	    forKey: @"content-type"];
