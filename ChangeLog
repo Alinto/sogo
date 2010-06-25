@@ -48,6 +48,8 @@
 	(loadMessageCallback): the window is no longer reloaded if the
 	message doesn't exist; only the proper row is removed.
 	(refreshMessage): new function called after sending a message.
+	(onMailboxMenuMove, onMailboxMenuCopy): remove cache of target
+	folder.
 
 2010-06-24  Francis Lachapelle  <flachapelle@inverse.ca>
 

@@ -545,6 +545,14 @@ function onMailboxMenuMove(event) {
                 break;
             }
     }
+
+    // Remove cache of target data source
+    var keys = Mailer.dataSources.keys();
+    for (var i = 0; i < keys.length; i++) {
+	if (keys[i] == targetMailbox || keys[i].startsWith(targetMailbox + "?"))
+	    Mailer.dataSources.unset(keys[i]);
+    }
+
     var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/moveMessages";
     var parameters = "uid=" + uids.join(",") + "&folder=" + targetMailbox;
     var data = { "id": uids, "mailbox": Mailer.currentMailbox, "path": paths, "folder": targetMailbox, "refresh": true };
@@ -572,6 +580,14 @@ function onMailboxMenuCopy(event) {
         uids.push(uid);
         paths.push(path);
     }
+
+    // Remove cache of target data source
+    var keys = Mailer.dataSources.keys();
+    for (var i = 0; i < keys.length; i++) {
+	if (keys[i] == targetMailbox || keys[i].startsWith(targetMailbox + "?"))
+	    Mailer.dataSources.unset(keys[i]);
+    }
+
     var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/copyMessages";
     var parameters = "uid=" + uids.join(",") + "&folder=" + targetMailbox;
     var data = { "id": uids, "mailbox": Mailer.currentMailbox, "path": paths, "folder": targetMailbox, "refresh": false };
@@ -2282,8 +2298,8 @@ function onLabelMenuPrepareVisibility() {
         }
     }
 
-    var lis = this.childNodesWithTag("ul")[0].childNodesWithTag("li")
-        var isFlagged = false;
+    var lis = this.childNodesWithTag("ul")[0].childNodesWithTag("li");
+    var isFlagged = false;
     for (var i = 1; i < 6; i++) {
         if (flags["label" + i]) {
             isFlagged = true;
