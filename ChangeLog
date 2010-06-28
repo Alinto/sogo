@@ -1,3 +1,8 @@
+2010-06-28  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Contacts/UIxContactEditor.m (-initSnapshot, -_saveSnapshot):
+	added support for "extended" work/home addresses.
+
 2010-06-25  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/MailerUI/UIxMailMainFrame.m (-inboxData): new method used to

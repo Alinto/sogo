@@ -183,6 +183,15 @@
             </tr>
             <tr>
               <td colspan="2">
+                <label>
+                  <input type="text" class="textField" name="homeExtendedAddress"
+                    id="homeExtendedAddress"
+                    var:value="snapshot.homeExtendedAddress" />
+                </label>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
                 <label><var:string label:value="City:" />
                   <input type="text" class="textField" name="homeCity"
                     id="homeCity"
@@ -264,6 +273,15 @@
                   <input type="text" class="textField" name="workStreetAddress"
                     id="workStreetAddress"
                     var:value="snapshot.workStreetAddress" />
+                </label>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <label>
+                  <input type="text" class="textField" name="workExtendedAddress"
+                    id="workExtendedAddress"
+                    var:value="snapshot.workExtendedAddress" />
                 </label>
               </td>
             </tr>

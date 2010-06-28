@@ -427,6 +427,8 @@
   if (elements && [elements count] > 0)
     {
       element = [elements objectAtIndex: 0];
+      [self _setSnapshotValue: @"workExtendedAddress"
+            to: [element value: 1]];
       [self _setSnapshotValue: @"workStreetAddress"
             to: [element value: 2]];
       [self _setSnapshotValue: @"workCity"
@@ -444,6 +446,8 @@
   if (elements && [elements count] > 0)
     {
       element = [elements objectAtIndex: 0];
+      [self _setSnapshotValue: @"homeExtendedAddress"
+            to: [element value: 1]];
       [self _setSnapshotValue: @"homeStreetAddress"
             to: [element value: 2]];
       [self _setSnapshotValue: @"homeCity"
@@ -602,6 +606,7 @@
   [card setTz: [snapshot objectForKey: @"tz"]];
 
   element = [self _elementWithTag: @"adr" ofType: @"home"];
+  [element setValue: 1 to: [snapshot objectForKey: @"homeExtendedAddress"]];
   [element setValue: 2 to: [snapshot objectForKey: @"homeStreetAddress"]];
   [element setValue: 3 to: [snapshot objectForKey: @"homeCity"]];
   [element setValue: 4 to: [snapshot objectForKey: @"homeState"]];
@@ -609,6 +614,7 @@
   [element setValue: 6 to: [snapshot objectForKey: @"homeCountry"]];
 
   element = [self _elementWithTag: @"adr" ofType: @"work"];
+  [element setValue: 1 to: [snapshot objectForKey: @"workExtendedAddress"]];
   [element setValue: 2 to: [snapshot objectForKey: @"workStreetAddress"]];
   [element setValue: 3 to: [snapshot objectForKey: @"workCity"]];
   [element setValue: 4 to: [snapshot objectForKey: @"workState"]];
