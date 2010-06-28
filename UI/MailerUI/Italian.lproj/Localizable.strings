@@ -222,10 +222,10 @@
 "Later" = "Posponi";
 
 /* Mark popup menu */
-"As Read" = "Già letto";;
+"As Read" = "Già letto";
 "Thread As Read" = "Thread già letto";
-"As Read By Date..." = "Già letti per data...";;
-"All Read" = "Tutti già letti";;
+"As Read By Date..." = "Già letti per data...";
+"All Read" = "Tutti già letti";
 "Flag" = "Contrassegna";
 "As Junk" = "Come indesiderati";
 "As Not Junk" = "Come non indesiderati";
@@ -234,9 +234,9 @@
 /* Folder operations */
 "Name :" = "Nome :";
 "Enter the new name of your folder :"
- = "Inserisci il nuovo nome della cartella :";
+    = "Inserisci il nuovo nome della cartella :";
 "Do you really want to move this folder into the trash ?"
- = "Sei sicuro di voler spostare la cartella nel cestino ?";
+    = "Sei sicuro di voler spostare la cartella nel cestino ?";
 "Operation failed" = "Operazione non riuscita";
 
 "Quota" = "Spazio usato";
@@ -248,22 +248,22 @@
 "The message you have selected doesn't exist anymore." = "The message you have selected doesn't exist anymore.";
 
 "The folder with name \"%{0}\" could not be created."
-= "La cartella con nome \"%{0}\" non può essere creata.";
+    = "La cartella con nome \"%{0}\" non può essere creata.";
 "This folder could not be renamed to \"%{0}\"."
-= "Questa cartella non puo essere rinominata in \"%{0}\".";
+    = "Questa cartella non puo essere rinominata in \"%{0}\".";
 "The folder could not be deleted."
-= "Questa cartella non può essere eliminata.";
+    = "Questa cartella non può essere eliminata.";
 "The trash could not be emptied."
-= "Il cestino non puo essere svuotato.";
+    = "Il cestino non puo essere svuotato.";
 "The folder functionality could not be changed."
-= "La funzionalita della cartella non puo essere cambiata.";
+    = "La funzionalita della cartella non puo essere cambiata.";
 
 "You need to choose a non-virtual folder!" = "Devi selezionare una cartella fisica, non virtuale!";
 
 "Moving a message into its own folder is impossible!"
-= "La cartella di destinazione coincide con la cartella di origine!";
+    = "La cartella di destinazione coincide con la cartella di origine!";
 "Copying a message into its own folder is impossible!"
-= "La cartella di destinazione coincide con la cartella di origine!";
+    = "La cartella di destinazione coincide con la cartella di origine!";
 
 /* Message editing */
 "error_validationfailed" = "Validazione fallita";
