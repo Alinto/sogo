@@ -1,8 +1,9 @@
 /* SOGoWebAppointmentFolder.m - this file is part of SOGo
  *
- * Copyright (C) 2009 Inverse inc.
+ * Copyright (C) 2009-2010 Inverse inc.
  *
  * Author: Cyril Robert <crobert@inverse.ca>
+ *         Ludovic Marcotte <lmarcotte@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +30,8 @@
 
 #import "SOGoWebAppointmentFolder.h"
 
+@class WOHTTPURLHandle;
+
 @implementation SOGoWebAppointmentFolder
 
 - (void) deleteAllContent
@@ -38,21 +41,24 @@
 
 - (int) loadWebCalendar
 {
-  NSURL *url;
-  NSData *data;
   NSString *location, *contents;
+  WOHTTPURLHandle *handle;
   iCalCalendar *calendar;
+  NSData *data;
+  NSURL *url;
+
   int imported = 0;
 
   location = [self folderPropertyValueInCategory: @"WebCalendars"];
   url = [NSURL URLWithString: location];
   if (url)
     {
-      data = [url resourceDataUsingCache: NO];
+      handle = AUTORELEASE([[WOHTTPURLHandle alloc] initWithURL: url  cached: NO]);
+      data = [handle resourceData];
 
       if (!data && [[location lowercaseString] hasPrefix: @"https"]) 
 	{
-	  NSLog(@"WARNING: Your GNUstep installation might not have SSL support.");
+	  NSLog(@"WARNING: Your GNUstep/SOPE installation might not have SSL support.");
 	  return -1;
 	}
 

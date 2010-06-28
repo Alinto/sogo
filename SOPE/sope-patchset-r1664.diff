@@ -9338,6 +9338,19 @@ Index: sope-appserver/NGObjWeb/WOCoreApplication.m
    if ([woport isKindOfClass:[NSNumber class]])
      return woport;
    woport = [woport stringValue];
+Index: sope-appserver/NGObjWeb/WOHTTPURLHandle.m
+===================================================================
+--- sope-appserver/NGObjWeb/WOHTTPURLHandle.m	(revision 1664)
++++ sope-appserver/NGObjWeb/WOHTTPURLHandle.m	(working copy)
+@@ -51,7 +51,7 @@
+ }
+ 
+ - (id)initWithURL:(NSURL *)_url cached:(BOOL)_flag {
+-  if (![[_url scheme] isEqualToString:@"http"]) {
++  if (![[_url scheme] hasPrefix:@"http"]) {
+     NSLog(@"%s: invalid URL scheme %@ for WOHTTPURLHandle !",
+           __PRETTY_FUNCTION__, [_url scheme]);
+     RELEASE(self);
 Index: sope-appserver/NGObjWeb/NGHttp/NGHttpRequest.m
 ===================================================================
 --- sope-appserver/NGObjWeb/NGHttp/NGHttpRequest.m	(revision 1664)

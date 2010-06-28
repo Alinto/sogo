@@ -2,6 +2,14 @@
 
         * SOPE/sope-patchset-r1664.diff
 	Fixed the LF/CRLF encoding issue in NGSmtpClient.m
+	* SOPE/sope-patchset-r1664.diff
+	We now also consider https connections for WOHTTPURLHandle.m
+	* SoObjects/Appointments/SOGoWebAppointmentFolder.m
+	(-loadWebCalendar):
+	Modified so that we use SOPE's WOHTTPURLHandle class instead
+	of the NSURL code to fetch remote ICS calendars. This allow
+	use to support SSL by using SOPE class instead of the SSL
+	bundle of GNUstep (which is generally not available anywhere).
 
 2010-06-28  Francis Lachapelle  <flachapelle@inverse.ca>
 
