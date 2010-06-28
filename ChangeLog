@@ -1,3 +1,8 @@
+2010-06-28  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+        * SOPE/sope-patchset-r1664.diff
+	Fixed the LF/CRLF encoding issue in NGSmtpClient.m
+
 2010-06-28  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Contacts/UIxContactEditor.m (-initSnapshot, -_saveSnapshot):
