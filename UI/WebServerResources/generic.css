@@ -797,7 +797,7 @@ DIV.tabsContainer > UL LI SPAN
 DIV.tabsContainer > UL LI.active
 { background: transparent url('tab_a_active_bg.png') no-repeat scroll top right !important; }
 DIV.tabsContainer > UL LI.active SPAN
-{   background: transparent url('tab_span_active_bg.png') no-repeat !important; }
+{ background: transparent url('tab_span_active_bg.png') no-repeat !important; }
 DIV.tabsContainer > UL LI.first
 { margin-left: -1px;
   padding-left: -1px; }
