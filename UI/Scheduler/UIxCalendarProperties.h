@@ -29,7 +29,7 @@
 @interface UIxCalendarProperties : UIxComponent
 {
   SOGoAppointmentFolder *calendar;
-  NSString *baseCalDAVURL;
+  NSString *baseCalDAVURL, *basePublicCalDAVURL;
   BOOL reloadTasks;
 }
 

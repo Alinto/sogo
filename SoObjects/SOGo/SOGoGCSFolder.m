@@ -1,7 +1,7 @@
 /* SOGoGCSFolder.m - this file is part of SOGo
  *
  * Copyright (C) 2004-2005 SKYRIX Software AG
- * Copyright (C) 2006-2009 Inverse inc.
+ * Copyright (C) 2006-2010 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -417,6 +417,21 @@ static NSArray *childRecordFields = nil;
                                           reason: @"Empty string"];
 
   return error;
+}
+
+- (NSURL *) publicDavURL
+{
+  NSMutableArray *newPath;
+  NSURL *davURL;
+
+  davURL = [self realDavURL];
+  newPath = [NSMutableArray arrayWithArray: [[davURL path] componentsSeparatedByString: @"/"]];
+  [newPath insertObject: @"public" atIndex: 3];
+  davURL = [[NSURL alloc] initWithScheme: [davURL scheme]
+				    host: [davURL host]
+				    path: [newPath componentsJoinedByString: @"/"]];
+
+  return davURL;
 }
 
 - (NSURL *) realDavURL

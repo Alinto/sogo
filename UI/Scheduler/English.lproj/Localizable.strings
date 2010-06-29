@@ -530,7 +530,8 @@ vtodo_class2 = "(Confidential task)";
 "Show tasks" = "Show tasks";
 
 "Links to this Calendar" = "Links to this Calendar";
-"CalDAV url" = "CalDAV url";
+"Authenticated User Access" = "Authenticated User Access";
+"CalDAV URL" = "CalDAV URL";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
 

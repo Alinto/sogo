@@ -13,7 +13,17 @@
   <form const:href="saveProperties" name="propertiesform" id="propertiesform">
     <input type="hidden" const:name="calendarID" const:id="calendarID"
       var:value="calendarID"/>
-    <div id="propertiesView">
+    <div class="tabsContainer" id="propertiesTabs">
+      <ul>
+        <li target="propertiesView"><span>
+            <var:string label:value="Properties" /></span></li>
+	<li target="davLinksView"><span>
+	    <var:string label:value="Links to this Calendar"/></span></li>
+      </ul>
+      <div class="tabs">
+        <div id="propertiesView" class="tab">
+
+    <!--<div id="propertiesView">-->
       <fieldset>
 	<legend><var:string label:value="Properties"/></legend>
         <div><span class="label"><var:string label:value="Name:"/></span
@@ -22,12 +32,6 @@
               class="textField"
               var:value="calendarName"
               /></span></div>
-        <var:if condition="isWebCalendar"
-          ><div const:id="webCalendarUrl"><span class="label"
-              ><var:string label:value="URL:"/></span
-              ><span class="content" var:title="webCalendarURL"
-              ><a var:href="webCalendarURL" target="_new"><var:string var:value="webCalendarURL"/></a>
-            </span></div></var:if>
         <div><span class="label"><var:string
               label:value="Color:"
               /></span><span class="content"
@@ -98,17 +102,39 @@
                 /><var:string label:value="Reload on login"
                 /></label></div></var:if>
       </fieldset>
-
+    </div>
+    <div id="davLinksView" class="tab">
+      <var:if condition="isWebCalendar"
+	><fieldset id="webCalendarUrl">
+	<legend><var:string label:value="URL:"/></legend>
+	<div><a const:class="clickableLink" var:href="webCalendarURL" var:title="webCalendarURL"
+	   target="_new"><var:string var:value="webCalendarURL"/></a></div>
+      </fieldset
+      ></var:if>
       <var:if condition="isWebCalendar" const:negate="YES"
-        ><fieldset id="davLinks">
-          <legend><var:string label:value="Links to this Calendar"/></legend>
-          <a const:class="clickableLink" var:href="calDavURL"
-            ><var:string label:value="CalDAV url"/></a><br/>
-            <a const:class="clickableLink" var:href="webDavICSURL"
+	><fieldset id="authenticatedLinks">
+          <legend><var:string label:value="Authenticated User Access"/></legend>
+          <div><a const:class="clickableLink" var:href="calDavURL" var:title="calDavURL"
+            ><var:string label:value="CalDAV URL"/></a><br/>
+            <a const:class="clickableLink" var:href="webDavICSURL" var:title="webDavICSURL"
               ><var:string label:value="WebDAV ICS URL"/></a><br/>
-            <a const:class="clickableLink" var:href="webDavXMLURL"
-              ><var:string label:value="WebDAV XML URL"/></a>
-        </fieldset></var:if>
+            <a const:class="clickableLink" var:href="webDavXMLURL" var:title="webDavXMLURL"
+              ><var:string label:value="WebDAV XML URL"/></a></div>
+        </fieldset>
+	<var:if condition="isPublicAccessEnabled"
+        ><fieldset id="publicLinks">
+          <legend><var:string label:value="Public Access"/></legend>
+          <div><a const:class="clickableLink" var:href="publicCalDavURL" var:title="publicCalDavURL"
+            ><var:string label:value="CalDAV URL"/></a><br/>
+	    <a const:class="clickableLink" var:href="publicWebDavICSURL" var:title="publicWebDavICSURL"
+            ><var:string label:value="WebDAV ICS URL"/></a><br/>
+            <a const:class="clickableLink" var:href="publicWebDavXMLURL" var:title="publicWebDavXMLURL"
+              ><var:string label:value="WebDAV XML URL"/></a></div>
+        </fieldset
+	></var:if
+      ></var:if>
+      </div>
+    </div>
 
       <div id="buttons">
         <a href="#" class="button actionButton" id="okButton" 

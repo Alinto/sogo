@@ -1,6 +1,10 @@
 /* -*- Mode: java; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 function onLoadCalendarProperties() {
+    var tabsContainer = $("propertiesTabs");
+    var controller = new SOGoTabsController();
+    controller.attachToTabsContainer(tabsContainer);
+
     var colorButton = $("colorButton");
     var calendarColor = $("calendarColor");
     colorButton.setStyle({ "backgroundColor": calendarColor.value, display: "inline" });

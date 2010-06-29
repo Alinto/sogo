@@ -94,11 +94,11 @@ TABLE
 BUTTON#colorButton
 { margin-top: 2px; }
 
-DIV#propertiesView FIELDSET
+DIV#propertiesTabs FIELDSET
 { margin: 0.5em;
   padding: 5px; }
 
-DIV#propertiesView LEGEND
+DIV#propertiesTabs LEGEND
 { margin-bottom: 5px; }
 
 /* UIxMailPartICalViewer */
