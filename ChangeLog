@@ -1,3 +1,8 @@
+2010-06-30  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/MailerUI.js (onDocumentKeydown): improved
+	scrolling when using the arrows keys.
+
 2010-06-29  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/UIxCalendarProperties.js

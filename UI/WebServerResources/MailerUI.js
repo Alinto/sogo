@@ -317,18 +317,18 @@ function onDocumentKeydown(event) {
                     row.up().deselectAll();
 					
                     // Adjust the scollbar
-                    var viewPort = $("mailboxContent");
+                    var viewPort = $("mailboxList");
                     var divDimensions = viewPort.getDimensions();
+                    var centerOffset = divDimensions.height/2;
                     var rowScrollOffset = nextRow.cumulativeScrollOffset();
-                    var rowPosition = nextRow.positionedOffset();
-                    var divBottom = divDimensions.height + rowScrollOffset.top;
-                    var rowBottom = rowPosition.top + nextRow.getHeight();
+                     var divBottom = divDimensions.height + rowScrollOffset.top;
+                    var rowBottom = nextRow.offsetTop + nextRow.getHeight();
 
                     if (divBottom < rowBottom)
-                        viewPort.scrollTop += rowBottom - divBottom;
-                    else if (rowScrollOffset.top > rowPosition.top)
-                        viewPort.scrollTop -= rowScrollOffset.top - rowPosition.top;
-					
+                        viewPort.scrollTop += rowBottom - divBottom + centerOffset;
+                     else if (viewPort.scrollTop > nextRow.offsetTop)
+                        viewPort.scrollTop -= rowScrollOffset.top - nextRow.offsetTop + centerOffset;
+		    
                     // Select and load the next message
                     nextRow.selectElement();
                     loadMessage(Mailer.currentMessages[Mailer.currentMailbox]);
