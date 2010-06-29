@@ -1,3 +1,19 @@
+2010-06-29  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/UIxCalendarProperties.js
+	(onLoadCalendarProperties): we now make use of tabs in the
+	properties window.
+
+	* UI/Scheduler/UIxCalendarProperties.m (-isPublicAccessEnabled):
+	new method, copied from Common/UIxAclEditor.m.
+	(-_basePublicCalDAVURL): new method that return the public base
+	URL of the calendar.
+	(-publicCalDavURL, -publicWebDavICSURL, -publicWebDavXMLURL): new
+	methods to return the various public URLs associated to the calendar.
+
+	* SoObjects/SOGo/SOGoGCSFolder.m (-publicDavURL): new method to
+	return the public DAV URL of the folder.
+
 2010-06-28  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
         * SOPE/sope-patchset-r1664.diff

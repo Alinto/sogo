@@ -1,6 +1,6 @@
 /* UIxCalendarProperties.m - this file is part of SOGo
  *
- * Copyright (C) 2008-2009 Inverse inc.
+ * Copyright (C) 2008-2010 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -28,6 +28,7 @@
 
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserSettings.h>
+#import <SOGo/SOGoSystemDefaults.h>
 #import <Appointments/SOGoAppointmentFolder.h>
 #import <Appointments/SOGoWebAppointmentFolder.h>
 
@@ -41,6 +42,7 @@
     {
       calendar = [self clientObject];
       baseCalDAVURL = nil;
+      basePublicCalDAVURL = nil;
       reloadTasks = NO;
     }
 
@@ -50,6 +52,7 @@
 - (void) dealloc
 {
   [baseCalDAVURL release];
+  [basePublicCalDAVURL release];
   [super dealloc];
 }
 
@@ -186,6 +189,13 @@
   return ([userLogin isEqualToString: [calendar ownerInContext: context]]);
 }
 
+- (BOOL) isPublicAccessEnabled
+{
+  // NOTE: This method is the same found in Common/UIxAclEditor.m
+  return [[SOGoSystemDefaults sharedSystemDefaults]
+           enablePublicAccess];
+}
+
 - (BOOL) isWebCalendar
 {
   return ([calendar isKindOfClass: [SOGoWebAppointmentFolder class]]);
@@ -253,6 +263,23 @@
   return baseCalDAVURL;
 }
 
+- (NSString *) _basePublicCalDAVURL
+{
+  NSString *davURL;
+
+  if (!basePublicCalDAVURL)
+    {
+      davURL = [[calendar publicDavURL] absoluteString];
+      if ([davURL hasSuffix: @"/"])
+	basePublicCalDAVURL = [davURL substringToIndex: [davURL length] - 1];
+      else
+        basePublicCalDAVURL = davURL;
+      [basePublicCalDAVURL retain];
+    }
+
+  return basePublicCalDAVURL;
+}
+
 - (NSString *) calDavURL
 {
   return [NSString stringWithFormat: @"%@/", [self _baseCalDAVURL]];
@@ -266,6 +293,21 @@
 - (NSString *) webDavXMLURL
 {
   return [NSString stringWithFormat: @"%@.xml", [self _baseCalDAVURL]];
+}
+
+- (NSString *) publicCalDavURL
+{
+  return [NSString stringWithFormat: @"%@/", [self _basePublicCalDAVURL]];
+}
+
+- (NSString *) publicWebDavICSURL
+{
+  return [NSString stringWithFormat: @"%@.ics", [self _basePublicCalDAVURL]];
+}
+
+- (NSString *) publicWebDavXMLURL
+{
+  return [NSString stringWithFormat: @"%@.xml", [self _basePublicCalDAVURL]];
 }
 
 @end

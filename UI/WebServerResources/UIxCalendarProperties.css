@@ -1,7 +1,3 @@
-DIV#propertiesView
-{ overflow: hidden;
-  padding: 5px 5px 0 5px; }
-
 DIV
 { clear: both; }
 
@@ -43,7 +39,10 @@ BUTTON#colorButton
   height: 18px; }
 
 DIV#buttons
-{ padding: 10px;
+{ position: absolute; 
+  bottom: 5px;
+  right: 5px;
+  padding: 10px;
   padding-top: 5px;
   text-align: right; }
 
@@ -52,9 +51,6 @@ INPUT#calendarSyncTag
 
 LABEL
 { white-space: nowrap; }
-
-#davLinks A
-{ margin-left: 60px; }
 
 #webCalendarUrl SPAN.content
 { white-space: nowrap;

@@ -530,7 +530,8 @@ vtodo_class2 = "(Tâche confidentielle)";
 "Show tasks" = "Afficher les tâches";
 
 "Links to this Calendar" = "Liens vers cet agenda";
-"CalDAV url" = "Accès en CalDAV";
+"Authenticated User Access" = "Accès aux utilisateurs authentifiés";
+"CalDAV URL" = "Accès en CalDAV";
 "WebDAV ICS URL" = "Représentation ICS en WebDAV";
 "WebDAV XML URL" = "Représentation XML en WebDAV";
 
