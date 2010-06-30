@@ -1,14 +1,15 @@
 /*
   Copyright (C) 2004 SKYRIX Software AG
+  Copyright (C) 2005-2010 Inverse inc.
+
+  This file is part of SOGo.
  
-  This file is part of OpenGroupware.org.
- 
-  OGo is free software; you can redistribute it and/or modify it under
+  SOGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
   Free Software Foundation; either version 2, or (at your option) any
   later version.
  
-  OGo is distributed in the hope that it will be useful, but WITHOUT ANY
+  SOGo is distributed in the hope that it will be useful, but WITHOUT ANY
   WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
   License for more details.
@@ -357,15 +358,20 @@
 
 - (NSString *) workService
 {
-  NSArray *org, *orgServices;
+  NSMutableArray *orgServices;
+  NSArray *org;
   NSRange aRange;
   NSString *services;
 
   org = [card org];
   if (org && [org count] > 1)
     {
-      aRange = NSMakeRange (1, [org count] - 1);
-      orgServices = [org subarrayWithRange: aRange];
+      aRange = NSMakeRange(1, [org count]-1);
+      orgServices = [NSMutableArray arrayWithArray: [org subarrayWithRange: aRange]];
+      
+      while ([orgServices containsObject: @""])
+	[orgServices removeObject: @""];
+
       services = [orgServices componentsJoinedByString: @", "];
     }
   else
