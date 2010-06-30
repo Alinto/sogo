@@ -557,14 +557,15 @@ function onComposeMessagesTypeChange(event) {
         if (!CKEDITOR.instances["signature"]) {
             CKEDITOR.replace('signature',
                              {
-                             height: "290px",
-                                     toolbar :
-                                 [['Bold', 'Italic', '-', 'Link', 
-                                   'Font','FontSize','-','TextColor',
-                                   'BGColor']
-                                  ] 
-                                     }
-                             );
+				 height: "290px",
+                                 toolbar : [['Bold', 'Italic', '-', 'Link', 
+					     'Font','FontSize','-','TextColor',
+					     'BGColor']
+					   ],
+				 language : localeCode,
+				 scayt_sLang : localeCode
+                             }
+                            );
         }
     }
 }

@@ -369,7 +369,9 @@ function initMailEditor() {
                                'JustifyLeft','JustifyCenter','JustifyRight',
                                'JustifyBlock','Font','FontSize','-','TextColor',
                                'BGColor']
-                              ] 
+                             ],
+                             language : localeCode,
+			     scayt_sLang : localeCode
                           }
                          );
         if (focusField == textarea)

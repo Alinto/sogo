@@ -1,6 +1,6 @@
 /* UIxPreferences.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2009 Inverse inc.
+ * Copyright (C) 2007-2010 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -991,6 +991,12 @@
 {
   return [[SOGoSystemDefaults sharedSystemDefaults]
            userCanChangePassword];
+}
+
+- (NSString *) localeCode
+{
+  // WARNING : NSLocaleCode is not defined in <Foundation/NSUserDefaults.h>
+  return [locale objectForKey: @"NSLocaleCode"];
 }
 
 - (NSArray *) languageCategories

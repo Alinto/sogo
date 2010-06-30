@@ -15,6 +15,7 @@
     var mailIsReply = <var:string value="isMailReply"/>;
     var sourceUID = <var:string value="sourceUID"/>;
     var sourceFolder = '<var:string value="sourceFolder" const:escapeHTML="NO"/>';
+    var localeCode = '<var:string value="localeCode"/>';
   </script>
   <div class="popupMenu" id="contactsMenu">
     <ul><!-- space --></ul>

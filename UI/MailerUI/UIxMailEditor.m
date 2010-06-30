@@ -1,6 +1,6 @@
 /*
   Copyright (C) 2004-2005 SKYRIX Software AG
-  Copyright (C) 2008-2009 Inverse inc.
+  Copyright (C) 2008-2010 Inverse inc.
 
   This file is part of SOGo.
 
@@ -32,6 +32,7 @@
                                 form data */
 #import <NGObjWeb/WORequest.h>
 #undef COMPILING_NGOBJWEB
+#import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -44,6 +45,7 @@
 #import <NGMime/NGMimeMultipartBody.h>
 #import <NGMime/NGMimeType.h>
 
+#import <SOGo/SOGoUserDefaults.h>
 #import <SoObjects/Mailer/SOGoDraftObject.h>
 #import <SoObjects/Mailer/SOGoMailFolder.h>
 #import <SoObjects/Mailer/SOGoMailAccount.h>
@@ -52,6 +54,8 @@
 #import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/NSDictionary+Utilities.h>
 #import <SOGoUI/UIxComponent.h>
+
+#import "../../Main/SOGo.h"
 
 /*
   UIxMailEditor
@@ -169,6 +173,19 @@ static NSArray *infoKeys = nil;
 - (NSString *) isMailReply
 {
   return ([to count] > 0 ? @"true" : @"false");
+}
+
+- (NSString *) localeCode
+{
+  SOGoUserDefaults *ud;
+  NSDictionary *locale;
+  
+  ud = [[context activeUser] userDefaults];
+  locale = [[WOApplication application]
+                 localeForLanguageNamed: [ud language]];
+
+  // WARNING : NSLocaleCode is not defined in <Foundation/NSUserDefaults.h>
+  return [locale objectForKey: @"NSLocaleCode"];
 }
 
 - (void) setFrom: (NSString *) newFrom

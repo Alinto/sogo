@@ -12,6 +12,9 @@
   const:popup="YES"
   const:jsFiles="PasswordPolicy.js,ckeditor/ckeditor.js"
   >
+  <script type="text/javascript">
+    var localeCode = '<var:string value="localeCode"/>';
+  </script>
   <form id="mainForm" var:href="ownPath">
     <div class="tabsContainer" id="preferencesTabs">
       <ul>
