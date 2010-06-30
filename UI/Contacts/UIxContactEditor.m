@@ -481,7 +481,26 @@
       [self _setSnapshotValue: @"homeURL"
 	    to: [[elements objectAtIndex: 0] value: 0]];
     }
-      
+  // If we do have a "work" URL but no "home" URL but two
+  // values URLs present, let's add the second one as the home URL
+  else if ([[snapshot objectForKey: @"workURL"] length] > 0 &&
+	   [[snapshot objectForKey: @"homeURL"] length] == 0 &&
+	   [elements count] > 1)
+    {
+      int i;
+
+      for (i = 0; i < [elements count]; i++)
+	{
+	  if ([[[elements objectAtIndex: i] value: 0]
+		caseInsensitiveCompare: [snapshot objectForKey: @"workURL"]] != NSOrderedSame)
+	    {
+	      [self _setSnapshotValue: @"homeURL"
+		    to: [[elements objectAtIndex: i] value: 0]];
+	      break;
+	    }
+	}
+    }
+    
 
   [self _setSnapshotValue: @"calFBURL"
         to: [[card uniqueChildWithTag: @"FBURL"] value: 0]];

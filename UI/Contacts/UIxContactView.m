@@ -299,34 +299,86 @@
   return [self _cardStringWithLabel: nil value: data];
 }
 
+- (NSString *) _formattedURL: (NSString *) url
+{
+  NSString *data;
+
+  data = nil;
+
+  if (url)
+    {
+      if (![[url lowercaseString] rangeOfString: @"://"].length)
+	url = [NSString stringWithFormat: @"http://%@", url];
+      
+      data = [NSString stringWithFormat:
+                         @"<a href=\"%@\" target=\"_blank\">%@</a>",
+                       url, url];
+    }
+
+  return [self _cardStringWithLabel: nil value: data];
+}
+
+
 - (NSString *) _urlOfType: (NSString *) aType
 {
   NSArray *elements;
-  NSString *data, *url;
+  NSString *url;
 
   elements = [card childrenWithTag: @"url"
                    andAttribute: @"type"
                    havingValue: aType];
   if ([elements count] > 0)
-    {
-      url = [[elements objectAtIndex: 0] value: 0];
-
-      if (![[url lowercaseString] rangeOfString: @"://"].length)
-	  url = [NSString stringWithFormat: @"http://%@", url];
-
-      data = [NSString stringWithFormat:
-                         @"<a href=\"%@\" target=\"_blank\">%@</a>",
-                       url, url];
-    }
+    url = [[elements objectAtIndex: 0] value: 0];
   else
-    data = nil;
+    url = nil;
 
-  return [self _cardStringWithLabel: nil value: data];
+  return [self _formattedURL: url];
 }
 
 - (NSString *) homeUrl
 {
-  return [self _urlOfType: @"home"];
+  NSString *s;
+
+  s = [self _urlOfType: @"home"];
+
+  if (!s || [s length] == 0)
+    {
+      NSArray *elements;
+      NSString *workURL;
+      int i;
+      
+      elements = [card childrenWithTag: @"url"
+		       andAttribute: @"type"
+		       havingValue: @"work"];
+      workURL = nil;
+
+      if ([elements count] > 0)
+	workURL = [[elements objectAtIndex: 0] value: 0];
+
+      elements = [card childrenWithTag: @"url"];
+
+      if (workURL && [elements count] > 1)
+	{
+	  for (i = 0; i < [elements count]; i++)
+	    {
+	      if ([[[elements objectAtIndex: i] value: 0] caseInsensitiveCompare: workURL] != NSOrderedSame)
+		{
+		  s = [[elements objectAtIndex: i] value: 0];
+		  break;
+		}
+	    }
+	  
+	}
+      else if (!workURL && [elements count] > 0)
+	{
+	  s = [[elements objectAtIndex: 0] value: 0];
+	}
+
+      if (s && [s length] > 0)
+	s = [self _formattedURL: s];
+    }
+  
+  return s;
 }
 
 - (BOOL) hasWorkInfos
