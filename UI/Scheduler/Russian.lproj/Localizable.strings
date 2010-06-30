@@ -486,6 +486,7 @@ validate_endbeforestart    = "The end date that you entered occurs before the st
 "Next hour" = "Next hour";
 "Work days only" = "Work days only";
 "The whole day" = "The whole day";
+"Between" = "Between";
 "and" = "and";
 
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"

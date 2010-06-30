@@ -486,6 +486,7 @@ validate_endbeforestart    = "A megadott befejező dátum korábbi, mint a kezd�
 "Next hour" = "Következő óra";
 "Work days only" = "Work days only";
 "The whole day" = "The whole day";
+"Between" = "Between";
 "and" = "and";
 
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"

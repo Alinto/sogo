@@ -486,6 +486,7 @@ validate_endbeforestart    = "Su fecha/hora de comienzo es posterio a la de fina
 "Next hour" = "Hora siguiente";
 "Work days only" = "Work days only";
 "The whole day" = "The whole day";
+"Between" = "Between";
 "and" = "and";
 
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"

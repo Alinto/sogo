@@ -486,6 +486,7 @@ validate_endbeforestart    = "La date de fin est avant la date de début.";
 "Next hour" = "Prochaine heure";
 "Work days only" = "Seulement les jours ouvrables";
 "The whole day" = "La journée complète";
+"Between" = "Entre";
 "and" = "et";
 
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
