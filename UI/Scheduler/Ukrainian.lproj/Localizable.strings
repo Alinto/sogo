@@ -483,7 +483,10 @@ validate_endbeforestart    = "Дата закінчення передує да�
 "Next slot" = "Наступний діапазон";
 "Previous hour" = "Попередня година";
 "Next hour" = "Наступна година";
-"Only office hours" = "Лише робочий час";
+"Work days only" = "Лише робочий час";
+"The whole day" = "The whole day";
+"Between" = "Between";
+"and" = "and";
 
 /* apt list */
 "Title" = "Назва";

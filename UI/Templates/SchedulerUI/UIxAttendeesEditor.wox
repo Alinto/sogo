@@ -24,7 +24,7 @@
         <var:string label:value="Suggest time slot:"/>
 
         <span id="freeBusyTimeRange">
-          <var:string label:value="Between:"/>
+          <var:string label:value="Between"/>
           <select const:id="timeSlotStartLimitHour"><!-- space --></select>
           <select const:id="timeSlotStartLimitMinute"><!-- space --></select>
           <var:string label:value="and"/>
