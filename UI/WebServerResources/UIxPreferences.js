@@ -35,7 +35,7 @@ function savePreferences(sender) {
     }
 
     if ($("enableForward") && $("enableForward").checked) {
-        if ($("forwardAddress").value.strip().length == 0) {
+        if (!emailRE.test($("forwardAddress").value)) {
             alert(_("Please specify an address to which you want to forward your messages."));
             sendForm = false;
         }

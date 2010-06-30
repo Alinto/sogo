@@ -134,8 +134,6 @@ function addressFieldLostFocus(sender) {
     
     var addresses = sender.value.split(',');
     if (addresses.length > 0) {
-        var emailRE = /^([\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+\.)*[\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+@((((([a-z0-9]{1}[a-z0-9\-]{0,62}[a-z0-9]{1})|[a-z])\.)+[a-z]{2,6})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?)$/i;
-
         var first = true;
         for (var i = 0; i < addresses.length; i++) {
             var words = addresses[i].split(' ');
@@ -143,6 +141,7 @@ function addressFieldLostFocus(sender) {
             for (var j = 0; j < words.length; j++) {
                 var word = words[j].strip().replace(/<(.+)>/, "$1");
                 if (word.length > 0) {
+                    // Use the regexp defined in generic.js
                     if (emailRE.test(word)) {
                         phrase.push('<' + word + '>');
                         if (first) {

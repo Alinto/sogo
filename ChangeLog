@@ -6,6 +6,9 @@
 
 2010-06-30  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/WebServerResources/UIxPreferences.js (savePreferences): added
+	email validation of forward address (if enabled).
+
 	* UI/WebServerResources/MailerUI.js (onDocumentKeydown): improved
 	scrolling when using the arrows keys.
 
