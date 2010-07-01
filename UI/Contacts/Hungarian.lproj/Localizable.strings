@@ -111,6 +111,7 @@
 "Note:" = "Megjegyzés:";
 "Timezone:" = "Időzóna:";
 "Birthday:" = "Születésnap:";
+"Birthday (yyyy-mm-dd):" = "Születésnap (yyyy-mm-dd):";
 "Freebusy URL:" = "Foglaltság URL:";
 
 "Add as..." = "Hozzáadás mint...";

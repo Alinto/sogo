@@ -111,6 +111,7 @@
 "Note:" = "Notizen:";
 "Timezone:" = "Zeitzone:";
 "Birthday:" = "Geburtsdatum:";
+"Birthday (yyyy-mm-dd):" = "Geburtsdatum (yyyy-mm-dd):";
 "Freebusy URL:" = "Freebusy URL:";
 
 "Add as..." = "Hinzufügen als ...";

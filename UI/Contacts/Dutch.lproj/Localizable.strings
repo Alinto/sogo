@@ -111,6 +111,7 @@
 "Note:" = "Notitie:";
 "Timezone:" = "Tijdzone:";
 "Birthday:" = "Geboortedatum:";
+"Birthday (yyyy-mm-dd):" = "Geboortedatum (yyyy-mm-dd):";
 "Freebusy URL:" = "Beschikbaarheids (Free/Busy) URL:";
 
 "Add as..." = "Toevoegen als ...";

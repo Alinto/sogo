@@ -1,3 +1,8 @@
+2010-07-01  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+        * In the Contacts module, improved the label
+	of the birthday field.
+
 2010-06-30  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
         * When displaying or editing cards, we make sure

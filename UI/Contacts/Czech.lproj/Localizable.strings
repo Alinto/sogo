@@ -111,6 +111,7 @@
 "Note:" = "Poznámka:";
 "Timezone:" = "Časové pásmo:";
 "Birthday:" = "Narozeniny:";
+"Birthday (yyyy-mm-dd):" = "Narozeniny (yyyy-mm-dd):";
 "Freebusy URL:" = "Freebusy URL:";
 
 "Add as..." = "Přidat jako...";

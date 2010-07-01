@@ -110,7 +110,8 @@
 
 "Note:" = "Remarques :";
 "Timezone:" = "Fuseau horaire :";
-"Birthday:" = "D. de naissance :";
+"Birthday:" = "D. naissance:";
+"Birthday (yyyy-mm-dd):" = "D. naissance (aaaa-mm-jj):";
 "Freebusy URL:" = "Adresse du FreeBusy :";
 
 "Add as..." = "Ajouter...";

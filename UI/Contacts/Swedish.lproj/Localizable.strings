@@ -111,6 +111,7 @@
 "Note:" = "Anteckning:";
 "Timezone:" = "Tidzon:";
 "Birthday:" = "Födelsedag:";
+"Birthday (yyyy-mm-dd):" = "Födelsedag (yyyy-mm-dd):";
 "Freebusy URL:" = "Freebusy URL:";
 
 "Add as..." = "Lägg till som...";

@@ -336,7 +336,7 @@
           <table class="framenocaption">
             <tr>
               <td class="firstColumn">
-                <label><var:string label:value="Birthday:" />
+                <label><var:string label:value="Birthday (yyyy-mm-dd):" />
                   <input type="text" class="textField" name="birthday" id="birthday"
                     var:value="snapshot.bday" />
                 </label>

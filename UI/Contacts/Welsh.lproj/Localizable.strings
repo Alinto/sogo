@@ -94,7 +94,8 @@
 
 "Note:" = "Nodyn: ";
 "Timezone:" = "Cylchfa Amser: ";
-"Birthday:" = "Penblwydd: ";
+"Birthday:" = "Penblwydd:";
+"Birthday (yyyy-mm-dd):" = "Penblwydd (yyyy-mm-dd):";
 "Freebusy URL:" = "Freebusy URL: ";
 
 "Add as..." = "Ychwanegu fel...";
