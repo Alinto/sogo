@@ -95,8 +95,7 @@ BUTTON#colorButton
 { margin-top: 2px; }
 
 DIV#propertiesTabs FIELDSET
-{ margin: 0.5em;
-  padding: 5px; }
+{ padding: 5px; }
 
 DIV#propertiesTabs LEGEND
 { margin-bottom: 5px; }

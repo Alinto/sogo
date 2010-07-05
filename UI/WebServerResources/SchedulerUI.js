@@ -563,6 +563,7 @@ function onViewEventCallback(http) {
                 div.addClassName("right");
             }
             else {
+                //log (" left = " + left + " + " + cellDimensions.width + " - " + parseInt(cellDimensions["width"]/3));
                 left = left + cellDimensions["width"] - parseInt(cellDimensions["width"]/3);
                 div.removeClassName("right");
                 div.addClassName("left");
@@ -2236,25 +2237,27 @@ function onCalendarModify(event) {
     var folders = $("calendarList");
     var selected = folders.getSelectedNodes()[0];
     var calendarID = selected.getAttribute("id");
+    var owner = selected.getAttribute("owner");
     var url = ApplicationBaseURL + calendarID + "/properties";
     var windowID = sanitizeWindowName(calendarID + " properties");
     var width = 310;
-    var height = 350;
+    var height = 294;
     var isWebCalendar = false;
     if (UserSettings['Calendar']
         && UserSettings['Calendar']['WebCalendars']) {
         var webCalendars = UserSettings['Calendar']['WebCalendars'];
-        var realID = calendarID.substr (1, calendarID.length - 1);
+        var realID = owner + ":Calendar/" + calendarID.substr (1, calendarID.length - 1);
         if (webCalendars[realID]) {
             isWebCalendar = true;
         }
     }
-    var owner = selected.getAttribute("owner");
+    if (Prototype.Browser.IE) height += 10;
+    
     if (owner == UserLogin) {
         height += 20;
     }
     if (isWebCalendar) {
-        height -= 38;
+        height += 26;
     }
     else if (calendarID == "/personal") {
         height -= 26;

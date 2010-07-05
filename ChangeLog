@@ -1,3 +1,9 @@
+2010-07-05  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/SchedulerUI.js (onCalendarModify): fixed
+	proper identification of web calendars and adjusted height of
+	popup window.
+
 2010-07-04  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
         * In the Contacts module, we prioritize the
