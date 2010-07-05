@@ -63,7 +63,7 @@
 "Shared Account: " = "Sdílený účet: ";
 
 /* acls */
-"Default Roles" = "Výchozí role";
+"Default Roles" = "Výchozí oprávnění";
 "User rights for:" = "Uživatelská práva pro:";
 
 "List and see this folder" = "Prohlížet tuto složku";
@@ -176,7 +176,8 @@
 /* Mailbox popup menus */
 "Open in New Mail Window" = "Otevřít v novém mailovém okně";
 "Copy Folder Location" = "Kopírovat adresu složky";
-"Subscribe..." = "Přihlásit se k odběru...";
+"Subscribe..." = "Odebírat...";
+"Properties..." = "Vlastnosti...";
 "Mark Folder Read..." = "Označit složku jako přečtenou...";
 "New Folder..." = "Nová složka...";
 "Compact This Folder" = "Provést údržbu složky";

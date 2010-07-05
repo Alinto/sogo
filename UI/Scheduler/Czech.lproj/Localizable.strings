@@ -111,7 +111,7 @@
 "Select an iCalendar file (.ics)." = "Zvolte iCalendar soubor (*.ics).";
 "Upload" = "Nahrát";
 "Publish Calendar..." = "Publikovat kalendář...";
-"Reload Remote Calendars" = "Nahrát vzdálené kalendáře";
+"Reload Remote Calendars" = "Aktualizovat vzdálené kalendáře";
 "Properties" = "Vlastnosti";
 "Done" = "Hotovo";
 "An error occured while importing calendar." = "Při importu událostí došlo k chybě.";
@@ -133,8 +133,8 @@
 
 "User rights for:" = "Uživatelská práva pro:";
 
-"Any Authenticated User" = "Any Authenticated User";
-"Public Access" = "Public Access";
+"Any Authenticated User" = "Každý ověřený uživatel";
+"Public Access" = "Veřejný přístup";
 
 "label_Public" = "Veřejné";
 "label_Private" = "Soukromé";
@@ -160,7 +160,7 @@
 /* Button Titles */
 
 "New Calendar..." = "Nový kalendář...";
-"Subscribe to a Calendar..." = "Přihlásit se k odběru kalendáře...";
+"Subscribe to a Calendar..." = "Odebírat kalendář...";
 "Remove the selected Calendar" = "Smazat zvolený kalendář";
 
 "Name of the Calendar" = "Název kalendáře";
@@ -225,7 +225,7 @@
 "Document:" = "Dokument:";
 "Category:" = "Kategorie:";
 "Repeat:" = "Opakování:";
-"Reminder:" = "Upomínka:";
+"Reminder:" = "Připomenutí:";
 "General:" = "Obecný:";
 "Reply:" = "Odpověď:";
 
@@ -248,11 +248,11 @@
 
 /* Appointments (participation state) */
 
-"partStat_NEEDS-ACTION" = "Vyžaduje akci";
+"partStat_NEEDS-ACTION" = "Potvrdím později";
 "partStat_ACCEPTED" = "Zúčastním se";
 "partStat_DECLINED" = "Nezúčastním se";
-"partStat_TENTATIVE" = "Potvrdím později";
-"partStat_DELEGATED" = "Delegovaný/á";
+"partStat_TENTATIVE" = "Nezávazně";
+"partStat_DELEGATED" = "Deleguji";
 "partStat_OTHER" = "Ostatní";
 
 /* Appointments (error messages) */
@@ -318,7 +318,7 @@
 /* status type */
 "status_" = "Nespecifikovaný";
 "status_NOT-SPECIFIED" = "Nespecifikovaný";
-"status_TENTATIVE" = "Prozatimní";
+"status_TENTATIVE" = "Nezávazně";
 "status_CONFIRMED" = "Potvrzený";
 "status_CANCELLED" = "Zrušený";
 "status_NEEDS-ACTION" = "Vyžaduje akci";
@@ -382,7 +382,7 @@
 "repeat_YEARLY" = "Ročně";
 "repeat_CUSTOM" = "Vlastní...";
 
-"reminder_NONE" = "Bez upomínky";
+"reminder_NONE" = "Bez připomenutí";
 "reminder_5_MINUTES_BEFORE" = "5 minut před";
 "reminder_10_MINUTES_BEFORE" = "10 minut před";
 "reminder_15_MINUTES_BEFORE" = "15 minut před";
@@ -404,7 +404,7 @@
 "reminder_AFTER" = "po";
 "reminder_START" = "začátku/em události";
 "reminder_END" = "konci události";
-"Reminder Details" = "Reminder Details";
+"Reminder Details" = "Podrobnosti připomenutí";
 
 "zoom_400" = "400%";
 "zoom_200" = "200%";
@@ -414,7 +414,7 @@
 
 /* transparency */
 
-"Show Time as Free" = "Ukázat čas volně";
+"Show Time as Free" = "Čas zobrazit jako volný";
 
 /* validation errors */
 
@@ -457,20 +457,20 @@ validate_endbeforestart    = "Zadané datum konce je před začátkem události.
 "taskDeleteConfirmation" = "Smazání tohoto úkolu je permanentní.\nChcete pokračovat?";
 
 "You cannot remove nor unsubscribe from your personal calendar."
-= "Nemůžete odebrat nebo se odhlásit z odběru svého vlastního kalendáře.";
+= "Nemůžete odebrat nebo se odhlásit z odebírání svého vlastního kalendáře.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Opravdu chcete smazat kalendář \"%{0}\"?";
 
 /* Legend */
 "Participant" = "Účastník";
 "Optional Participant" = "Nepovinný účastník";
-"Non Participant" = "Non Participant";
-"Chair" = "Židle";
+"Non Participant" = "Na vědomí";
+"Chair" = "Předsedající";
 
 "Needs action" = "Vyžaduje akci";
-"Accepted" = "Přijatý/á";
-"Declined" = "Odmítnutý/á";
-"Tentative" = "Nerozhodnutý/á";
+"Accepted" = "Zúčastníse";
+"Declined" = "Nezúčastníse";
+"Tentative" = "Nezávazně";
 
 "Free" = "Volno";
 "Busy" = "Není volno";
@@ -484,13 +484,13 @@ validate_endbeforestart    = "Zadané datum konce je před začátkem události.
 "Next slot" = "Následující místo";
 "Previous hour" = "Předchozí hodina";
 "Next hour" = "Následující hodina";
-"Work days only" = "Work days only";
-"The whole day" = "The whole day";
-"Between" = "Between";
-"and" = "and";
+"Work days only" = "Pouze pracovní dny";
+"The whole day" = "Celý den";
+"Between" = "mezi";
+"and" = "a";
 
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
-= "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?";
+= "Mezi účastníky dochází k časovému konfliktu.\nPonecháte současné nastavení i přesto?";
 
 /* apt list */
 "Title" = "Název";
@@ -507,7 +507,7 @@ vtodo_class0 = "(Veřejný úkol)";
 vtodo_class1 = "(Soukromý úkol)";
 vtodo_class2 = "(Důvěrný úkol)";
 
-"closeThisWindowMessage" = "Děkujeme! Nyní můžete okno zavřít, nebo se podívat na vaše ";
+"closeThisWindowMessage" = "Děkujeme! Nyní můžete okno zavřít nebo se podívat na vaše ";
 "Multicolumn Day View" = "Vícesloupkové denní zobrazení";
 
 "Please select an event or a task." = "Vyberte prosím událost nebo úkol.";
@@ -520,41 +520,41 @@ vtodo_class2 = "(Důvěrný úkol)";
 "Name:" = "Název:";
 "Color:" = "Barva:";
 
-"Include in free-busy" = "Include in free-busy";
+"Include in free-busy" = "Zahrnout do obsazeného času (free-busy)";
 
 "Synchronization" = "Synchronizace";
 "Synchronize" = "Synchronizovat";
 "Tag:" = "Štítek:";
 
 "Display" = "Zobrazení";
-"Show alarms" = "Zobrazit upomínky";
+"Show alarms" = "Zobrazit připomenutí";
 "Show tasks" = "Zobrazit úkoly";
 
-"Links to this Calendar" = "Links to this Calendar";
+"Links to this Calendar" = "Odkazy na tento kalendář";
 "CalDAV url" = "CalDAV url";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
 
 /* Error messages */
-"dayFieldInvalid" = "Please specify a numerical value in the Days field greater or equal to 1.";
-"weekFieldInvalid" = "Please specify a numerical value in the Week(s) field greater or equal to 1.";
-"monthFieldInvalid" = "Please specify a numerical value in the Month(s) field greater or equal to 1.";
-"monthDayFieldInvalid" = "Please specify a numerical value in the month day field greater or equal to 1.";
-"yearFieldInvalid" = "Please specify a numerical value in the Year(s) field greater or equal to 1.";
-"appointmentFieldInvalid" = "Please specify a numerical value in the Appointment(s) field  greater or equal to 1.";
-"recurrenceUnsupported" = "This type of recurrence is currently unsupported.";
-"tagNotDefined" = "You must specify a tag if you want to synchronize this calendar.";
-"tagAlreadyExists" = "The tag you specified is already associated to another calendar.";
-"tagHasChanged" = "If you change your calendar's tag, you'll need to reload the data on your mobile device.\nContinue?";
-"tagWasAdded" = "If you want to synchronize this calendar, you'll need to reload the data on your mobile device.\nContinue?";
-"tagWasRemoved" = "If you remove this calendar from synchronization, you'll need to reload the data on your mobile device.\nContinue?";
+"dayFieldInvalid" = "V políčku Dny zadejte číselnou hodnotu větší nebo rovnu 1.";
+"weekFieldInvalid" = "V políčku Týden zadejte číselnou hodnotu větší nebo rovnu 1.";
+"monthFieldInvalid" = "V políčku Měsíc zadejte číselnou hodnotu větší nebo rovnu 1.";
+"monthDayFieldInvalid" = "V políčku Den v měsíci zadejte číselnou hodnotu větší nebo rovnu 1.";
+"yearFieldInvalid" = "V políčku Rok zadejte číselnou hodnotu větší nebo rovnu 1.";
+"appointmentFieldInvalid" = "V políčku Připomenutí zadejte číselnou hodnotu větší nebo rovnu 1.";
+"recurrenceUnsupported" = "Tento typ opakování není podporován.";
+"tagNotDefined" = "Chcete-li synchronizovat tento kalendář, musíte zadat jeho Štítek.";
+"tagAlreadyExists" = "Zadaný štítek je již přiřazen jinému kalendáři.";
+"tagHasChanged" = "Změníte-li štítek svého kalendáře, budete muset znovu načíst data do svého mobilního zařízení.\nPokračovat?";
+"tagWasAdded" = "Chcete-li synchronizovat tento kalendář, budete muset znovu načíst data do svého mobilního zařízení.\nPokračovat?";
+"tagWasRemoved" = "Odstraníte-li u tohoto kalendáře synchronizaci, budete muset znovu načíst data do svého mobilního zařízení.\nPokračovat?";
 
 "Open Task..." = "Otevřít úkol...";
 "Mark Completed" = "Označit jako dokončené";
 "Delete Task" = "Smazat úkol";
 "Delete Event" = "Smazat událost";
 
-"Subscribe to a web calendar..." = "Přihlásit odběr vzdáleného kalendáře na webu";
+"Subscribe to a web calendar..." = "Odebírat vzdálený kalendář na webu";
 "URL of the Calendar" = "Adresa vzdáleného kalendáře na webu";
 "Web Calendar" = "Vzdálený kalendář na webu";
-"Reload on login" = "Reload on login";
+"Reload on login" = "Aktualizovat při přihlášení";

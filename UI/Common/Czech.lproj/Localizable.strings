@@ -28,27 +28,27 @@
 "Add..." = "Přidat...";
 "Remove" = "Odebrat";
 
-"Subscribe User" = "Subscribe User";
+"Subscribe User" = "Odebírat";
 
-"Any Authenticated User" = "Any Authenticated User";
-"Public Access" = "Public Access";
-"Any user not listed above" = "Any user not listed above";
-"Anybody accessing this resource from the public area" = "Anybody accessing this resource from the public area";
+"Any Authenticated User" = "Každý ověřený uživatel";
+"Public Access" = "Veřejný přístup";
+"Any user not listed above" = "Ostatní uživatelé neuvedení výše";
+"Anybody accessing this resource from the public area" = "Každý, kdo k tomuto zdroji přistupuje z veřejného prostoru";
 
 "Sorry, the user rights can not be configured for that object." = "Omlouváme se, ale uživatelská práva pro tento objekt nemohou být nastavena.";
 
 /* generic.js */
 "Unable to subscribe to that folder!"
-	= "Není možne se přihlásit k odběru této složky!";
+	= "Není možne se přihlásit k odebírání této složky!";
 "You cannot subscribe to a folder that you own!"
-      	= "Nemůžete se přihlásit k odběru své vlastní složky!";
+      	= "Nemůžete se přihlásit k odebírání své vlastní složky!";
 "Unable to unsubscribe from that folder!"
-	= "Není možné se odhlásit z odběru této složky!";
+	= "Není možné se odhlásit z odebírání této složky!";
 "You cannot unsubscribe from a folder that you own!"
-      	= "Nemůžete se odhlásit z odběru své vlastní složky!";
+      	= "Nemůžete se odhlásit z odebírání své vlastní složky!";
 "Unable to rename that folder!" = "Není možné tuto složku přejmenovat!";
 "You have already subscribed to that folder!"
-     	= "Již jste přihlášeni k odběru této složky!";
+     	= "Tuto složku již odebíráte!";
 "The user rights cannot be edited for this object!"
         = "Uživatelská práva pro tento objekt nemohou být upravena!";
 "A folder by that name already exists." = "A folder by that name already exists.";
@@ -60,10 +60,10 @@
 "You don't have the required privileges to perform the operation."
 = "Nemáte dostatečná práva k provedení této operace.";
 
-"noEmailForDelegation" = "You must specify the address to which you want to delegate your invitation.";
-"delegate is organizer" = "The delegate is the organizer. Please specify a different delegate.";
-"delegate is a participant" = "The delegate is already a participant.";
-"delegate is a group" = "The specified address corresponds to a group. You can only delegate to a unique person.";
+"noEmailForDelegation" = "Musíte určit adresu, na kterou chcete delegovat své pozvání.";
+"delegate is organizer" = "Delegovaný je organizátor. Prosím určete jiného delegovaného.";
+"delegate is a participant" = "Delegovaný je již účastníkem.";
+"delegate is a group" = "Určená adresa odpovídá skupině. Delegovat můžete pouze na osobu.";
 
 /* alarms */
 "Reminder:" = "Upomínka:";

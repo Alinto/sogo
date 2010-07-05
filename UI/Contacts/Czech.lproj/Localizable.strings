@@ -70,7 +70,7 @@
 "Remove" = "Odebrat";
 
 "Please wait..." = "Čekejte prosím...";
-"No possible subscription" = "Žádný možný odběr";
+"No possible subscription" = "Žádné možné odebírání";
 
 "Preferred" = "Upřednostňovaný";
 "Card for %@" = "Karta pro %@";
@@ -81,7 +81,7 @@
 
 "Phone Number:" = "Telefonní číslo:";
 "Prefers to receive messages formatted as:" = "Upřednostňovaný formát zpráv:";
-"Screen Name:" = "Screen Name:";
+"Screen Name:" = "Zobrazované jméno:";
 
 "First:" = "Křestní jméno:";
 "Last:" = "Příjmení:";
@@ -98,7 +98,7 @@
 "Service:" = "Služba:";
 "Company:" = "Společnost:";
 "Department:" = "Oddělení:";
-"Organization:" = "Společnost:";
+"Organization:" = "Organizace:";
 "Address:" = "Adresa:";
 "City:" = "Město:";
 "State_Province:" = "Stát/Provincie:";
@@ -111,8 +111,8 @@
 
 "Note:" = "Poznámka:";
 "Timezone:" = "Časové pásmo:";
-"Birthday:" = "Narozeniny:";
-"Birthday (yyyy-mm-dd):" = "Narozeniny (yyyy-mm-dd):";
+"Birthday:" = "Datum narození";
+"Birthday (yyyy-mm-dd):" = "Datum narození (yyyy-mm-dd):";
 "Freebusy URL:" = "Freebusy URL:";
 
 "Add as..." = "Přidat jako...";
@@ -121,16 +121,16 @@
 "Blind Carbon Copy" = "Skrytá kopie";
 
 "New Addressbook..." = "Nová složka kontaktů...";
-"Subscribe to an Addressbook..." = "Přihlásit se k odběru složky kontaktů...";
+"Subscribe to an Addressbook..." = "Odebírat složku kontaktů...";
 "Remove the selected Addressbook" = "Smazat složku kontaktů";
 
 "Name of the Address Book" = "Název složky kontaktů";
 "Are you sure you want to delete the selected address book?"
 = "Opravdu chcete odstranit označenou složku kontaktů?";
 "You cannot remove nor unsubscribe from a public addressbook."
-= "Nemůžete odebrat, nebo se odhlásit od odběru z veřejného adresáře.";
+= "Nemůžete odebrat nebo se odhlásit od odebírání veřejného adresáře.";
 "You cannot remove nor unsubscribe from your personal addressbook."
-= "Nemůžete odebrat, nebo se odhlásit od odběru ze svého vlastního adresáře";
+= "Nemůžete odebrat nebo se odhlásit od odebírání svého vlastního adresáře";
 
 "Are you sure you want to delete the selected contacts?"
 = "Opravdu chcete smazat označené kontakty?";
@@ -141,14 +141,14 @@
 "Address Book Name" = "Název adresáře";
 
 "You cannot subscribe to a folder that you own!"
-= "Nemůžete se přihlásit k odběru vlastní složky! ";
+= "Nemůžete se přihlásit k odebírání vlastní složky! ";
 "Unable to subscribe to that folder!"
-= "Nemůžete se přihlásit k odběru této složky!";
+= "Nemůžete se přihlásit k odebírání této složky!";
 
 "User rights for:" = "Uživatelská práva pro:";
 
-"Any Authenticated User" = "Any Authenticated User";
-"Public Access" = "Public Access";
+"Any Authenticated User" = "Každý ověřený uživatel";
+"Public Access" = "Veřejný přístup";
 
 "This person can add cards to this addressbook."
 = "Tato osoba může přidávat kontakty do této složky.";
