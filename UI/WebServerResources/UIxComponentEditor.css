@@ -25,6 +25,7 @@ SPAN.timeDateControl A:hover
 
 SPAN.content
 { position: absolute;
+  white-space: nowrap;
   line-height: 2em;
   top: -.25em;
   left: 8em;
