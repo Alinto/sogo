@@ -27,6 +27,7 @@ var uixEmailUsr =
 var uixEmailDomain = 
     "([a-zA-Z0-9][a-zA-Z0-9._-]*\\.)*[a-zA-Z0-9][a-zA-Z0-9._-]*\\.[a-zA-Z]{2,5}";
 var uixEmailRegex = new RegExp("^"+uixEmailUsr+"\@"+uixEmailDomain+"$");
+var dateRegex = /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/;
 
 var displayNameChanged = false;
 
@@ -94,6 +95,13 @@ function validateContactEditor() {
     if (e.value.length > 0
         && !uixEmailRegex.test(e.value)) {
         alert(_("invalidemailwarn"));
+        rc = false;
+    }
+
+    e = $('birthday');
+    if (e.value.length > 0
+        && !dateRegex.test(e.value)) {
+        alert(_("invaliddatewarn"));
         rc = false;
     }
 

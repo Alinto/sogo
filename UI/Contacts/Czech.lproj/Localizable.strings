@@ -35,6 +35,7 @@
 "delete" = "smazat";
 "edit" = "upravit";
 "invalidemailwarn" = "Specifikovaný e-mail je neplatný";
+"invaliddatewarn" = "The specified date is invalid.";
 "new" = "nový";
 "Preferred Phone"   = "Upřednostňovaný telefon";
 

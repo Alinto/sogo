@@ -35,6 +35,7 @@
 "delete" = "radera";
 "edit" = "ändra";
 "invalidemailwarn" = "Meddelandet är inkomplett";
+"invaliddatewarn" = "The specified date is invalid.";
 "new" = "ny";
 "Preferred Phone"   = "Föredragen telefon";
 

@@ -35,6 +35,7 @@
 "delete" = "Verwijderen";
 "edit" = "Bewerken";
 "invalidemailwarn" = "E-mailadres is ongeldig. Wilt u toch doorgaan?";
+"invaliddatewarn" = "The specified date is invalid.";
 "new" = "Nieuw";
 "Preferred Phone"   = "Voorkeurstelefoon";
 

@@ -35,6 +35,7 @@
 "delete" = "apagar";
 "edit" = "editar";
 "invalidemailwarn" = "O email informado é inválido";
+"invaliddatewarn" = "The specified date is invalid.";
 "new" = "novo";
 "Preferred Phone"   = "Telefone Preferencial";
 

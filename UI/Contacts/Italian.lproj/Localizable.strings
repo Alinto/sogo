@@ -35,6 +35,7 @@
 "delete" = "cancella";
 "edit" = "modifica";
 "invalidemailwarn" = "L'indirizzo email specificato non è valido";
+"invaliddatewarn" = "The specified date is invalid.";
 "new" = "nuovo";
 "Preferred Phone"   = "Telefono lavoro";
 

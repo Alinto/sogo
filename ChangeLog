@@ -1,5 +1,8 @@
 2010-07-05  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/WebServerResources/UIxContactEditor.js
+	(validateContactEditor): added validation of birthdate.
+
 	* UI/WebServerResources/SchedulerUI.js (onCalendarModify): fixed
 	proper identification of web calendars and adjusted height of
 	popup window.

@@ -35,6 +35,7 @@
 "delete" = "Töröl";
 "edit" = "Szerkeszt";
 "invalidemailwarn" = "A megadótt emailcím érvénytelen";
+"invaliddatewarn" = "The specified date is invalid.";
 "new" = "új";
 "Preferred Phone"   = "Preferált telefon";
 
