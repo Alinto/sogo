@@ -189,6 +189,7 @@
 
 - (NSString *) _phoneOfType: (NSString *) aType
                   withLabel: (NSString *) aLabel
+		  excluding: (NSString *) aTypeToExclude
 {
   NSArray *elements;
   NSString *phone;
@@ -196,37 +197,54 @@
   elements = [phones cardElementsWithAttribute: @"type"
                      havingValue: aType];
 
+  phone = nil;
+
   if ([elements count] > 0)
-    phone = [[elements objectAtIndex: 0] value: 0];
-  else
-    phone = nil;
+    {
+      CardElement *ce;
+      int i;
+
+      for (i = 0; i < [elements count]; i++)
+	{
+	  ce = [elements objectAtIndex: i];
+	  phone = [ce value: 0];
+
+	  if (!aTypeToExclude)
+	    break;
+	  
+	  if (![ce hasAttribute: @"type" havingValue: aTypeToExclude])
+	    break;
+	}
+    }
 
   return [self _cardStringWithLabel: aLabel value: phone];
 }
 
 - (NSString *) workPhone
 {
-  return [self _phoneOfType: @"work" withLabel: @"Work:"];
+  // We do this (exclude FAX) in order to avoid setting the WORK number as the FAX
+  // one if we do see the FAX field BEFORE the WORK number.
+  return [self _phoneOfType: @"work" withLabel: @"Work:" excluding: @"fax"];
 }
 
 - (NSString *) homePhone
 {
-  return [self _phoneOfType: @"home" withLabel: @"Home:"];
+  return [self _phoneOfType: @"home" withLabel: @"Home:" excluding: nil];
 }
 
 - (NSString *) fax
 {
-  return [self _phoneOfType: @"fax" withLabel: @"Fax:"];
+  return [self _phoneOfType: @"fax" withLabel: @"Fax:" excluding: nil];
 }
 
 - (NSString *) mobile
 {
-  return [self _phoneOfType: @"cell" withLabel: @"Mobile:"];
+  return [self _phoneOfType: @"cell" withLabel: @"Mobile:" excluding: nil];
 }
 
 - (NSString *) pager
 {
-  return [self _phoneOfType: @"pager" withLabel: @"Pager:"];
+  return [self _phoneOfType: @"pager" withLabel: @"Pager:" excluding: nil];
 }
 
 - (BOOL) hasHomeInfos

@@ -1,3 +1,9 @@
+2010-07-04  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+        * In the Contacts module, we prioritize the
+	WORK number while excluding the FAX one in case
+	we see the latter before the former.
+
 2010-07-01  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
         * In the Contacts module, improved the label

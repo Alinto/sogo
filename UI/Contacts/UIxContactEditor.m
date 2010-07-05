@@ -257,16 +257,33 @@
 
 - (NSString *) _simpleValueForType: (NSString *) aType
                            inArray: (NSArray *) anArray
+			   excluding: (NSString *) aTypeToExclude		  
 {
   NSArray *elements;
   NSString *value;
 
   elements = [anArray cardElementsWithAttribute: @"type"
                       havingValue: aType];
+
+  value = nil;
+
   if ([elements count] > 0)
-    value = [[elements objectAtIndex: 0] value: 0];
-  else
-    value = nil;
+    {
+      CardElement *ce;
+      int i;
+
+      for (i = 0; i < [elements count]; i++)
+	{
+	  ce = [elements objectAtIndex: i];
+	  value = [ce value: 0];
+
+	  if (!aTypeToExclude)
+	    break;
+	  
+	  if (![ce hasAttribute: @"type" havingValue: aTypeToExclude])
+	    break;
+	}
+    }
 
   return value;
 }
@@ -280,11 +297,11 @@
   elements = [card childrenWithTag: @"email"];
   max = [elements count];
   workMail = [self _simpleValueForType: @"work"
-                   inArray: elements];
+                   inArray: elements  excluding: nil];
   homeMail = [self _simpleValueForType: @"home"
-                   inArray: elements];
+                   inArray: elements  excluding: nil];
   prefMail = [self _simpleValueForType: @"pref"
-                   inArray: elements];
+                   inArray: elements  excluding: nil];
 
   if (max > 0)
     {
@@ -390,16 +407,18 @@
   [self _setSnapshotValue: @"nickname" to: [card nickname]];
 
   elements = [card childrenWithTag: @"tel"];
+  // We do this (exclude FAX) in order to avoid setting the WORK number as the FAX
+  // one if we do see the FAX field BEFORE the WORK number.
   [self _setSnapshotValue: @"telephoneNumber"
-        to: [self _simpleValueForType: @"work" inArray: elements]];
+        to: [self _simpleValueForType: @"work" inArray: elements  excluding: @"fax"]];
   [self _setSnapshotValue: @"homeTelephoneNumber"
-        to: [self _simpleValueForType: @"home" inArray: elements]];
+        to: [self _simpleValueForType: @"home" inArray: elements  excluding: nil]];
   [self _setSnapshotValue: @"mobile"
-        to: [self _simpleValueForType: @"cell" inArray: elements]];
+        to: [self _simpleValueForType: @"cell" inArray: elements  excluding: nil]];
   [self _setSnapshotValue: @"facsimileTelephoneNumber"
-        to: [self _simpleValueForType: @"fax" inArray: elements]];
+        to: [self _simpleValueForType: @"fax" inArray: elements  excluding: nil]];
   [self _setSnapshotValue: @"pager"
-        to: [self _simpleValueForType: @"pager" inArray: elements]];
+        to: [self _simpleValueForType: @"pager" inArray: elements  excluding: nil]];
 
   // If we don't have a "home" and "work" phone number but
   // we have a "voice" one defined, we set it to the "work" value
@@ -420,7 +439,7 @@
       [elements count] > 0)
     {
       [self _setSnapshotValue: @"telephoneNumber"
-	    to: [self _simpleValueForType: @"voice" inArray: elements]];
+	    to: [self _simpleValueForType: @"voice" inArray: elements  excluding: nil]];
     }
 
   [self _setupEmailFields];
@@ -468,9 +487,9 @@
 
   elements = [card childrenWithTag: @"url"];
   [self _setSnapshotValue: @"workURL"
-        to: [self _simpleValueForType: @"work" inArray: elements]];
+        to: [self _simpleValueForType: @"work"  inArray: elements  excluding: nil]];
   [self _setSnapshotValue: @"homeURL"
-        to: [self _simpleValueForType: @"home" inArray: elements]];
+        to: [self _simpleValueForType: @"home"  inArray: elements  excluding: nil]];
   
   // If we don't have a "work" or "home" URL but we still have 
   // an URL field present, let's add it to the "home" value
