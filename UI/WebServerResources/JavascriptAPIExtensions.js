@@ -60,7 +60,7 @@ String.prototype.asDate = function () {
 };
 
 String.prototype.asCSSIdentifier = function() {
-    var characters = [ '_'  , '\\.', '#'  , '@'  , '\\*', ':'  , ','   , ' ', "'" ];
+    var characters = [ '_'  , '\\.', '#'  , '@'  , '\\*', ':'  , ','   , ' '   , "'"    ];
     var escapeds =   [ '_U_', '_D_', '_H_', '_A_', '_S_', '_C_', '_CO_', '_SP_', '_SQ_' ];
 
     var newString = this;
