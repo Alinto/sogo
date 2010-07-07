@@ -316,4 +316,4 @@ Element.addMethods({
                     i++;
                 });
         }
-    });
+});

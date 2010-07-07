@@ -186,7 +186,7 @@ function dueDayAsShortString() {
 }
 
 this._getDate = function(which) {
-	var date = window.timeWidgets[which]['date'].valueAsDate();
+	var date = window.timeWidgets[which]['date'].inputAsDate();
 	date.setHours( window.timeWidgets[which]['hour'].value );
 	date.setMinutes( window.timeWidgets[which]['minute'].value );
    
@@ -221,7 +221,7 @@ this.getShadowDueDate = function() {
 };
 
 this._setDate = function(which, newDate) {
-	window.timeWidgets[which]['date'].setValueAsDate(newDate);
+	window.timeWidgets[which]['date'].setInputAsDate(newDate);
 	window.timeWidgets[which]['hour'].value = newDate.getHours();
 	var minutes = newDate.getMinutes();
 	if (minutes % 15)

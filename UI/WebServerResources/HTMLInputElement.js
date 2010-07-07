@@ -19,11 +19,11 @@ Form.Element.Methods.assignReplica = function(element, otherInput) {
 	element.replica = otherInput;
 };
 
-Form.Element.Methods.valueAsDate = function(element) {
+Form.Element.Methods.inputAsDate = function(element) {
 	return $F(element).asDate();
 };
 
-Form.Element.Methods.setValueAsDate = function(element, dateValue) {
+Form.Element.Methods.setInputAsDate = function(element, dateValue) {
 	element = $(element);
 	if (!element.dateSeparator)
 		element._detectDateSeparator();

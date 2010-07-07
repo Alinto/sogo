@@ -180,7 +180,7 @@ function endDayAsShortString() {
 }
 
 function _getDate(which) {
-    var date = window.timeWidgets[which]['date'].valueAsDate();
+    var date = window.timeWidgets[which]['date'].inputAsDate();
     date.setHours( window.timeWidgets[which]['hour'].value );
     date.setMinutes( window.timeWidgets[which]['minute'].value );
 
@@ -214,7 +214,7 @@ function getShadowEndDate() {
 }
 
 function _setDate(which, newDate) {
-    window.timeWidgets[which]['date'].setValueAsDate(newDate);
+    window.timeWidgets[which]['date'].setInputAsDate(newDate);
     window.timeWidgets[which]['hour'].value = newDate.getHours();
     var minutes = newDate.getMinutes();
     if (minutes % 15)

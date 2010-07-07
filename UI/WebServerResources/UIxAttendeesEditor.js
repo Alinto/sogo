@@ -358,8 +358,8 @@ function redisplayEventSpans() {
 
     var table = $("freeBusyHeader");
     var row = table.rows[2];
-    var stDay = $("startTime_date").valueAsDate();
-    var etDay = $("endTime_date").valueAsDate();
+    var stDay = $("startTime_date").inputAsDate();
+    var etDay = $("endTime_date").inputAsDate();
 
     var days = stDay.daysUpTo(etDay);
     var addDays = days.length - 1;
@@ -807,8 +807,8 @@ availabilityController.prototype = {
           }
       }
 
-      var start = window.timeWidgets['start']['date'].valueAsDate();
-      var end = window.timeWidgets['end']['date'].valueAsDate();
+      var start = window.timeWidgets['start']['date'].inputAsDate();
+      var end = window.timeWidgets['end']['date'].inputAsDate();
       if (isAllDay) {
           start.setHours(dayStartHour);
           start.setMinutes(0);
@@ -839,11 +839,11 @@ availabilityController.prototype = {
       session.start();
   },
   onRequestComplete: function aC_onRequestComplete(session, start, end) {
-      window.timeWidgets['start']['date'].setValueAsDate(start);
+      window.timeWidgets['start']['date'].setInputAsDate(start);
       window.timeWidgets['start']['hour'].value = start.getHours();
       window.timeWidgets['start']['minute'].value = start.getMinutes();
 
-      window.timeWidgets['end']['date'].setValueAsDate(end);
+      window.timeWidgets['end']['date'].setInputAsDate(end);
       window.timeWidgets['end']['hour'].value = end.getHours();
       window.timeWidgets['end']['minute'].value = end.getMinutes();
 
@@ -1101,8 +1101,8 @@ function displayFreeBusyForNode(input) {
             }
         }
 
-        var sd = $('startTime_date').valueAsDate();
-        var ed = $('endTime_date').valueAsDate();
+        var sd = $('startTime_date').inputAsDate();
+        var ed = $('endTime_date').inputAsDate();
         var listener = {
           onRequestComplete: function(request, success, entries) {
               if (success) {
@@ -1266,7 +1266,7 @@ function updateSlotDisplayCallback(http) {
                     parseInt (data[0]['endDate'].substr(4, 2)) - 1,
                     parseInt (data[0]['endDate'].substr(6, 2)));
     
-    window.timeWidgets['end']['date'].setValueAsDate(end);
+    window.timeWidgets['end']['date'].setInputAsDate(end);
     window.timeWidgets['end']['hour'].value = cleanInt(data[0]['endHour']);
     window.timeWidgets['end']['minute'].value = cleanInt(data[0]['endMinute']);
 
@@ -1275,7 +1275,7 @@ function updateSlotDisplayCallback(http) {
         cb = onTimeDateWidgetChange;
     }
 
-    window.timeWidgets['start']['date'].setValueAsDate(start);
+    window.timeWidgets['start']['date'].setInputAsDate(start);
     window.timeWidgets['start']['hour'].value = cleanInt(data[0]['startHour']);
     window.timeWidgets['start']['minute'].value = cleanInt(data[0]['startMinute']);
 
@@ -1294,10 +1294,10 @@ function onEditorOkClick(event) {
         }
     }
 
-    var startDate = $("startTime_date").valueAsDate();
+    var startDate = $("startTime_date").inputAsDate();
     startDate.setHours(parseInt($("startTime_time_hour").value));
     startDate.setMinutes(parseInt($("startTime_time_minute").value));
-    var endDate = $("endTime_date").valueAsDate();
+    var endDate = $("endTime_date").inputAsDate();
     endDate.setHours(parseInt($("endTime_time_hour").value));
     endDate.setMinutes(parseInt($("endTime_time_minute").value));
 
@@ -1419,10 +1419,12 @@ function onTimeDateWidgetChange() {
 
 function prepareTableHeaders() {
     var startTimeDate = $("startTime_date");
-    var startDate = startTimeDate.valueAsDate();
+    var startDate = startTimeDate.inputAsDate();
+    //var startDate = $F('startTime_date').asDate();
 
     var endTimeDate = $("endTime_date");
-    var endDate = endTimeDate.valueAsDate();
+    var endDate = endTimeDate.inputAsDate();
+    //var endDate = endTimeDate.getValue().asDate();
     endDate.setTime(endDate.getTime());
 
     var rows = $("freeBusyHeader").rows;
@@ -1459,10 +1461,10 @@ function prepareTableHeaders() {
 
 function prepareTableRows() {
     var startTimeDate = $("startTime_date");
-    var startDate = startTimeDate.valueAsDate();
+    var startDate = startTimeDate.inputAsDate();
 
     var endTimeDate = $("endTime_date");
-    var endDate = endTimeDate.valueAsDate();
+    var endDate = endTimeDate.inputAsDate();
     endDate.setTime(endDate.getTime());
 
     var rows = $("freeBusyData").tBodies[0].rows;
@@ -1670,7 +1672,7 @@ function onAdjustTime(event) {
 }
 
 function _getDate(which) {
-    var date = window.timeWidgets[which]['date'].valueAsDate();
+    var date = window.timeWidgets[which]['date'].inputAsDate();
     date.setHours( window.timeWidgets[which]['hour'].value );
     date.setMinutes( window.timeWidgets[which]['minute'].value );
 
@@ -1704,7 +1706,7 @@ function getShadowEndDate() {
 }
 
 function _setDate(which, newDate) {
-    window.timeWidgets[which]['date'].setValueAsDate(newDate);
+    window.timeWidgets[which]['date'].setInputAsDate(newDate);
     window.timeWidgets[which]['hour'].value = newDate.getHours();
     var minutes = newDate.getMinutes();
     if (minutes % 15)
