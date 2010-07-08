@@ -352,7 +352,6 @@ function initMailEditor() {
 
     var subjectField = $$("div#subjectRow input").first();
     initTabIndex($("addressList"), subjectField, textarea);
-    //onWindowResize.defer();
 
     var focusField = (mailIsReply ? textarea : $("addr_0"));
     focusField.focus();
@@ -517,18 +516,18 @@ function onWindowResize(event) {
   
     var attachmentsarea = $("attachmentsArea");
     var attachmentswidth = 0;
+    var subjectfield = headerarea.down("div#subjectRow span.headerField");
+    var subjectinput = headerarea.down("div#subjectRow input.textField");
     if (attachmentsarea.style.display) {
         // Resize attachments list
         attachmentswidth = attachmentsarea.getWidth();
         fromfield = $(document).getElementsByClassName('headerField', headerarea)[0];
-        var height = headerarea.getHeight() - fromfield.getHeight() - 10;
+        var height = headerarea.getHeight() - fromfield.getHeight() - subjectfield.getHeight() - 10;
         if (Prototype.Browser.IE)
             $("attachments").setStyle({ height: (height - 13) + 'px' });
         else
             $("attachments").setStyle({ height: height + 'px' });
     }
-    var subjectfield = headerarea.down("div#subjectRow span.headerField");
-    var subjectinput = headerarea.down("div#subjectRow input.textField");
   
     // Resize subject field
     subjectinput.setStyle({ width: (window.width()

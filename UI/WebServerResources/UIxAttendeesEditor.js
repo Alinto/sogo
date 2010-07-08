@@ -106,8 +106,10 @@ function onContactKeydown(event) {
         this.focussed = true;
         return;
     }
-    if (event.keyCode == 9 || event.keyCode == 13) { // Tab
+    if (event.keyCode == Event.KEY_TAB || event.keyCode == Event.KEY_RETURN) {
         preventDefault(event);
+        this.scrollLeft = 0;
+        $(this).up('DIV').scrollLeft = 0;
         if (this.confirmedValue)
             this.value = this.confirmedValue;
         this.hasfreebusy = false;
@@ -128,7 +130,7 @@ function onContactKeydown(event) {
         }
     }
     else if (event.keyCode == 0
-             || event.keyCode == 8 // Backspace
+             || event.keyCode == Event.KEY_BACKSPACE
              || event.keyCode == 32  // Space
              || event.keyCode > 47) {
         this.modified = true;
@@ -349,6 +351,8 @@ function onAttendeeResultClick(event) {
     input.confirmedValue = input.value = this.address;
     initializeAttendeeRole(input);
     checkAttendee(input);
+    this.scrollLeft = 0;
+    $(this).up('DIV').scrollLeft = 0;
 
     this.parentNode.input = null;
 }
@@ -440,7 +444,7 @@ function rotateAttendeeStatus(row) {
         idx++;
     }
     row.setAttribute(attributeName, values[idx]);
-    if (Prototype.Browser.IE) {
+    if (!Prototype.Browser.Gecko) {
         /* This hack enables a refresh of the row element right after the
            click. Otherwise, this occurs only when leaving the element with
            them mouse cursor. */
@@ -1289,7 +1293,7 @@ function onEditorOkClick(event) {
     var inputs = $("freeBusy").getElementsByTagName("input");
     for (var i = 0; i < inputs.length - 1; i++) {
         var input = inputs[i];
-        if (input.uid) {
+        if (!input.disabled && input.uid) {
             uids.push(input.uid);
         }
     }
@@ -1321,6 +1325,8 @@ function _confirmEditorOkClick() {
     var newAttendees = new Hash();
     var inputs = $("freeBusy").getElementsByTagName("input");
     for (var i = 0; i < inputs.length - 1; i++) {
+        if (inputs[i].disabled)
+            continue;
         var row = $(inputs[i]).up("tr");
         var name = extractEmailName(inputs[i].value);
         var email = extractEmailAddress(inputs[i].value);
@@ -1348,7 +1354,7 @@ function _confirmEditorOkClick() {
             attendee["role"] = role;
         newAttendees.set(email, attendee);
     }
-    window.opener.refreshAttendees(newAttendees.toJSON());
+    window.opener.refreshAttendees(Object.toJSON(newAttendees));
 
     updateParentDateFields("startTime", "startTime");
     updateParentDateFields("endTime", "endTime");
@@ -1481,16 +1487,48 @@ function prepareTableRows() {
 function prepareAttendees() {
     var tableAttendees = $("freeBusyAttendees");
     var tableData = $("freeBusyData");
+    var organizer = window.opener.organizer;
     var attendees = window.opener.attendees;
     var attendeesKeys = (attendees ? attendees.keys() : null);
-    if (attendeesKeys && attendeesKeys.length > 0) {
-        var tbodyAttendees = tableAttendees.tBodies[0];
-        var modelAttendee = tbodyAttendees.rows[tbodyAttendees.rows.length - 1];
-        var newAttendeeRow = tbodyAttendees.rows[tbodyAttendees.rows.length - 2];
 
-        var tbodyData = tableData.tBodies[0];
-        var modelData = tbodyData.rows[tbodyData.rows.length - 1];
-        var newDataRow = tbodyData.rows[tbodyData.rows.length - 2];
+    var tbodyAttendees = tableAttendees.tBodies[0];
+    var modelAttendee = tbodyAttendees.rows[tbodyAttendees.rows.length - 1];
+    var newAttendeeRow = tbodyAttendees.rows[tbodyAttendees.rows.length - 2];
+    
+    var tbodyData = tableData.tBodies[0];
+    var modelData = tbodyData.rows[tbodyData.rows.length - 1];
+    var newDataRow = tbodyData.rows[tbodyData.rows.length - 2];
+    
+    // Unconditionaly add the organizer
+    var row = $(modelAttendee.cloneNode(true));
+    tbodyAttendees.insertBefore(row, newAttendeeRow);
+    row.removeClassName("attendeeModel");
+    row.setAttribute("partstat", organizer["partstat"]);
+    row.setAttribute("role", organizer["role"]);
+    var uid = organizer["uid"];
+    row.addClassName("organizer-row");
+    row.removeClassName("attendee-row");
+    row.isOrganizer = true;
+    var input = row.down("input");
+    var value = organizer["name"];
+    if (value)
+        value += " ";
+    else
+        value = "";
+    value += "<" + organizer["email"] + ">";
+    input.value = value;
+    input.uid = uid;
+    //input.cname = organizer["cname"];
+    input.setAttribute("name", "");
+    input.modified = false;
+    input.disable();
+    
+    row = $(modelData.cloneNode(true));
+    tbodyData.insertBefore(row, newDataRow);
+    row.removeClassName("dataModel");
+    displayFreeBusyForNode(input);
+
+    if (attendeesKeys && attendeesKeys.length > 0) {
 
         attendeesKeys.each(function(atKey) {
             var attendee = attendees.get(atKey);
@@ -1524,7 +1562,7 @@ function prepareAttendees() {
                 value = "";
             value += "<" + attendee["email"] + ">";
             input.value = value;
-            input.uid = attendee["uid"];
+            input.uid = uid;
             input.cname = attendee["cname"];
             input.setAttribute("name", "");
             input.modified = false;
@@ -1535,7 +1573,7 @@ function prepareAttendees() {
             row = $(modelData.cloneNode(true));
             tbodyData.insertBefore(row, newDataRow);
             row.removeClassName("dataModel");
-            displayFreeBusyForNode(input);            
+            displayFreeBusyForNode(input);
         });
     }
     else {

@@ -1,6 +1,6 @@
 /* UIxComponentEditor.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2009 Inverse inc.
+ * Copyright (C) 2006-2010 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -810,6 +810,65 @@ iRANGE(2);
 - (NSString *) jsonAttendees
 {
   return [jsonAttendees jsonRepresentation];
+}
+
+- (NSString *) jsonOrganizer
+{
+  NSMutableDictionary *jsonOrganizer;
+  NSDictionary *ownerIdentity;
+  NSString *uid, *name, *email, *partstat, *role;
+  SOGoUserManager *um;
+  SOGoCalendarComponent *co;
+  SOGoUser *ownerUser;
+
+  jsonOrganizer = [NSMutableDictionary dictionary];
+  email = [organizer rfc822Email];
+  role = nil;
+  partstat = nil;
+
+  if ([email length])
+    {
+      um = [SOGoUserManager sharedUserManager];
+      
+      name = [organizer cn];
+      uid = [um getUIDForEmail: email];
+      
+      partstat = [[organizer partStat] lowercaseString];
+      role = [[organizer role] lowercaseString];
+    }
+  else
+    {
+      // No organizer defined in vEvent
+      co = [self clientObject];
+      uid = [[co container] ownerInContext: context];
+      ownerUser = [SOGoUser userWithLogin: uid roles: nil];
+      ownerIdentity = [ownerUser defaultIdentity];
+      
+      name = [ownerIdentity objectForKey: @"fullName"];
+      email = [ownerIdentity  objectForKey: @"email"];
+    }
+
+  if (uid != nil)
+    [jsonOrganizer setObject: uid 
+		      forKey: @"uid"];
+
+  [jsonOrganizer setObject: name
+		    forKey: @"name"];
+  
+  [jsonOrganizer setObject: email
+		    forKey: @"email"];
+  
+  if (partstat == nil || ![partstat length])
+    partstat = @"accepted";
+  [jsonOrganizer setObject: partstat
+		    forKey: @"partstat"];
+  
+  if (role == nil || ![role length])
+    role = @"chair";
+  [jsonOrganizer setObject: role
+		    forKey: @"role"];
+  
+  return [jsonOrganizer jsonRepresentation];
 }
 
 - (void) setLocation: (NSString *) _value

@@ -21,6 +21,7 @@
     const:negate="YES">false</var:if>;
     var attendees = <var:string value="jsonAttendees" const:escapeHTML="NO"/>;
     var ownerLogin = '<var:string value="ownerLogin"/>';
+    var organizer = <var:string value="jsonOrganizer" const:escapeHTML="NO"/>;
   </script>
 
   <var:if condition="eventIsReadOnly" const:negate="YES">

@@ -25,6 +25,8 @@
 
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
+#import <SOGo/NSDictionary+Utilities.h>
+
 #import <Common/UIxPageFrame.h>
 
 #import "UIxAttendeesEditor.h"

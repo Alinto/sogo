@@ -1,3 +1,14 @@
+2010-07-09  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/UIxAttendeesEditor.js (onContactKeydown):
+	reset left scroll uppon autocompletion (fix for IE).
+	(onAttendeeResultClick): idem.
+	(prepareAttendees): add the organizer at the top of the attendees list.
+
+	* UI/Scheduler/UIxComponentEditor.m (-jsonOrganizer): new method
+	that returns a JSON representation of a dictionary describing the
+	organizer of the event.
+
 2010-07-07  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/HTMLInputElement.js: renamed valueAsDate

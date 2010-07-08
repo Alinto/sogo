@@ -164,7 +164,7 @@ function addContact(tag, fullContactName, contactId, contactName, contactEmail) 
 
 function saveEvent(sender) {
     if (validateAptEditor()) {
-        document.forms['editform'].attendees.value = $(attendees).toJSON();
+        document.forms['editform'].attendees.value = Object.toJSON($(attendees));
         document.forms['editform'].submit();
     }
 
@@ -324,7 +324,7 @@ function refreshAttendees(newAttendees) {
 
     if (!attendeesHref)
         return refreshAttendeesRO();
-
+ 
     if (attendeesMenu)
         attendeesMenu = $("attendeesMenu").down("ul");
   
@@ -337,12 +337,12 @@ function refreshAttendees(newAttendees) {
     if (menuItems && attendeesMenu)
         for (var i = 0; i < menuItems.length; i++)
             attendeesMenu.removeChild(menuItems[i]);
-
-    if (newAttendees) {
+ 
+    if (newAttendees)
+        // Update global variable
         attendees = $H(newAttendees.evalJSON());
-    }
 
-    if (attendees.keys().length > 0) {
+     if (attendees.keys().length > 0) {
         // Update attendees link and show label
         var names = new Array();
         attendees.values().each(function(attendee) {

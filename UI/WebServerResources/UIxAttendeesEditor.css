@@ -243,12 +243,14 @@ TABLE#freeBusyData TD.noFreeBusy
 { margin: 0px;
   text-align: left; }
 
+SPAN#freeBusyViewOptions
+{ float: left; }
+
+#freeBusyViewButtons SELECT
+{ width: 50px; }
+
 SPAN.hidden
 { display: none; }
-
-#freeBusyViewButtons > DIV.buttons
-{ margin: 0px;
-  margin-top: 4px; }
 
 DIV#freeBusyReplicas
 { position: absolute;

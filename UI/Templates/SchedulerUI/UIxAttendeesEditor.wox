@@ -12,7 +12,7 @@
   const:popup="YES"
   const:jsFiles="skycalendar.js">
   <div class="popupMenu" id="attendeesMenu">
-    <ul></ul>
+    <ul><!-- space --></ul>
   </div>
   <script type="text/javascript">
     var dayStartHour = <var:string value="dayStartHour"/>;
@@ -21,20 +21,22 @@
   <div id="attendeesView">
     <form const:href=""
       ><div id="freeBusyViewButtons">
-        <var:string label:value="Suggest time slot:"/>
+        <span id="freeBusyViewOptions">
+	  <var:string label:value="Suggest time slot:"/>
+	
+	  <span id="freeBusyTimeRange">
+	    <var:string label:value="Between"/>
+	    <select const:id="timeSlotStartLimitHour"><!--space --></select>
+	    <select const:id="timeSlotStartLimitMinute"><!--space --></select>
+	    <var:string label:value="and"/>
+	    <select const:id="timeSlotEndLimitHour"><!--space --></select> 
+	    <select const:id="timeSlotEndLimitMinute"><!--space --></select>
+	  </span>
 
-        <span id="freeBusyTimeRange">
-          <var:string label:value="Between"/>
-          <select const:id="timeSlotStartLimitHour"><!-- space --></select>
-          <select const:id="timeSlotStartLimitMinute"><!-- space --></select>
-          <var:string label:value="and"/>
-          <select const:id="timeSlotEndLimitHour"><!-- space --></select> 
-          <select const:id="timeSlotEndLimitMinute"><!-- space --></select>
-        </span>
+	  <label><input type="checkbox" const:id="workDaysOnly" const:checked="YES"
+	     /><var:string label:value="Work days only"/></label>
+	</span>
 
-        <label><input type="checkbox" const:id="workDaysOnly"
-            const:checked="YES"
-            /><var:string label:value="Work days only"/></label>
         <a id="nextSlot" href="#" class="button"
           ><span><var:string label:value="Next slot" /></span></a>
         <a id="previousSlot" href="#" class="button"
@@ -77,8 +79,8 @@
             <td class="freeBusyData">
               <div><table id="freeBusyData" cellspacing="0" cellpadding="0">
                   <tbody>
-                    <tr class="futureData"></tr>
-                    <tr class="dataModel"></tr>
+                    <tr class="futureData"><!-- space --></tr>
+                    <tr class="dataModel"><!-- space --></tr>
                   </tbody>
                 </table></div>
             </td>
