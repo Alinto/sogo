@@ -82,7 +82,7 @@
                                                  forKey: @"SentBy"];
       sentByText
         = [sentByValues keysWithFormat: [self
-                                          labelForKey: @"(sent by %{SentBy})"
+                                          labelForKey: @"(sent by %{SentBy}) "
                                             inContext: context]];
     }
   else
