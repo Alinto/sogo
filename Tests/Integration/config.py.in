@@ -13,3 +13,5 @@ attendee1 = "user@domain.com"
 attendee1_delegate = "otheruser@domain.com"
 
 mailserver = "imaphost"
+
+testput_nbrdays = 30
