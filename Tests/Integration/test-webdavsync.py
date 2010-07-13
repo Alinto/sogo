@@ -3,6 +3,7 @@
 from config import hostname, port, username, password
 
 import sys
+import sogotests
 import unittest
 import webdavlib
 import time
@@ -19,6 +20,7 @@ class WebdavSyncTest(unittest.TestCase):
         self.client.execute(delete)
 
     def test(self):
+        """webdav sync"""
         # missing tests:
         #   invalid tokens: negative, non-numeric, > current timestamp
         #   non-empty collections: token validity, status codes for added,
@@ -63,4 +65,4 @@ class WebdavSyncTest(unittest.TestCase):
         self.assertTrue(token > 0)
 
 if __name__ == "__main__":
-    unittest.main()
+    sogotests.runTests()

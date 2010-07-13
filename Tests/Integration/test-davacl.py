@@ -7,6 +7,7 @@ import unittest
 import webdavlib
 import time
 
+import sogotests
 import utilities
 
 # TODO:
@@ -941,4 +942,4 @@ class DAVCalendarPublicAclTest(unittest.TestCase):
                             "resource '%s' not returned" % resource)
 
 if __name__ == "__main__":
-    unittest.main()
+    sogotests.runTests()

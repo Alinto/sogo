@@ -1,9 +1,15 @@
 #!/usr/bin/python
 
-import os, sys, unittest, getopt, traceback
+import os, sys, unittest, getopt, traceback, time
 import preferences
+import sogotests
+import unittest
 
 if __name__ == "__main__":
+    unittest._TextTestResult.oldStartTest = unittest._TextTestResult.startTest
+    unittest._TextTestResult.startTest = sogotests.UnitTestTextTestResultNewStartTest
+    unittest._TextTestResult.stopTest = sogotests.UnitTestTextTestResultNewStopTest
+
     loader = unittest.TestLoader()
     modules = []
     # Duplicated from UIxPreferences.m
@@ -28,7 +34,7 @@ if __name__ == "__main__":
         suite = loader.loadTestsFromNames(modules)
         print "%d tests in modules: '%s'" % (suite.countTestCases(),
                                              "', '".join(modules))
-        runner = unittest.TextTestRunner()
+        runner = unittest.TextTestRunner(verbosity=2)
 
         if testLanguages:
             prefs = preferences.preferences()
@@ -49,6 +55,7 @@ if __name__ == "__main__":
                 
                 print "Running test in %s (%d/%d)" % \
                     (languages[i], i + 1, len (languages))
+                runner.verbosity = 2
                 runner.run(suite)
             # Revert to the original language
             prefs.set ("language", userLanguage)
