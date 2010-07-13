@@ -1,3 +1,8 @@
+2010-07-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Tests/Integration/test-webdavsync.py (WebdavSyncTest.test):
+	adapted to suit the new handling of empty collections in SOGo
+
 2010-07-09  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/UIxAttendeesEditor.js (onContactKeydown):

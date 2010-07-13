@@ -51,13 +51,16 @@ class WebdavSyncTest(unittest.TestCase):
         self.assertTrue(token > 0)
         self.assertTrue(token <= int(query1.start))
 
-        # we make sure that any token is invalid when the collection is empty
+        # we make sure that any token is acceoted when the collection is
+        # empty, but that the returned token differs
         query2 = webdavlib.WebDAVSyncQuery(resource, "1234", [ "getetag" ])
         self.client.execute(query2)
-        self.assertEquals(query2.response["status"], 403)
-        cond_nodes = query2.response["document"].find("{DAV:}valid-sync-token")
-        self.assertTrue(cond_nodes is not None,
-                        "expected 'valid-sync-token' condition error")
+        self.assertEquals(query2.response["status"], 207)
+        token_node = query2.response["document"].find("{DAV:}sync-token")
+        self.assertTrue(token_node is not None,
+                        "expected 'sync-token' tag")
+        token = int(token_node.text)
+        self.assertTrue(token > 0)
 
 if __name__ == "__main__":
     unittest.main()
