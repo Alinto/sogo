@@ -1,5 +1,8 @@
 2010-07-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoGCSFolder.m (-aclSQLListingFilter): return an
+	empty string when the active user is a super user.
+
 	* Tests/Integration/test-davacl.py
 	(DAVCalendarAclTest._testEventIsSecureVersion): accept a differing
 	SUMMARY since it will always change depending on the user's

@@ -594,14 +594,20 @@ static NSArray *childRecordFields = nil;
     [self _subscriberRenameTo: newName];
 }
 
+/* Returns an empty string to indicate that the filter is empty and nil when
+   the query should not even be performed. */
 - (NSString *) aclSQLListingFilter
 {
   NSString *filter, *login;
   NSArray *roles;
+  SOGoUser *activeUser;
 
-  login = [[context activeUser] login];
+  activeUser = [context activeUser];
+  login = [activeUser login];
   if (activeUserIsOwner
-      || [[self ownerInContext: nil] isEqualToString: login])
+      || [[self ownerInContext: nil] isEqualToString: login]
+      || ([activeUser respondsToSelector: @selector (isSuperUser)]
+          && [activeUser isSuperUser]))
     filter = @"";
   else
     {
@@ -612,9 +618,6 @@ static NSArray *childRecordFields = nil;
       else
         filter = nil;
     }
-
-  /* An empty string indicates that the filter is empty while a return value
-     of nil indicates that the query should not even be performed. */
 
   return filter;
 }
@@ -1349,17 +1352,21 @@ static NSArray *childRecordFields = nil;
 - (void) initializeQuickTablesAclsInContext: (WOContext *) localContext
 {
   NSString *login;
+  SOGoUser *activeUser;
 
+  activeUser = [localContext activeUser];
   if (activeUserIsOwner)
     userCanAccessAllObjects = activeUserIsOwner;
   else
     {
-      login = [[localContext activeUser] login];
+      login = [activeUser login];
       /* we only grant "userCanAccessAllObjects" for role "ObjectEraser" and
          not "ObjectCreator" because the latter doesn't imply we can read
          properties from subobjects or even know their existence. */
       userCanAccessAllObjects
-        = [[self ownerInContext: localContext] isEqualToString: login];
+        = ([[self ownerInContext: localContext] isEqualToString: login]
+           || ([activeUser respondsToSelector: @selector (isSuperUser)]
+               && [activeUser isSuperUser]));
     }
 }
 
