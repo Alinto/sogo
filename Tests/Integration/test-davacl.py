@@ -484,7 +484,8 @@ class DAVCalendarAclTest(DAVAclTest):
         for key in event_dict.keys():
             self.assertTrue(expected_dict.has_key(key),
                             "key '%s' of secure event not expected" % key)
-            self.assertTrue(expected_dict[key] == event_dict[key],
+            self.assertTrue(expected_dict[key] == event_dict[key]
+                            or key == "SUMMARY",
                             "value for key '%s' of secure does not match"
                             " (exp: '%s', obtained: '%s'"
                             % (key, expected_dict[key], event_dict[key] ))
@@ -853,13 +854,22 @@ class DAVCalendarPublicAclTest(unittest.TestCase):
         acl_utility.setupRights(subscriber_username, { "c": True })
 
         self.subscriber_client.execute(propfind)
-        hrefs = propfind.response["document"] \
-                .findall("{DAV:}response/{DAV:}href")
-        self.assertEquals(len(hrefs), 2, "expected two hrefs in response")
+        hrefs = propfind.response["document"].findall("{DAV:}response/{DAV:}href")
+        self.assertEquals(len(hrefs), 4,
+                          "expected 4 hrefs in response, got %d: %s"
+                          % (len(hrefs), ", ".join([ x.text for x in hrefs ])))
         self.assertEquals(hrefs[0].text, parentColl,
                           "the first href is not a 'Calendar' parent coll.")
-        self.assertEquals(hrefs[1].text, resource,
-                          "the 2nd href is not the accessible coll.")
+
+        resourceHrefs = { resource: False,
+                          "%s.xml" % resource[:-1]: False,
+                          "%s.ics" % resource[:-1]: False }
+        for href in hrefs[1:]:
+            self.assertTrue(resourceHrefs.has_key(href.text),
+                            "received unexpected href: %s" % href.text)
+            self.assertFalse(resourceHrefs[href.text],
+                            "href was returned more than once: %s" % href.text)
+            resourceHrefs[href.text] = True
 
         acl_utility.setupRights(subscriber_username, {})
 
@@ -870,13 +880,21 @@ class DAVCalendarPublicAclTest(unittest.TestCase):
         self.subscriber_client.execute(propfind)
         hrefs = propfind.response["document"] \
                 .findall("{DAV:}response/{DAV:}href")
-        self.assertEquals(len(hrefs), 2,
-                          "expected two hrefs in response: %d received" \
-                          % len(hrefs))
+
+        self.assertEquals(len(hrefs), 4,
+                          "expected 4 hrefs in response, got %d: %s"
+                          % (len(hrefs), ", ".join([ x.text for x in hrefs ])))
         self.assertEquals(hrefs[0].text, parentColl,
                           "the first href is not a 'Calendar' parent coll.")
-        self.assertEquals(hrefs[1].text, resource,
-                          "the 2nd href is not the accessible coll.")
+        resourceHrefs = { resource: False,
+                          "%s.xml" % resource[:-1]: False,
+                          "%s.ics" % resource[:-1]: False }
+        for href in hrefs[1:]:
+            self.assertTrue(resourceHrefs.has_key(href.text),
+                            "received unexpected href: %s" % href.text)
+            self.assertFalse(resourceHrefs[href.text],
+                            "href was returned more than once: %s" % href.text)
+            resourceHrefs[href.text] = True
 
         anonParentColl = '/SOGo/dav/public/%s/Calendar/' % username
         anon_propfind = webdavlib.WebDAVPROPFIND(anonParentColl,
@@ -898,13 +916,23 @@ class DAVCalendarPublicAclTest(unittest.TestCase):
         self.anon_client.execute(anon_propfind)
         hrefs = anon_propfind.response["document"] \
                 .findall("{DAV:}response/{DAV:}href")
-        self.assertEquals(len(hrefs), 2, "expected 2 hrefs in response")
+
+
+        self.assertEquals(len(hrefs), 4,
+                          "expected 4 hrefs in response, got %d: %s"
+                          % (len(hrefs), ", ".join([ x.text for x in hrefs ])))
         self.assertEquals(hrefs[0].text, anonParentColl,
                           "the first href is not a 'Calendar' parent coll.")
         anonResource = '%stest-dav-acl/' % anonParentColl
-        self.assertEquals(hrefs[1].text, anonResource,
-                          "expected href '%s' instead of '%s'."\
-                          % (anonResource, hrefs[1].text))
+        resourceHrefs = { anonResource: False,
+                          "%s.xml" % anonResource[:-1]: False,
+                          "%s.ics" % anonResource[:-1]: False }
+        for href in hrefs[1:]:
+            self.assertTrue(resourceHrefs.has_key(href.text),
+                            "received unexpected href: %s" % href.text)
+            self.assertFalse(resourceHrefs[href.text],
+                            "href was returned more than once: %s" % href.text)
+            resourceHrefs[href.text] = True
 
         self.subscriber_client.execute(propfind)
         hrefs = propfind.response["document"] \
