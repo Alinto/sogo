@@ -2,6 +2,9 @@
 
 	* SoObjects/SOGo/SOGoGCSFolder.m (-aclSQLListingFilter): return an
 	empty string when the active user is a super user.
+	(-initializeQuickTablesAclsInContext:): set
+	"userCanAccessAllObjects" to YES also when the active user is a
+	super user.
 
 	* Tests/Integration/test-davacl.py
 	(DAVCalendarAclTest._testEventIsSecureVersion): accept a differing
