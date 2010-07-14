@@ -6,14 +6,15 @@
 from config import hostname, port, username, password, attendee1, attendee1_delegate
 
 import datetime
+import sogotests
 import sys
 import time
 import unittest
+import utilities
 import vobject
 import vobject.base
 import vobject.icalendar
 import webdavlib
-import utilities
 import StringIO
 import xml.etree.ElementTree
 
@@ -475,4 +476,4 @@ class CalDAVITIPDelegationTest(unittest.TestCase):
                                  "%stest-delegation.ics" % self.attendee1_calendar, 404)
 
 if __name__ == "__main__":
-    unittest.main()
+    sogotests.runTests()

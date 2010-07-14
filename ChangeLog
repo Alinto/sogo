@@ -1,3 +1,19 @@
+2010-07-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Tests/Integration/test-put.py: new test module executing X puts
+	based on a number of auto-generated events configured in config.py
+
+	* Tests/Integration/ev_generator.py: new module producing
+	auto-generated events based on a number of days
+
+	* Tests/Integration/sogotests.py: new module overriding
+	certain methods from the "unittest" module in order to
+	automatically execute the tests in verbose mode and by displaying
+	a timing of the test execution.
+
+	* Tests/Integration/test-webdavsync.py (WebdavSyncTest.test):
+	adapted to suit the new handling of empty collections in SOGo
+
 2010-07-09  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/UIxAttendeesEditor.js (onContactKeydown):

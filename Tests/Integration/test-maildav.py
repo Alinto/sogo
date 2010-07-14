@@ -3,6 +3,7 @@
 from config import hostname, port, username, password, mailserver, subscriber_username, subscriber_password
 
 import sys
+import sogotests
 import unittest
 import webdavlib
 import time
@@ -673,4 +674,4 @@ class DAVMailCollectionTest():
     self._deleteCollection ("test-dav-mail")
 
 if __name__ == "__main__":
-  unittest.main()
+    sogotests.runTests()

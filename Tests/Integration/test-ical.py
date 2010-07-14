@@ -3,6 +3,7 @@
 from config import hostname, port, username, password, subscriber_username
 
 import unittest
+import sogotests
 import utilities
 import webdavlib
 
@@ -200,4 +201,4 @@ class iCalTest(unittest.TestCase):
         client.execute(delete)
 
 if __name__ == "__main__":
-    unittest.main()
+    sogotests.runTests()

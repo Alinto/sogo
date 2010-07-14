@@ -2,6 +2,7 @@
 
 from config import hostname, port, username, password, subscriber_username
 
+import sogotests
 import unittest
 import utilities
 import webdavlib
@@ -151,4 +152,4 @@ class WebDAVTest(unittest.TestCase):
                                  propDisplayname))
 
 if __name__ == "__main__":
-    unittest.main()
+    sogotests.runTests()

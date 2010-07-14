@@ -2,7 +2,9 @@
 
 from config import hostname, port, username, password, mailserver, subscriber_username, attendee1, attendee1_delegate
 
+import sogotests
 import unittest
+import time
 
 class CalDAVITIPDelegationTest(unittest.TestCase):
     def testConfigPY(self):
@@ -51,4 +53,4 @@ class CalDAVITIPDelegationTest(unittest.TestCase):
             userHash[user] = True
 
 if __name__ == "__main__":
-    unittest.main()
+    sogotests.runTests()

@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+import sogotests
 import unittest
 
 from webdavlib import *
@@ -47,4 +48,4 @@ class HTTPUnparsedURLTest(unittest.TestCase):
         self.assertEquals(testURL.path, "/hooray")
 
 if __name__ == "__main__":
-    unittest.main()
+    sogotests.runTests()
