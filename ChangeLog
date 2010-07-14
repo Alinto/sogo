@@ -1,3 +1,21 @@
+2010-07-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoGCSFolder.m (-aclSQLListingFilter): return an
+	empty string when the active user is a super user.
+	(-initializeQuickTablesAclsInContext:): set
+	"userCanAccessAllObjects" to YES also when the active user is a
+	super user.
+
+	* Tests/Integration/test-davacl.py
+	(DAVCalendarAclTest._testEventIsSecureVersion): accept a differing
+	SUMMARY since it will always change depending on the user's
+	language and is a pain to adapt.
+	(DAVCalendarPublicAclTest.testCollectionAccessNormalUser): added
+	code to accept and handle the XML and ICS calendar variants.
+	(DAVCalendarSuperUserAclTest.__init__): new test access class for
+	ensuring that super users have full, inconditionnal and complete
+	access to simple user's collections
+
 2010-07-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* Tests/Integration/test-put.py: new test module executing X puts
