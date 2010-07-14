@@ -22,6 +22,149 @@ import utilities
 #     originally
 #   - test "current-user-acl-set"
 
+class DAVCalendarSuperUserAclTest(unittest.TestCase):
+    def __init__(self, arg):
+        self.client = webdavlib.WebDAVClient(hostname, port,
+                                             username, password)
+        self.resource = "/SOGo/dav/%s/Calendar/test-dav-superuser-acl/" % subscriber_username
+        self.filename = "suevent.ics"
+        self.url = "%s%s" % (self.resource, self.filename)
+
+        unittest.TestCase.__init__(self, arg)
+        
+    def setUp(self):
+        delete = webdavlib.WebDAVDELETE(self.resource)
+        self.client.execute(delete)
+        mkcol = webdavlib.WebDAVMKCOL(self.resource)
+        self.client.execute(mkcol)
+        self.assertEquals(mkcol.response["status"], 201,
+                          "preparation: failure creating collection"
+                          "(code = %d)" % mkcol.response["status"])
+
+    def tearDown(self):
+        delete = webdavlib.WebDAVDELETE(self.resource)
+        self.client.execute(delete)
+
+    def _getEvent(self):
+        get = webdavlib.HTTPGET(self.url)
+        self.client.execute(get)
+
+        if get.response["status"] == 200:
+            event = get.response["body"]
+        else:
+            event = None
+
+        return event
+
+    def _calendarDataInMultistatus(self, query, response_tag = "{DAV:}response"):
+        event = None
+
+        # print "\n\n\n%s\n\n" % query.response["body"]
+        # print "\n\n"
+        response_nodes = query.response["document"].findall(response_tag)
+        for response_node in response_nodes:
+            href_node = response_node.find("{DAV:}href")
+            href = href_node.text
+            if href.endswith(self.filename):
+                propstat_node = response_node.find("{DAV:}propstat")
+                if propstat_node is not None:
+                    status_node = propstat_node.find("{DAV:}status")
+                    status = status_node.text
+                    if status.endswith("200 OK"):
+                        data_node = propstat_node.find("{DAV:}prop/{urn:ietf:params:xml:ns:caldav}calendar-data")
+                        event = data_node.text
+                    elif not (status.endswith("404 Resource Not Found")
+                              or status.endswith("404 Not Found")):
+                        self.fail("%s: unexpected status code: '%s'"
+                                  % (self.filename, status))
+
+        return event
+
+    def _propfindEvent(self):
+        propfind = webdavlib.WebDAVPROPFIND(self.resource,
+                                            ["{urn:ietf:params:xml:ns:caldav}calendar-data"],
+                                            1)
+        self.client.execute(propfind)
+        if propfind.response["status"] != 404:
+            event = self._calendarDataInMultistatus(propfind)
+
+        return event
+    
+    def _multigetEvent(self):
+        event = None
+
+        multiget = webdavlib.CalDAVCalendarMultiget(self.resource,
+                                                    ["{urn:ietf:params:xml:ns:caldav}calendar-data"],
+                                                    [ self.url ])
+        self.client.execute(multiget)
+        if multiget.response["status"] != 404:
+            event = self._calendarDataInMultistatus(multiget)
+
+        return event
+
+    def _webdavSyncEvent(self):
+        event = None
+
+        sync_query = webdavlib.WebDAVSyncQuery(self.resource, None,
+                                               ["{urn:ietf:params:xml:ns:caldav}calendar-data"])
+        self.client.execute(sync_query)
+        if sync_query.response["status"] != 404:
+            event = self._calendarDataInMultistatus(sync_query, "{DAV:}sync-response")
+
+        return event
+
+    def testSUAccess(self):
+        """create, read, modify, delete for superuser"""
+        event = event_template % { "class": "PUBLIC",
+                                   "filename": self.filename,
+                                   "organizer_line": "",
+                                   "attendee_line": "" }
+
+        # 1. Create
+        put = webdavlib.HTTPPUT(self.url, event)
+        put.content_type = "text/calendar; charset=utf-8"
+        self.client.execute(put)
+        self.assertEquals(put.response["status"], 201,
+                          "%s: event creation/modification:"
+                          " expected status code '201' (received '%d')"
+                          % (self.filename, put.response["status"]))
+
+        # 2. Read
+        readEvent = self._getEvent()
+        self.assertEquals(readEvent, event,
+                          "GET: returned event does not match")
+        readEvent = self._propfindEvent()
+        self.assertEquals(readEvent, event,
+                          "PROPFIND: returned event does not match")
+        readEvent = self._multigetEvent()
+        self.assertEquals(readEvent, event,
+                          "MULTIGET: returned event does not match")
+        readEvent = self._webdavSyncEvent()
+        self.assertEquals(readEvent, event,
+                          "WEBDAV-SYNC: returned event does not match")
+        
+        # 3. Modify
+        for eventClass in [ "CONFIDENTIAL", "PRIVATE", "PUBLIC" ]:
+            event = event_template % { "class": eventClass,
+                                       "filename": self.filename,
+                                       "organizer_line": "",
+                                       "attendee_line": "" }
+            put = webdavlib.HTTPPUT(self.url, event)
+            put.content_type = "text/calendar; charset=utf-8"
+            self.client.execute(put)
+            self.assertEquals(put.response["status"], 204,
+                              "%s: event modification failed"
+                              " expected status code '204' (received '%d')"
+                              % (self.filename, put.response["status"]))
+        
+        # 4. Delete
+        delete = webdavlib.WebDAVDELETE(self.url)
+        self.client.execute(delete)
+        self.assertEquals(delete.response["status"], 204,
+                          "%s: event deletion failed"
+                          " expected status code '204' (received '%d')"
+                          % (self.filename, put.response["status"]))
+
 class DAVAclTest(unittest.TestCase):
     resource = None
 
