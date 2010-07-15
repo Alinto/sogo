@@ -54,6 +54,9 @@
 - (NSException *) newFolderWithName: (NSString *) name
 		    nameInContainer: (NSString **) newNameInContainer;
 
+- (id) lookupPersonalFolder: (NSString *) name
+             ignoringRights: (BOOL) ignoreRights;
+
 @end
 
 #endif /* SOGOPARENTFOLDERS_H */

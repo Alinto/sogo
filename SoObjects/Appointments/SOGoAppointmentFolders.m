@@ -29,6 +29,7 @@
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest+So.h>
 #import <NGObjWeb/NSException+HTTP.h>
+#import <NGObjWeb/SoSecurityManager.h>
 #import <NGExtensions/NSObject+Logs.h>
 
 #import <GDLAccess/EOAdaptorChannel.h>
@@ -57,13 +58,47 @@
 
 @interface SOGoParentFolder (Private)
 
-- (NSException *) initSubscribedSubFolders;
 - (NSException *) _fetchPersonalFolders: (NSString *) sql
                             withChannel: (EOAdaptorChannel *) fc;
 
 @end
 
+static SoSecurityManager *sm = nil;
+
 @implementation SOGoAppointmentFolders
+
++ (void) initialize
+{
+  if (!sm)
+    sm = [SoSecurityManager sharedSecurityManager];
+}
+
++ (SOGoWebDAVAclManager *) webdavAclManager
+{
+  static SOGoWebDAVAclManager *aclManager = nil;
+
+  if (!aclManager)
+    {
+      aclManager = [[super webdavAclManager] copy];
+      [aclManager 
+        registerDAVPermission: davElement (@"write", XMLNS_WEBDAV)
+                     abstract: NO
+               withEquivalent: SoPerm_AddDocumentsImagesAndFiles
+                    asChildOf: davElement (@"all", XMLNS_WEBDAV)];
+      [aclManager
+        registerDAVPermission: davElement (@"write-properties", XMLNS_WEBDAV)
+                     abstract: YES
+               withEquivalent: SoPerm_AddDocumentsImagesAndFiles
+                    asChildOf: davElement (@"write", XMLNS_WEBDAV)];
+      [aclManager
+        registerDAVPermission: davElement (@"write-content", XMLNS_WEBDAV)
+                     abstract: YES
+               withEquivalent: SoPerm_AddDocumentsImagesAndFiles
+                    asChildOf: davElement (@"write", XMLNS_WEBDAV)];
+    }
+
+  return aclManager;
+}
 
 - (id) init
 {
@@ -166,9 +201,11 @@
   SOGoAppointmentFolder *folder;
   NSString *folderObjectKey;
   int count, max;
+  BOOL ignoreRights;
 
   if (!folderObjectKeys)
     {
+      ignoreRights = [self ignoreRights];
       folders = [self subFolders];
       max = [folders count];
       folderObjectKeys = [[NSMutableArray alloc] initWithCapacity: max];
@@ -176,7 +213,10 @@
         {
           folder = [folders objectAtIndex: count];
           if ([folder isMemberOfClass: [SOGoAppointmentFolder class]]
-              && ![folder isSubscription])
+              && ![folder isSubscription]
+              && (ignoreRights || ![sm validatePermission: SOGoPerm_AccessObject
+                                                 onObject: folder
+                                                inContext: context]))
             {
               folderObjectKey = [NSString stringWithFormat: @"%@.ics",
                                           [folder nameInContainer]];
@@ -473,33 +513,6 @@
     }
 
   return error;
-}
-
-+ (SOGoWebDAVAclManager *) webdavAclManager
-{
-  static SOGoWebDAVAclManager *aclManager = nil;
-
-  if (!aclManager)
-    {
-      aclManager = [[super webdavAclManager] copy];
-      [aclManager 
-        registerDAVPermission: davElement (@"write", XMLNS_WEBDAV)
-                     abstract: NO
-               withEquivalent: SoPerm_AddDocumentsImagesAndFiles
-                    asChildOf: davElement (@"all", XMLNS_WEBDAV)];
-      [aclManager
-        registerDAVPermission: davElement (@"write-properties", XMLNS_WEBDAV)
-                     abstract: YES
-               withEquivalent: SoPerm_AddDocumentsImagesAndFiles
-                    asChildOf: davElement (@"write", XMLNS_WEBDAV)];
-      [aclManager
-        registerDAVPermission: davElement (@"write-content", XMLNS_WEBDAV)
-                     abstract: YES
-               withEquivalent: SoPerm_AddDocumentsImagesAndFiles
-                    asChildOf: davElement (@"write", XMLNS_WEBDAV)];
-    }
-
-  return aclManager;
 }
 
 - (BOOL) hasProxyCalendarsWithWriteAccess: (BOOL) write

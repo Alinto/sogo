@@ -1,3 +1,47 @@
+2010-07-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUser.m (-personalCalendarFolderInContext:):
+	we now make use of -[SOGoParentFolder
+	lookupPersonalFolder:ignoringRights:] with @"personal" and YES as
+	arguments.
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-lookupCalendarFolderForUID:): removed useless method, which can
+	be replaced with -[SOGoUser personalCalendarFolderInContext:].
+
+	* UI/Scheduler/UIxCalListingActions.m
+	(_aptFolder:withClientObject:): removed unused method.
+
+	* UI/WebServerResources/UIxAppointmentEditor.js
+	(onComposeToAllAttendees): take the status image DIV into account
+	when detecting the user fullnames.
+	(onComposeToUndecidedAttendees): same as above.
+
+	* Tests/Integration/test-davacl.py
+	(DAVCalendarPublicAclTest.testCollectionAccessNormalUser): print
+	the amount of received hrefs.
+
+	* SoObjects/Appointments/SOGoAppointmentFolders.m
+	(-folderObjectKeys): we now check the "AccessObject"
+	right on the returned folders to determine whether their ICS or
+	XML version should be accessible.
+
+	* SoObjects/SOGo/SOGoParentFolder.m
+	(_fetchPersonalFolders:withChannel:): we no longer check access
+	rights from here as this method is too low level and prevent other
+	mechanisms from working properly.
+	(-lookupPersonalFolder:ignoringRights:): new method enabling the
+	lookup of a user's personal folders only and offering the choice
+	of respecting (or not) the active user's permission before
+	returning it.
+	(-lookupName:inContext:acquire:): we now make use of the above
+	method when looking up personal folders ("personal" or not).
+	(-toManyRelationShipKeys): same as lookupName... above.
+
+	* SoObjects/SOGo/SOGoObject.m (-ignoreRights): new utility method
+	that determines whether the current object must check access
+	rights on subobjects.
+
 2010-07-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoGCSFolder.m (-aclSQLListingFilter): return an

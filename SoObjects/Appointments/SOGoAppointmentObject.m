@@ -163,7 +163,8 @@
   if (!object)
     {
       // Create the event in the user's personal calendar.
-      folder = [container lookupCalendarFolderForUID: uid];
+      folder = [[SOGoUser userWithLogin: uid]
+                 personalCalendarFolderInContext: context];
       object = [SOGoAppointmentObject objectWithName: nameInContainer
 				      inContainer: folder];
       [object setIsNew: YES];
@@ -265,7 +266,8 @@
       
       // Invitations are always written to the personal folder; it's not necessay
       // to look into all folders of the user
-      folder = [container lookupCalendarFolderForUID: theUID];
+      folder = [[SOGoUser userWithLogin: theUID]
+                 personalCalendarFolderInContext: context];
       object = [folder lookupName: nameInContainer
 		       inContext: context acquire: NO];
       if (![object isKindOfClass: [NSException class]])
