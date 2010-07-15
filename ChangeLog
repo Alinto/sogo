@@ -17,9 +17,12 @@
 	(_fetchPersonalFolders:withChannel:): we no longer check access
 	rights from here as this method is too low level and prevent other
 	mechanisms from working properly.
-	(-lookupName:inContext:acquire:): we now check the "AccessObject"
-	right from here before returning the found object. We also make
-	use of the new "ignoreRights" method (see below) to that end.
+	(-lookupPersonalFolder:ignoringRights:): new method enabling the
+	lookup of a user's personal folders only and offering the choice
+	of respecting (or not) the active user's permission before
+	returning it.
+	(-lookupName:inContext:acquire:): we now make use of the above
+	method when looking up personal folders ("personal" or not).
 	(-toManyRelationShipKeys): same as lookupName... above.
 
 	* SoObjects/SOGo/SOGoObject.m (-ignoreRights): new utility method
