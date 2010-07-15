@@ -15,6 +15,7 @@
 	* UI/WebServerResources/UIxAppointmentEditor.js
 	(onComposeToAllAttendees): take the status image DIV into account
 	when detecting the user fullnames.
+	(onComposeToUndecidedAttendees): same as above.
 
 	* Tests/Integration/test-davacl.py
 	(DAVCalendarPublicAclTest.testCollectionAccessNormalUser): print
