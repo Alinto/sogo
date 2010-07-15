@@ -98,6 +98,10 @@
 - (void) setOwner: (NSString *) newOwner;
 - (NSString *) ownerInContext: (id) _ctx;
 
+/* a helper that determines whether access rights can be ignored on
+   an object */ 
+- (BOOL) ignoreRights;
+
 /* looking up shared objects */
 
 - (SOGoUserFolder *) lookupUserFolder;

@@ -229,6 +229,25 @@
   return owner;
 }
 
+- (BOOL) ignoreRights
+{
+  SOGoUser *currentUser;
+  NSString *login;
+  BOOL ignoreRights;
+
+  if (activeUserIsOwner)
+    ignoreRights = YES;
+  else
+    {
+      currentUser = [context activeUser];
+      login = [currentUser login];
+      ignoreRights = ([login isEqualToString: [self ownerInContext: context]]
+                      || [currentUser isSuperUser]);
+    }
+
+  return ignoreRights;
+}
+
 - (BOOL) isInPublicZone
 {
   if (!isInPublicZone)
