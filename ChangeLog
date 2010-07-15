@@ -1,5 +1,23 @@
 2010-07-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Tests/Integration/test-davacl.py
+	(DAVCalendarPublicAclTest.testCollectionAccessNormalUser): print
+	the amount of received hrefs.
+
+	* SoObjects/Appointments/SOGoAppointmentFolders.m
+	(-folderObjectKeys): we now check the "AccessObject"
+	right on the returned folders to determine whether their ICS or
+	XML version should be accessible.
+
+	* SoObjects/SOGo/SOGoParentFolder.m
+	(_fetchPersonalFolders:withChannel:): we no longer check access
+	rights from here as this method is too low level and prevent other
+	mechanisms from working properly.
+	(-lookupName:inContext:acquire:): we now check the "AccessObject"
+	right from here before returning the found object. We also make
+	use of the new "ignoreRights" method (see below) to that end.
+	(-toManyRelationShipKeys): same as lookupName... above.
+
 	* SoObjects/SOGo/SOGoObject.m (-ignoreRights): new utility method
 	that determines whether the current object must check access
 	rights on subobjects.

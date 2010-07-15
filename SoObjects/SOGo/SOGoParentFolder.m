@@ -175,26 +175,19 @@ static SoSecurityManager *sm = nil;
 {
   NSArray *attrs;
   NSDictionary *row;
-  BOOL hasPersonal, ignoreRights;
   SOGoGCSFolder *folder;
   NSString *key, *login;
   NSException *error;
   SOGoUser *currentUser;
-  SoSecurityManager *securityManager;
 
   if (!subFolderClass)
     subFolderClass = [[self class] subFolderClass];
 
-  hasPersonal = NO;
   error = [fc evaluateExpressionX: sql];
   if (!error)
     {
       currentUser = [context activeUser];
       login = [currentUser login];
-      ignoreRights = (activeUserIsOwner || [login isEqualToString: owner]
-                      || [currentUser isSuperUser]);
-      if (!ignoreRights)
-        securityManager = [SoSecurityManager sharedSecurityManager];
 
       attrs = [fc describeResults: NO];
       while ((row = [fc fetchAttributes: attrs withZone: NULL]))
@@ -203,19 +196,13 @@ static SoSecurityManager *sm = nil;
 	  if ([key isKindOfClass: [NSString class]])
 	    {
 	      folder = [subFolderClass objectWithName: key inContainer: self];
-	      hasPersonal = (hasPersonal
-                             || [key isEqualToString: @"personal"]);
 	      [folder setOCSPath: [NSString stringWithFormat: @"%@/%@",
 					    OCSPath, key]];
-              if (ignoreRights
-                  || ![securityManager validatePermission: SOGoPerm_AccessObject
-                                                 onObject: folder
-                                                inContext: context])
-	      [subFolders setObject: folder forKey: key];
+              [subFolders setObject: folder forKey: key];
 	    }
 	}
 
-      if (ignoreRights && !hasPersonal)
+      if (![subFolders objectForKey: @"personal"])
 	[self _createPersonalFolder];
     }
 
@@ -413,8 +400,15 @@ static SoSecurityManager *sm = nil;
 	  obj = [NSException exceptionWithHTTPStatus: 503];
 	}
       else
-	obj = [subFolders objectForKey: name];
-      
+        {
+          obj = [subFolders objectForKey: name];
+          if (obj && ![self ignoreRights]
+              && [sm validatePermission: SOGoPerm_AccessObject
+                               onObject: obj
+                              inContext: context])
+            obj = nil;
+        }
+
       if (!obj)
 	{
 	  // Lookup in subscribed folders
@@ -475,7 +469,7 @@ static SoSecurityManager *sm = nil;
 
 #warning check error here
   error = [self initSubFolders];
-    
+
   subs = [subFolders allValues];
   count = [subs count];
   for (i = 0; !rc && i < count; i++)
@@ -492,11 +486,20 @@ static SoSecurityManager *sm = nil;
   NSEnumerator *sortedSubFolders;
   NSMutableArray *keys;
   SOGoGCSFolder *currentFolder;
+  BOOL ignoreRights;
+
+  ignoreRights = [self ignoreRights];
 
   keys = [NSMutableArray array];
   sortedSubFolders = [[self subFolders] objectEnumerator];
   while ((currentFolder = [sortedSubFolders nextObject]))
-    [keys addObject: [currentFolder nameInContainer]];
+    {
+      if (ignoreRights
+          || ![sm validatePermission: SOGoPerm_AccessObject
+                            onObject: currentFolder
+                           inContext: context])
+        [keys addObject: [currentFolder nameInContainer]];
+    }
 
   return keys;
 }

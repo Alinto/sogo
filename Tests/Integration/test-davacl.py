@@ -983,11 +983,11 @@ class DAVCalendarPublicAclTest(unittest.TestCase):
         self.subscriber_client.execute(propfind)
         hrefs = propfind.response["document"] \
                 .findall("{DAV:}response/{DAV:}href")
+
         self.assertEquals(len(hrefs), 1,
-                          "expected only one href in response")
+                          "expected 1 href in response instead of %d" % len(hrefs))
         self.assertEquals(hrefs[0].text, parentColl,
                           "the href must be the 'Calendar' parent coll.")
-
 
         acl_utility = utilities.TestCalendarACLUtility(self,
                                                        self.client,
