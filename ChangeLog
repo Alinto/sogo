@@ -1,5 +1,9 @@
 2010-07-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-lookupCalendarFolderForUID:): removed useless method, which can
+	be replaced with -[SOGoUser personalCalendarFolderInContext:].
+
 	* UI/Scheduler/UIxCalListingActions.m
 	(_aptFolder:withClientObject:): removed unused method.
 

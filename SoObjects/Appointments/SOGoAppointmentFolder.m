@@ -2645,36 +2645,6 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 }
 
 //
-// This method returns the personal calendar of a specific user.
-//
-- (SOGoAppointmentFolder *) lookupCalendarFolderForUID: (NSString *) uid
-{
-  SOGoFolder *currentContainer;
-  SOGoAppointmentFolders *parent;
-  NSException *error;
-
-  currentContainer = [[container container] container];
-  currentContainer = [currentContainer lookupName: uid
-				       inContext: context
-				       acquire: NO];
-  parent = [currentContainer lookupName: @"Calendar" inContext: context
-			     acquire: NO];
-  currentContainer = [parent lookupName: @"personal" inContext: context
-			     acquire: NO];
-  if (!currentContainer)
-    {
-      error = [parent newFolderWithName: [parent defaultFolderName]
-		      andNameInContainer: @"personal"];
-      if (!error)
-	currentContainer = [parent lookupName: @"personal"
-				   inContext: context
-				   acquire: NO];
-    }
-
-  return (SOGoAppointmentFolder *) currentContainer;
-}
-
-//
 // This method returns an array containing all the calendar folders
 // of a specific user, excluding her/his subscriptions.
 //
@@ -2712,6 +2682,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   NSMutableArray *folders;
   NSEnumerator *e;
   NSString *uid, *ownerLogin;
+  SOGoUser *user;
   id folder;
 
   ownerLogin = [self ownerInContext: context];
@@ -2725,7 +2696,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 	folder = self;
       else
 	{
-	  folder = [self lookupCalendarFolderForUID: uid];
+          user = [SOGoUser userWithLogin: uid];
+	  folder = [user personalCalendarFolderInContext: context];
 	  if (![folder isNotNull])
 	    [self logWithFormat:@"Note: did not find folder for uid: '%@'", uid];
 	}
