@@ -58,7 +58,6 @@
 
 @interface SOGoParentFolder (Private)
 
-- (NSException *) initSubscribedSubFolders;
 - (NSException *) _fetchPersonalFolders: (NSString *) sql
                             withChannel: (EOAdaptorChannel *) fc;
 
@@ -72,6 +71,33 @@ static SoSecurityManager *sm = nil;
 {
   if (!sm)
     sm = [SoSecurityManager sharedSecurityManager];
+}
+
++ (SOGoWebDAVAclManager *) webdavAclManager
+{
+  static SOGoWebDAVAclManager *aclManager = nil;
+
+  if (!aclManager)
+    {
+      aclManager = [[super webdavAclManager] copy];
+      [aclManager 
+        registerDAVPermission: davElement (@"write", XMLNS_WEBDAV)
+                     abstract: NO
+               withEquivalent: SoPerm_AddDocumentsImagesAndFiles
+                    asChildOf: davElement (@"all", XMLNS_WEBDAV)];
+      [aclManager
+        registerDAVPermission: davElement (@"write-properties", XMLNS_WEBDAV)
+                     abstract: YES
+               withEquivalent: SoPerm_AddDocumentsImagesAndFiles
+                    asChildOf: davElement (@"write", XMLNS_WEBDAV)];
+      [aclManager
+        registerDAVPermission: davElement (@"write-content", XMLNS_WEBDAV)
+                     abstract: YES
+               withEquivalent: SoPerm_AddDocumentsImagesAndFiles
+                    asChildOf: davElement (@"write", XMLNS_WEBDAV)];
+    }
+
+  return aclManager;
 }
 
 - (id) init
@@ -487,33 +513,6 @@ static SoSecurityManager *sm = nil;
     }
 
   return error;
-}
-
-+ (SOGoWebDAVAclManager *) webdavAclManager
-{
-  static SOGoWebDAVAclManager *aclManager = nil;
-
-  if (!aclManager)
-    {
-      aclManager = [[super webdavAclManager] copy];
-      [aclManager 
-        registerDAVPermission: davElement (@"write", XMLNS_WEBDAV)
-                     abstract: NO
-               withEquivalent: SoPerm_AddDocumentsImagesAndFiles
-                    asChildOf: davElement (@"all", XMLNS_WEBDAV)];
-      [aclManager
-        registerDAVPermission: davElement (@"write-properties", XMLNS_WEBDAV)
-                     abstract: YES
-               withEquivalent: SoPerm_AddDocumentsImagesAndFiles
-                    asChildOf: davElement (@"write", XMLNS_WEBDAV)];
-      [aclManager
-        registerDAVPermission: davElement (@"write-content", XMLNS_WEBDAV)
-                     abstract: YES
-               withEquivalent: SoPerm_AddDocumentsImagesAndFiles
-                    asChildOf: davElement (@"write", XMLNS_WEBDAV)];
-    }
-
-  return aclManager;
 }
 
 - (BOOL) hasProxyCalendarsWithWriteAccess: (BOOL) write
