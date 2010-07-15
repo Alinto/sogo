@@ -739,9 +739,7 @@ static NSArray *childRecordFields = nil;
   NSDictionary *record;
   WORequest *request;
 
-  obj = [super lookupName: key
-	       inContext: localContext
-	       acquire: acquire];
+  obj = [super lookupName: key inContext: localContext acquire: acquire];
   if (!obj)
     {
       record = [childRecords objectForKey: key];
