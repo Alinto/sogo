@@ -1,5 +1,8 @@
 2010-07-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalListingActions.m
+	(_aptFolder:withClientObject:): removed unused method.
+
 	* UI/WebServerResources/UIxAppointmentEditor.js
 	(onComposeToAllAttendees): take the status image DIV into account
 	when detecting the user fullnames.
