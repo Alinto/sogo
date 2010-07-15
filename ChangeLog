@@ -1,5 +1,9 @@
 2010-07-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/UIxAppointmentEditor.js
+	(onComposeToAllAttendees): take the status image DIV into account
+	when detecting the user fullnames.
+
 	* Tests/Integration/test-davacl.py
 	(DAVCalendarPublicAclTest.testCollectionAccessNormalUser): print
 	the amount of received hrefs.
