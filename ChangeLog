@@ -1,3 +1,9 @@
+2010-07-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoObject.m (-ignoreRights): new utility method
+	that determines whether the current object must check access
+	rights on subobjects.
+
 2010-07-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoGCSFolder.m (-aclSQLListingFilter): return an
