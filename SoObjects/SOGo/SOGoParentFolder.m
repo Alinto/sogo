@@ -392,23 +392,8 @@ static SoSecurityManager *sm = nil;
   obj = [super lookupName: name inContext: lookupContext acquire: NO];
   if (!obj)
     {
-      // Lookup in personal folders
-      error = [self initSubFolders];
-      if (error)
-	{
-	  [self errorWithFormat: @"a database error occured: %@", [error reason]];
-	  obj = [NSException exceptionWithHTTPStatus: 503];
-	}
-      else
-        {
-          obj = [subFolders objectForKey: name];
-          if (obj && ![self ignoreRights]
-              && [sm validatePermission: SOGoPerm_AccessObject
-                               onObject: obj
-                              inContext: context])
-            obj = nil;
-        }
-
+      obj = [self lookupPersonalFolder: name
+                        ignoringRights: NO];
       if (!obj)
 	{
 	  // Lookup in subscribed folders
@@ -423,6 +408,31 @@ static SoSecurityManager *sm = nil;
 	}
     }
   
+  return obj;
+}
+
+- (id) lookupPersonalFolder: (NSString *) name
+             ignoringRights: (BOOL) ignoreRights
+{
+  NSException *error;
+  id obj;
+
+  error = [self initSubFolders];
+  if (error)
+    {
+      [self errorWithFormat: @"a database error occured: %@", [error reason]];
+      obj = [NSException exceptionWithHTTPStatus: 503];
+    }
+  else
+    {
+      obj = [subFolders objectForKey: name];
+      if (obj && !ignoreRights && ![self ignoreRights]
+          && [sm validatePermission: SOGoPerm_AccessObject
+                           onObject: obj
+                          inContext: context])
+        obj = nil;
+    }
+
   return obj;
 }
 

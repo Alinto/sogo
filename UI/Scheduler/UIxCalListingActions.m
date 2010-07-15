@@ -234,25 +234,6 @@ static NSArray *tasksFields = nil;
     }
 }
 
-- (SOGoAppointmentFolder *) _aptFolder: (NSString *) folder
-		      withClientObject: (SOGoAppointmentFolder *) clientObject
-{
-  SOGoAppointmentFolder *aptFolder;
-  NSArray *folderParts;
-
-  if ([folder isEqualToString: @"/"])
-    aptFolder = clientObject;
-  else
-    {
-      folderParts = [folder componentsSeparatedByString: @":"];
-      aptFolder
-	= [clientObject lookupCalendarFolderForUID:
-			  [folderParts objectAtIndex: 0]];
-    }
-
-  return aptFolder;
-}
-
 - (void) _fixComponentTitle: (NSMutableDictionary *) component
                    withType: (NSString *) type
 {

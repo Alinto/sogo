@@ -599,9 +599,8 @@
 - (SOGoAppointmentFolder *)
  personalCalendarFolderInContext: (WOContext *) context
 {
-  return [[self calendarsFolderInContext: context] lookupName: @"personal"
-						   inContext: context
-						   acquire: NO];
+  return [[self calendarsFolderInContext: context] lookupPersonalFolder: @"personal"
+                                                         ignoringRights: YES];
 }
 
 // - (id) schedulingCalendarInContext: (id) _ctx
