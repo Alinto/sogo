@@ -26,6 +26,8 @@
 
 #import "NSArray+NGCards.h"
 
+#import "NGVCardPhoto.h"
+
 #import "NGVCard.h"
 
 @implementation NGVCard
@@ -79,6 +81,8 @@
       || [classTag isEqualToString: @"TITLE"]
       || [classTag isEqualToString: @"VERSION"])
     tagClass = [CardElement class];
+  else if ([classTag isEqualToString: @"PHOTO"])
+    tagClass = [NGVCardPhoto class];
   else
     tagClass = [super classForTag: classTag];
 

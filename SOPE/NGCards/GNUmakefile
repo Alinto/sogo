@@ -57,6 +57,7 @@ libNGCards_HEADER_FILES =  		\
 	\
 	NGVCard.h			\
 	NGVList.h			\
+	NGVCardPhoto.h			\
 	NGVCardReference.h		\
 # 	NGVCardAddress.h		\
 # 	NGVCardStrArrayValue.h		\
@@ -110,6 +111,7 @@ libNGCards_OBJC_FILES =    		\
 	\
 	NGVCard.m			\
 	NGVList.m			\
+	NGVCardPhoto.m			\
 	NGVCardReference.m		\
 	NGCardsSaxHandler.m		\
 #	IcalElements.m

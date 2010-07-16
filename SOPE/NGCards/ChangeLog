@@ -1,3 +1,8 @@
+2010-07-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* NGVCardPhoto.[hm]: new class module that implement facilities
+	for handling "PHOTO" tags in vcards.
+
 2010-06-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* iCalXMLRenderer.m (-[CardGroup xmlRender]): don't append empty
