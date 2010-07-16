@@ -1,3 +1,11 @@
+2010-07-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoContentObject.m (-davContentLength): fixed a
+	crash occurring with certain versions of GNUstep by using
+	NSISOLatin1StringEncoding instead of UTF8. This is actually the
+	correct way of doing things anyway since we want to return the
+	length in bytes and not in characters.
+
 2010-07-16  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* UI/Contacts/UIxContactView.m
