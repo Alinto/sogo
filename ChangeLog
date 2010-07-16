@@ -1,3 +1,10 @@
+2010-07-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	(_handleUpdatedEvent:fromOldEvent:): added handling of delegation
+	chains when resetting the participation status of the attendees.
+	Fixes #688.
+
 2010-07-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUser.m (-personalCalendarFolderInContext:):
