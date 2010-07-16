@@ -1,5 +1,21 @@
 2010-07-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactEditor.m (-photosURL): copy of the method
+	below.
+
+	* UI/Contacts/UIxContactView.m (-photosURL): new access that
+	returns the URL to the photos contained in the VCARD, whether
+	inline or not.
+	(-tabSelection): removed unused method.
+
+	* SoObjects/Contacts/SOGoContactGCSEntry.m
+	(-lookupName:inContext:acquire:): new overriden method to handle
+	"photoX" lookups and return the corrsponding SOGoContactEntryPhoto
+	instance, if exists.
+
+	* SoObjects/Contacts/SOGoContactEntryPhoto.[hm]: new controller
+	class for VCARD PHOTO objects.
+
 	* SoObjects/SOGo/SOGoContentObject.m (-davContentLength): fixed a
 	crash occurring with certain versions of GNUstep by using
 	NSISOLatin1StringEncoding instead of UTF8. This is actually the

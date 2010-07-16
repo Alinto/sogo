@@ -32,6 +32,7 @@
   NSArray *phones;
   CardElement *homeAdr;
   CardElement *workAdr;
+  NSMutableArray *photosURL;
 }
 
 - (NSString *) fullName;

@@ -37,6 +37,7 @@
   NSString *preferredEmail;
   NSString *item;
   NGVCard *card;
+  NSMutableArray *photosURL;
   NSMutableDictionary *snapshot; /* contains the values for editing */
   SOGoContactFolder *componentAddressBook;
 }
