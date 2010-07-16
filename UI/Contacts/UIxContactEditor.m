@@ -282,6 +282,8 @@
 	  
 	  if (![ce hasAttribute: @"type" havingValue: aTypeToExclude])
 	    break;
+
+	  value = nil;
 	}
     }
 
@@ -412,7 +414,7 @@
   [self _setSnapshotValue: @"telephoneNumber"
         to: [self _simpleValueForType: @"work" inArray: elements  excluding: @"fax"]];
   [self _setSnapshotValue: @"homeTelephoneNumber"
-        to: [self _simpleValueForType: @"home" inArray: elements  excluding: nil]];
+        to: [self _simpleValueForType: @"home" inArray: elements  excluding: @"fax"]];
   [self _setSnapshotValue: @"mobile"
         to: [self _simpleValueForType: @"cell" inArray: elements  excluding: nil]];
   [self _setSnapshotValue: @"facsimileTelephoneNumber"

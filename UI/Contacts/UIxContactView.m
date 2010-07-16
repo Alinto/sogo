@@ -228,6 +228,8 @@
 	  
 	  if (![ce hasAttribute: @"type" havingValue: aTypeToExclude])
 	    break;
+
+	  phone = nil;
 	}
     }
 
@@ -243,7 +245,7 @@
 
 - (NSString *) homePhone
 {
-  return [self _phoneOfType: @"home" withLabel: @"Home:" excluding: nil];
+  return [self _phoneOfType: @"home" withLabel: @"Home:" excluding: @"fax"];
 }
 
 - (NSString *) fax
