@@ -1,4 +1,4 @@
-1.2-2010XXXX (1.2.3)
+1.2-2010XXXX (1.3.0)
 --------------------
 - added support for the "tentative" status in the invitation responses
 - inviting a group of contacts is now possible, where each contact will be
@@ -14,6 +14,8 @@
   accessed from his own "Calendar" base collection
 - events are now displayed with the coloured stripe representing their
   category, if one is defined in the preferences
+- fixed display of all-day events in a monthly view where the timezone differs
+  from the current one
 - the event location is now displayed in the calendar view when defined
   properly
 - added a caching mechanism for freebusy requests, in order to accelerate the
