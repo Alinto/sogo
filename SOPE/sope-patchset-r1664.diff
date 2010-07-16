@@ -5638,7 +5638,15 @@ Index: sope-core/NGExtensions/ChangeLog
 ===================================================================
 --- sope-core/NGExtensions/ChangeLog	(revision 1664)
 +++ sope-core/NGExtensions/ChangeLog	(working copy)
-@@ -1,3 +1,8 @@
+@@ -1,3 +1,16 @@
++2010-07-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
++
++	* NGBase64Coding.m (-dataByDecodingBase64)
++	(-stringByDecodingBase64, -stringByEncodingBase64): make use of
++	-[NSString lengthOfBytesUsingEncoding: NSISOLatin1StringEncoding]
++	rather than -[... cStringLength] to avoid a crash within GNUstep.
++	The latter is deprecated anyway...
++
 +2010-01-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 +
 +	* NGRuleEngine.subproj/NGRuleModel.m (-candidateRulesForKey:):
@@ -5647,6 +5655,40 @@ Index: sope-core/NGExtensions/ChangeLog
  2009-03-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
  
  	* NGQuotedPrintableCoding.m: encode '_' as '=5F', so that it is not
+Index: sope-core/NGExtensions/NGBase64Coding.m
+===================================================================
+--- sope-core/NGExtensions/NGBase64Coding.m	(revision 1664)
++++ sope-core/NGExtensions/NGBase64Coding.m	(working copy)
+@@ -53,7 +53,7 @@
+   size_t destLength = -1;
+   char   *dest, *src;
+   
+-  if ((len = [self cStringLength]) == 0)
++  if ((len = [self lengthOfBytesUsingEncoding: NSISOLatin1StringEncoding]) == 0)
+     return @"";
+   
+   destSize = (len + 2) / 3 * 4; // 3:4 conversion ratio
+@@ -91,7 +91,7 @@
+ 
+   if (StringClass == Nil) StringClass = [NSString class];
+   
+-  if ((len = [self cStringLength]) == 0)
++  if ((len = [self lengthOfBytesUsingEncoding: NSISOLatin1StringEncoding]) == 0)
+     return @"";
+   
+   destSize = (len / 4 + 1) * 3 + 1;
+@@ -135,9 +135,9 @@
+ 
+   if (StringClass == Nil) StringClass = [NSString class];
+   
+-  if ((len = [self cStringLength]) == 0)
++  if ((len = [self lengthOfBytesUsingEncoding: NSISOLatin1StringEncoding]) == 0)
+     return [NSData data];
+-  
++
+   destSize = (len / 4 + 1) * 3 + 1;
+   dest = malloc(destSize + 1);
+ 
 Index: sope-core/NGExtensions/NGRuleEngine.subproj/NGRuleModel.m
 ===================================================================
 --- sope-core/NGExtensions/NGRuleEngine.subproj/NGRuleModel.m	(revision 1664)
