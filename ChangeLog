@@ -4,6 +4,11 @@
 	In secondaryEmail, we make sure that we loop
 	in all available email address and we pick the
 	first one that doesn't match the primaryEmail
+	* UI/Contacts/UIxContactEditor.m
+	UI/Contacts/UIxContactView.m - we make sure,
+	when excluding a type, that we reset the
+	local variable to nil since we might exclude
+	all values in our array.
 
 2010-07-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
