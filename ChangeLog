@@ -11,6 +11,7 @@
 
 	* UI/Scheduler/UIxCalListingActions.m
 	(_aptFolder:withClientObject:): removed unused method.
+	(_fixDates:): apply fix also for monthly views.
 
 	* UI/WebServerResources/UIxAppointmentEditor.js
 	(onComposeToAllAttendees): take the status image DIV into account
