@@ -139,15 +139,29 @@
   // We might not have a preferred item but rather something like this:
   // EMAIL;TYPE=work:dd@ee.com
   // EMAIL;TYPE=home:ff@gg.com
-  // In this case, we always return the last entry.
+  // 
+  // or:
+  //
+  // EMAIL;TYPE=INTERNET:a@a.com                                                  
+  // EMAIL;TYPE=INTERNET,HOME:b@b.com
+  // 
+  // In this case, we always return the entry NOT matching the primaryEmail
   if ([emails count] > 0)
     {
-      email = [[emails objectAtIndex: [emails count]-1] value: 0];
+      int i;
 
-      if ([email caseInsensitiveCompare: [card preferredEMail]] != NSOrderedSame)
-	mailTo = [NSString stringWithFormat: @"<a href=\"mailto:%@\""
-			   @" onclick=\"return openMailTo('%@ <%@>');\">"
-			   @"%@</a>", email, [[card fn] stringByReplacingString: @"\""  withString: @""], email, email];
+      for (i = 0; i < [emails count]; i++)
+	{
+	  email = [[emails objectAtIndex: i] value: 0];
+
+	  if ([email caseInsensitiveCompare: [card preferredEMail]] != NSOrderedSame)
+	    {
+	      mailTo = [NSString stringWithFormat: @"<a href=\"mailto:%@\""
+				 @" onclick=\"return openMailTo('%@ <%@>');\">"
+				 @"%@</a>", email, [[card fn] stringByReplacingString: @"\""  withString: @""], email, email];
+	      break;
+	    }
+	}
     }
 
   return [self _cardStringWithLabel: @"Additional Email:"
