@@ -67,17 +67,14 @@
 
   cmpTag = [aTag uppercaseString];
 
-  matchingElements = [NSMutableArray new];
-  [matchingElements autorelease];
+  matchingElements = [NSMutableArray arrayWithCapacity: 16];
 
   allElements = [self objectEnumerator];
-  currentElement = [allElements nextObject];
-  while (currentElement)
+  while ((currentElement = [allElements nextObject]))
     {
       currentTag = [[currentElement tag] uppercaseString];
       if ([currentTag isEqualToString: cmpTag])
         [matchingElements addObject: currentElement];
-      currentElement = [allElements nextObject];
     }
 
   return matchingElements;
@@ -92,16 +89,12 @@
 
   allElements = [self objectEnumerator];
 
-  matchingElements = [NSMutableArray new];
-  [matchingElements autorelease];
-  currentElement = [allElements nextObject];
-  while (currentElement)
-    {
-      if ([currentElement hasAttribute: anAttribute
-                          havingValue: aValue])
-        [matchingElements addObject: currentElement];
-      currentElement = [allElements nextObject];
-    }
+  matchingElements = [NSMutableArray arrayWithCapacity: 16];
+
+  while ((currentElement = [allElements nextObject]))
+    if ([currentElement hasAttribute: anAttribute
+                         havingValue: aValue])
+      [matchingElements addObject: currentElement];
 
   return matchingElements;
 }
