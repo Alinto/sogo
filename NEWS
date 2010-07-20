@@ -22,6 +22,9 @@
   display
 - added the ability to specify a time range when requesting a time slot
   suggestion
+- added live-loading support in the webmail interface with caching support
+- updated CKEditor and improved its integration with the current user
+  language for automatic spell checking support
 - added support for displaying photos from contacts
 - added a Ukrainian translation
 - updated the Czech translation
