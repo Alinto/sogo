@@ -1,3 +1,8 @@
+2010-07-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Contacts/UIxContactFoldersView.m (_subFoldersFromFolder:):
+	removed unused method.
+
 2010-07-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Contacts/UIxContactEditor.m (-photosURL): copy of the method
