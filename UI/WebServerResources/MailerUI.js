@@ -448,7 +448,8 @@ function deleteMessageWithDelay(url, id, mailbox, messageId) {
 }
 
 function onPrintCurrentMessage(event) {
-    var rowIds = $("messageList").getSelectedRowsId();
+    var messageList = $("messageListBody").down("TBODY");
+    var rowIds = messageList.getSelectedNodes();
     if (rowIds.length == 0) {
         window.alert(_("Please select a message to print."));
     }
