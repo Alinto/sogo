@@ -1,5 +1,9 @@
 2010-07-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUserFolder.m (_subFoldersFromFolder:): we
+	need to validate the current user's access to the listed folders
+	again because of the recent changes on SOGoParentFolder.
+
 	* UI/Contacts/UIxContactFoldersView.m (_subFoldersFromFolder:):
 	removed unused method.
 
