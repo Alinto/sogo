@@ -1,3 +1,8 @@
+2010-07-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/ContactsUI.js: (dropSelectedContacts):
+	reenabled copying contacts from system (LDAP) addressbooks.
+
 2010-07-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUserFolder.m (_subFoldersFromFolder:): we

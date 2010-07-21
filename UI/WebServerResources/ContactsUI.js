@@ -1272,8 +1272,9 @@ function startDragging (itm, e) {
     
     handle.show();
     handle.update (count);
-    if (e.shiftKey || currentFolderIsRemote ())
+    if (e.shiftKey || currentFolderIsRemote ()) {
       handle.addClassName ("copy");
+    }
 }
 
 function whileDragging (itm, e) {
@@ -1311,7 +1312,8 @@ function dropSelectedContacts (action, toId) {
             }
         }
         var fromId = $(selectedFolders[0]).id;
-        if (!currentFolderIsRemote () && fromId.substring(1) != toId) {
+        if ((!currentFolderIsRemote () || action != "move")
+            && fromId.substring(1) != toId) {
             var url = ApplicationBaseURL + fromId + "/" + action 
               + "?folder=" + toId + "&uid="
               + contactIds.join("&uid=");
