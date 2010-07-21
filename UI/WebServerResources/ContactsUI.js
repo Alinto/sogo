@@ -1311,7 +1311,7 @@ function dropSelectedContacts (action, toId) {
             }
         }
         var fromId = $(selectedFolders[0]).id;
-        if (!currentFolderIsRemote () || action != "move") {
+        if (!currentFolderIsRemote () && fromId.substring(1) != toId) {
             var url = ApplicationBaseURL + fromId + "/" + action 
               + "?folder=" + toId + "&uid="
               + contactIds.join("&uid=");
