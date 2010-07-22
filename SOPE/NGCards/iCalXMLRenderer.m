@@ -96,7 +96,7 @@
   int count;
 
   for (count = 0; count < max; count++)
-    [rendering appendFormat: @"<%@/>"];
+    [rendering appendFormat: @"<%@/>", valueTag];
 }
 
 - (NSString *) _xmlRenderParameter: (NSString *) paramName
