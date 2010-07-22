@@ -1,0 +1,11 @@
+#!/usr/bin/python
+
+webdavConfig = { "hostname": "sogo.hostname.com",
+                 "port": 80,
+                 "username": "username",
+                 "password": "password" }
+
+dbConfig = { "host": "localhost",
+             "username": "username",
+             "password": "password",
+             "db": "database" }
