@@ -318,7 +318,7 @@
 /* status type */
 "status_" = "Non-spécifié";
 "status_NOT-SPECIFIED" = "Non spécifié";
-"status_TENTATIVE" = "Tentative";
+"status_TENTATIVE" = "Tentatif";
 "status_CONFIRMED" = "Confirmé";
 "status_CANCELLED" = "Annulé";
 "status_NEEDS-ACTION" = "En attente";
@@ -470,7 +470,7 @@ validate_endbeforestart    = "La date de fin est avant la date de début.";
 "Needs action" = "En attente";
 "Accepted" = "Accepté";
 "Declined" = "Décliné";
-"Tentative" = "Tentative";
+"Tentative" = "Tentatif";
 
 "Free" = "Libre";
 "Busy" = "Occupé";

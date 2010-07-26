@@ -24,6 +24,8 @@
 
 #import <NGCards/NGVCard.h>
 
+#import "SOGoContactEntryPhoto.h"
+
 #import "SOGoContactGCSEntry.h"
 
 @implementation SOGoContactGCSEntry
@@ -61,6 +63,31 @@
 }
 
 /* actions */
+
+- (id) lookupName: (NSString *) lookupName
+        inContext: (id) localContext
+          acquire: (BOOL) acquire
+{
+  id obj;
+  int photoIndex;
+  NSArray *photoElements;
+
+  if ([lookupName hasPrefix: @"photo"])
+    {
+      photoElements = [[self vCard] childrenWithTag: @"photo"];
+      photoIndex = [[lookupName substringFromIndex: 5] intValue];
+      if (photoIndex > -1 && photoIndex < [photoElements count])
+        obj = [SOGoContactEntryPhoto entryPhotoWithID: photoIndex
+                                          inContainer: self];
+      else
+        obj = nil;
+    }
+  else
+    obj = [super lookupName: lookupName inContext: localContext
+                    acquire: acquire];
+
+  return obj;
+}
 
 - (NSException *) copyToFolder: (SOGoGCSFolder *) newFolder
 {

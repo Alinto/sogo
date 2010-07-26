@@ -27,6 +27,7 @@
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoClassSecurityInfo.h>
+#import <NGObjWeb/SoSecurityManager.h>
 #import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest.h>
@@ -147,18 +148,27 @@
   NSMutableArray *folders;
   NSEnumerator *subfolders;
   SOGoFolder *currentFolder;
-  NSString *folderName;
+  NSString *folderName, *folderOwner;
   Class subfolderClass;
   NSMutableDictionary *currentDictionary;
+  SoSecurityManager *securityManager;
 
   folders = [NSMutableArray array];
+
+  folderOwner = [parentFolder ownerInContext: context];
+  securityManager = [SoSecurityManager sharedSecurityManager];
 
   subfolderClass = [[parentFolder class] subFolderClass];
 
   subfolders = [[parentFolder subFolders] objectEnumerator];
   while ((currentFolder = [subfolders nextObject]))
     {
-      if ([currentFolder isMemberOfClass: subfolderClass])
+      if (![securityManager validatePermission: SOGoPerm_AccessObject
+                                      onObject: currentFolder
+                                     inContext: context]
+          && [[currentFolder ownerInContext: context]
+               isEqualToString: folderOwner]
+          && [currentFolder isMemberOfClass: subfolderClass])
 	{
 	  folderName = [NSString stringWithFormat: @"/%@/%@",
 				 [parentFolder nameInContainer],

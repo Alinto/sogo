@@ -328,17 +328,56 @@
     }
 }
 
-- (void) _requireResponseFromAttendees: (NSArray *) attendees
+- (void) _removeDelegationChain: (iCalPerson *) delegate
+                        inEvent: (iCalEvent *) event
 {
-  NSEnumerator *enumerator;
-  iCalPerson *currentAttendee;
+  NSString *delegatedTo, *mailTo;
 
-  enumerator = [attendees objectEnumerator];
-  while ((currentAttendee = [enumerator nextObject]))
+  delegatedTo = [delegate delegatedTo];
+  if ([delegatedTo length] > 0)
     {
+      mailTo = [delegatedTo rfc822Email];
+      delegate = [event findAttendeeWithEmail: mailTo];
+      if (delegate)
+        {
+          [self _removeDelegationChain: delegate
+                               inEvent: event];
+          [event removeFromAttendees: delegate];
+        }
+      else
+        [self errorWithFormat:
+               @"broken chain: delegate with email '%@' was not found",
+              mailTo];
+    }
+}
+
+/* This method returns YES when any attendee has been removed and NO
+   otherwise. */
+- (BOOL) _requireResponseFromAttendees: (iCalEvent *) event
+{
+  NSArray *attendees;
+  iCalPerson *currentAttendee;
+  BOOL listHasChanged;
+  int count, max;
+
+  attendees = [event attendees];
+  max = [attendees count];
+
+  for (count = 0; count < max; count++)
+    {
+      currentAttendee = [attendees objectAtIndex: count];
+      if ([[currentAttendee delegatedTo] length] > 0)
+        {
+          [self _removeDelegationChain: currentAttendee
+                               inEvent: event];
+          [currentAttendee setDelegatedTo: nil];
+          listHasChanged = YES;
+        }
       [currentAttendee setRsvp: @"TRUE"];
       [currentAttendee setParticipationStatus: iCalPersonPartStatNeedsAction];
     }
+
+  return listHasChanged;
 }
 
 - (void) _handleSequenceUpdateInEvent: (iCalEvent *) newEvent
@@ -400,6 +439,13 @@
   iCalEventChanges *changes;
 
   changes = [newEvent getChangesRelativeToEvent: oldEvent];
+  if ([changes sequenceShouldBeIncreased])
+    {
+      // Set new attendees status to "needs action" and recompute changes when
+      // the list of attendees has changed.
+      if ([self _requireResponseFromAttendees: newEvent])
+        changes = [newEvent getChangesRelativeToEvent: oldEvent];
+    }
   attendees = [changes deletedAttendees];
   if ([attendees count])
     {
@@ -417,8 +463,6 @@
   if ([changes sequenceShouldBeIncreased])
     {
       [newEvent increaseSequence];
-      // Set new attendees status to "needs action"
-      [self _requireResponseFromAttendees: [newEvent attendees]];
       // Update attendees calendars and send them an update
       // notification by email
       [self _handleSequenceUpdateInEvent: newEvent
@@ -455,10 +499,6 @@
 
   if ([attendees count])
     {
-      NSArray *originalAttendees;
-
-      originalAttendees = [NSArray arrayWithArray: [newEvent attendees]];
-
       // Send an invitation to new attendees
       [self _handleAddedUsers: attendees fromEvent: newEvent];
       [self sendEMailUsingTemplateNamed: @"Invitation"

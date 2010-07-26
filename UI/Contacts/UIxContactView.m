@@ -20,29 +20,39 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSURL.h>
+
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGCards/NGVCard.h>
+#import <NGCards/NGVCardPhoto.h>
 #import <NGCards/CardElement.h>
 #import <NGCards/NSArray+NGCards.h>
 #import <NGExtensions/NSString+Ext.h>
 
-#import <SoObjects/Contacts/SOGoContactObject.h>
+#import <Contacts/SOGoContactObject.h>
 
 #import "UIxContactView.h"
 
 @implementation UIxContactView
 
-/* accessors */
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      photosURL = nil;
+    }
 
-- (NSString *)tabSelection {
-  NSString *selection;
-    
-  selection = [self queryParameterForKey:@"tab"];
-  if (selection == nil)
-    selection = @"attributes";
-  return selection;
+  return self;
 }
+
+- (void) dealloc
+{
+  [photosURL release];
+  [super dealloc];
+}
+
+/* accessors */
 
 - (NSString *) _cardStringWithLabel: (NSString *) label
                               value: (NSString *) value
@@ -139,15 +149,29 @@
   // We might not have a preferred item but rather something like this:
   // EMAIL;TYPE=work:dd@ee.com
   // EMAIL;TYPE=home:ff@gg.com
-  // In this case, we always return the last entry.
+  // 
+  // or:
+  //
+  // EMAIL;TYPE=INTERNET:a@a.com                                                  
+  // EMAIL;TYPE=INTERNET,HOME:b@b.com
+  // 
+  // In this case, we always return the entry NOT matching the primaryEmail
   if ([emails count] > 0)
     {
-      email = [[emails objectAtIndex: [emails count]-1] value: 0];
+      int i;
 
-      if ([email caseInsensitiveCompare: [card preferredEMail]] != NSOrderedSame)
-	mailTo = [NSString stringWithFormat: @"<a href=\"mailto:%@\""
-			   @" onclick=\"return openMailTo('%@ <%@>');\">"
-			   @"%@</a>", email, [[card fn] stringByReplacingString: @"\""  withString: @""], email, email];
+      for (i = 0; i < [emails count]; i++)
+	{
+	  email = [[emails objectAtIndex: i] value: 0];
+
+	  if ([email caseInsensitiveCompare: [card preferredEMail]] != NSOrderedSame)
+	    {
+	      mailTo = [NSString stringWithFormat: @"<a href=\"mailto:%@\""
+				 @" onclick=\"return openMailTo('%@ <%@>');\">"
+				 @"%@</a>", email, [[card fn] stringByReplacingString: @"\""  withString: @""], email, email];
+	      break;
+	    }
+	}
     }
 
   return [self _cardStringWithLabel: @"Additional Email:"
@@ -214,6 +238,8 @@
 	  
 	  if (![ce hasAttribute: @"type" havingValue: aTypeToExclude])
 	    break;
+
+	  phone = nil;
 	}
     }
 
@@ -229,7 +255,7 @@
 
 - (NSString *) homePhone
 {
-  return [self _phoneOfType: @"home" withLabel: @"Home:" excluding: nil];
+  return [self _phoneOfType: @"home" withLabel: @"Home:" excluding: @"fax"];
 }
 
 - (NSString *) fax
@@ -612,6 +638,36 @@
                         reason: @"could not locate contact"];
 
   return self;
+}
+
+- (NSArray *) photosURL
+{
+  NSArray *photoElements;
+  NSURL *soURL;
+  NSString *baseInlineURL, *photoURL;
+  NGVCardPhoto *photo;
+  int count, max;
+
+  if (!photosURL)
+    {
+      soURL = [[self clientObject] soURL];
+      baseInlineURL = [soURL absoluteString];
+      photoElements = [card childrenWithTag: @"photo"];
+      max = [photoElements count];
+      photosURL = [[NSMutableArray alloc] initWithCapacity: max];
+      for (count = 0; count < max; count++)
+        {
+          photo = [photoElements objectAtIndex: count];
+          if ([photo isInline])
+            photoURL = [NSString stringWithFormat: @"%@/photo%d",
+                                 baseInlineURL, count];
+          else
+            photoURL = [photo value: 0];
+          [photosURL addObject: photoURL];
+        }
+    }
+
+  return photosURL;
 }
 
 @end /* UIxContactView */

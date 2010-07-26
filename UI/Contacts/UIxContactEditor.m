@@ -22,6 +22,7 @@
 
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSURL.h>
 #import <Foundation/NSEnumerator.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
@@ -33,6 +34,7 @@
 #import <NGExtensions/NSNull+misc.h>
 
 #import <NGCards/NGVCard.h>
+#import <NGCards/NGVCardPhoto.h>
 #import <NGCards/NSArray+NGCards.h>
 
 #import <Contacts/SOGoContactFolder.h>
@@ -51,6 +53,7 @@
     {
       snapshot = [[NSMutableDictionary alloc] initWithCapacity: 16];
       preferredEmail = nil;
+      photosURL = nil;
     }
 
   return self;
@@ -60,6 +63,7 @@
 {
   [snapshot release];
   [preferredEmail release];
+  [photosURL release];
   [super dealloc];
 }
 
@@ -282,6 +286,8 @@
 	  
 	  if (![ce hasAttribute: @"type" havingValue: aTypeToExclude])
 	    break;
+
+	  value = nil;
 	}
     }
 
@@ -412,7 +418,7 @@
   [self _setSnapshotValue: @"telephoneNumber"
         to: [self _simpleValueForType: @"work" inArray: elements  excluding: @"fax"]];
   [self _setSnapshotValue: @"homeTelephoneNumber"
-        to: [self _simpleValueForType: @"home" inArray: elements  excluding: nil]];
+        to: [self _simpleValueForType: @"home" inArray: elements  excluding: @"fax"]];
   [self _setSnapshotValue: @"mobile"
         to: [self _simpleValueForType: @"cell" inArray: elements  excluding: nil]];
   [self _setSnapshotValue: @"facsimileTelephoneNumber"
@@ -569,6 +575,36 @@
 
   return ([co isKindOfClass: [SOGoContentObject class]]
           && [super canCreateOrModify]);
+}
+
+- (NSArray *) photosURL
+{
+  NSArray *photoElements;
+  NSURL *soURL;
+  NSString *baseInlineURL, *photoURL;
+  NGVCardPhoto *photo;
+  int count, max;
+
+  if (!photosURL)
+    {
+      soURL = [[self clientObject] soURL];
+      baseInlineURL = [soURL absoluteString];
+      photoElements = [card childrenWithTag: @"photo"];
+      max = [photoElements count];
+      photosURL = [[NSMutableArray alloc] initWithCapacity: max];
+      for (count = 0; count < max; count++)
+        {
+          photo = [photoElements objectAtIndex: count];
+          if ([photo isInline])
+            photoURL = [NSString stringWithFormat: @"%@/photo%d",
+                                 baseInlineURL, count];
+          else
+            photoURL = [photo value: 0];
+          [photosURL addObject: photoURL];
+        }
+    }
+
+  return photosURL;
 }
 
 - (CardElement *) _elementWithTag: (NSString *) tag

@@ -29,6 +29,8 @@
         </li>
         <li target="addressesInfos">
           <span><var:string label:value="Address" /></span></li>
+        <li target="photos">
+          <span><var:string label:value="Photos" /></span></li>
         <li target="otherInfos">
           <span><var:string label:value="Other" /></span></li>
       </ul>
@@ -330,6 +332,12 @@
               </td>
             </tr>
           </table>
+        </div>
+
+        <div id="photos" class="tab">
+          <var:foreach list="photosURL" item="currentPhotoURL">
+            <img var:src="currentPhotoURL" class="contactPhoto"/><br
+              /></var:foreach>
         </div>
 
         <div id="otherInfos" class="tab">

@@ -412,32 +412,6 @@ static SoSecurityManager *sm = nil;
   return componentSet;
 }
 
-- (void) reloadWebCalendars: (BOOL) forceReload
-{
-  NSArray *refs;
-  SOGoWebAppointmentFolder *folder;
-  SOGoUserSettings *us;
-  NSDictionary *calSettings;
-  NSString *ref;
-  int count, max;
-
-  [self _migrateWebCalendarsSettings];
-  us = [[SOGoUser userWithLogin: owner] userSettings];
-  calSettings = [us objectForKey: @"Calendar"];
-  refs = [[calSettings objectForKey: @"WebCalendars"] allKeys];
-  max = [refs count];
-  for (count = 0; count < max; count++)
-    {
-      ref = [refs objectAtIndex: count];
-      folder = [SOGoWebAppointmentFolder
-                 folderWithSubscriptionReference: ref
-                                     inContainer: self];
-      if (folder
-          && (forceReload || [folder reloadOnLogin]))
-        [folder loadWebCalendar];
-    }
-}
-
 - (void) _migrateWebCalendarsSettings
 {
   SOGoUserSettings *us;
@@ -472,6 +446,32 @@ static SoSecurityManager *sm = nil;
     }
   if (hasChanged)
     [us synchronize];
+}
+
+- (void) reloadWebCalendars: (BOOL) forceReload
+{
+  NSArray *refs;
+  SOGoWebAppointmentFolder *folder;
+  SOGoUserSettings *us;
+  NSDictionary *calSettings;
+  NSString *ref;
+  int count, max;
+
+  [self _migrateWebCalendarsSettings];
+  us = [[SOGoUser userWithLogin: owner] userSettings];
+  calSettings = [us objectForKey: @"Calendar"];
+  refs = [[calSettings objectForKey: @"WebCalendars"] allKeys];
+  max = [refs count];
+  for (count = 0; count < max; count++)
+    {
+      ref = [refs objectAtIndex: count];
+      folder = [SOGoWebAppointmentFolder
+                 folderWithSubscriptionReference: ref
+                                     inContainer: self];
+      if (folder
+          && (forceReload || [folder reloadOnLogin]))
+        [folder loadWebCalendar];
+    }
 }
 
 - (NSException *) _fetchPersonalFolders: (NSString *) sql

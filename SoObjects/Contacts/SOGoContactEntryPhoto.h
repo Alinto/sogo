@@ -1,6 +1,6 @@
-/* UIxContactsUserFolders.m - this file is part of SOGo
+/* SOGoContactEntryPhoto.h - this file is part of SOGo
  *
- * Copyright (C) 2007-2010 Inverse inc.
+ * Copyright (C) 2010 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -20,8 +20,23 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import "UIxContactsUserFolders.h"
+#ifndef SOGOCONTACTENTRYPHOTO_H
+#define SOGOCONTACTENTRYPHOTO_H
 
-@implementation UIxContactsUserFolders
+#import <SOGo/SOGoObject.h>
+
+@interface SOGoContactEntryPhoto : SOGoObject
+{
+  int photoID;
+}
+
++ (id) entryPhotoWithID: (int) photoId
+            inContainer: (id) container;
+
+- (void) setPhotoID: (int) newPhotoID;
+
+- (NSString *) davContentType;
 
 @end
+
+#endif /* SOGOCONTACTENTRYPHOTO_H */

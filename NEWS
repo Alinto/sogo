@@ -1,4 +1,4 @@
-1.2-2010XXXX (1.2.3)
+1.3-20100721 (1.3.0)
 --------------------
 - added support for the "tentative" status in the invitation responses
 - inviting a group of contacts is now possible, where each contact will be
@@ -12,16 +12,22 @@
   via the "/SOGo/dav/public" url
 - we now provide ICS and XML version of a user's personal calendars when
   accessed from his own "Calendar" base collection
-- events are now displayed with the coloured stripe representing their
+- events are now displayed with the colored stripe representing their
   category, if one is defined in the preferences
+- fixed display of all-day events in a monthly view where the timezone differs
+  from the current one
 - the event location is now displayed in the calendar view when defined
   properly
 - added a caching mechanism for freebusy requests, in order to accelerate the
   display
 - added the ability to specify a time range when requesting a time slot
   suggestion
+- added live-loading support in the webmail interface with caching support
+- updated CKEditor and improved its integration with the current user
+  language for automatic spell checking support
+- added support for displaying photos from contacts
 - added a Ukrainian translation
-- updated the Czeck translation
+- updated the Czech translation
 
 1.2-20100504 (1.2.2)
 --------------------

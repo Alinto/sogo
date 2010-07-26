@@ -1,3 +1,66 @@
+2010-07-22  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* Added Migration/Horde/* - scripts used to migrate
+	the address books and email signatures from Horde to
+	the SOGo database.
+
+2010-07-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/ContactsUI.js: (dropSelectedContacts):
+	reenabled copying contacts from system (LDAP) addressbooks.
+
+2010-07-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUserFolder.m (_subFoldersFromFolder:): we
+	need to validate the current user's access to the listed folders
+	again because of the recent changes on SOGoParentFolder.
+
+	* UI/Contacts/UIxContactFoldersView.m (_subFoldersFromFolder:):
+	removed unused method.
+
+2010-07-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Contacts/UIxContactEditor.m (-photosURL): copy of the method
+	below.
+
+	* UI/Contacts/UIxContactView.m (-photosURL): new access that
+	returns the URL to the photos contained in the VCARD, whether
+	inline or not.
+	(-tabSelection): removed unused method.
+
+	* SoObjects/Contacts/SOGoContactGCSEntry.m
+	(-lookupName:inContext:acquire:): new overriden method to handle
+	"photoX" lookups and return the corrsponding SOGoContactEntryPhoto
+	instance, if exists.
+
+	* SoObjects/Contacts/SOGoContactEntryPhoto.[hm]: new controller
+	class for VCARD PHOTO objects.
+
+	* SoObjects/SOGo/SOGoContentObject.m (-davContentLength): fixed a
+	crash occurring with certain versions of GNUstep by using
+	NSISOLatin1StringEncoding instead of UTF8. This is actually the
+	correct way of doing things anyway since we want to return the
+	length in bytes and not in characters.
+
+2010-07-16  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* UI/Contacts/UIxContactView.m
+	In secondaryEmail, we make sure that we loop
+	in all available email address and we pick the
+	first one that doesn't match the primaryEmail
+	* UI/Contacts/UIxContactEditor.m
+	UI/Contacts/UIxContactView.m - we make sure,
+	when excluding a type, that we reset the
+	local variable to nil since we might exclude
+	all values in our array.
+
+2010-07-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	(_handleUpdatedEvent:fromOldEvent:): added handling of delegation
+	chains when resetting the participation status of the attendees.
+	Fixes #688.
+
 2010-07-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUser.m (-personalCalendarFolderInContext:):
@@ -11,6 +74,7 @@
 
 	* UI/Scheduler/UIxCalListingActions.m
 	(_aptFolder:withClientObject:): removed unused method.
+	(_fixDates:): apply fix also for monthly views.
 
 	* UI/WebServerResources/UIxAppointmentEditor.js
 	(onComposeToAllAttendees): take the status image DIV into account

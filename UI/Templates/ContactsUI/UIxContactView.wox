@@ -18,8 +18,10 @@
           /><var:string value="secondaryEmail" escapeHTML="NO"
           /><var:string value="screenName" escapeHTML="NO"
           /><var:string value="preferredAddress" escapeHTML="NO"
-          /></div
-        
+          /><var:foreach list="photosURL" item="currentPhotoURL"
+          ><br/><img var:src="currentPhotoURL" class="contactPhoto"/>
+        </var:foreach></div
+
         ><var:if condition="hasHomeInfos"
         ><div id="homeInfos"
           ><h4><var:string label:value="Home" /></h4

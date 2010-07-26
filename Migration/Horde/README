@@ -1,0 +1,7 @@
+1) copy config.py.in to config.py and personalize the settings
+2) personalize the domain setting in signature.py (look for DOMAIN.COM) 
+3) the scripts require "webdavlib.py", which is located in <SOGoDIR>/Tests/Integration/. Therefore, in order to use the scripts, we must set the environment variable "PYTHONPATH" to that directory on our system.
+4) invoke "signature <USER>" for importing signatures
+5) invoke "turba <USER>" for importing signatures
+6) "<USER>" can have the special "ALL" value
+

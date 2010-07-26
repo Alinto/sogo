@@ -1,6 +1,6 @@
 /* UIxContactFoldersView.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2009 Inverse inc.
+ * Copyright (C) 2006-2010 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -244,42 +244,6 @@
                                            reason: @"missing 'search' parameter"];  
 
   return result;
-}
-
-- (NSArray *) _subFoldersFromFolder: (SOGoParentFolder *) parentFolder
-{
-  NSMutableArray *folders;
-  NSEnumerator *subfolders;
-  SOGoGCSFolder *subfolder;
-  NSString *folderName;
-  NSMutableDictionary *currentDictionary;
-  SoSecurityManager *securityManager;
-
-  securityManager = [SoSecurityManager sharedSecurityManager];
-
-  folders = [NSMutableArray array];
-
-  subfolders = [[parentFolder subFolders] objectEnumerator];
-  while ((subfolder = [subfolders nextObject]))
-    {
-      if (![securityManager validatePermission: SOGoPerm_AccessObject
-                                      onObject: subfolder inContext: context])
-        {
-          folderName = [NSString stringWithFormat: @"/%@/%@",
-                                 [parentFolder nameInContainer],
-                                 [subfolder nameInContainer]];
-          currentDictionary
-            = [NSMutableDictionary dictionaryWithCapacity: 3];
-          [currentDictionary setObject: [subfolder displayName]
-                                forKey: @"displayName"];
-          [currentDictionary setObject: folderName forKey: @"name"];
-          [currentDictionary setObject: [subfolder folderType]
-                                forKey: @"type"];
-          [folders addObject: currentDictionary];
-        }
-    }
-
-  return folders;
 }
 
 - (void) checkDefaultModulePreference
