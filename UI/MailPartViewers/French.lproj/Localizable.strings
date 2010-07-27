@@ -26,6 +26,7 @@ Tentative = "Tentatif";
 "Delegate ..." = "Déléguer ...";
 "Delegated to" = "Délégué à";
 "Update status in calendar" = "Mettre l'agenda à jour";
+"delegated from" = "délégué par";
 
 reply_info_no_attendee = "Vous avez reçu une réponse à un événement mais l'expéditeur n'est pas un invité.";
 reply_info = "Ceci est une réponse à un événement que vous avez organisé.";

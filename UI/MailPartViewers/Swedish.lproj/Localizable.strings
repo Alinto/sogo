@@ -26,6 +26,7 @@ Tentative = "Preliminär";
 "Delegate ..." = "Delegera ...";
 "Delegated to" = "Delegerad till";
 "Update status in calendar" = "Uppdatera status i kalendern";
+"delegated from" = "delegated from";
 
 reply_info_no_attendee = "Du har fått ett svar till en planerad händelse som avsändaren inte är inbjuden till.";
 reply_info = "Du har fått ett svar till en händelse inbjuden av dig.";

@@ -26,6 +26,7 @@ Tentative = "Petrus";
 "Delegate ..." = "Delegate ...";
 "Delegated to" = "Delegated to";
 "Update status in calendar" = "Diweddaru statws yn y calendr";
+"delegated from" = "delegated from";
 
 reply_info_no_attendee = "Rydych wedi derbyn ymateb i digwyddiad ond nid yw'r anfonwr yn cyfranogwr.";
 reply_info = "Dyma ymateb i wahoddiad i digwyddiad a wnaed gennych chi.";

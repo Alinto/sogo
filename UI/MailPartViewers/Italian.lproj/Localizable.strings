@@ -26,6 +26,7 @@ Tentative = "Tentativo";
 "Delegate ..." = "Delegate ...";
 "Delegated to" = "Delegated to";
 "Update status in calendar" = "Aggiorna lo stato nel calendari";
+"delegated from" = "delegated from";
 
 reply_info_no_attendee = "Hai ricevuto una risposta relativa all'incontro programmato da un utente che non è incluso come partecipante.";
 reply_info = "Questa è una risposta ad un invito ad un evento organizzato da te.";

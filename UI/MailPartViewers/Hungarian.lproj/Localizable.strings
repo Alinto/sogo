@@ -26,6 +26,7 @@ Tentative = "Bizonytalan";
 "Delegate ..." = "Delegate ...";
 "Delegated to" = "Delegated to";
 "Update status in calendar" = "Állapot frissítése a naptárban";
+"delegated from" = "delegated from";
 
 reply_info_no_attendee = "Ön választ kapott egy találkozóra, a feladó azonban nem résztvevő.";
 reply_info = "Ez egy válasz az ön által kiküldött meghívásra.";

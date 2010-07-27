@@ -26,6 +26,7 @@ Tentative = "Vorläufig";
 "Delegate ..." = "Delegate ...";
 "Delegated to" = "Delegated to";
 "Update status in calendar" = "Kalender Status aktualisieren";
+"delegated from" = "delegated from";
 
 reply_info_no_attendee = "Sie haben eine Antwort auf einen Termin von einem Nicht-Teilnehmer erhalten.";
 reply_info = "Dies ist eine Anwort auf eine Einladung von Ihnen.";

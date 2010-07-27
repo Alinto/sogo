@@ -26,6 +26,7 @@ Tentative = "Tentativo";
 "Delegate ..." = "Delegate ...";
 "Delegated to" = "Delegated to";
 "Update status in calendar" = "Actualizar estado en calendario";
+"delegated from" = "delegated from";
 
 reply_info_no_attendee = "Ha recibido una respuesta a una invitación de evento pero el remitente no aparece como un participante.";
 reply_info = "Esta es la respuesta a una invitación de evento hecha por usted.";

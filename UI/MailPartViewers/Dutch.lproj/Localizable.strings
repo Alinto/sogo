@@ -26,6 +26,7 @@ Tentative = "Onder voorbehoud";
 "Delegate ..." = "Delegate ...";
 "Delegated to" = "Delegated to";
 "Update status in calendar" = "Afspraak bijwerken in agenda";
+"delegated from" = "delegated from";
 
 reply_info_no_attendee = "U heeft een antwoord betreffende een afspraak ontvangen van een niet-deelnemer.";
 reply_info = "Dit is een antwoord op een door u verstuurde uitnodiging.";

@@ -234,7 +234,7 @@
                     ><div class="status-icon"><!-- space --></div
                       ><a var:href="attendee.email">
 		  <var:string value="attendeeForDisplay"/></a>
-		(<var:string label:value="$attendee.partStatWithDefault" /><var:if condition="attendee.delegatedTo"> <var:string label:value="to" /> <var:string value="attendee.delegatedTo.rfc822Email" /></var:if><var:if condition="attendee.delegatedFrom">, <var:string label:value="delegated from" /> <var:string value="attendee.delegatedFrom.rfc822Email" /></var:if>)</span>
+		(<var:string label:value="$attendee.partStatWithDefault" /><var:if condition="attendee.delegatedTo"> <var:string label:value="to" /> <var:string value="attendee.delegatedTo.rfc822Email" /></var:if><var:if condition="attendee.delegatedFrom.length">, <var:string label:value="delegated from" /> <var:string value="attendee.delegatedFrom.rfc822Email" /></var:if>)</span>
 		<br /></var:if>
 	      </var:foreach>
 	    </td>
