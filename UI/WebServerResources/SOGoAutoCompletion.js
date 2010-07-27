@@ -192,12 +192,11 @@ var SOGoAutoCompletionInterface = {
                     }
 
                     // Show popup menu
-                    var div = Element.up(input, 'DIV');
                     var offsetScroll = Element.cumulativeScrollOffset(input);
                     var offset = Element.positionedOffset(input);
-                    if (div.getStyle('position') == 'relative')
-                        // Hack for some situations where the offset must be computed differently
-                        offset = Element.cumulativeOffset(input);
+                    if ($(document.body).hasClassName("popup") && typeof initPopupMailer == 'undefined')
+                    // Hack for some situations where the offset must be computed differently
+                         offset = Element.cumulativeOffset(input);
                     var top = offset.top - offsetScroll.top + node.offsetHeight + 3;
                     var height = 'auto';
                     var heightDiff = window.height() - offset[1];
