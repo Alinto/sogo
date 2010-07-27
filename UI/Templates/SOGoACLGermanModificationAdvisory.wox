@@ -8,7 +8,7 @@
   xmlns:label="OGo:label">
 
 <var:if condition="isSubject">
-    Zugangserlaubniss von <var:string value="currentUserName" const:escapeHTML="NO"/> geändert
+    Zugangsberechtigung von <var:string value="currentUserName" const:escapeHTML="NO"/> geändert
 </var:if>
 
 <var:if condition="isBody">
