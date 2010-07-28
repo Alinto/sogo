@@ -1,5 +1,9 @@
 2010-07-28  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/WebServerResources/MailerUI.js (deleteCachedMailboxByType,
+	deletedCachedMailbox): new methods to update the datasources
+	(mailboxes) cache.
+
 	* UI/WebServerResources/UIxComponentEditor.js (getCalendarOwner):
 	new function that returns the event organizer or the calendar
 	owner in case of an event with no organizer yet.

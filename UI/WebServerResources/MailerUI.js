@@ -548,11 +548,7 @@ function onMailboxMenuMove(event) {
     }
 
     // Remove cache of target data source
-    var keys = Mailer.dataSources.keys();
-    for (var i = 0; i < keys.length; i++) {
-	if (keys[i] == targetMailbox || keys[i].startsWith(targetMailbox + "?"))
-	    Mailer.dataSources.unset(keys[i]);
-    }
+    deleteCachedMailbox(targetMailbox);
 
     var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/moveMessages";
     var parameters = "uid=" + uids.join(",") + "&folder=" + targetMailbox;
@@ -583,11 +579,7 @@ function onMailboxMenuCopy(event) {
     }
 
     // Remove cache of target data source
-    var keys = Mailer.dataSources.keys();
-    for (var i = 0; i < keys.length; i++) {
-	if (keys[i] == targetMailbox || keys[i].startsWith(targetMailbox + "?"))
-	    Mailer.dataSources.unset(keys[i]);
-    }
+    deleteCachedMailbox(targetMailbox);
 
     var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/copyMessages";
     var parameters = "uid=" + uids.join(",") + "&folder=" + targetMailbox;
@@ -892,6 +884,23 @@ function onFolderMenuHide(event) {
     }
     if (topNode.selectedEntry)
         topNode.selectedEntry.selectElement();
+}
+
+function deleteCachedMailboxByType(type) {
+    var nodes = $("mailboxTree").select("DIV[datatype=" + type + "]");
+    if (nodes.length == 1)
+        deleteCachedMailbox(nodes[0].readAttribute("dataname"));
+    
+    if (Mailer.currentMailboxType == type)
+        refreshCurrentFolder();
+}
+
+function deleteCachedMailbox(mailboxPath) {
+    var keys = Mailer.dataSources.keys();
+    for (var i = 0; i < keys.length; i++) {
+	if (keys[i] == mailboxPath || keys[i].startsWith(mailboxPath + "?"))
+	    Mailer.dataSources.unset(keys[i]);
+    }
 }
 
 function deleteCachedMessage(messageId) {

@@ -236,8 +236,8 @@ function deleteDraft(url) {
 
 function refreshFolderByType(type) {
     /* this is called by UIxMailEditor with window.opener */
-    if (typeof Mailer != 'undefined' && Mailer.currentMailboxType == type)
-        refreshCurrentFolder();
+    if (typeof Mailer != 'undefined')
+        deleteCachedMailboxByType(type);
 }
 
 function createHTTPClient() {

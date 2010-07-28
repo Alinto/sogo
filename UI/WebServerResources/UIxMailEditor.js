@@ -228,6 +228,7 @@ function clickedEditorSave(sender) {
 
     if (window.opener && window.opener.open && !window.opener.closed)
         window.opener.refreshFolderByType('draft');
+
     return false;
 }
 
