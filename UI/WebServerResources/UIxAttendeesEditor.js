@@ -1487,7 +1487,7 @@ function prepareTableRows() {
 function prepareAttendees() {
     var tableAttendees = $("freeBusyAttendees");
     var tableData = $("freeBusyData");
-    var organizer = window.opener.organizer;
+    var organizer = window.opener.getCalendarOwner();
     var attendees = window.opener.attendees;
     var attendeesKeys = (attendees ? attendees.keys() : null);
 

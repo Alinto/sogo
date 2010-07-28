@@ -1,3 +1,15 @@
+2010-07-28  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/UIxComponentEditor.js (getCalendarOwner):
+	new function that returns the event organizer or the calendar
+	owner in case of an event with no organizer yet.
+
+	* UI/Scheduler/UIxComponentEditor.m (-organizerProfile): was
+	jsonOrganizer. Now caches the resulting dictionary in an ivar.
+	(-calendarOwnerList): new method called from the wox template and
+	use to display the event organizer in the edition window of the
+	attendees.
+
 2010-07-27  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/SOGoAutoCompletion.js

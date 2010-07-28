@@ -169,6 +169,7 @@ iRANGE(2);
       componentOwner = @"";
       organizer = nil;
       //organizerIdentity = nil;
+      organizerProfile = nil;
       ownerAsAttendee = nil;
       attendee = nil;
       jsonAttendees = nil;
@@ -202,6 +203,7 @@ iRANGE(2);
   [location release];
   [organizer release];
   //[organizerIdentity release];
+  [organizerProfile release];
   [ownerAsAttendee release];
   [comment release];
   [priority release];
@@ -812,63 +814,76 @@ iRANGE(2);
   return [jsonAttendees jsonRepresentation];
 }
 
-- (NSString *) jsonOrganizer
+- (NSDictionary *) organizerProfile
 {
-  NSMutableDictionary *jsonOrganizer;
+  NSMutableDictionary *profile;
   NSDictionary *ownerIdentity;
   NSString *uid, *name, *email, *partstat, *role;
   SOGoUserManager *um;
   SOGoCalendarComponent *co;
   SOGoUser *ownerUser;
 
-  jsonOrganizer = [NSMutableDictionary dictionary];
-  email = [organizer rfc822Email];
-  role = nil;
-  partstat = nil;
-
-  if ([email length])
+  if (organizerProfile == nil)
     {
-      um = [SOGoUserManager sharedUserManager];
+      profile = [NSMutableDictionary dictionary];
+      email = [organizer rfc822Email];
+      role = nil;
+      partstat = nil;
       
-      name = [organizer cn];
-      uid = [um getUIDForEmail: email];
+      if ([email length])
+	{
+	  um = [SOGoUserManager sharedUserManager];
+	  
+	  name = [organizer cn];
+	  uid = [um getUIDForEmail: email];
+	  
+	  partstat = [[organizer partStat] lowercaseString];
+	  role = [[organizer role] lowercaseString];
+	}
+      else
+	{
+	  // No organizer defined in vEvent; use calendar owner
+	  co = [self clientObject];
+	  uid = [[co container] ownerInContext: context];
+	  ownerUser = [SOGoUser userWithLogin: uid roles: nil];
+	  ownerIdentity = [ownerUser defaultIdentity];
+	  
+	  name = [ownerIdentity objectForKey: @"fullName"];
+	  email = [ownerIdentity  objectForKey: @"email"];
+	}
       
-      partstat = [[organizer partStat] lowercaseString];
-      role = [[organizer role] lowercaseString];
-    }
-  else
-    {
-      // No organizer defined in vEvent
-      co = [self clientObject];
-      uid = [[co container] ownerInContext: context];
-      ownerUser = [SOGoUser userWithLogin: uid roles: nil];
-      ownerIdentity = [ownerUser defaultIdentity];
+      if (uid != nil)
+	[profile setObject: uid 
+		    forKey: @"uid"];
+      else
+	uid = email;
       
-      name = [ownerIdentity objectForKey: @"fullName"];
-      email = [ownerIdentity  objectForKey: @"email"];
+      [profile setObject: name
+			   forKey: @"name"];
+      
+      [profile setObject: email
+			   forKey: @"email"];
+      
+      if (partstat == nil || ![partstat length])
+	partstat = @"accepted";
+      [profile setObject: partstat
+			   forKey: @"partstat"];
+      
+      if (role == nil || ![role length])
+	role = @"chair";
+      [profile setObject: role
+			   forKey: @"role"];
+      
+      organizerProfile = [NSDictionary dictionaryWithObject: profile forKey: uid];
+      [organizerProfile retain];
     }
 
-  if (uid != nil)
-    [jsonOrganizer setObject: uid 
-		      forKey: @"uid"];
+  return organizerProfile;
+}
 
-  [jsonOrganizer setObject: name
-		    forKey: @"name"];
-  
-  [jsonOrganizer setObject: email
-		    forKey: @"email"];
-  
-  if (partstat == nil || ![partstat length])
-    partstat = @"accepted";
-  [jsonOrganizer setObject: partstat
-		    forKey: @"partstat"];
-  
-  if (role == nil || ![role length])
-    role = @"chair";
-  [jsonOrganizer setObject: role
-		    forKey: @"role"];
-  
-  return [jsonOrganizer jsonRepresentation];
+- (NSString *) jsonOrganizer
+{
+  return [[[[self organizerProfile] allValues] lastObject] jsonRepresentation];
 }
 
 - (void) setLocation: (NSString *) _value
@@ -1134,6 +1149,56 @@ iRANGE(2);
     }
 
   return calendarList;
+}
+
+/**
+ * This method is called from the wox template and uses to display the event
+ * organizer in the edition window of the attendees.
+ * Returns an array of the two elements :
+ *  - array of calendar owners
+ *  - dictionary of owners profiles
+ */
+- (NSArray *) calendarOwnerList
+{
+  NSArray *calendars;
+  NSMutableArray *owners;
+  NSDictionary *currentOwnerIdentity;
+  NSMutableDictionary *profiles, *currentOwnerProfile;
+  NSString *currentOwner;
+  SOGoAppointmentFolder *currentCalendar;
+  SOGoUser *currentUser;
+  unsigned i;
+
+  calendars = [self calendarList];
+  owners = [NSMutableArray arrayWithCapacity: [calendars count]];
+  profiles = [NSMutableDictionary dictionaryWithDictionary: [self organizerProfile]];
+  
+  for (i = 0; i < [calendars count]; i++)
+    {
+      currentCalendar = [calendars objectAtIndex: i];
+      currentOwner = [currentCalendar ownerInContext: context];
+      [owners addObject: currentOwner];
+
+      if ([profiles objectForKey: currentOwner] == nil)
+	{
+	  currentUser = [SOGoUser userWithLogin: currentOwner roles: nil];
+	  currentOwnerIdentity = [currentUser defaultIdentity];
+
+	  currentOwnerProfile = [NSMutableDictionary dictionary];
+	  [currentOwnerProfile setObject: [currentOwnerIdentity objectForKey: @"fullName"]
+				  forKey: @"name"];
+	  [currentOwnerProfile setObject: [currentOwnerIdentity objectForKey: @"email"]
+				  forKey: @"email"];
+	  [currentOwnerProfile setObject: @"accepted"
+				  forKey: @"partstat"];
+	  [currentOwnerProfile setObject: @"chair"
+				  forKey: @"role"];
+
+	  [profiles setObject: currentOwnerProfile forKey: currentOwner];
+	}
+    }
+  
+  return [NSArray arrayWithObjects: owners, profiles, nil];
 }
 
 - (NSString *) calendarDisplayName

@@ -10,6 +10,24 @@ function getOwnerLogin() {
     return ownerLogin;
 }
 
+function getCalendarOwner() {
+    var ownerProfile;
+
+    if (typeof organizer == "undefined") {
+        var calendarIndex = $("calendarList").value;
+        var ownersList = owners[0];
+        var profiles = owners[1];
+        var ownerUid = ownersList[calendarIndex];
+        ownerProfile = profiles[ownerUid];
+        ownerProfile["uid"] = ownerUid;
+    }
+    else {
+        ownerProfile = organizer;
+    }
+    
+    return ownerProfile;
+}
+
 function onPopupAttendeesWindow(event) {
     if (event)
         preventDefault(event);
