@@ -29,13 +29,13 @@
     </div>
     <div class="calendarUserRights">
       <var:foreach list="rightTypes" item="currentRightType">
-	<span><var:string value="currentRightTypeLabel"/></span>
+	<div><span><var:string value="currentRightTypeLabel"/></span>
 	<var:popup list="objectRights" item="currentRight"
 		   var:name="currentRightTypeName"
 		   var:value="currentRight"
 		   string="currentRightLabel"
 		   selection="currentRightSelection"
-		   /><hr/>
+		   /></div>
       </var:foreach>
     </div>
     <var:if condition="userIsAnonymousUser" const:negate="YES"

@@ -31,11 +31,6 @@ UL#userList
 DIV.tabsContainer > DIV.scrollToolbar > A > SPAN
 { line-height: 12px; }
 
-/* UIxCalUserRightsEditor */
-
-DIV.calendarUserRights HR
-{ display: none; }
-
 /* MailerUI */
 
 IMG.dragMessage
