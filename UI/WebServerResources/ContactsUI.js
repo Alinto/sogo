@@ -1146,7 +1146,7 @@ function onDocumentKeydown(event) {
                     nextRow = row.previous("tr");
                 if (nextRow) {
                     row.up().deselectAll();
-					
+                    
                     // Adjust the scollbar
                     var viewPort = $("contactsListContent");
                     var divDimensions = viewPort.getDimensions();
@@ -1166,6 +1166,10 @@ function onDocumentKeydown(event) {
                 }
                 Event.stop(event);
             }
+        }
+        else if (event.ctrlKey == 1 && event.keyCode == 65) {  // Ctrl-A
+            $("contactsList").selectAll();
+            Event.stop(event);
         }
 }
 
@@ -1193,10 +1197,7 @@ function initContacts(event) {
         $("uploadOK").observe("click", hideImportResults);
     }
 
-    if (Prototype.Browser.Gecko)
-        Event.observe(document, "keypress", onDocumentKeydown); // for FF2
-    else
-        Event.observe(document, "keydown", onDocumentKeydown);        
+    Event.observe(document, "keydown", onDocumentKeydown);
     
     configureAddressBooks();
     updateAddressBooksMenus();

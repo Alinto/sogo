@@ -198,7 +198,7 @@ function deleteEvent() {
         var nodes = listOfSelection.getSelectedRows();
         if (nodes.length > 0) {
             var label = "";
-            if (!nodes[0].erasable) {
+            if (!nodes[0].erasable && !IsSuperUser) {
                 window.alert(_("You don't have the required privileges to perform the operation."));
                 return false;
             }
@@ -239,24 +239,35 @@ function deleteEvent() {
         }
     }
     else if (selectedCalendarCell) {
-        if (!selectedCalendarCell[0].erasable) {
-            window.alert(_("You don't have the required privileges to perform the operation."));
-            return false;
-        }
-        if (selectedCalendarCell[0].recurrenceTime) {
+        if (selectedCalendarCell.length == 1
+            && selectedCalendarCell[0].recurrenceTime) {
             _editRecurrenceDialog(selectedCalendarCell[0], "confirmDeletion");
         }
-        else {
-            var label = _("eventDeleteConfirmation");
-            if (confirm(label)) {
-                if (document.deleteEventAjaxRequest) {
-                    document.deleteEventAjaxRequest.aborted = true;
-                    document.deleteEventAjaxRequest.abort();
-                }
-                eventsToDelete.push([selectedCalendarCell[0].cname]);
-                calendarsOfEventsToDelete.push(selectedCalendarCell[0].calendar);
-                _batchDeleteEvents();
+        else if (confirm(_("eventDeleteConfirmation"))) {
+            if (document.deleteEventAjaxRequest) {
+                document.deleteEventAjaxRequest.aborted = true;
+                document.deleteEventAjaxRequest.abort();
             }
+            var canDelete = true;
+            var sortedNodes = [];
+            var calendars = [];
+            for (var i = 0; i < selectedCalendarCell.length; i++) {
+                canDelete = canDelete && (selectedCalendarCell[i].erasable || IsSuperUser);
+                if (canDelete) {
+                    var calendar = selectedCalendarCell[i].calendar;
+                    if (!sortedNodes[calendar]) {
+                        sortedNodes[calendar] = [];
+                        calendars.push(calendar);
+                    }
+                    sortedNodes[calendar].push(selectedCalendarCell[i].cname);
+                }
+            }
+            
+            for (var i = 0; i < calendars.length; i++) {
+                calendarsOfEventsToDelete.push(calendars[i]);
+                eventsToDelete.push(sortedNodes[calendars[i]]);
+            }
+            _batchDeleteEvents();
         }
     }
     else
@@ -666,13 +677,6 @@ function performDeleteEventCallback(http) {
             _deleteCalendarEventCache(calendar, cname, occurenceTime);
         }
     }
-}
-
-function onSelectAll() {
-    var list = $("eventsList");
-    list.selectRowsMatchingClass("eventRow");
-
-    return false;
 }
 
 /* in dateselector */
@@ -1854,30 +1858,89 @@ function _eventBlocksMatching(calendar, cname, recurrenceTime) {
 
 function selectCalendarEvent(calendar, cname, recurrenceTime) {
     // Select event in calendar view
-    if (selectedCalendarCell)
-        for (var i = 0; i < selectedCalendarCell.length; i++)
-            selectedCalendarCell[i].deselect();
-
     var selection = _eventBlocksMatching(calendar, cname, recurrenceTime);
     if (selection) {
         for (var i = 0; i < selection.length; i++)
             selection[i].selectElement();
-        selectedCalendarCell = selection;
+        if (selectedCalendarCell)
+            selectedCalendarCell = selectedCalendarCell.concat(selection);
+        else
+            selectedCalendarCell = selection;
     }
 
     return selection;
 }
 
-function onCalendarSelectEvent(event) {
-    selectCalendarEvent(this.calendar, this.cname, this.recurrenceTime);
+function onSelectAll(event) {
+    if (listOfSelection)
+        listOfSelection.selectAll();
+    else {
+        // Select events cells
+        var selectedBlocks = [];
+        for (var c in calendarEvents) {
+            var events = calendarEvents[c];
+            for (var e in events) {
+                var occurrences = events[e];
+                for (var i = 0; i < occurrences.length; i++)
+                    selectedBlocks = selectedBlocks.concat(occurrences[i].blocks);
+            }
+        }
+        for (var i = 0; i < selectedBlocks.length; i++)
+            selectedBlocks[i].selectElement();
+    
+        selectedCalendarCell = selectedBlocks;
+    }
 
-    // Select event in events list
-    var list = $("eventsList");
-    $(list.tBodies[0]).deselectAll();
+    return false;
+}
+
+function onCalendarSelectEvent(event) {
+    var list = $("eventsList").down("TBODY");
+    var alreadySelected = false;
+
+    // Look for event in events list
+    // TODO: event will likely not be found if an Ajax query is refreshing
+    // the events list.
     var rowID = this.calendar + "-" + this.cname;
     if (this.recurrenceTime)
         rowID += "-" + this.recurrenceTime;
     var row = $(rowID);
+
+    // Check if event is already selected
+    if (selectedCalendarCell)
+        for (var i = 0; i < selectedCalendarCell.length; i++)
+            if (selectedCalendarCell[i] == this) {
+                alreadySelected = true;
+                break;
+            }
+    
+    if ((isMac() && event.metaKey == 1) || (!isMac() && event.ctrlKey == 1)) {
+        // If meta or ctrl key is pressed, inverse the selection
+        if (alreadySelected) {
+            this.deselect();
+            selectedCalendarCell.splice(i, 1);
+            if (row)
+                row.deselect();
+            
+            return true;
+        }
+    }
+    else if (event.shiftKey == 0) {
+        // Unselect entries in events list and calendar view
+        list.deselectAll();
+        if (selectedCalendarCell) {
+            for (var i = 0; i < selectedCalendarCell.length; i++)
+                if (selectedCalendarCell[i] != this)
+                    selectedCalendarCell[i].deselect();
+        }
+        selectedCalendarCell = [this];
+    }
+
+    if (!alreadySelected) {
+        // Select event in calendar view
+        selectCalendarEvent(this.calendar, this.cname, this.recurrenceTime);
+    }
+    // Select event in events list
     if (row) {
         var div = row.parentNode.parentNode.parentNode;
         div.scrollTop = row.offsetTop - (div.offsetHeight / 2);
@@ -2649,6 +2712,10 @@ function onDocumentKeydown(event) {
             deleteEvent();
             event.stop();
         }
+        else if (event.ctrlKey == 1 && event.keyCode == 65) {  // Ctrl-A
+            onSelectAll(event);
+            Event.stop(event);
+         }
     }
 }
 
@@ -2675,10 +2742,7 @@ function initCalendars() {
         $("uploadCancel").observe("click", hideCalendarImport);
         $("uploadOK").observe("click", hideImportResults);
 
-        if (Prototype.Browser.Gecko)
-            Event.observe(document, "keypress", onDocumentKeydown); // for FF2
-        else
-            Event.observe(document, "keydown", onDocumentKeydown);
+        Event.observe(document, "keydown", onDocumentKeydown);
     }
 
     onWindowResize.defer();

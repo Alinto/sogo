@@ -1,3 +1,18 @@
+2010-07-30  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/SchedulerUI.js (deleteEvent): improved
+	the function to delete all selected events cells.
+	(onSelectAll): improved the function to select all events cells.
+	(onDocumentKeydown): select all elements upon ctrl-A.
+	(onCalendarSelectEvent): allow multiple selections.
+
+	* UI/WebServerResources/HTMLElement.js (selectAll): new method to
+	select all entries of a list or a table.
+
+	* UI/WebServerResources/scriptaculous/dragdrop.js (initDrag):
+	avoid stopping the event propagation so the blur event is properly
+	fired on the search input field when it isfocused.	
+
 2010-07-28  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/MailerUI.js (deleteCachedMailboxByType,

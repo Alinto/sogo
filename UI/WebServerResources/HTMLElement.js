@@ -202,6 +202,17 @@ Element.addMethods({
             }
         },
 
+        selectAll: function(element) {
+            element = $(element);
+            if (element.tagName == 'UL')
+                rows = element.getElementsByTagName('LI');
+            else
+                rows = element.select('TBODY TR');
+            for (var i = 0; i < rows.length; i++)
+                if (rows[i].nodeType == 1)
+                    $(rows[i]).selectElement();
+            },
+
         deselect: function(element) {
             element = $(element);
             element.removeClassName('_selected');
