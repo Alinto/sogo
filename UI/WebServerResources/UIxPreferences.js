@@ -11,7 +11,6 @@ function savePreferences(sender) {
         sigList.disabled = false;
 
     if ($("categoriesList")) {
-        endAllEditables();
         serializeCategories();
     }
 
@@ -383,56 +382,9 @@ function resetTableActions() {
         var row = $(r[i]);
         row.observe("mousedown", onRowClick);
         var tds = row.childElements();
-        tds[0].observe("mousedown", endAllEditables);
-        tds[0].observe("dblclick", onNameEdit);
-        tds[1].observe("mousedown", endAllEditables);
-        tds[1].childElements()[0].observe ("dblclick", onColorEdit);
-    }
-}
-
-function makeEditable (element) {
-    element.addClassName ("editing");
-    element.removeClassName ("categoryListCell");
-    var tmp = element.innerHTML;
-    element.innerHTML = "";
-    var textField = new Element ("input", {"type": "text"});
-    textField.value = tmp;
-    textField.setStyle({ width: '98%' });
-    textField.observe ("keydown", interceptEnter);
-    element.appendChild (textField);
-    textField.focus ();
-    textField.select ();
-}
-
-function interceptEnter (e) {
-    if (e.keyCode == Event.KEY_RETURN) {
-        endAllEditables (null);
-        preventDefault (e);
-        return false;
-    }
-}
-
-function endEditable (element) {
-    var tmp = element.childElements ().first ().value;
-    element.innerHTML = tmp;
-    element.removeClassName ("editing");
-    element.addClassName ("categoryListCell");
-    if (parseInt($("hasChanged").value) == 0)
-        onChoiceChanged(null);
-}
-
-function endAllEditables (e) {
-    var r = $$("TABLE#categoriesList tbody tr td");
-    for (var i=0; i<r.length; i++) {
-        if (r[i] != this && r[i].hasClassName ("editing"))
-            endEditable ($(r[i]));
-    }
-}
-
-function onNameEdit (e) {
-    endAllEditables ();
-    if (!this.hasClassName ("editing")) {
-        makeEditable (this);
+        var editionCtlr = new RowEditionController();
+        editionCtlr.attachToRowElement(tds[0]);
+        tds[1].childElements()[0].observe("dblclick", onColorEdit);
     }
 }
 
@@ -462,20 +414,16 @@ function onColorPickerChoice (newColor) {
         onChoiceChanged(null);
 }
 
-
 function onCategoryAdd (e) {
     var row = new Element ("tr");
     var nametd = new Element ("td").update ("");
     var colortd = new Element ("td");
     var colordiv = new Element ("div", {"class": "colorBox"});
 
-    endAllEditables();
-
     row.identify ();
     row.addClassName ("categoryListRow");
 
     nametd.addClassName ("categoryListCell");
-
     colortd.addClassName ("categoryListCell");
     colordiv.innerHTML = "&nbsp;";
     colordiv.showColor = "#F0F0F0";
@@ -485,9 +433,9 @@ function onCategoryAdd (e) {
     row.appendChild (nametd);
     row.appendChild (colortd);
     $("categoriesList").tBodies[0].appendChild (row);
-    makeEditable (nametd);
 
     resetTableActions ();
+    nametd.editionController.startEditing();
 }
 
 function onCategoryDelete (e) {

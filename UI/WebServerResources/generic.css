@@ -925,3 +925,7 @@ DIV.bottomToolbar A.bottomButton SPAN
 { background: transparent url('thead_bg.png') repeat-x top right; }
 DIV.bottomToolbar A.bottomButton SPAN:active
 { background-position: bottom left; }
+
+/* row editing */
+.editing > INPUT[type="text"]
+{ width: 98%; }

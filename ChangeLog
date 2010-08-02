@@ -1,5 +1,8 @@
 2010-08-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/RowEditionController.js: new class module
+	that implements the handling of editable list items.
+
 	* SoObjects/SOGo/NSNumber+Utilities.m (-jsonRepresentation):
 	returns "true" or "false" when the initial return value is "YES"
 	or "NO".
@@ -17,7 +20,7 @@
 
 	* UI/WebServerResources/scriptaculous/dragdrop.js (initDrag):
 	avoid stopping the event propagation so the blur event is properly
-	fired on the search input field when it isfocused.	
+	fired on the search input field when it isfocused.
 
 2010-07-28  Francis Lachapelle  <flachapelle@inverse.ca>
 
