@@ -1,4 +1,8 @@
-/* -*- Mode: java; tab-width: 2; c-label-minimum-indentation: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
+/* bind method: attachToEventCells(cells), attachToDayNode(dayNode)
+ * callback method: updateDropCallback(this, eventCells, delta),
+                    createDropCallback(this, dayDate, currentCoordinates);
+ */
+
 
 var SOGoEventDragDayLength = 24 * 4; /* quarters */
 var SOGoEventDragHandleSize = 8; /* handles for dragging mode */
