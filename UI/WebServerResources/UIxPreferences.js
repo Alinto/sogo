@@ -444,9 +444,9 @@ function onCategoryDelete (e) {
     var count = rows.length;
 
     for (var i=0; i < count; i++) {
+        rows[i].editionController = null;
         rows[i].remove ();
     }
-
 }
 
 function serializeCategories() {
