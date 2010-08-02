@@ -113,27 +113,6 @@ div#header span#navtitle
 div#header a:hover
 { text-decoration: none; }
 
-/* the dock */
-
-a.skydockfont
-{ text-decoration: none;
-  color: #06348B; }
-font.skydockfont
-{ text-decoration: none;
-  color: #06348B; }
-font.skydockfont_inactiveMail
-{ text-decoration: none;
-  color: #CCCCCC;
-  font-weight: bold; }
-font.skydockfont_newMail
-{ text-decoration: none;
-  color: #06348B;
-  font-weight: bold; }
-
-table.skytextdocktable
-{ padding: 0px;
-  table-layout: auto; }
-
 DIV.linkbanner
 { background-color: #222;
   width: 100%;
