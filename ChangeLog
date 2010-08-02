@@ -1,3 +1,9 @@
+2010-08-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/NSNumber+Utilities.m (-jsonRepresentation):
+	returns "true" or "false" when the initial return value is "YES"
+	or "NO".
+
 2010-07-30  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/SchedulerUI.js (deleteEvent): improved

@@ -28,8 +28,15 @@
 
 - (NSString *) jsonRepresentation
 {
+  NSString *jsonRepresentation;
 
-  return [NSString stringWithFormat: @"%@", self];
+  jsonRepresentation = [NSString stringWithFormat: @"%@", self];
+  if ([jsonRepresentation isEqualToString: @"YES"])
+    jsonRepresentation = @"true";
+  else if ([jsonRepresentation isEqualToString: @"NO"])
+    jsonRepresentation = @"false";
+
+  return jsonRepresentation;
 }
 
 @end
