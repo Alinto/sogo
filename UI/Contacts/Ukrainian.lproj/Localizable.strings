@@ -2,7 +2,6 @@
 
 "Contact" = "Контакт";
 "Address" = "Адреса";
-"Photos" = "Photos";
 "Other" = "Інше";
 
 "Address Books" = "Адресні книги";
@@ -50,7 +49,6 @@
 "Edit the selected card" = "Зміна вибраної картки";
 "Send a mail message" = "Створення повідомлення";
 "Delete selected card or address book" = "Вилучення вибраної картки або адресної книги";
-"Reload all contacts" = "Reload all contacts";
 
 "htmlMailFormat_UNKNOWN" = "Невідомо";
 "htmlMailFormat_FALSE" = "Звичайний текст";
@@ -113,7 +111,6 @@
 "Note:" = "Примітки:";
 "Timezone:" = "Часова зона:";
 "Birthday:" = "День народження:";
-"Birthday (yyyy-mm-dd):" = "День народження (yyyy-mm-dd):";
 "Freebusy URL:" = "Freebusy URL:";
 
 "Add as..." = "Додати як...";

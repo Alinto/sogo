@@ -45,7 +45,7 @@
 
 "Home"                 = "Початок"; 
 "Calendar"             = "Календар";
-"Addressbook"          = "Адресна книга";
+"Addressbook"          = "Адресна";
 "Mail"                 = "Пошта";
 "Right Administration" = "Права доступу";
 
@@ -136,7 +136,6 @@
 "View"          = "Перегляд";
 "All"           = "Всі";
 "Unread"        = "Непрочитані";
-"No message"    = "No message";
 "messages"      = "повідомлення";
 
 "first"         = "перша";
