@@ -128,6 +128,9 @@
 @implementation SOGoMailSpanishReply
 @end
 
+@implementation SOGoMailPolishReply
+@end
+
 @implementation SOGoMailRussianReply
 @end
 

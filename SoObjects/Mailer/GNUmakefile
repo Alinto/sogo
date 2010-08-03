@@ -60,6 +60,8 @@ Mailer_RESOURCE_FILES += \
 	SOGoMailHungarianReply.wo \
 	SOGoMailItalianForward.wo \
 	SOGoMailItalianReply.wo \
+	SOGoMailPolishForward.wo \
+	SOGoMailPolishReply.wo \
 	SOGoMailRussianForward.wo \
 	SOGoMailRussianReply.wo \
 	SOGoMailSpanishForward.wo \

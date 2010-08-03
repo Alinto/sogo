@@ -51,6 +51,7 @@
 "Edit the selected card" = "Modifier la fiche sélectionnée";
 "Send a mail message" = "Rédiger un courrier à la sélection";
 "Delete selected card or address book" = "Supprimer la fiche sélectionnée";
+"Reload all contacts" = "Reload all contacts";
 
 "htmlMailFormat_UNKNOWN" = "Inconnu";
 "htmlMailFormat_FALSE" = "Texte simple (sans HTML)";

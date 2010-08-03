@@ -1,0 +1,45 @@
+ACCEPTED = "zaakceptowane";
+COMPLETED = "zakończone";
+DECLINED = "odrzucone";
+DELEGATED = "przekazane";
+IN-PROCESS = "przetwarzane";
+NEEDS-ACTION = "wymaga akcji";
+TENTATIVE = "niepewny";
+organized_by_you = "organizowane przez ciebie";
+you_are_an_attendee = "jesteś uczestnikiem";
+add_info_text = "żądania iMIP 'ADD' nie są jeszcze obsługiwane przez SOGo.";
+publish_info_text = "Nadawca informuje cię o załączonym wydarzeniu.";
+cancel_info_text = "Twoje zaproszenie lub całe wydarzenie zostało anulowane.";
+request_info_no_attendee = "proponuje uczestnikom spotkanie. Otrzymujesz tę wiadomość jako powiadomienie, nie jesteś planowany jako uczestnik.";
+Appointment = "Spotkanie";
+
+Organizer = "Organizator";
+Time = "Czas";
+Attendees = "Uczestnicy";
+request_info = "zaprasza cię na spotkanie.";
+"Add to calendar" = "Dodaj do kalendarza";
+"Delete from calendar" = "Usuń z kalendarza";
+"Update status" = "Zaktualizuj status";
+Accept = "Akceptuj";
+Decline = "Odmów";
+Tentative = "Niepewny";
+"Delegate ..." = "Przekaż ...";
+"Delegated to" = "Przekazane do";
+"Update status in calendar" = "Zaktualizuj status w kalendarzu";
+
+reply_info_no_attendee = "Otrzymałeś odpowiedź do wydarzenia ale nadawca nie jest uczestnikiem.";
+reply_info = "To jest odpowiedź do utworzonego przez ciebie wydarzenia";
+
+"to" = "do";
+
+"Untitled" = "Bez tytułu";
+
+"Size" = "Rozmiar";
+
+"Digital signature is not valid" = "Podpis elektroniczny nie jest poprawny";
+"Message is signed" = "Wiadomość jest podpisana";
+"Subject" = "Temat";
+"From" = "Od";
+"Date" = "Data";
+"To" = "Do";
+"Issuer" = "Wystawca";

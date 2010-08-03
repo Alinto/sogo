@@ -259,6 +259,9 @@
 @implementation SOGoMailSpanishForward
 @end
 
+@implementation SOGoMailPolishForward
+@end
+
 @implementation SOGoMailRussianForward
 @end
 

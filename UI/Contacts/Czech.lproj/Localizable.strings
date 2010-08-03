@@ -51,6 +51,7 @@
 "Edit the selected card" = "Upravit označený kontakt";
 "Send a mail message" = "Poslat zprávu";
 "Delete selected card or address book" = "Smazat označený kontakt nebo složku kontaktů";
+"Reload all contacts" = "Reload all contacts";
 
 "htmlMailFormat_UNKNOWN" = "Neznámý";
 "htmlMailFormat_FALSE" = "Plain Text";

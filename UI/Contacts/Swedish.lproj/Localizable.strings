@@ -51,6 +51,7 @@
 "Edit the selected card" = "Redigera markerat adresskort";
 "Send a mail message" = "Skicka ett meddelande";
 "Delete selected card or address book" = "Ta bort markerat adresskort eller adressbok";
+"Reload all contacts" = "Reload all contacts";
 
 "htmlMailFormat_UNKNOWN" = "Okänt";
 "htmlMailFormat_FALSE" = "Oformaterad Text";

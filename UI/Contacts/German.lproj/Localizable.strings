@@ -50,6 +50,7 @@
 "Edit the selected card" = "Gewählte Karte bearbeiten";
 "Send a mail message" = "Neue Nachricht verfassen";
 "Delete selected card or address book" = "Gewählte Karte oder Adressbuch löschen";
+"Reload all contacts" = "Reload all contacts";
 
 "htmlMailFormat_UNKNOWN" = "Unbekannt";
 "htmlMailFormat_FALSE" = "Reintext";

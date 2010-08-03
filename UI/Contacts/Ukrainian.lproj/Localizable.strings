@@ -50,6 +50,7 @@
 "Edit the selected card" = "Зміна вибраної картки";
 "Send a mail message" = "Створення повідомлення";
 "Delete selected card or address book" = "Вилучення вибраної картки або адресної книги";
+"Reload all contacts" = "Reload all contacts";
 
 "htmlMailFormat_UNKNOWN" = "Невідомо";
 "htmlMailFormat_FALSE" = "Звичайний текст";
