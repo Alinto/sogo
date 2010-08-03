@@ -1,5 +1,8 @@
 2010-08-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUser.m (-_appendSystemMailAccount): new
+	private method with the mailbox code split from -[mailAccounts].
+
 	* UI/WebServerResources/MailerUI.js (composeNewMessage): the first
 	account is always identified as "0".
 

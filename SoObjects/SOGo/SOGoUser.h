@@ -40,7 +40,6 @@
 @class NSMutableArray;
 @class NSMutableDictionary;
 @class NSString;
-@class NSURL;
 
 @class WOContext;
 
@@ -69,7 +68,7 @@
   NSString *domainId;
   NSString *language;
   NSArray *allEmails;
-  NSArray *mailAccounts;
+  NSMutableArray *mailAccounts;
   NSString *cn;
   BOOL propagateCache;
 }
