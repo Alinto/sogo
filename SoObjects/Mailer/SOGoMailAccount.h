@@ -50,15 +50,12 @@ typedef enum {
 
 @interface SOGoMailAccount : SOGoMailBaseObject
 {
-  NSString *accountName;
   SOGoMailFolder *inboxFolder;
   SOGoDraftsFolder *draftsFolder;
   SOGoSentFolder *sentFolder;
   SOGoTrashFolder *trashFolder;
   SOGoIMAPAclStyle imapAclStyle;
 }
-
-- (void) setAccountName: (NSString *) newAccountName;
 
 - (SOGoIMAPAclStyle) imapAclStyle;
 - (BOOL) imapAclConformsToIMAPExt;

@@ -36,113 +36,55 @@
 
 @implementation SOGoMailAccounts
 
-/* listing the available mailboxes */
-
-// - (BOOL) isInHomeFolderBranchOfLoggedInAccount: (NSString *) userLogin
-// {
-//   return [[container nameInContainer] isEqualToString: userLogin];
-// }
-
-- (id) init
+- (NSArray *) mailAccounts
 {
-  if ((self = [super init]))
-    {
-      accountKeys = nil;
-    }
+  SOGoUser *user;
+  
+  user = [SOGoUser userWithLogin: [self ownerInContext: nil]];
 
-  return self;
-}
-
-- (void) dealloc
-{
-  [accountKeys release];
-  [super dealloc];
-}
-
-- (void) _initAccountKeys
-{
-  NSArray *accounts;
-  NSString *currentName;
-  int count, max;
-
-  if (!accountKeys)
-    {
-      accountKeys = [NSMutableDictionary new];
-
-      accounts = [[context activeUser] mailAccounts];
-      max = [accounts count];
-      for (count = 0; count < max; count++)
-        {
-          currentName = [[accounts objectAtIndex: count] objectForKey: @"name"];
-          [accountKeys setObject: currentName
-                          forKey: [currentName asCSSIdentifier]];
-        }
-    }
-}
-
-- (NSDictionary *) accountKeys
-{
-  [self _initAccountKeys];
-
-  return accountKeys;
+  return [user mailAccounts];
 }
 
 - (NSArray *) toManyRelationshipKeys
 {
-  [self _initAccountKeys];
+  NSMutableArray *keys;
+  NSArray *accounts;
+  int count, max;
+  SOGoUser *user;
+  
+  user = [SOGoUser userWithLogin: [self ownerInContext: nil]];
+  accounts = [user mailAccounts];
+  max = [accounts count];
 
-  return [accountKeys allKeys];
+  keys = [NSMutableArray arrayWithCapacity: max];
+  for (count = 0; count < max; count++)
+    [keys addObject: [NSString stringWithFormat: @"%d", count]];
+
+  return keys;
 }
 
 /* name lookup */
-
-// - (id) mailAccountWithName: (NSString *) _key
-// 		 inContext: (id) _ctx
-// {
-//   static Class ctClass = Nil;
-//   id ct;
-  
-//   if (ctClass == Nil)
-//     ctClass = NSClassFromString(@"SOGoMailAccount");
-//   if (ctClass == Nil) {
-//     [self errorWithFormat:@"missing SOGoMailAccount class!"];
-//     return nil;
-//   }
-  
-//   ct = [[ctClass alloc] initWithName:_key inContainer:self];
-
-//   return [ct autorelease];
-// }
 
 - (id) lookupName: (NSString *) _key
         inContext: (id) _ctx
           acquire: (BOOL) _flag
 {
   id obj;
-  NSString *accountName;
-//   NSString *userLogin;
-
-//   userLogin = [[context activeUser] login];
+  NSArray *accounts;
+  SOGoUser *user;
+  int keyCount;
   
-//   if (![self isInHomeFolderBranchOfLoggedInAccount: userLogin]) {
-//     [self warnWithFormat:@ "User %@ tried to access mail hierarchy of %@",
-// 	  userLogin, [container nameInContainer]];
-    
-//     return [NSException exceptionWithHTTPStatus:403 /* Forbidden */
-// 			reason:@"Tried to access the mail of another user"];
-//   }
-
   /* first check attributes directly bound to the application */
   obj = [super lookupName:_key inContext:_ctx acquire:NO];
   if (!obj)
     {
-      [self _initAccountKeys];
-      accountName = [accountKeys objectForKey: _key];
-      if ([accountName length])
-        {
-          obj = [SOGoMailAccount objectWithName: _key inContainer: self];
-          [obj setAccountName: accountName];
-        }
+      user = [SOGoUser userWithLogin: [self ownerInContext: nil]];
+      accounts = [user mailAccounts];
+
+      keyCount = [_key intValue];
+      if ([_key isEqualToString: [NSString stringWithFormat: @"%d", keyCount]]
+          && keyCount > -1 && keyCount < [accounts count])
+        obj = [SOGoMailAccount objectWithName: _key inContainer: self];
       else
         obj = [NSException exceptionWithHTTPStatus: 404 /* Not Found */];
     }

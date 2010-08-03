@@ -69,7 +69,6 @@ static NSString *sieveScriptName = @"sogo";
       draftsFolder = nil;
       sentFolder = nil;
       trashFolder = nil;
-      accountName = nil;
       imapAclStyle = undefined;
     }
 
@@ -82,13 +81,7 @@ static NSString *sieveScriptName = @"sogo";
   [draftsFolder release];
   [sentFolder release];
   [trashFolder release];
-  [accountName release];
   [super dealloc];  
-}
-
-- (void) setAccountName: (NSString *) newAccountName
-{
-  ASSIGN (accountName, newAccountName);
 }
 
 /* listing the available folders */
@@ -475,11 +468,6 @@ static NSString *sieveScriptName = @"sogo";
 
 /* IMAP4 */
 
-- (BOOL) useSSL
-{
-  return NO;
-}
-
 - (NSString *) imap4LoginFromHTTP
 {
   WORequest *rq;
@@ -505,46 +493,52 @@ static NSString *sieveScriptName = @"sogo";
   return [creds objectAtIndex:0]; /* the user */
 }
 
-- (NSString *) _urlHostString
+- (NSDictionary *) _mailAccount
 {
   NSDictionary *mailAccount;
-  NSString *username, *escUsername, *hostString;
+  NSArray *accounts;
+  SOGoUser *user;
 
-  mailAccount = [[context activeUser] accountWithName: accountName];
-  if (mailAccount)
-    {
-      username = [mailAccount objectForKey: @"userName"];
-      escUsername
-	= [[username stringByEscapingURL] stringByReplacingString: @"@"
-					  withString: @"%40"];
-      hostString = [NSString stringWithFormat: @"%@@%@", escUsername,
-                    [mailAccount objectForKey: @"serverName"]];
-    }
-  else
-    hostString = @"localhost";
+  user = [SOGoUser userWithLogin: [self ownerInContext: nil]];
+  accounts = [user mailAccounts];
+  mailAccount = [accounts objectAtIndex: [nameInContainer intValue]];
 
-  return hostString;
+  return mailAccount;
 }
 
 - (NSMutableString *) imap4URLString
 {
-  /* private, overridden by SOGoSharedMailAccount */
-  NSMutableString *urlString;
-  NSString *host;
+  NSMutableString *imap4URLString;
+  NSDictionary *mailAccount;
+  NSString *encryption, *protocol, *username, *escUsername;
+  int defaultPort, port;
 
-  urlString = [NSMutableString string];
-
-  if ([self useSSL])
-    [urlString appendString: @"imaps://"];
+  mailAccount = [self _mailAccount];
+  encryption = [mailAccount objectForKey: @"encryption"];
+  if ([encryption isEqualToString: @"ssl"])
+    {
+      protocol = @"imaps";
+      defaultPort = 993;
+    }
   else
-    [urlString appendString: @"imap://"];
+    {
+      protocol = @"imap";
+      defaultPort = 143;
+    }
+  
+  username = [mailAccount objectForKey: @"userName"];
+  escUsername
+    = [[username stringByEscapingURL] stringByReplacingString: @"@"
+                                                   withString: @"%40"];
+  imap4URLString = [NSMutableString stringWithFormat: @"%@://%@@%@",
+                                    protocol, escUsername,
+                           [mailAccount objectForKey: @"serverName"]];
+  port = [[mailAccount objectForKey: @"port"] intValue];
+  if (port && port != defaultPort)
+    [imap4URLString appendFormat: @":%d", port];
+  [imap4URLString appendString: @"/"];
 
-  host = [self _urlHostString];
-  if (![host rangeOfString: @"@"].length)
-    [urlString appendFormat: @"%@@", [self imap4LoginFromHTTP]];
-  [urlString appendFormat: @"%@/", host];
-
-  return urlString;
+  return imap4URLString;
 }
 
 - (NSMutableString *) traversalFromMailAccount
@@ -800,40 +794,9 @@ static NSString *sieveScriptName = @"sogo";
   return [[self imap4Connection] createMailbox:_name atURL:[self imap4URL]];
 }
 
-- (NSString *) shortTitle
-{
-  NSString *login, *host;
-  NSRange r;
-
-  r = [accountName rangeOfString:@"@"];
-  if (r.length > 0)
-    {
-      login = [accountName substringToIndex:r.location];
-      host  = [accountName substringFromIndex:(r.location + r.length)];
-    }
-  else
-    {
-      login = nil;
-      host  = accountName;
-    }
-  
-  r = [host rangeOfString:@"."];
-  if (r.length > 0)
-    host = [host substringToIndex:r.location];
-  
-  if ([login length] == 0)
-    return host;
-  
-  r = [login rangeOfString:@"."];
-  if (r.length > 0)
-    login = [login substringToIndex:r.location];
-  
-  return [NSString stringWithFormat:@"%@@%@", login, host];
-}
-
 - (NSString *) davDisplayName
 {
-  return [self shortTitle];
+  return [[self _mailAccount] objectForKey: @"name"];
 }
 
 @end /* SOGoMailAccount */

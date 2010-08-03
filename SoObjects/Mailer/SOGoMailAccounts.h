@@ -41,12 +41,10 @@
 @class NSMutableDictionary;
 
 @interface SOGoMailAccounts : SOGoFolder
-{
-  NSMutableDictionary *accountKeys;
-}
+
+- (NSArray *) mailAccounts;
 
 - (NSArray *) toManyRelationshipKeys;
-- (NSDictionary *) accountKeys;
 
 @end
 

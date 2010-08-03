@@ -1,5 +1,33 @@
 2010-08-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/MailerUI.js (composeNewMessage): the first
+	account is always identified as "0".
+
+	* UI/MailerUI/UIxMailMainFrame.m (-mailAccounts): we now return
+	tje JSON rep. of a simple and flat array containing the account
+	display names, since the account are represented with an integer
+	index.
+	(-inboxData): we directly fetch the first mail account by using
+	the "0" key.
+	(-composeAction): same as above.
+
+	* SoObjects/Mailer/SOGoMailAccount.m (-imap4URLString): the
+	"nameInContainer" now represents the index of the current account
+	in the array of user mail accounts, which simplifies this method.
+	We also handle the "encryption" key, albeit currently unused, and
+	we now add the port to the url as needed.
+	(-shortTitle): removed method.
+	(-davDisplayName): we only need to return the "name" key of the
+	current account.
+
+	* SoObjects/Mailer/SOGoMailAccounts.m (-mailAccounts): new utility
+	method that returns the mail account dictionaries corresponding to
+	the owner.
+	(-toManyRelationshipKeys): we now identify mail accounts via their
+	index in the array of accounts, since the order will never vary,
+	this simplifies the code.
+	(-lookupName:inContext:acquire:): same as the above.
+
 	* UI/WebServerResources/RowEditionController.js:
 	RowEditionController.startEditing: keep the "_selected" class
 	when starting edition, if exists.

@@ -103,27 +103,12 @@
 
 - (NSString *) mailAccounts
 {
-  SOGoMailAccounts *accounts;
-  NSDictionary *accountKeys;
-  NSArray *keys, *entry;
-  NSMutableArray *values;
-  NSString *key;
-  int i, max;
+  NSArray *accounts, *names;
 
-  accounts = [self clientObject];
-  accountKeys = [accounts accountKeys];
-  keys = [accountKeys allKeys];
-  values = [NSMutableArray array];
+  accounts = [[self clientObject] mailAccounts];
+  names = [accounts objectsForKey: @"name" notFoundMarker: nil];
 
-  max = [keys count];
-  for (i = 0; i < max; i++)
-    {
-      key = [keys objectAtIndex: i];
-      entry = [NSArray arrayWithObjects: key, [accountKeys objectForKey: key], nil];
-      [values addObject: entry];
-    }
-
-  return [values jsonRepresentation];
+  return [names jsonRepresentation];
 }
 
 - (NSString *) defaultColumnsOrder
@@ -182,21 +167,18 @@
   SOGoMailAccounts *accounts;
   SOGoMailAccount *account;
   SOGoMailFolder *inbox;
-
-  NSString *firstAccount;
   NSDictionary *data;
   SOGoUser *activeUser;
   UIxMailListActions *actions;
 
   [self _setupContext];
   
+#warning this code is dirty: we should not invoke UIxMailListActions from here!
   actions = [[[UIxMailListActions new] initWithRequest: [context request]] autorelease];
   activeUser = [context activeUser];
   accounts = [self clientObject];
   
-  firstAccount = [[[accounts accountKeys] allKeys]
-		   objectAtIndex: 0];
-  account = [accounts lookupName: firstAccount inContext: context acquire: NO];
+  account = [accounts lookupName: @"0" inContext: context acquire: NO];
   inbox = [account inboxFolderInContext: context];
 
   data = [actions getUIDsAndHeadersInFolder: inbox];
@@ -207,8 +189,8 @@
 - (id <WOActionResults>) composeAction
 {
   id contact;
-  NSArray *accounts, *contactsId, *cards;
-  NSString *firstAccount, *firstEscapedAccount, *newLocation, *parameters, *folderId, *uid, *formattedMail;
+  NSArray *contactsId, *cards;
+  NSString *newLocation, *parameters, *folderId, *uid, *formattedMail;
   NSEnumerator *uids;
   NSMutableArray *addresses;
   NGVCard *card;
@@ -222,11 +204,6 @@
   parameters = nil;
   co = [self clientObject];
   
-  // We use the first mail account
-  accounts = [[context activeUser] mailAccounts];
-  firstAccount = [[accounts objectsForKey: @"name" notFoundMarker: nil]
-                  objectAtIndex: 0];
-  firstEscapedAccount = [firstAccount asCSSIdentifier];
   request = [context request];
   
   if ((folderId = [request formValueForKey: @"folder"]) &&
@@ -290,9 +267,8 @@
     // No parameter passed; simply open the compose window
     parameters = @"?mailto=";
 
-  newLocation = [NSString stringWithFormat: @"%@/%@/compose%@",
+  newLocation = [NSString stringWithFormat: @"%@/0/compose%@",
                  [co baseURLInContext: context],
-                 firstEscapedAccount,
                  parameters];
 
   return [self redirectToLocation: newLocation];
