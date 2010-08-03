@@ -37,7 +37,12 @@ RowEditionController.prototype = {
     startEditing: function REC_startEditing() {
         var rowElement = this.rowElement;
         rowElement.previousClassName = rowElement.className;
-        rowElement.className = "editing";
+        if (rowElement.className.indexOf("_selected") > -1) {
+            rowElement.className = "editing _selected";
+        }
+        else {
+            rowElement.className = "editing";
+        }
 
         var value = "";
         for (var i = 0; i < rowElement.childNodes.length; i++) {
@@ -92,11 +97,13 @@ RowEditionController.prototype = {
 
     acceptEdition: function REC_acceptEdition() {
         var newValue = this.textField.value;
+        var isValid = (newValue && newValue.length > 0);
         if (this.initialValue != newValue
+            && isValid
             && this.notifyNewValueCallback) {
-            this.notifyNewValueCallback(this, value);
+            this.notifyNewValueCallback(this, newValue);
         }
-        this.stopEditing(true);
+        this.stopEditing(isValid);
     },
     cancelEdition: function REC_acceptEdition() {
         this.stopEditing(false);
@@ -119,6 +126,9 @@ RowEditionController.prototype = {
         else if (event.keyCode == Event.KEY_RETURN) {
             this.acceptEdition();
             event.stop();
+        }
+        else if (event.keyCode == Event.KEY_TAB) {
+            this.acceptEdition();
         }
     },
     onBodyMouseDown: function REC_onBodyMouseDown(event) {
