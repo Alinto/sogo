@@ -1,3 +1,7 @@
+2010-08-03  Ludovic Marcotte  <lmarcotte@inverse.ca>
+	
+	* Applied patch for bug #690
+
 2010-07-28  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/MailerUI.js (deleteCachedMailboxByType,
