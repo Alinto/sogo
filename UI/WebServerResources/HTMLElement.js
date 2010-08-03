@@ -13,7 +13,7 @@ Element.addMethods({
             element = $(element);
 
             var matchingNodes = new Array();
-            var tagName = tagName.toUpperCase();
+            tagName = tagName.toUpperCase();
     
             for (var i = 0; i < element.childNodes.length; i++) {
                 var childNode = $(element.childNodes[i]);
