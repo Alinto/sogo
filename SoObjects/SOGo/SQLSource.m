@@ -35,6 +35,8 @@
 #import <GDLAccess/EOAdaptorContext.h>
 #import <GDLAccess/EOAttribute.h>
 
+#include <unistd.h>
+
 #include <openssl/evp.h>
 #include <openssl/md5.h>
 
@@ -138,6 +140,16 @@
   if ([_userPasswordAlgorithm caseInsensitiveCompare: @"none"] == NSOrderedSame)
     {
       return [plainPassword isEqualToString: encryptedPassword];
+    }
+  else if ([_userPasswordAlgorithm caseInsensitiveCompare: @"crypt"] == NSOrderedSame)
+    {
+      NSString *s;
+      char *buf;
+      
+      buf = (char *)crypt([plainPassword UTF8String], [encryptedPassword UTF8String]);
+      s = [NSString stringWithUTF8String: buf];
+      
+      return [s isEqualToString: encryptedPassword];
     }
   else if ([_userPasswordAlgorithm caseInsensitiveCompare: @"md5"] == NSOrderedSame)
     {
