@@ -1684,6 +1684,18 @@ function createDialog(id, title, legend, content, positionClass) {
     var newDialog = createElement("div", id, ["dialog", positionClass]);
     newDialog.setStyle({"display": "none"});
 
+    if (positionClass == "none") {
+        var bgDiv = $("bgDialogDiv");
+        if (bgDiv) {
+            bgDiv.show();
+        }
+        else {
+            bgDiv = createElement("div", "bgDialogDiv", ["bgDialog"]);
+            document.body.appendChild(bgDiv);
+            bgDiv.observe("click", onBodyClickDialogHandler.bind(document.body, id));
+        }
+    }
+
     var subdiv = createElement("div", null, null, null, null, newDialog);
     if (title && title.length > 0) {
         var titleh3 = createElement("h3", null, null, null, null, subdiv);
@@ -1709,6 +1721,11 @@ function createButton(id, caption, action) {
         newButton.observe("click", action);
 
     return newButton;
+}
+
+function onBodyClickDialogHandler(dialogId) {
+    $(dialogId).hide();
+    $("bgDialogDiv").hide();
 }
 
 function readCookie(name) {

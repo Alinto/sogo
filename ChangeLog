@@ -1,3 +1,12 @@
+2010-08-04  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/generic.js (createDialog): when the
+	position class is set to "none", the dialog will be modal (with a
+	dimmed background).
+
+	* UI/WebServerResources/ContactsUI.js: replaced window.confirm by
+	a CSS modal dialog.
+
 2010-08-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUser.m (-_appendSystemMailAccount): new

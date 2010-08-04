@@ -545,7 +545,7 @@ DIV.resize-handle
   color: #fff !important;
 }
 
-DIV.dialog 
+DIV.dialog
 { position: absolute;
   width: 350px;
   z-index: 50; }
@@ -575,6 +575,28 @@ DIV.dialog.right DIV
 { border-right: 0px;
   margin-right: 19px;
   text-align: right; }
+
+DIV.dialog.none
+{ position: relative;
+  opacity: 1;
+  margin: 100px auto; /* top margin could be dynamically set depending on window height */
+  z-index: 10000; }
+
+DIV.dialog.none DIV
+{ padding: 10px;
+  padding-bottom: 31px; }
+
+DIV.dialog.none H3
+{ margin: 0; }
+
+DIV#bgDialogDiv
+{ position: absolute;
+  margin: auto;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 9999;
+  opacity: .3;
+  background-color: #000!important; }
 
 DIV#uploadDialog,
 DIV#uploadResults
@@ -929,3 +951,7 @@ DIV.bottomToolbar A.bottomButton SPAN:active
 /* row editing */
 .editing > INPUT[type="text"]
 { width: 98%; }
+
+/* modalbox */
+DIV#modalbox SPAN
+{ float: right; }

@@ -9,7 +9,8 @@ var usersRightsWindowWidth = 450;
 var Contact = {
     currentAddressBook: null,
     currentContact: null,
-    deleteContactsRequestCount: null
+    deleteContactsRequestCount: null,
+    dialogs: {}
 };
 
 function validateEditorInput(sender) {
@@ -433,23 +434,48 @@ function onToolbarDeleteSelectedContacts(event) {
     var rows = contactsList.getSelectedRowsId();
 
     if (rows.length) {
-        var label = _("Are you sure you want to delete the selected contacts?");
-        if (window.confirm(label)) {
-            for (var i = 0; i < rows.length; i++) {
-                delete cachedContacts[Contact.currentAddressBook + "/" + rows[i]];
-                var urlstr = (URLForFolderID(Contact.currentAddressBook) + "/"
-                              + rows[i] + "/delete");
-                Contact.deleteContactsRequestCount++;
-                triggerAjaxRequest(urlstr, onContactDeleteEventCallback,
-                                   rows[i]);
-            }
+        var dialogId = "deleteContactsDialog";
+        var dialog = Contact.dialogs[dialogId];
+        if (dialog) {
+            dialog.show();
+            $("bgDialogDiv").show();
         }
+        else {
+            var label = _("Are you sure you want to delete the selected contacts?");
+            var fields = createElement("p");
+            fields.appendChild(createButton("confirmBtn", "Yes", onToolbarDeleteSelectedContactsConfirm.bind(fields, dialogId)));
+            fields.appendChild(createButton("cancelBtn", "No", onBodyClickDialogHandler.bind(document.body, dialogId)));
+            var dialog = createDialog(dialogId,
+                                      _("Confirmation"),
+                                      label,
+                                      fields,
+                                      "none");
+            document.body.appendChild(dialog);
+            dialog.show();
+            Contact.dialogs[dialogId] = dialog;
+        }
+        return false;
     }
     else {
         window.alert(_("Please select a contact."));
     }
 
     return false;
+}
+
+function onToolbarDeleteSelectedContactsConfirm(dialogId) {
+    var contactsList = $('contactsList');
+    var rows = contactsList.getSelectedRowsId();
+    for (var i = 0; i < rows.length; i++) {
+        delete cachedContacts[Contact.currentAddressBook + "/" + rows[i]];
+        var urlstr = (URLForFolderID(Contact.currentAddressBook) + "/"
+                      + rows[i] + "/delete");
+        Contact.deleteContactsRequestCount++;
+        triggerAjaxRequest(urlstr, onContactDeleteEventCallback,
+                           rows[i]);
+    }
+
+    onBodyClickDialogHandler(dialogId);
 }
 
 function onContactDeleteEventCallback(http) {
@@ -774,24 +800,70 @@ function onAddressBookRemove(event) {
 
 function deletePersonalAddressBook(folderId) {
     if (folderId == "personal") {
-        var label = _("You cannot remove nor unsubscribe from your personal addressbook.");
-        window.alert(label);
-    }
-    else {
-        var label
-            = _("Are you sure you want to delete the selected address book?");
-        if (window.confirm(label)) {
-            if (document.deletePersonalABAjaxRequest) {
-                document.deletePersonalABAjaxRequest.aborted = true;
-                document.deletePersonalABAjaxRequest.abort();
-            }
-            var url = ApplicationBaseURL + folderId + "/delete";
-            document.deletePersonalABAjaxRequest
-                = triggerAjaxRequest(url, deletePersonalAddressBookCallback,
-                                     folderId);
+        var dialogId = "deletePersonalAddressBook";
+        var dialog = Contact.dialogs[dialogId];
+        if (dialog) {
+            dialog.show();
+            $("bgDialogDiv").show();
+        }
+        else {
+            var label = _("You cannot remove nor unsubscribe from your personal addressbook.");
+            var fields = createElement("p");
+            fields.appendChild(createButton(dialogId + "ContinueBtn",
+                                            "Continue",
+                                            onBodyClickDialogHandler.bind(document.body, dialogId)));
+            var dialog = createDialog(dialogId,
+                                      _("Warning"),
+                                      label,
+                                      fields,
+                                      "none");
+            document.body.appendChild(dialog);
+            dialog.show();
+            Contact.dialogs[dialogId] = dialog;
         }
     }
+    else {
+        var dialogId = "deleteAddressBook";
+        var dialog = Contact.dialogs[dialogId];
+        if (dialog) {
+            dialog.show();
+            $("bgDialogDiv").show();
+        }
+        else {
+            var label = _("Are you sure you want to delete the selected address book?");
+            var fields = createElement("p");
+            fields.appendChild(createButton(dialogId + "confirmBtn",
+                                            "Yes",
+                                            deletePersonalAddressBookConfirm.bind(fields, folderId, dialogId)));
+            fields.appendChild(createButton(dialogId + "cancelBtn",
+                                            "No",
+                                            onBodyClickDialogHandler.bind(document.body, dialogId)));
+            var dialog = createDialog(dialogId,
+                                      _("Confirmation"),
+                                      label,
+                                      fields,
+                                      "none");
+            document.body.appendChild(dialog);
+            dialog.show();
+            Contact.dialogs[dialogId] = dialog;
+        }
+    }
+        return false;
+    }
+
+function deletePersonalAddressBookConfirm(folderId, dialogId) {
+    if (document.deletePersonalABAjaxRequest) {
+        document.deletePersonalABAjaxRequest.aborted = true;
+        document.deletePersonalABAjaxRequest.abort();
+    }
+    var url = ApplicationBaseURL + folderId + "/delete";
+    document.deletePersonalABAjaxRequest
+        = triggerAjaxRequest(url, deletePersonalAddressBookCallback,
+                             folderId);
+
+    onBodyClickDialogHandler(dialogId);
 }
+
 
 function deletePersonalAddressBookCallback(http) {
     if (http.readyState == 4) {
