@@ -36,13 +36,7 @@ RowEditionController.prototype = {
 
     startEditing: function REC_startEditing() {
         var rowElement = this.rowElement;
-        rowElement.previousClassName = rowElement.className;
-        if (rowElement.className.indexOf("_selected") > -1) {
-            rowElement.className = "editing _selected";
-        }
-        else {
-            rowElement.className = "editing";
-        }
+        rowElement.addClassName("editing");
 
         var value = "";
         for (var i = 0; i < rowElement.childNodes.length; i++) {
@@ -51,7 +45,6 @@ RowEditionController.prototype = {
                 value += child.nodeValue;
             }
         }
-        log("initial Value: " + value);
         this.initialValue = value;
         this.emptyRow();
 
@@ -82,8 +75,7 @@ RowEditionController.prototype = {
         this.textField = null;
         this.emptyRow();
         var rowElement = this.rowElement;
-        rowElement.className = rowElement.previousClassName;
-        rowElement.previousClassName = null;
+        rowElement.removeClassName("editing");
         rowElement.appendChild(document.createTextNode(displayValue));
         this.initialValue = null;
 
@@ -111,7 +103,6 @@ RowEditionController.prototype = {
 
     /* event handlers */
     onRowDblClick: function REC_onRowDblClick(event) {
-        log("onRowDblClick");
         if (!this.textField) {
             this.startEditing();
             event.stop();

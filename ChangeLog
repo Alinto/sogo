@@ -7,6 +7,14 @@
 	* UI/WebServerResources/ContactsUI.js: replaced window.confirm by
 	a CSS modal dialog.
 
+2010-08-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/RowEditionController.js:
+	(RowEditionController.startEditing): avoid setting the whole
+	element class. Make use of addClassName/removeClassName instead,
+	so that classes added/removed via other evt handlers are not
+	ignored.
+
 2010-08-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUser.m (-_appendSystemMailAccount): new
