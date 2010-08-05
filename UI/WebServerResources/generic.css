@@ -675,6 +675,7 @@ A.button {
   height: 23px;
   padding-right: 3px; /* sliding doors padding */
   text-decoration: none;  
+  text-align: center;
   color: inherit;
   cursor: pointer;
 }
@@ -685,6 +686,7 @@ A.button SPAN {
     line-height: 13px;
     padding: 5px 2px 5px 5px;
     cursor: pointer;
+    min-width: 70px;
 }
 
 A.button.actionButton SPAN 

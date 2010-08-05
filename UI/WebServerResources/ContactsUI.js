@@ -444,7 +444,7 @@ function onToolbarDeleteSelectedContacts(event) {
             var label = _("Are you sure you want to delete the selected contacts?");
             var fields = createElement("p");
             fields.appendChild(createButton("confirmBtn", "Yes", onToolbarDeleteSelectedContactsConfirm.bind(fields, dialogId)));
-            fields.appendChild(createButton("cancelBtn", "No", onBodyClickDialogHandler.bind(document.body, dialogId)));
+            fields.appendChild(createButton("cancelBtn", "No", onBodyClickDialogHandler));
             var dialog = createDialog(dialogId,
                                       _("Confirmation"),
                                       label,
@@ -467,6 +467,8 @@ function onToolbarDeleteSelectedContactsConfirm(dialogId) {
     var contactsList = $('contactsList');
     var rows = contactsList.getSelectedRowsId();
     for (var i = 0; i < rows.length; i++) {
+        // hide row?
+        $(rows[i]).hide();
         delete cachedContacts[Contact.currentAddressBook + "/" + rows[i]];
         var urlstr = (URLForFolderID(Contact.currentAddressBook) + "/"
                       + rows[i] + "/delete");
@@ -475,7 +477,7 @@ function onToolbarDeleteSelectedContactsConfirm(dialogId) {
                            rows[i]);
     }
 
-    onBodyClickDialogHandler(dialogId);
+    onBodyClickDialogHandler();
 }
 
 function onContactDeleteEventCallback(http) {
@@ -497,10 +499,12 @@ function onContactDeleteEventCallback(http) {
                     loadContact(Contact.currentContact);
                 }
             }
+            row.deselect();
             row.parentNode.removeChild(row);
         }
         else if (parseInt(http.status) == 403) {
             var row = $(http.callbackData);
+            row.show();
             var displayName = row.readAttribute("contactname");
             Contact.deleteContactsRequestCount--;
             window.alert(labels["You cannot delete the card of \"%{0}\"."].formatted(displayName));
@@ -645,6 +649,7 @@ function refreshContacts(cname) {
 }
 
 function onAddressBookNew(event) {
+    var dialogId = "newAddressBookDialog";
     createFolder(window.prompt(_("Name of the Address Book"), ""),
                  appendAddressBook);
     preventDefault(event);
@@ -800,10 +805,9 @@ function onAddressBookRemove(event) {
 
 function deletePersonalAddressBook(folderId) {
     if (folderId == "personal") {
-        var dialogId = "deletePersonalAddressBook";
+        var dialogId = "deletePersonalAddressBookDialog";
         var dialog = Contact.dialogs[dialogId];
         if (dialog) {
-            dialog.show();
             $("bgDialogDiv").show();
         }
         else {
@@ -811,22 +815,21 @@ function deletePersonalAddressBook(folderId) {
             var fields = createElement("p");
             fields.appendChild(createButton(dialogId + "ContinueBtn",
                                             "Continue",
-                                            onBodyClickDialogHandler.bind(document.body, dialogId)));
-            var dialog = createDialog(dialogId,
-                                      _("Warning"),
-                                      label,
-                                      fields,
-                                      "none");
+                                            onBodyClickDialogHandler));
+            dialog = createDialog(dialogId,
+                                  _("Warning"),
+                                  label,
+                                  fields,
+                                  "none");
             document.body.appendChild(dialog);
-            dialog.show();
             Contact.dialogs[dialogId] = dialog;
         }
+        dialog.show();
     }
     else {
-        var dialogId = "deleteAddressBook";
+        var dialogId = "deleteAddressBookDialog";
         var dialog = Contact.dialogs[dialogId];
         if (dialog) {
-            dialog.show();
             $("bgDialogDiv").show();
         }
         else {
@@ -834,34 +837,37 @@ function deletePersonalAddressBook(folderId) {
             var fields = createElement("p");
             fields.appendChild(createButton(dialogId + "confirmBtn",
                                             "Yes",
-                                            deletePersonalAddressBookConfirm.bind(fields, folderId, dialogId)));
+                                            deletePersonalAddressBookConfirm.bind(fields)));
             fields.appendChild(createButton(dialogId + "cancelBtn",
                                             "No",
-                                            onBodyClickDialogHandler.bind(document.body, dialogId)));
-            var dialog = createDialog(dialogId,
-                                      _("Confirmation"),
-                                      label,
-                                      fields,
-                                      "none");
+                                            onBodyClickDialogHandler));
+            dialog = createDialog(dialogId,
+                                  _("Confirmation"),
+                                  label,
+                                  fields,
+                                  "none");
             document.body.appendChild(dialog);
-            dialog.show();
             Contact.dialogs[dialogId] = dialog;
         }
+        dialog.folderId = folderId;
+        dialog.show();
     }
-        return false;
-    }
+    return false;
+}
 
-function deletePersonalAddressBookConfirm(folderId, dialogId) {
+function deletePersonalAddressBookConfirm(event) {
     if (document.deletePersonalABAjaxRequest) {
         document.deletePersonalABAjaxRequest.aborted = true;
         document.deletePersonalABAjaxRequest.abort();
     }
+    var dialog = $(this).up("DIV.dialog");
+    var folderId = dialog.folderId;
     var url = ApplicationBaseURL + folderId + "/delete";
     document.deletePersonalABAjaxRequest
         = triggerAjaxRequest(url, deletePersonalAddressBookCallback,
                              folderId);
 
-    onBodyClickDialogHandler(dialogId);
+    onBodyClickDialogHandler();
 }
 
 

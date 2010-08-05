@@ -1692,7 +1692,7 @@ function createDialog(id, title, legend, content, positionClass) {
         else {
             bgDiv = createElement("div", "bgDialogDiv", ["bgDialog"]);
             document.body.appendChild(bgDiv);
-            bgDiv.observe("click", onBodyClickDialogHandler.bind(document.body, id));
+            bgDiv.observe("click", onBodyClickDialogHandler);
         }
     }
 
@@ -1723,8 +1723,12 @@ function createButton(id, caption, action) {
     return newButton;
 }
 
-function onBodyClickDialogHandler(dialogId) {
-    $(dialogId).hide();
+function onBodyClickDialogHandler() {
+    $$("DIV.dialog").each(function(div) {
+            if (div.visible())
+                div.hide();
+        });
+
     $("bgDialogDiv").hide();
 }
 
