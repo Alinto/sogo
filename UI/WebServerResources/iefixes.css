@@ -31,6 +31,9 @@ UL#userList
 DIV.tabsContainer > DIV.scrollToolbar > A > SPAN
 { line-height: 12px; }
 
+DIV#bgDialogDiv
+{ filter: alpha(opacity=30); }
+
 /* MailerUI */
 
 IMG.dragMessage
