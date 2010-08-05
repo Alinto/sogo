@@ -1,3 +1,10 @@
+2010-08-05  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/SOGoResizableTable.js
+	(computeColumnsWidths): was previous part of saveColumnsState.
+	Used when the user hasn't modify the columns widths but the local "ratios"
+	hash still need to be built.
+
 2010-08-04  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/generic.js (createDialog): when the
