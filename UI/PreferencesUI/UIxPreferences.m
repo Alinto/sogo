@@ -1152,7 +1152,7 @@
 - (BOOL) _validateAccount: (NSDictionary *) account
 {
   static NSString *accountKeys[] = { @"name", @"serverName", @"userName",
-                                     @"password", nil };
+                                     nil };
   static NSArray *knownKeys = nil;
   NSMutableDictionary *clone;
   NSString **key, *value;
@@ -1203,9 +1203,15 @@
 
 - (void) _extractAuxiliaryAccounts: (NSArray *) accounts
 {
-  int count, max;
+  int count, max, oldMax;
+  NSArray *oldAccounts;
   NSMutableArray *auxAccounts;
-  NSDictionary *account;
+  NSDictionary *oldAccount;
+  NSMutableDictionary *account;
+  NSString *password;
+
+  oldAccounts = [user mailAccounts];
+  oldMax = [oldAccounts count];
 
   max = [accounts count];
   auxAccounts = [NSMutableArray arrayWithCapacity: max];
@@ -1214,7 +1220,21 @@
     {
       account = [accounts objectAtIndex: count];
       if ([self _validateAccount: account])
-        [auxAccounts addObject: account];
+        {
+          password = [account objectForKey: @"password"];
+          if (!password)
+            {
+              if (count < oldMax)
+                {
+                  oldAccount = [oldAccounts objectAtIndex: count];
+                  password = [oldAccount objectForKey: @"password"];
+                }
+              if (!password)
+                password = @"";
+              [account setObject: password forKey: @"password"];
+            }
+          [auxAccounts addObject: account];
+        }
     }
 
   [userDefaults setAuxiliaryMailAccounts: auxAccounts];
@@ -1235,7 +1255,7 @@
         {
           [self _extractMainSignature: [accounts objectAtIndex: 0]];
 
-          if (max > 1 && [self mailAuxiliaryUserAccountsEnabled])
+          if ([self mailAuxiliaryUserAccountsEnabled])
             [self _extractAuxiliaryAccounts: accounts];
         }
     }
@@ -1244,8 +1264,16 @@
 - (NSString *) mailAccounts
 {
   NSArray *accounts;
+  NSMutableDictionary *account;
+  int count, max;
 
   accounts = [user mailAccounts];
+  max = [accounts count];
+  for (count = 0; count < max; count++)
+    {
+      account = [accounts objectAtIndex: count];
+      [account removeObjectForKey: @"password"];
+    }
 
   return [accounts jsonRepresentation];
 }
