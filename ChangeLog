@@ -1,5 +1,12 @@
 2010-08-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/MailerUIdTree.js:
+	(MailerUIdTreeExtension._addFolderNode): no longer set a SPAN
+	arroung the unseen count.
+	(MailerUIdTreeExtension.getMailboxNode): new method returning the
+	DIV.dTreeNode corresponding to the mailbox name passed as
+	parameter.
+
 	* UI/WebServerResources/UIxPreferences.js: (_setupEvents): no
 	longer take any parameter, which simplifies the method, as
 	removing the "change" observers on input field is not useful.
