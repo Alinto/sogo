@@ -1,5 +1,8 @@
 2010-08-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailEditor.m (-fromEmails): the list of
+	identities is now taken from the corresponding mail account dict.
+
 	* SoObjects/Mailer/SOGoMailForward.m (-signature): same as below.
 
 	* UI/MailerUI/UIxMailAccountActions.m (-composeAction): same as below.

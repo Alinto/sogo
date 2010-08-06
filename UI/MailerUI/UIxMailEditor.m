@@ -347,19 +347,21 @@ static NSArray *infoKeys = nil;
 
 - (NSArray *) fromEMails
 {
-  NSArray *allIdentities;
+  NSArray *identities;
   int count, max;
   NSString *email;
+  SOGoMailAccount *account;
 
   if (!fromEMails)
     { 
-      allIdentities = [[context activeUser] allIdentities];
-      fromEMails = [NSMutableArray new];
-      max = [allIdentities count];
+      account = [[self clientObject] mailAccountFolder];
+      identities = [account identities];
+      max = [identities count];
+      fromEMails = [[NSMutableArray alloc] initWithCapacity: max];
       for (count = 0; count < max; count++)
         {
           email
-            = [self _emailFromIdentity: [allIdentities objectAtIndex: count]];
+            = [self _emailFromIdentity: [identities objectAtIndex: count]];
           [fromEMails addObjectUniquely: email];
         }
     }
