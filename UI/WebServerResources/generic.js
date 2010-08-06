@@ -1475,7 +1475,7 @@ function onLinkBannerClick() {
 function onPreferencesClick(event) {
     var urlstr = UserFolderURL + "preferences";
     var w = window.open(urlstr, "_blank",
-                        "width=440,height=450,resizable=1,scrollbars=0,location=0");
+                        "width=480,height=450,resizable=1,scrollbars=0,location=0");
     w.opener = window;
     w.focus();
 
