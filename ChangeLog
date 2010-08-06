@@ -1,5 +1,11 @@
 2010-08-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailFolderActions.m (_setFolderPurpose:): we now
+	use the corresponding methods on the SOGoUserDefaults instance
+	rather than in the user settings (old bug) when setting folders
+	for the main account. Additionally, we now handle the entries from
+	auxiliary accounts.
+
 	* UI/MailerUI/UIxMailEditor.m (-fromEmails): the list of
 	identities is now taken from the corresponding mail account dict.
 

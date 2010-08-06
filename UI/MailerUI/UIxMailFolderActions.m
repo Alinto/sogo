@@ -32,11 +32,13 @@
 #import <NGImap4/NGImap4Connection.h>
 #import <NGImap4/NGImap4Client.h>
 
-#import <Mailer/SOGoMailFolder.h>
-#import <Mailer/SOGoTrashFolder.h>
 #import <Mailer/SOGoMailAccount.h>
+#import <Mailer/SOGoMailFolder.h>
 #import <Mailer/SOGoMailObject.h>
+#import <Mailer/SOGoTrashFolder.h>
+
 #import <SOGo/NSObject+Utilities.h>
+#import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserSettings.h>
@@ -351,26 +353,94 @@
   return response;
 }
 
+- (void) _setFolderPurposeOnMainAccount: (NSString *) purpose
+                         inUserDefaults: (SOGoUserDefaults *) ud
+                                     to: (NSString *) value
+{
+  NSString *selName;
+  SEL setter;
+
+  selName = [NSString stringWithFormat: @"set%@FolderName:", purpose];
+  setter = NSSelectorFromString (selName);
+  [ud performSelector: setter withObject: value];
+}
+
+- (WOResponse *) _setFolderPurpose: (NSString *) purpose
+                      onAuxAccount: (int) accountIdx
+                    inUserDefaults: (SOGoUserDefaults *) ud
+                                to: (NSString *) value
+{
+  NSArray *accounts;
+  int realIdx;
+  NSMutableDictionary *account, *mailboxes;
+  WOResponse *response;
+
+  if (accountIdx > 0)
+    {
+      realIdx = accountIdx - 1;
+      accounts = [ud auxiliaryMailAccounts];
+      if ([accounts count] > realIdx)
+        {
+          account = [accounts objectAtIndex: realIdx];
+          mailboxes = [account objectForKey: @"mailboxes"];
+          if (!mailboxes)
+            {
+              mailboxes = [NSMutableDictionary new];
+              [account setObject: mailboxes forKey: @"mailboxes"];
+              [mailboxes release];
+            }
+          [mailboxes setObject: value forKey: purpose];
+          [ud setAuxiliaryMailAccounts: accounts];
+          response = [self responseWith204];
+        }
+      else
+        response
+          = [self responseWithStatus: 500
+                           andString: @"You reached an impossible end."];
+    }
+  else
+    response
+      = [self responseWithStatus: 500
+                       andString: @"You reached an impossible end."];
+
+  return response;
+}
+
 - (WOResponse *) _setFolderPurpose: (NSString *) purpose
 {
   SOGoMailFolder *co;
   WOResponse *response;
-  SOGoUserSettings *us;
-  NSMutableDictionary *mailSettings;
+  SOGoUser *owner;
+  SOGoUserDefaults *ud;
+  NSString *accountIdx, *traversal;
 
   co = [self clientObject];
-  if ([NSStringFromClass ([co class]) isEqualToString: @"SOGoMailFolder"])
+  if ([co isKindOfClass: [SOGoMailFolder class]])
     {
-      us = [[context activeUser] userSettings];
-      mailSettings = [us objectForKey: @"Mail"];
-      if (!mailSettings)
-        mailSettings = [NSMutableDictionary dictionary];
-      [us setObject: mailSettings forKey: @"Mail"];
-      [mailSettings setObject: [co traversalFromMailAccount]
-		    forKey: [NSString stringWithFormat: @"%@Folder",
-				      purpose]];
-      [us synchronize];
-      response = [self responseWith204];
+      accountIdx = [[co mailAccountFolder] nameInContainer];
+      owner = [SOGoUser userWithLogin: [co ownerInContext: nil]];
+      ud = [owner userDefaults];
+      traversal = [co traversalFromMailAccount];
+      if ([accountIdx isEqualToString: @"0"])
+        {
+          /* default account: we directly set the corresponding pref in the ud
+           */
+          [self _setFolderPurposeOnMainAccount: purpose
+                                inUserDefaults: ud
+                                            to: traversal];
+          response = [self responseWith204];
+        }
+      else if ([[owner domainDefaults] mailAuxiliaryUserAccountsEnabled])
+        response = [self _setFolderPurpose: purpose
+                              onAuxAccount: [accountIdx intValue]
+                            inUserDefaults: ud
+                                        to: traversal];
+      else
+        response
+          = [self responseWithStatus: 500
+                           andString: @"You reached an impossible end."];
+      if ([response status] == 204)
+        [ud synchronize];
     }
   else
     {
