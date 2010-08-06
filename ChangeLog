@@ -1,5 +1,27 @@
 2010-08-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/MailerUI.js: (dropAction): ensure that the
+	destination mailbox is in the same mail account as the message
+	being dragged.
+	(getMenus): arranged menu descriptions as as single statement.
+	Added "prepareVisibility" callbacks for the "messageListMenu",
+	"messagesListMenu" and "messageContentMenu" (move/copy ops) and
+	"inboxIconMenu", "trashIconMenu", "mailboxIconMenu" menus (folder
+	sharing).
+	(onMessageListMenuPrepareVisibility): new vis. callback designed
+	to attach the right folder submenu to the copy and move ops.
+	(onFolderMenuPrepareVisibility): new vis. cb for disabling the
+	share of folders for auxiliary accounts.
+	(updateMailboxMenus): simplified method by removing the first
+	level of submenus, where the account names used to be.
+	(openInbox): "openMailbox" only takes 3 parameters. Using "null"
+	instead of "false" was also pretty lame.
+	(updateStatusFolders): take the mailbox name as parameter and
+	arranged for multiple mail accounts. In particular, "unseenCount"
+	is now a class identifier rather than an element id.
+	(markMailInWindow): make use of
+	MailerUIdTreeExtension.getMailboxNode.
+
 	* UI/WebServerResources/ContactsUI.js
 	(onToolbarDeleteSelectedContacts): use translated labels.
 
