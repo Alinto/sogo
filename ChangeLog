@@ -1,3 +1,10 @@
+2010-08-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/HTMLElement.js: (deselectAll): if the
+	container has a "selectedElements" attribute, then it's no longer
+	required to wander through the "selectedIds" attribute. This fixes
+	a strange bug on IE when modifying the selection on LI lists.
+
 2010-08-04  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/generic.js (createDialog): when the

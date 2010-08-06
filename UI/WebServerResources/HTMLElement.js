@@ -229,8 +229,9 @@ Element.addMethods({
                 for (var i = 0; i < element.selectedElements.length; i++)
                     element.selectedElements[i].removeClassName('_selected');
                 element.selectedElements = null;
+                element.selectedIds = null;
             }
-            if (element.selectedIds) {
+            else if (element.selectedIds) {
                 for (var i = 0; i < element.selectedIds.length; i++) {
                     var e =  element.down('#' + element.selectedIds[i]);
                     if (e && e.hasClassName('_selected'))
