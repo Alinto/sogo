@@ -591,12 +591,11 @@ DIV.dialog.none H3
 
 DIV#bgDialogDiv
 { position: absolute;
-  margin: auto;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  z-index: 9999;
+  top: 0px; left: 0px;
+  bottom: 0px;
+  right: 0px;
   opacity: .3;
-  background-color: #000!important; }
+  background-color: #555 !important; }
 
 DIV#uploadDialog,
 DIV#uploadResults
