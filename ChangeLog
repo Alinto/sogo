@@ -1,5 +1,15 @@
 2010-08-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoDomainDefaults.m
+	(-mailAuxiliaryUserAccountsEnabled): new method returning a BOOL
+	describing whether the domain users can access auxiliary mail
+	accounts.
+
+	* SoObjects/SOGo/SOGoUserDefaults.m (-setAuxiliaryMailAccounts:)
+	(auxiliaryMailAccounts): new methods that receives and returns an
+	NSArray of NSDictionary describing the user's auxiliary mail
+	accounts.
+
 	* UI/WebServerResources/HTMLElement.js: (deselectAll): if the
 	container has a "selectedElements" attribute, then it's no longer
 	required to wander through the "selectedIds" attribute. This fixes
