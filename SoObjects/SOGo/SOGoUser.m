@@ -477,7 +477,7 @@
       purpose = purposes;
       while (*purpose)
         {
-          key = [NSString stringWithFormat: @"%@Folder", purpose];
+          key = [NSString stringWithFormat: @"%@Folder", *purpose];
           folderName = [mailSettings objectForKey: key];
           if ([folderName length]
               && [self _migrateFolderWithPurpose: *purpose
