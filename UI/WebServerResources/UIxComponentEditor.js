@@ -402,7 +402,7 @@ function onOkButtonClick (e) {
         action = 'tentative';
     else if (value == 4) {
         var url = ApplicationBaseURL + activeCalendar + '/' + activeComponent;
-        document.modifyEventAjaxRequest = delegateInvitation(url, modifyEventCallback);
+        delegateInvitation(url, modifyEventCallback);
     }
 
     if (action != "")

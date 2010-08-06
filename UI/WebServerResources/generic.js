@@ -1588,8 +1588,8 @@ function delegateInvitation(componentUrl, callbackFunction, callbackData) {
         var receiveUpdates = false; //confirm("Do you want to keep receiving updates on the event?");
         var urlstr = componentUrl + "/delegate";
         var parameters = "to=" + delegatedTo + "&receiveUpdates=" + (receiveUpdates?"YES":"NO");
-        return triggerAjaxRequest(urlstr, callbackFunction, callbackData, parameters,
-                                  { "Content-type": "application/x-www-form-urlencoded" });
+        triggerAjaxRequest(urlstr, callbackFunction, callbackData, parameters,
+                           { "Content-type": "application/x-www-form-urlencoded" });
     }
 }
 
