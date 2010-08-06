@@ -1,27 +1,23 @@
-/* -*- Mode: java; tab-width: 2; c-label-minimum-indentation: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+/* generic.js - this file is part of SOGo
 
    Copyright (C) 2005 SKYRIX Software AG
    Copyright (C) 2006-2010 Inverse
 
-   This file is part of SOGo
+ SOGo is free software; you can redistribute it and/or modify it under
+ the terms of the GNU Lesser General Public License as published by the
+ Free Software Foundation; either version 2, or (at your option) any
+ later version.
 
-   SOGo is free software; you can redistribute it and/or modify it under
-   the terms of the GNU Lesser General Public License as published by the
-   Free Software Foundation; either version 2, or (at your option) any
-   later version.
+ SOGo is distributed in the hope that it will be useful, but WITHOUT ANY
+ WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+ License for more details.
 
-   SOGo is distributed in the hope that it will be useful, but WITHOUT ANY
-   WARRANTY; without even the implied warranty of MERCHANTABILITY or
-   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
-   License for more details.
-
-   You should have received a copy of the GNU Lesser General Public
-   License along with SOGo; see the file COPYING.  If not, write to the
-   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
-   02111-1307, USA.
-*/
-
-/* some generic JavaScript code for SOGo */
+ You should have received a copy of the GNU Lesser General Public
+ License along with SOGo; see the file COPYING.  If not, write to the
+ Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
+ 02111-1307, USA.
+ */
 
 var logConsole;
 var logWindow = null;
@@ -226,12 +222,12 @@ function openMailTo(senderMailTo) {
 function deleteDraft(url) {
     /* this is called by UIxMailEditor with window.opener */
     new Ajax.Request(url, {
-        asynchronous: false,
-                method: 'post',
-                onFailure: function(transport) {
-                log("draftDeleteCallback: problem during ajax request: " + transport.status);
-            }
-    });
+                         asynchronous: false,
+                         method: 'post',
+                         onFailure: function(transport) {
+                             log("draftDeleteCallback: problem during ajax request: " + transport.status);
+                         }
+                     });
 }
 
 function refreshFolderByType(type) {
@@ -312,13 +308,7 @@ function triggerAjaxRequest(url, callback, userdata, content, headers) {
                     hasContentLength = true;
                 http.setRequestHeader(i, headers[i]);
             }
-        } /*
-            if (!hasContentLength) {
-            var cLength = "0";
-            if (content)
-            cLength = "" + content.length;
-            http.setRequestHeader("Content-Length", "" + cLength);
-            } */
+        }
         http.send(content ? content : "");
     }
     else {
@@ -353,8 +343,9 @@ function checkAjaxRequestsState() {
             startAnimation(toolbar);
     }
     else if (!activeAjaxRequests
-             && progressImage)
+             && progressImage) {
         progressImage.parentNode.removeChild(progressImage);
+    }
 }
 
 function isMac() {
@@ -417,14 +408,19 @@ function refreshOpener() {
 /* selection mechanism */
 
 function eventIsLeftClick(event) {
-   var isLeftClick = true;
+    var isLeftClick = true;
     if (isMac() && isSafari()) {
-        if (event.ctrlKey == 1)
-            isLeftClick = false; // Control-click is equivalent to right-click under Mac OS X
-        else if (event.metaKey == 1) // Command-click
+        if (event.ctrlKey == 1) {
+            // Control-click is equivalent to right-click under Mac OS X
+            isLeftClick = false;
+        }
+        else if (event.metaKey == 1) {
+            // Command-click
             isLeftClick = true;
-        else
+        }
+        else {
             isLeftClick = Event.isLeftClick(event);
+        }
     }
     else {
         isLeftClick = event.isLeftClick();
@@ -494,7 +490,7 @@ function onRowClick(event) {
 
     var initialSelection = $(node.parentNode).getSelectedNodes();
 
-    if (initialSelection.length > 0 
+    if (initialSelection.length > 0
         && initialSelection.indexOf(node) >= 0
         && !eventIsLeftClick(event))
         // Ignore non primary-click (ie right-click) inside current selection
@@ -574,8 +570,8 @@ function popupMenu(event, menuId, target) {
     Event.stop(event);
     if (isVisible) {
         popup.setStyle({ top: menuTop + "px",
-                    left: menuLeft + "px",
-                    visibility: "visible" });
+                         left: menuLeft + "px",
+                         visibility: "visible" });
 
         document.currentPopupMenu = popup;
 
@@ -591,11 +587,12 @@ function getParentMenu(node) {
     var menure = new RegExp("(^|\s+)menu(\s+|$)", "i");
 
     while (menuNode == null
-           && currentNode)
+           && currentNode) {
         if (menure.test(currentNode.className))
             menuNode = currentNode;
         else
             currentNode = currentNode.parentNode;
+    }
 
     return menuNode;
 }
@@ -793,11 +790,12 @@ function popupSubmenu(event) {
                        + this.offsetTop);
 
         if (window.height()
-            < (menuTop + submenuNode.offsetHeight))
+            < (menuTop + submenuNode.offsetHeight)) {
             if (submenuNode.offsetHeight < window.height())
                 menuTop = window.height() - submenuNode.offsetHeight;
             else
                 menuTop = 0;
+        }
 
         var menuLeft = (parentNode.offsetLeft + parentNode.offsetWidth - 3);
         if (window.width()
@@ -812,8 +810,8 @@ function popupSubmenu(event) {
         parentNode.observe("mouseover", onMouseEnteredParentMenu);
         $(this).addClassName("submenu-selected");
         submenuNode.setStyle({ top: menuTop + "px",
-                    left: menuLeft + "px",
-                    visibility: "visible" });
+                               left: menuLeft + "px",
+                               visibility: "visible" });
         preventDefault(event);
     }
 }
@@ -850,8 +848,8 @@ function popupSearchMenu(event) {
         var popup = $(menuId);
         offset = Position.positionedOffset(this);
         popup.setStyle({ top: this.offsetHeight + "px",
-                    left: (offset[0] + 3) + "px",
-                    visibility: "visible" });
+                         left: (offset[0] + 3) + "px",
+                         visibility: "visible" });
 
         document.currentPopupMenu = popup;
         $(document.body).observe("click", onBodyClickMenuHandler);
@@ -1123,7 +1121,7 @@ function getListIndexForFolder(items, owner, folderName) {
     var i;
     var previousOwner = null;
 
-    for (var i = 0; i < items.length; i++) {
+    for (i = 0; i < items.length; i++) {
         var currentFolderName = items[i].lastChild.nodeValue.strip();
         var currentOwner = items[i].readAttribute('owner');
         if (currentOwner == owner) {
@@ -1131,11 +1129,13 @@ function getListIndexForFolder(items, owner, folderName) {
             if (currentFolderName > folderName)
                 break;
         }
-        else if (previousOwner || 
-                 (currentOwner != UserLogin && currentOwner > owner))
+        else if (previousOwner ||
+                 (currentOwner != UserLogin && currentOwner > owner)) {
             break;
-        else if (currentOwner == "nobody")
+        }
+        else if (currentOwner == "nobody") {
             break;
+        }
     }
 
     return i;
@@ -1160,7 +1160,7 @@ function refreshAlarms() {
     if (document.alarmsListAjaxRequest)
         return false;
     url = UserFolderURL + "Calendar/alarmslist?browserTime=" + utc;
-    document.alarmsListAjaxRequest 
+    document.alarmsListAjaxRequest
         = triggerAjaxRequest(url, refreshAlarmsCallback);
 
     return true;
@@ -1574,12 +1574,15 @@ function createFolderCallback(http) {
 function delegateInvitation(componentUrl, callbackFunction, callbackData) {
     var input = $("delegatedTo");
     var delegatedTo = null;
-    if (input.readAttribute("uid") != null)
+    if (input.readAttribute("uid") != null) {
         delegatedTo = input.readAttribute("uid");
-    else if (input.value.blank())
+    }
+    else if (input.value.blank()) {
         alert(_("noEmailForDelegation"));
-    else
+    }
+    else {
         delegatedTo = input.value;
+    }
 
     if (delegatedTo) {
         var receiveUpdates = false; //confirm("Do you want to keep receiving updates on the event?");
@@ -1640,11 +1643,11 @@ function _(key) {
  **/
 
 AIM = {
-    frame : function(c) {
+    frame: function(c) {
         var d = new Element ('div');
         var n = d.identify ();
-        d.innerHTML = '<iframe style="display:none" src="about:blank" id="' 
-        + n + '" name="' + n + '" onload="AIM.loaded(\'' + n + '\')"></iframe>';
+        d.innerHTML = '<iframe style="display:none" src="about:blank" id="'
+            + n + '" name="' + n + '" onload="AIM.loaded(\'' + n + '\')"></iframe>';
         document.body.appendChild(d);
         var i = $(n); // TODO: useful?
         if (c && typeof(c.onComplete) == 'function')
@@ -1652,11 +1655,11 @@ AIM = {
         return n;
     },
 
-    form : function(f, name) {
+    form: function(f, name) {
         f.writeAttribute('target', name);
     },
 
-    submit : function(f, c) {
+    submit: function(f, c) {
         AIM.form(f, AIM.frame(c));
         if (c && typeof(c.onStart) == 'function')
             return c.onStart();
@@ -1664,14 +1667,17 @@ AIM = {
             return true;
     },
 
-    loaded : function(id) {
+    loaded: function(id) {
         var i = $(id);
-        if (i.contentDocument)
+        if (i.contentDocument) {
             var d = i.contentDocument;
-        else if (i.contentWindow)
+        }
+        else if (i.contentWindow) {
             var d = i.contentWindow.document;
-        else
+        }
+        else {
             var d = window.frames[id].document;
+        }
         if (d.location.href == "about:blank")
             return;
 
@@ -1727,9 +1733,9 @@ function createButton(id, caption, action) {
 
 function onBodyClickDialogHandler() {
     $$("DIV.dialog").each(function(div) {
-            if (div.visible())
-                div.hide();
-        });
+                              if (div.visible())
+                                  div.hide();
+                          });
 
     $("bgDialogDiv").hide();
 }
