@@ -6,10 +6,9 @@
 "General" = "Général";
 "Calendar Options" = "Calendrier";
 "Mail Options" = "Courrier";
-"Signature" = "Signature";
+"IMAP Accounts" = "Comptes IMAP";
 "Vacation" = "Absence prolongée";
 "Forward" = "Transfert";
-"Identities" = "Identités";
 "Password" = "Mot de passe";
 "Categories" = "Catégories";
 "Name" = "Nom";
@@ -119,9 +118,6 @@
 "messageforward_inline" = "intégrés";
 "messageforward_attached" = "en pièces jointes";
 
-/* Identities */
-"Default identity:" = "Identité par défaut :";
-"Manage identities..." = "Gérer les identitiés...";
 "replyplacement_above" = "Placer ma réponse avant la citation";
 "replyplacement_below" = "Placer ma réponse après la citation";
 "And place my signature" = "Et placer ma signature";
@@ -131,7 +127,18 @@
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Texte";
 
-"composeMessageChanged" = "Changer la composition des messages nécessite d'enregistrer immédiatement vos préférences.\nVoulez-vous continuer?";
+/* IMAP Accounts */
+"Server Name:" = "Serveur :";
+"Port:" = "Port :";
+"User Name:" = "Utilisateur :";
+"Password:" = "Mot de passe :";
+ 
+"Full Name:" = "Nom complet :";
+"Email:" = "Email :";
+"Signature:" = "Signature :";
+
+"Signature" = "Signature";
+"Please enter your signature below:" = "Introduisez votre signature ci-dessous :";
 
 /* Additional Parameters */
 "Additional Parameters" = "Paramètres supplémentaires";

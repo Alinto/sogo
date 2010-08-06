@@ -6,10 +6,9 @@
 "General" = "Algemeen";
 "Calendar Options" = "Agenda";
 "Mail Options" = "E-mail";
-"Signature" = "Ondertekening";
+"IMAP Accounts" = "IMAP Accounts";
 "Vacation" = "Vacation";
 "Forward" = "Forward";
-"Identities" = "Identiteit";
 "Password" = "Wachtwoord";
 "Categories" = "Categories";
 "Name" = "Name";
@@ -119,9 +118,6 @@
 "messageforward_inline" = "In het bericht";
 "messageforward_attached" = "Als bijlage";
 
-/* Identities */
-"Default identity:" = "Standaardidentiteit:";
-"Manage identities..." = "Identiteiten beheren...";
 "replyplacement_above" = "reactie boven orgineletekst";
 "replyplacement_below" = "reactie onder orgineletekst";
 "And place my signature" = "Ondertekening plaatsen";
@@ -131,7 +127,18 @@
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Plain text";
 
-"composeMessageChanged" = "Changing your messages composition type requires to save your preferences immediately. Continue?";
+/* IMAP Accounts */
+"Server Name:" = "Server Name:";
+"Port:" = "Port:";
+"User Name:" = "User Name:";
+"Password:" = "Wachtwoord:";
+ 
+"Full Name:" = "Full Name:";
+"Email:" = "Email:";
+"Signature:" = "Ondertekening:";
+
+"Signature" = "Ondertekening";
+"Please enter your signature below:" = "Please enter your signature below:";
 
 /* Additional Parameters */
 "Additional Parameters" = "Extra Parameters";

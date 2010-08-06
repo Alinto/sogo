@@ -6,10 +6,9 @@
 "General" = "Загальне";
 "Calendar Options" = "Календар";
 "Mail Options" = "Пошта";
-"Signature" = "Підпис";
+"IMAP Accounts" = "IMAP Accounts";
 "Vacation" = "Відпустка";
 "Forward" = "Перенаправлення";
-"Identities" = "Облікові записи";
 "Password" = "Пароль";
 "Categories" = "Категорії";
 "Name" = "Назва";
@@ -121,9 +120,6 @@
 "messageforward_inline" = "В тілі листа";
 "messageforward_attached" = "Вкладеним файлом";
 
-/* Identities */
-"Default identity:" = "Зазвичай я представляюсь як:";
-"Manage identities..." = "Керувати іменами...";
 "replyplacement_above" = "Починати мою відповідь над текстом, що цитується";
 "replyplacement_below" = "Починати мою відповідь під текстом, що цитується";
 "And place my signature" = "Та додати мій підпис";
@@ -133,7 +129,19 @@
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Звичайний текст";
 
-"composeMessageChanged" = "Щоб змінити спосіб створення повідомлення потрібно зараз зберегти Ваші налаштування. Продовжити?";
+/* IMAP Accounts */
+"Server Name:" = "Server Name:";
+"Port:" = "Port:";
+"User Name:" = "User Name:";
+"Password:" = "Пароль:";
+ 
+"Full Name:" = "Full Name:";
+"Email:" = "Email:";
+"Signature:" = "Підпис:";
+
+"Signature" = "Підпис";
+"Please enter your signature below:" = "Please enter your signature below:";
+
 
 /* Additional Parameters */
 "Additional Parameters" = "Додаткові параметри";
