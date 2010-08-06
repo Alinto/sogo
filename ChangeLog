@@ -1,5 +1,8 @@
 2010-08-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/generic.js: (AjaxRequestsChain): new class
+	that implements the chaining of ajax requests.
+
 	* UI/WebServerResources/MailerUI.js: (dropAction): ensure that the
 	destination mailbox is in the same mail account as the message
 	being dragged.

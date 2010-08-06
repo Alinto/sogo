@@ -318,6 +318,44 @@ function triggerAjaxRequest(url, callback, userdata, content, headers) {
     return http;
 }
 
+function AjaxRequestsChain(callback, callbackData) {
+    this.requests = [];
+    this.counter = 0;
+    this.callback = callback;
+    this.callbackData = callbackData;
+}
+
+AjaxRequestsChain.prototype = {
+    requests: null,
+    counter: 0,
+    callback: null,
+    callbackData: null,
+
+    _step: function ARC__step() {
+        if (this.counter < this.requests.length) {
+            var request = this.requests[this.counter];
+            this.counter++;
+            var chain = this;
+            var origCallback = request[1];
+            request[1] = function ARC__step_callback(http) {
+                if (origCallback) {
+                    http.callback = origCallback;
+                    origCallback.apply(http, [http]);
+                }
+                chain._step();
+            };
+            triggerAjaxRequest.apply(window, request);
+        }
+        else {
+            this.callback.apply(this, [this.callbackData]);
+        }
+    },
+
+    start: function ARC_start() {
+        this._step();
+    }
+};
+
 function startAnimation(parent, nextNode) {
     var anim = $("progressIndicator");
     if (!anim) {
