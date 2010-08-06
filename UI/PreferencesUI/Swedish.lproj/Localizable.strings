@@ -128,6 +128,8 @@
 "composemessagestype_text" = "Oformaterad text";
 
 /* IMAP Accounts */
+"New Mail Account" = "New Mail Account";
+
 "Server Name:" = "Server Name:";
 "Port:" = "Port:";
 "User Name:" = "User Name:";
@@ -136,6 +138,7 @@
 "Full Name:" = "Full Name:";
 "Email:" = "Email:";
 "Signature:" = "Signatur:";
+"(Click to create)" = "(Click to create)";
 
 "Signature" = "Signatur";
 "Please enter your signature below:" = "Please enter your signature below:";

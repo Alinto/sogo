@@ -130,6 +130,8 @@
 "composemessagestype_text" = "Звичайний текст";
 
 /* IMAP Accounts */
+"New Mail Account" = "New Mail Account";
+
 "Server Name:" = "Server Name:";
 "Port:" = "Port:";
 "User Name:" = "User Name:";
@@ -138,6 +140,7 @@
 "Full Name:" = "Full Name:";
 "Email:" = "Email:";
 "Signature:" = "Підпис:";
+"(Click to create)" = "(Click to create)";
 
 "Signature" = "Підпис";
 "Please enter your signature below:" = "Please enter your signature below:";

@@ -112,6 +112,8 @@
 "composemessagestype_text" = "Egyszerű szöveg";
 
 /* IMAP Accounts */
+"New Mail Account" = "New Mail Account";
+
 "Server Name:" = "Server Name:";
 "Port:" = "Port:";
 "User Name:" = "User Name:";
@@ -120,6 +122,7 @@
 "Full Name:" = "Full Name:";
 "Email:" = "Email:";
 "Signature:" = "Aláírás:";
+"(Click to create)" = "(Click to create)";
 
 "Signature" = "Aláírás";
 "Please enter your signature below:" = "Please enter your signature below:";

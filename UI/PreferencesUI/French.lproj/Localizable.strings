@@ -128,10 +128,13 @@
 "composemessagestype_text" = "Texte";
 
 /* IMAP Accounts */
+"New Mail Account" = "Nouveau compte";
+
 "Server Name:" = "Serveur :";
 "Port:" = "Port :";
 "User Name:" = "Utilisateur :";
 "Password:" = "Mot de passe :";
+"(Click to create)" = "(Signature vide)";
  
 "Full Name:" = "Nom complet :";
 "Email:" = "Email :";

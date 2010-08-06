@@ -127,6 +127,8 @@
 "composemessagestype_text" = "Plain text";
 
 /* IMAP Accounts */
+"New Mail Account" = "New Mail Account";
+
 "Server Name:" = "Server Name:";
 "Port:" = "Port:";
 "User Name:" = "User Name:";
@@ -135,6 +137,7 @@
 "Full Name:" = "Full Name:";
 "Email:" = "Email:";
 "Signature:" = "Llofnod:";
+"(Click to create)" = "(Click to create)";
 
 "Signature" = "Llofnod";
 "Please enter your signature below:" = "Please enter your signature below:";
