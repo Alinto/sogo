@@ -1787,11 +1787,34 @@ function initMailboxTree() {
 
     mailboxTree.add(0, -1, '');
 
-    mailboxTree.pendingRequests = mailAccounts.length;
-    activeAjaxRequests += mailAccounts.length;
+    var chainRq = new AjaxRequestsChain(initMailboxTreeCB);
     for (var i = 0; i < mailAccounts.length; i++) {
         var url = ApplicationBaseURL + i + "/mailboxes";
-        triggerAjaxRequest(url, onLoadMailboxesCallback, i);
+        chainRq.requests.push([url, onLoadMailboxesCallback, i]);
+    }
+    chainRq.start();
+}
+
+function initMailboxTreeCB() {
+    updateMailboxTreeInPage();
+    updateMailboxMenus();
+    getStatusFolders();
+    checkAjaxRequestsState();
+    getFoldersState();
+    configureDroppables();
+}
+
+function onLoadMailboxesCallback(http) {
+    if (http.status == 200) {
+        checkAjaxRequestsState();
+        if (http.responseText.length > 0) {
+            var accountIdx = http.callbackData;
+            var newAccount = buildMailboxes(accountIdx, http.responseText);
+            accounts[accountIdx] = newAccount;
+            mailboxTree.addMailAccount(newAccount);
+        }
+        else
+            log ("onLoadMailboxesCallback " + http.status);
     }
 }
 
@@ -1942,30 +1965,6 @@ function updateMailboxMenus() {
             generateMenuForMailbox(mailbox, key + "-" + i,
                                    mailboxActions[key]);
         }
-    }
-}
-
-function onLoadMailboxesCallback(http) {
-    if (http.status == 200) {
-        checkAjaxRequestsState();
-        if (http.responseText.length > 0) {
-            var accountIdx = parseInt(http.callbackData);
-            var newAccount = buildMailboxes(accountIdx, http.responseText);
-            accounts[accountIdx] = newAccount;
-            mailboxTree.addMailAccount(newAccount);
-            mailboxTree.pendingRequests--;
-            activeAjaxRequests--;
-            if (!mailboxTree.pendingRequests) {
-                updateMailboxTreeInPage();
-                updateMailboxMenus();
-                getStatusFolders();
-                checkAjaxRequestsState();
-                getFoldersState();
-                configureDroppables();
-            }
-        }
-        else
-            log ("onLoadMailboxesCallback " + http.status);
     }
 }
 

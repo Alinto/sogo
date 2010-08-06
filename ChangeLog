@@ -1,5 +1,9 @@
 2010-08-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/MailerUI.js: (initMailboxTree): make use
+	of the new class below and drop all code related to keeping track
+	of active requests.
+
 	* UI/WebServerResources/generic.js: (AjaxRequestsChain): new class
 	that implements the chaining of ajax requests.
 
