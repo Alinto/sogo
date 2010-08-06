@@ -122,6 +122,9 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 - (void) setMailUseOutlookStyleReplies: (BOOL) newValue;
 - (BOOL) mailUseOutlookStyleReplies;
 
+- (void) setAuxiliaryMailAccounts: (NSArray *) newAccounts;
+- (NSArray *) auxiliaryMailAccounts;
+
 - (void) setCalendarCategories: (NSArray *) newValues;
 - (NSArray *) calendarCategories;
 

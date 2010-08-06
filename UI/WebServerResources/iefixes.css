@@ -7,6 +7,9 @@ FORM
   margin: 0px; }
 
 /* generic */
+DIV#bgDialogDiv
+{ filter: alpha(opacity=30); }
+
 SPAN.disabledToolbarButton
 { filter: alpha(opacity=40); }
 

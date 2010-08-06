@@ -511,6 +511,16 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   return [self boolForKey: @"SOGoMailUseOutlookStyleReplies"];
 }
 
+- (void) setAuxiliaryMailAccounts: (NSArray *) newAccounts
+{
+  [self setObject: newAccounts forKey: @"AuxiliaryMailAccounts"];
+}
+
+- (NSArray *) auxiliaryMailAccounts
+{
+  return [self arrayForKey: @"AuxiliaryMailAccounts"];
+}
+
 - (void) setCalendarCategories: (NSArray *) newValues
 {
   [self setObject: newValues forKey: @"SOGoCalendarCategories"];

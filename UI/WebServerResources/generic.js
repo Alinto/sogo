@@ -566,9 +566,10 @@ function popupMenu(event, menuId, target) {
         menuLeft -= (popup.offsetWidth + 1);
 
     var isVisible = true;
-    if (popup.prepareVisibility)
+    if (popup.prepareVisibility) {
         if (!popup.prepareVisibility())
             isVisible = false;
+    }
 
     Event.stop(event);
     if (isVisible) {
@@ -1010,8 +1011,9 @@ function popupToolbarMenu(node, menuId) {
         hideMenu(document.currentPopupMenu);
 
     var popup = $(menuId);
-    if (popup.prepareVisibility)
+    if (popup.prepareVisibility) {
         popup.prepareVisibility();
+    }
 
     var offset = $(node).cumulativeOffset();
     var top = offset.top + node.offsetHeight;

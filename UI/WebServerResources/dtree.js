@@ -1,17 +1,16 @@
-/* -*- Mode: java; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*--------------------------------------------------|
-  | dTree 2.05 | www.destroydrop.com/javascript/tree/ |
-  |---------------------------------------------------|
-  | Copyright (c) 2002-2003 Geir Landrö               |
-  |                                                   |
-  | This script can be used freely as long as all     |
-  | copyright messages are intact.                    |
-  |                                                   |
-  | Updated: 17.04.2003                               |
-  |--------------------------------------------------*/
+ | dTree 2.05 | www.destroydrop.com/javascript/tree/ |
+ |---------------------------------------------------|
+ | Copyright (c) 2002-2003 Geir Landrö               |
+ |                                                   |
+ | This script can be used freely as long as all     |
+ | copyright messages are intact.                    |
+ |                                                   |
+ | Updated: 17.04.2003                               |
+ |--------------------------------------------------*/
 
 /* The content of attribute values should be quoted properly by using the
-   equivalent entities. */
+ equivalent entities. */
 function dTreeQuote(str) {
     return (str
             .replace(/&/g, "&amp;")
@@ -23,48 +22,48 @@ function dTreeQuote(str) {
 // Node object
 function Node(id, pid, name, isParent, url, dataname, datatype, title, target,
               icon, iconOpen, open, hasUnseen) {
-  this.isParent = isParent;
-  this.id = id;
-  this.pid = pid;
-  this.name = name;
-  this.url = url; 
-  this.title = title;
-  this.target = target;
-  this.icon = icon;
-  this.iconOpen = iconOpen;
-  this.dataname = dataname;
-  this.datatype = datatype;
-  this.hasUnseen = hasUnseen;
-  this._io = open || false;
-  this._is = false;
-  this._ls = false;
-  this._hc = false;
-  this._ai = 0;
-  this._p;
+    this.isParent = isParent;
+    this.id = id;
+    this.pid = pid;
+    this.name = name;
+    this.url = url;
+    this.title = title;
+    this.target = target;
+    this.icon = icon;
+    this.iconOpen = iconOpen;
+    this.dataname = dataname;
+    this.datatype = datatype;
+    this.hasUnseen = hasUnseen;
+    this._io = open || false;
+    this._is = false;
+    this._ls = false;
+    this._hc = false;
+    this._ai = 0;
+    this._p;
 };
 
 // Tree object
 function dTree(objName) {
     this.obj = objName;
     this.config = {
-      target: null,
-      useCookies: false
+        target: null,
+        useCookies: false
     };
     this.icon = {
-      root: 'img/base.gif',
-      folder: 'img/folder.gif',
-      folderOpen: 'img/folderopen.gif',
-      node: 'img/page.gif',
-      empty: 'img/empty.gif',
-      line: 'img/line.gif',
-      join: 'img/join.gif',
-      joinBottom: 'img/joinbottom.gif',
-      plus: 'img/plus.gif',
-      plusBottom: 'img/plusbottom.gif',
-      minus: 'img/minus.gif',
-      minusBottom: 'img/minusbottom.gif',
-      nlPlus: 'img/nolines_plus.gif',
-      nlMinus: 'img/nolines_minus.gif'
+        root: 'img/base.gif',
+        folder: 'img/folder.gif',
+        folderOpen: 'img/folderopen.gif',
+        node: 'img/page.gif',
+        empty: 'img/empty.gif',
+        line: 'img/line.gif',
+        join: 'img/join.gif',
+        joinBottom: 'img/joinbottom.gif',
+        plus: 'img/plus.gif',
+        plusBottom: 'img/plusbottom.gif',
+        minus: 'img/minus.gif',
+        minusBottom: 'img/minusbottom.gif',
+        nlPlus: 'img/nolines_plus.gif',
+        nlMinus: 'img/nolines_minus.gif'
     };
     this.images = {};
     this.objects = {};
@@ -74,7 +73,7 @@ function dTree(objName) {
     this.selectedNode = null;
     this.selectedFound = false;
     this.completed = false;
-    
+
     return this;
 };
 
@@ -115,7 +114,7 @@ dTree.prototype = {
         this.objects['namespan'] = new Element ("span", {"class": "nodeName"});
         this.objects['image'] = new Element ("img");
     },
-    
+
 
     // Open/close all nodes
     openAll: function() {
@@ -131,7 +130,7 @@ dTree.prototype = {
         div.id = this.obj;
         div.addClassName ("dtree");
         if (this.config.useCookies)
-          this.selectedNode = this.getSelected();
+            this.selectedNode = this.getSelected();
         this.addNode (this.root, div);
         if (!this.selectedFound) this.selectedNode = null;
         this.completed = true;
@@ -166,26 +165,26 @@ dTree.prototype = {
         this.aNodes[nodeId] = node;
         if (this.root.id != node.pid) {
             var div = this.objects['nodediv'].cloneNode (true);
-            if (node.datatype) 
-              div.writeAttribute ("datatype", dTreeQuote(node.datatype));
+            if (node.datatype)
+                div.writeAttribute ("datatype", dTreeQuote(node.datatype));
             if (node.dataname)
-              div.writeAttribute ("dataname", dTreeQuote(node.dataname));
+                div.writeAttribute ("dataname", dTreeQuote(node.dataname));
             this.indent (node, nodeId, div);
 
             var link = this.objects['nodelink'].cloneNode (true);
             link.id = 's' + this.obj + nodeId;
             link.href = dTreeQuote(node.url);
             if (node.title)
-              link.writeAttribute ("title", dTreeQuote(node.title));
+                link.writeAttribute ("title", dTreeQuote(node.title));
             if (node.target)
-              link.writeAttribute ("target", dTreeQuote(node.target));
+                link.writeAttribute ("target", dTreeQuote(node.target));
             link.observe ("click", this.s.bindAsEventListener(this, parseInt(nodeId)));
 
-            if (!node.icon) 
-              node.icon = (this.root.id == node.pid) ? 
+            if (!node.icon)
+                node.icon = (this.root.id == node.pid) ?
                 this.icon.root : ((node._hc) ? this.icon.folder : this.icon.node);
-            if (!node.iconOpen) 
-              node.iconOpen = (node._hc) ? 
+            if (!node.iconOpen)
+                node.iconOpen = (node._hc) ?
                 this.icon.folderOpen : this.icon.node;
 
             if (this.root.id == node.pid) {
@@ -199,28 +198,28 @@ dTree.prototype = {
 
             var span = this.objects['namespan'].cloneNode (true);
             if (!node.isParent)
-              span.addClassName ("leaf");
+                span.addClassName ("leaf");
             if (node.hasUnseen)
-              span.addClassName ("unseen");
+                span.addClassName ("unseen");
             span.update (node.name);
 
             link.appendChild (img);
             link.appendChild (span);
             div.appendChild (link);
             if (container)
-              container.appendChild (div);
+                container.appendChild (div);
             else
-              rc = div;
+                rc = div;
         }
         if (node._hc) {
             var div = this.objects['clipdiv'].cloneNode (true);
             div.id = 'd' + this.obj + nodeId;
-            div.setStyle ({"display": 
-                          ((this.root.id == node.pid || node._io) ? 
-                           'block' : 'none')});
+            div.setStyle ({"display":
+                           ((this.root.id == node.pid || node._io) ?
+                            'block' : 'none')});
             this.addNode(node, div);
             if (container)
-              container.appendChild (div);
+                container.appendChild (div);
         }
         this.aIndent.pop();
         return rc;
@@ -230,8 +229,8 @@ dTree.prototype = {
     indent: function(node, nodeId, container) {
         if (this.root.id != node.pid) {
             for (var n=0; n<this.aIndent.length; n++) {
-                var img = (this.aIndent[n] == 1) ? 
-                  this.images['line'] : this.images['empty'];
+                var img = (this.aIndent[n] == 1) ?
+                    this.images['line'] : this.images['empty'];
                 container.appendChild (img.cloneNode (true));
             }
             (node._ls) ? this.aIndent.push(0) : this.aIndent.push(1);
@@ -241,9 +240,9 @@ dTree.prototype = {
                 link.observe ("click", this.o.bindAsEventListener(this, parseInt(nodeId)));
                 var img;
                 if (node._io)
-                  img = ((node._ls) ? this.images['minusbottom'] : this.images['minus']);
+                    img = ((node._ls) ? this.images['minusbottom'] : this.images['minus']);
                 else
-                  img = ((node._ls) ? this.images['plusbottom'] : this.images['plus']);
+                    img = ((node._ls) ? this.images['plusbottom'] : this.images['plus']);
                 img = img.cloneNode (true);
                 img.id = 'j' + this.obj + nodeId;
                 link.appendChild (img);
@@ -275,7 +274,7 @@ dTree.prototype = {
     // Highlights the selected node
     s: function(id, withEvent) {
         if (withEvent)
-          id = withEvent;
+            id = withEvent;
         var cn = this.aNodes[id];
         if (this.selectedNode != id) {
             if (this.selectedNode || this.selectedNode==0) {
@@ -292,12 +291,12 @@ dTree.prototype = {
     // Toggle Open or close
     o: function(id, withEvent) {
         if (withEvent)
-          id = withEvent;
+            id = withEvent;
         var cn = this.aNodes[id];
         this.nodeStatus(!cn._io, id, cn._ls);
         cn._io = !cn._io;
         if (this.config.useCookies) this.updateCookie();
-        
+
         return false;
     },
 
@@ -349,18 +348,18 @@ dTree.prototype = {
             if (this.aNodes[n].pid == node.id && this.aNodes[n]._hc) {
                 if (this.aNodes[n]._io) this.nodeStatus(false, n, this.aNodes[n]._ls);
                 this.aNodes[n]._io = false;
-                this.closeAllChildren(this.aNodes[n]); 
+                this.closeAllChildren(this.aNodes[n]);
             }
         }
     },
-    
+
     // Change the status of a node(open or closed)
     nodeStatus: function(status, id, bottom) {
         eDiv = document.getElementById('d' + this.obj + id);
         if (eDiv) {
             eJoin = $('j' + this.obj + id);
-                eIcon = document.getElementById('i' + this.obj + id);
-                eIcon.src = (status) ? this.aNodes[id].iconOpen : this.aNodes[id].icon;
+            eIcon = document.getElementById('i' + this.obj + id);
+            eIcon.src = (status) ? this.aNodes[id].iconOpen : this.aNodes[id].icon;
             eJoin.src = ((status)?((bottom)?this.icon.minusBottom:this.icon.minus):((bottom)?this.icon.plusBottom:this.icon.plus));
             eDiv.style.display = (status) ? 'block': 'none';
         }
@@ -373,7 +372,7 @@ dTree.prototype = {
         this.setCookie('co'+this.obj, 'cookieValue', yesterday);
         this.setCookie('cs'+this.obj, 'cookieValue', yesterday);
     },
-    
+
     // [Cookie] Sets value in a cookie
     setCookie: function(cookieName, cookieValue, expires, path, domain, secure) {
         document.cookie =
@@ -408,7 +407,7 @@ dTree.prototype = {
         }
         this.setCookie('co' + this.obj, str);
     },
-    
+
     // [Cookie] Checks if a node id is in a cookie
     isOpen: function(id) {
         var aOpen = this.getCookie('co' + this.obj).split('.');
@@ -420,18 +419,18 @@ dTree.prototype = {
 
 // If Push and pop is not implemented by the browser
 if (!Array.prototype.push) {
-  Array.prototype.push = function array_push() {
-    for(var i=0;i<arguments.length;i++)
-    this[this.length]=arguments[i];
-    return this.length;
-  }
+    Array.prototype.push = function array_push() {
+        for(var i=0;i<arguments.length;i++)
+            this[this.length]=arguments[i];
+        return this.length;
+    }
 };
 
 if (!Array.prototype.pop) {
-  Array.prototype.pop = function array_pop() {
-    lastElement = this[this.length-1];
-    this.length = Math.max(this.length-1,0);
-    return lastElement;
-  }
+    Array.prototype.pop = function array_pop() {
+        lastElement = this[this.length-1];
+        this.length = Math.max(this.length-1,0);
+        return lastElement;
+    }
 };
 
