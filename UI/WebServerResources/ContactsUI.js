@@ -443,8 +443,8 @@ function onToolbarDeleteSelectedContacts(event) {
         else {
             var label = _("Are you sure you want to delete the selected contacts?");
             var fields = createElement("p");
-            fields.appendChild(createButton("confirmBtn", "Yes", onToolbarDeleteSelectedContactsConfirm.bind(fields, dialogId)));
-            fields.appendChild(createButton("cancelBtn", "No", onBodyClickDialogHandler));
+            fields.appendChild(createButton("confirmBtn", _("Yes"), onToolbarDeleteSelectedContactsConfirm.bind(fields, dialogId)));
+            fields.appendChild(createButton("cancelBtn", _("No"), onBodyClickDialogHandler));
             var dialog = createDialog(dialogId,
                                       _("Confirmation"),
                                       label,
