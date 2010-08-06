@@ -1,5 +1,8 @@
 2010-08-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/generic.js (reloadPreferences): dropped
+	useless method.
+
 	* UI/PreferencesUI/UIxPreferences.m (_extractAuxiliaryAccounts:):
 	since we no longer transfer the user password to the client, the
 	old password has to be fetched from the old account unless a new

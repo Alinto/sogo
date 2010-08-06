@@ -1437,33 +1437,6 @@ function indexColor(number) {
     return color;
 }
 
-function reloadPreferences() {
-    var url = UserFolderURL + "jsonDefaults";
-    var http = createHTTPClient();
-    http.open("GET", url, false);
-    http.send("");
-
-    if (http.status == 200) {
-        if (http.responseText.length > 0) {
-            UserDefaults = http.responseText.evalJSON(true);
-            if (!UserDefaults)
-                UserDefaults = {};
-        }
-        else
-            UserDefaults = {};
-    }
-
-    url = UserFolderURL + "jsonSettings";
-    http.open("GET", url, false);
-    http.send("");
-    if (http.status == 200) {
-        if (http.responseText.length > 0)
-            UserSettings = http.responseText.evalJSON(true);
-        else
-            UserSettings = {};
-    }
-}
-
 function onLoadHandler(event) {
     queryParameters = parseQueryParameters('' + window.location);
     if (!$(document.body).hasClassName("popup")) {
