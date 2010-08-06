@@ -37,6 +37,8 @@
 
 - (NSArray *) userSources;
 
+- (BOOL) mailAuxiliaryUserAccountsEnabled;
+
 - (NSString *) mailDomain;
 - (NSString *) imapServer;
 - (NSString *) imapAclStyle;
