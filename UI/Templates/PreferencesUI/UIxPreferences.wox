@@ -27,8 +27,8 @@
           ><var:if condition="userHasMailAccess">
           <li target="mailOptionsView"><span><var:string
                 label:value="Mail Options"/></span></li>
-          <li target="identitiesView"><span><var:string
-                label:value="Signature"/></span></li>
+          <li target="mailAccountsView"><span><var:string
+                label:value="IMAP Accounts"/></span></li>
           <var:if condition="isVacationEnabled"><li target="vacationView"><span><var:string
                   label:value="Vacation"/></span></li></var:if
             ><var:if condition="isForwardEnabled"><li target="forwardView"><span><var:string
@@ -122,8 +122,9 @@
                         ></tr>
                   </var:foreach>
                 </tbody>
-              </table></div>
-            <div class="bottomToolbar">
+              </table>
+            </div>
+            <div const:id="categoriesToolbar" class="bottomToolbar">
               <a const:id="categoryAdd" class="bottomButton" href="#">
                 <span><img rsrc:src="add-icon.png" label:title="Add" />
                 </span></a>
@@ -195,8 +196,9 @@
                   <tbody><!--space --></tbody>
                 </table>
                 <input type="hidden" const:name="sieveFilters" const:id="sieveFilters"
-                  var:value="sieveFiltersValue"/></div>
-              <div class="bottomToolbar">
+                  var:value="sieveFiltersValue"/>
+              </div>
+              <div const:id="filtersToolbar" class="bottomToolbar">
                 <a const:id="filterAdd" class="bottomButton" href="#">
                   <span><img rsrc:src="add-icon.png" label:title="Add" />
                   </span></a>
@@ -212,10 +214,57 @@
               </div>
             </var:if>
           </div>
-          <div id="identitiesView" class="tab"
-            ><textarea const:id="signature" const:name="signature"
-              var:value="signature"
-              /></div>
+
+          <div id="mailAccountsView" class="tab">
+            <input type="hidden" const:name="mailAccountsJSON" const:id="mailAccountsJSON"
+              var:value="mailAccounts"/>
+            <div id="mailAccountsListWrapper"
+                 ><ul id="mailAccountsList"
+                      ><!-- space --></ul
+                      ></div>
+            <var:if condition="mailAuxiliaryUserAccountsEnabled">
+              <div const:id="mailAccountsToolbar" class="bottomToolbar">
+                <a const:id="mailAccountAdd" class="bottomButton" href="#">
+                  <span><img rsrc:src="add-icon.png" label:title="Add" />
+                </span></a>
+                <a const:id="mailAccountDelete" class="bottomButton" href="#">
+                  <span><img rsrc:src="remove-icon.png" label:title="Delete" />
+                </span></a>
+              </div>
+            </var:if>
+            <div id="mailAccountEditor">
+              <fieldset const:id="accountInfo">
+                <label><var:string label:value="Server Name:"/>
+                  <input const:name="serverName" const:id="serverName" type="text" const:value=""/></label>
+                <label><var:string label:value="Port:"/>
+                  <input const:name="port" const:id="port" type="text" const:value=""/></label><br/><br/>
+                <label><var:string label:value="User Name:"/>
+                  <input const:name="userName" const:id="userName" type="text" const:value=""/></label><br/>
+                <label><var:string label:value="Password:"/>
+                  <input const:name="password" const:id="password" type="password" const:value=""/></label>
+
+                  <input const:name="encryption" type="hidden" const:value="none"/>
+                <!-- <hr/> -->
+                <!-- <var:string label:value="Encryption:"/> -->
+                <!-- <label><input const:name="encryption" type="radio" const:value="none"/> -->
+                <!--   <var:string label:value="None"/></label> -->
+                <!-- <label><input const:name="encryption" type="radio" const:value="ssl"/> -->
+                <!--   <var:string label:value="SSL"/></label> -->
+                <!-- <label><input const:name="encryption" type="radio" const:value="tls"/> -->
+                <!--   <var:string label:value="TLS"/></label> -->
+              </fieldset>
+              <fieldset const:id="identityInfo">
+                <label><var:string label:value="Full Name:"/>
+                  <input const:name="fullName" const:id="fullName" type="text" const:value=""
+                    /></label><br/>
+                <label><var:string label:value="Email:"/>
+                  <input const:name="email" const:id="email" type="text" const:value=""/></label><br/><br/>
+                <var:string label:value="Signature:"/>
+                <span id="actSignature"><!--space --></span>
+              </fieldset>
+            </div>
+          </div>
+
           <var:if condition="isVacationEnabled">
             <div id="vacationView" class="tab">
               <label><input type="checkbox" 

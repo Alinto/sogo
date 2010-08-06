@@ -1,5 +1,29 @@
 2010-08-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/UIxPreferences.js: (_setupEvents): no
+	longer take any parameter, which simplifies the method, as
+	removing the "change" observers on input field is not useful.
+	(initMailAccounts): new method that parses the mail accounts JSON
+	dictionary, populates the mail account UL and setup related
+	events.
+	(onMailAccountInfoChange, onMailIdentityInfoChange)
+	(onMailIdentitySignatureClick, onMailIdentitySignatureOK)
+	(createMailAccountLI, onMailAccountEntryClick, displayMailAccount)
+	(displayAccountSignature, createMailAccount)
+	(onMailAccountAdd, onMailAccountDelete, saveMailAccounts)
+	(compactMailAccounts): new methods completing the above.
+
+	* UI/PreferencesUI/UIxPreferences.m (-identitiesList)
+	(-itemIdentityText, -signature, -setSignature): removed obsolete
+	methods.
+	(-defaultAction): when updating filters, we now only need to query
+	the "0" account since accounts are no longer identified by "name".
+	(-mailAuxiliaryUserAccountsEnabled): new bool method.
+	(-setMailAccounts): new accessor that decodes the new mail
+	accounts dictionary in JSON format and validates it prior to save
+	it in the user defaults.
+	(-mailAccounts): new accessor.
+
 	* UI/MailerUI/UIxMailFolderActions.m (_setFolderPurpose:): we now
 	use the corresponding methods on the SOGoUserDefaults instance
 	rather than in the user settings (old bug) when setting folders
