@@ -65,6 +65,12 @@
 "delegate is a participant" = "Le délégué est déjà un participant.";
 "delegate is a group" = "L'adresse spécifiée correspond à un groupe. Vous ne pouvez déléguer qu'à une personne.";
 
+/* common buttons */
+"OK" = "OK";
+"Cancel" = "Annuler";
+"Yes" = "Oui";
+"No" = "Non";
+
 /* alarms */
 "Reminder:" = "Rappel :";
 "Start:" = "Début :";

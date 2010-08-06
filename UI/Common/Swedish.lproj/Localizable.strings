@@ -65,6 +65,12 @@
 "delegate is a participant" = "Personen du delegerar till är redan en deltagare.";
 "delegate is a group" = "Adressen du skrivit går till en grupp. Du kan bara delegera till en unik person.";
 
+/* common buttons */
+"OK" = "OK";
+"Cancel" = "Cancel";
+"Yes" = "Yes";
+"No" = "No";
+
 /* alarms */
 "Reminder:" = "Påminnelse:";
 "Start:" = "Start:";
