@@ -30,8 +30,7 @@
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSURL+misc.h>
 
-#import <SOGo/SOGoAuthenticator.h>
-
+#import "SOGoMailAccount.h"
 #import "SOGoMailManager.h"
 
 #import "SOGoMailBaseObject.h"
@@ -187,44 +186,28 @@ static BOOL debugOn = YES;
 
 - (NSURL *) imap4URL
 {
+  SOGoMailAccount *account;
+  NSString *urlString;
+
   /* this could probably be handled better from NSURL but it's buggy in
      GNUstep */
   if (!imap4URL)
-    imap4URL = [[NSURL alloc] initWithString: [self imap4URLString]];
+    {
+      account = [self mailAccountFolder];
+      if ([[account encryption] isEqualToString: @"tls"])
+        urlString = [NSString stringWithFormat: @"%@?tls=YES",
+                              [self imap4URLString]];
+      else
+        urlString = [self imap4URLString];
+      imap4URL = [[NSURL alloc] initWithString: urlString];
+    }
 
   return imap4URL;
 }
 
-- (NSString *) imap4Login
-{
-  if (![container respondsToSelector:_cmd])
-    return nil;
-  
-  return [container imap4Login];
-}
-
 - (NSString *) imap4PasswordRenewed: (BOOL) renewed
 {
-  /*
-    Extract password from basic authentication.
-    
-    TODO: we might want to
-    a) move the primary code to SOGoMailAccount
-    b) cache the password
-  */
-  NSURL *imapURL;
-  NSString *password;
-
-  imapURL = [[self mailAccountFolder] imap4URL];
-
-  password = [[self authenticatorInContext: context]
-               imapPasswordInContext: context
-                           forServer: [imapURL host]
-                          forceRenew: renewed];
-  if (!password)
-    [self errorWithFormat: @"no IMAP4 password available"];
-
-  return password;
+  return [[self mailAccountFolder] imap4PasswordRenewed: renewed];
 }
 
 - (NSMutableString *) traversalFromMailAccount

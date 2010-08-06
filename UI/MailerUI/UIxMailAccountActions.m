@@ -41,7 +41,6 @@
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoUserDefaults.h>
 
 #import "../Common/WODirectAction+SOGo.h"
 
@@ -232,7 +231,6 @@
 {
   SOGoDraftsFolder *drafts;
   SOGoDraftObject *newDraftMessage;
-  SOGoUserDefaults *ud;
   NSString *urlBase, *url, *value, *signature;
   NSArray *mailTo;
   NSMutableDictionary *headers;
@@ -262,8 +260,7 @@
   if (save)
     [newDraftMessage setHeaders: headers];
 
-  ud = [[context activeUser] userDefaults];
-  signature = [ud mailSignature];
+  signature = [[self clientObject] signature];
   if ([signature length])
     {
       [newDraftMessage

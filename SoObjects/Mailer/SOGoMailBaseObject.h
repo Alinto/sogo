@@ -69,7 +69,6 @@
 - (NSMutableString *) traversalFromMailAccount;
 
 - (NSURL *) imap4URL;
-- (NSString *) imap4Login;
 - (NSString *) imap4PasswordRenewed: (BOOL) renew;
 
 - (void) flushMailCaches;

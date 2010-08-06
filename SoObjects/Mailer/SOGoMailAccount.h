@@ -63,6 +63,10 @@ typedef enum {
 - (BOOL) supportsQuotas;
 - (BOOL) updateFilters;
 
+- (NSArray *) identities;
+- (NSString *) signature;
+- (NSString *) encryption;
+
 /* folder pathes */
 
 - (NSArray *) allFolderPaths;

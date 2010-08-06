@@ -447,7 +447,7 @@ static NSString *defaultUserID =  @"anyone";
 		inContext: (id) localContext
 {
   NSArray *folders;
-  NSString *currentFolderName;
+  NSString *currentFolderName, *currentAccountName;
   NSMutableString *imapDestinationFolder;
   NGImap4Client *client;
   id result;
@@ -458,31 +458,45 @@ static NSString *defaultUserID =  @"anyone";
   folders = [[destinationFolder componentsSeparatedByString: @"/"]
               resultsOfSelector: @selector (fromCSSIdentifier)];
   max = [folders count];
-  for (count = 2; count < max; count++)
+  if (max > 1)
     {
-      currentFolderName
-        = [[folders objectAtIndex: count] substringFromIndex: 6];
-      [imapDestinationFolder appendFormat: @"/%@", currentFolderName];
+      currentAccountName = [[self mailAccountFolder] nameInContainer];
+      if ([[folders objectAtIndex: 1] isEqualToString: currentAccountName])
+        {
+          for (count = 2; count < max; count++)
+            {
+              currentFolderName
+                = [[folders objectAtIndex: count] substringFromIndex: 6];
+              [imapDestinationFolder appendFormat: @"/%@", currentFolderName];
+            }
+
+          client = [[self imap4Connection] client];
+          [imap4 selectFolder: [self imap4URL]];
+  
+          // We make sure the destination IMAP folder exist, if not, we create it.
+          result = [[client status: imapDestinationFolder
+                             flags: [NSArray arrayWithObject: @"UIDVALIDITY"]]
+                     objectForKey: @"result"];
+          if (![result boolValue])
+            result = [[self imap4Connection] createMailbox: imapDestinationFolder
+                                                     atURL: [[self mailAccountFolder] imap4URL]];
+          if (!result || [result boolValue])
+            result = [client copyUids: uids toFolder: imapDestinationFolder];
+
+          if ([[result valueForKey: @"result"] boolValue])
+            result = nil;
+          else
+            result = [NSException exceptionWithHTTPStatus: 500
+                                                   reason: @"Couldn't copy UIDs."];
+        }
+      else
+        result = [NSException exceptionWithHTTPStatus: 500
+                                               reason: @"Cannot copy messages across different accounts."];
     }
-
-  client = [[self imap4Connection] client];
-  [imap4 selectFolder: [self imap4URL]];
-  
-  // We make sure the destination IMAP folder exist, if not, we create it.
-  result = [[client status: imapDestinationFolder
-                     flags: [NSArray arrayWithObject: @"UIDVALIDITY"]]
-	     objectForKey: @"result"];
-  if (![result boolValue])
-    result = [[self imap4Connection] createMailbox: imapDestinationFolder
-                                             atURL: [[self mailAccountFolder] imap4URL]];
-  if (!result || [result boolValue])
-    result = [client copyUids: uids toFolder: imapDestinationFolder];
-
-  if ([[result valueForKey: @"result"] boolValue])
-    result = nil;
   else
-    result = [NSException exceptionWithHTTPStatus: 500 reason: @"Couldn't copy UIDs."];
-  
+    result = [NSException exceptionWithHTTPStatus: 500
+                                           reason: @"Invalid destination."];
+
   return result;
 }
 
@@ -1061,9 +1075,8 @@ static NSString *defaultUserID =  @"anyone";
     {
       thisAccount = [self mailAccountFolder];
       mailAccount = [[user mailAccounts] objectAtIndex: 0];
-      url = [NSString stringWithFormat: @"%@/%@%@",
+      url = [NSString stringWithFormat: @"%@/0%@",
 		      [self soURLToBaseContainerForUser: uid],
-		      [mailAccount objectForKey: @"name"],
 		      otherUsersPath];
     }
   else

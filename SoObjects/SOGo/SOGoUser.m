@@ -436,11 +436,73 @@
 }
 
 /* mail */
+- (BOOL) _migrateFolderWithPurpose: (NSString *) purpose
+                          withName: (NSString *) folderName
+{
+  NSString *methodName;
+  SEL methodSel;
+  BOOL rc;
+
+  [self userDefaults];
+  methodName = [NSString stringWithFormat: @"set%@FolderName:", purpose];
+  methodSel = NSSelectorFromString (methodName);
+  if ([_defaults respondsToSelector: methodSel])
+    {
+      [_defaults performSelector: methodSel withObject: folderName];
+      rc = YES;
+    }
+  else
+    {
+      [self errorWithFormat: @"method '%@' not available with user defaults"
+            @" object, folder migration fails", methodName];
+      rc = NO;
+    }
+
+  return rc;
+}
+
+- (void) _migrateFolderSettings
+{
+  NSMutableDictionary *mailSettings;
+  NSString *folderName, *key;
+  BOOL migrated;
+  NSString **purpose;
+  NSString *purposes[] = { @"Drafts", @"Sent", @"Trash", nil };
+
+  [self userSettings];
+  mailSettings = [_settings objectForKey: @"Mail"];
+  if (mailSettings)
+    {
+      migrated = NO;
+      purpose = purposes;
+      while (*purpose)
+        {
+          key = [NSString stringWithFormat: @"%@Folder", purpose];
+          folderName = [mailSettings objectForKey: key];
+          if ([folderName length]
+              && [self _migrateFolderWithPurpose: *purpose
+                                        withName: folderName])
+            {
+              migrated = YES;
+              [mailSettings removeObjectForKey: key];
+              folderName = nil;
+            }
+          purpose++;
+        }
+      if (migrated)
+        {
+          [_settings synchronize];
+          [self userDefaults];
+          [_defaults synchronize];
+        }
+    }
+}
+
 - (void) _appendSystemMailAccount
 {
-  NSMutableDictionary *mailAccount, *identity;
+  NSMutableDictionary *mailAccount, *identity, *mailboxes;
   NSMutableArray *identities;
-  NSString *fullName, *imapLogin, *imapServer;
+  NSString *fullName, *imapLogin, *imapServer, *signature;
   NSArray *mails;
   unsigned int count, max;
 
@@ -451,6 +513,7 @@
   imapServer = [self _fetchFieldForUser: @"c_imaphostname"];
   if (!imapServer)
     imapServer = [[self domainDefaults] imapServer];
+
   [mailAccount setObject: imapLogin forKey: @"userName"];
   [mailAccount setObject: imapServer forKey: @"serverName"];
 
@@ -469,6 +532,9 @@
         fullName = login;
       [identity setObject: fullName forKey: @"fullName"];
       [identity setObject: [mails objectAtIndex: count] forKey: @"email"];
+      signature = [[self userDefaults] mailSignature];
+      if (signature)
+        [identity setObject: signature forKey: @"signature"];
       [identities addObject: identity];
       [identity release];
     }
@@ -477,16 +543,38 @@
   
   [mailAccount setObject: identities forKey: @"identities"];
   [identities release];
-  [mailAccounts addObject: mailAccount];    
+
+  mailboxes = [NSMutableDictionary new];
+
+  [self userDefaults];
+  [self _migrateFolderSettings];
+  [mailboxes setObject: [_defaults draftsFolderName]
+                forKey: @"Drafts"];
+  [mailboxes setObject: [_defaults sentFolderName]
+                forKey: @"Sent"];
+  [mailboxes setObject: [_defaults trashFolderName]
+                forKey: @"Trash"];
+  [mailAccount setObject: mailboxes forKey: @"mailboxes"];
+  [mailboxes release];
+
+  [mailAccounts addObject: mailAccount];
   [mailAccount release];
 }
 
 - (NSArray *) mailAccounts
 {
+  NSArray *auxAccounts;
+
   if (!mailAccounts)
     {
       mailAccounts = [NSMutableArray new];
       [self _appendSystemMailAccount];
+      if ([[self domainDefaults] mailAuxiliaryUserAccountsEnabled])
+        {
+          auxAccounts = [[self userDefaults] auxiliaryMailAccounts];
+          if (auxAccounts)
+            [mailAccounts addObjectsFromArray: auxAccounts];
+        }
     }
 
   return mailAccounts;
@@ -508,60 +596,6 @@
 
   return mailAccount;
 }
-
-/*
-@interface SOGoMailIdentity : NSObject
-{
-  NSString *name;
-  NSString *email;
-  NSString *replyTo;
-  NSString *organization;
-  NSString *signature;
-  NSString *vCard;
-  NSString *sentFolderName;
-  NSString *sentBCC;
-  NSString *draftsFolderName;
-  NSString *templatesFolderName;
-  struct
-  {
-    int composeHTML:1;
-    int reserved:31;
-  } idFlags;
-}
-
-- (void) setName: (NSString *) _value;
-- (NSString *) name;
-
-- (void) setEmail: (NSString *) _value;
-- (NSString *) email;
-
-- (void) setReplyTo: (NSString *) _value;
-- (NSString *) replyTo;
-
-- (void) setOrganization: (NSString *) _value;
-- (NSString *) organization;
-
-- (void) setSignature: (NSString *) _value;
-- (NSString *) signature;
-- (BOOL) hasSignature;
-
-- (void) setVCard: (NSString *) _value;
-- (NSString *) vCard;
-- (BOOL) hasVCard;
-
-- (void) setSentFolderName: (NSString *) _value;
-- (NSString *) sentFolderName;
-
-- (void) setSentBCC: (NSString *) _value;
-- (NSString *) sentBCC;
-
-- (void) setDraftsFolderName: (NSString *) _value;
-- (NSString *) draftsFolderName;
-
-- (void) setTemplatesFolderName: (NSString *) _value;
-- (NSString *) templatesFolderName;
-
-@end */
 
 - (NSArray *) allIdentities
 {
@@ -606,28 +640,6 @@
   return [[self calendarsFolderInContext: context] lookupPersonalFolder: @"personal"
                                                          ignoringRights: YES];
 }
-
-// - (id) schedulingCalendarInContext: (id) _ctx
-// {
-//   /* Note: watch out for cyclic references */
-//   id folder;
-
-//   folder = [(WOContext *)_ctx objectForKey:@"ActiveUserCalendar"];
-//   if (folder != nil)
-//     return [folder isNotNull] ? folder : nil;
-
-//   folder = [self homeFolderInContext:_ctx];
-//   if ([folder isKindOfClass:[NSException class]])
-//     return folder;
-
-//   folder = [folder lookupName:@"Calendar" inContext:_ctx acquire:NO];
-//   if ([folder isKindOfClass:[NSException class]])
-//     return folder;
-
-//   [(WOContext *)_ctx setObject:folder ? folder : [NSNull null]
-//                 forKey:@"ActiveUserCalendar"];
-//   return folder;
-// }
 
 - (NSArray *) rolesForObject: (NSObject *) object
                    inContext: (WOContext *) context

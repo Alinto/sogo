@@ -1,5 +1,46 @@
 2010-08-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailForward.m (-signature): same as below.
+
+	* UI/MailerUI/UIxMailAccountActions.m (-composeAction): same as below.
+
+	* SoObjects/Mailer/SOGoDraftObject.m (-fetchMailForForwarding):
+	the signature is now taken from the original mail's corresponding
+	account.
+
+	* SoObjects/Mailer/SOGoMailFolder.m
+	(-copyUIDs:toFolder:inContext:): we now ensure that the operation
+	is not attempted on two separate accounts.
+	(-httpURLForAdvisoryToUser): the returned mail account is now
+	always "0".
+
+	* SoObjects/Mailer/SOGoMailBaseObject.m (-imap4URL): we now add
+	the "tls=YES" url parameter if the corresponding account
+	encryption is set to "tls".
+	(-imap4Login): removed useless method.
+	(-imap4PasswordRenewed:): now a proxy to the same method on the
+	instance account folder.
+
+	* SoObjects/Mailer/SOGoMailAccount.m (-identities, -signature)
+	(encryption): new helper methods that return the corresponding key
+	in the appropriate mail account dictionary.
+	(-_migrateFolderWithPurpose:): moved method in SOGoMailAccount.m.
+	(-_userFolderNameWithPurpose): rewrote method to make use of the
+	mail account dictionaries. Fallback on the main account of the
+	auxiliary ones do not have the required entry.
+	(-imap4PasswordRenewed:): moved method from SOGoMailBaseObject.m
+	and use the "password" entry in auxiliary account dicts depending
+	on "nameInContainer".
+	(-imap4LoginFromHTTP, -imap4Login): removed useless methods.
+
+	* SoObjects/SOGo/SOGoUser.m (-mailAccounts): we now conditionnally
+	append the array of auxiliary user accounts, if enabled in the
+	domain defaults.
+	(-_appendSystemMailAccount): the user main signature and the
+	sent, drafts, trash folder location are now stored in the account
+	dictionaries. Added migration code from us to ud from
+	SOGoMailAccount.m.
+
 	* SoObjects/SOGo/SOGoDomainDefaults.m
 	(-mailAuxiliaryUserAccountsEnabled): new method returning a BOOL
 	describing whether the domain users can access auxiliary mail
