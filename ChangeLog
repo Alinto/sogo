@@ -1,5 +1,15 @@
 2010-08-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Common/UIxPageFrame.m (-setUserDefaultsKeys:)
+	(-hasUserDefaultsKeys, -setUserSettingsKeys:)
+	(-hasUserSettingsKeys): new accessor for determining explicitly
+	which user defaults/settings keys are returned. The new
+	corresponding ivars are "udKeys" and "usKeys" respectively.
+	(-userDefaults, -userSettings): rewrote methods to create a
+	dictionary containing only the requested keys (see above). Since
+	the source are now explicitly queried, the values can now be
+	inherited from the domain and system defaults.
+
 	* UI/WebServerResources/UIxFilterEditor.js (loadMailboxes): the
 	first account is now always identitied with "0", therefore we no
 	longer need the "firstMailAccount" variable.

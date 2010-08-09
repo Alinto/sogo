@@ -7,6 +7,8 @@
   xmlns:label="OGo:label"
   className="UIxPageFrame"
   title="title"
+  const:userDefaultsKeys="SOGoMailMessageCheck,SOGoMailListViewColumnsOrder"
+  const:userSettingsKeys="Mail"
   const:jsFiles="dtree.js,MailerUIdTree.js,SOGoAutoCompletion.js,SOGoResizableTable.js,SOGoMailDataSource.js,SOGoDataTable.js">
   <script type="text/javascript">
     var textMailAccounts = '<var:string value="mailAccounts" const:escapeHTML="NO"/>';
