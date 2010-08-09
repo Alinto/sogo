@@ -1,5 +1,8 @@
 2010-08-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/generic.js (log): fixed handling of
+	messages ending with "\n".
+
 	* UI/Common/UIxPageFrame.m (-setUserDefaultsKeys:)
 	(-hasUserDefaultsKeys, -setUserSettingsKeys:)
 	(-hasUserSettingsKeys): new accessor for determining explicitly
