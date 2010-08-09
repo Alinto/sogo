@@ -42,22 +42,22 @@
 
       <body var:class="bodyClasses"
 	><var:if condition="isCompatibleBrowser"
-	  ><var:if condition="isPopup" const:negate="YES"
+	  ><var:if condition="shortUserNameForDisplay" const:value="anonymous"
+            const:negate="YES"><var:if condition="hasUserSettingsKeys"
+              ><script type="text/javascript">
+                var UserSettings = <var:string value="userSettings" const:escapeHTML="NO"/>;
+              </script
+                ></var:if><var:if condition="hasUserDefaultsKeys">
+              <script type="text/javascript">
+                var UserDefaults = <var:string value="userDefaults" const:escapeHTML="NO"/>;
+              </script
+                ></var:if
+              ></var:if
+            ><var:if condition="isPopup" const:negate="YES"
 	    ><var:if condition="isUIxDebugEnabled"
 	      ><div id="logConsole"><!-- space --></div></var:if>
-            <var:if condition="shortUserNameForDisplay" const:value="anonymous"
-	      const:negate="YES"><var:if condition="hasUserSettingsKeys"
-                ><script type="text/javascript">
-                  var UserSettings = <var:string value="userSettings" const:escapeHTML="NO"/>;
-                </script
-                  ></var:if><var:if condition="hasUserDefaultsKeys">
-                <script type="text/javascript">
-                  var UserDefaults = <var:string value="userDefaults" const:escapeHTML="NO"/>;
-                </script
-                  ></var:if
-                ></var:if>
-              <div id="linkBanner" class="linkbanner">
-                <var:if condition="canLogoff"
+            <div id="linkBanner" class="linkbanner">
+              <var:if condition="canLogoff"
                 ><a id="logoff" var:href="logoffPath"
                   ><var:string label:value="Disconnect"/> </a
                   ><span id="userIdentificationDisplay">
