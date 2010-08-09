@@ -621,6 +621,10 @@ function onMailAccountAdd(event) {
     displayMailAccount(newMailAccount, false);
     li.selectElement();
     li.editionController.startEditing();
+
+    var hasChanged = $("hasChanged");
+    hasChanged.value = "1";
+
     event.stop();
 }
 
@@ -641,6 +645,9 @@ function onMailAccountDelete(event) {
             mailAccounts.splice(index, 1);
             next.selectElement();
             displayMailAccount(next.mailAccount, next.readOnly);
+
+            var hasChanged = $("hasChanged");
+            hasChanged.value = "1";
         }
     }
     event.stop();
@@ -714,8 +721,10 @@ function onColorPickerChoice (newColor) {
     //  div.removeClassName ("colorEditing");
     div.showColor = newColor;
     div.style.background = newColor;
-    if (parseInt($("hasChanged").value) == 0)
-        onChoiceChanged(null);
+    if (parseInt($("hasChanged").value) == 0) {
+        var hasChanged = $("hasChanged");
+        hasChanged.value = "1";
+    }
 }
 
 function onCategoryAdd (e) {
