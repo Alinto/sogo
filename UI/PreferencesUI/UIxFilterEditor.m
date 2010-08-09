@@ -80,26 +80,4 @@
   return filterId;
 }
 
-- (NSString *) firstMailAccount
-{
-  NSArray *accounts;
-  NSDictionary *account;
-  NSString *login, *accountName;
-  SOGoUser *ownerUser;
-
-  login = [[self clientObject] nameInContainer];
-  ownerUser = [SOGoUser userWithLogin: login];
-
-  accounts = [ownerUser mailAccounts];
-  if ([accounts count] > 0)
-    {
-      account = [accounts objectAtIndex: 0];
-      accountName = [[account objectForKey: @"name"] asCSSIdentifier];
-    }
-  else
-    accountName = @"";
-
-  return accountName;
-}
-
 @end

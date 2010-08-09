@@ -1,5 +1,12 @@
 2010-08-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/UIxFilterEditor.js (loadMailboxes): the
+	first account is now always identitied with "0", therefore we no
+	longer need the "firstMailAccount" variable.
+
+	* UI/PreferencesUI/UIxFilterEditor.m (-firstMailAccount): removed
+	osbolete accessor.
+
 	* UI/WebServerResources/UIxPreferences.js: (onMailAccountAdd)
 	(onMailAccountDelete): set "hasChanged" to 1 when triggered.
 	(onColorPickerChoice): don't invoke "onChoiceChanged" as it is an

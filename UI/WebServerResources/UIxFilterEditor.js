@@ -38,8 +38,7 @@ function onLoadHandler() {
 }
 
 function loadMailboxes() {
-    var url = (ApplicationBaseURL + "Mail/"
-               + encodeURI(firstMailAccount) + "/mailboxes");
+    var url = ApplicationBaseURL + "Mail/0/mailboxes";
     triggerAjaxRequest(url, onLoadMailboxesCallback);
 }
 
