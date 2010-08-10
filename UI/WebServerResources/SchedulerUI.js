@@ -161,7 +161,7 @@ function editEvent() {
         var nodes = listOfSelection.getSelectedRows();
 
         if (nodes.length == 0) {
-            window.alert(_("Please select an event or a task."));
+            showAlertDialog(_("Please select an event or a task."));
             return false;
         }
 
@@ -175,7 +175,7 @@ function editEvent() {
             _editEventId(selectedCalendarCell[0].cname,
                          selectedCalendarCell[0].calendar);
     } else {
-        window.alert(_("Please select an event or a task."));
+        showAlertDialog(_("Please select an event or a task."));
     }
 
     return false; /* stop following the link */
@@ -199,7 +199,7 @@ function deleteEvent() {
         if (nodes.length > 0) {
             var label = "";
             if (!nodes[0].erasable && !IsSuperUser) {
-                window.alert(_("You don't have the required privileges to perform the operation."));
+                showAlertDialog(_("You don't have the required privileges to perform the operation."));
                 return false;
             }
             if (listOfSelection == $("tasksList"))
@@ -235,7 +235,7 @@ function deleteEvent() {
                 }
             }
         } else {
-            window.alert(_("Please select an event or a task."));
+            showAlertDialog(_("Please select an event or a task."));
         }
     }
     else if (selectedCalendarCell) {
@@ -271,7 +271,7 @@ function deleteEvent() {
         }
     }
     else
-        window.alert(_("Please select an event or a task."));
+        showAlertDialog(_("Please select an event or a task."));
 
     return false;
 }
@@ -329,10 +329,10 @@ function modifyEventCallback(http) {
             } else {
                 msg = "delegate is a participant";
             }
-            window.alert(_(msg));
+            showAlertDialog(_(msg));
         }
         else {
-            window.alert(_("eventPartStatModificationError"));
+            showAlertDialog(_("eventPartStatModificationError"));
         }
         document.modifyEventAjaxRequest = null;
     }
@@ -486,7 +486,7 @@ function deleteEventCallback(http) {
                 document.deleteEventAjaxRequest = null;
         }
         else if (parseInt(http.status) == 403)
-            window.alert(_("You don't have the required privileges to perform the operation."));
+            showAlertDialog(_("You don't have the required privileges to perform the operation."));
         else
             log ("deleteEventCallback Ajax error (" + http.status + ")");
     }
@@ -2465,7 +2465,7 @@ function appendCalendar(folderName, folderPath) {
     //log ("append name: " + folderName + "; path: " + folderPath + "; owner: " + owner);
 
     if ($(folderPath))
-        window.alert(_("You have already subscribed to that folder!"));
+        showAlertDialog(_("You have already subscribed to that folder!"));
     else {
         var calendarList = $("calendarList");
         var items = calendarList.select("li");
@@ -2564,7 +2564,7 @@ function onCalendarRemove(event) {
                 if (folderId == "/personal") {
                     var label = labels["You cannot remove nor unsubscribe from your"
                                        + " personal calendar."];
-                    window.alert(label);
+                    showAlertDialog(label);
                 }
                 else {
                     var folderIdElements = folderId.split(":");

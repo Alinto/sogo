@@ -27,6 +27,9 @@ var queryParameters;
 var menus = new Array();
 var search = {};
 var sorting = {};
+var dialogs = {};
+var dialogActive = false;
+var dialogsStack = new Array();
 
 var lastClickedRow = -1;
 
@@ -1070,7 +1073,7 @@ function folderSubscriptionCallback(http) {
                 http.callbackData["method"](http.callbackData["data"]);
         }
         else
-            window.alert(_("Unable to subscribe to that folder!"));
+            showAlertDialog(_("Unable to subscribe to that folder!"));
         document.subscriptionAjaxRequest = null;
     }
     else
@@ -1106,7 +1109,7 @@ function folderUnsubscriptionCallback(http) {
                 http.callbackData["method"](http.callbackData["data"]);
         }
         else
-            window.alert(_("Unable to unsubscribe from that folder!"));
+            showAlertDialog(_("Unable to unsubscribe from that folder!"));
     }
 }
 
@@ -1126,7 +1129,7 @@ function unsubscribeFromFolder(folderUrl, owner, refreshCallback,
             triggerAjaxRequest(url, folderUnsubscriptionCallback, rfCbData);
         }
         else
-            window.alert(_("You cannot unsubscribe from a folder that you own!"));
+            showAlertDialog(_("You cannot unsubscribe from a folder that you own!"));
     }
 }
 
@@ -1742,13 +1745,53 @@ function createButton(id, caption, action) {
     return newButton;
 }
 
+function showAlertDialog(label) {
+    var div = $("bgDialogDiv");
+    if (div && div.visible()) {
+        dialogsStack.push(label);
+        return;
+    }
+    else {
+        _showAlertDialog(label);
+    }
+}
+    
+function _showAlertDialog(label) {
+    var dialog = null;
+    if (dialogs[label])
+        dialog = dialogs[label];
+    if (dialog) {
+        $("bgDialogDiv").show();
+    }
+    else {
+        var fields = createElement("p");
+        fields.appendChild(createButton(null,
+                                        _("OK"),
+                                        onBodyClickDialogHandler));
+        dialog = createDialog(null,
+                              _("Warning"),
+                              label,
+                              fields,
+                              "none");
+        document.body.appendChild(dialog);
+        dialogs[label] = dialog;
+    }
+    dialog.show();
+}
+
 function onBodyClickDialogHandler() {
     $$("DIV.dialog").each(function(div) {
                               if (div.visible())
                                   div.hide();
                           });
 
-    $("bgDialogDiv").hide();
+    if (dialogsStack.length > 0) {
+        var label = dialogsStack.first();
+        dialogsStack.splice(0, 1);
+        _showAlertDialog.delay(0.1, label);
+    }
+    else
+        $("bgDialogDiv").hide();
 }
 
 function readCookie(name) {

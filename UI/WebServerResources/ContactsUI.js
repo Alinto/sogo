@@ -275,9 +275,9 @@ function actionContactCallback(http) {
             var error = html.select("p").first().firstChild.nodeValue.trim();
             log("actionContactCallback failed: error " + http.status + " (" + error + ")");
             if (parseInt(http.status) == 403)
-                window.alert(_("You don't have the required privileges to perform the operation."));
+                showAlertDialog(_("You don't have the required privileges to perform the operation."));
             else if (error)
-                window.alert(labels[error]);
+                showAlertDialog(labels[error]);
             refreshCurrentFolder();
         }
 }
@@ -397,7 +397,7 @@ function onToolbarEditSelectedContacts(event) {
     var rows = contactsList.getSelectedRowsId();
 
     if (rows.length == 0) {
-        window.alert(_("Please select a contact."));
+        showAlertDialog(_("Please select a contact."));
         return false;
     }
 
@@ -456,9 +456,8 @@ function onToolbarDeleteSelectedContacts(event) {
         }
         return false;
     }
-    else {
-        window.alert(_("Please select a contact."));
-    }
+    else
+        showAlertDialog(_("Please select a contact."));
 
     return false;
 }
@@ -507,7 +506,7 @@ function onContactDeleteEventCallback(http) {
             row.show();
             var displayName = row.readAttribute("contactname");
             Contact.deleteContactsRequestCount--;
-            window.alert(labels["You cannot delete the card of \"%{0}\"."].formatted(displayName));
+            showAlertDialog(_("You cannot delete the card of \"%{0}\".").formatted(displayName));
         }
     }
 }
@@ -786,7 +785,7 @@ function onAddressBookRemove(event) {
         var owner = node.getAttribute("owner");
         if (owner == "nobody") {
             var label = _("You cannot remove nor unsubscribe from a public addressbook.");
-            window.alert(label);
+            showAlertDialog(label);
         }
         else if (owner == UserLogin) {
             var folderIdElements = node.getAttribute("id").split(":");
@@ -805,26 +804,7 @@ function onAddressBookRemove(event) {
 
 function deletePersonalAddressBook(folderId) {
     if (folderId == "personal") {
-        var dialogId = "deletePersonalAddressBookDialog";
-        var dialog = Contact.dialogs[dialogId];
-        if (dialog) {
-            $("bgDialogDiv").show();
-        }
-        else {
-            var label = _("You cannot remove nor unsubscribe from your personal addressbook.");
-            var fields = createElement("p");
-            fields.appendChild(createButton(dialogId + "ContinueBtn",
-                                            "Continue",
-                                            onBodyClickDialogHandler));
-            dialog = createDialog(dialogId,
-                                  _("Warning"),
-                                  label,
-                                  fields,
-                                  "none");
-            document.body.appendChild(dialog);
-            Contact.dialogs[dialogId] = dialog;
-        }
-        dialog.show();
+        showAlertDialog(_("You cannot remove nor unsubscribe from your personal addressbook."));
     }
     else {
         var dialogId = "deleteAddressBookDialog";
@@ -1048,7 +1028,7 @@ function onAddressBookModify(event) {
                                {node: selected, name: newName});
         }
     } else
-        window.alert(_("Unable to rename that folder!"));
+        showAlertDialog(_("Unable to rename that folder!"));
 }
 
 function folderRenameCallback(http) {
@@ -1068,7 +1048,7 @@ function onMenuSharing(event) {
     var selected = folders.getSelectedNodes()[0];
     var owner = selected.getAttribute("owner");
     if (owner == "nobody")
-        window.alert(clabels["The user rights cannot be"
+        showAlertDialog(clabels["The user rights cannot be"
                              + " edited for this object!"]);
     else {
         var title = this.innerHTML;
