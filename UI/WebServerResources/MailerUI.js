@@ -94,7 +94,7 @@ function onMenuSharing(event) {
     var type = document.menuTarget.getAttribute("datatype");
 
     if (type == "additional")
-        window.alert(clabels["The user rights cannot be"
+        showAlertDialog(clabels["The user rights cannot be"
                              + " edited for this object!"]);
     else {
         var urlstr = URLForFolderID(folderID) + "/acls";
@@ -202,7 +202,7 @@ function openMessageWindowsForSelection(action, firstOnly) {
                     break;
             }
         } else {
-            window.alert(_("Please select a message."));
+            showAlertDialog(_("Please select a message."));
         }
     }
 
@@ -374,7 +374,7 @@ function deleteSelectedMessages(sender) {
                            { "Content-type": "application/x-www-form-urlencoded" });
     }
     else
-        window.alert(_("Please select a message."));
+        showAlertDialog(_("Please select a message."));
 
     return false;
 }
@@ -451,10 +451,10 @@ function onPrintCurrentMessage(event) {
     var messageList = $("messageListBody").down("TBODY");
     var rowIds = messageList.getSelectedNodes();
     if (rowIds.length == 0) {
-        window.alert(_("Please select a message to print."));
+        showAlertDialog(_("Please select a message to print."));
     }
     else if (rowIds.length > 1) {
-        window.alert(_("Please select only one message to print."));
+        showAlertDialog(_("Please select only one message to print."));
     }
     else
         window.print();
@@ -1250,10 +1250,10 @@ function ICalendarButtonCallback(http) {
                 }
             }
             if (i == Mailer.popups.length)
-                window.alert(_(msg));
+                showAlertDialog(_(msg));
         }
         else
-            window.alert("received code: " + http.status + "\nerror: " + http.responseText);
+            showAlertDialog("received code: " + http.status + "\nerror: " + http.responseText);
     }
 }
 
@@ -2126,7 +2126,7 @@ function onMenuEmptyTrash(event) {
 function _onMenuChangeToXXXFolder(event, folder) {
     var type = document.menuTarget.getAttribute("datatype");
     if (type == "additional")
-        window.alert(_("You need to choose a non-virtual folder!"));
+        showAlertDialog(_("You need to choose a non-virtual folder!"));
     else {
         var folderID = document.menuTarget.getAttribute("dataname");
         var urlstr = URLForFolderID(folderID) + "/setAs" + folder + "Folder";
@@ -2228,7 +2228,7 @@ function folderOperationCallback(http) {
         && isHttpStatus204(http.status))
         initMailboxTree();
     else
-        window.alert(http.callbackData);
+        showAlertDialog(http.callbackData);
 }
 
 function folderRefreshCallback(http) {
@@ -2258,7 +2258,7 @@ function folderRefreshCallback(http) {
                 row.show();
             }
         }
-        window.alert(_("Operation failed"));
+        showAlertDialog(_("Operation failed"));
     }
 }
 
@@ -2339,7 +2339,7 @@ function saveAs(event) {
         window.location.href = (url+"?id="+uids+"&uid="+uids+"&mailbox="+Mailer.currentMailbox+"&path="+paths);
     }
     else
-        window.alert(_("Please select a message."));
+        showAlertDialog(_("Please select a message."));
 
     return false;
 }

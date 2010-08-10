@@ -1,3 +1,8 @@
+2010-08-10  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/generic.js (showAlertDialog): new function
+	to replace window.alert().
+
 2010-08-05  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/SOGoResizableTable.js
