@@ -1,3 +1,9 @@
+2010-08-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Common/UIxPageFrame.m (_dictionaryWithKeys:fromSource:):
+	set an NSNull as value for keys which return no results, in order
+	to avoid an NSInvalidArgumentException.
+
 2010-08-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/MailerUI.js (openMailbox): removed the

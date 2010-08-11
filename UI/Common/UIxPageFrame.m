@@ -21,6 +21,7 @@
 */
 
 #import <Foundation/NSEnumerator.h>
+#import <Foundation/NSNull.h>
 #import <Foundation/NSString.h>
 
 #import <NGObjWeb/WOResourceManager.h>
@@ -465,6 +466,10 @@
   NSString *key;
   int count, max;
   NSMutableDictionary *dict;
+  NSNull *nsNull;
+  id value;
+
+  nsNull = [NSNull null];
 
   max = [keys count];
 
@@ -472,8 +477,10 @@
   for (count = 0; count < max; count++)
     {
       key = [keys objectAtIndex: count];
-      [dict setObject: [source objectForKey: key]
-                 forKey: key];
+      value = [source objectForKey: key];
+      if (!value)
+        value = nsNull;
+      [dict setObject: value forKey: key];
     }
 
   return [dict jsonRepresentation];
