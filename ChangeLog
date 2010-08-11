@@ -6,6 +6,9 @@
 	code will always succeed and the new code reuses
 	all the business logic used for the Web interface
 	of SOGo.
+	* SOPE/NGCards/iCalRecurrenceRule.m
+	Modified setInterval: so that when the value is
+	equal to 1, we do NOT set it.
 
 2010-08-03  Ludovic Marcotte  <lmarcotte@inverse.ca>
 	

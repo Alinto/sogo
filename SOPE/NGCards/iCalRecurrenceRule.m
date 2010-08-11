@@ -383,7 +383,10 @@ NSString *iCalWeekDayString[] = { @"SU", @"MO", @"TU", @"WE", @"TH", @"FR",
 
 - (void) setInterval: (NSString *) _interval
 {
-  [self setNamedValue: @"interval" to: _interval];
+  if (_interval && [_interval intValue] == 1)
+    [self setNamedValue: @"interval" to: nil];
+  else
+    [self setNamedValue: @"interval" to: _interval];
 }
 
 - (void) setCount: (NSString *) _count
