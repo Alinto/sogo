@@ -504,4 +504,30 @@
   return r;
 }
 
+- (SOGoWebDAVValue *) davCurrentUserPrincipal
+{
+  NSDictionary *userHREF;
+  NSString *usersUrl, *login;
+  SOGoUser *activeUser;
+  SOGoWebDAVValue *davCurrentUserPrincipal;
+
+  activeUser = [[self context] activeUser];
+  login = [activeUser login];
+  if ([login isEqualToString: @"anonymous"])
+    davCurrentUserPrincipal = nil;
+  else
+    {
+      usersUrl = [NSString stringWithFormat: @"%@%@/",
+                           [self davURLAsString], login];
+      userHREF = davElementWithContent (@"href", XMLNS_WEBDAV, usersUrl);
+      davCurrentUserPrincipal
+        = [davElementWithContent (@"current-user-principal",
+                                  XMLNS_WEBDAV,
+                                  userHREF)
+                                 asWebDAVValue];
+    }
+
+  return davCurrentUserPrincipal;
+}
+
 @end

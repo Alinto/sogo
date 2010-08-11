@@ -1,5 +1,11 @@
 2010-08-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Main/SOGo+DAV.m (-davCurrentUserPrincipal): new method
+	implementing the "{DAV:}current-user-principal" property.
+
+	* SoObjects/Contacts/SOGoContactGCSEntry.m (-davAddressData): new
+	DAV property accessor returning the card content.
+
 	* SoObjects/SOGo/WORequest+SOGo.m (-isAddressBookApp): new
 	(hackish) test method to determine whether the client is Apple's
 	AddressBook.app.
