@@ -36,14 +36,19 @@ function addUser(userName, userID) {
         var elements = url.split("/");
         elements[elements.length-1] = ("addUserInAcls?uid="
                                        + userID);
-        triggerAjaxRequest(elements.join("/"), addUserCallback);
+        triggerAjaxRequest(elements.join("/"), addUserCallback, newNode);
         result = true;
     }
     return result;
 }
 
 function addUserCallback(http) {
-    // Ignore response
+    if (http.readyState == 4) {
+        if (!isHttpStatus204(http.status)) {
+            var node = http.callbackData;
+            node.parentNode.removeChild(node);
+        }
+    }
 }
 
 function setEventsOnUserNode(node) {

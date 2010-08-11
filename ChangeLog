@@ -9,6 +9,9 @@
 	* SOPE/NGCards/iCalRecurrenceRule.m
 	Modified setInterval: so that when the value is
 	equal to 1, we do NOT set it.
+	* UI/WebServerResources/UIxAclEditor.js
+	In addUserCallback(), we remove the owner of the
+	resource if it was added.
 
 2010-08-03  Ludovic Marcotte  <lmarcotte@inverse.ca>
 	
