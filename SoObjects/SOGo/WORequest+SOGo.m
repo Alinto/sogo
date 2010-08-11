@@ -137,4 +137,14 @@
   return [self isAppleDAVWithSubstring: @"iCal/4."];
 }
 
+- (BOOL) isAddressBookApp
+{
+  WEClientCapabilities *cc;
+
+  cc = [self clientCapabilities];
+
+  return ([[cc userAgent] rangeOfString: @"CFNetwork"].location != NSNotFound
+          && [[cc userAgent] rangeOfString: @"Darwin"].location != NSNotFound);
+}
+
 @end
