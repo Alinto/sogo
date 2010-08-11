@@ -325,7 +325,7 @@ static NSCharacterSet *whitespaceCharSet = nil;
           intoValue: (NSString **) value_
 {
   NSRange  r;
-  NSString *attrName, *attrValue;
+  NSString *attrName, *attrValue, *upperAttr;
   
   r = [_attr rangeOfCharacterFromSet: equalSignCharSet];
   if (r.length > 0)
@@ -360,13 +360,16 @@ static NSCharacterSet *whitespaceCharSet = nil;
     }
   else
     {
-      if ([[_attr uppercaseString] isEqualToString: @"QUOTED-PRINTABLE"])
+      upperAttr = [_attr uppercaseString];
+      if ([upperAttr isEqualToString: @"QUOTED-PRINTABLE"]
+          || [upperAttr isEqualToString: @"BASE64"]
+          || [upperAttr isEqualToString: @"B"])
         attrName = @"ENCODING";
       else
         attrName = @"TYPE";
       attrValue = _attr;
     }
-  
+
 #if 0
   // ZNeK: what's this for?
   r = [attrValue rangeOfCharacterFromSet: commaCharSet];

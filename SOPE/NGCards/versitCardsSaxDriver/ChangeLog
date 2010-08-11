@@ -1,3 +1,9 @@
+2010-08-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* VSSaxDriver.m (_parseAttr:forTag:intoAttr:intoValue:): when no
+	attribute tag is not specified and the value is "BASE64" or "B", the
+	attribute tag is set to "ENCODING".
+
 2010-05-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* VSSaxDriver.m (_endComponent:value:): avoid a crash occurring
@@ -38,7 +44,7 @@
 
 	* VSSaxDriver.m: improved error reporting in case no data could be
 	  retrieved from a URL (v4.5.22)
-	
+
 2005-12-05  Helge Hess  <helge.hess@skyrix.com>
 
 	* v4.5.21
