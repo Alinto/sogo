@@ -11,7 +11,11 @@
 	equal to 1, we do NOT set it.
 	* UI/WebServerResources/UIxAclEditor.js
 	In addUserCallback(), we remove the owner of the
-	resource if it was added.
+	resource if it was added. This fixes #682.
+	* We now correctly encode/decode the '&'
+	character in the mailbox name when copying and moving 
+	messages and also when opening mailboxes. This
+	fixes #716.
 
 2010-08-03  Ludovic Marcotte  <lmarcotte@inverse.ca>
 	
