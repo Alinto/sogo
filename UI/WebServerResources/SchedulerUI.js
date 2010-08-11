@@ -2722,7 +2722,6 @@ function onDocumentKeydown(event) {
 function initCalendars() {
     sorting["attribute"] = "start";
     sorting["ascending"] = true;
-    showCompletedTasks = parseInt(UserSettings['ShowCompletedTasks']);
 
     if (!$(document.body).hasClassName("popup")) {
         var node = $("filterpopup");
@@ -2735,6 +2734,7 @@ function initCalendars() {
         initDateSelectorEvents();
         initCalendarSelector();
         configureSearchField();
+        showCompletedTasks = parseInt(UserSettings['ShowCompletedTasks']);
         configureLists();
         $("calendarList").attachMenu("calendarsMenu");
         $(document.body).observe("click", onBodyClickHandler);

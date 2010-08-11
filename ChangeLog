@@ -1,5 +1,10 @@
 2010-08-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/SchedulerUI.js: (initCalendars): avoid
+	setting "showCompletedTasks" when in a popup, since this needs
+	access to a UserDefaults dictionary which is not present nor event
+	required.
+
 	* Main/SOGo+DAV.m (-davCurrentUserPrincipal): new method
 	implementing the "{DAV:}current-user-principal" property.
 
