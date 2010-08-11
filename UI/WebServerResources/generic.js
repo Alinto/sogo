@@ -772,7 +772,7 @@ function log(message) {
             return;
         }
         if (message[message.length-1] == "\n") {
-            message = message.substr(0, message.length-2);
+            message = message.substr(0, message.length-1);
         }
         var lines = message.split("\n");
         for (var i = 0; i < lines.length; i++) {

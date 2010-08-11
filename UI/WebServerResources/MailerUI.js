@@ -622,7 +622,7 @@ function composeNewMessage() {
     }
 }
 
-function openMailbox(mailbox, reload, updateStatus) {
+function openMailbox(mailbox, reload) {
     if (mailbox != Mailer.currentMailbox || reload) {
         var url = ApplicationBaseURL + encodeURI(mailbox);
         var urlParams = new Hash();
@@ -691,9 +691,6 @@ function openMailbox(mailbox, reload, updateStatus) {
                 loadMessage(currentMessage);
             }
 	}
-
-        if (updateStatus != false)
-            getStatusFolders();
     }
 }
 
@@ -1672,7 +1669,7 @@ function refreshContacts() {
 
 function openInbox(node) {
     var done = false;
-    openMailbox(node.parentNode.getAttribute("dataname"), false, false);
+    openMailbox(node.parentNode.getAttribute("dataname"), false);
     var tree = $("mailboxTree");
     tree.selectedEntry = node;
     node.selectElement();
