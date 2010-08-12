@@ -111,12 +111,6 @@
   return [names jsonRepresentation];
 }
 
-- (NSString *) defaultColumnsOrder
-{
-  return [[[self columnsDisplayOrder] objectsForKey: @"value"
-				     notFoundMarker: @""] jsonRepresentation];
-}
-
 - (NSString *) pageFormURL
 {
   NSString *u;
@@ -617,6 +611,15 @@
 - (NSString *) columnTitle
 {
   return [self labelForKey: [currentColumn objectForKey: @"value"]];
+}
+
+- (NSString *) getUnseenCountForAllFolders
+{
+  SOGoDomainDefaults *dd;
+
+  dd = [[context activeUser] domainDefaults];
+
+  return ([dd mailCheckAllUnseenCounts] ? @"true" : @"false");
 }
 
 @end /* UIxMailMainFrame */

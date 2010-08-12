@@ -1,5 +1,28 @@
 2010-08-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/MailerUIdTree.js: (getMailboxNode): fixed
+	method to return unfolded nodes too.
+
+	* UI/WebServerResources/MailerUI.js: (updateUnseenCount): renamed
+	from "updateStatusFolders" and improved to use DOM methods.
+
+	* UI/WebServerResources/dtree.js: (Node): removed the "hasUnseen"
+	parameter.
+
+	* UI/MailerUI/UIxMailAccountActions.m (-listMailboxes): make use
+	of the "application/json" content type in the response.
+
+	* UI/MailerUI/UIxMailFolderActions.m: (-unseenCount): renamed and
+	moved implementation of the -[UIxMailAccountActions statusFolders]
+	method, splitted thereof since we now execute the method on all
+	mail folders.
+
+	* UI/MailerUI/UIxMailMainFrame.m (-defaultColumnsOrder): removed
+	accessor, made obsolete by the new propagation mechanism of user
+	defaults.
+	(-getUnseenCountForAllFolders): new accessor that returns the
+	value below as a string value.
+
 	* SoObjects/SOGo/SOGoDomainDefaults.m (-mailCheckAllUnseenCounts):
 	new method returning whether the unseen count of all mailboxes
 	should be checked.
@@ -15,7 +38,7 @@
 	memcached. In FF 3.5 and above, a bug prevents the initial cookie
 	from being given back to the reauthentication redirect from an
 	AJAX request. Therefore we open a window that will do this for us
-	and will close one the authentication has succeeded again. 
+	and will close one the authentication has succeeded again.
 
 	* UI/MainUI/SOGoRootPage.m (-revoverAction): new fake action that
 	perform the CAS redirection and then trigger the respawn of the

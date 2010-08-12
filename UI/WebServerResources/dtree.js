@@ -21,7 +21,7 @@ function dTreeQuote(str) {
 
 // Node object
 function Node(id, pid, name, isParent, url, dataname, datatype, title, target,
-              icon, iconOpen, open, hasUnseen) {
+              icon, iconOpen, open) {
     this.isParent = isParent;
     this.id = id;
     this.pid = pid;
@@ -33,7 +33,6 @@ function Node(id, pid, name, isParent, url, dataname, datatype, title, target,
     this.iconOpen = iconOpen;
     this.dataname = dataname;
     this.datatype = datatype;
-    this.hasUnseen = hasUnseen;
     this._io = open || false;
     this._is = false;
     this._ls = false;
@@ -90,10 +89,10 @@ dTree.prototype = {
 
     // Adds a new node to the node array
     add: function(id, pid, name, isParent, url, datatype,
-                  title, target, icon, iconOpen, open, hasUnseen) {
+                  title, target, icon, iconOpen, open) {
         this.aNodes[this.aNodes.length] = new Node(id, pid, name, isParent, url,
                                                    datatype, title, target, icon,
-                                                   iconOpen, open, false, hasUnseen);
+                                                   iconOpen, open, false);
     },
 
     preload: function () {
@@ -199,8 +198,6 @@ dTree.prototype = {
             var span = this.objects['namespan'].cloneNode (true);
             if (!node.isParent)
                 span.addClassName ("leaf");
-            if (node.hasUnseen)
-                span.addClassName ("unseen");
             span.update (node.name);
 
             link.appendChild (img);

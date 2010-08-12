@@ -31,8 +31,6 @@
 #import <NGImap4/NGImap4Connection.h>
 #import <NGImap4/NGImap4Client.h>
 
-#import <EOControl/EOQualifier.h>
-
 #import <Mailer/SOGoMailAccount.h>
 #import <Mailer/SOGoDraftObject.h>
 #import <Mailer/SOGoDraftsFolder.h>
@@ -124,50 +122,6 @@
   return folders;
 }
 
-- (NSDictionary *) _statusFolders
-{
-  EOQualifier *searchQualifier;
-  NSArray *searchResult;
-  NSDictionary *imapResult;
-  NGImap4Client *client;
-  NSNumber *unseen;
-  SOGoMailFolder *inbox;
-  SOGoMailAccount *co;  
-
-  co = [self clientObject];
-  inbox = [co inboxFolderInContext: context];
-  client = [[inbox imap4Connection] client];
-  unseen = nil;
-
-  if ([client select: [inbox relativeImap4Name]])
-    {
-      searchQualifier = [EOQualifier qualifierWithQualifierFormat: @"flags = %@ AND not flags = %@", @"unseen", @"deleted"];
-      imapResult = [client searchWithQualifier: searchQualifier];
-      searchResult = [[imapResult objectForKey: @"RawResponse"] objectForKey: @"search"];
-      unseen = [NSNumber numberWithInt: [searchResult count]];
-    }
-  
-  if (!unseen)
-    unseen = [NSNumber numberWithInt: 0];
-  
-  return [NSDictionary dictionaryWithObjectsAndKeys: unseen, @"unseen", nil];
-}
-
-- (WOResponse *) statusFoldersAction
-{
-  WOResponse *response;
-  NSDictionary *data;
-  
-  response = [self responseWithStatus: 200];
-  data = [self _statusFolders];
-
-  [response setHeader: @"text/plain; charset=utf-8"
-	    forKey: @"content-type"];
-  [response appendContentString: [data jsonRepresentation]];
-
-  return response;
-}
-
 - (WOResponse *) listMailboxesAction
 {
   SOGoMailAccount *co;
@@ -214,13 +168,12 @@
   // The parameter order is important here, as if the server doesn't support
   // quota, inboxQuota will be nil and it'll terminate the list of objects/keys.
   data = [NSDictionary dictionaryWithObjectsAndKeys: folders, @"mailboxes",
-		       [self _statusFolders], @"status",
 		       inboxQuota, @"quotas",
 		       nil];
-  response = [self responseWithStatus: 200];
-  [response setHeader: @"text/plain; charset=utf-8"
+  response = [self responseWithStatus: 200
+                            andString: [data jsonRepresentation]];
+  [response setHeader: @"application/json"
 	    forKey: @"content-type"];
-  [response appendContentString: [data jsonRepresentation]];
 
   return response;
 }

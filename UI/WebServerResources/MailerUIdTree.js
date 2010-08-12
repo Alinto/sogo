@@ -16,15 +16,11 @@ var MailerUIdTreeExtension = {
         else
             icon = "";
         var displayName = this.folderNames[type];
-        var hasUnseen = false;
         if (!displayName)
             displayName = name;
-        if (typeof unseen != "undefined") {
-            hasUnseen = true;
-            displayName += " <span class=\"unseenCount\">(" + parseInt(unseen) + ")</span>";
-        }
+        displayName += "<span class=\"unseenCount hidden\"> (" + parseInt(unseen) + ")</span>";
         this.add(this.elementCounter, parent, displayName, 1, '#', fullName,
-                 type, '', '', icon, icon, hasUnseen);
+                 type, '', '', icon, icon, true);
         this.elementCounter++;
     },
     _addFolder: function (parent, folder) {
@@ -61,10 +57,10 @@ var MailerUIdTreeExtension = {
     },
     getMailboxNode: function(mailbox) {
         var childNode = null;
-        for (var i = 0; !childNode &&  i < this.aNodes.length; i++) {
+        for (var i = 0; (childNode == null) && (i < this.aNodes.length); i++) {
             var aNode = this.aNodes[i];
             if (aNode.dataname == mailbox) {
-                childNode = $("tgmailboxTree" + aNode.id);
+                childNode = $("smailboxTree" + aNode.id);
             }
         }
 

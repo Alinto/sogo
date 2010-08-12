@@ -171,6 +171,11 @@
           protectedBy = "ReadAcls";
           pageName    = "UIxMailUserRightsEditor";
         };
+        unseenCount = {
+          protectedBy = "View";
+          actionClass = "UIxMailFolderActions";
+          actionName = "unseenCount";
+        };
         saveUserRights = {
           protectedBy = "Change Permissions";
           pageName    = "UIxMailUserRightsEditor";
@@ -382,11 +387,6 @@
           protectedBy = "View";
           actionClass = "UIxMailFolderActions";
           actionName = "createFolder";
-        };
-        statusFolders = {
-          protectedBy = "View";
-          actionClass = "UIxMailAccountActions";
-          actionName = "statusFolders";
         };
       };
     };

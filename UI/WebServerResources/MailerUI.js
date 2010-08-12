@@ -3,18 +3,12 @@
 /* JavaScript for SOGoMail */
 var accounts = [];
 var mailboxTree;
-var mailAccounts;
-if (typeof textMailAccounts != 'undefined') {
-    if (textMailAccounts.length > 0)
-        mailAccounts = textMailAccounts.evalJSON(true);
-    else
-        mailAccounts = new Array();
-}
 
 var Mailer = {
     currentMailbox: null,
     currentMailboxType: "",
     currentMessages: {},
+    unseenCountMailboxes: [],
     maxCachedMessages: 20,
     cachedMessages: new Array(),
     foldersStateTimer: false,
@@ -164,11 +158,9 @@ function markMailInWindow(win, msguid, markread) {
         }
 
         if (unseenCount != 0) {
-            if (Mailer.currentMailboxType == "inbox") {
-                var node = mailboxTree.getMailboxNode(Mailer.currentMailbox);
-                if (node) {
-                    updateStatusFolders(node, unseenCount, true);
-                }
+            var node = mailboxTree.getMailboxNode(Mailer.currentMailbox);
+            if (node) {
+                updateUnseenCount(node, unseenCount, true);
             }
         }
     }
@@ -362,11 +354,9 @@ function deleteSelectedMessages(sender) {
         messageList.deselectAll();
         updateMessageListCounter(0 - rows.length, true);
         if (unseenCount < 0) {
-            if (Mailer.currentMailboxType == "inbox") {
-                var node = mailboxTree.getMailboxNode(Mailer.currentMailbox);
-                if (node) {
-                    updateStatusFolders(node, unseenCount, true);
-                }
+            var node = mailboxTree.getMailboxNode(Mailer.currentMailbox);
+            if (node) {
+                updateUnseenCount(node, unseenCount, true);
             }
         }
         var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/batchDelete";
@@ -676,12 +666,17 @@ function openMailbox(mailbox, reload) {
             else
                 dataSource.load(urlParams);
             Mailer.dataSources.set(key, dataSource);
+            getUnseenCountForFolder(mailbox);
         }
         Mailer.dataTable.setSource(dataSource);
         messageList.deselectAll();
         Mailer.dataTable.render();
         configureDraggables();
         Mailer.currentMailbox = mailbox;
+
+        if (!getUnseenCountForAllFolders && Mailer.unseenCountMailboxes.indexOf(mailbox) == -1) {
+            Mailer.unseenCountMailboxes.push(mailbox);
+        }
 
 	// Restore previous selection
         var currentMessage = Mailer.currentMessages[mailbox];
@@ -740,33 +735,36 @@ function messageListCallback(row, data, isNew) {
     }
 }
 
-function getStatusFolders() {
-    var account = Mailer.currentMailbox.split("/")[1];
-    var url = ApplicationBaseURL + encodeURI(account) + '/statusFolders';
-    if (document.statusFoldersAjaxRequest) {
-        document.statusFoldersAjaxRequest.aborted = true;
-        document.statusFoldersAjaxRequest.abort();
-    }
-    document.statusFoldersAjaxRequest = triggerAjaxRequest(url,
-                                                           statusFoldersCallback,
-                                                           Mailer.currentMailbox);
-}
-
-function statusFoldersCallback(http) {
-    var div = $('mailboxContent');
-    var table = $('messageList');
-
-    if (http.status == 200) {
-        document.statusFoldersAjaxRequest = null;
-        var data = http.responseText.evalJSON(true);
-        var node = mailboxTree.getMailboxNode(http.callbackData);
+function refreshUnseenCounts() {
+    for (var i = 0; i < Mailer.unseenCountMailboxes.length; i++) {
+        var mailboxPath = Mailer.unseenCountMailboxes[i];
+        var node = mailboxTree.getMailboxNode(mailboxPath);
         if (node) {
-            updateStatusFolders(node, data.unseen, false);
+            getUnseenCountForFolder(mailboxPath);
         }
     }
 }
 
-function updateStatusFolders(node, count, isDelta) {
+function getUnseenCountForFolder(mailbox) {
+    var url = ApplicationBaseURL + encodeURI(mailbox) + '/unseenCount';
+    triggerAjaxRequest(url, unseenCountCallback, mailbox);
+}
+
+function unseenCountCallback(http) {
+    var div = $('mailboxContent');
+    var table = $('messageList');
+
+    if (http.status == 200) {
+        document.unseenCountAjaxRequest = null;
+        var data = http.responseText.evalJSON(true);
+        var node = mailboxTree.getMailboxNode(http.callbackData);
+        if (node) {
+            updateUnseenCount(node, data.unseen, false);
+        }
+    }
+}
+
+function updateUnseenCount(node, count, isDelta) {
     var unseenSpan = null;
     var counterSpan = null;
 
@@ -775,7 +773,6 @@ function updateStatusFolders(node, count, isDelta) {
         counterSpan = spans[0];
         unseenSpan = counterSpan.parentNode;
     }
-
     if (counterSpan) {
         if (typeof(count) == "undefined" || isDelta) {
             if (typeof(count) == "undefined") {
@@ -788,18 +785,25 @@ function updateStatusFolders(node, count, isDelta) {
                     content += cNode.nodeValue;
                 }
             }
-            count += parseInt(content.replace(/[()]/, "", "g"));
+            var digits = "";
+            for (var i = 0; i < content.length; i++) {
+                var code = content.charCodeAt(i);
+                if (code > 47 && code < 58) {
+                    digits += content[i];
+                }
+            }
+            count += parseInt(digits);
         }
         while (counterSpan.firstChild) {
             counterSpan.removeChild(counterSpan.firstChild);
         }
         counterSpan.appendChild(document.createTextNode(" (" + count + ")"));
   	if (count > 0) {
-            counterSpan.setStyle({ display: "inline" });
+            counterSpan.removeClassName("hidden");
             unseenSpan.addClassName("unseen");
   	}
         else {
-            counterSpan.setStyle({ display: "none" });
+            counterSpan.addClassName("hidden");
             unseenSpan.removeClassName("unseen");
         }
     }
@@ -1689,18 +1693,6 @@ function initMailer(event) {
         sorting["ascending"] = false;
     }
 
-    // Define columns order
-    if (typeof UserDefaults["SOGoMailListViewColumnsOrder"] == "undefined") {
-        var defaultColumnsOrder;
-        if (typeof textDefaultColumnsOrder != 'undefined') {
-            if (textDefaultColumnsOrder.length > 0)
-                defaultColumnsOrder = textDefaultColumnsOrder.evalJSON(true);
-            else
-                defaultColumnsOrder = new Array();
-        }
-        UserDefaults["SOGoMailListViewColumnsOrder"] = defaultColumnsOrder;
-    }
-
     if (!$(document.body).hasClassName("popup")) {
         //initDnd();
 
@@ -1759,6 +1751,7 @@ function initMessageCheckTimer() {
 
 function onMessageCheckCallback(event) {
     refreshMailbox();
+    refreshUnseenCounts();
 }
 
 function initMailboxTree() {
@@ -1796,10 +1789,16 @@ function initMailboxTree() {
 function initMailboxTreeCB() {
     updateMailboxTreeInPage();
     updateMailboxMenus();
-    getStatusFolders();
     checkAjaxRequestsState();
     getFoldersState();
     configureDroppables();
+    if (getUnseenCountForAllFolders) {
+        for (var i = 0; i < mailboxTree.aNodes.length; i++) {
+            var mailboxPath = mailboxTree.aNodes[i].dataname;
+            Mailer.unseenCountMailboxes.push(mailboxPath);
+        }
+        refreshUnseenCounts();
+    }
 }
 
 function onLoadMailboxesCallback(http) {
@@ -1811,8 +1810,9 @@ function onLoadMailboxesCallback(http) {
             accounts[accountIdx] = newAccount;
             mailboxTree.addMailAccount(newAccount);
         }
-        else
+        else {
             log ("onLoadMailboxesCallback " + http.status);
+        }
     }
 }
 
@@ -2516,7 +2516,6 @@ Mailbox.prototype = {
         this.children.push(mailbox);
     }
 };
-
 
 function configureDraggables () {
     var mainElement = $("dragDropVisual");
