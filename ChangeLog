@@ -1,3 +1,10 @@
+2010-08-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Contacts/SOGoContactFolders.m
+	(-toManyRelationshipKeys): new overriden method to return only the
+	personal addressbook when the request is performed by
+	AddressBook.app.
+
 2010-08-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/SchedulerUI.js: (initCalendars): avoid
