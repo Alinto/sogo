@@ -23,6 +23,7 @@ var logConsole;
 var logWindow = null;
 
 var queryParameters;
+var recoveryRequest = null;
 
 var menus = new Array();
 var search = {};
@@ -245,15 +246,24 @@ function createHTTPClient() {
 
 function onAjaxRequestStateChange(http) {
     try {
-        if (http.readyState == 4
-            && activeAjaxRequests > 0) {
-            if (!http.aborted)
-                http.callback(http);
-            activeAjaxRequests--;
-            checkAjaxRequestsState();
-            http.onreadystatechange = Prototype.emptyFunction;
-            http.callback = Prototype.emptyFunction;
-            http.callbackData = null;
+        if (http.readyState == 4) {
+            if (http.status == 0 && usesCASAuthentication) {
+                recoveryRequest = http;
+                var urlstr = ApplicationBaseURL;
+                if (!urlstr.endsWith('/'))
+                    urlstr += '/';
+                urlstr += ("../../recover");
+                window.open(urlstr, "_blank");
+            }
+            else if (activeAjaxRequests > 0) {
+                if (!http.aborted)
+                    http.callback(http);
+                activeAjaxRequests--;
+                checkAjaxRequestsState();
+                http.onreadystatechange = Prototype.emptyFunction;
+                http.callback = Prototype.emptyFunction;
+                http.callbackData = null;
+            }
         }
     }
     catch(e) {
@@ -272,6 +282,16 @@ function onAjaxRequestStateChange(http) {
         }
         log(backtrace());
         log("request url was '" + http.url + "'");
+    }
+}
+
+function recoverRequest() {
+    if (recoveryRequest) {
+        triggerAjaxRequest(recoveryRequest.url,
+                           recoveryRequest.callback,
+                           recoveryRequest.callbackData,
+                           recoveryRequest.paramHeaders);
+        recoveryRequest = null;
     }
 }
 
@@ -298,9 +318,10 @@ function triggerAjaxRequest(url, callback, userdata, content, headers) {
 
         http.open("POST", url, true);
         http.url = url;
+        http.paramHeaders = headers;
         http.callback = callback;
         http.callbackData = userdata;
-        http.onreadystatechange = function() { onAjaxRequestStateChange(http);};
+        http.onreadystatechange = function() { onAjaxRequestStateChange(http); };
         //       = function() {
         // //       log ("state changed (" + http.readyState + "): " + url);
         //     };
@@ -1755,7 +1776,7 @@ function showAlertDialog(label) {
         _showAlertDialog(label);
     }
 }
-    
+
 function _showAlertDialog(label) {
     var dialog = null;
     if (dialogs[label])

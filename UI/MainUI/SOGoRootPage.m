@@ -435,4 +435,9 @@
   return response;
 }
 
+- (id) recoverAction
+{
+  return [self jsCloseWithRefreshMethod: @"recoverRequest();"];
+}
+
 @end /* SOGoRootPage */

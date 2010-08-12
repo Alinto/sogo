@@ -106,9 +106,14 @@
         };
       };
       methods = {
-        view = { 
+        view = {
           protectedBy = "<public>";
           pageName = "SOGoRootPage"; 
+        };
+        recover = { 
+          protectedBy = "View";
+          pageName = "SOGoRootPage"; 
+          actionName = "recover";
         };
         index = { 
           protectedBy = "<public>";

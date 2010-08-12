@@ -406,6 +406,15 @@
 	  && [user isSuperUser]);
 }
 
+- (BOOL) usesCASAuthentication
+{
+  SOGoSystemDefaults *sd;
+
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+
+  return [[sd authenticationType] isEqualToString: @"cas"];
+}
+
 - (NSString *) userIdentification
 {
   /* The "identification" term is used in the human sense here. */

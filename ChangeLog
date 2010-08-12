@@ -1,5 +1,21 @@
 2010-08-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/generic.js: (onAjaxRequestStateChange):
+	when using CAS authentication and when the return code is 0 and
+	when the request status is 4, chances are that the initial ajax
+	request failed due to the expiration of the CAS ticket entry in
+	memcached. In FF 3.5 and above, a bug prevents the initial cookie
+	from being given back to the reauthentication redirect from an
+	AJAX request. Therefore we open a window that will do this for us
+	and will close one the authentication has succeeded again. 
+
+	* UI/MainUI/SOGoRootPage.m (-revoverAction): new fake action that
+	perform the CAS redirection and then trigger the respawn of the
+	initial request.
+
+	* UI/Common/UIxPageFrame.m (-usesCASAuthentication): new accessor
+	used for recovery of redirected requests.
+
 	* SoObjects/Contacts/SOGoFolder+CardDAV.m:
 	(_appendObject:withBaseURL:toREPORTResponse:): moved method here
 	from SOGOContact{GCS,Source}Folder since its implementation was
