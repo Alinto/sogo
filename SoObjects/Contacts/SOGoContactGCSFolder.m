@@ -32,9 +32,6 @@
 #import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
-#import <NGExtensions/NSNull+misc.h>
-#import <DOM/DOMElement.h>
-#import <DOM/DOMProtocols.h>
 #import <SaxObjC/XMLNamespaces.h>
 #import <EOControl/EOQualifier.h>
 #import <EOControl/EOSortOrdering.h>
@@ -48,7 +45,6 @@
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/NSObject+DAV.h>
-#import <SOGo/WOResponse+SOGo.h>
 
 #import "SOGoContactGCSEntry.h"
 #import "SOGoContactGCSList.h"
