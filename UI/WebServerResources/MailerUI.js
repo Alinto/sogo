@@ -1571,7 +1571,9 @@ function refreshCurrentFolder() {
 
 /* Called after sending an email */
 function refreshMessage(mailbox, messageUID) {
-    if (mailbox == Mailer.currentMailbox) {
+    if (Mailer.currentMailboxType == 'sent')
+        refreshCurrentFolder();
+    else if (mailbox == Mailer.currentMailbox) {
 	Mailer.dataTable.invalidate(messageUID);
     }
 }
