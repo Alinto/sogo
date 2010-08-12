@@ -198,6 +198,11 @@
   return [self arrayForKey: @"SOGoMailPollingIntervals"];
 }
 
+- (BOOL) mailCheckAllUnseenCounts
+{
+  return [self boolForKey: @"SOGoMailCheckAllUnseenCounts"];
+}
+
 - (NSString *) smtpServer
 {
   return [self stringForKey: @"SOGoSMTPServer"];

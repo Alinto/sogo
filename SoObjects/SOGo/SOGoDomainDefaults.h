@@ -62,6 +62,7 @@
 - (NSArray *) calendarDefaultRoles;
 - (NSArray *) contactsDefaultRoles;
 - (NSArray *) mailPollingIntervals;
+- (BOOL) mailCheckAllUnseenCounts;
 
 - (NSString *) calendarDefaultCategoryColor;
 

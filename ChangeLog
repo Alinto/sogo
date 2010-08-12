@@ -1,5 +1,9 @@
 2010-08-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoDomainDefaults.m (-mailCheckAllUnseenCounts):
+	new method returning whether the unseen count of all mailboxes
+	should be checked.
+
 	* SoObjects/Mailer/SOGoMailAccount.m (-updateFilters): when the
 	first login attempt fails, we must request a new password to the
 	authenticator (as intended originally).
