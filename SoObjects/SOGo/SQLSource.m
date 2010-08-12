@@ -20,6 +20,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#define _XOPEN_SOURCE 1
+#include <unistd.h>
+
+#include <openssl/evp.h>
+#include <openssl/md5.h>
+
 #import <Foundation/NSArray.h>
 #import <Foundation/NSObject.h>
 #import <Foundation/NSDictionary.h>
@@ -35,14 +41,9 @@
 #import <GDLAccess/EOAdaptorContext.h>
 #import <GDLAccess/EOAttribute.h>
 
-#include <unistd.h>
+#import "SOGoConstants.h"
 
-#include <openssl/evp.h>
-#include <openssl/md5.h>
-
-#include "SQLSource.h"
-
-#include "SOGoConstants.h"
+#import "SQLSource.h"
 
 /**
  * The view MUST contain the following columns:
