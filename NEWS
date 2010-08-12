@@ -4,6 +4,7 @@
 - added Polish translation
 - added crypt support to SQL sources
 - updated Ukrainian translation
+- added the caldav-auto-schedule capability 
 
 1.3-20100721 (1.3.0)
 --------------------

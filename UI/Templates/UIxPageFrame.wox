@@ -122,6 +122,12 @@
 	    <var:if condition="isSuperUser" const:negate="YES"
 	      >var IsSuperUser = false;
 	    </var:if>
+	    <var:if condition="usesCASAuthentication"
+	      >var usesCASAuthentication = true;
+	    </var:if>
+	    <var:if condition="usesCASAuthentication" const:negate="YES"
+	      >var usesCASAuthentication = false;
+	    </var:if>
 	    <var:if condition="shortUserNameForDisplay" const:value="anonymous"
 	      const:negate="YES"
 	      >var UserFolderURL = '<var:string value="userFolderPath" const:escapeHTML="NO"/>';
