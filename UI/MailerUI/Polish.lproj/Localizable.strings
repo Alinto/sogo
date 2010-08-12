@@ -1,0 +1,272 @@
+/* this file is in UTF-8 format! */
+
+/* Icon's label */
+"Create"      = "Utwórz";
+"Empty Trash" = "Opróżnij kosz";
+"Delete"      = "Usuń";
+"Expunge"     = "Wyczyść ostatecznie";
+"Forward"     = "Przekaż";
+"Get Mail"    = "Pobierz pocztę";
+"Junk"        = "Śmieć";
+"Reply"       = "Odpowiedz";
+"Reply All"   = "Odpowiedz wszystkim";
+"Print"       = "Drukuj";
+"Stop"        = "Zatrzymaj";
+"Write"       = "Napisz";
+
+"Send" = "Wyślij";
+"Contacts" = "Kontakty";
+"Attach" = "Załącz";
+"Save" = "Zapisz";
+"Priority" = "Priorytet";
+"Size" = "Rozmiar";
+
+/* Tooltips */
+
+"Send this message now" = "Wyślij teraz tę wiadomość";
+"Select a recipient from an Address Book" = "Wybierz odbiorcę z książki adresowej";
+"Include an attachment" = "Dodaj załącznik";
+"Save this message" = "Zapisz tę wiadomość";
+"Get new messages" = "Pobierz nową wiadomość";
+"Create a new message" = "Utwórz nową wiadomość";
+"Go to address book" = "Idź do książki adresowej";
+"Reply to the message" = "Odpowiedz na wiadomość";
+"Reply to sender and all recipients" = "Odpowiedz nadawcy i wszystkim odbiorcom";
+"Forward selected message" = "Przekaż zaznaczoną wiadomość";
+"Delete selected message or folder" = "Usuń zaznaczoną wiadomość lub folder";
+"Mark the selected messages as junk" = "Oznacz zaznaczone wiadomości jako śmieci";
+"Print this message" = "Wydrukuj tę wiadomość";
+"Stop the current transfer" = "Zatrzymaj bieżący transfer";
+"Attachment" = "Załącznik";
+"Unread" = "Nieprzeczytane";
+"Flagged" = "Oflagowane";
+
+/* Main Frame  */
+
+"Home"                 = "Strona główna"; 
+"Calendar"             = "Kalendarz";
+"Addressbook"          = "Książka adresowa";
+"Mail"                 = "Poczta";
+"Right Administration" = "Uprawnienia";
+
+"Help" = "Pomoc";
+
+/* Mail account main windows */
+
+"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Witaj w programie SOGo Mailer. Używaj drzewa folderów po lewej stronie by przeglądać swoje konta pocztowe!";
+
+"Read messages"       = "Wiadomości przeczytane";
+"Write a new message" = "Napisz nową wiadomość";
+
+"Share: " = "Udostępnianie: ";
+"Account: " = "Konto: ";
+"Shared Account: " = "Udostępnione konto: ";
+
+/* acls */
+"Default Roles" = "Domyślne role";
+"User rights for:" = "Uprawnienia użytkownika dla:";
+
+"List and see this folder" = "Wylistuj i zobacz ten folder";
+"Read mails from this folder" = "Czytaj wiadomości z tego foldera";
+"Mark mails read and unread" = "Zaznacz wiadomości jako przeczytane lub nie przeczytane";
+"Modify the flags of the mails in this folder" = "Zmień oflagowanie wiadomości w tym folderze";
+"Insert, copy and move mails into this folder" = "Wstaw, kopiuj lub przenieś wiadomości do tego foldera";
+"Post mails" = "Wyślij wiadomości";
+"Add subfolders to this folder" = "Utwórz podfoldery w tym folderze";
+"Remove this folder" = "Usuń ten folder";
+"Erase mails from this folder" = "Usuń wiadomości z tego foldera";
+"Expunge this folder" = "Wyczyść ostatecznie ten folder";
+"Archive This Folder" = "Zarchiwizuj ten folder";
+"Modify the acl of this folder" = "Modyfikuj uprawnienia ACL tego foldera";
+
+"Saved Messages.zip" = "Zapisano Messages.zip";
+
+"Update" = "Zaktualizuj";
+"Cancel" = "Anuluj";
+
+/* Mail edition */
+
+"From"          = "Od";
+"Subject"       = "Temat";
+"To"            = "Do";
+"Cc"            = "DW";
+"Bcc"           = "UDW";
+"Reply-To"	= "Odpowiedź do";
+"Add address"   = "Dodaj adres";
+
+"Attachments:" = "Załączniki:";
+"Open" = "Otwórz";
+"Select All" = "Zaznacz wszystkie";
+"Attach Web Page..." = "Załącz stronę Web...";
+"Attach File(s)..." = "Załącz plik(i)...";
+
+"to"            = "Do";
+"cc"            = "DW";
+"bcc"           = "UDW";
+
+"Addressbook"   = "Książka adresowa";
+
+"Edit Draft..." = "Edytuj szkic...";
+"Load Images" = "Załaduj obrazki";
+
+"highest" = "Najwyższy";
+"high" = "Wysoki";
+"normal" = "Normalny";
+"low" = "Niski";
+"lowest" = "Najniższy";
+
+"This mail is being sent from an unsecure network!" = "Ta wiadomość jest wysyłana z niezabezpieczonej sieci!";
+
+/* Popup "show" */
+
+"all"     = "wszystkie";
+"read"    = "przeczytane";
+"unread"  = "nie przeczytane";
+"deleted" = "usunięte";
+"flagged" = "oflagowane";
+
+/* MailListView */
+
+"Sender" = "Nadawca";
+"Subject or Sender" = "Temat lub nadawca";
+"To or Cc" = "Do lub DW";
+"Entire Message" = "Cała wiadomość";
+
+"Date"          = "Data";
+"View"          = "Widok";
+"All"           = "Wszystkie";
+"Unread"        = "Nie przeczytane";
+"No message"    = "Brak wiadomości";
+"messages"      = "wiadomości";
+
+"first"         = "Pierwsza";
+"previous"      = "Poprzednia";
+"next"          = "Następna";
+"last"          = "Ostatnia";
+
+"msgnumber_to"  = "do";
+"msgnumber_of"  = "z";
+
+"Mark Unread" = "Oznacz jako nie przeczytane";
+"Mark Read"   = "Oznacz jako przeczytane";
+
+"Untitled" = "Bez tytułu";
+
+/* Tree */
+
+"SentFolderName"   = "Wysłane";
+"TrashFolderName"  = "Kosz";
+"InboxFolderName"  = "Odebrane";
+"DraftsFolderName" = "Szkice";
+"SieveFolderName"  = "Filtry";
+"Folders"          = "Foldery"; /* title line */
+
+/* MailMoveToPopUp */
+
+"MoveTo"        = "Przenieś &hellip;";
+
+/* Address Popup menu */
+"Add to Address Book..." = "Dodaj do książki adresowej...";
+"Compose Mail To" = "Utwórz wiadomość do";
+"Create Filter From Message..." = "Utwórz filtr z wiadomości...";
+
+/* Image Popup menu */
+"Save Image" = "Zapisz obrazek";
+"Save Attachment" = "Zapisz załącznik";
+
+/* Mailbox popup menus */
+"Open in New Mail Window" = "Otwórz w nowym oknie";
+"Copy Folder Location" = "Kopiuj położenie foldera";
+"Subscribe..." = "Subskrybuj...";
+"Mark Folder Read..." = "Oznacz folder jako przeczytany...";
+"New Folder..." = "Nowy folder...";
+"Compact This Folder" = "Kompaktuj ten folder";
+"Search Messages..." = "Szukaj wiadomości...";
+"Sharing..." = "Udostępnianie...";
+"New Subfolder..." = "Nowy podfolder...";
+"Rename Folder..." = "Zmień nazwę foldera...";
+"Delete Folder" = "Usuń folder";
+"Use This Folder For" = "Użyj tego foldera do";
+"Get Messages for Account" = "Pobierz wiadomości z konta";
+
+/* Use This Folder menu */
+"Sent Messages" = "Wysłane";
+"Drafts" = "Szkice";
+"Deleted Messages" = "Usunięte";
+
+/* Message list popup menu */
+"Open Message In New Window" = "Otwórz wiadomość w nowym oknie";
+"Reply to Sender Only" = "Odpowiedz tylko nadawcy";
+"Reply to All" = "Odpowiedz wszystkim";
+"Forward" = "Przekaż";
+"Edit As New..." = "Edytuj jako nową...";
+"Move To" = "Przenieś do";
+"Copy To" = "Kopiuj do";
+"Label" = "Etykieta";
+"Mark" = "Oznacz";
+"Save As..." = "Zapisz jako...";
+"Print Preview" = "Podgląd wydruku";
+"View Message Source" = "Pokaż źródło wiadomości";
+"Print..." = "Drukuj...";
+"Delete Message" = "Usuń wiadomość";
+"Delete Selected Messages" = "Usuń zaznaczone wiadomości";
+
+"This Folder" = "Ten folder";
+
+/* Label popup menu */
+"None" = "Brak";
+"Important" = "Ważne";
+"Work" = "Praca";
+"Personal" = "Osobiste";
+"To Do" = "Do zrobienia";
+"Later" = "Później";
+
+/* Mark popup menu */
+"As Read" = "Jako przeczytane";
+"Thread As Read" = "Wątek jako przeczytany";
+"As Read By Date..." = "jako przeczytane do daty...";
+"All Read" = "wszystkie przeczytane";
+"Flag" = "Flaga";
+"As Junk" = "Jako śmieć";
+"As Not Junk" = "Jako nie-śmieć";
+"Run Junk Mail Controls" = "Uruchom kontrole wiadomości śmieci";
+
+/* Folder operations */
+"Name :" = "Nazwa :";
+"Enter the new name of your folder :"
+ = "Wprowadź nową nazwę twojego foldera :";
+"Do you really want to move this folder into the trash ?"
+ = "Czy na pewno chcesz przenieść ten folder do kosza ?";
+"Operation failed" = "Operacja nie powiodła się";
+
+"Quota" = "Limit:";
+"quotasFormat" = "użyte %{0}% z %{1} MB";
+
+"Please select a message." = "Zaznacz wiadomość.";
+"Please select a message to print." = "Zaznacz wiadomość do drukowania.";
+"Please select only one message to print." = "Zaznacz tylko jedną wiadomość do drukowania.";
+"The message you have selected doesn't exist anymore." = "Zaznaczona wiadomość już nie istnieje.";
+
+
+"The folder with name \"%{0}\" could not be created."
+= "Nie można było utworzyć foldera o nazwie \"%{0}\".";
+"This folder could not be renamed to \"%{0}\"."
+= "Nie można było zmienić nazwy foldera na \"%{0}\".";
+"The folder could not be deleted."
+= "Nie można było usunąć foldera.";
+"The trash could not be emptied."
+= "Nie można było opróżnić kosza.";
+"The folder functionality could not be changed."
+= "Nie można było zmienić funkcjonalności foldera.";
+
+"You need to choose a non-virtual folder!" = "Musisz wybrać folder, który nie jest wirtualny!";
+
+"Moving a message into its own folder is impossible!"
+= "Przenoszenie wiadomości do jej obecnego foldera nie jest możliwe!";
+"Copying a message into its own folder is impossible!"
+= "Kopiowanie wiadomości do jej obecnego foldera nie jest możliwe!";
+
+/* Message editing */
+"error_validationfailed" = "Weryfikacja zakończona niepowodzeniem";
+"error_missingsubject" = "Brak tematu";
+"error_missingrecipients" = "Brak odbiorców";

@@ -272,6 +272,12 @@
 @implementation SOGoFolderItalianRemovalAdvisory
 @end
 
+@implementation SOGoFolderPolishAdditionAdvisory
+@end
+
+@implementation SOGoFolderPolishRemovalAdvisory
+@end
+
 @implementation SOGoFolderRussianAdditionAdvisory
 @end
 

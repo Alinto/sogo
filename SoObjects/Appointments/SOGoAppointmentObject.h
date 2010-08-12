@@ -1,6 +1,6 @@
 /*
   Copyright (C) 2004-2005 SKYRIX Software AG
-  Copyright (C) 2007-2008 Inverse inc.
+  Copyright (C) 2007-2010 Inverse inc.
 
   This file is part of OpenGroupware.org.
 
@@ -53,11 +53,10 @@
                                withDelegate: (iCalPerson *) delegate
 			    forRecurrenceId: (NSCalendarDate *) _recurrenceId;
 
-- (void) takeAttendeeStatus: (iCalPerson *) attendee
-               withDelegate: (iCalPerson *) delegate
-		       from: (SOGoUser *) originator
-	   withRecurrenceId: (NSCalendarDate*) recurrenceId;
-
+//
+// Old CalDAV scheduling (draft 4 and below) methods. We keep them since we still
+// advertise for its support but we do everything within the calendar-auto-scheduling code
+//
 - (NSArray *) postCalDAVEventRequestTo: (NSArray *) recipients  from: (NSString *) originator;
 - (NSArray *) postCalDAVEventReplyTo: (NSArray *) recipients  from: (NSString *) originator;
 - (NSArray *) postCalDAVEventCancelTo: (NSArray *) recipients  from: (NSString *) originator;

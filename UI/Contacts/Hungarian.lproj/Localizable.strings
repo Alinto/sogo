@@ -51,6 +51,7 @@
 "Edit the selected card" = "A kijelölt névjegy szerkesztése";
 "Send a mail message" = "Email üzenet küldése";
 "Delete selected card or address book" = "Kijelölt névjegy vagy címjegyzék törlése";
+"Reload all contacts" = "Reload all contacts";
 
 "htmlMailFormat_UNKNOWN" = "Ismeretlen";
 "htmlMailFormat_FALSE" = "Egyszerű szöveg";

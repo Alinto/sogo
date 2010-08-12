@@ -45,6 +45,7 @@
 "Edit the selected card" = "Golygu'r cerdyn dewisol";
 "Send a mail message" = "Anfon neges ebost";
 "Delete selected card or address book" = "Dileu y cerdyn dewisol neu'r llyfr cyfeiriadau";
+"Reload all contacts" = "Reload all contacts";
 
 "htmlMailFormat_UNKNOWN" = "Anhysbys";
 "htmlMailFormat_FALSE" = "Testun plaen";

@@ -136,6 +136,7 @@
 "View"          = "Vista";
 "All"           = "Todo";
 "Unread"        = "No leído";
+"No message"    = "No message";
 "messages"      = "mensajes";
 
 "first"         = "Primero";

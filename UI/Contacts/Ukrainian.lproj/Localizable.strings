@@ -2,7 +2,6 @@
 
 "Contact" = "Контакт";
 "Address" = "Адреса";
-"Photos" = "Photos";
 "Other" = "Інше";
 
 "Address Books" = "Адресні книги";
@@ -112,7 +111,6 @@
 "Note:" = "Примітки:";
 "Timezone:" = "Часова зона:";
 "Birthday:" = "День народження:";
-"Birthday (yyyy-mm-dd):" = "День народження (yyyy-mm-dd):";
 "Freebusy URL:" = "Freebusy URL:";
 
 "Add as..." = "Додати як...";

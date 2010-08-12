@@ -51,7 +51,7 @@ static NSString *commaSeparator = nil;
   foldedString = [NSMutableString string];
 
   length = [self length];
-  if (length < 76)
+  if (length < 77)
     [foldedString appendString: self];
   else
     {
@@ -59,7 +59,7 @@ static NSString *commaSeparator = nil;
       [foldedString appendFormat: @"%@\r\n",
                     [self substringWithRange: subStringRange]];
       subStringRange = NSMakeRange (75, 74);
-      while ((length - subStringRange.location) > 74)
+      while ((length - subStringRange.location) > 75)
         {
           [foldedString appendFormat: @" %@\r\n",
                         [self substringWithRange: subStringRange]];

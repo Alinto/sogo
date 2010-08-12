@@ -380,7 +380,9 @@ static SoSecurityManager *sm = nil;
   if (primaryClasses)
     [classes addObjectsFromArray: primaryClasses];
   [classes addObject: @"calendar-access"];
-  [classes addObject: @"calendar-schedule"];
+  //[classes addObject: @"calendar-schedule"];
+  [classes addObject: @"calendar-auto-schedule"];
+
 
   return classes;
 }

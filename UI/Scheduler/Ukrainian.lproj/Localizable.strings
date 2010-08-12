@@ -483,10 +483,7 @@ validate_endbeforestart    = "Дата закінчення передує да�
 "Next slot" = "Наступний діапазон";
 "Previous hour" = "Попередня година";
 "Next hour" = "Наступна година";
-"Work days only" = "Лише робочий час";
-"The whole day" = "The whole day";
-"Between" = "Between";
-"and" = "and";
+"Only office hours" = "Лише робочий час";
 
 /* apt list */
 "Title" = "Назва";
@@ -523,11 +520,6 @@ vtodo_class2 = "(Конфіденційне завдання)";
 "Display" = "Показати";
 "Show alarms" = "Сповіщення";
 "Show tasks" = "Завдання";
-
-"Links to this Calendar" = "Links to this Calendar";
-"CalDAV url" = "CalDAV url";
-"WebDAV ICS URL" = "WebDAV ICS URL";
-"WebDAV XML URL" = "WebDAV XML URL";
 
 /* Error messages */
 "dayFieldInvalid" = "Будь ласка, зазначте числове значення в полі дні, що більше або рівно 1.";

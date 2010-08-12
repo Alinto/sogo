@@ -15,7 +15,7 @@ if __name__ == "__main__":
     # Duplicated from UIxPreferences.m
     languages = ["Czech", "Dutch", "English", "French", 
                  "German", "Hungarian", "Italian", "BrazilianPortuguese", 
-                 "Russian", "Spanish", "Swedish", "Ukrainian", "Welsh"]
+                 "Polish", "Russian", "Spanish", "Swedish", "Ukrainian", "Welsh"]
 
     # We can disable testing all languages
     testLanguages = False

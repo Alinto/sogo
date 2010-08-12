@@ -1,0 +1,73 @@
+/* this file is in UTF-8 format! */
+
+"title" = "SOGo";
+
+"Username:" = "Nazwa użytkownika:";
+"Password:" = "Hasło:";
+
+"Connect" = "Zaloguj";
+
+"Wrong username or password." = "Zła nazwa użytkownika lub hasło.";
+"cookiesNotEnabled" = "Nie możesz się zalogować ponieważ twoja przeglądarka ma zablokowaną obsługę ciasteczek (cookies). Włącz obsługę ciasteczek w ustawieniach twojej przeglądarki i spróbuj ponownie.";
+
+"browserNotCompatible" = "Używasz przeglądarki WWW, która nie jest obecnie obsługiwana przez tę stronę. Rekomendowaną przeglądarką jest Firefox. Kliknij poniższy odnośnik aby pobrać najnowszą wersję tej przeglądarki.";
+"alternativeBrowsers" = "Alternatywnie możesz także używać następujących przeglądarek";
+"alternativeBrowserSafari" = "Alternatywnie możesz używać również przeglądarki Safari.";
+"Download" = "Pobierz";
+
+"Language:" = "Język:";
+"choose" = "Wybierz ...";
+"Czech" = "Česky";
+"Dutch" = "Nederlands";
+"English" = "English";
+"French" = "Français";
+"German" = "Deutsch";
+"Hungarian" = "Magyar";
+"Italian" = "Italiano";
+"BrazilianPortuguese" = "Português brasileiro";
+"Russian" = "Русский";
+"Spanish" = "Español";
+"Swedish" = "Svenska";
+"Welsh" = "Cymraeg";
+"Polish" = "Polski";
+
+
+"About" = "O programie";
+"AboutBox" = "SOGo jest serwerem pracy grupowej zbudowanym w oparciu o systemy OpenGroupware.org (OGo) oraz SOPE. Głównym celem SOGo jest skalowalność.<br/><br/>
+SOGo oferuje bogaty, oparty na technologii AJAX interfejs webowy oraz wspiera wiele aplikacji klienckich dzięki korzystaniu ze standardowych protokołów takich jak CalDAV, CardDAV i GroupDAV.<br/><br/>
+Copyright © 2006-2010 Inverse inc.<br/>
+Copyright © 2002-2005 SKYRIX Software AG<br/>
+Tłumaczenie 2010 <a href=\"http://www.ib.pl/\">IB</a><br/><br/>
+To oprogramowanie rozpowszechniane jest w oparciu o licencję <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2.<br/>
+Elementy tego oprogramowania rozpowszechniane są w oparciu o licencję GNU LGPL version 2.<br/><br/>
+To oprogramowanie jest wolne: możesz je modyfikować i dystrybuować. Nie ma ŻADNYCH GWARANCJI, w zakresie dozwolonym przez prawo.";
+
+"Your account was locked due to too many failed attempts." = "Twoje konto zostało zablokowane wkutek zbyt wielu nieudanych prób logowania.";
+"Your account was locked due to an expired password." = "Twoje konto zostało zblokowane z powodu wygaśnięcia ważności hasła.";
+"Login failed due to unhandled error case: " = "Logowanie nie powiodło się z powodu niezidentyfikowanego błędu: ";
+"Change your Password" = "Zmień swoje hasło";
+"Your password has expired, please enter a new one below:" = "Ważność twojego hasła wygasła, wprowadź niżej nowe hasło:";
+"Password must not be empty." = "Hasło nie może być puste.";
+"The passwords do not match. Please try again." = "Hasła nie są zgodne. Spróbuj jeszcze raz.";
+"Password Grace Period" = "Okres pobłażliwości hasła";
+"You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog." = "Pozostało Ci %{0} logowań zanim konto zostanie zablokowane. Zmień swoje hasło w oknie właściwości.";
+"Password about to expire" = "Wkrótce wygaśnie ważność hasła";
+"Your password is going to expire in %{0} %{1}." = "Ważność twojego hasła wygaśnie za %{0} %{1}.";
+"days" = "dni";
+"hours" = "godz.";
+"minutes" = "min.";
+"seconds" = "sek.";
+"Password change failed" = "Zmiana hasła nie powiodła się";
+"Password change failed - Permission denied" = "Zmiana hasła nie powiodła się - odmowa dostępu";
+"Password change failed - Insufficient password quality" = "Zmiana hasła nie powiodła się - niewystarczająca jakość hasła";
+"Password change failed - Password is too short" = "Zmiana hasła nie powiodła się - hasło jest zbyt krótkie";
+"Password change failed - Password is too young" = "Zmiana hasła nie powiodła się - hasło jest zbyt świeże";
+"Password change failed - Password is in history" = "Zmiana hasła nie powiodła się - hasło znajduje się w historii";
+"Unhandled policy error: %{0}" = "Niezidentyfikowany błąd zabezpieczeń: %{0}";
+"Unhandled error response" = "Niezidentyfikowany błąd";
+"Password change is not supported." = "Zmiana hasła nie jest obsługiwana.";
+"Unhandled HTTP error code: %{0}" = "Nieobsługiwany kod błędu HTTP: %{0}";
+"New password:" = "Nowe hasło:";
+"Confirmation:" = "Potwierdzenie:";
+"Cancel" = "Anuluj";
+"Please wait..." = "Zaczekaj proszę...";

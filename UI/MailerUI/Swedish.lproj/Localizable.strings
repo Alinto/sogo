@@ -136,6 +136,7 @@
 "View"          = "Visa";
 "All"           = "Alla";
 "Unread"        = "Oläst";
+"No message"    = "No message";
 "messages"      = "meddelanden";
 
 "first"         = "Första";

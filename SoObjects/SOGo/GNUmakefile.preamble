@@ -19,7 +19,7 @@ SOGo_LIBRARIES_DEPEND_UPON += \
 	-lNGCards		\
 	-lNGMime		\
 	-lNGStreams -lNGExtensions -lEOControl \
-	-lXmlRpc -lDOM -lSaxObjC \
+	-lXmlRpc -lDOM -lSaxObjC -lcrypt \
 	-lNGLdap
 
 ADDITIONAL_TOOL_LIBS += \

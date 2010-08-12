@@ -1,6 +1,6 @@
 /* iCalEventChanges+SOGo.m - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse inc.
+ * Copyright (C) 2007-2010 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -34,7 +34,6 @@
                                    @"due", @"duration",
                                    @"rdate", @"rrule", @"exdate", @"exrule",
                                    @"status", @"location",
-                                   //@"summary", @"comment",
                                    nil};
   NSString **currentProperty;
   BOOL updateRequired;

@@ -43,6 +43,25 @@
 	personal addressbook when the request is performed by
 	AddressBook.app.
 
+2010-08-11  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	Removed all the old calendar-schedule code and
+	instead, implemented calendar-auto-schedule. The old
+	code will always succeed and the new code reuses
+	all the business logic used for the Web interface
+	of SOGo.
+	* SOPE/NGCards/iCalRecurrenceRule.m
+	Modified setInterval: so that when the value is
+	equal to 1, we do NOT set it.
+	* UI/WebServerResources/UIxAclEditor.js
+	In addUserCallback(), we remove the owner of the
+	resource if it was added. This fixes #682.
+	* We now correctly encode/decode the '&'
+	character in the mailbox name when copying and moving 
+	messages and also when opening mailboxes. This
+	fixes #716.
+
 2010-08-11  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/MailerUI.js (refreshMessage): if the
@@ -310,6 +329,14 @@
 	value is an empty string (might be wrong, though).
 	RowEditionController.onInputKeyDown: we now handle the tab key
 	too.
+
+2010-08-03  Ludovic Marcotte  <lmarcotte@inverse.ca>
+	
+	* Applied patch for bug #690
+	* Applied patch for bug #703
+	* Applied patch for bug #714
+	* Updated Ukrainian translation - patch from
+	Oleksa Stasevych <oleksiy.stasevych@gmail.com>
 
 2010-08-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

@@ -553,7 +553,7 @@ function onMailboxMenuMove(event) {
     deleteCachedMailbox(targetMailbox);
 
     var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/moveMessages";
-    var parameters = "uid=" + uids.join(",") + "&folder=" + targetMailbox;
+    var parameters = "uid=" + uids.join(",") + "&folder=" + encodeURIComponent(targetMailbox);
     var data = { "id": uids, "mailbox": Mailer.currentMailbox, "path": paths, "folder": targetMailbox, "refresh": true };
     triggerAjaxRequest(url, folderRefreshCallback, data, parameters,
                        { "Content-type": "application/x-www-form-urlencoded" });
@@ -572,7 +572,6 @@ function onMailboxMenuCopy(event) {
         targetMailbox = this.mailbox.fullName();
     else // from DnD
         targetMailbox = this.readAttribute("dataname");
-
     for (var i = 0; i < rows.length; i++) {
         var uid = rows[i].readAttribute("id").substr(4);
         var path = Mailer.currentMailbox + "/" + uid;
@@ -584,7 +583,7 @@ function onMailboxMenuCopy(event) {
     deleteCachedMailbox(targetMailbox);
 
     var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/copyMessages";
-    var parameters = "uid=" + uids.join(",") + "&folder=" + targetMailbox;
+    var parameters = "uid=" + uids.join(",") + "&folder=" + encodeURIComponent(targetMailbox);
     var data = { "id": uids, "mailbox": Mailer.currentMailbox, "path": paths, "folder": targetMailbox, "refresh": false };
     triggerAjaxRequest(url, folderRefreshCallback, data, parameters,
                        { "Content-type": "application/x-www-form-urlencoded" });

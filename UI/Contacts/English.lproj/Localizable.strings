@@ -51,6 +51,7 @@
 "Edit the selected card" = "Edit the selected card";
 "Send a mail message" = "Send a mail message";
 "Delete selected card or address book" = "Delete selected card or address book";
+"Reload all contacts" = "Reload all contacts";
 
 "htmlMailFormat_UNKNOWN" = "Unknown";
 "htmlMailFormat_FALSE" = "Plain Text";

@@ -15,7 +15,6 @@
 
     SOGoCacheCleanupInterval = 300.0;
     SOGoMemcachedHost = "localhost";
-    SOGoMemcachedPort = 11211;
 
     SOGoUIxDebugEnabled = NO;
 
@@ -33,7 +32,7 @@
     SOGoLanguage = "English";
     SOGoSupportedLanguages = ( "Czech", "Welsh", "English", "Spanish",
                                "French", "German", "Italian", "Hungarian",
-                               "Dutch", "BrazilianPortuguese", "Russian",
+                               "Dutch", "BrazilianPortuguese", "Polish", "Russian",
                                "Ukrainian", "Swedish");
 
     SOGoTimeZone = "UTC";

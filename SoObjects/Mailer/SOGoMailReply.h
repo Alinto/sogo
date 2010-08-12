@@ -71,6 +71,9 @@
 @interface SOGoMailSpanishReply : SOGoMailReply
 @end
 
+@interface SOGoMailPolishReply : SOGoMailReply
+@end
+
 @interface SOGoMailRussianReply : SOGoMailReply
 @end
 
