@@ -1,3 +1,9 @@
+2010-08-11  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/MailerUI.js (refreshMessage): if the
+	current mailbox is the sent folder, refresh the mailbox instead of
+	only the message.
+
 2010-08-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/SchedulerUI.js: (initCalendars): avoid
