@@ -1,5 +1,9 @@
 2010-08-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailAccount.m (-updateFilters): when the
+	first login attempt fails, we must request a new password to the
+	authenticator (as intended originally).
+
 	* UI/WebServerResources/generic.js: (onAjaxRequestStateChange):
 	when using CAS authentication and when the return code is 0 and
 	when the request status is 4, chances are that the initial ajax

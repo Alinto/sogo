@@ -356,7 +356,7 @@ static NSString *sieveScriptName = @"sogo";
   result = [client login: [[self imap4URL] user]  password: password];
   if (![[result valueForKey:@"result"] boolValue]) {
     [self errorWithFormat: @"failure. Attempting with a renewed password."];
-    password = [self imap4PasswordRenewed: NO];
+    password = [self imap4PasswordRenewed: YES];
     result = [client login: [[self imap4URL] user]  password: password];
   }
   
