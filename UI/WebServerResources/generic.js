@@ -247,9 +247,9 @@ function createHTTPClient() {
 function onAjaxRequestStateChange(http) {
     try {
         if (http.readyState == 4) {
-            activeAjaxRequests--;
-            checkAjaxRequestsState();
             if (http.status == 0 && usesCASAuthentication) {
+                activeAjaxRequests--;
+                checkAjaxRequestsState();
                 recoveryRequest = http;
                 var urlstr = ApplicationBaseURL;
                 if (!urlstr.endsWith('/'))
@@ -260,6 +260,8 @@ function onAjaxRequestStateChange(http) {
             else if (activeAjaxRequests > 0) {
                 if (!http.aborted)
                     http.callback(http);
+                activeAjaxRequests--;
+                checkAjaxRequestsState();
                 http.onreadystatechange = Prototype.emptyFunction;
                 http.callback = Prototype.emptyFunction;
                 http.callbackData = null;
