@@ -1,5 +1,27 @@
 2010-08-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoFolder+CardDAV.m:
+	(_appendObject:withBaseURL:toREPORTResponse:): moved method here
+	from SOGOContact{GCS,Source}Folder since its implementation was
+	mostly the same in the two classes and never invoked anywhere
+	else.
+	Modified to return both "address-data" and "addressbook-data"
+	(draft rev < 4) unless we parse the requested props appropriately.
+
+	* SoObjects/Contacts/SOGoContactGCSFolder.m
+	(-davAddressbookMultiget): new method that responds the
+	CardDAV addressbook-multiget report.
+	(-davSQLFieldsTable): new overriden method that adds support for
+	the CardDAV address-data property.
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-davCalendarMultiget:): make use of the new method below.
+
+	* SoObjects/SOGo/SOGoGCSFolder.m
+	(-performMultigetInContext:inNamespace:): collection-type
+	independent form of -[SOGoAppointmentFolder davCalendarMultiget:],
+	moved along with all its private methods.
+
 	* SoObjects/Contacts/SOGoContactFolders.m
 	(-toManyRelationshipKeys): new overriden method to return only the
 	personal addressbook when the request is performed by
