@@ -23,6 +23,7 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSURL.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoObject+SoDAV.h>
@@ -31,15 +32,23 @@
 #import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
-#import <NGCards/CardGroup.h>
+#import <NGExtensions/NSNull+misc.h>
+#import <DOM/DOMElement.h>
+#import <DOM/DOMProtocols.h>
+#import <SaxObjC/XMLNamespaces.h>
 #import <EOControl/EOQualifier.h>
 #import <EOControl/EOSortOrdering.h>
+
+#import <NGCards/CardGroup.h>
 #import <GDLContentStore/GCSFolder.h>
 
+#import <SOGo/DOMNode+SOGo.h>
 #import <SOGo/SOGoCache.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
+#import <SOGo/NSObject+DAV.h>
+#import <SOGo/WOResponse+SOGo.h>
 
 #import "SOGoContactGCSEntry.h"
 #import "SOGoContactGCSList.h"
@@ -84,7 +93,7 @@ static NSArray *folderListingFields = nil;
 - (Class) objectClassForComponentName: (NSString *) componentName
 {
   Class objectClass;
-
+  
   if ([componentName isEqualToString: @"vcard"])
     objectClass = [SOGoContactGCSEntry class];
   else if ([componentName isEqualToString: @"vlist"])
@@ -289,38 +298,17 @@ static NSArray *folderListingFields = nil;
   return records;
 }
 
-#warning this should be unified within SOGoFolder
-- (void) appendObject: (NSDictionary *) object
-          withBaseURL: (NSString *) baseURL
-     toREPORTResponse: (WOResponse *) r
+- (NSDictionary *) davSQLFieldsTable
 {
-  SOGoContactGCSEntry *component;
-  NSString *name, *etagLine, *contactString;
+  static NSMutableDictionary *davSQLFieldsTable = nil;
 
-  name = [object objectForKey: @"c_name"];
-  component = [self lookupName: name inContext: context acquire: NO];
+  if (!davSQLFieldsTable)
+    {
+      davSQLFieldsTable = [[super davSQLFieldsTable] mutableCopy];
+      [davSQLFieldsTable setObject: @"c_content" forKey: @"{urn:ietf:params:xml:ns:carddav}address-data"];
+    }
 
-  [r appendContentString: @"  <D:response>\r\n"];
-  [r appendContentString: @"    <D:href>"];
-  [r appendContentString: baseURL];
-  if (![baseURL hasSuffix: @"/"])
-    [r appendContentString: @"/"];
-  [r appendContentString: name];
-  [r appendContentString: @"</D:href>\r\n"];
-
-  [r appendContentString: @"    <D:propstat>\r\n"];
-  [r appendContentString: @"      <D:prop>\r\n"];
-  etagLine = [NSString stringWithFormat: @"        <D:getetag>%@</D:getetag>\r\n",
-                       [component davEntityTag]];
-  [r appendContentString: etagLine];
-  [r appendContentString: @"      </D:prop>\r\n"];
-  [r appendContentString: @"      <D:status>HTTP/1.1 200 OK</D:status>\r\n"];
-  [r appendContentString: @"    </D:propstat>\r\n"];
-  [r appendContentString: @"    <C:addressbook-data>"];
-  contactString = [[component contentAsString] stringByEscapingXMLString];
-  [r appendContentString: contactString];
-  [r appendContentString: @"</C:addressbook-data>\r\n"];
-  [r appendContentString: @"  </D:response>\r\n"];
+  return davSQLFieldsTable;
 }
 
 - (NSArray *) davComplianceClassesInContext: (id)_ctx
@@ -359,6 +347,12 @@ static NSArray *folderListingFields = nil;
   return resourceType;
 }
 
+- (id) davAddressbookMultiget: (id) queryContext
+{
+  return [self performMultigetInContext: queryContext
+                            inNamespace: @"urn:ietf:params:xml:ns:carddav"];
+}
+
 /* sorting */
 - (NSComparisonResult) compare: (id) otherFolder
 {
@@ -383,6 +377,24 @@ static NSArray *folderListingFields = nil;
 - (NSString *) outlookFolderClass
 {
   return @"IPF.Contact";
+}
+
+/* TODO: multiget reorg */
+- (NSString *) _nodeTagForProperty: (NSString *) property
+{
+  NSString *namespace, *nodeName, *nsRep;
+  NSRange nsEnd;
+
+  nsEnd = [property rangeOfString: @"}"];
+  namespace
+    = [property substringFromRange: NSMakeRange (1, nsEnd.location - 1)];
+  nodeName = [property substringFromIndex: nsEnd.location + 1];
+  if ([namespace isEqualToString: XMLNS_CARDDAV])
+    nsRep = @"C";
+  else
+    nsRep = @"D";
+
+  return [NSString stringWithFormat: @"%@:%@", nsRep, nodeName];
 }
 
 @end /* SOGoContactGCSFolder */

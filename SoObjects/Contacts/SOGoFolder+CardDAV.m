@@ -27,6 +27,7 @@
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
+#import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
 #import <DOM/DOMProtocols.h>
 #import <SaxObjC/SaxObjC.h>
@@ -38,6 +39,50 @@
 #import "SOGoContactGCSEntry.h"
 
 @implementation SOGoFolder (CardDAV)
+
+- (void) _appendObject: (NSDictionary *) object
+           withBaseURL: (NSString *) baseURL
+      toREPORTResponse: (WOResponse *) r
+{
+  id component;
+  NSString *name, *etagLine, *contactString;
+
+  name = [object objectForKey: @"c_name"];
+  if ([name length])
+    {
+      component = [self lookupName: name inContext: context acquire: NO];
+      if ([component isKindOfClass: [NSException class]])
+        {
+          [self logWithFormat: @"Object with name '%@' not found. You likely have a LDAP configuration issue.", name];
+          return;
+        }
+
+#warning we provide both "address-data" and "addressbook-data" for compatibility reasons, we should actually check which one has been queried
+      [r appendContentString: @"<D:response>"
+                        @"<D:href>"];
+      [r appendContentString: baseURL];
+      if (![baseURL hasSuffix: @"/"])
+	[r appendContentString: @"/"];
+      [r appendContentString: name];
+      [r appendContentString: @"</D:href>"
+                        @"<D:propstat>"
+                        @"<D:prop>"];
+      etagLine = [NSString stringWithFormat: @"<D:getetag>%@</D:getetag>",
+                           [component davEntityTag]];
+      [r appendContentString: etagLine];
+      [r appendContentString: @"</D:prop>"
+                        @"<D:status>HTTP/1.1 200 OK</D:status>"
+                       @"</D:propstat>"
+                        @"<C:addressbook-data>"];
+      contactString = [[component contentAsString] stringByEscapingXMLString];
+      [r appendContentString: contactString];
+      [r appendContentString: @"</C:addressbook-data>"
+                        @"<C:address-data>"];
+      [r appendContentString: contactString];
+      [r appendContentString: @"</C:address-data>"
+                     @"</D:response>"];
+    }
+}
 
 - (void) _appendComponentsMatchingFilters: (NSArray *) filters
                                toResponse: (WOResponse *) response
@@ -60,9 +105,8 @@
 		   objectEnumerator];
       
       while ((contact = [contacts nextObject]))
-	[(id<SOGoContactFolder>)self appendObject: contact
-				withBaseURL: baseURL
-				toREPORTResponse: response];
+	[self _appendObject: contact withBaseURL: baseURL
+           toREPORTResponse: response];
     }
 }
 
@@ -143,7 +187,7 @@
   [self _appendComponentsMatchingFilters: filters
         toResponse: r
 	context: queryContext];
-  [r appendContentString:@"</D:multistatus>"];
+  [r appendContentString: @"</D:multistatus>"];
 
   return r;
 }

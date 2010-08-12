@@ -34,7 +34,6 @@
 #import <NGObjWeb/SoSelectorInvocation.h>
 #import <NGObjWeb/SoUser.h>
 #import <NGExtensions/NSString+misc.h>
-#import <NGExtensions/NSObject+Logs.h>
 #import <EOControl/EOSortOrdering.h>
 #import <SaxObjC/XMLNamespaces.h>
 
@@ -49,49 +48,6 @@
 @class WOContext;
 
 @implementation SOGoContactSourceFolder
-
-#warning this should be unified within SOGoFolder
-- (void) appendObject: (NSDictionary *) object
-          withBaseURL: (NSString *) baseURL
-     toREPORTResponse: (WOResponse *) r
-{
-  SOGoContactLDIFEntry *component;
-  NSString *name, *etagLine, *contactString;
-
-  name = [object objectForKey: @"c_name"];
-  if ([name length])
-    {
-      component = [self lookupName: name inContext: context acquire: NO];
-
-      if ([component isKindOfClass: [NSException class]])
-        {
-          [self logWithFormat: @"Object with name '%@' not found. You likely have a LDAP configuration issue.", name];
-          return;
-        }
-
-      [r appendContentString: @"  <D:response>\r\n"];
-      [r appendContentString: @"    <D:href>"];
-      [r appendContentString: baseURL];
-      if (![baseURL hasSuffix: @"/"])
-	[r appendContentString: @"/"];
-      [r appendContentString: name];
-      [r appendContentString: @"</D:href>\r\n"];
-
-      [r appendContentString: @"    <D:propstat>\r\n"];
-      [r appendContentString: @"      <D:prop>\r\n"];
-      etagLine = [NSString stringWithFormat: @"        <D:getetag>%@</D:getetag>\r\n",
-                           [component davEntityTag]];
-      [r appendContentString: etagLine];
-      [r appendContentString: @"      </D:prop>\r\n"];
-      [r appendContentString: @"      <D:status>HTTP/1.1 200 OK</D:status>\r\n"];
-      [r appendContentString: @"    </D:propstat>\r\n"];
-      [r appendContentString: @"    <C:addressbook-data>"];
-      contactString = [[component contentAsString] stringByEscapingXMLString];
-      [r appendContentString: contactString];
-      [r appendContentString: @"</C:addressbook-data>\r\n"];
-      [r appendContentString: @"  </D:response>\r\n"];
-    }
-}
 
 + (id) folderWithName: (NSString *) aName
        andDisplayName: (NSString *) aDisplayName
