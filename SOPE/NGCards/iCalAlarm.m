@@ -116,6 +116,9 @@
   NSString *relation;
   NSTimeInterval anInterval;
 
+  // We currently have the following limitations for alarms:
+  // - the alarm's trigger value type must be DURATION;
+
   nextAlarmDate = nil;
 
   parentClass = [parent class];
