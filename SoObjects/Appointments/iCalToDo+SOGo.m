@@ -171,39 +171,29 @@
   [row setObject:partstates forKey: @"c_partstates"];
   [partstates release];
 
-  if ([self hasAlarms])
+  nextAlarmDate = nil;
+  if (![self isRecurrent] && [self hasAlarms])
     {
       // We currently have the following limitations for alarms:
       // - the component must not be recurrent;
       // - only the first alarm is considered;
       // - the alarm's action must be of type DISPLAY;
-      // - the alarm's trigger value type must be DURATION;
       //
       // Morever, we don't update the quick table if the property X-WebStatus
       // of the trigger is set to "triggered".
-      
       iCalAlarm *anAlarm;
-      iCalTrigger *aTrigger;
       NSString *webstatus;
-      NSTimeInterval anInterval;
 
       anAlarm = [[self alarms] objectAtIndex: 0];
-      aTrigger = [anAlarm trigger];
-      anInterval = [[aTrigger value] durationAsTimeInterval];
-
-      if ([[anAlarm action] caseInsensitiveCompare: @"DISPLAY"] == NSOrderedSame &&
-	  [[aTrigger valueType] caseInsensitiveCompare: @"DURATION"] == NSOrderedSame &&
-	  ![self isRecurrent])
-	{
-	  webstatus = [aTrigger value: 0 ofAttribute: @"x-webstatus"];
-	  if (!webstatus ||
-	      [webstatus caseInsensitiveCompare: @"TRIGGERED"] != NSOrderedSame)
-	    {
-	      // Compute the next alarm date with respect to the due date
-	      if ([dueDate isNotNull])
-		nextAlarmDate = [dueDate addTimeInterval: anInterval];
-	    }
-	}
+      if ([[anAlarm action] caseInsensitiveCompare: @"DISPLAY"]
+          == NSOrderedSame)
+        {
+          webstatus = [[anAlarm trigger] value: 0 ofAttribute: @"x-webstatus"];
+          if (!webstatus
+              || ([webstatus caseInsensitiveCompare: @"TRIGGERED"]
+                  != NSOrderedSame))
+            nextAlarmDate = [anAlarm nextAlarmDate];
+        }
     }
   if ([nextAlarmDate isNotNull])
     [row setObject: [NSNumber numberWithInt: [nextAlarmDate timeIntervalSince1970]]

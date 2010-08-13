@@ -77,7 +77,6 @@
 
   startDate = [self startDate];
   endDate = [self endDate];
-  nextAlarmDate = nil;
   uid = [self uid];
   title = [self summary];
   if (![title isNotNull])
@@ -203,46 +202,30 @@
   [row setObject:partstates forKey: @"c_partstates"];
   [partstates release];
 
-  if ([self hasAlarms])
+  nextAlarmDate = nil;
+  if (![self isRecurrent] && [self hasAlarms])
     {
       // We currently have the following limitations for alarms:
-      // - the event must not be recurrent;
+      // - the component must not be recurrent;
       // - only the first alarm is considered;
       // - the alarm's action must be of type DISPLAY;
       // - the alarm's trigger value type must be DURATION;
       //
       // Morever, we don't update the quick table if the property X-WebStatus
       // of the trigger is set to "triggered".
-      
       iCalAlarm *anAlarm;
-      iCalTrigger *aTrigger;
-      NSCalendarDate *relationDate;
-      NSString *relation, *webstatus;
-      NSTimeInterval anInterval;
+      NSString *webstatus;
 
       anAlarm = [[self alarms] objectAtIndex: 0];
-      aTrigger = [anAlarm trigger];
-      relation = [aTrigger relationType];
-      anInterval = [[aTrigger value] durationAsTimeInterval];
-
-      if ([[anAlarm action] caseInsensitiveCompare: @"DISPLAY"] == NSOrderedSame &&
-	  [[aTrigger valueType] caseInsensitiveCompare: @"DURATION"] == NSOrderedSame &&
-	  ![self isRecurrent])
-	{
-	  webstatus = [aTrigger value: 0 ofAttribute: @"x-webstatus"];
-	  if (!webstatus ||
-	      [webstatus caseInsensitiveCompare: @"TRIGGERED"] != NSOrderedSame)
-	    {
-	      if ([relation caseInsensitiveCompare: @"END"] == NSOrderedSame)
-		relationDate = endDate;
-	      else
-		relationDate = startDate;
-	      
-	      // Compute the next alarm date with respect to the reference date
-	      if ([relationDate isNotNull])
-		nextAlarmDate = [relationDate addTimeInterval: anInterval];
-	    }
-	}
+      if ([[anAlarm action] caseInsensitiveCompare: @"DISPLAY"]
+          == NSOrderedSame)
+        {
+          webstatus = [[anAlarm trigger] value: 0 ofAttribute: @"x-webstatus"];
+          if (!webstatus
+              || ([webstatus caseInsensitiveCompare: @"TRIGGERED"]
+                  != NSOrderedSame))
+            nextAlarmDate = [anAlarm nextAlarmDate];
+        }
     }
   if ([nextAlarmDate isNotNull])
     [row setObject: [NSNumber numberWithInt: [nextAlarmDate timeIntervalSince1970]]
