@@ -41,6 +41,8 @@
 - (void) setRecurrenceRule: (NSString *) _recurrenceRule;
 - (NSString *) recurrenceRule;
 
+- (NSCalendarDate *) nextAlarmDate;
+
 @end
 
 #endif /* __NGCards_iCalAlarm_H__ */

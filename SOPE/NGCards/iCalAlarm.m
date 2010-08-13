@@ -20,10 +20,14 @@
 */
 
 #import <Foundation/NSString.h>
+#import <NGExtensions/NSNull+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
 
 #import "iCalAttachment.h"
+#import "iCalEvent.h"
 #import "iCalRecurrenceRule.h"
 #import "iCalTrigger.h"
+#import "NSString+NGCards.h"
 
 #import "iCalAlarm.h"
 
@@ -101,6 +105,44 @@
 - (NSString *) recurrenceRule
 {
   return [[self uniqueChildWithTag: @"rrule"] value: 0];
+}
+
+- (NSCalendarDate *) nextAlarmDate
+{
+  Class parentClass;
+  iCalTrigger *aTrigger;
+  NSCalendarDate *relationDate, *nextAlarmDate;
+  NSString *relation;
+  NSTimeInterval anInterval;
+  iCalEvent *parentEvent;
+
+  nextAlarmDate = nil;
+
+  parentClass = [parent class];
+  if ([parentClass isKindOfClass: [iCalEvent class]])
+    {
+      parentEvent = (iCalEvent *) parent;
+      aTrigger = [self trigger];
+
+      if ([[aTrigger valueType] caseInsensitiveCompare: @"DURATION"])
+        {
+          relation = [aTrigger relationType];
+          anInterval = [[aTrigger value] durationAsTimeInterval];
+          if ([relation caseInsensitiveCompare: @"END"] == NSOrderedSame)
+            relationDate = [parentEvent endDate];
+          else
+            relationDate = [parentEvent startDate];
+	      
+          // Compute the next alarm date with respect to the reference date
+          if ([relationDate isNotNull])
+            nextAlarmDate = [relationDate addTimeInterval: anInterval];
+        }
+    }
+  else
+    [self warnWithFormat: @"alarms not handled for elements of class '%@'",
+          NSStringFromClass (parentClass)];
+
+  return nextAlarmDate;
 }
 
 @end /* iCalAlarm */
