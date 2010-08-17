@@ -1133,6 +1133,28 @@
   return ex;
 }
 
+
+//
+//
+//
+- (BOOL) _shouldScheduleEvent: (iCalPerson *) theOrganizer
+{
+  NSString *v;
+  BOOL b;
+  
+  b = YES;
+
+  if (theOrganizer && (v = [theOrganizer value: 0  ofAttribute: @"SCHEDULE-AGENT"]))
+    {
+      if ([v caseInsensitiveCompare: @"NONE"] == NSOrderedSame ||
+	  [v caseInsensitiveCompare: @"CLIENT"] == NSOrderedSame)
+	b = NO;
+    }
+
+  return b;
+}
+
+
 //
 //
 //
@@ -1146,6 +1168,9 @@
   ownerUser = [SOGoUser userWithLogin: owner];
   event = [self component: NO secure: NO];
   
+  if (![self _shouldScheduleEvent: [event organizer]])
+    return;
+
   if (occurence == nil)
     {
       // No occurence specified; use the master event.
@@ -1438,17 +1463,21 @@
   if ([self isNew])
     {
       iCalCalendar *calendar;
-      iCalEvent *event;
       SOGoUser *ownerUser;
+      iCalEvent *event;
+      
+      BOOL scheduling;
+      NSString *v;
 
       calendar = [iCalCalendar parseSingleFromSource: [rq contentAsString]];
       event = [[calendar events] objectAtIndex: 0];
       ownerUser = [SOGoUser userWithLogin: owner];
+      scheduling = [self _shouldScheduleEvent: [event organizer]];
       
       //
       // New event and we're the organizer -- send invitation to all attendees
       //
-      if ([event userIsOrganizer: ownerUser])
+      if (scheduling && [event userIsOrganizer: ownerUser])
 	{ 
 	  NSArray *attendees;
 
@@ -1469,7 +1498,7 @@
       // we receive an external invitation (IMIP/ITIP) and we accept it
       // from a CUA - it gets added to a specific CalDAV calendar using a PUT
       //
-      else if ([event userIsAttendee: ownerUser])
+      else if (scheduling && [event userIsAttendee: ownerUser])
 	{
 	  [self sendIMIPReplyForEvent: event
 		from: ownerUser
