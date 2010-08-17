@@ -1467,13 +1467,12 @@
       iCalEvent *event;
       
       BOOL scheduling;
-      NSString *v;
 
       calendar = [iCalCalendar parseSingleFromSource: [rq contentAsString]];
       event = [[calendar events] objectAtIndex: 0];
       ownerUser = [SOGoUser userWithLogin: owner];
       scheduling = [self _shouldScheduleEvent: [event organizer]];
-      
+     
       //
       // New event and we're the organizer -- send invitation to all attendees
       //
