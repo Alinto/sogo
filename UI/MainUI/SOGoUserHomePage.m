@@ -324,7 +324,7 @@
       contact = [allUsers objectAtIndex: count];
       uid = [contact objectForKey: @"c_uid"];
 
-      // We do NOT return the current authenticated user.
+      // We do NOT return the current authenticated user
       if (![uid isEqualToString: login])
         {
           jsonLine = [NSMutableArray arrayWithCapacity: 4];
