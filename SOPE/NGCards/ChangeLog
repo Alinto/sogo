@@ -1,3 +1,8 @@
+2010-08-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* NGVCardPhoto.m (-type): returns @"JPEG" if the type is
+	unspecified.
+
 2010-07-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* iCalXMLRenderer.m (_appendPaddingValues:withTag:intoString:):

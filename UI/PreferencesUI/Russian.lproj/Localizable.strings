@@ -6,10 +6,9 @@
 "General" = "Общее";
 "Calendar Options" = "Календарь";
 "Mail Options" = "Почта";
-"Signature" = "Подпись";
+"IMAP Accounts" = "IMAP Accounts";
 "Vacation" = "Vacation";
 "Forward" = "Forward";
-"Identities" = "Identities";
 "Password" = "Пароль";
 "Categories" = "Categories";
 "Name" = "Name";
@@ -124,9 +123,6 @@
 "messageforward_inline" = "В теле письма";
 "messageforward_attached" = "Приложенным файлом";
 
-/* Identities */
-"Default identity:" = "Обысно я представляюсь как:";
-"Manage identities..." = "Управлять именами...";
 "replyplacement_above" = "Начинать мой ответ над цитируемым текстом";
 "replyplacement_below" = "Начинать мой ответ под цитируемым текстом";
 "And place my signature" = "И поместить мою подпись";
@@ -136,7 +132,21 @@
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Plain text";
 
-"composeMessageChanged" = "Changing your messages composition type requires to save your preferences immediately. Continue?";
+/* IMAP Accounts */
+"New Mail Account" = "New Mail Account";
+
+"Server Name:" = "Server Name:";
+"Port:" = "Port:";
+"User Name:" = "User Name:";
+"Password:" = "Пароль:";
+ 
+"Full Name:" = "Full Name:";
+"Email:" = "Email:";
+"Signature:" = "Подпись:";
+"(Click to create)" = "(Click to create)";
+
+"Signature" = "Подпись";
+"Please enter your signature below:" = "Please enter your signature below:";
 
 /* Additional Parameters */
 "Additional Parameters" = "Дополнительные параметры";

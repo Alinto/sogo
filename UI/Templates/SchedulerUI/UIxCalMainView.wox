@@ -7,6 +7,8 @@
   xmlns:rsrc="OGo:url"
   xmlns:label="OGo:label"
   className="UIxPageFrame"
+  const:userDefaultsKeys="SOGoCalendarCategoriesColors"
+  const:userSettingsKeys="Calendar,ShowCompletedTasks"
   const:jsFiles="SchedulerUIDnD.js"
   title="title">
   <script type="text/javascript">

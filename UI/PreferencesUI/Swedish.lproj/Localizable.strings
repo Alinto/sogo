@@ -6,10 +6,9 @@
 "General" = "Allmänt";
 "Calendar Options" = "Kalenderinställningar";
 "Mail Options" = "E-postinställningar";
-"Signature" = "Signatur";
+"IMAP Accounts" = "IMAP Accounts";
 "Vacation" = "Frånvaro";
 "Forward" = "Vidarebefordring";
-"Identities" = "Identiteter";
 "Password" = "Lösenord";
 "Categories" = "Kategorier";
 "Name" = "Namn";
@@ -119,9 +118,6 @@
 "messageforward_inline" = "Infogade";
 "messageforward_attached" = "Bifogade";
 
-/* Identities */
-"Default identity:" = "Standardidentitet:";
-"Manage identities..." = "Redigera identiteter...";
 "replyplacement_above" = "Börja mitt svar ovanför det infogade meddelandet";
 "replyplacement_below" = "Börja mitt svar under det infogade meddelandet";
 "And place my signature" = "Lägg till min signatur";
@@ -131,7 +127,21 @@
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Oformaterad text";
 
-"composeMessageChanged" = "Ändring av din meddelandekodning sparar dina inställingar direkt. Fortsätt?";
+/* IMAP Accounts */
+"New Mail Account" = "New Mail Account";
+
+"Server Name:" = "Server Name:";
+"Port:" = "Port:";
+"User Name:" = "User Name:";
+"Password:" = "Lösenord:";
+ 
+"Full Name:" = "Full Name:";
+"Email:" = "Email:";
+"Signature:" = "Signatur:";
+"(Click to create)" = "(Click to create)";
+
+"Signature" = "Signatur";
+"Please enter your signature below:" = "Please enter your signature below:";
 
 /* Additional Parameters */
 "Additional Parameters" = "Övriga parametrar";

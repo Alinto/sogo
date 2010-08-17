@@ -7,11 +7,13 @@
   xmlns:label="OGo:label"
   className="UIxPageFrame"
   title="title"
+  const:userDefaultsKeys="SOGoMailMessageCheck,SOGoMailListViewColumnsOrder"
+  const:userSettingsKeys="Mail"
   const:jsFiles="dtree.js,MailerUIdTree.js,SOGoAutoCompletion.js,SOGoResizableTable.js,SOGoMailDataSource.js,SOGoDataTable.js">
   <script type="text/javascript">
-    var textMailAccounts = '<var:string value="mailAccounts" const:escapeHTML="NO"/>';
-    var textDefaultColumnsOrder = '<var:string value="defaultColumnsOrder" const:escapeHTML="NO"/>';
+    var mailAccounts = <var:string value="mailAccounts" const:escapeHTML="NO"/>;
     var inboxData = <var:string value="inboxData" const:escapeHTML="NO"/>;
+    var getUnseenCountForAllFolders = <var:string value="getUnseenCountForAllFolders"/>;
   </script>
   <style type="text/css">
   <var:if condition="horizontalDragHandleStyle">

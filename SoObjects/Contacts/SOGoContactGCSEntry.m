@@ -115,6 +115,11 @@
   return @"text/x-vcard";
 }
 
+- (NSString *) davAddressData
+{
+  return [self contentAsString];
+}
+
 /* specialized actions */
 
 - (void) save

@@ -1685,4 +1685,392 @@ static NSArray *childRecordFields = nil;
   [_ms appendFormat:@" ocs=%@", [self ocsPath]];
 }
 
+/* tmp: multiget */
+
+- (NSArray *) _fetchComponentsWithNames: (NSArray *) cNames
+                                 fields: (NSArray *) fields
+{
+  NSArray *records;
+  NSString *sqlFilter;
+  NSMutableString *filterString;
+  EOQualifier *qualifier;
+
+  sqlFilter = [self aclSQLListingFilter];
+  if (sqlFilter)
+    {
+      filterString = [NSMutableString stringWithCapacity: 8192];
+      [filterString appendFormat: @"(c_name='%@')",
+                    [cNames componentsJoinedByString: @"' OR c_name='"]];
+      if ([sqlFilter length] > 0)
+        [filterString appendFormat: @" AND (%@)", sqlFilter];
+      qualifier = [EOQualifier qualifierWithQualifierFormat: filterString];
+      records = [[self ocsFolder] fetchFields: fields
+                            matchingQualifier: qualifier];
+      if (![records isNotNull])
+        {
+          [self errorWithFormat: @"(%s): fetch failed!", __PRETTY_FUNCTION__];
+          return nil;
+        }
+    }
+  else
+    records = [NSArray array];
+
+  return records;
+}
+
+#define maxQuerySize 2500
+#define baseQuerySize 160
+#define idQueryOverhead 13
+
+- (NSArray *) _fetchComponentsMatchingObjectNames: (NSArray *) cNames
+                                           fields: (NSArray *) fields
+{
+  NSMutableArray *components;
+  NSArray *records;
+  NSMutableArray *currentNames;
+  unsigned int count, max, currentSize, queryNameLength;
+  NSString *currentName;
+
+//   NSLog (@"fetching components matching names");
+
+  currentNames = [NSMutableArray array];
+  currentSize = baseQuerySize;
+
+  max = [cNames count];
+  components = [NSMutableArray arrayWithCapacity: max];
+  for (count = 0; count < max; count++)
+    {
+      currentName = [cNames objectAtIndex: count];
+      queryNameLength = idQueryOverhead + [currentName length];
+      if ((currentSize + queryNameLength)
+	  > maxQuerySize)
+	{
+	  records = [self _fetchComponentsWithNames: currentNames fields: fields];
+	  [components addObjectsFromArray: records];
+	  [currentNames removeAllObjects];
+	  currentSize = baseQuerySize;
+	}
+      [currentNames addObject: currentName];
+      currentSize += queryNameLength;
+    }
+
+  records = [self _fetchComponentsWithNames: currentNames fields: fields];
+  [components addObjectsFromArray: records];
+
+//   NSLog (@"/fetching components matching names");
+
+  return components;
+}
+
+- (NSDictionary *) _deduceObjectNamesFromURLs: (NSArray *) urls
+{
+  unsigned int count, max;
+  NSString *url, *componentURLPath, *cName, *baseURLString;
+  NSMutableDictionary *cNames;
+  NSURL *componentURL, *baseURL;
+  NSArray *urlComponents;
+
+  max = [urls count];
+  cNames = [NSMutableDictionary dictionaryWithCapacity: max];
+  baseURL = [self davURL];
+  baseURLString = [self davURLAsString];
+
+  for (count = 0; count < max; count++)
+    {
+      url = [NSString stringWithFormat: @"%@/%@",
+		      [[urls objectAtIndex: count] stringByDeletingLastPathComponent],
+      		      [[[urls objectAtIndex: count] lastPathComponent] stringByEscapingURL]];
+      componentURL = [[NSURL URLWithString: url relativeToURL: baseURL]
+		       standardizedURL];
+      componentURLPath = [componentURL absoluteString];
+      if ([componentURLPath rangeOfString: baseURLString].location
+	  != NSNotFound)
+	{
+	  urlComponents = [componentURLPath componentsSeparatedByString: @"/"];
+	  cName = [[urls objectAtIndex: count] lastPathComponent];
+	  [cNames setObject: [urls objectAtIndex: count]  forKey: cName];
+	}
+    }
+
+  return cNames;
+}
+
+- (NSDictionary *) _fetchComponentsMatchingURLs: (NSArray *) urls
+                                         fields: (NSArray *) fields
+{
+  NSMutableDictionary *components;
+  NSDictionary *cnames, *record;
+  NSString *recordURL;
+  NSArray *records;
+  unsigned int count, max;
+
+  components = [NSMutableDictionary dictionary];
+
+  cnames = [self _deduceObjectNamesFromURLs: urls];
+  records = [self _fetchComponentsMatchingObjectNames: [cnames allKeys]
+                                               fields: fields];
+  max = [records count];
+  for (count = 0; count < max; count++)
+    {
+      record = [records objectAtIndex: count];
+      recordURL = [cnames objectForKey: [record objectForKey: @"c_name"]];
+      if (recordURL)
+        [components setObject: record forKey: recordURL];
+    }
+
+  return components;
+}
+
+#warning the two following methods should be replaced with the new dav rendering mechanism
+- (NSString *) _nodeTagForProperty: (NSString *) property
+{
+  [self subclassResponsibility: _cmd];
+  return nil;
+}
+
+- (NSString *) _nodeTag: (NSString *) property
+{
+  static NSMutableDictionary *tags = nil;
+  NSString *nodeTag;
+
+  if (!tags)
+    tags = [NSMutableDictionary new];
+  nodeTag = [tags objectForKey: property];
+  if (!nodeTag)
+    {
+      nodeTag = [self _nodeTagForProperty: property];
+      [tags setObject: nodeTag forKey: property];
+    }
+
+  return nodeTag;
+}
+
+- (NSString **) _properties: (NSString **) properties
+                      count: (unsigned int) propertiesCount
+                   ofObject: (NSDictionary *) object
+{
+  SOGoContentObject *sogoObject;
+  NSString **currentProperty;
+  NSString **values, **currentValue;
+  SEL methodSel;
+
+//   NSLog (@"_properties:ofObject:: %@", [NSDate date]);
+
+  values = NSZoneMalloc (NULL,
+                         (propertiesCount + 1) * sizeof (NSString *));
+  *(values + propertiesCount) = nil;
+
+  //c = [self objectClassForComponentName: [object objectForKey: @"c_component"]];
+
+  sogoObject = [self createChildComponentWithRecord: object];
+  currentProperty = properties;
+  currentValue = values;
+  while (*currentProperty)
+    {
+      methodSel = SOGoSelectorForPropertyGetter (*currentProperty);
+      if (methodSel && [sogoObject respondsToSelector: methodSel])
+        *currentValue = [[sogoObject performSelector: methodSel]
+                          stringByEscapingXMLString];
+      currentProperty++;
+      currentValue++;
+    }
+
+//    NSLog (@"/_properties:ofObject:: %@", [NSDate date]);
+
+  return values;
+}
+
+- (NSArray *) _propstats: (NSString **) properties
+                   count: (unsigned int) propertiesCount
+		ofObject: (NSDictionary *) object
+{
+  NSMutableArray *propstats, *properties200, *properties404, *propDict;
+  NSString **property, **values, **currentValue;
+  NSString *propertyValue, *nodeTag;
+
+//   NSLog (@"_propstats:ofObject:: %@", [NSDate date]);
+
+  propstats = [NSMutableArray array];
+
+  properties200 = [NSMutableArray array];
+  properties404 = [NSMutableArray array];
+
+  values = [self _properties: properties count: propertiesCount
+                    ofObject: object];
+  currentValue = values;
+
+  property = properties;
+  while (*property)
+    {
+      nodeTag = [self _nodeTag: *property];
+      if (*currentValue)
+	{
+	  propertyValue = [NSString stringWithFormat: @"<%@>%@</%@>",
+				    nodeTag, *currentValue, nodeTag];
+	  propDict = properties200;
+	}
+      else
+	{
+	  propertyValue = [NSString stringWithFormat: @"<%@/>", nodeTag];
+	  propDict = properties404;
+	}
+      [propDict addObject: propertyValue];
+      property++;
+      currentValue++;
+    }
+  free (values);
+
+  if ([properties200 count])
+    [propstats addObject: [NSDictionary dictionaryWithObjectsAndKeys:
+					  properties200, @"properties",
+					@"HTTP/1.1 200 OK", @"status",
+					nil]];
+  if ([properties404 count])
+    [propstats addObject: [NSDictionary dictionaryWithObjectsAndKeys:
+					  properties404, @"properties",
+					@"HTTP/1.1 404 Not Found", @"status",
+					nil]];
+//    NSLog (@"/_propstats:ofObject:: %@", [NSDate date]);
+
+  return propstats;
+}
+
+- (void) _appendPropstat: (NSDictionary *) propstat
+                toBuffer: (NSMutableString *) r
+{
+  NSArray *properties;
+  unsigned int count, max;
+
+  [r appendString: @"<D:propstat><D:prop>"];
+  properties = [propstat objectForKey: @"properties"];
+  max = [properties count];
+  for (count = 0; count < max; count++)
+    [r appendString: [properties objectAtIndex: count]];
+  [r appendString: @"</D:prop><D:status>"];
+  [r appendString: [propstat objectForKey: @"status"]];
+  [r appendString: @"</D:status></D:propstat>"];
+}
+
+#warning We need to use the new DAV utilities here...
+#warning this is baddddd because we return a single-valued dictionary containing \
+  a cname which may not event exist... the logic behind appendObject:... should be \
+  rethought, especially since we may start using SQL views
+
+- (void) appendObject: (NSDictionary *) object
+	   properties: (NSString **) properties
+                count: (unsigned int) propertiesCount
+          withBaseURL: (NSString *) baseURL
+	     toBuffer: (NSMutableString *) r
+{
+  NSArray *propstats;
+  unsigned int count, max;
+
+  [r appendFormat: @"<D:response><D:href>"];
+  [r appendString: baseURL];
+  [r appendString: [object objectForKey: @"c_name"]];
+  [r appendString: @"</D:href>"];
+
+//   NSLog (@"(appendPropstats...): %@", [NSDate date]);
+  propstats = [self _propstats: properties count: propertiesCount
+                      ofObject: object];
+  max = [propstats count];
+  for (count = 0; count < max; count++)
+    [self _appendPropstat: [propstats objectAtIndex: count]
+	  toBuffer: r];
+//   NSLog (@"/(appendPropstats...): %@", [NSDate date]);
+
+  [r appendString: @"</D:response>"];
+}
+
+- (void) appendMissingObjectRef: (NSString *) href
+		       toBuffer: (NSMutableString *) r
+{
+  [r appendString: @"<D:response><D:href>"];
+  [r appendString: href];
+  [r appendString: @"</D:href><D:status>HTTP/1.1 404 Not Found</D:status></D:response>"];
+}
+
+- (void) _appendComponentProperties: (NSDictionary *) properties
+                       matchingURLs: (id <DOMNodeList>) refs
+                         toResponse: (WOResponse *) response
+{
+  NSObject <DOMElement> *element;
+  NSDictionary *currentComponent, *components;
+  NSString *currentURL, *baseURL, *currentField;
+  NSString **propertiesArray;
+  NSMutableArray *urls, *fields;
+  NSMutableString *buffer;
+  unsigned int count, max, propertiesCount;
+  NSEnumerator *addFields;
+
+  baseURL = [self davURLAsString];
+#warning review this when fixing http://www.scalableogo.org/bugs/view.php?id=276
+  if (![baseURL hasSuffix: @"/"])
+    baseURL = [NSString stringWithFormat: @"%@/", baseURL];
+
+  urls = [NSMutableArray array];
+  max = [refs length];
+  for (count = 0; count < max; count++)
+    {
+      element = [refs objectAtIndex: count];
+      currentURL = [[element firstChild] nodeValue];
+      [urls addObject: currentURL];
+    }
+
+  propertiesArray = [[properties allKeys] asPointersOfObjects];
+  propertiesCount = [properties count];
+
+  fields = [NSMutableArray arrayWithObjects: @"c_name", @"c_component", nil];
+  addFields = [[properties allValues] objectEnumerator];
+  while ((currentField = [addFields nextObject]))
+    if ([currentField length])
+      [fields addObjectUniquely: currentField];
+
+  components = [self _fetchComponentsMatchingURLs: urls fields: fields];
+  max = [urls count];
+//   NSLog (@"adding properties with url");
+  buffer = [NSMutableString stringWithCapacity: max*512];
+  for (count = 0; count < max; count++)
+    {
+      currentComponent = [components objectForKey: [urls objectAtIndex: count]];
+      if (currentComponent)
+        [self appendObject: currentComponent
+                properties: propertiesArray
+                     count: propertiesCount
+               withBaseURL: baseURL
+                  toBuffer: buffer];
+      else
+        [self appendMissingObjectRef: currentURL
+                            toBuffer: buffer];
+    }
+  [response appendContentString: buffer];
+//   NSLog (@"/adding properties with url");
+
+  NSZoneFree (NULL, propertiesArray);
+}
+
+- (WOResponse *) performMultigetInContext: (WOContext *) queryContext
+                              inNamespace: (NSString *) namespace
+{
+  WOResponse *r;
+  id <DOMDocument> document;
+  DOMElement *documentElement, *propElement;
+
+  r = [context response];
+  [r prepareDAVResponse];
+  [r appendContentString:
+       [NSString stringWithFormat: @"<D:multistatus xmlns:D=\"DAV:\""
+                         @" xmlns:C=\"%@\">", namespace]];
+  document = [[queryContext request] contentAsDOMDocument];
+  documentElement = (DOMElement *) [document documentElement];
+  propElement = [documentElement firstElementWithTag: @"prop"
+                                         inNamespace: @"DAV:"];
+  [self _appendComponentProperties: [self parseDAVRequestedProperties: propElement]
+                      matchingURLs: [documentElement getElementsByTagName: @"href"]
+                        toResponse: r];
+  [r appendContentString:@"</D:multistatus>"];
+
+  return r;
+}
+
 @end /* SOGoFolder */

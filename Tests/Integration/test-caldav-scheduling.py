@@ -473,7 +473,7 @@ class CalDAVITIPDelegationTest(unittest.TestCase):
         att_inv = self._getEvent(self.client,
                                  "%stest-delegation.ics" % self.attendee1_calendar, 404)
         del_inv = self._getEvent(self.client,
-                                 "%stest-delegation.ics" % self.attendee1_calendar, 404)
+                                 "%stest-delegation.ics" % self.attendee1_delegate_calendar, 404)
 
 if __name__ == "__main__":
     sogotests.runTests()

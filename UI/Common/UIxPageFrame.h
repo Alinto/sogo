@@ -40,6 +40,8 @@
   NSString *toolbar;
   id item;
   BOOL isPopup;
+  NSArray *udKeys;
+  NSArray *usKeys;
   NSMutableArray *additionalCSSFiles;
   NSMutableArray *additionalJSFiles;
 }

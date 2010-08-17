@@ -113,27 +113,6 @@ div#header span#navtitle
 div#header a:hover
 { text-decoration: none; }
 
-/* the dock */
-
-a.skydockfont
-{ text-decoration: none;
-  color: #06348B; }
-font.skydockfont
-{ text-decoration: none;
-  color: #06348B; }
-font.skydockfont_inactiveMail
-{ text-decoration: none;
-  color: #CCCCCC;
-  font-weight: bold; }
-font.skydockfont_newMail
-{ text-decoration: none;
-  color: #06348B;
-  font-weight: bold; }
-
-table.skytextdocktable
-{ padding: 0px;
-  table-layout: auto; }
-
 DIV.linkbanner
 { background-color: #222;
   width: 100%;
@@ -504,7 +483,7 @@ LI[class~="_selected"].denied
   background-color: #f33;
 }
 
-DIV.hidden
+.hidden
 { visibility: hidden; }
 
 /* folder tree (js) )*/
@@ -566,7 +545,7 @@ DIV.resize-handle
   color: #fff !important;
 }
 
-DIV.dialog 
+DIV.dialog
 { position: absolute;
   width: 350px;
   z-index: 50; }
@@ -596,6 +575,27 @@ DIV.dialog.right DIV
 { border-right: 0px;
   margin-right: 19px;
   text-align: right; }
+
+DIV.dialog.none
+{ position: relative;
+  opacity: 1;
+  margin: 100px auto; /* top margin could be dynamically set depending on window height */
+  z-index: 10000; }
+
+DIV.dialog.none DIV
+{ padding: 10px;
+  padding-bottom: 31px; }
+
+DIV.dialog.none H3
+{ margin: 0; }
+
+DIV#bgDialogDiv
+{ position: absolute;
+  top: 0px; left: 0px;
+  bottom: 0px;
+  right: 0px;
+  opacity: .3;
+  background-color: #555 !important; }
 
 DIV#uploadDialog,
 DIV#uploadResults
@@ -674,6 +674,7 @@ A.button {
   height: 23px;
   padding-right: 3px; /* sliding doors padding */
   text-decoration: none;  
+  text-align: center;
   color: inherit;
   cursor: pointer;
 }
@@ -684,6 +685,7 @@ A.button SPAN {
     line-height: 13px;
     padding: 5px 2px 5px 5px;
     cursor: pointer;
+    min-width: 70px;
 }
 
 A.button.actionButton SPAN 
@@ -946,3 +948,11 @@ DIV.bottomToolbar A.bottomButton SPAN
 { background: transparent url('thead_bg.png') repeat-x top right; }
 DIV.bottomToolbar A.bottomButton SPAN:active
 { background-position: bottom left; }
+
+/* row editing */
+.editing > INPUT[type="text"]
+{ width: 98%; }
+
+/* modalbox */
+DIV#modalbox SPAN
+{ float: right; }

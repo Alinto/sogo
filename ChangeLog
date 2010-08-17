@@ -1,26 +1,78 @@
 2010-08-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
-       * UI/WebServerResources/generic.js: (onAjaxRequestStateChange):
-       when using CAS authentication and when the return code is 0 and
-       when the request status is 4, chances are that the initial ajax
-       request failed due to the expiration of the CAS ticket entry in
-       memcached. In FF 3.5 and above, a bug prevents the initial cookie
-       from being given back to the reauthentication redirect from an
-       AJAX request. Therefore we open a window that will do this for us
-       and will close one the authentication has succeeded again.
+	* UI/WebServerResources/MailerUIdTree.js: (getMailboxNode): fixed
+	method to return unfolded nodes too.
 
-       * UI/MainUI/SOGoRootPage.m (-revoverAction): new fake action that
-       perform the CAS redirection and then trigger the respawn of the
-       initial request.
+	* UI/WebServerResources/MailerUI.js: (updateUnseenCount): renamed
+	from "updateStatusFolders" and improved to use DOM methods.
 
-       * UI/Common/UIxPageFrame.m (-usesCASAuthentication): new accessor
-       used for recovery of redirected requests.
+	* UI/WebServerResources/dtree.js: (Node): removed the "hasUnseen"
+	parameter.
 
-2010-08-11  Francis Lachapelle  <flachapelle@inverse.ca>
+	* UI/MailerUI/UIxMailAccountActions.m (-listMailboxes): make use
+	of the "application/json" content type in the response.
 
-        * UI/WebServerResources/MailerUI.js (refreshMessage): if the
-        current mailbox is the sent folder, refresh the mailbox instead of
-        only the message.
+	* UI/MailerUI/UIxMailFolderActions.m: (-unseenCount): renamed and
+	moved implementation of the -[UIxMailAccountActions statusFolders]
+	method, splitted thereof since we now execute the method on all
+	mail folders.
+
+	* UI/MailerUI/UIxMailMainFrame.m (-defaultColumnsOrder): removed
+	accessor, made obsolete by the new propagation mechanism of user
+	defaults.
+	(-getUnseenCountForAllFolders): new accessor that returns the
+	value below as a string value.
+
+	* SoObjects/SOGo/SOGoDomainDefaults.m (-mailCheckAllUnseenCounts):
+	new method returning whether the unseen count of all mailboxes
+	should be checked.
+
+	* SoObjects/Mailer/SOGoMailAccount.m (-updateFilters): when the
+	first login attempt fails, we must request a new password to the
+	authenticator (as intended originally).
+
+	* UI/WebServerResources/generic.js: (onAjaxRequestStateChange):
+	when using CAS authentication and when the return code is 0 and
+	when the request status is 4, chances are that the initial ajax
+	request failed due to the expiration of the CAS ticket entry in
+	memcached. In FF 3.5 and above, a bug prevents the initial cookie
+	from being given back to the reauthentication redirect from an
+	AJAX request. Therefore we open a window that will do this for us
+	and will close one the authentication has succeeded again.
+
+	* UI/MainUI/SOGoRootPage.m (-revoverAction): new fake action that
+	perform the CAS redirection and then trigger the respawn of the
+	initial request.
+
+	* UI/Common/UIxPageFrame.m (-usesCASAuthentication): new accessor
+	used for recovery of redirected requests.
+
+	* SoObjects/Contacts/SOGoFolder+CardDAV.m:
+	(_appendObject:withBaseURL:toREPORTResponse:): moved method here
+	from SOGOContact{GCS,Source}Folder since its implementation was
+	mostly the same in the two classes and never invoked anywhere
+	else.
+	Modified to return both "address-data" and "addressbook-data"
+	(draft rev < 4) unless we parse the requested props appropriately.
+
+	* SoObjects/Contacts/SOGoContactGCSFolder.m
+	(-davAddressbookMultiget): new method that responds the
+	CardDAV addressbook-multiget report.
+	(-davSQLFieldsTable): new overriden method that adds support for
+	the CardDAV address-data property.
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-davCalendarMultiget:): make use of the new method below.
+
+	* SoObjects/SOGo/SOGoGCSFolder.m
+	(-performMultigetInContext:inNamespace:): collection-type
+	independent form of -[SOGoAppointmentFolder davCalendarMultiget:],
+	moved along with all its private methods.
+
+	* SoObjects/Contacts/SOGoContactFolders.m
+	(-toManyRelationshipKeys): new overriden method to return only the
+	personal addressbook when the request is performed by
+	AddressBook.app.
 
 2010-08-11  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
@@ -41,6 +93,274 @@
 	messages and also when opening mailboxes. This
 	fixes #716.
 
+2010-08-11  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/MailerUI.js (refreshMessage): if the
+	current mailbox is the sent folder, refresh the mailbox instead of
+	only the message.
+
+2010-08-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/SchedulerUI.js: (initCalendars): avoid
+	setting "showCompletedTasks" when in a popup, since this needs
+	access to a UserDefaults dictionary which is not present nor event
+	required.
+
+	* Main/SOGo+DAV.m (-davCurrentUserPrincipal): new method
+	implementing the "{DAV:}current-user-principal" property.
+
+	* SoObjects/Contacts/SOGoContactGCSEntry.m (-davAddressData): new
+	DAV property accessor returning the card content.
+
+	* SoObjects/SOGo/WORequest+SOGo.m (-isAddressBookApp): new
+	(hackish) test method to determine whether the client is Apple's
+	AddressBook.app.
+
+	* UI/Common/UIxPageFrame.m (_dictionaryWithKeys:fromSource:):
+	set an NSNull as value for keys which return no results, in order
+	to avoid an NSInvalidArgumentException.
+
+2010-08-10  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/generic.js (showAlertDialog): new function
+	to replace window.alert().
+
+2010-08-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/MailerUI.js (openMailbox): removed the
+	"updateStatus" parameter, which is never used.
+
+	* UI/WebServerResources/generic.js (log): fixed handling of
+	messages ending with "\n".
+
+	* UI/Common/UIxPageFrame.m (-setUserDefaultsKeys:)
+	(-hasUserDefaultsKeys, -setUserSettingsKeys:)
+	(-hasUserSettingsKeys): new accessor for determining explicitly
+	which user defaults/settings keys are returned. The new
+	corresponding ivars are "udKeys" and "usKeys" respectively.
+	(-userDefaults, -userSettings): rewrote methods to create a
+	dictionary containing only the requested keys (see above). Since
+	the source are now explicitly queried, the values can now be
+	inherited from the domain and system defaults.
+
+	* UI/WebServerResources/UIxFilterEditor.js (loadMailboxes): the
+	first account is now always identitied with "0", therefore we no
+	longer need the "firstMailAccount" variable.
+
+	* UI/PreferencesUI/UIxFilterEditor.m (-firstMailAccount): removed
+	osbolete accessor.
+
+	* UI/WebServerResources/UIxPreferences.js: (onMailAccountAdd)
+	(onMailAccountDelete): set "hasChanged" to 1 when triggered.
+	(onColorPickerChoice): don't invoke "onChoiceChanged" as it is an
+	event callback.
+
+2010-08-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/generic.js (reloadPreferences): dropped
+	useless method.
+
+	* UI/PreferencesUI/UIxPreferences.m (_extractAuxiliaryAccounts:):
+	since we no longer transfer the user password to the client, the
+	old password has to be fetched from the old account unless a new
+	password has been set.
+	(-mailAccounts): we now strip the passwords from the returned mail
+	accounts, to avoid transferring them uselessly with a risk of
+	keeping them in cache.
+
+	* UI/WebServerResources/MailerUI.js: (initMailboxTree): make use
+	of the new class below and drop all code related to keeping track
+	of active requests.
+
+	* UI/WebServerResources/generic.js: (AjaxRequestsChain): new class
+	that implements the chaining of ajax requests.
+
+	* UI/WebServerResources/MailerUI.js: (dropAction): ensure that the
+	destination mailbox is in the same mail account as the message
+	being dragged.
+	(getMenus): arranged menu descriptions as as single statement.
+	Added "prepareVisibility" callbacks for the "messageListMenu",
+	"messagesListMenu" and "messageContentMenu" (move/copy ops) and
+	"inboxIconMenu", "trashIconMenu", "mailboxIconMenu" menus (folder
+	sharing).
+	(onMessageListMenuPrepareVisibility): new vis. callback designed
+	to attach the right folder submenu to the copy and move ops.
+	(onFolderMenuPrepareVisibility): new vis. cb for disabling the
+	share of folders for auxiliary accounts.
+	(updateMailboxMenus): simplified method by removing the first
+	level of submenus, where the account names used to be.
+	(openInbox): "openMailbox" only takes 3 parameters. Using "null"
+	instead of "false" was also pretty lame.
+	(updateStatusFolders): take the mailbox name as parameter and
+	arranged for multiple mail accounts. In particular, "unseenCount"
+	is now a class identifier rather than an element id.
+	(markMailInWindow): make use of
+	MailerUIdTreeExtension.getMailboxNode.
+
+	* UI/WebServerResources/ContactsUI.js
+	(onToolbarDeleteSelectedContacts): use translated labels.
+
+	* UI/WebServerResources/MailerUIdTree.js:
+	(MailerUIdTreeExtension._addFolderNode): no longer set a SPAN
+	arroung the unseen count.
+	(MailerUIdTreeExtension.getMailboxNode): new method returning the
+	DIV.dTreeNode corresponding to the mailbox name passed as
+	parameter.
+
+	* UI/WebServerResources/UIxPreferences.js: (_setupEvents): no
+	longer take any parameter, which simplifies the method, as
+	removing the "change" observers on input field is not useful.
+	(initMailAccounts): new method that parses the mail accounts JSON
+	dictionary, populates the mail account UL and setup related
+	events.
+	(onMailAccountInfoChange, onMailIdentityInfoChange)
+	(onMailIdentitySignatureClick, onMailIdentitySignatureOK)
+	(createMailAccountLI, onMailAccountEntryClick, displayMailAccount)
+	(displayAccountSignature, createMailAccount)
+	(onMailAccountAdd, onMailAccountDelete, saveMailAccounts)
+	(compactMailAccounts): new methods completing the above.
+
+	* UI/PreferencesUI/UIxPreferences.m (-identitiesList)
+	(-itemIdentityText, -signature, -setSignature): removed obsolete
+	methods.
+	(-defaultAction): when updating filters, we now only need to query
+	the "0" account since accounts are no longer identified by "name".
+	(-mailAuxiliaryUserAccountsEnabled): new bool method.
+	(-setMailAccounts): new accessor that decodes the new mail
+	accounts dictionary in JSON format and validates it prior to save
+	it in the user defaults.
+	(-mailAccounts): new accessor.
+
+	* UI/MailerUI/UIxMailFolderActions.m (_setFolderPurpose:): we now
+	use the corresponding methods on the SOGoUserDefaults instance
+	rather than in the user settings (old bug) when setting folders
+	for the main account. Additionally, we now handle the entries from
+	auxiliary accounts.
+
+	* UI/MailerUI/UIxMailEditor.m (-fromEmails): the list of
+	identities is now taken from the corresponding mail account dict.
+
+	* SoObjects/Mailer/SOGoMailForward.m (-signature): same as below.
+
+	* UI/MailerUI/UIxMailAccountActions.m (-composeAction): same as below.
+
+	* SoObjects/Mailer/SOGoDraftObject.m (-fetchMailForForwarding):
+	the signature is now taken from the original mail's corresponding
+	account.
+
+	* SoObjects/Mailer/SOGoMailFolder.m
+	(-copyUIDs:toFolder:inContext:): we now ensure that the operation
+	is not attempted on two separate accounts.
+	(-httpURLForAdvisoryToUser): the returned mail account is now
+	always "0".
+
+	* SoObjects/Mailer/SOGoMailBaseObject.m (-imap4URL): we now add
+	the "tls=YES" url parameter if the corresponding account
+	encryption is set to "tls".
+	(-imap4Login): removed useless method.
+	(-imap4PasswordRenewed:): now a proxy to the same method on the
+	instance account folder.
+
+	* SoObjects/Mailer/SOGoMailAccount.m (-identities, -signature)
+	(encryption): new helper methods that return the corresponding key
+	in the appropriate mail account dictionary.
+	(-_migrateFolderWithPurpose:): moved method in SOGoMailAccount.m.
+	(-_userFolderNameWithPurpose): rewrote method to make use of the
+	mail account dictionaries. Fallback on the main account of the
+	auxiliary ones do not have the required entry.
+	(-imap4PasswordRenewed:): moved method from SOGoMailBaseObject.m
+	and use the "password" entry in auxiliary account dicts depending
+	on "nameInContainer".
+	(-imap4LoginFromHTTP, -imap4Login): removed useless methods.
+
+	* SoObjects/SOGo/SOGoUser.m (-mailAccounts): we now conditionnally
+	append the array of auxiliary user accounts, if enabled in the
+	domain defaults.
+	(-_appendSystemMailAccount): the user main signature and the
+	sent, drafts, trash folder location are now stored in the account
+	dictionaries. Added migration code from us to ud from
+	SOGoMailAccount.m.
+
+	* SoObjects/SOGo/SOGoDomainDefaults.m
+	(-mailAuxiliaryUserAccountsEnabled): new method returning a BOOL
+	describing whether the domain users can access auxiliary mail
+	accounts.
+
+	* SoObjects/SOGo/SOGoUserDefaults.m (-setAuxiliaryMailAccounts:)
+	(auxiliaryMailAccounts): new methods that receives and returns an
+	NSArray of NSDictionary describing the user's auxiliary mail
+	accounts.
+
+	* UI/WebServerResources/HTMLElement.js: (deselectAll): if the
+	container has a "selectedElements" attribute, then it's no longer
+	required to wander through the "selectedIds" attribute. This fixes
+	a strange bug on IE when modifying the selection on LI lists.
+
+2010-08-05  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/SOGoResizableTable.js
+	(computeColumnsWidths): was previous part of saveColumnsState.
+	Used when the user hasn't modify the columns widths but the local
+	"ratios" hash still need to be built.
+
+2010-08-04  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/generic.js (createDialog): when the
+	position class is set to "none", the dialog will be modal (with a
+	dimmed background).
+
+	* UI/WebServerResources/ContactsUI.js: replaced window.confirm by
+	a CSS modal dialog.
+
+2010-08-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/RowEditionController.js:
+	(RowEditionController.startEditing): avoid setting the whole
+	element class. Make use of addClassName/removeClassName instead,
+	so that classes added/removed via other evt handlers are not
+	ignored.
+
+2010-08-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUser.m (-_appendSystemMailAccount): new
+	private method with the mailbox code split from -[mailAccounts].
+
+	* UI/WebServerResources/MailerUI.js (composeNewMessage): the first
+	account is always identified as "0".
+
+	* UI/MailerUI/UIxMailMainFrame.m (-mailAccounts): we now return
+	tje JSON rep. of a simple and flat array containing the account
+	display names, since the account are represented with an integer
+	index.
+	(-inboxData): we directly fetch the first mail account by using
+	the "0" key.
+	(-composeAction): same as above.
+
+	* SoObjects/Mailer/SOGoMailAccount.m (-imap4URLString): the
+	"nameInContainer" now represents the index of the current account
+	in the array of user mail accounts, which simplifies this method.
+	We also handle the "encryption" key, albeit currently unused, and
+	we now add the port to the url as needed.
+	(-shortTitle): removed method.
+	(-davDisplayName): we only need to return the "name" key of the
+	current account.
+
+	* SoObjects/Mailer/SOGoMailAccounts.m (-mailAccounts): new utility
+	method that returns the mail account dictionaries corresponding to
+	the owner.
+	(-toManyRelationshipKeys): we now identify mail accounts via their
+	index in the array of accounts, since the order will never vary,
+	this simplifies the code.
+	(-lookupName:inContext:acquire:): same as the above.
+
+	* UI/WebServerResources/RowEditionController.js:
+	RowEditionController.startEditing: keep the "_selected" class
+	when starting edition, if exists.
+	RowEditionController.acceptEdition: revert the changes if the new
+	value is an empty string (might be wrong, though).
+	RowEditionController.onInputKeyDown: we now handle the tab key
+	too.
+
 2010-08-03  Ludovic Marcotte  <lmarcotte@inverse.ca>
 	
 	* Applied patch for bug #690
@@ -48,6 +368,30 @@
 	* Applied patch for bug #714
 	* Updated Ukrainian translation - patch from
 	Oleksa Stasevych <oleksiy.stasevych@gmail.com>
+
+2010-08-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/RowEditionController.js: new class module
+	that implements the handling of editable list items.
+
+	* SoObjects/SOGo/NSNumber+Utilities.m (-jsonRepresentation):
+	returns "true" or "false" when the initial return value is "YES"
+	or "NO".
+
+2010-07-30  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/SchedulerUI.js (deleteEvent): improved
+	the function to delete all selected events cells.
+	(onSelectAll): improved the function to select all events cells.
+	(onDocumentKeydown): select all elements upon ctrl-A.
+	(onCalendarSelectEvent): allow multiple selections.
+
+	* UI/WebServerResources/HTMLElement.js (selectAll): new method to
+	select all entries of a list or a table.
+
+	* UI/WebServerResources/scriptaculous/dragdrop.js (initDrag):
+	avoid stopping the event propagation so the blur event is properly
+	fired on the search input field when it isfocused.
 
 2010-07-28  Francis Lachapelle  <flachapelle@inverse.ca>
 

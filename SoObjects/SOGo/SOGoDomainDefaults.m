@@ -98,6 +98,11 @@
   return [self stringForKey: @"OCSFolderInfoURL"];
 }
 
+- (BOOL) mailAuxiliaryUserAccountsEnabled
+{
+  return [self boolForKey: @"SOGoMailAuxiliaryUserAccountsEnabled"];
+}
+
 - (NSString *) mailDomain
 {
   return [self stringForKey: @"SOGoMailDomain"];
@@ -191,6 +196,11 @@
 - (NSArray *) mailPollingIntervals
 {
   return [self arrayForKey: @"SOGoMailPollingIntervals"];
+}
+
+- (BOOL) mailCheckAllUnseenCounts
+{
+  return [self boolForKey: @"SOGoMailCheckAllUnseenCounts"];
 }
 
 - (NSString *) smtpServer

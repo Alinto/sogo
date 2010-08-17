@@ -6,10 +6,9 @@
 "General" = "Generale";
 "Calendar Options" = "Opzioni calendario";
 "Mail Options" = "Opzioni di posta";
-"Signature" = "Firma";
+"IMAP Accounts" = "IMAP Accounts";
 "Vacation" = "Vacation";
 "Forward" = "Forward";
-"Identities" = "Identità";
 "Password" = "Password";
 "Categories" = "Categories";
 "Name" = "Name";
@@ -119,9 +118,6 @@
 "messageforward_inline" = "Parte del messaggio";
 "messageforward_attached" = "Allegato";
 
-/* Identities */
-"Default identity:" = "Identità principale:";
-"Manage identities..." = "Gestisci identità...";
 "replyplacement_above" = "Inizia la risposta sopra il testo a cui si risponde";
 "replyplacement_below" = "Inizia la risposta sotto il testo a cui si risponde";
 "And place my signature" = "Metti la firma";
@@ -131,7 +127,21 @@
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Plain text";
 
-"composeMessageChanged" = "Changing your messages composition type requires to save your preferences immediately. Continue?";
+/* IMAP Accounts */
+"New Mail Account" = "New Mail Account";
+
+"Server Name:" = "Server Name:";
+"Port:" = "Port:";
+"User Name:" = "User Name:";
+"Password:" = "Password:";
+ 
+"Full Name:" = "Full Name:";
+"Email:" = "Email:";
+"Signature:" = "Firma:";
+"(Click to create)" = "(Click to create)";
+
+"Signature" = "Firma";
+"Please enter your signature below:" = "Please enter your signature below:";
 
 /* Additional Parameters */
 "Additional Parameters" = "Parametri addizionali";

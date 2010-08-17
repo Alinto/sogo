@@ -29,6 +29,7 @@
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
 
+#import "SOGoMailAccount.h"
 #import "SOGoMailObject+Draft.h"
 #import "SOGoMailForward.h"
 
@@ -221,7 +222,7 @@
   SOGoUserDefaults *ud;
 
   ud = [[context activeUser] userDefaults];
-  signature = [ud mailSignature];
+  signature = [[sourceMail mailAccountFolder] signature];
   if ([signature length])
     mailSignature = [NSString stringWithFormat: @"-- \n%@", signature];
   else

@@ -61,6 +61,12 @@
 "delegate is a participant" = "Цього учасника вже запрошено.";
 "delegate is a group" = "Зазначена адреса є групою. Ви можете запросити лише окрему особу.";
 
+/* common buttons */
+"OK" = "OK";
+"Cancel" = "Cancel";
+"Yes" = "Yes";
+"No" = "No";
+
 /* alarms */
 "Reminder:" = "Нагадування:";
 "Start:" = "Початок:";

@@ -326,7 +326,6 @@ var Draggable = Class.create({
       this.offset = [0,1].map( function(i) { return (pointer[i] - pos[i]) });
 
       Draggables.activate(this);
-      Event.stop(event);
     }
   },
 

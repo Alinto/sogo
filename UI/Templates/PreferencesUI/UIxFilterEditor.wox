@@ -13,7 +13,6 @@
   >
   <script type="text/javascript">
     var filterId = '<var:string value="filterId"/>';
-    var firstMailAccount = '<var:string value="firstMailAccount"/>';
   </script>
   <form id="mainForm" var:href="ownPath">
     <div id="filterNameContainer" class="container">

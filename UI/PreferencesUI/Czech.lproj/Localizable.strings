@@ -6,10 +6,9 @@
 "General" = "Obecný";
 "Calendar Options" = "Možnosti kalendáře";
 "Mail Options" = "Možnosti pošty";
-"Signature" = "Podpis";
+"IMAP Accounts" = "IMAP Accounts";
 "Vacation" = "Nepřítomnost";
 "Forward" = "Přeposílání";
-"Identities" = "Identity";
 "Password" = "Heslo";
 "Categories" = "Kategorie";
 "Name" = "Jméno";
@@ -119,9 +118,6 @@
 "messageforward_inline" = "Do řady";
 "messageforward_attached" = "Jako přílohu";
 
-/* Identities */
-"Default identity:" = "Výchozí identita:";
-"Manage identities..." = "Spravovat identity...";
 "replyplacement_above" = "Začít mojí odpověď nad citací";
 "replyplacement_below" = "Začít mojí odpověď pod citací";
 "And place my signature" = "A umístit můj podpis";
@@ -131,7 +127,21 @@
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Prostý text";
 
-"composeMessageChanged" = "Změna formátu vytváření zprávy vyžaduje okamžité uložení předvoleb. Pokračovat?";
+/* IMAP Accounts */
+"New Mail Account" = "New Mail Account";
+
+"Server Name:" = "Server Name:";
+"Port:" = "Port:";
+"User Name:" = "User Name:";
+"Password:" = "Heslo:";
+
+"Full Name:" = "Full Name:";
+"Email:" = "Email:";
+"Signature:" = "Podpis:";
+"(Click to create)" = "(Click to create)";
+
+"Signature" = "Podpis";
+"Please enter your signature below:" = "Please enter your signature below:";
 
 /* Additional Parameters */
 "Additional Parameters" = "Dodatečné parametry";

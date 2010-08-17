@@ -40,6 +40,7 @@
 
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
+#import <SOGo/SOGoAuthenticator.h>
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
@@ -69,7 +70,6 @@ static NSString *sieveScriptName = @"sogo";
       draftsFolder = nil;
       sentFolder = nil;
       trashFolder = nil;
-      accountName = nil;
       imapAclStyle = undefined;
     }
 
@@ -82,13 +82,7 @@ static NSString *sieveScriptName = @"sogo";
   [draftsFolder release];
   [sentFolder release];
   [trashFolder release];
-  [accountName release];
   [super dealloc];  
-}
-
-- (void) setAccountName: (NSString *) newAccountName
-{
-  ASSIGN (accountName, newAccountName);
 }
 
 /* listing the available folders */
@@ -362,7 +356,7 @@ static NSString *sieveScriptName = @"sogo";
   result = [client login: [[self imap4URL] user]  password: password];
   if (![[result valueForKey:@"result"] boolValue]) {
     [self errorWithFormat: @"failure. Attempting with a renewed password."];
-    password = [self imap4PasswordRenewed: NO];
+    password = [self imap4PasswordRenewed: YES];
     result = [client login: [[self imap4URL] user]  password: password];
   }
   
@@ -475,76 +469,82 @@ static NSString *sieveScriptName = @"sogo";
 
 /* IMAP4 */
 
-- (BOOL) useSSL
-{
-  return NO;
-}
-
-- (NSString *) imap4LoginFromHTTP
-{
-  WORequest *rq;
-  NSString  *s;
-  NSArray   *creds;
-  
-  rq = [context request];
-  
-  s = [rq headerForKey:@"x-webobjects-remote-user"];
-  if ([s length] > 0)
-    return s;
-  
-  if ((s = [rq headerForKey:@"authorization"]) == nil) {
-    /* no basic auth */
-    return nil;
-  }
-  
-  creds = [SoHTTPAuthenticator parseCredentials:s];
-  if ([creds count] < 2)
-    /* somehow invalid */
-    return nil;
-  
-  return [creds objectAtIndex:0]; /* the user */
-}
-
-- (NSString *) _urlHostString
+- (NSDictionary *) _mailAccount
 {
   NSDictionary *mailAccount;
-  NSString *username, *escUsername, *hostString;
+  NSArray *accounts;
+  SOGoUser *user;
 
-  mailAccount = [[context activeUser] accountWithName: accountName];
-  if (mailAccount)
-    {
-      username = [mailAccount objectForKey: @"userName"];
-      escUsername
-	= [[username stringByEscapingURL] stringByReplacingString: @"@"
-					  withString: @"%40"];
-      hostString = [NSString stringWithFormat: @"%@@%@", escUsername,
-                    [mailAccount objectForKey: @"serverName"]];
-    }
+  user = [SOGoUser userWithLogin: [self ownerInContext: nil]];
+  accounts = [user mailAccounts];
+  mailAccount = [accounts objectAtIndex: [nameInContainer intValue]];
+
+  return mailAccount;
+}
+
+- (NSArray *) identities
+{
+  return [[self _mailAccount] objectForKey: @"identities"];
+}
+
+- (NSString *) signature
+{
+  NSArray *identities;
+  NSString *signature;
+
+  identities = [self identities];
+  if ([identities count] > 0)
+    signature = [[identities objectAtIndex: 0] objectForKey: @"signature"];
   else
-    hostString = @"localhost";
+    signature = nil;
 
-  return hostString;
+  return signature;
+}
+
+- (NSString *) encryption
+{
+  NSString *encryption;
+
+  encryption = [[self _mailAccount] objectForKey: @"encryption"];
+  if (![encryption length])
+    encryption = @"none";
+
+  return encryption;
 }
 
 - (NSMutableString *) imap4URLString
 {
-  /* private, overridden by SOGoSharedMailAccount */
-  NSMutableString *urlString;
-  NSString *host;
+  NSMutableString *imap4URLString;
+  NSDictionary *mailAccount;
+  NSString *encryption, *protocol, *username, *escUsername;
+  int defaultPort, port;
 
-  urlString = [NSMutableString string];
-
-  if ([self useSSL])
-    [urlString appendString: @"imaps://"];
+  mailAccount = [self _mailAccount];
+  encryption = [mailAccount objectForKey: @"encryption"];
+  if ([encryption isEqualToString: @"ssl"])
+    {
+      protocol = @"imaps";
+      defaultPort = 993;
+    }
   else
-    [urlString appendString: @"imap://"];
+    {
+      protocol = @"imap";
+      defaultPort = 143;
+    }
+  
+  username = [mailAccount objectForKey: @"userName"];
+  escUsername
+    = [[username stringByEscapingURL] stringByReplacingString: @"@"
+                                                   withString: @"%40"];
+  imap4URLString = [NSMutableString stringWithFormat: @"%@://%@@%@",
+                                    protocol, escUsername,
+                           [mailAccount objectForKey: @"serverName"]];
+  port = [[mailAccount objectForKey: @"port"] intValue];
+  if (port && port != defaultPort)
+    [imap4URLString appendFormat: @":%d", port];
+  [imap4URLString appendString: @"/"];
 
-  host = [self _urlHostString];
-  if (![host rangeOfString: @"@"].length)
-    [urlString appendFormat: @"%@@", [self imap4LoginFromHTTP]];
-  [urlString appendFormat: @"%@/", host];
-
-  return urlString;
+  return imap4URLString;
 }
 
 - (NSMutableString *) traversalFromMailAccount
@@ -552,9 +552,33 @@ static NSString *sieveScriptName = @"sogo";
   return [NSMutableString string];
 }
 
-- (NSString *) imap4Login
+- (NSString *) imap4PasswordRenewed: (BOOL) renewed
 {
-  return [[self imap4URL] user];
+  /*
+    Extract password from basic authentication.
+  */
+  NSURL *imapURL;
+  NSString *password;
+
+  if ([nameInContainer isEqualToString: @"0"])
+    {
+      imapURL = [self imap4URL];
+
+      password = [[self authenticatorInContext: context]
+                   imapPasswordInContext: context
+                               forServer: [imapURL host]
+                              forceRenew: renewed];
+      if (!password)
+        [self errorWithFormat: @"no IMAP4 password available"];
+    }
+  else
+    {
+      password = [[self _mailAccount] objectForKey: @"password"];
+      if (!password)
+        password = @"";
+    }
+
+  return password;
 }
 
 /* name lookup */
@@ -610,70 +634,27 @@ static NSString *sieveScriptName = @"sogo";
   return inboxFolderName;
 }
 
-- (BOOL) _migrateFolderWithPurpose: (NSString *) purpose
-                          withName: (NSString *) folderName
-{
-  SOGoUserDefaults *ud;
-  NSString *methodName;
-  SEL methodSel;
-  BOOL rc;
-
-  ud = [[context activeUser] userDefaults];
-  methodName = [NSString stringWithFormat: @"set%@FolderName:", purpose];
-  methodSel = NSSelectorFromString (methodName);
-  if ([ud respondsToSelector: methodSel])
-    {
-      [ud performSelector: methodSel withObject: folderName];
-      [ud synchronize];
-      rc = YES;
-    }
-  else
-    {
-      [self errorWithFormat: @"method '%@' not available with user defaults"
-            @" object, folder migration fails", methodName];
-      rc = NO;
-    }
-
-  return rc;
-}
-
 - (NSString *) _userFolderNameWithPurpose: (NSString *) purpose
 {
   SOGoUser *user;
-  SOGoUserSettings *us;
-  SOGoUserDefaults *ud;
-  NSMutableDictionary *mailSettings;
-  NSString *folderName, *key, *methodName;
-  SEL methodSel;
+  NSArray *accounts;
+  int accountIdx;
+  NSDictionary *account;
+  NSString *folderName;
 
   folderName = nil;
 
-  user = [context activeUser];
-  /* migration part: */
-  us = [user userSettings];
-  mailSettings = [us objectForKey: @"Mail"];
-  if (mailSettings)
+  user = [SOGoUser userWithLogin: [self ownerInContext: nil]];
+  accounts = [user mailAccounts];
+  accountIdx = [nameInContainer intValue];
+  account = [accounts objectAtIndex: accountIdx];
+  folderName = [[account objectForKey: @"mailboxes"]
+                 objectForKey: purpose];
+  if (!folderName && accountIdx > 0)
     {
-      key = [NSString stringWithFormat: @"%@Folder", purpose];
-      folderName = [mailSettings objectForKey: key];
-      if ([folderName length]
-          && [self _migrateFolderWithPurpose: purpose withName: folderName])
-        {
-          [mailSettings removeObjectForKey: key];
-          [us synchronize];
-          folderName = nil;
-        }
-    }
-  else
-    folderName = nil;
-
-  if (!folderName)
-    {
-      ud = [[context activeUser] userDefaults];
-      methodName = [NSString stringWithFormat: @"%@FolderName",
-                             [purpose lowercaseString]];
-      methodSel = NSSelectorFromString (methodName);
-      folderName = [ud performSelector: methodSel];
+      account = [accounts objectAtIndex: 0];
+      folderName = [[account objectForKey: @"mailboxes"]
+                     objectForKey: purpose];
     }
 
   return folderName;
@@ -800,40 +781,9 @@ static NSString *sieveScriptName = @"sogo";
   return [[self imap4Connection] createMailbox:_name atURL:[self imap4URL]];
 }
 
-- (NSString *) shortTitle
-{
-  NSString *login, *host;
-  NSRange r;
-
-  r = [accountName rangeOfString:@"@"];
-  if (r.length > 0)
-    {
-      login = [accountName substringToIndex:r.location];
-      host  = [accountName substringFromIndex:(r.location + r.length)];
-    }
-  else
-    {
-      login = nil;
-      host  = accountName;
-    }
-  
-  r = [host rangeOfString:@"."];
-  if (r.length > 0)
-    host = [host substringToIndex:r.location];
-  
-  if ([login length] == 0)
-    return host;
-  
-  r = [login rangeOfString:@"."];
-  if (r.length > 0)
-    login = [login substringToIndex:r.location];
-  
-  return [NSString stringWithFormat:@"%@@%@", login, host];
-}
-
 - (NSString *) davDisplayName
 {
-  return [self shortTitle];
+  return [[self _mailAccount] objectForKey: @"name"];
 }
 
 @end /* SOGoMailAccount */

@@ -121,6 +121,10 @@
 
 - (NSString *) davCollectionTag;
 
+/* multiget helper */
+- (WOResponse *) performMultigetInContext: (WOContext *) queryContext
+                              inNamespace: (NSString *) namespace;
+
 @end
 
 #endif /* __SOGo_SOGoGCSFolder_H__ */

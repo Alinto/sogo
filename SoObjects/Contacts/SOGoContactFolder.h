@@ -42,10 +42,6 @@
 
 @protocol SOGoContactFolder <NSObject>
 
-- (void) appendObject: (NSDictionary *) object
-          withBaseURL: (NSString *) baseURL
-     toREPORTResponse: (WOResponse *) r;
-
 - (NSArray *) lookupContactsWithFilter: (NSString *) filter
                                 sortBy: (NSString *) sortKey
                               ordering: (NSComparisonResult) sortOrdering;

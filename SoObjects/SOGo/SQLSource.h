@@ -25,7 +25,7 @@
 
 #import <Foundation/NSObject.h>
 
-#include "SOGoSource.h"
+#import "SOGoSource.h"
 
 @class NSArray;
 @class NSDictionary;

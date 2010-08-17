@@ -13,7 +13,7 @@ Element.addMethods({
             element = $(element);
 
             var matchingNodes = new Array();
-            var tagName = tagName.toUpperCase();
+            tagName = tagName.toUpperCase();
     
             for (var i = 0; i < element.childNodes.length; i++) {
                 var childNode = $(element.childNodes[i]);
@@ -202,6 +202,17 @@ Element.addMethods({
             }
         },
 
+        selectAll: function(element) {
+            element = $(element);
+            if (element.tagName == 'UL')
+                rows = element.getElementsByTagName('LI');
+            else
+                rows = element.select('TBODY TR');
+            for (var i = 0; i < rows.length; i++)
+                if (rows[i].nodeType == 1)
+                    $(rows[i]).selectElement();
+            },
+
         deselect: function(element) {
             element = $(element);
             element.removeClassName('_selected');
@@ -218,8 +229,9 @@ Element.addMethods({
                 for (var i = 0; i < element.selectedElements.length; i++)
                     element.selectedElements[i].removeClassName('_selected');
                 element.selectedElements = null;
+                element.selectedIds = null;
             }
-            if (element.selectedIds) {
+            else if (element.selectedIds) {
                 for (var i = 0; i < element.selectedIds.length; i++) {
                     var e =  element.down('#' + element.selectedIds[i]);
                     if (e && e.hasClassName('_selected'))

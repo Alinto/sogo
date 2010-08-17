@@ -9,7 +9,8 @@ var usersRightsWindowWidth = 450;
 var Contact = {
     currentAddressBook: null,
     currentContact: null,
-    deleteContactsRequestCount: null
+    deleteContactsRequestCount: null,
+    dialogs: {}
 };
 
 function validateEditorInput(sender) {
@@ -274,9 +275,9 @@ function actionContactCallback(http) {
             var error = html.select("p").first().firstChild.nodeValue.trim();
             log("actionContactCallback failed: error " + http.status + " (" + error + ")");
             if (parseInt(http.status) == 403)
-                window.alert(_("You don't have the required privileges to perform the operation."));
+                showAlertDialog(_("You don't have the required privileges to perform the operation."));
             else if (error)
-                window.alert(labels[error]);
+                showAlertDialog(labels[error]);
             refreshCurrentFolder();
         }
 }
@@ -396,7 +397,7 @@ function onToolbarEditSelectedContacts(event) {
     var rows = contactsList.getSelectedRowsId();
 
     if (rows.length == 0) {
-        window.alert(_("Please select a contact."));
+        showAlertDialog(_("Please select a contact."));
         return false;
     }
 
@@ -433,23 +434,49 @@ function onToolbarDeleteSelectedContacts(event) {
     var rows = contactsList.getSelectedRowsId();
 
     if (rows.length) {
-        var label = _("Are you sure you want to delete the selected contacts?");
-        if (window.confirm(label)) {
-            for (var i = 0; i < rows.length; i++) {
-                delete cachedContacts[Contact.currentAddressBook + "/" + rows[i]];
-                var urlstr = (URLForFolderID(Contact.currentAddressBook) + "/"
-                              + rows[i] + "/delete");
-                Contact.deleteContactsRequestCount++;
-                triggerAjaxRequest(urlstr, onContactDeleteEventCallback,
-                                   rows[i]);
-            }
+        var dialogId = "deleteContactsDialog";
+        var dialog = Contact.dialogs[dialogId];
+        if (dialog) {
+            dialog.show();
+            $("bgDialogDiv").show();
         }
+        else {
+            var label = _("Are you sure you want to delete the selected contacts?");
+            var fields = createElement("p");
+            fields.appendChild(createButton("confirmBtn", _("Yes"), onToolbarDeleteSelectedContactsConfirm.bind(fields, dialogId)));
+            fields.appendChild(createButton("cancelBtn", _("No"), onBodyClickDialogHandler));
+            var dialog = createDialog(dialogId,
+                                      _("Confirmation"),
+                                      label,
+                                      fields,
+                                      "none");
+            document.body.appendChild(dialog);
+            dialog.show();
+            Contact.dialogs[dialogId] = dialog;
+        }
+        return false;
     }
-    else {
-        window.alert(_("Please select a contact."));
-    }
+    else
+        showAlertDialog(_("Please select a contact."));
 
     return false;
+}
+
+function onToolbarDeleteSelectedContactsConfirm(dialogId) {
+    var contactsList = $('contactsList');
+    var rows = contactsList.getSelectedRowsId();
+    for (var i = 0; i < rows.length; i++) {
+        // hide row?
+        $(rows[i]).hide();
+        delete cachedContacts[Contact.currentAddressBook + "/" + rows[i]];
+        var urlstr = (URLForFolderID(Contact.currentAddressBook) + "/"
+                      + rows[i] + "/delete");
+        Contact.deleteContactsRequestCount++;
+        triggerAjaxRequest(urlstr, onContactDeleteEventCallback,
+                           rows[i]);
+    }
+
+    onBodyClickDialogHandler();
 }
 
 function onContactDeleteEventCallback(http) {
@@ -471,13 +498,15 @@ function onContactDeleteEventCallback(http) {
                     loadContact(Contact.currentContact);
                 }
             }
+            row.deselect();
             row.parentNode.removeChild(row);
         }
         else if (parseInt(http.status) == 403) {
             var row = $(http.callbackData);
+            row.show();
             var displayName = row.readAttribute("contactname");
             Contact.deleteContactsRequestCount--;
-            window.alert(labels["You cannot delete the card of \"%{0}\"."].formatted(displayName));
+            showAlertDialog(_("You cannot delete the card of \"%{0}\".").formatted(displayName));
         }
     }
 }
@@ -619,6 +648,7 @@ function refreshContacts(cname) {
 }
 
 function onAddressBookNew(event) {
+    var dialogId = "newAddressBookDialog";
     createFolder(window.prompt(_("Name of the Address Book"), ""),
                  appendAddressBook);
     preventDefault(event);
@@ -755,7 +785,7 @@ function onAddressBookRemove(event) {
         var owner = node.getAttribute("owner");
         if (owner == "nobody") {
             var label = _("You cannot remove nor unsubscribe from a public addressbook.");
-            window.alert(label);
+            showAlertDialog(label);
         }
         else if (owner == UserLogin) {
             var folderIdElements = node.getAttribute("id").split(":");
@@ -774,24 +804,52 @@ function onAddressBookRemove(event) {
 
 function deletePersonalAddressBook(folderId) {
     if (folderId == "personal") {
-        var label = _("You cannot remove nor unsubscribe from your personal addressbook.");
-        window.alert(label);
+        showAlertDialog(_("You cannot remove nor unsubscribe from your personal addressbook."));
     }
     else {
-        var label
-            = _("Are you sure you want to delete the selected address book?");
-        if (window.confirm(label)) {
-            if (document.deletePersonalABAjaxRequest) {
-                document.deletePersonalABAjaxRequest.aborted = true;
-                document.deletePersonalABAjaxRequest.abort();
-            }
-            var url = ApplicationBaseURL + folderId + "/delete";
-            document.deletePersonalABAjaxRequest
-                = triggerAjaxRequest(url, deletePersonalAddressBookCallback,
-                                     folderId);
+        var dialogId = "deleteAddressBookDialog";
+        var dialog = Contact.dialogs[dialogId];
+        if (dialog) {
+            $("bgDialogDiv").show();
         }
+        else {
+            var label = _("Are you sure you want to delete the selected address book?");
+            var fields = createElement("p");
+            fields.appendChild(createButton(dialogId + "confirmBtn",
+                                            "Yes",
+                                            deletePersonalAddressBookConfirm.bind(fields)));
+            fields.appendChild(createButton(dialogId + "cancelBtn",
+                                            "No",
+                                            onBodyClickDialogHandler));
+            dialog = createDialog(dialogId,
+                                  _("Confirmation"),
+                                  label,
+                                  fields,
+                                  "none");
+            document.body.appendChild(dialog);
+            Contact.dialogs[dialogId] = dialog;
+        }
+        dialog.folderId = folderId;
+        dialog.show();
     }
+    return false;
 }
+
+function deletePersonalAddressBookConfirm(event) {
+    if (document.deletePersonalABAjaxRequest) {
+        document.deletePersonalABAjaxRequest.aborted = true;
+        document.deletePersonalABAjaxRequest.abort();
+    }
+    var dialog = $(this).up("DIV.dialog");
+    var folderId = dialog.folderId;
+    var url = ApplicationBaseURL + folderId + "/delete";
+    document.deletePersonalABAjaxRequest
+        = triggerAjaxRequest(url, deletePersonalAddressBookCallback,
+                             folderId);
+
+    onBodyClickDialogHandler();
+}
+
 
 function deletePersonalAddressBookCallback(http) {
     if (http.readyState == 4) {
@@ -970,7 +1028,7 @@ function onAddressBookModify(event) {
                                {node: selected, name: newName});
         }
     } else
-        window.alert(_("Unable to rename that folder!"));
+        showAlertDialog(_("Unable to rename that folder!"));
 }
 
 function folderRenameCallback(http) {
@@ -990,7 +1048,7 @@ function onMenuSharing(event) {
     var selected = folders.getSelectedNodes()[0];
     var owner = selected.getAttribute("owner");
     if (owner == "nobody")
-        window.alert(clabels["The user rights cannot be"
+        showAlertDialog(clabels["The user rights cannot be"
                              + " edited for this object!"]);
     else {
         var title = this.innerHTML;
@@ -1146,7 +1204,7 @@ function onDocumentKeydown(event) {
                     nextRow = row.previous("tr");
                 if (nextRow) {
                     row.up().deselectAll();
-					
+                    
                     // Adjust the scollbar
                     var viewPort = $("contactsListContent");
                     var divDimensions = viewPort.getDimensions();
@@ -1166,6 +1224,10 @@ function onDocumentKeydown(event) {
                 }
                 Event.stop(event);
             }
+        }
+        else if (event.ctrlKey == 1 && event.keyCode == 65) {  // Ctrl-A
+            $("contactsList").selectAll();
+            Event.stop(event);
         }
 }
 
@@ -1193,10 +1255,7 @@ function initContacts(event) {
         $("uploadOK").observe("click", hideImportResults);
     }
 
-    if (Prototype.Browser.Gecko)
-        Event.observe(document, "keypress", onDocumentKeydown); // for FF2
-    else
-        Event.observe(document, "keydown", onDocumentKeydown);        
+    Event.observe(document, "keydown", onDocumentKeydown);
     
     configureAddressBooks();
     updateAddressBooksMenus();

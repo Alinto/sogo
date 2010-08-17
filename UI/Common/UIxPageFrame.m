@@ -21,10 +21,12 @@
 */
 
 #import <Foundation/NSEnumerator.h>
+#import <Foundation/NSNull.h>
 #import <Foundation/NSString.h>
 
 #import <NGObjWeb/WOResourceManager.h>
 
+#import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
@@ -44,6 +46,8 @@
       item = nil;
       title = nil;
       toolbar = nil;
+      udKeys = nil;
+      usKeys = nil;
       additionalJSFiles = nil;
       additionalCSSFiles = nil;
     }
@@ -56,6 +60,8 @@
   [item release];
   [title release];
   [toolbar release];
+  [udKeys release];
+  [usKeys release];
   [additionalJSFiles release];
   [additionalCSSFiles release];
   [super dealloc];
@@ -462,30 +468,73 @@
   return [ud language];
 }
 
-- (NSString *) userSettings
+/* UserDefaults, UserSettings */
+- (NSString *) _dictionaryWithKeys: (NSArray *) keys
+                        fromSource: (SOGoDefaultsSource *) source
 {
-  SOGoUserSettings *us;
-  NSString *jsonResult;
+  NSString *key;
+  int count, max;
+  NSMutableDictionary *dict;
+  NSNull *nsNull;
+  id value;
 
-  us = [[context activeUser] userSettings];
-  jsonResult = [[us source] jsonRepresentation];
-  if (!jsonResult)
-    jsonResult = @"{}";
+  nsNull = [NSNull null];
 
-  return jsonResult;
+  max = [keys count];
+
+  dict = [NSMutableDictionary dictionaryWithCapacity: max];
+  for (count = 0; count < max; count++)
+    {
+      key = [keys objectAtIndex: count];
+      value = [source objectForKey: key];
+      if (!value)
+        value = nsNull;
+      [dict setObject: value forKey: key];
+    }
+
+  return [dict jsonRepresentation];
+}
+
+- (void) setUserDefaultsKeys: (NSString *) newKeys
+{
+  [udKeys release];
+  udKeys = [[newKeys componentsSeparatedByString: @","] trimmedComponents];
+  [udKeys retain];
+}
+
+- (BOOL) hasUserDefaultsKeys
+{
+  return ([udKeys count] > 0);
 }
 
 - (NSString *) userDefaults
 {
   SOGoUserDefaults *ud;
-  NSString *jsonResult;
 
   ud = [[context activeUser] userDefaults];
-  jsonResult = [[ud source] jsonRepresentation];
-  if (!jsonResult)
-    jsonResult = @"{}";
 
-  return jsonResult;
+  return [self _dictionaryWithKeys: udKeys fromSource: ud];
+}
+
+- (void) setUserSettingsKeys: (NSString *) newKeys
+{
+  [usKeys release];
+  usKeys = [[newKeys componentsSeparatedByString: @","] trimmedComponents];
+  [usKeys retain];
+}
+
+- (BOOL) hasUserSettingsKeys
+{
+  return ([usKeys count] > 0);
+}
+
+- (NSString *) userSettings
+{
+  SOGoUserSettings *us;
+
+  us = [[context activeUser] userSettings];
+
+  return [self _dictionaryWithKeys: usKeys fromSource: us];
 }
 
 /* browser/os identification */

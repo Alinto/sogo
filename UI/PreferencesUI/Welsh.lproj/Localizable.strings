@@ -6,10 +6,9 @@
 "General" = "Cyffredinol";
 "Calendar Options" = "Opsiynau Calendr";
 "Mail Options" = "Opsiynau Ebost";
-"Signature" = "Llofnod";
+"IMAP Accounts" = "IMAP Accounts";
 "Vacation" = "Vacation";
 "Forward" = "Forward";
-"Identities" = "hunaniaethau";
 "Password" = "Cyfrinair";
 "Categories" = "Categories";
 "Name" = "Name";
@@ -82,8 +81,7 @@
 "Day start time must be prior to day end time." = "Day start time must be prior to day end time.";
 "First week of year :" = "Wythnos cyntaf y flwyddyn :";
 "Enable reminders for Calendar items" = "Galluogu atgoffa ar gyfer eitemau calendr";
-"Play a sound when a reminder comes due"
-= "Chwarae swn pan fydd amser atgoffa";
+"Play a sound when a reminder comes due" = "Chwarae swn pan fydd amser atgoffa";
 "Default reminder :" = "Atgoffa gwreiddiol :";
 
 "firstWeekOfYear_January1" = "Dechrau ar Ionawr 1";
@@ -119,9 +117,6 @@
 "messageforward_inline" = "Mewn llinell";
 "messageforward_attached" = "Fel Atodiad";
 
-/* Identities */
-"Default identity:" = "Hunaniaeth Gwreiddiol:";
-"Manage identities..." = "Rheoli hunaniaethau...";
 "replyplacement_above" = "Dechrau fy ymateb uwchben y dyfynnod";
 "replyplacement_below" = "Dechrau fy ymateb o dan y dyfynnod";
 "And place my signature" = "A rhowch fy llofnod";
@@ -131,7 +126,21 @@
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Plain text";
 
-"composeMessageChanged" = "Changing your messages composition type requires to save your preferences immediately. Continue?";
+/* IMAP Accounts */
+"New Mail Account" = "New Mail Account";
+
+"Server Name:" = "Server Name:";
+"Port:" = "Port:";
+"User Name:" = "User Name:";
+"Password:" = "Cyfrinair:";
+ 
+"Full Name:" = "Full Name:";
+"Email:" = "Email:";
+"Signature:" = "Llofnod:";
+"(Click to create)" = "(Click to create)";
+
+"Signature" = "Llofnod";
+"Please enter your signature below:" = "Please enter your signature below:";
 
 /* Additional Parameters */
 "Additional Parameters" = "Additional Parameters";

@@ -37,7 +37,13 @@
 
 - (NSString *) type
 {
-  return [[self value: 0 ofAttribute: @"type"] uppercaseString];
+  NSString *type;
+
+  type = [[self value: 0 ofAttribute: @"type"] uppercaseString];
+  if (!type)
+    type = @"JPEG";
+
+  return type;
 }
 
 - (NSData *) decodedContent

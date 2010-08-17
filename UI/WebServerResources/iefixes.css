@@ -7,6 +7,9 @@ FORM
   margin: 0px; }
 
 /* generic */
+DIV#bgDialogDiv
+{ filter: alpha(opacity=30); }
+
 SPAN.disabledToolbarButton
 { filter: alpha(opacity=40); }
 
@@ -30,6 +33,9 @@ UL#userList
 
 DIV.tabsContainer > DIV.scrollToolbar > A > SPAN
 { line-height: 12px; }
+
+DIV#bgDialogDiv
+{ filter: alpha(opacity=30); }
 
 /* MailerUI */
 

@@ -35,6 +35,7 @@
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserManager.h>
+#import <SOGo/WORequest+SOGo.h>
 
 #import "SOGoContactGCSFolder.h"
 #import "SOGoContactSourceFolder.h"
@@ -85,6 +86,18 @@
 - (NSString *) defaultFolderName
 {
   return [self labelForKey: @"Personal Address Book"];
+}
+
+- (NSArray *) toManyRelationshipKeys
+{
+  NSMutableArray *keys;
+
+  if ([[context request] isAddressBookApp])
+    keys = [NSMutableArray arrayWithObject: @"personal"];
+  else
+    keys = (NSMutableArray *) [super toManyRelationshipKeys];
+
+  return keys;
 }
 
 @end

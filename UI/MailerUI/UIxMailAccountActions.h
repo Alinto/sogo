@@ -35,7 +35,6 @@
   NSString *trashFolderName;
 }
 
-- (WOResponse *) statusFoldersAction;
 - (WOResponse *) listMailboxesAction;
 
 @end

@@ -65,6 +65,12 @@
 "delegate is a participant" = "Delegovaný je již účastníkem.";
 "delegate is a group" = "Určená adresa odpovídá skupině. Delegovat můžete pouze na osobu.";
 
+/* common buttons */
+"OK" = "OK";
+"Cancel" = "Cancel";
+"Yes" = "Yes";
+"No" = "No";
+
 /* alarms */
 "Reminder:" = "Upomínka:";
 "Start:" = "Začátek:";

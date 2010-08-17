@@ -67,6 +67,7 @@
   if ((self = [super init]))
     {
       item = nil;
+#warning user should be the owner rather than the activeUser
       ASSIGN (user, [context activeUser]);
       ASSIGN (userDefaults, [user userDefaults]);
       ASSIGN (today, [NSCalendarDate date]);
@@ -575,35 +576,6 @@
   [userDefaults setMailMessageForwarding: newMessageForwarding];
 }
 
-/*
-// <label><var:string label:value="Default identity:"/>
-//   <var:popup list="identitiesList" item="item"
-//     string="itemIdentityText" selection="defaultIdentity"/></label>
-- (NSArray *) identitiesList
-{
-  NSDictionary *primaryAccount;
-
-#warning we manage only one account per user at this time...
-  primaryAccount = [[user mailAccounts] objectAtIndex: 0];
-
-  return [primaryAccount objectForKey: @"identities"];
-}
-
-- (NSString *) itemIdentityText
-{
-  return [(NSDictionary *) item keysWithFormat: @"%{fullName} <%{email}>"];
-  } */
-
-- (NSString *) signature
-{
-  return [userDefaults mailSignature];
-}
-
-- (void) setSignature: (NSString *) newSignature
-{
-  [userDefaults setMailSignature: newSignature];
-}
-
 - (NSArray *) replyPlacementList
 {
   return [NSArray arrayWithObjects: @"above", @"below", nil];
@@ -676,7 +648,7 @@
 
 - (NSString *) sieveCapabilities
 {
-#warning this should be deduced from the server
+#warning sieve caps should be deduced from the server
   static NSArray *capabilities = nil;
 
   if (!capabilities)
@@ -931,8 +903,7 @@
   if ([[request method] isEqualToString: @"POST"])
     {
       SOGoMailAccount *account;
-      id mailAccounts;
-      id folder;
+      SOGoMailAccounts *folder;
 
       dd = [[context activeUser] domainDefaults];
       if ([dd sieveScriptsEnabled])
@@ -943,13 +914,10 @@
         [userDefaults setForwardOptions: forwardOptions];
 
       [userDefaults synchronize];
-      
-      mailAccounts = [[[context activeUser] mailAccounts] objectAtIndex: 0];
+
       folder = [[self clientObject] mailAccountsFolder: @"Mail"
                                              inContext: context];
-      account = [folder lookupName: [[mailAccounts objectForKey: @"name"] asCSSIdentifier]
-                         inContext: context
-                           acquire: NO];
+      account = [folder lookupName: @"0" inContext: context acquire: NO];
       [account updateFilters];
 
       if (hasChanged)
@@ -1091,6 +1059,223 @@
 - (NSString *) languageText
 {
   return [self labelForKey: item];
+}
+
+- (BOOL) mailAuxiliaryUserAccountsEnabled
+{
+  return [[user domainDefaults] mailAuxiliaryUserAccountsEnabled];
+}
+
+- (void) _extractMainSignature: (NSDictionary *) account
+{
+  /* We perform some validation here as we have no guaranty on the input
+     validity. */
+  NSString *signature;
+  NSArray *identities;
+  NSDictionary *identity;
+
+  if ([account isKindOfClass: [NSDictionary class]])
+    {
+      identities = [account objectForKey: @"identities"];
+      if ([identities isKindOfClass: [NSArray class]])
+        {
+          signature = nil;
+
+          if ([identities count] > 0)
+            {
+              identity = [identities objectAtIndex: 0];
+              if ([identity isKindOfClass: [NSDictionary class]])
+                {
+                  signature = [identity objectForKey: @"signature"];
+                  if (!signature)
+                    signature = @"";
+                  [userDefaults setMailSignature: signature];
+                }
+            }
+        }
+    }
+}
+
+- (BOOL) _validateAccountIdentities: (NSArray *) identities
+{
+  static NSString *identityKeys[] = { @"fullName", @"email", nil };
+  static NSArray *knownKeys = nil;
+  NSString **key, *value;
+  NSDictionary *identity;
+  NSMutableDictionary *clone;
+  BOOL valid;
+  int count, max;
+
+  if (!knownKeys)
+    {
+      knownKeys = [NSArray arrayWithObjects: @"fullName", @"email",
+                           @"signature", nil];
+      [knownKeys retain];
+    }
+
+  valid = [identities isKindOfClass: [NSArray class]];
+  if (valid)
+    {
+      max = [identities count];
+      valid = (max > 0);
+      for (count = 0; valid && count < max; count++)
+        {
+          identity = [identities objectAtIndex: count];
+          clone = [identity mutableCopy];
+          [clone removeObjectsForKeys: knownKeys];
+          valid = ([clone count] == 0);
+          [clone autorelease];
+          if (valid)
+            {
+              key = identityKeys;
+              while (valid && *key)
+                {
+                  value = [identity objectForKey: *key];
+                  if ([value isKindOfClass: [NSString class]]
+                      && [value length] > 0)
+                    key++;
+                  else
+                    valid = NO;
+                }
+              if (valid)
+                {
+                  value = [identity objectForKey: @"signature"];
+                  valid = (!value || [value isKindOfClass: [NSString class]]);
+                }
+            }
+        }
+    }
+
+  return valid;
+}
+
+- (BOOL) _validateAccount: (NSDictionary *) account
+{
+  static NSString *accountKeys[] = { @"name", @"serverName", @"userName",
+                                     nil };
+  static NSArray *knownKeys = nil;
+  NSMutableDictionary *clone;
+  NSString **key, *value;
+  BOOL valid;
+
+  if (!knownKeys)
+    {
+      knownKeys = [NSArray arrayWithObjects: @"name", @"serverName",
+                           @"userName", @"password", @"encryption",
+                           @"identities", @"mailboxes", nil];
+      [knownKeys retain];
+    }
+
+  valid = [account isKindOfClass: [NSDictionary class]];
+  if (valid)
+    {
+      clone = [account mutableCopy];
+      [clone removeObjectsForKeys: knownKeys];
+      valid = ([clone count] == 0);
+      [clone autorelease];
+
+      key = accountKeys;
+      while (valid && *key)
+        {
+          value = [account objectForKey: *key];
+          if ([value isKindOfClass: [NSString class]]
+              && [value length] > 0)
+            key++;
+          else
+            valid = NO;
+        }
+
+      if (valid)
+        {
+          value = [account objectForKey: @"security"];
+          if (value)
+            valid = ([value isKindOfClass: [NSString class]]
+                     && ([value isEqualToString: @"none"]
+                         || [value isEqualToString: @"ssl"]
+                         || [value isEqualToString: @"tls"]));
+
+          valid &= [self _validateAccountIdentities: [account objectForKey: @"identities"]];
+        }
+    }
+
+  return valid;
+}
+
+- (void) _extractAuxiliaryAccounts: (NSArray *) accounts
+{
+  int count, max, oldMax;
+  NSArray *oldAccounts;
+  NSMutableArray *auxAccounts;
+  NSDictionary *oldAccount;
+  NSMutableDictionary *account;
+  NSString *password;
+
+  oldAccounts = [user mailAccounts];
+  oldMax = [oldAccounts count];
+
+  max = [accounts count];
+  auxAccounts = [NSMutableArray arrayWithCapacity: max];
+
+  for (count = 1; count < max; count++)
+    {
+      account = [accounts objectAtIndex: count];
+      if ([self _validateAccount: account])
+        {
+          password = [account objectForKey: @"password"];
+          if (!password)
+            {
+              if (count < oldMax)
+                {
+                  oldAccount = [oldAccounts objectAtIndex: count];
+                  password = [oldAccount objectForKey: @"password"];
+                }
+              if (!password)
+                password = @"";
+              [account setObject: password forKey: @"password"];
+            }
+          [auxAccounts addObject: account];
+        }
+    }
+
+  [userDefaults setAuxiliaryMailAccounts: auxAccounts];
+}
+
+- (void) setMailAccounts: (NSString *) newMailAccounts
+{
+  NSArray *accounts;
+  NSScanner *scanner;
+  int max;
+
+  scanner = [NSScanner scannerWithString: newMailAccounts];
+  [scanner scanJSONArray: &accounts];
+  if (accounts && [accounts isKindOfClass: [NSArray class]])
+    {
+      max = [accounts count];
+      if (max > 0)
+        {
+          [self _extractMainSignature: [accounts objectAtIndex: 0]];
+
+          if ([self mailAuxiliaryUserAccountsEnabled])
+            [self _extractAuxiliaryAccounts: accounts];
+        }
+    }
+}
+
+- (NSString *) mailAccounts
+{
+  NSArray *accounts;
+  NSMutableDictionary *account;
+  int count, max;
+
+  accounts = [user mailAccounts];
+  max = [accounts count];
+  for (count = 0; count < max; count++)
+    {
+      account = [accounts objectAtIndex: count];
+      [account removeObjectForKey: @"password"];
+    }
+
+  return [accounts jsonRepresentation];
 }
 
 @end

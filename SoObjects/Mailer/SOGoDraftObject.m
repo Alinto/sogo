@@ -722,7 +722,7 @@ static NSString    *userAgent      = nil;
     {
   // TODO: use subject for filename?
 //   error = [newDraft saveAttachment:content withName:@"forward.eml"];
-      signature = [ud mailSignature];
+      signature = [[self mailAccountFolder] signature];
       if ([signature length])
 	[self setText: [NSString stringWithFormat: @"\n-- \n%@", signature]];
       attachment = [NSDictionary dictionaryWithObjectsAndKeys:
