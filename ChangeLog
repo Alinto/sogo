@@ -1,3 +1,11 @@
+2010-08-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/iCalEvent+SOGo.m (-quickRecord): we now
+	make use of the new -[iCalAlarm nextAlarmDate] method.
+
+	* SoObjects/Appointments/iCalToDo+SOGo.m (-quickRecord): we now
+	make use of the new -[iCalAlarm nextAlarmDate] method.
+
 2010-08-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/MailerUIdTree.js: (getMailboxNode): fixed
