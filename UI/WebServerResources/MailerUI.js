@@ -1408,7 +1408,7 @@ function loadMessageCallback(http) {
         }
     }
     else if (http.status == 404) {
-        alert (_("The message you have selected doesn't exist anymore."));
+        showAlertDialog (_("The message you have selected doesn't exist anymore."));
 	Mailer.dataTable.remove(http.callbackData.msguid);
     }
     else

@@ -548,7 +548,7 @@ DIV.resize-handle
 DIV.dialog
 { position: absolute;
   width: 350px;
-  z-index: 50; }
+  z-index: 3; }
 
 DIV.dialog DIV
 { border: 1px solid #444;
@@ -579,8 +579,7 @@ DIV.dialog.right DIV
 DIV.dialog.none
 { position: relative;
   opacity: 1;
-  margin: 100px auto; /* top margin could be dynamically set depending on window height */
-  z-index: 10000; }
+  margin: 100px auto; /* top margin could be dynamically set depending on window height */ }
 
 DIV.dialog.none DIV
 { padding: 10px;
@@ -594,6 +593,7 @@ DIV#bgDialogDiv
   top: 0px; left: 0px;
   bottom: 0px;
   right: 0px;
+  z-index: 2;
   opacity: .3;
   background-color: #555 !important; }
 
