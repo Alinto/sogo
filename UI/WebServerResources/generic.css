@@ -161,7 +161,9 @@ DIV.contactSelector UL.contactList IMG
 SELECT
 { vertical-align: middle;
   margin: 2px;
-  padding-right: 1px; }
+  padding-right: 1px;
+  background-color: #CCDDEC;
+  color: #535D6D; }
 
 DIV.contactSelector DIV.contactList
 { font-size: smaller;
@@ -621,7 +623,6 @@ DIV, TEXTAREA, INPUT, SELECT
   font-size: inherit; }
 
 INPUT[type="text"], INPUT[type="password"], INPUT[type="file"],
-SELECT,
 TEXTAREA
 { border-top: 1px solid #909090;
   border-left: 1px solid #909090;
@@ -636,8 +637,7 @@ TEXTAREA[disabled], TEXTAREA[readonly]
 { background: #E6E7E6;
   color: #9ABCD8; }
 
-INPUT[type="text"], INPUT[type="password"], INPUT[type="file"],
-SELECT
+INPUT[type="text"], INPUT[type="password"], INPUT[type="file"]
 { background: url("input_bg.gif"); }
 
 TEXTAREA
