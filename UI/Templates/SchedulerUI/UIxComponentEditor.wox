@@ -21,6 +21,7 @@
     const:negate="YES">false</var:if>;
     var attendees = <var:string value="jsonAttendees" const:escapeHTML="NO"/>;
     var ownerLogin = '<var:string value="ownerLogin"/>';
+    var emailAlarmsEnabled = <var:string value="emailAlarmsEnabled"/>;
     <var:if condition="eventIsReadOnly" const:negate="YES"
 	    ><var:if condition="hasOrganizer">var organizer = <var:string value="jsonOrganizer" const:escapeHTML="NO"/>;</var:if
 	    >var owners = <var:string value="calendarOwnerList.jsonRepresentation" const:escapeHTML="NO"/>;</var:if
@@ -161,6 +162,15 @@
      <input type="hidden" name="reminderReference"
 	    id="reminderReference"
 	    var:value="reminderReference"/>
+     <input type="hidden" name="reminderAction"
+	    id="reminderAction"
+	    var:value="reminderAction"/>
+     <input type="hidden" name="reminderEmailOrganizer"
+	    id="reminderEmailOrganizer"
+	    var:value="reminderEmailOrganizer"/>
+     <input type="hidden" name="reminderEmailAttendees"
+	    id="reminderEmailAttendees"
+	    var:value="reminderEmailAttendees"/>
     </div>
   </form>
   </var:if>
@@ -327,6 +337,16 @@
      <input type="hidden" name="reminderReference"
 	    id="reminderReference"
 	    var:value="reminderReference"/>
+
+     <input type="hidden" name="reminderAction"
+	    id="reminderAction"
+	    var:value="reminderAction"/>
+     <input type="hidden" name="reminderEmailOrganizer"
+	    id="reminderEmailOrganizer"
+	    var:value="reminderEmailOrganizer"/>
+     <input type="hidden" name="reminderEmailAttendees"
+	    id="reminderEmailAttendees"
+	    var:value="reminderEmailAttendees"/>
 
     <div id="windowButtons">
       <var:if condition="userHasRSVP"><a id="okButton" href="#" class="button actionButton"

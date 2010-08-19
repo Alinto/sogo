@@ -62,6 +62,7 @@
 #import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserManager.h>
 #import <SOGo/SOGoPermissions.h>
+#import <SOGo/SOGoSystemDefaults.h>
 
 #import "../../Main/SOGo.h"
 
@@ -180,6 +181,9 @@ iRANGE(2);
       reminderUnit = nil;
       reminderRelation = nil;
       reminderReference = nil;
+      reminderAction = nil;
+      reminderEmailOrganizer = NO;
+      reminderEmailAttendees = NO;
       repeatType = nil;
       repeat1 = nil;
       repeat2 = nil;
@@ -462,8 +466,44 @@ iRANGE(2);
     }
 }
 
+- (void) _loadEMailAlarm: (iCalAlarm *) anAlarm
+{
+  NSArray *attendees;
+  iCalPerson *aAttendee;
+  SOGoUser *owner;
+  NSString *ownerId, *email;
+  int count, max;
+
+  attendees = [anAlarm attendees];
+  reminderEmailOrganizer = NO;
+  reminderEmailAttendees = NO;
+
+  ownerId = [[self clientObject] ownerInContext: nil];
+  owner = [SOGoUser userWithLogin: ownerId];
+  email = [[owner defaultIdentity] objectForKey: @"email"];
+
+  max = [attendees count];
+  for (count = 0;
+       !(reminderEmailOrganizer && reminderEmailAttendees)
+         && count < max;
+       count++)
+    {
+      aAttendee = [attendees objectAtIndex: count];
+      if ([[aAttendee rfc822Email] isEqualToString: email])
+        reminderEmailOrganizer = YES;
+      else
+        reminderEmailAttendees = YES;
+    }
+}
+
 - (void) _loadAlarms
 {
+  iCalAlarm *anAlarm;
+  iCalTrigger *aTrigger;
+  NSString *duration, *quantity;
+  unichar c;
+  unsigned int i;
+
   if ([component hasAlarms])
     {
       // We currently have the following limitations for alarms:
@@ -471,21 +511,17 @@ iRANGE(2);
       // - the alarm's action must be of type DISPLAY;
       // - the alarm's trigger value type must be DURATION.
 
-      iCalAlarm *anAlarm;
-      iCalTrigger *aTrigger;
-      NSString *duration, *quantity;
-      unichar c;
-      unsigned int i;
-
       anAlarm = [[component alarms] objectAtIndex: 0];
       aTrigger = [anAlarm trigger];
-      if ([[anAlarm action] caseInsensitiveCompare: @"DISPLAY"] == NSOrderedSame &&
-	  [[aTrigger valueType] caseInsensitiveCompare: @"DURATION"] == NSOrderedSame)
+      ASSIGN (reminderAction, [[anAlarm action] lowercaseString]);
+      if (([reminderAction isEqualToString: @"display"]
+           || [reminderAction isEqualToString: @"email"])
+	  && [[aTrigger valueType] caseInsensitiveCompare: @"DURATION"] == NSOrderedSame)
 	{
 	  duration = [aTrigger value];
 	  i = [reminderValues indexOfObject: duration];
 
-	  if (i == NSNotFound)
+	  if (i == NSNotFound || [reminderAction isEqualToString: @"email"])
 	    {
 	      // Custom alarm
 	      ASSIGN (reminder, @"CUSTOM");
@@ -537,6 +573,9 @@ iRANGE(2);
 		    }
 		  if ([quantity length])
 		    ASSIGN (reminderQuantity, quantity);
+
+                  if ([reminderAction isEqualToString: @"email"])
+                    [self _loadEMailAlarm: anAlarm];
 		}
 	    }
 	  else
@@ -1044,6 +1083,36 @@ iRANGE(2);
     text = [self labelForKey: [NSString stringWithFormat: @"reminder_%@", item]];
 
   return text;
+}
+
+- (void) setReminderAction: (NSString *) newValue
+{
+  ASSIGN (reminderAction, newValue);
+}
+
+- (NSString *) reminderAction
+{
+  return reminderAction;
+}
+
+- (void) setReminderEmailOrganizer: (NSString *) newValue
+{
+  reminderEmailOrganizer = [newValue isEqualToString: @"true"];
+}
+
+- (NSString *) reminderEmailOrganizer
+{
+  return (reminderEmailOrganizer ? @"true" : @"false");
+}
+
+- (void) setReminderEmailAttendees: (NSString *) newValue
+{
+  reminderEmailAttendees = [newValue isEqualToString: @"true"];
+}
+
+- (NSString *) reminderEmailAttendees
+{
+  return (reminderEmailAttendees ? @"true" : @"false");
 }
 
 - (NSString *) repeat
@@ -1983,6 +2052,41 @@ RANGE(2);
     }
 }
 
+- (void) _appendAttendees: (NSArray *) attendees
+             toEmailAlarm: (iCalAlarm *) alarm
+{
+  NSMutableArray *aAttendees;
+  int count, max;
+  iCalPerson *currentAttendee, *aAttendee;
+
+  max = [attendees count];
+  aAttendees = [NSMutableArray arrayWithCapacity: max];
+  for (count = 0; count < max; count++)
+    {
+      currentAttendee = [attendees objectAtIndex: count];
+      aAttendee = [iCalPerson elementWithTag: @"attendee"];
+      [aAttendee setCn: [currentAttendee cn]];
+      [aAttendee setEmail: [currentAttendee rfc822Email]];
+      [aAttendees addObject: aAttendee];
+    }
+  [alarm setAttendees: aAttendees];
+}
+
+- (void) _appendOrganizerToEmailAlarm: (iCalAlarm *) alarm
+{
+  NSString *uid;
+  NSDictionary *ownerIdentity;
+  iCalPerson *aAttendee;
+
+  uid = [[self clientObject] ownerInContext: context];
+  ownerIdentity = [[SOGoUser userWithLogin: uid roles: nil]
+                    defaultIdentity];
+  aAttendee = [iCalPerson elementWithTag: @"attendee"];
+  [aAttendee setCn: [ownerIdentity objectForKey: @"fullName"]];
+  [aAttendee setEmail: [ownerIdentity objectForKey: @"email"]];
+  [alarm addChild: aAttendee];
+}
+
 - (void) takeValuesFromRequest: (WORequest *) _rq
                      inContext: (WOContext *) _ctx
 {
@@ -2020,23 +2124,36 @@ RANGE(2);
       iCalAlarm *anAlarm;
       NSString *aValue;
       unsigned int index;
-      
+
+      anAlarm = [iCalAlarm new];
+
       index = [reminderItems indexOfObject: reminder];
-      aValue = [reminderValues objectAtIndex: index];
 
       aTrigger = [iCalTrigger elementWithTag: @"TRIGGER"];
       [aTrigger setValueType: @"DURATION"];
-      
-      anAlarm = [iCalAlarm new];
-      [anAlarm setAction: @"DISPLAY"];
       [anAlarm setTrigger: aTrigger];
       
+      aValue = [reminderValues objectAtIndex: index];
       if ([aValue length]) {
 	// Predefined alarm
+        [anAlarm setAction: @"DISPLAY"];
 	[aTrigger setValue: aValue];
       }
       else {
 	// Custom alarm
+        [anAlarm setAction: [reminderAction uppercaseString]];
+        if ([reminderAction isEqualToString: @"email"])
+          {
+            [anAlarm removeAllAttendees];
+            if (reminderEmailAttendees)
+              [self _appendAttendees: [component attendees]
+                        toEmailAlarm: anAlarm];
+            if (reminderEmailOrganizer)
+              [self _appendOrganizerToEmailAlarm: anAlarm];
+            [anAlarm setSummary: [component summary]];
+            [anAlarm setComment: [component comment]];
+          }
+
 	if ([reminderReference caseInsensitiveCompare: @"BEFORE"] == NSOrderedSame)
 	  aValue = [NSString stringWithString: @"-P"];
 	else
@@ -2275,6 +2392,17 @@ RANGE(2);
 - (BOOL) eventIsReadOnly
 {
   return [self getEventRWType] != 0;
+}
+
+- (NSString *) emailAlarmsEnabled
+{
+  SOGoSystemDefaults *sd;
+
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+
+  return ([sd enableEMailAlarms]
+          ? @"true"
+          : @"false");
 }
 
 - (BOOL) userHasRSVP

@@ -60,6 +60,7 @@
 #import "SOGoAptMailICalReply.h"
 #import "SOGoAptMailNotification.h"
 #import "SOGoAptMailReceipt.h"
+#import "SOGoEMailAlarmsManager.h"
 #import "iCalEntityObject+SOGo.h"
 #import "iCalPerson+SOGo.h"
 #import "iCalRepeatableEntityObject+SOGo.h"
@@ -590,6 +591,7 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
 - (void) saveComponent: (iCalRepeatableEntityObject *) newObject
 {
   NSString *newiCalString, *newUid;
+  SOGoEMailAlarmsManager *eaMgr;
 
   if (!isNew
       && [newObject isRecurrent])
@@ -610,6 +612,10 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
 	newUid = [newUid substringToIndex: [newUid length]-4];
       [newObject setUid: newUid];
     }
+
+  eaMgr = [SOGoEMailAlarmsManager sharedEMailAlarmsManager];
+  [eaMgr handleAlarmsInCalendar: [newObject parent]
+                  fromComponent: self];
 
   newiCalString = [[newObject parent] versitString];
 
@@ -1155,6 +1161,32 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
 - (iCalRepeatableEntityObject *) occurence
 {
   return [self component: YES secure: NO];
+}
+
+#warning alarms: we don not handle occurrences
+- (NSException *) prepareDelete
+{
+  SOGoEMailAlarmsManager *eaMgr;
+
+  eaMgr = [SOGoEMailAlarmsManager sharedEMailAlarmsManager];
+  [eaMgr deleteAlarmsFromComponent: self];
+
+  return nil;
+}
+
+- (id) PUTAction: (WOContext *) localContext
+{
+  SOGoEMailAlarmsManager *eaMgr;
+  WORequest *rq;
+  iCalCalendar *putCalendar;
+
+  rq = [localContext request];
+  putCalendar = [iCalCalendar parseSingleFromSource: [rq contentAsString]];
+  eaMgr = [SOGoEMailAlarmsManager sharedEMailAlarmsManager];
+  [eaMgr handleAlarmsInCalendar: putCalendar
+                  fromComponent: self];
+
+  return [super PUTAction: localContext];
 }
 
 // /* Overriding this method dramatically speeds up PROPFIND request, but may

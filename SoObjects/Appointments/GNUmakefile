@@ -42,6 +42,8 @@ Appointments_OBJC_FILES = \
 	SOGoAptMailICalReply.m		\
 	SOGoAptMailUpdate.m		\
 	SOGoAptMailReceipt.m		\
+	\
+	SOGoEMailAlarmsManager.m
 
 Appointments_RESOURCE_FILES +=		\
 	Version				\

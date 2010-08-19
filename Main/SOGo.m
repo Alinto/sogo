@@ -30,6 +30,8 @@
 
 #import <GDLAccess/EOAdaptorChannel.h>
 #import <GDLContentStore/GCSChannelManager.h>
+#import <GDLContentStore/GCSFolderManager.h>
+#import <GDLContentStore/GCSAlarmsFolder.h>
 
 #import <NGObjWeb/SoClassSecurityInfo.h>
 #import <NGObjWeb/WOContext.h>
@@ -201,6 +203,7 @@ static BOOL debugLeaks;
 - (BOOL) _checkMandatoryTables
 {
   GCSChannelManager *cm;
+  GCSFolderManager *fm;
   NSString *urlStrings[] = {@"SOGoProfileURL", @"OCSFolderInfoURL", nil};
   NSString **urlString;
   NSString *value;
@@ -225,6 +228,12 @@ static BOOL debugLeaks;
 	  NSLog (@"No value specified for '%@'", *urlString);
 	  ok = NO;
 	}
+    }
+
+  if (ok && [defaults enableEMailAlarms])
+    {
+      fm = [GCSFolderManager defaultFolderManager];
+      [[fm alarmsFolder] createFolderIfNotExists];
     }
 
   return ok;

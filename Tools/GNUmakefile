@@ -25,7 +25,14 @@ $(SOGO_SLAPD_SOCKD)_OBJC_FILES += \
 	SOGoSockDScanner.m \
 	SOGoSockDOperation.m \
 
-TOOL_NAME = $(SOGO_TOOL) $(SOGO_SLAPD_SOCKD)
+SOGO_EALARMS_NOTIFY = sogo-ealarms-notify
+$(SOGO_EALARMS_NOTIFY)_INSTALL_DIR = $(SOGO_ADMIN_TOOLS)
+$(SOGO_EALARMS_NOTIFY)_OBJC_FILES += \
+	sogo-ealarms-notify.m \
+	\
+	SOGoEAlarmsNotifier.m
+
+TOOL_NAME = $(SOGO_TOOL) $(SOGO_SLAPD_SOCKD)  $(SOGO_EALARMS_NOTIFY)
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/tool.make

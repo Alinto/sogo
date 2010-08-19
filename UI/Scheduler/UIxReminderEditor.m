@@ -23,7 +23,7 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
 
-#import <Common/UIxPageFrame.h>
+#import <SOGo/SOGoSystemDefaults.h>
 
 #import "UIxReminderEditor.h"
 
@@ -88,6 +88,15 @@
     text = [self labelForKey: [NSString stringWithFormat: @"reminder_%@", item]];
 
   return text;
+}
+
+- (BOOL) emailAlarmsEnabled
+{
+  SOGoSystemDefaults *sd;
+
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+
+  return [sd enableEMailAlarms];
 }
 
 @end

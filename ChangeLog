@@ -1,5 +1,41 @@
 2010-08-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/UIxReminderEditor.js
+	(initialiseFormValues): added code to configure the "actionList"
+	if present (email alarms enabled).
+	(onEditorOkClick): modify the parent's reminderAction,
+	reminderEmailOrganizer, reminderEmailAttendees when email alarms
+	are available. "reminderAction" is conditionally set to "display"
+	otherwise.
+
+	* UI/Scheduler/UIxReminderEditor.m (-emailAlarmsEnabled): new accessor.
+
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	(-saveComponent:): invoke SOGoEMailAlarmsManager to register any
+	email alarms in the saved component.
+	(-PUTAction:): new super method to perform the same as the above.
+	(-prepareDelete): new super method. Invoke SOGoEMailAlarmsManager
+	to unregister any email alarms in the deleted component.
+
+	* UI/Scheduler/UIxComponentEditor.m (-init): added the
+	"reminderAction", "reminderEmailOrganizer" and
+	"reminderEmailAttendees" ivars.
+	(_loadEMailAlarm:) new setup method for setting up parameters that
+	are specific to email alarms.
+	(_appendAttendees:toEmailAlarm:,_appendOrganizerToEmailAlarm:):
+	new method for adding "attendees" to email alarms.
+	(-emailAlarmsEnabled): new accessor.
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m (-prepareDelete):
+	we now invoke -[super prepareDelete] since SOGoCalendarComponent
+	now implements the method.
+	(-DELETEAction:): invoke -prepareDelete instead of
+	-prepareDeleteOccurence: since we want -[super prepareDelete] to
+	be invoked from here too.
+
+	* Main/SOGo.m (-_checkMandatoryTables): added code to create the
+	alarms table if email alarms are enabled.
+
 	* SoObjects/SOGo/SOGoSystemDefaults.m (-enableEMailAlarms): new
 	method for the "SOGoEnableEMailAlarms" user default.
 
