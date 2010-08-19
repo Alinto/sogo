@@ -271,7 +271,7 @@ static NSString *defaultUserID =  @"anyone";
   NGImap4Client *client;
   NSString *folderName;
   NSException *error;
-  id result;
+  NSString *result;
   BOOL b;
 
   trashFolder = [[self mailAccountFolder] trashFolderInContext: localContext];
@@ -296,19 +296,21 @@ static NSString *defaultUserID =  @"anyone";
 			 objectForKey: @"result"];
 	      
 	      if (![result boolValue])
-		result = [[self imap4Connection] createMailbox: folderName  atURL: [[self mailAccountFolder] imap4URL]];
+		[[self imap4Connection] createMailbox: folderName
+                                                atURL: [[self mailAccountFolder] imap4URL]];
+
+              result = [[client copyUids: uids toFolder: folderName]
+                           objectForKey: @"result"];
 	      
-	      if (!result || [result boolValue])
-		result = [client copyUids: uids toFolder: folderName];
-	      
-	      b = [[result valueForKey: @"result"] boolValue];
+	      b = [result boolValue];
 	    }
 	  
 	  if (b)
 	    {
-	      result = [client storeFlags: [NSArray arrayWithObject: @"Deleted"]
-			       forUIDs: uids addOrRemove: YES];
-	      if ([[result valueForKey: @"result"] boolValue])
+	      result = [[client storeFlags: [NSArray arrayWithObject: @"Deleted"]
+			       forUIDs: uids addOrRemove: YES]
+                          objectForKey: @"result"];
+	      if ([result boolValue])
 		{
 		  [self markForExpunge];
 		  [trashFolder flushMailCaches];

@@ -1,5 +1,9 @@
 2010-08-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailFolder.m (-deleteUIDs:inContext:): make
+	the use of the "result" variable clearer by declaring it with a
+	proper class name and avoiding type confusion within the code.
+
 	* UI/WebServerResources/MailerUI.js: (initDnd): removed useless
 	method.
 	(onMessageListPrepareVisibility): fixed a bug where the current
