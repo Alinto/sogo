@@ -24,11 +24,12 @@ var SOGoResizableTableInterface = {
             }
             SOGoResizableTable._resize(this, $(cell), i, null, cell.getWidth());
         }
+        this.computeColumnsWidths();
         Event.observe(window, "resize", this.resize.bind(this));
     },
 
     resize: function(e) {
-        // Only resize the columns after a certain delay, otherwise it slow
+        // Only resize the columns after a certain delay, otherwise it slows
         // down the interface.
         if (this.delayedResize) window.clearTimeout(this.delayedResize);
         this.delayedResize = this._resize.bind(this).delay(0.2);
@@ -62,7 +63,7 @@ var SOGoResizableTableInterface = {
         this.ratios = relativeWidths;
     },
 
-    saveColumnsState: function() {
+    computeColumnsWidths: function() {
         this.ratios = new Hash();
         var tableWidth = 100/this.getWidth();
         var cells = $(this).down('tr').childElements();
@@ -71,6 +72,10 @@ var SOGoResizableTableInterface = {
             if (cell.hasClassName('resizable'))
                 this.ratios.set(cell.id, Math.round(cell.getWidth()*tableWidth));
         }
+    },
+
+    saveColumnsState: function() {
+        this.computeColumnsWidths();
         if (!$(document.body).hasClassName("popup")) {
             var url =  ApplicationBaseURL + "saveColumnsState";
             var data = this.ratios;

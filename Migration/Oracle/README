@@ -1,0 +1,28 @@
+Depending on your location, the timezone will have to be adjusted
+in the oracleimport script. Search for "$timezone" and adjust it together
+with the DTSTART/DTEND values.
+
+Also, if you do not want the script to send invitation requests / updates
+for virtually every PUT operation, you MUST add the SCHEDULE-AGENT parameter
+(with a value of NONE or CLIENT) to the ORGANIZER of the events you're about
+to import. See http://tools.ietf.org/html/draft-desruisseaux-caldav-sched-08#section-10.1
+for all details. 
+
+Then, you need to export the data from Oracle Calendar. To do this, use
+the following tools based on the type of data you want to export.
+
+- Calendars -
+
+% uniical -export -host <hostname:port> -n <nodeid> -start <month>/<day>/<year> -end <month>/<day>/<year> -u <username>  -f <filename>
+
+- Tasks -
+
+% unicpoutu -host <hostname:port> -n <nodeid> -start <day> <month> <year> -end <day> <month> <year> -u <username>
+
+- Rights -
+
+% uniaccessrights -ls  -grantor <user> -host <hostname:port> -n <nodeid>  -p XXXX -grantee "S=*" -designate
+
+Please look at http://download.oracle.com/docs/cd/B25553_01/calendar.1012/b25486/utilities.htm for
+details on those tools.
+

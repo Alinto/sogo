@@ -6,7 +6,9 @@ setup
 
 1) copy config.py.in to config.py (make sure to never EVER add it to monotone)
 2) edit config.py to suit your environment
-3) run the test scripts
+3) make sure that you use a fresh database, with no prior information in it
+4) make sure that SOGoCalendarDefaultRoles and SOGoContactsDefaultRoles are empty or undefined
+5) run the test scripts
 
 runnable scripts
 ----------------
