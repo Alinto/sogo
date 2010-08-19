@@ -444,7 +444,7 @@ function onToolbarDeleteSelectedContacts(event) {
             var label = _("Are you sure you want to delete the selected contacts?");
             var fields = createElement("p");
             fields.appendChild(createButton("confirmBtn", _("Yes"), onToolbarDeleteSelectedContactsConfirm.bind(fields, dialogId)));
-            fields.appendChild(createButton("cancelBtn", _("No"), onBodyClickDialogHandler));
+            fields.appendChild(createButton("cancelBtn", _("No"), disposeDialog));
             var dialog = createDialog(dialogId,
                                       _("Confirmation"),
                                       label,
@@ -476,7 +476,7 @@ function onToolbarDeleteSelectedContactsConfirm(dialogId) {
                            rows[i]);
     }
 
-    onBodyClickDialogHandler();
+    disposeDialog();
 }
 
 function onContactDeleteEventCallback(http) {
@@ -648,10 +648,14 @@ function refreshContacts(cname) {
 }
 
 function onAddressBookNew(event) {
-    var dialogId = "newAddressBookDialog";
-    createFolder(window.prompt(_("Name of the Address Book"), ""),
-                 appendAddressBook);
+    showPromptDialog(_("New addressbook..."), _("Name of the Address Book"), onAddressBookNewConfirm);
     preventDefault(event);
+}
+
+function onAddressBookNewConfirm() {
+    if (this.value.length > 0)
+        createFolder(this.value, appendAddressBook);
+    disposeDialog();
 }
 
 function appendAddressBook(name, folder) {
@@ -820,7 +824,7 @@ function deletePersonalAddressBook(folderId) {
                                             deletePersonalAddressBookConfirm.bind(fields)));
             fields.appendChild(createButton(dialogId + "cancelBtn",
                                             "No",
-                                            onBodyClickDialogHandler));
+                                            disposeDialog));
             dialog = createDialog(dialogId,
                                   _("Confirmation"),
                                   label,
@@ -847,7 +851,7 @@ function deletePersonalAddressBookConfirm(event) {
         = triggerAjaxRequest(url, deletePersonalAddressBookCallback,
                              folderId);
 
-    onBodyClickDialogHandler();
+    disposeDialog();
 }
 
 
@@ -1018,17 +1022,28 @@ function onAddressBookModify(event) {
 
     if (UserLogin == selected.getAttribute("owner")) {
         var currentName = selected.innerHTML;
-        var newName = window.prompt(_("Address Book Name"),
-                                    currentName);
-        if (newName && newName.length > 0
-            && newName != currentName) {
-            var url = (URLForFolderID(selected.getAttribute("id"))
-                       + "/renameFolder?name=" + escape(newName.utf8encode()));
-            triggerAjaxRequest(url, folderRenameCallback,
-                               {node: selected, name: newName});
-        }
-    } else
+        showPromptDialog(_("Properties"),
+                         _("Address Book Name"),
+                         onAddressBookModifyConfirm,
+                         currentName);
+    }
+    else
         showAlertDialog(_("Unable to rename that folder!"));
+}
+
+function onAddressBookModifyConfirm() {
+    var folders = $("contactFolders");
+    var selected = folders.getSelectedNodes()[0];
+    var newName = this.value;
+    var currentName = this.getAttribute("previousValue");
+    if (newName && newName.length > 0
+        && newName != currentName) {
+        var url = (URLForFolderID(selected.getAttribute("id"))
+                   + "/renameFolder?name=" + escape(newName.utf8encode()));
+        triggerAjaxRequest(url, folderRenameCallback,
+                           {node: selected, name: newName});
+    }
+    disposeDialog();
 }
 
 function folderRenameCallback(http) {

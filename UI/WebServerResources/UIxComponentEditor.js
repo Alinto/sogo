@@ -48,7 +48,6 @@ function onSelectPrivacy(event) {
             node = $(node).up("A");
         popupToolbarMenu(node, "privacy-menu");
         Event.stop(event);
-        //       preventDefault(event);
     }
 }
 

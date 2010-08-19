@@ -1737,7 +1737,7 @@ function createDialog(id, title, legend, content, positionClass) {
         else {
             bgDiv = createElement("div", "bgDialogDiv", ["bgDialog"]);
             document.body.appendChild(bgDiv);
-            bgDiv.observe("click", onBodyClickDialogHandler);
+            bgDiv.observe("click", disposeDialog);
         }
     }
 
@@ -1752,6 +1752,7 @@ function createDialog(id, title, legend, content, positionClass) {
     }
     if (content)
         subdiv.appendChild(content);
+    createElement("hr", null, null, null, null, subdiv);
 
     return newDialog;
 }
@@ -1780,9 +1781,7 @@ function showAlertDialog(label) {
 }
 
 function _showAlertDialog(label) {
-    var dialog = null;
-    if (dialogs[label])
-        dialog = dialogs[label];
+    var dialog = dialogs[label];
     if (dialog) {
         $("bgDialogDiv").show();
     }
@@ -1790,7 +1789,7 @@ function _showAlertDialog(label) {
         var fields = createElement("p");
         fields.appendChild(createButton(null,
                                         _("OK"),
-                                        onBodyClickDialogHandler));
+                                        disposeDialog));
         dialog = createDialog(null,
                               _("Warning"),
                               label,
@@ -1802,7 +1801,39 @@ function _showAlertDialog(label) {
     dialog.show();
 }
 
-function onBodyClickDialogHandler() {
+function showPromptDialog(title, label, callback, defaultValue) {
+    var dialog = dialogs[label];
+    v = defaultValue?defaultValue:"";
+    if (dialog) {
+        $("bgDialogDiv").show();
+	dialog.down("input").value = v;
+    }
+    else {
+        var fields = createElement("p", null, ["prompt"]);
+	fields.appendChild(document.createTextNode(label));
+        var input = createElement("input", null, "textField",
+				  { type: "text", "value": v },
+				  { previousValue: v });
+	fields.appendChild(input);
+        fields.appendChild(createButton(null,
+                                        _("OK"),
+                                        callback.bind(input)));
+	fields.appendChild(createButton(null,
+                                        "Cancel",
+                                        disposeDialog));
+        dialog = createDialog(null,
+                              title,
+                              null,
+                              fields,
+                              "none");
+        document.body.appendChild(dialog);
+        dialogs[label] = dialog;
+    }
+    dialog.show();
+    dialog.down("input").focus();
+}
+
+function disposeDialog() {
     $$("DIV.dialog").each(function(div) {
                               if (div.visible())
                                   div.hide();

@@ -2349,9 +2349,13 @@ function updateCalendarProperties(calendarID, calendarName, calendarColor) {
 }
 
 function onCalendarNew(event) {
-    createFolder(window.prompt(_("Name of the Calendar"), ""),
-                 appendCalendar);
+    showPromptDialog(_("New Calendar..."), _("Name of the Calendar"), onCalendarNewConfirm);
     preventDefault(event);
+}
+
+function onCalendarNewConfirm() {
+    createFolder(this.value, appendCalendar);
+    disposeDialog();
 }
 
 function onCalendarAdd(event) {
@@ -2360,7 +2364,11 @@ function onCalendarAdd(event) {
 }
 
 function onCalendarWebAdd(event) {
-    var calendarUrl = window.prompt(_("URL of the Calendar"), "");
+    showPromptDialog(_("Subscribe to a web calendar..."), _("URL of the Calendar"), onCalendarWebAddConfirm);
+}
+
+function onCalendarWebAddConfirm() {
+    var calendarUrl = this.value;
     if (calendarUrl) {
         if (document.addWebCalendarRequest) {
             document.addWebCalendarRequest.aborted = true;
@@ -2370,6 +2378,7 @@ function onCalendarWebAdd(event) {
         document.addWebCalendarRequest =
           triggerAjaxRequest (url, addWebCalendarCallback);
     }
+    disposeDialog();
 }
 function addWebCalendarCallback (http) {
     var data = http.responseText.evalJSON(true);
@@ -2380,7 +2389,7 @@ function addWebCalendarCallback (http) {
         changeCalendarDisplay();
     }
     else {
-        alert (_("An error occured while importing calendar."));
+        showAlertDialog (_("An error occured while importing calendar."));
     }
 }
 

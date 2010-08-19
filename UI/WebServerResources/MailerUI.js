@@ -2045,7 +2045,11 @@ function saveFoldersStateCallback(http) {
 }
 
 function onMenuCreateFolder(event) {
-    var name = window.prompt(_("Name :"), "");
+    showPromptDialog(_("New Folder..."), _("Name :"), onMenuCreateFolderConfirm);
+}
+
+function onMenuCreateFolderConfirm(event) {
+    var name = this.value;
     if (name && name.length > 0) {
         var folderID = document.menuTarget.getAttribute("dataname");
         var urlstr = URLForFolderID(folderID) + "/createFolder?name=" + encodeURIComponent(name);
@@ -2053,11 +2057,15 @@ function onMenuCreateFolder(event) {
         triggerAjaxRequest(urlstr, folderOperationCallback,
                            errorLabel.formatted(name));
     }
+    disposeDialog();
 }
 
 function onMenuRenameFolder(event) {
-    var name = window.prompt(_("Enter the new name of your folder :"),
-                             "");
+    showPromptDialog(_("Rename Folder..."), _("Enter the new name of your folder :"), onMenuRenameFolderConfirm);
+}
+
+function onMenuRenameFolderConfirm() {
+    var name = this.value;
     if (name && name.length > 0) {
         var folderID = document.menuTarget.getAttribute("dataname");
         var urlstr = URLForFolderID(folderID) + "/renameFolder?name=" + name;
@@ -2065,6 +2073,7 @@ function onMenuRenameFolder(event) {
         triggerAjaxRequest(urlstr, folderOperationCallback,
                            errorLabel.formatted(name));
     }
+    disposeDialog();
 }
 
 function onMenuDeleteFolder(event) {

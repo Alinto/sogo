@@ -580,15 +580,31 @@ DIV.dialog.right DIV
 
 DIV.dialog.none
 { position: relative;
+  margin: 0px;
+  padding: 0px;
   opacity: 1;
   margin: 100px auto; /* top margin could be dynamically set depending on window height */ }
 
 DIV.dialog.none DIV
-{ padding: 10px;
-  padding-bottom: 31px; }
+{ padding: 10px; }
+
+DIV.dialog HR
+{ clear: both;
+  height: 0px;
+  margin: 0px;
+  padding: 0px;
+  color: #fff;
+  border: 0px; }
 
 DIV.dialog.none H3
 { margin: 0; }
+
+DIV.dialog.none P
+{ margin: 0px;
+  padding: 5px 0px; }
+
+DIV.dialog.none P.prompt
+{ text-align: right; }
 
 DIV#bgDialogDiv
 { position: absolute;

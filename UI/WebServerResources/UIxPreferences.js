@@ -439,7 +439,7 @@ function onMailIdentitySignatureClick(event) {
             fields.appendChild(createButton("okBtn", _("OK"),
                                             onMailIdentitySignatureOK));
             fields.appendChild(createButton("cancelBtn", _("Cancel"),
-                                            onBodyClickDialogHandler.bind(document.body, dialogId)));
+                                            disposeDialog.bind(document.body, dialogId)));
             var dialog = createDialog(dialogId,
                                       _("Signature"),
                                       label,

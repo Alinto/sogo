@@ -1,3 +1,8 @@
+2010-08-19  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/generic.js (showPromptDialog): new
+	function to replace window.prompt().
+
 2010-08-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/iCalEvent+SOGo.m (-quickRecord): we now
