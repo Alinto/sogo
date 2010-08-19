@@ -406,6 +406,12 @@
 "reminder_END" = "fim do evento";
 "Reminder Details" = "Reminder Details";
 
+"Choose a Reminder Action" = "Choose a Reminder Action";
+"Show an Alert" = "Show an Alert";
+"Send an E-mail" = "Send an E-mail";
+"Email Organizer" = "Email Organizer";
+"Email Attendees" = "Email Attendees";
+
 "zoom_400" = "400%";
 "zoom_200" = "200%";
 "zoom_100" = "100%";

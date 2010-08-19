@@ -397,7 +397,6 @@
 "reminder_1_WEEK_BEFORE" = "1 semaine avant";
 "reminder_CUSTOM" = "Personnaliser...";
 
-"Reminder Details" = "Détails du rappel";
 "reminder_MINUTES" = "minutes";
 "reminder_HOURS" = "heures";
 "reminder_DAYS" = "jours";
@@ -405,6 +404,13 @@
 "reminder_AFTER" = "après";
 "reminder_START" = "le début de 'événement";
 "reminder_END" = "la fin de l'événement";
+"Reminder Details" = "Détails du rappel";
+
+"Choose a Reminder Action" = "Choisir une action pour le rappel";
+"Show an Alert" = "Afficher une alerte";
+"Send an E-mail" = "Envoyer un courrier";
+"Email Organizer" = "À l'organisateur";
+"Email Attendees" = "Aux invités";
 
 "zoom_400" = "400%";
 "zoom_200" = "200%";
