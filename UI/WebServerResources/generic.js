@@ -848,7 +848,7 @@ function popupSubmenu(event) {
         parentNode.submenu = submenuNode;
 
         if (submenuNode.prepareVisibility)
-            submenuNode.prepareVisibility();
+            submenuNode.prepareVisibility.apply(submenuNode, []);
 
         var menuTop = (parentNode.offsetTop - 1
                        + this.offsetTop);
