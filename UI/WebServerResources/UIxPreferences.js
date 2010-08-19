@@ -244,7 +244,6 @@ function _editFilter(filterId) {
 }
 
 function onFilterAdd(event) {
-    log("onFilterAdd");
     _editFilter("new");
     event.stop();
 }
