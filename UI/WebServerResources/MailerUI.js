@@ -1635,32 +1635,6 @@ function onWindowResize(event) {
         handle.adjust();
 }
 
-/* dnd */
-function initDnd() {
-    //   log("MailerUI initDnd");
-
-    var tree = $("mailboxTree");
-    if (tree) {
-        var images = tree.getElementsByTagName("img");
-        for (var i = 0; i < images.length; i++) {
-            if (images[i].id[0] == 'j') {
-                images[i].dndAcceptType = mailboxSpanAcceptType;
-                images[i].dndEnter = plusSignEnter;
-                images[i].dndExit = plusSignExit;
-                document.DNDManager.registerDestination(images[i]);
-            }
-        }
-        var nodes = document.getElementsByClassName("nodeName", tree);
-        for (var i = 0; i < nodes.length; i++) {
-            nodes[i].dndAcceptType = mailboxSpanAcceptType;
-            nodes[i].dndEnter = mailboxSpanEnter;
-            nodes[i].dndExit = mailboxSpanExit;
-            nodes[i].dndDrop = mailboxSpanDrop;
-            document.DNDManager.registerDestination(nodes[i]);
-        }
-    }
-}
-
 /* stub */
 
 function refreshContacts() {
@@ -1688,8 +1662,6 @@ function initMailer(event) {
     }
 
     if (!$(document.body).hasClassName("popup")) {
-        //initDnd();
-
         Mailer.dataTable = $("mailboxList");
         Mailer.dataTable.addInterface(SOGoDataTableInterface);
         Mailer.dataTable.setRowRenderCallback(messageListCallback);
@@ -2280,7 +2252,7 @@ function onMessageListMenuPrepareVisibility() {
                     "messagesListMenu": 2,
                     "messageContentMenu": 4 };
     if (document.menuTarget) {
-        var mbx = document.menuTarget.getAttribute("dataname");
+        var mbx = Mailer.currentMailbox;
         if (mbx) {
             var lis = this.getElementsByTagName("li");
             var idx = indexes[this.id];
@@ -2533,33 +2505,47 @@ function configureDraggables () {
 
     new Draggable ("dragDropVisual",
                    { handle: "messageListBody",
-                           onStart: startDragging,
-                           onEnd: stopDragging,
-                           onDrag: whileDragging,
-                           scroll: "folderTreeContent" });
+                     onStart: startDragging,
+                     onEnd: stopDragging,
+                     onDrag: whileDragging,
+                     scroll: "folderTreeContent" });
 }
 
-function configureDroppables () {
-    var drops = $$("div#dmailboxTree1 div.dTreeNode a.node span.nodeName");
+function configureDroppables() {
+    var drops = $$("div#mailboxTree div.dTreeNode a.node span.nodeName");
 
     Droppables.empty ();
     drops.each(function (drop) {
-                   drop.identify();
-                   Droppables.add(drop.id,
-                                  { hoverclass: "genericHoverClass",
-                                    onDrop: dropAction });
+                   var dataname = drop.parentNode.parentNode.getAttribute("dataname");
+                   var acceptClass = "account";
+                   if (dataname.length > 0) {
+                       var parts = dataname.split("/");
+                       acceptClass += parts[1];
+                   }
+                   var parent = drop.parentNode.parentNode;
+                   if (parent.getAttribute("datatype") != "account") {
+                       drop.identify();
+                       Droppables.add(drop.id,
+                                      { hoverclass: "genericHoverClass",
+                                        accept: [ acceptClass ],
+                                        onDrop: dropAction });
+                   }
                });
 }
 
 function startDragging (itm, e) {
     var target = Event.element(e);
     if (target.up('TBODY') == undefined)
-        return false;
+        return;
 
     var handle = $("dragDropVisual");
     var count = $("messageListBody").getSelectedRowsId().length;
 
     handle.update (count);
+    if (Mailer.currentMailbox) {
+        var parts = Mailer.currentMailbox.split("/");
+        handle.addClassName("account" + parts[1]);
+    }
     if (e.shiftKey) {
         handle.addClassName("copy");
     }
@@ -2581,6 +2567,9 @@ function stopDragging () {
     handle.hide();
     if (handle.hasClassName("copy"))
         handle.removeClassName("copy");
+    for (var i = 0; i < accounts.length; i++) {
+        handle.removeClassName("account" + i);
+    }
 }
 
 function dropAction (dropped, zone, e) {

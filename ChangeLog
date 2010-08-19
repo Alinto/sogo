@@ -1,5 +1,23 @@
 2010-08-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailFolder.m (-deleteUIDs:inContext:): make
+	the use of the "result" variable clearer by declaring it with a
+	proper class name and avoiding type confusion within the code.
+
+	* UI/WebServerResources/MailerUI.js: (initDnd): removed useless
+	method.
+	(onMessageListPrepareVisibility): fixed a bug where the current
+	mailbox name would be attemptedly taken from the menu target,
+	while it really should have been deduced from
+	"Mailer.currentMailbox".
+	(configureDraggables): we now take all label nodes under
+	"#mailboxTree" into account and accept them as droppable when they
+	are not an account node. Also, we associate an account tag with
+	all of them.
+	(startDragging): we set the drag classname of the drag handle to
+	the correct account tag, to avoid visual feedback when hovering
+	mailboxes from another account.
+
 	* UI/WebServerResources/UIxReminderEditor.js
 	(initialiseFormValues): added code to configure the "actionList"
 	if present (email alarms enabled).
