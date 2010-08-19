@@ -1,3 +1,8 @@
+2010-08-19  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/MailerUI.js (onMenuEmptyTrash): delete the
+	cache of the trash mailbox when called.
+
 2010-08-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Mailer/SOGoMailFolder.m (-deleteUIDs:inContext:): make

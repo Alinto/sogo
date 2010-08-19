@@ -401,6 +401,7 @@ function deleteSelectedMessagesCallback(http) {
                     }
                     Mailer.dataTable.remove(data["id"][i]);
                     Mailer.dataTable.render();
+                    deleteCachedMailboxByType("trash");
                 }
                 else {
                     Mailer.dataTable.remove(data["id"][i]);
@@ -662,8 +663,8 @@ function openMailbox(mailbox, reload) {
             Mailer.dataSources.set(key, dataSource);
             getUnseenCountForFolder(mailbox);
         }
-        Mailer.dataTable.setSource(dataSource);
         messageList.deselectAll();
+        Mailer.dataTable.setSource(dataSource);
         Mailer.dataTable.render();
         configureDraggables();
         Mailer.currentMailbox = mailbox;
@@ -2062,13 +2063,13 @@ function onMenuEmptyTrash(event) {
     var folderID = document.menuTarget.getAttribute("dataname");
     var urlstr = URLForFolderID(folderID) + "/emptyTrash";
     var errorLabel = _("The trash could not be emptied.");
+    deleteCachedMailboxByType("trash");
     triggerAjaxRequest(urlstr, folderOperationCallback, errorLabel);
 
     if (folderID == Mailer.currentMailbox) {
         var div = $('messageContent');
         for (var i = div.childNodes.length - 1; i > -1; i--)
             div.removeChild(div.childNodes[i]);
-        refreshCurrentFolder();
     }
     var msgID = Mailer.currentMessages[folderID];
     if (msgID)
