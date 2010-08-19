@@ -1,3 +1,13 @@
 # Version file
 
+<<<<<<< variant A
 SUBMINOR_VERSION:=1
+
+# v0.9.1 requires Main v0.9.59
+>>>>>>> variant B
+SUBMINOR_VERSION:=1
+####### Ancestor
+SUBMINOR_VERSION:=0
+
+# v0.9.1 requires Main v0.9.59
+======= end
