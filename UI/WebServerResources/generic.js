@@ -1801,6 +1801,26 @@ function _showAlertDialog(label) {
     dialog.show();
 }
 
+function showConfirmDialog(title, label, callback) {
+    var dialog = dialogs[label];
+    if (dialog) {
+        $("bgDialogDiv").show();
+    }
+    else {
+        var fields = createElement("p");
+        fields.appendChild(createButton(null, _("Yes"), callback));
+        fields.appendChild(createButton(null, _("No"), disposeDialog));
+        dialog = createDialog(null,
+                              title,
+                              label,
+                              fields,
+                              "none");
+        document.body.appendChild(dialog);
+        dialogs[label] = dialog;
+    }
+    dialog.show();
+}
+
 function showPromptDialog(title, label, callback, defaultValue) {
     var dialog = dialogs[label];
     v = defaultValue?defaultValue:"";

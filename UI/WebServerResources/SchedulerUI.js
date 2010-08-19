@@ -2592,14 +2592,17 @@ function onCalendarRemove(event) {
 }
 
 function deletePersonalCalendar(folderElement) {
-    var folderId = folderElement.substr(1);
-    var label
-        = labels["Are you sure you want to delete the calendar \"%{0}\"?"].formatted($(folderElement).lastChild.nodeValue.strip());
-    if (window.confirm(label)) {
-        removeFolderRequestCount++;
-        var url = ApplicationBaseURL + "/" + folderId + "/delete";
-        triggerAjaxRequest(url, deletePersonalCalendarCallback, folderId);
-    }
+    showConfirmDialog(_("Confirmation"),
+                      _("Are you sure you want to delete the calendar \"%{0}\"?").formatted($(folderElement).lastChild.nodeValue.strip()),
+                      deletePersonalCalendarConfirm.bind(folderElement));
+}
+
+function deletePersonalCalendarConfirm() {
+    var folderId = this.substr(1);
+    removeFolderRequestCount++;
+    var url = ApplicationBaseURL + "/" + folderId + "/delete";
+    triggerAjaxRequest(url, deletePersonalCalendarCallback, folderId);
+    disposeDialog();
 }
 
 function deletePersonalCalendarCallback(http) {

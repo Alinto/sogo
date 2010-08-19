@@ -1,5 +1,8 @@
 2010-08-19  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/WebServerResources/generic.js (showConfirmDialog): new
+	function to replace window.confirm().
+
 	* UI/WebServerResources/MailerUI.js (onMenuEmptyTrash): delete the
 	cache of the trash mailbox when called.
 

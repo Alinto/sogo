@@ -2044,13 +2044,17 @@ function onMenuRenameFolderConfirm() {
 }
 
 function onMenuDeleteFolder(event) {
-    var answer = window.confirm(_("Do you really want to move this folder into the trash ?"));
-    if (answer) {
-        var folderID = document.menuTarget.getAttribute("dataname");
-        var urlstr = URLForFolderID(folderID) + "/delete";
-        var errorLabel = _("The folder could not be deleted.");
-        triggerAjaxRequest(urlstr, folderOperationCallback, errorLabel);
-    }
+    showConfirmDialog(_("Confirmation"),
+                     _("Do you really want to move this folder into the trash ?"),
+                     onMenuDeleteFolderConfirm);
+}
+
+function onMenuDeleteFolderConfirm() {
+    var folderID = document.menuTarget.getAttribute("dataname");
+    var urlstr = URLForFolderID(folderID) + "/delete";
+    var errorLabel = _("The folder could not be deleted.");
+    triggerAjaxRequest(urlstr, folderOperationCallback, errorLabel);
+    disposeDialog();
 }
 
 function onMenuExpungeFolder(event) {

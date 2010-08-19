@@ -9,8 +9,7 @@ var usersRightsWindowWidth = 450;
 var Contact = {
     currentAddressBook: null,
     currentContact: null,
-    deleteContactsRequestCount: null,
-    dialogs: {}
+    deleteContactsRequestCount: null
 };
 
 function validateEditorInput(sender) {
@@ -433,29 +432,10 @@ function onToolbarDeleteSelectedContacts(event) {
     var contactsList = $('contactsList');
     var rows = contactsList.getSelectedRowsId();
 
-    if (rows.length) {
-        var dialogId = "deleteContactsDialog";
-        var dialog = Contact.dialogs[dialogId];
-        if (dialog) {
-            dialog.show();
-            $("bgDialogDiv").show();
-        }
-        else {
-            var label = _("Are you sure you want to delete the selected contacts?");
-            var fields = createElement("p");
-            fields.appendChild(createButton("confirmBtn", _("Yes"), onToolbarDeleteSelectedContactsConfirm.bind(fields, dialogId)));
-            fields.appendChild(createButton("cancelBtn", _("No"), disposeDialog));
-            var dialog = createDialog(dialogId,
-                                      _("Confirmation"),
-                                      label,
-                                      fields,
-                                      "none");
-            document.body.appendChild(dialog);
-            dialog.show();
-            Contact.dialogs[dialogId] = dialog;
-        }
-        return false;
-    }
+    if (rows.length)
+        showConfirmDialog(_("Confirmation"),
+                          _("Are you sure you want to delete the selected contacts?"),
+                          onToolbarDeleteSelectedContactsConfirm);
     else
         showAlertDialog(_("Please select a contact."));
 
@@ -807,45 +787,21 @@ function onAddressBookRemove(event) {
 }
 
 function deletePersonalAddressBook(folderId) {
-    if (folderId == "personal") {
+    if (folderId == "personal")
         showAlertDialog(_("You cannot remove nor unsubscribe from your personal addressbook."));
-    }
-    else {
-        var dialogId = "deleteAddressBookDialog";
-        var dialog = Contact.dialogs[dialogId];
-        if (dialog) {
-            $("bgDialogDiv").show();
-        }
-        else {
-            var label = _("Are you sure you want to delete the selected address book?");
-            var fields = createElement("p");
-            fields.appendChild(createButton(dialogId + "confirmBtn",
-                                            "Yes",
-                                            deletePersonalAddressBookConfirm.bind(fields)));
-            fields.appendChild(createButton(dialogId + "cancelBtn",
-                                            "No",
-                                            disposeDialog));
-            dialog = createDialog(dialogId,
-                                  _("Confirmation"),
-                                  label,
-                                  fields,
-                                  "none");
-            document.body.appendChild(dialog);
-            Contact.dialogs[dialogId] = dialog;
-        }
-        dialog.folderId = folderId;
-        dialog.show();
-    }
+    else
+        showConfirmDialog(_("Confirmation"),
+                          _("Are you sure you want to delete the selected address book?"),
+                          deletePersonalAddressBookConfirm.bind(this, folderId));
+
     return false;
 }
 
-function deletePersonalAddressBookConfirm(event) {
+function deletePersonalAddressBookConfirm(folderId) {
     if (document.deletePersonalABAjaxRequest) {
         document.deletePersonalABAjaxRequest.aborted = true;
         document.deletePersonalABAjaxRequest.abort();
     }
-    var dialog = $(this).up("DIV.dialog");
-    var folderId = dialog.folderId;
     var url = ApplicationBaseURL + folderId + "/delete";
     document.deletePersonalABAjaxRequest
         = triggerAjaxRequest(url, deletePersonalAddressBookCallback,
