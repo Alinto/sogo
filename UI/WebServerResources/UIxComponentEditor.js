@@ -373,10 +373,13 @@ function onPopupReminderWindow(event) {
         if (event) {
             if (ComponentEditor.reminderWindow && ComponentEditor.reminderWindow.open && !ComponentEditor.reminderWindow.closed)
                 ComponentEditor.reminderWindow.focus();
-            else
-                ComponentEditor.reminderWindow = window.open(ApplicationBaseURL + "editReminder",
-                                                             sanitizeWindowName(activeCalendar + activeComponent + "Reminder"),
-                                                             "width=250,height=150");
+            else {
+                var height = (emailAlarmsEnabled ? 215 : 150);
+                ComponentEditor.reminderWindow
+                    = window.open(ApplicationBaseURL + "editReminder",
+                                  sanitizeWindowName(activeCalendar + activeComponent + "Reminder"),
+                                  "width=255,height=" + height);
+            }
         }
     }
     else if (reminderHref)

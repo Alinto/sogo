@@ -31,6 +31,9 @@
 
 @interface GCSSpecialQueries : NSObject
 
+- (NSString *) createEMailAlarmsFolderWithName: (NSString *) tableName;
+- (NSDictionary *) emailAlarmsAttributeTypes;
+
 - (NSString *) createFolderTableWithName: (NSString *) tableName;
 - (NSString *) createFolderACLTableWithName: (NSString *) tableName;
 

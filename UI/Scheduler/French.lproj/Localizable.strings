@@ -402,9 +402,15 @@
 "reminder_DAYS" = "jours";
 "reminder_BEFORE" = "avant";
 "reminder_AFTER" = "après";
-"reminder_START" = "l'événement débute";
-"reminder_END" = "l'événement se termine";
+"reminder_START" = "le début de 'événement";
+"reminder_END" = "la fin de l'événement";
 "Reminder Details" = "Détails du rappel";
+
+"Choose a Reminder Action" = "Choisir une action pour le rappel";
+"Show an Alert" = "Afficher une alerte";
+"Send an E-mail" = "Envoyer un courrier";
+"Email Organizer" = "À l'organisateur";
+"Email Attendees" = "Aux invités";
 
 "zoom_400" = "400%";
 "zoom_200" = "200%";

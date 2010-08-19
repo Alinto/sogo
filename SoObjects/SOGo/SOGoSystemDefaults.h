@@ -42,6 +42,8 @@
 - (BOOL) isCalendarDAVAccessEnabled;
 - (BOOL) isAddressBookDAVAccessEnabled;
 
+- (BOOL) enableEMailAlarms;
+
 - (NSString *) faviconRelativeURL;
 - (NSString *) zipPath;
 - (int) port;

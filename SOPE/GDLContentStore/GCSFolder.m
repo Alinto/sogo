@@ -192,11 +192,8 @@ static NSArray *contentFieldNames = nil;
   return folderTypeName;
 }
 
-- (GCSFolderManager *)folderManager {
-  return folderManager;
-}
-- (GCSChannelManager *)channelManager {
-  return [[self folderManager] channelManager];
+- (GCSChannelManager *)_channelManager {
+  return [folderManager channelManager];
 }
 
 - (NSString *)storeTableName {
@@ -216,28 +213,28 @@ static NSArray *contentFieldNames = nil;
 /* channels */
 
 - (EOAdaptorChannel *)acquireStoreChannel {
-  return [[self channelManager] acquireOpenChannelForURL:[self location]];
+  return [[self _channelManager] acquireOpenChannelForURL:[self location]];
 }
 - (EOAdaptorChannel *)acquireQuickChannel {
-  return [[self channelManager] acquireOpenChannelForURL:[self quickLocation]];
+  return [[self _channelManager] acquireOpenChannelForURL:[self quickLocation]];
 }
 - (EOAdaptorChannel *)acquireAclChannel {
-  return [[self channelManager] acquireOpenChannelForURL:[self aclLocation]];
+  return [[self _channelManager] acquireOpenChannelForURL:[self aclLocation]];
 }
 
 - (void)releaseChannel:(EOAdaptorChannel *)_channel {
-  [[self channelManager] releaseChannel:_channel];
+  [[self _channelManager] releaseChannel:_channel];
   if (debugOn) [self debugWithFormat:@"released channel: %@", _channel];
 }
 
 - (BOOL)canConnectStore {
-  return [[self channelManager] canConnect:[self location]];
+  return [[self _channelManager] canConnect:[self location]];
 }
 - (BOOL)canConnectQuick {
-  return [[self channelManager] canConnect:[self quickLocation]];
+  return [[self _channelManager] canConnect:[self quickLocation]];
 }
 - (BOOL)canConnectAcl {
-  return [[self channelManager] canConnect:[self quickLocation]];
+  return [[self _channelManager] canConnect:[self quickLocation]];
 }
 
 /* errors */
@@ -278,12 +275,12 @@ static NSArray *contentFieldNames = nil;
 /* operations */
 
 - (NSArray *)subFolderNames {
-  return [[self folderManager] listSubFoldersAtPath:[self path]
-			       recursive:NO];
+  return [folderManager listSubFoldersAtPath:[self path]
+                                   recursive:NO];
 }
 - (NSArray *)allSubFolderNames {
-  return [[self folderManager] listSubFoldersAtPath:[self path]
-			       recursive:YES];
+  return [folderManager listSubFoldersAtPath:[self path]
+                                   recursive:YES];
 }
 
 - (GCSTableRequirement) _tableRequirementForFields: (NSArray *) fields
@@ -515,7 +512,6 @@ static NSArray *contentFieldNames = nil;
 	{
 	  [self errorWithFormat:@"%s: cannot execute quick-fetch SQL '%@': %@", 
 		__PRETTY_FUNCTION__, sql, error];
-	  [self releaseChannel: channel];
 	  results = nil;
 	}
       else
@@ -529,8 +525,8 @@ static NSArray *contentFieldNames = nil;
 
 	  /* release channels */
   
-	  [self releaseChannel: channel];
 	}
+      [self releaseChannel: channel];
 //         NSLog(@"/running query");
     }
   else

@@ -608,7 +608,7 @@
 //   participation state has changed.
 // - uid is the actual UID of the user for whom we must
 //   update the calendar event (with the participation change)
-// - delegate is the delegated attendee if any
+// - delegate is the delegate attendee if any
 //
 // This method is called multiple times, in order to update the
 // status of the attendee in calendars for the particular event UID.
@@ -668,7 +668,7 @@
           else
             otherDelegate = NO;
 
-          /* we handle the addition/deletion of delegated users */
+          /* we handle the addition/deletion of delegate users */
           addDelegate = NO;
           removeDelegate = NO;
           if (delegate)
@@ -696,7 +696,7 @@
 		{
 		  [event removeFromAttendees: otherDelegate];
 		  
-		  // Verify if the delegate was already delegated
+		  // Verify if the delegate was already delegate
 		  delegateEmail = [otherDelegate delegatedTo];
 		  if ([delegateEmail length])
 		    delegateEmail = [delegateEmail rfc822Email];
@@ -777,31 +777,31 @@
   if ([delegateEmail length])
     otherDelegate = [event findAttendeeWithEmail: delegateEmail];
   else
-    otherDelegate = NO;
+    otherDelegate = nil;
   
-  /* We handle the addition/deletion of delegated users */
+  /* We handle the addition/deletion of delegate users */
   addDelegate = NO;
   removeDelegate = NO;
   if (delegate)
     {
       if (otherDelegate)
 	{
-	  // There was already a delegated
+	  // There was already a delegate
 	  if (![delegate hasSameEmailAddress: otherDelegate])
 	    {
-	      // The delegated has changed
+	      // The delegate has changed
 	      removeDelegate = YES;
 	      addDelegate = YES;
 	    }
 	}
       else
-	// There was no previous delegated
+	// There was no previous delegate
 	addDelegate = YES;
     }
   else
     {
       if (otherDelegate)
-	// The user has removed the delegated
+	// The user has removed the delegate
 	removeDelegate = YES;
     }
  
@@ -846,7 +846,7 @@
 
 	      delegatedUID = [otherDelegate uid];
 	      if (delegatedUID)
-		// Delegated attendee is a local user; remove event from his calendar
+		// Delegate attendee is a local user; remove event from his calendar
 		[self _removeEventFromUID: delegatedUID
 				    owner: [theOwnerUser login]
 			 withRecurrenceId: [event recurrenceId]];
@@ -880,7 +880,7 @@
 	  [event addToAttendees: delegate];
 	
 	  if (delegatedUID)
-	    // Delegated attendee is a local user; add event to his calendar
+	    // Delegate attendee is a local user; add event to his calendar
 	    [self _addOrUpdateEvent: event
 			     forUID: delegatedUID
 			      owner: [theOwnerUser login]];
@@ -1217,7 +1217,7 @@
 {
   [self prepareDeleteOccurence: nil];
 
-  return nil;
+  return [super prepareDelete];
 }
 
 /* message type */
@@ -1260,6 +1260,7 @@
   return partStats;
 }
 
+#warning parseSingleFromSource is invoked far too many times: maybe we should use an additional ivar to store the new iCalendar
 - (void) _setupResponseCalendarInRequest: (WORequest *) rq
 {
   iCalCalendar *calendar, *putCalendar;
@@ -1412,7 +1413,7 @@
 //
 - (id) DELETEAction: (WOContext *) _ctx
 {
-  [self prepareDeleteOccurence: nil];
+  [self prepareDelete];
   return [super DELETEAction: _ctx];
 }
 
@@ -1428,10 +1429,10 @@
   NSArray *roles;
   WORequest *rq;
   id response;
-  
+
   rq = [_ctx request];
   roles = [[context activeUser] rolesForObject: self  inContext: context];
-  
+
   //
   // We check if we gave only the "Respond To" right and someone is actually
   // responding to one of our invitation. In this case, _setupResponseCalendarInRequest
@@ -1469,6 +1470,7 @@
       BOOL scheduling;
 
       calendar = [iCalCalendar parseSingleFromSource: [rq contentAsString]];
+
       event = [[calendar events] objectAtIndex: 0];
       ownerUser = [SOGoUser userWithLogin: owner];
       scheduling = [self _shouldScheduleEvent: [event organizer]];

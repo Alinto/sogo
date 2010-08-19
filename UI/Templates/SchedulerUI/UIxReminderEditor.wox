@@ -12,32 +12,44 @@
   const:popup="YES">
 
   <form name="reminder_form" id="reminder_form" href="editReminder">
-    <div id="reminder_pattern">
-      <span class="caption"><var:string label:value="Reminder Details"/></span>
-      <table class="frame">
-	<tr><td>
-	  <input type="text" id="quantityField"
-		 class="textField"
-		 size="2"
-		 /><var:popup list="unitsList" const:id="unitsList" item="item"
-		 string="itemText" var:value="item" selection="minutes"
-		 /><var:popup list="referencesList" const:id="referencesList" item="item"
-		 string="itemText" var:value="item" selection="BEFORE"
-		 />
-	</td></tr>
-	<tr><td>
-	  <var:popup list="relationsList" const:id="relationsList" item="item"
-		     string="itemText" var:value="item" selection="START"
-		     />
-	</td></tr>
-      </table>
-    </div>
-  
-    <div id="windowButtons">
-      <a id="okButton" href="#" class="button actionButton"
-        ><span><var:string label:value="OK"/></span></a>
-      <a id="cancelButton" href="#" class="button"
-        ><span><var:string label:value="Cancel"/></span></a>
+    <div>
+      <fieldset>
+	<legend><var:string label:value="Reminder Details"/></legend>
+        <input type="text" id="quantityField"
+               class="textField"
+               size="2"
+               /><var:popup list="unitsList" const:id="unitsList" item="item"
+               string="itemText" var:value="item" selection="minutes"
+               /><var:popup list="referencesList" const:id="referencesList" item="item"
+               string="itemText" var:value="item" selection="BEFORE"
+               /><br/>
+        <var:popup list="relationsList" const:id="relationsList" item="item"
+                   string="itemText" var:value="item" selection="START"
+                   />
+      </fieldset>
+
+      <var:if condition="emailAlarmsEnabled">
+        <fieldset>
+          <legend><var:string label:value="Choose a Reminder Action"/></legend>
+          <select const:name="actionList" const:id="actionList">
+            <option const:value="display"><var:string label:value="Show an Alert"/></option>
+            <option const:value="email"><var:string label:value="Send an E-mail"/></option>
+          </select><br/>
+          <label><input type="checkbox" const:disabled="1"
+              const:name="emailOrganizer" const:id="emailOrganizer"/>
+            <var:string label:value="Email Organizer"/></label><br/>
+          <label><input type="checkbox" const:disabled="1"
+              const:name="emailAttendees" const:id="emailAttendees"/>
+            <var:string label:value="Email Attendees"/></label>
+        </fieldset>
+      </var:if>
+
+      <div id="windowButtons">
+        <a id="okButton" href="#" class="button actionButton"
+          ><span><var:string label:value="OK"/></span></a>
+        <a id="cancelButton" href="#" class="button"
+          ><span><var:string label:value="Cancel"/></span></a>
+      </div>
     </div>
   </form>
 

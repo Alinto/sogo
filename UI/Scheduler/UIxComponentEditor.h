@@ -72,6 +72,9 @@
   NSString *reminderUnit;
   NSString *reminderRelation;
   NSString *reminderReference;
+  NSString *reminderAction;
+  BOOL reminderEmailOrganizer;
+  BOOL reminderEmailAttendees;
   
   /* ugly */
   NSString *repeat;

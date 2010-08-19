@@ -1,3 +1,8 @@
+2010-08-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* iCalAlarm.m (-setComment, -setSummary, -setAction)
+	(-setAttendees): new accessors.
+
 2010-08-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* iCalAlarm.m (-nextAlarmDate): new utility method split from the
