@@ -221,6 +221,11 @@ BootstrapNSUserDefaults ()
   return [self boolForKey: @"SOGoAddressBookDAVAccessEnabled"];
 }
 
+- (BOOL) enableEMailAlarms
+{
+  return [self boolForKey: @"SOGoEnableEMailAlarms"];
+}
+
 - (NSString *) faviconRelativeURL
 {
   return [self stringForKey: @"SOGoFaviconRelativeURL"];

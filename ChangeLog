@@ -1,3 +1,8 @@
+2010-08-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoSystemDefaults.m (-enableEMailAlarms): new
+	method for the "SOGoEnableEMailAlarms" user default.
+
 2010-08-19  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/generic.js (showPromptDialog): new
