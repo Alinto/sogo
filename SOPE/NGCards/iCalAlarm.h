@@ -41,6 +41,15 @@
 - (void) setRecurrenceRule: (NSString *) _recurrenceRule;
 - (NSString *) recurrenceRule;
 
+- (void) setSummary: (NSString *) summary;
+- (NSString *) summary;
+- (void) setComment: (NSString *) comment;
+- (NSString *) comment;
+
+- (void) setAttendees: (NSArray *) attendees;
+- (NSArray *) attendees;
+- (void) removeAllAttendees;
+
 - (NSCalendarDate *) nextAlarmDate;
 
 @end

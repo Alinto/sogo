@@ -19,6 +19,7 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -44,8 +45,12 @@
     tagClass = [iCalAttachment class];
   else if ([classTag isEqualToString: @"RRULE"])
     tagClass = [iCalRecurrenceRule class];
+  else if ([classTag isEqualToString: @"ATTENDEE"])
+    tagClass = [iCalPerson class];
   else if ([classTag isEqualToString: @"ACTION"]
-           || [classTag isEqualToString: @"COMMENT"])
+           || [classTag isEqualToString: @"COMMENT"]
+           || [classTag isEqualToString: @"DESCRIPTION"]
+           || [classTag isEqualToString: @"SUMMARY"])
     tagClass = [CardElement class];
   else
     tagClass = [super classForTag: classTag];
@@ -75,21 +80,10 @@
   return (iCalAttachment *) [self uniqueChildWithTag: @"attach"];
 }
 
-- (void) setComment: (NSString *) _value
-{
-  [[self uniqueChildWithTag: @"comment"] setValue: 0
-                                         to: _value];
-}
-
-- (NSString *) comment
-{
-  return [[self uniqueChildWithTag: @"comment"] value: 0];
-}
-
 - (void) setAction: (NSString *) _value
 {
   [[self uniqueChildWithTag: @"action"] setValue: 0
-                                        to: _value];
+                                              to: _value];
 }
 
 - (NSString *) action
@@ -97,10 +91,48 @@
   return [[self uniqueChildWithTag: @"action"] value: 0];
 }
 
+- (void) setSummary: (NSString *) _value
+{
+  [[self uniqueChildWithTag: @"summary"] setValue: 0
+                                               to: _value];
+}
+
+- (NSString *) summary
+{
+  return [[self uniqueChildWithTag: @"summary"] value: 0];
+}
+
+- (void) setComment: (NSString *) _value
+{
+  [[self uniqueChildWithTag: @"description"] setValue: 0
+                                                   to: _value];
+}
+
+- (NSString *) comment
+{
+  return [[self uniqueChildWithTag: @"description"] value: 0];
+}
+
 - (void) setRecurrenceRule: (NSString *) _recurrenceRule
 {
   [[self uniqueChildWithTag: @"rrule"] setValue: 0
                                        to: _recurrenceRule];
+}
+
+- (void) setAttendees: (NSArray *) attendees
+{
+  [self removeAllAttendees];
+  [self addChildren: attendees];
+}
+
+- (NSArray *) attendees
+{
+  return [self childrenWithTag: @"attendee"];
+}
+
+- (void) removeAllAttendees
+{
+  [children removeObjectsInArray: [self attendees]];
 }
 
 - (NSString *) recurrenceRule
@@ -110,7 +142,6 @@
 
 - (NSCalendarDate *) nextAlarmDate
 {
-  Class parentClass;
   iCalTrigger *aTrigger;
   NSCalendarDate *relationDate, *nextAlarmDate;
   NSString *relation;
@@ -121,19 +152,19 @@
 
   nextAlarmDate = nil;
 
-  parentClass = [parent class];
-  if ([parentClass isKindOfClass: [iCalEvent class]]
-      || [parentClass isKindOfClass: [iCalToDo class]])
+  if ([parent isKindOfClass: [iCalEvent class]]
+      || [parent isKindOfClass: [iCalToDo class]])
     {
       aTrigger = [self trigger];
 
-      if ([[aTrigger valueType] caseInsensitiveCompare: @"DURATION"])
+      if ([[aTrigger valueType] caseInsensitiveCompare: @"DURATION"]
+          == NSOrderedSame)
         {
           relation = [aTrigger relationType];
           anInterval = [[aTrigger value] durationAsTimeInterval];
           if ([relation caseInsensitiveCompare: @"END"] == NSOrderedSame)
             {
-              if ([parentClass isKindOfClass: [iCalEvent class]])
+              if ([parent isKindOfClass: [iCalEvent class]])
                 relationDate = [(iCalEvent *) parent endDate];
               else
                 relationDate = [(iCalToDo *) parent due];
@@ -148,7 +179,7 @@
     }
   else
     [self warnWithFormat: @"alarms not handled for elements of class '%@'",
-          NSStringFromClass (parentClass)];
+          NSStringFromClass ([parent class])];
 
   return nextAlarmDate;
 }
