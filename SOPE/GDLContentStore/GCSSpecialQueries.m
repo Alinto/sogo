@@ -77,6 +77,20 @@
 
 @implementation GCSSpecialQueries
 
+- (NSString *) createEMailAlarmsFolderWithName: (NSString *) tableName
+{
+  [self subclassResponsibility: _cmd];
+
+  return nil;
+}
+
+- (NSDictionary *) emailAlarmsAttributeTypes
+{
+  [self subclassResponsibility: _cmd];
+
+  return nil;
+}
+
 - (NSString *) createFolderTableWithName: (NSString *) tableName
 {
   [self subclassResponsibility: _cmd];
@@ -94,6 +108,38 @@
 @end
 
 @implementation GCSPostgreSQLSpecialQueries
+
+- (NSString *) createEMailAlarmsFolderWithName: (NSString *) tableName
+{
+  static NSString *sqlFolderFormat
+    = (@"CREATE TABLE %@ (" 
+       @" c_path VARCHAR(255) NOT NULL,"
+       @" c_name VARCHAR(255) NOT NULL,"
+       @" c_uid VARCHAR(255) NOT NULL,"
+       @" c_recurrence_id INT NULL,"
+       @" c_alarm_number INT NOT NULL,"
+       @" c_alarm_date INT NOT NULL)");
+
+  return [NSString stringWithFormat: sqlFolderFormat, tableName];
+}
+
+- (NSDictionary *) emailAlarmsAttributeTypes
+{
+  static NSMutableDictionary *types = nil;
+
+  if (!types)
+    {
+      types = [NSMutableDictionary new];
+      [types setObject: @"varchar" forKey: @"c_path"];
+      [types setObject: @"varchar" forKey: @"c_name"];
+      [types setObject: @"varchar" forKey: @"c_uid"];
+      [types setObject: @"int" forKey: @"c_recurrence_id"];
+      [types setObject: @"int" forKey: @"c_alarm_number"];
+      [types setObject: @"int" forKey: @"c_alarm_date"];
+    }
+
+  return types;
+}
 
 - (NSString *) createFolderTableWithName: (NSString *) tableName
 {
@@ -126,6 +172,38 @@
 
 @implementation GCSMySQLSpecialQueries
 
+- (NSString *) createEMailAlarmsFolderWithName: (NSString *) tableName
+{
+  static NSString *sqlFolderFormat
+    = (@"CREATE TABLE %@ (" 
+       @" c_path VARCHAR(255) NOT NULL,"
+       @" c_name VARCHAR(255) NOT NULL,"
+       @" c_uid VARCHAR(255) NOT NULL,"
+       @" c_recurrence_id INT NULL,"
+       @" c_alarm_number INT NOT NULL,"
+       @" c_alarm_date INT NOT NULL)");
+
+  return [NSString stringWithFormat: sqlFolderFormat, tableName];
+}
+
+- (NSDictionary *) emailAlarmsAttributeTypes
+{
+  static NSMutableDictionary *types = nil;
+
+  if (!types)
+    {
+      types = [NSMutableDictionary new];
+      [types setObject: @"varchar" forKey: @"c_path"];
+      [types setObject: @"varchar" forKey: @"c_name"];
+      [types setObject: @"varchar" forKey: @"c_uid"];
+      [types setObject: @"int" forKey: @"c_recurrence_id"];
+      [types setObject: @"int" forKey: @"c_alarm_number"];
+      [types setObject: @"int" forKey: @"c_alarm_date"];
+    }
+
+  return types;
+}
+
 - (NSString *) createFolderTableWithName: (NSString *) tableName
 {
   static NSString *sqlFolderFormat
@@ -156,6 +234,38 @@
 @end
 
 @implementation GCSOracleSpecialQueries
+
+- (NSString *) createEMailAlarmsFolderWithName: (NSString *) tableName
+{
+  static NSString *sqlFolderFormat
+    = (@"CREATE TABLE %@ (" 
+       @" c_path VARCHAR2(255) NOT NULL,"
+       @" c_name VARCHAR2(255) NOT NULL,"
+       @" c_uid VARCHAR2(255) NOT NULL,"
+       @" c_recurrence_id INTEGER NULL,"
+       @" c_alarm_number INTEGER NOT NULL,"
+       @" c_alarm_date INTEGER NOT NULL)");
+
+  return [NSString stringWithFormat: sqlFolderFormat, tableName];
+}
+
+- (NSDictionary *) emailAlarmsAttributeTypes
+{
+  static NSMutableDictionary *types = nil;
+
+  if (!types)
+    {
+      types = [NSMutableDictionary new];
+      [types setObject: @"varchar2" forKey: @"c_path"];
+      [types setObject: @"varchar2" forKey: @"c_name"];
+      [types setObject: @"varchar2" forKey: @"c_uid"];
+      [types setObject: @"integer" forKey: @"c_recurrence_id"];
+      [types setObject: @"integer" forKey: @"c_alarm_number"];
+      [types setObject: @"integer" forKey: @"c_alarm_date"];
+    }
+
+  return types;
+}
 
 - (NSString *) createFolderTableWithName: (NSString *) tableName
 {

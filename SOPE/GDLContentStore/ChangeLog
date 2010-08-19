@@ -1,5 +1,15 @@
 2010-08-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* GCSSpecialQueries.m (-createEMailAlarmsFolderWithName:): new sql
+	helper methods
+	(emailAlarmsAttributeTypes:): new helper method that returns the
+	types pertaining to the adaptor.
+
+	* GCSFolderManager.m (-alarmsFolder): new helper method.
+
+	* GCSAlarmsFolder.[hm]: new class module for handling alarm
+	references.
+
 	* GCSFolder.m (-_channelManager): made method private.
 	(-folderManager): removed method.
 

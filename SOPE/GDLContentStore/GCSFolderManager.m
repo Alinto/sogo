@@ -37,13 +37,15 @@
 #import <NGExtensions/NGResourceLocator.h>
 #import <unistd.h>
 
-#import "GCSFolderManager.h"
 #import "GCSChannelManager.h"
-#import "GCSFolderType.h"
+#import "EOAdaptorChannel+GCS.h"
+#import "GCSAlarmsFolder.h"
 #import "GCSFolder.h"
+#import "GCSFolderType.h"
 #import "GCSSpecialQueries.h"
 #import "NSURL+GCS.h"
-#import "EOAdaptorChannel+GCS.h"
+
+#import "GCSFolderManager.h"
 
 /*
   Required database schema:
@@ -321,6 +323,11 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
                               aclLocation:aclLocation
 			      folderManager:self];
   return [folder autorelease];
+}
+
+- (GCSAlarmsFolder *) alarmsFolder
+{
+  return [GCSAlarmsFolder alarmsFolderWithFolderManager: self];
 }
 
 /* path SQL */

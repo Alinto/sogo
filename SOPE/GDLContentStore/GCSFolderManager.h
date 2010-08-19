@@ -32,7 +32,7 @@
 */
 
 @class NSString, NSArray, NSURL, NSDictionary, NSException;
-@class GCSChannelManager, GCSFolder, GCSFolderType;
+@class GCSChannelManager, GCSAlarmsFolder, GCSFolder, GCSFolderType;
 
 @interface GCSFolderManager : NSObject
 {
@@ -69,6 +69,9 @@
 
 - (NSException *)createFolderOfType:(NSString *)_type withName:(NSString *)_name atPath:(NSString *)_path;
 - (NSException *)deleteFolderAtPath:(NSString *)_path;
+
+/* alarms */
+- (GCSAlarmsFolder *)alarmsFolder;
 
 /* folder types */
 
