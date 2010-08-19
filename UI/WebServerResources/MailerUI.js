@@ -470,12 +470,13 @@ function onMailboxTreeItemClick(event) {
     if (Mailer.currentMailboxType == "account" || Mailer.currentMailboxType == "additional") {
         Mailer.currentMailbox = mailbox;
         $("messageContent").update();
-        var table = $("messageList");
-        var head = table.tHead;
+        var table = $("messageListBody");
         var body = table.tBodies[0];
         if (body.deselectAll) body.deselectAll ();
         for (var i = body.rows.length; i > 0; i--)
             body.deleteRow(i-1);
+	table = $("messageListHeader");
+	var head = table.tHead;
         if (head.rows[1])
             head.rows[1].firstChild.update();
     }
