@@ -1,3 +1,8 @@
+2010-08-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* GCSFolder.m (-_channelManager): made method private.
+	(-folderManager): removed method.
+
 2010-06-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* GCSFolderManager.m

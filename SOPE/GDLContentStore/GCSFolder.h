@@ -94,9 +94,6 @@
 - (NSURL *) aclLocation;
 - (NSString *) folderTypeName;
 
-- (GCSFolderManager *) folderManager;
-- (GCSChannelManager *) channelManager;
-
 - (NSString *) storeTableName;
 - (NSString *) quickTableName;
 - (NSString *) aclTableName;
