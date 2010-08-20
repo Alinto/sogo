@@ -61,28 +61,33 @@
   SOGoContactSourceFolder *currentFolder;
   SOGoUser *currentUser;
 
-  currentUser = [context activeUser];
-  if (activeUserIsOwner
-      || [[currentUser login]
-           isEqualToString: [self ownerInContext: context]])
+  if (![[context request] isIPhoneAddressBookApp])
     {
-      domain = [currentUser domain];
-      um = [SOGoUserManager sharedUserManager];
-      sourceIDs = [[um addressBookSourceIDsInDomain: domain] objectEnumerator];
-      while ((currentSourceID = [sourceIDs nextObject]))
+      currentUser = [context activeUser];
+      if (activeUserIsOwner
+          || [[currentUser login] isEqualToString: owner])
         {
-          srcDisplayName = [um displayNameForSourceWithID: currentSourceID];
-          currentFolder = [SOGoContactSourceFolder folderWithName: currentSourceID
-                                                   andDisplayName: srcDisplayName
-                                                      inContainer: self];
-          [currentFolder setSource: [um sourceWithID: currentSourceID]];
-          [subFolders setObject: currentFolder forKey: currentSourceID];
+          domain = [currentUser domain];
+          um = [SOGoUserManager sharedUserManager];
+          sourceIDs = [[um addressBookSourceIDsInDomain: domain]
+                        objectEnumerator];
+          while ((currentSourceID = [sourceIDs nextObject]))
+            {
+              srcDisplayName
+                = [um displayNameForSourceWithID: currentSourceID];
+              currentFolder = [SOGoContactSourceFolder
+                                folderWithName: currentSourceID
+                                andDisplayName: srcDisplayName
+                                   inContainer: self];
+              [currentFolder setSource: [um sourceWithID: currentSourceID]];
+              [subFolders setObject: currentFolder forKey: currentSourceID];
+            }
         }
     }
 
   return nil;
 }
-
+  
 - (NSString *) defaultFolderName
 {
   return [self labelForKey: @"Personal Address Book"];
@@ -92,7 +97,7 @@
 {
   NSMutableArray *keys;
 
-  if ([[context request] isAddressBookApp])
+  if ([[context request] isMacOSXAddressBookApp])
     keys = [NSMutableArray arrayWithObject: @"personal"];
   else
     keys = (NSMutableArray *) [super toManyRelationshipKeys];

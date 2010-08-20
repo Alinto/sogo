@@ -1,5 +1,8 @@
 2010-08-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactFolders.m (-appendSystemSources):
+	append nothing if used from an iPhone.
+
 	* SoObjects/SOGo/SOGoParentFolder.m (-appendPersonalSources): we
 	now that "owner" is always set properly from the init methods, no
 	need to invoke ownerInContext: anymore.
