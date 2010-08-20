@@ -8,6 +8,9 @@
 
 2010-08-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoEMailAlarmsManager.[hm]: new GCS
+	aware singleton class for main email alarms operations on the db.
+
 	* SoObjects/Mailer/SOGoMailFolder.m (-deleteUIDs:inContext:): make
 	the use of the "result" variable clearer by declaring it with a
 	proper class name and avoiding type confusion within the code.
