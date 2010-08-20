@@ -1,5 +1,10 @@
 2010-08-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/WORequest+SOGo.m (-isMacOSXAddressBookApp):
+	renamed from "isAddressBookApp".
+	(-isIPhoneAddressBookApp): new method to detect whether the
+	request has been performed from the AB of iOS.
+
 	* SoObjects/SOGo/SOGoFolder.m (-davEntityTag): we no return a
 	pseudo etag for collections for compatibility with the broken
 	Apple clients.

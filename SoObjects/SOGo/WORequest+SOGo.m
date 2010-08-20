@@ -104,6 +104,7 @@
   return patchedProperties;
 }
 
+/* So many different DAV libraries... */
 - (BOOL) isAppleDAVWithSubstring: (NSString *) osSubstring
 {
   WEClientCapabilities *cc;
@@ -137,7 +138,7 @@
   return [self isAppleDAVWithSubstring: @"iCal/4."];
 }
 
-- (BOOL) isAddressBookApp
+- (BOOL) isMacOSXAddressBookApp
 {
   WEClientCapabilities *cc;
 
@@ -145,6 +146,16 @@
 
   return ([[cc userAgent] rangeOfString: @"CFNetwork"].location != NSNotFound
           && [[cc userAgent] rangeOfString: @"Darwin"].location != NSNotFound);
+}
+
+- (BOOL) isIPhoneAddressBookApp
+{
+  WEClientCapabilities *cc;
+
+  cc = [self clientCapabilities];
+
+  return ([[cc userAgent] rangeOfString: @"DataAccess/1.0"].location
+          != NSNotFound);
 }
 
 @end
