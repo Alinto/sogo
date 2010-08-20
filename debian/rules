@@ -13,7 +13,7 @@ build: build-arch build-indep
 build-arch: build-arch-stamp
 build-arch-stamp:  config.make 
 #	 Add here commands to compile the arch part of the package.
-	$(MAKE) -j 2
+	$(MAKE)
 	touch $@
 
 build-indep: build-indep-stamp
