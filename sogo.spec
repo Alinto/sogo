@@ -48,6 +48,14 @@ AutoReqProv:  off
 SOGo backend for slapd and back-sock, enabling access to private addressbooks
 via LDAP.
 
+%package -n sogo-ealarms-notify
+Summary:      SOGo utility for executing email alarms
+Group:        Productivity/Groupware
+AutoReqProv:  off
+
+%description -n sogo-ealarms-notify
+SOGo utility executed each minute via a cronjob for executing email alarms.
+
 %package -n sogo-devel
 Summary:      Development headers and libraries for SOGo
 Group:        Development/Libraries/Objective C
@@ -193,6 +201,9 @@ rm -fr ${RPM_BUILD_ROOT}
 %files -n sogo-tool
 %{prefix}/Tools/Admin/sogo-tool
 
+%files -n sogo-ealarms-notify
+%{prefix}/Tools/Admin/sogo-ealarms-notify
+
 %files -n sogo-slapd-sockd
 %{prefix}/Tools/Admin/sogo-slapd-sockd
 
@@ -253,6 +264,9 @@ fi
 
 # ********************************* changelog *************************
 %changelog
+* Fri Aug 20 2010 Wolfgang Sourdeau <wsourdeau@inverse.ca>
+- added sogo-ealarms-notify package
+
 * Tue Apr 06 2010 Wolfgang Sourdeau <wsourdeau@inverse.ca>
 - added sogo-slapd-sockd package
 
