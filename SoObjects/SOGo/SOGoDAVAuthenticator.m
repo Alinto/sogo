@@ -58,11 +58,13 @@
   BOOL rc;
 
   perr = PolicyNoError;
-  rc = ([[SOGoUserManager sharedUserManager] checkLogin: _login
-                                               password: _pwd
-                                                   perr: &perr
-                                                 expire: &expire
-                                                  grace: &grace]
+  rc = ([[SOGoUserManager sharedUserManager]
+          checkLogin: [_login stringByReplacingString: @"%40"
+                                           withString: @"@"]
+            password: _pwd
+                perr: &perr
+              expire: &expire
+               grace: &grace]
         && perr == PolicyNoError);
   if (!rc)
     {

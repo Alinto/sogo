@@ -1765,7 +1765,7 @@ static NSArray *childRecordFields = nil;
 - (NSDictionary *) _deduceObjectNamesFromURLs: (NSArray *) urls
 {
   unsigned int count, max;
-  NSString *url, *componentURLPath, *cName, *baseURLString;
+  NSString *url, *currentURL, *componentURLPath, *cName, *baseURLString;
   NSMutableDictionary *cNames;
   NSURL *componentURL, *baseURL;
   NSArray *urlComponents;
@@ -1777,9 +1777,12 @@ static NSArray *childRecordFields = nil;
 
   for (count = 0; count < max; count++)
     {
+      currentURL
+        = [[urls objectAtIndex: count] stringByReplacingString: @"%40"
+                                                    withString: @"@"];
       url = [NSString stringWithFormat: @"%@/%@",
-		      [[urls objectAtIndex: count] stringByDeletingLastPathComponent],
-      		      [[[urls objectAtIndex: count] lastPathComponent] stringByEscapingURL]];
+		      [currentURL stringByDeletingLastPathComponent],
+      		      [[currentURL lastPathComponent] stringByEscapingURL]];
       componentURL = [[NSURL URLWithString: url relativeToURL: baseURL]
 		       standardizedURL];
       componentURLPath = [componentURL absoluteString];

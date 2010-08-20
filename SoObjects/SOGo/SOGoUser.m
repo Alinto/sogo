@@ -138,6 +138,8 @@
     realUID = newLogin;
   else
     {
+      newLogin = [newLogin stringByReplacingString: @"%40"
+                                        withString: @"@"];
       if (b)
 	realUID = newLogin;
       else
