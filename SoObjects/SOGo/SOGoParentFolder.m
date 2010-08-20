@@ -230,7 +230,7 @@ static SoSecurityManager *sm = nil;
 				       @" WHERE c_path2 = '%@'"
 				       @" AND c_folder_type = '%@'"),
 		    [folderLocation gcsTableName],
-		    [self ownerInContext: context],
+                    owner,
 		    gcsFolderType];
       error = [self _fetchPersonalFolders: sql withChannel: fc];
       [cm releaseChannel: fc];
@@ -276,7 +276,7 @@ static SoSecurityManager *sm = nil;
 
   error = nil; /* we ignore non-DB errors at this time... */
 
-  ownerUser = [SOGoUser userWithLogin: [self ownerInContext: context]];
+  ownerUser = [SOGoUser userWithLogin: owner];
   settings = [ownerUser userSettings];
   subscribedReferences = [[settings objectForKey: nameInContainer]
 			   objectForKey: @"SubscribedFolders"];
