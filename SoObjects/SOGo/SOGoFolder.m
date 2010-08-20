@@ -242,6 +242,11 @@
 
 /* WebDAV */
 
+- (NSString *) davEntityTag
+{
+  return @"\"None\"";
+}
+
 - (NSString *) davContentType
 {
   return @"httpd/unix-directory";

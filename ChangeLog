@@ -1,3 +1,9 @@
+2010-08-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoFolder.m (-davEntityTag): we no return a
+	pseudo etag for collections for compatibility with the broken
+	Apple clients.
+
 2010-08-19  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/generic.js (showConfirmDialog): new
