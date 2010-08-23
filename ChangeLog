@@ -1,3 +1,18 @@
+2010-08-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/MailerUI.js: (mailListToggleMessagesRead):
+	new method, spun from "mailListMarkMessage", which is basically
+	replaces in a more generic way by acting on all selected messages
+	in the msg list.
+	(mailListToggleMessagesFlagged): same as above for
+	"mailListFlagMessageToggle".
+	(onMenuToggleMessageRead, onMenuToggleMessageFlag): new menu
+	callback methods.
+	(onMarkMenuPrepareVisibility): new visibility method for the
+	"mark-menu".
+	(getMenus): activated the "mark as read" and "toggle flag" menu
+	options of the "mark menu".
+
 2010-08-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoDAVAuthenticator.m (-checkLogin:password:):

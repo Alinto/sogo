@@ -203,29 +203,43 @@ function openMessageWindowsForSelection(action, firstOnly) {
 }
 
 /* Triggered when clicking on the read/unread dot of a message row */
+function mailListToggleMessagesRead() {
+    var messageList = $("messageListBody");
+    if (messageList) {
+        var selectedRows = messageList.getSelectedRows();
+        if (selectedRows.length > 0) {
+            var row = selectedRows[0];
+            var action;
+            var markread;
+            if (row.hasClassName("mailer_unreadmail")) {
+                action = 'markMessageRead';
+                markread = true;
+            }
+            else {
+                action = 'markMessageUnread';
+                markread = false;
+            }
+
+            for (var i = 0; i < selectedRows.length; i++) {
+                row = selectedRows[i];
+                var msguid = row.id.split('_')[1];
+                markMailInWindow(window, msguid, markread);
+
+                var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/"
+                    + msguid + "/" + action;
+
+                var data = { "msguid": msguid };
+                triggerAjaxRequest(url, mailListMarkMessageCallback, data);
+            }
+        }
+    }
+}
+
 function mailListMarkMessage(event) {
-    var msguid = this.id.split('_')[1];
-    var row = $(this).up('TR');
-    var action;
-    var markread;
-    if (row.hasClassName("mailer_unreadmail")) {
-        action = 'markMessageRead';
-        markread = true;
-    }
-    else {
-        action = 'markMessageUnread';
-        markread = false;
-    }
-
-    markMailInWindow(window, msguid, markread);
-
-    var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/"
-      + msguid + "/" + action;
-
-    var data = { "msguid": msguid };
-    triggerAjaxRequest(url, mailListMarkMessageCallback, data);
+    mailListToggleMessagesRead();
 
     preventDefault(event);
+
     return false;
 }
 
@@ -242,28 +256,42 @@ function mailListMarkMessageCallback(http) {
     }
 }
 
-
-function mailListFlagMessageToggle (e) {
-    var msguid = this.ancestors ().first ().id.split ("_")[1];
-    var img = this.childElements ().first ();
-
-    var action = "markMessageFlagged";
-    var flagged = true;
-    if (img.hasClassName ("messageIsFlagged")) {
-        action = "markMessageUnflagged";
-        flagged = false;
-    }
-
-    flagMailInWindow(window, msguid, flagged);
-
-    var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/"
-      + msguid + "/" + action;
-    var data = { "msguid": msguid };
-
-    triggerAjaxRequest(url, mailListFlagMessageToggleCallback, data);
+function mailListFlagMessageToggle(e) {
+    mailListToggleMessagesFlagged();
 }
 
-function mailListFlagMessageToggleCallback (http) {
+function mailListToggleMessagesFlagged() {
+    var messageList = $("messageListBody");
+    if (messageList) {
+        var selectedRows = messageList.getSelectedRows();
+        if (selectedRows.length > 0) {
+            var row = selectedRows[0];
+            var firstTd = row.childElements().first();
+            var img = firstTd.childElements().first();
+
+            var action = "markMessageFlagged";
+            var flagged = true;
+            if (img.hasClassName("messageIsFlagged")) {
+                action = "markMessageUnflagged";
+                flagged = false;
+            }
+
+            for (var i = 0; i < selectedRows.length; i++) {
+                row = selectedRows[i];
+                var msguid = row.id.split("_")[1];
+                flagMailInWindow(window, msguid, flagged);
+
+                var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/"
+                    + msguid + "/" + action;
+                var data = { "msguid": msguid };
+
+                triggerAjaxRequest(url, mailListToggleMessageFlaggedCallback, data);
+            }
+        }
+    }
+}
+
+function mailListToggleMessageFlaggedCallback(http) {
     if (isHttpStatus204(http.status)) {
         var data = http.callbackData;
 	Mailer.dataTable.invalidate(data["msguid"], true);
@@ -2104,6 +2132,10 @@ function onMenuChangeToTrashFolder(event) {
     return _onMenuChangeToXXXFolder(event, "Trash");
 }
 
+function onMenuToggleMessageRead(event) {
+    mailListToggleMessagesRead();
+}
+
 function onMenuLabelNone() {
     var messages = new Array();
 
@@ -2178,6 +2210,10 @@ function onMenuLabelFlag4() {
 
 function onMenuLabelFlag5() {
     _onMenuLabelFlagX(5);
+}
+
+function onMenuToggleMessageFlag(event) {
+    mailListToggleMessagesFlagged();
 }
 
 function folderOperationCallback(http) {
@@ -2322,6 +2358,40 @@ function onLabelMenuPrepareVisibility() {
         lis[0].addClassName("_chosen");
 }
 
+function onMarkMenuPrepareVisibility() {
+    var messageList = $("messageListBody");
+    if (messageList) {
+        var nodes = messageList.down("TBODY").getSelectedNodes();
+
+        var isRead = false;
+        var isFlagged = false;
+
+        if (nodes.length > 0) {
+            var row = nodes[0];
+            var firstTd = row.childElements().first();
+            var img = firstTd.childElements().first();
+            isFlagged = img.hasClassName ("messageIsFlagged");
+            isRead = !row.hasClassName("mailer_unreadmail");
+        }
+
+        var menuUL = this.childElements()[0];
+        var menuLIS = menuUL.childElements();
+
+        if (isRead) {
+            menuLIS[0].addClassName("_chosen");
+        }
+        else {
+            menuLIS[0].removeClassName("_chosen");
+        }
+        if (isFlagged) {
+            menuLIS[5].addClassName("_chosen");
+        }
+        else {
+            menuLIS[5].removeClassName("_chosen");
+        }
+    }
+}
+
 function saveAs(event) {
     var messageList = $("messageListBody").down("TBODY");
     var rows = messageList.getSelectedNodes();
@@ -2408,8 +2478,9 @@ function getMenus() {
         "label-menu": [ onMenuLabelNone, "-", onMenuLabelFlag1,
                         onMenuLabelFlag2, onMenuLabelFlag3,
                         onMenuLabelFlag4, onMenuLabelFlag5 ],
-        "mark-menu": [ null, null, null, null, "-", null, "-",
-                       null, null, null ],
+        "mark-menu": [ onMenuToggleMessageRead, null, null, null, "-", onMenuToggleMessageFlag ],
+// , "-",
+//                        null, null, null ],
 
         searchMenu: [ setSearchCriteria, setSearchCriteria,
                       setSearchCriteria, setSearchCriteria,
@@ -2419,6 +2490,11 @@ function getMenus() {
     var labelMenu = $("label-menu");
     if (labelMenu) {
         labelMenu.prepareVisibility = onLabelMenuPrepareVisibility;
+    }
+
+    var markMenu = $("mark-menu");
+    if (markMenu) {
+        markMenu.prepareVisibility = onMarkMenuPrepareVisibility;
     }
 
     var listMenus = [ "messageListMenu", "messagesListMenu", "messageContentMenu" ];

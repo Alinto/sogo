@@ -175,17 +175,13 @@
   </div>
 
   <div class="menu" id="mark-menu">
-    <ul id="">
+    <ul id="" class="choiceMenu">
       <li><var:string label:value="As Read" /></li>
       <li><var:string label:value="Thread As Read" /></li>
       <li><var:string label:value="As Read By Date..." /></li>
       <li><var:string label:value="All Read" /></li>
       <li><!-- separator --></li>
       <li><var:string label:value="Flag" /></li>
-      <li><!-- separator --></li>
-      <li><var:string label:value="As Junk" /></li>
-      <li><var:string label:value="As Not Junk" /></li>
-      <li><var:string label:value="Run Junk Mail Controls" /></li>
     </ul>
   </div>
 
