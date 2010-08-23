@@ -587,33 +587,38 @@ static NSArray *infoKeys = nil;
   return error;
 }
 
-- (id <WOActionResults>) sendAction
+- (WOResponse *) sendAction
 {
-  id <WOActionResults> result;
   SOGoDraftObject *co;
+  NSDictionary *jsonResponse;
+  NSException *error;
 
-  // TODO: need to validate whether we have a To etc
-  
+  co = [self clientObject];
+
   /* first, save form data */
-  result = (id <WOActionResults>) [self validateForSend];
-  if (!result)
+  error = [self validateForSend];
+  if (!error)
     {
       if ([self _saveFormInfo])
-	{
-	  result = (id <WOActionResults>) [[self clientObject] sendMail];
-	  if (!result)
-	    {
-	      co = [self clientObject];
-	      result = [self jsCloseWithRefreshMethod: [NSString stringWithFormat: @"refreshMessage(\"%@\", %i)",
-								 [co sourceFolder],
-								 [co IMAP4ID]]];
-	    }
-	}
+        error = [co sendMail];
       else
-	result = [self failedToSaveFormResponse];
+	error = [self failedToSaveFormResponse];
     }
 
-  return result;
+  if (error)
+    jsonResponse = [NSDictionary dictionaryWithObjectsAndKeys:
+                                   @"failure", @"status",
+                                 [error reason], @"message",
+                                 nil];
+  else
+    jsonResponse = [NSDictionary dictionaryWithObjectsAndKeys:
+                                   @"success", @"status",
+                                 [co sourceFolder], @"sourceFolder",
+                                 [co IMAP4ID], @"messageID",
+                                 nil];
+
+  return [self responseWithStatus: 200
+                        andString: [jsonResponse jsonRepresentation]];
 }
 
 @end /* UIxMailEditor */

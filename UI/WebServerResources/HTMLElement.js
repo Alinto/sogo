@@ -8,7 +8,22 @@ Element.addMethods({
             if (element.bind)
                 element.bind();
         },
-            
+
+        allTextContent: function(element) {
+            var content = "";
+            for (var i = 0; i < element.childNodes.length; i++) {
+                var node = $(element.childNodes[i]);
+                if (node.nodeType == Node.TEXT_NODE) {
+                    content += node.nodeValue;
+                }
+                else if (node.nodeType == Node.ELEMENT_NODE) {
+                    content += Element.allTextContent(node);
+                }
+            }
+
+            return content;
+        },
+
         childNodesWithTag: function(element, tagName) {
             element = $(element);
 

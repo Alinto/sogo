@@ -1,5 +1,20 @@
 2010-08-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/UIxMailEditor.js: (clickEditorSend): make
+	use of the iframe hack for receiving the POST's response and
+	interpret it as JSON, with error handling.
+
+	* UI/WebServerResources/HTMLElement.js: (Element.allTextContent):
+	fetch the concatenated text content of the all the child nodes of
+	the element, recursively.
+
+	* UI/WebServerResources/MailerUI.js: (initMailer): use
+	"UserSettings" only if we are the main window.
+
+	* UI/MailerUI/UIxMailEditor.m (-sendAction): return a json
+	representation of the success of the operation, with a message if
+	an exception was returned.
+
 	* UI/WebServerResources/MailerUI.js: (mailListToggleMessagesRead):
 	new method, spun from "mailListMarkMessage", which is basically
 	replaces in a more generic way by acting on all selected messages

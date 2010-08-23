@@ -1679,18 +1679,18 @@ function openInbox(node) {
 }
 
 function initMailer(event) {
-    // Restore sorting from user settings
-    if (UserSettings["Mail"] && UserSettings["Mail"]["SortingState"]) {
-        sorting["attribute"] = UserSettings["Mail"]["SortingState"][0];
-        sorting["ascending"] = parseInt(UserSettings["Mail"]["SortingState"][1]) > 0;
-        if (sorting["attribute"] == 'to') sorting["attribute"] = 'from'; // initial mailbox is always the inbox
-    }
-    else {
-        sorting["attribute"] = "date";
-        sorting["ascending"] = false;
-    }
-
     if (!$(document.body).hasClassName("popup")) {
+        // Restore sorting from user settings
+        if (UserSettings && UserSettings["Mail"] && UserSettings["Mail"]["SortingState"]) {
+            sorting["attribute"] = UserSettings["Mail"]["SortingState"][0];
+            sorting["ascending"] = parseInt(UserSettings["Mail"]["SortingState"][1]) > 0;
+            if (sorting["attribute"] == 'to') sorting["attribute"] = 'from'; // initial mailbox is always the inbox
+        }
+        else {
+            sorting["attribute"] = "date";
+            sorting["ascending"] = false;
+        }
+
         Mailer.dataTable = $("mailboxList");
         Mailer.dataTable.addInterface(SOGoDataTableInterface);
         Mailer.dataTable.setRowRenderCallback(messageListCallback);

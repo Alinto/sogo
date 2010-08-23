@@ -106,7 +106,7 @@ function insertContact(inputNode, contactName, contactEmail) {
 
 /* mail editor */
 
-function validateEditorInput(sender) {
+function validateEditorInput() {
     var errortext = "";
     var field;
    
@@ -125,26 +125,63 @@ function validateEditorInput(sender) {
     return true;
 }
 
-function clickedEditorSend(sender) {
-    if (document.pageform.action == "send" || !validateEditorInput(sender))
-        return false;
+function onValidate(event) {
+    var rc = false;
 
-    var input = currentAttachmentInput();
-    if (input)
-        input.parentNode.removeChild(input);
+    if (document.pageform.action != "send"
+        && validateEditorInput()) {
+        var input = currentAttachmentInput();
+        if (input)
+            input.parentNode.removeChild(input);
 
-    var toolbar = document.getElementById("toolbar");
-    if (!document.busyAnim)
-        document.busyAnim = startAnimation(toolbar);
+        var toolbar = document.getElementById("toolbar");
+        if (!document.busyAnim)
+            document.busyAnim = startAnimation(toolbar);
   
-    var lastRow = $("lastRow");
-    lastRow.down("select").name = "popup_last";
+        var lastRow = $("lastRow");
+        lastRow.down("select").name = "popup_last";
     
-    window.shouldPreserve = true;
-    document.pageform.action = "send";
-    document.pageform.submit();
-    
-    return false;
+        window.shouldPreserve = true;
+
+        document.pageform.action = "send";
+
+        AIM.submit(document.pageform, {'onComplete' : onPostComplete});
+
+        rc = true;
+    }
+
+    return rc;
+}
+
+function onPostComplete(response) {
+    if (response && response.length > 0) {
+        var jsonResponse = response.evalJSON();
+        if (jsonResponse["status"] == "success") {
+            if (window.opener && window.opener.refreshMessage) {
+                window.opener.refreshMessage(jsonResponse["sourceFolder"],
+                                             jsonResponse["messageID"]);
+            }
+            window.close();
+        }
+        else {
+            var message = jsonResponse["message"];
+            document.pageform.action = "";
+            var progressImage = $("progressIndicator");
+            if (progressImage) {
+                progressImage.parentNode.removeChild(progressImage);
+            }
+            showAlertDialog(jsonResponse["message"]);
+        }
+    }
+    else {
+        window.close();
+    }
+}
+
+function clickedEditorSend() {
+    if (onValidate()) {
+        document.pageform.submit();
+    }
 }
 
 function currentAttachmentInput() {
@@ -161,7 +198,7 @@ function currentAttachmentInput() {
     return input;
 }
 
-function clickedEditorAttach(sender) {
+function clickedEditorAttach() {
     var input = currentAttachmentInput();
     if (!input) {
         var area = $("attachmentsArea");
@@ -214,7 +251,7 @@ function createAttachment(node, list) {
     attachment.appendChild(attachmentName);
 }
 
-function clickedEditorSave(sender) {
+function clickedEditorSave() {
     var input = currentAttachmentInput();
     if (input)
         input.parentNode.removeChild(input);

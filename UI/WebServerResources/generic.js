@@ -1718,8 +1718,9 @@ AIM = {
         if (d.location.href == "about:blank")
             return;
 
-        if (typeof(i.onComplete) == 'function')
-            i.onComplete(d.body.innerHTML);
+        if (typeof(i.onComplete) == 'function') {
+            i.onComplete(Element.allTextContent(d.body));
+        }
     }
 };
 

@@ -74,7 +74,7 @@
 	  class="textField"
 	  var:value="subject"
 	  /></div>
-      <!-- separator line --><hr/>
+      <!-- separator line --><hr class="fieldSeparator"/>
     </div>
     <textarea id="text" name="text" rows="30" var:value="text"></textarea>
     <!-- img rsrc:src="tbird_073_compose.png" alt="screenshot" / -->

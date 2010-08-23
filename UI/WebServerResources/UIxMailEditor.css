@@ -98,7 +98,7 @@ div#attachmentsArea
   margin: auto;
   border-left: 1px solid #888; }
 
-hr
+hr.fieldSeparator
 { background-color: #848284;
   border: 0;
   clear: both;
