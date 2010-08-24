@@ -87,6 +87,11 @@
   return @"text/x-vlist";
 }
 
+- (NSString *) davAddressData
+{
+  return [self contentAsString];
+}
+
 /* specialized actions */
 
 - (void) save
