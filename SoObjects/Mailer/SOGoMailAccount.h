@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2009 Inverse inc.
+  Copyright (C) 2009-2010 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo.

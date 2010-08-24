@@ -134,18 +134,6 @@
             </div>
             <input type="hidden" const:id="categoriesValue" 
               const:name="categoriesValue" var:value="categoriesValue"/>
-            <!-- 	  <br/> -->
-            <!-- 	  <label><input class="checkBox" -->
-            <!-- 	      type="checkbox" var:selection="reminderEnabled" -->
-            <!-- 	      var:checked="reminderEnabled"/><var:string -->
-            <!-- 	      label:value="Enable reminders for Calendar items"/></label><br/> -->
-            <!-- 	  <label><input class="checkBox" -->
-            <!-- 	      type="checkbox" var:selection="remindWithASound" -->
-            <!-- 	      var:checked="remindWithASound"/><var:string -->
-            <!-- 	      label:value="Play a sound when a reminder comes due"/></label><br/> -->
-            <!-- 	  <label><var:string label:value="Default reminder :"/> -->
-            <!-- 	    <var:popup list="reminderTimesList" item="item" -->
-            <!-- 	      string="itemReminderTimeText" selection="userReminderTime"/></label> -->
           </div>
         </var:if
           ><var:if condition="userHasMailAccess">
@@ -244,14 +232,14 @@
                   <input const:name="password" const:id="password" type="password" const:value=""/></label>
 
                   <input const:name="encryption" type="hidden" const:value="none"/>
-                <!-- <hr/> -->
-                <!-- <var:string label:value="Encryption:"/> -->
-                <!-- <label><input const:name="encryption" type="radio" const:value="none"/> -->
-                <!--   <var:string label:value="None"/></label> -->
-                <!-- <label><input const:name="encryption" type="radio" const:value="ssl"/> -->
-                <!--   <var:string label:value="SSL"/></label> -->
-                <!-- <label><input const:name="encryption" type="radio" const:value="tls"/> -->
-                <!--   <var:string label:value="TLS"/></label> -->
+                <hr/>
+                <var:string label:value="Encryption:"/>
+                <label><input const:name="encryption" type="radio" const:value="none"/>
+                  <var:string label:value="None"/></label>
+                <label><input const:name="encryption" type="radio" const:value="ssl"/>
+                  <var:string label:value="SSL"/></label>
+                <label><input const:name="encryption" type="radio" const:value="tls"/>
+                  <var:string label:value="TLS"/></label>
               </fieldset>
               <fieldset const:id="identityInfo">
                 <label><var:string label:value="Full Name:"/>

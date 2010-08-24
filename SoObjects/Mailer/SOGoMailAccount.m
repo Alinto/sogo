@@ -521,6 +521,7 @@ static NSString *sieveScriptName = @"sogo";
 
   mailAccount = [self _mailAccount];
   encryption = [mailAccount objectForKey: @"encryption"];
+
   if ([encryption isEqualToString: @"ssl"])
     {
       protocol = @"imaps";
@@ -543,7 +544,7 @@ static NSString *sieveScriptName = @"sogo";
   if (port && port != defaultPort)
     [imap4URLString appendFormat: @":%d", port];
   [imap4URLString appendString: @"/"];
-
+  
   return imap4URLString;
 }
 

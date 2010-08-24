@@ -1,3 +1,9 @@
+2010-08-24  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* UI/Templates/PreferencesUI/UIxPreferences.wox
+	Enabled the UI widgets related to SSL/TLS.
+	SOPE *must* be updated for them to work properly.
+
 2010-08-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/UIxMailEditor.js: (clickEditorSend): make
