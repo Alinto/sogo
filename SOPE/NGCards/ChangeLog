@@ -1,3 +1,8 @@
+2010-08-24  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* CardElement.m (-setNamedValue:to:): don't add the value if nil
+	and not already defined.
+
 2010-08-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* iCalAlarm.m (-setComment, -setSummary, -setAction)

@@ -319,7 +319,10 @@
                        aValue];
   index = [self _namedValue: aValueName];
   if (index == NSNotFound)
-    [self addValue: newValue];
+    {
+      if ([aValue length])
+	[self addValue: newValue];
+    }
   else
     {
       if ([aValue length])
