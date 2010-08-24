@@ -145,7 +145,7 @@ function onValidate(event) {
 
         document.pageform.action = "send";
 
-        AIM.submit(document.pageform, {'onComplete' : onPostComplete});
+        AIM.submit($(document.pageform), {'onComplete' : onPostComplete});
 
         rc = true;
     }
@@ -182,6 +182,8 @@ function clickedEditorSend() {
     if (onValidate()) {
         document.pageform.submit();
     }
+
+    return false;
 }
 
 function currentAttachmentInput() {
