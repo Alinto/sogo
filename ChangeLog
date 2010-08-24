@@ -1,5 +1,8 @@
 2010-08-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/generic.js: (log): added a hack to enable
+	child windows to log messages in the log console of the main window.
+
 	* SoObjects/Contacts/SOGoContactGCSList.m (-davAddressData): added
 	method.
 

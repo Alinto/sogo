@@ -786,7 +786,14 @@ function log(message) {
         while (logWindow.opener)
             logWindow = logWindow.opener;
     }
-    var logConsole = logWindow.document.getElementById("logConsole");
+    if (logWindow && logWindow._logMessage) {
+        var logMessage = message;
+        setTimeout(function() { logWindow._logMessage(logMessage) }, 10);
+    }
+}
+
+function _logMessage(message) {
+    var logConsole = $("logConsole");
     if (logConsole) {
         if (message == "\c") {
             while (logConsole.firstChild) {
