@@ -47,7 +47,7 @@
 "Calendar"             = "Kalender";
 "Addressbook"          = "Adressbuch";
 "Mail"                 = "E-Mail";
-"Right Administration" = "Verwaltung";
+"Right Administration" = "Rechteverwaltung";
 
 "Help" = "Hilfe";
 
@@ -166,7 +166,7 @@
 "MoveTo"        = "Verschieben nach";
 
 /* Address Popup menu */
-"Add to Address Book..." = "Zu Adressbuch hinzufügen";
+"Add to Address Book..." = "Zum Adressbuch hinzufügen";
 "Compose Mail To" = "Verfassen";
 "Create Filter From Message..." = "Filter aus Nachricht erstellen...";
 

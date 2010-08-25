@@ -62,7 +62,7 @@ This is free software: you are free to change and redistribute it. There is NO W
 "Password change failed - Password is too young" = "Passwortänderung fehlgeschlagen - Passwort ist zu jung";
 "Password change failed - Password is in history" = "Passwortänderung fehlgeschlagen - Passwort bereits früher verwendet";
 "Unhandled policy error: %{0}" = "Unbehandelter Richtlinienfehler: %{0}";
-"Unhandled error response" = "Unbehandelter Fehlerantwort";
+"Unhandled error response" = "Unbehandelte Fehlerantwort";
 "Password change is not supported." = "Passwortänderung wird nicht unterstützt.";
 "Unhandled HTTP error code: %{0}" = "Unbehandelter HTTP Fehlercode: %{0}";
 "New password:" = "Neues Passwort:";

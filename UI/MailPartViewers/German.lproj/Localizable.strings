@@ -23,10 +23,10 @@ request_info = "lädt sie ein, an einem Termin teilzunehmen.";
 Accept = "Akzeptieren";
 Decline = "Ablehnen";
 Tentative = "Vorläufig";
-"Delegate ..." = "Delegate ...";
-"Delegated to" = "Delegated to";
+"Delegate ..." = "Delegiere...";
+"Delegated to" = "Delegiert zu";
 "Update status in calendar" = "Kalender Status aktualisieren";
-"delegated from" = "delegated from";
+"delegated from" = "Delegiert von";
 
 reply_info_no_attendee = "Sie haben eine Antwort auf einen Termin von einem Nicht-Teilnehmer erhalten.";
 reply_info = "Dies ist eine Anwort auf eine Einladung von Ihnen.";
