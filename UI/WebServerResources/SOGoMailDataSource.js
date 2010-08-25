@@ -198,6 +198,6 @@ SOGoMailDataSource = Class.create({
         },
 
         indexOf: function(uid) {
-            this.uids.indexOf(uid + "");
+            return this.uids.indexOf(parseInt(uid));
         }
 });
