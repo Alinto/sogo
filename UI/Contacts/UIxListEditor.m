@@ -20,28 +20,44 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSDictionary.h>
 #import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOResponse.h>
-#import <Foundation/NSPropertyList.h>
 
-#import <Contacts/SOGoContactGCSFolder.h>
 #import <NGCards/NGVCardReference.h>
 #import <NGCards/NGVList.h>
+
+#import <Contacts/SOGoContactGCSFolder.h>
+#import <Contacts/SOGoContactGCSList.h>
 
 #import "UIxListEditor.h"
 
 @implementation UIxListEditor
 
+- (void) dealloc
+{
+  [list release];
+  [super dealloc];
+}
+
+- (id <WOActionResults>) defaultAction
+{
+  co = [self clientObject];
+  list = [co vList];
+  [list retain];
+
+  return self;
+}
 
 - (NSString *) listName
 {
   return [list fn];
 }
+
 - (void) setListName: (NSString *) newName
 {
   [list setFn: newName];
@@ -51,6 +67,7 @@
 {
   return [list nickname];
 }
+
 - (void) setNickname: (NSString *) newName
 {
   [list setNickname: newName];
@@ -60,6 +77,7 @@
 {
   return [list description];
 }
+
 - (void) setDescription: (NSString *) newDescription
 {
   [list setDescription: newDescription];
@@ -67,29 +85,33 @@
 
 - (NSArray *) references
 {
-  NSMutableArray *rc;
+  NSArray *references;
+  NSMutableArray *referenceDicts;
   NSMutableDictionary *row;
-  id ref;
-  int i, count;
+  NGVCardReference *ref;
+  NSString *name, *email;
+  int count, max;
 
-  rc = [NSMutableArray array];
-  count = [[list cardReferences] count];
+  references = [list cardReferences];
+  max = [references count];
+  referenceDicts = [NSMutableArray arrayWithCapacity: max];
 
-  for (i = 0; i < count; i++)
+  for (count = 0; count < max; count++)
     {
-      ref = [[list cardReferences] objectAtIndex: i];
-      row = [NSMutableDictionary dictionary];
-      if ([[ref email] length] > 0)
-	[row setObject: [NSString stringWithFormat: @"%@ <%@>", [ref fn], [ref email]]
-		forKey: @"name"];
+      ref = [references objectAtIndex: count];
+      row = [NSMutableDictionary new];
+      email = [ref email];
+      if ([email length] > 0)
+        name = [NSString stringWithFormat: @"%@ <%@>", [ref fn], email];
       else
-	[row setObject: [ref fn]
-		forKey: @"name"];
+        name = [ref fn];
+      [row setObject: name forKey: @"name"];
       [row setObject: [ref reference] forKey: @"id"];
-      [rc addObject: row];
+      [referenceDicts addObject: row];
+      [row release];
     }
 
-  return rc;
+  return referenceDicts;
 }
 
 - (void) setReferencesValue: (NSString *) value
@@ -104,19 +126,19 @@
   references = [value componentsSeparatedByString: @","];
   if ([references count])
     {
-      folder = [[self clientObject] container];
+      folder = [co container];
 
       // Remove from the list the cards that were deleted
       initialReferences = [list cardReferences];
       count = [initialReferences count];
-      
+
       for (i = 0; i < count; i++)
         {
           cardReference = [initialReferences objectAtIndex: i];
           if (![references containsObject: [cardReference reference]])
             [list deleteCardReference: cardReference];
         }
-      
+
       // Add new cards
       count = [references count];
       
@@ -141,6 +163,7 @@
 	}
     }  
 }
+
 - (BOOL) cardReferences: (NSArray *) references
                 contain: (NSString *) ref
 {
@@ -163,7 +186,7 @@
 - (NSString *) saveURL
 {
   return [NSString stringWithFormat: @"%@/saveAsList",
-                   [[self clientObject] baseURL]];
+               [co baseURLInContext: context]];
 }
 
 - (BOOL) canCreateOrModify
@@ -172,40 +195,26 @@
           && [super canCreateOrModify]);
 }
 
-- (id <WOActionResults>) defaultAction
-{
-  co = [self clientObject];
-  list = [co vList];
-  if (list)
-    NSLog (@"Found list");
-  else
-    return [NSException exceptionWithHTTPStatus:404 /* Not Found */
-                        reason: @"could not open list"];
-
-  return self;
-}
-
-- (void) takeValuesFromRequest: (WORequest *) _rq
-                     inContext: (WOContext *) _ctx
-{
-  co = [self clientObject];
-  list = [co vList];
-
-  [super takeValuesFromRequest: _rq inContext: _ctx];
-}
-
 - (BOOL) shouldTakeValuesFromRequest: (WORequest *) request
                            inContext: (WOContext*) context
 {
   NSString *actionName;
+  BOOL rc;
 
+  co = [self clientObject];
   actionName = [[request requestHandlerPath] lastPathComponent];
+  if ([co isKindOfClass: [SOGoContactGCSList class]]
+      && [actionName hasPrefix: @"save"])
+    {
+      list = [co vList];
+      [list retain];
+      rc = YES;
+    }
+  else
+    rc = NO;
 
-  return ([[self clientObject] isKindOfClass: [SOGoContactGCSList class]]
-	  && [actionName hasPrefix: @"save"]);
+  return rc;
 }
-
-
 
 #warning Could this be part of a common parent with UIxAppointment/UIxTaskEditor/UIxListEditor ?
 - (id) newAction
@@ -238,7 +247,7 @@
     {
       [co save];
       if ([[[[self context] request] formValueForKey: @"nojs"] intValue])
-                   result = [self redirectToLocation: [self modulePath]];
+        result = [self redirectToLocation: [self modulePath]];
       else
         {
           jsRefreshMethod

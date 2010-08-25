@@ -1,3 +1,8 @@
+2010-08-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Contacts/UIxListEditor.m: slightly improved code at various
+	places.
+
 2010-08-25  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
         * It's now possible to use SSL or TLS for the
