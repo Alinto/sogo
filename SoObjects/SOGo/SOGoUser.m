@@ -502,10 +502,11 @@
 
 - (void) _appendSystemMailAccount
 {
+  NSString *fullName, *imapLogin, *imapServer, *signature, *encryption, *port, *scheme;
   NSMutableDictionary *mailAccount, *identity, *mailboxes;
   NSMutableArray *identities;
-  NSString *fullName, *imapLogin, *imapServer, *signature;
   NSArray *mails;
+  NSURL *url;
   unsigned int count, max;
 
   mailAccount = [NSMutableDictionary new];
@@ -516,8 +517,46 @@
   if (!imapServer)
     imapServer = [[self domainDefaults] imapServer];
 
+  // imapServer might have the following format
+  // localhost
+  // localhost:143
+  // imap://localhost
+  // imap://localhost:143
+  // imaps://localhost:993
+  // imaps://localhost:143/?tls=YES
+  // imaps://localhost/?tls=YES
+  url = [NSURL URLWithString: imapServer];
+
+  scheme = [url scheme];
+  port = [url port];
+
+  encryption = @"none";
+  port = @"143";
+
+  if ([url query] && [[url query] caseInsensitiveCompare: @"tls=YES"] == NSOrderedSame)
+    encryption = @"tls";
+  
+  if ([port intValue] == 0)
+    {
+      if (scheme)
+	{
+	  if ([scheme caseInsensitiveCompare: @"imaps"] == NSOrderedSame && 
+	      ![encryption isEqualToString: @"tls"])
+	    {
+	      encryption = @"ssl";	      
+	      port = @"993";
+	    }
+	}
+    }
+    
+  if ([url host])
+    imapServer = [url host];
+  
   [mailAccount setObject: imapLogin forKey: @"userName"];
   [mailAccount setObject: imapServer forKey: @"serverName"];
+  [mailAccount setObject: port forKey: @"port"];
+  [mailAccount setObject: encryption forKey: @"encryption"];
+
 
   identities = [NSMutableArray new];
   mails = [self allEmails];

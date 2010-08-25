@@ -1,3 +1,10 @@
+2010-08-25  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+        * It's now possible to use SSL or TLS for the
+	SOGoIMAPServer value. Also updated the documentation
+	to give samples. Fixed the "port" value save from
+	the preferences module.
+
 2010-08-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/generic.js: (log): added a hack to enable

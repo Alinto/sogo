@@ -1162,7 +1162,7 @@
     {
       knownKeys = [NSArray arrayWithObjects: @"name", @"serverName",
                            @"userName", @"password", @"encryption",
-                           @"identities", @"mailboxes", nil];
+                           @"identities", @"mailboxes", @"port", nil];
       [knownKeys retain];
     }
 
