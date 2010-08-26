@@ -1,3 +1,6 @@
+1.3-2010XXXX (1.3.2)
+- fixed various issues with some types email address fields
+
 1.3-20100819 (1.3.1)
 --------------------
 - added migration scripts for Horde (email signatures and address books)
