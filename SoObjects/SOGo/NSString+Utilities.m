@@ -22,14 +22,15 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSCharacterSet.h>
+#import <Foundation/NSData.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSValue.h>
 
 #import <EOControl/EOQualifier.h>
 
 #import <NGExtensions/NSDictionary+misc.h>
-#import <NGExtensions/NGQuotedPrintableCoding.h>
 
+#import <NGMime/NGMimeHeaderFieldGenerator.h>
 #import "NSArray+Utilities.h"
 #import "NSDictionary+BSJSONAdditions.h"
 #import "NSDictionary+URL.h"
@@ -392,10 +393,21 @@ static int cssEscapingCount;
 {
   NSString *qpString, *subjectString;
   NSData *subjectData, *destSubjectData;
+  NSUInteger length, destLength;
+  unsigned char *destString;
 
+#warning "encoding" parameter is not useful
   subjectData = [self dataUsingEncoding: NSUTF8StringEncoding];
-  destSubjectData = [subjectData dataByEncodingQuotedPrintable];
+  length = [subjectData length];
+  destLength = length * 3;
+  destString = calloc (destLength, sizeof (char));
 
+  NGEncodeQuotedPrintableMime ([subjectData bytes], length,
+                               destString, destLength);
+
+  destSubjectData = [NSData dataWithBytesNoCopy: destString
+                                         length: strlen ((char *) destString)
+                                   freeWhenDone: YES];
   qpString = [[NSString alloc] initWithData: destSubjectData
 			       encoding: NSASCIIStringEncoding];
   [qpString autorelease];

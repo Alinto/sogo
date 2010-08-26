@@ -1,5 +1,10 @@
 2010-08-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/NSString+Utilities.m (-asQPSubjectString:): we
+	use "NGEncodeQuotedPrintableMime" instead of
+	"dataByEncodingQuotedPrintable" (NGQuotedPrintableCoding), as it's
+	more suited for email header fields.
+
 	* SoObjects/Mailer/SOGoDraftObject.m (_quoteSpecials:): now work
 	on single strings.
 	(_quoteSpecialsInArray:): new method that offers the same
