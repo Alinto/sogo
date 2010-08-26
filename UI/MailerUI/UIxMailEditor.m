@@ -195,27 +195,11 @@ static NSArray *infoKeys = nil;
 
 - (NSString *) _emailFromIdentity: (NSDictionary *) identity
 {
-  static NSCharacterSet *specialCharacters = nil;
   NSString *fullName, *format;
-
-  if (!specialCharacters)
-    {
-      /* This list is taken from rfc 822 sect. 3.3. LEXICAL TOKENS: */
-      specialCharacters = [NSCharacterSet
-                            characterSetWithCharactersInString:
-                                                     @"()<>@,;:\\\".[]"];
-      [specialCharacters retain];
-    }
 
   fullName = [identity objectForKey: @"fullName"];
   if ([fullName length])
-    {
-      if ([fullName rangeOfCharacterFromSet: specialCharacters].location
-          == NSNotFound)
-        format = @"%{fullName} <%{email}>";
-      else
-        format = @"\"%{fullName}\" <%{email}>";
-    }
+    format = @"%{fullName} <%{email}>";
   else
     format = @"%{email}";
 

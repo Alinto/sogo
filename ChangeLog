@@ -1,5 +1,9 @@
 2010-08-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailEditor.m (_emailFromIdentity:): the "from"
+	field is handled in SOGoDraftObject, therefore we don't need to
+	modify it here, especially since this will alterate the display.
+
 	* Tests/Unit/TestNGMimeAddressHeaderFieldGenerator.m: new test
 	module for NGMimeAddressHeaderFieldGenerator.
 
