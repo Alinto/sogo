@@ -968,7 +968,3 @@ DIV.bottomToolbar A.bottomButton SPAN:active
 /* row editing */
 .editing > INPUT[type="text"]
 { width: 98%; }
-
-/* modalbox */
-DIV#modalbox SPAN
-{ float: right; }
