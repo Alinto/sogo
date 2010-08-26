@@ -1,3 +1,8 @@
+2010-08-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Tests/Unit/TestNGMimeAddressHeaderFieldGenerator.m: new test
+	module for NGMimeAddressHeaderFieldGenerator.
+
 2010-08-25  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/SchedulerUI.js (copyEventToClipboard)
