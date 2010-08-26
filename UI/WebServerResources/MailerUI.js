@@ -318,13 +318,13 @@ function onUnload(event) {
 
 function onDocumentKeydown(event) {
     var target = Event.element(event);
-    if (target.tagName != "INPUT")
-        if (event.keyCode == Event.KEY_DELETE ||
+    if (target.tagName != "INPUT") {
+	if (event.keyCode == Event.KEY_DELETE ||
             event.keyCode == Event.KEY_BACKSPACE && isMac()) {
             deleteSelectedMessages();
             Event.stop(event);
         }
-        else if (event.keyCode == Event.KEY_DOWN ||
+	else if (event.keyCode == Event.KEY_DOWN ||
                  event.keyCode == Event.KEY_UP) {
             if (Mailer.currentMessages[Mailer.currentMailbox]) {
                 var row = $("row_" + Mailer.currentMessages[Mailer.currentMailbox]);
@@ -357,30 +357,44 @@ function onDocumentKeydown(event) {
                 Event.stop(event);
             }
         }
+	else if (event.ctrlKey == 1 && event.keyCode == 65) {  // Ctrl-A
+            $("messageListBody").down("TBODY").selectAll();
+            Event.stop(event);
+        }
+    }
 }
 
 /* bulk delete of messages */
 
 function deleteSelectedMessages(sender) {
     var messageList = $("messageListBody").down("TBODY");
-    var rows = messageList.getSelectedNodes();
+    var rowIds = messageList.getSelectedNodesId();
     var uids = new Array(); // message IDs
     var paths = new Array(); // row IDs
     var unseenCount = 0;
 
-    if (rows.length > 0) {
-        for (var i = 0; i < rows.length; i++) {
-            var uid = rows[i].readAttribute("id").substr(4);
-            var path = Mailer.currentMailbox + "/" + uid;
+    if (rowIds.length > 0) {
+        for (var i = 0; i < rowIds.length; i++) {
+	    if (unseenCount < 1) {
+		var rows = messageList.select('#' + rowIds[i]);
+		if (rows.length > 0) {
+		    var row = rows.first();
+		    row.hide();
+		    if (row.hasClassName("mailer_unreadmail"))
+			unseenCount--;
+		}
+		else {
+		    unseenCount = 1;
+		}
+	    }
             deleteMessageRequestCount++;
-            rows[i].hide();
+            var uid = rowIds[i].substr(4); // drop "row_"
+            var path = Mailer.currentMailbox + "/" + uid;
             uids.push(uid);
             paths.push(path);
-            if (rows[i].hasClassName("mailer_unreadmail"))
-                unseenCount--;
         }
         messageList.deselectAll();
-        updateMessageListCounter(0 - rows.length, true);
+        updateMessageListCounter(0 - rowIds.length, true);
         if (unseenCount < 0) {
             var node = mailboxTree.getMailboxNode(Mailer.currentMailbox);
             if (node) {
@@ -389,7 +403,7 @@ function deleteSelectedMessages(sender) {
         }
         var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/batchDelete";
         var parameters = "uid=" + uids.join(",");
-        var data = { "id": uids, "mailbox": Mailer.currentMailbox, "path": paths };
+        var data = { "id": uids, "mailbox": Mailer.currentMailbox, "path": paths, "refreshUnseenCount": (unseenCount > 0) };
         triggerAjaxRequest(url, deleteSelectedMessagesCallback, data, parameters,
                            { "Content-type": "application/x-www-form-urlencoded" });
     }
@@ -436,6 +450,8 @@ function deleteSelectedMessagesCallback(http) {
                 }
             }
         }
+	if (data["refreshUnseenCount"])
+	    getUnseenCountForFolder(data["mailbox"]);
     }
     else {
         log ("deleteSelectedMessagesCallback: problem during ajax request " + http.status);
@@ -470,11 +486,11 @@ function deleteMessageWithDelay(url, id, mailbox, messageId) {
 
 function onPrintCurrentMessage(event) {
     var messageList = $("messageListBody").down("TBODY");
-    var rowIds = messageList.getSelectedNodes();
-    if (rowIds.length == 0) {
+    var rows = messageList.getSelectedNodes();
+    if (rows.length == 0) {
         showAlertDialog(_("Please select a message to print."));
     }
-    else if (rowIds.length > 1) {
+    else if (rows.length > 1) {
         showAlertDialog(_("Please select only one message to print."));
     }
     else
@@ -531,7 +547,7 @@ function toggleAddressColumn(search, replace) {
 function onMailboxMenuMove(event) {
     var targetMailbox;
     var messageList = $("messageListBody").down("TBODY");
-    var rows = messageList.getSelectedNodes();
+    var rowIds = messageList.getSelectedNodesId();
     var uids = new Array(); // message IDs
     var paths = new Array(); // row IDs
 
@@ -543,10 +559,12 @@ function onMailboxMenuMove(event) {
     else // from DnD
         targetMailbox = this.readAttribute("dataname");
 
-    for (var i = 0; i < rows.length; i++) {
-        var uid = rows[i].readAttribute("id").substr(4);
+    for (var i = 0; i < rowIds.length; i++) {
+        var uid = rowIds[i].substr(4);
         var path = Mailer.currentMailbox + "/" + uid;
-        rows[i].hide();
+	var rows = messageList.select('#' + rowIds[i]);
+	if (rows.length > 0)
+	    rows.first().hide();
         uids.push(uid);
         paths.push(path);
         // Remove references to closed popups
@@ -576,7 +594,7 @@ function onMailboxMenuMove(event) {
 
 function onMailboxMenuCopy(event) {
     var messageList = $("messageListBody").down("TBODY");
-    var rows = messageList.getSelectedNodes();
+    var rowIds = messageList.getSelectedNodesId();
     var uids = new Array(); // message IDs
     var paths = new Array(); // row IDs
 
@@ -585,8 +603,8 @@ function onMailboxMenuCopy(event) {
         targetMailbox = this.mailbox.fullName();
     else // from DnD
         targetMailbox = this.readAttribute("dataname");
-    for (var i = 0; i < rows.length; i++) {
-        var uid = rows[i].readAttribute("id").substr(4);
+    for (var i = 0; i < rowIds.length; i++) {
+        var uid = rowIds[i].substr(4);
         var path = Mailer.currentMailbox + "/" + uid;
         uids.push(uid);
         paths.push(path);
@@ -2099,9 +2117,7 @@ function onMenuEmptyTrash(event) {
     triggerAjaxRequest(urlstr, folderOperationCallback, errorLabel);
 
     if (folderID == Mailer.currentMailbox) {
-        var div = $('messageContent');
-        for (var i = div.childNodes.length - 1; i > -1; i--)
-            div.removeChild(div.childNodes[i]);
+        $('messageContent').update();
     }
     var msgID = Mailer.currentMessages[folderID];
     if (msgID)
@@ -2230,6 +2246,7 @@ function folderRefreshCallback(http) {
         var oldMailbox = http.callbackData.mailbox;
         if (http.callbackData.refresh
             && oldMailbox == Mailer.currentMailbox) {
+	    getUnseenCountForFolder(oldMailbox);
             if (http.callbackData.id) {
                 var s = http.callbackData.id + "";
                 var uids = s.split(",");
@@ -2248,7 +2265,8 @@ function folderRefreshCallback(http) {
             var uids = s.split(",");
             for (var i = 0; i < uids.length; i++) {
                 var row = $("row_" + uids[i]);
-                row.show();
+		if (row)
+		    row.show();
             }
         }
         showAlertDialog(_("Operation failed"));
@@ -2622,7 +2640,7 @@ function startDragging (itm, e) {
     var handle = $("dragDropVisual");
     var count = $("messageListBody").getSelectedRowsId().length;
 
-    handle.update (count);
+    handle.update(count);
     if (Mailer.currentMailbox) {
         var parts = Mailer.currentMailbox.split("/");
         handle.addClassName("account" + parts[1]);

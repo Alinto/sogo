@@ -555,6 +555,8 @@ vtodo_class2 = "(Zadanie poufne)";
 "tagHasChanged" = "Jeśli zmienisz znacznik kalendarza, musisz przeładować dane na swoim urządzeniu mobilnym.\nKontynuować?";
 "tagWasAdded" = "Jeśli chesz synchronizować ten kalendarz, będziesz musiał(a) przeładować dane na swoim urządzeniu mobilnym.\nKontynuować?";
 "tagWasRemoved" = "Jeśli usuniesz ten kalendarz z synchronizacji, będziesz musiał(a) przeładować dane na swoim urządzeniu mobilnym.\nKontynuować?";
+"DestinationCalendarError" = "The source and destination calendars are the same. Please try to copy to a different calendar.";
+"EventCopyError" = "The copy failed. Please try to copy to a difference calendar.";
 
 "Open Task..." = "Otwórz zadanie...";
 "Mark Completed" = "Oznacz jako ukończone";

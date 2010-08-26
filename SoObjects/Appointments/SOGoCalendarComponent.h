@@ -55,6 +55,9 @@
 
 - (BOOL) expandGroupsInEvent: (iCalEvent *) theEvent;
 
+- (NSException *) copyComponent: (iCalCalendar *) calendar
+		       toFolder: (SOGoGCSFolder *) newFolder;
+
 - (void) saveComponent: (iCalRepeatableEntityObject *) newObject;
 
 /* mail notifications */

@@ -554,6 +554,8 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 "tagHasChanged" = "Wenn der Tag des Kalenders geändert wird, müssen die Daten erneut auf das Mobilgerät geladen werden.\nFortfahren?";
 "tagWasAdded" = "Wenn der Kalender synchronisiert werden soll, müssen die Daten erneut auf das Mobilgerät geladen werden.\nFortfahren?";
 "tagWasRemoved" = "Wenn der Kalender aus der Synchronisation entfernt wird, müssen die Daten erneut auf das Mobilgerät geladen werden.\nFortfahren?";
+"DestinationCalendarError" = "The source and destination calendars are the same. Please try to copy to a different calendar.";
+"EventCopyError" = "The copy failed. Please try to copy to a difference calendar.";
 
 "Open Task..." = "Aufgabe öffnen...";
 "Mark Completed" = "Als abgeschlossen markieren";

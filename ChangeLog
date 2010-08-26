@@ -1,3 +1,39 @@
+2010-08-25  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/SchedulerUI.js (copyEventToClipboard)
+	(copyEventFromClipboard, copyEventToPersonalCalendar, copyEvents):
+	new functions to allow the copy/paste of events.
+	(selectCalendarEvent): fixed various bugs with the selection of
+	events.
+	(onMenuCurrentViewPrepareVisibility): new function to disable the
+	delete option when no event is selected and to disable the copy
+	option when the event is owned by the user.
+	(onDocumentKeydown): added actions for Ctrl-C and Ctrl-V.
+	(deleteEvent): avoid showing a confirmation dialog with recurrent
+	events that the user can't erase.
+
+	* UI/WebServerResources/SOGoDataTable.js: Overrided methods from
+	HTMLElement (selectRange, selectAll) to handle selection based on rows ID.
+
+
+	* UI/WebServerResources/MailerUI.js: selected messages are now
+	identified by their row ID to handle live loading.
+
+	* UI/WebServerResources/HTMLElement.js (getSelectedNodesId): take
+	advantage of the selectedIds attribute.
+	(selectElement): also verify if the element is in the selectedIds
+	array.
+	(deselectAll): performance improvement; unselect elements based on
+	the _selected class.
+
+	* UI/Scheduler/UIxAppointmentActions.m (-copyAction): new method
+	to copy the appointment to a different calendar.
+
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	(-copyComponent:toFolder:): was copyToFolder. This new method
+	accepts a specific calendar component.
+	(-copyToFolder:): uses the above method with the current calendar.
+
 2010-08-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Contacts/UIxListEditor.m: slightly improved code at various

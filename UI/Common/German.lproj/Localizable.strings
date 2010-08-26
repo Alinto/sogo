@@ -54,6 +54,7 @@
 "A folder by that name already exists." = "Ein Ordner mit diesem Namen existiert bereits.";
 "You cannot create a list in a shared address book." 
         = "Es ist nicht möglich, eine Liste in einem gemeinsamen Adressbuch zu erstellen.";
+"Warning" = "Warning";
 
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Sie sind nicht berechtigt auf dieses Modul oder System zuzugreifen. Bitte kontaktieren Sie ihren Systemadministrator.";

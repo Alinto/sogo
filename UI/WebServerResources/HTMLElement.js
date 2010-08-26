@@ -120,15 +120,17 @@ Element.addMethods({
         getSelectedNodesId: function(element) {
             element = $(element);
 
-            var selArray = new Array();    
-            if (element.selectedElements) {
+            var selArray = null;
+            if (element.selectedIds) {
+                selArray = element.selectedIds;
+            }
+            else if (element.selectedElements) {
+                selArray = new Array();
                 for (var i = 0; i < element.selectedElements.length; i++) {
                     var node = element.selectedElements[i];
                     selArray.push(node.getAttribute("id"));
                 }
             }
-            else
-                element.selectedElements = new Array();
 
             return selArray;
         },
@@ -180,7 +182,7 @@ Element.addMethods({
             element.addClassName('_selected');
 			
             var parent = element.up();
-            if (!parent.selectedElements) {
+            if (!parent.selectedElements || !parent.selectedIds) {
                 // Selected nodes are kept in a array at the
                 // container level.
                 parent.selectedElements = new Array();
@@ -188,6 +190,8 @@ Element.addMethods({
             }
             for (var i = 0; i < parent.selectedElements.length; i++)
                 if (parent.selectedElements[i] == element) return;
+            for (var i = 0; i < parent.selectedIds.length; i++)
+                if (parent.selectedIds[i] == element.id) return;
             parent.selectedElements.push(element); // use index instead ?
             parent.selectedIds.push(element.id);
         },
@@ -226,7 +230,7 @@ Element.addMethods({
             for (var i = 0; i < rows.length; i++)
                 if (rows[i].nodeType == 1)
                     $(rows[i]).selectElement();
-            },
+        },
 
         deselect: function(element) {
             element = $(element);
@@ -240,20 +244,11 @@ Element.addMethods({
 
         deselectAll: function(element) {
             element = $(element);
-            if (element.selectedElements) {
-                for (var i = 0; i < element.selectedElements.length; i++)
-                    element.selectedElements[i].removeClassName('_selected');
-                element.selectedElements = null;
-                element.selectedIds = null;
-            }
-            else if (element.selectedIds) {
-                for (var i = 0; i < element.selectedIds.length; i++) {
-                    var e =  element.down('#' + element.selectedIds[i]);
-                    if (e && e.hasClassName('_selected'))
-                        e.removeClassName('_selected');
-                }
-                element.selectedIds = null;
-            }
+            var s = element.select("._selected");
+            for (var i = 0; i < s.length; i++)
+                s[i].removeClassName("_selected");
+            element.selectedElements = null;
+            element.selectedIds = null;
         },
 
         refreshSelectionByIds: function(element) {

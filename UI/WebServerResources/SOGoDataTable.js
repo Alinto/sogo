@@ -33,9 +33,51 @@ var SOGoDataTableInterface = {
         this.body = this.down("tbody");
         this.rowModel = this.body.down("tr");
 
+	/**
+	 * Overrided methods from HTMLElement.js
+	 * Handle selection based on rows ID.
+	 */
+	this.body.selectRange = function(startIndex, endIndex) {
+	    var element = $(this);
+            var s;
+            var e;
+            var rows;
+	    var div = this.up('div');
+	    var uid = lastClickedRowId.substr(4);
+
+	    startIndex = div.dataSource.indexOf(uid);
+	    uid = div.down('tr', endIndex).id.substr(4);
+	    endIndex = div.dataSource.indexOf(uid);
+
+            if (startIndex > endIndex) {
+                s = endIndex;
+                e = startIndex;
+            }
+            else {
+                s = startIndex;
+                e = endIndex;
+            }
+	    
+            while (s <= e) {
+		uid = "row_" + div.dataSource.uids[s];
+		if (this.selectedIds.indexOf(uid) < 0)
+		    this.selectedIds.push(uid);
+                s++;
+            }
+	    this.refreshSelectionByIds();
+	};
+
+	this.body.selectAll = function() {
+	    var div = this.up('div');
+	    this.selectedIds = new Array();
+	    for (var i = 0; i < div.dataSource.uids.length; i++)
+		this.selectedIds.push("row_" + div.dataSource.uids[i]);
+	    this.refreshSelectionByIds();
+        },
+
         // Since we use the fixed table layout, the first row must have the
         // proper CSS classes that will define the columns width.
-        this.rowTop = new Element('tr', {'id': 'rowTop'});//.update(new Element('td'));
+        this.rowTop = new Element('tr', {'id': 'rowTop'});
         this.body.insertBefore(this.rowTop, this.rowModel); // IE requires the element to be inside the DOM before appending new children
         var cells = this.rowModel.select('TD');
         for (var i = 0; i < cells.length; i++) {
@@ -60,6 +102,7 @@ var SOGoDataTableInterface = {
 
     setSource: function(ds) {
         this.dataSource = ds;
+        this.currentRenderID = "";
         this._emptyTable();
         this.scrollTop = 0;
     },
@@ -135,7 +178,6 @@ var SOGoDataTableInterface = {
         var scroll;
 
         scroll = this.scrollTop;
-        lastClickedRow = -1; // defined in generic.js
 
         h = start * this.rowHeight;
         if (Prototype.Browser.IE)

@@ -555,6 +555,8 @@ vtodo_class2 = "(Tâche confidentielle)";
 "tagHasChanged" = "En changeant le label de ce calendrier, vous devrez recharger les données sur votre appareil mobile.\nVoulez-vous continuer?";
 "tagWasAdded" = "Afin de synchroniser ce calendrier, vous devrez recharger les données sur votre appareil mobile.\nVoulez-vous continuer?";
 "tagWasRemoved" = "Afin de ne plus synchroniser ce calendrier, vous devrez recharger les données sur votre appareil mobile.\nVoulez-vous continuer?";
+"DestinationCalendarError" = "Le calendrier de destination est le même que celui de l'événement. Choisissez un calendrier de destination différent.";
+"EventCopyError" = "La copie a échouée. Choisissez un calendrier de destination différent.";
 
 "Open Task..." = "Ouvrir la tâche...";
 "Mark Completed" = "Marquer comme accomplie";

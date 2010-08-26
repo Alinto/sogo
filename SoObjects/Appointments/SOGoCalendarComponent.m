@@ -1,6 +1,6 @@
 /* SOGoCalendarComponent.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2009 Inverse inc.
+ * Copyright (C) 2006-2010 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -1042,15 +1042,19 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
 
 - (NSException *) copyToFolder: (SOGoGCSFolder *) newFolder
 {
+  return [self copyComponent: [self calendar: NO secure: NO]
+		    toFolder: newFolder];
+}
+
+- (NSException *) copyComponent: (iCalCalendar *) calendar
+		       toFolder: (SOGoGCSFolder *) newFolder
+{
   NSArray *elements;
   NSString *newUID;
   unsigned int count, max;
-  iCalCalendar *calendar;
   SOGoCalendarComponent *newComponent;
 
   newUID = [self globallyUniqueObjectId];
-  calendar = [self calendar: NO secure: NO];
-
   elements = [calendar allObjects];
   max = [elements count];
   for (count = 0; count < max; count++)

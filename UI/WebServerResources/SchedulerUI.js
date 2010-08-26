@@ -3,7 +3,7 @@
 var listFilter = 'view_today';
 
 var listOfSelection = null;
-var selectedCalendarCell;
+var selectedCalendarCell = null;
 
 var showCompletedTasks;
 
@@ -31,6 +31,9 @@ var calendarHeaderAdjusted = false;
 
 var categoriesStyles = new Hash();
 var categoriesStyleSheet = null;
+
+var clipboard = null;
+var eventsToCopy = [];
 
 function newEvent(type, day, hour, duration) {
     var folder = getSelectedFolder();
@@ -129,7 +132,7 @@ function getSelectedFolder() {
     if (nodes.length > 0)
         folder = nodes[0];
     else
-        folder = list.down("li");
+        folder = list.down("li"); // personal calendar
 
     return folder;
 }
@@ -198,10 +201,6 @@ function deleteEvent() {
         var nodes = listOfSelection.getSelectedRows();
         if (nodes.length > 0) {
             var label = "";
-            if (!nodes[0].erasable && !IsSuperUser) {
-                showAlertDialog(_("You don't have the required privileges to perform the operation."));
-                return false;
-            }
             if (listOfSelection == $("tasksList"))
                 label = _("taskDeleteConfirmation");
             else
@@ -209,17 +208,18 @@ function deleteEvent() {
 
             if (nodes.length == 1
                 && nodes[0].recurrenceTime) {
-                _editRecurrenceDialog(nodes[0], "confirmDeletion");
+                if (nodes[0].erasable)
+                    _editRecurrenceDialog(nodes[0], "confirmDeletion");
+                else
+                    showAlertDialog(_("You don't have the required privileges to perform the operation."));
             }
             else {
-                if (confirm(label)) {
-                    if (document.deleteEventAjaxRequest) {
-                        document.deleteEventAjaxRequest.aborted = true;
-                        document.deleteEventAjaxRequest.abort();
-                    }
-                    var sortedNodes = [];
-                    var calendars = [];
-                    for (var i = 0; i < nodes.length; i++) {
+                var canDelete;
+                var sortedNodes = [];
+                var calendars = [];
+                for (var i = 0; i < nodes.length; i++) {
+                    canDelete = nodes[i].erasable || IsSuperUser;
+                    if (canDelete) {
                         var calendar = nodes[i].calendar;
                         if (!sortedNodes[calendar]) {
                             sortedNodes[calendar] = [];
@@ -227,32 +227,34 @@ function deleteEvent() {
                         }
                         sortedNodes[calendar].push(nodes[i].cname);
                     }
-                    for (var i = 0; i < calendars.length; i++) {
-                        calendarsOfEventsToDelete.push(calendars[i]);
-                        eventsToDelete.push(sortedNodes[calendars[i]]);
-                    }
-                    _batchDeleteEvents();
                 }
+                for (i = 0; i < calendars.length; i++) {
+                    calendarsOfEventsToDelete.push(calendars[i]);
+                    eventsToDelete.push(sortedNodes[calendars[i]]);
+                }
+                if (i > 0)
+                    showConfirmDialog(_("Warning"), label, deleteEventFromListConfirm);
+                else
+                    showAlertDialog(_("You don't have the required privileges to perform the operation."));
             }
-        } else {
-            showAlertDialog(_("Please select an event or a task."));
         }
+        else
+            showAlertDialog(_("Please select an event or a task."));
     }
     else if (selectedCalendarCell) {
         if (selectedCalendarCell.length == 1
             && selectedCalendarCell[0].recurrenceTime) {
-            _editRecurrenceDialog(selectedCalendarCell[0], "confirmDeletion");
+            if (selectedCalendarCell[0].erasable)
+                _editRecurrenceDialog(selectedCalendarCell[0], "confirmDeletion");
+            else
+                showAlertDialog(_("You don't have the required privileges to perform the operation."));
         }
-        else if (confirm(_("eventDeleteConfirmation"))) {
-            if (document.deleteEventAjaxRequest) {
-                document.deleteEventAjaxRequest.aborted = true;
-                document.deleteEventAjaxRequest.abort();
-            }
-            var canDelete = true;
+        else {
+            var canDelete;
             var sortedNodes = [];
             var calendars = [];
             for (var i = 0; i < selectedCalendarCell.length; i++) {
-                canDelete = canDelete && (selectedCalendarCell[i].erasable || IsSuperUser);
+                canDelete = selectedCalendarCell[i].erasable || IsSuperUser;
                 if (canDelete) {
                     var calendar = selectedCalendarCell[i].calendar;
                     if (!sortedNodes[calendar]) {
@@ -263,17 +265,98 @@ function deleteEvent() {
                 }
             }
             
-            for (var i = 0; i < calendars.length; i++) {
+            for (i = 0; i < calendars.length; i++) {
                 calendarsOfEventsToDelete.push(calendars[i]);
                 eventsToDelete.push(sortedNodes[calendars[i]]);
             }
-            _batchDeleteEvents();
+            if (i > 0)
+                showConfirmDialog(_("Warning"), _("eventDeleteConfirmation"), deleteEventFromViewConfirm);
+            else
+                showAlertDialog(_("You don't have the required privileges to perform the operation."));
         }
     }
     else
         showAlertDialog(_("Please select an event or a task."));
 
     return false;
+}
+
+function deleteEventFromListConfirm() {
+    var nodes = listOfSelection.getSelectedRows();
+    if (document.deleteEventAjaxRequest) {
+        document.deleteEventAjaxRequest.aborted = true;
+        document.deleteEventAjaxRequest.abort();
+    }
+    _batchDeleteEvents();
+    disposeDialog();
+}
+
+function deleteEventFromViewConfirm() {
+    if (document.deleteEventAjaxRequest) {
+        document.deleteEventAjaxRequest.aborted = true;
+        document.deleteEventAjaxRequest.abort();
+    }
+    
+    selectedCalendarCell = null;
+    _batchDeleteEvents();
+    disposeDialog();
+}
+
+function copyEventToClipboard() {
+    if (listOfSelection) {
+        clipboard = new Array();
+        var nodes = listOfSelection.getSelectedRows();
+        for (var i = 0; i < nodes.length; i++)
+            clipboard.push(nodes[i].calendar + "/" + nodes[i].cname);
+    }
+    else if (selectedCalendarCell) {
+        clipboard = new Array();
+        for (var i = 0; i < selectedCalendarCell.length; i++)
+            clipboard.push(selectedCalendarCell[i].calendar + "/" + selectedCalendarCell[i].cname);
+    }
+    log ("clipboard : " + clipboard.join(", "));
+}
+
+function copyEventFromClipboard() {
+    if (clipboard && clipboard.length > 0) {
+        var folder = getSelectedFolder();
+        var folderID = folder.readAttribute("id").substr(1);
+        eventsToCopy = [];
+        for (var i = 0; i < clipboard.length; i++)
+            eventsToCopy[i] = clipboard[i] + "/copy?destination=" + folderID;
+        copyEvents();
+    }
+}
+
+function copyEventToPersonalCalendar(event) {
+    var calendar = selectedCalendarCell[0].calendar;
+    var cname = selectedCalendarCell[0].cname;
+    eventsToCopy = [calendar + "/" + cname + "/copy"];
+    copyEvents();
+}
+
+function copyEvents() {
+    var path = eventsToCopy.shift();
+    var urlstr = ApplicationBaseURL + path; log (urlstr);
+    triggerAjaxRequest(urlstr,
+                       copyEventCallback);
+}
+
+function copyEventCallback(http) {
+    if (http.readyState == 4) {
+        if (isHttpStatus204(http.status)) {
+            if (eventsToCopy.length)
+                copyEvents();
+            else
+                refreshEventsAndDisplay();
+        }
+        else if (parseInt(http.status) == 403)
+            showAlertDialog(_("You don't have the required privileges to perform the operation."));
+        else if (parseInt(http.status) == 400)
+            showAlertDialog(_("DestinationCalendarError"));
+        else
+            showAlertDialog(_("EventCopyError"));
+    }
 }
 
 function modifyEvent(sender, modification, parameters) {
@@ -1313,6 +1396,7 @@ function newBaseEventDIV(eventRep, event, eventText) {
     eventCell.calendar = event[1];
     if (eventRep.recurrenceTime)
         eventCell.recurrenceTime = eventRep.recurrenceTime;
+    //eventCell.owner = event[12];
     eventCell.isException = event[16];
     eventCell.editable = event[17];
     eventCell.erasable = event[18];
@@ -1533,36 +1617,22 @@ function calendarDisplayCallback(http) {
             currentDay = http.callbackData["day"];
 
         // Initialize contextual menu
-        var menu;
-        var observer;
-        if (currentView == 'dayview') {
-            menu = new Array(onMenuNewEventClick,
+        var menu = new Array(onMenuNewEventClick,
                              onMenuNewTaskClick,
                              "-",
                              loadPreviousView,
                              loadNextView,
                              "-",
-                             deleteEvent);
+                             deleteEvent,
+                             copyEventToPersonalCalendar);
+        var observer;
+        if (currentView == 'dayview') {
             observer = $("daysView");
         }
         else if (currentView == 'weekview') {
-            menu = new Array(onMenuNewEventClick,
-                             onMenuNewTaskClick,
-                             "-",
-                             loadPreviousView,
-                             loadNextView,
-                             "-",
-                             deleteEvent);
             observer = $("daysView");
         }
         else {
-            menu = new Array(onMenuNewEventClick,
-                             onMenuNewTaskClick,
-                             "-",
-                             loadPreviousView,
-                             loadNextView,
-                             "-",
-                             deleteEvent);
             observer = $("monthDaysView");
         }
 
@@ -1588,8 +1658,10 @@ function calendarDisplayCallback(http) {
         attachDragControllers(contentView);
 
         // Attach contextual menu
-        initMenu($("currentViewMenu"), menu);
+        var currentViewMenu = $("currentViewMenu");
+        initMenu(currentViewMenu, menu);
         observer.observe("contextmenu", onMenuCurrentView);
+        currentViewMenu.prepareVisibility = onMenuCurrentViewPrepareVisibility;
 
         restoreSelectedDay();
 
@@ -1654,12 +1726,20 @@ function onEventsSelectionChange() {
     this.removeClassName("_unfocused");
     $("tasksList").addClassName("_unfocused");
 
+    deselectAll(true);
     var rows = $(this.tBodies[0]).getSelectedNodes();
     if (rows.length == 1) {
         var row = rows[0];
         changeCalendarDisplay( { "day": row.day,
                     "scrollEvent": row.getAttribute("id") } );
-        changeDateSelectorDisplay(row.day);
+        changeDateSelectorDisplay(row.day, true);
+    }
+    else {
+        // Select visible events cells
+        for (var i = 0; i < rows.length; i++) {
+            var row = rows[i];
+            selectCalendarEvent(row.calendar, row.cname, row.recurrenceTime);
+        }
     }
 }
 
@@ -1862,8 +1942,9 @@ function selectCalendarEvent(calendar, cname, recurrenceTime) {
     if (selection) {
         for (var i = 0; i < selection.length; i++)
             selection[i].selectElement();
-        if (selectedCalendarCell)
+        if (selectedCalendarCell) {
             selectedCalendarCell = selectedCalendarCell.concat(selection);
+        }
         else
             selectedCalendarCell = selection;
     }
@@ -1894,8 +1975,18 @@ function onSelectAll(event) {
     return false;
 }
 
+function deselectAll(cellsOnly) {
+    if (!cellsOnly && listOfSelection) {
+        listOfSelection.deselectAll();
+    }
+    if (selectedCalendarCell) {
+        for (var i = 0; i < selectedCalendarCell.length; i++)
+            selectedCalendarCell[i].deselect();
+        selectedCalendarCell = null;
+    }
+}
+
 function onCalendarSelectEvent(event) {
-    var list = $("eventsList").down("TBODY");
     var alreadySelected = false;
 
     // Look for event in events list
@@ -1927,13 +2018,11 @@ function onCalendarSelectEvent(event) {
     }
     else if (event.shiftKey == 0) {
         // Unselect entries in events list and calendar view
-        list.deselectAll();
-        if (selectedCalendarCell) {
-            for (var i = 0; i < selectedCalendarCell.length; i++)
-                if (selectedCalendarCell[i] != this)
-                    selectedCalendarCell[i].deselect();
-        }
-        selectedCalendarCell = [this];
+        listOfSelection = $("eventsList");
+        deselectAll();
+        this.selectElement();
+        if (alreadySelected)
+            selectedCalendarCell = [this];
     }
 
     if (!alreadySelected) {
@@ -1951,9 +2040,20 @@ function onCalendarSelectEvent(event) {
 function onCalendarSelectDay(event) {
     var day = this.getAttribute("day");
     setSelectedDayDate(day);
-    var needRefresh = (listFilter == 'view_selectedday' && day != currentDay);
-
     changeDateSelectorDisplay(day);
+
+    var target = Event.findElement(event);
+    var div = target.up('div');
+    if (div && !div.hasClassName('event') && !div.hasClassName('eventInside') && !div.hasClassName('text') && !div.hasClassName('gradient')) {
+        // Target is not an event -- unselect all events.
+        listOfSelection = $("eventsList");
+        deselectAll();
+        listOfSelection = null;
+        preventDefault(event);
+        return false;
+    }
+
+    var needRefresh = (listFilter == 'view_selectedday' && day != currentDay);
 
     if (listOfSelection) {
         listOfSelection.addClassName("_unfocused");
@@ -2170,6 +2270,26 @@ function onCalendarsMenuPrepareVisibility() {
     return false;
 }
 
+function onMenuCurrentViewPrepareVisibility() {
+    var options = $(this).down("ul");
+    var deleteOption = options.down("li", 6);
+    var copyOption = options.down("li", 7);
+    if (!selectedCalendarCell) {
+        deleteOption.addClassName("disabled");
+        copyOption.addClassName("disabled");
+    }
+    else {
+        deleteOption.removeClassName("disabled");
+        var calendarEntry = $("/" + selectedCalendarCell[0].calendar);
+        if (calendarEntry.getAttribute("owner") == UserLogin)
+            copyOption.addClassName("disabled");
+        else
+            copyOption.removeClassName("disabled");
+    }
+
+    return true;
+}
+
 function getMenus() {
     var menus = {};
 
@@ -2245,10 +2365,11 @@ function onMenuSharing(event) {
 
 function onMenuCurrentView(event) {
     $("eventDialog").hide();
-    var onClick = onCalendarSelectEvent.bind(this);
-    onClick(event);
+    if (this.hasClassName('event')) {
+        var onClick = onCalendarSelectEvent.bind(this);
+        onClick(event);
+    }
     popupMenu(event, 'currentViewMenu', this);
-    
 }
 
 function onMenuAllDayView(event) {
@@ -2728,6 +2849,14 @@ function onDocumentKeydown(event) {
             onSelectAll(event);
             Event.stop(event);
          }
+        else if (((isMac() && event.metaKey == 1) || (!isMac() && event.ctrlKey == 1))
+                 && event.keyCode == 67) {  // Ctrl-C
+            copyEventToClipboard();
+        }
+        else if (((isMac() && event.metaKey == 1) || (!isMac() && event.ctrlKey == 1))
+                 && event.keyCode == 86) {  // Ctrl-V
+            copyEventFromClipboard();
+        }
     }
 }
 

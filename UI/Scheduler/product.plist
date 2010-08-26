@@ -220,6 +220,11 @@
           pageName    = "UIxAppointmentEditor"; 
           actionName  = "save";
         };
+        copy = {
+          protectedBy = "ViewAllComponent";
+          actionClass    = "UIxAppointmentActions";
+          actionName  = "copy";
+        };
         accept = { 
           protectedBy = "RespondToComponent";
           pageName    = "UIxAppointmentEditor"; 

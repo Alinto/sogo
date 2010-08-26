@@ -554,6 +554,8 @@ vtodo_class2 = "(Důvěrný úkol)";
 "tagHasChanged" = "Změníte-li štítek svého kalendáře, budete muset znovu načíst data do svého mobilního zařízení.\nPokračovat?";
 "tagWasAdded" = "Chcete-li synchronizovat tento kalendář, budete muset znovu načíst data do svého mobilního zařízení.\nPokračovat?";
 "tagWasRemoved" = "Odstraníte-li u tohoto kalendáře synchronizaci, budete muset znovu načíst data do svého mobilního zařízení.\nPokračovat?";
+"DestinationCalendarError" = "The source and destination calendars are the same. Please try to copy to a different calendar.";
+"EventCopyError" = "The copy failed. Please try to copy to a difference calendar.";
 
 "Open Task..." = "Otevřít úkol...";
 "Mark Completed" = "Označit jako dokončené";

@@ -554,6 +554,8 @@ vtodo_class2 = "(Vertrouwelijke taak)";
 "tagHasChanged" = "If you change your calendar's tag, you'll need to reload the data on your mobile device.\nContinue?";
 "tagWasAdded" = "If you want to synchronize this calendar, you'll need to reload the data on your mobile device.\nContinue?";
 "tagWasRemoved" = "If you remove this calendar from synchronization, you'll need to reload the data on your mobile device.\nContinue?";
+"DestinationCalendarError" = "The source and destination calendars are the same. Please try to copy to a different calendar.";
+"EventCopyError" = "The copy failed. Please try to copy to a difference calendar.";
 
 "Open Task..." = "Taak openen...";
 "Mark Completed" = "Mark Completed";

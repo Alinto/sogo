@@ -33,6 +33,7 @@ var dialogActive = false;
 var dialogsStack = new Array();
 
 var lastClickedRow = -1;
+var lastClickedRowId = -1;
 
 // logArea = null;
 var allDocumentElements = null;
@@ -552,10 +553,10 @@ function onRowClick(event) {
             return true;
     }
 
-    var initialSelection = $(node.parentNode).getSelectedNodes();
+    var initialSelection = $(node.parentNode).getSelectedNodesId();
 
-    if (initialSelection.length > 0
-        && initialSelection.indexOf(node) >= 0
+    if (initialSelection && initialSelection.length > 0
+        && initialSelection.indexOf(node.id) >= 0
         && !eventIsLeftClick(event))
         // Ignore non primary-click (ie right-click) inside current selection
         return true;
@@ -578,7 +579,7 @@ function onRowClick(event) {
         $(node.parentNode).deselectAll();
         $(node).selectElement();
 
-        if (initialSelection != $(node.parentNode).getSelectedNodes()) {
+        if (initialSelection != $(node.parentNode).getSelectedNodesId()) {
             // Selection has changed; fire mousedown event
             var parentNode = node.parentNode;
             if (parentNode.tagName == 'TBODY')
@@ -586,8 +587,10 @@ function onRowClick(event) {
             parentNode.fire("mousedown");
         }
     }
-    if (rowIndex != null)
-        lastClickedRow = rowIndex;
+    if (rowIndex != null) {
+	lastClickedRow = rowIndex;
+	lastClickedRowId = node.getAttribute("id");
+    }
 
     return true;
 }

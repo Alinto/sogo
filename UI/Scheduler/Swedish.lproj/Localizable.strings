@@ -554,6 +554,8 @@ vtodo_class2 = "(Konfidentiell uppgift)";
 "tagHasChanged" = "Om du ändrar etiketten på din kalender, behöver du ladda om datat i din mobiltelefon.\nFortsätta?";
 "tagWasAdded" = "Om du vill synkronisera kalendern, behöver du ladda om datat i din mobiltelefon.\nFortsätta?";
 "tagWasRemoved" = "Om du tar bort kalendern från synkronisering, behöver du ladda om datat i din mobiltelefon.\nFortsätta?";
+"DestinationCalendarError" = "The source and destination calendars are the same. Please try to copy to a different calendar.";
+"EventCopyError" = "The copy failed. Please try to copy to a difference calendar.";
 
 "Open Task..." = "Öppna uppgift...";
 "Mark Completed" = "Märk utförd";

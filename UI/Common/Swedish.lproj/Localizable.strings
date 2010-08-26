@@ -54,6 +54,7 @@
 "A folder by that name already exists." = "En mapp med det namnet finns redan.";
 "You cannot create a list in a shared address book." 
         = "Du kan inte skapa en lista i en delad adressbok.";
+"Warning" = "Warning";
 
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Du har inte åtkomsträttighet till modulen eller systemet. Kontakta din systemadministratör.";

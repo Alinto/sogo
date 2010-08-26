@@ -24,9 +24,12 @@
 #import <Foundation/NSString.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
+#import <NGObjWeb/SoPermissions.h>
+#import <NGObjWeb/SoSecurityManager.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest.h>
 
+#import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalEvent.h>
 
 #import <SOGo/NSCalendarDate+SOGo.h>
@@ -105,6 +108,85 @@
                                                      reason: @"missing 'days', 'start' and/or 'duration' parameters"];
 
     
+  return response;
+}
+
+- (WOResponse *) copyAction
+{
+  NSString *destination;
+  NSArray *events;
+  iCalCalendar *calendar;
+  iCalRepeatableEntityObject *masterOccurence;
+  SOGoAppointmentObject *thisEvent;
+  SOGoAppointmentFolder *sourceCalendar, *destinationCalendar;
+  SoSecurityManager *sm;
+  WOResponse *response;
+  WORequest *rq;
+
+  rq = [context request];
+
+  destination = [rq formValueForKey: @"destination"];
+  if (![destination length])
+    destination = @"personal";
+  
+  thisEvent = [self clientObject];
+  sourceCalendar = [thisEvent container];
+  destinationCalendar = [[sourceCalendar container] lookupName: destination
+						     inContext: context
+						       acquire: NO];
+  if (destinationCalendar)
+    {
+      // Verify access rights to destination calendar
+      sm = [SoSecurityManager sharedSecurityManager];
+      if ([sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
+			onObject: destinationCalendar
+		       inContext: context])
+	{
+	  response = [NSException exceptionWithHTTPStatus: 403
+						   reason: @"Can't add event to destination calendar."];
+	}
+      // Verify that the destination calendar is not the source calendar
+      else if ([[destinationCalendar nameInContainer] isEqualToString: [sourceCalendar nameInContainer]])
+	{
+	  response = [NSException exceptionWithHTTPStatus: 400
+						   reason: @"Destination calendar is the source calendar."];
+	}
+      else
+	{
+	  // Remove attendees, recurrence exceptions and single occurences from the event
+	  calendar = [thisEvent calendar: NO secure: NO];
+	  events = [calendar events];
+	  masterOccurence = [events objectAtIndex: 0];
+	  
+	  if ([masterOccurence hasAlarms])
+	    [masterOccurence removeAllAlarms];
+	  if ([masterOccurence hasRecurrenceRules])
+	    {
+	      [masterOccurence removeAllExceptionRules];
+	      [masterOccurence removeAllExceptionDates];
+	    }
+	  if ([[masterOccurence attendees] count] > 0)
+	    {
+	      [masterOccurence setOrganizer: nil];
+	      [masterOccurence removeAllAttendees];
+	    }
+	  [calendar setUniqueChild: masterOccurence];
+
+	  // Perform the copy
+	  if ([thisEvent copyComponent: calendar
+			      toFolder: (SOGoGCSFolder *) destinationCalendar])
+	    response = [NSException exceptionWithHTTPStatus: 500
+						     reason: @"Can't copy event to destination calendar."];
+	  else
+	    response = [self responseWith204];
+	}
+    }
+  else
+    {
+      response = [NSException exceptionWithHTTPStatus: 404
+					       reason: @"Can't find destination calendar."];
+    }
+  
   return response;
 }
 

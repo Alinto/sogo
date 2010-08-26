@@ -540,6 +540,8 @@ vtodo_class2 = "(Конфіденційне завдання)";
 "tagHasChanged" = "Якщо Ви змінете теґ вашого календаря, то потрібно буде перевантажити дані на Вашому мобільному пристрої.\nПродовжити?";
 "tagWasAdded" = "Якшр Ви хочете синхронізувати цей календар, то потрібно буде перевантажити дані на Вашому мобільному пристрої.\nПродовжити?";
 "tagWasRemoved" = "Якщо Ви скасуєте режим синхронізації для цього календаря, то потрібно буде перевантажити дані на Вашому мобільному пристрої.\nПродовжити?";
+"DestinationCalendarError" = "The source and destination calendars are the same. Please try to copy to a different calendar.";
+"EventCopyError" = "The copy failed. Please try to copy to a difference calendar.";
 
 "Open Task..." = "Відкрити завдання...";
 "Mark Completed" = "Позначити виконаним";

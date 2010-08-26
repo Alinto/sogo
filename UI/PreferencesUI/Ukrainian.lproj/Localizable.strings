@@ -16,7 +16,6 @@
 "Add" = "Додати";
 "Delete" = "Вилучити";
 
-
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Увімкнути повідомлення про мою відсутність";
 "Auto reply message :" = "Текст автоматичної відповіді:";
@@ -33,7 +32,6 @@
 "Keep a copy" = "Зберігати копію";
 "Please specify an address to which you want to forward your messages."
 = "Будь ласка, зазначте адресу, на яку потрібно перенаправляти повідомлення, адресовані Вам.";
-
 
 /* d & t */
 "Current Time Zone :" = "Поточна часова зона :";
@@ -136,7 +134,7 @@
 "Port:" = "Port:";
 "User Name:" = "User Name:";
 "Password:" = "Пароль:";
- 
+
 "Full Name:" = "Full Name:";
 "Email:" = "Email:";
 "Signature:" = "Підпис:";
@@ -144,7 +142,6 @@
 
 "Signature" = "Підпис";
 "Please enter your signature below:" = "Please enter your signature below:";
-
 
 /* Additional Parameters */
 "Additional Parameters" = "Додаткові параметри";
@@ -163,7 +160,7 @@
 "Contacts" = "Адресна книга";
 "Mail" = "Електронна пошта";
 "Last" = "Останнє";
-"Default module :" = "Модуль за замовчанням :"; 
+"Default module :" = "Модуль за замовчанням :";
 
 "Language :" = "Language :";
 "choose" = "Choose ...";
