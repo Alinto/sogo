@@ -1196,7 +1196,8 @@ function onDocumentKeydown(event) {
                 Event.stop(event);
             }
         }
-        else if (event.ctrlKey == 1 && event.keyCode == 65) {  // Ctrl-A
+        else if (((isMac() && event.metaKey == 1) || (!isMac() && event.ctrlKey == 1))
+                 && event.keyCode == 65) {  // Ctrl-A
             $("contactsList").selectAll();
             Event.stop(event);
         }
