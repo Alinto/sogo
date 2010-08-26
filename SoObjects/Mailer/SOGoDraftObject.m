@@ -1202,58 +1202,69 @@ static NSString    *userAgent      = nil;
   return NO;
 }
 
-- (NSArray *) _quoteSpecials: (NSArray *) _array
+- (NSString *) _quoteSpecials: (NSString *) address
 {
-  NSMutableArray *a;
-  NSString *s1, *s2;
-  int i, j, len;
-
-  a = [NSMutableArray array];
+  NSString *result, *part, *s2;
+  int i, len;
 
   // We want to correctly send mails to recipients such as :
   // foo.bar
   // foo (bar) <foo@zot.com>
   // bar, foo <foo@zot.com>
-  for (i = 0; i < [_array count]; i++)
+  if ([address indexOf: '('] >= 0 || [address indexOf: ')'] >= 0
+      || [address indexOf: '<'] >= 0 || [address indexOf: '>'] >= 0
+      || [address indexOf: '@'] >= 0 || [address indexOf: ','] >= 0
+      || [address indexOf: ';'] >= 0 || [address indexOf: ':'] >= 0
+      || [address indexOf: '\\'] >= 0 || [address indexOf: '"'] >= 0
+      || [address indexOf: '.'] >= 0
+      || [address indexOf: '['] >= 0 || [address indexOf: ']'] >= 0)
     {
-      s1 = [_array objectAtIndex: i];
+      // We search for the first instance of < from the end
+      // and we quote what was before if we need to
+      len = [address length];
+      i = -1;
+      while (len--)
+        if ([address characterAtIndex: len] == '<')
+          {
+            i = len;
+            break;
+          }
 
-      if ([s1 indexOf: '('] >= 0 || [s1 indexOf: ')'] >= 0
-	  || [s1 indexOf: '<'] >= 0 || [s1 indexOf: '>'] >= 0
-	  || [s1 indexOf: '@'] >= 0 || [s1 indexOf: ','] >= 0
-	  || [s1 indexOf: ';'] >= 0 || [s1 indexOf: ':'] >= 0
-	  || [s1 indexOf: '\\'] >= 0 || [s1 indexOf: '"'] >= 0
-	  || [s1 indexOf: '.'] >= 0
-	  || [s1 indexOf: '['] >= 0 || [s1 indexOf: ']'] >= 0)
-	{
-	  // We search for the first instance of < from the end
-	  // and we quote what was before if we need to
-	  len = [s1 length];
-	  j = -1;
-	  while (len--)
-	    if ([s1 characterAtIndex: len] == '<')
-	      {
-		j = len;
-		break;
-	      }
-
-	  if (j > 0)
-	    {
-	      s2 = [s1 substringToIndex: j-1];
-	      s2 = [NSString stringWithFormat: @"\"%@\" %@", s2, [s1 substringFromIndex: j]];
-	    }
-	  else
-	    {
-	      s2 = [NSString stringWithFormat: @"\"%@\"", s1];
-	    }
-
-	  [a addObject: s2];
-	}
+      if (i > 0)
+        {
+          part = [address substringToIndex: i - 1];
+          s2 = [[part stringByReplacingString: @"\\" withString: @"\\\\"]
+                     stringByReplacingString: @"\"" withString: @"\\\""];
+          result = [NSString stringWithFormat: @"\"%@\" %@", s2, [address substringFromIndex: i]];
+        }
       else
-	[a addObject: s1];
+        {
+          s2 = [[address stringByReplacingString: @"\\" withString: @"\\\\"]
+                     stringByReplacingString: @"\"" withString: @"\\\""];
+          result = [NSString stringWithFormat: @"\"%@\"", s2];
+        }
+    }
+  else
+    result = address;
+
+  return result;
+}
+
+- (NSArray *) _quoteSpecialsInArray: (NSArray *) addresses
+{
+  NSMutableArray *result;
+  NSString *address;
+  int count, max;
+
+  max = [addresses count];
+  result = [NSMutableArray arrayWithCapacity: max];
+  for (count = 0; count < max; count++)
+    {
+      address = [self _quoteSpecials: [addresses objectAtIndex: count]];
+      [result addObject: address];
     }
 
-  return a;
+  return result;
 }
 
 - (NGMutableHashMap *) mimeHeaderMapWithHeaders: (NSDictionary *) _headers
@@ -1269,11 +1280,11 @@ static NSString    *userAgent      = nil;
   /* add recipients */
 
   if ((emails = [headers objectForKey: @"to"]) != nil)
-    [map setObjects: [self _quoteSpecials: emails] forKey: @"to"];
+    [map setObjects: [self _quoteSpecialsInArray: emails] forKey: @"to"];
   if ((emails = [headers objectForKey: @"cc"]) != nil)
-    [map setObjects: [self _quoteSpecials: emails] forKey: @"cc"];
+    [map setObjects: [self _quoteSpecialsInArray: emails] forKey: @"cc"];
   if ((emails = [headers objectForKey: @"bcc"]) != nil)
-    [map setObjects: [self _quoteSpecials: emails] forKey: @"bcc"];
+    [map setObjects: [self _quoteSpecialsInArray: emails] forKey: @"bcc"];
 
   /* add senders */
   
@@ -1282,20 +1293,20 @@ static NSString    *userAgent      = nil;
   
   if (![self isEmptyValue:from]) {
     if ([from isKindOfClass:[NSArray class]])
-      [map setObjects: from forKey: @"from"];
+      [map setObjects: [self _quoteSpecialsInArray: from] forKey: @"from"];
     else
-      [map setObject: from forKey: @"from"];
+      [map setObject: [self _quoteSpecials: from] forKey: @"from"];
   }
   
   if (![self isEmptyValue: replyTo]) {
     if ([from isKindOfClass:[NSArray class]])
-      [map setObjects:from forKey: @"reply-to"];
+      [map setObjects: [self _quoteSpecialsInArray: from] forKey: @"reply-to"];
     else
-      [map setObject:from forKey: @"reply-to"];
+      [map setObject: [self _quoteSpecials: from] forKey: @"reply-to"];
   }
   else if (![self isEmptyValue:from])
-    [map setObjects:[map objectsForKey: @"from"] forKey: @"reply-to"];
-  
+    [map setObjects: [map objectsForKey: @"from"] forKey: @"reply-to"];
+
   if (inReplyTo)
     [map setObject: inReplyTo forKey: @"in-reply-to"];
 

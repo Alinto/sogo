@@ -1,5 +1,10 @@
 2010-08-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoDraftObject.m (_quoteSpecials:): now work
+	on single strings.
+	(_quoteSpecialsInArray:): new method that offers the same
+	functionality as _quoteSpecials: did before the change above.
+
 	* UI/MailerUI/UIxMailEditor.m (_emailFromIdentity:): the "from"
 	field is handled in SOGoDraftObject, therefore we don't need to
 	modify it here, especially since this will alterate the display.
