@@ -562,6 +562,7 @@ vtodo_class2 = "(Tâche confidentielle)";
 "Mark Completed" = "Marquer comme accomplie";
 "Delete Task" = "Supprimer la tâche";
 "Delete Event" = "Supprimer l'événement";
+"Copy event to my calendar" = "Copier l'événement dans mon agenda";
 
 "Subscribe to a web calendar..." = "S'inscrire à un agenda en ligne...";
 "URL of the Calendar" = "URL de l'agenda";
