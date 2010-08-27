@@ -13,6 +13,10 @@
 	(setupMailboxesFromJSON): new method, created due the same issue
 	as above, that enables the creation of an array from the response
 	received by the filter editing window.
+	(updateSieveFilterRow): we avoid removing the activation cb since
+	further update event would no longer be taken into account.
+	However we reset its "checked" status to the activation status of
+	the updated filter.
 
 2010-08-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

@@ -226,13 +226,8 @@ function updateSieveFilterRow(filterTable, number, filter) {
     nameColumn.appendChild(document.createTextNode(filter.name));
 
     var activeColumn = columns[1];
-    while (activeColumn.firstChild) {
-        activeColumn.removeChild(activeColumn.firstChild);
-    }
-    createElement("input", null, "checkBox",
-                  { checked: filter.active,
-                       type: "checkbox" },
-                  null, activeColumn);
+    var cb = activeColumn.childNodesWithTag("input");
+    cb[0].checked = filter.active;
 }
 
 function _editFilter(filterId) {
