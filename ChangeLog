@@ -1,5 +1,10 @@
 2010-08-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/ckeditor/: updated to v3.4.
+
+	* UI/WebServerResources/ckeditor/{ckeditor_source.js,ckeditor_basic_source.js,ckeditor.pack}:
+	dropped useless files.
+
 	* UI/WebServerResources/UIxPreferences.js: (appendSieveFilterRow):
 	we bind the "click" event on the activation checkbox rather than
 	"change", because a certain obsolete browser simply ignores it.

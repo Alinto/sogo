@@ -23,8 +23,8 @@
 #import <Foundation/NSCharacterSet.h>
 #import <Foundation/NSFileManager.h>
 #import <Foundation/NSKeyValueCoding.h>
-#import <Foundation/NSNumber.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSValue.h>
 
 #import <NGHttp/NGHttpRequest.h>
 #import <NGObjWeb/NSException+HTTP.h>

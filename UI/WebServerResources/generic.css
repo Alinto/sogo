@@ -873,6 +873,10 @@ SPAN.toolbarSeparator
   width: 0px;
   padding: 0px; }
 
+DIV.toolbar IMG.buttonImage
+{ width: 24px;
+  height: 24px; }
+
 A.toolbarButton, 
 A.toolbarButton:hover,
 A.smallToolbarButton, 
