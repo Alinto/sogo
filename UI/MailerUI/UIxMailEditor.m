@@ -23,6 +23,7 @@
 #import <Foundation/NSCharacterSet.h>
 #import <Foundation/NSFileManager.h>
 #import <Foundation/NSKeyValueCoding.h>
+#import <Foundation/NSNumber.h>
 #import <Foundation/NSString.h>
 
 #import <NGHttp/NGHttpRequest.h>
@@ -598,7 +599,7 @@ static NSArray *infoKeys = nil;
     jsonResponse = [NSDictionary dictionaryWithObjectsAndKeys:
                                    @"success", @"status",
                                  [co sourceFolder], @"sourceFolder",
-                                 [co IMAP4ID], @"messageID",
+                                 [NSNumber numberWithInt: [co IMAP4ID]], @"messageID",
                                  nil];
 
   return [self responseWithStatus: 200
