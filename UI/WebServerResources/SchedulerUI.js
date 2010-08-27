@@ -1378,7 +1378,7 @@ function newBaseEventDIV(eventRep, event, eventText) {
     //	log ("5 end = " + event[5]);
     //	log ("6 location = " + event[6]);
     //	log ("7 isallday = " + event[7]);
-    //	log ("8 classification = " + event[8]);
+    //	log ("8 classification = " + event[8]); // 0 = public, 1 = private, 2 = confidential
     //	log ("9 category = " + event[9]);
     //	log ("10 participants emails = " + event[10]);
     //	log ("11 participants states = " + event[11]);
@@ -1394,6 +1394,10 @@ function newBaseEventDIV(eventRep, event, eventText) {
     var eventCell = createElement("div");
     eventCell.cname = event[0];
     eventCell.calendar = event[1];
+//    if (event[8] == 1)
+//        eventCell.addClassName("private");
+//    else if (event[8] == 2)
+//        eventCell.addClassName("confidential");
     if (eventRep.recurrenceTime)
         eventCell.recurrenceTime = eventRep.recurrenceTime;
     //eventCell.owner = event[12];
@@ -1402,8 +1406,8 @@ function newBaseEventDIV(eventRep, event, eventText) {
     eventCell.erasable = event[18];
     eventCell.ownerIsOrganizer = event[19];
     eventCell.addClassName("event");
-    if (event[14] > 0)
-        eventCell.addClassName("alarm");
+//    if (event[14] > 0)
+//        eventCell.addClassName("alarm");
 
     var innerDiv = createElement("div");
     eventCell.appendChild(innerDiv);
@@ -1423,7 +1427,17 @@ function newBaseEventDIV(eventRep, event, eventText) {
     var textDiv = createElement("div");
     innerDiv.appendChild(textDiv);
     textDiv.addClassName("text");
-    textDiv.update(eventText.replace(/(\\r)?\\n/g, "<BR/>"));
+    var iconSpan = createElement("span");
+    textDiv.appendChild(iconSpan);
+    textDiv.appendChild(document.createTextNode(eventText.replace(/(\\r)?\\n/g, "<BR/>")));
+
+    // Add alarm and classification icons
+    if (event[8] == 1)
+        createElement("img", null, null, {src: ResourcesURL + "/private.png"}, null, iconSpan);
+    else if (event[8] == 2)
+        createElement("img", null, null, {src: ResourcesURL + "/confidential.png"}, null, iconSpan);
+    if (event[14] > 0)
+        createElement("img", null, null, {src: ResourcesURL + "/alarm.png"}, null, iconSpan);
 
     if (event[9] != null) {
         var categoryStyle = categoriesStyles.get(event[9]);

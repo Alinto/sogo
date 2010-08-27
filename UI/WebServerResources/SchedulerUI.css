@@ -1318,6 +1318,9 @@ DIV.gradient > IMG
   min-height: 15px; /* for 15-minute events */
   width: 100%; }
 
+DIV.text SPAN IMG
+{ vertical-align: middle; }
+
 DIV#calendarHeader DIV.event,
 DIV.monthView DIV.event
 { position: relative;
@@ -1328,11 +1331,6 @@ DIV.monthView DIV.event
   margin-right: 1px;
   white-space: nowrap;
   height: 20px; }
-
-DIV.event.alarm DIV.text
-{ background-image: url("alarm.png");
-  background-repeat: no-repeat;
-  background-position: top right; }
 
 DIV.eventInside.tentative,
 DIV.eventInside.needs-action
