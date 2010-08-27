@@ -44,17 +44,12 @@ function loadMailboxes() {
 
 function onLoadMailboxesCallback(http) {
     if (http.readyState == 4) {
-        window.opener.userMailboxes = $([]);
         // log("http.status: " + http.status);
         if (http.status == 200) {
             checkAjaxRequestsState();
             if (http.responseText.length > 0) {
                 var jsonResponse = http.responseText.evalJSON(true);
-                var responseMboxes = jsonResponse.mailboxes;
-                for (var i = 0; i < responseMboxes.length; i++) {
-                    var name = responseMboxes[i].path.substr(1);
-                    window.opener.userMailboxes.push(name);
-                }
+                window.opener.setupMailboxesFromJSON(jsonResponse);
             }
         }
         setupFilterViews();
@@ -779,7 +774,7 @@ function onActionDeleteClick(event) {
 
 function savePreferences() {
     if (window.opener) {
-        window.opener.updateFilterFromEditor(filterId, filter);
+        window.opener.updateFilterFromEditor(filterId, Object.toJSON(filter));
     }
     window.close();
 

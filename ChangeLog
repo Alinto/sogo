@@ -1,3 +1,19 @@
+2010-08-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/UIxPreferences.js: (appendSieveFilterRow):
+	we bind the "click" event on the activation checkbox rather than
+	"change", because a certain obsolete browser simply ignores it.
+	(updateFilterFromEditor): the "filter" argument is replaced with a
+	JSON-encoded string representing the filter in question. On a
+	certain obsolete browser, object referencing is so messed up that
+	closing the "creator" window will suddenly invalidate the created
+	objects. This solves the voodoo error message "The callee (server
+	[not server application]) is not available and disappeared; all
+	connections are invalid." when saving and closing.
+	(setupMailboxesFromJSON): new method, created due the same issue
+	as above, that enables the creation of an array from the response
+	received by the filter editing window.
+
 2010-08-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/NSString+Utilities.m (-asQPSubjectString:): we

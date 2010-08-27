@@ -205,7 +205,7 @@ function appendSieveFilterRow(filterTable, number, filter) {
                              type: "checkbox" },
                            null, activeColumn);
     var bound = onScriptActiveCheck.bindAsEventListener(cb);
-    cb.observe("change", bound);
+    cb.observe("click", bound);
     row.appendChild(activeColumn);
 
     filterTable.tBodies[0].appendChild(row);
@@ -350,7 +350,17 @@ function getFilterFromEditor(filterId) {
     return copyFilter(filters[filterId]);
 }
 
-function updateFilterFromEditor(filterId, filter) {
+function setupMailboxesFromJSON(jsonResponse) {
+    var responseMboxes = jsonResponse.mailboxes;
+    userMailboxes = $([]);
+    for (var i = 0; i < responseMboxes.length; i++) {
+        var name = responseMboxes[i].path.substr(1);
+        userMailboxes.push(name);
+    }
+}
+
+function updateFilterFromEditor(filterId, filterJSON) {
+    var filter = filterJSON.evalJSON();
     var sanitized = {};
     for (var k in filter) {
         if (!(k == "rules" && filter.match == "allmessages")) {
