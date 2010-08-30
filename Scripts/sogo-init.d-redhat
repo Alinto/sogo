@@ -75,6 +75,8 @@ fi
 
 DAEMON_OPTS="-WOWorkersCount $PREFORK -WOPidFile $PIDFILE -WOLogFile $LOGFILE"
 
+RETVAL=0
+
 start() {
     echo $"Starting $DESC: "
     pid="`cat $PIDFILE 2> /dev/null`"
@@ -84,15 +86,19 @@ start() {
 	if [ -n "$pid" ]
 	then
 	    echo "  $NAME already running. Skipped."
+	    RETVAL=0
 	else
 	    rm -f $PIDFILE
 	    daemon --user="$USER" --pidfile="$PIDFILE" "$DAEMON" $DAEMON_OPTS
+	    RETVAL=$?
 	    echo "  $NAME (stale pid file removed)"
 	fi
     else
 	daemon --user="$USER" --pidfile="$PIDFILE" "$DAEMON" $DAEMON_OPTS
+	RETVAL=$?
         echo "  $NAME"
     fi
+    return $RETVAL
 }
 
 stop() {
@@ -104,13 +110,17 @@ stop() {
 	if [ -n "$pid" ]
 	then
 	    kill $pid >& /dev/null
+	    RETVAL=$?
 	    echo "  $NAME stopped"
 	else
 	    echo "  $NAME not running"
+	    RETVAL=0
 	fi
     else
 	echo "  $NAME not running"
+	RETVAL=0
     fi
+    return $RETVAL
 }
 
 restart() {
@@ -145,4 +155,4 @@ case "$1" in
 	;;
 esac
 
-exit 0
+exit $?
