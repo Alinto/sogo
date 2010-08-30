@@ -106,7 +106,11 @@ static BOOL debugOn = YES;
   char buf[32];
   
   if (_p == NULL) _p = "";
+#if GS_64BIT_OLD
   sprintf(buf, "%s%02i:%02i", _p, [_d hourOfDay], [_d minuteOfHour]);
+#else
+  sprintf(buf, "%s%02li:%02li", _p, [_d hourOfDay], [_d minuteOfHour]);
+#endif
   return [StrClass stringWithCString:buf];
 }
 
@@ -138,10 +142,15 @@ static BOOL debugOn = YES;
     }
   }
   
-  /* 26.08.2004 13:24 */
+#if GS_64BIT_OLD
   sprintf(buf, "%02d.%02d.%04d %02d:%02d",
 	  [_date dayOfMonth], [_date monthOfYear], [_date yearOfCommonEra],
 	  [_date hourOfDay], [_date minuteOfHour]);
+#else
+  sprintf(buf, "%02ld.%02ld.%04ld %02ld:%02ld",
+	  [_date dayOfMonth], [_date monthOfYear], [_date yearOfCommonEra],
+	  [_date hourOfDay], [_date minuteOfHour]);
+#endif
   return [StrClass stringWithCString:buf];
 }
 

@@ -1,3 +1,10 @@
+2010-08-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Tools/SOGoToolRemoveDoubles.m, UI/MailerUI/UIxMailFormatter.m:
+	adapted classes to use "NSInteger" and "NSUInteger" instead of
+	"int" and "unsigned int" for compatibility with versions of
+	GNUstep base >= 1.20.
+
 2010-08-27  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/SchedulerUI.js (newBaseEventDIV): now adds

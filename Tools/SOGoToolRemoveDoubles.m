@@ -189,7 +189,13 @@
   NSString *tableName, *quickTableName, *currentRecordName;
   NSEnumerator *recordsEnum;
 
-  fprintf (stderr, "Removing %d records...\n", [recordNames count]);
+  fprintf (stderr,
+#if GS_64BIT_OLD
+           "Removing %d records...\n",
+#else
+           "Removing %ld records...\n",
+#endif
+           [recordNames count]);
 
   channel = [folder acquireStoreChannel];
   context = [channel adaptorContext];
@@ -469,11 +475,21 @@
       if ([recordsToRemove count])
         {
           [self removeRecords: recordsToRemove fromFolder: folder];
-          fprintf (stderr, "Removed %d records from %d.\n",
+          fprintf (stderr,
+#if GS_64BIT_OLD
+                   "Removed %d records from %d.\n",
+#else
+                   "Removed %ld records from %ld.\n",
+#endif
                    [recordsToRemove count], [records count]);
         }
       else
-        fprintf (stderr, "No record to remove. %d records kept.\n",
+        fprintf (stderr,
+#if GS_64BIT_OLD
+                 "No record to remove. %d records kept.\n",
+#else
+                 "No record to remove. %ld records kept.\n",
+#endif
                  [records count]);
     }
   else
