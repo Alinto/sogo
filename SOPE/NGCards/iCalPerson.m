@@ -247,8 +247,8 @@
 
 /* comparison */
 
-- (unsigned)hash {
-  if([self email])
+- (NSUInteger) hash {
+  if ([self email])
     return [[self email] hash];
   return [super hash];
 }

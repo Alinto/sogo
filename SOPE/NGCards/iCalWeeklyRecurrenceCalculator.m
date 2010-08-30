@@ -151,7 +151,7 @@
 	     [currentStartDate compare: endDate] == NSOrderedSame)
 	{
 	  BOOL isRecurrence = NO;
-	  int days, week;
+	  NSInteger days, week;
 
 	  if (repeatCount > 0 ||
 	      [startDate compare: currentStartDate] == NSOrderedAscending ||
@@ -166,7 +166,7 @@
 		}
 	      else 
 		{
-		  [currentStartDate years:NULL months:NULL days:(int *)&days hours:NULL
+		  [currentStartDate years:NULL months:NULL days:&days hours:NULL
 				  minutes:NULL seconds:NULL sinceDate: firStart];
 
 		  // The following adjustment always set the first day of the
