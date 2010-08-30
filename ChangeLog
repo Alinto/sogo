@@ -1,3 +1,8 @@
+2010-08-27  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/SchedulerUI.js (newBaseEventDIV): now adds
+	icon for event classification (confidential or private).
+
 2010-08-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/ckeditor/: updated to v3.4.

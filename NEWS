@@ -1,5 +1,7 @@
 1.3-2010XXXX (1.3.2)
 - fixed various issues with some types email address fields
+- added support for Ctrl-A (select all) in all web modules
+- added support for Ctrl-C/Ctrl-V (copy/paste) in the calendar web module
 
 1.3-20100819 (1.3.1)
 --------------------
