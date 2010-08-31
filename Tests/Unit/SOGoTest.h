@@ -66,7 +66,7 @@
 #define failIf(c) test(!c)
 
 #define testEquals(a,b) \
-  testWithMessage(([a isEqual: b]), \
+  testWithMessage(((a == b) || ([a isEqual: b])), \
                   ([NSString stringWithFormat: @"objects '%@' and '%@' differs", (a), (b)]))
 
 #define testEqualsWithMessage(a,b,m) \

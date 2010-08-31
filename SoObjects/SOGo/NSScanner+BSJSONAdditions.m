@@ -26,6 +26,8 @@
 //    Unit Tests adapted from Jonathan Wight's CocoaJSON code: http://www.toxicsoftware.com 
 //    I have included those adapted unit tests in this package.
 
+#include <math.h>
+
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDecimalNumber.h>
 #import <Foundation/NSNull.h>
@@ -224,9 +226,9 @@ NSString *jsonNullString = @"null";
 	
   [self scanJSONWhiteSpace];
   NSString *substring = [[self string] substringWithRange:NSMakeRange([self scanLocation], 1)];
-  unsigned int trueLocation = [[self string] rangeOfString:jsonTrueString options:0 range:NSMakeRange([self scanLocation], ([[self string] length] - [self scanLocation]))].location;
-  unsigned int falseLocation = [[self string] rangeOfString:jsonFalseString options:0 range:NSMakeRange([self scanLocation], ([[self string] length] - [self scanLocation]))].location;
-  unsigned int nullLocation = [[self string] rangeOfString:jsonNullString options:0 range:NSMakeRange([self scanLocation], ([[self string] length] - [self scanLocation]))].location;
+  NSUInteger trueLocation = [[self string] rangeOfString:jsonTrueString options:0 range:NSMakeRange([self scanLocation], ([[self string] length] - [self scanLocation]))].location;
+  NSUInteger falseLocation = [[self string] rangeOfString:jsonFalseString options:0 range:NSMakeRange([self scanLocation], ([[self string] length] - [self scanLocation]))].location;
+  NSUInteger nullLocation = [[self string] rangeOfString:jsonNullString options:0 range:NSMakeRange([self scanLocation], ([[self string] length] - [self scanLocation]))].location;
 	
   if ([substring isEqualToString:jsonStringDelimiterString]) {
     result = [self scanJSONString:value];
@@ -258,9 +260,39 @@ NSString *jsonNullString = @"null";
   //NSDecimal decimal;
   //BOOL result = [self scanDecimal:&decimal];
   //*number = [NSDecimalNumber decimalNumberWithDecimal:decimal];
-  int value;
-  BOOL result = [self scanInt: &value];
-  *number = [NSNumber numberWithInt: value];
+  long long intValue, commaValue;
+  double doubleValue;
+  NSUInteger curLocation, length;
+  NSString *stringValue;
+
+  stringValue = [self string];
+
+  BOOL result = [self scanLongLong: &intValue];
+  if (result)
+    {
+      curLocation = [self scanLocation];
+      if (curLocation < [stringValue length]
+          && [stringValue characterAtIndex: curLocation] == '.')
+        {
+          [self scanString: @"." intoString: NULL];
+          if ([self scanLongLong: &commaValue])
+            {
+              result = YES;
+              length = [self scanLocation] - curLocation - 1;
+              if (intValue < 0)
+                commaValue = -commaValue;
+              doubleValue = intValue + commaValue / pow(10.0, length);
+              *number = [NSNumber numberWithDouble: doubleValue];
+            }
+          else
+            *number = [NSNumber numberWithLongLong: intValue];
+        }
+      else
+        *number = [NSNumber numberWithLongLong: intValue];
+    }
+  else
+    *number = nil;
+
   return result;
 }
 

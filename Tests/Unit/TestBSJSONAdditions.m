@@ -22,9 +22,12 @@
 
 #import <Foundation/NSException.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSValue.h>
 
 #import "SOGo/NSScanner+BSJSONAdditions.h"
 #import "SOGo/NSDictionary+BSJSONAdditions.h"
+
+#import "SOGo/NSString+Utilities.h"
 
 #import "SOGoTest.h"
 
@@ -60,9 +63,36 @@
     }
 }
 
+- (void) test_scanJSONNumber
+{
+  NSScanner *testScanner;
+  NSNumber *result;
+
+  testScanner = [NSScanner scannerWithString: @""];
+  [testScanner scanJSONNumber: &result];
+  testEquals (result, nil);
+
+  testScanner = [NSScanner scannerWithString: @"0"];
+  [testScanner scanJSONNumber: &result];
+  testEquals (result, [NSNumber numberWithInt: 0]);
+                              
+  testScanner = [NSScanner scannerWithString: @"-1"];
+  [testScanner scanJSONNumber: &result];
+  testEquals (result, [NSNumber numberWithInt: -1]);
+                              
+  testScanner = [NSScanner scannerWithString: @"12.3456"];
+  [testScanner scanJSONNumber: &result];
+  testEquals (result, [NSNumber numberWithDouble: 12.3456]);
+
+  testScanner = [NSScanner scannerWithString: @"-312.3456"];
+  [testScanner scanJSONNumber: &result];
+  testEquals (result, [NSNumber numberWithDouble: -312.3456]);
+}
+
 @end
 
 @interface TestNSDictionaryBSJSONAdditions : SOGoTest
+
 @end
 
 @implementation TestNSDictionaryBSJSONAdditions
@@ -91,3 +121,4 @@
 }
 
 @end
+
