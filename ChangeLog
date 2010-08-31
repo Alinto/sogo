@@ -1,3 +1,19 @@
+2010-08-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/UIxMailEditor.js
+	(onMenuCheckReturnReceipt): new function.
+	(getMenus): added entries for initializing the new "Options" menu
+	as well as the "Priority" menu.
+
+	* UI/MailerUI/UIxMailEditor.m (-setReceipt, -receipt): new
+	accessors for the "receipt" hidden input field, meant to interract
+	the the "return receipt" entry in the "Options" menu.
+	(-setReplyTo, -replyTo): removed obsolete methods.
+
+	* SoObjects/Mailer/SOGoDraftObject.m (-setHeaders:)
+	(-mimeHeaderMapWithHeaders:excluding:): added handling for the
+	"Disposition-Notification-To" header.
+
 2010-08-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* Tools/SOGoToolRemoveDoubles.m, UI/MailerUI/UIxMailFormatter.m:

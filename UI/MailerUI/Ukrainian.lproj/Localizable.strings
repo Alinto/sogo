@@ -18,7 +18,7 @@
 "Contacts" = "Адреса";
 "Attach" = "Вкладення";
 "Save" = "Зберегти";
-"Priority" = "Важливість";
+"Options" = "Options";
 "Size" = "Розмір";
 
 /* Tooltips */
@@ -109,6 +109,9 @@
 "Edit Draft..." = "Редагувати чернетку...";
 "Load Images" = "Завантажити зображення";
 
+"Return Receipt" = "Return Receipt";
+
+"Priority" = "Важливість";
 "highest" = "Найвища";
 "high" = "Висока";
 "normal" = "Звичайна";

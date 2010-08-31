@@ -18,7 +18,7 @@
 "Contacts" = "Contacts";
 "Attach" = "Joindre";
 "Save" = "Enregistrer";
-"Priority" = "Priorité";
+"Options" = "Options";
 "Size" = "Taille";
 
 /* Tooltips */
@@ -109,6 +109,9 @@
 "Edit Draft..." = "Modifier le brouillon...";
 "Load Images" = "Télécharger les images";
 
+"Return Receipt" = "Accusé de réception";
+
+"Priority" = "Priorité";
 "highest" = "Maximale";
 "high" = "Haute";
 "normal" = "Normale";

@@ -18,7 +18,7 @@
 "Contacts" = "Kapcsolatok";
 "Attach" = "Melléklet";
 "Save" = "Mentés";
-"Priority" = "Sürgősség";
+"Options" = "Options";
 "Size" = "Méret";
 
 /* Tooltips */
@@ -109,6 +109,9 @@
 "Edit Draft..." = "Piszkozat szerkesztése...";
 "Load Images" = "Képek betöltése";
 
+"Return Receipt" = "Return Receipt";
+
+"Priority" = "Sürgősség";
 "highest" = "nagyon sürgős";
 "high" = "sürgős";
 "normal" = "átlagos";

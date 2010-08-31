@@ -32,7 +32,15 @@
     </ul>
   </div>
 
-  <div class="menu" id="priority-menu">
+  <div class="menu" id="optionsMenu">
+    <ul class="choiceMenu">
+      <li><var:string label:value="Return Receipt"/></li>
+      <li><!-- separator --></li>
+      <li><var:string label:value="Priority"/></li>
+    </ul>
+  </div>
+
+  <div class="menu" id="priorityMenu">
     <ul id="itemPriorityList" class="choiceMenu">
       <var:foreach list="priorityClasses" item="item">
 	<li var:priority="item"><var:string
@@ -42,8 +50,8 @@
   </div>
 
   <form const:href="" name="pageform" enctype="multipart/form-data" autocomplete="off">
-    <input type="hidden" name="priority" id="priority"
-	var:value="priority"/>
+    <input type="hidden" name="priority" id="priority" var:value="priority"/>
+    <input type="hidden" name="receipt" id="receipt" var:value="receipt"/>
 
     <div id="attachmentsArea">
       <var:string label:value="Attachments:" />

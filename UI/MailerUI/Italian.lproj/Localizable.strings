@@ -21,7 +21,7 @@
 "Contacts" = "Contatti";
 "Attach" = "Allegato";
 "Save" = "Salva";
-"Priority" = "Priorità";
+"Options" = "Options";
 "Size" = "Size";
 
 /* Tooltips */
@@ -109,6 +109,9 @@
 "Edit Draft..." = "Modifica bozza...";
 "Load Images" = "Carica Immagini";
 
+"Return Receipt" = "Return Receipt";
+
+"Priority" = "Priorità";
 "highest" = "Molto alta";
 "high" = "Alta";
 "normal" = "Normale";

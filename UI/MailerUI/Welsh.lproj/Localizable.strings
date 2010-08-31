@@ -18,7 +18,7 @@
 "Contacts" = "Cysylltiadau";
 "Attach" = "Atodi";
 "Save" = "Cadw";
-"Priority" = "Blaenoriaeth";
+"Options" = "Options";
 "Size" = "Size";
 
 /* Tooltips */
@@ -109,6 +109,9 @@
 "Edit Draft..." = "Golygu Drafft...";
 "Load Images" = "Llwytho Delweddau";
 
+"Return Receipt" = "Return Receipt";
+
+"Priority" = "Blaenoriaeth";
 "highest" = "Uchaf";
 "high" = "Uchel";
 "normal" = "Normal";

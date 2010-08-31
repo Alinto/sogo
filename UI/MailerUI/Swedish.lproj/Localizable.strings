@@ -18,7 +18,7 @@
 "Contacts" = "Kontakter";
 "Attach" = "Bifoga";
 "Save" = "Spara";
-"Priority" = "Prioritet";
+"Options" = "Options";
 "Size" = "Storlek";
 
 /* Tooltips */
@@ -109,6 +109,9 @@
 "Edit Draft..." = "Redigera utkast...";
 "Load Images" = "Ladda bilder";
 
+"Return Receipt" = "Return Receipt";
+
+"Priority" = "Prioritet";
 "highest" = "Högst";
 "high" = "Hög";
 "normal" = "Normal";

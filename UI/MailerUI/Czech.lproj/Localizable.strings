@@ -18,7 +18,7 @@
 "Contacts" = "Kontakty";
 "Attach" = "Přiložit";
 "Save" = "Uložit";
-"Priority" = "Priorita";
+"Options" = "Options";
 "Size" = "Velikost";
 
 /* Tooltips */
@@ -109,6 +109,9 @@
 "Edit Draft..." = "Upravit koncept...";
 "Load Images" = "Nahrát obrázky";
 
+"Return Receipt" = "Return Receipt";
+
+"Priority" = "Priorita";
 "highest" = "Nejvyšší";
 "high" = "Vysoká";
 "normal" = "Normální";

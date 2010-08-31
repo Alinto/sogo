@@ -18,7 +18,7 @@
 "Contacts" = "Adresboek";
 "Attach" = "Bijlage";
 "Save" = "Opslaan";
-"Priority" = "Prioriteit";
+"Options" = "Options";
 "Size" = "Size";
 
 /* Tooltips */
@@ -109,6 +109,9 @@
 "Edit Draft..." = "Concept aanpassen...";
 "Load Images" = "Afbeeldingen laden";
 
+"Return Receipt" = "Ontvangstbevestiging";
+
+"Priority" = "Prioriteit";
 "highest" = "Hoogste";
 "high" = "Hoog";
 "normal" = "Normaal";

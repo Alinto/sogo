@@ -18,7 +18,7 @@
 "Contacts" = "Contacts";
 "Attach" = "Attach";
 "Save" = "Save";
-"Priority" = "Priority";
+"Options" = "Options";
 "Size" = "Size";
 
 /* Tooltips */
@@ -109,6 +109,9 @@
 "Edit Draft..." = "Edit Draft...";
 "Load Images" = "Load Images";
 
+"Return Receipt" = "Return Receipt";
+
+"Priority" = "Priority";
 "highest" = "Highest";
 "high" = "High";
 "normal" = "Normal";

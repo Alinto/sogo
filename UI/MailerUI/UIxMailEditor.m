@@ -78,6 +78,7 @@
   SOGoMailFolder *sentFolder;
 
   NSString *priority;
+  NSString *receipt;
   id item;
 
   /* these are for the inline attachment list */
@@ -97,8 +98,8 @@ static NSArray *infoKeys = nil;
   if (!infoKeys)
     infoKeys = [[NSArray alloc] initWithObjects:
                                   @"subject", @"to", @"cc", @"bcc", 
-                                @"from", @"replyTo", @"inReplyTo",
-                                @"priority", nil];
+                                @"from", @"inReplyTo",
+                                @"priority", @"receipt", nil];
 }
 
 - (id) init
@@ -106,6 +107,7 @@ static NSArray *infoKeys = nil;
   if ((self = [super init]))
     {
       priority = @"NORMAL";
+      receipt = nil;
     }
   
   return self;
@@ -115,6 +117,7 @@ static NSArray *infoKeys = nil;
 {
   [item release];
   [priority release];
+  [receipt release];
   [sentFolder release];
   [fromEMails release];
   [from release];
@@ -158,12 +161,22 @@ static NSArray *infoKeys = nil;
 
 - (void) setPriority: (NSString *) _priority
 {
-  ASSIGN(priority, _priority);
+  ASSIGN (priority, _priority);
 }
 
 - (NSString *) priority
 {
   return priority;
+}
+
+- (void) setReceipt: (NSString *) newReceipt
+{
+  ASSIGN (receipt, newReceipt);
+}
+
+- (NSString *) receipt
+{
+  return receipt;
 }
 
 - (NSString *) itemPriorityText
@@ -220,16 +233,6 @@ static NSArray *infoKeys = nil;
 
   return from;
 }
-
-// - (void) setReplyTo: (NSString *) ignore
-// {
-// }
-
-// - (NSString *) replyTo
-// {
-//   /* we are here for future extensibility */
-//   return @"";
-// }
 
 - (void) setSubject: (NSString *) newSubject
 {

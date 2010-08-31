@@ -18,7 +18,7 @@
 "Contacts" = "Адресная книга";
 "Attach" = "Вложить";
 "Save" = "Сохранить";
-"Priority" = "Важность";
+"Options" = "Options";
 "Size" = "Size";
 
 /* Tooltips */
@@ -109,6 +109,9 @@
 "Edit Draft..." = "Редактировать черновик...";
 "Load Images" = "Загрузить изображения";
 
+"Return Receipt" = "Return Receipt";
+
+"Priority" = "Важность";
 "highest" = "Самый высокий";
 "high" = "Высокий";
 "normal" = "Обычный";

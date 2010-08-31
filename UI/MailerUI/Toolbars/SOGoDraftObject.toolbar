@@ -6,7 +6,9 @@
       image = "tb-compose-send-flat-24x24.png";
       cssClass = "tbicon_send";
       label = "Send";
-      tooltip = "Send this message now"; },
+      tooltip = "Send this message now"; }
+  ),
+  (
     { link  = "#";
       onclick  = "return onContactAdd(null);";
       image = "tb-compose-contacts-flat-24x24.png";
@@ -27,10 +29,11 @@
       cssClass = "tbicon_save";
       label = "Save";
       tooltip = "Save this message"; },
-    { link = "#";
+    { link  = "#";
       hasMenu = YES;
-      label = "Priority";
-      onclick = "return onSelectPriority(event);";
-      image = "priority.png"; },
+      onclick = "return onSelectOptions(event);";
+      image = "options.png";
+      cssClass = "tbicon_options";
+      label = "Options"; }
   )
 )

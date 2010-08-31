@@ -186,7 +186,7 @@ static NSString    *userAgent      = nil;
 {
   id headerValue;
   unsigned int count;
-  NSString *messageID, *priority;
+  NSString *messageID, *priority, *pureSender;
 
   for (count = 0; count < 8; count++)
     {
@@ -206,7 +206,6 @@ static NSString    *userAgent      = nil;
     }
   
   priority = [newHeaders objectForKey: @"priority"];
-  
   if (!priority || [priority isEqualToString: @"NORMAL"])
     {
       [headers removeObjectForKey: @"X-Priority"];
@@ -227,6 +226,15 @@ static NSString    *userAgent      = nil;
     {
       [headers setObject: @"5 (Lowest)"  forKey: @"X-Priority"];
     }
+
+  if ([[newHeaders objectForKey: @"receipt"] isEqualToString: @"true"])
+    {
+      pureSender = [[newHeaders objectForKey: @"from"] pureEMailAddress];
+      if (pureSender)
+        [headers setObject: pureSender forKey: @"Disposition-Notification-To"];
+    }
+  else
+    [headers removeObjectForKey: @"Disposition-Notification-To"];
 }
 
 - (NSDictionary *) headers
@@ -446,7 +454,6 @@ static NSString    *userAgent      = nil;
   while ((currentAddress = [addresses nextObject]))
     if ([currentAddress email])
       [_ma addObject: [currentAddress email]];
-    
 }
 
 - (void) _addRecipients: (NSArray *) recipients
@@ -1328,6 +1335,9 @@ static NSString    *userAgent      = nil;
   if ([(s = [headers objectForKey: @"X-Priority"]) length] > 0)
     [map setObject: s
 	 forKey: @"X-Priority"];
+  if ([(s = [headers objectForKey: @"Disposition-Notification-To"]) length] > 0)
+    [map setObject: s
+	 forKey: @"Disposition-Notification-To"];
 
   [self _addHeaders: _headers toHeaderMap: map];
   

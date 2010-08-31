@@ -433,7 +433,7 @@ function focusCKEditor(event) {
 
 function initializePriorityMenu() {
     var priority = $("priority").value.toUpperCase();
-    var priorityMenu = $("priority-menu").childNodesWithTag("ul")[0];
+    var priorityMenu = $("priorityMenu").childNodesWithTag("ul")[0];
     var menuEntries = $(priorityMenu).childNodesWithTag("li");
     var chosenNode;
     if (priority == "HIGHEST")
@@ -448,19 +448,39 @@ function initializePriorityMenu() {
         chosenNode = menuEntries[2];
     priorityMenu.chosenNode = chosenNode;
     $(chosenNode).addClassName("_chosen");
+}
 
-    var menuItems = $("itemPriorityList").childNodesWithTag("li");
-    for (var i = 0; i < menuItems.length; i++)
-        menuItems[i].observe("mousedown",
-                             onMenuSetPriority.bindAsEventListener(menuItems[i]),
-                             false);
+function onMenuCheckReturnReceipt() {
+    event.cancelBubble = true;
+
+    this.enabled = !this.enabled;
+    var enabled = this.enabled;
+    if (enabled) {
+        this.addClassName("_chosen");
+    }
+    else {
+        this.removeClassName("_chosen");
+    }
+
+    var receiptInput = $("receipt");
+    receiptInput.value = (enabled ? "true" : "false") ;
 }
 
 function getMenus() {
-    return { "attachmentsMenu": new Array(null, onRemoveAttachments,
-                                          onSelectAllAttachments,
-                                          "-",
-                                          clickedEditorAttach, null) };
+    return {
+            "attachmentsMenu": [ null, onRemoveAttachments,
+                                 onSelectAllAttachments,
+                                 "-",
+                                 clickedEditorAttach, null],
+            "optionsMenu": [ onMenuCheckReturnReceipt,
+                             "-",
+                             "priorityMenu" ],
+            "priorityMenu": [ onMenuSetPriority,
+                              onMenuSetPriority,
+                              onMenuSetPriority,
+                              onMenuSetPriority,
+                              onMenuSetPriority ]
+            };
 }
 
 function onRemoveAttachments() {
@@ -537,12 +557,12 @@ function onSelectAllAttachments() {
         nodes[i].selectElement();
 }
 
-function onSelectPriority(event) {
+function onSelectOptions(event) {
     if (event.button == 0 || (isSafari() && event.button == 1)) {
         var node = getTarget(event);
         if (node.tagName != 'A')
             node = $(node).up("A");
-        popupToolbarMenu(node, "priority-menu");
+        popupToolbarMenu(node, "optionsMenu");
         Event.stop(event);
     }
 }

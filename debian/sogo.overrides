@@ -391,7 +391,6 @@ sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/non_sorted.g
 sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/offline-settings.png
 sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/plus.png
 sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/previous.gif
-sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/priority.png
 sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/properties.png
 sogo: embedded-javascript-library usr/lib/GNUstep/SOGo/WebServerResources/prototype.js
 sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/quota-level-alert.png
