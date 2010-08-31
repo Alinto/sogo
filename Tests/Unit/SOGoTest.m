@@ -164,7 +164,7 @@ static NSString *SOGoTestAssertException = @"SOGoTestAssertException";
   int count, max;
   SEL testMethod;
 
-  methods = GSObjCMethodNames (self);
+  methods = GSObjCMethodNames (self, NO);
   max = [methods count];
   for (count = 0; count < max; count++)
     {
