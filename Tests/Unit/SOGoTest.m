@@ -164,7 +164,12 @@ static NSString *SOGoTestAssertException = @"SOGoTestAssertException";
   int count, max;
   SEL testMethod;
 
+#if ((GNUSTEP_BASE_MAJOR_VERSION > 1)                                   \
+     || ((GNUSTEP_BASE_MAJOR_VERSION == 1) && (GNUSTEP_BASE_MINOR_VERSION >= 20)))
   methods = GSObjCMethodNames (self, NO);
+#else
+  methods = GSObjCMethodNames (self);
+#endif
   max = [methods count];
   for (count = 0; count < max; count++)
     {

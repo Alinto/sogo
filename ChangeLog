@@ -1,5 +1,7 @@
 2010-09-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Tests/Unit/SOGoTest.m (-run): fixed build on GNUstep >= 1.20.
+
 	* UI/MailerUI/UIxMailView.m (-sendMDNAction): new action for
 	sending an MDN from the confirmation dialog.
 
