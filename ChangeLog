@@ -1,5 +1,8 @@
 2010-09-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailView.m (-sendMDNAction): new action for
+	sending an MDN from the confirmation dialog.
+
 	* UI/WebServerResources/MailerUI.js: (handleReturnReceipt): new
 	function, crafted to be executed both from the main window and the
 	popup mail window, where the value of the new "shouldAskReceipt"

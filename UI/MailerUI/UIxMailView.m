@@ -542,25 +542,16 @@ static NSString *mailETag = nil;
                                               @" oneself.")];
       else
         {
-          if ([self _messageHasDraftOrMDNSentFlag])
-            response = [self responseWithStatus: 403
-                                      andString: (@"The original message is"
-                                                  @" flagged as a draft or an"
-                                                  @" MDN has already been sent"
-                                                  @" for it.")];
-          else
+          action = [self _receiptAction];
+          if ([action isEqualToString: @"ask"])
             {
-              action = [self _receiptAction];
-              if ([action isEqualToString: @"ask"])
-                {
-                  [self _sendEMailReceiptTo: email];
-                  response = [self responseWithStatus: 204];
-                }
-              else
-                response = [self responseWithStatus: 403
-                                          andString: (@"No notification header found in"
-                                                      @" original message.")];
+              [self _sendEMailReceiptTo: email];
+              response = [self responseWithStatus: 204];
             }
+          else
+            response = [self responseWithStatus: 403
+                                      andString: (@"No notification header found in"
+                                                  @" original message.")];
         }
     }
   else
