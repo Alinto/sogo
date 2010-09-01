@@ -1,5 +1,10 @@
 2010-08-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/NSScanner+BSJSONAdditions.m (-scanJSONValue:):
+	make use of NSUInteger rather than "unsigned int" for length
+	values.
+	(-scanJSONNumber:): now scan float numbers too.
+
 	* UI/WebServerResources/UIxMailEditor.js
 	(onMenuCheckReturnReceipt): new function.
 	(getMenus): added entries for initializing the new "Options" menu
