@@ -28,6 +28,10 @@ TABLE, DIV, IMG
   margin: 0px;
   padding: 0px; }
 
+FIELDSET
+{ border: 1px solid #999;
+  margin-bottom: 2px; }
+
 IMG#progressIndicator
 { float: right;
   margin-top: 1.5em;
