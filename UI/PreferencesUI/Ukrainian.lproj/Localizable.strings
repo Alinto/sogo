@@ -178,6 +178,18 @@
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
 
+/* Return receipts */
+"When I receive a request for a return receipt:" = "When I receive a request for a return receipt:";
+"Never send a return receipt" = "Never send a return receipt";
+"Allow return receipts for some messages" = "Allow return receipts for some messages";
+"If I'm not in the To or Cc of the message:" = "If I'm not in the To or Cc of the message:";
+"If the sender is outside my domain:" = "If the sender is outside my domain:";
+"In all other cases:" = "In all other cases:";
+
+"Never send" = "Never send";
+"Always send" = "Always send";
+"Ask me" = "Ask me";
+
 /* Filters - UIxPreferences */
 "Filters" = "Фільтри";
 "Active" = "Увімкнено";

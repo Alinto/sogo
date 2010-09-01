@@ -176,6 +176,18 @@
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
 
+/* Return receipts */
+"When I receive a request for a return receipt:" = "Lors de la réception d'une demande d'accusé de réception :";
+"Never send a return receipt" = "Ne jamais envoyer d'accusé de réception";
+"Allow return receipts for some messages" = "Autoriser les accusés de réception pour certains messages";
+"If I'm not in the To or Cc of the message:" = "Si je ne suis pas dans le destinataire ou en copie du message :";
+"If the sender is outside my domain:" = "Si l'expéditeur est hors de mon domaine :";
+"In all other cases:" = "Dans tous les autres cas :";
+
+"Never send" = "Ne jamais envoyer";
+"Always send" = "Toujours envoyer";
+"Ask me" = "Me demander";
+
 /* Filters - UIxPreferences */
 "Filters" = "Filtres";
 "Active" = "Actif";
