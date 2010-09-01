@@ -83,6 +83,12 @@
 - (NSData *) content;
 - (NSString *) contentAsString;
 
+- (NSString *) cc;
+- (NSString *) from;
+- (NSString *) inReplyTo;
+- (NSString *) messageId;
+- (NSString *) received;
+
 /* bulk fetching of plain/text content */
 
 - (NSArray *) plainTextContentFetchKeys;
