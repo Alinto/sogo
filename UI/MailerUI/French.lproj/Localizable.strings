@@ -111,6 +111,7 @@
 
 "Return Receipt" = "Accusé de réception";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "L'auteur de ce message a souhaité être prévenu lorsque vous lirez ce message. Souhaitez-vous avertir l'expéditeur ?";
+"Return Receipt (displayed) - %@"= "Accusé de réception (affiché) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Ceci est un accusé de réception pour le courrier électronique envoyé à %@.\n\nNote : Cet accusé de réception indique seulement que le message a été affiché sur l'ordinateur du destinataire. Il n'y a aucune garantie que le destinataire ait lu ou compris le contenu du message.";
 
 "Priority" = "Priorité";
