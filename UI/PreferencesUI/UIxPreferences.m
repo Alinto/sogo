@@ -1096,6 +1096,45 @@
     }
 }
 
+- (BOOL) _validateReceiptAction: (NSString *) action
+{
+  return ([action isKindOfClass: [NSString class]]
+          && ([action isEqualToString: @"ignore"]
+              || [action isEqualToString: @"send"]
+              || [action isEqualToString: @"ask"]));
+}
+
+- (void) _extractMainReceiptsPreferences: (NSDictionary *) account
+{
+  /* We perform some validation here as we have no guaranty on the input
+     validity. */
+  NSDictionary *receipts;
+  NSString *action;
+
+  if ([account isKindOfClass: [NSDictionary class]])
+    {
+      receipts = [account objectForKey: @"receipts"];
+      if ([receipts isKindOfClass: [NSDictionary class]])
+        {
+          action = [receipts objectForKey: @"receiptAction"];
+          [userDefaults
+            setAllowUserReceipt: [action isEqualToString: @"allow"]];
+
+          action = [receipts objectForKey: @"receiptNonRecipientAction"];
+          if ([self _validateReceiptAction: action])
+            [userDefaults setUserReceiptNonRecipientAction: action];
+
+          action = [receipts objectForKey: @"receiptOutsideDomainAction"];
+          if ([self _validateReceiptAction: action])
+            [userDefaults setUserReceiptOutsideDomainAction: action];
+
+          action = [receipts objectForKey: @"receiptAnyAction"];
+          if ([self _validateReceiptAction: action])
+            [userDefaults setUserReceiptAnyAction: action];
+        }
+    }
+}
+
 - (BOOL) _validateAccountIdentities: (NSArray *) identities
 {
   static NSString *identityKeys[] = { @"fullName", @"email", nil };
@@ -1160,9 +1199,11 @@
 
   if (!knownKeys)
     {
-      knownKeys = [NSArray arrayWithObjects: @"name", @"serverName",
+      knownKeys = [NSArray arrayWithObjects: @"name", @"serverName", @"port",
                            @"userName", @"password", @"encryption",
-                           @"identities", @"mailboxes", @"port", nil];
+                           @"identities", @"mailboxes",
+                           @"receipts",
+                           nil];
       [knownKeys retain];
     }
 
@@ -1254,6 +1295,7 @@
       if (max > 0)
         {
           [self _extractMainSignature: [accounts objectAtIndex: 0]];
+          [self _extractMainReceiptsPreferences: [accounts objectAtIndex: 0]];
 
           if ([self mailAuxiliaryUserAccountsEnabled])
             [self _extractAuxiliaryAccounts: accounts];

@@ -1425,6 +1425,35 @@ function onAttachmentClick (event) {
     return false;
 }
 
+function handleReturnReceipt() {
+    var input = $("shouldAskReceipt");
+    if (input) {
+        if (eval(input.value)) {
+            showConfirmDialog(_("Return Receipt"),
+                              _("The sender of this message has asked to be notified when you read this message. "
+                                + "Do you with to notify the sender?"),
+                              onReadMessageConfirmMDN);
+        }
+    }
+}
+
+function onReadMessageConfirmMDN(event) {
+    var messageURL;
+    if (window.opener && window.opener.Mailer) {
+        /* from UIxMailPopupView */
+        messageURL = (ApplicationBaseURL + encodeURI(mailboxName)
+                      + "/" + messageName);
+    }
+    else {
+        /* from main window */
+        messageURL = (ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/"
+                      + Mailer.currentMessages[Mailer.currentMailbox]);
+    }
+    disposeDialog();
+    var url = messageURL + "/sendMDN";
+    triggerAjaxRequest(url);
+}
+
 function loadMessageCallback(http) {
     var div = $('messageContent');
 
@@ -1435,7 +1464,7 @@ function loadMessageCallback(http) {
         resizeMailContent();
         configureLoadImagesButton();
         configureSignatureFlagImage();
-
+        handleReturnReceipt();
         if (http.callbackData) {
             var cachedMessage = new Array();
 	    var msguid = http.callbackData.msguid;

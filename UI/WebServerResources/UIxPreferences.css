@@ -190,3 +190,6 @@ P.infoMessage#passwordError
   height: 90px;
   margin: 0px auto;
   margin-bottom: 10px; }
+
+#receiptOptions
+{ text-align: right; }

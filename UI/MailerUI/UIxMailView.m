@@ -24,14 +24,27 @@
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSException+misc.h>
+#import <NGExtensions/NGHashMap.h>
 #import <NGExtensions/NSString+misc.h>
+
+#import <NGMime/NGMimeBodyPart.h>
+#import <NGMime/NGMimeMultipartBody.h>
+#import <NGMail/NGMimeMessage.h>
+#import <NGMail/NGMimeMessageGenerator.h>
+
 #import <NGImap4/NGImap4Client.h>
 #import <NGImap4/NGImap4Connection.h>
 #import <NGImap4/NGImap4Envelope.h>
 #import <NGImap4/NGImap4EnvelopeAddress.h>
-#import <SoObjects/Mailer/SOGoMailObject.h>
-#import <SoObjects/Mailer/SOGoMailAccount.h>
-#import <SoObjects/Mailer/SOGoMailFolder.h>
+
+#import <SOGo/NSString+Utilities.h>
+#import <SOGo/SOGoMailer.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
+#import <SOGo/SOGoUserManager.h>
+#import <Mailer/SOGoMailObject.h>
+#import <Mailer/SOGoMailAccount.h>
+#import <Mailer/SOGoMailFolder.h>
 #import <SOGoUI/UIxComponent.h>
 #import <MailPartViewers/UIxMailRenderingContext.h> // cyclic
 
@@ -40,6 +53,8 @@
 @interface UIxMailView : UIxComponent
 {
   id currentAddress;
+  NSString *shouldAskReceipt;
+  NSString *matchingIdentityEMail;
 }
 
 @end
@@ -54,7 +69,13 @@ static NSString *mailETag = nil;
                                UIX_MAILER_MAJOR_VERSION,
                                UIX_MAILER_MINOR_VERSION,
                                UIX_MAILER_SUBMINOR_VERSION];
-  NSLog(@"Note: using constant etag for mail viewer: '%@'", mailETag);
+  NSLog (@"Note: using constant etag for mail viewer: '%@'", mailETag);
+}
+
+- (void) dealloc
+{
+  [matchingIdentityEMail release];
+  [super dealloc];
 }
 
 /* accessors */
@@ -167,14 +188,390 @@ static NSString *mailETag = nil;
   if (![self message]) // TODO: redirect to proper error
     return [NSException exceptionWithHTTPStatus:404 /* Not Found */
 			reason:@"did not find specified message!"];
-  
+
   return self;
 }
 
-- (BOOL) isInlineViewer
+/* MDN */
+
+- (BOOL) _userHasEMail: (NSString *) email
 {
-  return NO;
+  NSArray *identities;
+  NSString *identityEmail;
+  SOGoMailAccount *account;
+  int count, max;
+  BOOL rc;
+
+  account = [[self clientObject] mailAccountFolder];
+  identities = [account identities];
+  max = [identities count];
+  for (count = 0; !rc && count < max; count++)
+    {
+      identityEmail = [[identities objectAtIndex: count]
+                        objectForKey: @"email"];
+      rc = [identityEmail isEqualToString: email];
+    }
+
+  return rc;
 }
+
+- (BOOL) _messageHasDraftOrMDNSentFlag
+{
+  NSArray *flags;
+  NSDictionary *coreInfos;
+
+  coreInfos = [[self clientObject] fetchCoreInfos];
+  flags = [coreInfos objectForKey: @"flags"];
+
+  return ([flags containsObject: @"draft"]
+          || [flags containsObject: @"$mdnsent"]);
+}
+
+- (NSString *) _matchingIdentityEMail
+{
+  NSMutableArray *recipients;
+  NSArray *headerRecipients;
+  NSString *currentEMail;
+  NGImap4EnvelopeAddress *address;
+  NSInteger count, max;
+  SOGoMailObject *co;
+
+  if (!matchingIdentityEMail)
+    {
+      recipients = [NSMutableArray array];
+      co = [self clientObject];
+      headerRecipients = [co toEnvelopeAddresses];
+      if ([headerRecipients count])
+        [recipients addObjectsFromArray: headerRecipients];
+      headerRecipients = [co ccEnvelopeAddresses];
+      if ([headerRecipients count])
+        [recipients addObjectsFromArray: headerRecipients];
+
+      max = [recipients count];
+      for (count = 0; !matchingIdentityEMail && count < max; count++)
+        {
+          address = [recipients objectAtIndex: count];
+          currentEMail = [NSString stringWithFormat: @"%@@%@",
+                                   [address mailbox],
+                                   [address host]];
+          if ([self _userHasEMail: currentEMail])
+            {
+              matchingIdentityEMail = currentEMail;
+              [matchingIdentityEMail retain];
+            }
+        }
+    }
+
+  return matchingIdentityEMail;
+}
+
+- (NSString *) _domainFromEMail: (NSString *) email
+{
+  NSString *domain;
+  NSRange separator;
+
+  separator = [email rangeOfString: @"@"];
+  if (separator.location != NSNotFound)
+    domain = [email substringFromIndex: NSMaxRange (separator)];
+  else
+    domain = nil;
+
+  return domain;
+}
+
+- (NSArray *) _userEMailDomains
+{
+  NSMutableArray *domains;
+  NSArray *identities;
+  NSString *email, *domain;
+  SOGoMailAccount *account;
+  NSInteger count, max;
+
+  account = [[self clientObject] mailAccountFolder];
+  identities = [account identities];
+  max = [identities count];
+  domains = [NSMutableArray arrayWithCapacity: max];
+  for (count = 0; count < max; count++)
+    {
+      email = [[identities objectAtIndex: count]
+                objectForKey: @"email"];
+      domain = [self _domainFromEMail: email];
+      if (domain)
+        [domains addObject: domain];
+    }
+
+  return domains;
+}
+
+- (BOOL) _senderIsInUserDomain: (NSDictionary *) headers
+{
+  NSString *sender, *senderDomain;
+  BOOL rc;
+
+  sender = [[headers objectForKey: @"from"] pureEMailAddress];
+  senderDomain = [self _domainFromEMail: sender];
+  if (senderDomain)
+    rc = [[self _userEMailDomains] containsObject: senderDomain];
+  else
+    rc = NO;
+
+  return rc;
+}
+
+- (NSString *) _receiptAction
+{
+  SOGoUserDefaults *ud;
+  NSString *action;
+  NSDictionary *headers;
+
+  headers = [[self clientObject] mailHeaders];
+
+  ud = [[context activeUser] userDefaults];
+  if ([ud allowUserReceipt])
+    {
+      if ([self _matchingIdentityEMail])
+        {
+          if ([self _senderIsInUserDomain: headers])
+            action = [ud userReceiptAnyAction];
+          else
+            action = [ud userReceiptOutsideDomainAction];
+        }
+      else
+        action = [ud userReceiptNonRecipientAction];
+    }
+  else
+    action = @"ignore";
+
+  return action;
+}
+
+- (void) _flagMessageWithMDNSent
+{
+  [[self clientObject] addFlags: @"$MDNSent"];
+}
+
+- (void) _appendReceiptTextToBody: (NGMimeMultipartBody *) body
+{
+  NGMutableHashMap *map;
+  NGMimeBodyPart *bodyPart;
+  NSString *textPartFormat, *textPartMessage;
+
+  map = [[NGMutableHashMap alloc] initWithCapacity: 1];
+  [map setObject: @"text/plain; charset=utf-8; format=flowed"
+          forKey: @"content-type"];
+
+  bodyPart = [[NGMimeBodyPart alloc] initWithHeader: map];
+  [map release];
+
+  textPartFormat = [self labelForKey: @"This is a Return Receipt for the mail"
+                         @" that you sent to %@.\n\nNote: This Return Receipt"
+                         @" only acknowledges that the message was displayed"
+                         @" on the recipient's computer. There is no"
+                         @" guarantee that the recipient has read or"
+                         @" understood the message contents."];
+  textPartMessage = [NSString stringWithFormat: textPartFormat,
+                              [self _matchingIdentityEMail]];
+  [bodyPart setBody: [textPartMessage
+                       dataUsingEncoding: NSUTF8StringEncoding]];
+  [body addBodyPart: bodyPart];
+  [bodyPart release];
+}
+
+- (void) _appendMDNToBody: (NGMimeMultipartBody *) body
+{
+  NGMutableHashMap *map;
+  NGMimeBodyPart *bodyPart;
+  NSString *messageId;
+  NSMutableString *mdnPartMessage;
+
+  map = [[NGMutableHashMap alloc] initWithCapacity: 3];
+  [map addObject: @"message/disposition-notification; name=\"MDNPart2.txt\""
+          forKey: @"content-type"];
+  [map addObject: @"inline" forKey: @"content-disposition"];
+  [map addObject: @"7bit" forKey: @"content-transfer-encoding"];
+
+  bodyPart = [[NGMimeBodyPart alloc] initWithHeader: map];
+  [map release];
+
+  mdnPartMessage = [[NSMutableString alloc] initWithCapacity: 100];
+  [mdnPartMessage appendFormat: @"Reporting-UA: SOGoMail %d.%d.%d\n",
+                  UIX_MAILER_MAJOR_VERSION,
+                  UIX_MAILER_MINOR_VERSION,
+                  UIX_MAILER_SUBMINOR_VERSION];
+  [mdnPartMessage appendFormat: @"Final-Recipient: rfc822;%@\n",
+                  [self _matchingIdentityEMail]];
+  messageId = [[self clientObject] messageId];
+  [mdnPartMessage appendFormat: @"Original-Message-ID: %@\n",
+                  messageId];
+  [mdnPartMessage appendString: @"Disposition:"
+                  @" manual-action/MDN-sent-manually; displayed"];
+  [bodyPart setBody: [mdnPartMessage
+                       dataUsingEncoding: NSASCIIStringEncoding]];
+  [mdnPartMessage release];
+  [body addBodyPart: bodyPart];
+  [bodyPart release];
+}
+
+- (void) _appendHeadersToBody: (NGMimeMultipartBody *) body
+{
+  NGMutableHashMap *map;
+  NGMimeBodyPart *bodyPart;
+  NSDictionary *coreInfos;
+
+  map = [[NGMutableHashMap alloc] initWithCapacity: 3];
+  [map addObject: @"text/rfc822-headers; name=\"MDNPart3.txt\""
+          forKey: @"content-type"];
+  [map addObject: @"inline" forKey: @"content-disposition"];
+  [map addObject: @"7bit" forKey: @"content-transfer-encoding"];
+
+  bodyPart = [[NGMimeBodyPart alloc] initWithHeader: map];
+  [map release];
+
+  coreInfos = [[self clientObject] fetchCoreInfos];
+  [bodyPart setBody: [coreInfos objectForKey: @"header"]];
+  [body addBodyPart: bodyPart];
+  [bodyPart release];
+}
+
+- (NGHashMap *) _receiptMessageHeaderTo: (NSString *) email
+{
+  NGMutableHashMap *map;
+  NSString *subject;
+
+  map = [[NGMutableHashMap alloc] initWithCapacity: 1];
+  [map autorelease];
+  [map setObject: email forKey: @"to"];
+  [map setObject: [self _matchingIdentityEMail] forKey: @"from"];
+  [map setObject: @"multipart/report; report-type=disposition-notification"
+          forKey: @"content-type"];
+  subject = [NSString stringWithFormat:
+                     [self labelForKey: @"Return Receipt (displayed) - %@"],
+                      [self messageSubject]];
+  [map setObject: subject forKey: @"subject"];
+
+  return map;
+}
+
+- (void) _sendEMailReceiptTo: (NSString *) email
+{
+  NGMimeMultipartBody *body;
+  NGMimeMessage *message;
+  NGMimeMessageGenerator *generator;
+  SOGoDomainDefaults *dd;
+
+  message = [NGMimeMessage
+              messageWithHeader: [self _receiptMessageHeaderTo: email]];
+  body = [[NGMimeMultipartBody alloc] initWithPart: message];
+  [self _appendReceiptTextToBody: body];
+  [self _appendMDNToBody: body];
+  [self _appendHeadersToBody: body];
+  [message setBody: body];
+  [body release];
+
+  dd = [[context activeUser] domainDefaults];
+
+  generator = [NGMimeMessageGenerator new];
+  [generator autorelease];
+
+  if (![[SOGoMailer mailerWithDomainDefaults: dd]
+         sendMailData: [generator generateMimeFromPart: message]
+         toRecipients: [NSArray arrayWithObject: email]
+               sender: [self _matchingIdentityEMail]])
+    [self _flagMessageWithMDNSent];
+}
+
+- (NSString *) shouldAskReceipt
+{
+  NSDictionary *mailHeaders;
+  NSString *email, *action;
+
+  if (!shouldAskReceipt)
+    {
+      shouldAskReceipt = @"false";
+      mailHeaders = [[self clientObject] mailHeaders];
+      email = [mailHeaders objectForKey: @"disposition-notification-to"];
+      if (!email)
+        {
+          email = [mailHeaders objectForKey: @"x-confirm-reading-to"];
+          if (!email)
+            email = [mailHeaders objectForKey: @"return-receipt-to"];
+        }
+
+      if (email)
+        {
+          if (![self _userHasEMail: email]
+              && ![self _messageHasDraftOrMDNSentFlag])
+            {
+              action = [self _receiptAction];
+              if ([action isEqualToString: @"ask"])
+                {
+                  shouldAskReceipt = @"true";
+                  [self _flagMessageWithMDNSent];
+                }
+              else if ([action isEqualToString: @"send"])
+                [self _sendEMailReceiptTo: email];
+            }
+        }
+    }
+
+  return shouldAskReceipt;
+}
+
+- (WOResponse *) sendMDNAction
+{
+  WOResponse *response;
+  NSDictionary *mailHeaders;
+  NSString *email, *action;
+
+  mailHeaders = [[self clientObject] mailHeaders];
+  email = [mailHeaders objectForKey: @"disposition-notification-to"];
+  if (!email)
+    {
+      email = [mailHeaders objectForKey: @"x-confirm-reading-to"];
+      if (!email)
+        email = [mailHeaders objectForKey: @"return-receipt-to"];
+    }
+
+  /* We perform most of the validation steps that were done in
+     -shouldAskReceipt in order to enforce consistency. */
+  if (email)
+    {
+      if ([self _userHasEMail: email])
+        response = [self responseWithStatus: 403
+                                  andString: (@"One cannot send an MDN to"
+                                              @" oneself.")];
+      else
+        {
+          if ([self _messageHasDraftOrMDNSentFlag])
+            response = [self responseWithStatus: 403
+                                      andString: (@"The original message is"
+                                                  @" flagged as a draft or an"
+                                                  @" MDN has already been sent"
+                                                  @" for it.")];
+          else
+            {
+              action = [self _receiptAction];
+              if ([action isEqualToString: @"ask"])
+                {
+                  [self _sendEMailReceiptTo: email];
+                  response = [self responseWithStatus: 204];
+                }
+              else
+                response = [self responseWithStatus: 403
+                                          andString: (@"No notification header found in"
+                                                      @" original message.")];
+            }
+        }
+    }
+  else
+    response = [self responseWithStatus: 403
+                              andString: (@"No notification header found in"
+                                          @" original message.")];
+  
+  return response;
+}
+
+/* /MDN */
 
 - (BOOL) mailIsDraft
 {

@@ -31,6 +31,16 @@ String.prototype.capitalize = function() {
                         });
 };
 
+String.prototype.cssIdToHungarianId = function() {
+    var parts = this.split("-");
+    var newId = parts[0];
+    for (var i = 1; i < parts.length; i++) {
+        newId += parts[i].capitalize();
+    }
+
+    return newId;
+}
+
 String.prototype.decodeEntities = function() {
     return this.replace(/&#(\d+);/g,
                         function(wholematch, parenmatch1) {

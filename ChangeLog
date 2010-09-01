@@ -1,3 +1,46 @@
+2010-09-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/MailerUI.js: (handleReturnReceipt): new
+	function, crafted to be executed both from the main window and the
+	popup mail window, where the value of the new "shouldAskReceipt"
+	field is evaluated and where a popup is displayed accordingly.
+	(onMessageConfirmMDN): new callback function for dialog mentionned
+	above.
+
+	* UI/WebServerResources/JavascriptAPIExtensions.js:
+	(String.prototype.cssIdToHungarianId) new helper method that
+	compose the hungarian representation from an identifier where the
+	parts are separated with a dash, such as css class and id
+	identifiers.
+
+	* UI/WebServerResources/UIxPreferences.js: added code for handling
+	prefs pertaining to return receipts.
+
+	* UI/MailerUI/UIxMailView.m (-shouldAskReceipt): new accessor that
+	returns a JS bool string when the current message satisfy the
+	conditions required for asking the user whether to send a receipt
+	or not. Additionally, it will send the receipt automatically if
+	the message category falls in a category where the unconditonnal
+	send is required as per the user preferences. If "ask" or "always"
+	is the returned value, the "$MDNSend" flag is automatically set on
+	the IMAP message, since we want to avoid asking the user twice.
+
+	* UI/PreferencesUI/UIxPreferences.m
+	(-_extractMainReceiptsPreferences:): new method for extracting
+	prefs pertaining to return receipts and save them in the user
+	prefs dictionary.
+
+	* SoObjects/SOGo/SOGoUserDefaults.m (-setAllowUserReceipt:)
+	(-allowUserReceipt, setUserReceiptNonRecipientAction:)
+	(userReceiptNonRecipientAction)
+	(setUserReceiptOutsideDomainAction:)
+	(userReceiptOutsideDomainAction, setUserReceiptAnyAction:)
+	(userReceiptAnyAction): new accessors pertaining to return
+	receipts.
+
+	* SoObjects/SOGo/SOGoUser.m (-_appendSystemMailAccount): append
+	preferences pertaining to return receipts.
+
 2010-08-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/NSScanner+BSJSONAdditions.m (-scanJSONValue:):

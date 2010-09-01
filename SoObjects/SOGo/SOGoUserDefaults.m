@@ -501,6 +501,46 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   return signaturePlacement;
 }
 
+- (void) setAllowUserReceipt: (BOOL) allow
+{
+  [self setBool: allow forKey: @"SOGoMailReceiptAllow"];
+}
+
+- (BOOL) allowUserReceipt
+{
+  return [self boolForKey: @"SOGoMailReceiptAllow"];
+}
+
+- (void) setUserReceiptNonRecipientAction: (NSString *) action
+{
+  [self setObject: action forKey: @"SOGoMailReceiptNonRecipientAction"];
+}
+
+- (NSString *) userReceiptNonRecipientAction
+{
+  return [self stringForKey: @"SOGoMailReceiptNonRecipientAction"];
+}
+
+- (void) setUserReceiptOutsideDomainAction: (NSString *) action
+{
+  [self setObject: action forKey: @"SOGoMailReceiptOutsideDomainAction"];
+}
+
+- (NSString *) userReceiptOutsideDomainAction
+{
+  return [self stringForKey: @"SOGoMailReceiptOutsideDomainAction"];
+}
+
+- (void) setUserReceiptAnyAction: (NSString *) action
+{
+  [self setObject: action forKey: @"SOGoMailReceiptAnyAction"];
+}
+
+- (NSString *) userReceiptAnyAction
+{
+  return [self stringForKey: @"SOGoMailReceiptAnyAction"];
+}
+
 - (void) setMailUseOutlookStyleReplies: (BOOL) newValue
 {
   [self setBool: newValue forKey: @"SOGoMailUseOutlookStyleReplies"];

@@ -225,30 +225,70 @@
                 <label><var:string label:value="Server Name:"/>
                   <input const:name="serverName" const:id="serverName" type="text" const:value=""/></label>
                 <label><var:string label:value="Port:"/>
-                  <input const:name="port" const:id="port" type="text" const:value=""/></label><br/><br/>
-                <label><var:string label:value="User Name:"/>
-                  <input const:name="userName" const:id="userName" type="text" const:value=""/></label><br/>
-                <label><var:string label:value="Password:"/>
-                  <input const:name="password" const:id="password" type="password" const:value=""/></label>
-
-                  <input const:name="encryption" type="hidden" const:value="none"/>
-                <hr/>
+                  <input const:name="port" const:id="port" type="text" const:value=""/></label><br/>
                 <var:string label:value="Encryption:"/>
                 <label><input const:name="encryption" type="radio" const:value="none"/>
                   <var:string label:value="None"/></label>
                 <label><input const:name="encryption" type="radio" const:value="ssl"/>
                   <var:string label:value="SSL"/></label>
                 <label><input const:name="encryption" type="radio" const:value="tls"/>
-                  <var:string label:value="TLS"/></label>
+                  <var:string label:value="TLS"/></label><br/>
+                <label><var:string label:value="User Name:"/>
+                  <input const:name="userName" const:id="userName" type="text" const:value=""/></label><br/>
+                <label><var:string label:value="Password:"/>
+                  <input const:name="password" const:id="password" type="password" const:value=""/></label>
+
+                  <input const:name="encryption" type="hidden" const:value="none"/>
               </fieldset>
               <fieldset const:id="identityInfo">
                 <label><var:string label:value="Full Name:"/>
                   <input const:name="fullName" const:id="fullName" type="text" const:value=""
                     /></label><br/>
                 <label><var:string label:value="Email:"/>
-                  <input const:name="email" const:id="email" type="text" const:value=""/></label><br/><br/>
+                  <input const:name="email" const:id="email" type="text" const:value=""/></label><br/>
                 <var:string label:value="Signature:"/>
                 <span id="actSignature"><!--space --></span>
+              </fieldset>
+
+              <fieldset const:id="returnReceiptsInfo">
+                <var:string
+                    label:value="When I receive a request for a return receipt:"
+                    /><br/>
+                <label><input const:name="receipt-action" const:id="receipt-action-ignore"
+                    type="radio" const:value="ignore"/>
+                  <var:string
+                    label:value="Never send a return receipt"/></label
+                  ><br/>
+                <label><input const:name="receipt-action" const:id="receipt-action-allow"
+                    type="radio" const:value="allow"/>
+                  <var:string
+                    label:value="Allow return receipts for some messages"/></label
+                  ><br/>
+                <div id="receiptOptions">
+                  <var:string
+                    label:value="If I'm not in the To or Cc of the message:"/>
+                  <select name="receipt-non-recipient-action" id="receipt-non-recipient-action">
+                    <option const:value="ignore"><var:string label:value="Never send"/></option>
+                    <option const:value="send"><var:string label:value="Always send"/></option>
+                    <option const:value="ask"><var:string label:value="Ask me"/></option>
+                  </select><br/>
+
+                  <var:string
+                    label:value="If the sender is outside my domain:"/>
+                  <select name="receipt-outside-domain-action" id="receipt-outside-domain-action">
+                    <option const:value="ignore"><var:string label:value="Never send"/></option>
+                    <option const:value="send"><var:string label:value="Always send"/></option>
+                    <option const:value="ask"><var:string label:value="Ask me"/></option>
+                  </select><br/>
+
+                  <var:string
+                    label:value="In all other cases:"/>
+                  <select name="receipt-any-action" id="receipt-any-action">
+                    <option const:value="ignore"><var:string label:value="Never send"/></option>
+                    <option const:value="send"><var:string label:value="Always send"/></option>
+                    <option const:value="ask"><var:string label:value="Ask me"/></option>
+                  </select><br/>
+                </div>
               </fieldset>
             </div>
           </div>

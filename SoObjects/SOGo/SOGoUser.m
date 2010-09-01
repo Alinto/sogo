@@ -502,12 +502,15 @@
 
 - (void) _appendSystemMailAccount
 {
-  NSString *fullName, *imapLogin, *imapServer, *signature, *encryption, *port, *scheme;
-  NSMutableDictionary *mailAccount, *identity, *mailboxes;
+  NSString *fullName, *imapLogin, *imapServer, *signature, *encryption, *port,
+    *scheme, *action;
+  NSMutableDictionary *mailAccount, *identity, *mailboxes, *receipts;
   NSMutableArray *identities;
   NSArray *mails;
   NSURL *url;
   unsigned int count, max;
+
+  [self userDefaults];
 
   mailAccount = [NSMutableDictionary new];
 
@@ -557,7 +560,7 @@
   [mailAccount setObject: port forKey: @"port"];
   [mailAccount setObject: encryption forKey: @"encryption"];
 
-
+  /* identities */
   identities = [NSMutableArray new];
   mails = [self allEmails];
   [mailAccount setObject: [mails objectAtIndex: 0] forKey: @"name"];
@@ -573,7 +576,7 @@
         fullName = login;
       [identity setObject: fullName forKey: @"fullName"];
       [identity setObject: [mails objectAtIndex: count] forKey: @"email"];
-      signature = [[self userDefaults] mailSignature];
+      signature = [_defaults mailSignature];
       if (signature)
         [identity setObject: signature forKey: @"signature"];
       [identities addObject: identity];
@@ -585,9 +588,29 @@
   [mailAccount setObject: identities forKey: @"identities"];
   [identities release];
 
+  /* receipts */
+  if ([_defaults allowUserReceipt])
+    {
+      receipts = [NSMutableDictionary new];
+
+      [receipts setObject: @"allow" forKey: @"receiptAction"];
+      action = [_defaults userReceiptNonRecipientAction];
+      if (action)
+        [receipts setObject: action forKey: @"receiptNonRecipientAction"];
+      action = [_defaults userReceiptOutsideDomainAction];
+      if (action)
+        [receipts setObject: action forKey: @"receiptOutsideDomainAction"];
+      action = [_defaults userReceiptAnyAction];
+      if (action)
+        [receipts setObject: action forKey: @"receiptAnyAction"];
+
+      [mailAccount setObject: receipts forKey: @"receipts"];
+      [receipts release];
+    }
+
+  /* mailboxes */
   mailboxes = [NSMutableDictionary new];
 
-  [self userDefaults];
   [self _migrateFolderSettings];
   [mailboxes setObject: [_defaults draftsFolderName]
                 forKey: @"Drafts"];

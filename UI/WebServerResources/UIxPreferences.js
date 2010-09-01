@@ -414,6 +414,16 @@ function initMailAccounts() {
     }
     $("actSignature").observe("click", onMailIdentitySignatureClick);
     displayMailAccount(mailAccounts[0], true);
+
+    info = $("returnReceiptsInfo");
+    inputs = info.getElementsByTagName("input");
+    for (var i = 0; i < inputs.length; i++) {
+        $(inputs[i]).observe("change", onMailReceiptInfoChange);
+    }
+    inputs = info.getElementsByTagName("select");
+    for (var i = 0; i < inputs.length; i++) {
+        $(inputs[i]).observe("change", onMailReceiptActionChange);
+    }
 }
 
 function onMailAccountInfoChange(event) {
@@ -430,6 +440,31 @@ function onMailIdentityInfoChange(event) {
     identity[this.name] = this.value;
     var hasChanged = $("hasChanged");
     hasChanged.value = "1";
+}
+
+function onMailReceiptInfoChange(event) {
+    if (!this.mailAccount["receipts"]) {
+        this.mailAccount["receipts"] = {};
+    }
+    var keyName = this.name.cssIdToHungarianId();
+    this.mailAccount["receipts"][keyName] = this.value;
+
+    var popupIds = [ "receipt-non-recipient-action",
+                     "receipt-outside-domain-action",
+                     "receipt-any-action" ];
+    var receiptActionsDisable = (this.value == "ignore");
+    for (var i = 0; i < popupIds.length; i++) {
+        var actionPopup = $(popupIds[i]);
+        actionPopup.disabled = receiptActionsDisable;
+    }
+}
+
+function onMailReceiptActionChange(event) {
+    if (!this.mailAccount["receipts"]) {
+        this.mailAccount["receipts"] = {};
+    }
+    var keyName = this.name.cssIdToHungarianId();
+    this.mailAccount["receipts"][keyName] = this.value;
 }
 
 function onMailIdentitySignatureClick(event) {
@@ -526,20 +561,26 @@ function onMailAccountEntryClick(event) {
 }
 
 function displayMailAccount(mailAccount, readOnly) {
-    var editor = $("mailAccountEditor");
-    var inputs = editor.getElementsByTagName("input");
+    var fieldSet = $("accountInfo");
+    var inputs = fieldSet.getElementsByTagName("input");
+    for (var i = 0; i < inputs.length; i++) {
+        inputs[i].disabled = readOnly;
+        inputs[i].mailAccount = mailAccount;
+    }
+    fieldSet = $("identityInfo");
+    inputs = fieldSet.getElementsByTagName("input");
     for (var i = 0; i < inputs.length; i++) {
         inputs[i].disabled = readOnly;
         inputs[i].mailAccount = mailAccount;
     }
 
-    var encryption = "none";
+    var form = $("mainForm");
 
+    var encryption = "none";
     var encRadioValues = [ "none", "ssl", "tls" ];
     if (mailAccount["encryption"]) {
         encryption = mailAccount["encryption"];
     }
-    var form = $("mainForm");
     form.setRadioValue("encryption", encRadioValues.indexOf(encryption));
 
     var port;
@@ -567,6 +608,34 @@ function displayMailAccount(mailAccount, readOnly) {
     $("email").value = identity["email"] || "";
 
     displayAccountSignature(mailAccount);
+
+    var receiptAction = "ignore";
+    var receiptActionValues = [ "ignore", "allow" ];
+    if (mailAccount["receipts"] &&  mailAccount["receipts"]["receiptAction"]) {
+        receiptAction = mailAccount["receipts"]["receiptAction"];
+    }
+    for (var i = 0; i < receiptActionValues.length; i++) {
+        var keyName = "receipt-action-" + receiptActionValues[i];
+        var input = $(keyName);
+        input.mailAccount = mailAccount;
+    }
+    form.setRadioValue("receipt-action",
+                       receiptActionValues.indexOf(receiptAction));
+    var popupIds = [ "receipt-non-recipient-action",
+                     "receipt-outside-domain-action",
+                     "receipt-any-action" ];
+    var receiptActionsDisable = (receiptAction == "ignore");
+    for (var i = 0; i < popupIds.length; i++) {
+        var actionPopup = $(popupIds[i]);
+        actionPopup.disabled = receiptActionsDisable;
+        var settingValue = "ignore";
+        var settingName = popupIds[i].cssIdToHungarianId();
+        if (mailAccount["receipts"] && mailAccount["receipts"][settingName]) {
+            settingValue = mailAccount["receipts"][settingName];
+        }
+        actionPopup.value = settingValue;
+        actionPopup.mailAccount = mailAccount;
+    }
 }
 
 function displayAccountSignature(mailAccount) {

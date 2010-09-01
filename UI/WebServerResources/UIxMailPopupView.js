@@ -14,6 +14,8 @@ function initPopupMailer(event) {
     configureSignatureFlagImage();
 
     window.messageUID = mailboxName + "/" + messageName;
+
+    handleReturnReceipt();
 }
 
 function onICalendarButtonClick(event) {

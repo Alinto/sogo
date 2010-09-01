@@ -5,6 +5,7 @@
     xmlns:uix="OGo:uix"
     xmlns:rsrc="OGo:url"
     xmlns:label="OGo:label">
+    <input type="hidden" const:id="shouldAskReceipt" var:value="shouldAskReceipt"/>
     <var:if var:condition="mailIsDraft"
       ><input const:name="editDraftButton" const:id="editDraftButton"
 	type="button" class="button" label:value="Edit Draft..."
@@ -33,10 +34,6 @@
         <td class="mailer_fieldvalue">
           <var:string value="clientObject.date" 
             formatter="context.mailDateFormatter"/>
-
-          <!-- TODO:
-          (<a rsrc:href="tbird_073_viewer.png">screenshot</a>)
-          -->
         </td>
       </tr>
 
