@@ -117,6 +117,7 @@ function extractEmailName(mailTo) {
 
     var tmpMailTo = mailTo.replace("&lt;", "<");
     tmpMailTo = tmpMailTo.replace("&gt;", ">");
+    tmpMailTo = tmpMailTo.replace("&amp;", "&");
 
     var emailNamere = /([ 	]+)?(.+)\ </;
     if (emailNamere.test(tmpMailTo)) {
@@ -207,7 +208,7 @@ function openMailComposeWindow(url, wId) {
 function openMailTo(senderMailTo) {
     var addresses = senderMailTo.split(",");
     var sanitizedAddresses = new Array();
-    var subject = extractSubject(senderMailTo);
+    var subject = extractSubject(senderMailTo);	
     for (var i = 0; i < addresses.length; i++) {
         var sanitizedAddress = sanitizeMailTo(addresses[i]);
         if (sanitizedAddress.length > 0)
@@ -218,8 +219,8 @@ function openMailTo(senderMailTo) {
 
     if (mailto.length > 0)
         openMailComposeWindow(ApplicationBaseURL
-                              + "../Mail/compose?mailto=" + encodeURI(mailto)
-                              + ((subject.length > 0)?"?subject=" + encodeURI(subject):""));
+                              + "../Mail/compose?mailto=" + encodeURIComponent(mailto)
+                              + ((subject.length > 0)?"?subject=" + encodeURIComponent(subject):""));
 
     return false; /* stop following the link */
 }

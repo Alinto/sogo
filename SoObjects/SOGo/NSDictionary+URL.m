@@ -1,6 +1,6 @@
 /* NSDictionary+URL.m - this file is part of SOGo
  *
- * Copyright (C) 2006 Inverse inc.
+ * Copyright (C) 2006-2010 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -24,6 +24,8 @@
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
 
+#import <NGExtensions/NSString+misc.h>
+
 #import "NSDictionary+URL.h"
 
 @implementation NSDictionary (SOGoURLExtension)
@@ -32,10 +34,12 @@
 {
   NSMutableString *urlParameters;
   NSArray *keys;
+  NSMutableArray *values;
   NSEnumerator *keysEnum;
-  NSString *currentKey, *separator;
+  NSString *currentKey, *separator ,*value;
   id currentValue;
   BOOL isFirst;
+  unsigned int i;
 
   urlParameters = [NSMutableString new];
   [urlParameters autorelease];
@@ -51,13 +55,22 @@
           currentValue = [self objectForKey: currentKey];
           if ([currentValue isKindOfClass: [NSArray class]])
             {
+	      values = [NSMutableArray array];
               separator = [NSString stringWithFormat: @"&%@=", currentKey];
+	      for (i = 0; i < [currentValue count]; i++)
+		{
+		  value = [currentValue objectAtIndex: i];
+		  value = [value stringByEscapingURL];
+		  [values addObject: value];
+		}
               currentValue
-                = [currentValue componentsJoinedByString: separator];
+                = [values componentsJoinedByString: separator];
             }
+	  else
+	    currentValue = [currentValue stringByEscapingURL];
           [urlParameters appendFormat: @"%@%@=%@",
                          ((isFirst) ? @"?" : @"&"),
-                         currentKey, currentValue];
+                         [currentKey stringByEscapingURL], currentValue];
 	  isFirst = NO;
 	  currentKey = [keysEnum nextObject];
 	}

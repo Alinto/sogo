@@ -1,3 +1,12 @@
+2010-09-02  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/generic.js (openMailTo): replaced calls to
+	encodeURI by encodeURIComponent to make sure symbols such as '?'
+	and '&' are encoded.
+
+	* SoObjects/SOGo/NSDictionary+URL.m (-asURLParameters): escaped
+	keys and values using [NSString+misc stringByEscapingURL] from SOPE.
+
 2010-09-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* Tests/Unit/SOGoTest.m (-run): fixed build on GNUstep >= 1.20.
