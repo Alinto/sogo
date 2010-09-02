@@ -198,7 +198,7 @@ static BOOL debugOn = YES;
         urlString = [NSString stringWithFormat: @"%@?tls=YES",
                               [self imap4URLString]];
       else
-        urlString = [self imap4URLString];
+	urlString = [self imap4URLString];
       imap4URL = [[NSURL alloc] initWithString: urlString];
     }
 
