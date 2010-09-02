@@ -1,3 +1,10 @@
+2010-09-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/UIxMailEditor.js:
+	(onMenuCheckReturnReceipt): the function has an event parameter
+	which we need. This fixes an exception occurring when clicking the
+	"Options" menu.
+
 2010-09-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* Tests/Unit/SOGoTest.m (-run): fixed build on GNUstep >= 1.20.
