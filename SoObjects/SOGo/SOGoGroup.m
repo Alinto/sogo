@@ -207,7 +207,7 @@
 
       c = [dns count] + [uids count];
 
-      NSLog(@"members count (static group): %d", c);
+      //NSLog(@"members count (static group): %d", c);
 
       // We deal with a static group, let's add the members
       if (c)
