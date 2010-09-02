@@ -1,5 +1,5 @@
 1.3-2010XXXX (1.3.2)
-- fixed various issues with some types email address fields
+- fixed various issues with some types of email address fields
 - added support for Ctrl-A (select all) in all web modules
 - added support for Ctrl-C/Ctrl-V (copy/paste) in the calendar web module
 - now builds properly with gnustep-make 2.2 and above as well as gnustep-base
