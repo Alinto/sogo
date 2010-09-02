@@ -1318,6 +1318,9 @@ DIV.gradient > IMG
   min-height: 15px; /* for 15-minute events */
   width: 100%; }
 
+DIV.text SPAN
+{ float: right; }
+
 DIV.text SPAN IMG
 { vertical-align: middle; }
 
