@@ -110,11 +110,6 @@
           protectedBy = "<public>";
           pageName = "SOGoRootPage"; 
         };
-        recover = { 
-          protectedBy = "View";
-          pageName = "SOGoRootPage"; 
-          actionName = "recover";
-        };
         index = { 
           protectedBy = "<public>";
           pageName = "SOGoRootPage"; 
@@ -162,6 +157,11 @@
         view = { 
           protectedBy = "<public>";
           pageName = "SOGoUserHomePage"; 
+        };
+        recover = { 
+          protectedBy = "View";
+          pageName = "SOGoUserHomePage"; 
+          actionName = "recover";
         };
         logoff = {
           protectedBy = "<public>";

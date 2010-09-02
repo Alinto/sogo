@@ -23,7 +23,6 @@ var logConsole;
 var logWindow = null;
 
 var queryParameters;
-var recoveryRequest = null;
 
 var menus = new Array();
 var search = {};
@@ -208,7 +207,7 @@ function openMailComposeWindow(url, wId) {
 function openMailTo(senderMailTo) {
     var addresses = senderMailTo.split(",");
     var sanitizedAddresses = new Array();
-    var subject = extractSubject(senderMailTo);	
+    var subject = extractSubject(senderMailTo);
     for (var i = 0; i < addresses.length; i++) {
         var sanitizedAddress = sanitizeMailTo(addresses[i]);
         if (sanitizedAddress.length > 0)
@@ -246,18 +245,38 @@ function createHTTPClient() {
     return new XMLHttpRequest();
 }
 
+function createCASRecoveryIFrame(http) {
+    var urlstr = UserFolderURL;
+    if (!urlstr.endsWith('/'))
+        urlstr += '/';
+    urlstr += "recover";
+
+    var newIFrame = createElement("iframe", null, "hidden",
+                                  { src: urlstr });
+    newIFrame.request = http;
+    newIFrame.observe("load", onCASRecoverIFrameLoaded);
+    document.body.appendChild(newIFrame);
+}
+
+function onCASRecoverIFrameLoaded(event) {
+    if (this.request) {
+        var request = this.request;
+        triggerAjaxRequest(request.url,
+                           request.callback,
+                           request.callbackData,
+                           request.paramHeaders);
+        this.request = null;
+    }
+    this.parentNode.removeChild(this);
+}
+
 function onAjaxRequestStateChange(http) {
     try {
         if (http.readyState == 4) {
             if (http.status == 0 && usesCASAuthentication) {
                 activeAjaxRequests--;
                 checkAjaxRequestsState();
-                recoveryRequest = http;
-                var urlstr = ApplicationBaseURL;
-                if (!urlstr.endsWith('/'))
-                    urlstr += '/';
-                urlstr += ("../../recover");
-                window.open(urlstr, "_blank");
+                createCASRecoveryIFrame(http);
             }
             else if (activeAjaxRequests > 0) {
                 if (!http.aborted)
@@ -286,16 +305,6 @@ function onAjaxRequestStateChange(http) {
         }
         log(backtrace());
         log("request url was '" + http.url + "'");
-    }
-}
-
-function recoverRequest() {
-    if (recoveryRequest) {
-        triggerAjaxRequest(recoveryRequest.url,
-                           recoveryRequest.callback,
-                           recoveryRequest.callbackData,
-                           recoveryRequest.paramHeaders);
-        recoveryRequest = null;
     }
 }
 
@@ -1694,7 +1703,7 @@ AIM = {
     frame: function(c) {
         var d = new Element ('div');
         var n = d.identify ();
-        d.innerHTML = '<iframe style="display:none" src="about:blank" id="'
+        d.innerHTML = '<iframe class="hidden" src="about:blank" id="'
             + n + '" name="' + n + '" onload="AIM.loaded(\'' + n + '\')"></iframe>';
         document.body.appendChild(d);
         var i = $(n); // TODO: useful?

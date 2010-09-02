@@ -1,3 +1,17 @@
+2010-09-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/generic.js: (recoverRequest): removed
+	obsolete function.
+	(onAjaxRequestStateChange): when a recovery request is required,
+	we now use the new "createCASRecoveryIFrame" function and the
+	"onCASRecoverIFrameLoaded" to handle the request.
+
+	* UI/MainUI/SOGoUserHomePage.m (-recoverAction): new method,
+	returning a simple text-based response with HTTP code 200,
+	ensuring that the CAS authentication process has succeeded.
+
+	* UI/MainUI/SOGoRootPage.m (-recoverAction): removed method.
+
 2010-09-02  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/generic.js (openMailTo): replaced calls to
