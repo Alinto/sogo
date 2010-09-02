@@ -534,22 +534,17 @@
   port = [url port];
 
   encryption = @"none";
-  port = @"143";
 
   if ([url query] && [[url query] caseInsensitiveCompare: @"tls=YES"] == NSOrderedSame)
     encryption = @"tls";
   
-  if ([port intValue] == 0)
+  if ([scheme caseInsensitiveCompare: @"imaps"] == NSOrderedSame && 
+      ![encryption isEqualToString: @"tls"])
     {
-      if (scheme)
-	{
-	  if ([scheme caseInsensitiveCompare: @"imaps"] == NSOrderedSame && 
-	      ![encryption isEqualToString: @"tls"])
-	    {
-	      encryption = @"ssl";	      
-	      port = @"993";
-	    }
-	}
+      encryption = @"ssl";
+      
+      if ([port intValue] == 0)
+	port = @"993";
     }
     
   if ([url host])

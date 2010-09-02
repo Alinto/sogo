@@ -521,16 +521,13 @@ static NSString *sieveScriptName = @"sogo";
 
   mailAccount = [self _mailAccount];
   encryption = [mailAccount objectForKey: @"encryption"];
-  defaultPort = [[mailAccount objectForKey: @"port"] intValue];
+  defaultPort = 143;
+  protocol = @"imaps";
 
-  if (!defaultPort)
-    defaultPort = 143;
-
-  if ([encryption isEqualToString: @"ssl"] ||
-      [encryption isEqualToString: @"tls"])
-      protocol = @"imaps";
-  else
-      protocol = @"imap";
+  if ([encryption isEqualToString: @"ssl"])
+    defaultPort = 993;
+  else if (![encryption isEqualToString: @"tls"])
+    protocol = @"imap";
 
   username = [mailAccount objectForKey: @"userName"];
   escUsername
@@ -542,8 +539,9 @@ static NSString *sieveScriptName = @"sogo";
   port = [[mailAccount objectForKey: @"port"] intValue];
   if (port && port != defaultPort)
     [imap4URLString appendFormat: @":%d", port];
+
   [imap4URLString appendString: @"/"];
-  
+
   return imap4URLString;
 }
 

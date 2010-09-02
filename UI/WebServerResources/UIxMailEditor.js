@@ -450,7 +450,7 @@ function initializePriorityMenu() {
     $(chosenNode).addClassName("_chosen");
 }
 
-function onMenuCheckReturnReceipt() {
+function onMenuCheckReturnReceipt(event) {
     event.cancelBubble = true;
 
     this.enabled = !this.enabled;
