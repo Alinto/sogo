@@ -1,5 +1,8 @@
 2010-09-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailView.m (_receiptMessageHeaderTo:): properly
+	escape the message subject in QP when needed.
+
 	* UI/WebServerResources/UIxMailEditor.js:
 	(onMenuCheckReturnReceipt): the function has an event parameter
 	which we need. This fixes an exception occurring when clicking the

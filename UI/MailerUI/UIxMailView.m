@@ -447,7 +447,8 @@ static NSString *mailETag = nil;
   subject = [NSString stringWithFormat:
                      [self labelForKey: @"Return Receipt (displayed) - %@"],
                       [self messageSubject]];
-  [map setObject: subject forKey: @"subject"];
+  [map setObject: [subject asQPSubjectString: @"utf-8"]
+          forKey: @"subject"];
 
   return map;
 }
