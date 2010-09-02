@@ -207,11 +207,7 @@
               mail = [contact objectForKey: @"c_mail"];
               //NSLog(@"   found %@ (%@) ? %@", [contact objectForKey: @"c_name"], mail,
               //      [contact description]);
-              if ([mail isNotNull]
-                  && [uniqueContacts objectForKey: mail] == nil
-                  && !(excludeGroups && [contact objectForKey: @"isGroup"]))
-                [uniqueContacts setObject: contact forKey: mail];
-              else if (!excludeLists && [[contact objectForKey: @"c_component"]
+              if (!excludeLists && [[contact objectForKey: @"c_component"]
                                           isEqualToString: @"vlist"])
                 {
                   [contact setObject: [folder nameInContainer] 
@@ -219,6 +215,10 @@
                   [uniqueContacts setObject: contact 
                                      forKey: [contact objectForKey: @"c_name"]]; 
                 }
+              else if ([mail length]
+                       && [uniqueContacts objectForKey: mail] == nil
+                       && !(excludeGroups && [contact objectForKey: @"isGroup"]))
+                [uniqueContacts setObject: contact forKey: mail];
             }
         }
       if ([uniqueContacts count] > 0)

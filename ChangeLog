@@ -9,6 +9,10 @@
 
 2010-09-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactFoldersView.m (-allContactSearchAction):
+	inverted the contact/list condition test as the vlist test is
+	faster to execute.
+
 	* UI/MailerUI/UIxMailView.m (_receiptMessageHeaderTo:): properly
 	escape the message subject in QP when needed.
 
