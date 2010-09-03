@@ -531,14 +531,15 @@
   url = [NSURL URLWithString: imapServer];
 
   scheme = [url scheme];
-  port = [url port];
+  port = ([url port] ? [url port] : @"143");
 
   encryption = @"none";
 
   if ([url query] && [[url query] caseInsensitiveCompare: @"tls=YES"] == NSOrderedSame)
     encryption = @"tls";
   
-  if ([scheme caseInsensitiveCompare: @"imaps"] == NSOrderedSame && 
+  if (scheme &&
+      [scheme caseInsensitiveCompare: @"imaps"] == NSOrderedSame && 
       ![encryption isEqualToString: @"tls"])
     {
       encryption = @"ssl";
