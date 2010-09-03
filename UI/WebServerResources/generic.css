@@ -843,6 +843,7 @@ DIV.tabsContainer > DIV.tabs > DIV.tab
   right: 5px;
   overflow: hidden; }
 
+IFRAME.hidden,
 DIV.tab
 { display: none; }
 

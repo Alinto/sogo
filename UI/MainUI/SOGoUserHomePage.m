@@ -399,4 +399,10 @@
   return result;
 }
 
+- (id) recoverAction
+{
+  return [self responseWithStatus: 200
+                        andString: @"Full recovery in place."];
+}
+
 @end
