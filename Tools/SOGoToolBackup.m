@@ -277,6 +277,13 @@
   //                  forKey: @"displayname"];
   records = [gcsFolder fetchFields: fields
                 fetchSpecification: nil];
+  
+  if (!records)
+    {
+      NSLog(@"Unable to extract records for folder %@", folder);
+      return NO;
+    }
+
   [tableRecord setObject: records forKey: @"records"];
   [tableRecord setObject: [self fetchFolderDisplayName: folder
                                                 withFM: fm]
