@@ -263,6 +263,7 @@
   NSArray *records;
   static NSArray *fields = nil;
   NSMutableDictionary *tableRecord;
+  BOOL rc;
 
   if (!fields)
     {
@@ -277,22 +278,24 @@
   //                  forKey: @"displayname"];
   records = [gcsFolder fetchFields: fields
                 fetchSpecification: nil];
-  
-  if (!records)
+  if (records)
+    { 
+      [tableRecord setObject: records forKey: @"records"];
+      [tableRecord setObject: [self fetchFolderDisplayName: folder
+                                                    withFM: fm]
+                      forKey: @"displayname"];
+      [tableRecord setObject: [self fetchFolderACL: gcsFolder]
+                      forKey: @"acl"];
+      [folderRecord setObject: tableRecord forKey: folder];
+      rc = YES;
+   }
+  else
     {
       NSLog(@"Unable to extract records for folder %@", folder);
-      return NO;
+      rc = NO;
     }
 
-  [tableRecord setObject: records forKey: @"records"];
-  [tableRecord setObject: [self fetchFolderDisplayName: folder
-                                                withFM: fm]
-                  forKey: @"displayname"];
-  [tableRecord setObject: [self fetchFolderACL: gcsFolder]
-                  forKey: @"acl"];
-  [folderRecord setObject: tableRecord forKey: folder];
-
-  return YES;
+  return rc;
 }
 
 - (BOOL) extractUserFolders: (NSString *) uid
