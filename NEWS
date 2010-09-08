@@ -4,6 +4,13 @@
 - added support for Ctrl-C/Ctrl-V (copy/paste) in the calendar web module
 - now builds properly with gnustep-make >= 2.2 and gnustep-base >= 1.20
 - added return receipts support in the webmail interface
+- added CardDAV support (Apple AddressBook and iPhone)
+- added support for multiple, external IMAP accounts
+- added SSL/TLS support for IMAP accounts (system and external)
+- improved and standardized alerts in all web modules
+- added differentiation of public, private and confidential events
+- added display of unread messages count for all mailboxes
+- added support for email event reminders
 
 1.3-20100819 (1.3.1)
 --------------------
