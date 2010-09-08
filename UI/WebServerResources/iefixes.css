@@ -57,6 +57,11 @@ TABLE.messageList TR._selected TD
 /*DIV#contactFoldersList SPAN.toolbarButton
 { padding: 2px; } */
 
+/* UIxContactEditor */
+
+DIV#editorTabs TABLE.frame INPUT.textField
+{ margin: 0px; }
+
 /* SchedulerUI */
 
 DIV.event > DIV.eventInside
