@@ -1,3 +1,9 @@
+2010-09-09  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* Main/NSException+Stacktrace.m - reworked entirely
+	so we use the backtrace() function to generate an
+	interesting backtrace when an exception is raised
+
 2010-09-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/generic.js: (recoverRequest): removed
