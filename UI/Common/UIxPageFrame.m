@@ -546,7 +546,7 @@
   cc = [[context request] clientCapabilities];
 
   //NSLog(@"Browser = %@", [cc description]);
-//   NSLog(@"User agent = %@", [cc userAgent]);
+  //NSLog(@"User agent = %@", [cc userAgent]);
   //NSLog(@"Browser major version = %i", [cc majorVersion]);
 
   return (([[cc userAgentType] isEqualToString: @"IE"]
@@ -557,6 +557,7 @@
 	      && [cc majorVersion] >= 3)
 	  || ([[cc userAgentType] isEqualToString: @"Konqueror"]
 	      && [cc majorVersion] >= 4)
+	  || [[cc userAgentType] isEqualToString: @"Opera"]
 	   );
 }
 

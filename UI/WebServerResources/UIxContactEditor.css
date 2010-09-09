@@ -29,12 +29,7 @@ DIV#editorTabs DIV.tab TD.titleCell
 { text-align: left;
   font-weight: bold; }
 
-/* DIV#contactInfos INPUT.textField,
-DIV#contactInfos TABLE
-{ width: 100%; }
- */
-
-DIV#contactInfos INPUT.textField
+INPUT.textField
 { width: 60%; }
 
 TD#htmlMailFormat

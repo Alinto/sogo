@@ -52,7 +52,7 @@
     },
     {
       columnName = c_cycleinfo;
-      sqlType    = "VARCHAR(1000)";
+      sqlType    = "VARCHAR(1000000)";
       allowsNull = YES;
     },
     {
