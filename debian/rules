@@ -68,7 +68,8 @@ binary-arch: build-arch install-arch
 	dh_md5sums
 	dh_builddeb
 
-binary-indep:
+binary-indep: build install
+# We have nothing to do by default.
 
 
 binary:
