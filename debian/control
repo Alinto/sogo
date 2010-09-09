@@ -24,6 +24,7 @@ Description: a modern and scalable groupware
 
 Package: sogo-dbg
 Section: debug
+Priority: extra
 Architecture: any
 Depends: sogo (= ${binary:Version}), ${misc:Depends}
 Description: a modern and scalable groupware - debugging symbols
