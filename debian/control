@@ -25,7 +25,7 @@ Description: a modern and scalable groupware
 Package: sogo-dbg
 Section: debug
 Architecture: any
-Depends: sogo (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
+Depends: sogo (= ${binary:Version}), ${misc:Depends}
 Description: a modern and scalable groupware - debugging symbols
  SOGo is a groupware server built around OpenGroupware.org (OGo) and
  the SOPE application server with focus on scalability.
