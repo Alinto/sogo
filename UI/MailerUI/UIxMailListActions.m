@@ -668,7 +668,13 @@
       [msg addObject: [self msgRowID]];
 
       // uid
-      [msg addObject: [message objectForKey: @"uid"]];
+      if ([message objectForKey: @"uid"])
+	{
+	  [msg addObject: [message objectForKey: @"uid"]];
+	  [headers addObject: msg];
+	}
+      else
+	[self logWithFormat: @"Invalid UID for message: %@", message];
       
       [headers addObject: msg];
       
