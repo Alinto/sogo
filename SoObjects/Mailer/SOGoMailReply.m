@@ -134,5 +134,8 @@
 @implementation SOGoMailRussianReply
 @end
 
+@implementation SOGoMailUkrainianReply
+@end
+
 @implementation SOGoMailWelshReply
 @end
