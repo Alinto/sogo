@@ -1,3 +1,8 @@
+2010-09-13  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+        * Updated Ukrainian translation - patch from
+	Oleksa Stasevych <oleksiy.stasevych@gmail.com>
+
 2010-09-09  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* Main/NSException+Stacktrace.m - reworked entirely
