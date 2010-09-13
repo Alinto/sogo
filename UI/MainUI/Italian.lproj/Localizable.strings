@@ -8,7 +8,7 @@
 "Connect" = "Entra";
 
 "Wrong username or password." = "Username o password non corretti.";
-"cookiesNotEnabled" = "You cannot login because your browser's cookies are disabled. Please enable cookies in your browser's settings and try again.";
+"cookiesNotEnabled" = "Non è possibile eseguire il login perchè il browser non ha i cookies abilitati. Prego abilitare i cookies nel preferenze del proprio bowser e riprovare.";
 
 "browserNotCompatible" = "La versione del browser utilizzato non è supportata. Raccomandiamo l'utilizzo di Firefox. Clicca sul link per scaricarne l'ultima versione disponibile.";
 "alternativeBrowsers" = "Alternativamente, puoi utilizzare questi browser compatibili";
@@ -31,7 +31,7 @@
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
 
-"About" = "About";
+"About" = "Informazioni";
 "AboutBox" = "SOGo  is a groupware server built around OpenGroupware.org (OGo) and the SOPE application server.  It focuses on scalability.<br/><br/>
 SOGo provides a rich AJAX-based Web interface and supports multiple native clients through the use of standard protocols such as CalDAV, CardDAV and GroupDAV.<br/><br/>
 Copyright © 2006-2009 Inverse inc.<br/>
@@ -40,32 +40,32 @@ This software are distributed under the <a href=\"http://gnu.org/licenses/gpl.ht
 Parts of this software are distributed under the GNU LGPL version 2.<br/><br/>
 This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.";
 
-"Your account was locked due to too many failed attempts." = "Your account was locked due to too many failed attempts.";
-"Your account was locked due to an expired password." = "Your account was locked due to an expired password.";
-"Login failed due to unhandled error case: " = "Login failed due to unhandled error case: ";
-"Change your Password" = "Change your Password";
-"Your password has expired, please enter a new one below:" = "Your password has expired, please enter a new one below:";
-"Password must not be empty." = "Password must not be empty.";
-"The passwords do not match. Please try again." = "The passwords do not match. Please try again.";
-"Password Grace Period" = "Password Grace Period";
-"You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog." = "You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog.";
-"Password about to expire" = "Password about to expire";
-"Your password is going to expire in %{0} %{1}." = "Your password is going to expire in %{0} %{1}.";
-"days" = "days";
-"hours" = "hours";
-"minutes" = "minutes";
-"seconds" = "seconds";
-"Password change failed" = "Password change failed";
-"Password change failed - Permission denied" = "Password change failed - Permission denied";
-"Password change failed - Insufficient password quality" = "Password change failed - Insufficient password quality";
-"Password change failed - Password is too short" = "Password change failed - Password is too short";
-"Password change failed - Password is too young" = "Password change failed - Password is too young";
-"Password change failed - Password is in history" = "Password change failed - Password is in history";
-"Unhandled policy error: %{0}" = "Unhandled policy error: %{0}";
-"Unhandled error response" = "Unhandled error response";
-"Password change is not supported." = "Password change is not supported.";
-"Unhandled HTTP error code: %{0}" = "Unhandled HTTP error code: %{0}";
-"New password:" = "New password:";
-"Confirmation:" = "Confirmation:";
-"Cancel" = "Cancel";
-"Please wait..." = "Please wait...";
+"Your account was locked due to too many failed attempts." = "Account bloccato a causa di troppi tentativi falliti.";
+"Your account was locked due to an expired password." = "Account bloccato per password scaduta.";
+"Login failed due to unhandled error case: " = "Login fallito a causa di un errore non gestito: ";
+"Change your Password" = "Cambia la tua password";
+"Your password has expired, please enter a new one below:" = "La tua password è scaduta, prego inserire la nuova password qui sotto:";
+"Password must not be empty." = "La password non può essere vuota.";
+"The passwords do not match. Please try again." = "Le password non coincidono. Prego riprovare.";
+"Password Grace Period" = "Periodo di tolleranza password";
+"You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog." = "Hai %{0} login rimamenti prima che il tuo account sia bloccato. Prego cambiare la tua password nel pannello delle preferenze.";
+"Password about to expire" = "Password in scadenza";
+"Your password is going to expire in %{0} %{1}." = "La tua password scadrà in %{0} %{1}.";
+"days" = "giorni";
+"hours" = "ore";
+"minutes" = "minuti";
+"seconds" = "secondi";
+"Password change failed" = "Cambio password fallito";
+"Password change failed - Permission denied" = "Cambio password fallito - Permesso negato";
+"Password change failed - Insufficient password quality" = "Cambio password fallito - Qualità password insufficente";
+"Password change failed - Password is too short" = "Cambio password fallito - La password è troppo corta";
+"Password change failed - Password is too young" = "Cambio password fallito - Password cambiata troppo di recente";
+"Password change failed - Password is in history" = "Cambio password fallito - La password è nello storico";
+"Unhandled policy error: %{0}" = "Errore di policy non gestito: %{0}";
+"Unhandled error response" = "Risposta con errore non gestito";
+"Password change is not supported." = "Cambio di password non supportato.";
+"Unhandled HTTP error code: %{0}" = "Codice errore HTTP non gestito: %{0}";
+"New password:" = "Nuova password:";
+"Confirmation:" = "Conferma:";
+"Cancel" = "Cancella";
+"Please wait..." = "Prego attendere...";

@@ -2,7 +2,7 @@
 
 "Contact" = "Contatto";
 "Address" = "Indirizzo";
-"Photos" = "Photos";
+"Photos" = "Foto";
 "Other" = "Altro";
 
 "Address Books" = "Rubrica";
@@ -36,7 +36,7 @@
 "delete" = "cancella";
 "edit" = "modifica";
 "invalidemailwarn" = "L'indirizzo email specificato non è valido";
-"invaliddatewarn" = "The specified date is invalid.";
+"invaliddatewarn" = "La data specificata non è valida.";
 "new" = "nuovo";
 "Preferred Phone"   = "Telefono lavoro";
 
@@ -51,7 +51,7 @@
 "Edit the selected card" = "Modifica il contatto selezionato";
 "Send a mail message" = "Invia un'email";
 "Delete selected card or address book" = "Cancella il contatto selezionato";
-"Reload all contacts" = "Reload all contacts";
+"Reload all contacts" = "Ricarica tutti i contatti";
 
 "htmlMailFormat_UNKNOWN" = "Sconosciuto";
 "htmlMailFormat_FALSE" = "Testo normale";
@@ -115,7 +115,7 @@
 "Timezone:" = "Fuso orario:";
 "Birthday:" = "Data di Nascita:";
 "Birthday (yyyy-mm-dd):" = "Data di Nascita (yyyy-mm-dd):";
-"Freebusy URL:" = "Freebusy URL:";
+"Freebusy URL:" = "Libero-occupato URL:";
 
 "Add as..." = "Aggiungi come...";
 "Recipient" = "Destinatario";
@@ -138,7 +138,7 @@
 = "Sei sicuro di voler eliminare i contatti selezionati?";
 
 "You cannot delete the card of \"%{0}\"."
-= "You cannot delete the card of \"%{0}\".";
+= "Non è possibile eliminare il contatto di \"%{0}\".";
 
 "Address Book Name" = "Nome della Rubrica";
 
@@ -149,8 +149,8 @@
 
 "User rights for:" = "Permessi per:";
 
-"Any Authenticated User" = "Any Authenticated User";
-"Public Access" = "Public Access";
+"Any Authenticated User" = "Utenti autenticati";
+"Public Access" = "Accesso pubblico";
 
 "This person can add cards to this addressbook."
 = "Questa persona può aggiungere contatti a questa rubrica.";
@@ -170,28 +170,28 @@
 
 /* Error messages for move and copy */
 
-"SoAccessDeniedException" = "You cannot write to this address book.";
-"Forbidden" = "You cannot write to this address book.";
-"Invalid Contact" = "The selected contact no longer exists.";
-"Unknown Destination Folder" = "The chosen destination address book no longer exists.";
+"SoAccessDeniedException" = "Non è possibile scrivere questa rubrica.";
+"Forbidden" = "Non è possibile scrivere questa rubrica.";
+"Invalid Contact" = "Il contatto selezionato non esiste più.";
+"Unknown Destination Folder" = "La rubrica selezionata come destinazione non esiste più.";
 
 /* Lists */
-"List details" = "List details";
-"List name:" = "List name:";
-"List nickname:" = "List nickname:";
-"List description:" = "List description:";
-"Members" = "Members";
-"Contacts" = "Contacts";
-"Add" = "Add";
-"Lists can't be moved or copied." = "Lists can't be moved or copied.";
-"Export" = "Export";
-"Export Address Book..." = "Export Address Book...";
-"Import Cards" = "Import Cards";
-"Select a vCard or LDIF file." = "Select a vCard or LDIF file.";
+"List details" = "Dettagli lista";
+"List name:" = "Nome lista:";
+"List nickname:" = "Soprannome lista:";
+"List description:" = "Descrizione lista:";
+"Members" = "Membri";
+"Contacts" = "Contatti";
+"Add" = "Aggiungi";
+"Lists can't be moved or copied." = "Le liste non possono essere spostate o copiate.";
+"Export" = "Esporta";
+"Export Address Book..." = "Esporta rubrica...";
+"Import Cards" = "Importa contatti";
+"Select a vCard or LDIF file." = "Seleziona una vCard o LDIF file.";
 "Upload" = "Upload";
-"Done" = "Done";
-"An error occured while importing contacts." = "An error occured while importing contacts.";
-"No card was imported." = "No card was imported.";
-"A total of %{0} cards were imported in the addressbook." = "A total of %{0} cards were imported in the addressbook.";
+"Done" = "Fatto";
+"An error occured while importing contacts." = "Si è verificato un errore durante l'importazione dei contatti.";
+"No card was imported." = "Nessun contatto importato.";
+"A total of %{0} cards were imported in the addressbook." = "Sono stati importati %{0} contatti nella rubrica.";
 
-"Reload" = "Reload";
+"Reload" = "Ricarica";

@@ -46,8 +46,8 @@
 "dayLabelFormat" = "%d/%m/%Y";
 "today" = "Oggi";
 
-"Previous Day" = "Previous Day";
-"Next Day" = "Next Day";
+"Previous Day" = "Giorno precedente";
+"Next Day" = "Giorno successivo";
 
 /* Week */
 
@@ -56,8 +56,8 @@
 
 "Week %d" = "Settimana %d";
 
-"Previous Week" = "Previous Week";
-"Next Week" = "Next Week";
+"Previous Week" = "Settimana precedente";
+"Next Week" = "Settimana successiva";
 
 /* Month */
 
@@ -89,8 +89,8 @@
 "a3_November" = "Novembre";
 "a3_December" = "Dicembre";
 
-"Previous Month" = "Previous Month";
-"Next Month" = "Next Month";
+"Previous Month" = "Mese precedente";
+"Next Month" = "Mese successivo";
 
 /* Year */
 
@@ -103,20 +103,20 @@
 
 "New Calendar..." = "Nuovo calendario...";
 "Delete Calendar" = "Rimuovi calendario...";
-"Unsubscribe Calendar" = "Unsubscribe Calendar";
+"Unsubscribe Calendar" = "Rimuovi la sottoscrizione al calendario";
 "Sharing..." = "Condivisione";
 "Export Calendar..." = "Esporta calendario...";
-"Import Events..." = "Import Events...";
-"Import Events" = "Import Events";
+"Import Events..." = "Importa gli eventi...";
+"Import Events" = "Importa gli eventi";
 "Select an iCalendar file (.ics)." = "Select an iCalendar file (.ics).";
 "Upload" = "Upload";
 "Publish Calendar..." = "Pubblica calendario...";
 "Reload Remote Calendars" = "Aggiorna calendari remoti";
 "Properties" = "Proprietà";
-"Done" = "Done";
-"An error occured while importing calendar." = "An error occured while importing calendar.";
-"No event was imported." = "No event was imported.";
-"A total of %{0} events were imported in the calendar." = "A total of %{0} events were imported in the calendar.";
+"Done" = "Fatto";
+"An error occured while importing calendar." = "Si è verificato un errore durante l'importazione del calendario.";
+"No event was imported." = "Nessun evento è stato importato.";
+"A total of %{0} events were imported in the calendar." = "Un totale di %{0} sono stati importati nel calendario.";
 
 "Compose E-Mail to All Attendees" = "Invia Email a tutti gli invitati";
 "Compose E-Mail to Undecided Attendees" = "Invia Email agli invitati indecisi";
@@ -133,21 +133,21 @@
 
 "User rights for:" = "Permessi per:";
 
-"Any Authenticated User" = "Any Authenticated User";
-"Public Access" = "Public Access";
+"Any Authenticated User" = "Utenti autenticati";
+"Public Access" = "Accesso pubblico";
 
 "label_Public" = "Pubblico";
 "label_Private" = "Privato";
 "label_Confidential" = "Confidenziale";
 
-"label_Viewer" = "Tutto";
-"label_DAndTViewer" = "Data e ora";
+"label_Viewer" = "Vedi tutto";
+"label_DAndTViewer" = "Vedi data e ora";
 "label_Modifier" = "Modifica";
 "label_Responder" = "Rispondi a";
 "label_None" = "Nessuno";
 
-"View All" = "Tutto";
-"View the Date & Time" = "Data e ora";
+"View All" = "Vedi tutto";
+"View the Date & Time" = "Vedi data e ora";
 "Modify" = "Modifica";
 "Respond To" = "Rispondi a";
 "None" = "Nessuno";
@@ -182,7 +182,7 @@
 
 /* Schedule */
 
-"Schedule" = "Schedule";
+"Schedule" = "Schedula";
 "No appointments found" = "Nessun appuntamento trovato";
 "Meetings proposed by you" = "Incontri proposti da te";
 "Meetings proposed to you" = "Incontri a cui sei stato invitato";
@@ -226,14 +226,14 @@
 "Category:" = "Categoria:";
 "Repeat:" = "Ripeti:";
 "Reminder:" = "Promemoria:";
-"General:" = "General:";
-"Reply:" = "Reply:";
+"General:" = "Generale:";
+"Reply:" = "Risposta:";
 
 "Target:" = "Percorso:";
 
 "attributes" = "attributi";
 "attendees" = "invitati";
-"delegated from" = "delegated from";
+"delegated from" = "delegato da";
 
 /* checkbox title */
 "is private" = "contrassegna come privato";
@@ -397,20 +397,14 @@
 "reminder_1_WEEK_BEFORE" = "1 settimana prima";
 "reminder_CUSTOM" = "Personalizza...";
 
-"reminder_MINUTES" = "minutes";
-"reminder_HOURS" = "hours";
-"reminder_DAYS" = "days";
-"reminder_BEFORE" = "before";
-"reminder_AFTER" = "after";
-"reminder_START" = "the event starts";
-"reminder_END" = "the event ends";
-"Reminder Details" = "Reminder Details";
-
-"Choose a Reminder Action" = "Choose a Reminder Action";
-"Show an Alert" = "Show an Alert";
-"Send an E-mail" = "Send an E-mail";
-"Email Organizer" = "Email Organizer";
-"Email Attendees" = "Email Attendees";
+"reminder_MINUTES" = "minuti";
+"reminder_HOURS" = "ore";
+"reminder_DAYS" = "giorni";
+"reminder_BEFORE" = "prima";
+"reminder_AFTER" = "dopo";
+"reminder_START" = "l'evento inizia";
+"reminder_END" = "l'evento termina";
+"Reminder Details" = "Dettagli promemoria";
 
 "zoom_400" = "400%";
 "zoom_200" = "200%";
@@ -446,7 +440,7 @@ validate_endbeforestart    = "La data finale specificata è precedente alla data
 "Day View" = "Giorno";
 "Week View" = "Settimana";
 "Month View" = "Mese";
-"Reload" = "Reload";
+"Reload" = "Ricarica";
 
 "eventPartStatModificationError" = "Lo stato della tua partecipazione non può essere modificato.";
 
@@ -460,18 +454,18 @@ validate_endbeforestart    = "La data finale specificata è precedente alla data
 "Tasks in View" = "Attività in elenco";
 
 "eventDeleteConfirmation" = "Stai per cancellare in maniera permanente l'evento.\nVuoi procedere?";
-"taskDeleteConfirmation" = "Stai per cancellare in maniera permanente il task.\nVuoi procedere?";
+"taskDeleteConfirmation" = "Stai per cancellare in maniera permanente il l'attività.\nVuoi procedere?";
 
 "You cannot remove nor unsubscribe from your personal calendar."
-= "You cannot remove nor unsubscribe from your personal calendar.";
+= "Non puoi rimuovere la sottoscrizione del tuo calendario personale.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Sei sicuro di voler cancellare il calendario \"%{0}\"?";
 
 /* Legend */
-"Participant" = "Partecipanti";
-"Optional Participant" = "Partecipanti opzionali";
-"Non Participant" = "Non Partecipanti";
-"Chair" = "Sedia";
+"Participant" = "Partecipante";
+"Optional Participant" = "Partecipante non necessario";
+"Non Participant" = "Non Partecipante";
+"Chair" = "Presidente";
 
 "Needs action" = "Richiede un'azione";
 "Accepted" = "Accettato";
@@ -490,13 +484,13 @@ validate_endbeforestart    = "La data finale specificata è precedente alla data
 "Next slot" = "Successivo";
 "Previous hour" = "Ora precedente";
 "Next hour" = "Ora successiva";
-"Work days only" = "Work days only";
-"The whole day" = "The whole day";
-"Between" = "Between";
-"and" = "and";
+"Work days only" = "Solo giorni lavorativi";
+"The whole day" = "Intera giornata";
+"Between" = "Tra";
+"and" = "e";
 
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
-= "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?";
+= "C'è un conflitto di orari con uno o più partecipanti.\nVuoi mantenere lo stesso questa impostazione?";
 
 /* apt list */
 "Title" = "Titolo";
@@ -526,43 +520,41 @@ vtodo_class2 = "(Attività confidenziale)";
 "Name:" = "Nome:";
 "Color:" = "Colore:";
 
-"Include in free-busy" = "Include in free-busy";
+"Include in free-busy" = "Includi nel libero-occupato";
 
-"Synchronization" = "Synchronization";
-"Synchronize" = "Synchronize";
+"Synchronization" = "Sincronizzazione";
+"Synchronize" = "Sincronizza";
 "Tag:" = "Etichetta:";
 
-"Display" = "Display";
-"Show alarms" = "Show alarms";
-"Show tasks" = "Show tasks";
+"Display" = "Visualizza";
+"Show alarms" = "Mostra allarmi";
+"Show tasks" = "Mostra attività";
 
-"Links to this Calendar" = "Links to this Calendar";
+"Links to this Calendar" = "Link a questo Calendario";
 "CalDAV url" = "CalDAV url";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
 
 /* Error messages */
-"dayFieldInvalid" = "Please specify a numerical value in the Days field greater or equal to 1.";
-"weekFieldInvalid" = "Please specify a numerical value in the Week(s) field greater or equal to 1.";
-"monthFieldInvalid" = "Please specify a numerical value in the Month(s) field greater or equal to 1.";
-"monthDayFieldInvalid" = "Please specify a numerical value in the month day field greater or equal to 1.";
-"yearFieldInvalid" = "Please specify a numerical value in the Year(s) field greater or equal to 1.";
-"appointmentFieldInvalid" = "Please specify a numerical value in the Appointment(s) field  greater or equal to 1.";
-"recurrenceUnsupported" = "This type of recurrence is currently unsupported.";
-"tagNotDefined" = "You must specify a tag if you want to synchronize this calendar.";
-"tagAlreadyExists" = "The tag you specified is already associated to another calendar.";
-"tagHasChanged" = "If you change your calendar's tag, you'll need to reload the data on your mobile device.\nContinue?";
-"tagWasAdded" = "If you want to synchronize this calendar, you'll need to reload the data on your mobile device.\nContinue?";
-"tagWasRemoved" = "If you remove this calendar from synchronization, you'll need to reload the data on your mobile device.\nContinue?";
-"DestinationCalendarError" = "The source and destination calendars are the same. Please try to copy to a different calendar.";
-"EventCopyError" = "The copy failed. Please try to copy to a difference calendar.";
+"dayFieldInvalid" = "Prego specificare nel campo Giorni un valore numerico maggiore o ugale a 1.";
+"weekFieldInvalid" = "Prego specificare nel campo Settimana(e) un valore numerico maggiore o uguale a 1.";
+"monthFieldInvalid" = "Prego specificare nel campo Mese(i) un valore numerico maggiore o uguale a 1.";
+"monthDayFieldInvalid" = "Prego specificare nel campo giorno del mese un valore numerico maggiore o uguale a 1.";
+"yearFieldInvalid" = "Prego specificare nel campo Anno(i) un valore numerico maggiore o uguale a 1.";
+"appointmentFieldInvalid" = "Prego specificare nel campo Appuntamento(i) un valore numerico maggiore o uguale a 1.";
+"recurrenceUnsupported" = "Questo tipo di ricorrenza non è attualmente supportata.";
+"tagNotDefined" = "E' necessario specificare un etichetta se si vuole sincronizzare questo calendario.";
+"tagAlreadyExists" = "L'etichetta specificata è già associata ad un altro calendario.";
+"tagHasChanged" = "Cambiando l'etichetta del calendario è necessario ricaricare tutti i dati sul dispositivo mobile.\nContinuare?";
+"tagWasAdded" = "Sincronizzando questo calendario sarà necessario ricaricare i dati sul dispositivo mobile.\nContinuare?";
+"tagWasRemoved" = "Rimuovendo questo calendario dalla sincronizzazione, sarà necessario ricaricare i dati sul dispositivo mobile.\nCotinuare?";
 
-"Open Task..." = "Open Task...";
-"Mark Completed" = "Mark Completed";
-"Delete Task" = "Delete Task";
-"Delete Event" = "Delete Event";
+"Open Task..." = "Apri attività...";
+"Mark Completed" = "Segna come completata";
+"Delete Task" = "Elimina attività";
+"Delete Event" = "Elimina evento";
 
-"Subscribe to a web calendar..." = "Subscribe to a web calendar...";
-"URL of the Calendar" = "URL of the Calendar";
-"Web Calendar" = "Web Calendar";
-"Reload on login" = "Reload on login";
+"Subscribe to a web calendar..." = "Sottoscrivi un calendario remoto...";
+"URL of the Calendar" = "URL del calendario";
+"Web Calendar" = "Calendario remoto";
+"Reload on login" = "Ricarica al login";

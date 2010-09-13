@@ -23,10 +23,10 @@ request_info = "ti invita a partecipare ad un incontro.";
 Accept = "Accetta";
 Decline = "Declina";
 Tentative = "Tentativo";
-"Delegate ..." = "Delegate ...";
-"Delegated to" = "Delegated to";
+"Delegate ..." = "Delega ...";
+"Delegated to" = "Delega a";
 "Update status in calendar" = "Aggiorna lo stato nel calendari";
-"delegated from" = "delegated from";
+"delegated from" = "delegato da";
 
 reply_info_no_attendee = "Hai ricevuto una risposta relativa all'incontro programmato da un utente che non è incluso come partecipante.";
 reply_info = "Questa è una risposta ad un invito ad un evento organizzato da te.";
@@ -37,10 +37,10 @@ reply_info = "Questa è una risposta ad un invito ad un evento organizzato da te
 
 "Size" = "Dimensione";
 
-"Digital signature is not valid" = "Digital signature is not valid";
-"Message is signed" = "Message is signed";
-"Subject" = "Subject";
-"From" = "From";
-"Date" = "Date";
-"To" = "To";
-"Issuer" = "Issuer";
+"Digital signature is not valid" = "La firma digitale non è valida";
+"Message is signed" = "Il messaggio è firmato";
+"Subject" = "Soggetto";
+"From" = "Da";
+"Date" = "Data";
+"To" = "A";
+"Issuer" = "Emittente";

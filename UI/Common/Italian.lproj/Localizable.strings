@@ -10,7 +10,7 @@
 "Address Book"	= "Rubrica";
 "Mail" = "Posta";
 "Preferences" = "Preferenze";
-"Administration" = "Administration";
+"Administration" = "Amministrazione";
 "Disconnect" = "Disconnetti";
 "Right Administration" = "Amministrazione permessi";
 "Log Console (dev.)" = "Log Console (dev.)";
@@ -28,12 +28,12 @@
 "Add..." = "Aggiungi...";
 "Remove" = "Rimuovi";
 
-"Subscribe User" = "Subscribe User";
+"Subscribe User" = "Sottoscrivi utente";
 
-"Any Authenticated User" = "Any Authenticated User";
-"Public Access" = "Public Access";
-"Any user not listed above" = "Any user not listed above";
-"Anybody accessing this resource from the public area" = "Anybody accessing this resource from the public area";
+"Any Authenticated User" = "Utenti autenticati";
+"Public Access" = "Accesso pubblico";
+"Any user not listed above" = "Ogni utente non indicato sopra";
+"Anybody accessing this resource from the public area" = "Chiunque acceda a questa risorsa da un area pubblica";
 
 "Sorry, the user rights can not be configured for that object." = "Non è possibile configurare i  permessi per questo oggetto.";
 
@@ -51,26 +51,19 @@
      	= "Hai già sottoscritto la cartella!";
 "The user rights cannot be edited for this object!"
         = "I permessi di questo oggetto non possono essere modificati!";
-"A folder by that name already exists." = "A folder by that name already exists.";
+"A folder by that name already exists." = "Esiste già una cartella con questo nome.";
 "You cannot create a list in a shared address book." 
-        = "You cannot create a list in a shared address book.";
-"Warning" = "Warning";
+        = "Non puoi creare una lista in una rubrica in sola lettura.";
 
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Non sei abilitato ad accedere a questo modulo. Contatta il tuo amministratore di sistema.";
 "You don't have the required privileges to perform the operation."
 = "Non disponi dei privilegi richiesti per eseguire questa operazione.";
 
-"noEmailForDelegation" = "You must specify the address to which you want to delegate your invitation.";
-"delegate is organizer" = "The delegate is the organizer. Please specify a different delegate.";
-"delegate is a participant" = "The delegate is already a participant.";
-"delegate is a group" = "The specified address corresponds to a group. You can only delegate to a unique person.";
-
-/* common buttons */
-"OK" = "OK";
-"Cancel" = "Cancel";
-"Yes" = "Si";
-"No" = "No";
+"noEmailForDelegation" = "E' necessario specificare l'indirizzo a cui vuoi delegare il tuo invito.";
+"delegate is organizer" = "Il delato è l'organizzatore. Prego specificare un altro delegato.";
+"delegate is a participant" = "Il delegato è già un partecipante.";
+"delegate is a group" = "L'indirizzo specifico corrisponde ad un gruppo, puoi delegare solo una persona.";
 
 /* alarms */
 "Reminder:" = "Promemoria:";
