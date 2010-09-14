@@ -1,3 +1,11 @@
+2010-09-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Common/UIxPageFrame.m (-systemAdditionalJSFiles): new web
+	accessor for the new method below.
+
+	* SoObjects/SOGo/SOGoDomainDefaults.m (-additionalJSFiles): new
+	accessor for the new "SOGoUIAdditionalJSFiles" user default.
+
 2010-09-13  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
         * Updated Ukrainian translation - patch from

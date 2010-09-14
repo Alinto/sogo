@@ -168,6 +168,9 @@
 	  <var:foreach list="additionalJSFiles" item="item"
 	    ><script type="text/javascript" var:src="item"><!-- space --></script>
 	  </var:foreach>
+	  <var:foreach list="systemAdditionalJSFiles" item="item"
+	    ><script type="text/javascript" var:src="item"><!-- space --></script>
+	  </var:foreach>
         </var:if>
         <var:if condition="isCompatibleBrowser" const:negate="YES"
 	  ><var:component className="SOGoBrowsersPanel"

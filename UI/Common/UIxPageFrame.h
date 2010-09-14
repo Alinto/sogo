@@ -44,6 +44,7 @@
   NSArray *usKeys;
   NSMutableArray *additionalCSSFiles;
   NSMutableArray *additionalJSFiles;
+  NSMutableArray *systemAdditionalJSFiles;
 }
 
 - (NSString *) commonLocalizableStrings;
