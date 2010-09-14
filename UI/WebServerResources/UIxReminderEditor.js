@@ -69,7 +69,7 @@ function onEditorOkClick(event) {
         window.close();
     }
     else
-        alert("heu");
+        alert(_("Invalid number."));
 }
 
 function onEditorCancelClick(event) {

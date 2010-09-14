@@ -567,3 +567,4 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 "Web Calendar" = "Web-Kalender";
 
 "Reload on login" = "Bei Anmeldung neu laden";
+"Invalid number." = "Invalid number.";

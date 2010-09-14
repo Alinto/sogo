@@ -552,3 +552,4 @@ vtodo_class2 = "(Конфіденційне завдання)";
 "URL of the Calendar" = "URL календаря";
 "Web Calendar" = "Веб-календар";
 "Reload on login" = "Перевантажувати під час запуску";
+"Invalid number." = "Invalid number.";

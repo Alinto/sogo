@@ -566,3 +566,4 @@ vtodo_class2 = "(Důvěrný úkol)";
 "URL of the Calendar" = "Adresa vzdáleného kalendáře na webu";
 "Web Calendar" = "Vzdálený kalendář na webu";
 "Reload on login" = "Aktualizovat při přihlášení";
+"Invalid number." = "Invalid number.";

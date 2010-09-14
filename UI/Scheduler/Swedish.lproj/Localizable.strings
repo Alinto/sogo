@@ -566,3 +566,4 @@ vtodo_class2 = "(Konfidentiell uppgift)";
 "URL of the Calendar" = "URL till kalendern";
 "Web Calendar" = "Webbkalender";
 "Reload on login" = "Reload on login";
+"Invalid number." = "Invalid number.";

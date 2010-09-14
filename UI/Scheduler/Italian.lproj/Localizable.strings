@@ -558,3 +558,4 @@ vtodo_class2 = "(Attività confidenziale)";
 "URL of the Calendar" = "URL del calendario";
 "Web Calendar" = "Calendario remoto";
 "Reload on login" = "Ricarica al login";
+"Invalid number." = "Invalid number.";

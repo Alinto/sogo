@@ -567,3 +567,4 @@ vtodo_class2 = "(Zadanie poufne)";
 "URL of the Calendar" = "URL do kalendarza";
 "Web Calendar" = "Kalendarz Web";
 "Reload on login" = "Przeładuj przy logowaniu";
+"Invalid number." = "Invalid number.";
