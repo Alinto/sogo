@@ -1,3 +1,10 @@
+2010-09-14  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* SoObjects/Appointments/SOGoUserFolder+Appointments.m
+	(_davSpecialCalendarURLWithName:): we do not return
+	the schedule-inbox-URL if the CAL is iCal and
+	the owner isn't the current user
+
 2010-09-13  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
         * Updated Ukrainian translation - patch from

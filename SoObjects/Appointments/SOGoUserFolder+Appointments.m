@@ -1,6 +1,6 @@
 /* SOGoUserFolder+Appointments.m - this file is part of SOGo
  *
- * Copyright (C) 2008-2009 Inverse inc.
+ * Copyright (C) 2008-2010 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -105,6 +105,15 @@
   SOGoAppointmentFolders *parent;
   NSArray *tag, *response;
   NSString *parentURL;
+
+  // We do NOT return the schedule-inbox-URL to iCal clients
+  // if the current user isn't the owner of it. This is to prevent
+  // iCal from doing a PROPFIND on it later on since it'll
+  // ask for the schedule-inbox-URL.
+  if ([[context request] isICal] && 
+      [name isEqualToString: @"inbox"] &&
+      ![owner isEqualToString: [[context activeUser] login]])
+    return nil;
 
   parent = [self privateCalendars: @"Calendar" inContext: context];
   parentURL = [parent davURLAsString];
