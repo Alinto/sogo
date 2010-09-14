@@ -1,3 +1,4 @@
+<<<<<<< variant A
 2010-09-14  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/Appointments/SOGoUserFolder+Appointments.m
@@ -5,6 +6,17 @@
 	the schedule-inbox-URL if the CAL is iCal and
 	the owner isn't the current user
 
+>>>>>>> variant B
+2010-09-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Common/UIxPageFrame.m (-systemAdditionalJSFiles): new web
+	accessor for the new method below.
+
+	* SoObjects/SOGo/SOGoDomainDefaults.m (-additionalJSFiles): new
+	accessor for the new "SOGoUIAdditionalJSFiles" user default.
+
+####### Ancestor
+======= end
 2010-09-13  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
         * Updated Ukrainian translation - patch from

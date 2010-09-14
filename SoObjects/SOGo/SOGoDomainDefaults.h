@@ -71,6 +71,8 @@
 
 - (BOOL) iPhoneForceAllDayTransparency;
 
+- (NSArray *) additionalJSFiles;
+
 @end
 
 #endif /* SOGODOMAINDEFAULTS_H */

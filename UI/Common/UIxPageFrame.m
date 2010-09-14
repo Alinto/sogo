@@ -50,6 +50,7 @@
       usKeys = nil;
       additionalJSFiles = nil;
       additionalCSSFiles = nil;
+      systemAdditionalJSFiles = nil;
     }
 
   return self;
@@ -64,6 +65,7 @@
   [usKeys release];
   [additionalJSFiles release];
   [additionalCSSFiles release];
+  [systemAdditionalJSFiles release];
   [super dealloc];
 }
 
@@ -316,6 +318,31 @@
 - (NSArray *) additionalJSFiles
 {
   return additionalJSFiles;
+}
+
+- (NSArray *) systemAdditionalJSFiles
+{
+  NSArray *prefsJSFiles;
+  SOGoDomainDefaults *dd;
+  int count, max;
+  NSString *currentFile, *filename;
+
+  if (!systemAdditionalJSFiles)
+    {
+      systemAdditionalJSFiles = [NSMutableArray new];
+      dd = [[context activeUser] domainDefaults];
+      prefsJSFiles = [dd additionalJSFiles];
+      max = [prefsJSFiles count];
+      for (count = 0; count < max; count++)
+        {
+          currentFile = [prefsJSFiles objectAtIndex: count];
+          filename = [self urlForResourceFilename:
+                             [currentFile stringByTrimmingSpaces]];
+          [systemAdditionalJSFiles addObject: filename];
+        }
+    }
+
+  return systemAdditionalJSFiles;
 }
 
 - (NSString *) pageCSSURL
