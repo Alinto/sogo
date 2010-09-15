@@ -596,6 +596,26 @@
   [headers addObject: msg];
   while (message)
     {
+      // We must check for "umimportant" untagged responses.
+      //
+      // It's generally caused by IMAP server processes sending untagged IMAP responses to SOGo in differnent IMAP
+      // connections (SOGo might use 2-3 per user). Say you ask your messages:
+      //
+      // 127.000.000.001.40725-127.000.000.001.00143: 59 uid fetch 62 (UID FLAGS ENVELOPE RFC822.SIZE BODYSTRUCTURE BODY.PEEK[HEADER.FIELDS (X-PRIORITY)])
+      // 127.000.000.001.00143-127.000.000.001.40725: * 62 FETCH (UID 62 FLAGS (\Seen) RFC822.SIZE 854 ENVELOPE  .... (
+      // * 61 FETCH (FLAGS (\Deleted \Seen))
+      // * 62 FETCH (FLAGS (\Deleted \Seen))
+      // * 63 FETCH (FLAGS (\Deleted \Seen))
+      // 59 OK Fetch completed.
+      //
+      // We must ignore the * 61 .. * 63 untagged responses.
+      //
+      if (![message objectForKey: @"uid"])
+	{
+	  [self setMessage: [msgsList nextObject]];
+	  continue;
+	}
+
       msg = [NSMutableArray arrayWithCapacity: 12];
 
       // Columns data
@@ -668,14 +688,7 @@
       [msg addObject: [self msgRowID]];
 
       // uid
-      if ([message objectForKey: @"uid"])
-	{
-	  [msg addObject: [message objectForKey: @"uid"]];
-	  [headers addObject: msg];
-	}
-      else
-	[self logWithFormat: @"Invalid UID for message: %@", message];
-      
+      [msg addObject: [message objectForKey: @"uid"]];
       [headers addObject: msg];
       
       [self setMessage: [msgsList nextObject]];
