@@ -548,22 +548,22 @@ static NSTimeInterval ChannelCollectionTimer = 5 * 60;
 		{
 		  if ([[url port] intValue] == [[_url port] intValue])
 		    result = YES;
-		  else
+		  else if (debugOn)
 		    [self logWithFormat:
 			    @"MISMATCH: different port (%@ vs %@) ..",
 			  [url port], [_url port]];
 		}
-	      else
+	      else if (debugOn)
 		[self logWithFormat: @"MISMATCH: different user .."];
 	    }
-	  else
+	  else if (debugOn)
 	    [self logWithFormat: @"MISMATCH: different db .."];
 	}
-      else
+      else if (debugOn)
 	[self logWithFormat: @"MISMATCH: different host (%@ vs %@) ",
 	      [url host], [_url host]];
     }
-  else
+  else if (debugOn)
     [self logWithFormat: @"MISMATCH: no url .."];
 
   return result;
