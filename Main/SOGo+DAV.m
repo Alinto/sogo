@@ -530,4 +530,20 @@
   return davCurrentUserPrincipal;
 }
 
+- (NSArray *) davComplianceClassesInContext: (WOContext *) localContext
+{
+  static NSArray *classes = nil;
+
+  if (!classes)
+    {
+      classes = [NSArray arrayWithObjects: @"access-control",
+                         @"calendar-access", @"calendar-schedule",
+                         @"calendar-proxy", @"addressbook",
+                         nil];
+      [classes retain];
+    }
+
+  return classes;
+}
+
 @end
