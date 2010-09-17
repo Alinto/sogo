@@ -1,3 +1,8 @@
+2010-09-17  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/SOGo/SOGoGCSFolder.m (-renameTo:): don't act as the
+	owner of the folder when user is a superuser.
+
 2010-09-14  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/Appointments/SOGoUserFolder+Appointments.m
