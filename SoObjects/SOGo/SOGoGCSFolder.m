@@ -587,8 +587,6 @@ static NSArray *childRecordFields = nil;
 
   activeUser = [context activeUser];
   if (activeUserIsOwner)
-//      || ([activeUser respondsToSelector: @selector (isSuperUser)]
-//          && [activeUser isSuperUser]))
     [self _ownerRenameTo: newName];
   else
     [self _subscriberRenameTo: newName];
