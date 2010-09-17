@@ -1,6 +1,6 @@
 # Version file
 
-SUBMINOR_VERSION:=0
+SUBMINOR_VERSION:=2
 
 # v0.9.32 requires libSOGo         v0.9.57
 # v0.9.24 requires libWEExtensions v4.5.67
