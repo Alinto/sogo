@@ -1490,8 +1490,7 @@ static NSArray *childRecordFields = nil;
   if (!acls)
     {
       acls = [self _fetchAclsForUser: uid forObjectAtPath: objectPath];
-      if (!acls
-          || ([acls count] == 1 && [acls containsObject: SOGoRole_None]))
+      if (!acls)
         acls = [NSArray array];
       [self _cacheRoles: acls forUser: uid forObjectAtPath: objectPath];
     }

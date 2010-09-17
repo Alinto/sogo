@@ -2,6 +2,10 @@
 
 	* SoObjects/SOGo/SOGoGCSFolder.m (-renameTo:): don't act as the
 	owner of the folder when user is a superuser.
+	(-_realAclsForUser:forObjectAtPath:): don't ignore "None" access
+	right in order to avoid rollbacking to default roles for the
+	calendar module (SOGoCalendarDefaultRoles) when the user has
+	specifically no rights.
 
 2010-09-14  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
