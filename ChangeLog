@@ -1,3 +1,21 @@
+2010-09-20  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/MailerUI.js (deleteWithoutTrash): new
+	function used when the messages can't be copied to the trash
+	folder (usually because the user's mailbox is overquota).
+
+	* UI/WebServerResources/generic.js (showConfirmDialog): added new
+	argument variable to overwrite the default callback when user
+	clicks on the "No" button.
+
+	* SoObjects/Mailer/SOGoMailFolder.m
+	(-deleteUIDs:useTrashFolder:inContext:): new "useTrashFolder"
+	argument variable that avoids moving the messages to the trash is
+	set to YES.
+
+	* UI/MailerUI/UIxMailFolderActions.m (-batchDeleteAction): now
+	accepts a new form variable, "withoutTrash".
+
 2010-09-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/LDAPSource.m (-_searchAttributes): added

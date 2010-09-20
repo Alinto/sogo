@@ -454,10 +454,25 @@ function deleteSelectedMessagesCallback(http) {
 	if (data["refreshUnseenCount"])
 	    getUnseenCountForFolder(data["mailbox"]);
     }
+    else if (!http.callbackData["withoutTrash"]) {
+        showConfirmDialog(_("Warning"),
+                          _("The messages could not be moved to the trash folder. Would you like to delete them now?"),
+                          deleteMessagesWithoutTrash.bind(document, http.callbackData),
+                          function() { refreshCurrentFolder(); disposeDialog(); });
+    }
     else {
-        log ("deleteSelectedMessagesCallback: problem during ajax request " + http.status);
+        log ("deleteSelectedMessagesCallback: problem during ajax request " + http.status + " : " + http.responseText);
         refreshCurrentFolder();
     }
+}
+
+function deleteMessagesWithoutTrash(data) {
+    var url = ApplicationBaseURL + encodeURI(data["mailbox"]) + "/batchDelete";
+    var parameters = "uid=" + data["id"].join(",") + '&withoutTrash=1';
+    data["withoutTrash"] = true;
+    triggerAjaxRequest(url, deleteSelectedMessagesCallback, data, parameters,
+                           { "Content-type": "application/x-www-form-urlencoded" });
+    disposeDialog();
 }
 
 function onMenuDeleteMessage(event) {

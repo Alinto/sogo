@@ -1758,7 +1758,7 @@ function createDialog(id, title, legend, content, positionClass) {
         else {
             bgDiv = createElement("div", "bgDialogDiv", ["bgDialog"]);
             document.body.appendChild(bgDiv);
-            bgDiv.observe("click", disposeDialog);
+            //bgDiv.observe("click", disposeDialog);
         }
     }
 
@@ -1822,15 +1822,15 @@ function _showAlertDialog(label) {
     dialog.show();
 }
 
-function showConfirmDialog(title, label, callback) {
+function showConfirmDialog(title, label, callbackYes, callbackNo) {
     var dialog = dialogs[label];
     if (dialog) {
         $("bgDialogDiv").show();
     }
     else {
         var fields = createElement("p");
-        fields.appendChild(createButton(null, _("Yes"), callback));
-        fields.appendChild(createButton(null, _("No"), disposeDialog));
+        fields.appendChild(createButton(null, _("Yes"), callbackYes));
+        fields.appendChild(createButton(null, _("No"), callbackNo || disposeDialog));
         dialog = createDialog(null,
                               title,
                               label,

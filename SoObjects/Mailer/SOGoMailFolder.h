@@ -1,4 +1,5 @@
 /*
+  Copyright (C) 2009-2010 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
@@ -48,7 +49,9 @@
 - (NSString *) absoluteImap4Name;
 
 /* messages */
-- (NSException *) deleteUIDs: (NSArray *) uids  inContext: (id) context;
+- (NSException *) deleteUIDs: (NSArray *) uids
+	      useTrashFolder: (BOOL) withTrash
+		   inContext: (id) context;
 - (WOResponse *) archiveUIDs: (NSArray *) uids
               inArchiveNamed: (NSString *) archiveName
                    inContext: (id) context;

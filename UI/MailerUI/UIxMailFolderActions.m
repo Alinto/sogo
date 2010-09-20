@@ -240,15 +240,17 @@
   WOResponse *response;
   NSArray *uids;
   NSString *value;
+  BOOL withoutTrash;
 
   co = [self clientObject];
   value = [[context request] formValueForKey: @"uid"];
+  withoutTrash = [[[context request] formValueForKey: @"withoutTrash"] boolValue];
   response = nil;
 
   if ([value length] > 0)
     {
       uids = [value componentsSeparatedByString: @","];
-      response = (WOResponse *) [co deleteUIDs: uids  inContext: context];
+      response = (WOResponse *) [co deleteUIDs: uids useTrashFolder: !withoutTrash inContext: context];
       if (!response)
 	response = [self responseWith204];
     }

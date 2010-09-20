@@ -272,6 +272,10 @@
 "Copying a message into its own folder is impossible!"
 = "Copying a message into its own folder is impossible!";
 
+/* Message operations */
+"The messages could not be moved to the trash folder. Would you like to delete them now?"
+= "The messages could not be moved to the trash folder. Would you like to delete them now?";
+
 /* Message editing */
 "error_validationfailed" = "Validation failed";
 "error_missingsubject" = "Subject is missing";
