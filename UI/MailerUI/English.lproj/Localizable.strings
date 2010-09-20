@@ -76,7 +76,7 @@
 "Remove this folder" = "Remove this folder";
 "Erase mails from this folder" = "Erase mails from this folder";
 "Expunge this folder" = "Expunge this folder";
-"Archive This folder" = "Archive This folder";
+"Archive This Folder" = "Archive this folder";
 "Modify the acl of this folder" = "Modify the acl of this folder";
 
 "Saved Messages.zip" = "Saved Messages.zip";
@@ -273,8 +273,8 @@
 = "Copying a message into its own folder is impossible!";
 
 /* Message operations */
-"The messages could not be moved to the trash folder. Would you like to delete them now?"
-= "The messages could not be moved to the trash folder. Would you like to delete them now?";
+"The messages could not be moved to the trash folder. Would you like to delete them immediately?"
+= "The messages could not be moved to the trash folder. Would you like to delete them immediately?";
 
 /* Message editing */
 "error_validationfailed" = "Validation failed";

@@ -272,6 +272,10 @@
 "Copying a message into its own folder is impossible!"
 = "La copie d'un message dans son propre dossier est impossible.";
 
+/* Message operations */
+"The messages could not be moved to the trash folder. Would you like to delete them immediately?"
+= "Les messages ne peuvent être déplacés dans la corbeille. Voulez-vous les supprimer immédiatement?";
+
 /* Message editing */
 "error_validationfailed" = "Message invalide";
 "error_missingsubject" = "- le sujet est manquant";

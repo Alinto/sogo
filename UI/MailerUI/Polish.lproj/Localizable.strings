@@ -38,7 +38,7 @@
 "Print this message" = "Wydrukuj tę wiadomość";
 "Stop the current transfer" = "Zatrzymaj bieżący transfer";
 "Attachment" = "Załącznik";
-"Unread" = "Nieprzeczytane";
+"Unread" = "Nie przeczytane";
 "Flagged" = "Oflagowane";
 
 /* Main Frame  */
@@ -271,6 +271,10 @@
 = "Przenoszenie wiadomości do jej obecnego foldera nie jest możliwe!";
 "Copying a message into its own folder is impossible!"
 = "Kopiowanie wiadomości do jej obecnego foldera nie jest możliwe!";
+
+/* Message operations */
+"The messages could not be moved to the trash folder. Would you like to delete them immediately?"
+= "The messages could not be moved to the trash folder. Would you like to delete them immediately?";
 
 /* Message editing */
 "error_validationfailed" = "Weryfikacja zakończona niepowodzeniem";

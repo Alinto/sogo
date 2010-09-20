@@ -272,6 +272,10 @@
 "Copying a message into its own folder is impossible!"
 = "Неможливо скопіювати повідомлення, оскільки воно вже там є!";
 
+/* Message operations */
+"The messages could not be moved to the trash folder. Would you like to delete them immediately?"
+= "The messages could not be moved to the trash folder. Would you like to delete them immediately?";
+
 /* Message editing */
 "error_validationfailed" = "Перевірка зазнала невдачі";
 "error_missingsubject" = "Не зазначено теми повідомлення";

@@ -272,6 +272,10 @@
 "Copying a message into its own folder is impossible!"
 = "Kan bericht niet naar zijn eigen map kopiëren!";
 
+/* Message operations */
+"The messages could not be moved to the trash folder. Would you like to delete them immediately?"
+= "The messages could not be moved to the trash folder. Would you like to delete them immediately?";
+
 /* Message editing */
 "error_validationfailed" = "Validering mislukt!";
 "error_missingsubject" = "U heeft geen onderwerp opgegeven!";

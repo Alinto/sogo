@@ -272,6 +272,10 @@
 "Copying a message into its own folder is impossible!"
 = "Egy üzenet nem másolható át a saját mappájába!";
 
+/* Message operations */
+"The messages could not be moved to the trash folder. Would you like to delete them immediately?"
+= "The messages could not be moved to the trash folder. Would you like to delete them immediately?";
+
 /* Message editing */
 "error_validationfailed" = "Az ellenőrzés végrehatása nem sikerült";
 "error_missingsubject" = "Az üzenet tárgya hiányzik";
