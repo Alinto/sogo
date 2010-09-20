@@ -1,3 +1,10 @@
+2010-09-20  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* SoObjects/SOGo/SOGoGCSFolder.m
+	(+folderWithSubscriptionReference:inContainer:)
+	We now consider the localIsSubscription when
+	building the folderName
+
 2010-09-20  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/SOGo/SOGoContentObject.m (-davContentLength): use UTF8

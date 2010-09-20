@@ -172,13 +172,19 @@ static NSArray *childRecordFields = nil;
 
   path = [NSString stringWithFormat: @"/Users/%@/%@/%@",
 		   login, [pathElements objectAtIndex: 0], ocsName];
-  folderName = [NSString stringWithFormat: @"%@_%@",
-			 [login asCSSIdentifier], ocsName];
+
+  localIsSubscription = ![login isEqualToString:
+				  [aContainer ownerInContext: localContext]];
+
+  if (localIsSubscription)
+    folderName = [NSString stringWithFormat: @"%@_%@",
+			   [login asCSSIdentifier], ocsName];
+  else
+    folderName = ocsName;
+  
   newFolder = [self objectWithName: folderName inContainer: aContainer];
   [newFolder setOCSPath: path];
   [newFolder setOwner: login];
-  localIsSubscription = ![login isEqualToString:
-                             [aContainer ownerInContext: localContext]];
   [newFolder setIsSubscription: localIsSubscription];
   if (![newFolder displayName])
     newFolder = nil;
