@@ -628,6 +628,7 @@ static NSArray *commonSearchFields;
       [searchAttributes addObjectsFromArray: mailFields];
       [searchAttributes addObjectsFromArray: [self _constraintsFields]];
       [searchAttributes addObjectsFromArray: commonSearchFields];
+      [searchAttributes addObjectUniquely: IDField];
 
       // Add SOGoLDAPContactInfoAttribute from user defaults
       if ([contactInfoAttribute length])

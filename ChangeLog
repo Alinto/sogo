@@ -1,5 +1,9 @@
 2010-09-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/LDAPSource.m (-_searchAttributes): added
+	"IDField" to the search attributes for constructing addressbook
+	entries with a valid "c_name".
+
 	* Tests/Integration/test-davacl.py
 	(DAVCalendarPublicAclTest.testCollectionAccessNormalUser): make
 	use of the fix below when removing the rights for the subscriber
