@@ -1,3 +1,16 @@
+2010-09-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Tests/Integration/test-davacl.py
+	(DAVCalendarPublicAclTest.testCollectionAccessNormalUser): make
+	use of the fix below when removing the rights for the subscriber
+	user.
+
+	* Tests/Integration/utilities.py (TestACLUtility.setupRights):
+	when "rights" is None or unspecified, the user is now deleted from
+	the access list. This enable default roles to take place for the
+	specified user, which is different from simply removing all its
+	rights.
+
 2010-09-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* Main/SOGo+DAV.m (-davComplianceClassesInContext:): new method to

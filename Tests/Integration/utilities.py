@@ -64,22 +64,34 @@ class TestACLUtility(TestUtility):
     def rightsToSOGoRights(self, rights):
         self.fail("subclass must implement this method")
 
-    def setupRights(self, username, rights):
-        rights_str = "".join(["<%s/>"
-                              % x for x in self.rightsToSOGoRights(rights) ])
-        aclQuery = ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-                    + "<acl-query"
-                    + " xmlns=\"urn:inverse:params:xml:ns:inverse-dav\">"
-                    + "<set-roles user=\"%s\">%s</set-roles>" % (xml.sax.saxutils.escape(username),
-                                                                 rights_str)
-                    + "</acl-query>")
+    def setupRights(self, username, rights = None):
+        if rights is not None:
+            rights_str = "".join(["<%s/>"
+                                  % x for x in self.rightsToSOGoRights(rights) ])
+            aclQuery = ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                        + "<acl-query"
+                        + " xmlns=\"urn:inverse:params:xml:ns:inverse-dav\">"
+                        + "<set-roles user=\"%s\">%s</set-roles>" % (xml.sax.saxutils.escape(username),
+                                                                     rights_str)
+                        + "</acl-query>")
+        else:
+            aclQuery = ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                        + "<acl-query"
+                        + " xmlns=\"urn:inverse:params:xml:ns:inverse-dav\">"
+                        + "<remove-user user=\"%s\"/>" % xml.sax.saxutils.escape(username)
+                        + "</acl-query>")
 
         post = webdavlib.HTTPPOST(self.resource, aclQuery)
         post.content_type = "application/xml; charset=\"utf-8\""
         self.client.execute(post)
-        self.test.assertEquals(post.response["status"], 204,
-                               "rights modification: failure to set '%s' (status: %d)"
-                               % (rights_str, post.response["status"]))
+
+        if rights is None:
+            err_msg = ("rights modification: failure to remove entry (status: %d)"
+                       % post.response["status"])
+        else:
+            err_msg = ("rights modification: failure to set '%s' (status: %d)"
+                       % (rights_str, post.response["status"]))
+        self.test.assertEquals(post.response["status"], 204, err_msg)
 
 # Calendar:
 #   rights:

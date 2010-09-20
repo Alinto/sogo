@@ -1014,7 +1014,7 @@ class DAVCalendarPublicAclTest(unittest.TestCase):
                             "href was returned more than once: %s" % href.text)
             resourceHrefs[href.text] = True
 
-        acl_utility.setupRights(subscriber_username, {})
+        acl_utility.setupRights(subscriber_username)
 
         # 3. creation right added for "default user"
         #    subscriber_username expected to have access, but not "anonymous"
