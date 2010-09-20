@@ -456,7 +456,7 @@ function deleteSelectedMessagesCallback(http) {
     }
     else if (!http.callbackData["withoutTrash"]) {
         showConfirmDialog(_("Warning"),
-                          _("The messages could not be moved to the trash folder. Would you like to delete them now?"),
+                          _("The messages could not be moved to the trash folder. Would you like to delete them immediately?"),
                           deleteMessagesWithoutTrash.bind(document, http.callbackData),
                           function() { refreshCurrentFolder(); disposeDialog(); });
     }
