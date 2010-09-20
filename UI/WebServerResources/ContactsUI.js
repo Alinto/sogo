@@ -977,14 +977,14 @@ function onAddressBookModify(event) {
     var selected = folders.getSelectedNodes()[0];
 
     if (UserLogin == selected.getAttribute("owner")) {
-        var currentName = selected.innerHTML;
+        var currentName = selected.innerHTML.unescapeHTML();
         showPromptDialog(_("Properties"),
                          _("Address Book Name"),
                          onAddressBookModifyConfirm,
                          currentName);
     }
     else
-        showAlertDialog(_("Unable to rename that folder!"));
+        showAlertDialog(_("Unable to rename that folder!")); // WARNING: super users will end up here
 }
 
 function onAddressBookModifyConfirm() {
@@ -1046,7 +1046,7 @@ function onAddressBooksMenuPrepareVisibility() {
         // Disable the "Sharing" and "Modify" options when address book
         // is not owned by user
         if (folderOwner == UserLogin || IsSuperUser) {
-            modifyOption.removeClassName("disabled");
+            modifyOption.removeClassName("disabled"); // WARNING: will fail for super users anyway
             sharingOption.removeClassName("disabled");
         }
         else {
