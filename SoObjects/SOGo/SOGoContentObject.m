@@ -373,7 +373,7 @@
 - (NSString *) davContentLength
 {
   return [NSString stringWithFormat: @"%u",
-		   [content lengthOfBytesUsingEncoding: NSISOLatin1StringEncoding]];
+		   [content lengthOfBytesUsingEncoding: NSUTF8StringEncoding]];
 }
 
 // - (NSString *) davResourceType

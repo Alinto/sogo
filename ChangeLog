@@ -1,5 +1,8 @@
 2010-09-20  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* SoObjects/SOGo/SOGoContentObject.m (-davContentLength): use UTF8
+	encoding instead of latin1.
+
 	* UI/WebServerResources/MailerUI.js (deleteWithoutTrash): new
 	function used when the messages can't be copied to the trash
 	folder (usually because the user's mailbox is overquota).
