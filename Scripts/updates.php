@@ -33,7 +33,8 @@ $plugins
          => array( "application" => "thunderbird",
                    "version" => "3.102",
                    "filename" => "sogo-integrator-3.102.xpi" ),
-	 => array( "application" => "thunderbird",
+	"{e2fda1a4-762b-4020-b5ad-a41df1933103}"
+	=> array( "application" => "thunderbird",
 		   "version" => "1.0b2.102i",
 		   "filename" => "lightning-1.0b2.102i.xpi" )
 );
