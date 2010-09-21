@@ -1,7 +1,7 @@
 <?php
 /* updates.php - this file is part of SOGo
  *
- *  Copyright (C) 2006-2009 Inverse inc.
+ *  Copyright (C) 2006-2010 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -24,28 +24,24 @@
 /* This script handles the automatic propagation of extensions pertaining to a
    SOGo site. It requires PHP 4.1.0 or later. */
 $plugins
-= array( "sogo-connector@inverse.ca"
+= array(
+        "sogo-connector@inverse.ca"
          => array( "application" => "thunderbird",
-                   "version" => "0.92",
-                   "filename" => "sogo-connector-0.92.xpi" ),
-	 "sogo-integrator@inverse.ca"
+                   "version" => "3.102",
+                   "filename" => "sogo-connector-3.102.xpi" ),
+        "sogo-integrator@inverse.ca"
+         => array( "application" => "thunderbird",
+                   "version" => "3.102",
+                   "filename" => "sogo-integrator-3.102.xpi" ),
 	 => array( "application" => "thunderbird",
-		   "version" => "0.92",
-		   "filename" => "sogo-integrator-0.92-sogo-demo.xpi" ),
-	 "{e2fda1a4-762b-4020-b5ad-a41df1933103}" 
-	 => array( "application" => "thunderbird",
-		   "version" => "0.9.2",
-		   "filename" => "lightning-0.9.2.xpi" ));
-
-{3550f703-e582-4d05-9a08-453d09bdfdc6}
+		   "version" => "1.0b2.102i",
+		   "filename" => "lightning-1.0b2.102i.xpi" )
+);
 
 $applications
 = array( "thunderbird" => "<em:id>{3550f703-e582-4d05-9a08-453d09bdfdc6}</em:id>
-                <em:minVersion>1.5</em:minVersion>
-                <em:maxVersion>2.0.*</em:maxVersion>",
-	 "firefox" => "<em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
-                   <em:minVersion>1.5</em:minVersion>
-                   <em:maxVersion>2.0.*</em:maxVersion>" );
+                <em:minVersion>3.1.0</em:minVersion>
+                <em:maxVersion>3.1.*</em:maxVersion>" );
 
 $pluginname = $_GET["plugin"];
 $plugin =& $plugins[$pluginname];
