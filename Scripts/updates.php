@@ -37,6 +37,8 @@ $plugins
 		   "version" => "0.9.2",
 		   "filename" => "lightning-0.9.2.xpi" ));
 
+{3550f703-e582-4d05-9a08-453d09bdfdc6}
+
 $applications
 = array( "thunderbird" => "<em:id>{3550f703-e582-4d05-9a08-453d09bdfdc6}</em:id>
                 <em:minVersion>1.5</em:minVersion>
