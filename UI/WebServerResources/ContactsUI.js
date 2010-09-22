@@ -432,11 +432,11 @@ function onToolbarDeleteSelectedContacts(event) {
     var contactsList = $('contactsList');
     var rows = contactsList.getSelectedRowsId();
 
-    if (rows.length)
+    if (rows && rows.length)
         showConfirmDialog(_("Confirmation"),
                           _("Are you sure you want to delete the selected contacts?"),
                           onToolbarDeleteSelectedContactsConfirm);
-    else
+    else if (!onAddressBookRemove(event))
         showAlertDialog(_("Please select a contact."));
 
     return false;
@@ -784,6 +784,8 @@ function onAddressBookRemove(event) {
     }
 
     preventDefault(event);
+
+    return (nodes.length > 0);
 }
 
 function deletePersonalAddressBook(folderId) {
