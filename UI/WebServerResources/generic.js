@@ -1794,7 +1794,6 @@ function showAlertDialog(label) {
     var div = $("bgDialogDiv");
     if (div && div.visible()) {
         dialogsStack.push(label);
-        return;
     }
     else {
         _showAlertDialog(label);
