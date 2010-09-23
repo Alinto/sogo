@@ -45,11 +45,11 @@
 
 /* Tooltips */
 
-"Create a new address book card" = "Neue Adresskarte erzeugen";
+"Create a new address book card" = "Neue Adressbuch-Karte erzeugen";
 "Create a new list" = "Neue Liste erstellen";
-"Edit the selected card" = "Gewählte Adresskarte bearbeiten";
+"Edit the selected card" = "Gewählte Karte bearbeiten";
 "Send a mail message" = "Neue Nachricht verfassen";
-"Delete selected card or address book" = "Gewählte Adresskarte oder Adressbuch löschen";
+"Delete selected card or address book" = "Gewählte Karte oder Adressbuch löschen";
 "Reload all contacts" = "Alle Kontakte neu laden";
 
 "htmlMailFormat_UNKNOWN" = "Unbekannt";
@@ -60,7 +60,7 @@
 "Personal Addressbook" = "Persönliches Adressbuch";
 "Search in Addressbook" = "Im Adressbuch suchen ...";
 
-"New Card" = "Neue Adresskarte";
+"New Card" = "Neue Karte";
 "New List" = "Neue Liste";
 "Properties" = "Eigenschaften";
 "Sharing..." = "Benutzerrechte...";
@@ -114,7 +114,7 @@
 "Timezone:" = "Zeitzone:";
 "Birthday:" = "Geburtsdatum:";
 "Birthday (yyyy-mm-dd):" = "Geburtsdatum (yyyy-mm-dd):";
-"Freebusy URL:" = "Freebusy URL:";
+"Freebusy URL:" = "Verfügbarkeitsinformationen URL:";
 
 "Add as..." = "Hinzufügen als ...";
 "Recipient" = "Empfänger";
@@ -137,7 +137,7 @@
 = "Wollen Sie wirklich die gewählten Karten löschen?";
 
 "You cannot delete the card of \"%{0}\"."
-= "Sie können die Adresskarte von \"%{0}\" nicht löschen.";
+= "Sie können die Karte von \"%{0}\" nicht löschen.";
 
 "Address Book Name" = "Adressbuch-Name";
 
@@ -149,18 +149,18 @@
 "User rights for:" = "Benutzerrechte für:";
 
 "Any Authenticated User" = "Alle authentifizierten Benutzer";
-"Public Access" = "Öffentlicher Zugriff";
+"Public Access" = "Öffentlicher Zugang";
 
 "This person can add cards to this addressbook."
-= "Diese Person kann neue Adresskarten zu diesem Adressbuch hinzufügen.";
+= "Diese Person kann neue Karten zu diesem Adressbuch hinzufügen.";
 "This person can edit the cards of this addressbook."
-= "Diese Person kann in diesem Adressbuch bestehende Adresskarten verändern.";
+= "Diese Person kann in diesem Adressbuch bestehende Karten verändern.";
 "This person can list the content of this addressbook."
-= "Diese Person kann die Liste der Adresskarten dieses Adressbuches anzeigen.";
+= "Diese Person kann die Liste der Karten dieses Adressbuches anzeigen.";
 "This person can read the cards of this addressbook."
-= "Diese Person kann Adresskarten dieses Adressbuches anzeigen.";
+= "Diese Person kann Karten dieses Adressbuches anzeigen.";
 "This person can erase cards from this addressbook."
-= "Diese Person kann Adresskarten aus diesem Adressbuch löschen.";
+= "Diese Person kann Karten aus diesem Adressbuch löschen.";
 
 "The selected contact has no email address."
 = "Der gewählte Kontakt hat keine E-Mail-Adresse.";
@@ -184,13 +184,13 @@
 "Add" = "Hinzufügen";
 "Lists can't be moved or copied." = "Listen können nicht verschoben oder kopiert werden.";
 "Export" = "Export";
-"Export Address Book..." = "Addressbuch exportieren...";
-"Import Cards" = "Adresskarten importieren";
+"Export Address Book..." = "Exportiere Adressbuch...";
+"Import Cards" = "Karten importieren";
 "Select LDIF or vCard file..." = "LDIF oder vCard Datei wählen...";
 "Upload" = "Hochladen";
 "Done" = "Abgeschlossen";
-"An error occured while importing contacts." = "Fehler während des Importierens von Adresskarten.";
-"No card was imported." = "Es wurden keine Adresskarten importiert.";
-"A total of %{0} cards were imported in the addressbook." = "%{0} Adresskarten wurden in das Adressbuch importiert.";
+"An error occured while importing contacts." = "Fehler während des Importierens von Kontakten.";
+"No card was imported." = "Es wurden keine Kontakte importiert.";
+"A total of %{0} cards were imported in the addressbook." = "%{0} Kontakte wurden in das Adressbuch importiert.";
 
 "Reload" = "Neu laden";

@@ -31,7 +31,7 @@
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
 
-"About" = "About";
+"About" = "Über";
 "AboutBox" = "SOGo  is a groupware server built around OpenGroupware.org (OGo) and the SOPE application server.  It focuses on scalability.<br/><br/>
 SOGo provides a rich AJAX-based Web interface and supports multiple native clients through the use of standard protocols such as CalDAV, CardDAV and GroupDAV.<br/><br/>
 Copyright © 2006-2009 Inverse inc.<br/>
@@ -62,7 +62,7 @@ This is free software: you are free to change and redistribute it. There is NO W
 "Password change failed - Password is too young" = "Passwortänderung fehlgeschlagen - Passwort ist zu jung";
 "Password change failed - Password is in history" = "Passwortänderung fehlgeschlagen - Passwort bereits früher verwendet";
 "Unhandled policy error: %{0}" = "Unbehandelter Richtlinienfehler: %{0}";
-"Unhandled error response" = "Unbehandelte Fehlerantwort";
+"Unhandled error response" = "Unbehandelter Fehlerantwort";
 "Password change is not supported." = "Passwortänderung wird nicht unterstützt.";
 "Unhandled HTTP error code: %{0}" = "Unbehandelter HTTP Fehlercode: %{0}";
 "New password:" = "Neues Passwort:";

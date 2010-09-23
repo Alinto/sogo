@@ -9,7 +9,7 @@
 "ACLs" = "ACLs";
 
 /* Modules titles */
-"ACLs_title" = "Rechteverwaltung für Kalender und Adressbücher aller Benutzer";
+"ACLs_title" = "Benutzerordner ACL-Management";
 
 /* Modules descriptions */
 "ACLs_description" = "<p>Dieses Modul ermöglicht die Verwaltung der Zugriffsrechte für die Kalender und Adressbücher aller Benutzer.</p><p>Zum Ändern der Zugriffsrechte geben Sie den Namen des jeweiligen Benutzers in das Suchfeld ein. Wählen Sie den zu ändernden Ordner mit einem Doppelklick aus der Liste aus.</p>";

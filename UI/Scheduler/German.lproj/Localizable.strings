@@ -134,7 +134,7 @@
 "User rights for:" = "Benutzerrechte für:";
 
 "Any Authenticated User" = "Alle authentifizierten Benutzer";
-"Public Access" = "Öffentlicher Zugriff";
+"Public Access" = "Öffentlicher Zugang";
 
 "label_Public" = "Öffentlich";
 "label_Private" = "Privat";
@@ -233,7 +233,7 @@
 
 "attributes" = "Attribute";
 "attendees" = "Teilnehmer";
-"delegated from" = "delegiert von";
+"delegated from" = "übertragen von";
 
 /* checkbox title */
 "is private" = "Privater Termin";
@@ -456,21 +456,21 @@ validate_endbeforestart    = "Ihr Beginn ist nach dem Ende";
 "Edit Selected Event..." = "Markierten Termin bearbeiten...";
 "Delete Selected Event" = "Markierten Termin löschen";
 "Select All" = "Alles auswählen";
-"Workweek days only" = "Nur Arbeitstage";
+"Workweek days only" = "nur Arbeitstage";
 "Tasks in View" = "Aufgaben anzeigen";
 
 "eventDeleteConfirmation" = "Wollen Sie diesen Termin wirklich dauerhaft löschen?";
 "taskDeleteConfirmation" = "Wollen Sie diese Aufgabe wirklich dauerhaft löschen?";
 
 "You cannot remove nor unsubscribe from your personal calendar."
-= "Sie können Ihren Persönlichen Kalender nicht abbestellen oder löschen.";
+= "Der persönliche Kalender kann weder gelöscht noch abbestellt werden.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Wollen Sie diesen Kalender wirklich löschen \"%{0}\"?";
 
 /* Legend */
 "Participant" = "Teilnehmer";
 "Optional Participant" = "optionaler Teilnehmer";
-"Non Participant" = "Nicht-Teilnehmer";
+"Non Participant" = "kein Teilnehmer";
 "Chair" = "Vorsitz";
 
 "Needs action" = "Benötigt Eingriff";
@@ -490,13 +490,13 @@ validate_endbeforestart    = "Ihr Beginn ist nach dem Ende";
 "Next slot" = "Nächster";
 "Previous hour" = "Vorherige Stunde";
 "Next hour" = "Nächste Stunde";
-"Work days only" = "Nur Arbeitstage";
-"The whole day" = "Den gesamten Tag";
+"Work days only" = "Nur an Arbeitstagen";
+"The whole day" = "Den ganzen Tag";
 "Between" = "Zwischen";
 "and" = "und";
 
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
-= "Mit mindestens einem Teilnehmer entsteht ein Zeitkonflikt.\nWollen Sie die gewählten Einstellungen trotzdem behalten?";
+= "Dieser Termin überschneidet sich mit dem Termin eines Teilnehmers,\nwollen sie die Einstellungen trotzdem so belassen?";
 
 /* apt list */
 "Title" = "Titel";
@@ -566,5 +566,5 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 "URL of the Calendar" = "URL des Kalenders";
 "Web Calendar" = "Web-Kalender";
 
-"Reload on login" = "Bei Anmeldung neu laden";
+"Reload on login" = "Neu laden beim Anmelden";
 "Invalid number." = "Invalid number.";

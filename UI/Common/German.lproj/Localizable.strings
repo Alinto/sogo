@@ -12,7 +12,7 @@
 "Preferences" = "Einstellungen";
 "Administration" = "Administration";
 "Disconnect" = "Beenden";
-"Right Administration" = "Rechteverwaltung";
+"Right Administration" = "Rechte Administration";
 "Log Console (dev.)" = "Journal (dev.)";
 
 "User" = "Benutzer";
@@ -28,12 +28,12 @@
 "Add..." = "Hinzufügen...";
 "Remove" = "Löschen";
 
-"Subscribe User" = "Benutzer abonnieren";
+"Subscribe User" = "Für den Benutzer abonnieren";
 
 "Any Authenticated User" = "Alle authentifizierten Benutzer";
-"Public Access" = "Öffentlicher Zugriff";
-"Any user not listed above" = "Alle nicht zuvor gelisteten Benutzer";
-"Anybody accessing this resource from the public area" = "Jeder kann auf diese Ressource aus dem öffentlichen Bereich zugreifen";
+"Public Access" = "Öffentlicher Zugang";
+"Any user not listed above" = "Jeder Benutzer, der nicht oben aufgelistet ist";
+"Anybody accessing this resource from the public area" = "Jeder, der diese Ressource öffentlich erreicht";
 
 "Sorry, the user rights can not be configured for that object." = "Leider können die Benutzerrechte für dieses Objekt nicht konfiguriert werden.";
 

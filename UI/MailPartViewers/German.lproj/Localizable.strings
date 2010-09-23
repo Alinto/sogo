@@ -1,7 +1,7 @@
 ACCEPTED = "akzeptiert";
 COMPLETED = "abgeschlossen";
 DECLINED = "zurückgewiesen";
-DELEGATED = "weitergeleitet";
+DELEGATED = "übertragen";
 IN-PROCESS = "in Bearbeitung";
 NEEDS-ACTION = "Reaktion erwarted";
 TENTATIVE = "vorläufig";
@@ -23,10 +23,10 @@ request_info = "lädt sie ein, an einem Termin teilzunehmen.";
 Accept = "Akzeptieren";
 Decline = "Ablehnen";
 Tentative = "Vorläufig";
-"Delegate ..." = "Delegiere...";
-"Delegated to" = "Delegiert zu";
+"Delegate ..." = "Übertragen ...";
+"Delegated to" = "Übertragen zu";
 "Update status in calendar" = "Kalender Status aktualisieren";
-"delegated from" = "Delegiert von";
+"delegated from" = "übertragen von";
 
 reply_info_no_attendee = "Sie haben eine Antwort auf einen Termin von einem Nicht-Teilnehmer erhalten.";
 reply_info = "Dies ist eine Anwort auf eine Einladung von Ihnen.";
@@ -39,7 +39,7 @@ reply_info = "Dies ist eine Anwort auf eine Einladung von Ihnen.";
 
 "Digital signature is not valid" = "Digitale Signatur ist nicht gültig";
 "Message is signed" = "Nachricht ist signiert";
-"Subject" = "Subject";
+"Subject" = "Betreff";
 "From" = "Von";
 "Date" = "Datum";
 "To" = "An";
