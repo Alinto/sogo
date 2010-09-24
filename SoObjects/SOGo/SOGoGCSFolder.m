@@ -1431,8 +1431,15 @@ static NSArray *childRecordFields = nil;
       currentUID = [record valueForKey: @"c_uid"];
       if ([currentUID hasPrefix: @"@"])
         {
-          group = [SOGoGroup groupWithIdentifier: currentUID
-                                        inDomain: domain];
+	  group = [[SOGoCache sharedCache] groupNamed: currentUID  inDomain: domain];
+
+	  if (!group)
+	    {
+	      group = [SOGoGroup groupWithIdentifier: currentUID
+				 inDomain: domain];
+	      [[SOGoCache sharedCache] registerGroup: group  withName: currentUID  inDomain: domain];
+	    }
+
           if (group && [group hasMemberWithUID: uid])
             [acls addObject: [record valueForKey: @"c_role"]];
         }

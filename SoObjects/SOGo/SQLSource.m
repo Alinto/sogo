@@ -52,7 +52,7 @@
  * c_name     - which can be identical to c_uid - will be used to uniquely identify entries)
  * c_password - password of the user, plain-text or md5 encoded for now
  * c_cn       - the user's common name
- * mail       - hte user's mail address
+ * mail       - the user's mail address
  *
  * Other columns can be defined - see LDAPSource.m for the complete list.
  *

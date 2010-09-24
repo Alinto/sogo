@@ -1,3 +1,7 @@
+2010-09-24  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+        * Added caching support for LDAP-based groups
+
 2010-09-22  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/ContactsUI.js

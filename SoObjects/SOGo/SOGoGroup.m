@@ -50,6 +50,7 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
 
+#include "SOGoCache.h"
 #include "SOGoSource.h"
 #include "SOGoUserManager.h"
 #include "SOGoUser.h"
@@ -61,6 +62,7 @@
 @implementation SOGoGroup
 
 - (id) initWithIdentifier: (NSString *) theID
+		   domain: (NSString *) theDomain
 		   source: (NSObject <SOGoSource> *) theSource
 		    entry: (NGLdapEntry *) theEntry
 {
@@ -69,6 +71,7 @@
   if (self)
     {
       ASSIGN(_identifier, theID);
+      ASSIGN(_domain, theDomain);
       ASSIGN(_source, theSource);
       ASSIGN(_entry, theEntry);
       _members = nil;
@@ -80,6 +83,7 @@
 - (void) dealloc
 {
   RELEASE(_identifier);
+  RELEASE(_domain);
   RELEASE(_source);
   RELEASE(_entry);
   RELEASE(_members);
@@ -153,7 +157,6 @@
       
       // We check to see if it's a group
       classes = [[entry attributeWithName: @"objectClass"] allStringValues];
-      // NSLog(@"classes for %@ = %@", theValue, classes);
 
       // Found a group, let's return it.
       if ([classes containsObject: @"group"] ||
@@ -162,6 +165,7 @@
 	  [classes containsObject: @"posixGroup"])
 	{
 	  o = [[self alloc] initWithIdentifier: theValue
+			                domain: domain
                                         source: source
                                          entry: entry];
 	  AUTORELEASE(o);
@@ -177,7 +181,7 @@
 //
 - (NSArray *) members
 {
-  NSMutableArray *dns, *uids;
+  NSMutableArray *dns, *uids, *logins;
   NSString *dn, *login;
   SOGoUser *user;
   NSArray *o;
@@ -189,10 +193,9 @@
       _members = [NSMutableArray new];
       uids = [NSMutableArray array];
       dns = [NSMutableArray array];
+      logins = [NSMutableArray array];
 
-      // We check if it's a static group
-      //NSLog(@"attributes = %@", [_entry attributes]);
-  
+      // We check if it's a static group  
       // Fetch "members" - we get DNs
       o = [[_entry attributeWithName: @"member"] allStringValues];
       if (o) [dns addObjectsFromArray: o];
@@ -207,8 +210,6 @@
 
       c = [dns count] + [uids count];
 
-      //NSLog(@"members count (static group): %d", c);
-
       // We deal with a static group, let's add the members
       if (c)
         {
@@ -219,22 +220,32 @@
             {
               dn = [dns objectAtIndex: i];
               login = [um getLoginForDN: [dn lowercaseString]];
-              //NSLog(@"member = %@", login);
               user = [SOGoUser userWithLogin: login  roles: nil];
               if (user)
-                [_members addObject: user];
+		{
+		  [logins addObject: login];
+		  [_members addObject: user];
+		}
             }
 
           // We add members for whom we have their associated login name
           for (i = 0; i < [uids count]; i++)
             {
               login = [uids objectAtIndex: i];
-              //NSLog(@"member = %@", login);
               user = [SOGoUser userWithLogin: login  roles: nil];
               
               if (user)
-                [_members addObject: user];
+		{
+		  [logins addObject: login];
+		  [_members addObject: user];
+		}
             }
+
+
+	  // We are done fetching members, let's cache the members of the group
+	  // (ie., their UIDs) in memcached to speed up -hasMemberWithUID.
+	  [[SOGoCache sharedCache] setValue: [logins componentsJoinedByString: @","]
+				   forKey: [NSString stringWithFormat: @"%@+%@", _identifier, _domain]];
         }
       else
         {
@@ -247,20 +258,52 @@
   return _members;
 }
 
+//
+//
+//
 - (BOOL) hasMemberWithUID: (NSString *) memberUID
 {
-  int count, max;
-  NSString *currentUID;
+
   BOOL rc;
 
   rc = NO;
 
-  [self members];
-  max = [_members count];
-  for (count = 0; !rc && count < max; count++)
+  // If _members is initialized, we use it as it's very accurate.
+  // Otherwise, we fallback on memcached in order to avoid
+  // decomposing the group all the time just to see if a user
+  // is a member of it.
+  if (_members)
     {
-      currentUID = [[_members objectAtIndex: count] login];
-      rc = [memberUID isEqualToString: currentUID];
+      NSString *currentUID;
+	
+      int count, max;
+      max = [_members count];
+      for (count = 0; !rc && count < max; count++)
+	{
+	  currentUID = [[_members objectAtIndex: count] login];
+	  rc = [memberUID isEqualToString: currentUID];
+	}
+
+    }
+  else
+    {
+      NSString *key, *value;;
+      NSArray *a;
+
+      key = [NSString stringWithFormat: @"%@+%@", _identifier, _domain];
+      value = [[SOGoCache sharedCache] valueForKey: key];
+
+
+      // If the value isn't in memcached, that probably means -members was never called.
+      // We call it only once here.
+      if (!value)
+	{
+	  [self members];
+	  value = [[SOGoCache sharedCache] valueForKey: key];
+	}
+
+      a = [value componentsSeparatedByString: @","];
+      rc = [a containsObject: memberUID];
     }
 
   return rc;

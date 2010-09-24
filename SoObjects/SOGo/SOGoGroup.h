@@ -1,6 +1,6 @@
 /* SOGoGroup.h - this file is part of SOGo
  *
- * Copyright (C) 2009 Inverse inc.
+ * Copyright (C) 2009-2010 Inverse inc.
  *
  * Author: Ludovic Marcotte <lmarcotte@inverse.ca>
  *
@@ -37,6 +37,7 @@
 {
   @private 
     NSString *_identifier;
+    NSString *_domain;
     NGLdapEntry *_entry;
     NSObject <SOGoSource> *_source;
     NSMutableArray *_members;

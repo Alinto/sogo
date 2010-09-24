@@ -32,6 +32,7 @@
 @class NSString;
 @class NSUserDefaults;
 
+@class SOGoGroup;
 @class SOGoObject;
 @class SOGoUser;
 @class SOGoUserDefaults;
@@ -41,6 +42,7 @@
   NSMutableDictionary *localCache;
   NSMutableDictionary *cache;
   NSMutableDictionary *users;
+  NSMutableDictionary *groups;
   float cleanupInterval;
   NSString *memcachedServerName;
 }
@@ -58,6 +60,13 @@
 - (void) registerUser: (SOGoUser *) user
              withName: (NSString *) userName;
 - (id) userNamed: (NSString *) name;
+
+- (void) registerGroup: (SOGoGroup *) group
+              withName: (NSString *) groupName
+	      inDomain: (NSString *) domainName;
+
+- (id) groupNamed: (NSString *) groupName
+	 inDomain: (NSString *) domainName;
 
 /* NSDictionary-like methods */
 - (void) setValue: (NSString *) value forKey: (NSString *) key;

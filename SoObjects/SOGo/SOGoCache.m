@@ -1,6 +1,6 @@
 /* SOGoCache.m - this file is part of SOGo
  *
- * Copyright (C) 2008-2009 Inverse inc.
+ * Copyright (C) 2008-2010 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *         Ludovic Marcotte <lmarcotte@inverse.ca>
@@ -24,10 +24,11 @@
 /*
  * [ Cache Structure ]
  *
- * users               value = instances of SOGoUser > flushed after the completion of every SOGo requests
- * <uid>+defaults      value = NSDictionary instance > user's defaults
- * <uid>+settings      value = NSDictionary instance > user's settings
- * <uid>+attributes    value = NSMutableDictionary instance > user's LDAP attributes
+ * users                 value = instances of SOGoUser > flushed after the completion of every SOGo requests
+ * <uid>+defaults        value = NSDictionary instance > user's defaults
+ * <uid>+settings        value = NSDictionary instance > user's settings
+ * <uid>+attributes      value = NSMutableDictionary instance > user's LDAP attributes
+ * <groupname>+<domain>  value = NSString instance (array components separated by ",") or group member logins for a specific group in domain
  */
 
 #import <Foundation/NSArray.h>
@@ -78,6 +79,7 @@ static memcached_st *handle = NULL;
   // This is essential for refetching the cached values in case something has changed
   // accross various sogod processes
   [users removeAllObjects];
+  [groups removeAllObjects];
   [localCache removeAllObjects];
 }
 
@@ -89,8 +91,9 @@ static memcached_st *handle = NULL;
     {
       memcached_return error;
       
-      cache = [NSMutableDictionary new];
-      users = [NSMutableDictionary new];
+      cache = [[NSMutableDictionary alloc] init];
+      users = [[NSMutableDictionary alloc] init];
+      groups = [[NSMutableDictionary alloc] init];
 
       // localCache is used to avoid going all the time to the memcached
       // server during each request. We'll cache the value we got from
@@ -137,6 +140,7 @@ static memcached_st *handle = NULL;
   [memcachedServerName release];
   [cache release];
   [users release];
+  [groups release];
   [localCache release];
   [super dealloc];
 }
@@ -197,8 +201,6 @@ static memcached_st *handle = NULL;
 		   withName: name];
 
   return [cache objectForKey: fullPath];
-  //   if (object)
-  //     NSLog (@"found cached object '%@'", fullPath);
 }
 
 - (void) registerUser: (SOGoUser *) user
@@ -211,6 +213,23 @@ static memcached_st *handle = NULL;
 {
   return [users objectForKey: name];
 }
+
+- (void) registerGroup: (SOGoGroup *) group
+              withName: (NSString *) groupName
+	      inDomain: (NSString *) domainName
+
+{
+  if (group)
+    [groups setObject: group forKey: [NSString stringWithFormat: @"%@+%@", groupName, domainName]];
+}
+
+- (id) groupNamed: (NSString *) groupName
+	 inDomain: (NSString *) domainName
+
+{
+  return [groups objectForKey: [NSString stringWithFormat: @"%@+%@", groupName, domainName]];
+}
+
 
 //
 // For non-blocking cache method, see memcached_behavior_set and MEMCACHED_BEHAVIOR_NO_BLOCK
