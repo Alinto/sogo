@@ -28,7 +28,6 @@
   SOGoUserFolder
     Parent object: the root object (SoApplication object)
     Child objects: 
-      'Groups':   SOGoGroupsFolder
       'Calendar': SOGoAppointmentFolder
   
   The SOGoUserFolder is the "home directory" of the user where all his 

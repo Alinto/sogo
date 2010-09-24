@@ -324,11 +324,6 @@
   return [container lookupUserFolder];
 }
 
-// - (SOGoGroupsFolder *) lookupGroupsFolder
-// {
-//   return [[self lookupUserFolder] lookupGroupsFolder];
-// }
-
 - (void) sleep
 {
   if ([self doesRetainContainer])

@@ -11,9 +11,6 @@ SOGo_INSTALL_DIR = $(SOGO_LIBDIR)
 
 SOGo_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
 
-#	SOGoCustomGroupFolder.h		\
-# 	SOGoGroupsFolder.h		\
-# 	SOGoGroupFolder.h		
 SOGo_HEADER_FILES = \
 	SOGoBuild.h \
 	SOGoProductLoader.h		\
@@ -72,9 +69,6 @@ SOGo_HEADER_FILES = \
 all::
 	@touch SOGoBuild.m
 
-#	SOGoCustomGroupFolder.m		\
-# 	SOGoGroupsFolder.m		\
-# 	SOGoGroupFolder.m		
 SOGo_OBJC_FILES = \
 	SOGoBuild.m \
 	SOGoProductLoader.m		\

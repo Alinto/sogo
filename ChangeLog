@@ -3,6 +3,7 @@
         * Added caching support for LDAP-based groups
 	* SoObjects/SOGo/LDAPSource.m 
 	Improved SafeLDAPCriteria() to properly escape '%'
+	* Dropped lots of unnecessary and worthless files
 
 2010-09-22  Francis Lachapelle  <flachapelle@inverse.ca>
 
