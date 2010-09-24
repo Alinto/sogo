@@ -40,8 +40,9 @@
 
 #import "LDAPSource.h"
 
-#define SafeLDAPCriteria(x) [[x stringByReplacingString: @"\\" withString: @"\\\\"] \
-                                stringByReplacingString: @"'" withString: @"\\'"]
+#define SafeLDAPCriteria(x) [[[x stringByReplacingString: @"\\" withString: @"\\\\"] \
+                                 stringByReplacingString: @"'" withString: @"\\'"] \
+                                 stringByReplacingString: @"%" withString: @"%%"]
 static NSArray *commonSearchFields;
 
 @implementation LDAPSource
@@ -377,7 +378,7 @@ static NSArray *commonSearchFields;
 
   qs = [NSMutableString string];
 
-  escapedUid = SafeLDAPCriteria (uid);
+  escapedUid = SafeLDAPCriteria(uid);
 
   fields = [bindFields objectEnumerator];
   while ((currentField = [fields nextObject]))
@@ -548,7 +549,7 @@ static NSArray *commonSearchFields;
   EOQualifier *qualifier;
   NSMutableString *qs;
 
-  escapedFilter = SafeLDAPCriteria (filter);
+  escapedFilter = SafeLDAPCriteria(filter);
   if ([escapedFilter length] > 0)
     {
       fieldFormat = [NSString stringWithFormat: @"(%%@='%@*')", escapedFilter];
@@ -581,7 +582,7 @@ static NSArray *commonSearchFields;
   NSEnumerator *bindFieldsEnum;
   NSMutableString *qs;
 
-  escapedUid = SafeLDAPCriteria (uid);
+  escapedUid = SafeLDAPCriteria(uid);
 
   fieldFormat = [NSString stringWithFormat: @"(%%@='%@')", escapedUid];
   mailFormat = [[mailFields stringsWithFormat: fieldFormat]
@@ -890,7 +891,7 @@ static NSArray *commonSearchFields;
     {
       ldapConnection = [self _ldapConnection];
       s = [NSString stringWithFormat: @"(%@='%@')",
-                    IDField, SafeLDAPCriteria (theID)];
+                    IDField, SafeLDAPCriteria(theID)];
       qualifier = [EOQualifier qualifierWithQualifierFormat: s];
       attributes = [self _searchAttributes];
 
@@ -999,7 +1000,7 @@ static NSArray *commonSearchFields;
       ldapConnection = [self _ldapConnection];
 	  
       s = [NSString stringWithFormat: @"(%@='%@')",
-                    theAttribute, SafeLDAPCriteria (theValue)];
+                    theAttribute, SafeLDAPCriteria(theValue)];
       qualifier = [EOQualifier qualifierWithQualifierFormat: s];
 
       // We look for additional attributes - the ones related to group
