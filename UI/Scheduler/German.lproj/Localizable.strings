@@ -406,11 +406,11 @@
 "reminder_END" = "der Termin endet";
 "Reminder Details" = "Erinnerungsdetails";
 
-"Choose a Reminder Action" = "Choose a Reminder Action";
-"Show an Alert" = "Show an Alert";
-"Send an E-mail" = "Send an E-mail";
-"Email Organizer" = "Email Organizer";
-"Email Attendees" = "Email Attendees";
+"Choose a Reminder Action" = "Wählen Sie eine Erinnerungsoption";
+"Show an Alert" = "Alarm anzeigen";
+"Send an E-mail" = "Eine E-Mail senden";
+"Email Organizer" = "E-Mail an Organisator";
+"Email Attendees" = "E-Mail an Teilnehmer";
 
 "zoom_400" = "400%";
 "zoom_200" = "200%";
@@ -554,8 +554,8 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 "tagHasChanged" = "Wenn der Tag des Kalenders geändert wird, müssen die Daten erneut auf das Mobilgerät geladen werden.\nFortfahren?";
 "tagWasAdded" = "Wenn der Kalender synchronisiert werden soll, müssen die Daten erneut auf das Mobilgerät geladen werden.\nFortfahren?";
 "tagWasRemoved" = "Wenn der Kalender aus der Synchronisation entfernt wird, müssen die Daten erneut auf das Mobilgerät geladen werden.\nFortfahren?";
-"DestinationCalendarError" = "The source and destination calendars are the same. Please try to copy to a different calendar.";
-"EventCopyError" = "The copy failed. Please try to copy to a difference calendar.";
+"DestinationCalendarError" = "Quell- und Zielkalender sind identisch. Bitte kopieren Sie in einen anderen Kalender.";
+"EventCopyError" = "Kopieren fehlgeschlagen. Bitte kopieren Sie in einen anderen Kalender.";
 
 "Open Task..." = "Aufgabe öffnen...";
 "Mark Completed" = "Als abgeschlossen markieren";
@@ -567,4 +567,4 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 "Web Calendar" = "Web-Kalender";
 
 "Reload on login" = "Neu laden beim Anmelden";
-"Invalid number." = "Invalid number.";
+"Invalid number." = "Ungültige Nummer.";

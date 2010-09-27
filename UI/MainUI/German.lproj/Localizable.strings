@@ -40,17 +40,17 @@ This software are distributed under the <a href=\"http://gnu.org/licenses/gpl.ht
 Parts of this software are distributed under the GNU LGPL version 2.<br/><br/>
 This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.";
 
-"Your account was locked due to too many failed attempts." = "Ihr Account wurde wegen zu vieler fehlgeschlagener Versuche gesperrt.";
-"Your account was locked due to an expired password." = "Ihr Account wurde wegen eines abgelaufenen Passworts gesperrt.";
-"Login failed due to unhandled error case: " = "Login aufgrund eines unbehandelten Fehlers fehlgeschlagen: ";
-"Change your Password" = "Password ändern";
-"Your password has expired, please enter a new one below:" = "Ihr Passwort ist abgelaufen, bitte geben Sie ein neues an:";
+"Your account was locked due to too many failed attempts." = "Ihr Konto wurde wegen zu vieler fehlgeschlagener Versuche gesperrt.";
+"Your account was locked due to an expired password." = "Ihr Konto wurde wegen eines abgelaufenen Passworts gesperrt.";
+"Login failed due to unhandled error case: " = "Die Anmeldung ist aufgrund eines unbehandelten Fehlers fehlgeschlagen: ";
+"Change your Password" = "Passwort ändern";
+"Your password has expired, please enter a new one below:" = "Ihr Passwort ist abgelaufen. Bitte geben Sie ein neues an:";
 "Password must not be empty." = "Passwort darf nicht leer sein.";
-"The passwords do not match. Please try again." = "Die Passwörter stimmen nicht überein. Bitte nochmal eingeben.";
-"Password Grace Period" = "Passwort Schonfrist";
-"You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog." = "Sie haben %{0} Logins übrig, bevor Ihr Account gesperrt wird. Bitte ändern Sie das Passwort im Einstellungsdialog.";
-"Password about to expire" = "Passwort läuft bald ab";
-"Your password is going to expire in %{0} %{1}." = "Ihr Passwort läuft ab in %{0} %{1}.";
+"The passwords do not match. Please try again." = "Die Passwörter stimmen nicht überein. Bitte noch einmal eingeben.";
+"Password Grace Period" = "Passwort-Schonfrist";
+"You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog." = "Sie haben noch %{0} Anmeldeversuch(e) bevor Ihr Konto gesperrt wird. Bitte ändern Sie das Passwort im Einstellungsdialog.";
+"Password about to expire" = "Ihr Passwort läuft bald ab";
+"Your password is going to expire in %{0} %{1}." = "Ihr Passwort läuft in %{0} %{1} ab.";
 "days" = "Tagen";
 "hours" = "Stunden";
 "minutes" = "Minuten";
@@ -60,7 +60,7 @@ This is free software: you are free to change and redistribute it. There is NO W
 "Password change failed - Insufficient password quality" = "Passwortänderung fehlgeschlagen - Passwortqualität nicht ausreichend";
 "Password change failed - Password is too short" = "Passwortänderung fehlgeschlagen - Passwort ist zu kurz";
 "Password change failed - Password is too young" = "Passwortänderung fehlgeschlagen - Passwort ist zu jung";
-"Password change failed - Password is in history" = "Passwortänderung fehlgeschlagen - Passwort bereits früher verwendet";
+"Password change failed - Password is in history" = "Passwortänderung fehlgeschlagen - Passwort wurde bereits früher verwendet";
 "Unhandled policy error: %{0}" = "Unbehandelter Richtlinienfehler: %{0}";
 "Unhandled error response" = "Unbehandelter Fehlerantwort";
 "Password change is not supported." = "Passwortänderung wird nicht unterstützt.";

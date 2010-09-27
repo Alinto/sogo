@@ -6,7 +6,7 @@
 "General" = "Allgemein";
 "Calendar Options" = "Kalender";
 "Mail Options" = "E-Mail";
-"IMAP Accounts" = "IMAP Accounts";
+"IMAP Accounts" = "IMAP-Konten";
 "Vacation" = "Abwesenheit";
 "Forward" = "Weiterleitung";
 "Password" = "Passwort";
@@ -39,39 +39,34 @@
 "Long Date Format :" = "Langes Datumsformat:";
 "Time Format :" = "Zeitformat:";
 
-"default" = "Default";
+"default" = "Standard";
 
-"shortDateFmt_0" = "%d-%b-%y";
+"shortDateFmt_0" = "%d.%m.%Y";
+"shortDateFmt_1" = "%e.%m.%Y";
+"shortDateFmt_2" = "%d.%m.%y";
+"shortDateFmt_3" = "%e.%m.%y";
+"shortDateFmt_4" = "%Y-%m-%d";
+"shortDateFmt_5" = "%d. %b. %Y";
+"shortDateFmt_6" = "%e. %b. %Y";
+"shortDateFmt_7" = "%d. %b. %y";
+"shortDateFmt_8" = "%e. %b. %y";
+"shortDateFmt_9" = "";
 
-"shortDateFmt_1" = "%d-%m-%y";
-"shortDateFmt_2" = "%d/%m/%y";
-"shortDateFmt_3" = "%e/%m/%y";
-
-"shortDateFmt_4" = "%d-%m-%Y";
-"shortDateFmt_5" = "%d/%m/%Y";
-
-"shortDateFmt_6" = "%m-%d-%y";
-"shortDateFmt_7" = "%m/%d/%y";
-"shortDateFmt_8" = "%m/%e/%y";
-
-"shortDateFmt_9" = "%y-%m-%d";
-"shortDateFmt_10" = "%y/%m/%d";
-"shortDateFmt_11" = "%y.%m.%d";
-
-"shortDateFmt_12" = "%Y-%m-%d";
-"shortDateFmt_13" = "%Y/%m/%d";
-"shortDateFmt_14" = "%Y.%m.%d";
-
-"shortDateFmt_15" = "";
-   
-"longDateFmt_0" = "%A %e %B %Y";
-"longDateFmt_1" = "%e %b. %Y";
-"longDateFmt_2" = "%e %B %Y";
-"longDateFmt_3" = "";
+"longDateFmt_0" = "%A, %d. %B %Y";
+"longDateFmt_1" = "%A, %e. %B %Y";
+"longDateFmt_2" = "%a. %d. %B %Y";
+"longDateFmt_3" = "%a. %e. %B %Y";
+"longDateFmt_4" = "%A, %d. %b. %Y";
+"longDateFmt_5" = "%A, %e. %b. %Y";
+"longDateFmt_6" = "%a. %d. %b. %Y";
+"longDateFmt_7" = "%a. %e. %b. %Y";
+"longDateFmt_8" = "%d. %B %Y";
+"longDateFmt_9" = "%e. %B %Y";
+"longDateFmt_10" = "";
 
 "timeFmt_0" = "%H:%M";
-"timeFmt_1" = "%H.%M";
-"timeFmt_2" = "%H h. %M";
+"timeFmt_1" = "%Hh:%Mm";
+"timeFmt_2" = "%Hh %Mm";
 "timeFmt_3" = "";
 
 /* calendar */
@@ -128,20 +123,24 @@
 "composemessagestype_text" = "Reintext";
 
 /* IMAP Accounts */
-"New Mail Account" = "New Mail Account";
+"New Mail Account" = "Neues Mail-Konto";
 
-"Server Name:" = "Server Name:";
+"Server Name:" = "Servername:";
 "Port:" = "Port:";
-"User Name:" = "User Name:";
+"Encryption:" = "Verschlüsselung:";
+"None" = "Keine";
+"User Name:" = "Benutzername:";
 "Password:" = "Passwort:";
  
-"Full Name:" = "Full Name:";
-"Email:" = "Email:";
+"Full Name:" = "Name:";
+"Email:" = "E-Mail-Adresse:";
 "Signature:" = "Signatur:";
-"(Click to create)" = "(Click to create)";
+"(Click to create)" = "(Klick zum Erstellen)";
 
 "Signature" = "Signatur";
 "Please enter your signature below:" = "Please enter your signature below:";
+"Please enter your signature below:" = "Bitte fügen Sie die Signatur hier ein:";
+"Cancel" = "Abbrechen";
 
 /* Additional Parameters */
 "Additional Parameters" = "Zusätzliche Einstellungen";
@@ -179,16 +178,16 @@
 "Welsh" = "Cymraeg";
 
 /* Return receipts */
-"When I receive a request for a return receipt:" = "When I receive a request for a return receipt:";
-"Never send a return receipt" = "Never send a return receipt";
-"Allow return receipts for some messages" = "Allow return receipts for some messages";
-"If I'm not in the To or Cc of the message:" = "If I'm not in the To or Cc of the message:";
-"If the sender is outside my domain:" = "If the sender is outside my domain:";
-"In all other cases:" = "In all other cases:";
+"When I receive a request for a return receipt:" = "Wenn ich die Anforderung einer Empfangsbestätigung erhalte:";
+"Never send a return receipt" = "Niemals eine Beatätigung senden";
+"Allow return receipts for some messages" = "Erlaube eine Bestätigung für einige Nachrichten";
+"If I'm not in the To or Cc of the message:" = "Wenn ich nicht in An oder Cc der Nachricht bin:";
+"If the sender is outside my domain:" = "Wenn der Absender außerhalb meiner Domain ist:";
+"In all other cases:" = "In allen anderen Fällen:";
 
-"Never send" = "Never send";
-"Always send" = "Always send";
-"Ask me" = "Ask me";
+"Never send" = "Niemals senden";
+"Always send" = "Immer senden";
+"Ask me" = "Mich fragen";
 
 /* Filters - UIxPreferences */
 "Filters" = "Filter";
@@ -228,8 +227,8 @@
 "does not contain" = "enthält nicht";
 "matches" = "ist gleich";
 "does not match" = "ist nicht gleich";
-"matches regex" = "matches regex";
-"does not match regex" = "does not match regex";
+"matches regex" = "entspricht regulären Ausdrücken";
+"does not match regex" = "entspricht nicht regulären Ausdrücken";
 
 "Seen" = "Gelesen";
 "Deleted" = "Gelöscht";
