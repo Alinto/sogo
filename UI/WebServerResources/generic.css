@@ -556,7 +556,7 @@ DIV.dialog
   width: 350px;
   z-index: 3; }
 
-DIV.dialog DIV
+DIV.dialog > DIV
 { border: 1px solid #444;
   background-color: #fff;
   padding: 5px;
