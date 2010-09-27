@@ -374,7 +374,7 @@ function deleteSelectedMessages(sender) {
     var paths = new Array(); // row IDs
     var unseenCount = 0;
 
-    if (rowIds.length > 0) {
+    if (rowIds && rowIds.length > 0) {
         for (var i = 0; i < rowIds.length; i++) {
 	    if (unseenCount < 1) {
 		var rows = messageList.select('#' + rowIds[i]);
