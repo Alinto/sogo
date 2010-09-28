@@ -1,5 +1,8 @@
 2010-09-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailFolderActions.m (-createFolderAction):
+	modified to make use of -[SOGoMailFolder create].
+
 	* SoObjects/Mailer/SOGoMailObject.m (-displayName): new accessor.
 
 	* SoObjects/Mailer/SOGoMailFolder.m (-displayName): fixed accessor

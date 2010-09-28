@@ -53,34 +53,25 @@
 
 - (WOResponse *) createFolderAction
 {
-  SOGoMailFolder *co;
+  SOGoMailFolder *co, *newFolder;
   WOResponse *response;
-  NGImap4Connection *connection;
-  NSException *error;
-  NSString *folderName, *path;
+  NSString *folderName;
 
   co = [self clientObject];
 
   folderName = [[context request] formValueForKey: @"name"];
   if ([folderName length] > 0)
     {
-      connection = [co imap4Connection];
-      error = [connection createMailbox: folderName atURL: [co imap4URL]];
-      if (error)
+      newFolder
+        = [co lookupName: [NSString stringWithFormat: @"folder%@", folderName]
+               inContext: context
+                 acquire: NO];
+      if ([newFolder create])
+        response = [self responseWith204];
+      else
         {
           response = [self responseWithStatus: 500];
           [response appendContentString: @"Unable to create folder."];
-        }
-      else
-        {
-          if ([co respondsToSelector: @selector (absoluteImap4Name)])
-            path = [NSString stringWithFormat: @"%@%@", 
-                             [co absoluteImap4Name], folderName];
-          else
-            path = folderName;
-	  [[connection client] subscribe: path];
-	  
-          response = [self responseWith204];
         }
     }
   else
