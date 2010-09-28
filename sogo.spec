@@ -196,7 +196,7 @@ rm -fr ${RPM_BUILD_ROOT}
 
 %config %{_sysconfdir}/httpd/conf.d/SOGo.conf
 %config %{_sysconfdir}/sysconfig/sogo
-%doc ChangeLog README NEWS Scripts/sql-update-20070724.sh Scripts/sql-update-20070822.sh Scripts/sql-update-20080303.sh Scripts/sql-update-101_to_102.sh Scripts/sql-update-1.2.2_to_1.3.0.sh Scripts/sql-update-1.2.2_to_1.3.0-mysql.sh
+%doc ChangeLog NEWS Scripts/sql-update-20070724.sh Scripts/sql-update-20070822.sh Scripts/sql-update-20080303.sh Scripts/sql-update-101_to_102.sh Scripts/sql-update-1.2.2_to_1.3.0.sh Scripts/sql-update-1.2.2_to_1.3.0-mysql.sh
 
 %files -n sogo-tool
 %{prefix}/Tools/Admin/sogo-tool
@@ -264,6 +264,9 @@ fi
 
 # ********************************* changelog *************************
 %changelog
+* Tue Sep 28 2010 Wolfgang Sourdeau <wsourdeau@inverse.ca>
+- removed "README" from documentation
+
 * Fri Aug 20 2010 Wolfgang Sourdeau <wsourdeau@inverse.ca>
 - added sogo-ealarms-notify package
 
