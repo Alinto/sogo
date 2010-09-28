@@ -1,5 +1,6 @@
 /*
   Copyright (C) 2004-2005 SKYRIX Software AG
+  Copyright (C) 2010 Inverse inc.
 
   This file is part of SOPE.
 
@@ -131,18 +132,26 @@
 
 - (NSArray *) exceptionDates
 {
+  NSArray *exDates;
   NSMutableArray *dates;
   NSEnumerator *dateList;
   NSCalendarDate *exDate;
   NSString *dateString;
+  unsigned i;
 
   dates = [NSMutableArray array];
   dateList = [[self childrenWithTag: @"exdate"] objectEnumerator];
-  while ((exDate = [[dateList nextObject] dateTime]))
+  
+  while ((dateString = [dateList nextObject]))
     {
-      dateString = [NSString stringWithFormat: @"%@Z",
-			     [exDate iCalFormattedDateTimeString]];
-      [dates addObject: dateString];
+      exDates = [(iCalDateTime*) dateString dateTimes];
+      for (i = 0; i < [exDates count]; i++)
+	{
+	  exDate = [exDates objectAtIndex: i];
+	  dateString = [NSString stringWithFormat: @"%@Z",
+				 [exDate iCalFormattedDateTimeString]];
+	  [dates addObject: dateString];
+	}
     }
 
   return dates;

@@ -35,6 +35,8 @@
 
 - (void) setDate: (NSCalendarDate *) date;
 - (void) setDateTime: (NSCalendarDate *) dateTime;
+
+- (NSArray *) dateTimes;
 - (NSCalendarDate *) dateTime;
 
 - (BOOL) isAllDay;

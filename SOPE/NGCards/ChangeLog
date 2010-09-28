@@ -1,3 +1,16 @@
+2010-09-28  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* NSString+NGCards.m (-asCalendarDate): added handling of date that
+	includes dashes (YYYY-MM-DD).
+
+	* iCalDateTime.m (-dateTimes): new method that handles EXDATE with
+	multiple values.
+
+	* iCalRepeatableEntityObject.m (-exceptionDates): add all values
+	from each EXDATE attribute.
+
+	* iCalRepeatableEntityObject.m (-exceptionDates): idem.
+
 2010-08-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* iCalPerson.m, iCalWeeklyRecurrenceCalculator.m: adapted classes
