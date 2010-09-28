@@ -108,6 +108,11 @@
   return [newContact saveContentString: [newCard versitString]];
 }
 
+- (NSString *) displayName
+{
+  return [[self vCard] fn];
+}
+
 /* DAV */
 
 - (NSString *) davContentType

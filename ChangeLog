@@ -1,7 +1,12 @@
+2010-09-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Contacts/SOGoContactGCSEntry.m (-displayName): new
+	accessor.
+
 2010-09-24  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
         * Added caching support for LDAP-based groups
-	* SoObjects/SOGo/LDAPSource.m 
+	* SoObjects/SOGo/LDAPSource.m
 	Improved SafeLDAPCriteria() to properly escape '%'
 	* Dropped lots of unnecessary and worthless files
 
