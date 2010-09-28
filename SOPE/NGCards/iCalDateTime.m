@@ -20,6 +20,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSTimeZone.h>
 
@@ -151,36 +152,50 @@
 
 - (NSCalendarDate *) dateTime
 {
+  return [[self dateTimes] lastObject];
+}
+
+- (NSArray *) dateTimes
+{
   iCalTimeZone *iTZ;
   NSString *date;
   NSCalendarDate *initialDate, *dateTime;
+  NSMutableArray *dates;
   NSTimeZone *tz;
+  unsigned count, i;
 
-  date = [self value: 0];
-  iTZ = [self timeZone];
-  if (iTZ)
-    dateTime = [iTZ dateForDateTimeString: date];
-  else
+  count = [[self values] count];
+  dates = [NSMutableArray arrayWithCapacity: count];
+  for (i = 0; i < count; i++)
     {
-      initialDate = [date asCalendarDate];
-      if (initialDate)
-        {
-          if ([date hasSuffix: @"Z"] || [date hasSuffix: @"z"])
-            dateTime = initialDate;
-          else
-            {
-              /* same TODO as above */
-              tz = [NSTimeZone defaultTimeZone];
-              dateTime = [initialDate addYear: 0 month: 0 day: 0
-                                      hour: 0 minute: 0
-                                      second: -[tz secondsFromGMTForDate: initialDate]];
-            }
-        }
+      date = [self value: i];
+      iTZ = [self timeZone];
+      if (iTZ)
+	dateTime = [iTZ dateForDateTimeString: date];
       else
-        dateTime = nil;
+	{
+	  initialDate = [date asCalendarDate];
+	  if (initialDate)
+	    {
+	      if ([date hasSuffix: @"Z"] || [date hasSuffix: @"z"])
+		dateTime = initialDate;
+	      else
+		{
+		  /* same TODO as above */
+		  tz = [NSTimeZone defaultTimeZone];
+		  dateTime = [initialDate addYear: 0 month: 0 day: 0
+					     hour: 0 minute: 0
+					   second: -[tz secondsFromGMTForDate: initialDate]];
+		}
+	    }
+	  else
+	    dateTime = nil;
+	}
+      if (dateTime)
+	[dates addObject: dateTime];
     }
-
-  return dateTime;
+  
+  return dates;
 }
 
 - (BOOL) isAllDay
