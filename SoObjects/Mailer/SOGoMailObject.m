@@ -252,6 +252,11 @@ static BOOL debugSoParts       = NO;
   return [[self envelope] subject];
 }
 
+- (NSString *) displayName
+{
+  return [self subject];
+}
+
 - (NSString *) decodedSubject
 {
   return [[self subject] decodedHeader];
@@ -892,7 +897,7 @@ static BOOL debugSoParts       = NO;
   return NO;
 }
 
-- (id) davContentLength
+- (NSString *) davContentLength
 {
   return [[self fetchCoreInfos] valueForKey: @"size"];
 }

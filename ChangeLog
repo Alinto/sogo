@@ -1,5 +1,7 @@
 2010-09-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailObject.m (-displayName): new accessor.
+
 	* SoObjects/Mailer/SOGoMailFolder.m (-displayName): fixed accessor
 	to return the real folder name rather than the nameInContainer,
 	which is escaped and prefixed with "folder".
