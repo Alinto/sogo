@@ -1,5 +1,11 @@
 2010-09-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailFolder.m (-displayName): fixed accessor
+	to return the real folder name rather than the nameInContainer,
+	which is escaped and prefixed with "folder".
+	(-create): new method intented to align the operations on this
+	class to the ones in SOGoGCSFolder.
+
 	* SoObjects/Contacts/SOGoContactGCSEntry.m (-displayName): new
 	accessor.
 

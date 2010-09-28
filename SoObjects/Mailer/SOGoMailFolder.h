@@ -72,6 +72,8 @@
 - (void) markForExpunge;
 - (void) expungeLastMarkedFolder;
 
+- (BOOL) create;
+
 - (NSException *) expunge;
 
 /* flags */

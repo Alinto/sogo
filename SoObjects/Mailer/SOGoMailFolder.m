@@ -697,6 +697,25 @@ static NSString *defaultUserID =  @"anyone";
   return [[self imap4Connection] createMailbox:_name atURL:[self imap4URL]];
 }
 
+- (BOOL) create
+{
+  NSException *error;
+  BOOL rc;
+
+  [self imap4Connection];
+  error = [imap4 createMailbox: [self relativeImap4Name]
+                         atURL: [container imap4URL]];
+  if (error)
+    rc = NO;
+  else
+    {
+      [[imap4 client] subscribe: [self absoluteImap4Name]];
+      rc = YES;
+    }
+
+  return rc;
+}
+
 - (NSException *) delete
 {
   return [[self imap4Connection] deleteMailboxAtURL:[self imap4URL]];
@@ -1140,7 +1159,7 @@ static NSString *defaultUserID =  @"anyone";
 
 - (NSString *) displayName
 {
-  return [self nameInContainer];
+  return [self relativeImap4Name];
 }
 
 - (NSDictionary *) davIMAPFieldsTable
