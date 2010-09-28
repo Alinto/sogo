@@ -1,6 +1,6 @@
 /* NSString+NGCards.m - this file is part of SOPE
  *
- * Copyright (C) 2006-2009 Inverse inc.
+ * Copyright (C) 2006-2010 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -246,8 +246,12 @@ static NSString *commaSeparator = nil;
       year = [[self substringWithRange: cursor] intValue];
       cursor.location += cursor.length;
       cursor.length = 2;
+      if ([[self substringWithRange: cursor] hasPrefix: @"-"])
+	cursor.location += 1;
       month = [[self substringWithRange: cursor] intValue];
       cursor.location += cursor.length;
+      if ([[self substringWithRange: cursor] hasPrefix: @"-"])
+	cursor.location += 1;
       day = [[self substringWithRange: cursor] intValue];
 
       if (length > 14)
