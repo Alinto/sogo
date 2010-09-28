@@ -502,24 +502,26 @@
 
 - (void) _appendSystemMailAccount
 {
-  NSString *fullName, *imapLogin, *imapServer, *signature, *encryption, *port,
+  NSString *fullName, *imapLogin, *imapServer, *signature, *encryption,
     *scheme, *action;
   NSMutableDictionary *mailAccount, *identity, *mailboxes, *receipts;
+  NSNumber *port;
   NSMutableArray *identities;
   NSArray *mails;
   NSURL *url;
   unsigned int count, max;
+  NSInteger defaultPort;
 
   [self userDefaults];
 
   mailAccount = [NSMutableDictionary new];
 
+  // 1. login
   imapLogin = [[SOGoUserManager sharedUserManager]
                      getImapLoginForUID: login];
-  imapServer = [self _fetchFieldForUser: @"c_imaphostname"];
-  if (!imapServer)
-    imapServer = [[self domainDefaults] imapServer];
+  [mailAccount setObject: imapLogin forKey: @"userName"];
 
+  // 2. server
   // imapServer might have the following format
   // localhost
   // localhost:143
@@ -528,31 +530,33 @@
   // imaps://localhost:993
   // imaps://localhost:143/?tls=YES
   // imaps://localhost/?tls=YES
+
+  imapServer = [self _fetchFieldForUser: @"c_imaphostname"];
+  if (!imapServer)
+    imapServer = [[self domainDefaults] imapServer];
   url = [NSURL URLWithString: imapServer];
-
-  scheme = [url scheme];
-  port = ([url port] ? [url port] : @"143");
-
-  encryption = @"none";
-
-  if ([url query] && [[url query] caseInsensitiveCompare: @"tls=YES"] == NSOrderedSame)
-    encryption = @"tls";
-  
-  if (scheme &&
-      [scheme caseInsensitiveCompare: @"imaps"] == NSOrderedSame && 
-      ![encryption isEqualToString: @"tls"])
-    {
-      encryption = @"ssl";
-      
-      if ([port intValue] == 0)
-	port = @"993";
-    }
-    
   if ([url host])
     imapServer = [url host];
-  
-  [mailAccount setObject: imapLogin forKey: @"userName"];
   [mailAccount setObject: imapServer forKey: @"serverName"];
+
+  // 3. port & encryption
+  scheme = [url scheme];
+  if ([scheme caseInsensitiveCompare: @"imaps"] == NSOrderedSame)
+    {
+      encryption = @"ssl";
+      defaultPort = 993;
+    }
+  else
+    {
+      if ([[url query] caseInsensitiveCompare: @"tls=YES"] == NSOrderedSame)
+        encryption = @"tls";
+      else
+        encryption = @"none";
+      defaultPort = 143;
+    }
+  port = [url port];
+  if ([port intValue] == 0) /* port is nil or intValue == 0 */
+    port = [NSNumber numberWithInt: defaultPort];
   [mailAccount setObject: port forKey: @"port"];
   [mailAccount setObject: encryption forKey: @"encryption"];
 

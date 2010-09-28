@@ -1,5 +1,9 @@
 2010-09-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUser.m (-_appendSystemMailAccount): cleaned
+	up method by using NSNumber as class for port and removing useless
+	tests on nil values.
+
 	* UI/MailerUI/UIxMailFolderActions.m (-createFolderAction):
 	modified to make use of -[SOGoMailFolder create].
 
