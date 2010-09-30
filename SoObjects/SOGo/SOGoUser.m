@@ -160,7 +160,6 @@
           _defaults = nil;
           _domainDefaults = nil;
           _settings = nil;
-          allEmails = nil;
           mailAccounts = nil;
 	}
     }
