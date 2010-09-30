@@ -1,3 +1,9 @@
+2010-09-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/NSDictionary+BSJSONAdditions.m
+	(+[NSMutableDictionary dictionaryWithJSONString:]): return nil
+	directly if the json string is empty.
+
 2010-09-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUser.m (-_appendSystemMailAccount): cleaned
