@@ -2370,6 +2370,28 @@ function onMessageListMenuPrepareVisibility() {
     return true;
 }
 
+function onAccountIconMenuPrepareVisibility() {
+    /* This methods disables or enables the "Delegation..." menu option on
+     mail accounts. */
+   if (document.menuTarget) {
+        var mbx = document.menuTarget.getAttribute("dataname");
+        if (mbx) {
+            var lis = this.getElementsByTagName("li");
+            var li = lis[lis.length - 1];
+            var parts = mbx.split("/");
+            var acctNbr = parseInt(parts[1]);
+            if (acctNbr > 0) {
+                li.addClassName("disabled");
+            }
+            else {
+                li.removeClassName("disabled");
+            }
+        }
+    }
+
+    return true;
+}
+
 function onFolderMenuPrepareVisibility() {
     /* This methods disables or enables the "Sharing" menu option on
      mailboxes. */
@@ -2485,9 +2507,15 @@ function onMenuArchiveFolder(event) {
     event.stop();
 }
 
+function onMenuAccountDelegation(event) {
+    var folderID = document.menuTarget.getAttribute("dataname");
+    var urlstr = ApplicationBaseURL + folderID + "/delegation";
+    openAclWindow(urlstr);
+}
+
 function getMenus() {
     var menus = {
-        accountIconMenu: [ null, null, onMenuCreateFolder, null, null, null ],
+        accountIconMenu: [ null, null, onMenuCreateFolder, null, null, onMenuAccountDelegation ],
         inboxIconMenu: [ null, null, null, "-", null,
                          onMenuCreateFolder, onMenuExpungeFolder,
                          onMenuArchiveFolder, "-", null,
@@ -2555,6 +2583,11 @@ function getMenus() {
         labelMenu.prepareVisibility = onLabelMenuPrepareVisibility;
     }
 
+    var labelMenu = $("label-menu");
+    if (labelMenu) {
+        labelMenu.prepareVisibility = onLabelMenuPrepareVisibility;
+    }
+
     var markMenu = $("mark-menu");
     if (markMenu) {
         markMenu.prepareVisibility = onMarkMenuPrepareVisibility;
@@ -2566,6 +2599,11 @@ function getMenus() {
         if (menu) {
             menu.prepareVisibility = onMessageListMenuPrepareVisibility;
         }
+    }
+
+    var accountIconMenu = $("accountIconMenu");
+    if (accountIconMenu) {
+        accountIconMenu.prepareVisibility = onAccountIconMenuPrepareVisibility;
     }
 
     var folderMenus = [ "inboxIconMenu", "trashIconMenu", "mailboxIconMenu" ];

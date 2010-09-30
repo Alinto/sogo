@@ -35,6 +35,7 @@
 */
 
 @class NSArray;
+@class NSMutableArray;
 @class NSString;
 
 @class SOGoMailFolder;
@@ -55,6 +56,7 @@ typedef enum {
   SOGoSentFolder *sentFolder;
   SOGoTrashFolder *trashFolder;
   SOGoIMAPAclStyle imapAclStyle;
+  NSMutableArray *identities;
 }
 
 - (SOGoIMAPAclStyle) imapAclStyle;
@@ -88,6 +90,11 @@ typedef enum {
 
 - (NSArray *) otherUsersFolderNamespaces;
 - (NSArray *) sharedFolderNamespaces;
+
+/* account delegation */
+- (NSArray *) delegates;
+- (void) addDelegates: (NSArray *) newDelegates;
+- (void) removeDelegates: (NSArray *) oldDelegates;
 
 @end
 

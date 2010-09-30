@@ -194,6 +194,8 @@
 "Delete Folder" = "Mappa törlése";
 "Use This Folder For" = "Mappa használata az alábbira:";
 "Get Messages for Account" = "Fiók üzeneteinek letöltése";
+"Properties..." = "Properties...";
+"Delegation..." = "Delegation...";
 
 /* Use This Folder menu */
 "Sent Messages" = "Elküldött üzenetek";

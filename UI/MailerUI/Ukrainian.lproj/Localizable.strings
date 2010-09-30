@@ -194,6 +194,8 @@
 "Delete Folder" = "Вилучити";
 "Use This Folder For" = "Використати цю теку як";
 "Get Messages for Account" = "Отримати нові повідомлення";
+"Properties..." = "Properties...";
+"Delegation..." = "Delegation...";
 
 /* Use This Folder menu */
 "Sent Messages" = "Відіслані";

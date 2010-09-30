@@ -38,9 +38,9 @@
       <li><var:string label:value="Subscribe..." /></li>
       <li><var:string label:value="Get Messages for Account" /></li>
       <li><var:string label:value="New Folder..." /></li>
-      <li><!-- separator --></li>
       <li><var:string label:value="Search Messages..." /></li>
       <li><var:string label:value="Properties..." /></li>
+      <li><var:string label:value="Delegation..." /></li>
     </ul>
   </div>
 

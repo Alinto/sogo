@@ -205,7 +205,7 @@ function onConfirmFolderSelection(event) {
                 var email = (span.innerHTML
                              .replace("&lt;", "<", "g")
                              .replace("&gt;", ">", "g"));
-                folderName = email;
+                folderName = email.replace(/>,.*$/, ">", "g");
             }
             else {
                 var resource = $(topNode.selectedEntry).down("SPAN.nodeName");
@@ -214,8 +214,8 @@ function onConfirmFolderSelection(event) {
                              .replace("&lt;", "<", "g")
                              .replace("&gt;", ">", "g"));
                 folderName = resource.innerHTML + ' (' + email + ')';
+                folderName = folderName.replace(/>,.*(\))?$/, ">)$1", "g");
             }
-            folderName = folderName.replace(/>,.*(\))?$/, ">)$1", "g");
 
             var data = { folderName: folderName, folder: folder, window: window };
             if (parent$(accessToSubscribedFolder(folder)))

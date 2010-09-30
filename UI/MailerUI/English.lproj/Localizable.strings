@@ -194,6 +194,8 @@
 "Delete Folder" = "Delete Folder";
 "Use This Folder For" = "Use This Folder For";
 "Get Messages for Account" = "Get Messages for Account";
+"Properties..." = "Properties...";
+"Delegation..." = "Delegation...";
 
 /* Use This Folder menu */
 "Sent Messages" = "Sent Messages";

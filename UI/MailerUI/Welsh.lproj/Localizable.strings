@@ -194,6 +194,8 @@
 "Delete Folder" = "Dileu Ffolder";
 "Use This Folder For" = "Defyddio'r Ffolder yma am";
 "Get Messages for Account" = "Cael negeseuon ar gyfer Cyfrif";
+"Properties..." = "Properties...";
+"Delegation..." = "Delegation...";
 
 /* Use This Folder menu */
 "Sent Messages" = "Negeseuon anfonwyd";

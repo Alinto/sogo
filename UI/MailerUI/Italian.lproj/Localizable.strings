@@ -189,6 +189,8 @@
 "Delete Folder" = "Cancella cartella";
 "Use This Folder For" = "Usa questa cartella per";
 "Get Messages for Account" = "Scarica messaggi per l'account";
+"Properties..." = "Properties...";
+"Delegation..." = "Delegation...";
 
 /* Use This Folder menu */
 "Sent Messages" = "Messaggi inviati";

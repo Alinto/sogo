@@ -393,6 +393,20 @@
           actionClass = "UIxMailFolderActions";
           actionName = "createFolder";
         };
+        delegation = {
+          protectedBy = "View";
+          pageName = "UIxMailUserDelegationEditor";
+        };
+        addDelegate = {
+          protectedBy = "View";
+          actionClass = "UIxMailAccountActions";
+          actionName = "addDelegate";
+        };
+        removeDelegate = {
+          protectedBy = "View";
+          actionClass = "UIxMailAccountActions";
+          actionName = "removeDelegate";
+        };
       };
     };
 

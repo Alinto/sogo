@@ -194,6 +194,8 @@
 "Delete Folder" = "Удалить папку";
 "Use This Folder For" = "Использовать эту папку для";
 "Get Messages for Account" = "Получить новые сообщения";
+"Properties..." = "Properties...";
+"Delegation..." = "Delegation...";
 
 /* Use This Folder menu */
 "Sent Messages" = "Отправленные сообщения";

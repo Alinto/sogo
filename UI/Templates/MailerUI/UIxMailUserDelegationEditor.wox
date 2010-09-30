@@ -1,0 +1,35 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE var:component>
+<var:component xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:uix="OGo:uix"
+  xmlns:label="OGo:label"
+  xmlns:rsrc="OGo:url"
+  className="UIxPageFrame"
+  title="title"
+  const:toolbar="none"
+  const:popup="YES">
+
+  <form id="delegationForm" const:href="saveDelegation">
+    <div class="delegation">
+      <div class="delegateSelector" id="delegates">
+        <div id="delegateSelectorButtons">
+          <a href="#" id="addDelegate" class="smallToolbarButton"><span>
+              <img rsrc:src="add-contact.gif" label:title="Add..." /></span></a>
+          <a href="#" id="deleteDelegate" class="smallToolbarButton"><span>
+              <img rsrc:src="remove-contact.gif" label:title="Remove" /></span></a>
+        </div>
+	<ul id="delegateList">
+	  <var:foreach list="delegates" item="currentDelegate"
+            ><li var:id="currentDelegate" class="normal-user">
+              <span class="userFullName"
+                ><var:string value="currentDelegateDisplayName"
+                  /></span
+                ></li>
+          </var:foreach>
+	</ul>
+      </div>
+    </div>
+  </form>
+</var:component>

@@ -44,7 +44,6 @@
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
-#import <SOGo/SOGoUserSettings.h>
 
 #import "SOGoDraftsFolder.h"
 #import "SOGoMailFolder.h"
@@ -53,7 +52,7 @@
 #import "SOGoSentFolder.h"
 #import "SOGoSieveConverter.h"
 #import "SOGoTrashFolder.h"
-
+#import "SOGoUser+Mailer.h"
 
 #import "SOGoMailAccount.h"
 
@@ -71,6 +70,7 @@ static NSString *sieveScriptName = @"sogo";
       sentFolder = nil;
       trashFolder = nil;
       imapAclStyle = undefined;
+      identities = nil;
     }
 
   return self;
@@ -82,6 +82,7 @@ static NSString *sieveScriptName = @"sogo";
   [draftsFolder release];
   [sentFolder release];
   [trashFolder release];
+  [identities release];
   [super dealloc];  
 }
 
@@ -482,17 +483,47 @@ static NSString *sieveScriptName = @"sogo";
   return mailAccount;
 }
 
+- (void) _appendDelegatorIdentities
+{
+  NSArray *delegators;
+  SOGoUser *delegatorUser;
+  NSDictionary *delegatorAccount;
+  NSInteger count, max;
+
+  delegators = [[SOGoUser userWithLogin: owner] mailDelegators];
+  max = [delegators count];
+  for (count = 0; count < max; count++)
+    {
+      delegatorUser = [SOGoUser
+                        userWithLogin: [delegators objectAtIndex: count]];
+      if (delegatorUser)
+        {
+          delegatorAccount = [[delegatorUser mailAccounts]
+                                       objectAtIndex: 0];
+          [identities addObjectsFromArray:
+                        [delegatorAccount objectForKey: @"identities"]];
+        }
+    }
+}
+
 - (NSArray *) identities
 {
-  return [[self _mailAccount] objectForKey: @"identities"];
+  if (!identities)
+    {
+      identities = [[[self _mailAccount] objectForKey: @"identities"]
+                     mutableCopy];
+      if ([nameInContainer isEqualToString: @"0"])
+        [self _appendDelegatorIdentities];
+    }
+
+  return identities;
 }
 
 - (NSString *) signature
 {
-  NSArray *identities;
   NSString *signature;
 
-  identities = [self identities];
+  [self identities];
   if ([identities count] > 0)
     signature = [[identities objectAtIndex: 0] objectForKey: @"signature"];
   else
@@ -764,6 +795,93 @@ static NSString *sieveScriptName = @"sogo";
     }
 
   return trashFolder;
+}
+
+/* account delegation */
+- (NSArray *) delegates
+{
+  NSDictionary *mailSettings;
+  SOGoUser *ownerUser;
+  NSArray *delegates;
+
+  if ([nameInContainer isEqualToString: @"0"])
+    {
+      ownerUser = [SOGoUser userWithLogin: [self ownerInContext: context]];
+      mailSettings = [[ownerUser userSettings] objectForKey: @"Mail"];
+      delegates = [mailSettings objectForKey: @"DelegateTo"];
+      if (!delegates)
+        delegates = [NSArray array];
+    }
+  else
+    delegates = nil;
+
+  return delegates;
+}
+
+- (void) _setDelegates: (NSArray *) newDelegates
+{
+  SOGoUser *ownerUser;
+  SOGoUserSettings *settings;
+
+  ownerUser = [SOGoUser userWithLogin: [self ownerInContext: context]];
+  settings = [ownerUser userSettings];
+  [[settings objectForKey: @"Mail"] setObject: newDelegates
+                                       forKey: @"DelegateTo"];
+  [settings synchronize];
+}
+
+- (void) addDelegates: (NSArray *) newDelegates
+{
+  NSMutableArray *delegates;
+  NSInteger count, max;
+  NSString *currentDelegate;
+  SOGoUser *delegateUser;
+
+  if ([nameInContainer isEqualToString: @"0"])
+    {
+      delegates = [[self delegates] mutableCopy];
+      [delegates autorelease];
+      max = [newDelegates count];
+      for (count = 0; count < max; count++)
+        {
+          currentDelegate = [newDelegates objectAtIndex: 0];
+          delegateUser = [SOGoUser userWithLogin: currentDelegate];
+          if (delegateUser)
+            {
+              [delegates addObjectUniquely: currentDelegate];
+              [delegateUser addMailDelegator: owner];
+            }
+        }
+
+      [self _setDelegates: delegates];
+    }
+}
+
+- (void) removeDelegates: (NSArray *) oldDelegates
+{
+  NSMutableArray *delegates;
+  NSInteger count, max;
+  NSString *currentDelegate;
+  SOGoUser *delegateUser;
+
+  if ([nameInContainer isEqualToString: @"0"])
+    {
+      delegates = [[self delegates] mutableCopy];
+      [delegates autorelease];
+      max = [oldDelegates count];
+      for (count = 0; count < max; count++)
+        {
+          currentDelegate = [oldDelegates objectAtIndex: 0];
+          delegateUser = [SOGoUser userWithLogin: currentDelegate];
+          if (delegateUser)
+            {
+              [delegates removeObject: currentDelegate];
+              [delegateUser removeMailDelegator: owner];
+            }
+        }
+      
+      [self _setDelegates: delegates];
+    }
 }
 
 /* WebDAV */

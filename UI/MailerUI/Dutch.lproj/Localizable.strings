@@ -194,6 +194,8 @@
 "Delete Folder" = "Map verwijderen";
 "Use This Folder For" = "De map gebruiken voor...";
 "Get Messages for Account" = "Berichten ophalen voor account";
+"Properties..." = "Properties...";
+"Delegation..." = "Delegation...";
 
 /* Use This Folder menu */
 "Sent Messages" = "Berichten verzenden";

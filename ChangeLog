@@ -1,5 +1,34 @@
 2010-09-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/UIxContactsUserFolders.js:
+	(onConfirmFolderSelection): fixed the regexp used when sanitizing
+	a username containing a user info field.
+
+	* SoObjects/Mailer/SOGoMailAccount.m (-identities): the account
+	identities are now kept in an ivar until the account object is
+	released. Moreoever, we invoke the new
+	"_appendDelegatorIdentities" method when the account
+	nameInContainer is "0".
+	(-_appendDelegatorIdentities): new method that appends the mail
+	values of all delegators for the owner user.
+
+	* UI/WebServerResources/MailerUI.js: (onMenuAccountDelegation):
+	new menu action for showing the new dialog below.
+	(onAccountIconMenuPrepareVisibility): new setup function.
+
+	* UI/MailerUI/UIxMailAccountActions.m (-addDelegateAction)
+	(-removeDelegation): new action methods.
+
+	* SoObjects/Mailer/SOGoUser+Mailer.m: new category module.
+	(mailDelegators, addMailDelegator, removeMailDelegator): new
+	accessors.
+
+	* UI/MailerUI/UIxMailUserDelegationEditor.m: new window for
+	choosing account delegates
+
+	* UI/WebServerResources/UIxMailUserDelegationEditor.js: new page
+	file, derived from UIxAclEditor.js.
+
 	* SoObjects/SOGo/NSDictionary+BSJSONAdditions.m
 	(+[NSMutableDictionary dictionaryWithJSONString:]): return nil
 	directly if the json string is empty.

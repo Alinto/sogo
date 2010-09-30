@@ -231,4 +231,41 @@
   return [self redirectToLocation: url];  
 }
 
+- (WOResponse *) _performDelegationAction: (SEL) action
+{
+  SOGoMailAccount *co;
+  WOResponse *response;
+  NSString *uid;
+
+  co = [self clientObject];
+  if ([[co nameInContainer] isEqualToString: @"0"])
+    {
+      uid = [[context request] formValueForKey: @"uid"];
+      if ([uid length] > 0)
+        {
+          [co performSelector: action
+                   withObject: [NSArray arrayWithObject: uid]];
+          response = [self responseWith204];
+        }
+      else
+        response = [self responseWithStatus: 500
+                                  andString: @"Missing 'uid' parameter."];
+    }
+  else
+    response = [self responseWithStatus: 403
+                              andString: @"This action cannot be performed on secondary accounts."];
+
+  return response;
+}
+
+- (WOResponse *) addDelegateAction
+{
+  return [self _performDelegationAction: @selector (addDelegates:)];
+}
+
+- (WOResponse *) removeDelegateAction
+{
+  return [self _performDelegationAction: @selector (removeDelegates:)];
+}
+
 @end

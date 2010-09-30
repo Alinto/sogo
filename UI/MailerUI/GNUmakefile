@@ -32,6 +32,7 @@ MailerUI_OBJC_FILES += \
 	UIxMailWindowCloser.m		\
 	\
 	UIxMailUserRightsEditor.m	\
+	UIxMailUserDelegationEditor.m	\
 #	UIxMailEditorAction.m		\
 #	UIxMailReplyAction.m		\
 #	UIxMailForwardAction.m		\

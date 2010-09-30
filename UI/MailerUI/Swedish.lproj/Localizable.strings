@@ -194,6 +194,8 @@
 "Delete Folder" = "Ta bort mapp";
 "Use This Folder For" = "Använd mapp till";
 "Get Messages for Account" = "Hämta nya meddelanden för konto";
+"Properties..." = "Properties...";
+"Delegation..." = "Delegation...";
 
 /* Use This Folder menu */
 "Sent Messages" = "Skickade meddelanden";
