@@ -27,12 +27,13 @@
 #import <NGCards/NGVCard.h>
 #import <NGCards/NSArray+NGCards.h>
 
-#import <SOGo/SOGoObject.h>
-#import <Contacts/SOGoContactObject.h>
+#import <Contacts/SOGoContactGCSEntry.h>
+#import <Contacts/SOGoContactGCSFolder.h>
 
 #import "MAPIApplication.h"
 #import "MAPIStoreAuthenticator.h"
 #import "NSString+MAPIStore.h"
+#import "SOGoGCSFolder+MAPIStore.h"
 
 #import "MAPIStoreContactsContext.h"
 
@@ -61,6 +62,11 @@ static Class SOGoUserFolderK;
                               inContext: woContext
                                 acquire: NO];
   [moduleFolder retain];
+}
+
+- (NSArray *) getFolderMessageKeys: (SOGoFolder *) folder
+{
+  return [(SOGoGCSFolder *) folder componentKeysWithType: @"vcard"];
 }
 
 // - (int) getCommonTableChildproperty: (void **) data

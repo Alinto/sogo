@@ -251,40 +251,46 @@ static MAPIStoreMapping *mapping = nil;
   NSString *pathString, *nameInContainer;
 
   objectURL = [NSURL URLWithString: objectURLString];
-  if (!objectURL)
-    [self errorWithFormat: @"url string gave nil NSURL: '%@'", objectURLString];
-  object = moduleFolder;
-
-  pathString = [objectURL path];
-  if ([pathString hasPrefix: @"/"])
-    pathString = [pathString substringFromIndex: 1];
-  if ([pathString length] > 0)
+  if (objectURL)
     {
-      path = [pathString componentsSeparatedByString: @"/"];
-      max = [path count];
-      if (max > 0)
+      object = moduleFolder;
+
+      pathString = [objectURL path];
+      if ([pathString hasPrefix: @"/"])
+        pathString = [pathString substringFromIndex: 1];
+      if ([pathString length] > 0)
         {
-          for (count = 0;
-               object && count < max;
-               count++)
+          path = [pathString componentsSeparatedByString: @"/"];
+          max = [path count];
+          if (max > 0)
             {
-              nameInContainer = [[path objectAtIndex: count]
+              for (count = 0;
+                   object && count < max;
+                   count++)
+                {
+                  nameInContainer = [[path objectAtIndex: count]
                                       stringByUnescapingURL];
-              object = [object lookupName: nameInContainer
-                                inContext: woContext
-                                  acquire: NO];
-              if ([object isKindOfClass: SOGoObjectK])
-                [woContext setClientObject: object];
-              else
-                object = nil;
+                  object = [object lookupName: nameInContainer
+                                    inContext: woContext
+                                      acquire: NO];
+                  if ([object isKindOfClass: SOGoObjectK])
+                    [woContext setClientObject: object];
+                  else
+                    object = nil;
+                }
             }
         }
-    }
-  else
-    object = nil;
+      else
+        object = nil;
   
       // [self _setNewLastObject: object];
       // ASSIGN (lastObjectURL, objectURLString);
+    }
+  else
+    {
+      object = nil;
+      [self errorWithFormat: @"url string gave nil NSURL: '%@'", objectURLString];
+    }
 
   [woContext setClientObject: object];
         
@@ -437,13 +443,20 @@ static MAPIStoreMapping *mapping = nil;
     {
       folder = [self lookupObject: folderURL];
       if (folder)
-        keys = [folder toOneRelationshipKeys];
+        keys = [self getFolderMessageKeys: folder];
       else
         keys = (NSArray *) [NSNull null];
       [messageCache setObject: keys forKey: folderURL];
     }
 
   return keys;
+}
+
+- (NSArray *) getFolderMessageKeys: (SOGoFolder *) folder
+{
+  [self subclassResponsibility: _cmd];
+  
+  return (NSArray *) [NSNull null];
 }
 
 - (NSArray *) _subfolderKeysForFolderURL: (NSString *) folderURL

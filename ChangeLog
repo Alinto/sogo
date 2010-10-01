@@ -1,5 +1,16 @@
 2010-10-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/SOGoGCSFolder+MAPIStore.m (-componentKeysWithType:):
+	new method that return the keys of components corresponding to the
+	type passed as parameter.
+
+	* OpenChange/SOGoGCSFolder+MAPIStore.[hm]: new category module.
+
+	* OpenChange/MAPIStoreContext.m (-lookupObject): return nil when
+	the parsed URL is nil.
+	(-getFolderMessageKeys:): new subclass method designed to return
+	the appropriate "message" keys depending on the folder type.
+
 	* SoObjects/SOGo/SOGoObject.m (-displayName): new accessor.
 
 2010-09-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>

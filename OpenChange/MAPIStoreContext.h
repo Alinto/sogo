@@ -30,6 +30,7 @@
 #define SENSITIVITY_PRIVATE 2
 #define SENSITIVITY_COMPANY_CONFIDENTIAL 3
 
+@class NSArray;
 @class NSMutableDictionary;
 @class NSString;
 
@@ -109,6 +110,8 @@
                    withFlags: (uint8_t) flags;
 
 /* subclass methods */
+
+- (NSArray *) getFolderMessageKeys: (SOGoFolder *) folder;
 
 - (int) getCommonTableChildproperty: (void **) data
                               atURL: (NSString *) childURL

@@ -76,6 +76,11 @@ static Class SOGoUserFolderK;
   [moduleFolder retain];
 }
 
+- (NSArray *) getFolderMessageKeys: (SOGoFolder *) folder
+{
+  return [(SOGoMailFolder *) folder toOneRelationshipKeys];
+}
+
 // - (int) getCommonTableChildproperty: (void **) data
 //                               atURL: (NSString *) childURL
 //                             withTag: (uint32_t) proptag

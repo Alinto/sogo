@@ -25,6 +25,8 @@ $(MAPISTORESOGO)_OBJC_FILES += \
 	MAPIStoreContactsContext.m \
 	MAPIStoreMailContext.m \
 	\
+	SOGoGCSFolder+MAPIStore.m \
+	\
 	NSCalendarDate+MAPIStore.m \
 	NSString+MAPIStore.m
 

@@ -29,6 +29,7 @@
 #import "MAPIStoreAuthenticator.h"
 #import "NSCalendarDate+MAPIStore.h"
 #import "NSString+MAPIStore.h"
+#import "SOGoGCSFolder+MAPIStore.h"
 
 #import "MAPIStoreCalendarContext.h"
 
@@ -57,6 +58,11 @@ static Class SOGoUserFolderK;
                               inContext: woContext
                                 acquire: NO];
   [moduleFolder retain];
+}
+
+- (NSArray *) getFolderMessageKeys: (SOGoFolder *) folder
+{
+  return [(SOGoGCSFolder *) folder componentKeysWithType: @"vevent"];
 }
 
 - (int) getMessageTableChildproperty: (void **) data
