@@ -4,8 +4,6 @@ include ../config.make
 include $(GNUSTEP_MAKEFILES)/common.make
 include ../Version
 
-PKG_CONFIG_PATH=/usr/local/samba/lib/pkgconfig
-
 ADDITIONAL_INCLUDE_DIRS += $(shell pkg-config libmapiproxy --cflags) -I../SoObjects -I../SOPE
 ADDITIONAL_LIB_DIRS += -L../SOPE/GDLContentStore/obj/ $(shell pkg-config libmapiproxy --libs)
 
