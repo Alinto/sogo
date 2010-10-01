@@ -1,24 +1,26 @@
-/*
-   OpenChange Storage Abstraction Layer library
-   SOGo backend
-
-   OpenChange Project
-
-   Copyright (C)
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 3 of the License, or
-   (at your option) any later version.
-   
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-   
-   You should have received a copy of the GNU General Public License
-   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+/* MAPIStoreSOGo.m - this file is part of SOGo
+ *
+ * Copyright (C) 2010 Inverse inc.
+ *
+ * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *
+ * This file is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
  */
+
+/* OpenChange SOGo storage backend */
 
 #import <Foundation/NSAutoreleasePool.h>
 
@@ -36,13 +38,13 @@
  */
 static int sogo_init(void)
 {
-    NSAutoreleasePool *pool;
+  NSAutoreleasePool *pool;
 
-    pool = [NSAutoreleasePool new];
-    [MAPIApplication new];
-    [pool release];
+  pool = [NSAutoreleasePool new];
+  [MAPIApplication new];
+  [pool release];
 
-    return MAPISTORE_SUCCESS;
+  return MAPISTORE_SUCCESS;
 }
 
 /**
@@ -51,29 +53,29 @@ static int sogo_init(void)
    \param mem_ctx pointer to the memory context
    \param uri pointer to the sogo path
    \param private_data pointer to the private backend context 
- */
+*/
 
 static int sogo_create_context(TALLOC_CTX *mem_ctx, const char *uri, void **private_data)
 {
-        NSAutoreleasePool *pool;
-        sogo_context *cContext;
-        MAPIStoreContext *context;
+  NSAutoreleasePool *pool;
+  sogo_context *cContext;
+  MAPIStoreContext *context;
 
-        pool = [NSAutoreleasePool new];
+  pool = [NSAutoreleasePool new];
 
-	DEBUG(0, ("[%s:%d]\n", __FUNCTION__, __LINE__));
+  DEBUG(0, ("[%s:%d]\n", __FUNCTION__, __LINE__));
 
-        context = [MAPIStoreContext contextFromURI: uri];
-        [context setMemCtx: mem_ctx];
-        [context retain];
+  context = [MAPIStoreContext contextFromURI: uri];
+  [context setMemCtx: mem_ctx];
+  [context retain];
 
-        cContext = talloc_zero(mem_ctx, sogo_context);
-        cContext->objcContext = context;
-        *private_data = cContext;
+  cContext = talloc_zero(mem_ctx, sogo_context);
+  cContext->objcContext = context;
+  *private_data = cContext;
 
-        [pool release];
+  [pool release];
 
-	return MAPISTORE_SUCCESS;
+  return MAPISTORE_SUCCESS;
 }
 
 
@@ -83,24 +85,24 @@ static int sogo_create_context(TALLOC_CTX *mem_ctx, const char *uri, void **priv
    \param private_data pointer to the current sogo context
 
    \return MAPISTORE_SUCCESS on success, otherwise MAPISTORE_ERROR
- */
+*/
 static int sogo_delete_context(void *private_data)
 {
-        NSAutoreleasePool *pool;
-        sogo_context *cContext;
+  NSAutoreleasePool *pool;
+  sogo_context *cContext;
 
-        pool = [NSAutoreleasePool new];
+  pool = [NSAutoreleasePool new];
 
-	DEBUG(5, ("[%s:%d]\n", __FUNCTION__, __LINE__));
+  DEBUG(5, ("[%s:%d]\n", __FUNCTION__, __LINE__));
 
-        cContext = private_data;
-        [cContext->objcContext release];
+  cContext = private_data;
+  [cContext->objcContext release];
 
-        [pool release];
+  [pool release];
 
-        talloc_free (cContext);
+  talloc_free (cContext);
 
-	return MAPISTORE_SUCCESS;
+  return MAPISTORE_SUCCESS;
 }
 
 /**
@@ -109,25 +111,25 @@ static int sogo_delete_context(void *private_data)
    \param private_data pointer to the current sogo context
 
    \return MAPISTORE_SUCCESS on success, otherwise MAPISTORE_ERROR
- */
+*/
 static int sogo_release_record(void *private_data, uint64_t fmid, uint8_t type)
 {
-        NSAutoreleasePool *pool;
+  NSAutoreleasePool *pool;
 
-        pool = [NSAutoreleasePool new];
+  pool = [NSAutoreleasePool new];
 
-	DEBUG(5, ("[%s:%d]\n", __FUNCTION__, __LINE__));
+  DEBUG(5, ("[%s:%d]\n", __FUNCTION__, __LINE__));
 
-	switch (type) {
-	case MAPISTORE_FOLDER:
-		break;
-	case MAPISTORE_MESSAGE:
-		break;
-	}
+  switch (type) {
+  case MAPISTORE_FOLDER:
+    break;
+  case MAPISTORE_MESSAGE:
+    break;
+  }
 
-        [pool release];
+  [pool release];
 
-	return MAPISTORE_SUCCESS;
+  return MAPISTORE_SUCCESS;
 }
 
 
@@ -141,47 +143,47 @@ static int sogo_release_record(void *private_data, uint64_t fmid, uint8_t type)
    \param path pointer on pointer to the path to return
 
    \return MAPISTORE_SUCCESS on success, otherwise MAPISTORE error
- */
+*/
 static int sogo_get_path(void *private_data, uint64_t fmid,
-			   uint8_t type, char **path)
+                         uint8_t type, char **path)
 {
-        NSAutoreleasePool *pool;
+  NSAutoreleasePool *pool;
 
-        pool = [NSAutoreleasePool new];
+  pool = [NSAutoreleasePool new];
 
-	DEBUG(5, ("[%s:%d]\n", __FUNCTION__, __LINE__));
+  DEBUG(5, ("[%s:%d]\n", __FUNCTION__, __LINE__));
 
-	switch (type) {
-	case MAPISTORE_FOLDER:
-		break;
-        case MAPISTORE_MESSAGE:
-		break;
-	}
+  switch (type) {
+  case MAPISTORE_FOLDER:
+    break;
+  case MAPISTORE_MESSAGE:
+    break;
+  }
 
-        [pool release];
+  [pool release];
 
-	return MAPISTORE_SUCCESS;
+  return MAPISTORE_SUCCESS;
 }
 
 static int sogo_op_get_fid_by_name(void *private_data, uint64_t parent_fid, const char* foldername, uint64_t *fid)
 {
-        NSAutoreleasePool *pool;
-        sogo_context *cContext;
-        MAPIStoreContext *context;
-        int rc;
+  NSAutoreleasePool *pool;
+  sogo_context *cContext;
+  MAPIStoreContext *context;
+  int rc;
 
-        pool = [NSAutoreleasePool new];
+  pool = [NSAutoreleasePool new];
 
-        cContext = private_data;
-        context = cContext->objcContext;
-        [context setupRequest];
+  cContext = private_data;
+  context = cContext->objcContext;
+  [context setupRequest];
 
-        rc = [context getFID: fid byName: foldername inParentFID: parent_fid];
+  rc = [context getFID: fid byName: foldername inParentFID: parent_fid];
 
-        [context tearDownRequest];
-        [pool release];
+  [context tearDownRequest];
+  [pool release];
 
-	return rc;
+  return rc;
 }
 
 
@@ -191,27 +193,27 @@ static int sogo_op_get_fid_by_name(void *private_data, uint64_t parent_fid, cons
    \param private_data pointer to the current sogo context
 
    \return MAPISTORE_SUCCESS on success, otherwise MAPISTORE_ERROR
- */
+*/
 static int sogo_op_mkdir(void *private_data, uint64_t parent_fid, uint64_t fid,
                          struct SRow *aRow)
 {
-        NSAutoreleasePool *pool;
-        sogo_context *cContext;
-        MAPIStoreContext *context;
-        int rc;
+  NSAutoreleasePool *pool;
+  sogo_context *cContext;
+  MAPIStoreContext *context;
+  int rc;
 
-        pool = [NSAutoreleasePool new];
+  pool = [NSAutoreleasePool new];
 
-        cContext = private_data;
-        context = cContext->objcContext;
-        [context setupRequest];
+  cContext = private_data;
+  context = cContext->objcContext;
+  [context setupRequest];
 
-        rc = [context mkDir: aRow withFID: fid inParentFID: parent_fid];
+  rc = [context mkDir: aRow withFID: fid inParentFID: parent_fid];
 
-        [context tearDownRequest];
-        [pool release];
+  [context tearDownRequest];
+  [pool release];
 
-	return rc;
+  return rc;
 }
 
 
@@ -223,26 +225,26 @@ static int sogo_op_mkdir(void *private_data, uint64_t parent_fid, uint64_t fid,
    \param fid the FID for the folder to delete
 
    \return MAPISTORE_SUCCESS on success, otherwise MAPISTORE_ERROR
- */
+*/
 static int sogo_op_rmdir(void *private_data, uint64_t parent_fid, uint64_t fid)
 {
-        NSAutoreleasePool *pool;
-        sogo_context *cContext;
-        MAPIStoreContext *context;
-        int rc;
+  NSAutoreleasePool *pool;
+  sogo_context *cContext;
+  MAPIStoreContext *context;
+  int rc;
 
-        pool = [NSAutoreleasePool new];
+  pool = [NSAutoreleasePool new];
 
-        cContext = private_data;
-        context = cContext->objcContext;
-        [context setupRequest];
+  cContext = private_data;
+  context = cContext->objcContext;
+  [context setupRequest];
 
-        rc = [context rmDirWithFID: fid inParentFID: parent_fid];
+  rc = [context rmDirWithFID: fid inParentFID: parent_fid];
 
-        [context tearDownRequest];
-        [pool release];
+  [context tearDownRequest];
+  [pool release];
 
-	return rc;
+  return rc;
 }
 
 
@@ -254,26 +256,26 @@ static int sogo_op_rmdir(void *private_data, uint64_t parent_fid, uint64_t fid)
    \param fid the identifier of the colder to open
 
    \return MAPISTORE_SUCCESS on success, otherwise MAPISTORE_ERROR
- */
+*/
 static int sogo_op_opendir(void *private_data, uint64_t parent_fid, uint64_t fid)
 {
-        NSAutoreleasePool *pool;
-        sogo_context *cContext;
-        MAPIStoreContext *context;
-        int rc;
+  NSAutoreleasePool *pool;
+  sogo_context *cContext;
+  MAPIStoreContext *context;
+  int rc;
 
-        pool = [NSAutoreleasePool new];
+  pool = [NSAutoreleasePool new];
 
-        cContext = private_data;
-        context = cContext->objcContext;
-        [context setupRequest];
+  cContext = private_data;
+  context = cContext->objcContext;
+  [context setupRequest];
 
-        rc = [context openDir: fid inParentFID: parent_fid];
+  rc = [context openDir: fid inParentFID: parent_fid];
 
-        [context tearDownRequest];
-        [pool release];
+  [context tearDownRequest];
+  [pool release];
 
-	return rc;
+  return rc;
 }
 
 
@@ -283,26 +285,26 @@ static int sogo_op_opendir(void *private_data, uint64_t parent_fid, uint64_t fid
    \param private_data pointer to the current sogo context
 
    \return MAPISTORE_SUCCESS on success, otherwise MAPISTORE_ERROR
- */
+*/
 static int sogo_op_closedir(void *private_data)
 {
-        NSAutoreleasePool *pool;
-        sogo_context *cContext;
-        MAPIStoreContext *context;
-        int rc;
+  NSAutoreleasePool *pool;
+  sogo_context *cContext;
+  MAPIStoreContext *context;
+  int rc;
 
-        pool = [NSAutoreleasePool new];
+  pool = [NSAutoreleasePool new];
 
-        cContext = private_data;
-        context = cContext->objcContext;
-        [context setupRequest];
+  cContext = private_data;
+  context = cContext->objcContext;
+  [context setupRequest];
 
-        rc = [context closeDir];
+  rc = [context closeDir];
 
-        [context tearDownRequest];
-        [pool release];
+  [context tearDownRequest];
+  [pool release];
 
-	return rc;
+  return rc;
 }
 
 
@@ -312,57 +314,57 @@ static int sogo_op_closedir(void *private_data)
    \param private_data pointer to the current sogo context
 
    \return MAPISTORE_SUCCESS on success, otherwise MAPISTORE_ERROR
- */
+*/
 static int sogo_op_readdir_count(void *private_data, 
                                  uint64_t fid,
                                  uint8_t table_type,
                                  uint32_t *RowCount)
 {
-        NSAutoreleasePool *pool;
-        sogo_context *cContext;
-        MAPIStoreContext *context;
-        int rc;
+  NSAutoreleasePool *pool;
+  sogo_context *cContext;
+  MAPIStoreContext *context;
+  int rc;
 
-        pool = [NSAutoreleasePool new];
+  pool = [NSAutoreleasePool new];
 
-        cContext = private_data;
-        context = cContext->objcContext;
-        [context setupRequest];
+  cContext = private_data;
+  context = cContext->objcContext;
+  [context setupRequest];
 
-        rc = [context readCount: RowCount ofTableType: table_type inFID: fid];
+  rc = [context readCount: RowCount ofTableType: table_type inFID: fid];
 
-        [context tearDownRequest];
-        [pool release];
+  [context tearDownRequest];
+  [pool release];
 
-	return rc;
+  return rc;
 }
 
 
 static int sogo_op_get_table_property(void *private_data,
-					uint64_t fid,
-					uint8_t table_type,
-					uint32_t pos,
-					uint32_t proptag,
-					void **data)
+                                      uint64_t fid,
+                                      uint8_t table_type,
+                                      uint32_t pos,
+                                      uint32_t proptag,
+                                      void **data)
 {
-        NSAutoreleasePool *pool;
-        sogo_context *cContext;
-        MAPIStoreContext *context;
-        int rc;
+  NSAutoreleasePool *pool;
+  sogo_context *cContext;
+  MAPIStoreContext *context;
+  int rc;
 
-        pool = [NSAutoreleasePool new];
+  pool = [NSAutoreleasePool new];
 
-        cContext = private_data;
-        context = cContext->objcContext;
-        [context setupRequest];
+  cContext = private_data;
+  context = cContext->objcContext;
+  [context setupRequest];
 
-        rc = [context getTableProperty: data withTag: proptag atPosition: pos
-                         withTableType: table_type inFID: fid];
+  rc = [context getTableProperty: data withTag: proptag atPosition: pos
+                   withTableType: table_type inFID: fid];
 
-        [context tearDownRequest];
-        [pool release];
+  [context tearDownRequest];
+  [pool release];
 
-	return rc;
+  return rc;
 }
 
 
@@ -371,23 +373,23 @@ static int sogo_op_openmessage(void *private_data,
                                uint64_t mid,
                                struct mapistore_message *msg)
 {
-        NSAutoreleasePool *pool;
-        sogo_context *cContext;
-        MAPIStoreContext *context;
-        int rc;
+  NSAutoreleasePool *pool;
+  sogo_context *cContext;
+  MAPIStoreContext *context;
+  int rc;
 
-        pool = [NSAutoreleasePool new];
+  pool = [NSAutoreleasePool new];
 
-        cContext = private_data;
-        context = cContext->objcContext;
-        [context setupRequest];
+  cContext = private_data;
+  context = cContext->objcContext;
+  [context setupRequest];
 
-        rc = [context openMessage: msg withMID: mid inFID: fid];
+  rc = [context openMessage: msg withMID: mid inFID: fid];
 
-        [context tearDownRequest];
-        [pool release];
+  [context tearDownRequest];
+  [pool release];
 
-	return rc;
+  return rc;
 }
 
 
@@ -395,69 +397,69 @@ static int sogo_op_createmessage(void *private_data,
                                  uint64_t fid,
                                  uint64_t mid)
 {
-        NSAutoreleasePool *pool;
-        sogo_context *cContext;
-        MAPIStoreContext *context;
-        int rc;
+  NSAutoreleasePool *pool;
+  sogo_context *cContext;
+  MAPIStoreContext *context;
+  int rc;
 
-        pool = [NSAutoreleasePool new];
+  pool = [NSAutoreleasePool new];
 
-        cContext = private_data;
-        context = cContext->objcContext;
-        [context setupRequest];
+  cContext = private_data;
+  context = cContext->objcContext;
+  [context setupRequest];
 
-        rc = [context createMessageWithMID: mid inFID: fid];
+  rc = [context createMessageWithMID: mid inFID: fid];
 
-        [context tearDownRequest];
-        [pool release];
+  [context tearDownRequest];
+  [pool release];
 
-	return rc;
+  return rc;
 }
 
 static int sogo_op_savechangesmessage(void *private_data,
-					uint64_t mid,
-					uint8_t flags)
+                                      uint64_t mid,
+                                      uint8_t flags)
 {
-        NSAutoreleasePool *pool;
-        sogo_context *cContext;
-        MAPIStoreContext *context;
-        int rc;
+  NSAutoreleasePool *pool;
+  sogo_context *cContext;
+  MAPIStoreContext *context;
+  int rc;
 
-        pool = [NSAutoreleasePool new];
+  pool = [NSAutoreleasePool new];
 
-        cContext = private_data;
-        context = cContext->objcContext;
-        [context setupRequest];
+  cContext = private_data;
+  context = cContext->objcContext;
+  [context setupRequest];
 
-        rc = [context saveChangesInMessageWithMID: mid andFlags: flags];
+  rc = [context saveChangesInMessageWithMID: mid andFlags: flags];
 
-        [context tearDownRequest];
-        [pool release];
+  [context tearDownRequest];
+  [pool release];
 
-	return rc;
+  return rc;
 }
 
 static int sogo_op_submitmessage(void *private_data,
-				   uint64_t mid,
-				   uint8_t flags)
+                                 uint64_t mid,
+                                 uint8_t flags)
 {
-        NSAutoreleasePool *pool;
-        sogo_context *cContext;
-        MAPIStoreContext *context;
-        int rc;
+  NSAutoreleasePool *pool;
+  sogo_context *cContext;
+  MAPIStoreContext *context;
+  int rc;
 
-        pool = [NSAutoreleasePool new];
+  pool = [NSAutoreleasePool new];
 
-        cContext = private_data;
-        context = cContext->objcContext;
-        [context setupRequest];
+  cContext = private_data;
+  context = cContext->objcContext;
+  [context setupRequest];
 
-        rc = [context submitMessageWithMID: mid andFlags: flags];
+  rc = [context submitMessageWithMID: mid andFlags: flags];
 
-        [context tearDownRequest];
-        [pool release];
+  [context tearDownRequest];
+  [pool release];
 
-	return rc;
+  return rc;
 }
 
 static int sogo_op_getprops(void *private_data, 
@@ -466,115 +468,125 @@ static int sogo_op_getprops(void *private_data,
 			    struct SPropTagArray *SPropTagArray,
 			    struct SRow *aRow)
 {
-        NSAutoreleasePool *pool;
-        sogo_context *cContext;
-        MAPIStoreContext *context;
-        int rc;
+  NSAutoreleasePool *pool;
+  sogo_context *cContext;
+  MAPIStoreContext *context;
+  int rc;
 
-        pool = [NSAutoreleasePool new];
+  pool = [NSAutoreleasePool new];
 
-        cContext = private_data;
-        context = cContext->objcContext;
-        [context setupRequest];
+  cContext = private_data;
+  context = cContext->objcContext;
+  [context setupRequest];
 
-        rc = [context getProperties: SPropTagArray inRow: aRow withMID: fmid type: type];
+  rc = [context getProperties: SPropTagArray inRow: aRow withMID: fmid type: type];
 
-        [context tearDownRequest];
-        [pool release];
+  [context tearDownRequest];
+  [pool release];
 
-	return rc;
+  return rc;
 }
 
 
 static int sogo_op_setprops(void *private_data,
-			      uint64_t fmid,
-			      uint8_t type,
-			      struct SRow *aRow)
+                            uint64_t fmid,
+                            uint8_t type,
+                            struct SRow *aRow)
 {
-        NSAutoreleasePool *pool;
-        sogo_context *cContext;
-        MAPIStoreContext *context;
-        int rc;
+  NSAutoreleasePool *pool;
+  sogo_context *cContext;
+  MAPIStoreContext *context;
+  int rc;
 
-        pool = [NSAutoreleasePool new];
+  pool = [NSAutoreleasePool new];
 
-        cContext = private_data;
-        context = cContext->objcContext;
-        [context setupRequest];
+  cContext = private_data;
+  context = cContext->objcContext;
+  [context setupRequest];
 
-        rc = [context setPropertiesWithMID: fmid type: type inRow: aRow];
+  rc = [context setPropertiesWithMID: fmid type: type inRow: aRow];
 
-        [context tearDownRequest];
-        [pool release];
+  [context tearDownRequest];
+  [pool release];
 
-	return rc;
+  return rc;
 }
 
 static int sogo_op_deletemessage(void *private_data,
                                  uint64_t mid,
                                  uint8_t flags)
 {
-        NSAutoreleasePool *pool;
-        sogo_context *cContext;
-        MAPIStoreContext *context;
-        int rc;
+  NSAutoreleasePool *pool;
+  sogo_context *cContext;
+  MAPIStoreContext *context;
+  int rc;
 
-        pool = [NSAutoreleasePool new];
+  pool = [NSAutoreleasePool new];
 
-        cContext = private_data;
-        context = cContext->objcContext;
-        [context setupRequest];
+  cContext = private_data;
+  context = cContext->objcContext;
+  [context setupRequest];
 
-        rc = [context deleteMessageWithMID: mid withFlags: flags];
+  rc = [context deleteMessageWithMID: mid withFlags: flags];
 
-        [context tearDownRequest];
-        [pool release];
+  [context tearDownRequest];
+  [pool release];
 
-	return rc;
+  return rc;
 }
 
 /**
    \details Entry point for mapistore SOGO backend
 
    \return MAPI_E_SUCCESS on success, otherwise MAPISTORE error
- */
+*/
 int mapistore_init_backend(void)
 {
-	struct mapistore_backend	backend;
-	int				ret;
+  struct mapistore_backend	backend;
+  int				ret;
+  static BOOL registered = NO;
 
-	/* Fill in our name */
-	backend.name = "sogo";
-	backend.description = "mapistore sogo backend";
-	backend.namespace = "sogo://";
+  if (registered)
+    {
+      ret = MAPISTORE_ERROR;
+    }
+  else
+    {
+      registered = YES;
+      
+      /* Fill in our name */
+      backend.name = "SOGo";
+      backend.description = "mapistore SOGo backend";
+      backend.namespace = "sogo://";
 
-	/* Fill in all the operations */
-	backend.init = sogo_init;
-	backend.create_context = sogo_create_context;
-	backend.delete_context = sogo_delete_context;
-	backend.release_record = sogo_release_record;
-	backend.get_path = sogo_get_path;
+      /* Fill in all the operations */
+      backend.init = sogo_init;
+      backend.create_context = sogo_create_context;
+      backend.delete_context = sogo_delete_context;
+      backend.release_record = sogo_release_record;
+      backend.get_path = sogo_get_path;
 
-	backend.op_mkdir = sogo_op_mkdir;
-	backend.op_rmdir = sogo_op_rmdir;
-	backend.op_opendir = sogo_op_opendir;
-	backend.op_closedir = sogo_op_closedir;
-	backend.op_readdir_count = sogo_op_readdir_count;
-	backend.op_get_table_property = sogo_op_get_table_property;
-	backend.op_openmessage = sogo_op_openmessage;
-	backend.op_createmessage = sogo_op_createmessage;
-	backend.op_savechangesmessage = sogo_op_savechangesmessage;
-	backend.op_submitmessage = sogo_op_submitmessage;
-	backend.op_getprops = sogo_op_getprops;
-	backend.op_get_fid_by_name = sogo_op_get_fid_by_name;
-	backend.op_setprops = sogo_op_setprops;
-	backend.op_deletemessage = sogo_op_deletemessage;
+      backend.op_mkdir = sogo_op_mkdir;
+      backend.op_rmdir = sogo_op_rmdir;
+      backend.op_opendir = sogo_op_opendir;
+      backend.op_closedir = sogo_op_closedir;
+      backend.op_readdir_count = sogo_op_readdir_count;
+      backend.op_get_table_property = sogo_op_get_table_property;
+      backend.op_openmessage = sogo_op_openmessage;
+      backend.op_createmessage = sogo_op_createmessage;
+      backend.op_savechangesmessage = sogo_op_savechangesmessage;
+      backend.op_submitmessage = sogo_op_submitmessage;
+      backend.op_getprops = sogo_op_getprops;
+      backend.op_get_fid_by_name = sogo_op_get_fid_by_name;
+      backend.op_setprops = sogo_op_setprops;
+      backend.op_deletemessage = sogo_op_deletemessage;
 
-	/* Register ourselves with the MAPISTORE subsystem */
-	ret = mapistore_backend_register(&backend);
-	if (ret != MAPISTORE_SUCCESS) {
-		DEBUG(0, ("Failed to register the '%s' mapistore backend!\n", backend.name));
-	}
+      /* Register ourselves with the MAPISTORE subsystem */
+      ret = mapistore_backend_register(&backend);
+      if (ret != MAPISTORE_SUCCESS) {
+        DEBUG(0, ("Failed to register the '%s' mapistore backend!\n", backend.name));
+      }
+    }
 
-        return ret;
+  return ret;
 }

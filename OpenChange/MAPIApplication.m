@@ -1,6 +1,6 @@
-/* MAPIApplication.m - this file is part of $PROJECT_NAME_HERE$
+/* MAPIApplication.m - this file is part of SOGo
  *
- * Copyright (C) 2010 Wolfgang Sourdeau
+ * Copyright (C) 2010 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -35,9 +35,9 @@ MAPIApplication *MAPIApp = nil;
 
 @interface UnixSignalHandler : NSObject
 
-+ sharedHandler;
++ (id) sharedHandler;
 
-- (void)removeObserver:(id)observer;
+- (void) removeObserver: (id) observer;
 
 @end
 
@@ -45,61 +45,62 @@ MAPIApplication *MAPIApp = nil;
 
 - (id) init
 {
-        SOGoProductLoader *loader;
-        NSUserDefaults *ud;
-        SOGoSystemDefaults *sd;
+  SOGoProductLoader *loader;
+  NSUserDefaults *ud;
+  SOGoSystemDefaults *sd;
 
-        if (!MAPIApp) {
-                /* Here we work around a bug in GNUstep which decodes XML user
-                   defaults using the system encoding rather than honouring
-                   the encoding specified in the file. */
-                putenv ("GNUSTEP_STRING_ENCODING=NSUTF8StringEncoding");
+  if (!MAPIApp)
+    {
+      /* Here we work around a bug in GNUstep which decodes XML user
+         defaults using the system encoding rather than honouring
+         the encoding specified in the file. */
+      putenv ("GNUSTEP_STRING_ENCODING=NSUTF8StringEncoding");
 
-                sd = [SOGoSystemDefaults sharedSystemDefaults];
+      sd = [SOGoSystemDefaults sharedSystemDefaults];
 
-                // /* We force the plugin to base its configuration on the SOGo tree. */
-                ud = [NSUserDefaults standardUserDefaults];
-                [ud registerDefaults: [ud persistentDomainForName: @"sogod"]];
+      // /* We force the plugin to base its configuration on the SOGo tree. */
+      ud = [NSUserDefaults standardUserDefaults];
+      [ud registerDefaults: [ud persistentDomainForName: @"sogod"]];
 
-                NSLog (@"(config check) imap server: %@", [sd imapServer]);
+      NSLog (@"(config check) imap server: %@", [sd imapServer]);
 
-                // TODO publish
-                loader = [SOGoProductLoader productLoader];
-                [loader loadProducts: [NSArray arrayWithObjects:
-                                                 @"Contacts.SOGo",
-                                               @"Appointments.SOGo",
-                                               @"Mailer.SOGo",
-                                               nil]];
+      // TODO publish
+      loader = [SOGoProductLoader productLoader];
+      [loader loadProducts: [NSArray arrayWithObjects:
+                                       @"Contacts.SOGo",
+                                     @"Appointments.SOGo",
+                                     @"Mailer.SOGo",
+                                     nil]];
 
-                // TODO publish
-                [iCalEntityObject initializeSOGoExtensions];
+      // TODO publish
+      [iCalEntityObject initializeSOGoExtensions];
 
-                MAPIApp = [super init];
-                [MAPIApp retain];
+      MAPIApp = [super init];
+      [MAPIApp retain];
 
-                /* This is a hack to revert what is done in [WOCoreApplication
-                   init] */
-                [[NSClassFromString(@"UnixSignalHandler") sharedHandler]
+      /* This is a hack to revert what is done in [WOCoreApplication
+         init] */
+      [[NSClassFromString(@"UnixSignalHandler") sharedHandler]
                   removeObserver: self];
-        }
+    }
 
-        return MAPIApp;
+  return MAPIApp;
 }
 
 - (void) dealloc
 {
-        [mapiContext release];
-        [super dealloc];
+  [mapiContext release];
+  [super dealloc];
 }
 
 - (void) setMAPIStoreContext: (MAPIStoreContext *) newMAPIStoreContext
 {
-        ASSIGN (mapiContext, newMAPIStoreContext);
+  ASSIGN (mapiContext, newMAPIStoreContext);
 }
 
 - (id) authenticatorInContext: (id) context
 {
-        return [mapiContext authenticator];
+  return [mapiContext authenticator];
 }
 
 @end

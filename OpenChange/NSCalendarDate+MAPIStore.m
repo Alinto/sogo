@@ -38,13 +38,14 @@
   NSTimeZone *utc;
   uint64_t interval;
 
-  if (!refDate) {
-    utc = [NSTimeZone timeZoneWithName: @"UTC"];
-    refDate = [NSCalendarDate dateWithYear: 1601 month: 1 day: 1
-                                      hour: 0 minute: 0 second: 0
-                                  timeZone: utc];
-    [refDate retain];
-  }
+  if (!refDate)
+    {
+      utc = [NSTimeZone timeZoneWithName: @"UTC"];
+      refDate = [NSCalendarDate dateWithYear: 1601 month: 1 day: 1
+                                        hour: 0 minute: 0 second: 0
+                                    timeZone: utc];
+      [refDate retain];
+    }
   interval = (((uint64_t) [self timeIntervalSinceDate: refDate]) * 10000000);
   timeValue = talloc_zero(memCtx, struct FILETIME);
   timeValue->dwLowDateTime = (uint32_t) (interval & 0xffffffff);

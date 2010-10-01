@@ -28,11 +28,11 @@
 
 - (char *) asUnicodeInMemCtx: (void *) memCtx
 {
-        char *unicode;
+  char *unicode;
 
-        unicode = talloc_strdup(memCtx, [self UTF8String]);
+  unicode = talloc_strdup (memCtx, [self UTF8String]);
 
-        return unicode;
+  return unicode;
 }
 
 @end

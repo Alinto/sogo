@@ -42,13 +42,15 @@
 
 @interface MAPIStoreContext : NSObject
 {
-        NSMutableDictionary *objectCache;
-        MAPIStoreAuthenticator *authenticator;
-        WOContext *woContext;
-        NSMutableDictionary *messageCache;
-        NSMutableDictionary *subfolderCache;
-        SOGoFolder *moduleFolder;
-        void *memCtx;
+  NSMutableDictionary *objectCache;
+  MAPIStoreAuthenticator *authenticator;
+  WOContext *woContext;
+  NSMutableDictionary *messageCache;
+  NSMutableDictionary *subfolderCache;
+  SOGoFolder *moduleFolder;
+  void *memCtx;
+  NSString *lastObjectURL;
+  id lastObject;
 }
 
 + (id) contextFromURI: (const char *) newUri;
