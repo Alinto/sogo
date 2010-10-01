@@ -82,6 +82,7 @@
 
 - (NSData *) content;
 - (NSString *) contentAsString;
+- (NSString *) davContentLength;
 
 - (NSString *) cc;
 - (NSString *) from;
