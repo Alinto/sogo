@@ -49,6 +49,9 @@
 - (NSString *) absoluteImap4Name;
 
 /* messages */
+- (NSArray *) toOneRelationshipKeys;
+- (NSArray *) toManyRelationshipKeys;
+
 - (NSException *) deleteUIDs: (NSArray *) uids
 	      useTrashFolder: (BOOL) withTrash
 		   inContext: (id) context;
