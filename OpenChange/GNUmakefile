@@ -5,9 +5,9 @@ include $(GNUSTEP_MAKEFILES)/common.make
 include ../Version
 
 ADDITIONAL_INCLUDE_DIRS += $(shell pkg-config libmapiproxy --cflags) -I../SoObjects -I../SOPE
-ADDITIONAL_LIB_DIRS += -L../SOPE/GDLContentStore/obj/ $(shell pkg-config libmapiproxy --libs)
+ADDITIONAL_LIB_DIRS += -L../SOGo/SOGo.framework/ -lSOGo -L../SOPE/GDLContentStore/obj/ $(shell pkg-config libmapistore --libs)
 
-SAMBA_LIB_DIR = $(shell pkg-config libmapiproxy --variable=libdir)
+SAMBA_LIB_DIR = $(shell pkg-config libmapistore --variable=libdir)
 
 MAPISTORESOGO = MAPIStoreSOGo
 $(MAPISTORESOGO)_VERSION = 1.0.0
