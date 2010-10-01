@@ -1,5 +1,8 @@
 2010-10-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreTasksContext.[hm]: new mapi context class
+	for tasks.
+
 	* OpenChange/SOGoGCSFolder+MAPIStore.m (-componentKeysWithType:):
 	new method that return the keys of components corresponding to the
 	type passed as parameter.

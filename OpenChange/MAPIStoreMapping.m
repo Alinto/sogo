@@ -132,6 +132,13 @@ static uint64_t idCounter = 0x200001;
             [self errorWithFormat: @"Unable to register root folder: %@",
                   urlString];
         }
+      else if ([urlString isEqualToString: @"sogo://openchange:openchange@tasks/personal"])
+        {
+          idNbr = 0x1d0001;
+          if (![self registerURL: urlString withID: idNbr])
+            [self errorWithFormat: @"Unable to register root folder: %@",
+                  urlString];
+        }
       else
         {
           idCounter += idIncrement;

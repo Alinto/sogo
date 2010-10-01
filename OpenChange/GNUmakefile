@@ -24,6 +24,7 @@ $(MAPISTORESOGO)_OBJC_FILES += \
 	MAPIStoreCalendarContext.m \
 	MAPIStoreContactsContext.m \
 	MAPIStoreMailContext.m \
+	MAPIStoreTasksContext.m \
 	\
 	SOGoGCSFolder+MAPIStore.m \
 	\

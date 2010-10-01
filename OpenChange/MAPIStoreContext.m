@@ -116,6 +116,8 @@ static MAPIStoreMapping *mapping = nil;
                 contextClass = @"MAPIStoreContactsContext";
               else if ([module isEqualToString: @"calendar"])
                 contextClass = @"MAPIStoreCalendarContext";
+              else if ([module isEqualToString: @"tasks"])
+                contextClass = @"MAPIStoreTasksContext";
               else
                 {
                   NSLog (@"ERROR: unrecognized module name '%@'", module);
