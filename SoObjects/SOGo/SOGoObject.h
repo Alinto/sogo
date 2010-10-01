@@ -85,6 +85,7 @@
 /* accessors */
 
 - (NSString *) nameInContainer;
+- (NSString *) displayName;
 - (id) container;
 
 - (NSURL *) davURL;

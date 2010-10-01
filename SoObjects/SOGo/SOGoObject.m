@@ -204,6 +204,11 @@
   return nameInContainer;
 }
 
+- (NSString *) displayName
+{
+  return [self nameInContainer];
+}
+
 - (id) container
 {
   return container;
@@ -350,7 +355,7 @@
 
 - (NSString *) davDisplayName
 {
-  return [self nameInContainer];
+  return [self displayName];
 }
 
 /* DAV ACL properties */
