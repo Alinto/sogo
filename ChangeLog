@@ -1,3 +1,14 @@
+2010-10-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreTasksContext.m
+	(-getMessageTableChildproperty:atURL:withTag:inFolder:withFID:)
+	implemented the following properties: PR_SUBJECT_UNICODE,
+	PR_NORMALIZED_SUBJECT_UNICODE, PR_CONVERSATION_TOPIC_UNICODE,
+	0x8124000b, 0x81250040, PR_CREATION_TIME,
+	PR_MESSAGE_DELIVERY_TIME, PR_CLIENT_SUBMIT_TIME,
+	PR_LOCAL_COMMIT_TIME, PR_LAST_MODIFICATION_TIME, 0x81200003 as
+	well as stubs for 0x68340003, 0x683a0003, 0x68410003.
+
 2010-10-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreTasksContext.[hm]: new mapi context class

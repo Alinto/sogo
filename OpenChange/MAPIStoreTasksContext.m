@@ -72,9 +72,10 @@ static Class SOGoUserFolderK;
                              withFID: (uint64_t) fid
 {
   uint32_t *longValue;
-  // uint8_t *boolValue;
+  uint8_t *boolValue;
+  NSString *status;
   // id child;
-  // id task;
+  id task;
   int rc;
 
   rc = MAPI_E_SUCCESS;
@@ -94,6 +95,60 @@ static Class SOGoUserFolderK;
     case PR_MESSAGE_CLASS_UNICODE:
       *data = talloc_strdup(memCtx, "IPM.Task");
       break;
+    case PR_SUBJECT_UNICODE: // SUMMARY
+    case PR_NORMALIZED_SUBJECT_UNICODE:
+    case PR_CONVERSATION_TOPIC_UNICODE:
+      task = [[self lookupObject: childURL] component: NO secure: NO];
+      *data = [[task summary] asUnicodeInMemCtx: memCtx];
+      break;
+    case 0x8124000b: // completed
+      boolValue = talloc_zero(memCtx, uint8_t);
+      task = [[self lookupObject: childURL] component: NO secure: NO];
+      *boolValue = [[task status] isEqualToString: @"COMPLETED"];
+      *data = boolValue;
+      break;
+    case 0x81250040: // completion date
+      task = [[self lookupObject: childURL] component: NO secure: NO];
+      *data = [[task completed] asFileTimeInMemCtx: memCtx];
+      break;
+    case PR_CREATION_TIME:
+      task = [[self lookupObject: childURL] component: NO secure: NO];
+      *data = [[task created] asFileTimeInMemCtx: memCtx];
+      break;
+    case PR_MESSAGE_DELIVERY_TIME:
+    case PR_CLIENT_SUBMIT_TIME:
+    case PR_LOCAL_COMMIT_TIME:
+    case PR_LAST_MODIFICATION_TIME:
+      task = [[self lookupObject: childURL] component: NO secure: NO];
+      *data = [[task lastModified] asFileTimeInMemCtx: memCtx];
+      break;
+    case 0x81200003: // status
+      longValue = talloc_zero(memCtx, uint32_t);
+      task = [[self lookupObject: childURL] component: NO secure: NO];
+      status = [task status];
+      if (![status length]
+          || [status isEqualToString: @"NEEDS-ACTIONS"])
+        *longValue = 0;
+      else if ([status isEqualToString: @"IN-PROCESS"])
+        *longValue = 1;
+      else if ([status isEqualToString: @"COMPLETED"])
+        *longValue = 2;
+      *data = longValue;
+      break;
+      /* Completed */
+      // -	0x81380003 = -2000
+      // +	0x81380003 = -4000
+      
+      // 68330048
+      // 68420102
+    case 0x68340003:
+    case 0x683a0003:
+    case 0x68410003:
+      longValue = talloc_zero(memCtx, uint32_t);
+      *longValue = 0;
+      *data = longValue;
+      break;
+
     default:
       rc = [super getMessageTableChildproperty: data
                                          atURL: childURL
