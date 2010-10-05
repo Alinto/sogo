@@ -549,10 +549,13 @@ static MAPIStoreMapping *mapping = nil;
       *data = [[child displayName] asUnicodeInMemCtx: memCtx];
       break;
     default:
+      *data = NULL;
+      rc = MAPI_E_NOT_FOUND;
       if ((proptag & 0x001F) == 0x001F)
         {
           stringValue = [NSString stringWithFormat: @"Unhandled unicode value: 0x%x", proptag];
           *data = [stringValue asUnicodeInMemCtx: memCtx];
+          rc = MAPI_E_SUCCESS;
           [self errorWithFormat: @"Unknown proptag (returned): %.8x for child '%@'",
                 proptag, childURL];
           break;
@@ -561,9 +564,8 @@ static MAPIStoreMapping *mapping = nil;
         {
           [self errorWithFormat: @"Unknown proptag: %.8x for child '%@'",
                 proptag, childURL];
-          *data = NULL;
+          // *data = NULL;
         }
-      rc = MAPI_E_NOT_FOUND;
     }
 
   return rc;
@@ -599,11 +601,6 @@ static MAPIStoreMapping *mapping = nil;
       *longValue = 8; /* mandatory value... wtf? */
       *data = longValue;
       break;
-      // case PR_DEPTH: // TODO: DOUBT
-      //         longValue = talloc_zero(memCtx, uint32_t);
-      //         *longValue = 1;
-      //         *data = longValue;
-      //         break;
     case PR_FID:
       llongValue = talloc_zero(memCtx, uint64_t);
       *llongValue = fid;
