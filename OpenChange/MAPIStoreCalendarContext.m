@@ -22,6 +22,8 @@
 
 #import <NGObjWeb/WOContext+SoObjects.h>
 
+#import <NGExtensions/NSObject+Logs.h>
+
 #import <NGCards/iCalEvent.h>
 #import <Appointments/SOGoAppointmentObject.h>
 
