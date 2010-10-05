@@ -4,8 +4,19 @@ include ../config.make
 include $(GNUSTEP_MAKEFILES)/common.make
 include ../Version
 
-ADDITIONAL_INCLUDE_DIRS += $(shell pkg-config libmapiproxy --cflags) -I../SoObjects -I../SOPE
-ADDITIONAL_LIB_DIRS += -L../SOGo/SOGo.framework/ -lSOGo -L../SOPE/GDLContentStore/obj/ $(shell pkg-config libmapistore --libs)
+LIBMAPI_CFLAGS = $(shell pkg-config libmapiproxy --cflags)
+
+ifeq ($(LIBMAPI_CFLAGS),)
+
+all install::
+	@echo "* Cannot build the OpenChange SOGo backend (empty CFLAGS)"
+
+else
+
+LIBMAPI_LIBS = $(shell pkg-config libmapiproxy --libs)
+
+ADDITIONAL_INCLUDE_DIRS += $(LIBMAPI_CFLAGS) -I../SoObjects -I../SOPE
+ADDITIONAL_LIB_DIRS += -L../SOGo/SOGo.framework/ -lSOGo -L../SOPE/GDLContentStore/obj/ $(LIBMAPI_LIBS)
 
 SAMBA_LIB_DIR = $(shell pkg-config libmapistore --variable=libdir)
 
@@ -34,3 +45,5 @@ $(MAPISTORESOGO)_OBJC_FILES += \
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/library.make
 -include GNUmakefile.postamble
+
+endif
