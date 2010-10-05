@@ -39,14 +39,14 @@
 
 static Class SOGoUserFolderK;
 
-@implementation SOGoObject (LeakD)
+// @implementation SOGoObject (ZombieD)
 
-- (void) dealloc
-{
-  [super dealloc];
-}
+// - (void) dealloc
+// {
+//   [super dealloc];
+// }
 
-@end
+// @end
 
 @implementation MAPIStoreMailContext
 
@@ -140,6 +140,12 @@ static Class SOGoUserFolderK;
                                     hour: 0 minute: 0 second: 0];
       *data = [offsetDate asFileTimeInMemCtx: memCtx];
       break;
+    // case PR_DEPTH: // TODO: DOUBT
+    //   longValue = talloc_zero(memCtx, uint32_t);
+    //   *longValue = 1;
+    //   *data = longValue;
+    //   break;
+
       // case PR_ROW_TYPE: // TODO: DOUBT
       //         longValue = talloc_zero(memCtx, uint32_t);
       //         *longValue = 1;
