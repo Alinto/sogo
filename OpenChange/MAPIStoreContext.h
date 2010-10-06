@@ -46,6 +46,10 @@
 
 @class MAPIStoreAuthenticator;
 
+extern uint8_t *MAPIBoolValue (void *, BOOL);
+extern uint32_t *MAPILongValue (void *, uint32_t);
+extern uint64_t *MAPILongLongValue (void *, uint64_t);
+
 @interface MAPIStoreContext : NSObject
 {
   NSMutableDictionary *objectCache;

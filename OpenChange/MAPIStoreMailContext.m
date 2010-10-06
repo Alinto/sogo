@@ -108,8 +108,6 @@ static Class SOGoUserFolderK;
                             inFolder: (SOGoFolder *) folder
                              withFID: (uint64_t) fid
 {
-  uint8_t *boolValue;
-  uint32_t *longValue;
   SOGoMailObject *child;
   NSCalendarDate *offsetDate;
   int rc;
@@ -118,21 +116,18 @@ static Class SOGoUserFolderK;
   switch (proptag)
     {
     case PR_ICON_INDEX: // TODO
-      longValue = talloc_zero(memCtx, uint32_t);
-      *longValue = 0x00000100; /* read mail, see http://msdn.microsoft.com/en-us/library/cc815472.aspx */
-      *data = longValue;
+      /* read mail, see http://msdn.microsoft.com/en-us/library/cc815472.aspx */
+      *data = MAPILongValue (memCtx, 0x00000100);
       break;
     case PR_SUBJECT_UNICODE:
       child = [self lookupObject: childURL];
       *data = [[child decodedSubject] asUnicodeInMemCtx: memCtx];
       break;
     case PR_MESSAGE_CLASS_UNICODE:
-      *data = talloc_strdup(memCtx, "IPM.Note");
+      *data = talloc_strdup (memCtx, "IPM.Note");
       break;
-    case PR_HASATTACH:
-      boolValue = talloc_zero(memCtx, uint8_t);
-      *boolValue = NO;
-      *data = boolValue;
+    case PR_HASATTACH: // TODO
+      *data = MAPIBoolValue (memCtx, NO);
       break;
     case PR_MESSAGE_DELIVERY_TIME:
       child = [self lookupObject: childURL];
@@ -144,21 +139,15 @@ static Class SOGoUserFolderK;
     case PR_MSG_STATUS: // TODO
     case PR_MESSAGE_FLAGS: // TODO
     case PR_SENSITIVITY: // TODO
-      longValue = talloc_zero(memCtx, uint32_t);
-      *longValue = 0;
-      *data = longValue;
+      *data = MAPILongValue (memCtx, 0);
       break;
-    case PR_IMPORTANCE:
-      longValue = talloc_zero(memCtx, uint32_t);
-      *longValue = 1;
-      *data = longValue;
+    case PR_IMPORTANCE: // TODO
+      *data = MAPILongValue (memCtx, 1);
       break;
     case PR_MESSAGE_SIZE: // TODO
       child = [self lookupObject: childURL];
-      longValue = talloc_zero(memCtx, uint32_t);
       /* TODO: choose another name for that method */
-      *longValue = [[child davContentLength] intValue];
-      *data = longValue;
+      *data = MAPILongValue (memCtx, [[child davContentLength] intValue]);
       break;
       // #define PR_REPLY_TIME                                       PROP_TAG(PT_SYSTIME   , 0x0030) /* 0x00300040 */
       // #define PR_EXPIRY_TIME                                      PROP_TAG(PT_SYSTIME   , 0x0015) /* 0x00150040 */
@@ -194,19 +183,16 @@ static Class SOGoUserFolderK;
                            inFolder: (SOGoFolder *) folder
                             withFID: (uint64_t) fid
 {
-  uint32_t *longValue;
   int rc;
 
   rc = MAPI_E_SUCCESS;
   switch (proptag)
     {
     case PR_CONTENT_UNREAD:
-      longValue = talloc_zero(memCtx, uint32_t);
-      *longValue = 0;
-      *data = longValue;
+      *data = MAPILongValue (memCtx, 0);
       break;
     case PR_CONTAINER_CLASS_UNICODE:
-      *data = talloc_strdup(memCtx, "IPF.Note");
+      *data = talloc_strdup (memCtx, "IPF.Note");
       break;
     default:
       rc = [super getFolderTableChildproperty: data

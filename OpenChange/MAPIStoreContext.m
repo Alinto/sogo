@@ -60,6 +60,39 @@
 // SOGoMailFolderK = NSClassFromString (@"SOGoMailFolder");
 // SOGoUserFolderK = NSClassFromString (@"SOGoUserFolder");
 
+uint8_t *
+MAPIBoolValue (void *memCtx, BOOL value)
+{
+  uint8_t *boolValue;
+
+  boolValue = talloc_zero (memCtx, uint8_t);
+  *boolValue = value;
+
+  return boolValue;
+}
+
+uint32_t *
+MAPILongValue (void *memCtx, uint32_t value)
+{
+  uint32_t *longValue;
+
+  longValue = talloc_zero (memCtx, uint32_t);
+  *longValue = value;
+
+  return longValue;
+}
+
+uint64_t *
+MAPILongLongValue (void *memCtx, uint64_t value)
+{
+  uint64_t *llongValue;
+
+  llongValue = talloc_zero (memCtx, uint64_t);
+  *llongValue = value;
+
+  return llongValue;
+}
+
 static Class SOGoObjectK, SOGoMailAccountK, SOGoMailFolderK;
 
 @interface SOGoFolder (MAPIStoreProtocol)
@@ -577,52 +610,40 @@ static MAPIStoreMapping *mapping = nil;
                             inFolder: (SOGoFolder *) folder
                              withFID: (uint64_t) fid
 {
-  uint32_t *longValue;
-  uint64_t *llongValue;
   int rc;
+  int64_t mappingId;
 
   rc = MAPI_E_SUCCESS;
   switch (proptag)
     {
     case PR_INST_ID: // TODO: DOUBT
-      llongValue = talloc_zero(memCtx, uint64_t);
-      // *llongValue = 1;
-      *llongValue = [childURL hash]; /* we return a unique id based on the url */
-      *data = llongValue;
+      /* we return a unique id based on the url */
+      *data = MAPILongLongValue (memCtx, [childURL hash]);
       break;
       // case PR_INST_ID: // TODO: DOUBT
     case PR_DEPTH: // TODO: DOUBT
-      longValue = talloc_zero(memCtx, uint32_t);
-      *longValue = 0;
-      *data = longValue;
+      *data = MAPILongLongValue (memCtx, 0);
       break;
     case PR_ROW_TYPE: // TODO: DOUBT
-      longValue = talloc_zero(memCtx, uint32_t);
-      *longValue = TBL_LEAF_ROW;
-      *data = longValue;
+      *data = MAPILongValue (memCtx, TBL_LEAF_ROW);
       break;
     case PR_INSTANCE_NUM: // TODO: DOUBT
-      longValue = talloc_zero(memCtx, uint32_t);
-      *longValue = 0;
-      *data = longValue;
+      *data = MAPILongValue (memCtx, 0);
       break;
     case PR_VD_VERSION:
-      longValue = talloc_zero(memCtx, uint32_t);
-      *longValue = 8; /* mandatory value... wtf? */
-      *data = longValue;
+      /* mandatory value... wtf? */
+      *data = MAPILongValue (memCtx, 8);
       break;
     case PR_FID:
-      llongValue = talloc_zero(memCtx, uint64_t);
-      *llongValue = fid;
-      *data = llongValue;
+      *data = MAPILongLongValue (memCtx, fid);
     case PR_MID:
-      llongValue = talloc_zero(memCtx, uint64_t);
-      *llongValue = [mapping idFromURL: childURL];
-      if (*llongValue == NSNotFound) {
-        [mapping registerURL: childURL];
-        *llongValue = [mapping idFromURL: childURL];
-      }
-      *data = llongValue;
+      mappingId = [mapping idFromURL: childURL];
+      if (mappingId == NSNotFound)
+        {
+          [mapping registerURL: childURL];
+          mappingId = [mapping idFromURL: childURL];
+        }
+      *data = MAPILongLongValue (memCtx, mappingId);
       break;
 
       /* those are queried while they really pertain to the
@@ -672,10 +693,8 @@ static MAPIStoreMapping *mapping = nil;
                             withFID: (uint64_t) fid
 {
   // id child;
-  uint64_t *llongValue;
-  uint8_t *boolValue;
-  uint32_t *longValue;
   struct Binary_r *binaryValue;
+  int64_t mappingId;
   int rc;
   NSString *parentURL;
 
@@ -683,27 +702,25 @@ static MAPIStoreMapping *mapping = nil;
   switch (proptag)
     {
     case PR_FID:
-      llongValue = talloc_zero(memCtx, uint64_t);
-      *llongValue = [mapping idFromURL: childURL];
-      if (*llongValue == NSNotFound)
+      mappingId = [mapping idFromURL: childURL];
+      if (mappingId == NSNotFound)
         {
           [mapping registerURL: childURL];
-          *llongValue = [mapping idFromURL: childURL];
+          mappingId = [mapping idFromURL: childURL];
         }
-      *data = llongValue;
+      *data = MAPILongLongValue (memCtx, mappingId);
       break;
     case PR_PARENT_FID:
-      llongValue = talloc_zero(memCtx, uint64_t);
       parentURL = [self _parentURLFromURL: childURL];
       if (parentURL)
         {
-          *llongValue = [mapping idFromURL: childURL];
-          if (*llongValue == NSNotFound)
+          mappingId = [mapping idFromURL: parentURL];
+          if (mappingId == NSNotFound)
             {
-              [mapping registerURL: childURL];
-              *llongValue = [mapping idFromURL: childURL];
+              [mapping registerURL: parentURL];
+              mappingId = [mapping idFromURL: parentURL];
             }
-          *data = llongValue;
+          *data = MAPILongLongValue (memCtx, mappingId);
         }
       else
         {
@@ -714,21 +731,17 @@ static MAPIStoreMapping *mapping = nil;
     case PR_ATTR_HIDDEN:
     case PR_ATTR_SYSTEM:
     case PR_ATTR_READONLY:
-      boolValue = talloc_zero(memCtx, uint8_t);
-      *boolValue = NO;
-      *data = boolValue;
+      *data = MAPIBoolValue (memCtx, NO);
       break;
     case PR_SUBFOLDERS:
-      boolValue = talloc_zero(memCtx, uint8_t);
-      *boolValue = ([[self _subfolderKeysForFolderURL: childURL]
-                      count] > 0);
-      *data = boolValue;
+      *data = MAPIBoolValue (memCtx,
+                             [[self _subfolderKeysForFolderURL: childURL]
+                               count] > 0);
       break;
     case PR_CONTENT_COUNT:
-      longValue = talloc_zero(memCtx, uint32_t);
-      *longValue = ([[self _messageKeysForFolderURL: childURL]
-                      count] > 0);
-      *data = longValue;
+      *data = MAPILongValue (memCtx,
+                             [[self _messageKeysForFolderURL: childURL]
+                               count]);
       break;
     case PR_EXTENDED_FOLDER_FLAGS: // TODO: DOUBT: how to indicate the
       // number of subresponses ?

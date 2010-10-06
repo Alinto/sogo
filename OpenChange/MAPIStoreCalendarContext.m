@@ -73,8 +73,6 @@ static Class SOGoUserFolderK;
                             inFolder: (SOGoFolder *) folder
                              withFID: (uint64_t) fid
 {
-  uint32_t *longValue;
-  uint8_t *boolValue;
   // id child;
   id event;
   int rc;
@@ -83,13 +81,12 @@ static Class SOGoUserFolderK;
   switch (proptag)
     {
     case PR_ICON_INDEX: // TODO
-      longValue = talloc_zero(memCtx, uint32_t);
-      *longValue = 0x00000400; /* see http://msdn.microsoft.com/en-us/library/cc815472.aspx */
+      /* see http://msdn.microsoft.com/en-us/library/cc815472.aspx */
       // *longValue = 0x00000401 for recurring event
       // *longValue = 0x00000402 for meeting
       // *longValue = 0x00000403 for recurring meeting
       // *longValue = 0x00000404 for invitation
-      *data = longValue;
+      *data = MAPILongValue (memCtx, 0x00000400);
       break;
     case PR_MESSAGE_CLASS_UNICODE:
       *data = talloc_strdup(memCtx, "IPM.Appointment");
@@ -103,9 +100,7 @@ static Class SOGoUserFolderK;
       *data = [[event endDate] asFileTimeInMemCtx: memCtx];
       break;
     case 0x82410003: // LABEL idx, should be saved in an X- property
-      longValue = talloc_zero(memCtx, uint32_t);
-      *longValue = 0;
-      *data = longValue;
+      *data = MAPILongValue (memCtx, 0);
       break;
     case PR_SUBJECT_UNICODE: // SUMMARY
     case PR_NORMALIZED_SUBJECT_UNICODE:
@@ -118,15 +113,11 @@ static Class SOGoUserFolderK;
       *data = [[event location] asUnicodeInMemCtx: memCtx];
       break;
     case 0x8224000b: // private (bool), should depend on CLASS
-      boolValue = talloc_zero(memCtx, uint8_t);
-      *boolValue = NO;
-      *data = boolValue;
+      *data = MAPIBoolValue (memCtx, NO);
       break;
     case PR_SENSITIVITY: // not implemented, depends on CLASS
       // normal = 0, private = 2
-      longValue = talloc_zero(memCtx, uint32_t);
-      *longValue = 0;
-      *data = longValue;
+      *data = MAPILongValue (memCtx, 0);
       break;
 
       // case PR_VD_NAME_UNICODE:

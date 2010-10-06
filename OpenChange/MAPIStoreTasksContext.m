@@ -71,26 +71,24 @@ static Class SOGoUserFolderK;
                             inFolder: (SOGoFolder *) folder
                              withFID: (uint64_t) fid
 {
-  uint32_t *longValue;
-  uint8_t *boolValue;
   NSString *status;
   // id child;
   id task;
+  int32_t statusValue;
   int rc;
 
   rc = MAPI_E_SUCCESS;
   switch (proptag)
     {
     case PR_ICON_INDEX: // TODO
-      longValue = talloc_zero(memCtx, uint32_t);
-      *longValue = 0x00000500; /* see http://msdn.microsoft.com/en-us/library/cc815472.aspx */
+      /* see http://msdn.microsoft.com/en-us/library/cc815472.aspx */
       // Unassigned recurring task 0x00000501
       // Assignee's task 0x00000502
       // Assigner's task 0x00000503
       // Task request 0x00000504
       // Task acceptance 0x00000505
       // Task rejection 0x00000506
-      *data = longValue;
+      *data = MAPILongValue (memCtx, 0x00000500);
       break;
     case PR_MESSAGE_CLASS_UNICODE:
       *data = talloc_strdup(memCtx, "IPM.Task");
@@ -102,10 +100,9 @@ static Class SOGoUserFolderK;
       *data = [[task summary] asUnicodeInMemCtx: memCtx];
       break;
     case 0x8124000b: // completed
-      boolValue = talloc_zero(memCtx, uint8_t);
       task = [[self lookupObject: childURL] component: NO secure: NO];
-      *boolValue = [[task status] isEqualToString: @"COMPLETED"];
-      *data = boolValue;
+      *data = MAPIBoolValue (memCtx,
+                             [[task status] isEqualToString: @"COMPLETED"]);
       break;
     case 0x81250040: // completion date
       task = [[self lookupObject: childURL] component: NO secure: NO];
@@ -123,17 +120,18 @@ static Class SOGoUserFolderK;
       *data = [[task lastModified] asFileTimeInMemCtx: memCtx];
       break;
     case 0x81200003: // status
-      longValue = talloc_zero(memCtx, uint32_t);
       task = [[self lookupObject: childURL] component: NO secure: NO];
       status = [task status];
       if (![status length]
           || [status isEqualToString: @"NEEDS-ACTIONS"])
-        *longValue = 0;
+        statusValue = 0;
       else if ([status isEqualToString: @"IN-PROCESS"])
-        *longValue = 1;
+        statusValue = 1;
       else if ([status isEqualToString: @"COMPLETED"])
-        *longValue = 2;
-      *data = longValue;
+        statusValue = 2;
+      else
+        statusValue = 0xff;
+      *data = MAPILongValue (memCtx, statusValue);
       break;
       /* Completed */
       // -	0x81380003 = -2000
@@ -144,9 +142,7 @@ static Class SOGoUserFolderK;
     case 0x68340003:
     case 0x683a0003:
     case 0x68410003:
-      longValue = talloc_zero(memCtx, uint32_t);
-      *longValue = 0;
-      *data = longValue;
+      *data = MAPILongValue (memCtx, 0);
       break;
 
     default:

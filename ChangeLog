@@ -3,6 +3,8 @@
 	* OpenChange/MAPIStoreContext.m:
 	(-getMessageTableChildproperty:atURL:withTag:inFolder:withFID:)
 	added response for PR_ROW_TYPE (always 1) and PR_DEPTH (always 0).
+	(MAPIBoolValue, MAPILongValue, MAPILongLongValue): new helpers for
+	talloc'd C values.
 
 2010-10-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

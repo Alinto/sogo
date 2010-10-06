@@ -138,7 +138,6 @@ static Class SOGoUserFolderK;
                              withFID: (uint64_t) fid
 {
   NSString *stringValue;
-  uint32_t *longValue;
   id child;
   int rc;
 
@@ -146,29 +145,27 @@ static Class SOGoUserFolderK;
   switch (proptag)
     {
     case PR_ICON_INDEX: // TODO
-      longValue = talloc_zero(memCtx, uint32_t);
-      *longValue = 0x00000200; /* see http://msdn.microsoft.com/en-us/library/cc815472.aspx */
-      *data = longValue;
+      /* see http://msdn.microsoft.com/en-us/library/cc815472.aspx */
+      *data = MAPILongValue (memCtx, 0x00000200);
       break;
     case PR_MESSAGE_CLASS_UNICODE:
-      *data = talloc_strdup(memCtx, "IPM.Contact");
+      *data = talloc_strdup (memCtx, "IPM.Contact");
       break;
       // case PR_VD_NAME_UNICODE:
-      //         *data = talloc_strdup(memCtx, "PR_VD_NAME_UNICODE");
+      //         *data = talloc_strdup (memCtx, "PR_VD_NAME_UNICODE");
       //         break;
       // case PR_EMS_AB_DXA_REMOTE_CLIENT_UNICODE: "Home:" ???
-      //         *data = talloc_strdup(memCtx, "PR_EMS...");
+      //         *data = talloc_strdup (memCtx, "PR_EMS...");
       //         break;
     case PR_SUBJECT_UNICODE:
-      *data = talloc_strdup(memCtx, "PR_SUBJECT...");
+      *data = talloc_strdup (memCtx, "PR_SUBJECT...");
       break;
     case PR_OAB_NAME_UNICODE:
-      *data = talloc_strdup(memCtx, "PR_OAB_NAME_UNICODE");
+      *data = talloc_strdup (memCtx, "PR_OAB_NAME_UNICODE");
       break;
     case PR_OAB_LANGID:
-      longValue = talloc_zero(memCtx, uint32_t);
-      *longValue = 1033; /* English US */
-      *data = longValue;
+      /* English US */
+      *data = MAPILongValue (memCtx, 1033);
       break;
 
     case PR_TITLE_UNICODE:
@@ -252,7 +249,7 @@ static Class SOGoUserFolderK;
       // case PR_HOME2_TELEPHONE_NUMBER_UNICODE:
       // case PR_TTYTDD_PHONE_NUMBER_UNICODE:
       // case PR_BUSINESS_HOME_PAGE_UNICODE:
-      //         *data = talloc_strdup(memCtx, "[Generic and fake unicode value]");
+      //         *data = talloc_strdup (memCtx, "[Generic and fake unicode value]");
       //         break;
 
       // (18:54:45) Wolfgang-: 0x80a7001f (  Business: ) -> don't ask me which "business"
