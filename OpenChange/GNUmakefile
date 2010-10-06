@@ -4,7 +4,7 @@ include ../config.make
 include $(GNUSTEP_MAKEFILES)/common.make
 include ../Version
 
-LIBMAPI_CFLAGS = $(shell pkg-config libmapiproxy --cflags)
+LIBMAPI_CFLAGS = $(shell pkg-config libmapistore --cflags)
 
 ifeq ($(LIBMAPI_CFLAGS),)
 
@@ -13,7 +13,7 @@ all install::
 
 else
 
-LIBMAPI_LIBS = $(shell pkg-config libmapiproxy --libs)
+LIBMAPI_LIBS = $(shell pkg-config libmapistore --libs)
 
 ADDITIONAL_INCLUDE_DIRS += $(LIBMAPI_CFLAGS) -I../SoObjects -I../SOPE
 ADDITIONAL_LIB_DIRS += -L../SOGo/SOGo.framework/ -lSOGo -L../SOPE/GDLContentStore/obj/ $(LIBMAPI_LIBS)
