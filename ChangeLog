@@ -1,5 +1,9 @@
 2010-10-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUser.m (-_appendSystemMailAccount): check
+	that -[url scheme] and -[url query] are not null before the
+	comparison, since nil == 0 == NSOrderedSame....
+
 	* OpenChange/MAPIStoreContext.m:
 	(-getMessageTableChildproperty:atURL:withTag:inFolder:withFID:)
 	added response for PR_ROW_TYPE (always 1) and PR_DEPTH (always 0).

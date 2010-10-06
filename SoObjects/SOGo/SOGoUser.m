@@ -502,7 +502,7 @@
 - (void) _appendSystemMailAccount
 {
   NSString *fullName, *imapLogin, *imapServer, *signature, *encryption,
-    *scheme, *action;
+    *scheme, *action, *query;
   NSMutableDictionary *mailAccount, *identity, *mailboxes, *receipts;
   NSNumber *port;
   NSMutableArray *identities;
@@ -540,14 +540,16 @@
 
   // 3. port & encryption
   scheme = [url scheme];
-  if ([scheme caseInsensitiveCompare: @"imaps"] == NSOrderedSame)
+  if (scheme
+      && [scheme caseInsensitiveCompare: @"imaps"] == NSOrderedSame)
     {
       encryption = @"ssl";
       defaultPort = 993;
     }
   else
     {
-      if ([[url query] caseInsensitiveCompare: @"tls=YES"] == NSOrderedSame)
+      query = [url query];
+      if (query && [query caseInsensitiveCompare: @"tls=YES"] == NSOrderedSame)
         encryption = @"tls";
       else
         encryption = @"none";
