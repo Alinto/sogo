@@ -591,6 +591,16 @@ static MAPIStoreMapping *mapping = nil;
       *data = llongValue;
       break;
       // case PR_INST_ID: // TODO: DOUBT
+    case PR_DEPTH: // TODO: DOUBT
+      longValue = talloc_zero(memCtx, uint32_t);
+      *longValue = 0;
+      *data = longValue;
+      break;
+    case PR_ROW_TYPE: // TODO: DOUBT
+      longValue = talloc_zero(memCtx, uint32_t);
+      *longValue = TBL_LEAF_ROW;
+      *data = longValue;
+      break;
     case PR_INSTANCE_NUM: // TODO: DOUBT
       longValue = talloc_zero(memCtx, uint32_t);
       *longValue = 0;
