@@ -381,7 +381,7 @@ static NSCharacterSet *whitespaceCharSet = nil;
 #endif
 
   *attr_ = attrName;
-  *value_ = [attrValue unescapedFromCard];
+  *value_ = attrValue;
 }
 
 - (SaxAttributes *) _mapAttrs: (NSArray *) _attrs
@@ -475,15 +475,12 @@ static NSCharacterSet *whitespaceCharSet = nil;
   NSString *testContent;
 
   /* This is called for all non-BEGIN|END types. */
-  testContent = [[_content unescapedFromCard] stringByReplacingString: @";"
-					      withString: @""];
-
+  testContent = [_content stringByReplacingString: @";" withString: @""];
   if ([[testContent stringByTrimmingSpaces] length] > 0)
     {
       [self _beginTag: _tagName group: _group withAttrs: _attrs];
   
-      a = [(VSSaxTag *)[VSSaxTag alloc]
-                       initWithContentString: [_content unescapedFromCard]];
+      a = [(VSSaxTag *)[VSSaxTag alloc] initWithContentString: _content];
       if (a)
         {
           [elementList addObject: a];

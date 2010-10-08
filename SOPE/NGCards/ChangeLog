@@ -1,3 +1,11 @@
+2010-10-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* NSString+NGCards.m (-unescapedFromCard): removed obsolete
+	method.
+	(-componentsWithSafeSeparator:): renamed to
+	"vCardSubvaluesWithSeparator:" with proper unescaping of versit
+	values by scanning each character one after another.
+
 2010-09-28  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* NSString+NGCards.m (-asCalendarDate): added handling of date that

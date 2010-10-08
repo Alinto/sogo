@@ -34,14 +34,13 @@
 - (NSString *) foldedForVersitCards;
 - (NSArray *) asCardAttributeValues;
 - (NSString *) escapedForCards;
-- (NSString *) unescapedFromCard;
 - (NSString *) rfc822Email;
 
 - (NSTimeInterval) durationAsTimeInterval;
 - (NSCalendarDate *) asCalendarDate;
 - (BOOL) isAllDayDate;
 
-- (NSArray *) componentsWithSafeSeparator: (unichar) separator;
+- (NSArray *) vCardSubvaluesWithSeparator: (unichar) separator;
 
 @end
 

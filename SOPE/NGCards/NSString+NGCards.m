@@ -118,27 +118,6 @@ static NSString *commaSeparator = nil;
   return string;
 }
 
-- (NSString *) unescapedFromCard
-{
-  NSString *string;
-
-  string = [self stringByReplacingString: @"\\,"
-                 withString: @","];
-  string = [string stringByReplacingString: @"\\:"
-                   withString: @":"];
-  string = [string stringByReplacingString: @"\\;"
-                   withString: @";"];
-  string = [string stringByReplacingString: @"\\n"
-                   withString: @"\n"];
-  string = [string stringByReplacingString: @"\\r"
-                   withString: @"\r"];
-  string = [string stringByReplacingString: @"\\\\"
-                   withString: @"\\"];
-  string = [string stringByReplacingString: @"\\N"  // Outlook lameness
-                   withString: @"\n"];
-  return string;
-}
-
 - (NSTimeInterval) durationAsTimeInterval
 {
   /*
@@ -287,51 +266,72 @@ static NSString *commaSeparator = nil;
   return ([self length] == 8);
 }
 
-- (NSArray *) componentsWithSafeSeparator: (unichar) separator
+- (NSArray *) vCardSubvaluesWithSeparator: (unichar) separator
 {
   NSMutableArray *components;
-  NSRange currentRange;
-  unichar *stringBuffer;
+  unichar *stringBuffer, *substringBuffer;
+  NSString *substring;
   unichar currentChar;
-  unsigned int count, length;
+  NSUInteger substringLength, count, max;
   BOOL escaped;
 
-  components = [NSMutableArray array];
+  components = [NSMutableArray arrayWithCapacity: 5];
 
-  length = [self length];
-  stringBuffer = NSZoneMalloc (NULL, sizeof (unichar) * length);
+  max = [self length];
+  stringBuffer = NSZoneMalloc (NULL, sizeof (unichar) * max);
   [self getCharacters: stringBuffer];
+  substringLength = 0;
 
-  currentRange = NSMakeRange(0, 0);
-  escaped = NO;
-  count = 0;
-  while (count < length)
+  substringBuffer = NSZoneMalloc (NULL, sizeof (unichar) * max);
+
+  for (count = 0; count < max; count++)
     {
+      currentChar = stringBuffer[count];
       if (escaped)
-	currentRange.length++;
+        {
+          escaped = NO;
+          if (currentChar == 'n' || currentChar == 'N')
+            substringBuffer[substringLength] = '\n';
+          else if (currentChar == 'r')
+            substringBuffer[substringLength] = '\r';
+          else
+            substringBuffer[substringLength] = currentChar;
+          substringLength++;
+        }
       else
-	{
-	  currentChar = *(stringBuffer + count);
-	  if (currentChar == '\\')
-	    escaped = YES;
-	  else if (currentChar == separator)
-	    {
-	      [components
-		addObject: [self substringWithRange: currentRange]];
-	      currentRange = NSMakeRange (count + 1, 0);
-	    }
-	  else
-	    currentRange.length++;
-	}
-      count++;
+        {
+          if (currentChar == '\\')
+            escaped = YES;
+          else if (currentChar == separator)
+            {
+              substring
+                = [[NSString alloc] initWithCharactersNoCopy: substringBuffer
+                                                      length: substringLength
+                                                freeWhenDone: YES];
+              [components addObject: substring];
+              [substring release];
+              substringBuffer = NSZoneMalloc (NULL, sizeof (unichar) * max);
+              substringLength = 0;
+            }
+          else
+            {
+              substringBuffer[substringLength] = currentChar;
+              substringLength++;
+            }
+        }
     }
-  [components
-    addObject: [self substringWithRange: currentRange]];
+
+  substring = [[NSString alloc] initWithCharactersNoCopy: substringBuffer
+                                                  length: substringLength
+                                            freeWhenDone: YES];
+  [components addObject: substring];
+  [substring release];
 
   NSZoneFree (NULL, stringBuffer);
 
   return components;
 }
+
 
 - (NSString *) rfc822Email
 {

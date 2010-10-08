@@ -211,7 +211,7 @@
       free (content);
       content = NULL;
 //       NSLog (@"content: '%@'", s);
-      contentValues = [s componentsWithSafeSeparator: ';'];
+      contentValues = [s vCardSubvaluesWithSeparator: ';'];
     }
   else
     contentValues = nil;
