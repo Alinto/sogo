@@ -2247,6 +2247,37 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return rc;
 }
 
+- (void) removeFolderSettings: (NSMutableDictionary *) moduleSettings
+                withReference: (NSString *) reference
+{
+  NSMutableArray *refArray;
+  NSMutableDictionary *refDict;
+
+  refDict = [moduleSettings objectForKey: @"FreeBusyExclusions"];
+  [refDict removeObjectForKey: reference];
+
+  refDict = [moduleSettings objectForKey: @"FolderColors"];
+  [refDict removeObjectForKey: reference];
+
+  refDict = [moduleSettings objectForKey: @"FolderShowAlarms"];
+  [refDict removeObjectForKey: reference];
+
+  refDict = [moduleSettings objectForKey: @"FolderShowTasks"];
+  [refDict removeObjectForKey: reference];
+
+  refArray = [moduleSettings objectForKey: @"InactiveFolders"];
+  [refArray removeObject: nameInContainer];
+            
+  refDict = [moduleSettings objectForKey: @"FolderSyncTags"];
+  [refDict removeObjectForKey: reference];
+
+  refDict = [moduleSettings objectForKey: @"FolderSynchronize"];
+  [refDict removeObjectForKey: reference];
+
+  [super removeFolderSettings: moduleSettings
+                withReference: reference];
+}
+
 - (id) lookupHomeFolderForUID: (NSString *) _uid
                     inContext: (id)_ctx
 {
