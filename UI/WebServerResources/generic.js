@@ -1822,7 +1822,7 @@ function _showAlertDialog(label) {
 }
 
 function showConfirmDialog(title, label, callbackYes, callbackNo) {
-    var dialog = dialogs[label];
+    var dialog = dialogs[title+label];
     if (dialog) {
         $("bgDialogDiv").show();
     }
@@ -1836,13 +1836,13 @@ function showConfirmDialog(title, label, callbackYes, callbackNo) {
                               fields,
                               "none");
         document.body.appendChild(dialog);
-        dialogs[label] = dialog;
+        dialogs[title+label] = dialog;
     }
     dialog.show();
 }
 
 function showPromptDialog(title, label, callback, defaultValue) {
-    var dialog = dialogs[label];
+    var dialog = dialogs[title+label];
     v = defaultValue?defaultValue:"";
     if (dialog) {
         $("bgDialogDiv").show();
@@ -1867,7 +1867,7 @@ function showPromptDialog(title, label, callback, defaultValue) {
                               fields,
                               "none");
         document.body.appendChild(dialog);
-        dialogs[label] = dialog;
+        dialogs[title+label] = dialog;
     }
     dialog.show();
     dialog.down("input").focus();

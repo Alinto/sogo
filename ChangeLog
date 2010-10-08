@@ -1,5 +1,9 @@
 2010-10-08  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/WebServerResources/generic.js (showConfirmDialog)
+	(showPromptDialog): keys for cached dialogs are now build from a
+	combination of the dialog title and label to avoid collisions.
+
 	* UI/WebServerResources/SchedulerUI.js
 	(deleteEventFromViewCancel): new function loaded if the user
 	cancel the deletion of an event. It clears the array of events to
