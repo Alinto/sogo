@@ -88,6 +88,11 @@
   return selectedDayExtraStyle;
 }
 
+- (NSTimeZone *) viewTimeZone
+{
+  return timeZone;
+}
+
 /* date ranges */
 
 - (NSCalendarDate *) startDate

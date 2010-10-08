@@ -21,6 +21,9 @@
 
 2010-10-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalDateSelector.m (-viewTimeZone): restored
+	accessor, required for the proper display of the minimonth.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	(-removeFolderSettings:withReference:): new method which removes
 	the settings for keys "FreeBusyExclusions", "FolderColors",
