@@ -30,7 +30,7 @@
 
     SOGoLoginModule = "Mail";
     SOGoLanguage = "English";
-    SOGoSupportedLanguages = ( "Czech", "Welsh", "English", "Spanish",
+    SOGoSupportedLanguages = ( "Catalan", "Czech", "Welsh", "English", "Spanish",
                                "French", "German", "Italian", "Hungarian",
                                "Dutch", "BrazilianPortuguese", "Polish", "Russian",
                                "Ukrainian", "Swedish");

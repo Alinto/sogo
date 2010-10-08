@@ -1,0 +1,275 @@
+/* this file is in UTF-8 format! */
+
+/* Icon's label */
+"Create"      = "Redactar";
+"Empty Trash" = "Buidar paperera";
+"Delete"      = "Esborrar";
+"Expunge"     = "Compactar";
+"Forward"     = "Reenviar";
+"Get Mail"    = "Rebre";
+"Junk"        = "Brossa";
+"Reply"       = "Respondre";
+"Reply All"   = "Respondre a tots";
+"Print"       = "Imprimir";
+"Stop"        = "Aturar";
+"Write"       = "Redactar";
+
+"Send" = "Enviar";
+"Contacts" = "Contactes";
+"Attach" = "Adjuntar";
+"Save" = "Desar";
+"Options" = "Opcions";
+"Size" = "Mida";
+
+/* Tooltips */
+
+"Send this message now" = "Enviar aquest missatge ara";
+"Select a recipient from an Address Book" = "Seleccionar un destinatari d'una llibreta d'adreces";
+"Include an attachment" = "Incloure un adjunt";
+"Save this message" = "Desar aquest missatge";
+"Get new messages" = "Rebre nous missatges";
+"Create a new message" = "Crear un missatge nou";
+"Go to address book" = "Anar a llibreta d'adreces";
+"Reply to the message" = "Respondre al missatge";
+"Reply to sender and all recipients" = "Respondre al remitent i a tots els destinataris";
+"Forward selected message" = "Reenviar missatge seleccionat";
+"Delete selected message or folder" = "Esborrar el missatge o la carpeta seleccionats";
+"Mark the selected messages as junk" = "Marcar els missatges seleccionats com a brossa";
+"Print this message" = "Imprimir aquest missatge";
+"Stop the current transfer" = "Aturar la transferència";
+"Attachment" = "Adjunt";
+"Unread" = "No llegit";
+"Flagged" = "Marcat";
+
+/* Main Frame  */
+
+"Home"                 = "Inici"; 
+"Calendar"             = "Calendari";
+"Addressbook"          = "Llibreta d'adreces";
+"Mail"                 = "Correu";
+"Right Administration" = "Gestió de permisos";
+
+"Help" = "Ajuda";
+
+/* Mail account main windows */
+
+"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Benvingut a SOGo! Utilitzeu l'arbre de carpetes de l'esquerra per a navegar pels comptes de correu.";
+
+"Read messages"       = "Llegir missatges";
+"Write a new message" = "Redactar un missatge nou";
+
+"Share: " = "Compartir: ";
+"Account: " = "Compte: ";
+"Shared Account: " = "Compte compartit: ";
+
+/* acls */
+"Default Roles" = "Rols per defecte";
+"User rights for:" = "Permisos per a:";
+
+"List and see this folder" = "Llistar i veure aquesta carpeta";
+"Read mails from this folder" = "Llegir corrreu d'aquesta carpeta";
+"Mark mails read and unread" = "Marcar correus com a llegits o no llegits";
+"Modify the flags of the mails in this folder" = "Modificar les marques dels correus en aquesta carpeta";
+"Insert, copy and move mails into this folder" = "Inserir, copiar i moure correus a aquesta carpeta";
+"Post mails" = "Enviar correus";
+"Add subfolders to this folder" = "Afegir subcarpetes a aquesta carpeta";
+"Remove this folder" = "Esborrar aquesta carpeta";
+"Erase mails from this folder" = "Esborrar els correus d'aquesta carpeta";
+"Expunge this folder" = "Compactar aquesta carpeta";
+"Archive This Folder" = "Arxivar aquesta carpeta";
+"Modify the acl of this folder" = "Modificar la llista de permisos d'aquesta carpeta";
+
+"Saved Messages.zip" = "missatgesdesats.zip";
+
+"Update" = "Actualitzar";
+"Cancel" = "Cancel·lar";
+
+/* Mail edition */
+
+"From"          = "De";
+"Subject"       = "Assummpte";
+"To"            = "Per a";
+"Cc"            = "Cc";
+"Bcc"           = "C/o";
+"Reply-To"	= "Respondre a";
+"Add address"   = "Afegir adreça";
+
+"Attachments:" = "Adjunts:";
+"Open" = "Obrir";
+"Select All" = "Seleccionar tots";
+"Attach Web Page..." = "Adjuntar pàgina Web...";
+"Attach File(s)..." = "Adjuntar fitxers...";
+
+"to"            = "per a";
+"cc"            = "cc";
+"bcc"           = "c/o";
+
+"Addressbook"   = "Llibreta d'adreces";
+
+"Edit Draft..." = "Modificar esborrany...";
+"Load Images" = "Carregar imatges";
+
+"Return Receipt" = "Justificant de recepció";
+
+"Priority" = "Prioritat";
+"highest" = "Màxima";
+"high" = "Alta";
+"normal" = "Normal";
+"low" = "Baixa";
+"lowest" = "Mínima";
+
+"This mail is being sent from an unsecure network!" = "Aquest missatge s'envia des d'una xarxa no segura.";
+
+/* Popup "show" */
+
+"all"     = "tot";
+"read"    = "llegit";
+"unread"  = "no llegit";
+"deleted" = "esborrat";
+"flagged" = "marcat";
+
+/* MailListView */
+
+"Sender" = "Remitent";
+"Subject or Sender" = "Assumpte o remitent";
+"To or Cc" = "Per a o CC";
+"Entire Message" = "Missatge complet";
+
+"Date"          = "Data";
+"View"          = "Vista";
+"All"           = "Tot";
+"Unread"        = "No llegit";
+"No message"    = "Sense missatges";
+"messages"      = "Missatges";
+
+"first"         = "Primer";
+"previous"      = "Anterior";
+"next"          = "Següent";
+"last"          = "Últim";
+
+"msgnumber_to"  = "a";
+"msgnumber_of"  = "de";
+
+"Mark Unread" = "Marcar com a no llegit";
+"Mark Read"   = "Marcar com a llegit";
+
+"Untitled" = "Sense títol";
+
+/* Tree */
+
+"SentFolderName"   = "Enviats";
+"TrashFolderName"  = "Paperera";
+"InboxFolderName"  = "Safata d'entrada";
+"DraftsFolderName" = "Esborranys";
+"SieveFolderName"  = "Filtres";
+"Folders"          = "Carpetes"; /* title line */
+
+/* MailMoveToPopUp */
+
+"MoveTo"        = "Moure a &hellip;";
+
+/* Address Popup menu */
+"Add to Address Book..." = "Afegir a una llibreta d'adreces...";
+"Compose Mail To" = "Crear missatge per a";
+"Create Filter From Message..." = "Crear filtre a partir del missatge...";
+
+/* Image Popup menu */
+"Save Image" = "Desar imatge";
+"Save Attachment" = "Guardar adjunt";
+
+/* Mailbox popup menus */
+"Open in New Mail Window" = "Obrir missatge en una finestra nova";
+"Copy Folder Location" = "Copiar adreça de la carpeta";
+"Subscribe..." = "Subscriure...";
+"Mark Folder Read..." = "Marcar carpeta com a llegida...";
+"New Folder..." = "Crear carpeta...";
+"Compact This Folder" = "Compactar aquesta carpeta";
+"Search Messages..." = "Cercar missatges...";
+"Sharing..." = "Compartir...";
+"New Subfolder..." = "Crear subcarpeta...";
+"Rename Folder..." = "Reanomenar carpeta...";
+"Delete Folder" = "Esborrar carpeta";
+"Use This Folder For" = "Usar aquesta carpeta per a";
+"Get Messages for Account" = "Rebre missatges per a compte";
+
+/* Use This Folder menu */
+"Sent Messages" = "Enviar missatges";
+"Drafts" = "Esborranys";
+"Deleted Messages" = "Missatges esborrats";
+
+/* Message list popup menu */
+"Open Message In New Window" = "Obrir missatge en una finestra nova";
+"Reply to Sender Only" = "Respondre només al remitent";
+"Reply to All" = "Repondre a tots";
+"Forward" = "Reenviar";
+"Edit As New..." = "Editar com a nou...";
+"Move To" = "Moure a";
+"Copy To" = "Copiar a";
+"Label" = "Etiquetar";
+"Mark" = "Marcar";
+"Save As..." = "Desar com a...";
+"Print Preview" = "Vista preliminar";
+"View Message Source" = "Veure format original del missatge";
+"Print..." = "Imprimir...";
+"Delete Message" = "Esborrar missatge";
+"Delete Selected Messages" = "Esborrar missatges seleccionats";
+
+"This Folder" = "Aquesta carpeta";
+
+/* Label popup menu */
+"None" = "Cap";
+"Important" = "Important";
+"Work" = "Feina";
+"Personal" = "Personal";
+"To Do" = "Per fer";
+"Later" = "Més tard";
+
+/* Mark popup menu */
+"As Read" = "Com a llegits";
+"Thread As Read" = "Conversa com a llegida";
+"As Read By Date..." = "Com a llegits per data...";
+"All Read" = "Tots llegits";
+"Flag" = "Afegir estrella";
+"As Junk" = "Com a correu brossa";
+"As Not Junk" = "Com a correu normal";
+"Run Junk Mail Controls" = "Executar controls de correu brossa";
+
+/* Folder operations */
+"Name :" = "Nom: ";
+"Enter the new name of your folder :"
+ = "Introduïu el nom nou per a la carpeta: ";
+"Do you really want to move this folder into the trash ?"
+ = "Voleu moure aquesta carpeta a la paperera?";
+"Operation failed" = "Operació no vàlida";
+
+"Quota" = "Quota";
+"quotasFormat" = "%{0}% de %{1} Mb usats";
+
+"Please select a message." = "Seleccioneu un missatge abans.";
+"Please select a message to print." = "Seleccioneu el missatge que voleu imprimir.";
+"Please select only one message to print." = "Per imprimir, seleccioneu només un missatge.";
+"The message you have selected doesn't exist anymore." = "El missatge seleccionat ja no existeix.";
+
+
+"The folder with name \"%{0}\" could not be created."
+= "La carpeta de nom \"%{0}\" no es pot crear.";
+"This folder could not be renamed to \"%{0}\"."
+= "Aquesta carpeta no es pot anomenar \"%{0}\".";
+"The folder could not be deleted."
+= "No s'ha pogut esborrar la carpeta.";
+"The trash could not be emptied."
+= "No s'ha pogut buidar la paperera.";
+"The folder functionality could not be changed."
+= "La funció d'aquesta carpeta no es pot canviar.";
+
+"You need to choose a non-virtual folder!" = "Heu de seleccionar una carpeta no virtual.";
+
+"Moving a message into its own folder is impossible!"
+= "No es poden moure missatges a la mateixa carpeta.";
+"Copying a message into its own folder is impossible!"
+= "No es poden copiar missatges en la mateixa carpeta.";
+
+/* Message editing */
+"error_validationfailed" = "Error de validació";
+"error_missingsubject" = "No heu indicat l'assumpte";
+"error_missingrecipients" = "No heu indicat els destinataris";

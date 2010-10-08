@@ -1,0 +1,235 @@
+/* toolbar */
+"Save and Close" = "Desar i tancar";
+"Close" = "Tancar";
+
+/* tabs */
+"General" = "General";
+"Calendar Options" = "Opcions de calendari";
+"Mail Options" = "Opcions de correu";
+"IMAP Accounts" = "Comptes IMAP";
+"Vacation" = "Vacances";
+"Forward" = "Redirigir";
+"Password" = "Contrasenya";
+"Categories" = "Categories";
+"Name" = "Nom";
+"Color" = "Color";
+"Add" = "Afegir";
+"Delete" = "Esborrar";
+
+/* vacation (auto-reply) */
+"Enable vacation auto reply" = "Activar resposta automàtica";
+"Auto reply message :" = "Respondre automàticament una sola vegada a cada remitent amb aquest text: ";
+"Email addresses (separated by commas) :" = "Adreces de correu (separades per comes) :";
+"Add default email addresses" = "Afegir adreces de correu per defecte";
+"Days between responses :" = "Dies entre respostes :";
+"Do not send responses to mailing lists" = "No enviar respostes a llistes de correu";
+"Please specify your message and your email addresses for which you want to enable auto reply."
+ = "Especifiqueu el missatge i les adreces de correu per a les quals voleu activar la resposta automàtica.";
+
+/* forward messages */
+"Forward incoming messages" = "Redirigir missatges entrants";
+"Forward to address :" = "Redirigir a l'adreça :";
+"Keep a copy" = "Desar-ne una còpia";
+"Please specify an address to which you want to forward your messages."
+= "Especifiqueu l'adreça a la qual voleu redirigir els missatges.";
+
+/* d & t */
+"Current Time Zone :" = "Zona horària actual: ";
+"Short Date Format :" = "Format de data curt: ";
+"Long Date Format :" = "Format de data llarg: ";
+"Time Format :" = "Format d'hora: ";
+
+"default" = "Per defecte";
+
+"shortDateFmt_0" = "%d-%b-%y";
+
+"shortDateFmt_1" = "%d-%m-%y";
+"shortDateFmt_2" = "%d/%m/%y";
+"shortDateFmt_3" = "%e/%m/%y";
+
+"shortDateFmt_4" = "%d-%m-%Y";
+"shortDateFmt_5" = "%d/%m/%Y";
+
+"shortDateFmt_6" = "%m-%d-%y";
+"shortDateFmt_7" = "%m/%d/%y";
+"shortDateFmt_8" = "%m/%e/%y";
+
+"shortDateFmt_9" = "%y-%m-%d";
+"shortDateFmt_10" = "%y/%m/%d";
+"shortDateFmt_11" = "%y.%m.%d";
+
+"shortDateFmt_12" = "%Y-%m-%d";
+"shortDateFmt_13" = "%Y/%m/%d";
+"shortDateFmt_14" = "%Y.%m.%d";
+
+"shortDateFmt_15" = "";
+   
+"longDateFmt_0" = "%A, %e %B %Y";
+"longDateFmt_1" = "%A, %e de %B de %Y";
+"longDateFmt_2" = "%e de %b %Y";
+"longDateFmt_3" = "%e de %b de %Y";
+"longDateFmt_4" = "%e %B %Y";
+"longDateFmt_5" = "";
+
+"timeFmt_0" = "%H:%M";
+"timeFmt_1" = "%H.%M";
+"timeFmt_2" = "%H h. %M";
+"timeFmt_3" = "";
+
+/* calendar */
+"Week begins on :" = "Setmana comença en: ";
+"Day start time :" = "Hora inici dia: ";
+"Day end time :" = "Hora final dia: ";
+"Day start time must be prior to day end time." = "L'hora de començament del dia ha de ser anterior a l'hora d'acabament.";
+"First week of year :" = "Primera setmana de l'any: ";
+"Enable reminders for Calendar items" = "Habilitar recordatoris per a ítems del calendari";
+"Play a sound when a reminder comes due"
+  = "Usar senyal acústic per als recordatoris";
+"Default reminder :" = "Recordatori per omissió: ";
+
+"firstWeekOfYear_January1" = "Comença l'1 de gener";
+"firstWeekOfYear_First4DayWeek" = "Primera setmana de 4 dies";
+"firstWeekOfYear_FirstFullWeek" = "Primera setmana completa";
+
+"reminderTime_0000" = "0 minuts";
+"reminderTime_0005" = "5 minuts";
+"reminderTime_0010" = "10 minuts";
+"reminderTime_0015" = "15 minuts";
+"reminderTime_0030" = "30 minuts";
+"reminderTime_0100" = "1 hora";
+"reminderTime_0200" = "2 hores";
+"reminderTime_0400" = "4 hores";
+"reminderTime_0800" = "8 hores";
+"reminderTime_1200" = "1/2 dia";
+"reminderTime_2400" = "1 dia";
+"reminderTime_4800" = "2 dies";
+
+/* Mailer */
+"Show subscribed mailboxes only" = "Mostrar només les bústies subscrites";
+"Check for new mail:" = "Comprovar nou correu: ";
+"messagecheck_manually" = "Manualment";
+"messagecheck_every_minute" = "Cada minut";
+"messagecheck_every_2_minutes" = "Cada 2 minuts";
+"messagecheck_every_5_minutes" = "Cada 5 minuts";
+"messagecheck_every_10_minutes" = "Cada 10 minuts";
+"messagecheck_every_20_minutes" = "Cada 20 minuts";
+"messagecheck_every_30_minutes" = "Cada 30 minuts";
+"messagecheck_once_per_hour" = "Cada hora";
+
+"Forward messages:" = "Reenviar missatges:";
+"messageforward_inline" = "Incorporats";
+"messageforward_attached" = "Com a adjunts";
+
+"replyplacement_above" = "amb la resposta abans";
+"replyplacement_below" = "amb la resposta després";
+"And place my signature" = "Col·locant la signatura";
+"signatureplacement_above" = "abans";
+"signatureplacement_below" = "després";
+"Compose messages in" = "Compondre els missatges en";
+"composemessagestype_html" = "HTML";
+"composemessagestype_text" = "Text net";
+
+/* IMAP Accounts */
+"New Mail Account" = "Compte de correu nou";
+
+"Server Name:" = "Servidor:";
+"Port:" = "Port:";
+"User Name:" = "Usuari:";
+"Password:" = "Contrasenya:";
+ 
+"Full Name:" = "Nom complet:";
+"Email:" = "Correu electrònic:";
+"Signature:" = "Signatura:";
+"(Click to create)" = "(Clic per a crear-la)";
+
+"Signature" = "Signatura";
+"Please enter your signature below:" = "Si us plau, poseu la signatura a sota:";
+
+/* Additional Parameters */
+"Additional Parameters" = "Paràmetres addicionals";
+
+/* password */
+"New password:" = "Contrasenya nova:";
+"Confirmation:" = "Confirmar contrasenya nova:";
+"Change" = "Canviar";
+
+/* Event+task categories */
+"category_none" = "Cap";
+"category_labels" = "Aniversari,Natalici,Negocis,Telefonades,Clients,Competició,Feina,Favorits,Seguiment,Regals,Festes,Idees,Reunió,Assumptes,Altres,Personal,Projectes,Vacances públiques,Estat,Proveïdors,Viatges,Vacances";
+
+/* Default module */
+"Calendar" = "Calendari";
+"Contacts" = "Llibreta d'adreces";
+"Mail" = "Correu";
+"Last" = "Últim usat";
+"Default module :" = "Pàgina per defecte :";
+
+"Language :" = "Language :";
+"choose" = "Choose ...";
+"Catalan" = "Català";
+"Czech" = "Česky";
+"Dutch" = "Nederlands";
+"English" = "English";
+"French" = "Français";
+"German" = "Deutsch";
+"Hungarian" = "Magyar";
+"Italian" = "Italiano";
+"BrazilianPortuguese" = "Português brasileiro";
+"Russian" = "Русский";
+"Spanish" = "Español";
+"Swedish" = "Svenska";
+"Ukrainian" = "Українська";
+"Welsh" = "Cymraeg";
+
+/* Filters - UIxPreferences */
+"Filters" = "Filtres";
+"Active" = "Actiu";
+"Move Up" = "Pujar";
+"Move Down" = "Baixar";
+
+/* Filters - UIxFilterEditor */
+"Filter name:" = "Nom del filtre:";
+"For incoming messages that" = "Per a missatges d'entrada que";
+"match all of the following rules:" = "compleixin TOTES aquestes regles:";
+"match any of the following rules:" = "compleixin ALGUNA d'aquestes regles:";
+"match all messages" = "tots els missatges";
+"Perform these actions:" = "Realitzar aquestes accions:";
+
+"Subject" = "Assumpte";
+"From" = "De";
+"To" = "A";
+"Cc" = "Cc";
+"To or Cc" = "A o Cc";
+"Size (Kb)" = "Mida (Kb)";
+"Header" = "Capçalera";
+"Flag the message with:" = "Marca el missatge amb:";
+"Discard the message" = "Descarta el missatge";
+"File the message in:" = "Arxiva el missatge en:";
+"Keep the message" = "Desa el missatge";
+"Forward the message to:" = "Redirigeix el missatge a:";
+"Send a reject message:" = "Respon amb un missatge de refús:";
+"Send a vacation message" = "Respon amb un missatge de vacances";
+"Stop processing filter rules" = "Para de processar regles";
+
+"is under" = "està per sota de";
+"is over" = "està per damunt de";
+"is" = "és igual a";
+"is not" = "no és igual a";
+"contains" = "conté la cadena";
+"does not contain" = "no conté la cadena";
+"matches" = "compleix patró amb *";
+"does not match" = "no compleix patró amb *";
+"matches regex" = "compleix regex";
+"does not match regex" = "no compleix regex";
+
+"Seen" = "Vist";
+"Deleted" = "Esborrat";
+"Answered" = "Contestat";
+"Flagged" = "Marcat";
+"Junk" = "Brossa";
+"Not Junk" = "No brossa";
+"Label 1" = "Etiqueta 1";
+"Label 2" = "Etiqueta 2";
+"Label 3" = "Etiqueta 3";
+"Label 4" = "Etiqueta 4";
+"Label 5" = "Etiqueta 5";

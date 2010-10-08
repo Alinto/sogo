@@ -1,0 +1,47 @@
+ACCEPTED = "confirmat";
+COMPLETED = "completat";
+DECLINED = "rebutjat";
+DELEGATED = "delegat";
+IN-PROCESS = "en curs";
+NEEDS-ACTION = "necessita acció";
+TENTATIVE = "provisional";
+organized_by_you = "en sou l'organitzador.";
+you_are_an_attendee = "hi participeu";
+add_info_text = "iMIP 'ADD' encara no funciona.";
+publish_info_text = "El remitent us informa de l'esdeveniment adjunt.";
+cancel_info_text = "La vostra invitació o l'esdeveniment han estat 
+cancel·lats.";
+request_info_no_attendee = "Heu proposat un esdeveniment. Rebeu aquest correu com a notificació, però no hi figureu com a participant.";
+Appointment = "Cita";
+
+Organizer = "Organitzador";
+Time = "Hora";
+Attendees = "Participants";
+request_info = "us invita a un esdeveniment.";
+"Add to calendar" = "Afegir al calendari";
+"Delete from calendar" = "Esborrar del calendari";
+"Update status" = "Actualitzar estat";
+Accept = "Confirmar";
+Decline = "Rebutjar";
+Tentative = "Provisional";
+"Delegate ..." = "Delegat ...";
+"Delegated to" = "Delegat a";
+"Update status in calendar" = "Actualitzar l'estat en el calendari";
+"delegated from" = "delegat per";
+
+reply_info_no_attendee = "Heu rebut una resposta a una invitació d'esdeveniment, però el remitent no hi figura com a participant.";
+reply_info = "Aquesta és la resposta a una invitació d'esdeveniment que heu fet.";
+
+"to" = "per a";
+
+"Untitled" = "Sense títol";
+
+"Size" = "Mida";
+
+"Digital signature is not valid" = "La signatura digital no és vàlida";
+"Message is signed" = "El missatge està signat";
+"Subject" = "Assumpte";
+"From" = "De";
+"Date" = "Data";
+"To" = "Per a";
+"Issuer" = "Emissor";

@@ -6,7 +6,7 @@ BUNDLE_NAME = MailPartViewers
 
 MailPartViewers_PRINCIPAL_CLASS = MailPartViewersProduct
 
-MailPartViewers_LANGUAGES = BrazilianPortuguese Czech Dutch English French German Hungarian Italian Polish Russian Spanish Swedish Ukrainian Welsh
+MailPartViewers_LANGUAGES = BrazilianPortuguese Catalan Czech Dutch English French German Hungarian Italian Polish Russian Spanish Swedish Ukrainian Welsh
 
 MailPartViewers_OBJC_FILES += \
 	MailPartViewersProduct.m	\

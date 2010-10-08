@@ -1,0 +1,28 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE container>
+<container 
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label">
+
+<var:if condition="isSubject">
+    L'usuari <var:string value="currentUserName" const:escapeHTML="NO"/> us hi ha negat l'accés
+</var:if>
+
+<var:if condition="isBody">
+L'usuari <var:string value="currentUserName" const:escapeHTML="NO"/> us ha eliminat de la llista d'accés a la seva carpeta <var:string const:value='"' const:escapeHTML="NO"/><var:string value="resourceName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/>.
+<!--
+Podeu cancel·lar directament la subscripció a aquesta carpeta activant l'enllaç següent:
+    <var:string value="httpAdvisoryURL" const:escapeHTML="NO"/>unsubscribe?mail-invitation=YES
+
+O, si ho desitgeu, podeu cancel·lar la subscripció a aquesta carpeta més endavant usant la interfície Web de SOGo.
+
+Ja no podeu accedir a aquest recurs mitjanaçant aquest URL:
+
+<var:string value="httpFolderURL" const:escapeHTML="NO"/>
+-->
+</var:if>
+
+</container>

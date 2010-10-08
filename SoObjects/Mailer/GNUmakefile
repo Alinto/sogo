@@ -47,6 +47,8 @@ Mailer_RESOURCE_FILES += \
 Mailer_RESOURCE_FILES += \
 	SOGoMailBrazilianPortugueseForward.wo \
 	SOGoMailBrazilianPortugueseReply.wo \
+	SOGoMailCatalanForward.wo \
+	SOGoMailCatalanReply.wo \
 	SOGoMailCzechForward.wo \
 	SOGoMailCzechReply.wo \
 	SOGoMailDutchForward.wo \

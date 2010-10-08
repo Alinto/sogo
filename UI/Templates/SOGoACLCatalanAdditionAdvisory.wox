@@ -1,0 +1,28 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE container>
+<container 
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label">
+
+<var:if condition="isSubject">
+    L'usuari <var:string value="currentUserName" const:escapeHTML="NO"/> us ha agregat
+</var:if>
+
+<var:if condition="isBody">
+L'usuari <var:string value="currentUserName" const:escapeHTML="NO"/> us ha agregat a la llista d'accés de la seva carpeta <var:string const:value='"' const:escapeHTML="NO"/><var:string value="resourceName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/>.
+<!--
+Us podeu subscriure directament a aquesta carpeta activant aquest enllaç:
+    <var:string value="httpAdvisoryURL" const:escapeHTML="NO"/>subscribe?mail-invitation=YES
+
+O, si ho desitgeu, us hi podeu subscriure més endavant usant la interfície Web de SOGo.
+
+També podeu accedir a aquest recurs mitjançant aquest URL:
+
+<var:string value="httpFolderURL" const:escapeHTML="NO"/>
+-->
+</var:if>
+
+</container>

@@ -1,0 +1,40 @@
+/* Spanish */
+/* this file is in UTF-8 format! */
+/* Author: erny@yaco.es */
+/* Based on: rev 1397 */
+/* Last update: 2008-04-02 */
+
+{
+  NSLanguageName = "Catalan";
+  NSFormalName = "Català";
+  NSLocaleCode = "ca"; /* ISO 639-1 */
+  NSLanguageCode = "cat; Catalan"; /* ISO 639-2 */
+  NSParentContext = "";
+
+  NSAMPMDesignation = (AM, PM);
+  NSCurrencySymbol = "€";
+  NSDateFormatString = "%A %e %B %Y";
+  NSDateTimeOrdering = DMYH;
+  NSDecimalDigits = ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
+  NSDecimalSeparator = ".";
+  NSEarlierTimeDesignations = ("passat","últim","anterior");
+  NSHourNameDesignations = ((0, "mitjanit"), (10, "matí"), (12, "migdia"), (14, "tarda"), (20, "vespre"), (22, "nit"));
+  NSInternationalCurrencyString = EUR; /* ISO 4217 */
+  NSLaterTimeDesignations = ("que ve","següent");
+  NSMonthNameArray = (gener, febrer, marc, abril, maig, juny, juliol, agost, setembre, octubre, novembre, desembre);
+  NSNextDayDesignations = ("demà");
+  NSNextNextDayDesignations = ("demà passat");
+  NSPriorDayDesignations = (ahir);
+  NSShortDateFormatString = "%e/%m/%y";
+  NSShortMonthNameArray = (gen, feb, marc, abr, maig, juny, jul, ag, set, oct, nov, des);
+  NSShortTimeDateFormatString = "%e/%m/%y %H:%M";
+  NSShortWeekDayNameArray = ("dg", "dl", "dt", "dc", "dj", "dV", "ds");
+  NSThisDayDesignations = ("avui");
+  NSThousandsSeparator = ".";
+  NSTimeDateFormatString = "%A %e %B %Y %H:%M:%S %Z";
+  NSTimeFormatString = "%H:%M:%S";
+  NSWeekDayNameArray = ("diumenge", "dilluns", "dimarts", "dimecres", "dijous", "divendres", "dissabte");
+  NSYearMonthWeekDesignations = ("any", "mes", "setmana");
+  NSPositiveCurrencyFormatString = "$9,999.00$";
+  NSNegativeCurrencyFormatString = "-$9,999.00$";
+}

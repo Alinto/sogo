@@ -1,0 +1,72 @@
+/* this file is in UTF-8 format! */
+
+"title" = "SOGo";
+
+"Username:" = "Usuari:";
+"Password:" = "Contrasenya:";
+
+"Connect" = "Connectar";
+
+"Wrong username or password." = "Usuari o contrasenya incorrectes.";
+"cookiesNotEnabled" = "No us hi podeu connectar perquè les galetes estan deshabilitades. Habiliteu les galetes en el navegador i torneu a intentar-ho.";
+
+"browserNotCompatible" = "Aquesta versió del navegador no és compatible amb el sistema. Us recomanem l'ús de Firefox. Feu clic en l'enllaç següent per descarregar-vos la versió más recent d'aquest navegador.";
+"alternativeBrowsers" = "També podeu utilitza un d'aquests navegadors compatibles: ";
+"alternativeBrowserSafari" = "Safari.";
+"Download" = "Descàrrega";
+
+"Language:" = "Language:";
+"choose" = "Choose ...";
+"Catalan" = "Català";
+"Czech" = "Česky";
+"Dutch" = "Nederlands";
+"English" = "English";
+"French" = "Français";
+"German" = "Deutsch";
+"Hungarian" = "Magyar";
+"Italian" = "Italiano";
+"BrazilianPortuguese" = "Português brasileiro";
+"Russian" = "Русский";
+"Spanish" = "Español";
+"Swedish" = "Svenska";
+"Ukrainian" = "Українська";
+"Welsh" = "Cymraeg";
+
+"About" = "Informació";
+"AboutBox" = "SOGo és un servidor de programari de grup desenvolupat a partir d'OpenGroupware.org (OGo) i el servidor d'aplicacions SOPE. La seua característica principal és l'escalabilitat.<br/><br/>
+SOGo proporciona una completa interfície Web basada en AJAX i suporta múltiples clients nadius a través de protocols estàndard com el CalDAV, el CardDAV i el GroupDAV.<br/><br/>
+Copyright © 2006-2009 Inverse inc.<br/>
+Copyright © 2002-2005 SKYRIX Software AG<br/><br/>
+Aquest programa es distribueix amb llicència <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2.<br/>
+Parts d'aquest programa es distribueixen amb llicència GNU LGPL versió 2.<br/><br/>
+Aquest programa és obert i gratuït: es pot canviar i redistribuir lliurement. SENSE GARANTIES, amb les limitacions imposades per la llei.";
+
+"Your account was locked due to too many failed attempts." = "El vostre compte ha estat bloquejat per un excés d'intents fallits.";
+"Your account was locked due to an expired password." = "El vostre compte ha estat bloquejat perquè la contrasenya ha caducat.";
+"Login failed due to unhandled error case: " = "Connexió fallida a causa d'un error inesperat: ";
+"Change your Password" = "Canvieu la contrasenya";
+"Your password has expired, please enter a new one below:" = "La contrasenya ha caducat; introduïu-ne una de nova:";
+"Password must not be empty." = "Heu d'escriure la contrasenya.";
+"The passwords do not match. Please try again." = "Les contrasenyes no coincideixen. Torneu-ho a intentar.";
+"Password Grace Period" = "Període de validesa de la contrasenya";
+"You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog." = "Us resten %{0} connexions abans que se us bloquegi el compte. Si us plau, canvieu la contrasenya en el panell de preferències.";
+"Password about to expire" = "La contrasenya està a punt de caducar";
+"Your password is going to expire in %{0} %{1}." = "La contrasenya caducarà d'aquí a %{0} %{1}.";
+"days" = "dies";
+"hours" = "hores";
+"minutes" = "minuts";
+"seconds" = "segons";
+"Password change failed" = "Canvi de contrasenya sense èxit";
+"Password change failed - Permission denied" = "Canvi de contrasenya no vàlid - Permís denegat";
+"Password change failed - Insufficient password quality" = "Canvi de contrasenya no vàlid - Contrasenya massa simple";
+"Password change failed - Password is too short" = "Canvi de contrasenya no vàlid - Contrasenya massa curta";
+"Password change failed - Password is too young" = "Canvi de contrasenya no vàlid - Contrasenya massa recent";
+"Password change failed - Password is in history" = "Canvi de contrasenya no vàlid - La contrasenya es troba en l'historial";
+"Unhandled policy error: %{0}" = "Error en política no previst: %{0}";
+"Unhandled error response" = "Error no previst";
+"Password change is not supported." = "No s'admet canvi de contrasenyes.";
+"Unhandled HTTP error code: %{0}" = "Error HTTP no previst. Codi: %{0}";
+"New password:" = "Contrasenya nova:";
+"Confirmation:" = "Confirmació:";
+"Cancel" = "Cancel·lar";
+"Please wait..." = "Si us plau, espereu-vos...";

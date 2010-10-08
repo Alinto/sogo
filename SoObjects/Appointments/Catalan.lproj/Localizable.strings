@@ -1,0 +1,62 @@
+"Personal Calendar" = "Calendari personal";
+vevent_class0 = "(Esdeveniment públic)";
+vevent_class1 = "(Esdeveniment privat)";
+vevent_class2 = "(Esdeveniment confidencial)";
+
+vtodo_class0 = "(Tasca pública)";
+vtodo_class1 = "(Tasca privada)";
+vtodo_class2 = "(Tasca confidencial)";
+
+/* Receipts */
+"Title:" = "Títol:";
+"Start:" = "Començament:";
+"End:" = "Final:";
+
+"Receipt: users invited to a meeting" = "Recepció: usuaris invitats a una reunió";
+"You have invited the following attendees(s):" = "Heu invitat els assistents següents:";
+"... to attend the following event:" = "... a acudir a aquest esdeveniment:";
+
+"Receipt: invitation updated" = "Recepció: invitació actualitzada";
+"The following attendees(s):" = "Els assistents següents:";
+"... have been notified of the changes to the following event:" = "... han estat notificats dels canvis en aquest esdeveniment:";
+
+"Receipt: attendees removed from an event" = "Recepció: assistents suprimits d'un esdeveniment";
+"You have removed the following attendees(s):" = "Heu suprimit els assistents següents:";
+"... from the following event:" = "... d'aquest esdeveniment:";
+
+/* IMIP messages */
+"startDate_label" = "Inici:";
+"endDate_label" = "Final:";
+"due_label" = "Data límit:";
+"location_label" = "Lloc:";
+"summary_label" = "Resum:";
+"comment_label" = "Comentari:";
+
+/* Invitation */
+"Event Invitation: \"%{Summary}\"" = "Invitació a l'esdeveniment: \"%{Summary}\"";
+"(sent by %{SentBy}) " = "(enviada per %{SentBy}) ";
+"%{Organizer} %{SentByText}has invited you to %{Summary}." = "%{Organizer} %{SentByText} us ha invitat a %{Summary}.";
+
+/* Deletion */
+"Event Cancelled: \"%{Summary}\"" = "Esdeveniment suspès: \"%{Summary}\"";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}."
+= "%{Organizer} %{SentByText}ha suspès aquest esdeveniment: %{Summary}.";
+
+/* Update */
+"The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
+= "La cita \"%{Summary}\" per al dia %{OldStartDate} a les %{OldStartTime} ha canviat";
+"The following parameters have changed in the \"%{Summary}\" meeting:"
+= "Els paràmetres següents han canviat en la reunió \"%{Summary}\":";
+"Please accept or decline those changes."
+= "Si us plau, accepteu o rebutgeu aquests canvis.";
+
+/* Reply */
+"Reply to invitation: \"%{Summary}\"" = "Resposta a la invitació a l'esdeveniment: \"%{Summary}\"";
+"%{Attendee} %{SentByText}has accepted your event invitation."
+= "%{Attendee} %{SentByText}ha acceptat la invitació a l'esdeveniment.";
+"%{Attendee} %{SentByText}has declined your event invitation."
+= "%{Attendee} %{SentByText}ha rebutjat la invitació a l'esdeveniment.";
+"%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
+= "%{Attendee} %{SentByText}ha delegat la invitació en %{Delegate}.";
+"%{Attendee} %{SentByText}has not yet decided upon your event invitation."
+= "%{Attendee} %{SentByText}encara no s'ha decidit sobre la invitació a l'esdeveniment.";
