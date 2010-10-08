@@ -33,7 +33,7 @@ vtodo_class2 = "(Attività confidenziale)";
 "comment_label" = "Commento:";
 
 /* Invitation */
-"Event Invitation: \"%{Summary}\"" = "Invito Evento: \"%{Sommario}\"";
+"Event Invitation: \"%{Summary}\"" = "Invito Evento: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(inviato da %{SentBy}) ";
 "%{Organizer} %{SentByText}has invited you to %{Summary}." = "%{Organizer} %{SentByText}ti ha invitato al %{Summary}.";
 
