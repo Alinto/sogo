@@ -93,6 +93,9 @@
 - (NSException *) delete;
 - (void) renameTo: (NSString *) newName;
 
+- (void) removeFolderSettings: (NSMutableDictionary *) moduleSettings
+                withReference: (NSString *) reference;
+
 - (BOOL) subscribeUser: (NSString *) subscribingUser
               reallyDo: (BOOL) reallyDo;
 - (BOOL) userIsSubscriber: (NSString *) subscribingUser;

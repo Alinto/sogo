@@ -533,6 +533,8 @@ static NSArray *childRecordFields = nil;
 - (NSException *) delete
 {
   NSException *error;
+  SOGoUserSettings *us;
+  NSMutableDictionary *moduleSettings;
 
   // We just fetch our displayName since our table will use it!
   [self displayName];
@@ -543,8 +545,17 @@ static NSArray *childRecordFields = nil;
   else
     error = [[self folderManager] deleteFolderAtPath: ocsPath];
 
-  if (!error && [[context request] handledByDefaultHandler])
-    [self sendFolderAdvisoryTemplate: @"Removal"];
+  if (!error)
+    {
+      us = [[SOGoUser userWithLogin: owner] userSettings];
+      moduleSettings = [us objectForKey: [container nameInContainer]];
+      [self removeFolderSettings: moduleSettings
+                   withReference: [self folderReference]];
+      [us synchronize];
+
+      if ([[context request] handledByDefaultHandler])
+        [self sendFolderAdvisoryTemplate: @"Removal"];
+    }
 
   return error;
 }
@@ -839,7 +850,7 @@ static NSArray *childRecordFields = nil;
   NSDictionary *moduleSettings;
   NSArray *folderSubscription;
 
-  sogoUser = [SOGoUser userWithLogin: subscribingUser roles: nil];
+  sogoUser = [SOGoUser userWithLogin: subscribingUser];
   moduleSettings = [[sogoUser userSettings]
                      objectForKey: [container nameInContainer]];
   folderSubscription = [moduleSettings objectForKey: @"SubscribedFolders"];
@@ -850,10 +861,10 @@ static NSArray *childRecordFields = nil;
 - (BOOL) subscribeUser: (NSString *) subscribingUser
               reallyDo: (BOOL) reallyDo
 {
-  NSMutableArray *folderSubscription, *tmpA;
+  NSMutableArray *folderSubscription;
   NSString *subscriptionPointer;
   SOGoUserSettings *us;
-  NSMutableDictionary *moduleSettings, *tmpD;
+  NSMutableDictionary *moduleSettings;
   SOGoUser *sogoUser;
   BOOL rc;
 
@@ -871,49 +882,44 @@ static NSArray *childRecordFields = nil;
 
       folderSubscription
         = [moduleSettings objectForKey: @"SubscribedFolders"];
-      if (!(folderSubscription
-            && [folderSubscription isKindOfClass: [NSMutableArray class]]))
-        {
-          folderSubscription = [NSMutableArray array];
-          [moduleSettings setObject: folderSubscription
-                             forKey: @"SubscribedFolders"];
-        }
-  
       subscriptionPointer = [self folderReference];
+
       if (reallyDo)
-        [folderSubscription addObjectUniquely: subscriptionPointer];
+        {
+          if (!(folderSubscription
+                && [folderSubscription isKindOfClass: [NSMutableArray class]]))
+            {
+              folderSubscription = [NSMutableArray array];
+              [moduleSettings setObject: folderSubscription
+                                 forKey: @"SubscribedFolders"];
+            }
+
+          [folderSubscription addObjectUniquely: subscriptionPointer];
+        }
       else
         {
-          tmpD = [moduleSettings objectForKey: @"FolderColors"];
-          if (tmpD)
-            [tmpD removeObjectForKey: subscriptionPointer];
-
-          tmpD = [moduleSettings objectForKey: @"FolderShowAlarms"];
-          if (tmpD)
-            [tmpD removeObjectForKey: subscriptionPointer];
-
-          tmpD = [moduleSettings objectForKey: @"FolderShowTasks"];
-          if (tmpD)
-            [tmpD removeObjectForKey: subscriptionPointer];
-
-          tmpA = [moduleSettings objectForKey: @"InactiveFolders"];
-          if (tmpA)
-            [tmpA removeObject: nameInContainer];
-
-          tmpD = [moduleSettings objectForKey: @"FolderSyncTags"];
-          if (tmpD)
-            [tmpD removeObjectForKey: subscriptionPointer];
-
+          [self removeFolderSettings: moduleSettings
+                       withReference: subscriptionPointer];
           [folderSubscription removeObject: subscriptionPointer];
         }
 
       [us synchronize];
+
       rc = YES;
     }
   else
     rc = NO;
 
   return rc;
+}
+
+- (void) removeFolderSettings: (NSMutableDictionary *) moduleSettings
+                withReference: (NSString *) reference
+{
+  NSMutableDictionary *refDict;
+
+  refDict = [moduleSettings objectForKey: @"FolderDisplayNames"];
+  [refDict removeObjectForKey: reference];
 }
 
 - (NSArray *) _parseDAVDelegatedUsers

@@ -1,5 +1,9 @@
 2010-10-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* iCalEvent.m (-setAllDayWithStartDate:duration:): added a
+	work-around for bug 866, by adding one hour in addition to the
+	offset in days from the start date.
+
 	* NSString+NGCards.m (-unescapedFromCard): removed obsolete
 	method.
 	(-componentsWithSafeSeparator:): renamed to

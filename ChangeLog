@@ -9,6 +9,21 @@
 
 2010-10-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-removeFolderSettings:withReference:): new method which removes
+	the settings for keys "FreeBusyExclusions", "FolderColors",
+	"FolderShowAlarms", "FolderShowTasks", "InactiveFolders",
+	"FolderSyncTags" and "FolderSynchronize". Code taken from
+	-[SOGoGCSFolder subscribeUser:reallyDo:].
+
+	* SoObjects/SOGo/SOGoGCSFolder.m
+	(-removeFolderSettings:withReference:): new overridable method
+	which enables the removal of user settings pertaining to a folder
+	and its type when deleting the folder or unsubscribing from it.
+	This implementation removes the folder reference from the
+	"FolderDisplayNames" key.
+	(-delete): make use of the new method above.
+
 	* UI/WebServerResources/ContactsUI.js: (setEventsOnAddressBook)
 	enable the "dblclick" event on non-owned addressbooks, except the
 	public ones (owned by "nobody")

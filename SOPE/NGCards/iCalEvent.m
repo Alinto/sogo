@@ -57,7 +57,9 @@
 
   [(iCalDateTime *) [self uniqueChildWithTag: @"dtstart"]
 		    setDate: newStartDate];
-  endDate = [newStartDate dateByAddingYears: 0 months: 0 days: days];
+  // HACK: we add 1 hour to avoid losing a day on time shift dates
+  endDate = [newStartDate dateByAddingYears: 0 months: 0 days: days
+				hours: 1 minutes: 0 seconds: 0];
   [endDate setTimeZone: [newStartDate timeZone]];
   [(iCalDateTime *) [self uniqueChildWithTag: @"dtend"]
 		    setDate: endDate];
