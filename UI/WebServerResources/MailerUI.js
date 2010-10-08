@@ -319,17 +319,25 @@ function onUnload(event) {
 function onDocumentKeydown(event) {
     var target = Event.element(event);
     if (target.tagName != "INPUT") {
-	if (event.keyCode == Event.KEY_DELETE ||
-            event.keyCode == Event.KEY_BACKSPACE && isMac()) {
+        var keyCode = event.keyCode;
+        if (!keyCode) {
+            keyCode = event.charCode;
+            if (keyCode == "a".charCodeAt(0)) {
+                keyCode = "A".charCodeAt(0);
+            }
+        }
+
+	if (keyCode == Event.KEY_DELETE ||
+            keyCode == Event.KEY_BACKSPACE && isMac()) {
             deleteSelectedMessages();
             Event.stop(event);
         }
-	else if (event.keyCode == Event.KEY_DOWN ||
-                 event.keyCode == Event.KEY_UP) {
+	else if (keyCode == Event.KEY_DOWN ||
+                 keyCode == Event.KEY_UP) {
             if (Mailer.currentMessages[Mailer.currentMailbox]) {
                 var row = $("row_" + Mailer.currentMessages[Mailer.currentMailbox]);
                 var nextRow;
-                if (event.keyCode == Event.KEY_DOWN)
+                if (keyCode == Event.KEY_DOWN)
                     nextRow = row.next("tr");
                 else
                     nextRow = row.previous("tr");
@@ -358,7 +366,7 @@ function onDocumentKeydown(event) {
             }
         }
 	else if (((isMac() && event.metaKey == 1) || (!isMac() && event.ctrlKey == 1))
-                 && event.keyCode == 65) {  // Ctrl-A
+                 && keyCode == "A".charCodeAt(0)) {  // Ctrl-A
             $("messageListBody").down("TBODY").selectAll();
             Event.stop(event);
         }
