@@ -1021,8 +1021,7 @@ function onMenuSharing(event) {
     var selected = folders.getSelectedNodes()[0];
     var owner = selected.getAttribute("owner");
     if (owner == "nobody")
-        showAlertDialog(clabels["The user rights cannot be"
-                             + " edited for this object!"]);
+        showAlertDialog(_("The user rights cannot be edited for this object!"));
     else {
         var title = this.innerHTML;
         var url = URLForFolderID(selected.getAttribute("id"));
