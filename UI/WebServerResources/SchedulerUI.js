@@ -2863,23 +2863,33 @@ function drawNowLine () {
 function onDocumentKeydown(event) {
     var target = Event.element(event);
     if (target.tagName != "INPUT") {
-        if (event.keyCode == Event.KEY_DELETE
-            || (event.keyCode == Event.KEY_BACKSPACE && isMac())) {
+        var keyCode = event.keyCode;
+        if (!keyCode) {
+            keyCode = event.charCode;
+            if (keyCode == "a".charCodeAt(0))
+                keyCode = "A".charCodeAt(0);
+            else if (keyCode == "c".charCodeAt(0))
+                keyCode = "C".charCodeAt(0);
+            else if (keyCode == "v".charCodeAt(0))
+                keyCode = "V".charCodeAt(0);
+        }
+        if (keyCode == Event.KEY_DELETE
+            || (keyCode == Event.KEY_BACKSPACE && isMac())) {
             $("eventDialog").hide();
             deleteEvent();
             event.stop();
         }
         else if (((isMac() && event.metaKey == 1) || (!isMac() && event.ctrlKey == 1))
-                 && event.keyCode == 65) {  // Ctrl-A
+                 && keyCode == "A".charCodeAt(0)) {  // Ctrl-A
             onSelectAll(event);
             Event.stop(event);
          }
         else if (((isMac() && event.metaKey == 1) || (!isMac() && event.ctrlKey == 1))
-                 && event.keyCode == 67) {  // Ctrl-C
+                 && keyCode == "C".charCodeAt(0)) {  // Ctrl-C
             copyEventToClipboard();
         }
         else if (((isMac() && event.metaKey == 1) || (!isMac() && event.ctrlKey == 1))
-                 && event.keyCode == 86) {  // Ctrl-V
+                 && keyCode == "V".charCodeAt(0)) {  // Ctrl-V
             copyEventFromClipboard();
         }
     }

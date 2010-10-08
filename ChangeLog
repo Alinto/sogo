@@ -11,6 +11,14 @@
 	(onCalendarSelectEvent): don't clear the selection if the
 	contextual menu is going to appear.
 
+	* UI/WebServerResources/ContactsUI.js (onDocumentKeydown):
+	improved character key identification to fix a bug with some
+	browsers.
+
+	* UI/WebServerResources/MailerUI.js (onDocumentKeydown): idem.
+
+	* UI/WebServerResources/SchedulerUI.js (onDocumentKeydown): idem.
+
 2010-10-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
