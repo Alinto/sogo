@@ -54,7 +54,7 @@
 "A folder by that name already exists." = "Folder o tej nazwie już istnieje.";
 "You cannot create a list in a shared address book." 
         = "Nie możesz tworzyć list w udostępnionej książce adresowej.";
-"Warning" = "Warning";
+"Warning" = "Uwaga";
 
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Nie masz pozwolenia na dostęp do tego modułu lub tego systemu. Skontaktuj się ze swoim administratorem.";
@@ -68,9 +68,9 @@
 
 /* common buttons */
 "OK" = "OK";
-"Cancel" = "Cancel";
-"Yes" = "Yes";
-"No" = "No";
+"Cancel" = "Anuluj";
+"Yes" = "Tak";
+"No" = "Nie";
 
 /* alarms */
 "Reminder:" = "Przypomnienie:";

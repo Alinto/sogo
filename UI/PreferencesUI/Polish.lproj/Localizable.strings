@@ -169,16 +169,16 @@
 "Polish" = "Polski";
 
 /* Return receipts */
-"When I receive a request for a return receipt:" = "When I receive a request for a return receipt:";
-"Never send a return receipt" = "Never send a return receipt";
-"Allow return receipts for some messages" = "Allow return receipts for some messages";
-"If I'm not in the To or Cc of the message:" = "If I'm not in the To or Cc of the message:";
-"If the sender is outside my domain:" = "If the sender is outside my domain:";
-"In all other cases:" = "In all other cases:";
+"When I receive a request for a return receipt:" = "Kiedy otrzymam żądanie potwierdzenia odbioru:";
+"Never send a return receipt" = "Nigdy nie wysyłaj potwierdzenia odbioru";
+"Allow return receipts for some messages" = "Pozwól na potwierdzanie odbioru niektórych wiadomości";
+"If I'm not in the To or Cc of the message:" = "Jeśli nie jestem odbiorcą Do lub DW wiadomości:";
+"If the sender is outside my domain:" = "Jeśli nadawca jest spoza mojej domeny:";
+"In all other cases:" = "We wszystkich pozostałych przypadkach:";
 
-"Never send" = "Never send";
-"Always send" = "Always send";
-"Ask me" = "Ask me";
+"Never send" = "Nigdy nie wysyłaj";
+"Always send" = "Zawsze wysyłaj";
+"Ask me" = "Zapytaj mnie";
 
 /* Filters - UIxPreferences */
 "Filters" = "Filtry";
