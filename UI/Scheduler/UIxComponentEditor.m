@@ -611,7 +611,7 @@ iRANGE(2);
 	  ASSIGN (priority, [component priority]);
 	  ASSIGN (status, [component status]);
           ASSIGN (categories,
-                  [[component categories] componentsWithSafeSeparator: ',']);
+                  [[component categories] vCardSubvaluesWithSeparator: ',']);
 	  ASSIGN (organizer, [component organizer]);
 	  
 	  [self _loadCategories];
