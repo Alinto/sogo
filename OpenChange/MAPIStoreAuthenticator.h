@@ -1,6 +1,6 @@
 /* MAPIStoreAuthenticator.h - this file is part of $PROJECT_NAME_HERE$
  *
- * Copyright (C) 2010 Wolfgang Sourdeau
+ * Copyright (C) 2010 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
