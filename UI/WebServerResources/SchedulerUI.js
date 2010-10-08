@@ -270,7 +270,8 @@ function deleteEvent() {
                 eventsToDelete.push(sortedNodes[calendars[i]]);
             }
             if (i > 0)
-                showConfirmDialog(_("Warning"), _("eventDeleteConfirmation"), deleteEventFromViewConfirm);
+                showConfirmDialog(_("Warning"), _("eventDeleteConfirmation"),
+                                  deleteEventFromViewConfirm, deleteEventFromViewCancel);
             else
                 showAlertDialog(_("You don't have the required privileges to perform the operation."));
         }
@@ -299,6 +300,12 @@ function deleteEventFromViewConfirm() {
     
     selectedCalendarCell = null;
     _batchDeleteEvents();
+    disposeDialog();
+}
+
+function deleteEventFromViewCancel(event) {
+    calendarsOfEventsToDelete = [];
+    eventsToDelete = [];
     disposeDialog();
 }
 
@@ -1862,7 +1869,7 @@ function onListFilterChange() {
     var node = $("filterpopup");
 
     listFilter = node.value;
-    //   log ("listFilter = " + listFilter);
+//    log ("listFilter = " + listFilter);
 
     return refreshEvents();
 }
@@ -2000,7 +2007,7 @@ function deselectAll(cellsOnly) {
     }
 }
 
-function onCalendarSelectEvent(event) {
+function onCalendarSelectEvent(event, willShowContextualMenu) {
     var alreadySelected = false;
 
     // Look for event in events list
@@ -2026,13 +2033,16 @@ function onCalendarSelectEvent(event) {
             selectedCalendarCell.splice(i, 1);
             if (row)
                 row.deselect();
-            
+
             return true;
         }
     }
-    else if (event.shiftKey == 0) {
-        // Unselect entries in events list and calendar view
-        listOfSelection = $("eventsList");
+    else if (!(alreadySelected && willShowContextualMenu)
+             && event.shiftKey == 0) {
+        // Unselect entries in events list and calendar view, unless :
+        // - Shift key is pressed;
+        // - Or right button is clicked and event is already selected.
+        listOfSelection = null;
         deselectAll();
         this.selectElement();
         if (alreadySelected)
@@ -2053,8 +2063,13 @@ function onCalendarSelectEvent(event) {
 
 function onCalendarSelectDay(event) {
     var day = this.getAttribute("day");
+    var needRefresh = (listFilter == 'view_selectedday' && day != currentDay);
+
     setSelectedDayDate(day);
     changeDateSelectorDisplay(day);
+
+    if (needRefresh)
+        refreshEvents();
 
     var target = Event.findElement(event);
     var div = target.up('div');
@@ -2067,15 +2082,10 @@ function onCalendarSelectDay(event) {
         return false;
     }
 
-    var needRefresh = (listFilter == 'view_selectedday' && day != currentDay);
-
     if (listOfSelection) {
         listOfSelection.addClassName("_unfocused");
         listOfSelection = null;
     }
-
-    if (needRefresh)
-        refreshEvents();
 
     changeCalendarDisplay( { "day": currentDay } );
 }
@@ -2381,7 +2391,7 @@ function onMenuCurrentView(event) {
     $("eventDialog").hide();
     if (this.hasClassName('event')) {
         var onClick = onCalendarSelectEvent.bind(this);
-        onClick(event);
+        onClick(event, true);
     }
     popupMenu(event, 'currentViewMenu', this);
 }

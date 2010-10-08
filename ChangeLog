@@ -1,3 +1,12 @@
+2010-10-08  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/SchedulerUI.js
+	(deleteEventFromViewCancel): new function loaded if the user
+	cancel the deletion of an event. It clears the array of events to
+	delete.
+	(onCalendarSelectEvent): don't clear the selection if the
+	contextual menu is going to appear.
+
 2010-10-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/ContactsUI.js: (setEventsOnAddressBook)
