@@ -969,24 +969,24 @@ function setEventsOnAddressBook(folder) {
 
     node.observe("mousedown", listRowMouseDownHandler);
     node.observe("click", onRowClick);
-    if (UserLogin == node.readAttribute("owner"))
-        // Only the owner of the addressbook can rename it
+    if (node.readAttribute("owner") != "nobody") {
         node.observe("dblclick", onAddressBookModify);
+    }
 }
 
 function onAddressBookModify(event) {
     var folders = $("contactFolders");
     var selected = folders.getSelectedNodes()[0];
-
-    if (UserLogin == selected.getAttribute("owner")) {
+    if (selected.getAttribute("owner") == "nobody") {
+        showAlertDialog(_("Unable to rename that folder!"));
+    }
+    else {
         var currentName = selected.innerHTML.unescapeHTML();
         showPromptDialog(_("Properties"),
                          _("Address Book Name"),
                          onAddressBookModifyConfirm,
                          currentName);
     }
-    else
-        showAlertDialog(_("Unable to rename that folder!")); // WARNING: super users will end up here
 }
 
 function onAddressBookModifyConfirm() {

@@ -1,3 +1,11 @@
+2010-10-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/ContactsUI.js: (setEventsOnAddressBook)
+	enable the "dblclick" event on non-owned addressbooks, except the
+	public ones (owned by "nobody")
+	(onAddressBookModify): enable the renaming of non-owned
+	addressbooks, except the public ones
+
 2010-10-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUser.m (-_appendSystemMailAccount): check
