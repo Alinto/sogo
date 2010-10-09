@@ -6,7 +6,7 @@
 "General" = "Загальне";
 "Calendar Options" = "Календар";
 "Mail Options" = "Пошта";
-"IMAP Accounts" = "IMAP Accounts";
+"IMAP Accounts" = "IMAP-записи";
 "Vacation" = "Відпустка";
 "Forward" = "Перенаправлення";
 "Password" = "Пароль";
@@ -15,6 +15,8 @@
 "Color" = "Колір";
 "Add" = "Додати";
 "Delete" = "Вилучити";
+"Cancel" = "Скасувати";
+"OK" = "Добре";
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Увімкнути повідомлення про мою відсутність";
@@ -128,20 +130,20 @@
 "composemessagestype_text" = "Звичайний текст";
 
 /* IMAP Accounts */
-"New Mail Account" = "New Mail Account";
+"New Mail Account" = "Новий обліковий запис";
 
-"Server Name:" = "Server Name:";
-"Port:" = "Port:";
-"User Name:" = "User Name:";
+"Server Name:" = "Ім’я сервера:";
+"Port:" = "Порт:";
+"User Name:" = "Ім’я користувача:";
 "Password:" = "Пароль:";
 
-"Full Name:" = "Full Name:";
-"Email:" = "Email:";
+"Full Name:" = "Повне ім’я:";
+"Email:" = "E-Mail:";
 "Signature:" = "Підпис:";
-"(Click to create)" = "(Click to create)";
+"(Click to create)" = "(Клацніть, щоб додати)";
 
 "Signature" = "Підпис";
-"Please enter your signature below:" = "Please enter your signature below:";
+"Please enter your signature below:" = "Введіть ваш підпис нижче:";
 
 /* Additional Parameters */
 "Additional Parameters" = "Додаткові параметри";
@@ -162,9 +164,8 @@
 "Last" = "Останнє";
 "Default module :" = "Модуль за замовчанням :";
 
-"Language :" = "Language :";
+"Language :" = "Мова :";
 "choose" = "Choose ...";
-"Catalan" = "Català";
 "Czech" = "Česky";
 "Dutch" = "Nederlands";
 "English" = "English";
@@ -180,28 +181,16 @@
 "Welsh" = "Cymraeg";
 
 /* Return receipts */
-"When I receive a request for a return receipt:" = "When I receive a request for a return receipt:";
-"Never send a return receipt" = "Never send a return receipt";
-"Allow return receipts for some messages" = "Allow return receipts for some messages";
-"If I'm not in the To or Cc of the message:" = "If I'm not in the To or Cc of the message:";
-"If the sender is outside my domain:" = "If the sender is outside my domain:";
-"In all other cases:" = "In all other cases:";
+"When I receive a request for a return receipt:" = "Коли я отримую запит на сповіщення про прочитання:";
+"Never send a return receipt" = "Ніколи не відправляти сповіщення";
+"Allow return receipts for some messages" = "Дозволити надсилати сповіщення для окремих повідомлень";
+"If I'm not in the To or Cc of the message:" = "Якщо я не серед адресатів та у копії листа:";
+"If the sender is outside my domain:" = "Якщо відправник не з мого домену:";
+"In all other cases:" = "У всіх інших випадках:";
 
-"Never send" = "Never send";
-"Always send" = "Always send";
-"Ask me" = "Ask me";
-
-/* Return receipts */
-"When I receive a request for a return receipt:" = "When I receive a request for a return receipt:";
-"Never send a return receipt" = "Never send a return receipt";
-"Allow return receipts for some messages" = "Allow return receipts for some messages";
-"If I'm not in the To or Cc of the message:" = "If I'm not in the To or Cc of the message:";
-"If the sender is outside my domain:" = "If the sender is outside my domain:";
-"In all other cases:" = "In all other cases:";
-
-"Never send" = "Never send";
-"Always send" = "Always send";
-"Ask me" = "Ask me";
+"Never send" = "Ніколи не відправляти";
+"Always send" = "Завжди відправляти";
+"Ask me" = "Спитати";
 
 /* Filters - UIxPreferences */
 "Filters" = "Фільтри";
@@ -255,3 +244,6 @@
 "Label 3" = "Позначка 3";
 "Label 4" = "Позначка 4";
 "Label 5" = "Позначка 5";
+
+"Encryption:" = "Безпека з’єднання:";
+"None" = "жодної";

@@ -140,12 +140,6 @@
 "label_Private" = "Особиста подія";
 "label_Confidential" = "Показувати лише час та дату";
 
-"label_Viewer" = "View All";
-"label_DAndTViewer" = "View the Date & Time";
-"label_Modifier" = "Modify";
-"label_Responder" = "Respond To";
-"label_None" = "None";
-
 "label_Viewer" = "Показувати все";
 "label_DAndTViewer" = "Показувати дату та час";
 "label_Modifier" = "Змінити";
@@ -185,7 +179,7 @@
 "No appointments found" = "Не знайдено призначених зустрічей";
 "Meetings proposed by you" = "Ваші пропозиції про зустрічі";
 "Meetings proposed to you" = "Пропозиції зустрічі Вам";
-"sched_startDateFormat" = "%d/%m %H:%M";
+"sched_startDateFormat" = "%d.%m.%Y %H:%M";
 "action" = "Дія";
 "accept" = "Погодитись";
 "decline" = "Відмовитись";
@@ -195,10 +189,10 @@
 
 /* Appointments */
 
-"Appointment viewer" = "Appointment Viewer";
-"Appointment editor" = "Appointment Editor";
-"Appointment proposal" = "Appointment Proposal";
-"Appointment on" = "Appointment on";
+"Appointment viewer" = "Перегляд зустрічі";
+"Appointment editor" = "Зміна зустрічі";
+"Appointment proposal" = "Пропозиція зустрічі";
+"Appointment on" = "Зустріч";
 "Start:" = "Початок:";
 "End:" = "Кінець:";
 "Due Date:" = "Дійсно до:";
@@ -406,11 +400,11 @@
 "reminder_END" = "кінця події";
 "Reminder Details" = "Деталі нагадування";
 
-"Choose a Reminder Action" = "Choose a Reminder Action";
-"Show an Alert" = "Show an Alert";
-"Send an E-mail" = "Send an E-mail";
-"Email Organizer" = "Email Organizer";
-"Email Attendees" = "Email Attendees";
+"Choose a Reminder Action" = "Вибріть дію з нагадування";
+"Show an Alert" = "Показати нагадування";
+"Send an E-mail" = "Надіслати E-Mail";
+"Email Organizer" = "E-Mail організатора";
+"Email Attendees" = "E-Mail учасників";
 
 "zoom_400" = "400%";
 "zoom_200" = "200%";
@@ -540,8 +534,8 @@ vtodo_class2 = "(Конфіденційне завдання)";
 "tagHasChanged" = "Якщо Ви змінете теґ вашого календаря, то потрібно буде перевантажити дані на Вашому мобільному пристрої.\nПродовжити?";
 "tagWasAdded" = "Якшр Ви хочете синхронізувати цей календар, то потрібно буде перевантажити дані на Вашому мобільному пристрої.\nПродовжити?";
 "tagWasRemoved" = "Якщо Ви скасуєте режим синхронізації для цього календаря, то потрібно буде перевантажити дані на Вашому мобільному пристрої.\nПродовжити?";
-"DestinationCalendarError" = "The source and destination calendars are the same. Please try to copy to a different calendar.";
-"EventCopyError" = "The copy failed. Please try to copy to a difference calendar.";
+"DestinationCalendarError" = "Календарі співпадають. Спробуйте скопіювати до іншого календаря.";
+"EventCopyError" = "Помилка під час копіювання. Спробуйте скопіювати до іншого календаря.";
 
 "Open Task..." = "Відкрити завдання...";
 "Mark Completed" = "Позначити виконаним";
@@ -552,4 +546,4 @@ vtodo_class2 = "(Конфіденційне завдання)";
 "URL of the Calendar" = "URL календаря";
 "Web Calendar" = "Веб-календар";
 "Reload on login" = "Перевантажувати під час запуску";
-"Invalid number." = "Invalid number.";
+"Invalid number." = "Неправильний номер.";

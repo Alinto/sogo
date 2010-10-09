@@ -62,10 +62,10 @@
 "delegate is a group" = "Зазначена адреса є групою. Ви можете запросити лише окрему особу.";
 
 /* common buttons */
-"OK" = "OK";
-"Cancel" = "Cancel";
-"Yes" = "Yes";
-"No" = "No";
+"OK" = "Добре";
+"Cancel" = "Скасувати";
+"Yes" = "Так";
+"No" = "Ні";
 
 /* alarms */
 "Reminder:" = "Нагадування:";

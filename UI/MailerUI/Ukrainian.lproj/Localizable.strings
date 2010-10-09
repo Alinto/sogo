@@ -18,7 +18,7 @@
 "Contacts" = "Адреса";
 "Attach" = "Вкладення";
 "Save" = "Зберегти";
-"Options" = "Options";
+"Options" = "Налаштування";
 "Size" = "Розмір";
 
 /* Tooltips */
@@ -76,7 +76,7 @@
 "Remove this folder" = "Вилучати цю теку";
 "Erase mails from this folder" = "Вилучати повідомлення з цієї теки";
 "Expunge this folder" = "Позначати листи як вилучені";
-"Archive This folder" = "Архівувати цю теку";
+"Archive This Folder" = "Архівувати цю теку";
 "Modify the acl of this folder" = "Керувати правами доступу до цієї теки";
 
 "Saved Messages.zip" = "Збережено Messages.zip";
@@ -109,7 +109,7 @@
 "Edit Draft..." = "Редагувати чернетку...";
 "Load Images" = "Завантажити зображення";
 
-"Return Receipt" = "Return Receipt";
+"Return Receipt" = "Сповіщення про доставку";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?";
 "Return Receipt (displayed) - %@"= "Return Receipt (displayed) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents.";
@@ -142,7 +142,7 @@
 "View"          = "Перегляд";
 "All"           = "Всі";
 "Unread"        = "Непрочитані";
-"No message"    = "No message";
+"No message"    = "Повідомлення відсутні";
 "messages"      = "повідомлення";
 
 "first"         = "перша";
@@ -194,8 +194,6 @@
 "Delete Folder" = "Вилучити";
 "Use This Folder For" = "Використати цю теку як";
 "Get Messages for Account" = "Отримати нові повідомлення";
-"Properties..." = "Properties...";
-"Delegation..." = "Delegation...";
 
 /* Use This Folder menu */
 "Sent Messages" = "Відіслані";
