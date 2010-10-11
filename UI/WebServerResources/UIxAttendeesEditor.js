@@ -237,12 +237,17 @@ function performSearchCallback(http) {
                         node.container = contact["container"];
                     }
                     var matchPosition = completeEmail.toLowerCase().indexOf(data.searchText.toLowerCase());
-                    var matchBefore = completeEmail.substring(0, matchPosition);
-                    var matchText = completeEmail.substring(matchPosition, matchPosition + data.searchText.length);
-                    var matchAfter = completeEmail.substring(matchPosition + data.searchText.length);
-                    node.appendChild(document.createTextNode(matchBefore));
-                    node.appendChild(new Element('strong').update(matchText));
-                    node.appendChild(document.createTextNode(matchAfter));
+                    if (matchPosition > -1) {
+                        var matchBefore = completeEmail.substring(0, matchPosition);
+                        var matchText = completeEmail.substring(matchPosition, matchPosition + data.searchText.length);
+                        var matchAfter = completeEmail.substring(matchPosition + data.searchText.length);
+                        node.appendChild(document.createTextNode(matchBefore));
+                        node.appendChild(new Element('strong').update(matchText));
+                        node.appendChild(document.createTextNode(matchAfter));
+                    }
+                    else {
+                        node.appendChild(document.createTextNode(completeEmail));
+                    }
                     if (contact["contactInfo"])
                         node.appendChild(document.createTextNode(" (" +
                                                                  contact["contactInfo"] + ")"));
@@ -533,7 +538,7 @@ function onInputBlur(event) {
         // selecting a menu item
         var visible = $(document.currentPopupMenu).getStyle('visibility') != 'hidden';
         if (visible) {
-            log("XXX we return");
+            // log("XXX we return");
             return;
         }
     }
