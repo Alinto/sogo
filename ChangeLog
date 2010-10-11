@@ -1,5 +1,11 @@
 2010-10-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/generic.js: (triggerAjaxRequest): added an
+	optional "attempt" argument that enables counting the number of
+	invocations for an ajax request.
+	(onCASRecoveryIFrameLoaded): don't repeat a failed request more
+	than once.
+
 	* UI/WebServerResources/HTMLElement.js:
 	(Element.getSelectedNodesId): if the element has not
 	"selectedIds", set "selArray" to an empty array before checking

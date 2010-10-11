@@ -245,7 +245,7 @@ function createHTTPClient() {
     return new XMLHttpRequest();
 }
 
-function createCASRecoveryIFrame(http) {
+function createCASRecoveryIFrame(request) {
     var urlstr = UserFolderURL;
     if (!urlstr.endsWith('/'))
         urlstr += '/';
@@ -253,7 +253,7 @@ function createCASRecoveryIFrame(http) {
 
     var newIFrame = createElement("iframe", null, "hidden",
                                   { src: urlstr });
-    newIFrame.request = http;
+    newIFrame.request = request;
     newIFrame.observe("load", onCASRecoverIFrameLoaded);
     document.body.appendChild(newIFrame);
 }
@@ -261,10 +261,13 @@ function createCASRecoveryIFrame(http) {
 function onCASRecoverIFrameLoaded(event) {
     if (this.request) {
         var request = this.request;
-        triggerAjaxRequest(request.url,
-                           request.callback,
-                           request.callbackData,
-                           request.paramHeaders);
+        if (request.attempt == 0) {
+            triggerAjaxRequest(request.url,
+                               request.callback,
+                               request.callbackData,
+                               request.paramHeaders,
+                               1);
+        }
         this.request = null;
     }
     this.parentNode.removeChild(this);
@@ -323,7 +326,7 @@ function getContrastingTextColor(bgColor) {
     return ((brightness < 144) ? "white" : "black");
 }
 
-function triggerAjaxRequest(url, callback, userdata, content, headers) {
+function triggerAjaxRequest(url, callback, userdata, content, headers, attempt) {
     var http = createHTTPClient();
     if (http) {
         activeAjaxRequests++;
@@ -335,14 +338,16 @@ function triggerAjaxRequest(url, callback, userdata, content, headers) {
         http.callback = callback;
         http.callbackData = userdata;
         http.onreadystatechange = function() { onAjaxRequestStateChange(http); };
+
+        if (typeof(attempt) == "undefined") {
+            attempt = 0;
+        }
+        http.attempt = attempt;
         //       = function() {
         // //       log ("state changed (" + http.readyState + "): " + url);
         //     };
-        var hasContentLength = false;
         if (headers) {
             for (var i in headers) {
-                if (i.toLowerCase() == "content-length")
-                    hasContentLength = true;
                 http.setRequestHeader(i, headers[i]);
             }
         }
