@@ -124,11 +124,13 @@ Element.addMethods({
             if (element.selectedIds) {
                 selArray = element.selectedIds;
             }
-            else if (element.selectedElements) {
-                selArray = new Array();
-                for (var i = 0; i < element.selectedElements.length; i++) {
-                    var node = element.selectedElements[i];
-                    selArray.push(node.getAttribute("id"));
+            else {
+                selArray = [];
+                if (element.selectedElements) {
+                    for (var i = 0; i < element.selectedElements.length; i++) {
+                        var node = element.selectedElements[i];
+                        selArray.push(node.getAttribute("id"));
+                    }
                 }
             }
 

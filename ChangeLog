@@ -1,3 +1,11 @@
+2010-10-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/HTMLElement.js:
+	(Element.getSelectedNodesId): if the element has not
+	"selectedIds", set "selArray" to an empty array before checking
+	the "selectedElements" attribute. This enables the caller to not
+	check for a "null" return value.
+
 2010-10-08  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/generic.js (showConfirmDialog)
