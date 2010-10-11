@@ -24,21 +24,21 @@
   ),
 
   ( // second group
-    { link = "reply";
+    { link = "#";
       onclick = "return openMessageWindowsForSelection('reply');";
       isSafe   = NO;
       image = "tb-mail-reply-flat-24x24.png";
       cssClass = "tbicon_reply";
       label = "Reply";
       tooltip = "Reply to the message"; },
-    { link = "replyall";
+    { link = "#";
       onclick = "return openMessageWindowsForSelection('replyall');";
       isSafe   = NO;
       image = "tb-mail-replyall-flat-24x24.png";
       cssClass = "tbicon_replyall";
       label = "Reply All";
       tooltip = "Reply to sender and all recipients"; },
-    { link = "forward";
+    { link = "#";
       onclick = "return openMessageWindowsForSelection('forward');";
       isSafe   = NO;
       image = "tb-mail-forward-flat-24x24.png";
