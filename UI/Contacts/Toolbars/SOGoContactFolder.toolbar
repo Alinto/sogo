@@ -1,4 +1,4 @@
-( /* the toolbar groups -*-cperl-*- */
+( /* the toolbar groups -*-java-*- */
   (
    { link = "#";
      jsLink="js_card";
@@ -6,26 +6,26 @@
      image="new-card.png";
      onclick = "newContact(this); return false;";
      tooltip = "Create a new address book card"; },
-   { link = "new_list";
+   { link = "#";
      label="New List";
      image="new-list.png";
      onclick = "newList(this); return false;";
      tooltip = "Create a new list"; }
   ),
   (
-   { link = "edit";
+   { link = "#";
      label = "Properties";
      onclick = "return onToolbarEditSelectedContacts(this);";
      image = "properties.png";
      tooltip = "Edit the selected card"; },
-   { link = "write";
+   { link = "#";
      label="Write";
      onclick = "return onToolbarWriteToSelectedContacts(this);";
      image="write.png";
      tooltip = "Send a mail message"; }
   ),
   (
-   { link = "delete";
+   { link = "#";
      label="Delete";
      onclick = "return onToolbarDeleteSelectedContacts(this);";
      image="tb-mail-delete-flat-24x24.png";
