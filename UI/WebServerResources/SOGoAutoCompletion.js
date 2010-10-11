@@ -175,17 +175,22 @@ var SOGoAutoCompletionInterface = {
                         var node = new Element('li', { 'address': completeEmail,
                                                        'uid': contact[this.uidField] });
                         var matchPosition = completeEmail.toLowerCase().indexOf(data.searchText.toLowerCase());
-                        var matchBefore = completeEmail.substring(0, matchPosition);
-                        var matchText = completeEmail.substring(matchPosition, matchPosition + data.searchText.length);
-                        var matchAfter = completeEmail.substring(matchPosition + data.searchText.length);
+                        if (matchPosition > -1) {
+                            var matchBefore = completeEmail.substring(0, matchPosition);
+                            var matchText = completeEmail.substring(matchPosition, matchPosition + data.searchText.length);
+                            var matchAfter = completeEmail.substring(matchPosition + data.searchText.length);
+                            node.appendChild(document.createTextNode(matchBefore));
+                            node.appendChild(new Element('strong').update(matchText));
+                            node.appendChild(document.createTextNode(matchAfter));
+                        }
+                        else {
+                            node.appendChild(document.createTextNode(completeEmail));
+                        }
                         list.appendChild(node);
                         if (contact['c_name'].endsWith (".vlf")) {
                             // Keep track of list containers
                             node.writeAttribute("container", contact['container']);
                         }
-                        node.appendChild(document.createTextNode(matchBefore));
-                        node.appendChild(new Element('strong').update(matchText));
-                        node.appendChild(document.createTextNode(matchAfter));
                         if (contact["contactInfo"])
                             node.appendChild(document.createTextNode(" (" + contact["contactInfo"] + ")"));
                         $(node).observe("mousedown", this.onAddressResultClick.bindAsEventListener(this));

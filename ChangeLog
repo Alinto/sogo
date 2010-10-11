@@ -1,5 +1,11 @@
 2010-10-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/SOGoAutoCompletion.js:
+	(SOGoAutoCompletionInterface.performSearchCallback): when the
+	match string is not found in "completeEmail" (due to a match with a
+	non-displayed attribute), don't put emphasize anything
+	graphically.
+
 	* UI/WebServerResources/ContactsUI.js:
 	(onToolbarWriteToSelectedContacts): display an error message when
 	no contact is selected rather than composing a new message. Fixed
