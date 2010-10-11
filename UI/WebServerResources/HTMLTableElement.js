@@ -15,14 +15,16 @@ Element.addMethods({
 
   getSelectedRowsId: function(element) {
     element = $(element);
+    var rowsId = null;
     if (element.tagName == 'TABLE') {
       var tbody = (element.getElementsByTagName('tbody'))[0];
-      
-      return $(tbody).getSelectedNodesId();
+      rowsId = $(tbody).getSelectedNodesId();
     }
     else if (element.tagName == 'UL') {
-      return element.getSelectedNodesId();
+      rowsId = element.getSelectedNodesId();
     }
+
+    return rowsId;
   },
 
   selectRowsMatchingClass: function(element, className) {
