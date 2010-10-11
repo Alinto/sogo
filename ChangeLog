@@ -1,5 +1,10 @@
 2010-10-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/ContactsUI.js:
+	(onToolbarWriteToSelectedContacts): display an error message when
+	no contact is selected rather than composing a new message. Fixed
+	the method to only have one return point.
+
 	* UI/WebServerResources/generic.js: (triggerAjaxRequest): added an
 	optional "attempt" argument that enables counting the number of
 	invocations for an ajax request.
