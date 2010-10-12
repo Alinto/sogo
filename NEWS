@@ -1,6 +1,9 @@
 1.3-201010xx (1.3.3)
 --------------------
 - added Catalan translation, thanks to Hector Rulot
+- improved groups support by caching results
+- updated the Polish, Italian and Ukrainian translations
+- added the capability of renaming subscribed address books
 
 1.3-20100921 (1.3.2)
 --------------------
