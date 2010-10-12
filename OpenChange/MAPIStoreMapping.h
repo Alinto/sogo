@@ -30,8 +30,8 @@
 
 @interface MAPIStoreMapping : NSObject
 {
-        NSMutableDictionary *mapping; /* FID/MID -> url */
-        NSMutableDictionary *reverseMapping; /* url -> FID/MID */
+  NSMutableDictionary *mapping; /* FID/MID -> url */
+  NSMutableDictionary *reverseMapping; /* url -> FID/MID */
 }
 
 - (NSString *) urlFromID: (uint64_t) idKey;
