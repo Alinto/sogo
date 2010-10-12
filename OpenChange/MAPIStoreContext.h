@@ -52,13 +52,15 @@ extern uint64_t *MAPILongLongValue (void *, uint64_t);
 
 @interface MAPIStoreContext : NSObject
 {
+  struct mapistore_context *memCtx;
+  void *ldbCtx;
+
   NSMutableDictionary *objectCache;
   MAPIStoreAuthenticator *authenticator;
   WOContext *woContext;
   NSMutableDictionary *messageCache;
   NSMutableDictionary *subfolderCache;
   SOGoFolder *moduleFolder;
-  void *memCtx;
   NSString *lastObjectURL;
   id lastObject;
 }
@@ -67,7 +69,7 @@ extern uint64_t *MAPILongLongValue (void *, uint64_t);
 
 - (void) setupModuleFolder;
 
-- (void) setMemCtx: (void *) newMemCtx;
+- (void) setMemCtx: (struct mapistore_context *) newMemCtx;
 
 - (void) setAuthenticator: (MAPIStoreAuthenticator *) newAuthenticator;
 - (MAPIStoreAuthenticator *) authenticator;

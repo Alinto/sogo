@@ -1,5 +1,17 @@
 2010-10-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContext.m (-setMemCtx): argument is now of
+	type "struct mapistore_context *". The new ldbCtx ivar is
+	iinitialized from here.
+	(-getMessageTableChildproperty:atURL:withTag:inFolder:withFID:):
+	added support for PR_MESSAGE_CODEPAGE, PR_MESSAGE_LOCALE_ID,
+	PR_MESSAGE_FLAGS, PR_MESSAGE_SIZE, PR_MSG_STATUS,
+	PR_SUBJECT_PREFIX_UNICODE, PR_IMPORTANCE, PR_PRIORITY,
+	PR_SENSITIVITY.
+	Add registration of unregistered MID to ldb.
+	(-getFolderTableChildproperty:atURL:withTag:inFolder:withFID:):
+	Add registration of unregistered FID to ldb.
+
 	* OpenChange/MAPIStoreCalendarContext.m: added support for case
 	PR_CREATION_TIME.
 

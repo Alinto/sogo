@@ -51,6 +51,7 @@
 #undef DEBUG
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
+#include <libmapiproxy.h>
 // #include <dlinklist.h>
 
 // NSNullK = NSClassFromString (@"NSNull");
@@ -156,7 +157,7 @@ static MAPIStoreMapping *mapping = nil;
                   NSLog (@"ERROR: unrecognized module name '%@'", module);
                   contextClass = nil;
                 }
-                                
+              
               if (contextClass)
                 {
                   [mapping registerURL: completeURLString];
@@ -224,9 +225,13 @@ static MAPIStoreMapping *mapping = nil;
   return authenticator;
 }
 
-- (void) setMemCtx: (void *) newMemCtx
+- (void) setMemCtx: (struct mapistore_context *) newMemCtx
 {
+  struct loadparm_context *lpCtx;
   memCtx = newMemCtx;
+
+  lpCtx = loadparm_init (newMemCtx);
+  ldbCtx = mapiproxy_server_openchange_ldb_init (lpCtx);
 }
 
 - (void) setupRequest
@@ -611,7 +616,9 @@ static MAPIStoreMapping *mapping = nil;
                              withFID: (uint64_t) fid
 {
   int rc;
-  int64_t mappingId;
+  uint32_t contextId;
+  uint64_t mappingId;
+  id child;
 
   rc = MAPI_E_SUCCESS;
   switch (proptag)
@@ -620,15 +627,14 @@ static MAPIStoreMapping *mapping = nil;
       /* we return a unique id based on the url */
       *data = MAPILongLongValue (memCtx, [childURL hash]);
       break;
-      // case PR_INST_ID: // TODO: DOUBT
-    case PR_DEPTH: // TODO: DOUBT
-      *data = MAPILongLongValue (memCtx, 0);
+    case PR_INSTANCE_NUM: // TODO: DOUBT
+      *data = MAPILongValue (memCtx, 0);
       break;
     case PR_ROW_TYPE: // TODO: DOUBT
       *data = MAPILongValue (memCtx, TBL_LEAF_ROW);
       break;
-    case PR_INSTANCE_NUM: // TODO: DOUBT
-      *data = MAPILongValue (memCtx, 0);
+    case PR_DEPTH: // TODO: DOUBT
+      *data = MAPILongLongValue (memCtx, 0);
       break;
     case PR_VD_VERSION:
       /* mandatory value... wtf? */
@@ -640,10 +646,41 @@ static MAPIStoreMapping *mapping = nil;
       mappingId = [mapping idFromURL: childURL];
       if (mappingId == NSNotFound)
         {
-          [mapping registerURL: childURL];
-          mappingId = [mapping idFromURL: childURL];
+          openchangedb_get_new_folderID (ldbCtx, &mappingId);
+          [mapping registerURL: childURL withID: mappingId];
+          mapistore_search_context_by_uri (memCtx, [childURL UTF8String], &contextId);
+          mapistore_indexing_record_add_mid (memCtx, contextId, mappingId);
         }
       *data = MAPILongLongValue (memCtx, mappingId);
+      break;
+    case PR_MESSAGE_CODEPAGE:
+      *data = MAPILongValue (memCtx, 0x0000); // use folder object codepage
+      break;
+    case PR_MESSAGE_LOCALE_ID:
+      *data = MAPILongValue (memCtx, 0x0409);
+      break;
+    case PR_MESSAGE_FLAGS: // TODO
+      *data = MAPILongValue (memCtx, 0x02 | 0x20); // fromme + unmodified
+      break;
+    case PR_MESSAGE_SIZE: // TODO
+      child = [self lookupObject: childURL];
+      /* TODO: choose another name in SOGo for that method */
+      *data = MAPILongValue (memCtx, [[child davContentLength] intValue]);
+      break;
+    case PR_MSG_STATUS: // TODO
+      *data = MAPILongValue (memCtx, 0);
+      break;
+    case PR_SUBJECT_PREFIX_UNICODE: // TODO
+      *data = [@"" asUnicodeInMemCtx: memCtx];
+      break;
+    case PR_IMPORTANCE: // TODO -> subclass?
+      *data = MAPILongValue (memCtx, 1);
+      break;
+    case PR_PRIORITY: // TODO -> subclass?
+      *data = MAPILongValue (memCtx, 0);
+      break;
+    case PR_SENSITIVITY: // TODO -> subclass in calendar
+      *data = MAPILongValue (memCtx, 0);
       break;
 
       /* those are queried while they really pertain to the
@@ -653,7 +690,6 @@ static MAPIStoreMapping *mapping = nil;
       // case PR_OAB_CONTAINER_GUID_UNICODE:
 
       // 0x68420102  PidTagScheduleInfoDelegatorWantsCopy (BOOL)
-
 
     default:
       rc = [self getCommonTableChildproperty: data
@@ -694,7 +730,8 @@ static MAPIStoreMapping *mapping = nil;
 {
   // id child;
   struct Binary_r *binaryValue;
-  int64_t mappingId;
+  uint32_t contextId;
+  uint64_t mappingId;
   int rc;
   NSString *parentURL;
 
@@ -702,12 +739,16 @@ static MAPIStoreMapping *mapping = nil;
   switch (proptag)
     {
     case PR_FID:
-      mappingId = [mapping idFromURL: childURL];
-      if (mappingId == NSNotFound)
-        {
-          [mapping registerURL: childURL];
-          mappingId = [mapping idFromURL: childURL];
-        }
+       mappingId = [mapping idFromURL: childURL];
+       if (mappingId == NSNotFound)
+         {
+           openchangedb_get_new_folderID (ldbCtx, &mappingId);
+           [mapping registerURL: childURL withID: mappingId];
+           mapistore_search_context_by_uri (memCtx, [childURL UTF8String], &contextId);
+           mapistore_indexing_record_add_fid (memCtx, contextId, mappingId);
+         }
+        //   mappingId = [mapping idFromURL: childURL];
+        // }
       *data = MAPILongLongValue (memCtx, mappingId);
       break;
     case PR_PARENT_FID:
@@ -717,8 +758,12 @@ static MAPIStoreMapping *mapping = nil;
           mappingId = [mapping idFromURL: parentURL];
           if (mappingId == NSNotFound)
             {
-              [mapping registerURL: parentURL];
-              mappingId = [mapping idFromURL: parentURL];
+              openchangedb_get_new_folderID (ldbCtx, &mappingId);
+              [mapping registerURL: childURL withID: mappingId];
+              mapistore_search_context_by_uri (memCtx, [childURL UTF8String], &contextId);
+              mapistore_indexing_record_add_fid (memCtx, contextId, mappingId);
+              // [mapping registerURL: parentURL];
+              // mappingId = [mapping idFromURL: parentURL];
             }
           *data = MAPILongLongValue (memCtx, mappingId);
         }
@@ -770,8 +815,8 @@ static MAPIStoreMapping *mapping = nil;
   SOGoFolder *folder;
   int rc;
 
-  [self logWithFormat: @"METHOD '%s' (%d) -- proptag: 0x%.8x, pos: %ld, tableType: %d, fid: %lld",
-        __FUNCTION__, __LINE__, proptag, pos, tableType, fid];
+  // [self logWithFormat: @"METHOD '%s' (%d) -- proptag: 0x%.8x, pos: %ld, tableType: %d, fid: %lld",
+  //       __FUNCTION__, __LINE__, proptag, pos, tableType, fid];
 
   folderURL = [mapping urlFromID: fid];
   if (folderURL)
@@ -807,7 +852,7 @@ static MAPIStoreMapping *mapping = nil;
             }
           else
             {
-              [self logWithFormat: @"  querying child message at URL: %@", childURL];
+              // [self logWithFormat: @"  querying child message at URL: %@", childURL];
               rc = [self getMessageTableChildproperty: data
                                                 atURL: childURL
                                               withTag: proptag
