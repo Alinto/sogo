@@ -116,8 +116,12 @@ static Class SOGoUserFolderK;
       *data = MAPIBoolValue (memCtx, NO);
       break;
     case PR_SENSITIVITY: // not implemented, depends on CLASS
-      // normal = 0, private = 2
+      // normal = 0, personal?? = 1, private = 2, confidential = 3
       *data = MAPILongValue (memCtx, 0);
+      break;
+    case PR_CREATION_TIME:
+      event = [[self lookupObject: childURL] component: NO secure: NO];
+      *data = [[event created] asFileTimeInMemCtx: memCtx];
       break;
 
       // case PR_VD_NAME_UNICODE:
@@ -135,11 +139,8 @@ static Class SOGoUserFolderK;
     }
 
   // #define PR_REPLY_TIME                                       PROP_TAG(PT_SYSTIME   , 0x0030) /* 0x00300040 */
-  // #define PR_MESSAGE_FLAGS                                    PROP_TAG(PT_LONG      , 0x0e07) /* 0x0e070003 */
-  // #define PR_MSG_STATUS                                       PROP_TAG(PT_LONG      , 0x0e17) /* 0x0e170003 */
   // #define PR_INTERNET_MESSAGE_ID_UNICODE                      PROP_TAG(PT_UNICODE   , 0x1035) /* 0x1035001f */
   // #define PR_FLAG_STATUS                                      PROP_TAG(PT_LONG      , 0x1090) /* 0x10900003 */
-  // #define PR_CREATION_TIME                                    PROP_TAG(PT_SYSTIME   , 0x3007) /* 0x30070040 */
   // #define PR_SEARCH_KEY                                       PROP_TAG(PT_BINARY    , 0x300b) /* 0x300b0102 */
 
 

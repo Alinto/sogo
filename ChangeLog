@@ -1,5 +1,8 @@
 2010-10-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreCalendarContext.m: added support for case
+	PR_CREATION_TIME.
+
 	* Scripts/cas-proxy-validate.py: new script that resolve
 	reentrancy issues occurring when using SOGo in CAS mode, when SOGo
 	requests a PGT from the CAS server.
