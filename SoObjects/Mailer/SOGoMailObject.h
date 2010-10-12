@@ -84,6 +84,7 @@
 - (NSString *) contentAsString;
 - (NSString *) davContentLength;
 
+- (NSString *) to;
 - (NSString *) cc;
 - (NSString *) from;
 - (NSString *) inReplyTo;

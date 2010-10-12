@@ -1348,6 +1348,11 @@ static BOOL debugSoParts       = NO;
 
 //{urn:schemas:mailheader:}
 
+- (NSString *) to
+{
+  return [self _emailAddressesFrom: [self toEnvelopeAddresses]];
+}
+
 - (NSString *) cc
 {
   return [self _emailAddressesFrom: [self ccEnvelopeAddresses]];
@@ -1428,11 +1433,6 @@ static BOOL debugSoParts       = NO;
 - (NSString *) davDisplayName
 {
   return [self subject];
-}
-
-- (NSString *) to
-{
-  return [self _emailAddressesFrom: [self toEnvelopeAddresses]];
 }
 
 @end /* SOGoMailObject */
