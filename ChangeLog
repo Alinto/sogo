@@ -1,3 +1,9 @@
+2010-10-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Scripts/cas-proxy-validate.py: new script that resolve
+	reentrancy issues occurring when using SOGo in CAS mode, when SOGo
+	requests a PGT from the CAS server.
+
 2010-10-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/UIxAttendeesEditor.js:
