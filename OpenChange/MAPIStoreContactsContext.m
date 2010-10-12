@@ -164,8 +164,9 @@ static Class SOGoUserFolderK;
       *data = talloc_strdup (memCtx, "PR_OAB_NAME_UNICODE");
       break;
     case PR_OAB_LANGID:
+      /* see http://msdn.microsoft.com/en-us/goglobal/bb895996.asxp */
       /* English US */
-      *data = MAPILongValue (memCtx, 1033);
+      *data = MAPILongValue (memCtx, 0x0409);
       break;
 
     case PR_TITLE_UNICODE:
