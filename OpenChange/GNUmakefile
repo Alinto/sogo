@@ -9,11 +9,11 @@ LIBMAPI_CFLAGS = $(shell pkg-config libmapistore --cflags)
 ifeq ($(LIBMAPI_CFLAGS),)
 
 all install::
-	@echo "* Cannot build the OpenChange SOGo backend (empty CFLAGS)"
+	@echo "Cannot build the OpenChange SOGo backend (empty CFLAGS for libmapistore)"
 
 else
 
-LIBMAPI_LIBS = $(shell pkg-config libmapistore --libs)
+LIBMAPI_LIBS = $(shell pkg-config libmapistore --libs) -lmapiproxy
 
 ADDITIONAL_INCLUDE_DIRS += $(LIBMAPI_CFLAGS) -I../SoObjects -I../SOPE
 ADDITIONAL_LIB_DIRS += -L../SOGo/SOGo.framework/ -lSOGo -L../SOPE/GDLContentStore/obj/ $(LIBMAPI_LIBS)
