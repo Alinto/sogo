@@ -283,11 +283,11 @@ function deleteEvent() {
 }
 
 function deleteEventFromListConfirm() {
-    var nodes = listOfSelection.getSelectedRows();
     if (document.deleteEventAjaxRequest) {
         document.deleteEventAjaxRequest.aborted = true;
         document.deleteEventAjaxRequest.abort();
     }
+
     _batchDeleteEvents();
     disposeDialog();
 }
