@@ -28,11 +28,6 @@
 
 @implementation SOGoMailNamespace
 
-- (NSArray *) toOneRelationshipKeys
-{
-  return nil;
-}
-
 - (id) lookupName: (NSString *) _key
 	inContext: (id)_ctx
 	  acquire: (BOOL) _acquire
