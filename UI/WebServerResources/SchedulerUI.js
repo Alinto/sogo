@@ -1569,7 +1569,7 @@ function newMonthEventDIV(eventRep, event) {
     if (event[8]) // all-day event
         eventText = event[4];
     else
-        eventText = eventRep.starthour + " - " + event[3];
+        eventText = eventRep.starthour + " - " + event[4];
 
     var eventCell = newBaseEventDIV(eventRep, event,
                                     eventText);
