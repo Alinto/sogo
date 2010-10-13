@@ -55,21 +55,25 @@ extern uint64_t *MAPILongLongValue (void *, uint64_t);
   struct mapistore_context *memCtx;
   void *ldbCtx;
 
+  BOOL baseContextSet;
+
+  NSString *uri;
+
   NSMutableDictionary *objectCache;
   MAPIStoreAuthenticator *authenticator;
   WOContext *woContext;
   NSMutableDictionary *messageCache;
   NSMutableDictionary *subfolderCache;
   SOGoFolder *moduleFolder;
-  NSString *lastObjectURL;
-  id lastObject;
 }
 
-+ (id) contextFromURI: (const char *) newUri;
++ (id) contextFromURI: (const char *) newUri
+             inMemCtx: (struct mapistore_context *) newMemCtx;
+
+- (void) setURI: (NSString *) newUri
+      andMemCtx: (struct mapistore_context *) newMemCtx;
 
 - (void) setupModuleFolder;
-
-- (void) setMemCtx: (struct mapistore_context *) newMemCtx;
 
 - (void) setAuthenticator: (MAPIStoreAuthenticator *) newAuthenticator;
 - (MAPIStoreAuthenticator *) authenticator;
@@ -80,6 +84,10 @@ extern uint64_t *MAPILongLongValue (void *, uint64_t);
 - (id) lookupObject: (NSString *) objectURLString;
 
 /* backend methods */
+- (int) getPath: (char **) path
+         ofFMID: (uint64_t) fmid
+  withTableType: (uint8_t) tableType;
+
 - (int) getFID: (uint64_t *) fid
         byName: (const char *) foldername
    inParentFID: (uint64_t) parent_fid;
@@ -141,6 +149,9 @@ extern uint64_t *MAPILongLongValue (void *, uint64_t);
                             withTag: (uint32_t) proptag
                            inFolder: (SOGoFolder *) folder
                             withFID: (uint64_t) fid;
+
+- (int) getFoldersList: (struct indexing_folders_list **) folders_list
+              withFMID: (uint64_t) fmid;
 
 @end
 

@@ -65,12 +65,13 @@ static int sogo_create_context(TALLOC_CTX *mem_ctx, const char *uri, void **priv
 
   DEBUG(0, ("[%s:%d]\n", __FUNCTION__, __LINE__));
 
-  context = [MAPIStoreContext contextFromURI: uri];
-  [context setMemCtx: mem_ctx];
+  context = [MAPIStoreContext contextFromURI: uri
+                                    inMemCtx: mem_ctx];
   [context retain];
 
   cContext = talloc_zero(mem_ctx, sogo_context);
   cContext->objcContext = context;
+
   *private_data = cContext;
 
   [pool release];
@@ -148,21 +149,23 @@ static int sogo_get_path(void *private_data, uint64_t fmid,
                          uint8_t type, char **path)
 {
   NSAutoreleasePool *pool;
+  sogo_context *cContext;
+  MAPIStoreContext *context;
+  int rc;
 
   pool = [NSAutoreleasePool new];
 
-  DEBUG(5, ("[%s:%d]\n", __FUNCTION__, __LINE__));
+  cContext = private_data;
+  context = cContext->objcContext;
+  [context setupRequest];
 
-  switch (type) {
-  case MAPISTORE_FOLDER:
-    break;
-  case MAPISTORE_MESSAGE:
-    break;
-  }
+  rc = [context getPath: path ofFMID: fmid withTableType: type];
+
+  [context tearDownRequest];
 
   [pool release];
 
-  return MAPISTORE_SUCCESS;
+  return rc;
 }
 
 static int sogo_op_get_fid_by_name(void *private_data, uint64_t parent_fid, const char* foldername, uint64_t *fid)
@@ -535,6 +538,29 @@ static int sogo_op_deletemessage(void *private_data,
   return rc;
 }
 
+static int sogo_op_get_folders_list(void *private_data,
+                                    uint64_t fmid,
+                                    struct indexing_folders_list **folders_list)
+{
+  NSAutoreleasePool *pool;
+  sogo_context *cContext;
+  MAPIStoreContext *context;
+  int rc;
+
+  pool = [NSAutoreleasePool new];
+
+  cContext = private_data;
+  context = cContext->objcContext;
+  [context setupRequest];
+
+  rc = [context getFoldersList: folders_list withFMID: fmid];
+
+  [context tearDownRequest];
+  [pool release];
+
+  return rc;
+}
+
 /**
    \details Entry point for mapistore SOGO backend
 
@@ -580,6 +606,7 @@ int mapistore_init_backend(void)
       backend.op_get_fid_by_name = sogo_op_get_fid_by_name;
       backend.op_setprops = sogo_op_setprops;
       backend.op_deletemessage = sogo_op_deletemessage;
+      backend.op_get_folders_list = sogo_op_get_folders_list;
 
       /* Register ourselves with the MAPISTORE subsystem */
       ret = mapistore_backend_register(&backend);

@@ -50,7 +50,7 @@
       reverseMapping = [NSMutableDictionary new];
       [self _setupFixedMapping];
     }
-  
+
   return self;
 }
 

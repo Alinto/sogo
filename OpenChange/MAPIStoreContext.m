@@ -40,6 +40,8 @@
 #import <Mailer/SOGoMailAccount.h>
 #import <Mailer/SOGoMailFolder.h>
 
+#import "NSArray+MAPIStore.h"
+
 #import "MAPIApplication.h"
 #import "MAPIStoreAuthenticator.h"
 #import "MAPIStoreMapping.h"
@@ -124,6 +126,7 @@ static MAPIStoreMapping *mapping = nil;
 }
 
 + (id) contextFromURI: (const char *) newUri
+             inMemCtx: (struct mapistore_context *) newMemCtx
 {
   MAPIStoreContext *context;
   MAPIStoreAuthenticator *authenticator;
@@ -161,6 +164,7 @@ static MAPIStoreMapping *mapping = nil;
               if (contextClass)
                 {
                   context = [NSClassFromString (contextClass) new];
+                  [context setURI: completeURLString andMemCtx: newMemCtx];
                   [context autorelease];
 
                   authenticator = [MAPIStoreAuthenticator new];
@@ -193,6 +197,8 @@ static MAPIStoreMapping *mapping = nil;
       woContext = [WOContext contextWithRequest: nil];
       [woContext retain];
       moduleFolder = nil;
+      uri = nil;
+      baseContextSet = NO;
     }
 
   [self logWithFormat: @"-init"];
@@ -211,7 +217,21 @@ static MAPIStoreMapping *mapping = nil;
   [woContext release];
   [authenticator release];
 
+  [uri release];
+
   [super dealloc];
+}
+
+- (void) setURI: (NSString *) newUri
+      andMemCtx: (struct mapistore_context *) newMemCtx
+{
+  struct loadparm_context *lpCtx;
+
+  ASSIGN (uri, newUri);
+  memCtx = newMemCtx;
+
+  lpCtx = loadparm_init (newMemCtx);
+  ldbCtx = mapiproxy_server_openchange_ldb_init (lpCtx);
 }
 
 - (void) setAuthenticator: (MAPIStoreAuthenticator *) newAuthenticator
@@ -222,15 +242,6 @@ static MAPIStoreMapping *mapping = nil;
 - (MAPIStoreAuthenticator *) authenticator
 {
   return authenticator;
-}
-
-- (void) setMemCtx: (struct mapistore_context *) newMemCtx
-{
-  struct loadparm_context *lpCtx;
-  memCtx = newMemCtx;
-
-  lpCtx = loadparm_init (newMemCtx);
-  ldbCtx = mapiproxy_server_openchange_ldb_init (lpCtx);
 }
 
 - (void) setupRequest
@@ -403,17 +414,19 @@ static MAPIStoreMapping *mapping = nil;
       parentFolderURL = [mapping urlFromID: parentFID];
       if (!parentFolderURL)
         [self errorWithFormat: @"No url found for FID: %lld", parentFID];
-      if (parentFolderURL) {
-        folderURL = [self _createFolder: aRow inParentURL: parentFolderURL];
-        if (folderURL) {
-          [mapping registerURL: folderURL withID: fid];
-          // if ([sogoFolder isKindOfClass: SOGoMailAccountK])
-          //         [sogoFolder subscribe];
-          rc = MAPISTORE_SUCCESS;
+      if (parentFolderURL)
+        {
+          folderURL = [self _createFolder: aRow inParentURL: parentFolderURL];
+          if (folderURL)
+            {
+              [mapping registerURL: folderURL withID: fid];
+              // if ([sogoFolder isKindOfClass: SOGoMailAccountK])
+              //         [sogoFolder subscribe];
+              rc = MAPISTORE_SUCCESS;
+            }
+          else
+            rc = MAPISTORE_ERR_NOT_FOUND;
         }
-        else
-          rc = MAPISTORE_ERR_NOT_FOUND;
-      }
       else
         rc = MAPISTORE_ERR_NO_DIRECTORY;
     }
@@ -617,6 +630,7 @@ static MAPIStoreMapping *mapping = nil;
   int rc;
   uint32_t contextId;
   uint64_t mappingId;
+  NSString *folderURL;
   id child;
 
   rc = MAPI_E_SUCCESS;
@@ -648,9 +662,13 @@ static MAPIStoreMapping *mapping = nil;
         {
           openchangedb_get_new_folderID (ldbCtx, &mappingId);
           [mapping registerURL: childURL withID: mappingId];
-          mapistore_search_context_by_uri (memCtx,
-                                           [[mapping urlFromID: fid] UTF8String],
+          folderURL = [mapping urlFromID: fid];
+          NSAssert (folderURL != nil,
+                    @"folder URL is expected to be known here");
+          contextId = 0;
+          mapistore_search_context_by_uri (memCtx, [uri UTF8String] + 7,
                                            &contextId);
+          NSAssert (contextId > 0, @"no matching context found");
           mapistore_indexing_record_add_mid (memCtx, contextId, mappingId);
         }
       *data = MAPILongLongValue (memCtx, mappingId);
@@ -735,7 +753,7 @@ static MAPIStoreMapping *mapping = nil;
   uint32_t contextId;
   uint64_t mappingId;
   int rc;
-  NSString *parentURL;
+  NSString *folderURL;
 
   rc = MAPI_E_SUCCESS;
   switch (proptag)
@@ -746,9 +764,13 @@ static MAPIStoreMapping *mapping = nil;
          {
            openchangedb_get_new_folderID (ldbCtx, &mappingId);
            [mapping registerURL: childURL withID: mappingId];
-           mapistore_search_context_by_uri (memCtx,
-                                            [[mapping urlFromID: fid] UTF8String],
+           folderURL = [mapping urlFromID: fid];
+           NSAssert (folderURL != nil,
+                     @"folder URL is expected to be known here");
+           contextId = 0;
+           mapistore_search_context_by_uri (memCtx, [uri UTF8String] + 7,
                                             &contextId);
+           NSAssert (contextId > 0, @"no matching context found");
            mapistore_indexing_record_add_fid (memCtx, contextId, mappingId);
          }
         //   mappingId = [mapping idFromURL: childURL];
@@ -756,30 +778,7 @@ static MAPIStoreMapping *mapping = nil;
       *data = MAPILongLongValue (memCtx, mappingId);
       break;
     case PR_PARENT_FID:
-      parentURL = [self _parentURLFromURL: childURL];
-      if (parentURL)
-        {
-          mappingId = [mapping idFromURL: parentURL];
-          NSAssert (mappingId != NSNotFound,
-                    @"parent folder should be known at this stage");
-          // if (mappingId == NSNotFound)
-          //   {
-          //     [NSException raise: @"MAPIStoreSOGoException"
-          //                 format: @"This should never happen"
-          //     // openchangedb_get_new_folderID (ldbCtx, &mappingId);
-          //     // [mapping registerURL: childURL withID: mappingId];
-          //     // mapistore_search_context_by_uri (memCtx, [childURL UTF8String], &contextId);
-          //     // mapistore_indexing_record_add_fid (memCtx, contextId, mappingId);
-          //     // [mapping registerURL: parentURL];
-          //     // mappingId = [mapping idFromURL: parentURL];
-          //   }
-          *data = MAPILongLongValue (memCtx, mappingId);
-        }
-      else
-        {
-          *data = NULL;
-          rc = MAPISTORE_ERR_NOT_FOUND;
-        }
+      *data = MAPILongLongValue (memCtx, fid);
       break;
     case PR_ATTR_HIDDEN:
     case PR_ATTR_SYSTEM:
@@ -896,7 +895,6 @@ static MAPIStoreMapping *mapping = nil;
   return rc;
 }
 
-
 - (int) openMessage: (struct mapistore_message *) msg
             withMID: (uint64_t) mid
               inFID: (uint64_t) fid
@@ -949,6 +947,25 @@ static MAPIStoreMapping *mapping = nil;
   return MAPI_E_SUCCESS;
 }
 
+- (int) getPath: (char **) path
+         ofFMID: (uint64_t) fmid
+  withTableType: (uint8_t) tableType
+{
+  int rc;
+  NSString *objectURL;
+
+  objectURL = [mapping urlFromID: fmid];
+  if (objectURL)
+    {
+      *path = [[objectURL substringFromIndex: 7] asUnicodeInMemCtx: memCtx];
+      rc = MAPISTORE_SUCCESS;
+    }
+  else
+    rc = MAPI_E_NOT_FOUND;
+
+  return rc;
+}
+
 - (int) getFID: (uint64_t *) fid
         byName: (const char *) foldername
    inParentFID: (uint64_t) parent_fid
@@ -982,6 +999,49 @@ static MAPIStoreMapping *mapping = nil;
   [self logWithFormat: @"METHOD '%s' (%d)", __FUNCTION__, __LINE__];
 
   return MAPI_E_SUCCESS;
+}
+
+- (int) getFoldersList: (struct indexing_folders_list **) folders_list
+              withFMID: (uint64_t) fmid
+{
+  int rc;
+  NSString *currentURL;
+  NSMutableArray *nsFolderList;
+  uint64_t fid;
+
+  rc = MAPI_E_SUCCESS;
+
+  currentURL = [mapping urlFromID: fmid];
+  if (currentURL && ![currentURL isEqualToString: uri])
+    {
+      nsFolderList = [NSMutableArray arrayWithCapacity: 32];
+      currentURL = [self _parentURLFromURL: currentURL];
+      while (currentURL && rc == MAPI_E_SUCCESS
+             && ![currentURL isEqualToString: uri])
+        {
+          fid = [mapping idFromURL: currentURL];
+          if (fid == NSNotFound)
+            rc = MAPI_E_NOT_FOUND;
+          else
+            {
+              [nsFolderList insertObject: [NSNumber numberWithUnsignedLongLong: fid]
+                                 atIndex: 0];
+              currentURL = [self _parentURLFromURL: currentURL];
+            }
+        }
+
+      if (rc != MAPI_E_NOT_FOUND)
+        {
+          fid = [mapping idFromURL: uri];
+          [nsFolderList insertObject: [NSNumber numberWithUnsignedLongLong: fid]
+                             atIndex: 0];
+          *folders_list = [nsFolderList asFoldersListInCtx: memCtx];
+        }
+    }
+  else
+    rc = MAPI_E_NOT_FOUND;
+
+  return rc;
 }
 
 @end

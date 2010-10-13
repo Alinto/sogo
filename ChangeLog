@@ -9,11 +9,6 @@
 
 2010-10-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
-	* OpenChange/MAPIStoreContext.m
-	(-getMessageTableChildproperty:atURL:withTag:inFolder:withFID:):
-	added missing "break" statement, leading PR_FID to get the value
-	of PR_MID.
-
 	* OpenChange/MAPIStoreMapping.m (-registerURL:): commented method out.
 	(-_setupFixedMapping): new method that registers well-known ids
 	with well-known urls.
@@ -21,6 +16,22 @@
 	* OpenChange/MAPIStoreContext.m (+contextFromURI:): no longer
 	register the URI mapping since the basic ones are always
 	registered.
+	(-setURI:andMemCtx:): new method,
+	replacing setMemCtx, which also stores the context uri in the new
+	"uri" ivar.
+	(-getMessageTableChildproperty:atURL:withTag:inFolder:withFID:)
+	added assertions for context id searches. Make the context id
+	search without the "sogo://" prefix.
+	Added missing "break" statement, leading PR_FID to get the value
+	of PR_MID.
+	(-parentFID): simply returns fid...
+	(-getPath:ofFMID:withTableType:): implemented.
+	(-getFoldersList:withFMID:): new temporary store method,
+	implemented.
+
+	* OpenChange/NSArray+MAPIStore.m: new category module.
+	(-asFoldersListInCtx:): new method returning a properly populated
+	"struct struct indexing_folders_list *" from an array of fids.
 
 2010-10-13  Francis Lachapelle  <flachapelle@inverse.ca>
 
