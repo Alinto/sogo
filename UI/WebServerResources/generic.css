@@ -380,10 +380,12 @@ TD.headerDateTime
 { min-width: 30em; }
 
 TD.headerTitle
-{ width: 30%; }
+{ width: 20%; }
 
-TD.headerLocation
-{ min-width: 20em; }
+TD.headerLocation,
+TD.headerCalendarName
+{ min-width: 15em;
+  width: 15em; }
 
 td img.tbtv_sortcell
 { float: right;

@@ -1,6 +1,6 @@
 /* NSArray+Scheduler.m - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse inc.
+ * Copyright (C) 2007-2010 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -25,12 +25,36 @@
 
 #import <Foundation/NSArray.h>
 
+// See [UIxCalListingActions initialize]
+#define eventNameIndex              0
+#define eventFolderIndex            1
+#define eventCalendarNameIndex      2
+#define eventStatusIndex            3
+#define eventTitleIndex             4
+#define eventStartDateIndex         5
+#define eventEndDateIndex           6
+#define eventLocationIndex          7
+#define eventIsAllDayIndex          8
+#define eventClassificationIndex    9
+#define eventCategoryIndex         10
+#define eventPartMailsIndex        11
+#define eventPartStatesIndex       12
+#define eventOwnerIndex            13
+#define eventIsCycleIndex          14
+#define eventNextAlarmIndex        15
+#define eventRecurrenceIdIndex     16
+#define eventIsExceptionIndex      17
+#define eventEditableIndex         18
+#define eventErasableIndex         19
+#define eventOwnerIsOrganizerIndex 20
+
 @interface NSArray (SOGoEventComparison)
 
 - (NSComparisonResult) compareEventsStartDateAscending: (NSArray *) otherEvent;
 - (NSComparisonResult) compareEventsEndDateAscending: (NSArray *) otherEvent;
 - (NSComparisonResult) compareEventsTitleAscending: (NSArray *) otherEvent;
 - (NSComparisonResult) compareEventsLocationAscending: (NSArray *) otherEvent;
+- (NSComparisonResult) compareEventsCalendarNameAscending: (NSArray *) otherEvent;
 - (NSComparisonResult) compareTasksAscending: (NSArray *) otherTask;
 - (NSArray *) reversedArray;
 
