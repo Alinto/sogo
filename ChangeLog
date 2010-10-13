@@ -1,3 +1,13 @@
+2010-10-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreMapping.m (-registerURL:): commented method out.
+	(-_setupFixedMapping): new method that registers well-known ids
+	with well-known urls.
+
+	* OpenChange/MAPIStoreContext.m (+contextFromURI:): no longer
+	register the URI mapping since the basic ones are always
+	registered.
+
 2010-10-13  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Scheduler/NSArray+Scheduler.h: added index constants for

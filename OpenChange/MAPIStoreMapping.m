@@ -21,6 +21,7 @@
  */
 
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSException.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSValue.h>
 
@@ -28,10 +29,18 @@
 
 #import "MAPIStoreMapping.h"
 
-static const uint64_t idIncrement = 0x010000; /* we choose a high enough id to avoid any clash with system folders */
-static uint64_t idCounter = 0x200001;
+// static const uint64_t idIncrement = 0x010000; /* we choose a high enough id to avoid any clash with system folders */
+// static uint64_t idCounter = 0x200001;
 
 @implementation MAPIStoreMapping
+
+- (void) _setupFixedMapping
+{
+  [self registerURL: @"sogo://openchange:openchange@mail/folderINBOX" withID: 0x160001];
+  [self registerURL: @"sogo://openchange:openchange@contacts/personal" withID: 0x1a0001];
+  [self registerURL: @"sogo://openchange:openchange@calendar/personal" withID: 0x190001];
+  [self registerURL: @"sogo://openchange:openchange@tasks/personal" withID: 0x1d0001];
+}
 
 - (id) init
 {
@@ -39,6 +48,7 @@ static uint64_t idCounter = 0x200001;
     {
       mapping = [NSMutableDictionary new];
       reverseMapping = [NSMutableDictionary new];
+      [self _setupFixedMapping];
     }
   
   return self;
@@ -70,7 +80,7 @@ static uint64_t idCounter = 0x200001;
     idNbr = [idKey unsignedLongLongValue];
   else
     idNbr = NSNotFound;
-  
+
   return idNbr;
 }
 
@@ -100,53 +110,55 @@ static uint64_t idCounter = 0x200001;
   return rc;
 }
 
-- (void) registerURL: (NSString *) urlString
-{
-  uint64_t idNbr;
+// - (void) registerURL: (NSString *) urlString
+// {
+//   uint64_t idNbr;
   
-  // newID = openchangedb_get_new_folderID();
-  if (![reverseMapping objectForKey: urlString])
-    {
-      if ([urlString isEqualToString: @"sogo://openchange:openchange@mail/folderINBOX"])
-        {
-          idNbr = 0x160001;
-          if (![self registerURL: urlString withID: idNbr])
-            [self errorWithFormat: @"Unable to register root folder: %@",
-                  urlString];
-        }
-      // else if ([urlString isEqualToString: @"sogo://openchange:openchange@mail/folderSent"]) {
-      //         idNbr = 0x140001;
-      //         idCounter = idNbr;
-      // }
-      else if ([urlString isEqualToString: @"sogo://openchange:openchange@contacts/personal"])
-        {
-          idNbr = 0x1a0001;
-          if (![self registerURL: urlString withID: idNbr])
-            [self errorWithFormat: @"Unable to register root folder: %@",
-                  urlString];
-        }
-      else if ([urlString isEqualToString: @"sogo://openchange:openchange@calendar/personal"])
-        {
-          idNbr = 0x190001;
-          if (![self registerURL: urlString withID: idNbr])
-            [self errorWithFormat: @"Unable to register root folder: %@",
-                  urlString];
-        }
-      else if ([urlString isEqualToString: @"sogo://openchange:openchange@tasks/personal"])
-        {
-          idNbr = 0x1d0001;
-          if (![self registerURL: urlString withID: idNbr])
-            [self errorWithFormat: @"Unable to register root folder: %@",
-                  urlString];
-        }
-      else
-        {
-          idCounter += idIncrement;
-          while (![self registerURL: urlString withID: idCounter])
-            idCounter += idIncrement;
-        }
-      // [self _registerURL: urlString withID: newID];
-    }
-}
+//   // newID = openchangedb_get_new_folderID();
+//   if (![reverseMapping objectForKey: urlString])
+//     {
+//       if ([urlString isEqualToString: @"sogo://openchange:openchange@mail/folderINBOX"])
+//         {
+//           idNbr = 0x160001;
+//           if (![self registerURL: urlString withID: idNbr])
+//             [self errorWithFormat: @"Unable to register root folder: %@",
+//                   urlString];
+//         }
+//       // else if ([urlString isEqualToString: @"sogo://openchange:openchange@mail/folderSent"]) {
+//       //         idNbr = 0x140001;
+//       //         idCounter = idNbr;
+//       // }
+//       else if ([urlString isEqualToString: @"sogo://openchange:openchange@contacts/personal"])
+//         {
+//           idNbr = 0x1a0001;
+//           if (![self registerURL: urlString withID: idNbr])
+//             [self errorWithFormat: @"Unable to register root folder: %@",
+//                   urlString];
+//         }
+//       else if ([urlString isEqualToString: @"sogo://openchange:openchange@calendar/personal"])
+//         {
+//           idNbr = 0x190001;
+//           if (![self registerURL: urlString withID: idNbr])
+//             [self errorWithFormat: @"Unable to register root folder: %@",
+//                   urlString];
+//         }
+//       else if ([urlString isEqualToString: @"sogo://openchange:openchange@tasks/personal"])
+//         {
+//           idNbr = 0x1d0001;
+//           if (![self registerURL: urlString withID: idNbr])
+//             [self errorWithFormat: @"Unable to register root folder: %@",
+//                   urlString];
+//         }
+//       else
+//         {
+//           [NSException raise: @"MAPIStoreSOGoException"
+//                       format: @"use registerURL:withID: instead"];
+//           // idCounter += idIncrement;
+//           // while (![self registerURL: urlString withID: idCounter])
+//           //   idCounter += idIncrement;
+//         }
+//       // [self _registerURL: urlString withID: newID];
+//     }
+// }
 
 @end

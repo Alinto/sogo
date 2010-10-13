@@ -160,7 +160,6 @@ static MAPIStoreMapping *mapping = nil;
               
               if (contextClass)
                 {
-                  [mapping registerURL: completeURLString];
                   context = [NSClassFromString (contextClass) new];
                   [context autorelease];
 
