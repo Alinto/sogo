@@ -593,7 +593,11 @@ static NSArray *commonSearchFields;
     {
       bindFieldsEnum = [bindFields objectEnumerator];
       while ((currentField = [bindFieldsEnum nextObject]))
-        [qs appendFormat: @" OR (%@='%@')", [currentField stringByTrimmingSpaces], escapedUid];
+	{
+	  if ([currentField caseInsensitiveCompare: UIDField] != NSOrderedSame
+	      && ![mailFields containsObject: currentField])
+	    [qs appendFormat: @" OR (%@='%@')", [currentField stringByTrimmingSpaces], escapedUid];
+	}
     }
 
   if (_filter && [_filter length])

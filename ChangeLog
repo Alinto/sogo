@@ -1,5 +1,8 @@
 2010-10-13  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* SoObjects/SOGo/LDAPSource.m (_qualifierForUIDFilter:): removed
+	duplicated constraints in the filter when using bind fields.
+
 	* UI/WebServerResources/HTMLElement.js (deselectAll): fixed a bug
 	where the properties where not removed from the proper element
 	(table instead of the tbody).
