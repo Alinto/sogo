@@ -1,3 +1,8 @@
+2010-10-13  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* NSString+NGCards.m (-vCardSubvaluesWithSeparator): properly
+	initialized the "escaped" bool.
+
 2010-10-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* iCalEvent.m (-setAllDayWithStartDate:duration:): added a
