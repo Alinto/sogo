@@ -281,6 +281,7 @@ static NSString *commaSeparator = nil;
   stringBuffer = NSZoneMalloc (NULL, sizeof (unichar) * max);
   [self getCharacters: stringBuffer];
   substringLength = 0;
+  escaped = NO;
 
   substringBuffer = NSZoneMalloc (NULL, sizeof (unichar) * max);
 
