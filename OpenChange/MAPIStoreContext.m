@@ -648,7 +648,9 @@ static MAPIStoreMapping *mapping = nil;
         {
           openchangedb_get_new_folderID (ldbCtx, &mappingId);
           [mapping registerURL: childURL withID: mappingId];
-          mapistore_search_context_by_uri (memCtx, [childURL UTF8String], &contextId);
+          mapistore_search_context_by_uri (memCtx,
+                                           [[mapping urlFromID: fid] UTF8String],
+                                           &contextId);
           mapistore_indexing_record_add_mid (memCtx, contextId, mappingId);
         }
       *data = MAPILongLongValue (memCtx, mappingId);
@@ -744,7 +746,9 @@ static MAPIStoreMapping *mapping = nil;
          {
            openchangedb_get_new_folderID (ldbCtx, &mappingId);
            [mapping registerURL: childURL withID: mappingId];
-           mapistore_search_context_by_uri (memCtx, [childURL UTF8String], &contextId);
+           mapistore_search_context_by_uri (memCtx,
+                                            [[mapping urlFromID: fid] UTF8String],
+                                            &contextId);
            mapistore_indexing_record_add_fid (memCtx, contextId, mappingId);
          }
         //   mappingId = [mapping idFromURL: childURL];
@@ -756,15 +760,19 @@ static MAPIStoreMapping *mapping = nil;
       if (parentURL)
         {
           mappingId = [mapping idFromURL: parentURL];
-          if (mappingId == NSNotFound)
-            {
-              openchangedb_get_new_folderID (ldbCtx, &mappingId);
-              [mapping registerURL: childURL withID: mappingId];
-              mapistore_search_context_by_uri (memCtx, [childURL UTF8String], &contextId);
-              mapistore_indexing_record_add_fid (memCtx, contextId, mappingId);
-              // [mapping registerURL: parentURL];
-              // mappingId = [mapping idFromURL: parentURL];
-            }
+          NSAssert (mappingId != NSNotFound,
+                    @"parent folder should be known at this stage");
+          // if (mappingId == NSNotFound)
+          //   {
+          //     [NSException raise: @"MAPIStoreSOGoException"
+          //                 format: @"This should never happen"
+          //     // openchangedb_get_new_folderID (ldbCtx, &mappingId);
+          //     // [mapping registerURL: childURL withID: mappingId];
+          //     // mapistore_search_context_by_uri (memCtx, [childURL UTF8String], &contextId);
+          //     // mapistore_indexing_record_add_fid (memCtx, contextId, mappingId);
+          //     // [mapping registerURL: parentURL];
+          //     // mappingId = [mapping idFromURL: parentURL];
+          //   }
           *data = MAPILongLongValue (memCtx, mappingId);
         }
       else
