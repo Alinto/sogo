@@ -1,5 +1,10 @@
 2010-10-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContext.m
+	(-getMessageTableChildproperty:atURL:withTag:inFolder:withFID:):
+	added missing "break" statement, leading PR_FID to get the value
+	of PR_MID.
+
 	* OpenChange/MAPIStoreMapping.m (-registerURL:): commented method out.
 	(-_setupFixedMapping): new method that registers well-known ids
 	with well-known urls.

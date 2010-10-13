@@ -641,6 +641,7 @@ static MAPIStoreMapping *mapping = nil;
       break;
     case PR_FID:
       *data = MAPILongLongValue (memCtx, fid);
+      break;
     case PR_MID:
       mappingId = [mapping idFromURL: childURL];
       if (mappingId == NSNotFound)
