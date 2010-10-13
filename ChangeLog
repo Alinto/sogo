@@ -1,3 +1,19 @@
+2010-10-13  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Scheduler/NSArray+Scheduler.h: added index constants for
+	events fields.
+	(compareEventsCalendarNameAscending): new method to sort by
+	calendar name.
+
+	* UI/Scheduler/UIxCalListingActions.m: now uses the above
+	mentioned constants.
+	(+initialize): added calendar name to events fields.
+	(eventsListAction): added sort by calendar name.
+
+	* UI/WebServerResources/SchedulerUI.js (eventsListCallback): added
+	calendar name column.
+	(onCalendarSelectEvent): improved list selection.
+
 2010-10-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Mailer/SOGoMailNamespace.m (-toOneRelationshipKeys):

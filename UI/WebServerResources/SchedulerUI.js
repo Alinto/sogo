@@ -218,7 +218,7 @@ function deleteEvent() {
                 var sortedNodes = [];
                 var calendars = [];
                 for (var i = 0; i < nodes.length; i++) {
-                    canDelete = nodes[i].erasable || IsSuperUser;
+                    canDelete = nodes[i].erasable;
                     if (canDelete) {
                         var calendar = nodes[i].calendar;
                         if (!sortedNodes[calendar]) {
@@ -254,7 +254,7 @@ function deleteEvent() {
             var sortedNodes = [];
             var calendars = [];
             for (var i = 0; i < selectedCalendarCell.length; i++) {
-                canDelete = selectedCalendarCell[i].erasable || IsSuperUser;
+                canDelete = selectedCalendarCell[i].erasable;
                 if (canDelete) {
                     var calendar = selectedCalendarCell[i].calendar;
                     if (!sortedNodes[calendar]) {
@@ -865,7 +865,7 @@ function eventsListCallback(http) {
                 var row = createElement("tr");
                 table.tBodies[0].appendChild(row);
                 row.addClassName("eventRow");
-                var rTime = data[i][15];
+                var rTime = data[i][16];
                 var id = escape(data[i][1] + "-" + data[i][0]);
                 if (rTime)
                     id += "-" + escape(rTime);
@@ -874,17 +874,17 @@ function eventsListCallback(http) {
                 row.calendar = escape(data[i][1]);
                 if (rTime)
                     row.recurrenceTime = escape(rTime);
-                row.isException = data[i][16];
-                row.editable = data[i][17];
-                row.erasable = data[i][18];
+                row.isException = data[i][17];
+                row.editable = data[i][18];
+                row.erasable = data[i][19] || IsSuperUser;
                 var startDate = new Date();
-                startDate.setTime(data[i][4] * 1000);
+                startDate.setTime(data[i][5] * 1000);
                 row.day = startDate.getDayString();
-                if (!data[i][7])
+                if (!data[i][8])
                     row.hour = startDate.getHourString(); // event is not all day
                 row.observe("mousedown", onRowClick);
                 row.observe("selectstart", listRowMouseDownHandler);
-                if (data[i][2] != null)
+                if (data[i][3] != null)
                     // Status is defined -- event is readable
                     row.observe("dblclick", editDoubleClickedEvent);
                 row.attachMenu("eventsListMenu");
@@ -892,26 +892,31 @@ function eventsListCallback(http) {
                 var td = createElement("td");
                 row.appendChild(td);
                 td.observe("mousedown", listRowMouseDownHandler, true);
-                td.appendChild(document.createTextNode(data[i][3])); // title
+                td.appendChild(document.createTextNode(data[i][4])); // title
 
                 td = createElement("td");
                 row.appendChild(td);
                 td.observe("mousedown", listRowMouseDownHandler, true);
-                td.appendChild(document.createTextNode(data[i][20])); // start date
+                td.appendChild(document.createTextNode(data[i][21])); // start date
 
                 td = createElement("td");
                 row.appendChild(td);
                 td.observe("mousedown", listRowMouseDownHandler, true);
-                td.appendChild(document.createTextNode(data[i][21])); // end date
+                td.appendChild(document.createTextNode(data[i][22])); // end date
 
                 td = createElement("td");
                 row.appendChild(td);
                 td.observe("mousedown", listRowMouseDownHandler, true);
-                if (data[i][6])
-                    td.appendChild(document.createTextNode(data[i][6])); // location
+                if (data[i][7])
+                    td.appendChild(document.createTextNode(data[i][7])); // location
+
+                td = createElement("td");
+                row.appendChild(td);
+                td.observe("mousedown", listRowMouseDownHandler, true);
+                td.appendChild(document.createTextNode(data[i][2])); // calendar
             }
 
-            if (sorting["attribute"] && sorting["attribute"].length > 0) {
+            if (sorting["attribute"] && sorting["attribute"].length > 0) { log ("sort " + sorting["attribute"]);
                 var sortHeader = $(sorting["attribute"] + "Header");
 
                 if (sortHeader) {
@@ -964,7 +969,7 @@ function tasksListCallback(http) {
                 listItem.calendar = calendar;
                 listItem.addClassName("calendarFolder" + calendar);
                 listItem.cname = cname;
-                listItem.erasable = data[i][7];
+                listItem.erasable = data[i][7] || IsSuperUser;
                 var input = createElement("input");
                 input.setAttribute("type", "checkbox");
                 if (parseInt(data[i][6]) == 0) // editable?
@@ -1179,21 +1184,23 @@ function scrollDayView(scrollEvent) {
             var contentView;
             var eventRow = $(scrollEvent);
             var eventBlocks = selectCalendarEvent(eventRow.calendar, eventRow.cname, eventRow.recurrenceTime);
-            var firstEvent = eventBlocks.first();
+            if (eventBlocks) {
+                var firstEvent = eventBlocks.first();
 
-            if (currentView == "monthview")
-              contentView = firstEvent.up("DIV.day");
-            else
-              contentView = $("daysView");
-
-            // Don't scroll to an all-day event
-            if (typeof eventRow.hour != "undefined") {
-                var top = firstEvent.cumulativeOffset()[1] - contentView.scrollTop;
-                // Don't scroll if the event is visible to the user
-                if (top < contentView.cumulativeOffset()[1])
-                    contentView.scrollTop = firstEvent.cumulativeOffset()[1] - contentView.cumulativeOffset()[1];
-                else if (top > contentView.cumulativeOffset()[1] + contentView.getHeight() - firstEvent.getHeight())
-                    contentView.scrollTop = firstEvent.cumulativeOffset()[1] - contentView.cumulativeOffset()[1];
+                if (currentView == "monthview")
+                    contentView = firstEvent.up("DIV.day");
+                else
+                    contentView = $("daysView");
+                
+                // Don't scroll to an all-day event
+                if (typeof eventRow.hour != "undefined") {
+                    var top = firstEvent.cumulativeOffset()[1] - contentView.scrollTop;
+                    // Don't scroll if the event is visible to the user
+                    if (top < contentView.cumulativeOffset()[1])
+                        contentView.scrollTop = firstEvent.cumulativeOffset()[1] - contentView.cumulativeOffset()[1];
+                    else if (top > contentView.cumulativeOffset()[1] + contentView.getHeight() - firstEvent.getHeight())
+                        contentView.scrollTop = firstEvent.cumulativeOffset()[1] - contentView.cumulativeOffset()[1];
+                }
             }
         }
         else if (currentView != "monthview") {
@@ -1379,24 +1386,25 @@ function resetCategoriesStyles() {
 function newBaseEventDIV(eventRep, event, eventText) {
     //	log ("0 cname = " + event[0]);
     //	log ("1 calendar = " + event[1]);
-    //	log ("2 status = " + event[2]);
-    //	log ("3 title = " + event[3]);
-    //	log ("4 start = " + event[4]);
-    //	log ("5 end = " + event[5]);
-    //	log ("6 location = " + event[6]);
-    //	log ("7 isallday = " + event[7]);
-    //	log ("8 classification = " + event[8]); // 0 = public, 1 = private, 2 = confidential
-    //	log ("9 category = " + event[9]);
-    //	log ("10 participants emails = " + event[10]);
-    //	log ("11 participants states = " + event[11]);
-    //	log ("12 owner = " + event[12]);
-    //	log ("13 iscycle = " + event[13]);
-    //	log ("14 nextalarm = " + event[14]);
-    //	log ("15 recurrenceid = " + event[15]);
-    //	log ("16 isexception = " + event[16]);
-    //  log ("17 editable = " + event[17]);
-    //  log ("18 erasable = " + event[18]);
-    //  log ("19 ownerisorganizer = " + event[19]);
+    //  log ("2 calendar name = " + event[2]);
+    //	log ("3 status = " + event[3]);
+    //	log ("4 title = " + event[4]);
+    //	log ("5 start = " + event[5]);
+    //	log ("6 end = " + event[6]);
+    //	log ("7 location = " + event[7]);
+    //	log ("8 isallday = " + event[8]);
+    //	log ("9 classification = " + event[9]); // 0 = public, 1 = private, 2 = confidential
+    //	log ("10 category = " + event[10]);
+    //	log ("11 participants emails = " + event[11]);
+    //	log ("12 participants states = " + event[12]);
+    //	log ("13 owner = " + event[13]);
+    //	log ("14 iscycle = " + event[14]);
+    //	log ("15 nextalarm = " + event[15]);
+    //	log ("16 recurrenceid = " + event[16]);
+    //	log ("17 isexception = " + event[17]);
+    //  log ("18 editable = " + event[18]);
+    //  log ("19 erasable = " + event[19]);
+    //  log ("20 ownerisorganizer = " + event[20]);
 
     var eventCell = createElement("div");
     eventCell.cname = event[0];
@@ -1408,10 +1416,10 @@ function newBaseEventDIV(eventRep, event, eventText) {
     if (eventRep.recurrenceTime)
         eventCell.recurrenceTime = eventRep.recurrenceTime;
     //eventCell.owner = event[12];
-    eventCell.isException = event[16];
-    eventCell.editable = event[17];
-    eventCell.erasable = event[18];
-    eventCell.ownerIsOrganizer = event[19];
+    eventCell.isException = event[17];
+    eventCell.editable = event[18];
+    eventCell.erasable = event[19] || IsSuperUser;
+    eventCell.ownerIsOrganizer = event[20];
     eventCell.addClassName("event");
 //    if (event[14] > 0)
 //        eventCell.addClassName("alarm");
@@ -1434,29 +1442,29 @@ function newBaseEventDIV(eventRep, event, eventText) {
     var textDiv = createElement("div");
     innerDiv.appendChild(textDiv);
     textDiv.addClassName("text");
-    var iconSpan = createElement("span");
+    var iconSpan = createElement("span", null, "icons");
     textDiv.appendChild(iconSpan);
     textDiv.appendChild(document.createTextNode(eventText.replace(/(\\r)?\\n/g, "<BR/>")));
 
     // Add alarm and classification icons
-    if (event[8] == 1)
+    if (event[9] == 1)
         createElement("img", null, null, {src: ResourcesURL + "/private.png"}, null, iconSpan);
-    else if (event[8] == 2)
+    else if (event[9] == 2)
         createElement("img", null, null, {src: ResourcesURL + "/confidential.png"}, null, iconSpan);
-    if (event[14] > 0)
+    if (event[15] > 0)
         createElement("img", null, null, {src: ResourcesURL + "/alarm.png"}, null, iconSpan);
 
-    if (event[9] != null) {
-        var categoryStyle = categoriesStyles.get(event[9]);
+    if (event[10] != null) {
+        var categoryStyle = categoriesStyles.get(event[10]);
         if (!categoryStyle) {
             categoryStyle = 'category_' + categoriesStyles.keys().length;
-            categoriesStyles.set([event[9]], categoryStyle);
+            categoriesStyles.set([event[10]], categoryStyle);
         }
         innerDiv.addClassName(categoryStyle);
     }
     eventCell.observe("contextmenu", onMenuCurrentView);
     
-    if (event[2] == null) {
+    if (event[3] == null) {
         // Status field is not defined -- user can't read event
         eventCell.observe("selectstart", listRowMouseDownHandler);
         eventCell.observe("click", onCalendarSelectEvent);
@@ -1493,7 +1501,7 @@ function _drawCalendarAllDayEvents(events, eventsData) {
 function newAllDayEventDIV(eventRep, event) {
     // cname, calendar, starts, lasts,
     // 		     startHour, endHour, title) {
-    var eventCell = newBaseEventDIV(eventRep, event, event[3]);
+    var eventCell = newBaseEventDIV(eventRep, event, event[4]);
 
     return eventCell;
 }
@@ -1519,7 +1527,7 @@ function _drawCalendarEvents(events, eventsData) {
 }
 
 function newEventDIV(eventRep, event) {
-    var eventCell = newBaseEventDIV(eventRep, event, event[3]);
+    var eventCell = newBaseEventDIV(eventRep, event, event[4]);
 
     var pc = 100 / eventRep.siblings;
     var left = Math.floor(eventRep.position * pc);
@@ -1529,12 +1537,12 @@ function newEventDIV(eventRep, event) {
     eventCell.addClassName("starts" + eventRep.start);
     eventCell.addClassName("lasts" + eventRep.length);
 
-    if (event[6]) {
+    if (event[7]) {
         var inside = eventCell.childNodesWithTag("div")[0];
         var textDiv = inside.childNodesWithTag("div")[1];
         textDiv.appendChild(createElement("br"));
         var span = createElement("span", null, "location");
-        var text = _("Location:") + " " + event[6];
+        var text = _("Location:") + " " + event[7];
         span.appendChild(document.createTextNode(text));
         textDiv.appendChild(span);
     }
@@ -1558,8 +1566,8 @@ function _drawMonthCalendarEvents(events, eventsData) {
 
 function newMonthEventDIV(eventRep, event) {
     var eventText;
-    if (event[7]) // all-day event
-        eventText = event[3];
+    if (event[8]) // all-day event
+        eventText = event[4];
     else
         eventText = eventRep.starthour + " - " + event[3];
 
@@ -1745,9 +1753,11 @@ function popupCalendar(node) {
 function onEventsSelectionChange() {
     listOfSelection = this;
     this.removeClassName("_unfocused");
-    $("tasksList").addClassName("_unfocused");
 
-    deselectAll(true);
+    var tasksList = $("tasksList");
+    tasksList.addClassName("_unfocused");
+    deselectAll(tasksList);
+
     var rows = $(this.tBodies[0]).getSelectedNodes();
     if (rows.length == 1) {
         var row = rows[0];
@@ -1767,7 +1777,9 @@ function onEventsSelectionChange() {
 function onTasksSelectionChange() {
     listOfSelection = this;
     this.removeClassName("_unfocused");
-    $("eventsList").addClassName("_unfocused");
+    var eventsList = $("eventsList");
+    eventsList.addClassName("_unfocused");
+    deselectAll(eventsList);
 }
 
 function _loadEventHref(href) {
@@ -1812,6 +1824,8 @@ function onHeaderClick(event) {
         newSortAttribute = "end";
     else if (headerId == "locationHeader")
         newSortAttribute = "location";
+    else if (headerId == "calendarNameHeader")
+        newSortAttribute = "calendar";
     else
         newSortAttribute = "start";
 
@@ -1940,7 +1954,7 @@ function _eventBlocksMatching(calendar, cname, recurrenceTime) {
             if (recurrenceTime) {
                 for (var i = 0; i < occurences.length; i++) {
                     var occurence = occurences[i];
-                    if (occurence[15] == recurrenceTime)
+                    if (occurence[16] == recurrenceTime)
                         blocks = occurence.blocks;
                 }
             }
@@ -1957,8 +1971,8 @@ function _eventBlocksMatching(calendar, cname, recurrenceTime) {
     return blocks;
 }
 
+/** Select event in calendar view */
 function selectCalendarEvent(calendar, cname, recurrenceTime) {
-    // Select event in calendar view
     var selection = _eventBlocksMatching(calendar, cname, recurrenceTime);
     if (selection) {
         for (var i = 0; i < selection.length; i++)
@@ -1996,9 +2010,13 @@ function onSelectAll(event) {
     return false;
 }
 
-function deselectAll(cellsOnly) {
-    if (!cellsOnly && listOfSelection) {
-        listOfSelection.deselectAll();
+function deselectAll(list) {
+    if (list) {
+        list.deselectAll();
+    }
+    else {
+        $("eventsList").deselectAll();
+        $("tasksList").deselectAll();
     }
     if (selectedCalendarCell) {
         for (var i = 0; i < selectedCalendarCell.length; i++)
@@ -2007,6 +2025,7 @@ function deselectAll(cellsOnly) {
     }
 }
 
+/** Click on an event in the calendar view */
 function onCalendarSelectEvent(event, willShowContextualMenu) {
     var alreadySelected = false;
 
@@ -2042,8 +2061,8 @@ function onCalendarSelectEvent(event, willShowContextualMenu) {
         // Unselect entries in events list and calendar view, unless :
         // - Shift key is pressed;
         // - Or right button is clicked and event is already selected.
-        listOfSelection = null;
         deselectAll();
+        listOfSelection = $("eventsList");
         this.selectElement();
         if (alreadySelected)
             selectedCalendarCell = [this];
@@ -2077,14 +2096,12 @@ function onCalendarSelectDay(event) {
         // Target is not an event -- unselect all events.
         listOfSelection = $("eventsList");
         deselectAll();
-        listOfSelection = null;
         preventDefault(event);
         return false;
     }
 
     if (listOfSelection) {
         listOfSelection.addClassName("_unfocused");
-        listOfSelection = null;
     }
 
     changeCalendarDisplay( { "day": currentDay } );

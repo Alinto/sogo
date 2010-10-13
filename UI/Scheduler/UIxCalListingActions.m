@@ -80,6 +80,7 @@ static NSArray *tasksFields = nil;
   if (!eventsFields)
     {
       eventsFields = [NSArray arrayWithObjects: @"c_name", @"c_folder",
+			      @"calendarName",
 			      @"c_status", @"c_title", @"c_startdate",
 			      @"c_enddate", @"c_location", @"c_isallday",
 			      @"c_classification", @"c_category",
@@ -368,6 +369,8 @@ static NSArray *tasksFields = nil;
                           forKey: @"c_folder"];
               [newInfo setObject: [currentFolder ownerInContext: context]
                           forKey: @"c_owner"];
+              [newInfo setObject: [currentFolder displayName]
+                          forKey: @"calendarName"];
               if (![[newInfo objectForKey: @"c_title"] length])
                 [self _fixComponentTitle: newInfo withType: component];
 	      // Possible improvement: only call _fixDates if event is recurrent
@@ -510,13 +513,13 @@ static NSArray *tasksFields = nil;
   while ((oldEvent = [events nextObject]))
     {
       newEvent = [NSMutableArray arrayWithArray: oldEvent];
-      isAllDay = [[oldEvent objectAtIndex: 7] boolValue];
-      interval = [[oldEvent objectAtIndex: 4] intValue];
+      isAllDay = [[oldEvent objectAtIndex: eventIsAllDayIndex] boolValue];
+      interval = [[oldEvent objectAtIndex: eventStartDateIndex] intValue];
       [newEvent addObject: [self _formattedDateForSeconds: interval
-				 forAllDay: isAllDay]];
-      interval = [[oldEvent objectAtIndex: 5] intValue];
+						forAllDay: isAllDay]];
+      interval = [[oldEvent objectAtIndex: eventEndDateIndex] intValue];
       [newEvent addObject: [self _formattedDateForSeconds: interval
-				 forAllDay: isAllDay]];
+						forAllDay: isAllDay]];
       [newEvents addObject: newEvent];
     }
   
@@ -527,6 +530,8 @@ static NSArray *tasksFields = nil;
     [newEvents sortUsingSelector: @selector (compareEventsEndDateAscending:)];
   else if ([sort isEqualToString: @"location"])
     [newEvents sortUsingSelector: @selector (compareEventsLocationAscending:)];
+  else if ([sort isEqualToString: @"calendar"])
+    [newEvents sortUsingSelector: @selector (compareEventsCalendarNameAscending:)];
   else
     [newEvents sortUsingSelector: @selector (compareEventsStartDateAscending:)];
 
@@ -616,8 +621,8 @@ _userStateInEvent (NSArray *event)
   participants = nil;
   state = iCalPersonPartStatOther;
 
-  partList = [event objectAtIndex: 10];
-  stateList = [event objectAtIndex: 11];
+  partList = [event objectAtIndex: eventPartMailsIndex];
+  stateList = [event objectAtIndex: eventPartStatesIndex];
   if ([partList length] && [stateList length])
     {
       participants = [partList componentsSeparatedByString: @"\n"];
@@ -626,7 +631,7 @@ _userStateInEvent (NSArray *event)
       max = [participants count];
       while (state == iCalPersonPartStatOther && count < max)
 	{
-	  user = [SOGoUser userWithLogin: [event objectAtIndex: 12]
+	  user = [SOGoUser userWithLogin: [event objectAtIndex: eventOwnerIndex]
 			   roles: nil];
 	  if ([user hasEmail: [participants objectAtIndex: count]])
 	    state = [[states objectAtIndex: count] intValue];
@@ -648,16 +653,16 @@ _userStateInEvent (NSArray *event)
   NSMutableDictionary *eventBlock;
   iCalPersonPartStat userState;
 
-  eventStart = [[event objectAtIndex: 4] intValue];
+  eventStart = [[event objectAtIndex: eventStartDateIndex] intValue];
   if (eventStart < 0)
     [self errorWithFormat: @"event '%@' has negative start: %d (skipped)",
-          [event objectAtIndex: 0], eventStart];
+          [event objectAtIndex: eventNameIndex], eventStart];
   else
     {
-      eventEnd = [[event objectAtIndex: 5] intValue];
+      eventEnd = [[event objectAtIndex: eventEndDateIndex] intValue];
       if (eventEnd < 0)
         [self errorWithFormat: @"event '%@' has negative end: %d (skipped)",
-              [event objectAtIndex: 0], eventEnd];
+              [event objectAtIndex: eventNameIndex], eventEnd];
       else
         {
           if (eventEnd < eventStart)
@@ -666,14 +671,14 @@ _userStateInEvent (NSArray *event)
               eventStart = eventEnd;
               eventEnd = swap;
               [self warnWithFormat: @"event '%@' has end < start: %d < %d",
-                    [event objectAtIndex: 0], eventEnd, eventStart];
+                    [event objectAtIndex: eventNameIndex], eventEnd, eventStart];
             }
 
           startSecs = (unsigned int) [startDate timeIntervalSince1970];
           endsSecs = (unsigned int) [endDate timeIntervalSince1970];
 
-          if ([[event objectAtIndex: 13] boolValue]) // c_iscycle
-            recurrenceTime = [[event objectAtIndex: 15] unsignedIntValue]; // c_recurrence_id
+          if ([[event objectAtIndex: eventIsCycleIndex] boolValue])
+            recurrenceTime = [[event objectAtIndex: eventRecurrenceIdIndex] unsignedIntValue];
           else
             recurrenceTime = 0;
 
@@ -689,7 +694,7 @@ _userStateInEvent (NSArray *event)
           if (offset >= [blocks count])
             [self errorWithFormat: "event '%@' has a computed offset that"
                   @" overflows the amount of blocks (skipped)",
-                  [event objectAtIndex: 0]];
+                  [event objectAtIndex: eventNameIndex]];
           else
             {
               currentDay = [blocks objectAtIndex: offset];
@@ -955,7 +960,7 @@ _computeBlocksPosition (NSArray *blocks)
     {
       event = [events objectAtIndex: count];
       eventNbr = [NSNumber numberWithUnsignedInt: count];
-      isAllDay = [[event objectAtIndex: 7] boolValue];
+      isAllDay = [[event objectAtIndex: eventIsAllDayIndex] boolValue];
       if (dayBasedView && isAllDay)
 	[self _fillBlocks: allDayBlocks withEvent: event withNumber: eventNbr];
       else

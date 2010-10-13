@@ -55,8 +55,8 @@
   NSComparisonResult result;
   unsigned int selfTime, otherTime;
 
-  selfTime = [[self objectAtIndex: 4] intValue];
-  otherTime = [[otherEvent objectAtIndex: 4] intValue];
+  selfTime = [[self objectAtIndex: eventStartDateIndex] intValue];
+  otherTime = [[otherEvent objectAtIndex: eventStartDateIndex] intValue];
   if (selfTime > otherTime)
     result = NSOrderedDescending;
   else if (selfTime < otherTime)
@@ -72,8 +72,8 @@
   NSComparisonResult result;
   unsigned int selfTime, otherTime;
 
-  selfTime = [[self objectAtIndex: 5] intValue];
-  otherTime = [[otherEvent objectAtIndex: 5] intValue];
+  selfTime = [[self objectAtIndex: eventEndDateIndex] intValue];
+  otherTime = [[otherEvent objectAtIndex: eventEndDateIndex] intValue];
   if (selfTime > otherTime)
     result = NSOrderedDescending;
   else if (selfTime < otherTime)
@@ -88,8 +88,8 @@
 {
   NSString *selfTitle, *otherTitle;
 
-  selfTitle = [self objectAtIndex: 3];
-  otherTitle = [otherEvent objectAtIndex: 3];
+  selfTitle = [self objectAtIndex: eventTitleIndex];
+  otherTitle = [otherEvent objectAtIndex: eventTitleIndex];
 
   return [selfTitle caseInsensitiveCompare: otherTitle];
 }
@@ -98,10 +98,20 @@
 {
   NSString *selfTitle, *otherTitle;
 
-  selfTitle = [self objectAtIndex: 6];
-  otherTitle = [otherEvent objectAtIndex: 6];
+  selfTitle = [self objectAtIndex: eventLocationIndex];
+  otherTitle = [otherEvent objectAtIndex: eventLocationIndex];
 
   return [selfTitle caseInsensitiveCompare: otherTitle];
+}
+
+- (NSComparisonResult) compareEventsCalendarNameAscending: (NSArray *) otherEvent
+{
+  NSString *selfCalendarName, *otherCalendarName;
+
+  selfCalendarName = [self objectAtIndex: eventCalendarNameIndex];
+  otherCalendarName = [otherEvent objectAtIndex: eventCalendarNameIndex];
+
+  return [selfCalendarName caseInsensitiveCompare: otherCalendarName];
 }
 
 - (NSComparisonResult) compareTasksAscending: (NSArray *) otherTask
