@@ -530,7 +530,7 @@ static NSArray *tasksFields = nil;
     [newEvents sortUsingSelector: @selector (compareEventsEndDateAscending:)];
   else if ([sort isEqualToString: @"location"])
     [newEvents sortUsingSelector: @selector (compareEventsLocationAscending:)];
-  else if ([sort isEqualToString: @"calendar"])
+  else if ([sort isEqualToString: @"calendarName"])
     [newEvents sortUsingSelector: @selector (compareEventsCalendarNameAscending:)];
   else
     [newEvents sortUsingSelector: @selector (compareEventsStartDateAscending:)];

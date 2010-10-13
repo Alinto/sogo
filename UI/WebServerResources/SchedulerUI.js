@@ -916,7 +916,7 @@ function eventsListCallback(http) {
                 td.appendChild(document.createTextNode(data[i][2])); // calendar
             }
 
-            if (sorting["attribute"] && sorting["attribute"].length > 0) { log ("sort " + sorting["attribute"]);
+            if (sorting["attribute"] && sorting["attribute"].length > 0) {
                 var sortHeader = $(sorting["attribute"] + "Header");
 
                 if (sortHeader) {
@@ -1825,7 +1825,7 @@ function onHeaderClick(event) {
     else if (headerId == "locationHeader")
         newSortAttribute = "location";
     else if (headerId == "calendarNameHeader")
-        newSortAttribute = "calendar";
+        newSortAttribute = "calendarName";
     else
         newSortAttribute = "start";
 
