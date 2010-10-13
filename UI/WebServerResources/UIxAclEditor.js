@@ -20,7 +20,7 @@ function addUser(userName, userID) {
         var count = lis.length - 1;
         var nextLi = null;
         while (count > -1 && !nextLi) {
-            if (lis[count].hasClassName("normal-user")) {
+            if ($(lis[count]).hasClassName("normal-user")) {
                 nextLi = lis[count+1];
             }
             else {
