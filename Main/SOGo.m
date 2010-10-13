@@ -146,6 +146,7 @@ static BOOL debugLeaks;
   [super dealloc];
 }
 
+#warning the following methods should be replaced with helpers in GCSSpecialQueries
 - (NSString *) _sqlScriptForTable: (NSString *) tableName
 			 withType: (NSString *) tableType
 		    andFileSuffix: (NSString *) fileSuffix
