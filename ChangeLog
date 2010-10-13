@@ -1,3 +1,9 @@
+2010-10-13  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/HTMLElement.js (deselectAll): fixed a bug
+	where the properties where not removed from the proper element
+	(table instead of the tbody).
+
 2010-10-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreContext.m

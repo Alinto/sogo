@@ -246,6 +246,11 @@ Element.addMethods({
 
         deselectAll: function(element) {
             element = $(element);
+            if (element.tagName == 'TABLE') {
+                var tbody = element.down('TBODY');
+                if (tbody)
+                    element = tbody;
+            }
             var s = element.select("._selected");
             for (var i = 0; i < s.length; i++)
                 s[i].removeClassName("_selected");
