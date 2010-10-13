@@ -75,6 +75,7 @@ static memcached_st *handle = NULL;
 - (void) killCache
 {
   [cache removeAllObjects];
+  [imap4Connections removeAllObjects];
 
   // This is essential for refetching the cached values in case something has changed
   // accross various sogod processes
@@ -94,6 +95,7 @@ static memcached_st *handle = NULL;
       cache = [[NSMutableDictionary alloc] init];
       users = [[NSMutableDictionary alloc] init];
       groups = [[NSMutableDictionary alloc] init];
+      imap4Connections = [[NSMutableDictionary alloc] init];
 
       // localCache is used to avoid going all the time to the memcached
       // server during each request. We'll cache the value we got from
@@ -141,6 +143,7 @@ static memcached_st *handle = NULL;
   [cache release];
   [users release];
   [groups release];
+  [imap4Connections release];
   [localCache release];
   [super dealloc];
 }
@@ -230,6 +233,19 @@ static memcached_st *handle = NULL;
   return [groups objectForKey: [NSString stringWithFormat: @"%@+%@", groupName, domainName]];
 }
 
+- (void) registerIMAP4Connection: (NGImap4Connection *) connection
+                          forKey: (NSString *) key
+{
+  if (connection)
+    [imap4Connections setObject: connection forKey: key];
+  else
+    [imap4Connections removeObjectForKey: key];
+}
+
+- (NGImap4Connection *) imap4ConnectionForKey: (NSString *) key
+{
+  return [imap4Connections objectForKey: key];
+}
 
 //
 // For non-blocking cache method, see memcached_behavior_set and MEMCACHED_BEHAVIOR_NO_BLOCK

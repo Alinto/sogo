@@ -1,3 +1,13 @@
+2010-10-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailBaseObject.m (-imap4Connection): split
+	initialization of the connection is the new
+	"_createIMAP4Connection" method, make use of the cache below.
+
+	* SoObjects/SOGo/SOGoCache.m (-registerIMAP4Connection:forKey:)
+	(-imap4ConnectionForKey:): new accessors that enabling the
+	per-request caching of IMAP4 connections, in a valid state or not.
+
 2010-10-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreContext.m (-setMemCtx): argument is now of

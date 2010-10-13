@@ -30,6 +30,8 @@
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSURL+misc.h>
 
+#import <SOGo/SOGoCache.h>
+
 #import "SOGoMailAccount.h"
 #import "SOGoMailManager.h"
 
@@ -73,7 +75,7 @@ static BOOL debugOn = YES;
 {
   SOGoMailAccount *folder;
 
-  if ([container respondsToSelector:_cmd])
+  if ([container respondsToSelector: _cmd])
     folder = [container mailAccountFolder];
   else
     {
@@ -116,33 +118,52 @@ static BOOL debugOn = YES;
   return [NGImap4ConnectionManager defaultConnectionManager];
 }
 
-- (NGImap4Connection *) imap4Connection
+- (NGImap4Connection *) _createIMAP4Connection
 {
   NGImap4ConnectionManager *manager;
   NSString *password;
+  NGImap4Connection *newConnection;
+
+  [self imap4URL];
+  manager = [self mailManager];
+  password = [self imap4PasswordRenewed: NO];
+  if (password)
+    {
+      newConnection = [manager connectionForURL: imap4URL
+                                       password: password];
+      if (!newConnection)
+        {
+          [self logWithFormat: @"renewing imap4 password"];
+          password = [self imap4PasswordRenewed: YES];
+          if (password)
+            newConnection = [manager connectionForURL: imap4URL
+                                             password: password];
+        }
+    }
+  if (!newConnection)
+    {
+      newConnection = (NGImap4Connection *) [NSNull null];
+      [self errorWithFormat:@"Could not connect IMAP4"];
+    }
+
+  return newConnection;
+}
+
+- (NGImap4Connection *) imap4Connection
+{
+  NSString *cacheKey;
+  SOGoCache *sogoCache;
 
   if (!imap4)
     {
-      [self imap4URL];
-      manager = [self mailManager];
-      password = [self imap4PasswordRenewed: NO];
-      if (password)
-        {
-          imap4 = [manager connectionForURL: imap4URL
-                                   password: password];
-          if (!imap4)
-            {
-              [self logWithFormat: @"renewing imap4 password"];
-              password = [self imap4PasswordRenewed: YES];
-              if (password)
-                imap4 = [manager connectionForURL: imap4URL
-                                         password: password];
-            }
-        }
+      sogoCache = [SOGoCache sharedCache];
+      cacheKey = [[self mailAccountFolder] nameInContainer];
+      imap4 = [sogoCache imap4ConnectionForKey: cacheKey];
       if (!imap4)
         {
-          imap4 = (NGImap4Connection *) [NSNull null];
-          [self errorWithFormat:@"Could not connect IMAP4"];
+          imap4 = [self _createIMAP4Connection];
+          [sogoCache registerIMAP4Connection: imap4
+                                      forKey: cacheKey];
         }
       [imap4 retain];
     }

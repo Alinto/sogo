@@ -32,6 +32,8 @@
 @class NSString;
 @class NSUserDefaults;
 
+@class NGImap4Connection;
+
 @class SOGoGroup;
 @class SOGoObject;
 @class SOGoUser;
@@ -40,6 +42,7 @@
 @interface SOGoCache : NSObject
 {
   NSMutableDictionary *localCache;
+  NSMutableDictionary *imap4Connections;
   NSMutableDictionary *cache;
   NSMutableDictionary *users;
   NSMutableDictionary *groups;
@@ -67,6 +70,10 @@
 
 - (id) groupNamed: (NSString *) groupName
 	 inDomain: (NSString *) domainName;
+
+- (void) registerIMAP4Connection: (NGImap4Connection *) connection
+                          forKey: (NSString *) key;
+- (NGImap4Connection *) imap4ConnectionForKey: (NSString *) key;
 
 /* NSDictionary-like methods */
 - (void) setValue: (NSString *) value forKey: (NSString *) key;
