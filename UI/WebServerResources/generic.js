@@ -265,8 +265,13 @@ function onCASRecoverIFrameLoaded(event) {
             triggerAjaxRequest(request.url,
                                request.callback,
                                request.callbackData,
+                               request.content,
                                request.paramHeaders,
                                1);
+        }
+        else {
+            var logoffUrl = UserFolderURL + "logoff";
+            window.location.href = logoffUrl;
         }
         this.request = null;
     }
@@ -335,6 +340,7 @@ function triggerAjaxRequest(url, callback, userdata, content, headers, attempt) 
         http.open("POST", url, true);
         http.url = url;
         http.paramHeaders = headers;
+        http.content = content;
         http.callback = callback;
         http.callbackData = userdata;
         http.onreadystatechange = function() { onAjaxRequestStateChange(http); };

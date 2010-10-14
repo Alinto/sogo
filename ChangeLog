@@ -1,5 +1,10 @@
 2010-10-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/generic.js: (triggerAjaxRequest): save the
+	content in the request object in the case a retry is needed.
+	(onCASRecoverIFrameLoaded): on the first retry, the content
+	parameter is passed back to "triggerAjaxRequest".
+
 	* OpenChange/MAPIStoreMailContext.m
 	(-getMessageProperties:inRow:atURL:): new method.
 	(-getMessageTableChildproperty:atURL:withTag:inFolder:withFID:):
