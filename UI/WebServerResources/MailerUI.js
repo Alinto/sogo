@@ -509,7 +509,7 @@ function deleteMessageWithDelay(url, id, mailbox, messageId) {
 
 function onPrintCurrentMessage(event) {
     var messageList = $("messageListBody").down("TBODY");
-    var rows = messageList.getSelectedNodes();
+    var rows = messageList.getSelectedNodesId();
     if (rows.length == 0) {
         showAlertDialog(_("Please select a message to print."));
     }
@@ -2486,19 +2486,13 @@ function onMarkMenuPrepareVisibility() {
 
 function saveAs(event) {
     var messageList = $("messageListBody").down("TBODY");
-    var rows = messageList.getSelectedNodes();
-    var uids = new Array(); // message IDs
-    var paths = new Array(); // row IDs
 
-    if (rows.length > 0) {
-        for (var i = 0; i < rows.length; i++) {
-            var uid = rows[i].readAttribute("id").substr(4);
-            var path = Mailer.currentMailbox + "/" + uid;
-            uids.push(uid);
-            paths.push(path);
-        }
+    var uids = messageList.getSelectedNodesId();
+    if (uids.length > 0) {
+        for (var i = 0; i < uids.length; i++)
+            uids[i] = uids[i].substr(4);
         var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/saveMessages";
-        window.location.href = (url+"?id="+uids+"&uid="+uids+"&mailbox="+Mailer.currentMailbox+"&path="+paths);
+        window.location.href = url + "?uid=" + uids.join(",");
     }
     else
         showAlertDialog(_("Please select a message."));
