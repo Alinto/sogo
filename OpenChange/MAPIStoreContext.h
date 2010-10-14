@@ -153,6 +153,9 @@ extern uint64_t *MAPILongLongValue (void *, uint64_t);
 - (int) getFoldersList: (struct indexing_folders_list **) folders_list
               withFMID: (uint64_t) fmid;
 
+- (int) openMessage: (struct mapistore_message *) msg
+              atURL: (NSString *) childURL;
+
 @end
 
 #endif /* MAPISTORECONTEXT_H */
