@@ -20,6 +20,10 @@
 
 2010-10-14  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/WebServerResources/MailerUI.js (updateUnseenCount): used the
+	method charAt to read a string character instead of accessing it
+	as an array (was not supported by IE).
+
 	* UI/WebServerResources/UIxAttendeesEditor.js
 	(performSearchCallback): improved autocompletion when changing
 	field before completion has returned.

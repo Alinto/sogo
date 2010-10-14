@@ -326,7 +326,6 @@ function onDocumentKeydown(event) {
                 keyCode = "A".charCodeAt(0);
             }
         }
-
 	if (keyCode == Event.KEY_DELETE ||
             keyCode == Event.KEY_BACKSPACE && isMac()) {
             deleteSelectedMessages();
@@ -854,7 +853,7 @@ function updateUnseenCount(node, count, isDelta) {
             for (var i = 0; i < content.length; i++) {
                 var code = content.charCodeAt(i);
                 if (code > 47 && code < 58) {
-                    digits += content[i];
+                    digits += content.charAt(i);
                 }
             }
             count += parseInt(digits);
