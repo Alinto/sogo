@@ -208,7 +208,7 @@ static MAPIStoreMapping *mapping = nil;
 
 - (void) dealloc
 {
-  [self logWithFormat: @"-dealloc"];
+  [self logWithFormat: @"-dealloc: %@", self];
 
   [messageCache release];
   [subfolderCache release];
@@ -449,7 +449,7 @@ static MAPIStoreMapping *mapping = nil;
 {
   [self logWithFormat: @"METHOD '%s' (%d)", __FUNCTION__, __LINE__];
 
-  return MAPISTORE_SUCCESS;
+  return MAPISTORE_ERROR;
 }
 
 
@@ -467,7 +467,7 @@ static MAPIStoreMapping *mapping = nil;
 {
   [self logWithFormat: @"METHOD '%s' (%d)", __FUNCTION__, __LINE__];
 
-  return MAPISTORE_SUCCESS;
+  return MAPISTORE_ERROR;
 }
 
 
@@ -552,29 +552,34 @@ static MAPIStoreMapping *mapping = nil;
   [self logWithFormat: @"METHOD '%s' (%d)", __FUNCTION__, __LINE__];
 
   url = [mapping urlFromID: fid];
-  if (!url)
-    [self errorWithFormat: @"No url found for FID: %lld", fid];
-
-  switch (tableType)
+  if (url)
     {
-    case MAPISTORE_FOLDER_TABLE:
-      ids = [self _subfolderKeysForFolderURL: url];
-      break;
-    case MAPISTORE_MESSAGE_TABLE:
-      ids = [self _messageKeysForFolderURL: url];
-      break;
-    default:
-      rc = MAPISTORE_ERR_INVALID_PARAMETER;
-      ids = nil;
-    }
-
-  if ([ids isKindOfClass: [NSArray class]])
-    {
-      rc = MAPI_E_SUCCESS;
-      *rowCount = [ids count];
+      switch (tableType)
+        {
+        case MAPISTORE_FOLDER_TABLE:
+          ids = [self _subfolderKeysForFolderURL: url];
+          break;
+        case MAPISTORE_MESSAGE_TABLE:
+          ids = [self _messageKeysForFolderURL: url];
+          break;
+        default:
+          rc = MAPISTORE_ERR_INVALID_PARAMETER;
+          ids = nil;
+        }
+      
+      if ([ids isKindOfClass: [NSArray class]])
+        {
+          rc = MAPI_E_SUCCESS;
+          *rowCount = [ids count];
+        }
+      else
+        rc = MAPISTORE_ERR_NO_DIRECTORY;
     }
   else
-    rc = MAPISTORE_ERR_NO_DIRECTORY;
+    {
+      [self errorWithFormat: @"No url found for FID: %lld", fid];
+      rc = MAPISTORE_ERR_NOT_FOUND;
+    }
 
   return rc;
 }
@@ -648,6 +653,12 @@ static MAPIStoreMapping *mapping = nil;
       break;
     case PR_DEPTH: // TODO: DOUBT
       *data = MAPILongLongValue (memCtx, 0);
+      break;
+    case PR_ACCESS: // TODO
+      *data = MAPILongValue (memCtx, 0x02);
+      break;
+    case PR_ACCESS_LEVEL: // TODO
+      *data = MAPILongValue (memCtx, 0x00000000);
       break;
     case PR_VD_VERSION:
       /* mandatory value... wtf? */

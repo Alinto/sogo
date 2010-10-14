@@ -139,6 +139,9 @@ static Class SOGoUserFolderK;
     case PR_HASATTACH: // TODO
       *data = MAPIBoolValue (memCtx, NO);
       break;
+    case PR_CREATION_TIME: // DOUBT
+    case PR_LAST_MODIFICATION_TIME: // DOUBT
+    case PR_LATEST_DELIVERY_TIME: // DOUBT
     case PR_MESSAGE_DELIVERY_TIME:
       child = [self lookupObject: childURL];
       offsetDate = [[child date] addYear: -1 month: 0 day: 0
@@ -157,6 +160,7 @@ static Class SOGoUserFolderK;
 
     case PR_FLAG_STATUS: // TODO
     case PR_SENSITIVITY: // TODO
+    case PR_ORIGINAL_SENSITIVITY: // TODO
     case PR_FOLLOWUP_ICON: // TODO
       *data = MAPILongValue (memCtx, 0);
       break;
@@ -173,35 +177,48 @@ static Class SOGoUserFolderK;
         NSArray *acceptedTypes;
 
         child = [self lookupObject: childURL];
-        
-        acceptedTypes = [NSArray arrayWithObject: @"text/plain"];
+
+        acceptedTypes = [NSArray arrayWithObjects: @"text/plain",
+                                 @"text/html", nil];
         keys = [NSMutableArray array];
         [child addRequiredKeysOfStructure: [child bodyStructure]
                                      path: @"" toArray: keys
                             acceptedTypes: acceptedTypes];
-        if ([keys count] > 0)
-          {
-            id result;
-            NSData *content;
-            NSString *key, *stringContent;
-            
-            result = [child fetchParts: [keys objectsForKey: @"key"
-                                             notFoundMarker: nil]];
-            result = [[result valueForKey: @"RawResponse"] objectForKey:
-                                                             @"fetch"];
-            key = [[keys objectAtIndex: 0] objectForKey: @"key"];
-            content = [[result objectForKey: key] objectForKey: @"data"];
-            stringContent = [[NSString alloc] initWithData: content
-                                                  encoding: NSISOLatin1StringEncoding];
-            
-            // *data = NULL;
-            // rc = MAPISTORE_ERR_NOT_FOUND;
-            *data = [stringContent asUnicodeInMemCtx: memCtx];
-          }
-        else
+        if ([keys count] == 0 || [keys count] == 2)
           {
             *data = NULL;
             rc = MAPISTORE_ERR_NOT_FOUND;
+          }
+        else
+          {
+            acceptedTypes = [NSArray arrayWithObject: @"text/plain"];
+            [keys removeAllObjects];
+            [child addRequiredKeysOfStructure: [child bodyStructure]
+                                         path: @"" toArray: keys
+                                acceptedTypes: acceptedTypes];
+            if ([keys count] > 0)
+              {
+                id result;
+                NSData *content;
+                NSString *key, *stringContent;
+                
+                result = [child fetchParts: [keys objectsForKey: @"key"
+                                                 notFoundMarker: nil]];
+                result = [[result valueForKey: @"RawResponse"] objectForKey: @"fetch"];
+                key = [[keys objectAtIndex: 0] objectForKey: @"key"];
+                content = [[result objectForKey: key] objectForKey: @"data"];
+                stringContent = [[NSString alloc] initWithData: content
+                                                      encoding: NSISOLatin1StringEncoding];
+                
+                // *data = NULL;
+                // rc = MAPISTORE_ERR_NOT_FOUND;
+                *data = [stringContent asUnicodeInMemCtx: memCtx];
+              }
+            else
+              {
+                *data = NULL;
+                rc = MAPISTORE_ERR_NOT_FOUND;
+              }
           }
       }
       break;
@@ -244,14 +261,15 @@ static Class SOGoUserFolderK;
 
       /* We don't handle any RTF content. */
     case PR_RTF_COMPRESSED:
-    case PR_RTF_IN_SYNC:
       *data = NULL;
       rc = MAPISTORE_ERR_NOT_FOUND;
+      break;
+    case PR_RTF_IN_SYNC:
+      *data = MAPIBoolValue (memCtx, NO);
       break;
 
 
       // #define PR_ITEM_TEMPORARY_FLAGS                             PROP_TAG(PT_LONG      , 0x1097) /* 0x10970003 */
-      // #define PR_SEARCH_KEY                                       PROP_TAG(PT_BINARY    , 0x300b) /* 0x300b0102 */
 
       // 36030003 - PR_CONTENT_UNREAD
       // 36020003 - PR_CONTENT_COUNT
@@ -281,6 +299,96 @@ static Class SOGoUserFolderK;
     case PR_READ_RECEIPT_REQUESTED: // TODO
       *data = MAPIBoolValue (memCtx, NO);
       break;
+
+      /* BOOL */
+    case PR_ALTERNATE_RECIPIENT_ALLOWED:
+    case PR_AUTO_FORWARDED:
+    case PR_DL_EXPANSION_PROHIBITED:
+    case PR_RESPONSE_REQUESTED:
+    case PR_REPLY_REQUESTED:
+    case PR_DELETE_AFTER_SUBMIT:
+    case PR_PROCESSED:
+    case PR_ORIGINATOR_DELIVERY_REPORT_REQUESTED:
+    case PR_RECIPIENT_REASSIGNMENT_PROHIBITED:
+      *data = MAPIBoolValue (memCtx, NO);
+      break;
+
+      /* PT_SYSTIME */
+    case PR_START_DATE:
+    case PR_END_DATE:
+    case PR_ACTION_DATE:
+    case PR_FLAG_COMPLETE:
+    case PR_DEFERRED_DELIVERY_TIME:
+    case PR_REPORT_TIME:
+    case PR_CLIENT_SUBMIT_TIME:
+    case PR_DEFERRED_SEND_TIME:
+    case PR_ORIGINAL_SUBMIT_TIME:
+      
+      /* PT_BINARY */
+    case PR_CONVERSATION_KEY:
+    case PR_ORIGINALLY_INTENDED_RECIPIENT_NAME:
+    case PR_PARENT_KEY:
+    case PR_REPORT_TAG:
+    case PR_SENT_REPRESENTING_SEARCH_KEY:
+    case PR_RECEIVED_BY_ENTRYID:
+    case PR_SENT_REPRESENTING_ENTRYID:
+    case PR_RCVD_REPRESENTING_ENTRYID:
+    case PR_ORIGINAL_AUTHOR_ENTRYID:
+    case PR_REPLY_RECIPIENT_ENTRIES:
+    case PR_RECEIVED_BY_SEARCH_KEY:
+    case PR_RCVD_REPRESENTING_SEARCH_KEY:
+    case PR_SEARCH_KEY:
+    case PR_CHANGE_KEY:
+    case PR_ORIGINAL_AUTHOR_SEARCH_KEY:
+    case PR_CONVERSATION_INDEX:
+    case PR_SENDER_ENTRYID:
+    case PR_SENDER_SEARCH_KEY:
+
+      /* PT_SVREID*/
+    case PR_SENT_MAILSVR_EID:
+      *data = NULL;
+      rc = MAPISTORE_ERR_NOT_FOUND;
+      break;
+
+      /* PR_LONG */
+    case PR_OWNER_APPT_ID:
+    case PR_ACTION_FLAG:
+    case PR_INTERNET_CPID:
+    case PR_INET_MAIL_OVERRIDE_FORMAT:
+      *data = NULL;
+      rc = MAPISTORE_ERR_NOT_FOUND;
+      break;
+
+    case PR_MSG_EDITOR_FORMAT:
+      {
+        NSMutableArray *keys;
+        NSArray *acceptedTypes;
+        uint32_t format;
+
+        child = [self lookupObject: childURL];
+
+        format = 0; /* EDITOR_FORMAT_DONTKNOW */
+
+        acceptedTypes = [NSArray arrayWithObject: @"text/plain"];
+        keys = [NSMutableArray array];
+        [child addRequiredKeysOfStructure: [child bodyStructure]
+                                     path: @"" toArray: keys
+                            acceptedTypes: acceptedTypes];
+        if ([keys count] == 1)
+          format = EDITOR_FORMAT_PLAINTEXT;
+
+        acceptedTypes = [NSArray arrayWithObject: @"text/html"];
+        [keys removeAllObjects];
+        [child addRequiredKeysOfStructure: [child bodyStructure]
+                                     path: @"" toArray: keys
+                            acceptedTypes: acceptedTypes];
+        if ([keys count] == 1)
+          format = EDITOR_FORMAT_HTML;
+
+        *data = MAPILongValue (memCtx, format);
+      }
+      break;
+
     default:
       rc = [super getMessageTableChildproperty: data
                                          atURL: childURL
