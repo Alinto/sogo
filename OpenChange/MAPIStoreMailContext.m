@@ -165,6 +165,7 @@ static Class SOGoUserFolderK;
       break;
 
     case PR_BODY:
+    case PR_BODY_UNICODE:
       {
         NSMutableArray *keys;
         NSArray *acceptedTypes;
