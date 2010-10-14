@@ -156,6 +156,10 @@ extern uint64_t *MAPILongLongValue (void *, uint64_t);
 - (int) openMessage: (struct mapistore_message *) msg
               atURL: (NSString *) childURL;
 
+- (int) getMessageProperties: (struct SPropTagArray *) sPropTagArray
+                       inRow: (struct SRow *) aRow
+                       atURL: (NSString *) childURL;
+
 @end
 
 #endif /* MAPISTORECONTEXT_H */

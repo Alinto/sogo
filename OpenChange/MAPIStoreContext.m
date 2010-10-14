@@ -945,21 +945,43 @@ static MAPIStoreMapping *mapping = nil;
   return MAPISTORE_ERROR;
 }
 
-- (int) getProperties: (struct SPropTagArray *) SPropTagArray
+- (int) getProperties: (struct SPropTagArray *) sPropTagArray
                 inRow: (struct SRow *) aRow
               withMID: (uint64_t) fmid
                  type: (uint8_t) tableType
 {
-  [self logWithFormat: @"METHOD '%s' (%d) -- tableType: %d, mid: %lld",
-        __FUNCTION__, __LINE__, tableType, fmid];
+  NSString *childURL;
+  int rc;
 
-  switch (tableType)
+  childURL = [mapping urlFromID: fmid];
+  if (childURL)
     {
-    case MAPISTORE_FOLDER:
-      break;
-    case MAPISTORE_MESSAGE:
-      break;
+      switch (tableType)
+        {
+        case MAPISTORE_MESSAGE:
+          rc = [self getMessageProperties: sPropTagArray inRow: aRow
+                                    atURL: childURL];
+          break;
+        case MAPISTORE_FOLDER:
+        default:
+          rc = MAPISTORE_ERROR;
+          break;
+        }
     }
+  else
+    {
+      [self errorWithFormat: @"No url found for FMID: %lld", fmid];
+      rc = MAPISTORE_ERR_NOT_FOUND;
+    }
+
+  return rc;
+}
+
+- (int) getMessageProperties: (struct SPropTagArray *) sPropTagArray
+                       inRow: (struct SRow *) aRow
+                       atURL: (NSString *) childURL
+{
+  [self logWithFormat: @"METHOD '%s' (%d)", __FUNCTION__, __LINE__];
 
   return MAPISTORE_ERROR;
 }

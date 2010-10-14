@@ -20,6 +20,7 @@
 	(-setPropertiesWithMID:type:inRow:)
 	(-deleteMessageWithMID:withFlags:): return MAPISTORE_ERROR for
 	those unimplemented methods.
+	(-getMessageProperties:inRow:atURL:): new subclassable method.
 
 2010-10-14  Francis Lachapelle  <flachapelle@inverse.ca>
 
