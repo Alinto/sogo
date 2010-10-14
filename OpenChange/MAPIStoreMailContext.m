@@ -424,15 +424,16 @@ static Class SOGoUserFolderK;
                                          withTag: tag
                                         inFolder: nil
                                          withFID: 0]
-              == MAPI_E_SUCCESS)
+              != MAPI_E_SUCCESS)
             {
-              set_SPropValue_proptag (&(aRow->lpProps[aRow->cValues]),
-                                      tag, propValue);
-              aRow->cValues++;
-              // talloc_free (propValue);
+              propValue = MAPILongValue (memCtx, MAPI_E_NOT_FOUND);
+              tag = (tag & 0xffff0000) | 0x0a;
             }
+          set_SPropValue_proptag (&(aRow->lpProps[aRow->cValues]),
+                                  tag, propValue);
+          aRow->cValues++;
         }
-      rc = MAPISTORE_ERR_NOT_FOUND;
+      rc = MAPI_E_SUCCESS;
     }
   else
     rc = MAPISTORE_ERR_NOT_FOUND;
