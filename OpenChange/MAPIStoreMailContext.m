@@ -127,6 +127,8 @@ static Class SOGoUserFolderK;
       *data = MAPILongValue (memCtx, 0x00000100);
       break;
     case PR_CONVERSATION_TOPIC:
+    case PR_CONVERSATION_TOPIC_UNICODE:
+    case PR_SUBJECT:
     case PR_SUBJECT_UNICODE:
       child = [self lookupObject: childURL];
       *data = [[child decodedSubject] asUnicodeInMemCtx: memCtx];
