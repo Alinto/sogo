@@ -242,6 +242,7 @@ static Class SOGoUserFolderK;
   struct SRow *properties;
   NSArray *to;
   NSInteger count, max;
+  NGImap4EnvelopeAddress *currentAddress;
   NSString *name;
   uint32_t tags[] = { PR_SUBJECT_UNICODE, PR_HASATTACH,
                       PR_MESSAGE_DELIVERY_TIME, PR_MESSAGE_FLAGS,
@@ -273,7 +274,10 @@ static Class SOGoUserFolderK;
                                   PR_RECIPIENT_TYPE,
                                   MAPILongValue (memCtx, 0x01));
 
-          name = [[to objectAtIndex: count] personalName];
+          currentAddress = [to objectAtIndex: count];
+          name = [currentAddress personalName];
+          if (![name length])
+            name = [currentAddress baseEMail];
           set_SPropValue_proptag (&(recipients->aRow[count].lpProps[1]),
                                   PR_DISPLAY_NAME,
                                   [name asUnicodeInMemCtx: recipients->aRow[count].lpProps]);
