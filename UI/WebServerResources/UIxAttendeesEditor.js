@@ -66,8 +66,6 @@ function resolveListAttendeesCallback(http) {
             input.confirmedValue = null;
             input.hasfreebusy = false;
             input.modified = true;
-            // input.focussed = true;
-            // input.activate();
             input.checkAfterLookup = true;
             performSearch(input);
             if (i < (contacts.length - 1)) {
@@ -77,25 +75,17 @@ function resolveListAttendeesCallback(http) {
                 var row = input.parentNode.parentNode;
                 var tBody = row.parentNode;
                 if (row.rowIndex == (tBody.rows.length - 3)) {
-                    if (input.selectText) {
-                        input.selectText(0, 0);
-                    } else if (input.createTextRange) {
-                        input.createTextRange().moveStart();
-                    }
+                    //input.setCaretTo(0);
                     newAttendee();
                 } else {
                     var nextRow = tBody.rows[row.rowIndex + 1];
-                    var input = nextRow.down("input");
-                    input.selectText(0, input.value.length);
-                    input.focussed = true;
+                    input = nextRow.down("input");
+                    //input.selectText(0, input.value.length);
+                    //input.focussed = true;
                 }
             } else {
-                if (input.selectText) {
-                    input.selectText(0, 0);
-                } else if (input.createTextRange) {
-                    input.createTextRange().moveStart();
-                }
-                input.blur();
+                //input.setCaretTo(0);
+                //input.blur();
             }
         }
     }
@@ -118,8 +108,7 @@ function onContactKeydown(event) {
             resolveListAttendees(this, true);
             event.stop();
         } else {
-            checkAttendee(this);
-            // this.blur(); // triggers checkAttendee function call
+            this.focussed = false;
             var input = row.down("input");
             if (input) {
                 input.focussed = true;
@@ -208,7 +197,7 @@ function performSearchCallback(http) {
             var start = input.value.length;
             var data = http.responseText.evalJSON(true);
 
-            if (data.contacts.length > 1) {
+            if (data.contacts.length > 1 && input.focussed) {
                 list.input = input;
                 $(list.childNodesWithTag("li")).each(function(item) {
                         item.remove();
@@ -299,7 +288,8 @@ function performSearchCallback(http) {
                     }
                     if ((input.value == contact["c_mail"])
                         || (contact["c_cn"].substring(0, input.value.length).toUpperCase()
-                            == input.value.toUpperCase())) {
+                            == input.value.toUpperCase())
+                        || !input.focussed) {
                         input.value = completeEmail;
                     }
                     else
@@ -308,7 +298,13 @@ function performSearchCallback(http) {
                     input.isList = isList;
                     input.confirmedValue = completeEmail;
                     var end = input.value.length;
-                    $(input).selectText(start, end);
+                    if (input.focussed)
+                        $(input).selectText(start, end);
+                    else if (isList)
+                        resolveListAttendees(input, true);
+                    else
+                        // We lost the focus -- force freebusy lookup
+                        input.checkAfterLookup = true;
 
                     attendeesEditor.selectedIndex = -1;
 
@@ -1093,7 +1089,7 @@ function displayFreeBusyForNode(input) {
     var rowIndex = input.parentNode.parentNode.sectionRowIndex;
     var row = $("freeBusyData").tBodies[0].rows[rowIndex];
     var nodes = row.cells;
-    // log ("displayFreeBusyForNode index " + rowIndex + " (" + nodes.length + " cells)");
+    //log ("displayFreeBusyForNode index " + rowIndex + " (" + nodes.length + " cells)");
     if (input.uid) {
         if (!input.hasfreebusy) {
             // log("forcing draw of nodes");
