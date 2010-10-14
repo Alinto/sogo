@@ -1,3 +1,19 @@
+2010-10-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreContext.m (-openMessage:withMID:inFID:):
+	implemented method by resolving the url corresponding to the MID
+	and transferring the call to the new subclassable
+	"openMessage:atURL:" method.
+	(-openMessage:atURL:): new subclassable method.
+	(-createMessageWithMID:inFID:)
+	(-saveChangesInMessageWithMID:andFlags:):
+	(-submitMessageWithMID:andFlags:):
+	(-getProperties:inRow:withMID:type:):
+	(-getFID:byName:inParentFID:)
+	(-setPropertiesWithMID:type:inRow:)
+	(-deleteMessageWithMID:withFlags:): return MAPISTORE_ERROR for
+	those unimplemented methods.
+
 2010-10-14  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/UIxAttendeesEditor.js

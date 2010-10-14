@@ -899,9 +899,26 @@ static MAPIStoreMapping *mapping = nil;
             withMID: (uint64_t) mid
               inFID: (uint64_t) fid
 {
+  NSString *childURL;
+  int rc;
+
+  childURL = [mapping urlFromID: mid];
+  if (childURL)
+    {
+      rc = [self openMessage: msg atURL: childURL];
+    }
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
+}
+
+- (int) openMessage: (struct mapistore_message *) msg
+              atURL: (NSString *) childURL
+{
   [self logWithFormat: @"METHOD '%s' (%d)", __FUNCTION__, __LINE__];
 
-  return MAPI_E_SUCCESS;
+  return MAPISTORE_ERROR;
 }
 
 - (int) createMessageWithMID: (uint64_t) mid
@@ -909,7 +926,7 @@ static MAPIStoreMapping *mapping = nil;
 {
   [self logWithFormat: @"METHOD '%s' (%d)", __FUNCTION__, __LINE__];
 
-  return MAPI_E_SUCCESS;
+  return MAPISTORE_ERROR;
 }
 
 - (int) saveChangesInMessageWithMID: (uint64_t) mid
@@ -917,7 +934,7 @@ static MAPIStoreMapping *mapping = nil;
 {
   [self logWithFormat: @"METHOD '%s' (%d)", __FUNCTION__, __LINE__];
 
-  return MAPI_E_SUCCESS;
+  return MAPISTORE_ERROR;
 }
 
 - (int) submitMessageWithMID: (uint64_t) mid
@@ -925,7 +942,7 @@ static MAPIStoreMapping *mapping = nil;
 {
   [self logWithFormat: @"METHOD '%s' (%d)", __FUNCTION__, __LINE__];
 
-  return MAPI_E_SUCCESS;
+  return MAPISTORE_ERROR;
 }
 
 - (int) getProperties: (struct SPropTagArray *) SPropTagArray
@@ -944,7 +961,7 @@ static MAPIStoreMapping *mapping = nil;
       break;
     }
 
-  return MAPI_E_SUCCESS;
+  return MAPISTORE_ERROR;
 }
 
 - (int) getPath: (char **) path
@@ -973,7 +990,7 @@ static MAPIStoreMapping *mapping = nil;
   [self logWithFormat: @"METHOD '%s' (%d) -- foldername: %s, parent_fid: %lld",
         __FUNCTION__, __LINE__, foldername, parent_fid];
 
-  return MAPISTORE_ERR_INVALID_PARAMETER;
+  return MAPISTORE_ERROR;
 }
 
 - (int) setPropertiesWithMID: (uint64_t) fmid
@@ -990,7 +1007,7 @@ static MAPIStoreMapping *mapping = nil;
       break;
     }
 
-  return MAPI_E_SUCCESS;
+  return MAPISTORE_ERROR;
 }
 
 - (int) deleteMessageWithMID: (uint64_t) mid
@@ -998,7 +1015,7 @@ static MAPIStoreMapping *mapping = nil;
 {
   [self logWithFormat: @"METHOD '%s' (%d)", __FUNCTION__, __LINE__];
 
-  return MAPI_E_SUCCESS;
+  return MAPISTORE_ERROR;
 }
 
 - (int) getFoldersList: (struct indexing_folders_list **) folders_list
