@@ -30,8 +30,6 @@
               class="textField"
               type="text"
               var:value="address"
-              onfocus="addressFieldGotFocus(this);"
-              onblur="addressFieldLostFocus(this);"
               />
             </td>
           </tr>
