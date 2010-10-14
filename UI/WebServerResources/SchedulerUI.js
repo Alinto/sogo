@@ -2062,7 +2062,7 @@ function onCalendarSelectEvent(event, willShowContextualMenu) {
         // - Shift key is pressed;
         // - Or right button is clicked and event is already selected.
         deselectAll();
-        listOfSelection = $("eventsList");
+        listOfSelection = null;
         this.selectElement();
         if (alreadySelected)
             selectedCalendarCell = [this];
