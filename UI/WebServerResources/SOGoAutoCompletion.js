@@ -27,6 +27,7 @@ var SOGoAutoCompletionInterface = {
         this.menu = $('contactsMenu');
         this.writeAttribute("autocomplete", "off");
         this.writeAttribute("container", null);
+        this.confirmedValue = null;
         this.observe("keydown", this.onKeydown.bindAsEventListener(this));
         this.observe("blur", this.onBlur.bindAsEventListener(this));
     },
@@ -142,7 +143,7 @@ var SOGoAutoCompletionInterface = {
             if (input.animationParent)
                 startAnimation(input.animationParent);
             document.contactLookupAjaxRequest =
-            triggerAjaxRequest(urlstr, input.performSearchCallback.bind(input), input);
+                triggerAjaxRequest(urlstr, input.performSearchCallback.bind(input), input);
         }
         else {
             if (document.currentPopupMenu)

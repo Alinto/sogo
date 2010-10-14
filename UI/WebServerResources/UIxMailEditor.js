@@ -346,6 +346,8 @@ function initTabIndex(addressList, subjectField, msgArea) {
                 input.writeAttribute("tabindex", i++);
                 input.addInterface(SOGoAutoCompletionInterface);
                 input.uidField = "c_name";
+                input.observe("focus", addressFieldGotFocus.bind(input));
+                input.observe("blur", addressFieldLostFocus.bind(input));
                 input.observe("autocompletion:changedlist", expandContactList);
                 //input.onListAdded = expandContactList;
             }

@@ -71,19 +71,27 @@ function fancyAddRow(text, type) {
     var select = $(rowNodes[0]).childNodesWithTag("select")[0];
     select.name = 'popup_' + currentIndex;
     select.value = (type? type : proto.down("select").value);
-    var input = $(rowNodes[1]).childNodesWithTag("input")[0];
+    var cell = $(rowNodes[1]);
+    var input = cell.childNodesWithTag("input")[0];
+    if (Prototype.Browser.IE) {
+        cell.removeChild(input);
+        input = new Element("input");
+        cell.appendChild(input);
+    }
+    
     input.name  = 'addr_' + currentIndex;
     input.id = 'addr_' + currentIndex;
     input.value = text;
-    input.stopObserving("keydown");
-    input.stopObserving("blur");
-
-    addressList.insertBefore(row, lastChild);
+    input.stopObserving();
 
     input.addInterface(SOGoAutoCompletionInterface);
     input.focus();
     input.select();
+    input.observe("focus", addressFieldGotFocus.bind(input));
+    input.observe("blur", addressFieldLostFocus.bind(input));
     input.observe("autocompletion:changedlist", expandContactList);
+
+    addressList.insertBefore(row, lastChild);
 }
 
 function expandContactList (e) {
@@ -118,21 +126,21 @@ function expandContactListCallback (http) {
     }
 }
 
-function addressFieldGotFocus(sender) {
+function addressFieldGotFocus(event) {
     var idx;
   
-    idx = this.getIndexFromIdentifier(sender.id);
+    idx = getIndexFromIdentifier(this.id);
     if (lastIndex == idx) return;
-    this.removeLastEditedRowIfEmpty();
+    removeLastEditedRowIfEmpty();
     onWindowResize(null);
 
     return false;
 }
 
-function addressFieldLostFocus(sender) {
-    lastIndex = this.getIndexFromIdentifier(sender.id);
+function addressFieldLostFocus(event) {
+    lastIndex = getIndexFromIdentifier(this.id);
     
-    var addresses = sender.value.split(',');
+    var addresses = this.value.split(',');
     if (addresses.length > 0) {
         var first = true;
         for (var i = 0; i < addresses.length; i++) {
@@ -145,11 +153,11 @@ function addressFieldLostFocus(sender) {
                     if (emailRE.test(word)) {
                         phrase.push('<' + word + '>');
                         if (first) {
-                            sender.value = phrase.join(' ');
+                            this.value = phrase.join(' ');
                             first = false;
                         }
                         else
-                            fancyAddRow(phrase.join(' '), $(sender).up("tr").down("select").value);
+                            fancyAddRow(phrase.join(' '), $(this).up("tr").down("select").value);
                     
                         phrase = new Array();
                     }
@@ -159,11 +167,11 @@ function addressFieldLostFocus(sender) {
             }
             if (phrase.length > 0) {
                 if (first) {
-                    sender.value = phrase.join(' ');
+                    this.value = phrase.join(' ');
                     first = false;
                 }
                 else
-                    fancyAddRow(phrase.join(' '), $(sender).up("tr").down("select").value);
+                    fancyAddRow(phrase.join(' '), $(this).up("tr").down("select").value);
                 
                 phrase = new Array();
             }
