@@ -24,20 +24,22 @@
 
 #import <NGImap4/NGImap4EnvelopeAddress.h>
 
-#import <SOGo/SOGoUserFolder.h>
-
 #import <Mailer/SOGoMailFolder.h>
 #import <Mailer/SOGoMailObject.h>
 
+#import <SOGo/NSArray+Utilities.h>
+#import <SOGo/SOGoUserFolder.h>
+
 #import "MAPIApplication.h"
 #import "MAPIStoreAuthenticator.h"
+#import "NSData+MAPIStore.h"
 #import "NSCalendarDate+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 
 #import "MAPIStoreMailContext.h"
 
 #undef DEBUG
-typedef int bool;
+#include <stdbool.h>
 #include <gen_ndr/exchange.h>
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
@@ -161,7 +163,89 @@ static Class SOGoUserFolderK;
     case PR_REPLY_TIME:
       *data = [[NSCalendarDate date] asFileTimeInMemCtx: memCtx];
       break;
+
+    case PR_BODY:
+      {
+        NSMutableArray *keys;
+        NSArray *acceptedTypes;
+
+        child = [self lookupObject: childURL];
+        
+        acceptedTypes = [NSArray arrayWithObject: @"text/plain"];
+        keys = [NSMutableArray array];
+        [child addRequiredKeysOfStructure: [child bodyStructure]
+                                     path: @"" toArray: keys
+                            acceptedTypes: acceptedTypes];
+        if ([keys count] > 0)
+          {
+            id result;
+            NSData *content;
+            NSString *key, *stringContent;
+            
+            result = [child fetchParts: [keys objectsForKey: @"key"
+                                             notFoundMarker: nil]];
+            result = [[result valueForKey: @"RawResponse"] objectForKey:
+                                                             @"fetch"];
+            key = [[keys objectAtIndex: 0] objectForKey: @"key"];
+            content = [[result objectForKey: key] objectForKey: @"data"];
+            stringContent = [[NSString alloc] initWithData: content
+                                                  encoding: NSISOLatin1StringEncoding];
+            
+            // *data = NULL;
+            // rc = MAPISTORE_ERR_NOT_FOUND;
+            *data = [stringContent asUnicodeInMemCtx: memCtx];
+          }
+        else
+          {
+            *data = NULL;
+            rc = MAPISTORE_ERR_NOT_FOUND;
+          }
+      }
+      break;
       
+    case PR_HTML:
+      {
+        NSMutableArray *keys;
+        NSArray *acceptedTypes;
+
+        child = [self lookupObject: childURL];
+        
+        acceptedTypes = [NSArray arrayWithObject: @"text/html"];
+        keys = [NSMutableArray array];
+        [child addRequiredKeysOfStructure: [child bodyStructure]
+                                    path: @"" toArray: keys acceptedTypes: acceptedTypes];
+        if ([keys count] > 0)
+          {
+            id result;
+            NSString *key;
+            NSData *content;
+            
+            result = [child fetchParts: [keys objectsForKey: @"key"
+                                            notFoundMarker: nil]];
+            result = [[result valueForKey: @"RawResponse"] objectForKey:
+                                            @"fetch"];
+            key = [[keys objectAtIndex: 0] objectForKey: @"key"];
+            content = [[result objectForKey: key] objectForKey: @"data"];
+            *data = [content asBinaryInMemCtx: memCtx];
+          }
+        else
+          {
+            *data = NULL;
+            rc = MAPISTORE_ERR_NOT_FOUND;
+          }
+      }
+
+      // *data = NULL;
+      // rc = MAPISTORE_ERR_NOT_FOUND;
+      break;
+
+      /* We don't handle any RTF content. */
+    case PR_RTF_COMPRESSED:
+    case PR_RTF_IN_SYNC:
+      *data = NULL;
+      rc = MAPISTORE_ERR_NOT_FOUND;
+      break;
+
 
       // #define PR_ITEM_TEMPORARY_FLAGS                             PROP_TAG(PT_LONG      , 0x1097) /* 0x10970003 */
       // #define PR_SEARCH_KEY                                       PROP_TAG(PT_BINARY    , 0x300b) /* 0x300b0102 */
@@ -310,6 +394,45 @@ static Class SOGoUserFolderK;
       msg->properties = properties;
       
       rc = MAPI_E_SUCCESS;
+    }
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
+}
+
+- (int) getMessageProperties: (struct SPropTagArray *) sPropTagArray
+                       inRow: (struct SRow *) aRow
+                       atURL: (NSString *) childURL
+{
+  id child;
+  NSInteger count;
+  void *propValue;
+  uint32_t tag;
+  int rc;
+
+  child = [self lookupObject: childURL];
+  if (child)
+    {
+      aRow->lpProps = talloc_array (aRow, struct SPropValue,
+                                    sPropTagArray->cValues);
+      for (count = 0; count < sPropTagArray->cValues; count++)
+        {
+          tag = sPropTagArray->aulPropTag[count];
+          if ([self getMessageTableChildproperty: &propValue
+                                           atURL: childURL
+                                         withTag: tag
+                                        inFolder: nil
+                                         withFID: 0]
+              == MAPI_E_SUCCESS)
+            {
+              set_SPropValue_proptag (&(aRow->lpProps[aRow->cValues]),
+                                      tag, propValue);
+              aRow->cValues++;
+              // talloc_free (propValue);
+            }
+        }
+      rc = MAPISTORE_ERR_NOT_FOUND;
     }
   else
     rc = MAPISTORE_ERR_NOT_FOUND;

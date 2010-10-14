@@ -1,5 +1,11 @@
 2010-10-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailContext.m
+	(-getMessageProperties:inRow:atURL:): new method.
+	(-getMessageTableChildproperty:atURL:withTag:inFolder:withFID:):
+	added responses for PR_BODY, PR_HTML and fake responses for
+	PR_RTF_COMPRESSED, PR_RTF_IN_SYNC.
+
 	* OpenChange/NSData+MAPIStore.m: new category module.
 	(-asBinaryInMemCtx:): new method returning a struct Binary_r.
 
