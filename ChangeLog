@@ -1,5 +1,9 @@
 2010-10-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailContext.m (-openMessage:atURL:): basic
+	implementation returning the "to" recipients only and a few
+	unchecked tags.
+
 	* OpenChange/MAPIStoreContext.m (-openMessage:withMID:inFID:):
 	implemented method by resolving the url corresponding to the MID
 	and transferring the call to the new subclassable

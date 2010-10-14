@@ -22,6 +22,8 @@
 
 #import <NGObjWeb/WOContext+SoObjects.h>
 
+#import <NGImap4/NGImap4EnvelopeAddress.h>
+
 #import <SOGo/SOGoUserFolder.h>
 
 #import <Mailer/SOGoMailFolder.h>
@@ -35,7 +37,10 @@
 #import "MAPIStoreMailContext.h"
 
 #undef DEBUG
+typedef int bool;
+#include <gen_ndr/exchange.h>
 #include <mapistore/mapistore.h>
+#include <mapistore/mapistore_errors.h>
 
 static Class SOGoUserFolderK;
 
@@ -108,7 +113,7 @@ static Class SOGoUserFolderK;
                             inFolder: (SOGoFolder *) folder
                              withFID: (uint64_t) fid
 {
-  SOGoMailObject *child;
+  id child;
   NSCalendarDate *offsetDate;
   int rc;
 
@@ -225,6 +230,86 @@ static Class SOGoUserFolderK;
                                       withFID: fid];
     }
   
+  return rc;
+}
+
+- (int) openMessage: (struct mapistore_message *) msg
+              atURL: (NSString *) childURL
+{
+  id child;
+  int rc;
+  struct SRowSet *recipients;
+  struct SRow *properties;
+  NSArray *to;
+  NSInteger count, max;
+  NSString *name;
+  uint32_t tags[] = { PR_SUBJECT_UNICODE, PR_HASATTACH,
+                      PR_MESSAGE_DELIVERY_TIME, PR_MESSAGE_FLAGS,
+                      PR_FLAG_STATUS, PR_SENSITIVITY,
+                      PR_SENT_REPRESENTING_NAME_UNICODE,
+                      PR_INTERNET_MESSAGE_ID_UNICODE,
+                      PR_READ_RECEIPT_REQUESTED };
+  union SPropValue_CTR *valueCopyPtr;
+  union SPropValue_CTR valueCopy;
+
+  child = [self lookupObject: childURL];
+  if (child)
+    {
+      /* Retrieve recipients from the message */
+      to = [child toEnvelopeAddresses];
+      max = [to count];
+      recipients = talloc_zero (memCtx, struct SRowSet);
+      recipients->cRows = max;
+      recipients->aRow = talloc_array (recipients, struct SRow, max);
+      for (count = 0; count < max; count++)
+        {
+          recipients->aRow[count].ulAdrEntryPad = 0;
+          recipients->aRow[count].cValues = 2;
+          recipients->aRow[count].lpProps = talloc_array (recipients->aRow,
+                                                          struct SPropValue,
+                                                          2);
+          recipients->aRow[count].lpProps[0].ulPropTag = PR_RECIPIENT_TYPE;
+          // TODO (0x01 = primary recipient)
+          recipients->aRow[count].lpProps[0].value.l = 0x01;
+          
+          recipients->aRow[count].lpProps[1].ulPropTag = PR_DISPLAY_NAME;
+          name = [[to objectAtIndex: count] personalName];
+          recipients->aRow[count].lpProps[1].value.lpszW
+            = [name asUnicodeInMemCtx: recipients->aRow[count].lpProps];
+        }
+      msg->recipients = recipients;
+
+      max = 9;
+
+      properties = talloc_zero (memCtx, struct SRow);
+      properties->cValues = max;
+      properties->ulAdrEntryPad = 0;
+      properties->lpProps = talloc_array (properties, struct SPropValue, max);
+      for (count = 0; count < max; count++)
+        {
+          properties->lpProps[count].ulPropTag = tags[count];
+          if ([self getMessageTableChildproperty: &valueCopyPtr
+                                           atURL: childURL
+                                         withTag: tags[count]
+                                        inFolder: nil
+                                         withFID: 0]
+              == MAPI_E_SUCCESS)
+            {
+              valueCopy = *valueCopyPtr;
+              talloc_free (valueCopyPtr);
+            }
+          else
+            valueCopy.d = 0;
+          properties->lpProps[count].value = valueCopy;
+        }
+
+      msg->properties = properties;
+      
+      rc = MAPI_E_SUCCESS;
+    }
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
   return rc;
 }
 
