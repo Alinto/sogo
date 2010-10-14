@@ -249,8 +249,7 @@ static Class SOGoUserFolderK;
                       PR_SENT_REPRESENTING_NAME_UNICODE,
                       PR_INTERNET_MESSAGE_ID_UNICODE,
                       PR_READ_RECEIPT_REQUESTED };
-  union SPropValue_CTR *valueCopyPtr;
-  union SPropValue_CTR valueCopy;
+  void *propValue;
 
   child = [self lookupObject: childURL];
   if (child)
@@ -282,25 +281,24 @@ static Class SOGoUserFolderK;
       max = 9;
 
       properties = talloc_zero (memCtx, struct SRow);
-      properties->cValues = max;
+      properties->cValues = 0;
       properties->ulAdrEntryPad = 0;
       properties->lpProps = talloc_array (properties, struct SPropValue, max);
       for (count = 0; count < max; count++)
         {
-          properties->lpProps[count].ulPropTag = tags[count];
-          if ([self getMessageTableChildproperty: &valueCopyPtr
+          if ([self getMessageTableChildproperty: &propValue
                                            atURL: childURL
                                          withTag: tags[count]
                                         inFolder: nil
                                          withFID: 0]
               == MAPI_E_SUCCESS)
             {
-              valueCopy = *valueCopyPtr;
-              talloc_free (valueCopyPtr);
+              set_SPropValue_proptag (&(properties->lpProps[properties->cValues]),
+                                      tags[count],
+                                      propValue);
+              properties->cValues++;
+              // talloc_free (propValue);
             }
-          else
-            valueCopy.d = 0;
-          properties->lpProps[count].value = valueCopy;
         }
 
       msg->properties = properties;
