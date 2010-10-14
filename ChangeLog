@@ -1,5 +1,8 @@
 2010-10-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/NSData+MAPIStore.m: new category module.
+	(-asBinaryInMemCtx:): new method returning a struct Binary_r.
+
 	* OpenChange/MAPIStoreMailContext.m (-openMessage:atURL:): basic
 	implementation returning the "to" recipients only and a few
 	unchecked tags.

@@ -40,6 +40,7 @@ $(MAPISTORESOGO)_OBJC_FILES += \
 	SOGoGCSFolder+MAPIStore.m \
 	\
 	NSArray+MAPIStore.m \
+	NSData+MAPIStore.m \
 	NSCalendarDate+MAPIStore.m \
 	NSString+MAPIStore.m
 
