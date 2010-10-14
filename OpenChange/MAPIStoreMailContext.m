@@ -193,7 +193,7 @@ static Class SOGoUserFolderK;
 
     case PR_READ_RECEIPT_REQUESTED: // TODO
       *data = MAPIBoolValue (memCtx, NO);
-
+      break;
     default:
       rc = [super getMessageTableChildproperty: data
                                          atURL: childURL
@@ -267,14 +267,16 @@ static Class SOGoUserFolderK;
           recipients->aRow[count].lpProps = talloc_array (recipients->aRow,
                                                           struct SPropValue,
                                                           2);
-          recipients->aRow[count].lpProps[0].ulPropTag = PR_RECIPIENT_TYPE;
+
           // TODO (0x01 = primary recipient)
-          recipients->aRow[count].lpProps[0].value.l = 0x01;
-          
-          recipients->aRow[count].lpProps[1].ulPropTag = PR_DISPLAY_NAME;
+          set_SPropValue_proptag (&(recipients->aRow[count].lpProps[0]),
+                                  PR_RECIPIENT_TYPE,
+                                  MAPILongValue (memCtx, 0x01));
+
           name = [[to objectAtIndex: count] personalName];
-          recipients->aRow[count].lpProps[1].value.lpszW
-            = [name asUnicodeInMemCtx: recipients->aRow[count].lpProps];
+          set_SPropValue_proptag (&(recipients->aRow[count].lpProps[1]),
+                                  PR_DISPLAY_NAME,
+                                  [name asUnicodeInMemCtx: recipients->aRow[count].lpProps]);
         }
       msg->recipients = recipients;
 
