@@ -275,9 +275,9 @@ static Class SOGoUserFolderK;
                                   MAPILongValue (memCtx, 0x01));
 
           currentAddress = [to objectAtIndex: count];
-          name = [currentAddress personalName];
-          if (![name length])
-            name = [currentAddress baseEMail];
+          // name = [currentAddress personalName];
+          // if (![name length])
+          name = [currentAddress baseEMail];
           set_SPropValue_proptag (&(recipients->aRow[count].lpProps[1]),
                                   PR_DISPLAY_NAME,
                                   [name asUnicodeInMemCtx: recipients->aRow[count].lpProps]);
