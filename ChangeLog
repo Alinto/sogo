@@ -45,15 +45,6 @@
 	(performSearchCallback): improved autocompletion when changing
 	field before completion has returned.
 
-2010-10-13  Francis Lachapelle  <flachapelle@inverse.ca>
-
-	* SoObjects/SOGo/LDAPSource.m (_qualifierForUIDFilter:): removed
-	duplicated constraints in the filter when using bind fields.
-
-	* UI/WebServerResources/HTMLElement.js (deselectAll): fixed a bug
-	where the properties where not removed from the proper element
-	(table instead of the tbody).
-
 2010-10-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreMapping.m (-registerURL:): commented method out.
@@ -80,7 +71,26 @@
 	(-asFoldersListInCtx:): new method returning a properly populated
 	"struct struct indexing_folders_list *" from an array of fids.
 
+	* SoObjects/Mailer/SOGoMailNamespace.m (-toOneRelationshipKeys):
+	removed method since it seems that certain servers allow messages
+	to be put in certain "namespace folders" (like Courier IMAP).
+
+	* SoObjects/Mailer/SOGoMailBaseObject.m (-imap4Connection): split
+	initialization of the connection is the new
+	"_createIMAP4Connection" method, make use of the cache below.
+
+	* SoObjects/SOGo/SOGoCache.m (-registerIMAP4Connection:forKey:)
+	(-imap4ConnectionForKey:): new accessors that enabling the
+	per-request caching of IMAP4 connections, in a valid state or not.
+
 2010-10-13  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/SOGo/LDAPSource.m (_qualifierForUIDFilter:): removed
+	duplicated constraints in the filter when using bind fields.
+
+	* UI/WebServerResources/HTMLElement.js (deselectAll): fixed a bug
+	where the properties where not removed from the proper element
+	(table instead of the tbody).
 
 	* UI/Scheduler/NSArray+Scheduler.h: added index constants for
 	events fields.
@@ -95,20 +105,6 @@
 	* UI/WebServerResources/SchedulerUI.js (eventsListCallback): added
 	calendar name column.
 	(onCalendarSelectEvent): improved list selection.
-
-2010-10-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
-
-	* SoObjects/Mailer/SOGoMailNamespace.m (-toOneRelationshipKeys):
-	removed method since it seems that certain servers allow messages
-	to be put in certain "namespace folders" (like Courier IMAP).
-
-	* SoObjects/Mailer/SOGoMailBaseObject.m (-imap4Connection): split
-	initialization of the connection is the new
-	"_createIMAP4Connection" method, make use of the cache below.
-
-	* SoObjects/SOGo/SOGoCache.m (-registerIMAP4Connection:forKey:)
-	(-imap4ConnectionForKey:): new accessors that enabling the
-	per-request caching of IMAP4 connections, in a valid state or not.
 
 2010-10-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
