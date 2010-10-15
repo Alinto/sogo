@@ -257,19 +257,37 @@ static NSArray *tasksFields = nil;
   static NSString *fields[] = { @"startDate", @"c_startdate",
 				@"endDate", @"c_enddate" };
   
-  for (count = 0; count < 2; count++)
+  /* WARNING: This condition has been put and removed many times, please leave
+     it. Here is the story...
+     If _fixDates: is conditional to dayBasedView, the recurrences are computed
+     properly but the display time is wrong.
+     If _fixDates: is non-conditional, the reverse occurs.
+     If only this part of _fixDates: is conditional, both are right.
+
+     Regarding all day events, we need to execute this code no matter what the
+     date and the view are, otherwise the event will span on two days.
+     
+     ref bugs:
+     http://www.sogo.nu/bugs/view.php?id=909
+     http://www.sogo.nu/bugs/view.php?id=678
+     ...
+  */
+  if (dayBasedView || [[aRecord objectForKey: @"c_isallday"] boolValue])
     {
-      aDateField = fields[count * 2];
-      aDate = [aRecord objectForKey: aDateField];
-      daylightOffset = (int) ([userTimeZone secondsFromGMTForDate: aDate]
-                              - [userTimeZone secondsFromGMTForDate: startDate]);
-      if (daylightOffset)
+      for (count = 0; count < 2; count++)
         {
-          aDate = [aDate dateByAddingYears: 0 months: 0 days: 0 hours: 0
-                                   minutes: 0 seconds: daylightOffset];
-          [aRecord setObject: aDate forKey: aDateField];
-          aDateValue = [NSNumber numberWithInt: [aDate timeIntervalSince1970]];
-          [aRecord setObject: aDateValue forKey: fields[count * 2 + 1]];
+          aDateField = fields[count * 2];
+          aDate = [aRecord objectForKey: aDateField];
+          daylightOffset = (int) ([userTimeZone secondsFromGMTForDate: aDate]
+                                  - [userTimeZone secondsFromGMTForDate: startDate]);
+          if (daylightOffset)
+            {
+              aDate = [aDate dateByAddingYears: 0 months: 0 days: 0 hours: 0
+                                       minutes: 0 seconds: daylightOffset];
+              [aRecord setObject: aDate forKey: aDateField];
+              aDateValue = [NSNumber numberWithInt: [aDate timeIntervalSince1970]];
+              [aRecord setObject: aDateValue forKey: fields[count * 2 + 1]];
+            }
         }
     }
 
@@ -279,15 +297,15 @@ static NSArray *tasksFields = nil;
     {
       aStartDate = [aRecord objectForKey: @"startDate"];
       if ([userTimeZone isDaylightSavingTimeForDate: aStartDate] != 
-	  [userTimeZone isDaylightSavingTimeForDate: aDate])
-	{
-	  // For the event's recurrence id, compute the daylight saving time
-	  // offset with respect to the first occurrence of the recurring event.
-	  daylightOffset = (signed int)[userTimeZone secondsFromGMTForDate: aStartDate]
-	    - (signed int)[userTimeZone secondsFromGMTForDate: aDate];
-	  aDateValue = [NSNumber numberWithInt: [aDateValue intValue] + daylightOffset];
-	  [aRecord setObject: aDateValue forKey: @"c_recurrence_id"];
-	}
+          [userTimeZone isDaylightSavingTimeForDate: aDate])
+        {
+          // For the event's recurrence id, compute the daylight saving time
+          // offset with respect to the first occurrence of the recurring event.
+          daylightOffset = (signed int)[userTimeZone secondsFromGMTForDate: aStartDate]
+            - (signed int)[userTimeZone secondsFromGMTForDate: aDate];
+          aDateValue = [NSNumber numberWithInt: [aDateValue intValue] + daylightOffset];
+          [aRecord setObject: aDateValue forKey: @"c_recurrence_id"];
+        }
     }
 }
 
@@ -375,7 +393,7 @@ static NSArray *tasksFields = nil;
                 [self _fixComponentTitle: newInfo withType: component];
 	      // Possible improvement: only call _fixDates if event is recurrent
 	      // or the view range span a daylight saving time change
-	      [self _fixDates: newInfo];
+              [self _fixDates: newInfo];
               [infos addObject: [newInfo objectsForKeys: fields
                                          notFoundMarker: marker]];
             }
@@ -543,8 +561,8 @@ static NSArray *tasksFields = nil;
 }
 
 static inline void
-_feedBlockWithDayBasedData(NSMutableDictionary *block, unsigned int start,
-			   unsigned int end, unsigned int dayStart)
+_feedBlockWithDayBasedData (NSMutableDictionary *block, unsigned int start,
+                            unsigned int end, unsigned int dayStart)
 {
   unsigned int delta, quarterStart, length, swap;
   
@@ -568,9 +586,9 @@ _feedBlockWithDayBasedData(NSMutableDictionary *block, unsigned int start,
 }
 
 static inline void
-_feedBlockWithMonthBasedData(NSMutableDictionary *block, unsigned int start,
-			     NSTimeZone *userTimeZone,
-			     SOGoDateFormatter *dateFormatter)
+_feedBlockWithMonthBasedData (NSMutableDictionary *block, unsigned int start,
+                              NSTimeZone *userTimeZone,
+                              SOGoDateFormatter *dateFormatter)
 {
   NSCalendarDate *eventStartDate;
   NSString *startHour;

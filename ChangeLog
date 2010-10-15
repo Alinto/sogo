@@ -1,3 +1,8 @@
+2010-10-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxCalListingActions.m (_fixDates:): restored
+	deleted code, see explanation in the code.
+
 2010-10-15  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/SOGo/SOGoGCSFolder.m - remove the ACL cache
