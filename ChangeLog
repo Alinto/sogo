@@ -1,5 +1,12 @@
 2010-10-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContext.m (-getPath:ofFMID:withTableType:):
+	returns a found path IIF the fmid matches the current context.
+	Print an error message when the cause of mismatch is the lack of
+	sync with the indexing file.
+	(-getFoldersList:withFMDI:): returns a list IIF the FMID matches
+	the current context.
+
 	* OpenChange/MAPIStoreMapping.m (+sharedMapping): singleton
 	constructor.
 

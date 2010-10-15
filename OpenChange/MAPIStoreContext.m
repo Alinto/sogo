@@ -122,7 +122,7 @@ static MAPIStoreMapping *mapping = nil;
   SOGoObjectK = [SOGoObject class];
   SOGoMailAccountK = NSClassFromString (@"SOGoMailAccount");
   SOGoMailFolderK = NSClassFromString (@"SOGoMailFolder");
-  mapping = [MAPIStoreMapping new];
+  mapping = [MAPIStoreMapping sharedMapping];
 }
 
 + (id) contextFromURI: (const char *) newUri
@@ -590,7 +590,7 @@ static MAPIStoreMapping *mapping = nil;
                            inFolder: (SOGoFolder *) folder
                             withFID: (uint64_t) fid
 {
-  NSString *stringValue;
+  // NSString *stringValue;
   id child;
   // uint64_t *llongValue;
   // uint32_t *longValue;
@@ -604,24 +604,24 @@ static MAPIStoreMapping *mapping = nil;
       *data = [[child displayName] asUnicodeInMemCtx: memCtx];
       break;
     default:
-      *data = NULL;
+      // *data = NULL;
       rc = MAPI_E_NOT_FOUND;
-      if ((proptag & 0x001F) == 0x001F)
-        {
-          stringValue = [NSString stringWithFormat: @"Unhandled unicode value: 0x%x", proptag];
-          *data = [stringValue asUnicodeInMemCtx: memCtx];
-          rc = MAPI_E_SUCCESS;
+      // if ((proptag & 0x001F) == 0x001F)
+      //   {
+      //     stringValue = [NSString stringWithFormat: @"Unhandled unicode value: 0x%x", proptag];
+      //     *data = [stringValue asUnicodeInMemCtx: memCtx];
+      //     rc = MAPI_E_SUCCESS;
           [self errorWithFormat: @"Unknown proptag (returned): %.8x for child '%@'",
                 proptag, childURL];
+      //   }
+      // else
+      //   {
+      //     [self errorWithFormat: @"Unknown proptag: %.8x for child '%@'",
+      //           proptag, childURL];
+          // *data = NULL;
+	  rc = MAPI_E_NOT_FOUND;
           break;
         }
-      else
-        {
-          [self errorWithFormat: @"Unknown proptag: %.8x for child '%@'",
-                proptag, childURL];
-          // *data = NULL;
-        }
-    }
 
   return rc;
 }
@@ -997,21 +997,60 @@ static MAPIStoreMapping *mapping = nil;
   return MAPISTORE_ERROR;
 }
 
+// struct indexing_context_list {
+// 	struct tdb_wrap			*index_ctx;
+// 	char				*username;
+// 	uint32_t			ref_count;
+// 	struct indexing_context_list	*prev;
+// 	struct indexing_context_list	*next;
+// };
+
+// struct tdb_wrap {
+// 	struct tdb_context	*tdb;
+// 	const char		*name;
+// 	struct tdb_wrap		*prev;
+// 	struct tdb_wrap		*next;
+// };
+
 - (int) getPath: (char **) path
          ofFMID: (uint64_t) fmid
   withTableType: (uint8_t) tableType
 {
   int rc;
   NSString *objectURL;
+  // TDB_DATA key, dbuf;
 
   objectURL = [mapping urlFromID: fmid];
   if (objectURL)
     {
-      *path = [[objectURL substringFromIndex: 7] asUnicodeInMemCtx: memCtx];
-      rc = MAPISTORE_SUCCESS;
+      if ([objectURL hasPrefix: uri])
+        {
+          *path = [[objectURL substringFromIndex: 7] asUnicodeInMemCtx: memCtx];
+          rc = MAPISTORE_SUCCESS;
+        }
+      else
+        {
+          /* An id was found that is not part of this context...x */
+          *path = NULL;
+          rc = MAPI_E_NOT_FOUND;
+        }
     }
   else
-    rc = MAPI_E_NOT_FOUND;
+    {
+      [self errorWithFormat: @"%s: you should *never* get here", __PRETTY_FUNCTION__];
+      // /* attempt to populate our mapping dict with data from indexing.tdb */
+      // key.dptr = (unsigned char *) talloc_asprintf (memCtx, "0x%.16llx",
+      //                                               (long long unsigned int )fmid);
+      // key.dsize = strlen ((const char *) key.dptr);
+
+      // dbuf = tdb_fetch (memCtx->indexing_list->index_ctx->tdb, key);
+      // talloc_free (key.dptr);
+      // uri = talloc_strndup (memCtx, (const char *)dbuf.dptr, dbuf.dsize);
+      *path = NULL;
+      rc = MAPI_E_NOT_FOUND;
+    }
+
+  [self logWithFormat: @"getPath....  %lld -> (%s, %d)", fmid, *path, rc];
 
   return rc;
 }
@@ -1062,7 +1101,8 @@ static MAPIStoreMapping *mapping = nil;
   rc = MAPI_E_SUCCESS;
 
   currentURL = [mapping urlFromID: fmid];
-  if (currentURL && ![currentURL isEqualToString: uri])
+  if (currentURL && ![currentURL isEqualToString: uri]
+      && [currentURL hasPrefix: uri])
     {
       nsFolderList = [NSMutableArray arrayWithCapacity: 32];
       currentURL = [self _parentURLFromURL: currentURL];

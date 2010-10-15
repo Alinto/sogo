@@ -187,7 +187,7 @@ static Class SOGoUserFolderK;
         if ([keys count] == 0 || [keys count] == 2)
           {
             *data = NULL;
-            rc = MAPISTORE_ERR_NOT_FOUND;
+            rc = MAPI_E_NOT_FOUND;
           }
         else
           {
@@ -211,13 +211,12 @@ static Class SOGoUserFolderK;
                                                       encoding: NSISOLatin1StringEncoding];
                 
                 // *data = NULL;
-                // rc = MAPISTORE_ERR_NOT_FOUND;
+                // rc = MAPI_E_NOT_FOUND;
                 *data = [stringContent asUnicodeInMemCtx: memCtx];
               }
             else
               {
-                *data = NULL;
-                rc = MAPISTORE_ERR_NOT_FOUND;
+                rc = MAPI_E_NOT_FOUND;
               }
           }
       }
@@ -251,18 +250,17 @@ static Class SOGoUserFolderK;
         else
           {
             *data = NULL;
-            rc = MAPISTORE_ERR_NOT_FOUND;
+            rc = MAPI_E_NOT_FOUND;
           }
       }
 
       // *data = NULL;
-      // rc = MAPISTORE_ERR_NOT_FOUND;
+      // rc = MAPI_E_NOT_FOUND;
       break;
 
       /* We don't handle any RTF content. */
     case PR_RTF_COMPRESSED:
-      *data = NULL;
-      rc = MAPISTORE_ERR_NOT_FOUND;
+      rc = MAPI_E_NOT_FOUND;
       break;
     case PR_RTF_IN_SYNC:
       *data = MAPIBoolValue (memCtx, NO);
@@ -310,7 +308,7 @@ static Class SOGoUserFolderK;
     case PR_PROCESSED:
     case PR_ORIGINATOR_DELIVERY_REPORT_REQUESTED:
     case PR_RECIPIENT_REASSIGNMENT_PROHIBITED:
-      *data = MAPIBoolValue (memCtx, NO);
+      rc = MAPI_E_NOT_FOUND;
       break;
 
       /* PT_SYSTIME */
@@ -323,6 +321,8 @@ static Class SOGoUserFolderK;
     case PR_CLIENT_SUBMIT_TIME:
     case PR_DEFERRED_SEND_TIME:
     case PR_ORIGINAL_SUBMIT_TIME:
+      rc = MAPI_E_NOT_FOUND;
+      break;
       
       /* PT_BINARY */
     case PR_CONVERSATION_KEY:
@@ -339,15 +339,16 @@ static Class SOGoUserFolderK;
     case PR_RCVD_REPRESENTING_SEARCH_KEY:
     case PR_SEARCH_KEY:
     case PR_CHANGE_KEY:
-    case PR_ORIGINAL_AUTHOR_SEARCH_KEY:
+    case PR_ORIGINAL_AUTHOR_SEARCH_KEY:      
     case PR_CONVERSATION_INDEX:
     case PR_SENDER_ENTRYID:
     case PR_SENDER_SEARCH_KEY:
+      rc = MAPI_E_NOT_FOUND;
+      break;
 
       /* PT_SVREID*/
     case PR_SENT_MAILSVR_EID:
-      *data = NULL;
-      rc = MAPISTORE_ERR_NOT_FOUND;
+      rc = MAPI_E_NOT_FOUND;
       break;
 
       /* PR_LONG */
@@ -355,8 +356,7 @@ static Class SOGoUserFolderK;
     case PR_ACTION_FLAG:
     case PR_INTERNET_CPID:
     case PR_INET_MAIL_OVERRIDE_FORMAT:
-      *data = NULL;
-      rc = MAPISTORE_ERR_NOT_FOUND;
+      rc = MAPI_E_NOT_FOUND;
       break;
 
     case PR_MSG_EDITOR_FORMAT:
@@ -507,7 +507,7 @@ static Class SOGoUserFolderK;
       rc = MAPI_E_SUCCESS;
     }
   else
-    rc = MAPISTORE_ERR_NOT_FOUND;
+    rc = MAPI_E_NOT_FOUND;
 
   return rc;
 }
@@ -535,19 +535,17 @@ static Class SOGoUserFolderK;
                                          withTag: tag
                                         inFolder: nil
                                          withFID: 0]
-              != MAPI_E_SUCCESS)
+              == MAPI_E_SUCCESS)
             {
-              propValue = MAPILongValue (memCtx, MAPI_E_NOT_FOUND);
-              tag = (tag & 0xffff0000) | 0x0a;
-            }
-          set_SPropValue_proptag (&(aRow->lpProps[aRow->cValues]),
-                                  tag, propValue);
-          aRow->cValues++;
+	      set_SPropValue_proptag (&(aRow->lpProps[aRow->cValues]),
+				      tag, propValue);
+	      aRow->cValues++;
+	    }
         }
       rc = MAPI_E_SUCCESS;
     }
   else
-    rc = MAPISTORE_ERR_NOT_FOUND;
+    rc = MAPI_E_NOT_FOUND;
 
   return rc;
 }
