@@ -4,6 +4,9 @@
 - improved groups support by caching results
 - updated the Polish, Italian and Ukrainian translations
 - added the capability of renaming subscribed address books
+- acls are now cached in memcached and added a major performance
+  improvement when listing calendar / contact folders
+
 
 1.3-20100921 (1.3.2)
 --------------------

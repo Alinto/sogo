@@ -70,7 +70,6 @@
   NSArray *allEmails;
   NSMutableArray *mailAccounts;
   NSString *cn;
-  BOOL propagateCache;
 }
 
 // + (NSString *) language;

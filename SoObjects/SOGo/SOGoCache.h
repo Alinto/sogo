@@ -103,6 +103,11 @@
 - (void) setCASPGTId: (NSString *) pgtId
            forPGTIOU: (NSString *) pgtIou;
 
+- (void) setACLs: (NSDictionary *) theACLs
+	 forPath: (NSString *) thePath;
+
+- (NSMutableDictionary *) aclsForPath: (NSString *) thePath;
+
 @end
 
 #endif /* SOGOCACHE_H */

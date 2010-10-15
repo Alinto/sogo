@@ -25,9 +25,16 @@
  * [ Cache Structure ]
  *
  * users                 value = instances of SOGoUser > flushed after the completion of every SOGo requests
+ * groups                value = instances of SOGoGroup > flushed after the completion of every SOGo requests
+ * imap4Connections      value = 
+ * localCache            value = any value of what's in memcached - this is used to NOT query memcached within the same sogod instance
+ * 
+ * [ Distributed (using memcached) cache structure ]
+ *
  * <uid>+defaults        value = NSDictionary instance > user's defaults
  * <uid>+settings        value = NSDictionary instance > user's settings
  * <uid>+attributes      value = NSMutableDictionary instance > user's LDAP attributes
+ * <object path>+acl     value = NSDictionary instance > ACLs on an object at specified path
  * <groupname>+<domain>  value = NSString instance (array components separated by ",") or group member logins for a specific group in domain
  */
 
@@ -41,6 +48,7 @@
 #import <NGObjWeb/SoObject.h>
 #import <NGExtensions/NSObject+Logs.h>
 
+#import "NSDictionary+BSJSONAdditions.h"
 #import "SOGoObject.h"
 #import "SOGoSystemDefaults.h"
 #import "SOGoUser.h"
@@ -262,10 +270,10 @@ static memcached_st *handle = NULL;
     {
       keyData = [key dataUsingEncoding: NSUTF8StringEncoding];
       valueData = [value dataUsingEncoding: NSUTF8StringEncoding];
-      error = memcached_set (handle,
-                             [keyData bytes], [keyData length],
-                             [valueData bytes], [valueData length],
-                             expiration, 0);
+      error = memcached_set(handle,
+			    [keyData bytes], [keyData length],
+			    [valueData bytes], [valueData length],
+			    expiration, 0);
       if (error != MEMCACHED_SUCCESS)
         [self logWithFormat:
                 @"an error occurred when caching value for key '%@':"
@@ -327,6 +335,8 @@ static memcached_st *handle = NULL;
   NSData *keyData;
   memcached_return rc;
 
+  [localCache removeObjectForKey: key];
+
   if (handle)
     {
       keyData = [key dataUsingEncoding: NSUTF8StringEncoding];
@@ -343,25 +353,39 @@ static memcached_st *handle = NULL;
           key];
 }
 
+
+//
+// This method is used to cache a specific value (represented as a
+// string, usually JSON stuff) using the specified key and type-suffix
+//
+// The final key will aways be of the form: <key>+<type suffix>
+//
+// This method will insert the value in the localCache and also
+// in memcached.
+//
 - (void) _cacheValues: (NSString *) theAttributes
 	       ofType: (NSString *) theType
-	     forLogin: (NSString *) theLogin
+	       forKey: (NSString *) theKey
 {
   NSString *keyName;
 
-  keyName = [NSString stringWithFormat: @"%@+%@", theLogin, theType];
-  [self setValue: theAttributes forKey: keyName];
-  [localCache setObject: theAttributes forKey: keyName];
+  keyName = [NSString stringWithFormat: @"%@+%@", theKey, theType];
+
+  if (theAttributes)
+    {
+      [self setValue: theAttributes forKey: keyName];
+      [localCache setObject: theAttributes forKey: keyName];
+    }
 }
 
 - (NSString *) _valuesOfType: (NSString *) theType
-                    forLogin: (NSString *) theLogin
+                      forKey: (NSString *) theKey
 {
   NSString *valueString, *keyName;
 
   valueString = nil;
 
-  keyName = [NSString stringWithFormat: @"%@+%@", theLogin, theType];
+  keyName = [NSString stringWithFormat: @"%@+%@", theKey, theType];
   valueString = [localCache objectForKey: keyName];
   if (!valueString)
     {
@@ -377,36 +401,36 @@ static memcached_st *handle = NULL;
                   forLogin: (NSString *) login
 {
   [self _cacheValues: theAttributes ofType: @"attributes"
-            forLogin: login];
+	forKey: login];
 }
 
 - (NSString *) userAttributesForLogin: (NSString *) theLogin
 {
-  return [self _valuesOfType: @"attributes" forLogin: theLogin];
+  return [self _valuesOfType: @"attributes" forKey: theLogin];
 }
 
 - (void) setUserDefaults: (NSString *) theAttributes
                 forLogin: (NSString *) login
 {
   [self _cacheValues: theAttributes ofType: @"defaults"
-            forLogin: login];
+	forKey: login];
 }
 
 - (NSString *) userDefaultsForLogin: (NSString *) theLogin
 {
-  return [self _valuesOfType: @"defaults" forLogin: theLogin];
+  return [self _valuesOfType: @"defaults" forKey: theLogin];
 }
 
 - (void) setUserSettings: (NSString *) theAttributes
                 forLogin: (NSString *) login
 {
   [self _cacheValues: theAttributes ofType: @"settings"
-            forLogin: login];
+	forKey: login];
 }
 
 - (NSString *) userSettingsForLogin: (NSString *) theLogin
 {
-  return [self _valuesOfType: @"settings" forLogin: theLogin];
+  return [self _valuesOfType: @"settings" forKey: theLogin];
 }
 
 /* CAS session support */
@@ -451,5 +475,34 @@ static memcached_st *handle = NULL;
   [self setValue: pgtId
           forKey: [NSString stringWithFormat: @"cas-pgtiou:%@", pgtIou]];
 }
+
+//
+//
+//
+- (void) setACLs: (NSDictionary *) theACLs
+	 forPath: (NSString *) thePath
+{
+  NSLog(@"setting ACLs: %@ (%@)  forPath: %@", [theACLs jsonStringValue], theACLs, thePath);
+  if (theACLs)
+    [self _cacheValues: [theACLs jsonStringValue]
+	  ofType: @"acl"
+	  forKey: thePath];
+  else
+    [self removeValueForKey: [NSString stringWithFormat: @"%@+acl", thePath]];
+}
+
+- (NSMutableDictionary *) aclsForPath: (NSString *) thePath
+{
+  NSString *s;
+  
+  s = [self _valuesOfType: @"acl"  forKey: thePath];
+
+  if (s)
+    return [NSMutableDictionary dictionaryWithJSONString: s];
+
+  return nil;
+}
+
+
 
 @end

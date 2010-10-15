@@ -72,6 +72,7 @@
 #import "SOGoUser.h"
 #import "SOGoUserDefaults.h"
 #import "SOGoUserSettings.h"
+#import "SOGoUserManager.h"
 #import "SOGoWebDAVAclManager.h"
 #import "WORequest+SOGo.h"
 #import "WOResponse+SOGo.h"
@@ -198,7 +199,6 @@ static NSArray *childRecordFields = nil;
     {
       ocsPath = nil;
       ocsFolder = nil;
-      aclCache = [NSMutableDictionary new];
       childRecords = [NSMutableDictionary new];
       userCanAccessAllObjects = NO;
     }
@@ -210,7 +210,6 @@ static NSArray *childRecordFields = nil;
 {
   [ocsFolder release];
   [ocsPath release];
-  [aclCache release];
   [childRecords release];
   [super dealloc];
 }
@@ -286,11 +285,14 @@ static NSArray *childRecordFields = nil;
 
       if (!activeUserIsOwner)
 	{
-	  ownerIdentity = [[SOGoUser userWithLogin: owner]
-			    primaryIdentity];
-	  [displayName
-	    appendString: [ownerIdentity keysWithFormat:
-					   @" (%{fullName} <%{email}>)"]];
+	  // We MUST NOT use SOGoUser instances here (by calling -primaryIdentity)
+	  // as it'll load user defaults and user settings which is _very costly_
+	  // since it involves JSON parsing and database requests
+	  ownerIdentity = [[SOGoUserManager sharedUserManager]
+			    contactInfosForUserWithUIDorEmail: owner];
+
+	  [displayName appendFormat: @" (%@ <%@>)", [ownerIdentity objectForKey: @"cn"],
+		       [ownerIdentity objectForKey: @"c_email"]];
 	}
     }
 }
@@ -1480,17 +1482,23 @@ static NSArray *childRecordFields = nil;
 {
   NSMutableDictionary *aclsForObject;
 
-  aclsForObject = [aclCache objectForKey: objectPath];
+  aclsForObject = [[SOGoCache sharedCache] aclsForPath: objectPath];
   if (!aclsForObject)
     {
       aclsForObject = [NSMutableDictionary dictionary];
-      [aclCache setObject: aclsForObject
-                   forKey: objectPath];
     }
   if (roles)
-    [aclsForObject setObject: roles forKey: uid];
+    {
+      [aclsForObject setObject: roles forKey: uid];
+    }
   else
-    [aclsForObject removeObjectForKey: uid];
+    {
+      [aclsForObject removeObjectForKey: uid];
+    }
+  
+  // We update our distributed cache
+  [[SOGoCache sharedCache] setACLs: aclsForObject
+			   forPath: objectPath];
 }
 
 - (NSArray *) _realAclsForUser: (NSString *) uid
@@ -1501,7 +1509,7 @@ static NSArray *childRecordFields = nil;
   NSDictionary *aclsForObject;
 
   objectPath = [objectPathArray componentsJoinedByString: @"/"];
-  aclsForObject = [aclCache objectForKey: objectPath];
+  aclsForObject = [[SOGoCache sharedCache] aclsForPath: objectPath];
   if (aclsForObject)
     acls = [aclsForObject objectForKey: uid];
   else
@@ -1571,9 +1579,13 @@ static NSArray *childRecordFields = nil;
             }
         }
       objectPath = [objectPathArray componentsJoinedByString: @"/"];
-      aclsForObject = [aclCache objectForKey: objectPath];
+      aclsForObject = [[SOGoCache sharedCache] aclsForPath: objectPath];
       if (aclsForObject)
-        [aclsForObject removeObjectsForKeys: usersAndGroups];
+	{
+	  [aclsForObject removeObjectsForKeys: usersAndGroups];
+	  [[SOGoCache sharedCache] setACLs: aclsForObject
+				   forPath: objectPath];
+	}
       uids = [usersAndGroups componentsJoinedByString: @"') OR (c_uid = '"];
       qs = [NSString
              stringWithFormat: @"(c_object = '/%@') AND ((c_uid = '%@'))",

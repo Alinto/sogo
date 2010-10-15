@@ -1,3 +1,12 @@
+2010-10-15  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* SoObjects/SOGo/SOGoGCSFolder.m - remove the ACL cache
+	and moved it to SOGoCache with memcached support. Also
+	modified _setDisplayNameFromRow: to NOT use SOGoUser
+	instances and it is _very costly_ to do so.
+	* SoObjects/SOGo/SOGoCache.{h,m} - added support for
+	caching ACLs locally and in memcached
+
 2010-10-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreContext.m (-getPath:ofFMID:withTableType:):
