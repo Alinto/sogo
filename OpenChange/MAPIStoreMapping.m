@@ -34,6 +34,16 @@
 
 @implementation MAPIStoreMapping
 
++ (id) sharedMapping
+{
+  static id sharedMapping = nil;
+
+  if (!sharedMapping)
+    sharedMapping = [self new];
+
+  return sharedMapping;
+}
+
 - (void) _setupFixedMapping
 {
   [self registerURL: @"sogo://openchange:openchange@mail/folderINBOX" withID: 0x160001];

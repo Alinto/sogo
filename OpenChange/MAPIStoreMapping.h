@@ -34,6 +34,8 @@
   NSMutableDictionary *reverseMapping; /* url -> FID/MID */
 }
 
++ (id) sharedMapping;
+
 - (NSString *) urlFromID: (uint64_t) idKey;
 
 - (uint64_t) idFromURL: (NSString *) url;
