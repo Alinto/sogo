@@ -2,7 +2,7 @@ BEGIN:VCALENDAR
 PRODID:-//Inverse inc.//NONSGML SOGo//EN
 VERSION:2.0
 BEGIN:VTIMEZONE
-TZID:/inverse.ca/20091015_1/Africa/Lubumbashi
+TZID:/inverse.ca/20101018_1/Africa/Lubumbashi
 X-LIC-LOCATION:Africa/Lubumbashi
 BEGIN:STANDARD
 TZOFFSETFROM:+0200

@@ -2,7 +2,7 @@ BEGIN:VCALENDAR
 PRODID:-//Inverse inc.//NONSGML SOGo//EN
 VERSION:2.0
 BEGIN:VTIMEZONE
-TZID:/inverse.ca/20091015_1/America/Swift_Current
+TZID:/inverse.ca/20101018_1/America/Swift_Current
 X-LIC-LOCATION:America/Swift_Current
 BEGIN:STANDARD
 TZOFFSETFROM:-0600

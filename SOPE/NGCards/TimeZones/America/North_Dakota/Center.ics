@@ -2,7 +2,7 @@ BEGIN:VCALENDAR
 PRODID:-//Inverse inc.//NONSGML SOGo//EN
 VERSION:2.0
 BEGIN:VTIMEZONE
-TZID:/inverse.ca/20091015_1/America/North_Dakota/Center
+TZID:/inverse.ca/20101018_1/America/North_Dakota/Center
 X-LIC-LOCATION:America/North_Dakota/Center
 BEGIN:DAYLIGHT
 TZOFFSETFROM:-0600

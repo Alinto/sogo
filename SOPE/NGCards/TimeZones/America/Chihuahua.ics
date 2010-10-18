@@ -2,7 +2,7 @@ BEGIN:VCALENDAR
 PRODID:-//Inverse inc.//NONSGML SOGo//EN
 VERSION:2.0
 BEGIN:VTIMEZONE
-TZID:/inverse.ca/20091015_1/America/Chihuahua
+TZID:/inverse.ca/20101018_1/America/Chihuahua
 X-LIC-LOCATION:America/Chihuahua
 BEGIN:DAYLIGHT
 TZOFFSETFROM:-0700

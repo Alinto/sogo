@@ -2,7 +2,7 @@ BEGIN:VCALENDAR
 PRODID:-//Inverse inc.//NONSGML SOGo//EN
 VERSION:2.0
 BEGIN:VTIMEZONE
-TZID:/inverse.ca/20091015_1/Australia/Adelaide
+TZID:/inverse.ca/20101018_1/Australia/Adelaide
 X-LIC-LOCATION:Australia/Adelaide
 BEGIN:STANDARD
 TZOFFSETFROM:+1030

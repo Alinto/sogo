@@ -2,7 +2,7 @@ BEGIN:VCALENDAR
 PRODID:-//Inverse inc.//NONSGML SOGo//EN
 VERSION:2.0
 BEGIN:VTIMEZONE
-TZID:/inverse.ca/20091015_1/America/Mexico_City
+TZID:/inverse.ca/20101018_1/America/Mexico_City
 X-LIC-LOCATION:America/Mexico_City
 BEGIN:DAYLIGHT
 TZOFFSETFROM:-0600

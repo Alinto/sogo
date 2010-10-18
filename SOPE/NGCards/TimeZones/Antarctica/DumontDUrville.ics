@@ -2,7 +2,7 @@ BEGIN:VCALENDAR
 PRODID:-//Inverse inc.//NONSGML SOGo//EN
 VERSION:2.0
 BEGIN:VTIMEZONE
-TZID:/inverse.ca/20091015_1/Antarctica/DumontDUrville
+TZID:/inverse.ca/20101018_1/Antarctica/DumontDUrville
 X-LIC-LOCATION:Antarctica/DumontDUrville
 BEGIN:STANDARD
 TZOFFSETFROM:+1000
