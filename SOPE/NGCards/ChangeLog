@@ -1,3 +1,9 @@
+2010-10-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* iCalTimeZonePeriod.m (_occurenceForDate:byRRule:): we don't need
+	to deduct the offset from UTC from the resulting date since
+	"tzStart" is already relative to UTC.
+
 2010-10-13  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* NSString+NGCards.m (-vCardSubvaluesWithSeparator): properly

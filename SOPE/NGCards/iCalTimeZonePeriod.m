@@ -145,14 +145,13 @@
                                 timeZone: [NSTimeZone timeZoneWithName: @"GMT"]];
   tmpDate = [tmpDate addYear: 0 month: ((pos > 0) ? 0 : 1)
                          day: 0 hour: 0 minute: 0
-                      second: -[self _secondsOfOffset: @"tzoffsetfrom"]];
+                      second: 0];
   
-  dateDayOfWeek = [tmpDate dayOfWeek];
-
   /* If the day of the time change is "-XSU", we need to determine whether the
      first day of next month is in the same week. In practice, as most time
      changes occurs on sundays, it will be false only when that first day is a
      sunday, but we want to remain algorithmically exact. */
+  dateDayOfWeek = [tmpDate dayOfWeek];
   if (dateDayOfWeek > dayOfWeek && pos < 0)
     pos++;
 

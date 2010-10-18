@@ -42,6 +42,47 @@
 
 @implementation TestiCalTimeZonePeriod
 
+- (void) test_occurenceForDate_
+{
+  NSString *periods[] = { (@"BEGIN:DAYLIGHT\r\n"
+                           @"TZOFFSETFROM:-0500\r\n"
+                           @"TZOFFSETTO:-0400\r\n"
+                           @"TZNAME:EDT\r\n"
+                           @"DTSTART:19700308T020000\r\n"
+                           @"RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU\r\n"
+                           @"END:DAYLIGHT"),
+                          (@"BEGIN:STANDARD\r\n"
+                           @"TZOFFSETFROM:-0400\r\n"
+                           @"TZOFFSETTO:-0500\r\n"
+                           @"TZNAME:EST\r\n"
+                           @"DTSTART:19701101T020000\r\n"
+                           @"RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU\r\n"
+                           @"END:STANDARD") };
+  NSString *dateStrings[] = { @"20100314T050000Z", @"20101107T050000Z" };
+  // with TZ=America/Montreal:
+  //   date --date="2010-03-14 01:59" +"%s" -> 1268549940
+  //   date --date="2010-03-14 02:00" +"%s" -> invalid
+  //   date --date="2010-03-14 03:00" +"%s" -> 1268550000
+  //   date --date="2010-11-07 01:59" +"%s" -> 1289109540
+  //   date --date="2010-11-07 02:00" +"%s" -> 1289113200
+  NSInteger occurrenceSeconds[] = { 1268550000, 1289113200 };
+  NSInteger count, delta;
+  iCalTimeZonePeriod *period;
+  NSCalendarDate *testDate;
+
+  for (count = 0; count < 2; count++)
+    {
+      period = [iCalTimeZonePeriod parseSingleFromSource: periods[count]];
+      testDate = [period occurenceForDate: [dateStrings[count] asCalendarDate]];
+      delta = (NSInteger) [testDate timeIntervalSince1970] - occurrenceSeconds[count];
+      testWithMessage ((NSInteger) [testDate timeIntervalSince1970]
+                       == occurrenceSeconds[count],
+                       ([NSString stringWithFormat:
+                                         @"test %d: seconds do not match:"
+                                  @" delta = %d", count, delta]));
+    }
+}
+
 - (void) test__occurenceForDate_byRRule_
 {
   /* all rules are happening on 2010-03-14 */
