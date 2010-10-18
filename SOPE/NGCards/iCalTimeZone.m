@@ -130,8 +130,8 @@ static NSMutableDictionary *cache;
   return [[self uniqueChildWithTag: @"tzid"] value: 0];
 }
 
-- (NSCalendarDate *) _occurenceForPeriodNamed: (NSString *) pName
-                                      forDate: (NSCalendarDate *) aDate
+- (NSCalendarDate *) _occurrenceForPeriodNamed: (NSString *) pName
+                                       forDate: (NSCalendarDate *) aDate
 {
   NSArray *periods;
   iCalTimeZonePeriod *period;
@@ -157,10 +157,10 @@ static NSMutableDictionary *cache;
   /* FIXME, this could cause crashes when timezones are not properly
      specified, but let's say it won't happen often... */
 
-  daylightOccurence = [self _occurenceForPeriodNamed: @"daylight"
-                            forDate: date];
-  standardOccurence = [self _occurenceForPeriodNamed: @"standard"
-                            forDate: date];
+  daylightOccurence = [self _occurrenceForPeriodNamed: @"daylight"
+                                              forDate: date];
+  standardOccurence = [self _occurrenceForPeriodNamed: @"standard"
+                                              forDate: date];
 
   if (!standardOccurence)
     period = (iCalTimeZonePeriod *) [self uniqueChildWithTag: @"daylight"];
