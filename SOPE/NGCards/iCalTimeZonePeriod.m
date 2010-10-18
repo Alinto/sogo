@@ -139,14 +139,14 @@
   tzStart = [self startDate];
   [tzStart setTimeZone: [NSTimeZone timeZoneWithName: @"GMT"]];
   tmpDate = [NSCalendarDate dateWithYear: [refDate yearOfCommonEra]
-			    month: [[rrule namedValue: @"bymonth"] intValue]
-			    day: 1 hour: [tzStart hourOfDay]
-			    minute: [tzStart minuteOfHour] second: 0
-			    timeZone: [NSTimeZone timeZoneWithName: @"GMT"]];
+                                   month: [[rrule namedValue: @"bymonth"] intValue]
+                                     day: 1 hour: [tzStart hourOfDay]
+                                  minute: [tzStart minuteOfHour] second: 0
+                                timeZone: [NSTimeZone timeZoneWithName: @"GMT"]];
   tmpDate = [tmpDate addYear: 0 month: ((pos > 0) ? 0 : 1)
-		     day: 0 hour: 0 minute: 0
-		     second: -[self _secondsOfOffset: @"tzoffsetfrom"]];
-
+                         day: 0 hour: 0 minute: 0
+                      second: -[self _secondsOfOffset: @"tzoffsetfrom"]];
+  
   dateDayOfWeek = [tmpDate dayOfWeek];
 
   /* If the day of the time change is "-XSU", we need to determine whether the
@@ -158,8 +158,8 @@
 
   offset = (dayOfWeek - dateDayOfWeek) + (pos * 7);
   tmpDate = [tmpDate addYear: 0 month: 0 day: offset
-		     hour: 0 minute: 0 second: 0];
-
+                        hour: 0 minute: 0 second: 0];
+  
   return tmpDate;
 }
 
