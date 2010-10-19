@@ -1,5 +1,9 @@
 2010-10-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* iCalTimeZone.m (-dateForDateTimeString:): adjust dates since
+	they are passed as UTC and may not match the timezone's DST
+	switches. A bit dirty but good for now...
+
 	* iCalTimeZonePeriod.m (_occurenceForDate:byRRule:): we don't need
 	to deduct the offset from UTC from the resulting date since
 	"tzStart" is already relative to UTC.

@@ -220,14 +220,23 @@ static NSMutableDictionary *cache;
 - (NSCalendarDate *) dateForDateTimeString: (NSString *) string
 {
   NSCalendarDate *tmpDate;
-  iCalTimeZonePeriod *period;
+  iCalTimeZonePeriod *period, *realPeriod;
 
   tmpDate = [string asCalendarDate];
   period = [self periodForDate: tmpDate];
+  tmpDate = [tmpDate addYear: 0 month: 0 day: 0
+                        hour: 0 minute: 0
+                      second: -[period secondsOffsetFromGMT]];
 
-  return [tmpDate addYear: 0 month: 0 day: 0
-                  hour: 0 minute: 0
-                  second: -[period secondsOffsetFromGMT]];
+#warning this is a dirty hack due to the fact that the date is first passed as UTC
+  realPeriod = [self periodForDate: tmpDate];
+  if (realPeriod != period)
+    tmpDate = [tmpDate addYear: 0 month: 0 day: 0
+                          hour: 0 minute: 0
+                        second: ([period secondsOffsetFromGMT]
+                                 - [realPeriod secondsOffsetFromGMT])];
+
+  return tmpDate;
 }
 
 @end
