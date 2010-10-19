@@ -1,12 +1,33 @@
-1.3-201010xx (1.3.3)
+1.3-20101019 (1.3.3)
 --------------------
 - added Catalan translation, thanks to Hector Rulot
+- fixed German translation
+- fixed Polish translation
+- fixed Italian translation
+- enhanced default Apache config files
 - improved groups support by caching results
+- fixed base64 decoding issues in SOPE
 - updated the Polish, Italian and Ukrainian translations
 - added the capability of renaming subscribed address books
-- acls are now cached in memcached and added a major performance
-  improvement when listing calendar / contact folders
-
+- acls are now cached in memcached and added a major performance improvement
+  when listing calendar / contact folders
+- fixed many small issues pertaining to DST switches
+- auto complete of attendees caused an error if entered to fast
+- ctrl + a (select all) was not working properly in the Calendar UI on Firefox
+- calendar sync tag names and other metadata were not released when a calendar
+  was deleted
+- in the Contacts UI, clicking on the "write" toolbar button did not cause a
+  message to be displayed when no contact were selected
+- added the ability to rename a subscribed folder in the Contacts UI
+- card and event fields can now contain versit separators (";" and ",")
+- fixed handling of unsigned int fields with the MySQL adaptor
+- improved the speed of certain IMAP operations, in particular for GMail
+  accounts
+- prevent excessing login failures with IMAP accounts
+- fixed spurious creation of header fields due to an bug of auto-completion in
+  the mail composition window
+- fixed a wrong redirect when clicking "reply" or "forward" while no mail were
+  selected
 
 1.3-20100921 (1.3.2)
 --------------------
