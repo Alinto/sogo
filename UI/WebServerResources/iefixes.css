@@ -90,8 +90,8 @@ TABLE#freeBusyAttendees TD.attendeeStatus,
 TABLE#freeBusyAttendees TD.attendeeStatus DIV
 { width: 24px; }
 
-TABLE#freeBusyData TD
-{ height: 25px; }
+TABLE#freeBusyData TD.noFreeBusy
+{ height: 25px }
 
 TABLE
 { empty-cells: show; /* no impact? */ }

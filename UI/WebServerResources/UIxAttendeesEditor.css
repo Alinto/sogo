@@ -161,7 +161,7 @@ TABLE#freeBusyAttendees TR.futureAttendee INPUT
 
 TABLE#freeBusyAttendees TR.futureAttendee TD,
 TABLE#freeBusyData TR.futureData TD
-{ border: 0;
+{ border: 0px;
   height: 3em;
   line-height: 3em; }
 
@@ -181,7 +181,7 @@ TABLE#freeBusyHeader TR.freeBusyHeader3 SPAN.freeBusyZoneElement.busy
 { background-color: #f03 !important; }
 
 TABLE#freeBusyData TD SPAN.freeBusyZoneElement
-{ height: 23px; }
+{ height: 24px; }
 
 SPAN.colorBox.free,
 TABLE#freeBusyData TD SPAN.freeBusyZoneElement
