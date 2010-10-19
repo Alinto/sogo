@@ -372,8 +372,15 @@
 
 - (NSString *) davContentLength
 {
-  return [NSString stringWithFormat: @"%u",
-		   [content lengthOfBytesUsingEncoding: NSUTF8StringEncoding]];
+  NSInteger length;
+
+  /* The following may cause a crash, as stated in
+     http://www.sogo.nu/bugs/view.php?id=915:
+
+     length = [content lengthOfBytesUsingEncoding: NSUTF8StringEncoding]; */
+  length = strlen ([content UTF8String]);
+
+  return [NSString stringWithFormat: @"%u", length];
 }
 
 // - (NSString *) davResourceType

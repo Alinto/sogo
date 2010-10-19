@@ -1,3 +1,9 @@
+2010-10-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoContentObject.m (-davContentLength): fixed a
+	potential crash (see http://www.sogo.nu/bugs/view.php?id=915) by
+	evaluating the length differently.
+
 2010-10-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxCalListingActions.m (_fixDates:): restored
