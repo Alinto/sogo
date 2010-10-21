@@ -35,7 +35,7 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Termin Einladung: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(gesendet von %{SentBy}) ";
-"%{Organizer} %{SentByText}has invited you to %{Summary}." = "%{Organizer} %{SentByText}hat Sie eingeladen zu %{Summary}.";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}hat Sie eingeladen zu %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}";
 
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Termin abgesagt: \"%{Summary}\"";

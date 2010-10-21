@@ -62,6 +62,8 @@
   [viewTZ release];
   [oldStartDate release];
   [newStartDate release];
+  [oldEndDate release];
+  [newEndDate release];
   [super dealloc];
 }
 
@@ -113,6 +115,26 @@
       [newStartDate setTimeZone: viewTZ];
     }
   return newStartDate;
+}
+
+- (NSCalendarDate *) oldEndDate
+{
+  if (!oldEndDate)
+    {
+      ASSIGN (oldEndDate, [[self previousApt] endDate]);
+      [oldEndDate setTimeZone: viewTZ];
+    }
+  return oldEndDate;
+}
+
+- (NSCalendarDate *) newEndDate
+{
+  if (!newEndDate)
+    {
+      ASSIGN (newEndDate, [[self apt] endDate]);
+      [newEndDate setTimeZone: viewTZ];
+    }
+  return newEndDate;
 }
 
 - (NSString *) summary

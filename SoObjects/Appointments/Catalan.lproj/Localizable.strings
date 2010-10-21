@@ -35,7 +35,7 @@ vtodo_class2 = "(Tasca confidencial)";
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Invitació a l'esdeveniment: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(enviada per %{SentBy}) ";
-"%{Organizer} %{SentByText}has invited you to %{Summary}." = "%{Organizer} %{SentByText} us ha invitat a %{Summary}.";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText} us ha invitat a %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}";
 
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Esdeveniment suspès: \"%{Summary}\"";

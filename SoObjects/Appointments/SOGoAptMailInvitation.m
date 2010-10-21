@@ -21,9 +21,11 @@
 
 #import <NGCards/iCalEvent.h>
 
+#import <NGObjWeb/WOContext+SoObjects.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSObject+Utilities.h>
-
+#import <SOGo/SOGoDateFormatter.h>
+#import <SOGo/SOGoUser.h>
 #import "iCalPerson+SOGo.h"
 
 #import "SOGoAptMailNotification.h"
@@ -32,6 +34,34 @@
 @end
 
 @implementation SOGoAptMailInvitation
+
+- (void) setupValues
+{
+  SOGoDateFormatter *dateFormatter;
+  NSCalendarDate *date;
+  NSString *description;
+
+  [super setupValues];
+
+
+  dateFormatter = [[context activeUser] dateFormatterInContext: context];
+
+  date = [self newStartDate];
+  [values setObject: [dateFormatter shortFormattedDate: date]
+             forKey: @"StartDate"];
+  [values setObject: [dateFormatter formattedTime: date]
+             forKey: @"StartTime"];
+
+  date = [self newEndDate];
+  [values setObject: [dateFormatter shortFormattedDate: date]
+             forKey: @"EndDate"];
+  [values setObject: [dateFormatter formattedTime: date]
+             forKey: @"EndTime"];
+
+  description = [[self apt] comment];
+  [values setObject: (description ? description : @"")
+	  forKey: @"Description"];
+}
 
 - (NSString *) getSubject
 {
@@ -53,7 +83,7 @@
   if (!values)
     [self setupValues];
 
-  bodyFormat = [self labelForKey: @"%{Organizer} %{SentByText}has invited you to %{Summary}."
+  bodyFormat = [self labelForKey: @"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
                        inContext: context];
 
   return [values keysWithFormat: bodyFormat];

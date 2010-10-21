@@ -35,7 +35,7 @@ vtodo_class2 = "(Конфіденційне завдання)";
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Запрошення на подію: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(надіслано %{SentBy}) ";
-"%{Organizer} %{SentByText}has invited you to %{Summary}." = "%{Organizer} %{SentByText} запросив вас до %{Summary}.";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText} запросив вас до %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}";
 
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Подію скасовано: \"%{Summary}\"";

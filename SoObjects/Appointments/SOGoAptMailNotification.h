@@ -1,6 +1,6 @@
 /*
+  Copyright (C) 2006-2010 Inverse inc.
   Copyright (C) 2000-2005 SKYRIX Software AG
-  Copyright (C) 2006-2009 Inverse inc.
 
   This file is part of OpenGroupware.org.
 
@@ -43,6 +43,8 @@
   NSTimeZone *viewTZ;
   NSCalendarDate *oldStartDate;
   NSCalendarDate *newStartDate;
+  NSCalendarDate *oldEndDate;
+  NSCalendarDate *newEndDate;
   NSString *organizerName;
   NSMutableDictionary *values;
 }
@@ -60,6 +62,9 @@
 
 - (NSCalendarDate *) oldStartDate;
 - (NSCalendarDate *) newStartDate;
+
+- (NSCalendarDate *) oldEndDate;
+- (NSCalendarDate *) newEndDate;
 
 - (NSString *) getSubject;
 - (NSString *) getBody;
