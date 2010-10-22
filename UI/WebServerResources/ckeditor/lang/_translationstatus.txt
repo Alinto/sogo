@@ -10,7 +10,7 @@ ca.js      Found: 490 Missing: 41
 cs.js      Found: 411 Missing: 120
 cy.js      Found: 452 Missing: 79
 da.js      Found: 404 Missing: 127
-de.js      Found: 522 Missing: 9
+de.js      Found: 528 Missing: 3
 el.js      Found: 286 Missing: 245
 en-au.js   Found: 369 Missing: 162
 en-ca.js   Found: 369 Missing: 162
@@ -40,7 +40,7 @@ lv.js      Found: 283 Missing: 248
 mn.js      Found: 300 Missing: 231
 ms.js      Found: 265 Missing: 266
 nb.js      Found: 470 Missing: 61
-nl.js      Found: 494 Missing: 37
+nl.js      Found: 531 Missing: 0
 no.js      Found: 470 Missing: 61
 pl.js      Found: 411 Missing: 120
 pt-br.js   Found: 524 Missing: 7
@@ -56,5 +56,5 @@ th.js      Found: 287 Missing: 244
 tr.js      Found: 524 Missing: 7
 uk.js      Found: 404 Missing: 127
 vi.js      Found: 481 Missing: 50
-zh-cn.js   Found: 523 Missing: 8
+zh-cn.js   Found: 531 Missing: 0
 zh.js      Found: 404 Missing: 127
