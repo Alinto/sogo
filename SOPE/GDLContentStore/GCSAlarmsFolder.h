@@ -56,7 +56,7 @@
                                forUID: (NSString *) uid
                          recurrenceId: (NSCalendarDate *) recId
                           alarmNumber: (NSNumber *) alarmNbr
-                         andAlarmDate: (NSCalendarDate *) alarmNbr;
+                         andAlarmDate: (NSCalendarDate *) alarmDate;
 
 - (void) deleteRecordForEntryWithCName: (NSString *) cname
                       inCalendarAtPath: (NSString *) path;
