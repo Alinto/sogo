@@ -171,7 +171,7 @@
               if ([key length] == 0)
                 key = @"dn";
 
-              [entry setObject: value forKey: key];
+              [entry setObject: value forKey: [key lowercaseString]];
             }
           else
             {

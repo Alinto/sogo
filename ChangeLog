@@ -1,3 +1,8 @@
+2010-10-25  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Contacts/UIxContactFolderActions.m (-importLdifData:): use
+	lowercase keys for the contact dictionary.
+
 2010-10-21  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
         * Changes required for http://sogo.nu/bugs/view.php?id=795
@@ -80,6 +85,11 @@
 	* UI/WebServerResources/UIxAttendeesEditor.js
 	(performSearchCallback): improved autocompletion when changing
 	field before completion has returned.
+
+	* UI/WebServerResources/UIxMailToSelection.js (fancyAddRow): when
+	using IE, the input element is now removed and created when cloning
+	a row. Also convert the onFocus and onBlur attributes to
+	JavaScript calls.
 
 2010-10-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
