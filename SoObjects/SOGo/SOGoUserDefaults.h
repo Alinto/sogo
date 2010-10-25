@@ -39,6 +39,7 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 + (SOGoUserDefaults *) defaultsForUser: (NSString *) userId
                               inDomain: (NSString *) domainId;
 
+/* general */
 - (void) setLoginModule: (NSString *) newLoginModule;
 - (NSString *) loginModule;
 
@@ -80,6 +81,7 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 - (void) setLanguage: (NSString *) newValue;
 - (NSString *) language;
 
+/* mail */
 - (void) setMailShowSubscribedFoldersOnly: (BOOL) newValue;
 - (BOOL) mailShowSubscribedFoldersOnly;
 
@@ -134,6 +136,16 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 - (void) setAuxiliaryMailAccounts: (NSArray *) newAccounts;
 - (NSArray *) auxiliaryMailAccounts;
 
+- (void) setSieveFilters: (NSArray *) newValue;
+- (NSArray *) sieveFilters;
+
+- (void) setVacationOptions: (NSDictionary *) newValue;
+- (NSDictionary *) vacationOptions;
+
+- (void) setForwardOptions: (NSDictionary *) newValue;
+- (NSDictionary *) forwardOptions;
+
+/* calendar */
 - (void) setCalendarCategories: (NSArray *) newValues;
 - (NSArray *) calendarCategories;
 
@@ -152,14 +164,9 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 - (void) setRemindWithASound: (BOOL) newValue;
 - (BOOL) remindWithASound;
 
-- (void) setSieveFilters: (NSArray *) newValue;
-- (NSArray *) sieveFilters;
-
-- (void) setVacationOptions: (NSDictionary *) newValue;
-- (NSDictionary *) vacationOptions;
-
-- (void) setForwardOptions: (NSDictionary *) newValue;
-- (NSDictionary *) forwardOptions;
+/* contacts */
+- (void) setContactCategories: (NSArray *) newValues;
+- (NSArray *) contactCategories;
 
 @end
 

@@ -1,3 +1,16 @@
+2010-10-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUserDefaults.m (-setContactCategories)
+	(-contactCategories): new accessors for the
+	"SOGoContactCategories" user default. Accept/return an array of
+	strings.
+
+	* SoObjects/Contacts/SOGoContactFolders.m
+	(-setDavContactCategories, -davContactCategories): new accessors
+	for the new
+	"{urn:ietf:params:xml:ns:inverse-dav}contact-categories" custom
+	property. Make use of the new methods above.
+
 2010-10-25  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Contacts/UIxContactFolderActions.m (-importLdifData:): use

@@ -33,7 +33,12 @@
 #import <Foundation/NSEnumerator.h>
 
 #import <NGObjWeb/WOContext+SoObjects.h>
+#import <DOM/DOMElement.h>
+#import <DOM/DOMProtocols.h>
+
+#import <SOGo/NSObject+DAV.h>
 #import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserManager.h>
 #import <SOGo/WORequest+SOGo.h>
 
@@ -41,6 +46,7 @@
 #import "SOGoContactSourceFolder.h"
 #import "SOGoContactFolders.h"
 
+#define XMLNS_INVERSEDAV @"urn:ietf:params:xml:ns:inverse-dav"
 @implementation SOGoContactFolders
 
 + (NSString *) gcsFolderType
@@ -103,6 +109,71 @@
     keys = (NSMutableArray *) [super toManyRelationshipKeys];
 
   return keys;
+}
+
+- (NSException *) setDavContactCategories: (NSString *) newCategories
+{
+  SOGoUser *ownerUser;
+  NSMutableArray *categories;
+  DOMElement *documentElement, *catNode, *textNode;
+  id <DOMDocument> document;
+  id <DOMNodeList> catNodes;
+  NSUInteger count, max;
+  SOGoUserDefaults *ud;
+
+  categories = [NSMutableArray array];
+
+  if ([newCategories length] > 0)
+    {
+      document = [[context request] contentAsDOMDocument];
+      documentElement = (DOMElement *) [document documentElement];
+      catNodes = [documentElement getElementsByTagName: @"category"];
+      max = [catNodes length];
+      for (count = 0; count < max; count++)
+        {
+          catNode = [catNodes objectAtIndex: count];
+          if ([catNode hasChildNodes])
+            {
+              textNode = [[catNode childNodes] objectAtIndex: 0];
+              [categories addObject: [textNode nodeValue]];
+            }
+        }
+    }
+
+  NSLog (@"setting categories to : %@", categories);
+  ownerUser = [SOGoUser userWithLogin: owner];
+  ud = [ownerUser userDefaults];
+  [ud setContactCategories: categories];
+  [ud synchronize];
+
+  return nil;
+}
+
+- (SOGoWebDAVValue *) davContactCategories
+{
+  NSMutableArray *davCategories;
+  NSArray *categories;
+  NSUInteger count, max;
+  SOGoUser *ownerUser;
+  NSDictionary *catElement;
+
+  ownerUser = [SOGoUser userWithLogin: owner];
+  categories = [[ownerUser userDefaults] contactCategories];
+
+  max = [categories count];
+  davCategories = [NSMutableArray arrayWithCapacity: max];
+  for (count = 0; count < max; count++)
+    {
+      catElement = davElementWithContent (@"category",
+                                          XMLNS_INVERSEDAV,
+                                          [categories objectAtIndex: count]);
+      [davCategories addObject: catElement];
+    }
+
+  return [davElementWithContent (@"contact-categories",
+                                 XMLNS_INVERSEDAV,
+                                 davCategories)
+                                asWebDAVValue];
 }
 
 @end

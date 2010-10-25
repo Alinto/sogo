@@ -651,4 +651,14 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   return [self dictionaryForKey: @"Forward"];
 }
 
+- (void) setContactCategories: (NSArray *) newValues
+{
+  [self setObject: newValues forKey: @"SOGoContactCategories"];
+}
+
+- (NSArray *) contactCategories
+{
+  return [self stringArrayForKey: @"SOGoContactCategories"];
+}
+
 @end
