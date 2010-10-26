@@ -1,5 +1,9 @@
 2010-10-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OGoContentStore/OCSContactFieldExtractor.m
+	(-extractQuickFieldsFromVCard:): we now extract the list of
+	categories from the vcard.
+
 	* UI/WebServerResources/UIxPreferences.js: added code to handle
 	the new "Contacts Options" tab, in particular the contacts
 	categories.

@@ -56,6 +56,11 @@
       allowsNull = YES;
     },
     {
+      columnName = c_categories;
+      sqlType    = "VARCHAR(255)";
+      allowsNull = YES;
+    },
+    {
       columnName = c_component;
       sqlType    = "VARCHAR(10)";
       allowsNull = NO;

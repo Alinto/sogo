@@ -28,6 +28,8 @@
 #import <NGCards/NGVCard.h>
 #import <NGCards/NGVList.h>
 
+#import <SOGo/NSArray+Utilities.h>
+
 @interface OCSContactFieldExtractor : GCSFieldExtractor
 @end
 
@@ -78,6 +80,10 @@
     [fields setObject: [adr value: 3] forKey: @"c_l"];
   value = [[vCard uniqueChildWithTag: @"X-AIM"] value: 0];
   [fields setObject: value forKey: @"c_screenname"];
+  values = [[vCard categories] trimmedComponents];
+  if ([values count] > 0)
+    [fields setObject: [values componentsJoinedByString: @","]
+               forKey: @"c_categories"];
   [fields setObject: @"vcard" forKey: @"c_component"];
 
   return fields;

@@ -6,11 +6,12 @@ libOGoContentStore_LIBRARIES_DEPEND_UPON += \
 	-lNGCards	\
 	-lNGExtensions	\
 	-lEOControl	\
-	-lSaxObjC
+	-lSaxObjC \
+        -lSOGo
 
 ADDITIONAL_INCLUDE_DIRS += -I. -I.. -I../SOPE
 
-ADDITIONAL_LIB_DIRS += -L./$(GNUSTEP_OBJ_DIR) -L../SOPE/NGCards/$(GNUSTEP_OBJ_DIR)/
+ADDITIONAL_LIB_DIRS += -L./$(GNUSTEP_OBJ_DIR) -L../SOPE/NGCards/$(GNUSTEP_OBJ_DIR)/ -L../SoObjects/SOGo/SOGo.framework/
 
 SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib
 
