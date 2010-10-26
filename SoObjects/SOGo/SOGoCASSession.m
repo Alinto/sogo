@@ -141,7 +141,7 @@
   jsonSession = [cache CASSessionWithTicket: ticket];
   if ([jsonSession length])
     {
-      sessionDict = [NSMutableDictionary dictionaryWithJSONString: jsonSession];
+      sessionDict = [jsonSession objectFromJSONString];
       ASSIGN (login, [sessionDict objectForKey: @"login"]);
       ASSIGN (pgt, [sessionDict objectForKey: @"pgt"]);
       ASSIGN (identifier, [sessionDict objectForKey: @"identifier"]);

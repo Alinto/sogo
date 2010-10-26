@@ -195,7 +195,7 @@
   defFlags.modified = NO;
   [values release];
   jsonValue = [self jsonRepresentation];
-  values = [NSMutableDictionary dictionaryWithJSONString: jsonValue];
+  values = [jsonValue objectFromJSONString];
   if (values)
     [values retain];
   else

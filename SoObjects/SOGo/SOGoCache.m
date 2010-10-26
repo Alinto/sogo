@@ -49,6 +49,7 @@
 #import <NGExtensions/NSObject+Logs.h>
 
 #import "NSDictionary+BSJSONAdditions.h"
+#import "NSString+Utilities.h"
 #import "SOGoObject.h"
 #import "SOGoSystemDefaults.h"
 #import "SOGoUser.h"
@@ -498,7 +499,7 @@ static memcached_st *handle = NULL;
   s = [self _valuesOfType: @"acl"  forKey: thePath];
 
   if (s)
-    return [NSMutableDictionary dictionaryWithJSONString: s];
+    return [s objectFromJSONString];
 
   return nil;
 }

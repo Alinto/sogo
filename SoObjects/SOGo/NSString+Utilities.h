@@ -26,6 +26,7 @@
 #import <Foundation/NSString.h>
 
 @class NSDictionary;
+@class NSObject;
 
 @interface NSString (SOGoURLExtension)
 
@@ -64,6 +65,8 @@
 - (BOOL) _isLDIFSafe;
 
 - (BOOL) isJSONString;
+
+- (id) objectFromJSONString;
 
 @end
 

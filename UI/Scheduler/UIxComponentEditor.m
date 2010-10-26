@@ -55,7 +55,6 @@
 #import <Appointments/SOGoAppointmentOccurence.h>
 #import <Appointments/SOGoTaskObject.h>
 #import <SOGo/NSArray+Utilities.h>
-#import <SOGo/NSDictionary+BSJSONAdditions.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoUser.h>
@@ -1727,8 +1726,8 @@ RANGE(2);
   if ([json length])
     {
       attendees = [NSArray array];
-      attendeesData = [NSMutableDictionary dictionaryWithJSONString: json];
-      if (attendeesData)
+      attendeesData = [json objectFromJSONString];
+      if (attendeesData && [attendeesData isKindOfClass: [NSDictionary class]])
 	{
 	  newAttendees = [NSMutableArray array];
 	  attendees = [attendeesData allValues];

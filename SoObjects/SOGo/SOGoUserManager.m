@@ -29,8 +29,9 @@
 #import <Foundation/NSValue.h>
 #import <NGExtensions/NSObject+Logs.h>
 
-#import "NSDictionary+BSJSONAdditions.h"
 #import "NSArray+Utilities.h"
+#import "NSDictionary+BSJSONAdditions.h"
+#import "NSString+Utilities.h"
 #import "SOGoDomainDefaults.h"
 #import "SOGoSource.h"
 #import "SOGoSystemDefaults.h"
@@ -416,7 +417,7 @@
   BOOL checkOK;
  
   jsonUser = [[SOGoCache sharedCache] userAttributesForLogin: _login];
-  currentUser = [NSMutableDictionary dictionaryWithJSONString: jsonUser];
+  currentUser = [jsonUser objectFromJSONString];
   dictPassword = [currentUser objectForKey: @"password"];
   if (currentUser && dictPassword)
     checkOK = ([dictPassword isEqualToString: _pwd]);
@@ -458,7 +459,7 @@
   BOOL didChange;
  
   jsonUser = [[SOGoCache sharedCache] userAttributesForLogin: login];
-  currentUser = [NSMutableDictionary dictionaryWithJSONString: jsonUser];
+  currentUser = [jsonUser objectFromJSONString];
   dictPassword = [currentUser objectForKey: @"password"];
 
   if ([self _sourceChangePasswordForLogin: login
@@ -638,7 +639,7 @@
       // Remove the "@" prefix used to identified groups in the ACL tables.
       aUID = [uid hasPrefix: @"@"] ? [uid substringFromIndex: 1] : uid;
       jsonUser = [[SOGoCache sharedCache] userAttributesForLogin: aUID];
-      currentUser = [NSMutableDictionary dictionaryWithJSONString: jsonUser];
+      currentUser = [jsonUser objectFromJSONString]; 
       if (!([currentUser objectForKey: @"emails"]
 	    && [currentUser objectForKey: @"cn"]))
 	{

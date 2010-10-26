@@ -43,8 +43,7 @@
 
 #import <Appointments/SOGoAppointmentFolders.h>
 
-#import <SOGo/NSDictionary+Utilities.h>
-#import <SOGo/NSDictionary+BSJSONAdditions.h>
+#import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoCache.h>
 #import <SOGo/SOGoCASSession.h>
 #import <SOGo/SOGoDomainDefaults.h>
@@ -408,7 +407,7 @@
   WOCookie *authCookie;
 
   request = [context request];
-  message = [NSMutableDictionary dictionaryWithJSONString: [request contentAsString]];
+  message = [[request contentAsString] objectFromJSONString];
   username = [message objectForKey: @"userName"];
   password = [message objectForKey: @"password"];
   newPassword = [message objectForKey: @"newPassword"];

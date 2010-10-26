@@ -188,24 +188,3 @@ const int jsonDoNotIndent = -1;
 }
 
 @end
-
-@implementation NSMutableDictionary (BSJSONAdditions)
-
-+ (NSMutableDictionary *) dictionaryWithJSONString: (NSString *) jsonString
-{
-  NSScanner *scanner;
-  NSMutableDictionary *dictionary;
-
-  dictionary = nil;
-
-  if ([jsonString length] > 0)
-    {
-      scanner = [[NSScanner alloc] initWithString: jsonString];
-      [scanner scanJSONObject:&dictionary];
-      [scanner autorelease];
-    }
-
-  return dictionary;
-}
-
-@end

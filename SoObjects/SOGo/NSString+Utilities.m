@@ -34,6 +34,7 @@
 #import "NSArray+Utilities.h"
 #import "NSDictionary+BSJSONAdditions.h"
 #import "NSDictionary+URL.h"
+#import "NSScanner+BSJSONAdditions.h"
 
 #import "NSString+Utilities.h"
 
@@ -505,9 +506,28 @@ static NSMutableCharacterSet *safeLDIFStartChars = nil;
   NSDictionary *jsonData;
 
 #warning this method is a quick and dirty way of detecting the file-format
-  jsonData = [NSMutableDictionary dictionaryWithJSONString: self];
+  jsonData = [self objectFromJSONString];
 
   return (jsonData != nil);
 }
+
+- (id) objectFromJSONString
+{
+  NSScanner *scanner;
+  NSObject *object;
+
+  object = nil;
+
+  if ([self length] > 0)
+    {
+      scanner = [[NSScanner alloc] initWithString: self];
+      if (![scanner scanJSONValue: &object])
+        object = nil;
+      [scanner autorelease];
+    }
+
+  return object;
+}
+
 
 @end
