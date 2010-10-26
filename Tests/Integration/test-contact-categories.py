@@ -13,7 +13,7 @@ class HTTPContactCategoriesTest(unittest.TestCase):
             categories = []
         elements = [ { "{urn:ietf:params:xml:ns:inverse-dav}category": x }
                      for x in categories ]
-        props = { "{urn:ietf:params:xml:ns:inverse-dav}contact-categories": elements }
+        props = { "{urn:ietf:params:xml:ns:inverse-dav}contacts-categories": elements }
         proppatch = webdavlib.WebDAVPROPPATCH(resource, props)
         client = webdavlib.WebDAVClient(hostname, port, username, password)
         client.execute(proppatch)
@@ -24,7 +24,7 @@ class HTTPContactCategoriesTest(unittest.TestCase):
 
     def _getCategories(self, user):
         resource = '/SOGo/dav/%s/Contacts/' % user
-        props = [ "{urn:ietf:params:xml:ns:inverse-dav}contact-categories" ]
+        props = [ "{urn:ietf:params:xml:ns:inverse-dav}contacts-categories" ]
         propfind = webdavlib.WebDAVPROPFIND(resource, props, "0")
         client = webdavlib.WebDAVClient(hostname, port, username, password)
         client.execute(propfind)
@@ -33,7 +33,7 @@ class HTTPContactCategoriesTest(unittest.TestCase):
                           % (propfind.response["status"], user))
 
         categories = []
-        prop_nodes = propfind.response["document"].findall("{DAV:}response/{DAV:}propstat/{DAV:}prop/{urn:ietf:params:xml:ns:inverse-dav}contact-categories")
+        prop_nodes = propfind.response["document"].findall("{DAV:}response/{DAV:}propstat/{DAV:}prop/{urn:ietf:params:xml:ns:inverse-dav}contacts-categories")
         for prop_node in prop_nodes:
             cat_nodes = prop_node.findall("{urn:ietf:params:xml:ns:inverse-dav}category")
             if cat_nodes is not None:
