@@ -1,5 +1,21 @@
 2010-10-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/UIxContactEditor.js: (saveCategories)
+	(appendCategoryInput, onComboButtonClick, onCategoryInputChange)
+	(onCategoryInputFocus, regenerateCategoriesMenu)
+	(onCategoryMenuEntryClick, onEmptyCategoryClick) new methods added
+	for handling the contact categories.
+
+	* UI/Contacts/UIxContactEditor.m (-dealloc): release
+	addressBookItem, item, componentAddressBook and contactCategories
+	ivars.
+	(-setContactCategories, -contactCategories): new accessors for
+	getting/setting the contact vcard categories. Transfers are made
+	in JSON.
+	(-contactCategoriesList): new accessor to return the list of
+	categories defined in the preferences, combined with the list of
+	those found int the contact.
+
 	* SoObjects/SOGo/NSArray+Utilities.m (-mergedArrayWithArray:): new
 	method that returns the contact of the current array merged with
 	a unique copy of the objects of the array passed as parameter.

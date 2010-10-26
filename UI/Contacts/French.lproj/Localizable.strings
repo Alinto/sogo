@@ -96,6 +96,12 @@
 "Mobile:" = "Portable :";
 "Pager:" = "Téléavertisseur :";
 
+/* categories */
+"contacts_category_labels" = "Ami, Client, Collègue, Concurrent, Famille, Fournisseur, Partenaire d'affaire, Presse, VIP";
+"Categories" = "Catégories";
+"New category" = "Nouvelle catégorie";
+
+/* adresses */
 "Title:" = "Fonction :";
 "Service:" = "Service:";
 "Company:" = "Company:";

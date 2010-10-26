@@ -40,6 +40,7 @@
   NSMutableArray *photosURL;
   NSMutableDictionary *snapshot; /* contains the values for editing */
   SOGoContactFolder *componentAddressBook;
+  NSArray *contactCategories;
 }
 
 - (void) setAddressBookItem: (id) _item;

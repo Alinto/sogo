@@ -96,6 +96,12 @@
 "Mobile:" = "Mobil:";
 "Pager:" = "Személyhívó:";
 
+/* categories */
+"contacts_category_labels" = "Colleague, Competitor, Customer, Friend, Family, Business Partner, Provider, Press, VIP";
+"Categories" = "Categories";
+"New category" = "New category";
+
+/* adresses */
 "Title:" = "Cím:";
 "Service:" = "Szolgáltatás:";
 "Company:" = "Vállalat:";

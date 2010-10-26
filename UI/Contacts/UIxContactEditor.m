@@ -37,6 +37,11 @@
 #import <NGCards/NGVCardPhoto.h>
 #import <NGCards/NSArray+NGCards.h>
 
+#import <SOGo/NSArray+Utilities.h>
+#import <SOGo/NSString+Utilities.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
+
 #import <Contacts/SOGoContactFolder.h>
 #import <Contacts/SOGoContactFolders.h>
 #import <Contacts/SOGoContactObject.h>
@@ -54,6 +59,11 @@
       snapshot = [[NSMutableDictionary alloc] initWithCapacity: 16];
       preferredEmail = nil;
       photosURL = nil;
+      addressBookItem = nil;
+      item = nil;
+      card = nil;
+      componentAddressBook = nil;
+      contactCategories = nil;
     }
 
   return self;
@@ -64,6 +74,10 @@
   [snapshot release];
   [preferredEmail release];
   [photosURL release];
+  [addressBookItem release];
+  [item release];
+  [componentAddressBook release];
+  [contactCategories release];
   [super dealloc];
 }
 
@@ -216,7 +230,6 @@
   ASSIGN (componentAddressBook, _componentAddressBook);
 }
 
-
 - (NSString *) addressBookDisplayName
 {
   NSString *fDisplayName;
@@ -230,6 +243,80 @@
     fDisplayName = [self labelForKey: fDisplayName];
 
   return fDisplayName;
+}
+
+- (void) setContactCategories: (NSString *) jsonCategories
+{
+  NSArray *newCategories;
+
+  newCategories = [jsonCategories objectFromJSONString];
+  if ([newCategories isKindOfClass: [NSArray class]])
+    ASSIGN (contactCategories, newCategories);
+}
+
+- (NSString *) contactCategories
+{
+  NSString *jsonCats;
+
+  if (!contactCategories)
+    ASSIGN (contactCategories, [card categories]);
+  jsonCats = [contactCategories jsonRepresentation];
+  if (!jsonCats)
+    jsonCats = @"[]";
+
+  return jsonCats;
+}
+
+- (NSArray *) _languageContactsCategories
+{
+  NSArray *categoryLabels;
+
+  categoryLabels = [[self labelForKey: @"contacts_category_labels"]
+                       componentsSeparatedByString: @","];
+  if (!categoryLabels)
+    categoryLabels = [NSArray array];
+  
+  return [categoryLabels trimmedComponents];
+}
+
+- (NSArray *) _fetchAndCombineCategoriesList: (NSArray *) contactCats
+{
+  NSString *ownerLogin;
+  SOGoUserDefaults *ud;
+  NSArray *cats, *newCats;
+
+  ownerLogin = [[self clientObject] ownerInContext: context];
+  ud = [[SOGoUser userWithLogin: ownerLogin] userDefaults];
+  cats = [ud contactsCategories];
+  if (!cats)
+    cats = [self _languageContactsCategories];
+
+  if (contactCats)
+    {
+      newCats = [cats mergedArrayWithArray: contactCats];
+      if ([newCats count] != [cats count])
+        {
+          cats = [newCats sortedArrayUsingSelector:
+                            @selector (localizedCaseInsensitiveCompare:)];
+          [ud setContactsCategories: cats];
+          [ud synchronize];
+        }
+    }
+
+  return cats;
+}
+
+- (NSString *) contactCategoriesList
+{
+  NSArray *cats;
+  NSString *list;
+
+  cats = [self _fetchAndCombineCategoriesList: [card categories]];
+  list = [cats jsonRepresentation];
+  if (!list)
+    list = @"[]";
+
+  return list;
 }
 
 /* actions */
@@ -735,6 +822,8 @@
     {
 //       [self _fixupSnapshot];
       [self _saveSnapshot];
+      [card setCategories: contactCategories];
+      [self _fetchAndCombineCategoriesList: contactCategories];
       [contact save];
 
       if (componentAddressBook && componentAddressBook != [self componentAddressBook])

@@ -95,6 +95,12 @@
 "Mobile:" = "Mobil:";
 "Pager:" = "Pager:";
 
+/* categories */
+"contacts_category_labels" = "Geschäftspartner, Familie, Freund, Kollegin, Konkurrenten, Kunden, Lieferant, Presse, VIP";
+"Categories" = "Categories";
+"New category" = "New category";
+
+/* adresses */
 "Title:" = "Titel:";
 "Service:" = "Service:";
 "Company:" = "Firma:";
