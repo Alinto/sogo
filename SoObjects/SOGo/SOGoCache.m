@@ -483,7 +483,6 @@ static memcached_st *handle = NULL;
 - (void) setACLs: (NSDictionary *) theACLs
 	 forPath: (NSString *) thePath
 {
-  NSLog(@"setting ACLs: %@ (%@)  forPath: %@", [theACLs jsonStringValue], theACLs, thePath);
   if (theACLs)
     [self _cacheValues: [theACLs jsonStringValue]
 	  ofType: @"acl"
