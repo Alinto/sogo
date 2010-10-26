@@ -325,6 +325,23 @@
   return org;
 }
 
+- (void) setCategories: (NSArray *) newCategories
+{
+  CardElement *cats;
+
+  cats = [self uniqueChildWithTag: @"categories"];
+  [cats setValues: newCategories];
+}
+
+- (NSArray *) categories
+{
+  CardElement *cats;
+
+  cats = [self uniqueChildWithTag: @"categories"];
+
+  return [cats values];
+}
+
 // - (void) setOrg: (NGVCardOrg *) _v
 // {
 //   ASSIGNCOPY(self->org, _v);
@@ -345,19 +362,6 @@
 // - (NGVCardStrArrayValue *) nickname
 // {
 //   return self->nickname;
-// }
-
-// - (void) setCategories: (id) _v
-// {
-//   if (![_v isKindOfClass:[NGVCardStrArrayValue class]] && [_v isNotNull])
-//     _v = [[[NGVCardStrArrayValue alloc] initWithPropertyList:_v] autorelease];
-  
-//   ASSIGNCOPY(self->categories, _v);
-// }
-
-// - (NGVCardStrArrayValue *) categories
-// {
-//   return self->categories;
 // }
 
 // - (void) setTel: (NSArray *) _tel

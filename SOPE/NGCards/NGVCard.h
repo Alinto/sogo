@@ -125,13 +125,13 @@ typedef enum
           units: (NSArray *) someUnits;
 - (NSArray *) org;
 
+- (void) setCategories: (NSArray *) newCategories;
+- (NSArray *) categories;
+
 // - (void) setN: (NGVCardName *) _v;
 // - (NGVCardName *) n;
 // - (void) setOrg: (NGVCardOrg *) _v;
 // - (NGVCardOrg *) org;
-
-// - (void) setCategories: (id) _v;
-// - (NGVCardStrArrayValue *) categories;
 
 // - (void) setTel: (NSArray *) _tel;
 // - (NSArray *) tel;

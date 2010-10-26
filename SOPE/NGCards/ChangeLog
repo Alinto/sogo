@@ -1,5 +1,8 @@
 2010-10-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* NGVCard.m (-setCategories, -categories): new accessors for the
+	"CATEGORIES" vcard property.
+
 	* NGVCardPhoto.m (-type): fixed the returning of the default type.
 
 	* CardElement.m (-setValues:): new method. Actual renamed version
