@@ -178,10 +178,11 @@
         <div id="categoryInfos" class="tab">
           <div id="categoryContainer">
           </div>
-          <input type="text" class="textField" id="emptyCategory"
-            const:readonly="readonly"
-            const:name="emptyCategory"
-            const:value="" />
+          <var:if condition="canCreateOrModify"
+            ><input type="text" class="textField" id="emptyCategory"
+              const:readonly="readonly"
+              const:name="emptyCategory"
+              const:value="" /></var:if>
           <script type="text/javascript">
             var gCategories = <var:string value="contactCategoriesList" const:escapeHTML="NO"/>;
           </script>
