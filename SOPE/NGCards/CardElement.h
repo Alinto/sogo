@@ -89,6 +89,7 @@
 - (void) addType: (NSString *) aType;
 
 - (NSString *) tag;
+- (void) setValues: (NSArray *) newValues;
 - (NSArray *) values;
 - (NSDictionary *) attributes;
 - (BOOL) hasAttribute: (NSString *) aType
@@ -102,7 +103,6 @@
 
 - (id) elementWithClass: (Class) elementClass;
 
-- (void) setValuesAsCopy: (NSMutableArray *) someValues;
 - (void) setAttributesAsCopy: (NSMutableDictionary *) someAttributes;
 
 - (NSMutableArray *) deepCopyOfArray: (NSArray *) oldArray

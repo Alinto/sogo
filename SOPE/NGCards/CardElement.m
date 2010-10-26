@@ -219,6 +219,16 @@
   [self addAttribute: @"type" value: aType];
 }
 
+- (void) setValues: (NSArray *) newValues
+{
+  if (![newValues isKindOfClass: [NSMutableArray class]])
+    {
+      newValues = [newValues mutableCopy];
+      [newValues autorelease];
+    }
+  ASSIGN (values, newValues);
+}
+
 - (NSArray *) values
 {
   return values;
@@ -476,7 +486,7 @@
       newElement = [elementClass new];
       [newElement autorelease];
       [newElement setTag: tag];
-      [newElement setValuesAsCopy: values];
+      [newElement setValues: values];
       [newElement setAttributesAsCopy: attributes];
       if (group)
         [newElement setGroup: group];
@@ -489,11 +499,6 @@
     }
 
   return newElement;
-}
-
-- (void) setValuesAsCopy: (NSMutableArray *) someValues
-{
-  ASSIGN (values, someValues);
 }
 
 - (void) setAttributesAsCopy: (NSMutableDictionary *) someAttributes
@@ -567,7 +572,7 @@
   newGroup = [group copyWithZone: aZone];
   [new setGroup: newGroup];
   [newGroup release];
-  [new setValuesAsCopy: [self deepCopyOfArray: values withZone: aZone]];
+  [new setValues: [self deepCopyOfArray: values withZone: aZone]];
   [new setAttributesAsCopy: [self deepCopyOfDictionary: attributes
 				  withZone: aZone]];
 
@@ -588,7 +593,7 @@
   newGroup = [group copyWithZone: aZone];
   [new setGroup: newGroup];
   [newGroup release];
-  [new setValuesAsCopy: [self deepCopyOfArray: values withZone: aZone]];
+  [new setValues: [self deepCopyOfArray: values withZone: aZone]];
   [new setAttributesAsCopy: [self deepCopyOfDictionary: attributes
 				  withZone: aZone]];
 

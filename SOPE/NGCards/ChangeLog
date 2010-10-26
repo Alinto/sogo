@@ -1,3 +1,8 @@
+2010-10-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* CardElement.m (-setValues:): new method. Actual renamed version
+	of prior setValuesAsCopy:.
+
 2010-10-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* iCalTimeZone.m (-dateForDateTimeString:): adjust dates since
