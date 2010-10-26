@@ -1,5 +1,15 @@
 2010-10-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactSourceFolder.m
+	(-lookupContactsWithFilter:onCriteria:sortBy:ordering:): added the
+	handling of the new "criteria" parameter, returning an empty set
+	if no known one has been passed.
+
+	* SoObjects/Contacts/SOGoContactGCSFolder.m
+	(-lookupContactsWithFilter:onCriteria:sortBy:ordering:): added the
+	handling of the new "criteria" parameter, returning an empty set
+	if no known one has been passed.
+
 	* OGoContentStore/OCSContactFieldExtractor.m
 	(-extractQuickFieldsFromVCard:): we now extract the list of
 	categories from the vcard.

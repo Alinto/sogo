@@ -55,6 +55,7 @@
 "htmlMailFormat_TRUE" = "HTML";
 
 "Name or Email" = "Ім’я або адреса електронної пошти";
+"Category" = "Category";
 "Personal Addressbook" = "Особиста адресна книга";
 "Search in Addressbook" = "Шукати в адресній книзі";
 

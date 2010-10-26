@@ -52,6 +52,7 @@
 "htmlMailFormat_TRUE" = "HTML";
 
 "Name or Email" = "Enw neu Ebost";
+"Category" = "Category";
 "Personal Addressbook" = "Llyfr Cyfeiriadau Personol";
 "Search in Addressbook" = "Chwilio yn Llyfr Cyfeiriadau";
 

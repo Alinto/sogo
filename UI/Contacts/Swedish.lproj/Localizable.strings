@@ -58,6 +58,7 @@
 "htmlMailFormat_TRUE" = "HTML";
 
 "Name or Email" = "Namn eller e-post";
+"Category" = "Category";
 "Personal Addressbook" = "Personlig adressbok";
 "Search in Addressbook" = "Sök i adressbok";
 

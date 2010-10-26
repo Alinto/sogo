@@ -100,8 +100,9 @@
     {
       currentFilter = [filters objectAtIndex: count];
       contacts = [[(id<SOGoContactFolder>)self lookupContactsWithFilter: [[currentFilter allValues] lastObject]
-					  sortBy: @"c_givenname"
-					  ordering: NSOrderedDescending]
+                                                             onCriteria: @"name_or_address"
+                                                                 sortBy: @"c_givenname"
+                                                               ordering: NSOrderedDescending]
 		   objectEnumerator];
       
       while ((contact = [contacts nextObject]))

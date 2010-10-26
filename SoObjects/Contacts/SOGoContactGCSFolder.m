@@ -169,21 +169,33 @@ static NSArray *folderListingFields = nil;
 }
 
 - (EOQualifier *) _qualifierForFilter: (NSString *) filter
+                           onCriteria: (NSString *) criteria
 {
   NSString *qs;
   EOQualifier *qualifier;
 
-  if (filter && [filter length] > 0)
+  if ([filter length] > 0)
     {
       filter = [[filter stringByReplacingString: @"\\"  withString: @"\\\\"]
-                 stringByReplacingString: @"'"  withString: @"\\'\\'"];
-      qs = [NSString stringWithFormat:
-                       @"(c_sn isCaseInsensitiveLike: '%%%@%%') OR "
-                     @"(c_givenname isCaseInsensitiveLike: '%%%@%%') OR "
-		     @"(c_cn isCaseInsensitiveLike: '%%%@%%') OR "
-                     @"(c_mail isCaseInsensitiveLike: '%%%@%%')",
-                     filter, filter, filter, filter];
-      qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
+                     stringByReplacingString: @"'"  withString: @"\\'\\'"];
+      if ([criteria isEqualToString: @"name_or_address"])
+        qs = [NSString stringWithFormat:
+                         @"(c_sn isCaseInsensitiveLike: '%%%@%%') OR "
+                       @"(c_givenname isCaseInsensitiveLike: '%%%@%%') OR "
+                       @"(c_cn isCaseInsensitiveLike: '%%%@%%') OR "
+                       @"(c_mail isCaseInsensitiveLike: '%%%@%%')",
+                       filter, filter, filter, filter];
+      else if ([criteria isEqualToString: @"category"])
+        qs = [NSString stringWithFormat:
+                         @"(c_categories isCaseInsensitiveLike: '%%%@%%')",
+                       filter];
+      else
+        qs = @"(1 == 0)";
+
+      if (qs)
+        qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
+      else
+        qualifier = nil;
     }
   else
     qualifier = nil;
@@ -264,6 +276,7 @@ static NSArray *folderListingFields = nil;
 }
 
 - (NSArray *) lookupContactsWithFilter: (NSString *) filter
+                            onCriteria: (NSString *) criteria
                                 sortBy: (NSString *) sortKey
                               ordering: (NSComparisonResult) sortOrdering
 {
@@ -271,7 +284,7 @@ static NSArray *folderListingFields = nil;
   EOQualifier *qualifier;
   EOSortOrdering *ordering;
 
-  qualifier = [self _qualifierForFilter: filter];
+  qualifier = [self _qualifierForFilter: filter onCriteria: criteria];
   dbRecords = [[self ocsFolder] fetchFields: folderListingFields
 				matchingQualifier: qualifier];
 

@@ -58,6 +58,7 @@
 "htmlMailFormat_TRUE" = "HTML";
 
 "Name or Email" = "Jméno nebo e-mail";
+"Category" = "Category";
 "Personal Addressbook" = "Osobní kontakty";
 "Search in Addressbook" = "Vyhledávat v kontaktech";
 

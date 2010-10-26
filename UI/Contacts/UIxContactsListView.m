@@ -112,8 +112,9 @@
 
       [contactInfos release];
       contactInfos = [folder lookupContactsWithFilter: valueText
-			     sortBy: [self sortKey]
-			     ordering: ordering];
+                                           onCriteria: searchText
+                                               sortBy: [self sortKey]
+                                             ordering: ordering];
       [contactInfos retain];
     }
 
@@ -145,6 +146,7 @@
 
       uniqueContacts = [NSMutableDictionary dictionary];
       contacts = [folder lookupContactsWithFilter: searchText
+                                       onCriteria: @"name_or_address"
                                            sortBy: @"c_cn"
                                          ordering: NSOrderedAscending];
       for (i = 0; i < [contacts count]; i++)

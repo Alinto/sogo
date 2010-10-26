@@ -58,6 +58,7 @@
 "htmlMailFormat_TRUE" = "HTML";
 
 "Name or Email" = "Nazwa lub e-mail";
+"Category" = "Category";
 "Personal Addressbook" = "Osobista książka adresowa";
 "Search in Addressbook" = "Szukaj w książce adresowej";
 

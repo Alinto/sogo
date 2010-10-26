@@ -58,6 +58,7 @@
 "htmlMailFormat_TRUE" = "HTML";
 
 "Name or Email" = "Név vagy email";
+"Category" = "Category";
 "Personal Addressbook" = "Személyes címjegyzék";
 "Search in Addressbook" = "Keresés a címjegyzékben";
 

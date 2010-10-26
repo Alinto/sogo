@@ -58,6 +58,7 @@
 "htmlMailFormat_TRUE" = "HTML";
 
 "Name or Email" = "Naam of E-mail";
+"Category" = "Category";
 "Personal Addressbook" = "Persoonlijk adresboek";
 "Search in Addressbook" = "Adresboek doorzoeken...";
 

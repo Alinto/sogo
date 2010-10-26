@@ -243,6 +243,7 @@
 }
 
 - (NSArray *) lookupContactsWithFilter: (NSString *) filter
+                            onCriteria: (NSString *) criteria
                                 sortBy: (NSString *) sortKey
                               ordering: (NSComparisonResult) sortOrdering
 {
@@ -251,7 +252,7 @@
 
   result = nil;
 
-  if (filter && [filter length] > 0)
+  if ([filter length] > 0 && [criteria isEqualToString: @"name_or_address"])
     {
       records = [source fetchContactsMatching: filter];
       [childRecords setObjects: records

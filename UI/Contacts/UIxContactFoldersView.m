@@ -113,45 +113,6 @@
   return (selectorComponentClass != nil);
 }
 
-- (void) _fillResults: (NSMutableDictionary *) results
-             inFolder: (id <SOGoContactFolder>) folder
-         withSearchOn: (NSString *) contact
-{
-  NSEnumerator *folderResults;
-  NSDictionary *currentContact;
-  NSString *uid;
-
-  folderResults = [[folder lookupContactsWithFilter: contact
-                                             sortBy: @"cn"
-                                           ordering: NSOrderedAscending] objectEnumerator];
-  currentContact = [folderResults nextObject];
-  while (currentContact)
-    {
-      uid = [currentContact objectForKey: @"c_uid"];
-      if (uid && ![results objectForKey: uid])
-	[results setObject: currentContact forKey: uid];
-      currentContact = [folderResults nextObject];
-    }
-}
-
-- (NSString *) _emailForResult: (NSDictionary *) result
-{
-  NSMutableString *email;
-  NSString *name, *mail;
-
-  email = [NSMutableString string];
-  name = [result objectForKey: @"displayName"];
-  if (![name length])
-    name = [result objectForKey: @"cn"];
-  mail = [result objectForKey: @"mail"];
-  if ([name length])
-    [email appendFormat: @"%@ <%@>", name, mail];
-  else
-    [email appendString: mail];
-
-  return email;
-}
-
 - (id <WOActionResults>) allContactSearchAction
 {
   id <WOActionResults> result;
@@ -199,6 +160,7 @@
           folder = [sortedFolders objectAtIndex: i];
           //NSLog(@"  Address book: %@ (%@)", [folder displayName], [folder class]);
           contacts = [folder lookupContactsWithFilter: searchText
+                                           onCriteria: @"name_or_address"
                                                sortBy: @"c_cn"
                                              ordering: NSOrderedAscending];
           for (j = 0; j < [contacts count]; j++)

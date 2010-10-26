@@ -43,6 +43,7 @@
 @protocol SOGoContactFolder <NSObject>
 
 - (NSArray *) lookupContactsWithFilter: (NSString *) filter
+                            onCriteria: (NSString *) criteria
                                 sortBy: (NSString *) sortKey
                               ordering: (NSComparisonResult) sortOrdering;
 - (NSDictionary *) lookupContactWithName: (NSString *) aName;
