@@ -205,10 +205,11 @@ function onComboButtonClick(event) {
     var container = $("categoryContainer");
     var menuTop = (container.cascadeTopOffset()
                    + this.textInput.offsetTop + this.textInput.clientHeight);
-    var menuLeft = this.textInput.cascadeLeftOffset();
+    var menuLeft = this.textInput.cascadeLeftOffset() + 1;
     var minWidth = this.textInput.clientWidth;
     menu.setStyle({ "top": menuTop + "px",
                     "left": menuLeft + "px",
+                    "width": minWidth + "px",
                     "min-width": minWidth + "px" });
 
     event.preventDefault();
