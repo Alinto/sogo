@@ -57,6 +57,8 @@
 /* foreach ... */
 - (NSArray *) resultsOfSelector: (SEL) operation;
 
+- (NSArray *) mergedArrayWithArray: (NSArray *) otherArray;
+
 @end
 
 @interface NSMutableArray (SOGoArrayUtilities)

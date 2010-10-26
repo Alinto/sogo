@@ -204,6 +204,25 @@
   return results;
 }
 
+- (NSArray *) mergedArrayWithArray: (NSArray *) otherArray
+{
+  NSMutableArray *mergedArray;
+  NSUInteger count, max;
+  id object;
+
+  max = [otherArray count];
+  mergedArray = [NSMutableArray arrayWithCapacity: (max + [self count])];
+  [mergedArray setArray: self];
+  for (count = 0; count < max; count++)
+    {
+      object = [otherArray objectAtIndex: count];
+      if (![mergedArray containsObject: object])
+        [mergedArray addObject: object];
+    }
+
+  return mergedArray;
+}
+
 - (NSString *) jsonRepresentation
 {
   id currentElement;

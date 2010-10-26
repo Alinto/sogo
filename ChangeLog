@@ -1,5 +1,9 @@
 2010-10-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/NSArray+Utilities.m (-mergedArrayWithArray:): new
+	method that returns the contact of the current array merged with
+	a unique copy of the objects of the array passed as parameter.
+
 	* SoObjects/SOGo/SOGoUserDefaults.m (-{set}ContactsCategories):
 	renamed version of the "contactCategories" accessors.
 
