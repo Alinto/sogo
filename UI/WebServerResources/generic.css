@@ -666,13 +666,41 @@ TEXTAREA
 { padding: 0px;
   padding-left: 2px; }
 
-INPUT.textField
-{ margin: 2px; padding: 2px;
+INPUT.textField, INPUT.comboBoxField
+{ margin: 2px;
+  padding: 2px;
   vertical-align: middle;
   width: 250px; }
 
-INPUT.textField._invalid
+INPUT.comboBoxField
+{ margin-right: 0px; }
+
+INPUT.textField._invalid, INPUT.comboBoxField._invalid
 { background-color: #f00 !important; }
+
+BUTTON.comboBoxButton
+{ background-image: url("arrow-down.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-color: #e6e7e6;
+  width: 20px;
+  height: 20px;
+  margin: 0px;
+  padding: 0px;
+  border-bottom: 1px solid #909090;
+  border-right: 1px solid #909090;
+  border-left: 1px solid #eff0ef;
+  border-top: 1px solid #eff0ef;
+}
+
+BUTTON.comboBoxButton:active
+{
+  border-bottom: 1px solid #eff0ef;
+  border-right: 1px solid #eff0ef;
+  border-top: 1px solid #909090;
+  border-left: 1px solid #909090;
+  background-color: #d6d7d6;
+}
 
 INPUT#searchValue
 { margin-right: 1em;
