@@ -1,5 +1,7 @@
 2010-10-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* NGVCardPhoto.m (-type): fixed the returning of the default type.
+
 	* CardElement.m (-setValues:): new method. Actual renamed version
 	of prior setValuesAsCopy:.
 

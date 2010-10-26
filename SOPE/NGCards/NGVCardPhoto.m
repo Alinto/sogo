@@ -40,7 +40,7 @@
   NSString *type;
 
   type = [[self value: 0 ofAttribute: @"type"] uppercaseString];
-  if (!type)
+  if (![type length])
     type = @"JPEG";
 
   return type;
