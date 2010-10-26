@@ -1,5 +1,8 @@
 2010-10-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUserDefaults.m (-{set}ContactsCategories):
+	renamed version of the "contactCategories" accessors.
+
 	* SoObjects/SOGo/NSString+Utilities.m (-objectFromJSONString): new
 	method replacing the one below in a more generic way. I.e. the
 	method will accept any JSON object as input and not only

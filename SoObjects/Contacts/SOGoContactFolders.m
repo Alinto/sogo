@@ -111,7 +111,7 @@
   return keys;
 }
 
-- (NSException *) setDavContactCategories: (NSString *) newCategories
+- (NSException *) setDavContactsCategories: (NSString *) newCategories
 {
   SOGoUser *ownerUser;
   NSMutableArray *categories;
@@ -143,13 +143,13 @@
   NSLog (@"setting categories to : %@", categories);
   ownerUser = [SOGoUser userWithLogin: owner];
   ud = [ownerUser userDefaults];
-  [ud setContactCategories: categories];
+  [ud setContactsCategories: categories];
   [ud synchronize];
 
   return nil;
 }
 
-- (SOGoWebDAVValue *) davContactCategories
+- (SOGoWebDAVValue *) davContactsCategories
 {
   NSMutableArray *davCategories;
   NSArray *categories;
@@ -158,7 +158,7 @@
   NSDictionary *catElement;
 
   ownerUser = [SOGoUser userWithLogin: owner];
-  categories = [[ownerUser userDefaults] contactCategories];
+  categories = [[ownerUser userDefaults] contactsCategories];
 
   max = [categories count];
   davCategories = [NSMutableArray arrayWithCapacity: max];
@@ -170,7 +170,7 @@
       [davCategories addObject: catElement];
     }
 
-  return [davElementWithContent (@"contact-categories",
+  return [davElementWithContent (@"contacts-categories",
                                  XMLNS_INVERSEDAV,
                                  davCategories)
                                 asWebDAVValue];

@@ -165,8 +165,8 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 - (BOOL) remindWithASound;
 
 /* contacts */
-- (void) setContactCategories: (NSArray *) newValues;
-- (NSArray *) contactCategories;
+- (void) setContactsCategories: (NSArray *) newValues;
+- (NSArray *) contactsCategories;
 
 @end
 
