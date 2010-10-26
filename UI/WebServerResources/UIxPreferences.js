@@ -10,8 +10,11 @@ function savePreferences(sender) {
     if (sigList)
         sigList.disabled = false;
 
-    if ($("categoriesList")) {
-        serializeCategories();
+    if ($("calendarCategoriesListWrapper")) {
+        serializeCalendarCategories();
+    }
+    if ($("contactsCategoriesListWrapper")) {
+        serializeContactsCategories();
     }
 
     if ($("dayStartTime")) {
@@ -97,9 +100,12 @@ function _setupEvents() {
     $("replyPlacementList").observe ("change", onReplyPlacementListChange);
     $("composeMessagesType").observe ("change", onComposeMessagesTypeChange);
 
-    var categoriesValue = $("categoriesValue");
-    if (categoriesValue)
-        categoriesValue.value = "";
+    var valueInputs = [ "calendarCategoriesValue", "calendarCategoriesValue" ];
+    for (var i = 0; i < valueInputs.length; i++) {
+        var valueInput = $(valueInputs[i]);
+        if (valueInput)
+            valueInput.value = "";
+    }
 }
 
 function onChoiceChanged(event) {
@@ -140,16 +146,29 @@ function initPreferences() {
     if (typeof (initAdditionalPreferences) != "undefined")
         initAdditionalPreferences();
 
-    var table = $("categoriesList");
-    if (table) {
-        resetCategoriesColors(null);
-        var r = $$("TABLE#categoriesList tbody tr");
+    var wrapper = $("calendarCategoriesListWrapper");
+    if (wrapper) {
+        var table = wrapper.childNodesWithTag("table")[0];
+        resetCalendarCategoriesColors(null);
+        var r = $$("#calendarCategoriesListWrapper tbody tr");
         for (var i= 0; i < r.length; i++)
             r[i].identify();
         table.multiselect = true;
-        resetTableActions();
-        $("categoryAdd").observe("click", onCategoryAdd);
-        $("categoryDelete").observe("click", onCategoryDelete);
+        resetCalendarTableActions();
+        $("calendarCategoryAdd").observe("click", onCalendarCategoryAdd);
+        $("calendarCategoryDelete").observe("click", onCalendarCategoryDelete);
+    }
+
+    wrapper = $("contactsCategoriesListWrapper");
+    if (wrapper) {
+        var table = wrapper.childNodesWithTag("table")[0];
+        var r = $$("#contactsCategoriesListWrapper tbody tr");
+        for (var i= 0; i < r.length; i++)
+            r[i].identify();
+        table.multiselect = true;
+        resetContactsTableActions();
+        $("contactsCategoryAdd").observe("click", onContactsCategoryAdd);
+        $("contactsCategoryDelete").observe("click", onContactsCategoryDelete);
     }
 
     // Disable placement (after) if composing in HTML
@@ -759,9 +778,9 @@ function compactMailAccounts() {
     }
 }
 
-/* categories */
-function resetTableActions() {
-    var r = $$("TABLE#categoriesList tbody tr");
+/* calendar categories */
+function resetCalendarTableActions() {
+    var r = $$("#calendarCategoriesListWrapper tbody tr");
     for (var i = 0; i < r.length; i++) {
         var row = $(r[i]);
         row.observe("mousedown", onRowClick);
@@ -773,9 +792,9 @@ function resetTableActions() {
 }
 
 function onColorEdit (e) {
-    var r = $$("TABLE#categoriesList tbody tr td div.colorEditing");
+    var r = $$("#calendarCategoriesListWrapper div.colorEditing");
     for (var i=0; i<r.length; i++)
-        r[i].removeClassName ("colorEditing");
+        r[i].removeClassName("colorEditing");
 
     this.addClassName ("colorEditing");
     var cPicker = window.open(ApplicationBaseURL + "../" + UserLogin
@@ -790,7 +809,7 @@ function onColorEdit (e) {
 }
 
 function onColorPickerChoice (newColor) {
-    var div = $$("TABLE#categoriesList tbody tr td div.colorEditing").first ();
+    var div = $$("#calendarCategoriesListWrapper div.colorEditing").first ();
     //  div.removeClassName ("colorEditing");
     div.showColor = newColor;
     div.style.background = newColor;
@@ -800,7 +819,7 @@ function onColorPickerChoice (newColor) {
     }
 }
 
-function onCategoryAdd (e) {
+function onCalendarCategoryAdd (e) {
     var row = new Element ("tr");
     var nametd = new Element ("td").update ("");
     var colortd = new Element ("td");
@@ -818,14 +837,14 @@ function onCategoryAdd (e) {
     colortd.appendChild (colordiv);
     row.appendChild (nametd);
     row.appendChild (colortd);
-    $("categoriesList").tBodies[0].appendChild (row);
+    $("calendarCategoriesListWrapper").childNodesWithTag("table")[0].tBodies[0].appendChild (row);
 
-    resetTableActions ();
+    resetCalendarTableActions ();
     nametd.editionController.startEditing();
 }
 
-function onCategoryDelete (e) {
-    var list = $('categoriesList').down("TBODY");;
+function onCalendarCategoryDelete (e) {
+    var list = $('calendarCategoriesListWrapper').down("TABLE").down("TBODY");
     var rows = list.getSelectedNodes();
     var count = rows.length;
 
@@ -835,8 +854,8 @@ function onCategoryDelete (e) {
     }
 }
 
-function serializeCategories() {
-    var r = $$("TABLE#categoriesList tbody tr");
+function serializeCalendarCategories() {
+    var r = $$("#calendarCategoriesListWrapper TBODY TR");
 
     var values = [];
     for (var i = 0; i < r.length; i++) {
@@ -846,12 +865,11 @@ function serializeCategories() {
         values.push("\"" + name + "\": \"" + color + "\"");
     }
 
-    $("categoriesValue").value = "{ " + values.join(",\n") + "}";
+    $("calendarCategoriesValue").value = "{ " + values.join(",\n") + "}";
 }
 
-function resetCategoriesColors (e) {
-    var divs = $$("TABLE#categoriesList DIV.colorBox");
-
+function resetCalendarCategoriesColors (e) {
+    var divs = $$("#calendarCategoriesListWrapper DIV.colorBox");
     for (var i = 0; i < divs.length; i++) {
         var d = divs[i];
         var color = d.innerHTML;
@@ -861,6 +879,62 @@ function resetCategoriesColors (e) {
         d.update("&nbsp;");
     }
 }
+
+/* /calendar categories */
+
+/* contacts categories */
+function resetContactsTableActions() {
+    var r = $$("#contactsCategoriesListWrapper tbody tr");
+    for (var i = 0; i < r.length; i++) {
+        var row = $(r[i]);
+        row.observe("mousedown", onRowClick);
+        var tds = row.childElements();
+        var editionCtlr = new RowEditionController();
+        editionCtlr.attachToRowElement(tds[0]);
+    }
+}
+
+function onContactsCategoryAdd(e) {
+    var row = new Element("tr");
+    row.identify();
+    row.addClassName("categoryListRow");
+
+    var nametd = new Element("td").update("");
+    nametd.addClassName("categoryListCell");
+    row.appendChild(nametd);
+    var list = $('contactsCategoriesListWrapper').down("TABLE").down("TBODY");
+    list.appendChild(row);
+
+    resetContactsTableActions ();
+    nametd.editionController.startEditing();
+}
+
+function onContactsCategoryDelete (e) {
+    var list = $('contactsCategoriesListWrapper').down("TABLE").down("TBODY");
+    var rows = list.getSelectedNodes();
+    var count = rows.length;
+
+    for (var i = 0; i < count; i++) {
+        rows[i].editionController = null;
+        rows[i].remove();
+    }
+}
+
+function serializeContactsCategories() {
+    var values = [];
+
+    var tds = $$("#contactsCategoriesListWrapper TBODY TD");
+
+    for (var i = 0; i < tds.length; i++) {
+        var td = $(tds[i]);
+        values.push(td.allTextContent());
+    }
+
+    $("contactsCategoriesValue").value = values.toJSON();
+}
+
+/* / contact categories */
+
 
 function onReplyPlacementListChange() {
     // above = 0

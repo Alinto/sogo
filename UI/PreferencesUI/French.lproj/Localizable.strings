@@ -5,6 +5,7 @@
 /* tabs */
 "General" = "Général";
 "Calendar Options" = "Calendrier";
+"Contacts Options" = "Contacts";
 "Mail Options" = "Courrier";
 "IMAP Accounts" = "Comptes IMAP";
 "Vacation" = "Absence prolongée";
@@ -15,6 +16,9 @@
 "Color" = "Couleur";
 "Add" = "Ajouter";
 "Delete" = "Supprimer";
+
+/* contacts categories */
+"contacts_category_labels" = "Ami, Client, Collègue, Concurrent, Famille, Fournisseur, Partenaire d'affaire, Presse, VIP";
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Activer message d'absense prolongée";
@@ -151,7 +155,7 @@
 
 /* Event+task categories */
 "category_none" = "Aucune";
-"category_labels" = "Anniversaire,Affaire,Appels,Clients,Compétitions,Congrès,Consommation,Préférés,Suivis,Cadeaux,Congés,Idées,Problèmes,Réunion,Divers,Personnel,Projets,Jour férié,Statut,Fournisseurs,Voyages,Professionnel";
+"calendar_category_labels" = "Anniversaire,Affaire,Appels,Clients,Compétitions,Congrès,Consommation,Préférés,Suivis,Cadeaux,Congés,Idées,Problèmes,Réunion,Divers,Personnel,Projets,Jour férié,Statut,Fournisseurs,Voyages,Professionnel";
 
 /* Default module */
 "Calendar" = "Agenda";

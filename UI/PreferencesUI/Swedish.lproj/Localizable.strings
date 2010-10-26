@@ -5,6 +5,7 @@
 /* tabs */
 "General" = "Allmänt";
 "Calendar Options" = "Kalenderinställningar";
+"Contacts Options" = "Contacts Options";
 "Mail Options" = "E-postinställningar";
 "IMAP Accounts" = "IMAP Accounts";
 "Vacation" = "Frånvaro";
@@ -15,6 +16,9 @@
 "Color" = "Färg";
 "Add" = "Lägg till";
 "Delete" = "Ta bort";
+
+/* contacts categories */
+"contacts_category_labels" = "Colleague, Competitor, Customer, Friend, Family, Business Partner, Provider, Press, VIP";
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Aktivera frånvaro auto-svar";
@@ -153,7 +157,7 @@
 
 /* Event+task categories */
 "category_none" = "Ingen";
-"category_labels" = "Arbete,Diverse,Favoriter,Födelsedagar,Helgdagar,Idéer,Kunder,Ledighet,Leverantörer,Personligt,Presenter,Projekt,Meeting,Resor,Status,Telefonsamtal,Tävlingar,Uppföljning,Ärenden";
+"calendar_category_labels" = "Arbete,Diverse,Favoriter,Födelsedagar,Helgdagar,Idéer,Kunder,Ledighet,Leverantörer,Personligt,Presenter,Projekt,Meeting,Resor,Status,Telefonsamtal,Tävlingar,Uppföljning,Ärenden";
 
 /* Default module */
 "Calendar" = "Kalender";

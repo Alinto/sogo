@@ -9,10 +9,8 @@ DIV.bottomToolbar
 { position: absolute;
   height: 20px;
   margin: 0px;
-  padding: 0px; }
-
-#categoriesToolbar, #filtersToolbar
-{ left: 2em;
+  padding: 0px;
+  left: 2em;
   right: 2em;
   bottom: 8px; }
 
@@ -21,19 +19,7 @@ DIV.bottomToolbar
   bottom: 9px;
   width: 130px; }
 
-DIV#categoriesListWrapper
-{ overflow: auto;
-  position: absolute;
-  bottom: 30px;
-  right: 2em;
-  top: 88px;
-  left: 2em;
-  padding: 0px;
-  margin-top: 2px;
-  border-left: 1px solid #9b9b9b;
-  background: #ccddec; }
-
-TABLE#categoriesList
+TABLE.categoriesList
 { width: 100%; }
 
 #colorTableHeader
@@ -54,6 +40,32 @@ DIV.colorBox
   margin: 0 3px 0 0;
   width: 1em; }
 
+DIV.listWrapper
+{ overflow: auto;
+  position: absolute;
+  padding: 0px;
+  margin-top: 2px;
+  border-left: 1px solid #9b9b9b;
+  background: #ccddec;}
+
+#calendarCategoriesListWrapper
+{ bottom: 30px;
+  right: 2em;
+  top: 88px;
+  left: 2em; }
+
+#contactsCategoriesListWrapper
+{ overflow: auto;
+  position: absolute;
+  bottom: 30px;
+  right: 2em;
+  top: 20px;
+  left: 2em;
+  padding: 0px;
+  margin-top: 2px;
+  border-left: 1px solid #9b9b9b;
+  background: #ccddec; }
+
 /* vacation */
 #vacation, #forward
 { padding-left: 2.5em; }
@@ -73,16 +85,10 @@ DIV.colorBox
 
 /* mail filters */
 DIV#filtersListWrapper
-{ overflow: auto;
-  position: absolute;
-  bottom: 30px;
+{ bottom: 30px;
   right: 2em;
   top: 154px;
-  left: 2em;
-  padding: 0px;
-  margin-top: 2px;
-  border-left: 1px solid #9b9b9b;
-  background: #ccddec; }
+  left: 2em; }
 
 TABLE#filtersList
 { width: 100%;
@@ -115,21 +121,25 @@ P.infoMessage#passwordError
 
 /* mail accounts */
 #mailAccountsListWrapper, #mailAccountEditor
+{ bottom: 30px;
+  top: 5px;
+  left: 0px;
+  margin: 0px; }
+
+#mailAccountEditor
 { position: absolute;
   overflow: auto;
   bottom: 30px;
-  top: 5px;
-  left: 0px;
-  margin: 0px;
-  padding: 0px; }
+  left: 140px;
+  padding: 0px;
+  padding-top: 5px;
+  right: 5px; }
 
 #mailAccountsListWrapper
 { overflow-x: hidden;
   left: 5px;
   width: 130px;
-  background: #ccddec;
-  border-top: 1px solid #9b9b9b;
-  border-left: 1px solid #9b9b9b; }
+  border-top: 1px solid #9b9b9b; }
 
 #mailAccountsList
 { position: absolute;
@@ -149,11 +159,6 @@ P.infoMessage#passwordError
 #mailAccountsList LI.readonly
 { cursor: default;
   font-style: italic; }
-
-#mailAccountEditor
-{ left: 140px;
-  padding-top: 5px;
-  right: 5px; }
 
 #serverName
 { width: 100px; }

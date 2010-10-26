@@ -5,6 +5,7 @@
 /* tabs */
 "General" = "Cyffredinol";
 "Calendar Options" = "Opsiynau Calendr";
+"Contacts Options" = "Contacts Options";
 "Mail Options" = "Opsiynau Ebost";
 "IMAP Accounts" = "IMAP Accounts";
 "Vacation" = "Vacation";
@@ -15,6 +16,9 @@
 "Color" = "Color";
 "Add" = "Add";
 "Delete" = "Delete";
+
+/* contacts categories */
+"contacts_category_labels" = "Colleague, Competitor, Customer, Friend, Family, Business Partner, Provider, Press, VIP";
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Enable vacation auto reply";
@@ -153,7 +157,7 @@
 
 /* Event+task categories */
 "category_none" = "Dim";
-"category_labels" = "Amrywiol,Anrhegion,Busnes,Canlyniadau,Clientau,Cwsmer,Cyflenwyr,Cystadleuaeth,Dilyn lan,Ffefrynnau,Galwadau,Gwyliau,Meeting,Gwyliau Cyhoeddus,Penblwydd,Personol,Projectau,Statws,Syniadau,Teithio";
+"calendar_category_labels" = "Amrywiol,Anrhegion,Busnes,Canlyniadau,Clientau,Cwsmer,Cyflenwyr,Cystadleuaeth,Dilyn lan,Ffefrynnau,Galwadau,Gwyliau,Meeting,Gwyliau Cyhoeddus,Penblwydd,Personol,Projectau,Statws,Syniadau,Teithio";
 
 /* Default module */
 "Calendar" = "Calendar";

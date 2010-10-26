@@ -5,6 +5,7 @@
 /* tabs */
 "General" = "Ogólne";
 "Calendar Options" = "Opcje kalendarza";
+"Contacts Options" = "Contacts Options";
 "Mail Options" = "Opcje poczty";
 "Signature" = "Podpis";
 "Vacation" = "Nieobecność";
@@ -16,6 +17,9 @@
 "Color" = "Kolor";
 "Add" = "Dodaj";
 "Delete" = "Usuń";
+
+/* contacts categories */
+"contacts_category_labels" = "Colleague, Competitor, Customer, Friend, Family, Business Partner, Provider, Press, VIP";
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Włącz autoodpowiedź podczas nieobecności";
@@ -143,7 +147,7 @@
 
 /* Event+task categories */
 "category_none" = "Brak";
-"category_labels" = "Rocznica,Urodziny,Biznes,Telefony,Klienci,Konkurencja,Klient,Ulubione,Nawiązanie,Podarunki,Święta,Idee,Spotkania,Problemy,Różne,Osobiste,Projekty,Święta,Status,Dostawcy,Podróż,Wakacje";
+"calendar_category_labels" = "Rocznica,Urodziny,Biznes,Telefony,Klienci,Konkurencja,Klient,Ulubione,Nawiązanie,Podarunki,Święta,Idee,Spotkania,Problemy,Różne,Osobiste,Projekty,Święta,Status,Dostawcy,Podróż,Wakacje";
 
 /* Default module */
 "Calendar" = "Kalendarz";

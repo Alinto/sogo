@@ -10,8 +10,10 @@
   title="name"
   const:popup="YES"
   >
-  <form var:href="saveURL" name="editform" id="mainForm">
+  <div class="menu" id="categoriesMenu">
+  </div>
 
+  <form var:href="saveURL" name="editform" id="mainForm">
     <var:if condition="isNew"><div id="addressBookSelector">
         <style type="text/css">DIV#editorTabs { top: 30px; };</style>
         <var:string label:value="Add to:" />
@@ -27,6 +29,8 @@
         <li target="baseInfos">
           <span><var:string label:value="Contact" /></span>
         </li>
+        <li target="categoryInfos">
+          <span><var:string label:value="Categories" /></span></li>
         <li target="addressesInfos">
           <span><var:string label:value="Address" /></span></li>
         <li target="photos">
@@ -169,6 +173,21 @@
               </td>
             </tr>
           </table>
+        </div>
+
+        <div id="categoryInfos" class="tab">
+          <div id="categoryContainer">
+          </div>
+          <input type="text" class="textField" id="emptyCategory"
+            const:readonly="readonly"
+            const:name="emptyCategory"
+            const:value="" />
+          <script type="text/javascript">
+            var gCategories = <var:string value="contactCategoriesList" const:escapeHTML="NO"/>;
+          </script>
+          <input type="hidden" id="contactCategories"
+            const:name="contactCategories"
+            var:value="contactCategories" />
         </div>
 
         <div id="addressesInfos" class="tab">

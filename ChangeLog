@@ -1,5 +1,20 @@
 2010-10-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/UIxPreferences.js: added code to handle
+	the new "Contacts Options" tab, in particular the contacts
+	categories.
+
+	* UI/PreferencesUI/UIxPreferences.m (-languageCategories): renamed
+	to "_languageCalendarCategories" as it is a private method. The
+	dictionary key has also been renamed to
+	"calendar_category_labels" since we now handle contact categories
+	too.
+	(-calendarCategoriesValue, -setCalendarCategoriesValue:): renamed
+	from "categories" method.
+	(-contactsCategoryList, -contactsCategoriesValue)
+	(-setContactsCategoriesValue:): new methods for handling contacts
+	categories in the preferences. Transfers are in JSON.
+
 	* UI/WebServerResources/UIxContactEditor.js: (saveCategories)
 	(appendCategoryInput, onComboButtonClick, onCategoryInputChange)
 	(onCategoryInputFocus, regenerateCategoriesMenu)

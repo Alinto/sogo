@@ -24,6 +24,8 @@
           <li target="calendarOptionsView"><span><var:string
                 label:value="Calendar Options"/></span></li>
 	</var:if
+          ><li target="contactsOptionsView"><span><var:string
+              label:value="Contacts Options"/></span></li
           ><var:if condition="userHasMailAccess">
           <li target="mailOptionsView"><span><var:string
                 label:value="Mail Options"/></span></li>
@@ -101,8 +103,8 @@
                 string="itemFirstWeekText" selection="userFirstWeek"
                 /></label><br/>
             <label><var:string label:value="Categories"/></label>
-            <div id="categoriesListWrapper"
-              ><table id="categoriesList" cellspacing="0">
+            <div id="calendarCategoriesListWrapper" class="listWrapper"
+              ><table class="categoriesList" cellspacing="0">
                 <thead>
                   <tr class="tableview"
                     ><th const:class="tbtv_headercell" const:id="nameTableHeader"
@@ -112,7 +114,7 @@
                       ></tr
                     ></thead>
                 <tbody>
-                  <var:foreach list="categoryList" item="category">
+                  <var:foreach list="calendarCategoryList" item="category">
                     <tr const:class="categoryListRow"
                       ><td const:class="categoryListCell"
                         ><var:string var:value="category"/></td
@@ -124,19 +126,50 @@
                 </tbody>
               </table>
             </div>
-            <div const:id="categoriesToolbar" class="bottomToolbar">
-              <a const:id="categoryAdd" class="bottomButton" href="#">
+            <div class="bottomToolbar">
+              <a const:id="calendarCategoryAdd" class="bottomButton" href="#">
                 <span><img rsrc:src="add-icon.png" label:title="Add" />
                 </span></a>
-              <a const:id="categoryDelete" class="bottomButton" href="#">
+              <a const:id="calendarCategoryDelete" class="bottomButton" href="#">
                 <span><img rsrc:src="remove-icon.png" label:title="Delete" />
                 </span></a>
             </div>
-            <input type="hidden" const:id="categoriesValue" 
-              const:name="categoriesValue" var:value="categoriesValue"/>
+            <input type="hidden" const:id="calendarCategoriesValue" 
+              const:name="calendarCategoriesValue" var:value="calendarCategoriesValue"/>
           </div>
-        </var:if
-          ><var:if condition="userHasMailAccess">
+        </var:if>
+        <div id="contactsOptionsView" class="tab">
+          <label><var:string label:value="Categories"/></label>
+          <div id="contactsCategoriesListWrapper" class="listWrapper"
+            ><table class="categoriesList" cellspacing="0">
+              <thead>
+                <tr class="tableview"
+                  ><th const:class="tbtv_headercell" const:id="nameTableHeader"
+                    ><var:string label:value="Name"/></th
+                    ></tr
+                  ></thead>
+              <tbody>
+                <var:foreach list="contactsCategoryList" item="category">
+                  <tr const:class="categoryListRow"
+                    ><td const:class="categoryListCell"
+                      ><var:string var:value="category"/></td
+                      ></tr>
+                </var:foreach>
+              </tbody>
+            </table>
+          </div>
+          <div class="bottomToolbar">
+            <a const:id="contactsCategoryAdd" class="bottomButton" href="#">
+              <span><img rsrc:src="add-icon.png" label:title="Add" />
+              </span></a>
+            <a const:id="contactsCategoryDelete" class="bottomButton" href="#">
+              <span><img rsrc:src="remove-icon.png" label:title="Delete" />
+              </span></a>
+          </div>
+          <input type="hidden" const:id="contactsCategoriesValue" 
+            const:name="contactsCategoriesValue" var:value="contactsCategoriesValue"/>
+        </div>
+        <var:if condition="userHasMailAccess">
           <div id="mailOptionsView" class="tab">
             <label><input type="checkbox" 
                 const:name="subscribedFoldersOnly"
@@ -171,7 +204,7 @@
               <script type="text/javascript">
                 var sieveCapabilities = <var:string value="sieveCapabilities" const:escapeHTML="NO"/>;
               </script>
-              <div id="filtersListWrapper"
+              <div id="filtersListWrapper" class="listWrapper"
                 ><table id="filtersList" cellspacing="0">
                   <thead>
                     <tr class="tableview"
@@ -186,7 +219,7 @@
                 <input type="hidden" const:name="sieveFilters" const:id="sieveFilters"
                   var:value="sieveFiltersValue"/>
               </div>
-              <div const:id="filtersToolbar" class="bottomToolbar">
+              <div class="bottomToolbar">
                 <a const:id="filterAdd" class="bottomButton" href="#">
                   <span><img rsrc:src="add-icon.png" label:title="Add" />
                   </span></a>
@@ -206,7 +239,7 @@
           <div id="mailAccountsView" class="tab">
             <input type="hidden" const:name="mailAccountsJSON" const:id="mailAccountsJSON"
               var:value="mailAccounts"/>
-            <div id="mailAccountsListWrapper"
+            <div id="mailAccountsListWrapper" class="listWrapper"
                  ><ul id="mailAccountsList"
                       ><!-- space --></ul
                       ></div>

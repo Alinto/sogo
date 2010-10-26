@@ -5,6 +5,7 @@
 /* tabs */
 "General" = "Általános";
 "Calendar Options" = "Naptár";
+"Contacts Options" = "Contacts Options";
 "Mail Options" = "Levelezés";
 "IMAP Accounts" = "IMAP Accounts";
 "Password" = "Jelszó";
@@ -14,8 +15,25 @@
 "Add" = "Add";
 "Delete" = "Delete";
 
-/* ooo */
-"Auto reply messsage :" = "Automatikus válasz minden feladónak csak egy alkalommal :";
+/* contacts categories */
+"contacts_category_labels" = "Colleague, Competitor, Customer, Friend, Family, Business Partner, Provider, Press, VIP";
+
+/* vacation (auto-reply) */
+"Enable vacation auto reply" = "Enable vacation auto reply";
+"Auto reply message :" = "Automatikus válasz minden feladónak csak egy alkalommal :";
+"Email addresses (separated by commas) :" = "Email addresses (separated by commas) :";
+"Add default email addresses" = "Add default email addresses";
+"Days between responses :" = "Days between responses :";
+"Do not send responses to mailing lists" = "Do not send responses to mailing lists";
+"Please specify your message and your email addresses for which you want to enable auto reply."
+= "Please specify your message and your email addresses for which you want to enable auto reply.";
+
+/* forward messages */
+"Forward incoming messages" = "Forward incoming messages";
+"Forward to address :" = "Forward to address :";
+"Keep a copy" = "Keep a copy";
+"Please specify an address to which you want to forward your messages."
+= "Please specify an address to which you want to forward your messages.";
 
 /* d & t */
 "Current Time Zone :" = "Időzóna :";
@@ -137,7 +155,7 @@
 
 /* Event+task categories */
 "category_none" = "Nincs";
-"category_labels" = "Évforduló,Születésnap,Üzleti,Meghívás,Ügyfelek,Versenytársak,Vevő,Kedvencek,Nyomonkövetés,Ajándékozás,Szabadság,Ötletek,Meeting,Ügyek,Egyéb,Személyes,Projektek,Állami ünnep,Állapot,Szállítók,Utazás,Szünidő";
+"calendar_category_labels" = "Évforduló,Születésnap,Üzleti,Meghívás,Ügyfelek,Versenytársak,Vevő,Kedvencek,Nyomonkövetés,Ajándékozás,Szabadság,Ötletek,Meeting,Ügyek,Egyéb,Személyes,Projektek,Állami ünnep,Állapot,Szállítók,Utazás,Szünidő";
 
 /* Default module */
 "Calendar" = "Calendar";

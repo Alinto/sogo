@@ -5,6 +5,7 @@
 /* tabs */
 "General" = "Загальне";
 "Calendar Options" = "Календар";
+"Contacts Options" = "Contacts Options";
 "Mail Options" = "Пошта";
 "IMAP Accounts" = "IMAP-записи";
 "Vacation" = "Відпустка";
@@ -17,6 +18,9 @@
 "Delete" = "Вилучити";
 "Cancel" = "Скасувати";
 "OK" = "Добре";
+
+/* contacts categories */
+"contacts_category_labels" = "Colleague, Competitor, Customer, Friend, Family, Business Partner, Provider, Press, VIP";
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Увімкнути повідомлення про мою відсутність";
@@ -155,7 +159,7 @@
 
 /* Event+task categories */
 "category_none" = "Без категорії";
-"category_labels" = "Важливий день,День народження,Справи,Дзвінки,Клієнти,Поточне,Користувачі,Обране,Продовження,Подарунки,Свято,Думки,Зустріч,Питання,Різне,Особисте,Проекти,Публічне свято,Поточне,Постачальники,Поїздка,Відпустка";
+"calendar_category_labels" = "Важливий день,День народження,Справи,Дзвінки,Клієнти,Поточне,Користувачі,Обране,Продовження,Подарунки,Свято,Думки,Зустріч,Питання,Різне,Особисте,Проекти,Публічне свято,Поточне,Постачальники,Поїздка,Відпустка";
 
 /* Default module */
 "Calendar" = "Календар";

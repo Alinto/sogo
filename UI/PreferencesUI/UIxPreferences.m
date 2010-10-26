@@ -22,7 +22,6 @@
 
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSPropertyList.h>
-#import <Foundation/NSScanner.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSTimeZone.h>
 #import <Foundation/NSUserDefaults.h> /* for locale strings */
@@ -36,7 +35,6 @@
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+BSJSONAdditions.h>
 #import <SOGo/NSDictionary+Utilities.h>
-#import <SOGo/NSScanner+BSJSONAdditions.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
@@ -123,6 +121,7 @@
   [calendarCategoriesColors release];
   [defaultCategoryColor release];
   [category release];
+  [contactsCategories release];
   [forwardOptions release];
   [daysOfWeek release];
   [locale release];
@@ -672,13 +671,13 @@
 
 - (void) setSieveFiltersValue: (NSString *) newValue
 {
-  NSScanner *jsonScanner;
-
-  if ([newValue hasPrefix: @"["])
+  sieveFilters = [newValue objectFromJSONString];
+  if (sieveFilters)
     {
-      jsonScanner = [NSScanner scannerWithString: newValue];
-      [jsonScanner scanJSONArray: &sieveFilters];
-      [sieveFilters retain];
+      if ([sieveFilters isKindOfClass: [NSArray class]])
+        [sieveFilters retain];
+      else
+        sieveFilters = nil;
     }
 }
 
@@ -967,23 +966,23 @@
   return [locale objectForKey: @"NSLocaleCode"];
 }
 
-- (NSArray *) languageCategories
+- (NSArray *) _languageCalendarCategories
 {
   NSArray *categoryLabels;
 
-  categoryLabels = [[self labelForKey: @"category_labels"]
+  categoryLabels = [[self labelForKey: @"calendar_category_labels"]
                        componentsSeparatedByString: @","];
 
   return [categoryLabels trimmedComponents];
 }
 
-- (NSArray *) categoryList
+- (NSArray *) calendarCategoryList
 {
   if (!calendarCategories)
     {
       ASSIGN (calendarCategories, [userDefaults calendarCategories]);
       if (!calendarCategories)
-        ASSIGN (calendarCategories, [self languageCategories]);
+        ASSIGN (calendarCategories, [self _languageCalendarCategories]);
     }
 
   return [calendarCategories
@@ -1022,21 +1021,60 @@
   return categoryColor;
 }
 
-- (NSString *) categoriesValue
+- (NSString *) calendarCategoriesValue
 {
   return @"";
 }
 
-- (void) setCategoriesValue: (NSString *) value
+- (void) setCalendarCategoriesValue: (NSString *) value
 {
   NSDictionary *newColors;
 
-  newColors = [NSMutableDictionary dictionaryWithJSONString: value];
-  if (newColors)
+  newColors = [value objectFromJSONString];
+  if (newColors && [newColors isKindOfClass: [NSDictionary class]])
     {
       [userDefaults setCalendarCategories: [newColors allKeys]];
       [userDefaults setCalendarCategoriesColors: newColors];
     }
+}
+
+- (NSArray *) _languageContactsCategories
+{
+  NSArray *categoryLabels;
+
+  categoryLabels = [[self labelForKey: @"contacts_category_labels"]
+                       componentsSeparatedByString: @","];
+  if (!categoryLabels)
+    categoryLabels = [NSArray array];
+  
+  return [categoryLabels trimmedComponents];
+}
+
+- (NSArray *) contactsCategoryList
+{
+  if (!contactsCategories)
+    {
+      ASSIGN (contactsCategories, [userDefaults contactsCategories]);
+      if (!contactsCategories)
+        ASSIGN (contactsCategories, [self _languageContactsCategories]);
+    }
+
+  return [contactsCategories
+           sortedArrayUsingSelector: @selector (localizedCaseInsensitiveCompare:)];
+}
+
+- (NSString *) contactsCategoriesValue
+{
+  return @"";
+}
+
+- (void) setContactsCategoriesValue: (NSString *) value
+{
+  NSArray *newCategories;
+
+  newCategories = [value objectFromJSONString];
+  if (newCategories && [newCategories isKindOfClass: [NSArray class]])
+    [userDefaults setContactsCategories: newCategories];
 }
 
 - (NSArray *) languages
@@ -1284,11 +1322,9 @@
 - (void) setMailAccounts: (NSString *) newMailAccounts
 {
   NSArray *accounts;
-  NSScanner *scanner;
   int max;
 
-  scanner = [NSScanner scannerWithString: newMailAccounts];
-  [scanner scanJSONArray: &accounts];
+  accounts = [newMailAccounts objectFromJSONString];
   if (accounts && [accounts isKindOfClass: [NSArray class]])
     {
       max = [accounts count];

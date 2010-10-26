@@ -5,6 +5,7 @@
 /* tabs */
 "General" = "General";
 "Calendar Options" = "Opcions de calendari";
+"Contacts Options" = "Contacts Options";
 "Mail Options" = "Opcions de correu";
 "IMAP Accounts" = "Comptes IMAP";
 "Vacation" = "Vacances";
@@ -15,6 +16,9 @@
 "Color" = "Color";
 "Add" = "Afegir";
 "Delete" = "Esborrar";
+
+/* contacts categories */
+"contacts_category_labels" = "Colleague, Competitor, Customer, Friend, Family, Business Partner, Provider, Press, VIP";
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Activar resposta automàtica";
@@ -155,7 +159,7 @@
 
 /* Event+task categories */
 "category_none" = "Cap";
-"category_labels" = "Aniversari,Natalici,Negocis,Telefonades,Clients,Competició,Feina,Favorits,Seguiment,Regals,Festes,Idees,Reunió,Assumptes,Altres,Personal,Projectes,Vacances públiques,Estat,Proveïdors,Viatges,Vacances";
+"calendar_category_labels" = "Aniversari,Natalici,Negocis,Telefonades,Clients,Competició,Feina,Favorits,Seguiment,Regals,Festes,Idees,Reunió,Assumptes,Altres,Personal,Projectes,Vacances públiques,Estat,Proveïdors,Viatges,Vacances";
 
 /* Default module */
 "Calendar" = "Calendari";
