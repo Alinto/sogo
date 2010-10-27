@@ -204,13 +204,14 @@ function onComboButtonClick(event) {
     popupMenu(event, this.menuName, this.textInput);
     var container = $("categoryContainer");
     var menuTop = (container.cascadeTopOffset()
-                   + this.textInput.offsetTop + this.textInput.clientHeight);
+                   - container.scrollTop
+                   + this.textInput.offsetTop
+                   + this.textInput.clientHeight);
     var menuLeft = this.textInput.cascadeLeftOffset() + 1;
-    var minWidth = this.textInput.clientWidth;
+    var width = this.textInput.clientWidth;
     menu.setStyle({ "top": menuTop + "px",
                     "left": menuLeft + "px",
-                    "width": minWidth + "px",
-                    "min-width": minWidth + "px" });
+                    "width": width + "px" });
 
     event.preventDefault();
 }

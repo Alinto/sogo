@@ -1,3 +1,9 @@
+2010-10-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/UIxContactEditor.js: (onComboButtonClick):
+	take the container's scrollTop into account when displaying the
+	combobox menu.
+
 2010-10-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Contacts/SOGoContactSourceFolder.m
