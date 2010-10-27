@@ -47,15 +47,25 @@ DIV.tab TD.firstColumn INPUT.textField,
 DIV.tab TD.secondColumn INPUT.textField
 { width: 35%; }
 
-#categoryInfos
-{ margin-left: 20px; }
-
 #categoryContainer
-{ max-height: 320px;
+{ max-height: 400px;
+  overflow: auto;
+  padding: 0px;
   overflow-y: auto; }
 
+#categoryContainer > DIV
+{ margin: 0px;
+  padding: 0px;
+  border: 0px;
+  height: 22px; }
+
 INPUT.comboBoxField, #emptyCategory
-{ width: 330px; }
+{ width: 370px;
+  height: 16px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+  margin-top: 0px; }
 
 #otherInfos TEXTAREA
 { width: 70%; }
