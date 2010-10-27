@@ -362,6 +362,28 @@
   return value;
 }
 
+- (void) setCommaSeparatedValues: (NSArray *) newValues
+{
+  NSMutableString *newValue;
+  NSUInteger count, max;
+  NSString *currentValue;
+
+  newValue = [NSMutableString stringWithCapacity: 250];
+
+  max = [newValues count];
+  for (count = 0; count < max; count++)
+    {
+      currentValue = [[newValues objectAtIndex: count]
+                       stringByReplacingString: @","
+                                    withString: @"\\,"];
+      if (count > 0)
+        [newValue appendFormat: @",%@", currentValue];
+      else
+        [newValue appendString: currentValue];
+    }
+  [self setValues: [NSArray arrayWithObject: newValue]];
+}
+
 - (void) setValue: (unsigned int) anInt
       ofAttribute: (NSString *) anAttribute
                to: (NSString *) aValue

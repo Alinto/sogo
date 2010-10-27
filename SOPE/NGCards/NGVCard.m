@@ -25,6 +25,7 @@
 #import <Foundation/NSString.h>
 
 #import "NSArray+NGCards.h"
+#import "NSString+NGCards.h"
 
 #import "NGVCardPhoto.h"
 
@@ -330,7 +331,8 @@
   CardElement *cats;
 
   cats = [self uniqueChildWithTag: @"categories"];
-  [cats setValues: newCategories];
+
+  [cats setCommaSeparatedValues: newCategories];
 }
 
 - (NSArray *) categories
@@ -339,7 +341,7 @@
 
   cats = [self uniqueChildWithTag: @"categories"];
 
-  return [cats values];
+  return [[cats value: 0] vCardSubvaluesWithSeparator: ','];
 }
 
 // - (void) setOrg: (NGVCardOrg *) _v

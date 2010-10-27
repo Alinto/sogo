@@ -1,3 +1,12 @@
+2010-10-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* NGVCard.m (-setCategories): make use of the new method below.
+	(-categories): make use of value 0 and of the
+	vCardSubvaluesWithSeparator: category method.
+
+	* CardElement.m (-setCommaSeparatedValues): temporary helper for
+	versit fields that are using the comma as value separator.
+
 2010-10-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* NGVCard.m (-setCategories, -categories): new accessors for the

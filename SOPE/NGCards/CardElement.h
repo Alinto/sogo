@@ -74,6 +74,8 @@
                     to: (NSString *) aValue;
 - (NSString *) namedValue: (NSString *) aValueName;
 
+- (void) setCommaSeparatedValues: (NSArray *) values;
+
 - (void) setValue: (unsigned int) anInt
       ofAttribute: (NSString *) anAttribute
                to: (NSString *) aValue;
