@@ -41,6 +41,10 @@
   if ((self = [super init]))
     {
       photosURL = nil;
+      card = nil;
+      phones = nil;
+      homeAdr = nil;
+      workAdr = nil;
     }
 
   return self;
