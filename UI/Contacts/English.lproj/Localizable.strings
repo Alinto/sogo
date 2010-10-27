@@ -38,7 +38,7 @@
 "invalidemailwarn" = "The specified email is invalid";
 "invaliddatewarn" = "The specified date is invalid.";
 "new" = "new";
-"Preferred Phone"   = "Preferred Phone";
+"Preferred Phone" = "Preferred Phone";
 
 "Move To" = "Move To";
 "Copy To" = "Copy To";
@@ -85,6 +85,7 @@
 "Phone Number:" = "Phone Number:";
 "Prefers to receive messages formatted as:" = "Prefers to receive messages formatted as:";
 "Screen Name:" = "Screen Name:";
+"Categories:" = "Categories:";
 
 "First:" = "First:";
 "Last:" = "Last:";

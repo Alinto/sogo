@@ -63,8 +63,8 @@
 {
   NSMutableString *cardString;
 
-  cardString = [NSMutableString string];
-  if (value && [value length] > 0)
+  cardString = [NSMutableString stringWithCapacity: 80];
+  if ([value length] > 0)
     {
       if (label)
         [cardString appendFormat: @"%@&nbsp;%@<br />\n",
@@ -205,6 +205,15 @@
 - (NSString *) preferredAddress
 {
   return @"";
+}
+
+- (NSString *) categories
+{
+  NSString *categories;
+
+  categories = [[card categories] componentsJoinedByString: @", "];
+  return [self _cardStringWithLabel: @"Categories:"
+               value: categories];
 }
 
 - (BOOL) hasTelephones

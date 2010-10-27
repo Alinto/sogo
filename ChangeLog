@@ -1,5 +1,8 @@
 2010-10-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactView.m (-categories): new accessor for
+	displaying card categories.
+
 	* UI/WebServerResources/UIxContactEditor.js: (onComboButtonClick):
 	take the container's scrollTop into account when displaying the
 	combobox menu.
