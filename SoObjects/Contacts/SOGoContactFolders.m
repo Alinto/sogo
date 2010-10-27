@@ -46,7 +46,7 @@
 #import "SOGoContactSourceFolder.h"
 #import "SOGoContactFolders.h"
 
-#define XMLNS_INVERSEDAV @"urn:ietf:params:xml:ns:inverse-dav"
+#define XMLNS_INVERSEDAV @"urn:inverse:params:xml:ns:inverse-dav"
 @implementation SOGoContactFolders
 
 + (NSString *) gcsFolderType

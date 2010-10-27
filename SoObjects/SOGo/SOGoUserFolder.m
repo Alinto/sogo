@@ -374,7 +374,7 @@
   r = [context response];
   [r prepareDAVResponse];
   [r appendContentString: @"<D:multistatus xmlns:D=\"DAV:\""
-     @" xmlns=\"urn:ietf:params:xml:ns:inverse-dav\">"];
+     @" xmlns=\"urn:inverse:params:xml:ns:inverse-dav\">"];
 
   document = [[context request] contentAsDOMDocument];
   filter = [self _parseCollectionFilters: document];
