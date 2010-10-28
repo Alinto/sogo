@@ -422,29 +422,18 @@ static SoSecurityManager *sm = nil;
 - (NSString *) _fixedWebCalendarKey: (NSString *) oldKey
 {
   NSString *newKey;
-  NSRange lastOccurrence, fullOccurrence;
+  NSRange lastOccurrence;
 
   lastOccurrence = [oldKey rangeOfString: @":Calendar/"
                                  options: NSBackwardsSearch];
-  if ([oldKey rangeOfString: @":Calendar/"].location != lastOccurrence.location)
+  if ([oldKey rangeOfString: @":Calendar/"].location
+      != lastOccurrence.location)
     {
-      fullOccurrence
-        = [oldKey rangeOfString:
-                    [NSString stringWithFormat: @"%@:Calendar/",
-                              owner]
-                        options: NSBackwardsSearch];
-      if (fullOccurrence.location != NSNotFound)
-        {
-          newKey = [oldKey substringFromIndex: fullOccurrence.location];
-          [self logWithFormat: @"fixed erroneous calendar key: '%@' -> '%@'",
-                oldKey, newKey];
-        }
-      else
-        {
-          [self errorWithFormat: @"calendar key cannot be fixed: '%@'",
-                oldKey];
-          newKey = nil;
-        }
+      newKey
+        = [NSString stringWithFormat: @"%@%@", owner,
+                    [oldKey substringFromIndex: lastOccurrence.location]];
+      [self logWithFormat: @"fixed erroneous calendar key: '%@' -> '%@'",
+            oldKey, newKey];
     }
   else
     newKey = nil;
