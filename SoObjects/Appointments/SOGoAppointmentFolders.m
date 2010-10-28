@@ -414,6 +414,44 @@ static SoSecurityManager *sm = nil;
   return componentSet;
 }
 
+/* This method fixes an issue that occurred previously in
+   _migrateWebCalendarsSettings, where the active user, rather than the
+   owner's login would be taken to compose the expected key prefix, leading to
+   a corrupted calendar key with an endless chain of
+   [user]:/Calendar/[user]:/Calendar/[user].... occurrences. */
+- (NSString *) _fixedWebCalendarKey: (NSString *) oldKey
+{
+  NSString *newKey;
+  NSRange lastOccurrence, fullOccurrence;
+
+  lastOccurrence = [oldKey rangeOfString: @":Calendar/"
+                                 options: NSBackwardsSearch];
+  if ([oldKey rangeOfString: @":Calendar/"].location != lastOccurrence.location)
+    {
+      fullOccurrence
+        = [oldKey rangeOfString:
+                    [NSString stringWithFormat: @"%@:Calendar/",
+                              owner]
+                        options: NSBackwardsSearch];
+      if (fullOccurrence.location != NSNotFound)
+        {
+          newKey = [oldKey substringFromIndex: fullOccurrence.location];
+          [self logWithFormat: @"fixed erroneous calendar key: '%@' -> '%@'",
+                oldKey, newKey];
+        }
+      else
+        {
+          [self errorWithFormat: @"calendar key cannot be fixed: '%@'",
+                oldKey];
+          newKey = nil;
+        }
+    }
+  else
+    newKey = nil;
+
+  return newKey;
+}
+
 - (void) _migrateWebCalendarsSettings
 {
   SOGoUserSettings *us;
@@ -426,20 +464,24 @@ static SoSecurityManager *sm = nil;
 
   hasChanged = NO;
 
-  us = [[context activeUser] userSettings];
+  prefix = [NSString stringWithFormat: @"%@:Calendar/",
+                 [self ownerInContext: context]];
+
+  us = [[SOGoUser userWithLogin: owner] userSettings];
   module = [us objectForKey: @"Calendar"];
   webCalendars = [module objectForKey: @"WebCalendars"];
   keys = [webCalendars allKeys];
   max = [keys count];
 
-  prefix = [NSString stringWithFormat: @"%@:Calendar/",
-                 [self ownerInContext: context]];
   for (count = 0; count < max; count++)
     {
       oldKey = [keys objectAtIndex: count];
-      if (![oldKey hasPrefix: prefix])
+      if ([oldKey hasPrefix: prefix])
+        newKey = [self _fixedWebCalendarKey: oldKey];
+      else
+        newKey = [prefix stringByAppendingString: oldKey];
+      if (newKey)
         {
-          newKey = [prefix stringByAppendingString: oldKey];
           [webCalendars setObject: [webCalendars objectForKey: oldKey]
                            forKey: newKey];
           [webCalendars removeObjectForKey: oldKey];

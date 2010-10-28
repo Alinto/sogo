@@ -4,6 +4,14 @@
 	(-mimeHeaderMapWithHeaders:excluding:): added the X-Forward header
 	with the user's IP address, if available and not equal to 'localhost'.
 
+2010-10-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolders.m
+	(-_migrateWebCalendarsSettings): fixed a bug where the active
+	user's login name would be used as comparison prefix, leading to a
+	corrupted and very long calendar key. Added code to migrate those
+	previously corrupted keys to their proper form.
+
 2010-10-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Contacts/UIxContactView.m (-categories): new accessor for
