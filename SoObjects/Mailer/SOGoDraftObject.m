@@ -1285,7 +1285,6 @@ static NSString    *userAgent      = nil;
   map = [[[NGMutableHashMap alloc] initWithCapacity:16] autorelease];
   
   /* add recipients */
-
   if ((emails = [headers objectForKey: @"to"]) != nil)
     [map setObjects: [self _quoteSpecialsInArray: emails] forKey: @"to"];
   if ((emails = [headers objectForKey: @"cc"]) != nil)
@@ -1294,7 +1293,6 @@ static NSString    *userAgent      = nil;
     [map setObjects: [self _quoteSpecialsInArray: emails] forKey: @"bcc"];
 
   /* add senders */
-  
   from = [headers objectForKey: @"from"];
   replyTo = [headers objectForKey: @"replyTo"];
   
@@ -1332,6 +1330,10 @@ static NSString    *userAgent      = nil;
   [map addObject: userAgent forKey: @"User-Agent"];
 
   /* add custom headers */
+  if ([(s = [[context request] headerForKey:@"x-webobjects-remote-host"]) length] > 0 &&
+      [s compare: @"localhost"] != NSOrderedSame)
+    [map addObject: s
+	    forKey: @"X-Forward"];
   if ([(s = [headers objectForKey: @"X-Priority"]) length] > 0)
     [map setObject: s
 	 forKey: @"X-Priority"];

@@ -1,3 +1,9 @@
+2010-10-28  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Mailer/SOGoDraftObject.m
+	(-mimeHeaderMapWithHeaders:excluding:): added the X-Forward header
+	with the user's IP address, if available and not equal to 'localhost'.
+
 2010-10-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Contacts/UIxContactView.m (-categories): new accessor for
