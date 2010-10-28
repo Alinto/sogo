@@ -1,3 +1,8 @@
+2010-10-28  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* iCalRecurrenceRule.m (-isInfinite): a repeat count set to 0 is
+	no longer consider a limit (ie, isInfinite will be true).
+
 2010-10-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* NGVCard.m (-setCategories): make use of the new method below.

@@ -514,7 +514,7 @@ NSString *iCalWeekDayString[] = { @"SU", @"MO", @"TU", @"WE", @"TH", @"FR",
 
 - (BOOL) isInfinite
 {
-  return !([self repeatCount] || [self untilDate]);
+  return !(([self repeatCount] && [self repeatCount] > 0) || [self untilDate]);
 }
 
 /* private */
