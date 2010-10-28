@@ -480,7 +480,7 @@ static SoSecurityManager *sm = nil;
         newKey = [self _fixedWebCalendarKey: oldKey];
       else
         newKey = [prefix stringByAppendingString: oldKey];
-      if (newKey)
+      if (newKey && ![newKey isEqualToString: oldKey])
         {
           [webCalendars setObject: [webCalendars objectForKey: oldKey]
                            forKey: newKey];
