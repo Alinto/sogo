@@ -1,3 +1,12 @@
+1.3-2010XXXX (1.3.4)
+--------------------
+- fixed a bug that would prevent web calendars from being considered as such
+  under certain circumstances
+- when relevant, the "X-Forward" is added to mail headers with the client's
+  originating IP
+- added the ability to add categories to contacts as well as to configure the
+  list of contact categories in the preferences
+
 1.3-20101019 (1.3.3)
 --------------------
 - added Catalan translation, thanks to Hector Rulot
