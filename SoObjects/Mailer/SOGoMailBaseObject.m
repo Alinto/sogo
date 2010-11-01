@@ -140,6 +140,9 @@ static BOOL debugOn = YES;
                                              password: password];
         }
     }
+  else
+    newConnection = nil;
+
   if (!newConnection)
     {
       newConnection = (NGImap4Connection *) [NSNull null];

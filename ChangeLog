@@ -1,3 +1,9 @@
+2010-11-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailBaseObject.m (-_createIMAP4Connection):
+	we need to initialize newConnection to nil when the return
+	password is nil.
+
 2010-10-28  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/Mailer/SOGoDraftObject.m
