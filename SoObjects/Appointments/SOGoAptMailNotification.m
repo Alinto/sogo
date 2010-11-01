@@ -34,6 +34,7 @@
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSObject+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
+#import <SOGo/SOGoDateFormatter.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
 
@@ -172,9 +173,11 @@
 
 - (void) setupValues
 {
+  NSString *sentBy, *sentByText, *description;
+  NSCalendarDate *date;
   NSDictionary *sentByValues;
-  NSString *sentBy, *sentByText;
   SOGoUser *user;
+  SOGoDateFormatter *dateFormatter;
 
   user = [context activeUser];
   viewTZ = [[user userDefaults] timeZone];
@@ -200,6 +203,25 @@
         sentByText = @"";
       [values setObject: sentByText forKey: @"SentByText"];
     }
+
+  dateFormatter = [[context activeUser] dateFormatterInContext: context];
+
+  date = [self newStartDate];
+  [values setObject: [dateFormatter shortFormattedDate: date]
+             forKey: @"StartDate"];
+  [values setObject: [dateFormatter formattedTime: date]
+             forKey: @"StartTime"];
+
+  date = [self newEndDate];
+  [values setObject: [dateFormatter shortFormattedDate: date]
+             forKey: @"EndDate"];
+  [values setObject: [dateFormatter formattedTime: date]
+             forKey: @"EndTime"];
+
+  description = [[self apt] comment];
+  [values setObject: (description ? description : @"")
+	  forKey: @"Description"];
+
 }
 
 @end
