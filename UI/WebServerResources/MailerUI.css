@@ -256,7 +256,9 @@ TR#messageCountHeader TH
 TABLE.messageList TD
 { border-right: 1px solid transparent; }
 
-TABLE.messageList .messageFlagColumn
+TABLE.messageList .messageFlagColumn,
+TABLE.messageList .messageAttachmentColumn,
+TABLE.messageList .messageUnreadColumn
 { width: 22px;
   max-width: 22px;
   text-align: center; }
