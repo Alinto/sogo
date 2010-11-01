@@ -19,6 +19,9 @@
 
 2010-11-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAptMailUpdate.m (-setupValues): avoid
+	setting values that are already set in SOGoAptMailNotification.
+
 	* SoObjects/Appointments/SOGoAptMailDeletion.m (-getBody): added
 	the same details as for the meeting invitations.
 
