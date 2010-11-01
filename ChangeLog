@@ -1,5 +1,19 @@
 2010-11-01  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/WebServerResources/MailerUI.js (mailListToggleMessagesRead):
+	we now accepts an element as argument to directly set a message as
+	read or unread. Also fix the bug of marking multiple messages.
+	(mailListToggleMessagesFlagged): idem.
+	(messageListCallback): no more observers are registered on the
+	rows and cells. All events are delegated to the table.
+	(onMessageSelectionChange): implemented event delegation on the
+	table.
+	(configureMessageListEvents): idem.
+
+	* UI/WebServerResources/generic.js (onRowClick): we now accepts an
+	element as argument, bypassing the event's target element and the
+	event listener.
+
 	* UI/MailerUI/UIxMailListActions.m (-messageSubject): we now
 	escape HTML tags in the returned string.
 

@@ -541,8 +541,8 @@ function acceptMultiSelect(node) {
     return response;
 }
 
-function onRowClick(event) {
-    var node = Event.element(event);
+function onRowClick(event, target) {
+    var node = target || getTarget(event);
     var rowIndex = null;
 
     if (node.tagName != 'TD' && node.tagName != 'LI')
@@ -575,7 +575,6 @@ function onRowClick(event) {
     }
 
     var initialSelection = $(node.parentNode).getSelectedNodesId();
-
     if (initialSelection && initialSelection.length > 0
         && initialSelection.indexOf(node.id) >= 0
         && !eventIsLeftClick(event))

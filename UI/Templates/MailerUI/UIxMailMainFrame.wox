@@ -256,11 +256,11 @@
       <tr const:style="display: none;"
         ><var:foreach list="columnsDisplayOrder" item="currentColumn"
           ><var:if condition="currentColumn.value" const:value="Flagged"
-            ><td class="messageFlagColumn messageFlag"
+            ><td class="messageFlagColumn"
               ><!-- flagged --></td
           ></var:if>
           <var:if condition="currentColumn.value" const:value="Attachment"
-            ><td class="messageFlagColumn"
+            ><td class="messageAttachmentColumn"
               ><!-- attachment --></td
           ></var:if
           ><var:if condition="currentColumn.value" const:value="Subject"
@@ -276,7 +276,7 @@
               ><!-- to --></td
           ></var:if
           ><var:if condition="currentColumn.value" const:value="Unread"
-            ><td class="messageFlagColumn"
+            ><td class="messageUnreadColumn"
               ><!-- unread --></td
           ></var:if
           ><var:if condition="currentColumn.value" const:value="Date"
