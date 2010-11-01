@@ -27,6 +27,7 @@
     <tbody id="contactsListTbody">
       <var:foreach list="contactInfos" item="currentContact">
         <tr class="tableview"
+          var:categories="currentContact.c_categories"
           var:id="currentContact.c_name"
           var:contactname="currentContact.c_cn">
           <td class="displayName"><var:string value="currentContact.c_cn" const:escapeHTML="YES" /></td>

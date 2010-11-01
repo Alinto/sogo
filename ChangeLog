@@ -1,5 +1,17 @@
 2010-11-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/ContactsUI.js: (resetCategoriesMenu)
+	(onCategoriesMenuPrepareVisibility, onCategoriesMenuItemClick)
+	(setCategoryOnNode, unsetCategoryOnNode): new methods designed to
+	handle the handling of categories directly from the contacts list.
+
+	* SoObjects/Contacts/SOGoContactGCSFolder.m (+initialize): we now
+	return the "c_categories" field too.
+
+	* UI/Contacts/UIxContactActions.m: new class module implementing
+	actions on contacts.
+	(-setCategoryAction, -unsetCategoryAction): new actions.
+
 	* UI/WebServerResources/generic.js (triggerAjaxRequest): invoke
 	the request callback only when set on the http object.
 
