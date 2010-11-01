@@ -192,7 +192,7 @@
   if (![subject length])
     subject = [self labelForKey: @"Untitled"];
 
-  return subject;
+  return [subject stringByEscapingHTMLString];
 }
 
 - (BOOL) showToAddress 

@@ -1,3 +1,8 @@
+2010-11-01  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/MailerUI/UIxMailListActions.m (-messageSubject): we now
+	escape HTML tags in the returned string.
+
 2010-11-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Mailer/SOGoMailBaseObject.m (-_createIMAP4Connection):
