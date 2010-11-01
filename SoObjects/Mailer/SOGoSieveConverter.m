@@ -26,7 +26,6 @@
 #import <Foundation/NSValue.h>
 
 #import <SOGo/NSArray+Utilities.h>
-#import <SOGo/NSDictionary+BSJSONAdditions.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoUser.h>
