@@ -19,6 +19,12 @@
 
 2010-11-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAptMailDeletion.m (-getBody): added
+	the same details as for the meeting invitations.
+
+	* SoObjects/Appointments/SOGoAptMailNotification.m (-setupValues):
+	merged setup code from SOGoAptMailInvitation.m.
+
 	* UI/WebServerResources/ContactsUI.js: (resetCategoriesMenu)
 	(onCategoriesMenuPrepareVisibility, onCategoriesMenuItemClick)
 	(setCategoryOnNode, unsetCategoryOnNode): new methods designed to
