@@ -287,7 +287,7 @@ function onAjaxRequestStateChange(http) {
                 createCASRecoveryIFrame(http);
             }
             else if (activeAjaxRequests > 0) {
-                if (!http.aborted)
+                if (!http.aborted && http.callback)
                     http.callback(http);
                 activeAjaxRequests--;
                 checkAjaxRequestsState();

@@ -1,5 +1,8 @@
 2010-11-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/generic.js (triggerAjaxRequest): invoke
+	the request callback only when set on the http object.
+
 	* SoObjects/Mailer/SOGoMailBaseObject.m (-_createIMAP4Connection):
 	we need to initialize newConnection to nil when the return
 	password is nil.
