@@ -1,3 +1,7 @@
+2010-11-02  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* Implemented http://sogo.nu/bugs/view.php?id=821
+
 2010-11-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/NSDictionary+BSJSONAdditions.[hm]:

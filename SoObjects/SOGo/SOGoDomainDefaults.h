@@ -41,6 +41,7 @@
 
 - (NSString *) mailDomain;
 - (NSString *) imapServer;
+- (NSString *) sieveServer;
 - (NSString *) imapAclStyle;
 - (NSString *) imapFolderSeparator;
 - (BOOL) imapAclConformsToIMAPExt;
