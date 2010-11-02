@@ -30,8 +30,8 @@
 #import <NGExtensions/NSObject+Logs.h>
 
 #import "NSArray+Utilities.h"
-#import "NSDictionary+BSJSONAdditions.h"
 #import "NSString+Utilities.h"
+#import "NSObject+Utilities.h"
 #import "SOGoDomainDefaults.h"
 #import "SOGoSource.h"
 #import "SOGoSystemDefaults.h"
@@ -440,7 +440,7 @@
       // internal cache.
       [currentUser setObject: _pwd forKey: @"password"];
       [[SOGoCache sharedCache]
-        setUserAttributes: [currentUser jsonStringValue]
+        setUserAttributes: [currentUser jsonRepresentation]
                  forLogin: _login];
     }
     else
@@ -481,7 +481,7 @@
       // internal cache.
       [currentUser setObject: newPassword forKey: @"password"];
       [[SOGoCache sharedCache]
-        setUserAttributes: [currentUser jsonStringValue]
+        setUserAttributes: [currentUser jsonRepresentation]
 	forLogin: login];
     }
     else
@@ -595,13 +595,13 @@
   key = [newUser objectForKey: @"c_uid"];
   if (key)
     [[SOGoCache sharedCache]
-        setUserAttributes: [newUser jsonStringValue]
+        setUserAttributes: [newUser jsonRepresentation]
                  forLogin: key];
 
   emails = [[newUser objectForKey: @"emails"] objectEnumerator];
   while ((key = [emails nextObject]))
     [[SOGoCache sharedCache]
-        setUserAttributes: [newUser jsonStringValue]
+        setUserAttributes: [newUser jsonRepresentation]
                  forLogin: key];
 }
 

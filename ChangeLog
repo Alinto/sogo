@@ -1,3 +1,9 @@
+2010-11-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/NSDictionary+BSJSONAdditions.[hm]:
+	SoObjects/SOGo/NSScanner+BSJSONAdditions.[hm]: removed classes,
+	obsoleted by the use of the SBJson library.
+
 2010-11-01  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/MailerUI.js (mailListToggleMessagesRead):

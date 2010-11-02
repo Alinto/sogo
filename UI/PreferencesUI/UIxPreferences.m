@@ -33,7 +33,6 @@
 #import <NGExtensions/NSObject+Logs.h>
 
 #import <SOGo/NSArray+Utilities.h>
-#import <SOGo/NSDictionary+BSJSONAdditions.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoUser.h>
@@ -659,9 +658,7 @@
       [capabilities retain];
     }
 
-  return [[NSDictionary dictionary]
-           jsonStringForArray: capabilities
-              withIndentLevel: 0];
+  return [capabilities jsonRepresentation];
 }
 
 - (BOOL) isVacationEnabled
@@ -683,9 +680,7 @@
 
 - (NSString *) sieveFiltersValue
 {
-  return [[NSDictionary dictionary]
-           jsonStringForArray: sieveFilters
-              withIndentLevel: 0];
+  return [sieveFilters jsonRepresentation];
 }
 
 - (void) setEnableVacation: (BOOL) enableVacation

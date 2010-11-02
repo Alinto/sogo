@@ -20,7 +20,7 @@ SOGo_LIBRARIES_DEPEND_UPON += \
 	-lNGMime		\
 	-lNGStreams -lNGExtensions -lEOControl \
 	-lXmlRpc -lDOM -lSaxObjC -lcrypt \
-	-lNGLdap
+	-lNGLdap -lSBJson
 
 ADDITIONAL_TOOL_LIBS += \
         -L$(GNUSTEP_OBJ_DIR)/ \
