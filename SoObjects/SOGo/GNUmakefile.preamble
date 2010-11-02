@@ -13,7 +13,6 @@ SOGo_LIBRARIES_DEPEND_UPON += \
 	-L../../OGoContentStore/$(GNUSTEP_OBJ_DIR)/ \
 	-L../../SOPE/NGCards/$(GNUSTEP_OBJ_DIR)/ \
 	-lmemcached		\
-	-lOGoContentStore	\
 	-lGDLAccess		\
 	-lNGObjWeb		\
 	-lNGCards		\
