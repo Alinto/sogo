@@ -530,6 +530,7 @@ static NSMutableCharacterSet *safeLDIFStartChars = nil;
       if (error)
         {
           [self errorWithFormat: @"json parser: %@", error];
+          [self errorWithFormat: @"original string is: %@", self];
           object = nil;
         }
     }
