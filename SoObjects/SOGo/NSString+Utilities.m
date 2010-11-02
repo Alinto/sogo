@@ -538,5 +538,4 @@ static NSMutableCharacterSet *safeLDIFStartChars = nil;
   return object;
 }
 
-
 @end
