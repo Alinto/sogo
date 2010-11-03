@@ -1,5 +1,8 @@
 2010-11-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Tests/Integration/teststrings.sh: new utility script to test the
+	parsability of the localization strings file.
+
 	* UI/WebServerResources/generic.js: (onCASRecoverIFrameLoaded):
 	go back to the user's page instead of the logoff page.
 
