@@ -39,8 +39,8 @@ vtodo_class2 = "(Конфіденційне завдання)";
 
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Подію скасовано: \"%{Summary}\"";
-"%{Organizer} %{SentByText} скасував подію: %{Summary}."
-= "%{Organizer} %{SentByText} скасував подію: %{Summary}.";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText} скасував подію: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}";
 
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"

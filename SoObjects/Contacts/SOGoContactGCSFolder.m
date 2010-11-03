@@ -62,6 +62,7 @@ static NSArray *folderListingFields = nil;
                                            @"c_cn", @"c_givenname", @"c_sn",
                                            @"c_screenname", @"c_o",
                                            @"c_mail", @"c_telephonenumber",
+                                           @"c_categories",
                                            @"c_component", nil];
 }
 

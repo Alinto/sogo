@@ -134,12 +134,6 @@
   [values setObject: [dateFormatter formattedTime: date]
              forKey: @"OldStartTime"];
 
-  date = [self newStartDate];
-  [values setObject: [dateFormatter shortFormattedDate: date]
-             forKey: @"StartDate"];
-  [values setObject: [dateFormatter formattedTime: date]
-             forKey: @"StartTime"];
-
   [self _setupBodyValuesWithFormatter: dateFormatter];
 }
 

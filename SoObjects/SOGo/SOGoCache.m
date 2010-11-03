@@ -48,7 +48,7 @@
 #import <NGObjWeb/SoObject.h>
 #import <NGExtensions/NSObject+Logs.h>
 
-#import "NSDictionary+BSJSONAdditions.h"
+#import "NSDictionary+Utilities.h"
 #import "NSString+Utilities.h"
 #import "SOGoObject.h"
 #import "SOGoSystemDefaults.h"
@@ -484,7 +484,7 @@ static memcached_st *handle = NULL;
 	 forPath: (NSString *) thePath
 {
   if (theACLs)
-    [self _cacheValues: [theACLs jsonStringValue]
+    [self _cacheValues: [theACLs jsonRepresentation]
 	  ofType: @"acl"
 	  forKey: thePath];
   else

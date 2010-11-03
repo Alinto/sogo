@@ -7,6 +7,7 @@
   xmlns:uix="OGo:uix"
   xmlns:label="OGo:label"
   xmlns:rsrc="OGo:url"
+  const:userDefaultsKeys="SOGoContactsCategories"
   className="UIxPageFrame"
   title="name"
   var:popup="isPopup">
@@ -72,6 +73,7 @@
   <div class="menu" id="contactMenu">
     <ul>
       <li><var:string label:value="Properties" /></li>
+      <li><var:string label:value="Categories" /></li>
       <li><!-- separator --></li>
       <li><var:string label:value="Write" /></li>
       <li><var:string label:value="Instant Message" /></li>

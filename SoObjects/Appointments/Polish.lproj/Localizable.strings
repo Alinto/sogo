@@ -39,8 +39,8 @@ vtodo_class2 = "(Zadanie poufne)";
 
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Wydarzenie anulowane: \"%{Summary}\"";
-"%{Organizer} %{SentByText}has cancelled this event: %{Summary}."
-= "%{Organizer} %{SentByText}anulował(a) to wydarzenie: %{Summary}.";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText}anulował(a) to wydarzenie: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}";
 
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"

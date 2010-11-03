@@ -32,6 +32,6 @@ BUNDLE_LIBS += \
 	-lNGObjWeb				\
 	-lNGCards -lNGMime -lNGLdap		\
 	-lNGStreams -lNGExtensions -lEOControl	\
-	-lXmlRpc -lDOM -lSaxObjC
+	-lXmlRpc -lDOM -lSaxObjC -lSBJson
 
 ADDITIONAL_BUNDLE_LIBS += $(BUNDLE_LIBS)

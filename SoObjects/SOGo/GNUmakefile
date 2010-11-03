@@ -56,9 +56,6 @@ SOGo_HEADER_FILES = \
 	SOGoGroup.h			\
 	SOGoUser.h			\
 	\
-	NSDictionary+BSJSONAdditions.h	\
-	NSScanner+BSJSONAdditions.h	\
-	\
 	DOMNode+SOGo.h			\
 	\
 	WORequest+SOGo.h		\
@@ -120,9 +117,6 @@ SOGo_OBJC_FILES = \
 	SOGoMailer.m			\
 	SOGoGroup.m			\
 	SOGoUser.m			\
-	\
-	NSDictionary+BSJSONAdditions.m	\
-	NSScanner+BSJSONAdditions.m	\
 	\
 	DOMNode+SOGo.m			\
 	\

@@ -49,8 +49,11 @@
   if (!values)
     [self setupValues];
 
-  bodyFormat = [self labelForKey: @"%{Organizer} %{SentByText}has"
-                     @" cancelled this event: %{Summary}."
+  bodyFormat = [self labelForKey: (@"%{Organizer} %{SentByText}has cancelled"
+                                   @" this event: %{Summary}.\n\n"
+                                   @"Start: %{StartDate} at %{StartTime}\n"
+                                   @"End: %{EndDate} at %{EndTime}\n"
+                                   @"Description: %{Description}")
                        inContext: context];
 
   return [values keysWithFormat: bodyFormat];

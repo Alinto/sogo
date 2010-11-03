@@ -1,3 +1,21 @@
+2010-11-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Tests/Integration/teststrings.sh: new utility script to test the
+	parsability of the localization strings file.
+
+	* UI/WebServerResources/generic.js: (onCASRecoverIFrameLoaded):
+	go back to the user's page instead of the logoff page.
+
+2010-11-02  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* Implemented http://sogo.nu/bugs/view.php?id=821
+
+2010-11-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/NSDictionary+BSJSONAdditions.[hm]:
+	SoObjects/SOGo/NSScanner+BSJSONAdditions.[hm]: removed classes,
+	obsoleted by the use of the SBJson library.
+
 2010-11-01  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/MailerUI.js (mailListToggleMessagesRead):
@@ -18,6 +36,30 @@
 	escape HTML tags in the returned string.
 
 2010-11-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAptMailUpdate.m (-setupValues): avoid
+	setting values that are already set in SOGoAptMailNotification.
+
+	* SoObjects/Appointments/SOGoAptMailDeletion.m (-getBody): added
+	the same details as for the meeting invitations.
+
+	* SoObjects/Appointments/SOGoAptMailNotification.m (-setupValues):
+	merged setup code from SOGoAptMailInvitation.m.
+
+	* UI/WebServerResources/ContactsUI.js: (resetCategoriesMenu)
+	(onCategoriesMenuPrepareVisibility, onCategoriesMenuItemClick)
+	(setCategoryOnNode, unsetCategoryOnNode): new methods designed to
+	handle the handling of categories directly from the contacts list.
+
+	* SoObjects/Contacts/SOGoContactGCSFolder.m (+initialize): we now
+	return the "c_categories" field too.
+
+	* UI/Contacts/UIxContactActions.m: new class module implementing
+	actions on contacts.
+	(-setCategoryAction, -unsetCategoryAction): new actions.
+
+	* UI/WebServerResources/generic.js (triggerAjaxRequest): invoke
+	the request callback only when set on the http object.
 
 	* SoObjects/Mailer/SOGoMailBaseObject.m (-_createIMAP4Connection):
 	we need to initialize newConnection to nil when the return

@@ -39,8 +39,8 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Termin abgesagt: \"%{Summary}\"";
-"%{Organizer} %{SentByText}has cancelled this event: %{Summary}."
-= "%{Organizer} %{SentByText}hat diesen Termin abgesagt: %{Summary}.";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText}hat diesen Termin abgesagt: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}";
 
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"

@@ -236,8 +236,9 @@ static NSString *sieveScriptName = @"sogo";
   SOGoUserDefaults *ud;
   SOGoDomainDefaults *dd;
   NGSieveClient *client;
-  NSString *filterScript, *v, *password;
+  NSString *filterScript, *v, *password, *sieveServer;
   SOGoSieveConverter *converter;
+  int sievePort;
   BOOL b;
 
   dd = [[context activeUser] domainDefaults];
@@ -338,9 +339,36 @@ static NSString *sieveScriptName = @"sogo";
       [script insertString: header  atIndex: 0];
     }
 
-  // We connect to our Sieve server and upload the script
-  address =  [NGInternetSocketAddress addressWithPort: 2000
-				      onHost: [[self imap4URL] host]];
+  // We connect to our Sieve server and upload the script.
+  //
+  // sieveServer might have the following format:
+  //
+  // sieve://localhost
+  // sieve://localhost:2000
+  //
+  // Values such as "localhost" or "localhost:2000" are NOT supported.
+  //
+  sieveServer = [dd sieveServer];
+  sievePort = 2000;
+      
+  if (!sieveServer)
+    {
+      sieveServer = @"localhost";
+    }
+  else
+    {
+      NSURL *url;
+
+      url = [NSURL URLWithString: sieveServer];
+      
+      if ([url host])
+	sieveServer = [url host];
+      
+      if ([[url port] intValue] != 0)
+	sievePort = [[url port] intValue];
+    }
+
+  address =  [NGInternetSocketAddress addressWithPort: sievePort  onHost: sieveServer];
 
   client = [NGSieveClient clientWithAddress: address];
   

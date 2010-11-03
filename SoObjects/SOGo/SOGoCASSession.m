@@ -35,7 +35,7 @@
 #import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSObject+Logs.h>
 
-#import "NSDictionary+BSJSONAdditions.h"
+#import "NSDictionary+Utilities.h"
 #import "NSString+Utilities.h"
 #import "SOGoCache.h"
 #import "SOGoObject.h"
@@ -167,7 +167,7 @@
   [sessionDict setObject: identifier forKey: @"identifier"];
   if ([proxyTickets count])
     [sessionDict setObject: proxyTickets forKey: @"proxyTickets"];
-  jsonSession = [sessionDict jsonStringValue];
+  jsonSession = [sessionDict jsonRepresentation];
   [cache setCASSession: jsonSession
             withTicket: ticket
          forIdentifier: identifier];

@@ -1078,10 +1078,14 @@ function onContactMenuPrepareVisibility() {
                     aim: false };
 
     var elements = $(this).down("ul").childElements();
-    var writeOption = elements[2];
-    var aimOption = elements[3];
-    var deleteOption = elements[5];
-    var moveOption = elements[7];
+
+    var categoriesOption = elements[1];
+    if (selectedFolder.getAttribute("owner") == UserLogin) {
+        categoriesOption.removeClassName("disabled");
+    }
+    else {
+        categoriesOption.addClassName("disabled");
+    }
 
     $A(contactRows).each(function(contactRow) {
             var cells = contactRow.getElementsByTagName('td');
@@ -1091,15 +1095,20 @@ function onContactMenuPrepareVisibility() {
             options.aim |= (aimCell.firstChild != null);
         });
 
+    var writeOption = elements[3];
     if (options.write)
         writeOption.removeClassName("disabled");
     else
         writeOption.addClassName("disabled");
+
+    var aimOption = elements[4];
     if (options.aim)
         aimOption.removeClassName("disabled");
     else
         aimOption.addClassName("disabled");
 
+    var deleteOption = elements[6];
+    var moveOption = elements[8];
     if ($(selectedFolder).hasClassName("remote")) {
         // Remote address books are always read-only
         deleteOption.addClassName("disabled");
@@ -1120,7 +1129,9 @@ function getMenus() {
                                             onAddressBookRemove, "-",
                                             onAddressBookExport, onAddressBookImport, "-",
                                             onMenuSharing);
-    menus["contactMenu"] = new Array(onMenuEditContact, "-",
+    menus["contactMenu"] = new Array(onMenuEditContact,
+                                     "categoriesMenu",
+                                     "-",
                                      onMenuWriteToContact, onMenuAIMContact,
                                      "-", onMenuDeleteContact, "-",
                                      "moveContactMenu", "copyContactMenu", 
@@ -1255,6 +1266,107 @@ function initContacts(event) {
     // Default sort options
     sorting["attribute"] = "c_cn";
     sorting["ascending"] = true;
+
+    resetCategoriesMenu();
+}
+
+function resetCategoriesMenu() {
+    var menu = $("categoriesMenu");
+    if (menu) {
+        menu.parentNode.removeChild(menu);
+    }
+
+    menu = createElement("div", "categoriesMenu", "menu");
+    var menuUL = createElement("ul", null, "choiceMenu");
+    menu.appendChild(menuUL);
+    if (UserDefaults && UserDefaults["SOGoContactsCategories"]) {
+        for (var i = 0;
+             i < UserDefaults["SOGoContactsCategories"].length;
+             i++) {
+            var catName = UserDefaults["SOGoContactsCategories"][i];
+            if (catName.length > 0) {
+                var menuLI = createElement("li");
+                var bound = onCategoriesMenuItemClick.bindAsEventListener(menuLI);
+                menuLI.observe("click", bound);
+                menuLI.category = catName;
+                menuLI.appendChild(document.createTextNode(catName));
+                menuUL.appendChild(menuLI);
+            }
+        }
+    }
+
+    menu.prepareVisibility = onCategoriesMenuPrepareVisibility;
+
+    var pageContent = $("pageContent");
+    pageContent.appendChild(menu);
+}
+
+function onCategoriesMenuPrepareVisibility() {
+    var rows = contactsList.getSelectedRows();
+    if (rows.length > 0) {
+        var catList = rows[0].getAttribute("categories");
+        var catsArray;
+        if (catList && catList.length > 0) {
+            catsArray = catList.split(",");
+        }
+        else {
+            catsArray = [];
+        }
+
+        var menu = $("categoriesMenu");
+        var ul = menu.down("ul");
+        var listElements = ul.select("li");
+        for (var i = 0; i < listElements.length; i++) {
+            var li = listElements[i];
+            if (catsArray.indexOf(li.category) > -1) {
+                li.addClassName("_chosen");
+            }
+            else {
+                li.removeClassName("_chosen");
+            }
+        }
+    }
+}
+
+function onCategoriesMenuItemClick() {
+    var set = !this.hasClassName("_chosen");
+    var method = (set ? "setCategory" : "unsetCategory");
+    var contactsList = $("contactsList");
+    var rowIds = contactsList.getSelectedRowsId();
+    if (rowIds.length > 0) {
+        log("coucou...");
+        for (var i = 0; i < rowIds.length; i++) {
+            var url = (URLForFolderID(Contact.currentAddressBook)
+                       + "/" + rowIds[i] + "/" + method);
+            url += "?category=" + escape(this.category);
+            triggerAjaxRequest(url);
+            if (set) {
+                setCategoryOnNode($(rowIds[i]), this.category);
+            }
+            else {
+                unsetCategoryOnNode($(rowIds[i]), this.category);
+            }
+        }
+    }
+}
+
+function setCategoryOnNode(contactNode, category) {
+    var catList = contactNode.getAttribute("categories");
+    var catsArray = catList.split(",");
+    if (catsArray.indexOf(category) == -1) {
+        catsArray.push(category);
+        contactNode.setAttribute("categories", catsArray.join(","));
+    }
+}
+
+function unsetCategoryOnNode(contactNode, category) {
+    var catList = contactNode.getAttribute("categories");
+    var catsArray = catList.split(",");
+    var catIdx = catsArray.indexOf(category);
+    if (catsArray.indexOf(category) > -1) {
+        catsArray.splice(catIdx, 1);
+        contactNode.setAttribute("categories", catsArray.join(","));
+    }
 }
 
 function configureDraggables() {
@@ -1361,7 +1473,6 @@ function dropSelectedContacts (action, toId) {
         }
     }
 }
-
 
 function onContactsReload () {
     openContactsFolder(Contact.currentAddressBook, true);

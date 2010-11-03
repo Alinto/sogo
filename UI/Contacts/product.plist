@@ -184,6 +184,16 @@
           pageName    = "UIxContactEditor";
           actionName  = "write";
         };
+        setCategory = {
+          protectedBy = "Change Images And Files";
+          actionClass = "UIxContactActions";
+          actionName  = "setCategory";
+        };
+        unsetCategory = {
+          protectedBy = "Change Images And Files";
+          actionClass = "UIxContactActions";
+          actionName  = "unsetCategory";
+        };
       };
     };
 

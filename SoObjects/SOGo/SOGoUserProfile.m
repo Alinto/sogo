@@ -21,6 +21,7 @@
 */
 
 #import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSPropertyList.h>
 #import <Foundation/NSValue.h>
 
@@ -30,7 +31,6 @@
 #import "NSObject+Utilities.h"
 #import "NSString+Utilities.h"
 
-#import "NSDictionary+BSJSONAdditions.h"
 #import "SOGoCache.h"
 
 #import "SOGoUserProfile.h"
@@ -139,7 +139,7 @@
     {
       [self logWithFormat: @"database value for %@"
                   @" (uid: '%@') is a plist", [self profileTypeName], uid];
-      jsonValue = [plist jsonStringValue];
+      jsonValue = [plist jsonRepresentation];
     }
   else
     {
@@ -223,7 +223,7 @@
   SOGoCache *cache;
   BOOL rc;
 
-  jsonRepresentation = [values jsonStringValue];
+  jsonRepresentation = [values jsonRepresentation];
   if (jsonRepresentation)
     {
       rc = [self storeJSONProfileInDB: jsonRepresentation];

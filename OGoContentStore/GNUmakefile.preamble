@@ -9,7 +9,7 @@ libOGoContentStore_LIBRARIES_DEPEND_UPON += \
 	-lSaxObjC \
         -lSOGo
 
-ADDITIONAL_INCLUDE_DIRS += -I. -I.. -I../SOPE
+ADDITIONAL_INCLUDE_DIRS += -I. -I.. -I../SOPE -I../SoObjects
 
 ADDITIONAL_LIB_DIRS += -L./$(GNUSTEP_OBJ_DIR) -L../SOPE/NGCards/$(GNUSTEP_OBJ_DIR)/ -L../SoObjects/SOGo/SOGo.framework/
 

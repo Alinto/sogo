@@ -29,12 +29,13 @@
 #import <EOControl/EOQualifier.h>
 
 #import <NGExtensions/NSDictionary+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
 
 #import <NGMime/NGMimeHeaderFieldGenerator.h>
+#import <SBJson/SBJsonParser.h>
+
 #import "NSArray+Utilities.h"
-#import "NSDictionary+BSJSONAdditions.h"
 #import "NSDictionary+URL.h"
-#import "NSScanner+BSJSONAdditions.h"
 
 #import "NSString+Utilities.h"
 
@@ -513,21 +514,28 @@ static NSMutableCharacterSet *safeLDIFStartChars = nil;
 
 - (id) objectFromJSONString
 {
-  NSScanner *scanner;
+  SBJsonParser *parser;
   NSObject *object;
+  NSError *error;
 
   object = nil;
 
   if ([self length] > 0)
     {
-      scanner = [[NSScanner alloc] initWithString: self];
-      if (![scanner scanJSONValue: &object])
-        object = nil;
-      [scanner autorelease];
+      parser = [SBJsonParser new];
+      [parser autorelease];
+      error = nil;
+      object = [parser objectWithString: self
+                                  error: &error];
+      if (error)
+        {
+          [self errorWithFormat: @"json parser: %@", error];
+          [self errorWithFormat: @"original string is: %@", self];
+          object = nil;
+        }
     }
 
   return object;
 }
-
 
 @end
