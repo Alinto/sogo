@@ -1,3 +1,12 @@
+2010-11-03  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/SOGoDataTable.js (remove): we must
+	decrement the value of renderedIndex when the row removed is
+	before the first rendered row. We also call deselect in order to
+	update the internal array of selected rows IDs.
+	(refresh): new method to force the recomputation of the top and
+	bottom padding rows of the table.
+
 2010-11-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* Tests/Integration/teststrings.sh: new utility script to test the
@@ -60,7 +69,7 @@
 
 	* UI/WebServerResources/generic.js (triggerAjaxRequest): invoke
 	the request callback only when set on the http object.
-
+	
 	* SoObjects/Mailer/SOGoMailBaseObject.m (-_createIMAP4Connection):
 	we need to initialize newConnection to nil when the return
 	password is nil.

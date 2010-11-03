@@ -136,15 +136,21 @@ var SOGoDataTableInterface = {
         return firstRowIndex;
     },
     
-    render: function() {
+    refresh: function() {
+        this.render(true);
+    },
+
+    render: function(refresh) {
+        // Setting "refresh" to true will force the call to getData which
+        // recomputes the top and bottom padding with respect to the total
+        // number of rows.
         var index = this.firstVisibleRowIndex();
         var count = this.visibleRowCount();
-
         // Overflow the query to the maximum defined in the class variable overflow
         var start = index - (this.overflow/2);
         if (start < 0) start = 0;
         var end = index + count + this.overflow - (index - start);
-//          log ("DataTable.getData() from " + index + " to " + (index + count) + " boosted from " + start + " to " + end);
+//        log ("DataTable.render() from " + index + " to " + (index + count) + " boosted from " + start + " to " + end);
 
         // Don't overflow above the maximum number of entries from the data source
         //if (this.dataSource.uids && this.dataSource.uids.length < end) end = this.dataSource.uids.length;
@@ -154,7 +160,8 @@ var SOGoDataTableInterface = {
 
         this.currentRenderID = index + "-" + count;
         // Query the data source only if at least one row is not loaded
-        if (this.renderedIndex < 0 || 
+        if (refresh === true ||
+            this.renderedIndex < 0 || 
             this.renderedIndex > index ||
             this.renderedCount < count ||
             (index + count) > (this.renderedIndex + this.renderedCount)) {
@@ -171,7 +178,7 @@ var SOGoDataTableInterface = {
 //             log ("DataTable._render() ignore render for " + renderID + " (current is " + this.currentRenderID + ")");
             return;
         }
-//         log("DataTable._render() for " + data.length + " uids (from " + start + ")");
+//        log("DataTable._render() for " + data.length + " uids (from " + start + ", max " + max + ")");
 
         var h, i, j;
         var rows = this.body.select("tr");
@@ -302,14 +309,17 @@ var SOGoDataTableInterface = {
         var rows = this.body.select("TR#row_" + uid);
         if (rows.length == 1) {
             var row = rows.first();
+            row.deselect();
             row.parentNode.removeChild(row);
-            var index = this.dataSource.remove(uid);
-//             log ("DataTable.remove(" + uid + ")");
-            if (this.renderedIndex < index &&
-                (this.renderedIndex + this.renderedCount) > index) {
-                this.renderedCount--;
-            }
         }
+        var index = this.dataSource.remove(uid);
+//        log ("DataTable.remove(" + uid + ") at index " + index);
+        if (this.renderedIndex > index)
+            this.renderedIndex--;
+        else if ((this.renderedIndex + this.renderedCount) > index)
+            this.renderedCount--;
+
+        return index;
     },
  
     _emptyTable: function() {

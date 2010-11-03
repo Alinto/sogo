@@ -460,7 +460,7 @@ function deleteSelectedMessagesCallback(http) {
                         div.update();
                     }
                     Mailer.dataTable.remove(data["id"][i]);
-                    Mailer.dataTable.render();
+                    Mailer.dataTable.refresh();
                     deleteCachedMailboxByType("trash");
                 }
                 else {
@@ -2325,7 +2325,7 @@ function folderRefreshCallback(http) {
                 var uids = s.split(",");
                 for (var i = 0; i < uids.length; i++)
                     Mailer.dataTable.remove(uids[i]);
-                Mailer.dataTable.render();
+                Mailer.dataTable.refresh();
             }
             else
                 refreshCurrentFolder();
@@ -2336,6 +2336,7 @@ function folderRefreshCallback(http) {
             // Display hidden rows from move operation
             var s = http.callbackData.id + "";
             var uids = s.split(",");
+            log ("folderRefreshCallback failed for UIDs " + s);
             for (var i = 0; i < uids.length; i++) {
                 var row = $("row_" + uids[i]);
 		if (row)

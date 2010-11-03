@@ -129,7 +129,7 @@ SOGoMailDataSource = Class.create({
                 start = index;
                 end = index + count;
             }
-//             log ("MailDataSource._getData() from " + index + " to " + (index + count) + " boosted from " + start + " to " + end);
+//            log ("MailDataSource._getData() from " + index + " to " + (index + count) + " boosted from " + start + " to " + end);
 
             for (i = 0, j = start; j < end; j++) {
                 if (!this.cache.get(this.uids[j])) {
