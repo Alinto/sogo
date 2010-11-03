@@ -237,10 +237,12 @@ Element.addMethods({
         deselect: function(element) {
             element = $(element);
             element.removeClassName('_selected');
-            var parent = element.up();
-            if (parent && parent.selectedElements) {
-                parent.selectedElements = parent.selectedElements.without(element);
-                parent.selectedIds = parent.selectedIds.without(element.id);
+            var parent = element.parentNode;
+            if (parent) {
+                if (parent.selectedElements)
+                    parent.selectedElements = parent.selectedElements.without(element);
+                if (parent.selectedIds)
+                    parent.selectedIds = parent.selectedIds.without(element.id);
             }
         },
 
