@@ -14,6 +14,6 @@ clean:
 	rm -f $(PROGRAM) $(OBJS) *~
 
 .m.o:
-	$(CC) -o $@ -c $(GNUSTEP_HEADERS_FLAGS) $(AUXILIARY_OBJCFLAGS) $(OBJCFLAGS) $(CPPFLAGS) $<
+	$(CC) -o $@ -c $(GNUSTEP_HEADERS_FLAGS) $(AUXILIARY_OBJCFLAGS) $(OBJCFLAGS) $(CPPFLAGS) -I../../SoObjects $<
 
 .SUFFIXES: .m .o
