@@ -1,3 +1,8 @@
+2010-11-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/generic.js: (onCASRecoverIFrameLoaded):
+	go back to the user's page instead of the logoff page.
+
 2010-11-02  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* Implemented http://sogo.nu/bugs/view.php?id=821

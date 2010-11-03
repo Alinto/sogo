@@ -270,8 +270,7 @@ function onCASRecoverIFrameLoaded(event) {
                                1);
         }
         else {
-            var logoffUrl = UserFolderURL + "logoff";
-            window.location.href = logoffUrl;
+            window.location.href = UserFolderURL;
         }
         this.request = null;
     }
