@@ -1,6 +1,6 @@
 /* SOGoMailer.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2009 Inverse inc.
+ * Copyright (C) 2007-2010 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -96,12 +96,9 @@
 
 - (NSException *) _sendMailData: (NSData *) mailData
 		     withClient: (NGSmtpClient *) client
-		  andRejections: (unsigned int) toErrors
 {
   NSException *result;
 
-  if (toErrors > 0)
-    [self logWithFormat: @"sending email despite address rejections"];
   if ([client sendData: mailData])
     result = nil;
   else
@@ -118,12 +115,13 @@
 {
   NGInternetSocketAddress *addr;
   NSString *currentTo, *host;
+  NSMutableArray *toErrors;
   NSEnumerator *addresses; 
   NGSmtpClient *client;
   NSException *result;
   NSRange r;
 
-  unsigned int toErrors, port;
+  unsigned int port;
 
   client = [NGSmtpClient smtpClient];
   host = smtpServer;
@@ -145,7 +143,7 @@
     {
       if ([client mailFrom: sender])
 	{
-	  toErrors = 0;
+	  toErrors = [NSMutableArray array];
 	  addresses = [recipients objectEnumerator];
 	  currentTo = [addresses nextObject];
 	  while (currentTo)
@@ -153,17 +151,21 @@
 	      if (![client recipientTo: [currentTo pureEMailAddress]])
 		{
 		  [self logWithFormat: @"error with recipient '%@'", currentTo];
-		  toErrors++;
+		  [toErrors addObject: [currentTo pureEMailAddress]];
 		}
 	      currentTo = [addresses nextObject];
 	    }
-	  if (toErrors == [recipients count])
+	  if ([toErrors count] == [recipients count])
 	    result = [NSException exceptionWithHTTPStatus: 500
 				  reason: @"cannot send message:"
 				  @" (smtp) all recipients discarded"];
+	  else if ([toErrors count] > 0)
+	    result = [NSException exceptionWithHTTPStatus: 500
+				  reason: [NSString stringWithFormat: 
+						      @"cannot send message (smtp) - recipients discarded:\n%@",
+						    [toErrors componentsJoinedByString: @", "]]];
 	  else
-	    result = [self _sendMailData: mailData withClient: client
-			   andRejections: toErrors];
+	    result = [self _sendMailData: mailData withClient: client];
 	}
       else
 	result = [NSException exceptionWithHTTPStatus: 500
