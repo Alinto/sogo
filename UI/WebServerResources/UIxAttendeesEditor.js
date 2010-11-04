@@ -180,7 +180,7 @@ function performSearch(input) {
     if (input.value.trim().length > 0) {
         var urlstr = (UserFolderURL
                       + "Contacts/allContactSearch?excludeGroups=1&search="
-                      + escape(input.value));
+                      + encodeURIComponent(input.value));
         triggerAjaxRequest(urlstr, performSearchCallback, input);
     }
     input.searchTimeout = null;
