@@ -235,7 +235,9 @@ Class SOGoContactSourceFolderKlass = Nil;
   userFolder = [SOGoUserFolder objectWithName: uid inContainer: nil];
   parentFolder = [userFolder lookupName: @"Contacts"
                               inContext: nil acquire: NO];
-  folder = [parentFolder lookupName: folderId inContext: nil acquire: NO];
+  /* Note that this prevent lookup on subscribed addressbooks. */
+  folder = [parentFolder lookupPersonalFolder: folderId
+                               ignoringRights: YES];
 
   return folder;
 }
