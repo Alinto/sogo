@@ -72,7 +72,7 @@
   terminate = NO;
   while (!terminate)
     {
-      limitDate = [runLoop limitDateForMode:NSDefaultRunLoopMode];
+      limitDate = [runLoop limitDateForMode: NSDefaultRunLoopMode];
       [runLoop runMode: NSDefaultRunLoopMode beforeDate: limitDate];
     }
 
