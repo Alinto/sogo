@@ -1,3 +1,9 @@
+2010-11-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAptMailReceipt.m (-getSubject)
+	(-getBody): invoked setupValues if values is nil to ensure that
+	the timezone has been set properly.
+
 2010-11-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* Tools/SOGoSockDOperation.m (_getFolderWithId:forUser:): invoke

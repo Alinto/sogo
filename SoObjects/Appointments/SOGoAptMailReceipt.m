@@ -76,6 +76,9 @@ static NSCharacterSet *wsSet = nil;
 {
   NSString *subject;
 
+  if (!values)
+    [self setupValues];
+
   isSubject = YES;
   subject = [[[self generateResponse] contentAsString]
 	      stringByTrimmingCharactersInSet: wsSet];
@@ -93,6 +96,9 @@ static NSCharacterSet *wsSet = nil;
 - (NSString *) getBody
 {
   NSString *body;
+
+  if (!values)
+    [self setupValues];
 
   isSubject = NO;
 
