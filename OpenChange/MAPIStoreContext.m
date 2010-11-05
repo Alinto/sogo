@@ -41,6 +41,7 @@
 #import <Mailer/SOGoMailFolder.h>
 
 #import "NSArray+MAPIStore.h"
+#import "NSDate+MAPIStore.h"
 
 #import "MAPIApplication.h"
 #import "MAPIStoreAuthenticator.h"
@@ -98,6 +99,12 @@ MAPILongLongValue (void *memCtx, uint64_t value)
 
 static Class SOGoObjectK, SOGoMailAccountK, SOGoMailFolderK;
 
+@interface NSObject (MAPIStoreProtocol)
+
++ (id) objectFromSPropValue: (struct SPropValue *) value;
+
+@end
+
 @interface SOGoFolder (MAPIStoreProtocol)
 
 - (BOOL) create;
@@ -108,6 +115,62 @@ static Class SOGoObjectK, SOGoMailAccountK, SOGoMailFolderK;
 @interface SOGoObject (MAPIStoreProtocol)
 
 - (NSString *) davContentLength;
+
+@end
+
+@implementation NSObject (MAPIStoreProtocol)
+
++ (id) objectFromSPropValue: (struct SPropValue *) value
+{
+  short int valueType;
+  id result;
+
+  valueType = (value->ulPropTag & 0xffff);
+  switch (valueType)
+    {
+    case PT_NULL:
+      result = [NSNull null];
+      break;
+    case PT_SHORT:
+      result = [NSNumber numberWithShort: value->value.i];
+      break;
+    case PT_LONG:
+      result = [NSNumber numberWithLong: value->value.l];
+      break;
+    case PT_BOOLEAN:
+      result = [NSNumber numberWithBool: value->value.b];
+      break;
+    case PT_DOUBLE:
+      result = [NSNumber numberWithDouble: value->value.dbl];
+      break;
+    case PT_UNICODE:
+      result = [NSString stringWithUTF8String: value->value.lpszW];
+      break;
+    case PT_STRING8:
+      result = [NSString stringWithUTF8String: value->value.lpszA];
+      break;
+    case PT_SYSTIME:
+      result = [NSDate dateFromFileTime: &(value->value.ft)];
+      break;
+    default:
+// #define	PT_UNSPECIFIED		0x0
+// #define	PT_I2			0x2
+// #define	PT_CURRENCY		0x6
+// #define	PT_APPTIME		0x7
+// #define	PT_ERROR		0xa
+// #define	PT_OBJECT		0xd
+// #define	PT_I8			0x14
+// #define	PT_CLSID		0x48
+// #define	PT_SVREID		0xFB
+// #define	PT_SRESTRICT		0xFD
+// #define	PT_ACTIONS		0xFE
+// #define	PT_BINARY		0x102
+      result = [NSNull null];
+      [self errorWithFormat: @"object type not handled: %d", valueType];
+    }
+
+  return result;
+}
 
 @end
 
@@ -194,8 +257,10 @@ static MAPIStoreMapping *mapping = nil;
     {
       messageCache = [NSMutableDictionary new];
       subfolderCache = [NSMutableDictionary new];
+      messages = [NSMutableDictionary new];
       woContext = [WOContext contextWithRequest: nil];
       [woContext retain];
+      
       moduleFolder = nil;
       uri = nil;
       baseContextSet = NO;
@@ -212,6 +277,7 @@ static MAPIStoreMapping *mapping = nil;
 
   [messageCache release];
   [subfolderCache release];
+  [messages release];
 
   [moduleFolder release];
   [woContext release];
@@ -935,9 +1001,18 @@ static MAPIStoreMapping *mapping = nil;
 - (int) createMessageWithMID: (uint64_t) mid
                        inFID: (uint64_t) fid
 {
-  [self logWithFormat: @"METHOD '%s' (%d)", __FUNCTION__, __LINE__];
+  NSMutableDictionary *newMessage;
+  NSNumber *midNbr;
 
-  return MAPISTORE_ERROR;
+  newMessage = [NSMutableDictionary new];
+  [newMessage setObject: [NSNumber numberWithUnsignedLongLong: fid]
+                 forKey: @"fid"];
+  midNbr = [NSNumber numberWithUnsignedLongLong: mid];
+  [newMessage setObject: midNbr forKey: @"fid"];
+  [messages setObject: newMessage forKey: midNbr];
+  [newMessage release];
+
+  return MAPISTORE_SUCCESS;
 }
 
 - (int) saveChangesInMessageWithMID: (uint64_t) mid
@@ -1065,21 +1140,53 @@ static MAPIStoreMapping *mapping = nil;
   return MAPISTORE_ERROR;
 }
 
-- (int) setPropertiesWithMID: (uint64_t) fmid
-                        type: (uint8_t) type
-                       inRow: (struct SRow *) aRow
+- (int) setPropertiesOfMessage: (NSMutableDictionary *) message
+                       fromRow: (struct SRow *) aRow
 {
-  [self logWithFormat: @"METHOD '%s' (%d)", __FUNCTION__, __LINE__];
+  int counter;
+  NSNumber *key;
+  struct SPropValue *cValue;
+
+  for (counter = 0; counter < aRow->cValues; counter++)
+    {
+      cValue = &(aRow->lpProps[counter]);
+      key = [NSNumber numberWithUnsignedLong: cValue->ulPropTag];
+      [message setObject: [NSObject objectFromSPropValue: cValue]
+                  forKey: key];
+    }
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) setPropertiesWithFMID: (uint64_t) fmid
+                         type: (uint8_t) type
+                        inRow: (struct SRow *) aRow
+{
+  NSMutableDictionary *message;
+  NSNumber *midNbr;
+  int rc;
 
   switch (type)
     {
     case MAPISTORE_FOLDER:
+      [self logWithFormat: @"METHOD '%s' (%d)", __FUNCTION__, __LINE__];
+  
+      rc = MAPISTORE_ERROR;
       break;
     case MAPISTORE_MESSAGE:
+      midNbr = [NSNumber numberWithUnsignedLongLong: fmid];
+      message = [messages objectForKey: midNbr];
+      if (message)
+        rc = [self setPropertiesOfMessage: message
+                                  fromRow: aRow];
+      else
+        rc = MAPISTORE_ERR_NOT_FOUND;
       break;
+    default:
+      rc = MAPISTORE_ERROR;
     }
 
-  return MAPISTORE_ERROR;
+  return rc;
 }
 
 - (int) deleteMessageWithMID: (uint64_t) mid

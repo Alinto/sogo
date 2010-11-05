@@ -60,6 +60,7 @@ extern uint64_t *MAPILongLongValue (void *, uint64_t);
   NSString *uri;
 
   NSMutableDictionary *objectCache;
+  NSMutableDictionary *messages;
   MAPIStoreAuthenticator *authenticator;
   WOContext *woContext;
   NSMutableDictionary *messageCache;

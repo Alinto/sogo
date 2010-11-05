@@ -1,5 +1,20 @@
 2010-11-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContext.m: added a private category to NSObject.
+	(+[NSObject objectFromSPropValue:]) new generic constructor for
+	converting mapi types to NS* types.
+	(-init): added a new "messages" NSMutableDictionary ivar for
+	storing messages in constructions.
+	(-createMessageWithMID:inFID:): implemented method by registering
+	a new message object in "messages".
+	(-setPropertiesWithFMID:type:inRow:): implemented the message part
+	of the method by resolving the message passed as parameter and
+	passing it to the new setPropertiesOfMessage:fromRow: method.
+	(-setPropertiesOfMessage:fromRow:): new method that wanders in the
+	property array of the aRow parameter, converts each member via
+	+[NSObject objectFromSPropValue:] and stores the result in the
+	message passed as parameter.
+
 	* OpenChange/NSDate+MAPIStore.[hm]: this module now implements a
 	category for NSDate rather than NSCalendarDate.
 	(+dateFromFileTime): new method that returns an NSDate from a
