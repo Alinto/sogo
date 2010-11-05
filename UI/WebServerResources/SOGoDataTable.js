@@ -159,6 +159,7 @@ var SOGoDataTableInterface = {
         count = end - start;
 
         this.currentRenderID = index + "-" + count;
+
         // Query the data source only if at least one row is not loaded
         if (refresh === true ||
             this.renderedIndex < 0 || 
@@ -168,12 +169,16 @@ var SOGoDataTableInterface = {
             this.dataSource.getData(this.currentRenderID,
                                     index,
                                     count,
-                                    this._render.bind(this),
+                                    (refresh === true)?this._refresh.bind(this):this._render.bind(this),
                                     this.renderDelay);
         }
     },
 
-    _render: function(renderID, start, max, data) {
+    _refresh: function(renderID, start, max, data) {
+        this._render(renderID, start, max, data, true);
+    },
+
+    _render: function(renderID, start, max, data, refresh) {
         if (this.currentRenderID != renderID) {
 //             log ("DataTable._render() ignore render for " + renderID + " (current is " + this.currentRenderID + ")");
             return;
@@ -201,17 +206,16 @@ var SOGoDataTableInterface = {
             this.renderedCount = 0;
         }
 
-        if (start > (this.renderedIndex + this.renderedCount) ||
+        if (refresh === true ||
+            start > (this.renderedIndex + this.renderedCount) ||
             start + data.length < this.renderedIndex) {
             // No reusable row in the viewport;
             // refresh the complete view port
-
             for (i = 0, j = start;
                  i < this.renderedCount && i < data.length;
                  i++, j++) {
                 // Render all existing rows with new data
                 var row = rows[i+1]; // must skip the first row (this.rowTop)
-                row.removeClassName('_selected');
                 this.rowRenderCallback(row, data[i], false);
             }
 
@@ -314,11 +318,12 @@ var SOGoDataTableInterface = {
         }
         var index = this.dataSource.remove(uid);
 //        log ("DataTable.remove(" + uid + ") at index " + index);
-        if (this.renderedIndex > index)
-            this.renderedIndex--;
-        else if ((this.renderedIndex + this.renderedCount) > index)
-            this.renderedCount--;
-
+        if (index >= 0) {
+            if (this.renderedIndex > index)
+                this.renderedIndex--;
+            else if ((this.renderedIndex + this.renderedCount) > index)
+                this.renderedCount--;
+        }
         return index;
     },
  

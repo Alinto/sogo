@@ -558,17 +558,25 @@
 
 - (id <WOActionResults>) getSortedUIDsAction
 {
-  NSDictionary *data;
+  id data;
+  NSString *noHeaders;
   SOGoMailFolder *folder;
+  WORequest *request;
   WOResponse *response;
 
+  request = [context request];
   response = [context response];
-  folder = [self clientObject];
-  data = [self getUIDsAndHeadersInFolder: folder];
   [response setHeader: @"text/plain; charset=utf-8"
 	       forKey: @"content-type"];
+  folder = [self clientObject];
+  noHeaders = [request formValueForKey: @"no_headers"];
+  if ([noHeaders length])
+    data = [self getSortedUIDsInFolder: folder];
+  else
+    data = [self getUIDsAndHeadersInFolder: folder];
+  
   [response appendContentString: [data jsonRepresentation]];
-
+  
   return response;
 }
 
