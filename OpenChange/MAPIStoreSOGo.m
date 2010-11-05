@@ -94,7 +94,7 @@ static int sogo_delete_context(void *private_data)
 
   pool = [NSAutoreleasePool new];
 
-  DEBUG(5, ("[%s:%d]\n", __FUNCTION__, __LINE__));
+  DEBUG (5, ("SOGo: [%s:%d]\n", __FUNCTION__, __LINE__));
 
   cContext = private_data;
   [cContext->objcContext release];
@@ -119,7 +119,7 @@ static int sogo_release_record(void *private_data, uint64_t fmid, uint8_t type)
 
   pool = [NSAutoreleasePool new];
 
-  DEBUG(5, ("[%s:%d]\n", __FUNCTION__, __LINE__));
+  DEBUG (5, ("SOGo: [%s:%d]\n", __FUNCTION__, __LINE__));
 
   switch (type) {
   case MAPISTORE_FOLDER:
@@ -153,6 +153,8 @@ static int sogo_get_path(void *private_data, uint64_t fmid,
   MAPIStoreContext *context;
   int rc;
 
+  DEBUG (5, ("SOGo: [%s:%d]\n", __FUNCTION__, __LINE__));
+
   pool = [NSAutoreleasePool new];
 
   cContext = private_data;
@@ -174,6 +176,8 @@ static int sogo_op_get_fid_by_name(void *private_data, uint64_t parent_fid, cons
   sogo_context *cContext;
   MAPIStoreContext *context;
   int rc;
+
+  DEBUG (5, ("SOGo: [%s:%d]\n", __FUNCTION__, __LINE__));
 
   pool = [NSAutoreleasePool new];
 
@@ -204,6 +208,8 @@ static int sogo_op_mkdir(void *private_data, uint64_t parent_fid, uint64_t fid,
   sogo_context *cContext;
   MAPIStoreContext *context;
   int rc;
+
+  DEBUG (5, ("SOGo: [%s:%d]\n", __FUNCTION__, __LINE__));
 
   pool = [NSAutoreleasePool new];
 
@@ -236,6 +242,8 @@ static int sogo_op_rmdir(void *private_data, uint64_t parent_fid, uint64_t fid)
   MAPIStoreContext *context;
   int rc;
 
+  DEBUG (5, ("SOGo: [%s:%d]\n", __FUNCTION__, __LINE__));
+
   pool = [NSAutoreleasePool new];
 
   cContext = private_data;
@@ -267,6 +275,8 @@ static int sogo_op_opendir(void *private_data, uint64_t parent_fid, uint64_t fid
   MAPIStoreContext *context;
   int rc;
 
+  DEBUG (5, ("SOGo: [%s:%d]\n", __FUNCTION__, __LINE__));
+
   pool = [NSAutoreleasePool new];
 
   cContext = private_data;
@@ -295,6 +305,8 @@ static int sogo_op_closedir(void *private_data)
   sogo_context *cContext;
   MAPIStoreContext *context;
   int rc;
+
+  DEBUG (5, ("SOGo: [%s:%d]\n", __FUNCTION__, __LINE__));
 
   pool = [NSAutoreleasePool new];
 
@@ -328,6 +340,8 @@ static int sogo_op_readdir_count(void *private_data,
   MAPIStoreContext *context;
   int rc;
 
+  DEBUG (5, ("SOGo: [%s:%d]\n", __FUNCTION__, __LINE__));
+
   pool = [NSAutoreleasePool new];
 
   cContext = private_data;
@@ -355,6 +369,8 @@ static int sogo_op_get_table_property(void *private_data,
   MAPIStoreContext *context;
   int rc;
 
+  DEBUG (5, ("SOGo: [%s:%d]\n", __FUNCTION__, __LINE__));
+
   pool = [NSAutoreleasePool new];
 
   cContext = private_data;
@@ -370,7 +386,6 @@ static int sogo_op_get_table_property(void *private_data,
   return rc;
 }
 
-
 static int sogo_op_openmessage(void *private_data,
                                uint64_t fid,
                                uint64_t mid,
@@ -380,6 +395,8 @@ static int sogo_op_openmessage(void *private_data,
   sogo_context *cContext;
   MAPIStoreContext *context;
   int rc;
+
+  DEBUG (5, ("SOGo: [%s:%d]\n", __FUNCTION__, __LINE__));
 
   pool = [NSAutoreleasePool new];
 
@@ -405,6 +422,8 @@ static int sogo_op_createmessage(void *private_data,
   MAPIStoreContext *context;
   int rc;
 
+  DEBUG (5, ("SOGo: [%s:%d]\n", __FUNCTION__, __LINE__));
+
   pool = [NSAutoreleasePool new];
 
   cContext = private_data;
@@ -428,6 +447,8 @@ static int sogo_op_savechangesmessage(void *private_data,
   MAPIStoreContext *context;
   int rc;
 
+  DEBUG (5, ("SOGo: [%s:%d]\n", __FUNCTION__, __LINE__));
+
   pool = [NSAutoreleasePool new];
 
   cContext = private_data;
@@ -450,6 +471,8 @@ static int sogo_op_submitmessage(void *private_data,
   sogo_context *cContext;
   MAPIStoreContext *context;
   int rc;
+
+  DEBUG (5, ("SOGo: [%s:%d]\n", __FUNCTION__, __LINE__));
 
   pool = [NSAutoreleasePool new];
 
@@ -476,6 +499,8 @@ static int sogo_op_getprops(void *private_data,
   MAPIStoreContext *context;
   int rc;
 
+  DEBUG (5, ("SOGo: [%s:%d]\n", __FUNCTION__, __LINE__));
+
   pool = [NSAutoreleasePool new];
 
   cContext = private_data;
@@ -501,13 +526,15 @@ static int sogo_op_setprops(void *private_data,
   MAPIStoreContext *context;
   int rc;
 
+  DEBUG (5, ("SOGo: [%s:%d]\n", __FUNCTION__, __LINE__));
+
   pool = [NSAutoreleasePool new];
 
   cContext = private_data;
   context = cContext->objcContext;
   [context setupRequest];
 
-  rc = [context setPropertiesWithMID: fmid type: type inRow: aRow];
+  rc = [context setPropertiesWithFMID: fmid type: type inRow: aRow];
 
   [context tearDownRequest];
   [pool release];
@@ -523,6 +550,8 @@ static int sogo_op_deletemessage(void *private_data,
   sogo_context *cContext;
   MAPIStoreContext *context;
   int rc;
+
+  DEBUG (5, ("SOGo: [%s:%d]\n", __FUNCTION__, __LINE__));
 
   pool = [NSAutoreleasePool new];
 
@@ -546,6 +575,8 @@ static int sogo_op_get_folders_list(void *private_data,
   sogo_context *cContext;
   MAPIStoreContext *context;
   int rc;
+
+  DEBUG (5, ("SOGo: [%s:%d]\n", __FUNCTION__, __LINE__));
 
   pool = [NSAutoreleasePool new];
 

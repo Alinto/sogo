@@ -1,5 +1,8 @@
 2010-11-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreSOGo.m: added debugging witnesses call to
+	each method.
+
 	* OpenChange/MAPIStoreContext.m: added a private category to NSObject.
 	(+[NSObject objectFromSPropValue:]) new generic constructor for
 	converting mapi types to NS* types.
