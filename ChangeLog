@@ -1,5 +1,10 @@
 2010-11-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/NSDate+MAPIStore.[hm]: this module now implements a
+	category for NSDate rather than NSCalendarDate.
+	(+dateFromFileTime): new method that returns an NSDate from a
+	struct FILETIME
+
 	* SoObjects/Appointments/SOGoAptMailReceipt.m (-getSubject)
 	(-getBody): invoked setupValues if values is nil to ensure that
 	the timezone has been set properly.

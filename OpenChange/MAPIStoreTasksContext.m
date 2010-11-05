@@ -27,7 +27,7 @@
 
 #import "MAPIApplication.h"
 #import "MAPIStoreAuthenticator.h"
-#import "NSCalendarDate+MAPIStore.h"
+#import "NSDate+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 #import "SOGoGCSFolder+MAPIStore.h"
 

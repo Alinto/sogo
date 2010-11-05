@@ -20,6 +20,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSCalendarDate.h>
+
 #import <NGObjWeb/WOContext+SoObjects.h>
 
 #import <NGImap4/NGImap4EnvelopeAddress.h>
@@ -33,7 +35,7 @@
 #import "MAPIApplication.h"
 #import "MAPIStoreAuthenticator.h"
 #import "NSData+MAPIStore.h"
-#import "NSCalendarDate+MAPIStore.h"
+#import "NSDate+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 
 #import "MAPIStoreMailContext.h"
@@ -116,7 +118,7 @@ static Class SOGoUserFolderK;
                              withFID: (uint64_t) fid
 {
   id child;
-  NSCalendarDate *offsetDate;
+  NSDate *offsetDate;
   int rc;
 
   rc = MAPI_E_SUCCESS;
@@ -167,7 +169,7 @@ static Class SOGoUserFolderK;
 
     case PR_EXPIRY_TIME: // TODO
     case PR_REPLY_TIME:
-      *data = [[NSCalendarDate date] asFileTimeInMemCtx: memCtx];
+      *data = [[NSDate date] asFileTimeInMemCtx: memCtx];
       break;
 
     case PR_BODY:

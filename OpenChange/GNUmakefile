@@ -41,7 +41,7 @@ $(MAPISTORESOGO)_OBJC_FILES += \
 	\
 	NSArray+MAPIStore.m \
 	NSData+MAPIStore.m \
-	NSCalendarDate+MAPIStore.m \
+	NSDate+MAPIStore.m \
 	NSString+MAPIStore.m
 
 -include GNUmakefile.preamble

@@ -1,4 +1,4 @@
-/* NSCalendarDate+MAPIStore.m - this file is part of SOGo
+/* NSDate+MAPIStore.m - this file is part of SOGo
  *
  * Copyright (C) 2010 Inverse inc.
  *
@@ -20,34 +20,60 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSTimeZone.h>
 
-#import "NSCalendarDate+MAPIStore.h"
+#import "NSDate+MAPIStore.h"
 
 #undef DEBUG
 #include <mapistore/mapistore.h>
 #include <talloc.h>
 
-@implementation NSCalendarDate (MAPIStoreDataTypes)
+static NSDate *refDate = nil;
 
-- (struct FILETIME *) asFileTimeInMemCtx: (void *) memCtx
+@implementation NSDate (MAPIStoreDataTypes)
+
+static void
+_setupRefDate()
 {
-  static NSCalendarDate *refDate = nil;
-  struct FILETIME *timeValue;
   NSTimeZone *utc;
+
+  utc = [NSTimeZone timeZoneWithName: @"UTC"];
+  refDate = [NSCalendarDate dateWithYear: 1601 month: 1 day: 1
+                                    hour: 0 minute: 0 second: 0
+                                timeZone: utc];
+  [refDate retain];
+}
+
++ (id) dateFromFileTime: (struct FILETIME *) timeValue
+{
+  NSDate *result;
   uint64_t interval;
 
   if (!refDate)
-    {
-      utc = [NSTimeZone timeZoneWithName: @"UTC"];
-      refDate = [NSCalendarDate dateWithYear: 1601 month: 1 day: 1
-                                        hour: 0 minute: 0 second: 0
-                                    timeZone: utc];
-      [refDate retain];
-    }
+    _setupRefDate ();
+
+  interval = ((uint64_t) timeValue->dwHighDateTime << 32
+              | timeValue->dwLowDateTime);
+  result = [[NSDate alloc]
+             initWithTimeInterval: (NSTimeInterval) interval / 10000000
+                        sinceDate: refDate];
+  [result autorelease];
+
+  return result;
+}
+
+- (struct FILETIME *) asFileTimeInMemCtx: (void *) memCtx
+{
+  struct FILETIME *timeValue;
+  uint64_t interval;
+
+  if (!refDate)
+    _setupRefDate ();
+
   interval = (((uint64_t) [self timeIntervalSinceDate: refDate]) * 10000000);
-  timeValue = talloc_zero(memCtx, struct FILETIME);
+  timeValue = talloc_zero (memCtx, struct FILETIME);
   timeValue->dwLowDateTime = (uint32_t) (interval & 0xffffffff);
   timeValue->dwHighDateTime = (uint32_t) ((interval >> 32) & 0xffffffff);
   
