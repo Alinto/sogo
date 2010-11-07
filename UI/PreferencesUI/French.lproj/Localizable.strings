@@ -21,7 +21,7 @@
 "contacts_category_labels" = "Ami, Client, Collègue, Concurrent, Famille, Fournisseur, Partenaire d'affaire, Presse, VIP";
 
 /* vacation (auto-reply) */
-"Enable vacation auto reply" = "Activer message d'absense prolongée";
+"Enable vacation auto reply" = "Activer message d'absence prolongée";
 "Auto reply message :" = "Message de réponse automatique :";
 "Email addresses (separated by commas) :" = "Adresses courriels (séparées par des virgules) :";
 "Add default email addresses" = "Ajouter les adresses par défaut";
