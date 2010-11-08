@@ -213,7 +213,7 @@ function onComboButtonClick(event) {
                     "left": menuLeft + "px",
                     "width": width + "px" });
 
-    event.preventDefault();
+    return false;
 }
 
 function onCategoryInputChange(event) {

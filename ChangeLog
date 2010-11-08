@@ -12,6 +12,13 @@
 	* UI/WebServerResources/SOGoDragHandles.js (adjust): for vertical
 	drag handles, prioritize the top limit rather than the bottom one.
 
+	* UI/WebServerResources/UIxContactEditor.js (onComboButtonClick):
+	return false so the form is not submitted when the button is clicked.
+
+	* UI/WebServerResources/ContactsUI.js
+	(onCategoriesMenuPrepareVisibility): don't verify the selection if
+	the list doesn't exist (happens in the contact editor).
+
 2010-11-05  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/MailerUI/UIxMailListActions.m (-getSortedUIDsAction): now
