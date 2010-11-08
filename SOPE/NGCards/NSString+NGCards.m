@@ -322,11 +322,14 @@ static NSString *commaSeparator = nil;
         }
     }
 
-  substring = [[NSString alloc] initWithCharactersNoCopy: substringBuffer
-                                                  length: substringLength
-                                            freeWhenDone: YES];
-  [components addObject: substring];
-  [substring release];
+  if (substringLength > 0)
+    {
+      substring = [[NSString alloc] initWithCharactersNoCopy: substringBuffer
+						      length: substringLength
+						freeWhenDone: YES];
+      [components addObject: substring];
+      [substring release];
+    }
 
   NSZoneFree (NULL, stringBuffer);
 
