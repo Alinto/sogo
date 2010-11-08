@@ -3,6 +3,9 @@
 	* SOPE/GDLContentStore/GCSAlarmsFolder.m
 	We now check for non-nil values before calling
 	-timeInterval...
+	* SoObjects/Mailer/SOGoMailAccount.m
+	We try to fallback to the imap server prior falling
+	back to localhost
 
 2010-11-08  Francis Lachapelle  <flachapelle@inverse.ca>
 
