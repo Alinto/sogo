@@ -1302,30 +1302,34 @@ function resetCategoriesMenu() {
 }
 
 function onCategoriesMenuPrepareVisibility() {
-    var rows = contactsList.getSelectedRows();
-    if (rows.length > 0) {
-        var catList = rows[0].getAttribute("categories");
-        var catsArray;
-        if (catList && catList.length > 0) {
-            catsArray = catList.split(",");
-        }
-        else {
-            catsArray = [];
-        }
-
-        var menu = $("categoriesMenu");
-        var ul = menu.down("ul");
-        var listElements = ul.select("li");
-        for (var i = 0; i < listElements.length; i++) {
-            var li = listElements[i];
-            if (catsArray.indexOf(li.category) > -1) {
-                li.addClassName("_chosen");
+    var contactsList = $("contactsList");
+    if (contactsList) {
+        var rows = contactsList.getSelectedRows();
+        if (rows.length > 0) {
+            var catList = rows[0].getAttribute("categories"); log ("cats = " + catList);
+            var catsArray;
+            if (catList && catList.length > 0) {
+                catsArray = catList.split(",");
             }
             else {
-                li.removeClassName("_chosen");
+                catsArray = [];
+            }
+
+            var menu = $("categoriesMenu");
+            var ul = menu.down("ul");
+            var listElements = ul.select("li");
+            for (var i = 0; i < listElements.length; i++) {
+                var li = listElements[i];
+                if (catsArray.indexOf(li.category) > -1) {
+                    li.addClassName("_chosen");
+                }
+                else {
+                    li.removeClassName("_chosen");
+                }
             }
         }
     }
+    return true;
 }
 
 function onCategoriesMenuItemClick() {

@@ -353,7 +353,22 @@ static NSString *sieveScriptName = @"sogo";
       
   if (!sieveServer)
     {
+      NSString *s;
+
       sieveServer = @"localhost";
+      s = [dd imapServer];
+
+      if (s)
+	{
+	  NSURL *url;
+	  
+	  url = [NSURL URLWithString: s];
+
+	  if ([url host])
+	    sieveServer = [url host];
+	  else
+	    sieveServer = s;
+	}
     }
   else
     {

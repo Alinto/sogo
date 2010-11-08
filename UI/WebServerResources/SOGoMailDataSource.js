@@ -45,12 +45,14 @@ SOGoMailDataSource = Class.create({
         init: function(uids, headers) {
             this.uids = uids;
             
-            var keys = headers[0];
-            for (var i = 1; i < headers.length; i++) {
-                var header = [];
-                for (var j = 0; j < keys.length; j++)
-                    header[keys[j]] = headers[i][j];
-                this.cache.set(header["uid"], header);
+            if (headers) {
+                var keys = headers[0];
+                for (var i = 1; i < headers.length; i++) {
+                    var header = [];
+                    for (var j = 0; j < keys.length; j++)
+                        header[keys[j]] = headers[i][j];
+                    this.cache.set(header["uid"], header);
+                }
             }
 
             this.loaded = true;
@@ -78,7 +80,10 @@ SOGoMailDataSource = Class.create({
             if (http.status == 200) {
                 if (http.responseText.length > 0) {
                     var data = http.responseText.evalJSON(true);
-                    this.init(data.uids, data.headers);
+                    if (data.uids)
+                        this.init(data.uids, data.headers);
+                    else
+                        this.init(data);
                     this.loaded = true;
                     if (this.delayedGetData) {
                         this.delayedGetData();

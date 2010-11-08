@@ -39,8 +39,10 @@ var SOGoDragHandlesInterface = {
             }
         }
         else if (this.dhType == 'vertical') {
-            this.dhLimit = window.height() - 20 - this.upperBlock.cumulativeOffset()[1] + this.upperBlock.offsetTop;
-            if (parseInt(this.getStyle("top")) > this.dhLimit) {
+            var windowHeight = window.height();
+            this.dhLimit = windowHeight - 20 - this.upperBlock.cumulativeOffset().top + this.upperBlock.offsetTop;
+            if (parseInt(this.getStyle("top")) > this.dhLimit &&
+                windowHeight > this.topMargin) {
                 this.setStyle({ top: this.dhLimit + 'px' });
                 this.lowerBlock.setStyle({ top: this.dhLimit + 'px' });
                 this.upperBlock.setStyle({ height: (this.dhLimit - this.upperBlock.offsetTop) + 'px' });

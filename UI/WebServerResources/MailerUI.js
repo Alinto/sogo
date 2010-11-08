@@ -425,7 +425,7 @@ function deleteSelectedMessages(sender) {
         triggerAjaxRequest(url, deleteSelectedMessagesCallback, data, parameters,
                            { "Content-type": "application/x-www-form-urlencoded" });
     }
-    else
+    if (uids.length == 0)
         showAlertDialog(_("Please select a message."));
 
     return false;
@@ -440,7 +440,7 @@ function deleteSelectedMessagesCallback(http) {
             if (Mailer.currentMailbox == data["mailbox"]) {
                 var div = $('messageContent');
                 if (Mailer.currentMessages[Mailer.currentMailbox] == data["id"][i]) {
-                    div.update();
+                    div.innerHTML = '';
                     Mailer.currentMessages[Mailer.currentMailbox] = null;
                 }
                 if (deleteMessageRequestCount == 0) {
@@ -457,7 +457,7 @@ function deleteSelectedMessagesCallback(http) {
                         }
                     }
                     else {
-                        div.update();
+                        div.innerHTML = '';
                     }
                     Mailer.dataTable.remove(data["id"][i]);
                     Mailer.dataTable.refresh();
@@ -731,7 +731,7 @@ function openMailbox(mailbox, reload) {
         }
 
         var dataSource = Mailer.dataSources.get(key);
-        if (!dataSource || reload) {
+        if (!dataSource) {
             dataSource = new SOGoMailDataSource(Mailer.dataTable, url);
             if (inboxData) {
                 dataSource.init(inboxData['uids'], inboxData['headers']);
@@ -742,9 +742,16 @@ function openMailbox(mailbox, reload) {
             Mailer.dataSources.set(key, dataSource);
             getUnseenCountForFolder(mailbox);
         }
-        messageList.deselectAll();
-        Mailer.dataTable.setSource(dataSource);
-        Mailer.dataTable.render();
+        else if (reload) {
+            urlParams.set("no_headers", "1");
+            dataSource.load(urlParams);
+        }
+        if (reload)
+            Mailer.dataTable.refresh();
+        else {
+            Mailer.dataTable.setSource(dataSource);
+            Mailer.dataTable.render();
+        }
         configureDraggables();
         Mailer.currentMailbox = mailbox;
 
@@ -767,7 +774,6 @@ function openMailbox(mailbox, reload) {
  */
 function messageListCallback(row, data, isNew) {
     var currentMessage = Mailer.currentMessages[Mailer.currentMailbox];
-
     row.id = data['rowID'];
     row.writeAttribute('labels', (data['labels']?data['labels']:""));
     row.className = data['rowClasses'];
@@ -1511,7 +1517,8 @@ function loadMessageCallback(http) {
 	    var msguid = http.callbackData.msguid;
 	    // Warning: If the user can't set the read/unread flag, it won't
 	    // be reflected in the view unless we force the refresh.
-	    //Mailer.dataTable.invalidate(msguid, true);
+            if (http.callbackData.seenStateHasChanged)
+	        Mailer.dataTable.invalidate(msguid, true);
             cachedMessage['idx'] = Mailer.currentMailbox + '/' + msguid;
             cachedMessage['time'] = (new Date()).getTime();
             cachedMessage['text'] = http.responseText;

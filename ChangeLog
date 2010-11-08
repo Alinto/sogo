@@ -1,3 +1,24 @@
+2010-11-08  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* SOPE/GDLContentStore/GCSAlarmsFolder.m
+	We now check for non-nil values before calling
+	-timeInterval...
+	* SoObjects/Mailer/SOGoMailAccount.m
+	We try to fallback to the imap server prior falling
+	back to localhost
+
+2010-11-08  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/SOGoDragHandles.js (adjust): for vertical
+	drag handles, prioritize the top limit rather than the bottom one.
+
+	* UI/WebServerResources/UIxContactEditor.js (onComboButtonClick):
+	return false so the form is not submitted when the button is clicked.
+
+	* UI/WebServerResources/ContactsUI.js
+	(onCategoriesMenuPrepareVisibility): don't verify the selection if
+	the list doesn't exist (happens in the contact editor).
+
 2010-11-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreSOGo.m: added debugging witnesses call to
@@ -26,6 +47,33 @@
 	* SoObjects/Appointments/SOGoAptMailReceipt.m (-getSubject)
 	(-getBody): invoked setupValues if values is nil to ensure that
 	the timezone has been set properly.
+
+2010-11-05  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/MailerUI/UIxMailListActions.m (-getSortedUIDsAction): now
+	accepts the form parameter "no_headers" so only the UIDs are
+	returned, without the prefetched headers.
+
+	* UI/WebServerResources/SOGoMailDataSource.js (init): made the
+	headers argument optional.
+	(_loadCallback): handled the case when the server doesn't send the
+	prefetched headers.
+
+	* UI/WebServerResources/SOGoDataTable.js (_refresh): new method to
+	force the refresh of the data table with the data of the data source.
+	(remove): don't update the internal variables (index and count) if
+	the UID was not found in the data source.
+
+	* UI/WebServerResources/MailerUI.js (openMailbox): when reloading
+	a mailbox, only fetch the messages UIDs (without the headers).
+	(loadMessageCallback): only reload the headers if the seen state
+	has changed.
+
+2010-11-04  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	SoObjects/SOGo/SOGoMailer.m
+	We stop when we see an invalid recipient and we inform the
+	client back with what are the invalid recipients
 
 2010-11-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

@@ -326,8 +326,10 @@ static NSString *alarmsFolderURLString = nil;
 {
   NSNumber *tRecId, *tADate;
 
-  tRecId = [NSNumber numberWithInt: (int) [recId timeIntervalSince1970]];
-  tADate = [NSNumber numberWithInt: (int) [alarmDate timeIntervalSince1970]];
+  // We check if recId and alarmDate are nil prior calling -timeIntervalSince1970
+  // Weird gcc optimizations can cause issue here.
+  tRecId = [NSNumber numberWithInt: (recId ? (int)[recId timeIntervalSince1970] : 0)];
+  tADate = [NSNumber numberWithInt: (alarmDate ? (int)[alarmDate timeIntervalSince1970] : 0)];
 
   return [NSDictionary dictionaryWithObjectsAndKeys: cname, @"c_name",
                        path, @"c_path",
