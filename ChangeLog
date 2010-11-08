@@ -1,3 +1,9 @@
+2010-11-08  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* SOPE/GDLContentStore/GCSAlarmsFolder.m
+	We now check for non-nil values before calling
+	-timeInterval...
+
 2010-11-08  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/SOGoDragHandles.js (adjust): for vertical
