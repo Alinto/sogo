@@ -1,3 +1,8 @@
+2010-11-08  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/SOGoDragHandles.js (adjust): for vertical
+	drag handles, prioritize the top limit rather than the bottom one.
+
 2010-11-05  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/MailerUI/UIxMailListActions.m (-getSortedUIDsAction): now
