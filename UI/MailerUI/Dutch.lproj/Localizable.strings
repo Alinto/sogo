@@ -282,3 +282,8 @@
 "error_validationfailed" = "Validering mislukt!";
 "error_missingsubject" = "U heeft geen onderwerp opgegeven!";
 "error_missingrecipients" = "U heeft geen ontvanger opgegeven!";
+
+/* Message sending */
+"cannot send message: (smtp) all recipients discarded" = "Cannot send message: all recipients are invalid.";
+"cannot send message (smtp) - recipients discarded:" = "Cannot send message. The following addresses are invalid:";
+"cannot send message: (smtp) error when connecting" = "Cannot send message: error when connecting to the SMTP server.";

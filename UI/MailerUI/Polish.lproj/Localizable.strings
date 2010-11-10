@@ -282,3 +282,8 @@
 "error_validationfailed" = "Weryfikacja zakończona niepowodzeniem";
 "error_missingsubject" = "Brak tematu";
 "error_missingrecipients" = "Brak odbiorców";
+
+/* Message sending */
+"cannot send message: (smtp) all recipients discarded" = "Cannot send message: all recipients are invalid.";
+"cannot send message (smtp) - recipients discarded:" = "Cannot send message. The following addresses are invalid:";
+"cannot send message: (smtp) error when connecting" = "Cannot send message: error when connecting to the SMTP server.";

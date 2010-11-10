@@ -580,6 +580,7 @@ static NSArray *infoKeys = nil;
   SOGoDraftObject *co;
   NSDictionary *jsonResponse;
   NSException *error;
+  NSMutableArray *errorMsg;
 
   co = [self clientObject];
 
@@ -594,10 +595,17 @@ static NSArray *infoKeys = nil;
     }
 
   if (error)
-    jsonResponse = [NSDictionary dictionaryWithObjectsAndKeys:
-                                   @"failure", @"status",
-                                 [error reason], @"message",
-                                 nil];
+    {
+      // Only the first line is translated
+      errorMsg = [NSMutableArray arrayWithArray: [[error reason] componentsSeparatedByString: @"\n"]];
+      [errorMsg replaceObjectAtIndex: 0
+			  withObject: [self labelForKey: [errorMsg objectAtIndex: 0]]];
+      jsonResponse = [NSDictionary dictionaryWithObjectsAndKeys:
+				     @"failure", @"status",
+			           [errorMsg componentsJoinedByString: @"\n"],
+				   @"message",
+				   nil];
+    }
   else
     jsonResponse = [NSDictionary dictionaryWithObjectsAndKeys:
                                    @"success", @"status",

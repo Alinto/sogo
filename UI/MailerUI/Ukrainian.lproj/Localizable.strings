@@ -194,6 +194,8 @@
 "Delete Folder" = "Вилучити";
 "Use This Folder For" = "Використати цю теку як";
 "Get Messages for Account" = "Отримати нові повідомлення";
+"Properties..." = "Properties...";
+"Delegation..." = "Delegation...";
 
 /* Use This Folder menu */
 "Sent Messages" = "Відіслані";
@@ -280,3 +282,8 @@
 "error_validationfailed" = "Перевірка зазнала невдачі";
 "error_missingsubject" = "Не зазначено теми повідомлення";
 "error_missingrecipients" = "Не зазначено адресу отримувача";
+
+/* Message sending */
+"cannot send message: (smtp) all recipients discarded" = "Cannot send message: all recipients are invalid.";
+"cannot send message (smtp) - recipients discarded:" = "Cannot send message. The following addresses are invalid:";
+"cannot send message: (smtp) error when connecting" = "Cannot send message: error when connecting to the SMTP server.";

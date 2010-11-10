@@ -184,7 +184,6 @@
 "Open in New Mail Window" = "Otevřít v novém mailovém okně";
 "Copy Folder Location" = "Kopírovat adresu složky";
 "Subscribe..." = "Odebírat...";
-"Properties..." = "Vlastnosti...";
 "Mark Folder Read..." = "Označit složku jako přečtenou...";
 "New Folder..." = "Nová složka...";
 "Compact This Folder" = "Provést údržbu složky";
@@ -275,7 +274,16 @@
 "Copying a message into its own folder is impossible!"
 = "Je nemožné zkopírovat zprávu do své vlastní složky!";
 
+/* Message operations */
+"The messages could not be moved to the trash folder. Would you like to delete them immediately?"
+= "The messages could not be moved to the trash folder. Would you like to delete them immediately?";
+
 /* Message editing */
 "error_validationfailed" = "Potvrzení selhalo";
 "error_missingsubject" = "Chybí předmět";
 "error_missingrecipients" = "Příjemci nebyli specifikováni";
+
+/* Message sending */
+"cannot send message: (smtp) all recipients discarded" = "Cannot send message: all recipients are invalid.";
+"cannot send message (smtp) - recipients discarded:" = "Cannot send message. The following addresses are invalid:";
+"cannot send message: (smtp) error when connecting" = "Cannot send message: error when connecting to the SMTP server.";

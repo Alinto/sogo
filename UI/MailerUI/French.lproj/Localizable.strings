@@ -282,3 +282,8 @@
 "error_validationfailed" = "Message invalide";
 "error_missingsubject" = "- le sujet est manquant";
 "error_missingrecipients" = "- aucun destinataire spécifié";
+
+/* Message sending */
+"cannot send message: (smtp) all recipients discarded" = "Le message n'a pas pu être envoyé car aucune adresse n'est valide.";
+"cannot send message (smtp) - recipients discarded:" = "Le message n'a pas pu être envoyé car les adresses suivantes sont invalides :";
+"cannot send message: (smtp) error when connecting" = "Le message n'a pas pu être envoyé: une erreur est survenue en tentant de rejoindre le serveur SMTP.";
