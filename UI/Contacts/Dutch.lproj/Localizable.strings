@@ -38,7 +38,7 @@
 "invalidemailwarn" = "E-mailadres is ongeldig. Wilt u toch doorgaan?";
 "invaliddatewarn" = "The specified date is invalid.";
 "new" = "Nieuw";
-"Preferred Phone"   = "Voorkeurstelefoon";
+"Preferred Phone" = "Voorkeurstelefoon";
 
 "Move To" = "Move To";
 "Copy To" = "Copy To";

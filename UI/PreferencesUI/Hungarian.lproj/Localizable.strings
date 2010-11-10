@@ -8,6 +8,8 @@
 "Contacts Options" = "Contacts Options";
 "Mail Options" = "Levelezés";
 "IMAP Accounts" = "IMAP Accounts";
+"Vacation" = "Vacation";
+"Forward" = "Forward";
 "Password" = "Jelszó";
 "Categories" = "Categories";
 "Name" = "Name";
@@ -136,7 +138,7 @@
 "Port:" = "Port:";
 "User Name:" = "User Name:";
 "Password:" = "Jelszó:";
- 
+
 "Full Name:" = "Full Name:";
 "Email:" = "Email:";
 "Signature:" = "Aláírás:";
@@ -177,8 +179,21 @@
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
 "Spanish" = "Español";
+"Swedish" = "Svenska";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
+
+/* Return receipts */
+"When I receive a request for a return receipt:" = "When I receive a request for a return receipt:";
+"Never send a return receipt" = "Never send a return receipt";
+"Allow return receipts for some messages" = "Allow return receipts for some messages";
+"If I'm not in the To or Cc of the message:" = "If I'm not in the To or Cc of the message:";
+"If the sender is outside my domain:" = "If the sender is outside my domain:";
+"In all other cases:" = "In all other cases:";
+
+"Never send" = "Never send";
+"Always send" = "Always send";
+"Ask me" = "Ask me";
 
 /* Return receipts */
 "When I receive a request for a return receipt:" = "When I receive a request for a return receipt:";

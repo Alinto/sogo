@@ -38,7 +38,7 @@
 "invalidemailwarn" = "Specifikovaný e-mail je neplatný";
 "invaliddatewarn" = "The specified date is invalid.";
 "new" = "nový";
-"Preferred Phone"   = "Upřednostňovaný telefon";
+"Preferred Phone" = "Upřednostňovaný telefon";
 
 "Move To" = "Přesunout do";
 "Copy To" = "Kopírovat do";

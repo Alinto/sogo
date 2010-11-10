@@ -38,7 +38,7 @@
 "invalidemailwarn" = "La dirección email indicada no es válida.";
 "invaliddatewarn" = "The specified date is invalid.";
 "new" = "nuevo";
-"Preferred Phone"   = "Teléfono preferido";
+"Preferred Phone" = "Teléfono preferido";
 
 "Move To" = "Move To";
 "Copy To" = "Copy To";
