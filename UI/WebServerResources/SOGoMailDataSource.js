@@ -84,7 +84,6 @@ SOGoMailDataSource = Class.create({
                         this.init(data.uids, data.headers);
                     else
                         this.init(data);
-                    this.loaded = true;
                     if (this.delayedGetData) {
                         this.delayedGetData();
                         this.delayedGetData = false;
@@ -99,7 +98,7 @@ SOGoMailDataSource = Class.create({
         getData: function(id, index, count, callbackFunction, delay) {
             if (this.loaded == false) {
                 // UIDs are not yet loaded -- delay the call until loading the data is completed.
-//                 log ("MailDataSource.getData() delaying data fetching while waiting for UIDs");
+//                log ("MailDataSource.getData() delaying data fetching while waiting for UIDs");
                 this.delayedGetData = this.getData.bind(this, id, index, count, callbackFunction, delay);
                 return;
             }

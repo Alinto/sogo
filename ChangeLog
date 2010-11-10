@@ -1,3 +1,8 @@
+2010-11-10  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/MailerUI.js (openMailbox): improved
+	behavior when reloading the mailbox.
+
 2010-11-08  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SOPE/GDLContentStore/GCSAlarmsFolder.m

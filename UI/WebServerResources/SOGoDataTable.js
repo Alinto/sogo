@@ -180,7 +180,7 @@ var SOGoDataTableInterface = {
 
     _render: function(renderID, start, max, data, refresh) {
         if (this.currentRenderID != renderID) {
-//             log ("DataTable._render() ignore render for " + renderID + " (current is " + this.currentRenderID + ")");
+//            log ("DataTable._render() ignore render for " + renderID + " (current is " + this.currentRenderID + ")");
             return;
         }
 //        log("DataTable._render() for " + data.length + " uids (from " + start + ", max " + max + ")");

@@ -730,28 +730,44 @@ function openMailbox(mailbox, reload) {
             key += "?" + p;
         }
 
-        var dataSource = Mailer.dataSources.get(key);
-        if (!dataSource) {
-            dataSource = new SOGoMailDataSource(Mailer.dataTable, url);
-            if (inboxData) {
-                dataSource.init(inboxData['uids'], inboxData['headers']);
-                inboxData = null; // invalidate this initial lookup
-            }
-            else
-                dataSource.load(urlParams);
-            Mailer.dataSources.set(key, dataSource);
-            getUnseenCountForFolder(mailbox);
-        }
-        else if (reload) {
+        if (reload) {
+            // Don't change data source, only query UIDs from server and refresh
+            // the view. Cases that end up here:
+            // - performed a search
+            // - clicked on Get Mail button
             urlParams.set("no_headers", "1");
-            dataSource.load(urlParams);
-        }
-        if (reload)
+            Mailer.dataTable.load(urlParams);
             Mailer.dataTable.refresh();
+        }
         else {
+            var dataSource = Mailer.dataSources.get(key);
+            if (!dataSource) {
+                // Data source is not cached
+                dataSource = new SOGoMailDataSource(Mailer.dataTable, url);
+                if (inboxData) {
+                    // Use UIDs and headers from the WOX template; this only
+                    // happens once and only with the inbox
+                    dataSource.init(inboxData['uids'], inboxData['headers']);
+                    inboxData = null; // invalidate this initial lookup
+                }
+                else
+                    // Fetch UIDs and headers from server
+                    dataSource.load(urlParams);
+                // Cache data source
+                Mailer.dataSources.set(key, dataSource);
+                // Update unseen count
+                getUnseenCountForFolder(mailbox);
+            }
+            else {
+                // Data source is cached, query only UIDs from server
+                urlParams.set("no_headers", "1");
+                dataSource.load(urlParams);
+            }
+            // Associate data source with data table and render the view
             Mailer.dataTable.setSource(dataSource);
             Mailer.dataTable.render();
         }
+
         configureDraggables();
         Mailer.currentMailbox = mailbox;
 
