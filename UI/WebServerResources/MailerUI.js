@@ -1005,7 +1005,7 @@ function deleteCachedMailbox(mailboxPath) {
     var keys = Mailer.dataSources.keys();
     for (var i = 0; i < keys.length; i++) {
 	if (keys[i] == mailboxPath || keys[i].startsWith(mailboxPath + "?"))
-	    Mailer.dataSources.unset(keys[i]);
+            Mailer.dataSources.unset(keys[i]);
     }
 }
 
@@ -2209,15 +2209,22 @@ function onMenuEmptyTrash(event) {
     var folderID = document.menuTarget.getAttribute("dataname");
     var urlstr = URLForFolderID(folderID) + "/emptyTrash";
     var errorLabel = _("The trash could not be emptied.");
-    deleteCachedMailboxByType("trash");
-    triggerAjaxRequest(urlstr, folderOperationCallback, errorLabel);
+    triggerAjaxRequest(urlstr, onMenuEmptyTrashCallback, errorLabel);
 
     if (folderID == Mailer.currentMailbox) {
-        $('messageContent').update();
+        $('messageContent').innerHTML = '';
     }
     var msgID = Mailer.currentMessages[folderID];
     if (msgID)
         deleteCachedMessage(folderID + "/" + msgID);
+}
+
+function onMenuEmptyTrashCallback(http) {
+    if (http.readyState == 4
+        && isHttpStatus204(http.status))
+        deleteCachedMailboxByType('trash');
+    else
+        showAlertDialog(http.callbackData);
 }
 
 function _onMenuChangeToXXXFolder(event, folder) {

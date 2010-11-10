@@ -2,6 +2,9 @@
 
 	* UI/WebServerResources/MailerUI.js (openMailbox): improved
 	behavior when reloading the mailbox.
+	(onMenuEmptyTrashCallback): new callback exclusive to the "empty
+	trash" menu option; it deletes the cached data source and refresh
+	the current folder instead of jumping to the inbox.
 
 2010-11-08  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
