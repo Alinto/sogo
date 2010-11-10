@@ -139,8 +139,9 @@
   addr = [NGInternetSocketAddress addressWithPort: port
 				  onHost: host];
 
-  if ([client connectToAddress: addr])
+  NS_DURING
     {
+      [client connectToAddress: addr];
       if ([client mailFrom: sender])
 	{
 	  toErrors = [NSMutableArray array];
@@ -167,13 +168,17 @@
 	  else
 	    result = [self _sendMailData: mailData withClient: client];
 	}
-      else
-	result = [NSException exceptionWithHTTPStatus: 500
-			      reason: @"cannot send message:"
-			      @" (smtp) error when connecting"];
       [client quit];
       [client disconnect];
     }
+  NS_HANDLER
+    {
+      NSLog(@"Could not connect to the SMTP server %@ on port %d", host, port);
+      result = [NSException exceptionWithHTTPStatus: 500
+					     reason: @"cannot send message:"
+			    @" (smtp) error when connecting"];
+    }
+  NS_ENDHANDLER;
 
   return result;
 }
