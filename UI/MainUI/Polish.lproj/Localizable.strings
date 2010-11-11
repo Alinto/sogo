@@ -34,14 +34,10 @@
 
 
 "About" = "O programie";
-"AboutBox" = "SOGo jest serwerem pracy grupowej zbudowanym w oparciu o systemy OpenGroupware.org (OGo) oraz SOPE. Głównym celem SOGo jest skalowalność.<br/><br/>
-SOGo oferuje bogaty, oparty na technologii AJAX interfejs webowy oraz wspiera wiele aplikacji klienckich dzięki korzystaniu ze standardowych protokołów takich jak CalDAV, CardDAV i GroupDAV.<br/><br/>
-Copyright © 2006-2010 Inverse inc.<br/>
-Copyright © 2002-2005 SKYRIX Software AG<br/>
-Tłumaczenie 2010 <a href=\"http://www.ib.pl/\">IB</a><br/><br/>
-To oprogramowanie rozpowszechniane jest w oparciu o licencję <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2.<br/>
-Elementy tego oprogramowania rozpowszechniane są w oparciu o licencję GNU LGPL version 2.<br/><br/>
-To oprogramowanie jest wolne: możesz je modyfikować i dystrybuować. Nie ma ŻADNYCH GWARANCJI, w zakresie dozwolonym przez prawo.";
+"AboutBox" = "Developed by Inverse, SOGo is a fully-featured groupware server with a focus on scalability and simplicity.<br/><br/>
+SOGo provides a rich AJAX-based Web interface and supports multiple native clients through the use of standard protocols such as CalDAV and CardDAV.<br/><br/>
+SOGo is distributed under the <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2 or later and parts are distributed under the GNU LGPL version 2. This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.<br/><br/>
+See <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for various support options.";
 
 "Your account was locked due to too many failed attempts." = "Twoje konto zostało zablokowane wkutek zbyt wielu nieudanych prób logowania.";
 "Your account was locked due to an expired password." = "Twoje konto zostało zblokowane z powodu wygaśnięcia ważności hasła.";
