@@ -338,6 +338,7 @@ var SOGoDataTableInterface = {
                 this.body.removeChild(rows[i]);
         }
         
+        this.body.deselectAll();
         this.renderedIndex = -1;
         this.renderedCount = 0;
         this.rowTop.firstChild.setStyle({ 'height': '0px', 'line-height': '0px' });

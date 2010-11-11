@@ -1,3 +1,17 @@
+2010-11-11  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/MailerUI.js (deleteSelectedMessages):
+	don't try to delete message(s) when the selected mailbox is not a
+	folder.
+	(deleteSelectedMessagesCallback): when automatically selecting the
+	next message after deletion, invalidate this message header if it
+	was unread.
+	(refreshCurrentFolder): don't refresh the selected mailbox if it's
+	not a folder.
+
+	* UI/WebServerResources/SOGoDataTable.js (_emptyTable): now removes
+	references to previously selected rows.
+
 2010-11-10  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/MailerUI/UIxMailEditor.m (-sendAction): the error message (if
