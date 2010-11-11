@@ -202,4 +202,4 @@
 "No card was imported." = "No card was imported.";
 "A total of %{0} cards were imported in the addressbook." = "A total of %{0} cards were imported in the addressbook.";
 
-"Reload" = "Reload";
+"Reload" = "Atualizar";
