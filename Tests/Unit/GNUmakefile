@@ -17,7 +17,7 @@ $(TEST_TOOL)_OBJC_FILES += \
 	TestiCalTimeZonePeriod.m \
 	TestiCalRecurrenceCalculator.m \
 	\
-	TestBSJSONAdditions.m \
+	TestSBJsonParser.m \
 	\
 	TestNGMimeAddressHeaderFieldGenerator.m
 
@@ -27,7 +27,7 @@ ADDITIONAL_INCLUDE_DIRS += \
 	-D_GNU_SOURCE -I../SOPE/ -I../SoObjects/ -I../UI/
 
 ADDITIONAL_LIB_DIRS += \
-	-L../SoObjects/SOGo -lSOGo -lNGMime
+	-L../SoObjects/SOGo -lSOGo -lNGMime -lNGCards -lGDLContentStore
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/tool.make
