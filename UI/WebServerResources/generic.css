@@ -9,7 +9,7 @@ BODY
   left: 0px;
   right: 0px;
   bottom: 0px;
-  color: #535D6D;
+  color: #262B33;
   font-family: Lucida Grande, Bitstream VeraSans, Tahoma;
   font-size: 8pt;
   background-color: #E6E7E6;
@@ -52,7 +52,7 @@ A
   -moz-outline: 0px; }
 
 LABEL
-{ color: #535D6D;
+{ color: #262B33;
   white-space: nowrap;
   margin-left: .5em; }
 
@@ -79,7 +79,7 @@ a:hover
 
 .defaultfont
 { text-decoration: none;
-  color: #535D6D; }
+  color: #262B33; }
 
 .window_label
 { color: #06348b;
@@ -87,7 +87,7 @@ a:hover
 
 .homepagefont
 { text-decoration: none;
-  color: #535D6D; }
+  color: #262B33; }
 
 /* header */
 
@@ -103,7 +103,7 @@ div#header img.headerlogo
   height: 30px; }
 
 div#header div#headerhistory
-{ color: #535D6D;
+{ color: #262B33;
   margin: 0px;
   padding-top: 18px;
   height: 12px; }
@@ -167,7 +167,7 @@ SELECT
   margin: 2px;
   padding-right: 1px;
   background-color: #CCDDEC;
-  color: #535D6D; }
+  color: #262B33; }
 
 DIV.contactSelector DIV.contactList
 { font-size: smaller;
@@ -188,7 +188,7 @@ DIV.contactSelector DIV.contactList
   z-index: 1000;
   top: -1000px;
   background-color: #E6E7E6;
-  color: #535D6D;
+  color: #262B33;
   margin: 0px;
   padding: 0px;
   border-top: 1px solid #FFFFFF;
@@ -443,7 +443,7 @@ DIV.javascriptMessagePseudoTopWindow
   border-bottom: 2px solid #888;
   padding: 1em;
   margin: 0px auto;
-  color: #535D6D;
+  color: #262B33;
   background-color: #E6E7E6;
   -moz-border-bottom-colors: #000 #9c9a94 transparent;
   -moz-opacity: 1.0;
@@ -651,7 +651,7 @@ TEXTAREA
   border-bottom: 1px solid #EFF0EF;
   border-right: 1px solid #EFF0EF;
   background-color: #CCDDEC;
-  color: #535D6D; }
+  color: #262B33; }
 
 INPUT[disabled], INPUT[readonly],
 SELECT[disabled], SELECT[readonly],
@@ -784,7 +784,7 @@ SPAN.caption
   text-align: center;
   cursor: default;
   background-color: #E6E7E6;
-  color: #535D6D;
+  color: #262B33;
   width: auto;
   padding: .25em;
   margin-left: 7px;
@@ -856,7 +856,7 @@ DIV.tabsContainer > UL LI.first
 
 DIV.tabsContainer > DIV.tabs
 { position: absolute;
-  color: #535D6D;
+  color: #262B33;
   background-color: #E6E7E6;
   border: 1px solid #9B9B9B;
   top: 23px;

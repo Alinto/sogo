@@ -11,6 +11,7 @@
 - improved performance of live-loading of messages in the webmail interface
 - fixed a bug that would not identify which calendars must be excluded from the
   freebusy information
+- increased the contrast ratio of input/select/textarea fields
 
 1.3-20101019 (1.3.3)
 --------------------
