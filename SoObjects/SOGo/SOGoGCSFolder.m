@@ -256,11 +256,18 @@ static NSArray *childRecordFields = nil;
 
 - (id) folderPropertyValueInCategory: (NSString *) theKey
 {
+  return [self folderPropertyValueInCategory: theKey
+				     forUser: [context activeUser]];
+}
+
+- (id) folderPropertyValueInCategory: (NSString *) theKey
+			     forUser: (SOGoUser *) theUser
+{
   SOGoUserSettings *settings;
   NSDictionary *folderSettings;
   id value;
 
-  settings = [[context activeUser] userSettings];
+  settings = [theUser userSettings];
   folderSettings = [settings objectForKey: [container nameInContainer]];
   value = [[folderSettings objectForKey: theKey]
             objectForKey: [self folderReference]];

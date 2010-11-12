@@ -1,3 +1,13 @@
+2010-11-12  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/SOGo/SOGoGCSFolder.m
+	(-folderPropertyValueInCategory:forUser:): new method that allows
+	to specify the user from which to fetch the settings.
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-includeInFreeBusy): the verification is now performed on the
+	calendar owner's settings instead of the activer user's settings.
+
 2010-11-11  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/MailerUI.js (deleteSelectedMessages):

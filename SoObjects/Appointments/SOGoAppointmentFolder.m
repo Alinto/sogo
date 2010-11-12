@@ -410,8 +410,10 @@ static NSNumber *sharedYes = nil;
 {
   NSNumber *excludeFromFreeBusy;
 
+  // Check if the owner (not the active user) has excluded the calendar from her/his free busy data.
   excludeFromFreeBusy
-    = [self folderPropertyValueInCategory: @"FreeBusyExclusions"];
+    = [self folderPropertyValueInCategory: @"FreeBusyExclusions"
+				  forUser: [SOGoUser userWithLogin: [self ownerInContext: context]]];
 
   return ![excludeFromFreeBusy boolValue];
 }

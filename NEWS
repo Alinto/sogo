@@ -9,6 +9,9 @@
   originating IP
 - added the ability to add categories to contacts as well as to configure the
   list of contact categories in the preferences
+- improved performance of live-loading of messages in the webmail interface
+- fixed a bug that would not identify which calendars must be excluded from the
+  freebusy information
 
 1.3-20101019 (1.3.3)
 --------------------
