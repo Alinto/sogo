@@ -2390,6 +2390,7 @@ function messageFlagCallback(http) {
         && isHttpStatus204(http.status)) {
         var data = http.callbackData;
         if (data["mailbox"] == Mailer.currentMailbox) {
+            Mailer.dataTable.invalidate(data["msg"]);
             var row = $("row_" + data["msg"]);
             var operation = data["label"];
             if (operation) {

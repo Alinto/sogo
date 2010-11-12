@@ -1,5 +1,8 @@
 2010-11-12  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/WebServerResources/MailerUI.js (messageFlagCallback): now
+	remove the message headers from the cache.
+
 	* SoObjects/SOGo/SOGoGCSFolder.m
 	(-folderPropertyValueInCategory:forUser:): new method that allows
 	to specify the user from which to fetch the settings.
