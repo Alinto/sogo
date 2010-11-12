@@ -2,7 +2,6 @@
 --------------------
 - updated CKEditor to version 3.4.1
 - added event details in invitation email
-- added caching of ACLs locally and in memcached
 - fixed a bug that would prevent web calendars from being considered as such
   under certain circumstances
 - when relevant, the "X-Forward" is added to mail headers with the client's
@@ -43,6 +42,7 @@
   the mail composition window
 - fixed a wrong redirect when clicking "reply" or "forward" while no mail were
   selected
+- added caching of ACLs locally and in memcached
 
 1.3-20100921 (1.3.2)
 --------------------
