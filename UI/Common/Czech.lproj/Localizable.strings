@@ -51,10 +51,10 @@
      	= "Tuto složku již odebíráte!";
 "The user rights cannot be edited for this object!"
         = "Uživatelská práva pro tento objekt nemohou být upravena!";
-"A folder by that name already exists." = "A folder by that name already exists.";
+"A folder by that name already exists." = "Složka tohoto jména již existuje.";
 "You cannot create a list in a shared address book." 
         = "You cannot create a list in a shared address book.";
-"Warning" = "Warning";
+"Warning" = "Upozornění";
 
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Nemáte oprávnění pro přístup k tomuto modulu nebo systému. Kontaktujte prosím svého systémového administrátora.";
@@ -68,9 +68,9 @@
 
 /* common buttons */
 "OK" = "OK";
-"Cancel" = "Cancel";
-"Yes" = "Yes";
-"No" = "No";
+"Cancel" = "Storno";
+"Yes" = "Ano";
+"No" = "Ne";
 
 /* alarms */
 "Reminder:" = "Upomínka:";

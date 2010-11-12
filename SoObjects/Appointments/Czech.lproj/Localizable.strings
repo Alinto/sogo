@@ -35,7 +35,7 @@ vtodo_class2 = "(Skrytý úkol)";
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Pozvání na událost: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(poslal/a %{SentBy}) ";
-"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}Vás pozval/a na %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}Vás pozval/a na %{Summary}.\n\nZačátek: %{StartDate} v %{StartTime}\nKonec: %{EndDate} v %{EndTime}\nPopis: %{Description}";
 
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Zrušení události: \"%{Summary}\"";

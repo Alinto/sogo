@@ -406,11 +406,11 @@
 "reminder_END" = "konci události";
 "Reminder Details" = "Podrobnosti připomenutí";
 
-"Choose a Reminder Action" = "Choose a Reminder Action";
-"Show an Alert" = "Show an Alert";
-"Send an E-mail" = "Send an E-mail";
-"Email Organizer" = "Email Organizer";
-"Email Attendees" = "Email Attendees";
+"Choose a Reminder Action" = "Zvolit akci";
+"Show an Alert" = "Zobrazit výstrahu";
+"Send an E-mail" = "Poslat e-mai";
+"Email Organizer" = "E-mail organizátorovi";
+"Email Attendees" = "E-mail účastníkům";
 
 "zoom_400" = "400%";
 "zoom_200" = "200%";
@@ -537,6 +537,7 @@ vtodo_class2 = "(Důvěrný úkol)";
 "Show tasks" = "Zobrazit úkoly";
 
 "Links to this Calendar" = "Odkazy na tento kalendář";
+"Authenticated User Access" = "Přístup pro ověřené uživatele";
 "CalDAV url" = "CalDAV url";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";

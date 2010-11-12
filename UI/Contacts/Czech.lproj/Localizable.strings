@@ -2,7 +2,7 @@
 
 "Contact" = "Kontakt";
 "Address" = "Adresa";
-"Photos" = "Photos";
+"Photos" = "Fotografie";
 "Other" = "Ostatní";
 
 "Address Books" = "Složky kontaktů";
@@ -99,9 +99,9 @@
 "Pager:" = "Pager:";
 
 /* categories */
-"contacts_category_labels" = "Colleague, Competitor, Customer, Friend, Family, Business Partner, Provider, Press, VIP";
-"Categories" = "Categories";
-"New category" = "New category";
+"contacts_category_labels" = "Kolega, Konkurent, Zákazník, Přítel, Rodina, Obchodní partner, Dodavatel, Tisk, VIP";
+"Categories" = "Kategorie";
+"New category" = "Nová kategorie";
 
 /* adresses */
 "Title:" = "Pozice:";
@@ -134,6 +134,7 @@
 "Subscribe to an Addressbook..." = "Odebírat složku kontaktů...";
 "Remove the selected Addressbook" = "Smazat složku kontaktů";
 
+"Confirmation:" = "Potvrzení:";
 "Name of the Address Book" = "Název složky kontaktů";
 "Are you sure you want to delete the selected address book?"
 = "Opravdu chcete odstranit označenou složku kontaktů?";

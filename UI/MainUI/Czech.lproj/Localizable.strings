@@ -65,5 +65,5 @@ See <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for v
 "Unhandled HTTP error code: %{0}" = "Unhandled HTTP error code: %{0}";
 "New password:" = "Nové heslo:";
 "Confirmation:" = "Potvrzení:";
-"Cancel" = "Odvolat";
+"Cancel" = "Storno";
 "Please wait..." = "Prosím čekejte...";

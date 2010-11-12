@@ -5,9 +5,9 @@
 /* tabs */
 "General" = "Obecný";
 "Calendar Options" = "Možnosti kalendáře";
-"Contacts Options" = "Contacts Options";
+"Contacts Options" = "Možnosti kontaktů";
 "Mail Options" = "Možnosti pošty";
-"IMAP Accounts" = "IMAP Accounts";
+"IMAP Accounts" = "IMAP účty";
 "Vacation" = "Nepřítomnost";
 "Forward" = "Přeposílání";
 "Password" = "Heslo";
@@ -18,7 +18,7 @@
 "Delete" = "Smazat";
 
 /* contacts categories */
-"contacts_category_labels" = "Colleague, Competitor, Customer, Friend, Family, Business Partner, Provider, Press, VIP";
+"contacts_category_labels" = "Kolega, Konkurent, Zákazník, Přítel, Rodina, Obchodní partner, Dodavatel, Tisk, VIP";
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Zapnout odpovědi v nepřítomnosti";
@@ -132,20 +132,22 @@
 "composemessagestype_text" = "Prostý text";
 
 /* IMAP Accounts */
-"New Mail Account" = "New Mail Account";
+"New Mail Account" = "Nový poštovní účet";
 
-"Server Name:" = "Server Name:";
+"Server Name:" = "Adresa serveru:";
 "Port:" = "Port:";
-"User Name:" = "User Name:";
+"Encryption:" = "Zabezpečení spojení:";
+"None" = "Žádné";
+"User Name:" = "Uživatelské jméno:";
 "Password:" = "Heslo:";
 
-"Full Name:" = "Full Name:";
-"Email:" = "Email:";
+"Full Name:" = "Celé jméno:";
+"Email:" = "E-mailová adresa:";
 "Signature:" = "Podpis:";
-"(Click to create)" = "(Click to create)";
+"(Click to create)" = "(Klikni pro vytvoření)";
 
 "Signature" = "Podpis";
-"Please enter your signature below:" = "Please enter your signature below:";
+"Please enter your signature below:" = "Text podpisu:";
 
 /* Additional Parameters */
 "Additional Parameters" = "Dodatečné parametry";
@@ -176,36 +178,24 @@
 "German" = "Deutsch";
 "Hungarian" = "Magyar";
 "Italian" = "Italiano";
-"BrazilianPortuguese" = "Português brasileiro";
-"Russian" = "Русский";
-"Spanish" = "Español";
+"BrazilianPortuguese" = "Portugues brasileiro";
+"Russian" = "       ";
+"Spanish" = "Espanol";
 "Swedish" = "Svenska";
-"Ukrainian" = "Українська";
+"Ukrainian" = "          ";
 "Welsh" = "Cymraeg";
 
 /* Return receipts */
-"When I receive a request for a return receipt:" = "When I receive a request for a return receipt:";
-"Never send a return receipt" = "Never send a return receipt";
-"Allow return receipts for some messages" = "Allow return receipts for some messages";
-"If I'm not in the To or Cc of the message:" = "If I'm not in the To or Cc of the message:";
-"If the sender is outside my domain:" = "If the sender is outside my domain:";
-"In all other cases:" = "In all other cases:";
+"When I receive a request for a return receipt:" = "Pokud zpráva obsahuje žádost potvrzení o přečtení:";
+"Never send a return receipt" = "Nikdy neodeslat potvrzení o přečtení";
+"Allow return receipts for some messages" = "Vracet potvrzení o přečtení pro některé zprávy";
+"If I'm not in the To or Cc of the message:" = "Pokud nejsem uveden v Komu nebo Kopie:";
+"If the sender is outside my domain:" = "Pokud je odesílatel z jiné domény:";
+"In all other cases:" = "Ve všech ostatních případech:";
 
-"Never send" = "Never send";
-"Always send" = "Always send";
-"Ask me" = "Ask me";
-
-/* Return receipts */
-"When I receive a request for a return receipt:" = "When I receive a request for a return receipt:";
-"Never send a return receipt" = "Never send a return receipt";
-"Allow return receipts for some messages" = "Allow return receipts for some messages";
-"If I'm not in the To or Cc of the message:" = "If I'm not in the To or Cc of the message:";
-"If the sender is outside my domain:" = "If the sender is outside my domain:";
-"In all other cases:" = "In all other cases:";
-
-"Never send" = "Never send";
-"Always send" = "Always send";
-"Ask me" = "Ask me";
+"Never send" = "Nikdy neodeslat";
+"Always send" = "Vždy odeslat";
+"Ask me" = "Zeptat se";
 
 /* Filters - UIxPreferences */
 "Filters" = "Filters";
