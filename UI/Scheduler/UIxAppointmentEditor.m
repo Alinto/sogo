@@ -375,7 +375,9 @@
 
   if ([co isNew])
     {
-      if (componentCalendar && componentCalendar != previousCalendar)
+      if (componentCalendar
+          && ![[componentCalendar ocsPath]
+                isEqualToString: [previousCalendar ocsPath]])
 	{
 	  // New event in a different calendar -- make sure the user can
 	  // write to the selected calendar since the rights were verified
@@ -397,7 +399,9 @@
       // The event was modified -- save it.
       [co saveComponent: event];
 
-      if (componentCalendar && componentCalendar != previousCalendar)
+      if (componentCalendar
+          && ![[componentCalendar ocsPath]
+                isEqualToString: [previousCalendar ocsPath]])
 	{
 	  // The event was moved to a different calendar.
 	  if (![sm validatePermission: SoPerm_DeleteObjects
