@@ -443,8 +443,8 @@
         setUserAttributes: [currentUser jsonRepresentation]
                  forLogin: _login];
     }
-    else
-      checkOK = NO;
+  else
+    checkOK = NO;
 
   return checkOK;
 }
