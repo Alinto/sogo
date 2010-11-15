@@ -4,6 +4,14 @@
 	refreshUnseenCounts so the unseen count is updated when the user
 	clicks on the "Get Mail" button.
 
+2010-11-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxAppointmentEditor.m (-saveAction): check the
+	equality of componentCalendar and previousCalendar by comparing
+	their ocsPath, since the objects themselves might be different
+	instances when the current user has logged in with a different
+	identifier than his/her uid.
+
 2010-11-12  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/MailerUI.js (messageFlagCallback): now
