@@ -1,3 +1,9 @@
+2010-11-15  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/MailerUI.js (refreshMailbox): now calls
+	refreshUnseenCounts so the unseen count is updated when the user
+	clicks on the "Get Mail" button.
+
 2010-11-12  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/MailerUI.js (messageFlagCallback): now

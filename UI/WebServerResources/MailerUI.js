@@ -662,8 +662,10 @@ function onMailboxMenuCopy(event) {
 
 function refreshMailbox() {
     var topWindow = getTopWindow();
-    if (topWindow)
+    if (topWindow) {
         topWindow.refreshCurrentFolder();
+        topWindow.refreshUnseenCounts();
+    }
     
     return false;
 }
@@ -1868,7 +1870,6 @@ function initMessageCheckTimer() {
 
 function onMessageCheckCallback(event) {
     refreshMailbox();
-    refreshUnseenCounts();
 }
 
 function initMailboxTree() {
