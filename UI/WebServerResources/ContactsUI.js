@@ -1306,7 +1306,7 @@ function onCategoriesMenuPrepareVisibility() {
     if (contactsList) {
         var rows = contactsList.getSelectedRows();
         if (rows.length > 0) {
-            var catList = rows[0].getAttribute("categories"); log ("cats = " + catList);
+            var catList = rows[0].getAttribute("categories");
             var catsArray;
             if (catList && catList.length > 0) {
                 catsArray = catList.split(",");
