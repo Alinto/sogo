@@ -262,19 +262,23 @@ function onCASRecoverIFrameLoaded(event) {
     if (this.request) {
         var request = this.request;
         if (request.attempt == 0) {
-            triggerAjaxRequest(request.url,
-                               request.callback,
-                               request.callbackData,
-                               request.content,
-                               request.paramHeaders,
-                               1);
+            window.setTimeout(function() {
+                                  triggerAjaxRequest(request.url,
+                                                     request.callback,
+                                                     request.callbackData,
+                                                     request.content,
+                                                     request.paramHeaders,
+                                                     1); },
+                              100);
         }
         else {
             window.location.href = UserFolderURL;
         }
         this.request = null;
     }
-    this.parentNode.removeChild(this);
+    var this_ = this;
+    window.setTimeout(function() { this_.parentNode.removeChild(this_); },
+                      500);
 }
 
 function onAjaxRequestStateChange(http) {

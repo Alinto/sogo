@@ -1,3 +1,12 @@
+2010-11-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/generic.js: (onCASRecoverIFrameLoaded):
+	the ajax recovery request is now performed from a timeout attached
+	to the window, to make sure it does not reference the iframe
+	itself. The iframe is removed from a similar timeout, to avoid
+	reference errors and a continuous spinning wheel after a recovery
+	request.
+
 2010-11-15  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/MailerUI.js (refreshMailbox): now calls
