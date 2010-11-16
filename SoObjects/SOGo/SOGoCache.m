@@ -267,6 +267,7 @@ static memcached_st *handle = NULL;
   NSData *keyData, *valueData;
   memcached_return error;
 
+  // [self logWithFormat: @"setValue: '%@' forKey: '%@'", value, key];
   if (handle)
     {
       keyData = [key dataUsingEncoding: NSUTF8StringEncoding];
@@ -327,6 +328,8 @@ static memcached_st *handle = NULL;
       [self errorWithFormat: @"attempting to retrieved cached value for key"
             @" '%@' while no handle exists", key];
     }
+
+  // [self logWithFormat: @"valueForKey: '%@' -> '%@'", key, valueString];
 
   return valueString;
 }
