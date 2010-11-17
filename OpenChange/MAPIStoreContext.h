@@ -123,9 +123,9 @@ extern uint64_t *MAPILongLongValue (void *, uint64_t);
                 inRow: (struct SRow *) aRow
               withMID: (uint64_t) fmid
                  type: (uint8_t) tableType;
-- (int) setPropertiesWithMID: (uint64_t) fmid
-                        type: (uint8_t) type
-                       inRow: (struct SRow *) aRow;
+- (int) setPropertiesWithFMID: (uint64_t) fmid
+                         type: (uint8_t) type
+                        inRow: (struct SRow *) aRow;
 - (int) deleteMessageWithMID: (uint64_t) mid
                    withFlags: (uint8_t) flags;
 
