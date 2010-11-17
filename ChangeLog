@@ -1,3 +1,9 @@
+2010-11-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Tests/Integration/test-davacl.py (DAVPublicAccessTest.setUp):
+	renamed "init" method to "setUp" to force reinitialization of the
+	client objects before each test.
+
 2010-11-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/generic.js: (onCASRecoverIFrameLoaded):

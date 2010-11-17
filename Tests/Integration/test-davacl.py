@@ -913,8 +913,7 @@ END:VCARD""" }
         self._deleteCard(self.subscriber_client, "old.vcf", exp_code)
 
 class DAVPublicAccessTest(unittest.TestCase):
-    def __init__(self, arg):
-        unittest.TestCase.__init__(self, arg)
+    def setUp(self):
         self.client = webdavlib.WebDAVClient(hostname, port)
         self.anon_client = webdavlib.WebDAVClient(hostname, port)
         self.dav_utility = utilities.TestUtility(self, self.client)
@@ -930,7 +929,7 @@ class DAVPublicAccessTest(unittest.TestCase):
         options = webdavlib.HTTPOPTIONS(resource)
         self.anon_client.execute(options)
         self.assertEquals(options.response["status"], 404,
-                          "/SOGo/so/public is unexpectedly available")
+                          "/SOGo/public is unexpectedly available")
 
         resource = '/SOGo/dav/%s' % username
         options = webdavlib.HTTPOPTIONS(resource)
