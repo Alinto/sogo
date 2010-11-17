@@ -236,6 +236,9 @@
 @implementation SOGoMailBrazilianPortugueseForward
 @end
 
+@implementation SOGoMailCatalanForward
+@end
+
 @implementation SOGoMailCzechForward
 @end
 

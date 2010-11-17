@@ -1,6 +1,6 @@
 /* SOGoMailReply.h - this file is part of SOGo
  *
- * Copyright (C) 2007-2009 Inverse inc.
+ * Copyright (C) 2007-2010 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -45,6 +45,9 @@
 @end
 
 @interface SOGoMailBrazilianPortugueseReply : SOGoMailReply
+@end
+
+@interface SOGoMailCatalanReply : SOGoMailReply
 @end
 
 @interface SOGoMailCzechReply : SOGoMailReply

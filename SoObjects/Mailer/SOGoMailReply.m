@@ -104,6 +104,9 @@
 @implementation SOGoMailBrazilianPortugueseReply
 @end
 
+@implementation SOGoMailCatalanReply
+@end
+
 @implementation SOGoMailCzechReply
 @end
 
