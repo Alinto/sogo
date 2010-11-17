@@ -42,6 +42,9 @@
 @interface SOGoMailBrazilianPortugueseForward : SOGoMailForward
 @end
 
+@interface SOGoMailCatalanForward : SOGoMailForward
+@end
+
 @interface SOGoMailCzechForward : SOGoMailForward
 @end
 
