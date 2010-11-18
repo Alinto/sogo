@@ -1,3 +1,8 @@
+2010-11-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* NGVCard.m (-setVName, vName): removed useless and non-standard
+	methods.
+
 2010-11-08  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* NSString+NGCards.m (-vCardSubvaluesWithSeparator:): now returns

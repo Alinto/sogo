@@ -146,16 +146,6 @@
   return [[self uniqueChildWithTag: @"class"] value: 0];
 }
 
-- (void) setVName: (NSString *) _vname
-{
-  [[self uniqueChildWithTag: @"vname"] setValue: 0 to: _vname];
-}
-
-- (NSString *) vName
-{
-  return [[self uniqueChildWithTag: @"vname"] value: 0];
-}
-
 - (void) setProdID: (NSString *) _value
 {
   [[self uniqueChildWithTag: @"prodid"] setValue: 0 to: _value];

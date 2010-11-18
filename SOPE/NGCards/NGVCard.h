@@ -84,8 +84,6 @@ typedef enum
 
 - (void) setVClass: (NSString *) _s;
 - (NSString *) vClass;
-- (void) setVName: (NSString *) _s;
-- (NSString *) vName;
 - (void) setProdID: (NSString *) _s;
 - (NSString *) prodID;
 - (void) setProfile: (NSString *) _s;
