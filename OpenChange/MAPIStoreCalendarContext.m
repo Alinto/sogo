@@ -38,21 +38,14 @@
 #undef DEBUG
 #include <mapistore/mapistore.h>
 
-static Class SOGoUserFolderK;
-
 @implementation MAPIStoreCalendarContext
-
-+ (void) initialize
-{
-  SOGoUserFolderK = [SOGoUserFolder class];
-}
 
 - (void) setupModuleFolder
 {
   id userFolder;
 
-  userFolder = [SOGoUserFolderK objectWithName: [authenticator username]
-                                   inContainer: MAPIApp];
+  userFolder = [SOGoUserFolder objectWithName: [authenticator username]
+                                  inContainer: MAPIApp];
   [woContext setClientObject: userFolder];
   [userFolder retain]; // LEAK
 
