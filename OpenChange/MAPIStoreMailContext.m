@@ -46,30 +46,14 @@
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
 
-static Class SOGoUserFolderK;
-
-// @implementation SOGoObject (ZombieD)
-
-// - (void) dealloc
-// {
-//   [super dealloc];
-// }
-
-// @end
-
 @implementation MAPIStoreMailContext
-
-+ (void) initialize
-{
-  SOGoUserFolderK = [SOGoUserFolder class];
-}
 
 - (void) setupModuleFolder
 {
   id userFolder, accountsFolder;
 
-  userFolder = [SOGoUserFolderK objectWithName: [authenticator username]
-                                   inContainer: MAPIApp];
+  userFolder = [SOGoUserFolder objectWithName: [authenticator username]
+                                  inContainer: MAPIApp];
   [woContext setClientObject: userFolder];
   [userFolder retain]; // LEAK
 
@@ -506,44 +490,6 @@ static Class SOGoUserFolderK;
 
       msg->properties = properties;
       
-      rc = MAPI_E_SUCCESS;
-    }
-  else
-    rc = MAPI_E_NOT_FOUND;
-
-  return rc;
-}
-
-- (int) getMessageProperties: (struct SPropTagArray *) sPropTagArray
-                       inRow: (struct SRow *) aRow
-                       atURL: (NSString *) childURL
-{
-  id child;
-  NSInteger count;
-  void *propValue;
-  uint32_t tag;
-  int rc;
-
-  child = [self lookupObject: childURL];
-  if (child)
-    {
-      aRow->lpProps = talloc_array (aRow, struct SPropValue,
-                                    sPropTagArray->cValues);
-      for (count = 0; count < sPropTagArray->cValues; count++)
-        {
-          tag = sPropTagArray->aulPropTag[count];
-          if ([self getMessageTableChildproperty: &propValue
-                                           atURL: childURL
-                                         withTag: tag
-                                        inFolder: nil
-                                         withFID: 0]
-              == MAPI_E_SUCCESS)
-            {
-	      set_SPropValue_proptag (&(aRow->lpProps[aRow->cValues]),
-				      tag, propValue);
-	      aRow->cValues++;
-	    }
-        }
       rc = MAPI_E_SUCCESS;
     }
   else
