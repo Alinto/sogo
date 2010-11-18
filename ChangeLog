@@ -1,5 +1,8 @@
 2010-11-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIApplication.m (-init): most of the setup code has
+	been moved into MAPIStoreSOGo.m.
+
 	* OpenChange/GNUmakefile: the MAPIStoreSOGo library is now just a
 	wrapper that loads the new "SOGoBackend" bundle from
 	SoProductRegistry.

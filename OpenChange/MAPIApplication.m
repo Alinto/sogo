@@ -45,33 +45,8 @@ MAPIApplication *MAPIApp = nil;
 
 - (id) init
 {
-  SOGoProductLoader *loader;
-  NSUserDefaults *ud;
-  SOGoSystemDefaults *sd;
-
   if (!MAPIApp)
     {
-      /* Here we work around a bug in GNUstep which decodes XML user
-         defaults using the system encoding rather than honouring
-         the encoding specified in the file. */
-      putenv ("GNUSTEP_STRING_ENCODING=NSUTF8StringEncoding");
-
-      sd = [SOGoSystemDefaults sharedSystemDefaults];
-
-      // /* We force the plugin to base its configuration on the SOGo tree. */
-      ud = [NSUserDefaults standardUserDefaults];
-      [ud registerDefaults: [ud persistentDomainForName: @"sogod"]];
-
-      NSLog (@"(config check) imap server: %@", [sd imapServer]);
-
-      // TODO publish
-      loader = [SOGoProductLoader productLoader];
-      [loader loadProducts: [NSArray arrayWithObjects:
-                                       @"Contacts.SOGo",
-                                     @"Appointments.SOGo",
-                                     @"Mailer.SOGo",
-                                     nil]];
-
       // TODO publish
       [iCalEntityObject initializeSOGoExtensions];
 
@@ -80,7 +55,7 @@ MAPIApplication *MAPIApp = nil;
 
       /* This is a hack to revert what is done in [WOCoreApplication
          init] */
-      [[NSClassFromString(@"UnixSignalHandler") sharedHandler]
+      [[NSClassFromString (@"UnixSignalHandler") sharedHandler]
                   removeObserver: self];
     }
 
