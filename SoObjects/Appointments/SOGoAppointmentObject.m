@@ -1220,13 +1220,6 @@
   return [super prepareDelete];
 }
 
-/* message type */
-
-- (NSString *) outlookMessageClass
-{
-  return @"IPM.Appointment";
-}
-
 - (NSDictionary *) _partStatsFromCalendar: (iCalCalendar *) calendar
 {
   NSMutableDictionary *partStats;

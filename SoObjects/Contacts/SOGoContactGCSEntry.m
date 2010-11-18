@@ -136,11 +136,4 @@
   [self saveContentString: [vcard versitString]];
 }
 
-/* message type */
-
-- (NSString *) outlookMessageClass
-{
-  return @"IPM.Contact";
-}
-
 @end /* SOGoContactGCSEntry */

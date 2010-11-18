@@ -1205,13 +1205,6 @@ static BOOL debugSoParts       = NO;
   return 0; /* mails never change */
 }
 
-/* Outlook mail tagging */
-
-- (NSString *) outlookMessageClass
-{
-  return @"IPM.Message"; /* email, default class */
-}
-
 - (NSArray *) aclsForUser: (NSString *) uid
 {
   return [container aclsForUser: uid];

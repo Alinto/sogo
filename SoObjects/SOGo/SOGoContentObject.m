@@ -480,11 +480,4 @@
   return @"<default>";
 }
 
-/* message type */
-
-- (NSString *) outlookMessageClass
-{
-  return nil;
-}
-
 @end /* SOGoContentObject */

@@ -278,11 +278,4 @@
   return [newContact saveContentString: [newCard versitString]];
 }
 
-/* message type */
-
-- (NSString *) outlookMessageClass
-{
-  return @"IPM.Contact";
-}
-
 @end

@@ -75,10 +75,6 @@
 - (NSString *) davLastModified;
 - (NSString *) davContentLength;
 
-/* message type */
-
-- (NSString *) outlookMessageClass;
-
 @end
 
 @interface SOGoContentObject (OptionalMethods)

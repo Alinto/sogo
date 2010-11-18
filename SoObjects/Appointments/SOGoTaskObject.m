@@ -56,11 +56,4 @@
 			    inContainer: self];
 }
 
-/* message type */
-
-- (NSString *) outlookMessageClass
-{
-  return @"IPM.Task";
-}
-
 @end /* SOGoTaskObject */
