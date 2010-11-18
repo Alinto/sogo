@@ -1,5 +1,9 @@
 2010-11-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreSOGo.m (sogo_create_context): we now make
+	sure that the MAPIStoreContext class has been loaded. Otherwise we
+	return MAPISTORE_ERROR.
+
 	* OpenChange/MAPIApplication.m (-init): most of the setup code has
 	been moved into MAPIStoreSOGo.m.
 
