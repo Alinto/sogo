@@ -113,8 +113,8 @@ extern uint64_t *MAPILongLongValue (void *, uint64_t);
 - (int) openMessage: (struct mapistore_message *) msg
             withMID: (uint64_t) mid
               inFID: (uint64_t) fid;
-- (int) createMessageWithMID: (uint64_t) mid
-                       inFID: (uint64_t) fid;
+- (int) createMessagePropertiesWithMID: (uint64_t) mid
+                                 inFID: (uint64_t) fid;
 - (int) saveChangesInMessageWithMID: (uint64_t) mid
                            andFlags: (uint8_t) flags;
 - (int) submitMessageWithMID: (uint64_t) mid
