@@ -40,21 +40,14 @@
 #undef DEBUG
 #include <mapistore/mapistore.h>
 
-static Class SOGoUserFolderK;
-
 @implementation MAPIStoreContactsContext
-
-+ (void) initialize
-{
-  SOGoUserFolderK = [SOGoUserFolder class];
-}
 
 - (void) setupModuleFolder
 {
   id userFolder;
 
-  userFolder = [SOGoUserFolderK objectWithName: [authenticator username]
-                                   inContainer: MAPIApp];
+  userFolder = [SOGoUserFolder objectWithName: [authenticator username]
+                                  inContainer: MAPIApp];
   [woContext setClientObject: userFolder];
   [userFolder retain]; // LEAK
 
@@ -182,7 +175,7 @@ static Class SOGoUserFolderK;
       *data = [stringValue asUnicodeInMemCtx: memCtx];
       break;
 
-    case 0x3001001f: // Full Name
+    case PR_DISPLAY_NAME_UNICODE: // Full Name
     case 0x81c2001f: // contact block title name
       rc = [super getMessageTableChildproperty: data
                                          atURL: childURL
@@ -274,6 +267,19 @@ static Class SOGoUserFolderK;
     }
         
   return rc;
+}
+
+- (id) createMessageInFolder: (id) parentFolder
+{
+  SOGoContactGCSEntry *newEntry;
+  NSString *name;
+
+  name = [NSString stringWithFormat: @"%@.vcf",
+                   [SOGoObject globallyUniqueObjectId]];
+  newEntry = [SOGoContactGCSEntry objectWithName: name
+                                     inContainer: parentFolder];
+
+  return newEntry;
 }
 
 // - (int) getFolderTableChildproperty: (void **) data

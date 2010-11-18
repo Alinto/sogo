@@ -1,5 +1,8 @@
 2010-11-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContactsContext.m (-createMessageInFolder:):
+	implemented method and returns an instance of SOGoContactGCSEntry.
+
 	* OpenChange/SOGoContactGCSEntry+MAPIStore.m: new category module.
 	(setMAPIProperties:) new method that resets the properties on the
 	current object and update the corresponding record in the database.
