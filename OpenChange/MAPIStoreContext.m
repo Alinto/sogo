@@ -115,6 +115,7 @@ static Class SOGoObjectK, SOGoMailAccountK, SOGoMailFolderK;
 @interface SOGoObject (MAPIStoreProtocol)
 
 - (NSString *) davContentLength;
+- (void) setMAPIProperties: (NSDictionary *) properties;
 
 @end
 
@@ -998,8 +999,8 @@ static MAPIStoreMapping *mapping = nil;
   return MAPISTORE_ERROR;
 }
 
-- (int) createMessageWithMID: (uint64_t) mid
-                       inFID: (uint64_t) fid
+- (int) createMessagePropertiesWithMID: (uint64_t) mid
+                                 inFID: (uint64_t) fid
 {
   NSMutableDictionary *newMessage;
   NSNumber *midNbr;
@@ -1008,19 +1009,83 @@ static MAPIStoreMapping *mapping = nil;
   [newMessage setObject: [NSNumber numberWithUnsignedLongLong: fid]
                  forKey: @"fid"];
   midNbr = [NSNumber numberWithUnsignedLongLong: mid];
-  [newMessage setObject: midNbr forKey: @"fid"];
+  [newMessage setObject: midNbr forKey: @"mid"];
   [messages setObject: newMessage forKey: midNbr];
   [newMessage release];
 
   return MAPISTORE_SUCCESS;
 }
 
+- (id) createMessageInFolder: (id) parentFolder
+{
+  [self errorWithFormat: @"invoked unimplemented method"];
+
+  return nil;
+}
+
+- (id) _createMessageWithMID: (uint64_t) mid
+                       inFID: (uint64_t) fid
+{
+  NSString *folderURL, *messageURL;
+  SOGoFolder *parentFolder;
+  id message;
+
+  message = nil;
+
+  folderURL = [mapping urlFromID: fid];
+  if (folderURL)
+    {
+      parentFolder = [self lookupObject: folderURL];
+      if (parentFolder)
+        {
+          message = [self createMessageInFolder: parentFolder];
+          if (![folderURL hasSuffix: @"/"])
+            folderURL = [NSString stringWithFormat: @"%@/", folderURL];
+          messageURL = [NSString stringWithFormat: @"%@%@", folderURL,
+                                 [message nameInContainer]];
+          [mapping registerURL: messageURL withID: mid];
+        }
+    }
+  else
+    [self errorWithFormat: @"registered message without a valid fid"];
+
+  return message;
+}
+
 - (int) saveChangesInMessageWithMID: (uint64_t) mid
                            andFlags: (uint8_t) flags
 {
-  [self logWithFormat: @"METHOD '%s' (%d)", __FUNCTION__, __LINE__];
+  int rc;
+  id message;
+  NSMutableDictionary *messageProperties;
+  NSString *messageURL;
+  uint64_t fid;
 
-  return MAPISTORE_ERROR;
+  messageProperties = [messages objectForKey:
+                                  [NSNumber numberWithUnsignedLongLong: mid]];
+  if (messageProperties)
+    {
+      messageURL = [mapping urlFromID: mid];
+      if (messageURL)
+        message = [self lookupObject: messageURL];
+      else
+        {
+          fid = [[messageProperties objectForKey: @"fid"]
+                  unsignedLongLongValue];
+          message = [self _createMessageWithMID: mid inFID: fid];
+        }
+      if (message)
+        {
+          [message setMAPIProperties: messageProperties];
+          rc = MAPISTORE_SUCCESS;
+        }
+      else
+        rc = MAPISTORE_ERROR;
+    }
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
 }
 
 - (int) submitMessageWithMID: (uint64_t) mid
@@ -1067,9 +1132,38 @@ static MAPIStoreMapping *mapping = nil;
                        inRow: (struct SRow *) aRow
                        atURL: (NSString *) childURL
 {
-  [self logWithFormat: @"METHOD '%s' (%d)", __FUNCTION__, __LINE__];
+  id child;
+  NSInteger count;
+  void *propValue;
+  uint32_t tag;
+  int rc;
 
-  return MAPISTORE_ERROR;
+  child = [self lookupObject: childURL];
+  if (child)
+    {
+      aRow->lpProps = talloc_array (aRow, struct SPropValue,
+                                    sPropTagArray->cValues);
+      for (count = 0; count < sPropTagArray->cValues; count++)
+        {
+          tag = sPropTagArray->aulPropTag[count];
+          if ([self getMessageTableChildproperty: &propValue
+                                           atURL: childURL
+                                         withTag: tag
+                                        inFolder: nil
+                                         withFID: 0]
+              == MAPI_E_SUCCESS)
+            {
+	      set_SPropValue_proptag (&(aRow->lpProps[aRow->cValues]),
+				      tag, propValue);
+	      aRow->cValues++;
+	    }
+        }
+      rc = MAPI_E_SUCCESS;
+    }
+  else
+    rc = MAPI_E_NOT_FOUND;
+
+  return rc;
 }
 
 // struct indexing_context_list {
@@ -1150,7 +1244,14 @@ static MAPIStoreMapping *mapping = nil;
   for (counter = 0; counter < aRow->cValues; counter++)
     {
       cValue = &(aRow->lpProps[counter]);
+
+#if (GS_SIZEOF_LONG == 4)
       key = [NSNumber numberWithUnsignedLong: cValue->ulPropTag];
+#elif (GS_SIZEOF_INT == 4)
+      key = [NSNumber numberWithUnsignedInt: cValue->ulPropTag];
+#else
+#error No suitable type for 4 bytes integers
+#endif
       [message setObject: [NSObject objectFromSPropValue: cValue]
                   forKey: key];
     }

@@ -1,5 +1,14 @@
 2010-11-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContext.m
+	(-setPropertiesOfMessage:fromRow:): check the size of the integers
+	on the build platform to invoke the right constructor of NSNumber.
+	(-saveChangesInMessageWithMID:andFlags:): implemented method by
+	looking up the requested object and creating one via "[self
+	createMessageInFolder:]" if not exist. Afterwards, the MAPI props
+	previously passed via setProperties.... are commited into the
+	created/updated SOGo object.
+
 	* OpenChange/MAPIStoreMailContext.m
 	(-getMessageProperties:inRow:atURL:): moved method into
 	MAPIStoreContext.m since it's generic enough to apply to all the
