@@ -1,5 +1,9 @@
 2010-11-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/SOGoContactGCSEntry+MAPIStore.m: new category module.
+	(setMAPIProperties:) new method that resets the properties on the
+	current object and update the corresponding record in the database.
+
 	* OpenChange/MAPIStoreContext.m
 	(-setPropertiesOfMessage:fromRow:): check the size of the integers
 	on the build platform to invoke the right constructor of NSNumber.
