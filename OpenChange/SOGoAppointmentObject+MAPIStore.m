@@ -41,6 +41,7 @@
 
 @implementation SOGoAppointmentObject (MAPIStoreMessage)
 
+/* TODO: merge with tasks */
 - (void) setMAPIProperties: (NSDictionary *) properties
 {
   /* --dtstart=2007-06-01\ 22:00:00 --dtend=2007-06-01\ 22:35:00
