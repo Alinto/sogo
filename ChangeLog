@@ -1,5 +1,13 @@
 2010-11-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreCalendarContext.m (-createMessageInFolder:):
+	implemented method.
+
+	* OpenChange/SOGoAppointmentObject+MAPIStore.[hm]: new category
+	module for SOGoAppointmentObject.
+	(setMAPIProperties:): partially implemented, in order to be able
+	to create basic events.
+
 	* OpenChange/MAPIStoreTypes.m: new helper module designed to
 	handle type conversion between MAPI types and NS types.
 

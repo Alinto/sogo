@@ -29,7 +29,7 @@
 
 #import "MAPIApplication.h"
 #import "MAPIStoreAuthenticator.h"
-#import "NSDate+MAPIStore.h"
+#import "NSCalendarDate+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 #import "SOGoGCSFolder+MAPIStore.h"
 
@@ -150,6 +150,20 @@
   // Not found: 81d1001f //
 
   return rc;
+}
+
+- (id) createMessageInFolder: (id) parentFolder
+{
+  SOGoAppointmentObject *newEntry;
+  NSString *name;
+
+  name = [NSString stringWithFormat: @"%@.ics",
+                   [SOGoObject globallyUniqueObjectId]];
+  newEntry = [SOGoAppointmentObject objectWithName: name
+                                       inContainer: parentFolder];
+  [newEntry setIsNew: YES];
+
+  return newEntry;
 }
 
 // - (int) getFolderTableChildproperty: (void **) data
