@@ -51,6 +51,7 @@
   [self registerURL: @"sogo://openchange:openchange@contacts/personal" withID: 0x1a0001];
   [self registerURL: @"sogo://openchange:openchange@calendar/personal" withID: 0x190001];
   [self registerURL: @"sogo://openchange:openchange@tasks/personal" withID: 0x1d0001];
+  [self registerURL: @"sogo://openchange:openchange@freebusy/" withID: 0x70001];
 }
 
 - (id) init
