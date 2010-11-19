@@ -1,4 +1,4 @@
-/* NSDate+MAPIStore.m - this file is part of SOGo
+/* NSCalendarDate+MAPIStore.m - this file is part of SOGo
  *
  * Copyright (C) 2010 Inverse inc.
  *
@@ -24,15 +24,15 @@
 #import <Foundation/NSString.h>
 #import <Foundation/NSTimeZone.h>
 
-#import "NSDate+MAPIStore.h"
+#import "NSCalendarDate+MAPIStore.h"
 
 #undef DEBUG
 #include <mapistore/mapistore.h>
 #include <talloc.h>
 
-static NSDate *refDate = nil;
+static NSCalendarDate *refDate = nil;
 
-@implementation NSDate (MAPIStoreDataTypes)
+@implementation NSCalendarDate (MAPIStoreDataTypes)
 
 static void
 _setupRefDate()
@@ -46,9 +46,9 @@ _setupRefDate()
   [refDate retain];
 }
 
-+ (id) dateFromFileTime: (struct FILETIME *) timeValue
++ (id) dateFromFileTime: (const struct FILETIME *) timeValue
 {
-  NSDate *result;
+  NSCalendarDate *result;
   uint64_t interval;
 
   if (!refDate)
@@ -56,7 +56,7 @@ _setupRefDate()
 
   interval = ((uint64_t) timeValue->dwHighDateTime << 32
               | timeValue->dwLowDateTime);
-  result = [[NSDate alloc]
+  result = [[NSCalendarDate alloc]
              initWithTimeInterval: (NSTimeInterval) interval / 10000000
                         sinceDate: refDate];
   [result autorelease];

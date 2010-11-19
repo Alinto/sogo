@@ -1,4 +1,4 @@
-/* NSDate+MAPIStore.h - this file is part of SOGo
+/* NSCalendarDate+MAPIStore.h - this file is part of SOGo
  *
  * Copyright (C) 2010 Inverse inc.
  *
@@ -23,11 +23,11 @@
 #ifndef NSCALENDARDATE_MAPISTORE_H
 #define NSCALENDARDATE_MAPISTORE_H
 
-#import <Foundation/NSDate.h>
+#import <Foundation/NSCalendarDate.h>
 
-@interface NSDate (MAPIStoreDataTypes)
+@interface NSCalendarDate (MAPIStoreDataTypes)
 
-+ (id) dateFromFileTime: (struct FILETIME *) timeValue;
++ (id) dateFromFileTime: (const struct FILETIME *) timeValue;
 
 - (struct FILETIME *) asFileTimeInMemCtx: (void *) memCtx;
 
