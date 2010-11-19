@@ -1,5 +1,11 @@
 2010-11-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContext.m
+	(-setPropertiesWithFMID:type:inRow:): renamed to
+	-setPropertiesWithFMID:ofTableType:inRow:.
+	(-getProperties:inRow:withMID:type:): renamed to
+	-getProperties:ofTableType:inRow:withMID:.
+
 	* OpenChange/MAPIStoreContactsContext.m (-createMessageInFolder:):
 	mark new entry as new.
 

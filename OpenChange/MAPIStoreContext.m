@@ -38,11 +38,12 @@
 #import <Mailer/SOGoMailFolder.h>
 
 #import "NSArray+MAPIStore.h"
-#import "NSDate+MAPIStore.h"
+#import "NSCalendarDate+MAPIStore.h"
 
 #import "MAPIApplication.h"
 #import "MAPIStoreAuthenticator.h"
 #import "MAPIStoreMapping.h"
+#import "MAPIStoreTypes.h"
 
 #import "MAPIStoreContext.h"
 
@@ -52,55 +53,6 @@
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
 #include <libmapiproxy.h>
-// #include <dlinklist.h>
-
-// NSNullK = NSClassFromString (@"NSNull");
-
-// SOGoMailAccountsK = NSClassFromString (@"SOGoMailAccounts");
-// SOGoMailAccountK = NSClassFromString (@"SOGoMailAccount");
-// SOGoMailFolderK = NSClassFromString (@"SOGoMailFolder");
-// SOGoUserFolderK = NSClassFromString (@"SOGoUserFolder");
-
-uint8_t *
-MAPIBoolValue (void *memCtx, BOOL value)
-{
-  uint8_t *boolValue;
-
-  boolValue = talloc_zero (memCtx, uint8_t);
-  *boolValue = value;
-
-  return boolValue;
-}
-
-uint32_t *
-MAPILongValue (void *memCtx, uint32_t value)
-{
-  uint32_t *longValue;
-
-  longValue = talloc_zero (memCtx, uint32_t);
-  *longValue = value;
-
-  return longValue;
-}
-
-uint64_t *
-MAPILongLongValue (void *memCtx, uint64_t value)
-{
-  uint64_t *llongValue;
-
-  llongValue = talloc_zero (memCtx, uint64_t);
-  *llongValue = value;
-
-  return llongValue;
-}
-
-static Class SOGoObjectK, SOGoMailAccountK, SOGoMailFolderK;
-
-@interface NSObject (MAPIStoreProtocol)
-
-+ (id) objectFromSPropValue: (struct SPropValue *) value;
-
-@end
 
 @interface SOGoFolder (MAPIStoreProtocol)
 
@@ -116,73 +68,19 @@ static Class SOGoObjectK, SOGoMailAccountK, SOGoMailFolderK;
 
 @end
 
-@implementation NSObject (MAPIStoreProtocol)
-
-+ (id) objectFromSPropValue: (struct SPropValue *) value
-{
-  short int valueType;
-  id result;
-
-  valueType = (value->ulPropTag & 0xffff);
-  switch (valueType)
-    {
-    case PT_NULL:
-      result = [NSNull null];
-      break;
-    case PT_SHORT:
-      result = [NSNumber numberWithShort: value->value.i];
-      break;
-    case PT_LONG:
-      result = [NSNumber numberWithLong: value->value.l];
-      break;
-    case PT_BOOLEAN:
-      result = [NSNumber numberWithBool: value->value.b];
-      break;
-    case PT_DOUBLE:
-      result = [NSNumber numberWithDouble: value->value.dbl];
-      break;
-    case PT_UNICODE:
-      result = [NSString stringWithUTF8String: value->value.lpszW];
-      break;
-    case PT_STRING8:
-      result = [NSString stringWithUTF8String: value->value.lpszA];
-      break;
-    case PT_SYSTIME:
-      result = [NSDate dateFromFileTime: &(value->value.ft)];
-      break;
-    default:
-// #define	PT_UNSPECIFIED		0x0
-// #define	PT_I2			0x2
-// #define	PT_CURRENCY		0x6
-// #define	PT_APPTIME		0x7
-// #define	PT_ERROR		0xa
-// #define	PT_OBJECT		0xd
-// #define	PT_I8			0x14
-// #define	PT_CLSID		0x48
-// #define	PT_SVREID		0xFB
-// #define	PT_SRESTRICT		0xFD
-// #define	PT_ACTIONS		0xFE
-// #define	PT_BINARY		0x102
-      result = [NSNull null];
-      [self errorWithFormat: @"object type not handled: %d", valueType];
-    }
-
-  return result;
-}
-
-@end
-
 @implementation MAPIStoreContext : NSObject
 
 /* sogo://username:password@{contacts,calendar,tasks,journal,notes,mail}/dossier/id */
+
+static Class SOGoObjectK, SOGoMailAccountK, SOGoMailFolderK;
 
 static MAPIStoreMapping *mapping = nil;
 
 + (void) initialize
 {
   SOGoObjectK = [SOGoObject class];
-  SOGoMailAccountK = NSClassFromString (@"SOGoMailAccount");
-  SOGoMailFolderK = NSClassFromString (@"SOGoMailFolder");
+  SOGoMailAccountK = [SOGoMailAccount class];
+  SOGoMailFolderK = [SOGoMailFolder class];
   mapping = [MAPIStoreMapping sharedMapping];
 }
 
@@ -216,6 +114,8 @@ static MAPIStoreMapping *mapping = nil;
                 contextClass = @"MAPIStoreCalendarContext";
               else if ([module isEqualToString: @"tasks"])
                 contextClass = @"MAPIStoreTasksContext";
+              else if ([module isEqualToString: @"freebusy"])
+                contextClass = @"MAPIStoreFreebusyContext";
               else
                 {
                   NSLog (@"ERROR: unrecognized module name '%@'", module);
@@ -394,8 +294,6 @@ static MAPIStoreMapping *mapping = nil;
                 }
             }
         }
-      else
-        object = nil;
   
       // [self _setNewLastObject: object];
       // ASSIGN (lastObjectURL, objectURLString);
@@ -627,6 +525,8 @@ static MAPIStoreMapping *mapping = nil;
           ids = [self _messageKeysForFolderURL: url];
           break;
         default:
+          [self errorWithFormat: @"%s: value of tableType not handled: %d",
+                __FUNCTION__, tableType];
           rc = MAPISTORE_ERR_INVALID_PARAMETER;
           ids = nil;
         }
@@ -913,6 +813,8 @@ static MAPIStoreMapping *mapping = nil;
           children = [self _messageKeysForFolderURL: folderURL];
           break;
         default:
+          [self errorWithFormat: @"%s: value of tableType not handled: %d",
+                __FUNCTION__, tableType];
           children = nil;
           break;
         }
@@ -1094,9 +996,9 @@ static MAPIStoreMapping *mapping = nil;
 }
 
 - (int) getProperties: (struct SPropTagArray *) sPropTagArray
+          ofTableType: (uint8_t) tableType
                 inRow: (struct SRow *) aRow
               withMID: (uint64_t) fmid
-                 type: (uint8_t) tableType
 {
   NSString *childURL;
   int rc;
@@ -1112,6 +1014,8 @@ static MAPIStoreMapping *mapping = nil;
           break;
         case MAPISTORE_FOLDER:
         default:
+          [self errorWithFormat: @"%s: value of tableType not handled: %d",
+                __FUNCTION__, tableType];
           rc = MAPISTORE_ERROR;
           break;
         }
@@ -1235,42 +1139,28 @@ static MAPIStoreMapping *mapping = nil;
                        fromRow: (struct SRow *) aRow
 {
   int counter;
-  NSNumber *key;
   struct SPropValue *cValue;
 
   for (counter = 0; counter < aRow->cValues; counter++)
     {
       cValue = &(aRow->lpProps[counter]);
-
-#if (GS_SIZEOF_LONG == 4)
-      key = [NSNumber numberWithUnsignedLong: cValue->ulPropTag];
-#elif (GS_SIZEOF_INT == 4)
-      key = [NSNumber numberWithUnsignedInt: cValue->ulPropTag];
-#else
-#error No suitable type for 4 bytes integers
-#endif
-      [message setObject: [NSObject objectFromSPropValue: cValue]
-                  forKey: key];
+      [message setObject: NSObjectFromSPropValue (cValue)
+                  forKey: MAPIPropertyNumber (cValue->ulPropTag)];
     }
 
   return MAPISTORE_SUCCESS;
 }
 
 - (int) setPropertiesWithFMID: (uint64_t) fmid
-                         type: (uint8_t) type
+                  ofTableType: (uint8_t) tableType
                         inRow: (struct SRow *) aRow
 {
   NSMutableDictionary *message;
   NSNumber *midNbr;
   int rc;
 
-  switch (type)
+  switch (tableType)
     {
-    case MAPISTORE_FOLDER:
-      [self logWithFormat: @"METHOD '%s' (%d)", __FUNCTION__, __LINE__];
-  
-      rc = MAPISTORE_ERROR;
-      break;
     case MAPISTORE_MESSAGE:
       midNbr = [NSNumber numberWithUnsignedLongLong: fmid];
       message = [messages objectForKey: midNbr];
@@ -1280,7 +1170,10 @@ static MAPIStoreMapping *mapping = nil;
       else
         rc = MAPISTORE_ERR_NOT_FOUND;
       break;
+    case MAPISTORE_FOLDER:
     default:
+      [self errorWithFormat: @"%s: value of tableType not handled: %d",
+            __FUNCTION__, tableType];
       rc = MAPISTORE_ERROR;
     }
 

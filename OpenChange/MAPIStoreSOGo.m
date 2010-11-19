@@ -551,7 +551,7 @@ static int sogo_op_getprops(void *private_data,
   context = cContext->objcContext;
   [context setupRequest];
 
-  rc = [context getProperties: SPropTagArray inRow: aRow withMID: fmid type: type];
+  rc = [context getProperties: SPropTagArray ofTableType: type inRow: aRow withMID: fmid];
 
   [context tearDownRequest];
   [pool release];
@@ -578,7 +578,7 @@ static int sogo_op_setprops(void *private_data,
   context = cContext->objcContext;
   [context setupRequest];
 
-  rc = [context setPropertiesWithFMID: fmid type: type inRow: aRow];
+  rc = [context setPropertiesWithFMID: fmid ofTableType: type inRow: aRow];
 
   [context tearDownRequest];
   [pool release];
