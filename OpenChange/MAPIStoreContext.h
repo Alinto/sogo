@@ -120,11 +120,11 @@ extern uint64_t *MAPILongLongValue (void *, uint64_t);
 - (int) submitMessageWithMID: (uint64_t) mid
                     andFlags: (uint8_t) flags;
 - (int) getProperties: (struct SPropTagArray *) SPropTagArray
+          ofTableType: (uint8_t) tableType
                 inRow: (struct SRow *) aRow
-              withMID: (uint64_t) fmid
-                 type: (uint8_t) tableType;
+              withMID: (uint64_t) fmid;
 - (int) setPropertiesWithFMID: (uint64_t) fmid
-                         type: (uint8_t) type
+                  ofTableType: (uint8_t) tableType
                         inRow: (struct SRow *) aRow;
 - (int) deleteMessageWithMID: (uint64_t) mid
                    withFlags: (uint8_t) flags;
