@@ -25,6 +25,8 @@
 
 #import <Contacts/SOGoContactGCSEntry.h>
 
+@class NSDictionary;
+
 @interface SOGoContactGCSEntry (MAPIStoreMessage)
 
 - (void) setMAPIProperties: (NSDictionary *) properties;
