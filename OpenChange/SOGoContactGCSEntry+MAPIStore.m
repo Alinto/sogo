@@ -27,29 +27,11 @@
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGCards/NGVCard.h>
 
+#import "MAPIStoreTypes.h"
+
 #import "SOGoContactGCSEntry+MAPIStore.h"
 
-#undef DEBUG
-#include <stdbool.h>
-#include <gen_ndr/exchange.h>
-
 @implementation SOGoContactGCSEntry (MAPIStoreMessage)
-
-#if (GS_SIZEOF_LONG == 4)
-static inline NSNumber *
-MAPIPropertyNumber (unsigned long propTag)
-{
-  return [NSNumber numberWithUnsignedLong: propTag];
-}
-#elif (GS_SIZEOF_INT == 4)
-static inline NSNumber *
-MAPIPropertyNumber (unsigned int propTag)
-{
-  return [NSNumber numberWithUnsignedInt: propTag];
-}
-#else
-#error No suitable type for 4 bytes integers
-#endif
 
 - (void) setMAPIProperties: (NSDictionary *) properties
 {
