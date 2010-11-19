@@ -29,18 +29,22 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	MAPIStoreAuthenticator.m \
 	MAPIStoreContext.m \
 	MAPIStoreMapping.m \
+	MAPIStoreTypes.m \
 	\
 	MAPIStoreCalendarContext.m \
 	MAPIStoreContactsContext.m \
+	MAPIStoreFreebusyContext.m \
 	MAPIStoreMailContext.m \
 	MAPIStoreTasksContext.m \
 	\
+	SOGoAppointmentObject+MAPIStore.m \
 	SOGoGCSFolder+MAPIStore.m \
 	SOGoContactGCSEntry+MAPIStore.m \
+	SOGoTaskObject+MAPIStore.m \
 	\
 	NSArray+MAPIStore.m \
+	NSCalendarDate+MAPIStore.m \
 	NSData+MAPIStore.m \
-	NSDate+MAPIStore.m \
 	NSString+MAPIStore.m
 
 $(SOGOBACKEND)_RESOURCE_FILES += \
