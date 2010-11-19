@@ -35,7 +35,7 @@
 #import "MAPIApplication.h"
 #import "MAPIStoreAuthenticator.h"
 #import "NSData+MAPIStore.h"
-#import "NSDate+MAPIStore.h"
+#import "NSCalendarDate+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 
 #import "MAPIStoreMailContext.h"
@@ -102,7 +102,7 @@
                              withFID: (uint64_t) fid
 {
   id child;
-  NSDate *offsetDate;
+  NSCalendarDate *offsetDate;
   int rc;
 
   rc = MAPI_E_SUCCESS;
@@ -153,7 +153,7 @@
 
     case PR_EXPIRY_TIME: // TODO
     case PR_REPLY_TIME:
-      *data = [[NSDate date] asFileTimeInMemCtx: memCtx];
+      *data = [[NSCalendarDate date] asFileTimeInMemCtx: memCtx];
       break;
 
     case PR_BODY:
