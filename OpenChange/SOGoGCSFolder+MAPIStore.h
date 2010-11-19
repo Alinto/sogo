@@ -25,6 +25,8 @@
 
 #import <SOGo/SOGoGCSFolder.h>
 
+@class NSString;
+
 @interface SOGoGCSFolder (MAPIStore)
 
 - (NSArray *) componentKeysWithType: (NSString *) component;
