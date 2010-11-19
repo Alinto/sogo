@@ -1,5 +1,8 @@
 2010-11-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContactsContext.m (-createMessageInFolder:):
+	mark new entry as new.
+
 	* OpenChange/MAPIStoreCalendarContext.m (-createMessageInFolder:):
 	implemented method.
 

@@ -278,6 +278,7 @@
                    [SOGoObject globallyUniqueObjectId]];
   newEntry = [SOGoContactGCSEntry objectWithName: name
                                      inContainer: parentFolder];
+  [newEntry setIsNew: YES];
 
   return newEntry;
 }
