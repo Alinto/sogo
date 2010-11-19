@@ -20,13 +20,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
-#import <Foundation/NSEnumerator.h>
 #import <Foundation/NSNull.h>
 #import <Foundation/NSURL.h>
 #import <Foundation/NSThread.h>
-#import <Foundation/NSTimeZone.h>
 #import <Foundation/NSValue.h>
 
 #import <NGObjWeb/WOContext.h>
@@ -514,7 +511,7 @@ static MAPIStoreMapping *mapping = nil;
 - (int) rmDirWithFID: (uint64_t) fid
          inParentFID: (uint64_t) parentFid
 {
-  [self logWithFormat: @"METHOD '%s' (%d)", __FUNCTION__, __LINE__];
+  [self logWithFormat: @"UNIMPLEMENTED METHOD '%s' (%d)", __FUNCTION__, __LINE__];
 
   return MAPISTORE_ERROR;
 }
@@ -532,7 +529,7 @@ static MAPIStoreMapping *mapping = nil;
 - (int) openDir: (uint64_t) fid
     inParentFID: (uint64_t) parentFID
 {
-  [self logWithFormat: @"METHOD '%s' (%d)", __FUNCTION__, __LINE__];
+  [self logWithFormat: @"UNIMPLEMENTED METHOD '%s' (%d)", __FUNCTION__, __LINE__];
 
   return MAPISTORE_ERROR;
 }
@@ -994,7 +991,7 @@ static MAPIStoreMapping *mapping = nil;
 - (int) openMessage: (struct mapistore_message *) msg
               atURL: (NSString *) childURL
 {
-  [self logWithFormat: @"METHOD '%s' (%d)", __FUNCTION__, __LINE__];
+  [self logWithFormat: @"UNIMPLEMENTED METHOD '%s' (%d)", __FUNCTION__, __LINE__];
 
   return MAPISTORE_ERROR;
 }
@@ -1018,7 +1015,7 @@ static MAPIStoreMapping *mapping = nil;
 
 - (id) createMessageInFolder: (id) parentFolder
 {
-  [self errorWithFormat: @"invoked unimplemented method"];
+  [self subclassResponsibility: _cmd];
 
   return nil;
 }
@@ -1091,7 +1088,7 @@ static MAPIStoreMapping *mapping = nil;
 - (int) submitMessageWithMID: (uint64_t) mid
                     andFlags: (uint8_t) flags
 {
-  [self logWithFormat: @"METHOD '%s' (%d)", __FUNCTION__, __LINE__];
+  [self logWithFormat: @"UNIMPLEMENTED METHOD '%s' (%d)", __FUNCTION__, __LINE__];
 
   return MAPISTORE_ERROR;
 }
@@ -1293,7 +1290,7 @@ static MAPIStoreMapping *mapping = nil;
 - (int) deleteMessageWithMID: (uint64_t) mid
                    withFlags: (uint8_t) flags
 {
-  [self logWithFormat: @"METHOD '%s' (%d)", __FUNCTION__, __LINE__];
+  [self logWithFormat: @"UNIMPLEMENTED METHOD '%s' (%d)", __FUNCTION__, __LINE__];
 
   return MAPISTORE_ERROR;
 }
