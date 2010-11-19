@@ -1,5 +1,13 @@
 2010-11-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreTasksContext.m (-createMessageInFolder:):
+	implemented method.
+
+	* OpenChange/SOGoTaskObject+MAPIStore.[hm]: new category
+	module.
+	(setMAPIProperties:): partially implemented, in order to be able
+	to create basic tasks.
+
 	* OpenChange/MAPIStoreFreebusyContext.[hm]: new class module for
 	the "SCHEDULE+ FREE BUSY" public folder (0x70001).
 

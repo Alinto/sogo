@@ -27,7 +27,7 @@
 
 #import "MAPIApplication.h"
 #import "MAPIStoreAuthenticator.h"
-#import "NSDate+MAPIStore.h"
+#import "NSCalendarDate+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 #import "SOGoGCSFolder+MAPIStore.h"
 
@@ -147,6 +147,20 @@
     }
 
   return rc;
+}
+
+- (id) createMessageInFolder: (id) parentFolder
+{
+  SOGoTaskObject *newEntry;
+  NSString *name;
+
+  name = [NSString stringWithFormat: @"%@.ics",
+                   [SOGoObject globallyUniqueObjectId]];
+  newEntry = [SOGoTaskObject objectWithName: name
+                                inContainer: parentFolder];
+  [newEntry setIsNew: YES];
+
+  return newEntry;
 }
 
 @end
