@@ -33,6 +33,7 @@
 #import "MAPIApplication.h"
 #import "MAPIStoreAuthenticator.h"
 #import "MAPIStoreMapping.h"
+#import "MAPIStoreTypes.h"
 #import "NSString+MAPIStore.h"
 #import "SOGoGCSFolder+MAPIStore.h"
 
