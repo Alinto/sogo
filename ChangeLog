@@ -1,13 +1,26 @@
 2010-11-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
-	* OpenChange/MAPIStoreContext.m (_contextClassFromModule)
-	(_prepareContextClass): new static functions for clearing up
+	* OpenChange/MAPIStoreContext.m
+	(_prepareContextClass): new static function for clearing up
 	+contextFromURI:inMemCtx:.
 	(+registerFixedMappings:): new subclassable method.
 	(_prepareContextClass): the static mappings are now initialized
 	from the context class themselves, via the use of an unique
-	invocation of registerFixedMappings: when the class is
+	invocation of +registerFixedMappings: when the class is
 	instantiated first.
+	(+MAPIModuleName): new method that returns the corresponding
+	module name for parsing or constructing MAPI urls.
+	(+initialize): wander the list of subclasses and construct a
+	static dictionary with the help of the new method above for
+	further user from +contextFromURI:inMemCtx:. This replaces the
+	static code therein with a more dynamic approach.
+	(-submitMessageWithMID:andFlags:): implemented method via a
+	private method derived from
+	-saveChangesInMessageWithMID:andFlags:, invoking -MAPISubmit on
+	the resulting object.
+	(-saveChangesInMessageWithMID:andFlags:) make use of the same
+	private method as above, invoking -MAPISave on the resulting
+	object.
 
 	* OpenChange/SOGoTaskObject+MAPIStore.m (-setMAPIProperties:): the
 	start date must be taken from the 0x811e0040 property rather than
