@@ -40,6 +40,11 @@
 
 @implementation MAPIStoreTasksContext
 
++ (NSString *) MAPIModuleName
+{
+  return @"tasks";
+}
+
 + (void) registerFixedMappings: (MAPIStoreMapping *) mapping
 {
   [mapping registerURL: @"sogo://openchange:openchange@tasks/personal"
