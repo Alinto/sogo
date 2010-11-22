@@ -1,3 +1,11 @@
+2010-11-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/SOGoTaskObject+MAPIStore.m (-setMAPIProperties:): the
+	start date must be taken from the 0x811e0040 property rather than
+	"PR_START_DATE" (contrary to the event properties), we now handle
+	the due date (0x811f0040) as well as the task "body", set as
+	comment.
+
 2010-11-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreTasksContext.m (-createMessageInFolder:):

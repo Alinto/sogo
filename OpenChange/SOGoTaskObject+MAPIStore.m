@@ -106,7 +106,7 @@
   id value;
   SOGoUserDefaults *ud;
   iCalTimeZone *tz;
-  iCalDateTime *start;
+  iCalDateTime *date;
   NSString *status, *priority;
 
   vToDo = [self component: YES secure: NO];
@@ -118,6 +118,12 @@
             objectForKey: MAPIPropertyNumber (PR_NORMALIZED_SUBJECT_UNICODE)];
   if (value)
     [vToDo setSummary: value];
+
+  // comment
+  value = [properties
+            objectForKey: MAPIPropertyNumber (PR_BODY_UNICODE)];
+  if (value)
+    [vToDo setComment: value];
 
   // Location
   value = [properties objectForKey: MAPIPropertyNumber (0x810c001f)];
@@ -142,12 +148,21 @@
   [vCalendar addTimeZone: tz];
 
   // start
-  value = [properties objectForKey: MAPIPropertyNumber (PR_START_DATE)];
+  value = [properties objectForKey: MAPIPropertyNumber (0x811e0040)];
   if (value)
     {
-      start = (iCalDateTime *) [vToDo uniqueChildWithTag: @"dtstart"];
-      [start setTimeZone: tz];
-      [start setDateTime: value];
+      date = (iCalDateTime *) [vToDo uniqueChildWithTag: @"dtstart"];
+      [date setTimeZone: tz];
+      [date setDateTime: value];
+    }
+
+  // due
+  value = [properties objectForKey: MAPIPropertyNumber (0x811f0040)];
+  if (value)
+    {
+      date = (iCalDateTime *) [vToDo uniqueChildWithTag: @"due"];
+      [date setTimeZone: tz];
+      [date setDateTime: value];
     }
 
   // status
