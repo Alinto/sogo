@@ -26,10 +26,17 @@
 
 #import "MAPIApplication.h"
 #import "MAPIStoreAuthenticator.h"
+#import "MAPIStoreMapping.h"
 
 #import "MAPIStoreFreebusyContext.h"
 
 @implementation MAPIStoreFreebusyContext
+
++ (void) registerFixedMappings: (MAPIStoreMapping *) mapping
+{
+  [mapping registerURL: @"sogo://openchange:openchange@freebusy/"
+                withID: 0x70001];
+}
 
 - (void) setupModuleFolder
 {

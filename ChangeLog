@@ -1,5 +1,14 @@
 2010-11-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContext.m (_contextClassFromModule)
+	(_prepareContextClass): new static functions for clearing up
+	+contextFromURI:inMemCtx:.
+	(+registerFixedMappings:): new subclassable method.
+	(_prepareContextClass): the static mappings are now initialized
+	from the context class themselves, via the use of an unique
+	invocation of registerFixedMappings: when the class is
+	instantiated first.
+
 	* OpenChange/SOGoTaskObject+MAPIStore.m (-setMAPIProperties:): the
 	start date must be taken from the 0x811e0040 property rather than
 	"PR_START_DATE" (contrary to the event properties), we now handle

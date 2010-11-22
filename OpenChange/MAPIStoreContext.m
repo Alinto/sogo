@@ -73,6 +73,7 @@
 /* sogo://username:password@{contacts,calendar,tasks,journal,notes,mail}/dossier/id */
 
 static Class SOGoObjectK, SOGoMailAccountK, SOGoMailFolderK;
+static Class NSArrayK;
 
 static MAPIStoreMapping *mapping = nil;
 
@@ -81,14 +82,80 @@ static MAPIStoreMapping *mapping = nil;
   SOGoObjectK = [SOGoObject class];
   SOGoMailAccountK = [SOGoMailAccount class];
   SOGoMailFolderK = [SOGoMailFolder class];
+  NSArrayK = [NSArray class];
   mapping = [MAPIStoreMapping sharedMapping];
+}
+
++ (void) registerFixedMappings: (MAPIStoreMapping *) storeMapping
+{
+}
+
+static inline NSString *
+_contextClassFromModule (NSString *module)
+{
+  NSString *contextClass;
+
+  if ([module isEqualToString: @"mail"])
+    contextClass = @"MAPIStoreMailContext";
+  else if ([module isEqualToString: @"contacts"])
+    contextClass = @"MAPIStoreContactsContext";
+  else if ([module isEqualToString: @"calendar"])
+    contextClass = @"MAPIStoreCalendarContext";
+  else if ([module isEqualToString: @"tasks"])
+    contextClass = @"MAPIStoreTasksContext";
+  else if ([module isEqualToString: @"freebusy"])
+    contextClass = @"MAPIStoreFreebusyContext";
+  else
+    {
+      NSLog (@"ERROR: unrecognized module name '%@'", module);
+      contextClass = nil;
+    }
+
+  return contextClass;
+}
+
+static inline MAPIStoreContext *
+_prepareContextClass (struct mapistore_context *newMemCtx,
+                      NSString *contextClass, NSString *completeURLString,
+                      NSString *username, NSString *password)
+{
+  MAPIStoreContext *context;
+  MAPIStoreAuthenticator *authenticator;
+  static NSMutableDictionary *registration = nil;
+  Class contextK;
+
+  if (!registration)
+    registration = [NSMutableDictionary new];
+
+  contextK = NSClassFromString (contextClass);
+  if (![registration objectForKey: contextClass])
+    {
+      [contextK registerFixedMappings: mapping];
+      [registration setObject: [NSNull null]
+                       forKey: contextClass];
+    }
+
+  context = [contextK new];
+  [context setURI: completeURLString andMemCtx: newMemCtx];
+  [context autorelease];
+
+  authenticator = [MAPIStoreAuthenticator new];
+  [authenticator setUsername: username];
+  [authenticator setPassword: password];
+  [context setAuthenticator: authenticator];
+  [authenticator release];
+
+  [context setupRequest];
+  [context setupModuleFolder];
+  [context tearDownRequest];
+
+  return context;
 }
 
 + (id) contextFromURI: (const char *) newUri
              inMemCtx: (struct mapistore_context *) newMemCtx
 {
   MAPIStoreContext *context;
-  MAPIStoreAuthenticator *authenticator;
   NSString *contextClass, *module, *completeURLString, *urlString;
   NSURL *baseURL;
 
@@ -106,38 +173,13 @@ static MAPIStoreMapping *mapping = nil;
           module = [baseURL host];
           if (module)
             {
-              if ([module isEqualToString: @"mail"])
-                contextClass = @"MAPIStoreMailContext";
-              else if ([module isEqualToString: @"contacts"])
-                contextClass = @"MAPIStoreContactsContext";
-              else if ([module isEqualToString: @"calendar"])
-                contextClass = @"MAPIStoreCalendarContext";
-              else if ([module isEqualToString: @"tasks"])
-                contextClass = @"MAPIStoreTasksContext";
-              else if ([module isEqualToString: @"freebusy"])
-                contextClass = @"MAPIStoreFreebusyContext";
-              else
-                {
-                  NSLog (@"ERROR: unrecognized module name '%@'", module);
-                  contextClass = nil;
-                }
-              
+              contextClass = _contextClassFromModule (module);
               if (contextClass)
-                {
-                  context = [NSClassFromString (contextClass) new];
-                  [context setURI: completeURLString andMemCtx: newMemCtx];
-                  [context autorelease];
-
-                  authenticator = [MAPIStoreAuthenticator new];
-                  [authenticator setUsername: [baseURL user]];
-                  [authenticator setPassword: [baseURL password]];
-                  [context setAuthenticator: authenticator];
-                  [authenticator release];
-
-                  [context setupRequest];
-                  [context setupModuleFolder];
-                  [context tearDownRequest];
-                }
+                context = _prepareContextClass (newMemCtx,
+                                                contextClass,
+                                                completeURLString,
+                                                [baseURL user],
+                                                [baseURL password]);
             }
         }
       else
@@ -531,7 +573,7 @@ static MAPIStoreMapping *mapping = nil;
           ids = nil;
         }
       
-      if ([ids isKindOfClass: [NSArray class]])
+      if ([ids isKindOfClass: NSArrayK])
         {
           rc = MAPI_E_SUCCESS;
           *rowCount = [ids count];

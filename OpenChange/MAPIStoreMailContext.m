@@ -34,6 +34,7 @@
 
 #import "MAPIApplication.h"
 #import "MAPIStoreAuthenticator.h"
+#import "MAPIStoreMapping.h"
 #import "NSData+MAPIStore.h"
 #import "NSCalendarDate+MAPIStore.h"
 #import "NSString+MAPIStore.h"
@@ -47,6 +48,14 @@
 #include <mapistore/mapistore_errors.h>
 
 @implementation MAPIStoreMailContext
+
++ (void) registerFixedMappings: (MAPIStoreMapping *) mapping
+{
+  [mapping registerURL: @"sogo://openchange:openchange@mail/folderINBOX"
+                withID: 0x160001];
+  [mapping registerURL: @"sogo://openchange:openchange@mail/folderxxxc0001"
+                withID: 0x0c0001];
+}
 
 - (void) setupModuleFolder
 {

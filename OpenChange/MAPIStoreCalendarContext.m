@@ -29,6 +29,7 @@
 
 #import "MAPIApplication.h"
 #import "MAPIStoreAuthenticator.h"
+#import "MAPIStoreMapping.h"
 #import "NSCalendarDate+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 #import "SOGoGCSFolder+MAPIStore.h"
@@ -39,6 +40,12 @@
 #include <mapistore/mapistore.h>
 
 @implementation MAPIStoreCalendarContext
+
++ (void) registerFixedMappings: (MAPIStoreMapping *) mapping
+{
+  [mapping registerURL: @"sogo://openchange:openchange@calendar/personal"
+                withID: 0x190001];
+}
 
 - (void) setupModuleFolder
 {

@@ -130,6 +130,7 @@ extern uint64_t *MAPILongLongValue (void *, uint64_t);
                    withFlags: (uint8_t) flags;
 
 /* subclass methods */
++ (void) registerFixedMappings: (MAPIStoreMapping *) storeMapping;
 
 - (NSArray *) getFolderMessageKeys: (SOGoFolder *) folder;
 

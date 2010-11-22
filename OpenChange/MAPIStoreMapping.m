@@ -44,23 +44,12 @@
   return sharedMapping;
 }
 
-- (void) _setupFixedMapping
-{
-  [self registerURL: @"sogo://openchange:openchange@mail/folderINBOX" withID: 0x160001];
-  [self registerURL: @"sogo://openchange:openchange@mail/folderxxxc0001" withID: 0x0c0001];
-  [self registerURL: @"sogo://openchange:openchange@contacts/personal" withID: 0x1a0001];
-  [self registerURL: @"sogo://openchange:openchange@calendar/personal" withID: 0x190001];
-  [self registerURL: @"sogo://openchange:openchange@tasks/personal" withID: 0x1d0001];
-  [self registerURL: @"sogo://openchange:openchange@freebusy/" withID: 0x70001];
-}
-
 - (id) init
 {
   if ((self = [super init]))
     {
       mapping = [NSMutableDictionary new];
       reverseMapping = [NSMutableDictionary new];
-      [self _setupFixedMapping];
     }
 
   return self;

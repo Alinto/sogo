@@ -32,6 +32,7 @@
 
 #import "MAPIApplication.h"
 #import "MAPIStoreAuthenticator.h"
+#import "MAPIStoreMapping.h"
 #import "NSString+MAPIStore.h"
 #import "SOGoGCSFolder+MAPIStore.h"
 
@@ -41,6 +42,12 @@
 #include <mapistore/mapistore.h>
 
 @implementation MAPIStoreContactsContext
+
++ (void) registerFixedMappings: (MAPIStoreMapping *) mapping
+{
+  [mapping registerURL: @"sogo://openchange:openchange@contacts/personal"
+                withID: 0x1a0001];
+}
 
 - (void) setupModuleFolder
 {
