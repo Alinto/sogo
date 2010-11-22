@@ -31,8 +31,8 @@
 
 @interface MAPIStoreAuthenticator : NSObject
 {
-        NSString *username;
-        NSString *password;
+  NSString *username;
+  NSString *password;
 }
 
 - (void) setUsername: (NSString *) newUsername;
