@@ -65,6 +65,8 @@
 
 - (NSString *) davContentLength;
 - (void) setMAPIProperties: (NSDictionary *) properties;
+- (void) MAPISave;
+- (void) MAPISubmit;
 
 @end
 
@@ -75,67 +77,67 @@
 static Class SOGoObjectK, SOGoMailAccountK, SOGoMailFolderK;
 static Class NSArrayK;
 
-static MAPIStoreMapping *mapping = nil;
+static MAPIStoreMapping *mapping;
+static NSMutableDictionary *contextClassMapping;
 
 + (void) initialize
 {
+  NSArray *classes;
+  Class currentClass;
+  NSUInteger count, max;
+  NSString *moduleName;
+
   SOGoObjectK = [SOGoObject class];
   SOGoMailAccountK = [SOGoMailAccount class];
   SOGoMailFolderK = [SOGoMailFolder class];
   NSArrayK = [NSArray class];
   mapping = [MAPIStoreMapping sharedMapping];
+
+  contextClassMapping = [NSMutableDictionary new];
+  classes = GSObjCAllSubclassesOfClass (self);
+  max = [classes count];
+  for (count = 0; count < max; count++)
+    {
+      currentClass = [classes objectAtIndex: count];
+      moduleName = [currentClass MAPIModuleName];
+      NSLog (@"  registered class '%@' as handler of '%@' contexts",
+             NSStringFromClass (currentClass), moduleName);
+      [contextClassMapping setObject: currentClass
+                              forKey: moduleName];
+    }
+}
+
++ (NSString *) MAPIModuleName
+{
+  [self subclassResponsibility: _cmd];
+
+  return nil;
 }
 
 + (void) registerFixedMappings: (MAPIStoreMapping *) storeMapping
 {
 }
 
-static inline NSString *
-_contextClassFromModule (NSString *module)
-{
-  NSString *contextClass;
-
-  if ([module isEqualToString: @"mail"])
-    contextClass = @"MAPIStoreMailContext";
-  else if ([module isEqualToString: @"contacts"])
-    contextClass = @"MAPIStoreContactsContext";
-  else if ([module isEqualToString: @"calendar"])
-    contextClass = @"MAPIStoreCalendarContext";
-  else if ([module isEqualToString: @"tasks"])
-    contextClass = @"MAPIStoreTasksContext";
-  else if ([module isEqualToString: @"freebusy"])
-    contextClass = @"MAPIStoreFreebusyContext";
-  else
-    {
-      NSLog (@"ERROR: unrecognized module name '%@'", module);
-      contextClass = nil;
-    }
-
-  return contextClass;
-}
-
 static inline MAPIStoreContext *
 _prepareContextClass (struct mapistore_context *newMemCtx,
-                      NSString *contextClass, NSString *completeURLString,
+                      Class contextClass, NSString *completeURLString,
                       NSString *username, NSString *password)
 {
   MAPIStoreContext *context;
   MAPIStoreAuthenticator *authenticator;
   static NSMutableDictionary *registration = nil;
-  Class contextK;
 
   if (!registration)
     registration = [NSMutableDictionary new];
 
-  contextK = NSClassFromString (contextClass);
   if (![registration objectForKey: contextClass])
     {
-      [contextK registerFixedMappings: mapping];
+      [contextClass registerFixedMappings: mapping];
       [registration setObject: [NSNull null]
                        forKey: contextClass];
     }
 
-  context = [contextK new];
+  context = [contextClass new];
   [context setURI: completeURLString andMemCtx: newMemCtx];
   [context autorelease];
 
@@ -156,7 +158,8 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
              inMemCtx: (struct mapistore_context *) newMemCtx
 {
   MAPIStoreContext *context;
-  NSString *contextClass, *module, *completeURLString, *urlString;
+  Class contextClass;
+  NSString *module, *completeURLString, *urlString;
   NSURL *baseURL;
 
   NSLog (@"METHOD '%s' (%d) -- uri: '%s'", __FUNCTION__, __LINE__, newUri);
@@ -173,13 +176,15 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
           module = [baseURL host];
           if (module)
             {
-              contextClass = _contextClassFromModule (module);
+              contextClass = [contextClassMapping objectForKey: module];
               if (contextClass)
                 context = _prepareContextClass (newMemCtx,
                                                 contextClass,
                                                 completeURLString,
                                                 [baseURL user],
                                                 [baseURL password]);
+              else
+                NSLog (@"ERROR: unrecognized module name '%@'", module);
             }
         }
       else
@@ -980,21 +985,25 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
       if (parentFolder)
         {
           message = [self createMessageInFolder: parentFolder];
-          if (![folderURL hasSuffix: @"/"])
-            folderURL = [NSString stringWithFormat: @"%@/", folderURL];
-          messageURL = [NSString stringWithFormat: @"%@%@", folderURL,
-                                 [message nameInContainer]];
-          [mapping registerURL: messageURL withID: mid];
+          if (message)
+            {
+              if (![folderURL hasSuffix: @"/"])
+                folderURL = [NSString stringWithFormat: @"%@/", folderURL];
+              messageURL = [NSString stringWithFormat: @"%@%@", folderURL,
+                                     [message nameInContainer]];
+              [mapping registerURL: messageURL withID: mid];
+            }
         }
     }
   else
-    [self errorWithFormat: @"registered message without a valid fid"];
+    [self errorWithFormat: @"registered message without a valid fid (%.16x)", fid];
 
   return message;
 }
 
-- (int) saveChangesInMessageWithMID: (uint64_t) mid
-                           andFlags: (uint8_t) flags
+- (int) _saveOrSubmitChangesInMessageWithMID: (uint64_t) mid
+                                    andFlags: (uint8_t) flags
+                                        save: (BOOL) isSave
 {
   int rc;
   id message;
@@ -1018,6 +1027,10 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
       if (message)
         {
           [message setMAPIProperties: messageProperties];
+          if (isSave)
+            [message MAPISave];
+          else
+            [message MAPISubmit];
           rc = MAPISTORE_SUCCESS;
         }
       else
@@ -1029,12 +1042,20 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   return rc;
 }
 
+- (int) saveChangesInMessageWithMID: (uint64_t) mid
+                           andFlags: (uint8_t) flags
+{
+  return [self _saveOrSubmitChangesInMessageWithMID: mid
+                                           andFlags: flags
+                                               save: YES];
+}
+
 - (int) submitMessageWithMID: (uint64_t) mid
                     andFlags: (uint8_t) flags
 {
-  [self logWithFormat: @"UNIMPLEMENTED METHOD '%s' (%d)", __FUNCTION__, __LINE__];
-
-  return MAPISTORE_ERROR;
+  return [self _saveOrSubmitChangesInMessageWithMID: mid
+                                           andFlags: flags
+                                               save: NO];
 }
 
 - (int) getProperties: (struct SPropTagArray *) sPropTagArray

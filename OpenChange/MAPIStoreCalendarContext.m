@@ -42,6 +42,11 @@
 
 @implementation MAPIStoreCalendarContext
 
++ (NSString *) MAPIModuleName
+{
+  return @"calendar";
+}
+
 + (void) registerFixedMappings: (MAPIStoreMapping *) mapping
 {
   [mapping registerURL: @"sogo://openchange:openchange@calendar/personal"

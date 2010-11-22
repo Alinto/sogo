@@ -124,8 +124,7 @@
     }
 
   // MAPIStoreDumpMessageProperties (properties);
-
-  [self saveContentString: [vCalendar versitString]];
+  ASSIGN (content, [vCalendar versitString]);
 }
 
 @end

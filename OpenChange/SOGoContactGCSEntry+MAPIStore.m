@@ -70,7 +70,7 @@
   if (value)
     [newCard addEmail: value types: nil];
 
-  [self save];
+  ASSIGN (content, [newCard versitString]);
 }
 
 @end

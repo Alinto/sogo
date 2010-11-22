@@ -127,6 +127,7 @@
                    withFlags: (uint8_t) flags;
 
 /* subclass methods */
++ (NSString *) MAPIModuleName;
 + (void) registerFixedMappings: (MAPIStoreMapping *) storeMapping;
 
 - (NSArray *) getFolderMessageKeys: (SOGoFolder *) folder;

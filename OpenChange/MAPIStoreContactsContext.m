@@ -44,6 +44,11 @@
 
 @implementation MAPIStoreContactsContext
 
++ (NSString *) MAPIModuleName
+{
+  return @"contacts";
+}
+
 + (void) registerFixedMappings: (MAPIStoreMapping *) mapping
 {
   [mapping registerURL: @"sogo://openchange:openchange@contacts/personal"
