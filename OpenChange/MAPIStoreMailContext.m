@@ -50,6 +50,11 @@
 
 @implementation MAPIStoreMailContext
 
++ (NSString *) MAPIModuleName
+{
+  return @"mail";
+}
+
 + (void) registerFixedMappings: (MAPIStoreMapping *) mapping
 {
   [mapping registerURL: @"sogo://openchange:openchange@mail/folderINBOX"
@@ -392,7 +397,7 @@
                                       inFolder: folder
                                        withFID: fid];
     }
-        
+
   return rc;
 }
 

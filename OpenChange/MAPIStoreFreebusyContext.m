@@ -32,6 +32,11 @@
 
 @implementation MAPIStoreFreebusyContext
 
++ (NSString *) MAPIModuleName
+{
+  return @"freebusy";
+}
+
 + (void) registerFixedMappings: (MAPIStoreMapping *) mapping
 {
   [mapping registerURL: @"sogo://openchange:openchange@freebusy/"
