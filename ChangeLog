@@ -1,5 +1,8 @@
 2010-11-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreTypes.m (NSObjectFromSPropValue): added
+	support for "PT_BINARY".
+
 	* OpenChange/NSData+MAPIStore.m (+dataWithBinary:): new
 	constructor for generating an NSData instance from a struct
 	Binary_r *.

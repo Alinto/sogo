@@ -32,6 +32,7 @@
 #import <Foundation/NSNull.h>
 #import <Foundation/NSString.h>
 
+#import "NSData+MAPIStore.h"
 #import "NSCalendarDate+MAPIStore.h"
 
 #import "MAPIStoreTypes.h"
@@ -102,6 +103,13 @@ NSObjectFromSPropValue (const struct SPropValue *value)
     case PT_SYSTIME:
       result = [NSCalendarDate dateFromFileTime: &(value->value.ft)];
       break;
+    case PT_BINARY:
+		// lpProps->value.bin = *((const struct Binary_r *)data);
+
+      result
+        = [NSData dataWithBinary:
+                    (const struct Binary_r *) &(value->value.bin)];
+      break;
     default:
 // #define	PT_UNSPECIFIED		0x0
 // #define	PT_I2			0x2
@@ -116,7 +124,7 @@ NSObjectFromSPropValue (const struct SPropValue *value)
 // #define	PT_ACTIONS		0xFE
 // #define	PT_BINARY		0x102
       result = [NSNull null];
-      NSLog (@"object type not handled: %d", valueType);
+      NSLog (@"object type not handled: %d (0x.4x)", valueType, valueType);
     }
 
   return result;
