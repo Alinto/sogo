@@ -102,9 +102,7 @@ function updateEventFromDragging(controller, eventCells, eventDelta) {
                 urlstr += "/occurence" + eventCell.recurrenceTime;
             urlstr += ("/adjust?" + params);
             // log("  urlstr: " + urlstr);
-            triggerAjaxRequest(urlstr, updateEventFromDraggingCallback,
-                               { controller: controller,
-                                       eventCell: eventCell });
+            triggerAjaxRequest(urlstr, updateEventFromDraggingCallback);
         }
     }
 }
@@ -2728,7 +2726,6 @@ function onCalendarRemove(event) {
     if (removeFolderRequestCount == 0) {
         var nodes = $("calendarList").getSelectedNodes();
         for (var i = 0; i < nodes.length; i++) {
-            nodes[i].deselect();
             var owner = nodes[i].getAttribute("owner");
             var folderId = nodes[i].getAttribute("id");
             if (owner == UserLogin) {
@@ -2738,8 +2735,7 @@ function onCalendarRemove(event) {
                     showAlertDialog(label);
                 }
                 else {
-                    var folderIdElements = folderId.split(":");
-                    deletePersonalCalendar(folderIdElements[0]);
+                    deletePersonalCalendar(nodes[i]);
                 }
             }
             else {
@@ -2755,33 +2751,27 @@ function onCalendarRemove(event) {
 
 function deletePersonalCalendar(folderElement) {
     showConfirmDialog(_("Confirmation"),
-                      _("Are you sure you want to delete the calendar \"%{0}\"?").formatted($(folderElement).lastChild.nodeValue.strip()),
+                      _("Are you sure you want to delete the calendar \"%{0}\"?").formatted(folderElement.lastChild.nodeValue.strip()),
                       deletePersonalCalendarConfirm.bind(folderElement));
 }
 
 function deletePersonalCalendarConfirm() {
-    var folderId = this.substr(1);
+    var folderId = this.getAttribute("id").substr(1);
+    this.deselect();
+    this.hide();
     removeFolderRequestCount++;
     var url = ApplicationBaseURL + "/" + folderId + "/delete";
-    triggerAjaxRequest(url, deletePersonalCalendarCallback, folderId);
+    triggerAjaxRequest(url, deletePersonalCalendarCallback, this);
     disposeDialog();
 }
 
 function deletePersonalCalendarCallback(http) {
     if (http.readyState == 4) {
         if (isHttpStatus204(http.status)) {
-            var ul = $("calendarList");
-            var children = ul.childNodesWithTag("li");
-            var i = 0;
-            var done = false;
-            while (!done && i < children.length) {
-                var currentFolderId = children[i].getAttribute("id").substr(1);
-                if (currentFolderId == http.callbackData) {
-                    ul.removeChild(children[i]);
-                    done = true;
-                }
-                else
-                    i++;
+            var folderElement = http.callbackData;
+            if (folderElement) {
+                var list = folderElement.parentNode;
+                list.removeChild(folderElement);
             }
             removeFolderRequestCount--;
             if (removeFolderRequestCount == 0) {
@@ -2791,8 +2781,11 @@ function deletePersonalCalendarCallback(http) {
             }
         }
     }
-    else
+    else {
         log ("ajax problem 5: " + http.status);
+        var folderElement = http.callbackData;
+        folderElement.show();
+    }
 }
 
 function configureLists() {
@@ -2856,10 +2849,10 @@ function drawNowLine () {
       d = "0" + d;
     var day = today.getFullYear () + "" + m + "" + d;
     var targets = $$("DIV#daysView DIV.days DIV.day[day=" + day
-                     + "] DIV.events DIV.clickableHourCell");
+                     + "] DIV.clickableHourCell");
   }
   else if (currentView == "weekview")
-    var targets = $$("DIV#daysView DIV.days DIV.dayOfToday DIV.events DIV.clickableHourCell");
+    var targets = $$("DIV#daysView DIV.days DIV.dayOfToday DIV.clickableHourCell");
 
   if (targets) {
     var target = targets[hours];

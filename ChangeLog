@@ -1,3 +1,15 @@
+2010-11-23  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/SchedulerUI.js (deletePersonalCalendar):
+	argument is now the list node instead of simply the node id. The
+	confirmation callback (deletePersonalCalendarConfirm) is binded to
+	this object.
+	(deletePersonalCalendarConfirm): unselect and hide the calendar
+	node in the list until the Ajax call returns.
+	(deletePersonalCalendarCallback): remove the hidden calendar node
+	on success and show it when the Ajax call failed.
+	(drawNowLine): fixed the selection of the target cells.
+
 2010-11-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreTypes.m (NSObjectFromSPropValue): added
