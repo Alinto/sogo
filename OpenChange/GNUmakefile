@@ -39,6 +39,7 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	\
 	SOGoAppointmentObject+MAPIStore.m \
 	SOGoGCSFolder+MAPIStore.m \
+	SOGoContentObject+MAPIStore.m \
 	SOGoContactGCSEntry+MAPIStore.m \
 	SOGoTaskObject+MAPIStore.m \
 	\
