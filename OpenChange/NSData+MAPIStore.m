@@ -29,6 +29,11 @@
 
 @implementation NSData (MAPIStoreDataTypes)
 
++ (id) dataWithBinary: (const struct Binary_r *) binData
+{
+  return [NSData dataWithBytes: binData->lpb length: binData->cb];
+}
+
 - (struct Binary_r *) asBinaryInMemCtx: (void *) memCtx
 {
   struct Binary_r *binary;

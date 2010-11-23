@@ -27,9 +27,10 @@
 
 @interface NSData (MAPIStoreDataTypes)
 
++ (id) dataWithBinary: (const struct Binary_r *) binData;
+
 - (struct Binary_r *) asBinaryInMemCtx: (void *) memCtx;
 
 @end
-
 
 #endif /* NSDATA_MAPISTORE_H */

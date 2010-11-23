@@ -1,5 +1,9 @@
 2010-11-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/NSData+MAPIStore.m (+dataWithBinary:): new
+	constructor for generating an NSData instance from a struct
+	Binary_r *.
+
 	* SoObjects/Mailer/SOGoDraftObject.m (-setIsHTML, -isHTML): new
 	accessors, which enables the setting of html mode from the caller
 	rather than from the user defaults.
