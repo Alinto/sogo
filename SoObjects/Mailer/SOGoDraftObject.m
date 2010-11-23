@@ -112,6 +112,7 @@ static NSString    *userAgent      = nil;
       sourceURL = nil;
       sourceFlag = nil;
       inReplyTo = nil;
+      isHTML = NO;
     }
 
   return self;
@@ -252,6 +253,16 @@ static NSString    *userAgent      = nil;
   return text;
 }
 
+- (void) setIsHTML: (BOOL) aBool
+{
+  isHTML = aBool;
+}
+
+- (BOOL) isHTML
+{
+  return isHTML;
+}
+
 - (void) setInReplyTo: (NSString *) newInReplyTo
 {
   ASSIGN (inReplyTo, newInReplyTo);
@@ -307,6 +318,8 @@ static NSString    *userAgent      = nil;
       [infos setObject: headers forKey: @"headers"];
       if (text)
 	[infos setObject: text forKey: @"text"];
+      [infos setObject: [NSNumber numberWithBool: isHTML]
+                forKey: @"isHTML"];
       if (inReplyTo)
 	[infos setObject: inReplyTo forKey: @"inReplyTo"];
       if (IMAP4ID > -1)
@@ -351,6 +364,7 @@ static NSString    *userAgent      = nil;
   value = [infoDict objectForKey: @"text"];
   if ([value length] > 0)
     [self setText: value];
+  isHTML = [[infoDict objectForKey: @"isHTML"] boolValue];
 
   value = [infoDict objectForKey: @"IMAP4ID"];
   if (value)
@@ -895,13 +909,8 @@ static NSString    *userAgent      = nil;
   // TODO: set charset in header!
   [map setObject: @"text/plain" forKey: @"content-type"];
   if (text)
-    {
-      if ([[ud mailComposeMessageType] isEqualToString: @"html"])
-        [map setObject: htmlContentTypeValue
-                     forKey: @"content-type"];
-      else
-        [map setObject: contentTypeValue forKey: @"content-type"];
-    }
+    [map setObject: (isHTML ? htmlContentTypeValue : contentTypeValue)
+            forKey: @"content-type"];
 
 //   if ((body = text) != nil) {
 //     if ([body isKindOfClass: [NSString class]]) {
@@ -934,12 +943,8 @@ static NSString    *userAgent      = nil;
     {
 //       if ([body isKindOfClass:[NSString class]])
 	/* Note: just 'utf8' is displayed wrong in Mail.app */
-      if ([[ud mailComposeMessageType] isEqualToString: @"html"])
-        [map setObject: htmlContentTypeValue
-                forKey: @"content-type"];
-      else
-        [map setObject: contentTypeValue
-                forKey: @"content-type"];
+      [map setObject: (isHTML ? htmlContentTypeValue : contentTypeValue)
+              forKey: @"content-type"];
 //       body = [body dataUsingEncoding:NSUTF8StringEncoding];
 //       else if ([body isKindOfClass:[NSData class]] && addSuffix) {
 // 	body = [[body mutableCopy] autorelease];
@@ -949,12 +954,11 @@ static NSString    *userAgent      = nil;
 // 	      NSStringFromClass([body class])];
 //       }
 
-	message = [[[NGMimeMessage alloc] initWithHeader:map] autorelease];
-	[message setBody: body];
+      message = [[[NGMimeMessage alloc] initWithHeader:map] autorelease];
+      [message setBody: body];
     }
   else
     message = nil;
-
 
   return message;
 }

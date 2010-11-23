@@ -52,6 +52,7 @@
   <form const:href="" name="pageform" enctype="multipart/form-data" autocomplete="off">
     <input type="hidden" name="priority" id="priority" var:value="priority"/>
     <input type="hidden" name="receipt" id="receipt" var:value="receipt"/>
+    <input type="hidden" name="isHTML" id="isHTML" var:value="isHTML"/>
 
     <div id="attachmentsArea">
       <var:string label:value="Attachments:" />

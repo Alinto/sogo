@@ -76,6 +76,7 @@
   NSMutableArray *fromEMails;
   NSString *from;
   SOGoMailFolder *sentFolder;
+  BOOL isHTML;
 
   NSString *priority;
   NSString *receipt;
@@ -177,6 +178,21 @@ static NSArray *infoKeys = nil;
 - (NSString *) receipt
 {
   return receipt;
+}
+
+- (void) setIsHTML: (BOOL) aBool
+{
+  isHTML = aBool;
+  NSLog (@"setIsHTML: %d", aBool);
+}
+
+- (BOOL) isHTML
+{
+  SOGoUserDefaults *ud;
+
+  ud = [[context activeUser] userDefaults];
+
+  return [[ud mailComposeMessageType] isEqualToString: @"html"];
 }
 
 - (NSString *) itemPriorityText
@@ -480,6 +496,7 @@ static NSArray *infoKeys = nil;
       info = [self storeInfo];
       [co setHeaders: info];
       [co setText: text];
+      [co setIsHTML: isHTML];
       error = [co storeInfo];
       if (error)
 	{

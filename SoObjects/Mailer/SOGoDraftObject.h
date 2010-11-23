@@ -57,6 +57,7 @@
   NSString *sourceURL;
   NSString *sourceFlag;
   NSString *sourceFolder;
+  BOOL isHTML;
 }
 
 /* contents */
@@ -72,6 +73,8 @@
 - (NSDictionary *) headers;
 - (void) setText: (NSString *) newText;
 - (NSString *) text;
+- (void) setIsHTML: (BOOL) aBool;
+- (BOOL) isHTML;
 
 /* for replies and forwards */
 - (void) setSourceURL: (NSString *) newSurceURL;

@@ -1,3 +1,19 @@
+2010-11-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoDraftObject.m (-setIsHTML, -isHTML): new
+	accessors, which enables the setting of html mode from the caller
+	rather than from the user defaults.
+	(-mimeMessageForContentWithHeaderMap:, -bodyPartForText): make use
+	of "isHTML".
+
+	* UI/MailerUI/UIxMailEditor.m (-setIsHTML, -isHTML): new
+	accessors. The former sets the "isHTML" ivar based on a previous
+	request on the latter, which actually returns the value stored in
+	the user defaults. This enables the user to change composition
+	type while editing a message without altering the proper logic
+	underneat.
+	(-_saveFormInfo): forward the value of "isHTML" to the co.
+
 2010-11-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreContext.m
