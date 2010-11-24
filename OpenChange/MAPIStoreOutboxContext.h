@@ -1,8 +1,8 @@
-/* SOGoContentObject+MAPIStore.h - this file is part of SOGo
+/* MAPIStoreOutboxContext.h - this file is part of SOGo
  *
- * Copyright (C) 2010 Inverse inc.
+ * Copyright (C) 2010 Wolfgang Sourdeau
  *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Author: Wolfgang Sourdeau <root@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,15 +20,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef SOGOCONTENTOBJECT_MAPISTORE_H
-#define SOGOCONTENTOBJECT_MAPISTORE_H
+#ifndef MAPISTOREOUTBOXCONTEXT_H
+#define MAPISTOREOUTBOXCONTEXT_H
 
-#import <SOGo/SOGoContentObject.h>
+#import "MAPIStoreMailContext.h"
 
-@interface SOGoContentObject (MAPIStoreMessage)
-
-- (void) MAPISave;
+@interface MAPIStoreOutboxContext : MAPIStoreMailContext
 
 @end
 
-#endif /* SOGOCONTENTOBJECT_MAPISTORE_H */
+#endif /* MAPISTOREOUTBOXCONTEXT_H */

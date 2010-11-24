@@ -122,7 +122,6 @@ NSObjectFromSPropValue (const struct SPropValue *value)
 // #define	PT_SVREID		0xFB
 // #define	PT_SRESTRICT		0xFD
 // #define	PT_ACTIONS		0xFE
-// #define	PT_BINARY		0x102
       result = [NSNull null];
       NSLog (@"object type not handled: %d (0x.4x)", valueType, valueType);
     }
@@ -143,6 +142,11 @@ MAPIStoreDumpMessageProperties (NSDictionary *properties)
   max = [allKeys count];
 
   NSLog (@"message properties (%d):", max);
+
+  value = [properties objectForKey: @"recipients"];
+  if (value)
+    NSLog (@"  recipients: %@", value);
+
   for (count = 0; count < max; count++)
     {
       key = [allKeys objectAtIndex: count];

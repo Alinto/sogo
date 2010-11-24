@@ -62,7 +62,7 @@
   WOContext *woContext;
   NSMutableDictionary *messageCache;
   NSMutableDictionary *subfolderCache;
-  SOGoFolder *moduleFolder;
+  id moduleFolder;
 }
 
 + (id) contextFromURI: (const char *) newUri
@@ -123,6 +123,9 @@
 - (int) setPropertiesWithFMID: (uint64_t) fmid
                   ofTableType: (uint8_t) tableType
                         inRow: (struct SRow *) aRow;
+- (int) modifyRecipientsWithMID: (uint64_t) mid
+			 inRows: (struct ModifyRecipientRow *) rows
+		      withCount: (NSUInteger) max;
 - (int) deleteMessageWithMID: (uint64_t) mid
                    withFlags: (uint8_t) flags;
 

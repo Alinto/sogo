@@ -35,12 +35,14 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	MAPIStoreContactsContext.m \
 	MAPIStoreFreebusyContext.m \
 	MAPIStoreMailContext.m \
+	MAPIStoreOutboxContext.m \
 	MAPIStoreTasksContext.m \
 	\
 	SOGoAppointmentObject+MAPIStore.m \
-	SOGoGCSFolder+MAPIStore.m \
 	SOGoContentObject+MAPIStore.m \
 	SOGoContactGCSEntry+MAPIStore.m \
+	SOGoDraftObject+MAPIStore.m \
+	SOGoGCSFolder+MAPIStore.m \
 	SOGoTaskObject+MAPIStore.m \
 	\
 	NSArray+MAPIStore.m \

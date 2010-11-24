@@ -6,8 +6,7 @@ libOGoContentStore_LIBRARIES_DEPEND_UPON += \
 	-lNGCards	\
 	-lNGExtensions	\
 	-lEOControl	\
-	-lSaxObjC \
-        -lSOGo
+	-lSaxObjC
 
 ADDITIONAL_INCLUDE_DIRS += -I. -I.. -I../SOPE -I../SoObjects
 
