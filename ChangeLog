@@ -1,3 +1,22 @@
+2010-11-24  Wolfgang Sourdeau  <root@inverse.ca>
+
+	* OpenChange/SOGoDraftObject+MAPIStore.m: new category module.
+	(-setMAPIProperties,-MAPISubmit,-MAPISave): implemented the MAPI
+	methods for sending messages.
+
+	* OpenChange/MAPIStoreSOGo.m: (sogo_op_modifyrecipients): new
+	backend operation.
+
+	* OpenChange/MAPIStoreContext.m:
+	(-modifyRecipientsWithMID:inRows:withCount:): new method
+	implementing the new "modifyrecipients" operation.
+
+	* OpenChange/MAPIStoreOutboxContext.m: new class module
+	implementing the "outbox" folder type, as a subclass of
+	MAPIStoreMailContext.
+	(-createMessageInFolder:): new method that returns an instance of
+	SOGoDraftObject.
+
 2010-11-23  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/SchedulerUI.js (deletePersonalCalendar):

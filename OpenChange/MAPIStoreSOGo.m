@@ -551,7 +551,9 @@ static int sogo_op_getprops(void *private_data,
   context = cContext->objcContext;
   [context setupRequest];
 
-  rc = [context getProperties: SPropTagArray ofTableType: type inRow: aRow withMID: fmid];
+  rc = [context getProperties: SPropTagArray
+		ofTableType: type
+		inRow: aRow withMID: fmid];
 
   [context tearDownRequest];
   [pool release];
@@ -579,6 +581,34 @@ static int sogo_op_setprops(void *private_data,
   [context setupRequest];
 
   rc = [context setPropertiesWithFMID: fmid ofTableType: type inRow: aRow];
+
+  [context tearDownRequest];
+  [pool release];
+
+  return rc;
+}
+
+static int sogo_op_modifyrecipients(void *private_data,
+				    uint64_t mid,
+				    struct ModifyRecipientRow *rows,
+				    uint16_t count)
+{
+  NSAutoreleasePool *pool;
+  sogo_context *cContext;
+  MAPIStoreContext *context;
+  int rc;
+
+  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
+
+  pool = [NSAutoreleasePool new];
+
+  cContext = private_data;
+  context = cContext->objcContext;
+  [context setupRequest];
+
+  rc = [context modifyRecipientsWithMID: mid
+		inRows: rows
+		withCount: count];
 
   [context tearDownRequest];
   [pool release];
@@ -680,6 +710,7 @@ int mapistore_init_backend(void)
       backend.op_getprops = sogo_op_getprops;
       backend.op_get_fid_by_name = sogo_op_get_fid_by_name;
       backend.op_setprops = sogo_op_setprops;
+      backend.op_modifyrecipients = sogo_op_modifyrecipients;
       backend.op_deletemessage = sogo_op_deletemessage;
       backend.op_get_folders_list = sogo_op_get_folders_list;
 

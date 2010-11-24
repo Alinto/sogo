@@ -1198,28 +1198,14 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   return MAPISTORE_ERROR;
 }
 
-- (int) setPropertiesOfMessage: (NSMutableDictionary *) message
-                       fromRow: (struct SRow *) aRow
-{
-  int counter;
-  struct SPropValue *cValue;
-
-  for (counter = 0; counter < aRow->cValues; counter++)
-    {
-      cValue = &(aRow->lpProps[counter]);
-      [message setObject: NSObjectFromSPropValue (cValue)
-                  forKey: MAPIPropertyNumber (cValue->ulPropTag)];
-    }
-
-  return MAPISTORE_SUCCESS;
-}
-
 - (int) setPropertiesWithFMID: (uint64_t) fmid
                   ofTableType: (uint8_t) tableType
                         inRow: (struct SRow *) aRow
 {
   NSMutableDictionary *message;
   NSNumber *midNbr;
+  struct SPropValue *cValue;
+  NSUInteger counter;
   int rc;
 
   switch (tableType)
@@ -1228,8 +1214,15 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
       midNbr = [NSNumber numberWithUnsignedLongLong: fmid];
       message = [messages objectForKey: midNbr];
       if (message)
-        rc = [self setPropertiesOfMessage: message
-                                  fromRow: aRow];
+	{
+	  for (counter = 0; counter < aRow->cValues; counter++)
+	    {
+	      cValue = &(aRow->lpProps[counter]);
+	      [message setObject: NSObjectFromSPropValue (cValue)
+                          forKey: MAPIPropertyNumber (cValue->ulPropTag)];
+	    }
+	  rc = MAPISTORE_SUCCESS;
+	}
       else
         rc = MAPISTORE_ERR_NOT_FOUND;
       break;
@@ -1239,6 +1232,97 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
             __FUNCTION__, tableType];
       rc = MAPISTORE_ERROR;
     }
+
+  return rc;
+}
+
+- (NSDictionary *) _convertRecipientFromRow: (struct RecipientRow *) row
+{
+  NSMutableDictionary *recipient;
+  NSString *value;
+
+  recipient = [NSMutableDictionary dictionaryWithCapacity: 5];
+
+  if ((row->RecipientFlags & 0x07) == 1)
+    {
+      value = [NSString stringWithUTF8String: row->X500DN.recipient_x500name];
+      [recipient setObject: value forKey: @"x500dn"];
+    }
+
+  switch ((row->RecipientFlags & 0x208))
+    {
+    case 0x08:
+      // TODO: we cheat
+      value = [NSString stringWithUTF8String: row->EmailAddress.lpszA];
+      break;
+    case 0x208:
+      value = [NSString stringWithUTF8String: row->EmailAddress.lpszW];
+      break;
+    default:
+      value = nil;
+    }
+  if (value)
+    [recipient setObject: value forKey: @"email"];
+
+  switch ((row->RecipientFlags & 0x210))
+    {
+    case 0x10:
+      // TODO: we cheat
+      value = [NSString stringWithUTF8String: row->DisplayName.lpszA];
+      break;
+    case 0x210:
+      value = [NSString stringWithUTF8String: row->DisplayName.lpszW];
+      break;
+    default:
+      value = nil;
+    }
+  if (value)
+    [recipient setObject: value forKey: @"fullName"];
+
+  return recipient;
+}
+
+- (int) modifyRecipientsWithMID: (uint64_t) mid
+			 inRows: (struct ModifyRecipientRow *) rows
+		      withCount: (NSUInteger) max
+{
+  static NSString *recTypes[] = { @"orig", @"to", @"cc", @"bcc" };
+  NSMutableDictionary *message, *recipients;
+  NSMutableArray *list;
+  NSString *recType;
+  struct ModifyRecipientRow *currentRow;
+  NSUInteger count;
+  int rc;
+
+  message = [messages
+	      objectForKey: [NSNumber numberWithUnsignedLongLong: mid]];
+  if (message)
+    {
+      recipients = [NSMutableDictionary new];
+      [message setObject: recipients forKey: @"recipients"];
+      [recipients release];
+      for (count = 0; count < max; count++)
+	{
+	  currentRow = rows + count;
+	  if (currentRow->RecipClass >= 0
+	      && currentRow->RecipClass < 3)
+	    {
+	      recType = recTypes[currentRow->RecipClass];
+	      list = [recipients objectForKey: recType];
+	      if (!list)
+		{
+		  list = [NSMutableArray new];
+		  [recipients setObject: list forKey: recType];
+		  [list release];
+		}
+	      [list addObject: [self _convertRecipientFromRow:
+				       &(currentRow->RecipientRow)]];
+	    }
+	}
+      rc = MAPISTORE_SUCCESS;
+    }
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
 
   return rc;
 }
