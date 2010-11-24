@@ -6,8 +6,8 @@ include $(GNUSTEP_MAKEFILES)/common.make
 SUBPROJECTS = \
 	SOPE/NGCards \
 	SOPE/GDLContentStore \
-	SoObjects	\
 	OGoContentStore	\
+	SoObjects	\
 	Main		\
 	UI		\
 	Tools
