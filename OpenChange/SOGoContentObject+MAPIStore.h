@@ -31,5 +31,4 @@
 
 @end
 
-
 #endif /* SOGOCONTENTOBJECT_MAPISTORE_H */
