@@ -183,7 +183,6 @@ static NSArray *infoKeys = nil;
 - (void) setIsHTML: (BOOL) aBool
 {
   isHTML = aBool;
-  NSLog (@"setIsHTML: %d", aBool);
 }
 
 - (BOOL) isHTML
