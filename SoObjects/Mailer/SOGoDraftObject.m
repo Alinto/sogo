@@ -1372,12 +1372,12 @@ static NSString    *userAgent      = nil;
 	      excluding: _exclude];
   if (map)
     {
-      [self debugWithFormat: @"MIME Envelope: %@", map];
+      //[self debugWithFormat: @"MIME Envelope: %@", map];
   
       bodyParts = [self bodyPartsForAllAttachments];
       if (bodyParts)
 	{
-	  [self debugWithFormat: @"attachments: %@", bodyParts];
+	  //[self debugWithFormat: @"attachments: %@", bodyParts];
   
 	  if ([bodyParts count] == 0)
 	    /* no attachments */
@@ -1386,7 +1386,7 @@ static NSString    *userAgent      = nil;
 	    /* attachments, create multipart/mixed */
 	    message = [self mimeMultiPartMessageWithHeaderMap: map 
 			    andBodyParts: bodyParts];
-	  [self debugWithFormat: @"message: %@", message];
+	  //[self debugWithFormat: @"message: %@", message];
 	}
       else
 	[self errorWithFormat:
