@@ -1,4 +1,10 @@
-2010-11-24  Wolfgang Sourdeau  <root@inverse.ca>
+2010-11-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreTypes.m (NSObjectFromStreamData): new
+	function for returning an NSObject from a property tag and a data
+	pointer.
+
+2010-11-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/SOGoDraftObject+MAPIStore.m: new category module.
 	(-setMAPIProperties,-MAPISubmit,-MAPISave): implemented the MAPI

@@ -29,6 +29,7 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSException.h>
 #import <Foundation/NSNull.h>
 #import <Foundation/NSString.h>
 
@@ -124,6 +125,33 @@ NSObjectFromSPropValue (const struct SPropValue *value)
 // #define	PT_ACTIONS		0xFE
       result = [NSNull null];
       NSLog (@"object type not handled: %d (0x.4x)", valueType, valueType);
+    }
+
+  return result;
+}
+
+id NSObjectFromStreamData (enum MAPITAGS property, NSData* streamData)
+{
+  short int valueType;
+  id result;
+
+  valueType = (property & 0xffff);
+  switch (valueType)
+    {
+    case PT_UNICODE:
+    case PT_STRING8:
+      result = [NSString stringWithUTF8String: [streamData bytes]];
+      break;
+    case PT_BINARY:
+      result = streamData;
+      break;
+    case PT_OBJECT:
+      result = [NSNull null];
+      NSLog (@"object type not handled: %d (0x.4x)", valueType, valueType);
+      break;
+    default:
+      [NSException raise: @"MAPIStoreStreamTypeException"
+		   format: @"invalid data type"];
     }
 
   return result;

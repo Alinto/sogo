@@ -28,6 +28,7 @@
 #include <stdbool.h>
 #include <gen_ndr/exchange.h>
 
+@class NSData;
 @class NSDictionary;
 
 uint8_t *MAPIBoolValue (void *memCtx, BOOL value);
@@ -35,6 +36,7 @@ uint32_t *MAPILongValue (void *memCtx, uint32_t value);
 uint64_t *MAPILongLongValue (void *memCtx, uint64_t value);
 
 id NSObjectFromSPropValue (const struct SPropValue *);
+id NSObjectFromStreamData (enum MAPITAGS property, NSData *streamData);
 
 #if (GS_SIZEOF_LONG == 4)
 static inline NSNumber *
