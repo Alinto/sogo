@@ -23,6 +23,7 @@
 /* OpenChange SOGo storage backend */
 
 #import <Foundation/NSAutoreleasePool.h>
+#import <Foundation/NSFileHandle.h>
 #import <Foundation/NSUserDefaults.h>
 
 #import <NGObjWeb/SoProductRegistry.h>
@@ -588,6 +589,36 @@ static int sogo_op_setprops(void *private_data,
   return rc;
 }
 
+static int sogo_op_set_property_from_fd(void *private_data,
+					uint64_t fmid, uint8_t type,
+					uint32_t property, int fd)
+{
+  NSAutoreleasePool *pool;
+  sogo_context *cContext;
+  MAPIStoreContext *context;
+  NSFileHandle *fileHandle;
+  int rc;
+
+  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
+
+  pool = [NSAutoreleasePool new];
+
+  cContext = private_data;
+  context = cContext->objcContext;
+  [context setupRequest];
+
+  fileHandle = [[NSFileHandle alloc] initWithFileDescriptor: fd
+				     closeOnDealloc: NO];
+  rc = [context setProperty: property withFMID: fmid ofTableType: type
+		fromFile: fileHandle];
+  [fileHandle release];
+
+  [context tearDownRequest];
+  [pool release];
+
+  return rc;
+}
+
 static int sogo_op_modifyrecipients(void *private_data,
 				    uint64_t mid,
 				    struct ModifyRecipientRow *rows,
@@ -710,6 +741,7 @@ int mapistore_init_backend(void)
       backend.op_getprops = sogo_op_getprops;
       backend.op_get_fid_by_name = sogo_op_get_fid_by_name;
       backend.op_setprops = sogo_op_setprops;
+      backend.op_set_property_from_fd = sogo_op_set_property_from_fd;
       backend.op_modifyrecipients = sogo_op_modifyrecipients;
       backend.op_deletemessage = sogo_op_deletemessage;
       backend.op_get_folders_list = sogo_op_get_folders_list;

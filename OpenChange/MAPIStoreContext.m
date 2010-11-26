@@ -21,6 +21,7 @@
  */
 
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSFileHandle.h>
 #import <Foundation/NSNull.h>
 #import <Foundation/NSURL.h>
 #import <Foundation/NSThread.h>
@@ -1221,6 +1222,41 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 	      [message setObject: NSObjectFromSPropValue (cValue)
                           forKey: MAPIPropertyNumber (cValue->ulPropTag)];
 	    }
+	  rc = MAPISTORE_SUCCESS;
+	}
+      else
+        rc = MAPISTORE_ERR_NOT_FOUND;
+      break;
+    case MAPISTORE_FOLDER:
+    default:
+      [self errorWithFormat: @"%s: value of tableType not handled: %d",
+            __FUNCTION__, tableType];
+      rc = MAPISTORE_ERROR;
+    }
+
+  return rc;
+}
+
+- (int) setProperty: (enum MAPITAGS) property
+	   withFMID: (uint64_t) fmid
+	ofTableType: (uint8_t) tableType
+	   fromFile: (NSFileHandle *) aFile
+{
+  NSMutableDictionary *message;
+  NSNumber *midNbr;
+  NSData *fileData;
+  int rc;
+
+  fileData = [aFile readDataToEndOfFile];
+  switch (tableType)
+    {
+    case MAPISTORE_MESSAGE:
+      midNbr = [NSNumber numberWithUnsignedLongLong: fmid];
+      message = [messages objectForKey: midNbr];
+      if (message)
+	{
+	  [message setObject: NSObjectFromStreamData (property, fileData)
+		   forKey: MAPIPropertyNumber (property)];
 	  rc = MAPISTORE_SUCCESS;
 	}
       else

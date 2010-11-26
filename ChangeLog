@@ -4,6 +4,10 @@
 	function for returning an NSObject from a property tag and a data
 	pointer.
 
+	* OpenChange/MAPIStoreContext.m
+	(-setProperty:withFMID:ofTableType:fromFile:): new method
+	implementing the "set_property_from_fd" backend operation.
+
 2010-11-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/SOGoDraftObject+MAPIStore.m: new category module.

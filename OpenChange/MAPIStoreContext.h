@@ -36,6 +36,7 @@
 #define TBL_COLLAPSED_CATEGORY 0x00000004
 
 @class NSArray;
+@class NSFileHandle;
 @class NSMutableDictionary;
 @class NSString;
 
@@ -123,6 +124,10 @@
 - (int) setPropertiesWithFMID: (uint64_t) fmid
                   ofTableType: (uint8_t) tableType
                         inRow: (struct SRow *) aRow;
+- (int) setProperty: (enum MAPITAGS) property
+	   withFMID: (uint64_t) fmid
+	ofTableType: (uint8_t) tableType
+	   fromFile: (NSFileHandle *) aFile;
 - (int) modifyRecipientsWithMID: (uint64_t) mid
 			 inRows: (struct ModifyRecipientRow *) rows
 		      withCount: (NSUInteger) max;
