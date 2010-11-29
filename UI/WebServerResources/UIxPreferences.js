@@ -45,7 +45,7 @@ function savePreferences(sender) {
 
     if (isSieveScriptsEnabled) {
         var jsonFilters = prototypeIfyFilters();
-        $("sieveFilters").setValue(jsonFilters.toJSON());
+        $("sieveFilters").setValue(Object.toJSON(jsonFilters));
     }
 
     saveMailAccounts();
@@ -753,7 +753,7 @@ function saveMailAccounts() {
 
     compactMailAccounts();
     var mailAccountsJSON = $("mailAccountsJSON");
-    mailAccountsJSON.value = mailAccounts.toJSON();
+    mailAccountsJSON.value = Object.toJSON(mailAccounts);
 }
 
 function compactMailAccounts() {
@@ -930,7 +930,7 @@ function serializeContactsCategories() {
         values.push(td.allTextContent());
     }
 
-    $("contactsCategoriesValue").value = values.toJSON();
+    $("contactsCategoriesValue").value = Object.toJSON(values);
 }
 
 /* / contact categories */

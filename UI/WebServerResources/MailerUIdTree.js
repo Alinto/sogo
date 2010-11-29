@@ -50,7 +50,7 @@ var MailerUIdTreeExtension = {
                 expandedFolders.push(this.aNodes[n].dataname);
             }
         }
-        return expandedFolders.toJSON();
+        return Object.toJSON(expandedFolders);
     },
     autoSync: function() {
         this.config.useCookies = true;
