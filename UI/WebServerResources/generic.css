@@ -2,7 +2,6 @@
 
 /* common stuff */
 
-/* Bitstream VeraSans, , Tahoma, FreeSans, Helvetica, sans-serif */
 BODY
 { position: absolute;
   top: 0px;
@@ -10,7 +9,7 @@ BODY
   right: 0px;
   bottom: 0px;
   color: #262B33;
-  font-family: Lucida Grande, Bitstream VeraSans, Tahoma;
+  font-family: Lucida Grande, Bitstream VeraSans, Tahoma, sans-serif;
   font-size: 8pt;
   background-color: #E6E7E6;
   border: 0px;
