@@ -1,5 +1,11 @@
 2010-11-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailContext.m
+	(-getMessageTableChildproperty:atURL:withTag:inFolder:withFID:):
+	when the property is larger than 4000 bytes, register it in a
+	"message" dictionary and return MAPI_E_NOT_ENOUGH_MEMORY so that
+	it can be fetched later via the streaming mechanism.
+
 	* OpenChange/MAPIStoreTypes.h (MAPIPropertyNumber): changed the
 	prototype to use an enum MAPITAGS instead of an int32_t.
 

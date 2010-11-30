@@ -208,12 +208,23 @@
                 result = [[result valueForKey: @"RawResponse"] objectForKey: @"fetch"];
                 key = [[keys objectAtIndex: 0] objectForKey: @"key"];
                 content = [[result objectForKey: key] objectForKey: @"data"];
-                stringContent = [[NSString alloc] initWithData: content
-                                                      encoding: NSISOLatin1StringEncoding];
+		if ([content length] > 3999)
+		  {
+		    [self registerValue: content
+			     asProperty: proptag
+				 forURL: childURL];
+		    *data = NULL;
+		    rc = MAPI_E_NOT_ENOUGH_MEMORY;
+		  }
+		else
+		  {
+		    stringContent = [[NSString alloc] initWithData: content
+							  encoding: NSISOLatin1StringEncoding];
                 
-                // *data = NULL;
-                // rc = MAPI_E_NOT_FOUND;
-                *data = [stringContent asUnicodeInMemCtx: memCtx];
+		    // *data = NULL;
+		    // rc = MAPI_E_NOT_FOUND;
+		    *data = [stringContent asUnicodeInMemCtx: memCtx];
+		  }
               }
             else
               {
@@ -248,8 +259,11 @@
             content = [[result objectForKey: key] objectForKey: @"data"];
 	    if ([content length] > 3999)
 	      {
+		[self registerValue: content
+			 asProperty: proptag
+			     forURL: childURL];
 		*data = NULL;
-		rc = MAPI_E_NOT_ENOUGH_RESOURCES;
+		rc = MAPI_E_NOT_ENOUGH_MEMORY;
 	      }
 	    else
 	      *data = [content asBinaryInMemCtx: memCtx];
@@ -267,7 +281,7 @@
 
       /* We don't handle any RTF content. */
     case PR_RTF_COMPRESSED:
-      rc = MAPI_E_NOT_FOUND;
+      rc = MAPI_E_NOT_ENOUGH_MEMORY;
       break;
     case PR_RTF_IN_SYNC:
       *data = MAPIBoolValue (memCtx, NO);
