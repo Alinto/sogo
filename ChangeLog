@@ -1,5 +1,8 @@
 2010-11-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreTypes.h (MAPIPropertyNumber): changed the
+	prototype to use an enum MAPITAGS instead of an int32_t.
+
 	* OpenChange/MAPIStoreContext.m
 	(-getFolderTableChildproperty:atURL:withTag:inFolder:withFID:,-getMessageTableChildproperty:atURL:withTag:inFolder:withFID:)
 	(-getCommonTableChildproperty:atURL:withTag:inFolder:withFID:):

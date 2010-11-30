@@ -38,21 +38,17 @@ uint64_t *MAPILongLongValue (void *memCtx, uint64_t value);
 id NSObjectFromSPropValue (const struct SPropValue *);
 id NSObjectFromStreamData (enum MAPITAGS property, NSData *streamData);
 
+static inline NSNumber *
+MAPIPropertyNumber (enum MAPITAGS propTag)
+{
 #if (GS_SIZEOF_LONG == 4)
-static inline NSNumber *
-MAPIPropertyNumber (unsigned long propTag)
-{
   return [NSNumber numberWithUnsignedLong: propTag];
-}
 #elif (GS_SIZEOF_INT == 4)
-static inline NSNumber *
-MAPIPropertyNumber (unsigned int propTag)
-{
   return [NSNumber numberWithUnsignedInt: propTag];
-}
 #else
 #error No suitable type for 4 bytes integers
 #endif
+}
 
 void MAPIStoreDumpMessageProperties (NSDictionary *properties);
 
