@@ -55,6 +55,8 @@
 #include <mapistore/mapistore_errors.h>
 #include <libmapiproxy.h>
 
+/* TODO: homogenize method names and order of parameters */
+
 @interface SOGoFolder (MAPIStoreProtocol)
 
 - (BOOL) create;
@@ -1282,6 +1284,52 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   return rc;
 }
 
+- (int) getProperty: (enum MAPITAGS) property
+	   withFMID: (uint64_t) fmid
+	ofTableType: (uint8_t) tableType
+	   intoFile: (NSFileHandle *) aFile
+{
+  NSMutableDictionary *message;
+  NSNumber *midNbr;
+  NSData *fileData;
+  enum MAPISTATUS rc;
+
+  switch (tableType)
+    {
+    case MAPISTORE_MESSAGE:
+      midNbr = [NSNumber numberWithUnsignedLongLong: fmid];
+      message = [messages objectForKey: midNbr];
+      if (message)
+      	{
+	  fileData = [message objectForKey: MAPIPropertyNumber (property)];
+	  /* TODO: only NSData is supported right now */
+	  if (fileData)
+	    {
+	      [aFile writeData: fileData];
+	      rc = MAPI_E_SUCCESS;
+	    }
+	  else
+	    rc = MAPI_E_NOT_FOUND;
+	}
+      else
+        rc = MAPI_E_INVALID_OBJECT;
+      break;
+	
+      // 	  [message setObject: NSObjectFromStreamData (property, fileData)
+      // 		   forKey: MAPIPropertyNumber (property)];
+      // 	  rc = MAPISTORE_SUCCESS;
+      // 	}
+      // else
+    case MAPISTORE_FOLDER:
+    default:
+      [self errorWithFormat: @"%s: value of tableType not handled: %d",
+            __FUNCTION__, tableType];
+      rc = MAPI_E_INVALID_OBJECT;
+    }
+
+  return rc;
+}
+
 - (NSDictionary *) _convertRecipientFromRow: (struct RecipientRow *) row
 {
   NSMutableDictionary *recipient;
@@ -1423,6 +1471,35 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
     rc = MAPI_E_NOT_FOUND;
 
   return rc;
+}
+
+/* utils */
+
+- (void) registerValue: (id) value
+	    asProperty: (enum MAPITAGS) property
+		forURL: (NSString *) url
+{
+  /* TODO: this method is a hack to enable the saving of property values which
+     need to be passed as streams. Must be removed after the
+     getProperty/setProperty mechanisms have been rethought. */
+  NSMutableDictionary *message;
+  uint64_t fmid;
+  NSNumber *midNbr;
+
+  fmid = [mapping idFromURL: url];
+  if (fmid != NSNotFound)
+    {
+      midNbr = [NSNumber numberWithUnsignedLongLong: fmid];
+      message = [messages objectForKey: midNbr];
+      if (!message)
+	{
+	  message = [NSMutableDictionary new];
+	  [messages setObject: message forKey: midNbr];
+	  [message release];
+	  [message setObject: midNbr forKey: @"mid"];
+	}
+      [message setObject: value forKey: MAPIPropertyNumber (property)];
+    }
 }
 
 @end

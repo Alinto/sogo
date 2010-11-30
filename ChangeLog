@@ -10,6 +10,8 @@
 	returned from the getXXXChildProperty.. methods, the tag is set to
 	its corresponding error tag and the error code is returned as a
 	long value.
+	(-getProperty:withFMID:ofTableType:intoFile:): implemented
+	"op_get_property_into_fd" backend method.
 
 2010-11-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

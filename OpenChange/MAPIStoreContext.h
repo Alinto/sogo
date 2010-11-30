@@ -128,11 +128,21 @@
 	   withFMID: (uint64_t) fmid
 	ofTableType: (uint8_t) tableType
 	   fromFile: (NSFileHandle *) aFile;
+- (int) getProperty: (enum MAPITAGS) property
+	   withFMID: (uint64_t) fmid
+	ofTableType: (uint8_t) tableType
+	   intoFile: (NSFileHandle *) aFile;
 - (int) modifyRecipientsWithMID: (uint64_t) mid
 			 inRows: (struct ModifyRecipientRow *) rows
 		      withCount: (NSUInteger) max;
 - (int) deleteMessageWithMID: (uint64_t) mid
                    withFlags: (uint8_t) flags;
+
+
+/* util methods */
+- (void) registerValue: (id) value
+	    asProperty: (enum MAPITAGS) property
+		forURL: (NSString *) url;
 
 /* subclass methods */
 + (NSString *) MAPIModuleName;
