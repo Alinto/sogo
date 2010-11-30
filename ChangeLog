@@ -1,3 +1,16 @@
+2010-11-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreContext.m
+	(-getFolderTableChildproperty:atURL:withTag:inFolder:withFID:,-getMessageTableChildproperty:atURL:withTag:inFolder:withFID:)
+	(-getCommonTableChildproperty:atURL:withTag:inFolder:withFID:):
+	now return an "enum MAPISTATUS" for making debugging easier.
+	(_createMessageWithMID:inFID:): display an error when the returned
+	message is nil.
+	(-getMessageProperties:inRow:atURL:): when an error code is
+	returned from the getXXXChildProperty.. methods, the tag is set to
+	its corresponding error tag and the error code is returned as a
+	long value.
+
 2010-11-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreTypes.m (NSObjectFromStreamData): new

@@ -71,11 +71,11 @@
   return [(SOGoGCSFolder *) folder componentKeysWithType: @"vtodo"];
 }
 
-- (int) getMessageTableChildproperty: (void **) data
-                               atURL: (NSString *) childURL
-                             withTag: (uint32_t) proptag
-                            inFolder: (SOGoFolder *) folder
-                             withFID: (uint64_t) fid
+- (enum MAPISTATUS) getMessageTableChildproperty: (void **) data
+					   atURL: (NSString *) childURL
+					 withTag: (enum MAPITAGS) proptag
+					inFolder: (SOGoFolder *) folder
+					 withFID: (uint64_t) fid
 {
   NSString *status;
   // id child;

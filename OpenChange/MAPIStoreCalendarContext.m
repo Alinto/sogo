@@ -73,11 +73,11 @@
   return [(SOGoGCSFolder *) folder componentKeysWithType: @"vevent"];
 }
 
-- (int) getMessageTableChildproperty: (void **) data
-                               atURL: (NSString *) childURL
-                             withTag: (uint32_t) proptag
-                            inFolder: (SOGoFolder *) folder
-                             withFID: (uint64_t) fid
+- (enum MAPISTATUS) getMessageTableChildproperty: (void **) data
+					   atURL: (NSString *) childURL
+					 withTag: (enum MAPITAGS) proptag
+					inFolder: (SOGoFolder *) folder
+					 withFID: (uint64_t) fid
 {
   // id child;
   id event;
@@ -181,7 +181,7 @@
 
 // - (int) getFolderTableChildproperty: (void **) data
 //                               atURL: (NSString *) childURL
-//                             withTag: (uint32_t) proptag
+//                             withTag: (enum MAPITAGS) proptag
 //                            inFolder: (SOGoFolder *) folder
 //                             withFID: (uint64_t) fid
 // {

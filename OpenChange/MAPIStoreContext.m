@@ -596,11 +596,11 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   return rc;
 }
 
-- (int) getCommonTableChildproperty: (void **) data
-                              atURL: (NSString *) childURL
-                            withTag: (uint32_t) proptag
-                           inFolder: (SOGoFolder *) folder
-                            withFID: (uint64_t) fid
+- (enum MAPISTATUS) getCommonTableChildproperty: (void **) data
+					  atURL: (NSString *) childURL
+					withTag: (enum MAPITAGS) proptag
+				       inFolder: (SOGoFolder *) folder
+					withFID: (uint64_t) fid
 {
   // NSString *stringValue;
   id child;
@@ -638,11 +638,11 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   return rc;
 }
 
-- (int) getMessageTableChildproperty: (void **) data
-                               atURL: (NSString *) childURL
-                             withTag: (uint32_t) proptag
-                            inFolder: (SOGoFolder *) folder
-                             withFID: (uint64_t) fid
+- (enum MAPISTATUS) getMessageTableChildproperty: (void **) data
+					   atURL: (NSString *) childURL
+					 withTag: (enum MAPITAGS) proptag
+					inFolder: (SOGoFolder *) folder
+					 withFID: (uint64_t) fid
 {
   int rc;
   uint32_t contextId;
@@ -765,11 +765,11 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   return newURL;
 }
 
-- (int) getFolderTableChildproperty: (void **) data
-                              atURL: (NSString *) childURL
-                            withTag: (uint32_t) proptag
-                           inFolder: (SOGoFolder *) folder
-                            withFID: (uint64_t) fid
+- (enum MAPISTATUS) getFolderTableChildproperty: (void **) data
+					  atURL: (NSString *) childURL
+					withTag: (enum MAPITAGS) proptag
+				       inFolder: (SOGoFolder *) folder
+					withFID: (uint64_t) fid
 {
   // id child;
   struct Binary_r *binaryValue;
@@ -834,11 +834,11 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   return rc;
 }
 
-- (int) getTableProperty: (void **) data
-                 withTag: (uint32_t) proptag
-              atPosition: (uint32_t) pos
-           withTableType: (uint8_t) tableType
-                   inFID: (uint64_t) fid
+- (enum MAPISTATUS) getTableProperty: (void **) data
+			     withTag: (enum MAPITAGS) proptag
+			  atPosition: (uint32_t) pos
+		       withTableType: (uint8_t) tableType
+			       inFID: (uint64_t) fid
 {
   NSArray *children;
   NSString *folderURL, *childURL, *childName;
@@ -994,6 +994,10 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
                                      [message nameInContainer]];
               [mapping registerURL: messageURL withID: mid];
             }
+	  else
+	    [self errorWithFormat:
+		    @"no message created in folder '%.16x' with mid '%.16x'",
+		  fid, mid];
         }
     }
   else
@@ -1100,7 +1104,8 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   id child;
   NSInteger count;
   void *propValue;
-  uint32_t tag;
+  enum MAPITAGS tag;
+  enum MAPISTATUS propRc;
   int rc;
 
   child = [self lookupObject: childURL];
@@ -1111,17 +1116,22 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
       for (count = 0; count < sPropTagArray->cValues; count++)
         {
           tag = sPropTagArray->aulPropTag[count];
-          if ([self getMessageTableChildproperty: &propValue
-                                           atURL: childURL
-                                         withTag: tag
-                                        inFolder: nil
-                                         withFID: 0]
-              == MAPI_E_SUCCESS)
-            {
-	      set_SPropValue_proptag (&(aRow->lpProps[aRow->cValues]),
-				      tag, propValue);
-	      aRow->cValues++;
+	  propValue = NULL;
+	  propRc = [self getMessageTableChildproperty: &propValue
+			 atURL: childURL
+			 withTag: tag
+			 inFolder: nil
+			 withFID: 0];
+          if (propRc != MAPI_E_SUCCESS)
+	    {
+	      if (propValue)
+		talloc_free (propValue);
+	      propValue = MAPILongValue (memCtx, propRc);
+	      tag = (tag & 0xffff0000) | 0x000a;
 	    }
+	  set_SPropValue_proptag (&(aRow->lpProps[aRow->cValues]),
+				  tag, propValue);
+	  aRow->cValues++;
         }
       rc = MAPI_E_SUCCESS;
     }

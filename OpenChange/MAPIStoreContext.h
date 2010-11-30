@@ -91,11 +91,11 @@
         byName: (const char *) foldername
    inParentFID: (uint64_t) parent_fid;
 
-- (int) getTableProperty: (void **) data
-                 withTag: (uint32_t) proptag
-              atPosition: (uint32_t) pos
-           withTableType: (uint8_t) tableType
-                   inFID: (uint64_t) fid;
+- (enum MAPISTATUS) getTableProperty: (void **) data
+			     withTag: (enum MAPITAGS) proptag
+			  atPosition: (uint32_t) pos
+		       withTableType: (uint8_t) tableType
+			       inFID: (uint64_t) fid;
 
 - (int) mkDir: (struct SRow *) aRow
       withFID: (uint64_t) fid
@@ -140,23 +140,23 @@
 
 - (NSArray *) getFolderMessageKeys: (SOGoFolder *) folder;
 
-- (int) getCommonTableChildproperty: (void **) data
-                              atURL: (NSString *) childURL
-                            withTag: (uint32_t) proptag
-                           inFolder: (SOGoFolder *) folder
-                            withFID: (uint64_t) fid;
+- (enum MAPISTATUS) getCommonTableChildproperty: (void **) data
+					  atURL: (NSString *) childURL
+					withTag: (enum MAPITAGS) proptag
+				       inFolder: (SOGoFolder *) folder
+					withFID: (uint64_t) fid;
 
-- (int) getMessageTableChildproperty: (void **) data
-                               atURL: (NSString *) childURL
-                             withTag: (uint32_t) proptag
-                            inFolder: (SOGoFolder *) folder
-                             withFID: (uint64_t) fid;
+- (enum MAPISTATUS) getMessageTableChildproperty: (void **) data
+					   atURL: (NSString *) childURL
+					 withTag: (enum MAPITAGS) proptag
+					inFolder: (SOGoFolder *) folder
+					 withFID: (uint64_t) fid;
 
-- (int) getFolderTableChildproperty: (void **) data
-                              atURL: (NSString *) childURL
-                            withTag: (uint32_t) proptag
-                           inFolder: (SOGoFolder *) folder
-                            withFID: (uint64_t) fid;
+- (enum MAPISTATUS) getFolderTableChildproperty: (void **) data
+					  atURL: (NSString *) childURL
+					withTag: (enum MAPITAGS) proptag
+				       inFolder: (SOGoFolder *) folder
+					withFID: (uint64_t) fid;
 
 - (int) getFoldersList: (struct indexing_folders_list **) folders_list
               withFMID: (uint64_t) fmid;

@@ -89,9 +89,9 @@
   return [(SOGoMailFolder *) folder toOneRelationshipKeys];
 }
 
-// - (int) getCommonTableChildproperty: (void **) data
+// - (enum MAPISTATUS) getCommonTableChildproperty: (void **) data
 //                               atURL: (NSString *) childURL
-//                             withTag: (uint32_t) proptag
+//                             withTag: (enum MAPITAGS) proptag
 //                            inFolder: (SOGoFolder *) folder
 //                             withFID: (uint64_t) fid
 // {
@@ -110,15 +110,15 @@
 //         return rc;
 // }
 
-- (int) getMessageTableChildproperty: (void **) data
-                               atURL: (NSString *) childURL
-                             withTag: (uint32_t) proptag
-                            inFolder: (SOGoFolder *) folder
-                             withFID: (uint64_t) fid
+- (enum MAPISTATUS) getMessageTableChildproperty: (void **) data
+					   atURL: (NSString *) childURL
+					 withTag: (enum MAPITAGS) proptag
+					inFolder: (SOGoFolder *) folder
+					 withFID: (uint64_t) fid
 {
   id child;
   NSCalendarDate *offsetDate;
-  int rc;
+  enum MAPISTATUS rc;
 
   rc = MAPI_E_SUCCESS;
   switch (proptag)
@@ -246,7 +246,13 @@
                                             @"fetch"];
             key = [[keys objectAtIndex: 0] objectForKey: @"key"];
             content = [[result objectForKey: key] objectForKey: @"data"];
-            *data = [content asBinaryInMemCtx: memCtx];
+	    if ([content length] > 3999)
+	      {
+		*data = NULL;
+		rc = MAPI_E_NOT_ENOUGH_RESOURCES;
+	      }
+	    else
+	      *data = [content asBinaryInMemCtx: memCtx];
           }
         else
           {
@@ -290,6 +296,7 @@
       child = [self lookupObject: childURL];
       *data = [[child from] asUnicodeInMemCtx: memCtx];
       break;
+    case PR_INTERNET_MESSAGE_ID:
     case PR_INTERNET_MESSAGE_ID_UNICODE:
       child = [self lookupObject: childURL];
       *data = [[child messageId] asUnicodeInMemCtx: memCtx];
@@ -401,13 +408,13 @@
   return rc;
 }
 
-- (int) getFolderTableChildproperty: (void **) data
-                              atURL: (NSString *) childURL
-                            withTag: (uint32_t) proptag
-                           inFolder: (SOGoFolder *) folder
-                            withFID: (uint64_t) fid
+- (enum MAPISTATUS) getFolderTableChildproperty: (void **) data
+					  atURL: (NSString *) childURL
+					withTag: (enum MAPITAGS) proptag
+				       inFolder: (SOGoFolder *) folder
+					withFID: (uint64_t) fid
 {
-  int rc;
+  enum MAPISTATUS rc;
 
   rc = MAPI_E_SUCCESS;
   switch (proptag)

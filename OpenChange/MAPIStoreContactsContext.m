@@ -75,9 +75,9 @@
   return [(SOGoGCSFolder *) folder componentKeysWithType: @"vcard"];
 }
 
-// - (int) getCommonTableChildproperty: (void **) data
+// - (enum MAPISTATUS) getCommonTableChildproperty: (void **) data
 //                               atURL: (NSString *) childURL
-//                             withTag: (uint32_t) proptag
+//                             withTag: (enum MAPITAGS) proptag
 //                            inFolder: (SOGoFolder *) folder
 //                             withFID: (uint64_t) fid
 // {
@@ -137,15 +137,15 @@
   return phone;
 }
 
-- (int) getMessageTableChildproperty: (void **) data
-                               atURL: (NSString *) childURL
-                             withTag: (uint32_t) proptag
-                            inFolder: (SOGoFolder *) folder
-                             withFID: (uint64_t) fid
+- (enum MAPISTATUS) getMessageTableChildproperty: (void **) data
+					   atURL: (NSString *) childURL
+					 withTag: (enum MAPITAGS) proptag
+					inFolder: (SOGoFolder *) folder
+					 withFID: (uint64_t) fid
 {
   NSString *stringValue;
   id child;
-  int rc;
+  enum MAPISTATUS rc;
 
   rc = MAPI_E_SUCCESS;
   switch (proptag)
@@ -296,9 +296,9 @@
   return newEntry;
 }
 
-// - (int) getFolderTableChildproperty: (void **) data
+// - (enum MAPISTATUS) getFolderTableChildproperty: (void **) data
 //                               atURL: (NSString *) childURL
-//                             withTag: (uint32_t) proptag
+//                             withTag: (enum MAPITAGS) proptag
 //                            inFolder: (SOGoFolder *) folder
 //                             withFID: (uint64_t) fid
 // {
