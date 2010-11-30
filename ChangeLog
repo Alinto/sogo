@@ -4,7 +4,8 @@
 	prototype to use an enum MAPITAGS instead of an int32_t.
 
 	* OpenChange/MAPIStoreContext.m
-	(-getFolderTableChildproperty:atURL:withTag:inFolder:withFID:,-getMessageTableChildproperty:atURL:withTag:inFolder:withFID:)
+	(-getFolderTableChildproperty:atURL:withTag:inFolder:withFID:)
+	(-getMessageTableChildproperty:atURL:withTag:inFolder:withFID:)
 	(-getCommonTableChildproperty:atURL:withTag:inFolder:withFID:):
 	now return an "enum MAPISTATUS" for making debugging easier.
 	(_createMessageWithMID:inFID:): display an error when the returned
