@@ -10,11 +10,11 @@
 "Update" = "Поновити";
 "Cancel" = "Скасувати";
 "Common" = "Загальне";
-"Contact editor" = "Contact editor";
-"Contact viewer" = "Contact viewer";
+"Contact editor" = "Редактор контактів";
+"Contact viewer" = "Перегляд контактів";
 "Email" = "Електронна пошта";
 "Screen Name" = "Інтернет-пейджер";
-"Extended" = "Extended";
+"Extended" = "Розширення";
 "Fax" = "Факс";
 "Firstname" = "Ім’я";
 "Home" = "Домашня";
@@ -55,7 +55,7 @@
 "htmlMailFormat_TRUE" = "HTML";
 
 "Name or Email" = "Ім’я або адреса електронної пошти";
-"Category" = "Category";
+"Category" = "Категорія";
 "Personal Addressbook" = "Особиста адресна книга";
 "Search in Addressbook" = "Шукати в адресній книзі";
 
@@ -82,7 +82,7 @@
 "Phone Number:" = "Номер телефону:";
 "Prefers to receive messages formatted as:" = "Вважає за краще отримувати пошту у форматі:";
 "Screen Name:" = "Інтернет-пейджер:";
-"Categories:" = "Categories:";
+"Categories:" = "Категорії:";
 
 "First:" = "Ім’я:";
 "Last:" = "Прізвище:";
@@ -96,9 +96,9 @@
 "Pager:" = "Пейджер:";
 
 /* categories */
-"contacts_category_labels" = "Colleague, Competitor, Customer, Friend, Family, Business Partner, Provider, Press, VIP";
-"Categories" = "Categories";
-"New category" = "New category";
+"contacts_category_labels" = "Робота, Конкуренти, Клієнти, Друзі, Родина, Партнери, Постачальники, Преса, ВІП";
+"Categories" = "Категорії";
+"New category" = "Нова категорія";
 
 /* adresses */
 "Title:" = "Посада:";

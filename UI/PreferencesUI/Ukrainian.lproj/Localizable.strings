@@ -5,7 +5,7 @@
 /* tabs */
 "General" = "Загальне";
 "Calendar Options" = "Календар";
-"Contacts Options" = "Contacts Options";
+"Contacts Options" = "Контакти";
 "Mail Options" = "Пошта";
 "IMAP Accounts" = "IMAP-записи";
 "Vacation" = "Відпустка";
@@ -20,7 +20,7 @@
 "OK" = "Добре";
 
 /* contacts categories */
-"contacts_category_labels" = "Colleague, Competitor, Customer, Friend, Family, Business Partner, Provider, Press, VIP";
+"contacts_category_labels" = "Робота, Конкуренти, Клієнти, Друзі, Родина, Партнери, Постачальники, Преса, ВІП";
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Увімкнути повідомлення про мою відсутність";
