@@ -2,7 +2,7 @@
 
 "Contact" = "Kontakt";
 "Address" = "Adress";
-"Photos" = "Photos";
+"Photos" = "Foton";
 "Other" = "Annat";
 
 "Address Books" = "Adressböcker";
@@ -51,14 +51,14 @@
 "Edit the selected card" = "Redigera markerat adresskort";
 "Send a mail message" = "Skicka ett meddelande";
 "Delete selected card or address book" = "Ta bort markerat adresskort eller adressbok";
-"Reload all contacts" = "Reload all contacts";
+"Reload all contacts" = "Ladda om alla kontakter";
 
 "htmlMailFormat_UNKNOWN" = "Okänt";
 "htmlMailFormat_FALSE" = "Oformaterad Text";
 "htmlMailFormat_TRUE" = "HTML";
 
 "Name or Email" = "Namn eller e-post";
-"Category" = "Category";
+"Category" = "Kategori";
 "Personal Addressbook" = "Personlig adressbok";
 "Search in Addressbook" = "Sök i adressbok";
 
@@ -85,7 +85,7 @@
 "Phone Number:" = "Telefonnummer:";
 "Prefers to receive messages formatted as:" = "Föredrar att få mottagna meddelanden kodade som:";
 "Screen Name:" = "Skärmnamn:";
-"Categories:" = "Categories:";
+"Categories:" = "Kategorier:";
 
 "First:" = "Förnamn:";
 "Last:" = "Efternamn:";
@@ -99,9 +99,9 @@
 "Pager:" = "Personsökare:";
 
 /* categories */
-"contacts_category_labels" = "Colleague, Competitor, Customer, Friend, Family, Business Partner, Provider, Press, VIP";
-"Categories" = "Categories";
-"New category" = "New category";
+"contacts_category_labels" = "Kollega, Konkurrent, Kund, Vän, Familj, Affärspartner, Leverantör, Press, VIP";
+"Categories" = "Kategorier";
+"New category" = "Ny kategori";
 
 /* adresses */
 "Title:" = "Titel:";
@@ -123,7 +123,7 @@
 "Timezone:" = "Tidzon:";
 "Birthday:" = "Födelsedag:";
 "Birthday (yyyy-mm-dd):" = "Födelsedag (yyyy-mm-dd):";
-"Freebusy URL:" = "Freebusy URL:";
+"Freebusy URL:" = "Ledig/upptagen URL:";
 
 "Add as..." = "Lägg till som...";
 "Recipient" = "Mottagare";
@@ -157,8 +157,8 @@
 
 "User rights for:" = "Användarrättigheter för:";
 
-"Any Authenticated User" = "Any Authenticated User";
-"Public Access" = "Public Access";
+"Any Authenticated User" = "Alla autentiserade användare";
+"Public Access" = "Allmän åtkomst";
 
 "This person can add cards to this addressbook."
 = "Personen kan lägga till addresskort i adressboken.";
@@ -193,7 +193,7 @@
 "Add" = "Lägg till";
 "Lists can't be moved or copied." = "Utskickslistor kan inte flyttas eller kopieras.";
 "Export" = "Exportera";
-"Export Address Book..." = "Export Address Book...";
+"Export Address Book..." = "Exportera adressbok...";
 "Import Cards" = "Importera adresskort";
 "Select a vCard or LDIF file." = "Välj ett vCard eller LDIF fil.";
 "Upload" = "Ladda upp";
@@ -202,4 +202,4 @@
 "No card was imported." = "Inga adresskort importerades.";
 "A total of %{0} cards were imported in the addressbook." = "Totalt %{0} av adresskorten importerades till adressboken.";
 
-"Reload" = "Reload";
+"Reload" = "Ladda om";

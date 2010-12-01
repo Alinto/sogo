@@ -5,9 +5,9 @@
 /* tabs */
 "General" = "Allmänt";
 "Calendar Options" = "Kalenderinställningar";
-"Contacts Options" = "Contacts Options";
+"Contacts Options" = "Adressboksinställingar";
 "Mail Options" = "E-postinställningar";
-"IMAP Accounts" = "IMAP Accounts";
+"IMAP Accounts" = "IMAP konton";
 "Vacation" = "Frånvaro";
 "Forward" = "Vidarebefordring";
 "Password" = "Lösenord";
@@ -18,7 +18,7 @@
 "Delete" = "Ta bort";
 
 /* contacts categories */
-"contacts_category_labels" = "Colleague, Competitor, Customer, Friend, Family, Business Partner, Provider, Press, VIP";
+"contacts_category_labels" = "Kollega, Konkurrent, Kund, Vän, Familj, Affärspartner, Leverantör, Press, VIP";
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Aktivera frånvaro auto-svar";
@@ -132,20 +132,22 @@
 "composemessagestype_text" = "Oformaterad text";
 
 /* IMAP Accounts */
-"New Mail Account" = "New Mail Account";
+"New Mail Account" = "Nytt e-postkonto";
 
-"Server Name:" = "Server Name:";
+"Server Name:" = "
+
+Servernamn:";
 "Port:" = "Port:";
-"User Name:" = "User Name:";
+"User Name:" = "Användarnamn:";
 "Password:" = "Lösenord:";
 
-"Full Name:" = "Full Name:";
-"Email:" = "Email:";
+"Full Name:" = "Fullständigt namn:";
+"Email:" = "E-postadress:";
 "Signature:" = "Signatur:";
-"(Click to create)" = "(Click to create)";
+"(Click to create)" = "(Klicka för att skapa)";
 
 "Signature" = "Signatur";
-"Please enter your signature below:" = "Please enter your signature below:";
+"Please enter your signature below:" = "Skriv din signatur nedan:";
 
 /* Additional Parameters */
 "Additional Parameters" = "Övriga parametrar";
@@ -157,7 +159,7 @@
 
 /* Event+task categories */
 "category_none" = "Ingen";
-"calendar_category_labels" = "Arbete,Diverse,Favoriter,Födelsedagar,Helgdagar,Idéer,Kunder,Ledighet,Leverantörer,Personligt,Presenter,Projekt,Meeting,Resor,Status,Telefonsamtal,Tävlingar,Uppföljning,Ärenden";
+"calendar_category_labels" = "Arbete,Diverse,Favoriter,Födelsedagar,Helgdagar,Idéer,Kunder,Ledighet,Leverantörer,Personligt,Presenter,Projekt,Möte,Resor,Status,Telefonsamtal,Tävlingar,Uppföljning,Ärenden";
 
 /* Default module */
 "Calendar" = "Kalender";
@@ -184,78 +186,66 @@
 "Welsh" = "Cymraeg";
 
 /* Return receipts */
-"When I receive a request for a return receipt:" = "When I receive a request for a return receipt:";
-"Never send a return receipt" = "Never send a return receipt";
-"Allow return receipts for some messages" = "Allow return receipts for some messages";
-"If I'm not in the To or Cc of the message:" = "If I'm not in the To or Cc of the message:";
-"If the sender is outside my domain:" = "If the sender is outside my domain:";
-"In all other cases:" = "In all other cases:";
+"When I receive a request for a return receipt:" = "När jag får en begäran om mottagningskvitto:";
+"Never send a return receipt" = "Skicka aldrig mottagningskvitto";
+"Allow return receipts for some messages" = "Tillåt mottagningskvitto för vissa meddelanden";
+"If I'm not in the To or Cc of the message:" = "Om jag inte finns i meddelandets Till-fält eller Kopia-fält:";
+"If the sender is outside my domain:" = "Om avsändaren finns utanför min domän:";
+"In all other cases:" = "I alla andra fall:";
 
-"Never send" = "Never send";
-"Always send" = "Always send";
-"Ask me" = "Ask me";
-
-/* Return receipts */
-"When I receive a request for a return receipt:" = "When I receive a request for a return receipt:";
-"Never send a return receipt" = "Never send a return receipt";
-"Allow return receipts for some messages" = "Allow return receipts for some messages";
-"If I'm not in the To or Cc of the message:" = "If I'm not in the To or Cc of the message:";
-"If the sender is outside my domain:" = "If the sender is outside my domain:";
-"In all other cases:" = "In all other cases:";
-
-"Never send" = "Never send";
-"Always send" = "Always send";
-"Ask me" = "Ask me";
+"Never send" = "Skicka aldrig";
+"Always send" = "Skicka alltid";
+"Ask me" = "Fråga mig";
 
 /* Filters - UIxPreferences */
-"Filters" = "Filters";
-"Active" = "Active";
-"Move Up" = "Move Up";
-"Move Down" = "Move Down";
+"Filters" = "Filter";
+"Active" = "Aktiv";
+"Move Up" = "Flytta up";
+"Move Down" = "Flytta ner";
 
 /* Filters - UIxFilterEditor */
-"Filter name:" = "Filter name:";
-"For incoming messages that" = "For incoming messages that";
-"match all of the following rules:" = "match all of the following rules:";
-"match any of the following rules:" = "match any of the following rules:";
-"match all messages" = "match all messages";
-"Perform these actions:" = "Perform these actions:";
+"Filter name:" = "Filter namn:";
+"For incoming messages that" = "För inkommande meddelanden som";
+"match all of the following rules:" = "matchar alla följande regler:";
+"match any of the following rules:" = "matchar någon av följande regler:";
+"match all messages" = "matchar alla meddelanden";
+"Perform these actions:" = "Utför följande handlingar:";
 
-"Subject" = "Subject";
-"From" = "From";
-"To" = "To";
-"Cc" = "Cc";
-"To or Cc" = "To or Cc";
-"Size (Kb)" = "Size (Kb)";
-"Header" = "Header";
-"Flag the message with:" = "Flag the message with:";
-"Discard the message" = "Discard the message";
-"File the message in:" = "File the message in:";
-"Keep the message" = "Keep the message";
-"Forward the message to:" = "Forward the message to:";
-"Send a reject message:" = "Send a reject message:";
-"Send a vacation message" = "Send a vacation message";
-"Stop processing filter rules" = "Stop processing filter rules";
+"Subject" = "Ämne";
+"From" = "Från";
+"To" = "Till";
+"Cc" = "Kopia";
+"To or Cc" = "Till eller Kopia";
+"Size (Kb)" = "Storlek (Kb)";
+"Header" = "Rubrik";
+"Flag the message with:" = "Märk meddelandet med:";
+"Discard the message" = "Kasta meddelandet";
+"File the message in:" = "Spara meddelandet i:";
+"Keep the message" = "Behåll meddelandet";
+"Forward the message to:" = "Vidarebefordra meddelandet till:";
+"Send a reject message:" = "Avvisa meddelandet:";
+"Send a vacation message" = "Skicka ett frånvaromeddelande";
+"Stop processing filter rules" = "Avsluta körning av filterreglerna";
 
-"is under" = "is under";
-"is over" = "is over";
-"is" = "is";
-"is not" = "is not";
-"contains" = "contains";
-"does not contain" = "does not contain";
-"matches" = "matches";
-"does not match" = "does not match";
-"matches regex" = "matches regex";
-"does not match regex" = "does not match regex";
+"is under" = "är under";
+"is over" = "är över";
+"is" = "är";
+"is not" = "är inte";
+"contains" = "innehåller";
+"does not contain" = "innehåller inte";
+"matches" = "matchar";
+"does not match" = "matchar inte";
+"matches regex" = "matchar regulärt uttryck";
+"does not match regex" = "matchar inte regulärt uttryck";
 
-"Seen" = "Seen";
-"Deleted" = "Deleted";
-"Answered" = "Answered";
-"Flagged" = "Flagged";
-"Junk" = "Junk";
-"Not Junk" = "Not Junk";
-"Label 1" = "Label 1";
-"Label 2" = "Label 2";
-"Label 3" = "Label 3";
-"Label 4" = "Label 4";
-"Label 5" = "Label 5";
+"Seen" = "Visad";
+"Deleted" = "Borttagen";
+"Answered" = "Besvarad";
+"Flagged" = "Märkt";
+"Junk" = "Skräp";
+"Not Junk" = "Inte skräp";
+"Label 1" = "Etikett 1";
+"Label 2" = "Etikett 2";
+"Label 3" = "Etikett 3";
+"Label 4" = "Etikett 4";
+"Label 5" = "Etikett 5";

@@ -18,7 +18,7 @@
 "Contacts" = "Kontakter";
 "Attach" = "Bifoga";
 "Save" = "Spara";
-"Options" = "Options";
+"Options" = "Alternativ";
 "Size" = "Storlek";
 
 /* Tooltips */
@@ -76,10 +76,10 @@
 "Remove this folder" = "Ta bort mappen";
 "Erase mails from this folder" = "Radera meddelanden från mappen";
 "Expunge this folder" = "Radera mappen";
-"Archive This Folder" = "Archive This Folder";
+"Archive This Folder" = "Arkivera mappen";
 "Modify the acl of this folder" = "Ändra åtkomsträttigheter på mappen";
 
-"Saved Messages.zip" = "Saved Messages.zip";
+"Saved Messages.zip" = "Sparat Messages.zip";
 
 "Update" = "Uppdatera";
 "Cancel" = "Avbryt";
@@ -109,10 +109,10 @@
 "Edit Draft..." = "Redigera utkast...";
 "Load Images" = "Ladda bilder";
 
-"Return Receipt" = "Return Receipt";
-"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?";
-"Return Receipt (displayed) - %@"= "Return Receipt (displayed) - %@";
-"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents.";
+"Return Receipt" = "Mottagningskvitto";
+"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Avsändaren av detta meddelande har begärt att få bli underrättad när du läser detta meddelande. Vill du underrätta avsändaren?";
+"Return Receipt (displayed) - %@"= "Mottagningskvitto (visad) - %@";
+"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Detta är ett mottagningskvitto för meddelandet du skickade till %@.\n\nNotera: Detta mottagningskvitto bekräftar bara att meddelandet visades på mottagarens dator. Det finns ingen garanti att mottagaren har läst eller förstått innehållet i meddelandet.";
 
 "Priority" = "Prioritet";
 "highest" = "Högst";
@@ -142,7 +142,7 @@
 "View"          = "Visa";
 "All"           = "Alla";
 "Unread"        = "Oläst";
-"No message"    = "No message";
+"No message"    = "Inga meddelanden";
 "messages"      = "meddelanden";
 
 "first"         = "Första";
@@ -194,8 +194,8 @@
 "Delete Folder" = "Ta bort mapp";
 "Use This Folder For" = "Använd mapp till";
 "Get Messages for Account" = "Hämta nya meddelanden för konto";
-"Properties..." = "Properties...";
-"Delegation..." = "Delegation...";
+"Properties..." = "Egenskaper...";
+"Delegation..." = "Delegera meddelanden...";
 
 /* Use This Folder menu */
 "Sent Messages" = "Skickade meddelanden";
@@ -276,7 +276,7 @@
 
 /* Message operations */
 "The messages could not be moved to the trash folder. Would you like to delete them immediately?"
-= "The messages could not be moved to the trash folder. Would you like to delete them immediately?";
+= "Meddelandena kunde inte flyttas till papperskorgen. Vill du ta bort dem direkt?";
 
 /* Message editing */
 "error_validationfailed" = "Validering har misslyckats";
@@ -284,6 +284,6 @@
 "error_missingrecipients" = "Ingen mottagare är angiven";
 
 /* Message sending */
-"cannot send message: (smtp) all recipients discarded" = "Cannot send message: all recipients are invalid.";
-"cannot send message (smtp) - recipients discarded:" = "Cannot send message. The following addresses are invalid:";
-"cannot send message: (smtp) error when connecting" = "Cannot send message: error when connecting to the SMTP server.";
+"cannot send message: (smtp) all recipients discarded" = "Meddelandet kan inte skickas: alla mottagaradresserna är felaktiga.";
+"cannot send message (smtp) - recipients discarded:" = "Meddelandet kan inte skickas. Följande mottagaradresser är felaktiga:";
+"cannot send message: (smtp) error when connecting" = "Meddelandet kan inte skickas: ett fel uppstod i uppkopplingen mot SMTP servern.";

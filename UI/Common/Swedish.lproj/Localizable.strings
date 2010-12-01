@@ -19,7 +19,7 @@
 
 "Help" = "Hjälp";
 
-"noJavascriptError" = "SOGo kräver att Javascript kan köras. Kontrollera att Javascript kan köras och att det är aktiverat i din browsers inställningar.";
+"noJavascriptError" = "SOGo kräver att Javascript kan köras. Kontrollera att Javascript kan köras och att det är aktiverat i din nätbläddrares inställningar.";
 "noJavascriptRetry" = "Försök igen";
 
 "Owner:" = "Ägare:";
@@ -28,12 +28,12 @@
 "Add..." = "Lägg till...";
 "Remove" = "Ta bort";
 
-"Subscribe User" = "Subscribe User";
+"Subscribe User" = "Prenumrera på användare";
 
-"Any Authenticated User" = "Any Authenticated User";
-"Public Access" = "Public Access";
-"Any user not listed above" = "Any user not listed above";
-"Anybody accessing this resource from the public area" = "Anybody accessing this resource from the public area";
+"Any Authenticated User" = "Alla autentiserade användare";
+"Public Access" = "Allmän åtkomst";
+"Any user not listed above" = "Alla användare som inte listas ovan";
+"Anybody accessing this resource from the public area" = "Alla som kommer från den publika arean";
 
 "Sorry, the user rights can not be configured for that object." = "Tyvärr, användarrättigheterna kan inte konfigureras för objektet.";
 
@@ -54,7 +54,7 @@
 "A folder by that name already exists." = "En mapp med det namnet finns redan.";
 "You cannot create a list in a shared address book." 
         = "Du kan inte skapa en lista i en delad adressbok.";
-"Warning" = "Warning";
+"Warning" = "Varning";
 
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Du har inte åtkomsträttighet till modulen eller systemet. Kontakta din systemadministratör.";
@@ -68,9 +68,9 @@
 
 /* common buttons */
 "OK" = "OK";
-"Cancel" = "Cancel";
-"Yes" = "Yes";
-"No" = "No";
+"Cancel" = "Avbryt";
+"Yes" = "Ja";
+"No" = "Nej";
 
 /* alarms */
 "Reminder:" = "Påminnelse:";
