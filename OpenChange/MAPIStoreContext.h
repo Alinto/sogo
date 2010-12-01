@@ -57,6 +57,8 @@
 
   NSString *uri;
 
+  NSMutableArray *parentFoldersBag;
+
   NSMutableDictionary *objectCache;
   NSMutableDictionary *messages;
   MAPIStoreAuthenticator *authenticator;

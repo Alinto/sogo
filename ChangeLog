@@ -1,3 +1,11 @@
+2010-12-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreContext.m: prevent leaks by adding an
+	additional mutable array that retains the required parent folders
+	until deallocation of the context.
+	(-getCommonTableChildproperty:atURL:withTag:inFolder:withFID:):
+	log the name of the missing properties for easier diagnostics.
+
 2010-11-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreMailContext.m

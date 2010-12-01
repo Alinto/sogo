@@ -208,7 +208,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
       messages = [NSMutableDictionary new];
       woContext = [WOContext contextWithRequest: nil];
       [woContext retain];
-      
+      parentFoldersBag = [NSMutableArray new];
       moduleFolder = nil;
       uri = nil;
       baseContextSet = NO;
@@ -222,6 +222,8 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 - (void) dealloc
 {
   [self logWithFormat: @"-dealloc: %@", self];
+
+  [parentFoldersBag release];
 
   [messageCache release];
   [subfolderCache release];
@@ -609,6 +611,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   // uint64_t *llongValue;
   // uint32_t *longValue;
   int rc;
+  const char *propName;
 
   rc = MAPI_E_SUCCESS;
   switch (proptag)
@@ -618,24 +621,27 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
       *data = [[child displayName] asUnicodeInMemCtx: memCtx];
       break;
     default:
-      // *data = NULL;
-      rc = MAPI_E_NOT_FOUND;
+      // rc = MAPI_E_NOT_FOUND;
       // if ((proptag & 0x001F) == 0x001F)
       //   {
-      //     stringValue = [NSString stringWithFormat: @"Unhandled unicode value: 0x%x", proptag];
-      //     *data = [stringValue asUnicodeInMemCtx: memCtx];
-      //     rc = MAPI_E_SUCCESS;
-          [self errorWithFormat: @"Unknown proptag (returned): %.8x for child '%@'",
-                proptag, childURL];
+      propName = get_proptag_name (proptag);
+      if (!propName)
+	propName = "<unknown>";
+      [self errorWithFormat: @"Unhandled value: 0x%x (%s), childURL: %@",
+	    proptag, propName, childURL];
+      *data = NULL;
+      // *data = [stringValue asUnicodeInMemCtx: memCtx];
+      // rc = MAPI_E_SUCCESS;
+      //   [self errorWithFormat: @"Unknown proptag (returned): %.8x for child '%@'",
+      //         proptag, childURL];
+      // }
       //   }
       // else
       //   {
-      //     [self errorWithFormat: @"Unknown proptag: %.8x for child '%@'",
-      //           proptag, childURL];
-          // *data = NULL;
-	  rc = MAPI_E_NOT_FOUND;
-          break;
-        }
+      // *data = NULL;
+      rc = MAPI_E_NOT_FOUND;
+      break;
+    }
 
   return rc;
 }

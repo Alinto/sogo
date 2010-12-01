@@ -69,14 +69,14 @@
 
   userFolder = [SOGoUserFolder objectWithName: [authenticator username]
                                   inContainer: MAPIApp];
+  [parentFoldersBag addObject: userFolder];
   [woContext setClientObject: userFolder];
-  [userFolder retain]; // LEAK
 
   accountsFolder = [userFolder lookupName: @"Mail"
                                 inContext: woContext
                                   acquire: NO];
+  [parentFoldersBag addObject: accountsFolder];
   [woContext setClientObject: accountsFolder];
-  [accountsFolder retain]; // LEAK
 
   moduleFolder = [accountsFolder lookupName: @"0"
                                   inContext: woContext
