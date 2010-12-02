@@ -161,7 +161,7 @@ function saveCategories() {
                 newCategories.push(newValue);
             }
         }
-        var json = newCategories.toJSON();
+        var json = Object.toJSON(newCategories);
         catsInput.value = json;
     }
 }
