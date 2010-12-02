@@ -321,8 +321,16 @@
   NSRange substringRange;
 
   substringRange = [value rangeOfString: @"/SOGo/dav/"];
+
+  if (substringRange.location == NSNotFound)
+    return;
+
   value = [value substringFromIndex: NSMaxRange (substringRange)];
   substringRange = [value rangeOfString: @"/Calendar"];
+
+  if (substringRange.location == NSNotFound)
+    return;
+
   value = [value substringToIndex: substringRange.location];
   collection = [[SOGoUser userWithLogin: value]
 		 homeFolderInContext: localContext];
