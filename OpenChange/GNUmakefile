@@ -1,3 +1,4 @@
+
 # GNUstep makefile
 
 include ../config.make
@@ -36,6 +37,7 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	MAPIStoreFreebusyContext.m \
 	MAPIStoreMailContext.m \
 	MAPIStoreOutboxContext.m \
+	MAPIStoreSpoolerContext.m \
 	MAPIStoreTasksContext.m \
 	\
 	SOGoAppointmentObject+MAPIStore.m \
@@ -63,7 +65,12 @@ else
 
 LIBMAPI_LIBS = $(shell pkg-config libmapistore --libs) -lmapiproxy
 
-ADDITIONAL_INCLUDE_DIRS += $(LIBMAPI_CFLAGS) -I../SoObjects -I../SOPE -DBACKEND_BUNDLE_NAME="@\"$(BUNDLE_NAME)$(BUNDLE_EXTENSION)\"" -DSOGO_BUNDLES_DIR="@\"$(BUNDLE_INSTALL_DIR)\""
+ADDITIONAL_INCLUDE_DIRS += \
+	-Werror -Wall \
+	$(LIBMAPI_CFLAGS) \
+	-I../SoObjects -I../SOPE \
+	-DBACKEND_BUNDLE_NAME="@\"$(BUNDLE_NAME)$(BUNDLE_EXTENSION)\"" \
+	-DSOGO_BUNDLES_DIR="@\"$(BUNDLE_INSTALL_DIR)\""
 ADDITIONAL_LIB_DIRS += -Wl,--as-needed \
 	-L../SOGo/SOGo.framework/ -lSOGo \
 	-L../../OGoContentStore/$(GNUSTEP_OBJ_DIR)/ -lOGoContentStore \
