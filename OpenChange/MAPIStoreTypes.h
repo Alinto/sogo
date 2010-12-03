@@ -36,6 +36,7 @@ uint32_t *MAPILongValue (void *memCtx, uint32_t value);
 uint64_t *MAPILongLongValue (void *memCtx, uint64_t value);
 
 id NSObjectFromSPropValue (const struct SPropValue *);
+id NSObjectFromMAPISPropValue (const struct mapi_SPropValue *);
 id NSObjectFromStreamData (enum MAPITAGS property, NSData *streamData);
 
 static inline NSNumber *

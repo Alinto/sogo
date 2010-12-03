@@ -1,5 +1,9 @@
 2010-12-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreTypes.m (NSObjectFromMAPISPropValue): new
+	helper function, similar in semantics to NSObjectFromSPropValue
+	but taking a struct mapi_SPropValue * as parameter.
+
 	* OpenChange/NSData+MAPIStore.m: (+dataWithShortBinary:): new
 	constructor for returning an NSData instance from a struct
 	SBinary_short.

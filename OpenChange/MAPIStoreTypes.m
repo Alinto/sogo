@@ -72,6 +72,63 @@ MAPILongLongValue (void *memCtx, uint64_t value)
 }
 
 id
+NSObjectFromMAPISPropValue (const struct mapi_SPropValue *value)
+{
+  short int valueType;
+  id result;
+
+  valueType = (value->ulPropTag & 0xffff);
+  switch (valueType)
+    {
+    case PT_NULL:
+      result = [NSNull null];
+      break;
+    case PT_SHORT:
+      result = [NSNumber numberWithShort: value->value.i];
+      break;
+    case PT_LONG:
+      result = [NSNumber numberWithLong: value->value.l];
+      break;
+    case PT_BOOLEAN:
+      result = [NSNumber numberWithBool: value->value.b];
+      break;
+    case PT_DOUBLE:
+      result = [NSNumber numberWithDouble: value->value.dbl];
+      break;
+    case PT_UNICODE:
+      result = [NSString stringWithUTF8String: value->value.lpszW];
+      break;
+    case PT_STRING8:
+      result = [NSString stringWithUTF8String: value->value.lpszA];
+      break;
+    case PT_SYSTIME:
+      result = [NSCalendarDate dateFromFileTime: &(value->value.ft)];
+      break;
+    case PT_BINARY:
+		// lpProps->value.bin = *((const struct Binary_r *)data);
+
+      result = [NSData dataWithShortBinary: &value->value.bin];
+      break;
+    default:
+// #define	PT_UNSPECIFIED		0x0
+// #define	PT_I2			0x2
+// #define	PT_CURRENCY		0x6
+// #define	PT_APPTIME		0x7
+// #define	PT_ERROR		0xa
+// #define	PT_OBJECT		0xd
+// #define	PT_I8			0x14
+// #define	PT_CLSID		0x48
+// #define	PT_SVREID		0xFB
+// #define	PT_SRESTRICT		0xFD
+// #define	PT_ACTIONS		0xFE
+      result = [NSNull null];
+      NSLog (@"object type not handled: %d (0x.4x)", valueType, valueType);
+    }
+
+  return result;
+}
+
+id
 NSObjectFromSPropValue (const struct SPropValue *value)
 {
   short int valueType;
@@ -151,7 +208,8 @@ id NSObjectFromStreamData (enum MAPITAGS property, NSData* streamData)
       break;
     default:
       [NSException raise: @"MAPIStoreStreamTypeException"
-		   format: @"invalid data type"];
+		  format: @"invalid data type"];
+      result = nil;
     }
 
   return result;
